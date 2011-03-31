@@ -122,6 +122,61 @@ sub unapi {
     print "\nunapi 'unapi.bre' duration is $duration\n\n";
 }
 
+sub unapi_spread {
+    my @recs = @_;
+    my %records;
+    my $start = time();
+
+    my @reqs;
+    for my $rec_id (@recs) {
+
+        my $ses = OpenSRF::AppSession->create('open-ils.cstore');
+        my $req = $ses->request(
+            'open-ils.cstore.json_query', 
+            {from => ['unapi.bre', $rec_id, 'marcxml', 'record', '{holdings_xml,acp}', 'CONS']});
+
+        push(@reqs, $req);
+    }
+
+    for my $req (@reqs) {
+
+        my $data = $req->gather(1);
+        my $xml = XML::LibXML->new->parse_string($data->{'unapi.bre'});
+        $xml = $xml->documentElement;
+        my $attrs = get_bib_attrs($xml);
+        my $rec_id =  xptext($xml,'*[@tag="901"]/*[@code="c"]');
+        $records{$rec_id}{$_} = $attrs->{$_} for keys %$attrs;
+
+        my $rvols = [];
+        for my $volnode ($xml->findnodes('//*[local-name()="volumes"]/*[local-name()="volume"]')) {
+            my $vol = {}; 
+            $vol->{copies} = [];
+            $vol->{label} = $volnode->getAttribute('label');
+            for my $copynode ($volnode->getElementsByLocalName('copy')) {
+                my $copy = {};   
+                $copy->{barcode} = $copynode->getAttribute('barcode');
+                push(@{$vol->{copies}}, $copy);
+            }
+            push(@{$records{$rec_id}->{volumes}}, $vol);
+        }
+    }
+
+    my $duration = time() - $start;
+
+    for my $rec_id (keys %records) {
+        my $rec = $records{$rec_id};
+        print sprintf("%d [%s] has %d volumes and %d copies\n",
+            $rec_id, $rec->{title}, 
+            scalar(@{$rec->{volumes}}),
+            scalar(map { @{$_->{copies}} } @{$rec->{volumes}}));
+    }
+
+    #note, unapi.biblio_record_entry_feed per record performs the same as unapi.bre pre record
+    print "\nunapi 'unapi.bre' spread duration is $duration\n\n";
+}
+
+
+
 sub unapi_batch {
     my @recs = @_;
     my $start = time();
@@ -162,6 +217,53 @@ sub unapi_batch {
     }
     print "\nunapi 'batch feed' duration is $duration\n\n";
 }
+
+sub direct_spread {
+    my @recs = @_;
+    my %records;
+    my $start = time();
+
+    my $query = {
+        flesh => 4, 
+        flesh_fields => {
+            bre => ['call_numbers'], 
+            acn => ['copies', 'uris'], 
+            acp => ['location', 'stat_cat_entries', 'parts'],
+            ascecm => ['stat_cat', 'stat_cat_entry'],
+            acpm => ['part']
+        }
+    };
+
+    my @reqs;
+    for my $rec_id (@recs) {
+        my $ses = OpenSRF::AppSession->create('open-ils.cstore');
+        my $req = $ses->request(
+            'open-ils.cstore.direct.biblio.record_entry.search', {id => $rec_id}, $query);
+        push(@reqs, $req);
+    }
+
+    $records{$_}{counts} = $e->json_query({from => ['asset.record_copy_count', 1, $_, 0]})->[0] for @recs;
+    for my $req (@reqs) {
+        my $bre = $req->gather(1);
+        my $xml = XML::LibXML->new->parse_string($bre->marc)->documentElement;
+        my $attrs = get_bib_attrs($xml);
+        $records{$bre->id}{record} = $bre;
+        $records{$bre->id}{$_} = $attrs->{$_} for keys %$attrs;
+    }
+
+    my $duration = time() - $start;
+
+    for my $rec_id (keys %records) {
+        my $rec = $records{$rec_id};
+        print sprintf("%d [%s] has %d volumes and %d copies\n",
+            $rec_id, $rec->{title}, 
+            scalar(@{$rec->{record}->call_numbers}), 
+            scalar(map { @{$_->copies} } @{$rec->{record}->call_numbers}));
+    }
+
+    print "\n'direct' spread calls processing duration is $duration\n\n";
+}
+
 
 sub direct {
     my @recs = @_;
@@ -228,8 +330,7 @@ sub direct {
             scalar(map { @{$_->copies} } @{$rec->{record}->call_numbers}));
     }
 
-    print "\ndirect calls processing duration is $duration\n\n";
+    print "\n'direct' calls processing duration is $duration\n\n";
 }
 
-for (0..1) { direct(@recs); unapi(@recs); unapi_batch(@recs); }
-#unapi_batch(@recs); 
+for (0..1) { direct(@recs); unapi(@recs); unapi_batch(@recs); unapi_spread(@recs); direct_spread(@recs); }
