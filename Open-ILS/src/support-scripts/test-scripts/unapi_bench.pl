@@ -19,7 +19,8 @@ my $e = OpenILS::Utils::CStoreEditor->new;
 
 sub xptext {
     my($node, $path) = @_;
-    my $res = $node->findnodes($path);
+    #my $res = $node->findnodes($path);
+    my $res = $node->find($path);
     return '' unless $res and $res->[0];
     return $res->[0]->textContent;
 }
@@ -27,14 +28,14 @@ sub xptext {
 sub get_bib_attrs {
     my $xml = shift;
     return {
-        isbn => xptext($xml, '//*[@tag="020"]/*[@code="a"]'),
-        upc => xptext($xml,'//*[@tag="024"]/*[@code="a"]'),
-        issn => xptext($xml,'//*[@tag="022"]/*[@code="a"]'),
-        title => xptext($xml,'//*[@tag="245"]/*[@code="a"]'),
-        author => xptext($xml,'//*[@tag="100"]/*[@code="a"]'),
-        publisher => xptext($xml,'//*[@tag="260"]/*[@code="b"]'),
-        pubdate => xptext($xml,'//*[@tag="260"]/*[@code="c"]'),
-        edition => xptext($xml,'//*[@tag="250"]/*[@code="a"]'),
+        isbn => xptext($xml, '*[@tag="020"]/*[@code="a"]'),
+        upc => xptext($xml,'*[@tag="024"]/*[@code="a"]'),
+        issn => xptext($xml,'*[@tag="022"]/*[@code="a"]'),
+        title => xptext($xml,'*[@tag="245"]/*[@code="a"]'),
+        author => xptext($xml,'*[@tag="100"]/*[@code="a"]'),
+        publisher => xptext($xml,'*[@tag="260"]/*[@code="b"]'),
+        pubdate => xptext($xml,'*[@tag="260"]/*[@code="c"]'),
+        edition => xptext($xml,'*[@tag="250"]/*[@code="a"]'),
     };
 }
 
@@ -44,11 +45,11 @@ sub unapi {
 
     my %records;
     for my $rec_id (@recs) {
-        #my $ustart = time;
-        # Note, fetching all 10 recs from unapi.biblio_record_entry_feed in 1 feed takes considerably longer (2+ seconds)
-        my $data = $e->json_query({from => ['unapi.biblio_record_entry_feed', "{$rec_id}", 'marcxml', '{holdings_xml,acp}', 'CONS']})->[0];
-        #print "unapi query duration " . (time() - $ustart) . "\n";
-        my $xml = XML::LibXML->new->parse_string($data->{'unapi.biblio_record_entry_feed'});
+        #my $data = $e->json_query({from => ['unapi.biblio_record_entry_feed', "{$rec_id}", 'marcxml', '{holdings_xml,acp}', 'CONS']})->[0];
+        my $data = $e->json_query({from => ['unapi.bre', $rec_id, 'marcxml', 'record', '{holdings_xml,acp}', 'CONS']})->[0];
+        my $xml = XML::LibXML->new->parse_string($data->{'unapi.bre'});
+        #$xml = $xml->documentElement->getElementsByLocalName('record')->[0];
+        $xml = $xml->documentElement;
         my $attrs = get_bib_attrs($xml);
         $records{$rec_id}{$_} = $attrs->{$_} for keys %$attrs;
 
@@ -75,7 +76,50 @@ sub unapi {
             scalar(@{$rec->{volumes}}),
             scalar(map { @{$_->{copies}} } @{$rec->{volumes}}));
     }
-    print "\nunapi processing duration is $duration\n\n";
+
+    #note, unapi.biblio_record_entry_feed per record performs the same as unapi.bre pre record
+    print "\nunapi 'unapi.bre' duration is $duration\n\n";
+}
+
+sub unapi_batch {
+    my @recs = @_;
+    my $start = time();
+
+    my $data = $e->json_query({from => ['unapi.biblio_record_entry_feed', "{".join(',',@recs)."}", 'marcxml', '{holdings_xml,acp}', 'CONS']})->[0];
+    my $xml = XML::LibXML->new->parse_string($data->{'unapi.biblio_record_entry_feed'});
+
+    my %records;
+    for my $rec_xml ($xml->documentElement->getElementsByLocalName('record')) { 
+
+        my $attrs = get_bib_attrs($rec_xml);
+        my $rec_id =  xptext($rec_xml,'*[@tag="901"]/*[@code="c"]');
+        #print "REC = $rec_xml : $rec_id : " . $attrs->{title} . "\n" . $rec_xml->toString . "\n";
+        $records{$rec_id}{$_} = $attrs->{$_} for keys %$attrs;
+
+        my $rvols = [];
+        for my $volnode ($rec_xml->findnodes('//*[local-name()="volumes"]/*[local-name()="volume"]')) {
+            my $vol = {}; 
+            $vol->{copies} = [];
+            $vol->{label} = $volnode->getAttribute('label');
+            for my $copynode ($volnode->getElementsByLocalName('copy')) {
+                my $copy = {};   
+                $copy->{barcode} = $copynode->getAttribute('barcode');
+                push(@{$vol->{copies}}, $copy);
+            }
+            push(@{$records{$rec_id}->{volumes}}, $vol);
+        }
+    }
+
+    my $duration = time() - $start;
+
+    for my $rec_id (keys %records) {
+        my $rec = $records{$rec_id};
+        print sprintf("%d [%s] has %d volumes and %d copies\n",
+            $rec_id, $rec->{title}, 
+            scalar(@{$rec->{volumes}}),
+            scalar(map { @{$_->{copies}} } @{$rec->{volumes}}));
+    }
+    print "\nunapi 'batch feed' duration is $duration\n\n";
 }
 
 sub direct {
@@ -89,7 +133,16 @@ sub direct {
     my $bre_req = $cstore->request(
         'open-ils.cstore.direct.biblio.record_entry.search', 
         {id => \@recs},
-        {flesh => 3, flesh_fields => {bre => ['call_numbers'], acn => ['copies'], acp => ['location']}}
+        {
+            flesh => 4, 
+            flesh_fields => {
+                bre => ['call_numbers'], 
+                acn => ['copies', 'uris'], 
+                acp => ['location', 'stat_cat_entries', 'parts'],
+                ascecm => ['stat_cat', 'stat_cat_entry'],
+                acpm => ['part']
+            }
+        }
         # in practice, ^-- this might be a separate, paged json_query
         # note, not fleshing copy status since copy statuses will always be cached in the ML
     );
@@ -103,7 +156,7 @@ sub direct {
             {from => ['asset.record_copy_count', 1, $bre->id, 0]}
         );
 
-        my $xml = XML::LibXML->new->parse_string($bre->marc);
+        my $xml = XML::LibXML->new->parse_string($bre->marc)->documentElement;
         my $attrs = get_bib_attrs($xml);
         $records{$bre->id}{record} = $bre;
         $records{$bre->id}{$_} = $attrs->{$_} for keys %$attrs;
@@ -124,4 +177,5 @@ sub direct {
     print "\ndirect calls processing duration is $duration\n\n";
 }
 
-for (0..3) { direct(@recs); unapi(@recs); }
+for (0..1) { direct(@recs); unapi(@recs); unapi_batch(@recs); }
+#unapi_batch(@recs); 
