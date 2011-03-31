@@ -215,6 +215,9 @@ __PACKAGE__->register_method(
 	cachable	=> 1,
 );
 
+# XXX: this subroutine and its two registered methods are marked for 
+# deprecation, as they do not work properly in 2.x (these tags are no longer
+# normalized in mfr) and are not in known use
 sub isxn_search {
 	my $self = shift;
 	my $client = shift;
