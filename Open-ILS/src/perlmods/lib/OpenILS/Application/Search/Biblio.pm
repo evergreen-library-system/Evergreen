@@ -2083,7 +2083,7 @@ __PACKAGE__->register_method(
     signature => {
         desc   => 'Retrieve biblio IDs for a given ISBN',
         params => [
-            {desc => 'ISBN', type => 'string'}  # or number maybe?  How normalized is our storage data?
+            {desc => 'ISBN', type => 'string'}
         ],
         return => {
             desc => 'Results object like: { "count": $i, "ids": [...] }',
@@ -2095,10 +2095,17 @@ __PACKAGE__->register_method(
 sub biblio_search_isbn { 
 	my( $self, $client, $isbn ) = @_;
 	$logger->debug("Searching ISBN $isbn");
-	# Strip hyphens from incoming ISBNs
-	$isbn =~ s/-//g;
-	my $recs = $U->storagereq('open-ils.storage.id_list.biblio.record_entry.search.isbn.atomic', $isbn);
-	return { ids => $recs, count => scalar(@$recs) };
+	# the previous implementation of this method was essentially unlimited,
+	# so we will set our limit very high and let multiclass.query provide any
+	# actual limit
+	# XXX: if making this unlimited is deemed important, we might consider
+	# reworking 'open-ils.storage.id_list.biblio.record_entry.search.isbn',
+	# which is functionally deprecated at this point, or a custom call to
+	# 'open-ils.storage.biblio.multiclass.search_fts'
+	my $method = $self->method_lookup('open-ils.search.biblio.multiclass.query');
+	my ($search_result) = $method->run({'limit' => 1000000}, "identifier|isbn:$isbn");
+	my @recs = map { $_->[0] } @{$search_result->{'ids'}};
+	return { ids => \@recs, count => $search_result->{'count'} };
 }
 
 __PACKAGE__->register_method(
@@ -2106,16 +2113,16 @@ __PACKAGE__->register_method(
     api_name => "open-ils.search.biblio.isbn_list",
 );
 
+# XXX: see biblio_search_isbn() for note concerning 'limit'
 sub biblio_search_isbn_batch { 
 	my( $self, $client, $isbn_list ) = @_;
 	$logger->debug("Searching ISBNs @$isbn_list");
 	my @recs = (); my %rec_set = ();
+	my $method = $self->method_lookup('open-ils.search.biblio.multiclass.query');
 	foreach my $isbn ( @$isbn_list ) {
-		# Strip hyphens from incoming ISBNs
-		$isbn =~ s/-//g;
-		foreach my $rec ( @{ $U->storagereq(
-			'open-ils.storage.id_list.biblio.record_entry.search.isbn.atomic', $isbn )
-		} ) {
+		my ($search_result) = $method->run({'limit' => 1000000}, "identifier|isbn:$isbn");
+		my @recs_subset = map { $_->[0] } @{$search_result->{'ids'}};
+		foreach my $rec (@recs_subset) {
 			if (! $rec_set{ $rec }) {
 				$rec_set{ $rec } = 1;
 				push @recs, $rec;
@@ -2143,11 +2150,17 @@ __PACKAGE__->register_method(
 sub biblio_search_issn { 
 	my( $self, $client, $issn ) = @_;
 	$logger->debug("Searching ISSN $issn");
-	my $e = new_editor();
-	$issn =~ s/-/ /g;
-	my $recs = $U->storagereq(
-		'open-ils.storage.id_list.biblio.record_entry.search.issn.atomic', $issn );
-	return { ids => $recs, count => scalar(@$recs) };
+	# the previous implementation of this method was essentially unlimited,
+	# so we will set our limit very high and let multiclass.query provide any
+	# actual limit
+	# XXX: if making this unlimited is deemed important, we might consider
+	# reworking 'open-ils.storage.id_list.biblio.record_entry.search.issn',
+	# which is functionally deprecated at this point, or a custom call to
+	# 'open-ils.storage.biblio.multiclass.search_fts'
+	my $method = $self->method_lookup('open-ils.search.biblio.multiclass.query');
+	my ($search_result) = $method->run({'limit' => 1000000}, "identifier|issn:$issn");
+	my @recs = map { $_->[0] } @{$search_result->{'ids'}};
+	return { ids => \@recs, count => $search_result->{'count'} };
 }
 
 
