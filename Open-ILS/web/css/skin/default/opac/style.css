@@ -977,3 +977,5 @@ a.dash-link:hover { text-decoration: underline !important; }
 .fmt-note { vertical-align: middle; padding-left: 1em !important; }
 .hold-editor-controls { text-align: center; padding-top: 1em !important; }
 .hold-editor-controls a { padding-left: 2em; }
+
+#rdetail_cn_browse_div { text-align: center; }

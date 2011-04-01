@@ -1,16 +1,4 @@
-<div name='subject' rel="rdetail_subject_div" rel2="subject" class="rdetail_extras" id="rdetail_subject_link">
-    <div class="rdetail_extras_hr"></div>
-    <div class="rdetail_extras_link">
-        [% subj_href = PROCESS rdetail_extras_tab_link(tab='subject') %]
-        <a href='[% subj_href %]'><img
-            alt="[% l('Subject') %]" src="[% ctx.media_prefix %]/images/rdetail_arrow.png" /></a>
-        <a href='[% subj_href %]' class="rdetail_extras_lbl">[% l('Subject') %]</a>
-    </div>
-</div>
-
-[% IF ctx.expand_subject %]
-
-<div id='rdetail_subject_div' class='rdetail_extras_div'>
+<div id='rdetail_subject_div'>
     <table cellpadding="0" cellspacing="0" border="0">
         <tr>
             <td width="1" style="padding-right:7px;" valign="top">
@@ -87,6 +75,3 @@
         [% END; END; %]
     </table>
 </div>
-
-[% END %]
-

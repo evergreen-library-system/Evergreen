@@ -34,11 +34,10 @@ sub load_record {
     $self->ctx->{copy_offset} = $copy_offset;
 
     for my $expand ($self->cgi->param('expand')) {
+        $self->ctx->{"expand_$expand"} = 1;
         if($expand eq 'marchtml') {
             $self->ctx->{marchtml} = $self->mk_marc_html($rec_id);
-        } elsif($expand eq 'subject') {
-            $self->ctx->{expand_subject} = 1;
-        }
+        } 
     }
 
     return Apache2::Const::OK;
