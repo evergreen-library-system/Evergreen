@@ -22,7 +22,7 @@
                     ELSE;
                         cls_which = "off";
                     END -%]
-                <a href="[% page.url %]"
+                <a href="[% ctx.opac_root _ '/myopac/' _ page.url %]"
                     class="acct-[% page.url; '-'; cls_which %] acct-tab"></a>
                 [% END %]
             </div>

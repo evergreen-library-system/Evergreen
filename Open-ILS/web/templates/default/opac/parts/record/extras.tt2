@@ -1,151 +1,20 @@
+[% 
+    # Builds a link like so: $orig_link&expand=$tab#$tab
+    # use of 'SET foo =' prevents unintended inline rendering of values
+    BLOCK rdetail_extras_tab_link;
+        cgi = CGI();
+        SET foo = cgi.param('expand', tab);
+        url = ctx.unparsed_uri.replace('\?.*', '?' _ cgi.query_string);
+        SET foo = url.replace('#.*', ''); # clear any existing anchor
+        url _ '#' _ tab; # anchor on the tab name
+    END;
+%]
+
 <div id="rdetail_main_div">
-    <table class='hide_me rdetails_extra_links'>
-        <thead>
-            <tr>
-                <td id='rdetail_annotation_link' class='hide_me rdetail_extras_td'
-                    style='padding-right: 15px; padding-left: 15px;' >
-                    <a href='javascript:rdetailShowExtra("annotation");' 
-                        class='classic_link'>[% l("Annotation") %]</a>
-                </td>
-            </tr>
-        </thead>
-    </table>
 
     <div id='rdetail_extras_div' style='width: 100%;'> 
-        <div id='rdetail_extras_loading' class='hide_me' 
-            style='padding: 10px;'>[% l("Loading...") %]</div>
-
-        <div rel="rdetail_summary_div" rel2="summary" class="rdetail_extras hide_me" id="rdetail_summary_link">
-            <div class="rdetail_extras_hr"></div>
-            <div class="rdetail_extras_link">
-                <a href='javascript:rdetailShowExtra("summary");'><img
-                    alt="" src="[% ctx.media_prefix %]/images/rdetail_arrow.png" /></a>
-                <a href='javascript:rdetailShowExtra("summary");'
-                    class="rdetail_extras_lbl">Summary</a>
-            </div>
-        </div>
-        <div id='rdetail_summary_div' class='rdetail_extras_div hide_me'> 
-            <table style="margin-bottom:10px;" cellpadding="0" cellspacing="0" border="0">
-                <tr>
-                    <td width="1" style="padding-right:7px;" valign="top">
-                        <strong>Summary: </strong>
-                    </td>
-                    <td>
-                        <div id='rdetail_summary_container'></div>
-                    </td>
-                </tr>
-            </table>
-            <iframe width="100%" height="500" id="content_cafe_summary" frameborder="0"></iframe>
-        </div>
         
-        <div rel="rdetail_subject_div" rel2="subject" class="rdetail_extras hide_me" id="rdetail_subject_link">
-            <div class="rdetail_extras_hr"></div>
-            <div class="rdetail_extras_link">
-                <a href='javascript:rdetailShowExtra("subject");'><img
-                    alt="" src="[% ctx.media_prefix %]/images/rdetail_arrow.png" /></a>
-                <a href='javascript:rdetailShowExtra("subject");' class="rdetail_extras_lbl">subject</a>
-            </div>
-        </div>
-
-        <div id='rdetail_subject_div' class='rdetail_extras_div hide_me'> 
-            <table cellpadding="0" cellspacing="0" border="0">
-                <tr>
-                    <td width="1" style="padding-right:7px;" valign="top">
-                        <strong>Subject: </strong>
-                    </td>
-                    <td>
-                        <div id='rdetail_subject_container'></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td width="1" style="padding:5px 7px 0px 0px;" valign="top">
-                        <strong>Genre: </strong>
-                    </td>
-                    <td style="padding-top:5px;">
-                        <div id='rdetail_genre_cont'></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td width="1" style="padding:5px 7px 0px 0px;white-space:nowrap;"
-                        nowrap="nowrap" valign="top">
-                        <strong>Topic Heading: </strong>
-                    </td>
-                    <td style="padding-top:5px;">
-                        <div id='rdetail_topic_cont'></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td width="1" style="padding:5px 7px 0px 0px;white-space:nowrap;"
-                        nowrap="nowrap" valign="top">
-                        <strong>Geographic Setting: </strong>
-                    </td>
-                    <td style="padding-top:5px;">
-                        <div id='rdetail_geo_cont'></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td width="1" style="padding:5px 7px 0px 0px;white-space:nowrap;"
-                        nowrap="nowrap" valign="top">
-                        <strong>Biographical Subject: </strong>
-                    </td>
-                    <td style="padding-top:5px;">
-                        <div id='rdetail_bio_cont'></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td width="1" style="padding:5px 7px 0px 0px;white-space:nowrap;"
-                        nowrap="nowrap" valign="top">
-                        <strong>Character Attributes: </strong>
-                    </td>
-                    <td style="padding-top:5px;">
-                        <div id='rdetail_attrib_cont'></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td width="1" style="padding:5px 7px 0px 0px;" valign="top">
-                        <strong>Setting: </strong>
-                    </td>
-                    <td style="padding-top:5px;">
-                        <div id='rdetail_setting_cont'></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td width="1" style="padding:5px 7px 0px 0px;white-space:nowrap;"
-                        nowrap="nowrap" valign="top">
-                        <strong>Time Period: </strong>
-                    </td>
-                    <td style="padding-top:5px;">
-                        <div id='rdetail_time_cont'></div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-
-        <div rel="rdetail_content_div" rel2="content"
-            class="rdetail_extras hide_me" id="rdetail_content_link">
-            <div class="rdetail_extras_hr"></div>
-            <div class="rdetail_extras_link">
-                <a href='javascript:rdetailShowExtra("content");'><img alt=""
-                    src="[% ctx.media_prefix %]/images/rdetail_arrow.png" /></a>
-                <a href='javascript:rdetailShowExtra("content");' class="rdetail_extras_lbl">Contents</a>
-            </div>
-        </div>
-
-        <div id='rdetail_content_div' class='rdetail_extras_div hide_me'>
-            <strong>Contents:</strong>
-            <div id='rdetail_content_div_inner' style="padding-bottom:10px;"></div>
-            <strong>[% l("Table of Contents") %]:</strong>
-            <div id='rdetail_toc_div' class='rdetail_extras_div'></div>
-        </div>
-        
-        <div rel="rdetail_authors_div" rel2="authors"
-            class="rdetail_extras hide_me" id="rdetail_authors_link"><div class="rdetail_extras_hr"></div>
-            <div class="rdetail_extras_link">
-                <a href='javascript:rdetailShowExtra("authors");'><img
-                    alt="" src="[% ctx.media_prefix %]/images/rdetail_arrow.png" /></a>
-                <a href='javascript:rdetailShowExtra("authors");' class="rdetail_extras_lbl">Author</a>
-            </div>
-        </div>
+        <!-- SAMPLE AUTHORS LAYOUT / MOVE TO INCLUDE'D TEMPLATE
         <div id='rdetail_authors_div' class='rdetail_extras_div hide_me'>
             <strong>Authors:</strong>
             <div id="rdetail_authors_inner" style="padding-bottom:10px;"></div>
@@ -158,33 +27,9 @@
             <strong>Author Notes:</strong>
             <div id='rdetail_anotes_div' class='rdetail_extras_div'> </div>
         </div>
+        -->
         
-        <div rel="rdetail_series_div" rel2="series"
-            class="rdetail_extras hide_me" id="rdetail_series_link"><div class="rdetail_extras_hr"></div>
-            <div class="rdetail_extras_link">
-                <a href='javascript:rdetailShowExtra("series");'><img
-                    alt="" src="[% ctx.media_prefix %]/images/rdetail_arrow.png" /></a>
-                <a href='javascript:rdetailShowExtra("series");'
-                    class="rdetail_extras_lbl">series</a>
-            </div>
-        </div>
-
-        <div id='rdetail_series_div' class='rdetail_extras_div hide_me'> 
-            <strong>Series:</strong>
-            <div id='rdetail_series_container'></div>
-        </div>
-        
-        <div rel="rdetail_awards_div" rel2="awards"
-            class="rdetail_extras hide_me" id="rdetail_awards_link">
-            <div class="rdetail_extras_hr"></div>
-            <div class="rdetail_extras_link">
-                <a href='javascript:rdetailShowExtra("awards");'><img
-                    alt="" src="[% ctx.media_prefix %]/images/rdetail_arrow.png" /></a>
-                <a href='javascript:rdetailShowExtra("awards");'
-                    class="rdetail_extras_lbl">awards, reviews &amp; suggested reads</a>
-            </div>
-        </div>
-
+        <!-- SAMPLE AWARDS LAYOUT / MOVE TO INCLUDE'D TEMPLATE
         <div id='rdetail_awards_div' class='rdetail_extras_div hide_me'> 
             <strong>Awards:</strong>
             <div id='rdetail_awards_cont' style="margin-bottom:20px;"></div>
@@ -206,112 +51,61 @@
                 </div>
             </div>
         </div>
-        
-        <div rel="rdetail_reviews_div" rel2="reviews" class="rdetail_extras hide_me"
-            id="rdetail_reviews_link">
+        -->
+
+        [%
+            # Hidden extras are not yet implemented.  Some may require JS
+            extras = [
+                {name => 'summary',  label => l('Summary &amp; More'), hide => 1}, # Content Cafe
+                {name => 'content',  label => l('Contents'), hide => 1}, # ToC
+                {name => 'authors',  label => l('Authors'), hide => 1}, 
+                {name => 'series',   label => l('Series'), hide => 1}, 
+                {name => 'awards',   label => l('Series'), hide => 1}, 
+                {name => 'subject',  label => l('Subject')}, 
+                {name => 'annotation',  label => l('Annotation'), hide => 1}, 
+                {name => 'reviews',  label => l('Reviews'), hide => 1}, 
+                {name => 'excerpt',  label => l('Excerpt'), hide => 1},
+                {name => 'preview',  label => l('Preview'), hide => 1}, 
+                {name => 'novelist', label => l('Suggestions by NoveList'), hide => 1},
+                {name => 'cnbrowse', label => l('Shelf Browser'), hide => 1},
+                {name => 'copyinfo', label => l('Copy Summary'), hide => 1}, 
+                {name => 'marchtml', label => l('MARC Record')}
+            ];
+        %]
+        [% FOREACH extra IN extras %]
+            [% IF extra.hide; NEXT; END; %]
+        <div class="rdetail_extras">
             <div class="rdetail_extras_hr"></div>
             <div class="rdetail_extras_link">
-                <a href='javascript:rdetailShowExtra("reviews");'><img
-                    alt="" src="[% ctx.media_prefix %]/images/rdetail_arrow.png" /></a>
-                <a href='javascript:rdetailShowExtra("reviews");'
-                    class="rdetail_extras_lbl">[% l("Reviews") %]</a>
+                [% href = PROCESS rdetail_extras_tab_link(tab=extra.name) %]
+                <a name='[% extra.name %]' href='[% href %]'><img
+                    alt='[% extra.label %]' src="[% ctx.media_prefix %]/images/rdetail_arrow.png" /></a>
+                <a href='[% href %]' class="rdetail_extras_lbl">[% extra.label %]</a>
             </div>
         </div>
-
-        <div id='rdetail_reviews_div' class='rdetail_extras_div hide_me'> </div>
-
-        <div rel="rdetail_excerpt_div" rel2="excerpt"
-            class="rdetail_extras hide_me" id="rdetail_excerpt_link">
-            <div class="rdetail_extras_hr"></div>
-            <div class="rdetail_extras_link">
-                <a href='javascript:rdetailShowExtra("excerpt");'><img
-                    alt="" src="[% ctx.media_prefix %]/images/rdetail_arrow.png" /></a>
-                <a href='javascript:rdetailShowExtra("excerpt");'
-                    class="rdetail_extras_lbl">[% l("Excerpt") %]</a>
-            </div>
+        <div class='rdetail_extras_div'>
+            [%  name = extra.name; 
+                exp_name = 'expand_' _ name;
+                IF ctx.$exp_name;
+                    IF name == 'subject';
+                        INCLUDE "default/opac/parts/record/subjects.tt2";
+                    ELSIF name == 'reviews';
+                    ELSIF name == 'excerpt';
+                    ELSIF name == 'preview';
+                    ELSIF name == 'novelist';
+                    ELSIF name == 'cnbrowse';
+                    ELSIF name == 'copyinfo';
+                    ELSIF name == 'marchtml';
+                        ctx.marchtml;
+                    END;
+                END; 
+            %]
         </div>
-
-        <div id='rdetail_excerpt_div' class='rdetail_extras_div hide_me'> </div>
-        
-        <div rel="rdetail_preview_div" rel2="preview"
-            class="rdetail_extras hide_me" id="rdetail_preview_link">
-            <div class="rdetail_extras_hr"></div>
-            <div class="rdetail_extras_link">
-                <a href='javascript:rdetailShowExtra("preview");'><img
-                    alt="" src="[% ctx.media_prefix %]/images/rdetail_arrow.png" /></a>
-                <a href='javascript:rdetailShowExtra("preview");'
-                    class="rdetail_extras_lbl">[% l("Preview") %]</a>
-            </div>
-        </div>
-
-        <div id='rdetail_preview_div' class='rdetail_extras_div hide_me'> </div>
-        
-        <div rel="rdetail_novelist_div" rel2="novelist"
-            class="rdetail_extras hide_me" id="rdetail_novelist_link">
-            <div class="rdetail_extras_hr"></div>
-            <div class="rdetail_extras_link">
-                <a href='javascript:rdetailShowExtra("novelist");'><img
-                    alt="" src="[% ctx.media_prefix %]/images/rdetail_arrow.png" /></a>
-                <a href='javascript:rdetailShowExtra("novelist");'
-                    class="rdetail_extras_lbl">[% l("Suggestions by NoveList") %]</a>
-            </div>
-        </div>
-
-        <div rel="rdetail_cn_browse_div" rel2="cn" class="rdetail_extras hide_me"
-            id="rdetail_viewcn_link">
-            <div class="rdetail_extras_hr"></div>
-            <div class="rdetail_extras_link">
-                <a href='javascript:rdetailShowExtra("cn");'><img
-                    alt="" src="[% ctx.media_prefix %]/images/rdetail_arrow.png" /></a>
-                <a href='javascript:rdetailShowExtra("cn");'
-                    class="rdetail_extras_lbl">[% l("Shelf Browser") %]</a>
-            </div>
-        </div>
-
-        <div id='rdetail_cn_browse_div' style='text-align: center;' class='hide_me'>
-            <div id='cn_browse_none' class='hide_me color_4'
-                style='width: 90%; text-align: center; margin: 10px;'>
-                [% l("There are no call numbers for this item at this location.") %]
-            </div>
-
-            <div id='rdetail_cn_browse_select_div' 
-                style='width: 100%; border: 1px solid black; padding: 6px; margin-top: 5px;'>
-                <span>[% l("Local Call Numbers:") %] </span>
-                <select id='cn_browse_selector'> </select>
-            </div>
-            [% INCLUDE "default/opac/parts/cn_browse.tt2" %]
-        </div>
-
-        [% INCLUDE "default/opac/parts/record/cn_details.tt2" %]
-
-        <div rel="rdetail_copy_info_div" rel2="copyinfo"
-            class="hide_me rdetail_extras" id="rdetail_copy_info_link">
-            <div class="rdetail_extras_hr"></div>
-            <div class="rdetail_extras_link">
-                <a href='javascript:rdetailShowExtra("copyinfo");'><img
-                    alt="" src="[% ctx.media_prefix %]/images/rdetail_arrow.png" /></a>
-                <a href='javascript:rdetailShowExtra("copyinfo");'
-                    class="rdetail_extras_lbl">[% l("Copy Summary") %]</a>
-            </div>
-        </div>
-
-        [% INCLUDE "default/opac/parts/record/copyinfo.tt2" %]
-
-        <div rel="rdetail_marc_div" rel2="marc" class="rdetail_extras hide_me" id="rdetail_viewmarc_link">
-            <div class="rdetail_extras_hr"></div>
-            <div class="rdetail_extras_link">
-                <a href='javascript:rdetailShowExtra("marc");'><img
-                    alt="" src="[% ctx.media_prefix %]/images/rdetail_arrow.png" /></a>
-                <a href='javascript:rdetailShowExtra("marc");'
-                    class="rdetail_extras_lbl">[% l("MARC Record") %]</a>
-            </div>
-        </div>
-        <div id='rdetail_marc_div' class='rdetail_extras_div hide_me'>
-            <div id='rdetail_view_marc_box'></div>
-        </div>
+        [% END %]
     </div>
+    <!--
     <div id='rdetail_preview_full_text' class='hide_me'>[% l("Full text") %]</div>
     <div id='rdetail_preview_title' class='hide_me'>[% l("See the full text of this book.") %]</div>
     <div id='rdetail_preview_badge' class='hide_me'>[% l("Show a preview of this book from Google Book Search") %]</div>
+    -->
 </div>
-<!-- XXX TODO Novelist stuff here? -->

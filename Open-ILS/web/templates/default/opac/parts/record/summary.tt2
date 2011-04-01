@@ -88,52 +88,13 @@
                         </tr>
                         <tr>
                             <td nowrap='nowrap' valign="top">
-                                <strong id="rdetail_pubdate_lbl">[% IF attrs.pubdate; l("Publication Date"); END %]</strong>
-                            </td>
-                            <td valign="top" id='rdetail_pubdate'>[% attrs.pubdate %]</td>
-                            <td nowrap='nowrap' valign="top">
-                                <strong id="rdetail_sum_lbl">Summary</strong>
-                            </td>
-                            <td valign="top" id='rdetail_abstract'></td>
-                        </tr>
-                        <tr>
-                            <td nowrap='nowrap' valign="top">
                                 <strong id="rdetail_pub_lbl">[% IF attrs.publisher; l("Publisher"); END %]</strong>
                             </td>
                             <td valign="top" id='rdetail_publisher'>[% attrs.publisher %]</td>
-                            [% BLOCK render_subject;
-                            loc = CGI.param('loc') | uri;
-                            FOR node IN ctx.marc_xml.findnodes('//*[starts-with(@tag,"6")]');
-                                all_terms = [];
-                                FOR subfield IN node.childNodes;
-                                    NEXT UNLESS subfield.nodeName == "subfield";
-                                    code = 0;
-                                    FOR a IN subfield.attributes;
-                                        IF a.nodeName == "code";
-                                            code = a.nodeValue;
-                                        END;
-                                    END;
-                                    NEXT UNLESS code.match('[a-z]');
-
-                                    IF code.match('[vxyz]');
-                                        " &mdash; ";
-                                    END;
-                                    # at this point, we actually have a partial
-                                    # term to use.
-                                    single_term = subfield.textContent | html;
-                                    all_terms.push(subfield.textContent);
-                                    total_term = all_terms.join(" ").replace('\s+$', '') ; # XXX need to take care of any &'s, right?
-                                    '<a href="' _ ctx.opac_root _ '/results?qtype=subject&query=' _ total_term _ '&loc=' _ loc _ '">' _ single_term _ '</a>';
-                                END;
-                                "<br />";
-                            END %]
-                            [% END %]
-                            [% s = PROCESS render_subject; IF s.match('\S') %]
                             <td nowrap='nowrap' valign="top">
-                                <strong id="rdetail_sub_lbl">[% l("Subjects") %]</strong>
+                                <strong id="rdetail_pubdate_lbl">[% IF attrs.pubdate; l("Publication Date"); END %]</strong>
                             </td>
-                            <td valign="top">[% s %]</td>
-                            [% END %]
+                            <td valign="top" id='rdetail_pubdate'>[% attrs.pubdate %]</td>
                         </tr>
                     </table>
                 </div>

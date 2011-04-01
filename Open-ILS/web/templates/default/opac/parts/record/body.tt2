@@ -1,7 +1,7 @@
 <!-- ****************** page_rdetail.xml ***************************** -->
 [%  record = ctx.record;
     attrs = {marc_xml => ctx.marc_xml};
-    PROCESS "default/opac/parts/marc_misc.tt2";
+    PROCESS "default/opac/parts/misc_util.tt2";
     PROCESS get_marc_attrs args=attrs %]
 <div id='canvas_main' class='canvas'>
     <div id="rdetail_header" class="hide_me">[%#
@@ -38,84 +38,12 @@
         <div class="clear-both"></div>
     </div>
 
-    <table width='100%' id='np_table' border='0' class="hide_me">
-        <tbody>
-            <tr class='color_4'>
-                <td style='vertical-align: top;' align="center">
-                    <span style="float:left"><a href="javascript:;"
-                        onclick="history.go(-1);">&laquo; Back</a></span>
-                    <span></span>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
-    <table style='' class='rdetail_header color_1 hide_me' width='100%'
-        border="0" cellspacing="0" cellpadding="0">
-        <tbody>
-            <tr>
-                <td width='33%' align='left' class="hide_me">
-                    <span>[% l("Record Summary") %]</span>
-                </td>
-                <td align='right' style='padding-right: 7px;' width='33%'>
-                    <span id='rdetail_exp_refworks_span' class='hide_me'
-                        style='padding-right: 7px;'>
-                        <a id='rdetail_exp_refworks'>[% l("Export to RefWorks") %]</a>
-                    </span>
-                    <span style='padding-right: 7px;' class='hide_me'
-                        id='rdetail_more_actions'>
-                        <select id='rdetail_more_actions_selector'
-                            style='max-width: 11em;' class="hide_me">
-                            <option value='start'>
-                                [% l("More Actions...") %]
-                            </option>
-                            <option disabled='disabled'>
-                                --------------
-                            </option>
-                            <option disabled='disabled'>
-                                [% l("Add to bookbag") %]
-                            </option>
-                            <option disabled='disabled'>
-                                --------------
-                            </option>
-                            <option value='new_bookbag'>
-                                [% l("Create a new bookbag") %]
-                            </option>
-                        </select>
-                    </span>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
     <div style='font-weight: bold; padding: 5px; margin: 5px; width: 100%;'
         class='hide_me color_4' id='rdetail_deleted_exp'>
         [% l("This record has been deleted from the database.  We recommend that you remove this title from any bookbags it may have been added to.") %]
     </div>
-
     [% INCLUDE "default/opac/parts/record/summary.tt2" %]
     <br />
-    <div style="width:100%;" class="hide_me">
-        <div style="float:right;" class="hide_me" id="lib_info_more">
-            <button>More...</button>
-        </div>
-        <div style="float:right;" class="hide_me" id="lib_info_less">
-            <button>...Less</button>
-        </div>
-    </div>
     [% INCLUDE "default/opac/parts/record/extras.tt2" %]
-
-    <div class='hide_me' id='rdetail_bb_none'>
-        [% l("(none)") %]
-    </div>
-    <div class='hide_me' id='rdetail_bb_item_success'>
-        [% l("Item successfully added to bookbag") %]
-    </div>
-    <div class='hide_me' id='rdetail_bb_new'>
-        [% l("Enter the name of the new bookbag") %]
-    </div>
-    <div class='hide_me' id='rdetail_bb_success'>
-        [% l("Bookbag successfully created") %]
-    </div>
 </div>
 <!-- ****************** end; page_rdetail.xml ***************************** -->

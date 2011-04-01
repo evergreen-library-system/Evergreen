@@ -33,6 +33,13 @@ sub load_record {
     $self->ctx->{copy_limit} = $copy_limit;
     $self->ctx->{copy_offset} = $copy_offset;
 
+    for my $expand ($self->cgi->param('expand')) {
+        $self->ctx->{"expand_$expand"} = 1;
+        if($expand eq 'marchtml') {
+            $self->ctx->{marchtml} = $self->mk_marc_html($rec_id);
+        } 
+    }
+
     return Apache2::Const::OK;
 }
 
@@ -121,8 +128,10 @@ sub mk_copy_query {
 sub mk_marc_html {
     my($self, $rec_id) = @_;
 
-    $self->ctx->{marc_html} = $U->simplereq(
-        'open-ils.search', 'open-ils.search.biblio.record.html', $rec_id);
+    # could be optimized considerably by performing the xslt on the already fetched record
+    return $U->simplereq(
+        'open-ils.search', 
+        'open-ils.search.biblio.record.html', $rec_id);
 }
 
 1;
