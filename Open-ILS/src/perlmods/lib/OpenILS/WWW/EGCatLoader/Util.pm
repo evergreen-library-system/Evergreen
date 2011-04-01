@@ -145,12 +145,29 @@ sub generic_redirect {
 }
 
 sub get_records_and_facets {
-    my ($self, $rec_ids, $facet_key) = @_;
+    my ($self, $rec_ids, $facet_key, $unapi_args) = @_;
 
-    my $cstore = OpenSRF::AppSession->create('open-ils.cstore');
-    my $bre_req = $cstore->request(
-        'open-ils.cstore.direct.biblio.record_entry.search', {id => $rec_ids}
-    );
+    $unapi_args ||= {};
+    $unapi_args->{loc} ||= $self->ctx->{aou_tree}->()->shortname;
+    $unapi_args->{depth} ||= $self->ctx->{aou_tree}->()->ou_type->depth;
+    $unapi_args->{flesh_depth} ||= 5;
+
+    # XXX Fire in fixed-size batches to prevent larger display limits abusing cstore
+    my @reqs;
+    for my $id (@$rec_ids) {
+        my $ses = OpenSRF::AppSession->create('open-ils.cstore');
+        my $r = $ses->request(
+            'open-ils.cstore.json_query',
+             {from => [
+                'unapi.bre', $id, 'marcxml','record', 
+                $unapi_args->{flesh}, 
+                $unapi_args->{loc}, 
+                $unapi_args->{depth}, 
+                $unapi_args->{flesh_depth}, 
+            ]}
+        );
+        push(@reqs, {req => $r, ses => $ses});
+    }
 
     my $search = OpenSRF::AppSession->create('open-ils.search');
     my $facet_req = $search->request(
@@ -158,28 +175,17 @@ sub get_records_and_facets {
     ) if $facet_key;
 
     my @data;
-    while (my $resp = $bre_req->recv) {
-        my $bre = $resp->content;
-
-        # XXX farm out to multiple cstore sessions before loop,
-        # then collect after
-        my $copy_counts = $self->editor->json_query(
-            {from => ['asset.record_copy_count', 1, $bre->id, 0]}
-        )->[0];
-
-        push @data, {
-            bre => $bre,
-            marc_xml => XML::LibXML->new->parse_string($bre->marc),
-            copy_counts => $copy_counts
-        };
+    for my $req (@reqs) {
+        my $data = $req->{req}->gather(1);
+        $req->{ses}->kill_me;
+        my $xml = XML::LibXML->new->parse_string($data->{'unapi.bre'})->documentElement;
+        my $rec_id =  $xml->find('*[@tag="901"]/*[@code="c"]')->[0]->textContent;
+        push(@data, {id => $rec_id, marc_xml => $xml});
     }
-
-    $cstore->kill_me;
 
     my $facets;
     if ($facet_key) {
         $facets = $facet_req->gather(1);
-
         $facets->{$_} = {
             cmf => $self->ctx->{find_cmf}->($_),
             data => $facets->{$_}
@@ -191,6 +197,7 @@ sub get_records_and_facets {
     return ($facets, @data);
 }
 
+# TODO: blend this code w/ ^-- get_records_and_facets
 sub fetch_marc_xml_by_id {
     my ($self, $id_list) = @_;
     $id_list = [$id_list] unless ref($id_list);

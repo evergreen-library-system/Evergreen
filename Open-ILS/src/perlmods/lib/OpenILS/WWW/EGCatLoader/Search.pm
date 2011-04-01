@@ -139,13 +139,14 @@ sub load_rresults {
 
     return Apache2::Const::OK if @$rec_ids == 0;
 
-    my ($facets, @data) = $self->get_records_and_facets($rec_ids, $results->{facet_key});
+    my ($facets, @data) = $self->get_records_and_facets(
+        $rec_ids, $results->{facet_key}, {flesh => '{holdings_xml}'});
 
     # shove recs into context in search results order
     for my $rec_id (@$rec_ids) {
         push(
             @{$ctx->{records}},
-            grep { $_->{bre}->id == $rec_id } @data
+            grep { $_->{id} == $rec_id } @data
         );
     }
 
