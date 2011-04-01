@@ -142,8 +142,6 @@ vim:noet:sw=4:ts=4:
             <label value="&staff.cat.copy_browser.holdings_maintenance.depth_filter_menu;" />
             <hbox id="x_depth_menu"/>
             <spacer flex="1"/>
-            <label value="&staff.cat.copy_browser.holdings_maintenance.consortial_total;"/><label id="consortial_total"/>
-            <label value="&staff.cat.copy_browser.holdings_maintenance.consortial_available;"/><label id="consortial_available"/>
         </hbox>
         <hbox>
             <checkbox id="show_acns" label="&staff.cat.copy_browser.holdings_maintenance.show_acns;" />
@@ -155,6 +153,8 @@ vim:noet:sw=4:ts=4:
             <button label="Show All Libs" command="cmd_show_all_libs" accesskey=""/>
             -->
             <spacer flex="1"/>
+            <label value="&staff.cat.copy_browser.holdings_maintenance.consortial_total;"/><label id="consortial_total"/>
+            <label value="&staff.cat.copy_browser.holdings_maintenance.consortial_available;"/><label id="consortial_available"/>
             <menubar>
                 <menu label="&staff.cat.copy_browser.holdings_maintenance.actions.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.actions.accesskey;">
                     <menupopup>
