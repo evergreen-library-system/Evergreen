@@ -834,6 +834,12 @@ sub generate_fines {
             $fine_interval =~ s/(\d{2}):(\d{2}):(\d{2})/$1 h $2 m $3 s/o;
 			$fine_interval = interval_to_seconds( $fine_interval );
 	
+            if ( $fine_interval == 0 || int($c->$recurring_fine_method * 100) == 0 || int($c->max_fine * 100) == 0 ) {
+                $client->respond( "Fine Generator skipping circ due to 0 fine interval, 0 fine rate, or 0 max fine.\n" );
+                $log->info( "Fine Generator skipping circ " . $c->id . " due to 0 fine interval, 0 fine rate, or 0 max fine." );
+                next;
+            }
+
 			if ( $is_reservation and $fine_interval >= interval_to_seconds('1d') ) {	
 				my $tz_offset_s = 0;
 				if ($due_dt->strftime('%z') =~ /(-|\+)(\d{2}):?(\d{2})/) {
