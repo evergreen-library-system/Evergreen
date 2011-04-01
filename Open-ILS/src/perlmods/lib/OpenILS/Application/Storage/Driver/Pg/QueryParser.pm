@@ -802,8 +802,9 @@ sub buildSQL {
         for my $nfield (keys %$normalizers) {
             for my $nizer ( @{$$normalizers{$nfield}} ) {
                 if ($field eq $nfield) {
-                    if (!exists($norms{$nizer->{function}})) {
-                        $norms{$nizer->{function}} = {p=>$pos++,n=>$nizer};
+                    my $param_string = OpenSRF::Utils::JSON->perl2JSON($nizer->{params});
+                    if (!exists($norms{$nizer->{function}.$param_string})) {
+                        $norms{$nizer->{function}.$param_string} = {p=>$pos++,n=>$nizer};
                     }
                 }
             }

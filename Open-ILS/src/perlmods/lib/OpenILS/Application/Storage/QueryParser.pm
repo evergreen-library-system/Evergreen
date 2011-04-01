@@ -1,4 +1,5 @@
 package QueryParser;
+use OpenSRF::Utils::JSON;
 our %parser_config = (
     QueryParser => {
         filters => [],
@@ -180,7 +181,11 @@ sub add_query_normalizer {
     my $func = shift;
     my $params = shift || [];
 
-    return $func if (grep { $_ eq $func } @{$pkg->query_normalizers->{$class}->{$field}});
+    # do not add if function AND params are identical to existing member
+    return $func if (grep {
+        $_->{function} eq $func and 
+        OpenSRF::Utils::JSON->perl2JSON($_->{params}) eq OpenSRF::Utils::JSON->perl2JSON($params)
+    } @{$pkg->query_normalizers->{$class}->{$field}});
 
     push(@{$pkg->query_normalizers->{$class}->{$field}}, { function => $func, params => $params });
 
