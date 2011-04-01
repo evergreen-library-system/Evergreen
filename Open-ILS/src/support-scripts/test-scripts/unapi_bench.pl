@@ -277,7 +277,7 @@ sub direct {
     my ($req1, $req2, $req3);
 
     my $query = {
-        flesh => 4, 
+        flesh => 5, 
         flesh_fields => {
             bre => ['call_numbers'], 
             acn => ['copies', 'uris'], 
