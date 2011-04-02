@@ -980,3 +980,5 @@ a.dash-link:hover { text-decoration: underline !important; }
 
 #rdetail_cn_browse_div { text-align: center; }
 .rdetail-author-div { padding-bottom: 10px; }
+
+.invisible { visibility: hidden; }

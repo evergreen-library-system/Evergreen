@@ -22,24 +22,26 @@
             </td>
             <td align="right" valign="bottom">
                 <span class='start_end_links_span'>
-                    [% IF page > 0 %]
-                    <a class='search_page_nav_link'
-                        href="[% propagator _ '&page=' _ (page - 1) %]"
-                        title='[% l("Previous page") %]'>
-                        <span class="nav_arrow_fix">&#9668;</span> Previous
-                    </a>
-                    [% END %]
+                    [%  class = 'search_page_nav_link';
+                        href = '#';
+                        IF page > 0;
+                            href = propagator _ '&page=' _ (page - 1);
+                        ELSE; class = class _ ' invisible'; END;
+                    %]
+                    <a class='[% class %]' href='[% href %]' 
+                        title='[% l("Previous page") %]'><span class="nav_arrow_fix">&#9668;</span> Previous </a>
                     <span class='hide_me'
                         style='padding-left: 11px; padding-right:11px;'>
                         <span></span>
                     </span>
-                    [% IF (page + 1) < page_count %]
-                    <a class='search_page_nav_link'
-                        href="[% propagator _ '&page=' _ (page + 1) %]"
-                        title='[% l("Next page") %]'>
-                        Next <span class="nav_arrow_fix">&#9658;</span>
-                    </a>
-                    [% END %]
+                    [%  class = 'search_page_nav_link';
+                        href = '#';
+                        IF (page + 1) < page_count;
+                            href = propagator _ '&page=' _ (page + 1);
+                        ELSE; class = class _ ' invisible'; END;
+                    %]
+                    <a class='[% class %]' href='[% href %]' 
+                        title='[% l("Next page") %]'> Next <span class="nav_arrow_fix">&#9658;</span></a>
                 </span>
             </td>
         </tr>
