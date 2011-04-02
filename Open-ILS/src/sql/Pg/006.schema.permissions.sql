@@ -98,7 +98,28 @@ CREATE OR REPLACE FUNCTION permission.grp_ancestors ( INT ) RETURNS SETOF permis
 			THEN 0
 			ELSE 1
 		END, a.name;
-$$ LANGUAGE SQL STABLE;
+$$ LANGUAGE SQL STABLE ROWS 1;
+
+CREATE OR REPLACE FUNCTION permission.grp_ancestors_distance( INT ) RETURNS TABLE (id INT, distance INT) AS $$
+    WITH RECURSIVE grp_ancestors_distance(id, distance) AS (
+            SELECT $1, 0
+        UNION
+            SELECT pgt.parent, gad.distance+1
+            FROM permission.grp_tree pgt JOIN grp_ancestors_distance gad ON (pgt.id = gad.id)
+            WHERE pgt.parent IS NOT NULL
+    )
+    SELECT * FROM grp_ancestors_distance;
+$$ LANGUAGE SQL STABLE ROWS 1;
+
+CREATE OR REPLACE FUNCTION permission.grp_descendants_distance( INT ) RETURNS TABLE (id INT, distance INT) AS $$
+    WITH RECURSIVE grp_descendants_distance(id, distance) AS (
+            SELECT $1, 0
+        UNION
+            SELECT pgt.id, gdd.distance+1
+            FROM permission.grp_tree pgt JOIN grp_descendants_distance gdd ON (pgt.parent = gdd.id)
+    )
+    SELECT * FROM grp_descendants_distance;
+$$ LANGUAGE SQL STABLE ROWS 1;
 
 CREATE OR REPLACE FUNCTION permission.usr_perms ( INT ) RETURNS SETOF permission.usr_perm_map AS $$
 	SELECT	DISTINCT ON (usr,perm) *
@@ -119,7 +140,7 @@ CREATE OR REPLACE FUNCTION permission.usr_perms ( INT ) RETURNS SETOF permission
 			  WHERE	p.grp IN (SELECT (permission.grp_ancestors(m.grp)).id FROM permission.usr_grp_map m WHERE usr = $1))
 		) AS x
 	  ORDER BY 2, 3, 1 DESC, 5 DESC ;
-$$ LANGUAGE SQL STABLE;
+$$ LANGUAGE SQL STABLE ROWS 10;
 
 CREATE TABLE permission.usr_work_ou_map (
 	id	SERIAL	PRIMARY KEY,
@@ -505,7 +526,7 @@ BEGIN
 	RETURN;
 	--
 END;
-$$ LANGUAGE 'plpgsql';
+$$ LANGUAGE 'plpgsql' ROWS 1;
 
 
 CREATE OR REPLACE FUNCTION permission.usr_has_perm_at_all_nd(
@@ -561,7 +582,7 @@ BEGIN
 	RETURN;
 	--
 END;
-$$ LANGUAGE 'plpgsql';
+$$ LANGUAGE 'plpgsql' ROWS 1;
 
 
 CREATE OR REPLACE FUNCTION permission.usr_has_perm_at(
@@ -570,7 +591,7 @@ CREATE OR REPLACE FUNCTION permission.usr_has_perm_at(
 )
 RETURNS SETOF INTEGER AS $$
 SELECT DISTINCT * FROM permission.usr_has_perm_at_nd( $1, $2 );
-$$ LANGUAGE 'sql';
+$$ LANGUAGE 'sql' ROWS 1;
 
 
 CREATE OR REPLACE FUNCTION permission.usr_has_perm_at_all(
@@ -579,7 +600,7 @@ CREATE OR REPLACE FUNCTION permission.usr_has_perm_at_all(
 )
 RETURNS SETOF INTEGER AS $$
 SELECT DISTINCT * FROM permission.usr_has_perm_at_all_nd( $1, $2 );
-$$ LANGUAGE 'sql';
+$$ LANGUAGE 'sql' ROWS 1;
 
 
 COMMIT;
