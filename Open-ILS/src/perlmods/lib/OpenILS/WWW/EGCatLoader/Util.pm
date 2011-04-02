@@ -5,6 +5,7 @@ use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::AppUtils;
+use OpenSRF::MultiSession;
 my $U = 'OpenILS::Application::AppUtils';
 
 my $ro_object_subs; # cached subs
@@ -152,36 +153,38 @@ sub get_records_and_facets {
     $unapi_args->{depth} ||= $self->ctx->{aou_tree}->()->ou_type->depth;
     $unapi_args->{flesh_depth} ||= 5;
 
-    # XXX Fire in fixed-size batches to prevent larger display limits abusing cstore
-    my @reqs;
-    for my $id (@$rec_ids) {
-        my $ses = OpenSRF::AppSession->create('open-ils.cstore');
-        my $r = $ses->request(
-            'open-ils.cstore.json_query',
-             {from => [
-                'unapi.bre', $id, 'marcxml','record', 
-                $unapi_args->{flesh}, 
-                $unapi_args->{loc}, 
-                $unapi_args->{depth}, 
-                $unapi_args->{flesh_depth}, 
-            ]}
-        );
-        push(@reqs, {req => $r, ses => $ses});
-    }
+    my @data;
+    my $ses = OpenSRF::MultiSession->new(
+        app => 'open-ils.cstore',
+        cap => 10, # XXX config
+        success_handler => sub {
+            my($self, $req) = @_;
+            my $data = $req->{response}->[0]->content;
+            my $xml = XML::LibXML->new->parse_string($data->{'unapi.bre'})->documentElement;
+            my $bre_id =  $xml->find('*[@tag="901"]/*[@code="c"]')->[0]->textContent;
+            push(@data, {id => $bre_id, marc_xml => $xml});
+        }
+    );
 
+    $ses->request(
+        'open-ils.cstore.json_query',
+         {from => [
+            'unapi.bre', $_, 'marcxml','record', 
+            $unapi_args->{flesh}, 
+            $unapi_args->{loc}, 
+            $unapi_args->{depth}, 
+            $unapi_args->{flesh_depth}, 
+        ]}
+    ) for @$rec_ids;
+
+    # collect the facet data
     my $search = OpenSRF::AppSession->create('open-ils.search');
     my $facet_req = $search->request(
         'open-ils.search.facet_cache.retrieve', $facet_key, 10
     ) if $facet_key;
 
-    my @data;
-    for my $req (@reqs) {
-        my $data = $req->{req}->gather(1);
-        $req->{ses}->kill_me;
-        my $xml = XML::LibXML->new->parse_string($data->{'unapi.bre'})->documentElement;
-        my $rec_id =  $xml->find('*[@tag="901"]/*[@code="c"]')->[0]->textContent;
-        push(@data, {id => $rec_id, marc_xml => $xml});
-    }
+    # gather up the unapi recs
+    $ses->session_wait(1);
 
     my $facets;
     if ($facet_key) {
