@@ -1,34 +1,5 @@
-[% 
-    # Builds a link like so: $orig_link&expand=$tab#$tab
-    # use of 'SET foo =' prevents unintended inline rendering of values
-    BLOCK rdetail_extras_tab_link;
-        cgi = CGI();
-        SET foo = cgi.param('expand', tab);
-        url = ctx.unparsed_uri.replace('\?.*', '?' _ cgi.query_string);
-        SET foo = url.replace('#.*', ''); # clear any existing anchor
-        url _ '#' _ tab; # anchor on the tab name
-    END;
-%]
-
 <div id="rdetail_main_div">
-
     <div id='rdetail_extras_div' style='width: 100%;'> 
-        
-        <!-- SAMPLE AUTHORS LAYOUT / MOVE TO INCLUDE'D TEMPLATE
-        <div id='rdetail_authors_div' class='rdetail_extras_div hide_me'>
-            <strong>Authors:</strong>
-            <div id="rdetail_authors_inner" style="padding-bottom:10px;"></div>
-            <strong>Added Authors:</strong>
-            <div id="rdetail_moar_authors" style="padding-bottom:10px;"></div>
-            <strong>Credits:</strong>
-            <div id="rdetail_credits" style="padding-bottom:10px;"></div>
-            <strong>Cast:</strong>
-            <div id="rdetail_cast" style="padding-bottom:10px;"></div>
-            <strong>Author Notes:</strong>
-            <div id='rdetail_anotes_div' class='rdetail_extras_div'> </div>
-        </div>
-        -->
-        
         <!-- SAMPLE AWARDS LAYOUT / MOVE TO INCLUDE'D TEMPLATE
         <div id='rdetail_awards_div' class='rdetail_extras_div hide_me'> 
             <strong>Awards:</strong>
@@ -53,50 +24,46 @@
         </div>
         -->
 
-        [%
-            # Hidden extras are not yet implemented.  Some may require JS
-            extras = [
-                {name => 'summary',  label => l('Summary &amp; More'), hide => 1}, # Content Cafe
-                {name => 'content',  label => l('Contents'), hide => 1}, # ToC
-                {name => 'authors',  label => l('Authors'), hide => 1}, 
-                {name => 'series',   label => l('Series'), hide => 1}, 
-                {name => 'awards',   label => l('Series'), hide => 1}, 
-                {name => 'subject',  label => l('Subject')}, 
-                {name => 'annotation',  label => l('Annotation'), hide => 1}, 
-                {name => 'reviews',  label => l('Reviews'), hide => 1}, 
-                {name => 'excerpt',  label => l('Excerpt'), hide => 1},
-                {name => 'preview',  label => l('Preview'), hide => 1}, 
-                {name => 'novelist', label => l('Suggestions by NoveList'), hide => 1},
-                {name => 'cnbrowse', label => l('Shelf Browser'), hide => 1},
-                {name => 'copyinfo', label => l('Copy Summary'), hide => 1}, 
-                {name => 'marchtml', label => l('MARC Record')}
-            ];
+        [%  # Hidden extras are not yet implemented.  Some may require JS
+
+        extras = [
+            {name => 'summary',  label => l('Summary &amp; More'), hide => 1}, # Content Cafe
+            {name => 'content',  label => l('Contents'), hide => 1}, # ToC
+            {name => 'authors',  label => l('Authors')}, 
+            {name => 'series',   label => l('Series'), hide => 1}, 
+            {name => 'awards',   label => l('Series'), hide => 1}, 
+            {name => 'subjects', label => l('Subject')}, 
+            {name => 'annotation', label => l('Annotation'), hide => 1}, 
+            {name => 'reviews',  label => l('Reviews'), hide => 1}, 
+            {name => 'excerpt',  label => l('Excerpt'), hide => 1},
+            {name => 'preview',  label => l('Preview'), hide => 1}, 
+            {name => 'novelist', label => l('Suggestions by NoveList'), hide => 1},
+            {name => 'cnbrowse', label => l('Shelf Browser'), hide => 1},
+            {name => 'copyinfo', label => l('Copy Summary'), hide => 1}, 
+            {name => 'marchtml', label => l('MARC Record')}
+        ];
+
+        FOREACH extra IN extras;
+            IF extra.hide; NEXT; END; 
+            name = extra.name;
         %]
-        [% FOREACH extra IN extras %]
-            [% IF extra.hide; NEXT; END; %]
         <div class="rdetail_extras">
             <div class="rdetail_extras_hr"></div>
             <div class="rdetail_extras_link">
-                [% href = PROCESS rdetail_extras_tab_link(tab=extra.name) %]
-                <a name='[% extra.name %]' href='[% href %]'><img
+                [% href = ctx.full_path _ '?expand=' _ name _ '#' _ name; %]
+                <a name='[% name %]' href='[% href %]'><img
                     alt='[% extra.label %]' src="[% ctx.media_prefix %]/images/rdetail_arrow.png" /></a>
                 <a href='[% href %]' class="rdetail_extras_lbl">[% extra.label %]</a>
             </div>
         </div>
         <div class='rdetail_extras_div'>
-            [%  name = extra.name; 
-                exp_name = 'expand_' _ name;
+            [%  exp_name = 'expand_' _ name;
                 IF ctx.$exp_name;
-                    IF name == 'subject';
-                        INCLUDE "default/opac/parts/record/subjects.tt2";
-                    ELSIF name == 'reviews';
-                    ELSIF name == 'excerpt';
-                    ELSIF name == 'preview';
-                    ELSIF name == 'novelist';
-                    ELSIF name == 'cnbrowse';
-                    ELSIF name == 'copyinfo';
-                    ELSIF name == 'marchtml';
+                    IF name == 'marchtml';
                         ctx.marchtml;
+                    ELSE;
+                        # Load the template for the selected extra
+                        INCLUDE "default/opac/parts/record/${name}.tt2";
                     END;
                 END; 
             %]

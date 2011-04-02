@@ -15,7 +15,7 @@ sub load_record {
 
     my $org = $self->cgi->param('loc') || $self->ctx->{aou_tree}->()->id;
     my $depth = $self->cgi->param('depth') || 0;
-    my $copy_limit = int($self->cgi->param('copy_limit') || 20);
+    my $copy_limit = int($self->cgi->param('copy_limit') || 10);
     my $copy_offset = int($self->cgi->param('copy_offset') || 0);
 
     my $rec_id = $self->ctx->{page_args}->[0]

@@ -164,14 +164,16 @@
             new_offset = ctx.copy_offset - ctx.copy_limit;
             IF new_offset < 0; new_offset = 0; END %]
             <td>
-                <a href="[% ctx.opac_root %]/record/[% record.id %]?copy_offset=[% new_offset %]&copy_limit=[% ctx.copy_limit %]">&laquo; [%
+                [%# For some reason, browsers render &copy (as in, &copy_limit=foo) as the copyright 
+                    symbol, even though it's inside inside the href attribute string.  Use ; instead %]
+                <a href="[% ctx.opac_root %]/record/[% record.id %]?copy_offset=[% new_offset %];copy_limit=[% ctx.copy_limit %]">&laquo; [%
                     l('Previous [_1]', ctx.copy_offset - new_offset)
                 %]</a>
             </td>
         [% END %]
         [% IF ctx.copies.size >= ctx.copy_limit %]
             <td>
-                <a href="[% ctx.opac_root %]/record/[% record.id %]?copy_offset=[% ctx.copy_offset + ctx.copy_limit %]&copy_limit=[% ctx.copy_limit %]">[%
+                <a href="[% ctx.opac_root %]/record/[% record.id %]?copy_offset=[% ctx.copy_offset + ctx.copy_limit %];copy_limit=[% ctx.copy_limit %]">[%
                     l('Next [_1]', ctx.copy_limit)
                 %] &raquo;</a>
             </td>

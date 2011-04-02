@@ -22,24 +22,26 @@
             </td>
             <td align="right" valign="bottom">
                 <span class='start_end_links_span'>
-                    [% IF page > 0 %]
-                    <a class='search_page_nav_link'
-                        href="[% propagator _ '&page=' _ (page - 1) %]"
-                        title='[% l("Previous page") %]'>
-                        <span class="nav_arrow_fix">&#9668;</span> Previous
-                    </a>
-                    [% END %]
+                    [%  class = 'search_page_nav_link';
+                        href = '#';
+                        IF page > 0;
+                            href = propagator _ '&page=' _ (page - 1);
+                        ELSE; class = class _ ' invisible'; END;
+                    %]
+                    <a class='[% class %]' href='[% href %]' 
+                        title='[% l("Previous page") %]'><span class="nav_arrow_fix">&#9668;</span> Previous </a>
                     <span class='hide_me'
                         style='padding-left: 11px; padding-right:11px;'>
                         <span></span>
                     </span>
-                    [% IF (page + 1) < page_count %]
-                    <a class='search_page_nav_link'
-                        href="[% propagator _ '&page=' _ (page + 1) %]"
-                        title='[% l("Next page") %]'>
-                        Next <span class="nav_arrow_fix">&#9658;</span>
-                    </a>
-                    [% END %]
+                    [%  class = 'search_page_nav_link';
+                        href = '#';
+                        IF (page + 1) < page_count;
+                            href = propagator _ '&page=' _ (page + 1);
+                        ELSE; class = class _ ' invisible'; END;
+                    %]
+                    <a class='[% class %]' href='[% href %]' 
+                        title='[% l("Next page") %]'> Next <span class="nav_arrow_fix">&#9658;</span></a>
                 </span>
             </td>
         </tr>
@@ -76,7 +78,7 @@
                                             <td class='result_table_pic_header'
                                                 width="78" nowrap="nowrap" valign="top">
                                                 [% ident = attrs.isbn_clean || attrs.upc; IF ident; %]
-                                                <a href="[% ctx.opac_root %]/record/[% rec.bre.id _ propagator %]"><img alt="Image of item"
+                                                <a href="[% ctx.opac_root %]/record/[% rec.id _ propagator %]"><img alt="Image of item"
                                                         name='item_jacket' class='result_table_pic' width="55"
                                                         src='[% ctx.media_prefix %]/opac/extras/ac/jacket/small/[% ident %]' /></a><br />
                                                 [% END %]
@@ -86,7 +88,7 @@
                                                 valign="top">
                                                 <div class="bold">
                                                     <a title="[% attrs.title %]" name='item_title'
-                                                        href="[% ctx.opac_root %]/record/[% rec.bre.id _ propagator %]"
+                                                        href="[% ctx.opac_root %]/record/[% rec.id _ propagator %]"
                                                         class='search_link'>[% attrs.title %]</a>
                                                 </div>
                                                 <span style="font-size:11px;">
@@ -136,7 +138,9 @@
                                                     </table>
                                                     <div>
                                                         [% l('[_1] of [quant,_2,copy,copies] available',
-                                                            rec.copy_counts.available, rec.copy_counts.visible) %]
+                                                            attrs.copy_counts.available, attrs.copy_counts.count) # XXX s/count/nshadow/ ?
+                                                            #rec.copy_counts.available, rec.copy_counts.visible) 
+                                                        %]
                                                     </div>
                                                 </span>
                                                 <div class="hide_me">
@@ -180,16 +184,16 @@
                                                 <div style="width:250px;text-align:left;">
                                                     <div style="float:right;">
                                                         <div class="results_aux_utils opac-auto-010"><a
-                                                                href="[% ctx.opac_root %]/place_hold[% propagator; propagator.length > 1 ? "&" : ""; %]hold_target=[% rec.bre.id %]&hold_type=T" name="place_hold_link" class="no-dec"><img
+                                                                href="[% ctx.opac_root %]/place_hold[% propagator; propagator.length > 1 ? "&" : ""; %]hold_target=[% rec.id %]&hold_type=T" name="place_hold_link" class="no-dec"><img
                                                                 src="[% ctx.media_prefix %]/images/green_check.png"
                                                                 alt="place hold" /><span
                                                                     style="position:relative;top:-3px;left:3px;">Place Hold</span></a>
                                                         </div>
                                                         <div class="results_aux_utils opac-auto-011">
-                                                            [%  operation = ctx.mylist.grep(rec.bre.id).size ? "delete" : "add";
+                                                            [%  operation = ctx.mylist.grep(rec.id).size ? "delete" : "add";
                                                                 label = (operation == "add") ? "Add to" : "Remove from"; %]
                                                             <form action="[% ctx.opac_root %]/mylist/[% operation %]" method="POST">
-                                                                <input type="hidden" name="record" value="[% rec.bre.id %]" />
+                                                                <input type="hidden" name="record" value="[% rec.id %]" />
                                                             <div style="position:absolute;">
                                                                 <div style="position:relative;top:5px; left: 25px;">
                                                                     <input type="submit" title="[% l(label _ ' my list') %]" value="[% l(label _ ' my list') %]" class="subtle-button" />
