@@ -1,6 +1,9 @@
 DROP SCHEMA IF EXISTS unapi CASCADE;
 
 BEGIN;
+
+INSERT INTO config.upgrade_log (version) VALUES ('0507'); --miker
+
 CREATE SCHEMA unapi;
 
 CREATE OR REPLACE FUNCTION array_remove_item_by_value(inp ANYARRAY, el ANYELEMENT) RETURNS anyarray AS $$ SELECT ARRAY_ACCUM(x.e) FROM UNNEST( $1 ) x(e) WHERE x.e <> $2; $$ LANGUAGE SQL;
