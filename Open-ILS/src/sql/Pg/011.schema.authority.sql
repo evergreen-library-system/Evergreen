@@ -30,8 +30,10 @@ CREATE TABLE authority.control_set (
 
 CREATE TABLE authority.control_set_authority_field (
     id          SERIAL  PRIMARY KEY,
+    main_entry  INT     REFERENCES authority.control_set_authority_field (id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     control_set INT     NOT NULL REFERENCES authority.control_set (id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     tag         CHAR(3) NOT NULL,
+    sf_list     TEXT    NOT NULL,
     name        TEXT    NOT NULL, -- i18n
     description TEXT              -- i18n
 );
@@ -39,9 +41,7 @@ CREATE TABLE authority.control_set_authority_field (
 CREATE TABLE authority.control_set_bib_field (
     id              SERIAL  PRIMARY KEY,
     authority_field INT     NOT NULL REFERENCES authority.control_set_authority_field (id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-    tag             CHAR(3) NOT NULL,
-    name            TEXT    NOT NULL, -- i18n
-    description     TEXT              -- i18n
+    tag             CHAR(3) NOT NULL
 );
 
 CREATE TABLE authority.thesaurus (
