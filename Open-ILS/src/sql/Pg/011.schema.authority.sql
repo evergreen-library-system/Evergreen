@@ -22,18 +22,48 @@ DROP SCHEMA IF EXISTS authority CASCADE;
 BEGIN;
 CREATE SCHEMA authority;
 
+CREATE TABLE authority.control_set (
+    id          SERIAL  PRIMARY KEY,
+    name        TEXT    NOT NULL UNIQUE, -- i18n
+    description TEXT                     -- i18n
+);
+
+CREATE TABLE authority.control_set_authority_field (
+    id          SERIAL  PRIMARY KEY,
+    control_set INT     NOT NULL REFERENCES authority.control_set (id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    tag         CHAR(3) NOT NULL,
+    name        TEXT    NOT NULL, -- i18n
+    description TEXT              -- i18n
+);
+
+CREATE TABLE authority.control_set_bib_field (
+    id              SERIAL  PRIMARY KEY,
+    authority_field INT     NOT NULL REFERENCES authority.control_set_authority_field (id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    tag             CHAR(3) NOT NULL,
+    name            TEXT    NOT NULL, -- i18n
+    description     TEXT              -- i18n
+);
+
+CREATE TABLE authority.thesaurus (
+    code        TEXT    PRIMARY KEY,     -- MARC21 thesaurus code
+    control_set INT     NOT NULL REFERENCES authority.control_set (id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    name        TEXT    NOT NULL UNIQUE, -- i18n
+    description TEXT                     -- i18n
+);
+
 CREATE TABLE authority.record_entry (
-	id		BIGSERIAL	PRIMARY KEY,
-	creator		INT		NOT NULL DEFAULT 1,
-	editor		INT		NOT NULL DEFAULT 1,
-	create_date	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT now(),
-	edit_date	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT now(),
-	active		BOOL		NOT NULL DEFAULT TRUE,
-	deleted		BOOL		NOT NULL DEFAULT FALSE,
-	source		INT,
-	marc		TEXT		NOT NULL,
-	last_xact_id	TEXT		NOT NULL,
-	owner		INT
+    id              BIGSERIAL    PRIMARY KEY,
+    create_date     TIMESTAMP WITH TIME ZONE    NOT NULL DEFAULT now(),
+    edit_date       TIMESTAMP WITH TIME ZONE    NOT NULL DEFAULT now(),
+    creator         INT     NOT NULL DEFAULT 1,
+    editor          INT     NOT NULL DEFAULT 1,
+    active          BOOL    NOT NULL DEFAULT TRUE,
+    deleted         BOOL    NOT NULL DEFAULT FALSE,
+    source          INT,
+    control_set     INT     REFERENCES authority.control_set (id) ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    marc            TEXT    NOT NULL,
+    last_xact_id    TEXT    NOT NULL,
+    owner           INT
 );
 CREATE INDEX authority_record_entry_creator_idx ON authority.record_entry ( creator );
 CREATE INDEX authority_record_entry_editor_idx ON authority.record_entry ( editor );
@@ -52,71 +82,72 @@ CREATE INDEX authority_bl_bib_idx ON authority.bib_linking ( bib );
 CREATE UNIQUE INDEX authority_bl_bib_authority_once_idx ON authority.bib_linking ( authority, bib );
 
 CREATE TABLE authority.record_note (
-	id		BIGSERIAL	PRIMARY KEY,
-	record		BIGINT		NOT NULL REFERENCES authority.record_entry (id) DEFERRABLE INITIALLY DEFERRED,
-	value		TEXT		NOT NULL,
-	creator		INT		NOT NULL DEFAULT 1,
-	editor		INT		NOT NULL DEFAULT 1,
-	create_date	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT now(),
-	edit_date	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT now()
+    id          BIGSERIAL   PRIMARY KEY,
+    record      BIGINT      NOT NULL REFERENCES authority.record_entry (id) DEFERRABLE INITIALLY DEFERRED,
+    value       TEXT        NOT NULL,
+    creator     INT         NOT NULL DEFAULT 1,
+    editor      INT         NOT NULL DEFAULT 1,
+    create_date TIMESTAMP WITH TIME ZONE    NOT NULL DEFAULT now(),
+    edit_date   TIMESTAMP WITH TIME ZONE    NOT NULL DEFAULT now()
 );
 CREATE INDEX authority_record_note_record_idx ON authority.record_note ( record );
 CREATE INDEX authority_record_note_creator_idx ON authority.record_note ( creator );
 CREATE INDEX authority_record_note_editor_idx ON authority.record_note ( editor );
 
 CREATE TABLE authority.rec_descriptor (
-	id		BIGSERIAL PRIMARY KEY,
-	record		BIGINT,
-	record_status	TEXT,
-	char_encoding	TEXT
+    id              BIGSERIAL PRIMARY KEY,
+    record          BIGINT,
+    record_status   TEXT,
+    char_encoding   TEXT,
+    thesaurus       TEXT
 );
 CREATE INDEX authority_rec_descriptor_record_idx ON authority.rec_descriptor (record);
 
 CREATE TABLE authority.full_rec (
-	id		BIGSERIAL	PRIMARY KEY,
-	record		BIGINT		NOT NULL,
-	tag		CHAR(3)		NOT NULL,
-	ind1		TEXT,
-	ind2		TEXT,
-	subfield	TEXT,
-	value		TEXT		NOT NULL,
-	index_vector	tsvector	NOT NULL
+    id              BIGSERIAL   PRIMARY KEY,
+    record          BIGINT      NOT NULL,
+    tag             CHAR(3)     NOT NULL,
+    ind1            TEXT,
+    ind2            TEXT,
+    subfield        TEXT,
+    value           TEXT        NOT NULL,
+    index_vector    tsvector    NOT NULL
 );
 CREATE INDEX authority_full_rec_record_idx ON authority.full_rec (record);
 CREATE INDEX authority_full_rec_tag_subfield_idx ON authority.full_rec (tag, subfield);
 CREATE INDEX authority_full_rec_tag_part_idx ON authority.full_rec (SUBSTRING(tag FROM 2));
 CREATE INDEX authority_full_rec_subfield_a_idx ON authority.full_rec (value) WHERE subfield = 'a';
 CREATE TRIGGER authority_full_rec_fti_trigger
-	BEFORE UPDATE OR INSERT ON authority.full_rec
-	FOR EACH ROW EXECUTE PROCEDURE tsearch2(index_vector, value);
+    BEFORE UPDATE OR INSERT ON authority.full_rec
+    FOR EACH ROW EXECUTE PROCEDURE tsearch2(index_vector, value);
 
 CREATE INDEX authority_full_rec_index_vector_idx ON authority.full_rec USING GIST (index_vector);
 /* Enable LIKE to use an index for database clusters with locales other than C or POSIX */
 CREATE INDEX authority_full_rec_value_tpo_index ON authority.full_rec (value text_pattern_ops);
 
 CREATE OR REPLACE VIEW authority.tracing_links AS
-	SELECT	main.record AS record,
-		main.id AS main_id,
-		main.tag AS main_tag,
-		main.value AS main_value,
-		substr(link.value,1,1) AS relationship,
-		substr(link.value,2,1) AS use_restriction,
-		substr(link.value,3,1) AS deprecation,
-		substr(link.value,4,1) AS display_restriction,
-		link_value.id AS link_id,
-		link_value.tag AS link_tag,
-		link_value.value AS link_value
-	  FROM	authority.full_rec main
-		JOIN authority.full_rec link
-			ON (	link.record = main.record
-				AND link.tag in ((main.tag::int + 400)::text, (main.tag::int + 300)::text)
-				AND link.subfield = 'w' )
-		JOIN authority.full_rec link_value
-			ON (	link_value.record = main.record
-				AND link_value.tag = link.tag
-				AND link_value.subfield = 'a' )
-	  WHERE	main.tag IN ('100','110','111','130','150','151','155','180','181','182','185')
-		AND main.subfield = 'a';
+    SELECT  main.record AS record,
+            main.id AS main_id,
+            main.tag AS main_tag,
+            main.value AS main_value,
+            substr(link.value,1,1) AS relationship,
+            substr(link.value,2,1) AS use_restriction,
+            substr(link.value,3,1) AS deprecation,
+            substr(link.value,4,1) AS display_restriction,
+            link_value.id AS link_id,
+            link_value.tag AS link_tag,
+            link_value.value AS link_value
+      FROM  authority.full_rec main
+            JOIN authority.full_rec link
+                ON (link.record = main.record
+                    AND link.tag in ((main.tag::int + 400)::text, (main.tag::int + 300)::text)
+                    AND link.subfield = 'w' )
+            JOIN authority.full_rec link_value
+                ON (link_value.record = main.record
+                    AND link_value.tag = link.tag
+                    AND link_value.subfield = 'a' )
+      WHERE main.tag IN ('100','110','111','130','150','151','155','180','181','182','185')
+            AND main.subfield = 'a';
 
 -- Function to generate an ephemeral overlay template from an authority record
 CREATE OR REPLACE FUNCTION authority.generate_overlay_template ( TEXT, BIGINT ) RETURNS TEXT AS $func$
@@ -211,44 +242,49 @@ BEGIN
     --   replaced by the target record
 
     -- 1. Update all bib records with the ID from target_record in their $0
-    FOR bib_rec IN SELECT bre.* FROM biblio.record_entry bre 
-      INNER JOIN authority.bib_linking abl ON abl.bib = bre.id
-      WHERE abl.authority = source_record LOOP
+    FOR bib_rec IN
+            SELECT  bre.*
+              FROM  biblio.record_entry bre 
+                    JOIN authority.bib_linking abl ON abl.bib = bre.id
+              WHERE abl.authority = source_record
+        LOOP
 
-        UPDATE biblio.record_entry
-          SET marc = REGEXP_REPLACE(marc, 
-            E'(<subfield\\s+code="0"\\s*>[^<]*?\\))' || source_record || '<',
-            E'\\1' || target_record || '<', 'g')
+        UPDATE  biblio.record_entry
+          SET   marc = REGEXP_REPLACE(
+                    marc,
+                    E'(<subfield\\s+code="0"\\s*>[^<]*?\\))' || source_record || '<',
+                    E'\\1' || target_record || '<',
+                    'g'
+                )
           WHERE id = bib_rec.id;
 
           moved_objects := moved_objects + 1;
     END LOOP;
 
     -- 2. Grab the current value of reingest on same MARC flag
-    SELECT enabled INTO ingest_same
-      FROM config.internal_flag
+    SELECT  enabled INTO ingest_same
+      FROM  config.internal_flag
       WHERE name = 'ingest.reingest.force_on_same_marc'
     ;
 
     -- 3. Temporarily set reingest on same to TRUE
-    UPDATE config.internal_flag
-      SET enabled = TRUE
+    UPDATE  config.internal_flag
+      SET   enabled = TRUE
       WHERE name = 'ingest.reingest.force_on_same_marc'
     ;
 
     -- 4. Make a harmless update to target_record to trigger auto-update
     --    in linked bibliographic records
-    UPDATE authority.record_entry
-      SET deleted = FALSE
+    UPDATE  authority.record_entry
+      SET   deleted = FALSE
       WHERE id = target_record;
 
     -- 5. "Delete" source_record
-    DELETE FROM authority.record_entry
-      WHERE id = source_record;
+    DELETE FROM authority.record_entry WHERE id = source_record;
 
     -- 6. Set "reingest on same MARC" flag back to initial value
-    UPDATE config.internal_flag
-      SET enabled = ingest_same
+    UPDATE  config.internal_flag
+      SET   enabled = ingest_same
       WHERE name = 'ingest.reingest.force_on_same_marc'
     ;
 
