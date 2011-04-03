@@ -26,32 +26,32 @@ INSERT INTO unapi.bre_output_layout
 ;
 
 -- Dummy functions, so we can create the real ones out of order
-CREATE OR REPLACE FUNCTION unapi.aou    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
-CREATE OR REPLACE FUNCTION unapi.acnp   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
-CREATE OR REPLACE FUNCTION unapi.acns   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
-CREATE OR REPLACE FUNCTION unapi.acn    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
-CREATE OR REPLACE FUNCTION unapi.ssub   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
-CREATE OR REPLACE FUNCTION unapi.sdist  ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
-CREATE OR REPLACE FUNCTION unapi.sstr   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
-CREATE OR REPLACE FUNCTION unapi.sitem  ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
-CREATE OR REPLACE FUNCTION unapi.sunit  ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
-CREATE OR REPLACE FUNCTION unapi.sisum  ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
-CREATE OR REPLACE FUNCTION unapi.sbsum  ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
-CREATE OR REPLACE FUNCTION unapi.sssum  ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
-CREATE OR REPLACE FUNCTION unapi.siss   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
-CREATE OR REPLACE FUNCTION unapi.auri   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
-CREATE OR REPLACE FUNCTION unapi.acp    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
-CREATE OR REPLACE FUNCTION unapi.acpn   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
-CREATE OR REPLACE FUNCTION unapi.acl    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
-CREATE OR REPLACE FUNCTION unapi.ccs    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
-CREATE OR REPLACE FUNCTION unapi.ascecm ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
-CREATE OR REPLACE FUNCTION unapi.bre    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
-CREATE OR REPLACE FUNCTION unapi.bmp    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
+CREATE OR REPLACE FUNCTION unapi.aou    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
+CREATE OR REPLACE FUNCTION unapi.acnp   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
+CREATE OR REPLACE FUNCTION unapi.acns   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
+CREATE OR REPLACE FUNCTION unapi.acn    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
+CREATE OR REPLACE FUNCTION unapi.ssub   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
+CREATE OR REPLACE FUNCTION unapi.sdist  ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
+CREATE OR REPLACE FUNCTION unapi.sstr   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
+CREATE OR REPLACE FUNCTION unapi.sitem  ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
+CREATE OR REPLACE FUNCTION unapi.sunit  ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
+CREATE OR REPLACE FUNCTION unapi.sisum  ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
+CREATE OR REPLACE FUNCTION unapi.sbsum  ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
+CREATE OR REPLACE FUNCTION unapi.sssum  ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
+CREATE OR REPLACE FUNCTION unapi.siss   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
+CREATE OR REPLACE FUNCTION unapi.auri   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
+CREATE OR REPLACE FUNCTION unapi.acp    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
+CREATE OR REPLACE FUNCTION unapi.acpn   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
+CREATE OR REPLACE FUNCTION unapi.acl    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
+CREATE OR REPLACE FUNCTION unapi.ccs    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
+CREATE OR REPLACE FUNCTION unapi.ascecm ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
+CREATE OR REPLACE FUNCTION unapi.bre    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
+CREATE OR REPLACE FUNCTION unapi.bmp    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION unapi.holdings_xml ( bid BIGINT, ouid INT, org TEXT, depth INT DEFAULT NULL, includes TEXT[] DEFAULT NULL::TEXT[], slimit INT DEFAULT NULL, soffset INT DEFAULT NULL) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
-CREATE OR REPLACE FUNCTION unapi.biblio_record_entry_feed ( id_list BIGINT[], format TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, title TEXT DEFAULT NULL, description TEXT DEFAULT NULL, creator TEXT DEFAULT NULL, update_ts TEXT DEFAULT NULL, unapi_url TEXT DEFAULT NULL, header_xml XML DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
+CREATE OR REPLACE FUNCTION unapi.holdings_xml ( bid BIGINT, ouid INT, org TEXT, depth INT DEFAULT NULL, includes TEXT[] DEFAULT NULL::TEXT[], slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
+CREATE OR REPLACE FUNCTION unapi.biblio_record_entry_feed ( id_list BIGINT[], format TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE, title TEXT DEFAULT NULL, description TEXT DEFAULT NULL, creator TEXT DEFAULT NULL, update_ts TEXT DEFAULT NULL, unapi_url TEXT DEFAULT NULL, header_xml XML DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION unapi.memoize (classname TEXT, obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$
+CREATE OR REPLACE FUNCTION unapi.memoize (classname TEXT, obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
 DECLARE
     key     TEXT;
     output  XML;
@@ -60,11 +60,12 @@ BEGIN
         'id'        || COALESCE(obj_id::TEXT,'') ||
         'format'    || COALESCE(format::TEXT,'') ||
         'ename'     || COALESCE(ename::TEXT,'') ||
-        'includes'   || COALESCE(includes::TEXT,'{}'::TEXT[]::TEXT) ||
+        'includes'  || COALESCE(includes::TEXT,'{}'::TEXT[]::TEXT) ||
         'org'       || COALESCE(org::TEXT,'') ||
         'depth'     || COALESCE(depth::TEXT,'') ||
         'slimit'    || COALESCE(slimit::TEXT,'') ||
-        'soffset'   || COALESCE(soffset::TEXT,'');
+        'soffset'   || COALESCE(soffset::TEXT,'') ||
+        'include_xmlns'   || COALESCE(include_xmlns::TEXT,'');
     -- RAISE NOTICE 'memoize key: %', key;
 
     key := MD5(key);
@@ -72,12 +73,12 @@ BEGIN
 
     -- XXX cache logic ... memcached? table?
 
-    EXECUTE $$SELECT unapi.$$ || classname || $$( $1, $2, $3, $4, $5, $6, $7, $8);$$ INTO output USING obj_id, format, ename, includes, org, depth, slimit, soffset;
+    EXECUTE $$SELECT unapi.$$ || classname || $$( $1, $2, $3, $4, $5, $6, $7, $8, $9);$$ INTO output USING obj_id, format, ename, includes, org, depth, slimit, soffset, include_xmlns;
     RETURN output;
 END;
 $F$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION unapi.biblio_record_entry_feed ( id_list BIGINT[], format TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, title TEXT DEFAULT NULL, description TEXT DEFAULT NULL, creator TEXT DEFAULT NULL, update_ts TEXT DEFAULT NULL, unapi_url TEXT DEFAULT NULL, header_xml XML DEFAULT NULL ) RETURNS XML AS $F$
+CREATE OR REPLACE FUNCTION unapi.biblio_record_entry_feed ( id_list BIGINT[], format TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE, title TEXT DEFAULT NULL, description TEXT DEFAULT NULL, creator TEXT DEFAULT NULL, update_ts TEXT DEFAULT NULL, unapi_url TEXT DEFAULT NULL, header_xml XML DEFAULT NULL ) RETURNS XML AS $F$
 DECLARE
     layout          unapi.bre_output_layout%ROWTYPE;
     transform       config.xml_transform%ROWTYPE;
@@ -99,22 +100,22 @@ BEGIN
     xmlns_uri := COALESCE(transform.namespace_uri,xmlns_uri);
 
     -- Gather the bib xml
-    SELECT XMLAGG( unapi.bre(i, format, '', includes, org, depth, slimit, soffset)) INTO tmp_xml FROM UNNEST( id_list ) i;
+    SELECT XMLAGG( unapi.bre(i, format, '', includes, org, depth, slimit, soffset, include_xmlns)) INTO tmp_xml FROM UNNEST( id_list ) i;
 
     IF layout.title_element IS NOT NULL THEN
-        EXECUTE 'SELECT XMLCONCAT( XMLELEMENT( name '|| layout.title_element ||', XMLATTRIBUTES( $1 AS xmlns), $3), $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML, title;
+        EXECUTE 'SELECT XMLCONCAT( XMLELEMENT( name '|| layout.title_element ||', CASE WHEN $4 THEN XMLATTRIBUTES( $1 AS xmlns) ELSE NULL END, $3), $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML, title, include_xmlns;
     END IF;
 
     IF layout.description_element IS NOT NULL THEN
-        EXECUTE 'SELECT XMLCONCAT( XMLELEMENT( name '|| layout.description_element ||', XMLATTRIBUTES( $1 AS xmlns), $3), $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML, description;
+        EXECUTE 'SELECT XMLCONCAT( XMLELEMENT( name '|| layout.description_element ||', CASE WHEN $4 THEN XMLATTRIBUTES( $1 AS xmlns) ELSE NULL END, $3), $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML, description, include_xmlns;
     END IF;
 
     IF layout.creator_element IS NOT NULL THEN
-        EXECUTE 'SELECT XMLCONCAT( XMLELEMENT( name '|| layout.creator_element ||', XMLATTRIBUTES( $1 AS xmlns), $3), $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML, creator;
+        EXECUTE 'SELECT XMLCONCAT( XMLELEMENT( name '|| layout.creator_element ||', CASE WHEN $4 THEN XMLATTRIBUTES( $1 AS xmlns) ELSE NULL END, $3), $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML, creator, include_xmlns;
     END IF;
 
     IF layout.update_ts_element IS NOT NULL THEN
-        EXECUTE 'SELECT XMLCONCAT( XMLELEMENT( name '|| layout.update_ts_element ||', XMLATTRIBUTES( $1 AS xmlns), $3), $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML, update_ts;
+        EXECUTE 'SELECT XMLCONCAT( XMLELEMENT( name '|| layout.update_ts_element ||', CASE WHEN $4 THEN XMLATTRIBUTES( $1 AS xmlns) ELSE NULL END, $3), $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML, update_ts, include_xmlns;
     END IF;
 
     IF unapi_url IS NOT NULL THEN
@@ -125,14 +126,14 @@ BEGIN
 
     element_list := regexp_split_to_array(layout.feed_top,E'\\.');
     FOR i IN REVERSE ARRAY_UPPER(element_list, 1) .. 1 LOOP
-        EXECUTE 'SELECT XMLELEMENT( name '|| quote_ident(element_list[i]) ||', XMLATTRIBUTES( $1 AS xmlns), $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML;
+        EXECUTE 'SELECT XMLELEMENT( name '|| quote_ident(element_list[i]) ||', CASE WHEN $4 THEN XMLATTRIBUTES( $1 AS xmlns) ELSE NULL END, $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML, include_xmlns;
     END LOOP;
 
     RETURN tmp_xml::XML;
 END;
 $F$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION unapi.bre ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$
+CREATE OR REPLACE FUNCTION unapi.bre ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
 DECLARE
     me      biblio.record_entry%ROWTYPE;
     layout  unapi.bre_output_layout%ROWTYPE;
@@ -151,7 +152,7 @@ BEGIN
     END IF;
 
     IF format = 'holdings_xml' THEN -- the special case
-        output := unapi.holdings_xml( obj_id, ouid, org, depth, includes, slimit, soffset);
+        output := unapi.holdings_xml( obj_id, ouid, org, depth, includes, slimit, soffset, include_xmlns);
         RETURN output;
     END IF;
 
@@ -167,7 +168,7 @@ BEGIN
 
     -- grab hodlings if we need them
     IF ('holdings_xml' = ANY (includes)) THEN 
-        hxml := unapi.holdings_xml(obj_id, ouid, org, depth, array_remove_item_by_value(includes,'holdings_xml'), slimit, soffset);
+        hxml := unapi.holdings_xml(obj_id, ouid, org, depth, array_remove_item_by_value(includes,'holdings_xml'), slimit, soffset, include_xmlns);
     ELSE
         hxml := NULL::XML;
     END IF;
@@ -178,6 +179,9 @@ BEGIN
 
     IF format = 'marcxml' THEN
         tmp_xml := me.marc;
+        IF tmp_xml !~ E'<marc:' THEN -- If we're not using the prefixed namespace in this record, then remove all declarations of it
+           tmp_xml := REGEXP_REPLACE(tmp_xml, ' xmlns:marc="http://www.loc.gov/MARC21/slim"', '', 'g');
+        END IF; 
     ELSE
         tmp_xml := oils_xslt_process(me.marc, xfrm.xslt)::XML;
     END IF;
@@ -209,11 +213,11 @@ BEGIN
 END;
 $F$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION unapi.holdings_xml (bid BIGINT, ouid INT, org TEXT, depth INT DEFAULT NULL, includes TEXT[] DEFAULT NULL::TEXT[], slimit INT DEFAULT NULL, soffset INT DEFAULT NULL) RETURNS XML AS $F$
+CREATE OR REPLACE FUNCTION unapi.holdings_xml (bid BIGINT, ouid INT, org TEXT, depth INT DEFAULT NULL, includes TEXT[] DEFAULT NULL::TEXT[], slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE) RETURNS XML AS $F$
      SELECT  XMLELEMENT(
                  name holdings,
                  XMLATTRIBUTES(
-                    'http://open-ils.org/spec/holdings/v1' AS xmlns,
+                    CASE WHEN $8 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
                     CASE WHEN ('bre' = ANY ('{acn,auri}'::TEXT[] || $5)) THEN 'tag:open-ils.org:U2@bre/' || $1 || '/' || $3 ELSE NULL END AS id
                  ),
                  XMLELEMENT(
@@ -236,7 +240,7 @@ CREATE OR REPLACE FUNCTION unapi.holdings_xml (bid BIGINT, ouid INT, org TEXT, d
                  CASE 
                      WHEN ('bmp' = ANY ($5)) THEN
                         XMLELEMENT( name monograph_parts,
-                            XMLAGG((SELECT unapi.bmp( id, 'xml', 'monograph_part', array_remove_item_by_value( array_remove_item_by_value($5,'bre'), 'holdings_xml'), $3, $4, $6, $7) FROM biblio.monograph_part WHERE record = $1))
+                            XMLAGG((SELECT unapi.bmp( id, 'xml', 'monograph_part', array_remove_item_by_value( array_remove_item_by_value($5,'bre'), 'holdings_xml'), $3, $4, $6, $7, FALSE) FROM biblio.monograph_part WHERE record = $1))
                         )
                      ELSE NULL
                  END,
@@ -244,7 +248,7 @@ CREATE OR REPLACE FUNCTION unapi.holdings_xml (bid BIGINT, ouid INT, org TEXT, d
                      XMLELEMENT(
                          name volumes,
                          (SELECT XMLAGG(acn) FROM (
-                            SELECT  unapi.acn(acn.id,'xml','volume',array_remove_item_by_value(array_remove_item_by_value('{acn,auri}'::TEXT[] || $5,'holdings_xml'),'bre'), $3, $4, $6, $7)
+                            SELECT  unapi.acn(acn.id,'xml','volume',array_remove_item_by_value(array_remove_item_by_value('{acn,auri}'::TEXT[] || $5,'holdings_xml'),'bre'), $3, $4, $6, $7, FALSE)
                               FROM  asset.call_number acn
                               WHERE acn.record = $1
                                     AND EXISTS (
@@ -272,7 +276,7 @@ CREATE OR REPLACE FUNCTION unapi.holdings_xml (bid BIGINT, ouid INT, org TEXT, d
                      XMLELEMENT(
                          name subscriptions,
                          (SELECT XMLAGG(ssub) FROM (
-                            SELECT  unapi.ssub(id,'xml','subscription','{}'::TEXT[], $3, $4, $6, $7)
+                            SELECT  unapi.ssub(id,'xml','subscription','{}'::TEXT[], $3, $4, $6, $7, FALSE)
                               FROM  serial.subscription
                               WHERE record_entry = $1
                         )x)
@@ -281,11 +285,11 @@ CREATE OR REPLACE FUNCTION unapi.holdings_xml (bid BIGINT, ouid INT, org TEXT, d
              );
 $F$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION unapi.ssub ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$
+CREATE OR REPLACE FUNCTION unapi.ssub ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
         SELECT  XMLELEMENT(
                     name subscription,
                     XMLATTRIBUTES(
-                        'http://open-ils.org/spec/holdings/v1' AS xmlns,
+                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
                         'tag:open-ils.org:U2@ssub/' || id AS id,
                         start_date AS start, end_date AS end, expected_date_offset
                     ),
@@ -293,7 +297,7 @@ CREATE OR REPLACE FUNCTION unapi.ssub ( obj_id BIGINT, format TEXT,  ename TEXT,
                     XMLELEMENT( name distributions,
                         CASE 
                             WHEN ('sdist' = ANY ($4)) THEN
-                                XMLAGG((SELECT unapi.sdist( id, 'xml', 'distribution', array_remove_item_by_value($4,'ssub'), $5, $6, $7, $8) FROM serial.distribution WHERE subscription = ssub.id))
+                                XMLAGG((SELECT unapi.sdist( id, 'xml', 'distribution', array_remove_item_by_value($4,'ssub'), $5, $6, $7, $8, FALSE) FROM serial.distribution WHERE subscription = ssub.id))
                             ELSE NULL
                         END
                     )
@@ -303,39 +307,39 @@ CREATE OR REPLACE FUNCTION unapi.ssub ( obj_id BIGINT, format TEXT,  ename TEXT,
           GROUP BY id, start_date, end_date, expected_date_offset, owning_lib;
 $F$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION unapi.sdist ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$
+CREATE OR REPLACE FUNCTION unapi.sdist ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
         SELECT  XMLELEMENT(
                     name distribution,
                     XMLATTRIBUTES(
-                        'http://open-ils.org/spec/holdings/v1' AS xmlns,
+                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
                         'tag:open-ils.org:U2@sdist/' || id AS id,
 			'tag:open-ils.org:U2@acn/' || receive_call_number AS receive_call_number,
 			'tag:open-ils.org:U2@acn/' || bind_call_number AS bind_call_number,
                         unit_label_prefix, label, unit_label_suffix, summary_method
                     ),
                     unapi.aou( holding_lib, $2, 'holding_lib', array_remove_item_by_value($4,'sdist'), $5, $6, $7, $8),
-                    CASE WHEN subscription IS NOT NULL AND ('ssub' = ANY ($4)) THEN unapi.ssub( subscription, 'xml', 'subscription', array_remove_item_by_value($4,'sdist'), $5, $6, $7, $8) ELSE NULL END,
+                    CASE WHEN subscription IS NOT NULL AND ('ssub' = ANY ($4)) THEN unapi.ssub( subscription, 'xml', 'subscription', array_remove_item_by_value($4,'sdist'), $5, $6, $7, $8, FALSE) ELSE NULL END,
                     XMLELEMENT( name streams,
                         CASE 
                             WHEN ('sstr' = ANY ($4)) THEN
-                                XMLAGG((SELECT unapi.sstr( id, 'xml', 'stream', array_remove_item_by_value($4,'sdist'), $5, $6, $7, $8) FROM serial.stream WHERE distribution = sdist.id))
+                                XMLAGG((SELECT unapi.sstr( id, 'xml', 'stream', array_remove_item_by_value($4,'sdist'), $5, $6, $7, $8, FALSE) FROM serial.stream WHERE distribution = sdist.id))
                             ELSE NULL
                         END
                     ),
                     XMLELEMENT( name summaries,
                         CASE 
                             WHEN ('ssum' = ANY ($4)) THEN
-                                XMLAGG((SELECT unapi.sbsum( id, 'xml', 'serial_summary', array_remove_item_by_value($4,'sdist'), $5, $6, $7, $8) FROM serial.basic_summary WHERE distribution = sdist.id))
+                                XMLAGG((SELECT unapi.sbsum( id, 'xml', 'serial_summary', array_remove_item_by_value($4,'sdist'), $5, $6, $7, $8, FALSE) FROM serial.basic_summary WHERE distribution = sdist.id))
                             ELSE NULL
                         END,
                         CASE 
                             WHEN ('ssum' = ANY ($4)) THEN
-                                XMLAGG((SELECT unapi.sisum( id, 'xml', 'serial_summary', array_remove_item_by_value($4,'sdist'), $5, $6, $7, $8) FROM serial.index_summary WHERE distribution = sdist.id))
+                                XMLAGG((SELECT unapi.sisum( id, 'xml', 'serial_summary', array_remove_item_by_value($4,'sdist'), $5, $6, $7, $8, FALSE) FROM serial.index_summary WHERE distribution = sdist.id))
                             ELSE NULL
                         END,
                         CASE 
                             WHEN ('ssum' = ANY ($4)) THEN
-                                XMLAGG((SELECT unapi.sssum( id, 'xml', 'serial_summary', array_remove_item_by_value($4,'sdist'), $5, $6, $7, $8) FROM serial.supplement_summary WHERE distribution = sdist.id))
+                                XMLAGG((SELECT unapi.sssum( id, 'xml', 'serial_summary', array_remove_item_by_value($4,'sdist'), $5, $6, $7, $8, FALSE) FROM serial.supplement_summary WHERE distribution = sdist.id))
                             ELSE NULL
                         END
                     )
@@ -345,19 +349,19 @@ CREATE OR REPLACE FUNCTION unapi.sdist ( obj_id BIGINT, format TEXT,  ename TEXT
           GROUP BY id, label, unit_label_prefix, unit_label_suffix, holding_lib, summary_method, subscription, receive_call_number, bind_call_number;
 $F$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION unapi.sstr ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$
+CREATE OR REPLACE FUNCTION unapi.sstr ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
     SELECT  XMLELEMENT(
                 name stream,
                 XMLATTRIBUTES(
-                    'http://open-ils.org/spec/holdings/v1' AS xmlns,
+                    CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
                     'tag:open-ils.org:U2@sstr/' || id AS id,
                     routing_label
                 ),
-                CASE WHEN distribution IS NOT NULL AND ('sdist' = ANY ($4)) THEN unapi.sssum( distribution, 'xml', 'distribtion', array_remove_item_by_value($4,'sstr'), $5, $6, $7, $8) ELSE NULL END,
+                CASE WHEN distribution IS NOT NULL AND ('sdist' = ANY ($4)) THEN unapi.sssum( distribution, 'xml', 'distribtion', array_remove_item_by_value($4,'sstr'), $5, $6, $7, $8, FALSE) ELSE NULL END,
                 XMLELEMENT( name items,
                     CASE 
                         WHEN ('sitem' = ANY ($4)) THEN
-                            XMLAGG((SELECT unapi.sitem( id, 'xml', 'serial_item', array_remove_item_by_value($4,'sstr'), $5, $6, $7, $8) FROM serial.item WHERE stream = sstr.id))
+                            XMLAGG((SELECT unapi.sitem( id, 'xml', 'serial_item', array_remove_item_by_value($4,'sstr'), $5, $6, $7, $8, FALSE) FROM serial.item WHERE stream = sstr.id))
                         ELSE NULL
                     END
                 )
@@ -367,20 +371,20 @@ CREATE OR REPLACE FUNCTION unapi.sstr ( obj_id BIGINT, format TEXT,  ename TEXT,
       GROUP BY id, routing_label, distribution;
 $F$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION unapi.siss ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$
+CREATE OR REPLACE FUNCTION unapi.siss ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
     SELECT  XMLELEMENT(
                 name issuance,
                 XMLATTRIBUTES(
-                    'http://open-ils.org/spec/holdings/v1' AS xmlns,
+                    CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
                     'tag:open-ils.org:U2@siss/' || id AS id,
                     create_date, edit_date, label, date_published,
                     holding_code, holding_type, holding_link_id
                 ),
-                CASE WHEN subscription IS NOT NULL AND ('ssub' = ANY ($4)) THEN unapi.ssub( subscription, 'xml', 'subscription', array_remove_item_by_value($4,'siss'), $5, $6, $7, $8) ELSE NULL END,
+                CASE WHEN subscription IS NOT NULL AND ('ssub' = ANY ($4)) THEN unapi.ssub( subscription, 'xml', 'subscription', array_remove_item_by_value($4,'siss'), $5, $6, $7, $8, FALSE) ELSE NULL END,
                 XMLELEMENT( name items,
                     CASE 
                         WHEN ('sitem' = ANY ($4)) THEN
-                            XMLAGG((SELECT unapi.sitem( id, 'xml', 'serial_item', array_remove_item_by_value($4,'siss'), $5, $6, $7, $8) FROM serial.item WHERE issuance = sstr.id))
+                            XMLAGG((SELECT unapi.sitem( id, 'xml', 'serial_item', array_remove_item_by_value($4,'siss'), $5, $6, $7, $8, FALSE) FROM serial.item WHERE issuance = sstr.id))
                         ELSE NULL
                     END
                 )
@@ -390,19 +394,19 @@ CREATE OR REPLACE FUNCTION unapi.siss ( obj_id BIGINT, format TEXT,  ename TEXT,
       GROUP BY id, create_date, edit_date, label, date_published, holding_code, holding_type, holding_link_id, subscription;
 $F$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION unapi.sitem ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$
+CREATE OR REPLACE FUNCTION unapi.sitem ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
         SELECT  XMLELEMENT(
                     name serial_item,
                     XMLATTRIBUTES(
-                        'http://open-ils.org/spec/holdings/v1' AS xmlns,
+                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
                         'tag:open-ils.org:U2@sitem/' || id AS id,
                         'tag:open-ils.org:U2@siss/' || issuance AS issuance,
                         date_expected, date_received
                     ),
-                    CASE WHEN issuance IS NOT NULL AND ('siss' = ANY ($4)) THEN unapi.siss( issuance, $2, 'issuance', array_remove_item_by_value($4,'sitem'), $5, $6, $7, $8) ELSE NULL END,
-                    CASE WHEN stream IS NOT NULL AND ('sstr' = ANY ($4)) THEN unapi.sstr( stream, $2, 'stream', array_remove_item_by_value($4,'sitem'), $5, $6, $7, $8) ELSE NULL END,
-                    CASE WHEN unit IS NOT NULL AND ('sunit' = ANY ($4)) THEN unapi.sunit( stream, $2, 'serial_unit', array_remove_item_by_value($4,'sitem'), $5, $6, $7, $8) ELSE NULL END,
-                    CASE WHEN uri IS NOT NULL AND ('auri' = ANY ($4)) THEN unapi.auri( uri, $2, 'uri', array_remove_item_by_value($4,'sitem'), $5, $6, $7, $8) ELSE NULL END
+                    CASE WHEN issuance IS NOT NULL AND ('siss' = ANY ($4)) THEN unapi.siss( issuance, $2, 'issuance', array_remove_item_by_value($4,'sitem'), $5, $6, $7, $8, FALSE) ELSE NULL END,
+                    CASE WHEN stream IS NOT NULL AND ('sstr' = ANY ($4)) THEN unapi.sstr( stream, $2, 'stream', array_remove_item_by_value($4,'sitem'), $5, $6, $7, $8, FALSE) ELSE NULL END,
+                    CASE WHEN unit IS NOT NULL AND ('sunit' = ANY ($4)) THEN unapi.sunit( stream, $2, 'serial_unit', array_remove_item_by_value($4,'sitem'), $5, $6, $7, $8, FALSE) ELSE NULL END,
+                    CASE WHEN uri IS NOT NULL AND ('auri' = ANY ($4)) THEN unapi.auri( uri, $2, 'uri', array_remove_item_by_value($4,'sitem'), $5, $6, $7, $8, FALSE) ELSE NULL END
 --                    XMLELEMENT( name notes,
 --                        CASE 
 --                            WHEN ('acpn' = ANY ($4)) THEN
@@ -416,45 +420,45 @@ CREATE OR REPLACE FUNCTION unapi.sitem ( obj_id BIGINT, format TEXT,  ename TEXT
 $F$ LANGUAGE SQL;
 
 
-CREATE OR REPLACE FUNCTION unapi.sssum ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$
+CREATE OR REPLACE FUNCTION unapi.sssum ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
     SELECT  XMLELEMENT(
                 name serial_summary,
                 XMLATTRIBUTES(
-                    'http://open-ils.org/spec/holdings/v1' AS xmlns,
+                    CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
                     'tag:open-ils.org:U2@sbsum/' || id AS id,
                     'sssum' AS type, generated_coverage, textual_holdings, show_generated
                 ),
-                CASE WHEN ('sdist' = ANY ($4)) THEN unapi.sdist( distribution, 'xml', 'distribtion', array_remove_item_by_value($4,'ssum'), $5, $6, $7, $8) ELSE NULL END
+                CASE WHEN ('sdist' = ANY ($4)) THEN unapi.sdist( distribution, 'xml', 'distribtion', array_remove_item_by_value($4,'ssum'), $5, $6, $7, $8, FALSE) ELSE NULL END
             )
       FROM  serial.supplement_summary ssum
       WHERE id = $1
       GROUP BY id, generated_coverage, textual_holdings, distribution, show_generated;
 $F$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION unapi.sbsum ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$
+CREATE OR REPLACE FUNCTION unapi.sbsum ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
     SELECT  XMLELEMENT(
                 name serial_summary,
                 XMLATTRIBUTES(
-                    'http://open-ils.org/spec/holdings/v1' AS xmlns,
+                    CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
                     'tag:open-ils.org:U2@sbsum/' || id AS id,
                     'sbsum' AS type, generated_coverage, textual_holdings, show_generated
                 ),
-                CASE WHEN ('sdist' = ANY ($4)) THEN unapi.sdist( distribution, 'xml', 'distribtion', array_remove_item_by_value($4,'ssum'), $5, $6, $7, $8) ELSE NULL END
+                CASE WHEN ('sdist' = ANY ($4)) THEN unapi.sdist( distribution, 'xml', 'distribtion', array_remove_item_by_value($4,'ssum'), $5, $6, $7, $8, FALSE) ELSE NULL END
             )
       FROM  serial.basic_summary ssum
       WHERE id = $1
       GROUP BY id, generated_coverage, textual_holdings, distribution, show_generated;
 $F$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION unapi.sisum ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$
+CREATE OR REPLACE FUNCTION unapi.sisum ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
     SELECT  XMLELEMENT(
                 name serial_summary,
                 XMLATTRIBUTES(
-                    'http://open-ils.org/spec/holdings/v1' AS xmlns,
+                    CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
                     'tag:open-ils.org:U2@sbsum/' || id AS id,
                     'sisum' AS type, generated_coverage, textual_holdings, show_generated
                 ),
-                CASE WHEN ('sdist' = ANY ($4)) THEN unapi.sdist( distribution, 'xml', 'distribtion', array_remove_item_by_value($4,'ssum'), $5, $6, $7, $8) ELSE NULL END
+                CASE WHEN ('sdist' = ANY ($4)) THEN unapi.sdist( distribution, 'xml', 'distribtion', array_remove_item_by_value($4,'ssum'), $5, $6, $7, $8, FALSE) ELSE NULL END
             )
       FROM  serial.index_summary ssum
       WHERE id = $1
@@ -462,7 +466,7 @@ CREATE OR REPLACE FUNCTION unapi.sisum ( obj_id BIGINT, format TEXT,  ename TEXT
 $F$ LANGUAGE SQL;
 
 
-CREATE OR REPLACE FUNCTION unapi.aou ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$
+CREATE OR REPLACE FUNCTION unapi.aou ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
 DECLARE
     output XML;
 BEGIN
@@ -495,11 +499,11 @@ BEGIN
 END;
 $F$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION unapi.acl ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$
+CREATE OR REPLACE FUNCTION unapi.acl ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
     SELECT  XMLELEMENT(
                 name location,
                 XMLATTRIBUTES(
-                    'http://open-ils.org/spec/holdings/v1' AS xmlns,
+                    CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
                     id AS ident
                 ),
                 name
@@ -508,11 +512,11 @@ CREATE OR REPLACE FUNCTION unapi.acl ( obj_id BIGINT, format TEXT,  ename TEXT, 
       WHERE id = $1;
 $F$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION unapi.ccs ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$
+CREATE OR REPLACE FUNCTION unapi.ccs ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
     SELECT  XMLELEMENT(
                 name status,
                 XMLATTRIBUTES(
-                    'http://open-ils.org/spec/holdings/v1' AS xmlns,
+                    CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
                     id AS ident
                 ),
                 name
@@ -521,11 +525,11 @@ CREATE OR REPLACE FUNCTION unapi.ccs ( obj_id BIGINT, format TEXT,  ename TEXT, 
       WHERE id = $1;
 $F$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION unapi.acpn ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$
+CREATE OR REPLACE FUNCTION unapi.acpn ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
         SELECT  XMLELEMENT(
                     name copy_note,
                     XMLATTRIBUTES(
-                        'http://open-ils.org/spec/holdings/v1' AS xmlns,
+                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
                         create_date AS date,
                         title
                     ),
@@ -535,11 +539,11 @@ CREATE OR REPLACE FUNCTION unapi.acpn ( obj_id BIGINT, format TEXT,  ename TEXT,
           WHERE id = $1;
 $F$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION unapi.ascecm ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$
+CREATE OR REPLACE FUNCTION unapi.ascecm ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
         SELECT  XMLELEMENT(
                     name statcat,
                     XMLATTRIBUTES(
-                        'http://open-ils.org/spec/holdings/v1' AS xmlns,
+                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
                         sc.name,
                         sc.opac_visible
                     ),
@@ -550,11 +554,11 @@ CREATE OR REPLACE FUNCTION unapi.ascecm ( obj_id BIGINT, format TEXT,  ename TEX
           WHERE asce.id = $1;
 $F$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION unapi.bmp ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$
+CREATE OR REPLACE FUNCTION unapi.bmp ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
         SELECT  XMLELEMENT(
                     name monograph_part,
                     XMLATTRIBUTES(
-                        'http://open-ils.org/spec/holdings/v1' AS xmlns,
+                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
                         'tag:open-ils.org:U2@bmp/' || id AS id,
                         id AS ident,
                         label,
@@ -565,7 +569,7 @@ CREATE OR REPLACE FUNCTION unapi.bmp ( obj_id BIGINT, format TEXT,  ename TEXT, 
                         WHEN ('acp' = ANY ($4)) THEN
                             XMLELEMENT( name copies,
                                 (SELECT XMLAGG(acp) FROM (
-                                    SELECT  unapi.acp( cp.id, 'xml', 'copy', array_remove_item_by_value($4,'bmp'), $5, $6, $7, $8)
+                                    SELECT  unapi.acp( cp.id, 'xml', 'copy', array_remove_item_by_value($4,'bmp'), $5, $6, $7, $8, FALSE)
                                       FROM  asset.copy cp
                                             JOIN asset.copy_part_map cpm ON (cpm.target_copy = cp.id)
                                       WHERE cpm.part = $1
@@ -576,46 +580,46 @@ CREATE OR REPLACE FUNCTION unapi.bmp ( obj_id BIGINT, format TEXT,  ename TEXT, 
                             )
                         ELSE NULL
                     END,
-                    CASE WHEN ('bre' = ANY ($4)) THEN unapi.bre( record, 'marcxml', 'record', array_remove_item_by_value($4,'bmp'), $5, $6, $7, $8) ELSE NULL END
+                    CASE WHEN ('bre' = ANY ($4)) THEN unapi.bre( record, 'marcxml', 'record', array_remove_item_by_value($4,'bmp'), $5, $6, $7, $8, FALSE) ELSE NULL END
                 )
           FROM  biblio.monograph_part
           WHERE id = $1
           GROUP BY id, label, label_sortkey, record;
 $F$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION unapi.acp ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$
+CREATE OR REPLACE FUNCTION unapi.acp ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
         SELECT  XMLELEMENT(
                     name copy,
                     XMLATTRIBUTES(
-                        'http://open-ils.org/spec/holdings/v1' AS xmlns,
+                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
                         'tag:open-ils.org:U2@acp/' || id AS id,
                         create_date, edit_date, copy_number, circulate, deposit,
                         ref, holdable, deleted, deposit_amount, price, barcode,
                         circ_modifier, circ_as_type, opac_visible
                     ),
-                    unapi.ccs( status, $2, 'status', array_remove_item_by_value($4,'acp'), $5, $6, $7, $8),
-                    unapi.acl( location, $2, 'location', array_remove_item_by_value($4,'acp'), $5, $6, $7, $8),
+                    unapi.ccs( status, $2, 'status', array_remove_item_by_value($4,'acp'), $5, $6, $7, $8, FALSE),
+                    unapi.acl( location, $2, 'location', array_remove_item_by_value($4,'acp'), $5, $6, $7, $8, FALSE),
                     unapi.aou( circ_lib, $2, 'circ_lib', array_remove_item_by_value($4,'acp'), $5, $6, $7, $8),
                     unapi.aou( circ_lib, $2, 'circlib', array_remove_item_by_value($4,'acp'), $5, $6, $7, $8),
-                    CASE WHEN ('acn' = ANY ($4)) THEN unapi.acn( call_number, $2, 'call_number', array_remove_item_by_value($4,'acp'), $5, $6, $7, $8) ELSE NULL END,
+                    CASE WHEN ('acn' = ANY ($4)) THEN unapi.acn( call_number, $2, 'call_number', array_remove_item_by_value($4,'acp'), $5, $6, $7, $8, FALSE) ELSE NULL END,
                     XMLELEMENT( name copy_notes,
                         CASE 
                             WHEN ('acpn' = ANY ($4)) THEN
-                                XMLAGG((SELECT unapi.acpn( id, 'xml', 'copy_note', array_remove_item_by_value($4,'acp'), $5, $6, $7, $8) FROM asset.copy_note WHERE owning_copy = cp.id AND pub))
+                                XMLAGG((SELECT unapi.acpn( id, 'xml', 'copy_note', array_remove_item_by_value($4,'acp'), $5, $6, $7, $8, FALSE) FROM asset.copy_note WHERE owning_copy = cp.id AND pub))
                             ELSE NULL
                         END
                     ),
                     XMLELEMENT( name statcats,
                         CASE 
                             WHEN ('ascecm' = ANY ($4)) THEN
-                                XMLAGG((SELECT unapi.ascecm( stat_cat_entry, 'xml', 'statcat', array_remove_item_by_value($4,'acp'), $5, $6, $7, $8) FROM asset.stat_cat_entry_copy_map WHERE owning_copy = cp.id))
+                                XMLAGG((SELECT unapi.ascecm( stat_cat_entry, 'xml', 'statcat', array_remove_item_by_value($4,'acp'), $5, $6, $7, $8, FALSE) FROM asset.stat_cat_entry_copy_map WHERE owning_copy = cp.id))
                             ELSE NULL
                         END
                     ),
                     CASE 
                         WHEN ('bmp' = ANY ($4)) THEN
                             XMLELEMENT( name monograph_parts,
-                                XMLAGG((SELECT unapi.bmp( part, 'xml', 'monograph_part', array_remove_item_by_value($4,'acp'), $5, $6, $7, $8) FROM asset.copy_part_map WHERE target_copy = cp.id))
+                                XMLAGG((SELECT unapi.bmp( part, 'xml', 'monograph_part', array_remove_item_by_value($4,'acp'), $5, $6, $7, $8, FALSE) FROM asset.copy_part_map WHERE target_copy = cp.id))
                             )
                         ELSE NULL
                     END
@@ -625,33 +629,33 @@ CREATE OR REPLACE FUNCTION unapi.acp ( obj_id BIGINT, format TEXT,  ename TEXT, 
           GROUP BY id, status, location, circ_lib, call_number, create_date, edit_date, copy_number, circulate, deposit, ref, holdable, deleted, deposit_amount, price, barcode, circ_modifier, circ_as_type, opac_visible;
 $F$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION unapi.sunit ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$
+CREATE OR REPLACE FUNCTION unapi.sunit ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
         SELECT  XMLELEMENT(
                     name serial_unit,
                     XMLATTRIBUTES(
-                        'http://open-ils.org/spec/holdings/v1' AS xmlns,
+                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
                         'tag:open-ils.org:U2@acp/' || id AS id,
                         create_date, edit_date, copy_number, circulate, deposit,
                         ref, holdable, deleted, deposit_amount, price, barcode,
                         circ_modifier, circ_as_type, opac_visible, status_changed_time,
                         floating, mint_condition, detailed_contents, sort_key, summary_contents, cost 
                     ),
-                    unapi.ccs( status, $2, 'status', array_remove_item_by_value(array_remove_item_by_value($4,'acp'),'sunit'), $5, $6, $7, $8),
-                    unapi.acl( location, $2, 'location', array_remove_item_by_value(array_remove_item_by_value($4,'acp'),'sunit'), $5, $6, $7, $8),
+                    unapi.ccs( status, $2, 'status', array_remove_item_by_value(array_remove_item_by_value($4,'acp'),'sunit'), $5, $6, $7, $8, FALSE),
+                    unapi.acl( location, $2, 'location', array_remove_item_by_value(array_remove_item_by_value($4,'acp'),'sunit'), $5, $6, $7, $8, FALSE),
                     unapi.aou( circ_lib, $2, 'circ_lib', array_remove_item_by_value(array_remove_item_by_value($4,'acp'),'sunit'), $5, $6, $7, $8),
                     unapi.aou( circ_lib, $2, 'circlib', array_remove_item_by_value(array_remove_item_by_value($4,'acp'),'sunit'), $5, $6, $7, $8),
-                    CASE WHEN ('acn' = ANY ($4)) THEN unapi.acn( call_number, $2, 'call_number', array_remove_item_by_value($4,'acp'), $5, $6, $7, $8) ELSE NULL END,
+                    CASE WHEN ('acn' = ANY ($4)) THEN unapi.acn( call_number, $2, 'call_number', array_remove_item_by_value($4,'acp'), $5, $6, $7, $8, FALSE) ELSE NULL END,
                     XMLELEMENT( name copy_notes,
                         CASE 
                             WHEN ('acpn' = ANY ($4)) THEN
-                                XMLAGG((SELECT unapi.acpn( id, 'xml', 'copy_note', array_remove_item_by_value(array_remove_item_by_value($4,'acp'),'sunit'), $5, $6, $7, $8) FROM asset.copy_note WHERE owning_copy = cp.id AND pub))
+                                XMLAGG((SELECT unapi.acpn( id, 'xml', 'copy_note', array_remove_item_by_value(array_remove_item_by_value($4,'acp'),'sunit'), $5, $6, $7, $8, FALSE) FROM asset.copy_note WHERE owning_copy = cp.id AND pub))
                             ELSE NULL
                         END
                     ),
                     XMLELEMENT( name statcats,
                         CASE 
                             WHEN ('ascecm' = ANY ($4)) THEN
-                                XMLAGG((SELECT unapi.acpn( stat_cat_entry, 'xml', 'statcat', array_remove_item_by_value(array_remove_item_by_value($4,'acp'),'sunit'), $5, $6, $7, $8) FROM asset.stat_cat_entry_copy_map WHERE owning_copy = cp.id))
+                                XMLAGG((SELECT unapi.acpn( stat_cat_entry, 'xml', 'statcat', array_remove_item_by_value(array_remove_item_by_value($4,'acp'),'sunit'), $5, $6, $7, $8, FALSE) FROM asset.stat_cat_entry_copy_map WHERE owning_copy = cp.id))
                             ELSE NULL
                         END
                     )
@@ -662,11 +666,11 @@ CREATE OR REPLACE FUNCTION unapi.sunit ( obj_id BIGINT, format TEXT,  ename TEXT
                     deposit, ref, holdable, deleted, deposit_amount, price, barcode, circ_modifier, circ_as_type, opac_visible, status_changed_time, detailed_contents, sort_key, summary_contents, cost;
 $F$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION unapi.acn ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$
+CREATE OR REPLACE FUNCTION unapi.acn ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
         SELECT  XMLELEMENT(
                     name volume,
                     XMLATTRIBUTES(
-                        'http://open-ils.org/spec/holdings/v1' AS xmlns,
+                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
                         'tag:open-ils.org:U2@acn/' || acn.id AS id,
                         o.shortname AS lib,
                         o.opac_visible AS opac_visible,
@@ -677,7 +681,7 @@ CREATE OR REPLACE FUNCTION unapi.acn ( obj_id BIGINT, format TEXT,  ename TEXT, 
                         CASE 
                             WHEN ('acp' = ANY ($4)) THEN
                                 (SELECT XMLAGG(acp) FROM (
-                                    SELECT  unapi.acp( cp.id, 'xml', 'copy', array_remove_item_by_value($4,'acn'), $5, $6, $7, $8)
+                                    SELECT  unapi.acp( cp.id, 'xml', 'copy', array_remove_item_by_value($4,'acn'), $5, $6, $7, $8, FALSE)
                                       FROM  asset.copy cp
                                             JOIN actor.org_unit_descendants(
                                                 (SELECT id FROM actor.org_unit WHERE shortname = $5),
@@ -693,11 +697,11 @@ CREATE OR REPLACE FUNCTION unapi.acn ( obj_id BIGINT, format TEXT,  ename TEXT, 
                     ),
                     XMLELEMENT(
                         name uris,
-                        (SELECT XMLAGG(auri) FROM (SELECT unapi.auri(uri,'xml','uri', array_remove_item_by_value($4,'acn'), $5, $6, $7, $8) FROM asset.uri_call_number_map WHERE call_number = acn.id)x)
+                        (SELECT XMLAGG(auri) FROM (SELECT unapi.auri(uri,'xml','uri', array_remove_item_by_value($4,'acn'), $5, $6, $7, $8, FALSE) FROM asset.uri_call_number_map WHERE call_number = acn.id)x)
                     ),
-                    CASE WHEN ('acnp' = ANY ($4)) THEN unapi.acnp( acn.prefix, 'marcxml', 'prefix', array_remove_item_by_value($4,'acn'), $5, $6, $7, $8) ELSE NULL END,
-                    CASE WHEN ('acns' = ANY ($4)) THEN unapi.acns( acn.suffix, 'marcxml', 'suffix', array_remove_item_by_value($4,'acn'), $5, $6, $7, $8) ELSE NULL END,
-                    CASE WHEN ('bre' = ANY ($4)) THEN unapi.bre( acn.record, 'marcxml', 'record', array_remove_item_by_value($4,'acn'), $5, $6, $7, $8) ELSE NULL END
+                    CASE WHEN ('acnp' = ANY ($4)) THEN unapi.acnp( acn.prefix, 'marcxml', 'prefix', array_remove_item_by_value($4,'acn'), $5, $6, $7, $8, FALSE) ELSE NULL END,
+                    CASE WHEN ('acns' = ANY ($4)) THEN unapi.acns( acn.suffix, 'marcxml', 'suffix', array_remove_item_by_value($4,'acn'), $5, $6, $7, $8, FALSE) ELSE NULL END,
+                    CASE WHEN ('bre' = ANY ($4)) THEN unapi.bre( acn.record, 'marcxml', 'record', array_remove_item_by_value($4,'acn'), $5, $6, $7, $8, FALSE) ELSE NULL END
                 ) AS x
           FROM  asset.call_number acn
                 JOIN actor.org_unit o ON (o.id = acn.owning_lib)
@@ -705,11 +709,11 @@ CREATE OR REPLACE FUNCTION unapi.acn ( obj_id BIGINT, format TEXT,  ename TEXT, 
           GROUP BY acn.id, o.shortname, o.opac_visible, deleted, label, label_sortkey, label_class, owning_lib, record, acn.prefix, acn.suffix;
 $F$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION unapi.acnp ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$
+CREATE OR REPLACE FUNCTION unapi.acnp ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
         SELECT  XMLELEMENT(
                     name call_number_prefix,
                     XMLATTRIBUTES(
-                        'http://open-ils.org/spec/holdings/v1' AS xmlns,
+                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
                         id AS ident,
                         label,
                         label_sortkey
@@ -720,11 +724,11 @@ CREATE OR REPLACE FUNCTION unapi.acnp ( obj_id BIGINT, format TEXT,  ename TEXT,
           WHERE id = $1;
 $F$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION unapi.acns ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$
+CREATE OR REPLACE FUNCTION unapi.acns ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
         SELECT  XMLELEMENT(
                     name call_number_suffix,
                     XMLATTRIBUTES(
-                        'http://open-ils.org/spec/holdings/v1' AS xmlns,
+                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
                         id AS ident,
                         label,
                         label_sortkey
@@ -735,11 +739,11 @@ CREATE OR REPLACE FUNCTION unapi.acns ( obj_id BIGINT, format TEXT,  ename TEXT,
           WHERE id = $1;
 $F$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION unapi.auri ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL ) RETURNS XML AS $F$
+CREATE OR REPLACE FUNCTION unapi.auri ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
         SELECT  XMLELEMENT(
                     name volume,
                     XMLATTRIBUTES(
-                        'http://open-ils.org/spec/holdings/v1' AS xmlns,
+                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
                         'tag:open-ils.org:U2@auri/' || uri.id AS id,
                         use_restriction,
                         href,
@@ -748,7 +752,7 @@ CREATE OR REPLACE FUNCTION unapi.auri ( obj_id BIGINT, format TEXT,  ename TEXT,
                     XMLELEMENT( name copies,
                         CASE 
                             WHEN ('acn' = ANY ($4)) THEN
-                                (SELECT XMLAGG(acn) FROM (SELECT unapi.acn( call_number, 'xml', 'copy', array_remove_item_by_value($4,'auri'), $5, $6, $7, $8) FROM asset.uri_call_number_map WHERE uri = uri.id)x)
+                                (SELECT XMLAGG(acn) FROM (SELECT unapi.acn( call_number, 'xml', 'copy', array_remove_item_by_value($4,'auri'), $5, $6, $7, $8, FALSE) FROM asset.uri_call_number_map WHERE uri = uri.id)x)
                             ELSE NULL
                         END
                     )
