@@ -1757,6 +1757,93 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="item" reltype="has_a" key="id" map="" class="ccbi"/>
 		</links>
 	</class>
+
+	<class id="acs" controller="open-ils.cstore" oils_obj:fieldmapper="authority::control_set" oils_persist:tablename="authority.control_set" reporter:label="Authority Control Set">
+		<fields oils_persist:primary="id" oils_persist:sequence="authority.contol_set_id_seq">
+			<field reporter:label="Control Set ID" name="id" reporter:datatype="id" reporter:selector="name"/>
+			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true" />
+			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true" />
+			<field reporter:label="Controlling Authority Fields" name="authority_fields" reporter:datatype="link" oils_persist:virtual="true"/>
+		</fields>
+		<links>
+			<link field="authority_fields" reltype="has_many" key="control_set" map="" class="acsaf"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="CREATE_AUTHORITY_CONTROLSET" global_required="true"/>
+				<retrieve/>
+				<update permission="UPDATE_AUTHORITY_CONTROLSET" global_required="true"/>
+				<delete permission="DELETE_AUTHORITY_CONTROLSET" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="acsaf" controller="open-ils.cstore" oils_obj:fieldmapper="authority::control_set_authority_field" oils_persist:tablename="authority.control_set_authority_field" reporter:label="Authority Control Set Authority Field">
+		<fields oils_persist:primary="id" oils_persist:sequence="authority.contol_set_authority_field_id_seq">
+			<field reporter:label="Control Set Authority Field ID" name="id" reporter:datatype="id" reporter:selector="name"/>
+			<field reporter:label="Control Set" name="control_set" reporter:datatype="link"/>
+			<field reporter:label="Tag" name="tag" reporter:datatype="text" oils_obj:required="true" oils_obj:validate="^.{3}$"/>
+			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true" />
+			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true" />
+			<field reporter:label="Controlled Bib Fields" name="bib_fields" reporter:datatype="link" oils_persist:virtual="true"/>
+			<field reporter:label="Thesauri" name="thesauri" reporter:datatype="link" oils_persist:virtual="true"/>
+		</fields>
+		<links>
+			<link field="control_set" reltype="has_a" key="id" map="" class="acs"/>
+			<link field="bib_fields" reltype="has_many" key="authority_field" map="" class="acsbf"/>
+			<link field="thesauri" reltype="has_many" key="control_set" map="" class="at"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="CREATE_AUTHORITY_CONTROLSET" global_required="true"/>
+				<retrieve/>
+				<update permission="UPDATE_AUTHORITY_CONTROLSET" global_required="true"/>
+				<delete permission="UPDATE_AUTHORITY_CONTROLSET" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="acsbf" controller="open-ils.cstore" oils_obj:fieldmapper="authority::control_set_bib_field" oils_persist:tablename="authority.control_set_bib_field" reporter:label="Authority Control Set Bib Field">
+		<fields oils_persist:primary="id" oils_persist:sequence="authority.contol_set_bib_field_id_seq">
+			<field reporter:label="Controlled Bib Field ID" name="id" reporter:datatype="id" reporter:selector="name"/>
+			<field reporter:label="Controlling Authority Field" name="authority_field" reporter:datatype="link"/>
+			<field reporter:label="Tag" name="tag" reporter:datatype="text" oils_obj:required="true" oils_obj:validate="^.{3}$"/>
+			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true" />
+			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true" />
+		</fields>
+		<links>
+			<link field="authority_field" reltype="has_a" key="id" map="" class="acsaf"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="CREATE_AUTHORITY_CONTROLSET" global_required="true"/>
+				<retrieve/>
+				<update permission="UPDATE_AUTHORITY_CONTROLSET" global_required="true"/>
+				<delete permission="UPDATE_AUTHORITY_CONTROLSET" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="at" controller="open-ils.cstore" oils_obj:fieldmapper="authority::thesaurus" oils_persist:tablename="authority.thesaurus" reporter:label="Authority Thesaurus">
+		<fields oils_persist:primary="code">
+			<field reporter:label="Thesaurus Code" name="code" reporter:datatype="id" reporter:selector="name"/>
+			<field reporter:label="Control Set" name="control_set" reporter:datatype="link"/>
+			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true" />
+			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true" />
+		</fields>
+		<links>
+			<link field="control_set" reltype="has_a" key="id" map="" class="acs"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="CREATE_AUTHORITY_CONTROLSET" global_required="true"/>
+				<retrieve/>
+				<update permission="UPDATE_AUTHORITY_CONTROLSET" global_required="true"/>
+				<delete permission="UPDATE_AUTHORITY_CONTROLSET" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
 	<class id="are" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="authority::record_entry" oils_persist:tablename="authority.record_entry" reporter:label="Authority Record Entry">
 		<fields oils_persist:primary="id" oils_persist:sequence="authority.record_entry_id_seq">
 			<field name="active" reporter:datatype="bool"/>
@@ -1769,12 +1856,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="last_xact_id" />
 			<field name="marc" />
 			<field name="source" />
+			<field reporter:label="Control Set" name="control_set" reporter:datatype="link"/>
 			<field reporter:label="Owner" name="owner"  reporter:datatype="org_unit"/>
 			<field name="fixed_fields" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field name="notes" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field name="bib_links" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
+			<link field="control_set" reltype="has_a" key="id" map="" class="acs"/>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
 			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
@@ -1797,9 +1886,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="id" />
 			<field name="record" />
 			<field name="record_status" />
+			<field name="thesaurus" />
 		</fields>
 		<links>
 			<link field="record" reltype="has_a" key="id" map="" class="are"/>
+			<link field="thesaurus" reltype="might_have" key="code" map="" class="at"/>
 		</links>
 	</class>
 	<class id="abl" controller="open-ils.cstore" oils_obj:fieldmapper="authority::bib_linking" oils_persist:tablename="authority.bib_linking" reporter:label="Authority-Bibliographic Record Link">
