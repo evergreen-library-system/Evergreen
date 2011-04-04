@@ -330,7 +330,7 @@ function resultSuggestSpelling(r) {
 		if( blob ) blob = blob[0];
 		else continue;
 		if( blob.word == word ) {
-			if( blob.suggestions && blob.suggestions[0] ) {
+			if( !blob.found && blob.suggestions && blob.suggestions[0] ) {
 				newterm += " " + blob.suggestions[0];
 				unHideMe($('did_you_mean'));
 			} else {
