@@ -31,7 +31,7 @@ function retrieve_pull_list(ivl_in_days) {
 
     return fieldmapper.standardRequest(
         ["open-ils.booking", "open-ils.booking.reservations.get_pull_list"],
-        [xulG.auth.session.key, null, secs, owning_lib_selected]
+        [openils.User.authtoken, null, secs, owning_lib_selected]
     );
 }
 
@@ -121,7 +121,7 @@ function get_all_relevant_acp(list) {
                 "open-ils.booking",
                 "open-ils.booking.asset.get_copy_fleshed_just_right"
             ],
-            [xulG.auth.session.key, barcodes]
+            [openils.User.authtoken, barcodes]
         );
 
         if (!results) {
