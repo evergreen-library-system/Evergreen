@@ -8,11 +8,11 @@
 <commandset id="universal_cmds">
     <command id="cmd_forward"/>
     <command id="cmd_back"/>
-    <command id="cmd_close_window" key="close-window-key" />
-    <command id="cmd_new_window" key="new-window-key" />
-    <command id="cmd_new_tab" key="new-tab-key" />
-    <command id="cmd_close_tab" key="close-tab-key" />
-    <command id="cmd_close_all_tabs" key="close-all-tabs-key" />
+    <command id="cmd_close_window" />
+    <command id="cmd_new_window" />
+    <command id="cmd_new_tab" />
+    <command id="cmd_close_tab" />
+    <command id="cmd_close_all_tabs" />
     <command id="cmd_shutdown" />
 
     <command id="cmd_edit_copy_buckets" />
@@ -20,25 +20,25 @@
     <command id="cmd_edit_record_buckets" />
     <command id="cmd_edit_user_buckets" />
 
-    <command id="cmd_cat_main" key="cat-main-key" />
+    <command id="cmd_cat_main" />
     <command id="cmd_create_marc" />
     <command id="cmd_authority_manage" />
-    <command id="cmd_circ_checkout" key="circ-checkout-key" />
-    <command id="cmd_patron_search" key="patron-search-key" />
-    <command id="cmd_circ_checkin" key="circ-checkin-key" />
-    <command id="cmd_circ_renew" key="circ-renew-key" />
-    <command id="cmd_circ_hold_capture" key="circ-hold-capture-key" />
+    <command id="cmd_circ_checkout" />
+    <command id="cmd_patron_search" />
+    <command id="cmd_circ_checkin" />
+    <command id="cmd_circ_renew" />
+    <command id="cmd_circ_hold_capture" />
     <command id="cmd_circ_hold_pull_list" />
     <command id="cmd_browse_holds" />
     <command id="cmd_browse_holds_shelf" />
-    <command id="cmd_in_house_use" key="circ-in-house-use" />
+    <command id="cmd_in_house_use" />
     <command id="cmd_scan_item_as_missing_pieces" label="&staff.main.menu.circ.scan_item_as_missing_pieces.label;" accesskey="&staff.main.menu.circ.scan_item_as_missing_pieces.accesskey;" />
-    <command id="cmd_copy_status" key="copy-status-key" />
-    <command id="cmd_search_opac" key="search-opac-key" />
+    <command id="cmd_copy_status" />
+    <command id="cmd_search_opac" />
     <command id="cmd_public_opac" />
     <command id="cmd_search_tcn" />
     <command id="cmd_search_bib_id" />
-    <command id="cmd_patron_register" key="patron-register-key" />
+    <command id="cmd_patron_register" />
     <command id="cmd_staged_patrons" />
     <command id="cmd_standalone" />
     <command id="cmd_survey_wizard" />
