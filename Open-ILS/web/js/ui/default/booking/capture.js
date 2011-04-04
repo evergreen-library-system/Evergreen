@@ -195,7 +195,7 @@ function capture() {
             "open-ils.booking",
             "open-ils.booking.resources.capture_for_reservation"
         ],
-        [openils.User.authtoken, barcode]
+        [xulG.auth.session.key, barcode]
     );
 
     if (result && result.ilsevent !== undefined) {
