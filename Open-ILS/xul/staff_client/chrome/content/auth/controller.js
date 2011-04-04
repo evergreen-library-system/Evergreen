@@ -548,6 +548,8 @@ auth.controller.prototype = {
         this.controller.render('ws_deck');
 
         this.session.close();
+        this.data.menu_perms = false;
+        this.data.stash('menu_perms');
 
         /* FIXME - need some locking or object destruction for the async tests */
         /* this.test_server( this.controller.view.server_prompt.value ); */
