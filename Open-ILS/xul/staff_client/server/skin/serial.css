@@ -20,6 +20,9 @@ checkbox:focus:not([label]) .checkbox-label-box {
     border: none;
 }
 .padded_bottom { padding-bottom: 10px; }
+groupbox {
+    -moz-appearance: none;
+}
 description#print_routing_desc { margin: 0; padding: 0 1em; }
 #pattern_wizard_main > vbox { padding: 0.5em 0; }
 #pattern_wizard_main { overflow: auto; }
