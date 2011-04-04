@@ -11,6 +11,7 @@ vim:noet:sw=4:ts=4:
 <?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
 <?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
 <?xml-stylesheet href="/xul/server/skin/cat.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/serial.css" type="text/css"?>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
