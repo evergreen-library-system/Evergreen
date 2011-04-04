@@ -38,7 +38,10 @@
     <command id="cmd_public_opac" />
     <command id="cmd_search_tcn" />
     <command id="cmd_search_bib_id" />
-    <command id="cmd_patron_register" />
+<!-- Perhaps add group_application.user here as well? -->
+    <command id="cmd_patron_register"
+             perm="CREATE_USER" 
+             />
     <command id="cmd_staged_patrons" />
     <command id="cmd_standalone" />
     <command id="cmd_survey_wizard" />
@@ -104,7 +107,9 @@
     <command id="cmd_local_admin_fonts_and_sounds" />
     <command id="cmd_local_admin_printer" />
     <command id="cmd_local_admin_do_not_auto_attempt_print_setting" />
-    <command id="cmd_local_admin_closed_dates" />
+    <command id="cmd_local_admin_closed_dates"
+             perm="actor.org_unit.closed_date.update actor.org_unit.closed_date.create actor.org_unit.closed_date.delete" 
+             />
     <command id="cmd_local_admin_copy_locations" />
     <command id="cmd_local_admin_lib_settings" />
     <command id="cmd_local_admin_non_cat_types" />
@@ -120,18 +125,30 @@
     <command id="cmd_local_admin_age_overdue_circulations_to_lost" />
     <command id="cmd_local_admin_cash_reports" />
     <command id="cmd_local_admin_transit_list" />
-    <command id="cmd_local_admin_circ_matrix_matchpoint" />
-    <command id="cmd_local_admin_hold_matrix_matchpoint" />
+    <command id="cmd_local_admin_circ_matrix_matchpoint"
+             perm="ADMIN_CIRC_MATRIX_MATCHPOINT VIEW_CIRC_MATRIX_MATCHPOINT"
+             />
+    <command id="cmd_local_admin_hold_matrix_matchpoint"
+             perm="ADMIN_HOLD_MATRIX_MATCHPOINT VIEW_HOLD_MATRIX_MATCHPOINT"
+             />
     <command id="cmd_local_admin_work_log" />
     <command id="cmd_local_admin_patrons_due_refunds" />
     <command id="cmd_local_admin_copy_template" />
 
     <!-- server admin menu commands -->
-    <command id="cmd_server_admin_org_type" />
-    <command id="cmd_server_admin_org_unit" />
+    <command id="cmd_server_admin_org_type"
+             perm="CREATE_ORG_TYPE DELETE_ORG_TYPE UPDATE_ORG_TYPE"
+             />
+    <command id="cmd_server_admin_org_unit"
+             perm="CREATE_ORG_UNIT DELETE_ORG_UNIT UPDATE_ORG_UNIT"
+             />
     <command id="cmd_server_admin_grp_tree" />
-    <command id="cmd_server_admin_perm_list" />
-    <command id="cmd_server_admin_copy_status" />
+    <command id="cmd_server_admin_perm_list"
+             perm="CREATE_PERM DELETE_PERM UPDATE_PERM"
+             />
+    <command id="cmd_server_admin_copy_status"
+             perm="CREATE_COPY_STATUS DELETE_COPY_STATUS UPDATE_COPY_STATUS"
+             />
     <command id="cmd_server_admin_marc_code" />
     <command id="cmd_server_admin_coded_value_map" />
     <command id="cmd_server_admin_billing_type" />
@@ -156,23 +173,43 @@
     <command id="cmd_server_admin_acq_exchange_rate" />
     <command id="cmd_server_admin_acq_distrib_formula" />
     <command id="cmd_server_admin_z39_source" />
-    <command id="cmd_server_admin_circ_mod" />
-    <command id="cmd_server_admin_global_flag" />
+    <command id="cmd_server_admin_circ_mod" 
+             perm="CREATE_CIRC_MOD DELETE_CIRC_MOD UPDATE_CIRC_MOD ADMIN_CIRC_MOD"
+             />
+    <command id="cmd_server_admin_global_flag"
+             perm="ADMIN_GLOBAL_FLAG"
+             />
     <command id="cmd_server_admin_org_unit_setting_type" />
     <command id="cmd_server_admin_usr_setting_type" />
-    <command id="cmd_server_admin_config_hard_due_date" />
-    <command id="cmd_server_admin_config_rule_circ_duration" />
-    <command id="cmd_server_admin_config_rule_recurring_fine" />
-    <command id="cmd_server_admin_config_rule_max_fine" />
-    <command id="cmd_server_admin_config_rule_age_hold_protect" />
+    <command id="cmd_server_admin_config_hard_due_date"
+             perm="CREATE_CIRC_DURATION DELETE_CIRC_DURATION UPDATE_CIRC_DURATION"
+             />
+    <command id="cmd_server_admin_config_rule_circ_duration"
+             perm="CREATE_CIRC_DURATION DELETE_CIRC_DURATION UPDATE_CIRC_DURATION"
+             />
+    <command id="cmd_server_admin_config_rule_recurring_fine"
+             perm="ADMIN_RECURRING_FINE_RULE"
+             />
+    <command id="cmd_server_admin_config_rule_max_fine"
+             perm="ADMIN_MAX_FINE_RULE"
+             />
+    <command id="cmd_server_admin_config_rule_age_hold_protect"
+             perm="ADMIN_AGE_PROTECT_RULE"
+             />
     <command id="cmd_server_admin_booking_resource" />
     <command id="cmd_server_admin_booking_resource_type" />
     <command id="cmd_server_admin_booking_resource_attr" />
     <command id="cmd_server_admin_booking_resource_attr_value" />
     <command id="cmd_server_admin_booking_resource_attr_map" />
-    <command id="cmd_server_admin_config_circ_weights" />
-    <command id="cmd_server_admin_config_hold_weights" />
-    <command id="cmd_server_admin_config_weight_assoc" />
+    <command id="cmd_server_admin_config_circ_weights"
+             perm="ADMIN_CIRC_MATRIX_MATCHPOINT VIEW_CIRC_MATRIX_MATCHPOINT"
+             />
+    <command id="cmd_server_admin_config_hold_weights"
+             perm="ADMIN_HOLD_MATRIX_MATCHPOINT VIEW_HOLD_MATRIX_MATCHPOINT"
+             />
+    <command id="cmd_server_admin_config_weight_assoc"
+             perm="ADMIN_CIRC_MATRIX_MATCHPOINT ADMIN_HOLD_MATRIX_MATCHPOINT VIEW_CIRC_MATRIX_MATCHPOINT VIEW_HOLD_MATRIX_MATCHPOINT"
+             />
 </commandset>
 
 
