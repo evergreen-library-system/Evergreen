@@ -20,3 +20,6 @@ checkbox:focus:not([label]) .checkbox-label-box {
     border: none;
 }
 .padded_bottom { padding-bottom: 10px; }
+groupbox {
+    -moz-appearance: none;
+}

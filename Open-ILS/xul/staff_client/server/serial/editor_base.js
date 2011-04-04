@@ -353,7 +353,6 @@ serial.editor_base = {
                         }
                     }
                     if (typeof obj.changed[fn] != 'undefined') {
-                        groupbox.setAttribute('style','-moz-appearance: none');
                         groupbox.setAttribute('class','copy_editor_field_changed');
                     }
                     caption = document.createElement('caption'); groupbox.appendChild(caption);
