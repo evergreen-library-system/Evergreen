@@ -35,7 +35,9 @@ if(!dojo._hasResource["openils.XUL"]) {
         xulG.new_tab(path, tabInfo, options);
     }
 
-    openils.XUL.newTabEasy = function(url, tab_name, extra_content_params) {
+    openils.XUL.newTabEasy = function(
+        url, tab_name, extra_content_params, wrap_in_browser
+    ) {
         var content_params = {
             "session": openils.User.authtoken,
             "authtime": openils.User.authtime
@@ -51,9 +53,20 @@ if(!dojo._hasResource["openils.XUL"]) {
         if (extra_content_params)
             dojo.mixin(content_params, extra_content_params);
 
-        xulG.new_tab(
-            xulG.url_prefix(url), {"tab_name": tab_name}, content_params
-        );
+        var loc = xulG.url_prefix(url);
+
+        if (wrap_in_browser) {
+            loc = urls.XUL_BROWSER + "?url=" + window.escape(loc);
+            content_params = dojo.mixin(
+                {
+                    "no_xulG": false, "show_print_button": true,
+                    "show_nav_buttons": true,
+                    "passthru_content_params": extra_content_params
+                }, content_params
+            );
+        }
+
+        xulG.new_tab(loc, {"tab_name": tab_name}, content_params);
     };
 
     /**
