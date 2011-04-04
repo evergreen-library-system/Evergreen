@@ -927,50 +927,50 @@ main.menu.prototype = {
             'cmd_booking_reservation' : [
                 ['oncommand'],
                 function(event) {
-                    obj.command_tab(
-                        event,
+                    open_eg_web_page(
                         "/eg/booking/reservation",
-                        "menu.cmd_booking_reservation.tab"
+                        "menu.cmd_booking_reservation.tab",
+                        event
                     );
                 }
             ],
             'cmd_booking_pull_list' : [
                 ['oncommand'],
                 function(event) {
-                    obj.command_tab(
-                        event,
+                    open_eg_web_page(
                         "/eg/booking/pull_list",
-                        "menu.cmd_booking_pull_list.tab"
+                        "menu.cmd_booking_pull_list.tab",
+                        event
                     );
                 }
             ],
             'cmd_booking_capture' : [
                 ['oncommand'],
                 function(event) {
-                    obj.command_tab(
-                        event,
+                    open_eg_web_page(
                         "/eg/booking/capture",
-                        "menu.cmd_booking_capture.tab"
+                        "menu.cmd_booking_capture.tab",
+                        event
                     );
                 }
             ],
             'cmd_booking_reservation_pickup' : [
                 ['oncommand'],
                 function(event) {
-                    obj.command_tab(
-                        event,
+                    open_eg_web_page(
                         "/eg/booking/pickup",
-                        "menu.cmd_booking_reservation_pickup.tab"
+                        "menu.cmd_booking_reservation_pickup.tab",
+                        event
                     );
                 }
             ],
             'cmd_booking_reservation_return' : [
                 ['oncommand'],
                 function(event) {
-                    obj.command_tab(
-                        event,
+                    open_eg_web_page(
                         "/eg/booking/return",
-                        "menu.cmd_booking_reservation_return.tab"
+                        "menu.cmd_booking_reservation_return.tab",
+                        event
                     );
                 }
             ],
