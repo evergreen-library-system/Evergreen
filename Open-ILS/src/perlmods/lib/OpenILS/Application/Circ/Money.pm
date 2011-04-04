@@ -284,6 +284,7 @@ sub make_payments {
                     "city" => $cc_args->{billing_city},
                     "state" => $cc_args->{billing_state},
                     "zip" => $cc_args->{billing_zip},
+                    "cvv2" => $cc_args->{cvv2},
                 });
 
             if ($U->event_code($response)) { # non-success
