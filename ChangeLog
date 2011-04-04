@@ -341,3 +341,29 @@
 
 	* .: Tagging 2.0.5
 
+	* ChangeLog, Open-ILS/src/perlmods/OpenILS/Application.pm,
+	  Open-ILS/src/sql/Pg/002.schema.config.sql, README: version bumps
+
+2011-04-04  gmc
+
+	* Open-ILS/web/js/ui/default/acq/po/view_po.js: order line items in
+	  PO display by line item ID
+	  
+	  Order was effectively random otherwise. Use case from at least
+	  one library indicates this change, but doesn't preclude later
+	  work
+	  to make the sort order more flexible.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-04-04  phasefx
+
+	* Open-ILS/xul/staff_client/server/patron/search_form_horiz_overlay.xul:
+	  reorder tabindex for horizontal patron search. non-flex the
+	  search button. thanks to sylvar and others for poking
+
+2011-04-04  dbwells
+
+	* Open-ILS/xul/staff_client/server/serial/editor_base.js: Fix edit
+	  highlighting in Serial Control View
+
