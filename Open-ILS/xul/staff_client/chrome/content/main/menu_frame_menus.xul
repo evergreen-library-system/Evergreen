@@ -6,179 +6,578 @@
 <script>dump('loading menu_frame_menus.xul\n');</script>
 
 <commandset id="universal_cmds">
-    <command id="cmd_forward"/>
-    <command id="cmd_back"/>
-    <command id="cmd_close_window" />
-    <command id="cmd_new_window" />
-    <command id="cmd_new_tab" />
-    <command id="cmd_close_tab" />
-    <command id="cmd_close_all_tabs" />
-    <command id="cmd_shutdown" />
+    <command id="cmd_forward"
+             />
+    <command id="cmd_back"
+             />
+    <command id="cmd_close_window"
+             label="&staff.main.menu.file.close.label;"
+             accesskey="&staff.main.menu.file.close.accesskey;"
+             />
+    <command id="cmd_new_window"
+             label="&staff.main.menu.file.new.label;"
+             accesskey="&staff.main.menu.file.new.accesskey;"
+             />
+    <command id="cmd_new_tab"
+             label="&staff.main.menu.file.new_tab.label;"
+             accesskey="&staff.main.menu.file.new_tab.accesskey;"
+             />
+    <command id="cmd_close_tab"
+             label="&staff.main.menu.file.close_tab.label;"
+             accesskey="&staff.main.menu.file.close_tab.accesskey;"
+             />
+    <command id="cmd_close_all_tabs"
+             label="&staff.main.menu.tabs.close;"
+             accesskey="&staff.main.menu.tabs.close.accesskey;"
+             />
+    <command id="cmd_shutdown"
+             label="&staff.main.menu.quit;"
+             accesskey="&staff.main.menu.quit.accesskey;"
+             />
 
-    <command id="cmd_edit_copy_buckets" />
-    <command id="cmd_edit_volume_buckets" />
-    <command id="cmd_edit_record_buckets" />
-    <command id="cmd_edit_user_buckets" />
+    <command id="cmd_edit_copy_buckets"
+             label="&staff.main.menu.cat.edit_copy_buckets.label;"
+             accesskey="&staff.main.menu.cat.edit_copy_buckets.accesskey;"
+             />
+    <command id="cmd_edit_volume_buckets"
+             label="&staff.main.menu.cat.edit_volume_buckets.label;"
+             accesskey="&staff.main.menu.cat.edit_volume_buckets.accesskey;"
+             />
+    <command id="cmd_edit_record_buckets"
+             label="&staff.main.menu.cat.edit_record_buckets.label;"
+             accesskey="&staff.main.menu.cat.edit_record_buckets.accesskey;"
+             />
+    <command id="cmd_edit_user_buckets"
+             label="&staff.main.menu.edit.buckets.users;"
+             accesskey="&staff.main.menu.edit.buckets.users.accesskey;"
+             />
 
-    <command id="cmd_cat_main" />
-    <command id="cmd_create_marc" />
-    <command id="cmd_authority_manage" />
-    <command id="cmd_circ_checkout" />
-    <command id="cmd_patron_search" />
-    <command id="cmd_circ_checkin" />
-    <command id="cmd_circ_renew" />
-    <command id="cmd_circ_hold_capture" />
-    <command id="cmd_circ_hold_pull_list" />
-    <command id="cmd_browse_holds" />
-    <command id="cmd_browse_holds_shelf" />
-    <command id="cmd_in_house_use" />
-    <command id="cmd_scan_item_as_missing_pieces" label="&staff.main.menu.circ.scan_item_as_missing_pieces.label;" accesskey="&staff.main.menu.circ.scan_item_as_missing_pieces.accesskey;" />
-    <command id="cmd_copy_status" />
-    <command id="cmd_search_opac" />
-    <command id="cmd_public_opac" />
-    <command id="cmd_search_tcn" />
-    <command id="cmd_search_bib_id" />
-    <command id="cmd_patron_register" />
-    <command id="cmd_staged_patrons" />
-    <command id="cmd_standalone" />
-    <command id="cmd_survey_wizard" />
-    <command id="cmd_stat_cat_edit" />
-    <command id="cmd_non_cat_type_edit" />
-    <command id="cmd_copy_location_edit" />
-    <command id="cmd_print_list_template_edit" />
-    <command id="cmd_z39_50_import" />
-    <command id="cmd_create_new_marc_book" />
-    <command id="cmd_marc_batch_edit" label="&staff.main.menu.cat.marc_batch_edit.label;" accesskey="&staff.main.menu.cat.marc_batch_edit.accesskey;"/>
-    <command id="cmd_replace_barcode" />
-    <command id="cmd_reprint" />
-    <command id="cmd_retrieve_last_patron" />
-    <command id="cmd_retrieve_last_record" />
-    <command id="cmd_verify_credentials" />
+    <command id="cmd_cat_main"
+             />
+    <command id="cmd_create_marc"
+             label="&staff.main.menu.cat.create_marc.label;"
+             accesskey="&staff.main.menu.cat.create_marc.accesskey;"
+             />
+    <command id="cmd_authority_manage"
+             label="&staff.main.menu.cat.authority_manage.label;"
+             accesskey="&staff.main.menu.cat.authority_manage.accesskey;"
+             />
+    <command id="cmd_circ_checkout"
+             label="&staff.main.menu.circ.checkout.label;"
+             accesskey="&staff.main.menu.circ.checkout.accesskey;"
+             />
+    <command id="cmd_patron_search"
+             label="&staff.main.menu.search.patrons.label;"
+             accesskey="&staff.main.menu.search.patrons.accesskey;"
+             />
+    <command id="cmd_circ_checkin"
+             label="&staff.main.menu.circ.checkin.label;"
+             accesskey="&staff.main.menu.circ.checkin.accesskey;"
+             />
+    <command id="cmd_circ_renew"
+             label="&staff.main.menu.circ.renew.label;"
+             accesskey="&staff.main.menu.circ.renew.accesskey;"
+             />
+    <command id="cmd_circ_hold_capture"
+             label="&staff.main.menu.circ.hold_capture.label;"
+             accesskey="&staff.main.menu.circ.hold_capture.accesskey;"
+             />
+    <command id="cmd_circ_hold_pull_list"
+             label="&staff.main.menu.circ.hold_pull.label;"
+             accesskey="&staff.main.menu.circ.hold_pull.accesskey;"
+             />
+    <command id="cmd_browse_holds"
+             label="&staff.main.menu.admin.browse_holds.label;"
+             accesskey="&staff.main.menu.admin.browse_holds.accesskey;"
+             />
+    <command id="cmd_browse_holds_shelf"
+             label="&staff.main.menu.circ.hold_browse.label;"
+             accesskey="&staff.main.menu.circ.hold_browse.accesskey;"
+             />
+    <command id="cmd_in_house_use"
+             label="&staff.main.menu.circ.in_house.label;"
+             accesskey="&staff.main.menu.circ.in_house.accesskey;"
+             />
+    <command id="cmd_scan_item_as_missing_pieces"
+             label="&staff.main.menu.circ.scan_item_as_missing_pieces.label;"
+             accesskey="&staff.main.menu.circ.scan_item_as_missing_pieces.accesskey;"
+             />
+    <command id="cmd_copy_status"
+             label="&staff.main.menu.cat.copy_status.label;"
+             accesskey="&staff.main.menu.cat.copy_status.accesskey;"
+             />
+    <command id="cmd_search_opac"
+             label="&staff.main.menu.search.catalog.label;"
+             accesskey="&staff.main.menu.search.catalog.accesskey;"
+             />
+    <command id="cmd_public_opac"
+             label="&staff.main.menu.admin.public_opac.label;"
+             accesskey="&staff.main.menu.admin.public_opac.accesskey;"
+             />
+    <command id="cmd_search_tcn"
+             label="&staff.main.menu.cat.search_tcn.label;"
+             accesskey="&staff.main.menu.cat.search_tcn.accesskey;"
+             />
+    <command id="cmd_search_bib_id"
+             label="&staff.main.menu.cat.search_bib_id.label;"
+             accesskey="&staff.main.menu.cat.search_bib_id.accesskey;"
+             />
+    <command id="cmd_patron_register"
+             label="&staff.main.menu.circ.patron_registration.label;"
+             accesskey="&staff.main.menu.circ.patron_registration.accesskey;"
+             />
+    <command id="cmd_staged_patrons"
+             label="&staff.main.menu.circ.staged_patrons.label;"
+             accesskey="&staff.main.menu.circ.staged_patrons.accesskey;"
+             />
+    <command id="cmd_standalone"
+             label="&staff.main.menu.circ.offline.label;"
+             accesskey="&staff.main.menu.circ.offline.accesskey;"
+             />
+    <command id="cmd_survey_wizard"
+             label="&staff.main.menu.admin.survey_wizard.label;"
+             accesskey="&staff.main.menu.admin.survey_wizard.accesskey;"
+             />
+    <command id="cmd_stat_cat_edit"
+             label="&staff.main.menu.admin.stat_cat_edit.label;"
+             accesskey="&staff.main.menu.admin.stat_cat_edit.accesskey;"
+             />
+    <command id="cmd_non_cat_type_edit"
+             label="&staff.main.menu.admin.non_cat_type_edit.label;"
+             accesskey="&staff.main.menu.admin.non_cat_type_edit.accesskey;"
+             />
+    <command id="cmd_copy_location_edit"
+             label="&staff.main.menu.admin.copy_location_edit.label;"
+             accesskey="&staff.main.menu.admin.copy_location_edit.accesskey;"
+             />
+    <command id="cmd_print_list_template_edit"
+             label="&staff.main.menu.admin.template_edit.label;"
+             accesskey="&staff.main.menu.admin.template_edit.accesskey;"
+             />
+    <command id="cmd_z39_50_import"
+             label="&staff.main.menu.cat.z39_50_import.label;"
+             accesskey="&staff.main.menu.cat.z39_50_import.accesskey;"
+             />
+    <command id="cmd_create_new_marc_book"
+             />
+    <command id="cmd_marc_batch_edit"
+             label="&staff.main.menu.cat.marc_batch_edit.label;"
+             accesskey="&staff.main.menu.cat.marc_batch_edit.accesskey;"
+             />
+    <command id="cmd_replace_barcode"
+             label="&staff.main.menu.replace_barcode.label;"
+             />
+    <command id="cmd_reprint"
+             label="&staff.main.menu.circ.reprint.label;"
+             accesskey="&staff.main.menu.circ.reprint.accesskey;"
+             />
+    <command id="cmd_retrieve_last_patron"
+             label="&staff.main.menu.circ.patron_retrieve.label;"
+             accesskey="&staff.main.menu.circ.patron_retrieve.accesskey;"
+             />
+    <command id="cmd_retrieve_last_record"
+             label="&staff.main.menu.cat.retrieve_last_record.label;"
+             accesskey="&staff.main.menu.cat.retrieve_last_record.accesskey;"
+             />
+    <command id="cmd_verify_credentials"
+             label="&staff.main.menu.circ.verify_credentials;"
+             accesskey="&staff.main.menu.circ.verify_credentials.accesskey;"
+             />
 
-    <command id="cmd_change_session" />
-    <command id="cmd_manage_offline_xacts" />
-    <command id="cmd_download_patrons" />
-    <command id="cmd_local_admin" />
-    <command id="cmd_toggle_buttonbar" />
-    <command id="cmd_toggle_meters" />
+    <command id="cmd_change_session"
+             label="&staff.main.menu.admin.change_session.label;"
+             accesskey="O"
+             />
+    <command id="cmd_manage_offline_xacts"
+             label="&staff.main.menu.admin.offline_xacts.label;"
+             accesskey="&staff.main.menu.admin.offline_xacts.accesskey;"
+             />
+    <command id="cmd_download_patrons"
+             label="&staff.main.menu.admin.download_patrons.label;"
+             accesskey="&staff.main.menu.admin.download_patrons.accesskey;"
+             />
+    <command id="cmd_local_admin"
+             label="&staff.main.menu.admin.local_admin.label;"
+             accesskey="&staff.main.menu.admin.local_admin.accesskey;"
+             />
+    <command id="cmd_toggle_buttonbar"
+             label="&staff.main.menu.admin.toggle_buttonbar.label;"
+             accesskey="&staff.main.menu.admin.toggle_buttonbar.accesskey;"
+             />
+    <command id="cmd_toggle_meters"
+             label="&staff.main.menu.admin.toggle_meters.label;"
+             accesskey="&staff.main.menu.admin.toggle_meters.accesskey;"
+             />
 
-    <command id="cmd_extension_manager"/>
-    <command id="cmd_theme_manager"/>
-    <command id="cmd_about_config"/>
+    <command id="cmd_extension_manager"
+             label="&staff.main.menu.admin.extension_manager.label;"
+             />
+    <command id="cmd_theme_manager"
+             label="&staff.main.menu.admin.theme_manager.label;"
+             />
+    <command id="cmd_about_config"
+             label="&staff.main.menu.admin.about_config.label;"
+             />
 
-    <command id="cmd_adv_user_edit" />
-    <command id="cmd_console" />
-    <command id="cmd_shell" />
-    <command id="cmd_xuleditor" />
-    <command id="cmd_fieldmapper" />
-    <command id="cmd_test_html" />
-    <command id="cmd_test_xul" />
-    <command id="cmd_clear_cache" />
-    <command id="cmd_restore_all_tabs" />
+    <command id="cmd_adv_user_edit"
+             label="&staff.main.menu.admin.user_edit.label;"
+             accesskey="&staff.main.menu.admin.user_edit.accesskey;"
+             />
+    <command id="cmd_console"
+             label="&staff.main.menu.admin.cmd_console.label;"
+             accesskey="&staff.main.menu.admin.cmd_console.accesskey;"
+             />
+    <command id="cmd_shell"
+             label="&staff.main.menu.admin.cmd_shell.label;"
+             accesskey="&staff.main.menu.admin.cmd_shell.accesskey;"
+             />
+    <command id="cmd_xuleditor"
+             label="&staff.main.menu.admin.xuleditor.label;"
+             accesskey="&staff.main.menu.admin.xuleditor.accesskey;"
+             />
+    <command id="cmd_fieldmapper"
+             label="&staff.main.menu.admin.fieldmapper.label;"
+             accesskey="&staff.main.menu.admin.fieldmapper.accesskey;"
+             />
+    <command id="cmd_test_html"
+             label="server/main/test.html"
+             accesskey="1"
+             />
+    <command id="cmd_test_xul"
+             label="server/main/test.xul"
+             accesskey="2"
+             />
+    <command id="cmd_clear_cache"
+             label="&staff.main.menu.admin.clear_cache.label;"
+             accesskey="&staff.main.menu.admin.clear_cache.accesskey;"
+             />
+    <command id="cmd_restore_all_tabs"
+             label="&staff.main.menu.admin.restore_all_tabs.label;"
+             />
 
-    <command id="cmd_test" />
-    <command id="cmd_broken" disabled="true" />
-    <command id="cmd_open_vandelay" />
+    <command id="cmd_test"
+             label="&staff.main.menu.admin.cmd_test.label;"
+             />
+    <command id="cmd_broken"
+             disabled="true"
+             />
+    <command id="cmd_open_vandelay"
+             label="&staff.main.menu.cat.vandelay.label;"
+             />
     
-    <command id="cmd_acq_create_invoice" />
-    <command id="cmd_acq_create_po" />
-    <command id="cmd_acq_view_my_pl" />
-    <command id="cmd_acq_view_local_po" />
-    <command id="cmd_acq_view_local_inv" />
-    <command id="cmd_acq_upload" />
-    <command id="cmd_acq_user_requests" />
-    <command id="cmd_acq_bib_search" />
-    <command id="cmd_acq_unified_search" />
-    <command id="cmd_acq_from_bib" />
-    <command id="cmd_acq_new_brief_record" />
-    <command id="cmd_acq_claim_eligible" />
+    <command id="cmd_acq_create_invoice"
+             label="&staff.main.menu.acq.create_invoice.label;"
+             accesskey="&staff.main.menu.acq.create_invoice.accesskey;"
+             />
+    <command id="cmd_acq_create_po"
+             label="&staff.main.menu.acq.create_po.label;"
+             accesskey="&staff.main.menu.acq.create_po.accesskey;"
+             />
+    <command id="cmd_acq_view_my_pl"
+             label="&staff.main.menu.acq.view_my_pl.label;"
+             accesskey="&staff.main.menu.acq.view_my_pl.accesskey;"
+             />
+    <command id="cmd_acq_view_local_po"
+             label="&staff.main.menu.acq.view_local_po.label;"
+             accesskey="&staff.main.menu.acq.view_local_po.accesskey;"
+             />
+    <command id="cmd_acq_view_local_inv"
+             label="&staff.main.menu.acq.view_local_inv.label;"
+             accesskey="&staff.main.menu.acq.view_local_inv.accesskey;"
+             />
+    <command id="cmd_acq_upload"
+             label="&staff.main.menu.acq.upload.label;"
+             accesskey="&staff.main.menu.acq.upload.accesskey;"
+             />
+    <command id="cmd_acq_user_requests"
+             label="&staff.main.menu.acq.user_requests.label;"
+             accesskey="&staff.main.menu.acq.user_requests.accesskey;"
+             />
+    <command id="cmd_acq_bib_search"
+             label="&staff.main.menu.acq.bib_search.label;"
+             accesskey="&staff.main.menu.acq.bib_search.accesskey;"
+             />
+    <command id="cmd_acq_unified_search"
+             label="&staff.main.menu.acq.unified_search.label;"
+             accesskey="&staff.main.menu.acq.unified_search.accesskey;"
+             />
+    <command id="cmd_acq_from_bib"
+             label="&staff.main.menu.acq.from_bib.label;"
+             accesskey="&staff.main.menu.acq.from_bib.accesskey;"
+             />
+    <command id="cmd_acq_new_brief_record"
+             label="&staff.main.menu.acq.brief_record.label;"
+             accesskey="&staff.main.menu.acq.brief_record.accesskey;"
+             />
+    <command id="cmd_acq_claim_eligible"
+             label="&staff.main.menu.acq.claim_eligible.label;"
+             accesskey="&staff.main.menu.acq.claim_eligible.accesskey;"
+             />
 
-    <command id="cmd_booking_reservation" />
-    <command id="cmd_booking_pull_list" />
-    <command id="cmd_booking_capture" />
-    <command id="cmd_booking_reservation_pickup" />
-    <command id="cmd_booking_reservation_return" />
+    <command id="cmd_booking_reservation"
+             label="&staff.main.menu.booking.reservation.label;"
+             accesskey="&staff.main.menu.booking.reservation.accesskey;"
+             />
+    <command id="cmd_booking_pull_list"
+             label="&staff.main.menu.booking.pull_list.label;"
+             accesskey="&staff.main.menu.booking.pull_list.accesskey;"
+             />
+    <command id="cmd_booking_capture"
+             label="&staff.main.menu.booking.capture.label;"
+             accesskey="&staff.main.menu.booking.capture.accesskey;"
+             />
+    <command id="cmd_booking_reservation_pickup"
+             label="&staff.main.menu.booking.reservation_pickup.label;"
+             accesskey="&staff.main.menu.booking.reservation_pickup.accesskey;"
+             />
+    <command id="cmd_booking_reservation_return"
+             label="&staff.main.menu.booking.reservation_return.label;"
+             accesskey="&staff.main.menu.booking.reservation_return.accesskey;"
+             />
 
 
     <!-- local admin menu commands -->
-    <command id="cmd_local_admin_fonts_and_sounds"/>
-    <command id="cmd_local_admin_printer"/>
+    <command id="cmd_local_admin_fonts_and_sounds"
+             label="&staff.server.admin.index.fonts_and_sounds;"
+             />
+    <command id="cmd_local_admin_printer"
+             label="&staff.server.admin.index.printer;"
+             />
     <command id="cmd_local_admin_do_not_auto_attempt_print_setting"
-        label="&staff.server.admin.index.do_not_auto_attempt_print_setting.label;" 
-        accesskey="&staff.server.admin.index.do_not_auto_attempt_print_setting.accesskey;"/>
-    <command id="cmd_local_admin_closed_dates"/>
-    <command id="cmd_local_admin_copy_locations"/>
-    <command id="cmd_local_admin_lib_settings"/>
-    <command id="cmd_local_admin_non_cat_types"/>
-    <command id="cmd_local_admin_stat_cats"/>
-    <command id="cmd_local_admin_standing_penalty"/>
-    <command id="cmd_local_admin_grp_penalty_threshold"/>
-    <command id="cmd_local_admin_copy_location_order"/>
+             label="&staff.server.admin.index.do_not_auto_attempt_print_setting.label;"
+             accesskey="&staff.server.admin.index.do_not_auto_attempt_print_setting.accesskey;"
+             />
+    <command id="cmd_local_admin_closed_dates"
+             label="&staff.server.admin.index.closed_dates;"
+             />
+    <command id="cmd_local_admin_copy_locations"
+             label="&staff.server.admin.index.copy_locations;"
+             />
+    <command id="cmd_local_admin_lib_settings"
+             label="&staff.server.admin.index.library_settings;"
+             />
+    <command id="cmd_local_admin_non_cat_types"
+             label="&staff.server.admin.index.non_cataloged_types;"
+             />
+    <command id="cmd_local_admin_stat_cats"
+             label="&staff.server.admin.index.statistical_categories;"
+             />
+    <command id="cmd_local_admin_standing_penalty"
+             label="&staff.main.menu.admin.local_admin.conify.standing_penalty.label;"
+             />
+    <command id="cmd_local_admin_grp_penalty_threshold"
+             label="&staff.main.menu.admin.local_admin.conify.grp_penalty_threshold.label;"
+             />
+    <command id="cmd_local_admin_copy_location_order"
+             label="&staff.main.menu.admin.local_admin.conify.copy_location_order.label;"
+             />
     <command id="cmd_local_admin_external_text_editor"
-        label="&staff.server.admin.index.external_text_editor.label;"
-        accesskey="&staff.server.admin.index.external_text_editor.accesskey;"/>
-    <command id="cmd_local_admin_idl_field_doc"/>
-    <command id="cmd_local_admin_action_trigger"/>
-    <command id="cmd_local_admin_survey"/>
-    <command id="cmd_local_admin_reports"/>
+             label="&staff.server.admin.index.external_text_editor.label;"
+             accesskey="&staff.server.admin.index.external_text_editor.accesskey;"
+             />
+    <command id="cmd_local_admin_idl_field_doc"
+             label="&staff.main.menu.admin.local_admin.conify.idl_field_doc.label;"
+             />
+    <command id="cmd_local_admin_action_trigger"
+             label="&staff.main.menu.admin.local_admin.conify.action_trigger.label;"
+             />
+    <command id="cmd_local_admin_survey"
+             label="&staff.main.menu.admin.local_admin.conify.survey.label;"
+             />
+    <command id="cmd_local_admin_reports"
+             label="&staff.server.admin.index.reports;"
+             />
     <command id="cmd_local_admin_age_overdue_circulations_to_lost"
-        label="&staff.server.admin.index.age_overdue_circulations_to_lost.label;"
-        accesskey="&staff.server.admin.index.age_overdue_circulations_to_lost.accesskey;"/>
-    <command id="cmd_local_admin_cash_reports"/>
-    <command id="cmd_local_admin_transit_list"/>
-    <command id="cmd_local_admin_circ_matrix_matchpoint"/>
-    <command id="cmd_local_admin_hold_matrix_matchpoint"/>
-    <command id="cmd_local_admin_work_log"/>
-    <command id="cmd_local_admin_patrons_due_refunds"/>
-    <command id="cmd_local_admin_copy_template"/>
+             label="&staff.server.admin.index.age_overdue_circulations_to_lost.label;"
+             accesskey="&staff.server.admin.index.age_overdue_circulations_to_lost.accesskey;"
+             />
+    <command id="cmd_local_admin_cash_reports"
+             label="&staff.server.admin.index.cash_reports;"
+             />
+    <command id="cmd_local_admin_transit_list"
+             label="&staff.server.admin.index.transit_list;"
+             />
+    <command id="cmd_local_admin_circ_matrix_matchpoint"
+             label="&staff.main.menu.admin.local_admin.circ_matrix_matchpoint.label;"
+             />
+    <command id="cmd_local_admin_hold_matrix_matchpoint"
+             label="&staff.main.menu.admin.local_admin.hold_matrix_matchpoint.label;"
+             />
+    <command id="cmd_local_admin_work_log"
+             label="&staff.main.menu.admin.local_admin.work_log.label;"
+             accesskey="&staff.main.menu.admin.local_admin.work_log.accesskey;"
+             />
+    <command id="cmd_local_admin_patrons_due_refunds"
+             label="&staff.main.menu.admin.local_admin.patrons_due_refunds.label;"
+             accesskey="&staff.main.menu.admin.local_admin.patrons_due_refunds.accesskey;"
+             />
+    <command id="cmd_local_admin_copy_template"
+             label="&staff.main.menu.admin.local_admin.copy_template.label;"
+             accesskey="&staff.main.menu.admin.local_admin.copy_template.accesskey;"
+             />
 
     <!-- server admin menu commands -->
-    <command id="cmd_server_admin_org_type"/>
-    <command id="cmd_server_admin_org_unit"/>
-    <command id="cmd_server_admin_grp_tree"/>
-    <command id="cmd_server_admin_perm_list"/>
-    <command id="cmd_server_admin_copy_status"/>
-    <command id="cmd_server_admin_marc_code"/>
-    <command id="cmd_server_admin_coded_value_map"/>
-    <command id="cmd_server_admin_billing_type"/>
-    <command id="cmd_server_admin_acn_prefix"/>
-    <command id="cmd_server_admin_acn_suffix"/>
-    <command id="cmd_server_admin_acq_invoice_item_type"/>
-    <command id="cmd_server_admin_acq_invoice_payment_method"/>
-    <command id="cmd_server_admin_acq_cancel_reason"/>
-    <command id="cmd_server_admin_acq_lineitem_alert"/>
-    <command id="cmd_server_admin_acq_lineitem_marc_attr_def"/>
-    <command id="cmd_server_admin_acq_fund_tag"/>
-    <command id="cmd_server_admin_acq_claim_type"/>
-    <command id="cmd_server_admin_acq_claim_event_type"/>
-    <command id="cmd_server_admin_acq_claim_policy"/>
-    <command id="cmd_server_admin_acq_claim_policy_action"/>
-    <command id="cmd_server_admin_acq_fund" />
-    <command id="cmd_server_admin_acq_funding_source" />
-    <command id="cmd_server_admin_acq_provider" />
-    <command id="cmd_server_admin_acq_edi_account" />
-    <command id="cmd_server_admin_acq_edi_message" />
-    <command id="cmd_server_admin_acq_currency_type" />
-    <command id="cmd_server_admin_acq_exchange_rate" />
-    <command id="cmd_server_admin_acq_distrib_formula" />
-    <command id="cmd_server_admin_z39_source"/>
-    <command id="cmd_server_admin_circ_mod"/>
-    <command id="cmd_server_admin_global_flag"/>
-    <command id="cmd_server_admin_org_unit_setting_type"/>
-    <command id="cmd_server_admin_usr_setting_type"/>
-    <command id="cmd_server_admin_config_hard_due_date"/>
-    <command id="cmd_server_admin_config_rule_circ_duration"/>
-    <command id="cmd_server_admin_config_rule_recurring_fine"/>
-    <command id="cmd_server_admin_config_rule_max_fine"/>
-    <command id="cmd_server_admin_config_rule_age_hold_protect"/>
-    <command id="cmd_server_admin_booking_resource" />
-    <command id="cmd_server_admin_booking_resource_type" />
-    <command id="cmd_server_admin_booking_resource_attr" />
-    <command id="cmd_server_admin_booking_resource_attr_value" />
-    <command id="cmd_server_admin_booking_resource_attr_map" />
-    <command id="cmd_server_admin_config_circ_weights" />
-    <command id="cmd_server_admin_config_hold_weights" />
-    <command id="cmd_server_admin_config_weight_assoc" />
+    <command id="cmd_server_admin_org_type"
+             label="&staff.main.menu.admin.server_admin.conify.org_unit_type.label;"
+             />
+    <command id="cmd_server_admin_org_unit"
+             label="&staff.main.menu.admin.server_admin.conify.org_unit.label;"
+             />
+    <command id="cmd_server_admin_grp_tree"
+             label="&staff.main.menu.admin.server_admin.conify.grp_tree.label;"
+             />
+    <command id="cmd_server_admin_perm_list"
+             label="&staff.main.menu.admin.server_admin.conify.perm_list.label;"
+             />
+    <command id="cmd_server_admin_copy_status"
+             label="&staff.main.menu.admin.server_admin.conify.copy_status.label;"
+             />
+    <command id="cmd_server_admin_marc_code"
+             label="&staff.main.menu.admin.server_admin.conify.marc_record_attrs.label;"
+             />
+    <command id="cmd_server_admin_coded_value_map"
+             label="&staff.main.menu.admin.server_admin.conify.coded_value_maps.label;"
+             />
+    <command id="cmd_server_admin_billing_type"
+             label="&staff.main.menu.admin.server_admin.conify.billing_type.label;"
+             />
+    <command id="cmd_server_admin_acn_prefix"
+             label="&staff.main.menu.admin.server_admin.conify.acn_prefix.label;"
+             />
+    <command id="cmd_server_admin_acn_suffix"
+             label="&staff.main.menu.admin.server_admin.conify.acn_suffix.label;"
+             />
+    <command id="cmd_server_admin_acq_invoice_item_type"
+             label="&staff.main.menu.admin.server_admin.acq.invoice_item_type.label;"
+             accesskey="&staff.main.menu.admin.server_admin.acq.invoice_item_type.accesskey;"
+             />
+    <command id="cmd_server_admin_acq_invoice_payment_method"
+             label="&staff.main.menu.admin.server_admin.acq.invoice_payment_method.label;"
+             accesskey="&staff.main.menu.admin.server_admin.acq.invoice_payment_method.accesskey;"
+             />
+    <command id="cmd_server_admin_acq_cancel_reason"
+             label="&staff.main.menu.admin.server_admin.acq.cancel_reason.label;"
+             accesskey="&staff.main.menu.admin.server_admin.acq.cancel_reason.accesskey;"
+             />
+    <command id="cmd_server_admin_acq_lineitem_alert"
+             label="&staff.main.menu.admin.server_admin.acq.lineitem_alert.label;"
+             accesskey="&staff.main.menu.admin.server_admin.acq.lineitem_alert.accesskey;"
+             />
+    <command id="cmd_server_admin_acq_lineitem_marc_attr_def"
+             label="&staff.main.menu.admin.server_admin.acq.lineitem_marc_attr_def.label;"
+             accesskey="&staff.main.menu.admin.server_admin.acq.lineitem_marc_attr_def.accesskey;"
+             />
+    <command id="cmd_server_admin_acq_fund_tag"
+             label="&staff.main.menu.admin.server_admin.acq.fund_tag.label;"
+             accesskey="&staff.main.menu.admin.server_admin.acq.fund_tag.accesskey;"
+             />
+    <command id="cmd_server_admin_acq_claim_type"
+             label="&staff.main.menu.admin.server_admin.acq.claim_type.label;"
+             accesskey="&staff.main.menu.admin.server_admin.acq.claim_type.accesskey;"
+             />
+    <command id="cmd_server_admin_acq_claim_event_type"
+             label="&staff.main.menu.admin.server_admin.acq.claim_event_type.label;"
+             accesskey="&staff.main.menu.admin.server_admin.acq.claim_event_type.accesskey;"
+             />
+    <command id="cmd_server_admin_acq_claim_policy"
+             label="&staff.main.menu.admin.server_admin.acq.claim_policy.label;"
+             accesskey="&staff.main.menu.admin.server_admin.acq.claim_policy.accesskey;"
+             />
+    <command id="cmd_server_admin_acq_claim_policy_action"
+             label="&staff.main.menu.admin.server_admin.acq.claim_policy_action.label;"
+             accesskey="&staff.main.menu.admin.server_admin.acq.claim_policy_action.accesskey;"
+             />
+    <command id="cmd_server_admin_acq_fund"
+             label="&staff.main.menu.admin.server_admin.acq.fund.label;"
+             accesskey="&staff.main.menu.admin.server_admin.acq.fund.accesskey;"
+             />
+    <command id="cmd_server_admin_acq_funding_source"
+             label="&staff.main.menu.admin.server_admin.acq.funding_source.label;"
+             accesskey="&staff.main.menu.admin.server_admin.acq.funding_source.accesskey;"
+             />
+    <command id="cmd_server_admin_acq_provider"
+             label="&staff.main.menu.admin.server_admin.acq.provider.label;"
+             accesskey="&staff.main.menu.admin.server_admin.acq.provider.accesskey;"
+             />
+    <command id="cmd_server_admin_acq_edi_account"
+             label="&staff.main.menu.admin.server_admin.acq.edi_account.label;"
+             accesskey="&staff.main.menu.admin.server_admin.acq.edi_account.accesskey;"
+             />
+    <command id="cmd_server_admin_acq_edi_message"
+             label="&staff.main.menu.admin.server_admin.acq.edi_message.label;"
+             accesskey="&staff.main.menu.admin.server_admin.acq.edi_message.accesskey;"
+             />
+    <command id="cmd_server_admin_acq_currency_type"
+             label="&staff.main.menu.admin.server_admin.acq.currency_type.label;"
+             accesskey="&staff.main.menu.admin.server_admin.acq.currency_type.accesskey;"
+             />
+    <command id="cmd_server_admin_acq_exchange_rate"
+             label="&staff.main.menu.admin.server_admin.acq.exchange_rate.label;"
+             accesskey="&staff.main.menu.admin.server_admin.acq.exchange_rate.accesskey;"
+             />
+    <command id="cmd_server_admin_acq_distrib_formula"
+             label="&staff.main.menu.admin.server_admin.acq.distrib_formula.label;"
+             accesskey="&staff.main.menu.admin.server_admin.acq.distrib_formula.accesskey;"
+             />
+    <command id="cmd_server_admin_z39_source"
+             label="&staff.main.menu.admin.server_admin.conify.z3950_source.label;"
+             />
+    <command id="cmd_server_admin_circ_mod"
+             label="&staff.main.menu.admin.server_admin.conify.circulation_modifier.label;"
+             />
+    <command id="cmd_server_admin_global_flag"
+             label="&staff.main.menu.admin.server_admin.conify.global_flag.label;"
+             />
+    <command id="cmd_server_admin_org_unit_setting_type"
+             label="&staff.main.menu.admin.server_admin.conify.org_unit_setting_type;"
+             />
+    <command id="cmd_server_admin_usr_setting_type"
+             label="&staff.main.menu.admin.server_admin.conify.usr_setting_type;"
+             />
+    <command id="cmd_server_admin_config_hard_due_date"
+             label="&staff.main.menu.admin.server_admin.conify.config_hard_due_date;"
+             />
+    <command id="cmd_server_admin_config_rule_circ_duration"
+             label="&staff.main.menu.admin.server_admin.conify.config_rule_circ_duration;"
+             />
+    <command id="cmd_server_admin_config_rule_recurring_fine"
+             label="&staff.main.menu.admin.server_admin.conify.config_rule_recurring_fine;"
+             />
+    <command id="cmd_server_admin_config_rule_max_fine"
+             label="&staff.main.menu.admin.server_admin.conify.config_rule_max_fine;"
+             />
+    <command id="cmd_server_admin_config_rule_age_hold_protect"
+             label="&staff.main.menu.admin.server_admin.conify.config_rule_age_hold_protect;"
+             />
+    <command id="cmd_server_admin_booking_resource"
+             label="&staff.main.menu.admin.server_admin.booking.resource.label;"
+             accesskey="&staff.main.menu.admin.server_admin.booking.resource.accesskey;"
+             />
+    <command id="cmd_server_admin_booking_resource_type"
+             label="&staff.main.menu.admin.server_admin.booking.resource_type.label;"
+             accesskey="&staff.main.menu.admin.server_admin.booking.resource_type.accesskey;"
+             />
+    <command id="cmd_server_admin_booking_resource_attr"
+             label="&staff.main.menu.admin.server_admin.booking.resource_attr.label;"
+             accesskey="&staff.main.menu.admin.server_admin.booking.resource_attr.accesskey;"
+             />
+    <command id="cmd_server_admin_booking_resource_attr_value"
+             label="&staff.main.menu.admin.server_admin.booking.resource_attr_value.label;"
+             accesskey="&staff.main.menu.admin.server_admin.booking.resource_attr_value.accesskey;"
+             />
+    <command id="cmd_server_admin_booking_resource_attr_map"
+             label="&staff.main.menu.admin.server_admin.booking.resource_attr_map.label;"
+             accesskey="&staff.main.menu.admin.server_admin.booking.resource_attr_map.accesskey;"
+             />
+    <command id="cmd_server_admin_config_circ_weights"
+             label="&staff.main.menu.admin.server_admin.conify.config_circ_weights;"
+             />
+    <command id="cmd_server_admin_config_hold_weights"
+             label="&staff.main.menu.admin.server_admin.conify.config_hold_weights;"
+             />
+    <command id="cmd_server_admin_config_weight_assoc"
+             label="&staff.main.menu.admin.server_admin.conify.config_weight_assoc;"
+             />
 </commandset>
 
 
@@ -209,14 +608,14 @@
 <!-- The File menu on the main menu -->
 <menu id="main.menu.file" label="&staff.main.menu.file.label;" accesskey="&staff.main.menu.file.accesskey;" >
     <menupopup id="main.menu.file.popup">
-        <menuitem label="&staff.main.menu.file.new.label;" accesskey="&staff.main.menu.file.new.accesskey;" key="new-window-key" command="cmd_new_window"/>
-        <menuitem label="&staff.main.menu.file.new_tab.label;" accesskey="&staff.main.menu.file.new_tab.accesskey;" key="new-tab-key" command="cmd_new_tab"/>
+        <menuitem key="new-window-key" command="cmd_new_window"/>
+        <menuitem key="new-tab-key" command="cmd_new_tab"/>
         <menuseparator />
-        <menuitem label="&staff.main.menu.file.close_tab.label;" accesskey="&staff.main.menu.file.close_tab.accesskey;" oldaccesskey="&staff.main.menu.file.close_tab.key;" key="close-tab-key" command="cmd_close_tab"/>
-        <menuitem label="&staff.main.menu.tabs.close;" accesskey="&staff.main.menu.tabs.close.accesskey;" key="close-all-tabs-key" command="cmd_close_all_tabs"/>
-        <menuitem label="&staff.main.menu.file.close.label;" accesskey="&staff.main.menu.file.close.accesskey;" oldaccesskey="&staff.main.menu.file.close.key;" key="close-window-key" command="cmd_close_window"/>
+        <menuitem key="close-tab-key" command="cmd_close_tab"/>
+        <menuitem key="close-all-tabs-key" command="cmd_close_all_tabs"/>
+        <menuitem key="close-window-key" command="cmd_close_window"/>
         <menuseparator />
-        <menuitem label="&staff.main.menu.quit;" accesskey="&staff.main.menu.quit.accesskey;" command="cmd_shutdown"/>
+        <menuitem command="cmd_shutdown"/>
     </menupopup>
 </menu>
 
@@ -229,37 +628,37 @@
         -->
         <menuitem label="&staff.main.menu.edit.buckets.records;" command="cmd_edit_record_buckets" accesskey="&staff.main.menu.edit.buckets.records.accesskey;"/>
         <!--
-        <menuitem label="&staff.main.menu.edit.buckets.users;" command="cmd_edit_user_buckets" accesskey="&staff.main.menu.edit.buckets.users.accesskey;"/>
+        <menuitem command="cmd_edit_user_buckets"/>
         -->
         <menuseparator />
-        <menuitem label="&staff.main.menu.replace_barcode.label;" command="cmd_replace_barcode"/>
+        <menuitem command="cmd_replace_barcode"/>
     </menupopup>
 </menu>
 
 <!-- The Circulation menu on the main menu -->
 <menu id="main.menu.circ" label="&staff.main.menu.circ.label;" accesskey="&staff.main.menu.circ.accesskey;">
     <menupopup id="main.menu.circ.popup">
-        <menuitem label="&staff.main.menu.circ.checkout.label;" accesskey="&staff.main.menu.circ.checkout.accesskey;" key="circ-checkout-key" command="cmd_circ_checkout"/>
-        <menuitem label="&staff.main.menu.circ.checkin.label;" accesskey="&staff.main.menu.circ.checkin.accesskey;" key="circ-checkin-key" command="cmd_circ_checkin"/>
-        <menuitem label="&staff.main.menu.circ.renew.label;" accesskey="&staff.main.menu.circ.renew.accesskey;" key="circ-renew-key" command="cmd_circ_renew"/>
-        <menuitem label="&staff.main.menu.circ.patron_registration.label;" accesskey="&staff.main.menu.circ.patron_registration.accesskey;" key="patron-register-key" command="cmd_patron_register"/>
-        <menuitem label="&staff.main.menu.circ.staged_patrons.label;" accesskey="&staff.main.menu.circ.staged_patrons.accesskey;" command="cmd_staged_patrons"/>
-        <menuitem label="&staff.main.menu.circ.patron_retrieve.label;" accesskey="&staff.main.menu.circ.patron_retrieve.accesskey;" command="cmd_retrieve_last_patron" key="retrieve_last_patron_key"/>
+        <menuitem key="circ-checkout-key" command="cmd_circ_checkout"/>
+        <menuitem key="circ-checkin-key" command="cmd_circ_checkin"/>
+        <menuitem key="circ-renew-key" command="cmd_circ_renew"/>
+        <menuitem key="patron-register-key" command="cmd_patron_register"/>
+        <menuitem command="cmd_staged_patrons"/>
+        <menuitem command="cmd_retrieve_last_patron" key="retrieve_last_patron_key"/>
         <menuseparator />
-        <menuitem label="&staff.main.menu.circ.hold_capture.label;" accesskey="&staff.main.menu.circ.hold_capture.accesskey;" key="circ-hold-capture-key" command="cmd_circ_hold_capture"/>
-        <menuitem label="&staff.main.menu.circ.hold_pull.label;" accesskey="&staff.main.menu.circ.hold_pull.accesskey;" command="cmd_circ_hold_pull_list"/>
-        <menuitem label="&staff.main.menu.circ.hold_browse.label;" command="cmd_browse_holds_shelf" accesskey="&staff.main.menu.circ.hold_browse.accesskey;"/>
+        <menuitem key="circ-hold-capture-key" command="cmd_circ_hold_capture"/>
+        <menuitem command="cmd_circ_hold_pull_list"/>
+        <menuitem command="cmd_browse_holds_shelf"/>
         <menuitem label="&staff.main.menu.circ.place_hold.label;" accesskey="&staff.main.menu.circ.place_hold.accesskey;" key="search-opac-key" command="cmd_search_opac"/>
         <menuseparator />
         <menuitem label="&staff.main.menu.circ.barcode.show_item;" accesskey="&staff.main.menu.circ.barcode.show_item.accesskey;" key="copy-status-key" command="cmd_copy_status"/>
         <menuitem label="&staff.main.menu.circ.barcode.retrieve_patron;" accesskey="&staff.main.menu.circ.barcode.retrieve_patron.accesskey;" key="circ-checkout-key" command="cmd_circ_checkout"/>
-        <menuitem label="&staff.main.menu.circ.verify_credentials;" accesskey="&staff.main.menu.circ.verify_credentials.accesskey;" command="cmd_verify_credentials"/>
-        <menuitem label="&staff.main.menu.replace_barcode.label;" command="cmd_replace_barcode"/>
-        <menuitem label="&staff.main.menu.circ.in_house.label;" accesskey="&staff.main.menu.circ.in_house.accesskey;" key="circ-in-house-use-key" command="cmd_in_house_use"/>
+        <menuitem command="cmd_verify_credentials"/>
+        <menuitem command="cmd_replace_barcode"/>
+        <menuitem key="circ-in-house-use-key" command="cmd_in_house_use"/>
         <menuitem command="cmd_scan_item_as_missing_pieces"/>
         <menuseparator />
-        <menuitem label="&staff.main.menu.circ.reprint.label;" accesskey="&staff.main.menu.circ.reprint.accesskey;" key="reprint-receipt-key" command="cmd_reprint"/>
-        <menuitem label="&staff.main.menu.circ.offline.label;" command="cmd_standalone" accesskey="&staff.main.menu.circ.offline.accesskey;"/>
+        <menuitem key="reprint-receipt-key" command="cmd_reprint"/>
+        <menuitem command="cmd_standalone"/>
     </menupopup>
 </menu>
 
@@ -267,28 +666,28 @@
 <menu id="main.menu.cat" label="&staff.main.menu.cat.label;" accesskey="&staff.main.menu.cat.accesskey;">
     <menupopup id="main.menu.cat.popup">
         <menuitem label="&staff.main.menu.cat.bib_search.label;" accesskey="&staff.main.menu.cat.bib_search.accesskey;" key="search-opac-key" command="cmd_search_opac"/>
-        <menuitem label="&staff.main.menu.cat.search_tcn.label;" accesskey="&staff.main.menu.cat.search_tcn.accesskey;" key="search-tcn-key" command="cmd_search_tcn" />
-        <menuitem label="&staff.main.menu.cat.search_bib_id.label;" accesskey="&staff.main.menu.cat.search_bib_id.accesskey;" key="search-bib-id-key" command="cmd_search_bib_id" />
-        <menuitem label="&staff.main.menu.cat.copy_status.label;" accesskey="&staff.main.menu.cat.copy_status.accesskey;" key="copy-status-key" command="cmd_copy_status"/>
+        <menuitem key="search-tcn-key" command="cmd_search_tcn" />
+        <menuitem key="search-bib-id-key" command="cmd_search_bib_id" />
+        <menuitem key="copy-status-key" command="cmd_copy_status"/>
         <menuseparator />
         <!--
         <menuitem disabled="true" label="&staff.main.menu.cat.dedup.label;" accesskey="&staff.main.menu.cat.dedup.accesskey;" command="cmd_broken"/>
         -->
-        <menuitem label="&staff.main.menu.cat.edit_copy_buckets.label;" command="cmd_edit_copy_buckets" accesskey="&staff.main.menu.cat.edit_copy_buckets.accesskey;"/>
+        <menuitem command="cmd_edit_copy_buckets"/>
         <!--
-        <menuitem label="&staff.main.menu.cat.edit_volume_buckets.label;" command="cmd_edit_volume_buckets" accesskey="&staff.main.menu.cat.edit_volume_buckets.accesskey;"/>
+        <menuitem command="cmd_edit_volume_buckets"/>
         -->
-        <menuitem label="&staff.main.menu.cat.edit_record_buckets.label;" command="cmd_edit_record_buckets" accesskey="&staff.main.menu.cat.edit_record_buckets.accesskey;"/>
+        <menuitem command="cmd_edit_record_buckets"/>
         <menuseparator />
-        <menuitem label="&staff.main.menu.cat.create_marc.label;" accesskey="&staff.main.menu.cat.create_marc.accesskey;" command="cmd_create_marc"/>
-        <menuitem label="&staff.main.menu.cat.z39_50_import.label;" accesskey="&staff.main.menu.cat.z39_50_import.accesskey;" command="cmd_z39_50_import"/>
-        <menuitem label="&staff.main.menu.cat.vandelay.label;" command="cmd_open_vandelay"/>
+        <menuitem command="cmd_create_marc"/>
+        <menuitem command="cmd_z39_50_import"/>
+        <menuitem command="cmd_open_vandelay"/>
         <menuitem command="cmd_marc_batch_edit"/>
         <menuseparator />
-        <menuitem label="&staff.main.menu.replace_barcode.label;" command="cmd_replace_barcode"/>
-        <menuitem label="&staff.main.menu.cat.retrieve_last_record.label;" accesskey="&staff.main.menu.cat.retrieve_last_record.accesskey;" command="cmd_retrieve_last_record" key="retrieve_last_record_key"/>
+        <menuitem command="cmd_replace_barcode"/>
+        <menuitem command="cmd_retrieve_last_record" key="retrieve_last_record_key"/>
         <menuseparator />
-        <menuitem label="&staff.main.menu.cat.authority_manage.label;" accesskey="&staff.main.menu.cat.authority_manage.accesskey;" command="cmd_authority_manage"/>
+        <menuitem command="cmd_authority_manage"/>
     </menupopup>
 </menu>
 
@@ -296,40 +695,40 @@
 <!-- The Acquisitions menu on the main menu -->
 <menu id="main.menu.acq" label="&staff.main.menu.acq.label;" accesskey="&staff.main.menu.acq.accesskey;">
     <menupopup id="main.menu.acq.popup">
-        <menuitem label="&staff.main.menu.acq.unified_search.label;" accesskey="&staff.main.menu.acq.unified_search.accesskey;" command="cmd_acq_unified_search"/>
+        <menuitem command="cmd_acq_unified_search"/>
         <menuseparator />
-        <menuitem label="&staff.main.menu.acq.view_my_pl.label;" accesskey="&staff.main.menu.acq.view_my_pl.accesskey;" command="cmd_acq_view_my_pl"/>
-        <menuitem label="&staff.main.menu.acq.brief_record.label;" accesskey="&staff.main.menu.acq.brief_record.accesskey;" command="cmd_acq_new_brief_record"/>
-        <menuitem label="&staff.main.menu.acq.user_requests.label;" accesskey="&staff.main.menu.acq.user_requests.accesskey;" command="cmd_acq_user_requests" />
-        <menuitem label="&staff.main.menu.acq.bib_search.label;" accesskey="&staff.main.menu.acq.bib_search.accesskey;" command="cmd_acq_bib_search"/>
-        <menuitem label="&staff.main.menu.acq.from_bib.label;" accesskey="&staff.main.menu.acq.from_bib.accesskey;" command="cmd_acq_from_bib"/>
+        <menuitem command="cmd_acq_view_my_pl"/>
+        <menuitem command="cmd_acq_new_brief_record"/>
+        <menuitem command="cmd_acq_user_requests" />
+        <menuitem command="cmd_acq_bib_search"/>
+        <menuitem command="cmd_acq_from_bib"/>
         <menuseparator />
-        <menuitem label="&staff.main.menu.acq.upload.label;" accesskey="&staff.main.menu.acq.upload.accesskey;" command="cmd_acq_upload"/>
-        <menuitem label="&staff.main.menu.acq.view_local_po.label;" accesskey="&staff.main.menu.acq.view_local_po.accesskey;" command="cmd_acq_view_local_po"/>
-        <menuitem label="&staff.main.menu.acq.create_po.label;" accesskey="&staff.main.menu.acq.create_po.accesskey;" command="cmd_acq_create_po"/>
+        <menuitem command="cmd_acq_upload"/>
+        <menuitem command="cmd_acq_view_local_po"/>
+        <menuitem command="cmd_acq_create_po"/>
         <menuseparator />
-        <menuitem label="&staff.main.menu.acq.claim_eligible.label;" accesskey="&staff.main.menu.acq.claim_eligible.accesskey;" command="cmd_acq_claim_eligible" />
-        <menuitem label="&staff.main.menu.acq.view_local_inv.label;" accesskey="&staff.main.menu.acq.view_local_inv.accesskey;" command="cmd_acq_view_local_inv"/>
-        <menuitem label="&staff.main.menu.acq.create_invoice.label;" accesskey="&staff.main.menu.acq.create_invoice.accesskey;" command="cmd_acq_create_invoice"/>
+        <menuitem command="cmd_acq_claim_eligible" />
+        <menuitem command="cmd_acq_view_local_inv"/>
+        <menuitem command="cmd_acq_create_invoice"/>
     </menupopup>
 </menu>
 
 <!-- The Booking menu on the main menu -->
 <menu id="main.menu.booking" label="&staff.main.menu.booking.label;" accesskey="&staff.main.menu.booking.accesskey;">
     <menupopup id="main.menu.booking.popup">
-        <menuitem label="&staff.main.menu.booking.reservation.label;" accesskey="&staff.main.menu.booking.reservation.accesskey;" command="cmd_booking_reservation"/>
-        <menuitem label="&staff.main.menu.booking.pull_list.label;" accesskey="&staff.main.menu.booking.pull_list.accesskey;" command="cmd_booking_pull_list"/>
-        <menuitem label="&staff.main.menu.booking.capture.label;" accesskey="&staff.main.menu.booking.capture.accesskey;" command="cmd_booking_capture"/>
-         <menuitem label="&staff.main.menu.booking.reservation_pickup.label;" accesskey="&staff.main.menu.booking.reservation_pickup.accesskey;" command="cmd_booking_reservation_pickup"/>
-        <menuitem label="&staff.main.menu.booking.reservation_return.label;" accesskey="&staff.main.menu.booking.reservation_return.accesskey;" command="cmd_booking_reservation_return"/>
+        <menuitem command="cmd_booking_reservation"/>
+        <menuitem command="cmd_booking_pull_list"/>
+        <menuitem command="cmd_booking_capture"/>
+         <menuitem command="cmd_booking_reservation_pickup"/>
+        <menuitem command="cmd_booking_reservation_return"/>
     </menupopup>
 </menu>
 
 <!-- The Search menu on the main menu -->
 <menu id="main.menu.search" label="&staff.main.menu.search.label;" accesskey="&staff.main.menu.search.accesskey;">
     <menupopup id="main.menu.search.popup">
-        <menuitem label="&staff.main.menu.search.patrons.label;" accesskey="&staff.main.menu.search.patrons.accesskey;" key="patron-search-key" command="cmd_patron_search" />
-        <menuitem label="&staff.main.menu.search.catalog.label;" accesskey="&staff.main.menu.search.catalog.accesskey;" key="search-opac-key" command="cmd_search_opac" />
+        <menuitem key="patron-search-key" command="cmd_patron_search" />
+        <menuitem key="search-opac-key" command="cmd_search_opac" />
         <menuitem label="&staff.main.menu.search.record.label;" accesskey="&staff.main.menu.search.record.accesskey;" key="search-tcn-key" command="cmd_search_tcn" />
         <menuitem label="&staff.main.menu.search.record_via_id.label;" accesskey="&staff.main.menu.search.record_via_id.accesskey;" key="search-bib-id-key" command="cmd_search_bib_id" />
         <menuitem label="&staff.main.menu.search.copies.label;" accesskey="&staff.main.menu.search.copies.accesskey;" key="copy-status-key" command="cmd_copy_status"/>
@@ -341,9 +740,7 @@
 <menu id="main.menu.help" label="&staff.main.menu.help.label;" accesskey="&staff.main.menu.help.accesskey;">
     <menupopup id="main.menu.help.popup">
         <!-- kludge -->
-        <menuitem
-            label="&staff.main.menu.help.active_tab.label;" 
-            accesskey="&staff.main.menu.help.active_tab.accesskey;" 
+        <menuitem label="&staff.main.menu.help.active_tab.label;" accesskey="&staff.main.menu.help.active_tab.accesskey;" 
             oncommand="try { this.nextSibling.doCommand(); } catch(E) { alert(E); }" />
         <help id="help_btn" hidden="true" />
     </menupopup>
@@ -352,132 +749,131 @@
 <!-- The Help menu on the main menu -->
 <menu id="main.menu.admin" label="&staff.main.menu.admin.label;" accesskey="&staff.main.menu.admin.accesskey;" old_accesskey="&staff.main.menu.admin.key;">
     <menupopup id="main.menu.admin.popup">
-        <menuitem id="oc_menuitem" label="&staff.main.menu.admin.change_session.label;" label_orig="&staff.main.menu.admin.change_session.label;" 
-            accesskey="O" command="cmd_change_session"/>
-        <menuitem label="&staff.main.menu.admin.offline_xacts.label;" accesskey="&staff.main.menu.admin.offline_xacts.accesskey;" command="cmd_manage_offline_xacts"/>
-        <menuitem label="&staff.main.menu.admin.download_patrons.label;" accesskey="&staff.main.menu.admin.download_patrons.accesskey;" command="cmd_download_patrons"/>
+        <menuitem id="oc_menuitem" label_orig="&staff.main.menu.admin.change_session.label;" command="cmd_change_session"/>
+        <menuitem command="cmd_manage_offline_xacts"/>
+        <menuitem command="cmd_download_patrons"/>
         <menuseparator />
 
         <menu id="main.menu.admin.local" label="&staff.main.menu.admin.local_admin.label;">
             <menupopup id="main.menu.admin.local.popup">
                 <menuitem command="cmd_local_admin_age_overdue_circulations_to_lost"/>
-                <menuitem label="&staff.server.admin.index.cash_reports;" command="cmd_local_admin_cash_reports"/>
-                <menuitem label="&staff.main.menu.admin.local_admin.circ_matrix_matchpoint.label;" command="cmd_local_admin_circ_matrix_matchpoint"/>
-                <menuitem label="&staff.server.admin.index.closed_dates;" command="cmd_local_admin_closed_dates"/>
-                <menuitem label="&staff.server.admin.index.copy_locations;" command="cmd_local_admin_copy_locations"/>
-                <menuitem label="&staff.main.menu.admin.local_admin.conify.copy_location_order.label;" command="cmd_local_admin_copy_location_order"/>
-                <menuitem label="&staff.main.menu.admin.local_admin.copy_template.label;" accesskey="&staff.main.menu.admin.local_admin.copy_template.accesskey;" command="cmd_local_admin_copy_template"/>
+                <menuitem command="cmd_local_admin_cash_reports"/>
+                <menuitem command="cmd_local_admin_circ_matrix_matchpoint"/>
+                <menuitem command="cmd_local_admin_closed_dates"/>
+                <menuitem command="cmd_local_admin_copy_locations"/>
+                <menuitem command="cmd_local_admin_copy_location_order"/>
+                <menuitem command="cmd_local_admin_copy_template"/>
                 <menuitem command="cmd_local_admin_external_text_editor"/>
-                <menuitem label="&staff.main.menu.admin.local_admin.conify.idl_field_doc.label;" command="cmd_local_admin_idl_field_doc"/>
-                <menuitem label="&staff.server.admin.index.fonts_and_sounds;" command="cmd_local_admin_fonts_and_sounds"/>
-                <menuitem label="&staff.main.menu.admin.local_admin.conify.grp_penalty_threshold.label;" command="cmd_local_admin_grp_penalty_threshold"/>
-                <menuitem label="&staff.main.menu.admin.local_admin.hold_matrix_matchpoint.label;" command="cmd_local_admin_hold_matrix_matchpoint"/>
-                <menuitem label="&staff.server.admin.index.library_settings;" command="cmd_local_admin_lib_settings"/>
-                <menuitem label="&staff.server.admin.index.non_cataloged_types;" command="cmd_local_admin_non_cat_types"/>
-                <menuitem label="&staff.main.menu.admin.local_admin.conify.action_trigger.label;" command="cmd_local_admin_action_trigger"/>
-                <menuitem label="&staff.main.menu.admin.local_admin.patrons_due_refunds.label;" accesskey="&staff.main.menu.admin.local_admin.patrons_due_refunds.accesskey;" command="cmd_local_admin_patrons_due_refunds"/>
-                <menuitem label="&staff.server.admin.index.printer;" command="cmd_local_admin_printer"/>
-                <menuitem label="&staff.main.menu.admin.template_edit.label;" accesskey="&staff.main.menu.admin.template_edit.accesskey;" command="cmd_print_list_template_edit"/>
+                <menuitem command="cmd_local_admin_idl_field_doc"/>
+                <menuitem command="cmd_local_admin_fonts_and_sounds"/>
+                <menuitem command="cmd_local_admin_grp_penalty_threshold"/>
+                <menuitem command="cmd_local_admin_hold_matrix_matchpoint"/>
+                <menuitem command="cmd_local_admin_lib_settings"/>
+                <menuitem command="cmd_local_admin_non_cat_types"/>
+                <menuitem command="cmd_local_admin_action_trigger"/>
+                <menuitem command="cmd_local_admin_patrons_due_refunds"/>
+                <menuitem command="cmd_local_admin_printer"/>
+                <menuitem command="cmd_print_list_template_edit"/>
                 <menuitem command="cmd_local_admin_do_not_auto_attempt_print_setting"/>
-                <menuitem label="&staff.server.admin.index.reports;" command="cmd_local_admin_reports"/>
-                <menuitem label="&staff.main.menu.admin.local_admin.conify.standing_penalty.label;" command="cmd_local_admin_standing_penalty"/>
-                <menuitem label="&staff.server.admin.index.statistical_categories;" command="cmd_local_admin_stat_cats"/>
-                <menuitem label="&staff.main.menu.admin.local_admin.conify.survey.label;" command="cmd_local_admin_survey"/>
-                <menuitem label="&staff.server.admin.index.transit_list;" command="cmd_local_admin_transit_list"/>
-                <menuitem label="&staff.main.menu.admin.local_admin.work_log.label;" accesskey="&staff.main.menu.admin.local_admin.work_log.accesskey;" command="cmd_local_admin_work_log"/>
+                <menuitem command="cmd_local_admin_reports"/>
+                <menuitem command="cmd_local_admin_standing_penalty"/>
+                <menuitem command="cmd_local_admin_stat_cats"/>
+                <menuitem command="cmd_local_admin_survey"/>
+                <menuitem command="cmd_local_admin_transit_list"/>
+                <menuitem command="cmd_local_admin_work_log"/>
             </menupopup>
         </menu>
         <menu id="main.menu.admin.server" label="&staff.main.menu.admin.server_admin.label;">
             <menupopup id="main.menu.admin.server.popup">
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.org_unit_type.label;" command="cmd_server_admin_org_type"/>
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.org_unit.label;" command="cmd_server_admin_org_unit"/>
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.grp_tree.label;" command="cmd_server_admin_grp_tree"/>
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.perm_list.label;" command="cmd_server_admin_perm_list"/>
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.copy_status.label;" command="cmd_server_admin_copy_status"/>
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.acn_prefix.label;" command="cmd_server_admin_acn_prefix"/>
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.acn_suffix.label;" command="cmd_server_admin_acn_suffix"/>
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.marc_record_attrs.label;" command="cmd_server_admin_marc_code"/>
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.coded_value_maps.label;" command="cmd_server_admin_coded_value_map"/>
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.billing_type.label;" command="cmd_server_admin_billing_type"/>
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.z3950_source.label;" command="cmd_server_admin_z39_source"/>
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.circulation_modifier.label;" command="cmd_server_admin_circ_mod"/>
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.global_flag.label;" command="cmd_server_admin_global_flag"/>
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.org_unit_setting_type;" command="cmd_server_admin_org_unit_setting_type"/>
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.usr_setting_type;" command="cmd_server_admin_usr_setting_type"/>
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.config_hard_due_date;" command="cmd_server_admin_config_hard_due_date"/>
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.config_rule_circ_duration;" command="cmd_server_admin_config_rule_circ_duration"/>
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.config_rule_recurring_fine;" command="cmd_server_admin_config_rule_recurring_fine"/>
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.config_rule_max_fine;" command="cmd_server_admin_config_rule_max_fine"/>
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.config_rule_age_hold_protect;" command="cmd_server_admin_config_rule_age_hold_protect"/>
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.config_circ_weights;" command="cmd_server_admin_config_circ_weights"/>
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.config_hold_weights;" command="cmd_server_admin_config_hold_weights"/>
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.config_weight_assoc;" command="cmd_server_admin_config_weight_assoc"/>
+                <menuitem command="cmd_server_admin_org_type"/>
+                <menuitem command="cmd_server_admin_org_unit"/>
+                <menuitem command="cmd_server_admin_grp_tree"/>
+                <menuitem command="cmd_server_admin_perm_list"/>
+                <menuitem command="cmd_server_admin_copy_status"/>
+                <menuitem command="cmd_server_admin_acn_prefix"/>
+                <menuitem command="cmd_server_admin_acn_suffix"/>
+                <menuitem command="cmd_server_admin_marc_code"/>
+                <menuitem command="cmd_server_admin_coded_value_map"/>
+                <menuitem command="cmd_server_admin_billing_type"/>
+                <menuitem command="cmd_server_admin_z39_source"/>
+                <menuitem command="cmd_server_admin_circ_mod"/>
+                <menuitem command="cmd_server_admin_global_flag"/>
+                <menuitem command="cmd_server_admin_org_unit_setting_type"/>
+                <menuitem command="cmd_server_admin_usr_setting_type"/>
+                <menuitem command="cmd_server_admin_config_hard_due_date"/>
+                <menuitem command="cmd_server_admin_config_rule_circ_duration"/>
+                <menuitem command="cmd_server_admin_config_rule_recurring_fine"/>
+                <menuitem command="cmd_server_admin_config_rule_max_fine"/>
+                <menuitem command="cmd_server_admin_config_rule_age_hold_protect"/>
+                <menuitem command="cmd_server_admin_config_circ_weights"/>
+                <menuitem command="cmd_server_admin_config_hold_weights"/>
+                <menuitem command="cmd_server_admin_config_weight_assoc"/>
                 <menu id="main.menu.admin.server.acq" label="&staff.main.menu.admin.server_admin.acq.label;" accesskey="&staff.main.menu.admin.server_admin.acq.accesskey;">
                     <menupopup id="main.menu.admin.server.acq.popup">
-                        <menuitem label="&staff.main.menu.admin.server_admin.acq.fund.label;" accesskey="&staff.main.menu.admin.server_admin.acq.fund.accesskey;" command="cmd_server_admin_acq_fund" />
-                        <menuitem label="&staff.main.menu.admin.server_admin.acq.fund_tag.label;" accesskey="&staff.main.menu.admin.server_admin.acq.fund_tag.accesskey;" command="cmd_server_admin_acq_fund_tag"/>
-                        <menuitem label="&staff.main.menu.admin.server_admin.acq.funding_source.label;" accesskey="&staff.main.menu.admin.server_admin.acq.funding_source.accesskey;" command="cmd_server_admin_acq_funding_source" />
-                        <menuitem label="&staff.main.menu.admin.server_admin.acq.distrib_formula.label;" accesskey="&staff.main.menu.admin.server_admin.acq.distrib_formula.accesskey;" command="cmd_server_admin_acq_distrib_formula" />
-                        <menuitem label="&staff.main.menu.admin.server_admin.acq.currency_type.label;" accesskey="&staff.main.menu.admin.server_admin.acq.currency_type.accesskey;" command="cmd_server_admin_acq_currency_type" />
-                        <menuitem label="&staff.main.menu.admin.server_admin.acq.exchange_rate.label;" accesskey="&staff.main.menu.admin.server_admin.acq.exchange_rate.accesskey;" command="cmd_server_admin_acq_exchange_rate" />
-                        <menuitem label="&staff.main.menu.admin.server_admin.acq.provider.label;" accesskey="&staff.main.menu.admin.server_admin.acq.provider.accesskey;" command="cmd_server_admin_acq_provider" />
-                        <menuitem label="&staff.main.menu.admin.server_admin.acq.edi_account.label;" accesskey="&staff.main.menu.admin.server_admin.acq.edi_account.accesskey;" command="cmd_server_admin_acq_edi_account" />
-                        <menuitem label="&staff.main.menu.admin.server_admin.acq.edi_message.label;" accesskey="&staff.main.menu.admin.server_admin.acq.edi_message.accesskey;" command="cmd_server_admin_acq_edi_message" />
+                        <menuitem command="cmd_server_admin_acq_fund" />
+                        <menuitem command="cmd_server_admin_acq_fund_tag"/>
+                        <menuitem command="cmd_server_admin_acq_funding_source" />
+                        <menuitem command="cmd_server_admin_acq_distrib_formula" />
+                        <menuitem command="cmd_server_admin_acq_currency_type" />
+                        <menuitem command="cmd_server_admin_acq_exchange_rate" />
+                        <menuitem command="cmd_server_admin_acq_provider" />
+                        <menuitem command="cmd_server_admin_acq_edi_account" />
+                        <menuitem command="cmd_server_admin_acq_edi_message" />
                         <menuseparator />
-                        <menuitem label="&staff.main.menu.admin.server_admin.acq.claim_type.label;" accesskey="&staff.main.menu.admin.server_admin.acq.claim_type.accesskey;" command="cmd_server_admin_acq_claim_type"/>
-                        <menuitem label="&staff.main.menu.admin.server_admin.acq.claim_event_type.label;" accesskey="&staff.main.menu.admin.server_admin.acq.claim_event_type.accesskey;" command="cmd_server_admin_acq_claim_event_type"/>
-                        <menuitem label="&staff.main.menu.admin.server_admin.acq.claim_policy.label;" accesskey="&staff.main.menu.admin.server_admin.acq.claim_policy.accesskey;" command="cmd_server_admin_acq_claim_policy"/>
-                        <menuitem label="&staff.main.menu.admin.server_admin.acq.claim_policy_action.label;" accesskey="&staff.main.menu.admin.server_admin.acq.claim_policy_action.accesskey;" command="cmd_server_admin_acq_claim_policy_action"/>
+                        <menuitem command="cmd_server_admin_acq_claim_type"/>
+                        <menuitem command="cmd_server_admin_acq_claim_event_type"/>
+                        <menuitem command="cmd_server_admin_acq_claim_policy"/>
+                        <menuitem command="cmd_server_admin_acq_claim_policy_action"/>
                         <menuseparator />
-                        <menuitem label="&staff.main.menu.admin.server_admin.acq.invoice_item_type.label;" accesskey="&staff.main.menu.admin.server_admin.acq.invoice_item_type.accesskey;" command="cmd_server_admin_acq_invoice_item_type"/>
-                        <menuitem label="&staff.main.menu.admin.server_admin.acq.invoice_payment_method.label;" accesskey="&staff.main.menu.admin.server_admin.acq.invoice_payment_method.accesskey;" command="cmd_server_admin_acq_invoice_payment_method"/>
+                        <menuitem command="cmd_server_admin_acq_invoice_item_type"/>
+                        <menuitem command="cmd_server_admin_acq_invoice_payment_method"/>
                         <menuseparator />
-                        <menuitem label="&staff.main.menu.admin.server_admin.acq.lineitem_alert.label;" accesskey="&staff.main.menu.admin.server_admin.acq.lineitem_alert.accesskey;" command="cmd_server_admin_acq_lineitem_alert"/>
-                        <menuitem label="&staff.main.menu.admin.server_admin.acq.lineitem_marc_attr_def.label;" accesskey="&staff.main.menu.admin.server_admin.acq.lineitem_marc_attr_def.accesskey;" command="cmd_server_admin_acq_lineitem_marc_attr_def"/>
-                        <menuitem label="&staff.main.menu.admin.server_admin.acq.cancel_reason.label;" accesskey="&staff.main.menu.admin.server_admin.acq.cancel_reason.accesskey;" command="cmd_server_admin_acq_cancel_reason"/>
+                        <menuitem command="cmd_server_admin_acq_lineitem_alert"/>
+                        <menuitem command="cmd_server_admin_acq_lineitem_marc_attr_def"/>
+                        <menuitem command="cmd_server_admin_acq_cancel_reason"/>
                     </menupopup>
                 </menu>
                 <menu id="main.menu.admin.server.booking" label="&staff.main.menu.admin.server_admin.booking.label;" accesskey="&staff.main.menu.admin.server_admin.booking.accesskey;">
                     <menupopup id="main.menu.admin.server.booking.popup">
-                        <menuitem label="&staff.main.menu.admin.server_admin.booking.resource.label;" command="cmd_server_admin_booking_resource" accesskey="&staff.main.menu.admin.server_admin.booking.resource.accesskey;"/>
-                        <menuitem label="&staff.main.menu.admin.server_admin.booking.resource_type.label;" command="cmd_server_admin_booking_resource_type" accesskey="&staff.main.menu.admin.server_admin.booking.resource_type.accesskey;"/>
-                        <menuitem label="&staff.main.menu.admin.server_admin.booking.resource_attr.label;" command="cmd_server_admin_booking_resource_attr" accesskey="&staff.main.menu.admin.server_admin.booking.resource_attr.accesskey;"/>
-                        <menuitem label="&staff.main.menu.admin.server_admin.booking.resource_attr_value.label;" command="cmd_server_admin_booking_resource_attr_value" accesskey="&staff.main.menu.admin.server_admin.booking.resource_attr_value.accesskey;"/>
-                        <menuitem label="&staff.main.menu.admin.server_admin.booking.resource_attr_map.label;" command="cmd_server_admin_booking_resource_attr_map" accesskey="&staff.main.menu.admin.server_admin.booking.resource_attr_map.accesskey;"/>
+                        <menuitem command="cmd_server_admin_booking_resource"/>
+                        <menuitem command="cmd_server_admin_booking_resource_type"/>
+                        <menuitem command="cmd_server_admin_booking_resource_attr"/>
+                        <menuitem command="cmd_server_admin_booking_resource_attr_value"/>
+                        <menuitem command="cmd_server_admin_booking_resource_attr_map"/>
                     </menupopup>
                 </menu>
             </menupopup>
         </menu>
 
         <menuseparator />
-        <menuitem label="&staff.main.menu.admin.user_edit.label;" accesskey="&staff.main.menu.admin.user_edit.accesskey;" command="cmd_adv_user_edit"/>
-        <menuitem label="&staff.main.menu.admin.toggle_buttonbar.label;" accesskey="&staff.main.menu.admin.toggle_buttonbar.accesskey;" command="cmd_toggle_buttonbar"/>
-        <menuitem label="&staff.main.menu.admin.toggle_meters.label;" accesskey="&staff.main.menu.admin.toggle_meters.accesskey;" command="cmd_toggle_meters"/>
+        <menuitem command="cmd_adv_user_edit"/>
+        <menuitem command="cmd_toggle_buttonbar"/>
+        <menuitem command="cmd_toggle_meters"/>
         <menuseparator />
         <menu id="main.menu.admin.sub" accesskey="&staff.main.menu.admin.developer.accesskey;" label="&staff.main.menu.admin.developer.label;">
             <menupopup id="main.menu.admin.sub.popup">
-                <menuitem label="&staff.main.menu.admin.stat_cat_edit.label;" accesskey="&staff.main.menu.admin.stat_cat_edit.accesskey;" command="cmd_stat_cat_edit"/>
-                <menuitem label="&staff.main.menu.admin.non_cat_type_edit.label;" accesskey="&staff.main.menu.admin.non_cat_type_edit.accesskey;" command="cmd_non_cat_type_edit"/>
-                <menuitem label="&staff.main.menu.admin.copy_location_edit.label;" accesskey="&staff.main.menu.admin.copy_location_edit.accesskey;" command="cmd_copy_location_edit"/>
-                <menuitem label="&staff.main.menu.admin.browse_holds.label;" command="cmd_browse_holds" accesskey="&staff.main.menu.admin.browse_holds.accesskey;"/>
-                <menuitem label="&staff.main.menu.admin.local_admin.label;" accesskey="&staff.main.menu.admin.local_admin.accesskey;" command="cmd_local_admin"/>
-                <menuitem label="&staff.main.menu.admin.survey_wizard.label;" accesskey="&staff.main.menu.admin.survey_wizard.accesskey;" command="cmd_survey_wizard"/>
+                <menuitem command="cmd_stat_cat_edit"/>
+                <menuitem command="cmd_non_cat_type_edit"/>
+                <menuitem command="cmd_copy_location_edit"/>
+                <menuitem command="cmd_browse_holds"/>
+                <menuitem command="cmd_local_admin"/>
+                <menuitem command="cmd_survey_wizard"/>
                 <menuseparator />
-                <menuitem label="&staff.main.menu.admin.public_opac.label;" command="cmd_public_opac" accesskey="&staff.main.menu.admin.public_opac.accesskey;"/>
-                <menuitem label="&staff.main.menu.admin.cmd_test.label;" old_accesskey="T" command="cmd_test"/>
-                <menuitem label="&staff.main.menu.admin.xuleditor.label;" accesskey="&staff.main.menu.admin.xuleditor.accesskey;" command="cmd_xuleditor"/>
-                <menuitem label="&staff.main.menu.admin.fieldmapper.label;" accesskey="&staff.main.menu.admin.fieldmapper.accesskey;" command="cmd_fieldmapper"/>
-                <menuitem label="&staff.main.menu.admin.cmd_console.label;" accesskey="&staff.main.menu.admin.cmd_console.accesskey;" command="cmd_console"/>
-                <menuitem label="&staff.main.menu.admin.cmd_shell.label;" accesskey="&staff.main.menu.admin.cmd_shell.accesskey;" command="cmd_shell"/>
+                <menuitem command="cmd_public_opac"/>
+                <menuitem command="cmd_test"/>
+                <menuitem command="cmd_xuleditor"/>
+                <menuitem command="cmd_fieldmapper"/>
+                <menuitem command="cmd_console"/>
+                <menuitem command="cmd_shell"/>
                 <menuitem label="&staff.main.menu.admin.cmd_chrome_shell.label;" accesskey="&staff.main.menu.admin.cmd_chrome_shell.accesskey;" 
                     oncommand="try{xulG.window.win.start_js_shell();}catch(E){alert(E);}"/>
-                <menuitem label="server/main/test.html" accesskey="1" command="cmd_test_html"/>
-                <menuitem label="server/main/test.xul" accesskey="2" command="cmd_test_xul"/>
-                <menuitem label="&staff.main.menu.admin.clear_cache.label;" accesskey="&staff.main.menu.admin.clear_cache.accesskey;" command="cmd_clear_cache"/>
-                <menuitem label="&staff.main.menu.admin.restore_all_tabs.label;" command="cmd_restore_all_tabs"/>
-                <menuitem label="&staff.main.menu.admin.extension_manager.label;" command="cmd_extension_manager"/>
-                <menuitem label="&staff.main.menu.admin.theme_manager.label;" command="cmd_theme_manager"/>
-                <menuitem label="&staff.main.menu.admin.about_config.label;" command="cmd_about_config"/>
+                <menuitem command="cmd_test_html"/>
+                <menuitem command="cmd_test_xul"/>
+                <menuitem command="cmd_clear_cache"/>
+                <menuitem command="cmd_restore_all_tabs"/>
+                <menuitem command="cmd_extension_manager"/>
+                <menuitem command="cmd_theme_manager"/>
+                <menuitem command="cmd_about_config"/>
                 <menuitem label="&staff.main.menu.admin.venkman.label;" oncommand="try{xulG.window.win.start_debugger();}catch(E){alert(E);}"/>
                 <menuitem label="&staff.main.auth.debug.inspector;" oncommand="try{xulG.window.win.start_inspector();}catch(E){alert(E);}"/>
                 <menuitem label="&staff.main.auth.debug.chrome_list;" oncommand="try{xulG.window.win.start_chrome_list();}catch(E){alert(E);}"/>
