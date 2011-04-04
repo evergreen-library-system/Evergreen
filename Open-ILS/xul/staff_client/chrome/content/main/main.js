@@ -187,6 +187,39 @@ opentabs:
     }
 }
 
+// Returns false if we can't get an actual perm list
+// Returns an array of perms with boolean has/hasn't flag
+function get_menu_perms(indocument) {
+    // If we don't have our static perm list, and we have a remote window, go looking.
+    // We never need to look twice unless a dev is manually editing their files.
+    // Shame on them, they can restart the entire client ;)
+    if(typeof(get_menu_perms.perm_list) == 'undefined' && indocument != null)
+    {
+        get_menu_perms.perm_list = [ ];
+        var commands = indocument.getElementById('universal_cmds').getElementsByTagName('command');
+        for (var i = 0; i < commands.length; i++) { 
+            if (commands[i].hasAttribute('perm')) {
+                get_menu_perms.perm_list = get_menu_perms.perm_list.concat(commands[i].getAttribute('perm').split(' '));
+            }           
+        }
+    }
+    // 
+    if(typeof(get_menu_perms.perm_list) == 'object') {
+        G.data.stash_retrieve();
+        if(!G.data.menu_perms) {
+            JSAN.use('util.network');
+            var network = new util.network();
+            var r = network.simple_request('BATCH_PERM_RETRIEVE_WORK_OU', [ G.data.session.key, get_menu_perms.perm_list ]);
+            for(p in r)
+                r[p] = (typeof(r[p][0]) == 'number');
+            G.data.menu_perms = r;
+            G.data.stash('menu_perms');
+        }
+        return G.data.menu_perms;
+    }
+    return false;
+}
+
 function main_init() {
     dump('entering main_init()\n');
     try {

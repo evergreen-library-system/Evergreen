@@ -215,7 +215,7 @@ function get_brsrc_id_list() {
 
     return fieldmapper.standardRequest(
         ["open-ils.booking", "open-ils.booking.resources.filtered_id_list"],
-        [xulG.auth.session.key, options]
+        [openils.User.authtoken, options]
     );
 }
 
@@ -298,7 +298,7 @@ function create_bresv(resource_list) {
         results = fieldmapper.standardRequest(
             ["open-ils.booking", "open-ils.booking.reservations.create"],
             [
-                xulG.auth.session.key,
+                openils.User.authtoken,
                 barcode,
                 reserve_timestamp_range.get_range(),
                 pickup_lib_selected,
@@ -413,7 +413,7 @@ function create_bresv_on_brt() {
 function get_actor_by_barcode(barcode) {
     var usr = fieldmapper.standardRequest(
         ["open-ils.actor", "open-ils.actor.user.fleshed.retrieve_by_barcode"],
-        [xulG.auth.session.key, barcode]
+        [openils.User.authtoken, barcode]
     );
     if (usr == null) {
         alert(localeStrings.GET_PATRON_NO_RESULT);
@@ -432,7 +432,7 @@ function init_bresv_grid(barcode) {
         ["open-ils.booking",
             "open-ils.booking.reservations.filtered_id_list"
         ],
-        [xulG.auth.session.key, {
+        [openils.User.authtoken, {
             "user_barcode": barcode,
             "fields": {
                 "pickup_time": null,
@@ -480,7 +480,7 @@ function cancel_reservations(bresv_id_list, skip_update) {
     try {
         var result = fieldmapper.standardRequest(
             ["open-ils.booking", "open-ils.booking.reservations.cancel"],
-            [xulG.auth.session.key, bresv_id_list]
+            [openils.User.authtoken, bresv_id_list]
         );
     } catch (E) {
         alert(localeStrings.CXL_BRESV_FAILURE2 + E);
@@ -509,7 +509,7 @@ function munge_specific_resource(barcode) {
             var r = fieldmapper.standardRequest(
                 ["open-ils.booking",
                     "open-ils.booking.resources.create_from_copies"],
-                [xulG.auth.session.key,
+                [openils.User.authtoken,
                     copy_list.map(function(o) { return o.id(); })]
             );
 

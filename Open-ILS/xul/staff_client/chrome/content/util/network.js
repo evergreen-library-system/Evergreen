@@ -301,6 +301,36 @@ util.network.prototype = {
         }
     },
 
+    'set_user_status' : function() {
+        data.stash_retrieve();
+        try {
+            var windowManager = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService();
+            var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
+            var permlist = windowManagerInterface.getMostRecentWindow('eg_main').get_menu_perms(null);
+            var offlinestrings;
+            var enumerator = windowManagerInterface.getEnumerator('eg_menu');
+
+            var w;
+            var x;
+            while ( w = enumerator.getNext() ) {
+                x = w.document.getElementById('oc_menuitem');
+
+                if(!offlinestrings) w.document.getElementById('offlineStrings');
+                if(permlist) w.g.menu.set_menu_access(permlist);
+                if(data.list.au.length > 1) {
+                    addCSSClass(w.document.getElementById('main_tabbox'),'operator_change');
+                    x.setAttribute('label', offlineStrings.getFormattedString('menu.cmd_chg_session.operator.label', [data.list.au[1].usrname()]) );
+                }
+                else {
+                    removeCSSClass(w.document.getElementById('main_tabbox'),'operator_change');
+                    x.setAttribute('label', x.getAttribute('label_orig'));
+                }
+            }
+        } catch(E) {
+            obj.error.standard_unexpected_error_alert(offlineStrings.getString('network.window_title.error'),E);
+        }
+    },
+
     'get_new_session' : function(name,xulG,text) {
         var obj = this;
         try {
