@@ -69,6 +69,13 @@ main.menu.prototype = {
             if (y) y.setAttribute('hidden','true');
         }
 
+        var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].
+                    getService(Components.interfaces.nsIWindowMediator);
+        wm.getMostRecentWindow('eg_main').get_menu_perms(document);
+        JSAN.use('util.network');
+        var network = new util.network();
+        network.set_user_status();
+
         function open_conify_page(path, labelKey, event) {
 
             // tab label
@@ -1072,18 +1079,17 @@ main.menu.prototype = {
                     try {
                         obj.data.stash_retrieve();
                         JSAN.use('util.network'); var network = new util.network();
-                        var x = document.getElementById('oc_menuitem');
-                        var x_label = x.getAttribute('label_orig');
                         var temp_au = js2JSON( obj.data.list.au[0] );
                         var temp_ses = js2JSON( obj.data.session );
                         if (obj.data.list.au.length > 1) {
                             obj.data.list.au = [ obj.data.list.au[1] ];
                             obj.data.stash('list');
                             network.reset_titlebars( obj.data );
-                            x.setAttribute('label', x_label );
                             network.simple_request('AUTH_DELETE', [ obj.data.session.key ] );
                             obj.data.session = obj.data.previous_session;
+                            obj.data.menu_perms = obj.data.previous_menu_perms;
                             obj.data.stash('session');
+                            obj.data.stash('menu_perms');
                             try {
                                 netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                                 var ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
@@ -1098,18 +1104,20 @@ main.menu.prototype = {
                             alert(offlineStrings.getFormattedString(main.session_cookie.error, [E]));
                         }
 
-                            removeCSSClass(document.getElementById('main_tabbox'),'operator_change');
                         } else {
                             if (network.get_new_session(offlineStrings.getString('menu.cmd_chg_session.label'),{'url_prefix':obj.url_prefix})) {
                                 obj.data.stash_retrieve();
                                 obj.data.list.au[1] = JSON2js( temp_au );
                                 obj.data.stash('list');
                                 obj.data.previous_session = JSON2js( temp_ses );
+                                obj.data.previous_menu_perms = obj.data.menu_perms;
+                                obj.data.menu_perms = false;
                                 obj.data.stash('previous_session');
-                                x.setAttribute('label', offlineStrings.getFormattedString('menu.cmd_chg_session.operator.label', [obj.data.list.au[1].usrname()]) );
-                                addCSSClass(document.getElementById('main_tabbox'),'operator_change');
+                                obj.data.stash('previous_menu_perms');
+                                obj.data.stash('menu_perms');
                             }
                         }
+                        network.set_user_status();
                     } catch(E) {
                         obj.error.standard_unexpected_error_alert('cmd_change_session',E);
                     }
@@ -1499,6 +1507,26 @@ main.menu.prototype = {
             this.error.sdump('D_ERROR',E);
             return false;
         }
+    },
+
+    'set_menu_access' : function(perms) {
+        if(perms === false) return;
+        var commands = document.getElementById('universal_cmds').getElementsByTagName('command');
+        var commandperms;
+commands:
+        for (var i = 0; i < commands.length; i++) { 
+            if (commands[i].hasAttribute('perm')) {
+                commandperms = commands[i].getAttribute('perm').split(' ');
+                for (var j = 0; j < commandperms.length; j++) {
+                    if (perms[commandperms[j]]) {
+                        commands[i].setAttribute('disabled','false');
+                        continue commands;
+                    }
+                }
+                commands[i].setAttribute('disabled','true');
+            }           
+        }
+
     },
 
     'page_meter' : {
