@@ -399,7 +399,7 @@ function init() {
         {   async: true,
             params: [
                 openils.User.authtoken, 
-                {purchase_order:poId}, 
+                [{purchase_order:poId}, {"order_by": {"jub": "id ASC"}}], 
                 {flesh_attrs:true, flesh_notes:true, flesh_cancel_reason:true, clear_marc:true}
             ],
             onresponse: function(r) {
