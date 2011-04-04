@@ -9447,52 +9447,52 @@ INSERT INTO authority.control_set_authority_field (id, control_set, main_entry, 
     (52, 1, 12, '748', 'avwxyz25', oils_i18n_gettext('52','Established Heading Linking Entry -- Chronological Term','acsaf','name'));
 
 INSERT INTO authority.control_set_bib_field (tag, authority_field) VALUES
-    SELECT '100', id FROM authority.control_set_authority_field WHERE tag IN ('100','500','700')
+    SELECT '100', id FROM authority.control_set_authority_field WHERE tag IN ('100')
         UNION
-    SELECT '600', id FROM authority.control_set_authority_field WHERE tag IN ('100','500','700','180','181','182','185','580','581','582','585','780','781','782','785')
+    SELECT '600', id FROM authority.control_set_authority_field WHERE tag IN ('100','180','181','182','185')
         UNION
-    SELECT '700', id FROM authority.control_set_authority_field WHERE tag IN ('100','500','700')
+    SELECT '700', id FROM authority.control_set_authority_field WHERE tag IN ('100')
         UNION
-    SELECT '800', id FROM authority.control_set_authority_field WHERE tag IN ('100','500','700')
-        UNION
-
-    SELECT '110', id FROM authority.control_set_authority_field WHERE tag IN ('110','510','710')
-        UNION
-    SELECT '610', id FROM authority.control_set_authority_field WHERE tag IN ('110','510','710')
-        UNION
-    SELECT '710', id FROM authority.control_set_authority_field WHERE tag IN ('110','510','710')
-        UNION
-    SELECT '810', id FROM authority.control_set_authority_field WHERE tag IN ('110','510','710')
+    SELECT '800', id FROM authority.control_set_authority_field WHERE tag IN ('100')
         UNION
 
-    SELECT '111', id FROM authority.control_set_authority_field WHERE tag IN ('111','511','711')
+    SELECT '110', id FROM authority.control_set_authority_field WHERE tag IN ('110')
         UNION
-    SELECT '611', id FROM authority.control_set_authority_field WHERE tag IN ('111','511','711')
+    SELECT '610', id FROM authority.control_set_authority_field WHERE tag IN ('110')
         UNION
-    SELECT '711', id FROM authority.control_set_authority_field WHERE tag IN ('111','511','711')
+    SELECT '710', id FROM authority.control_set_authority_field WHERE tag IN ('110')
         UNION
-    SELECT '811', id FROM authority.control_set_authority_field WHERE tag IN ('111','511','711')
-        UNION
-
-    SELECT '130', id FROM authority.control_set_authority_field WHERE tag IN ('130','530','730')
-        UNION
-    SELECT '240', id FROM authority.control_set_authority_field WHERE tag IN ('130','530','730')
-        UNION
-    SELECT '630', id FROM authority.control_set_authority_field WHERE tag IN ('130','530','730')
-        UNION
-    SELECT '730', id FROM authority.control_set_authority_field WHERE tag IN ('130','530','730')
-        UNION
-    SELECT '830', id FROM authority.control_set_authority_field WHERE tag IN ('130','530','730')
+    SELECT '810', id FROM authority.control_set_authority_field WHERE tag IN ('110')
         UNION
 
-    SELECT '648', id FROM authority.control_set_authority_field WHERE tag IN ('148','548','748')
+    SELECT '111', id FROM authority.control_set_authority_field WHERE tag IN ('111')
+        UNION
+    SELECT '611', id FROM authority.control_set_authority_field WHERE tag IN ('111')
+        UNION
+    SELECT '711', id FROM authority.control_set_authority_field WHERE tag IN ('111')
+        UNION
+    SELECT '811', id FROM authority.control_set_authority_field WHERE tag IN ('111')
         UNION
 
-    SELECT '650', id FROM authority.control_set_authority_field WHERE tag IN ('150','550','750','180','181','182','185','580','581','582','585','780','781','782','785')
+    SELECT '130', id FROM authority.control_set_authority_field WHERE tag IN ('130')
         UNION
-    SELECT '651', id FROM authority.control_set_authority_field WHERE tag IN ('151','551','751','180','181','182','185','580','581','582','585','780','781','782','785')
+    SELECT '240', id FROM authority.control_set_authority_field WHERE tag IN ('130')
         UNION
-    SELECT '655', id FROM authority.control_set_authority_field WHERE tag IN ('155','555','755','180','181','182','185','580','581','582','585','780','781','782','785')
+    SELECT '630', id FROM authority.control_set_authority_field WHERE tag IN ('130')
+        UNION
+    SELECT '730', id FROM authority.control_set_authority_field WHERE tag IN ('130')
+        UNION
+    SELECT '830', id FROM authority.control_set_authority_field WHERE tag IN ('130')
+        UNION
+
+    SELECT '648', id FROM authority.control_set_authority_field WHERE tag IN ('148')
+        UNION
+
+    SELECT '650', id FROM authority.control_set_authority_field WHERE tag IN ('150','180','181','182','185')
+        UNION
+    SELECT '651', id FROM authority.control_set_authority_field WHERE tag IN ('151','180','181','182','185')
+        UNION
+    SELECT '655', id FROM authority.control_set_authority_field WHERE tag IN ('155','180','181','182','185')
 ;
 
 INSERT INTO authority.thesaurus (code, name, control_set) VALUES
