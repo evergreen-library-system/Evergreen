@@ -70,7 +70,8 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0505'); -- miker
+INSERT INTO config.upgrade_log (version) VALUES ('2.0.5');
+INSERT INTO config.upgrade_log (version) VALUES ('0506'); -- miker
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,

@@ -1,1 +1,343 @@
-#ChangeLog
+2011-03-17  dbwells
+
+	* Treat call number fields 090 and 092 as local LC and Dewey
+	  (respectively) based on de facto standards.
+
+2011-03-18  miker
+
+	* Allow the "result_field" to be used as the default alias in the
+	  output column of a row or set returning transform
+
+	* Make sure "ol" propagates through BibTemplate subject search
+	  links for OPAC range hiding
+
+2011-03-21  gmc
+
+	* trivial grammar fix
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-03-21  phasefx
+
+	* this "count" method gets the same parameters as the list version
+
+	* no, this was correct. doh :) the list version uses paging, but
+	  we're counting the entire set
+
+2011-03-21  miker
+
+	* correcting bad timespecs in the example crontab
+
+2011-03-21  dbs
+
+	* Enable update_db.sh to handle upgrading databases with release
+	  version
+	  
+	  When '0475' is mixed with '1.6.0.4', the latter wins as far as a
+	  plain MAX()
+	  operator goes. Ensuring that the version is all digits should
+	  help avoid the
+	  release version numbers in the config.upgrade_log table.
+	  
+	  Thanks to Thomas Berezansky for suggesting a SIMILAR TO operator
+	  variation
+	  that led to this approach.
+
+2011-03-21  miker
+
+	* Remove thready building -- we do not use threads anyway, and it
+	  breaks JS::SM
+
+2011-03-22  dbs
+
+	* Another layer of escaping for the escapes in the DB update script
+	  
+	  Apologies for the previous patch that led to breakage; I "tested"
+	  in a
+	  script in which I had already hardcoded the answer I wanted after
+	  running into problems with the previous version of the script.
+	  Not
+	  good testing practice.
+	  
+	  Thanks to Bill Erickson for suggesting the extra escapes. Tested
+	  in
+	  a clean environment this time, and it works.
+
+	* Build libjs from source for now until the Perl threading problem
+	  can be reliably tested
+	  
+	  The previous commit changed JavaScript::SpiderMonkey to be built
+	  without
+	  thread safety, but on Fedora we had been installing the js-devel
+	  package
+	  (which was threaded). As you can't build a non-threaded
+	  JavaScript::SpiderMonkey on top of a threaded libjs, for now
+	  we'll make
+	  Fedora build a non-threaded libjs from source just like the other
+	  distros.
+	  
+	  Note that the problem with threaded JavaScript::SpiderMonkey
+	  surfaced
+	  on Debian Lenny when targeting holds. Lenny has libthreads-perl
+	  1.71, but
+	  a number of fixes have been committed to subsequent versions
+	  (http://cpansearch.perl.org/src/JDHEDDEN/threads-1.82/Changes) -
+	  so
+	  threading support might be reliable on more current distros. Once
+	  we
+	  have a reliable test, we might be able to go back to the packaged
+	  version of libjs.
+
+2011-03-22  dbwells
+
+	* Honor the 'active' flag in QueryParser.pm for
+	  search.relevance_adjustment entries.
+
+2011-03-22  phasefx
+
+	* have checkILSEvent handle events that aren't in ils_events.xml
+	  
+	  Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2011-03-25  dbs
+
+	* Avoid Apache warnings resulting from duplicate NameVirtualHost
+	  directives
+	  
+	  Benjamin Shum reported that the Apache warnings that have been a
+	  part
+	  of Evergreen's default configuration on Apache start for ages
+	  could
+	  be avoided by commenting out the "NameVirtualHost: *80" line in
+	  eg.conf. Testing confirmed that the directive was not necessary
+	  on Ubuntu,
+	  Debian, or Fedora. As this warning has been the cause for
+	  unnecessary concern
+	  on the part of many new adopters of Evergreen, getting rid of it
+	  appears to
+	  be a nice usability win.
+	  
+	  Thanks Ben!
+
+2011-03-25  phasefx
+
+	* data.lookup was broken for cases where data.list[key] didn't
+	  exist for a given key
+	  
+	  Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+	* fixes things like the stat cat editor, since that extra param now
+	  changes the return signature of the method
+	  
+	  Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2011-03-28  phasefx
+
+	* fix up receipt options persistence in billing interface;
+	  implement # of receipts option (not perfect if using print
+	  dialogs; non-blocking and not necessarily queued up)
+	  
+	  Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2011-03-28  dbs
+
+	* Address LP 744393: Arabic text in en-CA offline.properties
+	  
+	  A translator appears to have mistakenly added Arabic text to
+	  the en-CA offline.properties file in Launchpad. This commit
+	  corrects those translations and completes the translation of
+	  the file for 2.0.
+
+2011-03-28  dbwells
+
+	* MARC View print problem workaround (LP Bug #742033)
+	  
+	  Certain printers were failing to print from the MARC View in the
+	  staff client. Adding a simple title to the view ended up being a
+	  successful workaround, and is unlikely to have negative
+	  consequences in any case.
+
+	* Fix call-number sorting for non-generic sort keys (LP Bug
+	  #737819)
+	  
+	  Selecting on 'label' but sorting on 'label_sortkey' did not work
+	  properly. Instead, we will now find the single best call number
+	  we can based on the label given, then both select and sort based
+	  on that call number's sort key.
+
+2011-03-29  gmc
+
+	* bug 744687: fix multi-field MARC expert search
+	  
+	  Fixes bug where a bib that has multiple subfields
+	  meeting one condition of a 2+ field MARC expert
+	  search could end up in the results list even if
+	  it didn't meet the other conditions (currently multi-field
+	  MARC expert searches use implicit 'AND').
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-03-29  erickson
+
+	* in the case of multiple xact event error responses, capture the
+	  first for staff client reporting
+
+2011-03-29  miker
+
+	* Inspired by a 1.6 patch from Brandon Uhlman to collect the set of
+	  holds not ready for pickup, 2.0+ style
+
+	* Force facet values to Unicode NFC to reduce spurious non-matches
+
+2011-03-30  gmc
+
+	* fix typo in facet_force_nfc definition
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-03-30  dbs
+
+	* Restore the Reset Password button on patron editor
+	  
+	  Per LP 488243, the Reset Password button that existed on the old
+	  XUL patron editor was lost in the transition to the new Dojo
+	  patron editor. Jason Stephenson stepped up and offered a patch
+	  to restore the functionality.
+	  
+	  Developer's Certificate of Origin 1.1
+	  
+	  By making a contribution to this project, I certify that:
+	  
+	  (a) The contribution was created in whole or in part by me and I
+	  have the right to submit it under the open source license
+	  indicated in the file; or
+	  
+	  (b) The contribution is based upon previous work that, to the
+	  best
+	  of my knowledge, is covered under an appropriate open source
+	  license and I have the right under that license to submit that
+	  work with modifications, whether created in whole or in part
+	  by me, under the same open source license (unless I am
+	  permitted to submit under a different license), as indicated
+	  in the file; or
+	  
+	  (c) The contribution was provided directly to me by some other
+	  person who certified (a), (b) or (c) and I have not modified
+	  it.
+	  
+	  (d) I understand and agree that this project and the contribution
+	  are public and that a record of the contribution (including all
+	  personal information I submit with it, including my sign-off) is
+	  maintained indefinitely and may be redistributed consistent with
+	  this project or the open source license(s) involved.
+	  
+	  Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+	* Change label to "Reset Password" and get button out of tab
+	  ordering
+	  
+	  In a keyboard-intensive patron input workflow, pressing tab
+	  should
+	  not place focus on the "Reset Password" button; the password is
+	  automatically generated at dialog creation time. Setting tabIndex
+	  to -1 disables tab focus for the button.
+	  
+	  Also, the button has been relabeled to "Reset Password" to be
+	  consistent with the previous button.
+
+2011-03-30  phasefx
+
+	* add item columns to xul-based holds lists
+	  
+	  Could argue this fixes a regression, since the original pull list
+	  from 1.6 showed the circ modifier, and the xul alternative does
+	  not. So begging forgiveness :)
+	  
+	  Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2011-03-31  phasefx
+
+	* Logic error trying to merge the date component of one date object
+	  with the time component of another. We were trying to use the
+	  time object and update it piecemeal, which resulted in
+	  non-sensical dates that were forced to wrap. For example, if the
+	  date object was to set to March 31, 2011, and we tried
+	  .setMonth(3) on it to change it to April, that would result in an
+	  April 31st, which doesn't exist, and the date thus moves forward
+	  a certain number of days into May.
+	  
+	  This affects Check Out, dedicated Renew interface, and the
+	  various date picking functions in Items Out and Holds interfaces.
+
+2011-03-31  dbwells
+
+	* Use identifer indexes for older ISxN API methods (LP Bug #728671)
+	  
+	  There are three logic layers involved in the older ISxN 'quick
+	  searches': the OPAC, the search API, and the storage API. The
+	  approach of this patch is to update the search API (which in turn
+	  fixes the OPAC), and ignore/deprecate the storage API for these
+	  identifiers.
+
+2011-04-01  phasefx
+
+	* reposition these labels to mitigate horizontal scrolling in
+	  Holdings Maintenance
+
+2011-04-01  dbwells
+
+	* Better search normalization de-duping when 'params' are used
+	  
+	  This patch addresses search normalization deduping at two levels.
+	  We now verify that both the function and the params are the same
+	  before excluding a normalization, both when the normalization is
+	  first added to the set and when the SQL is being built (since
+	  currently multiple sets may be involved).
+
+2011-04-01  erickson
+
+	* Patch from Thomas Berezansky to address unneccessary fine
+	  generation and avoid unchecked division by zero; details and DCO
+	  at https://bugs.launchpad.net/evergreen/+bug/747533
+
+2011-04-02  miker
+
+	* Add realistic row estimates to tree-ish functions (default is
+	  1000) so that callers can make better plans in complex queries;
+	  includes four functions backported from 2.1 for simplicity when
+	  it comes to upgrading
+
+	* Adjust upgrade for 2.0
+
+2011-04-04  senator
+
+	* Backport r19937 from trunk
+	  
+	  Ben Ostrowsky pointed out that the alt holds (pull list) printing
+	  interface
+	  was trying to include AutoIDL.js from an incorrect path.
+	  
+	  I don't believe that file should be included at all, so now I've
+	  removed the
+	  broken line.
+
+	* Backport r19942 from trunk
+	  
+	  Booking: This should a) make booking interfaces behave better
+	  when a staff
+	  login session times out and is replaced by use of a re-auth
+	  dialog, and b)
+	  wrap booking interfaces in a <browser> element with the attendant
+	  back/forward/reload buttons that most similar interfaces already
+	  had.
+
+	* Booking: in support of r19944, backport newer
+	  openils.XUL.newTabEasy() from
+	  trunk as well
+
+2011-04-04  miker
+
+	* 2.0.5 upgrade script
+
+	* .: Tagging 2.0.5
+
