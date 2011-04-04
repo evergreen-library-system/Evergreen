@@ -69,7 +69,7 @@ main.menu.prototype = {
             if (y) y.setAttribute('hidden','true');
         }
 
-        function open_conify_page(path, labelKey) {
+        function open_conify_page(path, labelKey, event) {
 
             // tab label
             labelKey = labelKey || 'menu.cmd_open_conify.tab';
@@ -78,14 +78,15 @@ main.menu.prototype = {
             // URL
             var loc = urls.XUL_BROWSER + '?url=' + window.escape( obj.url_prefix(urls.CONIFY) + '/' + path + '.html');
 
-            obj.set_tab( 
+            obj.command_tab(
+                event,
                 loc, 
                 {'tab_name' : label, 'browser' : false }, 
                 {'no_xulG' : false, 'show_print_button' : false, show_nav_buttons:true} 
             );
         }
 
-        function open_admin_page(path, labelKey, addSes) {
+        function open_admin_page(path, labelKey, addSes, event) {
 
             // tab label
             labelKey = labelKey || 'menu.cmd_open_conify.tab';
@@ -95,7 +96,8 @@ main.menu.prototype = {
             var loc = urls.XUL_BROWSER + '?url=' + window.escape( obj.url_prefix(urls.XUL_LOCAL_ADMIN_BASE) + '/' + path);
             if(addSes) loc += window.escape('?ses=' + ses());
 
-            obj.set_tab( 
+            obj.command_tab( 
+                event,
                 loc, 
                 {'tab_name' : label, 'browser' : false }, 
                 {'no_xulG' : false, 'show_print_button' : true, 'show_nav_buttons' : true } 
@@ -103,7 +105,7 @@ main.menu.prototype = {
         }
 
 
-        function open_eg_web_page(path, labelKey) {
+        function open_eg_web_page(path, labelKey, event) {
             
             // tab label
             labelKey = labelKey || 'menu.cmd_open_conify.tab';
@@ -112,7 +114,8 @@ main.menu.prototype = {
             // URL
             var loc = urls.XUL_BROWSER + '?url=' + window.escape(obj.url_prefix(urls.EG_WEB_BASE) + '/' + path);
 
-            obj.set_tab( 
+            obj.command_tab(
+                event,
                 loc, 
                 {tab_name : label, browser : false }, 
                 {no_xulG : false, show_print_button : true, show_nav_buttons : true }
@@ -167,30 +170,30 @@ main.menu.prototype = {
             /* Edit Menu */
             'cmd_edit_copy_buckets' : [
                 ['oncommand'],
-                function() {
+                function(event) {
                     obj.data.stash_retrieve();
-                    obj.set_tab(obj.url_prefix(urls.XUL_COPY_BUCKETS),{'tab_name':offlineStrings.getString('menu.cmd_edit_copy_buckets.tab')},{});
+                    obj.command_tab(event,obj.url_prefix(urls.XUL_COPY_BUCKETS),{'tab_name':offlineStrings.getString('menu.cmd_edit_copy_buckets.tab')},{});
                 }
             ],
             'cmd_edit_volume_buckets' : [
                 ['oncommand'],
-                function() {
+                function(event) {
                     obj.data.stash_retrieve();
-                    obj.set_tab(obj.url_prefix(urls.XUL_VOLUME_BUCKETS),{'tab_name':offlineStrings.getString('menu.cmd_edit_volume_buckets.tab')},{});
+                    obj.command_tab(event,obj.url_prefix(urls.XUL_VOLUME_BUCKETS),{'tab_name':offlineStrings.getString('menu.cmd_edit_volume_buckets.tab')},{});
                 }
             ],
             'cmd_edit_record_buckets' : [
                 ['oncommand'],
-                function() {
+                function(event) {
                     obj.data.stash_retrieve();
-                    obj.set_tab(obj.url_prefix(urls.XUL_RECORD_BUCKETS),{'tab_name':offlineStrings.getString('menu.cmd_edit_record_buckets.tab')},{});
+                    obj.command_tab(event,obj.url_prefix(urls.XUL_RECORD_BUCKETS),{'tab_name':offlineStrings.getString('menu.cmd_edit_record_buckets.tab')},{});
                 }
             ],
             'cmd_edit_user_buckets' : [
                 ['oncommand'],
-                function() {
+                function(event) {
                     obj.data.stash_retrieve();
-                    obj.set_tab(obj.url_prefix(urls.XUL_USER_BUCKETS),{'tab_name':offlineStrings.getString('menu.cmd_edit_user_buckets.tab')},{});
+                    obj.command_tab(event,obj.url_prefix(urls.XUL_USER_BUCKETS),{'tab_name':offlineStrings.getString('menu.cmd_edit_user_buckets.tab')},{});
                 }
             ],
 
@@ -278,10 +281,10 @@ main.menu.prototype = {
             ],
             'cmd_search_tcn' : [
                 ['oncommand'],
-                function() {
+                function(event) {
                     var tcn = prompt(offlineStrings.getString('menu.cmd_search_tcn.tab'),'',offlineStrings.getString('menu.cmd_search_tcn.prompt'));
 
-                    function spawn_tcn(r) {
+                    function spawn_tcn(r,event) {
                         for (var i = 0; i < r.count; i++) {
                             var id = r.ids[i];
                             var opac_url = obj.url_prefix( urls.opac_rdetail ) + '?r=' + id;
@@ -292,7 +295,8 @@ main.menu.prototype = {
                                 'opac_url' : opac_url,
                             };
                             if (i == 0) {
-                                obj.set_tab(
+                                obj.command_tab(
+                                    event,
                                     obj.url_prefix(urls.XUL_OPAC_WRAPPER), 
                                     {'tab_name':tcn}, 
                                     content_params
@@ -318,18 +322,18 @@ main.menu.prototype = {
                                 alert(offlineStrings.getFormattedString('menu.cmd_search_tcn.not_found.error', [tcn]));
                             } else {
                                 if ( window.confirm(offlineStrings.getFormattedString('menu.cmd_search_tcn.deleted.error', [tcn])) ) {
-                                    spawn_tcn(robj2);
+                                    spawn_tcn(robj2,event);
                                 }
                             }
                         } else {
-                            spawn_tcn(robj);
+                            spawn_tcn(robj,event);
                         }
                     }
                 }
             ],
             'cmd_search_bib_id' : [
                 ['oncommand'],
-                function() {
+                function(event) {
                     var bib_id = prompt(offlineStrings.getString('menu.cmd_search_bib_id.tab'),'',offlineStrings.getString('menu.cmd_search_bib_id.prompt'));
                     if (!bib_id) return;
 
@@ -339,7 +343,8 @@ main.menu.prototype = {
                         'authtime' : ses('authtime'),
                         'opac_url' : opac_url,
                     };
-                    obj.set_tab(
+                    obj.command_tab(
+                        event,
                         obj.url_prefix(urls.XUL_OPAC_WRAPPER), 
                         {'tab_name':'#' + bib_id}, 
                         content_params
@@ -425,9 +430,9 @@ main.menu.prototype = {
             ],
             'cmd_staged_patrons' : [
                 ['oncommand'],
-                function() {
+                function(event) {
                     obj.data.stash_retrieve();
-                    obj.set_tab(obj.url_prefix(urls.XUL_STAGED_PATRONS),{'tab_name':offlineStrings.getString('menu.circulation.staged_patrons.tab')},{});
+                    obj.command_tab(event,obj.url_prefix(urls.XUL_STAGED_PATRONS),{'tab_name':offlineStrings.getString('menu.circulation.staged_patrons.tab')},{});
                 }
             ],
             'cmd_circ_checkin' : [
@@ -439,9 +444,9 @@ main.menu.prototype = {
             ],
             'cmd_circ_renew' : [
                 ['oncommand'],
-                function() { 
+                function(event) { 
                     obj.data.stash_retrieve();
-                    obj.set_tab(obj.url_prefix(urls.XUL_RENEW),{},{});
+                    obj.command_tab(event,obj.url_prefix(urls.XUL_RENEW),{},{});
                 }
             ],
             'cmd_circ_checkout' : [
@@ -453,41 +458,41 @@ main.menu.prototype = {
             ],
             'cmd_circ_hold_capture' : [
                 ['oncommand'],
-                function() { 
+                function(event) { 
                     obj.data.stash_retrieve();
-                    obj.set_tab(obj.url_prefix(urls.XUL_CHECKIN)+'?hold_capture=1',{},{});
+                    obj.command_tab(event,obj.url_prefix(urls.XUL_CHECKIN)+'?hold_capture=1',{},{});
                 }
             ],
             'cmd_browse_holds' : [
                 ['oncommand'],
-                function() { 
+                function(event) { 
                     obj.data.stash_retrieve();
-                    obj.set_tab(obj.url_prefix(urls.XUL_HOLDS_BROWSER),{ 'tab_name' : offlineStrings.getString('menu.cmd_browse_holds.tab') },{});
+                    obj.command_tab(event,obj.url_prefix(urls.XUL_HOLDS_BROWSER),{ 'tab_name' : offlineStrings.getString('menu.cmd_browse_holds.tab') },{});
                 }
             ],
             'cmd_browse_holds_shelf' : [
                 ['oncommand'],
-                function() { 
+                function(event) { 
                     obj.data.stash_retrieve();
-                    obj.set_tab(obj.url_prefix(urls.XUL_HOLDS_BROWSER)+'?shelf=1',{ 'tab_name' : offlineStrings.getString('menu.cmd_browse_holds_shelf.tab') },{});
+                    obj.command_tab(event,obj.url_prefix(urls.XUL_HOLDS_BROWSER)+'?shelf=1',{ 'tab_name' : offlineStrings.getString('menu.cmd_browse_holds_shelf.tab') },{});
                 }
             ],
             'cmd_circ_hold_pull_list' : [
                 ['oncommand'],
-                function() { 
+                function(event) { 
                     obj.data.stash_retrieve();
                     var loc = urls.XUL_BROWSER + '?url=' + window.escape(
                         obj.url_prefix(urls.XUL_HOLD_PULL_LIST)
                     );
-                    obj.set_tab( loc, {'tab_name' : offlineStrings.getString('menu.cmd_browse_hold_pull_list.tab')}, { 'show_print_button' : true } );
+                    obj.command_tab(event, loc, {'tab_name' : offlineStrings.getString('menu.cmd_browse_hold_pull_list.tab')}, { 'show_print_button' : true } );
                 }
             ],
 
             'cmd_in_house_use' : [
                 ['oncommand'],
-                function() { 
+                function(event) { 
                     obj.data.stash_retrieve();
-                    obj.set_tab(obj.url_prefix(urls.XUL_IN_HOUSE_USE),{},{});
+                    obj.command_tab(event,obj.url_prefix(urls.XUL_IN_HOUSE_USE),{},{});
                 }
             ],
 
@@ -508,12 +513,13 @@ main.menu.prototype = {
 
             'cmd_local_admin' : [
                 ['oncommand'],
-                function() { 
+                function(event) { 
                     //obj.set_tab(obj.url_prefix(urls.XUL_LOCAL_ADMIN)+'?ses='+window.escape(ses())+'&session='+window.escape(ses()),{},{});
                     var loc = urls.XUL_BROWSER + '?url=' + window.escape(
                         obj.url_prefix( urls.XUL_LOCAL_ADMIN+'?ses='+window.escape(ses())+'&session='+window.escape(ses()) )
                     );
-                    obj.set_tab( 
+                    obj.command_tab(
+                        event,
                         loc, 
                         {'tab_name' : offlineStrings.getString('menu.cmd_local_admin.tab'), 'browser' : false }, 
                         { 'no_xulG' : false, 'show_nav_buttons' : true, 'show_print_button' : true } 
@@ -542,9 +548,10 @@ main.menu.prototype = {
 
             'cmd_local_admin_reports' : [
                 ['oncommand'],
-                function() { 
+                function(event) { 
                     var loc = urls.XUL_BROWSER + '?url=' + window.escape( obj.url_prefix(urls.XUL_REPORTS) + '?ses=' + ses());
-                    obj.set_tab( 
+                    obj.command_tab(
+                        event,
                         loc, 
                         {'tab_name' : offlineStrings.getString('menu.cmd_local_admin_reports.tab'), 'browser' : false }, 
                         {'no_xulG' : false, 'show_print_button' : false, show_nav_buttons : true } 
@@ -553,93 +560,93 @@ main.menu.prototype = {
             ],
             'cmd_open_vandelay' : [
                 ['oncommand'],
-                function() { open_eg_web_page('vandelay/vandelay'); }
+                function(event) { open_eg_web_page('vandelay/vandelay', null, event); }
             ],
             'cmd_local_admin_transit_list' : [
                 ['oncommand'],
-                function() { open_admin_page('transit_list.xul', 'menu.cmd_local_admin_transit_list.tab'); }
+                function(event) { open_admin_page('transit_list.xul', 'menu.cmd_local_admin_transit_list.tab', false, event); }
             ],
             'cmd_local_admin_age_overdue_circulations_to_lost' : [
                 ['oncommand'],
-                function() { open_admin_page('circ_age_to_lost.xul', 'menu.cmd_local_admin_age_overdue_circulations_to_lost.tab', true); }
+                function(event) { open_admin_page('circ_age_to_lost.xul', 'menu.cmd_local_admin_age_overdue_circulations_to_lost.tab', true, event); }
             ],
             'cmd_local_admin_cash_reports' : [
                 ['oncommand'],
-                function() { open_admin_page('cash_reports.xhtml', 'menu.cmd_local_admin_cash_reports.tab', true); }
+                function(event) { open_admin_page('cash_reports.xhtml', 'menu.cmd_local_admin_cash_reports.tab', true, event); }
             ],
             'cmd_local_admin_fonts_and_sounds' : [
                 ['oncommand'],
-                function() { open_admin_page('font_settings.xul', 'menu.cmd_local_admin_fonts_and_sounds.tab'); }
+                function(event) { open_admin_page('font_settings.xul', 'menu.cmd_local_admin_fonts_and_sounds.tab', false, event); }
             ],
             'cmd_local_admin_printer' : [
                 ['oncommand'],
-                function() { open_admin_page('printer_settings.html', 'menu.cmd_local_admin_printer.tab', true); }
+                function(event) { open_admin_page('printer_settings.html', 'menu.cmd_local_admin_printer.tab', true, event); }
             ],
             'cmd_local_admin_do_not_auto_attempt_print_setting' : [
                 ['oncommand'],
-                function() { 
-                    obj.set_tab(obj.url_prefix(urls.XUL_DO_NOT_AUTO_ATTEMPT_PRINT_SETTING),{'tab_name':offlineStrings.getString('menu.cmd_local_admin_do_not_auto_attempt_print_setting.tab')},{});
+                function(event) { 
+                    obj.command_tab(event,obj.url_prefix(urls.XUL_DO_NOT_AUTO_ATTEMPT_PRINT_SETTING),{'tab_name':offlineStrings.getString('menu.cmd_local_admin_do_not_auto_attempt_print_setting.tab')},{});
                 }
             ],
             'cmd_local_admin_closed_dates' : [
                 ['oncommand'],
-                function() { open_admin_page('closed_dates.xhtml', 'menu.cmd_local_admin_closed_dates.tab', true); }
+                function(event) { open_admin_page('closed_dates.xhtml', 'menu.cmd_local_admin_closed_dates.tab', true, event); }
             ],
             'cmd_local_admin_copy_locations' : [
                 ['oncommand'],
-                function() { open_admin_page('copy_locations.xhtml', 'menu.cmd_local_admin_copy_locations.tab', true); }
+                function(event) { open_admin_page('copy_locations.xhtml', 'menu.cmd_local_admin_copy_locations.tab', true, event); }
             ],
             'cmd_local_admin_lib_settings' : [
                 ['oncommand'],
-                function() { open_admin_page('org_unit_settings.xhtml', 'menu.cmd_local_admin_lib_settings.tab', true); }
+                function(event) { open_admin_page('org_unit_settings.xhtml', 'menu.cmd_local_admin_lib_settings.tab', true, event); }
             ],
             'cmd_local_admin_non_cat_types' : [
                 ['oncommand'],
-                function() { open_admin_page('non_cat_types.xhtml', 'menu.cmd_local_admin_non_cat_types.tab', true); }
+                function(event) { open_admin_page('non_cat_types.xhtml', 'menu.cmd_local_admin_non_cat_types.tab', true, event); }
             ],
             'cmd_local_admin_stat_cats' : [
                 ['oncommand'],
-                function() { open_admin_page('stat_cat_editor.xhtml', 'menu.cmd_local_admin_stat_cats.tab', true); }
+                function(event) { open_admin_page('stat_cat_editor.xhtml', 'menu.cmd_local_admin_stat_cats.tab', true, event); }
             ],
             'cmd_local_admin_standing_penalty' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/config/standing_penalty'); }
+                function(event) { open_eg_web_page('conify/global/config/standing_penalty', null, event); }
             ],
             'cmd_local_admin_grp_penalty_threshold' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/permission/grp_penalty_threshold'); }
+                function(event) { open_eg_web_page('conify/global/permission/grp_penalty_threshold', null, event); }
             ],
             'cmd_server_admin_config_rule_circ_duration' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/config/rule_circ_duration'); }
+                function(event) { open_eg_web_page('conify/global/config/rule_circ_duration', null, event); }
             ],
             'cmd_server_admin_config_hard_due_date' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/config/hard_due_date'); }
+                function(event) { open_eg_web_page('conify/global/config/hard_due_date', null, event); }
             ],
             'cmd_server_admin_config_rule_recurring_fine' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/config/rule_recurring_fine'); }
+                function(event) { open_eg_web_page('conify/global/config/rule_recurring_fine', null, event); }
             ],
             'cmd_server_admin_config_rule_max_fine' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/config/rule_max_fine'); }
+                function(event) { open_eg_web_page('conify/global/config/rule_max_fine', null, event); }
             ],
             'cmd_server_admin_config_rule_age_hold_protect' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/config/rule_age_hold_protect'); }
+                function(event) { open_eg_web_page('conify/global/config/rule_age_hold_protect', null, event); }
             ],
             'cmd_server_admin_config_circ_weights' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/config/circ_matrix_weights'); }
+                function(event) { open_eg_web_page('conify/global/config/circ_matrix_weights', null, event); }
             ],
             'cmd_server_admin_config_hold_weights' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/config/hold_matrix_weights'); }
+                function(event) { open_eg_web_page('conify/global/config/hold_matrix_weights', null, event); }
             ],
             'cmd_server_admin_config_weight_assoc' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/config/weight_assoc'); }
+                function(event) { open_eg_web_page('conify/global/config/weight_assoc', null, event); }
             ],
             'cmd_local_admin_external_text_editor' : [
                 ['oncommand'],
@@ -658,15 +665,15 @@ main.menu.prototype = {
             ],
             'cmd_local_admin_idl_field_doc' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/config/idl_field_doc'); }
+                function(event) { open_eg_web_page('conify/global/config/idl_field_doc', null, event); }
             ],
             'cmd_local_admin_action_trigger' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/action_trigger/event_definition'); }
+                function(event) { open_eg_web_page('conify/global/action_trigger/event_definition', null, event); }
             ],
             'cmd_local_admin_survey' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/action/survey'); }
+                function(event) { open_eg_web_page('conify/global/action/survey', null, event); }
             ],
             'cmd_local_admin_circ_matrix_matchpoint' : [
                 ['oncommand'],
@@ -680,12 +687,13 @@ main.menu.prototype = {
             ],
             'cmd_local_admin_copy_location_order' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/asset/copy_location_order'); }
+                function(event) { open_eg_web_page('conify/global/asset/copy_location_order', null, event); }
             ],
             'cmd_local_admin_work_log' : [
                 ['oncommand'],
-                function() { 
-                    obj.set_tab(
+                function(event) { 
+                    obj.command_tab(
+                        event,
                         urls.XUL_WORK_LOG,
                         { 'tab_name' : offlineStrings.getString('menu.local_admin.work_log.tab') },
                         {}
@@ -700,8 +708,9 @@ main.menu.prototype = {
             ],
             'cmd_local_admin_patrons_due_refunds' : [
                 ['oncommand'],
-                function() {
-                    obj.set_tab(
+                function(event) {
+                    obj.command_tab(
+                        event,
                         obj.url_prefix(urls.XUL_PATRONS_DUE_REFUNDS),
                         { 'tab_name' : offlineStrings.getString('menu.local_admin.patrons_due_refunds.tab') },
                         {}
@@ -710,208 +719,209 @@ main.menu.prototype = {
             ],
             'cmd_server_admin_org_type' : [
                 ['oncommand'],
-                function() { open_conify_page('actor/org_unit_type', null); }
+                function(event) { open_conify_page('actor/org_unit_type', null, event); }
             ],
             'cmd_server_admin_org_unit' : [
                 ['oncommand'],
-                function() { open_conify_page('actor/org_unit', null); }
+                function(event) { open_conify_page('actor/org_unit', null, event); }
             ],
             'cmd_server_admin_grp_tree' : [
                 ['oncommand'],
-                function() { open_conify_page('permission/grp_tree', null); }
+                function(event) { open_conify_page('permission/grp_tree', null, event); }
             ],
             'cmd_server_admin_perm_list' : [
                 ['oncommand'],
-                function() { open_conify_page('permission/perm_list', null); }
+                function(event) { open_conify_page('permission/perm_list', null, event); }
             ],
             'cmd_server_admin_copy_status' : [
                 ['oncommand'],
-                function() { open_conify_page('config/copy_status', null); }
+                function(event) { open_conify_page('config/copy_status', null, event); }
             ],
             'cmd_server_admin_marc_code' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/config/record_attr_definition'); }
+                function(event) { open_eg_web_page('conify/global/config/record_attr_definition', null, event); }
             ],
             'cmd_server_admin_coded_value_map' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/config/coded_value_map'); }
+                function(event) { open_eg_web_page('conify/global/config/coded_value_map', null, event); }
             ],
             'cmd_server_admin_acn_prefix' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/config/acn_prefix'); }
+                function(event) { open_eg_web_page('conify/global/config/acn_prefix', null, event); }
             ],
             'cmd_server_admin_acn_suffix' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/config/acn_suffix'); }
+                function(event) { open_eg_web_page('conify/global/config/acn_suffix', null, event); }
             ],
             'cmd_server_admin_billing_type' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/config/billing_type'); }
+                function(event) { open_eg_web_page('conify/global/config/billing_type', null, event); }
             ],
             'cmd_server_admin_acq_invoice_item_type' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/acq/invoice_item_type'); }
+                function(event) { open_eg_web_page('conify/global/acq/invoice_item_type', null, event); }
             ],
             'cmd_server_admin_acq_invoice_payment_method' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/acq/invoice_payment_method'); }
+                function(event) { open_eg_web_page('conify/global/acq/invoice_payment_method', null, event); }
             ],
             'cmd_server_admin_acq_lineitem_alert' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/acq/lineitem_alert'); }
+                function(event) { open_eg_web_page('conify/global/acq/lineitem_alert', null, event); }
             ],
             'cmd_server_admin_acq_lineitem_marc_attr_def' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/acq/lineitem_marc_attr_def'); }
+                function(event) { open_eg_web_page('conify/global/acq/lineitem_marc_attr_def', null, event); }
             ],
             'cmd_server_admin_acq_fund_tag' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/acq/fund_tag'); }
+                function(event) { open_eg_web_page('conify/global/acq/fund_tag', null, event); }
             ],
             'cmd_server_admin_acq_cancel_reason' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/acq/cancel_reason'); }
+                function(event) { open_eg_web_page('conify/global/acq/cancel_reason', null, event); }
             ],
             'cmd_server_admin_acq_claim_type' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/acq/claim_type'); }
+                function(event) { open_eg_web_page('conify/global/acq/claim_type', null, event); }
             ],
             'cmd_server_admin_acq_claim_event_type' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/acq/claim_event_type'); }
+                function(event) { open_eg_web_page('conify/global/acq/claim_event_type', null, event); }
             ],
             'cmd_server_admin_acq_claim_policy' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/acq/claim_policy'); }
+                function(event) { open_eg_web_page('conify/global/acq/claim_policy', null, event); }
             ],
             'cmd_server_admin_acq_claim_policy_action' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/acq/claim_policy_action'); }
+                function(event) { open_eg_web_page('conify/global/acq/claim_policy_action', null, event); }
             ],
             'cmd_server_admin_acq_fund' : [
                 ['oncommand'],
-                function() { open_eg_web_page('acq/fund/list'); }
+                function(event) { open_eg_web_page('acq/fund/list', null, event); }
             ],
             'cmd_server_admin_acq_funding_source' : [
                 ['oncommand'],
-                function() { open_eg_web_page('acq/funding_source/list'); }
+                function(event) { open_eg_web_page('acq/funding_source/list', null, event); }
             ],
             'cmd_server_admin_acq_provider' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/acq/provider'); }
+                function(event) { open_eg_web_page('conify/global/acq/provider', null, event); }
             ],
             'cmd_server_admin_acq_edi_account' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/acq/edi_account'); }
+                function(event) { open_eg_web_page('conify/global/acq/edi_account', null, event); }
             ],
             'cmd_server_admin_acq_edi_message' : [
                 ['oncommand'],
-                function() { open_eg_web_page('acq/po/edi_messages'); }
+                function(event) { open_eg_web_page('acq/po/edi_messages', null, event); }
             ],
             'cmd_server_admin_acq_currency_type' : [
                 ['oncommand'],
-                function() { open_eg_web_page('acq/currency_type/list'); }
+                function(event) { open_eg_web_page('acq/currency_type/list', null, event); }
             ],
             'cmd_server_admin_acq_exchange_rate' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/acq/exchange_rate'); }
+                function(event) { open_eg_web_page('conify/global/acq/exchange_rate', null, event); }
             ],
             'cmd_server_admin_acq_distrib_formula' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/acq/distribution_formula'); }
+                function(event) { open_eg_web_page('conify/global/acq/distribution_formula', null, event); }
             ],
             'cmd_server_admin_z39_source' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/config/z3950_source'); }
+                function(event) { open_eg_web_page('conify/global/config/z3950_source', null, event); }
             ],
             'cmd_server_admin_circ_mod' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/config/circ_modifier'); }
+                function(event) { open_eg_web_page('conify/global/config/circ_modifier', null, event); }
             ],
             'cmd_server_admin_global_flag' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/config/global_flag'); }
+                function(event) { open_eg_web_page('conify/global/config/global_flag', null, event); }
             ],
             'cmd_server_admin_org_unit_setting_type' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/config/org_unit_setting_type'); }
+                function(event) { open_eg_web_page('conify/global/config/org_unit_setting_type', null, event); }
             ],
             'cmd_server_admin_usr_setting_type' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/config/usr_setting_type'); }
+                function(event) { open_eg_web_page('conify/global/config/usr_setting_type', null, event); }
             ],
             'cmd_server_admin_booking_resource': [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/booking/resource'); }
+                function(event) { open_eg_web_page('conify/global/booking/resource', null, event); }
             ],
             'cmd_server_admin_booking_resource_type': [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/booking/resource_type'); }
+                function(event) { open_eg_web_page('conify/global/booking/resource_type', null, event); }
             ],
             'cmd_server_admin_booking_resource_attr': [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/booking/resource_attr'); }
+                function(event) { open_eg_web_page('conify/global/booking/resource_attr', null, event); }
             ],
             'cmd_server_admin_booking_resource_attr_value': [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/booking/resource_attr_value'); }
+                function(event) { open_eg_web_page('conify/global/booking/resource_attr_value', null, event); }
             ],
             'cmd_server_admin_booking_resource_attr_map': [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/booking/resource_attr_map'); }
+                function(event) { open_eg_web_page('conify/global/booking/resource_attr_map', null, event); }
             ],
             'cmd_acq_create_invoice' : [
                 ['oncommand'],
-                function() { open_eg_web_page('acq/invoice/view?create=1', 'menu.cmd_acq_create_invoice.tab'); }
+                function(event) { open_eg_web_page('acq/invoice/view?create=1', 'menu.cmd_acq_create_invoice.tab', event); }
             ],
             'cmd_acq_view_my_pl' : [
                 ['oncommand'],
-                function() { open_eg_web_page('acq/search/unified?ca=pl', 'menu.cmd_acq_unified_search.tab'); }
+                function(event) { open_eg_web_page('acq/search/unified?ca=pl', 'menu.cmd_acq_unified_search.tab', event); }
             ],
             'cmd_acq_view_local_po' : [
                 ['oncommand'],
-                function() { open_eg_web_page('acq/search/unified?ca=po', 'menu.cmd_acq_unified_search.tab'); }
+                function(event) { open_eg_web_page('acq/search/unified?ca=po', 'menu.cmd_acq_unified_search.tab', event); }
             ],
             'cmd_acq_create_po' : [
                 ['oncommand'],
-                function() { open_eg_web_page('acq/po/create', 'menu.cmd_acq_po.tab'); }
+                function(event) { open_eg_web_page('acq/po/create', 'menu.cmd_acq_po.tab', event); }
             ],
             'cmd_acq_view_local_inv' : [
                 ['oncommand'],
-                function() { open_eg_web_page('acq/search/unified?ca=inv', 'menu.cmd_acq_unified_search.tab'); }
+                function(event) { open_eg_web_page('acq/search/unified?ca=inv', 'menu.cmd_acq_unified_search.tab', event); }
             ],
             'cmd_acq_user_requests' : [
                 ['oncommand'],
-                function() { open_eg_web_page('acq/picklist/user_request', 'menu.cmd_acq_user_requests.tab'); }
+                function(event) { open_eg_web_page('acq/picklist/user_request', 'menu.cmd_acq_user_requests.tab', event); }
             ],
             'cmd_acq_upload' : [
                 ['oncommand'],
-                function() { open_eg_web_page('acq/picklist/upload', 'menu.cmd_acq_upload.tab'); }
+                function(event) { open_eg_web_page('acq/picklist/upload', 'menu.cmd_acq_upload.tab', event); }
             ],
             'cmd_acq_bib_search' : [
                 ['oncommand'],
-                function() { open_eg_web_page('acq/picklist/bib_search', 'menu.cmd_acq_bib_search.tab'); }
+                function(event) { open_eg_web_page('acq/picklist/bib_search', 'menu.cmd_acq_bib_search.tab', event); }
             ],
             'cmd_acq_unified_search' : [
                 ['oncommand'],
-                function() { open_eg_web_page('acq/search/unified', 'menu.cmd_acq_unified_search.tab'); }
+                function(event) { open_eg_web_page('acq/search/unified', 'menu.cmd_acq_unified_search.tab', event); }
             ],
             'cmd_acq_from_bib' : [
                 ['oncommand'],
-                function() { open_eg_web_page('acq/picklist/from_bib', 'menu.cmd_acq_from_bib.tab'); }
+                function(event) { open_eg_web_page('acq/picklist/from_bib', 'menu.cmd_acq_from_bib.tab', event); }
             ],
             'cmd_acq_new_brief_record' : [
                 ['oncommand'],
-                function() { open_eg_web_page('acq/picklist/brief_record', 'menu.cmd_acq_new_brief_record.tab'); }
+                function(event) { open_eg_web_page('acq/picklist/brief_record', 'menu.cmd_acq_new_brief_record.tab', event); }
             ],
             'cmd_acq_claim_eligible' : [
                 ['oncommand'],
-                function() { open_eg_web_page('acq/financial/claim_eligible', 'menu.cmd_acq_claim_eligible.tab'); }
+                function(event) { open_eg_web_page('acq/financial/claim_eligible', 'menu.cmd_acq_claim_eligible.tab', event); }
             ],
             'cmd_booking_reservation' : [
                 ['oncommand'],
-                function() {
-                    open_eg_web_page(
+                function(event) {
+                    obj.command_tab(
+                        event,
                         "/eg/booking/reservation",
                         "menu.cmd_booking_reservation.tab"
                     );
@@ -919,8 +929,9 @@ main.menu.prototype = {
             ],
             'cmd_booking_pull_list' : [
                 ['oncommand'],
-                function() {
-                    open_eg_web_page(
+                function(event) {
+                    obj.command_tab(
+                        event,
                         "/eg/booking/pull_list",
                         "menu.cmd_booking_pull_list.tab"
                     );
@@ -928,8 +939,9 @@ main.menu.prototype = {
             ],
             'cmd_booking_capture' : [
                 ['oncommand'],
-                function() {
-                    open_eg_web_page(
+                function(event) {
+                    obj.command_tab(
+                        event,
                         "/eg/booking/capture",
                         "menu.cmd_booking_capture.tab"
                     );
@@ -937,8 +949,9 @@ main.menu.prototype = {
             ],
             'cmd_booking_reservation_pickup' : [
                 ['oncommand'],
-                function() {
-                    open_eg_web_page(
+                function(event) {
+                    obj.command_tab(
+                        event,
                         "/eg/booking/pickup",
                         "menu.cmd_booking_reservation_pickup.tab"
                     );
@@ -946,8 +959,9 @@ main.menu.prototype = {
             ],
             'cmd_booking_reservation_return' : [
                 ['oncommand'],
-                function() {
-                    open_eg_web_page(
+                function(event) {
+                    obj.command_tab(
+                        event,
                         "/eg/booking/return",
                         "menu.cmd_booking_reservation_return.tab"
                     );
@@ -967,7 +981,7 @@ main.menu.prototype = {
 
             'cmd_retrieve_last_patron' : [
                 ['oncommand'],
-                function() {
+                function(event) {
                     obj.data.stash_retrieve();
                     if (!obj.data.last_patron) {
                         alert(offlineStrings.getString('menu.cmd_retrieve_last_patron.session.error'));
@@ -975,13 +989,13 @@ main.menu.prototype = {
                     }
                     var horizontal_interface = String( obj.data.hash.aous['ui.circ.patron_summary.horizontal'] ) == 'true';
                     var url = obj.url_prefix( horizontal_interface ? urls.XUL_PATRON_HORIZ_DISPLAY : urls.XUL_PATRON_DISPLAY );
-                    obj.set_tab( url, {}, { 'id' : obj.data.last_patron } );
+                    obj.command_tab( event, url, {}, { 'id' : obj.data.last_patron } );
                 }
             ],
             
             'cmd_retrieve_last_record' : [
                 ['oncommand'],
-                function() {
+                function(event) {
                     obj.data.stash_retrieve();
                     if (!obj.data.last_record) {
                         alert(offlineStrings.getString('menu.cmd_retrieve_last_record.session.error'));
@@ -993,7 +1007,8 @@ main.menu.prototype = {
                         'authtime' : ses('authtime'),
                         'opac_url' : opac_url,
                     };
-                    obj.set_tab(
+                    obj.command_tab(
+                        event,
                         obj.url_prefix(urls.XUL_OPAC_WRAPPER),
                         {'tab_name' : offlineStrings.getString('menu.cmd_retrieve_last_record.status')},
                         content_params
@@ -1003,8 +1018,9 @@ main.menu.prototype = {
 
             'cmd_verify_credentials' : [
                 ['oncommand'],
-                function() {
-                    obj.set_tab(
+                function(event) {
+                    obj.command_tab(
+                        event,
                         obj.url_prefix(urls.XUL_VERIFY_CREDENTIALS),
                         { 'tab_name' : offlineStrings.getString('menu.cmd_verify_credentials.tabname') },
                         {}
@@ -1015,31 +1031,32 @@ main.menu.prototype = {
             /* Cataloging Menu */
             'cmd_z39_50_import' : [
                 ['oncommand'],
-                function() {
+                function(event) {
                     obj.data.stash_retrieve();
-                    obj.set_tab(obj.url_prefix(urls.XUL_Z3950_IMPORT),{},{});
+                    obj.command_tab(event,obj.url_prefix(urls.XUL_Z3950_IMPORT),{},{});
                 }
             ],
             'cmd_create_marc' : [
                 ['oncommand'],
-                function() {
+                function(event) {
                     obj.data.stash_retrieve();
-                    obj.set_tab(obj.url_prefix(urls.XUL_MARC_NEW),{},{});
+                    obj.command_tab(event,obj.url_prefix(urls.XUL_MARC_NEW),{},{});
                 }
             ],
 
             'cmd_authority_manage' : [
                 ['oncommand'],
-                function() {
+                function(event) {
                     obj.data.stash_retrieve();
-                    obj.set_tab(obj.url_prefix(urls.AUTHORITY_MANAGE),{},{});
+                    obj.command_tab(event,obj.url_prefix(urls.AUTHORITY_MANAGE),{},{});
                 }
             ],
 
             'cmd_marc_batch_edit' : [
                 ['oncommand'],
-                function() {
-                    obj.set_tab(
+                function(event) {
+                    obj.command_tab(
+                        event,
                         obj.url_prefix(urls.MARC_BATCH_EDIT),{
                             'tab_name' : offlineStrings.getString('menu.cmd_marc_batch_edit.tab')
                         },
@@ -1100,8 +1117,8 @@ main.menu.prototype = {
             ],
             'cmd_manage_offline_xacts' : [
                 ['oncommand'],
-                function() {
-                    obj.set_tab(obj.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS), {'tab_name' : offlineStrings.getString('menu.cmd_manage_offline_xacts.tab')}, {});
+                function(event) {
+                    obj.command_tab(event,obj.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS), {'tab_name' : offlineStrings.getString('menu.cmd_manage_offline_xacts.tab')}, {});
                 }
             ],
             'cmd_download_patrons' : [
@@ -1131,83 +1148,83 @@ main.menu.prototype = {
             ],
             'cmd_adv_user_edit' : [
                 ['oncommand'],
-                function() {
+                function(event) {
                     obj.data.stash_retrieve();
-                    obj.set_tab(obj.url_prefix(urls.XUL_PATRON_BARCODE_ENTRY), {}, { 'perm_editor' : true });
+                    obj.command_tab(event,obj.url_prefix(urls.XUL_PATRON_BARCODE_ENTRY), {}, { 'perm_editor' : true });
                 }
             ],
             'cmd_print_list_template_edit' : [
                 ['oncommand'],
-                function() {
+                function(event) {
                     obj.data.stash_retrieve();
-                    obj.set_tab(obj.url_prefix(urls.XUL_PRINT_LIST_TEMPLATE_EDITOR), {}, {});
+                    obj.command_tab(event,obj.url_prefix(urls.XUL_PRINT_LIST_TEMPLATE_EDITOR), {}, {});
                 }
             ],
             'cmd_stat_cat_edit' : [
                 ['oncommand'],
-                function() {
+                function(event) {
                     obj.data.stash_retrieve();
-                    obj.set_tab(obj.url_prefix(urls.XUL_STAT_CAT_EDIT) + '?ses='+window.escape(ses()), {'tab_name' : offlineStrings.getString('menu.cmd_stat_cat_edit.tab')},{});
+                    obj.command_tab(event,obj.url_prefix(urls.XUL_STAT_CAT_EDIT) + '?ses='+window.escape(ses()), {'tab_name' : offlineStrings.getString('menu.cmd_stat_cat_edit.tab')},{});
                 }
             ],
             'cmd_non_cat_type_edit' : [
                 ['oncommand'],
-                function() {
+                function(event) {
                     obj.data.stash_retrieve();
-                    obj.set_tab(obj.url_prefix(urls.XUL_NON_CAT_LABEL_EDIT) + '?ses='+window.escape(ses()), {'tab_name' : offlineStrings.getString('menu.cmd_non_cat_type_edit.tab')},{});
+                    obj.command_tab(event,obj.url_prefix(urls.XUL_NON_CAT_LABEL_EDIT) + '?ses='+window.escape(ses()), {'tab_name' : offlineStrings.getString('menu.cmd_non_cat_type_edit.tab')},{});
                 }
             ],
             'cmd_copy_location_edit' : [
                 ['oncommand'],
-                function() {
+                function(event) {
                     obj.data.stash_retrieve();
-                    obj.set_tab(obj.url_prefix(urls.XUL_COPY_LOCATION_EDIT) + '?ses='+window.escape(ses()),{'tab_name' : offlineStrings.getString('menu.cmd_copy_location_edit.tab')},{});
+                    obj.command_tab(event,obj.url_prefix(urls.XUL_COPY_LOCATION_EDIT) + '?ses='+window.escape(ses()),{'tab_name' : offlineStrings.getString('menu.cmd_copy_location_edit.tab')},{});
                 }
             ],
             'cmd_test' : [
                 ['oncommand'],
-                function() {
+                function(event) {
                     obj.data.stash_retrieve();
                     var content_params = { 'session' : ses(), 'authtime' : ses('authtime') };
-                    obj.set_tab(obj.url_prefix(urls.XUL_OPAC_WRAPPER), {}, content_params);
+                    obj.command_tab(event,obj.url_prefix(urls.XUL_OPAC_WRAPPER), {}, content_params);
                 }
             ],
             'cmd_test_html' : [
                 ['oncommand'],
-                function() {
+                function(event) {
                     obj.data.stash_retrieve();
-                    obj.set_tab(obj.url_prefix(urls.TEST_HTML) + '?ses='+window.escape(ses()),{ 'browser' : true },{});
+                    obj.command_tab(event,obj.url_prefix(urls.TEST_HTML) + '?ses='+window.escape(ses()),{ 'browser' : true },{});
                 }
             ],
             'cmd_test_xul' : [
                 ['oncommand'],
-                function() {
+                function(event) {
                     obj.data.stash_retrieve();
-                    obj.set_tab(obj.url_prefix(urls.TEST_XUL) + '?ses='+window.escape(ses()),{ 'browser' : false },{});
+                    obj.command_tab(event,obj.url_prefix(urls.TEST_XUL) + '?ses='+window.escape(ses()),{ 'browser' : false },{});
                 }
             ],
             'cmd_console' : [
                 ['oncommand'],
-                function() {
-                    obj.set_tab(obj.url_prefix(urls.XUL_DEBUG_CONSOLE),{'tab_name' : offlineStrings.getString('menu.cmd_console.tab')},{});
+                function(event) {
+                    obj.command_tab(event,obj.url_prefix(urls.XUL_DEBUG_CONSOLE),{'tab_name' : offlineStrings.getString('menu.cmd_console.tab')},{});
                 }
             ],
             'cmd_shell' : [
                 ['oncommand'],
-                function() {
-                    obj.set_tab(obj.url_prefix(urls.XUL_DEBUG_SHELL),{'tab_name' : offlineStrings.getString('menu.cmd_shell.tab')},{});
+                function(event) {
+                    obj.command_tab(event,obj.url_prefix(urls.XUL_DEBUG_SHELL),{'tab_name' : offlineStrings.getString('menu.cmd_shell.tab')},{});
                 }
             ],
             'cmd_xuleditor' : [
                 ['oncommand'],
-                function() {
-                    obj.set_tab(obj.url_prefix(urls.XUL_DEBUG_XULEDITOR),{'tab_name' : offlineStrings.getString('menu.cmd_xuleditor.tab')},{});
+                function(event) {
+                    obj.command_tab(event,obj.url_prefix(urls.XUL_DEBUG_XULEDITOR),{'tab_name' : offlineStrings.getString('menu.cmd_xuleditor.tab')},{});
                 }
             ],
             'cmd_fieldmapper' : [
                 ['oncommand'],
-                function() {
-                    obj.set_tab(obj.url_prefix(urls.XUL_DEBUG_FIELDMAPPER),{'tab_name' : offlineStrings.getString('menu.cmd_fieldmapper.tab')},{});
+                function(event) {
+                    obj.command_tab(event,obj.url_prefix(urls.XUL_DEBUG_FIELDMAPPER),{'tab_name' : offlineStrings.getString('menu.cmd_fieldmapper.tab')},{});
                 }
             ],
             'cmd_survey_wizard' : [
@@ -1219,11 +1236,12 @@ main.menu.prototype = {
             ],
             'cmd_public_opac' : [
                 ['oncommand'],
-                function() {
+                function(event) {
                     var loc = urls.XUL_BROWSER + '?url=' + window.escape(
                         obj.url_prefix(urls.remote)
                     );
-                    obj.set_tab( 
+                    obj.command_tab(
+                        event,
                         loc, 
                         {'tab_name' : offlineStrings.getString('menu.cmd_public_opac.tab'), 'browser' : false}, 
                         { 'no_xulG' : true, 'show_nav_buttons' : true, 'show_print_button' : true } 
@@ -1255,20 +1273,20 @@ main.menu.prototype = {
             ],
             'cmd_extension_manager' : [
                 ['oncommand'],
-                function() {
-                    obj.set_tab('chrome://mozapps/content/extensions/extensions.xul?type=extensions',{'tab_name' : offlineStrings.getString('menu.cmd_extension_manager.tab')},{});
+                function(event) {
+                    obj.command_tab(event,'chrome://mozapps/content/extensions/extensions.xul?type=extensions',{'tab_name' : offlineStrings.getString('menu.cmd_extension_manager.tab')},{});
                 }
             ],
             'cmd_theme_manager' : [
                 ['oncommand'],
-                function() {
-                    obj.set_tab('chrome://mozapps/content/extensions/extensions.xul?type=themes',{'tab_name' : offlineStrings.getString('menu.cmd_theme_manager.tab')},{});
+                function(event) {
+                    obj.command_tab(event,'chrome://mozapps/content/extensions/extensions.xul?type=themes',{'tab_name' : offlineStrings.getString('menu.cmd_theme_manager.tab')},{});
                 }
             ],
             'cmd_about_config' : [
                 ['oncommand'],
-                function() {
-                    obj.set_tab('chrome://global/content/config.xul',{'tab_name' : 'about:config'},{});
+                function(event) {
+                    obj.command_tab(event,'chrome://global/content/config.xul',{'tab_name' : 'about:config'},{});
                 }
             ],
             'cmd_shutdown' : [
