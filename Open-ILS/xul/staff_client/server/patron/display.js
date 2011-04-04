@@ -1,4 +1,6 @@
 dump('entering patron/display.js\n');
+dojo.require("openils.User");
+dojo.require("openils.XUL");
 
 function $(id) { return document.getElementById(id); }
 
@@ -356,63 +358,51 @@ patron.display.prototype = {
                     'cmd_patron_reservation' : [
                         ['command'],
                         function(ev) {
-                            if (xulG.auth == undefined) {
-                                xulG.auth = {"session": {"key": ses()}};
-                            }
-                            xulG.bresv_interface_opts = {
-                                "patron_barcode": obj.patron.card().barcode()
-                            };
-                            xulG.new_tab(
+                            openils.XUL.newTabEasy(
                                 "/eg/booking/reservation",
-                                {
-                                    "tab_name": $("offlineStrings").getString(
-                                        "menu.cmd_booking_reservation.tab"
-                                    ),
-                                    "browser": false
+                                $("offlineStrings").getString(
+                                    "menu.cmd_booking_reservation.tab"
+                                ), {
+                                    "bresv_interface_opts": {
+                                        "patron_barcode":
+                                            obj.patron.card().barcode()
+                                    }
                                 },
-                                xulG
+                                true
                             );
                         }
                     ],
                     'cmd_patron_reservation_pickup' : [
                         ['command'],
                         function(ev) {
-                            if (xulG.auth == undefined) {
-                                xulG.auth = {"session": {"key": ses()}};
-                            }
-                            xulG.bresv_interface_opts = {
-                                "patron_barcode": obj.patron.card().barcode()
-                            };
-                            xulG.new_tab(
+                            openils.XUL.newTabEasy(
                                 "/eg/booking/pickup",
-                                {
-                                    "tab_name": $("offlineStrings").getString(
-                                        "menu.cmd_booking_reservation_pickup.tab"
-                                    ),
-                                    "browser": false
+                                $("offlineStrings").getString(
+                                    "menu.cmd_booking_reservation_pickup.tab"
+                                ), {
+                                    "bresv_interface_opts": {
+                                        "patron_barcode":
+                                            obj.patron.card().barcode()
+                                    }
                                 },
-                                xulG
+                                true
                             );
                         }
                     ],
                     'cmd_patron_reservation_return' : [
                         ['command'],
                         function(ev) {
-                            if (xulG.auth == undefined) {
-                                xulG.auth = {"session": {"key": ses()}};
-                            }
-                            xulG.bresv_interface_opts = {
-                                "patron_barcode": obj.patron.card().barcode()
-                            };
-                            xulG.new_tab(
+                            openils.XUL.newTabEasy(
                                 "/eg/booking/return",
-                                {
-                                    "tab_name": $("offlineStrings").getString(
-                                        "menu.cmd_booking_reservation_return.tab"
-                                    ),
-                                    "browser": false
+                                $("offlineStrings").getString(
+                                    "menu.cmd_booking_reservation_return.tab"
+                                ), {
+                                    "bresv_interface_opts": {
+                                        "patron_barcode":
+                                            obj.patron.card().barcode()
+                                    }
                                 },
-                                xulG
+                                true
                             );
                         }
                     ],

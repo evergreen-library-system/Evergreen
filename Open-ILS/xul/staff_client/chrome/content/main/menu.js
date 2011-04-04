@@ -663,75 +663,45 @@ main.menu.prototype = {
             'cmd_booking_reservation' : [
                 ['oncommand'],
                 function() {
-                    obj.set_tab(
+                    open_eg_web_page(
                         "/eg/booking/reservation",
-                        {
-                            "tab_name": offlineStrings.getString(
-                                "menu.cmd_booking_reservation.tab"
-                            ),
-                            "browser": false
-                        },
-                        xulG
+                        "menu.cmd_booking_reservation.tab"
                     );
                 }
             ],
             'cmd_booking_pull_list' : [
                 ['oncommand'],
                 function() {
-                    obj.set_tab(
+                    open_eg_web_page(
                         "/eg/booking/pull_list",
-                        {
-                            "tab_name": offlineStrings.getString(
-                                "menu.cmd_booking_pull_list.tab"
-                            ),
-                            "browser": false
-                        },
-                        xulG
+                        "menu.cmd_booking_pull_list.tab"
                     );
                 }
             ],
             'cmd_booking_capture' : [
                 ['oncommand'],
                 function() {
-                    obj.set_tab(
+                    open_eg_web_page(
                         "/eg/booking/capture",
-                        {
-                            "tab_name": offlineStrings.getString(
-                                "menu.cmd_booking_capture.tab"
-                            ),
-                            "browser": false
-                        },
-                        xulG
+                        "menu.cmd_booking_capture.tab"
                     );
                 }
             ],
             'cmd_booking_reservation_pickup' : [
                 ['oncommand'],
                 function() {
-                    obj.set_tab(
+                    open_eg_web_page(
                         "/eg/booking/pickup",
-                        {
-                            "tab_name": offlineStrings.getString(
-                                "menu.cmd_booking_reservation_pickup.tab"
-                            ),
-                            "browser": false
-                        },
-                        xulG
+                        "menu.cmd_booking_reservation_pickup.tab"
                     );
                 }
             ],
             'cmd_booking_reservation_return' : [
                 ['oncommand'],
                 function() {
-                    obj.set_tab(
+                    open_eg_web_page(
                         "/eg/booking/return",
-                        {
-                            "tab_name": offlineStrings.getString(
-                                "menu.cmd_booking_reservation_return.tab"
-                            ),
-                            "browser": false
-                        },
-                        xulG
+                        "menu.cmd_booking_reservation_return.tab"
                     );
                 }
             ],
