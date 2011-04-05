@@ -613,6 +613,12 @@ __PACKAGE__->register_method(
 	NOTE
 );
 
+sub _clean_regex_chars {
+    my ($search) = @_;
+
+    $search =~ tr/\\.[]()?*+{}^$//d;
+    return $search;
+}
 
 sub patron_search {
 	my $self = shift;
@@ -642,15 +648,15 @@ sub patron_search {
 	# group 3 = barcode
 
 	my $usr = join ' AND ', map { "evergreen.lowercase(CAST($_ AS text)) ~ ?" } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
-	my @usrv = map { "^" . $$search{$_}{value} } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
+	my @usrv = map { "^" . _clean_regex_chars($$search{$_}{value}) } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
 
 	my $addr = join ' AND ', map { "evergreen.lowercase(CAST($_ AS text)) ~ ?" } grep { ''.$$search{$_}{group} eq '1' } keys %$search;
-	my @addrv = map { "^" . $$search{$_}{value} } grep { ''.$$search{$_}{group} eq '1' } keys %$search;
+	my @addrv = map { "^" . _clean_regex_chars($$search{$_}{value}) } grep { ''.$$search{$_}{group} eq '1' } keys %$search;
 
-	my $pv = $$search{phone}{value};
-	my $iv = $$search{ident}{value};
-	my $nv = $$search{name}{value};
-	my $cv = $$search{card}{value};
+	my $pv = _clean_regex_chars($$search{phone}{value});
+	my $iv = _clean_regex_chars($$search{ident}{value});
+	my $nv = _clean_regex_chars($$search{name}{value});
+	my $cv = _clean_regex_chars($$search{card}{value});
 
 	my $card = '';
 	if ($cv) {
