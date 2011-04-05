@@ -98,11 +98,29 @@ max_servers='25'
 					<para>OR use SQL like:</para>
 <screen>
 <userinput>
-INSERT INTO permission.grp_tree (id,name,parent,description,application_perm)
+INSERT INTO permission.grp_tree (id,name,parent,description,application_perm) 
 VALUES (8, 'SIP', 1, 'SIP2 Client Systems', 'group_application.user.sip_client');
-
-INSERT INTO permission.grp_perm_map (grp,perm,depth) 
-VALUES (8,15,0),(8,16,0),(8,17,0),(8,31,0),(8,32,0),(8,48,0),(8,54,0),(8,75,0),(8,82,0);
+ 
+INSERT INTO
+  permission.grp_perm_map (grp, perm, depth, grantable)
+SELECT
+  g.id, p.id, 0, FALSE
+FROM
+  permission.grp_tree g,
+  permission.perm_list p
+WHERE
+  g.name = 'SIP' AND
+  p.code IN (
+    'COPY_CHECKIN',
+    'COPY_CHECKOUT',
+    'RENEW_CIRC',
+    'VIEW_CIRCULATIONS',
+    'VIEW_COPY_CHECKOUT_HISTORY',
+    'VIEW_PERMIT_CHECKOUT',
+    'VIEW_USER',
+    'VIEW_USER_FINES_SUMMARY',
+    'VIEW_USER_TRANSACTIONS'
+);
 </userinput>
 </screen>
 					
