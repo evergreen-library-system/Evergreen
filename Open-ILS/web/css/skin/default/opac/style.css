@@ -301,13 +301,13 @@ div.select-wrapper:hover {
 	background:url('/images/expert_search_off.gif') no-repeat bottom;
 }
 
-#acct_tabs {
+#acct_tabs, #acct_fines_tabs {
 	height:33px;
 	width:974px;
 	margin:auto;
 }
 
-#acct_tabs a {
+#acct_tabs a, #acct_fines_tabs a {
 	float: left;
 	display: block;
 	height:33px;
@@ -860,12 +860,19 @@ div.select-wrapper:hover {
 	top:3px;
 }
 
-#myopac_tabs, #adv_search_parent {
+#myopac_tabs, #adv_search_parent, #fines_payments_wrapper {
 	background: #929292;
 	border-top:1px solid #8b8b8b;
 	padding-top:5px;
 	margin-bottom:20px;
 }
+
+#fines_payments_wrapper {
+    padding-left: 5px; 
+    padding-right: 5px;
+}
+
+#myopac_payments_table th { text-align: left; }
 
 #adv_search_parent {
 	margin-bottom:0px;

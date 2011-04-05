@@ -121,7 +121,7 @@ sub load {
     return $self->load_place_hold if $path =~ m|opac/place_hold|;
     return $self->load_myopac_holds if $path =~ m|opac/myopac/holds|;
     return $self->load_myopac_circs if $path =~ m|opac/myopac/circs|;
-    return $self->load_myopac_fines if $path =~ m|opac/myopac/main|;
+    return $self->load_myopac_main if $path =~ m|opac/myopac/main|;
     return $self->load_myopac_update_email if $path =~ m|opac/myopac/update_email|;
     return $self->load_myopac_bookbags if $path =~ m|opac/myopac/lists|;
     return $self->load_myopac_bookbag_update if $path =~ m|opac/myopac/list/update|;
