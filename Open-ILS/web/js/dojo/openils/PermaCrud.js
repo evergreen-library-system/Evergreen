@@ -296,7 +296,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
 
                     req.onerror = function (r) {
                         _pcrud.disconnect();
-                        if (r._final_error) r._final_error(r);
+                        if (req._final_error) req._final_error(r);
                         else throw '_CUD: Error creating, deleting or updating ' + js2JSON(obj);
                     };
 
@@ -307,16 +307,16 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
                         var res = r.recv();
                         if ( res && res.content() ) {
                             _return_list.push( res.content() );
-                            _CUD_recursive( r._obj_list, r._pos, r._final_complete );
+                            _CUD_recursive( r._obj_list, r._pos, req._final_complete, req._final_error );
                         } else {
                             _pcrud.disconnect();
-                            if (r._final_error) r._final_error(r);
+                            if (req._final_error) req._final_error(r);
                             else throw '_CUD: Error creating, deleting or updating ' + js2JSON(obj);
                         }
                     };
                     req.onerror = function (r) {
                         _pcrud.disconnect();
-                        if (r._final_error) r._final_error(r);
+                        if (req._final_error) req._final_error(r);
                         throw '_CUD: Error creating, deleting or updating ' + js2JSON(obj);
                     };
                 }
@@ -398,6 +398,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
             if (!this.connected) this.connect();
 
             var _pcrud = this;
+            var _return_list = [];
 
             function _auto_CUD_recursive ( obj_list, pos, final_complete, final_error ) {
                 var obj = obj_list[pos];
@@ -423,32 +424,41 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
 
                 if (++pos == obj_list.length) {
                     req.oncomplete = function (r) {
+                        var res = r.recv();
 
-                        _pcrud.session.request({
-                            method : 'open-ils.pcrud.transaction.commit',
-                            timeout : 10,
-                            params : [ _pcrud.auth() ],
-                            onerror : function (r) {
-                                _pcrud.disconnect();
-                                throw 'Transaction commit error';
-                            },      
-                            oncomplete : function (r) {
-                                var res = r.recv();
-                                if ( res && res.content() ) {
-                                    if (r._final_complete) 
-                                        req._final_complete(req, _return_list);
-                                    _pcrud.disconnect();
-                                } else {
+                        if ( res && res.content() ) {
+                            _return_list.push( res.content() );
+                            _pcrud.session.request({
+                                method : 'open-ils.pcrud.transaction.commit',
+                                timeout : 10,
+                                params : [ _pcrud.auth() ],
+                                onerror : function (r) {
                                     _pcrud.disconnect();
                                     throw 'Transaction commit error';
-                                }
-                            },
-                        }).send();
+                                },      
+                                oncomplete : function (r) {
+                                    var res = r.recv();
+                                    if ( res && res.content() ) {
+                                        if (req._final_complete) 
+                                            req._final_complete(req, _return_list);
+                                        _pcrud.disconnect();
+                                    } else {
+                                        _pcrud.disconnect();
+                                        if (req._final_error) req._final_error(r);
+                                        else throw 'Transaction commit error';
+                                    }
+                                },
+                            }).send();
+                        } else {
+                            _pcrud.disconnect();
+                            if (req._final_error) req._final_error(r)
+                            else throw '_auto_CUD: Error creating, deleting or updating ' + js2JSON(obj);
+                        }
                     };
 
                     req.onerror = function (r) {
-                        if (r._final_error) r._final_error(r);
                         _pcrud.disconnect();
+                        if (req._final_error) req._final_error(r);
                     };
 
                 } else {
@@ -457,10 +467,12 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
                     req.oncomplete = function (r) {
                         var res = r.recv();
                         if ( res && res.content() ) {
-                            _auto_CUD_recursive( r._obj_list, r._pos, r._final_complete, r._final_error );
+                            _return_list.push( res.content() );
+                            _auto_CUD_recursive( r._obj_list, r._pos, req._final_complete, req._final_error );
                         } else {
                             _pcrud.disconnect();
-                            throw '_auto_CUD: Error creating, deleting or updating ' + js2JSON(obj);
+                            if (req._final_error) req._final_error(r);
+                            else throw '_auto_CUD: Error creating, deleting or updating ' + js2JSON(obj);
                         }
                     };
                 }
@@ -489,6 +501,8 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
                     }
                 },
             }).send();
+
+            return _return_list;
         }
 
     });
