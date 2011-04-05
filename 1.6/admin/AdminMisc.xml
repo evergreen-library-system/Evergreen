@@ -44,7 +44,7 @@
 		<caution>
 			<para>If you decide to start each service individually, you need to start them in a specific order:</para>
 <screen>
-<userimput>osrf_ctl.sh -l -a start_router</userinput>
+<userinput>osrf_ctl.sh -l -a start_router</userinput>
 <userinput>osrf_ctl.sh -l -a start_perl</userinput>
 <userinput>osrf_ctl.sh -l -a start_c</userinput>
 </screen>
