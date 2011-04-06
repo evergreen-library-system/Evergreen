@@ -29,18 +29,18 @@ my $config = '/openils/conf/opensrf_core.xml';
 my $marctype = 'USMARC';
 
 my $parse_options = GetOptions(
-	'idfield=s'	=> \$idfield,
-	'idsubfield=s'	=> \$idsubfield,
+    'idfield=s' => \$idfield,
+    'idsubfield=s' => \$idsubfield,
     'bibfield=s'=> \$bibfield,
     'bibsubfield=s'=> \$bibsubfield,
-	'startid=i'	=> \$count,
-	'user=s'	=> \$user,
-	'config=s'	=> \$config,
-	'marctype=s'	=> \$marctype,
-	'file=s'	=> \@files,
-	'libmap=s'	=> \$libmap,
-	'quiet'		=> \$quiet,
-	'help'		=> \$help,
+    'startid=i'=> \$count,
+    'user=s' => \$user,
+    'config=s' => \$config,
+    'marctype=s' => \$marctype,
+    'file=s' => \@files,
+    'libmap=s' => \$libmap,
+    'quiet' => \$quiet,
+    'help' => \$help,
 );
 
 if (!$parse_options or $help) {
@@ -55,7 +55,7 @@ my @req;
 my %processing_cache;
 my $lib_id_map;
 if ($libmap) {
-	$lib_id_map = map_libraries_to_ID($libmap);
+    $lib_id_map = map_libraries_to_ID($libmap);
 }
 
 OpenSRF::System->bootstrap_client( config_file => $config );
@@ -79,23 +79,23 @@ $batch->warnings_off();
 my $starttime = time;
 my $rec;
 while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
-	next if ($rec == -1);
-	my $id = $count;
-	my $record_field;
-	if ($idsubfield) {
-		$record_field = $rec->field($idfield, $idsubfield);
-	} else {
-		$record_field = $rec->field($idfield);
-	}
-	my $record = $count;
+    next if ($rec == -1);
+    my $id = $count;
+    my $record_field;
+    if ($idsubfield) {
+        $record_field = $rec->field($idfield, $idsubfield);
+    } else {
+        $record_field = $rec->field($idfield);
+    }
+    my $record = $count;
 
-	# On some systems, the 001 actually points to the record ID
-	# We need to attach to the call number to handle holdings in different libraries
-	# but we can work out call numbers later in SQL by the record ID + call number text
-	if ($record_field) {
-		$record = $record_field->data;
-		$record =~ s/^.*?(\d+).*?$/$1/o;
-	}
+    # On some systems, the 001 actually points to the record ID
+    # We need to attach to the call number to handle holdings in different libraries
+    # but we can work out call numbers later in SQL by the record ID + call number text
+    if ($record_field) {
+        $record = $record_field->data;
+        $record =~ s/^.*?(\d+).*?$/$1/o;
+    }
 
     # If we have been given bibfield / bibsubfield values, use those to find
     # a matching bib record for $record and use _that_ as our record instead
@@ -107,65 +107,65 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
         $record = $result->record;
     }
 
-	(my $xml = $rec->as_xml_record()) =~ s/\n//sog;
-	$xml =~ s/^<\?xml.+\?\s*>//go;
-	$xml =~ s/>\s+</></go;
-	$xml =~ s/\p{Cc}//go;
-	$xml = OpenILS::Application::AppUtils->entityize($xml);
-	$xml =~ s/[\x00-\x1f]//go;
+    (my $xml = $rec->as_xml_record()) =~ s/\n//sog;
+    $xml =~ s/^<\?xml.+\?\s*>//go;
+    $xml =~ s/>\s+</></go;
+    $xml =~ s/\p{Cc}//go;
+    $xml = OpenILS::Application::AppUtils->entityize($xml);
+    $xml =~ s/[\x00-\x1f]//go;
 
-	my $bib = new Fieldmapper::serial::record_entry;
-	$bib->id($id);
-	$bib->record($record);
-	$bib->active('t');
-	$bib->deleted('f');
-	$bib->marc($xml);
-	$bib->creator($user);
-	$bib->create_date('now');
-	$bib->editor($user);
-	$bib->edit_date('now');
-	$bib->last_xact_id('IMPORT-'.$starttime);
+    my $bib = new Fieldmapper::serial::record_entry;
+    $bib->id($id);
+    $bib->record($record);
+    $bib->active('t');
+    $bib->deleted('f');
+    $bib->marc($xml);
+    $bib->creator($user);
+    $bib->create_date('now');
+    $bib->editor($user);
+    $bib->edit_date('now');
+    $bib->last_xact_id('IMPORT-'.$starttime);
 
-	if ($libmap) {
-		my $lib_id = get_library_id($rec);
-		if ($lib_id) {
-			$bib->owning_lib($lib_id);
-		}
-	}
+    if ($libmap) {
+        my $lib_id = get_library_id($rec);
+        if ($lib_id) {
+            $bib->owning_lib($lib_id);
+        }
+    }
 
-	print OpenSRF::Utils::JSON->perl2JSON($bib)."\n";
+    print OpenSRF::Utils::JSON->perl2JSON($bib)."\n";
 
-	$count++;
+    $count++;
 
-	if (!$quiet && !($count % 20)) {
-		print STDERR "\r$count\t". $count / (time - $starttime);
-	}
+    if (!$quiet && !($count % 20)) {
+        print STDERR "\r$count\t". $count / (time - $starttime);
+    }
 }
 
 # Generate a hash of library names (as found in the 852b in the MFHD record) to
 # integers representing actor.org_unit ID values
 sub map_libraries_to_ID {
-	my $map_filename = shift;
+    my $map_filename = shift;
 
-	my %lib_id_map;
+    my %lib_id_map;
 
-	open(MAP_FH, '<', $map_filename) or die "Could not load [$map_filename] $!";
-	while (<MAP_FH>) {
-		my ($lib, $id) = $_ =~ /^(.*?)\t(.*?)$/;
-		$lib_id_map{$lib} = $id;
-	}
+    open(MAP_FH, '<', $map_filename) or die "Could not load [$map_filename] $!";
+    while (<MAP_FH>) {
+        my ($lib, $id) = $_ =~ /^(.*?)\t(.*?)$/;
+        $lib_id_map{$lib} = $id;
+    }
 
-	return \%lib_id_map;
+    return \%lib_id_map;
 }
 
 # Look up the actor.org_unit.id value for this library name
 sub get_library_id {
-	my $record = shift;
+    my $record = shift;
 
-	my $lib_name = $record->field('852')->subfield('b');
-	my $lib_id = $lib_id_map->{$lib_name};
+    my $lib_name = $record->field('852')->subfield('b');
+    my $lib_id = $lib_id_map->{$lib_name};
 
-	return $lib_id;
+    return $lib_id;
 }
 
 # Get the actor.usr.id value for the given username
