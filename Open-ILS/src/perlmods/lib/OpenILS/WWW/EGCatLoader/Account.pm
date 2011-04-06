@@ -36,7 +36,7 @@ sub load_myopac_prefs_notify {
     $user_prefs = $self->update_optin_prefs($user_prefs)
         if $self->cgi->request_method eq 'POST';
 
-    $self->ctx->{opt_in_settings} = $user_prefs;
+    $self->ctx->{opt_in_settings} = $user_prefs; 
 
     return Apache2::Const::OK;
 }
@@ -507,15 +507,27 @@ sub load_myopac_circ_history {
     my $e = $self->editor;
     my $ctx = $self->ctx;
     my $limit = $self->cgi->param('limit');
-    my $offset = $self->cgi->param('offset');
+    my $offset = $self->cgi->param('offset') || 0;
 
     my $circs = $e->json_query({
         from => ['action.usr_visible_circs', $e->requestor->id],
-        limit => $limit || 25,
-        offset => $offset || 0
+        #limit => $limit || 25,
+        #offset => $offset || 0,
     });
 
-    $ctx->{circs} = $self->fetch_user_circs(1, [map { $_->{id} } @$circs], $limit, $offset);
+    # XXX: order-by in the json_query above appears to do nothing, so in-query 
+    # paging is not reallly an option.  do the sorting/paging here
+
+    # sort newest to oldest
+    $circs = [ sort { $b->{xact_start} cmp $a->{xact_start} } @$circs ];
+    my @ids = map { $_->{id} } @$circs;
+
+    # find the selected page and trim cruft
+    @ids = @ids[$offset..($offset + $limit - 1)] if $limit;
+    @ids = grep { defined $_ } @ids;
+
+    $ctx->{circs} = $self->fetch_user_circs(1, \@ids, $limit, $offset);
+    #$ctx->{circs} = $self->fetch_user_circs(1, [map { $_->{id} } @$circs], $limit, $offset);
 
     return Apache2::Const::OK;
 }
