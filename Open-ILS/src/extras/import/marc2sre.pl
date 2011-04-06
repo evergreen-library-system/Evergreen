@@ -2,19 +2,13 @@
 use strict;
 use warnings;
 
-use lib '/openils/lib/perl5/';
-
 use OpenSRF::System;
-use OpenSRF::Application;
 use OpenSRF::EX qw/:try/;
-use OpenSRF::AppSession;
-use OpenSRF::MultiSession;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Application::AppUtils;
+use OpenILS::Event;
 use OpenILS::Utils::Fieldmapper;
-use Digest::MD5 qw/md5_hex/;
 use OpenSRF::Utils::JSON;
-use Data::Dumper;
 use Unicode::Normalize;
 
 use Time::HiRes qw/time/;
@@ -22,27 +16,40 @@ use Getopt::Long;
 use MARC::Batch;
 use MARC::File::XML ( BinaryEncoding => 'utf-8' );
 use MARC::Charset;
+use Pod::Usage;
 
 MARC::Charset->ignore_errors(1);
 
-my ($idfield, $count, $user, $password, $config, $marctype, $idsubfield, @files, @trash_fields, $quiet, $libmap) =
-	('001', 1, 'admin', 'open-ils', '/openils/conf/opensrf_core.xml', 'USMARC');
+# Command line options, with applicable defaults
+my ($idsubfield, $bibfield, $bibsubfield, @files, $libmap, $quiet, $help);
+my $idfield = '004';
+my $count = 1;
+my $user = 'admin';
+my $config = '/openils/conf/opensrf_core.xml';
+my $marctype = 'USMARC';
 
-GetOptions(
+my $parse_options = GetOptions(
 	'idfield=s'	=> \$idfield,
 	'idsubfield=s'	=> \$idsubfield,
+    'bibfield=s'=> \$bibfield,
+    'bibsubfield=s'=> \$bibsubfield,
 	'startid=i'	=> \$count,
 	'user=s'	=> \$user,
-	'password=s'	=> \$password,
 	'config=s'	=> \$config,
 	'marctype=s'	=> \$marctype,
 	'file=s'	=> \@files,
 	'libmap=s'	=> \$libmap,
 	'quiet'		=> \$quiet,
+	'help'		=> \$help,
 );
+
+if (!$parse_options or $help) {
+    pod2usage(0);
+}
 
 @files = @ARGV if (!@files);
 
+my $U = 'OpenILS::Application::AppUtils';
 my @ses;
 my @req;
 my %processing_cache;
@@ -54,7 +61,13 @@ if ($libmap) {
 OpenSRF::System->bootstrap_client( config_file => $config );
 Fieldmapper->import(IDL => OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
 
-$user = OpenILS::Application::AppUtils->check_user_session( login($user,$password) )->id;
+my ($result, $evt) = get_user_id($user);
+if ($evt || !$result->id) {
+    print("Could not retrieve user with user name '$user'\n");
+    exit(0);
+}
+
+$user = $result->id;
 
 select STDERR; $| = 1;
 select STDOUT; $| = 1;
@@ -83,6 +96,16 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 		$record = $record_field->data;
 		$record =~ s/^.*?(\d+).*?$/$1/o;
 	}
+
+    # If we have been given bibfield / bibsubfield values, use those to find
+    # a matching bib record for $record and use _that_ as our record instead
+    if ($bibfield) {
+        my ($result, $evt) = map_id_to_bib($record);
+        if ($evt || !$result->record) {
+            print("Could not find matching bibliographic record for $record\n");
+        }
+        $record = $result->record;
+    }
 
 	(my $xml = $rec->as_xml_record()) =~ s/\n//sog;
 	$xml =~ s/^<\?xml.+\?\s*>//go;
@@ -119,56 +142,8 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 	}
 }
 
-sub login {        
-	my( $username, $password, $type ) = @_;
-
-	$type |= "staff"; 
-
-	my $seed = OpenILS::Application::AppUtils->simplereq(
-		'open-ils.auth',
-		'open-ils.auth.authenticate.init',
-		$username
-	);
-
-	die("No auth seed. Couldn't talk to the auth server") unless $seed;
-
-	my $response = OpenILS::Application::AppUtils->simplereq(
-		'open-ils.auth',
-		'open-ils.auth.authenticate.complete',
-                {       username => $username,
-                        password => md5_hex($seed . md5_hex($password)),
-                        type => $type });
-
-        die("No auth response returned on login.") unless $response;
-
-        my $authtime = $response->{payload}->{authtime};
-        my $authtoken = $response->{payload}->{authtoken};
-
-	die("Login failed for user $username!") unless $authtoken;
-
-        return $authtoken;
-}       
-
-=head2
-
-map_libraries_to_ID
-
-Parses a file to return a hash of library names to integers representing
-the actor.org_unit.id value of the library. This enables us to generate
-an ingest file that does not subsequently need to manually manipulated.
-
-The library name must correspond to the 'b' subfield of the 852 field.
-Well, it does not have to, but you will have to modify this script
-accordingly.
-
-The format of the map file should be the name of the library, followed
-by a tab, followed by the desired numeric ID of the library. For example:
-
-BR1	4
-BR2	5
-
-=cut
-
+# Generate a hash of library names (as found in the 852b in the MFHD record) to
+# integers representing actor.org_unit ID values
 sub map_libraries_to_ID {
 	my $map_filename = shift;
 
@@ -183,6 +158,7 @@ sub map_libraries_to_ID {
 	return \%lib_id_map;
 }
 
+# Look up the actor.org_unit.id value for this library name
 sub get_library_id {
 	my $record = shift;
 
@@ -191,3 +167,158 @@ sub get_library_id {
 
 	return $lib_id;
 }
+
+# Get the actor.usr.id value for the given username
+sub get_user_id {
+    my $username = shift;
+
+    my ($result, $evt);
+
+    $result = $U->cstorereq(
+        'open-ils.cstore.direct.actor.user.search',
+        { usrname => $username, deleted => 'f' }
+    );
+    $evt = OpenILS::Event->new('ACTOR_USR_NOT_FOUND') unless $result;
+
+    return ($result, $evt);
+}
+
+# Get the biblio.record_entry.id value for the given identifier; note that this
+# approach uses a wildcard to match anything that precedes the identifier value
+sub map_id_to_bib {
+    my $record = shift;
+
+    my ($result, $evt);
+
+    my %search = (
+        tag => $bibfield, 
+        value => { like => '%' . $record }
+    );
+
+    if ($bibsubfield) {
+        $search{'subfield'} = $bibsubfield;
+    }
+
+    $result = $U->cstorereq(
+        'open-ils.cstore.direct.metabib.full_rec.search', \%search
+    );
+    $evt = OpenILS::Event->new('METABIB_FULL_REC_NOT_FOUND') unless $record;
+
+    return ($result, $evt);
+}
+
+__END__
+
+=head1 NAME
+
+marc2sre.pl - Convert MARC Format for Holdings Data (MFHD) records to SRE
+(serial.record_entry) JSON objects 
+
+=head1 SYNOPSIS
+
+C<marc2sre.pl> [B<--config>=I<opensrf_core.conf>]
+[[B<--idfield>=I<MARC-tag>[ B<--idsubfield>=I<MARC-code>]] [B<--start_id>=I<start-ID>]
+[B<--user>=I<db-username>] [B<--marctype>=I<fileformat>]
+[[B<--file>=I<MARC-filename>[, ...]] [B<--libmap>=I<map-file>] [B<--quiet>=I<quiet>]
+[[B<--bibfield>=I<MARC-tag> [B<--bibsubfield>=<MARC-code>]]
+
+=head1 DESCRIPTION
+
+For one or more files containing MFHD records, iterate through the records
+and generate SRE (serial.record_entry) JSON objects.
+
+=head1 OPTIONS
+
+=over
+
+=item * B<-c> I<config-file>, B<--config>=I<config-file>
+
+Specifies the OpenSRF configuration file used to connect to the OpenSRF router.
+Defaults to F</openils/conf/opensrf_core.xml>
+
+=item * B<--idfield> I<MARC-field>
+
+Specifies the MFHD field where the identifier of the corresponding
+bibliographic record is found. Defaults to '004'.
+
+=item * B<--idsubfield> I<MARC-code>
+
+Specifies the MFHD subfield, if any, where the identifier of the corresponding
+bibliographic record is found. This option is ignored unless it is accompanied
+by the B<--idfield> option.  Defaults to null.
+
+=item * B<--bibfield> I<MARC-field>
+
+Specifies the field in the bibliographic record that holds the identifier
+value. Defaults to null.
+
+=item * B<--bibsubfield> I<MARC-code>
+
+Specifies the subfield in the bibliographic record, if any, that holds the
+identifier value. This option is ignored unless it is accompanied by the
+B<--bibfield> option. Defaults to null.
+
+=item * B<-u> I<username>, B<--user>=I<username>
+
+Specifies the Evergreen user that will own these serial records.
+
+=item * B<-m> I<file-format>, B<--marctype>=I<file-format>
+
+Specifies whether the files containg the MFHD records are in MARC21 ('MARC21')
+or MARC21XML ('XML') format. Defaults to MARC21.
+
+=item * B<-l> I<map-file>, B<--libmap>=I<map-file>
+
+Points to a file to containing a mapping of library names to integers.
+The integer represents the actor.org_unit.id value of the library. This enables
+us to generate an ingest file that does not subsequently need to manually
+manipulated.
+
+The library name must correspond to the 'b' subfield of the 852 field.
+Well, it does not have to, but you will have to modify this script
+accordingly.
+
+The format of the map file should be the name of the library, followed
+by a tab, followed by the desired numeric ID of the library. For example:
+
+BR1	4
+BR2	5
+
+=item * B<-q>, B<--quiet>
+
+Suppresses the record counter output.
+
+=back
+
+=head1 EXAMPLES
+
+    marc2sre.pl --idfield 004 --bibfield 035 --bibsubfield a --user cat1 serial_holding.xml
+
+Processes MFHD records in the B<serial_holding.xml> file. The script pulls the
+bibliographic record identifier from the 004 control field of the MFHD record
+and searches for a matching value in the bibliographic record in data field
+035, subfield a. The "cat1" user will own the processed MFHD records.
+
+=head1 AUTHOR
+
+Dan Scott <dscott@laurentian.ca>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2010-2011 by Dan Scott
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+=cut
