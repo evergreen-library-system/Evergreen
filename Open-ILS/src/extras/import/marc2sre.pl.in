@@ -25,7 +25,7 @@ my ($idsubfield, $bibfield, $bibsubfield, @files, $libmap, $quiet, $help);
 my $idfield = '004';
 my $count = 1;
 my $user = 'admin';
-my $config = '/openils/conf/opensrf_core.xml';
+my $config = '@sysconfdir@/opensrf_core.xml';
 my $marctype = 'USMARC';
 
 my $parse_options = GetOptions(
@@ -243,7 +243,7 @@ and generate SRE (serial.record_entry) JSON objects.
 =item * B<-c> I<config-file>, B<--config>=I<config-file>
 
 Specifies the OpenSRF configuration file used to connect to the OpenSRF router.
-Defaults to F</openils/conf/opensrf_core.xml>
+Defaults to F<@sysconfdir@/opensrf_core.xml>
 
 =item * B<--idfield> I<MARC-field>
 

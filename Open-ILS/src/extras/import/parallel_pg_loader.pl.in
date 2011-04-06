@@ -2,8 +2,6 @@
 use strict;
 use warnings;
 
-use lib '/openils/lib/perl5/';
-
 use OpenSRF::System;
 use OpenSRF::EX qw/:try/;
 use OpenSRF::Utils::SettingsClient;
@@ -16,7 +14,7 @@ use Getopt::Long;
 
 my @files;
 my ($config, $output, @auto, @order, @wipe) =
-	('/openils/conf/opensrf_core.xml', 'pg_loader-output');
+	('@sysconfdir@/opensrf_core.xml', 'pg_loader-output');
 my $nocommit = 0;
 
 GetOptions(
