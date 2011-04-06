@@ -89,12 +89,8 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
     }
     my $record = $count;
 
-    # On some systems, the 001 actually points to the record ID
-    # We need to attach to the call number to handle holdings in different libraries
-    # but we can work out call numbers later in SQL by the record ID + call number text
     if ($record_field) {
         $record = $record_field->data;
-        $record =~ s/^.*?(\d+).*?$/$1/o;
     }
 
     # If we have been given bibfield / bibsubfield values, use those to find
@@ -105,6 +101,9 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
             print("Could not find matching bibliographic record for $record\n");
         }
         $record = $result->record;
+    } else {
+        # Strip the identifier down to a usable integer
+        $record =~ s/^.*?(\d+).*?$/$1/o;
     }
 
     (my $xml = $rec->as_xml_record()) =~ s/\n//sog;
@@ -192,7 +191,7 @@ sub map_id_to_bib {
 
     my %search = (
         tag => $bibfield, 
-        value => { like => '%' . $record }
+        value => { ilike => '%' . $record }
     );
 
     if ($bibsubfield) {
