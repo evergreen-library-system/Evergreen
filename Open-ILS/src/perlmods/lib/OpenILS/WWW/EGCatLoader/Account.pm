@@ -5,6 +5,7 @@ use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::AppUtils;
+use OpenSRF::Utils::JSON;
 my $U = 'OpenILS::Application::AppUtils';
 
 
@@ -31,6 +32,19 @@ sub load_myopac_prefs_notify {
     my $self = shift;
     my $e = $self->editor;
 
+    my $user_prefs = $self->fetch_optin_prefs;
+    $user_prefs = $self->update_optin_prefs($user_prefs)
+        if $self->cgi->request_method eq 'POST';
+
+    $self->ctx->{opt_in_settings} = $user_prefs;
+
+    return Apache2::Const::OK;
+}
+
+sub fetch_optin_prefs {
+    my $self = shift;
+    my $e = $self->editor;
+
     # fetch all of the opt-in settings the user has access to
     # XXX: user's should in theory have options to opt-in to notices
     # for remote locations, but that opens the door for a large
@@ -49,8 +63,41 @@ sub load_myopac_prefs_notify {
         [map {$_->name} @$opt_ins]
     );
 
-    $self->ctx->{opt_in_settings} = [map { {cust => $_, value => $user_set->{$_->name} } } @$opt_ins];
-    return Apache2::Const::OK;
+    return [map { {cust => $_, value => $user_set->{$_->name} } } @$opt_ins];
+}
+
+sub update_optin_prefs {
+    my $self = shift;
+    my $user_prefs = shift;
+    my $e = $self->editor;
+    my @settings = $self->cgi->param('setting');
+    my %newsets;
+
+    # apply now-true settings
+    for my $applied (@settings) {
+        # see if setting is already applied to this user
+        next if grep { $_->{cust}->name eq $applied and $_->{value} } @$user_prefs;
+        $newsets{$applied} = OpenSRF::Utils::JSON->true;
+    }
+
+    # remove now-false settings
+    for my $pref (grep { $_->{value} } @$user_prefs) {
+        $newsets{$pref->{cust}->name} = undef 
+            unless grep { $_ eq $pref->{cust}->name } @settings;
+    }
+
+    $U->simplereq(
+        'open-ils.actor',
+        'open-ils.actor.patron.settings.update',
+        $e->authtoken, $e->requestor->id, \%newsets);
+
+    # update the local prefs to match reality
+    for my $pref (@$user_prefs) {
+        $pref->{value} = $newsets{$pref->{cust}->name} 
+            if exists $newsets{$pref->{cust}->name};
+    }
+
+    return $user_prefs;
 }
 
 sub load_myopac_prefs_settings {

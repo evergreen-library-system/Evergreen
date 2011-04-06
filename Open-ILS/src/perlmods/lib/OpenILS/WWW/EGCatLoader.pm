@@ -199,10 +199,7 @@ sub load_common {
 
         } else {
 
-            # For now, keep an eye out for any pages being unceremoniously redirected to logout...
-            $self->apache->log->info("catloader: loading " . $ctx->{path_info} . 
-                "; auth session " .  $e->authtoken . " no longer valid; redirecting to logout");
-
+            # authtoken is no longer valid, log out to clean up
             return $self->load_logout;
         }
     }
