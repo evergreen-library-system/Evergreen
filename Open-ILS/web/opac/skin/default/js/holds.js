@@ -765,17 +765,31 @@ function holdsCheckPossibility(pickuplib, hold, recurse) {
 function holdsBuildOrgSelector(node) {
 
 	if(!node) node = globalOrgTree;
-    if(!isTrue(node.opac_visible())) return;
+	if(!isTrue(node.opac_visible())) return;
 
-	var selector = $('holds_org_selector');
-	var index = selector.options.length;
+	var render_this_org = true;
+	var orgHiding = checkOrgHiding(); // value here is cached so not too painful with the recursion
+	if (orgHiding) {
+		if (node.id() == globalOrgTree.id()) {
+			node = orgHiding.org; // top of tree = org hiding context org
+		}
+		if ( ! orgIsMine( orgHiding.org, node, orgHiding.depth ) ) {
+			render_this_org = false;
+		}
+	}
 
-	var type = findOrgType(node.ou_type());
-	var indent = type.depth() - 1;
-	var opt = setSelectorVal( selector, index, node.name(), node.id(), null, indent );
-	if(!type.can_have_users()) {
-		opt.disabled = true;
-		addCSSClass(opt, 'disabled_option');
+	if (render_this_org) {
+		var selector = $('holds_org_selector');
+		var index = selector.options.length;
+
+		var type = findOrgType(node.ou_type());
+		var indent = type.depth() - 1;
+
+		var opt = setSelectorVal( selector, index, node.name(), node.id(), null, indent );
+		if(!type.can_have_users()) {
+			opt.disabled = true;
+			addCSSClass(opt, 'disabled_option');
+		}
 	}
 	
 	for( var i in node.children() ) {
