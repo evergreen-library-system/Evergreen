@@ -11,6 +11,7 @@
     <command id="save_columns" />
     <command id="sel_bucket" disabled="true"/>
     <command id="sel_clip" />
+    <command id="sel_edit" />
     <command id="sel_copy_details"/>
     <command id="sel_patron"/>
     <command id="cmd_triggered_events"/>
@@ -33,6 +34,7 @@
     <command id="save_columns2" />
     <command id="sel_bucket2" disabled="true"/>
     <command id="sel_clip2" />
+    <command id="sel_edit2" />
     <command id="sel_copy_details2"/>
     <command id="sel_patron2"/>
     <command id="cmd_triggered_events2"/>
@@ -61,6 +63,8 @@
         <menuitem command="sel_patron" label="&staff.patron.items_overlay.sel_patron.label;" accesskey="&staff.patron.items_overlay.sel_patron.accesskey;"/>
         <menuitem command="cmd_triggered_events" label="&staff.patron.items_overlay.cmd_triggered_events.label;" accesskey="&staff.patron.items_overlay.cmd_triggered_events.accesskey;"/>
         <menuseparator />
+        <menuitem command="sel_edit" label="&staff.circ.copy_status_overlay.sel_edit.label;" accesskey="&staff.circ.copy_status_overlay.sel_edit.accesskey;" />
+        <menuseparator />
         <menuitem label="&staff.patron.items_overlay.items_edit.label;" command="cmd_items_edit" />
         <menuitem label="&staff.patron.items_overlay.items_mark_lost.label;" command="cmd_items_mark_lost" />
         <menuitem label="&staff.patron.items_overlay.items_claimed_returned.label;" command="cmd_items_claimed_returned" />
@@ -79,6 +83,8 @@
         <menuitem command="sel_copy_details2" label="&staff.patron.items_overlay.sel_copy_details.label;" accesskey="&staff.patron.items_overlay.sel_copy_details.accesskey;" />
         <menuitem command="sel_patron2" label="&staff.patron.items_overlay.sel_patron.label;" accesskey="&staff.patron.items_overlay.sel_patron.accesskey;"/>
         <menuitem command="cmd_triggered_events2" label="&staff.patron.items_overlay.cmd_triggered_events.label;" accesskey="&staff.patron.items_overlay.cmd_triggered_events.accesskey;"/>
+        <menuseparator />
+        <menuitem command="sel_edit2" label="&staff.circ.copy_status_overlay.sel_edit.label;" accesskey="&staff.circ.copy_status_overlay.sel_edit.accesskey;" />
         <menuseparator />
         <menuitem label="&staff.patron.items_overlay.items_edit.label;" command="cmd_items_edit2" />
         <menuitem label="&staff.patron.items_overlay.items_mark_lost.label;" command="cmd_items_mark_lost2" />
@@ -135,6 +141,8 @@
                 <menuitem command="sel_patron" label="&staff.patron.items_overlay.sel_patron.label;" accesskey="&staff.patron.items_overlay.sel_patron.accesskey;"/>
                 <menuitem command="cmd_triggered_events" label="&staff.patron.items_overlay.cmd_triggered_events.label;" accesskey="&staff.patron.items_overlay.cmd_triggered_events.accesskey;"/>
                 <menuseparator />
+                <menuitem command="sel_edit" label="&staff.circ.copy_status_overlay.sel_edit.label;" accesskey="&staff.circ.copy_status_overlay.sel_edit.accesskey;" />
+                <menuseparator />
                 <menuitem label="&staff.patron.items_overlay.items_edit.label;" command="cmd_items_edit" />
                 <menuitem label="&staff.patron.items_overlay.items_mark_lost.label;" command="cmd_items_mark_lost" />
                 <menuitem label="&staff.patron.items_overlay.items_claimed_returned.label;" command="cmd_items_claimed_returned" />
@@ -161,6 +169,8 @@
                 <menuitem command="sel_copy_details2" label="&staff.patron.items_overlay.sel_copy_details.label;" accesskey="&staff.patron.items_overlay.sel_copy_details.accesskey;" />
                 <menuitem command="sel_patron2" label="&staff.patron.items_overlay.sel_patron.label;" accesskey="&staff.patron.items_overlay.sel_patron.accesskey;"/>
                 <menuitem command="cmd_triggered_events2" label="&staff.patron.items_overlay.cmd_triggered_events.label;" accesskey="&staff.patron.items_overlay.cmd_triggered_events.accesskey;"/>
+                <menuseparator />
+                <menuitem command="sel_edit2" label="&staff.circ.copy_status_overlay.sel_edit.label;" accesskey="&staff.circ.copy_status_overlay.sel_edit.accesskey;" />
                 <menuseparator />
                 <menuitem label="&staff.patron.items_overlay.items_edit.label;" command="cmd_items_edit2" />
                 <menuitem label="&staff.patron.items_overlay.items_mark_lost.label;" command="cmd_items_mark_lost2" />
