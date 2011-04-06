@@ -87,18 +87,28 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
     } else {
         $record_field = $rec->field($idfield);
     }
+
+    # Start by just using the counter as the record ID
     my $record = $count;
 
+    # If we have identified a location for the bib record ID, grab that value
     if ($record_field) {
         $record = $record_field->data;
+    }
+
+    # If we didn't get a bib record ID, skip and move on to the next MFHD record
+    if (!$record) {
+        print STDERR "Could not find a bibliographic record ID link for record $count\n";
+        next;
     }
 
     # If we have been given bibfield / bibsubfield values, use those to find
     # a matching bib record for $record and use _that_ as our record instead
     if ($bibfield) {
         my ($result, $evt) = map_id_to_bib($record);
-        if ($evt || !$result->record) {
-            print("Could not find matching bibliographic record for $record\n");
+        if ($evt || !$result || !$result->record) {
+            print STDERR "Could not find matching bibliographic record for record $count\n";
+            next;
         }
         $record = $result->record;
     } else {
