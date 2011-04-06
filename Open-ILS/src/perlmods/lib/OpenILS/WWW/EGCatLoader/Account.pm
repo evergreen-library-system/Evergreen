@@ -10,9 +10,51 @@ my $U = 'OpenILS::Application::AppUtils';
 
 # context additions: 
 #   user : au object, fleshed
-sub load_myopac {
+sub load_myopac_prefs {
     my $self = shift;
-    $self->ctx->{page} = 'myopac';
+
+    $self->ctx->{user} = $self->editor->retrieve_actor_user([
+        $self->ctx->{user}->id,
+        {
+            flesh => 1,
+            flesh_fields => {
+                au => [qw/card home_ou addresses ident_type/]
+                # ...
+            }
+        }
+    ]);
+
+    return Apache2::Const::OK;
+}
+
+sub load_myopac_prefs_notify {
+    my $self = shift;
+    my $e = $self->editor;
+
+    # fetch all of the opt-in settings the user has access to
+    # XXX: user's should in theory have options to opt-in to notices
+    # for remote locations, but that opens the door for a large
+    # set of generally un-used opt-ins.. needs discussion
+    my $opt_ins =  $U->simplereq(
+        'open-ils.actor',
+        'open-ils.actor.event_def.opt_in.settings.atomic',
+        $e->authtoken, $e->requestor->home_ou);
+
+    # fetch user setting values for each of the opt-in settings
+    my $user_set = $U->simplereq(
+        'open-ils.actor',
+        'open-ils.actor.patron.settings.retrieve',
+        $e->authtoken, 
+        $e->requestor->id, 
+        [map {$_->name} @$opt_ins]
+    );
+
+    $self->ctx->{opt_in_settings} = [map { {cust => $_, value => $user_set->{$_->name} } } @$opt_ins];
+    return Apache2::Const::OK;
+}
+
+sub load_myopac_prefs_settings {
+    my $self = shift;
 
     $self->ctx->{user} = $self->editor->retrieve_actor_user([
         $self->ctx->{user}->id,

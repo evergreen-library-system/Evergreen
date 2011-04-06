@@ -1,0 +1,120 @@
+[%  PROCESS "default/opac/parts/header.tt2";
+    WRAPPER "default/opac/myopac/prefs.tt2";
+    myopac_page = "prefs/notify" %]
+
+<table>
+    <thead><tr>
+        <th>[% l('Notifation Type') %]</th>
+        <th>[% l('Enabled') %]</th>
+    </tr></thead>
+    <tbody class='data_grid'>
+        [% IF optin.size == 0 %]
+            <strong>[% l('No notification preferences are configured') %]</strong>
+        [% END %]
+        [% FOR optin IN ctx.opt_in_settings %]
+            <tr>
+                <td>[% optin.cust.label %]</td>
+                <td>
+                    <input 
+                        type='checkbox' 
+                        name='[% optin.cust.name %]' 
+                        [% IF optin.value %] checked='checked' [% END %]/>
+                </td>
+            </tr>
+        [% END %]
+    </tbody>
+</table>
+
+
+        <!-- NOTIFICATION PREFS / leaving here for reference
+        <table class="hide_me"
+               id="acct_notify_main">
+            <tbody>
+                <tr class="hide_me">
+                    <td><span>[% l("Default Hold Notification Method") %]</span> <a class=
+                    'classic_link'
+                       href='#'>[% l("(Help)") %]</a></td>
+
+                    <td style="padding-left:15px;"><select id=
+                    'prefs_hold_notify'>
+                        <option value='phone:email'
+                                selected='selected'>
+                            [% l("Use Phone and Email") %]
+                        </option>
+
+                        <option value='phone'>
+                            [% l("Use Phone Only") %]
+                        </option>
+
+                        <option value='email'>
+                            [% l("Use Email Only") %]
+                        </option>
+                    </select></td>
+                </tr>
+
+                <tr>
+                    <td style="padding-top:10px;"><strong>Pick Up Notice for
+                    Holds</strong><br />
+                    <input type="checkbox"
+                           id="opac.hold_notify.email"
+                           name="opac.hold_notify.email" /> <label for=
+                           "opac.hold_notify.email">Email</label><br />
+                    <input type="checkbox"
+                           id="opac.hold_notify.phone"
+                           name="opac.hold_notify.phone" /> <label for=
+                           "opac.hold_notify.phone">Phone</label>
+                           <b>(Temporarily phone notification will generate a
+                           mailed paper notice.)</b></td>
+                </tr>
+
+                <tr>
+                    <td style="padding-top:10px;"><strong>Expire Notice for
+                    Holds</strong><br />
+                    <input type="checkbox"
+                           id="notification.hold.expire.email"
+                           name="notification.hold.expire.email" /> <label for=
+                           "notification.hold.expire.email">Email</label></td>
+                </tr>
+
+                <tr>
+                    <td style="padding-top:10px;"><strong>Cancel Notice for
+                    Holds</strong><br />
+                    <input type="checkbox"
+                           id="notification.hold.cancel.email"
+                           name="notification.hold.cancel.email" /> <label for=
+                           "notification.hold.cancel.email">Email</label></td>
+                </tr>
+
+                <tr>
+                    <td style="padding-top:10px;"><strong>Overdue First
+                    Notice</strong><br />
+                    <input type="checkbox"
+                           id="notification.overdue.first.email"
+                           name="notification.overdue.first.email" />
+                           <label for=
+                           "notification.overdue.first.email">Email</label><br />
+                    <input type="checkbox"
+                           id="notification.overdue.first.phone"
+                           name="notification.overdue.first.phone" />
+                           <label for=
+                           "notification.overdue.first.phone">Phone</label>
+                           <b>(Temporarily phone notification will generate a
+                           mailed paper notice.)</b></td>
+                </tr>
+
+                <tr>
+                    <td style="padding-top:10px;"><strong>Courtesy
+                    Notice</strong><br />
+                    <input type="checkbox"
+                           id="notification.predue.email"
+                           name="notification.predue.email" /> <label for=
+                           "notification.predue.email">Email</label><br /></td>
+                </tr>
+            </tbody>
+        </table>
+        -->
+
+
+[% END %]
+
+

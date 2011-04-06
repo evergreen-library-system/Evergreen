@@ -1,0 +1,395 @@
+<div id="acct_info_main">
+    <div id='myopac.expired.alert'
+         class='hide_me'
+         style='margin-bottom: 20px;'>
+        <table class='data_grid'
+               width='100%'>
+            <tbody>
+                <tr>
+                    <td width='100%' class='red'>
+                        [% l("Your account expired on") %]
+                        <span id='myopac.expired.date'></span>!
+                        [% l("Please see a librarian to renew your account.") %]</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id='myopac.notes.div'
+         class='hide_me'>
+        <table class='data_grid'
+               width='100%'>
+            <thead>
+                <tr>
+                    <td colspan='2'>
+                    <b>[% l("* Staff Notes *") %]</b></td>
+                </tr>
+            </thead>
+
+            <tbody id='myopac.notes.tbody'>
+                <tr id='myopac.notes.tr'>
+                    <td><b name='title'></b> : <span name=
+                    'value'></span></td>
+                </tr>
+            </tbody>
+        </table><br />
+    </div>
+
+    <table width='70%'
+           class='light_border data_grid'>
+        <tbody id='myopac_summary_tbody'>
+            <tr>
+                <td width='30%'
+                    class='color_4 light_border'>[% l("Name") %]</td>
+
+                <td class='light_border'>[% l(
+                    HUMAN_NAME_FORMAT,
+                    ctx.user.prefix, ctx.user.first_given_name,
+                    ctx.user.second_given_name, ctx.user.family_name,
+                    ctx.user.suffix
+                ) | html %]</td>
+
+                <td></td>
+            </tr>
+
+            <tr>
+                <td class='color_4 light_border'>
+                [% l("Day Phone") %]</td>
+
+                <td class='light_border'
+                    id='myopac_summary_dayphone'>[% ctx.user.day_phone | html %]</td>
+
+                <td class='light_border'><a href='#'
+                   class="hide_me"
+                   id='myopac_summary_phone1_change'
+                   style=
+                   'text-decoration: underline;'>[% l("Change") %]</a></td>
+            </tr>
+
+            <tr id='myopac_update_phone1_row'
+                class='hide_me'>
+                <td class='myopac_update_cell'
+                    colspan='3'>
+                    <span class='myopac_update_span'>
+                        Enter New [% l("Day Phone") %]:
+                    </span>
+
+                    <input type='text' size='24' id='myopac_new_phone1' />
+                    <span class='myopac_update_span'>
+                        <button>
+                            <span class='myopac_update_span'>
+                                [% l("Submit") %]</span>
+                        </button>
+                    </span>
+                    <span class='myopac_update_span'>
+                        <button>
+                            <span class='myopac_update_span'>
+                                [% l("Cancel") %]</span>
+                        </button>
+                    </span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class='color_4 light_border'>
+                [% l("Evening Phone") %]</td>
+
+                <td class='light_border'
+                    id='myopac_summary_eveningphone'>[% ctx.user.evening_phone | html %]</td>
+
+                <td class='light_border'><a href='#'
+                   class="hide_me"
+                   id='myopac_summary_phone2_change'
+                   style=
+                   'text-decoration: underline;'>[% l("Change") %]</a></td>
+            </tr>
+
+            <tr id='myopac_update_phone2_row'
+                class='hide_me'>
+                <td class='myopac_update_cell'
+                    colspan='3'><span class='myopac_update_span'>New
+                    [% l("Evening Phone") %]:</span>
+                    <input type='text' size='24' id='myopac_new_phone2' />
+                    <span class='myopac_update_span'><button><span class=
+                        'myopac_update_span'>[% l("Submit") %]</span></button></span>
+                    <span class='myopac_update_span'><button><span class=
+                        'myopac_update_span'>[% l("Cancel") %]</span></button></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class='color_4 light_border'>
+                [% l("Other Phone") %]</td>
+
+                <td class='light_border'
+                    id='myopac_summary_otherphone'>[% ctx.user.other_phone | html %]</td>
+
+                <td class='light_border'><a href='#'
+                   class="hide_me"
+                   id='myopac_summary_phone3_change'
+                   style=
+                   'text-decoration: underline;'>[% l("Change") %]</a></td>
+            </tr>
+
+            <tr id='myopac_update_phone3_row'
+                class='hide_me'>
+                <td class='myopac_update_cell'
+                    colspan='3'><span class='myopac_update_span'>Enter
+                    New [% l("Other Phone") %]:</span>
+                    <input type='text' size='24' id='myopac_new_phone3' />
+                    <span class='myopac_update_span'><button><span class=
+                        'myopac_update_span'>[% l("Submit") %]</span></button></span>
+                    <span class='myopac_update_span'><button><span class=
+                        'myopac_update_span'>[% l("Cancel") %]</span></button></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class='color_4 light_border'>
+                    <div style="position:absolute">
+                        <div class="hide_me" style=
+                        "position:relative;left:70px;top:-3px;">
+                            <a href="#">
+                            <img alt="Username Help"
+                                 src=
+                                 "[% ctx.media_prefix %]/images/question-mark.png" /></a>
+                        </div>
+                    </div>[% l("Username") %]
+                </td>
+
+                <td class='light_border'
+                    id='myopac_summary_username'>[% ctx.user.usrname | html %]</td>
+
+                <td class='light_border'><a href='#'
+                   class="hide_me"
+                   id='myopac_summary_username_change'
+                   style=
+                   'text-decoration: underline;'>[% l("Change") %]</a></td>
+            </tr>
+
+            <tr id='myopac_update_username_row'
+                class='hide_me'>
+                <td class='myopac_update_cell'
+                    colspan='3'><span class=
+                    'myopac_update_span'>[% l("Enter new username:") %]</span>
+                    <input type='text' size='24' id='myopac_new_username' />
+                    <span class='myopac_update_span'><button><span class=
+                        'myopac_update_span'>[% l("Submit") %]</span></button></span>
+                    <span class='myopac_update_span'><button><span class=
+                        'myopac_update_span'>[% l("Cancel") %]</span></button></span>
+                </td>
+            </tr>
+            <tr>
+                <td class='color_4 light_border'>
+                [% l("Password") %]</td>
+                <td class='light_border'
+                    id='myopac_summary_password'>
+                    [% l("(not shown)") %]</td>
+                <td class='light_border'><a href='#'
+                   class="hide_me"
+                   style='text-decoration: underline;'>[% l("Change") %]</a></td>
+            </tr>
+            <tr class='hide_me'>
+                <td class='myopac_update_cell'
+                    colspan='3'>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span class= 'myopac_update_span'>
+                                        [% l("Enter current password:") %]
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <input type='password'
+                                       size='24' />
+                                   </td>
+                            </tr>
+                            <tr>
+                                <td><span class=
+                                'myopac_update_span'>[% l("Enter new password:") %]</span></td>
+
+                                <td><input type='password' size='24' />
+                                   </td>
+                            </tr>
+
+                            <tr>
+                                <td><span class=
+                                'myopac_update_span'>[% l("Re-enter new password:") %]</span></td>
+
+                                <td>
+                                    <input type='password' size='24' />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table><span class=
+                    'myopac_update_span'><button><span class=
+                    'myopac_update_span'>[% l("Submit") %]</span></button></span>
+                    <span class='myopac_update_span'><button><span class='myopac_update_span'>
+                    [% l("Cancel") %]</span></button></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class='color_4 light_border'>[% l("Email Address") %]</td>
+                <td class='light_border'>[% ctx.user.email | html %]</td>
+                <td class='light_border'><a href='update_email'>[% l('Change') %]</a></td>
+            </tr>
+
+            <tr class='hide_me'>
+                <td class='myopac_update_cell' colspan='3'>
+                    <span class= 'myopac_update_span'>
+                        [% l("Enter new email address:") %]
+                    </span>
+                    <input type='text' size='24' />
+                    <span class='myopac_update_span'>
+                        <button>
+                            <span class= 'myopac_update_span'>
+                                [% l("Submit") %]</span>
+                        </button>
+                    </span>
+                    <span class='myopac_update_span'>
+                        <button>
+                            <span class='myopac_update_span'>
+                                [% l("Cancel") %]</span>
+                        </button>
+                    </span>
+                </td>
+            </tr>
+            [% IF ctx.user.ident_value %]<tr class="hide_me">
+                <td class='color_4 light_border'>
+                [% l("Primary Identification") %]</td>
+
+                <td class='light_border'>
+                    [%
+                    # l('[_1] ([_2])', ctx.user.ident_value, ctx.user.ident_type.name) | html
+                    # XXX uncomment the above line to show primary
+                    # identification. With a minor tweak it could
+                    # alternatively be shown but partially obscured. 
+                    %]
+                </td>
+                <td></td>
+            </tr>[% END %]
+
+            <tr>
+                <td class='color_4 light_border'>
+                [% l("Active Barcode") %]</td>
+
+                <td class='light_border'>[% ctx.user.card.barcode %]</td>
+
+                <td></td>
+            </tr>
+
+            <tr>
+                <td class='color_4 light_border'>
+                [% l("Home Library") %]</td>
+                <td class='light_border'>[% ctx.user.home_ou.name %]</td>
+                <td><a href='#'
+                   class="hide_me"
+                   style='text-decoration: underline;'>[% l("Change") %]</a></td>
+            </tr>
+            <tr class='hide_me'>
+                <td class='myopac_update_cell'
+                    colspan='3'>
+                    <span class='myopac_update_span'>
+                        New home library:</span>
+                    <select>
+                    </select>
+                    <span class='myopac_update_span'>
+                        <button>
+                            <span class= 'myopac_update_span'>
+                                [% l("Submit") %]</span>
+                        </button>
+                    </span>
+                    <span class='myopac_update_span'>
+                        <button>
+                            <span class= 'myopac_update_span'>
+                                [% l("Cancel") %]</span>
+                        </button>
+                    </span>
+                </td>
+            </tr>
+            <tr class="hide_me">
+                <td class='color_4 light_border'>
+                    [% l("Account Creation Date") %]
+                </td>
+                <td class='light_border'
+                    id='myopac_summary_create_date'></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table><br />
+    <hr class='opac-auto-013' color="#DCDBDB" />
+    <br />
+
+    <table width='100%' class='light_border data_grid'>
+        <thead>
+            <tr>
+                <td><strong>[% l("Addresses") %]</strong></td>
+
+            </tr>
+        </thead>
+        <tbody id='myopac_addr_tbody'>
+            [% FOR addr IN ctx.user.addresses %]
+            <tr class='[% addr.pending == "t" ? "pending-addr" : "light_border" %]'>
+                <td>
+                    <table>
+                        <tr>
+                            <td>[% l("Address Type") %]</td>
+                            <td name='myopac_addr_type'>[%
+                                IF addr.pending == "t";
+                                    "<strong>" _ l("*** PENDING ***") _ "</strong> ";
+                                END;
+                                addr.address_type | lower | ucfirst;
+                            %]</td>
+                        </tr>
+                        <tr>
+                            <td>[% l("Street") %]</td>
+                            <td name='myopac_addr_street'>[% addr.street1 | html %]</td>
+                        </tr>
+                        [% IF addr.street2 %]<tr>
+                            <td>[% l("Street") %]</td>
+                            <td name='myopac_addr_street2'>[% addr.street2 | html %]</td>
+                        </tr>[% END %]
+
+                        <tr>
+                            <td>[% l("City") %]</td>
+                            <td name='myopac_addr_city'>[% addr.city | html %]</td>
+                        </tr>
+
+                        <tr>
+                            <td>[% l("County") %]</td>
+                            <td name='myopac_addr_county'>[% addr.county| html  %]</td>
+                        </tr>
+
+                        <tr>
+                            <td>[% l("State") %]</td>
+                            <td name='myopac_addr_state'>[% addr.state | html %]</td>
+                        </tr>
+
+                        <tr>
+                            <td>[% l("Country") %]</td>
+                            <td name='myopac_addr_country'>[% addr.country | html %]</td>
+                        </tr>
+
+                        <tr>
+                            <td>[% l("Zip") %]</td>
+                            <td name='myopac_addr_zip'>[% addr.post_code | html %]</td>
+                        </tr>
+                        <tr>
+                            <td name='myopac_addr_edit_td'
+                                colspan='2' class='hide_me'>
+                                <a class='classic_link'
+                                    name='myopac_addr_edit_link'
+                                    href='#'>Edit Address</a>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            [% END %]
+        </tbody>
+    </table>
+</div>
+
