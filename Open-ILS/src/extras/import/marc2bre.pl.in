@@ -22,7 +22,7 @@ use DBI;
 #MARC::Charset->ignore_errors(1);
 
 my ($id_field, $id_subfield, $recid, $user, $config, $idlfile, $marctype, $tcn_offset, $tcn_mapfile, $tcn_dumpfile, $used_id_file, $used_tcn_file, $enc, @files, @trash_fields, @req_fields, $use901, $quiet, $tcn_field, $tcn_subfield) =
-	('', 'a', 0, 1, '/openils/conf/opensrf_core.xml', '/openils/conf/fm_IDL.xml', 'USMARC', 0);
+	('', 'a', 0, 1, '@sysconfdir@/opensrf_core.xml', '@sysconfdir@/fm_IDL.xml', 'USMARC', 0);
 
 my ($db_driver, $db_host, $db_port, $db_name, $db_user, $db_pw) =
 	('Pg', 'localhost', 5432, 'evergreen', 'postgres', 'postgres');
@@ -41,11 +41,11 @@ GetOptions(
 	'tcn_mapfile=s'	=> \$tcn_mapfile, # external file which allows for matching specific record tcns to specific record ids, format = one id_number|tcn_number combo per line
 	'tcnfile=s'	=> \$tcn_dumpfile, # DEPRECATED, use tcn_dumpfile instead
 	'tcn_dumpfile=s'	=> \$tcn_dumpfile, # allows specification of a dumpfile for all used tcn values
-	'config=s'	=> \$config, # location of OpenSRF core config file, defaults to /openils/conf/opensrf_core.xml
+	'config=s'	=> \$config, # location of OpenSRF core config file, defaults to @sysconfdir@/opensrf_core.xml
 	'file=s'	=> \@files, # files to process (or you can simple list the files as unnamed arguments, i.e. @ARGV)
 	'required_fields=s'	=> \@req_fields, # skip any records missing these fields
 	'trash=s'	=> \@trash_fields, # fields to remove from all processed records
-	'xml_idl=s'	=> \$idlfile, # location of XML IDL file, defaults to /openils/conf/fm_IDL.xml
+	'xml_idl=s'	=> \$idlfile, # location of XML IDL file, defaults to @sysconfdir@/fm_IDL.xml
 	'dontuse=s'	=> \$used_id_file, # DEPRECATED, use used_id_file instead
 	'used_id_file=s'	=> \$used_id_file, # external file which prevents id collisions by specifying ids already in use in the database, format = one id number per line
 	'used_tcn_file=s'	=> \$used_tcn_file, # external file which prevents tcn collisions by specifying tcns already in use in the database, format = one tcn number per line
