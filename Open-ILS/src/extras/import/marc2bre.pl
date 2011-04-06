@@ -2,6 +2,8 @@
 use strict;
 use warnings;
 
+#use lib '/openils/lib/perl5/';
+
 use Error qw/:try/;
 use OpenILS::Utils::Fieldmapper;
 use Digest::MD5 qw/md5_hex/;

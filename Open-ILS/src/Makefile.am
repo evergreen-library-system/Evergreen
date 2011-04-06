@@ -138,7 +138,7 @@ if BUILDEGJAVA
 OILSJAVA_DIR = java
 endif
 
-bin_SCRIPTS = $(core_scripts) $(reporter_scripts) $(installautojs) @srcdir@/extras/eg_config @srcdir@/extras/fast-extract @srcdir@/extras/import/marc2are.pl @srcdir@/extras/import/marc2bre.pl @srcdir@/extras/import/marc2sre.pl @srcdir@/extras/import/parallel_pg_loader.pl
+bin_SCRIPTS = $(core_scripts) $(reporter_scripts) $(installautojs) @srcdir@/extras/eg_config @srcdir@/extras/fast-extract
 data_DATA = $(core_data) $(reporter_data)
 
 # Take care of which subdirectories to build, and which extra files to include in a distribution.
