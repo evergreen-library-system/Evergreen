@@ -240,6 +240,13 @@ sub sip_birthdate {
 	return $dob;
 }
 
+sub sip_expire {
+    my $self = shift;
+    my $expire = OpenILS::SIP->format_date($self->{user}->expire_date);
+    syslog('LOG_DEBUG', "OILS: Patron Expire = $expire");
+    return $expire;
+}
+
 sub ptype {
     my $self = shift;
 
