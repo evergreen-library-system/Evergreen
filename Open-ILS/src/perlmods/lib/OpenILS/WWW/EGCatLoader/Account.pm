@@ -652,6 +652,9 @@ sub load_myopac_update_email {
     my $ctx = $self->ctx;
     my $email = $self->cgi->param('email') || '';
 
+    return Apache2::Const::OK 
+        unless $self->cgi->request_method eq 'POST';
+
     unless($email =~ /.+\@.+\..+/) { # TODO better regex?
         $ctx->{invalid_email} = $email;
         return Apache2::Const::OK;
@@ -674,6 +677,9 @@ sub load_myopac_update_username {
     my $ctx = $self->ctx;
     my $username = $self->cgi->param('username') || '';
 
+    return Apache2::Const::OK 
+        unless $self->cgi->request_method eq 'POST';
+
     unless($username and $username !~ /\s/) { # any other username restrictions?
         $ctx->{invalid_username} = $username;
         return Apache2::Const::OK;
@@ -694,6 +700,47 @@ sub load_myopac_update_username {
 
     my $url = $self->apache->unparsed_uri;
     $url =~ s/update_username/prefs/;
+
+    return $self->generic_redirect($url);
+}
+
+sub load_myopac_update_password {
+    my $self = shift;
+    my $e = $self->editor;
+    my $ctx = $self->ctx;
+
+    return Apache2::Const::OK 
+        unless $self->cgi->request_method eq 'POST';
+
+    my $current_pw = $self->cgi->param('current_pw') || '';
+    my $new_pw = $self->cgi->param('new_pw') || '';
+    my $new_pw2 = $self->cgi->param('new_pw2') || '';
+
+    unless($new_pw eq $new_pw2) {
+        $ctx->{password_nomatch} = 1;
+        return Apache2::Const::OK;
+    }
+
+    my $pw_regex = $ctx->{get_org_setting}->($e->requestor->home_ou, 'global.password_regex');
+
+    if($pw_regex and $new_pw !~ /$pw_regex/) {
+        $ctx->{password_invalid} = 1;
+        return Apache2::Const::OK;
+    }
+
+    my $evt = $U->simplereq(
+        'open-ils.actor', 
+        'open-ils.actor.user.password.update', 
+        $e->authtoken, $new_pw, $current_pw);
+
+
+    if($U->event_equals($evt, 'INCORRECT_PASSWORD')) {
+        $ctx->{password_incorrect} = 1;
+        return Apache2::Const::OK;
+    }
+
+    my $url = $self->apache->unparsed_uri;
+    $url =~ s/update_password/prefs/;
 
     return $self->generic_redirect($url);
 }

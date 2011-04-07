@@ -157,75 +157,14 @@
                         </div>
                     </div>[% l("Username") %]
                 </td>
-
                 <td class='light_border'>[% ctx.user.usrname | html %]</td>
                 <td class='light_border'><a href='update_username'>[% l("Change") %]</a></td>
             </tr>
-
-            <tr id='myopac_update_username_row'
-                class='hide_me'>
-                <td class='myopac_update_cell'
-                    colspan='3'><span class=
-                    'myopac_update_span'>[% l("Enter new username:") %]</span>
-                    <input type='text' size='24' id='myopac_new_username' />
-                    <span class='myopac_update_span'><button><span class=
-                        'myopac_update_span'>[% l("Submit") %]</span></button></span>
-                    <span class='myopac_update_span'><button><span class=
-                        'myopac_update_span'>[% l("Cancel") %]</span></button></span>
-                </td>
-            </tr>
             <tr>
-                <td class='color_4 light_border'>
-                [% l("Password") %]</td>
-                <td class='light_border'
-                    id='myopac_summary_password'>
-                    [% l("(not shown)") %]</td>
-                <td class='light_border'><a href='#'
-                   class="hide_me"
-                   style='text-decoration: underline;'>[% l("Change") %]</a></td>
+                <td class='color_4 light_border'>[% l("Password") %]</td>
+                <td class='light_border'>[% l("(not shown)") %]</td>
+                <td class='light_border'><a href='update_password'>[% l("Change") %]</a></td>
             </tr>
-            <tr class='hide_me'>
-                <td class='myopac_update_cell'
-                    colspan='3'>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <span class= 'myopac_update_span'>
-                                        [% l("Enter current password:") %]
-                                    </span>
-                                </td>
-
-                                <td>
-                                    <input type='password'
-                                       size='24' />
-                                   </td>
-                            </tr>
-                            <tr>
-                                <td><span class=
-                                'myopac_update_span'>[% l("Enter new password:") %]</span></td>
-
-                                <td><input type='password' size='24' />
-                                   </td>
-                            </tr>
-
-                            <tr>
-                                <td><span class=
-                                'myopac_update_span'>[% l("Re-enter new password:") %]</span></td>
-
-                                <td>
-                                    <input type='password' size='24' />
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table><span class=
-                    'myopac_update_span'><button><span class=
-                    'myopac_update_span'>[% l("Submit") %]</span></button></span>
-                    <span class='myopac_update_span'><button><span class='myopac_update_span'>
-                    [% l("Cancel") %]</span></button></span>
-                </td>
-            </tr>
-
             <tr>
                 <td class='color_4 light_border'>[% l("Email Address") %]</td>
                 <td class='light_border'>[% ctx.user.email | html %]</td>
