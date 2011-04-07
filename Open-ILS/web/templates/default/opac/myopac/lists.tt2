@@ -84,14 +84,18 @@
                     </div>
                     <div class="clear-both pad-bottom-five"></div>
                 </div>
-                <form action="[% ctx.opac_root %]/myopac/list/update"
-                    method="POST">
+                <form action="[% ctx.opac_root %]/myopac/list/update" method="POST">
                 <input type="hidden" name="list" value="[% bbag.id %]" />
                 <table cellpadding='0' cellspacing='0' border='0'>
                     <thead id="acct_list_header">
                         <tr>
                             <td width="1%" style="padding-left: 10px;">
-                                <input type="checkbox" />
+                            <input type="checkbox" onclick="
+                                var inputs=document.getElementsByTagName('input'); 
+                                for (i = 0; i < inputs.length; i++) { 
+                                    if (inputs[i].name == 'del_item' && !inputs[i].disabled && inputs[i].getAttribute('bbag') == [% bbag.id %]) 
+                                        inputs[i].checked = this.checked;}"/>
+
                             </td>
                             <td width="49%" style="padding-left: 5px;">[% l('Title') %]</td>
                             <td width="49%">[% l('Author(s)') %]</td>
@@ -116,7 +120,7 @@
                             attrs = {marc_xml => ctx.bookbags_marc_xml.$rec_id};
                             PROCESS get_marc_attrs args=attrs %]
                         <tr>
-                            <td class="opac-auto-097b" style="padding-left: 10px;"><input type="checkbox" name="del_item" value="[% item.id %]" /></td>
+                            <td class="opac-auto-097b" style="padding-left: 10px;"><input type="checkbox" name="del_item" value="[% item.id %]" bbag='[% bbag.id %]'/></td>
                             <td class="opac-auto-097b" style="padding-left: 5px;">[% attrs.title %]</td>
                             <td class="opac-auto-097b">[% attrs.author %]</td>
                         </tr>
