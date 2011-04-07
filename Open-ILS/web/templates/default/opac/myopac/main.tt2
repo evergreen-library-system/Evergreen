@@ -115,9 +115,7 @@
 [% IF !show_payments %]
     [% IF ctx.fines.circulation.size > 0 %]
     <div id='myopac_circ_trans_div'>
-        <br/><hr/><br/>
-        <table width='100%' class='data_grid'
-            id='myopac_circ_trans_table'>
+        <table width='100%' class='data_grid'>
             <thead>
                 <tr>
                     <td colspan='10' style='padding: 6px'>
@@ -274,7 +272,6 @@
 
 [% ELSE %] <!-- show payments -->
     <div>
-        <div><b>[% l('Payments') %]</b></div>
         <table id='myopac_payments_table' width='100%' class='data_grid'>
             <thead><tr>
                 <th>[% l('Payment Date') %]</th>

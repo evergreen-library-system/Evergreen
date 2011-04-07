@@ -127,7 +127,9 @@ sub load {
     return $self->load_myopac_bookbag_update if $path =~ m|opac/myopac/list/update|;
     return $self->load_myopac_circ_history if $path =~ m|opac/myopac/circ_history|;
     return $self->load_myopac_hold_history if $path =~ m|opac/myopac/hold_history|;
-    return $self->load_myopac if $path =~ m|opac/myopac|;
+    return $self->load_myopac_prefs_notify if $path =~ m|opac/myopac/prefs/notify|;
+    return $self->load_myopac_prefs_settings if $path =~ m|opac/myopac/prefs/settings|;
+    return $self->load_myopac_prefs if $path =~ m|opac/myopac/prefs|;
 
     return Apache2::Const::OK;
 }
@@ -197,10 +199,7 @@ sub load_common {
 
         } else {
 
-            # For now, keep an eye out for any pages being unceremoniously redirected to logout...
-            $self->apache->log->info("catloader: loading " . $ctx->{path_info} . 
-                "; auth session " .  $e->authtoken . " no longer valid; redirecting to logout");
-
+            # authtoken is no longer valid, log out to clean up
             return $self->load_logout;
         }
     }

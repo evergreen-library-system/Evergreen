@@ -5,14 +5,103 @@ use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::AppUtils;
+use OpenSRF::Utils::JSON;
 my $U = 'OpenILS::Application::AppUtils';
 
 
 # context additions: 
 #   user : au object, fleshed
-sub load_myopac {
+sub load_myopac_prefs {
     my $self = shift;
-    $self->ctx->{page} = 'myopac';
+
+    $self->ctx->{user} = $self->editor->retrieve_actor_user([
+        $self->ctx->{user}->id,
+        {
+            flesh => 1,
+            flesh_fields => {
+                au => [qw/card home_ou addresses ident_type/]
+                # ...
+            }
+        }
+    ]);
+
+    return Apache2::Const::OK;
+}
+
+sub load_myopac_prefs_notify {
+    my $self = shift;
+    my $e = $self->editor;
+
+    my $user_prefs = $self->fetch_optin_prefs;
+    $user_prefs = $self->update_optin_prefs($user_prefs)
+        if $self->cgi->request_method eq 'POST';
+
+    $self->ctx->{opt_in_settings} = $user_prefs; 
+
+    return Apache2::Const::OK;
+}
+
+sub fetch_optin_prefs {
+    my $self = shift;
+    my $e = $self->editor;
+
+    # fetch all of the opt-in settings the user has access to
+    # XXX: user's should in theory have options to opt-in to notices
+    # for remote locations, but that opens the door for a large
+    # set of generally un-used opt-ins.. needs discussion
+    my $opt_ins =  $U->simplereq(
+        'open-ils.actor',
+        'open-ils.actor.event_def.opt_in.settings.atomic',
+        $e->authtoken, $e->requestor->home_ou);
+
+    # fetch user setting values for each of the opt-in settings
+    my $user_set = $U->simplereq(
+        'open-ils.actor',
+        'open-ils.actor.patron.settings.retrieve',
+        $e->authtoken, 
+        $e->requestor->id, 
+        [map {$_->name} @$opt_ins]
+    );
+
+    return [map { {cust => $_, value => $user_set->{$_->name} } } @$opt_ins];
+}
+
+sub update_optin_prefs {
+    my $self = shift;
+    my $user_prefs = shift;
+    my $e = $self->editor;
+    my @settings = $self->cgi->param('setting');
+    my %newsets;
+
+    # apply now-true settings
+    for my $applied (@settings) {
+        # see if setting is already applied to this user
+        next if grep { $_->{cust}->name eq $applied and $_->{value} } @$user_prefs;
+        $newsets{$applied} = OpenSRF::Utils::JSON->true;
+    }
+
+    # remove now-false settings
+    for my $pref (grep { $_->{value} } @$user_prefs) {
+        $newsets{$pref->{cust}->name} = undef 
+            unless grep { $_ eq $pref->{cust}->name } @settings;
+    }
+
+    $U->simplereq(
+        'open-ils.actor',
+        'open-ils.actor.patron.settings.update',
+        $e->authtoken, $e->requestor->id, \%newsets);
+
+    # update the local prefs to match reality
+    for my $pref (@$user_prefs) {
+        $pref->{value} = $newsets{$pref->{cust}->name} 
+            if exists $newsets{$pref->{cust}->name};
+    }
+
+    return $user_prefs;
+}
+
+sub load_myopac_prefs_settings {
+    my $self = shift;
 
     $self->ctx->{user} = $self->editor->retrieve_actor_user([
         $self->ctx->{user}->id,
@@ -418,15 +507,27 @@ sub load_myopac_circ_history {
     my $e = $self->editor;
     my $ctx = $self->ctx;
     my $limit = $self->cgi->param('limit');
-    my $offset = $self->cgi->param('offset');
+    my $offset = $self->cgi->param('offset') || 0;
 
     my $circs = $e->json_query({
         from => ['action.usr_visible_circs', $e->requestor->id],
-        limit => $limit || 25,
-        offset => $offset || 0
+        #limit => $limit || 25,
+        #offset => $offset || 0,
     });
 
-    $ctx->{circs} = $self->fetch_user_circs(1, [map { $_->{id} } @$circs], $limit, $offset);
+    # XXX: order-by in the json_query above appears to do nothing, so in-query 
+    # paging is not reallly an option.  do the sorting/paging here
+
+    # sort newest to oldest
+    $circs = [ sort { $b->{xact_start} cmp $a->{xact_start} } @$circs ];
+    my @ids = map { $_->{id} } @$circs;
+
+    # find the selected page and trim cruft
+    @ids = @ids[$offset..($offset + $limit - 1)] if $limit;
+    @ids = grep { defined $_ } @ids;
+
+    $ctx->{circs} = $self->fetch_user_circs(1, \@ids, $limit, $offset);
+    #$ctx->{circs} = $self->fetch_user_circs(1, [map { $_->{id} } @$circs], $limit, $offset);
 
     return Apache2::Const::OK;
 }
