@@ -243,8 +243,6 @@ sub load_login {
     $args->{username} = delete $args->{barcode} 
         if $bc_regex and !($username =~ /$bc_regex/);
 
-    $self->apache->log->warn("regex = $bc_regex; username = $username; " .  ($username =~ /$bc_regex/));
-
 	my $response = $U->simplereq(
         'open-ils.auth', 'open-ils.auth.authenticate.complete', $args);
 
