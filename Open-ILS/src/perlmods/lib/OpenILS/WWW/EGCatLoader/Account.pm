@@ -540,8 +540,11 @@ sub load_myopac_hold_history {
     my $self = shift;
     my $e = $self->editor;
     my $ctx = $self->ctx;
-    my $limit = $self->cgi->param('limit');
-    my $offset = $self->cgi->param('offset');
+    my $limit = $self->cgi->param('limit') || 15;
+    my $offset = $self->cgi->param('offset') || 0;
+    $ctx->{hold_history_limit} = $limit;
+    $ctx->{hold_history_offset} = $offset;
+
 
     my $holds = $e->json_query({
         from => ['action.usr_visible_holds', $e->requestor->id],

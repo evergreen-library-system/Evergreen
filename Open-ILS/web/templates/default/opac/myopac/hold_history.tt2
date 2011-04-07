@@ -2,8 +2,8 @@
     PROCESS "default/opac/parts/marc_misc.tt2";
     WRAPPER "default/opac/parts/myopac/base.tt2";
     myopac_page = "holds"  
-    limit = CGI.param('limit') || 25;
-    offset = CGI.param('offset') || 0;
+    limit = ctx.hold_history_limit;
+    offset = ctx.hold_history_offset;
 %]
 
 <div id='myopac_holds_div'>
@@ -19,8 +19,13 @@
     </div>
 
     <div class="header_middle">
-        <span id="acct_holds_header" style="float:left;">
-            [% l("Previously Held Items") %]
+        <span style="float:left;">[% l("Previously Held Items") %]</span>
+        <span class='float-left' style='padding-left: 10px;'>
+            <a href='hold_history?limit=[% limit %]&offset=[% offset - limit %]'
+                [% IF offset == 0 %] class='invisible' [% END %]>[% l('Previous') %]</a>
+            [%# TODO: get total to prevent paging off then end of the list.. %]
+            <a href='hold_history?limit=[% limit %]&offset=[% offset + limit %]'
+               [% IF ctx.holds.size < limit %] class='invisible' [% END %] >[% l('Next') %]</a>
         </span>
         <span style="float:right;">
             <a class="hide_me" href="#">Export List</a>
