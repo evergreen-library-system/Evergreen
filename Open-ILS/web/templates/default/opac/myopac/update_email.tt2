@@ -1,7 +1,7 @@
 [%  PROCESS "default/opac/parts/header.tt2";
     PROCESS "default/opac/parts/misc_util.tt2";
     WRAPPER "default/opac/parts/myopac/base.tt2";
-    myopac_page = "update_email"  %]
+    myopac_page = "prefs"  %]
 <div id='myopac_summary_div' style="padding:0px;">
 
 [% IF ctx.invalid_email %]

@@ -267,7 +267,7 @@ sub load_locale_handlers {
                     our %Lexicon = (%Lexicon, %{ Locale::Maketext::Lexicon::Gettext->parse(<F>) });
                     close F;
                 } else {
-                    warn "unable to open messages file: $messages"; 
+                    warn "EGWeb: unable to open messages file: $messages"; 
                 }
             }
 EVAL

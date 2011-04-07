@@ -668,6 +668,36 @@ sub load_myopac_update_email {
     return $self->generic_redirect($url);
 }
 
+sub load_myopac_update_username {
+    my $self = shift;
+    my $e = $self->editor;
+    my $ctx = $self->ctx;
+    my $username = $self->cgi->param('username') || '';
+
+    unless($username and $username !~ /\s/) { # any other username restrictions?
+        $ctx->{invalid_username} = $username;
+        return Apache2::Const::OK;
+    }
+
+    if($username ne $e->requestor->usrname) {
+
+        my $evt = $U->simplereq(
+            'open-ils.actor', 
+            'open-ils.actor.user.username.update', 
+            $e->authtoken, $username);
+
+        if($U->event_equals($evt, 'USERNAME_EXISTS')) {
+            $ctx->{username_exists} = $username;
+            return Apache2::Const::OK;
+        }
+    }
+
+    my $url = $self->apache->unparsed_uri;
+    $url =~ s/update_username/prefs/;
+
+    return $self->generic_redirect($url);
+}
+
 sub load_myopac_bookbags {
     my $self = shift;
     my $e = $self->editor;

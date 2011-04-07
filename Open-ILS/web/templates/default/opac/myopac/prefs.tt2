@@ -152,24 +152,14 @@
             <tr>
                 <td class='color_4 light_border'>
                     <div style="position:absolute">
-                        <div class="hide_me" style=
-                        "position:relative;left:70px;top:-3px;">
-                            <a href="#">
-                            <img alt="Username Help"
-                                 src=
-                                 "[% ctx.media_prefix %]/images/question-mark.png" /></a>
+                        <div class="hide_me" style="position:relative;left:70px;top:-3px;">
+                            <a href="#"><img alt="Username Help" src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
                         </div>
                     </div>[% l("Username") %]
                 </td>
 
-                <td class='light_border'
-                    id='myopac_summary_username'>[% ctx.user.usrname | html %]</td>
-
-                <td class='light_border'><a href='#'
-                   class="hide_me"
-                   id='myopac_summary_username_change'
-                   style=
-                   'text-decoration: underline;'>[% l("Change") %]</a></td>
+                <td class='light_border'>[% ctx.user.usrname | html %]</td>
+                <td class='light_border'><a href='update_username'>[% l("Change") %]</a></td>
             </tr>
 
             <tr id='myopac_update_username_row'
@@ -242,26 +232,6 @@
                 <td class='light_border'><a href='update_email'>[% l('Change') %]</a></td>
             </tr>
 
-            <tr class='hide_me'>
-                <td class='myopac_update_cell' colspan='3'>
-                    <span class= 'myopac_update_span'>
-                        [% l("Enter new email address:") %]
-                    </span>
-                    <input type='text' size='24' />
-                    <span class='myopac_update_span'>
-                        <button>
-                            <span class= 'myopac_update_span'>
-                                [% l("Submit") %]</span>
-                        </button>
-                    </span>
-                    <span class='myopac_update_span'>
-                        <button>
-                            <span class='myopac_update_span'>
-                                [% l("Cancel") %]</span>
-                        </button>
-                    </span>
-                </td>
-            </tr>
             [% IF ctx.user.ident_value %]<tr class="hide_me">
                 <td class='color_4 light_border'>
                 [% l("Primary Identification") %]</td>
