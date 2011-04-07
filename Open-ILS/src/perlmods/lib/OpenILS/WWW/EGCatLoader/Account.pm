@@ -551,23 +551,11 @@ sub load_myopac_hold_history {
     return Apache2::Const::OK;
 }
 
-sub load_myopac_main {
-    my $self = shift;
-    my $limit = $self->cgi->param('limit') || 0;
-    my $offset = $self->cgi->param('offset') || 0;
-    my $expand = $self->cgi->param('expand') || '';
-
-    return $self->load_myopac_payments($limit, $offset) 
-        if $expand eq 'payments';
-
-    return $self->load_myopac_fines($limit, $offset);
-}
-
 # TODO: add other filter options as params/configs/etc.
 sub load_myopac_payments {
     my $self = shift;
-    my $limit = shift || 0;
-    my $offset = shift || 0;
+    my $limit = $self->cgi->param('limit') || 0;
+    my $offset = $self->cgi->param('offset') || 0;
     my $e = $self->editor;
 
     my $args = {};
@@ -584,10 +572,10 @@ sub load_myopac_payments {
 
 
 
-sub load_myopac_fines {
+sub load_myopac_main {
     my $self = shift;
-    my $limit = shift || 0;
-    my $offset = shift || 0;
+    my $limit = $self->cgi->param('limit') || 0;
+    my $offset = $self->cgi->param('offset') || 0;
     my $e = $self->editor;
     my $ctx = $self->ctx;
 
