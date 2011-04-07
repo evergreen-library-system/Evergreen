@@ -281,7 +281,7 @@ function myOPACDrawCheckedTitle(r) {
 	var circid = r.circ;
 
 	/* Draw pre-cataloged items */
-	if(!record || checkILSEvent(record) || !(record.title() && record.author())) {
+	if(!record || checkILSEvent(record) || !(record.title() || record.author())) {
 		var req = new Request( FETCH_COPY, r.copy );
 		req.request.circ = circid;
 		req.callback(myOPACDrawPreCatalogedItem);
