@@ -1,9 +1,9 @@
 [%  PROCESS "default/opac/parts/header.tt2";
     PROCESS "default/opac/parts/marc_misc.tt2";
     WRAPPER "default/opac/parts/myopac/base.tt2";
-    myopac_page = "circs";
-    limit = CGI.param('limit') || 25;
-    offset = CGI.param('offset') || 0;
+    myopac_page = "circs"
+    limit = ctx.circ_history_limit;
+    offset = ctx.circ_history_offset;
 %]
 
 <div style="padding:0px;">
@@ -21,13 +21,11 @@
     <div class="header_middle">
         <span class="float-left">[% l('Previously Checked Out Items') %]</span>
         <span class='float-left' style='padding-left: 10px;'>
-            [% IF offset > 0 %]
-            <a href='circ_history?limit=[% limit %]&offset=[% offset - 1 %]'>[% l('Previous') %]</a>
-            [% END %]
-            [% IF ctx.circs.size == limit %]
+            <a href='circ_history?limit=[% limit %]&offset=[% offset - limit %]'
+                [% IF offset == 0 %] class='invisible' [% END %]>[% l('Previous') %]</a>
             [%# TODO: get total to prevent paging off then end of the list.. %]
-            <a href='circ_history?limit=[% limit %]&offset=[% offset + 1 %]'>[% l('Next') %]</a>
-            [% END %]
+            <a href='circ_history?limit=[% limit %]&offset=[% offset + limit %]'
+               [% IF ctx.circs.size < limit %] class='invisible' [% END %] >[% l('Next') %]</a>
         </span>
         <span class="float-right">
             <a class="hide_me" href="#">[% l('Export List') %]</a>

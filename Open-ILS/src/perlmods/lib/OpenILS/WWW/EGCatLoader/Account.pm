@@ -506,8 +506,11 @@ sub load_myopac_circ_history {
     my $self = shift;
     my $e = $self->editor;
     my $ctx = $self->ctx;
-    my $limit = $self->cgi->param('limit');
+    my $limit = $self->cgi->param('limit') || 15;
     my $offset = $self->cgi->param('offset') || 0;
+
+    $ctx->{circ_history_limit} = $limit;
+    $ctx->{circ_history_offset} = $offset;
 
     my $circs = $e->json_query({
         from => ['action.usr_visible_circs', $e->requestor->id],
@@ -526,7 +529,7 @@ sub load_myopac_circ_history {
     @ids = @ids[$offset..($offset + $limit - 1)] if $limit;
     @ids = grep { defined $_ } @ids;
 
-    $ctx->{circs} = $self->fetch_user_circs(1, \@ids, $limit, $offset);
+    $ctx->{circs} = $self->fetch_user_circs(1, \@ids);
     #$ctx->{circs} = $self->fetch_user_circs(1, [map { $_->{id} } @$circs], $limit, $offset);
 
     return Apache2::Const::OK;
