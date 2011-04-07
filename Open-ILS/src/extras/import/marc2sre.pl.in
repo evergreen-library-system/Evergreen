@@ -8,6 +8,7 @@ use OpenSRF::Utils::SettingsClient;
 use OpenILS::Application::AppUtils;
 use OpenILS::Event;
 use OpenILS::Utils::Fieldmapper;
+use OpenILS::Utils::Normalize qw/naco_normalize/;
 use OpenSRF::Utils::JSON;
 use Unicode::Normalize;
 
@@ -21,7 +22,7 @@ use Pod::Usage;
 MARC::Charset->ignore_errors(1);
 
 # Command line options, with applicable defaults
-my ($idsubfield, $bibfield, $bibsubfield, @files, $libmap, $quiet, $help);
+my ($idsubfield, $prefix, $bibfield, $bibsubfield, @files, $libmap, $quiet, $help);
 my $idfield = '004';
 my $count = 1;
 my $user = 'admin';
@@ -31,6 +32,7 @@ my $marctype = 'USMARC';
 my $parse_options = GetOptions(
     'idfield=s' => \$idfield,
     'idsubfield=s' => \$idsubfield,
+    'prefix=s'=> \$prefix,
     'bibfield=s'=> \$bibfield,
     'bibsubfield=s'=> \$bibsubfield,
     'startid=i'=> \$count,
@@ -192,16 +194,20 @@ sub get_user_id {
     return ($result, $evt);
 }
 
-# Get the biblio.record_entry.id value for the given identifier; note that this
-# approach uses a wildcard to match anything that precedes the identifier value
+# Get the biblio.record_entry.id value for the given identifier
 sub map_id_to_bib {
     my $record = shift;
 
     my ($result, $evt);
 
+    $record = naco_normalize($record);
+    if ($prefix) {
+        $record = "$prefix $record";
+    }
+
     my %search = (
         tag => $bibfield, 
-        value => { ilike => '%' . $record }
+        value => naco_normalize($record)
     );
 
     if ($bibsubfield) {
@@ -256,6 +262,12 @@ Specifies the MFHD subfield, if any, where the identifier of the corresponding
 bibliographic record is found. This option is ignored unless it is accompanied
 by the B<--idfield> option.  Defaults to null.
 
+=item * B<-p> I<prefix> B<--prefix>=I<prefix>
+
+Specifies the MARC code for the organization that should be prefixed to the
+bibliographic record identifier. This option is ignored unless it is accompanied
+by the B<--bibfield> option. Defaults to null.
+
 =item * B<--bibfield> I<MARC-field>
 
 Specifies the field in the bibliographic record that holds the identifier
@@ -301,12 +313,28 @@ Suppresses the record counter output.
 
 =head1 EXAMPLES
 
-    marc2sre.pl --idfield 004 --bibfield 035 --bibsubfield a --user cat1 serial_holding.xml
+    marc2sre.pl --user admin --marctype XML --libmap library.map --file serial_holding.xml 
+
+Processes MFHD records in the B<serial_holding.xml> file as a MARC21XML file,
+using the default 004 control field for the source of the bibliographic record
+ID and converting the ID to a plain integer for matching directly against the
+B<biblio.record_entry.id> column. The file B<library.map> contains the mappings
+of library names to integers, and the "admin" user will own the processed MFHD
+records.
+
+    marc2sre.pl --idfield 004 --prefix ocolc --bibfield 035 --bibsubfield a --user cat1 serial_holding.mrc
+
+B<WARNING>: The B<--bibfield> / B<--bibsubfield> options require one database
+lookup per MFHD record and will greatly slow down your import. Avoid if at all
+possible.
 
 Processes MFHD records in the B<serial_holding.xml> file. The script pulls the
 bibliographic record identifier from the 004 control field of the MFHD record
 and searches for a matching value in the bibliographic record in data field
-035, subfield a. The "cat1" user will own the processed MFHD records.
+035, subfield a.  The prefix "ocolc" will be prepended to the bibliographic
+record identifier to provide exact matchings against the
+B<metabib.full_rec.value> column.  The "cat1" user will own the processed MFHD
+records.
 
 =head1 AUTHOR
 
