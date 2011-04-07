@@ -201,8 +201,10 @@ sub load_common {
 
         } else {
 
-            # authtoken is no longer valid, log out to clean up
-            return $self->load_logout;
+            # if we encounter a stale authtoken, call load_logout 
+            # to clean up the cookie, then redirect the user to the
+            # originally requested page
+            return $self->load_logout($self->apache->unparsed_uri);
         }
     }
 
@@ -274,13 +276,14 @@ sub load_login {
 # -----------------------------------------------------------------------------
 sub load_logout {
     my $self = shift;
+    my $redirect_to = shift;
 
     # If the user was adding anyting to an anonymous cache 
     # while logged in, go ahead and clear it out.
     $self->clear_anon_cache;
 
     return $self->generic_redirect(
-        $self->ctx->{home_page},
+        $redirect_to || $self->ctx->{home_page},
         $self->cgi->cookie(
             -name => COOKIE_SES,
             -path => '/',
