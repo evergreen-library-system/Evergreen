@@ -419,8 +419,8 @@ OpenILS.data.prototype = {
                 },
                 'transit_slip' : {
                     'type' : 'transits',
-                    'header' : 'This item needs to be routed to <b>%route_to%</b>:<br/>\r\n%route_to_org_fullname%<br/>\r\n%street1%<br/>\r\n%street2%<br/>\r\n%city_state_zip%<br/>\r\n<br/>\r\n',
-                    'line_item' : 'Barcode: %item_barcode%<br/>\r\nTitle: %item_title%<br/>\r\nAuthor: %item_author%<br>\r\n<br/>\r\n',
+                    'header' : 'This item needs to be routed to <b>%route_to%</b>:<br/>\r\n%route_to_org_fullname%<br/>\r\n%street1%<br/>\r\n%street2%<br/>\r\n%city_state_zip%<br/>\r\n<br/>\r\nBarcode: %item_barcode%<br/>\r\nTitle: %item_title%<br/>\r\nAuthor: %item_author%<br>\r\n<br/>\r\n',
+                    'line_item' : '',
                     'footer' : 'Slip Date: %TODAY_TRIM%<br/>\r\nPrinted by %STAFF_FIRSTNAME% at %SHORTNAME%<br/>\r\n<br/>\r\n'
                 },
                 'hold_transit_slip' : {
