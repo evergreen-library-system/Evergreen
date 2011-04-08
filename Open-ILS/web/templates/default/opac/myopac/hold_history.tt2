@@ -22,10 +22,10 @@
         <span style="float:left;">[% l("Previously Held Items") %]</span>
         <span class='float-left' style='padding-left: 10px;'>
             <a href='hold_history?limit=[% limit %]&offset=[% offset - limit %]'
-                [% IF offset == 0 %] class='invisible' [% END %]>[% l('Previous') %]</a>
+                [% IF offset == 0 %] class='invisible' [% END %]><span class="nav_arrow_fix">&#9668;</span>[% l('Previous') %]</a>
             [%# TODO: get total to prevent paging off then end of the list.. %]
             <a href='hold_history?limit=[% limit %]&offset=[% offset + limit %]'
-               [% IF ctx.holds.size < limit %] class='invisible' [% END %] >[% l('Next') %]</a>
+               [% IF ctx.holds.size < limit %] class='invisible' [% END %] >[% l('Next') %]<span class="nav_arrow_fix">&#9658;</span></a>
         </span>
         <span style="float:right;">
             <a class="hide_me" href="#">Export List</a>

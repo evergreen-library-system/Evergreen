@@ -3,8 +3,23 @@
     WRAPPER "default/opac/parts/myopac/main_base.tt2";
     myopac_page = "main";
     myopac_main_page = "payments";
+    limit = ctx.payment_history_limit;
+    offset = ctx.payment_history_offset;
 %]
+
 <div>
+    <div class="header_middle">
+        <span class="float-left">[% l('Payments History') %]</span>
+        <span class='float-left' style='padding-left: 10px;'>
+            <a href='main_payments?limit=[% limit %]&offset=[% offset - limit %]'
+                [% IF offset == 0 %] class='invisible' [% END %]><span class="nav_arrow_fix">&#9668;</span>[% l('Previous') %]</a>
+            [%# TODO: get total to prevent paging off then end of the list.. %]
+            <a href='main_payments?limit=[% limit %]&offset=[% offset + limit %]'
+               [% IF ctx.payments.size < limit %] class='invisible' [% END %] >[% l('Next') %]<span class="nav_arrow_fix">&#9658;</span></a>
+        </span>
+    </div>
+    <div class="clear-both"></div>
+
     <table id='myopac_payments_table' width='100%' class='data_grid'>
         <thead><tr>
             <th>[% l('Payment Date') %]</th>

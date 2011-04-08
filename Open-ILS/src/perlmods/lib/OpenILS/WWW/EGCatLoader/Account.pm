@@ -560,9 +560,12 @@ sub load_myopac_hold_history {
 # TODO: add other filter options as params/configs/etc.
 sub load_myopac_payments {
     my $self = shift;
-    my $limit = $self->cgi->param('limit') || 0;
+    my $limit = $self->cgi->param('limit') || 20;
     my $offset = $self->cgi->param('offset') || 0;
     my $e = $self->editor;
+
+    $self->ctx->{payment_history_limit} = $limit;
+    $self->ctx->{payment_history_offset} = $offset;
 
     my $args = {};
     $args->{limit} = $limit if $limit;
