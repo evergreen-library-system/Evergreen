@@ -11,6 +11,13 @@ CREATE OR REPLACE FUNCTION evergreen.lowercase( TEXT ) RETURNS TEXT AS $$
     return lc(shift);
 $$ LANGUAGE PLPERLU STRICT IMMUTABLE;
 
+CREATE OR REPLACE FUNCTION evergreen.xml_escape(str TEXT) RETURNS text AS $$
+    SELECT REPLACE(REPLACE(REPLACE($1,
+       '&', '&amp;'),
+       '<', '&lt;'),
+       '>', '&gt;');
+$$ LANGUAGE SQL IMMUTABLE;
+
 CREATE OR REPLACE FUNCTION evergreen.change_db_setting(setting_name TEXT, settings TEXT[]) RETURNS VOID AS $$
 BEGIN
 EXECUTE 'ALTER DATABASE ' || quote_ident(current_database()) || ' SET ' || quote_ident(setting_name) || ' = ' || array_to_string(settings, ',');

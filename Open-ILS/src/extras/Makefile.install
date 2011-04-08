@@ -104,6 +104,7 @@ DEBS =  \
 	libtext-aspell-perl\
 	libtext-csv-perl\
 	libuniversal-require-perl\
+	libnet-ip-perl\
 	libunix-syslog-perl
 
 # Debian Lenny and Ubuntu Intrepid bundle recent versions of yaz
@@ -174,6 +175,7 @@ FEDORA_13_RPMS = \
 	perl-Email-Send \
 	perl-Email-Simple \
 	perl-GDGraph3d \
+	perl-Net-IP \
 	perl-Net-SSH2 \
 	perl-OLE-Storage_Lite \
 	perl-Spreadsheet-WriteExcel \
