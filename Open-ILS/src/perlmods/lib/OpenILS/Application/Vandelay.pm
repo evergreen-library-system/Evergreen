@@ -1107,5 +1107,34 @@ sub respond_with_status {
         success_count => $success_count, %args }) if $err or ($try_count % 5 == 0);
 }
 
+__PACKAGE__->register_method(  
+    api_name    => "open-ils.vandelay.match_set.get_tree",
+    method      => "match_set_get_tree",
+    api_level   => 1,
+    argc        => 1
+);
+
+sub match_set_get_tree {
+    my ($self, $conn, $authtoken, $match_set_id) = @_;
+
+    $match_set_id = int($match_set_id) or return;
+
+    my $e = new_editor("authtoken" => $authtoken);
+    $e->checkauth or return $e->die_event;
+
+    my $set = $e->retrieve_vandelay_match_set($match_set_id) or
+        return $e->die_event;
+
+    $e->allowed("ADMIN_IMPORT_MATCH_SET", $set->owner) or
+        return $e->die_event;
+
+    my $tree = $e->search_vandelay_match_set_point([
+        {"match_set" => $match_set_id, "parent" => undef},
+        {"flesh" => -1, "flesh_fields" => {"vmsp" => ["children"]}}
+    ]) or return $e->die_event;
+
+    return pop @$tree;
+}
+
 
 1;

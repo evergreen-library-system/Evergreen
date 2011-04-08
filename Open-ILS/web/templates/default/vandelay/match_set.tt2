@@ -1,0 +1,59 @@
+[% WRAPPER 'default/base.tt2' %]
+[% ctx.page_title = 'Vandelay Match Set' %]
+<style type="text/css">
+    h1 { margin: 0.5em 0; }
+    .outer { clear: both; }
+    #vmsp-buttons button { padding: 0 1.5em; }
+    .node-editor { margin-bottom: 2em; }
+    .node-editor td { padding: 0.5ex; }
+    li { background-color: #ddd; }
+</style>
+<h1>[% ctx.page_title %]</h1>
+<table class="hidden">
+    <tr consistent-controls="1">
+        <td>
+            <label for="quality-input"
+                title="A relative number representing the impact of this expression on the quality of the overall record match"><!-- XXX tooltipize -->
+                Quality:
+            </label>
+        </td>
+        <td>
+            <input id="quality-input" type="text" value="1"
+                size="4" maxlength="3" fmfield="quality" />
+        </td>
+    </tr>
+    <tr consistent-controls="1">
+        <td>
+            <label for="negate-input">Negate?</label>
+        </td>
+        <td>
+            <input id="negate-input" type="checkbox" fmfield="negate" />
+        </td>
+    </tr>
+</table>
+<div class="outer">
+    <div><!-- XXX TODO: consider a read-only display here of the query as built
+        so far from the treet --></div>
+    <div id="vmsp-buttons">
+        <button onclick="node_editor.add('svf');">New Single-Value-Field</button>
+        <button onclick="node_editor.add('tag');">New MARC Tag and Subfield</button>
+        <button onclick="node_editor.add('bool_op');">New Boolean Operator</button>
+    </div>
+</div>
+<div class="outer" style="margin-top: 2ex;">
+    <div style="float: left; width: 49%">
+        <div>
+            <form id="node-editor-container" onsubmit="return false;"></form>
+        </div>
+        <ul id="src_here"></ul>
+    </div>
+
+    <div style="float: right; width: 50%">
+        <div><big>Your Expression</big></div>
+        <div id="tree_here"></div>
+    </div>
+</div>
+<div jsId="progress_dialog" dojoType="openils.widget.ProgressDialog"></div>
+<script type="text/javascript"
+    src="[% ctx.media_prefix %]/js/ui/default/vandelay/match_set.js"></script>
+[% END %]

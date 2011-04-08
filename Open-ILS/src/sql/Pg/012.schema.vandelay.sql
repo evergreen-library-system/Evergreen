@@ -23,6 +23,7 @@ CREATE TABLE vandelay.match_set_point (
     svf         TEXT    REFERENCES config.record_attr_definition (name),
     tag         TEXT,
     subfield    TEXT,
+    negate      BOOL    DEFAULT FALSE,
     quality     INT     NOT NULL DEFAULT 1, -- higher is better
     CONSTRAINT vmsp_need_a_subfield_with_a_tag CHECK ((tag IS NOT NULL AND subfield IS NOT NULL) OR tag IS NULL),
     CONSTRAINT vmsp_need_a_tag_or_a_ff_or_a_bo CHECK (

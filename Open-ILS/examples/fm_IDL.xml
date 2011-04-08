@@ -541,10 +541,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="CREATE_IMPORT_MATCH_SET ADMIN_IMPORT_IMPORT_MATCH_SET" context_field="owner"/>
-				<retrieve permission="CREATE_IMPORT_MATCH_SET UPDATE_IMPORT_MATCH_SET DELETE_IMPORT_MATCH_SET" context_field="owner"/>
-				<update permission="UPDATE_IMPORT_MATCH_SET" context_field="owner"/>
-				<delete permission="DELETE_IMPORT_MATCH_SET" context_field="owner"/>
+				<create permission="ADMIN_IMPORT_MATCH_SET" context_field="owner"/>
+				<retrieve permission="ADMIN_IMPORT_MATCH_SET" context_field="owner"/>
+				<update permission="ADMIN_IMPORT_MATCH_SET" context_field="owner"/>
+				<delete permission="ADMIN_IMPORT_MATCH_SET" context_field="owner"/>
 			</actions>
 		</permacrud>
 	</class>
@@ -558,25 +558,28 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Coded Field" name="svf" reporter:datatype="link"/>
 			<field reporter:label="Tag" name="tag" reporter:datatype="text"/>
 			<field reporter:label="Subfield" name="subfield" reporter:datatype="text"/>
+            <field reporter:label="Negate" name="negate"  reporter:datatype="bool"/>
 			<field reporter:label="Importance" name="quality" reporter:datatype="int"/>
+			<field reporter:label="Expression Tree Children" name="children" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="parent" reltype="has_a" key="id" map="" class="vmsp"/>
 			<link field="match_set" reltype="has_a" key="id" map="" class="vms"/>
 			<link field="svf" reltype="has_a" key="id" map="" class="crad"/>
+			<link field="children" reltype="has_many" key="parent" map="" class="vmsp"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="CREATE_IMPORT_MATCH_SET ADMIN_IMPORT_IMPORT_MATCH_SET">
+				<create permission="ADMIN_IMPORT_MATCH_SET">
                     <context link="match_set" field="owner"/>
 				</create>
-				<retrieve permission="CREATE_IMPORT_MATCH_SET UPDATE_IMPORT_MATCH_SET DELETE_IMPORT_MATCH_SET">
+				<retrieve permission="ADMIN_IMPORT_MATCH_SET">
                     <context link="match_set" field="owner"/>
 				</retrieve>
-				<update permission="UPDATE_IMPORT_MATCH_SET">
+				<update permission="ADMIN_IMPORT_MATCH_SET">
                     <context link="match_set" field="owner"/>
 				</update>
-				<delete permission="DELETE_IMPORT_MATCH_SET">
+				<delete permission="ADMIN_IMPORT_MATCH_SET">
                     <context link="match_set" field="owner"/>
 				</delete>
 			</actions>
@@ -598,10 +601,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="CREATE_IMPORT_MATCH_SET ADMIN_IMPORT_IMPORT_MATCH_SET" context_field="owner"/>
-				<retrieve permission="CREATE_IMPORT_MATCH_SET UPDATE_IMPORT_MATCH_SET DELETE_IMPORT_MATCH_SET" context_field="owner"/>
-				<update permission="UPDATE_IMPORT_MATCH_SET" context_field="owner"/>
-				<delete permission="DELETE_IMPORT_MATCH_SET" context_field="owner"/>
+				<create permission="ADMIN_IMPORT_MATCH_SET" context_field="owner"/>
+				<retrieve permission="ADMIN_IMPORT_MATCH_SET" context_field="owner"/>
+				<update permission="ADMIN_IMPORT_MATCH_SET" context_field="owner"/>
+				<delete permission="ADMIN_IMPORT_MATCH_SET" context_field="owner"/>
 			</actions>
 		</permacrud>
 	</class>
