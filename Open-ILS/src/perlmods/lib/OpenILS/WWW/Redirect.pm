@@ -12,6 +12,7 @@ use CGI ();
 use OpenSRF::AppSession;
 use OpenSRF::System;
 use OpenSRF::Utils::Logger qw/$logger/;
+use Net::IP;
 
 use vars '$lib_ips_hash';
 my $lib_ips_hash;
@@ -35,11 +36,11 @@ sub parse_ips_file {
        while( my $data = <F> ) {
          chomp($data);
 
-         my( $shortname, $ip1, $ip2 ) = split(/\s+/, $data);
+         my ($shortname, $ip1, $ip2, $skin, $domain) = split(/\s+/, $data);
          next unless ($shortname and $ip1 and $ip2);
 
          $lib_ips_hash->{$shortname} = [] unless $lib_ips_hash->{$shortname};
-         push( @{$lib_ips_hash->{$shortname}}, [ $ip1, $ip2 ] );
+         push( @{$lib_ips_hash->{$shortname}}, [ $ip1, $ip2, $skin, $domain ] );
        }
 
        close(F);
@@ -68,15 +69,20 @@ sub handler {
 	if($cgi->https) { $proto = "https"; }
 
 	my $url = "$proto://$hostname:$port/opac/$locale/skin/$skin/xml/index.xml";
-
 	my $path = $apache_obj->path_info();
 
 	$logger->debug("Apache client connecting from $user_ip");
 
-	if(my $shortname = redirect_libs($user_ip)) {
+	my ($shortname, $nskin, $nhostname) = redirect_libs($user_ip);
+	if ($shortname) {
 
-		$logger->info("Apache redirecting $user_ip to $shortname");
+		if ($nskin =~ m/[^\s]/) { $skin = $nskin; }
+		if ($nhostname =~ m/[^\s]/) { $hostname = $nhostname; }
+
+		$logger->info("Apache redirecting $user_ip to $shortname with skin $skin and host $hostname");
 		my $session = OpenSRF::AppSession->create("open-ils.actor");
+
+		$url = "$proto://$hostname:$port/opac/$locale/skin/$skin/xml/index.xml";
 
 		my $org = $session->request(
             'open-ils.actor.org_unit.retrieve_by_shortname',
@@ -95,23 +101,19 @@ sub handler {
 }
 
 sub redirect_libs {
-	my $source_ip = shift;
-	my $aton_binary = inet_aton( $source_ip );
-
-    return 0 unless $aton_binary;
+	my $source_ip = new Net::IP (shift) or return 0;
 
 	# do this the linear way for now...
 	for my $shortname (keys %$lib_ips_hash) {
 
         for my $block (@{$lib_ips_hash->{$shortname}}) {
 
+            $logger->debug("Checking whether " . $source_ip->ip() . " is in the range " . $block->[0] . " to " . $block->[1]);
             if(defined($block->[0]) && defined($block->[1]) ) {
-                my $start_binary	= inet_aton( $block->[0] );
-                my $end_binary		= inet_aton( $block->[1] );
-                next unless( $start_binary and $end_binary );
-                if( $start_binary le $aton_binary and
-                        $end_binary ge $aton_binary ) {
-                    return $shortname;
+                my $range = new Net::IP( $block->[0] . ' - ' . $block->[1] );
+                if( $source_ip->overlaps($range)==$IP_A_IN_B_OVERLAP ||
+                    $source_ip->overlaps($range)==$IP_IDENTICAL ) {
+                    return ($shortname, $block->[2], $block->[3]);
                 }
             }
         }

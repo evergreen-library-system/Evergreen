@@ -103,6 +103,7 @@ DEBS =  \
 	libtext-aspell-perl\
 	libtext-csv-perl\
 	libuniversal-require-perl\
+	libnet-ip-perl\
 	libunix-syslog-perl
 
 # Debian Lenny and Ubuntu Intrepid bundle recent versions of yaz
