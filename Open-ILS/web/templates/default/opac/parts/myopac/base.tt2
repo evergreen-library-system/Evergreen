@@ -1,3 +1,5 @@
+[%  WRAPPER "default/opac/parts/base.tt2" %]
+
 [% myopac_pages = [
         {url => "main", name => "Account Summary"},
         {url => "circs", name => "Items Checked Out"},
@@ -32,3 +34,4 @@
             <div class="common-full-pad"></div>
         </div>
     </div>
+[% END %]

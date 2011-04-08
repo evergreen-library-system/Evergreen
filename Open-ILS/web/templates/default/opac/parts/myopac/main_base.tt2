@@ -1,0 +1,97 @@
+[%  PROCESS "default/opac/parts/header.tt2";
+    PROCESS "default/opac/parts/misc_util.tt2";
+    WRAPPER "default/opac/parts/myopac/base.tt2";
+%]
+
+<div id='myopac_summary_div' style="padding:0px;">
+
+    <div style="width:742px;float:left;">
+        <div class="header_middle">[% l('Account Summary') %]</div>
+    </div>
+
+    <!-- fines summary along the right of the page -->
+    <div id="myopac_sum_fines">
+        <div style="position:absolute;">
+            <div style="position:relative;top:-15px;left:-23px;">
+                <img src="[% ctx.media_prefix %]/images/acct_sum_fines_tl.png" />
+            </div>
+        </div>
+        <div style="position:absolute;">
+            <div style="position:relative;top:-15px;left:172px;">
+                <img src="[% ctx.media_prefix %]/images/acct_sum_fines_tr.png" />
+            </div>
+        </div>
+        <div style="position:absolute;">
+            <div style="position:relative;top:161px;left:-23px;">
+                <img src="[% ctx.media_prefix %]/images/acct_sum_fines_bl.png" />
+            </div>
+        </div>
+        <div style="position:absolute;">
+            <div style="position:relative;top:161px;left:172px;">
+                <img src="[% ctx.media_prefix %]/images/acct_sum_fines_br.png" />
+            </div>
+        </div>
+        [% l('Fines:') %]
+        <span id="myopac_sum_fines_bal" class='[% ctx.user_stats.fines.balance_owed ? "red" : ""%]'>
+            [% money(ctx.user_stats.fines.balance_owed) %]
+        </span><br />
+
+        [%# TODO %]
+        <a class="hide_me" href="#" id="pay_fines_btn1"><img
+            alt="[% l('Pay Fines') %]"
+            onmouseover="this.src='[% ctx.media_prefix %]/images/pay-fines-btn-hover.png';"
+            onmouseout="this.src='[% ctx.media_prefix %]/images/pay-fines-btn.png';"
+            src="[% ctx.media_prefix %]/images/pay-fines-btn.png"
+            style="position:relative;top:5px;" /></a>
+    </div>
+
+    <div style="width:662px;">
+        <div style="float:left;">
+            <div style="padding:10px 0px;" id="myopac_sum_name"></div>
+            <div class="acct_sum_row">
+                <table width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td>[% l("Items Currently Checked out ([_1])", ctx.user_stats.checkouts.total_out) %]</td>
+                        <td align="right">
+                            <a href="[% ctx.opac_root %]/myopac/circs">[% l("View All") %]</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="acct_sum_row">
+                <table width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td>[% l('Items Currently on Hold ([_1])', ctx.user_stats.holds.total) %]</td>
+                        <td align="right">
+                            <a href="[% ctx.opac_root %]/myopac/holds">[% l('View All') %]</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="acct_sum_row">
+                <table width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td>[% l('Items ready for pickup ([_1])', ctx.user_stats.holds.ready) %]</td>
+                        <td align="right">
+                            <a href="[% ctx.opac_root %]/myopac/holds?available=1">[% l('View All') %]</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="clear-both"></div>
+    <div id='fines_payments_wrapper'>
+        <div id='acct_fines_tabs'>
+            [% IF myopac_main_page == 'main' %]
+            <a href='#'><img src='[% ctx.media_prefix %]/images/acct_fines_on.jpg'/></a>
+            <a href='main_payments'><img src='[% ctx.media_prefix %]/images/acct_payments_off.jpg'/></a>
+            [% ELSE %]
+            <a href='main'><img src='[% ctx.media_prefix %]/images/acct_fines_off.jpg'/></a>
+            <a href='#'><img src='[% ctx.media_prefix %]/images/acct_payments_on.jpg'/></a>
+            [% END %]
+        </div>
+    </div>
+    [% content %]
+</div>
+[% END %]

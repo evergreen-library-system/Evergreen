@@ -1,0 +1,30 @@
+[%  PROCESS "default/opac/parts/header.tt2";
+    PROCESS "default/opac/parts/misc_util.tt2";
+    WRAPPER "default/opac/parts/myopac/main_base.tt2";
+    myopac_page = "main";
+    myopac_main_page = "payments";
+%]
+<div>
+    <table id='myopac_payments_table' width='100%' class='data_grid'>
+        <thead><tr>
+            <th>[% l('Payment Date') %]</th>
+            <th>[% l('Payment For') %]</th>
+            <th>[% l('Amount') %]</th>
+            <th>[% l('Receipt') %]</th> 
+        </tr></thead>
+        <tbody>
+            [% FOR payment IN ctx.payments %]
+            <tr>
+                <td>[% date.format(ctx.parse_datetime(payment.mp.payment_ts), DATE_FORMAT) %]</td>
+                <td>[% (payment.xact_type == 'grocery') ? payment.last_billing_type : payment.title %]</td>
+                <td>[% money(payment.mp.amount) %]</td>
+                <td>
+                    [%# post to print/email form... %]
+                    <a href=''>[% l('Print') %]</a> / <a href=''>[% l('Email') %]</a>
+                </td>
+            </tr>
+            [% END %]
+        </tbody>
+    </table>
+</div>
+[% END %]

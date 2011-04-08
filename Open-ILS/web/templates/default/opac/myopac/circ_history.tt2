@@ -1,10 +1,9 @@
 [%  PROCESS "default/opac/parts/header.tt2";
     PROCESS "default/opac/parts/marc_misc.tt2";
-    WRAPPER "default/opac/parts/base.tt2" +
-        "default/opac/parts/myopac/base.tt2";
-    myopac_page = "circs";
-    limit = CGI.param('limit') || 25;
-    offset = CGI.param('offset') || 0;
+    WRAPPER "default/opac/parts/myopac/base.tt2";
+    myopac_page = "circs"
+    limit = ctx.circ_history_limit;
+    offset = ctx.circ_history_offset;
 %]
 
 <div style="padding:0px;">
@@ -20,15 +19,13 @@
     </div>
 
     <div class="header_middle">
-        <span class="float-left">[% l('Current Items Checked Out') %]</span>
+        <span class="float-left">[% l('Previously Checked Out Items') %]</span>
         <span class='float-left' style='padding-left: 10px;'>
-            [% IF offset > 0 %]
-            <a href='circ_history?limit=[% limit %]&offset=[% offset - 1 %]'>[% l('Previous') %]</a>
-            [% END %]
-            [% IF ctx.circs.size == limit %]
+            <a href='circ_history?limit=[% limit %]&offset=[% offset - limit %]'
+                [% IF offset == 0 %] class='invisible' [% END %]>[% l('Previous') %]</a>
             [%# TODO: get total to prevent paging off then end of the list.. %]
-            <a href='circ_history?limit=[% limit %]&offset=[% offset + 1 %]'>[% l('Next') %]</a>
-            [% END %]
+            <a href='circ_history?limit=[% limit %]&offset=[% offset + limit %]'
+               [% IF ctx.circs.size < limit %] class='invisible' [% END %] >[% l('Next') %]</a>
         </span>
         <span class="float-right">
             <a class="hide_me" href="#">[% l('Export List') %]</a>
@@ -38,21 +35,9 @@
 
     [% IF ctx.circs.size < 1 %]
     <div class="opac-auto-079">
-        <big><strong>[% l('You have no items checked out.') %]</strong></big>
+        <big><strong>[% l('There are no items in your circulation history.') %]</strong></big>
     </div>
     [% ELSE %]
-
-    [% IF ctx.success_renewals %]
-    <div class="renew-summary">
-        [% l("Successfully renewed [_1] item(s)", ctx.success_renewals) %]
-    </div>
-    [% END %]
-
-    [% IF ctx.failed_renewals %]
-    <div class="renew-summary red">
-        [% l("Failed to renew [_1] item(s)", ctx.failed_renewals) %]
-    </div>
-    [% END %]
 
     <div id='checked_main'>
         <table style='border-collapse:collapse;'>
@@ -98,9 +83,12 @@
                             [% date.format(ctx.parse_datetime(circ.circ.due_date),DATE_FORMAT); %]
                         </td>
                         <td style="padding-left:5px;">
-                            [% IF circ.circ.checkin_time; 
-                                date.format(ctx.parse_datetime(circ.circ.checkin_time),DATE_FORMAT); 
-                            END; %]
+                            [% 
+                                IF circ.circ.checkin_time; 
+                                    date.format(ctx.parse_datetime(circ.circ.checkin_time),DATE_FORMAT); 
+                                ELSE; %]
+                                <span style='color:blue;'>*</span><!-- meh -->
+                            [% END; %]
                         </td>
                         <td>[% circ.circ.target_copy.barcode %]</td>
                         <td>[% circ.circ.target_copy.call_number.label %]</td>

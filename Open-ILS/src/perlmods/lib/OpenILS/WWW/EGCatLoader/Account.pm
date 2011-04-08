@@ -506,8 +506,11 @@ sub load_myopac_circ_history {
     my $self = shift;
     my $e = $self->editor;
     my $ctx = $self->ctx;
-    my $limit = $self->cgi->param('limit');
+    my $limit = $self->cgi->param('limit') || 15;
     my $offset = $self->cgi->param('offset') || 0;
+
+    $ctx->{circ_history_limit} = $limit;
+    $ctx->{circ_history_offset} = $offset;
 
     my $circs = $e->json_query({
         from => ['action.usr_visible_circs', $e->requestor->id],
@@ -526,7 +529,7 @@ sub load_myopac_circ_history {
     @ids = @ids[$offset..($offset + $limit - 1)] if $limit;
     @ids = grep { defined $_ } @ids;
 
-    $ctx->{circs} = $self->fetch_user_circs(1, \@ids, $limit, $offset);
+    $ctx->{circs} = $self->fetch_user_circs(1, \@ids);
     #$ctx->{circs} = $self->fetch_user_circs(1, [map { $_->{id} } @$circs], $limit, $offset);
 
     return Apache2::Const::OK;
@@ -537,8 +540,11 @@ sub load_myopac_hold_history {
     my $self = shift;
     my $e = $self->editor;
     my $ctx = $self->ctx;
-    my $limit = $self->cgi->param('limit');
-    my $offset = $self->cgi->param('offset');
+    my $limit = $self->cgi->param('limit') || 15;
+    my $offset = $self->cgi->param('offset') || 0;
+    $ctx->{hold_history_limit} = $limit;
+    $ctx->{hold_history_offset} = $offset;
+
 
     my $holds = $e->json_query({
         from => ['action.usr_visible_holds', $e->requestor->id],
@@ -551,23 +557,11 @@ sub load_myopac_hold_history {
     return Apache2::Const::OK;
 }
 
-sub load_myopac_main {
-    my $self = shift;
-    my $limit = $self->cgi->param('limit') || 0;
-    my $offset = $self->cgi->param('offset') || 0;
-    my $expand = $self->cgi->param('expand') || '';
-
-    return $self->load_myopac_payments($limit, $offset) 
-        if $expand eq 'payments';
-
-    return $self->load_myopac_fines($limit, $offset);
-}
-
 # TODO: add other filter options as params/configs/etc.
 sub load_myopac_payments {
     my $self = shift;
-    my $limit = shift || 0;
-    my $offset = shift || 0;
+    my $limit = $self->cgi->param('limit') || 0;
+    my $offset = $self->cgi->param('offset') || 0;
     my $e = $self->editor;
 
     my $args = {};
@@ -584,10 +578,10 @@ sub load_myopac_payments {
 
 
 
-sub load_myopac_fines {
+sub load_myopac_main {
     my $self = shift;
-    my $limit = shift || 0;
-    my $offset = shift || 0;
+    my $limit = $self->cgi->param('limit') || 0;
+    my $offset = $self->cgi->param('offset') || 0;
     my $e = $self->editor;
     my $ctx = $self->ctx;
 
@@ -664,6 +658,9 @@ sub load_myopac_update_email {
     my $ctx = $self->ctx;
     my $email = $self->cgi->param('email') || '';
 
+    return Apache2::Const::OK 
+        unless $self->cgi->request_method eq 'POST';
+
     unless($email =~ /.+\@.+\..+/) { # TODO better regex?
         $ctx->{invalid_email} = $email;
         return Apache2::Const::OK;
@@ -676,6 +673,80 @@ sub load_myopac_update_email {
 
     my $url = $self->apache->unparsed_uri;
     $url =~ s/update_email/prefs/;
+
+    return $self->generic_redirect($url);
+}
+
+sub load_myopac_update_username {
+    my $self = shift;
+    my $e = $self->editor;
+    my $ctx = $self->ctx;
+    my $username = $self->cgi->param('username') || '';
+
+    return Apache2::Const::OK 
+        unless $self->cgi->request_method eq 'POST';
+
+    unless($username and $username !~ /\s/) { # any other username restrictions?
+        $ctx->{invalid_username} = $username;
+        return Apache2::Const::OK;
+    }
+
+    if($username ne $e->requestor->usrname) {
+
+        my $evt = $U->simplereq(
+            'open-ils.actor', 
+            'open-ils.actor.user.username.update', 
+            $e->authtoken, $username);
+
+        if($U->event_equals($evt, 'USERNAME_EXISTS')) {
+            $ctx->{username_exists} = $username;
+            return Apache2::Const::OK;
+        }
+    }
+
+    my $url = $self->apache->unparsed_uri;
+    $url =~ s/update_username/prefs/;
+
+    return $self->generic_redirect($url);
+}
+
+sub load_myopac_update_password {
+    my $self = shift;
+    my $e = $self->editor;
+    my $ctx = $self->ctx;
+
+    return Apache2::Const::OK 
+        unless $self->cgi->request_method eq 'POST';
+
+    my $current_pw = $self->cgi->param('current_pw') || '';
+    my $new_pw = $self->cgi->param('new_pw') || '';
+    my $new_pw2 = $self->cgi->param('new_pw2') || '';
+
+    unless($new_pw eq $new_pw2) {
+        $ctx->{password_nomatch} = 1;
+        return Apache2::Const::OK;
+    }
+
+    my $pw_regex = $ctx->{get_org_setting}->($e->requestor->home_ou, 'global.password_regex');
+
+    if($pw_regex and $new_pw !~ /$pw_regex/) {
+        $ctx->{password_invalid} = 1;
+        return Apache2::Const::OK;
+    }
+
+    my $evt = $U->simplereq(
+        'open-ils.actor', 
+        'open-ils.actor.user.password.update', 
+        $e->authtoken, $new_pw, $current_pw);
+
+
+    if($U->event_equals($evt, 'INCORRECT_PASSWORD')) {
+        $ctx->{password_incorrect} = 1;
+        return Apache2::Const::OK;
+    }
+
+    my $url = $self->apache->unparsed_uri;
+    $url =~ s/update_password/prefs/;
 
     return $self->generic_redirect($url);
 }

@@ -1,7 +1,6 @@
 [%  PROCESS "default/opac/parts/header.tt2";
     PROCESS "default/opac/parts/misc_util.tt2";
-    WRAPPER "default/opac/parts/base.tt2" +
-        "default/opac/parts/myopac/base.tt2";
+    WRAPPER "default/opac/parts/myopac/base.tt2";
     myopac_page = "circs"  %]
 <div id='myopac_checked_div' style="padding:0px;">
 

@@ -121,14 +121,17 @@ sub load {
     return $self->load_place_hold if $path =~ m|opac/place_hold|;
     return $self->load_myopac_holds if $path =~ m|opac/myopac/holds|;
     return $self->load_myopac_circs if $path =~ m|opac/myopac/circs|;
+    return $self->load_myopac_payments if $path =~ m|opac/myopac/main_payments|;
     return $self->load_myopac_main if $path =~ m|opac/myopac/main|;
     return $self->load_myopac_update_email if $path =~ m|opac/myopac/update_email|;
+    return $self->load_myopac_update_password if $path =~ m|opac/myopac/update_password|;
+    return $self->load_myopac_update_username if $path =~ m|opac/myopac/update_username|;
     return $self->load_myopac_bookbags if $path =~ m|opac/myopac/lists|;
     return $self->load_myopac_bookbag_update if $path =~ m|opac/myopac/list/update|;
     return $self->load_myopac_circ_history if $path =~ m|opac/myopac/circ_history|;
     return $self->load_myopac_hold_history if $path =~ m|opac/myopac/hold_history|;
-    return $self->load_myopac_prefs_notify if $path =~ m|opac/myopac/prefs/notify|;
-    return $self->load_myopac_prefs_settings if $path =~ m|opac/myopac/prefs/settings|;
+    return $self->load_myopac_prefs_notify if $path =~ m|opac/myopac/prefs_notify|;
+    return $self->load_myopac_prefs_settings if $path =~ m|opac/myopac/prefs_settings|;
     return $self->load_myopac_prefs if $path =~ m|opac/myopac/prefs|;
 
     return Apache2::Const::OK;
@@ -199,8 +202,10 @@ sub load_common {
 
         } else {
 
-            # authtoken is no longer valid, log out to clean up
-            return $self->load_logout;
+            # if we encounter a stale authtoken, call load_logout 
+            # to clean up the cookie, then redirect the user to the
+            # originally requested page
+            return $self->load_logout($self->apache->unparsed_uri);
         }
     }
 
@@ -231,15 +236,15 @@ sub load_login {
 		'open-ils.auth.authenticate.init', $username);
 
     my $args = {	
-        username => $username, 
+        barcode => $username, 
         password => md5_hex($seed . md5_hex($password)), 
         type => ($persist) ? 'persist' : 'opac' 
     };
 
     my $bc_regex = $ctx->{get_org_setting}->($org_unit, 'opac.barcode_regex');
 
-    $args->{barcode} = delete $args->{username} 
-        if $bc_regex and $username =~ /$bc_regex/;
+    $args->{username} = delete $args->{barcode} 
+        if $bc_regex and !($username =~ /$bc_regex/);
 
 	my $response = $U->simplereq(
         'open-ils.auth', 'open-ils.auth.authenticate.complete', $args);
@@ -272,13 +277,14 @@ sub load_login {
 # -----------------------------------------------------------------------------
 sub load_logout {
     my $self = shift;
+    my $redirect_to = shift;
 
     # If the user was adding anyting to an anonymous cache 
     # while logged in, go ahead and clear it out.
     $self->clear_anon_cache;
 
     return $self->generic_redirect(
-        $self->ctx->{home_page},
+        $redirect_to || $self->ctx->{home_page},
         $self->cgi->cookie(
             -name => COOKIE_SES,
             -path => '/',
