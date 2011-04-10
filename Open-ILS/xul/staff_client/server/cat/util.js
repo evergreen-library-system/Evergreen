@@ -542,10 +542,10 @@ cat.util.fast_item_add = function(doc_id,cn_label,cp_barcode) {
         copy_obj.deposit(0);
         copy_obj.price(0);
         copy_obj.deposit_amount(0);
-        copy_obj.fine_level(2);
-        copy_obj.loan_duration(2);
-        copy_obj.location(1);
-        copy_obj.status(0);
+        copy_obj.fine_level(2); // Normal
+        copy_obj.loan_duration(2); // Normal
+        copy_obj.location(1); // Stacks
+        copy_obj.status(5); // In Process
         copy_obj.circulate(get_db_true());
         copy_obj.holdable(get_db_true());
         copy_obj.opac_visible(get_db_true());
