@@ -443,10 +443,10 @@ g.stash_and_close = function(param) {
             copy.deposit(0);
             copy.price(0);
             copy.deposit_amount(0);
-            copy.fine_level(2);
-            copy.loan_duration(2);
-            copy.location(1);
-            copy.status(5);
+            copy.fine_level(2); // Normal
+            copy.loan_duration(2); // Normal
+            copy.location(1); // Stacks
+            copy.status(5); // In Process
             copy.circulate(get_db_true());
             copy.holdable(get_db_true());
             copy.opac_visible(get_db_true());
