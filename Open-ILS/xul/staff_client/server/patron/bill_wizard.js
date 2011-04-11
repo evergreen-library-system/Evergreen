@@ -129,7 +129,7 @@ function patron_bill_init() {
 
         retrieve_patron();
 
-        $('billing_location').setAttribute('value', g.OpenILS.data.hash.aou[ g.OpenILS.data.list.au[0].ws_ou() ].name() );
+        $('wizard_billing_location').setAttribute('value', g.OpenILS.data.hash.aou[ g.OpenILS.data.list.au[0].ws_ou() ].name() );
 
         if ( g.OpenILS.data.hash.cbt[ ml.value ] ) {
             $('bill_amount').value = g.OpenILS.data.hash.cbt[ ml.value ].default_price();

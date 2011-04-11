@@ -2417,7 +2417,7 @@ function AcqLiTable() {
                     "onChange": function() {
                         if (this.item) {
                             self._updateCreatePoPrepayCheckbox(
-                                this.item.prepayment_required
+                                this.item.prepayment_required()
                             );
                         }
                     }
