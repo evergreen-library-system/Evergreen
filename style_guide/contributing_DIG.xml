@@ -56,18 +56,18 @@
 <screen><userinput>git clone git://github.com/rsoulliere/Evergreen-DocBook.git</userinput></screen>
 			</step>	
 			<step>
-				<para>Edit or add files in the clonesd repository location.</para>
+				<para>Edit or add files in the cloned repository location.</para>
 			</step>	
 		</procedure>
 		<para>For editing and committing changes to the repository there are only a handful of commands you need to know (run these inside the directory structure of your cloned 
 		repository):</para> 
 		<itemizedlist>
 			<listitem><command>git pull <option>filename</option></command> -  It will pull the most recent changes into your cloned version to avoid merging 
-			issues and errors when <quote>pushing</quote> your changes tp the remote repository.</listitem>
+			issues and errors when <quote>pushing</quote> your changes to the remote repository.</listitem>
 			<listitem><command>git add <option>filename</option></command> - Adds new files to repository. This is needed to tell git that you have added or edited files and want to add 
 			them into the repo.</listitem>
 			<listitem><command>git commit <option>filename</option></command> - Commits changes to the repository. A text file will open describing what will be committed. Add a 
-			meainingful note here to indicate 
+			meaningful note here to indicate 
 			what you have chanaged.</listitem>
 			<listitem><command>git push <option>filename</option></command> - Push changes to remote repository. After pushing your changes you should see them show up at: 
 			<link xlink:href="https://github.com/rsoulliere/Evergreen-DocBook/commits/master" xlink:title="see committed changes">
