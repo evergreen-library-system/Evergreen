@@ -125,29 +125,35 @@ CREATE INDEX authority_full_rec_index_vector_idx ON authority.full_rec USING GIS
 /* Enable LIKE to use an index for database clusters with locales other than C or POSIX */
 CREATE INDEX authority_full_rec_value_tpo_index ON authority.full_rec (value text_pattern_ops);
 
+-- Adding indexes using oils_xpath_string() for the main entry tags described in
+-- authority.control_set_authority_field would speed this up, if we ever want to use it, though
+-- the existing index on authority.normalize_heading() helps already with a record in hand
 CREATE OR REPLACE VIEW authority.tracing_links AS
     SELECT  main.record AS record,
             main.id AS main_id,
             main.tag AS main_tag,
-            main.value AS main_value,
+            oils_xpath_string('//*[@datafield="'||main.tag||'"]/*[local-name="subfield"]', are.marc) AS main_value,
+            authority.normalize_heading(are.marc) AS normalized_main_value,
             substr(link.value,1,1) AS relationship,
             substr(link.value,2,1) AS use_restriction,
             substr(link.value,3,1) AS deprecation,
             substr(link.value,4,1) AS display_restriction,
-            link_value.id AS link_id,
-            link_value.tag AS link_tag,
-            link_value.value AS link_value
+            link.id AS link_id,
+            link.tag AS link_tag,
+            extract_marc_field('authority.record_entry',link.record,'//*[@datafield="'||link.tag||'"]') AS link_value
       FROM  authority.full_rec main
+            JOIN authority.record_entry are ON (main.record = are.id)
+            JOIN authority.control_set_authority_field main_entry
+                ON (main_entry.tag = main.tag
+                    AND main_entry.main_entry IS NULL
+                    AND main.subfield = 'a' )
+            JOIN authority.control_set_authority_field sub_entry
+                ON (main_entry.id = sub_entry.main_entry)
             JOIN authority.full_rec link
                 ON (link.record = main.record
-                    AND link.tag in ((main.tag::int + 400)::text, (main.tag::int + 300)::text)
-                    AND link.subfield = 'w' )
-            JOIN authority.full_rec link_value
-                ON (link_value.record = main.record
-                    AND link_value.tag = link.tag
-                    AND link_value.subfield = 'a' )
-      WHERE main.tag IN ('100','110','111','130','150','151','155','180','181','182','185')
-            AND main.subfield = 'a';
+                    AND link.tag = sub_entry.tag
+                    AND link.subfield = 'w' );
+
 
 -- Function to generate an ephemeral overlay template from an authority record
 CREATE OR REPLACE FUNCTION authority.generate_overlay_template ( TEXT, BIGINT ) RETURNS TEXT AS $func$
