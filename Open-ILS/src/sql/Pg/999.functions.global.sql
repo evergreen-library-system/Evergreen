@@ -1440,9 +1440,13 @@ $func$ LANGUAGE PLPGSQL;
 CREATE OR REPLACE FUNCTION authority.reingest_authority_rec_descriptor( auth_id BIGINT ) RETURNS VOID AS $func$
 BEGIN
     DELETE FROM authority.rec_descriptor WHERE record = auth_id;
---    INSERT INTO authority.rec_descriptor (record, record_status, char_encoding, thesaurus)
---        SELECT  auth_id, ;
-
+    INSERT INTO authority.rec_descriptor (record, record_status, encoding_level, thesaurus)
+        SELECT  auth_id,
+                vandelay.marc21_extract_fixed_field(marc,'RecStat'),
+                vandelay.marc21_extract_fixed_field(marc,'ELvl'),
+                vandelay.marc21_extract_fixed_field(marc,'Subj')
+          FROM  authority.record
+          WHERE id = auth_id;
     RETURN;
 END;
 $func$ LANGUAGE PLPGSQL;
@@ -1482,11 +1486,10 @@ BEGIN
     PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_authority_full_rec' AND enabled;
     IF NOT FOUND THEN
         PERFORM authority.reingest_authority_full_rec(NEW.id);
--- authority.rec_descriptor is not currently used
---        PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_authority_rec_descriptor' AND enabled;
---        IF NOT FOUND THEN
---            PERFORM authority.reingest_authority_rec_descriptor(NEW.id);
---        END IF;
+        PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_authority_rec_descriptor' AND enabled;
+        IF NOT FOUND THEN
+            PERFORM authority.reingest_authority_rec_descriptor(NEW.id);
+        END IF;
     END IF;
 
     RETURN NEW;

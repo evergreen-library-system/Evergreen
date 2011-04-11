@@ -98,7 +98,7 @@ CREATE TABLE authority.rec_descriptor (
     id              BIGSERIAL PRIMARY KEY,
     record          BIGINT,
     record_status   TEXT,
-    char_encoding   TEXT,
+    encoding_level  TEXT,
     thesaurus       TEXT
 );
 CREATE INDEX authority_rec_descriptor_record_idx ON authority.rec_descriptor (record);
