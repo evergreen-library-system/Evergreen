@@ -2978,7 +2978,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
             print_data.route_to_org = lib;
             print_data.route_to_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.destination', [check.route_to]);
             print_data.route_to_org_fullname = lib.name();
-            var aous_req = network.simple_request('FM_AOUS_SPECIFIC_RETRIEVE',[ lib.id(), 'lib.courier_code', ses() ]);
+            var aous_req = network.simple_request('FM_AOUS_SPECIFIC_RETRIEVE',[ lib.id(), 'lib.courier_code' ]);
             if (aous_req) {
                 print_data.courier_code = aous_req.value || '';
             }
