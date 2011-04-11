@@ -373,6 +373,7 @@ AC_CONFIG_FILES([Makefile
          Open-ILS/updates/Makefile
          Open-ILS/xul/staff_client/Makefile
          Open-ILS/src/extras/eg_config
+         Open-ILS/src/extras/fast-extract
          Open-ILS/src/extras/import/marc2are.pl
          Open-ILS/src/extras/import/marc2bre.pl
          Open-ILS/src/extras/import/marc2sre.pl
