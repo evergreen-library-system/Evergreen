@@ -132,7 +132,7 @@ CREATE OR REPLACE VIEW authority.tracing_links AS
     SELECT  main.record AS record,
             main.id AS main_id,
             main.tag AS main_tag,
-            oils_xpath_string('//*[@datafield="'||main.tag||'"]/*[local-name="subfield"]', are.marc) AS main_value,
+            oils_xpath_string('//*[@tag="'||main.tag||'"]/*[local-name()="subfield"]', are.marc) AS main_value,
             authority.normalize_heading(are.marc) AS normalized_main_value,
             substr(link.value,1,1) AS relationship,
             substr(link.value,2,1) AS use_restriction,
@@ -140,7 +140,7 @@ CREATE OR REPLACE VIEW authority.tracing_links AS
             substr(link.value,4,1) AS display_restriction,
             link.id AS link_id,
             link.tag AS link_tag,
-            extract_marc_field('authority.record_entry',link.record,'//*[@datafield="'||link.tag||'"]') AS link_value
+            oils_xpath_string('//*[@tag="'||link.tag||'"]/*[local-name()="subfield"]', are.marc) AS link_value
       FROM  authority.full_rec main
             JOIN authority.record_entry are ON (main.record = are.id)
             JOIN authority.control_set_authority_field main_entry
@@ -154,84 +154,54 @@ CREATE OR REPLACE VIEW authority.tracing_links AS
                     AND link.tag = sub_entry.tag
                     AND link.subfield = 'w' );
 
-
 -- Function to generate an ephemeral overlay template from an authority record
-CREATE OR REPLACE FUNCTION authority.generate_overlay_template ( TEXT, BIGINT ) RETURNS TEXT AS $func$
+CREATE OR REPLACE FUNCTION authority.generate_overlay_template (source_xml TEXT) RETURNS TEXT AS $f$
+DECLARE
+    cset                INT;
+    main_entry          authority.control_set_authority_field%ROWTYPE;
+    bib_field           authority.control_set_bib_field%ROWTYPE;
+    auth_id             INT DEFAULT oils_xpath_string('//*[@tag="901"]/*[local-name()="subfield" and @code="c"]', source_xml)::INT;
+    replace_data        XML[] DEFAULT '{}'::XML[];
+    replace_rules       TEXT[] DEFAULT '{}'::TEXT[];
+    auth_field          TEXT;
+BEGIN
+    IF auth_id IS NULL THEN
+        RETURN NULL;
+    END IF;
 
-    use MARC::Record;
-    use MARC::File::XML (BinaryEncoding => 'UTF-8');
-    use MARC::Charset;
+    -- Default to the LoC controll set
+    SELECT COALESCE(control_set,1) INTO cset FROM authority.record_entry WHERE id = auth_id;
 
-    MARC::Charset->assume_unicode(1);
+    FOR main_entry IN SELECT * FROM authority.control_set_authority_field WHERE control_set = cset LOOP
+        auth_field := XPATH('//*[@tag="'||main_entry.tag||'"][1]',source_xml);
+        IF ARRAY_LENGTH(auth_field) > 0 THEN
+            FOR bib_field IN SELECT * FROM authority.control_set_bib_field WHERE authority_field = main_entry.id LOOP
+                replace_data := replace_data || XMLELEMENT( name datafield, bib_field.tag AS tag, XPATH('//*[local-name()="subfield"]',auth_field[1])::XML[]);
+                replace_rules := replace_rules || ( bib_field.tag || main_entry.sf_list || E'[0~\\)' || auth_id || '$]' );
+            END LOOP;
+            EXIT;
+        END IF;
+    END LOOP;
 
-    my $xml = shift;
-    my $r = MARC::Record->new_from_xml( $xml );
-
-    return undef unless ($r);
-
-    my $id = shift() || $r->subfield( '901' => 'c' );
-    $id =~ s/^\s*(?:\([^)]+\))?\s*(.+)\s*?$/$1/;
-    return undef unless ($id); # We need an ID!
-
-    my $tmpl = MARC::Record->new();
-    $tmpl->encoding( 'UTF-8' );
-
-    my @rule_fields;
-    for my $field ( $r->field( '1..' ) ) { # Get main entry fields from the authority record
-
-        my $tag = $field->tag;
-        my $i1 = $field->indicator(1);
-        my $i2 = $field->indicator(2);
-        my $sf = join '', map { $_->[0] } $field->subfields;
-        my @data = map { @$_ } $field->subfields;
-
-        my @replace_them;
-
-        # Map the authority field to bib fields it can control.
-        if ($tag >= 100 and $tag <= 111) {       # names
-            @replace_them = map { $tag + $_ } (0, 300, 500, 600, 700);
-        } elsif ($tag eq '130') {                # uniform title
-            @replace_them = qw/130 240 440 730 830/;
-        } elsif ($tag >= 150 and $tag <= 155) {  # subjects
-            @replace_them = ($tag + 500);
-        } elsif ($tag >= 180 and $tag <= 185) {  # floating subdivisions
-            @replace_them = qw/100 400 600 700 800 110 410 610 710 810 111 411 611 711 811 130 240 440 730 830 650 651 655/;
-        } else {
-            next;
-        }
-
-        # Dummy up the bib-side data
-        $tmpl->append_fields(
-            map {
-                MARC::Field->new( $_, $i1, $i2, @data )
-            } @replace_them
-        );
-
-        # Construct some 'replace' rules
-        push @rule_fields, map { $_ . $sf . '[0~\)' .$id . '$]' } @replace_them;
-    }
-
-    # Insert the replace rules into the template
-    $tmpl->append_fields(
-        MARC::Field->new( '905' => ' ' => ' ' => 'r' => join(',', @rule_fields ) )
-    );
-
-    $xml = $tmpl->as_xml_record;
-    $xml =~ s/^<\?.+?\?>$//mo;
-    $xml =~ s/\n//sgo;
-    $xml =~ s/>\s+</></sgo;
-
-    return $xml;
-
-$func$ LANGUAGE PLPERLU;
-
-CREATE OR REPLACE FUNCTION authority.generate_overlay_template ( BIGINT ) RETURNS TEXT AS $func$
-    SELECT authority.generate_overlay_template( marc, id ) FROM authority.record_entry WHERE id = $1;
-$func$ LANGUAGE SQL;
-
-CREATE OR REPLACE FUNCTION authority.generate_overlay_template ( TEXT ) RETURNS TEXT AS $func$
-    SELECT authority.generate_overlay_template( $1, NULL );
-$func$ LANGUAGE SQL;
+    RETURN XMLELEMENT(
+        name record,
+        XMLATTRIBUTES('http://www.loc.gov/MARC21/slim' AS xmlns)
+        XMLELEMENT( name leader, '00881nam a2200193   4500'),
+        replace_data,
+        XMLELEMENT(
+            name datafield,
+            '905' AS tag,
+            ' ' AS ind1,
+            ' ' AS ind2,
+            XMLELEMENT(
+                name subfield,
+                'r' AS code,
+                ARRAY_TO_STRING(replace_rules,',')
+            )
+        )
+    )::TEXT;
+END;
+$f$ STABLE LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION authority.merge_records ( target_record BIGINT, source_record BIGINT ) RETURNS INT AS $func$
 DECLARE
