@@ -181,7 +181,7 @@ sub load_common {
     $ctx->{full_path} = $ctx->{base_path} . $self->cgi->path_info;
     $ctx->{unparsed_uri} = $self->apache->unparsed_uri;
     $ctx->{opac_root} = $ctx->{base_path} . "/opac"; # absolute base url
-    $ctx->{is_staff} = ($self->apache->headers_in->get('User-Agent') =~ 'oils_xulrunner');
+    $ctx->{is_staff} = ($self->apache->headers_in->get('User-Agent') =~ /oils_xulrunner/);
 
     # capture some commonly accessed pages
     $ctx->{home_page} = 'http://' . $self->apache->hostname . $self->ctx->{opac_root} . "/home";
