@@ -477,8 +477,7 @@ SELECT  DISTINCT ou.id AS circ_lib,
 				<indexterm><primary>sql</primary></indexterm> 
 <programlisting language="sql">
 CREATE TABLE students (
-	 student_id int, barcode text, last_name text, first_name text, program_number text, 
-	program_name text, email text, address_type text, street1 text, street2 text, 
+	 student_id int, barcode text, last_name text, first_name text, email text, address_type text, street1 text, street2 text, 
 	city text, province text, country text, postal_code text, phone text, profile int, 
 	ident_type int, home_ou int, claims_returned_count int DEFAULT 0, usrname text, 
 	net_access_level int DEFAULT 2, password text
@@ -565,8 +564,7 @@ BEGIN;
 
 -- Create staging table.
 CREATE TABLE students (
-	student_id int, barcode text, last_name text, first_name text, program_number text, 
-	program_name text, email text, address_type text, street1 text, street2 text, 
+	student_id int, barcode text, last_name text, first_name text, email text, address_type text, street1 text, street2 text, 
 	city text, province text, country text, postal_code text, phone text, profile int, 
 	ident_type int, home_ou int, claims_returned_count int DEFAULT 0, usrname text, 
 	net_access_level int DEFAULT 2, password text
