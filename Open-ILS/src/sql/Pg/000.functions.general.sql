@@ -24,6 +24,6 @@ EXECUTE 'ALTER DATABASE ' || quote_ident(current_database()) || ' SET ' || quote
 END;
 $$ LANGUAGE plpgsql;
 
-SELECT evergreen.change_db_setting('search_path', ARRAY['public','pg_catalog']);
+SELECT evergreen.change_db_setting('search_path', ARRAY['evergreen','public','pg_catalog']);
 
 COMMIT;
