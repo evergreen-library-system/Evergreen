@@ -43,7 +43,7 @@ Installation instructions:
 Once you have configured and compiled Evergreen, issue the following
 command as the root user to install Evergreen:
 
-make STAFF_CLIENT_STAMP_ID=rel_2_1 install
+make STAFF_CLIENT_STAMP_ID=rel_2_1_prealpha2 install
 
 This will install Evergreen, including example configuration files in
 /openils/conf/ that you can use as templates for your own configuration files.
