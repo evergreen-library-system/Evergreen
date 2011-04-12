@@ -419,7 +419,7 @@ CREATE OR REPLACE FUNCTION oils_json_to_text( TEXT ) RETURNS TEXT AS $f$
     return $txt
 $f$ LANGUAGE PLPERLU;
 
-CREATE OR REPLACE FUNCTION maintain_901 () RETURNS TRIGGER AS $func$
+CREATE OR REPLACE FUNCTION evergreen.maintain_901 () RETURNS TRIGGER AS $func$
 DECLARE
     use_id_for_tcn BOOLEAN;
 BEGIN
@@ -482,7 +482,7 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION force_unicode_normal_form(string TEXT, form TEXT) RETURNS TEXT AS $func$
+CREATE OR REPLACE FUNCTION evergreen.force_unicode_normal_form(string TEXT, form TEXT) RETURNS TEXT AS $func$
 use Unicode::Normalize 'normalize';
 return normalize($_[1],$_[0]); # reverse the params
 $func$ LANGUAGE PLPERLU;
@@ -609,6 +609,21 @@ $func$ LANGUAGE PLPERLU;
 CREATE OR REPLACE FUNCTION oils_text_as_bytea (TEXT) RETURNS BYTEA AS $_$
     SELECT CAST(REGEXP_REPLACE(UPPER($1), $$\\$$, $$\\\\$$, 'g') AS BYTEA);
 $_$ LANGUAGE SQL IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION evergreen.lpad_number_substrings( TEXT, TEXT, INT ) RETURNS TEXT AS $$
+    my $string = shift;
+    my $pad = shift;
+    my $len = shift;
+    my $find = $len - 1;
+
+    while ($string =~ /(?:^|\D)(\d{1,$find})(?:$|\D)/) {
+        my $padded = $1;
+        $padded = $pad x ($len - length($padded)) . $padded;
+        $string =~ s/$1/$padded/sg;
+    }
+
+    return $string;
+$$ LANGUAGE PLPERLU;
 
 COMMIT;
 

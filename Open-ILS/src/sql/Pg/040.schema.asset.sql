@@ -289,7 +289,7 @@ INSERT INTO asset.call_number_class (name, normalizer, field) VALUES
 CREATE OR REPLACE FUNCTION asset.normalize_affix_sortkey () RETURNS TRIGGER AS $$
 BEGIN
     NEW.label_sortkey := REGEXP_REPLACE(
-        lpad_number_substrings(
+        evergreen.lpad_number_substrings(
             naco_normalize(NEW.label),
             '0',
             10
