@@ -483,8 +483,20 @@ CREATE TABLE students (
 	net_access_level int DEFAULT 2, password text
 ); 
 </programlisting>
-				<para>Note the <varname>DEFAULT</varname> variables. These allow you to set default for your library or to populate required fields if you data allows 
-				<systemitem>NULL</systemitem> values where fields are required in Evergreen.</para>
+				<para>Note the <varname>DEFAULT</varname> variables. These allow you to set default for your library or to populate required fields 
+				if you data allows <systemitem>NULL</systemitem> values where fields are required in Evergreen.</para>
+				<para>The data field <database class="field">profile</database> in the above SQL script refers to the user group and should be an
+				integer referencing the <database class="field">id</database> field in <link linkend="permission.table.grp-tree">
+				<database class="table">permission.grp_tree</database></link>. 
+				Setting this value will effect the permissions for the user. See the values in <database class="table">permission.grp_tree</database> for 
+				possibilities.</para> 
+				<para> <database class="field">ident_type</database> is the identification type used for identiying users. This is a integer value referencing 
+				<database class="table">config.identification_type</database> and should 
+				match the id values of that table. The default values are <literal>1</literal> for Drivers License, <literal>2</literal>for SSN or 
+				<literal>3</literal>for other.</para>
+				<para><database class="field">home_ou</database> is the home organizational unit for the user. This value needs to match the corresponding 
+				<database class="field">id</database> in the <link linkend="actor.table.org-unit"><database class="table">actor.org_unit</database></link> 
+				table.</para> 		
 			</step>
 			<step>
 				<para>Formatting of some fields to fit Evergreen filed formatting may be required. Here is an example of sql to adjust phone numbers in the staging 
@@ -507,6 +519,17 @@ substring(phone from 10), '(', ''), ')', ''), ' ', '-');
 </programlisting>			
 			</step>
 			<step>
+				<para>Copy records into staging table from a comma delimited file.</para>
+<programlisting language="sql">
+COPY students (student_id, last_name, first_name, email, address_type, street1, street2, city, province, country, postal_code, phone) 
+	FROM '/home/opensrf/patrons.csv' 
+		WITH CSV HEADER;  
+</programlisting>
+				<para>The above script wil vary depending on the format of your patron load file (<filename>patrons.csv</filename>). You may want to review 
+				<link xl:href="http://www.postgresql.org/docs/9.0/static/sql-copy.html" xl:title="PostgreSQL - COPY">PostgreSQL documentation</link>.</para>  
+			</step>
+
+			<step>
 				<para>insert records into <link linkend="actor.table.card">actor.card</link> from <link linkend="actor.table.usr">actor.usr</link>.</para>
 <programlisting language="sql">
 INSERT INTO actor.card (usr, barcode) 
@@ -515,7 +538,8 @@ INSERT INTO actor.card (usr, barcode)
 		INNER JOIN actor.usr 
 			ON students.usrname = actor.usr.usrname;
 </programlisting>		
-				<para>This assumes a one to one card patron relationship. If your patron data import has multiple cards assigned to one patron more complex import scripts may be required 					which look for inactive or active flags.</para>	
+				<para>This assumes a one to one card patron relationship. If your patron data import has multiple cards assigned to one patron more 
+				complex import scripts may be required which look for inactive or active flags.</para>	
 			</step>
 			<step>
 				<para>Update actor.usr.card field with actor.card.id to associate active card with the user:</para>
@@ -571,7 +595,12 @@ CREATE TABLE students (
 ); 
 
 
---Insert records from the staging table into the actor.usr table.
+--Copy records from your import text file
+COPY students (student_id, last_name, first_name, email, address_type, street1, street2, city, province, country, postal_code, phone) 
+	FROM '/home/opensrf/patrons.csv' 
+		WITH CSV HEADER;  
+
+--Insert records from the staging table into the actor.usr table
 INSERT INTO actor.usr (
 	profile, usrname, email, passwd, ident_type, ident_value, first_given_name, family_name, 
 	day_phone, home_ou, claims_returned_count, net_access_level) 
