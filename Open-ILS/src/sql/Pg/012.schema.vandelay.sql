@@ -2,8 +2,6 @@ DROP SCHEMA IF EXISTS vandelay CASCADE;
 
 BEGIN;
 
-CREATE OR REPLACE FUNCTION array_remove_item_by_value(inp ANYARRAY, el ANYELEMENT) RETURNS anyarray AS $$ SELECT ARRAY_ACCUM(x.e) FROM UNNEST( $1 ) x(e) WHERE x.e <> $2; $$ LANGUAGE SQL;
-
 CREATE SCHEMA vandelay;
 
 CREATE TABLE vandelay.match_set (
@@ -520,8 +518,8 @@ BEGIN
                 ELSIF test.required THEN
                     FOR tmp_rec IN SELECT * FROM UNNEST(matches) LOOP
                         IF tmp_rec NOT IN (SELECT * FROM UNNEST(potential_matches)) THEN
-                            matches := array_remove_item_by_value(matches, tmp_rec);
-                            potential_matches := array_remove_item_by_value(potential_matches, tmp_rec);
+                            matches := evergreen.array_remove_item_by_value(matches, tmp_rec);
+                            potential_matches := evergreen.array_remove_item_by_value(potential_matches, tmp_rec);
                         END IF;
                     END LOOP;
                 END IF;
@@ -542,8 +540,8 @@ BEGIN
             ELSIF test.required THEN
                 FOR tmp_rec IN SELECT * FROM UNNEST(matches) LOOP
                     IF tmp_rec NOT IN (SELECT * FROM UNNEST(potential_matches)) THEN
-                        matches := array_remove_item_by_value(matches, tmp_rec);
-                        potential_matches := array_remove_item_by_value(potential_matches, tmp_rec);
+                        matches := evergreen.array_remove_item_by_value(matches, tmp_rec);
+                        potential_matches := evergreen.array_remove_item_by_value(potential_matches, tmp_rec);
                     END IF;
                 END LOOP;
             END IF;
