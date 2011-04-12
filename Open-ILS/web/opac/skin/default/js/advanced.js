@@ -149,22 +149,28 @@ function advGenericSearch() {
 
 
 function advFindBarcode(barcode) {
-    var req = new Request(FETCH_BIB_ID_BY_BARCODE, barcode);
+    var req = new Request(FETCH_BIB_IDS_BY_BARCODE, barcode);
     req.callback(advDrawBarcode);
     req.request.alertEvent = false;
     req.send();
 }
 
 function advDrawBarcode(r) {
-    titleid = r.getResultObject();
-    if(checkILSEvent(titleid)) {
+    var title_ids = r.getResultObject();
+    if(checkILSEvent(title_ids)) {
         alertId('myopac.copy.not.found');
         return;
     }
-    if(!titleid) return;
+    if(!title_ids) return;
     var args = {};
-    args.page = RDETAIL;
-    args[PARAM_RID] = titleid;
+    if (title_ids.length == 1) {
+        args.page = RDETAIL;
+        args[PARAM_RID] = title_ids[0];
+    } else {
+        args.page = RRESULT;
+	    args[PARAM_RTYPE] = RTYPE_LIST;
+	    args[PARAM_RLIST] = title_ids;
+    }
     location.href = buildOPACLink(args);
 }
 

@@ -494,7 +494,7 @@ sub fleshed_copy_retrieve2 {
                 flesh        => 2,
                 flesh_fields => {
                     acp => [
-                        qw/ location status stat_cat_entry_copy_maps notes age_protect parts /
+                        qw/ location status stat_cat_entry_copy_maps notes age_protect parts peer_record_maps /
                     ],
                     ascecm => [qw/ stat_cat stat_cat_entry /],
                 }
@@ -568,15 +568,31 @@ __PACKAGE__->register_method(
     api_name      => 'open-ils.search.bib_id.by_barcode',
     authoritative => 1,
     signature => { 
-        desc   => 'Retrieve copy object with fleshed record, given the barcode',
+        desc   => 'Retrieve bib record id associated with the copy identified by the given barcode',
         params => [
             { desc => 'Item barcode', type => 'string' }
         ],
         return => {
-            desc => 'Asset copy object with fleshed record and callnumber, or event on error or null set'
+            desc => 'Bib record id.'
         }
     }
 );
+
+__PACKAGE__->register_method(
+    method        => 'title_id_by_item_barcode',
+    api_name      => 'open-ils.search.multi_home.bib_ids.by_barcode',
+    authoritative => 1,
+    signature => {
+        desc   => 'Retrieve bib record ids associated with the copy identified by the given barcode.  This includes peer bibs for Multi-Home items.',
+        params => [
+            { desc => 'Item barcode', type => 'string' }
+        ],
+        return => {
+            desc => 'Array of bib record ids.  First element is the native bib for the item.'
+        }
+    }
+);
+
 
 sub title_id_by_item_barcode {
     my( $self, $conn, $barcode ) = @_;
@@ -595,9 +611,97 @@ sub title_id_by_item_barcode {
     );
 
     return $e->event unless @$copies;
-    return $$copies[0]->call_number->record->id;
+
+    if( $self->api_name =~ /multi_home/ ) {
+        my $multi_home_list = $e->search_biblio_peer_bib_copy_map(
+            [
+                { target_copy => $$copies[0]->id }
+            ]
+        );
+        my @temp =  map { $_->peer_record } @{ $multi_home_list };
+        unshift @temp, $$copies[0]->call_number->record->id;
+        return \@temp;
+    } else {
+        return $$copies[0]->call_number->record->id;
+    }
 }
 
+__PACKAGE__->register_method(
+    method        => 'find_peer_bibs',
+    api_name      => 'open-ils.search.peer_bibs.test',
+    authoritative => 1,
+    signature => {
+        desc   => 'Tests to see if the specified record is a peer record.',
+        params => [
+            { desc => 'Biblio record entry Id', type => 'number' }
+        ],
+        return => {
+            desc => 'True if specified id can be found in biblio.peer_record_copy_map.peer_record.',
+            type => 'bool'
+        }
+    }
+);
+
+__PACKAGE__->register_method(
+    method        => 'find_peer_bibs',
+    api_name      => 'open-ils.search.peer_bibs',
+    authoritative => 1,
+    signature => {
+        desc   => 'Return acps and mvrs for multi-home items linked to specified peer record.',
+        params => [
+            { desc => 'Biblio record entry Id', type => 'number' }
+        ],
+        return => {
+            desc => '{ records => Array of mvrs, items => array of acps }',
+        }
+    }
+);
+
+
+sub find_peer_bibs {
+	my( $self, $client, $doc_id ) = @_;
+    my $e = new_editor();
+
+    my $multi_home_list = $e->search_biblio_peer_bib_copy_map(
+        [
+            { peer_record => $doc_id },
+            {
+                flesh => 2,
+                flesh_fields => {
+                    bpbcm => [ 'target_copy', 'peer_type' ],
+                    acp => [ 'call_number', 'location', 'status', 'peer_record_maps' ]
+                }
+            }
+        ]
+    );
+
+    if ($self->api_name =~ /test/) {
+        return scalar( @{$multi_home_list} ) > 0 ? 1 : 0;
+    }
+
+    if (scalar(@{$multi_home_list})==0) {
+        return [];
+    }
+
+    # create a unique hash of the primary record MVRs for foreign copies
+    # XXX PLEASE let's change to unAPI2 (supports foreign copies) in the TT opac?!?
+    my %rec_hash = map {
+        ($_->target_copy->call_number->record, _records_to_mods( $_->target_copy->call_number->record )->[0])
+    } @$multi_home_list;
+
+    # set the foreign_copy_maps field to an empty array
+    map { $rec_hash{$_}->foreign_copy_maps([]) } keys( %rec_hash );
+
+    # push the maps onto the correct MVRs
+    for (@$multi_home_list) {
+        push(
+            @{$rec_hash{ $_->target_copy->call_number->record }->foreign_copy_maps()},
+            $_
+        );
+    }
+
+    return [sort {$a->title cmp $b->title} values(%rec_hash)];
+};
 
 __PACKAGE__->register_method(
     method   => "biblio_copy_to_mods",

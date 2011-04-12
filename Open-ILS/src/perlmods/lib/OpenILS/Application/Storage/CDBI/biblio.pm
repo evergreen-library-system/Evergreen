@@ -23,6 +23,22 @@ biblio::record_note->columns( Essential => qw/id record value creator
 #-------------------------------------------------------------------------------
 
 #-------------------------------------------------------------------------------
+package biblio::peer_type;
+use base qw/biblio/;
+
+biblio::peer_type->table( 'biblio_peer_type' );
+biblio::peer_type->columns( Essential => qw/id name/ );
+#-------------------------------------------------------------------------------
+
+#-------------------------------------------------------------------------------
+package biblio::peer_record_copy_map;
+use base qw/biblio/;
+
+biblio::peer_record_copy_map->table( 'biblio_peer_record_copy_map' );
+biblio::peer_record_copy_map->columns( Essential => qw/id peer_type peer_record target_copy/ );
+#-------------------------------------------------------------------------------
+
+#-------------------------------------------------------------------------------
 package biblio::monograph_part;
 use base qw/biblio/;
 

@@ -203,6 +203,7 @@ var api = {
     'FM_AUSP_PCRUD_UPDATE' : { 'app' : 'open-ils.pcrud', 'method' : 'open-ils.pcrud.update.ausp', 'secure' : false },
     'FM_AUSP_UPDATE_NOTE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.penalty.note.update' },
     'FM_BOOKING_CREATE_BRT_AND_BRSRC' : { 'app' : 'open-ils.booking', 'method' : 'open-ils.booking.create_brt_and_brsrc_from_copies' },
+    'FM_BPT_PCRUD_SEARCH' : { 'app' : 'open-ils.pcrud', 'method' : 'open-ils.pcrud.search.bpt.atomic', 'secure' : false },
     'FM_BRESV_RETRIEVE_VIA_PCRUD' : { 'app' : 'open-ils.pcrud', 'method' : 'open-ils.pcrud.search.bresv.atomic' },
     'FM_BRSRC_RETRIEVE_VIA_PCRUD' : { 'app' : 'open-ils.pcrud', 'method' : 'open-ils.pcrud.search.brsrc.atomic' },
     'FM_BRT_RETRIEVE_VIA_PCRUD' : { 'app' : 'open-ils.pcrud', 'method' : 'open-ils.pcrud.search.brt.atomic' },
@@ -380,6 +381,7 @@ var urls = {
     'AUDIO_event_ASSET_COPY_NOT_FOUND' : '/xul/server/skin/media/audio/redalert.wav',
 
     'AUTHORITY_MANAGE' : '/eg/cat/authority/list',
+    'MANAGE_MULTI_HOME_ITEMS' : '/xul/server/cat/manage_multi_home_items.xul',
     'XUL_AUTH_SIMPLE' : '/xul/server/main/simple_auth.xul',
     'XUL_BIB_BRIEF' : '/xul/server/cat/bib_brief.xul',
     'XUL_BIB_BRIEF_VERTICAL' : '/xul/server/cat/bib_brief_vertical.xul',

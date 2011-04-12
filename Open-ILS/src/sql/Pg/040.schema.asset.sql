@@ -99,7 +99,8 @@ CREATE TABLE asset.copy_part_map (
 CREATE UNIQUE INDEX copy_part_map_cp_part_idx ON asset.copy_part_map (target_copy, part);
 
 CREATE TABLE asset.opac_visible_copies (
-  id        BIGINT primary key, -- copy id
+  id        BIGSERIAL primary key,
+  copy_id   BIGINT, -- copy id
   record    BIGINT,
   circ_lib  INTEGER
 );
@@ -109,6 +110,8 @@ search.query_parser_fts() to speed up OPAC visibility checks on large
 databases.  Contents are maintained by a set of triggers.
 $$;
 CREATE INDEX opac_visible_copies_idx1 on asset.opac_visible_copies (record, circ_lib);
+CREATE INDEX opac_visible_copies_copy_id_idx on asset.opac_visible_copies (copy_id);
+CREATE UNIQUE INDEX opac_visible_copies_once_per_record_idx on asset.opac_visible_copies (copy_id, record);
 
 CREATE OR REPLACE FUNCTION asset.acp_status_changed()
 RETURNS TRIGGER AS $$

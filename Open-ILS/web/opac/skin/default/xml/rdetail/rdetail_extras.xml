@@ -70,6 +70,12 @@
 						class='classic_link'>&rdetail.extras.novelist;</a>
 				</td>
 
+				<td id='rdetail_foreign_items_link' class='hide_me rdetail_extras_td'
+					style='padding-right: 15px; padding-left: 15px;' >
+					<a href='javascript:rdetailShowExtra("foreign_items");'
+						class='classic_link'>&rdetail.extras.foreign_items;</a>
+				</td>
+
 			</tr>
 		</thead>
 	</table>
@@ -117,6 +123,16 @@
             </div>
         </div>
 
+		<div id='rdetail_foreign_items_div' class='rdetail_extras_div hide_me'>
+            <table width='100%' class='data_grid data_grid_center' id='rdetail_foreign_items_table'>
+                <thead>
+                    <tr> <td>&common.title;</td> <td>&common.authors;</td> <td>&nbsp;</td></tr>
+                </thead>
+                <tbody id='rdetail_foreign_items_tbody'>
+                </tbody>
+            </table>
+        </div>
+ 
 		<div id='rdetail_cn_browse_div' style='text-align: center;' class='hide_me'>
 
 			<div id='cn_browse_none' class='hide_me color_4' style='width: 90%; text-align: center; margin: 10px;'>

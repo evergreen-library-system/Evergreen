@@ -9,7 +9,7 @@ var showDueDate = false;
 */
 var showDueTime = false;
 
-function cpdBuild( contextTbody, contextRow, record, callnumber, orgid, depth, copy_location ) {
+function cpdBuild( contextTbody, contextRow, record, callnumber, orgid, depth, copy_location, already_fetched_copies, peer_types ) {
 	var i = cpdCheckExisting(contextRow);
 	if(i) return i;
 
@@ -43,33 +43,51 @@ function cpdBuild( contextTbody, contextRow, record, callnumber, orgid, depth, c
 	var print = $n(templateRow,'print');
 	print.onclick = function() { cpdBuildPrintPane(
 		contextRow, record, callnumber, orgid, depth) };
+    if (typeof callnumber == 'object') {
+        addCSSClass(print,'hide_me');
+    }
 
 	var mainTbody = $n(templateRow, 'copies_tbody');
 	var extrasRow = mainTbody.removeChild($n(mainTbody, 'copy_extras_row'));
 
-	var req = new Request(FETCH_COPIES_FROM_VOLUME, record.doc_id(), callnumber, orgid);
-	req.callback(cpdDrawCopies);
+    var request_args = {
+        peer_types      : peer_types, /* indexed the same as already_fetched_copies */
+        contextTbody	: contextTbody, /* tbody that holds the contextrow */
+        contextRow		: contextRow, /* the row our new row will be inserted after */
+        record			: record,
+        callnumber		: callnumber, 
+        orgid				: orgid,
+        depth				: depth,
+        templateRow		: templateRow, /* contains everything */
+        copy_location		: copy_location,
+        mainTbody		: mainTbody, /* holds the copy rows */
+        extrasRow		: extrasRow, /* wrapper row for all extras */
+        counter			: counter
+    }
 
-	req.request.args = { 
-		contextTbody	: contextTbody, /* tbody that holds the contextrow */
-		contextRow		: contextRow, /* the row our new row will be inserted after */
-		record			: record,
-		callnumber		: callnumber, 
-		orgid				: orgid,
-		depth				: depth,
-		templateRow		: templateRow, /* contains everything */
-		copy_location		: copy_location,
-		mainTbody		: mainTbody, /* holds the copy rows */
-		extrasRow		: extrasRow, /* wrapper row for all extras */
-		counter			: counter
-	};
+    if (! already_fetched_copies) {
+        var req = new Request(FETCH_COPIES_FROM_VOLUME, record.doc_id(), callnumber, orgid);
+        req.callback(cpdDrawCopies);
+
+        req.request.args = request_args;
+
+        req.send();
+    } else {
+        setTimeout(
+            function() {
+                delete request_args['copy_location'];
+                cpdDrawCopies({
+                    'args' : request_args,
+                    'getResultObject' : function() { return already_fetched_copies; }
+                });
+            }, 0
+        );
+    }
 
 	if( contextRow.nextSibling ) 
 		contextTbody.insertBefore( templateRow, contextRow.nextSibling );
 	else
 		contextTbody.appendChild( templateRow );
-
-	req.send();
 	_debug('creating new details row with id ' + templateRow.id);
 	cpdNodes[templateRow.id] = { templateRow : templateRow };
 	return templateRow.id;
@@ -196,11 +214,27 @@ function cpdDrawCopies(r) {
 	for( var i = 0; i < copies.length; i++ ) {
 		var row = copyrow.cloneNode(true);
 		var copyid = copies[i];
-		var req = new Request(FETCH_FLESHED_COPY, copies[i]);
-		req.callback(cpdDrawCopy);
-		req.request.args = r.args;
-		req.request.row = row;
-		req.send();
+        var pt; if (args.peer_types) pt = args.peer_types[i];
+        if (typeof copyid != 'object') {
+            var req = new Request(FETCH_FLESHED_COPY, copyid);
+            req.callback(cpdDrawCopy);
+            req.request.args = r.args;
+            req.request.row = row;
+            req.send();
+        } else {
+            setTimeout(
+                function(copy,row,pt) {
+                    return function() {
+                        cpdDrawCopy({
+                            'getResultObject' : function() { return copy; },
+                            'args' : r.args,
+                            'peer_type' : pt,
+                            'row' : row
+                        });
+                    };
+                }(copies[i],row,pt), 0
+            );
+        }
 		copytbody.appendChild(row);
 	}
 }
@@ -208,6 +242,7 @@ function cpdDrawCopies(r) {
 function cpdDrawCopy(r) {
 	var copy = r.getResultObject();
 	var row  = r.row;
+	var pt   = r.peer_type;
     var trow = r.args.templateRow;
 
     if (r.args.copy_location && copy.location().name() != r.args.copy_location) {
@@ -215,7 +250,13 @@ function cpdDrawCopy(r) {
         return;
     }
 
-	$n(row, 'barcode').appendChild(text(copy.barcode()));
+	var b = $n(row, 'barcode').appendChild(text(copy.barcode()));
+
+    /* show the peer type*/
+    if (pt) {
+        $n(row, 'barcode').appendChild(text(' :: ' + pt));
+    }
+
 	$n(row, 'location').appendChild(text(copy.location().name()));
 	$n(row, 'status').appendChild(text(copy.status().name()));
 
@@ -229,6 +270,20 @@ function cpdDrawCopy(r) {
             if(i > 0) node.appendChild(text(','));
             node.appendChild(text(part.label()));
         }
+    }
+
+    /* show the other bibs link */
+    if (copy.peer_record_maps().length > 0) {
+        var l = $n(row, 'copy_multi_home');
+        unHideMe(l);
+        var link_args = {};
+        link_args.page = RRESULT;
+        link_args[PARAM_RTYPE] = RTYPE_LIST;
+        link_args[PARAM_RLIST] = new Array();
+        for (var i = 0; i < copy.peer_record_maps().length; i++) {
+            link_args[PARAM_RLIST].push( copy.peer_record_maps()[i].peer_record() );
+        }
+        l.setAttribute('href',buildOPACLink(link_args));
     }
 
 	if(isXUL()) {

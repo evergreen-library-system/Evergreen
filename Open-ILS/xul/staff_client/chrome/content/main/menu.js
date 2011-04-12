@@ -1724,9 +1724,26 @@ commands:
         content_params.url_prefix = function(url) { return obj.url_prefix(url); };
         content_params.network_meter = obj.network_meter;
         content_params.page_meter = obj.page_meter;
-        content_params.set_statusbar = function(slot,text) {
+        content_params.set_statusbar = function(slot,text,tooltiptext,click_handler) {
             var e = document.getElementById('statusbarpanel'+slot);
-            if (e) { e.setAttribute('label',text); }
+            if (e) {
+                var p = e.parentNode;
+                var sbp = document.createElement('statusbarpanel');
+                sbp.setAttribute('id','statusbarpanel'+slot);
+                p.replaceChild(sbp,e); // destroy and replace the statusbarpanel as a poor man's way of clearing event handlers
+
+                sbp.setAttribute('label',text);
+                if (tooltiptext) {
+                    sbp.setAttribute('tooltiptext',tooltiptext);
+                }
+                if (click_handler) {
+                    sbp.addEventListener(
+                        'click',
+                        click_handler,
+                        false
+                    );
+                }
+            }
         };
         content_params.chrome_xulG = xulG;
         content_params._data = xulG._data;

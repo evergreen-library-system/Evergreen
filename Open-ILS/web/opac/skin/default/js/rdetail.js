@@ -237,6 +237,64 @@ function rdetailViewMarc(r,id) {
 	$('rdetail_view_marc_box').insertBefore(span, $('rdetail_view_marc_box').firstChild);
 }
 
+function rdetailForeignItems(r,id) {
+	hideMe($('rdetail_extras_loading'));
+    var tbody = $('rdetail_foreign_items_tbody');
+
+    var robj = r.getResultObject(); /* mvr list with foreign_copy_maps fleshed */
+
+    for (var i = 0; i < robj.length; i++) {
+        var args = {};
+        args.page = RDETAIL;
+        args[PARAM_OFFSET] = 0;
+        args[PARAM_RID] = robj[i].doc_id();
+        var row = elem('tr'); tbody.appendChild(row);
+        var td1 = elem('td'); row.appendChild(td1);
+        var title = elem(
+            'a',
+            {
+                'href' : buildOPACLink(args),
+                'class' : 'classic_link'
+            },
+            robj[i].title()
+        );
+        td1.appendChild(title);
+        var td2 = elem('td',{},robj[i].author()); row.appendChild(td2);
+        var td3 = elem('td'); row.appendChild(td3);
+        var details = elem(
+            'a',
+            {
+                'href' : 'javascript:void(0)',
+                'class' : 'classic_link'
+            },
+            'Copy Details'
+        );
+        details.onclick = function(idx,context_row){
+            return function() {
+                cpdBuild(
+                    tbody,
+                    context_row,
+                    robj[idx],
+                    null,
+                    1,
+                    0,
+                    1,
+                    dojo.map(
+                        robj[idx].foreign_copy_maps(),
+                        function(x){ return x.target_copy(); }
+                    ),
+                    dojo.map(
+                        robj[idx].foreign_copy_maps(),
+                        function(x){ return x.peer_type().name(); }
+                    )
+                );
+            };
+        }(i,row);
+        td3.appendChild(details);
+    }
+}
+
+
 
 function rdetailShowLocalCopies() {
 	rdetailShowLocal = true;
@@ -566,6 +624,16 @@ function _rdetailDraw(r) {
     if (novelist && currentISBN) {
         unHideMe($('rdetail_novelist_link'));
     }
+
+    // Multi-Home / Foreign Items / Peer Bibs
+    var req = new Request( TEST_PEER_BIBS, record.doc_id() );
+    req.callback(function(r){
+        var test = r.getResultObject();
+        if (test == "1") {
+            unHideMe($('rdetail_foreign_items_link'));
+        }
+    }); 
+    req.send();
 }
 
 
@@ -635,6 +703,7 @@ function rdetailAddToBookbag() {
 
 
 var rdetailMarcFetched = false;
+var rdetailForeignItemsFetched = false;
 function rdetailShowExtra(type, args) {
 
 	hideMe($('rdetail_copy_info_div'));
@@ -648,6 +717,7 @@ function rdetailShowExtra(type, args) {
 	hideMe($('cn_browse'));
 	hideMe($('rdetail_cn_browse_div'));
 	hideMe($('rdetail_novelist_div'));
+	hideMe($('rdetail_foreign_items_div'));
 	hideMe($('rdetail_notes_div'));
 
 	removeCSSClass($('rdetail_copy_info_link'), 'rdetail_extras_selected');
@@ -661,6 +731,7 @@ function rdetailShowExtra(type, args) {
 	removeCSSClass($('rdetail_annotation_link'), 'rdetail_extras_selected');
 	removeCSSClass($('rdetail_viewmarc_link'), 'rdetail_extras_selected');
 	removeCSSClass($('rdetail_novelist_link'), 'rdetail_extras_selected');
+	removeCSSClass($('rdetail_foreign_items_link'), 'rdetail_extras_selected');
 
 	switch(type) {
 
@@ -714,6 +785,17 @@ function rdetailShowExtra(type, args) {
 		case "novelist": 
 			addCSSClass($('rdetail_novelist_link'), 'rdetail_extras_selected');
 			unHideMe($('rdetail_novelist_div')); 
+			break;
+
+		case "foreign_items": 
+			addCSSClass($('rdetail_foreign_items_link'), 'rdetail_extras_selected');
+			unHideMe($('rdetail_foreign_items_div')); 
+            if(rdetailForeignItemsFetched) return;
+			unHideMe($('rdetail_extras_loading'));
+            rdetailForeignItemsFetched = true;
+			var req = new Request( FETCH_PEER_BIBS, record.doc_id() );
+			req.callback(rdetailForeignItems); 
+			req.send();
 			break;
 
 		case 'cn':

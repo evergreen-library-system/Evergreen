@@ -22,10 +22,7 @@ util.exec.prototype = {
     'timer' : function(funcs,interval) {
         var obj = this;
 
-        if (obj._intervalId) {
-            obj.clear_timer();
-            window.removeEventListener('unload',obj.clear_timer,false); 
-        }
+        obj.clear_timer();
         var intervalId = window.setInterval(
             function() {
                 if (typeof obj.debug != 'undefined' && obj.debug) { dump('EXEC: ' + location.pathname + ': Running interval with id = ' + intervalId + '\n'); }
@@ -39,6 +36,13 @@ util.exec.prototype = {
         obj._intervalId  = intervalId;
         window.addEventListener('unload',obj.clear_timer,false); 
         return intervalId;
+    },
+    'clear_timer' : function() {
+        var obj = this;
+        if (obj._intervalId) {
+            obj.clear_timer();
+            window.removeEventListener('unload',obj.clear_timer,false);
+        }
     },
     // This executes a series of functions, but tries to give other events/functions a chance to
     // execute between each one.

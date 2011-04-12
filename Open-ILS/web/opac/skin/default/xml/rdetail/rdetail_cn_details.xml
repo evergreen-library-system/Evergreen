@@ -32,6 +32,8 @@
 										href='javascript:void(0);'>&rdetail.cn.hold;</a>
 									<a class='hide_me classic_link copy_more_info' name='copy_reserve_link' 
 										href='javascript:void(0);'>&rdetail.cn.reserve;</a>
+									<a class='hide_me classic_link copy_more_info' name='copy_multi_home'
+										href='javascript:void(0);'>&rdetail.cn.multi_home;</a>
 								</td>
 
 								<td name='status'> </td>

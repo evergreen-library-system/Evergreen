@@ -1128,7 +1128,7 @@ CREATE OR REPLACE FUNCTION asset.refresh_opac_visible_copies_mat_view () RETURNS
 
     TRUNCATE TABLE asset.opac_visible_copies;
 
-    INSERT INTO asset.opac_visible_copies (id, circ_lib, record)
+    INSERT INTO asset.opac_visible_copies (copy_id, circ_lib, record)
     SELECT  cp.id, cp.circ_lib, cn.record
     FROM  asset.copy cp
         JOIN asset.call_number cn ON (cn.id = cp.call_number)
@@ -1139,6 +1139,18 @@ CREATE OR REPLACE FUNCTION asset.refresh_opac_visible_copies_mat_view () RETURNS
     WHERE NOT cp.deleted
         AND NOT cn.deleted
         AND NOT b.deleted
+        AND cs.opac_visible
+        AND cl.opac_visible
+        AND cp.opac_visible
+        AND a.opac_visible
+            UNION
+    SELECT  cp.id, cp.circ_lib, pbcm.peer_record AS record
+    FROM  asset.copy cp
+        JOIN biblio.peer_bib_copy_map pbcm ON (pbcm.target_copy = cp.id)
+        JOIN actor.org_unit a ON (cp.circ_lib = a.id)
+        JOIN asset.copy_location cl ON (cp.location = cl.id)
+        JOIN config.copy_status cs ON (cp.status = cs.id)
+    WHERE NOT cp.deleted
         AND cs.opac_visible
         AND cl.opac_visible
         AND cp.opac_visible
@@ -1157,8 +1169,9 @@ DECLARE
     do_remove       BOOLEAN := false;
 BEGIN
     add_query := $$
-            INSERT INTO asset.opac_visible_copies (id, circ_lib, record)
-                SELECT  cp.id, cp.circ_lib, cn.record
+            INSERT INTO asset.opac_visible_copies (copy_id, circ_lib, record)
+              SELECT id, circ_lib, record FROM (
+                SELECT  cp.id, cp.circ_lib, cn.record, cn.id AS call_number
                   FROM  asset.copy cp
                         JOIN asset.call_number cn ON (cn.id = cp.call_number)
                         JOIN actor.org_unit a ON (cp.circ_lib = a.id)
@@ -1172,14 +1185,40 @@ BEGIN
                         AND cl.opac_visible
                         AND cp.opac_visible
                         AND a.opac_visible
+                            UNION
+                SELECT  cp.id, cp.circ_lib, pbcm.peer_record AS record, NULL AS call_number
+                  FROM  asset.copy cp
+                        JOIN biblio.peer_bib_copy_map pbcm ON (pbcm.target_copy = cp.id)
+                        JOIN actor.org_unit a ON (cp.circ_lib = a.id)
+                        JOIN asset.copy_location cl ON (cp.location = cl.id)
+                        JOIN config.copy_status cs ON (cp.status = cs.id)
+                  WHERE NOT cp.deleted
+                        AND cs.opac_visible
+                        AND cl.opac_visible
+                        AND cp.opac_visible
+                        AND a.opac_visible
+                    ) AS x 
+
     $$;
  
-    remove_query := $$ DELETE FROM asset.opac_visible_copies WHERE id IN ( SELECT id FROM asset.copy WHERE $$;
+    remove_query := $$ DELETE FROM asset.opac_visible_copies WHERE copy_id IN ( SELECT id FROM asset.copy WHERE $$;
+
+    IF TG_TABLE_NAME = 'peer_bib_copy_map' THEN
+        IF TG_OP = 'INSERT' THEN
+            add_query := add_query || 'WHERE x.id = ' || NEW.target_copy || ' AND x.record = ' || NEW.peer_record || ';';
+            EXECUTE add_query;
+            RETURN NEW;
+        ELSE
+            remove_query := 'DELETE FROM asset.opac_visible_copies WHERE copy_id = ' || OLD.target_copy || ' AND record = ' || OLD.peer_record || ';';
+            EXECUTE remove_query;
+            RETURN OLD;
+        END IF;
+    END IF;
 
     IF TG_OP = 'INSERT' THEN
 
         IF TG_TABLE_NAME IN ('copy', 'unit') THEN
-            add_query := add_query || 'AND cp.id = ' || NEW.id || ';';
+            add_query := add_query || 'WHERE x.id = ' || NEW.id || ';';
             EXECUTE add_query;
         END IF;
 
@@ -1225,7 +1264,7 @@ BEGIN
             DELETE FROM asset.opac_visible_copies WHERE id = NEW.id;
         END IF;
         IF do_add THEN
-            add_query := add_query || 'AND cp.id = ' || NEW.id || ';';
+            add_query := add_query || 'WHERE x.id = ' || NEW.id || ';';
             EXECUTE add_query;
         END IF;
 
@@ -1252,11 +1291,11 @@ BEGIN
         ELSIF OLD.deleted THEN -- add rows
  
             IF TG_TABLE_NAME IN ('copy','unit') THEN
-                add_query := add_query || 'AND cp.id = ' || NEW.id || ';';
+                add_query := add_query || 'WHERE x.id = ' || NEW.id || ';';
             ELSIF TG_TABLE_NAME = 'call_number' THEN
-                add_query := add_query || 'AND cp.call_number = ' || NEW.id || ';';
+                add_query := add_query || 'WHERE x.call_number = ' || NEW.id || ';';
             ELSIF TG_TABLE_NAME = 'record_entry' THEN
-                add_query := add_query || 'AND cn.record = ' || NEW.id || ';';
+                add_query := add_query || 'WHERE x.record = ' || NEW.id || ';';
             END IF;
  
             EXECUTE add_query;
@@ -1272,7 +1311,7 @@ BEGIN
             -- call number is linked to different bib
             remove_query := remove_query || 'call_number = ' || NEW.id || ');';
             EXECUTE remove_query;
-            add_query := add_query || 'AND cp.call_number = ' || NEW.id || ';';
+            add_query := add_query || 'WHERE x.call_number = ' || NEW.id || ';';
             EXECUTE add_query;
         END IF;
 
@@ -1321,6 +1360,7 @@ $func$ LANGUAGE PLPGSQL;
 COMMENT ON FUNCTION asset.cache_copy_visibility() IS $$
 Trigger function to update the copy OPAC visiblity cache.
 $$;
+CREATE TRIGGER a_opac_vis_mat_view_tgr AFTER INSERT OR DELETE ON biblio.peer_bib_copy_map FOR EACH ROW EXECUTE PROCEDURE asset.cache_copy_visibility();
 CREATE TRIGGER a_opac_vis_mat_view_tgr AFTER INSERT OR UPDATE ON biblio.record_entry FOR EACH ROW EXECUTE PROCEDURE asset.cache_copy_visibility();
 CREATE TRIGGER a_opac_vis_mat_view_tgr AFTER INSERT OR UPDATE ON asset.copy FOR EACH ROW EXECUTE PROCEDURE asset.cache_copy_visibility();
 CREATE TRIGGER a_opac_vis_mat_view_tgr AFTER INSERT OR UPDATE ON asset.call_number FOR EACH ROW EXECUTE PROCEDURE asset.cache_copy_visibility();
