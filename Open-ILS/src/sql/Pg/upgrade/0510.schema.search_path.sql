@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log('0510'); -- miker
+INSERT INTO config.upgrade_log (version) VALUES ('0510'); -- miker
 
 SELECT evergreen.change_db_setting('search_path', ARRAY['evergreen','public','pg_catalog']);
 
