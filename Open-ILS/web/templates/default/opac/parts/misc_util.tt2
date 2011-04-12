@@ -20,6 +20,9 @@
         FOR p IN phys; phys_content.push(p.textContent); END;
         args.phys_desc = phys_content.join("");
 
+        # MARC Callnumber
+        args.marc_cn = xml.findnodes('//*[@tag="092" or @tag="099"]/*').textContent;
+
         # clean up the ISBN
         args.isbn_clean = args.isbn.replace('\ .*', '');
 
@@ -40,12 +43,10 @@
             END;
         END;
 
-        # KCLS-specific stuff; needs to change
+        # XXX get me from SVF attrs.  If no "matttype" attr present, fall back to mods-esque item form/type
         args.mattype = xml.findnodes('//*[@tag="998"]/*[@code="d"]').textContent;
-        args.kcls_cn = xml.findnodes('//*[@tag="092" or @tag="099"]/*').textContent;
-        mattype = args.mattype;
-        args.format = ctx.find_citm(mattype).value;
-        args.format_icon = icon_by_format.$mattype;
+        args.format = ctx.find_citm(args.mattype).value;
+        args.format_icon = 'media/' _ args.mattype _ '.png';
     END;
 
     BLOCK get_hold_status;

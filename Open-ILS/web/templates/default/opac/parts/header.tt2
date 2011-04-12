@@ -20,42 +20,36 @@
     propagator = '?' _ query_string;
 
     is_advanced = CGI.param("_adv").size;
+%]
 
-    formats = [  # XXX KCLS-specific
-        {'code' => 'a', 'name' => 'Book', 'image' => 'media_book.png'},
-        {'code' => 'i', 'name' => 'Book on cassette', 'image' => 'media_bookoncassette.png'},
-        {'code' => 'n', 'name' => 'Book on CD', 'image' => 'media_bookoncd.png'},
-        {'code' => 'x', 'name' => 'Download music', 'image' => 'media_downloadmusic.jpg'},
-        {'code' => 'y', 'name' => 'Download video', 'image' => 'media_downloadvideo.jpg'},
-        {'code' => 'h', 'name' => 'DVD', 'image' => 'media_dvd.jpg'},
-        {'code' => 'w', 'name' => 'eBook - Audio', 'image' => 'media_eaudio.png'},
-        {'code' => 'v', 'name' => 'eBook - Text', 'image' => 'media_ebooktext.png'},
-        {'code' => 'e', 'name' => 'Equipment', 'image' => 'media_equipment.png'},
-        {'code' => 'f', 'name' => 'Films', 'image' => 'media_films.png'},
-        {'code' => 'o', 'name' => 'Kit', 'image' => 'media_kit.jpg'},
-        {'code' => 'q', 'name' => 'Large print', 'image' => 'media_largeprint.jpg'},
-        {'code' => 'b', 'name' => 'Magazine', 'image' => 'media_magazines.png'},
-        {'code' => 'd', 'name' => 'Microform', 'image' => 'media_microform.jpg'},
-        {'code' => 'k', 'name' => 'Music cassette', 'image' => 'media_musiccassette.jpg'},
-        {'code' => 'j', 'name' => 'Music CD', 'image' => 'media_musiccd.png'},
-        {'code' => 'l', 'name' => 'Music LP', 'image' => 'media_musicrecord.png'},
-        {'code' => 'p', 'name' => 'Newspaper', 'image' => 'media_newspaper.jpg'},
-        {'code' => 't', 'name' => 'Online', 'image' => 'media_online.jpg'},
-        {'code' => 'u', 'name' => 'Player', 'image' => 'media_eaudio.jpg'},
-        {'code' => 'c', 'name' => 'Printed music / scores', 'image' => 'media_printedmusic.jpg'},
-        {'code' => '2', 'name' => 'Read along with cassette', 'image' => 'media_cassettewithbook.png'},
-        {'code' => '5', 'name' => 'Read along with CD', 'image' => 'media_cdwithbook.png'},
-        {'code' => 'm', 'name' => 'Software', 'image' => 'media_software.jpg'},
-        {'code' => 'g', 'name' => 'Video', 'image' => 'media_films.png'},
-        {'code' => 'r', 'name' => '3-D Object', 'image' => 'media_3dobject.jpg'},
-        {'code' => 'z', 'name' => 'Map', 'image' => 'media_map.jpg'},
-        {'code' => 's', 'name' => 'Slide set', 'image' => 'media_slide.jpg'}
-    ];
 
-    icon_by_format = {};
-    FOR o IN formats;
-        code = o.code;
-        icon_by_format.$code = o.image;
-    END;
+[%# XXX KCLS Note... Remove me soon...
+BEGIN;
+INSERT INTO config.record_attr_definition (name, label, tag, sf_list)
+    VALUES ('mattype', 'Material Type', '998', 'd');
+INSERT INTO config.coded_value_map (ctype, code, value)
+    VALUES
+        ('mattype', 'a', 'Book'),
+        ('mattype', 'i', 'Book on cassette'),
+        ('mattype', 'n', 'Book on CD'),
+        ('mattype', 'x', 'Download music'),
+        ('mattype', 'y', 'Download video'),
+        ('mattype', 'h', 'DVD'),
+        ('mattype', 'w', 'eBook - Audio'),
+        ('mattype', 'v', 'eBook - Text'),
+        ('mattype', 'e', 'Equipment'),
+        ('mattype', 'f', 'Films'),
+        ('mattype', 'o', 'Kit'),
+        ('mattype', 'q', 'Large print'),
+        ('mattype', 'b', 'Magazine'),
+        ('mattype', 'd', 'Microform'),
+        ('mattype', 'k', 'Music cassette'),                                                                                                                                                              ('mattype', 'j', 'Music CD'),
+        ('mattype', 'l', 'Music LP'),                                                                                                                                                                    ('mattype', 'p', 'Newspaper'),
+        ('mattype', 't', 'Online'),                                                                                                                                                                      ('mattype', 'u', 'Player'),
+        ('mattype', 'c', 'Printed music / scores'),                                                                                                                                                      ('mattype', '2', 'Read along with cassette'),
+        ('mattype', '5', 'Read along with CD'),                                                                                                                                                          ('mattype', 'm', 'Software'),
+        ('mattype', 'g', 'Video'),                                                                                                                                                                       ('mattype', 'r', '3-D Object'),
+        ('mattype', 'z', 'Map'),                                                                                                                                                                         ('mattype', 's', 'Slide set');
+COMMIT;
+%]
 
--%]
