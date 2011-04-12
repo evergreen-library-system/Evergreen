@@ -500,6 +500,7 @@ Please see a librarian to renew your account.">
 <!ENTITY rdetail.cn.less "less info">
 <!ENTITY rdetail.cn.hold "place hold">
 <!ENTITY rdetail.cn.reserve "book now">
+<!ENTITY rdetail.cn.multi_home "linked titles">
 <!ENTITY rdetail.cn.disabled "- Disabled -">
 <!ENTITY rdetail.cn.note "Copy Note">
 <!ENTITY rdetail.cn.category "Copy Category">
@@ -549,6 +550,7 @@ We recommend that you remove this title from any bookbags it may have been added
 <!ENTITY rdetail.extras.author.notes "Author Notes">
 <!ENTITY rdetail.extras.annotation "Annotation">
 <!ENTITY rdetail.extras.marc "MARC Record">
+<!ENTITY rdetail.extras.foreign_items "Linked Titles">
 <!ENTITY rdetail.extras.call.null "There are no call numbers for this item at this location.">
 <!ENTITY rdetail.extras.call.local "Local Call Numbers:">
 <!ENTITY rdetail.extras.preview.fulltext "Full text">

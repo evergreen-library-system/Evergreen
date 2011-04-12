@@ -3,6 +3,8 @@ var docid; var marc_html; var top_pane; var bottom_pane; var opac_frame; var opa
 var marc_view_reset = true;
 var marc_edit_reset = true;
 var copy_browser_reset = true;
+var manage_parts_reset = true;
+var manage_multi_home_reset = true;
 var hold_browser_reset = true;
 var serctrl_view_reset = true;
 
@@ -674,10 +676,20 @@ function mark_for_overlay() {
     g.data.stash('marked_record_mvr');
     if (g.data.marked_record_mvr) {
         alert(document.getElementById('offlineStrings').getFormattedString('cat.opac.record_marked_for_overlay.tcn.alert',[ g.data.marked_record_mvr.tcn() ]));
-        xulG.set_statusbar(1, $("offlineStrings").getFormattedString('staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label',[g.data.marked_record_mvr.tcn()]) );
+        xulG.set_statusbar(
+            1,
+            $("offlineStrings").getFormattedString('staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label',[g.data.marked_record_mvr.tcn()]),
+            $("offlineStrings").getFormattedString('staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label',[g.data.marked_record]),
+            gen_statusbar_click_handler('marked_record')
+        );
     } else {
         alert(document.getElementById('offlineStrings').getFormattedString('cat.opac.record_marked_for_overlay.record_id.alert',[ g.data.marked_record  ]));
-        xulG.set_statusbar(1, $("offlineStrings").getFormattedString('staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label',[g.data.marked_record]) );
+        xulG.set_statusbar(
+            1,
+            $("offlineStrings").getFormattedString('staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label',[g.data.marked_record]),
+            '',
+            gen_statusbar_click_handler('marked_record')
+        );
     }
 }
 
@@ -694,10 +706,22 @@ function mark_for_hold_transfer() {
     g.data.stash('marked_record_for_hold_transfer_mvr');
     if (g.data.marked_record_mvr) {
         var m = $("offlineStrings").getFormattedString('staff.cat.opac.marked_record_for_hold_transfer_indicator.tcn.label',[g.data.marked_record_for_hold_transfer_mvr.tcn()]);
-        alert(m); xulG.set_statusbar(1, m );
+        alert(m);
+        xulG.set_statusbar(
+            3,
+            m,
+            '',
+            gen_statusbar_click_handler('marked_record_for_hold_transfer')
+        );
     } else {
         var m = $("offlineStrings").getFormattedString('staff.cat.opac.marked_record_for_hold_transfer_indicator.record_id.label',[g.data.marked_record_for_hold_transfer]);
-        alert(m); xulG.set_statusbar(1, m );
+        alert(m);
+        xulG.set_statusbar(
+            3,
+            m,
+            '',
+            gen_statusbar_click_handler('marked_record_for_hold_transfer')
+        );
     }
 }
 
@@ -764,6 +788,9 @@ function refresh_display(id) {
         marc_edit_reset = true;
         copy_browser_reset = true;
         hold_browser_reset = true;
+        manage_parts_reset = true;
+        manage_multi_home_reset = true;
+        serctrl_view_reset = true;
         while(top_pane.node.lastChild) top_pane.node.removeChild( top_pane.node.lastChild );
         var children = bottom_pane.node.childNodes;
         for (var i = 0; i < children.length; i++) {
@@ -845,17 +872,103 @@ function add_volumes() {
 
 function manage_parts() {
     try {
-        var title = document.getElementById('offlineStrings').getFormattedString('staff.cat.manage_parts.title', [docid]);
+        g.view = 'manage_parts';
         var loc = urls.XUL_BROWSER + "?url=" + window.escape(
             window.xulG.url_prefix(urls.CONIFY_MANAGE_PARTS) + '?r=' + docid
         );
-        var w = xulG.new_tab(
-            loc,
-            { 'tab_name' : title },
-            {}
-        );
+        if (manage_parts_reset) {
+            bottom_pane.reset_iframe( loc,{},xulG);
+            manage_parts_reset =false;
+        } else {
+            bottom_pane.set_iframe( loc,{},xulG);
+        }
+        opac_wrapper_set_help_context();
+        bottom_pane.get_contentWindow().addEventListener('load',opac_wrapper_set_help_context,false);
     } catch(E) {
         alert('Error in chrome/content/cat/opac.js, manage_parts(): ' + E);
     }
 }
+
+function manage_multi_home_items() {
+    try {
+        g.view = 'manage_multi_home';
+        var loc = window.xulG.url_prefix(urls.MANAGE_MULTI_HOME_ITEMS);
+        if (manage_multi_home_reset) {
+            bottom_pane.reset_iframe( loc,{},{'docid':docid,'no_bib_summary':true,'url_prefix':xulG.url_prefix,'new_tab':xulG.new_tab});
+            manage_multi_home_reset =false;
+        } else {
+            bottom_pane.set_iframe( loc,{},{'docid':docid,'no_bib_summary':true,'url_prefix':xulG.url_prefix,'new_tab':xulG.new_tab});
+        }
+        opac_wrapper_set_help_context();
+        bottom_pane.get_contentWindow().addEventListener('load',opac_wrapper_set_help_context,false);
+    } catch(E) {
+        alert('Error in chrome/content/cat/opac.js, manage_multi_home_items(): ' + E);
+    }
+}
+
+function mark_for_multi_home() {
+    g.data.marked_multi_home_record = docid;
+    g.data.stash('marked_multi_home_record');
+    var robj = g.network.simple_request('MODS_SLIM_RECORD_RETRIEVE.authoritative',[docid]);
+    if (typeof robj.ilsevent == 'undefined') {
+        g.data.marked_multi_home_record_mvr = robj;
+    } else {
+        g.data.marked_multi_home_record_mvr = null;
+        g.error.standard_unexpected_error_alert('in mark_for_multi_home',robj);
+    }
+    g.data.stash('marked_multi_home_record_mvr');
+
+    if (g.data.marked_multi_home_record_mvr) {
+        alert(document.getElementById('offlineStrings').getFormattedString('cat.opac.record_marked_for_multi_home.tcn.alert',[ g.data.marked_multi_home_record_mvr.tcn() ]));
+        xulG.set_statusbar(
+            2,
+            $("offlineStrings").getFormattedString('staff.cat.copy_browser.marked_record_for_multi_home_indicator.tcn.label',[g.data.marked_multi_home_record_mvr.tcn()]),
+            $("offlineStrings").getFormattedString('staff.cat.copy_browser.marked_record_for_multi_home_indicator.record_id.label',[g.data.marked_multi_home_record]),
+            gen_statusbar_click_handler('marked_multi_home_record')
+        );
+    } else {
+        alert(document.getElementById('offlineStrings').getFormattedString('cat.opac.record_marked_for_multi_home.record_id.alert',[ g.data.marked_multi_home_record ]));
+        xulG.set_statusbar(
+            2,
+            $("offlineStrings").getFormattedString('staff.cat.copy_browser.marked_record_for_multi_home_indicator.record_id.label',[g.data.marked_multi_home_record]),
+            '',
+            gen_statusbar_click_handler('marked_multi_home_record')
+        );
+    }
+}
+
+function gen_statusbar_click_handler(data_key) {
+    return function (ev) {
+
+        if (! g.data[data_key]) {
+            return;
+        }
+
+        if (ev.button == 0 /* left click, spawn opac */) {
+            var opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + g.data[data_key];
+            var content_params = {
+                'session' : ses(),
+                'authtime' : ses('authtime'),
+                'opac_url' : opac_url,
+            };
+            xulG.new_tab(
+                xulG.url_prefix(urls.XUL_OPAC_WRAPPER),
+                {'tab_name':'Retrieving title...'},
+                content_params
+            );
+        }
+
+        if (ev.button == 2 /* right click, remove mark */) {
+            if ( window.confirm( document.getElementById('offlineStrings').getString('cat.opac.clear_statusbar') ) ) {
+                g.data[data_key] = null;
+                g.data.stash(data_key);
+                ev.target.setAttribute('label','');
+                if (ev.target.hasAttribute('tooltiptext')) {
+                    ev.target.removeAttribute('tooltiptext');
+                }
+            }
+        }
+    }
+}
+
 

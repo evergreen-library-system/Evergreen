@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Example Template for remote xul -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/patron_display.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="widget_prompt_win" 
+    onload="try { my_init(); font_helper(); persist_helper( xul_param('title',{'modal_xulG':true}) ); } catch(E) { alert(E); }"
+    oils_persist="width height"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
+        <script type="text/javascript">
+        var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+    </script>
+        <scripts id="openils_util_scripts"/>
+
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script type="text/javascript" src="widget_prompt.js"/>
+
+    <vbox id="widget_prompt_topbar">
+        <description id="desc"/>
+    </vbox>
+    <vbox id="widget_prompt_main" flex="1" style="overflow: auto"/>
+    <vbox id="widget_prompt_bottombar">
+        <hbox id="widget_prompt_buttonbar">
+            <spacer flex="1"/>
+            <button id="ok_btn" />
+            <button id="cancel_btn" />
+        </hbox>
+    </vbox>
+
+</window>
+

@@ -12,6 +12,18 @@
     biblio::monograph_part->sequence( 'biblio.monograph_part_id_seq' );
 
 	#-------------------------------------------------------------------------------
+	package biblio::peer_record_copy_map;
+
+	biblio::peer_record_copy_map->table( 'biblio.peer_record_copy_map' );
+	biblio::peer_record_copy_map->sequence( 'biblio.peer_record_copy_map_id_seq' );
+
+	#-------------------------------------------------------------------------------
+	package biblio::peer_type;
+
+	biblio::peer_type->table( 'biblio.peer_type' );
+	biblio::peer_type->sequence( 'biblio.peer_type_id_seq' );
+
+	#-------------------------------------------------------------------------------
 	package container::user_bucket;
 
 	container::user_bucket->table( 'container.user_bucket' );

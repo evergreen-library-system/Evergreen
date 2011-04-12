@@ -595,3 +595,33 @@
         return url;
     }
 
+    function widget_prompt(node,args) {
+        // args is an object that may contain the following keys: title, desc, ok_label, ok_accesskey, cancel_label, cancel_accesskey, access, method
+        // access may contain 'property' or 'attribute' or 'method' for retrieving the value from the node
+        // if 'method', then the method key will reference a function that returns the value
+        try {
+            if (!node) { return false; }
+            if (!args) { args = {}; }
+            args[ 'widget' ] = node;
+
+            var url = location.protocol == 'chrome'
+                ? 'chrome://open_ils_staff_client/content/util/widget_prompt.xul'
+                : '/xul/server/util/widget_prompt.xul';
+
+            JSAN.use('util.window'); var win = new util.window();
+            var my_xulG = win.open(
+                url,
+                args.title || 'widget_prompt',
+                'chrome,modal',
+                args
+            );
+
+            if (my_xulG.status == 'incomplete') {
+                return false;
+            } else {
+                return my_xulG.value;
+            }
+        } catch(E) {
+            alert('Error in global_utils.js, widget_prompt(): ' + E);
+        }
+    }
