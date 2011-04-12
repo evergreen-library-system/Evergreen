@@ -419,7 +419,7 @@ CREATE OR REPLACE FUNCTION oils_json_to_text( TEXT ) RETURNS TEXT AS $f$
     return $txt
 $f$ LANGUAGE PLPERLU;
 
-CREATE OR REPLACE FUNCTION maintain_901 () RETURNS TRIGGER AS $func$
+CREATE OR REPLACE FUNCTION evergreen.maintain_901 () RETURNS TRIGGER AS $func$
 DECLARE
     use_id_for_tcn BOOLEAN;
 BEGIN
@@ -482,7 +482,7 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION force_unicode_normal_form(string TEXT, form TEXT) RETURNS TEXT AS $func$
+CREATE OR REPLACE FUNCTION evergreen.force_unicode_normal_form(string TEXT, form TEXT) RETURNS TEXT AS $func$
 use Unicode::Normalize 'normalize';
 return normalize($_[1],$_[0]); # reverse the params
 $func$ LANGUAGE PLPERLU;

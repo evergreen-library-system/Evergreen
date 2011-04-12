@@ -135,7 +135,7 @@ CREATE INDEX metabib_facet_entry_field_idx ON metabib.facet_entry (field);
 CREATE INDEX metabib_facet_entry_value_idx ON metabib.facet_entry (SUBSTRING(value,1,1024));
 CREATE INDEX metabib_facet_entry_source_idx ON metabib.facet_entry (source);
 
-CREATE OR REPLACE FUNCTION facet_force_nfc() RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION evergreen.facet_force_nfc() RETURNS TRIGGER AS $$
 BEGIN
     NEW.value := force_unicode_normal_form(NEW.value,'NFC');
     RETURN NEW;
@@ -144,7 +144,7 @@ $$ LANGUAGE PLPGSQL;
 
 CREATE TRIGGER facet_force_nfc_tgr
 	BEFORE UPDATE OR INSERT ON metabib.facet_entry
-	FOR EACH ROW EXECUTE PROCEDURE facet_force_nfc();
+	FOR EACH ROW EXECUTE PROCEDURE evergreen.facet_force_nfc();
 
 CREATE TABLE metabib.rec_descriptor (
 	id		BIGSERIAL PRIMARY KEY,
