@@ -90,7 +90,7 @@ CREATE TABLE biblio.monograph_part (
 CREATE OR REPLACE FUNCTION biblio.normalize_biblio_monograph_part_sortkey () RETURNS TRIGGER AS $$
 BEGIN
     NEW.label_sortkey := REGEXP_REPLACE(
-        lpad_number_substrings(
+        evergreen.lpad_number_substrings(
             naco_normalize(NEW.label),
             '0',
             10
