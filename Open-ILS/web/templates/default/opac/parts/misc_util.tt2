@@ -43,8 +43,10 @@
             END;
         END;
 
+        # "mattype" == "custom marc format specifier"
         FOR icon_style IN ['mattype', 'item_type']; 
-            node = xml.findnodes('//*[local-name()="attributes"]/*[local-name()="field"][@name="' _ icon_style _ '"]');
+            node = xml.findnodes(
+                '//*[local-name()="attributes"]/*[local-name()="field"][@name="' _ icon_style _ '"]');
             IF node;
                 args.format_label = node.getAttribute('coded-value')
                 args.format_icon = ctx.media_prefix _ '/images/format_icons/' _ icon_style _ '/' _ node.textContent _ '.png';

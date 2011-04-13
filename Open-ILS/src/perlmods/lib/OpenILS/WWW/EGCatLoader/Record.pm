@@ -11,32 +11,35 @@ my $U = 'OpenILS::Application::AppUtils';
 #   record : bre object
 sub load_record {
     my $self = shift;
-    $self->ctx->{page} = 'record';
+    my $ctx = $self->ctx;
+    $ctx->{page} = 'record';
 
-    my $org = $self->cgi->param('loc') || $self->ctx->{aou_tree}->()->id;
+    my $org = $self->cgi->param('loc') || $ctx->{aou_tree}->()->id;
     my $depth = $self->cgi->param('depth') || 0;
     my $copy_limit = int($self->cgi->param('copy_limit') || 10);
     my $copy_offset = int($self->cgi->param('copy_offset') || 0);
 
-    my $rec_id = $self->ctx->{page_args}->[0]
+    my $rec_id = $ctx->{page_args}->[0]
         or return Apache2::Const::HTTP_BAD_REQUEST;
 
     # run copy retrieval in parallel to bib retrieval
+    # XXX unapi
     my $copy_rec = OpenSRF::AppSession->create('open-ils.cstore')->request(
         'open-ils.cstore.json_query.atomic', 
         $self->mk_copy_query($rec_id, $org, $depth, $copy_limit, $copy_offset));
 
-    $self->ctx->{record} = $self->editor->retrieve_biblio_record_entry($rec_id);
-    $self->ctx->{marc_xml} = XML::LibXML->new->parse_string($self->ctx->{record}->marc);
+    my (undef, @rec_data) = $self->get_records_and_facets([$rec_id], undef, {flesh => '{holdings_xml,mra}'});
+    $ctx->{bre_id} = $rec_data[0]->{id};
+    $ctx->{marc_xml} = $rec_data[0]->{marc_xml};
 
-    $self->ctx->{copies} = $copy_rec->gather(1);
-    $self->ctx->{copy_limit} = $copy_limit;
-    $self->ctx->{copy_offset} = $copy_offset;
+    $ctx->{copies} = $copy_rec->gather(1);
+    $ctx->{copy_limit} = $copy_limit;
+    $ctx->{copy_offset} = $copy_offset;
 
     for my $expand ($self->cgi->param('expand')) {
-        $self->ctx->{"expand_$expand"} = 1;
+        $ctx->{"expand_$expand"} = 1;
         if($expand eq 'marchtml') {
-            $self->ctx->{marchtml} = $self->mk_marc_html($rec_id);
+            $ctx->{marchtml} = $self->mk_marc_html($rec_id);
         } 
     }
 
