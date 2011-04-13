@@ -7,6 +7,14 @@ INSERT INTO config.bib_source (id, quality, source, transcendant) VALUES
     (3, 1, oils_i18n_gettext(3, 'Project Gutenberg', 'cbs', 'source'), TRUE);
 SELECT SETVAL('config.bib_source_id_seq'::TEXT, 100);
 
+INSERT INTO biblio.peer_type (id,name) VALUES
+    (1,oils_i18n_gettext(1,'Bound Volume','bpt','name')),
+    (2,oils_i18n_gettext(2,'Bilingual','bpt','name')),
+    (3,oils_i18n_gettext(3,'Back-to-back','bpt','name')),
+    (4,oils_i18n_gettext(4,'Set','bpt','name')),
+    (5,oils_i18n_gettext(5,'e-Reader Preload','bpt','name')); 
+SELECT SETVAL('biblio.peer_type_id_seq'::TEXT, 100);
+
 INSERT INTO config.standing (id, value) VALUES (1, oils_i18n_gettext(1, 'Good', 'cst', 'value'));
 INSERT INTO config.standing (id, value) VALUES (2, oils_i18n_gettext(2, 'Barred', 'cst', 'value'));
 SELECT SETVAL('config.standing_id_seq'::TEXT, 100);
