@@ -871,6 +871,45 @@ cat.copy_browser.prototype = {
                                 obj.refresh_list();
                             }
                         ],
+
+                        'cmd_link_as_multi_bib' : [
+                            ['command'],
+                            function() {
+                                try {
+                                    obj.data.stash_retrieve();
+                                    if (!obj.data.marked_multi_home_record) {
+                                        alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.link_as_multi_bib.missing_bib'));
+                                        return;
+                                    }
+
+                                    JSAN.use('util.functional');
+
+                                    var list = util.functional.filter_list(
+                                        obj.sel_list,
+                                        function (o) {
+                                            return o.split(/_/)[0] == 'acp';
+                                        }
+                                    );
+
+                                    list = util.functional.map_list(
+                                        list,
+                                        function (o) {
+                                            return obj.map_acp[ o ].barcode();
+                                        }
+                                    );
+
+                                    xulG.new_tab(
+                                        window.xulG.url_prefix(urls.MANAGE_MULTI_HOME_ITEMS),
+                                        {},
+                                        { 'docid' : obj.data.marked_multi_home_record, 'barcodes' : list }
+                                    );
+
+                                } catch(E) {
+                                    alert('Error in copy_browser.js, cmd_link_as_multi_bib: ' + E);
+                                }
+                                obj.refresh_list();
+                            }
+                        ]
                     }
                 }
             );

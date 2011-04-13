@@ -84,6 +84,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="copy_count" oils_persist:virtual="true" />
 			<field name="series" oils_persist:virtual="true" />
 			<field name="serials" oils_persist:virtual="true" />
+			<field name="foreign_copy_maps" oils_persist:virtual="true" />
 		</fields>
 	</class>
 
@@ -1041,6 +1042,50 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
                 <retrieve/>
                 <update permission="UPDATE_CN_BTYPE" global_required="true"/>
                 <delete permission="DELETE_CN_BTYPE" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
+
+	<class id="bpt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="biblio::peer_type" oils_persist:tablename="biblio.peer_type" reporter:label="Bibliographic Record Peer Type" oils_persist:field_safe="true">
+		<fields oils_persist:primary="id" oils_persist:sequence="biblio.peer_type_id_seq">
+			<field reporter:label="ID" name="id" reporter:selector="name" reporter:datatype="id"/>
+			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true"/>
+		</fields>
+		<links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_BIB_PTYPE" global_required="true"/>
+                <retrieve/>
+                <update permission="UPDATE_BIB_PTYPE" global_required="true"/>
+                <delete permission="DELETE_BIB_PTYPE" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
+
+	<class id="bpbcm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="biblio::peer_bib_copy_map" oils_persist:tablename="biblio.peer_bib_copy_map" reporter:label="Bibliographic Record Peer Copy Map">
+		<fields oils_persist:primary="id" oils_persist:sequence="biblio.peer_bib_copy_map_id_seq">
+			<field reporter:label="ID" name="id" reporter:selector="name" reporter:datatype="id"/>
+			<field reporter:label="Peer Type" name="peer_type" reporter:datatype="link"/>
+			<field reporter:label="Peer Record" name="peer_record" reporter:datatype="link"/>
+			<field reporter:label="Target Copy" name="target_copy" reporter:datatype="link"/>
+		</fields>
+        <links>
+            <link field="peer_type" reltype="has_a" key="id" map="" class="bpt"/>
+            <link field="peer_record" reltype="has_a" key="id" map="" class="bre"/>
+            <link field="target_copy" reltype="has_a" key="id" map="" class="acp"/>
+        </links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="UPDATE_COPY">
+                    <context link="target_copy" field="circ_lib"/>
+                </create>
+                <retrieve/>
+                <update permission="UPDATE_COPY">
+                    <context link="target_copy" field="circ_lib"/>
+                </update>
+                <delete permission="UPDATE_COPY">
+                    <context link="target_copy" field="circ_lib"/>
+                </delete>
             </actions>
         </permacrud>
 	</class>
@@ -4770,6 +4815,8 @@ SELECT  usr,
 			<field reporter:label="Holds" name="holds" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Statistical Category Entries" name="stat_cat_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Monograph Parts" name="parts" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Peer Record Maps" name="peer_record_maps" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Peer Records" name="peer_records" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="age_protect" reltype="has_a" key="id" map="" class="crahp"/>
@@ -4787,6 +4834,8 @@ SELECT  usr,
 			<link field="total_circ_count" reltype="might_have" key="id" map="" class="erfcc"/>
 			<link field="circ_modifier" reltype="has_a" key="code" map="" class="ccm"/>
 			<link field="parts" reltype="has_many" key="target_copy" map="part" class="acpm"/>
+			<link field="peer_record_maps" reltype="has_many" key="target_copy" map="" class="bpbcm"/>
+			<link field="peer_records" reltype="has_many" key="target_copy" map="peer_record" class="bpbcm"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>

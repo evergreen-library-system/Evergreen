@@ -281,6 +281,17 @@ CREATE OR REPLACE FUNCTION unapi.holdings_xml (bid BIGINT, ouid INT, org TEXT, d
                               WHERE record_entry = $1
                         )x)
                      )
+                 ELSE NULL END,
+                 CASE WHEN ('acp' = ANY ($5)) THEN 
+                     XMLELEMENT(
+                         name foreign_copies,
+                         (SELECT XMLAGG(acp) FROM (
+                            SELECT  unapi.acp(p.target_copy,'xml','copy','{}'::TEXT[], $3, $4, $6, $7, FALSE)
+                              FROM  biblio.peer_bib_copy_map p
+                                    JOIN asset.copy c ON (p.target_copy = c.id)
+                              WHERE NOT c.deleted AND peer_record = $1
+                        )x)
+                     )
                  ELSE NULL END
              );
 $F$ LANGUAGE SQL;
@@ -615,6 +626,14 @@ CREATE OR REPLACE FUNCTION unapi.acp ( obj_id BIGINT, format TEXT,  ename TEXT, 
                                 XMLAGG((SELECT unapi.ascecm( stat_cat_entry, 'xml', 'statcat', evergreen.array_remove_item_by_value($4,'acp'), $5, $6, $7, $8, FALSE) FROM asset.stat_cat_entry_copy_map WHERE owning_copy = cp.id))
                             ELSE NULL
                         END
+                    ),
+                    XMLELEMENT( name foreign_records,
+                        CASE
+                            WHEN ('bre' = ANY ($4)) THEN
+                                XMLAGG((SELECT unapi.bre(peer_record,'marcxml','record','{}'::TEXT[], $5, $6, $7, $8, FALSE) FROM biblio.peer_bib_copy_map WHERE target_copy = cp.id))
+                            ELSE NULL
+                        END
+
                     ),
                     CASE 
                         WHEN ('bmp' = ANY ($4)) THEN

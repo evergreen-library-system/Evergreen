@@ -48,6 +48,8 @@
                 <menuitem label="&staff.cat.opac.marc_view.label;" accesskey="&staff.cat.opac.marc_view.accesskey;" id="marc_view" oncommand="set_marc_view();"/>
                 <menuitem label="&staff.cat.opac.marc_edit.label;" accesskey="&staff.cat.opac.marc_edit.accesskey;" id="marc_edit" oncommand="set_marc_edit();"/>
                 <menuitem label="&staff.cat.opac.copy_browse.label;" accesskey="&staff.cat.opac.copy_browse.accesskey;" id="copy_browse" oncommand="set_copy_browser();"/>
+                <menuitem label="&staff.cat.opac.manage_multi_home_items.label;" accesskey="&staff.cat.opac.manage_multi_home_items.accesskey;" id="manage_multi_home_items" oncommand="manage_multi_home_items();"/>
+                <menuitem label="&staff.cat.opac.manage_parts.label;" accesskey="&staff.cat.opac.manage_parts.accesskey;" id="manage_parts" oncommand="manage_parts();"/>
                 <menuitem label="&staff.cat.opac.view_holds.label;" accesskey="&staff.cat.opac.view_holds.accesskey;" id="view_holds" oncommand="set_hold_browser();"/>
                 <menuitem label="&staff.cat.opac.view_orders.label;" accesskey="&staff.cat.opac.view_orders.accesskey;" id="view_orders" oncommand="open_acq_orders();"/>
                 <menuseparator/>
@@ -59,13 +61,10 @@
                 <menuitem label="&staff.cat.copy_browser.holdings_maintenance.cmd_add_volumes.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_add_volumes.accesskey;" id="add_volumes" oncommand="add_volumes();"/>
                 <menuitem label="&staff.cat.opac.mark_for_hold_transfer.label;" accesskey="&staff.cat.opac.mark_for_hold_transfer.accesskey;" id="mark_for_hold_transfer" oncommand="mark_for_hold_transfer();"/>
                 <menuitem label="&staff.cat.opac.transfer_title_holds.label;" accesskey="&staff.cat.opac.transfer_title_holds.accesskey;" id="transfer_title_holds" oncommand="transfer_title_holds();"/>
-                <menuitem label="&staff.cat.opac.manage_parts.label;" accesskey="&staff.cat.opac.manage_parts.accesskey;" id="manage_parts" oncommand="manage_parts();"/>
+                <menuitem label="&staff.cat.opac.mark_for_multi_home.label;" accesskey="&staff.cat.opac.mark_for_multi_home.accesskey;" id="mark_for_multi_home" oncommand="mark_for_multi_home();"/>
                 <menuseparator/>
                 <menuitem label="&staff.cat.opac.bib_in_new_tab.label;" id="bib_in_new_tab" oncommand="bib_in_new_tab();"/>
                 <menuitem label="&staff.cat.opac.remove_me.label;" id="remove_me" oncommand="remove_me();"/>
-                <menuseparator/>
-                <menuitem label="&staff.cat.opac.default.label;" id="default" oncommand="set_default();"/>
-                <menuitem label="&staff.cat.opac.refresh_me.label;" id="refresh_me" oncommand="refresh_display(docid);"/>
                 <menuseparator/>
                 <menu id="mfhd_menu" label="&staff.serial.mfhd_menu.label;">
                     <menupopup id="mfhd_popup">
@@ -77,6 +76,9 @@
                 <menuitem id="serctrl_view" label="&staff.serial.serctrl_view.label;" oncommand="set_serctrl_view();" />
                 <menuitem label="&staff.cat.opac.alt_serial.label;" accesskey="&staff.cat.opac.alt_serial.accesskey;" id="alt_serial" oncommand="open_alt_serial_mgmt();" />
                 <menuitem label="&staff.cat.opac.batch_receive.label;" accesskey="&staff.cat.opac.batch_receive.accesskey;" id="batch_receive" oncommand="batch_receive_in_new_tab();"/>
+                <menuseparator/>
+                <menuitem label="&staff.cat.opac.default.label;" id="default" oncommand="set_default();"/>
+                <menuitem label="&staff.cat.opac.refresh_me.label;" id="refresh_me" oncommand="refresh_display(docid);"/>
                 </menupopup>
                 </menu>
             </menubar>

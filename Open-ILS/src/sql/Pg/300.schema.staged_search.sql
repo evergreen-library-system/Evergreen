@@ -190,9 +190,20 @@ BEGIN
               LIMIT 1;
 
             IF NOT FOUND THEN
-                -- RAISE NOTICE ' % were all status-excluded ... ', core_result.records;
-                excluded_count := excluded_count + 1;
-                CONTINUE;
+                PERFORM 1
+                  FROM  biblio.peer_bib_copy_map pr
+                        JOIN asset.copy cp ON (cp.id = pr.target_copy)
+                  WHERE NOT cp.deleted
+                        AND cp.status IN ( SELECT * FROM search.explode_array( param_statuses ) )
+                        AND pr.peer_record IN ( SELECT * FROM search.explode_array( core_result.records ) )
+                        AND cp.circ_lib IN ( SELECT * FROM search.explode_array( search_org_list ) )
+                  LIMIT 1;
+
+                IF NOT FOUND THEN
+                -- RAISE NOTICE ' % and multi-home linked records were all status-excluded ... ', core_result.records;
+                    excluded_count := excluded_count + 1;
+                    CONTINUE;
+                END IF;
             END IF;
 
         END IF;
@@ -210,9 +221,20 @@ BEGIN
               LIMIT 1;
 
             IF NOT FOUND THEN
-                -- RAISE NOTICE ' % were all copy_location-excluded ... ', core_result.records;
-                excluded_count := excluded_count + 1;
-                CONTINUE;
+                PERFORM 1
+                  FROM  biblio.peer_bib_copy_map pr
+                        JOIN asset.copy cp ON (cp.id = pr.target_copy)
+                  WHERE NOT cp.deleted
+                        AND cp.location IN ( SELECT * FROM search.explode_array( param_locations ) )
+                        AND pr.peer_record IN ( SELECT * FROM search.explode_array( core_result.records ) )
+                        AND cp.circ_lib IN ( SELECT * FROM search.explode_array( search_org_list ) )
+                  LIMIT 1;
+
+                IF NOT FOUND THEN
+                    -- RAISE NOTICE ' % and multi-home linked records were all copy_location-excluded ... ', core_result.records;
+                    excluded_count := excluded_count + 1;
+                    CONTINUE;
+                END IF;
             END IF;
 
         END IF;
@@ -226,9 +248,19 @@ BEGIN
               LIMIT 1;
 
             IF NOT FOUND THEN
-                -- RAISE NOTICE ' % were all visibility-excluded ... ', core_result.records;
-                excluded_count := excluded_count + 1;
-                CONTINUE;
+                PERFORM 1
+                  FROM  biblio.peer_bib_copy_map pr
+                        JOIN asset.opac_visible_copies cp ON (cp.copy_id = pr.target_copy)
+                  WHERE cp.circ_lib IN ( SELECT * FROM search.explode_array( search_org_list ) )
+                        AND pr.peer_record IN ( SELECT * FROM search.explode_array( core_result.records ) )
+                  LIMIT 1;
+
+                IF NOT FOUND THEN
+
+                    -- RAISE NOTICE ' % and multi-home linked records were all visibility-excluded ... ', core_result.records;
+                    excluded_count := excluded_count + 1;
+                    CONTINUE;
+                END IF;
             END IF;
 
         ELSE
@@ -236,7 +268,6 @@ BEGIN
             PERFORM 1
               FROM  asset.call_number cn
                     JOIN asset.copy cp ON (cp.call_number = cn.id)
-                    JOIN actor.org_unit a ON (cp.circ_lib = a.id)
               WHERE NOT cn.deleted
                     AND NOT cp.deleted
                     AND cp.circ_lib IN ( SELECT * FROM search.explode_array( search_org_list ) )
@@ -246,14 +277,25 @@ BEGIN
             IF NOT FOUND THEN
 
                 PERFORM 1
-                  FROM  asset.call_number cn
-                  WHERE cn.record IN ( SELECT * FROM search.explode_array( core_result.records ) )
+                  FROM  biblio.peer_bib_copy_map pr
+                        JOIN asset.copy cp ON (cp.id = pr.target_copy)
+                  WHERE NOT cp.deleted
+                        AND cp.circ_lib IN ( SELECT * FROM search.explode_array( search_org_list ) )
+                        AND pr.peer_record IN ( SELECT * FROM search.explode_array( core_result.records ) )
                   LIMIT 1;
 
-                IF FOUND THEN
-                    -- RAISE NOTICE ' % were all visibility-excluded ... ', core_result.records;
-                    excluded_count := excluded_count + 1;
-                    CONTINUE;
+                IF NOT FOUND THEN
+
+                    PERFORM 1
+                      FROM  asset.call_number cn
+                      WHERE cn.record IN ( SELECT * FROM search.explode_array( core_result.records ) )
+                      LIMIT 1;
+
+                    IF FOUND THEN
+                        -- RAISE NOTICE ' % and multi-home linked records were all visibility-excluded ... ', core_result.records;
+                        excluded_count := excluded_count + 1;
+                        CONTINUE;
+                    END IF;
                 END IF;
 
             END IF;

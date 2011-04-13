@@ -973,7 +973,7 @@ sub copy_details {
 			{
 				flesh => 2,
 				flesh_fields => {
-					acp => ['call_number','parts'],
+					acp => ['call_number','parts','peer_record_maps'],
 					acn => ['record','prefix','suffix','label_class']
 				}
 			}

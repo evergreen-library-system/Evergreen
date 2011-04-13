@@ -79,6 +79,20 @@ CREATE INDEX biblio_record_note_record_idx ON biblio.record_note ( record );
 CREATE INDEX biblio_record_note_creator_idx ON biblio.record_note ( creator );
 CREATE INDEX biblio_record_note_editor_idx ON biblio.record_note ( editor );
 
+CREATE TABLE biblio.peer_type (
+    id      SERIAL  PRIMARY KEY,
+    name        TEXT        NOT NULL UNIQUE -- i18n
+);
+
+CREATE TABLE biblio.peer_bib_copy_map (
+    id      SERIAL  PRIMARY KEY,
+    peer_type   INT     NOT NULL REFERENCES biblio.peer_type (id),
+    peer_record BIGINT      NOT NULL REFERENCES biblio.record_entry (id),
+    target_copy BIGINT      NOT NULL -- can't use fkey because of acp subtables
+);
+CREATE INDEX peer_bib_copy_map_record_idx ON biblio.peer_bib_copy_map (peer_record);
+CREATE INDEX peer_bib_copy_map_copy_idx ON biblio.peer_bib_copy_map (target_copy);
+
 CREATE TABLE biblio.monograph_part (
     id              SERIAL  PRIMARY KEY,
     record          BIGINT  NOT NULL REFERENCES biblio.record_entry (id),
