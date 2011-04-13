@@ -71,7 +71,7 @@ CREATE TABLE config.upgrade_log (
 );
 
 INSERT INTO config.upgrade_log (version) VALUES ('2.1-prealpha2'); -- miker
-INSERT INTO config.upgrade_log (version) VALUES ('0512'); -- miker
+INSERT INTO config.upgrade_log (version) VALUES ('0515'); -- miker
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
