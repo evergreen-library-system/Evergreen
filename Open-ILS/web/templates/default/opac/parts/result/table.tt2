@@ -93,20 +93,19 @@
                                                 </div>
                                                 <span style="font-size:11px;">
                                                     <div>
-                                                        <em>
-                                                            <a title="[% l("Perform an Author Search") %]"
+                                                        <em><a title="[% l("Perform an Author Search") %]"
                                                                 name='item_author'
-                                                                href="[% ctx.opac_root %]/results?qtype=author&query=[% attrs.author | replace('[,\.:;]', '') | uri %]&loc=[% CGI.param('loc') | uri %]"
-                                                                class='search_link'>[% attrs.author %]</a>
-                                                        </em> &nbsp;&nbsp;
+                                                                href="[% ctx.opac_root %]/results?qtype=author&query=[% 
+                                                                    attrs.author | replace('[,\.:;]', '') | uri %]&loc=[% CGI.param('loc') | uri %]"
+                                                                class='search_link'>[% attrs.author %]</a></em>
+                                                        &nbsp;&nbsp;
                                                         [% attrs.pubdate %]
                                                     </div>
                                                     <table cellpadding="0" cellspacing="0" border="0"
                                                         class="results_info_table">
                                                         <tr name='bib_cn_list' class='result_table_title_cell'>
                                                             <td colspan='2'>
-                                                                <strong>Call number:</strong>
-                                                                [% args.kcls_cn %]
+                                                                <strong>Call number:</strong>[% args.marc_cn %][%# XXX KCLS %]
                                                             </td>
                                                         </tr>
                                                         <tr name="results_pub_tr" class="[% attrs.publisher ? '' : 'hide_me' %]">
