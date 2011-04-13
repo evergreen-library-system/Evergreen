@@ -1,4 +1,4 @@
-/* Keep this dead simple. No dojo. Call nothing via onload. */
+/* Keep this dead simple. No dojo. */
 function $(s) { return document.getElementById(s); }
 function removeClass(node, cls) {
     if (!node || !node.className) return;

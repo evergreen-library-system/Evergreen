@@ -1,3 +1,4 @@
+[% IF !ctx.is_staff %]
 <div id="header">
     <div class="float-left">
         <a href="http://www.kcls.org"><img alt="[% l('KCLS Logo') %]" 
@@ -102,6 +103,7 @@
     </div>
     <div class="common-no-pad"></div>
 </div>
+[% END %]
 <div id="gold-links-holder">
     <div id="gold-links">
         <div id="header-links">
