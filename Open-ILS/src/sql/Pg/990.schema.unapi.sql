@@ -47,6 +47,7 @@ CREATE OR REPLACE FUNCTION unapi.ccs    ( obj_id BIGINT, format TEXT, ename TEXT
 CREATE OR REPLACE FUNCTION unapi.ascecm ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
 CREATE OR REPLACE FUNCTION unapi.bre    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
 CREATE OR REPLACE FUNCTION unapi.bmp    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
+CREATE OR REPLACE FUNCTION unapi.mra    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION unapi.holdings_xml ( bid BIGINT, ouid INT, org TEXT, depth INT DEFAULT NULL, includes TEXT[] DEFAULT NULL::TEXT[], slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
 CREATE OR REPLACE FUNCTION unapi.biblio_record_entry_feed ( id_list BIGINT[], format TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE, title TEXT DEFAULT NULL, description TEXT DEFAULT NULL, creator TEXT DEFAULT NULL, update_ts TEXT DEFAULT NULL, unapi_url TEXT DEFAULT NULL, header_xml XML DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL;
@@ -143,6 +144,7 @@ DECLARE
     top_el  TEXT;
     output  XML;
     hxml    XML;
+    axml    XML;
 BEGIN
 
     SELECT id INTO ouid FROM actor.org_unit WHERE shortname = org;
@@ -166,6 +168,13 @@ BEGIN
 
     SELECT * INTO me FROM biblio.record_entry WHERE id = obj_id;
 
+    -- grab SVF if we need them
+    IF ('mra' = ANY (includes)) THEN 
+        axml := unapi.mra(obj_id,NULL,NULL,NULL,NULL);
+    ELSE
+        axml := NULL::XML;
+    END IF;
+
     -- grab hodlings if we need them
     IF ('holdings_xml' = ANY (includes)) THEN 
         hxml := unapi.holdings_xml(obj_id, ouid, org, depth, evergreen.array_remove_item_by_value(includes,'holdings_xml'), slimit, soffset, include_xmlns);
@@ -187,6 +196,10 @@ BEGIN
     END IF;
 
     top_el := REGEXP_REPLACE(tmp_xml, E'^.*?<((?:\\S+:)?' || layout.holdings_element || ').*$', E'\\1');
+
+    IF axml IS NOT NULL THEN 
+        tmp_xml := REGEXP_REPLACE(tmp_xml, '</' || top_el || '>(.*?)$', axml || '</' || top_el || E'>\\1');
+    END IF;
 
     IF hxml IS NOT NULL THEN -- XXX how do we configure the holdings position?
         tmp_xml := REGEXP_REPLACE(tmp_xml, '</' || top_el || '>(.*?)$', hxml || '</' || top_el || E'>\\1');
@@ -779,6 +792,35 @@ CREATE OR REPLACE FUNCTION unapi.auri ( obj_id BIGINT, format TEXT,  ename TEXT,
           FROM  asset.uri uri
           WHERE uri.id = $1
           GROUP BY uri.id, use_restriction, href, label;
+$F$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION unapi.mra ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
+        SELECT  XMLELEMENT(
+                    name attributes,
+                    XMLATTRIBUTES(
+                        CASE WHEN $9 THEN 'http://open-ils.org/spec/indexing/v1' ELSE NULL END AS xmlns,
+                        'tag:open-ils.org:U2@mra/' || mra.id AS id,
+                        'tag:open-ils.org:U2@bre/' || mra.id AS record
+                    ),
+                    (SELECT XMLAGG(foo.y)
+                      FROM (SELECT XMLELEMENT(
+                                name field,
+                                XMLATTRIBUTES(
+                                    key AS name,
+                                    cvm.value AS "coded-value",
+                                    rad.filter,
+                                    rad.sorter
+                                ),
+                                x.value
+                            )
+                           FROM EACH(mra.attrs) AS x
+                                JOIN config.record_attr_definition rad ON (x.key = rad.name)
+                                LEFT JOIN config.coded_value_map cvm ON (cvm.ctype = x.key AND code = x.value)
+                        )foo(y)
+                    )
+                )
+          FROM  metabib.record_attr mra
+          WHERE mra.id = $1;
 $F$ LANGUAGE SQL;
 
 /*
