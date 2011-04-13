@@ -402,9 +402,9 @@ pg_dropcluster 8.4 main
 				</step>			
 				<step>
 					<para>Add the backport repository to your repository sources list:</para> 
-<programlisting>
+<screen><userinput>
 sudo add-apt-repository ppa:pitti/postgresql
-</programlisting>
+</userinput></screen>
 				</step>
 				<step>
 					<para>Update the sources list on your server.</para>
