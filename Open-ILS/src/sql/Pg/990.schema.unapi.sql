@@ -222,6 +222,7 @@ BEGIN
         output := tmp_xml;
     END IF;
 
+    output := REGEXP_REPLACE(output::TEXT,E'>\\s+<','><','gs')::XML;
     RETURN output;
 END;
 $F$ LANGUAGE PLPGSQL;
