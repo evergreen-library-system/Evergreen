@@ -43,10 +43,14 @@
             END;
         END;
 
-        # XXX get me from SVF attrs.  If no "matttype" attr present, fall back to mods-esque item form/type
-        args.mattype = xml.findnodes('//*[@tag="998"]/*[@code="d"]').textContent;
-        args.format = ctx.find_citm(args.mattype).value;
-        args.format_icon = 'media/' _ args.mattype _ '.png';
+        FOR icon_style IN ['mattype', 'item_type']; 
+            node = xml.findnodes('//*[local-name()="attributes"]/*[local-name()="field"][@name="' _ icon_style _ '"]');
+            IF node;
+                args.format_label = node.getAttribute('coded-value')
+                args.format_icon = ctx.media_prefix _ '/images/format_icons/' _ icon_style _ '/' _ node.textContent _ '.png';
+                LAST;
+            END;
+        END;
     END;
 
     BLOCK get_hold_status;

@@ -154,39 +154,36 @@
                                                     </span>
                                                 </div>
                                             </td>
-                                            <!-- Copy this td for each copy count appended -->
-                                            <td nowrap='nowrap' name="copy_count_cell"
-                                                class='copy_count_cell hide_me' width="1"> </td>
-                                            <td name='result_table_format_cell'
-                                                class='result_table_format_cell' width="1">
-                                                [% IF attrs.format %]
-                                                <img alt="[% attrs.format %]" src="[% ctx.media_prefix %]/images/[% attrs.format_icon %]" />
+
+                                            <td name='result_table_format_cell' class='result_table_format_cell' width="1">
+
+                                                [% IF attrs.format_icon %]
+                                                <img title="[% attrs.format_label %]" alt="[% attrs.format_label %]" src="[% attrs.format_icon %]" />
                                                 [% END %]
-                                                <span class='hide_me opac-auto-031'>
-                                                    <span>[% l("Match Score: ") %] </span>
-                                                    <span name='relevancy_span'> </span>
-                                                </span>
+
                                                 <!-- Empty span used for creating unAPI links -->
                                                 <span class="hide_me">
                                                     <abbr style='padding-left: 8px;' name="unapi" class="unapi-id">
                                                     <!-- unAPI URI goes here -->
                                                     </abbr>
                                                 </span>
+
                                                 <!-- Empty span used for creating Google Book Search-->
                                                 <span name="googleBooksLink" class="hide_me">
                                                     <a style='padding-left: 8px;'
                                                         class='classic_link hide_me'
                                                         name="googleBooks-link">[% l("Browse in Google Books Search") %]</a>
                                                 </span>
+
                                             </td>
                                             <td nowrap='nowrap' width="1" align="right">
                                                 <div style="width:250px;text-align:left;">
                                                     <div style="float:right;">
                                                         <div class="results_aux_utils opac-auto-010"><a
-                                                                href="[% ctx.opac_root %]/place_hold[% propagator; propagator.length > 1 ? "&" : ""; %]hold_target=[% rec.id %]&hold_type=T" name="place_hold_link" class="no-dec"><img
+                                                                href="[% ctx.opac_root %]/place_hold[% propagator; propagator.length > 1 ? "&" : ""; %]hold_target=[% rec.id %]&hold_type=T" 
+                                                                    name="place_hold_link" class="no-dec"><img
                                                                 src="[% ctx.media_prefix %]/images/green_check.png"
-                                                                alt="place hold" /><span
-                                                                    style="position:relative;top:-3px;left:3px;">Place Hold</span></a>
+                                                                alt="[% l('Place hold') %]"/><span style="position:relative;top:-3px;left:3px;">[% l('Place Hold') %]</span></a>
                                                         </div>
                                                         <div class="results_aux_utils opac-auto-011">
                                                             [%  operation = ctx.mylist.grep(rec.id).size ? "delete" : "add";
@@ -211,18 +208,10 @@
                                                                     style="position:relative;top:-5px;">Reviews &amp; More</span></a>
                                                         </div> -->
                                                     </div>
-                                                    <div style="float:right;margin-right:17px;">
-                                                    [%  key = attrs.mattype;
-                                                        format_desc = ctx.find_citm(key).value;
-                                                        icon_filename = icon_by_mattype.$key;
-                                                        IF icon_filename; %]
-                                                        <img alt="[% format_desc %]" title="[% format_desc %]"
-                                                            src="[% ctx.media_prefix _ '/images/' _ icon_filename %]" />
-                                                    [% END %]
-                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>
+
                                         <!-- Placeholder for ChiliFresh Review -->
                                         <tr class="hide_me" name="chilifreshReview">
                                             <td></td>
