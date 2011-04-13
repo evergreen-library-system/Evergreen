@@ -131,7 +131,7 @@ sub mk_marc_html {
     # could be optimized considerably by performing the xslt on the already fetched record
     return $U->simplereq(
         'open-ils.search', 
-        'open-ils.search.biblio.record.html', $rec_id);
+        'open-ils.search.biblio.record.html', $rec_id, 1);
 }
 
 1;

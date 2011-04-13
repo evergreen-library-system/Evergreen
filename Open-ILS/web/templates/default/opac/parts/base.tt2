@@ -5,42 +5,14 @@
         [% IF ctx.authtime %]
         <meta http-equiv="refresh" content="[% ctx.authtime %];[% ctx.logout_page %]">
         [% END %]
-        <link rel="stylesheet" type="text/css"
-            href="[% ctx.media_prefix %]/css/skin/default/opac/semiauto.css" />
-        <link rel="stylesheet" type="text/css"
-            href="[% ctx.media_prefix %]/css/skin/default/opac/style.css" />
-        <title>[% l('Catalog - King County Library - [_1]', ctx.page_title) %]</title>
+        <link rel="stylesheet" type="text/css" href="[% ctx.media_prefix %]/css/skin/default/opac/semiauto.css" />
+        <link rel="stylesheet" type="text/css" href="[% ctx.media_prefix %]/css/skin/default/opac/style.css" />
+        <title>[% l('Catalog - [_1]', ctx.page_title) %]</title>
         <link rel="unapi-server" type="application/xml" title="unAPI" href="/opac/extras/unapi" />
-        [% BLOCK html_head; END; # provide a default that can be overridden -%]
-        [%- PROCESS html_head -%]
     </head>
     <body>
         [% content %] 
-        <div id="footer">
-            <a href="http://www.kcls.org/usingthelibrary/request/">[% l('Request a Purchase') %]</a> &nbsp;|&nbsp;
-            <a href="http://www.kcls.org/usingthelibrary/request/">[% l('Interlibrary Loan') %]</a> &nbsp;|&nbsp;
-            <a href="http://www.kcls.org/about/contact/">[% l('Contact Us') %]</a> &nbsp;|&nbsp;
-            <a href="http://www.kcls.org/usingthelibrary/catalog_help/">[% l('Site Help') %]</a> &nbsp;|&nbsp;
-            <a href="http://www.kcls.org/usingthelibrary/policies/privacy.cfm">[% l('Privacy Statement') %]</a> &nbsp;|&nbsp;
-            <a href="http://www.kcls.org/about/support/">[% l('Support KCLS') %]</a> &nbsp;|&nbsp;
-            <a href="http://www.kcls.org/employment/">[% l('Employment') %]</a> 
-        </div>
-        <script type="text/javascript"
-            src="[% ctx.media_prefix %]/js/ui/default/opac/simple.js"></script>
-        <!-- Google Analytics -->
-        <script type="text/javascript">
-        /* uncomment when ready */ /*
-          var _gaq = _gaq || [];
-          _gaq.push(['_setAccount', 'UA-3018520-10']);
-          _gaq.push(['_trackPageview']);
-
-          (function() {
-            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-          })();
-        */
-        </script>
-        <!-- End Google Analytics -->
+        [% INCLUDE 'default/opac/parts/footer.tt2' %]
+        [% INCLUDE 'default/opac/parts/js.tt2' %]
     </body>
 </html>
