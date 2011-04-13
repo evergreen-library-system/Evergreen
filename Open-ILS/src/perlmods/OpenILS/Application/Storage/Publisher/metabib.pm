@@ -2657,10 +2657,10 @@ sub FTS_paging_estimate {
     my $delete_adjusted_total = $total - ( $total * $deleted_ratio );
 
     my $exclusion_ratio = $excluded / $checked;
-    my $delete_adjusted_exclusion_ratio = $excluded / ($checked - $deleted);
+    my $delete_adjusted_exclusion_ratio = $checked - $deleted ? $excluded / ($checked - $deleted) : 1;
 
     my $inclusion_ratio = $visible / $checked;
-    my $delete_adjusted_inclusion_ratio = $visible / ($checked - $deleted);
+    my $delete_adjusted_inclusion_ratio = $checked - $deleted ? $visible / ($checked - $deleted) : 0;
 
     return {
         exclusion                   => int($delete_adjusted_total - ( $delete_adjusted_total * $exclusion_ratio )),
