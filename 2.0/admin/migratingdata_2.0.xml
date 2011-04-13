@@ -487,7 +487,7 @@ CREATE TABLE students (
 				possibilities.</para> 
 				<para> <database class="field">ident_type</database> is the identification type used for identiying users. This is a integer value referencing 
 				<database class="table">config.identification_type</database> and should match the id values of that table. The default values are 
-				<literal>1</literal> for Drivers License, <literal>2</literal>for SSN or <literal>3</literal>for other.</para>
+				<literal>1</literal> for Drivers License, <literal>2</literal> for SSN or <literal>3</literal> for other.</para>
 				<para><database class="field">home_ou</database> is the home organizational unit for the user. This value needs to match the corresponding 
 				<database class="field">id</database> in the <link linkend="actor.table.org-unit"><database class="table">actor.org_unit</database></link> 
 				table.</para>    

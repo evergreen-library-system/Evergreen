@@ -331,59 +331,137 @@ cd /openils/bin
 			on finding solutions and seeking further assistance from the Evergreen community.</para>  
 		</note>
 	</section>
-	<section xml:id="upgrading_Postgresqlto8.4">
-		<title>Upgrading PostgreSQL from 8.2 to 8.4 (if required)</title>
-		<para>Evergreen 2.0 requires PostgreSQL version 8.4 or later.</para>
-		<note><para>The order of the following steps is very important.</para></note><indexterm><primary>databases</primary><secondary>PostgreSQL</secondary></indexterm>
-		<procedure>
-			<step>
-				<para>As <systemitem class="username">opensrf</systemitem>, stop the evergreen and opensrf services:</para>
-				<screen><userinput>osrf_ctl.sh -l -a stop_all</userinput></screen>
-			</step>			
-			<step>
-				<para><link linkend="backingup">Backup the Evergreen database data</link></para>
-			</step>
-			<step>
-				<para>Upgrade to Postgresql 8.4 by removing old version and installing Postgresql 8.4</para>
-			</step>
-			<step>			
-				<para>Create an empty Evergreen database in postgresql 8.4 by issuing the following commands as the postgres user:</para>
-<screen>
-<userinput>
-createdb -E UNICODE evergreen
+<section xml:id="upgrading_Postgresqlto9.0">
+		<title>Upgrading PostgreSQL from 8.4 to 9.0</title>
+		<simplesect>
+			<title>Upgrading PostgreSQL on Debian Squeez</title>
+		 	<procedure>
+				<step>
+					<para>Stop Evergreen and disconnect clients from database.</para>
+				</step>			
+				<step>
+					<para>Add the following line to <filename>/etc/apt/sources.list</filename>:</para> 
+<programlisting>
+deb http://www.backports.org/debian squeeze-backports main contrib non-free
+</programlisting>
+				</step>
+				<step>
+					<para>Update the sources list on your server.</para>
+<screen><userinput>				
+apt-get update
+</userinput></screen>
+				</step>
+				<step>
+					<para>Backup your databases</para>
+<screen><userinput>				
+$ pg_dump [db connect args] [db name] > evergreen-backup.sql
+</userinput></screen>
+				</step>
+				<step>
+					<para>Install PostgreSQL 9.0 as well as the client, contrib and plperl support packages.</para>
+<screen><userinput>				
+apt-get -t squeeze-backports install postgresql-9.0 postgresql-client-9.0 postgresql-contrib-9.0 postgresql-plperl-9.0
+</userinput></screen>
+				</step>
+				<step>
+					<para>Drop the empty 9.0 cluster.</para>
+<screen><userinput>				
+pg_dropcluster --stop 9.0 main
+</userinput></screen>
+				</step>
+				<step>
+					<para>Update the 8.4 cluster (with evergreen database) to 9.0</para>
+<screen><userinput>				
+pg_upgradecluster 8.4 main
+</userinput></screen>
+				</step>
+				<step>
+					<para>Test by logging into psql, checking the postgrSQL version and running a simple SELECT query.</para>
+<screen><userinput>	
+psql -U evergreen			
+evergreen=# select version();
+evergreen=# select count(*) from biblio.record_entry;
+</userinput></screen>
+				</step>
+				<step>
+					<para>Restart Evergreen and Apache.</para>
+				</step>
+				<step>
+					<para>Drop old 8.4 cluster (optional).</para>
+<screen><userinput>	
+pg_dropcluster 8.4 main
+</userinput></screen>
+				</step>
+			</procedure>
+		</simplesect>
+			<simplesect>
+			<title>Upgrading PostgreSQL on Ubuntu 10.04</title>
+		 	<procedure>
+				<step>
+					<para>Stop Evergreen and disconnect clients from database.</para>
+				</step>			
+				<step>
+					<para>Add the backport repository to your repository sources list:</para> 
+<programlisting>
+sudo add-apt-repository ppa:pitti/postgresql
+</programlisting>
+				</step>
+				<step>
+					<para>Update the sources list on your server.</para>
+<screen><userinput>				
+apt-get update
+</userinput></screen>
+				</step>
+				<step>
+					<para>As the <systemitem class="username">postgres</systemitem> user, backup your PostgreSQL databases.</para>
+<screen><userinput><![CDATA[				
+pg_dumpall > data
+]]></userinput></screen>
+				</step>
+				<step>
+					<para>As <systemitem class="username">root</systemitem>, remove PostgreSQL 8.4 and install 9.0.</para>
+<screen><userinput>				
+aptitude purge postgresql-8.4
+aptitude install postgresql-9.0 postgresql-client-9.0 postgresql-contrib-9.0 postgresql-plperl-9.0
+</userinput></screen>
+				</step>
+				<step>
+					<para>as the <systemitem class="username">postgres</systemitem> user, recreate empty evergreen databases with required language supports.</para>
+<screen><userinput>
+dropdb evergreen
+createdb -T template0 --lc-ctype=C --lc-collate=C -E UNICODE evergreen
 createlang plperl   evergreen
 createlang plperlu  evergreen
 createlang plpgsql  evergreen
-psql -f /usr/share/postgresql/8.4/contrib/tablefunc.sql evergreen
-psql -f /usr/share/postgresql/8.4/contrib/tsearch2.sql evergreen
-psql -f /usr/share/postgresql/8.4/contrib/pgxml.sql evergreen
-</userinput>
-</screen>		
-			</step>
-			<step>
-				<para>As the <systemitem class="username">postgres</systemitem> user on the PostgreSQL server, create a PostgreSQL user named <systemitem class="username">evergreen</systemitem> for the database cluster:</para>
-				<screen><userinput>createuser -P -s evergreen</userinput></screen>
-				<para>Enter the password for the new PostgreSQL superuser (<systemitem class="username">evergreen</systemitem>)</para>	
-			</step>			
-			<step>
-				<para>Restore data from backup created in step 1.</para>
-			</step>
-			<step>
-				<para>To point tsearch2 to proper function names in 8.4, run the SQL script 
-				<filename>/home/opensrf/Evergreen-ILS*/Open-ILS/src/sql/Pg/000.english.pg84.fts-config.sql</filename> using the <command>psql</command> command.</para>
-				<screen><userinput>cd /home/opensrf/Evergreen-ILS*</userinput></screen>
-				<screen><userinput>psql -f /Open-ILS/src/sql/Pg/000.english.pg84.fts-config.sql evergreen</userinput></screen>
-			</step>
-			<step>
-				<para><link linkend="startingopensrf">Restart Evergreen and OpenSRF services</link></para>
-			</step>
-			<step>
-				<para>For additional information regarding upgrading PostgreSQL, see the following documentation in PostgreSQL:</para>
-				<para><ulink url="http://www.postgresql.org/docs/8.4/static/install-upgrading.html" /></para>
-				<para><ulink url="http://www.postgresql.org/docs/8.4/interactive/textsearch-migration.html" /> 
-				</para>
-				<para><ulink url="http://www.postgresql.org/docs/current/static/tsearch2.html#AEN102824" /></para>
-			</step>
-		</procedure>
+psql -f /usr/share/postgresql/9.0/contrib/tablefunc.sql evergreen
+psql -f /usr/share/postgresql/9.0/contrib/tsearch2.sql  evergreen
+psql -f /usr/share/postgresql/9.0/contrib/pgxml.sql     evergreen
+</userinput></screen>
+				</step>
+				<step>
+					<para>Update the 8.4 cluster (with evergreen database) to 9.0.</para>
+<screen><userinput>				
+pg_upgradecluster 8.4 main
+</userinput></screen>
+				</step>
+				<step>
+					<para>as the <systemitem class="username">postgres</systemitem> user, load data from backup into PostgreSQL 9.0.</para>
+<screen><userinput><![CDATA[				
+psql < data
+]]></userinput></screen>
+				</step>
+				<step>
+					<para>Restart Evergreen and Apache.</para>
+				</step>
+				<step>
+					<para>Test by logging into psql, checking the postgrSQL version and running a simple SELECT query.</para>
+<screen><userinput>	
+psql -U evergreen			
+evergreen=# select version();
+evergreen=# select count(*) from biblio.record_entry;
+</userinput></screen>
+				</step>
+			</procedure>
+		</simplesect>
 	</section>
 </chapter>
