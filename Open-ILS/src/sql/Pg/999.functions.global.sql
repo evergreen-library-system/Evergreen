@@ -1261,7 +1261,7 @@ BEGIN
         END IF;
 
         IF do_remove THEN
-            DELETE FROM asset.opac_visible_copies WHERE id = NEW.id;
+            DELETE FROM asset.opac_visible_copies WHERE copy_id = NEW.id;
         END IF;
         IF do_add THEN
             add_query := add_query || 'WHERE x.id = ' || NEW.id || ';';
@@ -1281,7 +1281,7 @@ BEGIN
         ELSIF NEW.deleted THEN -- remove rows
  
             IF TG_TABLE_NAME = 'call_number' THEN
-                DELETE FROM asset.opac_visible_copies WHERE id IN (SELECT id FROM asset.copy WHERE call_number = NEW.id);
+                DELETE FROM asset.opac_visible_copies WHERE copy_id IN (SELECT id FROM asset.copy WHERE call_number = NEW.id);
             ELSIF TG_TABLE_NAME = 'record_entry' THEN
                 DELETE FROM asset.opac_visible_copies WHERE record = NEW.id;
             END IF;
