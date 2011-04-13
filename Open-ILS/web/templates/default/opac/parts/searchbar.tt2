@@ -35,9 +35,11 @@
             <td valign="top">
                 <div class="pos-abs">
                     <div class="opac-auto-143">
-                        <input type="image" alt="[% l('Search') %]" src="[% ctx.media_prefix %]/images/go-btn.png"
+                        <input id='search-submit-go' type="image" alt="[% l('Search') %]" src="[% ctx.media_prefix %]/images/go-btn.png"
                             onmouseover="this.src='[% ctx.media_prefix %]/images/go-btn-hover.png';"
-                            onmouseout="this.src='[% ctx.media_prefix %]/images/go-btn.png';" />
+                            onmouseout="this.src='[% ctx.media_prefix %]/images/go-btn.png';" 
+                            onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden"}, 1000)'/>
+                        <img id='search-submit-spinner' src='/opac/images/progressbar_green.gif' style='height:16px;width:16px;' class='hidden'/>
                     </div>
                 </div>
             </td>
