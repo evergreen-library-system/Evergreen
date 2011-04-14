@@ -547,6 +547,12 @@ sub unapi {
     if ($type eq 'isbn') {
         my $rec = $supercat->request('open-ils.supercat.isbn.object.retrieve',$id)->gather(1);
         if (!@$rec) {
+            # Escape user input before display
+            $command = CGI::escapeHTML($command);
+            $id = CGI::escapeHTML($id);
+            $type = CGI::escapeHTML($type);
+            $format = CGI::escapeHTML(decode_utf8($format));
+
             print "Content-type: text/html; charset=utf-8\n\n";
             $apache->custom_response( 404, <<"            HTML");
             <html>
@@ -572,6 +578,10 @@ sub unapi {
            { $_ eq $base_format }
            qw/opac html htmlholdings marctxt ris holdings_xml/
     ) {
+        # Escape user input before display
+        $format = CGI::escapeHTML($format);
+        $type = CGI::escapeHTML($type);
+
         print "Content-type: text/html; charset=utf-8\n\n";
         $apache->custom_response( 406, <<"        HTML");
         <html>
@@ -605,6 +615,12 @@ sub unapi {
         );
 
         if (!$feed->count) {
+            # Escape user input before display
+            $command = CGI::escapeHTML($command);
+            $id = CGI::escapeHTML($id);
+            $type = CGI::escapeHTML($type);
+            $format = CGI::escapeHTML(decode_utf8($format));
+
             print "Content-type: text/html; charset=utf-8\n\n";
             $apache->custom_response( 404, <<"            HTML");
             <html>
@@ -643,6 +659,12 @@ sub unapi {
     my $data = $req->gather();
 
     if ($req->failed || !$data) {
+        # Escape user input before display
+        $command = CGI::escapeHTML($command);
+        $id = CGI::escapeHTML($id);
+        $type = CGI::escapeHTML($type);
+        $format = CGI::escapeHTML(decode_utf8($format));
+
         print "Content-type: text/html; charset=utf-8\n\n";
         $apache->custom_response( 404, <<"        HTML");
         <html>
@@ -836,6 +858,9 @@ sub supercat {
         } otherwise {
             warn shift();
             
+            # Escape user input before display
+            $id = CGI::escapeHTML($id);
+
             print "Content-type: text/html; charset=utf-8\n\n";
             $apache->custom_response( 404, <<"            HTML");
             <html>
@@ -878,6 +903,12 @@ sub supercat {
     $req->wait_complete;
 
     if ($req->failed) {
+        # Escape user input before display
+        $command = CGI::escapeHTML($command);
+        $id = CGI::escapeHTML($id);
+        $type = CGI::escapeHTML($type);
+        $format = CGI::escapeHTML(decode_utf8($format));
+
         print "Content-type: text/html; charset=utf-8\n\n";
         $apache->custom_response( 404, <<"        HTML");
         <html>
@@ -1428,7 +1459,7 @@ sub create_record_feed {
         next unless $node;
 
         $xml = '';
-        if ($lib && ($type eq 'marcxml' || $type eq 'atom') &&  $flesh > 0) {
+        if ($lib && ($type eq 'marcxml' || $type eq 'atom') && ($flesh > 0 || $flesh eq 'uris')) {
             my $r = $supercat->request( "open-ils.supercat.$search.holdings_xml.retrieve", $rec, $lib, $depth, $flesh_feed, $paging );
             while ( !$r->complete ) {
                 $xml .= join('', map {$_->content} $r->recv);
@@ -1439,8 +1470,8 @@ sub create_record_feed {
 
         $node->id($item_tag);
         #$node->update_ts(cleanse_ISO8601($record->edit_date));
-        $node->link(alternate => $feed->unapi . "?id=$item_tag&format=htmlholdings-full" => 'text/html') if ($flesh > 0);
-        $node->link(opac => $feed->unapi . "?id=$item_tag&format=opac") if ($flesh > 0);
+        $node->link(alternate => $feed->unapi . "?id=$item_tag&format=htmlholdings-full" => 'text/html') if ($flesh > 0 || $flesh eq 'uris');
+        $node->link(opac => $feed->unapi . "?id=$item_tag&format=opac") if ($flesh > 0 || $flesh eq 'uris');
         $node->link(unapi => $feed->unapi . "?id=$item_tag") if ($flesh);
         $node->link('unapi-id' => $item_tag) if ($flesh);
     }
