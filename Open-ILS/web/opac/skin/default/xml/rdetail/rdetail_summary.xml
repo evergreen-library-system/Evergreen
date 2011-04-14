@@ -122,7 +122,7 @@
 						]]></script>
 					</span>
 				</td>
-				<td class='rdetail_item' id='rdetail_online' type='opac/slot-data' datatype='holdings_xml' query='volumes volume uris uri' join=", ">
+				<td class='rdetail_item' id='rdetail_online' type='opac/slot-data' query='volumes volume uris uri' join=", ">
 					<script type='opac/slot-format'><![CDATA[
 						var link = '<a href="' + item.getAttribute('href') + '">' + item.getAttribute('label') + '</a>';
 						if (item.getAttribute('use_restriction'))
