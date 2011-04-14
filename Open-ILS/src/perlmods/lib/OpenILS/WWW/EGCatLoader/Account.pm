@@ -759,21 +759,31 @@ sub load_myopac_bookbags {
     my $e = $self->editor;
     my $ctx = $self->ctx;
 
+    $e->xact_begin; # replication...
+
     my $rv = $self->load_mylist;
-    return $rv if $rv ne Apache2::Const::OK;
+    unless($rv eq Apache2::Const::OK) {
+        $e->rollback;
+        return $rv;
+    }
 
     my $args = {
         order_by => {cbreb => 'name'},
         limit => $self->cgi->param('limit') || 10,
-        offset => $self->cgi->param('limit') || 0
+        offset => $self->cgi->param('offset') || 0
     };
 
     $ctx->{bookbags} = $e->search_container_biblio_record_entry_bucket([
         {owner => $self->editor->requestor->id, btype => 'bookbag'},
         # XXX what to do about the possibility of really large bookbags here?
         {"flesh" => 1, "flesh_fields" => {"cbreb" => ["items"]}, %$args}
-    ]) or return $e->die_event;
+    ]);
 
+    if(!$ctx->{bookbags}) {
+        $e->rollback;
+        return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+    }
+    
     # get unique record IDs
     my %rec_ids = ();
     foreach my $bbag (@{$ctx->{bookbags}}) {
@@ -786,6 +796,7 @@ sub load_myopac_bookbags {
 
     $ctx->{bookbags_marc_xml} = $self->fetch_marc_xml_by_id([keys %rec_ids]);
 
+    $e->rollback;
     return Apache2::Const::OK;
 }
 
