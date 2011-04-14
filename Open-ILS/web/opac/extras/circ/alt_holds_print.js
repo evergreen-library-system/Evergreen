@@ -58,10 +58,12 @@ function do_pull_list() {
           },
           oncomplete : function () {
             progress_dialog.hide();
-            if (any)
-                window.print();
-            else
-                alert(dojo.byId("no_results").innerHTML);
+            setTimeout(
+                function() {
+                    if (any) window.print();
+                    else alert(dojo.byId("no_results").innerHTML);
+                }, 500  /* give the progress_dialog more time to go away */
+            );
           }
         }
     );
