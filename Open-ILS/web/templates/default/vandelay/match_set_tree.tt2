@@ -2,14 +2,16 @@
 [% ctx.page_title = 'Vandelay Match Set Editor' %]
 <style type="text/css">
     h1 { margin: 1ex 0; }
-    .outer { clear: both; }
-    #vmsp-buttons button { margin: 0 0.5em; }
+    .outer { clear: both; margin-bottom: 1ex; }
+    button { margin: 0 0.5em; }
     #tree-here { margin-bottom: 1.5em; }
     #vms-table { padding-bottom: 2ex; }
     #vms-table th { text-align: right; }
     #vms-table td { padding-left: 1em; }
     #src-pane { float: left; width: 49%; }
     #tree-pane { float: right; width: 50%; }
+    #submit-row { clear: both; text-align: center; padding-top: 1.5ex; }
+    #submit-row hr { margin: 1ex 0; }
     .node-editor { margin-bottom: 1.5ex; }
     .node-editor td { padding: 0.5ex; }
     li { background-color: #ddd; }
@@ -61,7 +63,7 @@
     <div><!-- XXX TODO: consider a read-only display here of the query as built
         so far from the treet --></div>
     <div id="vmsp-buttons">
-        New
+        Add new
         <button onclick="node_editor.add('svf');">Single-Value-Field</button>
         <button onclick="node_editor.add('tag');">MARC Tag and Subfield</button>
         <button onclick="node_editor.add('bool_op');">Boolean Operator</button>
@@ -69,6 +71,7 @@
 </div>
 <div class="outer" style="margin-top: 2ex;">
     <div id="src-pane">
+        <div><big>Working Match Point</big></div>
         <div>
             <form id="node-editor-container" onsubmit="return false;"></form>
         </div>
@@ -78,10 +81,19 @@
     <div id="tree-pane">
         <div><big>Your Expression</big></div>
         <div id="tree-here"></div>
-        <button id="deleter" onclick="delete_selected_from_tree()">
-            Deleted Selected Node
-        </button>
+        <div>
+            <button id="deleter" onclick="delete_selected_in_tree()">
+                Delete Selected Node
+            </button>
+            <button id="replacer" onclick="replace_mode()">
+                Enter Replace Mode
+            </button>
+        </div>
     </div>
+</div>
+<div id="submit-row">
+    <hr />
+    <button onclick="save_tree()">Save Changes</button>
 </div>
 <div jsId="progress_dialog" dojoType="openils.widget.ProgressDialog"></div>
 <script type="text/javascript"

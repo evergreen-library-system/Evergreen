@@ -1,7 +1,6 @@
 dojo.require("dijit.Tree");
 dojo.require("dijit.form.Button");
 dojo.require("dojo.data.ItemFileWriteStore");
-//dojo.require("openils.vandelay.DndSource");
 dojo.require("dojo.dnd.Source");
 dojo.require("openils.vandelay.TreeDndSource");
 dojo.require("openils.vandelay.TreeStoreModel");
@@ -122,47 +121,25 @@ function NodeEditor() {
     this.clear = function() {
         this.dnd_source.selectAll().deleteSelectedNodes();
         dojo.empty(this.node_editor_container);
+        this.dnd_source._ready = false;
+    };
+
+    this.build_vmsp = function() {
+        var match_point = new vmsp();
+        var controls = dojo.query("[fmfield]", this.node_editor_container);
+        for (var i = 0; i < controls.length; i++) {
+            var field = dojo.attr(controls[i], "fmfield");
+            var value = _simple_value_getter(controls[i]);
+            match_point[field](value);
+        }
+        return match_point;
     };
 
     this.update_draggable = function(draggable) {
-        var s = "";
-        draggable.match_point = new vmsp();
-        var had_op = false;
-        dojo.query("[fmfield]", this.node_editor_container).forEach(
-            function(control) {
-                var used_svf = null;
-                var field = dojo.attr(control, "fmfield");
-                var value = _simple_value_getter(control);
-                draggable.match_point[field](value);
-
-                if (field == "subfield")
-                    s += " \u2021";
-                if (field == "svf")
-                    used_svf = value;
-                if (field == "quality")
-                    return;
-                if (field == "bool_op")
-                    had_op = true;
-                if (field == "negate") {
-                    if (value) {
-                        if (had_op)
-                            s = "<strong>N</strong>" + s;
-                        else
-                            s = "<strong>NOT</strong> " + s;
-                    }
-                } else {
-                    s += value;
-                }
-
-                if (used_svf !== null) {
-                    var our_crad = _find_crad_by_name(used_svf);
-                    /* XXX i18n, use fmtted strings */
-                    s += " / " + our_crad.label() + "<br /><em>" +
-                        (our_crad.description() || "") + "</em><br />";
-                }
-            }
+        draggable.match_point = this.build_vmsp();
+        dojo.attr(
+            draggable, "innerHTML", render_vmsp_label(draggable.match_point)
         );
-        dojo.attr(draggable, "innerHTML", s);
         this.dnd_source._ready = true;
     };
 
@@ -210,7 +187,6 @@ function NodeEditor() {
         dojo.place(table, this.node_editor_container, "only");
         /* XXX around here attach other data structures to the node */
         this.dnd_source.insertNodes(false, [draggable]);
-        this.dnd_source._ready = false;
     };
 
     this._init.apply(this, arguments);
@@ -218,24 +194,39 @@ function NodeEditor() {
 
 /* XXX replace later with code that will suit this function's purpose
  * as well as that of update_draggable. */
-function display_name_from_point(point) {
+function render_vmsp_label(point) {
     /* quick and dirty */
     if (point.bool_op()) {
-        return (point.negate() == "t" ? "N" : "") + point.bool_op();
+        return (openils.Util.isTrue(point.negate()) ? "N" : "") +
+            point.bool_op();
     } else if (point.svf()) {
-        return (point.negate() == "t" ? "NOT " : "") + point.svf();
+        return (openils.Util.isTrue(point.negate()) ? "NOT " : "") +
+            point.svf() + " / " + _find_crad_by_name(point.svf()).label();
     } else {
-        return (point.negate() == "t" ? "NOT " : "") + point.tag() +
-            "\u2021" + point.subfield();
+        return (openils.Util.isTrue(point.negate()) ? "NOT " : "") +
+            point.tag() + " \u2021" + point.subfield();
     }
 }
 
-function delete_selected_from_tree() {
+function replace_mode() {
+    tree.model._replace_mode ^= 1;
+    dojo.attr(
+        "replacer", "innerHTML",
+        localeStrings[
+            (tree.model._replace_mode ? "EXIT" : "ENTER") + "_REPLACE_MODE"
+        ]
+    );
+}
+
+function delete_selected_in_tree() {
     /* relies on the fact that we only have one tree that would have
      * registered a dnd controller. */
     _tree_dnd_controllers[0].getSelectedItems().forEach(
         function(item) {
-            tree.model.store.deleteItem(item);
+            if (item === tree.model.root)
+                alert(localeStrings.LEAVE_ROOT_ALONE);
+            else
+                tree.model.store.deleteItem(item);
         }
     );
 }
@@ -264,7 +255,7 @@ function dojoize_match_set_tree(point, refgen) {
     point.children([]);
     var item = {
         "id": (root ? "root" : refgen),
-        "name": display_name_from_point(point),
+        "name": render_vmsp_label(point),
         "match_point": point.clone(),
         "children": []
     };
@@ -292,7 +283,7 @@ function render_match_set_description(match_set) {
     dojo.byId("vms-mtype").innerHTML = match_set.mtype();
 }
 
-function init_test() {
+function my_init() {
     progress_dialog.show(true);
 
     dojo.requireLocalization("openils.vandelay", "match_set");
@@ -315,19 +306,6 @@ function init_test() {
         [openils.User.authtoken, CGI.param("match_set")]
     );
 
-//        {
-//            "identifier": "id", "label": "name", "items": [
-//                {
-//                    "id": "root", "name": "AND",
-//                    "children": [
-//                        {"_reference": "leaf0"}, {"_reference": "leaf1"}
-//                    ]
-//                },
-//                {"id": "leaf0", "name": "nonsense test"},
-//                {"id": "leaf1", "name": "more nonsense"}
-//            ]
-//        }
-
     var store = new dojo.data.ItemFileWriteStore({
         "data": {
             "identifier": "id",
@@ -336,14 +314,14 @@ function init_test() {
         }
     });
 
-    var treeModel = new openils.vandelay.TreeStoreModel({
-        store: store, "query": {"id": "root"}
+    var tree_model = new openils.vandelay.TreeStoreModel({
+        "store": store, "query": {"id": "root"}
     });
 
     var src = new dojo.dnd.Source("src-here");
     tree = new dijit.Tree(
         {
-            "model": treeModel,
+            "model": tree_model,
             "dndController": openils.vandelay.TreeDndSource,
             "dragThreshold": 8,
             "betweenThreshold": 5,
@@ -356,22 +334,15 @@ function init_test() {
     dojo.connect(
         src, "onDndDrop", null,
         function(source, nodes, copy, target) {
-            if (source == this) {
-                var model = target.tree.model;
-                model.getRoot(
-                    function(root) {
-                        model.getSimpleTree(
-                            root, function(results) { alert(js2JSON(results)); }
-                        );
-                    }
-                );
+            /* XXX because of the... interesting... characteristics of DnD
+             * design in dojo/dijit (at least as of 1.3), this callback will
+             * fire both for our working node dndSource and for the tree!
+             */
+            if (source == this)
                 node_editor.clear();  /* because otherwise this acts like a copy! */
-            } else {
-                alert("XXX [src] nodes length is " + nodes.length); /* XXX DEBUG */
-            }
         }
     );
     progress_dialog.hide();
 }
 
-openils.Util.addOnLoad(init_test);
+openils.Util.addOnLoad(my_init);
