@@ -1021,7 +1021,7 @@ $$ LANGUAGE PLPGSQL;
 -- select * from acq.extract_provider_holding_data(699);
 
 CREATE OR REPLACE FUNCTION public.extract_acq_marc_field ( BIGINT, TEXT, TEXT) RETURNS TEXT AS $$
-	SELECT public.extract_marc_field('acq.lineitem', $1, $2, $3);
+	SELECT extract_marc_field('acq.lineitem', $1, $2, $3);
 $$ LANGUAGE SQL;
 
 /*
