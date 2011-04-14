@@ -616,7 +616,18 @@ __PACKAGE__->register_method(
 sub _clean_regex_chars {
     my ($search) = @_;
 
-    $search =~ tr/\\.[]()?*+{}^$//d;
+    # Escape metacharacters for SIMILAR TO 
+    # (http://www.postgresql.org/docs/8.4/interactive/functions-matching.html)
+    $search =~ s/\_/\\_/g;
+    $search =~ s/\%/\\%/g;
+    $search =~ s/\|/\\|/g;
+    $search =~ s/\*/\\*/g;
+    $search =~ s/\+/\\+/g;
+    $search =~ s/\[/\\[/g;
+    $search =~ s/\]/\\]/g;
+    $search =~ s/\(/\\(/g;
+    $search =~ s/\)/\\)/g;
+
     return $search;
 }
 
