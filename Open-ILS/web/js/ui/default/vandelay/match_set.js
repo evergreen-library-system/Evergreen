@@ -11,10 +11,7 @@ dojo.require("openils.Util");
 dojo.require("openils.PermaCrud");
 dojo.require("openils.widget.ProgressDialog");
 
-var localeStrings;
-var node_editor;
-var _crads;
-var CGI;
+var localeStrings, node_editor, _crads, CGI, tree;
 
 function _find_crad_by_name(name) {
     for (var i = 0; i < _crads.length; i++) {
@@ -233,6 +230,16 @@ function display_name_from_point(point) {
     }
 }
 
+function delete_selected_from_tree() {
+    /* relies on the fact that we only have one tree that would have
+     * registered a dnd controller. */
+    _tree_dnd_controllers[0].getSelectedItems().forEach(
+        function(item) {
+            tree.model.store.deleteItem(item);
+        }
+    );
+}
+
 /* dojoize_match_set_tree() takes an argument, "point", that is actually a
  * vmsp fieldmapper object with descendants fleshed hierarchically. It turns
  * that into a syntactically flat array but preserving the hierarchy
@@ -278,17 +285,28 @@ function dojoize_match_set_tree(point, refgen) {
     return results;
 }
 
+function render_match_set_description(match_set) {
+    dojo.byId("vms-name").innerHTML = match_set.name();
+    dojo.byId("vms-owner").innerHTML =
+        aou.findOrgUnit(match_set.owner()).name();
+    dojo.byId("vms-mtype").innerHTML = match_set.mtype();
+}
+
 function init_test() {
     progress_dialog.show(true);
 
     dojo.requireLocalization("openils.vandelay", "match_set");
     localeStrings = dojo.i18n.getLocalization("openils.vandelay", "match_set");
 
+    pcrud = new openils.PermaCrud();
     CGI = new openils.CGI();
+
+    var match_set = pcrud.retrieve("vms", CGI.param("match_set"));
+    render_match_set_description(match_set);
 
     /* XXX No-one should have hundreds of these or anything, but theoretically
      * this could be problematic with a big enough list of crad objects. */
-    _crads = new openils.PermaCrud().retrieveAll(
+    _crads = pcrud.retrieveAll(
         "crad", {"order_by": {"crad": "label"}}
     );
 
@@ -322,15 +340,15 @@ function init_test() {
         store: store, "query": {"id": "root"}
     });
 
-    var src = new dojo.dnd.Source("src_here");
-    var tree = new dijit.Tree(
+    var src = new dojo.dnd.Source("src-here");
+    tree = new dijit.Tree(
         {
             "model": treeModel,
             "dndController": openils.vandelay.TreeDndSource,
             "dragThreshold": 8,
             "betweenThreshold": 5,
             "persist": false
-        }, "tree_here"
+        }, "tree-here"
     );
 
     node_editor = new NodeEditor(src, "node-editor-container");

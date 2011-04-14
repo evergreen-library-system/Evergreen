@@ -7,6 +7,17 @@ dojo.require("dijit._tree.dndSource");
  */
 dojo.declare(
     "openils.vandelay.TreeDndSource", dijit._tree.dndSource, {
+        "constructor": function() {
+            /* Given a tree object, there seems to be no way to access its
+             * dndController, which seems to be the only thing that knows
+             * about a tree's selected nodes.  So we register instances
+             * in a global variable in order to find them later. :-(
+             */
+            if (!window._tree_dnd_controllers)
+                window._tree_dnd_controllers = [];
+
+            window._tree_dnd_controllers.push(this);
+        },
         "checkItemAcceptance": function(target, source, position) {
             return (
                 source._ready && (
