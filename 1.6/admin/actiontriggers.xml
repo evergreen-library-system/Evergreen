@@ -115,14 +115,6 @@
 			<step preformance="optional"><para>Enter text in the <guilabel>Template</guilabel> text box if required. These are for email messages. Here is an sample 
 			template for sending 90 day overdue notices:</para>
 <programlisting><![CDATA[
-[%- USE date -%]
-[%- user = target.0.usr -%]
-To: robert.soulliere@mohawkcollege.ca
-From: robert.soulliere@mohawkcollege.ca
-Subject: Overdue Notification
-
-Dear [% user.family_name %], [% user.first_given_name %]
-Our records indicate the following items are overdue.
 
 [%- USE date -%]
 [%- user = target.0.usr -%]
