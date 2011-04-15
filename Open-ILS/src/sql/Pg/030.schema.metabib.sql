@@ -554,12 +554,21 @@ BEGIN
         output.ff_name  := ff_pos.fixed_field;
         output.ff_value := NULL;
 
-        FOR tag_data IN SELECT value FROM UNNEST( oils_xpath( '//*[@tag="' || UPPER(tag) || '"]/text()', marc ) ) x(value) LOOP
-            output.ff_value := SUBSTRING( tag_data.value, ff_pos.start_pos + 1, ff_pos.length );
-            IF output.ff_value IS NULL THEN output.ff_value := REPEAT( ff_pos.default_val, ff_pos.length ); END IF;
-            RETURN NEXT output;
-            output.ff_value := NULL;
-        END LOOP;
+        IF ff_pos.tag = 'ldr' THEN
+            output.ff_value := oils_xpath_string('//*[local-name()="leader"]', marc);
+            IF output.ff_value IS NOT NULL THEN
+                output.ff_value := SUBSTRING( output.ff_value, ff_pos.start_pos + 1, ff_pos.length );
+                RETURN NEXT output;
+                output.ff_value := NULL;
+            END IF;
+        ELSE
+            FOR tag_data IN SELECT value FROM UNNEST( oils_xpath( '//*[@tag="' || UPPER(ff_pos.tag) || '"]/text()', marc ) ) x(value) LOOP
+                output.ff_value := SUBSTRING( tag_data, ff_pos.start_pos + 1, ff_pos.length );
+                IF output.ff_value IS NULL THEN output.ff_value := REPEAT( ff_pos.default_val, ff_pos.length ); END IF;
+                RETURN NEXT output;
+                output.ff_value := NULL;
+            END LOOP;
+        END IF;
 
     END LOOP;
 
