@@ -107,5 +107,5 @@
 </div>
 <div jsId="progress_dialog" dojoType="openils.widget.ProgressDialog"></div>
 <script type="text/javascript"
-    src="[% ctx.media_prefix %]/js/ui/default/vandelay/match_set.js"></script>
+    src="[% ctx.media_prefix %]/js/ui/default/conify/global/vandelay/match_set.js"></script>
 [% END %]

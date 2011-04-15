@@ -66,7 +66,7 @@
 
     function tree_editor_link(datum) {
         if (!datum) return "";
-        return '<a href="[% ctx.base_path %]/vandelay/match_set_tree?match_set=' +
+        return '<a href="[% ctx.base_path %]/eg/conify/global/vandelay/match_set_tree?match_set=' +
             datum.id + '">' + datum.name + '</a>';
     }
 
