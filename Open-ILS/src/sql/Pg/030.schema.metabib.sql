@@ -853,7 +853,9 @@ BEGIN
                     SELECT id INTO uri_id FROM asset.uri WHERE label = uri_label AND href = uri_href AND use_restriction = uri_use AND active;
                 END IF;
 
-                 FOR uri_owner IN 1 .. ARRAY_UPPER(uri_owner_list, 1) LOOP
+                FOR j IN 1 .. ARRAY_UPPER(uri_owner_list, 1) LOOP
+                    uri_owner := uri_owner_list[j];
+
                     SELECT id INTO uri_owner_id FROM actor.org_unit WHERE shortname = uri_owner;
                     CONTINUE WHEN NOT FOUND;
     
