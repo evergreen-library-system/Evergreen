@@ -19,7 +19,7 @@ function _simple_item(model, item) {
 
 dojo.declare(
     "openils.vandelay.TreeStoreModel", dijit.tree.TreeStoreModel, {
-        "_replace_mode": 0,
+        "replace_mode": 0,
         "getSimpleTree": function(item, oncomplete, result) {
             var self = this;
             if (!result) result = {};

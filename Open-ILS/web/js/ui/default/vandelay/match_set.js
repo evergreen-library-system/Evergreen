@@ -208,13 +208,20 @@ function render_vmsp_label(point) {
     }
 }
 
-function replace_mode() {
-    tree.model._replace_mode ^= 1;
+function replace_mode(explicit) {
+    if (typeof explicit == "undefined")
+        tree.model.replace_mode ^= 1;
+    else
+        tree.model.replace_mode = explicit;
+
     dojo.attr(
         "replacer", "innerHTML",
         localeStrings[
-            (tree.model._replace_mode ? "EXIT" : "ENTER") + "_REPLACE_MODE"
+            (tree.model.replace_mode ? "EXIT" : "ENTER") + "_REPLACE_MODE"
         ]
+    );
+    dojo[tree.model.replace_mode ? "addClass" : "removeClass"](
+        "replacer", "replace-mode"
     );
 }
 
@@ -229,6 +236,19 @@ function delete_selected_in_tree() {
                 tree.model.store.deleteItem(item);
         }
     );
+}
+
+function new_match_set_tree() {
+    var point = new vmsp();
+    point.bool_op("AND");
+    return [
+        {
+            "id": "root",
+            "children": [],
+            "name": render_vmsp_label(point),
+            "match_point": point
+        }
+    ];
 }
 
 /* dojoize_match_set_tree() takes an argument, "point", that is actually a
@@ -247,6 +267,9 @@ function dojoize_match_set_tree(point, refgen) {
     /* XXX TODO test with deeper trees! */
     var root = false;
     if (!refgen) {
+        if (!point) {
+            return new_match_set_tree();
+        }
         refgen = 0;
         root = true;
     }
@@ -292,6 +315,12 @@ function my_init() {
     pcrud = new openils.PermaCrud();
     CGI = new openils.CGI();
 
+    if (!CGI.param("match_set")) {
+        alert(localeStrings.NO_CAN_DO);
+        progress_dialog.hide();
+        return;
+    }
+
     var match_set = pcrud.retrieve("vms", CGI.param("match_set"));
     render_match_set_description(match_set);
 
@@ -330,6 +359,8 @@ function my_init() {
     );
 
     node_editor = new NodeEditor(src, "node-editor-container");
+
+    replace_mode(0);
 
     dojo.connect(
         src, "onDndDrop", null,
