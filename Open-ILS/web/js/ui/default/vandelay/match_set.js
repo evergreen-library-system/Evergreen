@@ -10,7 +10,7 @@ dojo.require("openils.Util");
 dojo.require("openils.PermaCrud");
 dojo.require("openils.widget.ProgressDialog");
 
-var localeStrings, node_editor, _crads, CGI, tree;
+var localeStrings, node_editor, _crads, CGI, tree, match_set;
 
 function _find_crad_by_name(name) {
     for (var i = 0; i < _crads.length; i++) {
@@ -120,7 +120,10 @@ function NodeEditor() {
 
     this.clear = function() {
         this.dnd_source.selectAll().deleteSelectedNodes();
-        dojo.empty(this.node_editor_container);
+        dojo.create(
+            "em", {"innerHTML": localeStrings.WORKING_MP_HERE},
+            this.node_editor_container, "only"
+        );
         this.dnd_source._ready = false;
     };
 
@@ -215,21 +218,28 @@ function NodeEditor() {
         );
 
         dojo.place(table, this.node_editor_container, "only");
-        /* XXX around here attach other data structures to the node */
+
         this.dnd_source.insertNodes(false, [draggable]);
+
+        /* nice */
+        try { dojo.query("select, input", table)[0].focus(); }
+        catch(E) { console.log(String(E)); }
+
     };
 
     this._init.apply(this, arguments);
 }
 
-function render_vmsp_label(point) {
+function render_vmsp_label(point, minimal) {
     /* quick and dirty */
     if (point.bool_op()) {
         return (openils.Util.isTrue(point.negate()) ? "N" : "") +
             point.bool_op();
     } else if (point.svf()) {
-        return (openils.Util.isTrue(point.negate()) ? "NOT " : "") +
-            point.svf() + " / " + _find_crad_by_name(point.svf()).label();
+        return (openils.Util.isTrue(point.negate()) ? "NOT " : "") + (
+            minimal ?  point.svf() :
+                (point.svf() + " / " + _find_crad_by_name(point.svf()).label())
+        );
     } else {
         return (openils.Util.isTrue(point.negate()) ? "NOT " : "") +
             point.tag() + " \u2021" + point.subfield();
@@ -333,6 +343,62 @@ function render_vms_metadata(match_set) {
     dojo.byId("vms-mtype").innerHTML = match_set.mtype();
 }
 
+function redraw_expression_preview() {
+    tree.model.getRoot(
+        function(root) {
+            tree.model.get_simple_tree(
+                root, function(r) {
+                    dojo.attr(
+                        "expr-preview",
+                        "innerHTML",
+                        render_expression_preview(r)
+                    );
+                }
+            );
+        }
+    );
+}
+
+function render_expression_preview(r) {
+    if (r.children().length) {
+        return "(" + r.children().map(render_expression_preview).join(
+            " " + render_vmsp_label(r) + " "
+        ) + ")";
+    } else if (!r.bool_op()) {
+        return render_vmsp_label(r, true /* minimal */);
+    } else {
+        return "()";
+    }
+}
+
+function save_tree() {
+    progress_dialog.show(true);
+
+    tree.model.getRoot(
+        function(root) {
+            tree.model.get_simple_tree(
+                root, function(r) {
+                    fieldmapper.standardRequest(
+                        ["open-ils.vandelay",
+                            "open-ils.vandelay.match_set.update"],/* XXX TODO */{
+                            "params": [
+                                openils.User.authtoken, match_set.id(), r
+                            ],
+                            "async": true,
+                            "oncomplete": function(r) {
+                                progress_dialog.hide();
+                                /* catch exceptions */
+                                r = openils.Util.readResponse(r);
+
+                                location.href = location.href;
+                            }
+                        }
+                    );
+                }
+            );
+        }
+    );
+}
 function my_init() {
     progress_dialog.show(true);
 
@@ -348,7 +414,9 @@ function my_init() {
         return;
     }
 
-    render_vms_metadata(pcrud.retrieve("vms", CGI.param("match_set")));
+    render_vms_metadata(
+        match_set = pcrud.retrieve("vms", CGI.param("match_set"))
+    );
 
     /* No-one should have hundreds of these or anything, but theoretically
      * this could be problematic with a big enough list of crad objects. */
@@ -400,6 +468,9 @@ function my_init() {
                                          "move." */
         }
     );
+
+    redraw_expression_preview();
+    node_editor.clear();
     progress_dialog.hide();
 }
 

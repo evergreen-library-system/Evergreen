@@ -12,7 +12,15 @@
     #src-pane { float: left; width: 49%; }
     #tree-pane { float: right; width: 50%; }
     #submit-row { clear: both; text-align: center; padding-top: 1.5ex; }
-    #submit-row hr { margin: 1ex 0; }
+    #submit-row hr { margin: 1.5ex 0; }
+    #expr-preview-row { margin: 2ex 0; }
+    #expr-preview {
+        font-family: monospace;
+        font-size: 125%;
+        font-weight: bold;
+        background-color: #000066;
+        color: white;
+    }
     .node-editor { margin-bottom: 1.5ex; }
     .node-editor td { padding: 0.5ex; }
     li { background-color: #ddd; }
@@ -62,8 +70,10 @@
     </tr>
 </table>
 <div class="outer">
-    <div><!-- XXX TODO: consider a read-only display here of the query as built
-        so far from the treet --></div>
+    <div id="expr-preview-row">
+        <em>Your Expression:</em>
+        <span id="expr-preview"></span>
+    </div>
     <div id="vmsp-buttons">
         Add new
         <button onclick="node_editor.add('svf');">Single-Value-Field</button>

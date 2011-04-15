@@ -30,6 +30,22 @@ dojo.declare(
                 window._tree_dnd_controllers = [];
 
             window._tree_dnd_controllers.push(this);
+
+            dojo.connect(
+                this.tree.model.store, "onNew", this,
+                function() { this.redraw_expression_preview(); }
+            );
+            dojo.connect(
+                this.tree.model.store, "onDelete", this,
+                function() { this.redraw_expression_preview(); }
+            );
+        },
+        "redraw_expression_preview": function() {
+            if (typeof(window.redraw_expression_preview) == "function") {
+                window.redraw_expression_preview();
+            } else {
+                console.log("no redraw_expression_preview function registered");
+            }
         },
         "checkItemAcceptance": function(target, source, position) {
             if (!source._ready || source == this) return;
@@ -100,6 +116,8 @@ dojo.declare(
                     window.render_vmsp_label(new_params.match_point)
                 );
             }
+
+            this.redraw_expression_preview();
 
             /* just because this is at the end of the default implementation: */
             this.onDndCancel();

@@ -10,32 +10,32 @@ dojo.require("openils.Util");
 function _simple_item(model, item) {
     /* Instead of model.getLabel(), could do
      * model.store.getValue(item, "blah") or something like that ... */
-    return {
-        "label": model.getLabel(item),
-        "match_point": String(model.store.getValue(item, "match_point")),
-        "children": {}
-    };
+    var mp = model.store.getValue(item, "match_point");
+    mp.children([]);
+    return mp;
 }
 
 dojo.declare(
     "openils.vandelay.TreeStoreModel", dijit.tree.TreeStoreModel, {
         "replace_mode": 0,
-        "getSimpleTree": function(item, oncomplete, result) {
+        "get_simple_tree": function(item, oncomplete, result) {
             var self = this;
-            if (!result) result = {};
-
-            var mykey = this.getIdentity(item);
-            result[mykey] = _simple_item(this, item);
-            var child_collector = result[mykey].children;
+            var me;
+            if (!result) {
+                me = result = _simple_item(this, item);
+            } else {
+                me = _simple_item(this, item);
+                result.push(me);
+            }
 
             if (this.mayHaveChildren(item)) {
                 this.getChildren(
                     item, function(children) {
+                        var kids_here = [];
                         for (var i = 0; i < children.length; i++) {
-                            self.getSimpleTree(
-                                children[i], null, child_collector
-                            );
+                            self.get_simple_tree(children[i], null, kids_here);
                         }
+                        me.children(kids_here);
                         if (oncomplete) oncomplete(result);
                     }
                 );
@@ -48,9 +48,5 @@ dojo.declare(
             else
                 return true;
         }
-//        "newItem": function(args, parent) {
-//            if (!this.mayHaveChildren(parent)) return;
-//            return this.inherited(arguments);
-//        }
     }
 );
