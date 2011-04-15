@@ -222,8 +222,6 @@ function NodeEditor() {
     this._init.apply(this, arguments);
 }
 
-/* XXX replace later with code that will suit this function's purpose
- * as well as that of update_draggable. */
 function render_vmsp_label(point) {
     /* quick and dirty */
     if (point.bool_op()) {
@@ -294,7 +292,6 @@ function new_match_set_tree() {
  *
  */
 function dojoize_match_set_tree(point, refgen) {
-    /* XXX TODO test with deeper trees! */
     var root = false;
     if (!refgen) {
         if (!point) {
@@ -329,7 +326,7 @@ function dojoize_match_set_tree(point, refgen) {
     return results;
 }
 
-function render_match_set_description(match_set) {
+function render_vms_metadata(match_set) {
     dojo.byId("vms-name").innerHTML = match_set.name();
     dojo.byId("vms-owner").innerHTML =
         aou.findOrgUnit(match_set.owner()).name();
@@ -351,14 +348,11 @@ function my_init() {
         return;
     }
 
-    var match_set = pcrud.retrieve("vms", CGI.param("match_set"));
-    render_match_set_description(match_set);
+    render_vms_metadata(pcrud.retrieve("vms", CGI.param("match_set")));
 
-    /* XXX No-one should have hundreds of these or anything, but theoretically
+    /* No-one should have hundreds of these or anything, but theoretically
      * this could be problematic with a big enough list of crad objects. */
-    _crads = pcrud.retrieveAll(
-        "crad", {"order_by": {"crad": "label"}}
-    );
+    _crads = pcrud.retrieveAll("crad", {"order_by": {"crad": "label"}});
 
     var match_set_tree = fieldmapper.standardRequest(
         ["open-ils.vandelay", "open-ils.vandelay.match_set.get_tree"],
@@ -395,12 +389,15 @@ function my_init() {
     dojo.connect(
         src, "onDndDrop", null,
         function(source, nodes, copy, target) {
-            /* XXX because of the... interesting... characteristics of DnD
+            /* Because of the... interesting... characteristics of DnD
              * design in dojo/dijit (at least as of 1.3), this callback will
              * fire both for our working node dndSource and for the tree!
              */
             if (source == this)
-                node_editor.clear();  /* because otherwise this acts like a copy! */
+                node_editor.clear();  /* ... because otherwise this acts like a
+                                         copy operation no matter what the user
+                                         does, even though we really want a
+                                         "move." */
         }
     );
     progress_dialog.hide();

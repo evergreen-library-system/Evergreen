@@ -7,11 +7,14 @@ dojo.require("dijit._tree.dndSource");
  */
 dojo.declare(
     "openils.vandelay.TreeDndSource", dijit._tree.dndSource, {
-        "_is_replaceable": function(spoint, dpoint) {
+        "_is_replaceable": function(spoint, dpoint, disroot) {
             /* An OP can replace anything, but non-OPs can only replace other
-             * non-OPs
+             * non-OPs, EXCEPT when the dest is the root node (this allows
+             * for simple "trees" with only a single non-OP node.
              */
-            if (spoint.bool_op())
+            if (disroot)
+                return true;
+            else if (spoint.bool_op())
                 return true;
             else if (!dpoint.bool_op())
                 return true;
@@ -32,13 +35,12 @@ dojo.declare(
             if (!source._ready || source == this) return;
 
             if (this.tree.model.replace_mode) {
+                var ditem = dijit.getEnclosingWidget(target).item;
                 return (
                     position == "over" && this._is_replaceable(
                         source.getAllNodes()[0].match_point,
-                        this.tree.model.store.getValue(
-                            dijit.getEnclosingWidget(target).item,
-                            "match_point"
-                        )
+                        this.tree.model.store.getValue(ditem, "match_point"),
+                        ditem === this.tree.model.root
                     )
                 );
             } else {
@@ -81,6 +83,15 @@ dojo.declare(
             for (var k in new_params) {
                 if (k == "id") continue;    /* can't use this / don't need it */
                 store.setValue(item, k, new_params[k]);
+            }
+            if (this.tree.model.root === item) {    /* replacing root node */
+                if (!new_params.match_point.bool_op()) {
+                    /* If we're here, we've replaced the root node with
+                     * something that isn't a bool op, so we need to nuke
+                     * any children that the item has.
+                     */
+                    store.setValue(item, "children", []);
+                }
             }
             if (typeof(window.render_vmsp_label) == "function") {
                 store.setValue(
