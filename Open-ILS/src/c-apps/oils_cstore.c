@@ -1598,7 +1598,7 @@ static jsonObject* doRetrieve(osrfMethodContext* ctx, int* err ) {
 	jsonObjectFree( fake_params );
 
 #ifdef PCRUD
-	if(!verifyObjectPCRUD(ctx, obj)) {
+	if(NULL != obj && !verifyObjectPCRUD(ctx, obj)) {
         jsonObjectFree(obj);
         *err = -1;
 
