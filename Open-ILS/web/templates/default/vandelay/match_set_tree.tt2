@@ -4,6 +4,7 @@
     h1 { margin: 1ex 0; }
     .outer { clear: both; margin-bottom: 1ex; }
     button { margin: 0 0.5em; }
+    input[type=submit] { padding: 0 0.5em; }
     #tree-here { margin-bottom: 1.5em; }
     #vms-table { padding-bottom: 2ex; }
     #vms-table th { text-align: right; }

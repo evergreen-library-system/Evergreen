@@ -124,6 +124,32 @@ function NodeEditor() {
         this.dnd_source._ready = false;
     };
 
+    this.is_sensible = function(mp) {
+        var need_one = 0;
+        ["tag", "svf", "bool_op"].forEach(
+            function(field) { if (mp[field]()) need_one++; }
+        );
+
+        if (need_one != 1) {
+            alert(localeStrings.POINT_NEEDS_ONE);
+            return false;
+        }
+
+        if (mp.tag()) {
+            if (
+                !mp.tag().match(/^\d{3}$/) ||
+                mp.subfield().length != 1 ||
+                !mp.subfield().match(/\S/) ||
+                mp.subfield().charCodeAt(0) < 32
+            ) {
+                alert(localeStrings.FAULTY_MARC);
+                return false;
+            }
+        }
+
+        return true;
+    };
+
     this.build_vmsp = function() {
         var match_point = new vmsp();
         var controls = dojo.query("[fmfield]", this.node_editor_container);
@@ -132,14 +158,18 @@ function NodeEditor() {
             var value = _simple_value_getter(controls[i]);
             match_point[field](value);
         }
-        return match_point;
+
+        if (!this.is_sensible(match_point)) return null;    /* will alert() */
+        else return match_point;
     };
 
     this.update_draggable = function(draggable) {
-        draggable.match_point = this.build_vmsp();
-        dojo.attr(
-            draggable, "innerHTML", render_vmsp_label(draggable.match_point)
-        );
+        var mp;
+
+        if (!(mp = this.build_vmsp())) return;  /* will alert() */
+
+        draggable.match_point = mp;
+        dojo.attr(draggable, "innerHTML", render_vmsp_label(mp));
         this.dnd_source._ready = true;
     };
 
@@ -176,7 +206,7 @@ function NodeEditor() {
 
         dojo.create(
             "input", {
-                "type": "submit", "value": "Ok",
+                "type": "submit", "value": localeStrings.OK,
                 "onclick": function() { self.update_draggable(draggable); }
             }, dojo.create(
                 "td", {"colspan": 2, "align": "center"},
