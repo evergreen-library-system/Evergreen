@@ -730,6 +730,7 @@
 <!ENTITY staff.main.menu.admin.server_admin.conify.z3950_source.label "Z39.50 Servers">
 <!ENTITY staff.main.menu.admin.server_admin.conify.circulation_modifier.label "Circulation Modifiers">
 <!ENTITY staff.main.menu.admin.server_admin.conify.org_unit_setting_type "Organization Unit Setting Types">
+<!ENTITY staff.main.menu.admin.server_admin.conify.import_match_set "Import Match Sets">
 <!ENTITY staff.main.menu.admin.server_admin.conify.usr_setting_type "User Setting Types">
 <!ENTITY staff.main.menu.admin.server_admin.conify.config_hard_due_date "Hard Due Date Changes">
 <!ENTITY staff.main.menu.admin.server_admin.conify.config_rule_circ_duration "Circulation Duration Rules">
