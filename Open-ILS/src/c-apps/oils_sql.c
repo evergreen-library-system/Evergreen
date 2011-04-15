@@ -2358,7 +2358,8 @@ int doRetrieve( osrfMethodContext* ctx ) {
 	jsonObjectFree( list );
 
 	if( enforce_pcrud ) {
-		if(!verifyObjectPCRUD( ctx, obj, 1 )) {
+		// no result, skip this entirely
+		if(NULL != obj && !verifyObjectPCRUD( ctx, obj, 1 )) {
 			jsonObjectFree( obj );
 
 			growing_buffer* msg = buffer_init( 128 );
