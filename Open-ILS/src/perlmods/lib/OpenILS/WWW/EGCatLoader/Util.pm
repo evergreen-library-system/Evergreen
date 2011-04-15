@@ -149,7 +149,7 @@ sub get_records_and_facets {
     my ($self, $rec_ids, $facet_key, $unapi_args) = @_;
 
     $unapi_args ||= {};
-    $unapi_args->{loc} ||= $self->ctx->{aou_tree}->()->shortname;
+    $unapi_args->{site} ||= $self->ctx->{aou_tree}->()->shortname;
     $unapi_args->{depth} ||= $self->ctx->{aou_tree}->()->ou_type->depth;
     $unapi_args->{flesh_depth} ||= 5;
 
@@ -171,7 +171,7 @@ sub get_records_and_facets {
          {from => [
             'unapi.bre', $_, 'marcxml','record', 
             $unapi_args->{flesh}, 
-            $unapi_args->{loc}, 
+            $unapi_args->{site}, 
             $unapi_args->{depth}, 
             $unapi_args->{flesh_depth}, 
         ]}
