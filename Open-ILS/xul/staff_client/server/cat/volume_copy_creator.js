@@ -61,7 +61,7 @@ function my_init() {
         /***********************************************************************************************************/
         /* Am I adding just copies or copies and volumes?  Or am I rebarcoding existing copies? */
 
-        // g.copy_shortcut = { ou_id : { callnumber_label : callnumber_id }, ... }
+        // g.copy_shortcut = { ou_id : { callnumber_label : callnumber_id, callnumber_label : callnumber_id, ... }, ... }
         g.copy_shortcut = xul_param('copy_shortcut');
         // g.existing_copies = [ copy1, copy2, ... ]
         g.existing_copies = xul_param('existing_copies') || [];
