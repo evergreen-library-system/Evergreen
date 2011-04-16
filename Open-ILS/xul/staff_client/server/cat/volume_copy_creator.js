@@ -215,14 +215,14 @@ function my_init() {
 }
 
 g.render_library_label = function(row,ou_id) {
-    dump('g.render_library_label('+row+','+ou_id+')\n');
+    dump('g.render_library_label(row='+row+',ou_id='+ou_id+')\n');
     var label = document.createElement('label'); row.appendChild(label);
     label.setAttribute('ou_id',ou_id);
     label.setAttribute('value',g.data.hash.aou[ ou_id ].shortname());
 }
 
 g.render_volume_count_entry = function(row,ou_id) {
-    dump('g.render_volume_count_entry('+row+','+ou_id+')\n');
+    dump('g.render_volume_count_entry(row='+row+',ou_id='+ou_id+')\n');
     var hb = document.createElement('vbox'); row.appendChild(hb);
     var tb = document.createElement('textbox'); hb.appendChild(tb);
     if (g.use_defaults) {
@@ -234,7 +234,7 @@ g.render_volume_count_entry = function(row,ou_id) {
     if ( (!g.copy_shortcut) && (!g.last_focus) ) { tb.focus(); g.last_focus = tb; }
     var node;
     function render_copy_count_entry(ev) {
-        dump('\trender_copy_count_entry()\n');
+        dump('\t\trender_copy_count_entry()\n');
         if (ev.target.disabled) return;
         if (! isNaN( Number( ev.target.value) ) ) {
             if ( Number( ev.target.value ) > g_max_copies_that_can_be_added_at_a_time_per_volume ) {
@@ -259,7 +259,7 @@ g.render_volume_count_entry = function(row,ou_id) {
         function() {
             try {
                 if (g.copy_shortcut) {
-                    dump('g.render_volume_count_entry, using g.copy_shortcut\n');
+                    dump('\t\tg.render_volume_count_entry, using g.copy_shortcut\n');
                     JSAN.use('util.functional');
                     tb.value = util.functional.map_object_to_list(
                         g.copy_shortcut[ou_id],
@@ -270,7 +270,7 @@ g.render_volume_count_entry = function(row,ou_id) {
                     render_copy_count_entry({'target':tb});
                     tb.disabled = true;
                 } else if (tb.value) {
-                    dump('g.render_volume_count_entry, using value = ' + tb.value + '\n');
+                    dump('\t\tg.render_volume_count_entry, using value = ' + tb.value + '\n');
                     // since we're now supplying a default
                     render_copy_count_entry({'target':tb});
                     setTimeout(
@@ -287,7 +287,7 @@ g.render_volume_count_entry = function(row,ou_id) {
 }
 
 g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
-    dump('g.render_call_number_copy_count_entry('+row+','+ou_id+','+count+')\n');
+    dump('g.render_call_number_copy_count_entry(row='+row+',ou_id='+ou_id+',count='+count+')\n');
     var grid = util.widgets.make_grid( [ {}, {} ] ); row.appendChild(grid);
     grid.setAttribute('flex','1');
     grid.setAttribute('ou_id',ou_id);
@@ -317,7 +317,7 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
         number_of_copies_column_textbox,
         barcode_column_box
     ) {
-        dump('handle_change_precipitating_barcode_rendering('+callnumber_composite_key+',tb with value = '+number_of_copies_column_textbox.value+','+ barcode_column_box + ')\n');
+        dump('handle_change_precipitating_barcode_rendering('+callnumber_composite_key+',number_of_copies = '+number_of_copies_column_textbox.value+','+ barcode_column_box + ')\n');
 
         if (isNaN( Number( number_of_copies_column_textbox.value ) )) {
             dump('1:handle_change_precipitating_barcode_rendering early return\n');
@@ -637,7 +637,7 @@ g.render_part_menuitems = function(menupopup) {
 
 g.render_barcode_entry = function(node,callnumber_composite_key,count,ou_id) {
     try {
-        dump('g.render_barcode_entry(node,'+callnumber_composite_key+','+count+','+ou_id+'\n');
+        dump('g.render_barcode_entry(node,'+callnumber_composite_key+',count='+count+',ou_id='+ou_id+'\n');
         function ready_to_create(ev) {
             if (! xulG.unified_interface) {
                 document.getElementById("EditThenCreate").disabled = false;
