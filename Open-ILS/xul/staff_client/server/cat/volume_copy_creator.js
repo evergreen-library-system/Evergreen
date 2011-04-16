@@ -215,12 +215,14 @@ function my_init() {
 }
 
 g.render_library_label = function(row,ou_id) {
+    dump('g.render_library_label('+row+','+ou_id+')\n');
     var label = document.createElement('label'); row.appendChild(label);
     label.setAttribute('ou_id',ou_id);
     label.setAttribute('value',g.data.hash.aou[ ou_id ].shortname());
 }
 
 g.render_volume_count_entry = function(row,ou_id) {
+    dump('g.render_volume_count_entry('+row+','+ou_id+')\n');
     var hb = document.createElement('vbox'); row.appendChild(hb);
     var tb = document.createElement('textbox'); hb.appendChild(tb);
     if (g.use_defaults) {
@@ -232,6 +234,7 @@ g.render_volume_count_entry = function(row,ou_id) {
     if ( (!g.copy_shortcut) && (!g.last_focus) ) { tb.focus(); g.last_focus = tb; }
     var node;
     function render_copy_count_entry(ev) {
+        dump('\trender_copy_count_entry()\n');
         if (ev.target.disabled) return;
         if (! isNaN( Number( ev.target.value) ) ) {
             if ( Number( ev.target.value ) > g_max_copies_that_can_be_added_at_a_time_per_volume ) {
@@ -256,6 +259,7 @@ g.render_volume_count_entry = function(row,ou_id) {
         function() {
             try {
                 if (g.copy_shortcut) {
+                    dump('g.render_volume_count_entry, using g.copy_shortcut\n');
                     JSAN.use('util.functional');
                     tb.value = util.functional.map_object_to_list(
                         g.copy_shortcut[ou_id],
@@ -266,6 +270,7 @@ g.render_volume_count_entry = function(row,ou_id) {
                     render_copy_count_entry({'target':tb});
                     tb.disabled = true;
                 } else if (tb.value) {
+                    dump('g.render_volume_count_entry, using value = ' + tb.value + '\n');
                     // since we're now supplying a default
                     render_copy_count_entry({'target':tb});
                     setTimeout(
@@ -282,6 +287,7 @@ g.render_volume_count_entry = function(row,ou_id) {
 }
 
 g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
+    dump('g.render_call_number_copy_count_entry('+row+','+ou_id+','+count+')\n');
     var grid = util.widgets.make_grid( [ {}, {} ] ); row.appendChild(grid);
     grid.setAttribute('flex','1');
     grid.setAttribute('ou_id',ou_id);
@@ -311,7 +317,7 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
         number_of_copies_column_textbox,
         barcode_column_box
     ) {
-        dump('handle_change_precipitating_barcode_rendering\n');
+        dump('handle_change_precipitating_barcode_rendering('+callnumber_composite_key+',tb with value = '+number_of_copies_column_textbox.value+','+ barcode_column_box + ')\n');
 
         if (isNaN( Number( number_of_copies_column_textbox.value ) )) {
             dump('1:handle_change_precipitating_barcode_rendering early return\n');
@@ -507,6 +513,7 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
                     try {
                         JSAN.use('util.functional');
                         if (g.copy_shortcut) {
+                            dump('g.render_call_number_copy_count_entry() using g.copy_shortcut\n');
                             var callnumber_composite_key = util.functional.map_object_to_list(
                                 g.copy_shortcut[ou_id],
                                 function(o,i) {
@@ -530,6 +537,7 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
                             suffix_column_menulist.value = acns_id;
                             handle_change_to_callnumber_data({'target':call_number_column_textbox});
                         } else {
+                            dump('g.render_call_number_copy_count_entry() using defaults\n');
 
                             // if we're providing defaults, keep on rendering
                             if (call_number_column_textbox.value) {
