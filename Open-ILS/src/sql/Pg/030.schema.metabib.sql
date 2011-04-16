@@ -825,7 +825,7 @@ BEGIN
 
             uri_href    := (oils_xpath('//*[@code="u"]/text()',uri_xml))[1];
             uri_label   := (oils_xpath('//*[@code="y"]/text()|//*[@code="3"]/text()|//*[@code="u"]/text()',uri_xml))[1];
-            uri_use     := (oils_xpath('//*[@code="z"]/text()|//*[@code="2"]/text()|//*[@code="n"]/text()|//*[@code="u"]/text()',uri_xml))[1];
+            uri_use     := (oils_xpath('//*[@code="z"]/text()|//*[@code="2"]/text()|//*[@code="n"]/text()',uri_xml))[1];
             CONTINUE WHEN uri_href IS NULL OR uri_label IS NULL;
 
             -- Get the distinct list of libraries wanting to use 
@@ -849,7 +849,11 @@ BEGIN
                 SELECT id INTO uri_id FROM asset.uri WHERE label = uri_label AND href = uri_href AND use_restriction = uri_use AND active;
                 IF NOT FOUND THEN -- create one
                     INSERT INTO asset.uri (label, href, use_restriction) VALUES (uri_label, uri_href, uri_use);
-                    SELECT id INTO uri_id FROM asset.uri WHERE label = uri_label AND href = uri_href AND use_restriction = uri_use AND active;
+                    IF uri_use IS NULL THEN
+                        SELECT id INTO uri_id FROM asset.uri WHERE label = uri_label AND href = uri_href AND use_restriction IS NULL AND active;
+                    ELSE
+                        SELECT id INTO uri_id FROM asset.uri WHERE label = uri_label AND href = uri_href AND use_restriction = uri_use AND active;
+                    END IF;
                 END IF;
 
                 FOR j IN 1 .. ARRAY_UPPER(uri_owner_list, 1) LOOP
@@ -882,7 +886,6 @@ BEGIN
     RETURN;
 END;
 $func$ LANGUAGE PLPGSQL;
-
 
 CREATE OR REPLACE FUNCTION metabib.remap_metarecord_for_bib( bib_id BIGINT, fp TEXT ) RETURNS BIGINT AS $func$
 DECLARE
