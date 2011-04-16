@@ -61,7 +61,7 @@ function my_init() {
         /***********************************************************************************************************/
         /* Am I adding just copies or copies and volumes?  Or am I rebarcoding existing copies? */
 
-        // g.copy_shortcut = { ou_id : { callnumber_label : callnumber_id, callnumber_label : callnumber_id, ... }, ... }
+        // g.copy_shortcut = { ou_id : { callnumber_composite_key : callnumber_id, callnumber_label : callnumber_id, ... }, ... }
         g.copy_shortcut = xul_param('copy_shortcut');
         // g.existing_copies = [ copy1, copy2, ... ]
         g.existing_copies = xul_param('existing_copies') || [];
@@ -267,10 +267,11 @@ g.render_volume_count_entry = function(row,ou_id) {
                             return g.copy_shortcut[ou_id][i];
                         }
                     ).length;
+                    dump('\t\tnumber of volumes = ' + tb.value + '\n');
                     render_copy_count_entry({'target':tb});
                     tb.disabled = true;
                 } else if (tb.value) {
-                    dump('\t\tg.render_volume_count_entry, using value = ' + tb.value + '\n');
+                    dump('\t\tg.render_volume_count_entry, number of volumes = ' + tb.value + '\n');
                     // since we're now supplying a default
                     render_copy_count_entry({'target':tb});
                     setTimeout(
@@ -513,13 +514,14 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
                     try {
                         JSAN.use('util.functional');
                         if (g.copy_shortcut) {
-                            dump('g.render_call_number_copy_count_entry() using g.copy_shortcut\n');
+                            dump('\t\tg.render_call_number_copy_count_entry() using g.copy_shortcut\n');
                             var callnumber_composite_key = util.functional.map_object_to_list(
                                 g.copy_shortcut[ou_id],
                                 function(o,i) {
                                     return i;
                                 }
                             )[idx];
+                            dump('\tcallnumber_composite_key = ' + callnumber_composite_key + '\n');
                             if (g.org_label_existing_copy_map[ou_id]) {
                                 var num_of_copies = g.org_label_existing_copy_map[ou_id][callnumber_composite_key].length;
                                 if (num_of_copies>0) {
@@ -535,9 +537,10 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
                             classification_column_menulist.value = acnc_id;
                             prefix_column_menulist.value = acnp_id;
                             suffix_column_menulist.value = acns_id;
+                            dump('\tacn_label = ' + acn_label + ' acnc_id = ' + acnc_id + ' acnp_id = ' + acnp_id + ' acns_id = ' + acns_id + '\n');
                             handle_change_to_callnumber_data({'target':call_number_column_textbox});
                         } else {
-                            dump('g.render_call_number_copy_count_entry() using defaults\n');
+                            dump('\t\tg.render_call_number_copy_count_entry() using defaults\n');
 
                             // if we're providing defaults, keep on rendering
                             if (call_number_column_textbox.value) {
