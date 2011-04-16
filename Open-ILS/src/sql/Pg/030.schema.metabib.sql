@@ -835,6 +835,14 @@ DECLARE
     uri_map_id      INT;
 BEGIN
 
+    -- Clear any URI mappings and call numbers for this bib.
+    -- This leads to acn / auricnm inflation, but also enables
+    -- old acn/auricnm's to go away and for bibs to be deleted.
+    FOR uri_cn_id IN SELECT id FROM asset.call_number WHERE record = bib_id AND label = '##URI##' AND NOT deleted LOOP
+        DELETE FROM asset.uri_call_number_map WHERE call_number = uri_cn_id;
+        DELETE FROM asset.call_number WHERE id = uri_cn_id;
+    END LOOP;
+
     uris := oils_xpath('//*[@tag="856" and (@ind1="4" or @ind1="1") and (@ind2="0" or @ind2="1")]',marcxml);
     IF ARRAY_UPPER(uris,1) > 0 THEN
         FOR i IN 1 .. ARRAY_UPPER(uris, 1) LOOP
@@ -875,7 +883,7 @@ BEGIN
 
                     SELECT id INTO uri_owner_id FROM actor.org_unit WHERE shortname = uri_owner;
                     CONTINUE WHEN NOT FOUND;
-    
+
                     -- we need a call number to link through
                     SELECT id INTO uri_cn_id FROM asset.call_number WHERE owning_lib = uri_owner_id AND record = bib_id AND label = '##URI##' AND NOT deleted;
                     IF NOT FOUND THEN
@@ -883,13 +891,13 @@ BEGIN
                             VALUES (uri_owner_id, bib_id, 'now', 'now', editor_id, editor_id, '##URI##');
                         SELECT id INTO uri_cn_id FROM asset.call_number WHERE owning_lib = uri_owner_id AND record = bib_id AND label = '##URI##' AND NOT deleted;
                     END IF;
-        
+
                     -- now, link them if they're not already
                     SELECT id INTO uri_map_id FROM asset.uri_call_number_map WHERE call_number = uri_cn_id AND uri = uri_id;
                     IF NOT FOUND THEN
                         INSERT INTO asset.uri_call_number_map (call_number, uri) VALUES (uri_cn_id, uri_id);
                     END IF;
-    
+
                 END LOOP;
 
             END IF;
