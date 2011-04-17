@@ -77,17 +77,27 @@ sub _prepare_biblio_search {
         }
     }
 
-    my $site = $cgi->param('loc');
-    if (defined($site) and $site ne '' and ($site ne $ctx->{aou_tree}->()->id) and not $query =~ /site\(\d+\)/) {
+    my $site;
+    my $org = $cgi->param('loc');
+    if (defined($org) and $org ne '' and ($org ne $ctx->{aou_tree}->()->id) and not $query =~ /site\(\S+\)/) {
+        $site = $ctx->{find_aou}->($org)->shortname;
         $query .= " site($site)";
     }
+
+    if(!$site) {
+        ($site) = ($query =~ /site\(([^\)]+)\)/);
+        $site ||= $ctx->{aou_tree}->()->shortname;
+    }
+
+
+    my $depth;
     if (defined($cgi->param('depth')) and not $query =~ /depth\(\d+\)/) {
-        my $depth = defined $cgi->param('depth') ?
+        $depth = defined $cgi->param('depth') ?
             $cgi->param('depth') : $ctx->{find_aou}->($site)->ou_type->depth;
         $query .= " depth($depth)";
     }
 
-    return $query;
+    return ($query, $site, $depth);
 }
 
 # context additions: 
@@ -104,9 +114,11 @@ sub load_rresults {
     my $page = $cgi->param('page') || 0;
     my $facet = $cgi->param('facet');
     my $limit = $cgi->param('limit') || 10; # TODO user settings
+    my $loc = $cgi->param('loc');
     my $offset = $page * $limit;
 
-    my $query = _prepare_biblio_search($cgi, $ctx);
+    my ($query, $site, $depth) = _prepare_biblio_search($cgi, $ctx);
+
     # Limit and offset will stay here. Everything else should be part of
     # the query string, not special args.
     my $args = {'limit' => $limit, 'offset' => $offset};
@@ -140,7 +152,13 @@ sub load_rresults {
     return Apache2::Const::OK if @$rec_ids == 0;
 
     my ($facets, @data) = $self->get_records_and_facets(
-        $rec_ids, $results->{facet_key}, {flesh => '{holdings_xml,mra}'});
+        $rec_ids, $results->{facet_key}, 
+        {
+            flesh => '{holdings_xml,mra}',
+            site => $site,
+            depth => $depth
+        }
+    );
 
     # shove recs into context in search results order
     for my $rec_id (@$rec_ids) {

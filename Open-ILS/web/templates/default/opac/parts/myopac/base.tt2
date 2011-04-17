@@ -11,7 +11,7 @@
 %]
     [% INCLUDE "default/opac/parts/topnav.tt2" %]
     <div id="search-wrapper">
-        [% INCLUDE "default/opac/parts/utils.tt2" %]
+        [% INCLUDE "default/opac/parts/printnav.tt2" %]
         [% INCLUDE "default/opac/parts/searchbar.tt2" %]
     </div>
     <div id="content-wrapper">
