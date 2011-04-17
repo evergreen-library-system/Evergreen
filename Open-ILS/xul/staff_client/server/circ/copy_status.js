@@ -492,16 +492,28 @@ circ.copy_status.prototype = {
                                     if (! map_acn[volume_id]) {
                                         map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ volume_id ]);
                                     }
-                                    var record_id = map_acn[ volume_id ].record();
-                                    var ou_id = map_acn[ volume_id ].owning_lib();
-                                    var label = map_acn[ volume_id ].label();
+                                    var call_number = obj.map_acn[volume_id];
+                                    var record_id = call_number.record();
+                                    var ou_id = call_number.owning_lib();
+                                    var label = call_number.label();
+                                    var acnc_id = typeof call_number.label_class() == 'object'
+                                        ? call_number.label_class().id()
+                                        : call_number.label_class();
+                                    var acnp_id = typeof call_number.prefix() == 'object'
+                                        ? call_number.prefix().id()
+                                        : call_number.prefix();
+                                    var acns_id = typeof call_number.suffix() == 'object'
+                                        ? call_number.suffix().id()
+                                        : call_number.suffix();
+                                    if (!copy_shortcut[ou_id]) copy_shortcut[ou_id] = {};
+                                    var callnumber_composite_key = acnc_id + ':' + acnp_id + ':' + label + ':' + acns_id;
                                     if (!copy_shortcut[record_id]) {
                                         copy_shortcut[record_id] = {};
                                     }
                                     if (!copy_shortcut[record_id][ou_id]) {
                                         copy_shortcut[record_id][ou_id] = {};
                                     }
-                                    copy_shortcut[record_id][ou_id][ label ] = volume_id;
+                                    copy_shortcut[record_id][ou_id][ callnumber_composite_key ] = volume_id;
 
                                 }
 

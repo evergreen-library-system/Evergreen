@@ -256,11 +256,22 @@ cat.copy_browser.prototype = {
                                     list = util.functional.map_list(
                                         list,
                                         function (o) {
-                                            var ou_id = obj.map_acn['acn_' + o].owning_lib();
+                                            var call_number = obj.map_acn['acn_'+o];
+                                            var ou_id = call_number.owning_lib();
                                             var volume_id = o;
-                                            var label = obj.map_acn['acn_' + o].label();
+                                            var label = call_number.label();
+                                            var acnc_id = typeof call_number.label_class() == 'object'
+                                                ? call_number.label_class().id()
+                                                : call_number.label_class();
+                                            var acnp_id = typeof call_number.prefix() == 'object'
+                                                ? call_number.prefix().id()
+                                                : call_number.prefix();
+                                            var acns_id = typeof call_number.suffix() == 'object'
+                                                ? call_number.suffix().id()
+                                                : call_number.suffix();
                                             if (!copy_shortcut[ou_id]) copy_shortcut[ou_id] = {};
-                                            copy_shortcut[ou_id][ label ] = volume_id;
+                                            var callnumber_composite_key = acnc_id + ':' + acnp_id + ':' + label + ':' + acns_id;
+                                            copy_shortcut[ou_id][ callnumber_composite_key ] = volume_id;
 
                                             return ou_id;
                                         }

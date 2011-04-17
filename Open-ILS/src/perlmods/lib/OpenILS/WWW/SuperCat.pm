@@ -680,12 +680,19 @@ sub unapi {
         return 404;
     }
 
-    print "Content-type: application/xml; charset=utf-8\n\n$data";
+    print "Content-type: application/xml; charset=utf-8\n\n";
 
+    # holdings_xml format comes back to us without an XML declaration
+    # and without being entityized; fix that here
     if ($base_format eq 'holdings_xml') {
+        print "<?xml version='1.0' encoding='UTF-8' ?>\n";
+        print $U->entityize($data);
+
         while (my $c = $req->recv) {
-            print $c->content;
+            print $U->entityize($c->content);
         }
+    } else {
+        print $data;
     }
 
     return Apache2::Const::OK;
