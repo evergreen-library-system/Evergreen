@@ -3,9 +3,9 @@
 	<info>
 		<title>Server-side Installation of Evergreen Software</title>
 		<abstract>
-			<para>This section describes installation of the Evergreen server-side software and its associated components.
-			Installation, configuration, testing and verification 
-			of the software is straightforward if you follow some simple directions.</para>
+			<para>This section describes installation of the Evergreen server-side software and
+			its associated components.  Installation, configuration, testing and verification of
+			the software is straightforward if you follow some simple directions.</para>
 		</abstract>
 	</info>
 	<para>Installing, configuring and testing the Evergreen server-side software is straightforward with the current
@@ -87,12 +87,12 @@
 		<para>Of course, after you successfully complete and test the entire Evergreen installation you should
 		take a final snapshot backup of your system(s). This can be the first in the series of regularly
 		scheduled system backups that you should probably also begin.</para>
-		<section xml:id="serversideinstallation-opensrf">
+		<section xml:id="serversideinstallation-opensrf-1.6.3">
 			<indexterm>
 				<primary>OpenSRF</primary>
 				<secondary>installation</secondary>
 			</indexterm>
-			<title>Installing OpenSRF 1.6.3 On <systemitem class="osname">Ubuntu</systemitem> or
+			<title>Installing OpenSRF 1.6.x On <systemitem class="osname">Ubuntu</systemitem> or
 				<systemitem class="osname">Debian</systemitem></title>
 			<indexterm>
 				<primary>Linux</primary>
@@ -151,12 +151,12 @@
 					In the following example, the default shell for the 
 					<systemitem class="username">opensrf</systemitem> user is automatically set
 					to <command>/bin/bash</command> to inherit a reasonable environment:</para>
-<screen>
-	<userinput>
+					<screen>
+						<userinput>
 	# as the root user:
 	useradd -m -s /bin/bash opensrf
 	passwd opensrf</userinput>
-</screen>
+					</screen>
 				</step>
 				<step>
 					<title>Download and Unpack Latest OpenSRF Version</title>
@@ -170,13 +170,13 @@
 					the directory <filename class="directory">/home/opensrf</filename> then download
 					and extract OpenSRF. The new subdirectory
 					<filename class="directory">/home/opensrf/OpenSRF-1.6.3</filename> will be created:</para>
-<screen>
-	<userinput>
+					<screen>
+						<userinput>
 	# as the opensrf user:
 	cd /home/opensrf
 	wget http://evergreen-ils.org/downloads/OpenSRF-1.6.3.tar.gz
 	tar zxf OpenSRF-1.6.3.tar.gz</userinput>
-</screen>
+					</screen>
 				</step>
 				<step>
 					<title>Install Prerequisites to Build OpenSRF</title>
@@ -191,12 +191,12 @@
 					distribution keywords table <xref linkend="serversideinstallation-keywords-opensrf"/> . 
 					For example, to install the prerequisites for Ubuntu version 10.04 (Lucid Lynx) you would
 					enter this command: <command>make -f src/extras/Makefile.install ubuntu-lucid</command> .</para>
-<screen>
-	<userinput>
+					<screen>
+						<userinput>
 	# as the root user:
 	cd /home/opensrf/OpenSRF-1.6.3
 	make -f src/extras/Makefile.install [DISTRIBUTION]</userinput>
-</screen>
+					</screen>
 					<table xml:id="serversideinstallation-keywords-opensrf">
 						<?dbfo keep-together="always" ?>
 						<title>Keyword Targets for OpenSRF <application>"make"</application> Command</title>
@@ -257,12 +257,30 @@
 							</tbody>
 						</tgroup>
 					</table>
-					<indexterm><primary>Linux</primary><secondary>Debian</secondary></indexterm>
-					<indexterm><primary>Linux</primary><secondary>Fedora</secondary></indexterm>
-					<indexterm><primary>Linux</primary><secondary>Ubuntu</secondary></indexterm>
-					<indexterm><primary>Linux</primary><secondary>CentOS</secondary></indexterm>
-					<indexterm><primary>Linux</primary><secondary>Red Hat</secondary></indexterm>
-					<indexterm><primary>Linux</primary><secondary>Gentoo</secondary></indexterm>
+					<indexterm>
+						<primary>Linux</primary>
+						<secondary>Debian</secondary>
+					</indexterm>
+					<indexterm>
+						<primary>Linux</primary>
+						<secondary>Fedora</secondary>
+					</indexterm>
+					<indexterm>
+						<primary>Linux</primary>
+						<secondary>Ubuntu</secondary>
+					</indexterm>
+					<indexterm>
+						<primary>Linux</primary>
+						<secondary>CentOS</secondary>
+					</indexterm>
+					<indexterm>
+						<primary>Linux</primary>
+						<secondary>Red Hat</secondary>
+					</indexterm>
+					<indexterm>
+						<primary>Linux</primary>
+						<secondary>Gentoo</secondary>
+					</indexterm>
 					<para>This will install a number of packages on the system that are required by OpenSRF,
 					including some Perl modules from CPAN. You can say <literal>No</literal> to the initial
 					CPAN configuration prompt to allow it to automatically configure itself to download and
@@ -287,13 +305,13 @@
 							include support for Python and Java, add the configuration
 							options <option>--enable-python</option> and
 							<option>--enable-java</option>, respectively:</para>
-<screen>
-	<userinput>
+							<screen>
+								<userinput>
 	# as the opensrf user:
 	cd /home/opensrf/OpenSRF-1.6.3
 	./configure --prefix=/openils --sysconfdir=/openils/conf
 	make</userinput>
-</screen>
+							</screen>
 							<para>This step will take several minutes to complete.</para>
 						</step>
 						<step>
@@ -302,12 +320,12 @@
 							user, return to the new OpenSRF build directory and use the
 							<command>make</command> utility to compile, link and install
 							OpenSRF:</para>
-<screen>
-	<userinput>
+							<screen>
+								<userinput>
 	# as the root user:
 	cd /home/opensrf/OpenSRF-1.6.3
 	make install</userinput>
-</screen>
+							</screen>
 							<para>This step will take several minutes to complete.</para>
 						</step>
 						<step>
@@ -320,13 +338,13 @@
 							new library paths, then execute the command
 							<command>ldconfig</command> to automatically read the file and
 							modify the system dynamic library path:</para>
-<screen>
-	<userinput>
+							<screen>
+								<userinput>
 	# as the root user:
 	echo "/openils/lib"   > /etc/ld.so.conf.d/osrf.conf
 	echo "/usr/local/lib >> /etc/ld.so.conf.d/osrf.conf
 	ldconfig</userinput>
-</screen>
+							</screen>
 						</step>
 						<step xml:id="serversideinstallation-definedomains">
 							<title>Define Public and Private OpenSRF Domains</title>
@@ -345,12 +363,12 @@
 							<indexterm>
 								<primary>Jabber</primary>
 							</indexterm>
-<screen>
-	<userinput>
+							<screen>
+								<userinput>
 	# as the root user:
 	127.0.1.2  public.localhost   public
 	127.0.1.3  private.localhost  private</userinput>
-</screen>
+							</screen>
 						</step>
 						<step>
 							<title>Change File Ownerships</title>
@@ -358,11 +376,11 @@
 							user, change the ownership of all files installed in the
 							directory <filename class="directory">/openils</filename> to the
 							user <systemitem class="username">opensrf</systemitem>:</para>
-<screen>
-	<userinput>
+							<screen>
+								<userinput>
 	# as the root user:
 	chown -R opensrf:opensrf /openils</userinput>
-</screen>
+							</screen>
 						</step>
 					</substeps>
 				</step>
@@ -374,25 +392,25 @@
 					<para>Before continuing with configuration of <systemitem class="service">ejabberd</systemitem>
 					you must stop that service. As the <systemitem class="username">root</systemitem> user,
 					execute the following command to stop the service:</para>
-<screen>
-	<userinput>
+					<screen>
+						<userinput>
 	# as the root user:
 	/etc/init.d/ejabberd stop</userinput>
-</screen>
+					</screen>
 					<para>If <systemitem class="service">ejabberd</systemitem> reports that it 
 					is already stopped, there may have been a problem when it started back
 					in the installation step. If there are any remaining daemon processes such as
 					<systemitem class="daemon">beam</systemitem> or
 					<systemitem class="daemon">epmd</systemitem> 
 					you may need to perform the following commands to kill them:</para>
-<screen>
-	<userinput>
+					<screen>
+						<userinput>
 	# as the root user:
 	epmd -kill
 	killall beam; killall beam.smp
 	rm /var/lib/ejabberd/*
 	echo 'ERLANG_NODE=ejabberd@localhost' >> /etc/default/ejabberd</userinput>
-</screen>
+					</screen>
 				</step>
 				<step>
 					<title>Edit the <systemitem class="service">ejabberd</systemitem> configuration</title>
@@ -410,12 +428,14 @@
 							<para/>
 						</step>
 						<step>
-							<para>Change the line for older versions of <systemitem class="service">ejabberd</systemitem>:</para>
+							<para>Change the line for older versions of
+							<systemitem class="service">ejabberd</systemitem>:</para>
 							<literal>{max_user_sessions, 10}</literal>
 							<para>to instead read:</para>
 							<literal>{max_user_sessions, 10000}</literal>
 							<para/>
-							<para>Change the line for newer versions of <systemitem class="service">ejabberd</systemitem>:</para>
+							<para>Change the line for newer versions of
+							<systemitem class="service">ejabberd</systemitem>:</para>
 							<literal>{access, max_user_sessions, [{10, all}]}</literal>
 							<para>to instead read:</para>
 							<literal>{access, max_user_sessions, [{10000, all}]}</literal>
@@ -446,11 +466,11 @@
 					<para>As the <systemitem class="username">root</systemitem> user, restart the
 					<systemitem class="service">ejabberd</systemitem> service to test the
 					configuration changes and to register your users:</para>
-<screen>
-	<userinput>
+					<screen>
+						<userinput>
 	# as the root user:
 	/etc/init.d/ejabberd start</userinput>
-	</screen>
+					</screen>
 				</step>
 				<step>
 					<title>Register <systemitem class="username">router</systemitem> and
@@ -483,8 +503,8 @@
 					for the users <systemitem class="username">router</systemitem> and
 					<systemitem class="username">opensrf</systemitem> on each domain (remember to replace
 					<emphasis>NEWPASSWORD</emphasis> with the appropriate password):</para>
-<screen>
-	<userinput>
+					<screen>
+						<userinput>
 	# as the root user:
 	# Note: the syntax for registering a user with ejabberdctl is:
 	#    ejabberdctl register USER DOMAIN PASSWORD
@@ -492,11 +512,12 @@
 	ejabberdctl register router  public.localhost  NEWPASSWORD
 	ejabberdctl register opensrf private.localhost NEWPASSWORD
 	ejabberdctl register opensrf public.localhost  NEWPASSWORD</userinput>
-</screen>
+					</screen>
 					<para>The users <systemitem class="username">router</systemitem> and
 					<systemitem class="username">opensrf</systemitem> and their respective passwords 
 					will be used again in <xref linkend="serversideinstallation-passwords"/> when
-					we modify the OpenSRF configuration file <filename>/openils/conf/opensrf_core.xml</filename> .</para>
+					we modify the OpenSRF configuration file
+					<filename>/openils/conf/opensrf_core.xml</filename> .</para>
 					<note>
 						<para>
 						There appears to be a problem with <command>ejabberdctl</command> in
@@ -515,26 +536,26 @@
 					execute the following commands to create the new configuration files
 					<filename>/openils/conf/opensrf_core.xml</filename> and
 					<filename>/openils/conf/opensrf.xml</filename> from the example templates:</para>
-<screen>
-	<userinput>
+					<screen>
+						<userinput>
 	# as the opensrf user:
 	cd /openils/conf
 	cp opensrf.xml.example      opensrf.xml
 	cp opensrf_core.xml.example opensrf_core.xml</userinput>
-</screen>
+					</screen>
 				</step>
 				<step xml:id="serversideinstallation-passwords">
 					<title>Update usernames and passwords in the OpenSRF configuration file</title>
 					<para>As the <systemitem class="username">opensrf</systemitem> user, edit the
 					OpenSRF configuration file <filename>/openils/conf/opensrf_core.xml</filename>
 					and update the usernames and passwords to match the values shown in the
-					following table. The left-hand side of <xref linkend="serversideinstallation-xpath-table-1"/>
-					shows common XPath syntax to indicate the approximate position within the XML
-					file that needs changes. The right-hand side of the table shows the replacement
-					values:</para>
+					following table. The left-hand side of 
+					<xref linkend="serversideinstallation-xpath-table-1"/> shows common XPath 
+					syntax to indicate the approximate position within the XML file that needs
+					changes. The right-hand side of the table shows the replacement values:</para>
 					<table xml:id="serversideinstallation-xpath-table-1">
 						<?dbfo keep-together="always" ?>
-						<title>Sample XPath syntax for editing "opensrf_core.xml"</title>
+						<title>Sample XPath syntax for editing 'opensrf_core.xml'</title>
 						<tgroup align="left" cols="2" colsep="1" rowsep="1">
 							<colspec colname="Xpath" colnum="1" colwidth="1.6*"/>
 							<colspec colname="Value" colnum="2" colwidth="2.0*"/>
@@ -650,11 +671,11 @@
 					to the home directory of each user who will use <command>srfsh</command>. 
 					For instance, do the following for the 
 					<systemitem class="username">opensrf</systemitem> user:</para>
-<screen>
-	<userinput>
+					<screen>
+						<userinput>
 	# as the root user:
 	cp /openils/conf/srfsh.xml.example  /home/opensrf/.srfsh.xml</userinput>
-</screen>
+					</screen>
 					<para>Edit each user's file <filename>~/.srfsh.xml</filename> and make the
 					following changes:</para>
 					<itemizedlist>
@@ -681,7 +702,8 @@
 							<para>Modify <literal>loglevel</literal> as needed for testing</para>
 						</listitem>
 						<listitem>
-							<para>Change the owner of the file to match the owner of the home directory</para>
+							<para>Change the owner of the file to match the owner of the
+							home directory</para>
 						</listitem>
 					</itemizedlist>
 					<para>Following is a sample of the file:</para>
@@ -708,30 +730,30 @@
 					environmental variable <envar>PATH</envar> by adding a new file path to the
 					<systemitem class="username">opensrf</systemitem> user's shell configuration
 					file <filename>~/.bashrc</filename>:</para>
-<screen>
-	<userinput>
+					<screen>
+						<userinput>
 	# as the opensrf user:
 	echo "export PATH=/openils/bin:\$PATH" >> ~/.bashrc</userinput>
-</screen>
+					</screen>
 				</step>
 				<step>
 					<title>Start OpenSRF</title>
 					<para>As the <systemitem class="username">root</systemitem> user, start the
 					<systemitem class="service">ejabberd</systemitem> and 
 					<systemitem class="service">memcached</systemitem> services:</para>
-<screen>
-	<userinput>
+					<screen>
+						<userinput>
 	# as the root user:
 	/etc/init.d/ejabberd start
 	/etc/init.d/memcached start</userinput>
-</screen>
+					</screen>
 					<para>Then as the <systemitem class="username">opensrf</systemitem> user,
 					start OpenSRF as follows:</para>
-<screen>
-	<userinput>
+					<screen>
+						<userinput>
 	# as the opensrf user:
 	osrf_ctl.sh -l -a start_all</userinput>
-</screen>
+					</screen>
 					<para>The flag <option>-l</option> forces Evergreen to use 
 					<systemitem class="domainname">localhost</systemitem> (your current system) 
 					as the hostname. The flag <option>-a start_all</option> starts the
@@ -766,19 +788,19 @@
 					<systemitem class="service">OpenSRF</systemitem> with the <command>srfsh</command> 
 					utility and try to call the <command>add</command> method on the OpenSRF 
 					<systemitem class="service">math</systemitem> service:</para>
-<screen>
-	<userinput>
+					<screen>
+						<userinput>
 	# as the root user:
 	/openils/bin/srfsh</userinput>
-	<computeroutput>
+						<computeroutput>
 	srfsh# <userinput>request opensrf.math add 2 2</userinput></computeroutput>
-	<computeroutput>
+						<computeroutput>
 	Received Data: 4
 	------------------------------------
 	Request Completed Successfully
 	Request Time in seconds: 0.007519
 	------------------------------------</computeroutput>
-</screen>
+					</screen>
 					<para>For other <command>srfsh</command> commands, type in
 					<userinput>help</userinput> at the prompt.</para>
 				</step>
@@ -788,16 +810,16 @@
 					<command>osrf_ctl.sh</command> again. As the 
 					<systemitem class="username">opensrf</systemitem> 
 					user, stop OpenSRF as follows:</para>
-<screen>
-	<userinput>
+					<screen>
+						<userinput>
 	# as the opensrf user:
 	osrf_ctl.sh -l -a stop_all</userinput>
-</screen>
+					</screen>
 				</step>
 			</procedure>
 		</section>
 		<section xml:id="serversideinstallation-ubuntudebian">
-			<title>Installing Evergreen 2.0 On <systemitem class="osname">Ubuntu</systemitem> or
+			<title>Installing Evergreen 2.x On <systemitem class="osname">Ubuntu</systemitem> or
 				<systemitem class="osname">Debian</systemitem></title>
 			<indexterm>
 				<primary>Linux</primary>
@@ -807,8 +829,11 @@
 				<primary>Linux</primary>
 				<secondary>Ubuntu</secondary>
 			</indexterm>
-			<para>This section outlines the installation process for the latest stable version of
-			Evergreen.</para>
+			<para>This section outlines the installation process for the latest stable 
+			version of Evergreen on <systemitem class="osname">Ubuntu</systemitem> or 
+			<systemitem class="osname">Debian</systemitem> systems.  See 
+			<xref linkend="serversideinstallation-fedora"/> for description of a similar 
+			installation on a <systemitem class="osname">Fedora 14</systemitem> system.</para>
 			<para>In this section you will download, unpack, install, configure and test the Evergreen
 			system, including the Evergreen server and the PostgreSQL database system. You will make several
 			configuration changes and adjustments to the software, including updates to configure the system
@@ -850,7 +875,7 @@
 					<para>Evergreen software is integrated with and depends on the Open Service
 					Request Framework (OpenSRF) software system. For further information on
 					installing, configuring and testing OpenSRF, see 
-					<xref linkend="serversideinstallation-opensrf"/>.</para>
+					<xref linkend="serversideinstallation-opensrf-1.6.3"/>.</para>
 					<para>Follow the steps outlined in that section and run the specified tests to
 					ensure that OpenSRF is properly installed and configured. Do 
 					<emphasis><emphasis role="bold">not</emphasis></emphasis> continue with
@@ -864,14 +889,15 @@
 					As the <systemitem class="username">opensrf</systemitem> user, change to
 					the directory <filename class="directory">/home/opensrf</filename> then download
 					and extract Evergreen. The new subdirectory
-					<filename class="directory">/home/opensrf/Evergreen-ILS-2.0.4</filename> will be created:</para>
-<screen>
-	<userinput>
+					<filename class="directory">/home/opensrf/Evergreen-ILS-2.0.4</filename>
+					will be created:</para>
+					<screen>
+						<userinput>
 	# as the opensrf user:
 	cd /home/opensrf
 	wget http://evergreen-ils.org/downloads/Evergreen-ILS-2.0.4.tar.gz
 	tar zxf Evergreen-ILS-2.0.4.tar.gz</userinput>
-</screen>
+					</screen>
 				</step>
 				<step xml:id="serversideinstallation-installprereq">
 					<title>Install Prerequisites to Build Evergreen</title>
@@ -888,25 +914,14 @@
 					For example, to install the prerequisites for Ubuntu version 10.05 (Lucid Lynx) you would
 					enter this command: <command>make -f Open-ILS/src/extras/Makefile.install
 					ubuntu-lucid</command>.</para>
-<screen>
-	<userinput>
+					<screen>
+						<userinput>
 	# as the root user:
 	cd /home/opensrf/Evergreen-ILS-2.0.4
 	make -f Open-ILS/src/extras/Makefile.install [DISTRIBUTION]</userinput>
-</screen>
-					<itemizedlist>
-					
-					<listitem>
-						<para><option>debian-squeeze</option> for <systemitem class="osname">Debian Squeeze (6.0)</systemitem></para>
-					</listitem>
-					
-					<listitem>
-						<para><option>ubuntu-lucid</option> for  <systemitem class="osname">Ubuntu Lucid Lynx 
-						(10.04)</systemitem></para>
-					</listitem>
-				</itemizedlist>
+					</screen>
 				</step>
-				<step performance="optional" xml:id="serversideinstallation-postgresql-default">
+				<step performance="optional">
 					<title>(OPTIONAL) Install the PostgreSQL Server</title>
 					<indexterm>
 						<primary>databases</primary>
@@ -937,24 +952,21 @@
 					<title>Install Perl Modules on PostgreSQL Server</title>
 					<para>If PostgreSQL is running on the same system as your Evergreen software,
 					then the Perl modules will automatically be available. Just skip this step.
-					Otherwise, continue if your PostgreSQL server is running on another system.</para>
-					<para>You will need to install several Perl modules on the other system. As the
-					<systemitem class="username">root</systemitem> user install the following Perl
-					modules:</para>
-					<para>as the root user, ensure the gcc compiler is installed:</para>
-<screen>
-	<userinput>aptitude install gcc libxml-libxml-perl libxml-libxslt-perl</userinput>
-</screen>
-					<para>then install the Perl modules:</para>
-<screen>
-	<userinput>perl -MCPAN -e shell</userinput>
-	<prompt>cpan></prompt> <userinput>Business::ISBN</userinput>	
-	<prompt>cpan></prompt> <userinput>install JSON::XS</userinput>
-	<prompt>cpan></prompt> <userinput>Library::CallNumber::LC</userinput>
-	<prompt>cpan></prompt> <userinput>install MARC::Record</userinput>
-	<prompt>cpan></prompt> <userinput>install MARC::File::XML</userinput>
-	<prompt>cpan></prompt> <userinput>cpan UUID::Tiny</userinput>
-</screen>
+					Otherwise, continue if your PostgreSQL server is running on another system
+					and install several Perl modules there. As the 
+					<systemitem class="username">root</systemitem> user, ensure the gcc compiler
+					is installed, then install the following Perl modules:</para>
+					<screen>
+						<userinput>
+	aptitude install gcc libxml-libxml-perl libxml-libxslt-perl
+	perl -MCPAN -e shell
+		<prompt>cpan></prompt> Business::ISBN
+		<prompt>cpan></prompt> install JSON::XS
+		<prompt>cpan></prompt> Library::CallNumber::LC
+		<prompt>cpan></prompt> install MARC::Record
+		<prompt>cpan></prompt> install MARC::File::XML
+		<prompt>cpan></prompt> cpan UUID::Tiny</userinput>
+					</screen>
 					<para>For more information on installing Perl Modules vist the official
 					<link xl:href="http://www.cpan.org/">CPAN</link> site.</para>
 					<indexterm>
@@ -967,15 +979,15 @@
 					<para>You must update the system dynamic library path to force your system to recognize
 					the newly installed libraries. As the <systemitem class="username">root</systemitem> user,
 					do this by creating the new file <filename>/etc/ld.so.conf.d/osrf.conf</filename>
-					containing a new library path, then run the command <command>ldconfig</command> to
+					containing two new library paths, then run the command <command>ldconfig</command> to
 					automatically read the file and modify the system dynamic library path:</para>
-<screen>
-	<userinput>
+					<screen>
+						<userinput>
 	# as the root user:
-	echo "/usr/local/lib"     >> /etc/ld.so.conf.d/osrf.conf
+	echo "/usr/local/lib"      > /etc/ld.so.conf.d/osrf.conf
 	echo "/usr/local/lib/dbd" >> /etc/ld.so.conf.d/osrf.conf
 	ldconfig</userinput>
-</screen>
+					</screen>
 				</step>
 				<step performance="optional">
 					<title>Restart the PostgreSQL Server</title>
@@ -987,11 +999,11 @@
 					execute the following command (remember to replace
 					<emphasis>PGSQL_VERSION</emphasis> with your installed PostgreSQL version,
 					for example <literal>8.4</literal>):</para>
-<screen>
-	<userinput>
+					<screen>
+						<userinput>
 	# as the opensrf user:
 	/etc/init.d/postgresql-PGSQL_VERSION restart</userinput>
-</screen>
+					</screen>
 				</step>
 				<step xml:id="serversideinstallation-configure">
 					<title>Configure Evergreen</title>
@@ -1000,26 +1012,27 @@
 					and linked later in <xref linkend="serversideinstallation-compile"/>.</para>
 					<para>As the <systemitem class="username">opensrf</systemitem> user, return to
 					the Evergreen build directory and execute these commands:</para>
-<screen>
-	<userinput>
+					<screen>
+						<userinput>
 	# as the opensrf user:
 	cd /home/opensrf/Evergreen-ILS-2.0.4
 	./configure --prefix=/openils --sysconfdir=/openils/conf
 	make</userinput>
-</screen>
+					</screen>
 				</step>
 				<step xml:id="serversideinstallation-compile">
 					<title>Compile, Link and Install Evergreen</title>
 					<para>In this step you will actually compile, link and install Evergreen and the 
 					default Evergreen Staff Client.</para>
 					<para>As the <systemitem class="username">root</systemitem> user, return to the
-					Evergreen build directory and use the <command>make</command> utility as shown below:</para>
-<screen>
-	<userinput>
+					Evergreen build directory and use the <command>make</command> utility as shown
+					below:</para>
+					<screen>
+						<userinput>
 	# as the root user:
 	cd /home/opensrf/Evergreen-ILS-2.0.4
 	make STAFF_CLIENT_BUILD_ID=rel_2_0_4 install</userinput>
-</screen>
+					</screen>
 					<para>The Staff Client will also be automatically built, but you must remember
 					to set the variable <envar>STAFF_CLIENT_BUILD_ID</envar> to match the version of the 
 					Staff Client you will use to connect to the Evergreen server.</para>
@@ -1032,12 +1045,12 @@
 					directory <filename class="directory">/openils/var/web/xul</filename> that points to the
 					subdirectory <filename class="directory">/server</filename> of the new Staff Client
 					build:</para>
-<screen>
-	<userinput>
+					<screen>
+						<userinput>
 	# as the root user:
 	cd /openils/var/web/xul
 	ln -sf rel_2_0_4/server server</userinput>
-</screen>
+					</screen>
 				</step>
 				<step>
 					<title>Copy the OpenSRF Configuration Files</title>
@@ -1049,8 +1062,8 @@
 					to <systemitem class="username">opensrf</systemitem>.
 					As the <systemitem class="username">root</systemitem> user, execute the following
 					commands:</para>
-<screen>
-	<userinput>
+					<screen>
+						<userinput>
 	# as the root user:
 	cd /openils/conf
 	cp opensrf.xml	      opensrf.xml.BAK
@@ -1059,7 +1072,7 @@
 	cp opensrf_core.xml.example opensrf_core.xml
 	cp oils_web.xml.example     oils_web.xml
 	chown -R opensrf:opensrf /openils/</userinput>
-</screen>
+					</screen>
 				</step>
 				<step>
 					<title>Create and Configure PostgreSQL Database</title>
@@ -1077,47 +1090,47 @@
 					<systemitem class="directory">/usr/share/postgresql/8.4/contrib/</systemitem> .</para>
 					<substeps>
 						<step>
-							<para>
-								<emphasis role="bold">Create and configure the database</emphasis>
-							</para>
+							<title>Create and configure the database</title>
 							<para>As the <systemitem class="username">postgres</systemitem>
 							user on the PostgreSQL system create the PostgreSQL database,
 							then set some internal paths:</para>
-<screen>
-	<userinput>
+							<screen>
+								<userinput>
 	# as the postgres user:
 	createdb evergreen -E UTF8 -T template0
 	createlang plperl   evergreen
 	createlang plperlu  evergreen
 	createlang plpgsql  evergreen</userinput>
-</screen>
-							<para>Continue as the <systemitem class="username">postgres</systemitem> user
-							and execute the SQL scripts as shown below (remember to adjust the paths as needed,
-							where <emphasis>PGSQL_VERSION</emphasis> is your installed PostgreSQL
-							version, for example <literal>8.4</literal>).</para>
-<screen>
-	<userinput>
+							</screen>
+							<para>Continue as the <systemitem class="username">postgres</systemitem> 
+							user and execute the SQL scripts as shown below (remember to adjust the
+							paths as needed, where <emphasis>PGSQL_VERSION</emphasis> is
+							your installed PostgreSQL version, for example
+							<literal>"8.4"</literal>).</para>
+							<screen>
+								<userinput>
 	# as the postgres user:
 	psql -f /usr/share/postgresql/PGSQL_VERSION/contrib/tablefunc.sql evergreen
 	psql -f /usr/share/postgresql/PGSQL_VERSION/contrib/tsearch2.sql  evergreen
 	psql -f /usr/share/postgresql/PGSQL_VERSION/contrib/pgxml.sql     evergreen</userinput>
-</screen>
+							</screen>
 						</step>
 						<step xml:id="serversideinstallation-postgresqlcreateuser">
-							<title>Create <systemitem class="username">evergreen</systemitem> PostgreSQL user</title>
+							<title>Create <systemitem class="username">evergreen</systemitem>
+								PostgreSQL user</title>
 							<para>As the <systemitem class="username">postgres</systemitem>
 							user on the PostgreSQL system, create a new PostgreSQL user
 							named <systemitem class="username">evergreen</systemitem> and
 							assign a password (remember to replace <emphasis>NEWPASSWORD</emphasis>
 							with an appropriate new password):</para>
-<screen>
-	<userinput>
+							<screen>
+								<userinput>
 	# as the postgres user:
 	createuser -P -s evergreen</userinput>
-	<computeroutput>
+								<computeroutput>
 	Enter password for new role: <userinput>NEWPASSWORD</userinput>
 	Enter it again: <userinput>NEWPASSWORD</userinput></computeroutput>
-</screen>
+							</screen>
 						</step>
 						<step>
 							<title>Create database schema</title>
@@ -1129,21 +1142,24 @@
 							the following commands and replace <emphasis>HOSTNAME, PORT,
 							PASSWORD</emphasis> and <emphasis>DATABASENAME</emphasis> with appropriate
 							values:</para>
-<screen>
-<userinput>cd /home/opensrf/Evergreen-ILS-2.0.4
-perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
---service all --create-schema --create-offline \
---hostname HOSTNAME --port PORT \
---user evergreen --password PASSWORD \
---database DATABASENAME --admin-user ADMIN-USER \ 
---admin-pass ADMIN-PASSWORD </userinput>
-</screen>
+							<screen>
+								<userinput>
+	# as the root user:
+	cd /home/opensrf/Evergreen-ILS-2.0.4
+	perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
+	--service all --create-schema --create-offline \
+	--hostname HOSTNAME --port PORT \
+	--user evergreen --password PASSWORD \
+	--database DATABASENAME --admin-user ADMIN-USER \ 
+	--admin-pass ADMIN-PASSWORD </userinput>
+							</screen>
 							<para>On most systems, <emphasis>HOSTNAME</emphasis> will be
 							<emphasis role="bold">localhost</emphasis> and
 							<emphasis>PORT</emphasis> will be <emphasis role="bold">5432</emphasis>.
 							Of course, values for <emphasis>PASSWORD</emphasis> and
  							<emphasis>DATABASENAME</emphasis> must match the values you used in 
- 							<xref linkend="serversideinstallation-postgresqlcreateuser"/>. The <option>admin-user</option> and <option>admin-pass</option> options will 
+ 							<xref linkend="serversideinstallation-postgresqlcreateuser"/>.
+							The <option>admin-user</option> and <option>admin-pass</option> options will 
 							specify the Evergreen administrator account's username and password. This was 
 							changed for security reasons, it was previously admin/open-ils</para>
 							<para>As the command executes, you may see warnings similar to:
@@ -1178,13 +1194,13 @@ perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
 							<indexterm>
 								<primary>Apache modules</primary>
 							</indexterm>
-<screen>
-	<userinput>
+							<screen>
+								<userinput>
 	# as the root user:
 	a2enmod ssl     # enable mod_ssl
 	a2enmod rewrite # enable mod_rewrite
 	a2enmod expires # enable mod_expires</userinput>
-</screen>
+							</screen>
 							<para>As the commands execute, you may see warnings similar to:
 							<literal>Module SOMEMODULE already enabled</literal> but you can
 							safely ignore them.</para>
@@ -1195,14 +1211,14 @@ perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
 							Evergreen installation directory to the Apache directory. As the
 							<systemitem class="username">root</systemitem> user, perform the
 							following commands:</para>
-<screen>
-	<userinput>
+							<screen>
+								<userinput>
 	# as the root user:
 	cd /home/opensrf/Evergreen-ILS-2.0.4
 	cp Open-ILS/examples/apache/eg.conf	/etc/apache2/sites-available/
 	cp Open-ILS/examples/apache/eg_vhost.conf  /etc/apache2/
 	cp Open-ILS/examples/apache/startup.pl     /etc/apache2/</userinput>
-</screen>
+							</screen>
 						</step>
 						<step xml:id="serversideinstallation-createsslcertificate">
 							<title>Create a Security Certificate</title>
@@ -1213,13 +1229,13 @@ perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
 							accept the warnings in the Staff Client and browser during testing and
 							development. As the <systemitem class="username">root</systemitem> user,
 							perform the following commands:</para>
-<screen>
-	<userinput>
+							<screen>
+								<userinput>
 	# as the root user:
 	mkdir /etc/apache2/ssl
 	cd /etc/apache2/ssl
 	openssl req -new -x509 -days 365 -nodes -out server.crt -keyout server.key</userinput>
-</screen>
+							</screen>
 							<para>You will be prompted for several items of information; enter
 							the appropriate information for each item. The new files
 							<filename>server.crt</filename> and <filename>server.key</filename> will
@@ -1233,12 +1249,11 @@ perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
 							<xref linkend="serversideinstallation-ssl"/>.</note>
 						</step>
 						<step xml:id="serversideinstallation-modify-apache">
-							<title>Update Apache configuration file</title>
-							<para>You must make several changes to the new Apache
-							configuration file
-							<filename>/etc/apache2/sites-available/eg.conf</filename> . 
-							As the <systemitem class="username">root</systemitem> user,
-							edit the file and make the following changes:</para>
+							<title>Update Apache configuration files</title>
+							<para>You must make several changes to an Apache configuration file.</para>
+							<para>As the <systemitem class="username">root</systemitem> user
+							edit the file <filename>/etc/apache2/sites-available/eg.conf</filename> 
+							and make the following changes:</para>
 							<itemizedlist>
 								<listitem>
 									<para>In the section
@@ -1268,18 +1283,18 @@ perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
 									<para>The following updates are needed to allow the logs
 									to function properly, but it may break other Apache
 									applications on your server:</para>
-									
-									<para>Edit the Apache configuration file and change the lines:</para>
-<screen>
-<userinput>export APACHE_RUN_USER=www-data</userinput>
-<userinput>export APACHE_RUN_GROUP=www-data</userinput>
-</screen>
+									<para>Edit the Apache configuration file and
+									change the lines:</para>
+									<screen>
+										<userinput>export APACHE_RUN_USER=www-data</userinput>
+										<userinput>export APACHE_RUN_GROUP=www-data</userinput>
+									</screen>
 									<para>to instead read:</para>
-<screen>
-	<userinput>
+									<screen>
+										<userinput>
 	export APACHE_RUN_USER=opensrf
 	export APACHE_RUN_GROUP=opensrf</userinput>
-</screen>
+									</screen>
 								</listitem>
 								<listitem>
 									<para>As the 
@@ -1289,11 +1304,11 @@ perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
 									modify the value for <literal>KeepAliveTimeout</literal>
 									and <literal>MaxKeepAliveRequests</literal> to match
 									the following:</para>
-<screen>
-	<userinput>
+									<screen>
+										<userinput>
 	KeepAliveTimeout       1
 	MaxKeepAliveRequests 100</userinput>
-</screen>
+									</screen>
 								</listitem>
 								<listitem>
 									<para>Further configuration changes to Apache may be
@@ -1326,15 +1341,15 @@ perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
 							following Apache configuration commands to disable the default
 							<emphasis>It Works</emphasis> web page and enable the Evergreen
 							web site, and then restart the Apache server:</para>
-<screen>
-	<userinput>
+							<screen>
+								<userinput>
 	# as the root user:
 	# disable/enable web sites
 	a2dissite default
 	a2ensite eg.conf
 	# restart the server
 	/etc/init.d/apache2 reload</userinput>
-</screen>
+							</screen>
 						</step>
 					</substeps>
 				</step>
@@ -1355,7 +1370,7 @@ perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
 					values:</para>
 					<table xml:id="serversideinstallation-xpath-table-2">
 						<?dbfo keep-together="always" ?>
-						<title>Sample XPath syntax for editing "opensrf_core.xml"</title>
+						<title>Sample XPath syntax for editing 'opensrf_core.xml'</title>
 						<tgroup align="left" cols="2" colsep="1" rowsep="1">
 							<colspec colname="Xpath" colnum="1" colwidth="1.6*"/>
 							<colspec colname="Value" colnum="2" colwidth="2.0*"/>
@@ -1446,17 +1461,17 @@ perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
 							user <systemitem class="username">opensrf</systemitem> by adding a Perl
 							environmental variable, then execute the shell configuration file to load
 							the new variables into your current environment.</para>
+							<screen>
+								<userinput>
+	# as the opensrf user:
+	echo "export PERL5LIB=/openils/lib/perl5:\$PERL5LIB" >> ~/.bashrc
+	. ~/.bashrc</userinput>
+							</screen>
 							<note>In a multi-server environment, you must add any
 							modifications to <filename>~/.bashrc</filename> to the top of the file
 							<emphasis>before</emphasis> the line <literal>[ -z "$PS1" ] &amp;&amp;
 							return </literal>. This will allow headless (scripted) logins to load the
 							correct environment.</note>
-<screen>
-	<userinput>
-	# as the opensrf user:
-	echo "export PERL5LIB=/openils/lib/perl5:\$PERL5LIB" >> ~/.bashrc
-	. ~/.bashrc</userinput>
-</screen>
 						</listitem>
 					</itemizedlist>
 				</step>
@@ -1471,7 +1486,571 @@ perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
 		</section>
 		<section xml:id="serversideinstallation-fedora">
 			<title>Installing Evergreen 2.x On <systemitem class="osname">Fedora 13</systemitem> or
-				<systemitem class="osname">Fedora 14</systemitem> </title>
+				<systemitem class="osname">Fedora 14</systemitem></title>
+			<indexterm>
+				<primary>Linux</primary>
+				<secondary>Fedora</secondary>
+			</indexterm>
+			<para>This section outlines the installation process for the latest stable version of
+			Evergreen on a <systemitem class="osname">Fedora 14</systemitem> system.  
+			See <xref linkend="serversideinstallation-ubuntudebian"/> for description of a 
+			similar installation on <systemitem class="osname">Ubuntu</systemitem> or 
+			<systemitem class="osname">Debian</systemitem> systems.</para>
+			<para>In the following section you will download, unpack, install, configure and test the Evergreen
+			system, including the Evergreen server and the PostgreSQL database system. You will make several
+			configuration changes and adjustments to the software, including updates to configure the system
+			for your own locale, and some updates needed to work around a few known issues.</para>
+			<note>
+				<para>The following steps have been tested on the x86 (32-bit) and x86_64
+				(64-bit) architecture of a <systemitem class="osname">Fedora 14</systemitem>
+				image as of 2011-01-27.</para>
+				<para>In the following instructions, you are asked to perform certain steps as 
+				either the <systemitem class="username">root</systemitem> user, the 
+				<systemitem class="username">opensrf</systemitem> user, or the 
+				<systemitem class="username">postgres</systemitem> user.</para>
+				<itemizedlist>
+					<listitem>
+						<para><systemitem class="osname">Fedora</systemitem> -- To become the
+						<systemitem class="username">root</systemitem> user, issue the command
+						<command>su -</command> and enter the password of the 
+						<systemitem class="username">root</systemitem> user.</para>
+					</listitem>
+				</itemizedlist>
+				<para>To switch from the <systemitem class="username">root</systemitem> user to a
+				different user, issue the command <command>su - USERNAME</command>. For example, to
+				switch from the <systemitem class="username">root</systemitem> user to the 
+				<systemitem class="username">opensrf</systemitem> user, issue the command 
+				<command>su - opensrf</command>. Once you have become a non-root user, to become the
+				<systemitem class="username">root</systemitem> user again, simply issue the command
+				<command>exit</command>.</para>
+			</note>
+			<procedure>
+				<step xml:id="serversideinstallation-opensrf-2.0">
+					<title>Install OpenSRF</title>
+					<para>Evergreen software is integrated with and depends on the Open Service
+					Request Framework (OpenSRF) software system. For further information on
+					installing, configuring and testing OpenSRF, see 
+					<xref linkend="serversideinstallation-opensrf-1.6.3"/>.</para>
+					<para>Follow the steps outlined in that section and run the specified tests to
+					ensure that OpenSRF is properly installed and configured. Do 
+					<emphasis><emphasis role="bold">not</emphasis></emphasis> continue with
+					any further Evergreen installation steps until you have verified that OpenSRF
+					has been successfully installed and tested.</para>
+				</step>
+				<step>
+					<title>Download and Unpack Latest Evergreen Version</title>
+					<para>The latest version of Evergreen can be found here:
+					<ulink url="http://evergreen-ils.org/downloads/Evergreen-ILS-2.0.4.tar.gz"></ulink> .
+					As the <systemitem class="username">opensrf</systemitem> user, change to
+					the directory <filename class="directory">/home/opensrf</filename> then 
+					download and extract Evergreen. The new subdirectory
+					<filename class="directory">/home/opensrf/Evergreen-ILS-2.0.4</filename> 
+					will be created:</para>
+					<screen>
+						<userinput>
+	# as the opensrf user:
+	cd /home/opensrf
+	wget http://evergreen-ils.org/downloads/Evergreen-ILS-2.0.4.tar.gz
+	tar zxf Evergreen-ILS-2.0.4.tar.gz</userinput>
+					</screen>
+				</step>
+				<step xml:id="serversideinstallation-installprereq-2.0">
+					<title>Install Prerequisites to Build Evergreen</title>
+					<para>In this section you will install and configure a set of prerequisites that will be
+					used later in <xref linkend="serversideinstallation-configure-2.0"/> and 
+					<xref linkend="serversideinstallation-compile-2.0"/> to build the Evergreen software 
+					using the <command>make</command> utility.</para>
+					<para>As the <systemitem class="username">root</systemitem> user, enter the commands show
+					below to build the prerequisites from the software distribution that you just downloaded
+					and unpacked. Remember to replace <emphasis>[DISTRIBUTION]</emphasis> in the following
+					example with the keyword corresponding to the name of one of the 
+					<systemitem class="osname">Linux</systemitem> distributions listed in the following
+					distribution list. For example, to install the prerequisites for
+					<systemitem class="osname">Fedora 13</systemitem> or
+					<systemitem class="osname">Fedora 14</systemitem>, you would enter the command:
+					<command>make -f Open-ILS/src/extras/Makefile.install fedora13</command>.</para>
+					<screen>
+						<userinput>
+	# as the root user:
+	cd /home/opensrf/Evergreen-ILS-2.0.4
+	make -f Open-ILS/src/extras/Makefile.install [DISTRIBUTION]</userinput>
+					</screen>
+				</step>
+				<step performance="optional">
+					<title>(OPTIONAL) Install the PostgreSQL Server</title>
+					<indexterm>
+						<primary>databases</primary>
+						<secondary>PostgreSQL</secondary>
+					</indexterm>
+					<para>Since the PostgreSQL server is usually a standalone server in multi-server
+					production systems, the prerequisite installer Makefile in the previous section
+					(see <xref linkend="serversideinstallation-installprereq-2.0"/>)
+					does not automatically install PostgreSQL. You must install the PostgreSQL server
+					yourself, either on the same system as Evergreen itself or on another system.
+					If your PostgreSQL server is on a different system, just skip this step.
+					If your PostgreSQL server will be on the same system as your Evergreen
+					software, you can install the required PostgreSQL server packages as described
+					in <xref linkend="InstallingPostgreSQL"/>, or you can visit the official 
+					web site <link xl:href="http://www.postgresql.org/">http://www.postgresql.org</link>
+					for more information.</para>
+					<note>
+						<para>PostgreSQL version 8.4 is the minimum supported version to work 
+						with Evergreen 2.0. If you have an older version of PostgreSQL, 
+						you should upgrade before installing Evergreen. To find your current version 
+						of PostgreSQL, as the <systemitem class="username">postgres</systemitem> 
+						user execute the command <command>psql</command>, then type 
+						<userinput>SELECT version();</userinput> to get detailed information 
+						about your version of PostgreSQL.</para>
+					</note>
+				</step>
+				<step performance="optional">
+					<title>Install Perl Modules on PostgreSQL Server</title>
+					<para>If PostgreSQL is running on the same system as your Evergreen software,
+					then the Perl modules will automatically be available. Just skip this step.
+					Otherwise, continue if your PostgreSQL server is running on another system,
+					and install several Perl modules there. As the 
+					<systemitem class="username">root</systemitem> user, ensure the gcc compiler
+					is installed, then install the following Perl modules:</para>
+					<screen>
+						<userinput>
+	yum install gcc
+	perl -MCPAN -e shell
+		<prompt>cpan></prompt> install JSON::XS
+		<prompt>cpan></prompt> install MARC::Record
+		<prompt>cpan></prompt> install MARC::File::XML</userinput>
+					</screen>
+					<para>For more information on installing Perl Modules vist the official
+					<link xl:href="http://www.cpan.org/">CPAN</link> site.</para>
+					<indexterm>
+						<primary>Perl</primary>
+						<secondary>CPAN</secondary>
+					</indexterm>
+				</step>
+				<step xml:id="serversideinstallation-configure-2.0">
+					<title>Configure Evergreen</title>
+					<para>In this step you will use the <command>configure</command> and
+					<command>make</command> utilities to configure Evergreen so it can be compiled
+					and linked later in <xref linkend="serversideinstallation-compile-2.0"/>.</para>
+					<para>As the <systemitem class="username">opensrf</systemitem> user, return to
+					the Evergreen build directory and execute these commands:</para>
+					<screen>
+						<userinput>
+	# as the opensrf user:
+	cd /home/opensrf/Evergreen-ILS-2.0.4
+	./configure --prefix=/openils --sysconfdir=/openils/conf
+	make</userinput>
+					</screen>
+				</step>
+				<step xml:id="serversideinstallation-compile-2.0">
+					<title>Compile, Link and Install Evergreen</title>
+					<para>In this step you will actually compile, link and install Evergreen and the 
+					default Evergreen Staff Client.</para>
+					<para>As the <systemitem class="username">root</systemitem> user, return to the
+					Evergreen build directory and use the <command>make</command> utility as shown
+					below:</para>
+					<screen>
+						<userinput>
+	# as the root user:
+	cd /home/opensrf/Evergreen-ILS-2.0.4
+	make STAFF_CLIENT_BUILD_ID=rel_2_0_4 install</userinput>
+					</screen>
+					<para>The Staff Client will also be automatically built, but you must remember
+					to set the variable <envar>STAFF_CLIENT_BUILD_ID</envar> to match the version of the 
+					Staff Client you will use to connect to the Evergreen server.</para>
+					<para>The above commands will create a new subdirectory
+					<filename class="directory">/openils/var/web/xul/rel_2_0_4</filename> 
+					containing the Staff Client.</para>
+					<para>To complete the Staff Client installation, as the
+					<systemitem class="username">root</systemitem> user execute the following commands
+					to create a symbolic link named <emphasis>server</emphasis> in the head of the
+					Staff Client directory <filename class="directory">/openils/var/web/xul</filename> 
+					that points to the subdirectory <filename class="directory">/server</filename>
+					of the new Staff Client build:</para>
+					<screen>
+						<userinput>
+	# as the root user:
+	cd /openils/var/web/xul
+	ln -sf rel_2_0_4/server server</userinput>
+					</screen>
+				</step>
+				<step>
+					<title>Copy the OpenSRF Configuration Files</title>
+					<para>In this step you will replace some OpenSRF configuration files that you set up
+					earlier in <xref linkend="serversideinstallation-opensrf-2.0"/> when you installed
+					and tested OpenSRF.</para>
+					<para>You must copy several example OpenSRF configuration files into place after first
+					creating backup copies for troubleshooting purposes, then change all the file ownerships
+					to <systemitem class="username">opensrf</systemitem>.
+					As the <systemitem class="username">root</systemitem> user, execute the following
+					commands:</para>
+					<screen>
+						<userinput>
+	# as the root user:
+	cd /openils/conf
+	cp opensrf.xml	      opensrf.xml.BAK
+	cp opensrf_core.xml	 opensrf_core.xml.BAK
+	cp opensrf.xml.example      opensrf.xml
+	cp opensrf_core.xml.example opensrf_core.xml
+	cp oils_web.xml.example     oils_web.xml
+	chown -R opensrf:opensrf /openils/</userinput>
+					</screen>
+				</step>
+				<step>
+					<title>Create and Configure PostgreSQL Database</title>
+					<indexterm>
+						<primary>databases</primary>
+						<secondary>PostgreSQL</secondary>
+					</indexterm>
+					<para>In this step you will create the Evergreen database. In the
+					commands below, remember to adjust the path of the 
+					<emphasis role="bold">contrib</emphasis> repository to match your 
+					PostgreSQL server layout. For example, if you built PostgreSQL from
+					source the path would be 
+					<filename class="directory">/usr/local/share/contrib</filename> 
+					, and if you installed the PostgreSQL 8.4 server packages on 
+					<systemitem class="osname">Ubuntu</systemitem>, the path would be 
+					<systemitem class="directory">/usr/share/postgresql/8.4/contrib/</systemitem> .</para>
+					<substeps>
+						<step>
+							<title>Start the PostgreSQL service</title>
+							<para>As the <systemitem class="username">root</systemitem>
+							user on the PostgreSQL system, initialize the PostgreSQL cluster
+							and start the PostgreSQL service:</para>
+							<screen>
+								<userinput>
+	# as the root user:
+	service initdb postgresql
+	/etc/init.d/postgresql start</userinput>
+							</screen>
+						</step>
+						<step>
+							<title>Create and configure the database</title>
+							<para>As the <systemitem class="username">postgres</systemitem> 
+							user on the PostgreSQL system create the PostgreSQL database,
+							then set some internal paths:</para>
+							<screen>
+								<userinput>
+	# as the postgres user:
+	createdb evergreen -E UTF8 -T template0
+	createlang plperl   evergreen
+	createlang plperlu  evergreen
+	createlang plpgsql  evergreen</userinput>
+							</screen>
+							<para>Continue as the <systemitem class="username">postgres</systemitem> 
+							user and execute the SQL scripts as shown below (remember to adjust the 
+							paths as needed, where <emphasis>PGSQL_VERSION</emphasis> is
+							your installed PostgreSQL version, for example
+							<literal>"8.4"</literal>).</para>
+							<screen>
+								<userinput>
+	# as the postgres user:
+	psql -f /usr/share/postgresql/PGSQL_VERSION/contrib/tablefunc.sql evergreen
+	psql -f /usr/share/postgresql/PGSQL_VERSION/contrib/tsearch2.sql  evergreen
+	psql -f /usr/share/postgresql/PGSQL_VERSION/contrib/pgxml.sql     evergreen</userinput>
+							</screen>
+						</step>
+						<step xml:id="serversideinstallation-postgresqlcreateuser-2.0">
+							<title>Create <systemitem class="username">evergreen</systemitem>
+								PostgreSQL user</title>
+							<para>As the <systemitem class="username">postgres</systemitem>
+							user on the PostgreSQL system, create a new PostgreSQL user
+							named <systemitem class="username">evergreen</systemitem> and
+							assign a password (remember to replace <emphasis>NEWPASSWORD</emphasis>
+							with an appropriate new password):</para>
+							<screen>
+								<userinput>
+	# as the postgres user:
+	createuser -P -s evergreen</userinput>
+								<computeroutput>
+	Enter password for new role: <userinput>NEWPASSWORD</userinput>
+	Enter it again: <userinput>NEWPASSWORD</userinput></computeroutput>
+							</screen>
+						</step>
+						<step>
+							<title>Enable IPv4 and IPv6 connections</title>
+							<para>As the root user, enable IPv4 and IPv6 connections to the
+							PostgreSQL server. For a single-server instance, enable
+							password-protected connections from the Evergreen user to the
+							Evergreen database on localhost by adding the following lines to
+							<filename>/var/lib/pgsql/data/pg_hba.conf</filename>:</para>
+							<screen>
+								<userinput>
+	# as the root user:
+
+	# IPv4 local connections:
+	host    evergreen     evergreen	 127.0.0.1/32	  md5
+	# IPv6 local connections:
+	host    evergreen     evergreen	 ::1/128	       md5</userinput>
+							</screen>
+							<para>Then, as the root user, restart the PostgreSQL server to
+							make that configuration take effect:</para>
+							<screen>
+								<userinput>
+	# as the root user:
+	/etc/init.d/postgresql restart</userinput>
+							</screen>
+						</step>
+						<step>
+							<title>Create database schema</title>
+							<para>In this step you will create the database schema and configure your
+							system with the corresponding database authentication details for the
+							<emphasis>evergreen</emphasis> database user that you just created in
+							<xref linkend="serversideinstallation-postgresqlcreateuser-2.0"/>.</para>
+							<para>As the <systemitem class="username">root</systemitem> user, enter
+							the following commands and replace <emphasis>HOSTNAME, PORT,
+							PASSWORD</emphasis> and <emphasis>DATABASENAME</emphasis> with appropriate
+							values:</para>
+							<screen>
+								<userinput>
+	# as the root user:
+	cd /home/opensrf/Evergreen-ILS-2.0.4
+	perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
+	--service all --create-schema --create-offline \
+	--hostname HOSTNAME --port PORT \
+	--user evergreen --password PASSWORD \
+	--database DATABASENAME --admin-user ADMIN-USER \ 
+	--admin-pass ADMIN-PASSWORD </userinput>
+							</screen>
+							<para>On most systems, <emphasis>HOSTNAME</emphasis> will be
+							<emphasis role="bold">localhost</emphasis> and
+							<emphasis>PORT</emphasis> will be <emphasis role="bold">5432</emphasis>.
+							Of course, values for <emphasis>PASSWORD</emphasis> and
+ 							<emphasis>DATABASENAME</emphasis> must match the values you used in 
+ 							<xref linkend="serversideinstallation-postgresqlcreateuser-2.0"/>.
+							The <option>admin-user</option> and <option>admin-pass</option> options will 
+							specify the Evergreen administrator account's username and password. This was 
+							changed for security reasons, it was previously admin/open-ils</para>
+							<para>As the command executes, you may see warnings similar to:
+							<literal>ERROR: schema SOMENAME does not exist</literal> (in fact,
+							you may see one warning per schema) but they can be safely ignored.</para>
+							<note>If you are entering the above command on a single line, do not
+							include the <literal>\</literal> (backslash) characters. If you are using
+							the <command>bash</command> shell, these should only be used at the end of
+							a line at a <command>bash</command> prompt to indicate that the command is
+							continued on the next line.</note>
+						</step>
+					</substeps>
+				</step>
+				<step>
+					<title>Configure the Apache web server</title>
+					<indexterm>
+						<primary>web server</primary>
+						<secondary>Apache</secondary>
+					</indexterm>
+					<para>In this step you will configure the Apache web server to support Evergreen
+					software.</para>
+					<para>First, you must install some additional Apache configuration files. Then you will
+					create a new Security Certificate. Finally, you must make several changes to Apache
+					configuration files.</para>
+					<substeps>
+						<step>
+							<title>Copy Apache configuration files</title>
+							<para>You must copy the Apache configuration files from the
+							Evergreen installation directory to the Apache directory. As the
+							<systemitem class="username">root</systemitem> user, perform the
+							following commands:</para>
+							<screen>
+								<userinput>
+	# as the root user:
+	cd /home/opensrf/Evergreen-ILS-2.0.4
+	cp Open-ILS/examples/apache/eg.conf	/etc/httpd/conf.d/
+	cp Open-ILS/examples/apache/eg_vhost.conf  /etc/httpd/
+	cp Open-ILS/examples/apache/startup.pl     /etc/httpd/</userinput>
+							</screen>
+						</step>
+						<step xml:id="serversideinstallation-createsslcertificate-2.0">
+							<title>Create a Security Certificate</title>
+							<para>In this step you will create a new Security Certificate (SSL Key)
+							for the Apache server using the <command>openssl</command> command. For a
+							public production server you must configure or purchase a signed SSL
+							certificate, but for now you can just use a self-signed certificate and
+							accept the warnings in the Staff Client and browser during testing and
+							development. As the <systemitem class="username">root</systemitem> user,
+							perform the following commands:</para>
+							<screen>
+								<userinput>
+	# as the root user:
+	mkdir /etc/httpd/ssl
+	cd /etc/httpd/ssl
+	openssl req -new -x509 -days 365 -nodes -out server.crt -keyout server.key</userinput>
+							</screen>
+							<para>You will be prompted for several items of information; enter
+							the appropriate information for each item. The new files
+							<filename>server.crt</filename> and <filename>server.key</filename> will
+							be created in the directory 
+							<filename class="directory">/etc/httpd/ssl</filename> .</para>
+							<note>This step generates a self-signed SSL certificate. You must install
+							a proper SSL certificate for a public production system to avoid warning
+							messages when users login to their account through the OPAC or when staff
+							login through the Staff Client. For further information on
+							installing a proper SSL certificate, see 
+							<xref linkend="serversideinstallation-ssl"/>.</note>
+						</step>
+						<step xml:id="serversideinstallation-modify-apache-2.0">
+							<title>Update Apache configuration files</title>
+							<para>You must make several changes to two Apache configuration files.</para>
+							<para>As the <systemitem class="username">root</systemitem>
+							user, edit the file <filename>/etc/httpd/conf.d/eg.conf</filename> 
+							and make the following changes:</para>
+							<itemizedlist>
+								<listitem>
+									<para>Change all instances of <literal>apache2</literal>
+ 									to <literal>httpd</literal> .</para>
+								</listitem>
+								<listitem>
+									<para>In the section
+									<literal>&lt;Directory "/openils/var/cgi-bin"></literal>
+									replace the line:</para>
+									<literal>Allow from 10.0.0.0/8</literal>
+									<para>with the line:</para>
+									<literal>Allow from all</literal>
+									<warning>This change allows access to your configuration
+									CGI scripts from any workstation on any network. This is
+									only a temporary change to expedite testing and should be
+									removed after you have finished and successfully tested
+									the Evergreen installation. See 
+									<xref linkend="serversideinstallation-postinstallation"/> 
+									for further details on removing this change after the
+									Evergreen installation is complete.
+									</warning>
+								</listitem>
+								<listitem>
+									<para>Comment out the line:</para>
+									<literal>Listen 443</literal>
+									<para>since it conflicts with the same declaration in 
+									the configuration file:</para>
+									<para><filename>/etc/httpd/conf.d/ssl.conf</filename>.</para>
+								</listitem>
+							</itemizedlist>
+							<para>
+							As the <systemitem class="username">root</systemitem> user, edit the
+							Apache configuration file <filename>/etc/httpd/conf.d/httpd.conf</filename>
+							and make the following changes:</para>
+							<itemizedlist>
+								<listitem>
+									Change <literal>User apache</literal> to
+									<literal>User opensrf</literal></listitem>
+								<listitem>
+									Change <literal>KeepAlive</literal> to
+									<literal>On</literal></listitem>
+								<listitem>
+									Change <literal>KeepAliveTimeout</literal> to
+									<literal>1</literal></listitem>
+							</itemizedlist>
+						</step>
+					</substeps>
+				</step>
+				<step>
+					<title>Update the System Dynamic Library Path</title>
+					<para>You must update the system dynamic library path to force your 
+					system to recognize the library <literal>dbdpgsql.so</literal>. As the
+					<systemitem class="username">root</systemitem> user, do this by creating
+					the new file <filename>/etc/ld.so.conf.d/eg.conf</filename> containing two
+					new library paths, then run the command <command>ldconfig</command> to
+					automatically read the file and modify the system dynamic library
+					path:</para>
+					<screen>
+						<userinput>
+	# as the root user:
+	echo "/usr/lib/dbd"     > /etc/ld.so.conf.d/eg.conf
+	echo "/usr/lib64/dbd/" >> /etc/ld.so.conf.d/eg.conf
+	ldconfig</userinput>
+					</screen>
+				</step>
+				<step xml:id="serversideinstallation-opensrf-config-2.0">
+					<title>Update the OpenSRF Configuration File</title>
+					<para>As the <systemitem class="username">opensrf</systemitem> user, edit the
+					OpenSRF configuration file <filename>/openils/conf/opensrf_core.xml</filename>
+					and update the Jabber usernames and passwords, and specify the domain from
+					which we will accept and to which we will make connections.</para>
+					<para>If you are installing Evergreen on a single server and using the
+					<systemitem class="domainname">private.localhost</systemitem> / 
+					<systemitem class="domainname">public.localhost</systemitem> domains, 
+					these will already be set to the correct values. Otherwise, search and replace
+					to match your customized values.</para>
+					<para>See the table <xref linkend="serversideinstallation-xpath-table-2"/>
+					for examples of the XPath syntax you will find in this XML file. The syntax
+					indicates the approximate position within the file that needs changes.</para>
+				</step>
+				<step xml:id="serversideinstallation-opensrf-env-2.0">
+					<title>Modify the OpenSRF Environment</title>
+					<para>In this step you will make some minor modifications to the OpenSRF environment:</para>
+					<itemizedlist>
+						<listitem>
+							<para>As the <systemitem class="username">opensrf</systemitem> user,
+							modify the shell configuration file <filename>~/.bashrc</filename> for
+							user <systemitem class="username">opensrf</systemitem> by adding a Perl
+							environmental variable, then execute the shell configuration file to load
+							the new variables into your current environment:</para>
+							<screen>
+								<userinput>
+	# as the opensrf user:
+	echo "export PERL5LIB=/openils/lib/perl5:\$PERL5LIB" >> ~/.bashrc
+	. ~/.bashrc</userinput>
+							</screen>
+							<note>In a multi-server environment, you must add any
+							modifications to <filename>~/.bashrc</filename> to the top of the file
+							<emphasis>before</emphasis> the line <literal>[ -z "$PS1" ] &amp;&amp;
+							return </literal>. This will allow headless (scripted) logins to load the
+							correct environment.</note>
+						</listitem>
+					</itemizedlist>
+				</step>
+				<step>
+					<title>Configuring Fedora Security</title>
+					<para><systemitem class="osname">Fedora</systemitem> is a very secure
+					system out of the box, including a very restrictive firewall and an
+					automatically enabled set of SELinux system policies to prevent
+					unauthorized access to system resources. Unfortunately, these secure
+					system policies can interfere with the normal operation of
+					applications like Evergreen.</para>
+					<para>Until a person with the required SELinux skills can offer a
+					nuanced set of policies appropriate for Evergreen, the simplest way to
+					test and develop against a <systemitem class="osname">Fedora</systemitem>
+					server is to completely disable the firewall and SELinux policies.</para>
+					<substeps>
+						<step>
+							<title>Disabling the Fedora firewall</title>
+							<para>To disable the <systemitem class="osname">Fedora</systemitem>
+							firewall until your next reboot, issue the
+							following command as the root user:</para>
+							<screen>
+								<userinput>
+	# as the root user:
+	/etc/init.d/iptables stop</userinput>
+							</screen>
+							<para>To disable the <systemitem class="osname">Fedora</systemitem>
+							firewall permanently, issue the following
+							command as the root user:</para>
+							<screen>
+								<userinput>
+	# as the root user:
+	chkconfig iptables off</userinput>
+							</screen>
+							<para>This change will take effect when you reboot your system.</para>
+						</step>
+						<step>
+							<title>Disabling the SELinux policies</title>
+							<para>To disable the SELinux policies until your next reboot, issue
+							the following command as the root user:</para>
+							<screen>
+								<userinput>
+	# as the root user:
+	/usr/sbin/setenforce 0</userinput>
+							</screen>
+							<para>To disable the SELinux policies permanently, as the root user
+							edit the file <filename>/etc/sysconfig/selinux</filename> and make the
+							following change:</para>
+							<screen>
+								<userinput>
+	# as the root user:
+	SELINUX=permissive</userinput>
+							</screen>
+							<para>This change will take effect when you reboot your system.</para>
+						</step>
+					</substeps>
+				</step>
+			</procedure>
 		</section>
 		<section xml:id="serversideinstallation-starting">
 			<title>Starting Evergreen</title>
@@ -1480,39 +2059,47 @@ perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
 			<xref linkend="serversideinstallation-stopping"/>.</para>
 			<procedure>
 				<step>
-					<para>As the <systemitem class="username">root</systemitem>
-					user, start the <systemitem class="service">ejabberd</systemitem> and 
-					<systemitem class="service">memcached</systemitem> services as follows:</para>
-<screen>
-	<userinput>
+					<para>As the <systemitem class="username">root</systemitem> user,
+					start the <systemitem class="service">ejabberd</systemitem>,
+					<systemitem class="service">memcached</systemitem>, and 
+					<systemitem class="service">PostgreSQL</systemitem> services 
+					(if they aren't already running) as follows:</para>
+					<screen>
+						<userinput>
 	# as the root user:
 	/etc/init.d/ejabberd start
-	/etc/init.d/memcached start</userinput>
-</screen>
+	/etc/init.d/memcached start
+	/etc/init.d/postgresql start</userinput>
+					</screen>
+				</step>
+				<step>
+					<para>If you want to have these services run automatically every time
+					you boot your server, issue the following commands as the root
+					user:</para>
+					<screen>
+						<userinput>
+	# as the root user:
+	chkconfig --levels 2345 ejabberd on
+	chkconfig --levels 2345 memcached on
+	chkconfig --levels 2345 postgresql on</userinput>
+					</screen>
 				</step>
 				<step>
 					<para>As the <systemitem class="username">opensrf</systemitem> user,
-					start the OpenSRF router service as follows:</para>
-<screen>
-	<userinput>
+					start the OpenSRF <systemitem class="service">router</systemitem> ,
+					<systemitem class="service">Perl</systemitem>, and <systemitem class="service">C</systemitem> services. The <option>-l</option> flag in 
+					the following command is only necessary if you want to force Evergreen to
+					treat the hostname as <literal>'localhost'</literal>. You should not
+					use the '-l' flag if you configured <filename>opensrf.xml</filename>
+					using the real hostname of your machine as returned by: <literal>perl
+					-ENet::Domain 'print Net::Domain::hostfqdn() . “\n”;'</literal> .
+					As the opensrf user, execute this command:</para>
+					<screen>
+						<userinput>
 	# as the opensrf user:
 	osrf_ctl.sh -l -a start_all</userinput>
-</screen>
-					<para>The flag <option>-l</option> forces Evergreen to use
-					<systemitem class="domainname">localhost</systemitem> (your current system) 
-					as the hostname. The flag <option>-a start_all</option> starts the 
-					OpenSRF <systemitem class="service">router</systemitem> , 
-					<systemitem class="service">Perl</systemitem> , and
-					<systemitem class="service">C</systemitem> services.</para>
+					</screen>
 					<itemizedlist>
-						<listitem>
-							<para>You can also start Evergreen without the
-							<option>-l</option> flag, but the <command>osrf_ctl.sh</command>
-							utility must know the fully qualified domain name for the system
-							on which it will execute. That hostname was probably specified
-							in the configuration file <filename>opensrf.xml</filename> which
-							you configured in a previous step.</para>
-						</listitem>
 						<listitem>
 							<para>If you receive an error message similar to
 							<emphasis>osrf_ctl.sh: command not found</emphasis>, then your
@@ -1529,27 +2116,27 @@ perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
 							aborted</emphasis>, then your environment variable 
 							<emphasis role="bold">PERL5LIB</emphasis> does not include the 
 							directory <filename class="directory">/openils/lib/perl5</filename>.
-							As the <systemitem class="username">opensrf</systemitem> user, 
-							edit the configuration file <filename>~/.bashrc</filename> and
-							add the following line: 
+							This should have been set by <filename>~/.bashrc</filename> when you
+							logged in as the <systemitem class="username">opensrf</systemitem>
+							user, but you can manually set it using the following command:
 							<literal>export PERL5LIB=$PERL5LIB:/openils/lib/perl5</literal></para>
 						</listitem>
 					</itemizedlist>
 				</step>
 				<step>
 					<para>In this step you will generate the Web files needed by the Staff Client
-					and catalog, and update the proximity of locations in the Organizational Unit
-					tree (which allows <emphasis>Holds</emphasis> to work properly).</para>
+					and catalog, as well as update the proximity of locations in the Organizational 
+					Unit tree (which allows <emphasis>Holds</emphasis> to work properly).</para>
 					<para>You must do this the first time you start Evergreen and after making any
 					changes to the library hierarchy.</para>
 					<para>As the <systemitem class="username">opensrf</systemitem> user, execute the
-					following command and review the results:</para>
-<screen>
-	<userinput>
+					following command and review the results as shown in this example:</para>
+					<screen>
+						<userinput>
 	# as the opensrf user:
 	cd /openils/bin
 	./autogen.sh -c /openils/conf/opensrf_core.xml -u</userinput>
-	<computeroutput>
+						<computeroutput>
 	Updating Evergreen organization tree and IDL using '/openils/conf/opensrf_core.xml'
 	Updating fieldmapper
 	Updating web_fieldmapper
@@ -1566,16 +2153,16 @@ perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
 	Refreshing proximity of org units
 	Successfully updated the organization proximity
 	Done</computeroutput>
-</screen>
+					</screen>
 				</step>
 				<step>
 					<para>As the <systemitem class="username">root</systemitem> user, restart the
 					Apache Web server:</para>
-<screen>
-	<userinput>
+					<screen>
+						<userinput>
 	# as the root user:
-	/etc/init.d/apache2 restart</userinput>
-</screen>
+	/etc/init.d/httpd restart</userinput>
+					</screen>
 					<note>If the Apache Web server was running when you started the OpenSRF
 					services, you might not be able to successfully log into the OPAC or Staff
 					Client until the Apache Web server has been restarted.</note>
@@ -1595,12 +2182,13 @@ perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
 				<command>srfsh</command> after a successful Evergreen installation. For help with
 				<command>srfsh</command> commands, type <userinput>help</userinput> at the prompt.
 				As the <systemitem class="username">opensrf</systemitem> user,
-				execute the following commands to test your Evergreen connection:</para>
-<screen>
-	<userinput>
+				execute the following command and review the results as shown in this example to test
+				your Evergreen connection:</para>
+				<screen>
+					<userinput>
 	# as the opensrf user:
 	/openils/bin/srfsh</userinput>
-	<computeroutput>
+					<computeroutput>
 	srfsh% <userinput>login admin open-ils</userinput>
 	Received Data: "250bf1518c7527a03249858687714376"
 	------------------------------------
@@ -1622,21 +2210,21 @@ perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
 	Request Completed Successfully
 	Request Time in seconds: 1.336568
 	------------------------------------</computeroutput>
-</screen>
+				</screen>
 				<para>If this does not work, try the following:</para>
 				<itemizedlist>
 					<listitem>
 						<para>As the <systemitem class="username">opensrf</systemitem> user, run the
-						<filename>settings-tester.pl</filename> utility to review your Evergreen
+						utility <filename>settings-tester.pl</filename>  to review your Evergreen
 						installation for any system configuration problems:</para>
-<screen>
-	<userinput>
+						<screen>
+							<userinput>
 	# as the opensrf user:
 	cd /home/opensrf
 	./Evergreen-ILS-2.0.4/Open-ILS/src/support-scripts/settings-tester.pl</userinput>
-</screen>
-						<para>If the output of <command>settings-tester.pl</command> does not help you
-						find the problem, please do not make any significant changes to your
+						</screen>
+						<para>If the output of <command>settings-tester.pl</command> does not help
+						you find the problem, please do not make any significant changes to your
 						configuration.</para>
 					</listitem>
 					<listitem>
@@ -1648,7 +2236,7 @@ perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
 						closely, you are probably extremely close to a working system. Gather your
 						configuration files and log files and contact the 
 						<ulink url="http://open-ils.org/listserv.php">Evergreen Development Mailing List</ulink>
-						list for assistance before making any drastic changes to your system
+						for assistance before making any drastic changes to your system
 						configuration.</para>
 					</listitem>
 				</itemizedlist>
@@ -1657,16 +2245,17 @@ perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
 				<title>Testing the Staff Client on Linux</title>
 				<para>In this section you will confirm that a basic login on the Staff Client works
 				properly.</para>
-				<para>Run the Evergreen Staff Client on a Linux system by using the application
+				<para>Run the Evergreen Staff Client on your <systemitem class="osname">Fedora</systemitem>
+				system by using the application
 				<emphasis>XULRunner</emphasis> (installed automatically and by default with Firefox
 				version 3.0 and later on Ubuntu and Debian distributions).</para>
 				<para>As the <systemitem class="username">root</systemitem> user, start the Staff Client
 				as shown:</para>
-<screen>
-	<userinput>
+				<screen>
+					<userinput>
 	# as the root user:
-	xulrunner /home/opensrf/Evergreen-ILS-v/Open-ILS/xul/staff_client/build/application.ini</userinput>
-</screen>
+	xulrunner /home/opensrf/Evergreen-ILS-2.0.4/Open-ILS/xul/staff_client/build/application.ini</userinput>
+				</screen>
 				<para>A login screen for the Staff Client similar to this should appear:</para>
 				<mediaobject>
 					<alt>Logging into the Staff Client</alt>
@@ -1675,15 +2264,17 @@ perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
 					</imageobject>
 				</mediaobject>
 				<para>First, add the name of your Evergreen server to the field
-				<literal>Hostname</literal> in the <literal>Server</literal> section. You will probably
-				want to use <literal>127.0.0.1</literal>. After adding the server name, click Re-Test
-				Server. You should now see the messages <literal>200:OK</literal> in the fields
-				<literal>Status</literal> and <literal>Version</literal>.</para>
+				<literal>Hostname</literal> in the <literal>Server</literal> section. You will
+				probably want to use <literal>127.0.0.1</literal>. After adding the server
+				name, click <guibutton>Re-Test Server</guibutton>. You should now see the
+				messages <literal>200:OK</literal> in the fields <literal>Status</literal> and
+				<literal>Version</literal>.</para>
 				<para>Because this is the initial run of the Staff Client, you will see a warning in the
 				upper-right saying: <emphasis role="bold">Not yet configured for the specified
 				server</emphasis>. To continue, you must assign a workstation name.</para>
-				<para>Try to log into the Staff Client with the admin username and password you created during installation. If the login is successful, 
-				you will see the following screen:</para>
+				<para>Try to log into the Staff Client with the admin username and password you created
+				during installation. If the login is successful, you will see the following
+				screen:</para>
 				<mediaobject>
 					<alt>Logging into the Staff Client</alt>
 					<imageobject>
@@ -1707,14 +2298,14 @@ perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
 				<para>In this section you will test the Apache configuration file(s), then restart the
 				Apache web server.</para>
 				<para>As the <emphasis role="bold">root</emphasis> user, execute the following
-				commands. Note the use of <emphasis>restart</emphasis> to force the new Evergreen
-				modules to be reloaded even if the Apache server is already running. Any problems found
-				with your configuration files should be displayed:</para>
-<screen>
-	<userinput>
+				commands. The use of <emphasis>restart</emphasis> will force the new Evergreen
+				modules to be reloaded even if the Apache server is already running. 
+				Any problems found with your configuration files should be displayed:</para>
+				<screen>
+					<userinput>
 	# as the root user:
-	apache2ctl configtest &amp;&amp; /etc/init.d/apache2 restart</userinput>
-</screen>
+	/etc/init.d/httpd configtest &amp;&amp; /etc/init.d/httpd restart</userinput>
+				</screen>
 			</simplesect>
 			<simplesect xml:id="serversideinstallation-stopping">
 				<title>Stopping Evergreen</title>
@@ -1723,12 +2314,12 @@ perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
 				Evergreen services.</para>
 				<para>As the <systemitem class="username">opensrf</systemitem> user, stop all Evergreen
 				services by using the following command:</para>
-<screen>
-	<userinput>
+				<screen>
+					<userinput>
 	# as the opensrf user
 	#   stop the server; use "-l" to force hostname to be "localhost"
 	osrf_ctl.sh -l -a stop_all</userinput>
-</screen>
+				</screen>
 				<note>You can also stop Evergreen services <emphasis role="bold">without</emphasis> the
 				<option>-l</option> flag, but the <command>osrf_ctl.sh</command> utility must know the
 				fully qualified domain name for the system on which it will execute. That hostname may
@@ -1765,7 +2356,7 @@ perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
 				<title>Configure a permanent SSL key</title>
 				<para>You used the command <command>openssl</command> in an earlier step to
 				temporarily create a new SSL key for the Apache server (see 
-				<xref linkend="serversideinstallation-createsslcertificate"/> for further
+				<xref linkend="serversideinstallation-createsslcertificate-2.0"/> for further
 				information). This self-signed security certificate was adequate during
 				testing and development, but will continue to generate warnings in the Staff
 				Client and browser. For a public production server you should configure or
