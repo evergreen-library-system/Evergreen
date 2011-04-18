@@ -2898,7 +2898,7 @@ sub find_hold_mvr {
         $tid = $issuance->subscription->record_entry;
 
     } elsif( $hold->hold_type eq OILS_HOLD_TYPE_MONOPART ) {
-        $part = $e->retrieve_biblio_monographic_part([
+        $part = $e->retrieve_biblio_monograph_part([
             $hold->target,
             {flesh => 1, flesh_fields => {bmp => [ qw/record/ ]}}
         ]) or return $e->event;
