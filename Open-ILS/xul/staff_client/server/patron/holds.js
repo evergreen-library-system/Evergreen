@@ -1154,7 +1154,7 @@ patron.holds.prototype = {
                                         break;
                                         case 'I' :
                                             opac_url = xulG.url_prefix( urls.opac_rdetail )
-                                            + '?r=' + obj.hold_subscription_map[ obj.retrieve_ids[i].hold_id ].record_entry();
+                                            + '?r=' + obj.hold_subscription_map[ obj.retrieve_ids[i].id ].record_entry();
                                         break;
                                         case 'V' :
                                             var my_acn = obj.network.simple_request( 'FM_ACN_RETRIEVE.authoritative', [ htarget ]);
