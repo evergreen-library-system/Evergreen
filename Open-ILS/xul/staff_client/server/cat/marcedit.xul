@@ -29,12 +29,6 @@
         <checkbox oils_persist="checked" accesskey="&staff.cat.marcedit.stackSubfields.accesskey;" label="&staff.cat.marcedit.stackSubfields.label;" oncommand="stackSubfields(this);" checked="false" id="stackSubfields"/>
         <checkbox oils_persist="checked" accesskey="&staff.cat.marcedit.flatTextEditor.accesskey;" label="&staff.cat.marcedit.flatTextEditor.label;" oncommand="set_flat_editor(this.checked);" checked="false" id="swapEditor_checkbox"/>
         <checkbox oils_persist="checked" accesskey="&staff.cat.marcedit.fastItemAdd.accesskey;" label="&staff.cat.marcedit.fastItemAdd.label;" oncommand="fastItemAdd_toggle(this);" checked="false" id="fastItemAdd_checkbox"/>
-        <hbox id="fastItemAdd_textboxes">
-            <label control="fastItemAdd_callnumber" accesskey="&staff.cat.marcedit.fastItemAdd_callnumber.accesskey;" value="&staff.cat.marcedit.fastItemAdd_callnumber.label;" />
-            <textbox context="clipboard" id="fastItemAdd_callnumber" oils_persist="value" onchange="this.setAttribute('value',this.value);"/>
-            <label control="fastItemAdd_barcode" accesskey="&staff.cat.marcedit.fastItemAdd_barcode.accesskey;" value="&staff.cat.marcedit.fastItemAdd_barcode.label;" />
-            <textbox context="clipboard" id="fastItemAdd_barcode"/>
-        </hbox>
         <button label="&staff.cat.marcedit.validate.label;" accesskey="&staff.cat.marcedit.validate.accesskey;" oncommand="validateAuthority(this);"/>
         <button id="save-button" accesskey="&staff.cat.marcedit.save-button.accesskey;"/>
         <button label="&staff.cat.marcedit.help.label;" accesskey="&staff.cat.marcedit.help.accesskey;"
@@ -51,6 +45,12 @@
                 $('catStrings').getString('staff.cat.marcedit.help.replace_008')
             );"
         />
+    </hbox>
+    <hbox id="fastItemAdd_textboxes">
+        <label control="fastItemAdd_callnumber" accesskey="&staff.cat.marcedit.fastItemAdd_callnumber.accesskey;" value="&staff.cat.marcedit.fastItemAdd_callnumber.label;" />
+        <textbox context="clipboard" id="fastItemAdd_callnumber" oils_persist="value" onchange="this.setAttribute('value',this.value);"/>
+        <label control="fastItemAdd_barcode" accesskey="&staff.cat.marcedit.fastItemAdd_barcode.accesskey;" value="&staff.cat.marcedit.fastItemAdd_barcode.label;" />
+        <textbox context="clipboard" id="fastItemAdd_barcode"/>
     </hbox>
 </groupbox>
 
