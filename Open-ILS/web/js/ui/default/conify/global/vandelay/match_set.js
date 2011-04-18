@@ -231,9 +231,12 @@ function NodeEditor() {
 }
 
 function render_vmsp_label(point, minimal) {
-    /* quick and dirty */
+    /* "minimal" mode has two implications:
+     *  1) for svf, only show the code, not the longer label.
+     *  2) for bool ops, completely ingore negation
+     */
     if (point.bool_op()) {
-        return (openils.Util.isTrue(point.negate()) ? "N" : "") +
+        return (!minimal && openils.Util.isTrue(point.negate()) ? "N" : "") +
             point.bool_op();
     } else if (point.svf()) {
         return (openils.Util.isTrue(point.negate()) ? "NOT " : "") + (
@@ -361,8 +364,9 @@ function redraw_expression_preview() {
 
 function render_expression_preview(r) {
     if (r.children().length) {
-        return "(" + r.children().map(render_expression_preview).join(
-            " " + render_vmsp_label(r) + " "
+        return (openils.Util.isTrue(r.negate()) ? "NOT " : "") +
+            "(" + r.children().map(render_expression_preview).join(
+            " " + render_vmsp_label(r, true /* minimal */) + " "
         ) + ")";
     } else if (!r.bool_op()) {
         return render_vmsp_label(r, true /* minimal */);
