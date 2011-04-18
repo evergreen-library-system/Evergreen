@@ -84,10 +84,11 @@ patron.holds.prototype = {
                                     if (typeof blob.ilsevent != 'undefined') throw(blob);
                                     row.my.ahr = blob.hold;
                                     row.my.status = blob.status;
-                                                                        row.my.ahr.status( blob.status );
+                                    row.my.ahr.status( blob.status );
                                     row.my.acp = blob.copy;
                                     row.my.acn = blob.volume;
                                     row.my.mvr = blob.mvr;
+                                    row.my.part = blob.part;
                                     row.my.patron_family_name = blob.patron_last;
                                     row.my.patron_first_given_name = blob.patron_first;
                                     row.my.patron_barcode = blob.patron_barcode;
@@ -1141,6 +1142,7 @@ patron.holds.prototype = {
                                             opac_url = xulG.url_prefix( urls.opac_rresult ) + '?m=' + htarget;
                                         break;
                                         case 'T' :
+                                        case 'P' :
                                             opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + htarget;
                                         break;
                                         case 'V' :
