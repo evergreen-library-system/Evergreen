@@ -290,9 +290,10 @@ COMMENT ON TABLE config.rule_recurring_fine IS $$
 Circulation Recurring Fine rules
 
 Each circulation is given a recurring fine amount based on one of
-these rules.  The recurrence_interval should not be any shorter
-than the interval between runs of the fine_processor.pl script
-(which is run from CRON), or you could miss fines.
+these rules.  Note that it is recommended to run the fine generator
+(from cron) at least as frequently as the lowest recurrence interval
+used by your circulation rules so that accrued fines will be up
+to date.
 $$;
 
 
@@ -306,10 +307,12 @@ COMMENT ON TABLE config.rule_age_hold_protect IS $$
 Hold Item Age Protection rules
 
 A hold request can only capture new(ish) items when they are
-within a particular proximity of the home_ou of the requesting
-user.  The proximity ('prox' column) is calculated by counting
-the number of tree edges between the user's home_ou and the owning_lib
-of the copy that could fulfill the hold.
+within a particular proximity of the pickup_lib of the request.
+The proximity ('prox' column) is calculated by counting
+the number of tree edges between the pickup_lib and either the
+owning_lib or circ_lib of the copy that could fulfill the hold,
+as determined by the distance_is_from_owner value of the hold matrix
+rule controlling the hold request.
 $$;
 
 CREATE TABLE config.copy_status (
