@@ -16,7 +16,7 @@
 				<itemizedlist>
 					<listitem><menuchoice><guimenu>Cataloging</guimenu><guimenuitem>Search the Catalog</guimenuitem></menuchoice> </listitem>
 					<listitem><menuchoice><guimenu>Search</guimenu><guimenuitem>the Catalog</guimenuitem></menuchoice></listitem>
-					<listitem>Presss <keycap>F3</keycap></listitem>
+					<listitem>Press <keycap>F3</keycap></listitem>
 				</itemizedlist>
 			</para>
 			<para>Specialized search functionality for catalogers is located on the left-hand side of the search screen (<guibutton>Quick Search</guibutton>).</para>
@@ -290,7 +290,7 @@
 			<title>Creating item templates</title>
 			<step><para>Search for and retrieve a record.</para></step>
 			<step><para>Select <menuchoice><guimenu>Actions for this Record</guimenu> <guimenuitem>Holdings Maintenance</guimenuitem></menuchoice>.</para></step>	
-			<step><para>Select an item record in list and click <menuchoice><guimenu>Actionsfor Selected Rows</guimenu> <guimenuitem>Edit Item Attributes</guimenuitem></menuchoice>.
+			<step><para>Select an item record in list and click <menuchoice><guimenu>Actions for Selected Rows</guimenu> <guimenuitem>Edit Item Attributes</guimenuitem></menuchoice>.
 			</para></step>
 			<step><para>The Copy Editor will open. Select the required template attributes by moving through fields and clicking <guibutton>Apply</guibutton> 
 			for every edit. </para></step>	
@@ -622,7 +622,7 @@
 <screen>856 40 $u http://lwn.net $y Linux Weekly News $9 BR1</screen>
 				<para>would make this item visible to people searching in a library scope that contains <literal>BR1</literal>.</para>
 				<note><para>You can enter more than one <literal>9</literal> subfield or you can enter the parent organizational unit to make this item visible in more than 
-				one organizatuional unit under the same parent organizational unit.</para></note>
+				one organizational unit under the same parent organizational unit.</para></note>
 			</step>
 		 	
 		 	 <step>
