@@ -8,5 +8,6 @@
     "OK": "Ok",
     "POINT_NEEDS_ONE": "A match point must be exactly one of the following: boolean operator, MARC tag/subfield pair, single-value-field.",
     "FAULTY_MARC": "A MARC tag must be identified by three digits, and the subfield must be one non-whitespace, non-control character.",
-    "WORKING_MP_HERE": "Choose from among the three buttons above to add a new match point."
+    "WORKING_MP_HERE": "Choose from among the three buttons above to add a new match point.",
+    "SVF": "Record Attribute"
 }

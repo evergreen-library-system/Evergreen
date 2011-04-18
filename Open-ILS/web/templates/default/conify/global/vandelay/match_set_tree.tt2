@@ -76,7 +76,7 @@
     </div>
     <div id="vmsp-buttons">
         Add new
-        <button onclick="node_editor.add('svf');">Single-Value-Field</button>
+        <button onclick="node_editor.add('svf');">Record Attribute</button>
         <button onclick="node_editor.add('tag');">MARC Tag and Subfield</button>
         <button onclick="node_editor.add('bool_op');">Boolean Operator</button>
     </div>

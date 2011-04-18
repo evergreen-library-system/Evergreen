@@ -44,7 +44,7 @@ function NodeEditor() {
             dojo.attr(select, "id", "svf-select");
             var label = dojo.create(
                 "label", {
-                    "for": "svf-select", "innerHTML": "Single-Value-Field:"
+                    "for": "svf-select", "innerHTML": localeStrings.SVF + ":"
                 }
             );
 
