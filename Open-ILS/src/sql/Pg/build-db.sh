@@ -76,70 +76,18 @@ EOM
 fi
 
 # ---------------------------------------------------------------------------
-# This describes the order in which the SQL files will be eval'd by psql.
+# Import files via psql, warn user on error, suggest abort.  SQL scripts
+# are processed in the ordered listed in sql_file_manifest.
 # ---------------------------------------------------------------------------
-ordered_file_list="
-  000.functions.general.sql
+cat sql_file_manifest | while read sql_file; do
+  if [ `expr "$sql_file" : "^#"` = 1 ] || [ "$sql_file" = '' ]; then
+    continue;
+  fi
 
-  $fts_config_file
+  if [ $sql_file = 'FTS_CONFIG_FILE' ]; then
+    sql_file=$fts_config_file
+  fi
 
-  001.schema.offline.sql
-
-  002.schema.config.sql
-  002.functions.aggregate.sql
-  002.functions.config.sql
-
-  005.schema.actors.sql
-  006.schema.permissions.sql
-  008.schema.query.sql
-  010.schema.biblio.sql
-  011.schema.authority.sql
-  012.schema.vandelay.sql
-  015.schema.staging.sql
-  020.schema.functions.sql
-  030.schema.metabib.sql
-  040.schema.asset.sql
-  070.schema.container.sql
-  080.schema.money.sql
-  090.schema.action.sql
-  095.schema.booking.sql
- 
-  099.matrix_weights.sql 
-  100.circ_matrix.sql
-  110.hold_matrix.sql
-
-  210.schema.serials.sql
-  200.schema.acq.sql
-  201.acq.audit-functions.sql
-
-  300.schema.staged_search.sql
-  400.schema.action_trigger.sql
-  
-  500.view.cross-schema.sql
-  
-  800.fkeys.sql
-  
-  900.audit-functions.sql
-  901.audit-tables.sql
-  950.data.seed-values.sql
-  951.data.MODS-xsl.sql
-  952.data.MODS3-xsl.sql
-  953.data.MODS32-xsl.sql
-  954.data.MODS33-xsl.sql
-  954.data.marc21expand880.sql
-
-  990.schema.unapi.sql
-  
-  reporter-schema.sql
-  extend-reporter.sql
-
-  999.functions.global.sql
-"
-
-# ---------------------------------------------------------------------------
-# Import files via psql, warn user on error, suggest abort.
-# ---------------------------------------------------------------------------
-for sql_file in $ordered_file_list; do
   # It would be wise to turn this on only if confidence is high that errors in
   # scripts will result in terminal failures.  Currently, there are a couple
   # that seem benign.  --asjoyner
