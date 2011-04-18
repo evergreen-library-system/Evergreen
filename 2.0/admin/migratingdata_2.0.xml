@@ -517,7 +517,7 @@ substring(phone from 10), '(', ''), ')', ''), ' ', '-');
  INSERT INTO actor.usr (
 	profile, usrname, email, passwd, ident_type, ident_value, first_given_name, 
 	family_name, day_phone, home_ou, claims_returned_count, net_access_level) 
-	SELECT profile, students.usrname, email, student_id, ident_type, student_id, 
+	SELECT profile, students.usrname, email, password, ident_type, student_id, 
 	first_name, last_name, phone, home_ou, claims_returned_count, net_access_level 
 	FROM students;
 </programlisting>		
@@ -588,7 +588,7 @@ CREATE TABLE students (
 ); 
 
 --Copy records from your import text file
-COPY students (student_id, last_name, first_name, email, address_type, street1, street2, city, province, country, postal_code, phone) 
+COPY students (student_id, last_name, first_name, email, address_type, street1, street2, city, province, country, postal_code, phone, password) 
 	FROM '/home/opensrf/patrons.csv' 
 		WITH CSV HEADER;  
 
@@ -597,7 +597,7 @@ COPY students (student_id, last_name, first_name, email, address_type, street1, 
 INSERT INTO actor.usr (
 	profile, usrname, email, passwd, ident_type, ident_value, first_given_name, family_name, 
 	day_phone, home_ou, claims_returned_count, net_access_level) 
-	SELECT profile, students.usrname, email, student_id, ident_type, student_id, first_name, 
+	SELECT profile, students.usrname, email, password, ident_type, student_id, first_name, 
 	last_name, phone, home_ou, claims_returned_count, net_access_level FROM students;
 
 --Insert records from the staging table into the actor.usr table.

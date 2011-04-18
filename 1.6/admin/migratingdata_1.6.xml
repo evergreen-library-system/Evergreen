@@ -499,6 +499,16 @@ CREATE TABLE students (
 				table.</para> 		
 			</step>
 			<step>
+				<para>Copy records into staging table from a comma delimited file.</para>
+<programlisting language="sql">
+COPY students (student_id, last_name, first_name, email, address_type, street1, street2, city, province, country, postal_code, phone, password) 
+	FROM '/home/opensrf/patrons.csv' 
+		WITH CSV HEADER;  
+</programlisting>
+				<para>The above script wil vary depending on the format of your patron load file (<filename>patrons.csv</filename>). You may want to review 
+				<link xl:href="http://www.postgresql.org/docs/9.0/static/sql-copy.html" xl:title="PostgreSQL - COPY">PostgreSQL documentation</link></para>  
+			</step>
+			<step>
 				<para>Formatting of some fields to fit Evergreen filed formatting may be required. Here is an example of sql to adjust phone numbers in the staging 
 				table to fit the evergreen field:</para>
 <programlisting language="sql">
@@ -507,13 +517,17 @@ substring(phone from 10), '(', ''), ')', ''), ' ', '-');
 </programlisting>
 				<para>Data <quote>massaging</quote> may be required to fit formats used in Evergreen.</para>
 			</step>
+			
+
+
+
 			<step>
 				<para>Insert records from the staging table into the <link linkend="actor.table.usr">actor.usr</link> Evergreen table:</para>
 <programlisting language="sql">
  INSERT INTO actor.usr (
 	profile, usrname, email, passwd, ident_type, ident_value, first_given_name, 
 	family_name, day_phone, home_ou, claims_returned_count, net_access_level) 
-	SELECT profile, students.usrname, email, student_id, ident_type, student_id, 
+	SELECT profile, students.usrname, email, password, ident_type, student_id, 
 	first_name, last_name, phone, home_ou, claims_returned_count, net_access_level 
 	FROM students;
 </programlisting>			
@@ -596,7 +610,7 @@ CREATE TABLE students (
 
 
 --Copy records from your import text file
-COPY students (student_id, last_name, first_name, email, address_type, street1, street2, city, province, country, postal_code, phone) 
+COPY students (student_id, last_name, first_name, email, address_type, street1, street2, city, province, country, postal_code, phone, password) 
 	FROM '/home/opensrf/patrons.csv' 
 		WITH CSV HEADER;  
 
@@ -604,7 +618,7 @@ COPY students (student_id, last_name, first_name, email, address_type, street1, 
 INSERT INTO actor.usr (
 	profile, usrname, email, passwd, ident_type, ident_value, first_given_name, family_name, 
 	day_phone, home_ou, claims_returned_count, net_access_level) 
-	SELECT profile, students.usrname, email, student_id, ident_type, student_id, first_name, 
+	SELECT profile, students.usrname, email, password, ident_type, student_id, first_name, 
 	last_name, phone, home_ou, claims_returned_count, net_access_level FROM students;
 
 --Insert records from the staging table into the actor.usr table.
