@@ -292,6 +292,35 @@ util.print.prototype = {
                 }
             } catch(E) { dump(E+'\n'); }
 
+            // Substrings
+            try {
+                var match;
+                // Pre-trim inside of substrings, and only inside of them
+                // This keeps the trim commands from being truncated
+                var substr_trim_patt=/(%SUBSTR\(-?\d+,?\s*(-?\d+)?\)%.*?)(\s*%-TRIM%|%TRIM-%\s*)(.*?%SUBSTR_END%)/;
+                while(match = substr_trim_patt.exec(s))
+                    s = s.replace(match[0], match[1] + match[4]);
+                // Then do the substrings themselves
+                var substr_patt=/%SUBSTR\((-?\d+),?\s*(-?\d+)?\)%(.*?)%SUBSTR_END%/;
+                while(match = substr_patt.exec(s)) {
+                    var substring_start = parseInt(match[1]);
+                    if(substring_start < 0) substring_start = match[3].length + substring_start;
+                    var substring_length = parseInt(match[2]);
+                    if(substring_length > 0)
+                        s = s.replace(match[0], match[3].substring(substring_start, substring_start + substring_length));
+                    else if(substring_length < 0)
+                        s = s.replace(match[0], match[3].substring(substring_start + substring_length, substring_start));
+                    else
+                        s = s.replace(match[0], match[3].substring(substring_start));
+                }
+            } catch(E) { dump(E+'\n'); }
+
+            // Cleanup unwanted whitespace
+            try {
+                s = s.replace(/%TRIM-%\s*/g,'');
+                s = s.replace(/\s*%-TRIM%/g,'');
+            } catch(E) { dump(E+'\n'); }
+
             return s;
         } catch(E) {
             alert('Error in print.js, template_sub(): ' + E);

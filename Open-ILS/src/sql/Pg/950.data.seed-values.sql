@@ -1709,7 +1709,7 @@ INSERT into config.org_unit_setting_type
 
 ( 'circ.hold_stalling_hard',
     oils_i18n_gettext('circ.hold_stalling_hard', 'Holds: Hard stalling interval', 'coust', 'label'),
-    oils_i18n_gettext('circ.hold_stalling_hard', '', 'coust', 'description'),
+    oils_i18n_gettext('circ.hold_stalling_hard', 'Holds: Hard stalling interval', 'coust', 'description'),
     'interval'),
 
 ( 'circ.hold_boundary.hard',
@@ -1794,7 +1794,7 @@ INSERT into config.org_unit_setting_type
 
 ( 'circ.charge_lost_on_zero',
     oils_i18n_gettext('circ.charge_lost_on_zero', 'Charge lost on zero', 'coust', 'label'),
-    oils_i18n_gettext('circ.charge_lost_on_zero', '', 'coust', 'description'),
+    oils_i18n_gettext('circ.charge_lost_on_zero', 'Charge lost on zero', 'coust', 'description'),
     'bool'),
 
 ( 'circ.damaged_item_processing_fee',
@@ -1939,17 +1939,17 @@ INSERT into config.org_unit_setting_type
 
 ( 'credit.processor.authorizenet.enabled',
     oils_i18n_gettext('credit.processor.authorizenet.enabled', 'Credit card processing: Enable AuthorizeNet payments', 'coust', 'label'),
-    oils_i18n_gettext('credit.processor.authorizenet.enabled', '', 'coust', 'description'),
+    oils_i18n_gettext('credit.processor.authorizenet.enabled', 'Enable AuthorizeNet payments', 'coust', 'description'),
     'bool'),
 
 ( 'credit.processor.authorizenet.login',
     oils_i18n_gettext('credit.processor.authorizenet.login', 'Credit card processing: AuthorizeNet login', 'coust', 'label'),
-    oils_i18n_gettext('credit.processor.authorizenet.login', '', 'coust', 'description'),
+    oils_i18n_gettext('credit.processor.authorizenet.login', 'AuthorizeNet login', 'coust', 'description'),
     'string'),
 
 ( 'credit.processor.authorizenet.password',
     oils_i18n_gettext('credit.processor.authorizenet.password', 'Credit card processing: AuthorizeNet password', 'coust', 'label'),
-    oils_i18n_gettext('credit.processor.authorizenet.password', '', 'coust', 'description'),
+    oils_i18n_gettext('credit.processor.authorizenet.password', 'AuthorizeNet password', 'coust', 'description'),
     'string'),
 
 ( 'credit.processor.authorizenet.server',
@@ -1959,28 +1959,28 @@ INSERT into config.org_unit_setting_type
 
 ( 'credit.processor.authorizenet.testmode',
     oils_i18n_gettext('credit.processor.authorizenet.testmode', 'Credit card processing: AuthorizeNet test mode', 'coust', 'label'),
-    oils_i18n_gettext('credit.processor.authorizenet.testmode', '', 'coust', 'description'),
+    oils_i18n_gettext('credit.processor.authorizenet.testmode', 'AuthorizeNet test mode', 'coust', 'description'),
     'bool'),
 
 ( 'credit.processor.paypal.enabled',
     oils_i18n_gettext('credit.processor.paypal.enabled', 'Credit card processing: Enable PayPal payments', 'coust', 'label'),
-    oils_i18n_gettext('credit.processor.paypal.enabled', '', 'coust', 'description'),
+    oils_i18n_gettext('credit.processor.paypal.enabled', 'Enable PayPal payments', 'coust', 'description'),
     'bool'),
 ( 'credit.processor.paypal.login',
     oils_i18n_gettext('credit.processor.paypal.login', 'Credit card processing: PayPal login', 'coust', 'label'),
-    oils_i18n_gettext('credit.processor.paypal.login', '', 'coust', 'description'),
+    oils_i18n_gettext('credit.processor.paypal.login', 'PayPal login', 'coust', 'description'),
     'string'),
 ( 'credit.processor.paypal.password',
     oils_i18n_gettext('credit.processor.paypal.password', 'Credit card processing: PayPal password', 'coust', 'label'),
-    oils_i18n_gettext('credit.processor.paypal.password', '', 'coust', 'description'),
+    oils_i18n_gettext('credit.processor.paypal.password', 'PayPal password', 'coust', 'description'),
     'string'),
 ( 'credit.processor.paypal.signature',
     oils_i18n_gettext('credit.processor.paypal.signature', 'Credit card processing: PayPal signature', 'coust', 'label'),
-    oils_i18n_gettext('credit.processor.paypal.signature', '', 'coust', 'description'),
+    oils_i18n_gettext('credit.processor.paypal.signature', 'PayPal signature', 'coust', 'description'),
     'string'),
 ( 'credit.processor.paypal.testmode',
     oils_i18n_gettext('credit.processor.paypal.testmode', 'Credit card processing: PayPal test mode', 'coust', 'label'),
-    oils_i18n_gettext('credit.processor.paypal.testmode', '', 'coust', 'description'),
+    oils_i18n_gettext('credit.processor.paypal.testmode', 'PayPal test mode', 'coust', 'description'),
     'bool'),
 ( 'credit.processor.payflowpro.enabled',
     oils_i18n_gettext('credit.processor.payflowpro.enabled', 'Credit card processing: Enable PayflowPro payments', 'coust', 'label'),
