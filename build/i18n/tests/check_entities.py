@@ -127,7 +127,6 @@ def check_files(entities):
         for root, dirs, files in os.walk(x_dir):
             for x_file in files:
                 if os.path.splitext(x_file)[1] == '.xul' or \
-				   os.path.splitext(x_file)[1] == '.js' or \
 				   os.path.splitext(x_file)[1] == '.html' or \
 				   os.path.splitext(x_file)[1] == '.xhtml':
                     check_xul(root, x_file, entities)
