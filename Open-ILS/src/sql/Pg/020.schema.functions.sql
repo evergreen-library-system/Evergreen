@@ -323,10 +323,8 @@ END;
 $$ LANGUAGE plpgsql STABLE ROWS 1;
 
 COMMENT ON FUNCTION actor.org_unit_ancestor_setting( TEXT, INT) IS $$
-/**
-* Search "up" the org_unit tree until we find the first occurrence of an 
-* org_unit_setting with the given name.
-*/
+Search "up" the org_unit tree until we find the first occurrence of an 
+org_unit_setting with the given name.
 $$;
 
 -- Intended to be used in a unique index on authority.record_entry like so:
@@ -410,10 +408,8 @@ CREATE OR REPLACE FUNCTION authority.normalize_heading( TEXT ) RETURNS TEXT AS $
 $func$ LANGUAGE 'plperlu' IMMUTABLE;
 
 COMMENT ON FUNCTION authority.normalize_heading( TEXT ) IS $$
-/**
-* Extract the authority heading, thesaurus, and NACO-normalized values
-* from an authority record. The primary purpose is to build a unique
-* index to defend against duplicated authority records from the same
-* thesaurus.
-*/
+Extract the authority heading, thesaurus, and NACO-normalized values
+from an authority record. The primary purpose is to build a unique
+index to defend against duplicated authority records from the same
+thesaurus.
 $$;

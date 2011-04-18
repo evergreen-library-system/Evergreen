@@ -915,13 +915,11 @@ END;
 $$ LANGUAGE plpgsql;
 
 COMMENT ON FUNCTION action.apply_fieldset( INT, TEXT, TEXT, TEXT ) IS $$
-/**
- * Applies a specified fieldset, using a supplied table name and primary
- * key name.  The query parameter should be non-null only for
- * query-based fieldsets.
- *
- * Returns NULL if successful, or an error message if not.
- */
+Applies a specified fieldset, using a supplied table name and primary
+key name.  The query parameter should be non-null only for
+query-based fieldsets.
+
+Returns NULL if successful, or an error message if not.
 $$;
 
 

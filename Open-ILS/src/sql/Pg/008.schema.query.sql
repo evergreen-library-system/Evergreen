@@ -1,20 +1,6 @@
--- Script to create the query schema and the tables therein
-
-BEGIN;
-
-DROP SCHEMA IF EXISTS query CASCADE;
-CREATE SCHEMA query;
-COMMENT ON SCHEMA actor IS $$
 /*
  * Copyright (C) 2009  Equinox Software, Inc. / Georgia Public Library Service
  * Scott McKellar <scott@esilibrary.com>
- *
- * Schema: query
- *
- * Contains tables designed to represent user-defined queries for
- * reports and the like.
- *
- * ****
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,6 +12,14 @@ COMMENT ON SCHEMA actor IS $$
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
+
+BEGIN;
+
+DROP SCHEMA IF EXISTS query CASCADE;
+CREATE SCHEMA query;
+COMMENT ON SCHEMA query IS $$
+Contains tables designed to represent user-defined queries for
+reports and the like.
 $$;
 
 CREATE TABLE  query.stored_query (

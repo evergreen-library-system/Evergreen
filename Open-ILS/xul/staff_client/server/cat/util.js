@@ -693,6 +693,13 @@ cat.util.batch_edit_volumes = function(fleshed_volumes) {
 
         if (volumes.length < 1) { return false; }
 
+        volumes = util.functional.map_list( volumes, function(o){
+            if (typeof o.suffix() == 'object') { o.suffix( o.suffix().id() ); }
+            if (typeof o.prefix() == 'object') { o.prefix( o.prefix().id() ); }
+            if (typeof o.label_class() == 'object') { o.label_class( o.label_class().id() ); }
+            return o;
+        });
+
         var r = net.simple_request(
             'FM_ACN_TREE_UPDATE',
             [ ses(), volumes, false, { 'auto_merge_vols' : my_xulG.auto_merge } ],

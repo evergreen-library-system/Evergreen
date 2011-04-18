@@ -1,7 +1,11 @@
 /*
  * Copyright (C) 2004-2008  Georgia Public Library Service
- * Copyright (C) 2008  Equinox Software, Inc.
+ * Copyright (C) 2008-2011  Equinox Software, Inc.
  * Mike Rylander <miker@esilibrary.com>
+ * Copyright (C) 2010 Merrimack Valley Library Consortium
+ * Jason Stephenson <jstephenson@mvlc.org>
+ * Copyright (C) 2010 Laurentian University
+ * Dan Scott <dscott@laurentian.ca>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,25 +29,8 @@ CREATE SCHEMA stats;
 
 CREATE SCHEMA config;
 COMMENT ON SCHEMA config IS $$
-/*
- * Copyright (C) 2005  Georgia Public Library Service 
- * Mike Rylander <mrylander@gmail.com>
- *
- * The config schema holds static configuration data for the
- * Open-ILS installation.
- *
- * ****
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
+The config schema holds static configuration data for the
+Evergreen installation.
 $$;
 
 CREATE TABLE config.internal_flag (
@@ -79,27 +66,10 @@ CREATE TABLE config.bib_source (
 	transcendant	BOOL	NOT NULL DEFAULT FALSE
 );
 COMMENT ON TABLE config.bib_source IS $$
-/*
- * Copyright (C) 2005  Georgia Public Library Service 
- * Mike Rylander <mrylander@gmail.com>
- *
- * Valid sources of MARC records
- *
- * This is table is used to set up the relative "quality" of each
- * MARC source, such as OCLC.
- *
- * ****
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
+This is table is used to set up the relative "quality" of each
+MARC source, such as OCLC.  Also identifies "transcendant" sources,
+i.e., sources of bib records that should display in the OPAC
+even if no copies or located URIs are attached.
 $$;
 
 CREATE TABLE config.standing (
@@ -107,29 +77,12 @@ CREATE TABLE config.standing (
 	value		TEXT	NOT NULL UNIQUE
 );
 COMMENT ON TABLE config.standing IS $$
-/*
- * Copyright (C) 2005  Georgia Public Library Service 
- * Mike Rylander <mrylander@gmail.com>
- *
- * Patron Standings
- *
- * This table contains the values that can be applied to a patron
- * by a staff member.  These values should not be changed, other
- * than for translation, as the ID column is currently a "magic
- * number" in the source. :(
- *
- * ****
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
+Patron Standings
+
+This table contains the values that can be applied to a patron
+by a staff member.  These values should not be changed, other
+than for translation, as the ID column is currently a "magic
+number" in the source. :(
 $$;
 
 CREATE TABLE config.standing_penalty (
@@ -218,29 +171,12 @@ CREATE TABLE config.metabib_field (
     facet_xpath TEXT
 );
 COMMENT ON TABLE config.metabib_field IS $$
-/*
- * Copyright (C) 2005  Georgia Public Library Service 
- * Mike Rylander <mrylander@gmail.com>
- *
- * XPath used for record indexing ingest
- *
- * This table contains the XPath used to chop up MODS into its
- * indexable parts.  Each XPath entry is named and assigned to
- * a "class" of either title, subject, author, keyword or series.
- * 
- *
- * ****
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
+XPath used for record indexing ingest
+
+This table contains the XPath used to chop up MODS into its
+indexable parts.  Each XPath entry is named and assigned to
+a "class" of either title, subject, author, keyword, series
+or identifier.
 $$;
 
 CREATE UNIQUE INDEX config_metabib_field_class_name_idx ON config.metabib_field (field_class, name);
@@ -260,25 +196,7 @@ CREATE TABLE config.non_cataloged_type (
 	CONSTRAINT noncat_once_per_lib UNIQUE (owning_lib,name)
 );
 COMMENT ON TABLE config.non_cataloged_type IS $$
-/*
- * Copyright (C) 2005  Georgia Public Library Service 
- * Mike Rylander <mrylander@gmail.com>
- *
- * Types of valid non-cataloged items.
- *
- *
- * ****
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
+Types of valid non-cataloged items.
 $$;
 
 CREATE TABLE config.identification_type (
@@ -286,28 +204,10 @@ CREATE TABLE config.identification_type (
 	name		TEXT	NOT NULL UNIQUE
 );
 COMMENT ON TABLE config.identification_type IS $$
-/*
- * Copyright (C) 2005  Georgia Public Library Service 
- * Mike Rylander <mrylander@gmail.com>
- *
- * Types of valid patron identification.
- *
- * Each patron must display at least one valid form of identification
- * in order to get a library card.  This table lists those forms.
- * 
- *
- * ****
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
+Types of valid patron identification.
+
+Each patron must display at least one valid form of identification
+in order to get a library card.  This table lists those forms.
 $$;
 
 CREATE TABLE config.rule_circ_duration (
@@ -319,27 +219,9 @@ CREATE TABLE config.rule_circ_duration (
 	max_renewals	INT		NOT NULL
 );
 COMMENT ON TABLE config.rule_circ_duration IS $$
-/*
- * Copyright (C) 2005  Georgia Public Library Service 
- * Mike Rylander <mrylander@gmail.com>
- *
- * Circulation Duration rules
- *
- * Each circulation is given a duration based on one of these rules.
- * 
- *
- * ****
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
+Circulation Duration rules
+
+Each circulation is given a duration based on one of these rules.
 $$;
 
 CREATE TABLE config.hard_due_date (
@@ -390,28 +272,10 @@ CREATE TABLE config.rule_max_fine (
     is_percent  BOOL            NOT NULL DEFAULT FALSE
 );
 COMMENT ON TABLE config.rule_max_fine IS $$
-/*
- * Copyright (C) 2005  Georgia Public Library Service 
- * Mike Rylander <mrylander@gmail.com>
- *
- * Circulation Max Fine rules
- *
- * Each circulation is given a maximum fine based on one of
- * these rules.
- * 
- *
- * ****
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
+Circulation Max Fine rules
+
+Each circulation is given a maximum fine based on one of
+these rules.
 $$;
 
 CREATE TABLE config.rule_recurring_fine (
@@ -424,30 +288,13 @@ CREATE TABLE config.rule_recurring_fine (
     grace_period       INTERVAL         NOT NULL DEFAULT '1 day'::INTERVAL
 );
 COMMENT ON TABLE config.rule_recurring_fine IS $$
-/*
- * Copyright (C) 2005  Georgia Public Library Service 
- * Mike Rylander <mrylander@gmail.com>
- *
- * Circulation Recurring Fine rules
- *
- * Each circulation is given a recurring fine amount based on one of
- * these rules.  The recurrence_interval should not be any shorter
- * than the interval between runs of the fine_processor.pl script
- * (which is run from CRON), or you could miss fines.
- * 
- *
- * ****
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
+Circulation Recurring Fine rules
+
+Each circulation is given a recurring fine amount based on one of
+these rules.  Note that it is recommended to run the fine generator
+(from cron) at least as frequently as the lowest recurrence interval
+used by your circulation rules so that accrued fines will be up
+to date.
 $$;
 
 
@@ -458,31 +305,15 @@ CREATE TABLE config.rule_age_hold_protect (
 	prox	INT		NOT NULL
 );
 COMMENT ON TABLE config.rule_age_hold_protect IS $$
-/*
- * Copyright (C) 2005  Georgia Public Library Service 
- * Mike Rylander <mrylander@gmail.com>
- *
- * Hold Item Age Protection rules
- *
- * A hold request can only capture new(ish) items when they are
- * within a particular proximity of the home_ou of the requesting
- * user.  The proximity ('prox' column) is calculated by counting
- * the number of tree edges between the user's home_ou and the owning_lib
- * of the copy that could fulfill the hold.
- * 
- *
- * ****
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
+Hold Item Age Protection rules
+
+A hold request can only capture new(ish) items when they are
+within a particular proximity of the pickup_lib of the request.
+The proximity ('prox' column) is calculated by counting
+the number of tree edges between the pickup_lib and either the
+owning_lib or circ_lib of the copy that could fulfill the hold,
+as determined by the distance_is_from_owner value of the hold matrix
+rule controlling the hold request.
 $$;
 
 CREATE TABLE config.copy_status (
@@ -492,38 +323,21 @@ CREATE TABLE config.copy_status (
 	opac_visible	BOOL	NOT NULL DEFAULT FALSE
 );
 COMMENT ON TABLE config.copy_status IS $$
-/*
- * Copyright (C) 2005  Georgia Public Library Service 
- * Mike Rylander <mrylander@gmail.com>
- *
- * Copy Statuses
- *
- * The available copy statuses, and whether a copy in that
- * status is available for hold request capture.  0 (zero) is
- * the only special number in this set, meaning that the item
- * is available for immediate checkout, and is counted as available
- * in the OPAC.
- *
- * Statuses with an ID below 100 are not removable, and have special
- * meaning in the code.  Do not change them except to translate the
- * textual name.
- *
- * You may add and remove statuses above 100, and these can be used
- * to remove items from normal circulation without affecting the rest
- * of the copy's values or its location.
- *
- * ****
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
+Copy Statuses
+
+The available copy statuses, and whether a copy in that
+status is available for hold request capture.  0 (zero) is
+the only special number in this set, meaning that the item
+is available for immediate checkout, and is counted as available
+in the OPAC.
+
+Statuses with an ID below 100 are not removable, and have special
+meaning in the code.  Do not change them except to translate the
+textual name.
+
+You may add and remove statuses above 100, and these can be used
+to remove items from normal circulation without affecting the rest
+of the copy's values or its location.
 $$;
 
 CREATE TABLE config.net_access_level (
@@ -531,27 +345,10 @@ CREATE TABLE config.net_access_level (
 	name	TEXT		NOT NULL UNIQUE
 );
 COMMENT ON TABLE config.net_access_level IS $$
-/*
- * Copyright (C) 2005  Georgia Public Library Service 
- * Mike Rylander <mrylander@gmail.com>
- *
- * Patron Network Access level
- *
- * This will be used to inform the in-library firewall of how much
- * internet access the using patron should be allowed.
- *
- * ****
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
+Patron Network Access level
+
+This will be used to inform the in-library firewall of how much
+internet access the using patron should be allowed.
 $$;
 
 
@@ -808,15 +605,10 @@ CREATE OR REPLACE FUNCTION public.force_to_isbn13( TEXT ) RETURNS TEXT AS $func$
 $func$ LANGUAGE PLPERLU;
 
 COMMENT ON FUNCTION public.force_to_isbn13(TEXT) IS $$
-/*
- * Copyright (C) 2011 Equinox Software
- * Mike Rylander <mrylander@gmail.com>
- *
- * Inspired by translate_isbn1013
- *
- * The force_to_isbn13 function takes an input ISBN and returns the ISBN13
- * version without hypens and with a repaired checksum if the checksum was bad
- */
+Inspired by translate_isbn1013
+
+The force_to_isbn13 function takes an input ISBN and returns the ISBN13
+version without hypens and with a repaired checksum if the checksum was bad
 $$;
 
 
@@ -860,18 +652,11 @@ CREATE OR REPLACE FUNCTION public.translate_isbn1013( TEXT ) RETURNS TEXT AS $fu
 $func$ LANGUAGE PLPERLU;
 
 COMMENT ON FUNCTION public.translate_isbn1013(TEXT) IS $$
-/*
- * Copyright (C) 2010 Merrimack Valley Library Consortium
- * Jason Stephenson <jstephenson@mvlc.org>
- * Copyright (C) 2010 Laurentian University
- * Dan Scott <dscott@laurentian.ca>
- *
- * The translate_isbn1013 function takes an input ISBN and returns the
- * following in a single space-delimited string if the input ISBN is valid:
- *   - The normalized input ISBN (hyphens stripped)
- *   - The normalized input ISBN with a fixed checksum if the checksum was bad
- *   - The ISBN converted to its ISBN10 or ISBN13 counterpart, if possible
- */
+The translate_isbn1013 function takes an input ISBN and returns the
+following in a single space-delimited string if the input ISBN is valid:
+  - The normalized input ISBN (hyphens stripped)
+  - The normalized input ISBN with a fixed checksum if the checksum was bad
+  - The ISBN converted to its ISBN10 or ISBN13 counterpart, if possible
 $$;
 
 -- And ... a table in which to register them
