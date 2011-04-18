@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<glossary xml:id="Glossary" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xl="http://www.w3.org/1999/xlink">
+<glossary xml:id="Glossary"	xmlns="http://docbook.org/ns/docbook"
+				xmlns:xi="http://www.w3.org/2001/XInclude"
+				xmlns:xl="http://www.w3.org/1999/xlink">
 	<title>Glossary</title>
 	<abstract>
 		<para>In this section we expand acronyms, define terms, and generally try
@@ -87,12 +89,14 @@
 				<secondary>Debian</secondary>
 			</indexterm>
 			<glossdef>
-				<para>One of the most popular open-source operating system using the
+				<para>One of the most popular open-source operating system based on the
 				<systemitem class="osname">Linux</systemitem> kernel that provides
 				over 25000 useful precompiled software packages. Also known as
 				<systemitem class="osname">Debian GNU/Linux</systemitem>. More
 				information is available at
 				<ulink url="http://www.debian.org">http://www.debian.org</ulink>.</para>
+				<glossseealso otherterm="Fedora"/>
+				<glossseealso otherterm="Ubuntu"/>
 			</glossdef>
 		</glossentry>
 		<glossentry>
@@ -137,7 +141,21 @@
 	</glossdiv>
 	<glossdiv>
 		<title>F</title>
-		<glossentry></glossentry>
+		<glossentry xml:id="Fedora">
+			<glossterm>Fedora</glossterm>
+			<indexterm>
+				<primary>Linux</primary>
+				<secondary>Fedora</secondary>
+			</indexterm>
+			<glossdef>
+				<para>A popular open-source operating system based on the
+				<systemitem class="osname">Linux</systemitem> kernel.
+				More information is available at
+				<ulink url="http://http://fedoraproject.org/">http://fedoraproject.org/</ulink>.</para>
+				<glossseealso otherterm="Debian"/>
+				<glossseealso otherterm="Ubuntu"/>
+			</glossdef>
+		</glossentry>
 	</glossdiv>
 	<glossdiv>
 		<title>G</title>
@@ -325,7 +343,8 @@
 				<primary>Perl</primary>
 			</indexterm>
 			<glossdef>
-				<para>The high-level scripting language in which most of the business logic of Evergreen is written.</para>
+				<para>The high-level scripting language in which most of the business logic of
+				Evergreen is written.</para>
 				<glossseealso otherterm="CPAN"/>
 			</glossdef>
 		</glossentry>
@@ -518,6 +537,17 @@
 				<glossseealso otherterm="PKI"/>
 			</glossdef>
 		</glossentry>
+		<glossentry xml:id="SuperCat">
+			<glossterm>SuperCat</glossterm>
+			<indexterm>
+				<primary>SuperCat</primary>
+			</indexterm>
+			<glossdef>
+				<para>A popular commercial utility used to catalog, search and manage the
+				contents of media such as CDs and DVDs.</para>
+				<glossseealso otherterm="PKI"/>
+			</glossdef>
+		</glossentry>
 	</glossdiv>
 	<glossdiv>
 		<title>T</title>
@@ -550,13 +580,14 @@
 				<secondary>Ubuntu</secondary>
 			</indexterm>
 			<glossdef>
-				<para>A popular open-source operating system using the
+				<para>A popular open-source operating system based on the
 				<systemitem class="osname">Linux</systemitem> kernel that was
 				originally based on the
 				<systemitem class="osname">Debian GNU/Linux</systemitem>
 				operating system. More information is available at
 				<ulink url="http://www.ubuntu.com">http://www.ubuntu.com</ulink>.</para>
 				<glossseealso otherterm="Debian"/>
+				<glossseealso otherterm="Fedora"/>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
