@@ -60,7 +60,7 @@
 		my @ranks;
 		for my $fts ( $self->fts_query ) {
 			push @output, join(' ', $self->fts_col, $self->{fts_op}, $fts);
-			push @ranks, "rank($column, $fts)";
+			push @ranks, "ts_rank($column, $fts)";
 		}
 		$self->{fts_rank} = \@ranks;
 	

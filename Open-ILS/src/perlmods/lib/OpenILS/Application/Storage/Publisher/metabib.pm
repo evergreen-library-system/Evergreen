@@ -2368,11 +2368,13 @@ sub staged_fts {
 
     }
 
+    my $config = OpenSRF::Utils::SettingsClient->new();
+
     if (!$default_preferred_language) {
 
-        $default_preferred_language = OpenSRF::Utils::SettingsClient
-            ->new
-            ->config_value(
+        $default_preferred_language = $config->config_value(
+                apps => 'open-ils.search' => app_settings => 'default_preferred_language'
+        ) || $config->config_value(
                 apps => 'open-ils.storage' => app_settings => 'default_preferred_language'
         );
 
@@ -2380,12 +2382,11 @@ sub staged_fts {
 
     if (!$default_preferred_language_weight) {
 
-        $default_preferred_language_weight = OpenSRF::Utils::SettingsClient
-            ->new
-            ->config_value(
+        $default_preferred_language_weight = $config->config_value(
+                apps => 'open-ils.storage' => app_settings => 'default_preferred_language_weight'
+        ) || $config->config_value(
                 apps => 'open-ils.storage' => app_settings => 'default_preferred_language_weight'
         );
-
     }
 
     # inclusion, exclusion, delete_adjusted_inclusion, delete_adjusted_exclusion
@@ -2842,6 +2843,11 @@ sub query_parser_fts {
 		die "No query was passed to ".$self->api_name;
 	}
 
+    my $default_CD_modifiers = OpenSRF::Utils::SettingsClient->new->config_value(
+        apps => 'open-ils.search' => app_settings => 'default_CD_modifiers'
+    );
+    $args{query} = "$default_CD_modifiers $args{query}" if ($default_CD_modifiers);
+
 
     my $simple_plan = $args{_simple_plan};
     # remove bad chunks of the %args hash
@@ -2854,31 +2860,45 @@ sub query_parser_fts {
     # we expect, and make use of, query, superpage, superpage_size, debug and core_limit args
     my $query = $parser->new( %args )->parse;
 
+    my $config = OpenSRF::Utils::SettingsClient->new();
 
     # set the locale-based default prefered location
     if (!$query->parse_tree->find_filter('preferred_language')) {
         $parser->default_preferred_language( $args{preferred_language} );
+
         if (!$parser->default_preferred_language) {
 		    my $ses_locale = $client->session ? $client->session->session_locale : '';
             $parser->default_preferred_language( $locale_map{ lc($ses_locale) } );
         }
-        $parser->default_preferred_language(
-            OpenSRF::Utils::SettingsClient->new->config_value(
+
+        if (!$parser->default_preferred_language) { # still nothing...
+            my $tmp_dpl = $config->config_value(
+                apps => 'open-ils.search' => app_settings => 'default_preferred_language'
+            ) || $config->config_value(
                 apps => 'open-ils.storage' => app_settings => 'default_preferred_language'
-            )
-        ) if (!$parser->default_preferred_language);
+            );
+
+            $parser->default_preferred_language( $tmp_dpl )
+        }
     }
 
 
     # set the global default language multiplier
     if (!$query->parse_tree->find_filter('preferred_language_weight') and !$query->parse_tree->find_filter('preferred_language_multiplier')) {
-        $parser->default_preferred_language_multiplier($args{preferred_language_weight});
-        $parser->default_preferred_language_multiplier($args{preferred_language_multiplier});
-        $parser->default_preferred_language_multiplier(
-            OpenSRF::Utils::SettingsClient->new->config_value(
+        my $tmp_dplw;
+
+        if ($tmp_dplw = $args{preferred_language_weight} || $args{preferred_language_multiplier} ) {
+            $parser->default_preferred_language_multiplier($tmp_dplw);
+
+        } else {
+            $tmp_dplw = $config->config_value(
+                apps => 'open-ils.search' => app_settings => 'default_preferred_language_weight'
+            ) || $config->config_value(
                 apps => 'open-ils.storage' => app_settings => 'default_preferred_language_weight'
-            )
-        ) if (!$parser->default_preferred_language_multiplier);
+            );
+
+            $parser->default_preferred_language_multiplier( $tmp_dplw );
+        }
     }
 
     # gather the site, if one is specified, defaulting to the in-query version
