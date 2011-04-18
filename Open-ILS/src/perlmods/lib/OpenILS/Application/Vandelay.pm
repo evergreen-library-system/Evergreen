@@ -1111,7 +1111,12 @@ __PACKAGE__->register_method(
     api_name    => "open-ils.vandelay.match_set.get_tree",
     method      => "match_set_get_tree",
     api_level   => 1,
-    argc        => 1
+    argc        => 2,
+    signature   => {
+        desc    => q/For a given vms object, return a tree of match set points
+                    represented by a vmsp object with recursively fleshed
+                    children./
+    }
 );
 
 sub match_set_get_tree {
@@ -1136,5 +1141,63 @@ sub match_set_get_tree {
     return pop @$tree;
 }
 
+
+__PACKAGE__->register_method(
+    api_name    => "open-ils.vandelay.match_set.update",
+    method      => "match_set_update_tree",
+    api_level   => 1,
+    argc        => 3,
+    signature   => {
+        desc => q/Replace any vmsp objects associated with a given (by ID) vms
+                with the given objects (recursively fleshed vmsp tree)./
+    }
+);
+
+sub _walk_new_vmsp {
+    my ($e, $match_set_id, $node, $parent_id) = @_;
+
+    my $point = new Fieldmapper::vandelay::match_set_point;
+    $point->parent($parent_id);
+    $point->match_set($match_set_id);
+    $point->$_($node->$_) for (qw/bool_op svf tag subfield negate quality/);
+
+    $e->create_vandelay_match_set_point($point) or return $e->die_event;
+
+    $parent_id = $e->data->id;
+    if ($node->children && @{$node->children}) {
+        for (@{$node->children}) {
+            return $e->die_event if
+                _walk_new_vmsp($e, $match_set_id, $_, $parent_id);
+        }
+    }
+
+    return;
+}
+
+sub match_set_update_tree {
+    my ($self, $conn, $authtoken, $match_set_id, $tree) = @_;
+
+    my $e = new_editor("xact" => 1, "authtoken" => $authtoken);
+    $e->checkauth or return $e->die_event;
+
+    my $set = $e->retrieve_vandelay_match_set($match_set_id) or
+        return $e->die_event;
+
+    $e->allowed("ADMIN_IMPORT_MATCH_SET", $set->owner) or
+        return $e->die_event;
+
+    my $existing = $e->search_vandelay_match_set_point([
+        {"match_set" => $match_set_id},
+        {"order_by" => {"vmsp" => "id DESC"}}
+    ]) or return $e->die_event;
+
+    foreach (@$existing) {
+        $e->delete_vandelay_match_set_point($_) or return $e->die_event;
+    }
+
+    _walk_new_vmsp($e, $match_set_id, $tree);
+
+    $e->commit or return $e->die_event;
+}
 
 1;
