@@ -37,10 +37,8 @@ END;
 $$ LANGUAGE plpgsql;
 
 COMMENT ON FUNCTION actor.usr_merge_rows(TEXT, TEXT, INT, INT) IS $$
-/**
- * Attempts to move each row of the specified table from src_user to dest_user.  
- * Where conflicts exist, the conflicting "source" row is deleted.
- */
+Attempts to move each row of the specified table from src_user to dest_user.  
+Where conflicts exist, the conflicting "source" row is deleted.
 $$;
 
 
@@ -360,10 +358,8 @@ END;
 $$ LANGUAGE plpgsql;
 
 COMMENT ON FUNCTION actor.usr_merge(INT, INT, BOOLEAN, BOOLEAN, BOOLEAN) IS $$
-/**
- * Merges all user date from src_usr to dest_usr.  When collisions occur, 
- * keep dest_usr's data and delete src_usr's data.
- */
+Merges all user date from src_usr to dest_usr.  When collisions occur, 
+keep dest_usr's data and delete src_usr's data.
 $$;
 
 
@@ -692,10 +688,8 @@ END;
 $$ LANGUAGE plpgsql;
 
 COMMENT ON FUNCTION actor.usr_purge_data(INT, INT) IS $$
-/**
- * Finds rows dependent on a given row in actor.usr and either deletes them
- * or reassigns them to a different user.
- */
+Finds rows dependent on a given row in actor.usr and either deletes them
+or reassigns them to a different user.
 $$;
 
 
@@ -814,10 +808,8 @@ END;
 $$ LANGUAGE plpgsql;
 
 COMMENT ON FUNCTION actor.usr_delete(INT, INT) IS $$
-/**
- * Logically deletes a user.  Removes personally identifiable information,
- * and purges associated data in other tables.
- */
+Logically deletes a user.  Removes personally identifiable information,
+and purges associated data in other tables.
 $$;
 
 
@@ -840,10 +832,8 @@ END
 $$ LANGUAGE plpgsql;
 
 COMMENT ON FUNCTION actor.approve_pending_address(INT) IS $$
-/**
- * Replaces an address with a pending address.  This is done by giving the pending 
- * address the ID of the old address.  The replaced address is retained with -id.
- */
+Replaces an address with a pending address.  This is done by giving the pending 
+address the ID of the old address.  The replaced address is retained with -id.
 $$;
 
 CREATE OR REPLACE FUNCTION container.clear_expired_circ_history_items( 
@@ -904,11 +894,9 @@ END;
 $$ LANGUAGE plpgsql;
 
 COMMENT ON FUNCTION container.clear_expired_circ_history_items( INTEGER ) IS $$
-/*
- * Delete old circulation bucket items for a specified user.
- * "Old" means older than the interval specified by a
- * user-level setting, if it is so specified.
-*/
+Delete old circulation bucket items for a specified user.
+"Old" means older than the interval specified by a
+user-level setting, if it is so specified.
 $$;
 
 CREATE OR REPLACE FUNCTION container.clear_all_expired_circ_history_items( )
@@ -966,10 +954,8 @@ END;
 $$ LANGUAGE plpgsql;
 
 COMMENT ON FUNCTION container.clear_all_expired_circ_history_items( ) IS $$
-/*
- * Delete expired circulation bucket items for all users that have
- * a setting for patron.max_reading_list_interval.
-*/
+Delete expired circulation bucket items for all users that have
+a setting for patron.max_reading_list_interval.
 $$;
 
 CREATE OR REPLACE FUNCTION asset.merge_record_assets( target_record BIGINT, source_record BIGINT ) RETURNS INT AS $func$
