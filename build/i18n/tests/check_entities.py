@@ -124,7 +124,7 @@ def check_files(entities):
     xul_files = []
 
     for x_dir in XML_DIRS:
-        for root, dirs, files in os.walk(x_dir):
+        for root, dirs, files in os.walk(os.path.join(basedir, x_dir)):
             for x_file in files:
                 if os.path.splitext(x_file)[1] == '.xul' or \
 				   os.path.splitext(x_file)[1] == '.html' or \

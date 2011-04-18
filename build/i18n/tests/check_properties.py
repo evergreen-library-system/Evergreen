@@ -113,7 +113,7 @@ def check_xul_files(props):
     xul_files = []
 
     for x_dir in XUL_DIRS:
-        for root, dirs, files in os.walk(x_dir):
+        for root, dirs, files in os.walk(os.path.join(basedir, x_dir)):
             for x_file in files:
                 if os.path.splitext(x_file)[1] == '.xul' or os.path.splitext(x_file)[1] == '.js':
                     check_xul(root, x_file, props)
