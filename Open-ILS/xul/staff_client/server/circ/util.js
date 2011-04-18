@@ -1948,6 +1948,24 @@ circ.util.hold_columns = function(modify,params) {
         },
         {
             'persist' : 'hidden width ordinal',
+            'id' : 'holdable_part',
+            'label' : document.getElementById('commonStrings').getString('staff.ahr_holdable_part_label'),
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false, 'render' : function(my) { return my.part.label(); }
+        },
+        {
+            'persist' : 'hidden width ordinal',
+            'id' : 'issuance_label',
+            'label' : document.getElementById('commonStrings').getString('staff.ahr_issuance_label_label'),
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false, 'render' : function(my) { return my.issuance.label(); }
+        },
+        {
+            'persist' : 'hidden width ordinal',
             'id' : 'ahr_id',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_id_label'),
             'flex' : 1,

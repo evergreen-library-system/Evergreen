@@ -476,6 +476,65 @@ vim:et:ts=4:sw=4:
                     -->
                     <estimation_strategy>inclusion</estimation_strategy>
 
+                    <!--
+                        Evergreen uses a cover density algorithm for calculating relative ranking of matches.  There
+                        are several tuning parameters and options available.  By default, no document length normalization
+                        is applied.  From the Postgres documentation on ts_rank_cd() (the function used by Evergreen):
+
+                            Since a longer document has a greater chance of containing a query term it is reasonable 
+                            to take into account document size, e.g., a hundred-word document with five instances of 
+                            a search word is probably more relevant than a thousand-word document with five instances. 
+                            Both ranking functions take an integer normalization option that specifies whether and how 
+                            a document's length should impact its rank. The integer option controls several behaviors, 
+                            so it is a bit mask: you can specify one or more behaviors using | (for example, 2|4).
+
+                                0 (the default) ignores the document length
+
+                                1 divides the rank by 1 + the logarithm of the document length
+
+                                2 divides the rank by the document length
+
+                                4 divides the rank by the mean harmonic distance between extents (this is implemented only by ts_rank_cd)
+
+                                8 divides the rank by the number of unique words in document
+
+                                16 divides the rank by 1 + the logarithm of the number of unique words in document
+
+                                32 divides the rank by itself + 1
+
+                            If more than one flag bit is specified, the transformations are applied in the order listed.
+
+                            It is important to note that the ranking functions do not use any global information, so it 
+                            is impossible to produce a fair normalization to 1% or 100% as sometimes desired. Normalization 
+                            option 32 (rank/(rank+1)) can be applied to scale all ranks into the range zero to one, but of 
+                            course this is just a cosmetic change; it will not affect the ordering of the search results.
+
+                        In Evergreen, these options are set via search modifiers.  The modifiers are mapped in the
+                        following way:
+
+                            * #CD_logDocumentLength  => 1  :: rank / (1 + LOG(total_word_count))   :: Longer documents slightly less relevant
+                            * #CD_documentLength     => 2  :: rank / total_word_count              :: Longer documents much less relevant
+                            * #CD_meanHarmonic       => 4  :: Word Proximity                       :: Greater matched-word distance is less relevant
+                            * #CD_uniqueWords        => 8  :: rank / unique_word_count             :: Documents with repeated words much less relevant
+                            * #CD_logUniqueWords     => 16 :: rank / (1 + LOG(unique_word_count))  :: Documents with repeated words slightly less relevant
+                            * #CD_selfPlusOne        => 32 :: rank / (1 + rank)                    :: Cosmetic normalization of rank value between 0 and 1
+
+                        Adding one or more of these to the default_CD_modifiers list will cause all searches that use QueryParser to apply them.
+                    -->
+                    <default_CD_modifiers>#CD_documentLength #CD_meanHarmonic #CD_uniqueWords</default_CD_modifiers>
+
+                    <!--
+                        default_preferred_language
+                            Set the global, default preferred languange
+                    -->
+                    <default_preferred_language>eng</default_preferred_language>
+
+                    <!--
+                        default_preferred_language_weight
+                            Set the weight (higher is "better") for the preferred language. Comment out to remove all lanuage weighting by default.
+                    -->
+                    <default_preferred_language_weight>5</default_preferred_language_weight>
+
                     <!-- Baseline number of records to check for hit estimation. -->
                     <superpage_size>1000</superpage_size>
 
@@ -798,12 +857,6 @@ vim:et:ts=4:sw=4:
                     <max_spare_children>5</max_spare_children>
                 </unix_config>
                 <app_settings>
-                    <!-- default_preferred_language: Set the global, default preferred languange -->
-                    <default_preferred_language>eng</default_preferred_language>
-
-                    <!-- default_preferred_language_weight: Set the weight (higher is "better") for the preferred language -->
-                    <default_preferred_language_weight>5</default_preferred_language_weight>
-
                     <script_path>LIBDIR/javascript/</script_path>
                     <script_path>LOCALSTATEDIR/catalog/</script_path>
                     <scripts>

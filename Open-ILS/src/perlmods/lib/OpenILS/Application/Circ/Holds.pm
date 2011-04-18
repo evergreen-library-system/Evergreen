@@ -2741,6 +2741,25 @@ sub all_rec_holds {
 			%$args 
 		}, {idlist=>1} );
 
+    $resp->{part_holds} = $e->search_action_hold_request(
+        {
+			hold_type => OILS_HOLD_TYPE_MONOPART,
+			target => $title_id,
+			%$args
+        }, {idlist=>1} );
+
+    my $subs = $e->search_serial_subscription(
+        { record_entry => $title_id }, {idlist=>1});
+    my $issuances = $e->search_serial_issuance(
+        { subscription => $subs }, {idlist=>1});
+
+    $resp->{issuance_holds} = $e->search_action_hold_request(
+        {
+			hold_type => OILS_HOLD_TYPE_ISSUANCE,
+            target => $issuances,
+            %$args
+        }, {idlist=>1} );
+
 	my $vols = $e->search_asset_call_number(
 		{ record => $title_id, deleted => 'f' }, {idlist=>1});
 
@@ -2898,9 +2917,8 @@ sub find_hold_mvr {
         $tid = $issuance->subscription->record_entry;
 
     } elsif( $hold->hold_type eq OILS_HOLD_TYPE_MONOPART ) {
-        $part = $e->retrieve_biblio_monographic_part([
-            $hold->target,
-            {flesh => 1, flesh_fields => {bmp => [ qw/record/ ]}}
+        $part = $e->retrieve_biblio_monograph_part([
+            $hold->target
         ]) or return $e->event;
 
         $tid = $part->record;

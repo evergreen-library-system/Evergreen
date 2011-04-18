@@ -894,7 +894,7 @@ sub rank {
     }
 
     return $self->{rank} if ($self->{rank});
-    return $self->{rank} = 'rank_cd(' . $self->table_alias . '.index_vector, ' . $self->table_alias . ".tsq, $cover_density)";
+    return $self->{rank} = 'ts_rank_cd(' . $self->table_alias . '.index_vector, ' . $self->table_alias . ".tsq, $cover_density)";
 }
 
 
