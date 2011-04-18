@@ -1,17 +1,8 @@
-DROP SCHEMA IF EXISTS actor CASCADE;
-
-BEGIN;
-CREATE SCHEMA actor;
-COMMENT ON SCHEMA actor IS $$
 /*
  * Copyright (C) 2005-2008  Equinox Software, Inc. / Georgia Public Library Service 
  * Mike Rylander <mrylander@gmail.com>
- *
- * Schema: actor
- *
- * Holds all tables pertaining to users and libraries (org units).
- *
- * ****
+ * Copyright (C) 2010 Laurentian University
+ * Dan Scott <dscott@laurentian.ca>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,6 +14,13 @@ COMMENT ON SCHEMA actor IS $$
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
+
+DROP SCHEMA IF EXISTS actor CASCADE;
+
+BEGIN;
+CREATE SCHEMA actor;
+COMMENT ON SCHEMA actor IS $$
+Holds all tables pertaining to users and libraries (org units).
 $$;
 
 CREATE TABLE actor.usr (
@@ -68,28 +66,11 @@ CREATE TABLE actor.usr (
 	claims_never_checked_out_count  INT         NOT NULL DEFAULT 0
 );
 COMMENT ON TABLE actor.usr IS $$
-/*
- * Copyright (C) 2005-2008  Equinox Software, Inc. / Georgia Public Library Service 
- * Mike Rylander <mrylander@gmail.com>
- *
- * User objects
- *
- * This table contains the core User objects that describe both
- * staff members and patrons.  The difference between the two
- * types of users is based on the user's permissions.
- *
- * ****
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
+User objects
+
+This table contains the core User objects that describe both
+staff members and patrons.  The difference between the two
+types of users is based on the user's permissions.
 $$;
 
 CREATE INDEX actor_usr_home_ou_idx ON actor.usr (home_ou);
@@ -156,27 +137,10 @@ CREATE TABLE actor.usr_setting (
 	CONSTRAINT usr_once_per_key UNIQUE (usr,name)
 );
 COMMENT ON TABLE actor.usr_setting IS $$
-/*
- * Copyright (C) 2005-2008  Equinox Software, Inc. / Georgia Public Library Service 
- * Mike Rylander <mrylander@gmail.com>
- *
- * User settings
- *
- * This table contains any arbitrary settings that a client
- * program would like to save for a user.
- *
- * ****
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
+User settings
+
+This table contains any arbitrary settings that a client
+program would like to save for a user.
 $$;
 
 CREATE INDEX actor_usr_setting_usr_idx ON actor.usr_setting (usr);
@@ -191,27 +155,10 @@ CREATE TABLE actor.stat_cat (
 	CONSTRAINT sc_once_per_owner UNIQUE (owner,name)
 );
 COMMENT ON TABLE actor.stat_cat IS $$
-/*
- * Copyright (C) 2005-2008  Equinox Software, Inc. / Georgia Public Library Service 
- * Mike Rylander <mrylander@gmail.com>
- *
- * User Statistical Catagories
- *
- * Local data collected about Users is placed into a Statistical
- * Catagory.  Here's where those catagories are defined.
- *
- * ****
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
+User Statistical Catagories
+
+Local data collected about Users is placed into a Statistical
+Catagory.  Here's where those catagories are defined.
 $$;
 
 
@@ -223,29 +170,11 @@ CREATE TABLE actor.stat_cat_entry (
 	CONSTRAINT sce_once_per_owner UNIQUE (stat_cat,owner,value)
 );
 COMMENT ON TABLE actor.stat_cat_entry IS $$
-/*
- * Copyright (C) 2005-2008  Equinox Software, Inc. / Georgia Public Library Service 
- * Mike Rylander <mrylander@gmail.com>
- *
- * User Statistical Catagory Entries
- *
- * Local data collected about Users is placed into a Statistical
- * Catagory.  Each library can create entries into any of its own
- * stat_cats, its ancestors' stat_cats, or its descendants' stat_cats.
- *
- *
- * ****
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
+User Statistical Catagory Entries
+
+Local data collected about Users is placed into a Statistical
+Catagory.  Each library can create entries into any of its own
+stat_cats, its ancestors' stat_cats, or its descendants' stat_cats.
 $$;
 
 
@@ -257,27 +186,9 @@ CREATE TABLE actor.stat_cat_entry_usr_map (
 	CONSTRAINT sc_once_per_usr UNIQUE (target_usr,stat_cat)
 );
 COMMENT ON TABLE actor.stat_cat_entry_usr_map IS $$
-/*
- * Copyright (C) 2005-2008  Equinox Software, Inc. / Georgia Public Library Service 
- * Mike Rylander <mrylander@gmail.com>
- *
- * Statistical Catagory Entry to User map
- *
- * Records the stat_cat entries for each user.
- *
- *
- * ****
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
+Statistical Catagory Entry to User map
+
+Records the stat_cat entries for each user.
 $$;
 
 CREATE INDEX actor_stat_cat_entry_usr_idx ON actor.stat_cat_entry_usr_map (target_usr);
@@ -289,30 +200,12 @@ CREATE TABLE actor.card (
 	active	BOOL	NOT NULL DEFAULT TRUE
 );
 COMMENT ON TABLE actor.card IS $$
-/*
- * Copyright (C) 2005-2008  Equinox Software, Inc. / Georgia Public Library Service 
- * Mike Rylander <mrylander@gmail.com>
- *
- * Library Cards
- *
- * Each User has one or more library cards.  The current "main"
- * card is linked to here from the actor.usr table, and it is up
- * to the consortium policy whether more than one card can be
- * active for any one user at a given time.
- *
- *
- * ****
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
+Library Cards
+
+Each User has one or more library cards.  The current "main"
+card is linked to here from the actor.usr table, and it is up
+to the consortium policy whether more than one card can be
+active for any one user at a given time.
 $$;
 
 CREATE INDEX actor_card_usr_idx ON actor.card (usr);
@@ -470,27 +363,10 @@ CREATE TABLE actor.org_unit_setting (
 	CONSTRAINT ou_once_per_key UNIQUE (org_unit,name)
 );
 COMMENT ON TABLE actor.org_unit_setting IS $$
-/*
- * Copyright (C) 2005-2008  Equinox Software, Inc. / Georgia Public Library Service 
- * Mike Rylander <mrylander@gmail.com>
- *
- * Org Unit settings
- *
- * This table contains any arbitrary settings that a client
- * program would like to save for an org unit.
- *
- * ****
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
+Org Unit settings
+
+This table contains any arbitrary settings that a client
+program would like to save for an org unit.
 $$;
 
 CREATE INDEX actor_org_unit_setting_usr_idx ON actor.org_unit_setting (org_unit);
@@ -530,24 +406,7 @@ CREATE TABLE actor.usr_password_reset (
   has_been_reset BOOL NOT NULL DEFAULT false
 );
 COMMENT ON TABLE actor.usr_password_reset IS $$
-/*
- * Copyright (C) 2010 Laurentian University
- * Dan Scott <dscott@laurentian.ca>
- *
- * Self-serve password reset requests
- *
- * ****
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
+Self-serve password reset requests
 $$;
 CREATE UNIQUE INDEX actor_usr_password_reset_uuid_idx ON actor.usr_password_reset (uuid);
 CREATE INDEX actor_usr_password_reset_usr_idx ON actor.usr_password_reset (usr);
@@ -586,24 +445,7 @@ CREATE TABLE actor.usr_standing_penalty (
 	note			TEXT
 );
 COMMENT ON TABLE actor.usr_standing_penalty IS $$
-/*
- * Copyright (C) 2005-2008  Equinox Software, Inc. / Georgia Public Library Service 
- * Mike Rylander <mrylander@gmail.com>
- *
- * User standing penalties
- *
- * ****
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
+User standing penalties
 $$;
 
 CREATE INDEX actor_usr_standing_penalty_usr_idx ON actor.usr_standing_penalty (usr);

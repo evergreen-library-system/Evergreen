@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2009  Georgia Public Library Service
+ * Scott McKellar <scott@esilibrary.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
 DROP SCHEMA IF EXISTS acq CASCADE;
 
 BEGIN;
@@ -179,40 +194,23 @@ CREATE VIEW acq.ordered_funding_source_credit AS
         acq.funding_source_credit;
 
 COMMENT ON VIEW acq.ordered_funding_source_credit IS $$
-/*
- * Copyright (C) 2009  Georgia Public Library Service
- * Scott McKellar <scott@gmail.com>
- *
- * The acq.ordered_funding_source_credit view is a prioritized
- * ordering of funding source credits.  When ordered by the first
- * three columns, this view defines the order in which the various
- * credits are to be tapped for spending, subject to the allocations
- * in the acq.fund_allocation table.
- *
- * The first column reflects the principle that we should spend
- * money with deadlines before spending money without deadlines.
- *
- * The second column reflects the principle that we should spend the
- * oldest money first.  For money with deadlines, that means that we
- * spend first from the credit with the earliest deadline.  For
- * money without deadlines, we spend first from the credit with the
- * earliest effective date.
- *
- * The third column is a tie breaker to ensure a consistent
- * ordering.
- *
- * ****
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
+The acq.ordered_funding_source_credit view is a prioritized
+ordering of funding source credits.  When ordered by the first
+three columns, this view defines the order in which the various
+credits are to be tapped for spending, subject to the allocations
+in the acq.fund_allocation table.
+
+The first column reflects the principle that we should spend
+money with deadlines before spending money without deadlines.
+
+The second column reflects the principle that we should spend the
+oldest money first.  For money with deadlines, that means that we
+spend first from the credit with the earliest deadline.  For
+money without deadlines, we spend first from the credit with the
+earliest effective date.
+
+The third column is a tie breaker to ensure a consistent
+ordering.
 $$;
 
 CREATE TABLE acq.fund (
@@ -687,35 +685,17 @@ CREATE INDEX acqftr_usr_idx
 ON acq.fund_transfer( transfer_user );
 
 COMMENT ON TABLE acq.fund_transfer IS $$
-/*
- * Copyright (C) 2009  Georgia Public Library Service
- * Scott McKellar <scott@esilibrary.com>
- *
- * Fund Transfer
- *
- * Each row represents the transfer of money from a source fund
- * to a destination fund.  There should be corresponding entries
- * in acq.fund_allocation.  The purpose of acq.fund_transfer is
- * to record how much money moved from which fund to which other
- * fund.
- *
- * The presence of two amount fields, rather than one, reflects
- * the possibility that the two funds are denominated in different
- * currencies.  If they use the same currency type, the two
- * amounts should be the same.
- *
- * ****
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
+Fund Transfer
+Each row represents the transfer of money from a source fund
+to a destination fund.  There should be corresponding entries
+in acq.fund_allocation.  The purpose of acq.fund_transfer is
+to record how much money moved from which fund to which other
+fund.
+
+The presence of two amount fields, rather than one, reflects
+the possibility that the two funds are denominated in different
+currencies.  If they use the same currency type, the two
+amounts should be the same.
 $$;
 
 CREATE TABLE acq.fiscal_calendar (
