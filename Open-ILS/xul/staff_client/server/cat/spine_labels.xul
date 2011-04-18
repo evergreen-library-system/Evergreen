@@ -20,7 +20,7 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="spine_labels_win" 
-	onload="try { font_helper(); persist_helper(); my_init(); } catch(E) { alert(E); }"
+	onload="try { persist_helper(); my_init(); font_helper(); } catch(E) { alert(E); }"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
