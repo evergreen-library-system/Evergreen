@@ -18,7 +18,7 @@ use warnings;
 use DBI;
 use Getopt::Long;
 use MARC::Record;
-use MARC::File::XML;
+use MARC::File::XML (BinaryEncoding => 'UTF-8');
 use OpenSRF::System;
 use OpenILS::Utils::Fieldmapper;
 use OpenSRF::Utils::SettingsClient;
