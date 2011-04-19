@@ -18,7 +18,7 @@
 	"DELETED_MFHD_RECORD": "Deleted MFHD record ${0}",
 	"EDIT_MFHD_RECORD": "Edit Record",
 	"EDIT_MFHD_MENU": "Edit Holdings",
-	"EDIT_PROPERTIES": "Edit Propeties",
+	"EDIT_PROPERTIES": "Edit Properties",
 	"BASIC_HOLDINGS": "Volumes",
 	"BASIC_HOLDINGS_ADD": "Additional Volume Information",
 	"INDEX_HOLDINGS": "Indexes",
