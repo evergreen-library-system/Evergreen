@@ -44,6 +44,10 @@ util.file.prototype = {
                     this._file = this.dirService.get( "UChrm",  Components.interfaces.nsIFile );
                     //this._file = this.dirService.get( "ProfD",  Components.interfaces.nsIFile );
                 break;
+                case 'skin' :
+                    this._file = this.dirService.get( "AChrom",  Components.interfaces.nsIFile );
+                    this._file.append("skin");
+                break;
                 default:
                 case 'chrome' : 
                     this._file = this.dirService.get( "AChrom",  Components.interfaces.nsIFile );

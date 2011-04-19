@@ -17,4 +17,12 @@ pref("open-ils.repository.revision","$Revision$");
 pref("open-ils.repository.date","$Date$");
 pref("open-ils.repository.id","$Id$");
 
+// Base (empty) prefs for local menu and toolbar customizations
+// NOTE: IF YOU SET DEFAULTS ON THESE THE ORG UNIT SETTING VARIANT WON'T WORK
+pref("open-ils.menu.hotkeyset", "");
+pref("open-ils.menu.toolbar", "");
+// For now these are only workstation level and are safe to set defaults on if desired
+pref("open-ils.menu.toolbar.iconsize", "");
+pref("open-ils.menu.toolbar.mode", "");
+pref("open-ils.menu.toolbar.labelbelow", false);
 pref("open-ils.toolbar.defaultnewtab", false);

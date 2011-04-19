@@ -1885,7 +1885,12 @@ INSERT into config.org_unit_setting_type
 ( 'ui.general.button_bar',
     oils_i18n_gettext('ui.general.button_bar', 'Button bar', 'coust', 'label'),
     oils_i18n_gettext('ui.general.button_bar', 'Button bar', 'coust', 'description'),
-    'bool'),
+    'string'),
+
+( 'ui.general.hotkeyset',
+    oils_i18n_gettext('ui.general.hotkeyset', 'Default Hotkeyset', 'coust', 'label'),
+    oils_i18n_gettext('ui.general.hotkeyset', 'Default Hotkeyset for clients (filename without the .keyset)', 'coust', 'description'),
+    'string'),
 
 ( 'circ.hold_shelf_status_delay',
     oils_i18n_gettext('circ.hold_shelf_status_delay', 'Hold Shelf Status Delay', 'coust', 'label'),

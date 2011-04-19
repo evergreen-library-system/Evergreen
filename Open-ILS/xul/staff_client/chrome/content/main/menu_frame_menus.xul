@@ -62,7 +62,6 @@
     <command id="cmd_manage_offline_xacts" />
     <command id="cmd_download_patrons" />
     <command id="cmd_local_admin" />
-    <command id="cmd_toggle_buttonbar" />
     <command id="cmd_toggle_meters" />
 
     <command id="cmd_extension_manager" />
@@ -210,42 +209,28 @@
     <command id="cmd_server_admin_config_weight_assoc"
              perm="ADMIN_CIRC_MATRIX_MATCHPOINT ADMIN_HOLD_MATRIX_MATCHPOINT VIEW_CIRC_MATRIX_MATCHPOINT VIEW_HOLD_MATRIX_MATCHPOINT"
              />
+
+    <command id="cmd_hotkeys_toggle" />
+    <command id="cmd_hotkeys_set" />
+    <command id="cmd_hotkeys_setworkstation" />
+    <command id="cmd_hotkeys_clearworkstation" />
+    <command id="cmd_toolbar_set" />
+    <command id="cmd_toolbar_setworkstation" />
+    <command id="cmd_toolbar_clearworkstation" />
+    <command id="cmd_toolbar_mode_set" />
+    <command id="cmd_toolbar_size_set" />
+    <command id="cmd_toolbar_label_position_set" />
 </commandset>
-
-
-<!-- Accelerator Keys (Accessor Keys are in DTD's) -->
-<keyset id="menu_frame_keys">
-    <key id="new-window-key" modifiers="accel" key="N" command="cmd_new_window"/>
-    <key id="new-tab-key" modifiers="accel" key="T" command="cmd_new_tab"/>
-    <key id="open-key" modifiers="accel" key="O" command=""/>
-    <key id="save-key" modifiers="accel" key="S" command=""/>
-    <key id="close-tab-key" modifiers="accel" key="W" command="cmd_close_tab"/>
-    <key id="close-all-tabs-key" modifiers="accel,shift" key="W" command="cmd_close_all_tabs"/>
-    <key id="close-window-key" modifiers="accel" key="Q" command="cmd_close_window"/>
-    <key id="circ-checkout-key" keycode="VK_F1" command="cmd_circ_checkout"/>
-    <key id="circ-checkin-key" keycode="VK_F2" command="cmd_circ_checkin"/>
-    <key id="circ-renew-key" keycode="VK_F2" modifiers="control" command="cmd_circ_renew"/>
-    <key id="reprint-receipt-key" keycode="VK_F9" command="cmd_reprint"/>
-    <key id="search-opac-key" keycode="VK_F3" command="cmd_search_opac"/>
-    <key id="search-tcn-key" keycode="VK_F3" modifiers="shift" command="cmd_search_tcn"/>
-    <key id="patron-search-key" keycode="VK_F4" command="cmd_patron_search"/>
-    <key id="copy-status-key" keycode="VK_F5" command="cmd_copy_status"/>
-    <key id="circ-in-house-use-key" keycode="VK_F6" command="cmd_in_house_use"/>
-    <key id="circ-hold-capture-key" keycode="VK_F2" modifiers="shift" command="cmd_circ_hold_capture"/>
-    <key id="patron-register-key" keycode="VK_F1" modifiers="shift" command="cmd_patron_register"/>
-    <key id="retrieve_last_patron_key" keycode="VK_F8" command="cmd_retrieve_last_patron"/>
-    <key id="retrieve_last_record_key" keycode="VK_F8" modifiers="shift" command="cmd_retrieve_last_record"/>
-</keyset>
 
 <!-- The File menu on the main menu -->
 <menu id="main.menu.file" label="&staff.main.menu.file.label;" accesskey="&staff.main.menu.file.accesskey;" >
     <menupopup id="main.menu.file.popup">
-        <menuitem label="&staff.main.menu.file.new.label;" accesskey="&staff.main.menu.file.new.accesskey;" key="new-window-key" command="cmd_new_window"/>
-        <menuitem label="&staff.main.menu.file.new_tab.label;" accesskey="&staff.main.menu.file.new_tab.accesskey;" key="new-tab-key" command="cmd_new_tab"/>
+        <menuitem label="&staff.main.menu.file.new.label;" accesskey="&staff.main.menu.file.new.accesskey;" command="cmd_new_window"/>
+        <menuitem label="&staff.main.menu.file.new_tab.label;" accesskey="&staff.main.menu.file.new_tab.accesskey;" command="cmd_new_tab"/>
         <menuseparator />
-        <menuitem label="&staff.main.menu.file.close_tab.label;" accesskey="&staff.main.menu.file.close_tab.accesskey;" oldaccesskey="&staff.main.menu.file.close_tab.key;" key="close-tab-key" command="cmd_close_tab"/>
-        <menuitem label="&staff.main.menu.tabs.close;" accesskey="&staff.main.menu.tabs.close.accesskey;" key="close-all-tabs-key" command="cmd_close_all_tabs"/>
-        <menuitem label="&staff.main.menu.file.close.label;" accesskey="&staff.main.menu.file.close.accesskey;" oldaccesskey="&staff.main.menu.file.close.key;" key="close-window-key" command="cmd_close_window"/>
+        <menuitem label="&staff.main.menu.file.close_tab.label;" accesskey="&staff.main.menu.file.close_tab.accesskey;" command="cmd_close_tab"/>
+        <menuitem label="&staff.main.menu.tabs.close;" accesskey="&staff.main.menu.tabs.close.accesskey;" command="cmd_close_all_tabs"/>
+        <menuitem label="&staff.main.menu.file.close.label;" accesskey="&staff.main.menu.file.close.accesskey;" command="cmd_close_window"/>
         <menuseparator />
         <menuitem label="&staff.main.menu.quit;" accesskey="&staff.main.menu.quit.accesskey;" command="cmd_shutdown"/>
     </menupopup>
@@ -270,26 +255,26 @@
 <!-- The Circulation menu on the main menu -->
 <menu id="main.menu.circ" label="&staff.main.menu.circ.label;" accesskey="&staff.main.menu.circ.accesskey;">
     <menupopup id="main.menu.circ.popup">
-        <menuitem label="&staff.main.menu.circ.checkout.label;" accesskey="&staff.main.menu.circ.checkout.accesskey;" key="circ-checkout-key" command="cmd_circ_checkout"/>
-        <menuitem label="&staff.main.menu.circ.checkin.label;" accesskey="&staff.main.menu.circ.checkin.accesskey;" key="circ-checkin-key" command="cmd_circ_checkin"/>
-        <menuitem label="&staff.main.menu.circ.renew.label;" accesskey="&staff.main.menu.circ.renew.accesskey;" key="circ-renew-key" command="cmd_circ_renew"/>
-        <menuitem label="&staff.main.menu.circ.patron_registration.label;" accesskey="&staff.main.menu.circ.patron_registration.accesskey;" key="patron-register-key" command="cmd_patron_register"/>
+        <menuitem label="&staff.main.menu.circ.checkout.label;" accesskey="&staff.main.menu.circ.checkout.accesskey;" command="cmd_circ_checkout"/>
+        <menuitem label="&staff.main.menu.circ.checkin.label;" accesskey="&staff.main.menu.circ.checkin.accesskey;" command="cmd_circ_checkin"/>
+        <menuitem label="&staff.main.menu.circ.renew.label;" accesskey="&staff.main.menu.circ.renew.accesskey;" command="cmd_circ_renew"/>
+        <menuitem label="&staff.main.menu.circ.patron_registration.label;" accesskey="&staff.main.menu.circ.patron_registration.accesskey;" command="cmd_patron_register"/>
         <menuitem label="&staff.main.menu.circ.staged_patrons.label;" accesskey="&staff.main.menu.circ.staged_patrons.accesskey;" command="cmd_staged_patrons"/>
-        <menuitem label="&staff.main.menu.circ.patron_retrieve.label;" accesskey="&staff.main.menu.circ.patron_retrieve.accesskey;" command="cmd_retrieve_last_patron" key="retrieve_last_patron_key"/>
+        <menuitem label="&staff.main.menu.circ.patron_retrieve.label;" accesskey="&staff.main.menu.circ.patron_retrieve.accesskey;" command="cmd_retrieve_last_patron"/>
         <menuseparator />
-        <menuitem label="&staff.main.menu.circ.hold_capture.label;" accesskey="&staff.main.menu.circ.hold_capture.accesskey;" key="circ-hold-capture-key" command="cmd_circ_hold_capture"/>
+        <menuitem label="&staff.main.menu.circ.hold_capture.label;" accesskey="&staff.main.menu.circ.hold_capture.accesskey;" command="cmd_circ_hold_capture"/>
         <menuitem label="&staff.main.menu.circ.hold_pull.label;" accesskey="&staff.main.menu.circ.hold_pull.accesskey;" command="cmd_circ_hold_pull_list"/>
         <menuitem label="&staff.main.menu.circ.hold_browse.label;" command="cmd_browse_holds_shelf" accesskey="&staff.main.menu.circ.hold_browse.accesskey;"/>
-        <menuitem label="&staff.main.menu.circ.place_hold.label;" accesskey="&staff.main.menu.circ.place_hold.accesskey;" key="search-opac-key" command="cmd_search_opac"/>
+        <menuitem label="&staff.main.menu.circ.place_hold.label;" accesskey="&staff.main.menu.circ.place_hold.accesskey;" command="cmd_search_opac"/>
         <menuseparator />
-        <menuitem label="&staff.main.menu.circ.barcode.show_item;" accesskey="&staff.main.menu.circ.barcode.show_item.accesskey;" key="copy-status-key" command="cmd_copy_status"/>
-        <menuitem label="&staff.main.menu.circ.barcode.retrieve_patron;" accesskey="&staff.main.menu.circ.barcode.retrieve_patron.accesskey;" key="circ-checkout-key" command="cmd_circ_checkout"/>
+        <menuitem label="&staff.main.menu.circ.barcode.show_item;" accesskey="&staff.main.menu.circ.barcode.show_item.accesskey;" command="cmd_copy_status"/>
+        <menuitem label="&staff.main.menu.circ.barcode.retrieve_patron;" accesskey="&staff.main.menu.circ.barcode.retrieve_patron.accesskey;" command="cmd_circ_checkout"/>
         <menuitem label="&staff.main.menu.circ.verify_credentials;" accesskey="&staff.main.menu.circ.verify_credentials.accesskey;" command="cmd_verify_credentials"/>
         <menuitem label="&staff.main.menu.replace_barcode.label;" command="cmd_replace_barcode"/>
-        <menuitem label="&staff.main.menu.circ.in_house.label;" accesskey="&staff.main.menu.circ.in_house.accesskey;" key="circ-in-house-use-key" command="cmd_in_house_use"/>
+        <menuitem label="&staff.main.menu.circ.in_house.label;" accesskey="&staff.main.menu.circ.in_house.accesskey;" command="cmd_in_house_use"/>
         <menuitem command="cmd_scan_item_as_missing_pieces" label="&staff.main.menu.circ.scan_item_as_missing_pieces.label;" accesskey="&staff.main.menu.circ.scan_item_as_missing_pieces.accesskey;"/>
         <menuseparator />
-        <menuitem label="&staff.main.menu.circ.reprint.label;" accesskey="&staff.main.menu.circ.reprint.accesskey;" key="reprint-receipt-key" command="cmd_reprint"/>
+        <menuitem label="&staff.main.menu.circ.reprint.label;" accesskey="&staff.main.menu.circ.reprint.accesskey;" command="cmd_reprint"/>
         <menuitem label="&staff.main.menu.circ.offline.label;" command="cmd_standalone" accesskey="&staff.main.menu.circ.offline.accesskey;"/>
     </menupopup>
 </menu>
@@ -297,10 +282,10 @@
 <!-- The Cataloging menu on the main menu -->
 <menu id="main.menu.cat" label="&staff.main.menu.cat.label;" accesskey="&staff.main.menu.cat.accesskey;">
     <menupopup id="main.menu.cat.popup">
-        <menuitem label="&staff.main.menu.cat.bib_search.label;" accesskey="&staff.main.menu.cat.bib_search.accesskey;" key="search-opac-key" command="cmd_search_opac"/>
-        <menuitem label="&staff.main.menu.cat.search_tcn.label;" accesskey="&staff.main.menu.cat.search_tcn.accesskey;" key="search-tcn-key" command="cmd_search_tcn" />
-        <menuitem label="&staff.main.menu.cat.search_bib_id.label;" accesskey="&staff.main.menu.cat.search_bib_id.accesskey;" key="search-bib-id-key" command="cmd_search_bib_id" />
-        <menuitem label="&staff.main.menu.cat.copy_status.label;" accesskey="&staff.main.menu.cat.copy_status.accesskey;" key="copy-status-key" command="cmd_copy_status"/>
+        <menuitem label="&staff.main.menu.cat.bib_search.label;" accesskey="&staff.main.menu.cat.bib_search.accesskey;" command="cmd_search_opac"/>
+        <menuitem label="&staff.main.menu.cat.search_tcn.label;" accesskey="&staff.main.menu.cat.search_tcn.accesskey;" command="cmd_search_tcn" />
+        <menuitem label="&staff.main.menu.cat.search_bib_id.label;" accesskey="&staff.main.menu.cat.search_bib_id.accesskey;" command="cmd_search_bib_id" />
+        <menuitem label="&staff.main.menu.cat.copy_status.label;" accesskey="&staff.main.menu.cat.copy_status.accesskey;" command="cmd_copy_status"/>
         <menuseparator />
         <!--
         <menuitem disabled="true" label="&staff.main.menu.cat.dedup.label;" accesskey="&staff.main.menu.cat.dedup.accesskey;" command="cmd_broken"/>
@@ -317,7 +302,7 @@
         <menuitem command="cmd_marc_batch_edit" label="&staff.main.menu.cat.marc_batch_edit.label;" accesskey="&staff.main.menu.cat.marc_batch_edit.accesskey;"/>
         <menuseparator />
         <menuitem label="&staff.main.menu.replace_barcode.label;" command="cmd_replace_barcode"/>
-        <menuitem label="&staff.main.menu.cat.retrieve_last_record.label;" accesskey="&staff.main.menu.cat.retrieve_last_record.accesskey;" command="cmd_retrieve_last_record" key="retrieve_last_record_key"/>
+        <menuitem label="&staff.main.menu.cat.retrieve_last_record.label;" accesskey="&staff.main.menu.cat.retrieve_last_record.accesskey;" command="cmd_retrieve_last_record"/>
         <menuseparator />
         <menuitem label="&staff.main.menu.cat.authority_manage.label;" accesskey="&staff.main.menu.cat.authority_manage.accesskey;" command="cmd_authority_manage"/>
     </menupopup>
@@ -359,12 +344,12 @@
 <!-- The Search menu on the main menu -->
 <menu id="main.menu.search" label="&staff.main.menu.search.label;" accesskey="&staff.main.menu.search.accesskey;">
     <menupopup id="main.menu.search.popup">
-        <menuitem label="&staff.main.menu.search.patrons.label;" accesskey="&staff.main.menu.search.patrons.accesskey;" key="patron-search-key" command="cmd_patron_search" />
-        <menuitem label="&staff.main.menu.search.catalog.label;" accesskey="&staff.main.menu.search.catalog.accesskey;" key="search-opac-key" command="cmd_search_opac" />
-        <menuitem label="&staff.main.menu.search.record.label;" accesskey="&staff.main.menu.search.record.accesskey;" key="search-tcn-key" command="cmd_search_tcn" />
-        <menuitem label="&staff.main.menu.search.record_via_id.label;" accesskey="&staff.main.menu.search.record_via_id.accesskey;" key="search-bib-id-key" command="cmd_search_bib_id" />
-        <menuitem label="&staff.main.menu.search.copies.label;" accesskey="&staff.main.menu.search.copies.accesskey;" key="copy-status-key" command="cmd_copy_status"/>
-        <menuitem label="&staff.main.menu.search.patrons_barcode.label;" accesskey="&staff.main.menu.search.patrons_barcode.accesskey;" key="circ-checkout-key" command="cmd_circ_checkout"/>
+        <menuitem label="&staff.main.menu.search.patrons.label;" accesskey="&staff.main.menu.search.patrons.accesskey;" command="cmd_patron_search" />
+        <menuitem label="&staff.main.menu.search.catalog.label;" accesskey="&staff.main.menu.search.catalog.accesskey;" command="cmd_search_opac" />
+        <menuitem label="&staff.main.menu.search.record.label;" accesskey="&staff.main.menu.search.record.accesskey;" command="cmd_search_tcn" />
+        <menuitem label="&staff.main.menu.search.record_via_id.label;" accesskey="&staff.main.menu.search.record_via_id.accesskey;" command="cmd_search_bib_id" />
+        <menuitem label="&staff.main.menu.search.copies.label;" accesskey="&staff.main.menu.search.copies.accesskey;" command="cmd_copy_status"/>
+        <menuitem label="&staff.main.menu.search.patrons_barcode.label;" accesskey="&staff.main.menu.search.patrons_barcode.accesskey;" command="cmd_circ_checkout"/>
     </menupopup>
 </menu>
 
@@ -380,8 +365,8 @@
     </menupopup>
 </menu>
 
-<!-- The Help menu on the main menu -->
-<menu id="main.menu.admin" label="&staff.main.menu.admin.label;" accesskey="&staff.main.menu.admin.accesskey;" old_accesskey="&staff.main.menu.admin.key;">
+<!-- The Admin menu on the main menu -->
+<menu id="main.menu.admin" label="&staff.main.menu.admin.label;" accesskey="&staff.main.menu.admin.accesskey;">
     <menupopup id="main.menu.admin.popup">
         <menuitem id="oc_menuitem" label="&staff.main.menu.admin.change_session.label;" label_orig="&staff.main.menu.admin.change_session.label;" 
             accesskey="O" command="cmd_change_session"/>
@@ -389,6 +374,60 @@
         <menuitem label="&staff.main.menu.admin.download_patrons.label;" accesskey="&staff.main.menu.admin.download_patrons.accesskey;" command="cmd_download_patrons"/>
         <menuseparator />
 
+        <menu id="main.menu.admin.client" label="&staff.main.menu.admin.client.label;" accesskey="&staff.main.menu.admin.client.accesskey;">
+            <menupopup id="main.menu.admin.client.popup">
+                <menuitem command="cmd_local_admin_external_text_editor" label="&staff.server.admin.index.external_text_editor.label;" accesskey="&staff.server.admin.index.external_text_editor.accesskey;"/>
+                <menuitem label="&staff.server.admin.index.printer;" command="cmd_local_admin_printer"/>
+                <menuitem label="&staff.main.menu.admin.template_edit.label;" accesskey="&staff.main.menu.admin.template_edit.accesskey;" command="cmd_print_list_template_edit"/>
+                <menuitem label="&staff.server.admin.index.fonts_and_sounds;" command="cmd_local_admin_fonts_and_sounds"/>
+                <menu id="main.menu.admin.client.hotkeys" label="&staff.main.menu.admin.client.hotkeys;">
+                    <menupopup id="main.menu.admin.client.hotkeys.popup">
+                        <menuitem label="&staff.main.menu.admin.client.hotkeys.toggle.label;" accesskey="&staff.main.menu.admin.client.hotkeys.toggle.accesskey;" type="checkbox" autocheck="false" command="cmd_hotkeys_toggle"/>
+                        <menu id="main.menu.admin.client.hotkeys.current" label="&staff.main.menu.admin.client.hotkeys.current;">
+                            <menupopup id="main.menu.admin.client.hotkeys.current.popup">
+                            </menupopup>
+                        </menu>
+                        <menuseparator />
+                        <menuitem label="&staff.main.menu.admin.client.hotkeys.setworkstation.label;" accesskey="&staff.main.menu.admin.client.hotkeys.setworkstation.accesskey;" command="cmd_hotkeys_setworkstation"/>
+                        <menuitem label="&staff.main.menu.admin.client.hotkeys.clearworkstation.label;" accesskey="&staff.main.menu.admin.client.hotkeys.clearworkstation.accesskey;" command="cmd_hotkeys_clearworkstation"/>
+                    </menupopup>
+                </menu>
+                <menu id="main.menu.admin.client.toolbars" label="&staff.main.menu.admin.client.toolbars;">
+                    <menupopup id="main.menu.admin.client.toolbars.popup">
+                        <menu id="main.menu.admin.client.toolbars.current" label="&staff.main.menu.admin.client.toolbars.current;">
+                            <menupopup id="main.menu.admin.client.toolbars.current.popup">
+                                <menuitem name="current_toolbar" type="radio" label="&staff.main.button_bar.none;" value="none" command="cmd_toolbar_set" checked="true"/>
+                                <menuitem name="current_toolbar" type="radio" label="&staff.main.button_bar.circ;" value="circ" command="cmd_toolbar_set"/>
+                                <menuitem name="current_toolbar" type="radio" label="&staff.main.button_bar.cat;" value="cat" command="cmd_toolbar_set"/>
+                            </menupopup>
+                        </menu>
+                        <menu id="main.menu.admin.client.toolbars.mode" label="&staff.main.menu.admin.client.toolbars.mode;">
+                            <menupopup id="main.menu.admin.client.toolbars.mode.popup">
+                                <menuitem name="toolbar_mode" type="radio" label="&staff.main.menu.admin.client.toolbars.mode.both;" value="both" command="cmd_toolbar_mode_set" checked="true"/>
+                                <menuitem name="toolbar_mode" type="radio" label="&staff.main.menu.admin.client.toolbars.mode.icons;" value="icons" command="cmd_toolbar_mode_set"/>
+                                <menuitem name="toolbar_mode" type="radio" label="&staff.main.menu.admin.client.toolbars.mode.text;" value="text" command="cmd_toolbar_mode_set"/>
+                            </menupopup>
+                        </menu>
+                        <menu id="main.menu.admin.client.toolbars.label_position" label="&staff.main.menu.admin.client.toolbars.label_position;">
+                            <menupopup id="main.menu.admin.client.toolbars.label_position.popup">
+                                <menuitem name="toolbar_label_position" type="radio" label="&staff.main.menu.admin.client.toolbars.label_position.side;" value="side" command="cmd_toolbar_label_position_set" checked="true"/>
+                                <menuitem name="toolbar_label_position" type="radio" label="&staff.main.menu.admin.client.toolbars.label_position.under;" value="under" command="cmd_toolbar_label_position_set"/>
+                            </menupopup>
+                        </menu>
+                        <menu id="main.menu.admin.client.toolbars.size" label="&staff.main.menu.admin.client.toolbars.size;">
+                            <menupopup id="main.menu.admin.client.toolbars.size.popup">
+                                <menuitem name="toolbar_size" type="radio" label="&staff.main.menu.admin.client.toolbars.size.large;" value="large" command="cmd_toolbar_size_set" checked="true"/>
+                                <menuitem name="toolbar_size" type="radio" label="&staff.main.menu.admin.client.toolbars.size.small;" value="small" command="cmd_toolbar_size_set"/>
+                            </menupopup>
+                        </menu>
+                        <menuseparator />
+                        <menuitem label="&staff.main.menu.admin.client.toolbars.setworkstation.label;" accesskey="&staff.main.menu.admin.client.toolbars.setworkstation.accesskey;" command="cmd_toolbar_setworkstation"/>
+                        <menuitem label="&staff.main.menu.admin.client.toolbars.clearworkstation.label;" accesskey="&staff.main.menu.admin.client.toolbars.clearworkstation.accesskey;" command="cmd_toolbar_clearworkstation"/>
+                    </menupopup>
+                </menu>
+
+            </menupopup>
+        </menu>
         <menu id="main.menu.admin.local" label="&staff.main.menu.admin.local_admin.label;">
             <menupopup id="main.menu.admin.local.popup">
                 <menuitem command="cmd_local_admin_age_overdue_circulations_to_lost" label="&staff.server.admin.index.age_overdue_circulations_to_lost.label;" accesskey="&staff.server.admin.index.age_overdue_circulations_to_lost.accesskey;"/>
@@ -398,17 +437,13 @@
                 <menuitem label="&staff.server.admin.index.copy_locations;" command="cmd_local_admin_copy_locations"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.copy_location_order.label;" command="cmd_local_admin_copy_location_order"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.copy_template.label;" accesskey="&staff.main.menu.admin.local_admin.copy_template.accesskey;" command="cmd_local_admin_copy_template"/>
-                <menuitem command="cmd_local_admin_external_text_editor" label="&staff.server.admin.index.external_text_editor.label;" accesskey="&staff.server.admin.index.external_text_editor.accesskey;"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.idl_field_doc.label;" command="cmd_local_admin_idl_field_doc"/>
-                <menuitem label="&staff.server.admin.index.fonts_and_sounds;" command="cmd_local_admin_fonts_and_sounds"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.grp_penalty_threshold.label;" command="cmd_local_admin_grp_penalty_threshold"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.hold_matrix_matchpoint.label;" command="cmd_local_admin_hold_matrix_matchpoint"/>
                 <menuitem label="&staff.server.admin.index.library_settings;" command="cmd_local_admin_lib_settings"/>
                 <menuitem label="&staff.server.admin.index.non_cataloged_types;" command="cmd_local_admin_non_cat_types"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.action_trigger.label;" command="cmd_local_admin_action_trigger"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.patrons_due_refunds.label;" accesskey="&staff.main.menu.admin.local_admin.patrons_due_refunds.accesskey;" command="cmd_local_admin_patrons_due_refunds"/>
-                <menuitem label="&staff.server.admin.index.printer;" command="cmd_local_admin_printer"/>
-                <menuitem label="&staff.main.menu.admin.template_edit.label;" accesskey="&staff.main.menu.admin.template_edit.accesskey;" command="cmd_print_list_template_edit"/>
                 <menuitem command="cmd_local_admin_do_not_auto_attempt_print_setting" label="&staff.server.admin.index.do_not_auto_attempt_print_setting.label;" accesskey="&staff.server.admin.index.do_not_auto_attempt_print_setting.accesskey;"/>
                 <menuitem label="&staff.server.admin.index.reports;" command="cmd_local_admin_reports"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.standing_penalty.label;" command="cmd_local_admin_standing_penalty"/>
@@ -482,7 +517,6 @@
 
         <menuseparator />
         <menuitem label="&staff.main.menu.admin.user_edit.label;" accesskey="&staff.main.menu.admin.user_edit.accesskey;" command="cmd_adv_user_edit"/>
-        <menuitem label="&staff.main.menu.admin.toggle_buttonbar.label;" accesskey="&staff.main.menu.admin.toggle_buttonbar.accesskey;" command="cmd_toggle_buttonbar"/>
         <menuitem label="&staff.main.menu.admin.toggle_meters.label;" accesskey="&staff.main.menu.admin.toggle_meters.accesskey;" command="cmd_toggle_meters"/>
         <menuseparator />
         <menu id="main.menu.admin.sub" accesskey="&staff.main.menu.admin.developer.accesskey;" label="&staff.main.menu.admin.developer.label;">
@@ -495,7 +529,7 @@
                 <menuitem label="&staff.main.menu.admin.survey_wizard.label;" accesskey="&staff.main.menu.admin.survey_wizard.accesskey;" command="cmd_survey_wizard"/>
                 <menuseparator />
                 <menuitem label="&staff.main.menu.admin.public_opac.label;" command="cmd_public_opac" accesskey="&staff.main.menu.admin.public_opac.accesskey;"/>
-                <menuitem label="&staff.main.menu.admin.cmd_test.label;" old_accesskey="T" command="cmd_test"/>
+                <menuitem label="&staff.main.menu.admin.cmd_test.label;" command="cmd_test"/>
                 <menuitem label="&staff.main.menu.admin.xuleditor.label;" accesskey="&staff.main.menu.admin.xuleditor.accesskey;" command="cmd_xuleditor"/>
                 <menuitem label="&staff.main.menu.admin.fieldmapper.label;" accesskey="&staff.main.menu.admin.fieldmapper.accesskey;" command="cmd_fieldmapper"/>
                 <menuitem label="&staff.main.menu.admin.cmd_console.label;" accesskey="&staff.main.menu.admin.cmd_console.accesskey;" command="cmd_console"/>

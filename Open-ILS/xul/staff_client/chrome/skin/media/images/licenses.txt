@@ -1,30 +1,41 @@
-HILLBLU_lente_32x32 derived from:
+HILLBLU_lente_32x32 and HILLBLU_lente_toolbar derived from:
 http://commons.wikimedia.org/wiki/File:HILLBLU_lente.png
 Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.2 or any later version published by the Free Software Foundation; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license is included in the section entitled "GNU Free Documentation License".
 
-HILLBLU_indici_32x32 derived from:
+HILLBLU_indici_32x32 and HILLBLU_indici_toolbar derived from:
 http://commons.wikimedia.org/wiki/File:HILLBLU_indici.png
 Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.2 or any later version published by the Free Software Foundation; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license is included in the section entitled "GNU Free Documentation License".
 
-HILLBLU_libro_32x32 derived from:
+HILLBLU_libro_32x32 and HILLBLU_libro_toolbar derived from:
 http://commons.wikimedia.org/wiki/File:HILLBLU_libro.png
 Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.2 or any later version published by the Free Software Foundation; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license is included in the section entitled "GNU Free Documentation License".
 
-HILLBLU_famiglia_32x32 derived from:
+HILLBLU_famiglia_32x32 and HILLBLU_famiglia_toolbar derived from:
 http://commons.wikimedia.org/wiki/File:HILLBLU_famiglia.png
 Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.2 or any later version published by the Free Software Foundation; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license is included in the section entitled "GNU Free Documentation License".
 
-Arrow-right-up-small.png derived from:
+Arrow-right-up-small.png and Arrow-right-up-small_toolbar.png derived from:
 http://commons.wikimedia.org/wiki/File:Arrow-rightup-small.svg
 Copyright © Vadim Plessky, all rights reserved. Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 Redistributions of source code must retain the above copyright notice, and this list of conditions;
 Redistributions in binary form must reproduce the above copyright notice, and this list of conditions in the documentation and/or other materials provided with the distribution;
 Neither the name of Vadim Plessky nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
 
-Center.png derived from:
+center.png and center_toolbar.png derived from:
 http://commons.wikimedia.org/wiki/File:Center.svg
 Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.2 or any later version published by the Free Software Foundation; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license is included in the section entitled "GNU Free Documentation License".
 
-Search_Items_32x32 derived from:
+Search_Items_32x32 and Search_Items_toolbar derived from:
 http://commons.wikimedia.org/wiki/File:HILLBLU_lente.png AND http://commons.wikimedia.org/wiki/File:HILLBLU_libro.png
 Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.2 or any later version published by the Free Software Foundation; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license is included in the section entitled "GNU Free Documentation License".
+
+hotkeys_disable_toolbar.png derived from:
+
+Nuvola 1.0 (KDE 3.x icon set) (nuvola)
+    link: http://www.icon-king.com/projects/nuvola/
+    license: LGPL 2.1
+    license link: http://creativecommons.org/licenses/LGPL/2.1/
+    formats: png
+    subdirectory: open_icon_library-devel/icons/nuvola
+
+preferences-desktop-keyboard-3.png
