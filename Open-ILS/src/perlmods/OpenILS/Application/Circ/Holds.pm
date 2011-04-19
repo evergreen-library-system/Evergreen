@@ -1063,7 +1063,19 @@ sub retrieve_hold_queue_status_impl {
         # fetch cut_in_line and request_time since they're in the order_by
         # and we're asking for distinct values
         select => {ahr => ['id', 'cut_in_line', 'request_time']},
-        from   => { ahr => 'ahcm' },
+        from   => {
+            ahr => {
+                'ahcm' => {
+                    join => {
+                        'ahcm2' => {
+                            'class' => 'ahcm',
+                            'field' => 'target_copy',
+                            'fkey'  => 'target_copy'
+                        }
+                    }
+                }
+            }
+        },
         order_by => [
             {
                 "class" => "ahr",
@@ -1076,15 +1088,7 @@ sub retrieve_hold_queue_status_impl {
         ],
         distinct => 1,
         where => {
-            '+ahcm' => {
-                target_copy => {
-                    in => {
-                        select => {ahcm => ['target_copy']},
-                        from   => 'ahcm',
-                        where  => {hold => $hold->id}
-                    } 
-                } 
-            }
+            '+ahcm2' => { hold => $hold->id }
         }
     });
 
