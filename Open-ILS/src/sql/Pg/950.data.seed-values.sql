@@ -1883,13 +1883,13 @@ INSERT into config.org_unit_setting_type
     'bool'),
 
 ( 'ui.general.button_bar',
-    oils_i18n_gettext('ui.general.button_bar', 'Button bar', 'coust', 'label'),
-    oils_i18n_gettext('ui.general.button_bar', 'Button bar', 'coust', 'description'),
+    oils_i18n_gettext('ui.general.button_bar', 'GUI: Button bar', 'coust', 'label'),
+    oils_i18n_gettext('ui.general.button_bar', 'Set to "circ" or "cat" for stock circulator or cataloger toolbar, respectively.', 'coust', 'description'),
     'string'),
 
 ( 'ui.general.hotkeyset',
-    oils_i18n_gettext('ui.general.hotkeyset', 'Default Hotkeyset', 'coust', 'label'),
-    oils_i18n_gettext('ui.general.hotkeyset', 'Default Hotkeyset for clients (filename without the .keyset)', 'coust', 'description'),
+    oils_i18n_gettext('ui.general.hotkeyset', 'GUI: Default Hotkeyset', 'coust', 'label'),
+    oils_i18n_gettext('ui.general.hotkeyset', 'Default Hotkeyset for clients (filename without the .keyset).  Examples: Default, Minimal, and None', 'coust', 'description'),
     'string'),
 
 ( 'circ.hold_shelf_status_delay',
