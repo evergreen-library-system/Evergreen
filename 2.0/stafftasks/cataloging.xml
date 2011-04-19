@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude"
+xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" xml:id="cataloging">
+  <info>
+    <title>Cataloging</title>
+    <abstract>
+      <para>This chapter explains the cataloging procedures carried out from
+      the staff client.</para>
+    </abstract>
+  </info>
+  <section xml:id="addingnewbibliographicrecords">
+    <title>Adding New Records via Built In Z39.50 Client</title>
+    <indexterm>
+      <primary>Z39.50</primary>
+    </indexterm>
+    <para>The Z39.50 client is used to search bibliographic databases and
+    examine or download bibliographic records. Open the client with <menuchoice>
+        <guimenu>Cataloging</guimenu>
+        <guimenuitem>Import Record from Z39.50</guimenuitem>
+      </menuchoice></para>
+    <simplesect xml:id="z39.50screenfeatures">
+      <title>Z39.50 Screen Features</title>
+      <para>Initially, or when you want to change targets, start with the
+      <guilabel role="bold">Service and Credentials</guilabel> area. Here you 
+      choose the remote databases you wish to search. Preconfigured servers are 
+      listed under Services. If any require authentication to access, you will 
+      see username and password boxes to the right. </para>
+      <procedure>
+        <step>Click all the databases you wish to search simultaneously (see the 
+        Note about which fields can be used).</step>
+        <step>Fill in user information for any that require it.</step>
+        <step>Click <guibutton>Save as Default</guibutton> to preserve these 
+        settings for next time.</step>
+      </procedure>
+      <para>The <guilabel role="bold">Query</guilabel> section is where you 
+      enter a search. The databases you select control which search fields you 
+      can use. You may use any combination of fields that are active (not grayed 
+      out), but be aware that not all fields are active for every database. 
+      Select just one database to see which fields are active for that database.
+      </para>
+      <note>
+        <para>If you are searching multiple databases, you will only get results 
+        from those that support the fields you&apos;re searching! For example, 
+        <guilabel>Keyword</guilabel> and <guilabel>Subject</guilabel> are only 
+        active if the local catalog is selected, so using those fields in a 
+        combined database search guarantees that you will only get results from 
+        the local catalog.</para>
+      </note>
+      <para>The <guilabel>Query</guilabel> section has three buttons.</para>
+      <itemizedlist>
+       <listitem><guibutton>Search</guibutton> begins searching on 
+       the criteria entered in the search fields.</listitem>
+       <listitem><guibutton>Clear Form</guibutton> resets all fields to empty.
+       </listitem>
+       <listitem><guibutton>Raw Search</guibutton> is an advanced interface for 
+       using Prefix Query Format to build complex searches. See 
+       <xref linkend="rawsearches" />.</listitem>
+       </itemizedlist>
+      <para>The <guilabel>Results</guilabel> pane displays the results from the 
+      most recent search.  Information about each record retrieved appears on a
+          separate summary line, with various columns of information.</para>
+      <itemizedlist>
+        <listitem>If more than the default number of results is available, use 
+        <guibutton>Fetch More Results</guibutton> to add the next set to the 
+        screen.</listitem>
+        <listitem>Click List Action to view options for exporting and saving 
+        from the list:
+          <itemizedlist>
+            <listitem>Copy Field from selected row to Clipboard</listitem>
+            <listitem>Print List CSV</listitem>
+            <listitem>Copy List CSV to Clipboard</listitem>
+            <listitem>Save List CSV to File</listitem>
+            <listitem>Save List Configuration</listitem>
+          </itemizedlist>
+          </listitem>
+          <listitem>Select an item and click <guibutton>MARC View</guibutton> to 
+          toggle viewing the MARC record. <guibutton>Results View</guibutton>
+          </listitem>
+          <listitem><guibutton>MARC Editor for Overlay</guibutton></listitem>
+          <listitem><guibutton>MARC Editor for Import</guibutton></listitem>
+        <listitem>To view long lists of results, use <guibutton>Hide Top Pane
+        </guibutton> to view the results. </listitem>
+      </itemizedlist>
+    </simplesect>
+    <simplesect xml:id="importingarecordviaz39.50">
+      <title>Importing a record via Z39.50</title>  
+</simplesect>
+    <simplesect xml:id="recordcollisions">
+      <title>Record Collisions</title>  
+</simplesect>
+    <simplesect xml:id="fastitemadds">
+      <title>Fast Item Adds</title>  
+</simplesect>
+
+   <simplesect xml:id="rawsearches">
+      <title>Raw Searches</title>  
+<tip>
+            <para>Visit <xref xlink:href="http://www.indexdata.com/yaz/doc/tools.html"/> 
+            for more details on PQF and examples you can copy/paste into the 
+            search box.</para>
+          </tip>
+          </simplesect>
+</section>
+ </chapter>
