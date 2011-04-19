@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 21:45:30-0400\n"
+"POT-Creation-Date: 2011-04-18 22:55:45-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid "Adygei"
 msgstr ""
 
-# id::cmc.name__title id::cza.label__5 id::cza.label__14 id::cza.label__23
+# id::cmc.label__title id::cza.label__5 id::cza.label__14 id::cza.label__23
 #: 950.data.seed-values.sql:24 950.data.seed-values.sql:289
 #: 950.data.seed-values.sql:310 950.data.seed-values.sql:329
 msgid "Title"
@@ -213,7 +213,7 @@ msgstr ""
 msgid "10_cent_per_day"
 msgstr ""
 
-# id::cmc.name__keyword
+# id::cmc.label__keyword
 #: 950.data.seed-values.sql:23
 msgid "Keyword"
 msgstr ""
@@ -1127,7 +1127,7 @@ msgstr ""
 msgid "Makasar"
 msgstr ""
 
-# id::cmc.name__series
+# id::cmc.label__series
 #: 950.data.seed-values.sql:27
 msgid "Series"
 msgstr ""
@@ -1214,7 +1214,7 @@ msgstr ""
 msgid "GUI: Work Log: Maximum Actions Logged"
 msgstr ""
 
-# id::cmc.name__author id::cza.label__4 id::cza.label__13 id::cza.label__22
+# id::cmc.label__author id::cza.label__4 id::cza.label__13 id::cza.label__22
 #: 950.data.seed-values.sql:25 950.data.seed-values.sql:287
 #: 950.data.seed-values.sql:308 950.data.seed-values.sql:327
 msgid "Author"
@@ -1461,7 +1461,7 @@ msgstr ""
 msgid "Khasi"
 msgstr ""
 
-# id::cmc.name__subject
+# id::cmc.label__subject
 #: 950.data.seed-values.sql:26
 msgid "Subject"
 msgstr ""
@@ -2927,7 +2927,7 @@ msgstr ""
 msgid "e-Reader Preload"
 msgstr ""
 
-# id::cmc.name__identifier id::vqarad.description__1
+# id::cmc.label__identifier id::vqarad.description__1
 #: 950.data.seed-values.sql:22 950.data.seed-values.sql:2544
 msgid "Identifier"
 msgstr ""
