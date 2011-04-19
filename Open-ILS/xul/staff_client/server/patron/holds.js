@@ -21,6 +21,8 @@ patron.holds.prototype = {
 
     'filter_lib' : null,
 
+    'hold_subscription_map' : {},
+
     'expired' : false,
     'post_clear_shelf_hold_action_map' : {},
 
@@ -88,6 +90,11 @@ patron.holds.prototype = {
                                     row.my.acp = blob.copy;
                                     row.my.acn = blob.volume;
                                     row.my.mvr = blob.mvr;
+                                    row.my.issuance = blob.issuance;
+                                    if (blob.issuance) {
+                                        row.my.subscription = blob.issuance.subscription();
+                                        obj.hold_subscription_map[ row.my.hold_id ] = row.my.subscription;
+                                    }
                                     row.my.patron_family_name = blob.patron_last;
                                     row.my.patron_first_given_name = blob.patron_first;
                                     row.my.patron_barcode = blob.patron_barcode;
@@ -1143,6 +1150,10 @@ patron.holds.prototype = {
                                         case 'T' :
                                             opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + htarget;
                                         break;
+                                        case 'I' :
+                                            opac_url = xulG.url_prefix( urls.opac_rdetail )
+                                            + '?r=' + obj.hold_subscription_map[ obj.retrieve_ids[i].hold_id ].record_entry();
+                                        break;
                                         case 'V' :
                                             var my_acn = obj.network.simple_request( 'FM_ACN_RETRIEVE.authoritative', [ htarget ]);
                                             opac_url = xulG.url_prefix( urls.opac_rdetail) + '?r=' + my_acn.record();
@@ -1519,6 +1530,7 @@ patron.holds.prototype = {
                     holds = holds.concat( robj.copy_holds );
                     holds = holds.concat( robj.volume_holds );
                     holds = holds.concat( robj.title_holds );
+                    holds = holds.concat( robj.issuance_holds );
                     holds = holds.concat( robj.metarecord_holds );
                     holds = holds.sort();
                 }

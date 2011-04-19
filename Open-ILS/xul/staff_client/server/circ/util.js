@@ -1860,6 +1860,15 @@ circ.util.hold_columns = function(modify,params) {
         },
         {
             'persist' : 'hidden width ordinal',
+            'id' : 'subscription_label',
+            'label' : document.getElementById('commonStrings').getString('staff.ahr_subscription_label_label'),
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false, 'render' : function(my) { return my.subscription.label(); }
+        },
+        {
+            'persist' : 'hidden width ordinal',
             'id' : 'ahr_id',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_id_label'),
             'flex' : 1,
