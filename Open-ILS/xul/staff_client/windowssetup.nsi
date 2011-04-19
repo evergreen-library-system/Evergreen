@@ -4,6 +4,9 @@
 ; Old versions of makensis don't like this, moved to Makefile
 ;!define /file PRODUCT_VERSION "client/VERSION"
 !define PRODUCT_TAG "Trunk"
+!define PRODUCT_INSTALL_TAG "${PRODUCT_TAG}"
+!define UI_IMAGESET "beta"
+;!define UI_IMAGESET "release"
 !define PRODUCT_NAME "Evergreen Staff Client ${PRODUCT_TAG}"
 !define PRODUCT_PUBLISHER "Evergreen Community"
 !define PRODUCT_WEB_SITE "http://evergreen-ils.org/"
@@ -14,6 +17,11 @@
 !ifndef PRODUCT_LICENSE
   !define PRODUCT_LICENSE
 !endif
+
+!define MUI_HEADERIMAGE
+!define MUI_HEADERIMAGE_BITMAP "custom_images\${UI_IMAGESET}\header.bmp"
+!define MUI_WELCOMEFINISHPAGE_BITMAP "custom_images\${UI_IMAGESET}\install.bmp"
+!define MUI_UNWELCOMEFINISHPAGE_BITMAP "custom_images\${UI_IMAGESET}\uninstall.bmp"
 
 ; MUI 1.67 compatible ------
 !include "MUI.nsh"
@@ -69,8 +77,8 @@ var ICONS_GROUP
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
 OutFile "evergreen_staff_client_setup.exe"
-InstallDir "$PROGRAMFILES\Evergreen Staff Client ${PRODUCT_TAG}"
-InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
+InstallDir "$PROGRAMFILES\Evergreen Staff Client ${PRODUCT_INSTALL_TAG}"
+InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" "${PRODUCT_INSTALL_TAG}"
 ShowInstDetails show
 ShowUnInstDetails show
 RequestExecutionLevel admin
