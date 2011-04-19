@@ -220,6 +220,70 @@ function get_menu_perms(indocument) {
     return false;
 }
 
+// Returns a list (cached or from filesystem) of hotkey sets
+function load_hotkey_sets() {
+    if(typeof(load_hotkey_sets.set_list) == 'undefined') {
+        load_hotkey_sets.set_list = [];
+        JSAN.use('util.file');
+        var file = new util.file();
+        var dirEntries = file.get('hotkeys','skin').directoryEntries;
+        while(dirEntries.hasMoreElements()) {
+            var entry = dirEntries.getNext();
+            entry.QueryInterface(Components.interfaces.nsIFile);
+            if(!entry.isFile()) continue;
+            if(!entry.leafName.match(/.+\.keyset$/)) continue;
+            var keysetname = entry.leafName.replace(/\.keyset$/,'');
+            load_hotkey_sets.set_list.push(keysetname);
+        }
+        file.close();
+    }
+    return load_hotkey_sets.set_list;
+}
+
+// Returns an array (cached or from filesystem) for a given hotkey set
+function get_hotkey_array(keyset_name) {
+    if(typeof(get_hotkey_array.keyset_cache) == 'undefined') {
+        get_hotkey_array.keyset_cache = {};
+    }
+    if(get_hotkey_array.keyset_cache[keyset_name])
+        return get_hotkey_array.keyset_cache[keyset_name];
+    JSAN.use('util.file');
+    var file = new util.file();
+    var keyset_raw;
+    try {
+        var keyset_file = file.get('hotkeys','skin');
+        keyset_file.append(keyset_name + ".keyset");
+        keyset_raw = file.get_content();
+        file.close();
+        var tempArray = [];
+
+        var keyset_lines = keyset_raw.trim().split("\n");
+        for(var line = 0; line < keyset_lines.length; line++) {
+            // Grab line, strip comments, strip leading/trailing whitespace
+            var curline = keyset_lines[line].replace(/\s*#.*$/,'').trim();
+            if(curline == "") continue; // Skip empty lines
+            // Split into pieces
+            var split_line = curline.split(',');
+            // We need at least 3 elements. Command, modifiers, keycode.
+            if(split_line.length < 3) continue;
+            // Trim each segment
+            split_line[0] = split_line[0].trim();
+            split_line[1] = split_line[1].trim();
+            split_line[2] = split_line[2].trim();
+            if(split_line.length > 3)
+                split_line[3] = split_line[3].trim();
+            // Skip empty commands
+            if(split_line[0] == "") continue;
+            // Push to array
+            tempArray.push(split_line);
+        }
+        get_hotkey_array.keyset_cache[keyset_name] = tempArray;
+        return tempArray;
+    } catch(E) { // Something went wrong.
+        return false;
+    }
+}
+
 function main_init() {
     dump('entering main_init()\n');
     try {

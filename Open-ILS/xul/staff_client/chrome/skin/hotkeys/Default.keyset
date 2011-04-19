@@ -1,0 +1,20 @@
+# Default hotkey set
+cmd_new_window,accel,N
+cmd_new_tab,accel,T
+cmd_close_tab,accel,W
+cmd_close_all_tabs,accel shift,W
+cmd_close_window,accel,Q
+cmd_circ_checkout,,VK_F1
+cmd_circ_checkin,,VK_F2
+cmd_circ_renew,accel,VK_F2
+cmd_reprint,,VK_F9
+cmd_search_opac,,VK_F3
+cmd_search_tcn,shift,VK_F3
+cmd_patron_search,,VK_F4
+cmd_copy_status,,VK_F5
+cmd_in_house_use,,VK_F6
+cmd_circ_hold_capture,shift,VK_F2
+cmd_patron_register,shift,VK_F1
+cmd_retrieve_last_patron,,VK_F8
+cmd_retrieve_last_record,shift,VK_F8
+

@@ -660,6 +660,9 @@
 <!ENTITY staff.main.auth.status "Status">
 <!ENTITY staff.main.auth.version "Version">
 <!ENTITY staff.main.auth.workstation "Workstation">
+<!ENTITY staff.main.button_bar.none "None">
+<!ENTITY staff.main.button_bar.circ "Circulation">
+<!ENTITY staff.main.button_bar.cat "Cataloging">
 <!ENTITY staff.main.button_bar.check_out.label "Check Out">
 <!ENTITY staff.main.button_bar.check_out.accesskey "">
 <!ENTITY staff.main.button_bar.check_in.label "Check In">
@@ -672,6 +675,10 @@
 <!ENTITY staff.main.button_bar.patron_search.accesskey "">
 <!ENTITY staff.main.button_bar.patron_registration.label "Patron Registration">
 <!ENTITY staff.main.button_bar.patron_registration.accesskey "">
+<!ENTITY staff.main.button_bar.hotkeys_toggle "Toggle Hotkeys">
+<!ENTITY staff.main.button_bar.create_marc "Create Marc Record">
+<!ENTITY staff.main.button_bar.authority_manage "Manage Authorities">
+<!ENTITY staff.main.button_bar.retrieve_last_record "Retrieve Last Record">
 <!ENTITY staff.main.menu.acquisitions.accesskey "q">
 <!ENTITY staff.main.menu.acquisitions.label "Acquisitions">
 <!ENTITY staff.main.menu.admin.accesskey "-">
@@ -805,6 +812,32 @@
 <!ENTITY staff.main.menu.admin.label "Admin">
 <!ENTITY staff.main.menu.admin.local_admin.accesskey "L">
 <!ENTITY staff.main.menu.admin.local_admin.label "Local Administration">
+<!ENTITY staff.main.menu.admin.client.label "Workstation Administration">
+<!ENTITY staff.main.menu.admin.client.accesskey "W">
+<!ENTITY staff.main.menu.admin.client.hotkeys "Hotkeys">
+<!ENTITY staff.main.menu.admin.client.hotkeys.current "Current">
+<!ENTITY staff.main.menu.admin.client.hotkeys.toggle.label "Disable Hotkeys">
+<!ENTITY staff.main.menu.admin.client.hotkeys.toggle.accesskey "D">
+<!ENTITY staff.main.menu.admin.client.hotkeys.setworkstation.label "Set Workstation Default to Current">
+<!ENTITY staff.main.menu.admin.client.hotkeys.setworkstation.accesskey "">
+<!ENTITY staff.main.menu.admin.client.hotkeys.clearworkstation.label "Clear Workstation Default">
+<!ENTITY staff.main.menu.admin.client.hotkeys.clearworkstation.accesskey "">
+<!ENTITY staff.main.menu.admin.client.toolbars "Toolbars">
+<!ENTITY staff.main.menu.admin.client.toolbars.current "Current">
+<!ENTITY staff.main.menu.admin.client.toolbars.setworkstation.label "Set Workstation Default to Current">
+<!ENTITY staff.main.menu.admin.client.toolbars.setworkstation.accesskey "">
+<!ENTITY staff.main.menu.admin.client.toolbars.clearworkstation.label "Clear Workstation Default">
+<!ENTITY staff.main.menu.admin.client.toolbars.clearworkstation.accesskey "">
+<!ENTITY staff.main.menu.admin.client.toolbars.size "Icon Size">
+<!ENTITY staff.main.menu.admin.client.toolbars.size.large "Large">
+<!ENTITY staff.main.menu.admin.client.toolbars.size.small "Small">
+<!ENTITY staff.main.menu.admin.client.toolbars.mode "Mode">
+<!ENTITY staff.main.menu.admin.client.toolbars.mode.both "Icons and Labels">
+<!ENTITY staff.main.menu.admin.client.toolbars.mode.icons "Icons Only">
+<!ENTITY staff.main.menu.admin.client.toolbars.mode.text "Labels Only">
+<!ENTITY staff.main.menu.admin.client.toolbars.label_position "Label Position">
+<!ENTITY staff.main.menu.admin.client.toolbars.label_position.side "Next to icons">
+<!ENTITY staff.main.menu.admin.client.toolbars.label_position.under "Under icons">
 <!ENTITY staff.main.menu.admin.non_cat_type_edit.accesskey "n">
 <!ENTITY staff.main.menu.admin.non_cat_type_edit.label "Non-Cataloged Type Editor">
 <!ENTITY staff.main.menu.admin.offline_xacts.accesskey "T">
@@ -827,8 +860,6 @@
 <!ENTITY staff.main.menu.admin.xuleditor.label "XUL Test">
 <!ENTITY staff.main.menu.admin.venkman.label "Venkman">
 <!ENTITY staff.main.menu.admin.ping "Ping Server">
-<!ENTITY staff.main.menu.admin.toggle_buttonbar.accesskey "B">
-<!ENTITY staff.main.menu.admin.toggle_buttonbar.label "Toggle Button Bar">
 <!ENTITY staff.main.menu.admin.toggle_meters.accesskey "M">
 <!ENTITY staff.main.menu.admin.toggle_meters.label "Toggle Activity Meters">
 <!ENTITY staff.main.menu.cat.accesskey "g">

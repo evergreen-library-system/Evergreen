@@ -33,6 +33,11 @@ main.menu.prototype = {
 
     'id_incr' : 0,
 
+    'toolbar' : 'none',
+    'toolbar_size' : 'large',
+    'toolbar_mode' : 'both',
+    'toolbar_labelpos' : 'side',
+
     'url_prefix' : function(url) {
         if (url.match(/^\//)) url = urls.remote + url;
         if (! url.match(/^(http|chrome):\/\//) && ! url.match(/^data:/) ) url = 'http://' + url;
@@ -55,10 +60,72 @@ main.menu.prototype = {
             eval( r.responseText );
         }
 
-        var button_bar = String( obj.data.hash.aous['ui.general.button_bar'] ) == 'true';
+        // Try workstation pref for button bar
+        var button_bar = xulG.pref.getCharPref('open-ils.menu.toolbar');
+
+        if (!button_bar) // No workstation pref? Try org unit pref.
+            button_bar = String( obj.data.hash.aous['ui.general.button_bar'] );
+
         if (button_bar) {
-            var x = document.getElementById('main_toolbar');
+            var x = document.getElementById('toolbar_' + button_bar);
             if (x) x.setAttribute('hidden','false');
+            this.toolbar = button_bar;
+        }
+
+        // Check for alternate Size pref
+        var toolbar_size = xulG.pref.getCharPref('open-ils.menu.toolbar.iconsize');
+        if(toolbar_size) this.toolbar_size = toolbar_size;
+        // Check for alternate Mode pref
+        var toolbar_mode = xulG.pref.getCharPref('open-ils.menu.toolbar.mode');
+        if(toolbar_mode) this.toolbar_mode = toolbar_mode;
+        // Check for alternate Label Position pref
+        var toolbar_labelpos = xulG.pref.getBoolPref('open-ils.menu.toolbar.labelbelow');
+        if(toolbar_labelpos) this.toolbar_labelpos = toolbar_labelpos;
+
+        if(button_bar || toolbar_size || toolbar_mode || toolbar_labelpos) {
+            var toolbox = document.getElementById('main_toolbox');
+            var toolbars = toolbox.getElementsByTagName('toolbar');
+            for(var i = 0; i < toolbars.length; i++) {
+                if(toolbars[i].id == 'toolbar_' + button_bar)
+                    toolbars[i].setAttribute('hidden', 'false');
+                else
+                    toolbars[i].setAttribute('hidden', 'true');
+                if(toolbar_mode) toolbars[i].setAttribute('mode', toolbar_mode);
+                if(toolbar_size) toolbars[i].setAttribute('iconsize', toolbar_size);
+                if(toolbar_labelpos) addCSSClass(toolbars[i], 'labelbelow');
+            }
+        }
+
+        if(button_bar) {
+            var x = document.getElementById('main.menu.admin.client.toolbars.current.popup');
+            if (x) {
+                var selectitems = x.getElementsByAttribute('value',button_bar);
+                if(selectitems.length > 0) selectitems[0].setAttribute('checked','true');
+            }
+        }
+
+        if(toolbar_size) {
+            var x = document.getElementById('main.menu.admin.client.toolbars.size.popup');
+            if (x) {
+                var selectitems = x.getElementsByAttribute('value',toolbar_size);
+                if(selectitems.length > 0) selectitems[0].setAttribute('checked','true');
+            }
+        }
+
+        if(toolbar_mode) {
+            var x = document.getElementById('main.menu.admin.client.toolbars.mode.popup');
+            if (x) {
+                var selectitems = x.getElementsByAttribute('value',toolbar_mode);
+                if(selectitems.length > 0) selectitems[0].setAttribute('checked','true');
+            }
+        }
+
+        if(toolbar_labelpos) {
+            var x = document.getElementById('main.menu.admin.client.toolbars.label_position.popup');
+            if (x) {
+                var selectitems = x.getElementsByAttribute('value',"under");
+                if(selectitems.length > 0) selectitems[0].setAttribute('checked','true');
+            }
         }
 
         var network_meter = String( obj.data.hash.aous['ui.network.progress_meter'] ) == 'true';
@@ -71,7 +138,26 @@ main.menu.prototype = {
 
         var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].
                     getService(Components.interfaces.nsIWindowMediator);
-        wm.getMostRecentWindow('eg_main').get_menu_perms(document);
+        var mainwin = wm.getMostRecentWindow('eg_main');
+        mainwin.get_menu_perms(document);
+        var hotkeysets = mainwin.load_hotkey_sets();
+
+        var popupmenu = document.getElementById('main.menu.admin.client.hotkeys.current.popup');
+        
+        for(var i = 0; i < hotkeysets.length; i++) {
+            var keysetname = hotkeysets[i];
+            var menuitem = document.createElement('menuitem');
+            if(offlineStrings.testString('hotkey.' + keysetname))
+                menuitem.setAttribute('label',offlineStrings.getString('hotkey.' + keysetname));
+            else
+                menuitem.setAttribute('label',keysetname);
+            menuitem.setAttribute('value',keysetname);
+            menuitem.setAttribute('type','radio');
+            menuitem.setAttribute('name','menu_hotkey_current');
+            menuitem.setAttribute('command','cmd_hotkeys_set');
+            popupmenu.appendChild(menuitem);
+        }
+
         JSAN.use('util.network');
         var network = new util.network();
         network.set_user_status();
@@ -532,14 +618,6 @@ main.menu.prototype = {
                         { 'no_xulG' : false, 'show_nav_buttons' : true, 'show_print_button' : true } 
                     );
 
-                }
-            ],
-
-            'cmd_toggle_buttonbar' : [
-                ['oncommand'],
-                function() {
-                    var x = document.getElementById('main_toolbar');
-                    if (x) x.hidden = ! x.hidden;
                 }
             ],
 
@@ -1325,6 +1403,112 @@ main.menu.prototype = {
                     }
                 }
             ],
+            'cmd_hotkeys_toggle' : [
+                ['oncommand'],
+                function() {
+                    // Easy enough, toggle disabled on the keyset
+                    var keyset = document.getElementById("menu_frame_keys");
+                    var disabled = (keyset.getAttribute("disabled") == "true") ? "false" : "true";
+                    keyset.setAttribute("disabled", disabled);
+                    // Then find every menuitem/toolbarbutton for this command for a graphical hint
+                    var controls = document.getElementsByAttribute("command","cmd_hotkeys_toggle");
+                    for(var i = 0; i < controls.length; i++)
+                        controls[i].setAttribute("checked",disabled);
+                }
+            ],
+            'cmd_hotkeys_set' : [
+                ['oncommand'],
+                function(event) {
+                    obj.set_menu_hotkeys(event.explicitOriginalTarget.getAttribute('value'));
+                }
+            ],
+            'cmd_hotkeys_setworkstation' : [
+                ['oncommand'],
+                function() {
+                    xulG.pref.setCharPref('open-ils.menu.hotkeyset', obj.data.current_hotkeyset);
+                }
+            ],
+            'cmd_hotkeys_clearworkstation' : [
+                ['oncommand'],
+                function() {
+                    if(xulG.pref.prefHasUserValue('open-ils.menu.hotkeyset'))
+                        xulG.pref.clearUserPref('open-ils.menu.hotkeyset');
+                }
+            ],
+            'cmd_toolbar_set' : [
+                ['oncommand'],
+                function(event) {
+                    var newToolbar = event.explicitOriginalTarget.getAttribute('value');
+                    var toolbox = document.getElementById('main_toolbox');
+                    var toolbars = toolbox.getElementsByTagName('toolbar');
+                    for(var i = 0; i < toolbars.length; i++) {
+                        if(toolbars[i].id == 'toolbar_' + newToolbar)
+                            toolbars[i].setAttribute('hidden', 'false');
+                        else
+                            toolbars[i].setAttribute('hidden', 'true');
+                    }
+                    obj.toolbar = newToolbar;
+                }
+            ],
+            'cmd_toolbar_mode_set' : [
+                ['oncommand'],
+                function(event) {
+                    var newMode = event.explicitOriginalTarget.getAttribute('value');
+                    var toolbox = document.getElementById('main_toolbox');
+                    var toolbars = toolbox.getElementsByTagName('toolbar');
+                    for(var i = 0; i < toolbars.length; i++)
+                        toolbars[i].setAttribute("mode",newMode);
+                    obj.toolbar_mode = newMode;
+                }
+            ],
+            'cmd_toolbar_size_set' : [
+                ['oncommand'],
+                function(event) {
+                    var newSize = event.explicitOriginalTarget.getAttribute('value');
+                    var toolbox = document.getElementById('main_toolbox');
+                    var toolbars = toolbox.getElementsByTagName('toolbar');
+                    for(var i = 0; i < toolbars.length; i++)
+                        toolbars[i].setAttribute("iconsize",newSize);
+                    obj.toolbar_size = newSize;
+                }
+            ],
+            'cmd_toolbar_label_position_set' : [
+                ['oncommand'],
+                function(event) {
+                    var altPosition = (event.explicitOriginalTarget.getAttribute('value') == "under");
+                    var toolbox = document.getElementById('main_toolbox');
+                    var toolbars = toolbox.getElementsByTagName('toolbar');
+                    for(var i = 0; i < toolbars.length; i++) {
+                        if(altPosition)
+                            addCSSClass(toolbars[i], 'labelbelow');
+                        else
+                            removeCSSClass(toolbars[i], 'labelbelow');
+                    }
+                    obj.toolbar_labelpos = (altPosition ? "under" : "side");
+                }
+            ],
+            'cmd_toolbar_setworkstation' : [
+                ['oncommand'],
+                function() {
+                xulG.pref.setCharPref('open-ils.menu.toolbar', obj.toolbar);
+                xulG.pref.setCharPref('open-ils.menu.toolbar.iconsize', obj.toolbar_size);
+                xulG.pref.setCharPref('open-ils.menu.toolbar.mode', obj.toolbar_mode);
+                xulG.pref.setBoolPref('open-ils.menu.toolbar.labelbelow', (obj.toolbar_labelpos == "under"));
+                }
+            ],
+            'cmd_toolbar_clearworkstation' : [
+                ['oncommand'],
+                function() {
+                    if(xulG.pref.prefHasUserValue('open-ils.menu.toolbar'))
+                        xulG.pref.clearUserPref('open-ils.menu.toolbar');
+                    if(xulG.pref.prefHasUserValue('open-ils.menu.toolbar.iconsize'))
+                        xulG.pref.clearUserPref('open-ils.menu.toolbar.iconsize');
+                    if(xulG.pref.prefHasUserValue('open-ils.menu.toolbar.mode'))
+                        xulG.pref.clearUserPref('open-ils.menu.toolbar.mode');
+                    if(xulG.pref.prefHasUserValue('open-ils.menu.toolbar.labelbelow'))
+                        xulG.pref.clearUserPref('open-ils.menu.toolbar.labelbelow');
+                }
+            ],
         };
 
         JSAN.use('util.controller');
@@ -1411,17 +1595,20 @@ main.menu.prototype = {
 
     'command_tab' : function(event,url,params,content_params) {
         var newTab = false;
-        if(event && event.explicitOriginalTarget.nodeName == 'toolbarbutton' && event.explicitOriginalTarget.command == event.originalTarget.id) {
+        var myEvent = event;
+        if(event && event.sourceEvent) myEvent = event.sourceEvent;
+        // Note: The last event is not supposed to be myEvent in this if.
+        if(myEvent && myEvent.explicitOriginalTarget.nodeName.match(/toolbarbutton/) && myEvent.explicitOriginalTarget.command == event.originalTarget.id) {
             var value = xulG.pref.getIntPref('ui.key.accelKey');
             switch(value) {
                 case 17:
-                    newTab = event.ctrlKey;
+                    newTab = myEvent.ctrlKey;
                     break;
                 case 18:
-                    newTab = event.altKey;
+                    newTab = myEvent.altKey;
                     break;
                 case 224:
-                    newTab = event.metaKey;
+                    newTab = myEvent.metaKey;
                     break;
             }
             try {
@@ -1527,6 +1714,122 @@ commands:
             }           
         }
 
+    },
+
+    'set_menu_hotkeys' : function(hotkeyset) {
+        this.data.stash_retrieve();
+
+        var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].
+                    getService(Components.interfaces.nsIWindowMediator);
+        var mainwin = wm.getMostRecentWindow('eg_main');
+        var explicit = false;
+        JSAN.use('util.network');
+        var network = new util.network();
+
+        if(hotkeyset) { // Explicit request
+            this.data.current_hotkeyset = hotkeyset;
+            this.data.stash('current_hotkeyset');
+            explicit = true;
+        }
+        else { // Non-explicit request?
+            if(this.data.current_hotkeyset) // Previous hotkeyset?
+                hotkeyset = this.data.current_hotkeyset; // Use it
+            else { // No previous? We need to decide on one!
+                // Load the list so we know if what we are being asked to load is valid.
+                var hotkeysets = mainwin.load_hotkey_sets();
+                if(!hotkeysets) return; // No sets = nothing to load. Which is probably an error, but meh.
+                hotkeysets.has = function(test) {
+                    for(i = 0; i < this.length; i++) {
+                        if(this[i] == test) return true;
+                    }
+                    return false;
+                }; 
+                // Try workstation (pref)
+                hotkeyset = xulG.pref.getCharPref('open-ils.menu.hotkeyset');
+
+                // Nothing or nothing valid?
+                if(!hotkeyset || !hotkeysets.has(hotkeyset)) {
+                    hotkeyset = this.data.hash.aous['ui.general.hotkeyset'];
+                }
+                // STILL nothing? Try Default.
+                if(!hotkeyset || !hotkeysets.has(hotkeyset)) {
+                    if(hotkeysets.has('Default'))
+                        hotkeyset = 'Default';
+                    else
+                        return false;
+                }
+                // And save whatever we are using.
+                this.data.current_hotkeyset = hotkeyset;
+                this.data.stash('current_hotkeyset');
+            }
+        }
+        // Clear out all the old hotkeys
+        var keyset = document.getElementById('menu_frame_keys');
+        var main_menu = document.getElementById('main_menubar');
+        if(keyset.hasChildNodes()) {
+            var menuitems = main_menu.getElementsByAttribute('key','*');
+            while(menuitems.length > 0) {
+                var menuitem = menuitems[0];
+                menuitem.removeAttribute('key');
+                // Trick/force mozilla to re-evaluate the menuitem
+                // If you want to take this trick for use *anywhere* in *any* project, regardless of licensing, please do
+                // Because it was a PITA to figure out
+                menuitem.style.display = 'none'; // Hide the item to force menu to clear spot
+                menuitem.removeAttribute('acceltext'); // Remove acceltext to clear out hotkey hint text
+                menuitem.parentNode.openPopupAtScreen(0,0,false); // Tell menupopup to redraw itself
+                menuitem.parentNode.hidePopup(); // And then make it go away right away.
+                menuitem.style.removeProperty('display'); // Restore normal css display
+            }
+            while(keyset.hasChildNodes()) keyset.removeChild(keyset.childNodes[0]);
+        }
+        keyset_lines = mainwin.get_hotkey_array(hotkeyset);
+        // Next, fill the keyset
+        for(var line = 0; line < keyset_lines.length; line++) {
+            // Create and populate our <key>
+            var key_node = document.createElement('key');
+            key_node.setAttribute('id',keyset_lines[line][0] + "_key");
+            key_node.setAttribute('command',keyset_lines[line][0]);
+            key_node.setAttribute('modifiers',keyset_lines[line][1]);
+            // If keycode starts with VK_ we assume it is a key code.
+            // Key codes go in the keycode attribute
+            // Regular keys (like "i") go in the key attribute
+            if(keyset_lines[line][2].match(/^VK_/))
+                key_node.setAttribute('keycode',keyset_lines[line][2]);
+            else
+                key_node.setAttribute('key',keyset_lines[line][2]);
+            // If a fourth option was specified, set keytext to it.
+            if(keyset_lines[line][3])
+                key_node.setAttribute('keytext',keyset_lines[line][3]);
+            // Add the new node to the DOM
+            keyset.appendChild(key_node);
+            // And populate all the menu items that should now display it
+            var menuitems = main_menu.getElementsByAttribute('command',keyset_lines[line][0]);
+            for(var i = 0; i < menuitems.length; i++) {
+                menuitems[i].setAttribute('key', keyset_lines[line][0] + "_key");
+                // Trick/force mozilla to re-evaluate the menuitem
+                menuitems[i].style.display = 'none'; // Hide the item to force menu to clear spot
+                menuitems[i].parentNode.openPopupAtScreen(0,0,false); // Tell menupopup to redraw itself
+                menuitems[i].parentNode.hidePopup(); // And then make it go away right away
+                menuitems[i].style.removeProperty('display'); // Restore normal css display
+            }
+        }
+        // If no keys, disable ability to toggle hotkeys (because why bother?)
+        var x = document.getElementById('cmd_hotkeys_toggle');
+        if(x) {
+            if(keyset.hasChildNodes())
+                x.removeAttribute('disabled');
+            else
+                x.setAttribute('disabled', 'true');
+        }
+        // Select the hotkey set in the menu
+        // This ensures that first window load OR remote window update shows properly
+        var hotkeylist = document.getElementById('main.menu.admin.client.hotkeys.current.popup');
+        var selectitems = hotkeylist.getElementsByAttribute('value',hotkeyset);
+        if(selectitems.length > 0) selectitems[0].setAttribute('checked','true');
+        // Tell other windows to update
+        if(explicit) {
+            network.set_user_status();
+        }
     },
 
     'page_meter' : {
