@@ -56,7 +56,7 @@
 		<xi:include href="stafftasks/kcls_acquisitions.xml"/>
 		<xi:include href="stafftasks/serials-gpls.xml"/>
 		<xi:include href="stafftasks/alternate_serial_control.xml"/>
-		
+		<xi:include href="stafftasks/cataloging.xml"/>
  	</part>
 	<part xml:id="admin">
 		<info>
