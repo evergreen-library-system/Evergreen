@@ -1275,8 +1275,8 @@ util.list.prototype = {
 
     'dump_csv_to_printer' : function(params) {
         var obj = this;
-        JSAN.use('util.print'); var print = new util.print(params.printer_context || obj.printer_context);
         if (typeof params == 'undefined') params = {};
+        JSAN.use('util.print'); var print = new util.print(params.printer_context || obj.printer_context);
         if (params.no_full_retrieve) {
             print.simple( obj.dump_csv( params ), {'content_type':'text/plain'} );
         } else {
@@ -1290,8 +1290,8 @@ util.list.prototype = {
 
     'dump_extended_format_to_printer' : function(params) {
         var obj = this;
-        JSAN.use('util.print'); var print = new util.print(params.printer_context || obj.printer_context);
         if (typeof params == 'undefined') params = {};
+        JSAN.use('util.print'); var print = new util.print(params.printer_context || obj.printer_context);
         if (params.no_full_retrieve) {
             print.simple( obj.dump_extended_format( params ), {'content_type':'text/plain'} );
         } else {
