@@ -56,7 +56,7 @@ xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" xml:id="cataloging">
        using Prefix Query Format to build complex searches. See 
        <xref linkend="rawsearches" />.</listitem>
        </itemizedlist>
-      <para>The <guilabel>Results</guilabel> pane displays the results from the 
+      <para>The <guilabel role="bold">Results</guilabel> pane displays the results from the 
       most recent search.  Information about each record retrieved appears on a
           separate summary line, with various columns of information.</para>
       <itemizedlist>
