@@ -1,0 +1,248 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Evergreen 1.4\n"
+"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"POT-Creation-Date: 2011-04-18 21:45:31-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: reservation.js:AUTO_ending_at
+msgid "and"
+msgstr ""
+
+#: reservation.js:BRSRC_NOT_FOUND
+msgid "Could not locate that resource."
+msgstr ""
+
+#: reservation.js:AUTO_choose_a_brt
+msgid "Choose a Bookable Resource Type"
+msgstr ""
+
+#: reservation.js:CREATE_BRESV_OK
+msgid "Created ${0} reservation(s)"
+msgstr ""
+
+#: reservation.js:AUTO_ATTR_VALUE_reserve_brsrc
+msgid "Reserve Selected"
+msgstr ""
+
+#: reservation.js:NO_BRT_RESULTS
+msgid "There are no bookable resource types registered."
+msgstr ""
+
+#: reservation.js:AUTO_ATTR_VALUE_next
+msgid "Next"
+msgstr ""
+
+#: reservation.js:BRSRC_RETRIVE_ERROR
+msgid "Error retrieving resource: "
+msgstr ""
+
+#: reservation.js:AUTO_starting_at
+msgid "Between"
+msgstr ""
+
+#: reservation.js:AUTO_bresv_grid_resource
+msgid "Resource"
+msgstr ""
+
+#: reservation.js:AUTO_brt_noncat_only
+msgid "Show only non-cataloged bookable resource types"
+msgstr ""
+
+#: reservation.js:ON_FLY_ERROR
+msgid "Error attempting to make item a bookable resource:"
+msgstr ""
+
+#: reservation.js:AUTO_bresv_grid_type
+msgid "Type"
+msgstr ""
+
+#: reservation.js:AUTO_with_these_attr
+msgid "With these attributes:"
+msgstr ""
+
+#: reservation.js:WHERES_THE_BARCODE
+msgid "Enter a patron's barcode to make a reservation."
+msgstr ""
+
+#: reservation.js:CREATE_BRESV_SERVER_ERROR
+msgid "Server error trying to create reservation: "
+msgstr ""
+
+#: reservation.js:CREATE_BRESV_LOCAL_ERROR
+msgid "Exception trying to create reservation: "
+msgstr ""
+
+#: reservation.js:CREATE_BRESV_OK_MISSING_TARGET
+msgid ""
+"Created ${0} reservation(s), but ${1} of these could not target any resources.\n"
+"\n"
+"This means that it won't be possible to fulfill some of these\n"
+"reservations until a suitable resource becomes available."
+msgstr ""
+
+#: reservation.js:CREATE_BRESV_OK_MISSING_TARGET_WILL_CANCEL
+msgid ""
+"Since the requested resource could not be targeted, this\n"
+"reservation will now be canceled."
+msgstr ""
+
+#: reservation.js:OUTSTANDING_BRESV
+msgid "Outstanding reservations for patron"
+msgstr ""
+
+#: reservation.js:HERE_ARE_EXISTING_BRESV
+msgid "Existing reservations for"
+msgstr ""
+
+#: reservation.js:CXL_BRESV_SUCCESS
+msgid "Canceled ${0} reservation(s)"
+msgstr ""
+
+#: reservation.js:GET_PATRON_NO_RESULT
+msgid "No server response after attempting to look up patron by barcode."
+msgstr ""
+
+#: reservation.js:AUTO_or
+msgid "- Or -"
+msgstr ""
+
+#: reservation.js:SELECT_A_BRSRC_THEN
+msgid ""
+"You have clicked 'Reserve Selected', but nothing is selected!\n"
+"\n"
+"You must select a resource from the large box above.\n"
+"\n"
+"***  If resources that you would select are highlighted in RED, ***\n"
+"these items are not available during the requested time; if\n"
+"possible, choose another resource or change the reservation time."
+msgstr ""
+
+#: reservation.js:AUTO_ATTR_VALUE_reserve_brt
+msgid "Reserve Any"
+msgstr ""
+
+#: reservation.js:AUTO_patron_barcode
+msgid "Reserve to patron barcode:"
+msgstr ""
+
+#: reservation.js:COULD_NOT_RETRIEVE_BRT_PASSED_IN
+msgid "Error retrieving booking resource type"
+msgstr ""
+
+#: reservation.js:ACTOR_CARD_NOT_FOUND
+msgid "Patron barcode not found. Please try again."
+msgstr ""
+
+#: reservation.js:CXL_BRESV_SELECT_SOMETHING
+msgid "You have not selected any reservations to cancel."
+msgstr ""
+
+#: reservation.js:AUTO_i_need_this_resource
+msgid "I need this resource..."
+msgstr ""
+
+#: reservation.js:NEED_EXACTLY_ONE_BRT_PASSED_IN
+msgid "Can't book multiple resource types at once"
+msgstr ""
+
+#: reservation.js:AUTO_bresv_grid_start_time
+msgid "Start time"
+msgstr ""
+
+#: reservation.js:ERROR_FETCHING_AOUS
+msgid ""
+"Could not retrieve organizational unit settings.\n"
+"This is a non-fatal error, but you may wish to\n"
+"contact your system administrator."
+msgstr ""
+
+#: reservation.js:AUTO_ATTR_VALUE_button_cancel_existing
+msgid "Cancel selected"
+msgstr ""
+
+#: reservation.js:GET_BRESV_LIST_NO_RESULT
+msgid "No results from server retrieving reservation list."
+msgstr ""
+
+#: reservation.js:GET_BRESV_LIST_ERR
+msgid "Error while retrieving reservation list: "
+msgstr ""
+
+#: reservation.js:AUTO_arbitrary_resource
+msgid "Enter the barcode of a cataloged, bookable resource:"
+msgstr ""
+
+#: reservation.js:NO_EXISTING_BRESV
+msgid "This user has no existing reservations at this time."
+msgstr ""
+
+#: reservation.js:AUTO_explain_bookable
+msgid "To reserve an item that is not yet registered as a bookable resource, find it in the catalog or under <em>Display Item</em>, and select <em>Make Item Bookable</em> or <em>Book Item Now</em> there."
+msgstr ""
+
+#: reservation.js:CXL_BRESV_FAILURE2
+msgid "Error canceling reservations:\n"
+msgstr ""
+
+#: reservation.js:NO_BRA_RESULTS
+msgid "Couldn't retrieve booking resource attributes."
+msgstr ""
+
+#: reservation.js:CREATE_BRESV_SERVER_NO_RESPONSE
+msgid "No response from server after trying to create reservation."
+msgstr ""
+
+#: reservation.js:AUTO_bresv_grid_end_time
+msgid "End time"
+msgstr ""
+
+#: reservation.js:UNTARGETED
+msgid "None targeted"
+msgstr ""
+
+#: reservation.js:ON_FLY_NO_RESPONSE
+msgid "No response from server attempting to make item a bookable resource."
+msgstr ""
+
+#: reservation.js:NO_TARG_DIV
+msgid "Could not find target div"
+msgstr ""
+
+#: reservation.js:INVALID_TS_RANGE
+msgid "You must choose a valid start and end time for the reservation."
+msgstr ""
+
+#: reservation.js:AUTO_pickup_lib_selector
+msgid "Choose the pickup library for this reservation:"
+msgstr ""
+
+#: reservation.js:NO_USABLE_BRSRC
+msgid ""
+"No reservable resources.  Adjust start and end time\n"
+"until a resource is available for reservation."
+msgstr ""
+
+#: reservation.js:AUTO_ATTR_VALUE_button_edit_existing
+msgid "Edit selected"
+msgstr ""
+
+#: reservation.js:CREATE_BRESV_OK_MISSING_TARGET_BLOCKED_BY_CIRC
+msgid ""
+"The desired reservation(s) are blocked by circulation(s) with the following due date(s):\n"
+"${0}"
+msgstr ""
+
+#: reservation.js:ANY
+msgid "ANY"
+msgstr ""
+
+#: reservation.js:CXL_BRESV_FAILURE
+msgid "Error canceling reservations; server silent."
+msgstr ""

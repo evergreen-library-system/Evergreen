@@ -1,0 +1,15 @@
+Evergreen Installer Graphics
+Adapted by Mike Peters (Evergreen Indiana)
+
+Sourced from NSIS "Orange" Modern UI Theme
+The NSIS "Orange Modern UI Theme" was created by MoNKi.  You can freely use it in your NSIS scritps. (from http://nsis.sourceforge.net/%22Orange%22_Modern_UI_Theme)
+
+Includes:
+Wizard - Install
+Wizard - Uninstall
+Header - Left, fade to white
+Beta Wizard - Install
+Beta Wizard - Uninstall
+Beta Header - Left, fade to white
+
+Thomas Berezansky then took them, saved them as BMP files (as makensis, on linux at least, won't read PNG files), and put them in beta/release folders with basic names.

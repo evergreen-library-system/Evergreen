@@ -42,6 +42,7 @@ autojsbinscripts = @srcdir@/extras/fieldmapper.pl \
 	 @srcdir@/extras/org_tree_html_options.pl \
 	 @srcdir@/extras/org_tree_proximity.pl \
 	 @srcdir@/extras/autogen.sh \
+	 @srcdir@/extras/cache-generator.sh \
 	 @srcdir@/support-scripts/offline-blocked-list.pl 
 
 # Decide which entities to build
@@ -183,6 +184,9 @@ ilscore-install:
 	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/autogen.sh'
 	sed -i 's|LOCALSTATEDIR|@localstatedir@|g' '$(DESTDIR)@bindir@/autogen.sh'
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@bindir@/autogen.sh'
+	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/cache-generator.sh'
+	sed -i 's|LOCALSTATEDIR|@localstatedir@|g' '$(DESTDIR)@bindir@/cache-generator.sh'
+	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@bindir@/cache-generator.sh'
 	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/reshelving_complete.srfsh'
 	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/clear_expired_circ_history.srfsh'
 	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/update_hard_due_dates.srfsh'

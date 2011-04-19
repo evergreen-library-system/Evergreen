@@ -1769,7 +1769,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<class id="cmc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::metabib_class" oils_persist:tablename="config.metabib_class" reporter:label="Metabib Class" oils_persist:field_safe="true">
 		<fields oils_persist:primary="name">
 			<field reporter:label="Name" name="name" reporter:datatype="text"/>
-			<field reporter:label="Label" name="label" reporter:datatype="text"/>
+			<field reporter:label="Label" name="label" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field reporter:label="Fields" name="fields" reporter:datatype="link" oils_persist:virtual="true"/>
 		</fields>
 		<links>
@@ -1790,7 +1790,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Class" name="field_class" reporter:datatype="link"/>
 			<field reporter:label="ID" name="id" reporter:datatype="id" />
 			<field reporter:label="Name" name="name" reporter:datatype="text"/>
-			<field reporter:label="Label" name="label" reporter:datatype="text"/>
+			<field reporter:label="Label" name="label" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field reporter:label="XPath" name="xpath" reporter:datatype="text"/>
 			<field reporter:label="Weight" name="weight" reporter:datatype="int" />
 			<field reporter:label="Format" name="format" reporter:datatype="link"/>
