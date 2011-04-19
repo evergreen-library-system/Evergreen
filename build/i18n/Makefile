@@ -94,6 +94,7 @@ newpo:
 	@pot2po $(PROGRESS) -i po/serial.properties/serial.properties.pot -o $(PO)/serial.properties/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/vandelay.dtd/vandelay.dtd.pot -o $(PO)/vandelay.dtd/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/AutoFieldWidget.js/AutoFieldWidget.js.pot -o $(PO)/AutoFieldWidget.js/$(LOCALE).po 
+	@pot2po $(PROGRESS) -i po/Searcher.js/Searcher.js.pot -o $(PO)/Searcher.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/TranslatorPopup.js/TranslatorPopup.js.pot -o $(PO)/TranslatorPopup.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/XULTermLoader.js/XULTermLoader.js.pot -o $(PO)/XULTermLoader.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/User.js/User.js.pot -o $(PO)/User.js/$(LOCALE).po 
@@ -139,6 +140,7 @@ updatepo: prep_output
 	@pot2po $(PROGRESS) -i po/serial.properties/serial.properties.pot -o $(PO)/serial.properties/$(LOCALE).po  -t $(PO)/serial.properties/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/vandelay.dtd/vandelay.dtd.pot -o $(PO)/vandelay.dtd/$(LOCALE).po  -t $(PO)/vandelay.dtd/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/AutoFieldWidget.js/AutoFieldWidget.js.pot -o $(PO)/AutoFieldWidget.js/$(LOCALE).po  -t $(PO)/AutoFieldWidget.js/$(LOCALE).po 
+	@pot2po $(PROGRESS) -i po/Searcher.js/Searcher.js.pot -o $(PO)/Searcher.js/$(LOCALE).po  -t $(PO)/Searcher.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/TranslatorPopup.js/TranslatorPopup.js.pot -o $(PO)/TranslatorPopup.js/$(LOCALE).po  -t $(PO)/TranslatorPopup.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/User.js/User.js.pot -o $(PO)/User.js/$(LOCALE).po  -t $(PO)/User.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/XULTermLoader.js/XULTermLoader.js.pot -o $(PO)/XULTermLoader.js/$(LOCALE).po  -t $(PO)/XULTermLoader.js/$(LOCALE).po 
@@ -165,6 +167,7 @@ dojo2pot:
 	@scripts/dojo_resource.py --pot $(DOJO_RPT_SRC)/reports.js --output $(PO)/reports.js/reports.js.pot
 	@scripts/dojo_resource.py --pot $(DOJO_USER_SRC)/User.js --output $(PO)/User.js/User.js.pot
 	@scripts/dojo_resource.py --pot $(DOJO_WIDGET_SRC)/AutoFieldWidget.js --output $(PO)/AutoFieldWidget.js/AutoFieldWidget.js.pot
+	@scripts/dojo_resource.py --pot $(DOJO_WIDGET_SRC)/Searcher.js --output $(PO)/Searcher.js/Searcher.js.pot
 	@scripts/dojo_resource.py --pot $(DOJO_WIDGET_SRC)/TranslatorPopup.js --output $(PO)/TranslatorPopup.js/TranslatorPopup.js.pot
 	@scripts/dojo_resource.py --pot $(DOJO_WIDGET_SRC)/XULTermLoader.js --output $(PO)/XULTermLoader.js/XULTermLoader.js.pot
 
@@ -182,6 +185,7 @@ po2dojo:
 	@scripts/dojo_resource.py --create $(PO)/reports.js/$(LOCALE).po --output $(PROJECT)/$(LOCALE)/reports.js
 	@scripts/dojo_resource.py --create $(PO)/selfcheck.js/$(LOCALE).po --output $(PROJECT)/$(LOCALE)/selfcheck.js
 	@scripts/dojo_resource.py --create $(PO)/AutoFieldWidget.js/$(LOCALE).po --output $(PROJECT)/$(LOCALE)/AutoFieldWidget.js
+	@scripts/dojo_resource.py --create $(PO)/Searcher.js/$(LOCALE).po --output $(PROJECT)/$(LOCALE)/Searcher.js
 	@scripts/dojo_resource.py --create $(PO)/TranslatorPopup.js/$(LOCALE).po --output $(PROJECT)/$(LOCALE)/TranslatorPopup.js
 	@scripts/dojo_resource.py --create $(PO)/User.js/$(LOCALE).po --output $(PROJECT)/$(LOCALE)/User.js
 	@scripts/dojo_resource.py --create $(PO)/XULTermLoader.js/$(LOCALE).po --output $(PROJECT)/$(LOCALE)/XULTermLoader.js
@@ -309,6 +313,7 @@ install: updatepo project fmidl2fmidlent fmidlpo2entity-en
 	cp $(PROJECT)/$(LOCALE)/User.js $(DOJO_USER_SRC)/$(DOJO_LOCALE)/User.js
 	mkdir -p $(DOJO_WIDGET_SRC)/$(DOJO_LOCALE)
 	cp $(PROJECT)/$(LOCALE)/AutoFieldWidget.js $(DOJO_WIDGET_SRC)/$(DOJO_LOCALE)/AutoFieldWidget.js
+	cp $(PROJECT)/$(LOCALE)/Searcher.js $(DOJO_WIDGET_SRC)/$(DOJO_LOCALE)/Searcher.js
 	cp $(PROJECT)/$(LOCALE)/TranslatorPopup.js $(DOJO_WIDGET_SRC)/$(DOJO_LOCALE)/TranslatorPopup.js
 	cp $(PROJECT)/$(LOCALE)/XULTermLoader.js $(DOJO_WIDGET_SRC)/$(DOJO_LOCALE)/XULTermLoader.js
 
