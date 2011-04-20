@@ -23,13 +23,26 @@ use Getopt::Long;
 
 my @formats = qw/USMARC UNIMARC XML BRE ARE/;
 
-my ($config,$format,$encoding,$location,$dollarsign,$idl,$help,$holdings,$timeout,$export_mfhd,$type,$all_records) = ('/openils/conf/opensrf_core.xml','USMARC','MARC8','','$',0,undef,undef,0,undef,'biblio',undef);
+my $config = '/openils/conf/opensrf_core.xml';
+my $format = 'USMARC';
+my $encoding = 'MARC8';
+my $location = '';
+my $dollarsign = '$';
+my $idl = 0;
+my $help = undef;
+my $holdings = undef;
+my $timeout = 0;
+my $export_mfhd = undef;
+my $type = 'biblio';
+my $all_records = undef;
+my $replace_001 = undef;
 
 GetOptions(
         'help'       => \$help,
         'items'      => \$holdings,
         'mfhd'       => \$export_mfhd,
         'all'        => \$all_records,
+        'replace_001'=> \$replace_001,
         'location=s' => \$location,
         'money=s'    => \$dollarsign,
         'config=s'   => \$config,
@@ -66,6 +79,7 @@ Usage: $0 [options]
                     have a lot of items attached to them.
  --type or -t       Record type (BIBLIO, AUTHORITY) [BIBLIO]
  --all or -a        Export all records; ignores input list
+ --replace_001      Replace the 001 field value with the record ID
 
  Additional options for type = 'BIBLIO':
  --items or -i      Include items (holdings) in the output
@@ -181,7 +195,7 @@ Total Time Elapsed: $time seconds
 DONE
 
 sub export_record {
-    my $id = shift;
+    my $id = int(shift);
 
     my $bib; 
 
@@ -217,6 +231,11 @@ sub export_record {
         my $r = MARC::Record->new_from_xml( $bib->marc, $encoding, $format );
         if ($type eq 'biblio') {
             add_bib_holdings($bib, $r);
+        }
+
+        if ($replace_001) {
+            my $tcn = $r->field('001');
+            $tcn->update($id);
         }
 
         if ($format eq 'XML') {
