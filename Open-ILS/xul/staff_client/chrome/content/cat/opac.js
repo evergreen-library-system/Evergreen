@@ -195,7 +195,7 @@ function set_marc_edit() {
                             copy_obj.fine_level(2); // Normal
                             copy_obj.loan_duration(2); // Normal
                             copy_obj.location(1); // Stacks
-                            copy_obj.status(5); // In Process
+                            copy_obj.status(0); // Available
                             copy_obj.circulate(get_db_true());
                             copy_obj.holdable(get_db_true());
                             copy_obj.opac_visible(get_db_true());
