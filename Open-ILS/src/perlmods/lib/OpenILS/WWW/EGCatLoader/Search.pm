@@ -53,7 +53,7 @@ sub _prepare_biblio_search {
 
     # filters
     foreach (grep /^fi:/, $cgi->param) {
-        /:(\w+)$/ or next;
+        /:(-?\w+)$/ or next;
         my $term = join(",", $cgi->param($_));
         $query .= " $1($term)" if length $term;
     }
