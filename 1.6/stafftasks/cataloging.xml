@@ -165,7 +165,8 @@
 				<note><para>If you did not utilize Fast Item Add as described above, you may now attach holdings as described in Adding holdings to title records.</para></note>
 			</procedure>
 			<note><para>Select <guilabel>Fast Item Add</guilabel> to input the call number and barcode data from this screen. This box is 
-				<emphasis>sticky</emphasis> for the login.</para></note>
+				<emphasis>sticky</emphasis> for the login. Please note that the status of items created this way is 
+				<emphasis role="bold">Available</emphasis> rather than In Process.</para></note>
 		</simplesect>	
 		<simplesect xml:id="uploadingMARCfiles">
 			<title>Uploading MARC Files</title>
