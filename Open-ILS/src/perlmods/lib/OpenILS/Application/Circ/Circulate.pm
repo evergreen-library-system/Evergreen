@@ -236,6 +236,7 @@ sub run_method {
                         $circulator->editor->update_asset_copy($copy);
                         $success_event->{"payload"}->{"record"} =
                             $U->record_to_mvr($copy->call_number->record);
+                        $success_event->{"payload"}->{"volume"} = $copy->call_number;
                         $copy->call_number($copy->call_number->id);
                         $success_event->{"payload"}->{"copy"} = $copy;
                     }
@@ -1497,6 +1498,7 @@ sub do_checkout {
         OpenILS::Event->new('SUCCESS',
             payload  => {
                 copy             => $U->unflesh_copy($self->copy),
+                volume           => $self->volume,
                 circ             => $self->circ,
                 record           => $record,
                 holds_fulfilled  => $self->fulfilled_holds,
@@ -3189,6 +3191,7 @@ sub checkin_flesh_events {
 
         my $payload         = {};
         $payload->{copy}    = $U->unflesh_copy($self->copy);
+        $payload->{volume}  = $self->volume;
         $payload->{record}  = $record,
         $payload->{circ}    = $self->circ;
         $payload->{transit} = $self->transit;

@@ -354,6 +354,7 @@ circ.renew.prototype = {
                         'mbts' : renew.parent_circ ? renew.parent_circ.billable_transaction().summary() : null,
                         'mvr' : renew.record,
                         'acp' : renew.copy,
+                        'acn' : renew.volume,
                         'au' : renew.patron,
                         'status' : renew.status,
                         'route_to' : renew.route_to,

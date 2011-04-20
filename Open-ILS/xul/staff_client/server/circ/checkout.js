@@ -426,7 +426,8 @@ circ.checkout.prototype = {
                                     'my' : {
                                     'circ' : checkout.payload.circ,
                                     'mvr' : checkout.payload.record,
-                                    'acp' : checkout.payload.copy
+                                    'acp' : checkout.payload.copy,
+                                    'acn' : checkout.payload.volume
                                     }
                                 },
                                 'to_top' : true
