@@ -31,7 +31,7 @@ sub determine_booking_status {
 
 my $MK_ENV_FLESH = { 
     flesh => 2, 
-    flesh_fields => {acp => ['call_number'], acn => ['record']} 
+    flesh_fields => {acp => ['call_number','parts'], acn => ['record']}
 };
 
 sub initialize {
