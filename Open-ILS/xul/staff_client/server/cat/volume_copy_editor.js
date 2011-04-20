@@ -78,7 +78,7 @@ function setup_templates() {
             };
             g.save_template = function() { xulG.item_editor_save_template(); };
             g.import_templates = function() { xulG.item_editor_import_templates(); };
-            g.export_templates = function() { xulG.item_editor_apply_templates(); };
+            g.export_templates = function() { xulG.item_editor_export_templates(); };
             g.reset = function() { xulG.item_editor_reset(); };
 
             // just do this once; not sure if on_url_load could fire multiple times
