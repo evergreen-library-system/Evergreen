@@ -53,7 +53,7 @@
 			</step>	
 			<step>
 				<para>Clone the Evergreen-DocBook repository on your local machine:</para>
-<screen><userinput>git clone git://github.com/rsoulliere/Evergreen-DocBook.git</userinput></screen>
+<screen><userinput>git clone git@github.com:rsoulliere/Evergreen-DocBook.git</userinput></screen>
 			</step>	
 			<step>
 				<para>Edit or add files in the cloned repository location.</para>
