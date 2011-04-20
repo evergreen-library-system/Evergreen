@@ -1828,6 +1828,8 @@ commands:
                 menuitems[i].style.removeProperty('display'); // Restore normal css display
             }
         }
+        // Force reload of keyset cache?
+        keyset.parentNode.insertBefore(keyset, keyset.nextSibling);
         // If no keys, disable ability to toggle hotkeys (because why bother?)
         var x = document.getElementById('cmd_hotkeys_toggle');
         if(x) {
