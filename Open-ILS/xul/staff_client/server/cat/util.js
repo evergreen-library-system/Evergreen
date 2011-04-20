@@ -517,6 +517,7 @@ cat.util.mark_item_missing = function(copy_ids) {
 
 cat.util.fast_item_add = function(doc_id,cn_label,cp_barcode) {
     var error;
+    JSAN.use('OpenILS.data'); var data = new OpenILS.data();
     try {
 
         JSAN.use('util.error'); error = new util.error();
@@ -532,6 +533,9 @@ cat.util.fast_item_add = function(doc_id,cn_label,cp_barcode) {
             return;
         }
 
+        // Get the default copy status; default to available if unset, per 1.6
+        var fast_ccs = data.hash.aous['cat.default_copy_status_fast'] || 0;
+
         var copy_obj = new acp();
         copy_obj.id( -1 );
         copy_obj.isnew('1');
@@ -545,7 +549,7 @@ cat.util.fast_item_add = function(doc_id,cn_label,cp_barcode) {
         copy_obj.fine_level(2); // Normal
         copy_obj.loan_duration(2); // Normal
         copy_obj.location(1); // Stacks
-        copy_obj.status(5); // In Process
+        copy_obj.status(fast_ccs);
         copy_obj.circulate(get_db_true());
         copy_obj.holdable(get_db_true());
         copy_obj.opac_visible(get_db_true());

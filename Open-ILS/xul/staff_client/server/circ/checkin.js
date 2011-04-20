@@ -613,6 +613,7 @@ circ.checkin.prototype = {
                     'mbts' : checkin.circ ? checkin.circ.billable_transaction().summary() : null,
                     'mvr' : checkin.record,
                     'acp' : checkin.copy,
+                    'acn' : checkin.volume,
                     'au' : checkin.patron,
                     'status' : checkin.status,
                     'route_to' : checkin.route_to,
