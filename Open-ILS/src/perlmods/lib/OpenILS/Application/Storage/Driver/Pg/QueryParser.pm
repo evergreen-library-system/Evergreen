@@ -1,3 +1,6 @@
+use strict;
+use warnings;
+
 package OpenILS::Application::Storage::Driver::Pg::QueryParser;
 use OpenILS::Application::Storage::QueryParser;
 use base 'QueryParser';
@@ -511,8 +514,9 @@ sub toSQL {
         if ($filter) {
             my @fargs = @{$filter->args};
 
-            if (@fargs > 1) {
-                $dyn_filters{$f} = "( " .
+            if (@fargs > 1 || $filter->negate) {
+                my $NOT = $filter->negate ? 'NOT' : '';
+                $dyn_filters{$f} = "$NOT( " .
                     join(
                         " OR ",
                         map { "mrd.attrs \@> hstore('$col', " . $self->QueryParser->quote_value($_) . ")" } @fargs
@@ -706,11 +710,12 @@ sub flatten {
                     @field_ids = @{ $self->QueryParser->facet_field_ids_by_class( $node->classname ) };
                 }
 
-                $from .= "\n\tJOIN /* facet */ metabib.facet_entry $talias ON (\n\t\tm.source = ${talias}.source\n\t\t".
+                my $join_type = $node->negate ? 'LEFT' : 'INNER';
+                $from .= "\n\t$join_type JOIN /* facet */ metabib.facet_entry $talias ON (\n\t\tm.source = ${talias}.source\n\t\t".
                          "AND SUBSTRING(${talias}.value,1,1024) IN (" . join(",", map { $self->QueryParser->quote_value($_) } @{$node->values}) . ")\n\t\t".
                          "AND ${talias}.field IN (". join(',', @field_ids) . ")\n\t)";
 
-                $where .= 'TRUE';
+                $where .= $node->negate ? "${talias}.id IS NULL" : 'TRUE';
 
             } else {
                 my $subnode = $node->flatten;

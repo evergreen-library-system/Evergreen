@@ -3011,7 +3011,7 @@ sub query_parser_fts {
 	my $metarecord = ($self->api_name =~ /metabib/ or $query->parse_tree->find_modifier('metabib') or $query->parse_tree->find_modifier('metarecord')) ? "'t'" : "'f'";
 
 	my $sth = metabib::metarecord_source_map->db_Main->prepare(<<"    SQL");
-        SELECT  * /* bib search */
+        SELECT  * -- bib search: $args{query}
           FROM  search.query_parser_fts(
                     $param_search_ou\:\:INT,
                     $param_depth\:\:INT,
