@@ -639,7 +639,9 @@ circ.util.columns = function(modify,params) {
             'hidden' : true,
             'editable' : false, 'render' : function(my) {
                 if (typeof my.acn == 'undefined') return '';
-                return (typeof my.acn.prefix() == 'object') ? my.acn.prefix().label() : my.acn.prefix();
+                return (typeof my.acn.prefix() == 'object')
+                    ? my.acn.prefix().label()
+                    : data.hash.acnp[ my.acn.prefix() ].label();
             },
             'persist' : 'hidden width ordinal'
         },
@@ -652,7 +654,9 @@ circ.util.columns = function(modify,params) {
             'hidden' : true,
             'editable' : false, 'render' : function(my) {
                 if (typeof my.acn == 'undefined') return '';
-                return (typeof my.acn.suffix() == 'object') ? my.acn.suffix().label() : my.acn.suffix();
+                return (typeof my.acn.suffix() == 'object')
+                    ? my.acn.suffix().label()
+                    : data.hash.acns[ my.acn.suffix() ].label();
             },
             'persist' : 'hidden width ordinal'
         },
@@ -2501,11 +2505,12 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
         JSAN.use('util.date');
         JSAN.use('util.sound'); var sound = new util.sound();
 
-        error.sdump('D_DEBUG','check = ' + error.pretty_print( js2JSON( check ) ) );
+        dump('check = ' + error.pretty_print( js2JSON( check ) ) + '\n' );
 
         check.message = check.textcode;
 
         if (check.payload && check.payload.copy) { check.copy = check.payload.copy; }
+        if (check.payload && check.payload.volume) { check.volume = check.payload.volume; }
         if (check.payload && check.payload.record) { check.record = check.payload.record; }
         if (check.payload && check.payload.circ) { check.circ = check.payload.circ; }
         if (check.payload && check.payload.patron) { check.patron = check.payload.patron; }
