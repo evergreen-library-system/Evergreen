@@ -23,7 +23,7 @@ use Getopt::Long;
 
 my @formats = qw/USMARC UNIMARC XML BRE ARE/;
 
-my $config = '/openils/conf/opensrf_core.xml';
+my $config = '@sysconfdir@/opensrf_core.xml';
 my $format = 'USMARC';
 my $encoding = 'MARC8';
 my $location = '';
@@ -72,7 +72,7 @@ in their ID sequences.
 
 Usage: $0 [options]
  --help or -h       This screen.
- --config or -c     Configuration file [/openils/conf/opensrf_core.xml]
+ --config or -c     Configuration file [@sysconfdir@/opensrf_core.xml]
  --format or -f     Output format (USMARC, UNIMARC, XML, BRE, ARE) [USMARC]
  --encoding or -e   Output encoding (UTF-8, ISO-8859-?, MARC8) [MARC8]
  --xml-idl or -x    Location of the IDL XML
