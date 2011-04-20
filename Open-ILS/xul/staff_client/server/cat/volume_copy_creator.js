@@ -917,6 +917,9 @@ g.gather_copies = function() {
         var copies = [];
         var volume_data = {};
 
+        // Get the default copy status; default to "In Process" if unset, per 1.6
+        var normal_ccs = g.data.hash.aous['cat.default_copy_status_normal'] || 5;
+
         function new_copy(acp_id,ou_id,acn_id,barcode) {
             var copy = new acp();
             copy.id( acp_id );
@@ -931,7 +934,7 @@ g.gather_copies = function() {
             copy.fine_level(2); // Normal
             copy.loan_duration(2); // Normal
             copy.location(1); // Stacks
-            copy.status(5); // In Process
+            copy.status(normal_ccs);
             copy.circulate(get_db_true());
             copy.holdable(get_db_true());
             copy.opac_visible(get_db_true());
