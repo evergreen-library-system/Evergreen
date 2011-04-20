@@ -39,6 +39,26 @@ endif
 
 install-exec-local: $(OILSSERVER_INST)
 
+# Helper target
+# For when you want to add devbuild/permachine/autoupdate to an existing stamp id
+rebuild: export STAFF_CLIENT_STAMP_ID=`cat PREV_STAMP_ID`
+rebuild: export STAFF_CLIENT_VERSION=`cat PREV_VERSION`
+rebuild: build
+
+rigrelease:
+	@echo ' * Rigging for release branding'
+	@cp xulrunner-stub.release.exe xulrunner-stub.exe
+	@mkdir -p branding
+	@cp evergreen-icon.ico branding/evergreen.ico
+	@sed -i -e 's/^\s*;\?\s*!define UI_IMAGESET "release"/!define UI_IMAGESET "release"/' -e 's/^\s*;\?\s*!define UI_IMAGESET "beta"/;!define UI_IMAGESET "beta"/' windowssetup.nsi
+
+rigbeta:
+	@echo ' * Rigging for beta branding'
+	@cp xulrunner-stub.beta.exe xulrunner-stub.exe
+	@mkdir -p branding
+	@cp evergreen-icon-beta.ico branding/evergreen.ico
+	@sed -i -e 's/^\s*;\?\s*!define UI_IMAGESET "release"/;!define UI_IMAGESET "release"/' -e 's/^\s*;\?\s*!define UI_IMAGESET "beta"/!define UI_IMAGESET "beta"/' windowssetup.nsi
+
 devbuild: build
 	@echo ' * Copying in developer preferences'
 	@cp external/developers.js build/defaults/preferences/
@@ -125,6 +145,8 @@ stamp:
 	@if [ -n "${AUTOUPDATE_HOST}" ]; then echo "Applying automatic update host ${AUTOUPDATE_HOST}"; fi
 	@if [ -n "${AUTOUPDATE_HOST}" ]; then sed -i -e "s|::HOSTNAME::|${AUTOUPDATE_HOST}|" -e "s|https\?://\(https\?://\)|\1|" build/defaults/preferences/autoupdate.js; fi
 	@if [ -n "${AUTOUPDATE_HOST}" ]; then sed -i -e "s|::HOSTNAME::|${AUTOUPDATE_HOST}|" -e "s|https\?://\(https\?://\)|\1|" build/install.rdf; fi
+	@cp build/STAMP_ID PREV_STAMP_ID
+	@cp build/VERSION PREV_VERSION
 
 bell:
 	@perl -e 'print "Ringing bell..." . chr(7) . "\n";'
