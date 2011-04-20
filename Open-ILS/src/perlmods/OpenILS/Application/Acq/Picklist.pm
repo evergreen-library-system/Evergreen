@@ -13,7 +13,7 @@ use OpenILS::Application::AppUtils;
 use OpenSRF::Utils::Cache;
 use MARC::Record;
 use MARC::Batch;
-use MARC::File::XML;
+use MARC::File::XML (BinaryEncoding => 'UTF-8');
 use MIME::Base64;
 use Digest::MD5 qw/md5_hex/;
 use OpenILS::Application::Acq::Financials;

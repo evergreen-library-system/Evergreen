@@ -28,7 +28,7 @@ use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Application::AppUtils;
 
 use MARC::Record;
-use MARC::File::XML;
+use MARC::File::XML ( BinaryEncoding => 'UTF-8' );
 
 my $log = 'OpenSRF::Utils::Logger';
 my $U = 'OpenILS::Application::AppUtils';

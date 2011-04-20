@@ -188,7 +188,7 @@ use OpenILS::Application::Cat::BibCommon;
 use OpenILS::Application::Cat::AssetCommon;
 use MARC::Record;
 use MARC::Batch;
-use MARC::File::XML;
+use MARC::File::XML (BinaryEncoding => 'UTF-8');
 my $U = 'OpenILS::Application::AppUtils';
 
 
