@@ -2,7 +2,7 @@
 use strict;
 use Error qw/:try/;
 use MARC::Batch;
-use MARC::File::XML;
+use MARC::File::XML (BinaryEncoding => 'UTF-8');
 use XML::LibXML;
 use Getopt::Long;
 use encoding 'utf8';
