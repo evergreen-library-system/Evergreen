@@ -21,7 +21,6 @@ DROP AGGREGATE IF EXISTS array_accum(anyelement) CASCADE;
 DROP AGGREGATE IF EXISTS public.first(anyelement) CASCADE;
 DROP AGGREGATE IF EXISTS public.last(anyelement) CASCADE;
 DROP AGGREGATE IF EXISTS public.agg_text(text) CASCADE;
-DROP AGGREGATE IF EXISTS public.agg_tsvector(pg_catalog.tsvector) CASCADE;
 
 CREATE AGGREGATE array_accum (
 	sfunc = array_append,
@@ -64,22 +63,6 @@ CREATE AGGREGATE public.agg_text (
 	sfunc	 = public.text_concat,
 	basetype = text,
 	stype	 = text
-);
-
-CREATE OR REPLACE FUNCTION tsvector_concat ( tsvector, tsvector ) RETURNS pg_catalog.tsvector AS $$
-SELECT
-	CASE	WHEN $1 IS NULL
-			THEN $2
-		WHEN $2 IS NULL
-			THEN $1
-		ELSE $1 || ' ' || $2
-	END;
-$$ LANGUAGE SQL STABLE;
-
-CREATE AGGREGATE public.agg_tsvector (
-	sfunc	 = tsvector_concat,
-	basetype = pg_catalog.tsvector,
-	stype	 = pg_catalog.tsvector
 );
 
 CREATE OR REPLACE FUNCTION public.explode_array(anyarray) RETURNS SETOF anyelement AS $BODY$
