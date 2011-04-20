@@ -317,7 +317,6 @@ util.network.prototype = {
 
                 if(!offlinestrings) w.document.getElementById('offlineStrings');
                 if(permlist) w.g.menu.set_menu_access(permlist);
-                w.g.menu.set_menu_hotkeys();
                 if(data.list.au.length > 1) {
                     addCSSClass(w.document.getElementById('main_tabbox'),'operator_change');
                     x.setAttribute('label', offlineStrings.getFormattedString('menu.cmd_chg_session.operator.label', [data.list.au[1].usrname()]) );
