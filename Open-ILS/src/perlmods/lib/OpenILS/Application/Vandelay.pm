@@ -11,7 +11,7 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use MARC::Batch;
 use MARC::Record;
-use MARC::File::XML;
+use MARC::File::XML ( BinaryEncoding => 'UTF-8' );
 use OpenILS::Utils::Fieldmapper;
 use Time::HiRes qw(time);
 use OpenSRF::Utils::Logger qw/$logger/;
