@@ -126,7 +126,7 @@
         <tr>
             <td>[%
                 # XXX KCLS-specific kludging
-                org_name = ctx.find_aou(copy_info.circ_lib).name;
+                org_name = ctx.get_aou(copy_info.circ_lib).name;
                 dir = org_name | lower | replace('[^\w]', '') |
                     replace('.+320th', '320th'); %]
                 <a href="http://www.kcls.org/[% dir %]/"
@@ -138,7 +138,7 @@
             [% IF ctx.is_staff %]
             <td>
                 [% copy_info.age_protect ?
-                    ctx.find_crahp(copy_info.age_protect).name : l('None') %]
+                    ctx.get_crahp(copy_info.age_protect).name : l('None') %]
             </td>
             <td>[% date.format(
                 ctx.parse_datetime(copy_info.create_date),
