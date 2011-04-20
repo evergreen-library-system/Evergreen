@@ -14,7 +14,7 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::CStoreEditor;
 
 use MARC::Record;
-use MARC::File::XML;
+use MARC::File::XML ( BinaryEncoding => 'UTF-8' );
 use UNIVERSAL::require;
 
 use Time::HiRes qw/time/;
