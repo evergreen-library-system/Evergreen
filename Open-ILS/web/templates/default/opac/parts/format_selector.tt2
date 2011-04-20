@@ -1,12 +1,23 @@
-[%-  name = name || "fi:format";
+[% 
+    # Start w/ mattype, fall back to item_type
+    format_spec = '';
+    formats = [];
+    FOR format_spec IN ['mattype', 'item_type'];
+        formats = ctx.search_ccvm('ctype', format_spec);
+        IF formats.size; BREAK; END;
+    END;
+    name = name || "fi:" _ format_spec;
     id = id || "format_selector";
-    values = values || CGI.param(name) -%]
+    values = values || CGI.param(name) 
+-%]
+
 <select id='[% id %]' name='[% name %]'[%
     multiple ? ' multiple="multiple"' : '';
     size ? (' size="' _ size _ '"') : ''; %]>
     <option value=''>[% l("All Formats") %]</option>
+
 [% FOR o IN formats %]
-    <option value='[% o.code %]'[% values.grep('^' _ o.code _ '$').size ? ' selected="selected"' : ''%]>[% o.name %]</option>
+    <option value='[% o.code %]'[% values.grep('^' _ o.code _ '$').size ? ' selected="selected"' : ''%]>[% o.value %]</option>
 [%- END %]
 <!--
 	<option value='at'>[% l("Books") %]</option>

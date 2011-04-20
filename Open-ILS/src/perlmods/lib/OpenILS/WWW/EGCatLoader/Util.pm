@@ -12,6 +12,7 @@ my $ro_object_subs; # cached subs
 our %cache = ( # cached data
     map => {aou => {}}, # others added dynamically as needed
     list => {},
+    search => {},
     org_settings => {}
 );
 
@@ -42,20 +43,33 @@ sub init_ro_object_cache {
 
         my $list_key = "${hint}_list";
         my $get_key = "get_$hint";
+        my $search_key = "search_$hint";
 
+        # Retrieve the full set of objects with class $hint
         $ro_object_subs->{$list_key} = sub {
             my $method = "retrieve_all_$eclass";
             $cache{list}{$hint} = $e->$method() unless $cache{list}{$hint};
             return $cache{list}{$hint};
         };
     
-        $cache{map}{$hint} = {} unless $cache{map}{$hint};
-
+        # locate object of class $hint with Ident field $id
+        $cache{map}{$hint} = {};
         $ro_object_subs->{$get_key} = sub {
             my $id = shift;
             return $cache{map}{$hint}{$id} if $cache{map}{$hint}{$id}; 
             ($cache{map}{$hint}{$id}) = grep { $_->$ident_field eq $id } @{$ro_object_subs->{$list_key}->()};
             return $cache{map}{$hint}{$id};
+        };
+
+        # search for objects of class $hint where field=value
+        $cache{search}{$hint} = {};
+        $ro_object_subs->{$search_key} = sub {
+            my ($field, $val) = @_;
+            my $method = "search_$eclass";
+            $cache{search}{$hint}{$field} = {} unless $cache{search}{$hint}{$field};
+            $cache{search}{$hint}{$field}{$val} = $e->$method({$field => $val}) 
+                unless $cache{search}{$hint}{$field}{$val};
+            return $cache{search}{$hint}{$field}{$val};
         };
     }
 
