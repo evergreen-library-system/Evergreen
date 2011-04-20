@@ -162,6 +162,8 @@ main.menu.prototype = {
         var network = new util.network();
         network.set_user_status();
 
+        this.set_menu_hotkeys();
+
         function open_conify_page(path, labelKey, event) {
 
             // tab label
@@ -1409,7 +1411,10 @@ main.menu.prototype = {
                     // Easy enough, toggle disabled on the keyset
                     var keyset = document.getElementById("menu_frame_keys");
                     var disabled = (keyset.getAttribute("disabled") == "true") ? "false" : "true";
-                    keyset.setAttribute("disabled", disabled);
+                    if(disabled == "true")
+                        keyset.setAttribute("disabled", "true");
+                    else
+                        keyset.removeAttribute("disabled");
                     // Then find every menuitem/toolbarbutton for this command for a graphical hint
                     var controls = document.getElementsByAttribute("command","cmd_hotkeys_toggle");
                     for(var i = 0; i < controls.length; i++)
@@ -1722,14 +1727,23 @@ commands:
         var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].
                     getService(Components.interfaces.nsIWindowMediator);
         var mainwin = wm.getMostRecentWindow('eg_main');
-        var explicit = false;
         JSAN.use('util.network');
         var network = new util.network();
 
         if(hotkeyset) { // Explicit request
+            // Store
             this.data.current_hotkeyset = hotkeyset;
             this.data.stash('current_hotkeyset');
-            explicit = true;
+            // Then iterate over windows
+            var windowManager = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService();
+            var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
+            var enumerator = windowManagerInterface.getEnumerator('eg_menu');
+
+            var w;
+            while ( w = enumerator.getNext() ) {
+                if ( w != window )
+                    w.g.menu.set_menu_hotkeys();
+            }
         }
         else { // Non-explicit request?
             if(this.data.current_hotkeyset) // Previous hotkeyset?
@@ -1775,6 +1789,7 @@ commands:
                 // If you want to take this trick for use *anywhere* in *any* project, regardless of licensing, please do
                 // Because it was a PITA to figure out
                 menuitem.style.display = 'none'; // Hide the item to force menu to clear spot
+                menuitem.setAttribute('acceltext', ''); // Set acceltext to blank string outright
                 menuitem.removeAttribute('acceltext'); // Remove acceltext to clear out hotkey hint text
                 menuitem.parentNode.openPopupAtScreen(0,0,false); // Tell menupopup to redraw itself
                 menuitem.parentNode.hidePopup(); // And then make it go away right away.
@@ -1813,6 +1828,8 @@ commands:
                 menuitems[i].style.removeProperty('display'); // Restore normal css display
             }
         }
+        // Force reload of keyset cache?
+        keyset.parentNode.insertBefore(keyset, keyset.nextSibling);
         // If no keys, disable ability to toggle hotkeys (because why bother?)
         var x = document.getElementById('cmd_hotkeys_toggle');
         if(x) {
@@ -1826,10 +1843,6 @@ commands:
         var hotkeylist = document.getElementById('main.menu.admin.client.hotkeys.current.popup');
         var selectitems = hotkeylist.getElementsByAttribute('value',hotkeyset);
         if(selectitems.length > 0) selectitems[0].setAttribute('checked','true');
-        // Tell other windows to update
-        if(explicit) {
-            network.set_user_status();
-        }
     },
 
     'page_meter' : {

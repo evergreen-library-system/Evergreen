@@ -177,7 +177,7 @@ function my_init() {
                     g.copies = xulG.copies;
                     g.original_copies = js2JSON( g.copies );
                     for (var i = 0; i < g.applied_templates.length; i++) {
-                        g._apply_template( g.applied_templates[i] );
+                        g._apply_template( g.applied_templates[i], false);
                     }
                     g.summarize( g.copies );
                     g.render();
@@ -233,7 +233,7 @@ g.retrieve_templates = function() {
                     g.copy_editor_prefs[ 'template_menu' ] = { 'value' : g.template_menu.value };
                     g.save_attributes();
                 }
-                xulG.item_editor_apply_template = function() { g.apply_template(); };
+                xulG.item_editor_apply_template = function() { g.apply_template(true); };
                 xulG.item_editor_delete_template = function() { g.delete_template(); };
                 xulG.item_editor_save_template = function() { g.save_template(); };
                 xulG.item_editor_import_templates = function() { g.import_templates(); };
@@ -252,12 +252,12 @@ g.retrieve_templates = function() {
 
 g.applied_templates = [];
 
-g.apply_template = function() {
+g.apply_template = function(apply_volume_editor_template_changes) {
     try {
         var name = g.template_menu.value;
         if (g.templates[ name ] != 'undefined') {
             g.applied_templates.push( name );
-            g._apply_template(name);
+            g._apply_template(name,apply_volume_editor_template_changes);
             g.summarize( g.copies );
             g.render();
             g.check_for_unmet_required_fields();
@@ -267,7 +267,7 @@ g.apply_template = function() {
     }
 }
 
-g._apply_template = function(name) {
+g._apply_template = function(name,apply_volume_editor_template_changes) {
     try {
         if (g.templates[ name ] != 'undefined') {
             var template = g.templates[ name ];
@@ -284,7 +284,7 @@ g._apply_template = function(name) {
                         g.apply_owning_lib(template[i].value);
                     break;
                     case 'volume_copy_creator' :
-                        if (xulG.unified_interface) {
+                        if (xulG.unified_interface && apply_volume_editor_template_changes) {
                             xulG.apply_template_to_batch(template[i].field,template[i].value);
                         }
                     break;
