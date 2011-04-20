@@ -1,0 +1,33 @@
+The files in this folder define hotkey sets.
+
+Each hotkey set should be name.keyset, where name is the name of the set.
+
+hotkey.properites in the locale directory can set an alternate or translated name for a hotkey set.
+You should use format like:
+hotkey.name=newname
+
+The backend code uses the filename derived name for everything else.
+
+
+In the files a # denotes a comment, at the start of a line or in the middle.
+
+Otherwise, the file format is as follows:
+
+command,modifiers,key/keycode[,keytext]
+
+command is the ID of the <command> node the hotkey will trigger.
+
+modifiers is a space-delimited set of modifiers (if any):
+    shift
+    alt
+    control
+    meta
+    accel
+    any
+
+Prefer accel over control/meta as it picks the appropriate one for the user's platform.
+any makes any listed before it optional.
+
+key/keycode is the key or virtual keycode for the hotkey. VK_ constants are treated as keycodes, everything else is a key.
+
+keytext is an optional setting for specifying the hint text to appear on the menu items.

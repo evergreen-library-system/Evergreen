@@ -1,3 +1,6 @@
+use strict;
+use warnings;
+
 package QueryParser;
 use OpenSRF::Utils::JSON;
 our %parser_config = (
@@ -523,11 +526,11 @@ sub decompose {
 
 
     # Build the filter and modifier uber-regexps
-    my $facet_re = '^\s*((?:' . join( '|', @{$pkg->facet_classes}) . ')(?:\|\w+)*)\[(.+?)\]';
+    my $facet_re = '^\s*(-?)((?:' . join( '|', @{$pkg->facet_classes}) . ')(?:\|\w+)*)\[(.+?)\]';
     warn " Facet RE: $facet_re\n" if $self->debug;
 
-    my $filter_re = '^\s*(' . join( '|', @{$pkg->filters}) . ')\(([^()]+)\)';
-    my $filter_as_class_re = '^\s*(' . join( '|', @{$pkg->filters}) . '):\s*(\S+)';
+    my $filter_re = '^\s*(-?)(' . join( '|', @{$pkg->filters}) . ')\(([^()]+)\)';
+    my $filter_as_class_re = '^\s*(-?)(' . join( '|', @{$pkg->filters}) . '):\s*(\S+)';
 
     my $modifier_re = '^\s*'.$modifier_tag_re.'(' . join( '|', @{$pkg->modifiers}) . ')\b';
     my $modifier_as_class_re = '^\s*(' . join( '|', @{$pkg->modifiers}) . '):\s*(\S+)';
@@ -547,17 +550,19 @@ sub decompose {
 
             $last_type = '';
         } elsif ($self->filter_count && /$filter_re/) { # found a filter
-            warn "Encountered search filter: $1 set to $2\n" if $self->debug;
+            warn "Encountered search filter: $1$2 set to $3\n" if $self->debug;
 
+            my $negate = ($1 eq '-') ? 1 : 0;
             $_ = $';
-            $struct->new_filter( $1 => [ split '[, ]+', $2 ] );
+            $struct->new_filter( $2 => [ split '[,]+', $3 ], $negate );
 
             $last_type = '';
         } elsif ($self->filter_count && /$filter_as_class_re/) { # found a filter
-            warn "Encountered search filter: $1 set to $2\n" if $self->debug;
+            warn "Encountered search filter: $1$2 set to $3\n" if $self->debug;
 
+            my $negate = ($1 eq '-') ? 1 : 0;
             $_ = $';
-            $struct->new_filter( $1 => [ split '[, ]+', $2 ] );
+            $struct->new_filter( $2 => [ split '[,]+', $3 ], $negate );
 
             $last_type = '';
         } elsif ($self->modifier_count && /$modifier_re/) { # found a modifier
@@ -611,11 +616,12 @@ sub decompose {
 
             $last_type = 'OR';
         } elsif ($self->facet_class_count && /$facet_re/) { # changing current class
-            warn "Encountered facet: $1 => $2\n" if $self->debug;
+            warn "Encountered facet: $1$2 => $3\n" if $self->debug;
 
-            my $facet = $1;
-            my $facet_value = [ split '\s*#\s*', $2 ];
-            $struct->new_facet( $facet => $facet_value );
+            my $negate = ($1 eq '-') ? 1 : 0;
+            my $facet = $2;
+            my $facet_value = [ split '\s*#\s*', $3 ];
+            $struct->new_facet( $facet => $facet_value, $negate );
             $_ = $';
 
             $last_type = '';
@@ -751,8 +757,9 @@ sub new_facet {
     my $pkg = ref($self) || $self;
     my $name = shift;
     my $args = shift;
+    my $negate = shift;
 
-    my $node = do{$pkg.'::facet'}->new( plan => $self, name => $name, 'values' => $args );
+    my $node = do{$pkg.'::facet'}->new( plan => $self, name => $name, 'values' => $args, negate => $negate );
     $self->add_node( $node );
 
     return $node;
@@ -763,8 +770,9 @@ sub new_filter {
     my $pkg = ref($self) || $self;
     my $name = shift;
     my $args = shift;
+    my $negate = shift;
 
-    my $node = do{$pkg.'::filter'}->new( plan => $self, name => $name, args => $args );
+    my $node = do{$pkg.'::filter'}->new( plan => $self, name => $name, args => $args, negate => $negate );
     $self->add_filter( $node );
 
     return $node;
@@ -1074,6 +1082,11 @@ sub name {
     return $self->{name};
 }
 
+sub negate {
+    my $self = shift;
+    return $self->{negate};
+}
+
 sub args {
     my $self = shift;
     return $self->{args};
@@ -1098,6 +1111,11 @@ sub plan {
 sub name {
     my $self = shift;
     return $self->{name};
+}
+
+sub negate {
+    my $self = shift;
+    return $self->{negate};
 }
 
 sub values {

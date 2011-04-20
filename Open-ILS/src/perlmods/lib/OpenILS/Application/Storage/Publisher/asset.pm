@@ -11,7 +11,7 @@ use OpenSRF::Utils::JSON;
 my $log = 'OpenSRF::Utils::Logger';
 
 use MARC::Record;
-use MARC::File::XML;
+use MARC::File::XML ( BinaryEncoding => 'UTF-8' );
 
 sub circ_count {
 	my $self = shift;

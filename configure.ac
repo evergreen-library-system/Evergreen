@@ -378,6 +378,7 @@ AC_CONFIG_FILES([Makefile
          Open-ILS/src/extras/import/marc2bre.pl
          Open-ILS/src/extras/import/marc2sre.pl
          Open-ILS/src/extras/import/parallel_pg_loader.pl
+         Open-ILS/src/support-scripts/marc_export
          Open-ILS/src/perlmods/Makefile
          Open-ILS/src/perlmods/lib/OpenILS/Utils/Cronscript.pm],
         [
@@ -387,6 +388,7 @@ AC_CONFIG_FILES([Makefile
             if test -e "./Open-ILS/src/extras/import/marc2bre.pl"; then chmod 755 Open-ILS/src/extras/import/marc2bre.pl; fi;
             if test -e "./Open-ILS/src/extras/import/marc2sre.pl"; then chmod 755 Open-ILS/src/extras/import/marc2sre.pl; fi;
             if test -e "./Open-ILS/src/extras/import/parallel_pg_loader.pl"; then chmod 755 Open-ILS/src/extras/import/parallel_pg_loader.pl; fi;
+            if test -e "./Open-ILS/src/support-scripts/marc_export"; then chmod 755 Open-ILS/src/support-scripts/marc_export; fi;
         ])
 AC_OUTPUT
 

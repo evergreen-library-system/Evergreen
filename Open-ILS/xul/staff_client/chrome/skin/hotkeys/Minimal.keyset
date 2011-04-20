@@ -1,0 +1,7 @@
+# Minimal (window/tab commands only) hotkey set
+# May be a useful starting point for new sets
+cmd_new_window,accel,N
+cmd_new_tab,accel,T
+cmd_close_tab,accel,W
+cmd_close_all_tabs,accel shift,W
+cmd_close_window,accel,Q

@@ -73,10 +73,10 @@ my %types     = ();
 
 GetOptions(
     "barcodes=s" => \%types,
-      "config"   => \$config,
+      "config:s"   => \$config,
       "oldstyle" => \$approach,
-      "hostname" => \$hostname,
-     "requestor" => \$oils_reqr,
+      "hostname:s" => \$hostname,
+     "requestor:s" => \$oils_reqr,
       "verbose"  => \$verbose,
        "help"    => \$help,
 );

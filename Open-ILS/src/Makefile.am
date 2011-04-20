@@ -42,6 +42,7 @@ autojsbinscripts = @srcdir@/extras/fieldmapper.pl \
 	 @srcdir@/extras/org_tree_html_options.pl \
 	 @srcdir@/extras/org_tree_proximity.pl \
 	 @srcdir@/extras/autogen.sh \
+	 @srcdir@/extras/cache-generator.sh \
 	 @srcdir@/support-scripts/offline-blocked-list.pl 
 
 # Decide which entities to build
@@ -138,7 +139,7 @@ if BUILDEGJAVA
 OILSJAVA_DIR = java
 endif
 
-bin_SCRIPTS = $(core_scripts) $(reporter_scripts) $(installautojs) @srcdir@/extras/eg_config @srcdir@/extras/fast-extract @srcdir@/extras/import/marc2are.pl @srcdir@/extras/import/marc2bre.pl @srcdir@/extras/import/marc2sre.pl @srcdir@/extras/import/parallel_pg_loader.pl
+bin_SCRIPTS = $(core_scripts) $(reporter_scripts) $(installautojs) @srcdir@/extras/eg_config @srcdir@/extras/fast-extract @srcdir@/extras/import/marc2are.pl @srcdir@/extras/import/marc2bre.pl @srcdir@/extras/import/marc2sre.pl @srcdir@/extras/import/parallel_pg_loader.pl $(supportscr)/marc_export
 data_DATA = $(core_data) $(reporter_data)
 
 # Take care of which subdirectories to build, and which extra files to include in a distribution.
@@ -183,6 +184,9 @@ ilscore-install:
 	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/autogen.sh'
 	sed -i 's|LOCALSTATEDIR|@localstatedir@|g' '$(DESTDIR)@bindir@/autogen.sh'
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@bindir@/autogen.sh'
+	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/cache-generator.sh'
+	sed -i 's|LOCALSTATEDIR|@localstatedir@|g' '$(DESTDIR)@bindir@/cache-generator.sh'
+	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@bindir@/cache-generator.sh'
 	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/reshelving_complete.srfsh'
 	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/clear_expired_circ_history.srfsh'
 	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/update_hard_due_dates.srfsh'

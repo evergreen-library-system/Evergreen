@@ -7,6 +7,14 @@ BEGIN;
 
 CREATE SCHEMA evergreen;
 
+CREATE OR REPLACE FUNCTION evergreen.change_db_setting(setting_name TEXT, settings TEXT[]) RETURNS VOID AS $$
+BEGIN
+    EXECUTE 'ALTER DATABASE ' || quote_ident(current_database()) || ' SET ' || quote_ident(setting_name) || ' = ' || array_to_string(settings, ',');
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT evergreen.change_db_setting('search_path', ARRAY['evergreen','public','pg_catalog']);
+
 CREATE OR REPLACE FUNCTION evergreen.lowercase( TEXT ) RETURNS TEXT AS $$
     return lc(shift);
 $$ LANGUAGE PLPERLU STRICT IMMUTABLE;
@@ -17,26 +25,5 @@ CREATE OR REPLACE FUNCTION evergreen.xml_escape(str TEXT) RETURNS text AS $$
        '<', '&lt;'),
        '>', '&gt;');
 $$ LANGUAGE SQL IMMUTABLE;
-
-CREATE OR REPLACE FUNCTION evergreen.change_db_setting(setting_name TEXT, settings TEXT[]) RETURNS VOID AS $$
-BEGIN
-EXECUTE 'ALTER DATABASE ' || quote_ident(current_database()) || ' SET ' || quote_ident(setting_name) || ' = ' || array_to_string(settings, ',');
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE OR REPLACE FUNCTION evergreen.fake_fkey_tgr () RETURNS TRIGGER AS $F$
-DECLARE
-    copy_id BIGINT;
-BEGIN
-    EXECUTE 'SELECT ($1).' || quote_ident(TG_ARGV[0]) INTO copy_id USING NEW;
-    PERFORM * FROM asset.copy WHERE id = copy_id;
-    IF NOT FOUND THEN
-        RAISE EXCEPTION 'Key (%.%=%) does not exist in asset.copy', TG_TABLE_SCHEMA, TG_TABLE_NAME, copy_id;
-    END IF;
-    RETURN NULL;
-END;
-$F$ LANGUAGE PLPGSQL;
-
-SELECT evergreen.change_db_setting('search_path', ARRAY['evergreen','public','pg_catalog']);
 
 COMMIT;

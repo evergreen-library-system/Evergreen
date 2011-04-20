@@ -4,7 +4,8 @@ use base qw/OpenILS::Application/;
 
 use OpenILS::Utils::ZClient;
 use MARC::Record;
-use MARC::File::XML;
+use MARC::File::XML (BinaryEncoding => 'UTF-8');
+use MARC::Charset;
 use Unicode::Normalize;
 use XML::LibXML;
 
@@ -15,6 +16,9 @@ use OpenSRF::Utils::SettingsClient;
 use OpenILS::Application::AppUtils;
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
+
+MARC::Charset->assume_unicode(1);
+MARC::Charset->ignore_errors(1);
 
 my $output = "usmarc"; 
 my $U = 'OpenILS::Application::AppUtils'; 

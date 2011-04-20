@@ -6,7 +6,7 @@ use warnings;
 use Getopt::Long;
 use MARC::Record;
 use MARC::Charset;
-use MARC::File::XML;
+use MARC::File::XML (BinaryEncoding => 'UTF-8');
 use Error qw/:try/;
 
 MARC::Charset->assume_unicode(1);

@@ -22,7 +22,7 @@
                     <tab hidden="true" />
                 </tabs>
             </arrowscrollbox>
-            <toolbarbutton id="main_tabs_closebutton" class="tabs-closebutton close-button" oncommand="g.menu.close_tab()" />
+            <toolbarbutton id="main_tabs_closebutton" class="tabs-closebutton close-button" command="cmd_close_tab" />
         </hbox>
         <tabpanels id="main_panels" flex="1">
             <tabpanel />
@@ -72,39 +72,138 @@
         <menu id="main.menu.admin" />
         <menu id="main.menu.help" />
     </menubar>
-    <toolbar id="main_toolbar" hidden="true">
-        <toolbarbutton id="tb_checkout" 
+    <toolbar id="toolbar_circ" hidden="true">
+        <toolbarbutton 
             command="cmd_circ_checkout" 
-            image="chrome://open_ils_staff_client/skin/media/images/Arrow-rightup-small.png" 
             label="&staff.main.button_bar.check_out.label;" 
-            accesskey="&staff.main.button_bar.check_out.accesskey;" />
-        <toolbarbutton id="tb_checkin" 
+            tooltiptext="&staff.main.button_bar.check_out.label;"
+            type="menu-button">
+            <menupopup tooltiptext=""> <!-- Little note on this first one - The blank tooltiptext stops the button's tooltiptext from applying to the menu and items -->
+                <menuitem label="&staff.main.menu.circ.checkout.label;" accesskey="&staff.main.menu.circ.checkout.accesskey;" command="cmd_circ_checkout"/>
+                <menuitem label="&staff.main.menu.circ.in_house.label;" accesskey="&staff.main.menu.circ.in_house.accesskey;" command="cmd_in_house_use"/>
+            </menupopup>
+        </toolbarbutton>
+        <toolbarbutton
             command="cmd_circ_checkin" 
-            image="chrome://open_ils_staff_client/skin/media/images/center.png" 
             label="&staff.main.button_bar.check_in.label;" 
-            accesskey="&staff.main.button_bar.check_in.accesskey;" />
+            tooltiptext="&staff.main.button_bar.check_in.label;"
+            type="menu-button">
+            <menupopup tooltiptext="">
+                <menuitem label="&staff.main.menu.circ.checkin.label;" accesskey="&staff.main.menu.circ.checkin.accesskey;" command="cmd_circ_checkin"/>
+                <menuitem label="&staff.main.menu.circ.hold_capture.label;" accesskey="&staff.main.menu.circ.hold_capture.accesskey;" command="cmd_circ_hold_capture"/>
+            </menupopup>
+        </toolbarbutton>
         <toolbarseparator />
-        <toolbarbutton id="tb_search_opac" 
+        <toolbarbutton
             command="cmd_search_opac" 
-            image="chrome://open_ils_staff_client/skin/media/images/Search_Items_32x32.png" 
             label="&staff.main.button_bar.search_opac.label;" 
-            accesskey="&staff.main.button_bar.search_opac.accesskey;" />
-        <toolbarbutton id="tb_item_status" 
+            tooltiptext="&staff.main.button_bar.search_opac.label;"
+            type="menu-button">
+            <menupopup tooltiptext="">
+                <menuitem label="&staff.main.menu.cat.bib_search.label;" accesskey="&staff.main.menu.cat.bib_search.accesskey;" command="cmd_search_opac"/>
+                <menuitem label="&staff.main.menu.cat.search_tcn.label;" accesskey="&staff.main.menu.cat.search_tcn.accesskey;" command="cmd_search_tcn" />
+                <menuitem label="&staff.main.menu.cat.search_bib_id.label;" accesskey="&staff.main.menu.cat.search_bib_id.accesskey;" command="cmd_search_bib_id" />
+            </menupopup>
+        </toolbarbutton>
+        <toolbarbutton
             command="cmd_copy_status" 
-            image="chrome://open_ils_staff_client/skin/media/images/HILLBLU_libro_32x32.png" 
             label="&staff.main.button_bar.item_status.label;" 
-            accesskey="&staff.main.button_bar.item_status.accesskey;" />
+            tooltiptext="&staff.main.button_bar.item_status.label;"
+            type="menu-button">
+            <menupopup tooltiptext="">
+                <menuitem label="&staff.main.menu.circ.barcode.show_item;" accesskey="&staff.main.menu.circ.barcode.show_item.accesskey;" command="cmd_copy_status"/>
+                <menuitem label="&staff.main.menu.replace_barcode.label;" command="cmd_replace_barcode"/>
+            </menupopup>
+        </toolbarbutton>
         <toolbarseparator />
-        <toolbarbutton id="tb_patron_search" 
+        <toolbarbutton
             command="cmd_patron_search" 
-            image="chrome://open_ils_staff_client/skin/media/images/HILLBLU_lente_32x32.png" 
             label="&staff.main.button_bar.patron_search.label;" 
-            accesskey="&staff.main.button_bar.patron_search.accesskey;" />
-        <toolbarbutton id="tb_patron_registration" 
+            tooltiptext="&staff.main.button_bar.patron_search.label;"
+            type="menu-button">
+            <menupopup tooltiptext="">
+                <menuitem label="&staff.main.menu.search.patrons.label;" accesskey="&staff.main.menu.search.patrons.accesskey;" command="cmd_patron_search" />
+                <menuitem label="&staff.main.menu.search.patrons_barcode.label;" accesskey="&staff.main.menu.search.patrons_barcode.accesskey;" command="cmd_circ_checkout"/>
+            </menupopup>
+        </toolbarbutton>
+        <toolbarbutton
             command="cmd_patron_register" 
-            image="chrome://open_ils_staff_client/skin/media/images/HILLBLU_famiglia_32x32.png" 
             label="&staff.main.button_bar.patron_registration.label;" 
-            accesskey="&staff.main.button_bar.patron_registration.accesskey;" />
+            tooltiptext="&staff.main.button_bar.patron_registration.label;"
+            type="menu-button">
+            <menupopup tooltiptext="">
+                <menuitem label="&staff.main.menu.circ.patron_registration.label;" accesskey="&staff.main.menu.circ.patron_registration.accesskey;" command="cmd_patron_register"/>
+                <menuitem label="&staff.main.menu.circ.staged_patrons.label;" accesskey="&staff.main.menu.circ.staged_patrons.accesskey;" command="cmd_staged_patrons"/>
+            </menupopup>
+        </toolbarbutton>
+        <toolbarspacer flex="1" />
+        <toolbarbutton
+            command="cmd_hotkeys_toggle"
+            type="checkbox"
+            autocheck="false"
+            label="&staff.main.button_bar.hotkeys_toggle;"
+            tooltiptext="&staff.main.button_bar.hotkeys_toggle;"/>
+    </toolbar>
+    <toolbar id="toolbar_cat" hidden="true">
+        <toolbarbutton
+            command="cmd_circ_checkin" 
+            label="&staff.main.button_bar.check_in.label;" 
+            tooltiptext="&staff.main.button_bar.check_in.label;"
+            type="menu-button">
+            <menupopup tooltiptext="">
+                <menuitem label="&staff.main.menu.circ.checkin.label;" accesskey="&staff.main.menu.circ.checkin.accesskey;" command="cmd_circ_checkin"/>
+                <menuitem label="&staff.main.menu.circ.hold_capture.label;" accesskey="&staff.main.menu.circ.hold_capture.accesskey;" command="cmd_circ_hold_capture"/>
+            </menupopup>
+        </toolbarbutton>
+        <toolbarseparator />
+        <toolbarbutton
+            command="cmd_search_opac" 
+            label="&staff.main.button_bar.search_opac.label;" 
+            tooltiptext="&staff.main.button_bar.search_opac.label;"
+            type="menu-button">
+            <menupopup tooltiptext="">
+                <menuitem label="&staff.main.menu.cat.bib_search.label;" accesskey="&staff.main.menu.cat.bib_search.accesskey;" command="cmd_search_opac"/>
+                <menuitem label="&staff.main.menu.cat.search_tcn.label;" accesskey="&staff.main.menu.cat.search_tcn.accesskey;" command="cmd_search_tcn" />
+                <menuitem label="&staff.main.menu.cat.search_bib_id.label;" accesskey="&staff.main.menu.cat.search_bib_id.accesskey;" command="cmd_search_bib_id" />
+            </menupopup>
+        </toolbarbutton>
+        <toolbarbutton
+            command="cmd_copy_status" 
+            label="&staff.main.button_bar.item_status.label;" 
+            tooltiptext="&staff.main.button_bar.item_status.label;"
+            type="menu-button">
+            <menupopup tooltiptext="">
+                <menuitem label="&staff.main.menu.circ.barcode.show_item;" accesskey="&staff.main.menu.circ.barcode.show_item.accesskey;" command="cmd_copy_status"/>
+                <menuitem label="&staff.main.menu.replace_barcode.label;" command="cmd_replace_barcode"/>
+            </menupopup>
+        </toolbarbutton>
+        <toolbarseparator />
+        <toolbarbutton
+            command="cmd_create_marc"
+            label="&staff.main.button_bar.create_marc;"
+            tooltiptext="&staff.main.button_bar.create_marc;"
+            type="menu-button">
+            <menupopup tooltiptext="">
+                <menuitem label="&staff.main.menu.cat.create_marc.label;" accesskey="&staff.main.menu.cat.create_marc.accesskey;" command="cmd_create_marc"/>
+                <menuitem label="&staff.main.menu.cat.z39_50_import.label;" accesskey="&staff.main.menu.cat.z39_50_import.accesskey;" command="cmd_z39_50_import"/>
+                <menuitem label="&staff.main.menu.cat.vandelay.label;" command="cmd_open_vandelay"/>
+            </menupopup>
+        </toolbarbutton>
+        <toolbarbutton
+            command="cmd_authority_manage"
+            label="&staff.main.button_bar.authority_manage;"
+            tooltiptext="&staff.main.button_bar.authority_manage;" />
+        <toolbarbutton
+            command="cmd_retrieve_last_record"
+            label="&staff.main.button_bar.retrieve_last_record;"
+            tooltiptext="&staff.main.button_bar.retrieve_last_record;" />
+        <toolbarspacer flex="1" />
+        <toolbarbutton
+            command="cmd_hotkeys_toggle"
+            type="checkbox"
+            autocheck="false"
+            label="&staff.main.button_bar.hotkeys_toggle;"
+            tooltiptext="&staff.main.button_bar.hotkeys_toggle;"/>
     </toolbar>
 </toolbox>
 

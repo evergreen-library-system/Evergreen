@@ -18,7 +18,7 @@ use Net::Server::PreFork;
 use base qw/Net::Server::PreFork/;
 use MARC::Record;
 use MARC::Batch;
-use MARC::File::XML;
+use MARC::File::XML ( BinaryEncoding => 'UTF-8' );
 use MARC::File::USMARC;
 
 use Data::Dumper;

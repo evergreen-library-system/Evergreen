@@ -21,7 +21,7 @@ use FileHandle;
 use Time::HiRes qw/time/;
 use Getopt::Long;
 use MARC::Batch;
-use MARC::File::XML;
+use MARC::File::XML (BinaryEncoding => 'UTF-8');
 use MARC::Charset;
 
 MARC::Charset->ignore_errors(1);

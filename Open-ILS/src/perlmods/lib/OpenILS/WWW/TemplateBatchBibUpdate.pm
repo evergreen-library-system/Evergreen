@@ -29,7 +29,7 @@ use OpenILS::Utils::Fieldmapper;
 use OpenSRF::Utils::Logger qw/$logger/;
 
 use MARC::Record;
-use MARC::File::XML;
+use MARC::File::XML ( BinaryEncoding => 'UTF-8' );
 
 use UNIVERSAL::require;
 
