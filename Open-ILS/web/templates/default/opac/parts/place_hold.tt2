@@ -62,7 +62,7 @@
                 value="[% ctx.referer | replace('^http:', 'https:') | html %]" />
             <h1>Place Hold</h1>
             <p>
-                [% | l(attrs.title, ctx.find_aou(ctx.default_pickup_lib).name) %]
+                [% | l(attrs.title, ctx.get_aou(ctx.default_pickup_lib).name) %]
                 You would like to place a hold on <strong><q>[_1]</q></strong> to be picked up at [_2].
                 If this is correct, press <strong>SUBMIT</strong>.
                 [% END %]

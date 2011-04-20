@@ -41,7 +41,7 @@ sub init_ro_object_cache {
         $eclass =~ s/::/_/g;
 
         my $list_key = "${hint}_list";
-        my $find_key = "find_$hint";
+        my $get_key = "get_$hint";
 
         $ro_object_subs->{$list_key} = sub {
             my $method = "retrieve_all_$eclass";
@@ -51,7 +51,7 @@ sub init_ro_object_cache {
     
         $cache{map}{$hint} = {} unless $cache{map}{$hint};
 
-        $ro_object_subs->{$find_key} = sub {
+        $ro_object_subs->{$get_key} = sub {
             my $id = shift;
             return $cache{map}{$hint}{$id} if $cache{map}{$hint}{$id}; 
             ($cache{map}{$hint}{$id}) = grep { $_->$ident_field eq $id } @{$ro_object_subs->{$list_key}->()};
@@ -76,7 +76,7 @@ sub init_ro_object_cache {
             sub flesh_aout {
                 my $node = shift;
                 my $ro_object_subs = shift;
-                $node->ou_type( $ro_object_subs->{find_aout}->($node->ou_type) );
+                $node->ou_type( $ro_object_subs->{get_aout}->($node->ou_type) );
                 $cache{map}{aou}{$node->id} = $node;
                 flesh_aout($_, $ro_object_subs) foreach @{$node->children};
             };
@@ -89,7 +89,7 @@ sub init_ro_object_cache {
     };
 
     # Add a special handler for the tree-shaped org unit cache
-    $ro_object_subs->{find_aou} = sub {
+    $ro_object_subs->{get_aou} = sub {
         my $org_id = shift;
         $ro_object_subs->{aou_tree}->(); # force the org tree to load
         return $cache{map}{aou}{$org_id};
@@ -190,7 +190,7 @@ sub get_records_and_facets {
     if ($facet_key) {
         $facets = $facet_req->gather(1);
         $facets->{$_} = {
-            cmf => $self->ctx->{find_cmf}->($_),
+            cmf => $self->ctx->{get_cmf}->($_),
             data => $facets->{$_}
         } for keys %$facets;    # quick-n-dirty
     } else {
