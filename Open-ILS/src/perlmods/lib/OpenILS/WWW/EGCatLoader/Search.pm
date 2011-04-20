@@ -51,6 +51,7 @@ sub _prepare_biblio_search {
 
     $query = ('#' . $_ . ' ' . $query) foreach ($cgi->param('modifier'));
 
+    # filters
     foreach (grep /^fi:/, $cgi->param) {
         /:(\w+)$/ or next;
         my $term = join(",", $cgi->param($_));
@@ -127,6 +128,8 @@ sub load_rresults {
     $ctx->{processed_search_query} = $query;
 
     $query = "$query $facet" if $facet; # TODO
+
+    $logger->activity("EGWeb: [search] $query");
 
     my $results;
 
