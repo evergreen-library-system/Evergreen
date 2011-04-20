@@ -1478,7 +1478,7 @@ sub fleshed_circ_retrieve {
 				flesh				=> 4,
 				flesh_fields	=> { 
 					circ => [ qw/ target_copy / ],
-					acp => [ qw/ location status stat_cat_entry_copy_maps notes age_protect call_number / ],
+					acp => [ qw/ location status stat_cat_entry_copy_maps notes age_protect call_number parts / ],
 					ascecm => [ qw/ stat_cat stat_cat_entry / ],
 					acn => [ qw/ record / ],
 				}
