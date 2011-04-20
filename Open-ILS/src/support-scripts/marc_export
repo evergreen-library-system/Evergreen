@@ -36,6 +36,7 @@ my $export_mfhd = undef;
 my $type = 'biblio';
 my $all_records = undef;
 my $replace_001 = undef;
+my @library = ();
 
 GetOptions(
         'help'       => \$help,
@@ -51,6 +52,7 @@ GetOptions(
         'xml-idl=s'  => \$idl,
         'encoding=s' => \$encoding,
         'timeout=i'  => \$timeout,
+        'library=s'  => \@library,
 );
 
 if ($help) {
@@ -79,6 +81,9 @@ Usage: $0 [options]
                     have a lot of items attached to them.
  --type or -t       Record type (BIBLIO, AUTHORITY) [BIBLIO]
  --all or -a        Export all records; ignores input list
+ --library          Export the bibliographic records that have attached
+                    holdings for the listed library or libraries as
+                    identified by shortname
  --replace_001      Replace the 001 field value with the record ID
 
  Additional options for type = 'BIBLIO':
@@ -99,8 +104,19 @@ To export a set of MARC21XML authority records in a file named "output.xml"
 for all authority records in the database:
   $0 --format XML --type AUTHORITY --all > output.xml
 
+To export a set of USMARC bibliographic records encoded in UTF-8 in a file
+named "sys1_bibs.mrc" based on records which have attached callnumbers for the
+libraries with the short names "BR1" and "BR2":
+
+  $0 --library BR1 --library BR2 --encoding UTF-8 > sys1_bibs.mrc
+
 HELP
     exit;
+}
+
+if ($all_records && @library) {
+    die('Incompatible arguments: you cannot combine a request for all ' .
+        'records with a request for records by library');
 }
 
 $type = lc($type);
@@ -175,12 +191,39 @@ if ($all_records) {
     for (my $i = 0; $i++ < $top_record;) {
         export_record($i);
     }
+} elsif (@library) {
+    my $recids = $editor->json_query({
+        select => { bre => ['id'] },
+        from => { bre => 'acn' },
+        where => {
+            '+bre' => { deleted => 'f' },
+            '+acn' => { 
+                deleted => 'f', 
+                owning_lib => {
+                    in => {
+                        select => {'aou' => ['id'] },
+                        from => 'aou',
+                        where => { shortname => { in => \@library } }
+                    } 
+                }
+            }
+        },
+        distinct => 1,
+        order_by => [{
+            class => 'bre',
+            field => 'id',
+            direction => 'ASC' 
+        }]
+    });
+
+    foreach my $record (@$recids) {
+        export_record($record->{id});
+    }; 
 } else {
     while ( my $i = <> ) {
         export_record($i);
     }
 }
-
 print "</collection>\n" if ($format eq 'XML');
 
 $speed = $count{did} / (time - $start);
