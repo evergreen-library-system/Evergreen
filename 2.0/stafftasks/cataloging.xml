@@ -91,12 +91,18 @@ xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" xml:id="cataloging">
       <title>Record Collisions</title>  
 </simplesect>
     <simplesect xml:id="fastitemadds">
-      <title>Fast Item Adds</title>  
+      <title>Fast Item Adds</title>
+            <note>
+            	<para>The status of items created with Fast Item Add will be set
+            	to <emphasis>In Process</emphasis>, consistent with other types 
+            	of item creation. This is a change from 1.6.</para>
+            </note>     
 </simplesect>
    <simplesect xml:id="rawsearches">
       <title>Raw Searches</title>  
 <tip>
-            <para>Visit <xref xlink:href="http://www.indexdata.com/yaz/doc/tools.html"/> 
+            <para>Visit <link xlink:href="http://www.indexdata.com/yaz/doc/tools.html">
+            http://www.indexdata.com/yaz/doc/tools.html</link> 
             for more details on PQF and examples you can copy/paste into the 
             search box.</para>
           </tip>
