@@ -269,7 +269,10 @@ sub language {
 sub charge_ok {
     my $self = shift;
     my $u = $self->{user};
-    return (($u->barred eq 'f') and ($u->card->active eq 't'));
+    return 
+        $u->barred eq 'f' and 
+        $u->active eq 't' and
+        $u->card->active eq 't';
 }
 
 # How much more detail do we need to check here?
