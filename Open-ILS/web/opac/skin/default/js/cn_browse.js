@@ -105,7 +105,18 @@ function _cnBrowseDraw( list ) {
 		var author_td		= $n(currentTd, 'cn_browse_author');
 		var pic_td			= $n(currentTd, 'cn_browse_pic');
 
+		if (parseInt(cn.prefix().id()) > -1) {
+            cn_td.appendChild(text(cn.prefix().label()));
+            cn_td.appendChild(text(' '));
+        }
+
 		cn_td.appendChild(text(cn.label()));
+
+		if (parseInt(cn.suffix().id()) > -1) {
+            cn_td.appendChild(text(' '));
+            cn_td.appendChild(text(cn.suffix().label()));
+        }
+
 		lib_td.appendChild(text(findOrgUnit(cn.owning_lib()).name()));
 		cnBrowseDrawTitle(mods, title_td, author_td, pic_td);
 
