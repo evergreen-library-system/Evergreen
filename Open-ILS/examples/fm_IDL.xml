@@ -278,7 +278,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field reporter:label="Complete" name="complete" reporter:datatype="bool"/>
 			<field reporter:label="Type" name="queue_type" reporter:datatype="text"/>
-			<field reporter:label="Quality" name="quality" reporter:datatype="int"/>
 			<field reporter:label="Match Set" name="match_set" reporter:datatype="link"/>
 			<field reporter:label="Item Import Attribute Definition" name="item_attr_def" reporter:datatype="link"/>
 		</fields>
@@ -417,7 +416,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field reporter:label="Complete" name="complete" reporter:datatype="bool"/>
 			<field reporter:label="Type" name="queue_type" reporter:datatype="text"/>
-			<field reporter:label="Quality" name="quality" reporter:datatype="int"/>
 			<field reporter:label="Match Set" name="match_set" reporter:datatype="link"/>
 		</fields>
 		<links>
@@ -472,7 +470,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field reporter:label="XPath" name="xpath" reporter:datatype="text"/>
 			<field reporter:label="Remove RegExp" name="remove" reporter:datatype="text"/>
-			<field reporter:label="Is Identifier?" name="ident" reporter:datatype="bool"/>
 		</fields>
 		<links/>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
