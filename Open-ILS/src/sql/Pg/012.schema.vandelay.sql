@@ -491,10 +491,11 @@ BEGIN
 
     incoming_existing_id := oils_xpath_string('//*[@tag="901"]/*[@code="c"][1]',NEW.marc);
 
-    IF incoming_existing_id IS NOT NULL THEN
-        SELECT id INTO tmp_rec FROM biblio.record_entry WHERE id = exact_id;
+    IF incoming_existing_id IS NOT NULL AND incoming_existing_id != '' THEN
+        incoming_existing_id := incoming_existing_id::bigint;
+        SELECT id INTO tmp_rec FROM biblio.record_entry WHERE id = incoming_existing_id;
         IF tmp_rec IS NOT NULL THEN
-            INSERT INTO vandelay.bib_match (queued_record, eg_record, quality) VALUES ( NEW.id, exact_id, 9999);
+            INSERT INTO vandelay.bib_match (queued_record, eg_record, quality) VALUES ( NEW.id, incoming_existing_id, 9999);
             RETURN NEW;
         END IF;
     END IF;
