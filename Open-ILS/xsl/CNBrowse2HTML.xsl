@@ -56,7 +56,9 @@
    <div style="border:solid #999999 1px;">
     <span>
      <dl>
+      <xsl:value-of select="@prefix"/>
       <xsl:value-of select="@label"/>
+      <xsl:value-of select="@suffix"/>
       <dd><xsl:apply-templates select="marc:record"/></dd>
       <dd><xsl:value-of select="act:owning_lib/@name"/></dd>
      </dl>
