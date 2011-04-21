@@ -120,6 +120,8 @@ sub load_rresults {
 
     my ($query, $site, $depth) = _prepare_biblio_search($cgi, $ctx);
 
+    return $self->generic_redirect unless $query;
+
     # Limit and offset will stay here. Everything else should be part of
     # the query string, not special args.
     my $args = {'limit' => $limit, 'offset' => $offset};
