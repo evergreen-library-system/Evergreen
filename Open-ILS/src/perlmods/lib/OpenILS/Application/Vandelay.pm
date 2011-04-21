@@ -775,6 +775,7 @@ sub import_record_list_impl {
             
                 # No overlay / merge occurred.  Do a traditional record import by creating a new record
             
+                $logger->info("vl: creating new $type record for queued record $rec_id");
                 if($type eq 'bib') {
                     $record = OpenILS::Application::Cat::BibCommon->biblio_record_xml_import($e, $rec->marc, $bib_sources{$rec->bib_source});
                 } else {
@@ -1004,10 +1005,15 @@ sub retrieve_queue_summary {
 sub import_record_asset_list_impl {
     my($conn, $rec_ids, $requestor) = @_;
 
-    my $total = @$rec_ids;
-    my $try_count = 0;
-    my $in_count = 0;
     my $roe = new_editor(xact=> 1, requestor => $requestor);
+
+    my %report_args = (
+        conn => $conn,
+        total => scalar(@$rec_ids),
+        step => 1, # how often to respond
+        progress => 0,
+        in_count => 0,
+    );
 
     for my $rec_id (@$rec_ids) {
         my $rec = $roe->retrieve_vandelay_queued_bib_record($rec_id);
@@ -1017,7 +1023,8 @@ sub import_record_asset_list_impl {
         for my $item_id (@$item_ids) {
             my $e = new_editor(requestor => $requestor, xact => 1);
             my $item = $e->retrieve_vandelay_import_item($item_id);
-            $try_count++;
+            $report_args{progress}++;
+            $report_args{import_item} = $item;
 
             # --------------------------------------------------------------------------------
             # Find or create the volume
@@ -1027,7 +1034,7 @@ sub import_record_asset_list_impl {
                     $e, $item->call_number, $rec->imported_as, $item->owning_lib);
 
             if($evt) {
-                respond_with_status($conn, $total, $try_count, $in_count, $evt);
+                respond_with_status(%report_args, evt => $evt);
                 next;
             }
 
@@ -1057,13 +1064,14 @@ sub import_record_asset_list_impl {
             # --------------------------------------------------------------------------------
             #if($copy->circ_modifier and not $e->retrieve_config_circ_modifier($item->circ_modifier)) {
             if($copy->circ_modifier and not $e->search_config_circ_modifier({code=>$item->circ_modifier})->[0]) {
-                respond_with_status($conn, $total, $try_count, $in_count, $e->die_event);
+                respond_with_status(%report_args, evt => $e->die_event);
                 next;
             }
 
             if($evt = OpenILS::Application::Cat::AssetCommon->create_copy($e, $vol, $copy)) {
                 try { $e->rollback } otherwise {}; # sometimes calls die_event, sometimes not
-                respond_with_status($conn, $total, $try_count, $in_count, $evt);
+                $report_args{evt} = $evt;
+                respond_with_status(%report_args);
                 next;
             }
 
@@ -1074,7 +1082,7 @@ sub import_record_asset_list_impl {
                 $e, $copy, '', $item->pub_note, 1) if $item->pub_note;
 
             if($evt) {
-                respond_with_status($conn, $total, $try_count, $in_count, $evt);
+                respond_with_status(%report_args, evt => $evt);
                 next;
             }
 
@@ -1082,7 +1090,7 @@ sub import_record_asset_list_impl {
                 $e, $copy, '', $item->priv_note, 1) if $item->priv_note;
 
             if($evt) {
-                respond_with_status($conn, $total, $try_count, $in_count, $evt);
+                respond_with_status(%report_args, evt => $evt);
                 next;
             }
 
@@ -1090,7 +1098,8 @@ sub import_record_asset_list_impl {
             # Item import succeeded
             # --------------------------------------------------------------------------------
             $e->commit;
-            respond_with_status($conn, $total, $try_count, ++$in_count, undef, imported_as => $copy->id);
+            $report_args{in_count}++;
+            respond_with_status(%report_args, imported_as => $copy->id)
         }
     }
     $roe->rollback;
@@ -1099,12 +1108,36 @@ sub import_record_asset_list_impl {
 
 
 sub respond_with_status {
-    my($conn, $total, $try_count, $success_count, $err, %args) = @_;
-    $conn->respond({
-        total => $total, 
-        progress => $try_count, 
-        err_event => $err, 
-        success_count => $success_count, %args }) if $err or ($try_count % 5 == 0);
+    my %args = @_;
+
+    #  If the import failed, track the failure reason
+
+    my $error = $args{import_error};
+    my $evt = $args{evt};
+
+    if($error || $evt) {
+
+        my $item = $args{import_item};
+
+        my $error ||= 'general.unknown';
+        $item->import_error($error);
+
+        if($evt) {
+            my $detail = sprintf("%s : %s", $evt->{textcode}, substr($evt->{desc}, 0, 120));
+            $item->error_detail($detail);
+        }
+
+        my $e = new_editor(xact => 1);
+        $e->update_vandelay_import_item($item);
+        $e->commit;
+    }
+
+    return unless $args{report_all} or ($args{progress} % $args{step}) == 0;
+    $args{step} *= 2 unless $args{step} == 256;
+
+    $args{conn}->respond({
+        map { $_ => $args{$_} } qw/total progress success_count/
+    });
 }
 
 __PACKAGE__->register_method(  
