@@ -193,6 +193,9 @@ function set_marc_edit() {
                                 return;
                             }
 
+                            // Get the default copy status; default to available if unset, per 1.6
+                            var fast_ccs = g.data.hash.aous['cat.default_copy_status_fast'] || 0;
+
                             var copy_obj = new acp();
                             copy_obj.id( -1 );
                             copy_obj.isnew('1');
@@ -206,7 +209,7 @@ function set_marc_edit() {
                             copy_obj.fine_level(2); // Normal
                             copy_obj.loan_duration(2); // Normal
                             copy_obj.location(1); // Stacks
-                            copy_obj.status(5); // In Process
+                            copy_obj.status(fast_ccs);
                             copy_obj.circulate(get_db_true());
                             copy_obj.holdable(get_db_true());
                             copy_obj.opac_visible(get_db_true());

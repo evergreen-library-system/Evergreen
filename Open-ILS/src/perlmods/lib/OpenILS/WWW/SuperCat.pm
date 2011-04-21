@@ -51,12 +51,26 @@ $browse_types{call_number}{xml} = sub {
         my $cn_tag = "tag:open-ils.org,$year:$cn_class/".$cn->id;
         my $cn_lib = $cn->owning_lib->shortname;
         my $cn_label = $cn->label;
+        my $cn_prefix = $cn->prefix->label;
+        my $cn_suffix = $cn->suffix->label;
 
         $cn_label =~ s/\n//gos;
         $cn_label =~ s/&/&amp;/go;
         $cn_label =~ s/'/&apos;/go;
         $cn_label =~ s/</&lt;/go;
         $cn_label =~ s/>/&gt;/go;
+
+        $cn_prefix =~ s/\n//gos;
+        $cn_prefix =~ s/&/&amp;/go;
+        $cn_prefix =~ s/'/&apos;/go;
+        $cn_prefix =~ s/</&lt;/go;
+        $cn_prefix =~ s/>/&gt;/go;
+
+        $cn_suffix =~ s/\n//gos;
+        $cn_suffix =~ s/&/&amp;/go;
+        $cn_suffix =~ s/'/&apos;/go;
+        $cn_suffix =~ s/</&lt;/go;
+        $cn_suffix =~ s/>/&gt;/go;
 
         (my $ou_class = $cn->owning_lib->class_name) =~ s/::/-/gso;
         $ou_class =~ s/Fieldmapper-//gso;
@@ -72,7 +86,7 @@ $browse_types{call_number}{xml} = sub {
 
         my $rec_tag = "tag:open-ils.org,$year:$rec_class/".$cn->record->id.'/'.$cn->owning_lib->shortname;
 
-        $content .= "<volume id='$cn_tag' lib='$cn_lib' label='$cn_label'>\n";
+        $content .= "<volume id='$cn_tag' lib='$cn_lib' prefix='$cn_prefix' label='$cn_label' suffix='$cn_suffix'>\n";
         $content .= "<owning_lib xmlns='http://open-ils.org/spec/actors/v1' id='$ou_tag' name='$ou_name'/>\n";
 
         my $r_doc = $parser->parse_string($cn->record->marc);
