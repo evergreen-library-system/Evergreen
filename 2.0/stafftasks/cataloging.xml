@@ -63,7 +63,7 @@ xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" xml:id="cataloging">
         <listitem>If more than the default number of results is available, use 
         <guibutton>Fetch More Results</guibutton> to add the next set to the 
         screen.</listitem>
-        <listitem>Click List Action to view options for exporting and saving 
+        <listitem>Click <guibutton>List Action</guibutton> to view options for exporting and saving 
         from the list:
           <itemizedlist>
             <listitem>Copy Field from selected row to Clipboard</listitem>
@@ -78,8 +78,13 @@ xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" xml:id="cataloging">
           Print Page</guibutton>. To toggle back, click <guibutton>Results View
           </guibutton>.
           </listitem>
-          <listitem><guibutton>MARC Editor for Overlay</guibutton></listitem>
-          <listitem><guibutton>MARC Editor for Import</guibutton></listitem>
+          <listitem>If you have previously marked a record for overlay (when 
+          viewing a bib, <guimenu>Actions for this Record</guimenu><guimenuitem>
+          Mark for Overlay</guimenuitem>), <guibutton>MARC Editor for 
+          Overlay</guibutton> will be active. Click to view/edit the new bib record 
+          to be laid over the local one you selected.</listitem>
+          <listitem><guibutton>MARC Editor for Import</guibutton> is used to 
+          view/edit           a new record.</listitem>
         <listitem>To view long lists of results, use <guibutton>Hide Top Pane
         </guibutton> to view the results. </listitem>
       </itemizedlist>
