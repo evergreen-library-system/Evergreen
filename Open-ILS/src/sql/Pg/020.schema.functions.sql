@@ -331,84 +331,47 @@ $$;
 -- CREATE UNIQUE INDEX unique_by_heading_and_thesaurus
 --   ON authority.record_entry (authority.normalize_heading(marc))
 --   WHERE deleted IS FALSE or deleted = FALSE;
-CREATE OR REPLACE FUNCTION authority.normalize_heading( TEXT ) RETURNS TEXT AS $func$
-    use strict;
-    use warnings;
+CREATE OR REPLACE FUNCTION authority.normalize_heading( marcxml TEXT ) RETURNS TEXT AS $func$
+DECLARE
+    acsaf           authority.control_set_authority_field%ROWTYPE;
+    tag_used        TEXT;
+    sf              TEXT;
+    thes_code       TEXT;
+    cset            INT;
+    heading_text    TEXT;
+    tmp_text        TEXT;
+BEGIN
+    thes_code := vandelay.marc21_extract_fixed_field(marcxml,'Subj');
+    IF thes_code IS NULL THEN
+        thes_code := '|';
+    END IF;
 
-    use utf8;
-    use MARC::Record;
-    use MARC::File::XML (BinaryEncoding => 'UTF8');
-    use MARC::Charset;
-    use UUID::Tiny ':std';
+    SELECT control_set INTO cset FROM authority.thesaurus WHERE code = thes_code;
+    IF NOT FOUND THEN
+        cset = 1;
+    END IF;
 
-    MARC::Charset->assume_unicode(1);
+    heading_text := '';
+    FOR acsaf IN SELECT * FROM authority.control_set_authority_field WHERE control_set = cset AND main_entry IS NULL LOOP
+        tag_use := acsaf.tag;
+        FOR sf IN SELECT * FROM regexp_split_to_table(acsaf.sf_list,'') LOOP
+            tmp_text := oils_xpath_string('//*[@tag="'||tag_used||'"]/*[@code="'||sf||'"]', marcxml);
+            IF tmp_text IS NOT NULL THEN
+                heading_text := heading_text || E'‡' || sf || ' ' || tmp_text;
+            END IF;
+        END LOOP;
+        EXIT WHEN heading_text <> '';
+    END LOOP;
 
-    my $xml = shift() or return undef;
+    IF heading_text <> '' THEN
+        heading_text := tag_used || '_' || thes_code || ' ' || public.naco_normalize(heading_text);
+    ELSE
+        heading_text := 'NOHEADING_' || thes_code || ' ' || MD5(marcxml);
+    END IF;
 
-    my $r;
-
-    # Prevent errors in XML parsing from blowing out ungracefully
-    eval {
-        $r = MARC::Record->new_from_xml( $xml );
-        1;
-    } or do {
-       return 'BAD_MARCXML_' . create_uuid_as_string(UUID_MD5, $xml);
-    };
-
-    if (!$r) {
-       return 'BAD_MARCXML_' . create_uuid_as_string(UUID_MD5, $xml);
-    }
-
-    # From http://www.loc.gov/standards/sourcelist/subject.html
-    my $thes_code_map = {
-        a => 'lcsh',
-        b => 'lcshac',
-        c => 'mesh',
-        d => 'nal',
-        k => 'cash',
-        n => 'notapplicable',
-        r => 'aat',
-        s => 'sears',
-        v => 'rvm',
-    };
-
-    # Default to "No attempt to code" if the leader is horribly broken
-    my $fixed_field = $r->field('008');
-    my $thes_char = '|';
-    if ($fixed_field) { 
-        $thes_char = substr($fixed_field->data(), 11, 1) || '|';
-    }
-
-    my $thes_code = 'UNDEFINED';
-
-    if ($thes_char eq 'z') {
-        # Grab the 040 $f per http://www.loc.gov/marc/authority/ad040.html
-        $thes_code = $r->subfield('040', 'f') || 'UNDEFINED';
-    } elsif ($thes_code_map->{$thes_char}) {
-        $thes_code = $thes_code_map->{$thes_char};
-    }
-
-    my $auth_txt = '';
-    my $head = $r->field('1..');
-    if ($head) {
-        # Concatenate all of these subfields together, prefixed by their code
-        # to prevent collisions along the lines of "Fiction, North Carolina"
-        foreach my $sf ($head->subfields()) {
-            $auth_txt .= '‡' . $sf->[0] . ' ' . $sf->[1];
-        }
-    }
-    
-    if ($auth_txt) {
-        my $stmt = spi_prepare('SELECT public.naco_normalize($1) AS norm_text', 'TEXT');
-        my $result = spi_exec_prepared($stmt, $auth_txt);
-        my $norm_txt = $result->{rows}[0]->{norm_text};
-        spi_freeplan($stmt);
-        undef($stmt);
-        return $head->tag() . "_" . $thes_code . " " . $norm_txt;
-    }
-
-    return 'NOHEADING_' . $thes_code . ' ' . create_uuid_as_string(UUID_MD5, $xml);
-$func$ LANGUAGE 'plperlu' IMMUTABLE;
+    RETURN heading_text;
+END;
+$func$ LANGUAGE PLPGSQL IMMUTABLE;
 
 COMMENT ON FUNCTION authority.normalize_heading( TEXT ) IS $$
 Extract the authority heading, thesaurus, and NACO-normalized values
