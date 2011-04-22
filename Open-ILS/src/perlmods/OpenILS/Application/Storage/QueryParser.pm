@@ -514,7 +514,7 @@ sub decompose {
             warn "Encountered explicit group end\n" if $self->debug;
 
             $_ = $';
-            $remainder = $';
+            $remainder = $struct->top_plan ? '' : $';
 
             $last_type = '';
         } elsif ($self->filter_count && /$filter_re/) { # found a filter
@@ -559,7 +559,7 @@ sub decompose {
             warn "Encountered explicit group start\n" if $self->debug;
 
             my ($substruct, $subremainder) = $self->decompose( $', $current_class, $recursing + 1 );
-            $struct->add_node( $substruct );
+            $struct->add_node( $substruct ) if ($substruct);
             $_ = $subremainder;
 
             $last_type = '';
@@ -649,6 +649,8 @@ sub decompose {
         last unless ($_);
 
     }
+
+    $struct = undef if (scalar(@{$struct->query_nodes}) == 0);
 
     return $struct if !wantarray;
     return ($struct, $remainder);
