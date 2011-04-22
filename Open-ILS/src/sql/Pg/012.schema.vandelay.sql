@@ -144,7 +144,8 @@ CREATE TABLE vandelay.bib_match (
 	matched_set 	INT			REFERENCES vandelay.match_set (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	queued_record	BIGINT		REFERENCES vandelay.queued_bib_record (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	eg_record		BIGINT		REFERENCES biblio.record_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-    quality         INT         NOT NULL DEFAULT 0
+    quality         INT         NOT NULL DEFAULT 0,
+    match_score     INT         NOT NULL DEFAULT 0
 );
 
 CREATE TABLE vandelay.import_item (
@@ -189,6 +190,7 @@ CREATE TABLE vandelay.merge_profile (
     replace_spec    TEXT,
     strip_spec      TEXT,
     preserve_spec   TEXT,
+    lwm_ratio       NUMERIC,
 	CONSTRAINT vand_merge_prof_owner_name_idx UNIQUE (owner,name),
 	CONSTRAINT add_replace_strip_or_preserve CHECK ((preserve_spec IS NOT NULL OR replace_spec IS NOT NULL) OR (preserve_spec IS NULL AND replace_spec IS NULL))
 );
@@ -1274,6 +1276,48 @@ BEGIN
 
 END;
 $$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION vandelay.auto_overlay_bib_record_with_best ( import_id BIGINT, merge_profile_id INT, lwm_ratio_value NUMERIC ) RETURNS BOOL AS $$
+DECLARE
+    eg_id           BIGINT;
+    match_count     INT;
+    existing_qual   INT;
+    match_attr      vandelay.bib_attr_definition%ROWTYPE;
+BEGIN
+
+    existing_qual := COALESCE(NULLIF(vandelay.incoming_record_quality(r.marc),0),1);
+
+    IF lwm_ratio_value IS NULL THEN
+        lwm_ratio_value := 0.0;
+    END IF;
+
+    PERFORM * FROM vandelay.queued_bib_record WHERE import_time IS NOT NULL AND id = import_id;
+
+    IF FOUND THEN
+        -- RAISE NOTICE 'already imported, cannot auto-overlay'
+        RETURN FALSE;
+    END IF;
+
+    SELECT  m.eg_record INTO eg_id
+      FROM  vandelay.bib_match m
+            JOIN biblio.record_entry r
+      WHERE m.queued_record = import_id
+            AND r.id = m.eg_record
+            AND m.quality::NUMERIC / existing_qual::NUMERIC >= lwm_ratio_value
+      ORDER BY m.match_score DESC, m.quality DESC, id limit 1;
+
+    IF eg_id IS NULL THEN
+        -- RAISE NOTICE 'incoming record is not of hight enough quality';
+        RETURN FALSE;
+    END IF;
+
+    RETURN vandelay.overlay_bib_record( import_id, eg_id, merge_profile_id );
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION vandelay.auto_overlay_bib_record_with_best ( import_id BIGINT, merge_profile_id INT ) RETURNS BOOL AS $$
+    SELECT vandelay.auto_overlay_bib_record_with_best( $1, $2, p.lwm_ratio ) FROM vandelay.merge_profile p WHERE id = $2;
+$$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION vandelay.auto_overlay_bib_record ( import_id BIGINT, merge_profile_id INT ) RETURNS BOOL AS $$
 DECLARE
