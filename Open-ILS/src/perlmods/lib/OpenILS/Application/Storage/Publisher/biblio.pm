@@ -381,7 +381,7 @@ sub record_copy_status_count {
 
 	my $cn_table = asset::call_number->table;
 	my $cnp_table = asset::call_number_prefix->table;
-	my $cns_table = asset::call_number_prefix->table;
+	my $cns_table = asset::call_number_suffix->table;
 	my $cp_table = asset::copy->table;
 	my $cl_table = asset::copy_location->table;
 	my $cs_table = config::copy_status->table;
@@ -389,7 +389,9 @@ sub record_copy_status_count {
 	my $sql = <<"	SQL";
 
 		SELECT	cp.circ_lib,
-				CASE WHEN cnp.id > -1 THEN cnp.label || ' ' ELSE '' END || cn.label || CASE WHEN cns.id > -1 THEN ' ' || cns.label ELSE '' END,
+				CASE WHEN cnp.id > -1 THEN cnp.label ELSE '' END,
+                cn.label,
+                CASE WHEN cns.id > -1 THEN cns.label ELSE '' END,
 				cp.status,
 				count(cp.id)
 		  FROM	$cp_table cp,
@@ -410,7 +412,7 @@ sub record_copy_status_count {
 			AND cp.opac_visible IS TRUE
 			AND cp.deleted IS FALSE
 			AND cs.opac_visible IS TRUE
-		  GROUP BY 1,2,3;
+		  GROUP BY 1,2,3,4,5;
 	SQL
 
 	my $sth = biblio::record_entry->db_Main->prepare_cached($sql);
@@ -418,13 +420,17 @@ sub record_copy_status_count {
 
 	my %data = ();
 	for my $row (@{$sth->fetchall_arrayref}) {
-		$data{$$row[0]}{$$row[1]}{$$row[2]} += $$row[3];
+		$data{$$row[0]}{$$row[1]}{$$row[2]}{$$row[3]}{$$row[4]} += $$row[5];
 	}
 	
 	for my $ou (keys %data) {
-		for my $cn (keys %{$data{$ou}}) {
-			$client->respond( [$ou, $cn, $data{$ou}{$cn}] );
-		}
+		for my $cn_prefix (keys %{$data{$ou}}) {
+		    for my $cn (keys %{$data{$ou}{$cn_prefix}}) {
+		        for my $cn_suffix (keys %{$data{$ou}{$cn_prefix}{$cn}}) {
+			        $client->respond( [$ou, $cn_prefix, $cn, $cn_suffix, $data{$ou}{$cn}{$cn_prefix}{$cn}{$cn_suffix}] );
+		        }
+            }
+        }
 	}
 	return undef;
 }
@@ -450,7 +456,7 @@ sub record_copy_status_location_count {
 
 	my $cn_table = asset::call_number->table;
 	my $cnp_table = asset::call_number_prefix->table;
-	my $cns_table = asset::call_number_prefix->table;
+	my $cns_table = asset::call_number_suffix->table;
 	my $cp_table = asset::copy->table;
 	my $cl_table = asset::copy_location->table;
 	my $cs_table = config::copy_status->table;
@@ -461,7 +467,9 @@ sub record_copy_status_location_count {
 	my $sql = <<"	SQL";
 
 		SELECT	cp.circ_lib,
-				CASE WHEN cnp.id > -1 THEN cnp.label || ' ' ELSE '' END || cn.label || CASE WHEN cns.id > -1 THEN ' ' || cns.label ELSE '' END,
+				CASE WHEN cnp.id > -1 THEN cnp.label ELSE '' END,
+                cn.label,
+                CASE WHEN cns.id > -1 THEN cns.label ELSE '' END,
 				oils_i18n_xlate('asset.copy_location', 'acpl', 'name', 'id', cl.id::TEXT, ?),
 				cp.status,
 				count(cp.id)
@@ -483,7 +491,7 @@ sub record_copy_status_location_count {
 			AND cp.opac_visible IS TRUE
 			AND cp.deleted IS FALSE
 			AND cs.opac_visible IS TRUE
-		  GROUP BY 1,2,3,4;
+		  GROUP BY 1,2,3,4,5,6;
 	SQL
 
 	my $sth = biblio::record_entry->db_Main->prepare_cached($sql);
@@ -492,14 +500,18 @@ sub record_copy_status_location_count {
 
 	my %data = ();
 	for my $row (@{$sth->fetchall_arrayref}) {
-		$data{$$row[0]}{$$row[1]}{$$row[2]}{$$row[3]} += $$row[4];
+		$data{$$row[0]}{$$row[1]}{$$row[2]}{$$row[3]}{$$row[4]}{$$row[5]} += $$row[6];
 	}
 	
 	for my $ou (keys %data) {
-		for my $cn (keys %{$data{$ou}}) {
-		    for my $cl (keys %{$data{$ou}{$cn}}) {
-    			$client->respond( [$ou, $cn, $cl, $data{$ou}{$cn}{$cl}] );
-            }
+		for my $cn_prefix (keys %{$data{$ou}}) {
+		    for my $cn (keys %{$data{$ou}{$cn_prefix}}) {
+		        for my $cn_suffix (keys %{$data{$ou}{$cn_prefix}{$cn}}) {
+                    for my $cl (keys %{$data{$ou}{$cn_prefix}{$cn}{$cn_suffix}}) {
+                        $client->respond( [$ou, $cn_prefix, $cn, $cn_suffix, $cl, $data{$ou}{$cn_prefix}{$cn}{$cn_suffix}{$cl}] );
+                    }
+		        }
+		    }
 		}
 	}
 	return undef;
