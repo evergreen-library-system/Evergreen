@@ -1234,7 +1234,6 @@ DECLARE
     eg_marc         TEXT;
     v_marc          TEXT;
     replace_rule    TEXT;
-    match_count     INT;
 BEGIN
 
     SELECT  q.marc INTO v_marc
@@ -1280,8 +1279,6 @@ $$ LANGUAGE PLPGSQL;
 CREATE OR REPLACE FUNCTION vandelay.auto_overlay_bib_record_with_best ( import_id BIGINT, merge_profile_id INT, lwm_ratio_value NUMERIC ) RETURNS BOOL AS $$
 DECLARE
     eg_id           BIGINT;
-    match_count     INT;
-    match_attr      vandelay.bib_attr_definition%ROWTYPE;
 BEGIN
 
     IF lwm_ratio_value IS NULL THEN
@@ -1323,7 +1320,6 @@ CREATE OR REPLACE FUNCTION vandelay.auto_overlay_bib_record ( import_id BIGINT, 
 DECLARE
     eg_id           BIGINT;
     match_count     INT;
-    match_attr      vandelay.bib_attr_definition%ROWTYPE;
 BEGIN
 
     PERFORM * FROM vandelay.queued_bib_record WHERE import_time IS NOT NULL AND id = import_id;
@@ -1341,14 +1337,14 @@ BEGIN
     END IF;
 
     -- Check that the one match is on the first 901c
-    PERFORM *
+    SELECT  m.eg_record INTO eg_id
       FROM  vandelay.queued_bib_record q
             JOIN vandelay.bib_match m ON (m.queued_record = q.id)
       WHERE q.id = import_id
             AND m.eg_record = oils_xpath_string('//*[@tag="901"]/*[@code="c"][1]',marc)::BIGINT;
 
     IF NOT FOUND THEN
-        -- RAISE NOTICE 'not a 901c match: %', match_attr.xpath;
+        -- RAISE NOTICE 'not a 901c match';
         RETURN FALSE;
     END IF;
 
