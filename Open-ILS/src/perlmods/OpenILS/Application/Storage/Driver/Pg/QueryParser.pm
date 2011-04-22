@@ -523,6 +523,13 @@ sub toSQL {
 
     my $core_limit = $self->QueryParser->core_limit || 25000;
 
+    my $flat_where = $$flat_plan{where};
+    if ($flat_where eq '()') {
+        $flat_where = '';
+    } else {
+        $flat_where = "AND $flat_where";
+    }
+
     my $sql = <<SQL;
 SELECT  $key AS id,
         ARRAY_ACCUM(DISTINCT m.source) AS records,
@@ -544,7 +551,7 @@ SELECT  $key AS id,
         $lit_form
         $language
         $bib_level
-        AND $$flat_plan{where}
+        $flat_where
   GROUP BY 1
   ORDER BY 4 $desc NULLS LAST, 5 DESC NULLS LAST, 3 DESC
   LIMIT $core_limit
