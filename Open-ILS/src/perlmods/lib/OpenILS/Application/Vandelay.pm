@@ -432,7 +432,7 @@ sub retrieve_queued_records {
     $query->{where}->{import_time} = undef if $$options{non_imported};
     $query->{where}->{import_error} = {'!=' => undef} if $$options{with_rec_import_error};
 
-    if($$options{with_item_import_error}) {
+    if($$options{with_item_import_error} and $type eq 'bib') {
         # limit to recs that have at least 1 item import error
         $query->{from} = {
             $class => {
@@ -467,6 +467,63 @@ sub retrieve_queued_records {
     }
 
     $e->rollback;
+    return undef;
+}
+
+__PACKAGE__->register_method(  
+    api_name    => 'open-ils.vandelay.import_item.queue.retrieve',
+    method      => 'retrieve_queue_import_items',
+    api_level   => 1,
+    argc        => 2,
+    stream      => 1,
+    authoritative => 1,
+    signature => q/
+        Returns Import Item (vii) objects for the selected queue.
+        Filter options:
+            with_import_error : only return items that failed to import
+    /
+);
+
+sub retrieve_queue_import_items {
+    my($self, $conn, $auth, $q_id, $options) = @_;
+
+    $options ||= {};
+    my $limit = $$options{limit} || 20;
+    my $offset = $$options{offset} || 0;
+
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+
+    my $queue = $e->retrieve_vandelay_bib_queue($q_id) or return $e->event;
+    my $evt = check_queue_perms($e, 'bib', $queue);
+    return $evt if $evt;
+
+    my $query = {
+        select => {vii => ['id']},
+        from => {
+            vii => {
+                vqbr => {
+                    join => {
+                        'vbq' => {
+                            field => 'id',
+                            fkey => 'queue',
+                            filter => {id => $q_id}
+                        }
+                    }
+                }
+            }
+        },
+        order_by => {'vii' => ['record']}
+    };
+
+    $query->{where} = {'+vii' => {import_error => {'!=' => undef}}}
+        if $$options{with_import_error};
+
+    my $items = $e->json_query($query);
+    for my $item (@$items) {
+        $conn->respond($e->retrieve_vandelay_import_item($item->{id}));
+    }
+
     return undef;
 }
 
