@@ -776,11 +776,10 @@ g.delay_gather_copies_soon = function() {
     }
 }
 
-g.gather_copies_soon = function() {
+g.gather_copies_soon = function(ev) {
     try {
         if (!xulG.unified_interface) { return; }
         dump('g.gather_copies_soon()\n');
-        document.getElementById("Create").disabled = true;
         if (g.update_copy_editor_timeoutID) {
             clearTimeout(g.update_copy_editor_timeoutID);
         }
@@ -791,9 +790,8 @@ g.gather_copies_soon = function() {
                 try {
                     g.gather_copies();
                     xulG.refresh_copy_editor();
-                    document.getElementById("Create").disabled = false;
                 } catch(E) {
-                    alert('Error in volume_copy_editor.js with g.gather_copies_soon setTimeout func(): ' + E);
+                    dump('Error in volume_copy_editor.js with g.gather_copies_soon setTimeout func(): ' + E + '\n');
                 }
             }, update_timer
         );
@@ -1075,8 +1073,14 @@ g.stash_and_close = function(param) {
 
     try {
 
+        if (g.update_copy_editor_timeoutID) {
+            clearTimeout(g.update_copy_editor_timeoutID);
+        }
+
         var copies;
         if (xulG.unified_interface) {
+            g.gather_copies();
+            xulG.refresh_copy_editor();
             copies = xulG.copies;
         } else {
             copies = g.gather_copies();
