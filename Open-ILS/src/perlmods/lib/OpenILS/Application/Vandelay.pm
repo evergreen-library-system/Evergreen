@@ -396,18 +396,19 @@ __PACKAGE__->register_method(
     signature   => {
         desc => q/Only retrieve queued authority records that have matches against existing records/
     }
-
 );
 
 sub retrieve_queued_records {
     my($self, $conn, $auth, $queue_id, $options) = @_;
-    my $e = new_editor(authtoken => $auth, xact => 1);
-    return $e->die_event unless $e->checkauth;
+
     $options ||= {};
     my $limit = $$options{limit} || 20;
     my $offset = $$options{offset} || 0;
-
     my $type = $self->{record_type};
+
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->die_event unless $e->checkauth;
+
     my $queue;
     if($type eq 'bib') {
         $queue = $e->retrieve_vandelay_bib_queue($queue_id) or return $e->die_event;
@@ -418,37 +419,53 @@ sub retrieve_queued_records {
     return $evt if ($evt);
 
     my $class = ($type eq 'bib') ? 'vqbr' : 'vqar';
-    my $search = ($type eq 'bib') ? 
-        'search_vandelay_queued_bib_record' : 'search_vandelay_queued_authority_record';
-    my $retrieve = ($type eq 'bib') ? 
-        'retrieve_vandelay_queued_bib_record' : 'retrieve_vandelay_queued_authority_record';
+    my $query = {
+        select => {$class => ['id']},
+        from => $class,
+        where => {queue => $queue_id},
+        distinct => 1,
+        order_by => {$class => ['id']}, 
+        limit => $limit,
+        offset => $offset,
+    };
 
-    my $filter = ($$options{non_imported}) ? {import_time => undef} : {};
+    $query->{where}->{import_time} = undef if $$options{non_imported};
+    $query->{where}->{import_error} = {'!=' => undef} if $$options{with_rec_import_error};
 
-    my $record_ids;
-    if($self->api_name =~ /matches/) {
-        # fetch only matched records
-        $record_ids = queued_records_with_matches($e, $type, $queue_id, $limit, $offset, $filter);
-    } else {
-        # fetch all queue records
-        $record_ids = $e->$search([
-                {queue => $queue_id, %$filter}, 
-                {order_by => {$class => 'id'}, limit => $limit, offset => $offset}
-            ],
-            {idlist => 1}
-        );
+    if($$options{with_item_import_error}) {
+        # limit to recs that have at least 1 item import error
+        $query->{from} = {
+            $class => {
+                vii => {
+                    field => 'record',
+                    fkey => 'id',
+                    filter => {import_error => {'!=' => undef}}
+                }
+            }
+        };
     }
 
+    if($self->api_name =~ /matches/) {
+        # find only records that have matches
+        my $mclass = $type eq 'bib' ? 'vbm' : 'vam';
+        $query->{from} = {$class => {$mclass => {type => 'right'}}};
+    } 
+
+    my $record_ids = $e->json_query($query);
+
+    my $retrieve = ($type eq 'bib') ? 
+        'retrieve_vandelay_queued_bib_record' : 'retrieve_vandelay_queued_authority_record';
 
     for my $rec_id (@$record_ids) {
         my $params = {   
             flesh => 1,
             flesh_fields => {$class => ['attributes', 'matches']},
         };
-        my $rec = $e->$retrieve([$rec_id, $params]);
+        my $rec = $e->$retrieve([$rec_id->{id}, $params]);
         $rec->clear_marc if $$options{clear_marc};
         $conn->respond($rec);
     }
+
     $e->rollback;
     return undef;
 }
