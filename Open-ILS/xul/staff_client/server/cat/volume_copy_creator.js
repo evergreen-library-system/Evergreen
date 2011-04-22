@@ -1084,7 +1084,6 @@ g.stash_and_close = function(param) {
             copies = xulG.copies;
         } else {
             copies = g.gather_copies();
-            copies = blob.copies;
         }
 
         var dont_close = false;
