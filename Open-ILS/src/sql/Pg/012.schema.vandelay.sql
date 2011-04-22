@@ -664,9 +664,7 @@ BEGIN
     IF node.bool_op IS NOT NULL THEN
         RETURN node.bool_op;
     ELSE
-        RETURN '(n' || node.id::TEXT || '.id IS ' ||
-            (CASE WHEN node.negate THEN '' ELSE 'NOT ' END) ||  -- sic!
-            'NULL)';
+        RETURN '(n' || node.id::TEXT || '.id IS NOT NULL)';
     END IF;
 END;
 $$ LANGUAGE PLPGSQL;
