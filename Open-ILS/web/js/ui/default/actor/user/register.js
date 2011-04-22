@@ -601,7 +601,7 @@ function loadStatCats() {
         var span = valtd.appendChild(document.createElement('span'));
         var store = new dojo.data.ItemFileReadStore(
                 {data:fieldmapper.actsc.toStoreData(stat.entries())});
-        var comboBox = new dijit.form.ComboBox({store:store,scrollOnFocus:false}, span);
+        var comboBox = new dijit.form.ComboBox({store:store,scrollOnFocus:false,fetchProperties:{sort:[{attribute: 'value'}]}}, span);
         comboBox.labelAttr = 'value';
         comboBox.searchAttr = 'value';
 

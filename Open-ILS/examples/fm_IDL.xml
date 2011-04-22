@@ -3599,6 +3599,7 @@ SELECT  usr,
 		<fields oils_persist:primary="id" oils_persist:sequence="serial.distribution_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Legacy Record Entry" name="record_entry" reporter:datatype="link"/>
+			<field reporter:label="Summary Method" name="summary_method" reporter:datatype="text"/>
 			<field reporter:label="Subscription" name="subscription" reporter:datatype="link"/>
 			<field reporter:label="Holding Lib" name="holding_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Label" name="label" reporter:datatype="text"/>
