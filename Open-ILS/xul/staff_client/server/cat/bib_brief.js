@@ -147,8 +147,14 @@ function add_volumes() {
 
         var title = document.getElementById('offlineStrings').getFormattedString('staff.circ.copy_status.add_volumes.title', [docid]);
 
-        var horizontal_interface = String( g.data.hash.aous['ui.cat.volume_copy_editor.horizontal'] ) == 'true';
-        var url = window.xulG.url_prefix( horizontal_interface ? urls.XUL_VOLUME_COPY_CREATOR_HORIZONTAL : urls.XUL_VOLUME_COPY_CREATOR );
+        var url;
+        var unified_interface = String( g.data.hash.aous['ui.unified_volume_copy_editor'] ) == 'true';
+        if (unified_interface) {
+            var horizontal_interface = String( g.data.hash.aous['ui.cat.volume_copy_editor.horizontal'] ) == 'true';
+            url = window.xulG.url_prefix( horizontal_interface ? urls.XUL_VOLUME_COPY_CREATOR_HORIZONTAL : urls.XUL_VOLUME_COPY_CREATOR );
+        } else {
+            url = window.xulG.url_prefix( urls.XUL_VOLUME_COPY_CREATOR_ORIGINAL );
+        }
         var w = xulG.new_tab(
             url,
             { 'tab_name' : title },

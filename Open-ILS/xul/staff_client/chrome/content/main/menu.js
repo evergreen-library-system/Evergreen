@@ -1928,8 +1928,14 @@ commands:
     },
     'volume_item_creator' : function(params) {
         var obj = this;
-        var horizontal_interface = String( obj.data.hash.aous['ui.cat.volume_copy_editor.horizontal'] ) == 'true';
-        var url = obj.url_prefix( horizontal_interface ? urls.XUL_VOLUME_COPY_CREATOR_HORIZONTAL : urls.XUL_VOLUME_COPY_CREATOR );
+        var url;
+        var unified_interface = String( obj.data.hash.aous['ui.unified_volume_copy_editor'] ) == 'true';
+        if (unified_interface) {
+            var horizontal_interface = String( obj.data.hash.aous['ui.cat.volume_copy_editor.horizontal'] ) == 'true';
+            url = obj.url_prefix( horizontal_interface ? urls.XUL_VOLUME_COPY_CREATOR_HORIZONTAL : urls.XUL_VOLUME_COPY_CREATOR );
+        } else {
+            url = obj.url_prefix( urls.XUL_VOLUME_COPY_CREATOR_ORIGINAL );
+        }
         var w = obj.new_tab(
             url,
             { 'tab_name' : document.getElementById('offlineStrings').getString('staff.cat.create_or_rebarcode_items') },

@@ -7984,3 +7984,13 @@ INSERT into config.org_unit_setting_type
   oils_i18n_gettext( 'cat.default_copy_status_normal', 'Default status when a copy is created using the normal volume/copy creator interface.', 'coust', 'description'),
   'link', 'ccs'
 );
+
+-- 0524.data.toggle_unified_volume_copy_editor.sql
+
+INSERT into config.org_unit_setting_type
+( name, label, description, datatype ) VALUES
+( 'ui.unified_volume_copy_editor',
+  oils_i18n_gettext( 'ui.unified_volume_copy_editor', 'GUI: Unified Volume/Item Creator/Editor', 'coust', 'label'),
+  oils_i18n_gettext( 'ui.unified_volume_copy_editor', 'If true combines the Volume/Copy Creator and Item Attribute Editor in some instances.', 'coust', 'description'),
+  'bool'
+);

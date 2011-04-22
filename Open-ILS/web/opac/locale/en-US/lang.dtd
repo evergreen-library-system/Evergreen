@@ -2517,7 +2517,7 @@
 <!ENTITY staff.cat.copy_browser.actions.cmd_create_brt.accesskey "K">
 <!ENTITY staff.cat.copy_browser.actions.sel_patron.label "Show Last Few Circulations">
 <!ENTITY staff.cat.copy_browser.actions.sel_patron.accesskey "L">
-<!ENTITY staff.cat.copy_browser.actions.cmd_edit_items.label "Edit Item Attributes / Call Numbers / Replace Barcodes">
+<!ENTITY staff.cat.copy_browser.actions.cmd_edit_items.label "Edit Items">
 <!ENTITY staff.cat.copy_browser.actions.cmd_edit_items.accesskey "E">
 <!ENTITY staff.cat.copy_browser.actions.cmd_transfer_items.label "Transfer Items to Previously Marked Volume">
 <!ENTITY staff.cat.copy_browser.actions.cmd_transfer_items.accesskey "T">
