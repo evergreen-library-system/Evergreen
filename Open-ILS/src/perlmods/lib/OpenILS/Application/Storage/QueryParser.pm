@@ -685,7 +685,7 @@ sub decompose {
 
     }
 
-    $struct = undef if (scalar(@{$struct->query_nodes}) == 0);
+    $struct = undef if (scalar(@{$struct->query_nodes}) == 0 && !$struct->top_plan);
 
     return $struct if !wantarray;
     return ($struct, $remainder);
