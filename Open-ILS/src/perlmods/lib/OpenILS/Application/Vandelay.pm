@@ -606,59 +606,6 @@ sub queued_records_with_matches {
     return [ map {$_->{queued_record}} @$data ];
 }
 
-# tracks any import errors, commits the current xact, responds to the client
-sub finish_rec_import_attempt {
-    my %args = @_;
-    my $error = $args{import_error} || 'general.unknown';
-    my $evt = $args{evt};
-    my $rec = $args{rec};
-    my $e = $args{e};
-
-    # error tracking
-    if($rec) {
-
-        if($error or $evt) {
-            # since an error occurred, there's no guarantee the transaction wasn't 
-            # rolled back.  force a rollback and create a new editor.
-            $e->rollback;
-            $e = new_editor(xact => 1);
-            $rec->import_error($error);
-
-            if($evt) {
-                my $detail = sprintf("%s : %s", $evt->{textcode}, substr($evt->{desc}, 0, 140));
-                $rec->error_detail($detail);
-            }
-
-            my $method = 'update_vandelay_queued_bib_record';
-            $method =~ s/bib/authority/ if $args{type} eq 'auth';
-            $e->$method($rec) and $e->commit or $e->rollback;
-
-        } else {
-            # successful import
-            $e->commit;
-        }
-
-    } else {
-        # requested queued record was not found
-        $e->rollback;
-    }
-        
-    # respond to client
-    if($args{report_all} or ($args{progress} % $args{step}) == 0) {
-
-        $args{conn}->respond({
-            total => $args{total}, 
-            progress => $args{progress}, 
-            imported => ($rec) ? $rec->id : undef,
-            err_event => $evt
-        });
-
-        # report often at first, climb quickly, then hold steady
-        $args{step} *= 2 unless $args{step} == 256;
-    }
-}
-
-
 
 sub import_record_list_impl {
     my($self, $conn, $rec_ids, $requestor, $args) = @_;
@@ -822,6 +769,8 @@ sub import_record_list_impl {
                     if($res->{$auto_overlay_func} eq 't') {
                         $logger->info("vl: $type auto-overlay succeeded for queued rec " . $rec->id);
                         $imported = 1;
+                    } else {
+                        $logger->info("vl: $type auto-overlay failed for queued rec " . $rec->id);
                     }
 
                 } else {
@@ -893,6 +842,66 @@ sub import_record_list_impl {
     $conn->respond({total => $report_args{total}, progress => $report_args{progress}});
     return undef;
 }
+
+# tracks any import errors, commits the current xact, responds to the client
+sub finish_rec_import_attempt {
+    my %args = @_;
+    my $evt = $args{evt};
+    my $rec = $args{rec};
+    my $e = $args{e};
+
+    my $error = $args{import_error};
+    $error = 'general.unknown' if $evt and not $error;
+
+    # error tracking
+    if($rec) {
+
+        if($error or $evt) {
+            # failed import
+            # since an error occurred, there's no guarantee the transaction wasn't 
+            # rolled back.  force a rollback and create a new editor.
+            $e->rollback;
+            $e = new_editor(xact => 1);
+            $rec->import_error($error);
+
+            if($evt) {
+                my $detail = sprintf("%s : %s", $evt->{textcode}, substr($evt->{desc}, 0, 140));
+                $rec->error_detail($detail);
+            }
+
+            my $method = 'update_vandelay_queued_bib_record';
+            $method =~ s/bib/authority/ if $args{type} eq 'auth';
+            $e->$method($rec) and $e->commit or $e->rollback;
+
+        } else {
+            # successful import
+            $rec->clear_import_error;
+            $rec->clear_error_detail;
+            $e->commit;
+        }
+
+    } else {
+        # requested queued record was not found
+        $e->rollback;
+    }
+        
+    # respond to client
+    if($args{report_all} or ($args{progress} % $args{step}) == 0) {
+
+        $args{conn}->respond({
+            total => $args{total}, 
+            progress => $args{progress}, 
+            imported => ($rec) ? $rec->id : undef,
+            err_event => $evt
+        });
+
+        # report often at first, climb quickly, then hold steady
+        $args{step} *= 2 unless $args{step} == 256;
+    }
+}
+
+
+
 
 
 __PACKAGE__->register_method(  
