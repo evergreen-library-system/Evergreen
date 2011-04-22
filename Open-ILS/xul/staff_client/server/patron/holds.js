@@ -237,6 +237,7 @@ patron.holds.prototype = {
                                     n.setAttribute('toggle','0');
                                     n.setAttribute('label', document.getElementById("circStrings").getString('staff.circ.holds.alt_view.label'));
                                     n.setAttribute('accesskey', document.getElementById("circStrings").getString('staff.circ.holds.alt_view.accesskey'));
+                                    obj.controller.view.save_columns.setAttribute('disabled','false');
                                 } else {
                                     document.getElementById('deck').selectedIndex = 1;
                                     n.setAttribute('toggle','1');
@@ -252,6 +253,7 @@ patron.holds.prototype = {
                                     f.xulG = xulG;
                                     f.xulG.clear_and_retrieve = function() { obj.clear_and_retrieve(); };
                                     f.fetch_and_render_all(true);
+                                    obj.controller.view.save_columns.setAttribute('disabled','true');
                                 }
                             } catch(E) {
                                 alert('Error in holds.js, cmd_alt_view handler: ' + E);
