@@ -149,12 +149,11 @@
                 function hold_pull_list(newtab) {
                         var loc = urls.XUL_REMOTE_BROWSER + '?url=' + window.escape(urls.XUL_HOLD_PULL_LIST + '?ses=' + window.escape(ses()));
                         var params = {'tab_name':'On Shelf Pull List'};
-                        var content_params = {'show_print_button':true};
                         
                         if(newtab)
-                                xulG.new_tab(loc, params, content_params);
+                                xulG.new_tab(loc, params);
                         else
-                                xulG.set_tab(loc, params, content_params);
+                                xulG.set_tab(loc, params);
                 }
                 function checkout(newtab) {
                         if(newtab)
