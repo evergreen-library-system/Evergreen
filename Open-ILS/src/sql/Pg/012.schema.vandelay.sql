@@ -1301,7 +1301,10 @@ BEGIN
       WHERE m.queued_record = import_id
             AND r.id = m.eg_record
             AND m.quality::NUMERIC / COALESCE(NULLIF(vandelay.incoming_record_quality(r.marc),0),1)::NUMERIC >= lwm_ratio_value
-      ORDER BY m.match_score DESC, m.quality DESC, id limit 1;
+      ORDER BY  m.match_score DESC,
+                m.quality::NUMERIC / COALESCE(NULLIF(vandelay.incoming_record_quality(r.marc),0),1)::NUMERIC DESC,
+                id
+      LIMIT 1;
 
     IF eg_id IS NULL THEN
         -- RAISE NOTICE 'incoming record is not of hight enough quality';
