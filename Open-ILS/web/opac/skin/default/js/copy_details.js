@@ -43,7 +43,7 @@ function cpdBuild( contextTbody, contextRow, record, callnumber, orgid, depth, c
 	var print = $n(templateRow,'print');
 	print.onclick = function() { cpdBuildPrintPane(
 		contextRow, record, callnumber, orgid, depth) };
-    if (typeof callnumber == 'object') {
+    if (callnumber == null) {
         addCSSClass(print,'hide_me');
     }
 
@@ -123,11 +123,12 @@ function cpdStylePopupWindow(div) {
 
 
 /* builds a friendly print window for this CNs data */
-function cpdBuildPrintPane(contextRow, record, callnumber, orgid, depth) {
+function cpdBuildPrintPane(contextRow, record, cn, orgid, depth) {
 
 	var div = cpdBuildPrintWindow( record, orgid);
 
-	$n(div, 'cn').appendChild(text(callnumber));
+    var whole_cn_text = (cn[0] ? cn[0] + ' ' : '') + cn[1] + (cn[2] ? ' ' + cn[2] : '');
+	$n(div, 'cn').appendChild(text(whole_cn_text));
 
 	unHideMe($n(div, 'copy_header'));
 

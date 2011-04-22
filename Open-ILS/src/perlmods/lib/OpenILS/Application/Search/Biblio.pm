@@ -2012,7 +2012,7 @@ __PACKAGE__->register_method(
     method   => "copy_count_summary",
     api_name => "open-ils.search.biblio.copy_counts.summary.retrieve",
     notes    => "returns an array of these: "
-              . "[ org_id, callnumber_label, <status1_count>, <status2_count>,...] "
+              . "[ org_id, callnumber_prefix, callnumber_label, callnumber_suffix, <status1_count>, <status2_count>,...] "
               . "where statusx is a copy status name.  The statuses are sorted by ID.",
 );
 		
@@ -2024,14 +2024,18 @@ sub copy_count_summary {
     my $data = $U->storagereq(
 		'open-ils.storage.biblio.record_entry.status_copy_count.atomic', $rid, $org, $depth );
 
-    return [ sort { $a->[1] cmp $b->[1] } @$data ];
+    return [ sort {
+        (($a->[1] ? $a->[1] . ' ' : '') . $a->[2] . ($a->[3] ? ' ' . $a->[3] : ''))
+        cmp
+        (($b->[1] ? $b->[1] . ' ' : '') . $b->[2] . ($b->[3] ? ' ' . $b->[3] : ''))
+    } @$data ];
 }
 
 __PACKAGE__->register_method(
     method   => "copy_location_count_summary",
     api_name => "open-ils.search.biblio.copy_location_counts.summary.retrieve",
     notes    => "returns an array of these: "
-              . "[ org_id, callnumber_label, copy_location, <status1_count>, <status2_count>,...] "
+              . "[ org_id, callnumber_prefix, callnumber_label, callnumber_suffix, copy_location, <status1_count>, <status2_count>,...] "
               . "where statusx is a copy status name.  The statuses are sorted by ID.",
 );
 
@@ -2042,14 +2046,20 @@ sub copy_location_count_summary {
     my $data = $U->storagereq(
 		'open-ils.storage.biblio.record_entry.status_copy_location_count.atomic', $rid, $org, $depth );
 
-    return [ sort { $a->[1] cmp $b->[1] || $a->[2] cmp $b->[2] } @$data ];
+    return [ sort {
+        (($a->[1] ? $a->[1] . ' ' : '') . $a->[2] . ($a->[3] ? ' ' . $a->[3] : ''))
+        cmp
+        (($b->[1] ? $b->[1] . ' ' : '') . $b->[2] . ($b->[3] ? ' ' . $b->[3] : ''))
+
+        || $a->[4] cmp $b->[4]
+    } @$data ];
 }
 
 __PACKAGE__->register_method(
     method   => "copy_count_location_summary",
     api_name => "open-ils.search.biblio.copy_counts.location.summary.retrieve",
     notes    => "returns an array of these: "
-              . "[ org_id, callnumber_label, <status1_count>, <status2_count>,...] "
+              . "[ org_id, callnumber_prefix, callnumber_label, callnumber_suffix, <status1_count>, <status2_count>,...] "
               . "where statusx is a copy status name.  The statuses are sorted by ID."
 );
 
@@ -2059,7 +2069,11 @@ sub copy_count_location_summary {
     $depth ||= 0;
     my $data = $U->storagereq(
         'open-ils.storage.biblio.record_entry.status_copy_location_count.atomic', $rid, $org, $depth );
-    return [ sort { $a->[1] cmp $b->[1] } @$data ];
+    return [ sort {
+        (($a->[1] ? $a->[1] . ' ' : '') . $a->[2] . ($a->[3] ? ' ' . $a->[3] : ''))
+        cmp
+        (($b->[1] ? $b->[1] . ' ' : '') . $b->[2] . ($b->[3] ? ' ' . $b->[3] : ''))
+    } @$data ];
 }
 
 
@@ -2620,9 +2634,11 @@ __PACKAGE__->register_method(
 );
 
 sub copies_by_cn_label {
-	my( $self, $conn, $record, $label, $circ_lib ) = @_;
+	my( $self, $conn, $record, $cn_parts, $circ_lib ) = @_;
 	my $e = new_editor();
-	my $cns = $e->search_asset_call_number({record => $record, label => $label, deleted => 'f'}, {idlist=>1});
+    my $cnp_id = $cn_parts->[0] eq '' ? -1 : $e->search_asset_call_number_prefix({label => $cn_parts->[0]}, {idlist=>1})->[0];
+    my $cns_id = $cn_parts->[2] eq '' ? -1 : $e->search_asset_call_number_suffix({label => $cn_parts->[2]}, {idlist=>1})->[0];
+	my $cns = $e->search_asset_call_number({record => $record, prefix => $cnp_id, label => $cn_parts->[1], suffix => $cns_id, deleted => 'f'}, {idlist=>1});
 	return [] unless @$cns;
 
 	# show all non-deleted copies in the staff client ...

@@ -810,7 +810,7 @@ function rdetailShowExtra(type, args) {
 function rdetailVolumeDetails(args) {
 	var row = $(args.rowid);
 	var tbody = row.parentNode;
-	cpdBuild( tbody, row, record, args.cn, args.org, args.depth, args.copy_location );
+	cpdBuild( tbody, row, record, [args.cn_prefix, args.cn, args.cn_suffix], args.org, args.depth, args.copy_location );
 	return;
 }
 
@@ -819,7 +819,7 @@ function rdetailBuildCNList() {
 	var select = $('cn_browse_selector');
 	var index = 0;
 	var arr = [];
-	for( var cn in callnumberCache ) arr.push( cn );
+	for( var cn_json in callnumberCache ) arr.push( cn_json );
 	arr.sort();
 
 	if( arr.length == 0 ) {
@@ -828,8 +828,10 @@ function rdetailBuildCNList() {
 	}
 
 	for( var i = 0; i < arr.length; i++ ) {
-		var cn = arr[i];
-		var opt = new Option(cn);
+		var cn_json = arr[i];
+        var cn = JSON2js(cn_json);
+        var whole_cn_text = (cn[0] ? cn[0] + ' ' : '') + cn[1] + (cn[2] ? ' ' + cn[2] : '');
+		var opt = new Option(whole_cn_text,cn_json);
 		select.options[index++] = opt;
 	}
 	select.onchange = rdetailGatherCN;
@@ -837,7 +839,7 @@ function rdetailBuildCNList() {
 
 function rdetailGatherCN() {
 	var cn = getSelectorVal($('cn_browse_selector'));
-	rdetailShowCNBrowse( cn, getLocation(), getDepth(), true );
+	rdetailShowCNBrowse( JSON2js(cn), getLocation(), getDepth(), true );
 	setSelector( $('cn_browse_selector'), cn );
 }
 
@@ -852,7 +854,7 @@ function rdetailShowCNBrowse( cn, loc, depth, fromOnclick ) {
 
 	unHideMe($('rdetail_cn_browse_select_div'));
 	rdetailBuildCNList();
-	setSelector( $('cn_browse_selector'), cn );
+	setSelector( $('cn_browse_selector'), js2JSON(cn) );
 	hideMe($('rdetail_copy_info_div'));
 	hideMe($('rdetail_reviews_div'));
 	hideMe($('rdetail_summary_div'));
@@ -926,7 +928,6 @@ function rdetailBuildInfoRows() {
 	var method = FETCH_COPY_COUNTS_SUMMARY;
 	if (rdetailShowCopyLocation)
 		method = FETCH_COPY_LOCATION_COUNTS_SUMMARY;
-
 	if( rdetailShowLocal ) 
 		req = new Request(method, record.doc_id(), getLocation(), getDepth())
 	else
@@ -1036,7 +1037,7 @@ function _rdetailBuildInfoRows(r) {
 	for( var i = 0; i < summary.length; i++ ) {
 
 		var arr = summary[i];
-		globalCNCache[arr[1]] = 1;
+		globalCNCache[js2JSON([arr[1],arr[2],arr[3]])] = 1; // prefix, label, suffix.  FIXME - Am I used anywhere?
 		var thisOrg = findOrgUnit(arr[0]);
 		var rowNode = $("cp_info_" + thisOrg.id());
 		if(!rowNode) continue;
@@ -1070,11 +1071,11 @@ function _rdetailBuildInfoRows(r) {
 		var cpc_temp = rowNode.removeChild(
 				findNodeByName(rowNode, config.names.rdetail.cp_count_cell));
 
-		var statuses = arr[2];
+		var statuses = arr[4];
 		var cl = '';
 		if (rdetailShowCopyLocation) {
-			cl = arr[2];
-			statuses = arr[3];
+			cl = arr[4];
+			statuses = arr[5];
 		}
 
 
@@ -1086,7 +1087,7 @@ function _rdetailBuildInfoRows(r) {
 			isLocal = true; 
 			if(!localCNFound) {
 				localCNFound = true;
-				defaultCN = arr[1];
+				defaultCN = [arr[1],arr[2],arr[3]]; // prefix, label, suffix
 			}
 		}
 
@@ -1094,9 +1095,9 @@ function _rdetailBuildInfoRows(r) {
 		unHideMe(rowNode);
 
 		rdetailSetPath( thisOrg, isLocal );
-		rdetailBuildBrowseInfo( rowNode, arr[1], isLocal, thisOrg, cl );
+		rdetailBuildBrowseInfo( rowNode, [arr[1],arr[2],arr[3]], isLocal, thisOrg, cl );
 
-		if( i == summary.length - 1 && !defaultCN) defaultCN = arr[1];
+		if( i == summary.length - 1 && !defaultCN) defaultCN = [arr[1],arr[2],arr[3]]; // prefix, label, suffix
 	}
 
 	if(!found) unHideMe(G.ui.rdetail.cp_info_none);
@@ -1104,16 +1105,19 @@ function _rdetailBuildInfoRows(r) {
 
 function rdetailBuildBrowseInfo(row, cn, local, orgNode, cl) {
 
+    var whole_cn_json = js2JSON(cn);
+    var whole_cn_text = (cn[0] ? cn[0] + ' ' : '') + cn[1] + (cn[2] ? ' ' + cn[2] : '');
+
 	if(local) {
-		var cache = callnumberCache[cn];
+		var cache = callnumberCache[whole_cn_json];
 		if( cache ) cache.count++;
-		else callnumberCache[cn] = { count : 1 };
+		else callnumberCache[whole_cn_json] = { count : 1 };
 	}
 
 	var depth = getDepth();
 	if( !local ) depth = findOrgDepth(globalOrgTree);
 
-	$n(row, 'rdetail_callnumber_cell').appendChild(text(cn));
+	$n(row, 'rdetail_callnumber_cell').appendChild(text(whole_cn_text));
 
 	if (rdetailShowCopyLocation) {
 		var cl_cell = $n(row, 'rdetail_copylocation_cell');
@@ -1121,12 +1125,12 @@ function rdetailBuildBrowseInfo(row, cn, local, orgNode, cl) {
 		unHideMe(cl_cell);
 	}
 
-	_debug('setting action clicks for cn ' + cn);
+	_debug('setting action clicks for cn ' + whole_cn_text);
 
 	var dHref = 'javascript:rdetailVolumeDetails('+
-			'{copy_location : "'+cl.replace(/\"/g, '\\"')+'", rowid : "'+row.id+'", cn :"'+cn.replace(/\"/g, '\\"')+'", depth:"'+depth+'", org:"'+orgNode.id()+'", local: '+local+'});';
+			'{copy_location : "'+cl.replace(/\"/g, '\\"')+'", rowid : "'+row.id+'", cn_prefix :"'+cn[0].replace(/\"/g, '\\"')+'",cn :"'+cn[1].replace(/\"/g, '\\"')+'",cn_suffix :"'+cn[2].replace(/\"/g, '\\"')+'", depth:"'+depth+'", org:"'+orgNode.id()+'", local: '+local+'});';
 
-	var bHref = 'javascript:rdetailShowCNBrowse("' + cn.replace(/\"/g, '\\"') + '", '+orgNode.id()+', "'+depth+'");'; 
+	var bHref = 'javascript:rdetailShowCNBrowse(["' + cn[0].replace(/\"/g, '\\"') + '","'+cn[1].replace(/\"/g, '\\"') + '","'+cn[2].replace(/\"/g, '\\"') + '"], '+orgNode.id()+', "'+depth+'");'; 
 
 	unHideMe( $n(row, 'details') )
 		$n(row, 'details').setAttribute('href', dHref);
