@@ -606,22 +606,79 @@ sub queued_records_with_matches {
     return [ map {$_->{queued_record}} @$data ];
 }
 
+# tracks any import errors, commits the current xact, responds to the client
+sub finish_rec_import_attempt {
+    my %args = @_;
+    my $error = $args{import_error} || 'general.unknown';
+    my $evt = $args{evt};
+    my $rec = $args{rec};
+    my $e = $args{e};
+
+    # error tracking
+    if($rec) {
+
+        if($error or $evt) {
+            # since an error occurred, there's no guarantee the transaction wasn't 
+            # rolled back.  force a rollback and create a new editor.
+            $e->rollback;
+            $e = new_editor(xact => 1);
+            $rec->import_error($error);
+
+            if($evt) {
+                my $detail = sprintf("%s : %s", $evt->{textcode}, substr($evt->{desc}, 0, 140));
+                $rec->error_detail($detail);
+            }
+
+            my $method = 'update_vandelay_queued_bib_record';
+            $method =~ s/bib/authority/ if $args{type} eq 'auth';
+            $e->$method($rec) and $e->commit or $e->rollback;
+
+        } else {
+            # successful import
+            $e->commit;
+        }
+
+    } else {
+        # requested queued record was not found
+        $e->rollback;
+    }
+        
+    # respond to client
+    if($args{report_all} or ($args{progress} % $args{step}) == 0) {
+
+        $args{conn}->respond({
+            total => $args{total}, 
+            progress => $args{progress}, 
+            imported => ($rec) ? $rec->id : undef,
+            err_event => $evt
+        });
+
+        # report often at first, climb quickly, then hold steady
+        $args{step} *= 2 unless $args{step} == 256;
+    }
+}
+
+
+
 sub import_record_list_impl {
     my($self, $conn, $rec_ids, $requestor, $args) = @_;
 
     my $overlay_map = $args->{overlay_map} || {};
     my $type = $self->{record_type};
-    my $total = @$rec_ids;
-    my $count = 0;
     my %queues;
 
-    my $step = 1;
+    my %report_args = (
+        progress => 0,
+        step => 1,
+        conn => $conn,
+        total => scalar(@$rec_ids),
+        report_all => $$args{report_all}
+    );
 
     my $auto_overlay_exact = $$args{auto_overlay_exact};
     my $auto_overlay_1match = $$args{auto_overlay_1match};
     my $merge_profile = $$args{merge_profile};
     my $bib_source = $$args{bib_source};
-    my $report_all = $$args{report_all};
 
     my $overlay_func = 'vandelay.overlay_bib_record';
     my $auto_overlay_func = 'vandelay.auto_overlay_bib_record';
@@ -632,13 +689,11 @@ sub import_record_list_impl {
     my $update_queue_func = 'update_vandelay_bib_queue';
     my $rec_class = 'vqbr';
 
-    my %bib_sources;
     my $editor = new_editor();
-    my $sources = $editor->search_config_bib_source({id => {'!=' => undef}});
 
-    foreach my $src (@$sources) {
-        $bib_sources{$src->id} = $src->source;
-    }
+    my %bib_sources;
+    my $sources = $editor->search_config_bib_source({id => {'!=' => undef}});
+    $bib_sources{$_->id} = $_->source for @$sources;
 
     if($type eq 'auth') {
         $overlay_func =~ s/bib/auth/o;
@@ -654,11 +709,14 @@ sub import_record_list_impl {
     my @success_rec_ids;
     for my $rec_id (@$rec_ids) {
 
+        my $error = 0;
         my $overlay_target = $overlay_map->{$rec_id};
 
-        my $error = 0;
         my $e = new_editor(xact => 1);
         $e->requestor($requestor);
+
+        $report_args{progress}++;
+        $report_args{e} = $e;
 
         my $rec = $e->$retrieve_func([
             $rec_id,
@@ -668,10 +726,11 @@ sub import_record_list_impl {
         ]);
 
         unless($rec) {
-            $conn->respond({total => $total, progress => ++$count, imported => $rec_id, err_event => $e->event});
-            $e->rollback;
+            finish_rec_import_attempt(%report_args, evt => $e->event);
             next;
         }
+
+        $report_args{rec} = $rec;
 
         if($rec->import_time) {
             $e->rollback;
@@ -784,9 +843,8 @@ sub import_record_list_impl {
                 }
 
                 if($U->event_code($record)) {
-
-                    $e->event($record); 
-                    $e->rollback;
+                    my $import_error = 'import.duplicate.tcn' if $record->{textcode} eq 'TCN_EXISTS';
+                    finish_rec_import_attempt(%report_args, import_error => $import_error, evt => $record);
 
                 } else {
 
@@ -801,16 +859,11 @@ sub import_record_list_impl {
 
         if($imported) {
             push @success_rec_ids, $rec_id;
-            $e->commit;
+            finish_rec_import_attempt(%report_args);
+
         } else {
             # Send an update whenever there's an error
-            $conn->respond({total => $total, progress => ++$count, imported => $rec_id, err_event => $e->event});
-        }
-
-        if($report_all or (++$count % $step) == 0) {
-            $conn->respond({total => $total, progress => $count, imported => $rec_id});
-            # report often at first, climb quickly, then hold steady
-            $step *= 2 unless $step == 256;
+            finish_rec_import_attempt(%report_args, evt => $e->event);
         }
     }
 
@@ -834,9 +887,10 @@ sub import_record_list_impl {
     	$e->rollback;
     }
 
+    # import the copies
     import_record_asset_list_impl($conn, \@success_rec_ids, $requestor);
 
-    $conn->respond({total => $total, progress => $count});
+    $conn->respond({total => $report_args{total}, progress => $report_args{progress}});
     return undef;
 }
 
@@ -1062,8 +1116,14 @@ sub import_record_asset_list_impl {
             # --------------------------------------------------------------------------------
             # see if a valid circ_modifier was provided
             # --------------------------------------------------------------------------------
-            #if($copy->circ_modifier and not $e->retrieve_config_circ_modifier($item->circ_modifier)) {
             if($copy->circ_modifier and not $e->search_config_circ_modifier({code=>$item->circ_modifier})->[0]) {
+                $report_args{import_error} = 'import.item.invalid.circ_modifier';
+                respond_with_status(%report_args, evt => $e->die_event);
+                next;
+            }
+
+            if($copy->location and not $e->retrieve_asset_copy_location($copy->location)) {
+                $report_args{import_error} = 'import.item.invalid.location';
                 respond_with_status(%report_args, evt => $e->die_event);
                 next;
             }
@@ -1071,6 +1131,8 @@ sub import_record_asset_list_impl {
             if($evt = OpenILS::Application::Cat::AssetCommon->create_copy($e, $vol, $copy)) {
                 try { $e->rollback } otherwise {}; # sometimes calls die_event, sometimes not
                 $report_args{evt} = $evt;
+                $report_args{import_error} = 'import.item.duplicate.barcode' 
+                    if $evt->{textcode} eq 'ITEM_BARCODE_EXISTS';
                 respond_with_status(%report_args);
                 next;
             }
@@ -1115,7 +1177,7 @@ sub respond_with_status {
     my $error = $args{import_error};
     my $evt = $args{evt};
 
-    if($error || $evt) {
+    if($error or $evt) {
 
         my $item = $args{import_item};
 
@@ -1123,7 +1185,7 @@ sub respond_with_status {
         $item->import_error($error);
 
         if($evt) {
-            my $detail = sprintf("%s : %s", $evt->{textcode}, substr($evt->{desc}, 0, 120));
+            my $detail = sprintf("%s : %s", $evt->{textcode}, substr($evt->{desc}, 0, 140));
             $item->error_detail($detail);
         }
 
@@ -1136,7 +1198,8 @@ sub respond_with_status {
     $args{step} *= 2 unless $args{step} == 256;
 
     $args{conn}->respond({
-        map { $_ => $args{$_} } qw/total progress success_count/
+        map { $_ => $args{$_} } qw/total progress success_count/,
+        err_event => $evt
     });
 }
 
