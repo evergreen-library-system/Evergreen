@@ -14,7 +14,7 @@
  *
  */
 
-INSERT INTO config.upgrade_log(version) VALUES ('1.6.1.4');
+INSERT INTO config.upgrade_log(version) VALUES ('1.6.1.5');
 
 INSERT INTO permission.perm_list (code) VALUES ('VIEW_GROUP_PENALTY_THRESHOLD'); 
 INSERT INTO permission.perm_list (code) VALUES ('ADMIN_CIRC_MATRIX_MATCHPOINT'); 
