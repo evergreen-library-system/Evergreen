@@ -1152,23 +1152,15 @@ BEGIN
         RETURN FALSE;
     END IF;
 
-    SELECT  d.* INTO match_attr
-      FROM  vandelay.bib_attr_definition d
-            JOIN vandelay.queued_bib_record_attr a ON (a.field = d.id)
-            JOIN vandelay.bib_match m ON (m.matched_attr = a.id)
-      WHERE m.queued_record = import_id;
+    -- Check that the one match is on the first 901c
+    PERFORM *
+      FROM  vandelay.queued_bib_record q
+            JOIN vandelay.bib_match m ON (m.queued_record = q.id)
+      WHERE q.id = import_id
+            AND m.eg_record = oils_xpath_string('//*[@tag="901"]/*[@code="c"][1]',marc)::BIGINT;
 
-    IF NOT (match_attr.xpath ~ '@tag="901"' AND match_attr.xpath ~ '@code="c"') THEN
+    IF NOT FOUND THEN
         -- RAISE NOTICE 'not a 901c match: %', match_attr.xpath;
-        RETURN FALSE;
-    END IF;
-
-    SELECT  m.eg_record INTO eg_id
-      FROM  vandelay.bib_match m
-      WHERE m.queued_record = import_id
-      LIMIT 1;
-
-    IF eg_id IS NULL THEN
         RETURN FALSE;
     END IF;
 
