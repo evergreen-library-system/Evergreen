@@ -698,10 +698,10 @@ BEGIN
         vandelay.match_set_test_marcxml(my_bib_queue.match_set, NEW.marc) LOOP
 
         INSERT INTO vandelay.bib_match (
-            matched_set, queued_record, eg_record, quality
+            matched_set, queued_record, eg_record, match_score, quality
         ) VALUES (
             my_bib_queue.match_set, NEW.id, test_result.record,
-            test_result.quality
+            test_result.quality, vandelay.incoming_record_quality(NEW.marc)
         );
 
     END LOOP;
@@ -1281,11 +1281,8 @@ CREATE OR REPLACE FUNCTION vandelay.auto_overlay_bib_record_with_best ( import_i
 DECLARE
     eg_id           BIGINT;
     match_count     INT;
-    existing_qual   INT;
     match_attr      vandelay.bib_attr_definition%ROWTYPE;
 BEGIN
-
-    existing_qual := COALESCE(NULLIF(vandelay.incoming_record_quality(r.marc),0),1);
 
     IF lwm_ratio_value IS NULL THEN
         lwm_ratio_value := 0.0;
@@ -1303,7 +1300,7 @@ BEGIN
             JOIN biblio.record_entry r
       WHERE m.queued_record = import_id
             AND r.id = m.eg_record
-            AND m.quality::NUMERIC / existing_qual::NUMERIC >= lwm_ratio_value
+            AND m.quality::NUMERIC / COALESCE(NULLIF(vandelay.incoming_record_quality(r.marc),0),1)::NUMERIC >= lwm_ratio_value
       ORDER BY m.match_score DESC, m.quality DESC, id limit 1;
 
     IF eg_id IS NULL THEN
@@ -1373,6 +1370,28 @@ BEGIN
     
 END;
 $$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION vandelay.auto_overlay_bib_queue_with_best ( queue_id BIGINT, merge_profile_id INT, lwm_ratio_value NUMERIC ) RETURNS SETOF BIGINT AS $$
+DECLARE
+    queued_record   vandelay.queued_bib_record%ROWTYPE;
+BEGIN
+
+    FOR queued_record IN SELECT * FROM vandelay.queued_bib_record WHERE queue = queue_id AND import_time IS NULL LOOP
+
+        IF vandelay.auto_overlay_bib_record_with_best( queued_record.id, merge_profile_id, lwm_ratio_value ) THEN
+            RETURN NEXT queued_record.id;
+        END IF;
+
+    END LOOP;
+
+    RETURN;
+    
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION vandelay.auto_overlay_bib_queue_with_best ( import_id BIGINT, merge_profile_id INT ) RETURNS SETOF BIGINT AS $$
+    SELECT vandelay.auto_overlay_bib_queue_with_best( $1, $2, p.lwm_ratio ) FROM vandelay.merge_profile p WHERE id = $2;
+$$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION vandelay.auto_overlay_bib_queue ( queue_id BIGINT ) RETURNS SETOF BIGINT AS $$
     SELECT * FROM vandelay.auto_overlay_bib_queue( $1, NULL );
