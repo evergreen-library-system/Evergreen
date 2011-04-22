@@ -9,12 +9,9 @@ dojo.declare(
     "openils.vandelay.TreeDndSource", dijit._tree.dndSource, {
         "_is_replaceable": function(spoint, dpoint, disroot) {
             /* An OP can replace anything, but non-OPs can only replace other
-             * non-OPs, EXCEPT when the dest is the root node (this allows
-             * for simple "trees" with only a single non-OP node.
+             * non-OPs.
              */
-            if (disroot)
-                return true;
-            else if (spoint.bool_op())
+            if (spoint.bool_op())
                 return true;
             else if (!dpoint.bool_op())
                 return true;

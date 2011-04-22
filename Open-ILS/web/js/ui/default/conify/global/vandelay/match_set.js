@@ -205,7 +205,8 @@ function NodeEditor() {
         var nodes = _factories_by_type[type]();
         for (var i = 0; i < nodes.length; i++) dojo.place(nodes[i], table);
 
-        this._add_consistent_controls(table);
+        if (type != "bool_op")
+            this._add_consistent_controls(table);
 
         dojo.create(
             "input", {
@@ -231,13 +232,11 @@ function NodeEditor() {
 }
 
 function render_vmsp_label(point, minimal) {
-    /* "minimal" mode has two implications:
-     *  1) for svf, only show the code, not the longer label.
-     *  2) for bool ops, completely ingore negation
+    /* "minimal" has this implication:
+     * for svf, only show the code, not the longer label.
      */
     if (point.bool_op()) {
-        return (!minimal && openils.Util.isTrue(point.negate()) ? "N" : "") +
-            point.bool_op();
+        return point.bool_op();
     } else if (point.svf()) {
         return (openils.Util.isTrue(point.negate()) ? "NOT " : "") + (
             minimal ?  point.svf() :
@@ -364,9 +363,8 @@ function redraw_expression_preview() {
 
 function render_expression_preview(r) {
     if (r.children().length) {
-        return (openils.Util.isTrue(r.negate()) ? "NOT " : "") +
-            "(" + r.children().map(render_expression_preview).join(
-            " " + render_vmsp_label(r, true /* minimal */) + " "
+        return "(" + r.children().map(render_expression_preview).join(
+            " " + render_vmsp_label(r) + " "
         ) + ")";
     } else if (!r.bool_op()) {
         return render_vmsp_label(r, true /* minimal */);
