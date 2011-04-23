@@ -25,5 +25,10 @@
     "ADDRESS_APPROVE" : "Approve Address",
     "ADDRESS_OWNED" : "This address is owned by another user: ",
     "ADDRESS_NEW" : "New Address",
-    "STAT_CATS" : "Statistical Categories"
+    "STAT_CATS" : "Statistical Categories",
+    "SAVE" : "Save",
+    "SAVE_CLONE" : "Save &amp; Clone",
+    "SHOW_REQUIRED" : "Show Only Required Fields",
+    "SHOW_SUGGESTED" : "Show Suggested Fields",
+    "SHOW_ALL" : "Show All Fields"
 }

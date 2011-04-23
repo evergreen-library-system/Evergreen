@@ -61,6 +61,21 @@ function load() {
     var userId = cgi.param('usr');
     var stageUname = cgi.param('stage');
 
+    saveButton.attr("label", localeStrings.SAVE);
+    saveCloneButton.attr("label", localeStrings.SAVE_CLONE);
+    replaceBarcode.attr("label", localeStrings.REPLACE_BARCODE);
+    dojo.byId('uedit-show-required').innerHTML = localeStrings.SHOW_REQUIRED;
+    dojo.byId('uedit-show-suggested').innerHTML = localeStrings.SHOW_SUGGESTED;
+    dojo.byId('uedit-show-all').innerHTML = localeStrings.SHOW_ALL;
+    dojo.byId('uedit-dupe-barcode-warning').innerHTML = localeStrings.BARCODE_IN_USE;
+    allCards.attr("label", localeStrings.SEE_ALL);
+    dojo.byId('uedit-dupe-username-warning').innerHTML = localeStrings.DUPE_USERNAME;
+    generatePassword.attr("label", localeStrings.RESET_PASSWORD);
+    dojo.byId('verifyPassword').innerHTML = localeStrings.VERIFY_PASSWORD;
+    dojo.byId('parentGuardian').innerHTML = localeStrings.PARENT_OR_GUARDIAN;
+    dojo.byId('userSettings').innerHTML = localeStrings.USER_SETTINGS;
+    dojo.byId('statCats').innerHTML = localeStrings.STAT_CATS;
+
     dojo.query("td[name='addressHeader']").forEach( function(item) { item.innerHTML = localeStrings.ADDRESS_HEADER; });
     dojo.query("span[name='mailingAddress']").forEach( function(item) { item.innerHTML = localeStrings.ADDRESS_MAILING; });
     dojo.query("span[name='billingAddress']").forEach( function(item) { item.innerHTML = localeStrings.ADDRESS_BILLING; });
@@ -196,15 +211,6 @@ function load() {
     checkGrpAppPerm(); // to do the initial load
     loadStaticFields();
 
-    replaceBarcode.attr("label", localeStrings.REPLACE_BARCODE);
-    dojo.byId('uedit-dupe-barcode-warning').innerHTML = localeStrings.BARCODE_IN_USE;
-    allCards.attr("label", localeStrings.SEE_ALL);
-    dojo.byId('uedit-dupe-username-warning').innerHTML = localeStrings.DUPE_USERNAME;
-    generatePassword.attr("label", localeStrings.RESET_PASSWORD);
-    dojo.byId('verifyPassword').innerHTML = localeStrings.VERIFY_PASSWORD;
-    dojo.byId('parentGuardian').innerHTML = localeStrings.PARENT_OR_GUARDIAN;
-    dojo.byId('userSettings').innerHTML = localeStrings.USER_SETTINGS;
-    dojo.byId('statCats').innerHTML = localeStrings.STAT_CATS;
 
     if(patron.isnew() && patron.addresses().length == 0) 
         uEditNewAddr(null, uEditAddrVirtId, true);

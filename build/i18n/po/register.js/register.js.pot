@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-23 01:19:52-0400\n"
+"POT-Creation-Date: 2011-04-23 01:33:28-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,20 +23,24 @@ msgstr ""
 msgid "Billing"
 msgstr ""
 
-#: register.js:SEE_ALL
-msgid "See All"
-msgstr ""
-
-#: register.js:BARCODE_IN_USE
-msgid "Barcode is already in use"
+#: register.js:ADDRESS_OWNED
+msgid "This address is owned by another user: "
 msgstr ""
 
 #: register.js:REPLACED_ADDRESS
 msgid "<div>Replaces address <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"
 msgstr ""
 
+#: register.js:SHOW_REQUIRED
+msgid "Show Only Required Fields"
+msgstr ""
+
 #: register.js:DUPE_PATRON_ADDR
 msgid "Found ${0} patron(s) with the same address"
+msgstr ""
+
+#: register.js:SAVE
+msgid "Save"
 msgstr ""
 
 #: register.js:DUPE_PATRON_IDENT
@@ -55,8 +59,8 @@ msgstr ""
 msgid "An address is required during registration."
 msgstr ""
 
-#: register.js:EXAMPLE
-msgid "Example: "
+#: register.js:PARENT_OR_GUARDIAN
+msgid "Parent/Guardian"
 msgstr ""
 
 #: register.js:ADDRESS_HEADER
@@ -71,12 +75,16 @@ msgstr ""
 msgid "Form is invalid.  Please edit and try again."
 msgstr ""
 
-#: register.js:PARENT_OR_GUARDIAN
-msgid "Parent/Guardian"
+#: register.js:BARCODE_IN_USE
+msgid "Barcode is already in use"
 msgstr ""
 
-#: register.js:DUPE_PATRON_NAME
-msgid "Found ${0} patron(s) with the same name"
+#: register.js:EXAMPLE
+msgid "Example: "
+msgstr ""
+
+#: register.js:SHOW_SUGGESTED
+msgid "Show Suggested Fields"
 msgstr ""
 
 #: register.js:ADDRESS_PENDING
@@ -87,8 +95,16 @@ msgstr ""
 msgid "Username is already in use"
 msgstr ""
 
+#: register.js:DUPE_PATRON_NAME
+msgid "Found ${0} patron(s) with the same name"
+msgstr ""
+
 #: register.js:DEFAULT_ADDRESS_TYPE
 msgid "MAILING"
+msgstr ""
+
+#: register.js:SHOW_ALL
+msgid "Show All Fields"
 msgstr ""
 
 #: register.js:ADDRESS_APPROVE
@@ -97,6 +113,10 @@ msgstr ""
 
 #: register.js:VERIFY_PASSWORD
 msgid "Verify Password"
+msgstr ""
+
+#: register.js:SAVE_CLONE
+msgid "Save &amp; Clone"
 msgstr ""
 
 #: register.js:STAT_CATS
@@ -111,8 +131,8 @@ msgstr ""
 msgid "Reset Password"
 msgstr ""
 
-#: register.js:ADDRESS_OWNED
-msgid "This address is owned by another user: "
+#: register.js:SEE_ALL
+msgid "See All"
 msgstr ""
 
 #: register.js:DELETE_ADDRESS
