@@ -513,7 +513,7 @@ sub retrieve_queue_import_items {
                 }
             }
         },
-        order_by => {'vii' => ['record']}
+        order_by => {'vii' => ['record','id']}
     };
 
     $query->{where} = {'+vii' => {import_error => {'!=' => undef}}}
