@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 21:45:31-0400\n"
+"POT-Creation-Date: 2011-04-23 01:33:28-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,46 +11,130 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: register.js:DUPE_PATRON_ADDR
-msgid "Found ${0} patron(s) with the same address"
-msgstr ""
-
-#: register.js:INVALID_FORM
-msgid "Form is invalid.  Please edit and try again."
-msgstr ""
-
-#: register.js:DUPE_PATRON_IDENT
-msgid "Found ${0} patron(s) with the same identification"
-msgstr ""
-
-#: register.js:DELETE_ADDRESS
-msgid "Delete address ${0}?"
+#: register.js:USER_SETTINGS
+msgid "User Settings"
 msgstr ""
 
 #: register.js:DUPE_PATRON_EMAIL
 msgid "Found ${0} patron(s) with the same email address"
 msgstr ""
 
-#: register.js:DUPE_PATRON_NAME
-msgid "Found ${0} patron(s) with the same name"
+#: register.js:ADDRESS_BILLING
+msgid "Billing"
 msgstr ""
 
-#: register.js:NEED_ADDRESS
-msgid "An address is required during registration."
-msgstr ""
-
-#: register.js:EXAMPLE
-msgid "Example: "
-msgstr ""
-
-#: register.js:DUPE_PATRON_PHONE
-msgid "Found ${0} patron(s) with the same phone number"
+#: register.js:ADDRESS_OWNED
+msgid "This address is owned by another user: "
 msgstr ""
 
 #: register.js:REPLACED_ADDRESS
 msgid "<div>Replaces address <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"
 msgstr ""
 
+#: register.js:SHOW_REQUIRED
+msgid "Show Only Required Fields"
+msgstr ""
+
+#: register.js:DUPE_PATRON_ADDR
+msgid "Found ${0} patron(s) with the same address"
+msgstr ""
+
+#: register.js:SAVE
+msgid "Save"
+msgstr ""
+
+#: register.js:DUPE_PATRON_IDENT
+msgid "Found ${0} patron(s) with the same identification"
+msgstr ""
+
+#: register.js:ADDRESS_MAILING
+msgid "Mailing"
+msgstr ""
+
+#: register.js:REPLACE_BARCODE
+msgid "Replace Barcode"
+msgstr ""
+
+#: register.js:NEED_ADDRESS
+msgid "An address is required during registration."
+msgstr ""
+
+#: register.js:PARENT_OR_GUARDIAN
+msgid "Parent/Guardian"
+msgstr ""
+
+#: register.js:ADDRESS_HEADER
+msgid "Address"
+msgstr ""
+
+#: register.js:DUPE_PATRON_PHONE
+msgid "Found ${0} patron(s) with the same phone number"
+msgstr ""
+
+#: register.js:INVALID_FORM
+msgid "Form is invalid.  Please edit and try again."
+msgstr ""
+
+#: register.js:BARCODE_IN_USE
+msgid "Barcode is already in use"
+msgstr ""
+
+#: register.js:EXAMPLE
+msgid "Example: "
+msgstr ""
+
+#: register.js:SHOW_SUGGESTED
+msgid "Show Suggested Fields"
+msgstr ""
+
+#: register.js:ADDRESS_PENDING
+msgid "This is a pending address: "
+msgstr ""
+
+#: register.js:DUPE_USERNAME
+msgid "Username is already in use"
+msgstr ""
+
+#: register.js:DUPE_PATRON_NAME
+msgid "Found ${0} patron(s) with the same name"
+msgstr ""
+
 #: register.js:DEFAULT_ADDRESS_TYPE
 msgid "MAILING"
+msgstr ""
+
+#: register.js:SHOW_ALL
+msgid "Show All Fields"
+msgstr ""
+
+#: register.js:ADDRESS_APPROVE
+msgid "Approve Address"
+msgstr ""
+
+#: register.js:VERIFY_PASSWORD
+msgid "Verify Password"
+msgstr ""
+
+#: register.js:SAVE_CLONE
+msgid "Save &amp; Clone"
+msgstr ""
+
+#: register.js:STAT_CATS
+msgid "Statistical Categories"
+msgstr ""
+
+#: register.js:ADDRESS_NEW
+msgid "New Address"
+msgstr ""
+
+#: register.js:RESET_PASSWORD
+msgid "Reset Password"
+msgstr ""
+
+#: register.js:SEE_ALL
+msgid "See All"
+msgstr ""
+
+#: register.js:DELETE_ADDRESS
+msgid "Delete address ${0}?"
 msgstr ""
