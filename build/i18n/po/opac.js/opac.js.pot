@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2010-09-01 22:23:40-0400\n"
+"POT-Creation-Date: 2011-04-18 21:45:31-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,16 +35,24 @@ msgstr ""
 msgid "Barcode: "
 msgstr ""
 
+#: opac.js:PWD_RESET_FORGOT_PROMPT
+msgid "Forgot your password?"
+msgstr ""
+
 #: opac.js:SUPPLEMENT_HOLDINGS_ADD
 msgid "Additional Supplement Information"
 msgstr ""
 
-#: opac.js:DELETED_MFHD_RECORD
-msgid "Deleted MFHD record ${0}"
+#: opac.js:MORE_COPIES_FULL_RECORD
+msgid "... more copies listed in full record"
 msgstr ""
 
-#: opac.js:SAVE_MFHD_LABEL
-msgid "Save MFHD"
+#: opac.js:HOLD_STATUS_PLURAL
+msgid "hold # ${0} of ${1} total holds and ${2} potential items"
+msgstr ""
+
+#: opac.js:MORE
+msgid "More"
 msgstr ""
 
 #: opac.js:EDIT_PROPERTIES
@@ -59,8 +67,8 @@ msgstr ""
 msgid "Edit Record"
 msgstr ""
 
-#: opac.js:PWD_RESET_FORGOT_PROMPT
-msgid "Forgot your password?"
+#: opac.js:SAVE_MFHD_LABEL
+msgid "Save MFHD"
 msgstr ""
 
 #: opac.js:INDEX_HOLDINGS_ADD
@@ -77,6 +85,18 @@ msgstr ""
 
 #: opac.js:MISSING_VOLUMES
 msgid "Missing volumes"
+msgstr ""
+
+#: opac.js:DELETED_MFHD_RECORD
+msgid "Deleted MFHD record ${0}"
+msgstr ""
+
+#: opac.js:HOLD_STATUS_SINGULAR
+msgid "hold # ${0} of ${1} total holds and ${2} potential item"
+msgstr ""
+
+#: opac.js:PLACE_HOLD
+msgid "Place hold"
 msgstr ""
 
 #: opac.js:BASIC_HOLDINGS_ADD

@@ -1,0 +1,143 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Evergreen 1.4\n"
+"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"POT-Creation-Date: 2011-04-18 21:45:31-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: pickup_and_return.js:NO_SUCH_RETURNABLE_RESOURCE
+msgid "No such returnable resource."
+msgstr ""
+
+#: pickup_and_return.js:PICKUP_ERROR
+msgid "Error communicating with server (attempting pickup):"
+msgstr ""
+
+#: pickup_and_return.js:ADDRESS
+msgid ""
+"${0}\n"
+"${1}\n"
+"${2}, ${3} ${4}"
+msgstr ""
+
+#: pickup_and_return.js:AUTO_ready_bresv
+msgid "Patron has these reservations ready for pickup:"
+msgstr ""
+
+#: pickup_and_return.js:AUTO_ATTR_VALUE_pickup
+msgid "Pick up"
+msgstr ""
+
+#: pickup_and_return.js:RETURN_ERROR
+msgid "Error communicating with server (attempting return):"
+msgstr ""
+
+#: pickup_and_return.js:AUTO_no_in_bresv
+msgid "Patron has not returned any resources today."
+msgstr ""
+
+#: pickup_and_return.js:NO_PATRON_BARCODE
+msgid "Please enter a patron barcode."
+msgstr ""
+
+#: pickup_and_return.js:AUTO_ATTR_VALUE_return
+msgid "Return"
+msgstr ""
+
+#: pickup_and_return.js:AUTO_no_out_bresv
+msgid "Patron has no more reservations out at this time."
+msgstr ""
+
+#: pickup_and_return.js:RESERVATIONS_ERROR
+msgid "Error communicating with server (asking for reservations):"
+msgstr ""
+
+#: pickup_and_return.js:AUTO_return_h1
+msgid "Reservations Return"
+msgstr ""
+
+#: pickup_and_return.js:AUTO_ATTR_VALUE_reset
+msgid "Clear / New Patron"
+msgstr ""
+
+#: pickup_and_return.js:AUTO_h1
+msgid "Reservations Pickup"
+msgstr ""
+
+#: pickup_and_return.js:AUTO_no_ready_bresv
+msgid "Patron has no reservations ready for pickup at this time."
+msgstr ""
+
+#: pickup_and_return.js:AUTO_resource
+msgid "Resource"
+msgstr ""
+
+#: pickup_and_return.js:COPY_ALERT
+msgid ""
+"${0}:\n"
+"${1}\n"
+"\n"
+"Do you wish to process it anyway?"
+msgstr ""
+
+#: pickup_and_return.js:NOTICE_CHANGE_OF_PATRON
+msgid ""
+"Note that the resource scanned was out on reservation to a different\n"
+"patron than the last resource you scanned.  If this is not\n"
+"expected, stop to examine outstanding reservations for your patron\n"
+"or on the resource."
+msgstr ""
+
+#: pickup_and_return.js:SELECT_SOMETHING
+msgid "You have not selected any reservations."
+msgstr ""
+
+#: pickup_and_return.js:AUTO_out_bresv
+msgid "Patron currently has these reservations out:"
+msgstr ""
+
+#: pickup_and_return.js:RESERVATIONS_NO_RESPONSE
+msgid "No response from server when asking for reservations."
+msgstr ""
+
+#: pickup_and_return.js:AUTO_barcode_type
+msgid "Return by barcode of"
+msgstr ""
+
+#: pickup_and_return.js:RETURN_NO_RESPONSE
+msgid "No response from server when attempting return."
+msgstr ""
+
+#: pickup_and_return.js:RETURN_SUCCESS
+msgid "Return successful."
+msgstr ""
+
+#: pickup_and_return.js:AUTO_patron_barcode
+msgid "Enter patron barcode:"
+msgstr ""
+
+#: pickup_and_return.js:PICKUP_NO_RESPONSE
+msgid "No response from server when attempting pickup."
+msgstr ""
+
+#: pickup_and_return.js:RETURNABLE_RESOURCE_ERROR
+msgid "Error looking up returnable resource:"
+msgstr ""
+
+#: pickup_and_return.js:AUTO_patron
+msgid "Patron"
+msgstr ""
+
+#: pickup_and_return.js:AUTO_in_bresv
+msgid "Patron has returned these resources today:"
+msgstr ""
+
+#: pickup_and_return.js:AUTO_ATTR_VALUE_go
+msgid "Go"
+msgstr ""
