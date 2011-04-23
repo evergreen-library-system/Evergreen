@@ -2,30 +2,28 @@
     <tr fmclass='ac' fmfield='barcode' required='required'>
         <td/><td/><td/>
         <td>
-            <button dojoType='dijit.form.Button' jsId='replaceBarcode' scrollOnFocus='false'>Replace Barcode</button>
+            <button dojoType='dijit.form.Button' jsId='replaceBarcode' scrollOnFocus='false'></button>
             <span id='uedit-dupe-barcode-warning' style='color:red; font-weight:bold' class='hidden'>
-                Barcode is already in use
             </span>
         </td>
         <td id='uedit-all-barcodes' class='hidden'>
-            <button dojoType='dijit.form.Button' jsId='allCards' scrollOnFocus='false'>See All</button>
+            <button dojoType='dijit.form.Button' jsId='allCards' scrollOnFocus='false'></button>
         </td>
     </tr>
     <tr fmclass='au' fmfield='usrname' required='required'>
         <td/><td/><td/>
         <td>
             <span id='uedit-dupe-username-warning' style='color:red; font-weight:bold' class='hidden'>
-                Username is already in use
             </span>
         </td>
     </tr>
     <tr fmclass='au' fmfield='passwd' required='required'>
         <td/><td/><td/>
         <td>
-            <button dojoType='dijit.form.Button' jsId='generatePassword' scrollOnFocus='false' tabIndex='-1'>Reset Password</button>
+            <button dojoType='dijit.form.Button' jsId='generatePassword' scrollOnFocus='false' tabIndex='-1'></button>
         </td>
     </tr>
-    <tr fmclass='au' fmfield='passwd2' required='required'><td/><td>Verify Password</td><td/></tr>
+    <tr fmclass='au' fmfield='passwd2' required='required'><td/><td id='verifyPassword'></td><td/></tr>
     <tr fmclass='au' fmfield='first_given_name' required='required'/>
     <tr fmclass='au' fmfield='second_given_name'/>
     <tr fmclass='au' fmfield='family_name' required='required'/>
@@ -35,7 +33,7 @@
     <tr fmclass='au' fmfield='juvenile'/>
     <tr fmclass='au' fmfield='ident_type' required='required'/>
     <tr fmclass='au' fmfield='ident_value'/>
-    <tr fmclass='au' fmfield='ident_value2'><td/><td>Parent/Guardian</td></tr>
+    <tr fmclass='au' fmfield='ident_value2'><td/><td id='parentGuardian'></td></tr>
     <tr fmclass='au' fmfield='email'/>
     <tr fmclass='au' fmfield='day_phone'/>
     <tr fmclass='au' fmfield='evening_phone'/>
@@ -51,7 +49,7 @@
     <tr fmclass='au' fmfield='claims_never_checked_out_count' wclass='dijit.form.NumberSpinner' wconstraints="{min:0,places:0}" wvalue='0'/>
     <tr fmclass='au' fmfield='alert_message' wclass='dijit.form.Textarea' wstyle='height:5em'/>
 
-    <tr class='divider hidden' id='uedit-settings-divider'><td colspan='0'>User Settings</td></tr>
+    <tr class='divider hidden' id='uedit-settings-divider'><td colspan='0' id='userSettings'></td></tr>
     <tr class='hidden' id='uedit-user-setting-template'>
         <td/>
         <td><span name='label'></span></td>
@@ -60,18 +58,18 @@
 
     <!-- Address -->
     <tr name='uedit-addr-divider' class='divider' type='addr-template' required='show'>
-        <td colspan='2'>Address</td>
+        <td colspan='2' name='addressHeader'></td>
         <td>
-            <span>Mailing</span><input type='radio' name='mailing_address'>
-            <span>Billing</span><input type='radio' name='billing_address'>
+            <span name='mailingAddress'></span><input type='radio' name='mailing_address'>
+            <span name='billingAddress'></span><input type='radio' name='billing_address'>
             <button dojoType='dijit.form.Button' scrollOnFocus='false' name='delete-button' class='uedit-addr-del-button'>X</button>
         </td>
     </tr>
 
     <tr name='uedit-addr-pending-row' type='addr-template' class='pending-addr-row hidden'>
         <td colspan='3'>
-            <span style='padding-right:10px;'>This is a pending address: </span>
-            <button dojoType='dijit.form.Button' scrollOnFocus='false'  name='approve-button'>Approve Address</button>
+            <span style='padding-right:10px;' name='addressPending'></span>
+            <button dojoType='dijit.form.Button' scrollOnFocus='false'  name='approve-button'></button>
             <div name='replaced-addr-div'>
                 <div name='replaced-addr'></div>
             </div>
@@ -80,7 +78,7 @@
 
     <tr name='uedit-addr-owner-row' type='addr-template' class='pending-addr-row hidden'>
         <td colspan='3'>
-            <span style='padding-right:10px;'>This address is owned by another user: </span>
+            <span style='padding-right:10px;' name='address-already-owned'></span>
             <a href='javascript:void(0);'  name='addr-owner'></a>
         </td>
     </tr>
@@ -99,12 +97,12 @@
 
     <tr id='new-addr-row' class='newaddr-row' required='show'>
         <td colspan='0' style='text-align:center;'>
-            <button dojoType='dijit.form.Button' onClick='uEditNewAddr' scrollOnFocus='false'>New Address</button>
+            <button dojoType='dijit.form.Button' onClick='uEditNewAddr' scrollOnFocus='false' name='addressNew'></button>
         </td>
     </tr>
 
     <!-- stat cats -->
-    <tr class='divider' id='stat-cat-divider' required='suggested'><td colspan='0'>Statistical Categories</td></tr>
+    <tr class='divider' id='stat-cat-divider' required='suggested'><td colspan='0' id='statCats'></td></tr>
     <tr id='stat-cat-row-template' required='suggested'><td class='uedit-help'/><td name='name'/><td name='widget'/></tr>
 
     <!-- surveys -->

@@ -61,6 +61,14 @@ function load() {
     var userId = cgi.param('usr');
     var stageUname = cgi.param('stage');
 
+    dojo.query("td[name='addressHeader']").forEach( function(item) { item.innerHTML = localeStrings.ADDRESS_HEADER; });
+    dojo.query("span[name='mailingAddress']").forEach( function(item) { item.innerHTML = localeStrings.ADDRESS_MAILING; });
+    dojo.query("span[name='billingAddress']").forEach( function(item) { item.innerHTML = localeStrings.ADDRESS_BILLING; });
+    dojo.query("span[name='addressPending']").forEach( function(item) { item.innerHTML = localeStrings.ADDRESS_PENDING; });
+    dojo.query("button[name='approve-button']").forEach( function(item) { item.innerHTML = localeStrings.ADDRESS_APPROVE; });
+    dojo.query("span[name='address-already-owned']").forEach( function(item) { item.innerHTML = localeStrings.ADDRESS_OWNED; });
+    dojo.query("button[name='addressNew']").forEach( function(item) { item.innerHTML = localeStrings.ADDRESS_NEW; });
+
     if(xulG) {
 	    if(xulG.ses) openils.User.authtoken = xulG.ses;
 	    if(typeof xulG.clone != 'undefined') cloneUser = xulG.clone;
@@ -187,6 +195,17 @@ function load() {
 
     checkGrpAppPerm(); // to do the initial load
     loadStaticFields();
+
+    replaceBarcode.attr("label", localeStrings.REPLACE_BARCODE);
+    dojo.byId('uedit-dupe-barcode-warning').innerHTML = localeStrings.BARCODE_IN_USE;
+    allCards.attr("label", localeStrings.SEE_ALL);
+    dojo.byId('uedit-dupe-username-warning').innerHTML = localeStrings.DUPE_USERNAME;
+    generatePassword.attr("label", localeStrings.RESET_PASSWORD);
+    dojo.byId('verifyPassword').innerHTML = localeStrings.VERIFY_PASSWORD;
+    dojo.byId('parentGuardian').innerHTML = localeStrings.PARENT_OR_GUARDIAN;
+    dojo.byId('userSettings').innerHTML = localeStrings.USER_SETTINGS;
+    dojo.byId('statCats').innerHTML = localeStrings.STAT_CATS;
+
     if(patron.isnew() && patron.addresses().length == 0) 
         uEditNewAddr(null, uEditAddrVirtId, true);
     else loadAllAddrs();
@@ -1515,7 +1534,7 @@ function uEditNewAddr(evt, id, mkLinks) {
                 }
 
             } else if(row.getAttribute('name') == 'uedit-addr-divider') {
-                // link up the billing/mailing address and give the inputs IDs so we can acces the later
+                // link up the billing/mailing address and give the inputs IDs so we can access the later
                 
                 // billing address
                 var ba = getByName(row, 'billing_address');
