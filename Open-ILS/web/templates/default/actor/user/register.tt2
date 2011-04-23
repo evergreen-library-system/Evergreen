@@ -15,8 +15,8 @@
 </div>
 
 <div id='uedit-save-div'>
-    <button dojoType='dijit.form.Button' jsId='saveButton' onClick='uEditSave' scrollOnFocus='false'>Save</button>
-    <button dojoType='dijit.form.Button' jsId='saveCloneButton' onClick='uEditSaveClone' scrollOnFocus='false'>Save &amp; Clone</button>
+    <button dojoType='dijit.form.Button' jsId='saveButton' onClick='uEditSave' scrollOnFocus='false'></button>
+    <button dojoType='dijit.form.Button' jsId='saveCloneButton' onClick='uEditSaveClone' scrollOnFocus='false'></button>
     <div id='require-toggle'>
         <a href='javascript:uEditToggleRequired(1);' id='uedit-show-required'>Show Only Required Fields</a><br id='uedit-show-required-br'/>
         <a href='javascript:uEditToggleRequired(2);' id='uedit-show-suggested'>Show Suggested Fields</a><br id='uedit-show-suggested-br'/>
