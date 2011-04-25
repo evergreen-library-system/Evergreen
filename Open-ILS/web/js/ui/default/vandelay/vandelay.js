@@ -57,7 +57,8 @@ var globalDivs = [
     'vl-attr-editor-div',
     'vl-marc-export-div',
     'vl-profile-editor-div',
-    'vl-item-attr-editor-div'
+    'vl-item-attr-editor-div',
+    'vl-import-error-div'
 ];
 
 var authtoken;
@@ -587,10 +588,37 @@ function vlFormatViewErrors(chunk) {
     var count = chunk.split(':')[2];
     var links = '';
     if(rec) 
-        links += '<a href="javascript:void(0);" onclick="vlLoadErrorUI(' + id + ');"><b>Record</b></a><br/>'; // XXX I18N
+        links += '<a href="javascript:void(0);" onclick="vlLoadErrorUI(' + id + ');"><b>Record</b></a><br/>'; // TODO I18N
     if(Number(count))
-        links += '<a href="javascript:void(0);" onclick="vlLoadErrorUI(' + id + ');"><b>Items ('+count+')</b></a>'; // XXX I18N
+        links += '<a href="javascript:void(0);" onclick="vlLoadErrorUI(' + id + ');">Items ('+count+')</a>'; // TODO I18N
     return links;
+}
+
+//var vlItemErrorColumnPicker;
+function vlLoadErrorUI(id) {
+
+    displayGlobalDiv('vl-import-error-div');
+    openils.Util.show('vl-import-error-grid-some');
+    openils.Util.hide('vl-import-error-grid-all');
+
+    var rec = queuedRecordsMap[id];
+
+    /* TODO: show record attrs and whether it failed import */
+
+    var errorItems = rec.import_items().filter(function(i) {return i.import_error()});
+    if(errorItems) {
+        storeData = vqbr.toStoreData(errorItems);
+        var store = new dojo.data.ItemFileReadStore({data:storeData});
+        vlImportErrorGrid.setStore(store);
+        vlImportErrorGrid.update();
+    }
+}
+
+function vlGetOrg(rowIdx, item) {
+    if(!item) return '';
+    var value = this.grid.store.getValue(item, this.field);
+    if(value) return fieldmapper.aou.findOrgUnit(value).shortname();
+    return '';
 }
 
 function vlFormatViewMatchMARC(id) {

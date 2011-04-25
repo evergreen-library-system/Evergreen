@@ -40,6 +40,9 @@
 <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-item-attr-editor-div' class='hidden content'>
     [% INCLUDE 'default/vandelay/inc/item_attrs.tt2' %]
 </div>
+<div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-import-error-div' class='hidden content'>
+    [% INCLUDE 'default/vandelay/inc/import_errors.tt2' %]
+</div>
 
 
 [% END %]
