@@ -114,9 +114,9 @@ sub toc_html {
         my $page_number = $chapter->{pagenum} || '';
  
         $toc_html .= '<tr>' .
-            "<td style='text-align: right;'>$label</td>" .
-            "<td style='text-align: left; padding-right: 2em;'>$title</td>" .
-            "<td style='text-align: right;'>$page_number</td>" .
+            "<td class='toc_label'>$label</td>" .
+            "<td class='toc_title'>$title</td>" .
+            "<td class='toc_page'>$page_number</td>" .
             "</tr>\n";
     }
 
