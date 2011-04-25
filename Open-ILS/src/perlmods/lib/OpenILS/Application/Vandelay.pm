@@ -1161,6 +1161,7 @@ sub import_record_asset_list_impl {
             my $item = $e->retrieve_vandelay_import_item($item_id);
             $report_args{progress}++;
             $report_args{import_item} = $item;
+            $report_args{e} = $e;
 
             # --------------------------------------------------------------------------------
             # Find or create the volume
@@ -1199,23 +1200,30 @@ sub import_record_asset_list_impl {
             # see if a valid circ_modifier was provided
             # --------------------------------------------------------------------------------
             if($copy->circ_modifier and not $e->search_config_circ_modifier({code=>$item->circ_modifier})->[0]) {
-                $report_args{import_error} = 'import.item.invalid.circ_modifier';
-                respond_with_status(%report_args, evt => $e->die_event);
+                respond_with_status(
+                    %report_args, 
+                    evt => $e->die_event,
+                    import_error => 'import.item.invalid.circ_modifier'
+                );
                 next;
             }
 
             if($copy->location and not $e->retrieve_asset_copy_location($copy->location)) {
-                $report_args{import_error} = 'import.item.invalid.location';
-                respond_with_status(%report_args, evt => $e->die_event);
+                respond_with_status(
+                    %report_args, 
+                    evt => $e->die_event,
+                    import_error => 'import.item.invalid.location'
+                );
                 next;
             }
 
             if($evt = OpenILS::Application::Cat::AssetCommon->create_copy($e, $vol, $copy)) {
-                try { $e->rollback } otherwise {}; # sometimes calls die_event, sometimes not
-                $report_args{evt} = $evt;
-                $report_args{import_error} = 'import.item.duplicate.barcode' 
-                    if $evt->{textcode} eq 'ITEM_BARCODE_EXISTS';
-                respond_with_status(%report_args);
+                respond_with_status(
+                    %report_args,
+                    evt => $evt,
+                    import_error => ($evt->{textcode} eq 'ITEM_BARCODE_EXISTS') ? 
+                        'import.item.duplicate.barcode' : undef
+                );
                 next;
             }
 
@@ -1243,7 +1251,8 @@ sub import_record_asset_list_impl {
             # --------------------------------------------------------------------------------
             $e->commit;
             $report_args{in_count}++;
-            respond_with_status(%report_args, imported_as => $copy->id)
+            respond_with_status(%report_args, imported_as => $copy->id);
+            $logger->info("vl: successfully imported item " . $item->barcode);
         }
     }
     $roe->rollback;
@@ -1253,6 +1262,7 @@ sub import_record_asset_list_impl {
 
 sub respond_with_status {
     my %args = @_;
+    my $e = $args{e};
 
     #  If the import failed, track the failure reason
 
@@ -1262,8 +1272,9 @@ sub respond_with_status {
     if($error or $evt) {
 
         my $item = $args{import_item};
+        $logger->info("vl: unable to import item " . $item->barcode);
 
-        my $error ||= 'general.unknown';
+        $error ||= 'general.unknown';
         $item->import_error($error);
 
         if($evt) {
@@ -1271,7 +1282,9 @@ sub respond_with_status {
             $item->error_detail($detail);
         }
 
-        my $e = new_editor(xact => 1);
+        # state of the editor is unknown at this point.  Force a rollback and start over.
+        $e->rollback;
+        $e = new_editor(xact => 1);
         $e->update_vandelay_import_item($item);
         $e->commit;
     }

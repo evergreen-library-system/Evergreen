@@ -616,9 +616,18 @@ function vlLoadErrorUI(id) {
                 openils.Util.hide(dojo.byId(eid).parentNode);
             }
         }
-    )
-    dojo.byId('vl-error-import-error').innerHTML = rec.import_error();
-    dojo.byId('vl-error-error-detail').innerHTML = rec.error_detail();
+    );
+    var iediv = dojo.byId('vl-error-import-error');
+    var eddiv = dojo.byId('vl-error-error-detail');
+    if(rec.import_error()) {
+        openils.Util.show(iediv.parentNode, 'table-row');
+        openils.Util.show(eddiv.parentNode, 'table-row');
+        iediv.innerHTML = rec.import_error();
+        eddiv.innerHTML = rec.error_detail();
+    } else {
+        openils.Util.hide(iediv.parentNode);
+        openils.Util.hide(eddiv.parentNode);
+    }
 
     var errorItems = rec.import_items().filter(function(i) {return i.import_error()});
     if(errorItems.length) {
@@ -627,6 +636,8 @@ function vlLoadErrorUI(id) {
         var store = new dojo.data.ItemFileReadStore({data:storeData});
         vlImportErrorGrid.setStore(store);
         vlImportErrorGrid.update();
+    } else {
+        openils.Util.hide('vl-import-error-grid-some');
     }
 }
 
