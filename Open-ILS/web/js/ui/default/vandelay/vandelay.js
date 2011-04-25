@@ -369,7 +369,7 @@ function retrieveQueuedRecords(type, queueId, onload) {
     var limit = parseInt(sel.options[sel.selectedIndex].value);
     var offset = limit * parseInt(vlQueueDisplayPage.attr('value')-1);
 
-    var params =  [authtoken, queueId, {clear_marc: 1, offset: offset, limit: limit}];
+    var params =  [authtoken, queueId, {clear_marc: 1, offset: offset, limit: limit, flesh_import_items:1}];
     if(vlQueueGridShowNonImport.checked)
         params[2].non_imported = 1;
 
@@ -566,6 +566,31 @@ function vlGetViewMatches(rowIdx, item) {
 function vlFormatViewMatches(id) {
     if(id == -1) return '';
     return '<a href="javascript:void(0);" onclick="vlLoadMatchUI(' + id + ');">' + this.name + '</a>';
+}
+
+function vlGetViewErrors(rowIdx, item) {
+    if(item) {
+        var id = this.grid.store.getValue(item, 'id');
+        var rec = queuedRecordsMap[id];
+        // id:rec_error:item_import_error_count
+        return id + ':' + 
+            (rec.import_error() ? 1 : '') + ':' + 
+            rec.import_items().filter(function(i) {return i.import_error()}).length;
+    }
+    return -1
+}
+
+function vlFormatViewErrors(chunk) {
+    if(chunk == -1) return '';
+    var id = chunk.split(':')[0];
+    var rec = chunk.split(':')[1];
+    var count = chunk.split(':')[2];
+    var links = '';
+    if(rec) 
+        links += '<a href="javascript:void(0);" onclick="vlLoadErrorUI(' + id + ');"><b>Record</b></a><br/>'; // XXX I18N
+    if(Number(count))
+        links += '<a href="javascript:void(0);" onclick="vlLoadErrorUI(' + id + ');"><b>Items ('+count+')</b></a>'; // XXX I18N
+    return links;
 }
 
 function vlFormatViewMatchMARC(id) {
