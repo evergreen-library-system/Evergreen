@@ -27,8 +27,6 @@
             </legalnotice>
             
       </info> 
-      
-     	<xi:include href="contributing_DIG.xml"/>
       <xi:include href="glossary.xml"/>
       <xi:include href="image.xml"/> 
       <xi:include href="links.xml"/> 
