@@ -865,6 +865,9 @@ var handleRetrieveRecords = function() {
             dojo.byId('vl-queue-summary-name').innerHTML = summary.queue.name();
             dojo.byId('vl-queue-summary-total-count').innerHTML = summary.total +'';
             dojo.byId('vl-queue-summary-import-count').innerHTML = summary.imported + '';
+            dojo.byId('vl-queue-summary-import-item-count').innerHTML = summary.total_items + '';
+            dojo.byId('vl-queue-summary-rec-error-count').innerHTML = summary.rec_import_errors + '';
+            dojo.byId('vl-queue-summary-item-error-count').innerHTML = summary.item_import_errors + '';
         }
     );
 }

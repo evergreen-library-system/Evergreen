@@ -36,22 +36,23 @@
 <!ENTITY vandelay.id "ID">
 <!ENTITY vandelay.import.matches "Import Matches">
 <!ENTITY vandelay.import.records "Import Records">
-<!ENTITY vandelay.import.selected "Import Selected">
-<!ENTITY vandelay.import.all "Import All">
+<!ENTITY vandelay.import.selected "Import Selected Records">
+<!ENTITY vandelay.import.all "Import All  Records">
 <!ENTITY vandelay.import.time "Import Time">
 <!ENTITY vandelay.inspect.queue "Inspect Queue">
 <!ENTITY vandelay.last.edit.date "Last Edit Date">
-<!ENTITY vandelay.limit.to.collision.matches "Limit to Collision Matches">
+<!ENTITY vandelay.limit.to.collision.matches "Limit to Records with Matches">
 <!ENTITY vandelay.limit.to.non.imported "Limit to Non-Imported Records">
+<!ENTITY vandelay.limit.to.import_error "Limit to Records with Import Errors">
 <!ENTITY vandelay.marc.file.upload "Evergreen MARC File Upload">
 <!ENTITY vandelay.marc.record "MARC Record">
 <!ENTITY vandelay.matches "Matches">
-<!ENTITY vandelay.next.page "Next Page &#187;">
+<!ENTITY vandelay.next.page "Next &#187;">
 <!ENTITY vandelay.overlay.selected.record "Overlay selected record with imported record">
 <!ENTITY vandelay.overlay.target "Overlay Target">
 <!ENTITY vandelay.page "Page">
 <!ENTITY vandelay.powered.by.evergreen "Powered by Evergreen!">
-<!ENTITY vandelay.prev.page "&#171; Previous Page">
+<!ENTITY vandelay.prev.page "&#171; Previous">
 <!ENTITY vandelay.processing "Processing... ">
 <!ENTITY vandelay.queue "Queue">
 <!ENTITY vandelay.queue.type "Queue Type">
@@ -60,7 +61,7 @@
 <!ENTITY vandelay.refresh "Refresh">
 <!ENTITY vandelay.remove.advanced "Remove (advanced)">
 <!ENTITY vandelay.remove "Remove">
-<!ENTITY vandelay.results.per.page "Results Per Page">
+<!ENTITY vandelay.results.per.page "Records Per Page">
 <!ENTITY vandelay.retrieve.queue "Retrieve Queue">
 <!ENTITY vandelay.return "Return">
 <!ENTITY vandelay.select.cols "Select Columns">
@@ -106,7 +107,7 @@
 <!ENTITY vandelay.export.field_no_hint "(starting from 0)">
 <!ENTITY vandelay.export.bucket "Record Bucket ID">
 <!ENTITY vandelay.select_actions "-- Actions --">
-<!ENTITY vandelay.queue.total "Total:">
-<!ENTITY vandelay.queue.imported "Imported:">
+<!ENTITY vandelay.queue.total "Records in Queue:">
+<!ENTITY vandelay.queue.imported "Records Imported:">
 <!ENTITY vandelay.queue.column_picker.title "Column Picker">
 <!ENTITY vandelay.import.bib_sources "Select a Record Source">
