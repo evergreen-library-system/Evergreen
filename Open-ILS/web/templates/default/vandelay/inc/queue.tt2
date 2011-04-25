@@ -95,8 +95,8 @@
 
                         <span>&vandelay.limit.to.non.imported;</span>
                         <span class='filter_span'>
-                            <input dojoType='dijit.form.CheckBox' jsId='vlQueueGridShowNonImport' 
-                                checked='checked' onchange='retrieveQueuedRecords();'/>
+                            <input dojoType='dijit.form.CheckBox' 
+                                jsId='vlQueueGridShowNonImport' onchange='retrieveQueuedRecords();'/>
                         </span>
 
                         <span>&vandelay.results.per.page;</span>
