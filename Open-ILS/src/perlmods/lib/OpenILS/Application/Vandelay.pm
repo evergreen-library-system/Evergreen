@@ -1128,11 +1128,41 @@ sub retrieve_queue_summary {
     my $search = 'search_vandelay_queued_bib_record';
     $search =~ s/bib/authority/ if $type ne 'bib';
 
-    return {
+    my $summary = {
         queue => $queue,
         total => scalar(@{$e->$search({queue => $queue_id}, {idlist=>1})}),
         imported => scalar(@{$e->$search({queue => $queue_id, import_time => {'!=' => undef}}, {idlist=>1})}),
     };
+
+    my $class = ($type eq 'bib') ? 'vqbr' : 'vqar';
+    $summary->{rec_import_errors} = $e->json_query({
+        select => {$class => [{alias => 'count', column => 'id', transform => 'count', aggregate => 1}]},
+        from => $class,
+        where => {queue => $queue_id, import_error => {'!=' => undef}}
+    })->[0]->{count};
+
+    if($type eq 'bib') {
+        
+        my $query = {
+            select => {vii => [{alias => 'count', column => 'id', transform => 'count', aggregate => 1}]},
+            from => 'vii',
+            where => {
+                record => {
+                    in => {
+                        select => {vqbr => ['id']},
+                        from => 'vqbr',
+                        where => {queue => $queue_id}
+                    }
+                }
+            }
+        };
+
+        $summary->{total_items} = $e->json_query($query)->[0]->{count};
+        $query->{where}->{import_error} = {'!=' => undef};
+        $summary->{item_import_errors} = $e->json_query($query)->[0]->{count};
+    }
+
+    return $summary;
 }
 
 # --------------------------------------------------------------------------------
