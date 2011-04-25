@@ -115,7 +115,7 @@ sub toc_html {
  
         $toc_html .= '<tr>' .
             "<td style='text-align: right;'>$label</td>" .
-            "<td style='text-align: left; padding-right: 2em;'>$title</td>" .
+            "<td style='text-align: left; padding-left: 1em; padding-right: 2em;'>$title</td>" .
             "<td style='text-align: right;'>$page_number</td>" .
             "</tr>\n";
     }
