@@ -23,7 +23,7 @@
                               </imageobject>
                         </inlinemediaobject>
                   </link></para>
-                  <para>This document was updated October 18, 2010.</para>
+                  <para>This document was updated .<?dbtimestamp format="Y-m-d"?></para>
             </legalnotice>
             
       </info> 
