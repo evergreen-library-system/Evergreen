@@ -457,10 +457,9 @@ sub retrieve_queued_records {
         'retrieve_vandelay_queued_bib_record' : 'retrieve_vandelay_queued_authority_record';
 
     for my $rec_id (@$record_ids) {
-        my $params = {   
-            flesh => 1,
-            flesh_fields => {$class => ['attributes', 'matches']},
-        };
+        my $flesh = ['attributes', 'matches'];
+        push(@$flesh, 'import_items') if $$options{flesh_import_items};
+        my $params = {flesh => 1, flesh_fields => {$class => $flesh}};
         my $rec = $e->$retrieve([$rec_id->{id}, $params]);
         $rec->clear_marc if $$options{clear_marc};
         $conn->respond($rec);
