@@ -588,7 +588,7 @@ function vlFormatViewErrors(chunk) {
     var count = chunk.split(':')[2];
     var links = '';
     if(rec) 
-        links += '<a href="javascript:void(0);" onclick="vlLoadErrorUI(' + id + ');"><b>Record</b></a><br/>'; // TODO I18N
+        links += '<a href="javascript:void(0);" onclick="vlLoadErrorUI(' + id + ');">Record</a><br/>'; // TODO I18N
     if(Number(count))
         links += '<a href="javascript:void(0);" onclick="vlLoadErrorUI(' + id + ');">Items ('+count+')</a>'; // TODO I18N
     return links;
@@ -598,15 +598,31 @@ function vlFormatViewErrors(chunk) {
 function vlLoadErrorUI(id) {
 
     displayGlobalDiv('vl-import-error-div');
-    openils.Util.show('vl-import-error-grid-some');
     openils.Util.hide('vl-import-error-grid-all');
+    openils.Util.show('vl-import-error-record');
 
     var rec = queuedRecordsMap[id];
 
-    /* TODO: show record attrs and whether it failed import */
+    dojo.byId('vl-error-id').innerHTML = rec.id();
+    dojo.forEach( // TODO sane authority rec. fields
+        ['title', 'author', 'isbn', 'issn', 'upc'],
+        function(field) {
+            var attr =  getRecAttrFromCode(rec, field);
+            var eid = 'vl-error-' + field;
+            if(attr) {
+                openils.Util.show(dojo.byId(eid).parentNode, 'table-row');
+                dojo.byId(eid).innerHTML = attr.attr_value();
+            } else {
+                openils.Util.hide(dojo.byId(eid).parentNode);
+            }
+        }
+    )
+    dojo.byId('vl-error-import-error').innerHTML = rec.import_error();
+    dojo.byId('vl-error-error-detail').innerHTML = rec.error_detail();
 
     var errorItems = rec.import_items().filter(function(i) {return i.import_error()});
-    if(errorItems) {
+    if(errorItems.length) {
+        openils.Util.show('vl-import-error-grid-some');
         storeData = vqbr.toStoreData(errorItems);
         var store = new dojo.data.ItemFileReadStore({data:storeData});
         vlImportErrorGrid.setStore(store);

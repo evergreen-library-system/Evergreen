@@ -6,40 +6,56 @@
 </div>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
-    <table id='import-error-table'>
+    <table id='vl-import-error-record' class='hidden'>
+        <tbody>
+            <tr><td>ID</td><td id='vl-error-id'/></tr>
+            <tr><td>Import Error</td><td id='vl-error-import-error'/></tr>
+            <tr><td>Error Detail</td><td id='vl-error-error-detail'/></tr>
+            <tr><td>Title</td><td id='vl-error-title'/></tr>
+            <tr><td>Author</td><td id='vl-error-author'/></tr>
+            <tr><td>ISBN</td><td id='vl-error-isbn'/></tr>
+            <tr><td>ISSN</td><td id='vl-error-issn'/></tr>
+            <tr><td>UPC</td><td id='vl-error-upc'/></tr>
+        </tbody>
     </table>
 </div>
 
-<div dojoType="dijit.layout.ContentPane" layoutAlign='client' class='hidden' id='vl-import-error-grid-some'>
-    <table  jsId="vlImportErrorGrid"
-            dojoType="openils.widget.AutoGrid"
-            autoHeight='true'
-            fieldOrder="['barcode', 'call_number', 'owning_lib', 'import_error', 'error_detail']"
-            query="{id: '*'}"
-            hidePaginator='true'
-            showColumnPicker='true'
-            columnPickerPrefix='"vandelay.item.import_error"'
-            fmClass='vii'>
-            <thead>
-                <th field='owning_lib' get='vlGetOrg'/>
-                <th field='circ_lib' get='vlGetOrg'/>
-            </thead>
-    </table>
+<div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
+    <div class='hidden' id='vl-import-error-grid-some'>
+        <h3>Item Import Errors</h3>
+        <table  jsId="vlImportErrorGrid"
+                dojoType="openils.widget.AutoGrid"
+                autoHeight='true'
+                fieldOrder="['barcode', 'call_number', 'owning_lib', 'import_error', 'error_detail']"
+                query="{id: '*'}"
+                hidePaginator='true'
+                showColumnPicker='true'
+                columnPickerPrefix='"vandelay.item.import_error"'
+                fmClass='vii'>
+                <thead>
+                    <th field='owning_lib' get='vlGetOrg'/>
+                    <th field='circ_lib' get='vlGetOrg'/>
+                </thead>
+        </table>
+    </div>
 </div>
-<div dojoType="dijit.layout.ContentPane" layoutAlign='client' class='hidden' id='vl-import-error-grid-all'>
-    <table  jsId="vlAllImportErrorGrid"
-            dojoType="openils.widget.AutoGrid"
-            autoHeight='true'
-            fieldOrder="['barcode', 'call_number', 'owning_lib', 'import_error', 'error_detail']"
-            query="{id: '*'}"
-            showPaginator='true'
-            showColumnPicker='true'
-            columnPickerPrefix='"vandelay.item.import_error"'
-            fmClass='vii'>
-            <thead>
-                <th field='owning_lib' get='vlGetOrg'/>
-                <th field='circ_lib' get='vlGetOrg'/>
-            </thead>
-    </table>
+<div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
+    <div class='hidden' id='vl-import-error-grid-all'>
+        <h3>Item Import Errors</h3>
+        <table  jsId="vlAllImportErrorGrid"
+                dojoType="openils.widget.AutoGrid"
+                autoHeight='true'
+                fieldOrder="['barcode', 'call_number', 'owning_lib', 'import_error', 'error_detail']"
+                query="{id: '*'}"
+                showPaginator='true'
+                showColumnPicker='true'
+                columnPickerPrefix='"vandelay.item.import_error"'
+                fmClass='vii'>
+                <thead>
+                    <th field='owning_lib' get='vlGetOrg'/>
+                    <th field='circ_lib' get='vlGetOrg'/>
+                </thead>
+        </table>
+    </div>
 </div>
 
