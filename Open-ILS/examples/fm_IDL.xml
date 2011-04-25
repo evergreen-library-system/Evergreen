@@ -327,6 +327,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Purpose" name="purpose" reporter:datatype="text"/>
 			<field reporter:label="Attributes" name="attributes" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Matches" name="matches" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Import Items" name="import_items" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="import_error" reltype="has_a" key="code" map="" class="vie"/>
@@ -335,6 +336,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="imported_as" reltype="has_a" key="id" map="" class="bre"/>
             <link field="attributes" reltype="has_many" key="record" map="" class="vqbra"/>
             <link field="matches" reltype="has_many" key="queued_record" map="" class="vbm"/>
+            <link field="import_items" reltype="has_many" key="record" map="" class="vii"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
