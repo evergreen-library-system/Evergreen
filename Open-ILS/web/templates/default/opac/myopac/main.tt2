@@ -33,7 +33,11 @@
             <tbody id='myopac_circ_trans_tbody'>
                 [% FOR f IN ctx.fines.circulation;
                     attrs = {marc_xml => f.marc_xml};
-                    PROCESS get_marc_attrs args=attrs %]
+                    IF f.marc_xml;
+                        PROCESS get_marc_attrs args=attrs;
+                    ELSIF f.xact.reservation;
+                        attrs.title = f.xact.reservation.target_resource_type.name;
+                    END %]
                 <tr id='myopac_circ_trans_row'>
                     <td>
                         <a href="[% ctx.opac_root %]/record/[% f.xact.circulation.target_copy.call_number.record.id %]">[% attrs.title %]</a>
@@ -42,26 +46,21 @@
                         <a href="[% ctx.opac_root %]/results?qtype=author&query=[% attrs.author | replace('[,\.:;]', '') | url %]">[% attrs.author %]</a>
                     </td>
                     <td name='myopac_circ_trans_start'>
-                        [% date.format(
-                            ctx.parse_datetime(
-                                f.xact.circulation.xact_start
-                            ), DATE_FORMAT
-                        ) %]
+                        [% ts = f.xact.circulation.xact_start || f.xact.reservation.start_time || 0;
+                        IF ts;
+                            date.format(ctx.parse_datetime(ts), DATE_FORMAT);
+                        END %]
                     </td>
                     <td name='myopac_circ_trans_due'>
-                        [% date.format(
-                            ctx.parse_datetime(
-                                f.xact.circulation.due_date
-                            ), DATE_FORMAT
-                        ) %]
+                        [% ts = f.xact.circulation.due_date || f.xact.reservation.end_time || 0;
+                        IF ts;
+                            date.format(ctx.parse_datetime(ts), DATE_FORMAT);
+                        END %]
                     </td>
                     <td name='myopac_circ_trans_finished'>
-                        [%  IF f.xact.circulation.checkin_time;
-                                date.format(
-                                    ctx.parse_datetime(
-                                        f.xact.circulation.checkin_time
-                                    ), DATE_FORMAT
-                                );
+                        [%  ts = f.xact.circulation.checkin_time || f.xact.reservation.return_time || 0;
+                            IF ts;
+                                date.format(ctx.parse_datetime(ts), DATE_FORMAT);
                             ELSE %]
                             <!-- XXX TODO fines aren't really accruing
                                 if circ has hit maxfines. more clarity

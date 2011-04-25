@@ -613,7 +613,9 @@ sub load_myopac_main {
         {
             flesh => 4,
             flesh_fields => {
-                mobts => ['circulation', 'grocery'],
+                mobts => [qw/grocery circulation reservation/],
+                bresv => ['target_resource_type'],
+                brt => ['record'],
                 mg => ['billings'],
                 mb => ['btype'],
                 circ => ['target_copy'],
@@ -640,14 +642,25 @@ sub load_myopac_main {
             qw/total_paid total_owed balance_owed/
         );
 
+        my $marc_xml = undef;
+        if ($mobts->xact_type eq 'reservation' and
+            $mobts->reservation->target_resource_type->record) {
+            $marc_xml = XML::LibXML->new->parse_string(
+                $mobts->reservation->target_resource_type->record->marc
+            );
+        } elsif ($mobts->xact_type eq 'circulation' and
+            $circ->target_copy->call_number->id != -1) {
+            $marc_xml = XML::LibXML->new->parse_string(
+                $circ->target_copy->call_number->record->marc
+            );
+        }
+
         push(
             @{$ctx->{"fines"}->{$mobts->grocery ? "grocery" : "circulation"}},
             {
                 xact => $mobts,
                 last_grocery_billing => $last_billing,
-                marc_xml => ($mobts->xact_type ne 'circulation' or $circ->target_copy->call_number->id == -1) ?
-                    undef :
-                    XML::LibXML->new->parse_string($circ->target_copy->call_number->record->marc),
+                marc_xml => $marc_xml
             } 
         );
     }
