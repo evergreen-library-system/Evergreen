@@ -339,7 +339,7 @@ my %controllees = (
 foreach my $rec_id (@records) {
     # print "$rec_id\n";
 
-    my $e = OpenILS::Utils::CStoreEditor->new(xact=>1);
+    my $e = OpenILS::Utils::CStoreEditor->new();
     # State variable; was the record changed?
     my $changed;
 
@@ -418,6 +418,7 @@ foreach my $rec_id (@records) {
         }
     }
     if ($changed) {
+        my $editor = OpenILS::Utils::CStoreEditor->new(xact=>1);
         # print $marc->as_formatted();
         my $xml = $marc->as_xml_record();
         $xml =~ s/\n//sgo;
@@ -427,9 +428,9 @@ foreach my $rec_id (@records) {
         $xml = OpenILS::Application::AppUtils->entityize($xml);
 
         $record->marc($xml);
-        $e->update_biblio_record_entry($record);
+        $editor->update_biblio_record_entry($record);
+        $editor->commit();
     }
-    $e->commit();
 }
 
 __END__
