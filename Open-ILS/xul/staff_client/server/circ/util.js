@@ -2819,6 +2819,9 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                                     'list' : print_list,
                                     'data' : print_data
                                 };
+                                if ($('printer_prompt')) {
+                                    if (! $('printer_prompt').checked) { params.no_prompt = true; }
+                                }
                                 print.tree_list( params );
                             }
                         } catch(E) {
@@ -3209,6 +3212,9 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                             'list' : print_list,
                             'data' : print_data 
                         };
+                        if ($('printer_prompt')) {
+                            if (! $('printer_prompt').checked) { params.no_prompt = true; }
+                        }
                         print.tree_list( params );
                     }
                 } catch(E) {
