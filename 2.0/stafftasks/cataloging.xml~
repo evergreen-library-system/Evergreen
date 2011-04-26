@@ -1,0 +1,1051 @@
+
+
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" xml:id="cataloging">
+
+
+
+<info>
+
+
+
+<title>Cataloging
+
+</title> 
+
+
+
+<abstract>
+
+
+
+<para>This chapter explains the cataloging procedures carried out from the staff client.
+
+</para> 
+
+
+
+</abstract> 
+
+
+
+</info> 
+
+
+
+<section xml:id="MARC">
+
+
+
+<title>Working with the MARC Editor
+
+</title> 
+
+
+
+<indexterm>
+
+<primary>cataloguing
+
+</primary> 
+
+<secondary>MARC 
+
+</secondary> 
+
+</indexterm> 
+
+
+
+<para>The MARC Editor allows MARC tags, sub-fields, and indicators to be edited.
+
+</para> 
+
+
+
+<para>OPAC icons for text, moving pictures and sound rely on correct MARC coding in the leader and the 008, as do OPAC search filters such as publication date, item type, or target audience. Bibliographic matching and de-duplicating also rely on correct MARC coding and consistency in use and content in particular MARC tags.
+
+</para> 
+
+
+
+<simplesect xml:id="editingMARCrecords">
+
+
+
+<title>Editing MARC Records
+
+</title> 
+
+
+
+<indexterm>
+
+<primary>cataloguing
+
+</primary> 
+
+<secondary>editing MARC records
+
+</secondary> 
+
+</indexterm> 
+
+
+
+<procedure>
+
+
+
+<step>
+
+<para>Retrieve the record.
+
+</para> 
+
+</step> 
+
+
+
+<step>
+
+<para>
+
+<menuchoice>
+
+<guimenu>Actions for this Record
+
+</guimenu> 
+
+<guimenuitem>MARC Edit
+
+</guimenuitem> 
+
+</menuchoice>. 
+
+</para> 
+
+</step> 
+
+
+
+<step>
+
+<para>The MARC record will display. 
+
+</para> 
+
+</step> 
+
+
+
+<step>
+
+<para>Select 
+
+<guilabel>Stack
+
+</guilabel> subfields to alter subfields display.
+
+</para> 
+
+</step> 
+
+
+
+<step>
+
+<para>Right click into a tag field to add/remove rows or replace tags.
+
+</para> 
+
+</step> 
+
+
+
+<step>
+
+<para>To work with the data in a tag or indicator, click or 
+
+<keycap>Tab
+
+</keycap> into the required field. 
+
+<emphasis>Right click
+
+</emphasis> to view acceptable tags or indicators.
+
+</para> 
+
+</step> 
+
+
+
+<step>
+
+<para>When finished, click 
+
+<guibutton>Save Record
+
+</guibutton> .
+
+</para> 
+
+</step> 
+
+
+
+<step>
+
+<para>Click 
+
+<guibutton>OK
+
+</guibutton> .
+
+</para> 
+
+</step> 
+
+
+
+</procedure> 
+
+
+
+<tip>
+
+<para>The MARC Editor may be navigated using keyboard shortcuts. Click 
+
+<guibutton>Help
+
+</guibutton> to see the shortcut menu from within the MARC Editor.
+
+</para> 
+
+</tip> 
+
+
+
+</simplesect> 
+
+
+
+<simplesect xml:id="MARCrecordleader">
+
+
+
+<title>MARC Record Leader and MARC fixed field 008
+
+</title> 
+
+
+
+<indexterm>
+
+<primary>MARC
+
+</primary> 
+
+<secondary>MARC leader
+
+</secondary> 
+
+</indexterm> 
+
+
+
+<indexterm>
+
+<primary>MARC
+
+</primary> 
+
+<secondary>fixed field 008
+
+</secondary> 
+
+</indexterm> 
+
+
+
+<para>Parts of the leader and the 008 field can be edited in the MARC Editor via the fixed field  box displayed above the MARC record. Information about the leader and the 008 can be found on the Library of Congress's MARC Standards page at 
+
+<ulink url="http://www.loc.gov/marc/">http://www.loc.gov/marc/
+
+</ulink> .
+
+</para> 
+
+
+
+<procedure>
+
+
+
+<title>To edit the MARC record leader
+
+</title> 
+
+
+
+<step>
+
+<para>Retrieve and display the appropriate record in MARC Edit view.
+
+</para> 
+
+</step> 
+
+
+
+<step>
+
+<para>
+
+<emphasis>Click
+
+</emphasis> into any box displayed in the fixed field .
+
+</para> 
+
+</step> 
+
+
+
+<step>
+
+<para>Press 
+
+<keycap>Tab
+
+</keycap> or use the mouse to move between fields. 
+
+</para> 
+
+</step> 
+
+
+
+<step>
+
+<para>Click 
+
+<guibutton>Save Record
+
+</guibutton> .
+
+</para> 
+
+</step> 
+
+
+
+<step>
+
+<para>Click 
+
+<guibutton>OK
+
+</guibutton> to save record edits.
+
+</para> 
+
+</step> 
+
+
+
+<step>
+
+<para>The OPAC icon for the appropriate material type will display.
+
+</para> 
+
+</step> 
+
+
+
+</procedure> 
+
+
+
+<tip>
+
+<para>The MARC Editor may be navigated using keyboard shortcuts. Click 
+
+<guibutton>Help
+
+</guibutton> to see the shortcut menu from within the MARC Editor.
+
+</para> 
+
+</tip> 
+
+
+
+</simplesect> 
+
+
+
+<simplesect xml:id="overlayingMARCrecords">
+
+
+
+<title>Overlaying MARC Records
+
+</title> 
+
+
+
+<indexterm>
+
+<primary>cataloguing
+
+</primary> 
+
+<secondary>overlaying MARC records
+
+</secondary> 
+
+</indexterm> 
+
+
+
+<para>Overlaying a MARC record replaces an existing MARC record while leaving all holdings, holds, active circulations, bills, and fines intact.
+
+</para> 
+
+
+
+<para>In Evergreen, a record must be 
+
+<emphasis>marked
+
+</emphasis> for overlay. The mark for overlay is by login. Only one record at a time may be marked for overlay. When another record is marked for overlay, the previously marked item is 
+
+<emphasis>de-marked
+
+</emphasis> . Once a record is marked, it remains marked until overlaid or until the user logs out of Evergreen.
+
+</para> 
+
+
+
+<procedure>
+
+
+
+<title>Marking a record for overlay
+
+</title> 
+
+
+
+<step>
+
+<para>Search for and retrieve a record for overlay.
+
+</para> 
+
+</step> 
+
+
+
+<step>
+
+<para>Select 
+
+<menuchoice>
+
+<guimenu>Actions for this Record
+
+</guimenu> 
+
+<guimenuitem>Mark for Overlay
+
+</guimenuitem> 
+
+</menuchoice> . Record is now 
+
+<emphasis>marked
+
+</emphasis> .
+
+</para> 
+
+</step> 
+
+
+
+</procedure> 
+
+
+
+<procedure>
+
+
+
+<title>Overlaying the marked record
+
+</title> 
+
+
+
+<step>
+
+<para>Once the record is marked for overlay, proceed to search for and import the new record from a Z39.50 target.
+
+</para> 
+
+</step> 
+
+
+
+<step>
+
+<para>Select 
+
+<menuchoice>
+
+<guimenu>Cataloging
+
+</guimenu> 
+
+<guimenuitem>Import Record from Z39.50
+
+</guimenuitem> 
+
+</menuchoice> .
+
+</para> 
+
+</step> 
+
+
+
+<step>
+
+<para>Choose targets and enter search terms.
+
+</para> 
+
+</step> 
+
+
+
+<step>
+
+<para>Click 
+
+<guibutton>MARC Editor for Overlay
+
+</guibutton> . The TCN of the Evergreen record marked for overlay is displayed.
+
+</para> 
+
+</step> 
+
+
+
+<step>
+
+<para>The record displays in MARC Edit view. Edit the record as necessary. 
+
+</para> 
+
+</step> 
+
+
+
+<step>
+
+<para>Click 
+
+<guibutton>Overlay Record
+
+</guibutton> .
+
+</para> 
+
+</step> 
+
+
+
+<step>
+
+<para>The existing record will display along with a prompt to confirm the overlay. Panes may be moved to view the record in entirety, if required.
+
+</para> 
+
+</step> 
+
+
+
+<step>
+
+<para>Click 
+
+<guibutton>Overlay
+
+</guibutton> .
+
+</para> 
+
+</step> 
+
+
+
+<step>
+
+<para>Confirm the overlay. The record in Evergreen is overlaid with the new MARC record. All preexisting holdings remain intact.
+
+</para> 
+
+</step> 
+
+
+
+</procedure> 
+
+
+
+</simplesect> 
+
+
+
+</section> 
+
+
+
+<section xml:id="addingnewbibliographicrecords">
+
+
+
+<title>Adding New Records via Built In Z39.50 Client
+
+</title> 
+
+
+
+<indexterm>
+
+
+
+<primary>Z39.50
+
+</primary> 
+
+
+
+</indexterm> 
+
+
+
+<para>The Z39.50 client is used to search bibliographic databases and examine or download bibliographic records. Open the client with 
+
+<menuchoice>
+
+
+
+<guimenu>Cataloging
+
+</guimenu> 
+
+
+
+<guimenuitem>Import Record from Z39.50
+
+</guimenuitem> 
+
+
+
+</menuchoice> 
+
+</para> 
+
+
+
+<simplesect xml:id="z39.50screenfeatures">
+
+
+
+<title>Z39.50 Screen Features
+
+</title> 
+
+
+
+<para>Initially, or when you want to change targets, start with the 
+
+<guilabel role="bold">Service and Credentials
+
+</guilabel> area. Here you  choose the remote databases you wish to search. Preconfigured servers are  listed under Services. If any require authentication to access, you will  see username and password boxes to the right. 
+
+</para> 
+
+
+
+<procedure>
+
+
+
+<step>Click all the databases you wish to search simultaneously (see the  Note about which fields can be used).
+
+</step> 
+
+
+
+<step>Fill in user information for any that require it.
+
+</step> 
+
+
+
+<step>Click 
+
+<guibutton>Save as Default
+
+</guibutton> to preserve these  settings for next time.
+
+</step> 
+
+
+
+</procedure> 
+
+
+
+<para>The 
+
+<guilabel role="bold">Query
+
+</guilabel> section is where you  enter a search. The databases you select control which search fields you  can use. You may use any combination of fields that are active (not grayed  out), but be aware that not all fields are active for every database.  Select just one database to see which fields are active for that database. 
+
+</para> 
+
+
+
+<note>
+
+
+
+<para>If you are searching multiple databases, you will only get results  from those that support the fields you&apos;re searching! For example,  
+
+<guilabel>Keyword
+
+</guilabel> and 
+
+<guilabel>Subject
+
+</guilabel> are only  active if the local catalog is selected, so using those fields in a  combined database search guarantees that you will only get results from  the local catalog.
+
+</para> 
+
+
+
+</note> 
+
+
+
+<para>The 
+
+<guilabel>Query
+
+</guilabel> section has three buttons.
+
+</para> 
+
+
+
+<itemizedlist>
+
+
+
+<listitem>
+
+<guibutton>Search
+
+</guibutton> begins searching on  the criteria entered in the search fields.
+
+</listitem> 
+
+
+
+<listitem>
+
+<guibutton>Clear Form
+
+</guibutton> resets all fields to empty. 
+
+</listitem> 
+
+
+
+<listitem>
+
+<guibutton>Raw Search
+
+</guibutton> is an advanced interface for  using Prefix Query Format to build complex searches. See  
+
+<xref linkend="rawsearches"/>.
+
+</listitem> 
+
+
+
+</itemizedlist> 
+
+
+
+<para>The 
+
+<guilabel role="bold">Results
+
+</guilabel> pane displays the results from the  most recent search. Information about each record retrieved appears on a separate summary line, with various columns of information.
+
+</para> 
+
+
+
+<itemizedlist>
+
+
+
+<listitem>If more than the default number of results is available, use  
+
+<guibutton>Fetch More Results
+
+</guibutton> to add the next set to the  screen.
+
+</listitem> 
+
+
+
+<listitem>Click 
+
+<guibutton>List Action
+
+</guibutton> to view options for exporting and saving  from the list: 
+
+<itemizedlist>
+
+
+
+<listitem>Copy Field from selected row to Clipboard
+
+</listitem> 
+
+
+
+<listitem>Print List CSV
+
+</listitem> 
+
+
+
+<listitem>Copy List CSV to Clipboard
+
+</listitem> 
+
+
+
+<listitem>Save List CSV to File
+
+</listitem> 
+
+
+
+<listitem>Save List Configuration
+
+</listitem> 
+
+
+
+</itemizedlist> 
+
+
+
+</listitem> 
+
+
+
+<listitem>Select an item and click 
+
+<guibutton>MARC View
+
+</guibutton> to  toggle viewing the MARC record. When in MARC View, you can 
+
+<guibutton>
+
+
+
+Print Page
+
+</guibutton> . To toggle back, click 
+
+<guibutton>Results View 
+
+</guibutton> . 
+
+</listitem> 
+
+
+
+<listitem>If you have previously marked a record for overlay (when  viewing a bib, 
+
+<guimenu>Actions for this Record
+
+</guimenu> 
+
+<guimenuitem>
+
+
+
+Mark for Overlay
+
+</guimenuitem> ), 
+
+<guibutton>MARC Editor for  Overlay
+
+</guibutton> will be active. Click to view/edit the new bib record  to be laid over the local one you selected.
+
+</listitem> 
+
+
+
+<listitem>
+
+<guibutton>MARC Editor for Import
+
+</guibutton> is used to  view/edit a new record.
+
+</listitem> 
+
+
+
+<listitem>To view long lists of results, click 
+
+<guibutton>Hide Top Pane 
+
+</guibutton> to give the results list more screen real estate. 
+
+</listitem> 
+
+
+
+</itemizedlist> 
+
+
+
+</simplesect> 
+
+
+
+<simplesect xml:id="importingarecordviaz39.50">
+
+
+
+<title>Importing a record via Z39.50
+
+</title> 
+
+
+
+</simplesect> 
+
+
+
+<simplesect xml:id="recordcollisions">
+
+
+
+<title>Record Collisions
+
+</title> 
+
+
+
+</simplesect> 
+
+
+
+<simplesect xml:id="fastitemadds">
+
+
+
+<title>Fast Item Adds
+
+</title> 
+
+
+
+<note>
+
+
+
+<para>The status of items created with Fast Item Add will be set to 
+
+<emphasis>In Process
+
+</emphasis> , consistent with other types  of item creation. This is a change from 1.6.
+
+</para> 
+
+
+
+</note> 
+
+
+
+</simplesect> 
+
+
+
+<simplesect xml:id="rawsearches">
+
+
+
+<title>Raw Searches
+
+</title> 
+
+
+
+<tip>
+
+
+
+<para>Visit 
+
+
+
+<link xlink:href="http://www.indexdata.com/yaz/doc/tools.html">
+
+
+
+http://www.indexdata.com/yaz/doc/tools.html
+
+</link>
+
+
+
+for more details on PQF and examples you can copy/paste into the  search box.
+
+</para> 
+
+
+
+</tip> 
+
+
+
+</simplesect> 
+
+
+
+</section> 
+
+
+
+</chapter> 
