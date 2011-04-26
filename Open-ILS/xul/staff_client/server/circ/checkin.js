@@ -305,16 +305,19 @@ circ.checkin.prototype = {
                 { 
                     'barcode' : barcode,
                      'disable_textbox' : function() { 
+                        obj.controller.view.checkin_barcode_entry_textbox.blur();
                         obj.controller.view.checkin_barcode_entry_textbox.disabled = true; 
                         obj.controller.view.cmd_checkin_submit_barcode.setAttribute('disabled', 'true'); 
                     },
                     'enable_textbox' : function() { 
                         obj.controller.view.checkin_barcode_entry_textbox.disabled = false; 
                         obj.controller.view.cmd_checkin_submit_barcode.setAttribute('disabled', 'false'); 
+                        obj.controller.view.checkin_barcode_entry_textbox.focus();
                     },
                     'checkin_result' : function(checkin) {
                         obj.controller.view.checkin_barcode_entry_textbox.disabled = false;
                         obj.controller.view.cmd_checkin_submit_barcode.setAttribute('disabled', 'false'); 
+                        obj.controller.view.checkin_barcode_entry_textbox.focus();
                         obj.checkin2(checkin,backdate);
                     }
                 }, 
