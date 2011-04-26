@@ -1628,7 +1628,7 @@ function myopacProcessHolds(action, thawDate) {
         switch(action) { 
 
             case 'cancel':
-                req = new Request(CANCEL_HOLD, G.user.session, hold.id());
+	            req = new Request(CANCEL_HOLD, G.user.session, hold.id(), /* Patron via OPAC */ 6);
                 break;
     
             case 'thaw':
