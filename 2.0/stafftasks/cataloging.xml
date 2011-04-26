@@ -294,7 +294,7 @@ xml:id="cataloging">
 
         <step>
           <para>Confirm the overlay. The record in Evergreen is
-          overlaid with the new MARC record. All preexisting
+          overlaid with the new MARC record. All pre-existing
           holdings remain intact.</para>
         </step>
       </procedure>
