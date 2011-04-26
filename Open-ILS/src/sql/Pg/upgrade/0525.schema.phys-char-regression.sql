@@ -89,7 +89,7 @@ BEGIN
                 ELSIF attr_def.phys_char_sf IS NOT NULL THEN -- a named Physical Characteristic, see config.marc21_physical_characteristic_*_map
                     SELECT  m.value INTO attr_value
                       FROM  biblio.marc21_physical_characteristics(NEW.id) v
-                            config.marc21_physical_characteristic_value_map m ON (m.id = v.value)
+                            JOIN config.marc21_physical_characteristic_value_map m ON (m.id = v.value)
                       WHERE v.subfield = attr_def.phys_char_sf
                       LIMIT 1; -- Just in case ...
 
