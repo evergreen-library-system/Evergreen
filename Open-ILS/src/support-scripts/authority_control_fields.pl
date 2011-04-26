@@ -395,6 +395,12 @@ foreach my $rec_id (@records) {
 
             # print Dumper($validates);
 
+            # Protect against failed (error condition) search request
+            if (!$validates) {
+                print STDERR "Search for matching authority failed; record # $rec_id\n";
+                next;
+            }
+
             if (scalar(@$validates) == 0) {
                 next;
             }
