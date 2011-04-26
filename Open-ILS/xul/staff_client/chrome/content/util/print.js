@@ -22,6 +22,16 @@ util.print = function (context) {
     }
     this.oils_printer_external_cmd = has_key ? prefs.getCharPref(key) : '';
 
+    try {
+        if (prefs.prefHasUserValue('print.always_print_silent')) {
+            if (! prefs.getBoolPref('print.always_print_silent')) {
+                prefs.clearUserPref('print.always_print_silent');
+            }
+        }
+    } catch(E) {
+        dump('Error in print.js trying to clear print.always_print_silent\n');
+    }
+
     return this;
 };
 
