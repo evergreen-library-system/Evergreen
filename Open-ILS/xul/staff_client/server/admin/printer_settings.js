@@ -67,10 +67,13 @@ g.printer_settings = function() {
         print_silent_pref = g.prefs.getBoolPref('print.always_print_silent');
     }
     g.prefs.setBoolPref('print.always_print_silent', false);
+    g.prefs.clearUserPref('print.always_print_silent');
     var w = get_contentWindow(document.getElementById('sample'));
     g.print.NSPrint(w ? w : window, false, {});
     g.print.save_settings();
-    g.prefs.setBoolPref('print.always_print_silent', print_silent_pref);
+    if (print_silent_pref) {
+        g.prefs.setBoolPref('print.always_print_silent', true);
+    }
 }
 
 g.set_print_strategy = function(which) {
