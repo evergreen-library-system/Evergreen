@@ -2176,6 +2176,7 @@
 <!ENTITY staff.circ.checkin_overlay.actions.label "Actions for Selected Items">
 <!ENTITY staff.circ.checkin_overlay.actions.accesskey "S">
 <!ENTITY staff.circ.checkin_overlay.checkin_export.label "Export">
+<!ENTITY staff.circ.checkin_overlay.printer_prompt.label "Printer Prompt">
 <!ENTITY staff.circ.checkin_overlay.trim_list.label "Trim List (20 rows)">
 <!ENTITY staff.circ.checkin_overlay.async_checkin.label "Fast Entry (Asynchronous)">
 <!ENTITY staff.circ.checkin_overlay.strict_barcode.label "Strict Barcode">
