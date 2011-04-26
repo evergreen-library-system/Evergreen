@@ -537,6 +537,7 @@ circ.checkin.prototype = {
                 'barcode' : barcode,
                 'disable_textbox' : function() { 
                     if (!async) {
+                        textbox.blur();
                         textbox.disabled = true; 
                         textbox.setAttribute('disabled', 'true'); 
                     }
@@ -544,9 +545,11 @@ circ.checkin.prototype = {
                 'enable_textbox' : function() { 
                     textbox.disabled = false; 
                     textbox.setAttribute('disabled', 'false'); 
+                    textbox.focus();
                 },
                 'checkin_result' : function(checkin) {
                     textbox.disabled = false;
+                    textbox.focus();
                     //obj.controller.view.cmd_checkin_submit_barcode.setAttribute('disabled', 'false'); 
                     obj.checkin2(checkin,backdate,row_params);
                 },
