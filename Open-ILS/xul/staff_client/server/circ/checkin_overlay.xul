@@ -155,6 +155,7 @@
         label="&staff.checkin.print_receipt.label;" 
         command="cmd_checkin_print"
         accesskey="&staff.checkin.print_receipt.accesskey;"/>
+    <checkbox id="printer_prompt" label="&staff.circ.checkin_overlay.printer_prompt.label;" checked="true" oils_persist="checked"/>
     <checkbox id="trim_list" label="&staff.circ.checkin_overlay.trim_list.label;" checked="true" oils_persist="checked"/> 
     <checkbox id="async_checkin" label="&staff.circ.checkin_overlay.async_checkin.label;" checked="false" oils_persist="checked"/> 
     <checkbox id="strict_barcode" label="&staff.circ.checkin_overlay.strict_barcode.label;" checked="false" oils_persist="checked"/> 
