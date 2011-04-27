@@ -22,6 +22,7 @@ use MARC::File::XML (BinaryEncoding => 'UTF-8');
 use OpenSRF::System;
 use OpenILS::Utils::Fieldmapper;
 use OpenSRF::Utils::SettingsClient;
+use OpenSRF::EX qw/:try/;
 use Encode;
 use Unicode::Normalize;
 use OpenILS::Application::AppUtils;
@@ -348,94 +349,100 @@ foreach my $rec_id (@records) {
     next unless $record;
     # print Dumper($record);
 
-    my $marc = MARC::Record->new_from_xml($record->marc());
+    try {
+        my $marc = MARC::Record->new_from_xml($record->marc());
 
-    # get the list of controlled fields
-    my @c_fields = keys %controllees;
+        # get the list of controlled fields
+        my @c_fields = keys %controllees;
 
-    foreach my $c_tag (@c_fields) {
-        my @c_subfields = keys %{$controllees{"$c_tag"}};
-        # print "Field: $field subfields: ";
-        # foreach (@subfields) { print "$_ "; }
+        foreach my $c_tag (@c_fields) {
+            my @c_subfields = keys %{$controllees{"$c_tag"}};
+            # print "Field: $field subfields: ";
+            # foreach (@subfields) { print "$_ "; }
 
-        # Get the MARCXML from the record and check for controlled fields/subfields
-        my @bib_fields = ($marc->field($c_tag));
-        foreach my $bib_field (@bib_fields) {
-            # print $_->as_formatted(); 
-            my %match_subfields;
-            my $match_tag;
-            my @searches;
-            foreach my $c_subfield (@c_subfields) {
-                my $sf = $bib_field->subfield($c_subfield);
-                if ($sf) {
-                    # Give me the first element of the list of authority controlling tags for this subfield
-                    # XXX Will we need to support more than one controlling tag per subfield? Probably. That
-                    # will suck. Oh well, leave that up to Ole to implement.
-                    $match_subfields{$c_subfield} = (keys %{$controllees{$c_tag}{$c_subfield}})[0];
-                    $match_tag = $match_subfields{$c_subfield};
-                    push @searches, {term => $sf, subfield => $c_subfield};
+            # Get the MARCXML from the record and check for controlled fields/subfields
+            my @bib_fields = ($marc->field($c_tag));
+            foreach my $bib_field (@bib_fields) {
+                # print $_->as_formatted(); 
+                my %match_subfields;
+                my $match_tag;
+                my @searches;
+                foreach my $c_subfield (@c_subfields) {
+                    my $sf = $bib_field->subfield($c_subfield);
+                    if ($sf) {
+                        # Give me the first element of the list of authority controlling tags for this subfield
+                        # XXX Will we need to support more than one controlling tag per subfield? Probably. That
+                        # will suck. Oh well, leave that up to Ole to implement.
+                        $match_subfields{$c_subfield} = (keys %{$controllees{$c_tag}{$c_subfield}})[0];
+                        $match_tag = $match_subfields{$c_subfield};
+                        push @searches, {term => $sf, subfield => $c_subfield};
+                    }
                 }
+                # print Dumper(\%match_subfields);
+                next if !$match_tag;
+
+                my @tags = ($match_tag);
+
+                # print "Controlling tag: $c_tag and match tag $match_tag\n";
+                # print Dumper(\@tags, \@searches);
+
+                # Now we've built up a complete set of matching controlled
+                # subfields for this particular field; let's check to see if
+                # we have a matching authority record
+                my $session = OpenSRF::AppSession->create("open-ils.search");
+                my $validates = $session->request("open-ils.search.authority.validate.tag.id_list", 
+                    "tags", \@tags, "searches", \@searches
+                )->gather();
+                $session->disconnect();
+
+                # print Dumper($validates);
+
+                # Protect against failed (error condition) search request
+                if (!$validates) {
+                    print STDERR "Search for matching authority failed; record # $rec_id\n";
+                    next;
+                }
+
+                if (scalar(@$validates) == 0) {
+                    next;
+                }
+
+                # Iterate through the returned authority record IDs to delete any
+                # matching $0 subfields already in the bib record
+                foreach my $auth_zero (@$validates) {
+                    $bib_field->delete_subfield(code => '0', match => qr/\)$auth_zero$/);
+                }
+
+                # Okay, we have a matching authority control; time to
+                # add the magical subfield 0. Use the first returned auth
+                # record as a match.
+                my $auth_id = @$validates[0];
+                my $auth_rec = $e->retrieve_authority_record_entry($auth_id);
+                my $auth_marc = MARC::Record->new_from_xml($auth_rec->marc());
+                my $cni = $auth_marc->field('003')->data();
+                
+                $bib_field->add_subfields('0' => "($cni)$auth_id");
+                $changed = 1;
             }
-            # print Dumper(\%match_subfields);
-            next if !$match_tag;
-
-            my @tags = ($match_tag);
-
-            # print "Controlling tag: $c_tag and match tag $match_tag\n";
-            # print Dumper(\@tags, \@searches);
-
-            # Now we've built up a complete set of matching controlled
-            # subfields for this particular field; let's check to see if
-            # we have a matching authority record
-            my $session = OpenSRF::AppSession->create("open-ils.search");
-            my $validates = $session->request("open-ils.search.authority.validate.tag.id_list", 
-                "tags", \@tags, "searches", \@searches
-            )->gather();
-            $session->disconnect();
-
-            # print Dumper($validates);
-
-            # Protect against failed (error condition) search request
-            if (!$validates) {
-                print STDERR "Search for matching authority failed; record # $rec_id\n";
-                next;
-            }
-
-            if (scalar(@$validates) == 0) {
-                next;
-            }
-
-            # Iterate through the returned authority record IDs to delete any
-            # matching $0 subfields already in the bib record
-            foreach my $auth_zero (@$validates) {
-                $bib_field->delete_subfield(code => '0', match => qr/\)$auth_zero$/);
-            }
-
-            # Okay, we have a matching authority control; time to
-            # add the magical subfield 0. Use the first returned auth
-            # record as a match.
-            my $auth_id = @$validates[0];
-            my $auth_rec = $e->retrieve_authority_record_entry($auth_id);
-            my $auth_marc = MARC::Record->new_from_xml($auth_rec->marc());
-            my $cni = $auth_marc->field('003')->data();
-            
-            $bib_field->add_subfields('0' => "($cni)$auth_id");
-            $changed = 1;
         }
-    }
-    if ($changed) {
-        my $editor = OpenILS::Utils::CStoreEditor->new(xact=>1);
-        # print $marc->as_formatted();
-        my $xml = $marc->as_xml_record();
-        $xml =~ s/\n//sgo;
-        $xml =~ s/^<\?xml.+\?\s*>//go;
-        $xml =~ s/>\s+</></go;
-        $xml =~ s/\p{Cc}//go;
-        $xml = OpenILS::Application::AppUtils->entityize($xml);
+        if ($changed) {
+            my $editor = OpenILS::Utils::CStoreEditor->new(xact=>1);
+            # print $marc->as_formatted();
+            my $xml = $marc->as_xml_record();
+            $xml =~ s/\n//sgo;
+            $xml =~ s/^<\?xml.+\?\s*>//go;
+            $xml =~ s/>\s+</></go;
+            $xml =~ s/\p{Cc}//go;
+            $xml = OpenILS::Application::AppUtils->entityize($xml);
 
-        $record->marc($xml);
-        $editor->update_biblio_record_entry($record);
-        $editor->commit();
+            $record->marc($xml);
+            $editor->update_biblio_record_entry($record);
+            $editor->commit();
+        }
+    } otherwise {
+        my $err = shift;
+        print STDERR "\nRecord # $rec_id : $err\n";
+        import MARC::File::XML; # reset SAX parser so that one bad record doesn't kill the entire process
     }
 }
 
