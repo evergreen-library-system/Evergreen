@@ -62,7 +62,8 @@ CREATE TABLE config.db_patch_dependencies (
   db_patch      TEXT PRIMARY KEY,
   supersedes    TEXT[],
   deprecates    TEXT[],
-  EXCLUDE ( supersedes WITH &&, deprecates WITH && )
+  CONSTRAINT supersede_once EXCLUDE USING GIST ( supersedes WITH && ),
+  CONSTRAINT deprecate_once EXCLUDE USING GIST ( deprecates WITH && )
 );
 
 INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0526', :eg_version); -- miker

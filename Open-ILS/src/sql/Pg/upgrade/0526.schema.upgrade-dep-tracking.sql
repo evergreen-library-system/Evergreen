@@ -6,7 +6,8 @@ CREATE TABLE config.db_patch_dependencies (
   db_patch      TEXT PRIMARY KEY,
   supersedes    TEXT[],
   deprecates    TEXT[],
-  EXCLUDE ( supersedes WITH &&, deprecates WITH && )
+  CONSTRAINT supersede_once EXCLUDE USING GIST ( supersedes WITH && ),
+  CONSTRAINT deprecate_once EXCLUDE USING GIST ( deprecates WITH && )
 );
 
 ALTER TABLE config.upgrade_log
