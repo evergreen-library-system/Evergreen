@@ -15,6 +15,7 @@ use OpenSRF::EX qw(:try);
 use OpenSRF::Utils::Cache;
 use OpenSRF::System;
 use OpenSRF::Utils::Logger qw/$logger/;
+use OpenILS::Utils::CStoreEditor;
 
 use LWP::UserAgent;
 use MIME::Base64;
@@ -82,43 +83,85 @@ sub handler {
     my @path_parts = split( /\//, $r->unparsed_uri );
     my $type = $path_parts[-3];
     my $format = $path_parts[-2];
-    my $key = $path_parts[-1];
+    my $id = $path_parts[-1];
     my $res;
 
     child_init() unless $handler;
 
-    return Apache2::Const::NOT_FOUND unless $handler and $type and $format and $key;
+    return Apache2::Const::NOT_FOUND unless $handler and $type and $format and $id;
 
     my $err;
     my $data;
     my $method = "${type}_${format}";
 
     return Apache2::Const::NOT_FOUND unless $handler->can($method);
-    return $res if defined($res = $AC->serve_from_cache($type, $format, $key));
+    return $res if defined($res = $AC->serve_from_cache($type, $format, $id));
     return Apache2::Const::NOT_FOUND unless $AC->lookups_enabled;
 
+    my $key_data = get_rec_keys($id);
+    my @isbns = grep {$_->{tag} eq '020'} @$key_data;
+    my @upcs = grep {$_->{tag} eq '024'} @$key_data;
+
+    my $keys = {
+        isbn => [map {$_->{value}} @isbns],
+        upc => [map {$_->{value}} @upcs]
+    };
+
+    # TODO clean isbn
+
+    # XXX DEBUG
+    use OpenSRF::Utils::JSON;
+    $logger->info("Added Content Keys: " . OpenSRF::Utils::JSON->perl2JSON($keys));
+
     try {
-        $data = $handler->$method($key);
-    } catch Error with { 
-        $err = shift; 
+        $data = $handler->$method($keys);
+    } catch Error with {
+        $err = shift;
         decr_error_countdown();
-        $logger->debug("added content handler failed: $method($key) => $err");
+        $logger->debug("added content handler failed: $method($id) => $err");
     };
 
     return Apache2::Const::NOT_FOUND if $err;
+    next unless $data;
 
     if(!$data) {
         # if the AC lookup found no corresponding data, cache that information
-        $logger->debug("added content handler returned no results $method($key)") unless $data;
-        $AC->cache_result($type, $format, $key, {nocontent=>1});
+        $logger->debug("added content handler returned no results $method($id)") unless $data;
+        $AC->cache_result($type, $format, $id, {nocontent=>1});
         return Apache2::Const::NOT_FOUND;
     }
     
     $AC->print_content($data);
-    $AC->cache_result($type, $format, $key, $data);
+    $AC->cache_result($type, $format, $id, $data);
 
     reset_error_countdown();
     return Apache2::Const::OK;
+}
+
+# returns [{tag => $tag, value => $value}, {tag => $tag2, value => $value2}]
+sub get_rec_keys {
+    my $id = shift;
+    return OpenILS::Utils::CStoreEditor->new->json_query({
+        select => {mfr => ['tag', 'value']},
+        from => 'mfr',
+        where => {
+            record => $id,
+            '-or' => [
+                {
+                    '-and' => [
+                        {tag => '020'},
+                        {subfield => 'a'}
+                    ]
+                }, {
+                    '-and' => [
+                        {tag => '024'},
+                        {subfield => 'a'},
+                        {ind1 => 1}
+                    ]
+                }
+            ]
+        }
+    });
 }
 
 sub print_content {
