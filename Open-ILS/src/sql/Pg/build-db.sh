@@ -96,9 +96,9 @@ cat sql_file_manifest | while read sql_file; do
   export PGHOST PGPORT PGDATABASE PGUSER PGPASSWORD
   # Hide most of the harmless messages that obscure real problems
   if [ -z "$VERBOSE" ]; then
-    psql -f $sql_file 2>&1 | grep -v NOTICE | grep -v "^INSERT"
+    psql -v eg_version=NULL -f $sql_file 2>&1 | grep -v NOTICE | grep -v "^INSERT"
   else
-    psql -f $sql_file
+    psql -v eg_version=NULL -f $sql_file
   fi
   if [ $? != 0 ]; then
     cat <<EOM
