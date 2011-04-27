@@ -105,7 +105,7 @@ sub ebooks_html {
     # Internet Archive online reader
     my $stream_url = $ebooks_json->[0]->{'read_url'} || '';
     if ($stream_url) {
-        $ebook_html .= "<div class='ebook_stream'>$stream_url</div>\n";
+        $ebook_html .= "<li class='ebook_stream'><a href='$stream_url'>Read online</a></li>\n";
         $logger->debug("$key: stream URL = $stream_url");
     }
 
@@ -115,12 +115,12 @@ sub ebooks_html {
         if ($ebook_formats->{$ebook} eq 'read_url') {
             next;
         }
-        $ebook_html .= "<div class='$ebook'>" . 
-            $ebook_formats->{$ebook}->{'url'} . "</div>\n";
+        $ebook_html .= "<li class='ebook_$ebook'><a href='" . 
+            $ebook_formats->{$ebook}->{'url'} . "'>" . uc($ebook) . "</a></li>\n";
     }
 
     $logger->debug("$key: $ebook_html");
-    $self->send_html("<div class='ebooks'>$ebook_html</div>");
+    $self->send_html("<ul class='ebooks'>$ebook_html</ul>");
 }
 =head1
 
