@@ -48,9 +48,11 @@ my %defaults = (
     'user=s'        => 'admin',
     'password=s'    => '',
     'tempdir=s'     => '',
+    'spoolfile=s'   => '',
     'nolockfile'    => 1,
     'queue=i'       => 1,
     'noqueue'       => 0,
+    'nodaemon'      => 0,
     'wait=i'        => 5,
     'import-by-queue' => 0
 );
@@ -154,10 +156,16 @@ sub xml_import {
 
 sub old_process_batch_data {
     my $data = shift or $logger->error("process_batch_data called without any data");
+    my $isfile = shift;
     $data or return;
 
     my $handle;
-    open $handle, '<', \$data; 
+    if ($isfile) {
+        $handle = $data;
+    } else {
+        open $handle, '<', \$data; 
+    }
+
     my $batch = MARC::Batch->new('USMARC', $handle);
     $batch->strict_off;
 
@@ -315,13 +323,19 @@ sub bib_queue_import {
 
 sub process_batch_data {
     my $data = shift or $logger->error("process_batch_data called without any data");
+    my $isfile = shift;
     $data or return;
 
     $vl_ses = OpenSRF::AppSession->create('open-ils.vandelay');
 
-    my ($handle, $tempfile) = File::Temp->tempfile("$0_XXXX", DIR => $tempdir) or die "Cannot write tempfile in $tempdir";
-    print $handle $data;
-    close $handle;
+    my ($handle, $tempfile);
+    if (!$isfile) {
+        ($handle, $tempfile) = File::Temp->tempfile("$0_XXXX", DIR => $tempdir) or die "Cannot write tempfile in $tempdir";
+        print $handle $data;
+        close $handle;
+    } else {
+        $tempfile = $data;
+    }
        
     $logger->info("Calling process_spool on tempfile $tempfile (queue: $queue_id; source: $bib_source)");
     my $rec_ids = process_spool($tempfile);
@@ -358,12 +372,15 @@ sub process_request {   # The core Net::Server method
         exit;
     }
 
-    my $data;
+    my $data = '';
     eval {
         local $SIG{ALRM} = sub { die "alarm\n" };
         alarm $wait_time; # prevent accidental tie ups of backend processes
         local $/ = "\x1D"; # MARC record separator
-        $data = <STDIN>;
+        while (my $newline = <STDIN>) {
+            $data .= $newline;
+            alarm $wait_time; # prevent accidental tie ups of backend processes
+        }
         alarm 0;
     };
 
@@ -400,6 +417,44 @@ sub process_request {   # The core Net::Server method
     clear_auth_token(); # logout
 }
 
+sub standalone_process_request {   # The command line version
+    my $file = shift;
+    
+    $logger->info("stream parser received file processing request for $file");
+
+    my $ph = OpenSRF::Transport::PeerHandle->retrieve;
+    if(!$ph->flush_socket()) {
+        $logger->error("We received a request, bu we are no longer connected to opensrf.  ".
+            "Exiting and dropping request for $file");
+        exit;
+    }
+
+    my ($imported, $failed) = (0, 0);
+
+    new_auth_token(); # login
+
+    if ($real_opts->{noqueue}) {
+        ($imported, $failed) = old_process_batch_data($file, 1);
+    } else {
+        ($imported, $failed) = process_batch_data($file, 1);
+    }
+
+    my $profile = (!$merge_profile) ? '' :
+        $apputils->simplereq(
+            'open-ils.pcrud', 
+            'open-ils.pcrud.retrieve.vmp', 
+            $authtoken, 
+            $merge_profile)->name;
+
+    my $msg = '';
+    $msg .= "Successfully imported $imported records using merge profile '$profile'\n" if $imported;
+    $msg .= "Failed to import $failed records\n" if $failed;
+    $msg .= "\x00";
+    print $msg;
+
+    clear_auth_token(); # logout
+}
+
 
 # the authtoken will timeout after the configured inactivity period.
 # When that happens, get a new one.
@@ -420,8 +475,16 @@ sub clear_auth_token {
 ##### MAIN ######
 
 osrf_connect($osrf_config);
-print "Calling Net::Server run ", (@ARGV ? "with command-line options: " . join(' ', @ARGV) : ''), "\n";
-__PACKAGE__->run(conf_file => $conf_file);
+if ($real_opts->{nodaemon}) {
+    if (!$real_opts->{spoolfile}) {
+        print " --nodaemon mode requested, but no --spoolfile supplied!\n";
+        exit;
+    }
+    standalone_process_request($real_opts->{spoolfile});
+} else {
+    print "Calling Net::Server run ", (@ARGV ? "with command-line options: " . join(' ', @ARGV) : ''), "\n";
+    __PACKAGE__->run(conf_file => $conf_file);
+}
 
 __END__
 
@@ -442,7 +505,7 @@ underlying L<Net::Server> options.
 
 Note: this script has to be run in the same directory as B<oils_header.pl>.
 
-Typical execution will include a trailing C<&> to run in the background.
+Typical server-style execution will include a trailing C<&> to run in the background.
 
 =head1 DESCRIPTION
 
@@ -459,6 +522,8 @@ The only required option is --password
  --tempdir          =</temp/dir/>   default: from L<opensrf.conf> <open-ils.vandelay/app_settings/databases/importer>
  --source           =<i>            default: 1
  --import-by-queue  =<i>            default: 0
+ --spoolfile        =<import_file>  default: NONE      File to import in --nodaemon mode
+ --nodaemon                         default: OFF       When used with --spoolfile, turns off Net::Server mode and runs this utility in the foreground
 
 
 =head2 Old style: --noqueue and associated options
@@ -507,6 +572,10 @@ or via the command line to restrict access as necessary.
     admin open-ils connexion --port 5555 --min_servers 2 \
     --max_servers=20 --log_file=/openils/var/log/marc_net_importer.log &
 
+./marc_stream_importer.pl  \
+    admin open-ils connexion --port 5555 --min_servers 2 \
+    --max_servers=20 --log_file=/openils/var/log/marc_net_importer.log &
+
 =head1 SEE ALSO
 
 L<Net::Server::PreFork>, L<marc_stream_importer.conf>
@@ -515,5 +584,6 @@ L<Net::Server::PreFork>, L<marc_stream_importer.conf>
 
     Bill Erickson <erickson@esilibrary.com>
     Joe Atzberger <jatzberger@esilibrary.com>
+    Mike Rylander <miker@esilibrary.com> (nodaemon+spoolfile mode)
 
 =cut
