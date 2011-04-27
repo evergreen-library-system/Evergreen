@@ -1,0 +1,15 @@
+[%- name = name || "fi:" _ attr;
+    id = id || attr _ "_selector";
+    values = values || CGI.param(name); -%]
+<select id='[% id %]' name='[% name %]'[%
+    multiple ? ' multiple="multiple"' : '';
+    size ? (' size="' _ size _ '"') : ''; %]>
+[%  all_values = ctx.search_ccvm('ctype', attr);
+IF none_ok %]
+    <option>[% l('-- Any --') %]</option>
+[% END;
+FOR o IN all_values;
+   |l(o.value) %]
+    <option value='[% o.code %]'[% values.grep('^' _ o.code _ '$').size ? ' selected="selected"' : '' %]>[_1]</option>
+[%  END; END -%]
+</select>
