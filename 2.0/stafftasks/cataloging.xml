@@ -481,7 +481,8 @@ bib record imports from Z39.50 will be up to the user.</note>.
 
     <simplesect xml:id="fastitemadds">
       <title>Fast Item Adds</title>
-
+<step><para>If Fast Item Add was used, the copy editor will display.  Make 
+necessary adjustments and click <guibutton>Create Copies</guibutton>.</para></step>
       <note>
         <para>The status of items created with Fast Item Add will
         be set to 
