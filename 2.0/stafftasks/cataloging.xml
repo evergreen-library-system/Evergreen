@@ -467,24 +467,20 @@ xml:id="cataloging">
 
     <simplesect xml:id="importingarecordviaz39.50">
       <title>Importing a record via Z39.50</title>
+<para>Find the desired record, click <guibutton>MARC Editor for Import</guibutton>,
+and make any desired changes. Click <guibutton>Import Record</guibutton> when done. 
+A success (or failure) message will display. If you used <guilabel>Fast Item Adds</guilabel>, 
+the <guilabel>Copy Editor</guilabel> will appear.</para>
     </simplesect>
-
-    <simplesect xml:id="recordcollisions">
-      <title>Record Collisions</title>
-<note>In the current version of the software, if the global flag "Cat: Use internal ID for TCN value" has been set by
-the administrator (under <menuchoice><guimenu>Admin <guimenuitem>Server Settings</guimenuitem>
-<guimenuitem>Global Flags</guimenuitem></guimenu></menuchoice>), the collision
-detection in the Z39.50 import interface will be disabled because it relies on the TCN. 
-Until a more flexible collision detection process is in place, avoiding duplicate
-bib record imports from Z39.50 will be up to the user.</note>.
-    </simplesect>
-
     <simplesect xml:id="fastitemadds">
       <title>Fast Item Adds</title>
-<step><para>If Fast Item Add was used, the copy editor will display.  Make 
-necessary adjustments and click <guibutton>Create Copies</guibutton>.</para></step>
+<para>Clicking the <guibutton>Fast Item Add</guibutton> box will display <guilabel>Call Number</guilabel> and
+<guilabel>Item Barcode</guilabel> fields. Use these to quickly add items to the record as you
+edit it.</para>
+<para>When you've successfully imported the record, the copy editor will display.  Make 
+necessary adjustments and click <guibutton>Modify/Create Copies</guibutton>.</para>
       <note>
-        <para>The status of items created with Fast Item Add will
+        <para>As of 2.0.6, the status of items created with Fast Item Add will
         be set to 
         <emphasis>In Process</emphasis>
 
@@ -492,6 +488,18 @@ necessary adjustments and click <guibutton>Create Copies</guibutton>.</para></st
         change from 1.6.</para>
       </note>
     </simplesect>
+
+    <simplesect xml:id="recordcollisions">
+      <title>Record Collisions</title>
+<note>As of 2.0.5, if the global flag "Cat: Use internal ID for TCN value" has been set by
+the administrator (under <menuchoice><guimenu>Admin <guimenuitem>Server Settings</guimenuitem>
+<guimenuitem>Global Flags</guimenuitem></guimenu></menuchoice>), the collision
+detection in the Z39.50 import interface will be disabled because it relies on the TCN. 
+Until a more flexible collision detection process is in place, avoiding duplicate
+bib record imports from Z39.50 will be up to the user.</note>.
+    </simplesect>
+
+
 
     <simplesect xml:id="rawsearches">
       <title>Raw Searches</title>
