@@ -471,6 +471,12 @@ xml:id="cataloging">
 
     <simplesect xml:id="recordcollisions">
       <title>Record Collisions</title>
+<note>In the current version of the software, if the global flag "Cat: Use internal ID for TCN value" has been set by
+the administrator (under <menuchoice><guimenu>Admin <guimenuitem>Server Settings</guimenuitem>
+<guimenuitem>Global Flags</guimenuitem></guimenu></menuchoice>), the collision
+detection in the Z39.50 import interface will be disabled because it relies on the TCN. 
+Until a more flexible collision detection process is in place, avoiding duplicate
+bib record imports from Z39.50 will be up to the user.</note>.
     </simplesect>
 
     <simplesect xml:id="fastitemadds">
