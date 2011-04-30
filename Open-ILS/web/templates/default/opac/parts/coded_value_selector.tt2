@@ -6,7 +6,7 @@
     size ? (' size="' _ size _ '"') : ''; %]>
 [%  all_values = ctx.search_ccvm('ctype', attr);
 IF none_ok %]
-    <option>[% l('-- Any --') %]</option>
+    <option value=''>[% l('-- Any --') %]</option>
 [% END;
 FOR o IN all_values;
    |l(o.value) %]
