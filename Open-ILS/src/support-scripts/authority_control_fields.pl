@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Copyright (C) 2010 Laurentian University
+# Copyright (C) 2010-2011 Laurentian University
 # Author: Dan Scott <dscott@laurentian.ca>
 #
 # This program is free software; you can redistribute it and/or
@@ -54,12 +54,12 @@ Fieldmapper->import(IDL => OpenSRF::Utils::SettingsClient->new->config_value("ID
 use OpenILS::Utils::CStoreEditor;
 OpenILS::Utils::CStoreEditor::init();
 
-my $editor = OpenILS::Utils::CStoreEditor->new;
+my $e = OpenILS::Utils::CStoreEditor->new;
 my $undeleted;
 if ($options{all}) {
     # get a list of all non-deleted records from Evergreen
     # open-ils.cstore open-ils.cstore.direct.biblio.record_entry.id_list.atomic {"deleted":"f"}
-    $undeleted = $editor->request( 
+    $undeleted = $e->request( 
         'open-ils.cstore.direct.biblio.record_entry.id_list.atomic', 
         [{deleted => 'f'}, {id => { '>' => 0}}]
     );
@@ -340,7 +340,6 @@ my %controllees = (
 foreach my $rec_id (@records) {
     # print "$rec_id\n";
 
-    my $e = OpenILS::Utils::CStoreEditor->new();
     # State variable; was the record changed?
     my $changed;
 
