@@ -1,10 +1,21 @@
 <div id="footer">
-    <a href="http://www.kcls.org/usingthelibrary/request/">[% l('Request a Purchase') %]</a> &nbsp;|&nbsp;
-    <a href="http://www.kcls.org/usingthelibrary/request/">[% l('Interlibrary Loan') %]</a> &nbsp;|&nbsp;
-    <a href="http://www.kcls.org/about/contact/">[% l('Contact Us') %]</a> &nbsp;|&nbsp;
-    <a href="http://www.kcls.org/usingthelibrary/catalog_help/">[% l('Site Help') %]</a> &nbsp;|&nbsp;
-    <a href="http://www.kcls.org/usingthelibrary/policies/privacy.cfm">[% l('Privacy Statement') %]</a> &nbsp;|&nbsp;
-    <a href="http://www.kcls.org/about/support/">[% l('Support KCLS') %]</a> &nbsp;|&nbsp;
-    <a href="http://www.kcls.org/employment/">[% l('Employment') %]</a> 
+    <a href="http://example.com">[% l('Bottom Link 1') %]</a> &nbsp;|&nbsp;
+    <a href="http://example.com">[% l('Bottom Link 2') %]</a> &nbsp;|&nbsp;
+    <a href="http://example.com">[% l('Bottom Link 3') %]</a> &nbsp;|&nbsp;
+    <a href="http://example.com">[% l('Bottom Link 4') %]</a> &nbsp;|&nbsp;
+    <a href="http://example.com">[% l('Bottom Link 5') %]</a>
+
+    <div id="copyright_text" style="margin-top: 2em;">
+        [% l('Copyright &copy; 2006-2011 Georgia Public Library Service, and others') %]
+    </div>
+    <div id="footer_logo">
+        [% l('Powered by') %]
+        <a href="http://evergreen-ils.org">
+            <img src="[% ctx.media_prefix %]/opac/images/eg_tiny_logo.jpg"
+                style="border:none; width: 94px; height: 16px;"
+                alt="[% l('Evergreen') %]
+            />
+        </a>
+    </div>
 </div>
 
