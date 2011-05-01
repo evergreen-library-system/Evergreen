@@ -30,7 +30,7 @@ use Data::Dumper;
 use Pod::Usage qw/ pod2usage /;
 
 my ($start_id, $end_id);
-my $bootstrap = '/openils/conf/opensrf_core.xml';
+my $bootstrap = '@sysconfdir@/opensrf_core.xml';
 my @records;
 
 my %options;
@@ -503,7 +503,7 @@ table identifying the record ID, field, and subfield(s) that were not controlled
 =item * B<-c> I<config-file>, B<--configuration>=I<config-file>
 
 Specifies the OpenSRF configuration file used to connect to the OpenSRF router.
-Defaults to F</openils/conf/opensrf_core.xml>
+Defaults to F<@sysconfdir@/opensrf_core.xml>
 
 =item * B<-r> I<record-ID>, B<--record>=I<record-ID>
 
