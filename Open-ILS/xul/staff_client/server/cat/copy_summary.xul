@@ -122,7 +122,7 @@
                                 } else {
                                     $w('copy_summary_callnumber',cn.label());    
                                 }
-                                g.list.append({'row':{'my':{'acp':copy,'acn':cn}}});
+                                g.list.append({'row':{'my':{'acp':copy,'acn':cn,'circ':xulG.circ}}});
                                 g.barcode = copy.barcode(); g.doc_id = cn.record();
                                 if (g.doc_id > -1) {
                                     $('show_in_opac').hidden = false;
