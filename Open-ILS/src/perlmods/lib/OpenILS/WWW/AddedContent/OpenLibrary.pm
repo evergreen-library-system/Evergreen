@@ -43,22 +43,63 @@ sub new {
 sub jacket_small {
     my( $self, $key ) = @_;
     return $self->send_img(
-        $self->fetch_cover_response('-S.jpg', $key));
+        $self->fetch_cover_response('small', $key));
 }
 
 sub jacket_medium {
     my( $self, $key ) = @_;
     return $self->send_img(
-        $self->fetch_cover_response('-M.jpg', $key));
+        $self->fetch_cover_response('medium', $key));
 
 }
 sub jacket_large {
     my( $self, $key ) = @_;
     return $self->send_img(
-        $self->fetch_cover_response('-L.jpg', $key));
+        $self->fetch_cover_response('large', $key));
 }
 
 # --------------------------------------------------------------------------
+
+
+sub excerpt_html {
+    my( $self, $key ) = @_;
+    my $book_details_json = $self->fetch_details_response($key)->content();
+
+    $logger->debug("$key: $book_details_json");
+
+    my $excerpt_html;
+    
+    my $book_details = OpenSRF::Utils::JSON->JSON2perl($book_details_json);
+    my $book_key = (keys %$book_details)[0];
+
+    # We didn't find a matching book; short-circuit our response
+    if (!$book_key) {
+        $logger->debug("$key: no found book");
+        return 0;
+    }
+
+    my $first_sentence = $book_details->{$book_key}->{first_sentence};
+    if ($first_sentence) {
+        $excerpt_html .= "<div class='sentence1'>$first_sentence</div>\n";
+    }
+
+    my $excerpts_json = $book_details->{$book_key}->{excerpts};
+    if ($excerpts_json && scalar(@$excerpts_json)) {
+        # Load up excerpt text with comments in tooltip
+        foreach my $excerpt (@$excerpts_json) {
+            my $text = $excerpt->{text};
+            my $cmnt = $excerpt->{comment};
+            $excerpt_html .= "<div class='ac_excerpt' title='$text'>$cmnt</div>\n";
+        }
+    }
+
+    if (!$excerpt_html) {
+        return 0;
+    }
+
+    $logger->debug("$key: $excerpt_html");
+    $self->send_html("<div class='ac_excerpts'>$excerpt_html</div>");
+}
 
 =head1
 
@@ -177,8 +218,26 @@ sub fetch_response {
 # returns the HTTP response object from the URL fetch
 sub fetch_cover_response {
     my( $self, $size, $key ) = @_;
-    my $url = $cover_base_url . "$key$size";
-    return $AC->get_url($url);
+
+    my $response = $self->fetch_data_response($key)->content();
+
+    my $book_data = OpenSRF::Utils::JSON->JSON2perl($response);
+    my $book_key = (keys %$book_data)[0];
+
+    # We didn't find a matching book; short-circuit our response
+    if (!$book_key) {
+        $logger->debug("$key: no found book");
+        return 0;
+    }
+
+    my $covers_json = $book_data->{$book_key}->{cover};
+    if (!$covers_json) {
+        $logger->debug("$key: no covers for this book");
+        return 0;
+    }
+
+    $logger->debug("$key: " . $covers_json->{$size});
+    return $AC->get_url($covers_json->{$size}) || 0;
 }
 
 
