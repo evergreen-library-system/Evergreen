@@ -1,6 +1,6 @@
 # ---------------------------------------------------------------
 # Copyright (C) 2009 David Christensen <david.a.christensen@gmail.com>
-# Copyright (C) 2009 Dan Scott <dscott@laurentian.ca>
+# Copyright (C) 2009-2011 Dan Scott <dscott@laurentian.ca>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -30,7 +30,13 @@ my $AC = 'OpenILS::WWW::AddedContent';
 
 # These URLs are always the same for OpenLibrary, so there's no advantage to
 # pulling from opensrf.xml; we hardcode them here
-my $base_url = 'http://openlibrary.org/api/books?details=true&bibkeys=ISBN:';
+
+# jscmd=details is unstable but includes goodies such as Table of Contents
+my $base_url_details = 'http://openlibrary.org/api/books?format=json&jscmd=details&bibkeys=ISBN:';
+
+# jscmd=data is stable and contains links to ebooks, excerpts, etc
+my $base_url_data = 'http://openlibrary.org/api/books?format=json&jscmd=data&bibkeys=ISBN:';
+
 my $cover_base_url = 'http://covers.openlibrary.org/b/isbn/';
 
 sub new {
@@ -43,22 +49,119 @@ sub new {
 sub jacket_small {
     my( $self, $key ) = @_;
     return $self->send_img(
-        $self->fetch_cover_response('-S.jpg', $key));
+        $self->fetch_cover_response('small', $key));
 }
 
 sub jacket_medium {
     my( $self, $key ) = @_;
     return $self->send_img(
-        $self->fetch_cover_response('-M.jpg', $key));
+        $self->fetch_cover_response('medium', $key));
 
 }
 sub jacket_large {
     my( $self, $key ) = @_;
     return $self->send_img(
-        $self->fetch_cover_response('-L.jpg', $key));
+        $self->fetch_cover_response('large', $key));
 }
 
 # --------------------------------------------------------------------------
+
+sub ebooks_html {
+    my( $self, $key ) = @_;
+    my $book_data_json = $self->fetch_data_response($key)->content();
+
+    $logger->debug("$key: " . $book_data_json);
+
+    my $ebook_html;
+    
+    my $book_data = OpenSRF::Utils::JSON->JSON2perl($book_data_json);
+    my $book_key = (keys %$book_data)[0];
+
+    # We didn't find a matching book; short-circuit our response
+    if (!$book_key) {
+        $logger->debug("$key: no found book");
+        return 0;
+    }
+
+    my $ebooks_json = $book_data->{$book_key}->{ebooks};
+
+    # No ebooks are available for this book; short-circuit
+    if (!$ebooks_json or !scalar(@$ebooks_json)) {
+        $logger->debug("$key: no ebooks");
+        return 0;
+    }
+
+    # Check the availability of the ebooks
+    my $available = $ebooks_json->[0]->{'availability'} || '';
+    if (!$available) {
+        $logger->debug("$key: no available ebooks");
+        return 0;
+    }
+
+    # Build a basic list of available ebook types and their URLs
+    # ebooks appears to be an array containing one element - a hash
+
+    # First element of the hash is 'read_url' which is a URL to
+    # Internet Archive online reader
+    my $stream_url = $ebooks_json->[0]->{'read_url'} || '';
+    if ($stream_url) {
+        $ebook_html .= "<li class='ebook_stream'><a href='$stream_url'>Read online</a></li>\n";
+        $logger->debug("$key: stream URL = $stream_url");
+    }
+
+    my $ebook_formats = $ebooks_json->[0]->{'formats'} || '';
+    # Next elements are various ebook formats that are available
+    foreach my $ebook (keys %{$ebook_formats}) {
+        if ($ebook_formats->{$ebook} eq 'read_url') {
+            next;
+        }
+        $ebook_html .= "<li class='ebook_$ebook'><a href='" . 
+            $ebook_formats->{$ebook}->{'url'} . "'>" . uc($ebook) . "</a></li>\n";
+    }
+
+    $logger->debug("$key: $ebook_html");
+    $self->send_html("<ul class='ebooks'>$ebook_html</ul>");
+}
+
+sub excerpt_html {
+    my( $self, $key ) = @_;
+    my $book_details_json = $self->fetch_details_response($key)->content();
+
+    $logger->debug("$key: $book_details_json");
+
+    my $excerpt_html;
+    
+    my $book_details = OpenSRF::Utils::JSON->JSON2perl($book_details_json);
+    my $book_key = (keys %$book_details)[0];
+
+    # We didn't find a matching book; short-circuit our response
+    if (!$book_key) {
+        $logger->debug("$key: no found book");
+        return 0;
+    }
+
+    my $first_sentence = $book_details->{$book_key}->{first_sentence};
+    if ($first_sentence) {
+        $excerpt_html .= "<div class='sentence1'>$first_sentence</div>\n";
+    }
+
+    my $excerpts_json = $book_details->{$book_key}->{excerpts};
+    if ($excerpts_json && scalar(@$excerpts_json)) {
+        # Load up excerpt text with comments in tooltip
+        foreach my $excerpt (@$excerpts_json) {
+            my $text = $excerpt->{text};
+            my $cmnt = $excerpt->{comment};
+            $excerpt_html .= "<div class='ac_excerpt' title='$text'>$cmnt</div>\n";
+        }
+    }
+
+    if (!$excerpt_html) {
+        return 0;
+    }
+
+    $logger->debug("$key: $excerpt_html");
+    $self->send_html("<div class='ac_excerpts'>$excerpt_html</div>");
+}
 
 =head1
 
@@ -74,12 +177,7 @@ HTML table.
 
 sub toc_html {
     my( $self, $key ) = @_;
-    my $book_details_json = $self->fetch_response($key)->content();
-
-
-    # Trim the "var _OlBookInfo = " declaration that makes this
-    # invalid JSON
-    $book_details_json =~ s/^.+?({.*?});$/$1/s;
+    my $book_details_json = $self->fetch_details_response($key)->content();
 
     $logger->debug("$key: " . $book_details_json);
 
@@ -127,7 +225,7 @@ sub toc_html {
 sub toc_json {
     my( $self, $key ) = @_;
     my $toc = $self->send_json(
-        $self->fetch_response($key)
+        $self->fetch_details_response($key)
     );
 }
 
@@ -167,9 +265,16 @@ sub send_html {
 }
 
 # returns the HTTP response object from the URL fetch
-sub fetch_response {
+sub fetch_data_response {
     my( $self, $key ) = @_;
-    my $url = $base_url . "$key";
+    my $url = $base_url_data . "$key";
+    my $response = $AC->get_url($url);
+    return $response;
+}
+# returns the HTTP response object from the URL fetch
+sub fetch_details_response {
+    my( $self, $key ) = @_;
+    my $url = $base_url_details . "$key";
     my $response = $AC->get_url($url);
     return $response;
 }
@@ -177,8 +282,26 @@ sub fetch_response {
 # returns the HTTP response object from the URL fetch
 sub fetch_cover_response {
     my( $self, $size, $key ) = @_;
-    my $url = $cover_base_url . "$key$size";
-    return $AC->get_url($url);
+
+    my $response = $self->fetch_data_response($key)->content();
+
+    my $book_data = OpenSRF::Utils::JSON->JSON2perl($response);
+    my $book_key = (keys %$book_data)[0];
+
+    # We didn't find a matching book; short-circuit our response
+    if (!$book_key) {
+        $logger->debug("$key: no found book");
+        return 0;
+    }
+
+    my $covers_json = $book_data->{$book_key}->{cover};
+    if (!$covers_json) {
+        $logger->debug("$key: no covers for this book");
+        return 0;
+    }
+
+    $logger->debug("$key: " . $covers_json->{$size});
+    return $AC->get_url($covers_json->{$size}) || 0;
 }
 
 

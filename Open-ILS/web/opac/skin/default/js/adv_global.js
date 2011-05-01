@@ -295,7 +295,6 @@ function advBuildSearchBlob() {
 				break;
 		}
 		if(string) {
-			string = string.replace(/'/g,' ');
 			string = string.replace(/\\/g,' ');
             string = string.replace(/^\s*/,'');
             string = string.replace(/\s*$/,'');

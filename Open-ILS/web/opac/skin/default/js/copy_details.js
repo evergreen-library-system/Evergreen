@@ -251,7 +251,19 @@ function cpdDrawCopy(r) {
         return;
     }
 
-	var b = $n(row, 'barcode').appendChild(text(copy.barcode()));
+    // Make barcode more useful for staff client usage
+    if(isXUL()) {
+        var my_a = document.createElement('a');
+        my_a.appendChild(text(copy.barcode()));
+        my_a.setAttribute("href","javascript:void(0);");
+        my_a.onclick = function() {
+            xulG.new_tab(xulG.urls.XUL_COPY_STATUS, {}, {'from_item_details_new': true, 'barcodes': [copy.barcode()]});
+		};
+        $n(row, 'barcode').appendChild(my_a);
+    }
+    else {
+    	$n(row, 'barcode').appendChild(text(copy.barcode()));
+    }
 
     /* show the peer type*/
     if (pt) {
