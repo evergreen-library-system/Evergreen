@@ -186,24 +186,24 @@
 <div id="rdetail_locs_expand" class="hide_me">
     <a href="#"><img
         src="[% ctx.media_prefix %]/images/plus_sign.png" /></a>
-    <a style="position:relative;top:-3px;" href="#">Show more locations</a>
+    <a style="position:relative;top:-3px;" href="#">[% l('Show more locations') %]</a>
 </div>
 
 <div id="rdetail_locs_collapse" class="hide_me">
     <a href="#"><img
         src="[% ctx.media_prefix %]/images/plus_sign.png" /></a>
-    <a style="position:relative;top:-3px;" href="#">Collapse locations</a>
+    <a style="position:relative;top:-3px;" href="#">[% l('Collapse locations') %]</a>
 </div>
 
 <div id="rdetail_extras_expand" class="hide_me">
     <a href="#"><img
         src="[% ctx.media_prefix %]/images/plus_sign.png" /></a>
-    <a style="position:relative;top:-3px;" href="#">Expand all tabs</a>
+    <a style="position:relative;top:-3px;" href="#">[% l('Expand all tabs') %]</a>
 </div>
 
 <div id="rdetail_extras_collapse" class="hide_me">
     <a href="#"><img src="[% ctx.media_prefix %]/images/plus_sign.png" /></a>
-    <a style="position:relative;top:-3px;" href="#">Collapse all tabs</a>
+    <a style="position:relative;top:-3px;" href="#">[% l('Collapse all tabs') %]</a>
 </div>
 
 <div class="hide_me">
