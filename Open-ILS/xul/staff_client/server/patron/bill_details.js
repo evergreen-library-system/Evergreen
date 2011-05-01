@@ -91,7 +91,7 @@ function retrieve_circ() {
                 var copy_summary = document.createElement('iframe'); csb.appendChild(copy_summary);
                 copy_summary.setAttribute('src',urls.XUL_COPY_SUMMARY); // + '?copy_id=' + r_circ.target_copy());
                 copy_summary.setAttribute('flex','1');
-                get_contentWindow(copy_summary).xulG = { 'copy_id' : r_circ.target_copy(), 'new_tab' : xulG.new_tab, 'url_prefix' : xulG.url_prefix };
+                get_contentWindow(copy_summary).xulG = { 'circ' : r_circ, 'copy_id' : r_circ.target_copy(), 'new_tab' : xulG.new_tab, 'url_prefix' : xulG.url_prefix };
 
                 g.network.simple_request(
                     'MODS_SLIM_RECORD_RETRIEVE_VIA_COPY.authoritative',
