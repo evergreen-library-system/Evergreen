@@ -1,0 +1,116 @@
+[%  PROCESS "default/opac/parts/header.tt2";
+    WRAPPER "default/opac/parts/myopac/prefs_base.tt2";
+    myopac_page = "prefs_notify";
+    prefs_page = 'settings' %]
+
+USER SETTINGS
+
+        <!-- SEARCH PREFS SAVE, MOVE TO SUB-TEMPLATE
+        <div style="float:right;width:65px;">
+            <div style="position:absolute">
+                <div style="position:relative;top:75px;">
+                    <a id='acct_prefs_save'
+                         class='hide_me'
+                         href="#"><img alt="Save"
+                         src="[% ctx.media_prefix %]/images/save-btn.png" /></a>
+                </div>
+            </div>
+        </div>
+        -->
+
+
+        <!-- SEARCH PREFERENCES / leaving here for reference
+        <table class="hide_me full-width" id="acct_search_main">
+            <tbody id='myopac_prefs_tbody'>
+                <tr id='myopac_prefs_loading'>
+                    <td colspan='3'><b>[% l("Loading...") %]</b></td>
+                </tr>
+
+                <tr id='myopac_prefs_row'>
+                    <td width='20%'>[% l("Search hits per page") %]</td>
+
+                    <td>
+                        <div style="position:absolute">
+                            <div style="position:relative;top:0px;left:55px;">
+                                <a href="#">
+                                <img alt="Search Hits Help"
+                                     src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
+                            </div>
+                        </div><select id='prefs_hits_per'
+                            style="position:relative;z-index:100;">
+                            <option value='5'>
+                                5
+                            </option>
+
+                            <option value='8'>
+                                8
+                            </option>
+
+                            <option value='10'>
+                                10
+                            </option>
+
+                            <option value='15'>
+                                15
+                            </option>
+
+                            <option value='20'>
+                                20
+                            </option>
+
+                            <option value='25'>
+                                25
+                            </option>
+
+                            <option value='50'>
+                                50
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2"><label for="circHistStart">Keep history of
+                    checked out items?</label> <input type="checkbox"
+                           id="circHistStart" /></td>
+                </tr>
+
+                <tr class="hide_me">
+                    <td>[% l("Default Font Size") %]</td>
+
+                    <td><select id='prefs_def_font'>
+                        <option value='regular'>
+                            [% l("Regular Font") %]
+                        </option>
+
+                        <option value='large'>
+                            [% l("Large Font") %]
+                        </option>
+                    </select></td>
+                </tr>
+
+                <tr class="hide_me">
+                    <td>[% l("Default Search Location") %]</td>
+                    <td>
+                        <div style='margin-bottom: 5px;'>
+                            <input type='checkbox' id='myopac_pref_home_lib' />
+                                 [% l("Always search my home library by default.") %]
+                        </div>
+                        <select id='prefs_def_location'></select>
+                    </td>
+                </tr>
+
+                <tr class="hide_me">
+                    <td>[% l("Default Search Range") %]</td>
+
+                    <td><select id='prefs_def_range'>
+                        </select></td>
+                </tr>
+            </tbody>
+        </table><a href=
+        "http://www.kcls.org/usingthelibrary/catalog_help/library_elf.cfm"><u>Try
+        Library Elf-to manage library materials!</u></a>
+
+        -->
+
+[% END %]

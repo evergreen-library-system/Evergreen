@@ -12,7 +12,7 @@
                 <a href="javascript:window.print();"
                     id="util_print_btn"><img alt="[% l('Print Page') %]"
                     src="[% ctx.media_prefix %]/images/tool_print.png" /></a>
-                <a href="http://open-ils.org/dokuwiki/doku.php?id=evergreen-user:opac_help"
+                <a href="http://www.kcls.org/usingthelibrary/catalog_help/index.cfm"
                     id="util_help_btn"><img alt="[% l('Help') %]"
                     src="[% ctx.media_prefix %]/images/tool_help.png" /></a>
                 <a href="javascript:history.go(+1)"
