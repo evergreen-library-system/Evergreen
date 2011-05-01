@@ -1,5 +1,5 @@
 <!-- ****************** rdetail_summary.xml ***************************** -->
-<abbr class="unapi-id" title='tag:HTTP_HOST,OILS_TIME_YEAR:biblio-record_entry/OILS_OPAC_RID'></abbr><!-- XXX FIXME or remove -->
+<abbr class="unapi-id" title='tag:[% ctx.hostname %],[% date.format(date.now, '%Y') %]:biblio-record_entry/[% ctx.bre_id %]'></abbr>
 <!-- This holds the record summary information -->
 
 <table width="100%" border="0" cellpadding="0" cellspacing="0" id="rdetail_details_table">
@@ -241,8 +241,6 @@
             </tr>
         </tbody>
     </table>
-    <!-- Empty span used for creating unAPI links -->
-    <abbr name="unapi" class="unapi-id"> <!-- unAPI URI goes here --> </abbr>
 </div> <!-- details_body -->
 
 <!-- ****************** end: rdetail_summary.xml ***************************** -->
