@@ -2692,7 +2692,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                                 print.simple( msg , { 'no_prompt' : true, 'content_type' : 'text/html' } );
                             } else {
                                 var template = 'hold_slip';
-                                var params = {
+                                var parms = {
                                     'patron' : print_data.user,
                                     'lib' : data.hash.aou[ check.payload.hold.pickup_lib() ],
                                     'staff' : data.list.au[0],
@@ -2704,9 +2704,9 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                                     'data' : print_data
                                 };
                                 if ($('printer_prompt')) {
-                                    if (! $('printer_prompt').checked) { params.no_prompt = true; }
+                                    if (! $('printer_prompt').checked) { parms.no_prompt = true; }
                                 }
-                                print.tree_list( params );
+                                print.tree_list( parms );
                             }
                         } catch(E) {
                             var err_msg = document.getElementById('commonStrings').getString('common.error');
@@ -3065,7 +3065,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                         print.simple( msg , { 'no_prompt' : true, 'content_type' : 'text/html' } );
                     } else {
                         var template = check.payload.hold ? 'hold_transit_slip' : 'transit_slip';
-                        var params = {
+                        var parms = {
                             'patron' : print_data.user,
                             'lib' : data.hash.aou[ data.list.au[0].ws_ou() ],
                             'staff' : data.list.au[0],
@@ -3077,9 +3077,9 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                             'data' : print_data 
                         };
                         if ($('printer_prompt')) {
-                            if (! $('printer_prompt').checked) { params.no_prompt = true; }
+                            if (! $('printer_prompt').checked) { parms.no_prompt = true; }
                         }
-                        print.tree_list( params );
+                        print.tree_list( parms );
                     }
                 } catch(E) {
                     var err_msg = document.getElementById('commonStrings').getString('common.error');
