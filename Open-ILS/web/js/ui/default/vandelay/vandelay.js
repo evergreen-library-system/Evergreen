@@ -1073,6 +1073,38 @@ function vlFleshQueueSelect(selector, type) {
     selector.setDisplayedValue('');
     if(data[0])
         selector.setValue(data[0].id());
+
+    var qInput = dijit.byId('vl-queue-name');
+
+    var selChange = function(val) {
+        console.log('selector onchange');
+        // user selected a queue from the selector;  clear the input and 
+        // set the item import profile already defined for the queue
+        var queue = allUserBibQueues.filter(function(q) { return (q.id() == val) })[0];
+        if(val) {
+            vlUploadQueueHoldingsImportProfile.attr('value', queue.item_attr_def() || '');
+            vlUploadQueueHoldingsImportProfile.attr('disabled', true);
+        } else {
+            vlUploadQueueHoldingsImportProfile.attr('value', '');
+            vlUploadQueueHoldingsImportProfile.attr('disabled', false);
+        }
+        dojo.disconnect(qInput._onchange);
+        qInput.attr('value', '');
+        qInput._onchange = dojo.connect(qInput, 'onChange', inputChange);
+    }
+    
+    var inputChange = function(val) {
+        console.log('qinput onchange');
+        // user entered a new queue name. clear the selector 
+        vlUploadQueueHoldingsImportProfile.attr('value', '');
+        vlUploadQueueHoldingsImportProfile.attr('disabled', false);
+        dojo.disconnect(selector._onchange);
+        selector.attr('value', '');
+        selector._onchange = dojo.connect(selector, 'onChange', selChange);
+    }
+
+    selector._onchange = dojo.connect(selector, 'onChange', selChange);
+    qInput._onchange = dojo.connect(qInput, 'onChange', inputChange);
 }
 
 function vlShowUploadForm() {

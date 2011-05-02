@@ -24,6 +24,27 @@
             </td>
         </tr>
         <tr>
+            <td>Holdings Import Profile</td>
+            <td>
+                <input jsId='vlUploadQueueHoldingsImportProfile'
+                    dojoType='dijit.form.FilteringSelect' labelAttr='name' searchAttr='name'/>
+            </td>
+        </tr>
+        <tr>
+            <td>&vandelay.import.bib_sources;</td>
+            <td>
+                <select name='bib_source' jsId='vlUploadSourceSelector' 
+                    dojoType='dijit.form.FilteringSelect' labelAttr='source' searchAttr='source'/>
+            </td>
+        </tr>
+        <tr><td colspan='2' style='margin-top:10px;border-bottom:1px solid #888;border-top:1px solid #888'><b>Import Actions</b></td></tr>
+        <tr>
+            <td>&vandelay.auto.import.merge_profile;</td>
+            <td colspan='4'>
+                <div jsId='vlUploadMergeProfile' dojoType='dijit.form.FilteringSelect' required='false' labelAttr='name' searchAttr='name'/>
+            </td>
+        </tr>
+        <tr>
             <td>&vandelay.auto.import.noncolliding;</td>
             <td colspan='4'>
                 <input jsId='vlUploadQueueAutoImport' dojoType='dijit.form.CheckBox'/>
@@ -41,37 +62,12 @@
                 <input jsId='vlUploadQueueAutoOverlay1Match' dojoType='dijit.form.CheckBox'/>
             </td>
         </tr>
+        <tr><td colspan='2' style='border-bottom:1px solid #888'></td></tr>
         <tr>
-            <td>&vandelay.auto.import.merge_profile;</td>
-            <td colspan='4'>
-                <div jsId='vlUploadMergeProfile' dojoType='dijit.form.FilteringSelect' required='false' labelAttr='name' searchAttr='name'/>
-            </td>
-        </tr>
-        <tr>
-            <td>Holdings Import Profile</td>
-            <td>
-                <input jsId='vlUploadQueueHoldingsImportProfile'
-                    dojoType='dijit.form.FilteringSelect' labelAttr='name' searchAttr='name'/>
-            </td>
-        </tr>
-        <tr>
-            <td>&vandelay.import.bib_sources;</td>
-            <td>
-                <select name='bib_source' jsId='vlUploadSourceSelector' 
-                    dojoType='dijit.form.FilteringSelect' labelAttr='source' searchAttr='source'/>
-            </td>
-        </tr>
-        <tr>
-            <td>
+            <td colspan='5'>
                 <span id="vl-file-label">&vandelay.file.to.upload;</span>
-            </td>
-            <td id='vl-input-td' colspan='4'>
                 <input size='48' type="file" name="marc_upload"/>
-            </td>
-        </tr>
-        <tr>
-            <td align='center' colspan='4'>
-                <button dojoType="dijit.form.Button" onclick="batchUpload()">&vandelay.upload;</button>
+                <span style='margin-left:10px;'><button dojoType="dijit.form.Button" onclick="batchUpload()">&vandelay.upload;</button></span>
             </td>
         </tr>
     </table>
