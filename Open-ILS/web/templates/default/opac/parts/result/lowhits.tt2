@@ -19,12 +19,7 @@
             </table>
         </div>
         <div style="float:right;width:353px;background:#ccc;padding:10px;margin-top:7px;">
-            <p>
-                <strong>Still not finding what you are looking for?</strong><br />
-                Request that KCLS purchase the material you are looking for by making a
-                <a href="javascript:;">Purchase Request</a><br />
-                <strong>Note:</strong> You must be logged in to make a Purchase Request<br />
-            </p>
+            [% INCLUDE "default/opac/parts/result/lowhits_purchase.tt2" %]
             <p>
                 <strong>Keyword Search Tips</strong><br />
                 Change to <strong>Advanced Keyword Search.</strong>
