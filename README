@@ -16,7 +16,7 @@ before you can successfully configure, compile, and install Evergreen.
 +
 [source, bash]
 ------------------------------------------------------------------------------
-deb http://www.backports.org/debian squeeze-backports main contrib
+deb http://backports.debian.org/debian-backports squeeze-backports main contrib
 ------------------------------------------------------------------------------
 +
   * On Ubuntu Lucid, add the following line to `/etc/apt/sources.list`:
