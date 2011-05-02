@@ -1,57 +1,86 @@
 README for Evergreen trunk
+========================
 
 Installing prerequisites:
-========================
+-------------------------
+
 Evergreen has a number of prerequisite packages that must be installed
 before you can successfully configure, compile, and install Evergreen.
 
-1. Begin by installing the most recent version of OpenSRF (1.6.2 or later).
-You can download OpenSRF releases from
-http://evergreen-ils.org/downloads
-
-2. On Debian and Ubuntu, the easiest way to install the rest of the
-prerequisites for Evergreen is to use the Makefile.install prerequisite
-installer.
-
-Issue the following commands as the root user to install prerequisites
-using the Makefile.install prerequisite installer, substituting
-"debian-etch", "debian-lenny", "fedora-14", "ubuntu-hardy", "ubuntu-lucid",
-"centos", or "rhel" for <osname> below:
-
+1. Begin by installing the most recent version of OpenSRF (2.0 or later).
+   You can download OpenSRF releases from http://evergreen-ils.org/downloads
+2. On many distributions, it is necessary to install Postgres 9 from external
+   repositories.
++
+  * On Debian Squeeze, add the following line to `/etc/apt/sources.list`:
++
+[source, bash]
+------------------------------------------------------------------------------
+deb http://www.backports.org/debian squeeze-backports main contrib
+------------------------------------------------------------------------------
++
+  * On Ubuntu Lucid, add the following line to `/etc/apt/sources.list`:
++
+[source, bash]
+------------------------------------------------------------------------------
+deb http://archive.ubuntu.com/ubuntu lucid-backports main universe multiverse restricted
+------------------------------------------------------------------------------
++
+  * On Fedora 14, follow the http://yum.pgrpms.org/howtoyum.php[instructions
+    in the Yum HOWTO] to enable the PostgreSQL RPM Building Project yum
+    repository.
++
+3. On Debian and Ubuntu, the easiest way to install the rest of the
+   prerequisites for Evergreen is to use the Makefile.install prerequisite
+   installer.
+4. Issue the following commands as the root user to install prerequisites
+   using the Makefile.install prerequisite installer, substituting
+   `debian-squeeze`, `fedora-14`, `ubuntu-lucid`, `centos`, or `rhel` for
+   <osname> below:
++
+[source, bash]
+------------------------------------------------------------------------------
 make -f Open-ILS/src/extras/Makefile.install <osname>
+------------------------------------------------------------------------------
 
-Note: "centos" and "rhel" are less tested than the debian, fedora,
-and ubuntu options.  Your patches and suggestions for improvement are
+Note: `centos` and `rhel` are less tested than the `debian`, `fedora`,
+and `ubuntu` options.  Your patches and suggestions for improvement are
 welcome!
 
 Configuration and compilation instructions:
-==========================================
+-------------------------------------------
 
-For the time being, we are still installing everything in the /openils/
+For the time being, we are still installing everything in the `/openils/`
 directory. If you are working with a version of Evergreen taken directly
 from the Subversion repository, rather than a packaged version of Evergreen,
-first see "Developer instructions" below.
+first see `Developer instructions` below.
 
 Otherwise, issue the following commands to configure and build Evergreen:
 
+[source, bash]
+------------------------------------------------------------------------------
 ./configure --prefix=/openils --sysconfdir=/openils/conf
 make
+------------------------------------------------------------------------------
 
 Installation instructions:
-=========================
+--------------------------
 
 Once you have configured and compiled Evergreen, issue the following
 command as the root user to install Evergreen:
 
+[source, bash]
+------------------------------------------------------------------------------
 make STAFF_CLIENT_STAMP_ID=rel_trunk install
+------------------------------------------------------------------------------
 
 This will install Evergreen, including example configuration files in
-/openils/conf/ that you can use as templates for your own configuration files.
-The STAFF_CLIENT_STAMP_ID variable stamps the server-side and client-side files
+`/openils/conf/` that you can use as templates for your own configuration files.
+The `STAFF_CLIENT_STAMP_ID` variable stamps the server-side and client-side files
 for the staff client to ensure that they match.
 
 Install Dojo Toolkit:
-====================
+---------------------
 
 Evergreen uses the Dojo Toolkit to support its Web and staff client interfaces.
 
@@ -62,68 +91,82 @@ Issue the following commands as the root user to fetch, extract, and copy the
 files into the correct directory, adjusting the version number to match the
 version of the Dojo Toolkit that you downloaded:
 
+[source, bash]
+------------------------------------------------------------------------------
 wget http://download.dojotoolkit.org/release-1.3.3/dojo-release-1.3.3.tar.gz
 tar -C /openils/var/web/js -xzf dojo-release-1.3.3.tar.gz
 cp -r /openils/var/web/js/dojo-release-1.3.3/* /openils/var/web/js/dojo/.
+------------------------------------------------------------------------------
 
 Create the oils_web.xml configuration file:
-==========================================
+-------------------------------------------
 Many administration interfaces, such as acquisitions, bookings, and various
 configuration screens, depend on the correct configuration of HTML templates.
 Copying the sample configuration file into place should work in most cases:
 
+[source, bash]
+------------------------------------------------------------------------------
 cp /openils/conf/oils_web.xml.example /openils/conf/oils_web.xml
+------------------------------------------------------------------------------
 
 Change ownership of the Evergreen files:
-=======================================
+----------------------------------------
 
-All files in the /openils/ directory and subdirectories must be owned by the
-"opensrf" user. Issue the following command as the root user to change the
+All files in the `/openils/` directory and subdirectories must be owned by the
+`opensrf` user. Issue the following command as the root user to change the
 ownership on the files:
 
+[source, bash]
+------------------------------------------------------------------------------
 chown -R opensrf:opensrf /openils
+------------------------------------------------------------------------------
 
 Configure the Apache Web server:
-===============================
+--------------------------------
 
-Use the example configuration files in Open-ILS/examples/apache/ to configure
+Use the example configuration files in `Open-ILS/examples/apache/` to configure
 your Web server for the Evergreen catalog, staff client, Web services, and
 administration interfaces.
 
 Configure OpenSRF for the Evergreen application:
-===============================================
+------------------------------------------------
 
-There are a number of example OpenSRF configuration files in /openils/conf/ that
-you can use as a template for your Evergreen installation.
+There are a number of example OpenSRF configuration files in `/openils/conf/`
+that you can use as a template for your Evergreen installation.
 
+[source, bash]
+------------------------------------------------------------------------------
 cp /openils/conf/opensrf_core.xml.example /openils/conf/opensrf_core.xml
 cp /openils/conf/opensrf.xml.example /openils/conf/opensrf.xml
+------------------------------------------------------------------------------
 
 When you installed OpenSRF, you will have created four Jabber users on two
-separate domains and edited the opensrf_core.xml file accordingly. Please
+separate domains and edited the `opensrf_core.xml` file accordingly. Please
 refer back to the OpenSRF README and edit the Evergreen version of the
-opensrf_core.xml file using the same Jabber users and domains as you used
+`opensrf_core.xml` file using the same Jabber users and domains as you used
 while installing and testing OpenSRF.
 
-eg_db_config.pl, described in the following section, will set the database
-connection information in opensrf.xml for you.
+`eg_db_config.pl`, described in the following section, will set the database
+connection information in `opensrf.xml` for you.
 
 Creating the Evergreen database:
-===============================
+--------------------------------
 
-PostgreSQL 9.0 will be installed on your system by the Makefile.install
+PostgreSQL 9.0 will be installed on your system by the `Makefile.install`
 prerequisite installer if packages are available for your distribution, or
 you will have to compile PostgreSQL 9.0 from source and install it (which
 is beyond the scope of this document).
 
 Once the PostgreSQL database server has been installed, you will need to
 create the database and add the appropriate languages and extensions to
-support Evergreen. Issue the following commands as the "postgres" user to set
-up a database called "evergreen". Note that the location of the PostgreSQL
-"contrib" packages may vary depending on your distribution. In the following
+support Evergreen. Issue the following commands as the `postgres` user to set
+up a database called `evergreen`. Note that the location of the PostgreSQL
+`contrib` packages may vary depending on your distribution. In the following
 commands, we assume that you are working with PostgreSQL 9.0 on a Debian-based
 system:
 
+[source, bash]
+------------------------------------------------------------------------------
 createdb --template template0 --lc-ctype=C --lc-collate=C --encoding UNICODE evergreen
 createlang plperl evergreen
 createlang plperlu evergreen
@@ -132,13 +175,17 @@ psql -f /usr/share/postgresql/9.0/contrib/tablefunc.sql -d evergreen
 psql -f /usr/share/postgresql/9.0/contrib/tsearch2.sql -d evergreen
 psql -f /usr/share/postgresql/9.0/contrib/pgxml.sql -d evergreen
 psql -f /usr/share/postgresql/9.0/contrib/hstore.sql -d evergreen
+------------------------------------------------------------------------------
 
 Once you have created the Evergreen database, you need to create a PostgreSQL
-user to access the database. Issue the following command as the "postgres"
-user to create a new PostgreSQL user named "evergreen". When prompted, enter
-the new user's password and answer "yes" to make the new role a superuser:
+user to access the database. Issue the following command as the `postgres`
+user to create a new PostgreSQL user named `evergreen`. When prompted, enter
+the new user's password and answer `yes` to make the new role a superuser:
 
+[source, bash]
+------------------------------------------------------------------------------
 createuser -P evergreen
+------------------------------------------------------------------------------
 
 Once you have created the Evergreen database, you also need to create the
 database schema and configure your configuration files to point at the
@@ -148,23 +195,26 @@ with the appropriate values for your PostgreSQL database, and <admin-user> and
 <admin-pass> with the values you want for the default Evergreen administrator
 account:
 
+[source, bash]
+------------------------------------------------------------------------------
 perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
        --service all --create-schema --create-offline \
        --user <user> --password <password> --hostname <hostname> --port <port> \
        --database <dbname> --admin-user <admin-user> --admin-pass <admin-pass>
+------------------------------------------------------------------------------
 
 This will create the database schema and configure all of the services in
-your /openils/conf/opensrf.xml configuration file to point to that database.
+your `/openils/conf/opensrf.xml` configuration file to point to that database.
 It also creates the configuration files required by the Evergreen cgi-bin
 administration scripts, and set the user name and password for the default
 Evergreen administrator account to your requested values.
 
 Developer instructions:
-======================
+-----------------------
 
 Developers working directly with the source code from the Subversion
 repository will also need to install some extra packages and perform
-one more step before they can proceed with the "./configure" step.
+one more step before they can proceed with the `./configure` step.
 
 Install the following packages:
   * autoconf
@@ -174,19 +224,25 @@ Install the following packages:
 Run the following command in the source directory to generate the configure
 script and Makefiles:
 
+[source, bash]
+------------------------------------------------------------------------------
 ./autogen.sh 
+------------------------------------------------------------------------------
 
-After running 'make install', developers also need to install the Dojo Toolkit
+After running `make install`, developers also need to install the Dojo Toolkit
 set of JavaScript libraries. The appropriate version of Dojo is included
 in Evergreen release tarballs; developers should install the Dojo 1.3.3
 version of Dojo as follows:
 
+[source, bash]
+------------------------------------------------------------------------------
 wget http://download.dojotoolkit.org/release-1.3.3/dojo-release-1.3.3.tar.gz
 tar xzf dojo-release-1.3.3.tar.gz
 cp -r dojo-release-1.3.3/* /openils/var/web/js/dojo/.
+------------------------------------------------------------------------------
 
 Getting help:
-============
+-------------
 
 Need help installing or using Evergreen? Join the mailing lists at
 http://evergreen-ils.org/listserv.php or contact us on the Freenode
