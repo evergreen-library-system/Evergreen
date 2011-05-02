@@ -675,7 +675,7 @@ sub _build_volume_list {
 
         my $copies = $e->search_asset_copy([
             { call_number => $volume->id , deleted => 'f' },
-            { flesh => 1, flesh_fields => { acp => ['parts'] } }
+            { flesh => 1, flesh_fields => { acp => ['stat_cat_entries','parts'] } }
         ]);
 
         $copies = [ sort { $a->barcode cmp $b->barcode } @$copies  ];
