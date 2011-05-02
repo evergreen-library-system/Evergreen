@@ -61,7 +61,7 @@
             [% END; %]
         [% END; %]
     [% IF any_subjects == 0 %]
-        <tr><td><i>No Subjects</i></td></tr>
+        <tr><td><i>[% l('No Subjects') %]</i></td></tr>
     [% END; %]
     </table>
 </div>

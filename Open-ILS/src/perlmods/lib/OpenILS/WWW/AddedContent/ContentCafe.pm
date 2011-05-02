@@ -206,6 +206,27 @@ sub summary_json {
         $self->fetch_content('AnnotationDetail', $key));
 }
 
+sub available_json {
+    my($self, $key) = @_;
+    my $xml = $self->fetch_content('AvailableContent', $key);
+    my $doc = XML::LibXML->new->parse_string($xml);
+
+    my @avail;
+    for my $node ($doc->findnodes('//*[text()="true"]')) {
+        push(@avail, 'summary') if $node->nodeName eq 'Annotation';
+        push(@avail, 'jacket') if $node->nodeName eq 'Jacket';
+        push(@avail, 'toc') if $node->nodeName eq 'TOC';
+        push(@avail, 'anotes') if $node->nodeName eq 'Biography';
+        push(@avail, 'excerpt') if $node->nodeName eq 'Excerpt';
+        push(@avail, 'reviews') if $node->nodeName eq 'Review';
+    }
+
+    return { 
+        content_type => 'text/plain', 
+        content => OpenSRF::Utils::JSON->perl2JSON(\@avail)
+    };
+}
+
 
 # --------------------------------------------------------------------------
 
