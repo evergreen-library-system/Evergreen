@@ -430,19 +430,25 @@ sub retrieve_queued_records {
     };
 
     $query->{where}->{import_time} = undef if $$options{non_imported};
-    $query->{where}->{import_error} = {'!=' => undef} if $$options{with_rec_import_error};
 
-    if($$options{with_item_import_error} and $type eq 'bib') {
-        # limit to recs that have at least 1 item import error
-        $query->{from} = {
-            $class => {
-                vii => {
-                    field => 'record',
-                    fkey => 'id',
-                    filter => {import_error => {'!=' => undef}}
-                }
-            }
-        };
+    if($$options{with_import_error}) {
+
+        $query->{from} = {$class => {vii => {type => 'right'}}};
+        $query->{where}->{'-or'} = [
+            {'+vqbr' => {import_error => {'!=' => undef}}},
+            {'+vii' => {import_error => {'!=' => undef}}}
+        ];
+
+    } else {
+        
+        if($$options{with_rec_import_error}) {
+            $query->{where}->{import_error} = {'!=' => undef};
+
+        } elsif( $$options{with_item_import_error} and $type eq 'bib') {
+
+            $query->{from} = {$class => 'vii'};
+            $query->{where}->{'+vii'} = {import_error => {'!=' => undef}};
+        }
     }
 
     if($self->api_name =~ /matches/) {
