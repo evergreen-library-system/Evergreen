@@ -644,6 +644,43 @@ function vlLoadErrorUI(id) {
     }
 }
 
+function vlLoadErrorUIAll() {
+
+    displayGlobalDiv('vl-import-error-div');
+    openils.Util.hide('vl-import-error-grid-some');
+    openils.Util.show('vl-import-error-grid-all');
+    vlAllImportErrorGrid.resetStore();
+
+    vlAllImportErrorGrid.dataLoader = function() {
+
+        vlAllImportErrorGrid.showLoadProgressIndicator();
+
+        fieldmapper.standardRequest(
+            ['open-ils.vandelay', 'open-ils.vandelay.import_item.queue.retrieve'],
+            {
+                async : true,
+                params : [
+                    authtoken, currentQueueId, {   
+                        with_import_error:1, 
+                        offset : vlAllImportErrorGrid.displayOffset,
+                        limit : vlAllImportErrorGrid.displayLimit
+                    }
+                ],
+                onresponse : function(r) {
+                    var item = openils.Util.readResponse(r);
+                    if(!item) return;
+                    vlAllImportErrorGrid.store.newItem(vii.toStoreItem(item));
+                },
+                oncomplete : function() {
+                    vlAllImportErrorGrid.hideLoadProgressIndicator();
+                }
+            }
+        );
+    };
+
+    vlAllImportErrorGrid.dataLoader();
+}
+
 function vlGetOrg(rowIdx, item) {
     if(!item) return '';
     var value = this.grid.store.getValue(item, this.field);

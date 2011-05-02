@@ -518,7 +518,9 @@ sub retrieve_queue_import_items {
                 }
             }
         },
-        order_by => {'vii' => ['record','id']}
+        order_by => {'vii' => ['record','id']},
+        limit => $limit,
+        offset => $offset
     };
 
     $query->{where} = {'+vii' => {import_error => {'!=' => undef}}}
