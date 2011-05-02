@@ -374,6 +374,9 @@ function retrieveQueuedRecords(type, queueId, onload) {
     if(vlQueueGridShowNonImport.checked)
         params[2].non_imported = 1;
 
+    if(vlQueueGridShowImportErrors.checked)
+        params[2].with_import_error = 1;
+
     fieldmapper.standardRequest(
         ['open-ils.vandelay', method],
         {   async: true,
