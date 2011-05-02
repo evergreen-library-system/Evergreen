@@ -52,7 +52,7 @@ function scSetPerms() {
     PERMS[ASSET].update_stat_cat_entry =  OILS_WORK_PERMS.UPDATE_COPY_STAT_CAT_ENTRY;
     PERMS[ASSET].delete_stat_cat_entry =  OILS_WORK_PERMS.DELETE_COPY_STAT_CAT_ENTRY;
 
-    // set up the fitler select
+    // set up the filter select
     var fselector = $('sc_org_filter');
     var org_list = PERMS[currentlyVisible].update_stat_cat;
     buildMergedOrgSel(fselector, org_list, 0, 'shortname');
@@ -296,9 +296,12 @@ function scBuildNew() {
     var org_list = PERMS[type].create_stat_cat;
     if(org_list.length == 0) { /* no create perms */
         $('sc_new').disabled = true;
-        typeSel.disabled = true;
         libSel.disabled = true;
         return;
+    }
+    else {
+        $('sc_new').disabled = false;
+        libSel.disabled = false;
     }
     buildMergedOrgSel(libSel, org_list, 0, 'shortname');
 }
