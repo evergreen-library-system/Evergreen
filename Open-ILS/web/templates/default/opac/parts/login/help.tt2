@@ -1,0 +1,12 @@
+<td class="login_boxes right_brain" align="center" valign="top" width="291">
+
+    <a href="http://example.com"><img 
+        src="[% ctx.media_prefix %]/images/questions.png" alt="[% l('Questions?') %]" style="margin-top:29px;" /></a>
+
+    <div style="width:182px;color:black;padding:5px 25px;">
+        [% l('Visit our FAQs section for answers to common questions about how to use your account.') %]
+    </div>
+
+    <a href="http://example.com"><img
+        alt="[% l('FAQs') %]" src="[% ctx.media_prefix %]/images/faqs-btn.png" style="margin-top:13px;" /></a>
+</td>

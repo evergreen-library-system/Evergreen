@@ -116,11 +116,7 @@
                         <tr>
                             <td valign="top" class="lbl1">
                                 [% l('PIN Number or Password') %]<br />
-                                <span class="lbl2">
-                                    [% | l('<br/>', '<br/>') %]
-                                       If this is your first time logging in, please enter [_1] the last 4 digits of your phone number. [_2] Example: 0926
-                                    [% END %]
-                                </span>
+                                [% INCLUDE "default/opac/parts/login/password_hint.tt2" %]
                             </td>
                             <td valign="top">
                                 <div class="input_bg">
@@ -152,18 +148,7 @@
                     <br /><br />
                 </td>
 	            <td><div style="width:10px;"></div></td>
-                <td class="login_boxes right_brain" align="center" valign="top" width="291">
-
-                    <a href="http://www.kcls.org/about/contact/"><img 
-                        src="[% ctx.media_prefix %]/images/questions.png" alt="[% l('Questions?') %]" style="margin-top:29px;" /></a>
-
-	                <div style="width:182px;color:black;padding:5px 25px;">
-                        [% l('Visit our FAQs section for answers to common questions about how to use your account.') %]
-	                </div>
-
-                    <a href="http://www.kcls.org/usingthelibrary/catalog_help/index.cfm#FAQs"><img
-                        alt="[% l('FAQs') %]" src="[% ctx.media_prefix %]/images/faqs-btn.png" style="margin-top:13px;" /></a>
-	            </td>
+                [% INCLUDE "default/opac/parts/login/help.tt2" %]
             </tr>
         </table>
     </form>
