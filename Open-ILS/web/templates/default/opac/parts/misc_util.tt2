@@ -26,11 +26,11 @@
         # clean up the ISBN
         args.isbn_clean = args.isbn.replace('\ .*', '');
 
-        args.holdsing = [];
+        args.holdings = [];
         FOR holding IN xml.findnodes('//*[local-name()="volumes"]/*[local-name()="volume"]');
-            args.holdings.push({
-                # TODO
-            });
+            args.holdings.push(
+                holding.getAttribute('label')
+            );
         END;
 
         # Extract the copy count summary

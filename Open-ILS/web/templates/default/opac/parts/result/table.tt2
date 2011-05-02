@@ -104,31 +104,32 @@
                                                     <table cellpadding="0" cellspacing="0" border="0"
                                                         class="results_info_table">
                                                         <tr name='bib_cn_list' class='result_table_title_cell'>
-                                                            <td colspan='2'>
-                                                                <strong>Call number:</strong>[% args.marc_cn %][%# XXX KCLS %]
+                                                            <td valign='top'>
+                                                                <strong>[% l('Call number:') %]</strong>
                                                             </td>
+                                                            <td>[% args.holdings.0 %]</td>
                                                         </tr>
                                                         <tr name="results_pub_tr" class="[% attrs.publisher ? '' : 'hide_me' %]">
                                                             <td valign="top">
-                                                                <strong>Publisher:</strong>
+                                                                <strong>[% l('Publisher:') %]</strong>
                                                             </td>
                                                             <td>[% attrs.publisher; %]</td>
                                                         </tr>
                                                         <tr name="results_isbn_tr" class="[% attrs.isbn ? '' : 'hide_me' %]">
                                                             <td valign="top">
-                                                                <strong>ISBN:</strong>
+                                                                <strong>[% l('ISBN:') %]</strong>
                                                             </td>
                                                             <td>[% attrs.isbn %]</td>
                                                         </tr>
                                                         <tr name="results_edition_tr" class="[% attrs.edition ? '' : 'hide_me' %]">
                                                             <td valign="top">
-                                                                <strong>Edition:</strong>
+                                                                <strong>[% l('Edition:') %]</strong>
                                                             </td>
                                                             <td>[% attrs.edition %]</td>
                                                         </tr>
                                                         <tr name="results_phys_desc_tr" class="[% attrs.phys_desc ? '' : 'hide_me' %]">
                                                             <td nowrap="nowrap" valign="top">
-                                                                <strong>Phys. Desc.:</strong>
+                                                                <strong>[% l('Phys. Desc.:') %]</strong>
                                                             </td>
                                                             <td>
                                                                 [% args.phys_desc %]
@@ -161,11 +162,8 @@
                                                 <img title="[% attrs.format_label %]" alt="[% attrs.format_label %]" src="[% attrs.format_icon %]" />
                                                 [% END %]
 
-                                                <!-- Empty span used for creating unAPI links -->
                                                 <span class="hide_me">
-                                                    <abbr style='padding-left: 8px;' name="unapi" class="unapi-id">
-                                                    <!-- unAPI URI goes here -->
-                                                    </abbr>
+                                                    <abbr class="unapi-id">&nbsp;</abbr>
                                                 </span>
 
                                                 <!-- Empty span used for creating Google Book Search-->
