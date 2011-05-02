@@ -125,8 +125,12 @@ sub bib_to_svr {
 	my $mfhd_parser = OpenILS::Utils::MFHDParser->new();
 	foreach (@$sdists) {
         my $svr;
-        if (ref $_->record_entry) {
-            $svr = $mfhd_parser->generate_svr($_->record_entry->id, $_->record_entry->marc, $_->record_entry->owning_lib);
+        if (ref $_->record_entry and $_->summary_method ne 'use_sdist_only') {
+            my $skip_all_computable = 0;
+            if ($_->summary_method eq 'merge_with_sre') { # 'computable' (85x/86x combos) are handled by generated_coverage when attempting to merge
+                $skip_all_computable = 1;
+            }
+            $svr = $mfhd_parser->generate_svr($_->record_entry->id, $_->record_entry->marc, $_->record_entry->owning_lib, $skip_all_computable);
         } else {
             $svr = Fieldmapper::serial::virtual_record->new;
             $svr->sre_id(-1);
@@ -142,28 +146,30 @@ sub bib_to_svr {
             $svr->missing([]);
             $svr->incomplete([]);
         }
-        if (ref $_->basic_summary) { #TODO: 'show-generated' boolean on summaries
-            if ($_->basic_summary->generated_coverage) {
-                push(@{$svr->basic_holdings}, $_->basic_summary->generated_coverage);
+        if ($_->summary_method ne 'use_sre_only') {
+            if (ref $_->basic_summary) { #TODO: 'show-generated' boolean on summaries
+                if ($_->basic_summary->generated_coverage) {
+                    push(@{$svr->basic_holdings}, $_->basic_summary->generated_coverage);
+                }
+                if ($_->basic_summary->textual_holdings) {
+                    push(@{$svr->basic_holdings_add}, $_->basic_summary->textual_holdings);
+                }
             }
-            if ($_->basic_summary->textual_holdings) {
-                push(@{$svr->basic_holdings_add}, $_->basic_summary->textual_holdings);
+            if (ref $_->supplement_summary) {
+                if ($_->supplement_summary->generated_coverage) {
+                    push(@{$svr->supplement_holdings}, $_->supplement_summary->generated_coverage);
+                }
+                if ($_->supplement_summary->textual_holdings) {
+                    push(@{$svr->supplement_holdings_add}, $_->supplement_summary->textual_holdings);
+                }
             }
-        }
-        if (ref $_->supplement_summary) {
-            if ($_->supplement_summary->generated_coverage) {
-                push(@{$svr->supplement_holdings}, $_->supplement_summary->generated_coverage);
-            }
-            if ($_->supplement_summary->textual_holdings) {
-                push(@{$svr->supplement_holdings_add}, $_->supplement_summary->textual_holdings);
-            }
-        }
-        if (ref $_->index_summary) {
-            if ($_->index_summary->generated_coverage) {
-                push(@{$svr->index_holdings}, $_->index_summary->generated_coverage);
-            }
-            if ($_->index_summary->textual_holdings) {
-                push(@{$svr->index_holdings_add}, $_->index_summary->textual_holdings);
+            if (ref $_->index_summary) {
+                if ($_->index_summary->generated_coverage) {
+                    push(@{$svr->index_holdings}, $_->index_summary->generated_coverage);
+                }
+                if ($_->index_summary->textual_holdings) {
+                    push(@{$svr->index_holdings_add}, $_->index_summary->textual_holdings);
+                }
             }
         }
         push(@$svrs, $svr);

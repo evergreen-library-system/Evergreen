@@ -54,7 +54,7 @@ Returns a Perl hash containing fields of interest from the MFHD record
 =cut
 
 sub mfhd_to_hash {
-    my ($self, $mfhd_xml) = @_;
+    my ($self, $mfhd_xml, $skip_all_computable) = @_;
 
     my $marc;
     my $mfhd;
@@ -142,55 +142,57 @@ sub mfhd_to_hash {
             }
         }
 
-        if (!exists($skip_computable{'basic'})) {
-            foreach my $cap_id ($mfhd->caption_link_ids('853')) {
-                my @holdings = $mfhd->holdings('863', $cap_id);
-                next unless scalar @holdings;
-                foreach (@holdings) {
-                    push @$basic_holdings, $_->format();
+        if (!$skip_all_computable) {
+            if (!exists($skip_computable{'basic'})) {
+                foreach my $cap_id ($mfhd->caption_link_ids('853')) {
+                    my @holdings = $mfhd->holdings('863', $cap_id);
+                    next unless scalar @holdings;
+                    foreach (@holdings) {
+                        push @$basic_holdings, $_->format();
+                    }
                 }
-            }
-            if (!@$basic_holdings) { # no computed holdings found
+                if (!@$basic_holdings) { # no computed holdings found
+                    $basic_holdings = $basic_holdings_add;
+                    $basic_holdings_add = [];
+                }
+            } else { # textual are non additional, but primary
                 $basic_holdings = $basic_holdings_add;
                 $basic_holdings_add = [];
             }
-        } else { # textual are non additional, but primary
-            $basic_holdings = $basic_holdings_add;
-            $basic_holdings_add = [];
-        }
 
-        if (!exists($skip_computable{'supplement'})) {
-            foreach my $cap_id ($mfhd->caption_link_ids('854')) {
-                my @supplements = $mfhd->holdings('864', $cap_id);
-                next unless scalar @supplements;
-                foreach (@supplements) {
-                    push @$supplement_holdings, $_->format();
+            if (!exists($skip_computable{'supplement'})) {
+                foreach my $cap_id ($mfhd->caption_link_ids('854')) {
+                    my @supplements = $mfhd->holdings('864', $cap_id);
+                    next unless scalar @supplements;
+                    foreach (@supplements) {
+                        push @$supplement_holdings, $_->format();
+                    }
                 }
-            }
-            if (!@$supplement_holdings) { # no computed holdings found
+                if (!@$supplement_holdings) { # no computed holdings found
+                    $supplement_holdings = $supplement_holdings_add;
+                    $supplement_holdings_add = [];
+                }
+            } else { # textual are non additional, but primary
                 $supplement_holdings = $supplement_holdings_add;
                 $supplement_holdings_add = [];
             }
-        } else { # textual are non additional, but primary
-            $supplement_holdings = $supplement_holdings_add;
-            $supplement_holdings_add = [];
-        }
 
-        if (!exists($skip_computable{'index'})) {
-            foreach my $cap_id ($mfhd->caption_link_ids('855')) {
-                my @indexes = $mfhd->holdings('865', $cap_id);
-                next unless scalar @indexes;
-                foreach (@indexes) {
-                    push @$index_holdings, $_->format();
+            if (!exists($skip_computable{'index'})) {
+                foreach my $cap_id ($mfhd->caption_link_ids('855')) {
+                    my @indexes = $mfhd->holdings('865', $cap_id);
+                    next unless scalar @indexes;
+                    foreach (@indexes) {
+                        push @$index_holdings, $_->format();
+                    }
                 }
-            }
-            if (!@$index_holdings) { # no computed holdings found
+                if (!@$index_holdings) { # no computed holdings found
+                    $index_holdings = $index_holdings_add;
+                    $index_holdings_add = [];
+                }
+            } else { # textual are non additional, but primary
                 $index_holdings = $index_holdings_add;
                 $index_holdings_add = [];
             }
-        } else { # textual are non additional, but primary
-            $index_holdings = $index_holdings_add;
-            $index_holdings_add = [];
         }
 
         # Laurentian extensions
@@ -271,14 +273,14 @@ Given an MFHD record, return a populated svr instance
 =cut
 
 sub generate_svr {
-    my ($self, $id, $mfhd, $owning_lib) = @_;
+    my ($self, $id, $mfhd, $owning_lib, $skip_all_computable) = @_;
 
     if (!$mfhd) {
         return undef;
     }
 
     my $record   = init_holdings_virtual_record();
-    my $holdings = $self->mfhd_to_hash($mfhd);
+    my $holdings = $self->mfhd_to_hash($mfhd, $skip_all_computable);
 
     $record->sre_id($id);
     $record->owning_lib($owning_lib);

@@ -932,8 +932,6 @@ sub make_predictions {
 # a hash ref of options initially defined as:
 # caption : the caption field to predict on
 # num_to_predict : the number of issues you wish to predict
-# last_rec_date : the date of the last received issue, to be used as an offset
-#                 for predicting future issues
 # faked_chron_date : if the serial does not actually have a chronology caption (but we need one for prediction's sake), base predictions on this date
 #
 # The basic method is to first convert to a single holding if compressed, then
@@ -952,7 +950,6 @@ sub _generate_issuance_values {
     my $end_date = $options->{end_date};
     my $predict_from = $options->{predict_from};   # issuance to predict from
     my $faked_chron_date = $options->{faked_chron_date};   # serial does not have a chronology caption, so add one (temporarily) based on this date 
-    #my $last_rec_date = $options->{last_rec_date};   # expected or actual
 
 
 # Only needed for 'real' MFHD records, not our temp records
@@ -1040,6 +1037,8 @@ sub _revive_holding {
 
     # build MFHD::Holding
     return new MFHD::Holding($seqno, $holding_field, $caption_field);
+
+    # TODO(?) the underlying MARC and the Holding object end up in conflict concerning subfield '8'
 }
 
 __PACKAGE__->register_method(
@@ -1237,11 +1236,13 @@ sub unitize_items {
 
         $found_stream_ids{$stream_id} = 1;
 
-        if (defined($unit_id)) {
+        if (defined($unit_id) and $unit_id ne '') {
             $found_unit_ids{$unit_id} = 1;
             # save the stream_id for this unit_id
             # TODO: prevent items from different streams in same unit? (perhaps in interface)
             $stream_ids_by_unit_id{$unit_id} = $stream_id;
+        } else {
+            $item->clear_unit;
         }
 
         my $evt = _update_sitem($editor, undef, $item);
@@ -1324,6 +1325,7 @@ sub unitize_items {
             } else {
                 $sdist = $editor->search_serial_distribution([{"+sstr" => {"id" => $stream_id}}, { "join" => {"sstr" => {}} }]);
                 $sdist = $sdist->[0];
+                $sdist_by_stream_id{$stream_id} = $sdist;
             }
             my $streams;
             if (!exists($streams_by_sdist{$sdist->id})) {
@@ -1344,7 +1346,7 @@ sub unitize_items {
             foreach my $type (keys %{$found_types{$stream_id}}) {
                 my $issuances = $editor->search_serial_issuance([ {"+sitem" => {"stream" => $stream_id, "status" => "Received"}, "+scap" => {"type" => $type}}, {"join" => {"sitem" => {}, "scap" => {}}, "order_by" => {"siss" => "date_published"}} ]);
                 #TODO: evt on search failure
-                my $evt = _prepare_summaries($editor, $issuances, $sdist_id, $type);
+                my $evt = _prepare_summaries($editor, $issuances, $sdist_by_stream_id{$stream_id}, $type);
                 if ($U->event_code($evt)) {
                     $editor->rollback;
                     return $evt;
@@ -1459,12 +1461,12 @@ sub _prepare_unit {
 # type ('basic', 'index', 'supplement') for a given distribution.
 # It also creates the summary if it doesn't yet exist.
 sub _prepare_summaries {
-    my ($e, $issuances, $dist_id, $type) = @_;
+    my ($e, $issuances, $sdist, $type) = @_;
 
-    my ($mfhd, $formatted_parts) = _summarize_contents($e, $issuances);
+    my ($mfhd, $formatted_parts) = _summarize_contents($e, $issuances, $sdist);
 
     my $search_method = "search_serial_${type}_summary";
-    my $summary = $e->$search_method([{"distribution" => $dist_id}]);
+    my $summary = $e->$search_method([{"distribution" => $sdist->id}]);
 
     my $cu_method = "update";
 
@@ -1473,7 +1475,7 @@ sub _prepare_summaries {
     } else {
         my $class = "Fieldmapper::serial::${type}_summary";
         $summary = $class->new;
-        $summary->distribution($dist_id);
+        $summary->distribution($sdist->id);
         $cu_method = "create";
     }
 
@@ -1660,7 +1662,7 @@ sub receive_items_one_unit_per {
             unless (grep { $_->id == $item->issuance->id } @$issuances_received) {
                 push @$issuances_received, $item->issuance;
             }
-            $evt = _prepare_summaries($e, $issuances_received, $item->stream->distribution->id, $item->issuance->holding_type);
+            $evt = _prepare_summaries($e, $issuances_received, $item->stream->distribution, $item->issuance->holding_type);
             if ($U->event_code($evt)) {
                 $e->rollback;
                 return $evt;
@@ -1751,14 +1753,32 @@ sub _build_unit {
 sub _summarize_contents {
     my $editor = shift;
     my $issuances = shift;
+    my $sdist = shift;
 
-    # create MFHD record
-    my $mfhd = MFHD->new(MARC::Record->new());
+    # create or lookup MFHD record
+    my $mfhd;
+    if ($sdist and defined($sdist->record_entry) and $sdist->summary_method eq 'merge_with_sre') {
+        my $sre;
+        if (ref $sdist->record_entry) {
+            $sre = $sdist->record_entry; 
+        } else {
+            $sre = $editor->retrieve_serial_record_entry($sdist->record_entry);
+        }
+        $mfhd = MFHD->new(MARC::Record->new_from_xml($sre->marc)); 
+    } else {
+        $logger->info($sdist);
+        $mfhd = MFHD->new(MARC::Record->new());
+    }
+
     my %scaps;
     my %scap_fields;
-    my @scap_fields_ordered;
     my $seqno = 1;
-    my $link_id = 1;
+    # We keep track of these separately to avoid link_id contamination,
+    # e.g. a basic issuance, followed by a merging supplement, followed by
+    # another basic.  If we could be sure that they were not mixed, one
+    # value could suffice.
+    my %link_ids = ('basic' => 10000, 'index' => 10000, 'supplement' => 10000);
+    my %first_scap = ('basic' => 1, 'index' => 1, 'supplement' => 1);
     foreach my $issuance (@$issuances) {
         my $scap_id = $issuance->caption_and_pattern;
         next if (!$scap_id); # skip issuances with no caption/pattern
@@ -1770,13 +1790,35 @@ sub _summarize_contents {
             $scaps{$scap_id} = $editor->retrieve_serial_caption_and_pattern($scap_id);
             $scap = $scaps{$scap_id};
             $scap_field = _revive_caption($scap);
+            my $did_merge = 0;
+            if ($first_scap{$scap->type}) { # special merge processing
+                $first_scap{$MFHD_TAGS_BY_NAME{$scap->type}} = 0;
+                if ($sdist and $sdist->summary_method eq 'merge_with_sre') {
+                    # MFHD Caption objects do not yet have a built-in compare (TODO), so let's do a basic one
+                    my @field_85xs = $mfhd->field($MFHD_TAGS_BY_NAME{$scap->type});
+                    if (@field_85xs) {
+                        my $last_caption_field = $field_85xs[-1];
+                        my $last_link_id = $last_caption_field->subfield('8');
+                        # set the link id to match, temporarily, for comparison
+                        $last_caption_field->update('8' => $scap_field->subfield('8'));
+                        my $last_caption_json = OpenSRF::Utils::JSON->perl2JSON([$last_caption_field->indicator(1), $last_caption_field->indicator(2), $last_caption_field->subfields_list]);
+                        if ($last_caption_json eq $scap->pattern_code) { # merge is possible, they match
+                            # restore link id
+                            $link_ids{$scap->type} = $last_link_id;
+                            # set scap_field to last field
+                            $scap_field = $last_caption_field;
+                            $did_merge = 1;
+                        }
+                    }
+                }
+            }
             $scap_fields{$scap_id} = $scap_field;
-            push(@scap_fields_ordered, $scap_field);
-            $scap_field->update('8' => $link_id);
-            $mfhd->append_fields($scap_field);
-            $link_id++;
+            $scap_field->update('8' => $link_ids{$scap->type});
+            # TODO: make MFHD/Caption smarter about this
+            $scap_field->{_mfhdc_LINK_ID} = $link_ids{$scap->type};
+            $mfhd->append_fields($scap_field) if !$did_merge;
+            $link_ids{$scap->type}++;
         } else {
-            $scap = $scaps{$scap_id};
             $scap_field = $scap_fields{$scap_id};
         }
 
@@ -1785,6 +1827,7 @@ sub _summarize_contents {
     }
 
     my @formatted_parts;
+    my @scap_fields_ordered = $mfhd->field('85[345]');
     foreach my $scap_field (@scap_fields_ordered) { #TODO: use generic MFHD "summarize" method, once available
        my @updated_holdings = $mfhd->get_compressed_holdings($scap_field);
        foreach my $holding (@updated_holdings) {

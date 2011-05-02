@@ -159,6 +159,15 @@ serial.sdist_editor.prototype = {
                 }
             ],
             [
+                'summary_method',
+                {
+                    render: 'obj.summary_methods[fm.summary_method()]',
+                    input: 'c = function(v){ obj.apply("summary_method",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_object_to_list( obj.summary_methods, function(obj,i) { return [ obj[i], i ]; })); x.setAttribute("value",obj.editor_values.summary_method); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+                    value_key: 'summary_method',
+                    dropdown_key: 'fm.summary_method() == null ? null : fm.summary_method()'
+                }
+            ],
+            [
                 'unit_label_prefix',
                 {
                     input: 'c = function(v){ obj.apply("unit_label_prefix",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.setAttribute("value",obj.editor_values.unit_label_prefix); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
@@ -390,8 +399,14 @@ serial.sdist_editor.prototype = {
             obj.error.standard_unexpected_error_alert('get_act_list',E);
             return [];
         }
+    },
+    /******************************************************************************************************/
+    'summary_methods' : {
+        "add_to_sre" : $('serialStrings').getString('staff.serial.sdist_editor.add_to_sre.label'),
+        "merge_with_sre" : $('serialStrings').getString('staff.serial.sdist_editor.merge_with_sre.label'),
+        "use_sre_only" : $('serialStrings').getString('staff.serial.sdist_editor.use_sre_only.label'),
+        "use_sdist_only" : $('serialStrings').getString('staff.serial.sdist_editor.use_sdist_only.label'),
     }
-
 };
 
 dump('exiting serial/sdist_editor.js\n');
