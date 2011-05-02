@@ -22,11 +22,17 @@ serial.manage_items.prototype = {
 		var obj = this;
 
         try {
-            obj.holding_lib = $('serial_item_lib_menu').value;
+            obj.lib = $('serial_item_lib_menu').value;
+            var sdist_retrieve_params = {"+ssub":{"record_entry" : obj.docid}};
+            if (obj.mode == 'receive') {
+                sdist_retrieve_params["+ssub"].owning_lib = obj.lib;
+            } else {
+                sdist_retrieve_params.holding_lib = obj.lib;
+            }
             var robj = obj.network.request(
                 'open-ils.pcrud',
                 'open-ils.pcrud.id_list.sdist',
-                [ ses(), {"holding_lib" : obj.holding_lib, "+ssub":{"record_entry" : obj.docid}}, {"join":"ssub"} ]
+                [ ses(), sdist_retrieve_params, {"join":"ssub"} ]
             );
             if (robj != null) {
                 if (typeof robj.ilsevent != 'undefined') throw(robj);
@@ -105,8 +111,10 @@ serial.manage_items.prototype = {
         // deal with mode radio selectedIndex, as load_attributes is setting a "read-only" value
         if ($('mode_receive').getAttribute('selected')) {
             $('serial_manage_items_mode').selectedIndex = 0;
-        } else {
+        } else if ($('mode_advanced_receive').getAttribute('selected')) {
             $('serial_manage_items_mode').selectedIndex = 1;
+        } else {
+            $('serial_manage_items_mode').selectedIndex = 2;
         }
 
         // setup recent sunits list
@@ -298,16 +306,7 @@ serial.manage_items.prototype = {
                         function(evt) {
                             try {
                                 var target = evt.explicitOriginalTarget;
-                                var label = target.label;
-                                var sunit_id = target.getAttribute('sunit_id');
-                                var sdist_id = target.getAttribute('sdist_id');
-                                var sstr_id = target.getAttribute('sstr_id');
-                                obj.set_sunit(sunit_id, label, sdist_id, sstr_id);
-                                obj.save_sunit(sunit_id, label, sdist_id, sstr_id);
-                                if (obj.mode == 'bind') {
-                                    obj.refresh_list('main');
-                                    obj.refresh_list('workarea');
-                                }
+                                obj.process_unit_selection(target);
                             } catch(E) {
                                 obj.error.standard_unexpected_error_alert('cmd_set_sunit failed!',E);
                             }
@@ -348,7 +347,7 @@ serial.manage_items.prototype = {
                                     );
 
                                 var method; var success_label;
-                                if (obj.mode == 'receive') {
+                                if (obj.mode == 'receive' || obj.mode == 'advanced_receive') {
                                     method = 'open-ils.serial.receive_items';
                                     success_label = 'received';
                                 } else { // bind mode
@@ -359,7 +358,7 @@ serial.manage_items.prototype = {
                                 // deal with barcodes and call numbers for *NEW* units
                                 var barcodes = {};
                                 var call_numbers = {};
-                                var call_numbers_by_issuance_id = {};
+                                var call_numbers_by_siss_and_sdist = {};
 
                                 if (obj.current_sunit_id < 0) { // **AUTO** or **NEW** units
                                     var new_unit_barcode = '';
@@ -388,16 +387,24 @@ serial.manage_items.prototype = {
                                             alert('Invalid barcode entered, defaulting to system-generated.');
                                             barcode = '@@AUTO';
                                         } else {
+                                            // disable alarm sound temporarily
+                                            var sound_setting = obj.data.no_sound;
+                                            if (!sound_setting) { // undefined or false
+                                                obj.data.no_sound = true; obj.data.stash('no_sound');
+                                            }
                                             var test = obj.network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ barcode ]);
                                             if (typeof test.ilsevent == 'undefined') {
                                                 alert('Another copy has barcode "' + barcode + '", defaulting to system-generated.');
                                                 barcode = '@@AUTO';
                                             }
+                                            if (!sound_setting) {
+                                                obj.data.no_sound = sound_setting; obj.data.stash('no_sound');
+                                            }
                                         }
                                         barcodes[item.id()] = barcode;
 
                                         // now call numbers
-                                        if (typeof call_numbers_by_issuance_id[item.issuance().id()] == 'undefined') {
+                                        if (typeof call_numbers_by_siss_and_sdist[item.issuance().id() + '@' + item.stream().distribution().id()] == 'undefined') {
                                             var default_cn = 'DEFAULT';
                                             // if they defined a *_call_number, honor it as the default
                                             var preset_cn_id = item.stream().distribution()[obj.mode + '_call_number']();
@@ -412,11 +419,10 @@ serial.manage_items.prototype = {
                                                 }
                                             } else {
                                                 // for now, let's default to the last created call number if there is one
-                                                // TODO: make this distribution specific
                                                 var acn_list = obj.network.request(
                                                         'open-ils.pcrud',
                                                         'open-ils.pcrud.search.acn',
-                                                        [ ses(), {"record" : obj.docid, "owning_lib" : obj.holding_lib, "deleted" : 'f' }, {"order_by" : {"acn" : "create_date DESC"}, "limit" : "1" } ]
+                                                        [ ses(), {"record" : obj.docid, "owning_lib" : item.stream().distribution().holding_lib(), "deleted" : 'f' }, {"order_by" : {"acn" : "create_date DESC"}, "limit" : "1" } ]
                                                 );
 
                                                 if (acn_list) {
@@ -433,10 +439,10 @@ serial.manage_items.prototype = {
                                                 call_number = 'DEFAULT'; //TODO: real default by setting
                                             }
                                             call_numbers[item.id()] = call_number;
-                                            call_numbers_by_issuance_id[item.issuance().id()] = call_number;
+                                            call_numbers_by_siss_and_sdist[item.issuance().id() + '@' + item.stream().distribution().id()] = call_number;
                                         } else {
-                                            // we have already seen this same issuance, so use the same call number
-                                            call_numbers[item.id()] = call_numbers_by_issuance_id[item.issuance().id()];
+                                            // we have already seen this same issuance and distribution combo, so use the same call number
+                                            call_numbers[item.id()] = call_numbers_by_siss_and_sdist[item.issuance().id() + '@' + item.stream().distribution().id()];
                                         }
 
                                         if (obj.current_sunit_id == -2) {
@@ -531,6 +537,7 @@ serial.manage_items.prototype = {
 
 	'rebuild_current_sunit' : function(sdist_label, sdist_id, sstr_id) {
 		var obj = this;
+        if (!obj.current_sunit_id) return; // current sunit is NONE
 		try {
             var robj = obj.network.request(
                 'open-ils.pcrud',
@@ -553,7 +560,7 @@ serial.manage_items.prototype = {
             obj.current_sunit_id = sunit_id;
             obj.current_sunit_sdist_id = sdist_id;
             obj.current_sunit_sstr_id = sstr_id;
-            if (sunit_id < 0) {
+            if (sunit_id < 0  || sunit_id === '') {
                 $('serial_workarea_sunit_desc').firstChild.nodeValue = '**' + label + '**';
             } else {
                 $('serial_workarea_sunit_desc').firstChild.nodeValue = label;
@@ -653,7 +660,9 @@ serial.manage_items.prototype = {
             obj.mode = mode;
         }
 
-        if (mode == 'receive') {
+        obj.set_sdist_ids();
+
+        if (mode == 'receive' || mode == 'advanced_receive') {
             $('serial_workarea_mode_label').value = 'Recently Received';
             if ($('serial_manage_items_show_all').checked) {
                 obj.lists.main.sitem_retrieve_params = {};
@@ -664,8 +673,20 @@ serial.manage_items.prototype = {
 
             obj.lists.workarea.sitem_retrieve_params = {'date_received' : {"!=" : null}};
             obj.lists.workarea.sitem_extra_params ={'order_by' : {'sitem' : 'date_received DESC'}, 'limit' : 30};
+            if (mode == 'receive') {
+                $('serial_manage_items_context').value = $('serialStrings').getString('staff.serial.manage_items.subscriber.label') + ':';
+                $('cmd_set_other_sunit').setAttribute('disabled','true');
+                $('serial_items_recent_sunits').disabled = true;
+                obj.process_unit_selection($('serial_items_auto_per_item_menuitem'));
+                //obj.set_sunit(obj.current_sunit_id, label, sdist_id, sstr_id);
+            } else {
+                $('serial_manage_items_context').value = $('serialStrings').getString('staff.serial.manage_items.holder.label') + ':';
+                $('cmd_set_other_sunit').setAttribute('disabled','false');
+                $('serial_items_recent_sunits').disabled = false;
+            }    
         } else { // bind mode
             $('serial_workarea_mode_label').value = 'Bound Items in Current Working Unit';
+            $('serial_manage_items_context').value = $('serialStrings').getString('staff.serial.manage_items.holder.label') + ':';
             if ($('serial_manage_items_show_all').checked) {
                 obj.lists.main.sitem_retrieve_params = {};
             } else {
@@ -676,6 +697,8 @@ serial.manage_items.prototype = {
             obj.lists.workarea.sitem_retrieve_params = {}; // unit set dynamically in 'retrieve'
             obj.lists.workarea.sitem_extra_params ={'order_by' : {'sitem' : 'date_received DESC'}};
 
+            $('cmd_set_other_sunit').setAttribute('disabled','false');
+            $('serial_items_recent_sunits').disabled = false;
             // default to **NEW UNIT**
             // For now, keep the unit static.  TODO: Eventually, keep track of and store the last used unit value for both receive and bind separately
             // obj.set_sunit(-2, 'New Unit', '', '');
@@ -686,7 +709,7 @@ serial.manage_items.prototype = {
 		var obj = this;
 
         JSAN.use('util.file'); var file = new util.file('serial_items_prefs.'+obj.data.server_unadorned);
-        util.widgets.save_attributes(file, { 'serial_item_lib_menu' : [ 'value' ], 'mode_receive' : [ 'selected' ], 'mode_bind' : [ 'selected' ], 'serial_manage_items_show_all' : [ 'checked' ] });
+        util.widgets.save_attributes(file, { 'serial_item_lib_menu' : [ 'value' ], 'mode_receive' : [ 'selected' ], 'mode_advanced_receive' : [ 'selected' ], 'mode_bind' : [ 'selected' ], 'serial_manage_items_show_all' : [ 'checked' ] });
     },
 
 	'init_lists' : function() {
@@ -846,7 +869,22 @@ serial.manage_items.prototype = {
 		obj.controller.view.sel_mark_items_missing.setAttribute('disabled','false');*/
 
 		obj.retrieve_ids = list;
-	}
+	},
+
+    'process_unit_selection' : function(menuitem) {
+        var obj = this;
+
+        var label = menuitem.label;
+        var sunit_id = menuitem.getAttribute('sunit_id');
+        var sdist_id = menuitem.getAttribute('sdist_id');
+        var sstr_id = menuitem.getAttribute('sstr_id');
+        obj.set_sunit(sunit_id, label, sdist_id, sstr_id);
+        obj.save_sunit(sunit_id, label, sdist_id, sstr_id);
+        if (obj.mode == 'bind') {
+            obj.refresh_list('main');
+            obj.refresh_list('workarea');
+        }
+    }
 }
 
 function item_columns(modify,params) {
@@ -881,6 +919,14 @@ function item_columns(modify,params) {
             'hidden' : false,
             'persist' : 'hidden width ordinal',
             'render' : function(my) { return my.sitem.stream().distribution().label(); }
+        },        {
+            'id' : 'distribution_ou',
+            'label' : $('serialStrings').getString('staff.serial.manage_items.holder.label'),
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : false,
+            'persist' : 'hidden width ordinal',
+            'render' : function(my) { return data.hash.aou[ my.sitem.stream().distribution().holding_lib() ].shortname(); }
         },
         {
             'id' : 'stream_id',

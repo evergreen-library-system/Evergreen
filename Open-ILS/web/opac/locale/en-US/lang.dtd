@@ -1690,13 +1690,16 @@
 <!ENTITY staff.serial.manage_items.mode "Mode:">
 <!ENTITY staff.serial.manage_items.bind.label "Bind">
 <!ENTITY staff.serial.manage_items.receive.label "Receive">
+<!ENTITY staff.serial.manage_items.advanced_receive.label "Adv. Receive">
 <!ENTITY staff.serial.manage_items.show_all.label "Show All">
 <!ENTITY staff.serial.manage_items.receive_move.label "Receive/Move Selected &#8595;">
 <!ENTITY staff.serial.manage_items.set_current_unit.label "Set Current Unit">
 <!ENTITY staff.serial.manage_items.auto_per_item.label "Auto per Item">
 <!ENTITY staff.serial.manage_items.new_unit.label "New Unit">
+<!ENTITY staff.serial.manage_items.no_unit.label "No Unit">
 <!ENTITY staff.serial.manage_items.recent.label "Recent">
 <!ENTITY staff.serial.manage_items.other_unit.label "Other...">
+<!ENTITY staff.serial.manage_items.context.label "Context:">
 
 <!ENTITY staff.serial.batch_receive "Batch Receive">
 <!ENTITY staff.serial.batch_receive.bib_search_term.label "Enter an identifier for a bibliographic record:">
