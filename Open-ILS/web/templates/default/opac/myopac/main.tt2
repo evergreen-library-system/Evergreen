@@ -304,30 +304,7 @@
                     </button>
                 </td>
             </tr>
-            <tr>
-                <td colspan="3">
-                    <br />
-                    Important! You must have a printed receipt to be
-                    eligible for a refund on lost items (regulations allow
-                    for no exceptions).
-                    <br />
-                    <strong>
-                        To ensure your necessary receipt information is
-                        not lost, enter your email address above and a
-                        receipt will be emailed to you. Otherwise, make
-                        certain you have a printed receipt in hand before
-                        closing the payment receipt screen.
-                    </strong>
-                    <br />
-                    Refunds are not available for parts and pieces, overdue
-                    fines, or items that do not display a specific title in
-                    My Account. For a full list of refundable and
-                    non-refundable items, visit
-                    <a href="http://www.kcls.org/usingthelibrary/borrowing/refundable.cfm">http://www.kcls.org/usingthelibrary/borrowing/refundable.cfm</a><br /><br />
-                    This site uses VeriSign SSL encryption to ensure your
-                    privacy.
-                </td>
-            </tr>
+            [% INCLUDE "default/opac/myopac/main_refund_policy.tt2" %]
         </tbody>
     </table>
 </div>
