@@ -2,16 +2,16 @@
     <div id='rdetail_extras_div' style='width: 100%;'> 
         <!-- SAMPLE AWARDS LAYOUT / MOVE TO INCLUDE'D TEMPLATE
         <div id='rdetail_awards_div' class='rdetail_extras_div hide_me'> 
-            <strong>Awards:</strong>
+            <strong>[% l('Awards:') %]</strong>
             <div id='rdetail_awards_cont' style="margin-bottom:20px;"></div>
-                <strong>Patron Reviews:</strong>
+                <strong>[% l('Patron Reviews:') %]</strong>
                 <div id='rdetail_chilifresh_reviews' class='hide_me' style="margin-bottom:20px;">
                     <div id='chilifreshReviewLink' name='chilifreshReviewLink' class='chili_review'></div>
                     <div id='chilifreshReviewResult' name='chilifreshReviewResult' class='hidden'></div>
                 </div>
-                <strong>Reviews:</strong>
+                <strong>[% l('Reviews:') %]</strong>
                 <div id='rdetail_review_container' style="margin-bottom:20px;"></div>
-                <strong>Suggested Reads:</strong>
+                <strong>[% l('Suggested Reads:') %]</strong>
                 <div id='rdetail_novelist_div' class='rdetail_extras_div'>
                 <div id="NoveListSelect" class="NoveListSelect">
                     <div id="NoveListAnchor" class="NoveListSelect"></div>

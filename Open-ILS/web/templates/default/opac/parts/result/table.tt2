@@ -29,7 +29,7 @@
                         ELSE; class = class _ ' invisible'; END;
                     %]
                     <a class='[% class %]' href='[% href %]' 
-                        title='[% l("Previous page") %]'><span class="nav_arrow_fix">&#9668;</span> Previous </a>
+                        title='[% l("Previous page") %]'><span class="nav_arrow_fix">&#9668;</span> [% l('Previous') %] </a>
                     <span class='hide_me'
                         style='padding-left: 11px; padding-right:11px;'>
                         <span></span>
@@ -41,7 +41,7 @@
                         ELSE; class = class _ ' invisible'; END;
                     %]
                     <a class='[% class %]' href='[% href %]' 
-                        title='[% l("Next page") %]'> Next <span class="nav_arrow_fix">&#9658;</span></a>
+                        title='[% l("Next page") %]'> [% l('Next') %] <span class="nav_arrow_fix">&#9658;</span></a>
                 </span>
             </td>
         </tr>
@@ -78,7 +78,7 @@
                                             <td class='result_table_pic_header'
                                                 width="78" nowrap="nowrap" valign="top">
                                                 [% ident = attrs.isbn_clean || attrs.upc; IF ident; %]
-                                                <a href="[% ctx.opac_root %]/record/[% rec.id _ propagator %]"><img alt="Image of item"
+                                                <a href="[% ctx.opac_root %]/record/[% rec.id _ propagator %]"><img alt="[% l('Image of item') %]"
                                                         name='item_jacket' class='result_table_pic' width="55"
                                                         src='[% ctx.media_prefix %]/opac/extras/ac/jacket/small/[% ident %]' /></a><br />
                                                 [% END %]
@@ -105,30 +105,30 @@
                                                         class="results_info_table">
                                                         <tr name='bib_cn_list' class='result_table_title_cell'>
                                                             <td colspan='2'>
-                                                                <strong>Call number:</strong>[% args.marc_cn %][%# XXX KCLS %]
+                                                                <strong>[% l('Call number:') %]</strong>[% args.marc_cn %][%# XXX KCLS %]
                                                             </td>
                                                         </tr>
                                                         <tr name="results_pub_tr" class="[% attrs.publisher ? '' : 'hide_me' %]">
                                                             <td valign="top">
-                                                                <strong>Publisher:</strong>
+                                                                <strong>[% l('Publisher:') %]</strong>
                                                             </td>
                                                             <td>[% attrs.publisher; %]</td>
                                                         </tr>
                                                         <tr name="results_isbn_tr" class="[% attrs.isbn ? '' : 'hide_me' %]">
                                                             <td valign="top">
-                                                                <strong>ISBN:</strong>
+                                                                <strong>[% l('ISBN:') %]</strong>
                                                             </td>
                                                             <td>[% attrs.isbn %]</td>
                                                         </tr>
                                                         <tr name="results_edition_tr" class="[% attrs.edition ? '' : 'hide_me' %]">
                                                             <td valign="top">
-                                                                <strong>Edition:</strong>
+                                                                <strong>[% l('Edition:') %]</strong>
                                                             </td>
                                                             <td>[% attrs.edition %]</td>
                                                         </tr>
                                                         <tr name="results_phys_desc_tr" class="[% attrs.phys_desc ? '' : 'hide_me' %]">
                                                             <td nowrap="nowrap" valign="top">
-                                                                <strong>Phys. Desc.:</strong>
+                                                                <strong>[% l('Phys. Desc.:') %]</strong>
                                                             </td>
                                                             <td>
                                                                 [% args.phys_desc %]
@@ -161,12 +161,8 @@
                                                 <img title="[% attrs.format_label %]" alt="[% attrs.format_label %]" src="[% attrs.format_icon %]" />
                                                 [% END %]
 
-                                                <!-- Empty span used for creating unAPI links -->
-                                                <span class="hide_me">
-                                                    <abbr style='padding-left: 8px;' name="unapi" class="unapi-id">
-                                                    <!-- unAPI URI goes here -->
-                                                    </abbr>
-                                                </span>
+                                                <!-- unAPI link -->
+                                                <abbr class="unapi-id" title='tag:[% ctx.hostname %],[% date.format(date.now, '%Y') %]:biblio-record_entry/[% rec.id %]'></abbr>
 
                                                 <!-- Empty span used for creating Google Book Search-->
                                                 <span name="googleBooksLink" class="hide_me">
@@ -187,7 +183,7 @@
                                                         </div>
                                                         <div class="results_aux_utils opac-auto-011">
                                                             [%  operation = ctx.mylist.grep(rec.id).size ? "delete" : "add";
-                                                                label = (operation == "add") ? "Add to" : "Remove from"; %]
+                                                                label = (operation == "add") ? l("Add to") : l("Remove from"); %]
                                                             <form action="[% ctx.opac_root %]/mylist/[% operation %]" method="POST">
                                                                 <input type="hidden" name="record" value="[% rec.id %]" />
                                                             <div style="position:absolute;">
@@ -203,9 +199,9 @@
                                                         <!-- <div style="padding-top:7px;" class="results_aux_utils">
                                                             <a title="Reviews and More" target="_blank" class="no-dec"
                                                                 name="reviews_and_more" href="javascript:;"><img
-                                                                alt="reviews &amp; more"
+                                                                alt="[% l('Reviews and more') %]"
                                                                 src="[% ctx.media_prefix %]/images/starz.png" /> <span
-                                                                    style="position:relative;top:-5px;">Reviews &amp; More</span></a>
+                                                                    style="position:relative;top:-5px;">[% l('Reviews and More') %]</span></a>
                                                         </div> -->
                                                     </div>
                                                 </div>

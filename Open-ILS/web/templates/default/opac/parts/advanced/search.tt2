@@ -31,19 +31,19 @@
           <table cellpadding='10' cellspacing='0' border='0'><tr>
             <td valign='top'>
                 <strong>[% l("Item Type") %]</strong><br />
-                [%  INCLUDE "default/opac/parts/format_selector.tt2"
-                        multiple="multiple" size="4"
+                [%  INCLUDE "default/opac/parts/coded_value_selector.tt2"
+                        attr="mattype" multiple="multiple" size="4"
                         id="adv_global_item_type_basic" %]
             </td>
             <td valign='top'>
                 <strong>[% l("Language") %]</strong><br />
-                [%  INCLUDE "default/opac/parts/language_selector.tt2"
-                        multiple="multiple" size="4" %]
+                [%  INCLUDE "default/opac/parts/coded_value_selector.tt2"
+                        attr="item_lang" multiple="multiple" size="4" %]
             </td>
             <td valign='top'>
                 <strong>[% l("Audience") %]</strong><br />
-                    [% INCLUDE "default/opac/parts/audience_selector.tt2"
-                        id="adv_global_audience_basic"
+                    [% INCLUDE "default/opac/parts/coded_value_selector.tt2"
+                        attr="audience" id="adv_global_audience_basic" 
                         multiple="multiple" size="4" %]
                 </select>
                     <!--<a id='adv_global_audience_link_adv' class='classic_link adv_adv_link'
