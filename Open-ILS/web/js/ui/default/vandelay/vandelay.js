@@ -86,13 +86,14 @@ var cgi = new openils.CGI();
 var vlQueueGridColumePicker = {};
 var vlBibSources = [];
 var importItemDefs = [];
+var matchSets = {};
 
 /**
   * Grab initial data
   */
 function vlInit() {
     authtoken = openils.User.authtoken;
-    var initNeeded = 6; // how many async responses do we need before we're init'd 
+    var initNeeded = 7; // how many async responses do we need before we're init'd 
     var initCount = 0; // how many async reponses we've received
 
     openils.Util.registerEnterHandler(
@@ -160,6 +161,23 @@ function vlInit() {
         {   async: true,
             oncomplete: function(r) {
                 importItemDefs = openils.Util.readResponse(r);
+                checkInitDone();
+            }
+        }
+    );
+
+    new openils.PermaCrud().search('vms',
+        {owner: owner.map(function(org) { return org.id(); })},
+        {   async: true,
+            oncomplete: function(r) {
+                var sets = openils.Util.readResponse(r);
+                dojo.forEach(sets, 
+                    function(set) {
+                        if(!matchSets[set.mtype()])
+                            matchSets[set.mtype()] = [];
+                        matchSets[set.mtype()].push(set);
+                    }
+                );
                 checkInitDone();
             }
         }
@@ -319,13 +337,13 @@ function uploadMARC(onload){
 /**
   * Creates a new vandelay queue
   */
-function createQueue(queueName, type, onload, importDefId) {
+function createQueue(queueName, type, onload, importDefId, matchSet) {
     var name = (type=='bib') ? 'bib' : 'authority';
     var method = 'open-ils.vandelay.'+ name +'_queue.create'
     fieldmapper.standardRequest(
         ['open-ils.vandelay', method],
         {   async: true,
-            params: [authtoken, queueName, null, name, importDefId],
+            params: [authtoken, queueName, null, name, matchSet, importDefId],
             oncomplete : function(r) {
                 var queue = r.recv().content();
                 if(e = openils.Event.parse(queue)) 
@@ -1111,7 +1129,10 @@ function batchUpload() {
         currentQueueId = vlUploadQueueSelector.getValue();
         uploadMARC(handleUploadMARC);
     } else {
-        createQueue(queueName, currentType, handleCreateQueue, vlUploadQueueHoldingsImportProfile.attr('value'));
+        createQueue(queueName, currentType, handleCreateQueue, 
+            vlUploadQueueHoldingsImportProfile.attr('value'),
+            vlUploadQueueMatchSet.attr('value')
+        );
     }
 }
 
@@ -1134,9 +1155,13 @@ function vlFleshQueueSelect(selector, type) {
         if(val) {
             vlUploadQueueHoldingsImportProfile.attr('value', queue.item_attr_def() || '');
             vlUploadQueueHoldingsImportProfile.attr('disabled', true);
+            vlUploadQueueMatchSet.attr('value', queue.match_set() || '');
+            vlUploadQueueMatchSet.attr('disabled', true);
         } else {
             vlUploadQueueHoldingsImportProfile.attr('value', '');
             vlUploadQueueHoldingsImportProfile.attr('disabled', false);
+            vlUploadQueueMatchSet.attr('value', '');
+            vlUploadQueueMatchSet.attr('disabled', false);
         }
         dojo.disconnect(qInput._onchange);
         qInput.attr('value', '');
@@ -1148,6 +1173,8 @@ function vlFleshQueueSelect(selector, type) {
         // user entered a new queue name. clear the selector 
         vlUploadQueueHoldingsImportProfile.attr('value', '');
         vlUploadQueueHoldingsImportProfile.attr('disabled', false);
+        vlUploadQueueMatchSet.attr('value', '');
+        vlUploadQueueMatchSet.attr('disabled', false);
         dojo.disconnect(selector._onchange);
         selector.attr('value', '');
         selector._onchange = dojo.connect(selector, 'onChange', selChange);
@@ -1155,6 +1182,12 @@ function vlFleshQueueSelect(selector, type) {
 
     selector._onchange = dojo.connect(selector, 'onChange', selChange);
     qInput._onchange = dojo.connect(qInput, 'onChange', inputChange);
+}
+
+function vlUpdateMatchSetSelector(type) {
+    type = (type.match(/bib/)) ? 'biblio' : 'authority';
+    vlUploadQueueMatchSet.store = 
+        new dojo.data.ItemFileReadStore({data:vms.toStoreData(matchSets[type])});
 }
 
 function vlShowUploadForm() {
@@ -1165,6 +1198,7 @@ function vlShowUploadForm() {
     vlUploadSourceSelector.setValue(vlBibSources[0].id());
     vlUploadQueueHoldingsImportProfile.store = 
         new dojo.data.ItemFileReadStore({data:viiad.toStoreData(importItemDefs)});
+    vlUpdateMatchSetSelector(vlUploadRecordType.getValue());
 }
 
 function vlShowQueueSelect() {

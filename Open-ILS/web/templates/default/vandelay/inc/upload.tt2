@@ -24,6 +24,13 @@
             </td>
         </tr>
         <tr>
+            <td>Record Match Set</td>
+            <td>
+                <input jsId='vlUploadQueueMatchSet'
+                    dojoType='dijit.form.FilteringSelect' labelAttr='name' searchAttr='name'/>
+            </td>
+        </tr>
+        <tr>
             <td>Holdings Import Profile</td>
             <td>
                 <input jsId='vlUploadQueueHoldingsImportProfile'
