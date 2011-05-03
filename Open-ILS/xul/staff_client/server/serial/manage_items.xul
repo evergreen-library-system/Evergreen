@@ -47,8 +47,9 @@ vim:noet:sw=4:ts=4:
     </popupset>
     <tabpanel id="serial_manage_items" orient="vertical" flex="1">
         <hbox align="center">
+            <label id="serial_manage_items_context" style="font-weight: bold" value="&staff.serial.manage_items.context.label;"/>
             <hbox id="serial_item_lib_menu_box"/>
-            <label value="&staff.serial.manage_items.mode;" control="mode_receive"/><radiogroup id="serial_manage_items_mode" orient="horizontal"><radio id="mode_receive" label="&staff.serial.manage_items.receive.label;"/><radio id="mode_bind" label="&staff.serial.manage_items.bind.label;"/></radiogroup><checkbox id="serial_manage_items_show_all" label="&staff.serial.manage_items.show_all.label;" />
+            <label value="&staff.serial.manage_items.mode;" control="mode_receive"/><radiogroup id="serial_manage_items_mode" orient="horizontal"><radio id="mode_receive" label="&staff.serial.manage_items.receive.label;"/><radio id="mode_advanced_receive" label="&staff.serial.manage_items.advanced_receive.label;"/><radio id="mode_bind" label="&staff.serial.manage_items.bind.label;"/></radiogroup><checkbox id="serial_manage_items_show_all" label="&staff.serial.manage_items.show_all.label;" />
             <button id="refresh_button" label="&staff.cat.copy_browser.holdings_maintenance.refresh_button.label;" command="cmd_refresh_list" />
             <spacer flex="1"/>
             <menubar>
@@ -100,7 +101,8 @@ vim:noet:sw=4:ts=4:
                 <menu label="&staff.serial.manage_items.set_current_unit.label;" id="serial_items_current_sunit" sunit_id="-1" sunit_label="&staff.serial.manage_items.auto_per_item.label;" sdist_id="" sstr_id="">
                     <menupopup>
                         <menuitem command="cmd_set_sunit" label="&staff.serial.manage_items.new_unit.label;" sunit_id="-2" sdist_id="" sstr_id=""/>
-                        <menuitem command="cmd_set_sunit" label="&staff.serial.manage_items.auto_per_item.label;" sunit_id="-1" sdist_id="" sstr_id=""/>
+                        <menuitem id="serial_items_auto_per_item_menuitem" command="cmd_set_sunit" label="&staff.serial.manage_items.auto_per_item.label;" sunit_id="-1" sdist_id="" sstr_id=""/>
+                        <menuitem command="cmd_set_sunit" label="&staff.serial.manage_items.no_unit.label;" sunit_id="" sdist_id="" sstr_id=""/>
                         <menu label="&staff.serial.manage_items.recent.label;" id="serial_items_recent_sunits" sunit_json='[]'/>
                         <menuitem command="cmd_set_other_sunit" label="&staff.serial.manage_items.other_unit.label;"/>
                     </menupopup>
