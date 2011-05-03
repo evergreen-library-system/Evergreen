@@ -37,6 +37,8 @@
 <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-profile-editor-div' class='hidden content'>
     [% INCLUDE 'default/vandelay/inc/profiles.tt2' %]
 </div>
+<div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-match-set-editor-div' class='hidden content'>
+</div>
 <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-item-attr-editor-div' class='hidden content'>
     [% INCLUDE 'default/vandelay/inc/item_attrs.tt2' %]
 </div>

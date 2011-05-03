@@ -24,10 +24,11 @@
 <!ENTITY vandelay.dest.match.point "Destination Match Point">
 <!ENTITY vandelay.display "Display">
 <!ENTITY vandelay.done "Done">
-<!ENTITY vandelay.edit.attributes "Edit Attributes">
-<!ENTITY vandelay.edit.attrs "Edit Attributes">
+<!ENTITY vandelay.edit.attributes "Record Display Attributes">
+<!ENTITY vandelay.edit.attrs "Record Display Attributes">
 <!ENTITY vandelay.edit.profiles "Edit Merge / Overlay Profiles">
-<!ENTITY vandelay.edit.import_item_attrs "Edit Import Item Attributes">
+<!ENTITY vandelay.edit.match_set "Record Match Sets">
+<!ENTITY vandelay.edit.import_item_attrs "Import Item Attributes">
 <!ENTITY vandelay.false "False">
 <!ENTITY vandelay.file.to.upload "File to Upload:">
 <!ENTITY vandelay.for.example "Example">

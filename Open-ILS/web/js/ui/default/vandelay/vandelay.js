@@ -258,6 +258,10 @@ function displayGlobalDiv(id) {
     openils.Util.removeCSSClass(dojo.byId('vl-menu-queue-select'), 'toolbar_selected');
     openils.Util.removeCSSClass(dojo.byId('vl-menu-attr-editor'), 'toolbar_selected');
     openils.Util.removeCSSClass(dojo.byId('vl-menu-profile-editor'), 'toolbar_selected');
+    openils.Util.removeCSSClass(dojo.byId('vl-menu-match-set-editor'), 'toolbar_selected');
+
+    if(dojo.byId('vl-match-set-iframe'))
+        dojo.byId('vl-match-set-editor-div').removeChild(dojo.byId('vl-match-set-iframe'));
 
     switch(id) {
         case 'vl-marc-export-div':
@@ -277,6 +281,9 @@ function displayGlobalDiv(id) {
             break;
         case 'vl-item-attr-editor-div':
             openils.Util.addCSSClass(dojo.byId('vl-menu-import-item-attr-editor'), 'toolbar_selected');
+            break;
+        case 'vl-match-set-editor-div':
+            openils.Util.addCSSClass(dojo.byId('vl-menu-match-set-editor'), 'toolbar_selected');
             break;
     }
 }
@@ -1165,6 +1172,17 @@ function vlShowQueueSelect() {
     vlFleshQueueSelect(vlQueueSelectQueueList, vlQueueSelectType.getValue());
 }
 
+function vlShowMatchSetEditor() {
+    displayGlobalDiv('vl-match-set-editor-div');
+    dojo.byId('vl-match-set-editor-div').appendChild(
+        dojo.create('iframe', {
+            id : 'vl-match-set-iframe',
+            src : oilsBasePath + '/eg/conify/global/vandelay/match_set',
+            style : 'width:100%; height:500px; border:none; margin:0px;'
+        })
+    );
+}
+
 function vlFetchQueueFromForm() {
     currentType = vlQueueSelectType.getValue();
     currentQueueId = vlQueueSelectQueueList.getValue();
@@ -1321,7 +1339,6 @@ function onAttrEditorClick() {
     var parsed_xpath = xpathParser.parse(this.store.getValue(row, 'xpath'));
     dijit.byId('attr-editor-tags').attr('value', parsed_xpath.tags);
     dijit.byId('attr-editor-subfields').attr('value', parsed_xpath.subfields);
-    dijit.byId('attr-editor-identifier').attr('value', this.store.getValue(row, 'ident'));
     dijit.byId('attr-editor-xpath').attr('value', this.store.getValue(row, 'xpath'));
     dijit.byId('attr-editor-remove').attr('value', this.store.getValue(row, 'remove'));
 
