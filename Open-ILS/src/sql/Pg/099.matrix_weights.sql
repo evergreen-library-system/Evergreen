@@ -10,6 +10,7 @@ CREATE TABLE config.circ_matrix_weights (
     circ_modifier           NUMERIC(6,2)   NOT NULL,
     marc_type               NUMERIC(6,2)   NOT NULL,
     marc_form               NUMERIC(6,2)   NOT NULL,
+    marc_bib_level          NUMERIC(6,2)   NOT NULL,
     marc_vr_format          NUMERIC(6,2)   NOT NULL,
     copy_circ_lib           NUMERIC(6,2)   NOT NULL,
     copy_owning_lib         NUMERIC(6,2)   NOT NULL,
@@ -35,6 +36,7 @@ CREATE TABLE config.hold_matrix_weights (
     circ_modifier           NUMERIC(6,2)   NOT NULL,
     marc_type               NUMERIC(6,2)   NOT NULL,
     marc_form               NUMERIC(6,2)   NOT NULL,
+    marc_bib_level          NUMERIC(6,2)   NOT NULL,
     marc_vr_format          NUMERIC(6,2)   NOT NULL,
     juvenile_flag           NUMERIC(6,2)   NOT NULL,
     ref_flag                NUMERIC(6,2)   NOT NULL
