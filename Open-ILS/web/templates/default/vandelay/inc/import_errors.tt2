@@ -1,4 +1,3 @@
-<h1>Import Errors</h1><br/>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
     <button dojoType='dijit.form.Button' 
@@ -6,23 +5,25 @@
 </div>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
-    <table id='vl-import-error-record' class='hidden'>
-        <tbody>
-            <tr><td>ID</td><td id='vl-error-id'/></tr>
-            <tr><td>Import Error</td><td id='vl-error-import-error'/></tr>
-            <tr><td>Error Detail</td><td id='vl-error-error-detail'/></tr>
-            <tr><td>Title</td><td id='vl-error-title'/></tr>
-            <tr><td>Author</td><td id='vl-error-author'/></tr>
-            <tr><td>ISBN</td><td id='vl-error-isbn'/></tr>
-            <tr><td>ISSN</td><td id='vl-error-issn'/></tr>
-            <tr><td>UPC</td><td id='vl-error-upc'/></tr>
-        </tbody>
-    </table>
+    <div id='vl-import-error-record' class='hidden'>
+        <h1>Import Errors</h1><br/>
+        <table>
+            <tbody>
+                <tr><td>ID</td><td id='vl-error-id'/></tr>
+                <tr><td>Import Error</td><td id='vl-error-import-error'/></tr>
+                <tr><td>Error Detail</td><td id='vl-error-error-detail'/></tr>
+                <tr><td>Title</td><td id='vl-error-title'/></tr>
+                <tr><td>Author</td><td id='vl-error-author'/></tr>
+                <tr><td>ISBN</td><td id='vl-error-isbn'/></tr>
+                <tr><td>ISSN</td><td id='vl-error-issn'/></tr>
+                <tr><td>UPC</td><td id='vl-error-upc'/></tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
     <div class='hidden' id='vl-import-error-grid-some'>
-        <h3>Item Import Errors</h3>
         <table  jsId="vlImportErrorGrid"
                 dojoType="openils.widget.AutoGrid"
                 autoHeight='true'
@@ -33,15 +34,19 @@
                 columnPickerPrefix='"vandelay.item.import_error"'
                 fmClass='vii'>
                 <thead>
-                    <th field='owning_lib' get='vlGetOrg'/>
-                    <th field='circ_lib' get='vlGetOrg'/>
+                    <tr>
+                        <th field='owning_lib' get='vlGetOrg'/>
+                        <th field='circ_lib' get='vlGetOrg'/>
+                    </tr>
                 </thead>
         </table>
     </div>
 </div>
 <div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
     <div class='hidden' id='vl-import-error-grid-all'>
-        <h3>Item Import Errors</h3>
+        <h1>Import Items</h1><br/>
+        <input dojoType='dijit.form.CheckBox' jsId='vlImportItemsShowErrors' onchange='vlLoadErrorUIAll();'/>
+        <span>Limit to Import Failures</span>
         <table  jsId="vlAllImportErrorGrid"
                 dojoType="openils.widget.AutoGrid"
                 autoHeight='true'
@@ -52,8 +57,10 @@
                 columnPickerPrefix='"vandelay.item.import_error"'
                 fmClass='vii'>
                 <thead>
-                    <th field='owning_lib' get='vlGetOrg'/>
-                    <th field='circ_lib' get='vlGetOrg'/>
+                    <tr>
+                        <th field='owning_lib' get='vlGetOrg'/>
+                        <th field='circ_lib' get='vlGetOrg'/>
+                    </tr>
                 </thead>
         </table>
     </div>

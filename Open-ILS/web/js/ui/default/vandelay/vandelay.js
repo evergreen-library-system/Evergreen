@@ -648,8 +648,11 @@ function vlLoadErrorUIAll() {
 
     displayGlobalDiv('vl-import-error-div');
     openils.Util.hide('vl-import-error-grid-some');
+    openils.Util.hide('vl-import-error-record');
     openils.Util.show('vl-import-error-grid-all');
     vlAllImportErrorGrid.resetStore();
+
+    vlImportErrorGrid.displayOffset = 0;
 
     vlAllImportErrorGrid.dataLoader = function() {
 
@@ -661,7 +664,7 @@ function vlLoadErrorUIAll() {
                 async : true,
                 params : [
                     authtoken, currentQueueId, {   
-                        with_import_error:1, 
+                        with_import_error: (vlImportItemsShowErrors.checked) ? 1 : null,
                         offset : vlAllImportErrorGrid.displayOffset,
                         limit : vlAllImportErrorGrid.displayLimit
                     }

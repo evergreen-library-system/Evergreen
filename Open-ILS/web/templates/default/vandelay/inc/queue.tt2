@@ -11,7 +11,7 @@
                             <tbody>
                                 <tr><td><a href='#' onclick='vlHandleQueueItemsAction("import")'>&vandelay.import.selected;</a></td></tr>
                                 <tr><td><a href='#' onclick='vlHandleQueueItemsAction("import_all")'>&vandelay.import.all;</a></td></tr>
-                                <tr><td><a href='#' onclick='vlLoadErrorUIAll();'>View Item Import Failures</a></td></tr>
+                                <tr><td><a href='#' onclick='vlLoadErrorUIAll();'>View Import Items</a></td></tr>
                                 <tr><td><a href='#' onclick='
                                     if(confirm("&vandelay.sure.to.delete.queue;")) {
                                         vlDeleteQueue(currentType, currentQueueId, 
