@@ -309,7 +309,10 @@ CREATE OR REPLACE FUNCTION vandelay.add_field ( target_xml TEXT, source_xml TEXT
 
     use MARC::Record;
     use MARC::File::XML (BinaryEncoding => 'UTF-8');
+    use MARC::Charset;
     use strict;
+
+    MARC::Charset->assume_unicode(1);
 
     my $target_xml = shift;
     my $source_xml = shift;
@@ -386,7 +389,10 @@ CREATE OR REPLACE FUNCTION vandelay.strip_field ( xml TEXT, field TEXT ) RETURNS
 
     use MARC::Record;
     use MARC::File::XML (BinaryEncoding => 'UTF-8');
+    use MARC::Charset;
     use strict;
+
+    MARC::Charset->assume_unicode(1);
 
     my $xml = shift;
     my $r = MARC::Record->new_from_xml( $xml );

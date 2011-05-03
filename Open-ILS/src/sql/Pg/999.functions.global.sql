@@ -1371,6 +1371,9 @@ CREATE OR REPLACE FUNCTION authority.flatten_marc ( TEXT ) RETURNS SETOF authori
 
 use MARC::Record;
 use MARC::File::XML (BinaryEncoding => 'UTF-8');
+use MARC::Charset;
+
+MARC::Charset->assume_unicode(1);
 
 my $xml = shift;
 my $r = MARC::Record->new_from_xml( $xml );
