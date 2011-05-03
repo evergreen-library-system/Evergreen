@@ -19,6 +19,7 @@ use DBI;
 use Getopt::Long;
 use MARC::Record;
 use MARC::File::XML (BinaryEncoding => 'UTF-8');
+use MARC::Charset;
 use OpenSRF::System;
 use OpenILS::Utils::Fieldmapper;
 use OpenSRF::Utils::SettingsClient;
@@ -28,6 +29,8 @@ use Unicode::Normalize;
 use OpenILS::Application::AppUtils;
 use Data::Dumper;
 use Pod::Usage qw/ pod2usage /;
+
+MARC::Charset->assume_unicode(1);
 
 my ($start_id, $end_id);
 my $bootstrap = '/openils/conf/opensrf_core.xml';
