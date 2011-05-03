@@ -491,8 +491,11 @@ CREATE OR REPLACE FUNCTION maintain_control_numbers() RETURNS TRIGGER AS $func$
 use strict;
 use MARC::Record;
 use MARC::File::XML (BinaryEncoding => 'UTF-8');
+use MARC::Charset;
 use Encode;
 use Unicode::Normalize;
+
+MARC::Charset->assume_unicode(1);
 
 my $record = MARC::Record->new_from_xml($_TD->{new}{marc});
 my $schema = $_TD->{table_schema};

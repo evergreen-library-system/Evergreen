@@ -338,7 +338,10 @@ CREATE OR REPLACE FUNCTION authority.normalize_heading( TEXT ) RETURNS TEXT AS $
     use utf8;
     use MARC::Record;
     use MARC::File::XML (BinaryEncoding => 'UTF8');
+    use MARC::Charset;
     use UUID::Tiny ':std';
+
+    MARC::Charset->assume_unicode(1);
 
     my $xml = shift() or return undef;
 
