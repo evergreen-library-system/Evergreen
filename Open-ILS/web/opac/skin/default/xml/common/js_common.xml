@@ -19,18 +19,18 @@
      }, lang, bidi;
 </script>
 
-<script language='javascript' src='/js/dojo/dojo/dojo.js'></script>
-<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_JS_BASE"-->/JSON_v1.js'></script>
-<script language='javascript' type="text/javascript" src='/js/dojo/opensrf/opensrf.js'></script>
-<script language='javascript' type="text/javascript" src='/js/dojo/dojo/openils_dojo.js'></script>
-<script language='javascript' type="text/javascript" src='/js/dojo/fieldmapper/AutoIDL.js'></script>
+<script language='javascript' src='/js/dojo/dojo/dojo.js?<!--#include virtual="/eg_cache_hash"-->'></script>
+<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_JS_BASE"-->/JSON_v1.js?<!--#include virtual="/eg_cache_hash"-->'></script>
+<script language='javascript' type="text/javascript" src='/js/dojo/opensrf/opensrf.js?<!--#include virtual="/eg_cache_hash"-->'></script>
+<script language='javascript' type="text/javascript" src='/js/dojo/dojo/openils_dojo.js?<!--#include virtual="/eg_cache_hash"-->'></script>
+<script language='javascript' type="text/javascript" src='/js/dojo/fieldmapper/AutoIDL.js?<!--#include virtual="/eg_cache_hash"-->'></script>
 
-<script language='javascript' type="text/javascript" src='<!--#echo var="OILS_JS_BASE"-->/<!--#echo var="locale"-->/OrgTree.js'></script>
-<script language='javascript' type="text/javascript" src='<!--#echo var="OILS_JS_BASE"-->/<!--#echo var="locale"-->/FacetDefs.js'></script>
-<script language='javascript' type="text/javascript" src='<!--#echo var="OILS_JS_BASE"-->/OrgLasso.js'></script>
+<script language='javascript' type="text/javascript" src='<!--#echo var="OILS_JS_BASE"-->/<!--#echo var="locale"-->/OrgTree.js?<!--#include virtual="/eg_cache_hash"-->'></script>
+<script language='javascript' type="text/javascript" src='<!--#echo var="OILS_JS_BASE"-->/<!--#echo var="locale"-->/FacetDefs.js?<!--#include virtual="/eg_cache_hash"-->'></script>
+<script language='javascript' type="text/javascript" src='<!--#echo var="OILS_JS_BASE"-->/OrgLasso.js?<!--#include virtual="/eg_cache_hash"-->'></script>
 
 <!--#if expr="$OILS_OPAC_COMBINED_JS"-->
-<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/combined.js'></script>
+<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/combined.js?<!--#include virtual="/eg_cache_hash"-->'></script>
 <!--#else --> 
 <!-- 
     When combined JS is enabled in the Apache config, the block 
