@@ -17,7 +17,8 @@
         replace(';x=\d+','') | replace(';y=\d+','') | replace(';page=\d*', '') |
         replace(';', '&');
 
-    propagator = '?' _ query_string;
+
+    propagator = '?' _ query_string | url | replace('&', '&amp;');
 
     is_advanced = CGI.param("_adv").size;
 %]
