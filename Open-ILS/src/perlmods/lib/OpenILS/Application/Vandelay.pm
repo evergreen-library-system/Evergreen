@@ -1420,8 +1420,15 @@ sub match_set_update_tree {
         {"order_by" => {"vmsp" => "id DESC"}}
     ]) or return $e->die_event;
 
-    foreach (@$existing) {
-        $e->delete_vandelay_match_set_point($_) or return $e->die_event;
+    # delete points, working up from leaf points to the root
+    while(@$existing) {
+        for my $point (shift @$existing) {
+            if( grep {$_->parent eq $point->id} @$existing) {
+                push(@$existing, $point);
+            } else {
+                $e->delete_vandelay_match_set_point($point) or return $e->die_event;
+            }
+        }
     }
 
     _walk_new_vmsp($e, $match_set_id, $tree);
