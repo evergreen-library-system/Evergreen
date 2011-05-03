@@ -8,7 +8,7 @@
     <table  jsId="hmGrid" 
             autoHeight='true'
             dojoType="openils.widget.AutoGrid" 
-            fieldOrder="['id', 'strict_ou_match', 'user_home_ou', 'request_ou', 'pickup_ou', 'item_owning_ou', 'item_circ_ou', 'requestor_grp', 'circ_modifier']"
+            fieldOrder="['id', 'strict_ou_match', 'user_home_ou', 'request_ou', 'pickup_ou', 'item_owning_ou', 'item_circ_ou', 'requestor_grp', 'circ_modifier', 'marc_type', 'marc_form', 'marc_bib_level', 'marc_vr_format']"
             defaultCellWidth='"auto"'
             query="{id: '*'}" 
             fmClass='chmm' 

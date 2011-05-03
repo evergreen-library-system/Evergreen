@@ -652,13 +652,16 @@ function loadSurveys() {
     // draw surveys
     for(var idx in surveys) {
         var survey = surveys[idx];
+        var required = openils.Util.isTrue(survey.required());
         var srow = surveyTemplate.cloneNode(true);
+        if(required) srow.setAttribute('required','required');
         tbody.appendChild(srow);
         getByName(srow, 'name').innerHTML = survey.name();
 
         for(var q in survey.questions()) {
             var quest = survey.questions()[q];
             var qrow = surveyQuestionTemplate.cloneNode(true);
+            if(required) qrow.setAttribute('required','required');
             tbody.appendChild(qrow);
             getByName(qrow, 'question').innerHTML = quest.question();
 
@@ -666,7 +669,7 @@ function loadSurveys() {
             var store = new dojo.data.ItemFileReadStore(
                 {data:fieldmapper.asva.toStoreData(quest.answers())});
             var select = new dijit.form.FilteringSelect({store:store,scrollOnFocus:false}, span);
-            if (! openils.Util.isTrue(survey.required())) {
+            if (! required ) {
                 select.isValid = function() { return true; };
             }
             select.labelAttr = 'answer';
