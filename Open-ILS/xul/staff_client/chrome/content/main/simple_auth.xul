@@ -150,8 +150,8 @@
                     <textbox id="password" type="password"/>
                 </row>
                 <row>
-                    <button label="&common.cancel;" accesskey="&common.cancel.accesskey;" oncommand="window.close()"/>
                     <button label="&staff.main.simple_auth.authorize.label;" accesskey="&staff.main.simple_auth.authorize.accesskey;" oncommand="authorize()"/>
+                    <button label="&common.cancel;" accesskey="&common.cancel.accesskey;" oncommand="window.close()"/>
                 </row>
             </rows>
         </grid>
