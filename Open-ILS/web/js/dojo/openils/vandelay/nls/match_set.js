@@ -6,8 +6,10 @@
     "ENTER_REPLACE_MODE": "Enter Replace Mode",
     "NO_CAN_DO": "An error has occurred. Close this interface and try again.",
     "OK": "Ok",
-    "POINT_NEEDS_ONE": "A match point must be exactly one of the following: boolean operator, MARC tag/subfield pair, single-value-field.",
+    "CANCEL": "Cancel",
+    "POINT_NEEDS_ONE": "You have not entered valid data",
     "FAULTY_MARC": "A MARC tag must be identified by three digits, and the subfield must be one non-whitespace, non-control character.",
     "WORKING_MP_HERE": "Choose from among the three buttons above to add a new match point.",
+    "WORKING_QM_HERE": "Use buttons above and to the right to add new quality metrics.",
     "SVF": "Record Attribute"
 }

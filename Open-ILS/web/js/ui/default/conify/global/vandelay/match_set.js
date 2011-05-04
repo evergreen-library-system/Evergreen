@@ -11,7 +11,7 @@ dojo.require("openils.PermaCrud");
 dojo.require("openils.widget.ProgressDialog");
 dojo.require("openils.widget.AutoGrid");
 
-var localeStrings, node_editor, _crads, CGI, tree, match_set;
+var localeStrings, node_editor, qnode_editor, _crads, CGI, tree, match_set;
 
 var NodeEditorAbstract = {
     "_svf_select_template": null,
@@ -25,11 +25,7 @@ var NodeEditorAbstract = {
     },
     "is_sensible": function(thing) {
         var need_one = 0;
-        var list = openils.Util.objectProperties(this._factories_by_type);
-        console.log(list.join(" "));
-        openils.Util.objectProperties(this._factories_by_type).forEach(
-            function(field) { if (thing[field]()) need_one++; }
-        );
+        this.foi.forEach(function(field) { if (thing[field]()) need_one++; });
 
         if (need_one != 1) {
             alert(localeStrings.POINT_NEEDS_ONE);
@@ -56,7 +52,6 @@ var NodeEditorAbstract = {
             this._consistent_controls = [];
             for (var i = 0; i < trs.length; i++)
                 this._consistent_controls[i] = dojo.clone(trs[i]);
-            dojo.empty(trs[0].parentNode);
         }
 
         this._consistent_controls.forEach(
@@ -124,39 +119,53 @@ var NodeEditorAbstract = {
                 }, dojo.create("td", null, rows[1])
             );
             return rows;
+        },
+        "bool_op": function() {
+            var tr = dojo.create("tr");
+            dojo.create(
+                "label",
+                {"for": "operator-select", "innerHTML": "Operator:"},
+                dojo.create("td", null, tr)
+            );
+            var select = dojo.create(
+                "select", {"fmfield": "bool_op", "id": "operator-select"},
+                dojo.create("td", null, tr)
+            );
+            dojo.create("option", {"value": "AND", "innerHTML": "AND"}, select);
+            dojo.create("option", {"value": "OR", "innerHTML": "OR"}, select);
+
+            return [tr];
         }
     }
 };
 
-function _find_crad_by_name(name) {
-    for (var i = 0; i < _crads.length; i++) {
-        if (_crads[i].name() == name)
-            return _crads[i];
-    }
-    return null;
+function apply_base_class(cls, basecls) {
+    openils.Util.objectProperties(basecls).forEach(
+        function(m) { cls[m] = basecls[m]; }
+    );
 }
 
 function QualityNodeEditor() {
     var self = this;
+    this.foi = ["tag", "svf"]; /* Fields of Interest - starting points for UI */
 
-    this._init = function(dnd_source, qnode_editor_container) {
+    this._init = function(qnode_editor_container) {
         this._consistent_controls_query =
             "[consistent-controls], [quality-controls]";
-        this.dnd_source = dnd_source;
         this.qnode_editor_container = dojo.byId(qnode_editor_container);
+        this.clear();
     };
 
     this.clear = function() {
-        this.dnd_source.selectAll().deleteSelectedNodes();
         dojo.create(
-            "em", {"innerHTML": localeStrings.WORKING_MP_HERE},
+            "em", {"innerHTML": localeStrings.WORKING_QM_HERE},
             this.qnode_editor_container, "only"
         );
-        this.dnd_source._ready = false;
     };
 
     this.build_vmsq = function() {
         var metric = new vmsq();
+        metric.match_set(match_set.id());   /* using global */
         var controls = dojo.query("[fmfield]", this.qnode_editor_container);
         for (var i = 0; i < controls.length; i++) {
             var field = dojo.attr(controls[i], "fmfield");
@@ -171,7 +180,6 @@ function QualityNodeEditor() {
     this.add = function(type) {
         this.clear();
 
-
         /* these are the editing widgets */
         var table = dojo.create("table", {"className": "node-editor"});
 
@@ -180,19 +188,51 @@ function QualityNodeEditor() {
 
         this._add_consistent_controls(table);
 
+        var ok_cxl_td = dojo.create(
+            "td", {"colspan": 2, "align": "center", "className": "space-me"},
+            dojo.create("tr", null, table)
+        );
+
         dojo.create(
             "input", {
                 "type": "submit", "value": localeStrings.OK,
-                "onclick": function() { alert("would update draggable here"/* XXX TODO */); }
-            }, dojo.create(
-                "td", {"colspan": 2, "align": "center"},
-                dojo.create("tr", null, table)
-            )
+                "onclick": function() {
+                    var metric = self.build_vmsq();
+                    if (metric) {
+                        self.clear();
+                        pcrud.create(
+                            metric, {
+                                /* borrowed from openils.widget.AutoGrid */
+                                "oncomplete": function(req, cudResults) {
+                                    var fmObject = cudResults[0];
+                                    if (vmsq_grid.onPostCreate)
+                                        vmsq_grid.onPostCreate(fmObject);
+                                    if (fmObject) {
+                                        vmsq_grid.store.newItem(
+                                            fmObject.toStoreItem()
+                                        );
+                                    }
+                                    setTimeout(function() {
+                                        try {
+                                            vmsq_grid.selection.select(vmsq_grid.rowCount-1);
+                                            vmsq_grid.views.views[0].getCellNode(vmsq_grid.rowCount-1, 1).focus();
+                                        } catch (E) {}
+                                    },200);
+                                }
+                            }
+                        );
+                    }
+                }
+            }, ok_cxl_td
+        );
+        dojo.create(
+            "input", {
+                "type": "reset", "value": localeStrings.CANCEL,
+                "onclick": function() { self.clear(); }
+            }, ok_cxl_td
         );
 
-        dojo.place(table, this.qnode_editor_container, "only");/* XXX put in dialog here */
-
-        //this.dnd_source.insertNodes(false, [draggable]);
+        dojo.place(table, this.qnode_editor_container, "only");
 
         /* nice */
         try { dojo.query("select, input", table)[0].focus(); }
@@ -200,17 +240,17 @@ function QualityNodeEditor() {
 
     };
 
-    openils.Util.objectProperties(NodeEditorAbstract).forEach(
-        function(m) { self[m] = NodeEditorAbstract[m]; }
-    );
+    apply_base_class(self, NodeEditorAbstract);
     this._init.apply(this, arguments);
 }
 
 function NodeEditor() {
     var self = this;
+    this.foi = ["tag", "svf", "bool_op"]; /* Fields of Interest - starting points for UI */
 
     this._init = function(dnd_source, node_editor_container) {
-        this._consistent_controls_query = "[consistent-controls]";
+        this._consistent_controls_query =
+            "[consistent-controls], [point-controls]";
         this.dnd_source = dnd_source;
         this.node_editor_container = dojo.byId(node_editor_container);
     };
@@ -285,27 +325,17 @@ function NodeEditor() {
 
     };
 
-    openils.Util.objectProperties(NodeEditorAbstract).forEach(
-        function(m) { self[m] = NodeEditorAbstract[m]; }
-    );
+    apply_base_class(self, NodeEditorAbstract);
 
-    this._factories_by_type.bool_op = function() {
-        var tr = dojo.create("tr");
-        dojo.create(
-            "label",
-            {"for": "operator-select", "innerHTML": "Operator:"},
-            dojo.create("td", null, tr)
-        );
-        var select = dojo.create(
-            "select", {"fmfield": "bool_op", "id": "operator-select"},
-            dojo.create("td", null, tr)
-        );
-        dojo.create("option", {"value": "AND", "innerHTML": "AND"}, select);
-        dojo.create("option", {"value": "OR", "innerHTML": "OR"}, select);
-
-        return [tr];
-    };
     this._init.apply(this, arguments);
+}
+
+function find_crad_by_name(name) {
+    for (var i = 0; i < _crads.length; i++) {
+        if (_crads[i].name() == name)
+            return _crads[i];
+    }
+    return null;
 }
 
 function render_vmsp_label(point, minimal) {
@@ -317,7 +347,7 @@ function render_vmsp_label(point, minimal) {
     } else if (point.svf()) {
         return (openils.Util.isTrue(point.negate()) ? "NOT " : "") + (
             minimal ?  point.svf() :
-                (point.svf() + " / " + _find_crad_by_name(point.svf()).label())
+                (point.svf() + " / " + find_crad_by_name(point.svf()).label())
         );
     } else {
         return (openils.Util.isTrue(point.negate()) ? "NOT " : "") +
@@ -459,7 +489,7 @@ function save_tree() {
                 root, function(r) {
                     fieldmapper.standardRequest(
                         ["open-ils.vandelay",
-                            "open-ils.vandelay.match_set.update"],/* XXX TODO */{
+                            "open-ils.vandelay.match_set.update"], {
                             "params": [
                                 openils.User.authtoken, match_set.id(), r
                             ],
@@ -482,7 +512,7 @@ function save_tree() {
 function init_vmsq_grid() {
     vmsq_grid.loadAll(
         {"order_by": {"vmsq": "quality"}},
-        {"match_set": CGI.param("match_set")}
+        {"match_set": match_set.id()}
     );
 }
 
@@ -538,6 +568,7 @@ function my_init() {
     );
 
     node_editor = new NodeEditor(src, "node-editor-container");
+    qnode_editor = new QualityNodeEditor("qnode-editor-container");
 
     replace_mode(0);
 
