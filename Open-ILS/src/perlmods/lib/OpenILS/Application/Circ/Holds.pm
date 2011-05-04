@@ -795,6 +795,16 @@ sub update_hold_impl {
         return OpenILS::Event->new('BAD_PARAMS') if $hold->fulfillment_time;
         return $e->die_event unless $e->allowed('UPDATE_HOLD_REQUEST_TIME', $hold->pickup_lib);
     }
+    
+	
+	# --------------------------------------------------------------
+	# Code for making sure staff have appropriate permissons for cut_in_line
+	# This, as is, doesn't prevent a user from cutting their own holds in line 
+	# but needs to
+	# --------------------------------------------------------------	
+	if($U->is_true($hold->cut_in_line) ne $U->is_true($orig_hold->cut_in_line)) {
+		return $e->die_event unless $e->allowed('UPDATE_HOLD_REQUEST_TIME', $hold->pickup_lib);
+	}
 
     # --------------------------------------------------------------
     # if the hold is on the holds shelf or in transit and the pickup 

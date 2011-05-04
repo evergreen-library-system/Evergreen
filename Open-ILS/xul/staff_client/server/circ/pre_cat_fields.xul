@@ -94,7 +94,7 @@
     <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
     <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
 
-    <groupbox>
+    <groupbox flex="1" style="overflow: auto">
         <caption label="&staff.circ.pre_cat.caption.label;"/>
         <grid>
             <columns><column /><column flex="1"/></columns>
