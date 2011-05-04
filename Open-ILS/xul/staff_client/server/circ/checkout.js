@@ -119,6 +119,7 @@ circ.checkout.prototype = {
                         ['change'],
                         function(ev) { 
                             try {
+				document.getElementById('checkout_duedate_checkbox').checked = true;
                                 if (obj.check_date(ev.target)) {
                                     ev.target.parentNode.setAttribute('style','');
                                 } else {
