@@ -48,7 +48,7 @@
                         [% END %]
                     </td>
                     <td>
-                        <a href="[% ctx.opac_root %]/results?qtype=author&query=[% attrs.author | replace('[,\.:;]', '') | url %]">[% attrs.author %]</a>
+                        <a href="[% ctx.opac_root %]/results?qtype=author&amp;query=[% attrs.author | replace('[,\.:;]', '') | url %]">[% attrs.author %]</a>
                     </td>
                     <td name='myopac_circ_trans_start'>
                         [% ts = f.xact.circulation.xact_start || f.xact.reservation.start_time || 0;
