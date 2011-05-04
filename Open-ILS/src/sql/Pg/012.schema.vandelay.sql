@@ -141,7 +141,6 @@ CREATE INDEX queued_bib_record_attr_record_idx ON vandelay.queued_bib_record_att
 
 CREATE TABLE vandelay.bib_match (
 	id				BIGSERIAL	PRIMARY KEY,
-	matched_set 	INT			REFERENCES vandelay.match_set (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	queued_record	BIGINT		REFERENCES vandelay.queued_bib_record (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	eg_record		BIGINT		REFERENCES biblio.record_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     quality         INT         NOT NULL DEFAULT 0,
@@ -702,10 +701,10 @@ BEGIN
         vandelay.match_set_test_marcxml(my_bib_queue.match_set, NEW.marc) LOOP
 
         INSERT INTO vandelay.bib_match (
-            matched_set, queued_record, eg_record, match_score, quality
+            queued_record, eg_record, match_score, quality
         ) VALUES (
-            my_bib_queue.match_set, NEW.id, test_result.record,
-            test_result.quality, vandelay.incoming_record_quality(NEW.marc)
+            NEW.id, test_result.record,
+            test_result.quality, vandelay.incoming_record_quality(NEW.marc, my_bib_queue.match_set)
         );
 
     END LOOP;
@@ -1298,17 +1297,18 @@ BEGIN
 
     SELECT  m.eg_record INTO eg_id
       FROM  vandelay.bib_match m
-            JOIN biblio.record_entry r
+            JOIN vandelay.queued_bib_record qr ON (m.queued_record = qr.id)
+            JOIN vandelay.bib_queue q ON (qr.queue = q.id)
+            JOIN biblio.record_entry r ON (r.id = m.eg_record)
       WHERE m.queued_record = import_id
-            AND r.id = m.eg_record
-            AND m.quality::NUMERIC / COALESCE(NULLIF(vandelay.incoming_record_quality(r.marc),0),1)::NUMERIC >= lwm_ratio_value
-      ORDER BY  m.match_score DESC,
-                m.quality::NUMERIC / COALESCE(NULLIF(vandelay.incoming_record_quality(r.marc),0),1)::NUMERIC DESC,
-                id
+            AND m.quality::NUMERIC / COALESCE(NULLIF(vandelay.incoming_record_quality(r.marc, q.match_set),0),1)::NUMERIC >= lwm_ratio_value
+      ORDER BY  m.match_score DESC, -- required match score
+                m.quality::NUMERIC / COALESCE(NULLIF(vandelay.incoming_record_quality(r.marc, q.match_set),0),1)::NUMERIC DESC, -- quality tie breaker
+                m.id -- when in doubt, use the first match
       LIMIT 1;
 
     IF eg_id IS NULL THEN
-        -- RAISE NOTICE 'incoming record is not of hight enough quality';
+        -- RAISE NOTICE 'incoming record is not of high enough quality';
         RETURN FALSE;
     END IF;
 
@@ -1886,7 +1886,6 @@ CREATE INDEX queued_authority_record_attr_record_idx ON vandelay.queued_authorit
 
 CREATE TABLE vandelay.authority_match (
 	id				BIGSERIAL	PRIMARY KEY,
-	matched_set 	INT			REFERENCES vandelay.match_set (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	queued_record	BIGINT		REFERENCES vandelay.queued_authority_record (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	eg_record		BIGINT		REFERENCES authority.record_entry (id) DEFERRABLE INITIALLY DEFERRED,
     quality         INT         NOT NULL DEFAULT 0
