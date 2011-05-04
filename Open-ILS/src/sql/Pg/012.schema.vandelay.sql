@@ -681,6 +681,10 @@ DECLARE
     test_result             vandelay.match_set_test_result%ROWTYPE;
     tmp_rec                 BIGINT;
 BEGIN
+    IF TG_OP IN ('INSERT','UPDATE') AND NEW.imported_as IS NOT NULL THEN
+        RETURN NEW;
+    END IF;
+
     DELETE FROM vandelay.bib_match WHERE queued_record = NEW.id;
 
     -- Perfect matches on 901$c exit early with a match with high quality.
@@ -1669,6 +1673,10 @@ DECLARE
     atype   TEXT;
     adef    RECORD;
 BEGIN
+    IF TG_OP IN ('INSERT','UPDATE') AND NEW.imported_as IS NOT NULL THEN
+        RETURN NEW;
+    END IF;
+
     FOR adef IN SELECT * FROM vandelay.bib_attr_definition LOOP
 
         SELECT extract_marc_field('vandelay.queued_bib_record', id, adef.xpath, adef.remove) INTO value FROM vandelay.queued_bib_record WHERE id = NEW.id;
@@ -1687,6 +1695,10 @@ DECLARE
     attr_def    BIGINT;
     item_data   vandelay.import_item%ROWTYPE;
 BEGIN
+
+    IF TG_OP IN ('INSERT','UPDATE') AND NEW.imported_as IS NOT NULL THEN
+        RETURN NEW;
+    END IF;
 
     SELECT item_attr_def INTO attr_def FROM vandelay.bib_queue WHERE id = NEW.queue;
 
@@ -1824,6 +1836,10 @@ $func$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION vandelay.cleanup_bib_marc ( ) RETURNS TRIGGER AS $$
 BEGIN
+    IF TG_OP IN ('INSERT','UPDATE') AND NEW.imported_as IS NOT NULL THEN
+        RETURN NEW;
+    END IF;
+
     DELETE FROM vandelay.queued_bib_record_attr WHERE record = OLD.id;
     DELETE FROM vandelay.import_item WHERE record = OLD.id;
 
@@ -1897,6 +1913,10 @@ DECLARE
     atype   TEXT;
     adef    RECORD;
 BEGIN
+    IF TG_OP IN ('INSERT','UPDATE') AND NEW.imported_as IS NOT NULL THEN
+        RETURN NEW;
+    END IF;
+
     FOR adef IN SELECT * FROM vandelay.authority_attr_definition LOOP
 
         SELECT extract_marc_field('vandelay.queued_authority_record', id, adef.xpath, adef.remove) INTO value FROM vandelay.queued_authority_record WHERE id = NEW.id;
@@ -1912,6 +1932,10 @@ $$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION vandelay.cleanup_authority_marc ( ) RETURNS TRIGGER AS $$
 BEGIN
+    IF TG_OP IN ('INSERT','UPDATE') AND NEW.imported_as IS NOT NULL THEN
+        RETURN NEW;
+    END IF;
+
     DELETE FROM vandelay.queued_authority_record_attr WHERE record = OLD.id;
     IF TG_OP = 'UPDATE' THEN
         RETURN NEW;
