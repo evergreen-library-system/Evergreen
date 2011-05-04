@@ -31,7 +31,7 @@ BLOCK build_author_links;
             code = subfield.getAttribute('code');
             NEXT UNLESS code.match('[a-z]');
             term = subfield.textContent | html;
-            '<br/><a href="' _ ctx.opac_root _ '/results?qtype=author&query=' _ term _ '&loc=' _ loc _ '">' _ term _ '</a>';
+            '<br/><a href="' _ ctx.opac_root _ '/results?qtype=author&amp;query=' _ term _ '&amp;loc=' _ loc _ '">' _ term _ '</a>';
         END;
     END;
 END;
