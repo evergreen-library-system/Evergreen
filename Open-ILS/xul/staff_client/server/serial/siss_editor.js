@@ -137,7 +137,7 @@ serial.siss_editor.prototype = {
             [
                 'holding_code',
                 {
-                    input: 'c = function(v){ obj.apply("holding_code",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.setAttribute("value",obj.editor_values.holding_code); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+                    input: 'c = function(v){ obj.apply("holding_code",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.setAttribute("multiline",true); x.setAttribute("cols",40); x.setAttribute("value",obj.editor_values.holding_code); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
                     value_key: 'holding_code'
                 }
             ],

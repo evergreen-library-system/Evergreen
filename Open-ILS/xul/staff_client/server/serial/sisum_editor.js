@@ -76,7 +76,7 @@ serial.sisum_editor.prototype = {
             [
                 'textual_holdings',
                 { 
-                    input: 'c = function(v){ obj.apply("textual_holdings",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.setAttribute("size", 85); x.setAttribute("value",obj.editor_values.textual_holdings); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+                    input: 'c = function(v){ obj.apply("textual_holdings",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.setAttribute("multiline",true); x.setAttribute("cols", 80); x.setAttribute("value",obj.editor_values.textual_holdings); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
                     value_key: 'textual_holdings'
                 }
             ],
