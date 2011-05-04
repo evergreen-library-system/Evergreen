@@ -7,3 +7,23 @@
     urls['browser'] = '/opac/' + LOCALE + '/skin/mylib/xml/advanced.xml?nps=1';
 
 */
+
+// Debugging aids.  _dump_level = 4 enables all dump statements
+_dump_level = 4;
+var _dump_prefix = '0';
+try {
+    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces['nsIPrefBranch']);
+    if (!prefs.prefHasUserValue('oils.unique_id')) {
+        prefs.setIntPref('oils.unique_id',Number(_dump_prefix));
+    } else {
+        var temp = prefs.getIntPref('oils.unique_id') + 1;
+        prefs.setIntPref('oils.unique_id',temp);
+        _dump_prefix = String( temp );
+    }
+    dump(' _dump_prefix ' + _dump_prefix + ' = ' + location.href + '\n');
+} catch(E) {
+    dump('Error in custom.js trying to set oils.unique_id\n');
+}
+
+

@@ -16,6 +16,9 @@
                 try {
                     if (typeof level == 'undefined') { level = 4; }
                     if (level > _dump_level) { return; }
+                    if (typeof _dump_prefix != 'undefined') {
+                        _original_dump(_dump_prefix + ' ');
+                    }
                     switch(level) {
                         case 1: case 'error': _original_dump('error: '); break;
                         case 2: case 'warn': _original_dump('warn: '); break;
@@ -58,6 +61,9 @@
         <script type="text/javascript" src="/xul/server/util/text.js" />
         <script type="text/javascript" src="/xul/server/util/widgets.js" />
         <script type="text/javascript" src="/xul/server/util/window.js" />
+        <script type="text/javascript" src="/xul/server/circ/util.js" />
+        <script type="text/javascript" src="/xul/server/cat/util.js" />
+        <script type="text/javascript" src="/xul/server/patron/util.js" />
         <script type="text/javascript" src="/opac/common/js/utils.js" />
         <script type="text/javascript" src="/opac/common/js/CGI.js" />
         <script type="text/javascript" src="/opac/common/js/md5.js" />
