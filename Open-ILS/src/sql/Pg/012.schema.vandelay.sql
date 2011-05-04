@@ -522,7 +522,7 @@ BEGIN
         FROM _vandelay_tmp_jrows;
 
     -- add those joins and the where clause to our query.
-    query_ := query_ || joins || E'\n' || 'WHERE ' || wq;
+    query_ := query_ || joins || E'\n' || 'WHERE ' || wq || ' AND not bre.deleted';
 
     -- this will return rows of record,quality
     FOR rec IN EXECUTE query_ USING tags_rstore, svf_rstore LOOP
