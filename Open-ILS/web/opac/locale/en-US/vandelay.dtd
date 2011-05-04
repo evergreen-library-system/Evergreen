@@ -26,7 +26,7 @@
 <!ENTITY vandelay.done "Done">
 <!ENTITY vandelay.edit.attributes "Record Display Attributes">
 <!ENTITY vandelay.edit.attrs "Record Display Attributes">
-<!ENTITY vandelay.edit.profiles "Edit Merge / Overlay Profiles">
+<!ENTITY vandelay.edit.profiles "Merge / Overlay Profiles">
 <!ENTITY vandelay.edit.match_set "Record Match Sets">
 <!ENTITY vandelay.edit.import_item_attrs "Import Item Attributes">
 <!ENTITY vandelay.false "False">
