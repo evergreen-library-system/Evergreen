@@ -281,7 +281,7 @@ Otherwise, we won't return any holdings.
 =cut
 
 sub parse_feed_type {
-    my $type = shift;
+    my $type = shift || '';
 
      if ($type =~ /-full$/o) {
         return 1;
@@ -412,21 +412,22 @@ sub unapi {
     # Enable localized results of copy status, etc
     $supercat->session_locale($locale);
 
-    my $format = $cgi->param('format');
+    my $format = $cgi->param('format') || '';
     my $flesh_feed = parse_feed_type($format);
     (my $base_format = $format) =~ s/(-full|-uris)$//o;
-    my ($id,$type,$command,$lib,$depth,$paging) = ('','','');
+    my ($id,$type,$command,$lib,$depth,$paging) = ('','record','');
+    my $body = "Content-type: application/xml; charset=utf-8\n\n";
+
+    if ($uri =~ m{^tag:[^:]+:([^\/]+)/([^\/[]+)(?:\[([0-9,]+)\])?(?:/(.+))?}o) {
+        $id = $2;
+        $paging = $3;
+        ($lib,$depth) = split('/', $4);
+        $type = 'metarecord' if ($1 =~ /^m/o);
+        $type = 'authority' if ($1 =~ /^authority/o);
+    }
 
     if (!$format) {
-        my $body = "Content-type: application/xml; charset=utf-8\n\n";
-    
         if ($uri =~ m{^tag:[^:]+:([^\/]+)/([^\/[]+)(?:\[([0-9,]+)\])?(?:/(.+))?}o) {
-            $id = $2;
-            $paging = $3;
-            ($lib,$depth) = split('/', $4);
-            $type = 'record';
-            $type = 'metarecord' if ($1 =~ /^m/o);
-            $type = 'authority' if ($1 =~ /^authority/o);
 
             my $list = $supercat
                 ->request("open-ils.supercat.$type.formats")
