@@ -69,6 +69,15 @@
                 <input jsId='vlUploadQueueAutoOverlay1Match' dojoType='dijit.form.CheckBox'/>
             </td>
         </tr>
+        <tr>
+            <td>&vandelay.auto.import.auto_overlay_best;</td>
+            <td colspan='4'><input jsId='vlUploadQueueAutoOverlayBestMatch' dojoType='dijit.form.CheckBox'/></td>
+        </tr>
+        <tr>
+            <td>&vandelay.auto.import.auto_overlay_best_ratio;</td>
+            <td colspan='4'><input style='width:3em' value='0.0' jsId='vlUploadQueueAutoOverlayBestMatchRatio' dojoType='dijit.form.TextBox'/></td>
+        </tr>
+
         <tr><td colspan='2' style='border-bottom:1px solid #888'></td></tr>
         <tr>
             <td colspan='5'>

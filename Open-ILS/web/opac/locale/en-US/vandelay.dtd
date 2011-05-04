@@ -1,9 +1,11 @@
 <!ENTITY vandelay.add.existing.queue "or Add to an Existing Queue">
 <!ENTITY vandelay.auth.attrs "Authority attributes">
 <!ENTITY vandelay.auth.records "Authority Records">
-<!ENTITY vandelay.auto.import.noncolliding "Auto-Import Non-Colliding Records">
-<!ENTITY vandelay.auto.import.auto_overlay_exact "Auto Merge/Overlay Exact Matches">
-<!ENTITY vandelay.auto.import.auto_overlay_1match "Auto Merge/Overlay When Exactly 1 Match is Found">
+<!ENTITY vandelay.auto.import.noncolliding "Import Non-Colliding Records">
+<!ENTITY vandelay.auto.import.auto_overlay_exact "Merge/Overlay Exact Matches (901c)">
+<!ENTITY vandelay.auto.import.auto_overlay_1match "Merge/Overlay Single Matches">
+<!ENTITY vandelay.auto.import.auto_overlay_best "Merge/Overlay Best Match">
+<!ENTITY vandelay.auto.import.auto_overlay_best_ratio "Best Match Minimum Quality Ratio">
 <!ENTITY vandelay.auto.import.merge_profile "Merge/Overlay Profile">
 <!ENTITY vandelay.auto.width "Auto Width">
 <!ENTITY vandelay.back.to.import.queue "Back To Import Queue">
