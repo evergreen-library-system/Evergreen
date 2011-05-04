@@ -143,7 +143,7 @@ CREATE TABLE vandelay.bib_match (
 	id				BIGSERIAL	PRIMARY KEY,
 	queued_record	BIGINT		REFERENCES vandelay.queued_bib_record (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	eg_record		BIGINT		REFERENCES biblio.record_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-    quality         INT         NOT NULL DEFAULT 0,
+    quality         INT         NOT NULL DEFAULT 1,
     match_score     INT         NOT NULL DEFAULT 0
 );
 
@@ -687,6 +687,10 @@ BEGIN
 
     DELETE FROM vandelay.bib_match WHERE queued_record = NEW.id;
 
+    SELECT * INTO my_bib_queue FROM vandelay.bib_queue WHERE id = NEW.queue;
+
+    NEW.quality := vandelay.measure_record_quality( b.marc, my_bib_queue.match_set );
+
     -- Perfect matches on 901$c exit early with a match with high quality.
     incoming_existing_id :=
         oils_xpath_string('//*[@tag="901"]/*[@code="c"][1]', NEW.marc);
@@ -699,17 +703,17 @@ BEGIN
         END IF;
     END IF;
 
-    SELECT * INTO my_bib_queue FROM vandelay.bib_queue WHERE id = NEW.queue;
 
     FOR test_result IN SELECT * FROM
         vandelay.match_set_test_marcxml(my_bib_queue.match_set, NEW.marc) LOOP
 
-        INSERT INTO vandelay.bib_match (
-            queued_record, eg_record, match_score, quality
-        ) VALUES (
-            NEW.id, test_result.record,
-            test_result.quality, vandelay.incoming_record_quality(NEW.marc, my_bib_queue.match_set)
-        );
+        INSERT INTO vandelay.bib_match ( queued_record, eg_record, match_score, quality )
+	SELECT  NEW.id,
+	        test_result.record,
+                test_result.quality,
+		vandelay.measure_record_quality( b.marc, my_bib_queue.match_set )
+	  FROM  biblio.record_entry b
+	  WHERE id = test_result.record;
 
     END LOOP;
 
@@ -717,7 +721,7 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION vandelay.incoming_record_quality ( xml TEXT, match_set_id INT ) RETURNS INT AS $_$
+CREATE OR REPLACE FUNCTION vandelay.measure_record_quality ( xml TEXT, match_set_id INT ) RETURNS INT AS $_$
 DECLARE
     out_q   INT := 0;
     rvalue  TEXT;
@@ -1283,14 +1287,13 @@ BEGIN
 END;
 $$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION vandelay.auto_overlay_bib_record_with_best ( import_id BIGINT, merge_profile_id INT, lwm_ratio_value NUMERIC ) RETURNS BOOL AS $$
+CREATE OR REPLACE FUNCTION vandelay.auto_overlay_bib_record_with_best ( import_id BIGINT, merge_profile_id INT, lwm_ratio_value_p NUMERIC ) RETURNS BOOL AS $$
 DECLARE
     eg_id           BIGINT;
+    lwm_ratio_value NUMERIC;
 BEGIN
 
-    IF lwm_ratio_value IS NULL THEN
-        lwm_ratio_value := 0.0;
-    END IF;
+    lwm_ratio_value := COALESCE(lwm_ratio_value_p, 0.0);
 
     PERFORM * FROM vandelay.queued_bib_record WHERE import_time IS NOT NULL AND id = import_id;
 
@@ -1305,9 +1308,9 @@ BEGIN
             JOIN vandelay.bib_queue q ON (qr.queue = q.id)
             JOIN biblio.record_entry r ON (r.id = m.eg_record)
       WHERE m.queued_record = import_id
-            AND m.quality::NUMERIC / COALESCE(NULLIF(vandelay.incoming_record_quality(r.marc, q.match_set),0),1)::NUMERIC >= lwm_ratio_value
+            AND qr.quality::NUMERIC / COALESCE(NULLIF(m.quality,0),1)::NUMERIC >= lwm_ratio_value
       ORDER BY  m.match_score DESC, -- required match score
-                m.quality::NUMERIC / COALESCE(NULLIF(vandelay.incoming_record_quality(r.marc, q.match_set),0),1)::NUMERIC DESC, -- quality tie breaker
+                qr.quality::NUMERIC / COALESCE(NULLIF(m.quality,0),1)::NUMERIC DESC, -- quality tie breaker
                 m.id -- when in doubt, use the first match
       LIMIT 1;
 
