@@ -409,6 +409,27 @@ CREATE OR REPLACE FUNCTION biblio.extract_metabib_field_entry ( BIGINT ) RETURNS
 	SELECT * FROM biblio.extract_metabib_field_entry($1, ' ');
 $func$ LANGUAGE SQL;
 
+CREATE OR REPLACE FUNCTION authority.flatten_marc ( rid BIGINT ) RETURNS SETOF authority.full_rec AS $func$
+DECLARE
+	auth	authority.record_entry%ROWTYPE;
+	output	authority.full_rec%ROWTYPE;
+	field	RECORD;
+BEGIN
+	SELECT INTO auth * FROM authority.record_entry WHERE id = rid;
+
+	FOR field IN SELECT * FROM vandelay.flatten_marc( auth.marc ) LOOP
+		output.record := rid;
+		output.ind1 := field.ind1;
+		output.ind2 := field.ind2;
+		output.tag := field.tag;
+		output.subfield := field.subfield;
+		output.value := field.value;
+
+		RETURN NEXT output;
+	END LOOP;
+END;
+$func$ LANGUAGE PLPGSQL;
+
 CREATE OR REPLACE FUNCTION biblio.flatten_marc ( rid BIGINT ) RETURNS SETOF metabib.full_rec AS $func$
 DECLARE
 	bib	biblio.record_entry%ROWTYPE;
