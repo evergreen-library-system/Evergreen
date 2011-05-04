@@ -464,26 +464,24 @@ function vlLoadMatchUI(recId) {
 
                 // build the data store of records with match information
                 var dataStore = bre.toStoreData(recs, null, 
-                    {virtualFields:['_id']});
+                    {virtualFields:['_id', 'match_score', 'match_quality']});
                 dataStore.identifier = '_id';
 
                 var matchSeenMap = {};
 
-                // XXX much of this is no longer needed with changes to match_set
                 for(var i = 0; i < dataStore.items.length; i++) {
                     var item = dataStore.items[i];
                     item._id = i; // just need something unique
-                    /*
                     for(var j = 0; j < matches.length; j++) {
                         var match = matches[j];
                         if(match.eg_record() == item.id && !matchSeenMap[match.id()]) {
-                            var attr = getRecAttrFromMatch(queuedRecordsMap[recId], match);
-                            item.src_matchpoint = getRecAttrDefFromAttr(attr, currentType).code();
+                            if(match.match_score)
+                                item.match_score = match.match_score();
+                            item.match_quality = match.quality();
                             matchSeenMap[match.id()] = 1;
                             break;
                         }
                     }
-                    */
                 }
 
                 // now populate the grid
