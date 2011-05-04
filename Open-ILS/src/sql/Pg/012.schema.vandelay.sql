@@ -321,6 +321,10 @@ CREATE OR REPLACE FUNCTION vandelay.flay_marc ( TEXT ) RETURNS SETOF vandelay.fl
 
 use MARC::Record;
 use MARC::File::XML (BinaryEncoding => 'UTF-8');
+use MARC::Charset;
+use strict;
+
+MARC::Charset->assume_unicode(1);
 
 my $xml = shift;
 my $r = MARC::Record->new_from_xml( $xml );
