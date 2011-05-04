@@ -16,6 +16,9 @@
                 try {
                     if (typeof level == 'undefined') { level = 4; }
                     if (level > _dump_level) { return; }
+                    if (typeof _dump_prefix != 'undefined') {
+                        _original_dump(_dump_prefix + ' ');
+                    }
                     switch(level) {
                         case 1: case 'error': _original_dump('error: '); break;
                         case 2: case 'warn': _original_dump('warn: '); break;
