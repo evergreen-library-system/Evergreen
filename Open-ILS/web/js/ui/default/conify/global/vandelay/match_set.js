@@ -9,25 +9,64 @@ dojo.require("openils.User");
 dojo.require("openils.Util");
 dojo.require("openils.PermaCrud");
 dojo.require("openils.widget.ProgressDialog");
+dojo.require("openils.widget.AutoGrid");
 
 var localeStrings, node_editor, _crads, CGI, tree, match_set;
 
-function _find_crad_by_name(name) {
-    for (var i = 0; i < _crads.length; i++) {
-        if (_crads[i].name() == name)
-            return _crads[i];
-    }
-    return null;
-}
+var NodeEditorAbstract = {
+    "_svf_select_template": null,
+    "_simple_value_getter": function(control) {
+        if (typeof control.selectedIndex != "undefined")
+            return control.options[control.selectedIndex].value;
+        else if (dojo.attr(control, "type") == "checkbox")
+            return control.checked;
+        else
+            return control.value;
+    },
+    "is_sensible": function(thing) {
+        var need_one = 0;
+        var list = openils.Util.objectProperties(this._factories_by_type);
+        console.log(list.join(" "));
+        openils.Util.objectProperties(this._factories_by_type).forEach(
+            function(field) { if (thing[field]()) need_one++; }
+        );
 
-function NodeEditor() {
-    var self = this;
+        if (need_one != 1) {
+            alert(localeStrings.POINT_NEEDS_ONE);
+            return false;
+        }
 
-    var _svf_select_template = null;
-    var _factories_by_type = {
+        if (thing.tag()) {
+            if (
+                !thing.tag().match(/^\d{3}$/) ||
+                thing.subfield().length != 1 ||
+                !thing.subfield().match(/\S/) ||
+                thing.subfield().charCodeAt(0) < 32
+            ) {
+                alert(localeStrings.FAULTY_MARC);
+                return false;
+            }
+        }
+
+        return true;
+    },
+    "_add_consistent_controls": function(tgt) {
+        if (!this._consistent_controls) {
+            var trs = dojo.query(this._consistent_controls_query);
+            this._consistent_controls = [];
+            for (var i = 0; i < trs.length; i++)
+                this._consistent_controls[i] = dojo.clone(trs[i]);
+            dojo.empty(trs[0].parentNode);
+        }
+
+        this._consistent_controls.forEach(
+            function(node) { dojo.place(dojo.clone(node), tgt); }
+        );
+    },
+    "_factories_by_type": {
         "svf": function() {
-            if (!_svf_select_template) {
-                _svf_select_template = dojo.create(
+            if (!self._svf_select_template) {
+                self._svf_select_template = dojo.create(
                     "select", {"fmfield": "svf"}
                 );
                 for (var i=0; i<_crads.length; i++) {
@@ -35,12 +74,12 @@ function NodeEditor() {
                         "option", {
                             "value": _crads[i].name(),
                             "innerHTML": _crads[i].label()
-                        }, _svf_select_template
+                        }, self._svf_select_template
                     );
                 }
             }
 
-            var select = dojo.clone(_svf_select_template);
+            var select = dojo.clone(self._svf_select_template);
             dojo.attr(select, "id", "svf-select");
             var label = dojo.create(
                 "label", {
@@ -85,35 +124,93 @@ function NodeEditor() {
                 }, dojo.create("td", null, rows[1])
             );
             return rows;
-        },
-        "bool_op": function() {
-            var tr = dojo.create("tr");
-            dojo.create(
-                "label",
-                {"for": "operator-select", "innerHTML": "Operator:"},
-                dojo.create("td", null, tr)
-            );
-            var select = dojo.create(
-                "select", {"fmfield": "bool_op", "id": "operator-select"},
-                dojo.create("td", null, tr)
-            );
-            dojo.create("option", {"value": "AND", "innerHTML": "AND"}, select);
-            dojo.create("option", {"value": "OR", "innerHTML": "OR"}, select);
-
-            return [tr];
         }
+    }
+};
+
+function _find_crad_by_name(name) {
+    for (var i = 0; i < _crads.length; i++) {
+        if (_crads[i].name() == name)
+            return _crads[i];
+    }
+    return null;
+}
+
+function QualityNodeEditor() {
+    var self = this;
+
+    this._init = function(dnd_source, qnode_editor_container) {
+        this._consistent_controls_query =
+            "[consistent-controls], [quality-controls]";
+        this.dnd_source = dnd_source;
+        this.qnode_editor_container = dojo.byId(qnode_editor_container);
     };
 
-    function _simple_value_getter(control) {
-        if (typeof control.selectedIndex != "undefined")
-            return control.options[control.selectedIndex].value;
-        else if (dojo.attr(control, "type") == "checkbox")
-            return control.checked;
-        else
-            return control.value;
+    this.clear = function() {
+        this.dnd_source.selectAll().deleteSelectedNodes();
+        dojo.create(
+            "em", {"innerHTML": localeStrings.WORKING_MP_HERE},
+            this.qnode_editor_container, "only"
+        );
+        this.dnd_source._ready = false;
     };
+
+    this.build_vmsq = function() {
+        var metric = new vmsq();
+        var controls = dojo.query("[fmfield]", this.qnode_editor_container);
+        for (var i = 0; i < controls.length; i++) {
+            var field = dojo.attr(controls[i], "fmfield");
+            var value = this._simple_value_getter(controls[i]);
+            metric[field](value);
+        }
+
+        if (!this.is_sensible(metric)) return null;    /* will alert() */
+        else return metric;
+    };
+
+    this.add = function(type) {
+        this.clear();
+
+
+        /* these are the editing widgets */
+        var table = dojo.create("table", {"className": "node-editor"});
+
+        var nodes = this._factories_by_type[type]();
+        for (var i = 0; i < nodes.length; i++) dojo.place(nodes[i], table);
+
+        this._add_consistent_controls(table);
+
+        dojo.create(
+            "input", {
+                "type": "submit", "value": localeStrings.OK,
+                "onclick": function() { alert("would update draggable here"/* XXX TODO */); }
+            }, dojo.create(
+                "td", {"colspan": 2, "align": "center"},
+                dojo.create("tr", null, table)
+            )
+        );
+
+        dojo.place(table, this.qnode_editor_container, "only");/* XXX put in dialog here */
+
+        //this.dnd_source.insertNodes(false, [draggable]);
+
+        /* nice */
+        try { dojo.query("select, input", table)[0].focus(); }
+        catch(E) { console.log(String(E)); }
+
+    };
+
+    openils.Util.objectProperties(NodeEditorAbstract).forEach(
+        function(m) { self[m] = NodeEditorAbstract[m]; }
+    );
+    this._init.apply(this, arguments);
+}
+
+function NodeEditor() {
+    var self = this;
 
     this._init = function(dnd_source, node_editor_container) {
+        this._consistent_controls_query = "[consistent-controls]";
         this.dnd_source = dnd_source;
         this.node_editor_container = dojo.byId(node_editor_container);
     };
@@ -127,38 +224,12 @@ function NodeEditor() {
         this.dnd_source._ready = false;
     };
 
-    this.is_sensible = function(mp) {
-        var need_one = 0;
-        ["tag", "svf", "bool_op"].forEach(
-            function(field) { if (mp[field]()) need_one++; }
-        );
-
-        if (need_one != 1) {
-            alert(localeStrings.POINT_NEEDS_ONE);
-            return false;
-        }
-
-        if (mp.tag()) {
-            if (
-                !mp.tag().match(/^\d{3}$/) ||
-                mp.subfield().length != 1 ||
-                !mp.subfield().match(/\S/) ||
-                mp.subfield().charCodeAt(0) < 32
-            ) {
-                alert(localeStrings.FAULTY_MARC);
-                return false;
-            }
-        }
-
-        return true;
-    };
-
     this.build_vmsp = function() {
         var match_point = new vmsp();
         var controls = dojo.query("[fmfield]", this.node_editor_container);
         for (var i = 0; i < controls.length; i++) {
             var field = dojo.attr(controls[i], "fmfield");
-            var value = _simple_value_getter(controls[i]);
+            var value = this._simple_value_getter(controls[i]);
             match_point[field](value);
         }
 
@@ -176,20 +247,6 @@ function NodeEditor() {
         this.dnd_source._ready = true;
     };
 
-    this._add_consistent_controls = function(tgt) {
-        if (!this._consistent_controls) {
-            var trs = dojo.query("[consistent-controls]");
-            this._consistent_controls = [];
-            for (var i = 0; i < trs.length; i++)
-                this._consistent_controls[i] = dojo.clone(trs[i]);
-            dojo.empty(trs[0].parentNode);
-        }
-
-        this._consistent_controls.forEach(
-            function(node) { dojo.place(dojo.clone(node), tgt); }
-        );
-    };
-
     this.add = function(type) {
         this.clear();
 
@@ -202,7 +259,7 @@ function NodeEditor() {
         /* these are the editing widgets */
         var table = dojo.create("table", {"className": "node-editor"});
 
-        var nodes = _factories_by_type[type]();
+        var nodes = this._factories_by_type[type]();
         for (var i = 0; i < nodes.length; i++) dojo.place(nodes[i], table);
 
         if (type != "bool_op")
@@ -228,6 +285,26 @@ function NodeEditor() {
 
     };
 
+    openils.Util.objectProperties(NodeEditorAbstract).forEach(
+        function(m) { self[m] = NodeEditorAbstract[m]; }
+    );
+
+    this._factories_by_type.bool_op = function() {
+        var tr = dojo.create("tr");
+        dojo.create(
+            "label",
+            {"for": "operator-select", "innerHTML": "Operator:"},
+            dojo.create("td", null, tr)
+        );
+        var select = dojo.create(
+            "select", {"fmfield": "bool_op", "id": "operator-select"},
+            dojo.create("td", null, tr)
+        );
+        dojo.create("option", {"value": "AND", "innerHTML": "AND"}, select);
+        dojo.create("option", {"value": "OR", "innerHTML": "OR"}, select);
+
+        return [tr];
+    };
     this._init.apply(this, arguments);
 }
 
@@ -401,6 +478,14 @@ function save_tree() {
         }
     );
 }
+
+function init_vmsq_grid() {
+    vmsq_grid.loadAll(
+        {"order_by": {"vmsq": "quality"}},
+        {"match_set": CGI.param("match_set")}
+    );
+}
+
 function my_init() {
     progress_dialog.show(true);
 
@@ -473,6 +558,9 @@ function my_init() {
 
     redraw_expression_preview();
     node_editor.clear();
+
+    init_vmsq_grid();
+
     progress_dialog.hide();
 }
 

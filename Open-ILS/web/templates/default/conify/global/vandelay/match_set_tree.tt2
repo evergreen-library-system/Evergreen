@@ -68,6 +68,14 @@
             <input id="negate-input" type="checkbox" fmfield="negate" />
         </td>
     </tr>
+    <tr quality-controls="1">
+        <td>
+            <label for="value-input">Value:</label>
+        </td>
+        <td>
+            <input id="value-input" type="text" fmfield="value" />
+        </td>
+    </tr>
 </table>
 <div class="outer">
     <div id="expr-preview-row">
@@ -102,8 +110,37 @@
     </div>
 </div>
 <div id="submit-row">
-    <hr />
-    <button onclick="save_tree()">Save Changes</button>
+    <button onclick="save_tree()">Save Changes To Expression</button>
+</div>
+<hr />
+<div id="quality-editor-wrapper">
+    <div>
+        <div style="float: left; width: 50%;">
+            <big>Quality Metrics for this Match Set</big>
+        </div>
+        <div style="float: right; width: 49%; text-align: right;">
+            <button onclick="qnode_editor.add('svf')">
+                Record Attribute
+            </button>
+            <button onclick="qnode_editor.add('tag')">
+                MARC Tag and Subfield
+            </button>
+            <button onclick="vmsq_grid.deleteSelected()">
+                Delete Selected Metrics
+            </button>
+        </div>
+    </div>
+    <br style="clear: both;" />
+    <table jsId="vmsq_grid"
+        dojoType="openils.widget.AutoGrid"
+        query="{id: '*'}"
+        defaultCellWidth="'17%'"
+        fmClass="vmsq"
+        fieldOrder="['quality','svf','tag','subfield','value']"
+        suppressFields="['match_set']"
+        showPaginator="true"
+        editOnEnter="false">
+    </table>
 </div>
 <div jsId="progress_dialog" dojoType="openils.widget.ProgressDialog"></div>
 <script type="text/javascript"
