@@ -708,11 +708,15 @@ sub import_record_list_impl {
 
     my $auto_overlay_exact = $$args{auto_overlay_exact};
     my $auto_overlay_1match = $$args{auto_overlay_1match};
+    my $auto_overlay_best = $$args{auto_overlay_best_match};
+    my $match_quality_ratio = $$args{match_quality_ratio};
     my $merge_profile = $$args{merge_profile};
     my $bib_source = $$args{bib_source};
+    my $import_no_match = $$args{import_no_match};
 
     my $overlay_func = 'vandelay.overlay_bib_record';
     my $auto_overlay_func = 'vandelay.auto_overlay_bib_record';
+    my $auto_overlay_best_func = 'vandelay.auto_overlay_bib_record_with_best'; # XXX bib-only
     my $retrieve_func = 'retrieve_vandelay_queued_bib_record';
     my $update_func = 'update_vandelay_queued_bib_record';
     my $search_func = 'search_vandelay_queued_bib_record';
@@ -863,7 +867,39 @@ sub import_record_list_impl {
                 }
             }
 
-            if(!$imported and !$error) {
+            if(!$imported and !$error and $auto_overlay_best and scalar(@{$rec->matches}) > 0 ) {
+
+                # caller says to overlay the best match
+
+                my $res = $e->json_query(
+                    {
+                        from => [
+                            $auto_overlay_best_func,
+                            $rec->id, 
+                            $merge_profile,
+                            $match_quality_ratio
+                        ]
+                    }
+                );
+
+                if($res and ($res = $res->[0])) {
+
+                    if($res->{$auto_overlay_best_func} eq 't') {
+                        $logger->info("vl: $type auto-overlay-best succeeded for queued rec " . $rec->id);
+                        $imported = 1;
+                    } else {
+                        $report_args{import_error} = 'overlay.record.quality' if $match_quality_ratio > 0;
+                        $logger->info("vl: $type auto-overlay-best failed for queued rec " . $rec->id);
+                    }
+
+                } else {
+                    $error = 1;
+                    $logger->error("vl: Error attempting overlay with func=$auto_overlay_best_func, ".
+                        "quality_ratio=$match_quality_ratio, profile=$merge_profile, record=$rec_id");
+                }
+            }
+
+            if(!$imported and !$error and $import_no_match and scalar(@{$rec->matches}) == 0) {
             
                 # No overlay / merge occurred.  Do a traditional record import by creating a new record
             

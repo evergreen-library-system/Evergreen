@@ -6,6 +6,7 @@
 <!ENTITY vandelay.auto.import.auto_overlay_1match "Merge/Overlay Single Matches">
 <!ENTITY vandelay.auto.import.auto_overlay_best "Merge/Overlay Best Match">
 <!ENTITY vandelay.auto.import.auto_overlay_best_ratio "Best Match Minimum Quality Ratio">
+<!ENTITY vandelay.auto.import.auto_overlay_best_ratio.desc "New Record Quaility / Quality of Best Match">
 <!ENTITY vandelay.auto.import.merge_profile "Merge/Overlay Profile">
 <!ENTITY vandelay.auto.width "Auto Width">
 <!ENTITY vandelay.back.to.import.queue "Back To Import Queue">

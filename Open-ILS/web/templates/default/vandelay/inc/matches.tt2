@@ -15,7 +15,7 @@
                     formatter : vlFormatViewMatchMARC
                 },
                 {name: 'Match Score', field:'match_score'},
-                {name: 'Match Quality', field:'match_quality'},
+                {name: 'Matched Record Quality', field:'match_quality'},
                 {name: '&vandelay.creator;', get: vlGetCreator},
                 {name: '&vandelay.create.date;', field:'create_date', get: vlGetDateTimeField},
                 {name: '&vandelay.last.edit.date;', field:'edit_date', get: vlGetDateTimeField},
