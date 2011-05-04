@@ -736,7 +736,7 @@ BEGIN
                 END IF;
             END LOOP;
         ELSE
-            IF test.value = vandelay.extract_rec_attrs(xml, ARRAY[test.svf]) THEN
+            IF test.value = vandelay.extract_rec_attrs(xml, ARRAY[test.svf]) -> test.svf THEN
                 out_q := out_q + test.quality;
             END IF;
         END IF;
