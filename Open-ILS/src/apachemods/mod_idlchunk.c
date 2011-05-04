@@ -497,7 +497,7 @@ static int idlChunkHandler( ap_filter_t *f, apr_bucket_brigade *brigade ) {
 	idlChunkConfig* config = ap_get_module_config( 
 			f->r->per_dir_config, &idlchunk_module );
 
-	ap_log_rerror(APLOG_MARK, APLOG_ERR, 
+	ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 
 			0, f->r, "IDLCHUNK Config:\nContent Type = %s, "
 			"Strip PI = %s, Strip Comments = %s, Doctype = %s", 
 			config->contentType, 
