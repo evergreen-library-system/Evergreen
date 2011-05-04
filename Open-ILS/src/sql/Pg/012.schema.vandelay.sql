@@ -689,7 +689,7 @@ BEGIN
 
     SELECT * INTO my_bib_queue FROM vandelay.bib_queue WHERE id = NEW.queue;
 
-    NEW.quality := vandelay.measure_record_quality( b.marc, my_bib_queue.match_set );
+    NEW.quality := vandelay.measure_record_quality( NEW.marc, my_bib_queue.match_set );
 
     -- Perfect matches on 901$c exit early with a match with high quality.
     incoming_existing_id :=
