@@ -19519,7 +19519,10 @@ return undef;
 
 $func$ LANGUAGE PLPERLU;
 
+\qecho Rewriting authority records to include a 901$c, so that
+\qecho they can be used to control bibs.  This may take a while...
 
+UPDATE authority.record_entry SET active = active;
 
 \qecho Upgrade script completed.
 \qecho But wait, there's more: please run reingest-1.6-2.0.pl
