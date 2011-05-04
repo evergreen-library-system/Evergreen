@@ -17,7 +17,7 @@
     #   PROCESS build_org_selector id='selector-id' name='selector-name'
     BLOCK build_org_selector;
 %]
-    <select id='[% id %]' name='[% name %]'>
+    <select [% IF id %] id='[% id %]' [% END %] name='[% name %]'>
     [% PROCESS build_org_selector_options walker=(org_unit || ctx.aou_tree) value=value %]
     </select>
 [%  END %]
