@@ -1130,7 +1130,7 @@ function rdetailBuildBrowseInfo(row, cn, local, orgNode, cl) {
 	var dHref = 'javascript:rdetailVolumeDetails('+
 			'{copy_location : "'+cl.replace(/\"/g, '\\"')+'", rowid : "'+row.id+'", cn_prefix :"'+cn[0].replace(/\"/g, '\\"')+'",cn :"'+cn[1].replace(/\"/g, '\\"')+'",cn_suffix :"'+cn[2].replace(/\"/g, '\\"')+'", depth:"'+depth+'", org:"'+orgNode.id()+'", local: '+local+'});';
 
-	var bHref = 'javascript:rdetailShowCNBrowse(["' + cn[0].replace(/\"/g, '\\"') + '","'+cn[1].replace(/\"/g, '\\"') + '","'+cn[2].replace(/\"/g, '\\"') + '"], '+orgNode.id()+', "'+depth+'");'; 
+	var bHref = 'javascript:rdetailShowCNBrowse("'+cn[1].replace(/\"/g, '\\"') + '", '+orgNode.id()+', "'+depth+'");'; 
 
 	unHideMe( $n(row, 'details') )
 		$n(row, 'details').setAttribute('href', dHref);
