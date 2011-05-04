@@ -444,7 +444,7 @@ function vlLoadMatchUI(recId) {
     var params = [records];
     if(currentType == 'auth') {
         retrieve = ['open-ils.cat', 'open-ils.cat.authority.record.retrieve'];
-        parmas = [authtoken, records, {clear_marc:1}];
+        params = [authtoken, records, {clear_marc:1}];
     }
 
     fieldmapper.standardRequest(
@@ -464,24 +464,26 @@ function vlLoadMatchUI(recId) {
 
                 // build the data store of records with match information
                 var dataStore = bre.toStoreData(recs, null, 
-                    {virtualFields:['dest_matchpoint', 'src_matchpoint', '_id']});
+                    {virtualFields:['_id']});
                 dataStore.identifier = '_id';
 
                 var matchSeenMap = {};
 
+                // XXX much of this is no longer needed with changes to match_set
                 for(var i = 0; i < dataStore.items.length; i++) {
                     var item = dataStore.items[i];
                     item._id = i; // just need something unique
+                    /*
                     for(var j = 0; j < matches.length; j++) {
                         var match = matches[j];
                         if(match.eg_record() == item.id && !matchSeenMap[match.id()]) {
-                            item.dest_matchpoint = match.field_type();
                             var attr = getRecAttrFromMatch(queuedRecordsMap[recId], match);
                             item.src_matchpoint = getRecAttrDefFromAttr(attr, currentType).code();
                             matchSeenMap[match.id()] = 1;
                             break;
                         }
                     }
+                    */
                 }
 
                 // now populate the grid
@@ -554,6 +556,7 @@ function getRecMatchesFromAttrCode(rec, attrCode) {
 }
 */
 
+/*
 function getRecAttrFromMatch(rec, match) {
     for(var i = 0; i < rec.attributes().length; i++) {
         var attr = rec.attributes()[i];
@@ -561,6 +564,7 @@ function getRecAttrFromMatch(rec, match) {
             return attr;
     }
 }
+*/
 
 function getRecAttrDefFromAttr(attr, type) {
     var defs = (type == 'bib') ? bibAttrDefs : authAttrDefs;
