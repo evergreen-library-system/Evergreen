@@ -13,7 +13,7 @@
         <a href="http://evergreen-ils.org">
             <img src="[% ctx.media_prefix %]/opac/images/eg_tiny_logo.jpg"
                 style="border:none; width: 94px; height: 16px;"
-                alt="[% l('Evergreen') %]
+                alt="[% l('Evergreen') %]"
             />
         </a>
     </div>

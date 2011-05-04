@@ -38,7 +38,7 @@
                 single_term = subfield.textContent | html;
                 all_terms.push(subfield.textContent);
                 total_term = all_terms.join(" ").replace('\s+$', '') | uri;
-                '<a href="' _ ctx.opac_root _ '/results?qtype=subject&query=' _ total_term _ '&loc=' _ loc _ '">' _ single_term _ '</a>';
+                '<a href="' _ ctx.opac_root _ '/results?qtype=subject&amp;query=' _ total_term _ '&amp;loc=' _ loc _ '">' _ single_term _ '</a>';
             END;
             IF all_terms.size; "<br/>"; END;
         END;

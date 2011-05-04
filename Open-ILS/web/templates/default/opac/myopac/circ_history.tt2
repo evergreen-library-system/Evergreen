@@ -21,10 +21,10 @@
     <div class="header_middle">
         <span class="float-left">[% l('Previously Checked Out Items') %]</span>
         <span class='float-left' style='padding-left: 10px;'>
-            <a href='circ_history?limit=[% limit %]&offset=[% offset - limit %]'
+            <a href='circ_history?limit=[% limit %]&amp;offset=[% offset - limit %]'
                 [% IF offset == 0 %] class='invisible' [% END %]><span class="nav_arrow_fix">&#9668;</span>[% l('Previous') %]</a>
             [%# TODO: get total to prevent paging off then end of the list.. %]
-            <a href='circ_history?limit=[% limit %]&offset=[% offset + limit %]'
+            <a href='circ_history?limit=[% limit %]&amp;offset=[% offset + limit %]'
                [% IF ctx.circs.size < limit %] class='invisible' [% END %] >[% l('Next') %]<span class="nav_arrow_fix">&#9658;</span></a>
         </span>
         <span class="float-right">
@@ -73,7 +73,7 @@
                             <a href="[% ctx.opac_root %]/record/[% circ.circ.target_copy.call_number.record.id %]" 
                                 name="[% l('Catalog record') %]">[% attrs.title %]</a>
                             [% IF attrs.author %] /
-                            <a href="[% ctx.opac_root %]/results?qtype=author&query=[% attrs.author | replace('[,\.:;]', '') | url %]">[% attrs.author %]</a>
+                            <a href="[% ctx.opac_root %]/results?qtype=author&amp;query=[% attrs.author | replace('[,\.:;]', '') | url %]">[% attrs.author %]</a>
                             [% END %]
                         </td>
                         <td style="padding-left:5px;">

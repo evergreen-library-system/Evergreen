@@ -108,7 +108,7 @@
                             name="author">
                             <a href="[% ctx.opac_root %]/record/[% circ.circ.target_copy.call_number.record.id %]" name="[% l('Catalog record') %]">[% attrs.title %]</a>
                             [% IF attrs.author %] /
-                            <a href="[% ctx.opac_root %]/results?qtype=author&query=[% attrs.author | replace('[,\.:;]', '') | url %]">[% attrs.author %]</a>
+                            <a href="[% ctx.opac_root %]/results?qtype=author&amp;query=[% attrs.author | replace('[,\.:;]', '') | url %]">[% attrs.author %]</a>
                             [% END %]
                         </td>
                         <td width="8%" name="renewals" align="center">

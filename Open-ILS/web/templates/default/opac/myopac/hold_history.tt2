@@ -21,10 +21,10 @@
     <div class="header_middle">
         <span style="float:left;">[% l("Previously Held Items") %]</span>
         <span class='float-left' style='padding-left: 10px;'>
-            <a href='hold_history?limit=[% limit %]&offset=[% offset - limit %]'
+            <a href='hold_history?limit=[% limit %]&amp;offset=[% offset - limit %]'
                 [% IF offset == 0 %] class='invisible' [% END %]><span class="nav_arrow_fix">&#9668;</span>[% l('Previous') %]</a>
             [%# TODO: get total to prevent paging off then end of the list.. %]
-            <a href='hold_history?limit=[% limit %]&offset=[% offset + limit %]'
+            <a href='hold_history?limit=[% limit %]&amp;offset=[% offset + limit %]'
                [% IF ctx.holds.size < limit %] class='invisible' [% END %] >[% l('Next') %]<span class="nav_arrow_fix">&#9658;</span></a>
         </span>
         <span style="float:right;">
@@ -67,7 +67,7 @@
                     </td>
                     <td width="123">
                         <div style="margin-top:10px;margin-bottom:10px;">
-                            <a href="[% ctx.opac_root %]/results?qtype=author&query=[% attrs.author | replace('[,\.:;]', '') | url %]">[% attrs.author | html %]</a>
+                            <a href="[% ctx.opac_root %]/results?qtype=author&amp;query=[% attrs.author | replace('[,\.:;]', '') | url %]">[% attrs.author | html %]</a>
                         </div>
                     </td>
                     <td width="64">

@@ -15,7 +15,7 @@
 
     query_string = CGI.query_string |
         replace(';x=\d+','') | replace(';y=\d+','') | replace(';page=\d*', '') |
-        replace(';', '&');
+        replace(';', '&') | replace('&', '&amp;');
 
     propagator = '?' _ query_string;
 
