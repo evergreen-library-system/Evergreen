@@ -485,7 +485,7 @@ necessary adjustments and click <guibutton>Modify/Create Copies</guibutton>.</pa
         <emphasis>In Process</emphasis>
 
         , consistent with other types of item creation. This is a
-        change from 1.6.</para>
+        change from 2.0.5 and earlier, when items created with Fast Add were Available.</para>
       </note>
     </simplesect>
 
