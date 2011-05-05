@@ -12,7 +12,7 @@ xml:id="cataloging">
     </abstract>
   </info>
 
-  <section xml:id="MARC">
+  <section xml:id="MARC_editor">
     <title>Working with the MARC Editor</title>
 
     <indexterm>
