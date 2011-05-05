@@ -9,10 +9,10 @@
                         <table class='queue-nav-table'>
                             <thead><tr><th colspan='2' class='queue-nav-table-label'>Queue Actions</th></tr></thead>
                             <tbody>
-                                <tr><td><a href='#' onclick='vlHandleQueueItemsAction("import")'>&vandelay.import.selected;</a></td></tr>
-                                <tr><td><a href='#' onclick='vlHandleQueueItemsAction("import_all")'>&vandelay.import.all;</a></td></tr>
-                                <tr><td><a href='#' onclick='vlLoadErrorUIAll();'>View Import Items</a></td></tr>
-                                <tr><td><a href='#' onclick='
+                                <tr><td><a href='javascript:;' onclick='vlHandleQueueItemsAction("import")'>&vandelay.import.selected;</a></td></tr>
+                                <tr><td><a href='javascript:;' onclick='vlHandleQueueItemsAction("import_all")'>&vandelay.import.all;</a></td></tr>
+                                <tr><td><a href='javascript:;' onclick='vlLoadErrorUIAll();'>View Import Items</a></td></tr>
+                                <tr><td><a href='javascript:;' onclick='
                                     if(confirm("&vandelay.sure.to.delete.queue;")) {
                                         vlDeleteQueue(currentType, currentQueueId, 
                                             function() { displayGlobalDiv("vl-marc-upload-div"); });}'>&vandelay.delete.queue;</a></td></tr>
@@ -186,9 +186,16 @@
         <table class='form_table'>
             <tbody>
                 <tr>
+                    <td>&vandelay.auto.import.merge_profile;</td>
+                    <td colspan='4'>
+                        <div jsId='vlUploadMergeProfile2' 
+                            dojoType='dijit.form.FilteringSelect' required='false' labelAttr='name' searchAttr='name'/>
+                    </td>
+                </tr>
+                <tr>
                     <td>&vandelay.auto.import.noncolliding;</td>
                     <td colspan='4'>
-                        <input jsId='vlUploadQueueAutoImport2' dojoType='dijit.form.CheckBox'/>
+                        <input jsId='vlUploadQueueImportNoMatch2' dojoType='dijit.form.CheckBox'/>
                     </td>
                 </tr>
                 <tr>
@@ -204,10 +211,14 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>&vandelay.auto.import.merge_profile;</td>
+                    <td>&vandelay.auto.import.auto_overlay_best;</td>
+                    <td colspan='4'><input jsId='vlUploadQueueAutoOverlayBestMatch2' dojoType='dijit.form.CheckBox'/></td>
+                </tr>
+                <tr>
+                    <td>&vandelay.auto.import.auto_overlay_best_ratio;</td>
                     <td colspan='4'>
-                        <div jsId='vlUploadMergeProfile2' 
-                            dojoType='dijit.form.FilteringSelect' required='false' labelAttr='name' searchAttr='name'/>
+                        <input style='width:3em' value='0.0' jsId='vlUploadQueueAutoOverlayBestMatchRatio2' dojoType='dijit.form.TextBox'/>
+                        <span style='padding-left: 10px; font-size:90%'>(&vandelay.auto.import.auto_overlay_best_ratio.desc;)</span>
                     </td>
                 </tr>
                 <tr>

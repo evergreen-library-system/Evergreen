@@ -576,7 +576,7 @@ sub import_record_list {
     return $e->die_event unless $e->checkauth;
     $args ||= {};
     my $err = import_record_list_impl($self, $conn, $rec_ids, $e->requestor, $args);
-    $e->rollback;
+    try {$e->rollback} otherwise {}; 
     return $err if $err;
     return {complete => 1};
 }
@@ -698,13 +698,13 @@ sub import_record_list_impl {
     my $type = $self->{record_type};
     my %queues;
 
-    my %report_args = (
-        progress => 0,
+    my $report_args = {
+        progress => 1,
         step => 1,
         conn => $conn,
         total => scalar(@$rec_ids),
         report_all => $$args{report_all}
-    );
+    };
 
     my $auto_overlay_exact = $$args{auto_overlay_exact};
     my $auto_overlay_1match = $$args{auto_overlay_1match};
@@ -750,10 +750,9 @@ sub import_record_list_impl {
         my $e = new_editor(xact => 1);
         $e->requestor($requestor);
 
-        $report_args{progress}++;
-        $report_args{e} = $e;
-        $report_args{import_error} = undef;
-        $report_args{evt} = undef;
+        $$report_args{e} = $e;
+        $$report_args{import_error} = undef;
+        $$report_args{evt} = undef;
 
         my $rec = $e->$retrieve_func([
             $rec_id,
@@ -763,11 +762,12 @@ sub import_record_list_impl {
         ]);
 
         unless($rec) {
-            finish_rec_import_attempt(%report_args, evt => $e->event);
+            $$report_args{evt} = $e->event;
+            finish_rec_import_attempt($report_args);
             next;
         }
 
-        $report_args{rec} = $rec;
+        $$report_args{rec} = $rec;
 
         if($rec->import_time) {
             $e->rollback;
@@ -890,7 +890,7 @@ sub import_record_list_impl {
                         $logger->info("vl: $type auto-overlay-best succeeded for queued rec " . $rec->id);
                         $imported = 1;
                     } else {
-                        $report_args{import_error} = 'overlay.record.quality' if $match_quality_ratio > 0;
+                        $$report_args{import_error} = 'overlay.record.quality' if $match_quality_ratio > 0;
                         $logger->info("vl: $type auto-overlay-best failed for queued rec " . $rec->id);
                     }
 
@@ -914,8 +914,8 @@ sub import_record_list_impl {
                 }
 
                 if($U->event_code($record)) {
-                    $report_args{import_error} = 'import.duplicate.tcn' if $record->{textcode} eq 'TCN_EXISTS';
-                    $report_args{evt} = $record;
+                    $$report_args{import_error} = 'import.duplicate.tcn' if $record->{textcode} eq 'TCN_EXISTS';
+                    $$report_args{evt} = $record;
 
                 } else {
 
@@ -929,11 +929,12 @@ sub import_record_list_impl {
 
         if($imported) {
             push @success_rec_ids, $rec_id;
-            finish_rec_import_attempt(%report_args);
+            finish_rec_import_attempt($report_args);
 
         } else {
             # Send an update whenever there's an error
-            finish_rec_import_attempt(%report_args, evt => $e->event);
+            $$report_args{evt} = $e->event unless $$report_args{evt};
+            finish_rec_import_attempt($report_args);
         }
     }
 
@@ -960,18 +961,18 @@ sub import_record_list_impl {
     # import the copies
     import_record_asset_list_impl($conn, \@success_rec_ids, $requestor);
 
-    $conn->respond({total => $report_args{total}, progress => $report_args{progress}});
+    $conn->respond({total => $$report_args{total}, progress => $$report_args{progress}});
     return undef;
 }
 
 # tracks any import errors, commits the current xact, responds to the client
 sub finish_rec_import_attempt {
-    my %args = @_;
-    my $evt = $args{evt};
-    my $rec = $args{rec};
-    my $e = $args{e};
+    my $args = shift;
+    my $evt = $$args{evt};
+    my $rec = $$args{rec};
+    my $e = $$args{e};
 
-    my $error = $args{import_error};
+    my $error = $$args{import_error};
     $error = 'general.unknown' if $evt and not $error;
 
     # error tracking
@@ -991,7 +992,7 @@ sub finish_rec_import_attempt {
             }
 
             my $method = 'update_vandelay_queued_bib_record';
-            $method =~ s/bib/authority/ if $args{type} eq 'auth';
+            $method =~ s/bib/authority/ if $$args{type} eq 'auth';
             $e->$method($rec) and $e->commit or $e->rollback;
 
         } else {
@@ -1007,18 +1008,17 @@ sub finish_rec_import_attempt {
     }
         
     # respond to client
-    if($args{report_all} or ($args{progress} % $args{step}) == 0) {
-
-        $args{conn}->respond({
-            total => $args{total}, 
-            progress => $args{progress}, 
+    if($$args{report_all} or ($$args{progress} % $$args{step}) == 0) {
+        $$args{conn}->respond({
+            total => $$args{total}, 
+            progress => $$args{progress}, 
             imported => ($rec) ? $rec->id : undef,
             err_event => $evt
         });
-
-        # report often at first, climb quickly, then hold steady
-        $args{step} *= 2 unless $args{step} == 256;
+        $$args{step} *= 2 unless $$args{step} == 256;
     }
+
+    $$args{progress}++;
 }
 
 
@@ -1221,25 +1221,34 @@ sub import_record_asset_list_impl {
 
     my $roe = new_editor(xact=> 1, requestor => $requestor);
 
+    # for speed, filter out any records have not been 
+    # imported or have no import items to load
+    $rec_ids = $roe->json_query({
+        select => {vqbr => ['id']},
+        from => {vqbr => 'vii'},
+        where => {'+vqbr' => {import_time => {'!=' => undef}}}
+    });
+    $rec_ids = [map {$_->{id}} @$rec_ids];
+
     my %report_args = (
         conn => $conn,
         total => scalar(@$rec_ids),
         step => 1, # how often to respond
-        progress => 0,
+        progress => 1,
         in_count => 0,
     );
 
     for my $rec_id (@$rec_ids) {
         my $rec = $roe->retrieve_vandelay_queued_bib_record($rec_id);
-        next unless $rec and $rec->import_time;
         my $item_ids = $roe->search_vandelay_import_item({record => $rec->id}, {idlist=>1});
 
         for my $item_id (@$item_ids) {
             my $e = new_editor(requestor => $requestor, xact => 1);
             my $item = $e->retrieve_vandelay_import_item($item_id);
-            $report_args{progress}++;
             $report_args{import_item} = $item;
             $report_args{e} = $e;
+            $report_args{import_error} = undef;
+            $report_args{evt} = undef;
 
             # --------------------------------------------------------------------------------
             # Find or create the volume
@@ -1332,24 +1341,26 @@ sub import_record_asset_list_impl {
             respond_with_status(%report_args, imported_as => $copy->id);
             $logger->info("vl: successfully imported item " . $item->barcode);
         }
+
     }
+
     $roe->rollback;
     return undef;
 }
 
 
 sub respond_with_status {
-    my %args = @_;
-    my $e = $args{e};
+    my $args = shift;
+    my $e = $$args{e};
 
     #  If the import failed, track the failure reason
 
-    my $error = $args{import_error};
-    my $evt = $args{evt};
+    my $error = $$args{import_error};
+    my $evt = $$args{evt};
 
     if($error or $evt) {
 
-        my $item = $args{import_item};
+        my $item = $$args{import_item};
         $logger->info("vl: unable to import item " . $item->barcode);
 
         $error ||= 'general.unknown';
@@ -1367,13 +1378,15 @@ sub respond_with_status {
         $e->commit;
     }
 
-    return unless $args{report_all} or ($args{progress} % $args{step}) == 0;
-    $args{step} *= 2 unless $args{step} == 256;
+    if($$args{report_all} or ($$args{progress} % $$args{step}) == 0) {
+        $$args{conn}->respond({
+            map { $_ => $args->{$_} } qw/total progress success_count/,
+            err_event => $evt
+        });
+        $$args{step} *= 2 unless $$args{step} == 256;
+    }
 
-    $args{conn}->respond({
-        map { $_ => $args{$_} } qw/total progress success_count/,
-        err_event => $evt
-    });
+    $$args{progress}++;
 }
 
 __PACKAGE__->register_method(  

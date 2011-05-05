@@ -435,7 +435,8 @@ function retrieveQueuedRecords(type, queueId, onload) {
 
 function vlLoadMatchUI(recId) {
     displayGlobalDiv('vl-generic-progress');
-    var matches = queuedRecordsMap[recId].matches();
+    var queuedRec = queuedRecordsMap[recId];
+    var matches = queuedRec.matches();
     var records = [];
     currentImportRecId = recId;
     for(var i = 0; i < matches.length; i++)
@@ -465,7 +466,7 @@ function vlLoadMatchUI(recId) {
 
                 // build the data store of records with match information
                 var dataStore = bre.toStoreData(recs, null, 
-                    {virtualFields:['_id', 'match_score', 'match_quality']});
+                    {virtualFields:['_id', 'match_score', 'match_quality', 'rec_quality']});
                 dataStore.identifier = '_id';
 
                 var matchSeenMap = {};
@@ -479,6 +480,7 @@ function vlLoadMatchUI(recId) {
                             if(match.match_score)
                                 item.match_score = match.match_score();
                             item.match_quality = match.quality();
+                            item.rec_quality = queuedRec.quality();
                             matchSeenMap[match.id()] = 1;
                             break;
                         }
@@ -979,6 +981,8 @@ function vlHandleQueueItemsAction(action) {
             vlUploadQueueAutoOverlayExact.attr('value',  vlUploadQueueAutoOverlayExact2.attr('value'));
             vlUploadQueueAutoOverlay1Match.attr('value',  vlUploadQueueAutoOverlay1Match2.attr('value'));
             vlUploadMergeProfile.attr('value',  vlUploadMergeProfile2.attr('value'));
+            vlUploadQueueAutoOverlayBestMatch.attr('value',  vlUploadQueueAutoOverlayBestMatch2.attr('value'));
+            vlUploadQueueAutoOverlayBestMatchRatio.attr('value',  vlUploadQueueAutoOverlayBestMatchRatio2.attr('value'));
 
             if(action == 'import') {
                 vlImportSelectedRecords();
@@ -995,6 +999,10 @@ function vlHandleQueueItemsAction(action) {
             vlUploadQueueAutoOverlay1Match2.attr('value', false);
             vlUploadMergeProfile.attr('value', '');
             vlUploadMergeProfile2.attr('value', '');
+            vlUploadQueueAutoOverlayBestMatch.attr('value', false);
+            vlUploadQueueAutoOverlayBestMatch2.attr('value', false);
+            vlUploadQueueAutoOverlayBestMatchRatio.attr('value', '0.0');
+            vlUploadQueueAutoOverlayBestMatchRatio2.attr('value', '0.0');
         }
     );
 
@@ -1002,8 +1010,8 @@ function vlHandleQueueItemsAction(action) {
 }
     
 
+/* import user-selected records */
 function vlImportSelectedRecords() {
-    displayGlobalDiv('vl-generic-progress-with-total');
     var records = [];
 
     for(var id in selectableGridRecords) {
@@ -1015,55 +1023,35 @@ function vlImportSelectedRecords() {
         }
     }
 
-    var options = {overlay_map : currentOverlayRecordsMap};
-
-    if(vlUploadQueueAutoOverlayExact.checked) {
-        options.auto_overlay_exact = true;
-        vlUploadQueueAutoOverlayExact.checked = false;
-    }
-
-    if(vlUploadQueueAutoOverlay1Match.checked) {
-        options.auto_overlay_1match = true;
-        vlUploadQueueAutoOverlay1Match.checked = false;
-    }
-    
-    var profile = vlUploadMergeProfile.attr('value');
-    if(profile != null && profile != '') {
-        options.merge_profile = profile;
-    }
-
-    fieldmapper.standardRequest(
-        ['open-ils.vandelay', 'open-ils.vandelay.'+currentType+'_record.list.import'],
-        {   async: true,
-            params: [authtoken, records, options],
-            onresponse: function(r) {
-                var resp = r.recv().content();
-                if(e = openils.Event.parse(resp))
-                    return alert(e);
-                if(resp.complete) {
-                    return retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
-                } else {
-                    vlControlledProgressBar.update({maximum:resp.total, progress:resp.progress});
-                }
-            }, 
+    vlImportRecordQueue(
+        currentType, 
+        currentQueueId, 
+        records,
+        function(){
+            retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
         }
     );
 }
 
+/* import all (non-imported) queue records */
 function vlImportAllRecords() {
-    vlImportRecordQueue(currentType, currentQueueId, false,
-        function(){displayGlobalDiv('vl-queue-div');});
+    vlImportRecordQueue(
+        currentType, 
+        currentQueueId, 
+        null,
+        function(){
+            retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
+        }
+    );
 }
 
-function vlImportRecordQueue(type, queueId, onload) {
+/* if recList has values, import only those records */
+function vlImportRecordQueue(type, queueId, recList, onload) {
     displayGlobalDiv('vl-generic-progress-with-total');
-    var method = 'open-ils.vandelay.bib_queue.import';
-    if(type == 'auth')
-        method = method.replace('bib', 'auth');
 
-
+    /* set up options */
     var mergeOpt = false;
-    var options = {};
+    var options = {overlay_map : currentOverlayRecordsMap};
 
     if(vlUploadQueueImportNoMatch.checked) {
         options.import_no_match = true;
@@ -1089,22 +1077,34 @@ function vlImportRecordQueue(type, queueId, onload) {
         mergeOpt = true;
     }
 
-    if(!mergeOpt) {
-        // in the interest of speed, if no merge options are 
-        // chosen, tell the back-end code to only process records
-        // that have no matches
-        method = method.replace('.import', 'nomatch.import');
-    }
-    
     var profile = vlUploadMergeProfile.attr('value');
     if(profile != null && profile != '') {
         options.merge_profile = profile;
     }
 
+    /* determine which method we're calling */
+
+    var method = 'open-ils.vandelay.bib_queue.import';
+    if(type == 'auth')
+        method = method.replace('bib', 'auth');
+
+    if(!mergeOpt) {
+        // in the interest of speed, if no merge options are 
+        // chosen, tell the back-end code to only process records
+        // that have no matches
+        method = method.replace(/\.import/, '.nomatch.import');
+    }
+
+    var params = [authtoken, queueId, options];
+    if(recList) {
+        method = 'open-ils.vandelay.'+currentType+'_record.list.import';
+        params[1] = recList;
+    }
+
     fieldmapper.standardRequest(
         ['open-ils.vandelay', method],
         {   async: true,
-            params: [authtoken, queueId, options],
+            params: params,
             onresponse: function(r) {
                 var resp = r.recv().content();
                 if(e = openils.Event.parse(resp))
@@ -1134,6 +1134,7 @@ function batchUpload() {
                 vlImportRecordQueue(
                     currentType, 
                     currentQueueId, 
+                    null,
                     function() {
                         retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
                     }
@@ -1239,6 +1240,17 @@ function vlShowUploadForm() {
                vlUploadQueueAutoOverlayBestMatchRatio.attr('value', profile.lwm_ratio()+''); 
         }
     );
+    dojo.connect(
+        vlUploadMergeProfile2, 
+        'onChange',
+        function(val) {
+            if(!val) return;
+            var profile = mergeProfiles.filter(function(p) { return (p.id() == val); })[0];
+            if(profile.lwm_ratio() != null)
+               vlUploadQueueAutoOverlayBestMatchRatio2.attr('value', profile.lwm_ratio()+''); 
+        }
+    );
+
 }
 
 function vlShowQueueSelect() {
