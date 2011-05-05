@@ -148,6 +148,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Replace Specification" name="replace_spec" reporter:datatype="text"/>
 			<field reporter:label="Remove Specification" name="strip_spec" reporter:datatype="text"/>
 			<field reporter:label="Preserve Specification" name="preserve_spec" reporter:datatype="text"/>
+			<field reporter:label="Min. Quality Ratio" name="lwm_ratio" reporter:datatype="float"/>
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
