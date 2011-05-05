@@ -87,6 +87,7 @@ var vlQueueGridColumePicker = {};
 var vlBibSources = [];
 var importItemDefs = [];
 var matchSets = {};
+var mergeProfiles = [];
 
 /**
   * Grab initial data
@@ -106,13 +107,13 @@ function vlInit() {
             runStartupCommands();
     }
 
-    var profiles = new openils.PermaCrud().retrieveAll('vmp');
-    vlUploadMergeProfile.store = new dojo.data.ItemFileReadStore({data:fieldmapper.vmp.toStoreData(profiles)});
+    mergeProfiles = new openils.PermaCrud().retrieveAll('vmp');
+    vlUploadMergeProfile.store = new dojo.data.ItemFileReadStore({data:fieldmapper.vmp.toStoreData(mergeProfiles)});
     vlUploadMergeProfile.labelAttr = 'name';
     vlUploadMergeProfile.searchAttr = 'name';
     vlUploadMergeProfile.startup();
 
-    vlUploadMergeProfile2.store = new dojo.data.ItemFileReadStore({data:fieldmapper.vmp.toStoreData(profiles)});
+    vlUploadMergeProfile2.store = new dojo.data.ItemFileReadStore({data:fieldmapper.vmp.toStoreData(mergeProfiles)});
     vlUploadMergeProfile2.labelAttr = 'name';
     vlUploadMergeProfile2.searchAttr = 'name';
     vlUploadMergeProfile2.startup();
@@ -1226,6 +1227,18 @@ function vlShowUploadForm() {
     vlUploadQueueHoldingsImportProfile.store = 
         new dojo.data.ItemFileReadStore({data:viiad.toStoreData(importItemDefs)});
     vlUpdateMatchSetSelector(vlUploadRecordType.getValue());
+
+    // use ratio from the merge profile if it's set
+    dojo.connect(
+        vlUploadMergeProfile, 
+        'onChange',
+        function(val) {
+            if(!val) return;
+            var profile = mergeProfiles.filter(function(p) { return (p.id() == val); })[0];
+            if(profile.lwm_ratio() != null)
+               vlUploadQueueAutoOverlayBestMatchRatio.attr('value', profile.lwm_ratio()+''); 
+        }
+    );
 }
 
 function vlShowQueueSelect() {
