@@ -137,6 +137,8 @@ patron.display.prototype = {
                             obj.controller.view.cmd_search_form.setAttribute('disabled','true');
                             obj.left_deck.node.selectedIndex = 0;
                             obj.controller.view.patron_name.setAttribute('value', $("patronStrings").getString('staff.patron.display.cmd_search_form.no_patron'));
+                            obj.controller.view.patron_name.setAttribute('tooltiptext', '');
+                            obj.controller.view.patron_name.setAttribute('onclick', '');
                             removeCSSClass(document.documentElement,'PATRON_HAS_BILLS');
                             removeCSSClass(document.documentElement,'PATRON_HAS_OVERDUES');
                             removeCSSClass(document.documentElement,'PATRON_HAS_NOTES');
@@ -516,6 +518,7 @@ patron.display.prototype = {
                                     ]
                                 );
                                 e.setAttribute('tooltiptext',tooltiptext);
+                                e.setAttribute('onclick','try { copy_to_clipboard(event); } catch(E) { alert(E); }');
                             };
                         }
                     ],
