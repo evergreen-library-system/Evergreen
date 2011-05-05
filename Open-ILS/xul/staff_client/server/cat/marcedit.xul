@@ -258,7 +258,7 @@
 </groupbox>
 
 <hbox hidden="true" id="text-editor" flex="1">
-    <xhtml:textarea rows="50" cols='100' onkeypress="if (event.charCode == 115 &mp;&amp; event.ctrlKey &amp;&amp; $('symbol-panel')) { setNod(tab); $('symbol-panel').openPopup(tab, 'after_pointer'); } else { netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); } }" context="clipboard" id="text-editor-box"></xhtml:textarea>
+    <xhtml:textarea rows="50" cols='100' onkeypress="if (event.charCode == 115 &amp;&amp; event.ctrlKey &amp;&amp; $('symbol-panel')) { setNod(tab); $('symbol-panel').openPopup(tab, 'after_pointer'); } else { netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); } }" context="clipboard" id="text-editor-box"></xhtml:textarea>
 </hbox>
 
 <grid name="authority-marc-template" hidden="true">
