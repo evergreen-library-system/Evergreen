@@ -368,7 +368,7 @@ sub send_success {
 	$tmpl =~ s/{TO}/$r->{email}/smog;
 	$tmpl =~ s/{FROM}/$email_sender/smog;
 	$tmpl =~ s/{REPLY_TO}/$email_sender/smog;
-	$tmpl =~ s/{REPORT_NAME}/$r->{report}->{template}->{name} -- $r->{report}->{name}/smog;
+	$tmpl =~ s/{REPORT_NAME}/$r->{report}->{name} -- $r->{report}->{template}->{name}/smog;
 	$tmpl =~ s/{RUN_TIME}/$r->{run_time}/smog;
 	$tmpl =~ s/{COMPLETE_TIME}/$r->{complete_time}/smog;
 	$tmpl =~ s/{OUTPUT_URL}/$url/smog;
@@ -389,7 +389,7 @@ sub send_fail {
 	$tmpl =~ s/{TO}/$r->{email}/smog;
 	$tmpl =~ s/{FROM}/$email_sender/smog;
 	$tmpl =~ s/{REPLY_TO}/$email_sender/smog;
-	$tmpl =~ s/{REPORT_NAME}/$r->{report}->{template}->{name} -- $r->{report}->{name}/smog;
+	$tmpl =~ s/{REPORT_NAME}/$r->{report}->{name} -- $r->{report}->{template}->{name}/smog;
 	$tmpl =~ s/{RUN_TIME}/$r->{run_time}/smog;
 	$tmpl =~ s/{ERROR_TEXT}/$r->{error_text}/smog;
 	$tmpl =~ s/{SQL}/$sql/smog;
