@@ -170,7 +170,6 @@ system:
 createdb --template template0 --lc-ctype=C --lc-collate=C --encoding UNICODE evergreen
 createlang plperl evergreen
 createlang plperlu evergreen
-createlang plpgsql evergreen
 psql -f /usr/share/postgresql/9.0/contrib/tablefunc.sql -d evergreen
 psql -f /usr/share/postgresql/9.0/contrib/tsearch2.sql -d evergreen
 psql -f /usr/share/postgresql/9.0/contrib/pgxml.sql -d evergreen
