@@ -230,17 +230,17 @@
                 <row id="pdcgpr1">
                     <label id="PatronSummaryContact_day_phone_label" class="copyable text_left phone label day_phone"
                         value="&staff.patron_display.day_phone.label;" />
-                    <description id="patron_day_phone" class="copyable phone value day_phone"/> 
+                    <description id="patron_day_phone" class="copyable phone value day_phone click_link" onclick="try { copy_to_clipboard(event); } catch(E) { alert(E); }"/> 
                 </row>
                 <row id="pdcgpr2">
                     <label id="PatronSummaryContact_evening_phone_label" class="copyable text_left phone label evening_phone"
                         value="&staff.patron_display.evening_phone.label;" />
-                    <description id="patron_evening_phone" class="copyable phone value evening_phone"/>
+                    <description id="patron_evening_phone" class="copyable phone value evening_phone click_link" onclick="try { copy_to_clipboard(event); } catch(E) { alert(E); }"/>
                 </row>
                 <row id="pdcgpr3">
                     <label id="PatronSummaryContact_other_phone_label" class="copyable text_left phone label other_phone"
                         value="&staff.patron_display.other_phone.label;" />
-                    <description id="patron_other_phone" class="copyable phone value other_phone"/> 
+                    <description id="patron_other_phone" class="copyable phone value other_phone click_link" onclick="try { copy_to_clipboard(event); } catch(E) { alert(E); }"/> 
                 </row>
             </rows>
         </grid>
