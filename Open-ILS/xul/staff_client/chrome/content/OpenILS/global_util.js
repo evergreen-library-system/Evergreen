@@ -231,9 +231,12 @@
                         dump('on_oils_persist: <<< ' + target.nodeName + '.id = ' + target.id + '\t' + bk + '\n');
                         for (var j = 0; j < attribute_list.length; j++) {
                             var key = base_key + attribute_list[j];
-                            var value = target.getAttribute( attribute_list[j] );
+                            var value = encodeURI(target.getAttribute( attribute_list[j] ));
                             if ( attribute_list[j] == 'checked' && ['checkbox','toolbarbutton'].indexOf( target.nodeName ) > -1 ) {
                                 value = target.checked;
+                                dump('\t' + value + ' <== .' + attribute_list[j] + '\n');
+                            } else if ( attribute_list[j] == 'value' && ['menulist'].indexOf( target.nodeName ) > -1 ) {
+                                value = target.value;
                                 dump('\t' + value + ' <== .' + attribute_list[j] + '\n');
                             } else if ( attribute_list[j] == 'value' && ['textbox'].indexOf( target.nodeName ) > -1 ) {
                                 value = target.value;
@@ -278,7 +281,7 @@
                 for (var j = 0; j < attribute_list.length; j++) {
                     var key = base_key + attribute_list[j];
                     var has_key = prefs.prefHasUserValue(key);
-                    var value = has_key ? prefs.getCharPref(key) : null;
+                    var value = has_key ? decodeURI(prefs.getCharPref(key)) : null;
                     if (value == 'true') { value = true; }
                     if (value == 'false') { value = false; }
                     if (has_key) {
@@ -292,6 +295,9 @@
                         } else if ( attribute_list[j] == 'value' && ['textbox'].indexOf( nodes[i].nodeName ) > -1 ) {
                             nodes[i].value = value;
                             dump('\t' + value + ' ==> .' + attribute_list[j] + '\n');
+                        } else if ( attribute_list[j] == 'value' && ['menulist'].indexOf( nodes[i].nodeName ) > -1 ) {
+                            nodes[i].value = value;
+                            dump('\t' + value + ' ==> .' + attribute_list[j] + '\n');       
                         } else if ( attribute_list[j] == 'sizemode' && ['window'].indexOf( nodes[i].nodeName ) > -1 ) {
                             switch(value) {
                                 case window.STATE_MAXIMIZED:
@@ -356,7 +362,9 @@
                         }
                     } else {
                         if (node.nodeName == 'textbox') { 
-                            event_types.push('change'); 
+                            event_types.push('change');
+                        } else if (node.nodeName == 'menulist') { 
+                            event_types.push('select');  
                         } else if (node.nodeName == 'window') {
                             event_types.push('resize'); 
                             node = window; // xul window is an element of window.document
