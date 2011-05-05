@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<overlay id="iisg_symbol_overlay"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    
+    <scripts id="iisg_symbol_scripts">
+        <script type="text/javascript" src="symbol_overlay.js" />   
+        <script>dump('finished iisg_symbol_overlay\n');</script>
+    </scripts>
+
+<popupset>
+  <menupopup id="symbol-menu">
+      <menu label="West-European">
+          <menupopup>
+              <menu label="A">
+                  <menupopup>
+                    <menuitem label="À" oncommand="document.popupNode.label='\u00C0'"/>
+                    <menuitem label="à" oncommand="document.popupNode.label='\u00E0'"/>
+                    <menuitem label="Á" oncommand="document.popupNode.label='\u00C1'"/>
+                    <menuitem label="á" oncommand="document.popupNode.label='\u00E1'"/>
+                    <menuitem label="Ä" oncommand="document.popupNode.label='\u00C4'"/>
+                    <menuitem label="ä" oncommand="document.popupNode.label='\u00E4'"/>
+                    <menuitem label="Â" oncommand="document.popupNode.label='\u00C2'"/>
+                    <menuitem label="â" oncommand="document.popupNode.label='\u00E2'"/>
+                    <menuitem label="Ã" oncommand="document.popupNode.label='\u00C3'"/>
+                    <menuitem label="ã" oncommand="document.popupNode.label='\u00E3'"/>
+                    <menuitem label="Å" oncommand="document.popupNode.label='\u00C5'"/>
+                    <menuitem label="å" oncommand="document.popupNode.label='\u00E5'"/>                    
+                </menupopup>
+            </menu>
+              <menu label="E">
+                  <menupopup>
+                    <menuitem label="È" oncommand="document.popupNode.label='\u00C8'"/>
+                    <menuitem label="è" oncommand="document.popupNode.label='\u00E8'"/>
+                    <menuitem label="É" oncommand="document.popupNode.label='\u00C9'"/>
+                    <menuitem label="é" oncommand="document.popupNode.label='\u00E9'"/>
+                    <menuitem label="Ë" oncommand="document.popupNode.label='\u00CB'"/>
+                    <menuitem label="ë" oncommand="document.popupNode.label='\u00EB'"/>
+                    <menuitem label="Ê" oncommand="document.popupNode.label='\u00CA'"/>
+                    <menuitem label="ê" oncommand="document.popupNode.label='\u00EA'"/>                
+                </menupopup>
+            </menu>
+              <menu label="I">
+                  <menupopup>
+                    <menuitem label="Ì" oncommand="document.popupNode.label='\u00CC'"/>
+                    <menuitem label="ì" oncommand="document.popupNode.label='\u00EC'"/>
+                    <menuitem label="Í" oncommand="document.popupNode.label='\u00CD'"/>
+                    <menuitem label="í" oncommand="document.popupNode.label='\u00ED'"/>
+                    <menuitem label="Ï" oncommand="document.popupNode.label='\u00CF'"/>
+                    <menuitem label="ï" oncommand="document.popupNode.label='\u00EF'"/>
+                    <menuitem label="Î" oncommand="document.popupNode.label='\u00CE'"/>
+                    <menuitem label="î" oncommand="document.popupNode.label='\u00EE'"/>
+                   </menupopup>
+            </menu>
+              <menu label="O">
+                  <menupopup>
+                    <menuitem label="Ò" oncommand="document.popupNode.label='\u00D2'"/>
+                    <menuitem label="ò" oncommand="document.popupNode.label='\u00F2'"/>
+                    <menuitem label="Ó" oncommand="document.popupNode.label='\u00D3'"/>
+                    <menuitem label="ó" oncommand="document.popupNode.label='\u00F3'"/>
+                    <menuitem label="Ö" oncommand="document.popupNode.label='\u00D6'"/>
+                    <menuitem label="ö" oncommand="document.popupNode.label='\u00F6'"/>
+                    <menuitem label="Ô" oncommand="document.popupNode.label='\u00D4'"/>
+                    <menuitem label="ô" oncommand="document.popupNode.label='\u00F4'"/>
+                    <menuitem label="Õ" oncommand="document.popupNode.label='\u00D5'"/>
+                    <menuitem label="õ" oncommand="document.popupNode.label='\u00F5'"/>
+                    <menuitem label="Ø" oncommand="document.popupNode.label='\u00D8'"/>
+                    <menuitem label="ø" oncommand="document.popupNode.label='\u00F8'"/>                    
+                </menupopup>
+            </menu>
+              <menu label="U">
+                  <menupopup>
+                    <menuitem label="Ù" oncommand="document.popupNode.label='\u00D9'"/>
+                    <menuitem label="ù" oncommand="document.popupNode.label='\u00F9'"/>
+                    <menuitem label="Ú" oncommand="document.popupNode.label='\u00DA'"/>
+                    <menuitem label="ú" oncommand="document.popupNode.label='\u00FA'"/>
+                    <menuitem label="Ü" oncommand="document.popupNode.label='\u00DC'"/>
+                    <menuitem label="ü" oncommand="document.popupNode.label='\u00FC'"/>
+                    <menuitem label="Û" oncommand="document.popupNode.label='\u00DB'"/>
+                    <menuitem label="û" oncommand="document.popupNode.label='\u00FB'"/>
+                </menupopup>
+            </menu>
+              <menu label="C">
+                  <menupopup>
+                    <menuitem label="Ç" oncommand="document.popupNode.label='\u00C7'"/>
+                    <menuitem label="ç" oncommand="document.popupNode.label='\u00E7'"/>
+                 </menupopup>
+            </menu>
+              <menu label="N">
+                  <menupopup>
+                    <menuitem label="Ñ" oncommand="document.popupNode.label='\u00D1'"/>
+                    <menuitem label="ñ" oncommand="document.popupNode.label='\u00F1'"/>
+                 </menupopup>
+            </menu>                 
+        </menupopup>
+    </menu>
+    <menu label="Turkish">
+          <menupopup>
+              <menu label="A">
+                  <menupopup>
+                    <menuitem label="Â" oncommand="document.popupNode.label='\u00C2'"/>
+                    <menuitem label="â" oncommand="document.popupNode.label='\u00E2'"/>
+                </menupopup>
+            </menu>
+              <menu label="G">
+                  <menupopup>
+                    <menuitem label="Ğ" oncommand="document.popupNode.label='\u011E'"/>
+                    <menuitem label="ğ" oncommand="document.popupNode.label='\u011F'"/>
+                </menupopup>
+            </menu>
+              <menu label="I">
+                  <menupopup>
+                    <menuitem label="İ" oncommand="document.popupNode.label='\u0130'"/>
+                    <menuitem label="ı" oncommand="document.popupNode.label='\u0131'"/>
+                   </menupopup>
+            </menu>
+              <menu label="O">
+                  <menupopup>
+                    <menuitem label="Ö" oncommand="document.popupNode.label='\u00D6'"/>
+                    <menuitem label="ö" oncommand="document.popupNode.label='\u00F6'"/>
+                </menupopup>
+            </menu>
+              <menu label="U">
+                  <menupopup>
+                    <menuitem label="Ü" oncommand="document.popupNode.label='\u00DC'"/>
+                    <menuitem label="ü" oncommand="document.popupNode.label='\u00FC'"/>
+                </menupopup>
+            </menu>
+              <menu label="C">
+                  <menupopup>
+                    <menuitem label="Ç" oncommand="document.popupNode.label='\u00C7'"/>
+                    <menuitem label="ç" oncommand="document.popupNode.label='\u00E7'"/>
+                 </menupopup>
+            </menu>
+              <menu label="S">
+                  <menupopup>
+                    <menuitem label="Ş" oncommand="document.popupNode.label='\u015E'"/>
+                    <menuitem label="ş" oncommand="document.popupNode.label='\u015F'"/>
+                 </menupopup>
+            </menu>                 
+        </menupopup>
+    </menu>
+    <menu label="Cyrillic">
+          <menupopup>
+              <menu label="A">
+                  <menupopup>
+                    <menuitem label="Ă" oncommand="document.popupNode.label='\u0102'"/>
+                    <menuitem label="ă" oncommand="document.popupNode.label='\u0103'"/>
+                </menupopup>
+            </menu>
+              <menu label="I">
+                  <menupopup>
+                    <menuitem label="Ï" oncommand="document.popupNode.label='\u00CF'"/>
+                    <menuitem label="ï" oncommand="document.popupNode.label='\u00EF'"/>
+                    <menuitem label="Ī" oncommand="document.popupNode.label='\u012A'"/>
+                    <menuitem label="ī" oncommand="document.popupNode.label='\u012B'"/>
+                   </menupopup>
+            </menu>
+              <menu label="C">
+                  <menupopup>
+                    <menuitem label="Č" oncommand="document.popupNode.label='\u010C'"/>
+                    <menuitem label="č" oncommand="document.popupNode.label='\u010D'"/>
+                 </menupopup>
+            </menu>
+              <menu label="S">
+                  <menupopup>
+                    <menuitem label="Š" oncommand="document.popupNode.label='\u0160'"/>
+                    <menuitem label="š" oncommand="document.popupNode.label='\u0161'"/>
+                 </menupopup>
+            </menu>
+            <menu label="Z">
+                  <menupopup>
+                    <menuitem label="Ž" oncommand="document.popupNode.label='\u017D'"/>
+                    <menuitem label="ž" oncommand="document.popupNode.label='\u017E'"/>
+                </menupopup>
+            </menu>                 
+        </menupopup>
+    </menu>
+    <menu label="Slavic">
+          <menupopup>
+              <menu label="A">
+                  <menupopup>
+                    <menuitem label="Á" oncommand="document.popupNode.label='\u00C1'"/>
+                    <menuitem label="á" oncommand="document.popupNode.label='\u00E1'"/>
+                    <menuitem label="Ą" oncommand="document.popupNode.label='\u0104'"/>
+                    <menuitem label="ą" oncommand="document.popupNode.label='\u0105'"/>
+                </menupopup>
+            </menu>
+              <menu label="E">
+                  <menupopup>
+                    <menuitem label="É" oncommand="document.popupNode.label='\u00C9'"/>
+                    <menuitem label="é" oncommand="document.popupNode.label='\u00E9'"/>
+                    <menuitem label="Ĕ" oncommand="document.popupNode.label='\u0114'"/>
+                    <menuitem label="ĕ" oncommand="document.popupNode.label='\u0115'"/>
+                    <menuitem label="Ę" oncommand="document.popupNode.label='\u0118'"/>
+                    <menuitem label="ę" oncommand="document.popupNode.label='\u0119'"/>
+                   </menupopup>
+            </menu>
+              <menu label="I">
+                  <menupopup>
+                    <menuitem label="Í" oncommand="document.popupNode.label='\u00CD'"/>
+                    <menuitem label="í" oncommand="document.popupNode.label='\u00ED'"/>
+                 </menupopup>
+            </menu>
+              <menu label="O">
+                  <menupopup>
+                    <menuitem label="Ó" oncommand="document.popupNode.label='\u00D3'"/>
+                    <menuitem label="ó" oncommand="document.popupNode.label='\u00F3'"/>
+                 </menupopup>
+            </menu>
+            <menu label="U">
+                  <menupopup>
+                    <menuitem label="Ů" oncommand="document.popupNode.label='\u016E'"/>
+                    <menuitem label="ů" oncommand="document.popupNode.label='\u016F'"/>
+                </menupopup>
+            </menu>
+            <menu label="Y">
+                  <menupopup>
+                    <menuitem label="Ý" oncommand="document.popupNode.label='\u00DD'"/>
+                    <menuitem label="ý" oncommand="document.popupNode.label='\u00FD'"/>
+                </menupopup>
+            </menu>    
+            <menu label="L">
+                  <menupopup>
+                    <menuitem label="Ł" oncommand="document.popupNode.label='\u0141'"/>
+                    <menuitem label="ł" oncommand="document.popupNode.label='\u0142'"/>
+                </menupopup>
+            </menu>               
+            <menu label="C">
+                  <menupopup>
+                    <menuitem label="Ć" oncommand="document.popupNode.label='\u0106'"/>
+                    <menuitem label="ć" oncommand="document.popupNode.label='\u0107'"/>
+                    <menuitem label="Č" oncommand="document.popupNode.label='\u010C'"/>
+                    <menuitem label="č" oncommand="document.popupNode.label='\u010D'"/>
+                </menupopup>
+            </menu>               
+            <menu label="D">
+                  <menupopup>
+                    <menuitem label="Ð" oncommand="document.popupNode.label='\u00D0'"/>
+                    <menuitem label="ð" oncommand="document.popupNode.label='\u00F0'"/>
+                </menupopup>
+            </menu>
+            <menu label="N">
+                  <menupopup>
+                    <menuitem label="Ń" oncommand="document.popupNode.label='\u0143'"/>
+                    <menuitem label="ń" oncommand="document.popupNode.label='\u0144'"/>
+                </menupopup>
+            </menu>
+            <menu label="R">
+                  <menupopup>
+                    <menuitem label="Ř" oncommand="document.popupNode.label='\u0158'"/>
+                    <menuitem label="ř" oncommand="document.popupNode.label='\u0159'"/>
+                </menupopup>
+            </menu>
+            <menu label="S">
+                  <menupopup>
+                    <menuitem label="Ś" oncommand="document.popupNode.label='\u015A'"/>
+                    <menuitem label="ś" oncommand="document.popupNode.label='\u015B'"/>
+                </menupopup>
+            </menu>
+            <menu label="Z">
+                  <menupopup>
+                    <menuitem label="Ž" oncommand="document.popupNode.label='\u017D'"/>
+                    <menuitem label="ž" oncommand="document.popupNode.label='\u017E'"/>
+                    <menuitem label="Ź" oncommand="document.popupNode.label='\u0179'"/>
+                    <menuitem label="ź" oncommand="document.popupNode.label='\u017A'"/>
+                    <menuitem label="Ż" oncommand="document.popupNode.label='\u017B'"/>
+                    <menuitem label="ż" oncommand="document.popupNode.label='\u017C'"/>
+                </menupopup>
+            </menu>
+        </menupopup>
+    </menu>
+    <menu label="Hungarian">
+          <menupopup>
+              <menu label="A">
+                  <menupopup>
+                    <menuitem label="Á" oncommand="document.popupNode.label='\u00C1'"/>
+                    <menuitem label="á" oncommand="document.popupNode.label='\u00E1'"/>
+                </menupopup>
+            </menu>
+              <menu label="E">
+                  <menupopup>
+                    <menuitem label="É" oncommand="document.popupNode.label='\u00C9'"/>
+                    <menuitem label="é" oncommand="document.popupNode.label='\u00E9'"/>
+                   </menupopup>
+            </menu>
+              <menu label="I">
+                  <menupopup>
+                    <menuitem label="Í" oncommand="document.popupNode.label='\u00CD'"/>
+                    <menuitem label="í" oncommand="document.popupNode.label='\u00ED'"/>
+                 </menupopup>
+            </menu>
+              <menu label="O">
+                  <menupopup>
+                    <menuitem label="Ó" oncommand="document.popupNode.label='\u00D3'"/>
+                    <menuitem label="ó" oncommand="document.popupNode.label='\u00F3'"/>
+                    <menuitem label="Ö" oncommand="document.popupNode.label='\u00D3'"/>
+                    <menuitem label="ö" oncommand="document.popupNode.label='\u00F3'"/>
+                    <menuitem label="Ő" oncommand="document.popupNode.label='\u00D3'"/>
+                    <menuitem label="ő" oncommand="document.popupNode.label='\u00F3'"/>
+                 </menupopup>
+            </menu>
+            <menu label="U">
+                  <menupopup>
+                    <menuitem label="Ú" oncommand="document.popupNode.label='\u00DA'"/>
+                    <menuitem label="ú" oncommand="document.popupNode.label='\u00FA'"/>
+                    <menuitem label="Ü" oncommand="document.popupNode.label='\u00DC'"/>
+                    <menuitem label="ü" oncommand="document.popupNode.label='\u00FC'"/>
+                    <menuitem label="Ű" oncommand="document.popupNode.label='\u0170'"/>
+                    <menuitem label="ű" oncommand="document.popupNode.label='\u0171'"/>
+                </menupopup>
+            </menu>
+        </menupopup>
+    </menu>
+    
+  </menupopup>
+</popupset>
+        <popupset>
+            <panel id="symbol-panel" noautohide="false" titlebar="normal" onpopuphidden="" >
+                  <vbox>
+                    <hbox>
+                        <button class="sym" style="width:2em;min-width:1em;" id="sym1A" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="À" />
+                        <button class="sym" id="sym1B" context="symbol-menu" onclick="ret(label,event);"  oils_persist="label" label="Á" />
+                        <button class="sym" id="sym1C" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="Ä" />
+                        <button class="sym" id="sym1D" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="Â" />
+                        <button class="sym" id="sym1E" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="Ã" />
+                        <button class="sym" id="sym1F" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="Å" />
+                    </hbox>
+                    <hbox>
+                        <button class ="sym" id="sym2A" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="à"/>
+                        <button class ="sym" id="sym2B" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="á"/>
+                        <button class ="sym" id="sym2C" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="ä"/>
+                        <button class ="sym" id="sym2D" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="â"/>
+                        <button class ="sym" id="sym2E" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="ã" />
+                        <button class ="sym" id="sym2F" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="å" />
+                    </hbox>        
+                    <hbox>
+                        <button class ="sym" id="sym3A" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="Ò"/>
+                        <button class ="sym" id="sym3B" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="Ó"/>
+                        <button class ="sym" id="sym3C" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="Ö"/>
+                        <button class ="sym" id="sym3D" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="Ô"/>
+                        <button class ="sym" id="sym3E" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="Õ" />
+                        <button class ="sym" id="sym3F" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="Ø" />                    
+                    </hbox>
+                    <hbox>
+                        <button class ="sym" id="sym4A" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="ò"/>
+                        <button class ="sym" id="sym4B" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="ó"/>
+                        <button class ="sym" id="sym4C" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="ö"/>
+                        <button class ="sym" id="sym4D" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="ô"/>
+                        <button class ="sym" id="sym4E" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="õ" />
+                        <button class ="sym" id="sym4F" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="ø" />                    
+                    </hbox>
+                    <hbox>
+                        <button class ="sym" id="sym5A" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="È"/>
+                        <button class ="sym" id="sym5B" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="É"/>
+                        <button class ="sym" id="sym5C" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="Ë"/>
+                        <button class ="sym" id="sym5D" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="Ê"/>
+                        <button class ="sym" id="sym5E" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="Ç" />
+                        <button class ="sym" id="sym5F" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="Ñ" />                
+                    </hbox>
+                    <hbox>
+                        <button class="sym" id="sym6A" context="symbol-menu" onclick="ret(label,event);"  oils_persist="label" label="è"/>
+                        <button class ="sym" id="sym6B" context="symbol-menu" onclick="ret(label,event);"  oils_persist="label" label="é"/>
+                        <button class ="sym" id="sym6C" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="ë"/>
+                        <button class ="sym" id="sym6D" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="ê"/>
+                        <button class ="sym" id="sym6E" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="ç" />
+                        <button class ="sym" id="sym6F" context="symbol-menu" onclick="ret(label,event);" oils_persist="label" label="ñ" />                
+                    </hbox>                        
+                  </vbox>
+            </panel>
+        </popupset>
+</overlay>
+
