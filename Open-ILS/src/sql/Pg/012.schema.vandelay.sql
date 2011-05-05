@@ -1866,7 +1866,7 @@ CREATE TRIGGER ingest_item_trigger
     FOR EACH ROW EXECUTE PROCEDURE vandelay.ingest_bib_items();
 
 CREATE TRIGGER zz_match_bibs_trigger
-    AFTER INSERT OR UPDATE ON vandelay.queued_bib_record
+    BEFORE INSERT OR UPDATE ON vandelay.queued_bib_record
     FOR EACH ROW EXECUTE PROCEDURE vandelay.match_bib_record();
 
 
