@@ -752,6 +752,8 @@ sub import_record_list_impl {
 
         $report_args{progress}++;
         $report_args{e} = $e;
+        $report_args{import_error} = undef;
+        $report_args{evt} = undef;
 
         my $rec = $e->$retrieve_func([
             $rec_id,
@@ -912,15 +914,14 @@ sub import_record_list_impl {
                 }
 
                 if($U->event_code($record)) {
-                    my $import_error = 'import.duplicate.tcn' if $record->{textcode} eq 'TCN_EXISTS';
-                    finish_rec_import_attempt(%report_args, import_error => $import_error, evt => $record);
+                    $report_args{import_error} = 'import.duplicate.tcn' if $record->{textcode} eq 'TCN_EXISTS';
+                    $report_args{evt} = $record;
 
                 } else {
 
                     $logger->info("vl: successfully imported new $type record");
                     $rec->imported_as($record->id);
                     $rec->import_time('now');
-
                     $imported = 1 if $e->$update_func($rec);
                 }
             }
