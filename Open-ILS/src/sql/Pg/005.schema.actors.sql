@@ -88,6 +88,15 @@ CREATE INDEX actor_usr_day_phone_idx ON actor.usr (evergreen.lowercase(day_phone
 CREATE INDEX actor_usr_evening_phone_idx ON actor.usr (evergreen.lowercase(evening_phone));
 CREATE INDEX actor_usr_other_phone_idx ON actor.usr (evergreen.lowercase(other_phone));
 
+CREATE INDEX actor_usr_day_phone_idx_numeric ON actor.usr USING BTREE
+    (evergreen.lowercase(REGEXP_REPLACE(day_phone, '[^0-9]', '', 'g')));
+
+CREATE INDEX actor_usr_evening_phone_idx_numeric ON actor.usr USING BTREE
+    (evergreen.lowercase(REGEXP_REPLACE(evening_phone, '[^0-9]', '', 'g')));
+
+CREATE INDEX actor_usr_other_phone_idx_numeric ON actor.usr USING BTREE
+    (evergreen.lowercase(REGEXP_REPLACE(other_phone, '[^0-9]', '', 'g')));
+
 CREATE INDEX actor_usr_ident_value_idx ON actor.usr (evergreen.lowercase(ident_value));
 CREATE INDEX actor_usr_ident_value2_idx ON actor.usr (evergreen.lowercase(ident_value2));
 

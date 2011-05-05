@@ -680,7 +680,11 @@ sub patron_search {
 	my @phonev;
 	if ($pv) {
 		for my $p ( qw/day_phone evening_phone other_phone/ ) {
-			push @ps, "evergreen.lowercase($p) ~ ?";
+			if ($pv =~ /^\d+$/) {
+				push @ps, "evergreen.lowercase(REGEXP_REPLACE($p, '[^0-9]', '', 'g')) ~ ?";
+ 			} else {
+ 				push @ps, "evergreen.lowercase($p) ~ ?";
+ 			}
 			push @phonev, "^$pv";
 		}
 		$phone = '(' . join(' OR ', @ps) . ')';

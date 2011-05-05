@@ -57,7 +57,7 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0529'); -- miker, for Joseph Lewis and Michael Peters
+INSERT INTO config.upgrade_log (version) VALUES ('0530'); -- senator, for Niles Ingalls
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
