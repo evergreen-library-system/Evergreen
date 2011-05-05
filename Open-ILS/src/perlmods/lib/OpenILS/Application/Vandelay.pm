@@ -922,6 +922,8 @@ sub import_record_list_impl {
                     $logger->info("vl: successfully imported new $type record");
                     $rec->imported_as($record->id);
                     $rec->import_time('now');
+                    $rec->clear_import_error;
+                    $rec->clear_error_detail;
                     $imported = 1 if $e->$update_func($rec);
                 }
             }
@@ -996,9 +998,7 @@ sub finish_rec_import_attempt {
             $e->$method($rec) and $e->commit or $e->rollback;
 
         } else {
-            # successful import
-            $rec->clear_import_error;
-            $rec->clear_error_detail;
+            # commit the successful import
             $e->commit;
         }
 
@@ -1226,17 +1226,18 @@ sub import_record_asset_list_impl {
     $rec_ids = $roe->json_query({
         select => {vqbr => ['id']},
         from => {vqbr => 'vii'},
-        where => {'+vqbr' => {import_time => {'!=' => undef}}}
+        where => {'+vqbr' => {import_time => {'!=' => undef}}},
+        distinct => 1
     });
     $rec_ids = [map {$_->{id}} @$rec_ids];
 
-    my %report_args = (
+    my $report_args = {
         conn => $conn,
         total => scalar(@$rec_ids),
         step => 1, # how often to respond
         progress => 1,
         in_count => 0,
-    );
+    };
 
     for my $rec_id (@$rec_ids) {
         my $rec = $roe->retrieve_vandelay_queued_bib_record($rec_id);
@@ -1245,10 +1246,10 @@ sub import_record_asset_list_impl {
         for my $item_id (@$item_ids) {
             my $e = new_editor(requestor => $requestor, xact => 1);
             my $item = $e->retrieve_vandelay_import_item($item_id);
-            $report_args{import_item} = $item;
-            $report_args{e} = $e;
-            $report_args{import_error} = undef;
-            $report_args{evt} = undef;
+            $$report_args{import_item} = $item;
+            $$report_args{e} = $e;
+            $$report_args{import_error} = undef;
+            $$report_args{evt} = undef;
 
             # --------------------------------------------------------------------------------
             # Find or create the volume
@@ -1258,7 +1259,9 @@ sub import_record_asset_list_impl {
                     $e, $item->call_number, $rec->imported_as, $item->owning_lib);
 
             if($evt) {
-                respond_with_status(%report_args, evt => $evt);
+
+                $$report_args{evt} = $evt;
+                respond_with_status($report_args);
                 next;
             }
 
@@ -1287,30 +1290,24 @@ sub import_record_asset_list_impl {
             # see if a valid circ_modifier was provided
             # --------------------------------------------------------------------------------
             if($copy->circ_modifier and not $e->search_config_circ_modifier({code=>$item->circ_modifier})->[0]) {
-                respond_with_status(
-                    %report_args, 
-                    evt => $e->die_event,
-                    import_error => 'import.item.invalid.circ_modifier'
-                );
+                $$report_args{evt} = $e->die_event;
+                $$report_args{import_error} = 'import.item.invalid.circ_modifier';
+                respond_with_status($report_args);
                 next;
             }
 
             if($copy->location and not $e->retrieve_asset_copy_location($copy->location)) {
-                respond_with_status(
-                    %report_args, 
-                    evt => $e->die_event,
-                    import_error => 'import.item.invalid.location'
-                );
+                $$report_args{evt} = $e->die_event;
+                $$report_args{import_error} = 'import.item.invalid.location';
+                respond_with_status($report_args);
                 next;
             }
 
             if($evt = OpenILS::Application::Cat::AssetCommon->create_copy($e, $vol, $copy)) {
-                respond_with_status(
-                    %report_args,
-                    evt => $evt,
-                    import_error => ($evt->{textcode} eq 'ITEM_BARCODE_EXISTS') ? 
-                        'import.item.duplicate.barcode' : undef
-                );
+                $$report_args{evt} = $evt;
+                $$report_args{import_error} = 'import.item.duplicate.barcode'
+                    if $evt->{textcode} eq 'ITEM_BARCODE_EXISTS';
+                respond_with_status($report_args);
                 next;
             }
 
@@ -1321,7 +1318,8 @@ sub import_record_asset_list_impl {
                 $e, $copy, '', $item->pub_note, 1) if $item->pub_note;
 
             if($evt) {
-                respond_with_status(%report_args, evt => $evt);
+                $$report_args{evt} = $evt;
+                respond_with_status($report_args);
                 next;
             }
 
@@ -1329,7 +1327,8 @@ sub import_record_asset_list_impl {
                 $e, $copy, '', $item->priv_note, 1) if $item->priv_note;
 
             if($evt) {
-                respond_with_status(%report_args, evt => $evt);
+                $$report_args{evt} = $evt;
+                respond_with_status($report_args);
                 next;
             }
 
@@ -1337,8 +1336,8 @@ sub import_record_asset_list_impl {
             # Item import succeeded
             # --------------------------------------------------------------------------------
             $e->commit;
-            $report_args{in_count}++;
-            respond_with_status(%report_args, imported_as => $copy->id);
+            $$report_args{in_count}++;
+            respond_with_status($report_args);
             $logger->info("vl: successfully imported item " . $item->barcode);
         }
 
