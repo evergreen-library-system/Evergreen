@@ -1,1 +1,645 @@
-#ChangeLog
+2011-04-04  dbwells
+
+	* More robust fix for edit highlighting in Serial Control View
+
+2011-04-05  dbs
+
+	* Prevent patron search from returning horrible errors on regexian
+	  input
+	  
+	  Add a utility method, _clean_regex_chars(), to filter common
+	  regex
+	  characters out of input values. When these characters are passed
+	  to
+	  database SIMILAR searches, strange things (generally ugly errors)
+	  can
+	  happen - so filter them out.
+
+2011-04-06  phasefx
+
+	* backport r18757 for org hiding tweak
+
+2011-04-06  miker
+
+	* Patch from Thomas Berezansky to support patron priv expiration
+	  information in SIP2
+
+2011-04-06  gmc
+
+	* fix crash when importing/saving bib with '&' in TCN value
+	  
+	  Also fix similar glitch if ampersand is present in the TCN
+	  source.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-04-07  gmc
+
+	* further fixes to maintain_901
+	  
+	  Now correctly handles &, <, or > appearing in the tcn_value
+	  or tcn_source. Also introduces a trivial utility stored
+	  function, evergreen.xml_escape():
+	  
+	  evergreen.xml_escape(TEXT) returns TEXT: converts '&', '<',
+	  and '>' to XML entities
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-04-07  phasefx
+
+	* test for pre-cat slightly off in OPAC My Account, spotted by
+	  Steve Callender
+
+2011-04-08  phasefx
+
+	* For transit_slip template, %item_title%, %item_barcode%, etc.
+	  need to be in the Header, not the Line Item
+
+2011-04-08  erickson
+
+	* repaired bug in prepayment_required check. property -> method
+
+2011-04-10  phasefx
+
+	* for lp bug#756838, consistent copy status for new items.
+	  jamesrf++
+
+	* patch from jamesrf for lp#756880 for Grocery Billing Location in
+	  Bill Patron wizard
+
+2011-04-11  phasefx
+
+	* Let's not be picky about permissions here; an item needs to go
+	  where it needs to go :)
+
+2011-04-12  gmc
+
+	* add missing upgrade script
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-04-12  miker
+
+	* Fix functions stranded in the evergreen schema without a search
+	  path reference (ugly but mechanical)
+
+	* Final cleanup for the base schema, re search_path ... I hope
+
+	* Add a trigger function to simulate FKEY constraints on inherited
+	  tables
+
+2011-04-12  erickson
+
+	* repaired SQL upgrade syntax error
+
+2011-04-13  miker
+
+	* Protect search against all-deleted bibs by pinning the estimation
+	  ratios in that case
+
+2011-04-14  gmc
+
+	* tweaks to quick_metarecord_map.sql
+	  
+	  * used version from wiki, which provides same results as the
+	  previous version but performs better on large databases
+	  * now works without editing (a vacuum cannot run inside of a
+	  transaction)
+	  * don't do vacuum full, just a regular vacuum analyze
+	  
+	  [1]
+	  http://evergreen-ils.org/dokuwiki/doku.php?id=scratchpad:random_magic_spells#how_to_generate_metarecords_for_a_newly_loaded_bib_batch
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-04-14  erickson
+
+	* rely on search_path to locate the extract_marc_field() function
+	  which is now installed in the 'evergreen' schema by default
+
+	* upgrade script for consistency w/ schema change in r20073
+
+2011-04-14  senator
+
+	* Backport r20082 from trunk
+	  
+	  Address LP #754880, where printing happens before the progress
+	  dialog can be
+	  cleared in the alternate holds pull list print interface
+	  
+	  Additionally, provide the usual "print page" button so that the
+	  list can be
+	  reprinted at will
+
+2011-04-14  dbs
+
+	* Escape rather than filter SIMILAR TO metacharacters in patron
+	  crazy search
+	  
+	  The filtering I introduced in r19983 was overly aggressive, and
+	  included
+	  characters that weren't actually SIMILAR TO metacharacters.
+	  Instead, escape
+	  each character, carefully going through the list of
+	  metacharacters listed at
+	  http://www.postgresql.org/docs/8.4/interactive/functions-matching.html
+	  
+	  Works for email addresses like "foo.bar+baz@example.com".
+
+	* Specify the holdings_xml unAPI format for URI calls
+	  
+	  The unAPI marcxml-uris format is not returning URIs at the
+	  moment.
+	  While we're getting that fixed, use the holdings_xml format to
+	  get the URI job done; requires an extra JS call, but that's
+	  better than not working at all.
+
+	* Restore URIs in marcxml-uris unAPI format
+	  
+	  At some point (r16750) we started doing a numeric comparison of
+	  $flesh instead of just checking to see if $flesh was defined;
+	  this
+	  returned false when $flesh == 'uris', preventing URIs from being
+	  included in the marcxml-uris unAPI format.
+	  
+	  This restores URIs to marcxml-uris and so we can revert the extra
+	  BibTemplate call in rdetail_summary.xml.
+
+2011-04-15  miker
+
+	* Protect pcrud-ish retrieve from an empty result set
+
+	* Re-add (from ingest in 1.6) support mulitiple subfield-9 values
+	  in a single 856 tag
+
+2011-04-15  dbs
+
+	* Protect dumb JavaScript engines from having to deal with actual
+	  Unicode
+	  
+	  The holdings_xml format did not include an XML declaration, but
+	  adding that
+	  as we do here still does not make the Firefox and Chromium JS
+	  engines capable
+	  of consuming XML that contains Unicode content outside of the
+	  base ASCII
+	  range.
+	  
+	  So, we invoke entityize() to convert anything outside of the
+	  realm of
+	  ASCII to XML entities. An alternative would be to invoke
+	  entityize() in
+	  OpenILS::Application::SuperCat::unAPI::acn but it's not clear if
+	  that
+	  would interfere with any other uses.
+	  
+	  With this change, library names / copy location names with
+	  Unicode content
+	  can be displayed correctly on the search results page.
+
+2011-04-16  dbs
+
+	* Delete ##URI## call numbers and uri_call_number_map entries on
+	  bib reingest
+	  
+	  This approach will lead to some acn/auricnm ID inflation, but it
+	  works.
+	  
+	  Addresses LP# 761130 (immortal ##URI## entries in
+	  asset.call_number) reported
+	  by Ben Shum and LP# 761085 (cannot delete bib with ##URI##
+	  volumes) reported
+	  by Jason Etheridge.
+
+	* Do not clear auri links in default skin
+	  
+	  The dojo orphan() call which attempted to wipe any non-located
+	  856s
+	  was actually wiping the located 856s in the record detail
+	  display.
+	  
+	  Removing the extra call makes this work in Firefox and Chromium,
+	  at least.
+
+	* Allow NULL "use restriction" fields for located URIs
+	  
+	  The asset.uri.use_restriction field, which is really a sort of
+	  public notes
+	  field for 856 fields, was grabbing the $u subfield (URL) as a
+	  sort of last-gasp
+	  effort to give it some data. However, the effect was rather odd
+	  and led to
+	  workarounds like Conifer's skin to avoid displaying the use
+	  restriction field
+	  if its value was identical to the URL, etc.
+	  
+	  Instead, stop grabbing $u and handle the case where
+	  use_restriction column is
+	  NULL gracefully, just like the schema intended.
+
+2011-04-18  dbs
+
+	* Don't check .js files for entities
+	  
+	  Must have asked this script to check JS files for valid entities
+	  for a reason at some point in the dark past, but it couldn't have
+	  been a very good reason; we're getting a false positive that
+	  needs
+	  to be hushed now. Better to just stop looking for XML entities in
+	  JavaScript.
+
+	* Enable relative paths in i18n testing scripts
+	  
+	  We were 98% of the way there; now we no longer need to
+	  cd into the same directory as the i18n testing scripts
+	  to run them with meaningful output. Should be useful
+	  for adding these to the CI server.
+
+2011-04-18  phasefx
+
+	* in the MARC Editor, put the callnumber and barcode textboxes for
+	  Fast Item Add on a separate row
+
+2011-04-18  gmc
+
+	* minor improvements to database object comments
+	  
+	  * remove copyright, license verbiage, and C-style comment marking
+	  from the comments; these can live in the SQL scripts
+	  * updated several copyright headers
+	  * minor improvements to documentation of a couple tables
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+	* improve comments on a couple config tables
+	  
+	  Based on suggestions from Mike Rylander and Thomas Berezansky.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-04-19  dbs
+
+	* Correct encoding issue with authority_control_fields.pl
+	  
+	  Is there ever a time when MARC::File::XML would be invoked with
+	  anything other than BinaryEncoding => 'utf-8'? Not here, at
+	  least. Addresses LP# 764582.
+
+	* Add openils.widget.Searcher Dojo NLS to the i18n build
+	  
+	  Necessary for the "advanced" searchbar on the Evergreen
+	  AjaxPAC.
+
+	* Mark cmf and cmc labels as translatable
+	  
+	  We went to the effort of extracting the translatable text from
+	  950.data.seed-values.sql, but had not marked the fields as
+	  translatable in the IDL. Now at least the out-of-the-box
+	  fields and classes will easily be able to have translations.
+
+	* Mark cmc.label for translation, not cmc.name, in seed data
+
+2011-04-19  phasefx
+
+	* Add xul support for displaying issuance holds (needs testing)
+
+	* display issuance label, not subscription label
+
+	* one more fix, for Show in Catalog on issuance holds
+
+2011-04-19  dbwells
+
+	* Fix dump-style printing by ensuring 'params' is defined before
+	  accessing it
+
+2011-04-19  miker
+
+	* Use top level join instead of subquery in hold queue position
+	  query
+	  
+	  This is more readily optimized by the Postgres planer.
+	  
+	  Note also, for very large data sets (lots of holds, on the order
+	  of 100k+ active), the following is also advised:
+	  
+	  ALTER TABLE action.hold_copy_map alter column target_copy SET
+	  statistics 500, alter column hold set statistics 500;
+	  ANALYZE action.hold_copy_map;
+	  
+	  This gives the planner better data about the hold-copy-map
+	  n-distinct.
+
+2011-04-19  dbs
+
+	* Typo: Propeties/Properties
+
+2011-04-20  miker
+
+	* Patch from Jeff Davis addressing parameter usage issues
+
+	* Backport of trunk r20250: Always use BinaryEncodeing => "UTF-8"
+	  with MARC::File::XML
+
+2011-04-20  dbs
+
+	* Revert r20035 - restore default copy status for Fast Add to
+	  "Available"
+	  
+	  As noted in https://bugs.launchpad.net/evergreen/+bug/756838, the
+	  default
+	  status for "Fast Add" copies has been "Available" since release
+	  1.6.1.0.
+	  Changing the default in the middle of the 2.0 release series
+	  would likely
+	  cause more confusion for those sites who appreciate the current
+	  Fast Add
+	  behaviour, so this reverts the changes in r20035 and maintains
+	  the same
+	  defaults as 1.6.1.0.
+	  
+	  Note that in r20264, 2.1.0 will gain two new org unit settings
+	  that will
+	  enable sites to control their preferred default copy status for
+	  the Fast Add
+	  and Add Volume interfaces.
+
+2011-04-21  erickson
+
+	* check user 'active' field in SIP charge_ok (and dependent) calls
+
+2011-04-22  miker
+
+	* Patch from James Fournie to sort statcats in their comboboxes
+
+2011-04-22  phasefx
+
+	* Turn off non-working print button for holds pull
+	  
+	  https://bugs.launchpad.net/evergreen/+bug/727983
+	  
+	  Author: Thomas Berezansky <tsbere@mvlc.org>
+	  Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+	  Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2011-04-22  miker
+
+	* Address LP#730743, errant parens cause pain
+	  
+	  Specifically, we prune subplans that contain no nodes (empty
+	  parens), and avoid dropping out of the top level query context
+	  when we encounter a close-paren.
+
+2011-04-22  phasefx
+
+	* Disable Save Columns in xul holds interface when Hold Details is
+	  being viewed. https://bugs.launchpad.net/evergreen/+bug/691599
+	  Not the best fix, but the quickest fix
+
+2011-04-22  miker
+
+	* address the empty-query case
+
+2011-04-25  dbs
+
+	* Add a space between TOC part and TOC title in OpenLibrary added
+	  content
+	  
+	  In trunk/rel_2_1 we switched to layout.css for table of contents
+	  styling. We'll keep it simpler for stable 2.0 and handle this
+	  bugfix completely inline.
+
+2011-04-26  dbs
+
+	* Make authority_control_fields.pl resistant to database timeouts
+	  
+	  LP 771237 describes how on an underpowered system, the work that
+	  authority_control_fields.pl tries to do on a per-record basis may
+	  hit the
+	  CStore default timeout of 6 seconds for a transaction and
+	  automatically
+	  end the transaction, resulting in no work being committed once
+	  the script tries
+	  to update the bibliographic record. Searching each controlled
+	  field for a
+	  matching authority record can be costly in a database with
+	  millions of
+	  authority records.
+	  
+	  To enable the script to accomplish its work on underpowered test
+	  systems, use a
+	  regular read-only CStoreEditor session to accomplish the lookups
+	  and create a
+	  separate CStoreEditor session to issue the update in a
+	  transaction if required.
+	  
+	  Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-04-26  phasefx
+
+	* fix disappearing cursor/caret for Check In
+
+	* set the cancel cause field when patrons cancel holds. There's a
+	  holdsCancel function that also does this, but it never gets
+	  called by anything
+
+2011-04-26  dbs
+
+	* Protect against errors returned by open-ils.search
+	  
+	  If open-ils.search returns an error rather than a result, prevent
+	  authority_control_fields.pl from bombing out completely; instead,
+	  flag the problem in STDERR and move on to the next record.
+	  
+	  Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-04-26  phasefx
+
+	* Setting print.always_print_silent to false is a bad thing, since
+	  it trumps gPrintSettings.printSilent, and will cause a print
+	  dialog regardless of Printer Prompt or Auto-Print checkboxes.
+	  Let's clear it instead when toggling it off, and if we find it
+	  lingering as false from past code, let's clear it then too.
+
+	* Hold, Transit, and Hold/Transit Slips used to suppress the
+	  printer dialog, but we lost that when we moved to templated
+	  slips. This adds a sticky Printer Prompt checkbox to Check In for
+	  controlling that behavior.
+
+2011-04-27  dbs
+
+	* Prevent a MARC::File::XML error from killing
+	  authority_control_fields.pl batch
+	  
+	  Continuing to make this script bullet-proof, MARC::File::XML
+	  cares deeply
+	  about things like whether datafields have indicators and throws
+	  exceptions
+	  that, if not caught, kill a processing script - like this one.
+	  
+	  Borrowing the approach from marc_export, wrap the new_from_xml()
+	  call in
+	  a try / otherwise block and roll on.
+	  
+	  Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+	* Consolidate on checking for integers for -full / -uris
+	  
+	  The check for an integer when $flesh eq 'uris' was throwing
+	  errors
+	  and breaking authority browsing; rather than complicating matters
+	  further, use an explicit integer for the return value when the
+	  format
+	  ends with "-uris" so that we can simply test for an integer value
+	  greater than 0.
+	  
+	  Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+	* One more strictly integer check for fleshing feeds in SuperCat
+	  
+	  Missed this one in r20336. Argh.
+	  
+	  Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-05-01  dbs
+
+	* Slight optimization for authority_control_fields.pl
+	  
+	  Instead of creating two CStoreEditors per bib record, reuse the
+	  global
+	  CStoreEditor for read operations; this way we only have to create
+	  a new
+	  CStoreEditor if a record has fields to authorize.
+	  
+	  Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+2011-05-01  miker
+
+	* Patch from Michael Peters, Jason Boyer and Jason Etheridge
+	  addressing LP#744244: bill_details.xul "Checkout or Renew
+	  Library" column is blank
+
+	* After investigation by Dan Scott, Michael Peters and Mike
+	  Rylander (a little), apos removal in advanced search
+	  normalization is considered harmful.
+
+2011-05-02  phasefx
+
+	* fix "undefined is in transit"
+	  https://bugs.launchpad.net/evergreen/+bug/773528
+	  ---
+	  
+	  Fix bug squashing of params in checkin_via_barcode2 in
+	  circ/util.js.
+	  
+	  Author: Jason Stephenson <jstephenson@mvlc.org>
+	  Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+	  Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+	* Fix bug and typo in stat cat editor
+	  
+	  Specifically, disabling the ability to select a stat cat type on
+	  no permissions on current type.
+	  
+	  If you don't have permissions on ASSET you could never get to
+	  ACTOR.
+	  
+	  If you picked ACTOR without rights you couldn't get back to
+	  ASSET.
+	  
+	  Also, re-enable the library selector and new buttons when you do
+	  change to one you can add for.
+	  
+	  Author: Thomas Berezansky <tsbere@mvlc.org>
+	  Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+	  Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2011-05-03  miker
+
+	* Followup patch to the first listed in
+	  https://bugs.launchpad.net/evergreen/+bug/745123
+
+2011-05-03  dbs
+
+	* Avoid data loss by setting MARC::Charset->assume_unicode(1)
+	  
+	  When using MARC::File::XML, MARC::Charset is used to perform
+	  character
+	  conversions; however, MARC::File::XML does not tell MARC::Charset
+	  that it is
+	  handling Unicode data. If we do not tell MARC::Charset that it is
+	  handling
+	  Unicode data, it can return an error which results in the loss of
+	  data
+	  (typically a subfield containing one or more characters which
+	  MARC::Charset
+	  does not have an equivalent mapping outside of Unicode).
+	  
+	  This problem could be reproduced in authority_control_fields.pl
+	  with a
+	  subfield like "von Hans-Christian Müơller" - when this subfield
+	  was encountered
+	  without assume_unicode(1), a null string was returned for that
+	  subfield, and
+	  if the record was written back to the database due to an
+	  authority match being
+	  found in a different field, the only recourse was to restore the
+	  record from
+	  auditor.biblio_record_entry_history. The same sort of problems
+	  could occur
+	  for any other script or function that modifies the data being
+	  handed to it
+	  using MARC::File::XML and BinaryEncoding => UTF8.
+	  
+	  Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-05-04  miker
+
+	* Patch from Michael Peters to protect cut-in-line holds from staff
+	  without the appropriate permission
+
+2011-05-04  dbs
+
+	* Change an ERROR to a DEBUG log message in mod_idlchunk
+	  
+	  Reported by James Fournie at Sitka, this message was logged
+	  as an error when it is simply a debug message; we drop the
+	  level accordingly so that it will not appear in the Apache
+	  logs during the normal course of operations.
+	  
+	  Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+2011-05-04  miker
+
+	* Initial fix from Michael Peters addressing small-screen UI
+	  issues: LP#767507
+
+	* Addressing LP#732681 at upgrade time -- make authority records
+	  useful for controlling bibs
+
+	* Collaboration patch from Joseph Lewis and Michael Peters
+	  addressing LP#758007, missing patron merge OU settings.
+
+2011-05-04  dbwells
+
+	* Fix some Serial Control text boxes which were too small to use
+	  effectively.
+
+2011-05-04  miker
+
+	* Patch from Jason Boyer swapping the order of report and template
+	  name in emailed notices; LP#777273
+
+	* Patch from James Fournie improving due-date-editor usability by
+	  auto-checking the check box; LP#70956965
+
+2011-05-05  miker
+
+	* adding upgrade script
+
+	* .: Tagging 2.0.6
+
+	* Open-ILS/src/perlmods/OpenILS/Application.pm,
+	  Open-ILS/src/sql/Pg/002.schema.config.sql, README: bumping
+	  version numbers
+
