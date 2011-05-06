@@ -39,6 +39,10 @@
 !define MUI_LANGDLL_REGISTRY_KEY "${PRODUCT_UNINST_KEY}"
 !define MUI_LANGDLL_REGISTRY_VALUENAME "NSIS:Language"
 
+; Make the welcome page a tad less verbose on the name
+; Note: The title bar will still be verbose (full product name + version + "Setup")
+!define MUI_WELCOMEPAGE_TITLE "Welcome to the Evergreen Staff Client ${PRODUCT_VERSION} Setup Wizard"
+
 ; Welcome page
 !insertmacro MUI_PAGE_WELCOME
 ; License page, if we have one
@@ -69,9 +73,7 @@ var ICONS_GROUP
 !insertmacro MUI_UNPAGE_INSTFILES
 
 ; Language files
-!insertmacro MUI_LANGUAGE "Czech"
 !insertmacro MUI_LANGUAGE "English"
-!insertmacro MUI_LANGUAGE "French"
 
 ; MUI end ------
 
@@ -114,9 +116,11 @@ Section "Staff Client" SECMAIN
   CreateShortCut "$DESKTOP\Evergreen Staff Client ${PRODUCT_TAG}.lnk" "$INSTDIR\evergreen.exe"
   
   ; External script for extra things.
+  !ifdef EXTRAS
   !define EXTERNAL_EXTRAS_SECMAIN
   !include /NONFATAL "extras.nsi"
   !undef EXTERNAL_EXTRAS_SECMAIN
+  !endif
 
   !insertmacro MUI_STARTMENU_WRITE_END
 
@@ -208,6 +212,7 @@ Section -Post
 SectionEnd
 
 ; Section descriptions
+!ifdef AUTOUPDATE | DEVELOPER | PERMACHINE
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
   !insertmacro MUI_DESCRIPTION_TEXT ${SECMAIN} "The Evergreen Staff Client with XULRunner, Required"
   !ifdef AUTOUPDATE
@@ -220,7 +225,7 @@ SectionEnd
   !insertmacro MUI_DESCRIPTION_TEXT ${SECPERMAC}  "Default registration and offline storage to per machine instead of per user"
   !endif
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
-
+!endif
 
 Function un.onUninstSuccess
   HideWindow
@@ -265,9 +270,11 @@ Section Uninstall
   Delete "$SMPROGRAMS\$ICONS_GROUP\Evergreen Staff Client.lnk"
 
   ; External script for removing extra files before we wipe out the install directory
+  !ifdef EXTRAS
   !define EXTERNAL_EXTRAS_UNINSTALL
   !include /NONFATAL "extras.nsi"
   !undef EXTERNAL_EXTRAS_UNINSTALL
+  !endif
 
   RMDir "$SMPROGRAMS\$ICONS_GROUP"
   RMDir /r "$INSTDIR\updates"
