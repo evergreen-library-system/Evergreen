@@ -165,17 +165,17 @@
 						<secondary>download</secondary>
 					</indexterm>
 					<para>The latest version of OpenSRF can be found here:
-					<ulink url="http://evergreen-ils.org/downloads/OpenSRF-1.6.3.tar.gz"></ulink> .
+					<ulink url="http://evergreen-ils.org/downloads/opensrf-1.6.3.tar.gz"></ulink> .
 					As the <systemitem class="username">opensrf</systemitem> user, change to
 					the directory <filename class="directory">/home/opensrf</filename> then download
 					and extract OpenSRF. The new subdirectory
-					<filename class="directory">/home/opensrf/OpenSRF-1.6.3</filename> will be created:</para>
+					<filename class="directory">/home/opensrf/opensrf-1.6.3</filename> will be created:</para>
 					<screen>
 						<userinput>
 	# as the opensrf user:
 	cd /home/opensrf
-	wget http://evergreen-ils.org/downloads/OpenSRF-1.6.3.tar.gz
-	tar zxf OpenSRF-1.6.3.tar.gz</userinput>
+	wget http://evergreen-ils.org/downloads/opensrf-1.6.3.tar.gz
+	tar zxf opensrf-1.6.3.tar.gz</userinput>
 					</screen>
 				</step>
 				<step>
@@ -194,7 +194,7 @@
 					<screen>
 						<userinput>
 	# as the root user:
-	cd /home/opensrf/OpenSRF-1.6.3
+	cd /home/opensrf/opensrf-1.6.3
 	make -f src/extras/Makefile.install [DISTRIBUTION]</userinput>
 					</screen>
 					<table xml:id="serversideinstallation-keywords-opensrf">
@@ -308,7 +308,7 @@
 							<screen>
 								<userinput>
 	# as the opensrf user:
-	cd /home/opensrf/OpenSRF-1.6.3
+	cd /home/opensrf/opensrf-1.6.3
 	./configure --prefix=/openils --sysconfdir=/openils/conf
 	make</userinput>
 							</screen>
@@ -323,7 +323,7 @@
 							<screen>
 								<userinput>
 	# as the root user:
-	cd /home/opensrf/OpenSRF-1.6.3
+	cd /home/opensrf/opensrf-1.6.3
 	make install</userinput>
 							</screen>
 							<para>This step will take several minutes to complete.</para>
