@@ -357,7 +357,7 @@ BEGIN
         FOR sf IN SELECT * FROM regexp_split_to_table(acsaf.sf_list,'') LOOP
             tmp_text := oils_xpath_string('//*[@tag="'||tag_used||'"]/*[@code="'||sf||'"]', marcxml);
             IF tmp_text IS NOT NULL THEN
-                heading_text := heading_text || E'‡' || sf || ' ' || tmp_text;
+                heading_text := heading_text || E'\U2021' || sf || ' ' || tmp_text;
             END IF;
         END LOOP;
         EXIT WHEN heading_text <> '';
