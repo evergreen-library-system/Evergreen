@@ -69,6 +69,13 @@
             <table id='vl-queue-paging-table' class='queue-nav-table'>
                 <tbody>
                     <tr><td valign='bottom' align='right'>
+                        <select id='vl-queue-export-options' style='margin-right: 10px;'>
+                            <!-- TODO I18N -->
+                            <option value=''>Export Queue As...</option>
+                            <option value='print'>Print</option>
+                            <option value='csv'>CSV</option>
+                            <option value='email'>Email</option>
+                        </select>
                         <span style='padding-right:5px;'>&vandelay.results.per.page;</span>
                         <span class='queue-pager-span'>
                             <select jsId='vlQueueDisplayLimit' id='vl-queue-display-limit-selector'

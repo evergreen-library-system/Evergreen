@@ -185,6 +185,7 @@ function vlInit() {
     );
 
     vlAttrEditorInit();
+    vlExportInit();
 }
 
 
@@ -375,20 +376,45 @@ function processSpool(key, queueId, type, onload) {
     );
 }
 
-function retrieveQueuedRecords(type, queueId, onload) {
+function vlExportInit() {
+    var qsel = dojo.byId('vl-queue-export-options');
+    qsel.onchange = function(newVal) {
+        var value = qsel.options[qsel.selectedIndex].value;
+        qsel.selectedIndex = 0;
+        if(!value) return;
+        if(!confirm('Export as "' + value + '"?')) return; // TODO: i18n
+        retrieveQueuedRecords(
+            currentType, 
+            currentQueueId, 
+            function(r) { exportHandler(value, r) },
+            value
+        );
+    }
+}
+
+function exportHandler(type, response) {
+    var content = openils.Util.readResponse(response);
+    if(type == 'print') {
+        // TODO print the content
+    }
+    alert('response = ' + response);
+}
+
+function retrieveQueuedRecords(type, queueId, onload, doExport) {
     displayGlobalDiv('vl-generic-progress');
     queuedRecords = [];
     queuedRecordsMap = {};
     currentOverlayRecordsMap = {};
     currentOverlayRecordsMapGid = {};
     selectableGridRecords = {};
-    //resetVlQueueGridLayout();
 
     if(!type) type = currentType;
     if(!queueId) queueId = currentQueueId;
     if(!onload) onload = handleRetrieveRecords;
 
     var method = 'open-ils.vandelay.'+type+'_queue.records.retrieve.atomic';
+
+    if(doExport) method += '.export.' + doExport;
     if(vlQueueGridShowMatches.checked)
         method = method.replace('records', 'records.matches');
 
@@ -407,18 +433,8 @@ function retrieveQueuedRecords(type, queueId, onload) {
         ['open-ils.vandelay', method],
         {   async: true,
             params: params,
-            /*
-            onresponse: function(r) {
-                console.log("ONREPONSE");
-                var rec = r.recv().content();
-                if(e = openils.Event.parse(rec))
-                    return alert(e);
-                console.log("got record " + rec.id());
-                queuedRecords.push(rec);
-                queuedRecordsMap[rec.id()] = rec;
-            },
-            */
             oncomplete: function(r){
+                if(doExport) return onload();
                 var recs = r.recv().content();
                 if(e = openils.Event.parse(recs[0]))
                     return alert(e);
