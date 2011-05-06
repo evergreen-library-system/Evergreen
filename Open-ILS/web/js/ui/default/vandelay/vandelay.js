@@ -377,6 +377,8 @@ function processSpool(key, queueId, type, onload) {
 }
 
 function vlExportInit() {
+
+    // queue export
     var qsel = dojo.byId('vl-queue-export-options');
     qsel.onchange = function(newVal) {
         var value = qsel.options[qsel.selectedIndex].value;
@@ -386,8 +388,35 @@ function vlExportInit() {
         retrieveQueuedRecords(
             currentType, 
             currentQueueId, 
-            function(r) { exportHandler(value, r) },
+            function(r) { 
+                exportHandler(value, r);
+                displayGlobalDiv('vl-queue-div');
+            },
             value
+        );
+    }
+
+    // item export
+    var isel = dojo.byId('vl-item-export-options');
+    isel.onchange = function(newVal) {
+        var value = isel.options[isel.selectedIndex].value;
+        isel.selectedIndex = 0;
+        if(!value) return;
+        if(!confirm('Export as "' + value + '"?')) return; // TODO: i18n
+
+        var method = 'open-ils.vandelay.import_item.queue.export.' + value;
+
+        fieldmapper.standardRequest(
+            ['open-ils.vandelay', method],
+            {
+                params : [
+                    authtoken, 
+                    currentQueueId, 
+                    {with_import_error: (vlImportItemsShowErrors.checked) ? 1 : null}
+                ],
+                async : true,
+                oncomplete : function(r) {exportHandler(type, r)}
+            }
         );
     }
 }

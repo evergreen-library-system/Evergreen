@@ -47,6 +47,15 @@
         <h1>Import Items</h1><br/>
         <input dojoType='dijit.form.CheckBox' jsId='vlImportItemsShowErrors' onchange='vlLoadErrorUIAll();'/>
         <span>Limit to Import Failures</span>
+        <table width='100%'><tr><td width='100%' align='right'>
+            <select id='vl-item-export-options' style='margin-right: 10px;'>
+                <!-- TODO I18N -->
+                <option value=''>Export Items As...</option>
+                <option value='print'>Print</option>
+                <option value='csv'>CSV</option>
+                <option value='email'>Email</option>
+            </select>
+        </td></tr></table>
         <table  jsId="vlAllImportErrorGrid"
                 dojoType="openils.widget.AutoGrid"
                 autoHeight='true'
