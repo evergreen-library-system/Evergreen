@@ -26,6 +26,7 @@ export NSIS_WICON=$$(if [ -f client/evergreen.ico ]; then echo '-DWICON'; fi)
 export NSIS_AUTOUPDATE=$$([ -f client/defaults/preferences/autoupdate.js ] && echo '-DAUTOUPDATE')
 export NSIS_DEV=$$([ -f client/defaults/preferences/developers.js ] && echo '-DDEVELOPER')
 export NSIS_PERMACHINE=$$([ -f client/defaults/preferences/aa_per_machine.js ] && echo '-DPERMACHINE')
+export NSIS_EXTRAS=$$([ -f extras.nsi ] && echo '-DEXTRAS')
 # Url taken from http://nsis.sourceforge.net/AccessControl_plug-in
 NSIS_ACCESSCONTROL=http://nsis.sourceforge.net/mediawiki/images/4/4a/AccessControl.zip
 
@@ -253,9 +254,23 @@ generic-client: client_app
 # https://developer.mozilla.org/en/XULRunner/Deploying_XULRunner_1.8
 # for their respective platforms in regards to XULRunner deployment
 
+nsis_check:
+	@echo 'Checking for makensis'
+	@type -P makensis > /dev/null || ( echo 'MAKENSIS NOT FOUND: Cannot continue. Do you need to install the NSIS package?' && exit 1 )
+
+unzip_check:
+	@echo 'Checking for unzip'
+	@type -P unzip > /dev/null || ( echo 'UNZIP NOT FOUND: Cannot continue.' && exit 1 )
+
+branding_check:
+	@echo 'Checking for branding'
+	@[ -f xulrunner-stub.exe ] || echo 'xulrunner-stub.exe not found'
+	@[ -f build/evergreen.ico ] || echo 'build/evergreen.ico not found'
+	@if [ ! -f xulrunner-stub.exe -o ! -f build/evergreen.ico ]; then echo 'Branding incomplete. Did you forget to run "make rigbeta" or "make rigrelease"?'; echo 'You will need to "make rebuild" afterwards.'; exit 1; fi
+
 # Note that I decided to use win/lin channels for ease of coding platform specific updates
 
-win-xulrunner: client_app
+win-xulrunner: unzip_check branding_check client_app
 	@echo 'Preparing Windows xulrunner'
 	@if [ ! -f ${XULRUNNER_WINFILE} ]; then wget ${XULRUNNER_URL}${XULRUNNER_WINFILE}; fi
 	@unzip -q ${XULRUNNER_WINFILE} -dclient
@@ -273,10 +288,10 @@ linux-xulrunner: client_app
 
 # Build a windows installer.
 
-win-client: win-xulrunner
+win-client: nsis_check win-xulrunner
 	@if [ "${NSIS_AUTOUPDATE}${NSIS_PERMACHINE}" -a ! -d AccessControl ]; then echo 'Fetching AccessControl Plugin'; wget ${NSIS_ACCESSCONTROL} -O AccessControl.zip; unzip AccessControl.zip; fi
 	@echo 'Building installer'
-	@makensis -V2 -DPRODUCT_VERSION="${STAFF_CLIENT_VERSION}" ${NSIS_WICON} ${NSIS_AUTOUPDATE} ${NSIS_DEV} ${NSIS_PERMACHINE} ${NSIS_EXTRAOPTS} windowssetup.nsi
+	@makensis -V2 -DPRODUCT_VERSION="${STAFF_CLIENT_VERSION}" ${NSIS_WICON} ${NSIS_AUTOUPDATE} ${NSIS_DEV} ${NSIS_PERMACHINE} ${NSIS_EXTRAS} ${NSIS_EXTRAOPTS} windowssetup.nsi
 	@echo 'Done'
 
 # For linux, just build a tar.bz2 archive
