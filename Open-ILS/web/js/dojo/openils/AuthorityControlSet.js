@@ -15,20 +15,20 @@
  * ---------------------------------------------------------------------------
  */
 
-if(!dojo._hasResource["MARC.AuthorityControlSet"]) {
+if(!dojo._hasResource["openils.AuthorityControlSet"]) {
 
     dojo.require('openils.PermaCrud');
     dojo.require('MARC.FixedFields');
 
-    dojo._hasResource["MARC.AuthorityControlSet"] = true;
-    dojo.provide("MARC.AuthorityControlSet");
-    dojo.declare('MARC.AuthorityControlSet', null, {
+    dojo._hasResource["openils.AuthorityControlSet"] = true;
+    dojo.provide("openils.AuthorityControlSet");
+    dojo.declare('openils.AuthorityControlSet', null, {
 
         _controlset : null,
 
         constructor : function(kwargs) {
 
-            if (!MARC.AuthorityControlSet._remote_loaded) {
+            if (!openils.AuthorityControlSet._remote_loaded) {
 
                 // TODO -- push the raw tree into the oils cache for later reuse
 
@@ -37,7 +37,7 @@ if(!dojo._hasResource["MARC.AuthorityControlSet"]) {
 
                 // loop over each acs
                 dojo.forEach( acs_list, function (cs) {
-                    MARC.AuthorityControlSet._controlsets[''+cs.id()] = {
+                    openils.AuthorityControlSet._controlsets[''+cs.id()] = {
                         id : cs.id(),
                         name : cs.name(),
                         description : cs.description(),
@@ -50,8 +50,8 @@ if(!dojo._hasResource["MARC.AuthorityControlSet"]) {
                     // grab the authority fields
                     var acsaf_list = pcrud.search('acsaf', {control_set : cs.id()});
                     var at_list = pcrud.search('at', {control_set : cs.id()});
-                    MARC.AuthorityControlSet._controlsets[''+cs.id()].raw.authority_fields( acsaf_list );
-                    MARC.AuthorityControlSet._controlsets[''+cs.id()].raw.thesauri( at_list );
+                    openils.AuthorityControlSet._controlsets[''+cs.id()].raw.authority_fields( acsaf_list );
+                    openils.AuthorityControlSet._controlsets[''+cs.id()].raw.thesauri( at_list );
 
                     // and loop over each
                     dojo.forEach( acsaf_list, function (csaf) {
@@ -75,8 +75,8 @@ if(!dojo._hasResource["MARC.AuthorityControlSet"]) {
                         var acsbf_list = pcrud.search('acsbf', {authority_field : csaf.id()});
                         csaf.bib_fields( acsbf_list );
 
-                        MARC.AuthorityControlSet._controlsets[''+cs.id()].bib_fields = [].concat(
-                            MARC.AuthorityControlSet._controlsets[''+cs.id()].bib_fields
+                        openils.AuthorityControlSet._controlsets[''+cs.id()].bib_fields = [].concat(
+                            openils.AuthorityControlSet._controlsets[''+cs.id()].bib_fields
                             acsbf_list
                         );
 
@@ -94,19 +94,19 @@ if(!dojo._hasResource["MARC.AuthorityControlSet"]) {
                     });
 
                     // build the authority_tag_map
-                    dojo.forEach( MARC.AuthorityControlSet._controlsets[''+cs.id()].bib_fields, function (bf) {
-                        MARC.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()] = {};
+                    dojo.forEach( openils.AuthorityControlSet._controlsets[''+cs.id()].bib_fields, function (bf) {
+                        openils.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()] = {};
                         dojo.forEach( bf.authority_field().sf_list().split(''), function (sf_code) {
-                            MARC.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()][sf_code] = { bf.authority_field().tag() : sf_code };
+                            openils.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()][sf_code] = { bf.authority_field().tag() : sf_code };
                         });
                     });
                 });
 
                 
                 if (this.controlSetList().length > 0)
-                    delete MARC.AuthorityControlSet._controlsets['-1'];
+                    delete openils.AuthorityControlSet._controlsets['-1'];
 
-                MARC.AuthorityControlSet._remote_loaded = true;
+                openils.AuthorityControlSet._remote_loaded = true;
             }
 
             if (kwargs.controlSet) {
@@ -122,20 +122,20 @@ if(!dojo._hasResource["MARC.AuthorityControlSet"]) {
         },
 
         controlSet: function (x) {
-            return MARC.AuthorityControlSet._controlsets[''+this.controlSetId(x)];
+            return openils.AuthorityControlSet._controlsets[''+this.controlSetId(x)];
         },
 
         authorityFields: function (x) {
-            return MARC.AuthorityControlSet._controlsets[''+this.controlSetId(x)].raw.authority_fields();
+            return openils.AuthorityControlSet._controlsets[''+this.controlSetId(x)].raw.authority_fields();
         },
 
         thesauri: function (x) {
-            return MARC.AuthorityControlSet._controlsets[''+this.controlSetId(x)].raw.thesauri();
+            return openils.AuthorityControlSet._controlsets[''+this.controlSetId(x)].raw.thesauri();
         },
 
         controlSetList : function () {
             var l = [];
-            for (var i in MARC.AuthorityControlSet._controlsets) {
+            for (var i in openils.AuthorityControlSet._controlsets) {
                 l.push(i);
             }
             return l;
@@ -153,9 +153,9 @@ if(!dojo._hasResource["MARC.AuthorityControlSet"]) {
 
     });
 
-    MARC.AuthorityControlSet._remote_loaded = false;
+    openils.AuthorityControlSet._remote_loaded = false;
 
-    MARC.AuthorityControlSet._controlsets = {
+    openils.AuthorityControlSet._controlsets = {
         // static sorta-LoC setup ... to be overwritten with server data 
         -1 : {
             id : -1,

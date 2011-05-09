@@ -42,6 +42,8 @@ var show_auth_menu = false;
 
 function $(id) { return document.getElementById(id); }
 
+var acs = new openils.AuthorityControlSet ();
+
 function mangle_005() {
     var now = new Date();
     var y = now.getUTCFullYear();
@@ -1243,116 +1245,6 @@ function getContextMenu (target, type) {
     return true;
 }
 
-var authority_tag_map = {
-    100 : ['[100,500,700]',100],
-    700 : ['[100,500,700]',100],
-    800 : ['[100,500,700]',100],
-    110 : ['[110,510,710]',110],
-    610 : ['[110,510,710]',110],
-    710 : ['[110,510,710]',110],
-    810 : ['[110,510,710]',110],
-    111 : ['[111,511,711]',111],
-    611 : ['[111,511,711]',111],
-    711 : ['[111,511,711]',111],
-    811 : ['[111,511,711]',111],
-    240 : ['[130,530,730]',130],
-    130 : ['[130,530,730]',130],
-    730 : ['[130,530,730]',130],
-    830 : ['[130,530,730]',130],
-    600 : ['[100,500,580,581,582,585,700,780,781,782,785]',100],
-    630 : ['[130,530,730]',130],
-    648 : ['[148,548]',148],
-    650 : ['[150,550,580,581,582,585,750,780,781,782,785]',150],
-    651 : ['[151,551,580,581,582,585,751,780,781,782,785]',151],
-    655 : ['[155,555,580,581,582,585,755,780,781,782,785]',155]
-};
-
-function getAuthorityContextMenu (target, sf) {
-    var menu_id = sf.parent().@tag + ':' + sf.@code + '-authority-context-' + sf;
-
-    var page = 0;
-    var old = dojo.byId( menu_id );
-    if (old) {
-        page = auth_pages[menu_id];
-        old.parentNode.removeChild(old);
-    } else {
-        auth_pages[menu_id] = 0;
-    }
-
-    var sf_popup = createPopup({ id : menu_id, flex : 1 });
-
-    sf_popup.addEventListener("popuphiding", function(event) {
-        if (show_auth_menu) {
-            show_auth_menu = false;
-            getAuthorityContextMenu(target, sf);
-            dojo.byId(menu_id).openPopup();
-        }  
-    }, false);
-
-    context_menus.appendChild( sf_popup );
-
-    if (!authority_tag_map[sf.parent().@tag]) {
-        sf_popup.appendChild(createLabel( { value : $('catStrings').getString('staff.cat.marcedit.not_authority_field.label') } ) );
-        target.setAttribute('context', 'clipboard');
-        return false;
-    }
-
-    if (sf.toString().replace(/\s*/, '')) {
-        browseAuthority(sf_popup, menu_id, target, sf, 20, page);
-    }
-
-    return true;
-}
-
-/* Apply the complete 1xx */
-function applyFullAuthority ( target, ui_sf, e4x_sf ) {
-    var new_vals = dojo.query('*[tag^="1"]', target);
-    return applyAuthority( target, ui_sf, e4x_sf, new_vals );
-}
-
-function applySelectedAuthority ( target, ui_sf, e4x_sf ) {
-    var new_vals = target.getElementsByAttribute('checked','true');
-    return applyAuthority( target, ui_sf, e4x_sf, new_vals );
-}
-
-function applyAuthority ( target, ui_sf, e4x_sf, new_vals ) {
-    var field = e4x_sf.parent();
-
-    for (var i = 0; i < new_vals.length; i++) {
-
-        var sf_list = field.subfield;
-        for (var j in sf_list) {
-
-            if (sf_list[j].@code == new_vals[i].getAttribute('subfield')) {
-                sf_list[j] = new_vals[i].getAttribute('value');
-                new_vals[i].setAttribute('subfield','');
-                break;
-            }
-        }
-    }
-
-    for (var i = 0; i < new_vals.length; i++) {
-        if (!new_vals[i].getAttribute('subfield')) continue;
-
-        var val = new_vals[i].getAttribute('value');
-
-        var sf = <subfield code="" xmlns="http://www.loc.gov/MARC21/slim">{val}</subfield>;
-        sf.@code = new_vals[i].getAttribute('subfield');
-
-        field.insertChildAfter(field.subfield[field.subfield.length() - 1], sf);
-    }
-
-    var row = marcDatafield( field );
-
-    var node = ui_sf;
-    while (node.nodeName != 'row') {
-        node = node.parentNode;
-    }
-
-    node.parentNode.replaceChild( row, node );
-    return true;
-}
-
 var control_map = {
     100 : {
         'a' : { 100 : 'a' },
@@ -1611,6 +1503,97 @@ var control_map = {
     }
 };
 
+function getAuthorityContextMenu (target, sf) {
+    var menu_id = sf.parent().@tag + ':' + sf.@code + '-authority-context-' + sf;
+
+    var page = 0;
+    var old = dojo.byId( menu_id );
+    if (old) {
+        page = auth_pages[menu_id];
+        old.parentNode.removeChild(old);
+    } else {
+        auth_pages[menu_id] = 0;
+    }
+
+    var sf_popup = createPopup({ id : menu_id, flex : 1 });
+
+    sf_popup.addEventListener("popuphiding", function(event) {
+        if (show_auth_menu) {
+            show_auth_menu = false;
+            getAuthorityContextMenu(target, sf);
+            dojo.byId(menu_id).openPopup();
+        }  
+    }, false);
+
+    context_menus.appendChild( sf_popup );
+
+    var found_acs = [];
+    dojo.forEach( acs.controlSetList(), function (acs_id) {
+        if (ac.controlSet(acs_id).control_map[sf.parent().@tag]) found_acs.push(acs_id);
+    });
+
+    if (!found_acs.length) {
+        sf_popup.appendChild(createLabel( { value : $('catStrings').getString('staff.cat.marcedit.not_authority_field.label') } ) );
+        target.setAttribute('context', 'clipboard');
+        return false;
+    }
+
+    if (sf.toString().replace(/\s*/, '')) {
+        browseAuthority(sf_popup, menu_id, target, sf, 20, page);
+    }
+
+    return true;
+}
+
+/* Apply the complete 1xx */
+function applyFullAuthority ( target, ui_sf, e4x_sf ) {
+    var new_vals = dojo.query('*[tag^="1"]', target);
+    return applyAuthority( target, ui_sf, e4x_sf, new_vals );
+}
+
+function applySelectedAuthority ( target, ui_sf, e4x_sf ) {
+    var new_vals = target.getElementsByAttribute('checked','true');
+    return applyAuthority( target, ui_sf, e4x_sf, new_vals );
+}
+
+function applyAuthority ( target, ui_sf, e4x_sf, new_vals ) {
+    var field = e4x_sf.parent();
+
+    for (var i = 0; i < new_vals.length; i++) {
+
+        var sf_list = field.subfield;
+        for (var j in sf_list) {
+
+            if (sf_list[j].@code == new_vals[i].getAttribute('subfield')) {
+                sf_list[j] = new_vals[i].getAttribute('value');
+                new_vals[i].setAttribute('subfield','');
+                break;
+            }
+        }
+    }
+
+    for (var i = 0; i < new_vals.length; i++) {
+        if (!new_vals[i].getAttribute('subfield')) continue;
+
+        var val = new_vals[i].getAttribute('value');
+
+        var sf = <subfield code="" xmlns="http://www.loc.gov/MARC21/slim">{val}</subfield>;
+        sf.@code = new_vals[i].getAttribute('subfield');
+
+        field.insertChildAfter(field.subfield[field.subfield.length() - 1], sf);
+    }
+
+    var row = marcDatafield( field );
+
+    var node = ui_sf;
+    while (node.nodeName != 'row') {
+        node = node.parentNode;
+    }
+
+    node.parentNode.replaceChild( row, node );
+    return true;
+}
+
 function validateAuthority (button) {
     var grid = document.getElementById('recGrid');
     var label = button.getAttribute('label');
@@ -1621,47 +1604,53 @@ function validateAuthority (button) {
         var row = rows[i];
         var tag = row.firstChild;
 
-        if (!control_map[tag.value]) continue
-        button.setAttribute('label', label + ' - ' + tag.value);
-
-        var ind1 = tag.nextSibling;
-        var ind2 = ind1.nextSibling;
-        var subfields = ind2.nextSibling.childNodes;
-
-        var tags = {};
-
-        for (var j = 0; j < subfields.length; j++) {
-            var sf = subfields[j];
-            var sf_code = sf.childNodes[1].value;
-            var sf_value = sf.childNodes[2].value;
-
-            if (!control_map[tag.value][sf_code]) continue;
-
-            var found = 0;
-            for (var a_tag in control_map[tag.value][sf_code]) {
-                if (!tags[a_tag]) tags[a_tag] = [];
-                tags[a_tag].push({ term : sf_value, subfield : sf_code });
+        for (var acs_id in acs.controlSetList()) {
+            var control_map = acs.controlSet(acs_id).control_map;
+    
+            if (!control_map[tag.value]) continue
+            button.setAttribute('label', label + ' - ' + tag.value);
+    
+            var ind1 = tag.nextSibling;
+            var ind2 = ind1.nextSibling;
+            var subfields = ind2.nextSibling.childNodes;
+    
+            var tags = {};
+    
+            for (var j = 0; j < subfields.length; j++) {
+                var sf = subfields[j];
+                var sf_code = sf.childNodes[1].value;
+                var sf_value = sf.childNodes[2].value;
+    
+                if (!control_map[tag.value][sf_code]) continue;
+    
+                var found = 0;
+                for (var a_tag in control_map[tag.value][sf_code]) {
+                    if (!tags[a_tag]) tags[a_tag] = [];
+                    tags[a_tag].push({ term : sf_value, subfield : sf_code });
+                }
+    
+            }
+    
+            for (var val_tag in tags) {
+                var auth_data = validateBibField( acs_id, [val_tag], tags[val_tag]);
+                var res = new XML( auth_data.responseText );
+                found = parseInt(res.gw::payload.gw::string.toString());
+                if (found) break;
+            }
+    
+            // XXX If adt, etc should be validated separately from vxz, etc then move this up into the above for loop
+            for (var j = 0; j < subfields.length; j++) {
+                var sf = subfields[j];
+                if (!found) {
+                    dojo.removeClass(sf.childNodes[2], 'marcValidated');
+                    dojo.addClass(sf.childNodes[2], 'marcUnvalidated');
+                } else {
+                    dojo.removeClass(sf.childNodes[2], 'marcUnvalidated');
+                    dojo.addClass(sf.childNodes[2], 'marcValidated');
+                }
             }
 
-        }
-
-        for (var val_tag in tags) {
-            var auth_data = validateBibField( [val_tag], tags[val_tag]);
-            var res = new XML( auth_data.responseText );
-            found = parseInt(res.gw::payload.gw::string.toString());
             if (found) break;
-        }
-
-        // XXX If adt, etc should be validated separately from vxz, etc then move this up into the above for loop
-        for (var j = 0; j < subfields.length; j++) {
-            var sf = subfields[j];
-            if (!found) {
-                dojo.removeClass(sf.childNodes[2], 'marcValidated');
-                dojo.addClass(sf.childNodes[2], 'marcUnvalidated');
-            } else {
-                dojo.removeClass(sf.childNodes[2], 'marcUnvalidated');
-                dojo.addClass(sf.childNodes[2], 'marcValidated');
-            }
         }
     }
 
