@@ -27,9 +27,8 @@ xml:id="cataloging">
     <para>OPAC icons for text, moving pictures and sound rely on
     correct MARC coding in the leader and the 008, as do OPAC
     search filters such as publication date, item type, or target
-    audience. Bibliographic matching and de-duplicating also rely
-    on correct MARC coding and consistency in use and content in
-    particular MARC tags.</para>
+    audience. Bibliographic matching and de-duplicating also need
+    correct and consistent MARC coding in particular tags.</para>
 
 
 
