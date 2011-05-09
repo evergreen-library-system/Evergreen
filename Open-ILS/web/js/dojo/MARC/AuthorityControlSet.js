@@ -24,7 +24,7 @@ if(!dojo._hasResource["MARC.AuthorityControlSet"]) {
     dojo.provide("MARC.AuthorityControlSet");
     dojo.declare('MARC.AuthorityControlSet', null, {
 
-        _controlset : -1,
+        _controlset : null,
 
         constructor : function(kwargs) {
 
@@ -37,7 +37,7 @@ if(!dojo._hasResource["MARC.AuthorityControlSet"]) {
 
                 // loop over each acs
                 dojo.forEach( acs_list, function (cs) {
-                    MARC.AuthorityControlSet._controlsets[cs.id()] = {
+                    MARC.AuthorityControlSet._controlsets[''+cs.id()] = {
                         id : cs.id(),
                         name : cs.name(),
                         description : cs.description(),
@@ -49,7 +49,7 @@ if(!dojo._hasResource["MARC.AuthorityControlSet"]) {
 
                     // grab the authority fields
                     var acsaf_list = pcrud.search('acsaf', {control_set : cs.id()});
-                    MARC.AuthorityControlSet._controlsets[cs.name()].raw.authority_fields( acsaf_list );
+                    MARC.AuthorityControlSet._controlsets[''+cs.id()].raw.authority_fields( acsaf_list );
 
                     // and loop over each
                     dojo.forEach( acsaf_list, function (csaf) {
@@ -73,8 +73,8 @@ if(!dojo._hasResource["MARC.AuthorityControlSet"]) {
                         var acsbf_list = pcrud.search('acsbf', {authority_field : csaf.id()});
                         csaf.bib_fields( acsbf_list );
 
-                        MARC.AuthorityControlSet._controlsets[cs.name()].bib_fields = [].concat(
-                            MARC.AuthorityControlSet._controlsets[cs.name()].bib_fields
+                        MARC.AuthorityControlSet._controlsets[''+cs.id()].bib_fields = [].concat(
+                            MARC.AuthorityControlSet._controlsets[''+cs.id()].bib_fields
                             acsbf_list
                         );
 
@@ -92,26 +92,35 @@ if(!dojo._hasResource["MARC.AuthorityControlSet"]) {
                     });
 
                     // build the authority_tag_map
-                    dojo.forEach( MARC.AuthorityControlSet._controlsets[cs.name()].bib_fields, function (bf) {
-                        MARC.AuthorityControlSet._controlsets[cs.name()].authority_tag_map[bf.tag()] = [/*XXX*/];
-                        MARC.AuthorityControlSet._controlsets[cs.name()].control_map[bf.tag()] = {/*XXX*/};
+                    dojo.forEach( MARC.AuthorityControlSet._controlsets[''+cs.id()].bib_fields, function (bf) {
+                        MARC.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()] = {};
+                        dojo.forEach( bf.authority_field().sf_list().split(''), function (sf_code) {
+                            MARC.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()][sf_code] = { bf.authority_field().tag() : sf_code };
+                        });
                     });
                 });
 
+                
+                if (this.controlSetList().length > 0)
+                    delete MARC.AuthorityControlSet._controlsets['-1'];
+
+                MARC.AuthorityControlSet._remote_loaded = true;
             }
 
             if (kwargs.controlSet) {
-                this._controlset = kwargs.controlSet;
+                this.controlSetId( kwargs.controlSet );
+            } else {
+                this.controlSetId( this.controlSetList().sort(function(a,b){return (a - b)}) );
             }
         },
 
         controlSetId: function (x) {
-            if (x) this._controlset = x;
+            if (x) this._controlset = ''+x;
             return this._controlset;
         },
 
         controlSet: function (x) {
-            return MARC.AuthorityControlSet._controlsets[this.controlSetId(x)];
+            return MARC.AuthorityControlSet._controlsets[''+this.controlSetId(x)];
         },
 
         controlSetList : function () {
@@ -132,29 +141,6 @@ if(!dojo._hasResource["MARC.AuthorityControlSet"]) {
             id : -1,
             name : 'Static LoC legacy mapping',
             description : 'Legacy mapping provided as a default',
-            authority_tag_map : {
-                100 : [[100,500,700],100],
-                700 : [[100,500,700],100],
-                800 : [[100,500,700],100],
-                110 : [[110,510,710],110],
-                610 : [[110,510,710],110],
-                710 : [[110,510,710],110],
-                810 : [[110,510,710],110],
-                111 : [[111,511,711],111],
-                611 : [[111,511,711],111],
-                711 : [[111,511,711],111],
-                811 : [[111,511,711],111],
-                240 : [[130,530,730],130],
-                130 : [[130,530,730],130],
-                730 : [[130,530,730],130],
-                830 : [[130,530,730],130],
-                600 : [[100,500,580,581,582,585,700,780,781,782,785],100],
-                630 : [[130,530,730],130],
-                648 : [[148,548],148],
-                650 : [[150,550,580,581,582,585,750,780,781,782,785],150],
-                651 : [[151,551,580,581,582,585,751,780,781,782,785],151],
-                655 : [[155,555,580,581,582,585,755,780,781,782,785],155]
-            },
             contorl_map : {
                 100 : {
                     'a' : { 100 : 'a' },
