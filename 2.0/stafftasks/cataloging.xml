@@ -256,6 +256,27 @@ xml:id="cataloging">
         </step>
       </procedure>
     </simplesect>
+<simplesect xml:id="validatingMARCrecords">
+      <title>Validating MARC Records</title>
+
+      <indexterm>
+        <primary>cataloguing</primary>
+
+        <secondary>validating records</secondary>
+      </indexterm>
+<para>Validation checks headings that are subject
+to authority control (subjects, names, uniform titles) by comparing them to the
+authority records that are available in the system.</para>
+<procedure>
+<step>Click <guibutton>Validate</guibutton>.</step>
+<step>Scroll through the record looking for fields that have turned red.</step>
+<step>Right-click on a field that is red. The closest valid headings will display.</step>
+<step>To apply a heading, mouse over it and click <guilabel>Apply Selected</guilabel>.</step>
+<step>Fields that do not validate are not necessarily invalid--there may not be an authority
+record for that name/subject/title. If you have the appropriate permissions, you 
+can add an authority record based on the existing record.</step>
+</procedure>
+</simplesect>
   </section>
 
   <section xml:id="z39.50">
@@ -456,20 +477,16 @@ Until a more flexible collision detection process is in place, avoiding duplicat
 bib record imports from Z39.50 will be up to the user.</note>.
     </simplesect>
 
-
-
     <simplesect xml:id="rawsearches">
       <title>Raw Searches</title>
-
-      <tip>
-        <para>Visit 
+<para>You can do advanced searching of remote databases in Prefix Query Format by 
+clicking <guibutton>Raw Search</guibutton> and entering a search string. Visit 
         <link
         xlink:href="http://www.indexdata.com/yaz/doc/tools.html">
         http://www.indexdata.com/yaz/doc/tools.html</link>
 
         for more details on PQF and examples you can copy/paste
         into the search box.</para>
-      </tip>
     </simplesect>
   </section>
 </chapter>
