@@ -129,7 +129,7 @@ CREATE INDEX authority_full_rec_value_tpo_index ON authority.full_rec (value tex
 -- CREATE UNIQUE INDEX unique_by_heading_and_thesaurus
 --   ON authority.record_entry (authority.normalize_heading(marc))
 --   WHERE deleted IS FALSE or deleted = FALSE;
-CREATE OR REPLACE FUNCTION authority.normalize_heading( marcxml TEXT ) RETURNS TEXT AS $func$
+CREATE OR REPLACE FUNCTION authority.normalize_heading( marcxml TEXT, no_thesaurus BOOL ) RETURNS TEXT AS $func$
 DECLARE
     acsaf           authority.control_set_authority_field%ROWTYPE;
     tag_used        TEXT;
@@ -162,7 +162,11 @@ BEGIN
     END LOOP;
 
     IF heading_text <> '' THEN
-        heading_text := tag_used || '_' || thes_code || ' ' || public.naco_normalize(heading_text);
+        IF no_thesaurus IS TRUE THEN
+            heading_text := tag_used || ' ' || public.naco_normalize(heading_text);
+        ELSE
+            heading_text := tag_used || '_' || thes_code || ' ' || public.naco_normalize(heading_text);
+        END IF;
     ELSE
         heading_text := 'NOHEADING_' || thes_code || ' ' || MD5(marcxml);
     END IF;
@@ -170,6 +174,14 @@ BEGIN
     RETURN heading_text;
 END;
 $func$ LANGUAGE PLPGSQL IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION authority.simple_normalize_heading( marcxml TEXT ) RETURNS TEXT AS $func$
+    SELECT authority.normalize_heading($1, TRUE);
+$func$ LANGUAGE SQL IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION authority.normalize_heading( marcxml TEXT ) RETURNS TEXT AS $func$
+    SELECT authority.normalize_heading($1, FALSE);
+$func$ LANGUAGE SQL IMMUTABLE;
 
 COMMENT ON FUNCTION authority.normalize_heading( TEXT ) IS $$
 Extract the authority heading, thesaurus, and NACO-normalized values
