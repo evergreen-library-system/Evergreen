@@ -1,0 +1,26 @@
+<div id='rdetail_issues_div' class='rdetail_extras_div'>
+[%
+base_expando = ctx.full_path _ "?expand=issues";
+FOREACH type IN ctx.holding_summaries.keys;
+    NEXT UNLESS ctx.holding_summaries.$type.size;
+    expanded = CGI.param('expand_holding_type') == type; %]
+    <div class="rdetail-issue-type">
+        <a href="[% base_expando; expanded ? '' : '&amp;expand_holding_type=' _ type; %]#issues">[[% expanded ? '-' : '+' %]]</a>
+        [% ctx.holding_summaries.$type.join(", ") %]
+        [% IF expanded %]
+        <table>
+            [% FOR blob IN ctx.expanded_holdings %]
+            <tr>
+                <td class="rdetail-issue-issue">[% blob.issuance.label %]</td>
+                [% IF blob.has_units %]
+                <td class="rdetail-issue-place-hold">
+                    <a href="[% ctx.opac_root %]/place_hold?hold_target=[% blob.issuance.id %]&amp;hold_type=I">[% l("Place Hold") %]</a>
+                </td>
+                [% END %]
+            </tr>
+            [% END %]
+        </table>
+        [% END %]
+    </div>
+[% END %]
+</div>

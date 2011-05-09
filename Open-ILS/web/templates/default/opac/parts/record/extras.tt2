@@ -36,6 +36,7 @@
             {name => 'annotation', label => l('Annotation'), hide => 1}, 
             {name => 'reviews',  label => l('Reviews'), hide => 1}, 
             {name => 'excerpt',  label => l('Excerpt'), hide => 1},
+            {name => 'issues',   label => l('Issues Held'), hide => !ctx.have_holdings_to_show},
             {name => 'preview',  label => l('Preview'), hide => 1}, 
             {name => 'novelist', label => l('Suggestions by NoveList'), hide => 1},
             {name => 'cnbrowse', label => l('Shelf Browser'), hide => 1},
