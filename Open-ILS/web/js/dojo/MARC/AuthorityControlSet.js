@@ -49,7 +49,9 @@ if(!dojo._hasResource["MARC.AuthorityControlSet"]) {
 
                     // grab the authority fields
                     var acsaf_list = pcrud.search('acsaf', {control_set : cs.id()});
+                    var at_list = pcrud.search('at', {control_set : cs.id()});
                     MARC.AuthorityControlSet._controlsets[''+cs.id()].raw.authority_fields( acsaf_list );
+                    MARC.AuthorityControlSet._controlsets[''+cs.id()].raw.thesauri( at_list );
 
                     // and loop over each
                     dojo.forEach( acsaf_list, function (csaf) {
@@ -123,12 +125,30 @@ if(!dojo._hasResource["MARC.AuthorityControlSet"]) {
             return MARC.AuthorityControlSet._controlsets[''+this.controlSetId(x)];
         },
 
+        authorityFields: function (x) {
+            return MARC.AuthorityControlSet._controlsets[''+this.controlSetId(x)].raw.authority_fields();
+        },
+
+        thesauri: function (x) {
+            return MARC.AuthorityControlSet._controlsets[''+this.controlSetId(x)].raw.thesauri();
+        },
+
         controlSetList : function () {
             var l = [];
             for (var i in MARC.AuthorityControlSet._controlsets) {
                 l.push(i);
             }
             return l;
+        },
+
+        findControlSetsForTag : function (tag) {
+            var old_acs = this.controlSetId();
+            var acs_list = dojo.filter(
+                this.controlSetList(),
+                function(acs_id) { return (this.controlSet(acs_id).control_map[tag]) }
+            );
+            this.controlSetId(old_acs);
+            return acs_list;
         }
 
     });
