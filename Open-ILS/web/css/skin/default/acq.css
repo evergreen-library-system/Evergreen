@@ -214,6 +214,7 @@ span[name="notes_alert_flag"] {color: #c00;font-weight: bold;font-size: 110%;mar
 .acq-link-invoice-dialog td,.acq-link-invoice-dialog th {padding-top: 10px;}
 .acq-invoice-paid-col {background : #E0E0E0; text-align: center;}
 .acq-invoice-center-col { text-align: center; }
+.acq-invoice-money { width: 7em; }
 
 .acq-lineitem-summary { font-weight: bold; }
 .acq-lineitem-summary-extra { padding-left: 10px; }

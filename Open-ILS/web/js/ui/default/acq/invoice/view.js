@@ -133,9 +133,22 @@ function doAttachLi() {
 
     //var invoiceArgs = {provider : lineitem.provider(), shipper : lineitem.provider()}; 
     if(cgi.param('create')) {
-        var invoiceArgs = {};
-        invoicePane = drawInvoicePane(dojo.byId('acq-view-invoice-div'), null, invoiceArgs);
+
+        fieldmapper.standardRequest(
+            ['open-ils.acq', 'open-ils.acq.lineitem.retrieve.authoritative'],
+            {
+                params : [openils.User.authtoken, attachLi, {clear_marc:1}],
+                oncomplete : function(r) {
+                    var li = openils.Util.readResponse(r);
+                    invoicePane = drawInvoicePane(
+                        dojo.byId('acq-view-invoice-div'), null, 
+                        {provider : li.provider(), shipper : li.provider()}
+                    );
+                }
+            }
+        );
     }
+
     var entry = new fieldmapper.acqie();
     entry.id(virtualId--);
     entry.isnew(true);
@@ -283,7 +296,7 @@ function addInvoiceItem(item) {
             if(field == 'title' || field == 'author') {
                 //args = {style : 'width:10em'};
             } else if(field == 'cost_billed' || field == 'amount_paid') {
-                args = {required : true, style : 'width: 6em'};
+                args = {required : true, style : 'width: 8em'};
             }
             registerWidget(
                 item,
@@ -430,6 +443,7 @@ function addInvoiceEntry(entry) {
                 ['inv_item_count', 'phys_item_count', 'cost_billed', 'amount_paid'],
                 function(field) {
                     var dijitArgs = {required : true, constraints : {min: 0}, style : 'width:6em'};
+                    if(!field.match(/count/)) dijitArgs.style = 'width:9em';
                     if(entry.isnew() && field == 'phys_item_count') {
                         // by default, attempt to pay for all non-canceled and as-of-yet-un-invoiced items
                         var count = Number(li.order_summary().item_count() || 0) - 
