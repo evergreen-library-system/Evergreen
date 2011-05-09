@@ -1480,7 +1480,7 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     }
     
     MARC.Record.prototype.videorecordingFormatName = function () {
-    	var _7 = this.field('007');
+    	var _7 = this.field('007').data;
     
     	if (_7.match(/^v/)) {
     		var _v_e = _7.substr(
@@ -1495,7 +1495,7 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     }
     
     MARC.Record.prototype.videorecordingFormatCode = function () {
-    	var _7 = this.field('007');
+    	var _7 = this.field('007').data;
     
     	if (_7.match(/^v/)) {
     		return _7.substr(
@@ -1509,9 +1509,9 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     
     MARC.Record.prototype.extractFixedField = function (field, dflt) {
     
-    	var _l = this.field('007');
-    	var _8 = this.field('008');
-    	var _6 = this.field('006');
+    	var _l = this.leader;
+    	var _8 = this.field('008').data;
+    	var _6 = this.field('006').data;
     
     	var rtype = this.recordType();
     
@@ -1569,6 +1569,58 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
                 val = null;
             }
         }
+
+    	return val;
+    }
+
+    MARC.Record.prototype.setFixedField = function (field, value) {
+    
+    	var _l = this.leader;
+    	var _8 = this.field('008').data;
+    	var _6 = this.field('006').data;
+    
+    	var rtype = this.recordType();
+    
+    	var val;
+    
+    	if (MARC.Record._ff_pos[field].ldr) {
+    		if (MARC.Record._ff_pos[field].ldr[rtype]) { // It's in the leader
+                val = value.substr(0, MARC.Record._ff_pos[field].ldr[rtype].len);
+                this.leader =
+                    _l.substring(0, MARC.Record._ff_pos[field].ldr[rtype].start) +
+                    val +
+                    _l.substring(
+                        MARC.Record._ff_pos[field].ldr[rtype].start
+                        + MARC.Record._ff_pos[field].ldr[rtype].len
+                    );
+    		}
+    	} else if (MARC.Record._ff_pos[field]._8) {
+    		if (MARC.Record._ff_pos[field]._8[rtype]) { // Nope, it's in the 008
+                val = value.substr(0, MARC.Record._ff_pos[field]._8[rtype].len);
+                this.field('008').update(
+                    _8.substring(0, MARC.Record._ff_pos[field]._8[rtype].start) +
+                    val +
+                    _8.substring(
+                        MARC.Record._ff_pos[field]._8[rtype].start
+                        + MARC.Record._ff_pos[field]._8[rtype].len
+                    )
+                );
+    		}
+    	}
+    
+    	if (!val && MARC.Record._ff_pos[field]._6) {
+    		if (MARC.Record._ff_pos[field]._6[rtype]) { // ok, maybe the 006?
+                val = value.substr(0, MARC.Record._ff_pos[field]._6[rtype].len);
+                this.field('006').update(
+                    _6.substring(0, MARC.Record._ff_pos[field]._6[rtype].start) +
+                    val +
+                    _6.substring(
+                        MARC.Record._ff_pos[field]._6[rtype].start
+                        + MARC.Record._ff_pos[field]._6[rtype].len
+                    )
+                );
+    		}
+    	}
 
     	return val;
     }

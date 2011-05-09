@@ -43,6 +43,12 @@ if(!dojo._hasResource["MARC.Record"]) {
                 this.fromBreaker(kwargs.marcbreaker);
                 if (this.onLoad) this.onLoad();
             }
+
+            if (kwargs.rtype == 'AUT') {
+                dojo.require('MARC.FixedFields');
+                this.setFixedField('Type','z');
+            }
+
         },
 
         title : function () { return this.subfield('245','a') },
