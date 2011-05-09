@@ -125,12 +125,24 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
             return openils.AuthorityControlSet._controlsets[''+this.controlSetId(x)];
         },
 
+        bibFieldByTag: function (x) {
+            var me = this;
+            return dojo.filter(
+                me.controlSet()].bib_fields(),
+                function (bf) { if (bf.tag() == x) return true }
+            )[0];
+        },
+
+        bibFields: function (x) {
+            return this.controlSet(x).bib_fields();
+        },
+
         authorityFields: function (x) {
-            return openils.AuthorityControlSet._controlsets[''+this.controlSetId(x)].raw.authority_fields();
+            return this.controlSet(x).raw.authority_fields();
         },
 
         thesauri: function (x) {
-            return openils.AuthorityControlSet._controlsets[''+this.controlSetId(x)].raw.thesauri();
+            return this.controlSet(x).raw.thesauri();
         },
 
         controlSetList : function () {
@@ -142,13 +154,56 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
         },
 
         findControlSetsForTag : function (tag) {
+            var me = this;
             var old_acs = this.controlSetId();
             var acs_list = dojo.filter(
-                this.controlSetList(),
-                function(acs_id) { return (this.controlSet(acs_id).control_map[tag]) }
+                me.controlSetList(),
+                function(acs_id) { return (me.controlSet(acs_id).control_map[tag]) }
             );
             this.controlSetId(old_acs);
             return acs_list;
+        },
+
+        bibToAuthority : function (field) {
+            var b_field = this.bibFieldByTag(field.tag());
+
+            if (b_field) { // construct an marc authority record
+                af = b_field.authority_field();
+                var m = new MARC.Record ({rtype:'AUT'});
+                m.appendField(
+                    new MARC.Field ({
+                        tag : af.tag(),
+                        ind1: field.ind1,
+                        ind2: field.ind2,
+                        subfields: dojo.filter(
+                            field.subfields,
+                            function (sf) { return (af.sf_list().indexOf(sf[0]) > -1) }
+                        )
+                    })
+                );
+
+                return m.toXmlString();
+            }
+
+            return null;
+        },
+
+        bibToAuthorities : function (field) {
+            var auth_list = [];
+            var me = this;
+
+            var old_acs = this.controlSetId();
+            dojo.forEach(
+                me.controlSetList(),
+                function (acs_id) {
+                    var acs = me.controlSet(acs_id);
+                    var x = me.bibToAuthority(field);
+                    if (x) auth_list.push({acs_id : m.toXmlString()});
+                }
+            );
+            this.controlSetId(old_acs);
+
+            return auth_list;
         }
 
     });
@@ -161,7 +216,7 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
             id : -1,
             name : 'Static LoC legacy mapping',
             description : 'Legacy mapping provided as a default',
-            contorl_map : {
+            control_map : {
                 100 : {
                     'a' : { 100 : 'a' },
                     'd' : { 100 : 'd' },
