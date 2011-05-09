@@ -31,6 +31,8 @@ xml:id="cataloging">
     on correct MARC coding and consistency in use and content in
     particular MARC tags.</para>
 
+
+
     <simplesect xml:id="editingMARCrecords">
       <title>Editing MARC Records</title>
 
@@ -76,7 +78,7 @@ xml:id="cataloging">
           format is being able to copy and paste multiple lines. It also allows
           the use of tools like MarcEdit (
           <link xlink:href="http://people.oregonstate.edu/~reeset/marcedit/html/index.php">
-          http://people.oregonstate.edu/~reeset/marcedit/html/index.php</link>.
+          http://people.oregonstate.edu/~reeset/marcedit/html/index.php</link>).
           Unclick the box to switch back.</para>
         </listitem>
 
@@ -112,33 +114,9 @@ xml:id="cataloging">
           <emphasis>Right click</emphasis>
 
           to view acceptable tags or indicators.</para>
-        </listitem></itemizedlist></step>
-
-        <step>
-          <para>When finished, click 
-          <guibutton>Save Record</guibutton>
-
-          and then either close the tab or switch to another view
-          under <guimenu>Actions for this Record</guimenu>, for example to view it as it
-          appears in the OPAC.</para>
-        </step>
-
-      </procedure>
-
-      <tip>
-        <para>The MARC Editor may be navigated using keyboard
-        shortcuts. Click 
-        <guibutton>Help</guibutton>
-
-        to see the shortcut menu from within the MARC
-        Editor.</para>
-      </tip>
-    </simplesect>
-
-    <simplesect xml:id="MARCrecordleader">
-      <title>MARC Record Leader and MARC fixed field 008</title>
-
-      <indexterm>
+        </listitem>
+<listitem>
+         <indexterm>
         <primary>MARC</primary>
 
         <secondary>MARC leader</secondary>
@@ -151,47 +129,18 @@ xml:id="cataloging">
       </indexterm>
 
       <para>Parts of the leader and the 008 field can be edited
-      in the MARC Editor via the fixed field box displayed above
-      the MARC record. Information about the leader and the 008
+      with the fixed field box displayed above
+      the MARC record. Click into any box to edit the contents. (Information 
+      about the leader and the 008
       can be found on the Library of Congress's MARC Standards
       page at 
       <link xlink:href="http://www.loc.gov/marc/bibliographic/ecbdlist.html">
       http://www.loc.gov/marc/bibliographic/ecbdlist.html</link>
-
-      .</para>
-
-      <procedure>
-        <title>To edit the MARC record leader</title>
-
-        <step>
-          <para>Retrieve and display the appropriate record in
-          MARC Edit view.</para>
-        </step>
-
-        <step>
-          <para>
-          <emphasis>Click</emphasis>
-
-          into any box displayed in the fixed field .</para>
-        </step>
-
-        <step>
-          <para>Press 
-          <keycap>Tab</keycap>
-
-          or use the mouse to move between fields.</para>
-        </step>
-
-        <step>
-          <para>Click 
-          <guibutton>Save Record</guibutton>
-
-          .</para>
-        </step>
-
-      </procedure>
-
-      <tip>
+      .)</para>
+      </listitem>
+          
+        </itemizedlist>
+              <tip>
         <para>The MARC Editor may be navigated using keyboard
         shortcuts. Click 
         <guibutton>Help</guibutton>
@@ -199,7 +148,21 @@ xml:id="cataloging">
         to see the shortcut menu from within the MARC
         Editor.</para>
       </tip>
+        </step>
+
+        <step>
+          <para>When finished, click 
+          <guibutton>Save Record</guibutton>.
+
+          The record stays open in the editor. You can close the tab or switch to another view
+          under <guimenu>Actions for this Record</guimenu> (for example to view it as it
+          appears in the OPAC).</para>
+        </step>
+
+      </procedure>
+
     </simplesect>
+    
 
     <simplesect xml:id="overlayingMARCrecords">
       <title>Overlaying MARC Records</title>
@@ -221,9 +184,8 @@ xml:id="cataloging">
       record at a time may be marked for overlay. When another
       record is marked for overlay, the previously marked item is
       
-      <emphasis>de-marked</emphasis>
-
-      . Once a record is marked, it remains marked until overlaid
+      <emphasis>de-marked</emphasis>. Once a record is marked, it remains 
+      marked until overlaid
       or until the user logs out of Evergreen.</para>
 
       <procedure>
@@ -240,12 +202,8 @@ xml:id="cataloging">
             <guimenu>Actions for this Record</guimenu>
 
             <guimenuitem>Mark for Overlay</guimenuitem>
-          </menuchoice>
-
-          . Record is now 
-          <emphasis>marked</emphasis>
-
-          .</para>
+          </menuchoice>. Record is now 
+          <emphasis>marked</emphasis>.</para>
         </step>
       </procedure>
 
@@ -254,7 +212,7 @@ xml:id="cataloging">
 
         <step>
           <para>Once the record is marked for overlay, proceed to
-          <link linkend="z39.60">search for and import the new record from a Z39.50
+          <link linkend="z39.50">search for and import the new record from a Z39.50
           target</link>.</para>
         </step>
 
