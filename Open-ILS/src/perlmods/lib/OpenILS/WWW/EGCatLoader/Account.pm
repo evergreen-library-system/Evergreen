@@ -304,8 +304,18 @@ sub load_place_hold {
     $ctx->{hold_type} = $cgi->param('hold_type');
     $ctx->{default_pickup_lib} = $e->requestor->home_ou; # XXX staff
 
-    if($ctx->{hold_type} eq 'T') {
+    if ($ctx->{hold_type} eq 'T') {
         $ctx->{record} = $e->retrieve_biblio_record_entry($ctx->{hold_target});
+    } elsif ($ctx->{hold_type} eq 'I') {
+        my $iss = $e->retrieve_serial_issuance([
+            $ctx->{hold_target}, {
+                "flesh" => 2,
+                "flesh_fields" => {
+                    "siss" => ["subscription"], "ssub" => ["record_entry"]
+                }
+            }
+        ]);
+        $ctx->{record} = $iss->subscription->record_entry;
     }
     # ...
 

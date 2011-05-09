@@ -36,11 +36,30 @@ sub load_record {
     $ctx->{copy_limit} = $copy_limit;
     $ctx->{copy_offset} = $copy_offset;
 
+    $ctx->{have_holdings_to_show} = 0;
+
+    # XXX TODO we'll also need conditional logic to show MFHD-based holdings
+    if (
+        $ctx->{get_org_setting}->
+            ($org, "opac.fully_compressed_serial_holdings")
+    ) {
+        $ctx->{holding_summaries} =
+            $self->get_holding_summaries($rec_id, $org, $depth);
+
+        $ctx->{have_holdings_to_show} =
+            scalar(@{$ctx->{holding_summaries}->{basic}}) ||
+            scalar(@{$ctx->{holding_summaries}->{index}}) ||
+            scalar(@{$ctx->{holding_summaries}->{supplement}});
+    }
+
     for my $expand ($self->cgi->param('expand')) {
         $ctx->{"expand_$expand"} = 1;
-        if($expand eq 'marchtml') {
+        if ($expand eq 'marchtml') {
             $ctx->{marchtml} = $self->mk_marc_html($rec_id);
-        } 
+        } elsif ($expand eq 'issues' and $ctx->{have_holdings_to_show}) {
+            $ctx->{expanded_holdings} =
+                $self->get_expanded_holdings($rec_id, $org, $depth);
+        }
     }
 
     return Apache2::Const::OK;
@@ -136,5 +155,34 @@ sub mk_marc_html {
         'open-ils.search', 
         'open-ils.search.biblio.record.html', $rec_id, 1);
 }
+
+sub get_holding_summaries {
+    my ($self, $rec_id, $org, $depth) = @_;
+
+    return (
+        create OpenSRF::AppSession("open-ils.serial")->request(
+            "open-ils.serial.bib.summary_statements",
+            $rec_id, {"org_id" => $org, "depth" => $depth}
+        )->gather(1)
+    );
+}
+
+sub get_expanded_holdings {
+    my ($self, $rec_id, $org, $depth) = @_;
+
+    my $holding_limit = int($self->cgi->param("holding_limit") || 10);
+    my $holding_offset = int($self->cgi->param("holding_offset") || 0);
+    my $type = $self->cgi->param("expand_holding_type");
+
+    return create OpenSRF::AppSession("open-ils.serial")->request(
+        "open-ils.serial.received_siss.retrieve.by_bib.atomic",
+        $rec_id, {
+            "ou" => $org, "depth" => $depth,
+            "limit" => $holding_limit, "offset" => $holding_offset,
+            "type" => $type
+        }
+    )->gather(1);
+}
+
 
 1;
