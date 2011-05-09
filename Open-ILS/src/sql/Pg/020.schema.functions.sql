@@ -327,59 +327,6 @@ Search "up" the org_unit tree until we find the first occurrence of an
 org_unit_setting with the given name.
 $$;
 
--- Intended to be used in a unique index on authority.record_entry like so:
--- CREATE UNIQUE INDEX unique_by_heading_and_thesaurus
---   ON authority.record_entry (authority.normalize_heading(marc))
---   WHERE deleted IS FALSE or deleted = FALSE;
-CREATE OR REPLACE FUNCTION authority.normalize_heading( marcxml TEXT ) RETURNS TEXT AS $func$
-DECLARE
-    acsaf           authority.control_set_authority_field%ROWTYPE;
-    tag_used        TEXT;
-    sf              TEXT;
-    thes_code       TEXT;
-    cset            INT;
-    heading_text    TEXT;
-    tmp_text        TEXT;
-BEGIN
-    thes_code := vandelay.marc21_extract_fixed_field(marcxml,'Subj');
-    IF thes_code IS NULL THEN
-        thes_code := '|';
-    END IF;
-
-    SELECT control_set INTO cset FROM authority.thesaurus WHERE code = thes_code;
-    IF NOT FOUND THEN
-        cset = 1;
-    END IF;
-
-    heading_text := '';
-    FOR acsaf IN SELECT * FROM authority.control_set_authority_field WHERE control_set = cset AND main_entry IS NULL LOOP
-        tag_use := acsaf.tag;
-        FOR sf IN SELECT * FROM regexp_split_to_table(acsaf.sf_list,'') LOOP
-            tmp_text := oils_xpath_string('//*[@tag="'||tag_used||'"]/*[@code="'||sf||'"]', marcxml);
-            IF tmp_text IS NOT NULL THEN
-                heading_text := heading_text || E'\U2021' || sf || ' ' || tmp_text;
-            END IF;
-        END LOOP;
-        EXIT WHEN heading_text <> '';
-    END LOOP;
-
-    IF heading_text <> '' THEN
-        heading_text := tag_used || '_' || thes_code || ' ' || public.naco_normalize(heading_text);
-    ELSE
-        heading_text := 'NOHEADING_' || thes_code || ' ' || MD5(marcxml);
-    END IF;
-
-    RETURN heading_text;
-END;
-$func$ LANGUAGE PLPGSQL IMMUTABLE;
-
-COMMENT ON FUNCTION authority.normalize_heading( TEXT ) IS $$
-Extract the authority heading, thesaurus, and NACO-normalized values
-from an authority record. The primary purpose is to build a unique
-index to defend against duplicated authority records from the same
-thesaurus.
-$$;
-
 CREATE OR REPLACE FUNCTION evergreen.get_barcodes(select_ou INT, type TEXT, in_barcode TEXT) RETURNS SETOF evergreen.barcode_set AS $$
 DECLARE
     cur_barcode TEXT;
@@ -468,3 +415,4 @@ Given user input, find an appropriate barcode in the proper class.
 
 Will add prefix/suffix information to do so, and return all results.
 $$;
+
