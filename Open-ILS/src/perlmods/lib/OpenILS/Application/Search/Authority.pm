@@ -60,6 +60,61 @@ __PACKAGE__->register_method(
         note		=> "Searches authority data for existing controlled terms and crossrefs",
 );              
 
+sub search_authority_by_simple_normalize_heading {
+    my $self = shift;
+    my $client = shift;
+    my $marcxml = shift;
+    my $controlset = shift;
+
+    my $query = {
+        select => { are => ['id'] },
+        from   => 'are',
+        where  => {
+            deleted => 'f',
+            marc => { '=' => {
+                transform => 'authority.simple_normalize_heading',
+                value     => [ 'authority.simple_normalize_heading' => $marcxml ]
+            }},
+            defined($controlset) ? ( control_set => $controlset ) : ()
+        }
+    };
+
+    $client->respond($_->{id}) for @{ new_editor()->json_query( $query ) };
+    $client->respond_complete;
+}
+__PACKAGE__->register_method(
+        method		=> "search_authority_by_simple_normalize_heading",
+        api_name	=> "open-ils.search.authority.simple_heading.from_xml",
+        argc		=> 1, 
+        stream      => 1,
+        note		=> "Searches authority data by main entry using marcxml, returning 'are' ids",
+);
+
+sub search_authority_batch_by_simple_normalize_heading {
+    my $self = shift;
+    my $client = shift;
+    my $search_set = shift;
+
+    $search_set = [$search_set] unless (ref($search_set) =~ /ARRAY/);
+
+    my $m = $self->method_lookup('open-ils.search.authority.simple_heading.from_xml.atomic');
+
+    for my $s ( @$search_set ) {
+        for my $k ( keys %$s ) {
+            $client->respond( { $k => $m->run( $s->{$k}, $k ) } );
+        }
+    }
+
+    $client->respond_complete;
+}
+__PACKAGE__->register_method(
+        method		=> "search_authority_batch_by_simple_normalize_heading",
+        api_name	=> "open-ils.search.authority.simple_heading.from_xml.batch",
+        argc		=> 1, 
+        stream      => 1,
+        note		=> "Searches authority data by main entry using marcxml, in control-set batches, returning 'are' ids",
+);
+
 
 sub crossref_authority {
 	my $self = shift;
