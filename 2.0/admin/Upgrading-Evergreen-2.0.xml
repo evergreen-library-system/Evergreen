@@ -58,10 +58,10 @@
 				<para>As the <systemitem class="username">opensrf</systemitem> user, download and extract the source files for <application>OpenSRF</application> 
 				1.6.3:</para>
 <screen><userinput>
-wget http://open-ils.org/downloads/OpenSRF-1.6.3.tar.gz
-tar xzf OpenSRF-1.6.3.tar.gz
+wget http://open-ils.org/downloads/opensrf-1.6.3.tar.gz
+tar xzf opensrf-1.6.3.tar.gz
 </userinput></screen>
-				<para>A new directory OpenSRF-1.6.3 is created.</para>
+				<para>A new directory opensrf-1.6.3 is created.</para>
 				<note><para>For the latest edition of OpenSRF, check the Evergreen download page at 
 				<ulink url="http://www.open-ils.org/downloads.php" />.
 				</para></note>
@@ -71,7 +71,7 @@ tar xzf OpenSRF-1.6.3.tar.gz
 				prerequisite installer.</para> 
 <screen><userinput>
 aptitude install make
-cd /home/opensrf/OpenSRF-1.6.3
+cd /home/opensrf/opensrf-1.6.3
 </userinput></screen>		
 				<para>Replace <option>[distribution]</option> below with the following value 
 				for your distribution:</para>
@@ -114,7 +114,7 @@ make -f src/extras/Makefile.install [distribution]
 				you want to include support for Python<indexterm><primary>Python</primary></indexterm> and Java
 				<indexterm><primary>Java</primary></indexterm>, respectively.</note>
 <screen><userinput>
-cd /home/opensrf/OpenSRF-1.6.3
+cd /home/opensrf/opensrf-1.6.3
 ./configure --prefix=/openils --sysconfdir=/openils/conf
 make
 </userinput></screen>		
@@ -123,7 +123,7 @@ make
 				<para>As the <systemitem class="username">root</systemitem> user, return to your OpenSRF build directory and install 
 				OpenSRF:</para>
 <screen><userinput>
-cd /home/opensrf/OpenSRF-1.6.3
+cd /home/opensrf/opensrf-1.6.3
 make install
 </userinput></screen>
 			</step>
