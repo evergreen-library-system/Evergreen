@@ -278,7 +278,37 @@ can add an authority record based on the existing record.</step>
 </procedure>
 </simplesect>
   </section>
-
+<section xml:id="AuthorityRecords">
+<title>Authority Records</title>
+<indexterm><primary>cataloguing</primary>
+<secondary>authority records</secondary>
+</indexterm>
+<para>Authority records establish uniform usage for names, topics/subjects, and 
+uniform titles; they also guide users from deprecated or alternative terms to
+desired terms. Authority records are in MARC format. See <link
+        xlink:href="http://www.loc.gov/marc/authority/ecadhome.html">
+        http://www.loc.gov/marc/authority/ecadhome.html</link> for more on the 
+standard.</para>
+    <simplesect xml:id="viewingsearchingauthorityrecords">
+<title>Viewing/Searching Authority Records</title>
+<procedure>
+<step>Select <menuchoice><guimenu>Cataloging</guimenu>
+<guimenuitem>Manage Authorities</guimenuitem></menuchoice>.</step>
+<step>Enter a search term and choose an authority type from the drop-down menu, then
+click <guibutton>Submit</guibutton>.</step>
+<step>A list of records will display.</step>
+</procedure>
+</simplesect>
+    <simplesect xml:id="editingauthorityrecords">
+<title>Editing Authority Records</title>
+</simplesect>
+    <simplesect xml:id="addingnewauthorityrecords">
+<title>Adding New Authority Records</title>
+</simplesect>
+    <simplesect xml:id="mergingordeletingauthorityrecords">
+<title>Merging or Deleting Authority Records</title>
+</simplesect>
+</section>
   <section xml:id="z39.50">
     <title>Adding New Records via Built In Z39.50 Client</title>
 
