@@ -6,7 +6,7 @@
         [% INCLUDE "default/opac/parts/printnav.tt2" %]
         [% INCLUDE "default/opac/parts/searchbar.tt2" %]
     </div>
-    <div id="content-wrapper">
+    <div id="content-wrapper" class="content-wrapper-record-page">
         <div id="main-content">
             [% INCLUDE "default/opac/parts/record/body.tt2" %]
             <div class="common-full-pad"></div>	
