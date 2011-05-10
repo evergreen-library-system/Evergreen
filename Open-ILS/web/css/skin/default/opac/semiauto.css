@@ -131,7 +131,7 @@
 .opac-auto-145 { position: relative; top: -3px; left: 3px; }
 .opac-auto-146 { position: relative; top: -3px; left: -5px; }
 .opac-auto-147 { position: relative; top: -5px; }
-#learn_more { position: relative; top: 5px; }
+.pos-rel-top-5 { position: relative; top: 5px; }
 .opac-auto-149 { position: relative; top: 5px; left: 25px; }
 #util_print_btn { position: relative; top: 5px; left: 30px; }
 .opac-auto-151 { position: relative; top: 75px; }
