@@ -58,8 +58,16 @@
                 value="[% CGI.param('hold_target') | html %]" />
             <input type="hidden" name="hold_type"
                 value="[% CGI.param('hold_type') | html %]" />
+            [%
+                new_redirect_to = ctx.referer;
+                IF new_redirect_to.match('redirect_to');
+                    new_redirect_to = 'https://' _ ctx.hostname _ ctx.opac_root _ '/home';
+                ELSE;
+                    new_redirect_to = new_redirect_to | replace('^http:', 'https:');
+                END;
+            %]
             <input type="hidden" name="redirect_to"
-                value="[% ctx.referer | replace('^http:', 'https:') | html %]" />
+                value="[% new_redirect_to | html %]" />
             <h1>Place Hold</h1>
             <p>
                 [% | l(attrs.title, ctx.get_aou(ctx.default_pickup_lib).name) %]
