@@ -374,6 +374,7 @@ __PACKAGE__->register_method(
     method      => 'retrieve_queued_records',
     api_level   => 1,
     argc        => 2,
+    stream      => 1,
     record_type => 'bib'
 );
 __PACKAGE__->register_method(
@@ -381,6 +382,7 @@ __PACKAGE__->register_method(
     method      => 'retrieve_queued_records',
     api_level   => 1,
     argc        => 2,
+    stream      => 1,
     record_type => 'bib'
 );
 __PACKAGE__->register_method(
@@ -388,6 +390,7 @@ __PACKAGE__->register_method(
     method      => 'retrieve_queued_records',
     api_level   => 1,
     argc        => 2,
+    stream      => 1,
     record_type => 'bib'
 );
 
@@ -404,6 +407,7 @@ __PACKAGE__->register_method(
     method      => 'retrieve_queued_records',
     api_level   => 1,
     argc        => 2,
+    stream      => 1,
     record_type => 'auth'
 );
 __PACKAGE__->register_method(
@@ -411,6 +415,7 @@ __PACKAGE__->register_method(
     method      => 'retrieve_queued_records',
     api_level   => 1,
     argc        => 2,
+    stream      => 1,
     record_type => 'auth'
 );
 __PACKAGE__->register_method(
@@ -418,6 +423,7 @@ __PACKAGE__->register_method(
     method      => 'retrieve_queued_records',
     api_level   => 1,
     argc        => 2,
+    stream      => 1,
     record_type => 'auth'
 );
 
@@ -512,13 +518,52 @@ sub retrieve_queued_records {
     my $retrieve = ($type eq 'bib') ? 
         'retrieve_vandelay_queued_bib_record' : 'retrieve_vandelay_queued_authority_record';
 
-    for my $rec_id (@$record_ids) {
-        my $flesh = ['attributes', 'matches'];
-        push(@$flesh, 'import_items') if $$options{flesh_import_items};
-        my $params = {flesh => 1, flesh_fields => {$class => $flesh}};
-        my $rec = $e->$retrieve([$rec_id->{id}, $params]);
-        $rec->clear_marc if $$options{clear_marc};
-        $conn->respond($rec);
+    if ($self->api_name =~ /export/) {
+        if ($self->api_name =~ /print/) {
+
+            $e->rollback;
+            return $U->fire_object_event(
+                undef,
+                'vandelay.queued_'.$type.'_record.print',
+                [map {$_->{id}} @$record_ids],
+                $e->requestor->ws_ou
+            );
+
+        } elsif ($self->api_name =~ /csv/) {
+
+            $e->rollback;
+            return $U->fire_object_event(
+                undef,
+                'vandelay.queued_'.$type.'_record.csv',
+                [map {$_->{id}} @$record_ids],
+                $e->requestor->ws_ou
+            );
+
+        } elsif ($self->api_name =~ /email/) {
+
+            $conn->respond_complete(1);
+
+            for my $rec_id (@$record_ids) {
+                $U->create_events_for_hook(
+                    'vandelay.queued_'.$type.'_record.email',
+                    $rec_id->{id},
+                    $e->requestor->home_ou,
+                    undef,
+                    undef,
+                    1
+                );
+            }
+
+        }
+    } else {
+        for my $rec_id (@$record_ids) {
+            my $flesh = ['attributes', 'matches'];
+            push(@$flesh, 'import_items') if $$options{flesh_import_items};
+            my $params = {flesh => 1, flesh_fields => {$class => $flesh}};
+            my $rec = $e->$retrieve([$rec_id->{id}, $params]);
+            $rec->clear_marc if $$options{clear_marc};
+            $conn->respond($rec);
+        }
     }
 
     $e->rollback;
@@ -543,6 +588,7 @@ __PACKAGE__->register_method(
     method      => 'retrieve_queue_import_items',
     api_level   => 1,
     argc        => 2,
+    stream      => 1,
     authoritative => 1,
     signature => q/
         Returns template-generated printable output of Import Item (vii) objects for the selected queue.
@@ -555,6 +601,7 @@ __PACKAGE__->register_method(
     method      => 'retrieve_queue_import_items',
     api_level   => 1,
     argc        => 2,
+    stream      => 1,
     authoritative => 1,
     signature => q/
         Returns template-generated CSV output of Import Item (vii) objects for the selected queue.
@@ -567,6 +614,7 @@ __PACKAGE__->register_method(
     method      => 'retrieve_queue_import_items',
     api_level   => 1,
     argc        => 2,
+    stream      => 1,
     authoritative => 1,
     signature => q/
         Emails template-generated output of Import Item (vii) objects for the selected queue.
@@ -617,8 +665,45 @@ sub retrieve_queue_import_items {
         if $$options{with_import_error};
 
     my $items = $e->json_query($query);
-    for my $item (@$items) {
-        $conn->respond($e->retrieve_vandelay_import_item($item->{id}));
+    if ($self->api_name =~ /export/) {
+        if ($self->api_name =~ /print/) {
+
+            return $U->fire_object_event(
+                undef,
+                'vandelay.import_items.print',
+                [map {$_->{id}} @$items],
+                $e->requestor->ws_ou
+            );
+
+        } elsif ($self->api_name =~ /csv/) {
+
+            return $U->fire_object_event(
+                undef,
+                'vandelay.import_items.csv',
+                [map {$_->{id}} @$items],
+                $e->requestor->ws_ou
+            );
+
+        } elsif ($self->api_name =~ /email/) {
+
+            $conn->respond_complete(1);
+
+            for my $item (@$items) {
+                $U->create_events_for_hook(
+                    'vandelay.import_items.email',
+                    $item->{id},
+                    $e->requestor->home_ou,
+                    undef,
+                    undef,
+                    1
+                );
+            }
+
+        }
+    } else {
+        for my $item (@$items) {
+            $conn->respond($e->retrieve_vandelay_import_item($item->{id}));
+        }
     }
 
     return undef;
