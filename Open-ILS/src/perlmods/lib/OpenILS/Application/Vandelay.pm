@@ -370,7 +370,7 @@ __PACKAGE__->register_method(
     record_type => 'bib'
 );
 __PACKAGE__->register_method(
-    api_name    => "open-ils.vandelay.bib_queue.records.retrieve.atomic.export.print",
+    api_name    => "open-ils.vandelay.bib_queue.records.retrieve.export.print",
     method      => 'retrieve_queued_records',
     api_level   => 1,
     argc        => 2,
@@ -378,7 +378,7 @@ __PACKAGE__->register_method(
     record_type => 'bib'
 );
 __PACKAGE__->register_method(
-    api_name    => "open-ils.vandelay.bib_queue.records.retrieve.atomic.export.csv",
+    api_name    => "open-ils.vandelay.bib_queue.records.retrieve.export.csv",
     method      => 'retrieve_queued_records',
     api_level   => 1,
     argc        => 2,
@@ -386,7 +386,7 @@ __PACKAGE__->register_method(
     record_type => 'bib'
 );
 __PACKAGE__->register_method(
-    api_name    => "open-ils.vandelay.bib_queue.records.retrieve.atomic.export.email",
+    api_name    => "open-ils.vandelay.bib_queue.records.retrieve.export.email",
     method      => 'retrieve_queued_records',
     api_level   => 1,
     argc        => 2,
@@ -403,7 +403,7 @@ __PACKAGE__->register_method(
     record_type => 'auth'
 );
 __PACKAGE__->register_method(
-    api_name    => "open-ils.vandelay.auth_queue.records.retrieve.atomic.export.print",
+    api_name    => "open-ils.vandelay.auth_queue.records.retrieve.export.print",
     method      => 'retrieve_queued_records',
     api_level   => 1,
     argc        => 2,
@@ -411,7 +411,7 @@ __PACKAGE__->register_method(
     record_type => 'auth'
 );
 __PACKAGE__->register_method(
-    api_name    => "open-ils.vandelay.auth_queue.records.retrieve.atomic.export.csv",
+    api_name    => "open-ils.vandelay.auth_queue.records.retrieve.export.csv",
     method      => 'retrieve_queued_records',
     api_level   => 1,
     argc        => 2,
@@ -419,7 +419,7 @@ __PACKAGE__->register_method(
     record_type => 'auth'
 );
 __PACKAGE__->register_method(
-    api_name    => "open-ils.vandelay.auth_queue.records.retrieve.atomic.export.email",
+    api_name    => "open-ils.vandelay.auth_queue.records.retrieve.export.email",
     method      => 'retrieve_queued_records',
     api_level   => 1,
     argc        => 2,
