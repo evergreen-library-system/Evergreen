@@ -33,6 +33,10 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="about_this_documen
 						<entry>King County Library System </entry>
 					</row>
 					<row>
+						<entry>Hilary Caws-Elwitt</entry>
+						<entry>Susquehanna County Library</entry>
+					</row>
+					<row>
 						<entry>Sarah Childs</entry>
 						<entry>Hussey-Mayfield Memorial Public Library</entry>
 					</row>
@@ -118,6 +122,10 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="about_this_documen
 						<entry>Pioneer Library System</entry>
 					</row>
 					<row>
+						<entry>Yamil Suarez</entry>
+						<entry>Berklee College of Music</entry>
+					</row>
+					<row>
 						<entry>Jenny Turner</entry>
 						<entry>PALS</entry>
 					</row>
@@ -160,15 +168,20 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="about_this_documen
 				</tbody>
 			</tgroup>
 		</table>	
-		<para>Special thanks goes to:</para>
-		<itemizedlist>
-			<listitem>Jeremy Buhler and SITKA for providing DocBook style sheets, style guides and large portions of content for this documentation.</listitem>
-			<listitem>Dan Scott from Laurentian University for providing large portions of content and many helpful tips.</listitem>
-			<listitem>Mike Rylander, Grace Dunbar, Galen Charleton, Jason Etheridge, Bill Erickson, Joe Atzberger, Scott McKellar and all the other folks at Equinox Software for 
-			contributing large portions of content on the wiki.</listitem>
-		</itemizedlist>		
-		<para>There have been many other who have contributed there time to the Book of Evergreen project. Without their contributions to this community driven project, this documentation 
-		would not be possible.</para>	
+	</section>
+	<section xml:id="attributions">
+		<title>Attributions</title>		
+		<para>Copyright &#169; 2009-2011 <link linkend="aboutDIG">Evergreen  DIG</link></para>	
+		<para>Copyright &#169; 2007-2011 <link xl:href="http://www.esilibrary.com/esi/">Equinox</link></para>	
+		<para>Copyright &#169; 2007-2011 <link xl:href="http://coffeecode.net/">Dan Scott</link></para>
+		<para>Copyright &#169; 2009-2011 <link xl:href="http://sitka.bclibraries.ca/">BC Libraries Cooperative (SITKA)</link></para>
+		<para>Copyright &#169; 2008-2011 <link xl:href="http://www.kcls.org/">King County Library System</link></para>
+		<para>Copyright &#169; 2009-2010 <link xl:href="http://www.pls-net.org/">Pioneer Library System</link></para>
+		<para>Copyright &#169; 2009-2010 <link xl:href="http://www.mnpals.org/">PALS</link></para>
+		<para>Copyright &#169; 2009-2010 <link xl:href="http://www.georgialibraries.org/">Georgia Public Library Service</link></para>
+		<para>Copyright &#169; 2008-2010 <link xl:href="http://projectconifer.ca/">Project Conifer</link></para>
+		<para>Copyright &#169; 2009-2010 <link xl:href="http://biblio.org/">Bibliomation</link></para>
+		<para>Copyright &#169; 2008-2010 <link xl:href="http://www.in.gov/library/evergreen.htm">Evergreen Indiana</link></para>
 	</section>
 	<section xml:id="howtoParticipate">
 		<title>How to Participate</title><indexterm><primary>Documentation Interest Group (DIG)</primary></indexterm>
