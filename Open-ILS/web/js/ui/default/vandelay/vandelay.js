@@ -441,11 +441,13 @@ function retrieveQueuedRecords(type, queueId, onload, doExport) {
     if(!queueId) queueId = currentQueueId;
     if(!onload) onload = handleRetrieveRecords;
 
-    var method = 'open-ils.vandelay.'+type+'_queue.records.retrieve.atomic';
+    var method = 'open-ils.vandelay.'+type+'_queue.records.retrieve';
 
     if(doExport) method += '.export.' + doExport;
     if(vlQueueGridShowMatches.checked)
         method = method.replace('records', 'records.matches');
+
+    method += '.atomic';
 
     var sel = dojo.byId('vl-queue-display-limit-selector');
     var limit = parseInt(sel.options[sel.selectedIndex].value);
