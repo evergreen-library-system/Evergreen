@@ -369,12 +369,55 @@ __PACKAGE__->register_method(
     stream      => 1,
     record_type => 'bib'
 );
+__PACKAGE__->register_method(
+    api_name    => "open-ils.vandelay.bib_queue.records.retrieve.atomic.export.print",
+    method      => 'retrieve_queued_records',
+    api_level   => 1,
+    argc        => 2,
+    record_type => 'bib'
+);
+__PACKAGE__->register_method(
+    api_name    => "open-ils.vandelay.bib_queue.records.retrieve.atomic.export.csv",
+    method      => 'retrieve_queued_records',
+    api_level   => 1,
+    argc        => 2,
+    record_type => 'bib'
+);
+__PACKAGE__->register_method(
+    api_name    => "open-ils.vandelay.bib_queue.records.retrieve.atomic.export.email",
+    method      => 'retrieve_queued_records',
+    api_level   => 1,
+    argc        => 2,
+    record_type => 'bib'
+);
+
 __PACKAGE__->register_method(  
     api_name    => "open-ils.vandelay.auth_queue.records.retrieve",
     method      => 'retrieve_queued_records',
     api_level   => 1,
     argc        => 2,
     stream      => 1,
+    record_type => 'auth'
+);
+__PACKAGE__->register_method(
+    api_name    => "open-ils.vandelay.auth_queue.records.retrieve.atomic.export.print",
+    method      => 'retrieve_queued_records',
+    api_level   => 1,
+    argc        => 2,
+    record_type => 'auth'
+);
+__PACKAGE__->register_method(
+    api_name    => "open-ils.vandelay.auth_queue.records.retrieve.atomic.export.csv",
+    method      => 'retrieve_queued_records',
+    api_level   => 1,
+    argc        => 2,
+    record_type => 'auth'
+);
+__PACKAGE__->register_method(
+    api_name    => "open-ils.vandelay.auth_queue.records.retrieve.atomic.export.email",
+    method      => 'retrieve_queued_records',
+    api_level   => 1,
+    argc        => 2,
     record_type => 'auth'
 );
 
@@ -431,6 +474,10 @@ sub retrieve_queued_records {
         limit => $limit,
         offset => $offset,
     };
+    if($self->api_name =~ /export/) {
+        delete $query->{limit};
+        delete $query->{offset};
+    }
 
     $query->{where}->{import_time} = undef if $$options{non_imported};
 
@@ -491,6 +538,42 @@ __PACKAGE__->register_method(
             with_import_error : only return items that failed to import
     /
 );
+__PACKAGE__->register_method(
+    api_name    => 'open-ils.vandelay.import_item.queue.export.print',
+    method      => 'retrieve_queue_import_items',
+    api_level   => 1,
+    argc        => 2,
+    authoritative => 1,
+    signature => q/
+        Returns template-generated printable output of Import Item (vii) objects for the selected queue.
+        Filter options:
+            with_import_error : only return items that failed to import
+    /
+);
+__PACKAGE__->register_method(
+    api_name    => 'open-ils.vandelay.import_item.queue.export.csv',
+    method      => 'retrieve_queue_import_items',
+    api_level   => 1,
+    argc        => 2,
+    authoritative => 1,
+    signature => q/
+        Returns template-generated CSV output of Import Item (vii) objects for the selected queue.
+        Filter options:
+            with_import_error : only return items that failed to import
+    /
+);
+__PACKAGE__->register_method(
+    api_name    => 'open-ils.vandelay.import_item.queue.export.email',
+    method      => 'retrieve_queue_import_items',
+    api_level   => 1,
+    argc        => 2,
+    authoritative => 1,
+    signature => q/
+        Emails template-generated output of Import Item (vii) objects for the selected queue.
+        Filter options:
+            with_import_error : only return items that failed to import
+    /
+);
 
 sub retrieve_queue_import_items {
     my($self, $conn, $auth, $q_id, $options) = @_;
@@ -525,6 +608,10 @@ sub retrieve_queue_import_items {
         limit => $limit,
         offset => $offset
     };
+    if($self->api_name =~ /export/) {
+        delete $query->{limit};
+        delete $query->{offset};
+    }
 
     $query->{where} = {'+vii' => {import_error => {'!=' => undef}}}
         if $$options{with_import_error};
