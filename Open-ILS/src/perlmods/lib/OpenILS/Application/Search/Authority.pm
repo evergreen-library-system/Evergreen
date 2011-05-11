@@ -87,15 +87,13 @@ __PACKAGE__->register_method(
         api_name	=> "open-ils.search.authority.simple_heading.from_xml",
         argc		=> 1, 
         stream      => 1,
-        note		=> "Searches authority data by main entry using marcxml, returning 'are' ids",
+        note		=> "Searches authority data by main entry using marcxml, returning 'are' ids; params are marcxml and optional control-set-id",
 );
 
 sub search_authority_batch_by_simple_normalize_heading {
     my $self = shift;
     my $client = shift;
-    my $search_set = shift;
-
-    $search_set = [$search_set] unless (ref($search_set) =~ /ARRAY/);
+    my $search_set = [@_];
 
     my $m = $self->method_lookup('open-ils.search.authority.simple_heading.from_xml.atomic');
 
@@ -112,7 +110,7 @@ __PACKAGE__->register_method(
         api_name	=> "open-ils.search.authority.simple_heading.from_xml.batch",
         argc		=> 1, 
         stream      => 1,
-        note		=> "Searches authority data by main entry using marcxml, in control-set batches, returning 'are' ids",
+        note		=> "Searches authority data by main entry using marcxml, in control-set batches, returning 'are' ids; params are hashes of { control-set-id => marcxml }",
 );
 
 
