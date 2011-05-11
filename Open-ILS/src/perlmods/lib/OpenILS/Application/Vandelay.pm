@@ -517,15 +517,18 @@ sub retrieve_queued_records {
 
     my $retrieve = ($type eq 'bib') ? 
         'retrieve_vandelay_queued_bib_record' : 'retrieve_vandelay_queued_authority_record';
+    my $search = ($type eq 'bib') ? 
+        'search_vandelay_queued_bib_record' : 'search_vandelay_queued_authority_record';
 
     if ($self->api_name =~ /export/) {
+        my $rec_list = $e->$search({id => [map { $_->{id} } @$record_ids]});
         if ($self->api_name =~ /print/) {
 
             $e->rollback;
             return $U->fire_object_event(
                 undef,
                 'vandelay.queued_'.$type.'_record.print',
-                [map {$_->{id}} @$record_ids],
+                $rec_list,
                 $e->requestor->ws_ou
             );
 
@@ -535,7 +538,7 @@ sub retrieve_queued_records {
             return $U->fire_object_event(
                 undef,
                 'vandelay.queued_'.$type.'_record.csv',
-                [map {$_->{id}} @$record_ids],
+                $rec_list,
                 $e->requestor->ws_ou
             );
 
@@ -543,10 +546,10 @@ sub retrieve_queued_records {
 
             $conn->respond_complete(1);
 
-            for my $rec_id (@$record_ids) {
+            for my $rec (@$rec_list) {
                 $U->create_events_for_hook(
                     'vandelay.queued_'.$type.'_record.email',
-                    $rec_id->{id},
+                    $rec,
                     $e->requestor->home_ou,
                     undef,
                     undef,
@@ -665,13 +668,14 @@ sub retrieve_queue_import_items {
         if $$options{with_import_error};
 
     my $items = $e->json_query($query);
+    my $item_list = $e->search_vandelay_import_item({id => [map { $_->{id} } @$items]});
     if ($self->api_name =~ /export/) {
         if ($self->api_name =~ /print/) {
 
             return $U->fire_object_event(
                 undef,
                 'vandelay.import_items.print',
-                [map {$_->{id}} @$items],
+                $item_list,
                 $e->requestor->ws_ou
             );
 
@@ -680,7 +684,7 @@ sub retrieve_queue_import_items {
             return $U->fire_object_event(
                 undef,
                 'vandelay.import_items.csv',
-                [map {$_->{id}} @$items],
+                $item_list,
                 $e->requestor->ws_ou
             );
 
@@ -688,10 +692,10 @@ sub retrieve_queue_import_items {
 
             $conn->respond_complete(1);
 
-            for my $item (@$items) {
+            for my $item (@$item_list) {
                 $U->create_events_for_hook(
                     'vandelay.import_items.email',
-                    $item->{id},
+                    $item,
                     $e->requestor->home_ou,
                     undef,
                     undef,
@@ -701,8 +705,8 @@ sub retrieve_queue_import_items {
 
         }
     } else {
-        for my $item (@$items) {
-            $conn->respond($e->retrieve_vandelay_import_item($item->{id}));
+        for my $item (@$item_list) {
+            $conn->respond($item);
         }
     }
 

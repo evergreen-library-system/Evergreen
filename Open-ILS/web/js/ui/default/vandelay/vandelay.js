@@ -422,11 +422,15 @@ function vlExportInit() {
 }
 
 function exportHandler(type, response) {
-    var content = openils.Util.readResponse(response);
-    if(type == 'print') {
-        // TODO print the content
+    try {
+        var content = openils.Util.readResponse(response)[0].template_output().data();
+        switch(type) {
+            case 'print': openils.Util.printHtmlString(content); break;
+            default: alert('response = ' + response + ' content:\n' + content);
+        }
+    } catch(E) {
+        alert('Error exporting data: ' + E);
     }
-    alert('response = ' + response);
 }
 
 function retrieveQueuedRecords(type, queueId, onload, doExport) {
@@ -465,7 +469,7 @@ function retrieveQueuedRecords(type, queueId, onload, doExport) {
         {   async: true,
             params: params,
             oncomplete: function(r){
-                if(doExport) return onload();
+                if(doExport) return onload(r);
                 var recs = r.recv().content();
                 if(e = openils.Event.parse(recs[0]))
                     return alert(e);
