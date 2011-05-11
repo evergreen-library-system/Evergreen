@@ -9465,6 +9465,22 @@ INSERT INTO authority.control_set_authority_field (id, control_set, main_entry, 
     (71, 1, 11, '485', 'ivwxyz4', oils_i18n_gettext('71','See Also Tracing -- Form Subdivision','acsaf','name')),
     (72, 1, 12, '448', 'aivwxyz4', oils_i18n_gettext('72','See Also Tracing -- Chronological Term','acsaf','name'));
 
+INSERT INTO authority.browse_axis (code,name,description) VALUES
+    ('title','Title','Title axis'),
+    ('author','Author','Author axis'),
+    ('subject','Subject','Subject axis'),
+    ('topic','Topic','Topic Subject axis');
+
+INSERT INTO authority.browse_axis_authority_field_map (axis,field) VALUES
+    ('author',  1 ),
+    ('author',  2 ),
+    ('author',  3 ),
+    ('title',   4 ),
+    ('topic',   5 ),
+    ('subject', 5 ),
+    ('subject', 6 ),
+    ('subject', 7 ),
+    ('subject', 12);
 
 INSERT INTO authority.control_set_bib_field (tag, authority_field) VALUES
     SELECT '100', id FROM authority.control_set_authority_field WHERE tag IN ('100')

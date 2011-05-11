@@ -51,6 +51,18 @@ CREATE TABLE authority.thesaurus (
     description TEXT                     -- i18n
 );
 
+CREATE TABLE authority.browse_axis (
+    code        TEXT    PRIMARY KEY,
+    name        TEXT    UNIQUE NOT NULL, -- i18n
+    description TEXT
+);
+
+CREATE TABLE authority.browse_axis_authority_field_map (
+    id          SERIAL  PRIMARY KEY,
+    axis        TEXT    NOT NULL REFERENCES authority.browse_axis (code) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    field       INT     NOT NULL REFERENCES authority.control_set_authority_field (id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
+);
+
 CREATE TABLE authority.record_entry (
     id              BIGSERIAL    PRIMARY KEY,
     create_date     TIMESTAMP WITH TIME ZONE    NOT NULL DEFAULT now(),

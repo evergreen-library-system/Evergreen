@@ -1846,6 +1846,48 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
+	<class id="aba" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="authority::browse_axis" oils_persist:tablename="authority.browse_axis" reporter:label="Authority Browse Axis">
+		<fields oils_persist:primary="code">
+			<field reporter:label="Code" name="code" reporter:datatype="id" reporter:selector="name"/>
+			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true"/>
+			<field reporter:label="Description" name="description" reporter:datatype="text"/>
+			<field reporter:label="Authority Fields" name="fields" reporter:datatype="link" oils_persist:virtual="true"/>
+			<field reporter:label="Authority Field Maps" name="maps" reporter:datatype="link" oils_persist:virtual="true"/>
+		</fields>
+		<links>
+			<link field="fields" reltype="has_many" key="axis" map="field" class="abaafm"/>
+			<link field="maps" reltype="has_many" key="axis" map="" class="abaafm"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="CREATE_AUTHORITY_CONTROLSET" global_required="true"/>
+				<retrieve/>
+				<update permission="UPDATE_AUTHORITY_CONTROLSET" global_required="true"/>
+				<delete permission="UPDATE_AUTHORITY_CONTROLSET" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
+    <class id="abaafm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="authority::browse_axis_authority_field_map" oils_persist:tablename="authority.browse_axis_authority_field_map" reporter:label="Authority Browse Axis Field Map">
+        <fields oils_persist:primary="id" oils_persist:sequence="authority.browse_axis_authority_field_map_id_seq">
+            <field reporter:label="Axis Authority Field Map ID" name="id" reporter:datatype="id"/>
+            <field reporter:label="Authority Field" name="authority_field" oils_obj:required="true" reporter:datatype="link"/>
+            <field reporter:label="Axis" name="axis" reporter:datatype="link" oils_obj:required="true"/>
+        </fields>
+        <links>
+            <link field="field" reltype="has_a" key="id" map="" class="acsaf"/>
+            <link field="axis" reltype="has_a" key="code" map="" class="aba"/>
+        </links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_AUTHORITY_CONTROLSET" global_required="true"/>
+                <retrieve/>
+                <update permission="UPDATE_AUTHORITY_CONTROLSET" global_required="true"/>
+                <delete permission="UPDATE_AUTHORITY_CONTROLSET" global_required="true"/>
+            </actions>
+        </permacrud>
+    </class>
+
 	<class id="are" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="authority::record_entry" oils_persist:tablename="authority.record_entry" reporter:label="Authority Record Entry">
 		<fields oils_persist:primary="id" oils_persist:sequence="authority.record_entry_id_seq">
 			<field name="active" reporter:datatype="bool"/>
