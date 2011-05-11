@@ -2765,16 +2765,25 @@ static char* searchFieldTransformPredicate( const ClassInfo* class_info, osrfHas
 		right_parens = ")";
 	}
 
+	const char* right_percent = "";
+	const char* real_op       = op;
+
+	if( !strcasecmp( op, "startwith") ) {
+		real_op = "like";
+		right_percent = "|| '%'";
+	}
+
 	growing_buffer* sql_buf = buffer_init( 32 );
 
 	buffer_fadd(
 		sql_buf,
-		"%s%s %s %s %s %s%s",
+		"%s%s %s %s %s%s %s%s",
 		left_parens,
 		field_transform,
-		op,
+		real_op,
 		left_parens,
 		value,
+		right_percent,
 		right_parens,
 		right_parens
 	);
