@@ -1659,37 +1659,15 @@ function browseAuthority (sf_popup, menu_id, target, sf, limit, page) {
 
     // map tag + subfield to the appropriate authority browse axis:
     // currently authority.author, authority.subject, authority.title, authority.topic
-    // based on mappings in OpenILS::Application::SuperCat
+    // based on mappings in OpenILS::Application::SuperCat, though Authority Control
+    // Sets will change that
 
-    var type;
+    var axis_list = acs.bibFieldBrowseAxes( sf.parent().@tag.toString() );
+    // No matching tag means no authorities to search - shortcut
+    if (axis_list.length == 0) return;
 
-    // Map based on replacing the first char of the selected tag with '1'
-    switch ('1' + (sf.parent().@tag.toString()).substring(1)) {
-        case "130":
-            type = 'authority.title';
-            break;
-
-        case "100":
-        case "110":
-        case "111":
-            type = 'authority.author';
-            break;
-
-        case "150":
-            type = 'authority.topic';
-            break;
-
-        case "148":
-        case "151":
-        case "155":
-            type = 'authority.subject';
-            break;
-
-        // No matching tag means no authorities to search - shortcut
-        default:
-            return;
-    }
-
+    var type = 'authority.' + axis_list[0]; // Just take the first for now
+                                            // TODO support multiple axes ... loop?
     if (!limit) {
         limit = 10;
     }
