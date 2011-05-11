@@ -689,6 +689,10 @@ BEGIN
 
     SELECT * INTO my_bib_queue FROM vandelay.bib_queue WHERE id = NEW.queue;
 
+    IF my_bib_queue.match_set IS NULL THEN
+        RETURN NEW;
+    END IF;
+
     NEW.quality := vandelay.measure_record_quality( NEW.marc, my_bib_queue.match_set );
 
     -- Perfect matches on 901$c exit early with a match with high quality.
