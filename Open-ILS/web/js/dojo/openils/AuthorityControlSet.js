@@ -33,10 +33,28 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
                 // TODO -- push the raw tree into the oils cache for later reuse
 
                 var pcrud = new openils.PermaCrud();
-                var acs_list = pcrud.retrieveAll('acs');
+
+                // fetch everything up front...
+                openils.AuthorityControlSet._control_set_list = pcrud.retrieveAll('acs');
+                openils.AuthorityControlSet._thesaurus_list = pcrud.retrieveAll('at');
+                openils.AuthorityControlSet._authority_field_list = pcrud.retrieveAll('acsaf');
+                openils.AuthorityControlSet._bib_field_list = pcrud.retrieveAll('acsbf');
+                openils.AuthorityControlSet._browse_axis_list = pcrud.retrieveAll('aba');
+                openils.AuthorityControlSet._browse_field_map_list = pcrud.retrieveAll('abaafm');
+
+                openils.AuthorityControlSet._browse_axis_by_name = {};
+                dojo.forEach( openils.AuthorityControlSet._browse_axis_list, function (ba) {
+                    ba.maps(
+                        dojo.filter(
+                            openils.AuthorityControlSet._browse_field_map_list,
+                            function (m) { return m.axis() == ba.code() }
+                        )
+                    );
+                    openils.AuthorityControlSet._browse_axis_by_name[ba.code()] = ba;
+                );
 
                 // loop over each acs
-                dojo.forEach( acs_list, function (cs) {
+                dojo.forEach( openils.AuthorityControlSet._control_set_list, function (cs) {
                     openils.AuthorityControlSet._controlsets[''+cs.id()] = {
                         id : cs.id(),
                         name : cs.name(),
@@ -48,13 +66,23 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
                     };
 
                     // grab the authority fields
-                    var acsaf_list = pcrud.search('acsaf', {control_set : cs.id()});
-                    var at_list = pcrud.search('at', {control_set : cs.id()});
+                    var acsaf_list = dojo.filter(
+                        openils.AuthorityControlSet._authority_field_list,
+                        function (af) { return af.control_set() == cs.id() }
+                    );
+
+                    var at_list = dojo.filter(
+                        openils.AuthorityControlSet._thesaurus_list,
+                        function (at) { return at.control_set() == cs.id() }
+                    );
+
                     openils.AuthorityControlSet._controlsets[''+cs.id()].raw.authority_fields( acsaf_list );
                     openils.AuthorityControlSet._controlsets[''+cs.id()].raw.thesauri( at_list );
 
                     // and loop over each
                     dojo.forEach( acsaf_list, function (csaf) {
+                        csaf.axis_maps([]);
+
                         // link the main entry if we're subordinate
                         if (csaf.main_entry()) {
                             csaf.main_entry(
@@ -68,11 +96,14 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
                         csaf.sub_entries(
                             dojo.filter(acsaf_list, function (x) {
                                 return x.main_entry() == csaf.id();
-                            })[0]
+                            })
                         );
 
                         // now, bib fields
-                        var acsbf_list = pcrud.search('acsbf', {authority_field : csaf.id()});
+                        var acsbf_list = dojo.filter(
+                            openils.AuthorityControlSet._bib_field_list,
+                            function (b) { return b.authority_field() == csaf.id() }
+                        );
                         csaf.bib_fields( acsbf_list );
 
                         openils.AuthorityControlSet._controlsets[''+cs.id()].bib_fields = [].concat(
@@ -91,6 +122,20 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
                             }
     
                         });
+
+                        dojo.forEach( // for each axis
+                            openils.AuthorityControlSet._browse_axis_list,
+                            function (ba) {
+                                dojo.forEach( // loop over the maps
+                                    dojo.filter( // filtering to just this field's mapps
+                                        ba.maps(),
+                                        function (m) { return m.field() == csfa.id() }
+                                    ),
+                                    function (fm) { fm.field( csaf ); csaf.axis_maps().push( fm ) } // and set the field
+                                )
+                            }
+                        );
+
                     });
 
                     // build the authority_tag_map
@@ -100,8 +145,19 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
                             openils.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()][sf_code] = { bf.authority_field().tag() : sf_code };
                         });
                     });
+
                 });
 
+                openils.AuthorityControlSet._browse_axis_by_name = {};
+                dojo.forEach( openils.AuthorityControlSet._browse_axis_list, function (ba) {
+                    ba.maps(
+                        dojo.fitler(
+                            openils.AuthorityControlSet._browse_field_map_list,
+                            function (m) { m.axis() == ba.code }
+                        )
+                    );
+                    openils.AuthorityControlSet._browse_axis_by_name[ba.code()] = ba;
+                });
                 
                 if (this.controlSetList().length > 0)
                     delete openils.AuthorityControlSet._controlsets['-1'];
@@ -128,13 +184,30 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
         bibFieldByTag: function (x) {
             var me = this;
             return dojo.filter(
-                me.controlSet()].bib_fields(),
+                me.controlSet().bib_fields(),
                 function (bf) { if (bf.tag() == x) return true }
             )[0];
         },
 
         bibFields: function (x) {
             return this.controlSet(x).bib_fields();
+        },
+
+        bibFieldBrowseAxes : function (t) {
+            var blist = [];
+            for (var bname in openils.AuthorityControlSet._browse_axis_by_name) {
+                dojo.forEach(
+                    openils.AuthorityControlSet._browse_axis_by_name[bname].maps(),
+                    function (m) {
+                        if (dojo.filter(
+                                m.field().bib_fields(),
+                                function (b) { return b.tag == t }
+                            ).length > 0
+                        ) blist.push(bname);
+                    }
+                );
+            }
+            return blist;
         },
 
         authorityFields: function (x) {
