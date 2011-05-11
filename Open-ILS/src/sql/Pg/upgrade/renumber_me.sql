@@ -161,5 +161,38 @@ INSERT INTO action_trigger.environment ( event_def, path) VALUES (
     ,( 38, 'queue')
 ;
 
+INSERT INTO action_trigger.event_definition (
+        id,
+        active,
+        owner,
+        name,
+        hook,
+        validator,
+        reactor,
+        group_field,
+        granularity,
+        template
+    ) VALUES (
+        39,
+        TRUE,
+        1,
+        'CSV Output for Queued Bib Records',
+        'vandelay.queued_bib_record.csv',
+        'NOOP_True',
+        'ProcessTemplate',
+        'usr',
+        'print-on-demand',
+$$
+[%- USE date -%][%- FOR vqbr IN target -%]"[% helpers.get_queued_bib_attr('title',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('author',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('language',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('pagination',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('isbn',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('issn',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('price',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('rec_identifier',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('eg_tcn',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('eg_tcn_source',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('eg_identifier',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('publisher',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('pubdate',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('edition',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('item_barcode',vqbr.attributes) | replace('"', '""') %]"[%- END -%]
+$$
+    )
+;
+
+INSERT INTO action_trigger.environment ( event_def, path) VALUES (
+    39, 'attributes')
+    ,( 39, 'queue')
+;
+
+
 COMMIT;
--- DELETE FROM action_trigger.event WHERE event_def IN (38); DELETE FROM action_trigger.environment WHERE event_def IN (38); DELETE FROM action_trigger.event_definition WHERE id IN (38); DELETE FROM action_trigger.hook WHERE key IN ('vandelay.queued_bib_record.print','vandelay.queued_bib_record.csv','vandelay.queued_bib_record.email','vandelay.queued_auth_record.print','vandelay.queued_auth_record.csv','vandelay.queued_auth_record.email','vandelay.import_items.print','vandelay.import_items.csv','vandelay.import_items.email'); DELETE FROM config.upgrade_log WHERE version = 'test';
+-- DELETE FROM action_trigger.event WHERE event_def IN (38,39); DELETE FROM action_trigger.environment WHERE event_def IN (38,39); DELETE FROM action_trigger.event_definition WHERE id IN (38,39); DELETE FROM action_trigger.hook WHERE key IN ('vandelay.queued_bib_record.print','vandelay.queued_bib_record.csv','vandelay.queued_bib_record.email','vandelay.queued_auth_record.print','vandelay.queued_auth_record.csv','vandelay.queued_auth_record.email','vandelay.import_items.print','vandelay.import_items.csv','vandelay.import_items.email'); DELETE FROM config.upgrade_log WHERE version = 'test';

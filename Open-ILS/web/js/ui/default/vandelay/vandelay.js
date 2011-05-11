@@ -423,10 +423,22 @@ function vlExportInit() {
 
 function exportHandler(type, response) {
     try {
-        var content = openils.Util.readResponse(response)[0].template_output().data();
+        var content = openils.Util.readResponse(response);
+        if (type=='email') {
+            if (content) { throw(content); }
+            return;
+        }
+        content = content[0].template_output().data();
         switch(type) {
-            case 'print': openils.Util.printHtmlString(content); break;
-            default: alert('response = ' + response + ' content:\n' + content);
+            case 'print':
+                openils.Util.printHtmlString(content);
+            break;
+            case 'csv':
+                //content = content.replace(/\\t/g,'\t'); // if we really wanted to do .tsv instead
+                openils.XUL.contentToFileSaveDialog(content);
+            break;
+            default:
+                alert('response = ' + response + '\tcontent:\n' + content);
         }
     } catch(E) {
         alert('Error exporting data: ' + E);
