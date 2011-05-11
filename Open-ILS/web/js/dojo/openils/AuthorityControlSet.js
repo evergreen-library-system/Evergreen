@@ -204,6 +204,13 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
             this.controlSetId(old_acs);
 
             return auth_list;
+        },
+
+        findMatchingAuthorities : function (field) {
+            return fieldmapper.standardRequest(
+                [ 'open-ils.search', 'open-ils.search.authority.simple_heading.from_xml.batch.atomic' ],
+                this.bibToAuthorities(field)
+            );
         }
 
     });
