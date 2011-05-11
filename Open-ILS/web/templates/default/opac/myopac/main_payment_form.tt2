@@ -1,0 +1,167 @@
+[%  PROCESS "default/opac/parts/header.tt2";
+    PROCESS "default/opac/parts/misc_util.tt2";
+    WRAPPER "default/opac/parts/myopac/main_base.tt2";
+    myopac_page = "main";
+    myopac_main_page = "payment_form";
+%]
+<div id="pay_fines_now">
+    <form action="[% ctx.opac_root %]/myopac/pay" method="POST">
+        [% FOR xact IN CGI.param('xact') %]
+        <input type="hidden" name="xact" value="[% xact | html %]" />
+        [% END %]
+        <table>
+            <tbody>
+                <tr>
+                    <td colspan='2'><strong>[% l('Billing Information') %]</strong></td>
+                    <td rowspan='13' valign='top'>
+                        [% l('Selected fines you are paying for:') %]
+                        <table cellpadding="0" cellspacing="5" border="0">
+                            <thead>
+                                <tr>
+                                    <th>[% l('Name') %]</th>
+                                    <th>[% l('Amount') %]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            [%
+                            pay_total = 0.0;
+                            FOR f IN ctx.fines.circulation;
+                                NEXT UNLESS CGI.param('xact').grep(f.xact.id).size;
+                                attrs = {marc_xml => f.marc_xml};
+                                IF f.marc_xml;
+                                    PROCESS get_marc_attrs args=attrs;
+                                ELSIF f.xact.reservation;
+                                    attrs.title = f.xact.reservation.target_resource_type.name;
+                                END;
+                                # XXX use fixed point math
+                                pay_total = pay_total + f.xact.balance_owed; %]
+                                <tr>
+                                    <td>[% attrs.title %]</td>
+                                    <td class="text-right">[% money(f.xact.balance_owed) %]</td>
+                                </tr>
+                            [%
+                            END;
+                            FOR f IN ctx.fines.grocery;
+                                NEXT UNLESS CGI.param('xact').grep(f.xact.id).size;
+                                # XXX use fixed point math
+                                pay_total = pay_total + f.xact.balance_owed; %]
+                                <tr>
+                                    <td>[% f.xact.last_billing_type %]</td>
+                                    <td class="text-right">[% money(f.xact.balance_owed) %]</td>
+                                </tr>
+                            [% END %]
+                            </tbody>
+                        </table>
+                        <br />
+                        <div>
+                            [% l('Total amount to pay:') %]
+                            [%# XXX TODO: calculate pay_total not here in the
+                            template but rather in the mod_perl, and only
+                            proceed when that number is positive %]
+                            <strong>[% money(pay_total) %]</strong>
+                        </div>
+                        <br />
+                        [% | l('<strong>', '</strong>') %]Click [_1]Cancel[_2] to go back and (un)select other fines.[% END %]
+                    </td>
+                </tr>
+                <tr>
+                    <td>[% l('First Name') %]</td>
+                    <td><input type="text" name="billing_first" value="[% ctx.user.first_given_name | html %]" /></td>
+                </tr>
+                <tr>
+                    <td>[% l('Last Name') %]</td>
+                    <td><input type="text" name="billing_last" value="[% ctx.user.family_name | html %]" /></td>
+                </tr>
+                <tr>
+                    <td>[% l('Street Address') %]</td>
+                    <td><input type="text" name="billing_address" value="[% ctx.user.billing_address.street1 _ ctx.user.billing_address.street2 | html %]" /></td>
+                </tr>
+                <tr>
+                    <td>[% l('City' )%]</td>
+                    <td><input type="text" name="billing_city" value="[% ctx.user.billing_address.city | html %]" /></td>
+                </tr>
+                <tr>
+                    <td>[% l('State or Province') %]</td>
+                    <td><input type="text" name="billing_state" value="[% ctx.user.billing_address.state | html %]" /></td>
+                </tr>
+                <tr>
+                    <td>[% l('ZIP or Postal Code') %]</td>
+                    <td><input type="text" name="billing_zip" value="[% ctx.user.billing_address.post_code | html %]" /></td>
+                </tr>
+                <tr>
+                  <td colspan='2'><strong>[% l('Credit Card Information') %]</strong></td>
+                </tr>
+                <!-- Technically not needed since card type is derived from the CC number
+                <tr>
+                    <td>Type of Card</td>
+                    <td>
+                        <select name="type">
+                            <option value='VISA'>VISA</option>
+                            <option value='MasterCard'>MasterCard</option>
+                            <option value='American Express'>American Express</option>
+                        </select>
+                    </td>
+                </tr>
+                -->
+                <tr>
+                    <td>[% l('Credit Card #') %]</td>
+                    <td><input type="text" name="number" maxlength="16" /></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="position:absolute;">
+                            <div style="position:relative;left:80px;">
+                                <a href="#"><img
+                                    src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
+                            </div>
+                        </div>
+                        [% l('Security Code') %]
+                    </td>
+                    <td>
+                        <input type="text" size="4" maxlength="5" name="cvv2" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>[% l('Exipration Month') %]</td>
+                    <td>
+                        <select name="expire_month">
+                            <option value="01">[% l("January") %]</option>
+                            <option value="02">[% l("February") %]</option>
+                            <option value="03">[% l("March") %]</option>
+                            <option value="04">[% l("April") %]</option>
+                            <option value="05">[% l("May") %]</option>
+                            <option value="06">[% l("June") %]</option>
+                            <option value="07">[% l("July") %]</option>
+                            <option value="08">[% l("August") %]</option>
+                            <option value="09">[% l("September") %]</option>
+                            <option value="10">[% l("October") %]</option>
+                            <option value="11">[% l("November") %]</option>
+                            <option value="12">[% l("December") %]</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>[% l('Expiration Year') %]</td>
+                    <td>
+                        <select name="expire_year">
+                        [% year = date.format(date.now, '%Y');
+                        y = year;
+                        WHILE y < year + 10; # show ten years starting now %]
+                            <option value="[% y %]">[% y %]</option>
+                        [% y = y + 1; END %]
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan='2' align="center">
+                        <input type="submit" value="[% l('Submit Payment') %]" />
+                        <input type="reset" value="[% l('Cancel') %]"
+                            onclick="location.history.go(-1);" />
+                    </td>
+                </tr>
+                [% INCLUDE "default/opac/myopac/main_refund_policy.tt2" %]
+            </tbody>
+        </table>
+    </form>
+</div>
+[% END %]

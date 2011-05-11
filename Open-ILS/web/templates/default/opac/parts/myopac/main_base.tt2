@@ -36,7 +36,7 @@
             [% money(ctx.user_stats.fines.balance_owed) %]
         </span><br />
 
-        <form action="[% ctx.opac_root %]/myopac/main_pay" method="POST"><input
+        <form action="[% ctx.opac_root %]/myopac/main_payment_form" method="POST"><input
             type="image" title="[% l('Pay Fines') %]" alt="[% l('Pay Fines') %]"
             onmouseover="this.src='[% ctx.media_prefix %]/images/pay-fines-btn-hover.png';"
             onmouseout="this.src='[% ctx.media_prefix %]/images/pay-fines-btn.png';"

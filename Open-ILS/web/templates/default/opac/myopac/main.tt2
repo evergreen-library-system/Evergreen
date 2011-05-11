@@ -4,7 +4,7 @@
     myopac_page = "main";
     myopac_main_page = "main";
 %]
-<form action="[% ctx.opac_root %]/myopac/main_pay" method="POST">
+<form action="[% ctx.opac_root %]/myopac/main_payment_form" method="POST">
     [% IF ctx.fines.circulation.size > 0 %]
     <div id='myopac_circ_trans_div'>
         <table width='100%' class='data_grid'>
@@ -77,7 +77,8 @@
                         </strong>
                     </td>
                     <td>
-                        <input type="checkbox" name="selector" title="[% l('Pay this fine') %]" />
+                        <input type="checkbox" title="[% l('Pay this fine') %]"
+                            name="xact" value="[% f.xact.id %]" />
                     </td>
                 </tr>
                 [% END %]
@@ -141,7 +142,8 @@
                     </td>
                     <td>[% f.xact.last_billing_type %]</td>
                     <td>
-                        <input type="checkbox" name='selector' title='[% l("Pay this fine") %]'/>
+                        <input type="checkbox" title='[% l("Pay this fine") %]'
+                            name="xact" value="[% f.xact.id %]" />
                     </td>
                 </tr>
                 [% END %]
