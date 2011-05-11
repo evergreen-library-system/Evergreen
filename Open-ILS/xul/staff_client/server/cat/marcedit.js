@@ -815,41 +815,12 @@ function updateFixedFields (element) {
     var new_value = element.value;
 
     var marc_rec = new MARC.Record ({ delimiter : '$', marcxml : xml_record.toXMLString() });
-    var rtype = marc_rec.recordType();
+    marc_rec.setFixedField(element.getAttribute('name'), new_value);
 
-    var parts = {
-        ldr : marc_rec.leader(),
-        _6 : marc_rec.field('006');
-        _7 : marc_rec.field('007');
-        _8 : marc_rec.field('008');
-    };
-
-    var name = element.getAttribute('name');
-    for (var i in MARC.Record._ff_pos[name]) {
-
-        if (!MARC.Record._ff_pos[name][i][rtype]) continue;
-        if (!parts[i]) {
-            // we're missing the required field.  Add it now.
-
-            var newfield;
-            if (i == '_6') newfield = '006';
-            else if (i == '_7') newfield = '007';
-            else if (i == '_8') newfield = '008';
-            else continue;
-
-            createControlField(newfield,'                                        ');
-            parts[i] = xml_record.controlfield.(@tag==newfield).toString();
-        }
-
-        var before = parts[i].substr(0, MARC.Record._ff_pos[name][i][rtype].start);
-        var after = parts[i].substr(MARC.Record._ff_pos[name][i][rtype].start + MARC.Record._ff_pos[name][i][rtype].len);
-
-        for (var j = 0; new_value.length < MARC.Record._ff_pos[name][i][rtype].len; j++) {
-            new_value += MARC.Record._ff_pos[name][i][rtype].def;
-        }
-
-        recGrid.getElementsByAttribute('tag',i)[0].lastChild.value = before + new_value + after;
-    }
+    var xml_string = marc_rec.toXmlString();
+    xml_record = new XML( xml_string );
+    if (xml_record..record[0]) xml_record = xml_record..record[0];
+    loadRecord();
 
     return true;
 }
@@ -1614,34 +1585,24 @@ function validateAuthority (button) {
             var ind2 = ind1.nextSibling;
             var subfields = ind2.nextSibling.childNodes;
     
-            var tags = {};
-    
+            var sf_list = [];
             for (var j = 0; j < subfields.length; j++) {
                 var sf = subfields[j];
-                var sf_code = sf.childNodes[1].value;
-                var sf_value = sf.childNodes[2].value;
-    
-                if (!control_map[tag.value][sf_code]) continue;
-    
-                var found = 0;
-                for (var a_tag in control_map[tag.value][sf_code]) {
-                    if (!tags[a_tag]) tags[a_tag] = [];
-                    tags[a_tag].push({ term : sf_value, subfield : sf_code });
-                }
-    
+                sf_list.push( sf.childNodes[1].value );
+                sf_list.push( sf.childNodes[2].value );
             }
-    
-            for (var val_tag in tags) {
-                var auth_data = validateBibField( acs_id, [val_tag], tags[val_tag]);
-                var res = new XML( auth_data.responseText );
-                found = parseInt(res.gw::payload.gw::string.toString());
-                if (found) break;
-            }
+
+            var matches = acs.findMatchingAuthorities(
+                new MARC.Field({
+                    'tag'       : tag.value,
+                    'subfields' : sf_list
+                })
+            );
     
             // XXX If adt, etc should be validated separately from vxz, etc then move this up into the above for loop
             for (var j = 0; j < subfields.length; j++) {
                 var sf = subfields[j];
-                if (!found) {
+                if (!matches.length) {
                     dojo.removeClass(sf.childNodes[2], 'marcValidated');
                     dojo.addClass(sf.childNodes[2], 'marcUnvalidated');
                 } else {
@@ -1650,7 +1611,7 @@ function validateAuthority (button) {
                 }
             }
 
-            if (found) break;
+            if (matches.length) break;
         }
     }
 
@@ -1660,6 +1621,7 @@ function validateAuthority (button) {
 }
 
 
+/*
 function validateBibField (tags, searches) {
     var url = "/gateway?input_format=json&format=xml&service=open-ils.search&method=open-ils.search.authority.validate.tag";
     url += '&param="tags"&param=' + js2JSON(tags);
@@ -1673,6 +1635,8 @@ function validateBibField (tags, searches) {
     return req;
 
 }
+*/
+
 function searchAuthority (term, tag, sf, limit) {
     var url = "/gateway?input_format=json&format=xml&service=open-ils.search&method=open-ils.search.authority.fts";
     url += '&param="term"&param="' + term + '"';
@@ -1689,6 +1653,7 @@ function searchAuthority (term, tag, sf, limit) {
 
 }
 
+/* TODO new authority browse support for context sets, and use that here */
 function browseAuthority (sf_popup, menu_id, target, sf, limit, page) {
     dojo.require('dojox.xml.parser');
 
