@@ -26,7 +26,8 @@
                             [%
                             pay_total = 0.0;
                             FOR f IN ctx.fines.circulation;
-                                NEXT UNLESS CGI.param('xact').grep(f.xact.id).size;
+                                NEXT IF CGI.param('xact').size &&
+                                    !CGI.param('xact').grep(f.xact.id).size;
                                 attrs = {marc_xml => f.marc_xml};
                                 IF f.marc_xml;
                                     PROCESS get_marc_attrs args=attrs;
@@ -42,7 +43,8 @@
                             [%
                             END;
                             FOR f IN ctx.fines.grocery;
-                                NEXT UNLESS CGI.param('xact').grep(f.xact.id).size;
+                                NEXT IF CGI.param('xact').size &&
+                                    !CGI.param('xact').grep(f.xact.id).size;
                                 # XXX use fixed point math
                                 pay_total = pay_total + f.xact.balance_owed; %]
                                 <tr>

@@ -612,7 +612,7 @@ sub load_fines {
         {
             usr => $self->editor->requestor->id,
             balance_owed => {'!=' => 0},
-            (ref $id_list eq 'ARRAY' ? ("id" => $id_list) : ()),
+            ($id_list && @$id_list ? ("id" => $id_list) : ()),
         },
         {
             flesh => 4,
