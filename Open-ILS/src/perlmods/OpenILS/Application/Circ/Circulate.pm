@@ -3211,6 +3211,7 @@ sub do_renew {
     my $circ = $self->editor->search_action_circulation({
         target_copy => $self->copy->id,
         xact_finish => undef,
+        checkin_time => undef,
         ($usrid ? (usr => $usrid) : ()),
         '-or' => [
             {stop_fines => undef},
