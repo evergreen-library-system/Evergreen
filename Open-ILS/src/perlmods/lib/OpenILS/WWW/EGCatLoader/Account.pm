@@ -8,7 +8,7 @@ use OpenILS::Application::AppUtils;
 use OpenSRF::Utils::JSON;
 my $U = 'OpenILS::Application::AppUtils';
 
-sub load_extended_user_info {
+sub prepare_extended_user_info {
     my $self = shift;
 
     $self->ctx->{user} = $self->editor->retrieve_actor_user([
@@ -29,7 +29,7 @@ sub load_extended_user_info {
 #   user : au object, fleshed
 sub load_myopac_prefs {
     my $self = shift;
-    return $self->load_extended_user_info || Apache2::Const::OK;
+    return $self->prepare_extended_user_info || Apache2::Const::OK;
 }
 
 sub load_myopac_prefs_notify {
@@ -106,7 +106,7 @@ sub update_optin_prefs {
 
 sub load_myopac_prefs_settings {
     my $self = shift;
-    return $self->load_extended_user_info || Apache2::Const::OK;
+    return $self->prepare_extended_user_info || Apache2::Const::OK;
 }
 
 sub fetch_user_holds {
@@ -562,16 +562,8 @@ sub load_myopac_payment_form {
     my $self = shift;
     my $r;
 
-    $r = $self->load_fines(undef, undef, [$self->cgi->param('xact')]) and return $r;
-
-    # total selected fines
-    foreach (
-        @{$self->ctx->{"fines"}->{"circulation"}},
-        @{$self->ctx->{"fines"}->{"grocery"}}
-    ) {
-    }
-
-    $r = $self->load_extended_user_info and return $r;
+    $r = $self->prepare_fines(undef, undef, [$self->cgi->param('xact')]) and return $r;
+    $r = $self->prepare_extended_user_info and return $r;
 
     return Apache2::Const::OK;
 }
@@ -598,7 +590,41 @@ sub load_myopac_payments {
     return Apache2::Const::OK;
 }
 
-sub load_fines {
+sub load_myopac_pay {
+    my $self = shift;
+    my $r;
+
+    $r = $self->prepare_fines and return $r;
+
+    # balance_owed is computed specifically from the fines we're trying
+    # to pay in this case.
+    return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR if
+        $self->ctx->{fines}->{balance_owed} <= 0;
+
+    my $cc_args = {
+        "where_process" => 1,
+    };
+    $cc_args->{$_} = $self->cgi->param($_) for (qw/
+        number cvv2 expire_year expire_month billing_first
+        billing_last billing_address billing_city billing_state
+        billing_zip
+    /);
+
+    my $args = {
+        "cc_args" => $cc_args,
+        "userid" => $self->ctx->{user}->id,
+        "payment_type": "credit_card_payment",
+        "payments" => [$self->cgi->param('xact')]   # should be safe after self->prepare_fines
+    };
+
+    $U->simplereq("open-ils.circ", "open-ils.circ.money.payment",
+        $self->editor->authtoken, $args, $self->ctx->{user}->last_xact_id
+    );
+
+    # XXX FINISH ME: indicate success/fail, redirect to page with layout
+}
+
+sub prepare_fines {
     my ($self, $limit, $offset, $id_list) = @_;
 
     # XXX TODO: check for failure after various network calls
@@ -692,7 +718,7 @@ sub load_myopac_main {
     my $limit = $self->cgi->param('limit') || 0;
     my $offset = $self->cgi->param('offset') || 0;
 
-    return $self->load_fines($limit, $offset) || Apache2::Const::OK;
+    return $self->prepare_fines($limit, $offset) || Apache2::Const::OK;
 }
 
 sub load_myopac_update_email {
