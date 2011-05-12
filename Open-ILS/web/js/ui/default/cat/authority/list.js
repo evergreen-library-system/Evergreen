@@ -14,6 +14,7 @@ dojo.require('openils.CGI');
 dojo.require('openils.PermaCrud');
 dojo.require('openils.XUL');
 dojo.require('openils.widget.OrgUnitFilteringSelect');
+dojo.require("openils.widget.PCrudAutocompleteBox");
 dojo.requireLocalization("openils.authority", "authority");
 var auth_strings = dojo.i18n.getLocalization("openils.authority", "authority");
 
