@@ -193,6 +193,68 @@ INSERT INTO action_trigger.environment ( event_def, path) VALUES (
     ,( 39, 'queue')
 ;
 
+INSERT INTO action_trigger.event_definition (
+        id,
+        active,
+        owner,
+        name,
+        hook,
+        validator,
+        reactor,
+        group_field,
+        granularity,
+        template
+    ) VALUES (
+        40,
+        TRUE,
+        1,
+        'Email Output for Queued Bib Records',
+        'vandelay.queued_bib_record.email',
+        'NOOP_True',
+        'SendEmail',
+        'queue.owner',
+        NULL,
+$$
+[%- USE date -%]
+[%- SET user = target.0.queue.owner -%]
+To: [%- params.recipient_email || user.email || 'root@localhost' %]
+From: [%- params.sender_email || default_sender %]
+Subject: Bibs from Import Queue
 
+Queue ID: [% target.0.queue.id %]
+Queue Name: [% target.0.queue.name %]
+Queue Type: [% target.0.queue.queue_type %]
+Complete? [% target.0.queue.complete %]
+
+    [% FOR vqbr IN target %]
+=-=-=
+ Title of work    | [% helpers.get_queued_bib_attr('title',vqbr.attributes) %]
+ Author of work   | [% helpers.get_queued_bib_attr('author',vqbr.attributes) %]
+ Language of work | [% helpers.get_queued_bib_attr('language',vqbr.attributes) %]
+ Pagination       | [% helpers.get_queued_bib_attr('pagination',vqbr.attributes) %]
+ ISBN             | [% helpers.get_queued_bib_attr('isbn',vqbr.attributes) %]
+ ISSN             | [% helpers.get_queued_bib_attr('issn',vqbr.attributes) %]
+ Price            | [% helpers.get_queued_bib_attr('price',vqbr.attributes) %]
+ Accession Number | [% helpers.get_queued_bib_attr('rec_identifier',vqbr.attributes) %]
+ TCN Value        | [% helpers.get_queued_bib_attr('eg_tcn',vqbr.attributes) %]
+ TCN Source       | [% helpers.get_queued_bib_attr('eg_tcn_source',vqbr.attributes) %]
+ Internal ID      | [% helpers.get_queued_bib_attr('eg_identifier',vqbr.attributes) %]
+ Publisher        | [% helpers.get_queued_bib_attr('publisher',vqbr.attributes) %]
+ Publication Date | [% helpers.get_queued_bib_attr('pubdate',vqbr.attributes) %]
+ Edition          | [% helpers.get_queued_bib_attr('edition',vqbr.attributes) %]
+ Item Barcode     | [% helpers.get_queued_bib_attr('item_barcode',vqbr.attributes) %]
+
+    [% END %]
+
+$$
+    )
+;
+
+INSERT INTO action_trigger.environment ( event_def, path) VALUES (
+    40, 'attributes')
+    ,( 40, 'queue')
+    ,( 40, 'queue.owner')
+;
 COMMIT;
--- DELETE FROM action_trigger.event WHERE event_def IN (38,39); DELETE FROM action_trigger.environment WHERE event_def IN (38,39); DELETE FROM action_trigger.event_definition WHERE id IN (38,39); DELETE FROM action_trigger.hook WHERE key IN ('vandelay.queued_bib_record.print','vandelay.queued_bib_record.csv','vandelay.queued_bib_record.email','vandelay.queued_auth_record.print','vandelay.queued_auth_record.csv','vandelay.queued_auth_record.email','vandelay.import_items.print','vandelay.import_items.csv','vandelay.import_items.email'); DELETE FROM config.upgrade_log WHERE version = 'test';
+
+-- DELETE FROM action_trigger.event_output WHERE id IN ((SELECT template_output FROM action_trigger.event WHERE event_def IN (38,39,40))UNION(SELECT error_output FROM action_trigger.event WHERE event_def IN (38,39,40))); DELETE FROM action_trigger.event WHERE event_def IN (38,39,40); DELETE FROM action_trigger.environment WHERE event_def IN (38,39,40); DELETE FROM action_trigger.event_definition WHERE id IN (38,39,40); DELETE FROM action_trigger.hook WHERE key IN ('vandelay.queued_bib_record.print','vandelay.queued_bib_record.csv','vandelay.queued_bib_record.email','vandelay.queued_auth_record.print','vandelay.queued_auth_record.csv','vandelay.queued_auth_record.email','vandelay.import_items.print','vandelay.import_items.csv','vandelay.import_items.email'); DELETE FROM config.upgrade_log WHERE version = 'test';
