@@ -560,9 +560,20 @@ sub load_myopac_hold_history {
 
 sub load_myopac_payment_form {
     my $self = shift;
-    my $r = $self->load_fines(undef, undef, [$self->cgi->param('xact')]);
-    return $r if $r;
-    return $self->load_extended_user_info || Apache2::Const::OK;
+    my $r;
+
+    $r = $self->load_fines(undef, undef, [$self->cgi->param('xact')]) and return $r;
+
+    # total selected fines
+    foreach (
+        @{$self->ctx->{"fines"}->{"circulation"}},
+        @{$self->ctx->{"fines"}->{"grocery"}}
+    ) {
+    }
+
+    $r = $self->load_extended_user_info and return $r;
+
+    return Apache2::Const::OK;
 }
 
 # TODO: add other filter options as params/configs/etc.
@@ -631,6 +642,9 @@ sub load_fines {
         }
     );
 
+    my @total_keys = qw/total_paid total_owed balance_owed/;
+    $self->ctx->{"fines"}->{@total_keys} = (0, 0, 0);
+
     while(my $resp = $req->recv) {
         my $mobts = $resp->content;
         my $circ = $mobts->circulation;
@@ -641,10 +655,10 @@ sub load_fines {
             $last_billing = pop(@billings);
         }
 
-        # XXX TODO switch to some money-safe non-fp library for math
-        $self->ctx->{"fines"}->{$_} += $mobts->$_ for (
-            qw/total_paid total_owed balance_owed/
-        );
+        # XXX TODO confirm that the following, and the later division by 100.0
+        # to get a floating point representation once again, is sufficiently
+        # "money-safe" math.
+        $self->ctx->{"fines"}->{$_} += int($mobts->$_ * 100) for (@total_keys);
 
         my $marc_xml = undef;
         if ($mobts->xact_type eq 'reservation' and
@@ -669,7 +683,8 @@ sub load_fines {
         );
     }
 
-     return;
+    $self->ctx->{"fines"}->{$_} /= 100.0 for (@total_keys);
+    return;
 }
 
 sub load_myopac_main {

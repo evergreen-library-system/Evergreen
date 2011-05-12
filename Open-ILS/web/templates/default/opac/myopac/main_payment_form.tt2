@@ -4,8 +4,15 @@
     myopac_page = "main";
     myopac_main_page = "payment_form";
 %]
+[% IF ctx.fines.balance_owed <= 0 %]
+<div>
+    [% l("You either have no fines to pay or you have selected fines whose " _
+        "total is non-positive.  We cannot process non-positive amounts.") %]
+</div>
+[% ELSE %]
 <div id="pay_fines_now">
-    <form action="[% ctx.opac_root %]/myopac/pay" method="POST">
+    <form action="[% ctx.opac_root %]/myopac/pay" method="POST"
+        onsubmit="return confirm('[% l("Are you sure you are ready to charge [_1] to your credit card?", money(ctx.fines.balance_owed)) %]');">
         [% FOR xact IN CGI.param('xact') %]
         <input type="hidden" name="xact" value="[% xact | html %]" />
         [% END %]
@@ -24,7 +31,6 @@
                             </thead>
                             <tbody>
                             [%
-                            pay_total = 0.0;
                             FOR f IN ctx.fines.circulation;
                                 NEXT IF CGI.param('xact').size &&
                                     !CGI.param('xact').grep(f.xact.id).size;
@@ -33,9 +39,7 @@
                                     PROCESS get_marc_attrs args=attrs;
                                 ELSIF f.xact.reservation;
                                     attrs.title = f.xact.reservation.target_resource_type.name;
-                                END;
-                                # XXX use fixed point math
-                                pay_total = pay_total + f.xact.balance_owed; %]
+                                END %]
                                 <tr>
                                     <td>[% attrs.title %]</td>
                                     <td class="text-right">[% money(f.xact.balance_owed) %]</td>
@@ -44,9 +48,7 @@
                             END;
                             FOR f IN ctx.fines.grocery;
                                 NEXT IF CGI.param('xact').size &&
-                                    !CGI.param('xact').grep(f.xact.id).size;
-                                # XXX use fixed point math
-                                pay_total = pay_total + f.xact.balance_owed; %]
+                                    !CGI.param('xact').grep(f.xact.id).size %]
                                 <tr>
                                     <td>[% f.xact.last_billing_type %]</td>
                                     <td class="text-right">[% money(f.xact.balance_owed) %]</td>
@@ -57,10 +59,7 @@
                         <br />
                         <div>
                             [% l('Total amount to pay:') %]
-                            [%# XXX TODO: calculate pay_total not here in the
-                            template but rather in the mod_perl, and only
-                            proceed when that number is positive %]
-                            <strong>[% money(pay_total) %]</strong>
+                            <strong>[% money(ctx.fines.balance_owed) %]</strong>
                         </div>
                         <br />
                         [% | l('<strong>', '</strong>') %]Click [_1]Cancel[_2] to go back and (un)select other fines.[% END %]
@@ -166,4 +165,5 @@
         </table>
     </form>
 </div>
+[% END %]
 [% END %]

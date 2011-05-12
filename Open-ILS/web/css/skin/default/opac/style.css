@@ -806,6 +806,8 @@ div.select-wrapper:hover {
 	height: 166px;
 }
 
+#myopac_sum_fines_placehold { float: right; width: 177px; height: 166px; }
+
 .acct_holds_temp td {
 	text-align: left;
 }
