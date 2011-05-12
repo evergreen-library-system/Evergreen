@@ -197,8 +197,10 @@ sub calc_proximity {
 				actor.org_unit r;
 	SQL
 
+	$self->method_lookup('open-ils.storage.transaction.begin')->run;
 	actor::org_unit_proximity->db_Main->do($delete_sql);
 	actor::org_unit_proximity->db_Main->do($insert_sql);
+	$self->method_lookup('open-ils.storage.transaction.commit')->run;
 
 	return 1;
 }
