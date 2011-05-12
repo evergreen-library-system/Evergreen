@@ -157,7 +157,7 @@
                     <td colspan='2' align="center">
                         <input type="submit" value="[% l('Submit Payment') %]" />
                         <input type="reset" value="[% l('Cancel') %]"
-                            onclick="location.history.go(-1);" />
+                            onclick="history.go(-1);" />
                     </td>
                 </tr>
                 [% INCLUDE "default/opac/myopac/main_refund_policy.tt2" %]
