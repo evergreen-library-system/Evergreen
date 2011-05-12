@@ -6,7 +6,7 @@
     <a href="http://example.com">[% l('Bottom Link 5') %]</a>
 
     <div id="copyright_text" style="margin-top: 2em;">
-        [% l('Copyright &copy; 2006-2011 Georgia Public Library Service, and others') %]
+        [% l('Copyright &copy; 2006-[_1] Georgia Public Library Service, and others', date.format(date.now, '%Y')) %]
     </div>
     <div id="footer_logo">
         [% l('Powered by') %]

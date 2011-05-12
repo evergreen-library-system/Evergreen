@@ -10,6 +10,9 @@
     </div>
 
     <!-- fines summary along the right of the page -->
+    [% IF myopac_main_page == "payment_form" %]
+    <div id="myopac_sum_fines_placehold"></div>
+    [% ELSE %]
     <div id="myopac_sum_fines">
         <div style="position:absolute;">
             <div style="position:relative;top:-15px;left:-23px;">
@@ -36,14 +39,14 @@
             [% money(ctx.user_stats.fines.balance_owed) %]
         </span><br />
 
-        [%# TODO %]
-        <a class="hide_me" href="#" id="pay_fines_btn1"><img
-            alt="[% l('Pay Fines') %]"
+        <form action="[% ctx.opac_root %]/myopac/main_payment_form" method="POST"><input
+            type="image" title="[% l('Pay Fines') %]" alt="[% l('Pay Fines') %]"
             onmouseover="this.src='[% ctx.media_prefix %]/images/pay-fines-btn-hover.png';"
             onmouseout="this.src='[% ctx.media_prefix %]/images/pay-fines-btn.png';"
             src="[% ctx.media_prefix %]/images/pay-fines-btn.png"
-            style="position:relative;top:5px;" /></a>
+            class="pos-rel-top-5" /></form>
     </div>
+    [% END %]
 
     <div style="width:662px;">
         <div style="float:left;">

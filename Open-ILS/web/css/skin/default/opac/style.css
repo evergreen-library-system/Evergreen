@@ -806,6 +806,8 @@ div.select-wrapper:hover {
 	height: 166px;
 }
 
+#myopac_sum_fines_placehold { float: right; width: 177px; height: 166px; }
+
 .acct_holds_temp td {
 	text-align: left;
 }
@@ -987,7 +989,7 @@ a.dash-link:hover { text-decoration: underline !important; }
 .hold-editor-controls { text-align: center; padding-top: 1em !important; }
 .hold-editor-controls a { padding-left: 2em; }
 
-#rdetail_cn_browse_div { text-align: center; }
+.text-right { text-align: right; }
 .rdetail-author-div { padding-bottom: 10px; }
 
 .invisible { visibility: hidden; }

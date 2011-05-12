@@ -8,10 +8,7 @@ use OpenILS::Application::AppUtils;
 use OpenSRF::Utils::JSON;
 my $U = 'OpenILS::Application::AppUtils';
 
-
-# context additions: 
-#   user : au object, fleshed
-sub load_myopac_prefs {
+sub load_extended_user_info {
     my $self = shift;
 
     $self->ctx->{user} = $self->editor->retrieve_actor_user([
@@ -19,13 +16,20 @@ sub load_myopac_prefs {
         {
             flesh => 1,
             flesh_fields => {
-                au => [qw/card home_ou addresses ident_type/]
+                au => [qw/card home_ou addresses ident_type billing_address/]
                 # ...
             }
         }
-    ]);
+    ]) or return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
 
-    return Apache2::Const::OK;
+    return;
+}
+
+# context additions: 
+#   user : au object, fleshed
+sub load_myopac_prefs {
+    my $self = shift;
+    return $self->load_extended_user_info || Apache2::Const::OK;
 }
 
 sub load_myopac_prefs_notify {
@@ -102,21 +106,8 @@ sub update_optin_prefs {
 
 sub load_myopac_prefs_settings {
     my $self = shift;
-
-    $self->ctx->{user} = $self->editor->retrieve_actor_user([
-        $self->ctx->{user}->id,
-        {
-            flesh => 1,
-            flesh_fields => {
-                au => [qw/card home_ou addresses ident_type/]
-                # ...
-            }
-        }
-    ]);
-
-    return Apache2::Const::OK;
+    return $self->load_extended_user_info || Apache2::Const::OK;
 }
-
 
 sub fetch_user_holds {
     my $self = shift;
@@ -567,6 +558,24 @@ sub load_myopac_hold_history {
     return Apache2::Const::OK;
 }
 
+sub load_myopac_payment_form {
+    my $self = shift;
+    my $r;
+
+    $r = $self->load_fines(undef, undef, [$self->cgi->param('xact')]) and return $r;
+
+    # total selected fines
+    foreach (
+        @{$self->ctx->{"fines"}->{"circulation"}},
+        @{$self->ctx->{"fines"}->{"grocery"}}
+    ) {
+    }
+
+    $r = $self->load_extended_user_info and return $r;
+
+    return Apache2::Const::OK;
+}
+
 # TODO: add other filter options as params/configs/etc.
 sub load_myopac_payments {
     my $self = shift;
@@ -589,23 +598,18 @@ sub load_myopac_payments {
     return Apache2::Const::OK;
 }
 
+sub load_fines {
+    my ($self, $limit, $offset, $id_list) = @_;
 
+    # XXX TODO: check for failure after various network calls
 
-sub load_myopac_main {
-    my $self = shift;
-    my $limit = $self->cgi->param('limit') || 0;
-    my $offset = $self->cgi->param('offset') || 0;
-    my $e = $self->editor;
-    my $ctx = $self->ctx;
-
-    $ctx->{"fines"} = {
+    $self->ctx->{"fines"} = {
         "circulation" => [],
         "grocery" => [],
         "total_paid" => 0,
         "total_owed" => 0,
         "balance_owed" => 0
     };
-
 
     my $cstore = OpenSRF::AppSession->create('open-ils.cstore');
 
@@ -617,8 +621,9 @@ sub load_myopac_main {
     my $req = $cstore->request(
         'open-ils.cstore.direct.money.open_billable_transaction_summary.search',
         {
-            usr => $e->requestor->id,
-            balance_owed => {'!=' => 0}
+            usr => $self->editor->requestor->id,
+            balance_owed => {'!=' => 0},
+            ($id_list && @$id_list ? ("id" => $id_list) : ()),
         },
         {
             flesh => 4,
@@ -637,6 +642,9 @@ sub load_myopac_main {
         }
     );
 
+    my @total_keys = qw/total_paid total_owed balance_owed/;
+    $self->ctx->{"fines"}->{@total_keys} = (0, 0, 0);
+
     while(my $resp = $req->recv) {
         my $mobts = $resp->content;
         my $circ = $mobts->circulation;
@@ -647,10 +655,10 @@ sub load_myopac_main {
             $last_billing = pop(@billings);
         }
 
-        # XXX TODO switch to some money-safe non-fp library for math
-        $ctx->{"fines"}->{$_} += $mobts->$_ for (
-            qw/total_paid total_owed balance_owed/
-        );
+        # XXX TODO confirm that the following, and the later division by 100.0
+        # to get a floating point representation once again, is sufficiently
+        # "money-safe" math.
+        $self->ctx->{"fines"}->{$_} += int($mobts->$_ * 100) for (@total_keys);
 
         my $marc_xml = undef;
         if ($mobts->xact_type eq 'reservation' and
@@ -666,7 +674,7 @@ sub load_myopac_main {
         }
 
         push(
-            @{$ctx->{"fines"}->{$mobts->grocery ? "grocery" : "circulation"}},
+            @{$self->ctx->{"fines"}->{$mobts->grocery ? "grocery" : "circulation"}},
             {
                 xact => $mobts,
                 last_grocery_billing => $last_billing,
@@ -675,8 +683,17 @@ sub load_myopac_main {
         );
     }
 
-     return Apache2::Const::OK;
-}       
+    $self->ctx->{"fines"}->{$_} /= 100.0 for (@total_keys);
+    return;
+}
+
+sub load_myopac_main {
+    my $self = shift;
+    my $limit = $self->cgi->param('limit') || 0;
+    my $offset = $self->cgi->param('offset') || 0;
+
+    return $self->load_fines($limit, $offset) || Apache2::Const::OK;
+}
 
 sub load_myopac_update_email {
     my $self = shift;
