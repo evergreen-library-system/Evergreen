@@ -36,12 +36,16 @@ use OpenSRF::Utils::Logger qw($logger);
 # ... and this is our OpenILS object (en|de)coder and psuedo-ORM package.
 use OpenILS::Utils::Fieldmapper;
 
+use OpenILS::Utils::CStoreEditor q/:funcs/;
+
+
 our (
   $_parser,
   $_xslt,
   %record_xslt,
   %metarecord_xslt,
   %holdings_data_cache,
+  %authority_browse_axis_cache,
 );
 
 sub child_init {
@@ -883,6 +887,48 @@ Returns a list of the requested org-scoped record IDs held
 		}
 );
 
+sub axis_authority_browse {
+	my $self = shift;
+	my $client = shift;
+    my $axis = shift;
+
+    $axis =~ s/(\.refs)$//;
+    my $refs = $1;
+
+    unless(scalar(keys(%authority_browse_axis_cache))) {
+        my $axes = new_editor->search_authority_browse_axis([
+            { code => { '<>' => undef } },
+            {flesh => 4, flesh_fields => { aba => ['fields'], acsafm => ['sub_entries'] } }
+        ]);
+        $authority_browse_axis_cache{$_->code} = $_ for (@$axes);
+    }
+
+    my @tags;
+    for my $f (@{$authority_browse_axis_cache{$axis}->fields}) {
+        push @tags, $f->tag;
+        if ($refs) {
+            push @tags, $_->tag for @{$f-sub_entries};
+        }
+    }
+
+    return authority_tag_sf_browse($self, $client, \@tags, 'a', @_); # XXX TODO figure out something more correct for the subfield param
+}
+__PACKAGE__->register_method(
+	method    => 'axis_authority_browse',
+	api_name  => 'open-ils.supercat.authority.browse.by_axis',
+	api_level => 1,
+	argc      => 2,
+	signature =>
+		{ desc     => "Returns a list of the requested authority record IDs held",
+		  params   =>
+		  	[ { name => 'axis', desc => 'The target axis', type => 'string' },
+		  	  { name => 'value', desc => 'The target value', type => 'string' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
+		}
+);
+
 sub general_authority_browse {
 	my $self = shift;
 	my $client = shift;
@@ -1397,6 +1443,48 @@ Returns a list of the requested org-scoped record IDs held
 		}
 );
 
+sub axis_authority_startwith {
+	my $self = shift;
+	my $client = shift;
+    my $axis = shift;
+
+    $axis =~ s/(\.refs)$//;
+    my $refs = $1;
+
+    unless(scalar(keys(%authority_browse_axis_cache))) {
+        my $axes = new_editor->search_authority_browse_axis([
+            { code => { '<>' => undef } },
+            {flesh => 4, flesh_fields => { aba => ['fields'], acsafm => ['sub_entries'] } }
+        ]);
+        $authority_browse_axis_cache{$_->code} = $_ for (@$axes);
+    }
+
+    my @tags;
+    for my $f (@{$authority_browse_axis_cache{$axis}->fields}) {
+        push @tags, $f->tag;
+        if ($refs) {
+            push @tags, $_->tag for @{$f-sub_entries};
+        }
+    }
+
+    return authority_tag_sf_startwith($self, $client, \@tags, 'a', @_); # XXX TODO figure out something more correct for the subfield param
+}
+__PACKAGE__->register_method(
+	method    => 'axis_authority_startwith',
+	api_name  => 'open-ils.supercat.authority.startwith.by_axis',
+	api_level => 1,
+	argc      => 2,
+	signature =>
+		{ desc     => "Returns a list of the requested authority record IDs held",
+		  params   =>
+		  	[ { name => 'axis', desc => 'The target axis', type => 'string' },
+		  	  { name => 'value', desc => 'The target value', type => 'string' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 10', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
+		}
+);
+
 sub general_authority_startwith {
 	my $self = shift;
 	my $client = shift;
@@ -1412,7 +1500,7 @@ __PACKAGE__->register_method(
 		{ desc     => "Returns a list of the requested authority record IDs held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target title', type => 'string' },
-			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 10', type => 'number' },
 			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
 		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
 		}
@@ -1427,7 +1515,7 @@ __PACKAGE__->register_method(
 		{ desc     => "Returns a list of the requested authority record IDs held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target author', type => 'string' },
-			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 10', type => 'number' },
 			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
 		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
 		}
@@ -1442,7 +1530,7 @@ __PACKAGE__->register_method(
 		{ desc     => "Returns a list of the requested authority record IDs held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target subject', type => 'string' },
-			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 10', type => 'number' },
 			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
 		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
 		}
@@ -1457,7 +1545,7 @@ __PACKAGE__->register_method(
 		{ desc     => "Returns a list of the requested authority record IDs held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target topical subject', type => 'string' },
-			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 10', type => 'number' },
 			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
 		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
 		}
@@ -1472,7 +1560,7 @@ __PACKAGE__->register_method(
 		{ desc     => "Returns a list of the requested authority record IDs held, including see (4xx) and see also (5xx) references",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target title', type => 'string' },
-			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 10', type => 'number' },
 			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
 		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
 		}
@@ -1487,7 +1575,7 @@ __PACKAGE__->register_method(
 		{ desc     => "Returns a list of the requested authority record IDs held, including see (4xx) and see also (5xx) references",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target author', type => 'string' },
-			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 10', type => 'number' },
 			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
 		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
 		}
@@ -1502,7 +1590,7 @@ __PACKAGE__->register_method(
 		{ desc     => "Returns a list of the requested authority record IDs held, including see (4xx) and see also (5xx) references",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target subject', type => 'string' },
-			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 10', type => 'number' },
 			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
 		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
 		}
@@ -1517,7 +1605,7 @@ __PACKAGE__->register_method(
 		{ desc     => "Returns a list of the requested authority record IDs held, including see (4xx) and see also (5xx) references",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target topical subject', type => 'string' },
-			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 10', type => 'number' },
 			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
 		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
 		}
@@ -1627,7 +1715,7 @@ Returns a list of the requested authority record IDs held
 				  desc => 'The target string',
 				  type => 'string' },
 				{ name => 'page_size',
-				  desc => 'Count of call numbers to retrieve, default is 9',
+				  desc => 'Count of call numbers to retrieve, default is 10',
 				  type => 'number' },
 				{ name => 'page',
 				  desc => 'The page of call numbers to retrieve, calculated based on page_size.  Can be positive, negative or 0.',
