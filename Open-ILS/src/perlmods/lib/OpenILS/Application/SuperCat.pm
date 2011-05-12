@@ -887,21 +887,36 @@ Returns a list of the requested org-scoped record IDs held
 		}
 );
 
+sub grab_authority_browse_axes {
+
+    unless(scalar(keys(%authority_browse_axis_cache))) {
+        my $axes = new_editor->search_authority_browse_axis([
+            { code => { '<>' => undef } },
+            { flesh => 2, flesh_fields => { aba => ['fields'], acsafm => ['bib_fields','sub_entries'] } }
+        ]);
+        $authority_browse_axis_cache{$_->code} = $_ for (@$axes);
+    }
+
+    return [keys %authority_browse_axis_cache];
+}
+__PACKAGE__->register_method(
+	method    => 'grab_authority_browse_axes',
+	api_name  => 'open-ils.supercat.authority.browse_axis_list',
+	api_level => 1,
+	argc      => 0,
+	note      => "Returns a list of valid authority browse/startswith axes"
+);
+
 sub axis_authority_browse {
 	my $self = shift;
 	my $client = shift;
     my $axis = shift;
 
+    $axis =~ s/^authority\.//;
     $axis =~ s/(\.refs)$//;
     my $refs = $1;
 
-    unless(scalar(keys(%authority_browse_axis_cache))) {
-        my $axes = new_editor->search_authority_browse_axis([
-            { code => { '<>' => undef } },
-            {flesh => 4, flesh_fields => { aba => ['fields'], acsafm => ['sub_entries'] } }
-        ]);
-        $authority_browse_axis_cache{$_->code} = $_ for (@$axes);
-    }
+    return undef unless ( grep { /$axis/ } @{ grab_authority_browse_axes() } );
 
     my @tags;
     for my $f (@{$authority_browse_axis_cache{$axis}->fields}) {
@@ -928,6 +943,8 @@ __PACKAGE__->register_method(
 		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
 		}
 );
+
+=pod
 
 sub general_authority_browse {
 	my $self = shift;
@@ -1054,6 +1071,8 @@ __PACKAGE__->register_method(
 		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
 		}
 );
+
+=cut
 
 sub authority_tag_sf_browse {
     my $self = shift;
@@ -1448,16 +1467,11 @@ sub axis_authority_startwith {
 	my $client = shift;
     my $axis = shift;
 
+    $axis =~ s/^authority\.//;
     $axis =~ s/(\.refs)$//;
     my $refs = $1;
 
-    unless(scalar(keys(%authority_browse_axis_cache))) {
-        my $axes = new_editor->search_authority_browse_axis([
-            { code => { '<>' => undef } },
-            {flesh => 4, flesh_fields => { aba => ['fields'], acsafm => ['sub_entries'] } }
-        ]);
-        $authority_browse_axis_cache{$_->code} = $_ for (@$axes);
-    }
+    return undef unless ( grep { /$axis/ } @{ grab_authority_browse_axes() } );
 
     my @tags;
     for my $f (@{$authority_browse_axis_cache{$axis}->fields}) {
@@ -1484,6 +1498,8 @@ __PACKAGE__->register_method(
 		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
 		}
 );
+
+=pod
 
 sub general_authority_startwith {
 	my $self = shift;
@@ -1610,6 +1626,8 @@ __PACKAGE__->register_method(
 		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
 		}
 );
+
+=cut
 
 sub authority_tag_sf_startwith {
     my $self = shift;
