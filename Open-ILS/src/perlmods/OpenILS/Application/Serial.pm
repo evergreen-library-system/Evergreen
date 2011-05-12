@@ -120,13 +120,26 @@ sub fleshed_item_alter {
     my $editor = new_editor(requestor => $reqr, xact => 1);
     my $override = $self->api_name =~ /override/;
 
-# TODO: permission check
-#        return $editor->event unless
-#            $editor->allowed('UPDATE_COPY', $class->copy_perm_org($vol, $copy));
-
+    my %found_sdist_ids;
+    my %found_sstr_ids;
     for my $item (@$items) {
+        my $sstr_id = ref $item->stream ? $item->stream->id : $item->stream;
+        if (!exists($found_sstr_ids{$sstr_id})) {
+            my $sstr;
+            if (ref $item->stream) {
+                $sstr = $item->stream;
+            } else {
+                $sstr = $editor->retrieve_serial_stream($item->stream) or return $editor->die_event;
+            }
+            if (!exists($found_sdist_ids{$sstr->distribution})) {
+                my $sdist = $editor->retrieve_serial_distribution($sstr->distribution) or return $editor->die_event;
+                return $editor->die_event unless
+                    $editor->allowed("ADMIN_SERIAL_STREAM", $sdist->holding_lib);
+                $found_sdist_ids{$sstr->distribution} = 1;
+            }
+            $found_sstr_ids{$sstr_id} = 1;
+        }
 
-        my $itemid = $item->id;
         $item->editor($editor->requestor->id);
         $item->edit_date('now');
 
@@ -243,11 +256,22 @@ sub fleshed_issuance_alter {
     my $editor = new_editor(requestor => $reqr, xact => 1);
     my $override = $self->api_name =~ /override/;
 
-# TODO: permission support
-#        return $editor->event unless
-#            $editor->allowed('UPDATE_COPY', $class->copy_perm_org($vol, $copy));
-
+    my %found_ssub_ids;
     for my $issuance (@$issuances) {
+        my $ssub_id = ref $issuance->subscription ? $issuance->subscription->id : $issuance->subscription;
+        if (!exists($found_ssub_ids{$ssub_id})) {
+            my $owning_lib_id;
+            if (ref $issuance->subscription) {
+                $owning_lib_id = $issuance->subscription->owning_lib;
+            } else {
+                my $ssub = $editor->retrieve_serial_subscription($issuance->subscription) or return $editor->die_event;
+                $owning_lib_id = $ssub->owning_lib;
+            }
+            return $editor->die_event unless
+                $editor->allowed("ADMIN_SERIAL_SUBSCRIPTION", $owning_lib_id);
+            $found_ssub_ids{$ssub_id} = 1;
+        }
+
         my $issuanceid = $issuance->id;
         $issuance->editor($editor->requestor->id);
         $issuance->edit_date('now');
@@ -549,11 +573,22 @@ sub fleshed_sunit_alter {
     my $editor = new_editor(requestor => $reqr, xact => 1);
     my $override = $self->api_name =~ /override/;
 
-# TODO: permission support
-#        return $editor->event unless
-#            $editor->allowed('UPDATE_COPY', $class->copy_perm_org($vol, $copy));
-
+    my %found_cn_ids;
     for my $sunit (@$sunits) {
+        my $cn_id = ref $sunit->call_number ? $sunit->call_number->id : $sunit->call_number;
+        if (!exists($found_cn_ids{$cn_id})) {
+            my $owning_lib_id;
+            if (ref $sunit->call_number) {
+                $owning_lib_id = $sunit->call_number->owning_lib;
+            } else {
+                my $cn = $editor->retrieve_asset_call_number($sunit->call_number) or return $editor->die_event;
+                $owning_lib_id = $cn->owning_lib;
+            }
+            return $editor->die_event unless
+                $editor->allowed("UPDATE_COPY", $owning_lib_id);
+            $found_cn_ids{$cn_id} = 1;
+        }
+
         if( $sunit->isdeleted ) {
             $evt = _delete_sunit( $editor, $override, $sunit );
         } else {
@@ -776,7 +811,8 @@ sub make_predictions {
         push (@issuances, $issuance);
     }
 
-    fleshed_issuance_alter($self, $conn, $authtoken, \@issuances); # FIXME: catch events
+    my $evt = fleshed_issuance_alter($self, $conn, $authtoken, \@issuances);
+    return $evt if ref $evt;
 
     my @items;
     for (my $i = 0; $i < @issuances; $i++) {
@@ -1895,11 +1931,10 @@ sub fleshed_ssub_alter {
     my $editor = new_editor(requestor => $reqr, xact => 1);
     my $override = $self->api_name =~ /override/;
 
-# TODO: permission check
-#        return $editor->event unless
-#            $editor->allowed('UPDATE_COPY', $class->copy_perm_org($vol, $copy));
-
     for my $ssub (@$ssubs) {
+        my $owning_lib_id = ref $ssub->owning_lib ? $ssub->owning_lib->id : $ssub->owning_lib;
+        return $editor->die_event unless
+            $editor->allowed("ADMIN_SERIAL_SUBSCRIPTION", $owning_lib_id);
 
         my $ssubid = $ssub->id;
 
@@ -2122,12 +2157,10 @@ sub fleshed_sdist_alter {
     my $editor = new_editor(requestor => $reqr, xact => 1);
     my $override = $self->api_name =~ /override/;
 
-# TODO: permission check
-#        return $editor->event unless
-#            $editor->allowed('UPDATE_COPY', $class->copy_perm_org($vol, $copy));
-
     for my $sdist (@$sdists) {
-        my $sdistid = $sdist->id;
+        my $holding_lib_id = ref $sdist->holding_lib ? $sdist->holding_lib->id : $sdist->holding_lib;
+        return $editor->die_event unless
+            $editor->allowed("ADMIN_SERIAL_DISTRIBUTION", $holding_lib_id);
 
         if( $sdist->isdeleted ) {
             $evt = _delete_sdist( $editor, $override, $sdist);
@@ -2326,12 +2359,14 @@ sub scap_alter {
     my $editor = new_editor(requestor => $reqr, xact => 1);
     my $override = $self->api_name =~ /override/;
 
-# TODO: permission check
-#        return $editor->event unless
-#            $editor->allowed('UPDATE_COPY', $class->copy_perm_org($vol, $copy));
-
+    my %found_ssub_ids;
     for my $scap (@$scaps) {
-        my $scapid = $scap->id;
+        if (!exists($found_ssub_ids{$scap->subscription})) {
+            my $ssub = $editor->retrieve_serial_subscription($scap->subscription) or return $editor->die_event;
+            return $editor->die_event unless
+                $editor->allowed("ADMIN_SERIAL_CAPTION_PATTERN", $ssub->owning_lib);
+            $found_ssub_ids{$scap->subscription} = 1;
+        }
 
         if( $scap->isdeleted ) {
             $evt = _delete_scap( $editor, $override, $scap);
@@ -2437,12 +2472,14 @@ sub sstr_alter {
     my $editor = new_editor(requestor => $reqr, xact => 1);
     my $override = $self->api_name =~ /override/;
 
-# TODO: permission check
-#        return $editor->event unless
-#            $editor->allowed('UPDATE_COPY', $class->copy_perm_org($vol, $copy));
-
+    my %found_sdist_ids;
     for my $sstr (@$sstrs) {
-        my $sstrid = $sstr->id;
+        if (!exists($found_sdist_ids{$sstr->distribution})) {
+            my $sdist = $editor->retrieve_serial_distribution($sstr->distribution) or return $editor->die_event;
+            return $editor->die_event unless
+                $editor->allowed("ADMIN_SERIAL_STREAM", $sdist->holding_lib);
+            $found_sdist_ids{$sstr->distribution} = 1;
+        }
 
         if( $sstr->isdeleted ) {
             $evt = _delete_sstr( $editor, $override, $sstr);
@@ -2605,12 +2642,14 @@ sub sum_alter {
     my $editor = new_editor(requestor => $reqr, xact => 1);
     my $override = $self->api_name =~ /override/;
 
-# TODO: permission check
-#        return $editor->event unless
-#            $editor->allowed('UPDATE_COPY', $class->copy_perm_org($vol, $copy));
-
+    my %found_sdist_ids;
     for my $sum (@$sums) {
-        my $sumid = $sum->id;
+        if (!exists($found_sdist_ids{$sum->distribution})) {
+            my $sdist = $editor->retrieve_serial_distribution($sum->distribution) or return $editor->die_event;
+            return $editor->die_event unless
+                $editor->allowed("ADMIN_SERIAL_DISTRIBUTION", $sdist->holding_lib);
+            $found_sdist_ids{$sum->distribution} = 1;
+        }
 
         # XXX: (for now, at least) summaries should be created/deleted by the distribution functions
         if( $sum->isdeleted ) {
