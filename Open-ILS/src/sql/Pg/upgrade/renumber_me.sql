@@ -255,6 +255,132 @@ INSERT INTO action_trigger.environment ( event_def, path) VALUES (
     ,( 40, 'queue')
     ,( 40, 'queue.owner')
 ;
+
+INSERT INTO action_trigger.event_definition (
+        id,
+        active,
+        owner,
+        name,
+        hook,
+        validator,
+        reactor,
+        group_field,
+        granularity,
+        template
+    ) VALUES (
+        41,
+        TRUE,
+        1,
+        'Print Output for Queued Authority Records',
+        'vandelay.queued_auth_record.print',
+        'NOOP_True',
+        'ProcessTemplate',
+        'usr',
+        'print-on-demand',
+$$
+[%- USE date -%]
+<pre>
+Queue ID: [% target.0.queue.id %]
+Queue Name: [% target.0.queue.name %]
+Queue Type: [% target.0.queue.queue_type %]
+Complete? [% target.0.queue.complete %]
+
+    [% FOR vqar IN target %]
+=-=-=
+ Record Identifier | [% helpers.get_queued_auth_attr('rec_identifier',vqar.attributes) %]
+
+    [% END %]
+</pre>
+$$
+    )
+;
+
+INSERT INTO action_trigger.environment ( event_def, path) VALUES (
+    41, 'attributes')
+    ,( 41, 'queue')
+;
+
+INSERT INTO action_trigger.event_definition (
+        id,
+        active,
+        owner,
+        name,
+        hook,
+        validator,
+        reactor,
+        group_field,
+        granularity,
+        template
+    ) VALUES (
+        42,
+        TRUE,
+        1,
+        'CSV Output for Queued Authority Records',
+        'vandelay.queued_auth_record.csv',
+        'NOOP_True',
+        'ProcessTemplate',
+        'usr',
+        'print-on-demand',
+$$
+[%- USE date -%][%- FOR vqar IN target -%]"[% helpers.get_queued_auth_attr('rec_identifier',vqar.attributes) | replace('"', '""') %]"[%- END -%]
+$$
+    )
+;
+
+INSERT INTO action_trigger.environment ( event_def, path) VALUES (
+    42, 'attributes')
+    ,( 42, 'queue')
+;
+
+INSERT INTO action_trigger.event_definition (
+        id,
+        active,
+        owner,
+        name,
+        hook,
+        validator,
+        reactor,
+        group_field,
+        granularity,
+        template
+    ) VALUES (
+        43,
+        TRUE,
+        1,
+        'Email Output for Queued Authority Records',
+        'vandelay.queued_auth_record.email',
+        'NOOP_True',
+        'SendEmail',
+        'queue.owner',
+        NULL,
+$$
+[%- USE date -%]
+[%- SET user = target.0.queue.owner -%]
+To: [%- params.recipient_email || user.email || 'root@localhost' %]
+From: [%- params.sender_email || default_sender %]
+Subject: Authorities from Import Queue
+
+Queue ID: [% target.0.queue.id %]
+Queue Name: [% target.0.queue.name %]
+Queue Type: [% target.0.queue.queue_type %]
+Complete? [% target.0.queue.complete %]
+
+    [% FOR vqar IN target %]
+=-=-=
+ Record Identifier | [% helpers.get_queued_auth_attr('rec_identifier',vqar.attributes) %]
+
+    [% END %]
+
+$$
+    )
+;
+
+INSERT INTO action_trigger.environment ( event_def, path) VALUES (
+    43, 'attributes')
+    ,( 43, 'queue')
+    ,( 43, 'queue.owner')
+;
+
 COMMIT;
 
--- DELETE FROM action_trigger.event_output WHERE id IN ((SELECT template_output FROM action_trigger.event WHERE event_def IN (38,39,40))UNION(SELECT error_output FROM action_trigger.event WHERE event_def IN (38,39,40))); DELETE FROM action_trigger.event WHERE event_def IN (38,39,40); DELETE FROM action_trigger.environment WHERE event_def IN (38,39,40); DELETE FROM action_trigger.event_definition WHERE id IN (38,39,40); DELETE FROM action_trigger.hook WHERE key IN ('vandelay.queued_bib_record.print','vandelay.queued_bib_record.csv','vandelay.queued_bib_record.email','vandelay.queued_auth_record.print','vandelay.queued_auth_record.csv','vandelay.queued_auth_record.email','vandelay.import_items.print','vandelay.import_items.csv','vandelay.import_items.email'); DELETE FROM config.upgrade_log WHERE version = 'test';
+-- DELETE FROM action_trigger.event_output WHERE id IN ((SELECT template_output FROM action_trigger.event WHERE event_def IN (38,39,40,41,42,43))UNION(SELECT error_output FROM action_trigger.event WHERE event_def IN (38,39,40,41,42,43))); DELETE FROM action_trigger.event WHERE event_def IN (38,39,40,41,42,43); DELETE FROM action_trigger.environment WHERE event_def IN (38,39,40,41,42,43); DELETE FROM action_trigger.event_definition WHERE id IN (38,39,40,41,42,43); DELETE FROM action_trigger.hook WHERE key IN ('vandelay.queued_bib_record.print','vandelay.queued_bib_record.csv','vandelay.queued_bib_record.email','vandelay.queued_auth_record.print','vandelay.queued_auth_record.csv','vandelay.queued_auth_record.email','vandelay.import_items.print','vandelay.import_items.csv','vandelay.import_items.email'); DELETE FROM config.upgrade_log WHERE version = 'test';
