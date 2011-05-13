@@ -381,6 +381,76 @@ INSERT INTO action_trigger.environment ( event_def, path) VALUES (
     ,( 43, 'queue.owner')
 ;
 
+INSERT INTO action_trigger.event_definition (
+        id,
+        active,
+        owner,
+        name,
+        hook,
+        validator,
+        reactor,
+        group_field,
+        granularity,
+        template
+    ) VALUES (
+        44,
+        TRUE,
+        1,
+        'Print Output for Import Items from Queued Bib Records',
+        'vandelay.import_items.print',
+        'NOOP_True',
+        'ProcessTemplate',
+        'record.queue.owner',
+        'print-on-demand',
+$$
+[%- USE date -%]
+<pre>
+Queue ID: [% target.0.record.queue.id %]
+Queue Name: [% target.0.record.queue.name %]
+Queue Type: [% target.0.record.queue.queue_type %]
+Complete? [% target.0.record.queue.complete %]
+
+    [% FOR vii IN target %]
+=-=-=
+ Import Item ID         | [% vii.id %]
+ Title of work          | [% helpers.get_queued_bib_attr('title',vii.record.attributes) %]
+ ISBN                   | [% helpers.get_queued_bib_attr('isbn',vii.record.attributes) %]
+ Attribute Definition   | [% vii.definition %]
+ Import Error           | [% vii.import_error %]
+ Import Error Detail    | [% vii.error_detail %]
+ Owning Library         | [% vii.owning_lib %]
+ Circulating Library    | [% vii.circ_lib %]
+ Call Number            | [% vii.call_number %]
+ Copy Number            | [% vii.copy_number %]
+ Status                 | [% vii.status.name %]
+ Shelving Location      | [% vii.location.name %]
+ Circulate              | [% vii.circulate %]
+ Deposit                | [% vii.deposit %]
+ Deposit Amount         | [% vii.deposit_amount %]
+ Reference              | [% vii.ref %]
+ Holdable               | [% vii.holdable %]
+ Price                  | [% vii.price %]
+ Barcode                | [% vii.barcode %]
+ Circulation Modifier   | [% vii.circ_modifier %]
+ Circulate As MARC Type | [% vii.circ_as_type %]
+ Alert Message          | [% vii.alert_message %]
+ Public Note            | [% vii.pub_note %]
+ Private Note           | [% vii.priv_note %]
+ OPAC Visible           | [% vii.opac_visible %]
+
+    [% END %]
+</pre>
+$$
+    )
+;
+
+INSERT INTO action_trigger.environment ( event_def, path) VALUES (
+    44, 'record')
+    ,( 44, 'record.attributes')
+    ,( 44, 'record.queue')
+    ,( 44, 'record.queue.owner')
+;
+
 COMMIT;
 
--- DELETE FROM action_trigger.event_output WHERE id IN ((SELECT template_output FROM action_trigger.event WHERE event_def IN (38,39,40,41,42,43))UNION(SELECT error_output FROM action_trigger.event WHERE event_def IN (38,39,40,41,42,43))); DELETE FROM action_trigger.event WHERE event_def IN (38,39,40,41,42,43); DELETE FROM action_trigger.environment WHERE event_def IN (38,39,40,41,42,43); DELETE FROM action_trigger.event_definition WHERE id IN (38,39,40,41,42,43); DELETE FROM action_trigger.hook WHERE key IN ('vandelay.queued_bib_record.print','vandelay.queued_bib_record.csv','vandelay.queued_bib_record.email','vandelay.queued_auth_record.print','vandelay.queued_auth_record.csv','vandelay.queued_auth_record.email','vandelay.import_items.print','vandelay.import_items.csv','vandelay.import_items.email'); DELETE FROM config.upgrade_log WHERE version = 'test';
+-- BEGIN; DELETE FROM action_trigger.event_output WHERE id IN ((SELECT template_output FROM action_trigger.event WHERE event_def IN (38,39,40,41,42,43,44))UNION(SELECT error_output FROM action_trigger.event WHERE event_def IN (38,39,40,41,42,43,44))); DELETE FROM action_trigger.event WHERE event_def IN (38,39,40,41,42,43,44); DELETE FROM action_trigger.environment WHERE event_def IN (38,39,40,41,42,43,44); DELETE FROM action_trigger.event_definition WHERE id IN (38,39,40,41,42,43,44); DELETE FROM action_trigger.hook WHERE key IN ('vandelay.queued_bib_record.print','vandelay.queued_bib_record.csv','vandelay.queued_bib_record.email','vandelay.queued_auth_record.print','vandelay.queued_auth_record.csv','vandelay.queued_auth_record.email','vandelay.import_items.print','vandelay.import_items.csv','vandelay.import_items.email'); DELETE FROM config.upgrade_log WHERE version = 'test'; COMMIT;
