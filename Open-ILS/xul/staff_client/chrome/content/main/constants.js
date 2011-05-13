@@ -357,7 +357,8 @@ var api = {
     'RECALCULATE_STANDING_PENALTIES' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.penalties.update' },
     'USER_ORG_UNIT_OPT_IN_FEATURE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.org_unit_opt_in.enabled' },
     'USER_ORG_UNIT_OPT_IN_CHECK' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.org_unit_opt_in.check' },
-    'USER_ORG_UNIT_OPT_IN_CREATE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.org_unit_opt_in.create' }
+    'USER_ORG_UNIT_OPT_IN_CREATE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.org_unit_opt_in.create' },
+    'GET_BARCODES' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.get_barcodes' }
 }
 
 var urls = {

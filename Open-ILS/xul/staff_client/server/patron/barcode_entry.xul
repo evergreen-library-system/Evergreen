@@ -93,60 +93,65 @@
 
                 tb.disabled = true;
                 document.getElementById('progress').setAttribute('hidden','false');
-                net.simple_request('FM_AU_ID_RETRIEVE_VIA_BARCODE_OR_USERNAME',[ ses(), barcode, null ],
-                    function(req) {
-                        document.getElementById('progress').setAttribute('hidden','true');
-                        tb.disabled = false; tb.select(); tb.focus(); ;
-                        var robj = req.getResultObject();
-                        if (typeof robj.ilsevent != 'undefined') {
-                            sound.bad();
-                            switch(Number(robj.ilsevent)) {
-                                case 1002 /* ACTOR_USER_NOT_FOUND */: 
-                                    add_msg($("patronStrings").getFormattedString('staff.patron.barcode_entry.barcode_not_found', [barcode]));
-                                break;
-                                default:
-                                    add_msg($("patronStrings").getFormattedString('staff.patron.barcode_entry.barcode_retrieval_problem', [barcode, js2JSON(robj)]));
-                            }
-                            return;
-                        }
+                // Auto-complete the barcode, users only. Handily, looks up all we need to know in the process.
+                var barcode_object = xulG.get_barcode(window, 'actor', barcode);
+                document.getElementById('progress').setAttribute('hidden','true');
+                tb.disabled = false; tb.select(); tb.focus(); ;
+                // user_false means the user said "None of the above", so abort without further prompts/actions
+                if(barcode_object == "user_false") return;
+                if(barcode_object == false) {
+                    // Boolean false means the barcode was not found, and the user wasn't prompted.
+                    sound.bad();
+                    add_msg($("patronStrings").getFormattedString('staff.patron.barcode_entry.barcode_not_found', [barcode]));
+                    return;
+                }
+                else if(typeof barcode_object.ilsevent != 'undefined') {
+                    // Getting an ilsevent error otherwise means something, likely permissions issues, went wrong
+                    sound.bad();
+                    add_msg($("patronStrings").getFormattedString('staff.patron.barcode_entry.barcode_retrieval_problem', [barcode, js2JSON(barcode_object)]));
+                    return;
+                }
 
-                        if (g.data.user_org_unit_opt_in_enabled) {
-                            var r = net.simple_request('USER_ORG_UNIT_OPT_IN_CHECK',[ ses(), robj ]);
-                            if (typeof r.ilsevent != 'undefined') {
-                                throw(r);
+                if (g.data.user_org_unit_opt_in_enabled) {
+                    var r = net.simple_request('USER_ORG_UNIT_OPT_IN_CHECK',[ ses(), barcode_object.id ]);
+                    if (typeof r.ilsevent != 'undefined') {
+                        throw(r);
+                    } else {
+
+                        if (r == 0) {
+
+                            JSAN.use('patron.util');
+                            var parts;
+                            // Handily, if the user was prompted, we should already have the user's name information returned from autocomplete
+                            // Use it if there, as it saves us a network call.
+                            if(barcode_object.request_data) parts = barcode_object.request_data;
+                            // Otherwise, make the network call
+                            else parts = patron.util.retrieve_name_via_id( ses(), barcode_object.id );
+    
+                            if (0 != g.error.yns_alert(
+                                    $("patronStrings").getFormattedString('staff.patron.barcode_entry.consent_from_patron',
+                                        [parts[0], parts[1] + (parts[2] ? ' ' + parts[2] : ''), g.data.hash.aou[ parts[3] ].name(), g.data.hash.aou[ parts[3] ].shortname()]),
+                                    $("patronStrings").getString('staff.patron.barcode_entry.patron_consent_title'),
+                                    $("patronStrings").getString('staff.patron.barcode_entry.patron_consent_accept'),
+                                    $("patronStrings").getString('staff.patron.barcode_entry.patron_consent_deny'), null,
+                                    $("patronStrings").getString('staff.patron.barcode_entry.patron_consent_confirm')
+                                )
+                            ) {
+                                tb.select(); tb.focus();
+                                return;
                             } else {
-
-                                if (r == 0) {
-
-                                    JSAN.use('patron.util');
-                                    var parts = patron.util.retrieve_name_via_id( ses(), robj );
-    
-                                    if (0 != g.error.yns_alert(
-                                            $("patronStrings").getFormattedString('staff.patron.barcode_entry.consent_from_patron',
-                                                [parts[0], parts[1] + (parts[2] ? ' ' + parts[2] : ''), g.data.hash.aou[ parts[3] ].name(), g.data.hash.aou[ parts[3] ].shortname()]),
-                                            $("patronStrings").getString('staff.patron.barcode_entry.patron_consent_title'),
-                                            $("patronStrings").getString('staff.patron.barcode_entry.patron_consent_accept'),
-                                            $("patronStrings").getString('staff.patron.barcode_entry.patron_consent_deny'), null,
-                                            $("patronStrings").getString('staff.patron.barcode_entry.patron_consent_confirm')
-                                        )
-                                    ) {
-                                        tb.select(); tb.focus();
-                                        return;
-                                    } else {
-                                        var c = net.simple_request('USER_ORG_UNIT_OPT_IN_CREATE',[ ses(), robj ]);
-                                        if (typeof c.ilsevent != 'undefined') throw(r);
-                                    }
-                                }
-    
-                                sound.good();
-                                spawn(barcode);
+                                var c = net.simple_request('USER_ORG_UNIT_OPT_IN_CREATE',[ ses(), barcode_object.id ]);
+                                if (typeof c.ilsevent != 'undefined') throw(r);
                             }
-                        } else {
-                            sound.good();
-                            spawn(barcode);
                         }
+    
+                        sound.good();
+                        spawn(barcode_object.id, barcode_object.barcode);
                     }
-                );
+                } else {
+                    sound.good();
+                    spawn(barcode_object.id, barcode_object.barcode);
+                }
             } catch(E) {
                 tb.select(); tb.focus();
                 g.error.standard_unexpected_error_alert('barcode_entry.xul',E);
@@ -161,8 +166,8 @@
             d.setAttribute('style','color: red');
         }
 
-        function spawn(barcode) {
-            if (xul_param('perm_editor')) { spawn_perm_editor(barcode); } else { spawn_checkout(barcode); }
+        function spawn(id, barcode) {
+            if (xul_param('perm_editor')) { spawn_perm_editor(id); } else { spawn_checkout(barcode); }
         }
 
         function spawn_checkout(barcode) {
@@ -179,10 +184,9 @@
             }
         }
 
-        function spawn_perm_editor(barcode) {
+        function spawn_perm_editor(id) {
             try {
-                JSAN.use('patron.util'); var patron_obj = patron.util.retrieve_fleshed_au_via_barcode( ses(), barcode );
-                var loc = urls.XUL_USER_PERM_EDITOR + '?ses=' + window.escape(ses()) + '&usr=' + patron_obj.id();
+                var loc = urls.XUL_USER_PERM_EDITOR + '?ses=' + window.escape(ses()) + '&usr=' + id;
                 if (typeof window.xulG == 'object' && typeof window.xulG.set_tab == 'function') {
                     window.xulG.set_tab( loc, {}, {} );
                 } else {

@@ -53,7 +53,24 @@ function _holdsHandleStaffMe() {
 }
 
 function _holdsHandleStaff() {
-	var barcode = xulG.patron_barcode || $('xul_recipient_barcode').value;
+	var barcode = xulG.patron_barcode;
+    if(!barcode) {
+        barcode = $('xul_recipient_barcode').value;
+        if(xulG.get_barcode) {
+            // We have a "complete the barcode" function, call it (actor = users only)
+            var new_barcode = xulG.get_barcode(window, 'actor', barcode);
+            // If we got a result (boolean false is "no result") check it
+            if(new_barcode) {
+                // user_false string means they picked "None of the above"
+                // Abort before any other events can fire
+                if(new_barcode == "user_false") return;
+                // No error means we have a (hopefully valid) completed barcode to use.
+                // Otherwise, fall through to other methods of checking
+                if(typeof new_barcode.ilsevent == 'undefined')
+                    barcode = new_barcode.barcode;
+            }
+        }
+    }
 	var user = grabUserByBarcode( G.user.session, barcode );
 
 	var evt;

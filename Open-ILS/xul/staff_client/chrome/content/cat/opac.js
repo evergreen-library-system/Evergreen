@@ -105,7 +105,8 @@ function set_brief_view() {
     ["url_prefix", "new_tab", "set_tab", "close_tab", "new_patron_tab",
         "set_patron_tab", "volume_item_creator", "get_new_session",
         "holdings_maintenance_tab", "open_chrome_window", "url_prefix",
-        "network_meter", "page_meter", "set_statusbar", "set_help_context"
+        "network_meter", "page_meter", "set_statusbar", "set_help_context",
+        "get_barcode"
     ].forEach(function(k) { content_params[k] = xulG[k]; });
 
     top_pane.set_iframe( 
@@ -300,7 +301,7 @@ function open_acq_orders() {
             "set_patron_tab", "volume_item_creator", "get_new_session",
             "holdings_maintenance_tab", "set_tab_name", "open_chrome_window",
             "url_prefix", "network_meter", "page_meter", "set_statusbar",
-            "set_help_context"
+            "set_help_context", "get_barcode"
         ].forEach(function(k) { content_params[k] = xulG[k]; });
 
         var loc = urls.XUL_BROWSER + "?url=" + window.escape(
@@ -334,7 +335,7 @@ function open_alt_serial_mgmt() {
             "set_patron_tab", "volume_item_creator", "get_new_session",
             "holdings_maintenance_tab", "set_tab_name", "open_chrome_window",
             "url_prefix", "network_meter", "page_meter", "set_statusbar",
-            "set_help_context"
+            "set_help_context", "get_barcode"
         ].forEach(function(k) { content_params[k] = xulG[k]; });
 
         var loc = urls.XUL_BROWSER + "?url=" + window.escape(
@@ -370,7 +371,8 @@ function set_opac() {
                     } catch(E) {
                         g.error.standard_unexpected_error_alert('window_open',E);
                     }
-                }
+                },
+                'get_barcode' : xulG.get_barcode
             },
             'on_url_load' : function(f) {
                 netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
@@ -489,6 +491,7 @@ function set_opac() {
         content_params.page_meter = xulG.page_meter;
         content_params.set_statusbar = xulG.set_statusbar;
         content_params.set_help_context = xulG.set_help_context;
+        content_params.get_barcode = xulG.get_barcode;
 
         if (opac_url) { content_params.url = opac_url; } else { content_params.url = xulG.url_prefix( urls.browser ); }
         browser_frame = bottom_pane.set_iframe( xulG.url_prefix(urls.XUL_BROWSER) + '?name=Catalog', {}, content_params);
@@ -616,6 +619,7 @@ function bib_in_new_tab() {
         content_params.page_meter = xulG.page_meter;
         content_params.set_statusbar = xulG.set_statusbar;
         content_params.set_help_context = xulG.set_help_context;
+        content_params.get_barcode = xulG.get_barcode;
 
         xulG.new_tab(xulG.url_prefix(urls.XUL_OPAC_WRAPPER), {}, content_params);
     } catch(E) {
@@ -631,7 +635,7 @@ function batch_receive_in_new_tab() {
             "set_patron_tab", "volume_item_creator", "get_new_session",
             "holdings_maintenance_tab", "set_tab_name", "open_chrome_window",
             "url_prefix", "network_meter", "page_meter", "set_statusbar",
-            "set_help_context"
+            "set_help_context", "get_barcode"
         ].forEach(function(k) { content_params[k] = xulG[k]; });
 
         xulG.new_tab(

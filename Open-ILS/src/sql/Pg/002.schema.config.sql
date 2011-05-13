@@ -887,4 +887,19 @@ Upgrade script % can not be applied:
 END;
 $$ LANGUAGE PLPGSQL;
 
+CREATE TABLE config.barcode_completion (
+    id          SERIAL PRIMARY KEY,
+    active      BOOL NOT NULL DEFAULT true,
+    org_unit    INT NOT NULL, -- REFERENCES actor.org_unit(id) DEFERRABLE INITIALLY DEFERRED,
+    prefix      TEXT,
+    suffix      TEXT,
+    length      INT NOT NULL DEFAULT 0,
+    padding     TEXT,
+    padding_end BOOL NOT NULL DEFAULT false,
+    asset       BOOL NOT NULL DEFAULT true,
+    actor       BOOL NOT NULL DEFAULT true
+);
+
+CREATE TYPE evergreen.barcode_set AS (type TEXT, id BIGINT, barcode TEXT);
+
 COMMIT;
