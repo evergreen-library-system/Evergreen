@@ -62,9 +62,13 @@ sub match_day {
     }
 }
 
+# TODO: possible support for extraneous $yp information
+# ex. $ypdtu but on a bi-weekly (currently assumes weekly)
 sub subsequent_day {
     my $pat = shift;
-    my @cur = @_;
+    my $cur = shift;
+
+    my @cur = @$cur;
     my $dt  = DateTime->new(
         year  => $cur[0],
         month => $cur[1],
@@ -280,7 +284,9 @@ sub match_week {
 #
 sub subsequent_week {
     my $pat = shift;
-    my @cur = @_;
+    my $cur = shift;
+
+    my @cur = @$cur;
     my $candidate;
     my $dt;
 
@@ -388,7 +394,9 @@ sub match_month {
 
 sub subsequent_month {
     my $pat = shift;
-    my @cur = @_;
+    my $cur = shift;
+
+    my @cur = @$cur;
 
     if ($cur[1] >= $pat) {
         # Current date is on or after the patter date, so the next
@@ -411,13 +419,25 @@ sub match_season {
 
 sub subsequent_season {
     my $pat = shift;
-    my @cur = @_;
+    my $cur = shift;
+    my $caption = shift;
+
+    my @cur = @$cur;
 
 #     printf("# subsequent_season: pat='%s', cur='%s'\n", $pat, join('/',@cur));
 
     if (($pat < 21) || ($pat > 24)) {
         carp "Unexpected season '$pat'";
         return undef;
+    }
+
+    if ($caption->winter_starts_year()) {
+        if ($pat == 24) {
+            $pat = 20; # fake early winter
+        }
+        if ($cur[1] == 24) {
+            $cur[1] = 20; # fake early winter
+        }
     }
 
     if ($cur[1] >= $pat) {
@@ -445,6 +465,8 @@ sub subsequent_year {
     my $pat = shift;
     my $cur = shift;
 
+    my @cur = @$cur;
+
     # XXX WRITE ME
     return undef;
 }
@@ -462,6 +484,8 @@ sub match_issue {
 sub subsequent_issue {
     my $pat = shift;
     my $cur = shift;
+
+    my @cur = @$cur;
 
     # Issue generation is handled separately
     return undef;
@@ -509,6 +533,7 @@ my %increments = (
     i => {days   => 2},     # three times / week
     j => {days   => 10},    # three times /month
                             # k => continuous
+#    l => {weeks  => 3},     # triweekly (NON-STANDARD)
     m => {months => 1},     # monthly
     q => {months => 3},     # quarterly
     s => {days   => 15},    # semimonthly
