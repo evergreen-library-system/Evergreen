@@ -511,14 +511,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<fields oils_persist:primary="id" oils_persist:sequence="vandelay.authority_match_id_seq">
 			<field reporter:label="Match ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Queued Record" name="queued_record" reporter:datatype="link"/>
-			<field reporter:label="Matched Attribute" name="matched_attr" reporter:datatype="link"/>
 			<field reporter:label="Evergreen Record" name="eg_record" reporter:datatype="link"/>
 			<field reporter:label="Quality" name="quality" reporter:datatype="int"/>
 		</fields>
 		<links>
 			<link field="queued_record" reltype="has_a" key="id" map="" class="vqbr"/>
 			<link field="eg_record" reltype="has_a" key="id" map="" class="bre"/>
-			<link field="matched_attr" reltype="has_a" key="id" map="" class="vqbra"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
