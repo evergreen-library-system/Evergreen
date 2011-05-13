@@ -114,7 +114,7 @@
 863 41 $820.3$a1$b5$i1990$j12$x|a2|b1|i1991|j02$zWrap at end of year/vol.
 
 245 00 $aEconomist: pub. w on Sa, except combined iss on last two weeks of year
-853 20 $821$av.$bno.$u12$vc$i(year)$j(month)$k(day)$ww$x01,04,07,10$ypdsa$yow1299
+853 20 $821$av.$bno.$vc$i(year)$j(month)$k(day)$ww$x01,04,07,10$ypdsa$yow1299
 863 41 $821.1$a100$b1200$i2008$j12$k06$x|a100|b1201|i2008|j12|k13$zwithin vol.
 863 41 $821.2$a100$b1201$i2008$j12$k13$x|a100|b1202|i2008|j12|k20$zwithin vol. combined iss.
 863 41 $821.3$a100$b1202$i2008$j12$k20$x|a101|b1203|i2009|j01|k03$zvolume change over omitted iss.
@@ -127,7 +127,7 @@
 863 41 $822.4$a2$b4$i2013$j04$k11$x|a2|b5|i2013|j05|k01$zpublished on Wed May 1st
 
 245 00 $aMFHD example: pub. every Mon, Thu, except on New Years, July 4, Labor Day, Thanksgiving, Christmas
-853 20 $823$av.$bno.$uvar$vr$i(year)$j(month)$k(day)$wc$x07$ypw00mo,00th$yod0101,0704,1225$yow0901mo,1104th
+853 20 $823$av.$bno.$uvar$i(year)$j(month)$k(day)$wc$x07$ypw00mo,00th$yod0101,0704,1225$yow0901mo,1104th
 863 41 $823.1$a1$b100$i2009$j02$k02$x|a1|b101|i2009|j02|k05$znormal: Mon to Thu
 863 41 $823.2$a1$b101$i2009$j02$k05$x|a1|b102|i2009|j02|k09$znormal: Thu to Mon
 863 41 $823.3$a1$b150$i2009$j06$k29$x|a2|b151|i2009|j07|k02$znormal: calendar change
@@ -164,3 +164,38 @@
 863 41 $826.1$a1$b1$i1990$j01$x|a1|b2|i1990|j02$znormal issue
 864 41 $827.1$a1$i1990$j09$x|a2|i1991|j09$zAnnual supplement
 865 41 $828.1$a1$i1990$j02$x|a2|i1991|j02$zAnnual Index
+
+# Issue numbering restarts at the calendar change
+245 00 $aIssue No. restarts at calendar change
+853 20 $829$av.$bno.$uvar$vr$i(year)$j(month)$k(day)$wd$x0101,0701
+863 41 $829.1$a1$b181$i2011$j06$k30$x|a2|b1|i2011|j07|k01$zJune 30 to July 1
+
+# Winter starts the calendar year
+# Requires a hacky use of MARC due to limitations in MARC standard
+245 00 $aWinter starts the calendar year
+853 20 $830$av.$bno.$u4$vr$i(year)$j(season)$w4$yps24,21,22,23
+863 41 $830.1$a1$b4$i2010$j23$x|a2|b1|i2011|j24$zAutumn 2010 to Winter 2011
+863 41 $830.2$a2$b1$i2011$j24$x|a2|b2|i2011|j21$y2011-01-01$zWinter 2011 to Spring 2011
+
+# Combined seasons
+245 00 $aCombined seasons, and Winter starts the calendar year
+853 20 $831$av.$bno.$u4$vr$i(year)$j(season)$w4$yps24/21,22,23
+863 41 $831.1$a1$b4$i2010$j23$x|a2|b1|i2011|j24/21$zAutumn 2010 to combined Winter/Spring 2011
+
+# Combined seasons, variation
+245 00 $aCombined seasons variation, and Winter starts the calendar year
+853 20 $832$av.$bno.$u4$vr$i(year)$j(season)$w4$yps24,21/22,23
+863 41 $832.1$a1$b4$i2011$j24$x|a2|b1|i2011|j21/22$zWinter 2011 to combined Spring/Summer 2011
+863 41 $832.2$a1$b4$i2011$j21/22$x|a2|b1|i2011|j23$zSpring/Summer 2011 to Autumn 2011
+
+# Defined unit count, non-restarting
+245 00 $aDefined unit count, non-restarting
+853 20 $833$av.$bno.$u4$vc$i(year)$j(month)$wf
+863 41 $833.1$a24$b95$i2011$j01$x|a24|b96|i2011|j07$z3rd Issue to 4th Issue in Volume
+863 41 $833.2$a24$b96$i2011$j07$x|a25|b97|i2012|j01$z4th Issue to 1st Issue in next Volume
+
+# Combined months to end the year
+245 00 $aCombined months to end the year
+853 20 $834$av.$bno.$u12$vr$i(year)$j(month)$wm$ycm12/01$yce22/3
+863 41 $834.1$a24$b1$i2011$j11$x|a24|b2/3|i2011/2012|j12/01$zNov. to Combined Dec./Jan.
+863 41 $834.2$a24$b2/3$i2011/2012$j12/1$x|a24|b4|i2012|j02$zCombined Dec./Jan. to Feb.

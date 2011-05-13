@@ -433,7 +433,7 @@ BEGIN
           FROM  
                 actor.org_unit_descendants(ans.id) d
                 JOIN asset.opac_visible_copies av ON (av.record = rid AND av.circ_lib = d.id)
-                JOIN asset.copy cp ON (cp.id = av.id)
+                JOIN asset.copy cp ON (cp.id = av.copy_id)
           GROUP BY 1,2,6;
 
         IF NOT FOUND THEN
@@ -464,7 +464,7 @@ BEGIN
           FROM
                 actor.org_unit_descendants(ans.id) d
                 JOIN asset.opac_visible_copies av ON (av.record = rid AND av.circ_lib = d.id)
-                JOIN asset.copy cp ON (cp.id = av.id)
+                JOIN asset.copy cp ON (cp.id = av.copy_id)
           GROUP BY 1,2,6;
 
         IF NOT FOUND THEN
@@ -577,7 +577,7 @@ BEGIN
           FROM  
                 actor.org_unit_descendants(ans.id) d
                 JOIN asset.opac_visible_copies av ON (av.record = rid AND av.circ_lib = d.id)
-                JOIN asset.copy cp ON (cp.id = av.id)
+                JOIN asset.copy cp ON (cp.id = av.copy_id)
                 JOIN metabib.metarecord_source_map m ON (m.source = av.record)
           GROUP BY 1,2,6;
 
@@ -609,7 +609,7 @@ BEGIN
           FROM
                 actor.org_unit_descendants(ans.id) d
                 JOIN asset.opac_visible_copies av ON (av.record = rid AND av.circ_lib = d.id)
-                JOIN asset.copy cp ON (cp.id = av.id)
+                JOIN asset.copy cp ON (cp.id = av.copy_id)
                 JOIN metabib.metarecord_source_map m ON (m.source = av.record)
           GROUP BY 1,2,6;
 
