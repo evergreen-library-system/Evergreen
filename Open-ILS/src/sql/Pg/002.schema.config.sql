@@ -57,7 +57,7 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0531'); -- gmc
+INSERT INTO config.upgrade_log (version) VALUES ('0532'); -- gmc
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
