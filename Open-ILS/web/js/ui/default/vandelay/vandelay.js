@@ -415,7 +415,7 @@ function vlExportInit() {
                     {with_import_error: (vlImportItemsShowErrors.checked) ? 1 : null}
                 ],
                 async : true,
-                oncomplete : function(r) {exportHandler(type, r)}
+                oncomplete : function(r) {exportHandler(value, r)}
             }
         );
     }
