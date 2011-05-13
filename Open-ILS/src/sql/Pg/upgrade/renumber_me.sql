@@ -122,7 +122,7 @@ INSERT INTO action_trigger.event_definition (
         'vandelay.queued_bib_record.print',
         'NOOP_True',
         'ProcessTemplate',
-        'usr',
+        'queue.owner',
         'print-on-demand',
 $$
 [%- USE date -%]
@@ -180,7 +180,7 @@ INSERT INTO action_trigger.event_definition (
         'vandelay.queued_bib_record.csv',
         'NOOP_True',
         'ProcessTemplate',
-        'usr',
+        'queue.owner',
         'print-on-demand',
 $$
 [%- USE date -%][%- FOR vqbr IN target -%]"[% helpers.get_queued_bib_attr('title',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('author',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('language',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('pagination',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('isbn',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('issn',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('price',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('rec_identifier',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('eg_tcn',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('eg_tcn_source',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('eg_identifier',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('publisher',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('pubdate',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('edition',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('item_barcode',vqbr.attributes) | replace('"', '""') %]"[%- END -%]
@@ -275,7 +275,7 @@ INSERT INTO action_trigger.event_definition (
         'vandelay.queued_auth_record.print',
         'NOOP_True',
         'ProcessTemplate',
-        'usr',
+        'queue.owner',
         'print-on-demand',
 $$
 [%- USE date -%]
@@ -319,7 +319,7 @@ INSERT INTO action_trigger.event_definition (
         'vandelay.queued_auth_record.csv',
         'NOOP_True',
         'ProcessTemplate',
-        'usr',
+        'queue.owner',
         'print-on-demand',
 $$
 [%- USE date -%][%- FOR vqar IN target -%]"[% helpers.get_queued_auth_attr('rec_identifier',vqar.attributes) | replace('"', '""') %]"[%- END -%]
