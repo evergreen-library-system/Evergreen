@@ -362,16 +362,19 @@ sub format_part {
     }
 
     # Breaks in the sequence
-    if (defined($self->{_mfhdh_BREAK})) {
-        if ($self->{_mfhdh_BREAK} eq 'n') {
-            $str .= ' non-gap break';
-        } elsif ($self->{_mfhdh_BREAK} eq 'g') {
-            $str .= ' gap';
-        } else {
-            warn "unrecognized break indicator '$self->{_mfhdh_BREAK}'";
-        }
-    }
-
+# XXX: this is non-standard and also not the right place for this, since gaps
+# only make sense in the context of multiple holding segments, not a single
+# holding
+#    if (defined($self->{_mfhdh_BREAK})) {
+#        if ($self->{_mfhdh_BREAK} eq 'n') {
+#            $str .= ' non-gap break';
+#        } elsif ($self->{_mfhdh_BREAK} eq 'g') {
+#            $str .= ' gap';
+#        } else {
+#            warn "unrecognized break indicator '$self->{_mfhdh_BREAK}'";
+#        }
+#    }
+#
     return $str;
 }
 
@@ -635,10 +638,25 @@ sub chron_to_date {
                     $chrons[$i]->[1] = 9;
                     $chrons[$i]->[2] = 22;
                 } elsif ($seasons[$i] == 24) {
-                    $chrons[$i]->[1] = 12;
-                    $chrons[$i]->[2] = 21;
+                    # "winter" can come at the beginning or end of a year,
+                    if ($self->caption->winter_starts_year()) {
+                        $chrons[$i]->[1] = 1;
+                        $chrons[$i]->[2] = 1;
+                    } else { # default to astronomical
+                        $chrons[$i]->[1] = 12;
+                        $chrons[$i]->[2] = 21;
+                    }
                 }
             }
+        }
+    }
+
+    # if we have an an annual, set the month to ypm## if available
+    if (exists($self->caption->{_mfhdc_PATTERN}->{y}->{p}) and $self->caption->{_mfhdc_PATTERN}->{w} eq 'a') {
+        my $reg = $self->caption->{_mfhdc_PATTERN}->{y}->{p}->[0];
+        if ($reg =~ /^m(\d+)/) {
+            $chrons[0]->[1] = $1;
+            $chrons[1]->[1] = $1;
         }
     }
 

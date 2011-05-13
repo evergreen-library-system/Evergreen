@@ -52,6 +52,10 @@ while ($rec = testlib::load_MARC_rec($testdata, $testno++)) {
                   if ($field->subfield('z') =~ /^TODO/);
                 is_deeply($field->next, right_answer($field),
                     $field->subfield('8') . ': ' . $field->subfield('z'));
+
+                if ($field->subfield('y')) {
+                    is($field->chron_to_date(), $field->subfield('y'), 'Chron-to-date test');
+                }
             }
         }
     }
