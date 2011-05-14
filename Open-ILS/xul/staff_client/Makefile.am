@@ -19,7 +19,8 @@ CHROME_LOCALES = $$(ls -1 chrome/locale)
 SKIN_CSS = $$(ls -1 server/skin/*css | sed -e "s/.css/_custom.css/")
 UPDATESDIR=@localstatedir@/updates
 
-SVN=svn # Because some people might need to override this to 'git svn' or something
+GIT_BRANCH=$$(git rev-parse --abbrev-ref HEAD || echo master)
+GIT_TAG=$$(git rev-parse --short HEAD) # For auto-tagging builds
 
 export NSIS_EXTRAOPTS
 export NSIS_WICON=$$(if [ -f client/evergreen.ico ]; then echo '-DWICON'; fi)
@@ -113,18 +114,18 @@ localize_manifest:
 
 # The default "automatic" BUILD ID is acceptable.
 
-# The version from the README usually conforms to that documentation, unless it is trunk.
-# If we are in trunk, we probably have svn kicking around, ask it for the revision and build an appropriate version string.
+# The version from the README usually conforms to that documentation, unless it is master.
+# If we are in master, we probably have git kicking around, ask it for the revision and build an appropriate version string.
 
 # Neither really applies to the STAMP, though.
 # The method below gives the same format STAMPS as previous instructions provided. If README has version 1.2.3.4 then STAMP_ID will become rel_1_2_3_4.
-# Trunk VERSION will end up with 0trunk.release, trunk STAMP ID will be 0trunk_release.
+# Master VERSION will end up with 0branch.release, master STAMP ID will be 0branch_release.
 stamp:
 	@/bin/date +"%Y%m%d.%H%M%S" > build/BUILD_ID
 	@if [ -n "${STAFF_CLIENT_BUILD_ID}" ]; then ( echo "Stamping with Build ID: ${STAFF_CLIENT_BUILD_ID}" ; echo ${STAFF_CLIENT_BUILD_ID} > build/BUILD_ID ) ; fi
 	@if [ -z "${STAFF_CLIENT_BUILD_ID}" ]; then ( echo "No Build ID for versioning" ; echo "none" > build/BUILD_ID ) ; fi
 	@sed -n -e '1 s/^.* \([^ ]*\)$$/\1/p' @top_srcdir@/README > build/VERSION
-	@if [ "${STAFF_CLIENT_VERSION}" == "trunk" ]; then echo "0trunk.$$(${SVN} info | sed -n -e 's/Last Changed Rev: \([0-9][0-9]*\)/\1/p')" > build/VERSION; fi 
+	@if [ "${STAFF_CLIENT_VERSION}" == "master" ]; then echo "0${GIT_BRANCH}.${GIT_TAG}" > build/VERSION; fi 
 	@if [ -n "${STAFF_CLIENT_VERSION}" ]; then ( echo "Stamping with Version: ${STAFF_CLIENT_VERSION}" ; echo ${STAFF_CLIENT_VERSION} > build/VERSION ) ; fi
 	@if [ -z "${STAFF_CLIENT_VERSION}" ]; then ( echo "No Version" ; echo "none" > build/VERSION ) ; fi
 	@sed -e 's/\./_/g' -e 's/^\([0-9_]*\)$$/rel_&/' build/VERSION > build/STAMP_ID
