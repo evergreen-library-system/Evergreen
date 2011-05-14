@@ -675,7 +675,10 @@ function vlGetViewErrors(rowIdx, item) {
         // id:rec_error:item_import_error_count
         return id + ':' + 
             (rec.import_error() ? 1 : '') + ':' + 
-            rec.import_items().filter(function(i) {return i.import_error()}).length;
+            (typeof rec.import_items == 'function'
+                ? rec.import_items().filter(function(i) {return i.import_error()}).length
+                :''
+            );
     }
     return -1
 }
