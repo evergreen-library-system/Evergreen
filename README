@@ -225,7 +225,7 @@ script and Makefiles:
 
 [source, bash]
 ------------------------------------------------------------------------------
-./autogen.sh 
+./autogen.sh
 ------------------------------------------------------------------------------
 
 After running `make install`, developers also need to install the Dojo Toolkit
