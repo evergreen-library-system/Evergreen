@@ -425,7 +425,7 @@ function exportHandler(type, response) {
     try {
         var content = openils.Util.readResponse(response);
         if (type=='email') {
-            if (content==1) { alert('Email sent.'); }
+            if (content==1) { alert('Email sent.'); return; }
             throw(content);
         }
         /* handle .atomic versus non-atomic method calls */
