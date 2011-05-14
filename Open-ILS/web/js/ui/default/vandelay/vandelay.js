@@ -404,7 +404,7 @@ function vlExportInit() {
         if(!value) return;
         if(!confirm('Export as "' + value + '"?')) return; // TODO: i18n
 
-        var method = 'open-ils.vandelay.import_item.queue.export.' + value;
+        var method = 'open-ils.vandelay.import_item.queue.export.' + value + '.atomic';
 
         fieldmapper.standardRequest(
             ['open-ils.vandelay', method],
@@ -425,10 +425,13 @@ function exportHandler(type, response) {
     try {
         var content = openils.Util.readResponse(response);
         if (type=='email') {
-            if (content) { throw(content); }
-            return;
+            if (content==1) { alert('Email sent.'); }
+            throw(content);
         }
-        content = content[0].template_output().data();
+        /* handle .atomic versus non-atomic method calls */
+        content = content.constructor == Array
+            ? content[0].template_output().data()
+            : content.template_output().data();
         switch(type) {
             case 'print':
                 openils.Util.printHtmlString(content);
