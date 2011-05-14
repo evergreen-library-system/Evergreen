@@ -5,19 +5,14 @@
 # 
 # Based on initial version by Bill Erickson.
 
-function svn_or_git {
+function fetch_changes {
     echo -en "###########\nUpdating source directory:" `pwd` "\n";
     if [ -d "./.git" ]; then
-        if [ -d "./.git/svn/trunk" ]; then
-            git svn fetch;
-            # git svn rebase origin || die_msg "git svn rebase origin failed";
-        else
-            git fetch;
-            # git rebase origin || die_msg "git rebase origin failed";
-        fi
+        git fetch;
+        # git rebase origin || die_msg "git rebase origin failed";
     else
-        echo "Remember to run svn update as needed";
-        # svn update || die_msg "svn update failed";
+        echo "You don't appear to be using Git yet, please fix that"
+        exit 1;
     fi
 }
 
@@ -60,7 +55,7 @@ and error-prone tasks associated with an upgrade for a developer.
 Considerations:
  * Run as opensrf user
  * opensrf needs sudo 
- * Assumes opensrf has OpenILS and OpenSRF repositories as svn or git-svn 
+ * Assumes opensrf has OpenILS and OpenSRF repositories as Git
    checkouts and both have been configured (as in ./configure) 
   
 END_OF_USAGE
@@ -110,7 +105,7 @@ JSDIR="$INSTALL/lib/javascript";    # only used for FULL install
 [ ! -d "$OSRF"    ]   && die_msg "OpenSRF Source Directory '$OSRF' does not exist!";
 which sudo >/dev/null || die_msg "sudo not installed (or in PATH)";
 
-[ -d "${ILS}/.svn" ] || [ -d "${ILS}/.git" ] || [ -d ${ILS}/.bzr ] || die_msg "Evergreen Source Directory '$ILS' is not a SVN, bzr or git repo";
+[ -d "${ILS}/.git" ] || [ -d ${ILS}/.bzr ] || die_msg "Evergreen Source Directory '$ILS' is not a SVN, bzr or git repo";
 
 if [ ! -z "$OPT_TEST" ] ; then
     feedback;
@@ -140,8 +135,8 @@ $INSTALL/bin/osrf_ctl.sh -l -a stop_all;
 # OpenSRF perl directory is not shared.  update the drone
 # ssh 10.5.0.202 "./update_osrf_perl.sh";
 
-cd $OSRF; svn_or_git;
-cd $ILS;  svn_or_git;
+cd $OSRF; fetch_changes;
+cd $ILS;  fetch_changes;
 
 if [ -n "$OPT_CLEAN" ]; then
     cd $OSRF && make clean;

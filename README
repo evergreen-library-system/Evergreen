@@ -52,7 +52,7 @@ Configuration and compilation instructions:
 
 For the time being, we are still installing everything in the `/openils/`
 directory. If you are working with a version of Evergreen taken directly
-from the Subversion repository, rather than a packaged version of Evergreen,
+from the Git repository, rather than a packaged version of Evergreen,
 first see `Developer instructions` below.
 
 Otherwise, issue the following commands to configure and build Evergreen:
@@ -211,7 +211,7 @@ Evergreen administrator account to your requested values.
 Developer instructions:
 -----------------------
 
-Developers working directly with the source code from the Subversion
+Developers working directly with the source code from the Git
 repository will also need to install some extra packages and perform
 one more step before they can proceed with the `./configure` step.
 
