@@ -451,6 +451,42 @@ INSERT INTO action_trigger.environment ( event_def, path) VALUES (
     ,( 44, 'record.queue.owner')
 ;
 
+INSERT INTO action_trigger.event_definition (
+        id,
+        active,
+        owner,
+        name,
+        hook,
+        validator,
+        reactor,
+        group_field,
+        granularity,
+        template
+    ) VALUES (
+        45,
+        TRUE,
+        1,
+        'CSV Output for Import Items from Queued Bib Records',
+        'vandelay.import_items.csv',
+        'NOOP_True',
+        'ProcessTemplate',
+        'record.queue.owner',
+        'print-on-demand',
+$$
+[%- USE date -%][% FOR vii IN target %]"[% vii.id | replace('"', '""') %]","[% helpers.get_queued_bib_attr('title',vii.record.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('isbn',vii.record.attributes) | replace('"', '""') %]","[% vii.definition | replace('"', '""') %]","[% vii.import_error | replace('"', '""') %]","[% vii.error_detail | replace('"', '""') %]","[% vii.owning_lib | replace('"', '""') %]","[% vii.circ_lib | replace('"', '""') %]","[% vii.call_number | replace('"', '""') %]","[% vii.copy_number | replace('"', '""') %]","[% vii.status.name | replace('"', '""') %]","[% vii.location.name | replace('"', '""') %]","[% vii.circulate | replace('"', '""') %]","[% vii.deposit | replace('"', '""') %]","[% vii.deposit_amount | replace('"', '""') %]","[% vii.ref | replace('"', '""') %]","[% vii.holdable | replace('"', '""') %]","[% vii.price | replace('"', '""') %]","[% vii.barcode | replace('"', '""') %]","[% vii.circ_modifier | replace('"', '""') %]","[% vii.circ_as_type | replace('"', '""') %]","[% vii.alert_message | replace('"', '""') %]","[% vii.pub_note | replace('"', '""') %]","[% vii.priv_note | replace('"', '""') %]","[% vii.opac_visible | replace('"', '""') %]"
+[% END %]
+$$
+    )
+;
+
+INSERT INTO action_trigger.environment ( event_def, path) VALUES (
+    45, 'record')
+    ,( 45, 'record.attributes')
+    ,( 45, 'record.queue')
+    ,( 45, 'record.queue.owner')
+;
+
+
 COMMIT;
 
--- BEGIN; DELETE FROM action_trigger.event_output WHERE id IN ((SELECT template_output FROM action_trigger.event WHERE event_def IN (38,39,40,41,42,43,44))UNION(SELECT error_output FROM action_trigger.event WHERE event_def IN (38,39,40,41,42,43,44))); DELETE FROM action_trigger.event WHERE event_def IN (38,39,40,41,42,43,44); DELETE FROM action_trigger.environment WHERE event_def IN (38,39,40,41,42,43,44); DELETE FROM action_trigger.event_definition WHERE id IN (38,39,40,41,42,43,44); DELETE FROM action_trigger.hook WHERE key IN ('vandelay.queued_bib_record.print','vandelay.queued_bib_record.csv','vandelay.queued_bib_record.email','vandelay.queued_auth_record.print','vandelay.queued_auth_record.csv','vandelay.queued_auth_record.email','vandelay.import_items.print','vandelay.import_items.csv','vandelay.import_items.email'); DELETE FROM config.upgrade_log WHERE version = 'test'; COMMIT;
+-- BEGIN; DELETE FROM action_trigger.event WHERE event_def IN (38,39,40,41,42,43,44,45); DELETE FROM action_trigger.environment WHERE event_def IN (38,39,40,41,42,43,44,45); DELETE FROM action_trigger.event_definition WHERE id IN (38,39,40,41,42,43,44,45); DELETE FROM action_trigger.hook WHERE key IN ('vandelay.queued_bib_record.print','vandelay.queued_bib_record.csv','vandelay.queued_bib_record.email','vandelay.queued_auth_record.print','vandelay.queued_auth_record.csv','vandelay.queued_auth_record.email','vandelay.import_items.print','vandelay.import_items.csv','vandelay.import_items.email'); DELETE FROM action_trigger.event_output WHERE id IN ((SELECT template_output FROM action_trigger.event WHERE event_def IN (38,39,40,41,42,43,44,45))UNION(SELECT error_output FROM action_trigger.event WHERE event_def IN (38,39,40,41,42,43,44,45))); DELETE FROM config.upgrade_log WHERE version = 'test'; COMMIT;
