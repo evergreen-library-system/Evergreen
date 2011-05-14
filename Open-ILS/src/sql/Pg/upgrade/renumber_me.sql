@@ -494,7 +494,79 @@ INSERT INTO action_trigger.environment ( event_def, path) VALUES (
     ,( 45, 'record.queue.owner')
 ;
 
+INSERT INTO action_trigger.event_definition (
+        id,
+        active,
+        owner,
+        name,
+        hook,
+        validator,
+        reactor,
+        group_field,
+        granularity,
+        template
+    ) VALUES (
+        46,
+        TRUE,
+        1,
+        'Email Output for Import Items from Queued Bib Records',
+        'vandelay.import_items.email',
+        'NOOP_True',
+        'SendEmail',
+        'record.queue.owner',
+        NULL,
+$$
+[%- USE date -%]
+[%- SET user = target.0.record.queue.owner -%]
+To: [%- params.recipient_email || user.email || 'root@localhost' %]
+From: [%- params.sender_email || default_sender %]
+Subject: Import Items from Import Queue
+
+Queue ID: [% target.0.record.queue.id %]
+Queue Name: [% target.0.record.queue.name %]
+Queue Type: [% target.0.record.queue.queue_type %]
+Complete? [% target.0.record.queue.complete %]
+
+    [% FOR vii IN target %]
+=-=-=
+ Import Item ID         | [% vii.id %]
+ Title of work          | [% helpers.get_queued_bib_attr('title',vii.record.attributes) %]
+ ISBN                   | [% helpers.get_queued_bib_attr('isbn',vii.record.attributes) %]
+ Attribute Definition   | [% vii.definition %]
+ Import Error           | [% vii.import_error %]
+ Import Error Detail    | [% vii.error_detail %]
+ Owning Library         | [% vii.owning_lib %]
+ Circulating Library    | [% vii.circ_lib %]
+ Call Number            | [% vii.call_number %]
+ Copy Number            | [% vii.copy_number %]
+ Status                 | [% vii.status.name %]
+ Shelving Location      | [% vii.location.name %]
+ Circulate              | [% vii.circulate %]
+ Deposit                | [% vii.deposit %]
+ Deposit Amount         | [% vii.deposit_amount %]
+ Reference              | [% vii.ref %]
+ Holdable               | [% vii.holdable %]
+ Price                  | [% vii.price %]
+ Barcode                | [% vii.barcode %]
+ Circulation Modifier   | [% vii.circ_modifier %]
+ Circulate As MARC Type | [% vii.circ_as_type %]
+ Alert Message          | [% vii.alert_message %]
+ Public Note            | [% vii.pub_note %]
+ Private Note           | [% vii.priv_note %]
+ OPAC Visible           | [% vii.opac_visible %]
+
+    [% END %]
+$$
+    )
+;
+
+INSERT INTO action_trigger.environment ( event_def, path) VALUES (
+    46, 'record')
+    ,( 46, 'record.attributes')
+    ,( 46, 'record.queue')
+    ,( 46, 'record.queue.owner')
+;
 
 COMMIT;
 
--- BEGIN; DELETE FROM action_trigger.event WHERE event_def IN (38,39,40,41,42,43,44,45); DELETE FROM action_trigger.environment WHERE event_def IN (38,39,40,41,42,43,44,45); DELETE FROM action_trigger.event_definition WHERE id IN (38,39,40,41,42,43,44,45); DELETE FROM action_trigger.hook WHERE key IN ('vandelay.queued_bib_record.print','vandelay.queued_bib_record.csv','vandelay.queued_bib_record.email','vandelay.queued_auth_record.print','vandelay.queued_auth_record.csv','vandelay.queued_auth_record.email','vandelay.import_items.print','vandelay.import_items.csv','vandelay.import_items.email'); DELETE FROM action_trigger.event_output WHERE id IN ((SELECT template_output FROM action_trigger.event WHERE event_def IN (38,39,40,41,42,43,44,45))UNION(SELECT error_output FROM action_trigger.event WHERE event_def IN (38,39,40,41,42,43,44,45))); DELETE FROM config.upgrade_log WHERE version = 'test'; COMMIT;
+-- BEGIN; DELETE FROM action_trigger.event WHERE event_def IN (38,39,40,41,42,43,44,45,46); DELETE FROM action_trigger.environment WHERE event_def IN (38,39,40,41,42,43,44,45,46); DELETE FROM action_trigger.event_definition WHERE id IN (38,39,40,41,42,43,44,45,46); DELETE FROM action_trigger.hook WHERE key IN ('vandelay.queued_bib_record.print','vandelay.queued_bib_record.csv','vandelay.queued_bib_record.email','vandelay.queued_auth_record.print','vandelay.queued_auth_record.csv','vandelay.queued_auth_record.email','vandelay.import_items.print','vandelay.import_items.csv','vandelay.import_items.email'); DELETE FROM action_trigger.event_output WHERE id IN ((SELECT template_output FROM action_trigger.event WHERE event_def IN (38,39,40,41,42,43,44,45,46))UNION(SELECT error_output FROM action_trigger.event WHERE event_def IN (38,39,40,41,42,43,44,45,46))); DELETE FROM config.upgrade_log WHERE version = 'test'; COMMIT;
