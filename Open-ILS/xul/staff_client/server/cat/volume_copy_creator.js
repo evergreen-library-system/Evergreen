@@ -448,6 +448,7 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
                         ,false
                     );
                     classification_column_box.appendChild(classification_column_menulist);
+                    classification_column_menulist.value = g.label_class;
 
                     /**** PREFIX COLUMN revisited ****/
                     var prefix_column_menulist = g.render_prefix_menu(call_number_column_textbox);
