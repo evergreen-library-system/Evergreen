@@ -25,10 +25,6 @@ treechildren::-moz-tree-cell-text(selected,focus) {
 }
 */
 
-/*
-* { font-size-adjust: .5; }
-*/
-
 .ALL_FONTS_SMALLER * { font-size-adjust: .3 !important;}
 .ALL_FONTS_LARGER * { font-size-adjust: 1.1 !important; }
 .ALL_FONTS_XX_SMALL * { font-size: xx-small !important; }
