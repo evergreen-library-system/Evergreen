@@ -1456,7 +1456,7 @@ BEGIN
                 vandelay.marc21_extract_fixed_field(marc,'RecStat'),
                 vandelay.marc21_extract_fixed_field(marc,'ELvl'),
                 vandelay.marc21_extract_fixed_field(marc,'Subj')
-          FROM  authority.record
+          FROM  authority.record_entry
           WHERE id = auth_id;
     RETURN;
 END;

@@ -163,11 +163,11 @@ BEGIN
 
     heading_text := '';
     FOR acsaf IN SELECT * FROM authority.control_set_authority_field WHERE control_set = cset AND main_entry IS NULL LOOP
-        tag_use := acsaf.tag;
+        tag_used := acsaf.tag;
         FOR sf IN SELECT * FROM regexp_split_to_table(acsaf.sf_list,'') LOOP
             tmp_text := oils_xpath_string('//*[@tag="'||tag_used||'"]/*[@code="'||sf||'"]', marcxml);
             IF tmp_text IS NOT NULL THEN
-                heading_text := heading_text || E'\U2021' || sf || ' ' || tmp_text;
+                heading_text := heading_text || E'\u2021' || sf || ' ' || tmp_text;
             END IF;
         END LOOP;
         EXIT WHEN heading_text <> '';
@@ -253,7 +253,7 @@ BEGIN
         auth_field := XPATH('//*[@tag="'||main_entry.tag||'"][1]',source_xml);
         IF ARRAY_LENGTH(auth_field) > 0 THEN
             FOR bib_field IN SELECT * FROM authority.control_set_bib_field WHERE authority_field = main_entry.id LOOP
-                replace_data := replace_data || XMLELEMENT( name datafield, bib_field.tag AS tag, XPATH('//*[local-name()="subfield"]',auth_field[1])::XML[]);
+                replace_data := replace_data || XMLELEMENT( name datafield, XMLATTRIBUTES(bib_field.tag AS tag), XPATH('//*[local-name()="subfield"]',auth_field[1])::XML[]);
                 replace_rules := replace_rules || ( bib_field.tag || main_entry.sf_list || E'[0~\\)' || auth_id || '$]' );
             END LOOP;
             EXIT;
@@ -262,17 +262,15 @@ BEGIN
 
     RETURN XMLELEMENT(
         name record,
-        XMLATTRIBUTES('http://www.loc.gov/MARC21/slim' AS xmlns)
+        XMLATTRIBUTES('http://www.loc.gov/MARC21/slim' AS xmlns),
         XMLELEMENT( name leader, '00881nam a2200193   4500'),
         replace_data,
         XMLELEMENT(
             name datafield,
-            '905' AS tag,
-            ' ' AS ind1,
-            ' ' AS ind2,
+            XMLATTRIBUTES( '905' AS tag, ' ' AS ind1, ' ' AS ind2),
             XMLELEMENT(
                 name subfield,
-                'r' AS code,
+                XMLATTRIBUTES('r' AS code),
                 ARRAY_TO_STRING(replace_rules,',')
             )
         )

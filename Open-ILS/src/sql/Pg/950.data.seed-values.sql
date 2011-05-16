@@ -9482,7 +9482,7 @@ INSERT INTO authority.browse_axis_authority_field_map (axis,field) VALUES
     ('subject', 7 ),
     ('subject', 12);
 
-INSERT INTO authority.control_set_bib_field (tag, authority_field) VALUES
+INSERT INTO authority.control_set_bib_field (tag, authority_field) 
     SELECT '100', id FROM authority.control_set_authority_field WHERE tag IN ('100')
         UNION
     SELECT '600', id FROM authority.control_set_authority_field WHERE tag IN ('100','180','181','182','185')
@@ -9541,6 +9541,6 @@ INSERT INTO authority.thesaurus (code, name, control_set) VALUES
     ('r', oils_i18n_gettext('r','Art and Architecture Thesaurus','at','name'), 1),
     ('s', oils_i18n_gettext('s','Sears List of Subject Headings','at','name'), 1),
     ('v', oils_i18n_gettext('v','Repertoire de vedettes-matiere','at','name'), 1),
-    ('z', oils_i18n_gettext('z','Other','at','name') 1),
-    ('|', oils_i18n_gettext('|','No attempt to code','at','name') 1);
+    ('z', oils_i18n_gettext('z','Other','at','name'), 1),
+    ('|', oils_i18n_gettext('|','No attempt to code','at','name'), 1);
 
