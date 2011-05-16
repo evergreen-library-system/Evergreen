@@ -875,6 +875,9 @@ g.gather_copies = function() {
 
         for (var i = 0; i < barcodes.length; i++) {
             var acp_id = barcodes[i].getAttribute('acp_id') || g.new_acp_id--;
+            if (acp_id < 0) {
+                barcodes[i].setAttribute('acp_id',acp_id);
+            }
             var ou_id = barcodes[i].getAttribute('ou_id');
             var callnumber_composite_key = barcodes[i].getAttribute('callkey');
             var barcode = barcodes[i].value;
