@@ -11,7 +11,7 @@
 </div>
 [% ELSE %]
 <div id="pay_fines_now">
-    <form action="[% ctx.opac_root %]/myopac/pay" method="POST"
+    <form action="[% ctx.opac_root %]/myopac/main_pay" method="POST"
         onsubmit="return confirm('[% l("Are you sure you are ready to charge [_1] to your credit card?", money(ctx.fines.balance_owed)) %]');">
         [% FOR xact IN CGI.param('xact') %]
         <input type="hidden" name="xact" value="[% xact | html %]" />
@@ -157,7 +157,7 @@
                     <td colspan='2' align="center">
                         <input type="submit" value="[% l('Submit Payment') %]" />
                         <input type="reset" value="[% l('Cancel') %]"
-                            onclick="location.history.go(-1);" />
+                            onclick="history.go(-1);" />
                     </td>
                 </tr>
                 [% INCLUDE "default/opac/myopac/main_refund_policy.tt2" %]

@@ -6,9 +6,11 @@ use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::AppUtils;
 use OpenSRF::Utils::JSON;
+#use Data::Dumper;
+#$Data::Dumper::Indent = 0;
 my $U = 'OpenILS::Application::AppUtils';
 
-sub load_extended_user_info {
+sub prepare_extended_user_info {
     my $self = shift;
 
     $self->ctx->{user} = $self->editor->retrieve_actor_user([
@@ -29,7 +31,7 @@ sub load_extended_user_info {
 #   user : au object, fleshed
 sub load_myopac_prefs {
     my $self = shift;
-    return $self->load_extended_user_info || Apache2::Const::OK;
+    return $self->prepare_extended_user_info || Apache2::Const::OK;
 }
 
 sub load_myopac_prefs_notify {
@@ -106,7 +108,7 @@ sub update_optin_prefs {
 
 sub load_myopac_prefs_settings {
     my $self = shift;
-    return $self->load_extended_user_info || Apache2::Const::OK;
+    return $self->prepare_extended_user_info || Apache2::Const::OK;
 }
 
 sub fetch_user_holds {
@@ -562,16 +564,8 @@ sub load_myopac_payment_form {
     my $self = shift;
     my $r;
 
-    $r = $self->load_fines(undef, undef, [$self->cgi->param('xact')]) and return $r;
-
-    # total selected fines
-    foreach (
-        @{$self->ctx->{"fines"}->{"circulation"}},
-        @{$self->ctx->{"fines"}->{"grocery"}}
-    ) {
-    }
-
-    $r = $self->load_extended_user_info and return $r;
+    $r = $self->prepare_fines(undef, undef, [$self->cgi->param('xact')]) and return $r;
+    $r = $self->prepare_extended_user_info and return $r;
 
     return Apache2::Const::OK;
 }
@@ -598,11 +592,61 @@ sub load_myopac_payments {
     return Apache2::Const::OK;
 }
 
-sub load_fines {
+sub load_myopac_pay {
+    my $self = shift;
+    my $r;
+
+    $r = $self->prepare_fines(undef, undef, [$self->cgi->param('xact')]) and
+        return $r;
+
+    # balance_owed is computed specifically from the fines we're trying
+    # to pay in this case.
+    if ($self->ctx->{fines}->{balance_owed} <= 0) {
+        $self->apache->log->info(
+            sprintf("Can't pay non-positive balance. xacts selected: (%s)",
+                join(", ", map(int, $self->cgi->param("xact"))))
+        );
+        return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+    }
+
+    my $cc_args = {"where_process" => 1};
+
+    $cc_args->{$_} = $self->cgi->param($_) for (qw/
+        number cvv2 expire_year expire_month billing_first
+        billing_last billing_address billing_city billing_state
+        billing_zip
+    /);
+
+    my $args = {
+        "cc_args" => $cc_args,
+        "userid" => $self->ctx->{user}->id,
+        "payment_type" => "credit_card_payment",
+        "payments" => $self->prepare_fines_for_payment   # should be safe after self->prepare_fines
+    };
+
+    my $resp = $U->simplereq("open-ils.circ", "open-ils.circ.money.payment",
+        $self->editor->authtoken, $args, $self->ctx->{user}->last_xact_id
+    );
+
+    $self->ctx->{"payment_response"} = $resp;
+
+    unless ($resp->{"textcode"}) {
+        $self->ctx->{printable_receipt} = $U->simplereq(
+           "open-ils.circ", "open-ils.circ.money.payment_receipt.print",
+           $self->editor->authtoken, $resp->{payments}
+        );
+    }
+
+    return Apache2::Const::OK;
+}
+
+sub prepare_fines {
     my ($self, $limit, $offset, $id_list) = @_;
 
     # XXX TODO: check for failure after various network calls
 
+    # It may be unclear, but this result structure lumps circulation and
+    # reservation fines together, and keeps grocery fines separate.
     $self->ctx->{"fines"} = {
         "circulation" => [],
         "grocery" => [],
@@ -687,12 +731,27 @@ sub load_fines {
     return;
 }
 
+sub prepare_fines_for_payment {
+    # This assumes $self->prepare_fines has already been run
+    my ($self) = @_;
+
+    my @results = ();
+    if ($self->ctx->{fines}) {
+        push @results, [$_->{xact}->id, $_->{xact}->balance_owed] foreach (
+            @{$self->ctx->{fines}->{circulation}},
+            @{$self->ctx->{fines}->{grocery}}
+        );
+    }
+
+    return \@results;
+}
+
 sub load_myopac_main {
     my $self = shift;
     my $limit = $self->cgi->param('limit') || 0;
     my $offset = $self->cgi->param('offset') || 0;
 
-    return $self->load_fines($limit, $offset) || Apache2::Const::OK;
+    return $self->prepare_fines($limit, $offset) || Apache2::Const::OK;
 }
 
 sub load_myopac_update_email {

@@ -877,6 +877,10 @@ div.select-wrapper:hover {
 }
 
 #myopac_payments_table th { text-align: left; }
+.payment-error {
+    font-weight: bold; color: red;
+    padding: 10px; border: 1px solid #888;
+}
 
 #adv_search_parent {
 	margin-bottom:0px;

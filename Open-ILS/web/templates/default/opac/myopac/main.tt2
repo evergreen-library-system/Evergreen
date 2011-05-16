@@ -4,7 +4,7 @@
     myopac_page = "main";
     myopac_main_page = "main";
 %]
-<form action="[% ctx.opac_root %]/myopac/main_payment_form" method="POST">
+<form action="[% ctx.opac_root %]/myopac/main_payment_form" method="GET">
     [% IF ctx.fines.circulation.size > 0 %]
     <div id='myopac_circ_trans_div'>
         <table width='100%' class='data_grid'>
