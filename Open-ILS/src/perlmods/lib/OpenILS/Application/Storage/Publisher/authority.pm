@@ -31,6 +31,7 @@ sub validate_tag {
 	my @searches = @{$args{searches}};
 
 	my $search_table = authority::full_rec->table;
+	my $rec_table = authority::record_entry->table;
 
 	my @values;
 	my @selects;
@@ -53,8 +54,9 @@ sub validate_tag {
 			$sql = 'SELECT COUNT(DISTINCT record) FROM (';
 		}
 		$sql .= 'SELECT record FROM (('.join(') INTERSECT (', @selects).')) AS x ';
-		$sql .= "JOIN $search_table recheck USING (record) WHERE recheck.tag = ? ";
-		$sql .= "GROUP BY 1 HAVING (COUNT(recheck.id) - ?) = 0) AS foo;";
+		$sql .= "JOIN $search_table recheck USING (record) ";
+		$sql .= "JOIN $rec_table delcheck ON (recheck.record = delcheck.id and delcheck.deleted = 'f') ";
+		$sql .= "WHERE recheck.tag = ? GROUP BY 1 HAVING (COUNT(recheck.id) - ?) = 0) AS foo;";
 
 		if ($self->api_name =~ /id_list/) {
 			my $id_list = authority::full_rec->db_Main->selectcol_arrayref( $sql, {}, @values, $t, scalar(@searches) );
