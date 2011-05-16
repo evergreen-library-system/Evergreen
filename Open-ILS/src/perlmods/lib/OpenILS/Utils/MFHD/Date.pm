@@ -5,6 +5,7 @@ use Carp;
 
 use Data::Dumper;
 use DateTime;
+use OpenILS::Utils::MFHD::Caption;
 
 use base 'Exporter';
 
@@ -107,7 +108,7 @@ sub subsequent_day {
         # MMDD: published on the given day of the given month
         my ($mon, $day) = unpack("a2a2", $pat);
 
-        if (on_or_after($mon, $day, $cur[1], $cur[2])) {
+        if (MFHD::Caption::on_or_after([$cur[1], $cur[2]], [$mon, $day])) {
             # Current date is on or after pattern; next one is next year
             $cur[0] += 1;
         }
