@@ -640,6 +640,17 @@ sub load_myopac_pay {
     return Apache2::Const::OK;
 }
 
+sub load_myopac_receipt_print {
+    my $self = shift;
+
+    $self->ctx->{printable_receipt} = $U->simplereq(
+       "open-ils.circ", "open-ils.circ.money.payment_receipt.print",
+       $self->editor->authtoken, [$self->cgi->param("payment")]
+    );
+
+    return Apache2::Const::OK;
+}
+
 sub prepare_fines {
     my ($self, $limit, $offset, $id_list) = @_;
 
