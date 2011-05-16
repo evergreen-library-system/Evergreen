@@ -6,6 +6,8 @@ use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::AppUtils;
 use OpenSRF::Utils::JSON;
+#use Data::Dumper;
+#$Data::Dumper::Indent = 0;
 my $U = 'OpenILS::Application::AppUtils';
 
 sub prepare_extended_user_info {
@@ -594,16 +596,21 @@ sub load_myopac_pay {
     my $self = shift;
     my $r;
 
-    $r = $self->prepare_fines and return $r;
+    $r = $self->prepare_fines(undef, undef, [$self->cgi->param('xact')]) and
+        return $r;
 
     # balance_owed is computed specifically from the fines we're trying
     # to pay in this case.
-    return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR if
-        $self->ctx->{fines}->{balance_owed} <= 0;
+    if ($self->ctx->{fines}->{balance_owed} <= 0) {
+        $self->apache->log->info(
+            sprintf("Can't pay non-positive balance. xacts selected: (%s)",
+                join(", ", map(int, $self->cgi->param("xact"))))
+        );
+        return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+    }
 
-    my $cc_args = {
-        "where_process" => 1,
-    };
+    my $cc_args = {"where_process" => 1};
+
     $cc_args->{$_} = $self->cgi->param($_) for (qw/
         number cvv2 expire_year expire_month billing_first
         billing_last billing_address billing_city billing_state
@@ -613,15 +620,24 @@ sub load_myopac_pay {
     my $args = {
         "cc_args" => $cc_args,
         "userid" => $self->ctx->{user}->id,
-        "payment_type": "credit_card_payment",
-        "payments" => [$self->cgi->param('xact')]   # should be safe after self->prepare_fines
+        "payment_type" => "credit_card_payment",
+        "payments" => $self->prepare_fines_for_payment   # should be safe after self->prepare_fines
     };
 
-    $U->simplereq("open-ils.circ", "open-ils.circ.money.payment",
+    my $resp = $U->simplereq("open-ils.circ", "open-ils.circ.money.payment",
         $self->editor->authtoken, $args, $self->ctx->{user}->last_xact_id
     );
 
-    # XXX FINISH ME: indicate success/fail, redirect to page with layout
+    $self->ctx->{"payment_response"} = $resp;
+
+    unless ($resp->{"textcode"}) {
+        $self->ctx->{printable_receipt} = $U->simplereq(
+           "open-ils.circ", "open-ils.circ.money.payment_receipt.print",
+           $self->editor->authtoken, $resp->{payments}
+        );
+    }
+
+    return Apache2::Const::OK;
 }
 
 sub prepare_fines {
@@ -629,6 +645,8 @@ sub prepare_fines {
 
     # XXX TODO: check for failure after various network calls
 
+    # It may be unclear, but this result structure lumps circulation and
+    # reservation fines together, and keeps grocery fines separate.
     $self->ctx->{"fines"} = {
         "circulation" => [],
         "grocery" => [],
@@ -711,6 +729,21 @@ sub prepare_fines {
 
     $self->ctx->{"fines"}->{$_} /= 100.0 for (@total_keys);
     return;
+}
+
+sub prepare_fines_for_payment {
+    # This assumes $self->prepare_fines has already been run
+    my ($self) = @_;
+
+    my @results = ();
+    if ($self->ctx->{fines}) {
+        push @results, [$_->{xact}->id, $_->{xact}->balance_owed] foreach (
+            @{$self->ctx->{fines}->{circulation}},
+            @{$self->ctx->{fines}->{grocery}}
+        );
+    }
+
+    return \@results;
 }
 
 sub load_myopac_main {
