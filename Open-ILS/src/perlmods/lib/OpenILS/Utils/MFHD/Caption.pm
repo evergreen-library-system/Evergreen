@@ -101,17 +101,6 @@ sub new {
 
     my $pat = $self->{_mfhdc_PATTERN};
 
-    # Sanity check publication frequency vs publication pattern:
-    # if the frequency is a number, then the pattern better
-    # have that number of values associated with it.
-    if (   exists($pat->{w})
-        && ($pat->{w} =~ /^\d+$/)
-        && ($pat->{w} != scalar(@{$pat->{y}->{p}}))) {
-        carp(
-"Caption::new: publication frequency '$pat->{w}' != publication pattern @{$pat->{y}->{p}}"
-        );
-    }
-
     # If there's a $x subfield and a $j, then it's compressible
     if (exists $pat->{x} && exists $self->{_mfhdc_CHRONS}->{'j'}) {
         $self->{_mfhdc_COMPRESSIBLE} = 1;
@@ -397,13 +386,14 @@ sub next_chron {
     my $freq    = $pattern->{w};
 
     foreach my $i (0..$#keys) {
-        $cur[$i] = $next->{$keys[$i]} if exists $next->{$keys[$i]};
+        if (exists $next->{$keys[$i]}) {
+            $cur[$i] = $next->{$keys[$i]};
+            # If the current issue has a combined date (eg, May/June)
+            # get rid of the first date and base the calculation
+            # on the final date in the combined issue.
+            $cur[$i] =~ s|^[^/]+/||;
+        }
     }
-
-    # If the current issue has a combined date (eg, May/June)
-    # get rid of the first date and base the calculation
-    # on the final date in the combined issue.
-    $cur[-1] =~ s|^[^/]+/||;
 
     if (defined $pattern->{y}->{p}) {
         # There is a $y publication pattern defined in the record:
@@ -434,12 +424,12 @@ sub next_chron {
                     ($start, $end) = (undef, undef);
                 }
 
-                @candidate = $genfunc->($start || $pat, @cur);
+                @candidate = $genfunc->($start || $pat, \@cur, $self);
 
                 while ($self->is_omitted(@candidate)) {
                     # 		    printf("# pubpat omitting date '%s'\n",
                     # 			   join('/', @candidate));
-                    @candidate = $genfunc->($start || $pat, @candidate);
+                    @candidate = $genfunc->($start || $pat, \@candidate, $self);
                 }
 
                 # 		printf("# testing new candidate '%s' against '%s'\n",
@@ -451,7 +441,7 @@ sub next_chron {
                     # @candidate is the next issue.
                     @new = @candidate;
                     if (defined $end) {
-                        @newend = $genfunc->($end, @cur);
+                        @newend = $genfunc->($end, \@cur, $self);
                     } else {
                         $newend[0] = undef;
                     }
@@ -460,6 +450,8 @@ sub next_chron {
                 }
             }
         }
+
+        $new[1] = 24 if ($new[1] == 20); # restore fake early winter
 
         if (defined($newend[0])) {
             # The best match was a combined issue
@@ -488,10 +480,11 @@ sub next_chron {
 
             if ($self->is_combined(@new)) {
                 my @second_date = MFHD::Date::incr_date($freq, @new);
-
-                # I am cheating: This code assumes that only the smallest
-                # time increment is combined. So, no "Apr 15/May 1" allowed.
-                $new[-1] = $new[-1] . '/' . $second_date[-1];
+                foreach my $i (0..$#new) {
+                    # don't combine identical fields
+                    next if $new[$i] eq $second_date[$i];
+                    $new[$i] .= '/' . $second_date[$i];
+                }
             }
         }
     }
@@ -499,17 +492,56 @@ sub next_chron {
     for my $i (0..$#new) {
         $next->{$keys[$i]} = $new[$i];
     }
+
     # Figure out if we need to adjust volume number
-    # right now just use the $carry that was passed in.
-    # in long run, need to base this on ($carry or date_change)
-    if ($carry) {
-        # if $carry is set, the date doesn't matter: we're not
-        # going to increment the v. number twice at year-change.
+    #
+    # If we are incrementing based on date, $carry doesn't
+    # matter: we're not going to increment the v. number twice
+    #
+    # It is conceivable that a serial could increment based on date for some
+    # volumes and issue numbering for other volumes, but until a real case
+    # comes up, let's assume that defined calendar changes always trump $u
+    if (defined $pattern->{x}) {
+        my $increment = $self->calendar_increment(\@cur, \@new);
+        # if we hit a calendar change, restart dependant restarters
+        # regardless of whether they thought they should
+        if ($increment) {
+            $next->{a} += $increment;
+            foreach my $key ('b'..'f') {
+                next if !exists $next->{$key};
+                my $cap = $self->capfield($key);
+                if ($cap->{RESTART}) {
+                    $next->{$key} = 1;
+                    if ($self->enum_is_combined($key, $next->{$key})) {
+                        $next->{$key} .= '/' . ($next->{$key} + 1);
+                    }
+                } else {
+                    last; # if we find a non-restarting level, stop
+                }
+            }
+        }
+    } elsif ($carry) {
         $next->{a} += $carry;
-    } elsif (defined $pattern->{x}) {
-        $next->{a} += $self->calendar_increment(\@cur, \@new);
     }
 }
+
+sub winter_starts_year {
+    my $self = shift;
+
+    my $pubpats = $self->{_mfhdc_PATTERN}->{y}->{p};
+    my $freq = $self->{_mfhdc_PATTERN}->{w};
+
+    if ($freq =~ /^\d$/) {
+        foreach my $pubpat (@$pubpats) {
+            my $chroncode = substr($pubpat, 0, 1);
+            if ($chroncode eq 's' and substr($pubpat, 1, 2) == 24) {
+                return 1;        
+            }
+        }
+    }
+    return 0;
+}
+
 
 sub next_alt_enum {
     my $self = shift;
@@ -652,6 +684,15 @@ sub next_enum {
                 && $cap->{COUNT}
                 && ($next->{$key} eq $cap->{COUNT})) {
                 $next->{$key} = 1;
+                $carry = 1;
+            } elsif ($cap->{COUNT} > 0 and !($next->{$key} % $cap->{COUNT})) {
+                # If we have a non-restarting enum, but we define a count,
+                # we need to carry to the next level when the current value
+                # divides evenly by the count
+                # XXX: this code naively assumes that there has never been an
+                # issue number anomaly of any kind (like an extra issue), but this
+                # limit is inherent in the standard
+                $next->{$key} += 1;
                 $carry = 1;
             } else {
                 # If I don't need to "carry" beyond here, then I just increment

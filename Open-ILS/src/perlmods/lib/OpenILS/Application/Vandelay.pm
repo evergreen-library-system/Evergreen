@@ -1040,7 +1040,7 @@ sub import_record_asset_list_impl {
             $copy->barcode($item->barcode);
             $copy->location($item->location);
             $copy->circ_lib($item->circ_lib || $item->owning_lib);
-            $copy->status($item->status || OILS_COPY_STATUS_IN_PROCESS);
+            $copy->status( defined($item->status) ? $item->status : OILS_COPY_STATUS_IN_PROCESS );
             $copy->circulate($item->circulate);
             $copy->deposit($item->deposit);
             $copy->deposit_amount($item->deposit_amount);
