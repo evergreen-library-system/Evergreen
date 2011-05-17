@@ -10,7 +10,9 @@
     </div>
 
     <!-- fines summary along the right of the page -->
-    [% IF myopac_main_page == "payment_form" %]
+    [% IF myopac_main_page == "payment_form" OR (
+        !ctx.fines.circulation.size AND !ctx.fines.grocery.size
+    ) %]
     <div id="myopac_sum_fines_placehold"></div>
     [% ELSE %]
     <div id="myopac_sum_fines">
