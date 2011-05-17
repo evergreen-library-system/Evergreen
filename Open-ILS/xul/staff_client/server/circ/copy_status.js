@@ -1049,7 +1049,15 @@ circ.copy_status.prototype = {
         try {
             try { document.getElementById('last_scanned').setAttribute('value',''); } catch(E) {}
             if (!barcode) {
+                // No barcode provided = get barcode
                 barcode = obj.controller.view.copy_status_barcode_entry_textbox.value;
+                // Complete the barcode - just items
+                var barcode_object = xulG.get_barcode(window, 'asset', barcode);
+                // user_false is user said "None of the above" - Abort before other errors/prompts can result
+                if(barcode_object == "user_false") return;
+                // Got a barcode and no error? Use the barcode. Otherwise, fall through with entered barcode.
+                if(barcode_object && typeof barcode_object.ilsevent == 'undefined')
+                    barcode = barcode_object.barcode;
             }
             if (!barcode) { return; }
             if (barcode) {

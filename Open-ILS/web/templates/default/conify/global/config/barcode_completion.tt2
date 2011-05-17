@@ -1,0 +1,26 @@
+[% ctx.page_title = 'Barcode Completion Configuration' %]
+[% WRAPPER default/base.tt2 %]
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/config/barcode_completion.js'> </script>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+    <div>Barcode Completion Configuration</div>
+    <div><button dojoType='dijit.form.Button' onClick='cmGrid.showCreatePane()'>New</button></div>
+</div>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <table  jsId="cmGrid"
+            style="height: 600px;"
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['id', 'active', 'org_unit', 'prefix', 'suffix', 'length', 'padding', 'padding_end', 'asset', 'actor']"
+            defaultCellWidth='"auto"'
+            query="{id: '*'}"
+            fmClass='cbc'
+            editStyle='pane'
+            editOnEnter='true'
+            showColumnPicker='true'
+            columnPickerPrefix='"conify.config.barcode_completion"'>
+    </table>
+</div>
+
+<div class='hidden'><div dojoType='openils.widget.ProgressDialog' jsId='progressDialog'/></div>
+
+[% END %]
+

@@ -589,6 +589,27 @@ circ.checkout.prototype = {
         if (! (params.barcode||params.noncat)) { return; }
 
         if (params.barcode) {
+            // Default is "just items"
+            var barcode_context = 'asset';
+            // Add actor (can be any string that includes 'actor') if looking up patrons at checkout
+            if(String( obj.data.hash.aous['circ.staff_client.actor_on_checkout'] ) == 'true')
+                barcode_context += '-actor';
+            // Auto-complete the barcode
+            var in_barcode = xulG.get_barcode(window, barcode_context, params.barcode);
+            // user_false is "None of the above selected", don't error out/fall through as they already said no
+            if(in_barcode == "user_false") return;
+            // We have a barcode and there was no error?
+            if(in_barcode && typeof in_barcode.ilsevent == 'undefined') {
+                // Check if it was an actor barcode (will never happen unless actor was added above)
+                if(in_barcode.type == 'actor') {
+                    // Go to new patron (do not pass go, do not collect $200, do not prompt user)
+                    var horizontal_interface = String( obj.data.hash.aous['ui.circ.patron_summary.horizontal'] ) == 'true';
+                    var loc = xulG.url_prefix( horizontal_interface ? urls.XUL_PATRON_HORIZ_DISPLAY : urls.XUL_PATRON_DISPLAY );
+                    xulG.set_tab( loc, {}, { 'barcode' : in_barcode.barcode } );
+                    return;
+                }
+                params.barcode = in_barcode.barcode;
+            }
 
             if ( obj.test_barcode(params.barcode) ) { /* good */ } else { /* bad */ return; }
 

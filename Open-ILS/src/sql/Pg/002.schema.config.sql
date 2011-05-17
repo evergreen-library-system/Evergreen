@@ -86,7 +86,7 @@ CREATE TRIGGER no_overlapping_deps
     BEFORE INSERT OR UPDATE ON config.db_patch_dependencies
     FOR EACH ROW EXECUTE PROCEDURE evergreen.array_overlap_check ('deprecates');
 
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0535', :eg_version); -- dbs
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0536', :eg_version); -- miker for tsbere
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -886,5 +886,20 @@ Upgrade script % can not be applied:
     RETURN TRUE;
 END;
 $$ LANGUAGE PLPGSQL;
+
+CREATE TABLE config.barcode_completion (
+    id          SERIAL PRIMARY KEY,
+    active      BOOL NOT NULL DEFAULT true,
+    org_unit    INT NOT NULL, -- REFERENCES actor.org_unit(id) DEFERRABLE INITIALLY DEFERRED,
+    prefix      TEXT,
+    suffix      TEXT,
+    length      INT NOT NULL DEFAULT 0,
+    padding     TEXT,
+    padding_end BOOL NOT NULL DEFAULT false,
+    asset       BOOL NOT NULL DEFAULT true,
+    actor       BOOL NOT NULL DEFAULT true
+);
+
+CREATE TYPE evergreen.barcode_set AS (type TEXT, id BIGINT, barcode TEXT);
 
 COMMIT;

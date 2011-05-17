@@ -2508,6 +2508,11 @@ INSERT into config.org_unit_setting_type
     oils_i18n_gettext('circ.selfcheck.auto_override_checkout_events', 'List of checkout/renewal events that the selfcheck interface should automatically override instead instead of alerting and stopping the transaction', 'coust', 'description'),
     'array'),
 
+( 'circ.staff_client.actor_on_checkout',
+    oils_i18n_gettext('circ.staff_client.actor_on_checkout', 'Load patron from Checkout', 'coust', 'label'),
+    oils_i18n_gettext('circ.staff_client.actor_on_checkout', 'When scanning barcodes into Checkout auto-detect if a new patron barcode is scanned and auto-load the new patron.', 'coust', 'description'),
+    'bool'),
+
 ( 'circ.staff_client.do_not_auto_attempt_print',
     oils_i18n_gettext('circ.staff_client.do_not_auto_attempt_print', 'Disable Automatic Print Attempt Type List', 'coust', 'label'),
     oils_i18n_gettext('circ.staff_client.do_not_auto_attempt_print', 'Disable automatic print attempts from staff client interfaces for the receipt types in this list.  Possible values: "Checkout", "Bill Pay", "Hold Slip", "Transit Slip", and "Hold/Transit Slip".  This is different from the Auto-Print checkbox in the pertinent interfaces in that it disables automatic print attempts altogether, rather than encouraging silent printing by suppressing the print dialog.  The Auto-Print checkbox in these interfaces have no effect on the behavior for this setting.  In the case of the Hold, Transit, and Hold/Transit slips, this also suppresses the alert dialogs that precede the print dialog (the ones that offer Print and Do Not Print as options).', 'coust', 'description'),

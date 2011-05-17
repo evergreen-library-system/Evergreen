@@ -124,6 +124,8 @@
     <command id="cmd_local_admin_age_overdue_circulations_to_lost" />
     <command id="cmd_local_admin_cash_reports" />
     <command id="cmd_local_admin_transit_list" />
+    <command id="cmd_local_admin_barcode_completion"
+             perm="UPDATE_ORG_UNIT_SETTING_ALL" />
     <command id="cmd_local_admin_circ_matrix_matchpoint"
              perm="ADMIN_CIRC_MATRIX_MATCHPOINT VIEW_CIRC_MATRIX_MATCHPOINT"
              />
@@ -432,6 +434,7 @@
             <menupopup id="main.menu.admin.local.popup">
                 <menuitem command="cmd_local_admin_age_overdue_circulations_to_lost" label="&staff.server.admin.index.age_overdue_circulations_to_lost.label;" accesskey="&staff.server.admin.index.age_overdue_circulations_to_lost.accesskey;"/>
                 <menuitem label="&staff.server.admin.index.cash_reports;" command="cmd_local_admin_cash_reports"/>
+                <menuitem label="&staff.main.menu.admin.local_admin.barcode_completion.label;" command="cmd_local_admin_barcode_completion"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.circ_matrix_matchpoint.label;" command="cmd_local_admin_circ_matrix_matchpoint"/>
                 <menuitem label="&staff.server.admin.index.closed_dates;" command="cmd_local_admin_closed_dates"/>
                 <menuitem label="&staff.server.admin.index.copy_locations;" command="cmd_local_admin_copy_locations"/>

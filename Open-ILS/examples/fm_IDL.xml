@@ -8811,6 +8811,31 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
+	<class id="cbc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::barcode_completion" oils_persist:tablename="config.barcode_completion" reporter:label="Barcode Completions">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.barcode_completion_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Active" name="active" reporter:datatype="bool"/>
+			<field reporter:label="Owner" name="org_unit" reporter:datatype="org_unit"/>
+			<field reporter:label="Prefix" name="prefix" reporter:datatype="text"/>
+			<field reporter:label="Suffix" name="suffix" reporter:datatype="text"/>
+			<field reporter:label="Length" name="length" reporter:datatype="int"/>
+			<field reporter:label="Padding" name="padding" reporter:datatype="text"/>
+			<field reporter:label="Padding At End" name="padding_end" reporter:datatype="bool"/>
+			<field reporter:label="Applies to Items" name="asset" reporter:datatype="bool"/>
+			<field reporter:label="Applies to Users" name="actor" reporter:datatype="bool"/>
+		</fields>
+		<links>
+			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="UPDATE_ORG_UNIT_SETTING_ALL" context_field="org_unit"/>
+				<retrieve/>
+				<update permission="UPDATE_ORG_UNIT_SETTING_ALL" context_field="org_unit"/>
+				<delete permission="UPDATE_ORG_UNIT_SETTING_ALL" context_field="org_unit"/>
+			</actions>
+		</permacrud>
+	</class>
 
 	<!-- ********************************************************************************************************************* -->
 

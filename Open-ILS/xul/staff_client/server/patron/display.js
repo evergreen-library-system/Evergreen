@@ -831,7 +831,9 @@ patron.display.prototype = {
                                 }
                             )
                         }
-                    }
+                    },
+                    'get_barcode' : xulG.get_barcode,
+                    'url_prefix' : xulG.url_prefix
                 }
             );
             netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");

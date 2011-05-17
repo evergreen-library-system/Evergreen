@@ -51,6 +51,8 @@ main.menu.prototype = {
 
         urls.remote = params['server'];
 
+        xulG.get_barcode = this.get_barcode;
+
         // Pull in local customizations
         var r = new XMLHttpRequest();
         r.open("GET", obj.url_prefix('/xul/server/skin/custom.js'), false);
@@ -761,6 +763,11 @@ main.menu.prototype = {
             'cmd_local_admin_survey' : [
                 ['oncommand'],
                 function(event) { open_eg_web_page('conify/global/action/survey', null, event); }
+            ],
+            'cmd_local_admin_barcode_completion' : [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/config/barcode_completion', 
+                    'menu.local_admin.barcode_completion.tab'); }
             ],
             'cmd_local_admin_circ_matrix_matchpoint' : [
                 ['oncommand'],
@@ -2046,6 +2053,7 @@ commands:
         content_params.url_prefix = function(url) { return obj.url_prefix(url); };
         content_params.network_meter = obj.network_meter;
         content_params.page_meter = obj.page_meter;
+        content_params.get_barcode = obj.get_barcode;
         content_params.set_statusbar = function(slot,text,tooltiptext,click_handler) {
             var e = document.getElementById('statusbarpanel'+slot);
             if (e) {
@@ -2142,8 +2150,154 @@ commands:
         }
 
         return frame;
-    }
+    },
 
+    'get_barcode' : function(window, context, barcode) {
+        JSAN.use('util.network');
+        JSAN.use('util.sound');
+
+        // Depending on where we were called from data can be found in multiple ways
+        var data;
+        if(this.data) data = this.data;
+        else if(xulG.data) data = xulG.data;        
+        else {
+            JSAN.use('util.data');
+            data = new util.data();
+        }
+        data.stash_retrieve();
+
+        var network = new util.network();
+        var sound = new util.sound();
+
+        // Should return an array. Or an error.
+        var r = network.simple_request('GET_BARCODES', [ ses(), data.list.au[0].ws_ou(), context, barcode ]);
+
+        if(!r) // Nothing?
+            return false;
+
+        // Top-level error, likely means bad session or no STAFF_LOGIN permission.
+        if(typeof r.ilsevent != 'undefined') {
+            // Hand it off to the caller.
+            return r;
+        }
+
+        // No results? Return false
+        if(r.length == 0) return false;
+
+        // One result?
+        if(r.length == 1) {
+            // Return it. If it is an error the caller should deal with it.
+            return r[0];
+        }
+
+        // At this point we have more than one result.
+        // Check to see what we got.
+        var result_filter = {};
+        var valid_r = [];
+        var unique_count = 0;
+        var found_errors = false;
+        var errors = '';
+        var len = r.length;
+
+        // Check each result.
+        for(var i = 0; i < len; ++i) {
+            // If it is an error
+            if(typeof r[i].ilsevent != 'undefined') {
+                // Make note that we found errors
+                found_errors = true;
+                // Grab the error into a string
+                errors += js2JSON(r[i]);
+            }
+            else {
+                // Otherwise, record the type/id combo for later
+                var type = r[i].type;
+                var id = r[i].id;
+                var barcode = r[i].barcode;
+                if(!result_filter[type]) result_filter[type] = {};
+                if(!result_filter[type][id]) {
+                    unique_count++;
+                    result_filter[type][id] = [];
+                }
+                result_filter[type][id].push(barcode);
+                valid_r.push(r[i]);
+            }
+        }
+
+        // Only errors? Return the first one.
+        if(unique_count == 0 && found_errors == true) {
+            return r[0];
+        }
+
+        // No errors, one (unique) result? Return it.
+        if(unique_count == 1 && found_errors == false) return valid_r[0];
+
+        // For possible debugging, dump the errors.
+        if(found_errors) dump(errors);
+
+        // Still here? Must need to have the user pick.
+        if(!xulG.url_prefix) xulG.url_prefix = url_prefix; // Make util.window happy
+        JSAN.use('util.window');
+        var win = new util.window();
+        var url = url_prefix(urls.XUL_FANCY_PROMPT);
+        var title = offlineStrings.getString('barcode_choice.title');
+        var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml" flex="1">';
+        xml += '<groupbox flex="1" style="overflow: auto; border: solid thin;"><caption label="' + title + '"/>';
+        xml += '<description style="-moz-user-select: text; -moz-user-focus: normal; font-size: large">' + offlineStrings.getString('barcode_choice.prompt') + '</description>';
+        if(found_errors) // Let the user know that one or more possible answers errored out.
+            xml += '<description style="-moz-user=select: text; -moz-user-focus: normal; font-size: large">' + offlineStrings.getString('barcode_choice.errors_found') + '</description>';
+        xml += '</groupbox><groupbox><caption label="' + offlineStrings.getString('barcode_choice.choice_label') + '"/><vbox>';
+
+        len = valid_r.length;
+        // Look at all the non-error answers we got
+        for(var i = 0; i < len; ++i) {
+            // If we still have a filtered answer, display a button.
+            if(result_filter[valid_r[i].type][valid_r[i].id]) {
+                var result_data = false;
+                var barcodes = result_filter[valid_r[i].type][valid_r[i].id];
+                var barcodes_assembled = barcodes.shift();
+                var button_label = '';
+                while(barcodes.length > 0) // Join any secondary barcodes found together
+                    barcodes_assembled = offlineStrings.getFormattedString('barcode_choice.join_barcodes', [barcodes_assembled, barcodes.shift()]);
+                switch(r[i].type) {
+                    case 'actor':
+                        result_data = network.simple_request('BLOB_AU_PARTS_RETRIEVE',
+                            [ ses() , valid_r[i].id, ['family_name', 'first_given_name', 'second_given_name', 'home_ou' ] ]);
+                        button_label = offlineStrings.getFormattedString('barcode_choice.actor',
+                            [barcodes_assembled, result_data[0], result_data[1] + (result_data[2] ? ' ' + result_data[2] : ''), data.hash.aou[ result_data[3] ].name(), data.hash.aou[ result_data[3] ].shortname()]);
+                        break;
+                    case 'booking':
+                        result_data = network.simple_request('FM_ACP_DETAILS_VIA_BARCODE', [ ses(), valid_r[i].barcode ]);
+                        // Note: This falls through intentionally.
+                    case 'asset':
+                    case 'serial':
+                        if(!result_data) // If we fell through this should be set already.
+                            result_data = network.simple_request('FM_ACP_DETAILS', [ ses(), valid_r[i].id ]);
+                        button_label = offlineStrings.getFormattedString('barcode_choice.asset',
+                            [barcodes_assembled, result_data.mvr.title(), data.hash.aou[ result_data.copy.circ_lib() ].name(), data.hash.aou[ result_data.copy.circ_lib() ].shortname()]);
+                        break;
+                }
+                r[i].data = result_data;
+
+                // This ensures we only show each unique id once
+                delete result_filter[valid_r[i].type][valid_r[i].id];
+
+                // If we have more than one context this should label each entry with where it came from
+                // Likely most useful for distinguishing assets from bookings
+                if(context != valid_r[i].type && offlineStrings.testString('barcode_choice.' + valid_r[i].type + '_label'))
+                    button_label = offlineStrings.getFormattedString('barcode_choice.' + valid_r[i].type + '_label', [button_label]);
+
+                xml += '<button label="' + button_label + '" name="fancy_submit" value="' + i + '"/>';
+            }
+        }
+        xml += '<button label="' + offlineStrings.getString('barcode_choice.none') + '" name="fancy_cancel"/>';
+        xml += '</vbox></groupbox></vbox>';
+        var fancy_prompt_data = win.open( url, 'fancy_prompt', 'chrome,resizable,modal,width=500,height=500', { 'xml' : xml, 'title' : title, 'sound' : 'bad' } );
+        if(fancy_prompt_data.fancy_status == 'complete')
+            return valid_r[fancy_prompt_data.fancy_submit];
+        else
+            // user_false is used to indicate the user said "None of the above" to avoid fall-through erroring later.
+            return "user_false";
+    }
 }
 
 dump('exiting main/menu.js\n');

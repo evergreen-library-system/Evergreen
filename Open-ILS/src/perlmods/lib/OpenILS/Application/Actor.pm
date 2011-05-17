@@ -4275,6 +4275,55 @@ sub user_saved_search_cud {
     return $res;
 }
 
+__PACKAGE__->register_method(
+    method   => "get_barcodes",
+    api_name => "open-ils.actor.get_barcodes"
+);
 
+sub get_barcodes {
+	my( $self, $client, $auth, $org_id, $context, $barcode ) = @_;
+	my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+    return $e->event unless $e->allowed('STAFF_LOGIN', $org_id);
+
+    my $db_result = $e->json_query(
+        {   from => [
+                'evergreen.get_barcodes',
+                $org_id, $context, $barcode,
+            ]
+        }
+    );
+    if($context =~ /actor/) {
+        my $filter_result = ();
+        my $patron;
+        foreach my $result (@$db_result) {
+            if($result->{type} eq 'actor') {
+                if($e->requestor->id != $result->{id}) {
+                    $patron = $e->retrieve_actor_user($result->{id});
+                    if(!$patron) {
+                        push(@$filter_result, $e->event);
+                        next;
+                    }
+                    if($e->allowed('VIEW_USER', $patron->home_ou)) {
+                        push(@$filter_result, $result);
+                    }
+                    else {
+                        push(@$filter_result, $e->event);
+                    }
+                }
+                else {
+                    push(@$filter_result, $result);
+                }
+            }
+            else {
+                push(@$filter_result, $result);
+            }
+        }
+        return $filter_result;
+    }
+    else {
+        return $db_result;
+    }
+}
 
 1;
