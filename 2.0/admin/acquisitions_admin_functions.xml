@@ -157,13 +157,12 @@
 		<step><simpara>Select a currency type from the drop down menu. This menu is comprised of entries in the currency types menu. When a fund
 		is applied to a line item or copy, the price of the item will be encumbered in the currency associated with the fund.</simpara></step>
 		<step><simpara>Click the Active box to activate this fund. You cannot make purchases from this fund if it is not active.</simpara></step>
-		<step><simpara>Enter a Balance Stop Percent. The balance stop percent prevents you from making purchases when only a specified amount of the
-		fund remains. For example, if you want to leave a five percent balance in the fund, then you would enter 5 in the field.
-		You can also enter negative numbers to prevent over expenditure. When the fund reaches its balance stop percent, it will appear in 
-		red when you apply funds to copies.</simpara></step>
-		<step><simpara>Enter a Balance Warning Percent. The balance warning percent gives you a warning that the fund is low. You can specify any percent. For example, if you want to be 
-		warned when the fund has only 10 percent of its balance remaining, then enter 10 in the field. When the fund reaches its balance warning percent, it will appear in yellow when you 
-		apply funds to copies.</simpara></step>
+		<step><simpara>Enter a Balance Stop Percent. The balance stop percent prevents you from making purchases when only a specified amount of the fund remains. For example, if 
+		you want to spend 95 percent of your funds, leaving a five percent balance in the fund, then you would enter 95 in the field.  When the fund reaches its balance stop percent, 
+		it will appear in red when you apply funds to copies.</simpara></step>
+		<step><simpara>Enter a Balance Warning Percent. The balance warning percent gives you a warning that the fund is low. You can specify any percent. For example, if you want to spend 
+		90 percent of your funds and be warned when the fund has only 10 percent of its balance remaining, then enter 90 in the field. When the fund reaches its balance warning percent, it will 
+		appear in yellow when you apply funds to copies.</simpara></step>
 		<step><simpara>Check the Propagate box to propagate funds. When you propagate a fund, the ILS will create a new fund for the following fisca 
 		year with the same parameters as your current fund. All of the settings transfer except for the year and the amount of
 		money in the fund. Propagation occurs during the fiscal year close-out operation.</simpara></step>
