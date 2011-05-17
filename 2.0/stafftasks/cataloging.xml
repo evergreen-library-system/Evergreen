@@ -289,6 +289,10 @@ desired terms. Authority records are in MARC format. See <link
         xlink:href="http://www.loc.gov/marc/authority/ecadhome.html">
         http://www.loc.gov/marc/authority/ecadhome.html</link> for more on the 
 standard.</para>
+<note>See <link
+        xlink:href="http://open-ils.org/dokuwiki/doku.php?id=authorities:2.0">
+        http://open-ils.org/dokuwiki/doku.php?id=authorities:2.0</link> for more
+        documentation on authorities in Evergreen 2.0.</note> 
     <simplesect xml:id="viewingsearchingauthorityrecords">
 <title>Viewing/Searching Authority Records</title>
 <procedure>
