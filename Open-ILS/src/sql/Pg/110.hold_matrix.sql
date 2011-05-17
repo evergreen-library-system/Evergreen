@@ -184,6 +184,7 @@ DECLARE
     transit_range_ou_type    actor.org_unit_type%ROWTYPE;
     transit_source        actor.org_unit%ROWTYPE;
     item_object        asset.copy%ROWTYPE;
+    item_cn_object     asset.call_number%ROWTYPE;
     ou_skip              actor.org_unit_setting%ROWTYPE;
     result            action.matrix_test_result;
     hold_test        config.hold_matrix_matchpoint%ROWTYPE;
@@ -330,6 +331,7 @@ BEGIN
 
         IF item_object.create_date + age_protect_object.age > NOW() THEN
             IF hold_test.distance_is_from_owner THEN
+                SELECT INTO item_cn_object * FROM asset.call_number WHERE id = item_object.call_number;
                 SELECT INTO hold_transit_prox prox FROM actor.org_unit_proximity WHERE from_org = item_cn_object.owning_lib AND to_org = pickup_ou;
             ELSE
                 SELECT INTO hold_transit_prox prox FROM actor.org_unit_proximity WHERE from_org = item_object.circ_lib AND to_org = pickup_ou;
