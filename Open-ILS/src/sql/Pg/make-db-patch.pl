@@ -97,7 +97,7 @@ if (@deprecates or @supersedes) {
 }
 
 my $patch_init_contents;
-$patch_init_contents = `git diff $patch_from -- ./[0-9][0-9][0-9].*.sql | sed -e '/^[^+-]/d' -e '/^\\(--- a\\|+++ b\\)/d' -e 's/^+//'` if ($patch_from ne '');
+$patch_init_contents = `git diff $patch_from -- ./[0-9][0-9][0-9].*.sql | sed -e '/^[^+\@-]/d' -e '/^\\(--- a\\|+++ b\\)/d' -e 's/^+//'` if ($patch_from ne '');
 
 print OUT <<_FOOTER_;
 
