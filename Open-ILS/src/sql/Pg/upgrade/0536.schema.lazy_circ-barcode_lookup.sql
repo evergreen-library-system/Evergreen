@@ -1,20 +1,25 @@
+-- Evergreen DB patch 0536.schema.lazy_circ-barcode_lookup.sql
+--
+-- FIXME: insert description of change, if needed
+--
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('XXXX');
+-- check whether patch can be applied
+SELECT evergreen.update_deps_block_check('0536', :eg_version);
 
 INSERT INTO config.org_unit_setting_type ( name, label, description, datatype) VALUES ( 'circ.staff_client.actor_on_checkout', 'Load patron from Checkout', 'When scanning barcodes into Checkout auto-detect if a new patron barcode is scanned and auto-load the new patron.', 'bool');
 
 CREATE TABLE config.barcode_completion (
-    id          SERIAL PRIMARY KEY,
-    active      BOOL NOT NULL DEFAULT true,
-    org_unit    INT NOT NULL, -- REFERENCES actor.org_unit(id) DEFERRABLE INITIALLY DEFERRED,
+    id          SERIAL  PRIMARY KEY,
+    active      BOOL    NOT NULL DEFAULT true,
+    org_unit    INT     NOT NULL REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     prefix      TEXT,
     suffix      TEXT,
-    length      INT NOT NULL DEFAULT 0,
+    length      INT     NOT NULL DEFAULT 0,
     padding     TEXT,
-    padding_end BOOL NOT NULL DEFAULT false,
-    asset       BOOL NOT NULL DEFAULT true,
-    actor       BOOL NOT NULL DEFAULT true
+    padding_end BOOL    NOT NULL DEFAULT false,
+    asset       BOOL    NOT NULL DEFAULT true,
+    actor       BOOL    NOT NULL DEFAULT true
 );
 
 CREATE TYPE evergreen.barcode_set AS (type TEXT, id BIGINT, barcode TEXT);
@@ -108,6 +113,5 @@ Given user input, find an appropriate barcode in the proper class.
 Will add prefix/suffix information to do so, and return all results.
 $$;
 
-ALTER TABLE config.barcode_completion ADD CONSTRAINT config_barcode_completion_org_unit_fkey FOREIGN KEY (org_unit) REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
-
 COMMIT;
+
