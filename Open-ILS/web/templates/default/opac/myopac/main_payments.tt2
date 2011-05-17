@@ -34,10 +34,14 @@
                 <td>[% (payment.xact_type == 'grocery') ? payment.last_billing_type : payment.title %]</td>
                 <td>[% money(payment.mp.amount) %]</td>
                 <td>
-                    [%# post to print/email form... XXX wait, why post? -senator %]
-                    <a href="[% ctx.opac_root %]/myopac/receipt_print?payment=[% payment.mp.id %]" target="_egrcpt">[% l('Print') %]</a>
-                    /
-                    <a href=''>[% l('Email') %]</a>
+                    <form action="[% ctx.opac_root %]/myopac/receipt_print" method="POST">
+                        <input type="hidden" name="payment" value="[% payment.mp.id %]" />
+                        <input type="submit" value="[% l('Print') %]" />
+                    </form>
+                    <form action="[% ctx.opac_root %]/myopac/receipt_email" method="POST">
+                        <input type="hidden" name="payment" value="[% payment.mp.id %]" />
+                        <input type="submit" value="[% l('Email') %]" />
+                    </form>
                 </td>
             </tr>
             [% END %]

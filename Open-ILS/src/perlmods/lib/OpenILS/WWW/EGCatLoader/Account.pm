@@ -5,9 +5,8 @@ use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::AppUtils;
+use OpenILS::Event;
 use OpenSRF::Utils::JSON;
-#use Data::Dumper;
-#$Data::Dumper::Indent = 0;
 my $U = 'OpenILS::Application::AppUtils';
 
 sub prepare_extended_user_info {
@@ -647,6 +646,24 @@ sub load_myopac_receipt_print {
        "open-ils.circ", "open-ils.circ.money.payment_receipt.print",
        $self->editor->authtoken, [$self->cgi->param("payment")]
     );
+
+    return Apache2::Const::OK;
+}
+
+sub load_myopac_receipt_email {
+    my $self = shift;
+
+    # The following ML method doesn't actually check whether the user in
+    # question has an email address, so we do.
+    if ($self->ctx->{user}->email) {
+        $self->ctx->{email_receipt_result} = $U->simplereq(
+           "open-ils.circ", "open-ils.circ.money.payment_receipt.email",
+           $self->editor->authtoken, [$self->cgi->param("payment")]
+        );
+    } else {
+        $self->ctx->{email_receipt_result} =
+            new OpenILS::Event("PATRON_NO_EMAIL_ADDRESS");
+    }
 
     return Apache2::Const::OK;
 }

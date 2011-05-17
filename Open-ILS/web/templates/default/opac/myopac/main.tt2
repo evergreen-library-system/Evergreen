@@ -151,6 +151,9 @@
         </table>
     </div>
     [% END %]
+    [% UNLESS ctx.fines.grocery.size OR ctx.fines.circulation.size %]
+    <div>[% l('You have no current fines.') %]</div>
+    [% ELSE %]
     <div class="text-right pad-top-ten">
         <input type="image"
             alt="[% l('Pay selected fines') %]"
@@ -159,5 +162,6 @@
             onmouseout="this.src='[% ctx.media_prefix %]/images/pay-fines-btn.png';"
             src="[% ctx.media_prefix %]/images/pay-fines-btn.png" />
     </div>
+    [% END %]
 </form>
 [% END %]
