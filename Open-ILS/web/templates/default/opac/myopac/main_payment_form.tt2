@@ -160,7 +160,7 @@
                             onclick="history.go(-1);" />
                     </td>
                 </tr>
-                [% INCLUDE "default/opac/myopac/main_refund_policy.tt2" %]
+                [% INCLUDE "default/opac/parts/myopac/main_refund_policy.tt2" %]
             </tbody>
         </table>
     </form>
