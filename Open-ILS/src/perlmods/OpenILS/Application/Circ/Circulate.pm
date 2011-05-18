@@ -2260,6 +2260,7 @@ sub do_checkin {
     }
 
     if( $self->circ ) {
+        $self->generate_fines_finish;
         $self->checkin_handle_circ;
         return if $self->bail_out;
         $self->checkin_changed(1);
