@@ -231,7 +231,13 @@
                         dump('on_oils_persist: <<< ' + target.nodeName + '.id = ' + target.id + '\t' + bk + '\n');
                         for (var j = 0; j < attribute_list.length; j++) {
                             var key = base_key + attribute_list[j];
-                            var value = encodeURI(target.getAttribute( attribute_list[j] ));
+                            var value;
+                            try {
+                                value = encodeURI(target.getAttribute( attribute_list[j] ));
+                            } catch(E) {
+                                dump('Error in persist_helper with encodeURI: ' + E + '\n');
+                                value = target.getAttribute( attribute_list[j] );
+                            }
                             if ( attribute_list[j] == 'checked' && ['checkbox','toolbarbutton'].indexOf( target.nodeName ) > -1 ) {
                                 value = target.checked;
                                 dump('\t' + value + ' <== .' + attribute_list[j] + '\n');
@@ -281,7 +287,13 @@
                 for (var j = 0; j < attribute_list.length; j++) {
                     var key = base_key + attribute_list[j];
                     var has_key = prefs.prefHasUserValue(key);
-                    var value = has_key ? decodeURI(prefs.getCharPref(key)) : null;
+                    var value;
+                    try {
+                        value = has_key ? decodeURI(prefs.getCharPref(key)) : null;
+                    } catch(E) {
+                        dump('Error in persist_helper with decodeURI: ' + E + '\n');
+                        value = has_key ? prefs.getCharPref(key) : null;
+                    }
                     if (value == 'true') { value = true; }
                     if (value == 'false') { value = false; }
                     if (has_key) {
