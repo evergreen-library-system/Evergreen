@@ -801,7 +801,7 @@ function rdetailShowExtra(type, args) {
 		case 'cn':
 			addCSSClass($('rdetail_viewcn_link'), 'rdetail_extras_selected');
 			unHideMe($('rdetail_cn_browse_div'));
-			rdetailShowCNBrowse(defaultCN, getLocation(), null, true);
+			rdetailShowCNBrowse(defaultCN[1], getLocation(), null, true);
 			break;
 
 	}

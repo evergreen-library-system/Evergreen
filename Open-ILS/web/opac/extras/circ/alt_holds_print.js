@@ -35,6 +35,8 @@ function do_pull_list() {
                 hold.current_copy.location = hold_fm.current_copy().location().toHash(true);
                 hold.current_copy.call_number = hold_fm.current_copy().call_number().toHash(true);
                 hold.current_copy.call_number.record = hold_fm.current_copy().call_number().record().toHash(true);
+                hold.current_copy.call_number.prefix = hold_fm.current_copy().call_number().prefix().toHash(true);
+                hold.current_copy.call_number.suffix = hold_fm.current_copy().call_number().suffix().toHash(true);
 
                 // clone the template's html
                 var tr = dojo.clone(
