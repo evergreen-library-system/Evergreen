@@ -1,5 +1,7 @@
 BEGIN;
 
+INSERT INTO config.upgrade_log (version) VALUES ('0527');
+
 ALTER TABLE config.circ_matrix_weights ADD COLUMN marc_bib_level NUMERIC(6,2) NOT NULL DEFAULT 0.0;
 
 UPDATE config.circ_matrix_weights
