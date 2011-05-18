@@ -6,7 +6,7 @@ License: GNU Public License v 2.0 or later
 Author: Joe Atzberger
         Equinox Software, Inc.
 
-For ease of interpretation, Evergreen needs a service to convert between raw EDI and a 
+For ease of interpretation, Evergreen needs a service to convert between raw EDI and a
 more commonly used JSON-based notation.  Here we have the script (edi_webrick.rb) to
 do that.  The Translator will be called on both inbound and outbound EDI messages,
 translating to JSON (JEDI) for edi_fetcher.pl and to EDI for edi_pusher.pl,
@@ -23,12 +23,12 @@ Files:
 
 This service can be run on a local or remote system that has the proper ruby environment
 established.  See the install.sh script for an example of how to install the needed ruby
-components (on debian lenny linux).  
+components (on debian lenny linux).
 
 There is no such thing (yet?) as "push" from a vendor of their EDI responses.  Basically
 they just put responses in an FTP directory somewhere that you are expected to check.  It
-would be cool if there were a better way to do that like consuming some RSS feed or 
-remote API callbacks.  Similarly, nobody seems willing to utilize interactive EDI.  
+would be cool if there were a better way to do that like consuming some RSS feed or
+remote API callbacks.  Similarly, nobody seems willing to utilize interactive EDI.
 
 Evergreen will only support one delivery address per PO.  That limitation is based
 on the mapping to the delivery address via the ordering_agency org_unit.  If items
