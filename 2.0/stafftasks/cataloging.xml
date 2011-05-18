@@ -289,6 +289,15 @@ desired terms. Authority records are in MARC format. See <link
         xlink:href="http://www.loc.gov/marc/authority/ecadhome.html">
         http://www.loc.gov/marc/authority/ecadhome.html</link> for more on the 
 standard.</para>
+<para>Some of the authority-oriented features in Evergreen 2.0 include:</para>
+<itemizedlist>
+    <listitem>Following the Library of Congress standard, a field in a bibliographic record is controlled by an authority record when it contains a ‡0 subfield. In Evergreen, the system control number in the ‡0 subfield is always interpreted as the local ID for the authority record.</listitem>
+    <listitem>When an authority record is edited or merged with another authority record, changes in authority records are automatically propagated to linked bibliographic records.</listitem>
+    <listitem>A user interface for managing authorities, including searching, editing, merging, and deleting authorities.</listitem>
+    <listitem>A script for linking fields in a set of uncontrolled bibliographic records to a set of authority records.</listitem>
+</itemizedlist>
+
+
 <note>See <link
         xlink:href="http://open-ils.org/dokuwiki/doku.php?id=authorities:2.0">
         http://open-ils.org/dokuwiki/doku.php?id=authorities:2.0</link> for more
