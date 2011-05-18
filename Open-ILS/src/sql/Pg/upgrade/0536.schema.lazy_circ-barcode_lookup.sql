@@ -5,7 +5,7 @@
 BEGIN;
 
 -- check whether patch can be applied
-SELECT evergreen.update_deps_block_check('0536', :eg_version);
+INSERT INTO config.upgrade_log (version) VALUES ('0536');
 
 INSERT INTO config.org_unit_setting_type ( name, label, description, datatype) VALUES ( 'circ.staff_client.actor_on_checkout', 'Load patron from Checkout', 'When scanning barcodes into Checkout auto-detect if a new patron barcode is scanned and auto-load the new patron.', 'bool');
 
