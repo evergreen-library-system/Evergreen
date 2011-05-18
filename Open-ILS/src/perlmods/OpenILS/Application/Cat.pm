@@ -751,6 +751,8 @@ sub fleshed_volume_update {
 		if( $vol->isdeleted ) {
 
 			$logger->info("vol-update: deleting volume");
+			return $editor->event unless
+				$editor->allowed('UPDATE_VOLUME', $vol->owning_lib);
 			my $cs = $editor->search_asset_copy(
 				{ call_number => $vol->id, deleted => 'f' } );
 			return OpenILS::Event->new(
@@ -794,6 +796,9 @@ sub update_volume {
     my $auto_merge = shift;
 	my $evt;
     my $merge_vol;
+
+    return {evt => $editor->event} unless
+        $editor->allowed('UPDATE_VOLUME', $vol->owning_lib);
 
 	return {evt => $evt} 
         if ( $evt = OpenILS::Application::Cat::AssetCommon->org_cannot_have_vols($editor, $vol->owning_lib) );
