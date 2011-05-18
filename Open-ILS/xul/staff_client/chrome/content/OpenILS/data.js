@@ -181,6 +181,16 @@ OpenILS.data.prototype = {
             var obj = this; var found;
             if (obj.hash[key] && obj.hash[key][value]) return obj.hash[key][value];
             switch(key) {
+                case 'acnp':
+                    found = obj.network.simple_request('FM_ACNP_RETRIEVE_VIA_PCRUD',[ ses(), { 'id' : { '=' : value } }]);
+                    if (typeof found.ilsevent != 'undefined') throw(js2JSON(found));
+                    found = found[0];
+                break;
+                case 'acns':
+                    found = obj.network.simple_request('FM_ACNS_RETRIEVE_VIA_PCRUD',[ ses(), { 'id' : { '=' : value } }]);
+                    if (typeof found.ilsevent != 'undefined') throw(js2JSON(found));
+                    found = found[0];
+                break;
                 case 'acpl': 
                     found = obj.network.simple_request('FM_ACPL_RETRIEVE_VIA_ID.authoritative',[ value ]);
                 break;
