@@ -289,7 +289,12 @@
                         }
                     }
                     if ($('call_number').checked && $('call_number_line').value == j + 1) {
-                        tb2.value = volume.label().substr(0,label_cfg.pocket_width);
+                        tb2.value = (
+                            (volume.prefix() + ' ' + volume.label() + ' ' + volume.suffix())
+                            .replace(/\s+$/,'')
+                            .replace(/^\s+/,'')
+                            .substr(0,label_cfg.pocket_width)
+                        );
                     }
                     if ($('owning_lib_shortname').checked && $('owning_lib_shortname_line').value == j + 1) {
                         var lib = volume.owning_lib();
