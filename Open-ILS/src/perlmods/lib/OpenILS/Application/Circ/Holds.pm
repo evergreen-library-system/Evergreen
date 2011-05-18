@@ -1348,7 +1348,7 @@ __PACKAGE__->register_method(
         desc   => 'Returns a stream of fleshed holds',
         params => [
             { desc => 'Authtoken', type => 'string'},
-            { desc => 'Hash of optional param: Org unit ID (defaults to workstation org unit), limit, offset, sort (array of: acplo.position, call_number, request_time)',
+            { desc => 'Hash of optional param: Org unit ID (defaults to workstation org unit), limit, offset, sort (array of: acplo.position, prefix, call_number, suffix, request_time)',
               type => 'object'
             },
         ],
@@ -1383,8 +1383,12 @@ sub print_hold_pull_list_stream {
                     "class" => "acplo", "field" => "position",
                     "transform" => "coalesce", "params" => [999]
                 };
+            } elsif ($s eq 'prefix') {
+                push @$sort, {"class" => "acnp", "field" => "label_sortkey"};
             } elsif ($s eq 'call_number') {
-                push @$sort, {"class" => "acn", "field" => "label"};
+                push @$sort, {"class" => "acn", "field" => "label_sortkey"};
+            } elsif ($s eq 'suffix') {
+                push @$sort, {"class" => "acns", "field" => "label_sortkey"};
             } elsif ($s eq 'request_time') {
                 push @$sort, {"class" => "ahr", "field" => "request_time"};
             }
@@ -1407,7 +1411,17 @@ sub print_hold_pull_list_stream {
                         "join" => {
                             "acn" => {
                                 "field" => "id",
-                                "fkey" => "call_number" 
+                                "fkey" => "call_number",
+                                "join" => {
+                                    "acnp" => {
+                                        "field" => "id",
+                                        "fkey" => "prefix"
+                                    },
+                                    "acns" => {
+                                        "field" => "id",
+                                        "fkey" => "suffix"
+                                    }
+                                }
                             },
                             "acplo" => {
                                 "field" => "org",
@@ -1448,7 +1462,7 @@ sub print_hold_pull_list_stream {
                     "ahr" => ["usr", "current_copy"],
                     "au"  => ["card"],
                     "acp" => ["location", "call_number"],
-                    "acn" => ["record"]
+                    "acn" => ["record","prefix","suffix"]
                 }
             }
         ]);
