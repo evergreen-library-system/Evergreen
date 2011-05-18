@@ -105,7 +105,7 @@ $patch_init_contents = `cat $patch_wrap` if (defined $patch_wrap && $patch_wrap 
 print OUT <<_FOOTER_;
 
 -- check whether patch can be applied
-SELECT evergreen.update_deps_block_check('$db_patch_num', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('$db_patch_num', :eg_version);
 
 -- FIXME: add/check SQL statements to perform the upgrade
 $patch_init_contents
