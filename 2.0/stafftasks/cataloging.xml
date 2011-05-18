@@ -296,7 +296,7 @@ standard.</para>
     <listitem>A user interface for managing authorities, including searching, editing, merging, and deleting authorities.</listitem>
     <listitem>A script for linking fields in a set of uncontrolled bibliographic records to a set of authority records.</listitem>
 </itemizedlist>
-
+<note>There are some limitations to the authorities in the current version.</note>
 
 <note>See <link
         xlink:href="http://open-ils.org/dokuwiki/doku.php?id=authorities:2.0">
