@@ -641,7 +641,7 @@ circ.util.columns = function(modify,params) {
                 if (typeof my.acn == 'undefined') return '';
                 return (typeof my.acn.prefix() == 'object')
                     ? my.acn.prefix().label()
-                    : data.hash.acnp[ my.acn.prefix() ].label();
+                    : data.lookup("acnp", my.acn.prefix() ).label();
             },
             'persist' : 'hidden width ordinal'
         },
@@ -656,7 +656,7 @@ circ.util.columns = function(modify,params) {
                 if (typeof my.acn == 'undefined') return '';
                 return (typeof my.acn.suffix() == 'object')
                     ? my.acn.suffix().label()
-                    : data.hash.acns[ my.acn.suffix() ].label();
+                    : data.lookup("acns", my.acn.suffix() ).label();
             },
             'persist' : 'hidden width ordinal'
         },
