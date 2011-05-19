@@ -302,6 +302,18 @@ util.print.prototype = {
                 }
             } catch(E) { dump(E+'\n'); }
 
+            // Date Format
+            try {
+                var match;
+                var date_format_patt=/%DATE_FORMAT\(\s*([^,]*?)\s*,\s*([^)]*?)\s*\)%/
+                while(match = date_format_patt.exec(s)) {
+                    if(match[1] == '' || match[2] == '')
+                        s = s.replace(match[0], '');
+                    else
+                        s = s.replace(match[0], util.date.formatted_date(match[1], match[2]));
+                }
+            } catch(E) { dump(E+'\n'); }
+
             // Substrings
             try {
                 var match;

@@ -2566,6 +2566,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
             'notify_by_email_msg' : '',
             'request_date' : '',
             'request_date_msg' : '',
+            'shelf_expire_time' : '',
             'slip_date' : '',
             'slip_date_msg' : '',
             'user' : '',
@@ -2764,6 +2765,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                         msg += '\n';
                         print_data.request_date = util.date.formatted_date(check.payload.hold.request_time(),'%F');
                         print_data.request_date_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.request_date', [print_data.request_date]);
+                        print_data.shelf_expire_time = check.payload.hold.shelf_expire_time();
                         msg += print_data.request_date_msg;
                         msg += '\n';
                     }
