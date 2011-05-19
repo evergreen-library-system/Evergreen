@@ -287,9 +287,9 @@
 <!ENTITY staff.cat.opac.manage_parts.accesskey "P">
 <!ENTITY staff.cat.opac.manage_parts.label "Manage Parts">
 <!ENTITY staff.cat.opac.manage_multi_home_items.accesskey "F">
-<!ENTITY staff.cat.opac.manage_multi_home_items.label "Manage Foreign Items">
+<!ENTITY staff.cat.opac.manage_multi_home_items.label "Manage Conjoined Items">
 <!ENTITY staff.cat.opac.mark_for_multi_home.accesskey "F">
-<!ENTITY staff.cat.opac.mark_for_multi_home.label "Mark as Target for Foreign Items">
+<!ENTITY staff.cat.opac.mark_for_multi_home.label "Mark as Target for Conjoined Items">
 <!ENTITY staff.cat.opac.marc_edit.accesskey "E">
 <!ENTITY staff.cat.opac.marc_edit.label "MARC Edit">
 <!ENTITY staff.cat.opac.marc_view.accesskey "V">
@@ -2495,7 +2495,7 @@
 <!ENTITY staff.hold_list.cancel_hold_dialog.cancel_btn.accesskey "C">
 <!ENTITY staff.hold_list.cancel_hold_dialog.apply_btn.label "Apply">
 <!ENTITY staff.hold_list.cancel_hold_dialog.apply_btn.accesskey "A">
-<!ENTITY staff.cat.manage_multi_bib_items.caption "Manage Foreign Items">
+<!ENTITY staff.cat.manage_multi_bib_items.caption "Manage Conjoined Items">
 <!ENTITY staff.cat.manage_multi_bib_items.actions.menu.label "Actions for Selected Items">
 <!ENTITY staff.cat.manage_multi_bib_items.actions.menu.accesskey "f">
 <!ENTITY staff.cat.manage_multi_bib_items.actions.menu_entry.show_in_opac.label "Show in Catalog">
@@ -2526,7 +2526,7 @@
 <!ENTITY staff.cat.copy_browser.actions.cmd_edit_items.accesskey "E">
 <!ENTITY staff.cat.copy_browser.actions.cmd_transfer_items.label "Transfer Items to Previously Marked Volume">
 <!ENTITY staff.cat.copy_browser.actions.cmd_transfer_items.accesskey "T">
-<!ENTITY staff.cat.copy_browser.actions.cmd_link_as_multi_bib.label "Link as Foreign Items to Previously Marked Bib Record">
+<!ENTITY staff.cat.copy_browser.actions.cmd_link_as_multi_bib.label "Link as Conjoined Items to Previously Marked Bib Record">
 <!ENTITY staff.cat.copy_browser.actions.cmd_link_as_multi_bib.accesskey "F">
 <!ENTITY staff.cat.copy_browser.actions.cmd_add_volumes.label "Add Volumes">
 <!ENTITY staff.cat.copy_browser.actions.cmd_add_volumes.accesskey "V">
