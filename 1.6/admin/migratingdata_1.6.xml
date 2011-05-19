@@ -30,7 +30,7 @@
       				<listitem><para>Converts <systemitem>MARC21</systemitem> to <systemitem>MARCXML21</systemitem></para></listitem>
      				<listitem><para>Select the unique record number field (common choices are '035' or '001'; check your records as you might be surprised how a supposedly unique field 
 				actually has duplicates, though marc2bre.pl will select a unique identifier for subsequent duplicates)</para></listitem>
-     				<listitem><para>Extracts certain pertinent fields indexing and display purposes (along with the complete MARCXML21 record)</para></listitem>
+     				<listitem><para>Extracts certain pertinent fields for indexing and display purposes (along with the complete MARCXML21 record)</para></listitem>
      				<listitem><para>Sets the ID number of the first record from this batch to be imported into the biblio.record_entry table (hint - run the following 
 				<systemitem>SQL</systemitem> to determine what this number should be to avoid conflicts:</para>
 <screen>
