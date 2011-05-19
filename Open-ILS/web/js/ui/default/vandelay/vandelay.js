@@ -1143,6 +1143,7 @@ function vlImportRecordQueue(type, queueId, recList, onload) {
     if(vlUploadQueueAutoOverlay1Match.checked) {
         options.auto_overlay_1match = true;
         vlUploadQueueAutoOverlay1Match.checked = false;
+        options.match_quality_ratio = vlUploadQueueAutoOverlayBestMatchRatio.attr('value');
         mergeOpt = true;
     }
 

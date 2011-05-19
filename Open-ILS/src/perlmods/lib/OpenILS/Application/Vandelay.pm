@@ -927,8 +927,8 @@ sub import_record_list_impl {
         $e->requestor($requestor);
 
         $$report_args{e} = $e;
-        $$report_args{import_error} = undef;
         $$report_args{evt} = undef;
+        $$report_args{import_error} = undef;
 
         my $rec = $e->$retrieve_func([
             $rec_id,
@@ -962,7 +962,7 @@ sub import_record_list_impl {
                 {
                     from => [
                         $overlay_func,
-                        $rec->id, 
+                        $rec_id,
                         $overlay_target, 
                         $merge_profile
                     ]
@@ -972,8 +972,8 @@ sub import_record_list_impl {
             if($res and ($res = $res->[0])) {
 
                 if($res->{$overlay_func} eq 't') {
-                    $logger->info("vl: $type direct overlay succeeded for queued rec " . 
-                        $rec->id . " and overlay target $overlay_target");
+                    $logger->info("vl: $type direct overlay succeeded for queued rec ".
+                        "$rec_id and overlay target $overlay_target");
                     $imported = 1;
                 }
 
@@ -984,34 +984,39 @@ sub import_record_list_impl {
 
         } else {
 
-            if($auto_overlay_1match) { 
-                # caller says to overlay if there is exactly 1 match
+            if($auto_overlay_1match) { # overlay if there is exactly 1 match
 
                 my %match_recs = map { $_->eg_record => 1 } @{$rec->matches};
 
                 if( scalar(keys %match_recs) == 1) { # all matches point to the same record
 
+                    # $auto_overlay_best_func will find the 1 match and 
+                    # overlay if the quality ratio allows it
+
                     my $res = $e->json_query(
                         {
                             from => [
-                                $overlay_func,
-                                $rec->id, 
-                                $rec->matches->[0]->eg_record,
-                                $merge_profile
+                                $auto_overlay_best_func,
+                                $rec_id, 
+                                $merge_profile,
+                                $match_quality_ratio
                             ]
                         }
                     );
 
                     if($res and ($res = $res->[0])) {
     
-                        if($res->{$overlay_func} eq 't') {
-                            $logger->info("vl: $type overlay-1match succeeded for queued rec " . $rec->id);
+                        if($res->{$auto_overlay_best_func} eq 't') {
+                            $logger->info("vl: $type overlay-1match succeeded for queued rec $rec_id");
                             $imported = 1;
+                        } else {
+                            $$report_args{import_error} = 'overlay.record.quality' if $match_quality_ratio > 0;
+                            $logger->info("vl: $type overlay-1match failed for queued rec $rec_id");
                         }
 
                     } else {
                         $error = 1;
-                        $logger->error("vl: Error attempting overlay with func=$overlay_func, profile=$merge_profile, record=$rec_id");
+                        $logger->error("vl: Error attempting overlay with func=$auto_overlay_best_func, profile=$merge_profile, record=$rec_id");
                     }
                 }
             }
@@ -1019,12 +1024,13 @@ sub import_record_list_impl {
             if(!$imported and !$error and $auto_overlay_exact and scalar(@{$rec->matches}) == 1 ) {
                 
                 # caller says to overlay if there is an /exact/ match
+                # $auto_overlay_func only proceeds and returns true on exact matches
 
                 my $res = $e->json_query(
                     {
                         from => [
                             $auto_overlay_func,
-                            $rec->id, 
+                            $rec_id,
                             $merge_profile
                         ]
                     }
@@ -1033,10 +1039,10 @@ sub import_record_list_impl {
                 if($res and ($res = $res->[0])) {
 
                     if($res->{$auto_overlay_func} eq 't') {
-                        $logger->info("vl: $type auto-overlay succeeded for queued rec " . $rec->id);
+                        $logger->info("vl: $type auto-overlay succeeded for queued rec $rec_id");
                         $imported = 1;
                     } else {
-                        $logger->info("vl: $type auto-overlay failed for queued rec " . $rec->id);
+                        $logger->info("vl: $type auto-overlay failed for queued rec $rec_id");
                     }
 
                 } else {
@@ -1053,7 +1059,7 @@ sub import_record_list_impl {
                     {
                         from => [
                             $auto_overlay_best_func,
-                            $rec->id, 
+                            $rec_id,
                             $merge_profile,
                             $match_quality_ratio
                         ]
@@ -1063,11 +1069,11 @@ sub import_record_list_impl {
                 if($res and ($res = $res->[0])) {
 
                     if($res->{$auto_overlay_best_func} eq 't') {
-                        $logger->info("vl: $type auto-overlay-best succeeded for queued rec " . $rec->id);
+                        $logger->info("vl: $type auto-overlay-best succeeded for queued rec $rec_id");
                         $imported = 1;
                     } else {
                         $$report_args{import_error} = 'overlay.record.quality' if $match_quality_ratio > 0;
-                        $logger->info("vl: $type auto-overlay-best failed for queued rec " . $rec->id);
+                        $logger->info("vl: $type auto-overlay-best failed for queued rec $rec_id");
                     }
 
                 } else {
@@ -1097,20 +1103,28 @@ sub import_record_list_impl {
 
                     $logger->info("vl: successfully imported new $type record");
                     $rec->imported_as($record->id);
-                    $rec->import_time('now');
-                    $rec->clear_import_error;
-                    $rec->clear_error_detail;
-                    $imported = 1 if $e->$update_func($rec);
                 }
             }
         }
 
         if($imported) {
-            push @success_rec_ids, $rec_id;
-            finish_rec_import_attempt($report_args);
 
-        } else {
-            # Send an update whenever there's an error
+            $rec->import_time('now');
+            $rec->clear_import_error;
+            $rec->clear_error_detail;
+
+            if($e->$update_func($rec)) {
+
+                push @success_rec_ids, $rec_id;
+                finish_rec_import_attempt($report_args);
+
+            } else {
+                $imported = 0;
+            }
+        }
+
+        if(!$imported) {
+            $logger->info("vl: record $rec_id was not imported");
             $$report_args{evt} = $e->event unless $$report_args{evt};
             finish_rec_import_attempt($report_args);
         }
@@ -1137,7 +1151,7 @@ sub import_record_list_impl {
     }
 
     # import the copies
-    import_record_asset_list_impl($conn, \@success_rec_ids, $requestor);
+    import_record_asset_list_impl($conn, \@success_rec_ids, $requestor) if @success_rec_ids;
 
     $conn->respond({total => $$report_args{total}, progress => $$report_args{progress}});
     return undef;
@@ -1402,7 +1416,10 @@ sub import_record_asset_list_impl {
     $rec_ids = $roe->json_query({
         select => {vqbr => ['id']},
         from => {vqbr => 'vii'},
-        where => {'+vqbr' => {import_time => {'!=' => undef}}},
+        where => {'+vqbr' => {
+            id => $rec_ids,
+            import_time => {'!=' => undef}
+        }},
         distinct => 1
     });
     $rec_ids = [map {$_->{id}} @$rec_ids];
@@ -1555,7 +1572,9 @@ sub respond_with_status {
 
     if($$args{report_all} or ($$args{progress} % $$args{step}) == 0) {
         $$args{conn}->respond({
-            map { $_ => $args->{$_} } qw/total progress success_count/,
+            total => $$args{total},
+            progress => $$args{progress},
+            success_count => $$args{success_count},
             err_event => $evt
         });
         $$args{step} *= 2 unless $$args{step} == 256;

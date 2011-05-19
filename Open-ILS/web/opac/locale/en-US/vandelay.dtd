@@ -2,12 +2,12 @@
 <!ENTITY vandelay.auth.attrs "Authority attributes">
 <!ENTITY vandelay.auth.records "Authority Records">
 <!ENTITY vandelay.auto.import.noncolliding "Import Non-Colliding Records">
-<!ENTITY vandelay.auto.import.auto_overlay_exact "Merge/Overlay Exact Matches (901c)">
-<!ENTITY vandelay.auto.import.auto_overlay_1match "Merge/Overlay Single Matches">
-<!ENTITY vandelay.auto.import.auto_overlay_best "Merge/Overlay Best Match">
-<!ENTITY vandelay.auto.import.auto_overlay_best_ratio "Best Match Minimum Quality Ratio">
+<!ENTITY vandelay.auto.import.auto_overlay_exact "Merge On Exact Match (901c)">
+<!ENTITY vandelay.auto.import.auto_overlay_1match "Merge On Single Match">
+<!ENTITY vandelay.auto.import.auto_overlay_best "Merge On Best Match">
+<!ENTITY vandelay.auto.import.auto_overlay_best_ratio "Best/Single Match Minimum Quality Ratio">
 <!ENTITY vandelay.auto.import.auto_overlay_best_ratio.desc "New Record Quaility / Quality of Best Match">
-<!ENTITY vandelay.auto.import.merge_profile "Merge/Overlay Profile">
+<!ENTITY vandelay.auto.import.merge_profile "Merge Profile">
 <!ENTITY vandelay.auto.width "Auto Width">
 <!ENTITY vandelay.back.to.import.queue "Back To Import Queue">
 <!ENTITY vandelay.bib.attrs "Bibliographic attributes">
@@ -52,8 +52,8 @@
 <!ENTITY vandelay.marc.record "MARC Record">
 <!ENTITY vandelay.matches "Matches">
 <!ENTITY vandelay.next.page "Next &#187;">
-<!ENTITY vandelay.overlay.selected.record "Overlay selected record with imported record">
-<!ENTITY vandelay.overlay.target "Overlay Target">
+<!ENTITY vandelay.overlay.selected.record "Merge selected record with imported record">
+<!ENTITY vandelay.overlay.target "Merge Target">
 <!ENTITY vandelay.page "Page">
 <!ENTITY vandelay.powered.by.evergreen "Powered by Evergreen!">
 <!ENTITY vandelay.prev.page "&#171; Previous">

@@ -677,9 +677,9 @@ $$ LANGUAGE PLPGSQL;
 CREATE OR REPLACE FUNCTION vandelay.match_bib_record() RETURNS TRIGGER AS $func$
 DECLARE
     incoming_existing_id    TEXT;
-    my_bib_queue            vandelay.bib_queue%ROWTYPE;
     test_result             vandelay.match_set_test_result%ROWTYPE;
     tmp_rec                 BIGINT;
+    match_set               INT;
 BEGIN
     IF TG_OP IN ('INSERT','UPDATE') AND NEW.imported_as IS NOT NULL THEN
         RETURN NEW;
@@ -687,13 +687,11 @@ BEGIN
 
     DELETE FROM vandelay.bib_match WHERE queued_record = NEW.id;
 
-    SELECT * INTO my_bib_queue FROM vandelay.bib_queue WHERE id = NEW.queue;
+    SELECT q.match_set INTO match_set FROM vandelay.bib_queue q WHERE q.id = NEW.queue;
 
-    IF my_bib_queue.match_set IS NULL THEN
-        RETURN NEW;
+    IF match_set IS NOT NULL THEN
+        NEW.quality := vandelay.measure_record_quality( NEW.marc, match_set );
     END IF;
-
-    NEW.quality := vandelay.measure_record_quality( NEW.marc, my_bib_queue.match_set );
 
     -- Perfect matches on 901$c exit early with a match with high quality.
     incoming_existing_id :=
@@ -702,22 +700,33 @@ BEGIN
     IF incoming_existing_id IS NOT NULL AND incoming_existing_id != '' THEN
         SELECT id INTO tmp_rec FROM biblio.record_entry WHERE id = incoming_existing_id::bigint;
         IF tmp_rec IS NOT NULL THEN
-            INSERT INTO vandelay.bib_match (queued_record, eg_record, quality) VALUES ( NEW.id, incoming_existing_id::bigint, 9999);
-            RETURN NEW;
+            INSERT INTO vandelay.bib_match (queued_record, eg_record, match_score, quality) 
+                SELECT
+                    NEW.id, 
+                    b.id,
+                    9999,
+                    -- note: no match_set means quality==0
+                    vandelay.measure_record_quality( b.marc, match_set )
+                FROM biblio.record_entry b
+                WHERE id = incoming_existing_id::bigint;
         END IF;
     END IF;
 
+    IF match_set IS NULL THEN
+        RETURN NEW;
+    END IF;
 
     FOR test_result IN SELECT * FROM
-        vandelay.match_set_test_marcxml(my_bib_queue.match_set, NEW.marc) LOOP
+        vandelay.match_set_test_marcxml(match_set, NEW.marc) LOOP
 
         INSERT INTO vandelay.bib_match ( queued_record, eg_record, match_score, quality )
-	SELECT  NEW.id,
-	        test_result.record,
+            SELECT  
+                NEW.id,
+                test_result.record,
                 test_result.quality,
-		vandelay.measure_record_quality( b.marc, my_bib_queue.match_set )
-	  FROM  biblio.record_entry b
-	  WHERE id = test_result.record;
+                vandelay.measure_record_quality( b.marc, match_set )
+	        FROM  biblio.record_entry b
+	        WHERE id = test_result.record;
 
     END LOOP;
 
