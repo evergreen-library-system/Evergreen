@@ -15,7 +15,7 @@ CREATE TABLE vandelay.match_set (
 -- Table to define match points, either FF via SVF or tag+subfield
 CREATE TABLE vandelay.match_set_point (
     id          SERIAL  PRIMARY KEY,
-    match_set   INT     REFERENCES vandelay.match_set (id),
+    match_set   INT     REFERENCES vandelay.match_set (id) ON DELETE CASCADE,
     parent      INT     REFERENCES vandelay.match_set_point (id),
     bool_op     TEXT    CHECK (bool_op IS NULL OR (bool_op IN ('AND','OR','NOT'))),
     svf         TEXT    REFERENCES config.record_attr_definition (name),
@@ -33,7 +33,7 @@ CREATE TABLE vandelay.match_set_point (
 
 CREATE TABLE vandelay.match_set_quality (
     id          SERIAL  PRIMARY KEY,
-    match_set   INT     NOT NULL REFERENCES vandelay.match_set (id),
+    match_set   INT     NOT NULL REFERENCES vandelay.match_set (id) ON DELETE CASCADE,
     svf         TEXT    REFERENCES config.record_attr_definition,
     tag         TEXT,
     subfield    TEXT,
