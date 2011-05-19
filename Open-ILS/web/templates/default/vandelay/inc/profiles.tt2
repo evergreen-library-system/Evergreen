@@ -19,5 +19,10 @@
             fmClass='vmp'
             showPaginator='true'
             editOnEnter='true'>
+        <thead>
+            <tr>
+                <th field='owner' get='vlGetOrg'/>
+            </tr>
+        </thead>
     </table>
 </div>
