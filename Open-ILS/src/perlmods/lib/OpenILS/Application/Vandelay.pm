@@ -1089,14 +1089,16 @@ sub import_record_list_impl {
             
                 $logger->info("vl: creating new $type record for queued record $rec_id");
                 if($type eq 'bib') {
-                    $record = OpenILS::Application::Cat::BibCommon->biblio_record_xml_import($e, $rec->marc, $bib_sources{$rec->bib_source});
+                    $record = OpenILS::Application::Cat::BibCommon->biblio_record_xml_import(
+                        $e, $rec->marc, $bib_sources{$rec->bib_source}, undef, 1);
                 } else {
 
                     $record = OpenILS::Application::Cat::AuthCommon->import_authority_record($e, $rec->marc); #$source);
                 }
 
                 if($U->event_code($record)) {
-                    $$report_args{import_error} = 'import.duplicate.tcn' if $record->{textcode} eq 'TCN_EXISTS';
+                    $$report_args{import_error} = 'import.duplicate.tcn' 
+                        if $record->{textcode} eq 'OPEN_TCN_NOT_FOUND';
                     $$report_args{evt} = $record;
 
                 } else {
