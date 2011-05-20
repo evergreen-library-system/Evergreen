@@ -1400,6 +1400,9 @@ sub retrieve_queue_summary {
         $summary->{total_items} = $e->json_query($query)->[0]->{count};
         $query->{where}->{import_error} = {'!=' => undef};
         $summary->{item_import_errors} = $e->json_query($query)->[0]->{count};
+        delete $query->{where}->{import_error};
+        $query->{where}->{import_time} = {'!=' => undef};
+        $summary->{total_items_imported} = $e->json_query($query)->[0]->{count};
     }
 
     return $summary;

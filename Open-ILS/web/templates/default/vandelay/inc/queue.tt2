@@ -28,6 +28,7 @@
                                 <tr><td>&vandelay.queue.imported;</td><td> <span style='font-weight:bold;' id='vl-queue-summary-import-count'/></td></tr>
                                 <tr><td>Record Import Failures</td><td> <span style='font-weight:bold;' id='vl-queue-summary-rec-error-count'/></td></tr>
                                 <tr><td>Items in Queue</td><td> <span style='font-weight:bold;' id='vl-queue-summary-import-item-count'/></td></tr>
+                                <tr><td>Items Imported</td><td> <span style='font-weight:bold;' id='vl-queue-summary-import-item-imported-count'/></td></tr>
                                 <tr><td>Item Import Failures</td><td> <span style='font-weight:bold;' id='vl-queue-summary-item-error-count'/></td></tr>
                             </tbody>
                         </table>
