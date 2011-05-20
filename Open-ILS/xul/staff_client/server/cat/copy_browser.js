@@ -387,6 +387,37 @@ cat.copy_browser.prototype = {
                                 }
                             }
                         ],
+                        'cmd_replace_barcode' : [
+                            ['command'],
+                            function() {
+                                try {
+                                    JSAN.use('util.functional');
+
+                                    var list = util.functional.filter_list(
+                                        obj.sel_list,
+                                        function (o) {
+                                            return o.split(/_/)[0] == 'acp';
+                                        }
+                                    );
+
+                                    list = util.functional.map_list(
+                                        list,
+                                        function (o) {
+                                            var cloned_copy_obj = JSON2js( js2JSON( obj.map_acp[ o ] ) );
+                                            cloned_copy_obj.call_number( obj.map_acn[ 'acn_' + cloned_copy_obj.call_number() ] );
+                                            return cloned_copy_obj;
+                                        }
+                                    );
+
+                                    xulG.volume_item_creator( {'existing_copies':list, 'onrefresh' : function() { obj.refresh_list(); } } );
+
+                                } catch(E) {
+                                    obj.error.standard_unexpected_error_alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.edit_items.error'),E);
+                                    obj.refresh_list();
+                                }
+                            }
+                        ],
+
                         'old_cmd_edit_items' : [
                             ['command'],
                             function() {
@@ -1740,6 +1771,7 @@ cat.copy_browser.prototype = {
             obj.controller.view.cmd_add_items.setAttribute('disabled','true');
             obj.controller.view.cmd_add_items_to_buckets.setAttribute('disabled','true');
             obj.controller.view.cmd_edit_items.setAttribute('disabled','true');
+            obj.controller.view.cmd_replace_barcode.setAttribute('disabled','true');
             obj.controller.view.cmd_delete_items.setAttribute('disabled','true');
             obj.controller.view.cmd_print_spine_labels.setAttribute('disabled','true');
             obj.controller.view.cmd_add_volumes.setAttribute('disabled','true');
@@ -1771,6 +1803,7 @@ cat.copy_browser.prototype = {
                 obj.controller.view.sel_mark_items_missing.setAttribute('disabled','false');
                 obj.controller.view.cmd_add_items_to_buckets.setAttribute('disabled','false');
                 obj.controller.view.cmd_edit_items.setAttribute('disabled','false');
+                obj.controller.view.cmd_replace_barcode.setAttribute('disabled','false');
                 obj.controller.view.cmd_delete_items.setAttribute('disabled','false');
                 obj.controller.view.cmd_print_spine_labels.setAttribute('disabled','false');
                 obj.controller.view.cmd_transfer_items.setAttribute('disabled','false');

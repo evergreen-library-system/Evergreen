@@ -2598,6 +2598,7 @@
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_print_spine_labels.label "Print Item Spine Labels">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_print_spine_labels.accesskey "P">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_replace_barcode.label "Replace Barcode">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_replace_barcode.accesskey "R">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.save_columns.label "Save Columns">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_refresh_list.label "Refresh Listing">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_refresh_list.accesskey "R">
