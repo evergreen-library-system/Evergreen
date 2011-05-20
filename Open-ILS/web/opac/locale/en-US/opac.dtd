@@ -609,6 +609,7 @@ We recommend that you remove this title from any bookbags it may have been added
 <!ENTITY common.hold.issuance "Issuance Hold">
 <!ENTITY common.hold.advanced "Advanced Hold Options">
 <!ENTITY common.hold.delivery "Please select a physical location where your hold can be delivered.">
+<!ENTITY common.hold.part_required "Please select a specific monographic part to hold.">
 <!ENTITY common.hold.checked_out "This item is already checked out.">
 <!ENTITY common.hold.checked_out.override "This item is already checked out.  Would you like to place the hold anyway?">
 <!ENTITY common.hold.exists "A hold already exists on the requested item.">
