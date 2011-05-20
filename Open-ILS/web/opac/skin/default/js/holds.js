@@ -928,15 +928,10 @@ function holdsBuildHoldFromWindow() {
 	else
 		hold.email_notify(0);
 
-    if(holdArgs.recordParts && holdArgs.recordParts.length) {
-        var part = getSelectorVal($('holds_parts_selector'));
-        if(part) {
-            holdArgs.type = 'P';
-            holdArgs.part = part;
-        } else {
-            alertId('holds_pick_part');
-            return;
-        }
+    var part = getSelectorVal($('holds_parts_selector'));
+    if(part) {
+        holdArgs.type = 'P';
+        holdArgs.part = part;
     }
 
 	var target = holdArgs[holdTargetTypeMap[holdArgs.type]];
