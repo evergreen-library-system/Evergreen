@@ -21,6 +21,12 @@ function my_init() {
         xulG.not_modal = true;
         xulG.edit = true;
 
+        // Volume Creator looks for these
+        xulG.no_bib_summary = true;
+        xulG.volume_ui_callback_for_unified_interface = function() {
+            on_volume_pane_load();
+        };
+
         // Spawn the volume/copy creator
         JSAN.use('util.browser');
         var volume_pane = new util.browser();
@@ -30,27 +36,7 @@ function my_init() {
                 'push_xulG' : true,
                 'alt_print' : false,
                 'browser_id' : 'volume_pane',
-                'passthru_content_params' : xulG,
-                'on_url_load' : function() {
-                    if ($('Create')) { // in horizontal UI variant
-                        // Hide the Create button in the embedded volume creator
-                        var f_content = get_contentWindow( $('volume_pane' ) );
-                        var original_btn = f_content.document.getElementById('Create');
-                        original_btn.hidden = true;
-                        $('Create').setAttribute(
-                            'label',
-                            $('catStrings').getString('staff.cat.volume_copy_creator.create.btn.label')
-                        );
-                        $('Create').setAttribute(
-                            'accesskey',
-                            $('catStrings').getString('staff.cat.volume_copy_creator.create.btn.accesskey')
-                        );
-                        g.stash_and_close = function(p) {
-                            // Wire up the method for the replacement button
-                            f_content.g.stash_and_close(p);
-                        }
-                    }
-                }
+                'passthru_content_params' : xulG
             }
         );
 
@@ -129,3 +115,37 @@ function setup_templates() {
     }
 }
 
+function on_volume_pane_load() {
+    try {
+        var f_content = get_contentWindow( $('volume_pane' ) );
+
+        // horizontal UI variant has its own create button
+        if ($('Create')) {
+            var original_btn = f_content.document.getElementById('Create');
+            original_btn.hidden = true;
+            $('Create').setAttribute(
+                'label',
+                $('catStrings').getString('staff.cat.volume_copy_creator.create.btn.label')
+            );
+            $('Create').setAttribute(
+                'accesskey',
+                $('catStrings').getString('staff.cat.volume_copy_creator.create.btn.accesskey')
+            );
+            g.stash_and_close = function(p) {
+                // Wire up the method for the replacement button
+                f_content.g.stash_and_close(p);
+            }
+        }
+
+        // load the bib summary pane
+        var sb = document.getElementById('summary_box');
+        while(sb.firstChild) sb.removeChild(sb.lastChild);
+        var summary = document.createElement('iframe'); sb.appendChild(summary);
+        summary.setAttribute('src',urls.XUL_BIB_BRIEF);
+        summary.setAttribute('flex','1');
+        get_contentWindow(summary).xulG = { 'docid' : f_content.g.doc_id };
+        dump('f_content.g.doc_id = ' + f_content.g.doc_id + '\n');
+    } catch(E) {
+        alert('Error in volume_copy_editor.js, on_volume_pane_load(): ' + E);
+    }
+}
