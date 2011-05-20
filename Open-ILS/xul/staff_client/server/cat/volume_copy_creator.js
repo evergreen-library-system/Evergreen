@@ -145,11 +145,18 @@ function my_init() {
             alert('Error in volume_copy_creator.js, g.doc_id not valid');
             window.close(); return;
         }
-        var sb = document.getElementById('summary_box'); while(sb.firstChild) sb.removeChild(sb.lastChild);
-        var summary = document.createElement('iframe'); sb.appendChild(summary);
-        summary.setAttribute('src',urls.XUL_BIB_BRIEF);
-        summary.setAttribute('flex','1');
-        get_contentWindow(summary).xulG = { 'docid' : g.doc_id };
+
+        var sb = document.getElementById('summary_box');
+        if (xul_param('no_bib_summary')) {
+            sb.hidden = true;
+            sb.nextSibling.hidden = true; /* splitter */
+        } else {
+            while(sb.firstChild) sb.removeChild(sb.lastChild);
+            var summary = document.createElement('iframe'); sb.appendChild(summary);
+            summary.setAttribute('src',urls.XUL_BIB_BRIEF);
+            summary.setAttribute('flex','1');
+            get_contentWindow(summary).xulG = { 'docid' : g.doc_id };
+        }
 
         /***********************************************************************************************************/
         /* Setup pcrud and fetch the monographic parts for this bib */
@@ -205,6 +212,10 @@ function my_init() {
             $('main').parentNode.scrollLeft = 9999;
         } catch(E) {
             dump('Error in volume_copy_creator.js, my_init(), trying to auto-scroll to the far right: ' + E + '\n');
+        }
+
+        if (typeof xulG.volume_ui_callback_for_unified_interface == 'function') {
+            xulG.volume_ui_callback_for_unified_interface();
         }
 
     } catch(E) {
