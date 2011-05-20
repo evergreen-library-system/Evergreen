@@ -417,15 +417,18 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
             var classification_column_box = document.createElement('vbox');
             classification_column_box.setAttribute('class','cn_class');
             r.appendChild(classification_column_box);
+            classification_column_box.width = $('batch_class').parentNode.boxObject.width;
 
             /**** PREFIX COLUMN ****/
             var prefix_column_box = document.createElement('vbox');
             prefix_column_box.setAttribute('class','cn_prefix');
             r.appendChild(prefix_column_box);
+            prefix_column_box.width = $('batch_prefix').parentNode.boxObject.width;
 
             /**** CALLNUMBER COLUMN ****/
             var call_number_column_box = document.createElement('vbox');
             r.appendChild(call_number_column_box);
+            call_number_column_box.width = $('marc_cn').parentNode.boxObject.width;
                 var call_number_column_textbox = document.createElement('textbox');
                 call_number_column_box.appendChild(call_number_column_textbox);
                     if (g.use_defaults && $('marc_cn').firstChild) {
@@ -482,6 +485,7 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
             var suffix_column_box = document.createElement('vbox');
             suffix_column_box.setAttribute('class','cn_suffix');
             r.appendChild(suffix_column_box);
+            suffix_column_box.width = $('batch_suffix').parentNode.boxObject.width;
                 var suffix_column_menulist = g.render_suffix_menu(call_number_column_textbox);
                 suffix_column_menulist.addEventListener(
                     'command',

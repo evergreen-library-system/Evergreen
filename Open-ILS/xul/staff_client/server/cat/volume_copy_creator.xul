@@ -49,24 +49,51 @@
     <vbox id="main" oils_persist="height" flex="1">
         <groupbox flex="1" class="my_overflow">
             <caption id="caption" label="&staff.cat.volume_copy_creator.label;"/>
-            <hbox flex="0">
-                <hbox id="batch_bar" flex="1">
-                    <label value="&staff.cat.volume_copy_creator.batch_bar;"/>
-                    <label class="cn_class" value="&staff.cat.volume_copy_creator.batch_bar.call_number.classification;"/>
-                    <hbox class="cn_class" id="batch_class"/>
-                    <label class="cn_prefix" value="&staff.cat.volume_copy_creator.batch_bar.call_number.prefix;"/>
-                    <hbox class="cn_prefix" id="batch_prefix"/>
-                    <label value="&staff.cat.volume_copy_creator.batch_bar.call_number.label.label;"
-                        accesskey="&staff.cat.volume_copy_creator.batch_bar.call_number.label.accesskey;" control="marc_cn_menulist"/>
-                    <hbox id="marc_cn"/>
-                    <label class="cn_suffix" value="&staff.cat.volume_copy_creator.batch_bar.call_number.suffix;"/>
-                    <hbox class="cn_suffix" id="batch_suffix"/>
-                    <hbox id="batch_button_box"/>
-                </hbox>
-            </hbox>
             <grid flex="1">
                 <columns> <column flex="0"/> <column flex="0"/> <column flex="1"/> </columns>
                 <rows id="rows">
+                    <row id="batch_bar">
+                        <spacer />
+                        <spacer />
+                        <grid flex="1">
+                            <columns>
+                                <column/>
+                                <column/>
+                                <column/>
+                                <column/>
+                            </columns>
+                            <rows>
+                                <row>
+                                    <vbox class="cn_class">
+                                        <label value="&staff.cat.volume_copy_creator.batch_bar.call_number.classification;"
+                                            class="header"/>
+                                        <hbox id="batch_class"/>
+                                    </vbox>
+                                    <vbox class="cn_prefix">
+                                        <label value="&staff.cat.volume_copy_creator.batch_bar.call_number.prefix;"
+                                            class="header"/>
+                                        <hbox id="batch_prefix"/>
+                                    </vbox>
+                                    <vbox>
+                                        <label
+                                            value="&staff.cat.volume_copy_creator.batch_bar.call_number.label.label;"
+                                            accesskey="&staff.cat.volume_copy_creator.batch_bar.call_number.label.accesskey;"
+                                            control="marc_cn_menulist" class="header"/>
+                                        <hbox id="marc_cn"/>
+                                    </vbox>
+                                    <vbox class="cn_suffix">
+                                        <label value="&staff.cat.volume_copy_creator.batch_bar.call_number.suffix;"
+                                            class="header"/>
+                                        <hbox id="batch_suffix"/>
+                                    </vbox>
+                                    <vbox>
+                                        <label class="header" value="&staff.cat.volume_copy_creator.batch_bar;"/>
+                                        <hbox id="batch_button_box"/>
+                                    </vbox>
+                                </row>
+                            </rows>
+                        </grid>
+                    </row>
                     <row>
                         <label value="&staff.cat.volume_copy_creator.library_label.value;" style="font-weight: bold"/>
                         <label value="&staff.cat.volume_copy_creator.num_of_volumes_label.value;" style="font-weight: bold"/>
