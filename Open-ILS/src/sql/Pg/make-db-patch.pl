@@ -23,6 +23,7 @@ use Getopt::Long;
 my $db_patch_num;
 my $patch_name;
 my $patch_from;
+my $patch_wrap;
 my @deprecates;
 my @supersedes;
 
@@ -31,6 +32,7 @@ GetOptions(
     'num=i' => \$db_patch_num,
     'name=s' => \$patch_name,
     'from=s' => \$patch_from,
+    'wrap=s' => \$patch_wrap,
     'deprecates=i' => \@deprecates,
     'supersedes=i' => \@supersedes,
 ) or exit_usage();
@@ -97,12 +99,13 @@ if (@deprecates or @supersedes) {
 }
 
 my $patch_init_contents;
-$patch_init_contents = `git diff $patch_from -- ./[0-9][0-9][0-9].*.sql | sed -e '/^[^+\@-]/d' -e '/^\\(--- a\\|+++ b\\)/d' -e 's/^+//'` if ($patch_from ne '');
+$patch_init_contents = `git diff $patch_from -- ./[0-9][0-9][0-9].*.sql | sed -e '/^[^+\@-]/d' -e '/^\\(--- a\\|+++ b\\)/d' -e 's/^+//'` if ($patch_from ne '' && ! defined $patch_wrap);
+$patch_init_contents = `cat $patch_wrap` if (defined $patch_wrap && $patch_wrap ne '');
 
 print OUT <<_FOOTER_;
 
 -- check whether patch can be applied
-SELECT evergreen.update_deps_block_check('$db_patch_num', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('$db_patch_num', :eg_version);
 
 -- FIXME: add/check SQL statements to perform the upgrade
 $patch_init_contents
@@ -126,6 +129,7 @@ Make template for a DB patch SQL file.
     --deprecates   patch(es) deprecated by this update
     --supersedes   patch(es) superseded by this update
     --from         git refspec to compare against
+    --wrap         existing file to wrap (overrides --from)
 _HELP_
     exit 0;
 }

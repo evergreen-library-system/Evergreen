@@ -225,7 +225,9 @@ static int oilsAuthVerifyPassword( const osrfMethodContext* ctx,
 	if(!seed) {
 		return osrfAppRequestRespondException( ctx->session,
 			ctx->request, "No authentication seed found. "
-			"open-ils.auth.authenticate.init must be called first");
+			"open-ils.auth.authenticate.init must be called first "
+			" (check that memcached is running and can be connected to) "
+		);
 	}
 
 	// Get the hashed password from the user object
