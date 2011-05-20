@@ -346,8 +346,11 @@ serial.manage_items.prototype = {
                                         }
                                     );
 
+                                var mode = obj.mode;
+                                if (mode == 'advanced_receive') mode = 'receive';
+
                                 var method; var success_label;
-                                if (obj.mode == 'receive' || obj.mode == 'advanced_receive') {
+                                if (mode == 'receive') {
                                     method = 'open-ils.serial.receive_items';
                                     success_label = 'received';
                                 } else { // bind mode
@@ -407,7 +410,7 @@ serial.manage_items.prototype = {
                                         if (typeof call_numbers_by_siss_and_sdist[item.issuance().id() + '@' + item.stream().distribution().id()] == 'undefined') {
                                             var default_cn = 'DEFAULT';
                                             // if they defined a *_call_number, honor it as the default
-                                            var preset_cn_id = item.stream().distribution()[obj.mode + '_call_number']();
+                                            var preset_cn_id = item.stream().distribution()[mode + '_call_number']();
                                             if (preset_cn_id) {
                                                 var preset_default_cn = obj.network.request(
                                                         'open-ils.pcrud',
