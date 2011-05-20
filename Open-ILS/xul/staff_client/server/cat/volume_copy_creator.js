@@ -297,15 +297,18 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
     var x = document.createElement('label'); r.appendChild(x);
         x.setAttribute('value', $("catStrings").getString('staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.classification'));
         x.setAttribute('style','font-weight: bold');
+        x.setAttribute('class','cn_class');
     x = document.createElement('label'); r.appendChild(x);
         x.setAttribute('value', $("catStrings").getString('staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.prefix'));
         x.setAttribute('style','font-weight: bold');
+        x.setAttribute('class','cn_prefix');
     x = document.createElement('label'); r.appendChild(x);
         x.setAttribute('value', $("catStrings").getString('staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.call_nums'));
         x.setAttribute('style','font-weight: bold');
     x = document.createElement('label'); r.appendChild(x);
         x.setAttribute('value', $("catStrings").getString('staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.suffix'));
         x.setAttribute('style','font-weight: bold');
+        x.setAttribute('class','cn_suffix');
     x = document.createElement('label'); r.appendChild(x);
         x.setAttribute('value',$("catStrings").getString('staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.num_of_copies'));
         x.setAttribute('style','font-weight: bold');
@@ -401,10 +404,12 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
 
             /**** CLASSIFICATION COLUMN ****/
             var classification_column_box = document.createElement('vbox');
+            classification_column_box.setAttribute('class','cn_class');
             r.appendChild(classification_column_box);
 
             /**** PREFIX COLUMN ****/
             var prefix_column_box = document.createElement('vbox');
+            prefix_column_box.setAttribute('class','cn_prefix');
             r.appendChild(prefix_column_box);
 
             /**** CALLNUMBER COLUMN ****/
@@ -464,6 +469,7 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
 
             /**** SUFFIX COLUMN ****/
             var suffix_column_box = document.createElement('vbox');
+            suffix_column_box.setAttribute('class','cn_suffix');
             r.appendChild(suffix_column_box);
                 var suffix_column_menulist = g.render_suffix_menu(call_number_column_textbox);
                 suffix_column_menulist.addEventListener(
@@ -664,6 +670,7 @@ g.render_barcode_entry = function(node,callnumber_composite_key,count,ou_id) {
                 tb = document.createElement('textbox');
                 tb_part_box.appendChild(tb);
                 part_menu = g.render_part_menu(tb);
+                part_menu.setAttribute('class','part_column');
                 tb_part_box.appendChild(part_menu);
                 set_handlers = true;
             } else {

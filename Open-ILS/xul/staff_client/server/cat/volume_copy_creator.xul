@@ -50,15 +50,15 @@
         <hbox flex="0">
             <hbox id="batch_bar">
                 <label value="&staff.cat.volume_copy_creator.batch_bar;"/>
-                <label value="&staff.cat.volume_copy_creator.batch_bar.call_number.classification;"/>
-                <hbox id="batch_class"/>
-                <label value="&staff.cat.volume_copy_creator.batch_bar.call_number.prefix;"/>
-                <hbox id="batch_prefix"/>
+                <label class="cn_class" value="&staff.cat.volume_copy_creator.batch_bar.call_number.classification;"/>
+                <hbox class="cn_class" id="batch_class"/>
+                <label class="cn_prefix" value="&staff.cat.volume_copy_creator.batch_bar.call_number.prefix;"/>
+                <hbox class="cn_prefix" id="batch_prefix"/>
                 <label value="&staff.cat.volume_copy_creator.batch_bar.call_number.label.label;"
                     accesskey="&staff.cat.volume_copy_creator.batch_bar.call_number.label.accesskey;" control="marc_cn_menulist"/>
                 <hbox id="marc_cn"/>
-                <label value="&staff.cat.volume_copy_creator.batch_bar.call_number.suffix;"/>
-                <hbox id="batch_suffix"/>
+                <label class="cn_suffix" value="&staff.cat.volume_copy_creator.batch_bar.call_number.suffix;"/>
+                <hbox class="cn_suffix" id="batch_suffix"/>
                 <hbox id="batch_button_box"/>
             </hbox>
             <spacer flex="1" />
