@@ -5404,6 +5404,7 @@ INSERT INTO action_trigger.event_definition (
         'ProcessTemplate',
         'print-on-demand',
 $$
+[% FILTER collapse %]
 [%- SET invoice = target -%]
 <!-- This lacks general refinement -->
 <div class="acq-invoice-voucher">
