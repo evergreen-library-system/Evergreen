@@ -28,6 +28,8 @@
     </script>
     <scripts id="openils_util_scripts"/>
 
+    <messagecatalog id="catStrings" src='/xul/server/locale/<!--#echo var="locale"-->/cat.properties'/>
+
     <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
     <script type="text/javascript" src="volume_copy_editor.js"/>
 
@@ -48,6 +50,10 @@
             <browser id="item_pane" flex="1" />
             <hbox id="bottom_bar"/>
         </vbox>
+    </hbox>
+    <hbox>
+        <spacer flex="1"/>
+        <button id="Create" oncommand="g.stash_and_close('unified_interface');"/>
     </hbox>
 
 </window>

@@ -30,7 +30,27 @@ function my_init() {
                 'push_xulG' : true,
                 'alt_print' : false,
                 'browser_id' : 'volume_pane',
-                'passthru_content_params' : xulG
+                'passthru_content_params' : xulG,
+                'on_url_load' : function() {
+                    if ($('Create')) { // in horizontal UI variant
+                        // Hide the Create button in the embedded volume creator
+                        var f_content = get_contentWindow( $('volume_pane' ) );
+                        var original_btn = f_content.document.getElementById('Create');
+                        original_btn.hidden = true;
+                        $('Create').setAttribute(
+                            'label',
+                            $('catStrings').getString('staff.cat.volume_copy_creator.create.btn.label')
+                        );
+                        $('Create').setAttribute(
+                            'accesskey',
+                            $('catStrings').getString('staff.cat.volume_copy_creator.create.btn.accesskey')
+                        );
+                        g.stash_and_close = function(p) {
+                            // Wire up the method for the replacement button
+                            f_content.g.stash_and_close(p);
+                        }
+                    }
+                }
             }
         );
 
