@@ -61,7 +61,7 @@
         <td>
             <label for="quality-input"
                 title="A relative number representing the impact of this expression on the quality of the overall record match"><!-- XXX tooltipize -->
-                Quality:
+                Math Score Value
             </label>
         </td>
         <td>
