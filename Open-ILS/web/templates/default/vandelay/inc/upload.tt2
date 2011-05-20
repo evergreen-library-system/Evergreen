@@ -88,7 +88,7 @@
             <td colspan='5'>
                 <span id="vl-file-label">&vandelay.file.to.upload;</span>
                 <input size='48' style='border:1px solid #888;' type="file" name="marc_upload"/>
-                <span style='margin-left:10px;'><button onclick="batchUpload()">&vandelay.upload;</button></span>
+                <span style='margin-left:10px;'><button dojoType="dijit.form.Button" onclick="batchUpload()">&vandelay.upload;</button></span>
             </td>
         </tr>
     </table>
