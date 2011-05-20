@@ -2829,7 +2829,7 @@
 <!ENTITY staff.cat.volume_copy_creator.batch_bar "BATCH">
 <!ENTITY staff.cat.volume_copy_creator.batch_bar.call_number.classification "Classification:">
 <!ENTITY staff.cat.volume_copy_creator.batch_bar.call_number.prefix "Prefix:">
-<!ENTITY staff.cat.volume_copy_creator.batch_bar.call_number.label.label "Label:">
+<!ENTITY staff.cat.volume_copy_creator.batch_bar.call_number.label.label "Call Number:">
 <!ENTITY staff.cat.volume_copy_creator.batch_bar.call_number.label.accesskey "L">
 <!ENTITY staff.cat.volume_copy_creator.batch_bar.call_number.suffix "Suffix:">
 <!ENTITY staff.cat.volume_editor.title "Volumes">

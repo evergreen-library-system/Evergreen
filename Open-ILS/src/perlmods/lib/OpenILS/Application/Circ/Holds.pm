@@ -1348,7 +1348,7 @@ __PACKAGE__->register_method(
         desc   => 'Returns a stream of fleshed holds',
         params => [
             { desc => 'Authtoken', type => 'string'},
-            { desc => 'Hash of optional param: Org unit ID (defaults to workstation org unit), limit, offset, sort (array of: acplo.position, call_number, request_time)',
+            { desc => 'Hash of optional param: Org unit ID (defaults to workstation org unit), limit, offset, sort (array of: acplo.position, prefix, call_number, suffix, request_time)',
               type => 'object'
             },
         ],
@@ -1383,8 +1383,12 @@ sub print_hold_pull_list_stream {
                     "class" => "acplo", "field" => "position",
                     "transform" => "coalesce", "params" => [999]
                 };
+            } elsif ($s eq 'prefix') {
+                push @$sort, {"class" => "acnp", "field" => "label_sortkey"};
             } elsif ($s eq 'call_number') {
-                push @$sort, {"class" => "acn", "field" => "label"};
+                push @$sort, {"class" => "acn", "field" => "label_sortkey"};
+            } elsif ($s eq 'suffix') {
+                push @$sort, {"class" => "acns", "field" => "label_sortkey"};
             } elsif ($s eq 'request_time') {
                 push @$sort, {"class" => "ahr", "field" => "request_time"};
             }
@@ -1407,7 +1411,17 @@ sub print_hold_pull_list_stream {
                         "join" => {
                             "acn" => {
                                 "field" => "id",
-                                "fkey" => "call_number" 
+                                "fkey" => "call_number",
+                                "join" => {
+                                    "acnp" => {
+                                        "field" => "id",
+                                        "fkey" => "prefix"
+                                    },
+                                    "acns" => {
+                                        "field" => "id",
+                                        "fkey" => "suffix"
+                                    }
+                                }
                             },
                             "acplo" => {
                                 "field" => "org",
@@ -1448,7 +1462,7 @@ sub print_hold_pull_list_stream {
                     "ahr" => ["usr", "current_copy"],
                     "au"  => ["card"],
                     "acp" => ["location", "call_number"],
-                    "acn" => ["record"]
+                    "acn" => ["record","prefix","suffix"]
                 }
             }
         ]);
@@ -2736,7 +2750,7 @@ sub all_rec_holds {
     $args->{fulfillment_time} = undef; #  we don't want to see old fulfilled holds
 	$args->{cancel_time} = undef;
 
-	my $resp = { volume_holds => [], copy_holds => [], metarecord_holds => [] };
+	my $resp = { volume_holds => [], copy_holds => [], metarecord_holds => [], issuance_holds => [] };
 
     my $mr_map = $e->search_metabib_metarecord_source_map({source => $title_id})->[0];
     if($mr_map) {
@@ -2764,15 +2778,22 @@ sub all_rec_holds {
 
     my $subs = $e->search_serial_subscription(
         { record_entry => $title_id }, {idlist=>1});
-    my $issuances = $e->search_serial_issuance(
-        { subscription => $subs }, {idlist=>1});
 
-    $resp->{issuance_holds} = $e->search_action_hold_request(
-        {
-			hold_type => OILS_HOLD_TYPE_ISSUANCE,
-            target => $issuances,
-            %$args
-        }, {idlist=>1} );
+    if (@$subs) {
+        my $issuances = $e->search_serial_issuance(
+            {subscription => $subs}, {idlist=>1}
+        );
+
+        if ($issuances) {
+            $resp->{issuance_holds} = $e->search_action_hold_request(
+                {
+                    hold_type => OILS_HOLD_TYPE_ISSUANCE,
+                    target => $issuances,
+                    %$args
+                }, {idlist=>1}
+            );
+        }
+    }
 
 	my $vols = $e->search_asset_call_number(
 		{ record => $title_id, deleted => 'f' }, {idlist=>1});

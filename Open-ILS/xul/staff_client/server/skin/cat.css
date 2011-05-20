@@ -8,4 +8,12 @@
 .copy_editor_field_changed { background: lightgreen; }
 .copy_editor_field_required { border: solid thin red; }
 
-hbox#batch_bar { background-color: gray; }
+row#batch_bar { background-color: gray; }
+
+/* How you might hide the classification, affix, and parts columns in the volume creator/editor */
+/*
+.cn_class { display: none; }
+.cn_prefix { display: none; }
+.cn_suffix { display: none; }
+.part_column { display: none; }
+*/

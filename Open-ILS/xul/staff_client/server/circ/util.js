@@ -641,7 +641,7 @@ circ.util.columns = function(modify,params) {
                 if (typeof my.acn == 'undefined') return '';
                 return (typeof my.acn.prefix() == 'object')
                     ? my.acn.prefix().label()
-                    : data.hash.acnp[ my.acn.prefix() ].label();
+                    : data.lookup("acnp", my.acn.prefix() ).label();
             },
             'persist' : 'hidden width ordinal'
         },
@@ -656,7 +656,7 @@ circ.util.columns = function(modify,params) {
                 if (typeof my.acn == 'undefined') return '';
                 return (typeof my.acn.suffix() == 'object')
                     ? my.acn.suffix().label()
-                    : data.hash.acns[ my.acn.suffix() ].label();
+                    : data.lookup("acns", my.acn.suffix() ).label();
             },
             'persist' : 'hidden width ordinal'
         },
@@ -2217,15 +2217,86 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.patron_first_given_name ? my.patron_first_given_name : ""; }
         },
         {
-            'persist' : 'hidden width ordinal',
             'id' : 'callnumber',
-            'label' : document.getElementById('circStrings').getString('staff.circ.utils.callnumber'),
+            'fm_class' : 'acp',
+            'label' : document.getElementById('commonStrings').getString('staff.acp_label_call_number'),
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.acn.label(); }
+            'editable' : false, 'render' : function(my,scratch_data) {
+                var acn_id;
+                if (my.acn) {
+                    if (typeof my.acn == 'object') {
+                        acn_id = my.acn.id();
+                    } else {
+                        acn_id = my.acn;
+                    }
+                } else if (my.acp) {
+                    if (typeof my.acp.call_number() == 'object') {
+                        acn_id = my.acp.call_number().id();
+                    } else {
+                        acn_id = my.acp.call_number();
+                    }
+                }
+                if (!acn_id && acn_id != 0) {
+                    return '';
+                } else if (acn_id == -1) {
+                    return document.getElementById('circStrings').getString('staff.circ.utils.not_cataloged');
+                } else if (acn_id == -2) {
+                    return document.getElementById('circStrings').getString('staff.circ.utils.retrieving');
+                } else {
+                    if (!my.acn) {
+                        if (typeof scratch_data['acn_map'] == 'undefined') {
+                            scratch_data['acn_map'] = {};
+                        }
+                        if (typeof scratch_data['acn_map'][ acn_id ] == 'undefined') {
+                            var x = network.simple_request("FM_ACN_RETRIEVE.authoritative",[ acn_id ]);
+                            if (x.ilsevent) {
+                                return document.getElementById('circStrings').getString('staff.circ.utils.not_cataloged');
+                            } else {
+                                my.acn = x;
+                                scratch_data['acn_map'][ acn_id ] = my.acn;
+                            }
+                        } else {
+                            my.acn = scratch_data['acn_map'][ acn_id ];
+                        }
+                    }
+                    return my.acn.label();
+                }
+            },
+            'persist' : 'hidden width ordinal'
         },
-                {
+        {
+            'id' : 'prefix',
+            'fm_class' : 'acn',
+            'label' : document.getElementById('circStrings').getString('staff.circ.utils.prefix'),
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false, 'render' : function(my) {
+                if (typeof my.acn == 'undefined') return '';
+                return (typeof my.acn.prefix() == 'object')
+                    ? my.acn.prefix().label()
+                    : data.lookup("acnp", my.acn.prefix() ).label();
+            },
+            'persist' : 'hidden width ordinal'
+        },
+        {
+            'id' : 'suffix',
+            'fm_class' : 'acn',
+            'label' : document.getElementById('circStrings').getString('staff.circ.utils.suffix'),
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false, 'render' : function(my) {
+                if (typeof my.acn == 'undefined') return '';
+                return (typeof my.acn.suffix() == 'object')
+                    ? my.acn.suffix().label()
+                    : data.lookup("acns", my.acn.suffix() ).label();
+            },
+            'persist' : 'hidden width ordinal'
+        },
+        {
             'persist' : 'hidden width ordinal',
             'id' : 'total_holds',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.total_holds'),

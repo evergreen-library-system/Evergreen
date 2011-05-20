@@ -24,10 +24,16 @@ function my_init() {
         for (var i = 0; i < g.volumes.length; i++) {
             var row = document.createElement('row'); rows.appendChild(row);
             var lib_label = document.createElement('label'); row.appendChild(lib_label);
-            var class_ml = g.render_class_menu(i); row.appendChild(class_ml);
-            var prefix_ml = g.render_prefix_menu(i); row.appendChild(prefix_ml);
+            var class_ml = g.render_class_menu(i);
+                class_ml.setAttribute('class','cn_class');
+                row.appendChild(class_ml);
+            var prefix_ml = g.render_prefix_menu(i);
+                prefix_ml.setAttribute('class','cn_prefix');
+                row.appendChild(prefix_ml);
             var label_tb = document.createElement('textbox'); row.appendChild(label_tb);
-            var suffix_ml = g.render_suffix_menu(i); row.appendChild(suffix_ml);
+            var suffix_ml = g.render_suffix_menu(i);
+                suffix_ml.setAttribute('class','cn_suffix');
+                row.appendChild(suffix_ml);
             if (!first_tb) { first_tb = label_tb; }
 
             var lib_id = g.volumes[i].owning_lib();

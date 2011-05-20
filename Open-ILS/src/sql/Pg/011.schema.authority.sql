@@ -37,6 +37,7 @@ CREATE TABLE authority.record_entry (
 );
 CREATE INDEX authority_record_entry_creator_idx ON authority.record_entry ( creator );
 CREATE INDEX authority_record_entry_editor_idx ON authority.record_entry ( editor );
+CREATE INDEX authority_record_deleted_idx ON authority.record_entry(deleted) WHERE deleted IS FALSE OR deleted = false;
 CREATE TRIGGER a_marcxml_is_well_formed BEFORE INSERT OR UPDATE ON authority.record_entry FOR EACH ROW EXECUTE PROCEDURE biblio.check_marcxml_well_formed();
 CREATE TRIGGER b_maintain_901 BEFORE INSERT OR UPDATE ON authority.record_entry FOR EACH ROW EXECUTE PROCEDURE evergreen.maintain_901();
 CREATE TRIGGER c_maintain_control_numbers BEFORE INSERT OR UPDATE ON authority.record_entry FOR EACH ROW EXECUTE PROCEDURE maintain_control_numbers();
@@ -84,6 +85,7 @@ CREATE TABLE authority.full_rec (
 CREATE INDEX authority_full_rec_record_idx ON authority.full_rec (record);
 CREATE INDEX authority_full_rec_tag_subfield_idx ON authority.full_rec (tag, subfield);
 CREATE INDEX authority_full_rec_tag_part_idx ON authority.full_rec (SUBSTRING(tag FROM 2));
+CREATE INDEX authority_full_rec_subfield_a_idx ON authority.full_rec (value) WHERE subfield = 'a';
 CREATE TRIGGER authority_full_rec_fti_trigger
 	BEFORE UPDATE OR INSERT ON authority.full_rec
 	FOR EACH ROW EXECUTE PROCEDURE tsearch2(index_vector, value);
