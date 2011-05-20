@@ -2293,6 +2293,8 @@
 <!ENTITY staff.circ.copy_status_overlay.cmd_find_acq_po.accesskey "F">
 <!ENTITY staff.circ.copy_status_overlay.sel_edit.label "Edit Item Attributes">
 <!ENTITY staff.circ.copy_status_overlay.sel_edit.accesskey "E">
+<!ENTITY staff.circ.copy_status_overlay.sel_vol_copy_edit.label "Edit Items/Volumes Per Bib">
+<!ENTITY staff.circ.copy_status_overlay.sel_vol_copy_edit.accesskey "V">
 <!ENTITY staff.circ.copy_status_overlay.sel_mark_items_damaged.label "Mark Item Damaged">
 <!ENTITY staff.circ.copy_status_overlay.sel_mark_items_damaged.accesskey "D">
 <!ENTITY staff.circ.copy_status_overlay.sel_mark_items_missing.label "Mark Item Missing">
