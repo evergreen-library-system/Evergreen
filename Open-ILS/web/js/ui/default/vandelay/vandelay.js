@@ -404,6 +404,7 @@ function vlExportInit() {
         if(!value) return;
         if(!confirm('Export as "' + value + '"?')) return; // TODO: i18n
 
+        displayGlobalDiv('vl-generic-progress');
         var method = 'open-ils.vandelay.import_item.queue.export.' + value + '.atomic';
 
         fieldmapper.standardRequest(
@@ -422,6 +423,7 @@ function vlExportInit() {
 }
 
 function exportHandler(type, response) {
+    displayGlobalDiv('vl-import-error-div');
     try {
         var content = openils.Util.readResponse(response);
         if (type=='email') {
