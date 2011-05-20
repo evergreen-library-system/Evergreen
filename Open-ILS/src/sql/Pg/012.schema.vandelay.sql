@@ -153,6 +153,8 @@ CREATE TABLE vandelay.import_item (
     definition      BIGINT      NOT NULL REFERENCES vandelay.import_item_attr_definition (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	import_error	TEXT        REFERENCES vandelay.import_error (code) ON DELETE SET NULL ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	error_detail	TEXT,
+    imported_as     BIGINT      REFERENCES asset.copy (id) DEFERRABLE INITIALLY DEFERRED,
+    import_time	    TIMESTAMP WITH TIME ZONE,
     owning_lib      INT,
     circ_lib        INT,
     call_number     TEXT,

@@ -189,6 +189,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Attribute Definition" name="definition" reporter:datatype="link"/>
 			<field reporter:label="Import Error" name="import_error" reporter:datatype="link"/>
 			<field reporter:label="Import Error Detail" name="error_detail" reporter:datatype="text"/>
+			<field reporter:label="Final Target Copy" name="imported_as" reporter:datatype="link"/>
+			<field reporter:label="Import Time" name="import_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Owning Library" name="owning_lib" reporter:datatype="int"/>
 			<field reporter:label="Circulating Library" name="circ_lib" reporter:datatype="int"/>
 			<field reporter:label="Call Number" name="call_number" reporter:datatype="text"/>
@@ -213,6 +215,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="import_error" reltype="has_a" key="code" map="" class="vie"/>
 			<link field="record" reltype="has_a" key="id" map="" class="vqbr"/>
 			<link field="definition" reltype="has_a" key="id" map="" class="viiad"/>
+			<link field="imported_as" reltype="has_a" key="id" map="" class="acp"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
