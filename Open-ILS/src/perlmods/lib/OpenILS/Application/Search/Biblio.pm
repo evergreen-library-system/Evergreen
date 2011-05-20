@@ -2519,7 +2519,8 @@ sub rec_hold_parts {
                     distinct => 1,
                 }
             }
-        }
+        },
+        order_by =>[{class=>'bmp', field=>'label_sortkey'}]
     };
 
     if(defined $pickup_lib) {
