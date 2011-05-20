@@ -339,19 +339,27 @@ function find_crad_by_name(name) {
 }
 
 function render_vmsp_label(point, minimal) {
-    /* "minimal" has this implication:
+    /* "minimal" has these implications:
      * for svf, only show the code, not the longer label.
+     * no quality display
      */
     if (point.bool_op()) {
         return point.bool_op();
     } else if (point.svf()) {
         return (openils.Util.isTrue(point.negate()) ? "NOT " : "") + (
             minimal ?  point.svf() :
-                (point.svf() + " / " + find_crad_by_name(point.svf()).label())
+                (point.svf() + " / " + find_crad_by_name(point.svf()).label()) +
+                " | " + dojo.string.substitute(
+                    localeStrings.MATCH_SCORE, [point.quality()]
+                )
         );
     } else {
         return (openils.Util.isTrue(point.negate()) ? "NOT " : "") +
-            point.tag() + " \u2021" + point.subfield();
+            point.tag() + " \u2021" + point.subfield() + (minimal ? "" : " | " +
+                dojo.string.substitute(
+                    localeStrings.MATCH_SCORE, [point.quality()]
+                )
+            );
     }
 }
 
