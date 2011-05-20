@@ -44,7 +44,9 @@
                     dojoType='dijit.form.FilteringSelect' labelAttr='source' searchAttr='source'/>
             </td>
         </tr>
-        <tr><td colspan='2' style='margin-top:10px;border-bottom:1px solid #888;border-top:1px solid #888'><b>Import Actions</b></td></tr>
+        <tr><td colspan='2' style='margin-top:10px;border-bottom:1px solid #888;border-top:2px solid #888'>
+            <b>&vandelay.import.actions;</b>
+        </td></tr>
         <tr>
             <td>&vandelay.auto.import.merge_profile;</td>
             <td colspan='4'>
@@ -80,13 +82,13 @@
                 <span style='padding-left: 10px; font-size:90%'>(&vandelay.auto.import.auto_overlay_best_ratio.desc;)</span>
             </td>
         </tr>
-
-        <tr><td colspan='2' style='border-bottom:1px solid #888'></td></tr>
+        <tr><td colspan='2' style='border-bottom:2px solid #888;'></td></tr>
+        <tr><td colspan='2' style='padding-bottom: 10px;'></td></tr>
         <tr>
             <td colspan='5'>
                 <span id="vl-file-label">&vandelay.file.to.upload;</span>
-                <input size='48' type="file" name="marc_upload"/>
-                <span style='margin-left:10px;'><button dojoType="dijit.form.Button" onclick="batchUpload()">&vandelay.upload;</button></span>
+                <input size='48' style='border:1px solid #888;' type="file" name="marc_upload"/>
+                <span style='margin-left:10px;'><button onclick="batchUpload()">&vandelay.upload;</button></span>
             </td>
         </tr>
     </table>

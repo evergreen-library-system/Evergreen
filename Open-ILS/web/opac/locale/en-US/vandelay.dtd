@@ -1,7 +1,8 @@
 <!ENTITY vandelay.add.existing.queue "or Add to an Existing Queue">
 <!ENTITY vandelay.auth.attrs "Authority attributes">
 <!ENTITY vandelay.auth.records "Authority Records">
-<!ENTITY vandelay.auto.import.noncolliding "Import Non-Colliding Records">
+<!ENTITY vandelay.import.actions "Record Import Actions">
+<!ENTITY vandelay.auto.import.noncolliding "Import Non-Matching Records">
 <!ENTITY vandelay.auto.import.auto_overlay_exact "Merge On Exact Match (901c)">
 <!ENTITY vandelay.auto.import.auto_overlay_1match "Merge On Single Match">
 <!ENTITY vandelay.auto.import.auto_overlay_best "Merge On Best Match">
