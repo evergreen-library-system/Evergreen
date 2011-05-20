@@ -6,6 +6,7 @@
 <!-- STYLESHEETS -->
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/cat.css" type="text/css"?>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
@@ -49,18 +50,18 @@
         <grid flex="1">
             <columns>
                 <column />
-                <column />
-                <column />
+                <column class="cn_class"/>
+                <column class="cn_prefix"/>
                 <column flex="1"/>
-                <column />
+                <column class="cn_suffix"/>
             </columns>
             <rows id="rows">
                 <row>
                     <label value="&staff.cat.volume_editor.owning_lib;" class="header"/>
-                    <label value="&staff.cat.volume_editor.classification;" class="header"/>
-                    <label value="&staff.cat.volume_editor.prefix;" class="header"/>
+                    <label value="&staff.cat.volume_editor.classification;" class="header cn_class"/>
+                    <label value="&staff.cat.volume_editor.prefix;" class="header cn_prefix"/>
                     <label value="&staff.cat.volume_editor.label;" class="header"/>
-                    <label value="&staff.cat.volume_editor.suffix;" class="header"/>
+                    <label value="&staff.cat.volume_editor.suffix;" class="header cn_suffix"/>
                 </row>
             </rows>
         </grid>
