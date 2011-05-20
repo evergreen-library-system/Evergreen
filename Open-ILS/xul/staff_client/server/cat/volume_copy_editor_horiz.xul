@@ -31,9 +31,9 @@
     <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
     <script type="text/javascript" src="volume_copy_editor.js"/>
 
+    <hbox id="template_bar_holder"/>
     <hbox flex="1">
         <vbox id="top_pane" flex="1" oils_persist="width">
-            <hbox id="template_bar_holder"/>
             <browser id="volume_pane" flex="1" />
         </vbox>
         <splitter
