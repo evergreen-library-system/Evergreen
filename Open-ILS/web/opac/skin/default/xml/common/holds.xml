@@ -234,7 +234,6 @@
 	<span class='hide_me' id='holds_explain_adv'>&holds.advanced_options;</span>
 
 	<span class='hide_me' id='holds_pick_good_org'>&common.hold.delivery;</span>
-	<span class='hide_me' id='holds_pick_part'>&common.hold.part_required;</span>
 
 	<span class='hide_me' id='hold_dup_exists'>&common.hold.exists;</span>
 	<span class='hide_me' id='hold_checked_out'>&common.hold.checked_out;</span>
