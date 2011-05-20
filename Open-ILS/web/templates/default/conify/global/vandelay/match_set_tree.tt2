@@ -60,8 +60,8 @@
     <tr consistent-controls="1">
         <td>
             <label for="quality-input"
-                title="A relative number representing the impact of this expression on the quality of the overall record match"><!-- XXX tooltipize -->
-                Math Score Value
+                title="A relative number representing the impact of this expression on the score of the overall record match"><!-- XXX tooltipize -->
+                Math Score
             </label>
         </td>
         <td>
