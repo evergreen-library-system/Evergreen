@@ -28,12 +28,23 @@
     </script>
     <scripts id="openils_util_scripts"/>
 
+    <messagecatalog id="catStrings" src='/xul/server/locale/<!--#echo var="locale"-->/cat.properties'/>
+
     <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
     <script type="text/javascript" src="volume_copy_editor.js"/>
 
+    <vbox id="summary_box" oils_persist="height"/>
+    <splitter
+        collapse="before"
+        resize_before="flex"
+        resize_after="grow"
+        oils_persist="state hidden"
+        oils_persist_peers="summary_box main">
+        <grippy/>
+    </splitter>
+    <hbox flex="0" id="template_bar_holder"/>
     <hbox flex="1">
         <vbox id="top_pane" flex="1" oils_persist="width">
-            <hbox id="template_bar_holder"/>
             <browser id="volume_pane" flex="1" />
         </vbox>
         <splitter
@@ -48,6 +59,10 @@
             <browser id="item_pane" flex="1" />
             <hbox id="bottom_bar"/>
         </vbox>
+    </hbox>
+    <hbox>
+        <spacer flex="1"/>
+        <button id="Create" oncommand="g.stash_and_close('unified_interface');"/>
     </hbox>
 
 </window>

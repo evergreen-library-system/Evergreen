@@ -145,11 +145,18 @@ function my_init() {
             alert('Error in volume_copy_creator.js, g.doc_id not valid');
             window.close(); return;
         }
-        var sb = document.getElementById('summary_box'); while(sb.firstChild) sb.removeChild(sb.lastChild);
-        var summary = document.createElement('iframe'); sb.appendChild(summary);
-        summary.setAttribute('src',urls.XUL_BIB_BRIEF);
-        summary.setAttribute('flex','1');
-        get_contentWindow(summary).xulG = { 'docid' : g.doc_id };
+
+        var sb = document.getElementById('summary_box');
+        if (xul_param('no_bib_summary')) {
+            sb.hidden = true;
+            sb.nextSibling.hidden = true; /* splitter */
+        } else {
+            while(sb.firstChild) sb.removeChild(sb.lastChild);
+            var summary = document.createElement('iframe'); sb.appendChild(summary);
+            summary.setAttribute('src',urls.XUL_BIB_BRIEF);
+            summary.setAttribute('flex','1');
+            get_contentWindow(summary).xulG = { 'docid' : g.doc_id };
+        }
 
         /***********************************************************************************************************/
         /* Setup pcrud and fetch the monographic parts for this bib */
@@ -205,6 +212,10 @@ function my_init() {
             $('main').parentNode.scrollLeft = 9999;
         } catch(E) {
             dump('Error in volume_copy_creator.js, my_init(), trying to auto-scroll to the far right: ' + E + '\n');
+        }
+
+        if (typeof xulG.volume_ui_callback_for_unified_interface == 'function') {
+            xulG.volume_ui_callback_for_unified_interface();
         }
 
     } catch(E) {
@@ -297,15 +308,18 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
     var x = document.createElement('label'); r.appendChild(x);
         x.setAttribute('value', $("catStrings").getString('staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.classification'));
         x.setAttribute('style','font-weight: bold');
+        x.setAttribute('class','cn_class');
     x = document.createElement('label'); r.appendChild(x);
         x.setAttribute('value', $("catStrings").getString('staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.prefix'));
         x.setAttribute('style','font-weight: bold');
+        x.setAttribute('class','cn_prefix');
     x = document.createElement('label'); r.appendChild(x);
         x.setAttribute('value', $("catStrings").getString('staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.call_nums'));
         x.setAttribute('style','font-weight: bold');
     x = document.createElement('label'); r.appendChild(x);
         x.setAttribute('value', $("catStrings").getString('staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.suffix'));
         x.setAttribute('style','font-weight: bold');
+        x.setAttribute('class','cn_suffix');
     x = document.createElement('label'); r.appendChild(x);
         x.setAttribute('value',$("catStrings").getString('staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.num_of_copies'));
         x.setAttribute('style','font-weight: bold');
@@ -401,15 +415,20 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
 
             /**** CLASSIFICATION COLUMN ****/
             var classification_column_box = document.createElement('vbox');
+            classification_column_box.setAttribute('class','cn_class');
             r.appendChild(classification_column_box);
+            classification_column_box.width = $('batch_class').parentNode.boxObject.width;
 
             /**** PREFIX COLUMN ****/
             var prefix_column_box = document.createElement('vbox');
+            prefix_column_box.setAttribute('class','cn_prefix');
             r.appendChild(prefix_column_box);
+            prefix_column_box.width = $('batch_prefix').parentNode.boxObject.width;
 
             /**** CALLNUMBER COLUMN ****/
             var call_number_column_box = document.createElement('vbox');
             r.appendChild(call_number_column_box);
+            call_number_column_box.width = $('marc_cn').parentNode.boxObject.width;
                 var call_number_column_textbox = document.createElement('textbox');
                 call_number_column_box.appendChild(call_number_column_textbox);
                     if (g.use_defaults && $('marc_cn').firstChild) {
@@ -464,7 +483,9 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
 
             /**** SUFFIX COLUMN ****/
             var suffix_column_box = document.createElement('vbox');
+            suffix_column_box.setAttribute('class','cn_suffix');
             r.appendChild(suffix_column_box);
+            suffix_column_box.width = $('batch_suffix').parentNode.boxObject.width;
                 var suffix_column_menulist = g.render_suffix_menu(call_number_column_textbox);
                 suffix_column_menulist.addEventListener(
                     'command',
@@ -664,6 +685,7 @@ g.render_barcode_entry = function(node,callnumber_composite_key,count,ou_id) {
                 tb = document.createElement('textbox');
                 tb_part_box.appendChild(tb);
                 part_menu = g.render_part_menu(tb);
+                part_menu.setAttribute('class','part_column');
                 tb_part_box.appendChild(part_menu);
                 set_handlers = true;
             } else {
