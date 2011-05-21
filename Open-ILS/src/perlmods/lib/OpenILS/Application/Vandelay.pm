@@ -1383,6 +1383,7 @@ sub retrieve_queue_summary {
 
     if($type eq 'bib') {
         
+        # count of all items attached to records in the queue in question
         my $query = {
             select => {vii => [{alias => 'count', column => 'id', transform => 'count', aggregate => 1}]},
             from => 'vii',
@@ -1396,10 +1397,13 @@ sub retrieve_queue_summary {
                 }
             }
         };
-
         $summary->{total_items} = $e->json_query($query)->[0]->{count};
+
+        # count of items we attempted to import, but errored, attached to records in the queue in question
         $query->{where}->{import_error} = {'!=' => undef};
         $summary->{item_import_errors} = $e->json_query($query)->[0]->{count};
+
+        # count of items we successfully imported attached to records in the queue in question
         delete $query->{where}->{import_error};
         $query->{where}->{import_time} = {'!=' => undef};
         $summary->{total_items_imported} = $e->json_query($query)->[0]->{count};
