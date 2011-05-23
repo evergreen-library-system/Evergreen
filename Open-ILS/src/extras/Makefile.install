@@ -89,7 +89,6 @@ DEBS =  \
 	libemail-send-perl\
 	libgd-graph3d-perl\
 	liblog-log4perl-perl\
-	libmarc-record-perl\
 	libncurses5-dev\
 	libnet-server-perl\
 	libnet-ssh2-perl\
@@ -110,13 +109,15 @@ EXTRA_DEBS = \
 	libbusiness-isbn-perl\
 	libbusiness-isbn-data-perl\
 	libmarc-charset-perl \
-	libmarc-xml-perl \
 	libnet-z3950-zoom-perl \
 	libyaz-dev \
 	yaz
 
+# Squeeze has MARC::File::XML and a new enough version of MARC::Record (2.0.2)
 EXTRA_DEBS_SQUEEZE = \
-    libuuid-tiny-perl
+	libmarc-record-perl\
+	libmarc-xml-perl\
+	libuuid-tiny-perl
 
 # Ubuntu Hardy requires libencode-perl # to get a version of Encode
 # > 2.12 - see bug 525069.
@@ -236,7 +237,6 @@ CPAN_MODULES = \
 # More chronically unpackaged CPAN modules (available in Squeeze though)
 CPAN_MODULES_MORE = \
     Business::CreditCard::Object \
-    MARC::Record \
     Net::SSH2 \
     UUID::Tiny
 
@@ -248,9 +248,10 @@ CPAN_MODULES_SAFE = \
 CPAN_MODULES_MARC = \
 	Business::ISBN \
 	Business::ISBN::Data \
-    MARC::Charset \
-    MARC::File::XML \
-    Net::Z3950::ZOOM
+	MARC::Charset \
+	MARC::Record \
+	MARC::File::XML \
+	Net::Z3950::ZOOM
 
 CPAN_MODULES_FORCE = \
 	Class::DBI::Frozen::301
@@ -270,7 +271,7 @@ centos_like: install_centos_rpms install_yaz install_cpan_marc install install_c
 fedora13: install_fedora_13_rpms install_cpan install_cpan_fedora install_cpan_marc install_js_sm install_cpan_force
 fedora14: fedora13
 
-debian-lenny: lenny generic_debian install_cpan_more install_cpan_safe
+debian-lenny: lenny generic_debian install_cpan_marc install_cpan_more install_cpan_safe
 debian-squeeze: squeeze generic_debian
 lenny: install_pgsql_client_debs_83 install_extra_debs
 squeeze: install_pgsql_client_debs_84  install_extra_debs_squeeze
