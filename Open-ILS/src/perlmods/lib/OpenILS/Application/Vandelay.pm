@@ -765,7 +765,13 @@ __PACKAGE__->register_method(
     argc        => 2,
     stream      => 1,
     max_chunk_size => 0,
-    record_type => 'bib'
+    record_type => 'bib',
+    signature => {
+        desc => q/
+            Attempts to import all non-imported records for the selected queue.
+            Will also attempt import of all non-imported items.
+        /
+    }
 );
 
 __PACKAGE__->register_method(  
@@ -777,31 +783,7 @@ __PACKAGE__->register_method(
     max_chunk_size => 0,
     record_type => 'auth'
 );
-__PACKAGE__->register_method(  
-    api_name    => "open-ils.vandelay.bib_queue.nomatch.import",
-    method      => 'import_queue',
-    api_level   => 1,
-    argc        => 2,
-    stream      => 1,
-    signature   => {
-        desc => q/Only import records that have no collisions/
-    },
-    max_chunk_size => 0,
-    record_type => 'bib'
-);
 
-__PACKAGE__->register_method(  
-    api_name    => "open-ils.vandelay.auth_queue.nomatch.import",
-    method      => 'import_queue',
-    api_level   => 1,
-    argc        => 2,
-    stream      => 1,
-    signature   => {
-        desc => q/Only import records that have no collisions/
-    },
-    max_chunk_size => 0,
-    record_type => 'auth'
-);
 sub import_queue {
     my($self, $conn, $auth, $q_id, $options) = @_;
     my $e = new_editor(authtoken => $auth, xact => 1);
@@ -810,16 +792,31 @@ sub import_queue {
     my $type = $self->{record_type};
     my $class = ($type eq 'bib') ? 'vqbr' : 'vqar';
 
+    # First, collect the not-yet-imported records
     my $query = {queue => $q_id, import_time => undef};
+    my $search = ($type eq 'bib') ? 
+        'search_vandelay_queued_bib_record' : 
+        'search_vandelay_queued_authority_record';
+    my $rec_ids = $e->$search($query, {idlist => 1});
 
-    if($self->api_name =~ /nomatch/) {
-        my $matched_recs = queued_records_with_matches($e, $type, $q_id, undef, undef, {import_time => undef});
-        $query->{id} = {'not in' => $matched_recs} if @$matched_recs;
+    # Now add any imported records that have un-imported items
+
+    if($type eq 'bib') {
+        my $item_recs = $e->json_query({
+            select => {vqbr => ['id']},
+            from => {vqbr => 'vii'},
+            where => {
+                '+vqbr' => {
+                    queue => $q_id,
+                    import_time => {'!=' => undef}
+                },
+                '+vii' => {import_time => undef}
+            },
+            distinct => 1
+        });
+        push(@$rec_ids, map {$_->{id}} @$item_recs);
     }
 
-    my $search = ($type eq 'bib') ? 
-        'search_vandelay_queued_bib_record' : 'search_vandelay_queued_authority_record';
-    my $rec_ids = $e->$search($query, {idlist => 1});
     my $err = import_record_list_impl($self, $conn, $rec_ids, $e->requestor, $options);
     try {$e->rollback} otherwise {}; # only using this to make the read authoritative -- don't die from it
     return $err if $err;
@@ -828,6 +825,7 @@ sub import_queue {
 
 # returns a list of queued record IDs for a given queue that 
 # have at least one entry in the match table
+# XXX DEPRECATED?
 sub queued_records_with_matches {
     my($e, $type, $q_id, $limit, $offset, $filter) = @_;
 
@@ -943,13 +941,15 @@ sub import_record_list_impl {
             next;
         }
 
-        $$report_args{rec} = $rec;
-
         if($rec->import_time) {
+            # if the record is already imported, that means it may have 
+            # un-imported copies.  Add to success list for later processing.
+            push(@success_rec_ids, $rec_id);
             $e->rollback;
             next;
         }
 
+        $$report_args{rec} = $rec;
         $queues{$rec->queue} = 1;
 
         my $record;
@@ -1009,6 +1009,12 @@ sub import_record_list_impl {
                         if($res->{$auto_overlay_best_func} eq 't') {
                             $logger->info("vl: $type overlay-1match succeeded for queued rec $rec_id");
                             $imported = 1;
+
+                            # re-fetch the record to pick up the imported_as value from the DB
+                            $$report_args{rec} = $rec = $e->$retrieve_func([
+                                $rec_id, {flesh => 1, flesh_fields => {$rec_class => ['matches']}}]);
+
+
                         } else {
                             $$report_args{import_error} = 'overlay.record.quality' if $match_quality_ratio > 0;
                             $logger->info("vl: $type overlay-1match failed for queued rec $rec_id");
@@ -1041,6 +1047,11 @@ sub import_record_list_impl {
                     if($res->{$auto_overlay_func} eq 't') {
                         $logger->info("vl: $type auto-overlay succeeded for queued rec $rec_id");
                         $imported = 1;
+
+                        # re-fetch the record to pick up the imported_as value from the DB
+                        $$report_args{rec} = $rec = $e->$retrieve_func([
+                            $rec_id, {flesh => 1, flesh_fields => {$rec_class => ['matches']}}]);
+
                     } else {
                         $logger->info("vl: $type auto-overlay failed for queued rec $rec_id");
                     }
@@ -1071,6 +1082,11 @@ sub import_record_list_impl {
                     if($res->{$auto_overlay_best_func} eq 't') {
                         $logger->info("vl: $type auto-overlay-best succeeded for queued rec $rec_id");
                         $imported = 1;
+
+                        # re-fetch the record to pick up the imported_as value from the DB
+                        $$report_args{rec} = $rec = $e->$retrieve_func([
+                            $rec_id, {flesh => 1, flesh_fields => {$rec_class => ['matches']}}]);
+
                     } else {
                         $$report_args{import_error} = 'overlay.record.quality' if $match_quality_ratio > 0;
                         $logger->info("vl: $type auto-overlay-best failed for queued rec $rec_id");

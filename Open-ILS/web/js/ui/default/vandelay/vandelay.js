@@ -1122,7 +1122,6 @@ function vlImportRecordQueue(type, queueId, recList, onload) {
     displayGlobalDiv('vl-generic-progress-with-total');
 
     /* set up options */
-    var mergeOpt = false;
     var options = {overlay_map : currentOverlayRecordsMap};
 
     if(vlUploadQueueImportNoMatch.checked) {
@@ -1133,21 +1132,18 @@ function vlImportRecordQueue(type, queueId, recList, onload) {
     if(vlUploadQueueAutoOverlayExact.checked) {
         options.auto_overlay_exact = true;
         vlUploadQueueAutoOverlayExact.checked = false;
-        mergeOpt = true;
     }
 
     if(vlUploadQueueAutoOverlayBestMatch.checked) {
         options.auto_overlay_best_match = true;
         vlUploadQueueAutoOverlayBestMatch.checked = false;
         options.match_quality_ratio = vlUploadQueueAutoOverlayBestMatchRatio.attr('value');
-        mergeOpt = true;
     }
 
     if(vlUploadQueueAutoOverlay1Match.checked) {
         options.auto_overlay_1match = true;
         vlUploadQueueAutoOverlay1Match.checked = false;
         options.match_quality_ratio = vlUploadQueueAutoOverlayBestMatchRatio.attr('value');
-        mergeOpt = true;
     }
 
     var profile = vlUploadMergeProfile.attr('value');
@@ -1160,13 +1156,6 @@ function vlImportRecordQueue(type, queueId, recList, onload) {
     var method = 'open-ils.vandelay.bib_queue.import';
     if(type == 'auth')
         method = method.replace('bib', 'auth');
-
-    if(!mergeOpt) {
-        // in the interest of speed, if no merge options are 
-        // chosen, tell the back-end code to only process records
-        // that have no matches
-        method = method.replace(/\.import/, '.nomatch.import');
-    }
 
     var params = [authtoken, queueId, options];
     if(recList) {
