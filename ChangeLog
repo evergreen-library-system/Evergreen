@@ -1,1 +1,104 @@
-#ChangeLog
+2011-05-23  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/perlmods/OpenILS/Application.pm,
+	Open-ILS/src/sql/Pg/002.schema.config.sql, README: Bumping version
+	numbers Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-05-12  miker <miker@dcc99617-32d9-48b4-a31d-7c20da2025e4>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Vandelay.pm: Address
+	LP#779975; Status of Available (0) not honored because 0==false --
+	use ternary op with defined() instead git-svn-id: svn://svn.open-ils.org/ILS/branches/rel_2_0@20454
+	dcc99617-32d9-48b4-a31d-7c20da2025e4 (cherry picked from commit
+	2d96fea0800a99092acdc97330b33b3d421f3098) Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-04-26  phasefx <phasefx@dcc99617-32d9-48b4-a31d-7c20da2025e4>
+
+	* Open-ILS/xul/staff_client/server/circ/checkin.js: fix disappearing
+	cursor/caret for Check In git-svn-id: svn://svn.open-ils.org/ILS/branches/rel_1_6_2@20318
+	dcc99617-32d9-48b4-a31d-7c20da2025e4
+
+2011-04-22  gmc <gmc@dcc99617-32d9-48b4-a31d-7c20da2025e4>
+
+	* Open-ILS/src/sql/Pg/1.6.1.4-1.6.1.5-db-upgrade.sql: LP#768983 -
+	fix version stamp in 1.6.1.4-1.6.1.5 upgrade script Signed-off-by: Galen Charlton <gmc@esilibrary.com> git-svn-id: svn://svn.open-ils.org/ILS/branches/rel_1_6_2@20284
+	dcc99617-32d9-48b4-a31d-7c20da2025e4
+
+2011-04-20  miker <miker@dcc99617-32d9-48b4-a31d-7c20da2025e4>
+
+	* Open-ILS/src/support-scripts/offline-blocked-list.pl: Patch from
+	Jeff Davis addressing parameter usage issues git-svn-id: svn://svn.open-ils.org/ILS/branches/rel_1_6_2@20248
+	dcc99617-32d9-48b4-a31d-7c20da2025e4
+
+2011-04-18  phasefx <phasefx@dcc99617-32d9-48b4-a31d-7c20da2025e4>
+
+	* Open-ILS/xul/staff_client/server/cat/marcedit.xul: in the MARC
+	Editor, put the callnumber and barcode textboxes for Fast Item Add
+	on a separate row git-svn-id: svn://svn.open-ils.org/ILS/branches/rel_1_6_2@20155
+	dcc99617-32d9-48b4-a31d-7c20da2025e4
+
+2011-04-18  phasefx <phasefx@dcc99617-32d9-48b4-a31d-7c20da2025e4>
+
+	* Open-ILS/xul/staff_client/server/cat/spine_labels.xul: font_helper
+	in this version depends on JSAN being set up by my_init() git-svn-id: svn://svn.open-ils.org/ILS/branches/rel_1_6_2@20142
+	dcc99617-32d9-48b4-a31d-7c20da2025e4
+
+2011-04-15  phasefx <phasefx@dcc99617-32d9-48b4-a31d-7c20da2025e4>
+
+	* Open-ILS/xul/staff_client/server/cat/spine_labels.xul: label
+	interface, run persist_helper() before my_init(), since the latter
+	depends on values set by the former git-svn-id: svn://svn.open-ils.org/ILS/branches/rel_1_6_2@20110
+	dcc99617-32d9-48b4-a31d-7c20da2025e4
+
+2011-04-15  miker <miker@dcc99617-32d9-48b4-a31d-7c20da2025e4>
+
+	* Open-ILS/src/c-apps/oils_cstore.c: Backported version of r20094:
+	Protect pcrud-ish retrieve from an empty result set git-svn-id: svn://svn.open-ils.org/ILS/branches/rel_1_6_2@20098
+	dcc99617-32d9-48b4-a31d-7c20da2025e4
+
+2011-04-07  phasefx <phasefx@dcc99617-32d9-48b4-a31d-7c20da2025e4>
+
+	* Open-ILS/web/opac/skin/default/js/myopac.js: test for pre-cat
+	slightly off in OPAC My Account, spotted by Steve Callender git-svn-id: svn://svn.open-ils.org/ILS/branches/rel_1_6_2@20022
+	dcc99617-32d9-48b4-a31d-7c20da2025e4
+
+2011-03-29  miker <miker@dcc99617-32d9-48b4-a31d-7c20da2025e4>
+
+	* Open-ILS/src/perlmods/OpenILS/SIP/Patron.pm: Patch from Brandon
+	Uhlman addressing SIP2 unavailable holds display.  The unavail_holds() function in OpenILS::SIP::Patron is a
+	placeholder that returns an empty set, instead of an actual list of
+	a patrons' holds not cur rently ready for pickup.  When an SC determines whether a patron has holds ready for pickup by
+	comparing the cardinalities of hold_items() and unavail_holds() [*]
+	using the exi sting unavail_holds() logic, it effectively reports
+	every currently placed hold as ready for pickup, which is generally
+	not true.  The attached patch assumes that unavailable holds are those that
+	meet one of two sets of conditions: - hold requests that are not cancelled (cancel_time = null), not
+	fulfilled (fulfillment time = null), and not captured (capture_time
+	= null) - hold requests that are neither cancelled nor fulfilled (as above),
+	are captured (capture_time != null), and for which, additionally,
+	the current_cop y does not have the status 'On holds shelf' (status
+	= 8). The only items that should meet this condition are those that
+	are in transit to a location w here they will be added to the holds
+	shelf.  The patch iterates through the items meeting each condition, and
+	adds them to a master list of relevant holds, which it then
+	processes (in the same wa y that hold_items is processed) and
+	returns.  This patch was developed against and tested on rel_1_6_0 from SVN (~
+	1.6.0.2), but should apply cleanly against current rel_1_6_0 and
+	trunk; OpenSRF 1 .2.2, PostgreSQL 8.3.8, Ubuntu Hardy 64-bit.  [*] The two cardinalities are returned by SIP message 64 as
+	fixed-length integers in positions 35-38 and 55-58 respectively, so
+	we don't need to itera te through the list ourseles.  git-svn-id: svn://svn.open-ils.org/ILS/branches/rel_1_6_2@19897
+	dcc99617-32d9-48b4-a31d-7c20da2025e4
+
+2011-03-21  miker <miker@dcc99617-32d9-48b4-a31d-7c20da2025e4>
+
+	* Open-ILS/web/opac/skin/default/xml/rdetail/rdetail_summary.xml: 
+	Make sure "ol" propagates through BibTemplate subject search links
+	for OPAC range hiding git-svn-id: svn://svn.open-ils.org/ILS/branches/rel_1_6_2@19836
+	dcc99617-32d9-48b4-a31d-7c20da2025e4
+
+2011-03-18  miker <miker@dcc99617-32d9-48b4-a31d-7c20da2025e4>
+
+	* Allow the "result_field" to be used as the default alias in the
+	output column of a row or set returning transform git-svn-id: svn://svn.open-ils.org/ILS/branches/rel_1_6_2@19803
+	dcc99617-32d9-48b4-a31d-7c20da2025e4
+
