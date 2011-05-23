@@ -1032,9 +1032,13 @@ function vlFetchQueueSummary(qId, type, onload) {
     );
 }
 
+var _importCancelHandler;
+var _importGoHandler;
 function vlHandleQueueItemsAction(action) {
 
-    dojo.connect(
+    if(_importCancelHandler) dojo.disconnect(_importCancelHandler);
+
+    _importCancelHandler = dojo.connect(
         queueItemsImportCancelButton, 
         'onClick', 
         function() {
@@ -1042,7 +1046,10 @@ function vlHandleQueueItemsAction(action) {
         }
     );
 
-    dojo.connect(
+    if(_importGoHandler)
+        dojo.disconnect(_importGoHandler);
+
+    _importGoHandler = dojo.connect(
         queueItemsImportGoButton,
         'onClick', 
         function() {
