@@ -492,7 +492,7 @@ circ.copy_status.prototype = {
                                     if (! map_acn[volume_id]) {
                                         map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ volume_id ]);
                                     }
-                                    var call_number = obj.map_acn[volume_id];
+                                    var call_number = map_acn[volume_id];
                                     var record_id = call_number.record();
                                     var ou_id = call_number.owning_lib();
                                     var label = call_number.label();
@@ -505,7 +505,6 @@ circ.copy_status.prototype = {
                                     var acns_id = typeof call_number.suffix() == 'object'
                                         ? call_number.suffix().id()
                                         : call_number.suffix();
-                                    if (!copy_shortcut[ou_id]) copy_shortcut[ou_id] = {};
                                     var callnumber_composite_key = acnc_id + ':' + acnp_id + ':' + label + ':' + acns_id;
                                     if (!copy_shortcut[record_id]) {
                                         copy_shortcut[record_id] = {};
