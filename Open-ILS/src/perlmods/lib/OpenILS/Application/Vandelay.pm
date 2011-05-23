@@ -1550,6 +1550,16 @@ sub import_record_asset_list_impl {
                 next;
             }
 
+            # set the import data on the import item
+            $item->imported_as($copy->id); # $copy->id is set by create_copy() ^--
+            $item->import_time('now');
+
+            unless($e->update_vandelay_import_item($item)) {
+                $$report_args{evt} = $e->die_event;
+                respond_with_status($report_args);
+                next;
+            }
+
             # --------------------------------------------------------------------------------
             # Item import succeeded
             # --------------------------------------------------------------------------------
