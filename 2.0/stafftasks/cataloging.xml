@@ -30,8 +30,6 @@ xml:id="cataloging">
     audience. Bibliographic matching and de-duplicating also need
     correct and consistent MARC coding in particular tags.</para>
 
-
-
     <simplesect xml:id="editingMARCrecords">
       <title>Editing MARC Records</title>
 
@@ -62,106 +60,133 @@ xml:id="cataloging">
         </step>
 
         <step>
-          <para>Select viewing and editing options, if desired.</para>
-  <itemizedlist><listitem><para>
-          <guilabel>Stack subfields</guilabel>
+          <para>Select viewing and editing options, if
+          desired.</para>
 
-          to display each subfield on its own line.</para>
-        </listitem>
+          <itemizedlist>
+            <listitem>
+              <para>
+              <guilabel>Stack subfields</guilabel>
 
-        <listitem>
-          <para> 
-          <guilabel>Flat-Text Editor</guilabel>
+              to display each subfield on its own line.</para>
+            </listitem>
 
-          switches to a plain-text (menmonic) MARC format. The advantage of this
-          format is being able to copy and paste multiple lines. It also allows
-          the use of tools like MarcEdit (
-          <link xlink:href="http://people.oregonstate.edu/~reeset/marcedit/html/index.php">
-          http://people.oregonstate.edu/~reeset/marcedit/html/index.php</link>).
-          Unclick the box to switch back.</para>
-        </listitem>
+            <listitem>
+              <para>
+              <guilabel>Flat-Text Editor</guilabel>
 
-        <listitem>
-          <para> 
-          <guilabel>Fast Item Add</guilabel>
+              switches to a plain-text (menmonic) MARC format.
+              The advantage of this format is being able to copy
+              and paste multiple lines. It also allows the use of
+              tools like MarcEdit ( 
+              <link
+              xlink:href="http://people.oregonstate.edu/~reeset/marcedit/html/index.php">
+              http://people.oregonstate.edu/~reeset/marcedit/html/index.php</link>
 
-          allows attaching items quickly with call number and barcode. 
-          When <guibutton>Save</guibutton> is clicked, the **INSERT
-          CROSS-REFERENCE** Copy Editor
-          will open.</para>
-        </listitem></itemizedlist></step>
+              ). Unclick the box to switch back.</para>
+            </listitem>
 
-        <step><para>Make changes as desired.</para>
-<itemizedlist><listitem>
-          <para>Right click into a tag field to add/remove rows
-          or replace tags.</para>
-        </listitem>
-<listitem>
-          <para>With the cursor at the end of a subfield, click <keycap>Control + D</keycap>
-          (<keycap>Control + I</keycap> in Mac OSX) to insert a new subfield.</para>
-        </listitem>
-<listitem>
-          <para>To remove a subfield, click <keycap>Shift + Delete</keycap>
-          </para>
-        </listitem>
-        <listitem>
-          <para>To work with the data in a tag or indicator,
-          click or 
-          <keycap>Tab</keycap>
+            <listitem>
+              <para>
+              <guilabel>Fast Item Add</guilabel>
 
-          into the required field. 
-          <emphasis>Right click</emphasis>
+              allows attaching items quickly with call number and
+              barcode. When 
+              <guibutton>Save</guibutton>
 
-          to view acceptable tags or indicators.</para>
-        </listitem>
-<listitem>
-         <indexterm>
-        <primary>MARC</primary>
+              is clicked, the **INSERT CROSS-REFERENCE** Copy
+              Editor will open.</para>
+            </listitem>
+          </itemizedlist>
+        </step>
 
-        <secondary>MARC leader</secondary>
-      </indexterm>
+        <step>
+          <para>Make changes as desired.</para>
 
-      <indexterm>
-        <primary>MARC</primary>
+          <itemizedlist>
+            <listitem>
+              <para>Right click into a tag field to add/remove
+              rows or replace tags.</para>
+            </listitem>
 
-        <secondary>fixed field 008</secondary>
-      </indexterm>
+            <listitem>
+              <para>With the cursor at the end of a subfield,
+              click 
+              <keycap>Control + D</keycap>
 
-      <para>Parts of the leader and the 008 field can be edited
-      with the fixed field box displayed above
-      the MARC record. Click into any box to edit the contents. (Information 
-      about the leader and the 008
-      can be found on the Library of Congress's MARC Standards
-      page at 
-      <link xlink:href="http://www.loc.gov/marc/bibliographic/ecbdlist.html">
-      http://www.loc.gov/marc/bibliographic/ecbdlist.html</link>
-      .)</para>
-      </listitem>
-          
-        </itemizedlist>
-              <tip>
-        <para>The MARC Editor may be navigated using keyboard
-        shortcuts. Click 
-        <guibutton>Help</guibutton>
+              (
+              <keycap>Control + I</keycap>
 
-        to see the shortcut menu from within the MARC
-        Editor.</para>
-      </tip>
+              in Mac OSX) to insert a new subfield.</para>
+            </listitem>
+
+            <listitem>
+              <para>To remove a subfield, click 
+              <keycap>Shift + Delete</keycap>
+              </para>
+            </listitem>
+
+            <listitem>
+              <para>To work with the data in a tag or indicator,
+              click or 
+              <keycap>Tab</keycap>
+
+              into the required field. 
+              <emphasis>Right click</emphasis>
+
+              to view acceptable tags or indicators.</para>
+            </listitem>
+
+            <listitem>
+              <indexterm>
+                <primary>MARC</primary>
+
+                <secondary>MARC leader</secondary>
+              </indexterm>
+
+              <indexterm>
+                <primary>MARC</primary>
+
+                <secondary>fixed field 008</secondary>
+              </indexterm>
+
+              <para>Parts of the leader and the 008 field can be
+              edited with the fixed field box displayed above the
+              MARC record. Click into any box to edit the
+              contents. (Information about the leader and the 008
+              can be found on the Library of Congress's MARC
+              Standards page at 
+              <link
+              xlink:href="http://www.loc.gov/marc/bibliographic/ecbdlist.html">
+              http://www.loc.gov/marc/bibliographic/ecbdlist.html</link>
+
+              .)</para>
+            </listitem>
+          </itemizedlist>
+
+          <tip>
+            <para>The MARC Editor may be navigated using keyboard
+            shortcuts. Click 
+            <guibutton>Help</guibutton>
+
+            to see the shortcut menu from within the MARC
+            Editor.</para>
+          </tip>
         </step>
 
         <step>
           <para>When finished, click 
-          <guibutton>Save Record</guibutton>.
+          <guibutton>Save Record</guibutton>
 
-          The record stays open in the editor. You can close the tab or switch to another view
-          under <guimenu>Actions for this Record</guimenu> (for example to view it as it
-          appears in the OPAC).</para>
+          . The record stays open in the editor. You can close
+          the tab or switch to another view under 
+          <guimenu>Actions for this Record</guimenu>
+
+          (for example to view it as it appears in the
+          OPAC).</para>
         </step>
-
       </procedure>
-
     </simplesect>
-    
 
     <simplesect xml:id="overlayingMARCrecords">
       <title>Overlaying MARC Records</title>
@@ -183,8 +208,9 @@ xml:id="cataloging">
       record at a time may be marked for overlay. When another
       record is marked for overlay, the previously marked item is
       
-      <emphasis>de-marked</emphasis>. Once a record is marked, it remains 
-      marked until overlaid
+      <emphasis>de-marked</emphasis>
+
+      . Once a record is marked, it remains marked until overlaid
       or until the user logs out of Evergreen.</para>
 
       <procedure>
@@ -201,8 +227,12 @@ xml:id="cataloging">
             <guimenu>Actions for this Record</guimenu>
 
             <guimenuitem>Mark for Overlay</guimenuitem>
-          </menuchoice>. Record is now 
-          <emphasis>marked</emphasis>.</para>
+          </menuchoice>
+
+          . Record is now 
+          <emphasis>marked</emphasis>
+
+          .</para>
         </step>
       </procedure>
 
@@ -211,11 +241,13 @@ xml:id="cataloging">
 
         <step>
           <para>Once the record is marked for overlay, proceed to
-          <link linkend="z39.50">search for and import the new record from a Z39.50
-          target</link>.</para>
+          
+          <link linkend="z39.50">search for and import the new
+          record from a Z39.50 target</link>
+
+          .</para>
         </step>
 
-        
         <step>
           <para>Click 
           <guibutton>MARC Editor for Overlay</guibutton>
@@ -256,7 +288,8 @@ xml:id="cataloging">
         </step>
       </procedure>
     </simplesect>
-<simplesect xml:id="validatingMARCrecords">
+
+    <simplesect xml:id="validatingMARCrecords">
       <title>Validating MARC Records</title>
 
       <indexterm>
@@ -264,63 +297,123 @@ xml:id="cataloging">
 
         <secondary>validating records</secondary>
       </indexterm>
-<para>Validation checks headings that are subject
-to authority control (subjects, names, uniform titles) by comparing them to the
-authority records that are available in the system.</para>
-<procedure>
-<step>Click <guibutton>Validate</guibutton>.</step>
-<step>Scroll through the record looking for fields that have turned red.</step>
-<step>Right-click on a field that is red. The closest valid headings will display.</step>
-<step>To apply a heading, mouse over it and click <guilabel>Apply Selected</guilabel>.</step>
-<step>Fields that do not validate are not necessarily invalid--there may not be an authority
-record for that name/subject/title. If you have the appropriate permissions, you 
-can add an authority record based on the existing record.</step>
-</procedure>
-</simplesect>
+
+      <para>Validation checks headings that are subject to
+      authority control (subjects, names, uniform titles) by
+      comparing them to the authority records that are available
+      in the system.</para>
+
+      <procedure>
+        <step>Click 
+        <guibutton>Validate</guibutton>
+
+        .</step>
+
+        <step>Scroll through the record looking for fields that
+        have turned red.</step>
+
+        <step>Right-click on a field that is red. The closest
+        valid headings will display.</step>
+
+        <step>To apply a heading, mouse over it and click 
+        <guilabel>Apply Selected</guilabel>
+
+        .</step>
+
+        <step>Fields that do not validate are not necessarily
+        invalid--there may not be an authority record for that
+        name/subject/title. If you have the appropriate
+        permissions, you can add an authority record based on the
+        existing record.</step>
+      </procedure>
+    </simplesect>
   </section>
-<section xml:id="AuthorityRecords">
-<title>Authority Records</title>
-<indexterm><primary>cataloguing</primary>
-<secondary>authority records</secondary>
-</indexterm>
-<para>Authority records establish uniform usage for names, topics/subjects, and 
-uniform titles; they also guide users from deprecated or alternative terms to
-desired terms. Authority records are in MARC format. See <link
-        xlink:href="http://www.loc.gov/marc/authority/ecadhome.html">
-        http://www.loc.gov/marc/authority/ecadhome.html</link> for more on the 
-standard.</para>
-<note>See <link
-        xlink:href="http://open-ils.org/dokuwiki/doku.php?id=authorities:2.0">
-        http://open-ils.org/dokuwiki/doku.php?id=authorities:2.0</link> for more
-        documentation on authorities in Evergreen 2.0.</note> 
+
+  <section xml:id="AuthorityRecords">
+    <title>Authority Records</title>
+
+    <indexterm>
+      <primary>cataloguing</primary>
+
+      <secondary>authority records</secondary>
+    </indexterm>
+
+    <para>Authority records establish uniform usage for names,
+    topics/subjects, and uniform titles; they also guide users
+    from deprecated or alternative terms to desired terms.
+    Authority records are in MARC format. See 
+    <link
+    xlink:href="http://www.loc.gov/marc/authority/ecadhome.html">
+    http://www.loc.gov/marc/authority/ecadhome.html</link>
+
+    for more on the standard.</para>
+
+<para>All bibliographic record fields that are controlled by authority records 
+will have a &#8225;0 subfield
+      containing the local ID for the controlling authority record.</para>
+
+      <para>When an authority record is edited or merged with
+      another authority record, the changes are
+      automatically propagated to all the bibliographic records with fields 
+      connected to the ID of the edited authority record.</para>
+
+
+
+    <note>There are some limitations to the authorities in the
+    current version.</note>
+
+    <note>See 
+    <link
+    xlink:href="http://open-ils.org/dokuwiki/doku.php?id=authorities:2.0">
+    http://open-ils.org/dokuwiki/doku.php?id=authorities:2.0</link>
+
+    for more documentation on authorities in Evergreen
+    2.0.</note>
+
     <simplesect xml:id="viewingsearchingauthorityrecords">
-<title>Viewing/Searching Authority Records</title>
-<procedure>
-<step>Select <menuchoice><guimenu>Cataloging</guimenu>
-<guimenuitem>Manage Authorities</guimenuitem></menuchoice>.</step>
-<step>Enter a search term and choose an authority type from the drop-down menu, then
-click <guibutton>Submit</guibutton>.</step>
-<step>A list of records will display.</step>
-</procedure>
-</simplesect>
+      <title>Viewing/Searching Authority Records</title>
+
+      <procedure>
+        <step>Select 
+        <menuchoice>
+          <guimenu>Cataloging</guimenu>
+
+          <guimenuitem>Manage Authorities</guimenuitem>
+        </menuchoice>
+
+        .</step>
+
+        <step>Enter a search term and choose an authority type
+        from the drop-down menu, then click 
+        <guibutton>Submit</guibutton>
+
+        .</step>
+
+        <step>A list of records will display.</step>
+      </procedure>
+    </simplesect>
+
     <simplesect xml:id="editingauthorityrecords">
-<title>Editing Authority Records</title>
-</simplesect>
+      <title>Editing Authority Records</title>
+    </simplesect>
+
     <simplesect xml:id="addingnewauthorityrecords">
-<title>Adding New Authority Records</title>
-</simplesect>
+      <title>Adding New Authority Records</title>
+    </simplesect>
+
     <simplesect xml:id="mergingordeletingauthorityrecords">
-<title>Merging or Deleting Authority Records</title>
-</simplesect>
-</section>
+      <title>Merging or Deleting Authority Records</title>
+    </simplesect>
+  </section>
+
   <section xml:id="z39.50">
     <title>Adding New Records via Built In Z39.50 Client</title>
 
-      <indexterm>
-        <primary>cataloguing</primary>
+    <indexterm>
+      <primary>cataloguing</primary>
 
-        <secondary>Z39.50</secondary>
-      </indexterm>
+      <secondary>Z39.50</secondary>
+    </indexterm>
 
     <para>The Z39.50 client is used to search bibliographic
     databases and examine or download bibliographic records. Open
@@ -455,13 +548,17 @@ click <guibutton>Submit</guibutton>.</step>
 
         .</listitem>
 
-        <listitem>If you have previously <link linkend="overlayingMARCrecords">
-        marked a record for
-        overlay</link>, 
+        <listitem>If you have previously 
+        <link linkend="overlayingMARCrecords">marked a record for
+        overlay</link>
+
+        , 
         <guibutton>MARC Editor for Overlay</guibutton>
 
         will be active. Click to view/edit the new bib record to
-        be laid over the local one you selected. See <xref linkend="overlayingMARCrecords"/>
+        be laid over the local one you selected. See 
+        <xref linkend="overlayingMARCrecords" />
+
         for details.</listitem>
 
         <listitem>
@@ -479,49 +576,93 @@ click <guibutton>Submit</guibutton>.</step>
 
     <simplesect xml:id="importingarecordviaz39.50">
       <title>Importing a record via Z39.50</title>
-<para>Find the desired record, click <guibutton>MARC Editor for Import</guibutton>,
-and make any desired changes. Click <guibutton>Import Record</guibutton> when done. 
-A success (or failure) message will display. If you used <guilabel>Fast Item Adds</guilabel>, 
-the <guilabel>Copy Editor</guilabel> will appear.</para>
+
+      <para>Find the desired record, click 
+      <guibutton>MARC Editor for Import</guibutton>
+
+      , and make any desired changes. Click 
+      <guibutton>Import Record</guibutton>
+
+      when done. A success (or failure) message will display. If
+      you used 
+      <guilabel>Fast Item Adds</guilabel>
+
+      , the 
+      <guilabel>Copy Editor</guilabel>
+
+      will appear.</para>
     </simplesect>
+
     <simplesect xml:id="fastitemadds">
       <title>Fast Item Adds</title>
-<para>Clicking the <guibutton>Fast Item Add</guibutton> box will display <guilabel>Call Number</guilabel> and
-<guilabel>Item Barcode</guilabel> fields. Use these to quickly add items to the record as you
-edit it.</para>
-<para>When you've successfully imported the record, the copy editor will display.  Make 
-necessary adjustments and click <guibutton>Modify/Create Copies</guibutton>.</para>
+
+      <para>Clicking the 
+      <guibutton>Fast Item Add</guibutton>
+
+      box will display 
+      <guilabel>Call Number</guilabel>
+
+      and 
+      <guilabel>Item Barcode</guilabel>
+
+      fields. Use these to quickly add items to the record as you
+      edit it.</para>
+
+      <para>When you've successfully imported the record, the
+      copy editor will display. Make necessary adjustments and
+      click 
+      <guibutton>Modify/Create Copies</guibutton>
+
+      .</para>
+
       <note>
-        <para>As of 2.0.6, the status of items created with Fast Item Add will
-        be set to 
+        <para>As of 2.0.6, the status of items created with Fast
+        Item Add will be set to 
         <emphasis>In Process</emphasis>
 
         , consistent with other types of item creation. This is a
-        change from 2.0.5 and earlier, when items created with Fast Add were Available.</para>
+        change from 2.0.5 and earlier, when items created with
+        Fast Add were Available.</para>
       </note>
     </simplesect>
 
     <simplesect xml:id="recordcollisions">
-      <title>Record Collisions</title>
-<note>As of 2.0.5, if the global flag "Cat: Use internal ID for TCN value" has been set by
-the administrator (under <menuchoice><guimenu>Admin <guimenuitem>Server Settings</guimenuitem>
-<guimenuitem>Global Flags</guimenuitem></guimenu></menuchoice>), the collision
-detection in the Z39.50 import interface will be disabled because it relies on the TCN. 
-Until a more flexible collision detection process is in place, avoiding duplicate
-bib record imports from Z39.50 will be up to the user.</note>.
+    <title>Record Collisions</title>
+
+    <note>As of 2.0.5, if the global flag "Cat: Use internal ID
+    for TCN value" has been set by the administrator (under 
+    <menuchoice>
+      <guimenu>Admin 
+      <guimenuitem>Server Settings</guimenuitem>
+
+      <guimenuitem>Global Flags</guimenuitem>
+      </guimenu>
+    </menuchoice>
+
+    ), the collision detection in the Z39.50 import interface
+    will be disabled because it relies on the TCN. Until a more
+    flexible collision detection process is in place, avoiding
+    duplicate bib record imports from Z39.50 will be up to the
+    user.</note>
+
     </simplesect>
 
     <simplesect xml:id="rawsearches">
       <title>Raw Searches</title>
-<para>You can do advanced searching of remote databases in Prefix Query Format by 
-clicking <guibutton>Raw Search</guibutton> and entering a search string. Visit 
-        <link
-        xlink:href="http://www.indexdata.com/yaz/doc/tools.html">
-        http://www.indexdata.com/yaz/doc/tools.html</link>
 
-        for more details on PQF and examples you can copy/paste
-        into the search box.</para>
+      <para>You can do advanced searching of remote databases in
+      Prefix Query Format by clicking 
+      <guibutton>Raw Search</guibutton>
+
+      and entering a search string. Visit 
+      <link
+      xlink:href="http://www.indexdata.com/yaz/doc/tools.html">
+      http://www.indexdata.com/yaz/doc/tools.html</link>
+
+      for more details on PQF and examples you can copy/paste
+      into the search box.</para>
     </simplesect>
   </section>
 </chapter>
+
 
