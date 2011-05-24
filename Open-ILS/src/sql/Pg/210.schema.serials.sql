@@ -225,6 +225,11 @@ CREATE TRIGGER autogenerate_placeholder_barcode
    FOR EACH ROW EXECUTE PROCEDURE asset.autogenerate_placeholder_barcode()
 ;
 
+-- must create this trigger explicitly; it is not inherited from asset.copy
+CREATE TRIGGER sunit_status_changed_trig
+    BEFORE UPDATE ON serial.unit
+    FOR EACH ROW EXECUTE PROCEDURE asset.acp_status_changed();
+
 CREATE TABLE serial.item (
 	id              SERIAL  PRIMARY KEY,
 	creator         INT     NOT NULL
