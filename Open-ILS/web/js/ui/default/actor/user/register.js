@@ -233,9 +233,6 @@ function load() {
     }
 
 	dojo.connect(generatePassword, 'onClick', generatePasswordHandler);
-	if (uEditUsePhonePw) {
-		generatePassword.attr('disabled', true);
-	}
 
     if(!patron.isnew() && !checkGrpAppPerm(patron.profile()) && patron.id() != openils.User.user.id()) {
         // we are not allowed to edit this user, so disable the save option
@@ -1262,7 +1259,6 @@ function uEditNewPatron() {
 }
 
 function uEditMakeRandomPw(patron) {
-    if(uEditUsePhonePw) return;
     var rand  = Math.random();
     rand = parseInt(rand * 10000) + '';
     while(rand.length < 4) rand += '0';
