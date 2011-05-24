@@ -893,6 +893,9 @@ var vlQueueGridLayout = null;
 function buildRecordGrid(type) {
     displayGlobalDiv('vl-queue-div');
 
+    vlBibQueueGrid.canSort = function(col){ if(Math.abs(col) == 1) { return false; } else { return true; } }; 
+    vlAuthQueueGrid.canSort = function(col){ if(Math.abs(col) == 1) { return false; } else { return true; } }; 
+
     if(type == 'bib') {
         openils.Util.show('vl-bib-queue-grid-wrapper');
         openils.Util.hide('vl-auth-queue-grid-wrapper');
