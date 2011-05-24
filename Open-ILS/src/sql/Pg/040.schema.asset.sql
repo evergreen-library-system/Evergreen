@@ -190,14 +190,16 @@ DECLARE
 BEGIN
     sortkey := NEW.label_sortkey;
 
+    IF NEW.label_class IS NULL THEN
+        NEW.label_class := COALESCE( (SELECT substring(value from E'\\d+')::integer from actor.org_unit_setting WHERE name = 'cat.default_classification_scheme' AND org_unit = NEW.owning_lib), 1 );
+    END IF;
+
     EXECUTE 'SELECT ' || acnc.normalizer || '(' || 
        quote_literal( NEW.label ) || ')'
        FROM asset.call_number_class acnc
        WHERE acnc.id = NEW.label_class
        INTO sortkey;
-
     NEW.label_sortkey = sortkey;
-
     RETURN NEW;
 END;
 $func$ LANGUAGE PLPGSQL;
@@ -289,7 +291,7 @@ CREATE TABLE asset.call_number (
 	owning_lib	INT				NOT NULL,
 	label		TEXT				NOT NULL,
 	deleted		BOOL				NOT NULL DEFAULT FALSE,
-	label_class	BIGINT				DEFAULT 1 NOT NULL
+	label_class	BIGINT				NOT NULL
 							REFERENCES asset.call_number_class(id)
 							DEFERRABLE INITIALLY DEFERRED,
 	label_sortkey	TEXT
