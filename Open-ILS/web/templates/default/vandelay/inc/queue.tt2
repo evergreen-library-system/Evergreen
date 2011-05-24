@@ -116,7 +116,8 @@
                     field='+row_selector'
                     get='vlQueueGridDrawSelectBox'
                     formatter='vlQueueGridFormatSelectBox'
-                    styles='text-align: center;width:30px;'
+                    width='16'
+                    styles='text-align: center;'
                     nonSelectable='true'>
                         <input id="vl-queue-grid-row-selector" type="checkbox" onclick="vlToggleQueueGridSelect();"></input>
                 </th>
