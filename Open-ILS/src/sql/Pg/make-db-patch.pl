@@ -40,7 +40,7 @@ GetOptions(
 ) or exit_usage();
 
 exit_usage('--num cannot be used with --nonum') if ($db_patch_nonum && defined $db_patch_num);
-$db_patch_num = 'XXXX' if($db_patch_nonum);
+$db_patch_num = 'XXXX' if ($db_patch_nonum);
 exit_usage('--num or --nonum required') unless defined $db_patch_num;
 exit_usage('--name required') unless defined $patch_name;
 
