@@ -21,6 +21,7 @@ use warnings;
 use Getopt::Long;
 
 my $db_patch_num;
+my $db_patch_nonum;
 my $patch_name;
 my $patch_from;
 my $patch_wrap;
@@ -30,6 +31,7 @@ my @supersedes;
 exit_usage() if $#ARGV == -1;
 GetOptions( 
     'num=i' => \$db_patch_num,
+    'nonum' => \$db_patch_nonum,
     'name=s' => \$patch_name,
     'from=s' => \$patch_from,
     'wrap=s' => \$patch_wrap,
@@ -37,31 +39,42 @@ GetOptions(
     'supersedes=i' => \@supersedes,
 ) or exit_usage();
 
-exit_usage('--num required') unless defined $db_patch_num;
+exit_usage('--num cannot be used with --nonum') if ($db_patch_nonum && defined $db_patch_num);
+$db_patch_num = 'XXXX' if ($db_patch_nonum);
+exit_usage('--num or --nonum required') unless defined $db_patch_num;
 exit_usage('--name required') unless defined $patch_name;
 
 $patch_from = 'HEAD' unless defined $patch_from;
 
 # pad to four digits
-$db_patch_num = sprintf('%-04.4d', $db_patch_num);
+$db_patch_num = sprintf('%-04.4d', $db_patch_num) unless $db_patch_nonum ;
 $_ = sprintf('%-04.4d', $_) foreach @deprecates;
 $_ = sprintf('%-04.4d', $_) foreach @supersedes;
 
-# basic sanity checks
-my @existing = glob("upgrade/$db_patch_num.*");
-if (@existing) {    
-    print "Error: $db_patch_num is already used by $existing[0]\n";
-    exit(1);
-}
-foreach my $dep (@deprecates) {
-    if ($dep gt $db_patch_num) {
-        print "Error: deprecated patch $dep has a higher patch number than $db_patch_num\n";
+if($db_patch_num ne 'XXXX') {
+    # basic sanity checks
+    my @existing = glob("upgrade/$db_patch_num.*");
+    if (@existing) {    
+        print "Error: $db_patch_num is already used by $existing[0]\n";
         exit(1);
     }
+    foreach my $dep (@deprecates) {
+        if ($dep gt $db_patch_num) {
+            print "Error: deprecated patch $dep has a higher patch number than $db_patch_num\n";
+            exit(1);
+        }
+    }
+    foreach my $sup (@supersedes) {
+        if ($sup gt $db_patch_num) {
+            print "Error: superseded patch $sup has a higher patch number than $db_patch_num\n";
+            exit(1);
+        }
+    }
 }
-foreach my $sup (@supersedes) {
-    if ($sup gt $db_patch_num) {
-        print "Error: superseded patch $sup has a higher patch number than $db_patch_num\n";
+else {
+    if ( -e "upgrade/XXXX.$patch_name.sql" ) {
+        print "Error: upgrade/XXXX.$patch_name.sql already exists\n";
+        print "Either remove the existing file or pick a new --name\n";
         exit(1);
     }
 }
@@ -125,6 +138,7 @@ usage: $0 --num <patch_num> --name <patch_name> [--deprecates <num1>] [--superse
 Make template for a DB patch SQL file.
 
     --num          DB patch number
+    --nonum        Versionless
     --name         descriptive part of patch filename 
     --deprecates   patch(es) deprecated by this update
     --supersedes   patch(es) superseded by this update
