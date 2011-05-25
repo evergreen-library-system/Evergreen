@@ -427,7 +427,7 @@ util.network.prototype = {
                         auto_override = true;
                         for (var i = 0; i < r.length; i++) {
                             if ( 
-                                (r[i].ilsevent != 'undefined') && 
+                                (typeof r[i].ilsevent != 'undefined') && 
                                 (
                                     (override_params.auto_override_these_events.indexOf( r[i].ilsevent == null ? null : Number(r[i].ilsevent) ) != -1) ||
                                     (override_params.auto_override_these_events.indexOf( r[i].textcode ) != -1) 
@@ -499,9 +499,9 @@ util.network.prototype = {
                 var found_good = false; var found_bad = false;
                 for (var i = 0; i < result.length; i++) {
                     if ( 
-                        (result[i].ilsevent != 'undefined') && 
+                        (typeof result[i].ilsevent != 'undefined') && 
                         (
-                            (override_params.overridable_events.indexOf( result[i].ilsevent == null || result.ilsevent == '' ? null : Number(result[i].ilsevent) ) != -1) ||
+                            (override_params.overridable_events.indexOf( result[i].ilsevent == null || result[i].ilsevent == '' ? null : Number(result[i].ilsevent) ) != -1) ||
                             (override_params.overridable_events.indexOf( result[i].textcode ) != -1) 
                         )
                     ) {
