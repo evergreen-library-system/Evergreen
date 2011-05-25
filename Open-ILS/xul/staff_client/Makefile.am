@@ -19,7 +19,7 @@ CHROME_LOCALES = $$(ls -1 chrome/locale)
 SKIN_CSS = $$(ls -1 server/skin/*css | sed -e "s/.css/_custom.css/")
 UPDATESDIR=@localstatedir@/updates
 
-GIT_BRANCH=$$(git rev-parse --abbrev-ref HEAD || echo master)
+GIT_BRANCH=$$(echo $$(git rev-parse --abbrev-ref HEAD || echo master) | sed 's|.*/||')
 GIT_TAG=$$(git rev-parse --short HEAD) # For auto-tagging builds
 
 export NSIS_EXTRAOPTS

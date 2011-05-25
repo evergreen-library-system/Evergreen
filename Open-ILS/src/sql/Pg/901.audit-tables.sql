@@ -36,6 +36,9 @@ CREATE INDEX aud_asset_cn_hist_editor_idx         ON auditor.asset_call_number_h
 SELECT auditor.create_auditor ( 'asset', 'copy' );
 CREATE INDEX aud_asset_cp_hist_creator_idx        ON auditor.asset_copy_history ( creator );
 CREATE INDEX aud_asset_cp_hist_editor_idx         ON auditor.asset_copy_history ( editor );
+SELECT auditor.create_auditor ( 'serial', 'unit' );
+CREATE INDEX aud_serial_unit_hist_creator_idx     ON auditor.serial_unit_history ( creator );
+CREATE INDEX aud_serial_unit_hist_editor_idx      ON auditor.serial_unit_history ( editor );
 
 SELECT auditor.create_auditor ( 'acq', 'invoice' );
 
