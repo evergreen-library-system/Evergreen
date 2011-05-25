@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('0538', :eg_version); -- senator
+INSERT INTO config.upgrade_log (version) VALUES ('0538'); -- senator
 
 UPDATE action_trigger.event_definition
 SET template = '[% FILTER collapse %]' || template
