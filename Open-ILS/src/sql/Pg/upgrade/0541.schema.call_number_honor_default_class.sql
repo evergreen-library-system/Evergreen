@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('0541', :eg_version); -- dbwells
+INSERT INTO config.upgrade_log (version) VALUES ('0541'); -- dbwells
 
 ALTER TABLE asset.call_number ALTER COLUMN label_class DROP DEFAULT;
 
