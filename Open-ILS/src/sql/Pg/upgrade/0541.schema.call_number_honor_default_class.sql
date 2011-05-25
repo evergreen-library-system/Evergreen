@@ -11,7 +11,14 @@ BEGIN
     sortkey := NEW.label_sortkey;
 
     IF NEW.label_class IS NULL THEN
-        NEW.label_class := COALESCE( (SELECT substring(value from E'\\d+')::integer from actor.org_unit_setting WHERE name = 'cat.default_classification_scheme' AND org_unit = NEW.owning_lib), 1);
+        NEW.label_class := COALESCE(
+            (
+                SELECT substring(value from E'\\d+')::integer
+                FROM actor.org_unit_setting
+                WHERE name = 'cat.default_classification_scheme'
+                AND org_unit = NEW.owning_lib
+            ), 1
+        );
     END IF;
 
     EXECUTE 'SELECT ' || acnc.normalizer || '(' ||
