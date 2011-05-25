@@ -169,15 +169,15 @@ srfsh#
 				<para>As the <systemitem class="username">opensrf</systemitem> user, download and extract <application>Evergreen 2.0</application>
 				</para>
 <screen><userinput>
-wget http://www.open-ils.org/downloads/Evergreen-ILS-2.0.5.tar.gz
-tar xzf Evergreen-ILS-2.0.5.tar.gz
+wget http://www.open-ils.org/downloads/Evergreen-ILS-2.0.6.tar.gz
+tar xzf Evergreen-ILS-2.0.6.tar.gz
 </userinput></screen>
 				<note><para>For the latest edition of Evergreen 2.0, check the Evergreen download page at
 				<ulink url="http://www.open-ils.org/downloads.php" /> and adjust upgrading instructions accordingly.</para></note>
 			</step>
 			<step>
 				<para>As the <systemitem class="username">root</systemitem> user, install the prerequisites:</para> 
-				<screen><userinput>cd /home/opensrf/Evergreen-ILS-2.0.5</userinput></screen>	
+				<screen><userinput>cd /home/opensrf/Evergreen-ILS-2.0.6</userinput></screen>	
 				<para>On the next command, replace <option>[distribution]</option> with one of 
 				these values for your distribution of Debian or Ubuntu:</para>
 				<itemizedlist>
@@ -196,19 +196,19 @@ tar xzf Evergreen-ILS-2.0.5.tar.gz
 			<step>
 				<para>As the <systemitem class="username">opensrf</systemitem> user, configure and compile 
 				<application>Evergreen</application>:</para>
-				<screen><userinput>cd /home/opensrf/Evergreen-ILS-2.0.5</userinput></screen>
+				<screen><userinput>cd /home/opensrf/Evergreen-ILS-2.0.6</userinput></screen>
 				<screen><userinput>./configure --prefix=/openils --sysconfdir=/openils/conf</userinput></screen>
 				<screen><userinput>make</userinput></screen>
 			</step>
 			<step>
 				<para>As the <systemitem class="username">root</systemitem> user, install 
 				<application>Evergreen</application>:</para>
-				<screen><userinput>make STAFF_CLIENT_BUILD_ID=rel_2_0_5 install</userinput></screen>
+				<screen><userinput>make STAFF_CLIENT_BUILD_ID=rel_2_0_6 install</userinput></screen>
 			</step>
 			<step>
 				<para>Change to the <application>Evergreen</application> installation 
 				directory:</para>
-				<screen><userinput>cd /home/opensrf/Evergreen-ILS-2.0.5</userinput></screen>
+				<screen><userinput>cd /home/opensrf/Evergreen-ILS-2.0.6</userinput></screen>
 			</step>
 			<step>
 				<para>As the <emphasis>root</emphasis> user, change all files to be owned by the 
@@ -220,7 +220,7 @@ tar xzf Evergreen-ILS-2.0.5.tar.gz
 <screen><userinput>
 cd /openils/var/web/xul/
 rm server
-ln -s rel_2_0_5/server
+ln -s rel_2_0_6/server
 </userinput></screen>
 			</step>
 			<step>
@@ -237,6 +237,7 @@ psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/2.0.1-2.0.2-upgrade-db.sql
 psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/2.0.2-2.0.3-upgrade-db.sql evergreen
 psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/2.0.3-2.0.4-upgrade-db.sql evergreen
 psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/2.0.4-2.0.5-upgrade-db.sql evergreen
+psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/2.0.5-2.0.6-upgrade-db.sql evergreen
 </userinput>
 </screen> 	
                              
