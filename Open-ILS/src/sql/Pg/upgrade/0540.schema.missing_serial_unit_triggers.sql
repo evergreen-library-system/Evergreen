@@ -6,7 +6,7 @@ BEGIN;
 
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('0540', :eg_version);
+INSERT INTO config.upgrade_log (version) VALUES ('0540'); -- dbwells
 
 CREATE TRIGGER sunit_status_changed_trig
     BEFORE UPDATE ON serial.unit
