@@ -27,6 +27,18 @@ INSERT INTO permission.perm_list VALUES
     ,(506, 'VIEW_USER_SETTING_TYPE', oils_i18n_gettext(506, 'Allows viewing of configurable user setting types.', 'ppl', 'description'))
 ;
 
+-- stock Users group
+
+INSERT INTO permission.grp_perm_map ( grp, perm, depth )
+    SELECT
+        1,
+        id,
+        0
+    FROM permission.perm_list
+    WHERE code in (
+        'CREATE_PURCHASE_REQUEST'
+    );
+
 -- stock Staff group
 
 INSERT INTO permission.grp_perm_map ( grp, perm, depth )
@@ -36,10 +48,8 @@ INSERT INTO permission.grp_perm_map ( grp, perm, depth )
         0
     FROM permission.perm_list
     WHERE code in (
-        'CREATE_PURCHASE_REQUEST'
-        ,'VIEW_USER_SETTING_TYPE'
+        'VIEW_USER_SETTING_TYPE'
     );
-
 
 -- stock Circulators group
 
