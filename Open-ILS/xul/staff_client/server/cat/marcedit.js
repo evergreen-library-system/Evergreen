@@ -42,7 +42,7 @@ var show_auth_menu = false;
 
 function $(id) { return document.getElementById(id); }
 
-var acs = new openils.AuthorityControlSet ();
+var acs; // AuthorityControlSet
 
 function mangle_005() {
     var now = new Date();
@@ -154,6 +154,9 @@ function my_init() {
         if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
         JSAN.errorLevel = "die"; // none, warn, or die
         JSAN.addRepository('/xul/server/');
+
+        dojo.require('openils.AuthorityControlSet');
+        acs = new openils.AuthorityControlSet ();
 
         // Fake xulG for standalone...
         try {

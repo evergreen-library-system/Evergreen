@@ -28,6 +28,8 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
 
         constructor : function(kwargs) {
 
+            kwargs = kwargs || {};
+
             if (!openils.AuthorityControlSet._remote_loaded) {
 
                 // TODO -- push the raw tree into the oils cache for later reuse
@@ -51,7 +53,7 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
                         )
                     );
                     openils.AuthorityControlSet._browse_axis_by_name[ba.code()] = ba;
-                );
+                });
 
                 // loop over each acs
                 dojo.forEach( openils.AuthorityControlSet._control_set_list, function (cs) {
@@ -107,7 +109,7 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
                         csaf.bib_fields( acsbf_list );
 
                         openils.AuthorityControlSet._controlsets[''+cs.id()].bib_fields = [].concat(
-                            openils.AuthorityControlSet._controlsets[''+cs.id()].bib_fields
+                            openils.AuthorityControlSet._controlsets[''+cs.id()].bib_fields,
                             acsbf_list
                         );
 
@@ -142,7 +144,8 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
                     dojo.forEach( openils.AuthorityControlSet._controlsets[''+cs.id()].bib_fields, function (bf) {
                         openils.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()] = {};
                         dojo.forEach( bf.authority_field().sf_list().split(''), function (sf_code) {
-                            openils.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()][sf_code] = { bf.authority_field().tag() : sf_code };
+                            openils.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()][sf_code] = {};
+                            openils.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()][sf_code][bf.authority_field().tag()] = sf_code;
                         });
                     });
 
@@ -292,7 +295,7 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
 
     openils.AuthorityControlSet._controlsets = {
         // static sorta-LoC setup ... to be overwritten with server data 
-        -1 : {
+        '-1' : {
             id : -1,
             name : 'Static LoC legacy mapping',
             description : 'Legacy mapping provided as a default',
