@@ -1117,12 +1117,10 @@ serial.manage_subs.prototype = {
             if (!sel_lists[row_type]) sel_lists[row_type] = [];
             sel_lists[row_type].push(id);
 
-            if (twisty) {
-                switch(row_type) {
-                    case 'aou' : obj.on_click_aou(id,twisty); break;
-                    case 'ssub' : obj.on_select_ssub(id,twisty); break;
-                    default: break;
-                }
+            switch(row_type) {
+                case 'aou' : obj.on_click_aou(id,twisty); break;
+                case 'ssub' : obj.on_select_ssub(id,twisty); break;
+                default: break;
             }
         }
 

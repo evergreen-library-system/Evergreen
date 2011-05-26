@@ -647,12 +647,10 @@ serial.manage_dists.prototype = {
             if (!sel_lists[row_type]) sel_lists[row_type] = [];
             sel_lists[row_type].push(id);
 
-            if (twisty) {
-                switch(row_type) {
-                    case 'aou' : obj.on_click_aou(id,twisty); break;
-                    case 'sdist' : obj.on_select_sdist(id,twisty); break;
-                    default: break;
-                }
+            switch(row_type) {
+                case 'aou' : obj.on_click_aou(id,twisty); break;
+                case 'sdist' : obj.on_select_sdist(id,twisty); break;
+                default: break;
             }
         }
 
