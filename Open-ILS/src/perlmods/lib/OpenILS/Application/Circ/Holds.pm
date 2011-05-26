@@ -2769,10 +2769,15 @@ sub all_rec_holds {
 			%$args 
 		}, {idlist=>1} );
 
+    my $parts = $e->search_biblio_monograph_part(
+        {
+            record => $title_id
+        }, {idlist=>1} );
+
     $resp->{part_holds} = $e->search_action_hold_request(
         {
 			hold_type => OILS_HOLD_TYPE_MONOPART,
-			target => $title_id,
+			target => $parts,
 			%$args
         }, {idlist=>1} );
 
