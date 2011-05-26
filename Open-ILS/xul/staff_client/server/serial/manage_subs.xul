@@ -69,7 +69,7 @@ vim:noet:sw=4:ts=4:
                         <hbox id="serial_sub_lib_menu"/>
                         <hbox>
                             <checkbox id="show_ssubs" label="Show Subs." />
-                            <checkbox id="show_groups" label="Show Groups" />
+                            <checkbox id="show_ssub_groups" label="Show Groups" />
                             <button id="serial_sub_add_button" label="&staff.cat.copy_browser.holdings_maintenance.refresh_button.label;" command="cmd_refresh_list" />
                             <spacer flex="1"/>
                             <menubar>

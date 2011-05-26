@@ -896,7 +896,7 @@ serial.manage_subs.prototype = {
                     function(ev) {
                         if (document.getElementById('refresh_button')) document.getElementById('refresh_button').focus(); 
                         JSAN.use('util.file'); var file = new util.file('manage_subs_prefs.'+obj.data.server_unadorned);
-                        util.widgets.save_attributes(file, { 'lib_menu' : [ 'value' ], 'show_ssubs' : [ 'checked' ], 'show_groups' : [ 'checked' ] });
+                        util.widgets.save_attributes(file, { 'lib_menu' : [ 'value' ], 'show_ssubs' : [ 'checked' ], 'show_ssub_groups' : [ 'checked' ] });
                         obj.refresh_list();
                     },
                     false
@@ -917,16 +917,16 @@ serial.manage_subs.prototype = {
                 'command',
                 function(ev) {
                     JSAN.use('util.file'); var file = new util.file('manage_subs_prefs.'+obj.data.server_unadorned);
-                    util.widgets.save_attributes(file, { 'lib_menu' : [ 'value' ], 'show_ssubs' : [ 'checked' ], 'show_groups' : [ 'checked' ] });
+                    util.widgets.save_attributes(file, { 'lib_menu' : [ 'value' ], 'show_ssubs' : [ 'checked' ], 'show_ssub_groups' : [ 'checked' ] });
                 },
                 false
             );
 
-            document.getElementById('show_groups').addEventListener(
+            document.getElementById('show_ssub_groups').addEventListener(
                 'command',
                 function(ev) {
                     JSAN.use('util.file'); var file = new util.file('manage_subs_prefs.'+obj.data.server_unadorned);
-                    util.widgets.save_attributes(file, { 'lib_menu' : [ 'value' ], 'show_ssubs' : [ 'checked' ], 'show_groups' : [ 'checked' ] });
+                    util.widgets.save_attributes(file, { 'lib_menu' : [ 'value' ], 'show_ssubs' : [ 'checked' ], 'show_ssub_groups' : [ 'checked' ] });
                 },
                 false
             );
@@ -1117,12 +1117,10 @@ serial.manage_subs.prototype = {
             if (!sel_lists[row_type]) sel_lists[row_type] = [];
             sel_lists[row_type].push(id);
 
-            if (twisty) {
-                switch(row_type) {
-                    case 'aou' : obj.on_click_aou(id,twisty); break;
-                    case 'ssub' : obj.on_select_ssub(id,twisty); break;
-                    default: break;
-                }
+            switch(row_type) {
+                case 'aou' : obj.on_click_aou(id,twisty); break;
+                case 'ssub' : obj.on_select_ssub(id,twisty); break;
+                default: break;
             }
         }
 
@@ -1431,7 +1429,7 @@ serial.manage_subs.prototype = {
                 //did this support a later typo? obj.map_sdist[ 'ssub_' + ssub_tree.id() ] = ssub_tree;
                 node.setAttribute('container','true');
             }
-            if (document.getElementById('show_groups').checked) {
+            if (document.getElementById('show_ssub_groups').checked) {
                 node.setAttribute('open','true');
                 obj.funcs.push( function() { obj.on_select_ssub( ssub_tree.id(), true ); } );
             }
