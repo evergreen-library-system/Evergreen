@@ -73,7 +73,7 @@ vim:noet:sw=4:ts=4:
                         <hbox id="serial_dist_lib_menu"/>
                         <hbox>
                             <checkbox id="show_sdists" label="Show Dists." />
-                            <checkbox id="show_groups" label="Show Groups" />
+                            <checkbox id="show_sdist_groups" label="Show Groups" />
                             <button id="serial_dist_add_button" label="&staff.cat.copy_browser.holdings_maintenance.refresh_button.label;" command="cmd_refresh_list" />
                             <spacer flex="1"/>
                             <menubar>
