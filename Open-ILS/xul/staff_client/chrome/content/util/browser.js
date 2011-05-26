@@ -383,13 +383,58 @@ util.browser.prototype = {
 
             var obj = this;
             obj.progressListener = {
-                onProgressChange    : function(){},
-                onLocationChange    : function(){},
-                onStatusChange        : function(){},
-                onSecurityChange    : function(){},
+                onProgressChange    : function(webProgress,request,curSelfProgress,maxSelfProgress,curTotalProgress,maxTotalProgress){
+                    try {
+                        /*dump('browser.js onProgressChange('
+                            +webProgress
+                            +','+request
+                            +','+curSelfProgress
+                            +','+maxSelfProgress
+                            +','+curTotalProgress
+                            +','+maxTotalProgress+')\n');*/
+                    } catch(E) {
+                        dump('error in util.browser.progresslistener.onProgressChange: ' + E + '\n');
+                    }
+                },
+                onLocationChange    : function(webProgress,request,uri){
+                    try {
+                        /*dump('browser.js onLocationChange('
+                            +webProgress
+                            +','+request
+                            +','+uri+')\n');*/
+                    } catch(E) {
+                        dump('error in util.browser.progresslistener.onLocationChange: ' + E + '\n');
+                    }
+                },
+                onStatusChange        : function(webProgress,request,status,message){
+                    try {
+                        /*dump('browser.js onStatusChange('
+                            +webProgress+','
+                            +request
+                            +','+status
+                            +','+message+')\n');*/
+                    } catch(E) {
+                        dump('error in util.browser.progresslistener.onStatusChange: ' + E + '\n');
+                    }
+                },
+                onSecurityChange    : function(webProgress,request,state){
+                    try {
+                        /*dump('browser.js onSecurityChange('
+                            +webProgress
+                            +','+request
+                            +','+state+')\n');*/
+                    } catch(E) {
+                        dump('error in util.browser.progresslistener.onSecurityChange: ' + E + '\n');
+                    }
+                },
                 onStateChange         : function ( webProgress, request, stateFlags, status) {
                     try {
                         netscape.security.PrivilegeManager.enablePrivilege( "UniversalXPConnect" );
+                        /*dump('browser.js onStateChange('
+                            +webProgress
+                            +','+request
+                            +','+stateFlags
+                            +','+status+')\n');*/
                         var s = obj.url + '\n' + obj.get_content().location.href + '\n';
                         const nsIWebProgressListener = Components.interfaces.nsIWebProgressListener;
                         const nsIChannel = Components.interfaces.nsIChannel;
@@ -411,7 +456,15 @@ util.browser.prototype = {
                             }
                         }
                         //////
-                        if (stateFlags == 65540 || stateFlags == 65537 || stateFlags == 65552) { return; }
+                        if ( (stateFlags & nsIWebProgressListener.STATE_IS_REQUEST
+                                && stateFlags & nsIWebProgressListener.STATE_TRANSFERRING)
+                            || (stateFlags & nsIWebProgressListener.STATE_IS_REQUEST
+                                && stateFlags & nsIWebProgressListener.STATE_START)
+                            || (stateFlags & nsIWebProgressListener.STATE_IS_REQUEST
+                                && stateFlags & nsIWebProgressListener.STATE_STOP)
+                            ) {
+                            return;
+                        }
                         s += ('onStateChange: stateFlags = ' + stateFlags + ' status = ' + status + '\n');
                         if (stateFlags & nsIWebProgressListener.STATE_IS_REQUEST) {
                             s += ('\tSTATE_IS_REQUEST\n');
@@ -420,7 +473,13 @@ util.browser.prototype = {
                             s += ('\tSTATE_IS_DOCUMENT\n');
                             if( stateFlags & nsIWebProgressListener.STATE_STOP ) {
                                 var alert_string = 'document has stopped: ' + new Date() + '\n'; dump(alert_string);
-                                obj.push_variables(); obj.updateNavButtons();
+                                try {
+                                    obj.push_variables(); obj.updateNavButtons();
+                                } catch(E) {
+                                    var err_msg = 'browser.js STATE_IS_DOCUMENT STATE_STOP error with push_variables or updateNavButtons: ' + E + '\n';
+                                    dump(err_msg);
+                                    obj.error.sdump('D_ERROR',err_msg);
+                                }
                                 if (typeof obj.on_url_load == 'function') {
                                     try {
                                         obj.error.sdump('D_TRACE','calling on_url_load');
@@ -474,6 +533,7 @@ util.browser.prototype = {
                         //obj.error.sdump('D_BROWSER',s);    
                         if (throbber) { throbber.tooltip(s); }
                     } catch(E) {
+                        dump('error in util.browser.progresslistener.onStateChange: ' + E + '\n');
                         obj.error.sdump('D_ERROR','util.browser.progresslistener.onstatechange: ' + (E));
                     }
                 }
