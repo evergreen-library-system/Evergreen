@@ -171,7 +171,7 @@ INSERT INTO permission.grp_perm_map ( grp, perm, depth, grantable )
 
 INSERT INTO permission.grp_perm_map ( grp, perm, depth, grantable )
     SELECT
-        11,
+        12,
         id,
         1,
         't'
@@ -184,7 +184,7 @@ INSERT INTO permission.grp_perm_map ( grp, perm, depth, grantable )
 
 INSERT INTO permission.grp_perm_map ( grp, perm, depth, grantable )
     SELECT
-        12,
+        13,
         id,
         0,
         't'
