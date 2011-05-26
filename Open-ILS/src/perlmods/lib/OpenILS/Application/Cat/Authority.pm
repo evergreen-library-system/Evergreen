@@ -194,7 +194,7 @@ sub count_linked_bibs {
 
     my $editor = new_editor();
 
-    my $link_count;
+    my $link_count = [];
     my @clean_records;
     for my $auth ( @$records ) {
         # Protection against SQL injection? Might be overkill.
