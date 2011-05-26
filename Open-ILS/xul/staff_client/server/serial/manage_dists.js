@@ -521,7 +521,7 @@ serial.manage_dists.prototype = {
                     function(ev) {
                         if (document.getElementById('refresh_button')) document.getElementById('refresh_button').focus(); 
                         JSAN.use('util.file'); var file = new util.file('manage_dists_prefs.'+obj.data.server_unadorned);
-                        util.widgets.save_attributes(file, { 'sdist_lib_menu' : [ 'value' ], 'show_sdists' : [ 'checked' ], 'show_groups' : [ 'checked' ] });
+                        util.widgets.save_attributes(file, { 'sdist_lib_menu' : [ 'value' ], 'show_sdists' : [ 'checked' ], 'show_sdist_groups' : [ 'checked' ] });
                         obj.refresh_list();
                     },
                     false
@@ -544,16 +544,16 @@ serial.manage_dists.prototype = {
                 'command',
                 function(ev) {
                     JSAN.use('util.file'); var file = new util.file('manage_dists_prefs.'+obj.data.server_unadorned);
-                    util.widgets.save_attributes(file, { 'sdist_lib_menu' : [ 'value' ], 'show_sdists' : [ 'checked' ], 'show_groups' : [ 'checked' ] });
+                    util.widgets.save_attributes(file, { 'sdist_lib_menu' : [ 'value' ], 'show_sdists' : [ 'checked' ], 'show_sdist_groups' : [ 'checked' ] });
                 },
                 false
             );
 
-            document.getElementById('show_groups').addEventListener(
+            document.getElementById('show_sdist_groups').addEventListener(
                 'command',
                 function(ev) {
                     JSAN.use('util.file'); var file = new util.file('manage_dists_prefs.'+obj.data.server_unadorned);
-                    util.widgets.save_attributes(file, { 'sdist_lib_menu' : [ 'value' ], 'show_sdists' : [ 'checked' ], 'show_groups' : [ 'checked' ] });
+                    util.widgets.save_attributes(file, { 'sdist_lib_menu' : [ 'value' ], 'show_sdists' : [ 'checked' ], 'show_sdist_groups' : [ 'checked' ] });
                 },
                 false
             );
@@ -1001,7 +1001,7 @@ serial.manage_dists.prototype = {
                 }
             }
             node.setAttribute('container','true');
-            if (document.getElementById('show_groups').checked) {
+            if (document.getElementById('show_sdist_groups').checked) {
                 node.setAttribute('open','true');
                 obj.funcs.push( function() { obj.on_select_sdist( sdist_tree.id(), true ); } );
             }
