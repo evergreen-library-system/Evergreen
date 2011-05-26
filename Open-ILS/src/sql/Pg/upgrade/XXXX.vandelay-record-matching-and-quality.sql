@@ -52,47 +52,32 @@ CREATE UNIQUE INDEX vmsq_def_once_per_set ON vandelay.match_set_quality (match_s
 
 
 -- ALTER TABLEs...
+ALTER TABLE vandelay.queue ADD COLUMN match_set INT REFERENCES vandelay.match_set (id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE vandelay.queue_record ADD COLUMN quality INT NOT NULL DEFAULT 0;
+ALTER TABLE vandelay.bib_attr_definition DROP COLUMN ident;
 
-    match_set       INT         REFERENCES vandelay.match_set (id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
-@@ -18,7 +60,8 @@ CREATE TABLE vandelay.queued_record (
--    marc		TEXT                        NOT NULL
-    marc		TEXT                        NOT NULL,
-    quality     INT                         NOT NULL DEFAULT 0
-@@ -31,8 +74,7 @@ CREATE TABLE vandelay.bib_attr_definition (
--	remove		TEXT	NOT NULL DEFAULT '',
--	ident		BOOL	NOT NULL DEFAULT FALSE
-	remove		TEXT	NOT NULL DEFAULT ''
-@@ -67,6 +109,11 @@ CREATE TABLE vandelay.import_item_attr_definition (
 CREATE TABLE vandelay.import_error (
     code        TEXT    PRIMARY KEY,
     description TEXT    NOT NULL -- i18n
 );
 
-@@ -75,9 +122,11 @@ CREATE TABLE vandelay.bib_queue (
--	queue		INT		NOT NULL REFERENCES vandelay.bib_queue (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
--	bib_source	INT		REFERENCES config.bib_source (id) DEFERRABLE INITIALLY DEFERRED,
--	imported_as	BIGINT	REFERENCES biblio.record_entry (id) DEFERRABLE INITIALLY DEFERRED
-	queue		    INT		NOT NULL REFERENCES vandelay.bib_queue (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-	bib_source	    INT		REFERENCES config.bib_source (id) DEFERRABLE INITIALLY DEFERRED,
-	imported_as 	BIGINT	REFERENCES biblio.record_entry (id) DEFERRABLE INITIALLY DEFERRED,
-	import_error	TEXT    REFERENCES vandelay.import_error (code) ON DELETE SET NULL ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
-	error_detail	TEXT
-@@ -92,17 +141,20 @@ CREATE INDEX queued_bib_record_attr_record_idx ON vandelay.queued_bib_record_att
--	field_type		TEXT		NOT NULL CHECK (field_type in ('isbn','tcn_value','id')),
--	matched_attr	INT			REFERENCES vandelay.queued_bib_record_attr (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
--	eg_record		BIGINT		REFERENCES biblio.record_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
-	eg_record		BIGINT		REFERENCES biblio.record_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-    quality         INT         NOT NULL DEFAULT 1,
-    match_score     INT         NOT NULL DEFAULT 0
---- DROP TABLE vandelay.import_item CASCADE;
-	import_error	TEXT        REFERENCES vandelay.import_error (code) ON DELETE SET NULL ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
-	error_detail	TEXT,
-    imported_as     BIGINT      REFERENCES asset.copy (id) DEFERRABLE INITIALLY DEFERRED,
-    import_time	    TIMESTAMP WITH TIME ZONE,
-@@ -139,10 +191,592 @@ CREATE TABLE vandelay.merge_profile (
-    lwm_ratio       NUMERIC,
+ALTER TABLE vandelay.queued_bib_record
+    ADD COLUMN import_error TEXT REFERENCES vandelay.import_error (code) ON DELETE SET NULL ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    ADD COLUMN error_detail TEXT;
 
+ALTER TABLE vandelay.bib_match
+    DROP COLUMN field_type,
+    DROP COLUMN matched_attr,
+    ADD COLUMN quality INT NOT NULL DEFAULT 1,
+    ADD COLUMN match_score INT NOT NULL DEFAULT 0;
 
+ALTER TABLE vandelay.import_item
+    ADD COLUMN import_error TEXT REFERENCES vandelay.import_error (code) ON DELETE SET NULL ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    ADD COLUMN error_detail TEXT,
+    ADD COLUMN imported_as BIGINT REFERENCES asset.copy (id) DEFERRABLE INITIALLY DEFERRED,
+    ADD COLUMN import_time TIMESTAMP WITH TIME ZONE;
+
+ALTER TABLE vandelay.merge_profile ADD COLUMN lwm_ratio NUMERIC;
 
 CREATE OR REPLACE FUNCTION vandelay.marc21_record_type( marc TEXT ) RETURNS config.marc21_rec_type_map AS $func$
 DECLARE
@@ -355,9 +340,10 @@ BEGIN
             attr_value := oils_xpath_string(attr_def.xpath, transformed_xml, COALESCE(attr_def.joiner,' '), ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]]);
 
         ELSIF attr_def.phys_char_sf IS NOT NULL THEN -- a named Physical Characteristic, see config.marc21_physical_characteristic_*_map
-            SELECT  value::TEXT INTO attr_value
-              FROM  vandelay.marc21_physical_characteristics(xml)
-              WHERE subfield = attr_def.phys_char_sf
+            SELECT  m.value::TEXT INTO attr_value
+              FROM  vandelay.marc21_physical_characteristics(xml) v
+                    JOIN config.marc21_physical_characteristic_value_map m ON (m.id = v.value)
+              WHERE v.subfield = attr_def.phys_char_sf
               LIMIT 1; -- Just in case ...
 
         END IF;
@@ -929,39 +915,56 @@ BEGIN
 END;
 $$ LANGUAGE PLPGSQL;
 
-
 -- ALTER TABLEs...
 
--
--CREATE OR REPLACE FUNCTION vandelay.cleanup_bib_marc ( ) RETURNS TRIGGER AS $$
--BEGIN
-@@ -1200,7 +1818,7 @@ CREATE TRIGGER ingest_item_trigger
--    AFTER INSERT OR UPDATE ON vandelay.queued_bib_record
+DROP TRIGGER zz_match_bibs_trigger ON vandelay.queued_bib_record;
+CREATE TRIGGER zz_match_bibs_trigger
     BEFORE INSERT OR UPDATE ON vandelay.queued_bib_record
-@@ -1211,8 +1829,7 @@ CREATE TABLE vandelay.authority_attr_definition (
--	remove		TEXT	NOT NULL DEFAULT '',
--	ident		BOOL	NOT NULL DEFAULT FALSE
-	remove		TEXT	NOT NULL DEFAULT ''
-@@ -1223,7 +1840,9 @@ ALTER TABLE vandelay.authority_queue ADD PRIMARY KEY (id);
--	imported_as	INT	REFERENCES authority.record_entry (id) DEFERRABLE INITIALLY DEFERRED
-	imported_as	INT	REFERENCES authority.record_entry (id) DEFERRABLE INITIALLY DEFERRED,
-	import_error	TEXT    REFERENCES vandelay.import_error (code) ON DELETE SET NULL ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
-	error_detail	TEXT
-@@ -1238,9 +1857,9 @@ CREATE INDEX queued_authority_record_attr_record_idx ON vandelay.queued_authorit
--	matched_attr	INT			REFERENCES vandelay.queued_authority_record_attr (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
--	eg_record		BIGINT		REFERENCES authority.record_entry (id) DEFERRABLE INITIALLY DEFERRED
-	eg_record		BIGINT		REFERENCES authority.record_entry (id) DEFERRABLE INITIALLY DEFERRED,
-    quality         INT         NOT NULL DEFAULT 0
-@@ -1249,6 +1868,10 @@ DECLARE
+    FOR EACH ROW EXECUTE PROCEDURE vandelay.match_bib_record();
+
+CREATE OR REPLACE FUNCTION vandelay.ingest_authority_marc ( ) RETURNS TRIGGER AS $$
+DECLARE
+    value   TEXT;
+    atype   TEXT;
+    adef    RECORD;
+BEGIN
     IF TG_OP IN ('INSERT','UPDATE') AND NEW.imported_as IS NOT NULL THEN
         RETURN NEW;
     END IF;
 
-@@ -1264,6 +1887,10 @@ $$ LANGUAGE PLPGSQL;
+    FOR adef IN SELECT * FROM vandelay.authority_attr_definition LOOP
+
+        SELECT extract_marc_field('vandelay.queued_authority_record', id, adef.xpath, adef.remove) INTO value FROM vandelay.queued_authority_record WHERE id = NEW.id;
+        IF (value IS NOT NULL AND value <> '') THEN
+            INSERT INTO vandelay.queued_authority_record_attr (record, field, attr_value) VALUES (NEW.id, adef.id, value);
+        END IF;
+
+    END LOOP;
+
+    RETURN NULL;
+END;
+$$ LANGUAGE PLPGSQL;
+
+ALTER TABLE vandelay.authority_attr_definition DROP COLUMN ident;
+ALTER TABLE vandelay.queued_authority_record
+    ADD COLUMN import_error TEXT REFERENCES vandelay.import_error (code) ON DELETE SET NULL ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    ADD COLUMN error_detail TEXT;
+
+ALTER TABLE vandelay.authority_match DROP COLUMN matched_attr;
+
+CREATE OR REPLACE FUNCTION vandelay.cleanup_authority_marc ( ) RETURNS TRIGGER AS $$
+BEGIN
     IF TG_OP IN ('INSERT','UPDATE') AND NEW.imported_as IS NOT NULL THEN
         RETURN NEW;
     END IF;
-@@ -372,6 +372,27 @@ CREATE OR REPLACE FUNCTION biblio.extract_metabib_field_entry ( BIGINT ) RETURNS
+
+    DELETE FROM vandelay.queued_authority_record_attr WHERE record = OLD.id;
+    IF TG_OP = 'UPDATE' THEN
+        RETURN NEW;
+    END IF;
+    RETURN OLD;
+END;
+$$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION authority.flatten_marc ( rid BIGINT ) RETURNS SETOF authority.full_rec AS $func$
 DECLARE
@@ -1004,29 +1007,6 @@ BEGIN
 	END LOOP;
 END;
 $func$ LANGUAGE PLPGSQL;
-
-
-CREATE OR REPLACE FUNCTION authority.flatten_marc ( rid BIGINT ) RETURNS SETOF authority.full_rec AS $func$
-DECLARE
-	auth	authority.record_entry%ROWTYPE;
-	output	authority.full_rec%ROWTYPE;
-	field	RECORD;
-BEGIN
-	SELECT INTO auth * FROM authority.record_entry WHERE id = rid;
-
-	FOR field IN SELECT * FROM vandelay.flatten_marc( auth.marc ) LOOP
-		output.record := rid;
-		output.ind1 := field.ind1;
-		output.ind2 := field.ind2;
-		output.tag := field.tag;
-		output.subfield := field.subfield;
-		output.value := field.value;
-
-		RETURN NEXT output;
-	END LOOP;
-END;
-$func$ LANGUAGE PLPGSQL;
-
 
 -----------------------------------------------
 -- Seed data for import errors
