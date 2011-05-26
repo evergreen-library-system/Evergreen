@@ -922,7 +922,7 @@ sub axis_authority_browse {
     for my $f (@{$authority_browse_axis_cache{$axis}->fields}) {
         push @tags, $f->tag;
         if ($refs) {
-            push @tags, $_->tag for @{$f-sub_entries};
+            push @tags, $_->tag for @{$f->sub_entries};
         }
     }
 
@@ -1477,7 +1477,7 @@ sub axis_authority_startwith {
     for my $f (@{$authority_browse_axis_cache{$axis}->fields}) {
         push @tags, $f->tag;
         if ($refs) {
-            push @tags, $_->tag for @{$f-sub_entries};
+            push @tags, $_->tag for @{$f->sub_entries};
         }
     }
 
