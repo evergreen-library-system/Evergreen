@@ -557,7 +557,30 @@ cat.util.fast_item_add = function(doc_id,cn_label,cp_barcode) {
 
         JSAN.use('util.window'); var win = new util.window();
         JSAN.use('cat.util');
-        return cat.util.spawn_copy_editor( { 'handle_update' : 1, 'edit' : 1, 'docid' : doc_id, 'copies' : [ copy_obj ] });
+
+        var unified_interface = String( data.hash.aous['ui.unified_volume_copy_editor'] ) == 'true';
+        if (unified_interface) {
+            var horizontal_interface = String( data.hash.aous['ui.cat.volume_copy_editor.horizontal'] ) == 'true';
+            var url = window.xulG.url_prefix( horizontal_interface ? urls.XUL_VOLUME_COPY_CREATOR_HORIZONTAL : urls.XUL_VOLUME_COPY_CREATOR );
+            var w = xulG.set_tab(
+                url,
+                {
+                    'tab_name' : document.getElementById('offlineStrings').getFormattedString(
+                        'cat.bib_record',
+                        [ doc_id ]
+                    )
+                },
+                {
+                    'doc_id' : doc_id, 
+                    'existing_copies' : [ copy_obj ],
+                    'load_opac_when_done' : true,
+                    'labels_in_new_tab' : true
+                }
+            );
+
+        } else {
+            return cat.util.spawn_copy_editor( { 'handle_update' : 1, 'edit' : 1, 'docid' : doc_id, 'copies' : [ copy_obj ] });
+        }
 
     } catch(E) {
         if (error) error.standard_unexpected_error_alert('cat.util.fast_item_add',E); else alert('FIXME: ' + E);

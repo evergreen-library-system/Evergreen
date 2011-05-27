@@ -217,7 +217,30 @@ function set_marc_edit() {
                             copy_obj.ref(get_db_false());
 
                             JSAN.use('util.window'); var win = new util.window();
-                            return cat.util.spawn_copy_editor( { 'handle_update' : 1, 'edit' : 1, 'docid' : doc_id, 'copies' : [ copy_obj ] });
+
+                            var unified_interface = String( data.hash.aous['ui.unified_volume_copy_editor'] ) == 'true';
+                            if (unified_interface) {
+                                var horizontal_interface = String( data.hash.aous['ui.cat.volume_copy_editor.horizontal'] ) == 'true';
+                                var url = window.xulG.url_prefix( horizontal_interface ? urls.XUL_VOLUME_COPY_CREATOR_HORIZONTAL : urls.XUL_VOLUME_COPY_CREATOR );
+                                var w = xulG.set_tab(
+                                    url,
+                                    {
+                                        'tab_name' : document.getElementById('offlineStrings').getFormattedString(
+                                            'cat.bib_record',
+                                            [ doc_id ]
+                                        )
+                                    },
+                                    {
+                                        'doc_id' : doc_id, 
+                                        'existing_copies' : [ copy_obj ],
+                                        'load_opac_when_done' : true,
+                                        'labels_in_new_tab' : true
+                                    }
+                                );
+
+                            } else {
+                                return cat.util.spawn_copy_editor( { 'handle_update' : 1, 'edit' : 1, 'docid' : doc_id, 'copies' : [ copy_obj ] });
+                            }
 
                         } catch(E) {
                             if (error) error.standard_unexpected_error_alert('Error in chrome/content/cat/opac.js, cat.util.fast_item_add #2',E); else alert('FIXME: ' + E);
