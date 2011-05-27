@@ -45,6 +45,8 @@
                 if (xul_param('hold_capture')) {
                     document.getElementById('checkin_auto').checked = true;
                     document.getElementById('checkin_auto').hidden = true;
+                    document.getElementById('checkin_auto').setAttribute('checked','true');
+                    document.getElementById('checkin_auto').removeAttribute('oils_persist');
                     document.getElementById('checkin_effective_date_hbox').hidden = true;
                     document.getElementById('caption').setAttribute('label',document.getElementById('circStrings').getString('staff.circ.checkin.hold_capture'));
                     document.getElementById('hold_capture_blurb').hidden = false;
