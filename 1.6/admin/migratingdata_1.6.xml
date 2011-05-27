@@ -39,7 +39,7 @@
 </screen>
 			</listitem>
             		<listitem>
-				<para>If you are processing multiple sets of MARC records with <command>marc2bre.pl</command>before loading the records into the database, you will need to keep track 
+				<para>If you are processing multiple sets of MARC records with <command>marc2bre.pl</command> before loading the records into the database, you will need to keep track 
 				of the starting ID number for each subsequent batch of records that you are importing. For example, if you are processing three files of MARC records with 10000 
 				records each into a clean database, you would use <option>–startid 1</option>, <option>–startid 10001</option>, and <option>–startid 20001</option> 
 				parameters for each respective file.</para>
