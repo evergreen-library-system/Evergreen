@@ -24,7 +24,7 @@
 	<!--#include virtual='../footer.xml'-->
     <center>
         <div id='gcfPrompt' class='hide_me'>
-            <script>dojo.require('dojo.cookie')</script>;
+            <script>dojo.require('dojo.cookie');</script>
             <div><span>&common.googlechromeframe.why;</span></div>
             <button onclick='CFInstall.check({preventPrompt: false, mode: "popup"});'>&common.googlechromeframe.install;</button>
             <button onclick='dojo.cookie("noGCF", "true", {path:"/", expires: 365}); hideMe($("gcfPrompt"));'>&common.googlechromeframe.dontask;</button>
