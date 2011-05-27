@@ -1764,9 +1764,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true" />
 			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true" />
 			<field reporter:label="Controlling Authority Fields" name="authority_fields" reporter:datatype="link" oils_persist:virtual="true"/>
+			<field reporter:label="Thesauri" name="thesauri" reporter:datatype="link" oils_persist:virtual="true"/>
 		</fields>
 		<links>
 			<link field="authority_fields" reltype="has_many" key="control_set" map="" class="acsaf"/>
+			<link field="thesauri" reltype="has_many" key="control_set" map="" class="at"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
@@ -1784,6 +1786,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Main Entry" name="main_entry" reporter:datatype="link"/>
 			<field reporter:label="Control Set" name="control_set" reporter:datatype="link"/>
 			<field reporter:label="Tag" name="tag" reporter:datatype="text" oils_obj:required="true" oils_obj:validate="^.{3}$"/>
+			<field reporter:label="Subfield List" name="sf_list" reporter:datatype="text" />
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true" />
 			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true" />
 			<field reporter:label="Subordinate Entries" name="sub_entries" reporter:datatype="link" oils_persist:virtual="true"/>
@@ -1873,7 +1876,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
     <class id="abaafm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="authority::browse_axis_authority_field_map" oils_persist:tablename="authority.browse_axis_authority_field_map" reporter:label="Authority Browse Axis Field Map">
         <fields oils_persist:primary="id" oils_persist:sequence="authority.browse_axis_authority_field_map_id_seq">
             <field reporter:label="Axis Authority Field Map ID" name="id" reporter:datatype="id"/>
-            <field reporter:label="Authority Field" name="authority_field" oils_obj:required="true" reporter:datatype="link"/>
+            <field reporter:label="Authority Field" name="field" oils_obj:required="true" reporter:datatype="link"/>
             <field reporter:label="Axis" name="axis" reporter:datatype="link" oils_obj:required="true"/>
         </fields>
         <links>

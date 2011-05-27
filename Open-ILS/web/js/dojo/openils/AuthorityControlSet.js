@@ -34,7 +34,7 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
 
                 // TODO -- push the raw tree into the oils cache for later reuse
 
-                var pcrud = new openils.PermaCrud();
+                var pcrud = new openils.PermaCrud({authtoken : ses()});
 
                 // fetch everything up front...
                 openils.AuthorityControlSet._control_set_list = pcrud.retrieveAll('acs');
@@ -114,11 +114,11 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
                         );
 
                         dojo.forEach( acsbf_list, function (csbf) {
-                            // link the main entry if we're subordinate
+                            // link the authority field to the bib field
                             if (csbf.authority_field()) {
                                 csbf.authority_field(
                                     dojo.filter(acsaf_list, function (x) {
-                                        return x.a() == csbf.authority_field();
+                                        return x.id() == csbf.authority_field();
                                     })[0]
                                 );
                             }
@@ -131,7 +131,7 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
                                 dojo.forEach( // loop over the maps
                                     dojo.filter( // filtering to just this field's mapps
                                         ba.maps(),
-                                        function (m) { return m.field() == csfa.id() }
+                                        function (m) { return m.field() == csaf.id() }
                                     ),
                                     function (fm) { fm.field( csaf ); csaf.axis_maps().push( fm ) } // and set the field
                                 )
@@ -154,7 +154,7 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
                 openils.AuthorityControlSet._browse_axis_by_name = {};
                 dojo.forEach( openils.AuthorityControlSet._browse_axis_list, function (ba) {
                     ba.maps(
-                        dojo.fitler(
+                        dojo.filter(
                             openils.AuthorityControlSet._browse_field_map_list,
                             function (m) { m.axis() == ba.code }
                         )

@@ -44,7 +44,7 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
                 MAP : {start : 15, len : 3, def : ' ' },
                 SCO : {start : 15, len : 3, def : ' ' },
                 REC : {start : 15, len : 3, def : ' ' },
-                COM : {start : 15, len : 3, def : ' ' },
+                COM : {start : 15, len : 3, def : ' ' }
             }
         },
         Lang : {
@@ -56,7 +56,7 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
                 MAP : {start : 35, len : 3, def : ' ' },
                 SCO : {start : 35, len : 3, def : ' ' },
                 REC : {start : 35, len : 3, def : ' ' },
-                COM : {start : 35, len : 3, def : ' ' },
+                COM : {start : 35, len : 3, def : ' ' }
             }
         },
         MRec : {
@@ -68,7 +68,7 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
                 MAP : {start : 38, len : 1, def : ' ' },
                 SCO : {start : 38, len : 1, def : ' ' },
                 REC : {start : 38, len : 1, def : ' ' },
-                COM : {start : 38, len : 1, def : ' ' },
+                COM : {start : 38, len : 1, def : ' ' }
             }
         },
         DtSt : {
@@ -80,7 +80,7 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
                 MAP : {start : 6, len : 1, def : ' ' },
                 SCO : {start : 6, len : 1, def : ' ' },
                 REC : {start : 6, len : 1, def : ' ' },
-                COM : {start : 6, len : 1, def : ' ' },
+                COM : {start : 6, len : 1, def : ' ' }
             }
         },
         Type : {
@@ -107,7 +107,7 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
                 MAP : {start : 8, len : 1, def : ' ' },
                 SCO : {start : 8, len : 1, def : ' ' },
                 REC : {start : 8, len : 1, def : ' ' },
-                COM : {start : 8, len : 1, def : ' ' },
+                COM : {start : 8, len : 1, def : ' ' }
             }
         },
         BLvl : {
@@ -119,7 +119,7 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
                 MAP : {start : 7, len : 1, def : 'm' },
                 SCO : {start : 7, len : 1, def : 'm' },
                 REC : {start : 7, len : 1, def : 'm' },
-                COM : {start : 7, len : 1, def : 'm' },
+                COM : {start : 7, len : 1, def : 'm' }
             }
         },
         Desc : {
@@ -131,7 +131,7 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
                 MAP : {start : 18, len : 1, def : ' ' },
                 SCO : {start : 18, len : 1, def : ' ' },
                 REC : {start : 18, len : 1, def : ' ' },
-                COM : {start : 18, len : 1, def : ' ' },
+                COM : {start : 18, len : 1, def : ' ' }
             }
         },
         Item : {
@@ -155,20 +155,30 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
         },
         TMat : {
             _8 : {
-                VIS : {start : 33, len : 1, def : ' ' },
+                VIS : {start : 33, len : 1, def : ' ' }
             },
             _6 : {
-                VIS : {start : 16, len : 1, def : ' ' },
+                VIS : {start : 16, len : 1, def : ' ' }
+            }
+        },
+        TrAr : {
+            _8 : {
+                SCO : {start : 33, len : 1, def : ' ' },
+                REC : {start : 33, len : 1, def : 'n' }
+            },
+            _6 : {
+                SCO : {start : 16, len : 1, def : ' ' },
+                REC : {start : 16, len : 1, def : 'n' }
             }
         },
         Indx : {
             _8 : {
                 BKS : {start : 31, len : 1, def : '0' },
-                MAP : {start : 31, len : 1, def : '0' },
+                MAP : {start : 31, len : 1, def : '0' }
             },
             _6 : {
                 BKS : {start : 14, len : 1, def : '0' },
-                MAP : {start : 14, len : 1, def : '0' },
+                MAP : {start : 14, len : 1, def : '0' }
             }
         },
         Date1 : {
@@ -180,8 +190,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
                 MAP : {start : 7, len : 4, def : ' ' },
                 SCO : {start : 7, len : 4, def : ' ' },
                 REC : {start : 7, len : 4, def : ' ' },
-                COM : {start : 7, len : 4, def : ' ' },
-            },
+                COM : {start : 7, len : 4, def : ' ' }
+            }
         },
         Date2 : {
             _8 : {
@@ -192,49 +202,49 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
                 MAP : {start : 11, len : 4, def : ' ' },
                 SCO : {start : 11, len : 4, def : ' ' },
                 REC : {start : 11, len : 4, def : ' ' },
-                COM : {start : 11, len : 4, def : ' ' },
-            },
+                COM : {start : 11, len : 4, def : ' ' }
+            }
         },
         LitF : {
             _8 : {
-                BKS : {start : 33, len : 1, def : '0' },
+                BKS : {start : 33, len : 1, def : '0' }
             },
             _6 : {
-                BKS : {start : 16, len : 1, def : '0' },
+                BKS : {start : 16, len : 1, def : '0' }
             }
         },
         Biog : {
             _8 : {
-                BKS : {start : 34, len : 1, def : ' ' },
+                BKS : {start : 34, len : 1, def : ' ' }
             },
             _6 : {
-                BKS : {start : 17, len : 1, def : ' ' },
+                BKS : {start : 17, len : 1, def : ' ' }
             }
         },
         Ills : {
             _8 : {
-                BKS : {start : 18, len : 4, def : ' ' },
+                BKS : {start : 18, len : 4, def : ' ' }
             },
             _6 : {
-                BKS : {start : 1, len : 4, def : ' ' },
+                BKS : {start : 1, len : 4, def : ' ' }
             }
         },
         Fest : {
             _8 : {
-                BKS : {start : 30, len : 1, def : '0' },
+                BKS : {start : 30, len : 1, def : '0' }
             },
             _6 : {
-                BKS : {start : 13, len : 1, def : '0' },
+                BKS : {start : 13, len : 1, def : '0' }
             }
         },
         Conf : {
             _8 : {
                 BKS : {start : 24, len : 4, def : ' ' },
-                SER : {start : 25, len : 3, def : ' ' },
+                SER : {start : 25, len : 3, def : ' ' }
             },
             _6 : {
                 BKS : {start : 7, len : 4, def : ' ' },
-                SER : {start : 8, len : 3, def : ' ' },
+                SER : {start : 8, len : 3, def : ' ' }
             }
         },
         GPub : {
@@ -243,16 +253,28 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
                 SER : {start : 28, len : 1, def : ' ' },
                 VIS : {start : 28, len : 1, def : ' ' },
                 MAP : {start : 28, len : 1, def : ' ' },
-                COM : {start : 28, len : 1, def : ' ' },
+                COM : {start : 28, len : 1, def : ' ' }
             },
             _6 : {
                 BKS : {start : 11, len : 1, def : ' ' },
                 SER : {start : 11, len : 1, def : ' ' },
                 VIS : {start : 11, len : 1, def : ' ' },
                 MAP : {start : 11, len : 1, def : ' ' },
-                COM : {start : 11, len : 1, def : ' ' },
+                COM : {start : 11, len : 1, def : ' ' }
             }
         },
+        Srce : {
+            _8 : {
+                BKS : {start : 39, len : 1, def : 'd' },
+                SER : {start : 39, len : 1, def : 'd' },
+                VIS : {start : 39, len : 1, def : 'd' },
+                SCO : {start : 39, len : 1, def : 'd' },
+                REC : {start : 39, len : 1, def : 'd' },
+                COM : {start : 39, len : 1, def : 'd' },
+                MFHD : {start : 39, len : 1, def : 'd' },
+                "AUT" : {"start" : 39, "len" : 1, "def" : 'd' }
+            }
+	},
         Audn : {
             _8 : {
                 BKS : {start : 22, len : 1, def : ' ' },
@@ -260,7 +282,7 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
                 VIS : {start : 22, len : 1, def : ' ' },
                 SCO : {start : 22, len : 1, def : ' ' },
                 REC : {start : 22, len : 1, def : ' ' },
-                COM : {start : 22, len : 1, def : ' ' },
+                COM : {start : 22, len : 1, def : ' ' }
             },
             _6 : {
                 BKS : {start : 5, len : 1, def : ' ' },
@@ -268,7 +290,7 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
                 VIS : {start : 5, len : 1, def : ' ' },
                 SCO : {start : 5, len : 1, def : ' ' },
                 REC : {start : 5, len : 1, def : ' ' },
-                COM : {start : 5, len : 1, def : ' ' },
+                COM : {start : 5, len : 1, def : ' ' }
             }
         },
         Form : {
@@ -279,7 +301,7 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
                 MIX : {start : 23, len : 1, def : ' ' },
                 MAP : {start : 29, len : 1, def : ' ' },
                 SCO : {start : 23, len : 1, def : ' ' },
-                REC : {start : 23, len : 1, def : ' ' },
+                REC : {start : 23, len : 1, def : ' ' }
             },
             _6 : {
                 BKS : {start : 6, len : 1, def : ' ' },
@@ -288,23 +310,23 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
                 MIX : {start : 6, len : 1, def : ' ' },
                 MAP : {start : 12, len : 1, def : ' ' },
                 SCO : {start : 6, len : 1, def : ' ' },
-                REC : {start : 6, len : 1, def : ' ' },
+                REC : {start : 6, len : 1, def : ' ' }
             }
         },
         'S/L' : {
             _8 : {
-                SER : {start : 34, len : 1, def : '0' },
+                SER : {start : 34, len : 1, def : '0' }
             },
             _6 : {
-                SER : {start : 17, len : 1, def : '0' },
+                SER : {start : 17, len : 1, def : '0' }
             }
         },
         'Alph' : {
             _8 : {
-                SER : {start : 33, len : 1, def : ' ' },
+                SER : {start : 33, len : 1, def : ' ' }
             },
             _6 : {
-                SER : {start : 16, len : 1, def : ' ' },
+                SER : {start : 16, len : 1, def : ' ' }
             }
         },
         "GeoDiv" : {
@@ -421,8 +443,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						o : "Optical disk",
     						r : "Remote",
     						u : "Unspecified",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			d : {	start : 3,
     				len   : 1,
@@ -434,8 +456,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						m : "Mixed",
     						n : "Not applicable",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			e : {	start : 4,
     				len   : 1,
@@ -449,32 +471,32 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						o : "5 1/4 in.",
     						u : "Unknown",
     						v : "8 in.",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			f : {	start : 5,
     				len   : 1,
     				label : "Sound",
     				values: {	' ' : "No sound (Silent)",
     						a   : "Sound",
-    						u   : "Unknown",
-    				},
+    						u   : "Unknown"
+    				}
     			},
     			g : {	start : 6,
     				len   : 3,
     				label : "Image bit depth",
     				values: {	mmm   : "Multiple",
     						nnn   : "Not applicable",
-    						'---' : "Unknown",
-    				},
+    						'---' : "Unknown"
+    				}
     			},
     			h : {	start : 9,
     				len   : 1,
     				label : "File formats",
     				values: {	a : "One file format",
     						m : "Multiple file formats",
-    						u : "Unknown",
-    				},
+    						u : "Unknown"
+    				}
     			},
     			i : {	start : 10,
     				len   : 1,
@@ -482,8 +504,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     				values: {	a : "Absent",
     						n : "Not applicable",
     						p : "Present",
-    						u : "Unknown",
-    				},
+    						u : "Unknown"
+    				}
     			},
     			j : {	start : 11,
     				len   : 1,
@@ -494,8 +516,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						d : "File reproduced from an intermediate (not microform)",
     						m : "Mixed",
     						n : "Not applicable",
-    						u : "Unknown",
-    				},
+    						u : "Unknown"
+    				}
     			},
     			k : {	start : 12,
     				len   : 1,
@@ -504,8 +526,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						b : "Lossless",
     						d : "Lossy",
     						m : "Mixed",
-    						u : "Unknown",
-    				},
+    						u : "Unknown"
+    				}
     			},
     			l : {	start : 13,
     				len   : 1,
@@ -514,10 +536,10 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						n : "Not applicable",
     						p : "Preservation",
     						r : "Replacement",
-    						u : "Unknown",
-    				},
-    			},
-    		},
+    						u : "Unknown"
+    				}
+    			}
+    		}
     	},
     	d : {
     		label     : "Globe",
@@ -530,15 +552,15 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						c : "Terrestrial globe",
     						e : "Earth moon globe",
     						u : "Unspecified",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			d : {	start : 3,
     				len   : 1,
     				label : "Color",
     				values: {	a : "One color",
-    						c : "Multicolored",
-    				},
+    						c : "Multicolored"
+    				}
     			},
     			e : {	start : 4,
     				len   : 1,
@@ -552,8 +574,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						g : "Textile",
     						p : "Plaster",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			f : {	start : 5,
     				len   : 1,
@@ -561,10 +583,10 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     				values: {	f : "Facsimile",
     						n : "Not applicable",
     						u : "Unknown",
-    						z : "Other",
-    				},
-    			},
-    		},
+    						z : "Other"
+    				}
+    			}
+    		}
     	},
     	a : {
     		label     : "Map",
@@ -581,15 +603,15 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						s : "Section",
     						u : "Unspecified",
     						y : "View",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			d : {	start : 3,
     				len   : 1,
     				label : "Color",
     				values: {	a : "One color",
-    						c : "Multicolored",
-    				},
+    						c : "Multicolored"
+    				}
     			},
     			e : {	start : 4,
     				len   : 1,
@@ -608,8 +630,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						t : "Non-flexible base photographic medium, negative",
     						u : "Unknown",
     						y : "Other photographic medium",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			f : {	start : 5,
     				len   : 1,
@@ -617,8 +639,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     				values: {	f : "Facsimile",
     						n : "Not applicable",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			g : {	start : 6,
     				len   : 1,
@@ -628,8 +650,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						c : "Pre-production",
     						d : "Film",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			h : {	start : 7,
     				len   : 1,
@@ -637,10 +659,10 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     				values: {	a : "Positive",
     						b : "Negative",
     						m : "Mixed",
-    						n : "Not applicable",
-    				},
-    			},
-    		},
+    						n : "Not applicable"
+    				}
+    			}
+    		}
     	},
     	h : {
     		label     : "Microform",
@@ -656,8 +678,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						f : "Microfiche cassette",
     						g : "Microopaque",
     						u : "Unspecified",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			d : {	start : 3,
     				len   : 1,
@@ -665,8 +687,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     				values: {	a : "Positive",
     						b : "Negative",
     						m : "Mixed",
-    						u : "Unknown",
-    				},
+    						u : "Unknown"
+    				}
     			},
     			e : {	start : 4,
     				len   : 1,
@@ -681,8 +703,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						o : "6 x 9 in. (16 x 23 cm.)",
     						p : "3 1/4 x 7 3/8 in. (9 x 19 cm.)",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			f : {	start : 5,
     				len   : 4,
@@ -693,8 +715,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						d : "Very high (61-90x)",
     						e : "Ultra (90x-)",
     						u : "Unknown",
-    						v : "Reduction ratio varies",
-    				},
+    						v : "Reduction ratio varies"
+    				}
     			},
     			g : {	start : 9,
     				len   : 1,
@@ -703,8 +725,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						c : "Multicolored",
     						m : "Mixed",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			h : {	start : 10,
     				len   : 1,
@@ -715,8 +737,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						m : "Mixed",
     						n : "Not applicable",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			i : {	start : 11,
     				len   : 1,
@@ -725,8 +747,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						b : "Printing master",
     						c : "Service copy",
     						m : "Mixed generation",
-    						u : "Unknown",
-    				},
+    						u : "Unknown"
+    				}
     			},
     			j : {	start : 12,
     				len   : 1,
@@ -741,10 +763,10 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						r : "Safety base, mixed",
     						t : "Safety base, triacetate",
     						u : "Unknown",
-    						z : "Other",
-    				},
-    			},
-    		},
+    						z : "Other"
+    				}
+    			}
+    		}
     	},
     	m : {
     		label     : "Motion Picture",
@@ -756,8 +778,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						f : "Film cassette",
     						r : "Film reel",
     						u : "Unspecified",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			d : {	start : 3,
     				len   : 1,
@@ -767,8 +789,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						h : "Hand-colored",
     						m : "Mixed",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			e : {	start : 4,
     				len   : 1,
@@ -780,16 +802,16 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						e : "Other-wide screen format",
     						f : "Standard. silent aperture, full frame",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			f : {	start : 5,
     				len   : 1,
     				label : "Sound on medium or separate",
     				values: {	a : "Sound on medium",
     						b : "Sound separate from medium",
-    						u : "Unknown",
-    				},
+    						u : "Unknown"
+    				}
     			},
     			g : {	start : 6,
     				len   : 1,
@@ -804,8 +826,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						h : "Videotape",
     						i : "Videodisc",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			h : {	start : 7,
     				len   : 1,
@@ -818,8 +840,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						f : "35 mm.",
     						g : "70 mm.",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			i : {	start : 8,
     				len   : 1,
@@ -830,8 +852,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						q : "Multichannel, surround or quadraphonic",
     						s : "Stereophonic",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			j : {	start : 9,
     				len   : 1,
@@ -844,10 +866,10 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						f : "Title bands/inter-title rolls",
     						g : "Production rolls",
     						n : "Not applicable",
-    						z : "Other",
-    				},
-    			},
-    		},
+    						z : "Other"
+    				}
+    			}
+    		}
     	},
     	k : {
     		label     : "Non-projected Graphic",
@@ -867,8 +889,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						n : "Chart",
     						o : "Flash/activity card",
     						u : "Unspecified",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			d : {	start : 3,
     				len   : 1,
@@ -879,8 +901,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						h : "Hand-colored",
     						m : "Mixed",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			e : {	start : 4,
     				len   : 1,
@@ -901,8 +923,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						s : "Stone",
     						t : "Wood",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			f : {	start : 5,
     				len   : 1,
@@ -923,10 +945,10 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						s : "Stone",
     						t : "Wood",
     						u : "Unknown",
-    						z : "Other",
-    				},
-    			},
-    		},
+    						z : "Other"
+    				}
+    			}
+    		}
     	},
     	g : {
     		label     : "Projected Graphic",
@@ -940,8 +962,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						o : "Filmstrip roll",
     						s : "Slide",
     						t : "Transparency",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			d : {	start : 3,
     				len   : 1,
@@ -952,8 +974,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						m : "Mixed",
     						n : "Not applicable",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			e : {	start : 4,
     				len   : 1,
@@ -965,16 +987,16 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						m : "Mixed collection",
     						o : "Paper",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			f : {	start : 5,
     				len   : 1,
     				label : "Sound on medium or separate",
     				values: {	a : "Sound on medium",
     						b : "Sound separate from medium",
-    						u : "Unknown",
-    				},
+    						u : "Unknown"
+    				}
     			},
     			g : {	start : 6,
     				len   : 1,
@@ -989,8 +1011,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						h : "Videotape",
     						i : "Videodisc",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			h : {	start : 7,
     				len   : 1,
@@ -1011,8 +1033,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						x : "10 x 10 in. (26 x 26 cm.)",
     						y : "7 x 7 in. (18 x 18 cm.)",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			i : {	start : 8,
     				len   : 1,
@@ -1025,10 +1047,10 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						k : "Synthetics and glass",
     						m : "Mixed collection",
     						u : "Unknown",
-    						z : "Other",
-    				},
-    			},
-    		},
+    						z : "Other"
+    				}
+    			}
+    		}
     	},
     	r : {
     		label     : "Remote-sensing Image",
@@ -1036,7 +1058,7 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     			b : {	start : 1,
     				len   : 1,
     				label : "SMD",
-    				values: { u : "Unspecified" },
+    				values: { u : "Unspecified" }
     			},
     			d : {	start : 3,
     				len   : 1,
@@ -1046,8 +1068,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						c : "Spaceborne",
     						n : "Not applicable",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			e : {	start : 4,
     				len   : 1,
@@ -1056,8 +1078,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						b : "High oblique",
     						c : "Vertical",
     						n : "Not applicable",
-    						u : "Unknown",
-    				},
+    						u : "Unknown"
+    				}
     			},
     			f : {	start : 5,
     				len   : 1,
@@ -1073,8 +1095,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						8 : "80-89%",
     						9 : "90-100%",
     						n : "Not applicable",
-    						u : "Unknown",
-    				},
+    						u : "Unknown"
+    				}
     			},
     			g : {	start : 6,
     				len   : 1,
@@ -1090,8 +1112,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						i : "Submersible remote-sensing device",
     						n : "Not applicable",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			h : {	start : 7,
     				len   : 1,
@@ -1102,8 +1124,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						m : "Mixed uses",
     						n : "Not applicable",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			i : {	start : 8,
     				len   : 1,
@@ -1111,8 +1133,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     				values: {	a : "Active",
     						b : "Passive",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			j : {	start : 9,
     				len   : 2,
@@ -1157,10 +1179,10 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						rc : "Bouger",
     						rd : "Isostatic",
     						sa : "Magnetic field",
-    						ta : "Radiometric surveys",
-    				},
-    			},
-    		},
+    						ta : "Radiometric surveys"
+    				}
+    			}
+    		}
     	},
     	s : {
     		label     : "Sound Recording",
@@ -1177,8 +1199,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						t : "Sound-tape reel",
     						u : "Unspecified",
     						w : "Wire recording",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			d : {	start : 3,
     				len   : 1,
@@ -1198,8 +1220,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						p : "15 ips",
     						r : "30 ips",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			e : {	start : 4,
     				len   : 1,
@@ -1208,8 +1230,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						q : "Quadraphonic",
     						s : "Stereophonic",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			f : {	start : 5,
     				len   : 1,
@@ -1218,8 +1240,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						n : "Not applicable",
     						s : "Coarse/standard",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			g : {	start : 6,
     				len   : 1,
@@ -1236,8 +1258,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						s : "2 3/4 x 4 in.",
     						n : "Not applicable",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			h : {	start : 7,
     				len   : 1,
@@ -1248,8 +1270,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						o : "1/2 in.",
     						p : "1 in.",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			i : {	start : 8,
     				len   : 1,
@@ -1262,8 +1284,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						f : "16 track",
     						n : "Not applicable",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			m : {	start : 12,
     				len   : 1,
@@ -1278,8 +1300,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						h : "CX encoded",
     						n : "Not applicable",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			n : {	start : 13,
     				len   : 1,
@@ -1289,10 +1311,10 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						d : "Digital storage",
     						e : "Analog electrical storage",
     						u : "Unknown",
-    						z : "Other",
-    				},
-    			},
-    		},
+    						z : "Other"
+    				}
+    			}
+    		}
     	},
     	f : {
     		label     : "Tactile Material",
@@ -1305,8 +1327,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						c : "Combination",
     						d : "Tactile, with no writing system",
     						u : "Unspecified",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			d : {	start : 3,
     				len   : 2,
@@ -1319,8 +1341,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						m : "Multiple braille types",
     						n : "Not applicable",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			e : {	start : 4,
     				len   : 1,
@@ -1330,8 +1352,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						m : "Combination",
     						n : "Not applicable",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			f : {	start : 6,
     				len   : 3,
@@ -1350,8 +1372,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						l : "Vertical score",
     						n : "Not applicable",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			g : {	start : 9,
     				len   : 1,
@@ -1360,10 +1382,10 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						b : "Jumbo or enlarged braille",
     						n : "Not applicable",
     						u : "Unknown",
-    						z : "Other",
-    				},
-    			},
-    		},
+    						z : "Other"
+    				}
+    			}
+    		}
     	},
     	v : {
     		label     : "Videorecording",
@@ -1376,8 +1398,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						f : "Videocassette",
     						r : "Videoreel",
     						u : "Unspecified",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			d : {	start : 3,
     				len   : 1,
@@ -1387,8 +1409,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						m : "Mixed",
     						n : "Not applicable",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			e : {	start : 4,
     				len   : 1,
@@ -1410,16 +1432,16 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						q : "Hi-8 mm.",
     						u : "Unknown",
     						v : "DVD",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			f : {	start : 5,
     				len   : 1,
     				label : "Sound on medium or separate",
     				values: {	a : "Sound on medium",
     						b : "Sound separate from medium",
-    						u : "Unknown",
-    				},
+    						u : "Unknown"
+    				}
     			},
     			g : {	start : 6,
     				len   : 1,
@@ -1434,8 +1456,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						h : "Videotape",
     						i : "Videodisc",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			h : {	start : 7,
     				len   : 1,
@@ -1447,8 +1469,8 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						q : "2 in.",
     						r : "3/4 in.",
     						u : "Unknown",
-    						z : "Other",
-    				},
+    						z : "Other"
+    				}
     			},
     			i : {	start : 8,
     				len   : 1,
@@ -1459,11 +1481,11 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     						q : "Multichannel, surround or quadraphonic",
     						s : "Stereophonic",
     						u : "Unknown",
-    						z : "Other",
-    				},
-    			},
-    		},
-    	},
+    						z : "Other"
+    				}
+    			}
+    		}
+    	}
     };
     
     MARC.Record.prototype.recordType = function () {
@@ -1482,7 +1504,7 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     MARC.Record.prototype.videorecordingFormatName = function () {
     	var _7 = this.field('007').data;
     
-    	if (_7.match(/^v/)) {
+    	if (_7 && _7.match(/^v/)) {
     		var _v_e = _7.substr(
     			MARC.Record._physical_characteristics.v.subfields.e.start,
     			MARC.Record._physical_characteristics.v.subfields.e.len
@@ -1497,7 +1519,7 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     MARC.Record.prototype.videorecordingFormatCode = function () {
     	var _7 = this.field('007').data;
     
-    	if (_7.match(/^v/)) {
+    	if (_7 && _7.match(/^v/)) {
     		return _7.substr(
     			MARC.Record._physical_characteristics.v.subfields.e.start,
     			MARC.Record._physical_characteristics.v.subfields.e.len
@@ -1508,6 +1530,7 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     }
     
     MARC.Record.prototype.extractFixedField = function (field, dflt) {
+	if (!MARC.Record._ff_pos[field]) return null;
     
     	var _l = this.leader;
     	var _8 = this.field('008').data;
@@ -1517,14 +1540,14 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     
     	var val;
     
-    	if (MARC.Record._ff_pos[field].ldr) {
+    	if (MARC.Record._ff_pos[field].ldr && _l) {
     		if (MARC.Record._ff_pos[field].ldr[rtype]) {
     			val = _l.substr(
     				MARC.Record._ff_pos[field].ldr[rtype].start,
     				MARC.Record._ff_pos[field].ldr[rtype].len
     			);
     		}
-    	} else if (MARC.Record._ff_pos[field]._8) {
+    	} else if (MARC.Record._ff_pos[field]._8 && _8) {
     		if (MARC.Record._ff_pos[field]._8[rtype]) {
     			val = _8.substr(
     				MARC.Record._ff_pos[field]._8[rtype].start,
@@ -1533,7 +1556,7 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     		}
     	}
     
-    	if (!val && MARC.Record._ff_pos[field]._6) {
+    	if (!val && MARC.Record._ff_pos[field]._6 && _6) {
     		if (MARC.Record._ff_pos[field]._6[rtype]) {
     			val = _6.substr(
     				MARC.Record._ff_pos[field]._6[rtype].start,
@@ -1546,23 +1569,23 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
             val = '';
             var d;
             var p;
-            if (MARC.Record._ff_pos[name].ldr && MARC.Record._ff_pos[name].ldr[rtype]) {
-                d = MARC.Record._ff_pos[name].ldr[rtype].def;
+            if (MARC.Record._ff_pos[field].ldr && MARC.Record._ff_pos[field].ldr[rtype]) {
+                d = MARC.Record._ff_pos[field].ldr[rtype].def;
                 p = 'ldr';
             }
 
-            if (MARC.Record._ff_pos[name]._8 && MARC.Record._ff_pos[name]._8[rtype]) {
-                d = MARC.Record._ff_pos[name]._8[rtype].def;
+            if (MARC.Record._ff_pos[field]._8 && MARC.Record._ff_pos[field]._8[rtype]) {
+                d = MARC.Record._ff_pos[field]._8[rtype].def;
                 p = '_8';
             }
 
-            if (!val && MARC.Record._ff_pos[name]._6 && MARC.Record._ff_pos[name]._6[rtype]) {
-                d = MARC.Record._ff_pos[name]._6[rtype].def;
+            if (!val && MARC.Record._ff_pos[field]._6 && MARC.Record._ff_pos[field]._6[rtype]) {
+                d = MARC.Record._ff_pos[field]._6[rtype].def;
                 p = '_6';
             }
 
             if (p) {
-                for (var j = 0; j < MARC.Record._ff_pos[name][p][rtype].len; j++) {
+                for (var j = 0; j < MARC.Record._ff_pos[field][p][rtype].len; j++) {
                     val += d;
                 }
             } else {
@@ -1574,6 +1597,7 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     }
 
     MARC.Record.prototype.setFixedField = function (field, value) {
+	if (!MARC.Record._ff_pos[field]) return null;
     
     	var _l = this.leader;
     	var _8 = this.field('008').data;
@@ -1583,7 +1607,7 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     
     	var val;
     
-    	if (MARC.Record._ff_pos[field].ldr) {
+    	if (MARC.Record._ff_pos[field].ldr && _l) {
     		if (MARC.Record._ff_pos[field].ldr[rtype]) { // It's in the leader
                 val = value.substr(0, MARC.Record._ff_pos[field].ldr[rtype].len);
                 this.leader =
@@ -1594,7 +1618,7 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
                         + MARC.Record._ff_pos[field].ldr[rtype].len
                     );
     		}
-    	} else if (MARC.Record._ff_pos[field]._8) {
+    	} else if (MARC.Record._ff_pos[field]._8 && _8) {
     		if (MARC.Record._ff_pos[field]._8[rtype]) { // Nope, it's in the 008
                 val = value.substr(0, MARC.Record._ff_pos[field]._8[rtype].len);
                 this.field('008').update(
@@ -1608,7 +1632,7 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
     		}
     	}
     
-    	if (!val && MARC.Record._ff_pos[field]._6) {
+    	if (!val && MARC.Record._ff_pos[field]._6 && _6) {
     		if (MARC.Record._ff_pos[field]._6[rtype]) { // ok, maybe the 006?
                 val = value.substr(0, MARC.Record._ff_pos[field]._6[rtype].len);
                 this.field('006').update(
