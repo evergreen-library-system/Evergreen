@@ -271,28 +271,28 @@ function loadMarcEditor(recId) {
  * Limited brain power means that I'm brute-forcing it for now
  */
 function _holdingsDraw(h) {
-	holdings = h.getResultObject();
-	if (!holdings) { return null; }
+    holdings = h.getResultObject();
+    if (!holdings) { return null; }
 
-	dojo.forEach(holdings, _holdingsDrawMFHD);
+    // Only draw holdings within our OU scope
+    dojo.forEach(holdings, function (item) {
+        var here = findOrgUnit(getLocation());
+        if (getDepth() > 0 || getDepth === 0 ) {
+            while (getDepth() < findOrgDepth(here))
+            here = findOrgUnit( here.parent_ou() );
+            if (orgIsMine(findOrgUnit(here), findOrgUnit(item.owning_lib()))) {
+                _holdingsDrawMFHD(item);
+            }
+        }
+    });
 
-	// Populate XUL menus
-	if (isXUL()) {
-		runEvt('rdetail','MFHDDrawn');
-	}
+    // Populate XUL menus
+    if (isXUL()) {
+        runEvt('rdetail','MFHDDrawn');
+    }
 }
 
 function _holdingsDrawMFHD(holdings, entryNum) {
-
-        var here = findOrgUnit(getLocation());
-        if (getDepth() > 0 || getDepth === 0 ) {
-                while (getDepth() < findOrgDepth(here))
-                here = findOrgUnit( here.parent_ou() );
-		if (!orgIsMine(findOrgUnit(here), findOrgUnit(holdings.owning_lib()))) {
-			return null;
-		}
-        }
-
 	var hb = holdings.basic_holdings();
 	var hba = holdings.basic_holdings_add();
 	var hs = holdings.supplement_holdings();
