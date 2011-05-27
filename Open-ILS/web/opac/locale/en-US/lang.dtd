@@ -431,7 +431,7 @@
 <!ENTITY staff.circ.offline_register.passwd.label 'New Password:'>
 <!ENTITY staff.circ.offline_register.family_name.label 'Last Name:'>
 <!ENTITY staff.circ.offline_register.first_given_name.label 'First Name:'>
-<!ENTITY staff.circ.offline_register.dob.label 'Date of Birth:'>
+<!ENTITY staff.circ.offline_register.dob.label 'Date of Birth (YYYY-MM-DD):'>
 <!ENTITY staff.circ.offline_register.x_ident_type.label 'Identification Type:'>
 <!ENTITY staff.circ.offline_register.ident_value.label 'Ident Value:'>
 <!ENTITY staff.circ.offline_register.billing_address.label 'Billing Address'>
