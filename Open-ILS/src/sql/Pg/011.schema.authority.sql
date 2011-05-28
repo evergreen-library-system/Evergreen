@@ -83,7 +83,7 @@ CREATE INDEX authority_record_deleted_idx ON authority.record_entry(deleted) WHE
 CREATE TRIGGER a_marcxml_is_well_formed BEFORE INSERT OR UPDATE ON authority.record_entry FOR EACH ROW EXECUTE PROCEDURE biblio.check_marcxml_well_formed();
 CREATE TRIGGER b_maintain_901 BEFORE INSERT OR UPDATE ON authority.record_entry FOR EACH ROW EXECUTE PROCEDURE evergreen.maintain_901();
 CREATE TRIGGER c_maintain_control_numbers BEFORE INSERT OR UPDATE ON authority.record_entry FOR EACH ROW EXECUTE PROCEDURE maintain_control_numbers();
-CREATE RULE protect_authority_rec_delete AS ON DELETE TO authority.record_entry DO INSTEAD (UPDATE authority.record_entry SET deleted = TRUE WHERE OLD.id = authority.record_entry.id);
+CREATE RULE protect_authority_rec_delete AS ON DELETE TO authority.record_entry DO INSTEAD (UPDATE authority.record_entry SET deleted = TRUE WHERE OLD.id = authority.record_entry.id; DELETE FROM authority.full_rec WHERE record = OLD.id);
 
 CREATE TABLE authority.bib_linking (
     id          BIGSERIAL   PRIMARY KEY,
@@ -136,6 +136,8 @@ CREATE TRIGGER authority_full_rec_fti_trigger
 CREATE INDEX authority_full_rec_index_vector_idx ON authority.full_rec USING GIST (index_vector);
 /* Enable LIKE to use an index for database clusters with locales other than C or POSIX */
 CREATE INDEX authority_full_rec_value_tpo_index ON authority.full_rec (value text_pattern_ops);
+/* But we still need this (boooo) for paging using >, <, etc */
+CREATE INDEX authority_full_rec_value_index ON authority.full_rec (value);
 
 -- Intended to be used in a unique index on authority.record_entry like so:
 -- CREATE UNIQUE INDEX unique_by_heading_and_thesaurus

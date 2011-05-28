@@ -1513,7 +1513,7 @@ function getAuthorityContextMenu (target, sf) {
     }
 
     if (sf.toString().replace(/\s*/, '')) {
-        browseAuthority(sf_popup, menu_id, target, sf, 20, page);
+        return browseAuthority(sf_popup, menu_id, target, sf, 20, page);
     }
 
     return true;
@@ -1668,8 +1668,12 @@ function browseAuthority (sf_popup, menu_id, target, sf, limit, page) {
     // Sets will change that
 
     var axis_list = acs.bibFieldBrowseAxes( sf.parent().@tag.toString() );
+
     // No matching tag means no authorities to search - shortcut
-    if (axis_list.length == 0) return;
+    if (axis_list.length == 0) {
+        target.setAttribute('context', 'clipboard');
+        return false;
+    }
 
     var type = 'authority.' + axis_list[0]; // Just take the first for now
                                             // TODO support multiple axes ... loop?

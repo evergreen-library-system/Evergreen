@@ -151,17 +151,6 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
 
                 });
 
-                openils.AuthorityControlSet._browse_axis_by_name = {};
-                dojo.forEach( openils.AuthorityControlSet._browse_axis_list, function (ba) {
-                    ba.maps(
-                        dojo.filter(
-                            openils.AuthorityControlSet._browse_field_map_list,
-                            function (m) { m.axis() == ba.code }
-                        )
-                    );
-                    openils.AuthorityControlSet._browse_axis_by_name[ba.code()] = ba;
-                });
-                
                 if (this.controlSetList().length > 0)
                     delete openils.AuthorityControlSet._controlsets['-1'];
 
@@ -203,8 +192,8 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
                     openils.AuthorityControlSet._browse_axis_by_name[bname].maps(),
                     function (m) {
                         if (dojo.filter(
-                                m.field().bib_fields,
-                                function (b) { return b.tag == t }
+                                m.field().bib_fields(),
+                                function (b) { return b.tag() == t }
                             ).length > 0
                         ) blist.push(bname);
                     }

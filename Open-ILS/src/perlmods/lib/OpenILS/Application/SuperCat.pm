@@ -892,7 +892,7 @@ sub grab_authority_browse_axes {
     unless(scalar(keys(%authority_browse_axis_cache))) {
         my $axes = new_editor->search_authority_browse_axis([
             { code => { '<>' => undef } },
-            { flesh => 2, flesh_fields => { aba => ['fields'], acsafm => ['bib_fields','sub_entries'] } }
+            { flesh => 2, flesh_fields => { aba => ['fields'], acsaf => ['bib_fields','sub_entries'] } }
         ]);
         $authority_browse_axis_cache{$_->code} = $_ for (@$axes);
     }
@@ -1116,11 +1116,8 @@ sub authority_tag_sf_browse {
         my $before = $_storage->request(
             "open-ils.cstore.json_query.atomic",
             { select    => { afr => [qw/record value/] },
-              from      => { 'are', 'afr' },
-              where     => {
-                '+afr' => { tag => \@ref_tags, subfield => $subfield, value => { '<' => $value } },
-                '+are' => { 'deleted' => 'f' }
-              },
+              from      => 'afr',
+              where     => { tag => \@ref_tags, subfield => $subfield, value => { '<' => $value } },
               order_by  => { afr => { value => 'desc' } },
               limit     => $before_limit,
               offset    => abs($page) * $page_size - $before_offset,
@@ -1133,11 +1130,8 @@ sub authority_tag_sf_browse {
         my $after = $_storage->request(
             "open-ils.cstore.json_query.atomic",
             { select    => { afr => [qw/record value/] },
-              from      => { 'are', 'afr' },
-              where     => {
-                '+afr' => { tag => \@ref_tags, subfield => $subfield, value => { '>=' => $value } },
-                '+are' => { 'deleted' => 'f' }
-              },
+              from      => 'afr',
+              where     => { tag => \@ref_tags, subfield => $subfield, value => { '>=' => $value } },
               order_by  => { afr => { value => 'asc' } },
               limit     => $after_limit,
               offset    => abs($page) * $page_size - $after_offset,
