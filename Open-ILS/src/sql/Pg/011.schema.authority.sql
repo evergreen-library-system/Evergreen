@@ -242,7 +242,7 @@ DECLARE
     auth_id             INT DEFAULT oils_xpath_string('//*[@tag="901"]/*[local-name()="subfield" and @code="c"]', source_xml)::INT;
     replace_data        XML[] DEFAULT '{}'::XML[];
     replace_rules       TEXT[] DEFAULT '{}'::TEXT[];
-    auth_field          TEXT;
+    auth_field          XML[];
 BEGIN
     IF auth_id IS NULL THEN
         RETURN NULL;
@@ -252,8 +252,8 @@ BEGIN
     SELECT COALESCE(control_set,1) INTO cset FROM authority.record_entry WHERE id = auth_id;
 
     FOR main_entry IN SELECT * FROM authority.control_set_authority_field WHERE control_set = cset LOOP
-        auth_field := XPATH('//*[@tag="'||main_entry.tag||'"][1]',source_xml);
-        IF ARRAY_LENGTH(auth_field) > 0 THEN
+        auth_field := XPATH('//*[@tag="'||main_entry.tag||'"][1]',source_xml::XML);
+        IF ARRAY_LENGTH(auth_field,1) > 0 THEN
             FOR bib_field IN SELECT * FROM authority.control_set_bib_field WHERE authority_field = main_entry.id LOOP
                 replace_data := replace_data || XMLELEMENT( name datafield, XMLATTRIBUTES(bib_field.tag AS tag), XPATH('//*[local-name()="subfield"]',auth_field[1])::XML[]);
                 replace_rules := replace_rules || ( bib_field.tag || main_entry.sf_list || E'[0~\\)' || auth_id || '$]' );
