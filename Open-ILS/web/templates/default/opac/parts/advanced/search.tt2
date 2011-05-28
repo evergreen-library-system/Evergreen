@@ -32,7 +32,7 @@
             <td valign='top'>
                 <strong>[% l("Item Type") %]</strong><br />
                 [%  INCLUDE "default/opac/parts/coded_value_selector.tt2"
-                        attr="mattype" multiple="multiple" size="4"
+                        attr=["mattype", "item_type"] multiple="multiple" size="4"
                         id="adv_global_item_type_basic" %]
             </td>
             <td valign='top'>

@@ -48,7 +48,7 @@
         [% UNLESS is_advanced %]
         <tr>
             <td>
-                [% INCLUDE "default/opac/parts/coded_value_selector.tt2" attr="mattype" none_ok=1 %]
+                [% INCLUDE "default/opac/parts/coded_value_selector.tt2" attr=["mattype", "item_type"] none_ok=1 %]
             </td>
             <td>
                 <span id='depth_selector_span'>
