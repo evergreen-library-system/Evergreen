@@ -187,13 +187,13 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
         bibFieldByTag: function (x) {
             var me = this;
             return dojo.filter(
-                me.controlSet().bib_fields(),
+                me.controlSet().bib_fields,
                 function (bf) { if (bf.tag() == x) return true }
             )[0];
         },
 
         bibFields: function (x) {
-            return this.controlSet(x).bib_fields();
+            return this.controlSet(x).bib_fields;
         },
 
         bibFieldBrowseAxes : function (t) {
@@ -203,7 +203,7 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
                     openils.AuthorityControlSet._browse_axis_by_name[bname].maps(),
                     function (m) {
                         if (dojo.filter(
-                                m.field().bib_fields(),
+                                m.field().bib_fields,
                                 function (b) { return b.tag == t }
                             ).length > 0
                         ) blist.push(bname);
@@ -241,20 +241,20 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
         },
 
         bibToAuthority : function (field) {
-            var b_field = this.bibFieldByTag(field.tag());
+            var b_field = this.bibFieldByTag(field.tag);
 
             if (b_field) { // construct an marc authority record
                 af = b_field.authority_field();
                 var m = new MARC.Record ({rtype:'AUT'});
-                m.appendField(
+                m.appendFields(
                     new MARC.Field ({
                         tag : af.tag(),
                         ind1: field.ind1,
                         ind2: field.ind2,
-                        subfields: dojo.filter(
+                        subfields: [dojo.filter(
                             field.subfields,
                             function (sf) { return (af.sf_list().indexOf(sf[0]) > -1) }
-                        )
+                        )]
                     })
                 );
 
@@ -274,7 +274,7 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
                 function (acs_id) {
                     var acs = me.controlSet(acs_id);
                     var x = me.bibToAuthority(field);
-                    if (x) auth_list.push({acs_id : m.toXmlString()});
+                    if (x) { var foo = {}; foo[acs_id] = x; auth_list.push(foo); }
                 }
             );
             this.controlSetId(old_acs);

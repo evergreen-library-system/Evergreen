@@ -166,7 +166,7 @@ BEGIN
         tag_used := acsaf.tag;
         FOR sf IN SELECT * FROM regexp_split_to_table(acsaf.sf_list,'') LOOP
             tmp_text := oils_xpath_string('//*[@tag="'||tag_used||'"]/*[@code="'||sf||'"]', marcxml);
-            IF tmp_text IS NOT NULL THEN
+            IF tmp_text IS NOT NULL AND tmp_text <> '' THEN
                 heading_text := heading_text || E'\u2021' || sf || ' ' || tmp_text;
             END IF;
         END LOOP;

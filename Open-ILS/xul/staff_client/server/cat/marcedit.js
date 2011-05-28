@@ -1503,7 +1503,7 @@ function getAuthorityContextMenu (target, sf) {
 
     var found_acs = [];
     dojo.forEach( acs.controlSetList(), function (acs_id) {
-        if (ac.controlSet(acs_id).control_map[sf.parent().@tag]) found_acs.push(acs_id);
+        if (acs.controlSet(acs_id).control_map[sf.parent().@tag]) found_acs.push(acs_id);
     });
 
     if (!found_acs.length) {
@@ -1578,10 +1578,12 @@ function validateAuthority (button) {
         var row = rows[i];
         var tag = row.firstChild;
 
-        for (var acs_id in acs.controlSetList()) {
+	var done = false;
+        dojo.forEach(acs.controlSetList(), function (acs_id) {
+            if (done) return;
             var control_map = acs.controlSet(acs_id).control_map;
     
-            if (!control_map[tag.value]) continue
+            if (!control_map[tag.value]) return;
             button.setAttribute('label', label + ' - ' + tag.value);
     
             var ind1 = tag.nextSibling;
@@ -1614,8 +1616,8 @@ function validateAuthority (button) {
                 }
             }
 
-            if (matches.length) break;
-        }
+            if (matches.length) done = true;
+        });
     }
 
     button.setAttribute('label', label);

@@ -6,7 +6,7 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::AppUtils;
 use XML::LibXML;
 use XML::LibXSLT;
-use OpenILS::Utils::Editor q/:funcs/;
+use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenSRF::Utils::Logger qw/$logger/;
 
 use OpenSRF::Utils::JSON;
