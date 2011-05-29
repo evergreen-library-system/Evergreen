@@ -737,6 +737,14 @@ main.menu.prototype = {
                 ['oncommand'],
                 function(event) { open_eg_web_page('conify/global/config/weight_assoc', null, event); }
             ],
+            'cmd_server_admin_config_actor_sip_fields' : [
+                ['oncommand'],
+                function(event) { open_eg_web_page('conify/global/config/actor_sip_fields', null, event); }
+            ],
+            'cmd_server_admin_config_asset_sip_fields' : [
+                ['oncommand'],
+                function(event) { open_eg_web_page('conify/global/config/asset_sip_fields', null, event); }
+            ],
             'cmd_local_admin_external_text_editor' : [
                 ['oncommand'],
                 function() {

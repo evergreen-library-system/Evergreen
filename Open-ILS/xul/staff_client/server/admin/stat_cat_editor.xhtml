@@ -96,7 +96,16 @@
                             <span>&staff.server.admin.stat_cat.off;</span>
                             <input type='radio' name='usr_summary' checked='checked'> </input>
                         </td>
-
+                    </tr>
+                    <tr>
+                        <td>&staff.server.admin.stat_cat.sip_field;</td>
+                        <td>
+                            <select name='sip_field' id='sc_sip_field'>
+                                <option value=''>&staff.server.admin.stat_cat.sip_field.none;</option>
+                            </select>
+                        </td>
+                        <td>&staff.server.admin.stat_cat.sip_format;</td>
+                        <td><input type='text' name='sip_format' id='sc_sip_format' /></td>
                     </tr>
                     <tr>
                         <td colspan='4'>
@@ -132,6 +141,7 @@
 
             <br/>
             <div>&staff.server.admin.stat_cat.info_prompt;</div>
+            <div>&staff.server.admin.stat_cat.sip_field_warning;</div>
             <br/>
 
             <div style='padding: 20px;' id='sc_none' class='hide_me'><b>&staff.server.admin.stat_cat.none_defined;</b></div>
@@ -147,6 +157,8 @@
                             <td>&staff.server.admin.stat_cat.opac_visibility.label;</td>
                             <td id='sc_required_label'>&staff.server.admin.stat_cat.required.label;</td>
                             <td id='sc_usr_summary_label'>&staff.server.admin.stat_cat.usr_summary.label;</td>
+                            <td>&staff.server.admin.stat_cat.sip_field.label;</td>
+                            <td>&staff.server.admin.stat_cat.sip_format.label;</td>
                             <td>&staff.server.admin.stat_cat.entries.label;</td>
                             <td>&staff.server.admin.stat_cat.add_entry;</td>
                             <td>&staff.server.admin.stat_cat.edit;</td>
@@ -170,6 +182,11 @@
                                 <span class='hide_me' name='sc_usr_summary_on'>&staff.server.admin.stat_cat.on;</span> 
                                 <span class='hide_me' name='sc_usr_summary'>&staff.server.admin.stat_cat.off;</span> 
                             </td>
+                            <td>
+                                <span class='hide_me' name='sc_sip_field_none'>&staff.server.admin.stat_cat.sip_field.none.label;</span>
+                                <span class='hide_me' name='sc_sip_field_value' />
+                            </td>
+                            <td name='sc_sip_format_td'/>
                             <td>
                                 <select class='selector' name='sc_entries_selector'>
                                     <option>&staff.server.admin.stat_cat.none;</option>
@@ -224,6 +241,14 @@
                 </td>
                 <td name='sc_edit_usr_summary_td'>
                     <input type='checkbox' name='sc_edit_usr_summary'/>
+                </td>
+                <td>
+                    <select name='sc_edit_sip_field'>
+                        <option value=''>&staff.server.admin.stat_cat.sip_field.none;</option>
+                    </select>
+                </td>
+                <td name='sc_edit_sip_format_td'>
+                    <input type='text' name='sc_edit_sip_format'/>
                 </td>
                 <td colspan='4'>
                     <span class='padded'>

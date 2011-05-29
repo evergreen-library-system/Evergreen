@@ -737,6 +737,8 @@
 <!ENTITY staff.main.menu.admin.server_admin.conify.config_circ_weights "Circulation Matchpoint Weights">
 <!ENTITY staff.main.menu.admin.server_admin.conify.config_hold_weights "Hold Matchpoint Weights">
 <!ENTITY staff.main.menu.admin.server_admin.conify.config_weight_assoc "Weights Association">
+<!ENTITY staff.main.menu.admin.server_admin.conify.config_actor_sip_fields "Actor Stat Cat Sip Fields">
+<!ENTITY staff.main.menu.admin.server_admin.conify.config_asset_sip_fields "Asset Stat Cat Sip Fields">
 <!ENTITY staff.main.menu.admin.server_admin.conify.global_flag.label "Global Flags">
 
 <!ENTITY staff.main.menu.admin.server_admin.acq.label "Acquisitions">
@@ -2124,6 +2126,7 @@
 <!ENTITY staff.server.admin.stat_cat.copy_stat_cats "Copy Statistical Categories">
 <!ENTITY staff.server.admin.stat_cat.patron_stat_cats "Patron Statistical Categories">
 <!ENTITY staff.server.admin.stat_cat.info_prompt "* To edit or view information about an entry, click on the entry in the drop-down menu">
+<!ENTITY staff.server.admin.stat_cat.sip_field_warning "** Some sip fields may only be valid on one stat cat. Entries using them may not save.">
 <!ENTITY staff.server.admin.stat_cat.none_defined "No statistical categories are defined">
 <!ENTITY staff.server.admin.stat_cat.name.label "Statistical Category Name">
 <!ENTITY staff.server.admin.stat_cat.owning_library.label "Owning Library">
@@ -2147,6 +2150,12 @@
 <!ENTITY staff.server.admin.stat_cat.new_entry_name "Enter the value of the new entry: ">
 <!ENTITY staff.server.admin.stat_cat.new_entry_create "Create new entry">
 <!ENTITY staff.server.admin.stat_cat.update_success "Update succeeded">
+<!ENTITY staff.server.admin.stat_cat.sip_field "SIP Field: ">
+<!ENTITY staff.server.admin.stat_cat.sip_field.none "No SIP Export">
+<!ENTITY staff.server.admin.stat_cat.sip_format "SIP Format: ">
+<!ENTITY staff.server.admin.stat_cat.sip_field.label "SIP Field">
+<!ENTITY staff.server.admin.stat_cat.sip_format.label "SIP Format">
+<!ENTITY staff.server.admin.stat_cat.sip_field.none.label "No SIP">
 <!ENTITY staff.server.admin.upload_xacts.title "Upload Offline Transactions">
 <!ENTITY staff.server.admin.upload_xacts.header "Uploading transactions...">
 <!ENTITY staff.server.admin.upload_xacts.upload "Upload">
