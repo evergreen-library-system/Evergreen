@@ -232,6 +232,7 @@ ln -s rel_2_0_6/server
 <userinput>
 psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.1-2.0-upgrade-db.sql evergreen
 psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/2.0.0-2.0.1-upgrade-db.sql evergreen
+psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/2.0.1-2.0.2-upgrade-db.sql evergreen
 psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/2.0.2-2.0.3-upgrade-db.sql evergreen
 psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/2.0.3-2.0.4-upgrade-db.sql evergreen
 psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/2.0.4-2.0.5-upgrade-db.sql evergreen
