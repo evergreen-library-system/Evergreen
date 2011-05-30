@@ -1660,11 +1660,8 @@ sub authority_tag_sf_startwith {
         my $before = $_storage->request(
             "open-ils.cstore.json_query.atomic",
             { select    => { afr => [qw/record value/] },
-              from      => { 'afr', 'are' },
-              where     => {
-                '+afr' => { tag => \@ref_tags, subfield => $subfield, value => { '<' => $value } },
-                '+are' => { deleted => 'f' }
-              },
+              from      => 'afr',
+              where     => { tag => \@ref_tags, subfield => $subfield, value => { '<' => $value } },
               order_by  => { afr => { value => 'desc' } },
               limit     => $ref_limit,
               offset    => $offset,
@@ -1677,11 +1674,8 @@ sub authority_tag_sf_startwith {
         my $after = $_storage->request(
             "open-ils.cstore.json_query.atomic",
             { select    => { afr => [qw/record value/] },
-              from      => { 'afr', 'are' },
-              where     => {
-                '+afr' => { tag => \@ref_tags, subfield => $subfield, value => { '>=' => $value } },
-                '+are' => { deleted => 'f' }
-              },
+              from      => 'afr',
+              where     => { tag => \@ref_tags, subfield => $subfield, value => { '>=' => $value } },
               order_by  => { afr => { value => 'asc' } },
               limit     => $ref_limit,
               offset    => $offset,
