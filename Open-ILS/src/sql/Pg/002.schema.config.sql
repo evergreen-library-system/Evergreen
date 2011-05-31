@@ -876,8 +876,8 @@ Upgrade script % can not be applied:
   deprecated by %
   superseded by %',
             my_db_patch,
-            ARRAY_ACUM(evergreen.upgrade_list_applied_deprecates(my_db_patch)),
-            ARRAY_ACUM(evergreen.upgrade_list_applied_supersedes(my_db_patch)),
+            ARRAY_AGG(evergreen.upgrade_list_applied_deprecates(my_db_patch)),
+            ARRAY_AGG(evergreen.upgrade_list_applied_supersedes(my_db_patch)),
             evergreen.upgrade_list_applied_deprecated(my_db_patch),
             evergreen.upgrade_list_applied_superseded(my_db_patch);
     END IF;
