@@ -33,8 +33,10 @@ CREATE TRIGGER no_overlapping_deps
 ALTER TABLE config.upgrade_log
     ADD COLUMN applied_to TEXT;
 
+CREATE TYPE evergreen_patch AS (patch TEXT);
+
 -- List applied db patches that are deprecated by (and block the application of) my_db_patch
-CREATE OR REPLACE FUNCTION evergreen.upgrade_list_applied_deprecates ( my_db_patch TEXT ) RETURNS SETOF TEXT AS $$
+CREATE OR REPLACE FUNCTION evergreen.upgrade_list_applied_deprecates ( my_db_patch TEXT ) RETURNS SETOF evergreen_patch AS $$
     SELECT  DISTINCT l.version
       FROM  config.upgrade_log l
             JOIN config.db_patch_dependencies d ON (l.version::TEXT[] && d.deprecates)
@@ -42,7 +44,7 @@ CREATE OR REPLACE FUNCTION evergreen.upgrade_list_applied_deprecates ( my_db_pat
 $$ LANGUAGE SQL;
 
 -- List applied db patches that are superseded by (and block the application of) my_db_patch
-CREATE OR REPLACE FUNCTION evergreen.upgrade_list_applied_supersedes ( my_db_patch TEXT ) RETURNS SETOF TEXT AS $$
+CREATE OR REPLACE FUNCTION evergreen.upgrade_list_applied_supersedes ( my_db_patch TEXT ) RETURNS SETOF evergreen_patch AS $$
     SELECT  DISTINCT l.version
       FROM  config.upgrade_log l
             JOIN config.db_patch_dependencies d ON (l.version::TEXT[] && d.supersedes)
@@ -77,8 +79,13 @@ $$ LANGUAGE SQL;
 
 -- Raise an exception if there are, in fact, dep/sup confilct
 CREATE OR REPLACE FUNCTION evergreen.upgrade_deps_block_check ( my_db_patch TEXT, my_applied_to TEXT ) RETURNS BOOL AS $$
+DECLARE 
+    deprecates TEXT;
+    supersedes TEXT;
 BEGIN
     IF NOT evergreen.upgrade_verify_no_dep_conflicts( my_db_patch ) THEN
+        SELECT  STRING_AGG(patch, ', ') INTO deprecates FROM evergreen.upgrade_list_applied_deprecates(my_db_patch);
+        SELECT  STRING_AGG(patch, ', ') INTO supersedes FROM evergreen.upgrade_list_applied_supersedes(my_db_patch);
         RAISE EXCEPTION '
 Upgrade script % can not be applied:
   applied deprecated scripts %
@@ -86,8 +93,8 @@ Upgrade script % can not be applied:
   deprecated by %
   superseded by %',
             my_db_patch,
-            ARRAY_AGG(evergreen.upgrade_list_applied_deprecates(my_db_patch)),
-            ARRAY_AGG(evergreen.upgrade_list_applied_supersedes(my_db_patch)),
+            deprecates,
+            supersedes,
             evergreen.upgrade_list_applied_deprecated(my_db_patch),
             evergreen.upgrade_list_applied_superseded(my_db_patch);
     END IF;
