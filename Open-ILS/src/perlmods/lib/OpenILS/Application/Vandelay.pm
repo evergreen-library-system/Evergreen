@@ -489,7 +489,7 @@ sub retrieve_queued_records {
 
     if($$options{with_import_error}) {
 
-        $query->{from} = {$class => {vii => {type => 'right'}}};
+        $query->{from} = {$class => {vii => {type => 'left'}}};
         $query->{where}->{'-or'} = [
             {'+vqbr' => {import_error => {'!=' => undef}}},
             {'+vii' => {import_error => {'!=' => undef}}}
@@ -1121,6 +1121,7 @@ sub import_record_list_impl {
 
                     $logger->info("vl: successfully imported new $type record");
                     $rec->imported_as($record->id);
+                    $imported = 1;
                 }
             }
         }
