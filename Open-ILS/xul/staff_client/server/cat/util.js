@@ -231,7 +231,7 @@ cat.util.show_in_opac = function(selection_list) {
             };
             xulG.new_tab(
                 xulG.url_prefix(urls.XUL_OPAC_WRAPPER), 
-                {'tab_name':'Retrieving title...'}, 
+                {'tab_name':$('catStrings').getString('staff.cat.util.show_in_opac.retrieving_title')}, 
                 content_params
             );
         }
