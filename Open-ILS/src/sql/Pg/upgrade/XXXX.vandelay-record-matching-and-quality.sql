@@ -6,7 +6,7 @@ BEGIN;
 
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+--SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
 
 CREATE OR REPLACE FUNCTION evergreen.array_remove_item_by_value(inp ANYARRAY, el ANYELEMENT) RETURNS anyarray AS $$ SELECT ARRAY_ACCUM(x.e) FROM UNNEST( $1 ) x(e) WHERE x.e <> $2; $$ LANGUAGE SQL;
 
@@ -53,7 +53,7 @@ CREATE UNIQUE INDEX vmsq_def_once_per_set ON vandelay.match_set_quality (match_s
 
 -- ALTER TABLEs...
 ALTER TABLE vandelay.queue ADD COLUMN match_set INT REFERENCES vandelay.match_set (id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
-ALTER TABLE vandelay.queue_record ADD COLUMN quality INT NOT NULL DEFAULT 0;
+ALTER TABLE vandelay.queued_record ADD COLUMN quality INT NOT NULL DEFAULT 0;
 ALTER TABLE vandelay.bib_attr_definition DROP COLUMN ident;
 
 CREATE TABLE vandelay.import_error (
@@ -144,7 +144,6 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
-CREATE TYPE biblio.record_ff_map AS (record BIGINT, ff_name TEXT, ff_value TEXT);
 CREATE OR REPLACE FUNCTION vandelay.marc21_extract_all_fixed_fields( marc TEXT ) RETURNS SETOF biblio.record_ff_map AS $func$
 DECLARE
     tag_data    TEXT;
@@ -180,7 +179,6 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
-CREATE TYPE biblio.marc21_physical_characteristics AS ( id INT, record BIGINT, ptype TEXT, subfield INT, value INT );
 CREATE OR REPLACE FUNCTION vandelay.marc21_physical_characteristics( marc TEXT) RETURNS SETOF biblio.marc21_physical_characteristics AS $func$
 DECLARE
     rowid   INT := 0;
