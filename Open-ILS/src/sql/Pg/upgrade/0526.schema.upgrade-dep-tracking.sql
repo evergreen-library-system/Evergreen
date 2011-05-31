@@ -1,3 +1,10 @@
+-- DROP objects that might have existed from a prior run of 0526
+-- Yes this is ironic.
+DROP TABLE IF EXISTS config.db_patch_dependencies;
+ALTER TABLE config.upgrade_log DROP COLUMN applied_to;
+DROP FUNCTION evergreen.upgrade_list_applied_deprecates(TEXT);
+DROP FUNCTION evergreen.upgrade_list_applied_supersedes(TEXT);
+
 BEGIN;
 
 INSERT INTO config.upgrade_log (version) VALUES ('0526'); --miker
@@ -33,10 +40,11 @@ CREATE TRIGGER no_overlapping_deps
 ALTER TABLE config.upgrade_log
     ADD COLUMN applied_to TEXT;
 
-CREATE TYPE evergreen_patch AS (patch TEXT);
+-- Provide a named type for patching functions
+CREATE TYPE evergreen.patch AS (patch TEXT);
 
 -- List applied db patches that are deprecated by (and block the application of) my_db_patch
-CREATE OR REPLACE FUNCTION evergreen.upgrade_list_applied_deprecates ( my_db_patch TEXT ) RETURNS SETOF evergreen_patch AS $$
+CREATE OR REPLACE FUNCTION evergreen.upgrade_list_applied_deprecates ( my_db_patch TEXT ) RETURNS SETOF evergreen.patch AS $$
     SELECT  DISTINCT l.version
       FROM  config.upgrade_log l
             JOIN config.db_patch_dependencies d ON (l.version::TEXT[] && d.deprecates)
@@ -44,7 +52,7 @@ CREATE OR REPLACE FUNCTION evergreen.upgrade_list_applied_deprecates ( my_db_pat
 $$ LANGUAGE SQL;
 
 -- List applied db patches that are superseded by (and block the application of) my_db_patch
-CREATE OR REPLACE FUNCTION evergreen.upgrade_list_applied_supersedes ( my_db_patch TEXT ) RETURNS SETOF evergreen_patch AS $$
+CREATE OR REPLACE FUNCTION evergreen.upgrade_list_applied_supersedes ( my_db_patch TEXT ) RETURNS SETOF evergreen.patch AS $$
     SELECT  DISTINCT l.version
       FROM  config.upgrade_log l
             JOIN config.db_patch_dependencies d ON (l.version::TEXT[] && d.supersedes)

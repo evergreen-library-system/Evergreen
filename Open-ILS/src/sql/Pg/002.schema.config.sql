@@ -823,10 +823,8 @@ BEGIN
 END;
 $$ LANGUAGE PLPGSQL;
 
-CREATE TYPE evergreen_patch AS (patch TEXT);
-
 -- List applied db patches that are deprecated by (and block the application of) my_db_patch
-CREATE OR REPLACE FUNCTION evergreen.upgrade_list_applied_deprecates ( my_db_patch TEXT ) RETURNS SETOF evergreen_patch AS $$
+CREATE OR REPLACE FUNCTION evergreen.upgrade_list_applied_deprecates ( my_db_patch TEXT ) RETURNS SETOF evergreen.patch AS $$
     SELECT  DISTINCT l.version
       FROM  config.upgrade_log l
             JOIN config.db_patch_dependencies d ON (l.version::TEXT[] && d.deprecates)
@@ -834,7 +832,7 @@ CREATE OR REPLACE FUNCTION evergreen.upgrade_list_applied_deprecates ( my_db_pat
 $$ LANGUAGE SQL;
 
 -- List applied db patches that are superseded by (and block the application of) my_db_patch
-CREATE OR REPLACE FUNCTION evergreen.upgrade_list_applied_supersedes ( my_db_patch TEXT ) RETURNS SETOF evergreen_patch AS $$
+CREATE OR REPLACE FUNCTION evergreen.upgrade_list_applied_supersedes ( my_db_patch TEXT ) RETURNS SETOF evergreen.patch AS $$
     SELECT  DISTINCT l.version
       FROM  config.upgrade_log l
             JOIN config.db_patch_dependencies d ON (l.version::TEXT[] && d.supersedes)
