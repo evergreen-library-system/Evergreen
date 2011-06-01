@@ -89,11 +89,17 @@ util.functional.map_object_to_list = function(obj,f) {
     return new_list;
 }
 
-util.functional.convert_object_list_to_hash = function(list) {
+util.functional.convert_object_list_to_hash = function(list,key_field) {
     var my_hash = new Object();
     if (list) {
         for (var i = 0; i < list.length; i++) {
-            if (typeof list[i].id == 'function') {
+            if (key_field && typeof list[i][key_field] != 'undefined') {
+                if (typeof list[i][key_field] == 'function') {
+                    my_hash[ list[i][key_field]() ] = list[i];
+                } else {
+                    my_hash[ list[i][key_field] ] = list[i];
+                }
+            } else if (typeof list[i].id == 'function') {
                 my_hash[ list[i].id() ] = list[i];
             } else if (typeof list[i].code == 'function') {
                 my_hash[ list[i].code() ] = list[i];
