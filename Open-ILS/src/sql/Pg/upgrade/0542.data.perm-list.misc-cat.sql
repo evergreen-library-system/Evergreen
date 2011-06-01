@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('0542', :eg_version); -- phasefx
+INSERT INTO config.upgrade_log (version) VALUES ('0542'); -- phasefx
 
 INSERT INTO permission.perm_list VALUES
     (485, 'CREATE_VOLUME_SUFFIX', oils_i18n_gettext(485, 'Create suffix label definition.', 'ppl', 'description'))
