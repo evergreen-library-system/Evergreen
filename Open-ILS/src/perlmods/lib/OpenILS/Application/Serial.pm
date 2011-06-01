@@ -1515,7 +1515,7 @@ sub _prepare_summaries {
         $cu_method = "create";
     }
 
-    $summary->generated_coverage(join(", ", @$formatted_parts));
+    $summary->generated_coverage(OpenSRF::Utils::JSON->perl2JSON($formatted_parts));
     my $method = "${cu_method}_serial_${type}_summary";
     return $e->die_event unless $e->$method($summary);
 }
