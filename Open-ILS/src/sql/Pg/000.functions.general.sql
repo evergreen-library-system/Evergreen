@@ -26,4 +26,7 @@ CREATE OR REPLACE FUNCTION evergreen.xml_escape(str TEXT) RETURNS text AS $$
        '>', '&gt;');
 $$ LANGUAGE SQL IMMUTABLE;
 
+-- Provide a named type for patching functions
+CREATE TYPE evergreen.patch AS (patch TEXT);
+
 COMMIT;
