@@ -68,7 +68,11 @@ sub retrieve_visible_folders {
 	my $class = 'rrf';
 	$class = 'rtf' if $type eq 'template';
 	$class = 'rof' if $type eq 'output';
-	my $flesh = {flesh => 1,flesh_fields => { $class => ['owner', 'share_with']}};
+	my $flesh = {
+		flesh => 1,
+		flesh_fields => { $class => ['owner', 'share_with']}, 
+		order_by => { $class => 'name ASC'} 
+	};
 
 	my $meth = "search_reporter_${type}_folder";
 	my $fs = $e->$meth( [{ owner => $e->requestor->id }, $flesh] );
