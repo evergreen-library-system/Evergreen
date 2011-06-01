@@ -123,11 +123,6 @@ function my_init() {
             $('top_nav').setAttribute('hidden','true');
         }
 
-        if (g.copies.length > 0 && g.copies[0].id() < 0) {
-            document.getElementById('copy_notes').setAttribute('hidden','true');
-            $('save').setAttribute('label', $('catStrings').getString('staff.cat.copy_editor.create_copies'));
-            $('save').setAttribute('accesskey', $('catStrings').getString('staff.cat.copy_editor.create_copies.accesskey'));
-        }
         g.panes_and_field_names.left_pane = 
             [
                 [
@@ -140,9 +135,6 @@ function my_init() {
                 ]
             ].concat(g.panes_and_field_names.left_pane);
 
-        if (g.copies.length != 1) {
-            document.getElementById('copy_notes').setAttribute('hidden','true');
-        }
 
         /******************************************************************************************************/
         /* Show the Record Details? */
@@ -176,6 +168,14 @@ function my_init() {
                 try {
                     g.copies = xulG.copies;
                     g.original_copies = js2JSON( g.copies );
+                    if (g.copies.length > 0 && g.copies[0].id() < 0) {
+                        document.getElementById('copy_notes').setAttribute('hidden','true');
+                        $('save').setAttribute('label', $('catStrings').getString('staff.cat.copy_editor.create_copies'));
+                        $('save').setAttribute('accesskey', $('catStrings').getString('staff.cat.copy_editor.create_copies.accesskey'));
+                    }
+                    if (g.copies.length != 1) {
+                        document.getElementById('copy_notes').setAttribute('hidden','true');
+                    }
                     for (var i = 0; i < g.applied_templates.length; i++) {
                         g._apply_template( g.applied_templates[i], false);
                     }
@@ -191,6 +191,15 @@ function my_init() {
             };
             xulG.notify_of_templatable_field_change = function(id,v) {
                 g.changed[ 'volume_copy_creator.'+id ] = { 'type' : 'volume_copy_creator', 'field' : id, 'value' : v };
+            }
+        } else {
+            if (g.copies.length > 0 && g.copies[0].id() < 0) {
+                document.getElementById('copy_notes').setAttribute('hidden','true');
+                $('save').setAttribute('label', $('catStrings').getString('staff.cat.copy_editor.create_copies'));
+                $('save').setAttribute('accesskey', $('catStrings').getString('staff.cat.copy_editor.create_copies.accesskey'));
+            }
+            if (g.copies.length != 1) {
+                document.getElementById('copy_notes').setAttribute('hidden','true');
             }
         }
 
