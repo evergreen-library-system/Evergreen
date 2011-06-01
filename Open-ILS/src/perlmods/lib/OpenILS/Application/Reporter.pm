@@ -70,8 +70,8 @@ sub retrieve_visible_folders {
 	$class = 'rof' if $type eq 'output';
 	my $flesh = {
 		flesh => 1,
-		flesh_fields => { $class => ['owner', 'share_with']}, 
-		order_by => { $class => 'name ASC'} 
+		flesh_fields => { $class => ['owner', 'share_with']},
+		order_by => { $class => 'name ASC'}
 	};
 
 	my $meth = "search_reporter_${type}_folder";
@@ -85,10 +85,10 @@ sub retrieve_visible_folders {
 	my $fs2 = $e->$meth(
 		[
 			{
-				shared => 't', 
-				share_with => \@orgs, 
-				owner => { '!=' => $e->requestor->id } 
-			}, 
+				shared => 't',
+				share_with => \@orgs,
+				owner => { '!=' => $e->requestor->id }
+			},
 			$flesh
 		]
 	);
@@ -113,11 +113,11 @@ sub retrieve_folder_data {
 	$class = 'rt' if $type eq 'template';
 	my $flesh = {
 		flesh => 1,
-		flesh_fields => { $class => ['owner']}, 
-		order_by => { $class => 'create_time DESC'} 
+		flesh_fields => { $class => ['owner']},
+		order_by => { $class => 'create_time DESC'}
 	};
 	$flesh->{limit} = $limit if $limit;
-	return $e->$meth([{ folder => $folderid }, $flesh]); 
+	return $e->$meth([{ folder => $folderid }, $flesh]);
 }
 
 __PACKAGE__->register_method(
@@ -132,7 +132,7 @@ sub retrieve_schedules {
 	my $search = { folder => $folderId };
 	my $query = [
 		{ folder => $folderId },
-		{ 
+		{
 			order_by => { rs => 'run_time DESC' } ,
 			flesh => 1,
 			flesh_fields => { rs => ['report'] }
@@ -170,7 +170,7 @@ sub create_template {
 	return $e->die_event unless $e->allowed('RUN_REPORTS');
 	$template->owner($e->requestor->id);
 
-	my $existing = $e->search_reporter_template( {owner=>$template->owner, 
+	my $existing = $e->search_reporter_template( {owner=>$template->owner,
 			folder=>$template->folder, name=>$template->name},{idlist=>1});
 	return OpenILS::Event->new('REPORT_TEMPLATE_EXISTS') if @$existing;
 
@@ -182,7 +182,7 @@ sub create_template {
 
 
 
-	
+
 
 __PACKAGE__->register_method(
 	api_name => 'open-ils.reporter.report.create',
@@ -194,7 +194,7 @@ sub create_report {
 	return $e->die_event unless $e->allowed('RUN_REPORTS');
 	$report->owner($e->requestor->id);
 
-	my $existing = $e->search_reporter_report( {owner=>$report->owner, 
+	my $existing = $e->search_reporter_report( {owner=>$report->owner,
 			folder=>$report->folder, name=>$report->name},{idlist=>1});
 	return OpenILS::Event->new('REPORT_REPORT_EXISTS') if @$existing;
 
@@ -230,7 +230,7 @@ sub retrieve_template {
 	my $e = new_rstore_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('RUN_REPORTS');
-	my $t = $e->retrieve_reporter_template($id) 
+	my $t = $e->retrieve_reporter_template($id)
 		or return $e->event;
 	return $t;
 }
@@ -244,7 +244,7 @@ sub retrieve_report {
 	my $e = new_rstore_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('RUN_REPORTS');
-	my $r = $e->retrieve_reporter_report($id) 
+	my $r = $e->retrieve_reporter_report($id)
 		or return $e->event;
 	return $r;
 }
@@ -441,16 +441,16 @@ sub cascade_delete_template_impl {
     }
 
     # fetch all reports attached to this template that
-    # do not belong to $owner.  If there are any, we can't 
+    # do not belong to $owner.  If there are any, we can't
     # delete the template
     my $alt_reports = $e->search_reporter_report(
         {template=>$templateId, owner=>{"!=" => $owner}},{idlist=>1});
 
-    # all_rpts_deleted will be false if a report has an 
+    # all_rpts_deleted will be false if a report has an
     # attached scheduled owned by a different user
     return 1 if @$alt_reports or not $all_rpts_deleted;
 
-    $e->delete_reporter_template($template) 
+    $e->delete_reporter_template($template)
         or return $e->die_event;
     return 2;
 }
@@ -478,14 +478,14 @@ sub cascade_delete_report_impl {
     }
 
     # fetch all schedules attached to this report that
-    # do not belong to $owner.  If there are any, we can't 
+    # do not belong to $owner.  If there are any, we can't
     # delete the report
     my $alt_scheds = $e->search_reporter_schedule(
         {report=>$reportId, runner=>{"!=" => $owner}},{idlist=>1});
 
     return 1 if @$alt_scheds;
 
-    $e->delete_reporter_report($report) 
+    $e->delete_reporter_report($report)
         or return $e->die_event;
 
     return 2;
@@ -603,14 +603,14 @@ sub magic_fetch_all {
 #	}
 
 	# Find the class the iplements the given hint
-	my ($class) = grep { 
+	my ($class) = grep {
 		$Fieldmapper::fieldmap->{$_}{hint} eq $hint } Fieldmapper->classes;
 
 	return undef unless $class->Selector;
 
 	$class =~ s/Fieldmapper:://og;
 	$class =~ s/::/_/og;
-	
+
 	my $method;
 	my $margs;
 
