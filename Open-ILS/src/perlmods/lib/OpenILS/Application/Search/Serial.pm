@@ -15,6 +15,8 @@ use OpenSRF::Utils::Logger qw/:logger/;
 
 use Data::Dumper;
 
+use OpenSRF::Utils::JSON;
+
 use Time::HiRes qw(time);
 use OpenSRF::EX qw(:try);
 use Digest::MD5 qw(md5_hex);
@@ -25,7 +27,8 @@ use XML::LibXSLT;
 use OpenILS::Const qw/:const/;
 
 use OpenILS::Application::AppUtils;
-my $U = "OpenILS::Application::AppUtils";
+my $apputils = "OpenILS::Application::AppUtils";
+my $U = $apputils;
 
 my $pfx = "open-ils.search_";
 
@@ -146,7 +149,7 @@ sub bib_to_svr {
         if ($_->summary_method ne 'use_sre_only') {
             if (ref $_->basic_summary) { #TODO: 'show-generated' boolean on summaries
                 if ($_->basic_summary->generated_coverage) {
-                    push(@{$svr->basic_holdings}, OpenSRF::Utils::JSON->JSON2perl($_->basic_summary->generated_coverage));
+                    push(@{$svr->basic_holdings}, $_->basic_summary->generated_coverage);
                 }
                 if ($_->basic_summary->textual_holdings) {
                     push(@{$svr->basic_holdings_add}, $_->basic_summary->textual_holdings);
@@ -154,7 +157,7 @@ sub bib_to_svr {
             }
             if (ref $_->supplement_summary) {
                 if ($_->supplement_summary->generated_coverage) {
-                    push(@{$svr->supplement_holdings}, OpenSRF::Utils::JSON->JSON2perl($_->supplement_summary->generated_coverage));
+                    push(@{$svr->supplement_holdings}, $_->supplement_summary->generated_coverage);
                 }
                 if ($_->supplement_summary->textual_holdings) {
                     push(@{$svr->supplement_holdings_add}, $_->supplement_summary->textual_holdings);
@@ -162,7 +165,7 @@ sub bib_to_svr {
             }
             if (ref $_->index_summary) {
                 if ($_->index_summary->generated_coverage) {
-                    push(@{$svr->index_holdings}, OpenSRF::Utils::JSON->JSON2perl($_->index_summary->generated_coverage));
+                    push(@{$svr->index_holdings}, $_->index_summary->generated_coverage);
                 }
                 if ($_->index_summary->textual_holdings) {
                     push(@{$svr->index_holdings_add}, $_->index_summary->textual_holdings);
