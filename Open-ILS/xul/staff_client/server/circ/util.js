@@ -1074,7 +1074,14 @@ circ.util.columns = function(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.acp.circ_as_type(); }
+            'editable' : false, 'render' : function(my) {
+                return my.acp.circ_as_type() != null && my.acp.circ_as_type() == 'object'
+                    ? my.acp.circ_as_type()
+                    : ( typeof data.hash.citm[ my.acp.circ_as_type() ] != 'undefined'
+                        ? data.hash.citm[ my.acp.circ_as_type() ].value
+                        : ''
+                    );
+            }
         },
         {
             'persist' : 'hidden width ordinal',
