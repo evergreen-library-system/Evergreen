@@ -57,7 +57,7 @@ INSERT INTO permission.grp_perm_map ( grp, perm, depth )
     SELECT
         5,
         id,
-        0
+        2
     FROM permission.perm_list
     WHERE code in (
         'MARK_ITEM_MISSING_PIECES'
@@ -83,11 +83,10 @@ INSERT INTO permission.grp_perm_map ( grp, perm, depth )
     SELECT
         5,
         id,
-        0
+        1
     FROM permission.perm_list
     WHERE code in (
         'MAP_MONOGRAPH_PART'
-        ,'ADMIN_SERIAL_ITEM'
     );
 
 -- stock Cataloging Administrator group
@@ -101,7 +100,6 @@ INSERT INTO permission.grp_perm_map ( grp, perm, depth, grantable )
     FROM permission.perm_list
     WHERE code in (
         'MAP_MONOGRAPH_PART'
-        ,'ADMIN_SERIAL_ITEM'
         ,'CREATE_VOLUME_SUFFIX'
         ,'UPDATE_VOLUME_SUFFIX'
         ,'DELETE_VOLUME_SUFFIX'
@@ -122,7 +120,7 @@ INSERT INTO permission.grp_perm_map ( grp, perm, depth )
     SELECT
         11,
         id,
-        0
+        1
     FROM permission.perm_list
     WHERE code in (
         'ADMIN_SERIAL_ITEM'
