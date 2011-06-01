@@ -224,16 +224,16 @@ sub __abort_transit {
 	my $evt;
 	my $hold;
 
-	if( $transit->copy_status == OILS_COPY_STATUS_LOST or
-		$transit->copy_status == OILS_COPY_STATUS_MISSING ) {
+	if( ($transit->copy_status == OILS_COPY_STATUS_LOST and !$e->allowed('ABORT_TRANSIT_ON_LOST')) or
+		($transit->copy_status == OILS_COPY_STATUS_MISSING and !$e->allowed('ABORT_TRANSIT_ON_MISSING')) ) {
 		$e->rollback;
-		return OpenILS::Event->new('TRANSIT_ABORT_NOT_ALLOWED');
+		return OpenILS::Event->new('TRANSIT_ABORT_NOT_ALLOWED', copy_status => $transit->copy_status);
 	}
 
 
 	if( $transit->dest != $e->requestor->ws_ou 
 		and $transit->source != $e->requestor->ws_ou ) {
-		return $e->event unless $e->allowed('ABORT_REMOTE_TRANSIT', $e->requestor->ws_ou);
+		return $e->die_event unless $e->allowed('ABORT_REMOTE_TRANSIT', $e->requestor->ws_ou);
 	}
 
 	# recover the copy status
@@ -248,15 +248,15 @@ sub __abort_transit {
 		$copy->status( OILS_COPY_STATUS_RESHELVING );
 	}
 
-	return $e->event unless $e->delete_action_transit_copy($transit);
-	return $e->event unless $e->update_asset_copy($copy);
+	return $e->die_event unless $e->delete_action_transit_copy($transit);
+	return $e->die_event unless $e->update_asset_copy($copy);
 
 	$e->commit;
 
 	# if this is a hold transit, un-capture/un-target the hold
 	if($holdtransit and !$no_reset_hold) {
-		$hold = $e->retrieve_action_hold_request($holdtransit->hold)
-			or return $e->event;
+		$hold = $e->retrieve_action_hold_request($holdtransit->hold) 
+            or return $e->die_event;
 		$evt = $holdcode->_reset_hold( $e->requestor, $hold );
 		return $evt if $evt;
 	}
