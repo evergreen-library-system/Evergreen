@@ -1377,7 +1377,52 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
     'ADMIN_SERIAL_DISTRIBUTION', 'ppl', 'description' )),
  ( 483, 'ADMIN_SERIAL_STREAM', oils_i18n_gettext( 483, 
     'ADMIN_SERIAL_STREAM', 'ppl', 'description' )),
- ( 484, 'RECEIVE_SERIAL', oils_i18n_gettext(484, 'Receive serial items', 'ppl', 'description'));
+ ( 484, 'RECEIVE_SERIAL', oils_i18n_gettext(484,
+	'Receive serial items', 'ppl', 'description')),
+ ( 485, 'CREATE_VOLUME_SUFFIX', oils_i18n_gettext(485,
+    'Create suffix label definition.', 'ppl', 'description')),
+ ( 486, 'UPDATE_VOLUME_SUFFIX', oils_i18n_gettext(486,
+    'Update suffix label definition.', 'ppl', 'description')),
+ ( 487, 'DELETE_VOLUME_SUFFIX', oils_i18n_gettext(487,
+    'Delete suffix label definition.', 'ppl', 'description')),
+ ( 488, 'CREATE_VOLUME_PREFIX', oils_i18n_gettext(488,
+    'Create prefix label definition.', 'ppl', 'description')),
+ ( 489, 'UPDATE_VOLUME_PREFIX', oils_i18n_gettext(489,
+    'Update prefix label definition.', 'ppl', 'description')),
+ ( 490, 'DELETE_VOLUME_PREFIX', oils_i18n_gettext(490,
+    'Delete prefix label definition.', 'ppl', 'description')),
+ ( 491, 'CREATE_MONOGRAPH_PART', oils_i18n_gettext(491,
+    'Create monograph part definition.', 'ppl', 'description')),
+ ( 492, 'UPDATE_MONOGRAPH_PART', oils_i18n_gettext(492,
+    'Update monograph part definition.', 'ppl', 'description')),
+ ( 493, 'DELETE_MONOGRAPH_PART', oils_i18n_gettext(493,
+    'Delete monograph part definition.', 'ppl', 'description')),
+ ( 494, 'ADMIN_CODED_VALUE', oils_i18n_gettext(494,
+    'Create/Update/Delete SVF Record Attribute Coded Value Map', 'ppl', 'description')),
+ ( 495, 'ADMIN_SERIAL_ITEM', oils_i18n_gettext(495,
+    'Create/Retrieve/Update/Delete Serial Item', 'ppl', 'description')),
+ ( 496, 'ADMIN_SVF', oils_i18n_gettext(496,
+    'Create/Update/Delete SVF Record Attribute Defintion', 'ppl', 'description')),
+ ( 497, 'CREATE_BIB_PTYPE', oils_i18n_gettext(497,
+    'Create Bibliographic Record Peer Type', 'ppl', 'description')),
+ ( 498, 'CREATE_PURCHASE_REQUEST', oils_i18n_gettext(498,
+    'Create User Purchase Request', 'ppl', 'description')),
+ ( 499, 'DELETE_BIB_PTYPE', oils_i18n_gettext(499,
+    'Delete Bibliographic Record Peer Type', 'ppl', 'description')),
+ ( 500, 'MAP_MONOGRAPH_PART', oils_i18n_gettext(500,
+    'Create/Update/Delete Copy Monograph Part Map', 'ppl', 'description')),
+ ( 501, 'MARK_ITEM_MISSING_PIECES', oils_i18n_gettext(501,
+    'Allows the Mark Item Missing Pieces action.', 'ppl', 'description')),
+ ( 502, 'UPDATE_BIB_PTYPE', oils_i18n_gettext(502,
+    'Update Bibliographic Record Peer Type', 'ppl', 'description')),
+ ( 503, 'UPDATE_HOLD_REQUEST_TIME', oils_i18n_gettext(503,
+    'Allows editing of a hold''s request time, and/or its Cut-in-line/Top-of-queue flag.', 'ppl', 'description')),
+ ( 504, 'UPDATE_PICKLIST', oils_i18n_gettext(504,
+    'Allows update/re-use of an acquisitions pick/selection list.', 'ppl', 'description')),
+ ( 505, 'UPDATE_WORKSTATION', oils_i18n_gettext(505,
+    'Allows update of a workstation during workstation registration override.', 'ppl', 'description')),
+ ( 506, 'VIEW_USER_SETTING_TYPE', oils_i18n_gettext(506,
+    'Allows viewing of configurable user setting types.', 'ppl', 'description'));
 
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
@@ -1444,11 +1489,13 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 		perm.code IN (
 			'COPY_CHECKIN',
 			'CREATE_MY_CONTAINER',
+			'CREATE_PURCHASE_REQUEST',
 			'MR_HOLDS',
 			'OPAC_LOGIN',
 			'RENEW_CIRC',
 			'TITLE_HOLDS',
-			'user_request.create');
+			'user_request.create'
+		);
 
 
 -- Add basic user permissions to the Data Review group
@@ -1538,7 +1585,9 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'VIEW_PERMISSION',
 			'VIEW_TITLE_NOTES',
 			'VIEW_TRANSACTION',
-			'VIEW_VOLUME_NOTES');
+			'VIEW_USER_SETTING_TYPE',
+			'VIEW_VOLUME_NOTES'
+		);
 
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 	SELECT
@@ -1640,6 +1689,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'DELETE_MFHD_RECORD',
 			'DELETE_VOLUME',
 			'DELETE_VOLUME_NOTE',
+			'MAP_MONOGRAPH_PART',
 			'MARK_ITEM_AVAILABLE',
 			'MARK_ITEM_BINDERY',
 			'MARK_ITEM_CHECKED_OUT',
@@ -1677,20 +1727,34 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'ADMIN_MERGE_PROFILE',
 			'CREATE_AUTHORITY_IMPORT_IMPORT_DEF',
 			'CREATE_BIB_IMPORT_FIELD_DEF',
+			'CREATE_BIB_PTYPE',
 			'CREATE_BIB_SOURCE',
 			'CREATE_IMPORT_ITEM_ATTR_DEF',
 			'CREATE_IMPORT_TRASH_FIELD',
 			'CREATE_MERGE_PROFILE',
+			'CREATE_MONOGRAPH_PART',
+			'CREATE_VOLUME_PREFIX',
+			'CREATE_VOLUME_SUFFIX',
 			'DELETE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF',
+			'DELETE_BIB_PTYPE',
 			'DELETE_BIB_SOURCE',
 			'DELETE_IMPORT_ITEM_ATTR_DEF',
 			'DELETE_IMPORT_TRASH_FIELD',
 			'DELETE_MERGE_PROFILE',
+			'DELETE_MONOGRAPH_PART',
+			'DELETE_VOLUME_PREFIX',
+			'DELETE_VOLUME_SUFFIX',
+			'MAP_MONOGRAPH_PART',
 			'UPDATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF',
 			'UPDATE_BIB_IMPORT_IMPORT_FIELD_DEF',
+			'UPDATE_BIB_PTYPE',
 			'UPDATE_IMPORT_ITEM_ATTR_DEF',
 			'UPDATE_IMPORT_TRASH_FIELD',
-			'UPDATE_MERGE_PROFILE');
+			'UPDATE_MERGE_PROFILE',
+			'UPDATE_MONOGRAPH_PART',
+			'UPDATE_VOLUME_PREFIX',
+			'UPDATE_VOLUME_SUFFIX'
+		);
 
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 	SELECT
@@ -1742,6 +1806,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'MARK_ITEM_IN_TRANSIT',
 			'MARK_ITEM_LOST',
 			'MARK_ITEM_MISSING',
+			'MARK_ITEM_MISSING_PIECES',
 			'MARK_ITEM_ON_HOLDS_SHELF',
 			'MARK_ITEM_ON_ORDER',
 			'MARK_ITEM_RESHELVING',
@@ -1835,7 +1900,9 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'ADMIN_MAX_FINE_RULE',
 			'CREATE_CIRC_DURATION',
 			'DELETE_CIRC_DURATION',
+			'MARK_ITEM_MISSING_PIECES',
 			'UPDATE_CIRC_DURATION',
+			'UPDATE_HOLD_REQUEST_TIME',
 			'UPDATE_NET_ACCESS_LEVEL',
 			'VIEW_CIRC_MATRIX_MATCHPOINT',
 			'VIEW_HOLD_MATRIX_MATCHPOINT');
@@ -2030,6 +2097,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'UPDATE_FUNDING_SOURCE',
 			'UPDATE_IMPORT_ITEM',
 			'UPDATE_MARC',
+			'UPDATE_PICKLIST',
 			'UPDATE_RECORD',
 			'UPDATE_VOLUME',
 			'user_request.delete',
@@ -2101,8 +2169,9 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'SHARE_REPORT_FOLDER',
 			'UPDATE_ACQ_FUNDING_SOURCE',
 			'UPDATE_INVOICE_ITEM_TYPE',
-			'UPDATE_INVOICE_METHOD');
-
+			'UPDATE_INVOICE_METHOD',
+			'UPDATE_PICKLIST'
+		);
 
 -- Add serials permissions to the Serials group
 
@@ -2120,6 +2189,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'ADMIN_ASSET_COPY_TEMPLATE',
 			'ADMIN_SERIAL_CAPTION_PATTERN',
 			'ADMIN_SERIAL_DISTRIBUTION',
+			'ADMIN_SERIAL_ITEM',
 			'ADMIN_SERIAL_STREAM',
 			'ADMIN_SERIAL_SUBSCRIPTION',
 			'ISSUANCE_HOLDS',
@@ -8617,200 +8687,5 @@ INSERT INTO config.org_unit_setting_type
   'Mark barcode(s) of subordinate user(s) in a patron merge as inactive', 
   'bool'
 );
-
--- 0542.data.perm-list.misc-cat.sql
-
-INSERT INTO permission.perm_list VALUES
-    (485, 'CREATE_VOLUME_SUFFIX', oils_i18n_gettext(485, 'Create suffix label definition.', 'ppl', 'description'))
-    ,(486, 'UPDATE_VOLUME_SUFFIX', oils_i18n_gettext(486, 'Update suffix label definition.', 'ppl', 'description'))
-    ,(487, 'DELETE_VOLUME_SUFFIX', oils_i18n_gettext(487, 'Delete suffix label definition.', 'ppl', 'description'))
-    ,(488, 'CREATE_VOLUME_PREFIX', oils_i18n_gettext(488, 'Create prefix label definition.', 'ppl', 'description'))
-    ,(489, 'UPDATE_VOLUME_PREFIX', oils_i18n_gettext(489, 'Update prefix label definition.', 'ppl', 'description'))
-    ,(490, 'DELETE_VOLUME_PREFIX', oils_i18n_gettext(490, 'Delete prefix label definition.', 'ppl', 'description'))
-    ,(491, 'CREATE_MONOGRAPH_PART', oils_i18n_gettext(491, 'Create monograph part definition.', 'ppl', 'description'))
-    ,(492, 'UPDATE_MONOGRAPH_PART', oils_i18n_gettext(492, 'Update monograph part definition.', 'ppl', 'description'))
-    ,(493, 'DELETE_MONOGRAPH_PART', oils_i18n_gettext(493, 'Delete monograph part definition.', 'ppl', 'description'))
-    ,(494, 'ADMIN_CODED_VALUE', oils_i18n_gettext(494, 'Create/Update/Delete SVF Record Attribute Coded Value Map', 'ppl', 'description'))
-    ,(495, 'ADMIN_SERIAL_ITEM', oils_i18n_gettext(495, 'Create/Retrieve/Update/Delete Serial Item', 'ppl', 'description'))
-    ,(496, 'ADMIN_SVF', oils_i18n_gettext(496, 'Create/Update/Delete SVF Record Attribute Defintion', 'ppl', 'description'))
-    ,(497, 'CREATE_BIB_PTYPE', oils_i18n_gettext(497, 'Create Bibliographic Record Peer Type', 'ppl', 'description'))
-    ,(498, 'CREATE_PURCHASE_REQUEST', oils_i18n_gettext(498, 'Create User Purchase Request', 'ppl', 'description'))
-    ,(499, 'DELETE_BIB_PTYPE', oils_i18n_gettext(499, 'Delete Bibliographic Record Peer Type', 'ppl', 'description'))
-    ,(500, 'MAP_MONOGRAPH_PART', oils_i18n_gettext(500, 'Create/Update/Delete Copy Monograph Part Map', 'ppl', 'description'))
-    ,(501, 'MARK_ITEM_MISSING_PIECES', oils_i18n_gettext(501, 'Allows the Mark Item Missing Pieces action.', 'ppl', 'description'))
-    ,(502, 'UPDATE_BIB_PTYPE', oils_i18n_gettext(502, 'Update Bibliographic Record Peer Type', 'ppl', 'description'))
-    ,(503, 'UPDATE_HOLD_REQUEST_TIME', oils_i18n_gettext(503, 'Allows editing of a hold''s request time, and/or its Cut-in-line/Top-of-queue flag.', 'ppl', 'description'))
-    ,(504, 'UPDATE_PICKLIST', oils_i18n_gettext(504, 'Allows update/re-use of an acquisitions pick/selection list.', 'ppl', 'description'))
-    ,(505, 'UPDATE_WORKSTATION', oils_i18n_gettext(505, 'Allows update of a workstation during workstation registration override.', 'ppl', 'description'))
-    ,(506, 'VIEW_USER_SETTING_TYPE', oils_i18n_gettext(506, 'Allows viewing of configurable user setting types.', 'ppl', 'description'))
-;
-
--- stock Users group
-
-INSERT INTO permission.grp_perm_map ( grp, perm, depth )
-    SELECT
-        1,
-        id,
-        0
-    FROM permission.perm_list
-    WHERE code in (
-        'CREATE_PURCHASE_REQUEST'
-    );
-
--- stock Staff group
-
-INSERT INTO permission.grp_perm_map ( grp, perm, depth )
-    SELECT
-        3,
-        id,
-        0
-    FROM permission.perm_list
-    WHERE code in (
-        'VIEW_USER_SETTING_TYPE'
-    );
-
--- stock Circulators group
-
-INSERT INTO permission.grp_perm_map ( grp, perm, depth )
-    SELECT
-        5,
-        id,
-        0
-    FROM permission.perm_list
-    WHERE code in (
-        'MARK_ITEM_MISSING_PIECES'
-    );
-
---- stock Circulation Administrator group
-
-INSERT INTO permission.grp_perm_map ( grp, perm, depth, grantable )
-    SELECT
-        4,
-        id,
-        0,
-        't'
-    FROM permission.perm_list
-    WHERE code in (
-        'MARK_ITEM_MISSING_PIECES'
-        ,'UPDATE_HOLD_REQUEST_TIME'
-    );
-
--- stock Catalogers group
-
-INSERT INTO permission.grp_perm_map ( grp, perm, depth )
-    SELECT
-        5,
-        id,
-        0
-    FROM permission.perm_list
-    WHERE code in (
-        'MAP_MONOGRAPH_PART'
-        ,'ADMIN_SERIAL_ITEM'
-    );
-
--- stock Cataloging Administrator group
-
-INSERT INTO permission.grp_perm_map ( grp, perm, depth, grantable )
-    SELECT
-        8,
-        id,
-        0,
-        't'
-    FROM permission.perm_list
-    WHERE code in (
-        'MAP_MONOGRAPH_PART'
-        ,'ADMIN_SERIAL_ITEM'
-        ,'CREATE_VOLUME_SUFFIX'
-        ,'UPDATE_VOLUME_SUFFIX'
-        ,'DELETE_VOLUME_SUFFIX'
-        ,'CREATE_VOLUME_PREFIX'
-        ,'UPDATE_VOLUME_PREFIX'
-        ,'DELETE_VOLUME_PREFIX'
-        ,'CREATE_MONOGRAPH_PART'
-        ,'UPDATE_MONOGRAPH_PART'
-        ,'DELETE_MONOGRAPH_PART'
-        ,'CREATE_BIB_PTYPE'
-        ,'UPDATE_BIB_PTYPE'
-        ,'DELETE_BIB_PTYPE'
-    );
-
--- stock Serials group
-
-INSERT INTO permission.grp_perm_map ( grp, perm, depth )
-    SELECT
-        11,
-        id,
-        0
-    FROM permission.perm_list
-    WHERE code in (
-        'ADMIN_SERIAL_ITEM'
-    );
-
-
--- stock Acquisitions group
-
-INSERT INTO permission.grp_perm_map ( grp, perm, depth )
-    SELECT
-        7,
-        id,
-        0
-    FROM permission.perm_list
-    WHERE code in (
-        'UPDATE_PICKLIST'
-    );
-
---- stock Acquisitions Administrator group
-
-INSERT INTO permission.grp_perm_map ( grp, perm, depth, grantable )
-    SELECT
-        8,
-        id,
-        0,
-        't'
-    FROM permission.perm_list
-    WHERE code in (
-        'UPDATE_PICKLIST'
-    );
-
---- stock Local Administrator group
-
-INSERT INTO permission.grp_perm_map ( grp, perm, depth, grantable )
-    SELECT
-        10,
-        id,
-        2,
-        't'
-    FROM permission.perm_list
-    WHERE code in (
-        'UPDATE_WORKSTATION'
-    );
-
---- stock System Administrator group
-
-INSERT INTO permission.grp_perm_map ( grp, perm, depth, grantable )
-    SELECT
-        12,
-        id,
-        1,
-        't'
-    FROM permission.perm_list
-    WHERE code in (
-        'UPDATE_WORKSTATION'
-    );
-
---- stock Global Administrator group
-
-INSERT INTO permission.grp_perm_map ( grp, perm, depth, grantable )
-    SELECT
-        13,
-        id,
-        0,
-        't'
-    FROM permission.perm_list
-    WHERE code in (
-        'UPDATE_WORKSTATION'
-        ,'ADMIN_SVF'
-        ,'ADMIN_CODED_VALUE'
-    );
 
 

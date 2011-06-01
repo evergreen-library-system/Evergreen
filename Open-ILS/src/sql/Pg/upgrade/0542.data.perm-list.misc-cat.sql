@@ -152,45 +152,4 @@ INSERT INTO permission.grp_perm_map ( grp, perm, depth, grantable )
         'UPDATE_PICKLIST'
     );
 
---- stock Local Administrator group
-
-INSERT INTO permission.grp_perm_map ( grp, perm, depth, grantable )
-    SELECT
-        10,
-        id,
-        2,
-        't'
-    FROM permission.perm_list
-    WHERE code in (
-        'UPDATE_WORKSTATION'
-    );
-
---- stock System Administrator group
-
-INSERT INTO permission.grp_perm_map ( grp, perm, depth, grantable )
-    SELECT
-        12,
-        id,
-        1,
-        't'
-    FROM permission.perm_list
-    WHERE code in (
-        'UPDATE_WORKSTATION'
-    );
-
---- stock Global Administrator group
-
-INSERT INTO permission.grp_perm_map ( grp, perm, depth, grantable )
-    SELECT
-        13,
-        id,
-        0,
-        't'
-    FROM permission.perm_list
-    WHERE code in (
-        'UPDATE_WORKSTATION'
-        ,'ADMIN_SVF'
-        ,'ADMIN_CODED_VALUE'
-    );
-
 COMMIT;
