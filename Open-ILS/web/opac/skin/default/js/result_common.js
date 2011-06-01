@@ -451,6 +451,15 @@ function resultDisplayRecord(rec, pos, is_mr) {
 	var r = table.rows[pos + 1];
     var currentISBN = cleanISBN(rec.isbn());
 
+    if (OpenLibraryLinks) {
+        var olspan = $n(r, 'openLibraryLink');
+        if (currentISBN) {
+            olspan.setAttribute('name', olspan.getAttribute('name') + 
+                '-' + currentISBN
+            );
+        }
+    }
+
     if (googleBooksLink) {
 	    var gbspan = $n(r, "googleBooksLink");
         if (currentISBN) {
@@ -677,55 +686,99 @@ function resultBuildFormatIcons( row, rec, is_mr ) {
 }
 
 function fetchOpenLibraryLinks() {
-    var data = '{ "records": { "/books/OL7577192M": { "recordURL": "http://openlibrary.org/books/OL7577192M", "oclcs": [], "publishDates": [ "August 1, 1959" ], "lccns": [], "isbns": [ "0451525221", "9780451525222" ], "issns": [], "data": { "publishers": [ { "name": "Signet Classics" } ], "identifiers": { "isbn_13": [ "9780451525222" ], "openlibrary": [ "OL7577192M" ], "isbn_10": [ "0451525221" ], "goodreads": [ "1138582" ], "librarything": [ "2264" ] }, "title": "The Scarlet Letter (Signet Classics)", "url": "http://mccabe-dev.us.archive.org:8080/books/OL7577192M/The_Scarlet_Letter_(Signet_Classics)", "number_of_pages": 10, "cover": { "small": "http://covers.openlibrary.org/b/id/295505-S.jpg", "large": "http://covers.openlibrary.org/b/id/295505-L.jpg", "medium": "http://covers.openlibrary.org/b/id/295505-M.jpg" }, "subject_places": [ { "url": "http://openlibrary.org/subjects/place:boston_(mass.)", "name": "Boston (Mass.)" }, { "url": "http://openlibrary.org/subjects/place:massachusetts", "name": "Massachusetts" }, { "url": "http://openlibrary.org/subjects/place:boston", "name": "Boston" }, { "url": "http://openlibrary.org/subjects/place:new_england", "name": "New England" }, { "url": "http://openlibrary.org/subjects/place:england", "name": "England" }, { "url": "http://openlibrary.org/subjects/place:history", "name": "History" } ], "subjects": [ { "url": "http://openlibrary.org/subjects/fiction", "name": "Fiction" }, { "url": "http://openlibrary.org/subjects/puritans", "name": "Puritans" }, { "url": "http://openlibrary.org/subjects/puritans_in_fiction", "name": "Puritans in fiction" }, { "url": "http://openlibrary.org/subjects/history", "name": "History" }, { "url": "http://openlibrary.org/subjects/adultery_in_fiction", "name": "Adultery in fiction" }, { "url": "http://openlibrary.org/subjects/adultery", "name": "Adultery" }, { "url": "http://openlibrary.org/subjects/illegitimate_children", "name": "Illegitimate children" }, { "url": "http://openlibrary.org/subjects/illegitimate_children_in_fiction", "name": "Illegitimate children in fiction" }, { "url": "http://openlibrary.org/subjects/triangles_(interpersonal_relations)", "name": "Triangles (Interpersonal relations)" }, { "url": "http://openlibrary.org/subjects/clergy", "name": "Clergy" }, { "url": "http://openlibrary.org/subjects/married_women_in_fiction", "name": "Married women in fiction" }, { "url": "http://openlibrary.org/subjects/married_women", "name": "Married women" }, { "url": "http://openlibrary.org/subjects/clergy_in_fiction", "name": "Clergy in fiction" }, { "url": "http://openlibrary.org/subjects/revenge", "name": "Revenge" }, { "url": "http://openlibrary.org/subjects/revenge_in_fiction", "name": "Revenge in fiction" }, { "url": "http://openlibrary.org/subjects/women_immigrants", "name": "Women immigrants" }, { "url": "http://openlibrary.org/subjects/women_immigrants_in_fiction", "name": "Women immigrants in fiction" }, { "url": "http://openlibrary.org/subjects/massachusetts_in_fiction", "name": "Massachusetts in fiction" }, { "url": "http://openlibrary.org/subjects/american_fiction", "name": "American fiction" }, { "url": "http://openlibrary.org/subjects/women", "name": "Women" }, { "url": "http://openlibrary.org/subjects/women_in_fiction", "name": "Women in fiction" }, { "url": "http://openlibrary.org/subjects/study_guides", "name": "Study guides" }, { "url": "http://openlibrary.org/subjects/new_england_in_fiction", "name": "New England in fiction" }, { "url": "http://openlibrary.org/subjects/social_life_and_customs", "name": "Social life and customs" }, { "url": "http://openlibrary.org/subjects/examinations", "name": "Examinations" }, { "url": "http://openlibrary.org/subjects/juvenile_fiction", "name": "Juvenile fiction" }, { "url": "http://openlibrary.org/subjects/young_adult_fiction", "name": "Young adult fiction" }, { "url": "http://openlibrary.org/subjects/england_in_fiction", "name": "England in fiction" }, { "url": "http://openlibrary.org/subjects/vocabulary", "name": "Vocabulary" }, { "url": "http://openlibrary.org/subjects/historical_fiction", "name": "Historical fiction" }, { "url": "http://openlibrary.org/subjects/sat_(educational_test)", "name": "SAT (Educational test)" }, { "url": "http://openlibrary.org/subjects/english_language", "name": "English language" }, { "url": "http://openlibrary.org/subjects/nathaniel_hawthorne", "name": "Nathaniel Hawthorne" }, { "url": "http://openlibrary.org/subjects/lending_library", "name": "Lending library" }, { "url": "http://openlibrary.org/subjects/accessible_book", "name": "Accessible book" }, { "url": "http://openlibrary.org/subjects/protected_daisy", "name": "Protected DAISY" }, { "url": "http://openlibrary.org/subjects/litt\u00e9rature", "name": "Litt\u00e9rature" }, { "url": "http://openlibrary.org/subjects/adult\u00e8re", "name": "Adult\u00e8re" }, { "url": "http://openlibrary.org/subjects/femmes", "name": "Femmes" }, { "url": "http://openlibrary.org/subjects/the_scarlet_letter_(hawthorne)", "name": "The scarlet letter (Hawthorne)" }, { "url": "http://openlibrary.org/subjects/puritains", "name": "Puritains" }, { "url": "http://openlibrary.org/subjects/romans,_nouvelles", "name": "Romans, nouvelles" }, { "url": "http://openlibrary.org/subjects/romance_norte_americano", "name": "Romance Norte Americano" }, { "url": "http://openlibrary.org/subjects/in_library", "name": "In library" } ], "publish_date": "August 1, 1959", "key": "/books/OL7577192M", "authors": [ { "url": "http://mccabe-dev.us.archive.org:8080/authors/OL26681A/Nathaniel_Hawthorne", "name": "Nathaniel Hawthorne" } ], "subject_people": [ { "url": "http://openlibrary.org/subjects/person:nathaniel_hawthorne_(1804-1864)", "name": "Nathaniel Hawthorne (1804-1864)" }, { "url": "http://openlibrary.org/subjects/person:nathaniel_hawthorne_(1804-1865)", "name": "Nathaniel Hawthorne (1804-1865)" } ], "subject_times": [ { "url": "http://openlibrary.org/subjects/time:colonial_period,_ca._1600-1775", "name": "Colonial period, ca. 1600-1775" }, { "url": "http://openlibrary.org/subjects/time:colonial_period,_ca.1600-1775", "name": "Colonial period, ca.1600-1775" }, { "url": "http://openlibrary.org/subjects/time:19th_century", "name": "19th century" } ] } } }, "items": [ { "status": "lendable", "ol-work-id": "OL455305W", "ol-edition-id": "OL5849784M", "cover": { "small": "http://covers.openlibrary.org/b/id/6560185-S.jpg", "large": "http://covers.openlibrary.org/b/id/6560185-L.jpg", "medium": "http://covers.openlibrary.org/b/id/6560185-M.jpg" }, "itemURL": "http://openlibrary.org/books/OL5849784M/The_scarlet_letter/borrow", "enumcron": false, "contributor": "contributor", "fromRecord": "/books/OL7577192M", "match": "similar" }, { "status": "full access", "ol-work-id": "OL455305W", "ol-edition-id": "OL7106163M", "cover": { "small": "http://covers.openlibrary.org/b/id/5624131-S.jpg", "large": "http://covers.openlibrary.org/b/id/5624131-L.jpg", "medium": "http://covers.openlibrary.org/b/id/5624131-M.jpg" }, "itemURL": "http://www.archive.org/stream/scarletletterrom00hawtrich", "enumcron": false, "contributor": "contributor", "fromRecord": "/books/OL7577192M", "match": "similar" } ] }';
-renderOpenLibraryLinks(data);
-}
-
-function fetchOpenLibraryLinksReal() {
     if (isbnList && OpenLibraryLinks) {
-    alert('fetching');
+        /* OpenLibrary supports a number of different identifiers:
+         * ISBN: isbn:<isbn>
+         * LCCN: lccn:<lccn>
+         * OpenLibrary ID: olid:<openlibrary-ID>
+         *
+         * We'll just fire off ISBNs for now.
+         */
+
         var isbns = '';
         dojo.forEach(isbnList, function(isbn) {
-            isbns += 'isbn:' + isbn + ',';
+            isbns += 'isbn:' + isbn + '|';
         });
+        isbns = isbns.replace(/.$/, '');
         dojo.require('dojo.io.script');
         dojo.io.script.get({
-            "url":"http://mccabe-dev.us.archive.org:8080/api/shotgun",
-            "content": { "keys": isbns },
+            "url":"http://openlibrary.org/api/volumes/brief/json/" + isbns + '?callback=renderOpenLibraryLinks',
             "callback": "renderOpenLibraryLinks"
         });
     }
 }
 
 function renderOpenLibraryLinks(response) {
-    var results = dojo.fromJson(response);
     var ol_ebooks = {};
 
-    /* Iterate over each returned record */
-    for (var record in results.records) {
-        var edition = results.records[record];
-        /* Map ISBN that we care about to OL edition ID */
-        dojo.forEach(edition.isbns, function(isbn) {
-            ol_ebooks[isbn] = record;
-        });
+    /* Iterate over each identifier we requested */
+    for (var item_id in response) {
 
-        /* Now iterate over the results to find matches for our original ISBNs;
-           if we find a match, take action */
-        dojo.forEach(isbnList, function (isbn) {
-            if (ol_ebooks[isbn]) {
-                var oled = ol_ebooks[isbn];
-                /* Find matching items by their fromEdition key */
-                dojo.forEach(results.items, function (item) {
-                    /* Populate the links if we have a match */
-                    if (item.fromRecord == oled) {
-                        /* alert for now */
-                        alert(item.status + ' ' + item.match + ' ' + item.url);
-                    }
-                });
+        var isbn = item_id.replace(/^isbn:/, '');
+        /* Iterate over each matching item; OpenLibrary supplies access info:
+         *  * match: "exact" or "similar"
+         *  * status: "full access" or "lendable"
+         */
+        dojo.forEach(response[item_id].items, function(item) {
+            ol_ebooks[isbn] = {};
+            if (item.match == 'exact') {
+                if (item.status == 'full access') {
+                    ol_ebooks[isbn]['exact_full'] = item.itemURL;
+                } else {
+                    ol_ebooks[isbn]['exact_lendable'] = item.itemURL;
+                }
+            } else {
+                if (item.status == 'full access') {
+                    ol_ebooks[isbn]['similar_full'] = item.itemURL;
+                } else {
+                    ol_ebooks[isbn]['similar_lendable'] = item.itemURL;
+                }
             }
         });
-        
-    };
+
+        /* Now populate the results page with our ebook goodness*/
+        /* Go for the jugular - exact match with full access */
+        if (ol_ebooks[isbn]['exact_full']) {
+            createOpenLibraryLink(
+                isbn, ol_ebooks[isbn]['exact_full'], 'Read online'
+            );
+            continue;
+        }
+
+        /* Fall back to slightly less palatable options */
+        else if (ol_ebooks[isbn]['exact_lendable']) {
+            createOpenLibraryLink(
+                isbn, ol_ebooks[isbn]['exact_lendable'], 'Borrow online'
+            );
+        }
+
+        if (ol_ebooks[isbn]['similar_full']) {
+            createOpenLibraryLink(
+                isbn, ol_ebooks[isbn]['similar_full'], 'Read similar online'
+            );
+        } else if (ol_ebooks[isbn]['similar_lendable']) {
+            createOpenLibraryLink(
+                isbn, ol_ebooks[isbn]['similar_full'], 'Borrow similar online'
+            );
+        }
+    }
+}
+
+function createOpenLibraryLink(isbn, url, text) {
+    var ol_span = $n(document.documentElement, 'openLibraryLink-' + isbn);
+
+    var ol_a_span = dojo.create('a', {
+            "href": url,
+            "class": "classic_link"
+        }, ol_span
+    );
+    dojo.create('img', {
+            "src": "/opac/images/openlibrary.gif"
+        }, ol_a_span
+    );
+    dojo.create('br', null, ol_a_span);
+    ol_a_span.appendChild(dojo.doc.createTextNode(text));
+    dojo.removeClass(ol_span, 'hide_me');
 }
 
 function fetchGoogleBooksLink () {

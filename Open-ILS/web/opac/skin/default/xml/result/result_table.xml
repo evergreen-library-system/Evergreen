@@ -44,6 +44,8 @@
                                     </a>
                                 </td>
 
+                                <!-- Empty span used for creating OpenLibrary links -->
+                                <td rowspan='4' name="openLibraryLink" style="text-align: center; vertical-align: middle; width: 15em;" class="hide_me"></td>
                                 <!-- Copy this td for each copy count appended -->
                                 <td  rowspan='4' nowrap='nowrap' name="copy_count_cell" class='copy_count_cell'> 
                                 </td>
