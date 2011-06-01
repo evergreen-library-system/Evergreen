@@ -1587,10 +1587,22 @@ g.check_for_unmet_required_fields = function() {
             abort.push(fn);
         }
     }
-    if (abort.length > 0) {
-        $('save').setAttribute('disabled','true'); 
+    if (xulG.unified_interface) {
+        if (abort.length > 0) {
+            if (typeof xulG.lock_save_button == 'function') {
+                xulG.lock_save_button();
+            }
+        } else {
+            if (typeof xulG.unlock_save_button == 'function') {
+                xulG.unlock_save_button();
+            }
+        }
     } else {
-        $('save').setAttribute('disabled','false'); 
+        if (abort.length > 0) {
+            $('save').setAttribute('disabled','true');
+        } else {
+            $('save').setAttribute('disabled','false');
+        }
     }
 }
 
