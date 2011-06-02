@@ -28,6 +28,8 @@ use Data::Dumper;
 
 my $AC = 'OpenILS::WWW::AddedContent';
 
+my $blank_img = 'http://images.concat.ca/opac/images/blank.png';
+
 # This URL is always the same for OpenLibrary, so there's no advantage to
 # pulling from opensrf.xml
 
@@ -303,7 +305,7 @@ sub fetch_details_response {
 sub fetch_items_response {
     my ($self, $key) = @_;
 
-    my $book_results = $self->fetch_response($key);
+    my $book_results = $self->fetch_response($key) || return 0;
 
     my $items = $book_results->{items};
 
@@ -324,6 +326,10 @@ sub fetch_cover_response {
 
     my $items = $self->fetch_items_response($key);
 
+    if (!$items) {
+        return $AC->get_url($blank_img);
+    }
+
     $logger->debug("$key: items request got " . scalar(@$items) . " items back");
 
     foreach my $item (@$items) {
@@ -333,7 +339,9 @@ sub fetch_cover_response {
     }
 
     $logger->debug("$key: no covers for this book");
-    return 0;
+
+    # Return a blank image
+    return $AC->get_url($blank_img);
 }
 
 1;
