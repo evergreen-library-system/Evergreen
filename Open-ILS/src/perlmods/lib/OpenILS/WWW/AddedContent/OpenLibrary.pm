@@ -28,7 +28,8 @@ use Data::Dumper;
 
 my $AC = 'OpenILS::WWW::AddedContent';
 
-my $blank_img = 'http://images.concat.ca/opac/images/blank.png';
+# This should work for most setups
+my $blank_img = 'http://localhost/opac/images/blank.png';
 
 # This URL is always the same for OpenLibrary, so there's no advantage to
 # pulling from opensrf.xml
@@ -239,6 +240,16 @@ sub send_html {
 
     return { content_type => 'text/html', content => $HTML };
 }
+
+# proxy OpenLibrary requests so that the IP address of the library
+# can be used to determine access rights to materials
+sub proxy_json {
+    my( $self, $key ) = @_;
+
+    my $url = $read_api . $key;
+    $self->send_json($AC->get_url($url)->content());
+}
+
 
 # returns the HTTP response object from the URL fetch
 sub fetch_response {
