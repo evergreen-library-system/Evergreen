@@ -698,12 +698,14 @@ function fetchOpenLibraryLinks() {
             isbns += 'isbn:' + isbn + '|';
         });
         isbns = isbns.replace(/.$/, '');
-        dojo.require('dojo.io.script');
-        dojo.io.script.get({
-            "url":"http://openlibrary.org/api/volumes/brief/json/" + isbns + '?callback=renderOpenLibraryLinks',
-            "callback": "renderOpenLibraryLinks"
-        });
     }
+
+    dojo.xhrGet({
+        "url": "/opac/extras/ac/proxy/json/" + isbns,
+        "handleAs": "json",
+        "load": function (data) { renderOpenLibraryLinks(data); }
+    });
+
 }
 
 function renderOpenLibraryLinks(response) {

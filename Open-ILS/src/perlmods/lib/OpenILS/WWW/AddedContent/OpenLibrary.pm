@@ -247,6 +247,8 @@ sub proxy_json {
     my( $self, $key ) = @_;
 
     my $url = $read_api . $key;
+    $logger->debug("proxy_json with key '$key', url $url");
+
     $self->send_json($AC->get_url($url)->content());
 }
 
