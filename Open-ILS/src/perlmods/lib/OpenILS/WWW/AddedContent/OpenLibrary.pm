@@ -124,12 +124,12 @@ sub excerpt_html {
 
     my $content = $self->fetch_details_response($key)->content();
 
-    my $first_sentence = $content->{details}->{first_sentence};
+    my $first_sentence = $content->{first_sentence};
     if ($first_sentence) {
         $excerpt_html .= "<div class='sentence1'>$first_sentence</div>\n";
     }
 
-    my $excerpts_json = $content->{details}->{$book_key}->{excerpts};
+    my $excerpts_json = $content->{excerpts};
     if ($excerpts_json && scalar(@$excerpts_json)) {
         # Load up excerpt text with comments in tooltip
         foreach my $excerpt (@$excerpts_json) {
@@ -279,29 +279,40 @@ sub fetch_details_response {
     return $book_results->{$book_key}->{details};
 }
 
-# returns the HTTP response object from the URL fetch
+sub fetch_items_response {
+    my ($self, $key) = @_;
+
+    my $book_results = $self->fetch_response($key)->content();
+
+    $logger->debug("$key: items $book_results");
+    
+    my $items = $book_results->{items};
+
+    # We didn't find a matching book; short-circuit our response
+    if (!$items || scalar(@$items) == 0) {
+        $logger->debug("$key: no found items");
+        return 0;
+    }
+
+    return $book_results->{items};
+}
+
+
+# returns a cover image from the list of associated items
+# TODO: Look for the best match in the array of items
 sub fetch_cover_response {
     my( $self, $size, $key ) = @_;
 
-    my $response = $self->fetch_response($key)->content();
+    my $items = $self->fetch_items_response($key);
 
-    my $book_data = OpenSRF::Utils::JSON->JSON2perl($response);
-    my $book_key = (keys %$book_data)[0];
-
-    # We didn't find a matching book; short-circuit our response
-    if (!$book_key) {
-        $logger->debug("$key: no found book");
-        return 0;
+    foreach my $item (@$items) {
+        if ($item->{covers}) {
+            return $AC->get_url($item->{covers}->{$size}) || 0;
+        }
     }
 
-    my $covers_json = $book_data->{$book_key}->{cover};
-    if (!$covers_json) {
-        $logger->debug("$key: no covers for this book");
-        return 0;
-    }
-
-    $logger->debug("$key: " . $covers_json->{$size});
-    return $AC->get_url($covers_json->{$size}) || 0;
+    $logger->debug("$key: no covers for this book");
+    return 0;
 }
 
 1;
