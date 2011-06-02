@@ -451,24 +451,22 @@ function resultDisplayRecord(rec, pos, is_mr) {
 	var r = table.rows[pos + 1];
     var currentISBN = cleanISBN(rec.isbn());
 
-    if (OpenLibraryLinks) {
-        var olspan = $n(r, 'openLibraryLink');
-        if (currentISBN) {
+    if (currentISBN) {
+        isbnList.push(currentISBN);
+        if (OpenLibraryLinks) {
+            var olspan = $n(r, 'openLibraryLink');
             olspan.setAttribute('name', olspan.getAttribute('name') + 
                 '-' + currentISBN
             );
         }
-    }
 
-    if (googleBooksLink) {
-	    var gbspan = $n(r, "googleBooksLink");
-        if (currentISBN) {
+        if (googleBooksLink) {
+            var gbspan = $n(r, "googleBooksLink");
             gbspan.setAttribute(
                 'name',
                 gbspan.getAttribute('name') + '-' + currentISBN
             );
 
-            isbnList.push(currentISBN);
         }
     }
 
@@ -686,7 +684,7 @@ function resultBuildFormatIcons( row, rec, is_mr ) {
 }
 
 function fetchOpenLibraryLinks() {
-    if (isbnList && OpenLibraryLinks) {
+    if (isbnList.length > 0 && OpenLibraryLinks) {
         /* OpenLibrary supports a number of different identifiers:
          * ISBN: isbn:<isbn>
          * LCCN: lccn:<lccn>
@@ -735,6 +733,11 @@ function renderOpenLibraryLinks(response) {
                 }
             }
         });
+
+        /* If there are no books to read or borrow, move on */
+        if (!ol_ebooks[isbn]) {
+            continue;
+        }
 
         /* Now populate the results page with our ebook goodness*/
         /* Go for the jugular - exact match with full access */
