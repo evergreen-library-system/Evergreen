@@ -98,6 +98,7 @@
  		<xi:include href="reports/report-shared-template.xml"/>
  		<xi:include href="reports/report-recurring-report.xml"/>
  		<xi:include href="reports/report-template-terminology.xml"/>
+ 		<xi:include href="report-exporting-report-templates-using-phppgadmin.xml"/>
 		
 	</part>
 
