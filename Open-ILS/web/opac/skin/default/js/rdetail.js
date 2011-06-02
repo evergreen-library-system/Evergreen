@@ -349,7 +349,7 @@ function _holdingsDrawMFHD(holdings, entryNum) {
 	if (hm.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.MISSING_VOLUMES, hm); }
 	if (hinc.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.INCOMPLETE_VOLUMES, hinc); }
 
-	if (isXUL()) {
+	if (isXUL() && holdings.sre_id() != -1) { // -1 indicates in-DB only holdings, so no button or menu entries for MFHD
 		mfhdDetails.push({ 'id' : holdings.sre_id(), 'label' : hloc, 'entryNum' : entryNum, 'owning_lib' : holdings.owning_lib() });
 		dojo.require('openils.Event');
 		dojo.require('openils.PermaCrud');
