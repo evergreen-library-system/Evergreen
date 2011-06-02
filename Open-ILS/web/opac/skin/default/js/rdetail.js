@@ -275,14 +275,12 @@ function _holdingsDraw(h) {
     if (!holdings) { return null; }
 
     // Only draw holdings within our OU scope
+    var here = findOrgUnit(getLocation());
+    var entryNum = 0;
     dojo.forEach(holdings, function (item) {
-        var here = findOrgUnit(getLocation());
-        if (getDepth() > 0 || getDepth === 0 ) {
-            while (getDepth() < findOrgDepth(here))
-            here = findOrgUnit( here.parent_ou() );
-            if (orgIsMine(findOrgUnit(here), findOrgUnit(item.owning_lib()))) {
-                _holdingsDrawMFHD(item);
-            }
+        if (orgIsMine(here, findOrgUnit(item.owning_lib()))) {
+            _holdingsDrawMFHD(item, entryNum);
+            entryNum++;
         }
     });
 
