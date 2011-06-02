@@ -1422,7 +1422,11 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 505, 'UPDATE_WORKSTATION', oils_i18n_gettext(505,
     'Allows update of a workstation during workstation registration override.', 'ppl', 'description')),
  ( 506, 'VIEW_USER_SETTING_TYPE', oils_i18n_gettext(506,
-    'Allows viewing of configurable user setting types.', 'ppl', 'description'));
+    'Allows viewing of configurable user setting types.', 'ppl', 'description')),
+ ( 507, 'ABORT_TRANSIT_ON_LOST', oils_i18n_gettext(507,
+    'Allows a user to abort a transit on a copy with status of LOST', 'ppl', 'description')),
+ ( 508, 'ABORT_TRANSIT_ON_MISSING', oils_i18n_gettext(508,
+    'Allows a user to abort a transit on a copy with status of MISSING', 'ppl', 'description'));
 
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
@@ -1905,6 +1909,8 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'UPDATE_HOLD_REQUEST_TIME',
 			'UPDATE_NET_ACCESS_LEVEL',
 			'VIEW_CIRC_MATRIX_MATCHPOINT',
+            'ABORT_TRANSIT_ON_LOST', 
+            'ABORT_TRANSIT_ON_MISSING',
 			'VIEW_HOLD_MATRIX_MATCHPOINT');
 
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
