@@ -60,7 +60,7 @@ sub create_copy {
 
 	my $evt;
 	my $org = (ref $copy->circ_lib) ? $copy->circ_lib->id : $copy->circ_lib;
-	return $evt if ($evt = OpenILS::Application::Cat::AssetCommon->org_cannot_have_vols($editor, $org));
+	return $evt if ($evt = $class->org_cannot_have_vols($editor, $org));
 
 	$copy->clear_id;
 	$copy->editor($editor->requestor->id);
@@ -196,7 +196,7 @@ sub update_copy {
 
 	my $evt;
 	my $org = (ref $copy->circ_lib) ? $copy->circ_lib->id : $copy->circ_lib;
-	return $evt if ( $evt = OpenILS::Application::Cat::AssetCommon->org_cannot_have_vols($editor, $org) );
+	return $evt if ( $evt = $class->org_cannot_have_vols($editor, $org) );
 
 	$logger->info("vol-update: updating copy ".$copy->id);
 	my $orig_copy = $editor->retrieve_asset_copy($copy->id);
@@ -313,7 +313,7 @@ sub update_fleshed_copies {
 
 
 sub delete_copy {
-	my($class, $editor, $override, $vol, $copy, $retarget_holds, $force_delete_empty_bib) = @_;
+	my($class, $editor, $override, $vol, $copy, $retarget_holds, $force_delete_empty_bib, $skip_empty_cleanup) = @_;
 
    return $editor->event unless 
       $editor->allowed('DELETE_COPY', $class->copy_perm_org($vol, $copy));
@@ -345,6 +345,8 @@ sub delete_copy {
 	}
 
     $class->check_hold_retarget($editor, $copy, undef, $retarget_holds);
+
+    return undef if $skip_empty_cleanup;
 
 	return $class->remove_empty_objects($editor, $override, $vol, $force_delete_empty_bib);
 }
@@ -447,7 +449,7 @@ sub find_or_create_volume {
 	$vol->suffix($suffix);
 	$vol->record($record_id);
 
-    my $evt = OpenILS::Application::Cat::AssetCommon->create_volume(0, $e, $vol);
+    my $evt = $class->create_volume(0, $e, $vol);
     return (undef, $evt) if $evt;
 
 	return ($vol);
@@ -479,10 +481,8 @@ sub remove_empty_objects {
 
         # delete this volume if it's not already marked as deleted
         unless( $U->is_true($vol->deleted) || $vol->isdeleted ) {
-            $vol->deleted('t');
-            $vol->editor($editor->requestor->id);
-            $vol->edit_date('now');
-            $editor->update_asset_call_number($vol) or return $editor->event;
+            my $evt = $class->delete_volume($editor, $vol, $override, 0, 1);
+            return $evt if $evt;
         }
 
         return OpenILS::Event->new('TITLE_LAST_COPY', payload => $vol->record ) 
@@ -496,6 +496,37 @@ sub remove_empty_objects {
 	}
 
 	return undef;
+}
+
+# Deletes a volume.  Returns undef on success, event on error
+# force : deletes all attached copies
+# skip_copy_check : assumes caller has verified no copies need deleting first
+sub delete_volume {
+    my($class, $editor, $vol, $override, $delete_copies, $skip_copy_checks) = @_;
+    my $evt;
+
+    unless($skip_copy_checks) {
+        my $cs = $editor->search_asset_copy(
+            [{call_number => $vol->id, deleted => 'f'}, {limit => 1}], {idlist => 1});
+
+        return OpenILS::Event->new('VOLUME_NOT_EMPTY', payload => $vol->id) 
+            if @$cs and !$delete_copies;
+
+        my $copies = $editor->search_asset_copy({call_number => $vol->id, deleted => 'f'});
+
+        for my $copy (@$copies) {
+            $evt = $class->delete_copy($editor, $override, $vol, $copy, 0, 0, 1);
+            return $evt if $evt;
+        }
+    }
+
+    $vol->deleted('t');
+    $vol->edit_date('now');
+    $vol->editor($editor->requestor->id);
+    $editor->update_asset_call_number($vol) or return $editor->die_event;
+
+    # handle the case where this is the last volume on the record
+	return $class->remove_empty_objects($editor, $override, $vol);
 }
 
 
