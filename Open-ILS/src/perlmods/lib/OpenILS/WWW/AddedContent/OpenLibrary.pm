@@ -28,16 +28,10 @@ use Data::Dumper;
 
 my $AC = 'OpenILS::WWW::AddedContent';
 
-# These URLs are always the same for OpenLibrary, so there's no advantage to
-# pulling from opensrf.xml; we hardcode them here
+# This URL is always the same for OpenLibrary, so there's no advantage to
+# pulling from opensrf.xml
 
-# jscmd=details is unstable but includes goodies such as Table of Contents
-my $base_url_details = 'http://openlibrary.org/api/books?format=json&jscmd=details&bibkeys=ISBN:';
-
-# jscmd=data is stable and contains links to ebooks, excerpts, etc
-my $base_url_data = 'http://openlibrary.org/api/books?format=json&jscmd=data&bibkeys=ISBN:';
-
-my $cover_base_url = 'http://covers.openlibrary.org/b/isbn/';
+my $read_api = 'http://openlibrary.org/api/volumes/brief/json/';
 
 sub new {
     my( $class, $args ) = @_;
@@ -68,7 +62,7 @@ sub jacket_large {
 
 sub ebooks_html {
     my( $self, $key ) = @_;
-    my $book_data_json = $self->fetch_data_response($key)->content();
+    my $book_data_json = $self->fetch_response($key)->content();
 
     $logger->debug("$key: " . $book_data_json);
 
@@ -125,27 +119,17 @@ sub ebooks_html {
 
 sub excerpt_html {
     my( $self, $key ) = @_;
-    my $book_details_json = $self->fetch_details_response($key)->content();
-
-    $logger->debug("$key: $book_details_json");
 
     my $excerpt_html;
-    
-    my $book_details = OpenSRF::Utils::JSON->JSON2perl($book_details_json);
-    my $book_key = (keys %$book_details)[0];
 
-    # We didn't find a matching book; short-circuit our response
-    if (!$book_key) {
-        $logger->debug("$key: no found book");
-        return 0;
-    }
+    my $content = $self->fetch_details_response($key)->content();
 
-    my $first_sentence = $book_details->{$book_key}->{first_sentence};
+    my $first_sentence = $content->{details}->{first_sentence};
     if ($first_sentence) {
         $excerpt_html .= "<div class='sentence1'>$first_sentence</div>\n";
     }
 
-    my $excerpts_json = $book_details->{$book_key}->{excerpts};
+    my $excerpts_json = $content->{details}->{$book_key}->{excerpts};
     if ($excerpts_json && scalar(@$excerpts_json)) {
         # Load up excerpt text with comments in tooltip
         foreach my $excerpt (@$excerpts_json) {
@@ -177,22 +161,12 @@ HTML table.
 
 sub toc_html {
     my( $self, $key ) = @_;
-    my $book_details_json = $self->fetch_details_response($key)->content();
-
-    $logger->debug("$key: " . $book_details_json);
 
     my $toc_html;
     
-    my $book_details = OpenSRF::Utils::JSON->JSON2perl($book_details_json);
-    my $book_key = (keys %$book_details)[0];
+    my $details = $self->fetch_details_response($key) || return 0;
 
-    # We didn't find a matching book; short-circuit our response
-    if (!$book_key) {
-        $logger->debug("$key: no found book");
-        return 0;
-    }
-
-    my $toc_json = $book_details->{$book_key}->{details}->{table_of_contents};
+    my $toc_json = $details->{table_of_contents};
 
     # No table of contents is available for this book; short-circuit
     if (!$toc_json or !scalar(@$toc_json)) {
@@ -225,7 +199,7 @@ sub toc_html {
 sub toc_json {
     my( $self, $key ) = @_;
     my $toc = $self->send_json(
-        $self->fetch_details_response($key)
+        $self->fetch_response($key)
     );
 }
 
@@ -265,25 +239,51 @@ sub send_html {
 }
 
 # returns the HTTP response object from the URL fetch
-sub fetch_data_response {
+sub fetch_response {
     my( $self, $key ) = @_;
-    my $url = $base_url_data . "$key";
+
+    # TODO: OpenLibrary can also accept lccn, oclc, olid...
+    # Hardcoded to only accept ISBNs for now.
+    $key = "isbn:$key";
+
+    my $url = $read_api . $key;
     my $response = $AC->get_url($url);
-    return $response;
+
+    my $book_results = OpenSRF::Utils::JSON->JSON2perl($response);
+    my $record = $book_results->{$key};
+
+    # We didn't find a matching book; short-circuit our response
+    if (!$record) {
+        $logger->debug("$key: no found record");
+        return 0;
+    }
+
+    return $record;
 }
-# returns the HTTP response object from the URL fetch
+
 sub fetch_details_response {
-    my( $self, $key ) = @_;
-    my $url = $base_url_details . "$key";
-    my $response = $AC->get_url($url);
-    return $response;
+    my ($self, $key) = @_;
+
+    my $book_results = $self->fetch_response($key)->content();
+
+    $logger->debug("$key: $book_results");
+    
+    my $book_key = (keys %$book_results)[0];
+
+    # We didn't find a matching book; short-circuit our response
+    if (!$book_key) {
+        $logger->debug("$key: no found book");
+        return 0;
+    }
+
+    return $book_results->{$book_key}->{details};
 }
 
 # returns the HTTP response object from the URL fetch
 sub fetch_cover_response {
     my( $self, $size, $key ) = @_;
 
-    my $response = $self->fetch_data_response($key)->content();
+    my $response = $self->fetch_response($key)->content();
 
     my $book_data = OpenSRF::Utils::JSON->JSON2perl($response);
     my $book_key = (keys %$book_data)[0];
@@ -303,6 +303,5 @@ sub fetch_cover_response {
     $logger->debug("$key: " . $covers_json->{$size});
     return $AC->get_url($covers_json->{$size}) || 0;
 }
-
 
 1;
