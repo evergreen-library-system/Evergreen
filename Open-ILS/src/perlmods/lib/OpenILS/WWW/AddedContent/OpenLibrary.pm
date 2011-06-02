@@ -62,7 +62,7 @@ sub jacket_large {
 
 sub ebooks_html {
     my( $self, $key ) = @_;
-    my $book_data_json = $self->fetch_response($key)->content();
+    my $book_data_json = $self->fetch_response($key);
 
     $logger->debug("$key: " . $book_data_json);
 
@@ -164,9 +164,9 @@ sub toc_html {
 
     my $toc_html;
     
-    my $details = $self->fetch_details_response($key) || return 0;
+    my $book_data = $self->fetch_data_response($key) || return 0;
 
-    my $toc_json = $details->{table_of_contents};
+    my $toc_json = $book_data->{table_of_contents};
 
     # No table of contents is available for this book; short-circuit
     if (!$toc_json or !scalar(@$toc_json)) {
@@ -178,7 +178,7 @@ sub toc_html {
     # and page number. Some rows may not contain section numbers, we should
     # protect against empty page numbers too.
     foreach my $chapter (@$toc_json) {
-	my $label = $chapter->{label};
+        my $label = $chapter->{label};
         if ($label) {
             $label .= '. ';
         }
@@ -247,7 +247,9 @@ sub fetch_response {
     $key = "isbn:$key";
 
     my $url = $read_api . $key;
-    my $response = $AC->get_url($url);
+    my $response = $AC->get_url($url)->content();
+
+    $logger->debug("$key: response was $response");
 
     my $book_results = OpenSRF::Utils::JSON->JSON2perl($response);
     my $record = $book_results->{$key};
@@ -261,14 +263,33 @@ sub fetch_response {
     return $record;
 }
 
+sub fetch_data_response {
+    my ($self, $key) = @_;
+
+    my $book_results = $self->fetch_response($key);
+
+    my $book_key = (keys %{$book_results->{records}})[0];
+
+    $logger->debug("$key: using record key $book_key");
+
+    # We didn't find a matching book; short-circuit our response
+    if (!$book_key || !$book_results->{records}->{$book_key}->{data}) {
+        $logger->debug("$key: no found book");
+        return 0;
+    }
+
+    return $book_results->{records}->{$book_key}->{data};
+}
+
+
 sub fetch_details_response {
     my ($self, $key) = @_;
 
-    my $book_results = $self->fetch_response($key)->content();
+    my $book_results = $self->fetch_response($key);
 
-    $logger->debug("$key: $book_results");
-    
-    my $book_key = (keys %$book_results)[0];
+    my $book_key = (keys %{$book_results->{records}})[0];
+
+    $logger->debug("$key: using record key $book_key");
 
     # We didn't find a matching book; short-circuit our response
     if (!$book_key) {
@@ -282,10 +303,8 @@ sub fetch_details_response {
 sub fetch_items_response {
     my ($self, $key) = @_;
 
-    my $book_results = $self->fetch_response($key)->content();
+    my $book_results = $self->fetch_response($key);
 
-    $logger->debug("$key: items $book_results");
-    
     my $items = $book_results->{items};
 
     # We didn't find a matching book; short-circuit our response
@@ -305,9 +324,11 @@ sub fetch_cover_response {
 
     my $items = $self->fetch_items_response($key);
 
+    $logger->debug("$key: items request got " . scalar(@$items) . " items back");
+
     foreach my $item (@$items) {
-        if ($item->{covers}) {
-            return $AC->get_url($item->{covers}->{$size}) || 0;
+        if ($item->{cover}) {
+            return $AC->get_url($item->{cover}->{$size}) || 0;
         }
     }
 
