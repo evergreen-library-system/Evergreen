@@ -1427,7 +1427,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
     'Allows a user to abort a transit on a copy with status of LOST', 'ppl', 'description')),
  ( 508, 'ABORT_TRANSIT_ON_MISSING', oils_i18n_gettext(508,
     'Allows a user to abort a transit on a copy with status of MISSING', 'ppl', 'description')),
- ( 509, 'TRANSIT_CHECKIN_INTERVAL_BLOCK.override', oils_i18n_gettext(509,
+ ( 509, 'UPDATE_PATRON_COLLECTIONS_EXEMPT', oils_i18n_gettext(509,
+    'Allows a user to indicate that a patron is exempt from collections processing', 'ppl', 'description')),
+ ( 510, 'TRANSIT_CHECKIN_INTERVAL_BLOCK.override', oils_i18n_gettext(510,
     'Allows a user to override the TRANSIT_CHECKIN_INTERVAL_BLOCK event', 'ppl', 'description'));
 
 
@@ -1913,6 +1915,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'VIEW_CIRC_MATRIX_MATCHPOINT',
             'ABORT_TRANSIT_ON_LOST', 
             'ABORT_TRANSIT_ON_MISSING',
+            'UPDATE_PATRON_COLLECTIONS_EXEMPT',
 			'VIEW_HOLD_MATRIX_MATCHPOINT');
 
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
