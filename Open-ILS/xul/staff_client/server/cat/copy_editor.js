@@ -168,7 +168,7 @@ function my_init() {
                 try {
                     g.copies = xulG.copies;
                     g.original_copies = js2JSON( g.copies );
-                    g.show_copy_notes_button();
+                    g.hide_copy_notes_button();
                     for (var i = 0; i < g.applied_templates.length; i++) {
                         g._apply_template( g.applied_templates[i], false);
                     }
@@ -186,7 +186,7 @@ function my_init() {
                 g.changed[ 'volume_copy_creator.'+id ] = { 'type' : 'volume_copy_creator', 'field' : id, 'value' : v };
             }
         } else {
-            g.show_copy_notes_button();
+            g.hide_copy_notes_button();
         }
 
     } catch(E) {
@@ -198,7 +198,7 @@ function my_init() {
 
 /******************************************************************************************************/
 /* Show copy notes button */
-g.show_copy_notes_button = function() {
+g.hide_copy_notes_button = function() {
     if (g.copies.length > 0 && g.copies[0].id() < 0) {
         document.getElementById('copy_notes').setAttribute('hidden','true');
         $('save').setAttribute('label', $('catStrings').getString('staff.cat.copy_editor.create_copies'));
