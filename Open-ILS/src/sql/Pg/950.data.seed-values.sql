@@ -1427,10 +1427,10 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
     'Allows a user to abort a transit on a copy with status of LOST', 'ppl', 'description')),
  ( 508, 'ABORT_TRANSIT_ON_MISSING', oils_i18n_gettext(508,
     'Allows a user to abort a transit on a copy with status of MISSING', 'ppl', 'description')),
- ( 509, 'UPDATE_PATRON_COLLECTIONS_EXEMPT', oils_i18n_gettext(509,
-    'Allows a user to indicate that a patron is exempt from collections processing', 'ppl', 'description')),
- ( 510, 'TRANSIT_CHECKIN_INTERVAL_BLOCK.override', oils_i18n_gettext(510,
-    'Allows a user to override the TRANSIT_CHECKIN_INTERVAL_BLOCK event', 'ppl', 'description'));
+ ( 509, 'TRANSIT_CHECKIN_INTERVAL_BLOCK.override', oils_i18n_gettext(509,
+    'Allows a user to override the TRANSIT_CHECKIN_INTERVAL_BLOCK event', 'ppl', 'description')),
+ ( 510, 'UPDATE_PATRON_COLLECTIONS_EXEMPT', oils_i18n_gettext(510,
+    'Allows a user to indicate that a patron is exempt from collections processing', 'ppl', 'description'));
 
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
