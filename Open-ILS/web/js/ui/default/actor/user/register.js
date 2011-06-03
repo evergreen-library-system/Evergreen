@@ -1005,6 +1005,9 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
                 return;
 
             case 'dob':
+                widget.widget.isValid = function() {
+                    return this.attr("value") < new Date();
+                };
                 dojo.connect(widget.widget, 'onChange',
                     function(newDob) {
                         if(!newDob) return;
