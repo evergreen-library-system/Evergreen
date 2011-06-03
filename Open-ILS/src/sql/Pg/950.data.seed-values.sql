@@ -1423,7 +1423,7 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
     'Allows update of a workstation during workstation registration override.', 'ppl', 'description')),
  ( 506, 'VIEW_USER_SETTING_TYPE', oils_i18n_gettext(506,
     'Allows viewing of configurable user setting types.', 'ppl', 'description')),
- ( 509, 'UPDATE_PATRON_COLLECTIONS_EXEMPT', oils_i18n_gettext(509,
+ ( 510, 'UPDATE_PATRON_COLLECTIONS_EXEMPT', oils_i18n_gettext(510,
     'Allows a user to indicate that a patron is exempt from collections processing', 'ppl', 'description'));
 
 
