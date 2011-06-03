@@ -110,6 +110,7 @@
 		<info>
 			<title>Appendices</title>
 		</info>
+		<xi:include href="appendices/permissions.xml"/>
 		<xi:include href="appendices/schema.xml"/>
 		<xi:include href="appendices/about_this_documentation.xml"/>
 		<xi:include href="appendices/more_info.xml"/>
