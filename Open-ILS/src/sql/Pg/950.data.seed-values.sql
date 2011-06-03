@@ -1422,7 +1422,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 505, 'UPDATE_WORKSTATION', oils_i18n_gettext(505,
     'Allows update of a workstation during workstation registration override.', 'ppl', 'description')),
  ( 506, 'VIEW_USER_SETTING_TYPE', oils_i18n_gettext(506,
-    'Allows viewing of configurable user setting types.', 'ppl', 'description'));
+    'Allows viewing of configurable user setting types.', 'ppl', 'description')),
+ ( 509, 'UPDATE_PATRON_COLLECTIONS_EXEMPT', oils_i18n_gettext(509,
+    'Allows a user to indicate that a patron is exempt from collections processing', 'ppl', 'description'));
 
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
@@ -1905,6 +1907,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'UPDATE_HOLD_REQUEST_TIME',
 			'UPDATE_NET_ACCESS_LEVEL',
 			'VIEW_CIRC_MATRIX_MATCHPOINT',
+            'UPDATE_PATRON_COLLECTIONS_EXEMPT',
 			'VIEW_HOLD_MATRIX_MATCHPOINT');
 
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
