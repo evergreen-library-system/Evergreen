@@ -1,0 +1,38 @@
+[% WRAPPER default/base.tt2 %]
+[% ctx.page_title = 'Configure Authority Thesaurus' %]
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+        <div>Thesauri</div>
+        <div>
+            <button dojoType='dijit.form.Button' onClick='thesGrid.showCreateDialog()'>New Thesaurus</button>
+            <button dojoType='dijit.form.Button' onClick='thesGrid.deleteSelected()'>Delete Selected</button>
+        </div>
+    </div>
+    <div>
+    <table  jsId="thesGrid"
+            dojoType="openils.widget.AutoGrid"
+            autoHeight='true'
+            fieldOrder="['code','name','description','control_set]"
+            query="{code:'*'}"
+            fmClass='at'
+            editOnEnter='true'/>
+</div>
+
+<script type="text/javascript">
+    dojo.require("openils.widget.PCrudAutocompleteBox");
+    dojo.require('openils.widget.AutoGrid');
+
+    openils.Util.addOnLoad(
+        function() {
+            thesGrid.overrideEditWidgets.control_set =
+                new openils.widget.PCrudAutocompleteBox({
+                    "fmclass": "acs", "searchAttr": "name"
+                });
+            thesGrid.overrideEditWidgets.control_set.shove = {"create": ""};
+            thesGrid.loadAll({order_by:{at : 'name'}}, {"id": {"!=": null}});
+        }
+    );
+</script>
+[% END %]
+
+
