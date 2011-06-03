@@ -1,3 +1,10 @@
+-- Evergreen DB patch 0546.schema.sip_statcats.sql
+BEGIN;
+
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0546', :eg_version);
+
 CREATE TABLE actor.stat_cat_sip_fields (
     field   CHAR(2) PRIMARY KEY,
     name    TEXT    NOT NULL,
@@ -72,3 +79,6 @@ $func$ LANGUAGE PLPGSQL;
 CREATE TRIGGER asset_stat_cat_sip_update_trigger
     BEFORE INSERT OR UPDATE ON asset.stat_cat FOR EACH ROW
     EXECUTE PROCEDURE asset.stat_cat_check();
+
+
+COMMIT;
