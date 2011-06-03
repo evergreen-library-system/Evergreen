@@ -5,7 +5,7 @@
         	<title>Exporting Report Templates Using phpPgAdmin</title>
 	</info>
 	<para>Once the data is exported. Database Administrators/Systems Administrators can easily import this data into the templates folder to make it available in the client.</para>
-	<simplesect xml:id="dumpentirereportstemplatetable">
+	<simplesect xml:id="dump-entire-reports-template-table">
 		<title>Dump the Entire Reports Template Table</title>
 		<para>The data exported in this method can create issues importing into a different system if you do not have a matching folder and owner.  This is going to export report templates created in your system.  The most important fields for importing into the new system are <emphasis>name</emphasis>, <emphasis>description</emphasis>, and <emphasis>data</emphasis>. Data defines the actual structure of the report. The <emphasis>owner</emphasis> and <emphasis>folder</emphasis> fields will unique to the system they were exported from and will have to be altered to ensure they match the appropriate owner and folder information for the new system.</para>
 		
@@ -23,7 +23,7 @@
 		</orderedlist>
 
 	</simplesect>
-	<simplesect xml:id="dumpdatasqlstatement">
+	<simplesect xml:id="dump-data-sql-statement">
 		<title>Dump Data with an SQL Statement</title>
 		<para>The following statement could be used to grab the data in the folder and dump it with admin account as the owner and the first folder in your system.</para>
 		<screen>SELECT 1 as owner, name, description, data, 1 as folder FROM reporter.template</screen>
