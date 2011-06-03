@@ -139,11 +139,13 @@ select
           from  action.circulation x
                 left join money.collections_tracker c ON (c.usr = x.usr AND c.location = ?)
                 join money.billing b on (b.xact = x.id)
+                LEFT JOIN actor.usr_setting set ON (set.usr = x.usr and set.name='circ.collections.exempt' and set.value = 'true')
           where x.xact_finish is null
                 and c.id is null
                 and x.circ_lib in (XX)
                 and b.billing_ts < current_timestamp - ? * '1 day'::interval
                 and not b.voided
+                and set.id IS NULL
           group by 1,2
 
                   union all
@@ -156,11 +158,13 @@ select
           from  money.grocery x
                 left join money.collections_tracker c ON (c.usr = x.usr AND c.location = ?)
                 join money.billing b on (b.xact = x.id)
+                LEFT JOIN actor.usr_setting set ON (set.usr = x.usr and set.name='circ.collections.exempt' and set.value = 'true')
           where x.xact_finish is null
                 and c.id is null
                 and x.billing_location in (XX)
                 and b.billing_ts < current_timestamp - ? * '1 day'::interval
                 and not b.voided
+                and set.id IS NULL
           group by 1,2
 
                   union all
@@ -173,11 +177,13 @@ select
           from  booking.reservation x
                 left join money.collections_tracker c ON (c.usr = x.usr AND c.location = ?)
                 join money.billing b on (b.xact = x.id)
+                LEFT JOIN actor.usr_setting set ON (set.usr = x.usr and set.name='circ.collections.exempt' and set.value = 'true')
           where x.xact_finish is null
                 and c.id is null
                 and x.pickup_lib in (XX)
                 and b.billing_ts < current_timestamp - ? * '1 day'::interval
                 and not b.voided
+                and set.id IS NULL
           group by 1,2
         ) full_list
         left join money.payment p on (full_list.id = p.xact)

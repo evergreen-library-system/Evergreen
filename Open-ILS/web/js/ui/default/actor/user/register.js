@@ -523,7 +523,7 @@ function uEditFetchUserSettings(userId) {
     /* fetch any user setting types we need + any that offer opt-in */
     userSettingTypes = pcrud.search('cust', {
         '-or' : [
-            {name:['circ.holds_behind_desk']}, 
+            {name:['circ.holds_behind_desk', 'circ.collections.exempt']}, 
             {name : {
                 'in': {
                     select : {atevdef : ['opt_in_setting']}, 
