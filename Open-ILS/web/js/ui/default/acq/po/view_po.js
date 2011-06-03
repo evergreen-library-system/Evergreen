@@ -315,10 +315,7 @@ function renderPo() {
         dojo.byId('acq-po-activated-on').innerHTML = 
             dojo.string.substitute(
                 localeStrings.PO_ACTIVATED_ON, [
-                    dojo.date.locale.format(
-                        dojo.date.stamp.fromISOString(PO.order_date()), 
-                        {formatLength:'short'}
-                    )
+                    openils.Util.timeStamp(PO.order_date(), {formatLength:'short'})
                 ]
             );
 
