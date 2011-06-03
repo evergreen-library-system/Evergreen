@@ -2,13 +2,7 @@ BEGIN;
 
 SELECT evergreen.upgrade_deps_block_check('0547', :eg_version); -- dbwells
 
--- delete errant inserts from 0545 (group 4 is NOT the circulation admin group)
-DELETE FROM permission.grp_perm_map WHERE grp = 4 AND perm IN (
-	SELECT id FROM permission.perm_list
-    WHERE code in ('ABORT_TRANSIT_ON_LOST', 'ABORT_TRANSIT_ON_MISSING')
-);
-
--- now account for spelling errors (Admin != Administrator)
+-- account for spelling errors (Admin != Administrator)
 \qecho This might not insert much if you passed through 0542 on your way here,
 \qecho but one group was missed there as well
 
@@ -121,8 +115,6 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 		pgt.name = 'Circulation Administrator' AND
 		aout.name = 'Consortium' AND
 		perm.code IN (
-			'ABORT_TRANSIT_ON_LOST',
-			'ABORT_TRANSIT_ON_MISSING',
 			'ADMIN_MAX_FINE_RULE',
 			'CREATE_CIRC_DURATION',
 			'DELETE_CIRC_DURATION',
