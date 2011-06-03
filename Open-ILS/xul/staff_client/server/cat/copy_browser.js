@@ -683,27 +683,42 @@ cat.copy_browser.prototype = {
                                             document.getElementById('commonStrings').getString('common.confirm')
                                     );
 
-                                    if (r == 0) {
+                                    if (r == 0) { // delete vols
                                         for (var i = 0; i < list.length; i++) {
                                             list[i].isdeleted('1');
                                         }
-                                        var robj = obj.network.simple_request(
-                                            'FM_ACN_TREE_UPDATE', 
-                                            [ ses(), list, true ],
-                                            null,
-                                            {
-                                                'title' : document.getElementById('catStrings').getString('staff.cat.copy_browser.delete_volume.override'),
-                                                'overridable_events' : [
-                                                ]
+                                        var params = {};
+                                        loop: while(true) {
+                                            var robj = obj.network.simple_request(
+                                                'FM_ACN_TREE_UPDATE', 
+                                                [ ses(), list, true, params ],
+                                                null,
+                                                {
+                                                    'title' : document.getElementById('catStrings').getString('staff.cat.copy_browser.delete_volume.override'),
+                                                    'overridable_events' : [
+                                                    ]
+                                                }
+                                            );
+                                            if (robj == null) throw(robj);
+                                            if (typeof robj.ilsevent != 'undefined') {
+                                                if (robj.ilsevent == 1206 /* VOLUME_NOT_EMPTY */) {
+                                                    var r2 = obj.error.yns_alert(
+                                                        document.getElementById('catStrings').getString('staff.cat.copy_browser.delete_volume.copies_remain'),
+                                                        document.getElementById('catStrings').getString('staff.cat.copy_browser.delete_volume.title'),
+                                                        document.getElementById('catStrings').getString('staff.cat.copy_browser.delete_volume.copies_remain.confirm'),
+                                                        document.getElementById('catStrings').getString('staff.cat.copy_browser.delete_volume.copies_remain.cancel'),
+                                                        null,
+                                                        document.getElementById('commonStrings').getString('common.confirm')
+                                                    );
+                                                    if (r2 == 0) { // delete vols and copies
+                                                        params.force_delete_copies = true;
+                                                        continue loop;
+                                                    }
+                                                } else {
+                                                    if (robj.ilsevent != 0) throw(robj);
+                                                }
                                             }
-                                        );
-                                        if (robj == null) throw(robj);
-                                        if (typeof robj.ilsevent != 'undefined') {
-                                            if (robj.ilsevent == 1206 /* VOLUME_NOT_EMPTY */) {
-                                                alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.delete_volume.copies_remain'));
-                                                return;
-                                            }
-                                            if (robj.ilsevent != 0) throw(robj);
+                                            break loop;
                                         }
                                         obj.refresh_list();
                                     }

@@ -200,7 +200,10 @@ sub update_copy {
 
 	$logger->info("vol-update: updating copy ".$copy->id);
 	my $orig_copy = $editor->retrieve_asset_copy($copy->id);
-	my $orig_vol  = $editor->retrieve_asset_call_number($copy->call_number);
+
+    # Call-number may have changed, find the original
+    my $orig_vol_id = $editor->json_query({select => {acp => ['call_number']}, from => 'acp', where => {id => $copy->id}});
+    my $orig_vol  = $editor->retrieve_asset_call_number($orig_vol_id->[0]->{call_number});
 
 	$copy->editor($editor->requestor->id);
 	$copy->edit_date('now');
@@ -493,7 +496,27 @@ sub remove_empty_objects {
             my $evt = OpenILS::Application::Cat::BibCommon->delete_rec($editor, $vol->record);
             return $evt if $evt;
         }
-	}
+
+	} else {
+
+        # this may be the last copy attached to the volume.  
+
+        if($U->ou_ancestor_setting_value(
+                $editor->requestor->ws_ou, 'cat.volume.delete_on_empty', $editor)) {
+
+            # if this volume is "empty" and not mid-delete, delete it.
+            unless($U->is_true($vol->deleted) || $vol->isdeleted) {
+
+                my $copies = $editor->search_asset_copy(
+                    [{call_number => $vol->id, deleted => 'f'}, {limit => 1}], {idlist => 1});
+
+                if(!@$copies) {
+                    my $evt = $class->delete_volume($editor, $vol, $override, 0, 1);
+                    return $evt if $evt;
+                }
+            }
+        }
+    }
 
 	return undef;
 }
