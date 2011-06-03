@@ -1,0 +1,1944 @@
+ <appendix xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="permissions_appendix"> 
+         <info><title>Permissions List</title></info>
+         <section xml:id="permission_descriptions"> 
+                 <title>Permission Descriptions</title>  
+                         
+                         <formalpara>
+                                 <title>ABORT_REMOTE_TRANSIT</title>
+                                 <para>Allow a user to abort a copy transit if the user is not at the transit source or dest</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ABORT_TRANSIT</title>
+                                 <para>Allow a user to abort a copy transit if the user is at the transit destination or source</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ACQ_XFER_MANUAL_DFUND_AMOUNT</title>
+                                 <para>Allow a user to transfer different amounts of money out of one fund and into another</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>actor.org_unit.closed_date.create</title>
+                                 <para>Allow a user to create a new closed date for a location</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>actor.org_unit.closed_date.delete</title>
+                                 <para>Allow a user to remove a closed date interval for a given location</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>actor.org_unit.closed_date.update</title>
+                                 <para>Allow a user to update a closed date interval for a given location</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_ACQ_CANCEL_CAUSE</title>
+                                 <para>Allow a user to create/update/delete reasons for order cancellations</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_ACQ_CLAIM</title>
+                                 <para>ADMIN_ACQ_CLAIM</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_ACQ_CLAIM_EVENT_TYPE</title>
+                                 <para>ADMIN_ACQ_CLAIM_EVENT_TYPE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_ACQ_CLAIM_TYPE</title>
+                                 <para>ADMIN_ACQ_CLAIM_TYPE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_ACQ_DISTRIB_FORMULA</title>
+                                 <para>ADMIN_ACQ_DISTRIB_FORMULA</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_ACQ_FISCAL_YEAR</title>
+                                 <para>ADMIN_ACQ_FISCAL_YEAR</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_ACQ_FUND</title>
+                                 <para>Allow a user to create/view/update/delete a fund</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_ACQ_FUND_ALLOCATION_PERCENT</title>
+                                 <para>ADMIN_ACQ_FUND_ALLOCATION_PERCENT</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_ACQ_FUND_TAG</title>
+                                 <para>ADMIN_ACQ_FUND_TAG</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_ACQ_LINEITEM_ALERT_TEXT</title>
+                                 <para>ADMIN_ACQ_LINEITEM_ALERT_TEXT</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_AGE_PROTECT_RULE</title>
+                                 <para>ADMIN_AGE_PROTECT_RULE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_ASSET_COPY_TEMPLATE</title>
+                                 <para>ADMIN_ASSET_COPY_TEMPLATE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_BOOKING_RESERVATION</title>
+                                 <para>Enables the user to create/update/delete booking reservations</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_BOOKING_RESERVATION_ATTR_MAP</title>
+                                 <para>ADMIN_BOOKING_RESERVATION_ATTR_MAP</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_BOOKING_RESERVATION_ATTR_VALUE_MAP</title>
+                                 <para>Enables the user to create/update/delete booking reservation attribute value maps</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_BOOKING_RESOURCE</title>
+                                 <para>Enables the user to create/update/delete booking resources</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_BOOKING_RESOURCE_ATTR</title>
+                                 <para>Enables the user to create/update/delete booking resource attributes</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_BOOKING_RESOURCE_ATTR_MAP</title>
+                                 <para>Enables the user to create/update/delete booking resource attribute maps</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_BOOKING_RESOURCE_ATTR_VALUE</title>
+                                 <para>Enables the user to create/update/delete booking resource attribute values</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_BOOKING_RESOURCE_TYPE</title>
+                                 <para>Enables the user to create/update/delete booking resource types</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_CIRC_MATRIX_MATCHPOINT</title>
+                                 <para>ADMIN_CIRC_MATRIX_MATCHPOINT</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_CIRC_MOD</title>
+                                 <para>ADMIN_CIRC_MOD</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_CLAIM_POLICY</title>
+                                 <para>ADMIN_CLAIM_POLICY</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_CONFIG_REMOTE_ACCOUNT</title>
+                                 <para>ADMIN_CONFIG_REMOTE_ACCOUNT</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_COPY_LOCATION_ORDER</title>
+                                 <para>Allow a user to create/view/update/delete a copy location order</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_CREDIT_CARD_PROCESSING</title>
+                                 <para>Update org unit settings related to credit card processing</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_CURRENCY_TYPE</title>
+                                 <para>Allow a user to create/view/update/delete a currency_type</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_FIELD_DOC</title>
+                                 <para>ADMIN_FIELD_DOC</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_FUND</title>
+                                 <para>Allow a user to create/view/update/delete a fund</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_FUNDING_SOURCE</title>
+                                 <para>Allow a user to create/view/update/delete a funding source</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_GLOBAL_FLAG</title>
+                                 <para>ADMIN_GLOBAL_FLAG</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_GROUP_PENALTY_THRESHOLD</title>
+                                 <para>ADMIN_GROUP_PENALTY_THRESHOLD</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_HOLD_CANCEL_CAUSE</title>
+                                 <para>ADMIN_HOLD_CANCEL_CAUSE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_HOLD_MATRIX_MATCHPOINT</title>
+                                 <para>ADMIN_HOLD_MATRIX_MATCHPOINT</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_IDENT_TYPE</title>
+                                 <para>ADMIN_IDENT_TYPE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_IMPORT_ITEM_ATTR_DEF</title>
+                                 <para>ADMIN_IMPORT_ITEM_ATTR_DEF</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_INDEX_NORMALIZER</title>
+                                 <para>ADMIN_INDEX_NORMALIZER</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_INVOICE</title>
+                                 <para>ADMIN_INVOICE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_INVOICE_METHOD</title>
+                                 <para>ADMIN_INVOICE_METHOD</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_INVOICE_PAYMENT_METHOD</title>
+                                 <para>ADMIN_INVOICE_PAYMENT_METHOD</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_LINEITEM_MARC_ATTR_DEF</title>
+                                 <para>ADMIN_LINEITEM_MARC_ATTR_DEF</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_MARC_CODE</title>
+                                 <para>ADMIN_MARC_CODE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_MAX_FINE_RULE</title>
+                                 <para>ADMIN_MAX_FINE_RULE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_MERGE_PROFILE</title>
+                                 <para>ADMIN_MERGE_PROFILE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_ORG_UNIT_SETTING_TYPE</title>
+                                 <para>ADMIN_ORG_UNIT_SETTING_TYPE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_PROVIDER</title>
+                                 <para>Allow a user to create/view/update/delete a provider</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_RECURRING_FINE_RULE</title>
+                                 <para>ADMIN_RECURRING_FINE_RULE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_SERIAL_CAPTION_PATTERN</title>
+                                 <para>Create/update/delete serial caption and pattern objects</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_SERIAL_DISTRIBUTION</title>
+                                 <para>Create/update/delete serial distribution objects</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_SERIAL_STREAM</title>
+                                 <para>Create/update/delete serial stream objects</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_SERIAL_SUBSCRIPTION</title>
+                                 <para>Create/update/delete serial subscription objects</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_STANDING_PENALTY</title>
+                                 <para>ADMIN_STANDING_PENALTY</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_SURVEY</title>
+                                 <para>ADMIN_SURVEY</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_TRIGGER_CLEANUP</title>
+                                 <para>Allow a user to create, delete, and update trigger cleanup entries</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_TRIGGER_EVENT_DEF</title>
+                                 <para>Allow a user to administer trigger event definitions</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_TRIGGER_HOOK</title>
+                                 <para>Allow a user to create, update, and delete trigger hooks</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_TRIGGER_REACTOR</title>
+                                 <para>Allow a user to create, update, and delete trigger reactors</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_TRIGGER_TEMPLATE_OUTPUT</title>
+                                 <para>Allow a user to delete trigger template output</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_TRIGGER_VALIDATOR</title>
+                                 <para>Allow a user to create, update, and delete trigger validators</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_USER_REQUEST_TYPE</title>
+                                 <para>ADMIN_USER_REQUEST_TYPE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_USER_SETTING_GROUP</title>
+                                 <para>ADMIN_USER_SETTING_GROUP</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_USER_SETTING_TYPE</title>
+                                 <para>ADMIN_USER_SETTING_TYPE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ADMIN_Z3950_SOURCE</title>
+                                 <para>ADMIN_Z3950_SOURCE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ALLOW_ALT_TCN</title>
+                                 <para>Allows staff to import a record using an alternate TCN to avoid conflicts</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ASSIGN_GROUP_PERM</title>
+                                 <para>ASSIGN_GROUP_PERM</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ASSIGN_WORK_ORG_UNIT</title>
+                                 <para>Allow a staff member to define where another staff member has their permissions</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>BAR_PATRON</title>
+                                 <para>Allow a user to bar a patron</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CANCEL_HOLDS</title>
+                                 <para>Allow a user to cancel holds</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CAPTURE_RESERVATION</title>
+                                 <para>Allows a user to capture booking reservations</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CHECKIN_BYPASS_HOLD_FULFILL</title>
+                                 <para>* no longer applicable</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CIRC_CLAIMS_RETURNED.override</title>
+                                 <para>Allow a user to check in or check out an item that has a status of 'claims returned'</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CIRC_EXCEEDS_COPY_RANGE.override</title>
+                                 <para>Allow staff to override circulation copy range failure</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CIRC_OVERRIDE_DUE_DATE</title>
+                                 <para>Allow a user to change the due date on an item to any date</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CIRC_PERMIT_OVERRIDE</title>
+                                 <para>Allow a user to bypass the circulation permit call for check out</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>COPY_ALERT_MESSAGE.override</title>
+                                 <para>Allow a user to check in/out an item that has an alert message</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>COPY_BAD_STATUS.override</title>
+                                 <para>Allow a user to check out an item in a non-circulatable status</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>COPY_CHECKIN</title>
+                                 <para>Allow a user to check in a copy</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>COPY_CHECKOUT</title>
+                                 <para>Allow a user to check out a copy</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>COPY_CIRC_NOT_ALLOWED.override</title>
+                                 <para>Allow a user to checkout an item that is marked as non-circ</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>COPY_HOLDS</title>
+                                 <para>Allow a user to place a hold on a specific copy</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>COPY_IS_REFERENCE.override</title>
+                                 <para>Allow a user to override the copy_is_reference event</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>COPY_NEEDED_FOR_HOLD.override</title>
+                                 <para>Allow a user to force renewal of an item that could fulfill a hold request</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>COPY_NOT_AVAILABLE.override</title>
+                                 <para>Allow staff to force checkout of Missing/Lost type items</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>COPY_STATUS_LOST.override</title>
+                                 <para>Allow a user to remove the lost status from a copy</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>COPY_STATUS_MISSING.override</title>
+                                 <para>Allow a user to change the missing status on a copy</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>COPY_TRANSIT_RECEIVE</title>
+                                 <para>Allow a user to close out a transit on a copy</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_ACQ_FUNDING_SOURCE</title>
+                                 <para>CREATE_ACQ_FUNDING_SOURCE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_AUDIENCE</title>
+                                 <para>CREATE_AUDIENCE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF</title>
+                                 <para>CREATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_AUTHORITY_IMPORT_QUEUE</title>
+                                 <para>CREATE_AUTHORITY_IMPORT_QUEUE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_AUTHORITY_RECORD_NOTE</title>
+                                 <para>CREATE_AUTHORITY_RECORD_NOTE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_BIB_BTYPE</title>
+                                 <para>CREATE_BIB_BTYPE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_BIB_IMPORT_FIELD_DEF</title>
+                                 <para>CREATE_BIB_IMPORT_FIELD_DEF</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_BIB_IMPORT_QUEUE</title>
+                                 <para>CREATE_BIB_IMPORT_QUEUE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_BIB_LEVEL</title>
+                                 <para>CREATE_BIB_LEVEL</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_BIBLIO_FINGERPRINT</title>
+                                 <para>CREATE_BIBLIO_FINGERPRINT</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_BIB_SOURCE</title>
+                                 <para>CREATE_BIB_SOURCE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_BILL</title>
+                                 <para>Allow a user to create a new bill on a transaction</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_BILLING_TYPE</title>
+                                 <para>CREATE_BILLING_TYPE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_CIRC_DURATION</title>
+                                 <para>CREATE_CIRC_DURATION</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_CIRC_MOD</title>
+                                 <para>CREATE_CIRC_MOD</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_CN_BTYPE</title>
+                                 <para>CREATE_CN_BTYPE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_CONTAINER</title>
+                                 <para>Allow a user to create a new container for another user</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_CONTAINER_ITEM</title>
+                                 <para>Allow a user to create a container item for another user</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_COPY</title>
+                                 <para>Allow a user to create a new copy object</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_COPY_BTYPE</title>
+                                 <para>CREATE_COPY_BTYPE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_COPY_LOCATION</title>
+                                 <para>Allow a user to create a new copy location</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_COPY_NOTE</title>
+                                 <para>Allow a user to create a new copy note</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_COPY_STAT_CAT</title>
+                                 <para>User may create a copy statistical category</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_COPY_STAT_CAT_ENTRY</title>
+                                 <para>User may create an entry in a copy statistical category</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_COPY_STAT_CAT_ENTRY_MAP</title>
+                                 <para>User may link a copy to an entry in a statistical category</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_COPY_STATUS</title>
+                                 <para>CREATE_COPY_STATUS</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_COPY_TRANSIT</title>
+                                 <para>Allow a user to create a transit_copy object for transiting a copy</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_DUPLICATE_HOLDS</title>
+                                 <para>Allow a user to create duplicate holds (two or more holds on the same title)</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_FUND</title>
+                                 <para>Allow a user to create a new fund</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_FUND_ALLOCATION</title>
+                                 <para>Allow a user to create a new fund allocation</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_FUNDING_SOURCE</title>
+                                 <para>Allow a user to create a new funding source</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_HOLD_NOTIFICATION</title>
+                                 <para>Allow a user to create new hold notifications</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_HOURS_OF_OPERATION</title>
+                                 <para>CREATE_HOURS_OF_OPERATION</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_IMPORT_ITEM</title>
+                                 <para>CREATE_IMPORT_ITEM</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_IMPORT_ITEM_ATTR_DEF</title>
+                                 <para>CREATE_IMPORT_ITEM_ATTR_DEF</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_IMPORT_TRASH_FIELD</title>
+                                 <para>CREATE_IMPORT_TRASH_FIELD</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_IN_HOUSE_USE</title>
+                                 <para>Allow a user to create a new in-house-use </para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_INVOICE</title>
+                                 <para>CREATE_INVOICE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_INVOICE_ITEM_TYPE</title>
+                                 <para>CREATE_INVOICE_ITEM_TYPE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_INVOICE_METHOD</title>
+                                 <para>CREATE_INVOICE_METHOD</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_ITEM_FORM</title>
+                                 <para>CREATE_ITEM_FORM</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_ITEM_TYPE</title>
+                                 <para>CREATE_ITEM_TYPE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_LANGUAGE</title>
+                                 <para>CREATE_LANGUAGE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_LASSO</title>
+                                 <para>CREATE_LASSO</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_LASSO_MAP</title>
+                                 <para>CREATE_LASSO_MAP</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_LIT_FORM</title>
+                                 <para>CREATE_LIT_FORM</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_LOCALE</title>
+                                 <para>CREATE_LOCALE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_MARC</title>
+                                 <para>Allow a user to create new MARC records</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_MARC_CODE</title>
+                                 <para>CREATE_MARC_CODE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_MERGE_PROFILE</title>
+                                 <para>CREATE_MERGE_PROFILE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_METABIB_CLASS</title>
+                                 <para>CREATE_METABIB_CLASS</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_METABIB_FIELD</title>
+                                 <para>CREATE_METABIB_FIELD</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_METABIB_SEARCH_ALIAS</title>
+                                 <para>CREATE_METABIB_SEARCH_ALIAS</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_MFHD_RECORD</title>
+                                 <para>Allows a user to create a new MFHD record</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_MY_CONTAINER</title>
+                                 <para>Allow a user to create a container for themselves</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_NET_ACCESS_LEVEL</title>
+                                 <para>CREATE_NET_ACCESS_LEVEL</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_NON_CAT_TYPE</title>
+                                 <para>Allow a user to create a new non-cataloged item type</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_ORG_ADDRESS</title>
+                                 <para>CREATE_ORG_ADDRESS</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_ORG_TYPE</title>
+                                 <para>CREATE_ORG_TYPE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_ORG_UNIT</title>
+                                 <para>CREATE_ORG_UNIT</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_ORG_UNIT_CLOSING</title>
+                                 <para>CREATE_ORG_UNIT_CLOSING</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_PATRON_STAT_CAT</title>
+                                 <para>User may create a new patron statistical category</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_PATRON_STAT_CAT_ENTRY</title>
+                                 <para>User may create an entry in a patron statistical category</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_PATRON_STAT_CAT_ENTRY_MAP</title>
+                                 <para>User may link another user to an entry in a statistical category</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_PAYMENT</title>
+                                 <para>Allow a user to record payments in the Billing Interface</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_PERM</title>
+                                 <para>CREATE_PERM</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_PICKLIST</title>
+                                 <para>Allows a user to create a picklist</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_PROVIDER</title>
+                                 <para>Allow a user to create a new provider</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_PURCHASE_ORDER</title>
+                                 <para>Allows a user to create a purchase order</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_RELEVANCE_ADJUSTMENT</title>
+                                 <para>CREATE_RELEVANCE_ADJUSTMENT</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_SURVEY</title>
+                                 <para>CREATE_SURVEY</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_TITLE_NOTE</title>
+                                 <para>Allow a user to create a new title note</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_TRANSACTION</title>
+                                 <para>Allow a user to create a new billable transaction</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_TRANSIT</title>
+                                 <para>Allow a user to place an item in transit</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_TRANSLATION</title>
+                                 <para>CREATE_TRANSLATION</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_TRIGGER_CLEANUP</title>
+                                 <para>Allow a user to create trigger cleanup entries</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_TRIGGER_EVENT_DEF</title>
+                                 <para>Allow a user to create trigger event definitions</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_TRIGGER_HOOK</title>
+                                 <para>Allow a user to create trigger hooks</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_TRIGGER_REACTOR</title>
+                                 <para>Allow a user to create trigger reactors</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_TRIGGER_VALIDATOR</title>
+                                 <para>Allow a user to create trigger validators</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_USER</title>
+                                 <para>Allow a user to create another user</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_USER_BTYPE</title>
+                                 <para>CREATE_USER_BTYPE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_USER_GROUP_LINK</title>
+                                 <para>Allow a user to add other users to permission groups</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_VOLUME</title>
+                                 <para>Allow a user to create a volume</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_VOLUME_NOTE</title>
+                                 <para>Allow a user to create a new volume note</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_VR_FORMAT</title>
+                                 <para>CREATE_VR_FORMAT</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>CREATE_XML_TRANSFORM</title>
+                                 <para>CREATE_XML_TRANSFORM</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_ACQ_FUNDING_SOURCE</title>
+                                 <para>DELETE_ACQ_FUNDING_SOURCE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_AUDIENCE</title>
+                                 <para>DELETE_AUDIENCE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF</title>
+                                 <para>DELETE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_AUTHORITY_IMPORT_QUEUE</title>
+                                 <para>DELETE_AUTHORITY_IMPORT_QUEUE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_AUTHORITY_RECORD_NOTE</title>
+                                 <para>DELETE_AUTHORITY_RECORD_NOTE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_BIB_BTYPE</title>
+                                 <para>DELETE_BIB_BTYPE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_BIB_IMPORT_IMPORT_FIELD_DEF</title>
+                                 <para>DELETE_BIB_IMPORT_IMPORT_FIELD_DEF</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_BIB_IMPORT_QUEUE</title>
+                                 <para>DELETE_BIB_IMPORT_QUEUE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_BIB_LEVEL</title>
+                                 <para>DELETE_BIB_LEVEL</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_BIBLIO_FINGERPRINT</title>
+                                 <para>DELETE_BIBLIO_FINGERPRINT</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_BIB_SOURCE</title>
+                                 <para>DELETE_BIB_SOURCE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_BILLING_TYPE</title>
+                                 <para>DELETE_BILLING_TYPE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_CIRC_DURATION</title>
+                                 <para>DELETE_CIRC_DURATION</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_CIRC_MOD</title>
+                                 <para>DELETE_CIRC_MOD</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_CN_BTYPE</title>
+                                 <para>DELETE_CN_BTYPE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_CONTAINER</title>
+                                 <para>Allow a user to delete another user's container</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_CONTAINER_ITEM</title>
+                                 <para>Allow a user to delete an item out of another user's container</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_COPY</title>
+                                 <para>Allow a user to delete a copy</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_COPY_BTYPE</title>
+                                 <para>DELETE_COPY_BTYPE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_COPY_LOCATION</title>
+                                 <para>Allow a user to delete a copy location</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_COPY_NOTE</title>
+                                 <para>Allow a user to delete another user's copy notes</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_COPY_STAT_CAT</title>
+                                 <para>User may delete a copy statistical category</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_COPY_STAT_CAT_ENTRY</title>
+                                 <para>User may delete an entry from a copy statistical category</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_COPY_STAT_CAT_ENTRY_MAP</title>
+                                 <para>User may delete a copy statistical category entry map</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_COPY_STATUS</title>
+                                 <para>DELETE_COPY_STATUS</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_FUND</title>
+                                 <para>Allow a user to delete a fund</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_FUND_ALLOCATION</title>
+                                 <para>Allow a user to delete a fund allocation</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_FUNDING_SOURCE</title>
+                                 <para>Allow a user to delete a funding source</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_HOLDS</title>
+                                 <para>* no longer applicable</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_HOURS_OF_OPERATION</title>
+                                 <para>DELETE_HOURS_OF_OPERATION</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_IMPORT_ITEM</title>
+                                 <para>DELETE_IMPORT_ITEM</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_IMPORT_ITEM_ATTR_DEF</title>
+                                 <para>DELETE_IMPORT_ITEM_ATTR_DEF</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_IMPORT_TRASH_FIELD</title>
+                                 <para>DELETE_IMPORT_TRASH_FIELD</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_INVOICE_ITEM_TYPE</title>
+                                 <para>DELETE_INVOICE_ITEM_TYPE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_INVOICE_METHOD</title>
+                                 <para>DELETE_INVOICE_METHOD</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_ITEM_FORM</title>
+                                 <para>DELETE_ITEM_FORM</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_ITEM_TYPE</title>
+                                 <para>DELETE_ITEM_TYPE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_LANGUAGE</title>
+                                 <para>DELETE_LANGUAGE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_LASSO</title>
+                                 <para>DELETE_LASSO</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_LASSO_MAP</title>
+                                 <para>DELETE_LASSO_MAP</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_LIT_FORM</title>
+                                 <para>DELETE_LIT_FORM</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_LOCALE</title>
+                                 <para>DELETE_LOCALE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_MARC_CODE</title>
+                                 <para>DELETE_MARC_CODE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_MERGE_PROFILE</title>
+                                 <para>DELETE_MERGE_PROFILE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_METABIB_CLASS</title>
+                                 <para>DELETE_METABIB_CLASS</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_METABIB_FIELD</title>
+                                 <para>DELETE_METABIB_FIELD</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_METABIB_SEARCH_ALIAS</title>
+                                 <para>DELETE_METABIB_SEARCH_ALIAS</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_MFHD_RECORD</title>
+                                 <para>Allows a user to delete an MFHD record</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_NET_ACCESS_LEVEL</title>
+                                 <para>DELETE_NET_ACCESS_LEVEL</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_NON_CAT_TYPE</title>
+                                 <para>Allow a user to delete a non cataloged type</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_ORG_ADDRESS</title>
+                                 <para>DELETE_ORG_ADDRESS</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_ORG_TYPE</title>
+                                 <para>DELETE_ORG_TYPE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_ORG_UNIT</title>
+                                 <para>DELETE_ORG_UNIT</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_ORG_UNIT_CLOSING</title>
+                                 <para>DELETE_ORG_UNIT_CLOSING</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_PATRON_STAT_CAT</title>
+                                 <para>User may delete a patron statistical category</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_PATRON_STAT_CAT_ENTRY</title>
+                                 <para>User may delete an entry from a patron statistical category</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_PATRON_STAT_CAT_ENTRY_MAP</title>
+                                 <para>User may delete a patron statistical category entry map</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_PERM</title>
+                                 <para>DELETE_PERM</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_PROVIDER</title>
+                                 <para>Allow a user to delate a provider</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_RECORD</title>
+                                 <para>Allow a staff member to directly remove a bibliographic record</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_RELEVANCE_ADJUSTMENT</title>
+                                 <para>DELETE_RELEVANCE_ADJUSTMENT</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_SURVEY</title>
+                                 <para>DELETE_SURVEY</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_TITLE_NOTE</title>
+                                 <para>Allow a user to delete another user's title note</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_TRANSIT</title>
+                                 <para>DELETE_TRANSIT</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_TRANSLATION</title>
+                                 <para>DELETE_TRANSLATION</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_TRIGGER_CLEANUP</title>
+                                 <para>Allow a user to delete trigger cleanup entries</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_TRIGGER_EVENT_DEF</title>
+                                 <para>Allow a user to delete trigger event definitions</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_TRIGGER_HOOK</title>
+                                 <para>Allow a user to delete trigger hooks</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_TRIGGER_REACTOR</title>
+                                 <para>Allow a user to delete trigger reactors</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_TRIGGER_TEMPLATE_OUTPUT</title>
+                                 <para>Allow a user to delete trigger template output</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_TRIGGER_VALIDATOR</title>
+                                 <para>Allow a user to delete trigger validators</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_USER</title>
+                                 <para>Allow a user to mark a user as deleted</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_USER_BTYPE</title>
+                                 <para>DELETE_USER_BTYPE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_VOLUME</title>
+                                 <para>Allow a user to delete a volume</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_VOLUME_NOTE</title>
+                                 <para>Allow a user to delete another user's volume note</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_VR_FORMAT</title>
+                                 <para>DELETE_VR_FORMAT</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_WORKSTATION</title>
+                                 <para>Allow a user to remove an existing workstation so a new one can replace it</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>DELETE_XML_TRANSFORM</title>
+                                 <para>DELETE_XML_TRANSFORM</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>GENERAL_ACQ</title>
+                                 <para>Lowest level permission required to access the ACQ interface</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>group_application.user</title>
+                                 <para>Allow a user to add/remove users to/from the "User" group</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>group_application.user.patron</title>
+                                 <para>Allow a user to add/remove users to/from the "Patron" group</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>group_application.user.sip_client</title>
+                                 <para>Allow a user to add/remove users to/from the "SIP-Client" group</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>group_application.user.staff</title>
+                                 <para>Allow a user to add/remove users to/from the "Staff" group</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>group_application.user.staff.acq</title>
+                                 <para>Allows a user to add/remove/edit users in the "ACQ" group</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>group_application.user.staff.acq_admin</title>
+                                 <para>Allows a user to add/remove/edit users in the "Acquisitions Administrator" group</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>group_application.user.staff.admin.global_admin</title>
+                                 <para>Allow a user to add/remove users to/from the "GlobalAdmin" group</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>group_application.user.staff.admin.lib_manager</title>
+                                 <para>Allow a user to add/remove users to/from the "LibraryManager" group</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>group_application.user.staff.admin.local_admin</title>
+                                 <para>Allow a user to add/remove users to/from the "LocalAdmin" group</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>group_application.user.staff.cat</title>
+                                 <para>Allow a user to add/remove users to/from the "Cataloger" group</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>group_application.user.staff.cat.cat1</title>
+                                 <para>Allow a user to add/remove users to/from the "Cat1" group</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>group_application.user.staff.circ</title>
+                                 <para>Allow a user to add/remove users to/from the "Circulator" group</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>group_application.user.staff.supercat</title>
+                                 <para>Allow a user to add/remove users to/from the "Supercat" group</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>group_application.user.vendor</title>
+                                 <para>Allow a user to add/remove users to/from the "Vendor" group</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>HOLD_EXISTS.override</title>
+                                 <para>Allow a user to place multiple holds on a single title</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>HOLD_ITEM_CHECKED_OUT.override</title>
+                                 <para>Allows a user to place a hold on an item that they already have checked out</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>HOLD_LOCAL_AVAIL_OVERRIDE</title>
+                                 <para>Allow a user to place a hold despite the availability of a local copy</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>IMPORT_ACQ_LINEITEM_BIB_RECORD</title>
+                                 <para>Allows a user to import a bib record from the acq staging area (on-order record) into the ILS bib data set</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>IMPORT_MARC</title>
+                                 <para>Allow a user to import a MARC record via the Z39.50 interface</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ISSUANCE_HOLDS</title>
+                                 <para>Allow a user to place holds on serials issuances</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ITEM_AGE_PROTECTED.override</title>
+                                 <para>Allow a user to place a hold on an age-protected item</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>ITEM_ON_HOLDS_SHELF.override</title>
+                                 <para>Allow staff to override item on holds shelf failure</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>MANAGE_CLAIM</title>
+                                 <para>MANAGE_CLAIM</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>MANAGE_FUND</title>
+                                 <para>Allow a user to view/credit/debit a fund</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>MANAGE_FUNDING_SOURCE</title>
+                                 <para>Allow a user to view/credit/debit a funding source</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>MANAGE_PROVIDER</title>
+                                 <para>Allow a user to view and purchase from a provider</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>MARK_BAD_DEBT</title>
+                                 <para>Allow a user to mark a transaction as bad (unrecoverable) debt</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>MARK_ITEM_AVAILABLE</title>
+                                 <para>Allow a user to mark an item status as 'available'</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>MARK_ITEM_BINDERY</title>
+                                 <para>Allow a user to mark an item status as 'bindery'</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>MARK_ITEM_CHECKED_OUT</title>
+                                 <para>Allow a user to mark an item status as 'checked out'</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>MARK_ITEM_ILL</title>
+                                 <para>Allow a user to mark an item status as 'inter-library loan'</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>MARK_ITEM_IN_PROCESS</title>
+                                 <para>Allow a user to mark an item status as 'in process'</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>MARK_ITEM_IN_TRANSIT</title>
+                                 <para>Allow a user to mark an item status as 'in transit'</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>MARK_ITEM_LOST</title>
+                                 <para>Allow a user to mark an item status as 'lost'</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>MARK_ITEM_MISSING</title>
+                                 <para>Allow a user to mark an item status as 'missing'</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>MARK_ITEM_ON_HOLDS_SHELF</title>
+                                 <para>Allow a user to mark an item status as 'on holds shelf'</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>MARK_ITEM_ON_ORDER</title>
+                                 <para>Allow a user to mark an item status as 'on order'</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>MARK_ITEM_RESHELVING</title>
+                                 <para>Allow a user to mark an item status as 'reshelving'</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>MAX_RENEWALS_REACHED.override</title>
+                                 <para>Allow a user to renew an item past the maximum renewal count</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>MERGE_AUTH_RECORDS</title>
+                                 <para>Allow a user to merge authority records together</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>MERGE_BIB_RECORDS</title>
+                                 <para>MERGE_BIB_RECORDS</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>MERGE_USERS</title>
+                                 <para>MERGE_USERS</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>money.collections_tracker.create</title>
+                                 <para>Allow a user to put someone into collections</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>money.collections_tracker.delete</title>
+                                 <para>Allow a user to remove someone from collections</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>MR_HOLDS</title>
+                                 <para>Allow a user to create a metarecord holds</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>OFFLINE_EXECUTE</title>
+                                 <para>Allow a user to execute an offline script batch</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>OFFLINE_UPLOAD</title>
+                                 <para>Allow a user to upload an offline script</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>OFFLINE_VIEW</title>
+                                 <para>Allow a user to view uploaded offline script information</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>OPAC_LOGIN</title>
+                                 <para>Allow a user to log in to the OPAC</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>OVERRIDE_HOLD_HAS_LOCAL_COPY</title>
+                                 <para>Allow a user to override the circ.holds.hold_has_copy_at.block setting</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>PATRON_EXCEEDS_CHECKOUT_COUNT.override</title>
+                                 <para>Allow staff to override checkout count failure</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>PATRON_EXCEEDS_FINES.override</title>
+                                 <para>Allow staff to override fine amount checkout failure</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>PATRON_EXCEEDS_OVERDUE_COUNT.override</title>
+                                 <para>Allow staff to override overdue count failure</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>RECEIVE_PURCHASE_ORDER</title>
+                                 <para>Allows a user to mark a purchase order, lineitem, or individual copy as received</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>RECEIVE_SERIAL</title>
+                                 <para>Receive serial items</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>REGISTER_WORKSTATION</title>
+                                 <para>Allow a user to register a new workstation</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>REMOTE_Z3950_QUERY</title>
+                                 <para>Allow a user to perform Z39.50 queries against remote servers</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>REMOVE_GROUP_PERM</title>
+                                 <para>REMOVE_GROUP_PERM</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>REMOVE_USER_GROUP_LINK</title>
+                                 <para>Allow a user to remove other users from permission groups</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>RENEW_CIRC</title>
+                                 <para>Allow a user to renew items</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>RENEW_HOLD_OVERRIDE</title>
+                                 <para>Allow a user to continue to renew an item even if it is required for a hold</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>REQUEST_HOLDS</title>
+                                 <para>Allow a user to create holds for another user (if true, we still check to make sure they have permission to make the type of hold they are requesting, for example, COPY_HOLDS)</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>REQUEST_HOLDS_OVERRIDE</title>
+                                 <para>* no longer applicable</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>RETRIEVE_RESERVATION_PULL_LIST</title>
+                                 <para>Allows a user to retrieve a booking reservation pull list</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>RUN_REPORTS</title>
+                                 <para>Allow a user to run reports</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>SET_CIRC_CLAIMS_RETURNED</title>
+                                 <para>Allow a user to mark an item as 'claims returned'</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>SET_CIRC_CLAIMS_RETURNED.override</title>
+                                 <para>Allows staff to override the max claims returned value for a patron</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>SET_CIRC_LOST</title>
+                                 <para>Allow a user to mark an item as 'lost'</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>SET_CIRC_MISSING</title>
+                                 <para>Allow a user to mark an item as 'missing'</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>SHARE_REPORT_FOLDER</title>
+                                 <para>Allow a user to share report his own folders</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>STAFF_LOGIN</title>
+                                 <para>Allow a user to log in to the staff client</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>TITLE_HOLDS</title>
+                                 <para>Allow a user to place a hold at the title level</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>TRANSIT_COPY</title>
+                                 <para>TRANSIT_COPY</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UNBAR_PATRON</title>
+                                 <para>Allow a user to un-bar a patron</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ACQ_FUNDING_SOURCE</title>
+                                 <para>UPDATE_ACQ_FUNDING_SOURCE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_AUDIENCE</title>
+                                 <para>UPDATE_AUDIENCE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF</title>
+                                 <para>UPDATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_AUTHORITY_IMPORT_QUEUE</title>
+                                 <para>UPDATE_AUTHORITY_IMPORT_QUEUE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_AUTHORITY_RECORD_NOTE</title>
+                                 <para>UPDATE_AUTHORITY_RECORD_NOTE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_BATCH_COPY</title>
+                                 <para>Allow a user to edit copies in batch</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_BIB_BTYPE</title>
+                                 <para>UPDATE_BIB_BTYPE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_BIB_IMPORT_IMPORT_FIELD_DEF</title>
+                                 <para>UPDATE_BIB_IMPORT_IMPORT_FIELD_DEF</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_BIB_IMPORT_QUEUE</title>
+                                 <para>UPDATE_BIB_IMPORT_QUEUE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_BIB_LEVEL</title>
+                                 <para>UPDATE_BIB_LEVEL</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_BIBLIO_FINGERPRINT</title>
+                                 <para>UPDATE_BIBLIO_FINGERPRINT</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_BIB_SOURCE</title>
+                                 <para>UPDATE_BIB_SOURCE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_BILLING_TYPE</title>
+                                 <para>UPDATE_BILLING_TYPE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_BILL_NOTE</title>
+                                 <para>Allows staff to edit the note for a bill on a transaction</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_CIRC_DURATION</title>
+                                 <para>UPDATE_CIRC_DURATION</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_CIRC_MOD</title>
+                                 <para>UPDATE_CIRC_MOD</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_CN_BTYPE</title>
+                                 <para>UPDATE_CN_BTYPE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_CONTAINER</title>
+                                 <para>Allow a user to update another user's container</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_COPY</title>
+                                 <para>Allow a user to edit a copy</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_COPY_BTYPE</title>
+                                 <para>UPDATE_COPY_BTYPE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_COPY_LOCATION</title>
+                                 <para>Allow a user to update a copy location</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_COPY_NOTE</title>
+                                 <para>UPDATE_COPY_NOTE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_COPY_STAT_CAT</title>
+                                 <para>User may update a copy statistical category</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_COPY_STAT_CAT_ENTRY</title>
+                                 <para>User may update an entry in a copy statistical category</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_COPY_STATUS</title>
+                                 <para>UPDATE_COPY_STATUS</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_FUND</title>
+                                 <para>Allow a user to update a fund</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_FUND_ALLOCATION</title>
+                                 <para>Allow a user to update a fund allocation</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_FUNDING_SOURCE</title>
+                                 <para>Allow a user to update a funding source</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_GROUP_PERM</title>
+                                 <para>UPDATE_GROUP_PERM</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_HOLD</title>
+                                 <para>Allow a user to update another user's hold</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_HOURS_OF_OPERATION</title>
+                                 <para>UPDATE_HOURS_OF_OPERATION</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_IMPORT_ITEM</title>
+                                 <para>UPDATE_IMPORT_ITEM</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_IMPORT_ITEM_ATTR_DEF</title>
+                                 <para>UPDATE_IMPORT_ITEM_ATTR_DEF</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_IMPORT_TRASH_FIELD</title>
+                                 <para>UPDATE_IMPORT_TRASH_FIELD</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_INVOICE_ITEM_TYPE</title>
+                                 <para>UPDATE_INVOICE_ITEM_TYPE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_INVOICE_METHOD</title>
+                                 <para>UPDATE_INVOICE_METHOD</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ITEM_FORM</title>
+                                 <para>UPDATE_ITEM_FORM</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ITEM_TYPE</title>
+                                 <para>UPDATE_ITEM_TYPE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_LANGUAGE</title>
+                                 <para>UPDATE_LANGUAGE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_LASSO</title>
+                                 <para>UPDATE_LASSO</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_LASSO_MAP</title>
+                                 <para>UPDATE_LASSO_MAP</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_LIT_FORM</title>
+                                 <para>UPDATE_LIT_FORM</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_LOCALE</title>
+                                 <para>UPDATE_LOCALE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_MARC</title>
+                                 <para>Allow a user to edit a MARC record</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_MARC_CODE</title>
+                                 <para>UPDATE_MARC_CODE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_MERGE_PROFILE</title>
+                                 <para>UPDATE_MERGE_PROFILE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_METABIB_CLASS</title>
+                                 <para>UPDATE_METABIB_CLASS</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_METABIB_FIELD</title>
+                                 <para>UPDATE_METABIB_FIELD</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_METABIB_SEARCH_ALIAS</title>
+                                 <para>UPDATE_METABIB_SEARCH_ALIAS</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_MFHD_RECORD</title>
+                                 <para>Allows a user to update an MFHD record</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_NET_ACCESS_LEVEL</title>
+                                 <para>UPDATE_NET_ACCESS_LEVEL</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_NON_CAT_TYPE</title>
+                                 <para>Allow a user to update a non-cataloged item type</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ORG_ADDRESS</title>
+                                 <para>UPDATE_ORG_ADDRESS</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ORG_SETTING</title>
+                                 <para>Allow a user to update an organization unit setting</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ORG_TYPE</title>
+                                 <para>UPDATE_ORG_TYPE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ORG_UNIT</title>
+                                 <para>Allow a user to change the settings for an organization unit</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ORG_UNIT_CLOSING</title>
+                                 <para>UPDATE_ORG_UNIT_CLOSING</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ORG_UNIT_SETTING_ALL</title>
+                                 <para>UPDATE_ORG_UNIT_SETTING_ALL</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ORG_UNIT_SETTING.auth.opac_timeout</title>
+                                 <para>UPDATE_ORG_UNIT_SETTING.auth.opac_timeout</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ORG_UNIT_SETTING.auth.staff_timeout</title>
+                                 <para>UPDATE_ORG_UNIT_SETTING.auth.staff_timeout</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ORG_UNIT_SETTING.cat.bib.alert_on_empty</title>
+                                 <para>UPDATE_ORG_UNIT_SETTING.cat.bib.alert_on_empty</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ORG_UNIT_SETTING.cat.bib.keep_on_empty</title>
+                                 <para>UPDATE_ORG_UNIT_SETTING.cat.bib.keep_on_empty</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ORG_UNIT_SETTING.cat.default_item_price</title>
+                                 <para>UPDATE_ORG_UNIT_SETTING.cat.default_item_price</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ORG_UNIT_SETTING.circ.block_renews_for_holds</title>
+                                 <para>Allow a user to enable blocking of renews on items that could fulfill holds</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ORG_UNIT_SETTING.circ.hold_boundary.hard</title>
+                                 <para>UPDATE_ORG_UNIT_SETTING.circ.hold_boundary.hard</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ORG_UNIT_SETTING.circ.hold_boundary.soft</title>
+                                 <para>UPDATE_ORG_UNIT_SETTING.circ.hold_boundary.soft</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ORG_UNIT_SETTING.circ.hold_expire_alert_interval</title>
+                                 <para>UPDATE_ORG_UNIT_SETTING.circ.hold_expire_alert_interval</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ORG_UNIT_SETTING.circ.hold_expire_interval</title>
+                                 <para>UPDATE_ORG_UNIT_SETTING.circ.hold_expire_interval</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ORG_UNIT_SETTING.circ.hold_stalling.soft</title>
+                                 <para>UPDATE_ORG_UNIT_SETTING.circ.hold_stalling.soft</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ORG_UNIT_SETTING.circ.item_checkout_history.max</title>
+                                 <para>UPDATE_ORG_UNIT_SETTING.circ.item_checkout_history.max</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ORG_UNIT_SETTING.circ.lost_materials_processing_fee</title>
+                                 <para>UPDATE_ORG_UNIT_SETTING.circ.lost_materials_processing_fee</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ORG_UNIT_SETTING.circ.reshelving_complete.interval</title>
+                                 <para>UPDATE_ORG_UNIT_SETTING.circ.reshelving_complete.interval</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ORG_UNIT_SETTING.circ.selfcheck.alert_on_checkout_event</title>
+                                 <para>UPDATE_ORG_UNIT_SETTING.circ.selfcheck.alert_on_checkout_event</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ORG_UNIT_SETTING.circ.selfcheck.patron_login_timeout</title>
+                                 <para>UPDATE_ORG_UNIT_SETTING.circ.selfcheck.patron_login_timeout</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ORG_UNIT_SETTING.circ.selfcheck.require_patron_password</title>
+                                 <para>UPDATE_ORG_UNIT_SETTING.circ.selfcheck.require_patron_password</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ORG_UNIT_SETTING.circ.void_overdue_on_lost</title>
+                                 <para>UPDATE_ORG_UNIT_SETTING.circ.void_overdue_on_lost</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ORG_UNIT_SETTING.credit.payments.allow</title>
+                                 <para>UPDATE_ORG_UNIT_SETTING.credit.payments.allow</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ORG_UNIT_SETTING.global.juvenile_age_threshold</title>
+                                 <para>UPDATE_ORG_UNIT_SETTING.global.juvenile_age_threshold</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ORG_UNIT_SETTING.global.password_regex</title>
+                                 <para>UPDATE_ORG_UNIT_SETTING.global.password_regex</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ORG_UNIT_SETTING.opac.barcode_regex</title>
+                                 <para>UPDATE_ORG_UNIT_SETTING.opac.barcode_regex</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ORG_UNIT_SETTING.org.bounced_emails</title>
+                                 <para>UPDATE_ORG_UNIT_SETTING.org.bounced_emails</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_ORG_UNIT_SETTING.patron.password.use_phone</title>
+                                 <para>UPDATE_ORG_UNIT_SETTING.patron.password.use_phone</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_PATRON_CLAIM_NEVER_CHECKED_OUT_COUNT</title>
+                                 <para>Allows staff to manually change a patron's claims never checkout out count</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_PATRON_CLAIM_RETURN_COUNT</title>
+                                 <para>Allows staff to manually change a patron's claims returned count</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_PATRON_STAT_CAT</title>
+                                 <para>User may update a patron statistical category</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_PATRON_STAT_CAT_ENTRY</title>
+                                 <para>User may update an entry in a patron statistical category</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_PAYMENT_NOTE</title>
+                                 <para>Allows staff to edit the note for a payment on a transaction</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_PERM</title>
+                                 <para>UPDATE_PERM</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF</title>
+                                 <para>UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_PICKUP_LIB_FROM_TRANSIT</title>
+                                 <para>Allow a user to change the pickup and transit destination for a captured hold item already in transit</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_PROVIDER</title>
+                                 <para>Allow a user to update a provider</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_RECORD</title>
+                                 <para>Allow a user to update and undelete bibliographic records</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_RELEVANCE_ADJUSTMENT</title>
+                                 <para>UPDATE_RELEVANCE_ADJUSTMENT</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_SURVEY</title>
+                                 <para>UPDATE_SURVEY</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_TRANSIT</title>
+                                 <para>UPDATE_TRANSIT</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_TRANSLATION</title>
+                                 <para>UPDATE_TRANSLATION</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_TRIGGER_CLEANUP</title>
+                                 <para>Allow a user to update trigger cleanup entries</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_TRIGGER_EVENT_DEF</title>
+                                 <para>Allow a user to update trigger event definitions</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_TRIGGER_HOOK</title>
+                                 <para>Allow a user to update trigger hooks</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_TRIGGER_REACTOR</title>
+                                 <para>Allow a user to update trigger reactors</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_TRIGGER_VALIDATOR</title>
+                                 <para>Allow a user to update trigger validators</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_USER</title>
+                                 <para>Allow a user to edit a user's record</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_USER_BTYPE</title>
+                                 <para>UPDATE_USER_BTYPE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_VOLUME</title>
+                                 <para>Allow a user to edit volumes - needed for merging records. This is a duplicate of VOLUME_UPDATE; user must have both permissions at appropriate level to merge records.</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_VOLUME_NOTE</title>
+                                 <para>UPDATE_VOLUME_NOTE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_VR_FORMAT</title>
+                                 <para>UPDATE_VR_FORMAT</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>UPDATE_XML_TRANSFORM</title>
+                                 <para>UPDATE_XML_TRANSFORM</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>user_request.create</title>
+                                 <para>user_request.create</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>user_request.delete</title>
+                                 <para>user_request.delete</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>user_request.update</title>
+                                 <para>user_request.update</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>user_request.view</title>
+                                 <para>user_request.view</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_ACQ_FUND_ALLOCATION_PERCENT</title>
+                                 <para>VIEW_ACQ_FUND_ALLOCATION_PERCENT</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_ACQ_FUNDING_SOURCE</title>
+                                 <para>VIEW_ACQ_FUNDING_SOURCE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_AUTHORITY_RECORD_NOTES</title>
+                                 <para>VIEW_AUTHORITY_RECORD_NOTES</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_BILLING_TYPE</title>
+                                 <para>Allow a user to view billing types</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_CIRC_MATRIX_MATCHPOINT</title>
+                                 <para>VIEW_CIRC_MATRIX_MATCHPOINT</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_CIRCULATIONS</title>
+                                 <para>Allow a user to see what another user has checked out</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_CLAIM</title>
+                                 <para>VIEW_CLAIM</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_CONTAINER</title>
+                                 <para>Allow a user to view another user's containers (buckets)</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_COPY_CHECKOUT_HISTORY</title>
+                                 <para>Allow a user to view which users have checked out a given copy</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_COPY_NOTES</title>
+                                 <para>Allow a user to view all notes attached to a copy</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_CREDIT_CARD_PROCESSING</title>
+                                 <para>View org unit settings related to credit card processing</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_FUND</title>
+                                 <para>Allow a user to view a fund</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_FUND_ALLOCATION</title>
+                                 <para>Allow a user to view a fund allocation</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_FUNDING_SOURCE</title>
+                                 <para>Allow a user to view a funding source</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_GROUP_PENALTY_THRESHOLD</title>
+                                 <para>VIEW_GROUP_PENALTY_THRESHOLD</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_HOLD</title>
+                                 <para>Allow a user to view another user's holds</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_HOLD_MATRIX_MATCHPOINT</title>
+                                 <para>VIEW_HOLD_MATRIX_MATCHPOINT</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_HOLD_NOTIFICATION</title>
+                                 <para>Allow a user to view notifications attached to a hold</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_HOLD_PERMIT</title>
+                                 <para>Allow a user to see if another user has permission to place a hold on a given copy</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_INVOICE</title>
+                                 <para>VIEW_INVOICE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_MERGE_PROFILE</title>
+                                 <para>VIEW_MERGE_PROFILE</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_ORG_SETTINGS</title>
+                                 <para>Allows a user to view all org settings at the specified level</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_PERM_GROUPS</title>
+                                 <para>Allow a user to view other users' permission groups</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_PERMISSION</title>
+                                 <para>Allow a user to view user permissions within the user permissions editor</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_PERMIT_CHECKOUT</title>
+                                 <para>Allow a user to determine whether another user can check out an item</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_PICKLIST</title>
+                                 <para>Allow a user to view another users picklist</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_PROVIDER</title>
+                                 <para>Allow a user to view a provider</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_PURCHASE_ORDER</title>
+                                 <para>Allows a user to view a purchase order</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_REPORT_OUTPUT</title>
+                                 <para>Allow a user to view report output</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_SERIAL_SUBSCRIPTION</title>
+                                 <para>VIEW_SERIAL_SUBSCRIPTION</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_STANDING_PENALTY</title>
+                                 <para>VIEW_STANDING_PENALTY</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_TITLE_NOTES</title>
+                                 <para>Allow a user to view all notes attached to a title</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_TRANSACTION</title>
+                                 <para>Allow a user may view another user's transactions</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_TRIGGER_EVENT_DEF</title>
+                                 <para>Allow a user to view trigger event definitions</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_USER</title>
+                                 <para>Allow a user to view another user's Patron Record</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_USER_FINES_SUMMARY</title>
+                                 <para>Allow a user to view bill details</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_USER_TRANSACTIONS</title>
+                                 <para>Allow a user to see another user's grocery or circulation transactions in the Bills Interface; duplicate of VIEW_TRANSACTION</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_VOLUME_NOTES</title>
+                                 <para>Allow a user to view all notes attached to a volume</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VIEW_ZIP_DATA</title>
+                                 <para>Allow a user to query the ZIP code data method</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VOID_BILLING</title>
+                                 <para>Allow a user to void a bill</para>
+                         </formalpara>
+                         <formalpara>
+                                 <title>VOLUME_HOLDS</title>
+                                 <para>Allow a user to place a volume level hold</para>
+                         </formalpara> 
+                 
+         </section>
+ </appendix>
