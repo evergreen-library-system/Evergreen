@@ -1724,7 +1724,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 		permission.perm_list perm,
 		actor.org_unit_type aout
 	WHERE
-		pgt.name = 'Cataloging Admin' AND
+		pgt.name = 'Cataloging Administrator' AND
 		aout.name = 'Consortium' AND
 		perm.code IN (
 			'ADMIN_IMPORT_ITEM_ATTR_DEF',
@@ -1768,7 +1768,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 		permission.perm_list perm,
 		actor.org_unit_type aout
 	WHERE
-		pgt.name = 'Cataloging Admin' AND
+		pgt.name = 'Cataloging Administrator' AND
 		aout.name = 'System' AND
 		perm.code IN (
 			'CREATE_COPY_STAT_CAT',
@@ -1885,7 +1885,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 		permission.perm_list perm,
 		actor.org_unit_type aout
 	WHERE
-		pgt.name = 'Circulation Admin' AND
+		pgt.name = 'Circulation Administrator' AND
 		aout.name = 'Branch' AND
 		perm.code IN (
 			'DELETE_USER');
@@ -1898,7 +1898,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 		permission.perm_list perm,
 		actor.org_unit_type aout
 	WHERE
-		pgt.name = 'Circulation Admin' AND
+		pgt.name = 'Circulation Administrator' AND
 		aout.name = 'Consortium' AND
 		perm.code IN (
 			'ADMIN_MAX_FINE_RULE',
@@ -1921,7 +1921,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 		permission.perm_list perm,
 		actor.org_unit_type aout
 	WHERE
-		pgt.name = 'Circulation Admin' AND
+		pgt.name = 'Circulation Administrator' AND
 		aout.name = 'System' AND
 		perm.code IN (
 			'ADMIN_BOOKING_RESERVATION',

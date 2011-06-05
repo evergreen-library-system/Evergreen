@@ -1,4 +1,4 @@
-// vim:noet:sw=4:ts=4
+// vim:et:sw=4:ts=4
 var g = {};
 g.map_acn = {};
 
@@ -123,11 +123,6 @@ function my_init() {
             $('top_nav').setAttribute('hidden','true');
         }
 
-        if (g.copies.length > 0 && g.copies[0].id() < 0) {
-            document.getElementById('copy_notes').setAttribute('hidden','true');
-            $('save').setAttribute('label', $('catStrings').getString('staff.cat.copy_editor.create_copies'));
-            $('save').setAttribute('accesskey', $('catStrings').getString('staff.cat.copy_editor.create_copies.accesskey'));
-        }
         g.panes_and_field_names.left_pane = 
             [
                 [
@@ -140,9 +135,6 @@ function my_init() {
                 ]
             ].concat(g.panes_and_field_names.left_pane);
 
-        if (g.copies.length != 1) {
-            document.getElementById('copy_notes').setAttribute('hidden','true');
-        }
 
         /******************************************************************************************************/
         /* Show the Record Details? */
@@ -176,6 +168,7 @@ function my_init() {
                 try {
                     g.copies = xulG.copies;
                     g.original_copies = js2JSON( g.copies );
+                    g.hide_copy_notes_button();
                     for (var i = 0; i < g.applied_templates.length; i++) {
                         g._apply_template( g.applied_templates[i], false);
                     }
@@ -192,12 +185,27 @@ function my_init() {
             xulG.notify_of_templatable_field_change = function(id,v) {
                 g.changed[ 'volume_copy_creator.'+id ] = { 'type' : 'volume_copy_creator', 'field' : id, 'value' : v };
             }
+        } else {
+            g.hide_copy_notes_button();
         }
 
     } catch(E) {
         var err_msg = $("commonStrings").getFormattedString('common.exception', ['cat/copy_editor.js', E]);
         try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); dump(js2JSON(E)); }
         alert(err_msg);
+    }
+}
+
+/******************************************************************************************************/
+/* Show copy notes button */
+g.hide_copy_notes_button = function() {
+    if (g.copies.length > 0 && g.copies[0].id() < 0) {
+        document.getElementById('copy_notes').setAttribute('hidden','true');
+        $('save').setAttribute('label', $('catStrings').getString('staff.cat.copy_editor.create_copies'));
+        $('save').setAttribute('accesskey', $('catStrings').getString('staff.cat.copy_editor.create_copies.accesskey'));
+    }
+    if (g.copies.length != 1) {
+        document.getElementById('copy_notes').setAttribute('hidden','true');
     }
 }
 
