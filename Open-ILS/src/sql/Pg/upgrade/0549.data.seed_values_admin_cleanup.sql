@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('0536'); --dbs
+INSERT INTO config.upgrade_log (version) VALUES ('0549'); --dbs
 
 -- config settings group
 INSERT INTO config.settings_group (name, label) VALUES
