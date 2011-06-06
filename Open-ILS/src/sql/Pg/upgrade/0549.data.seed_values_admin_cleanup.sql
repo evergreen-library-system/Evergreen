@@ -1,3 +1,7 @@
+BEGIN;
+
+INSERT INTO config.upgrade_log (version) VALUES ('0536'); --dbs
+
 -- config settings group
 INSERT INTO config.settings_group (name, label) VALUES
 ('sys', 'System'),
@@ -210,3 +214,5 @@ UPDATE config.org_unit_setting_type SET grp = 'self' WHERE name = 'circ.selfchec
 UPDATE config.org_unit_setting_type SET grp = 'self' WHERE name = 'circ.selfcheck.require_patron_password';
 UPDATE config.org_unit_setting_type SET grp = 'self' WHERE name = 'circ.selfcheck.workstation_required';
 UPDATE config.org_unit_setting_type SET grp = 'serial' WHERE name = 'serial.prev_issuance_copy_location';
+
+COMMIT;
