@@ -366,10 +366,10 @@ BEGIN
     -- Assume success unless we hit a failure condition
     result.success := TRUE;
 
-    -- Fail if the user is BARRED
-    SELECT INTO user_object * FROM actor.usr WHERE id = match_user;
+    -- Need user info to look up matchpoints
+    SELECT INTO user_object * FROM actor.usr WHERE id = match_user AND NOT deleted;
 
-    -- Fail if we couldn't find the user 
+    -- (Insta)Fail if we couldn't find the user
     IF user_object.id IS NULL THEN
         result.fail_part := 'no_user';
         result.success := FALSE;
@@ -378,9 +378,10 @@ BEGIN
         RETURN;
     END IF;
 
-    SELECT INTO item_object * FROM asset.copy WHERE id = match_item;
+    -- Need item info to look up matchpoints
+    SELECT INTO item_object * FROM asset.copy WHERE id = match_item AND NOT deleted;
 
-    -- Fail if we couldn't find the item 
+    -- (Insta)Fail if we couldn't find the item 
     IF item_object.id IS NULL THEN
         result.fail_part := 'no_item';
         result.success := FALSE;
@@ -389,6 +390,32 @@ BEGIN
         RETURN;
     END IF;
 
+    SELECT INTO circ_test * FROM action.find_circ_matrix_matchpoint(circ_ou, item_object, user_object, renewal);
+
+    circ_matchpoint             := circ_test.matchpoint;
+    result.matchpoint           := circ_matchpoint.id;
+    result.circulate            := circ_matchpoint.circulate;
+    result.duration_rule        := circ_matchpoint.duration_rule;
+    result.recurring_fine_rule  := circ_matchpoint.recurring_fine_rule;
+    result.max_fine_rule        := circ_matchpoint.max_fine_rule;
+    result.hard_due_date        := circ_matchpoint.hard_due_date;
+    result.renewals             := circ_matchpoint.renewals;
+    result.grace_period         := circ_matchpoint.grace_period;
+    result.buildrows            := circ_test.buildrows;
+
+    -- (Insta)Fail if we couldn't find a matchpoint
+    IF circ_test.success = false THEN
+        result.fail_part := 'no_matchpoint';
+        result.success := FALSE;
+        done := TRUE;
+        RETURN NEXT result;
+        RETURN;
+    END IF;
+
+    -- All failures before this point are non-recoverable
+    -- Below this point are possibly overridable failures
+
+    -- Fail if the user is barred
     IF user_object.barred IS TRUE THEN
         result.fail_part := 'actor.usr.barred';
         result.success := FALSE;
@@ -410,6 +437,7 @@ BEGIN
         result.success := FALSE;
         done := TRUE;
         RETURN NEXT result;
+    -- Alternately, fail if the item isn't checked out on a renewal
     ELSIF renewal AND item_object.status <> 1 THEN
         result.fail_part := 'asset.copy.status';
         result.success := FALSE;
@@ -424,28 +452,6 @@ BEGIN
         result.success := FALSE;
         done := TRUE;
         RETURN NEXT result;
-    END IF;
-
-    SELECT INTO circ_test * FROM action.find_circ_matrix_matchpoint(circ_ou, item_object, user_object, renewal);
-
-    circ_matchpoint             := circ_test.matchpoint;
-    result.matchpoint           := circ_matchpoint.id;
-    result.circulate            := circ_matchpoint.circulate;
-    result.duration_rule        := circ_matchpoint.duration_rule;
-    result.recurring_fine_rule  := circ_matchpoint.recurring_fine_rule;
-    result.max_fine_rule        := circ_matchpoint.max_fine_rule;
-    result.hard_due_date        := circ_matchpoint.hard_due_date;
-    result.renewals             := circ_matchpoint.renewals;
-    result.grace_period         := circ_matchpoint.grace_period;
-    result.buildrows            := circ_test.buildrows;
-
-    -- Fail if we couldn't find a matchpoint
-    IF circ_test.success = false THEN
-        result.fail_part := 'no_matchpoint';
-        result.success := FALSE;
-        done := TRUE;
-        RETURN NEXT result;
-        RETURN; -- All tests after this point require a matchpoint. No sense in running on an incomplete or missing one.
     END IF;
 
     -- Apparently....use the circ matchpoint org unit to determine what org units are valid.
@@ -522,7 +528,7 @@ BEGIN
         END IF;
     END LOOP;
 
-    -- If we passed everything, return the successful matchpoint id
+    -- If we passed everything, return the successful matchpoint
     IF NOT done THEN
         RETURN NEXT result;
     END IF;
