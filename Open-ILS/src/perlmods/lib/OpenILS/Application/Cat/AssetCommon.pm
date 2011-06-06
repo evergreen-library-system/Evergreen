@@ -347,11 +347,70 @@ sub delete_copy {
 			or return $editor->event;
 	}
 
+    my $evt = $class->cancel_copy_holds($editor, $copy);
+    return $evt if $evt;
+
     $class->check_hold_retarget($editor, $copy, undef, $retarget_holds);
 
     return undef if $skip_empty_cleanup;
 
 	return $class->remove_empty_objects($editor, $override, $vol, $force_delete_empty_bib);
+}
+
+
+# deletes all holds that specifically target the deleted copy
+sub cancel_copy_holds {
+    my($class, $editor, $copy) = @_;
+
+    my $holds = $editor->search_action_hold_request({   
+        target              => $copy->id, 
+        hold_type           => [qw/C R F/],
+        cancel_time         => undef, 
+        fulfillment_time    => undef 
+    });
+
+    return $class->cancel_hold_list($editor, $holds);
+}
+
+# deletes all holds that specifically target the deleted volume
+sub cancel_volume_holds {
+    my($class, $editor, $volume) = @_;
+
+    my $holds = $editor->search_action_hold_request({   
+        target              => $volume->id, 
+        hold_type           => 'V',
+        cancel_time         => undef, 
+        fulfillment_time    => undef 
+    });
+
+    return $class->cancel_hold_list($editor, $holds);
+}
+
+sub cancel_hold_list {
+    my($class, $editor, $holds) = @_;
+
+    for my $hold (@$holds) {
+
+        $hold->cancel_time('now');
+        $hold->cancel_cause(1); # un-targeted expiration.  Do we need an alternate "target deleted" cause?
+        $editor->update_action_hold_request($hold) or return $editor->die_event;
+
+        # delete the copy maps.  
+        my $maps = $editor->search_action_hold_copy_map({hold => $hold->id});
+        for(@$maps) {
+            $editor->delete_action_hold_copy_map($_) 
+                or return $editor->die_event;
+        }
+
+        # tell A/T the hold was cancelled.  Don't wait for a response..
+        my $at_ses = OpenSRF::AppSession->create('open-ils.trigger');
+        $at_ses->request(
+            'open-ils.trigger.event.autocreate',
+            'hold_request.cancel.expire_no_target', 
+            $hold, $hold->pickup_lib);
+    }
+
+    return undef;
 }
 
 
@@ -547,6 +606,9 @@ sub delete_volume {
     $vol->edit_date('now');
     $vol->editor($editor->requestor->id);
     $editor->update_asset_call_number($vol) or return $editor->die_event;
+
+    $evt = $class->cancel_volume_holds($editor, $vol);
+    return $evt if $evt;
 
     # handle the case where this is the last volume on the record
 	return $class->remove_empty_objects($editor, $override, $vol);
