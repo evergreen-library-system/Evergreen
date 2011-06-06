@@ -2077,11 +2077,15 @@ sub marc_search {
 }
 
 
+foreach my $isbn_method (qw/
+    open-ils.search.biblio.isbn
+    open-ils.search.biblio.isbn.staff
+/) {
 __PACKAGE__->register_method(
     method    => "biblio_search_isbn",
-    api_name  => "open-ils.search.biblio.isbn",
+    api_name  => $isbn_method,
     signature => {
-        desc   => 'Retrieve biblio IDs for a given ISBN',
+        desc   => 'Retrieve biblio IDs for a given ISBN. The .staff version of the call includes otherwise hidden hits.',
         params => [
             {desc => 'ISBN', type => 'string'}
         ],
@@ -2091,6 +2095,7 @@ __PACKAGE__->register_method(
         }
     }
 );
+}
 
 sub biblio_search_isbn { 
 	my( $self, $client, $isbn ) = @_;
@@ -2102,7 +2107,13 @@ sub biblio_search_isbn {
 	# reworking 'open-ils.storage.id_list.biblio.record_entry.search.isbn',
 	# which is functionally deprecated at this point, or a custom call to
 	# 'open-ils.storage.biblio.multiclass.search_fts'
-	my $method = $self->method_lookup('open-ils.search.biblio.multiclass.query');
+
+    my $isbn_method = 'open-ils.search.biblio.multiclass.query';
+    if ($self->api_name =~ m/.staff$/) {
+        $isbn_method .= '.staff';
+    }
+
+	my $method = $self->method_lookup($isbn_method);
 	my ($search_result) = $method->run({'limit' => 1000000}, "identifier|isbn:$isbn");
 	my @recs = map { $_->[0] } @{$search_result->{'ids'}};
 	return { ids => \@recs, count => $search_result->{'count'} };
@@ -2132,9 +2143,13 @@ sub biblio_search_isbn_batch {
 	return { ids => \@recs, count => scalar(@recs) };
 }
 
+foreach my $issn_method (qw/
+    open-ils.search.biblio.issn
+    open-ils.search.biblio.issn.staff
+/) {
 __PACKAGE__->register_method(
     method   => "biblio_search_issn",
-    api_name => "open-ils.search.biblio.issn",
+    api_name => $issn_method,
     signature => {
         desc   => 'Retrieve biblio IDs for a given ISSN',
         params => [
@@ -2146,6 +2161,7 @@ __PACKAGE__->register_method(
         }
     }
 );
+}
 
 sub biblio_search_issn { 
 	my( $self, $client, $issn ) = @_;
@@ -2157,7 +2173,13 @@ sub biblio_search_issn {
 	# reworking 'open-ils.storage.id_list.biblio.record_entry.search.issn',
 	# which is functionally deprecated at this point, or a custom call to
 	# 'open-ils.storage.biblio.multiclass.search_fts'
-	my $method = $self->method_lookup('open-ils.search.biblio.multiclass.query');
+
+    my $issn_method = 'open-ils.search.biblio.multiclass.query';
+    if ($self->api_name =~ m/.staff$/) {
+        $issn_method .= '.staff';
+    }
+
+	my $method = $self->method_lookup($issn_method);
 	my ($search_result) = $method->run({'limit' => 1000000}, "identifier|issn:$issn");
 	my @recs = map { $_->[0] } @{$search_result->{'ids'}};
 	return { ids => \@recs, count => $search_result->{'count'} };
