@@ -500,7 +500,8 @@ OpenILS.data.prototype = {
                         if (obj.list[classname].constructor.name == 'Array') {
                             obj.hash[classname] = 
                                 util.functional.convert_object_list_to_hash(
-                                    obj.list[classname]
+                                    obj.list[classname],
+                                    classname == 'citm' ? 'code' : null
                                 );
                         }
                     } catch(E) {

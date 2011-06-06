@@ -1,4 +1,5 @@
 var SC_FETCH_ALL        = 'open-ils.circ:open-ils.circ.stat_cat.TYPE.retrieve.all';
+var SC_FETCH_SF         = 'open-ils.pcrud:open-ils.pcrud.search.PCRUD.atomic';
 var SC_CREATE            = 'open-ils.circ:open-ils.circ.stat_cat.TYPE.create';
 var SC_UPDATE            = 'open-ils.circ:open-ils.circ.stat_cat.TYPE.update';
 var SC_DELETE            = 'open-ils.circ:open-ils.circ.stat_cat.TYPE.delete';
@@ -15,6 +16,12 @@ var scCache                = {};
 var PERMS                = {};
 PERMS[ACTOR]            = {};
 PERMS[ASSET]            = {};
+
+var PCRUD_CLASS         = {};
+PCRUD_CLASS[ACTOR]      = 'actscsf';
+PCRUD_CLASS[ASSET]      = 'ascsf';
+
+scSFCache               = {};
 
 var currentlyVisible;
 var opacVisible        = false;
@@ -84,6 +91,21 @@ function scEditorInit() {
         }, 20 );
 }
 
+function scPopSipFields( selector, type ) {
+    while(selector.lastChild.value != '') selector.removeChild(selector.lastChild);
+    if(!scSFCache[type]) {
+        var req = new Request( 
+            SC_FETCH_SF.replace(/PCRUD/, PCRUD_CLASS[type]) , session, { 'field' : { '!=' : null } } );
+        req.send(true);
+        scSFCache[type] = req.result();
+    }
+    for(var f in scSFCache[type]) {
+        var option = document.createElement('option');
+        option.value = scSFCache[type][f].field();
+        option.appendChild(text(scSFCache[type][f].name() + ' (' + scSFCache[type][f].field() + ')' + (isTrue(scSFCache[type][f].one_only()) ? '**' : '')));
+        selector.appendChild(option);
+    }
+}
 
 function scGo() {
     var show = cgi.param('show');
@@ -170,6 +192,16 @@ function scInsertCat( tbody, cat, type ) {
         unHideMe($n(row, 'sc_opac_visible'));
     else 
         unHideMe($n(row, 'sc_opac_invisible'));
+
+    if(cat.sip_field().length != 2)
+        unHideMe($n(row, 'sc_sip_field_none'));
+    else {
+        $n(row, 'sc_sip_field_value').appendChild( text( cat.sip_field() ) );
+        unHideMe($n(row, 'sc_sip_field_value'));
+    }
+
+    $n(row, 'sc_sip_format_td').appendChild( text( cat.sip_format() ) );
+
 
     if(type == ACTOR) {
         if(isTrue(cat.usr_summary()))
@@ -285,10 +317,12 @@ function scBuildNew() {
             hideMe($('required_td2'));
             unHideMe($('usr_summary_td1'));
             unHideMe($('usr_summary_td2'));
+            unHideMe($('sip_tr'));
         break;
         case ASSET:
             hideMe($('usr_summary_td1'));
             hideMe($('usr_summary_td2'));
+            hideMe($('sip_tr'));
             unHideMe($('required_td1'));
             unHideMe($('required_td2'));
         break;
@@ -304,6 +338,7 @@ function scBuildNew() {
         libSel.disabled = false;
     }
     buildMergedOrgSel(libSel, org_list, 0, 'shortname');
+    scPopSipFields($('sc_sip_field'),type);
 }
 
 
@@ -328,6 +363,10 @@ function scNew() {
         cat = new asc();
         cat.required( required );
     }
+    var field = getSelectorVal($('sc_sip_field'));
+    if(field.length == 2) cat.sip_field(field);
+    else cat.sip_field(null);
+    cat.sip_format($('sc_sip_format').value);
 
     cat.opac_visible(visible);
     cat.name(name);
@@ -354,7 +393,10 @@ function scEdit( tbody, type, cat ) {
     if(r.nextSibling) { tbody.insertBefore( row, r.nextSibling ); }
     else{ tbody.appendChild(row); }
 
+    scPopSipFields($n(row, 'sc_edit_sip_field'), type);
     $n(row, 'sc_edit_name').value = cat.name();
+    setSelector($n(row, 'sc_edit_sip_field'), cat.sip_field());
+    $n(row, 'sc_edit_sip_format').value = cat.sip_format();
 
     if(type == ACTOR) {
         var cb = $n(row, 'sc_edit_usr_summary');
@@ -425,11 +467,15 @@ function scEditGo( type, cat, row, selector ) {
 
     var usr_summary = $n(row, 'sc_edit_usr_summary').checked;
     var required = $n(row, 'sc_edit_required').checked;
+    var sip_field = getSelectorVal( $n(row, 'sc_edit_sip_field') );
 
     cat.name( name );
     cat.owner( newlib );
     cat.entries(null);
     cat.opac_visible(0);
+    if(sip_field.length == 2) cat.sip_field( sip_field );
+    else cat.sip_field(null);
+    cat.sip_format($n(row, 'sc_edit_sip_format').value);
     if( visible ) cat.opac_visible(1);
     switch(type) {
         case ACTOR:

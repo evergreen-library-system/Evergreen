@@ -154,6 +154,17 @@ $$;
 
 CREATE INDEX actor_usr_setting_usr_idx ON actor.usr_setting (usr);
 
+CREATE TABLE actor.stat_cat_sip_fields (
+    field   CHAR(2) PRIMARY KEY,
+    name    TEXT    NOT NULL,
+    one_only  BOOL    NOT NULL DEFAULT FALSE
+);
+COMMENT ON TABLE actor.stat_cat_sip_fields IS $$
+Actor Statistical Category SIP Fields
+
+Contains the list of valid SIP Field identifiers for
+Statistical Categories.
+$$;
 
 CREATE TABLE actor.stat_cat (
 	id		SERIAL  PRIMARY KEY,
@@ -161,6 +172,8 @@ CREATE TABLE actor.stat_cat (
 	name		TEXT    NOT NULL,
 	opac_visible	BOOL NOT NULL DEFAULT FALSE,
 	usr_summary     BOOL NOT NULL DEFAULT FALSE,
+    sip_field   CHAR(2) REFERENCES actor.stat_cat_sip_fields(field) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
+    sip_format  TEXT,
 	CONSTRAINT sc_once_per_owner UNIQUE (owner,name)
 );
 COMMENT ON TABLE actor.stat_cat IS $$
@@ -201,6 +214,28 @@ Records the stat_cat entries for each user.
 $$;
 
 CREATE INDEX actor_stat_cat_entry_usr_idx ON actor.stat_cat_entry_usr_map (target_usr);
+
+CREATE FUNCTION actor.stat_cat_check() RETURNS trigger AS $func$
+DECLARE
+    sipfield actor.stat_cat_sip_fields%ROWTYPE;
+    use_count INT;
+BEGIN
+    IF NEW.sip_field IS NOT NULL THEN
+        SELECT INTO sipfield * FROM actor.stat_cat_sip_fields WHERE field = NEW.sip_field;
+        IF sipfield.one_only THEN
+            SELECT INTO use_count count(id) FROM actor.stat_cat WHERE sip_field = NEW.sip_field AND id != NEW.id;
+            IF use_count > 0 THEN
+                RAISE EXCEPTION 'Sip field cannot be used twice';
+            END IF;
+        END IF;
+    END IF;
+    RETURN NEW;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER actor_stat_cat_sip_update_trigger
+    BEFORE INSERT OR UPDATE ON actor.stat_cat FOR EACH ROW
+    EXECUTE PROCEDURE actor.stat_cat_check();
 
 CREATE TABLE actor.card (
 	id	SERIAL	PRIMARY KEY,

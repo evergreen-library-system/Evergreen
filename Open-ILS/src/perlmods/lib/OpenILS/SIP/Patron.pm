@@ -66,6 +66,10 @@ sub new {
                 "billing_address",
                 "mailing_address",
                 'profile',
+                "stat_cat_entries",
+            ],
+            actscecm => [
+                "stat_cat",
             ],
         }
     };
@@ -721,5 +725,38 @@ sub inet_privileges {
     return $name;
 }
 
+sub extra_fields {
+    my( $self ) = @_;
+    my $extra_fields = {};
+   	my $u = $self->{user};
+    foreach my $stat_cat_entry (@{$u->stat_cat_entries}) {
+        my $stat_cat = $stat_cat_entry->stat_cat;
+        next unless ($stat_cat->sip_field);
+        my $value = $stat_cat_entry->stat_cat_entry;
+        if(defined $stat_cat->sip_format && length($stat_cat->sip_format) > 0) { # Has a format string?
+            if($stat_cat->sip_format =~ /^\|(.*)\|$/) { # Regex match?
+                if($value =~ /($1)/) { # If we have a match
+                    if(defined $2) { # Check to see if they embedded a capture group
+                        $value = $2; # If so, use it
+                    }
+                    else { # No embedded capture group?
+                        $value = $1; # Use our outer one
+                    }
+                }
+                else { # No match?
+                    $value = ''; # Empty string. Will be checked for below.
+                }
+            }
+            else { # Not a regex match - Try sprintf match (looking for a %s, if any)
+                $value = sprintf($stat_cat->sip_format, $value);
+            }
+        }
+        next unless length($value) > 0; # No value = no export
+        $value =~ s/\|//g; # Remove all lingering pipe chars for sane output purposes
+        $extra_fields->{ $stat_cat->sip_field } = [] unless (defined $extra_fields->{$stat_cat->sip_field});
+        push(@{$extra_fields->{ $stat_cat->sip_field}}, $value);
+    }
+    return $extra_fields;
+}
 
 1;
