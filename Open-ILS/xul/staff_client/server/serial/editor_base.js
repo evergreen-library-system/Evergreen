@@ -249,6 +249,7 @@ serial.editor_base = {
 
     'editor_base_summarize' : function(my_fms) {
         var obj = this;
+        var fm_type = obj.fm_type;
         /******************************************************************************************************/
         /* Setup */
 
@@ -262,6 +263,8 @@ serial.editor_base = {
         /******************************************************************************************************/
         /* Loop through the field names */
 
+        obj.missing_required = [];
+
         for (var i = 0; i < obj.field_names.length; i++) {
 
             var field_name = obj.field_names[i][0];
@@ -269,6 +272,7 @@ serial.editor_base = {
             var attr = obj.field_names[i][1].attr;
             var value_key = obj.field_names[i][1].value_key;
             var dropdown_key = obj.field_names[i][1].dropdown_key;
+            var required = obj.field_names[i][1].required;
             obj.summary[ field_name ] = {};
 
             /******************************************************************************************************/
@@ -293,9 +297,14 @@ serial.editor_base = {
                     } else if (value_key) {
                         obj.editor_values[value_key] = value;
                     }
+                    if (required && value == "") {
+                        obj.missing_required.push(fieldmapper.IDL.fmclasses[fm_type].field_map[field_name].label); //TODO: consider applying a style
+                    }
+
                     if (value == "") {
                         value = $('serialStrings').getString('serial.editor_base.unset');
                     }
+
                 } catch(E) { 
                     obj.error.sdump('D_ERROR','Attempted ' + cmd + '\n' +  E + '\n'); 
                 }
@@ -313,6 +322,7 @@ serial.editor_base = {
                 }
             }
         }
+
         obj.error.sdump('D_TRACE','summary = ' + js2JSON(obj.summary) + '\n');
     },
 
@@ -540,11 +550,16 @@ serial.editor_base = {
     'editor_base_save' : function(update_method) {
         var obj = this;
         var fm_type_plural = obj.fm_type_plural;
-        var fm_type= obj.fm_type;
+        var fm_type = obj.fm_type;
 
         try {
             if (obj.handle_update) {
                 try {
+                    if (obj.missing_required.length > 0) {
+                        alert($('serialStrings').getString('staff.serial.required_fields_alert') + obj.missing_required.join(', '));
+                        return; //stop submission
+                    }
+
                     //send fms to the update function
                     var r = obj.network.request(
                         'open-ils.serial',

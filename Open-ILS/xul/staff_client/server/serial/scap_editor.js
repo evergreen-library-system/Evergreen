@@ -83,7 +83,8 @@ serial.scap_editor.prototype = {
                 'type',
                 {
                     input: 'c = function(v){ obj.apply("type",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ ["basic", "basic"], ["index", "index"], ["supplement", "supplement"] ] ); x.setAttribute("value",obj.editor_values.type); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
-                    value_key: 'type'
+                    value_key: 'type',
+                    required: true
                 }
             ],
             [
@@ -99,7 +100,8 @@ serial.scap_editor.prototype = {
                 'pattern_code',
                 { 
                     input: 'c = function(v){ obj.apply("pattern_code",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.setAttribute("multiline",true); x.setAttribute("cols",40); x.setAttribute("value",obj.editor_values.pattern_code); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
-                    value_key: 'pattern_code'
+                    value_key: 'pattern_code',
+                    required: true
                 }
             ]
         ]
