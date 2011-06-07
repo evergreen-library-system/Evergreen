@@ -305,7 +305,7 @@ BEGIN
         xml_node_list := oils_xpath( idx.xpath, transformed_xml, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]] );
 
         raw_text := NULL;
-        FOR xml_node IN SELECT x FROM explode_array(xml_node_list) AS x LOOP
+        FOR xml_node IN SELECT x FROM unnest(xml_node_list) AS x LOOP
             CONTINUE WHEN xml_node !~ E'^\\s*<';
 
             curr_text := ARRAY_TO_STRING(
@@ -935,7 +935,7 @@ BEGIN
     INSERT INTO metabib.metarecord_source_map (metarecord, source) VALUES (old_mr, bib_id); -- new source mapping
 
     IF ARRAY_UPPER(deleted_mrs,1) > 0 THEN
-        UPDATE action.hold_request SET target = old_mr WHERE target IN ( SELECT explode_array(deleted_mrs) ) AND hold_type = 'M'; -- if we had to delete any MRs above, make sure their holds are moved
+        UPDATE action.hold_request SET target = old_mr WHERE target IN ( SELECT unnest(deleted_mrs) ) AND hold_type = 'M'; -- if we had to delete any MRs above, make sure their holds are moved
     END IF;
 
     RETURN old_mr;
@@ -950,7 +950,7 @@ CREATE OR REPLACE FUNCTION biblio.map_authority_linking (bibid BIGINT, marc TEXT
                 y.authority
           FROM (    SELECT  DISTINCT $1 AS bib,
                             BTRIM(remove_paren_substring(txt))::BIGINT AS authority
-                      FROM  explode_array(oils_xpath('//*[@code="0"]/text()',$2)) x(txt)
+                      FROM  unnest(oils_xpath('//*[@code="0"]/text()',$2)) x(txt)
                       WHERE BTRIM(remove_paren_substring(txt)) ~ $re$^\d+$$re$
                 ) y JOIN authority.record_entry r ON r.id = y.authority;
     SELECT $1;

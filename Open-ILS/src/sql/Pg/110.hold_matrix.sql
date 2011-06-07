@@ -283,7 +283,7 @@ BEGIN
           FROM  actor.usr_standing_penalty usp
                 JOIN config.standing_penalty csp ON (csp.id = usp.standing_penalty)
           WHERE usr = match_user
-                AND usp.org_unit IN ( SELECT * FROM explode_array(context_org_list) )
+                AND usp.org_unit IN ( SELECT * FROM unnest(context_org_list) )
                 AND (usp.stop_date IS NULL or usp.stop_date > NOW())
                 AND csp.block_list LIKE '%HOLD%' LOOP
 
@@ -299,7 +299,7 @@ BEGIN
               FROM  actor.usr_standing_penalty usp
                     JOIN config.standing_penalty csp ON (csp.id = usp.standing_penalty)
               WHERE usr = match_user
-                    AND usp.org_unit IN ( SELECT * FROM explode_array(context_org_list) )
+                    AND usp.org_unit IN ( SELECT * FROM unnest(context_org_list) )
                     AND (usp.stop_date IS NULL or usp.stop_date > NOW())
                     AND csp.block_list LIKE '%CIRC%' LOOP
     

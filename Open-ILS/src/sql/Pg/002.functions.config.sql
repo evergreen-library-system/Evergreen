@@ -278,7 +278,7 @@ BEGIN
             select_list := ARRAY_APPEND(
                 select_list,
                 $sel$
-                EXPLODE_ARRAY(
+                unnest(
                     COALESCE(
                         NULLIF(
                             oils_xpath(

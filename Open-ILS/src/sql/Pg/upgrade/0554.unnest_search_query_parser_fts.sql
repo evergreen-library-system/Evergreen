@@ -1,37 +1,10 @@
-/*
- * Copyright (C) 2007-2010  Equinox Software, Inc.
- * Mike Rylander <miker@esilibrary.com> 
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- */
-
-
-DROP SCHEMA IF EXISTS search CASCADE;
-
+-- Evergreen DB patch 0554.unnest_search_query_parser_fts.sql
+--
+-- Replace usage of custom explode_array() function with native unnest()
+--
 BEGIN;
 
-CREATE SCHEMA search;
-
-CREATE TABLE search.relevance_adjustment (
-    id          SERIAL  PRIMARY KEY,
-    active      BOOL    NOT NULL DEFAULT TRUE,
-    field       INT     NOT NULL REFERENCES config.metabib_field (id) DEFERRABLE INITIALLY DEFERRED,
-    bump_type   TEXT    NOT NULL CHECK (bump_type IN ('word_order','first_word','full_match')),
-    multiplier  NUMERIC NOT NULL DEFAULT 1.0
-);
-CREATE UNIQUE INDEX bump_once_per_field_idx ON search.relevance_adjustment ( field, bump_type );
-
-CREATE TYPE search.search_result AS ( id BIGINT, rel NUMERIC, record INT, total INT, checked INT, visible INT, deleted INT, excluded INT );
-CREATE TYPE search.search_args AS ( id INT, field_class TEXT, field_name TEXT, table_alias TEXT, term TEXT, term_type TEXT );
+INSERT INTO config.upgrade_log (version) VALUES ('0550'); -- dbs
 
 CREATE OR REPLACE FUNCTION search.query_parser_fts (
 
@@ -185,9 +158,20 @@ BEGIN
               LIMIT 1;
 
             IF NOT FOUND THEN
-                -- RAISE NOTICE ' % were all status-excluded ... ', core_result.records;
-                excluded_count := excluded_count + 1;
-                CONTINUE;
+                PERFORM 1
+                  FROM  biblio.peer_bib_copy_map pr
+                        JOIN asset.copy cp ON (cp.id = pr.target_copy)
+                  WHERE NOT cp.deleted
+                        AND cp.status IN ( SELECT * FROM unnest( param_statuses ) )
+                        AND pr.peer_record IN ( SELECT * FROM unnest( core_result.records ) )
+                        AND cp.circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
+                  LIMIT 1;
+
+                IF NOT FOUND THEN
+                -- RAISE NOTICE ' % and multi-home linked records were all status-excluded ... ', core_result.records;
+                    excluded_count := excluded_count + 1;
+                    CONTINUE;
+                END IF;
             END IF;
 
         END IF;
@@ -205,9 +189,20 @@ BEGIN
               LIMIT 1;
 
             IF NOT FOUND THEN
-                -- RAISE NOTICE ' % were all copy_location-excluded ... ', core_result.records;
-                excluded_count := excluded_count + 1;
-                CONTINUE;
+                PERFORM 1
+                  FROM  biblio.peer_bib_copy_map pr
+                        JOIN asset.copy cp ON (cp.id = pr.target_copy)
+                  WHERE NOT cp.deleted
+                        AND cp.location IN ( SELECT * FROM unnest( param_locations ) )
+                        AND pr.peer_record IN ( SELECT * FROM unnest( core_result.records ) )
+                        AND cp.circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
+                  LIMIT 1;
+
+                IF NOT FOUND THEN
+                    -- RAISE NOTICE ' % and multi-home linked records were all copy_location-excluded ... ', core_result.records;
+                    excluded_count := excluded_count + 1;
+                    CONTINUE;
+                END IF;
             END IF;
 
         END IF;
@@ -221,9 +216,19 @@ BEGIN
               LIMIT 1;
 
             IF NOT FOUND THEN
-                -- RAISE NOTICE ' % were all visibility-excluded ... ', core_result.records;
-                excluded_count := excluded_count + 1;
-                CONTINUE;
+                PERFORM 1
+                  FROM  biblio.peer_bib_copy_map pr
+                        JOIN asset.opac_visible_copies cp ON (cp.copy_id = pr.target_copy)
+                  WHERE cp.circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
+                        AND pr.peer_record IN ( SELECT * FROM unnest( core_result.records ) )
+                  LIMIT 1;
+
+                IF NOT FOUND THEN
+
+                    -- RAISE NOTICE ' % and multi-home linked records were all visibility-excluded ... ', core_result.records;
+                    excluded_count := excluded_count + 1;
+                    CONTINUE;
+                END IF;
             END IF;
 
         ELSE
@@ -231,7 +236,6 @@ BEGIN
             PERFORM 1
               FROM  asset.call_number cn
                     JOIN asset.copy cp ON (cp.call_number = cn.id)
-                    JOIN actor.org_unit a ON (cp.circ_lib = a.id)
               WHERE NOT cn.deleted
                     AND NOT cp.deleted
                     AND cp.circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
@@ -241,14 +245,25 @@ BEGIN
             IF NOT FOUND THEN
 
                 PERFORM 1
-                  FROM  asset.call_number cn
-                  WHERE cn.record IN ( SELECT * FROM unnest( core_result.records ) )
+                  FROM  biblio.peer_bib_copy_map pr
+                        JOIN asset.copy cp ON (cp.id = pr.target_copy)
+                  WHERE NOT cp.deleted
+                        AND cp.circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
+                        AND pr.peer_record IN ( SELECT * FROM unnest( core_result.records ) )
                   LIMIT 1;
 
-                IF FOUND THEN
-                    -- RAISE NOTICE ' % were all visibility-excluded ... ', core_result.records;
-                    excluded_count := excluded_count + 1;
-                    CONTINUE;
+                IF NOT FOUND THEN
+
+                    PERFORM 1
+                      FROM  asset.call_number cn
+                      WHERE cn.record IN ( SELECT * FROM unnest( core_result.records ) )
+                      LIMIT 1;
+
+                    IF FOUND THEN
+                        -- RAISE NOTICE ' % and multi-home linked records were all visibility-excluded ... ', core_result.records;
+                        excluded_count := excluded_count + 1;
+                        CONTINUE;
+                    END IF;
                 END IF;
 
             END IF;
@@ -296,4 +311,3 @@ END;
 $func$ LANGUAGE PLPGSQL;
 
 COMMIT;
-
