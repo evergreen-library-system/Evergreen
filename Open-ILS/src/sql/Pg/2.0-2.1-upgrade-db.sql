@@ -3556,7 +3556,7 @@ BEGIN
 
         check_count := check_count + 1;
 
-        PERFORM 1 FROM biblio.record_entry b WHERE NOT b.deleted AND b.id IN ( SELECT * FROM search.explode_array( core_result.records ) );
+        PERFORM 1 FROM biblio.record_entry b WHERE NOT b.deleted AND b.id IN ( SELECT * FROM unnest( core_result.records ) );
         IF NOT FOUND THEN
             -- RAISE NOTICE ' % were all deleted ... ', core_result.records;
             deleted_count := deleted_count + 1;
@@ -3567,7 +3567,7 @@ BEGIN
           FROM  biblio.record_entry b
                 JOIN config.bib_source s ON (b.source = s.id)
           WHERE s.transcendant
-                AND b.id IN ( SELECT * FROM search.explode_array( core_result.records ) );
+                AND b.id IN ( SELECT * FROM unnest( core_result.records ) );
 
         IF FOUND THEN
             -- RAISE NOTICE ' % were all transcendant ... ', core_result.records;
@@ -3600,8 +3600,8 @@ BEGIN
                 AND cn.label = '##URI##'
                 AND uri.active
                 AND ( param_locations IS NULL OR array_upper(param_locations, 1) IS NULL )
-                AND cn.record IN ( SELECT * FROM search.explode_array( core_result.records ) )
-                AND cn.owning_lib IN ( SELECT * FROM search.explode_array( search_org_list ) )
+                AND cn.record IN ( SELECT * FROM unnest( core_result.records ) )
+                AND cn.owning_lib IN ( SELECT * FROM unnest( search_org_list ) )
           LIMIT 1;
 
         IF FOUND THEN
@@ -3634,9 +3634,9 @@ BEGIN
                     JOIN asset.copy cp ON (cp.call_number = cn.id)
               WHERE NOT cn.deleted
                     AND NOT cp.deleted
-                    AND cp.status IN ( SELECT * FROM search.explode_array( param_statuses ) )
-                    AND cn.record IN ( SELECT * FROM search.explode_array( core_result.records ) )
-                    AND cp.circ_lib IN ( SELECT * FROM search.explode_array( search_org_list ) )
+                    AND cp.status IN ( SELECT * FROM unnest( param_statuses ) )
+                    AND cn.record IN ( SELECT * FROM unnest( core_result.records ) )
+                    AND cp.circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
               LIMIT 1;
 
             IF NOT FOUND THEN
@@ -3644,9 +3644,9 @@ BEGIN
                   FROM  biblio.peer_bib_copy_map pr
                         JOIN asset.copy cp ON (cp.id = pr.target_copy)
                   WHERE NOT cp.deleted
-                        AND cp.status IN ( SELECT * FROM search.explode_array( param_statuses ) )
-                        AND pr.peer_record IN ( SELECT * FROM search.explode_array( core_result.records ) )
-                        AND cp.circ_lib IN ( SELECT * FROM search.explode_array( search_org_list ) )
+                        AND cp.status IN ( SELECT * FROM unnest( param_statuses ) )
+                        AND pr.peer_record IN ( SELECT * FROM unnest( core_result.records ) )
+                        AND cp.circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
                   LIMIT 1;
 
                 IF NOT FOUND THEN
@@ -3665,9 +3665,9 @@ BEGIN
                     JOIN asset.copy cp ON (cp.call_number = cn.id)
               WHERE NOT cn.deleted
                     AND NOT cp.deleted
-                    AND cp.location IN ( SELECT * FROM search.explode_array( param_locations ) )
-                    AND cn.record IN ( SELECT * FROM search.explode_array( core_result.records ) )
-                    AND cp.circ_lib IN ( SELECT * FROM search.explode_array( search_org_list ) )
+                    AND cp.location IN ( SELECT * FROM unnest( param_locations ) )
+                    AND cn.record IN ( SELECT * FROM unnest( core_result.records ) )
+                    AND cp.circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
               LIMIT 1;
 
             IF NOT FOUND THEN
@@ -3675,9 +3675,9 @@ BEGIN
                   FROM  biblio.peer_bib_copy_map pr
                         JOIN asset.copy cp ON (cp.id = pr.target_copy)
                   WHERE NOT cp.deleted
-                        AND cp.location IN ( SELECT * FROM search.explode_array( param_locations ) )
-                        AND pr.peer_record IN ( SELECT * FROM search.explode_array( core_result.records ) )
-                        AND cp.circ_lib IN ( SELECT * FROM search.explode_array( search_org_list ) )
+                        AND cp.location IN ( SELECT * FROM unnest( param_locations ) )
+                        AND pr.peer_record IN ( SELECT * FROM unnest( core_result.records ) )
+                        AND cp.circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
                   LIMIT 1;
 
                 IF NOT FOUND THEN
@@ -3693,16 +3693,16 @@ BEGIN
 
             PERFORM 1
               FROM  asset.opac_visible_copies
-              WHERE circ_lib IN ( SELECT * FROM search.explode_array( search_org_list ) )
-                    AND record IN ( SELECT * FROM search.explode_array( core_result.records ) )
+              WHERE circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
+                    AND record IN ( SELECT * FROM unnest( core_result.records ) )
               LIMIT 1;
 
             IF NOT FOUND THEN
                 PERFORM 1
                   FROM  biblio.peer_bib_copy_map pr
                         JOIN asset.opac_visible_copies cp ON (cp.copy_id = pr.target_copy)
-                  WHERE cp.circ_lib IN ( SELECT * FROM search.explode_array( search_org_list ) )
-                        AND pr.peer_record IN ( SELECT * FROM search.explode_array( core_result.records ) )
+                  WHERE cp.circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
+                        AND pr.peer_record IN ( SELECT * FROM unnest( core_result.records ) )
                   LIMIT 1;
 
                 IF NOT FOUND THEN
@@ -3720,8 +3720,8 @@ BEGIN
                     JOIN asset.copy cp ON (cp.call_number = cn.id)
               WHERE NOT cn.deleted
                     AND NOT cp.deleted
-                    AND cp.circ_lib IN ( SELECT * FROM search.explode_array( search_org_list ) )
-                    AND cn.record IN ( SELECT * FROM search.explode_array( core_result.records ) )
+                    AND cp.circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
+                    AND cn.record IN ( SELECT * FROM unnest( core_result.records ) )
               LIMIT 1;
 
             IF NOT FOUND THEN
@@ -3730,15 +3730,15 @@ BEGIN
                   FROM  biblio.peer_bib_copy_map pr
                         JOIN asset.copy cp ON (cp.id = pr.target_copy)
                   WHERE NOT cp.deleted
-                        AND cp.circ_lib IN ( SELECT * FROM search.explode_array( search_org_list ) )
-                        AND pr.peer_record IN ( SELECT * FROM search.explode_array( core_result.records ) )
+                        AND cp.circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
+                        AND pr.peer_record IN ( SELECT * FROM unnest( core_result.records ) )
                   LIMIT 1;
 
                 IF NOT FOUND THEN
 
                     PERFORM 1
                       FROM  asset.call_number cn
-                      WHERE cn.record IN ( SELECT * FROM search.explode_array( core_result.records ) )
+                      WHERE cn.record IN ( SELECT * FROM unnest( core_result.records ) )
                       LIMIT 1;
 
                     IF FOUND THEN
@@ -5921,7 +5921,7 @@ BEGIN
           FROM  actor.usr_standing_penalty usp
                 JOIN config.standing_penalty csp ON (csp.id = usp.standing_penalty)
           WHERE usr = match_user
-                AND usp.org_unit IN ( SELECT * FROM explode_array(context_org_list) )
+                AND usp.org_unit IN ( SELECT * FROM unnest(context_org_list) )
                 AND (usp.stop_date IS NULL or usp.stop_date > NOW())
                 AND csp.block_list LIKE '%HOLD%' LOOP
 
@@ -5937,7 +5937,7 @@ BEGIN
               FROM  actor.usr_standing_penalty usp
                     JOIN config.standing_penalty csp ON (csp.id = usp.standing_penalty)
               WHERE usr = match_user
-                    AND usp.org_unit IN ( SELECT * FROM explode_array(context_org_list) )
+                    AND usp.org_unit IN ( SELECT * FROM unnest(context_org_list) )
                     AND (usp.stop_date IS NULL or usp.stop_date > NOW())
                     AND csp.block_list LIKE '%CIRC%' LOOP
     
