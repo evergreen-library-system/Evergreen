@@ -3336,7 +3336,7 @@ sub as_xml {
 
     $xml .= ">\n";
 
-    $xml .= '        <status ident="' . $self->obj->status->id . '">' . $self->escape( $self->obj->status->name  ) . "</status>\n";
+    $xml .= '        <status ident="' . $self->obj->status->id . '" opac_visible="' . $self->obj->status->opac_visible . '">' . $self->escape( $self->obj->status->name  ) . "</status>\n";
     $xml .= '        <location ident="' . $self->obj->location->id . '">' . $self->escape( $self->obj->location->name  ) . "</location>\n";
     $xml .= '        <circlib ident="' . $self->obj->circ_lib->id . '">' . $self->escape( $self->obj->circ_lib->name  ) . "</circlib>\n";
 
@@ -3457,7 +3457,7 @@ sub as_xml {
 
     $xml .= ">\n";
 
-    $xml .= '        <status ident="' . $self->obj->status->id . '">' . $self->escape( $self->obj->status->name  ) . "</status>\n";
+    $xml .= '        <status ident="' . $self->obj->status->id . '" opac_visible="' . $self->obj->status->opac_visible . '">' . $self->escape( $self->obj->status->name  ) . "</status>\n";
     $xml .= '        <location ident="' . $self->obj->location->id . '" opac_visible="'.$self->obj->location->opac_visible.'">' . $self->escape( $self->obj->location->name  ) . "</location>\n";
     $xml .= '        <circlib ident="' . $self->obj->circ_lib->id . '" opac_visible="'.$self->obj->circ_lib->opac_visible.'">' . $self->escape( $self->obj->circ_lib->name  ) . "</circlib>\n";
 
