@@ -166,27 +166,14 @@
                                                 return;
                                             }
 
-                                            /* 
-                                               Hardcoded check for copy statuses per default opac_visible
-                                               setting in config.copy_status; replace with a copy attribute
-                                               check for visible status if holdings_xml ever gets that
-                                            */
-                                            var ident;
+                                            /* Ensure the status is visible */
+                                            var visible_status;
                                             dojo.query('status', cp).forEach(function (status) {
-                                                ident = status.getAttribute('ident');
+                                                visible_status = status.getAttribute('opac_visible');
                                             });
-                                            if (parseInt(ident) !== 0 && /* Available */
-                                                parseInt(ident) != 1 &&  /* Checked out */
-                                                parseInt(ident) != 5 &&  /* In process */
-                                                parseInt(ident) != 6 &&  /* In transit */
-                                                parseInt(ident) != 7 &&  /* Reshelving */
-                                                parseInt(ident) != 8 &&  /* On holds shelf */
-                                                parseInt(ident) != 9 &&  /* On order */
-                                                parseInt(ident) != 12
-                                            ) {
+                                            if (visible_status == 'f') {
                                                 return;
                                             }
-
 
                                             /* Ensure the circulation library is visible */
                                             var lib_vis;
