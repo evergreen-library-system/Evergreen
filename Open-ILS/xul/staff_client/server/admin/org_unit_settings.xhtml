@@ -23,7 +23,7 @@
     <head>
         <title>&staff.server.admin.org_unit_settings.title;</title>
         <link type='text/css' rel='stylesheet' href='admin.css'/>
-        <script type="text/javascript" src='/IDL2js?aou,aout,pgt,au,coust,aous'></script>
+        <script type="text/javascript" src='/IDL2js?aou,aout,pgt,au,coust,aous,csg'></script>
         <script type="text/javascript" djConfig="parseOnLoad: true,isDebug:false" src="/js/dojo/dojo/dojo.js"></script>
         <script type="text/javascript" djConfig="parseOnLoad: true,isDebug:false" src="/js/dojo/dojo/openils_dojo.js"></script>
         <script type="text/javascript" src='org_unit_settings.js'></script>
@@ -53,6 +53,7 @@
                                 get: osGetEditLink, 
                                 formatter : osFormatEditLink
                             },
+                            {name: 'Group', get: osGetGridData, field:'grp'},
                             {name: 'Setting', get: osGetGridData, field:'label', width:'auto', styles:'text-align:left;'},
                             {name: 'Context', get: osGetGridData, field:'context'},
                             {name: 'Value', get: osGetGridData, field:'value', width:'auto'},
@@ -106,6 +107,7 @@
         <span id='os-true' class='hidden'>&common.true;</span>
         <span id='os-false' class='hidden'>&common.false;</span>
         <div dojoType="openils.widget.ProgressDialog" jsId="progressDialog" indeterminate="true"></div>
+        <div class="hidden"></div>
     </body>
 </html>
 

@@ -23,13 +23,18 @@ var osSettings = {};
 var ouSettingValues = {};
 var osEditAutoWidget;
 var perm_codes = {};
+var osGroups = {};
 
 function osInit(data) {
     authtoken = new openils.CGI().param('ses') || dojo.cookie('ses');
     user = new openils.User({authtoken:authtoken});
     contextOrg = user.user.ws_ou();
     openils.User.authtoken = authtoken;
+    
+    var grps = new openils.PermaCrud({authtoken:authtoken}).retrieveAll('csg');
+    dojo.forEach(grps, function(grp) { osGroups[grp.name()] = grp.label(); });
 
+    
     var connect = function() { 
         dojo.connect(contextOrg, 'onChange', osChangeContext); 
 
@@ -71,7 +76,6 @@ function osDraw(specific_setting) {
             names.push(key);
 
     } else {
-
         var types = new openils.PermaCrud({authtoken:authtoken}).retrieveAll('coust');
 
         dojo.forEach(types, 
@@ -81,7 +85,8 @@ function osDraw(specific_setting) {
                     desc : type.description(),
                     type : type.datatype(),
                     fm_class : type.fm_class(),
-                    update_perm : type.update_perm()
+                    update_perm : type.update_perm(),
+                    grp : osGroups[type.grp()]
                 }
             }
         );
