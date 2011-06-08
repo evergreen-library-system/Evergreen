@@ -52,16 +52,16 @@
 		</procedure>
 	</section>
 	<section xml:id="upgradingevergreen-upgradingOpenSRF">
-		<title>Upgrading OpenSRF to 1.6.3</title><indexterm><primary>OpenSRF</primary></indexterm>
+		<title>Upgrading OpenSRF to 2.0</title><indexterm><primary>OpenSRF</primary></indexterm>
 		<procedure>
 			<step>
 				<para>As the <systemitem class="username">opensrf</systemitem> user, download and extract the source files for <application>OpenSRF</application> 
-				1.6.3:</para>
+				2.0:</para>
 <screen><userinput>
-wget http://open-ils.org/downloads/opensrf-1.6.3.tar.gz
+wget http://open-ils.org/downloads/opensrf-2.0.0.tar.gz
 tar xzf opensrf-1.6.3.tar.gz
 </userinput></screen>
-				<para>A new directory opensrf-1.6.3 is created.</para>
+				<para>A new directory opensrf-2.0.0 is created.</para>
 				<note><para>For the latest edition of OpenSRF, check the Evergreen download page at 
 				<ulink url="http://www.open-ils.org/downloads.php" />.
 				</para></note>
@@ -71,7 +71,7 @@ tar xzf opensrf-1.6.3.tar.gz
 				prerequisite installer.</para> 
 <screen><userinput>
 aptitude install make
-cd /home/opensrf/opensrf-1.6.3
+cd /home/opensrf/opensrf-2.0.0
 </userinput></screen>		
 				<para>Replace <option>[distribution]</option> below with the following value 
 				for your distribution:</para>
@@ -98,7 +98,6 @@ cd /home/opensrf/opensrf-1.6.3
 					</listitem>
 				</itemizedlist>
 <screen><userinput>
-cd /path/to/OpenSRF
 make -f src/extras/Makefile.install [distribution]
 </userinput></screen>
 				<para>This will install a number of packages required by OpenSRF on your system, 
@@ -114,7 +113,7 @@ make -f src/extras/Makefile.install [distribution]
 				you want to include support for Python<indexterm><primary>Python</primary></indexterm> and Java
 				<indexterm><primary>Java</primary></indexterm>, respectively.</note>
 <screen><userinput>
-cd /home/opensrf/opensrf-1.6.3
+cd /home/opensrf/opensrf-2.0.0
 ./configure --prefix=/openils --sysconfdir=/openils/conf
 make
 </userinput></screen>		
@@ -123,7 +122,7 @@ make
 				<para>As the <systemitem class="username">root</systemitem> user, return to your OpenSRF build directory and install 
 				OpenSRF:</para>
 <screen><userinput>
-cd /home/opensrf/opensrf-1.6.3
+cd /home/opensrf/opensrf-2.0.0
 make install
 </userinput></screen>
 			</step>
@@ -131,6 +130,32 @@ make install
 				<para>As the <systemitem class="username">root</systemitem> user, change the ownership of the installed files to the 
 				<systemitem class="username">opensrf</systemitem> user:</para>
 				<screen><userinput>chown -R opensrf:opensrf /openils</userinput></screen>
+			</step>			
+			<step>
+				<para>Jot down the usernames/passwords of the two Jabber users created when OpenSRF was previously installed these users will correspond to 
+				entries in opensrf_core.xml. </para>
+			</step>
+			<step>
+				<para>Important: Backup your current opensrf.xml and opensrf_core.xml configuration files.</para>
+<screen>
+<userinput>cp -p /openils/conf/opensrf.xml /openils/conf/opensrf.xml.backup</userinput>
+<userinput>cp -p /openils/conf/opensrf_core.xml /openils/conf/opensrf_core.xml.backup</userinput>
+</screen>
+			</step>
+			<step>
+				<para>As the <systemitem class="username">opensrf</systemitem> user, copy the <filename>/openils/conf/opensrf_core.xml<filename> and 
+				<filename>/openils/conf/opensrf.xml</filename> configuration files from the example templates:</para>
+<screen>
+<userinput>cp /openils/conf/opensrf.xml.example /openils/conf/opensrf.xml</userinput>
+<userinput>cp /openils/conf/opensrf_core.xml.example /openils/conf/opensrf_core.xml</userinput>
+</screen>
+				<para>Edit <filename>/openils/conf/opensrf_core.xml</filename> to change the Jabber usernames and passwords you jotted down earlier.</para> 
+			</step>
+			<step>
+				<para>As the <systemitem class="username">root</systemitem> user, Run the following command:</para>
+<screen>
+<userinput>ldconfig</userinput>
+</screen>
 			</step>
 			<step>
 				<para>Restart and Test OpenSRF</para>
@@ -150,8 +175,15 @@ Request Time in seconds: 0.007519
 
 srfsh#
 </screen>	
-				<para>If test completed successfully move onto the next section. 
-				Otherwise, refer to the <link linkend="troubleshooting">troubleshooting</link> chapter 
+			</step>	
+			<step>			
+				<para>If test completed successful restore your Evergreen configuration files:</para>
+<screen><userinput>
+cp /openils/conf/opensrf.xml.backup /openils/conf/opensrf.xml
+cp /openils/conf/opensrf_core.xml.backup /openils/conf/opensrf_core.xml
+</userinput></screen>
+		
+ 				<para>and move on to the next section to upgrade Evergreen. Otherwise, refer to the <link linkend="troubleshooting">troubleshooting</link> chapter 
 				of this documentation.</para> 
 			</step>	
 		</procedure>	
