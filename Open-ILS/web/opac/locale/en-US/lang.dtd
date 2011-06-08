@@ -1795,12 +1795,21 @@
 <!ENTITY staff.server.admin.do_not_auto_attempt_print_setting.transit_slip "Transit Slip">
 <!ENTITY staff.server.admin.do_not_auto_attempt_print_setting.hold_transit_slip "Hold/Transit Slip">
 <!ENTITY staff.server.admin.org_unit_settings.title "Organization Unit Settings">
-<!ENTITY staff.server.admin.org_unit_settings.context "Context Location">
+<!ENTITY staff.server.admin.org_unit_settings.context_loc "Context Location">
 <!ENTITY staff.server.admin.org_unit_settings.uninherited " * Indicates the setting is not inherited from the parent org unit at run time">
 <!ENTITY staff.server.admin.org_unit_settings.no_perms "You do not have permission to view org unit settings">
 <!ENTITY staff.server.admin.org_unit_settings.edit_setting "Edit Setting">
 <!ENTITY staff.server.admin.org_unit_settings.delete_setting "Delete Setting">
 <!ENTITY staff.server.admin.org_unit_settings.update_setting "Update Setting">
+<!ENTITY staff.server.admin.org_unit_settings.processing "Processing...">
+<!ENTITY staff.server.admin.org_unit_settings.filter "Filter">
+<!ENTITY staff.server.admin.org_unit_settings.clear_filter "Clear Filter">
+<!ENTITY staff.server.admin.org_unit_settings.no_results "There are no results for your filter.">
+<!ENTITY staff.server.admin.org_unit_settings.group "Group">
+<!ENTITY staff.server.admin.org_unit_settings.setting "Setting">
+<!ENTITY staff.server.admin.org_unit_settings.context "Context">
+<!ENTITY staff.server.admin.org_unit_settings.value "Value">
+<!ENTITY staff.server.admin.org_unit_settings.edit "Edit">
 <!ENTITY staff.server.admin.offline.xacts.caption "Offline Sessions">
 <!ENTITY staff.server.admin.offline.xacts.refresh.accesskey "R">
 <!ENTITY staff.server.admin.offline.xacts.create.label "Create">

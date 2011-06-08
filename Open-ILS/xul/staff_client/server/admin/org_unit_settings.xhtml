@@ -32,13 +32,19 @@
         <div dojoType="dijit.layout.LayoutContainer" orientation="vertical" class="tall">
             <div dojoType="dijit.layout.ContentPane" layoutAlign='top'>
                 <h1>&staff.server.admin.org_unit_settings.title;</h1><br/>
-                <span>&staff.server.admin.org_unit_settings.context;</span>
+                <span>&staff.server.admin.org_unit_settings.context_loc;</span>
                 <span>
                     <select dojoType="openils.widget.OrgUnitFilteringSelect" jsId='osContextSelector'
                         searchAttr="shortname" autocomplete="true" labelAttr='shortname' onchange='osChangeContext();'> 
                     </select>
                 </span>
                 <span>&staff.server.admin.org_unit_settings.uninherited;</span>
+                    <form onSubmit="return doSearch()">
+                        <input type="text" dojoType="dijit.form.TextBox" id="searchBox" />
+                        <button type="submit" dojoType='dijit.form.Button'>&staff.server.admin.org_unit_settings.filter;</button>
+                        <button dojoType='dijit.form.Button' onClick="clearSearch();">&staff.server.admin.org_unit_settings.clear_filter;</button>
+                    </form>
+                        <button dojoType='dijit.form.Button' onClick="osToJson();">Output</button>
             </div>
             <div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
                 <div class='hide_me' id='no-perms'><b>&staff.server.admin.org_unit_settings.no_perms;</b></div>
@@ -48,15 +54,15 @@
                     var osGridLayout = [{
                         defaultCell: {styles: 'text-align: center;'},
                         cells : [[
-                            {   name: 'Edit', 
-                                value: '&lt;a href=&quot;javascript:void(0);&quot; onclick=&quot;osLaunchEditor(\'SETTING\');&quot;>Edit&lt;/a>',
+                            {   name: '&staff.server.admin.org_unit_settings.edit;', 
+                                value: '&lt;a href=&quot;javascript:void(0);&quot; onclick=&quot;osLaunchEditor(\'SETTING\');&quot;>&staff.server.admin.org_unit_settings.edit;&lt;/a>',
                                 get: osGetEditLink, 
                                 formatter : osFormatEditLink
                             },
-                            {name: 'Group', get: osGetGridData, field:'grp'},
-                            {name: 'Setting', get: osGetGridData, field:'label', width:'auto', styles:'text-align:left;'},
-                            {name: 'Context', get: osGetGridData, field:'context'},
-                            {name: 'Value', get: osGetGridData, field:'value', width:'auto'},
+                            {name: '&staff.server.admin.org_unit_settings.group;', get: osGetGridData, field:'grp'},
+                            {name: '&staff.server.admin.org_unit_settings.setting;', get: osGetGridData, field:'label', width:'auto', styles:'text-align:left;'},
+                            {name: '&staff.server.admin.org_unit_settings.context;', get: osGetGridData, field:'context'},
+                            {name: '&staff.server.admin.org_unit_settings.value;', get: osGetGridData, field:'value', width:'auto'},
                         ]]
                     }];
                 </script>
@@ -73,7 +79,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Context</td>
+                        <td>&staff.server.admin.org_unit_settings.context;</td>
                         <td> 
                             <select dojoType="openils.widget.OrgUnitFilteringSelect" jsId='osEditContextSelector'
                                 searchAttr="shortname" autocomplete="true" labelAttr='shortname'> 
@@ -81,7 +87,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Value</td>
+                        <td>&staff.server.admin.org_unit_settings.value;</td>
                         <td>
                             <input dojoType='dijit.form.TextBox' jsId='osEditTextBox'/>
                             <input dojoType='dijit.form.CurrencyTextBox' jsId='osEditCurrencyTextBox'/>
@@ -107,7 +113,13 @@
         <span id='os-true' class='hidden'>&common.true;</span>
         <span id='os-false' class='hidden'>&common.false;</span>
         <div dojoType="openils.widget.ProgressDialog" jsId="progressDialog" indeterminate="true"></div>
-        <div class="hidden"></div>
+        <div id='proci18n' class="hidden">&staff.server.admin.org_unit_settings.processing;</div>
+        <div id="noresults" class="hidden">&staff.server.admin.org_unit_settings.no_results;</div>
+        <div id="jsonoutput" class='hidden'  dojoType="dijit.Dialog" jsId='osJSONOutDialog'>
+            <table>
+            <tr><td>Copy this to your clipboard and save it to a file to export the settings.</td></tr>
+            <tr><td><textarea id="jsonOutput"></textarea></td></tr>
+            </table>
+        </div>
     </body>
 </html>
-

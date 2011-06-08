@@ -1,12 +1,12 @@
 dojo.require('fieldmapper.AutoIDL');
-dojo.require("dijit.layout.LayoutContainer");
-dojo.require("dijit.layout.ContentPane");
+dojo.require('dijit.layout.LayoutContainer');
+dojo.require('dijit.layout.ContentPane');
 dojo.require('dijit.form.FilteringSelect');
 dojo.require('dijit.Dialog');
-dojo.require("dojox.grid.Grid");
-dojo.require("fieldmapper.Fieldmapper");
-dojo.require("fieldmapper.dojoData");
-dojo.require("fieldmapper.OrgUtils");
+dojo.require('dojox.grid.Grid');
+dojo.require('fieldmapper.Fieldmapper');
+dojo.require('fieldmapper.dojoData');
+dojo.require('fieldmapper.OrgUtils');
 dojo.require('dojo.cookie');
 dojo.require('openils.CGI');
 dojo.require('openils.User');
@@ -24,6 +24,7 @@ var ouSettingValues = {};
 var osEditAutoWidget;
 var perm_codes = {};
 var osGroups = {};
+var searchAssist = [];
 
 function osInit(data) {
     authtoken = new openils.CGI().param('ses') || dojo.cookie('ses');
@@ -66,8 +67,16 @@ function osInit(data) {
 }
 dojo.addOnLoad(osInit);
 
+function showProcessingDialog(toggle) {
+    var proc = dojo.byId('proci18n').innerHTML;
+    if(toggle)
+        progressDialog.show(true, proc);
+    else
+        progressDialog.hide();
+}
+
 function osDraw(specific_setting) {
-    progressDialog.show(true, "Processing..."); /* FIXME: I18N */
+    showProcessingDialog(true);
 
     var names = [];
     if (specific_setting) {
@@ -78,6 +87,8 @@ function osDraw(specific_setting) {
     } else {
         var types = new openils.PermaCrud({authtoken:authtoken}).retrieveAll('coust');
 
+        searchAssist =  [];
+        
         dojo.forEach(types, 
             function(type) {
                 osSettings[type.name()] = {
@@ -88,6 +99,11 @@ function osDraw(specific_setting) {
                     update_perm : type.update_perm(),
                     grp : osGroups[type.grp()]
                 }
+                
+                var tmp = "" + type.label() + "" + type.description() + "" + type.fm_class() + "" + 
+                          osGroups[type.grp()] + "" + type.name();
+                
+                searchAssist[type.name()] = tmp.toLowerCase().replace(/[^a-z0-9]+/, '');
             }
         );
         
@@ -95,6 +111,58 @@ function osDraw(specific_setting) {
             names.push(key);
     }
 
+    osDrawNames(names);
+    
+}
+
+//Limits those functions seen to the ones that have similar text to 
+//that which is provided. Not case sensitive.
+function osLimitSeen(text) {
+    showProcessingDialog(true);
+    
+    text = text.toLowerCase().replace(/[^a-z0-9]+/, '');
+    
+    console.log(text);
+    
+    var names = [];
+    for(var n in searchAssist)
+        if(searchAssist[n].indexOf(text) != -1)
+            names.push(n);
+    
+    //Don't update on an empty list as this causes bizarre errors.
+    if(names.length == 0) {
+        showProcessingDialog(false);
+        
+        var noresults = dojo.byId('noresults').innerHTML;
+        myDialog = new dijit.Dialog({ content: noresults});
+        myDialog.show();
+        return;
+    }
+    
+    ouSettingValues = {}; // Clear the values.
+    osDrawNames(names);
+}
+
+function doSearch() {
+    var query = dojo.byId("searchBox").value;
+    osLimitSeen(query);
+    
+    return false; //Keep form from submitting
+}
+
+function clearSearch() {
+    dojo.byId("searchBox").value = "";
+    osDraw();
+}
+
+function osToJson() {
+    //console.log(dojo.toJson(ouSettingValues));
+    dojo.byId('jsonOutput').value = dojo.toJson(ouSettingValues);
+    osJSONOutDialog.show();
+}
+
+//Draws the grid based upon a given array of items to draw.
+function osDrawNames(names) {
     fieldmapper.standardRequest(
         [   'open-ils.actor', 
             'open-ils.actor.ou_setting.ancestor_default.batch'],
@@ -107,7 +175,8 @@ function osDraw(specific_setting) {
                 for(var key in data)
                     ouSettingValues[key] = data[key];
                 osLoadGrid(ouSettingValues);
-                progressDialog.hide();
+                
+                showProcessingDialog(false);
             }
         }
     );
@@ -316,4 +385,3 @@ function osEditSetting(deleteMe) {
         }
     );
 }
-
