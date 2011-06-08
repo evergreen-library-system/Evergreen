@@ -77,8 +77,8 @@
                         </strong>
                     </td>
                     <td>
-                        <input type="checkbox" title="[% l('Pay this fine') %]"
-                            name="xact" value="[% f.xact.id %]" />
+                        <input type="checkbox" checked="checked" 
+                            title="[% l('Pay this fine') %]" name="xact" value="[% f.xact.id %]" />
                     </td>
                 </tr>
                 [% END %]
