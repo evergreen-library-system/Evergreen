@@ -143,7 +143,7 @@ make install
 </screen>
 			</step>
 			<step>
-				<para>As the <systemitem class="username">opensrf</systemitem> user, copy the <filename>/openils/conf/opensrf_core.xml<filename> and 
+				<para>As the <systemitem class="username">opensrf</systemitem> user, copy the <filename>/openils/conf/opensrf_core.xml</filename> and 
 				<filename>/openils/conf/opensrf.xml</filename> configuration files from the example templates:</para>
 <screen>
 <userinput>cp /openils/conf/opensrf.xml.example /openils/conf/opensrf.xml</userinput>
