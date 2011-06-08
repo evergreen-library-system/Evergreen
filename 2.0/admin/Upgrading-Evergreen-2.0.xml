@@ -238,11 +238,6 @@ tar xzf Evergreen-ILS-2.0.6.tar.gz
 				<screen><userinput>make STAFF_CLIENT_BUILD_ID=rel_2_0_6 install</userinput></screen>
 			</step>
 			<step>
-				<para>Change to the <application>Evergreen</application> installation 
-				directory:</para>
-				<screen><userinput>cd /home/opensrf/Evergreen-ILS-2.0.6</userinput></screen>
-			</step>
-			<step>
 				<para>As the <emphasis>root</emphasis> user, change all files to be owned by the 
 				<emphasis>opensrf</emphasis> user and group:</para>
 				<screen><userinput>chown -R opensrf:opensrf /openils</userinput></screen>
@@ -255,6 +250,12 @@ rm server
 ln -s rel_2_0_6/server
 </userinput></screen>
 			</step>
+			<step>
+				<para>Change to the <application>Evergreen</application> installation 
+				directory:</para>
+				<screen><userinput>cd /home/opensrf/Evergreen-ILS-2.0.6</userinput></screen>
+			</step>
+
 			<step>
 				<para>Update the <database>evergreen</database> database:</para>
 				<note><para>It is recommended that you <link linkend="backingup">back up your Evergreen database</link> in order to restore your data if anything goes wrong.</para></note>
