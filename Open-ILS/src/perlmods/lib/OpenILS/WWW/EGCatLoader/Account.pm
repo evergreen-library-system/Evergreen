@@ -7,6 +7,7 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::AppUtils;
 use OpenILS::Event;
 use OpenSRF::Utils::JSON;
+use DateTime;
 my $U = 'OpenILS::Application::AppUtils';
 
 sub prepare_extended_user_info {
@@ -106,7 +107,7 @@ sub update_optin_prefs {
     return $user_prefs;
 }
 
-sub load_myopac_prefs_settings {
+sub _load_user_with_prefs {
     my $self = shift;
     my $stat = $self->prepare_extended_user_info('settings');
     return $stat if $stat; # not-OK
@@ -116,12 +117,49 @@ sub load_myopac_prefs_settings {
             @{$self->ctx->{user}->settings}
     };
 
+    return undef;
+}
+
+sub load_myopac_prefs_settings {
+    my $self = shift;
+
+    my $stat = $self->_load_user_with_prefs;
+    return $stat if $stat;
+
     return Apache2::Const::OK
         unless $self->cgi->request_method eq 'POST';
 
-    # process POST request...
+    # some setting values from the form don't match the 
+    # required value/format for the db, so they have to be 
+    # individually translated.
 
-    return Apache2::Const::OK;
+    my %settings;
+    my $set_map = $self->ctx->{user_setting_map};
+
+    my $key = 'opac.hits_per_page';
+    my $val = $self->cgi->param($key);
+    $settings{$key}= $val unless $$set_map{$key} eq $val;
+
+    my $now = DateTime->now->strftime('%F');
+    for $key (qw/history.circ.retention_start history.hold.retention_start/) {
+        $val = $self->cgi->param($key);
+        if($val and $val eq 'on') {
+            # Set the start time to 'now' unless a start time already exists for the user
+            $settings{$key} = $now unless $$set_map{$key};
+        } else {
+            # clear the start time if one previously existed for the user
+            $settings{$key} = undef if $$set_map{$key};
+        }
+    }
+    
+    # Send the modified settings off to be saved
+    $U->simplereq(
+        'open-ils.actor', 
+        'open-ils.actor.patron.settings.update',
+        $self->editor->authtoken, undef, \%settings);
+
+    # re-fetch user prefs 
+    return $self->_load_user_with_prefs || Apache2::Const::OK;
 }
 
 sub fetch_user_holds {

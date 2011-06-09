@@ -3,13 +3,12 @@
     myopac_page = "prefs_notify";
     prefs_page = 'settings' %]
 
-    <form method='GET'>
+    <form method='POST'>
 
         <div style="float:right;width:65px;">
             <div style="position:absolute">
                 <div style="position:relative;top:75px;">
-                    <a id='acct_prefs_save' href="#"><img alt="[% l('Save') %]"
-                         src="[% ctx.media_prefix %]/images/save-btn.png" /></a>
+                    <input type="image" alt="[% l('Save') %]" src="[% ctx.media_prefix %]/images/save-btn.png"/>
                 </div>
             </div>
         </div>
