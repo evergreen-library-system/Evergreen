@@ -1074,7 +1074,14 @@ circ.util.columns = function(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.acp.circ_as_type(); }
+            'editable' : false, 'render' : function(my) {
+                return my.acp.circ_as_type() != null && my.acp.circ_as_type() == 'object'
+                    ? my.acp.circ_as_type()
+                    : ( typeof data.hash.citm[ my.acp.circ_as_type() ] != 'undefined'
+                        ? data.hash.citm[ my.acp.circ_as_type() ].value
+                        : ''
+                    );
+            }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -2655,7 +2662,8 @@ circ.util.checkin_via_barcode = function(session,params,backdate,auto_print,asyn
                     7010 /* COPY_ALERT_MESSAGE */,
                     7011 /* COPY_STATUS_LOST */,
                     7012 /* COPY_STATUS_MISSING */,
-                    7013 /* PATRON_EXCEEDS_FINES */
+                    7013 /* PATRON_EXCEEDS_FINES */,
+                    11103 /* TRANSIT_CHECKIN_INTERVAL_BLOCK */ 
                 ],
                 'text' : {
                     '1203' : function(r) {

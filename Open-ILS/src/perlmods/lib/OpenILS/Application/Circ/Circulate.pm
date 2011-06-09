@@ -2206,6 +2206,34 @@ sub checkout_noncat {
    }
 }
 
+# If a copy goes into transit and is then checked in before the transit checkin 
+# interval has expired, push an event onto the overridable events list.
+sub check_transit_checkin_interval {
+    my $self = shift;
+
+    # only concerned with in-transit items
+    return unless $U->copy_status($self->copy->status)->id == OILS_COPY_STATUS_IN_TRANSIT;
+
+    # no interval, no problem
+    my $interval = $U->ou_ancestor_setting_value($self->circ_lib, 'circ.transit.min_checkin_interval');
+    return unless $interval;
+
+    # capture the transit so we don't have to fetch it again later during checkin
+    $self->transit(
+        $self->editor->search_action_transit_copy(
+            {target_copy => $self->copy->id, dest_recv_time => undef}
+        )->[0]
+    ); 
+
+    my $seconds = OpenSRF::Utils->interval_to_seconds($interval);
+    my $t_start = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($self->transit->source_send_time));
+    my $horizon = $t_start->add(seconds => $seconds);
+
+    # See if we are still within the transit checkin forbidden range
+    $self->push_events(OpenILS::Event->new('TRANSIT_CHECKIN_INTERVAL_BLOCK')) 
+        if $horizon > DateTime->now;
+}
+
 
 sub do_checkin {
     my $self = shift;
@@ -2214,6 +2242,8 @@ sub do_checkin {
     return $self->bail_on_events(
         OpenILS::Event->new('ASSET_COPY_NOT_FOUND')) 
         unless $self->copy;
+
+    $self->check_transit_checkin_interval;
 
     # the renew code and mk_env should have already found our circulation object
     unless( $self->circ ) {
@@ -2257,7 +2287,7 @@ sub do_checkin {
     $self->override_events unless $self->is_renewal;
     return if $self->bail_out;
     
-    if( $self->copy ) {
+    if( $self->copy and !$self->transit ) {
         $self->transit(
             $self->editor->search_action_transit_copy(
                 { target_copy => $self->copy->id, dest_recv_time => undef }
@@ -2913,12 +2943,29 @@ sub put_hold_on_shelf {
     my $shelf_expire = $U->ou_ancestor_setting_value(
         $self->circ_lib, 'circ.holds.default_shelf_expire_interval', $self->editor);
 
-    if($shelf_expire) {
-        my $seconds = OpenSRF::Utils->interval_to_seconds($shelf_expire);
-        my $expire_time = DateTime->now->add(seconds => $seconds);
-        $hold->shelf_expire_time($expire_time->strftime('%FT%T%z'));
+    return undef unless $shelf_expire;
+
+    my $seconds = OpenSRF::Utils->interval_to_seconds($shelf_expire);
+    my $expire_time = DateTime->now->add(seconds => $seconds);
+
+    # if the shelf expire time overlaps with a pickup lib's 
+    # closed date, push it out to the first open date
+    my $dateinfo = $U->storagereq(
+        'open-ils.storage.actor.org_unit.closed_date.overlap', 
+        $hold->pickup_lib, $expire_time);
+
+    if($dateinfo) {
+        my $dt_parser = DateTime::Format::ISO8601->new;
+        $expire_time = $dt_parser->parse_datetime(cleanse_ISO8601($dateinfo->{end}));
+
+        # TODO: enable/disable time bump via setting?
+        $expire_time->set(hour => '23', minute => '59', second => '59');
+
+        $logger->info("circulator: shelf_expire_time overlaps".
+            " with closed date, pushing expire time to $expire_time");
     }
 
+    $hold->shelf_expire_time($expire_time->strftime('%FT%T%z'));
     return undef;
 }
 

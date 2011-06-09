@@ -980,6 +980,10 @@
         <desc xml:lang="en-US">Units cannot be created for the given item because its associated distribution does not have a call number.</desc>
     </event>
 
+    <event code='11103' textcode='TRANSIT_CHECKIN_INTERVAL_BLOCK'>
+        <desc xml:lang="en-US">Checkin attempted on item during minimum transit checkin interval.</desc>
+    </event>
+
 	<!-- ================================================================ -->
 
 </ils_events>

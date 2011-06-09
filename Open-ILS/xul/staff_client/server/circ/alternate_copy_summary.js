@@ -178,7 +178,13 @@ function load_item() {
                     set("call_number", acn_obj.label());
                 });
             }
-            set("circ_as_type", details.copy.circ_as_type()); 
+            set("circ_as_type", details.copy.circ_as_type() != null && details.copy.circ_as_type() == 'object'
+                ? details.copy.circ_as_type()
+                : ( typeof data.hash.citm[ details.copy.circ_as_type() ] != 'undefined'
+                    ? data.hash.citm[ details.copy.circ_as_type() ].value
+                    : ''
+                )
+            ); 
             set("copy_circ_lib" , typeof details.copy.circ_lib() == 'object' ? details.copy.circ_lib().shortname() : data.hash.aou[ details.copy.circ_lib() ].shortname()); 
             set_tooltip("copy_circ_lib" , typeof details.copy.circ_lib() == 'object' ? details.copy.circ_lib().name() : data.hash.aou[ details.copy.circ_lib() ].name()); 
             var cm = details.copy.circ_modifier();
