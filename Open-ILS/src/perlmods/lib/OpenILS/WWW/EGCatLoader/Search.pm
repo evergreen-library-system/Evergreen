@@ -5,6 +5,7 @@ use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::AppUtils;
+use OpenSRF::Utils::JSON;
 my $U = 'OpenILS::Application::AppUtils';
 
 
@@ -101,6 +102,25 @@ sub _prepare_biblio_search {
     return ($query, $site, $depth);
 }
 
+sub _get_search_limit {
+    my $self = shift;
+
+    # param takes precedence
+    my $limit = $self->cgi->param('limit');
+    return $limit if $limit;
+
+    if($self->editor->requestor) {
+        # See if the user has a hit count preference
+        my $lset = $self->editor->search_actor_user_setting({
+            usr => $self->editor->requestor->id, 
+            name => 'opac.hits_per_page'
+        })->[0];
+        return OpenSRF::Utils::JSON->JSON2perl($lset->value) if $lset;
+    }
+
+    return 10; # default
+}
+
 # context additions: 
 #   page_size
 #   hit_count
@@ -114,7 +134,7 @@ sub load_rresults {
     $ctx->{page} = 'rresult';
     my $page = $cgi->param('page') || 0;
     my $facet = $cgi->param('facet');
-    my $limit = $cgi->param('limit') || 10; # TODO user settings
+    my $limit = $self->_get_search_limit;
     my $loc = $cgi->param('loc');
     my $offset = $page * $limit;
 

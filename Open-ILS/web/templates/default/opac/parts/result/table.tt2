@@ -1,7 +1,7 @@
 [%  PROCESS "default/opac/parts/misc_util.tt2";
 
     ctx.result_start = 1 + ctx.page_size * page;
-    ctx.result_stop = 1 + ctx.page_size * (page + 1);
+    ctx.result_stop = ctx.page_size * (page + 1);
     IF ctx.result_stop > ctx.hit_count; ctx.result_stop = ctx.hit_count; END;
 
     result_count = ctx.result_start;
