@@ -159,6 +159,7 @@ sub load_myopac_prefs_settings {
         $self->editor->authtoken, undef, \%settings);
 
     # re-fetch user prefs 
+    $self->ctx->{updated_user_settings} = \%settings;
     return $self->_load_user_with_prefs || Apache2::Const::OK;
 }
 
