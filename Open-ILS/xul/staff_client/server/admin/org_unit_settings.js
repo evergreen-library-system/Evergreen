@@ -3,6 +3,8 @@ dojo.require('dijit.layout.LayoutContainer');
 dojo.require('dijit.layout.ContentPane');
 dojo.require('dijit.form.FilteringSelect');
 dojo.require('dijit.Dialog');
+dojo.require('dijit.form.Textarea');
+dojo.require('dijit.form.ComboBox');
 dojo.require('dojox.grid.Grid');
 dojo.require('fieldmapper.Fieldmapper');
 dojo.require('fieldmapper.dojoData');
@@ -156,9 +158,69 @@ function clearSearch() {
 }
 
 function osToJson() {
-    //console.log(dojo.toJson(ouSettingValues));
-    dojo.byId('jsonOutput').value = dojo.toJson(ouSettingValues);
+    var out = dojo.fromJson(dojo.toJson(ouSettingValues)); // Easy deep copy
+    var context = osContextSelector.getValue();
+    
+    // Set all of the nulls in the outputs to be part of the current org
+    // this keeps from overwriting later if this file is transfered to another lib.
+    for(key in out)
+        if(out[key] == null)
+            out[key] = {'org':context, 'value':null};
+    
+    dojo.byId('jsonOutput').value = dojo.toJson(out);
     osJSONOutDialog.show();
+}
+
+function osJsonOutputCopy() {
+    document.popupNode = dojo.byId('jsonOutput');
+    document.getElementById('jsonOutput').focus();
+    document.getElementById('jsonOutput').select();
+    util.clipboard.copy();
+}
+
+function osJsonInputPaste() {
+    document.popupNode = dojo.byId('jsonInput');
+    document.popupNode.focus();
+    document.popupNode.select();
+    util.clipboard.paste();
+}
+
+function osFromJson() {
+     dojo.byId('jsonInput').value = '';
+     osJSONInDialog.show();
+}
+
+function osFromJsonSubmit() {
+    var input = dojo.byId('jsonInput').value;
+    var from = dojo.fromJson(input);
+    
+    osJSONInDialog.hide();
+
+    showProcessingDialog(true);
+    for(key in from) {
+        
+        //Check that there isn't already set to the same value (speed increase);
+        if( ouSettingValues[key] == null && 
+            from[key]['value'] == null &&
+            osContextSelector.getValue() == from[key]['org'])
+            continue;
+                
+        if( ouSettingValues[key] != null && 
+            ouSettingValues[key]['value'] == from[key]['value'] &&
+            ouSettingValues[key]['org'] == from[key]['org'])
+            continue;
+        
+        var obj = {};
+        var context;
+        
+        if(from[key] != null) { 
+            obj[key] = from[key]['value'];
+            context  = from[key]['org'];
+        }
+        
+        osUpdateSetting(obj, context);
+    }
+    showProcessingDialog(false);
 }
 
 //Draws the grid based upon a given array of items to draw.
@@ -371,11 +433,14 @@ function osEditSetting(deleteMe) {
             }
         }
     }
+    osUpdateSetting(obj, osEditContextSelector.getValue());
+}
 
+function osUpdateSetting(obj, context) {
     fieldmapper.standardRequest(
         ['open-ils.actor', 'open-ils.actor.org_unit.settings.update'],
         {   async: true,
-            params: [authtoken, osEditContextSelector.getValue(), obj],
+            params: [authtoken, context, obj],
             oncomplete: function(r) {
                 var res = r.recv().content();
                 if(e = openils.Event.parse(res))

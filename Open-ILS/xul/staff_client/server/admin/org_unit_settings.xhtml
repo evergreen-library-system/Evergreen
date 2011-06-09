@@ -22,11 +22,18 @@
 <html xmlns='http://www.w3.org/1999/xhtml'>
     <head>
         <title>&staff.server.admin.org_unit_settings.title;</title>
-        <link type='text/css' rel='stylesheet' href='admin.css'/>
-        <script type="text/javascript" src='/IDL2js?aou,aout,pgt,au,coust,aous,csg'></script>
-        <script type="text/javascript" djConfig="parseOnLoad: true,isDebug:false" src="/js/dojo/dojo/dojo.js"></script>
-        <script type="text/javascript" djConfig="parseOnLoad: true,isDebug:false" src="/js/dojo/dojo/openils_dojo.js"></script>
-        <script type="text/javascript" src='org_unit_settings.js'></script>
+        <link type='text/css' rel='stylesheet' href='admin.css' />
+        <script type="text/javascript" src='/IDL2js?aou,aout,pgt,au,coust,aous,csg' />
+        <script type="text/javascript" djConfig="parseOnLoad: true,isDebug:false" src="/js/dojo/dojo/dojo.js" />
+        <script type="text/javascript" djConfig="parseOnLoad: true,isDebug:false" src="/js/dojo/dojo/openils_dojo.js" />
+        <script type="text/javascript" src='org_unit_settings.js' />
+        <script type="text/javascript" src="/xul/server/util/clipboard.js" />
+        <style type="text/css">
+            .form_table textarea {
+                width:500px;
+                height:15em;
+            }
+        </style>
     </head>
     <body class="tundra tall">
         <div dojoType="dijit.layout.LayoutContainer" orientation="vertical" class="tall">
@@ -44,7 +51,9 @@
                         <button type="submit" dojoType='dijit.form.Button'>&staff.server.admin.org_unit_settings.filter;</button>
                         <button dojoType='dijit.form.Button' onClick="clearSearch();">&staff.server.admin.org_unit_settings.clear_filter;</button>
                     </form>
-                        <button dojoType='dijit.form.Button' onClick="osToJson();">Output</button>
+                        <button dojoType='dijit.form.Button' onClick="osToJson();">&staff.server.admin.org_unit_settings.export;</button>
+                        <button dojoType='dijit.form.Button' onClick="osFromJson();">&staff.server.admin.org_unit_settings.import;</button>
+
             </div>
             <div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
                 <div class='hide_me' id='no-perms'><b>&staff.server.admin.org_unit_settings.no_perms;</b></div>
@@ -115,10 +124,18 @@
         <div dojoType="openils.widget.ProgressDialog" jsId="progressDialog" indeterminate="true"></div>
         <div id='proci18n' class="hidden">&staff.server.admin.org_unit_settings.processing;</div>
         <div id="noresults" class="hidden">&staff.server.admin.org_unit_settings.no_results;</div>
-        <div id="jsonoutput" class='hidden'  dojoType="dijit.Dialog" jsId='osJSONOutDialog'>
-            <table>
-            <tr><td>Copy this to your clipboard and save it to a file to export the settings.</td></tr>
-            <tr><td><textarea id="jsonOutput"></textarea></td></tr>
+        <div id="jsonOutputDialog" dojoType="dijit.Dialog" jsId='osJSONOutDialog' title="&staff.server.admin.org_unit_settings.export;">
+            <table class="form_table">
+                <tr><td>&staff.server.admin.org_unit_settings.export_copy_label;</td></tr>
+                <tr><td><textarea id="jsonOutput" /></td></tr>
+                <tr><td><button dojoType='dijit.form.Button' onclick='osJsonOutputCopy();'>&staff.server.admin.org_unit_settings.copy;</button></td></tr>
+            </table>
+        </div>
+        <div id="jsonInputDialog" dojoType="dijit.Dialog" jsId='osJSONInDialog' title="&staff.server.admin.org_unit_settings.import;">
+            <table class="form_table">
+                <tr><td>&staff.server.admin.org_unit_settings.import_paste_label;</td></tr>
+                <tr><td><textarea id="jsonInput" /></td></tr>
+                <tr><td><button dojoType='dijit.form.Button' onclick='osJsonInputPaste();'>&staff.server.admin.org_unit_settings.paste;</button><button type="submit"  dojoType='dijit.form.Button' onclick='osFromJsonSubmit();'>&staff.server.admin.org_unit_settings.submit;</button></td></tr>
             </table>
         </div>
     </body>

@@ -1810,6 +1810,13 @@
 <!ENTITY staff.server.admin.org_unit_settings.context "Context">
 <!ENTITY staff.server.admin.org_unit_settings.value "Value">
 <!ENTITY staff.server.admin.org_unit_settings.edit "Edit">
+<!ENTITY staff.server.admin.org_unit_settings.export "Export">
+<!ENTITY staff.server.admin.org_unit_settings.import "Import">
+<!ENTITY staff.server.admin.org_unit_settings.export_copy_label "Copy this to your clipboard and save it to a file to export the settings.">
+<!ENTITY staff.server.admin.org_unit_settings.import_paste_label "Paste in your exported settings.">
+<!ENTITY staff.server.admin.org_unit_settings.submit "Submit">
+<!ENTITY staff.server.admin.org_unit_settings.copy "Copy">
+<!ENTITY staff.server.admin.org_unit_settings.paste "Paste">
 <!ENTITY staff.server.admin.offline.xacts.caption "Offline Sessions">
 <!ENTITY staff.server.admin.offline.xacts.refresh.accesskey "R">
 <!ENTITY staff.server.admin.offline.xacts.create.label "Create">
