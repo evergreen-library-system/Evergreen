@@ -11,13 +11,14 @@ my $U = 'OpenILS::Application::AppUtils';
 
 sub prepare_extended_user_info {
     my $self = shift;
+    my @extra_flesh = @_;
 
     $self->ctx->{user} = $self->editor->retrieve_actor_user([
         $self->ctx->{user}->id,
         {
             flesh => 1,
             flesh_fields => {
-                au => [qw/card home_ou addresses ident_type billing_address/]
+                au => [qw/card home_ou addresses ident_type billing_address/, @extra_flesh]
                 # ...
             }
         }
@@ -107,7 +108,20 @@ sub update_optin_prefs {
 
 sub load_myopac_prefs_settings {
     my $self = shift;
-    return $self->prepare_extended_user_info || Apache2::Const::OK;
+    my $stat = $self->prepare_extended_user_info('settings');
+    return $stat if $stat; # not-OK
+
+    $self->ctx->{user_setting_map} = {
+        map { $_->name => OpenSRF::Utils::JSON->JSON2perl($_->value) } 
+            @{$self->ctx->{user}->settings}
+    };
+
+    return Apache2::Const::OK
+        unless $self->cgi->request_method eq 'POST';
+
+    # process POST request...
+
+    return Apache2::Const::OK;
 }
 
 sub fetch_user_holds {
