@@ -1426,7 +1426,7 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 507, 'ABORT_TRANSIT_ON_LOST', oils_i18n_gettext(507,
     'Allows a user to abort a transit on a copy with status of LOST', 'ppl', 'description')),
  ( 508, 'ABORT_TRANSIT_ON_MISSING', oils_i18n_gettext(508,
-    'Allows a user to abort a transit on a copy with status of MISSING', 'ppl', 'description'));
+    'Allows a user to abort a transit on a copy with status of MISSING', 'ppl', 'description')),
  ( 509, 'TRANSIT_CHECKIN_INTERVAL_BLOCK.override', oils_i18n_gettext(509,
     'Allows a user to override the TRANSIT_CHECKIN_INTERVAL_BLOCK event', 'ppl', 'description'));
 
