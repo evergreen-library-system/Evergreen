@@ -7,7 +7,7 @@ BEGIN;
 
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0549', :eg_version);
 
 INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
     'circ.transit.min_checkin_interval',
