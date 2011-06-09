@@ -1,24 +1,25 @@
+-- Add groups to config settings.
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('0549'); --dbs
+INSERT INTO config.upgrade_log (version) VALUES ('0550'); --dbs
 
 -- config settings group
 INSERT INTO config.settings_group (name, label) VALUES
-('sys', 'System'),
-('finance','Finances'),
-('holds','Holds'),
-('circ','Circulation'),
-('self','Self Check'),
-('opac','OPAC'),
-('gui','GUI'),
-('lib','Library'),
-('sec','Security'),
-('prog','Program'),
-('glob','Global'),
-('credit','Credit Card Processing'),
-('cat','Cataloging'),
-('serial','Serials'),
-('recall','Recalls');
+('sys', oils_i18n_gettext('config.settings_group.system', 'System', 'coust', 'label')),
+('gui', oils_i18n_gettext('config.settings_group.gui', 'GUI', 'coust', 'label')),
+('lib', oils_i18n_gettext('config.settings_group.lib', 'Library', 'coust', 'label')),
+('sec', oils_i18n_gettext('config.settings_group.sec', 'Security', 'coust', 'label')),
+('cat', oils_i18n_gettext('config.settings_group.cat', 'Cataloging', 'coust', 'label')),
+('holds', oils_i18n_gettext('config.settings_group.holds', 'Holds', 'coust', 'label')),
+('circ', oils_i18n_gettext('config.settings_group.circulation', 'Circulation', 'coust', 'label')),
+('self', oils_i18n_gettext('config.settings_group.self', 'Self Check', 'coust', 'label')),
+('opac', oils_i18n_gettext('config.settings_group.opac', 'OPAC', 'coust', 'label')),
+('prog', oils_i18n_gettext('config.settings_group.program', 'Program', 'coust', 'label')),
+('glob', oils_i18n_gettext('config.settings_group.global', 'Global', 'coust', 'label')),
+('finance', oils_i18n_gettext('config.settings_group.finances', 'Finanaces', 'coust', 'label')),
+('credit', oils_i18n_gettext('config.settings_group.ccp', 'Credit Card Processing', 'coust', 'label')),
+('serial', oils_i18n_gettext('config.settings_group.serial', 'Serials', 'coust', 'label')),
+('recall', oils_i18n_gettext('config.settings_group.recall', 'Recalls', 'coust', 'label'));
 
 -- Set up all of the config.org_unit_setting_type[s] with a proper group.
 UPDATE config.org_unit_setting_type SET grp = 'cat' WHERE name = 'cat.bib.delete_on_no_copy_via_acq_lineitem_cancel';

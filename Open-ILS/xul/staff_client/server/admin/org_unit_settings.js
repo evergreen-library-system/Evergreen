@@ -105,16 +105,15 @@ function osDraw(specific_setting) {
                 var tmp = "" + type.label() + "" + type.description() + "" + type.fm_class() + "" + 
                           osGroups[type.grp()] + "" + type.name();
                 
-                searchAssist[type.name()] = tmp.toLowerCase().replace(/[^a-z0-9]+/, '');
+                searchAssist[type.name()] = tmp.toLowerCase().replace(/[^a-z0-9]+/g, '');
             }
         );
         
         for(var key in osSettings)
             names.push(key);
     }
-
-    osDrawNames(names);
     
+    osDrawNames(names);
 }
 
 //Limits those functions seen to the ones that have similar text to 
@@ -122,14 +121,24 @@ function osDraw(specific_setting) {
 function osLimitSeen(text) {
     showProcessingDialog(true);
     
-    text = text.toLowerCase().replace(/[^a-z0-9]+/, '');
+    text = text.split(' ');
     
-    console.log(text);
+    for(t in text)
+        text[t] = text[t].toLowerCase().replace(/[^a-z0-9]+/g, '');
+    
+    numTerms = text.length;
     
     var names = [];
-    for(var n in searchAssist)
-        if(searchAssist[n].indexOf(text) != -1)
+    for(var n in searchAssist) {
+        var numFound = 0;
+        
+        for(var t in text) 
+            if(searchAssist[n].indexOf(text[t]) != -1)
+                numFound++;
+                
+        if(numFound == numTerms)
             names.push(n);
+    }
     
     //Don't update on an empty list as this causes bizarre errors.
     if(names.length == 0) {
