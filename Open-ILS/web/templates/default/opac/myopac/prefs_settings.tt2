@@ -15,11 +15,10 @@
         </div>
 
 
-        <table class="full-width" id="acct_search_main">
+        <table class="full-width data_grid" id="acct_search_main">
             <tbody>
-                <tr id='myopac_prefs_row'>
+                <tr >
                     <td width='20%'>[% l("Search hits per page") %]</td>
-
                     <td>
                         <div style="position:absolute">
                             <div style="position:relative;top:0px;left:55px;">
@@ -27,28 +26,30 @@
                                     src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
                             </div>
                         </div>
-                        <select name='opac.hits_per_page'>
-                            [%  key = 'opac.hits_per_page';
-                                FOR val IN [5, 8, 10, 15, 20, 25, 50] %]
+                        [% setting = 'opac.hits_per_page' %]
+                        <select name='[% setting %]'>
+                            [%  FOR val IN [5, 8, 10, 15, 20, 25, 50] %]
                                 <option value='[% val %]' 
-                                    [% IF ctx.user_setting_map.$key == val %]
+                                    [% IF ctx.user_setting_map.$setting == val %]
                                         selected='selected'[% END %]>[% val %]</option>
                             [% END %]
                         </select>
                     </td>
                 </tr>
-
                 <tr>
+                    <td>[% l('Keep history of checked out items?') %]</td>
                     <td>
-                        [% l('Keep history of checked out items?') %]
+                        [% setting = 'history.circ.retention_start' %]
+                        <input name='[% setting %]' type="checkbox"
+                            [% IF ctx.user_setting_map.$setting; %] checked='checked' [% END %]/>
                     </td>
+                </tr>
+                <tr>
+                    <td>[% l('Keep history of holds?') %]</td>
                     <td>
-                        <input name='history.circ.retention_start' type="checkbox"
-                            [% 
-                                key = 'history.circ.retention_start';
-                                IF ctx.user_setting_map.$key; # any value
-                            %] checked='checked' [% END %]
-                        />
+                        [% setting = 'history.hold.retention_start' %]
+                        <input name='[% setting %]' type="checkbox"
+                            [% IF ctx.user_setting_map.$setting; %] checked='checked' [% END %]/>
                     </td>
                 </tr>
 
