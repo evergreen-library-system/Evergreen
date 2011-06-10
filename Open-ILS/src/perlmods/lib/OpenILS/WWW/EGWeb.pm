@@ -57,7 +57,7 @@ sub handler {
         }
     });
 
-    unless($tt->process($template, {ctx => $ctx, l => set_text_handler($ctx, $r)})) {
+    unless($tt->process($template, {ctx => $ctx, ENV => \%ENV, l => set_text_handler($ctx, $r)})) {
         $r->log->warn('egweb: template error: ' . $tt->error);
         return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
     }
