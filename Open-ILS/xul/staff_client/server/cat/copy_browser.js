@@ -593,8 +593,15 @@ cat.copy_browser.prototype = {
 
                                     var title = document.getElementById('catStrings').getString('staff.cat.copy_browser.add_volume.title');
 
-                                    var horizontal_interface = String( obj.data.hash.aous['ui.cat.volume_copy_editor.horizontal'] ) == 'true';
-                                    var url = window.xulG.url_prefix( horizontal_interface ? urls.XUL_VOLUME_COPY_CREATOR_HORIZONTAL : urls.XUL_VOLUME_COPY_CREATOR );
+                                    var url;
+                                    var unified_interface = String( obj.data.hash.aous['ui.unified_volume_copy_editor'] ) == 'true';
+                                    if (unified_interface) {
+                                        var horizontal_interface = String( obj.data.hash.aous['ui.cat.volume_copy_editor.horizontal'] ) == 'true';
+                                        url = xulG.url_prefix( horizontal_interface ? urls.XUL_VOLUME_COPY_CREATOR_HORIZONTAL : urls.XUL_VOLUME_COPY_CREATOR );
+                                    } else {
+                                        url = xulG.url_prefix( urls.XUL_VOLUME_COPY_CREATOR_ORIGINAL );
+                                    }
+
                                     var w = xulG.new_tab(
                                         url,
                                         { 'tab_name' : title },

@@ -54,6 +54,14 @@ function my_init() {
                     },0
                 );
             }
+            xulG.lock_save_button = function() {
+                g.save_button_locked = true;
+                document.getElementById("Create").disabled = true;
+            }
+            xulG.unlock_save_button = function() {
+                g.save_button_locked = false;
+                document.getElementById("Create").disabled = false;
+            }
         } else {
             $('Create').hidden = true;
         }
@@ -359,7 +367,9 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
             document.getElementById("EditThenCreate").disabled = false;
             document.getElementById("CreateWithDefaults").disabled = false;
         } else {
-            document.getElementById("Create").disabled = false;
+            if (! g.save_button_locked) {
+                document.getElementById("Create").disabled = false;
+            }
         }
     }
 
@@ -668,7 +678,9 @@ g.render_barcode_entry = function(node,callnumber_composite_key,count,ou_id) {
                 document.getElementById("EditThenCreate").disabled = false;
                 document.getElementById("CreateWithDefaults").disabled = false;
             } else {
-                document.getElementById("Create").disabled = false;
+                if (! g.save_button_locked) {
+                    document.getElementById("Create").disabled = false;
+                }
             }
         }
 
