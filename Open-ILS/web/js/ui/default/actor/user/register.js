@@ -45,6 +45,7 @@ var stageUser;
 var optInSettings;
 var allCardsTemplate;
 var uEditCloneCopyAddr; // if true, copy addrs on clone instead of link
+var homeOuTypes = {};
 
 var dupeUsrname = false;
 var dupeBarcode = false;
@@ -116,6 +117,12 @@ function load() {
         if(!fieldDoc[doc.fm_class()])
             fieldDoc[doc.fm_class()] = {};
         fieldDoc[doc.fm_class()][doc.field()] = doc;
+    }
+
+    list = pcrud.search('aout', {can_have_users: 'true'});
+    for(var i in list) {
+        var type = list[i];
+        homeOuTypes[type.id()] = true;
     }
 
     tbody = dojo.byId('uedit-tbody');
@@ -919,6 +926,15 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
                 return;
 
             case 'home_ou':
+                widget.widget.isValid = function() {
+                    if(this.item) {
+                        if(homeOuTypes[this.store.getValue(this.item, 'ou_type')]) {
+                            return true;
+                        }
+                        return false;
+                    }
+                    return true;
+                };
                 dojo.connect(widget.widget, 'onChange',
                     function(newVal) { 
                         checkClaimsReturnCountPerm(); 

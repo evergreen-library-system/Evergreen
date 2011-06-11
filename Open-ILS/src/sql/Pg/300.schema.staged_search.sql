@@ -231,7 +231,6 @@ BEGIN
             PERFORM 1
               FROM  asset.call_number cn
                     JOIN asset.copy cp ON (cp.call_number = cn.id)
-                    JOIN actor.org_unit a ON (cp.circ_lib = a.id)
               WHERE NOT cn.deleted
                     AND NOT cp.deleted
                     AND cp.circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
