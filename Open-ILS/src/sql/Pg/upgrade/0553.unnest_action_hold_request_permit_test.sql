@@ -4,7 +4,7 @@
 --
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('0550'); -- dbs
+INSERT INTO config.upgrade_log (version) VALUES ('0553'); -- dbs
 
 CREATE OR REPLACE FUNCTION action.hold_request_permit_test( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT, retargetting BOOL ) RETURNS SETOF action.matrix_test_result AS $func$
 DECLARE

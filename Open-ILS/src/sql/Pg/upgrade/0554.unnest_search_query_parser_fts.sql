@@ -4,7 +4,7 @@
 --
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('0550'); -- dbs
+INSERT INTO config.upgrade_log (version) VALUES ('0554'); -- dbs
 
 CREATE OR REPLACE FUNCTION search.query_parser_fts (
 

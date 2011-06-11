@@ -4,7 +4,7 @@
 --
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('0550'); -- dbs
+INSERT INTO config.upgrade_log (version) VALUES ('0551'); -- dbs
 
 CREATE OR REPLACE FUNCTION metabib.remap_metarecord_for_bib( bib_id BIGINT, fp TEXT ) RETURNS BIGINT AS $func$
 DECLARE

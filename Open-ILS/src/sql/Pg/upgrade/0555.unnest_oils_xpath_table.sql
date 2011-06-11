@@ -1,10 +1,10 @@
--- Evergreen DB patch 0549.unnest_oils_xpath_table.sql
+-- Evergreen DB patch 0555.unnest_oils_xpath_table.sql
 --
 -- Replace usage of custom explode_array() function with native unnest()
 --
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('0550'); -- dbs
+INSERT INTO config.upgrade_log (version) VALUES ('0555'); -- dbs
 
 CREATE OR REPLACE FUNCTION oils_xpath_table ( key TEXT, document_field TEXT, relation_name TEXT, xpaths TEXT, criteria TEXT ) RETURNS SETOF RECORD AS $func$
 DECLARE
