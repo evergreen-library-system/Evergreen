@@ -1426,7 +1426,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 507, 'ABORT_TRANSIT_ON_LOST', oils_i18n_gettext(507,
     'Allows a user to abort a transit on a copy with status of LOST', 'ppl', 'description')),
  ( 508, 'ABORT_TRANSIT_ON_MISSING', oils_i18n_gettext(508,
-    'Allows a user to abort a transit on a copy with status of MISSING', 'ppl', 'description'));
+    'Allows a user to abort a transit on a copy with status of MISSING', 'ppl', 'description')),
+ ( 509, 'TRANSIT_CHECKIN_INTERVAL_BLOCK.override', oils_i18n_gettext(509,
+    'Allows a user to override the TRANSIT_CHECKIN_INTERVAL_BLOCK event', 'ppl', 'description'));
 
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
@@ -1986,6 +1988,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'VIEW_REPORT_OUTPUT',
 			'VIEW_STANDING_PENALTY',
 			'VOID_BILLING',
+            'TRANSIT_CHECKIN_INTERVAL_BLOCK.override',
 			'VOLUME_HOLDS');
 
 
@@ -2727,7 +2730,19 @@ INSERT into config.org_unit_setting_type
 ( 'opac.fully_compressed_serial_holdings',
     oils_i18n_gettext('opac.fully_compressed_serial_holdings', 'OPAC: Use fully compressed serial holdings', 'coust', 'label'),
     oils_i18n_gettext('opac.fully_compressed_serial_holdings', 'Show fully compressed serial holdings for all libraries at and below the current context unit', 'coust', 'description'),
-    'bool')
+    'bool'),
+
+( 'org.patron_opt_boundary',
+    oils_i18n_gettext( 'org.patron_opt_boundary', 'Circ: Patron Opt-In Boundary', 'coust', 'label'),
+    oils_i18n_gettext( 'org.patron_opt_boundary', 'This determines at which depth above which patrons must be opted in, and below which patrons will be assumed to be opted in.', 'coust', 'label'),
+    'integer'),
+
+( 'org.patron_opt_default',
+    oils_i18n_gettext( 'org.patron_opt_default', 'Circ: Patron Opt-In Default', 'coust', 'label'),
+    oils_i18n_gettext( 'org.patron_opt_default', 'This is the default depth at which a patron is opted in; it is calculated as an org unit relative to the current workstation.', 'coust', 'label'),
+    'integer');
+
+COMMIT;
 ;
 
 UPDATE config.org_unit_setting_type
@@ -8707,3 +8722,21 @@ INSERT INTO config.usr_setting_type
   oils_i18n_gettext('circ.collections.exempt', 'User is exempt from collections tracking/processing', 'cust', 'description'),
   'bool'
 );
+
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+    'circ.transit.min_checkin_interval',
+    oils_i18n_gettext( 
+        'circ.transit.min_checkin_interval', 
+        'Circ:  Minimum Transit Checkin Interval',
+        'coust',
+        'label'
+    ),
+    oils_i18n_gettext( 
+        'circ.transit.min_checkin_interval', 
+        'In-Transit items checked in this close to the transit start time will be prevented from checking in',
+        'coust',
+        'label'
+    ),
+    'interval'
+);
+

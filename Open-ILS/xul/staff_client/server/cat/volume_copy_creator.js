@@ -54,6 +54,14 @@ function my_init() {
                     },0
                 );
             }
+            xulG.lock_save_button = function() {
+                g.save_button_locked = true;
+                document.getElementById("Create").disabled = true;
+            }
+            xulG.unlock_save_button = function() {
+                g.save_button_locked = false;
+                document.getElementById("Create").disabled = false;
+            }
         } else {
             $('Create').hidden = true;
         }
@@ -118,6 +126,20 @@ function my_init() {
             var copy = g.existing_copies[i];
             g.id_copy_map[ copy.id() ] = copy;
             var call_number = copy.call_number();
+            if (typeof call_number != 'object') {
+                if (typeof g.acn_map[call_number] == 'undefined') {
+                    var temp_acn = g.network.simple_request(
+                        'FM_ACN_RETRIEVE.authoritative',
+                        [ call_number ]
+                    );
+                    if (typeof temp_acn.ilsevent != 'undefined') {
+                        alert('Error in my_init(), acn_id = ' + call_number + ' temp_acn = ' + js2JSON(temp_acn));
+                        continue;
+                    }
+                    g.acn_map[ call_number ] = temp_acn;
+                }
+                call_number = g.acn_map[call_number];
+            }
             g.doc_id = call_number.record();
             if (!g.copy_shortcut[ call_number.owning_lib() ]) {
                 ou_ids.push( call_number.owning_lib() );
@@ -359,7 +381,9 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
             document.getElementById("EditThenCreate").disabled = false;
             document.getElementById("CreateWithDefaults").disabled = false;
         } else {
-            document.getElementById("Create").disabled = false;
+            if (! g.save_button_locked) {
+                document.getElementById("Create").disabled = false;
+            }
         }
     }
 
@@ -668,7 +692,9 @@ g.render_barcode_entry = function(node,callnumber_composite_key,count,ou_id) {
                 document.getElementById("EditThenCreate").disabled = false;
                 document.getElementById("CreateWithDefaults").disabled = false;
             } else {
-                document.getElementById("Create").disabled = false;
+                if (! g.save_button_locked) {
+                    document.getElementById("Create").disabled = false;
+                }
             }
         }
 
@@ -1044,37 +1070,13 @@ g.vivicate_update_volumes = function() {
                             continue;
                         }
                         g.acn_map[ acn_id ] = temp_acn;
-                        if (callnumber_data.acn_id < 0) {
-                            g.acn_map[ callnumber_data.acn_id ] = temp_acn;
-                        }
+                    }
+
+                    if (typeof g.acn_map[ callnumber_data.acn_id ] == 'undefined') {
+                        g.acn_map[ callnumber_data.acn_id ] = g.acn_map[ acn_id ];
                     }
 
                 }
-/*
-                var my_acn = g.acn_map[ acn_id ];
-
-                var node = g.volumes_scaffold[ou_id][composite_key].node;
-                var class_menulist = node.parentNode.previousSibling.previousSibling.firstChild;
-                var prefix_menulist = node.parentNode.previousSibling.firstChild;
-                var suffix_menulist = node.parentNode.nextSibling.firstChild;
-
-                if ( String(class_menulist.value) != String(my_acn.label_class()) {
-                    my_acn.label_class( class_menulist.value );
-                    my_acn.ischanged( get_db_true() );
-                }
-                if ( String(prefix_menulist.value) != String(my_acn.prefix()) {
-                    my_acn.prefix( prefix_menulist.value );
-                    my_acn.ischanged( get_db_true() );
-                }
-                if ( String(suffix_menulist.value) != String(my_acn.suffix()) {
-                    my_acn.suffix( suffix_menulist.value );
-                    my_acn.ischanged( get_db_true() );
-                }
-
-                if (get_bool( my_acn.ischanged() )) {
-                    volumes.push( my_acn );
-                }
-*/
             }
         }
         if (volumes.length > 0) {
@@ -1125,6 +1127,7 @@ g.stash_and_close = function(param) {
             }
         }
 
+        var label_editor_func;
         if (copies.length > 0) {
             if (param == 'edit') {
                 JSAN.use('cat.util');
@@ -1144,15 +1147,19 @@ g.stash_and_close = function(param) {
             try {
                 //case 1706 /* ITEM_BARCODE_EXISTS */ :
                 if (copies && copies.length > 0 && $('print_labels').checked) {
-                    JSAN.use('util.functional');
                     dont_close = true;
-                    xulG.set_tab(
-                        urls.XUL_SPINE_LABEL,
-                        { 'tab_name' : $("catStrings").getString('staff.cat.util.spine_editor.tab_name') },
-                        {
-                            'barcodes' : util.functional.map_list( copies, function(o){return o.barcode();})
-                        }
-                    );
+                    var tab_name = $("catStrings").getString('staff.cat.util.spine_editor.tab_name');
+                    var tab_method = xul_param('labels_in_new_tab') ? 'new_tab' : 'set_tab';
+                    label_editor_func = function() {
+                        JSAN.use('util.functional');
+                        xulG[tab_method](
+                            urls.XUL_SPINE_LABEL,
+                            { 'tab_name' : tab_name },
+                            {
+                                'barcodes' : util.functional.map_list( copies, function(o){return o.barcode();})
+                            }
+                        );
+                    };
                 }
             } catch(E) {
                 alert('2: Error in volume_copy_creator.js with g.stash_and_close(): ' + E);
@@ -1166,7 +1173,31 @@ g.stash_and_close = function(param) {
             xulG.unlock_copy_editor();
         }
 
-        if (! dont_close) { xulG.close_tab(); }
+        if (xul_param('load_opac_when_done')) {
+            var opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + g.doc_id;
+            var content_params = {
+                'session' : ses(),
+                'authtime' : ses('authtime'),
+                'opac_url' : opac_url
+            };
+            xulG.set_tab(
+                xulG.url_prefix(urls.XUL_OPAC_WRAPPER),
+                {
+                    'tab_name':'Retrieving title...',
+                    'on_tab_load' : function(cw) {
+                        if (typeof label_editor_func == 'function') {
+                            label_editor_func();
+                        }
+                    }
+                },
+                content_params
+            );
+        } else {
+            if (typeof label_editor_func == 'function') {
+                label_editor_func();
+            }
+            if (! dont_close) { xulG.close_tab(); }
+        }
 
     } catch(E) {
         alert('3: Error in volume_copy_creator.js with g.stash_and_close(): ' + E);

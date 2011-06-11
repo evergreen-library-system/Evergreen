@@ -2145,6 +2145,13 @@ commands:
                             } catch(E) {
                                 obj.error.sdump('D_ERROR', 'main.menu, set_tab, onload: ' + E);
                             }
+                            try {
+                                if (typeof params.on_tab_load == 'function') {
+                                    params.on_tab_load(cw);
+                                }
+                            } catch(E) {
+                                obj.error.sdump('D_ERROR', 'main.menu, set_tab, onload #2: ' + E);
+                            }
                         },
                         false
                     );

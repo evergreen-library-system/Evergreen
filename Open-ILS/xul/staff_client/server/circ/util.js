@@ -2662,7 +2662,8 @@ circ.util.checkin_via_barcode = function(session,params,backdate,auto_print,asyn
                     7010 /* COPY_ALERT_MESSAGE */,
                     7011 /* COPY_STATUS_LOST */,
                     7012 /* COPY_STATUS_MISSING */,
-                    7013 /* PATRON_EXCEEDS_FINES */
+                    7013 /* PATRON_EXCEEDS_FINES */,
+                    11103 /* TRANSIT_CHECKIN_INTERVAL_BLOCK */ 
                 ],
                 'text' : {
                     '1203' : function(r) {
