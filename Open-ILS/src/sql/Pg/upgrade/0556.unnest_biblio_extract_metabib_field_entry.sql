@@ -1,10 +1,10 @@
--- Evergreen DB patch 0550.unnest_biblio_extract_metabib_field_entry.sql
+-- Evergreen DB patch 0556.unnest_biblio_extract_metabib_field_entry.sql
 --
 -- Replace usage of custom explode_array() function with native unnest()
 --
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('0550'); -- dbs
+INSERT INTO config.upgrade_log (version) VALUES ('0556'); -- dbs
 
 CREATE OR REPLACE FUNCTION biblio.extract_metabib_field_entry ( rid BIGINT, default_joiner TEXT ) RETURNS SETOF metabib.field_entry_template AS $func$
 DECLARE
