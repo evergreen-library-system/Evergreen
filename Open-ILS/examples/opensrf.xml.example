@@ -288,7 +288,7 @@ vim:et:ts=4:sw=4:
             return data.  Data not returned within the timeout is considered
             a failure
             -->
-            <timeout>1</timeout>
+            <timeout>30</timeout>
 
             <!--
             After added content lookups have been disabled due to too many
