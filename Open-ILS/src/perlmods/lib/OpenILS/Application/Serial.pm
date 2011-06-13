@@ -1943,39 +1943,39 @@ sub fetch_notes {
 }
 
 __PACKAGE__->register_method(
-    method      => 'create_note',
-    api_name        => 'open-ils.serial.item_note.create',
+    method      => 'update_note',
+    api_name        => 'open-ils.serial.item_note.update',
     signature   => q/
-        Creates a new item note
+        Updates or creates an item note
         @param authtoken The login session key
-        @param note The note object to create
-        @return The id of the new note object
+        @param note The note object to update or create
+        @return The id of the note object
     /
 );
 
 __PACKAGE__->register_method(
-    method      => 'create_note',
-    api_name        => 'open-ils.serial.subscription_note.create',
+    method      => 'update_note',
+    api_name        => 'open-ils.serial.subscription_note.update',
     signature   => q/
-        Creates a new subscription note
+        Updates or creates a subscription note
         @param authtoken The login session key
-        @param note The note object to create
-        @return The id of the new note object
+        @param note The note object to update or create
+        @return The id of the note object
     /
 );
 
 __PACKAGE__->register_method(
-    method      => 'create_note',
-    api_name        => 'open-ils.serial.distribution_note.create',
+    method      => 'update_note',
+    api_name        => 'open-ils.serial.distribution_note.update',
     signature   => q/
-        Creates a new distribution note
+        Updates or creates a distribution note
         @param authtoken The login session key
-        @param note The note object to create
-        @return The id of the new note object
+        @param note The note object to update or create
+        @return The id of the note object
     /
 );
 
-sub create_note {
+sub update_note {
     my( $self, $connection, $authtoken, $note ) = @_;
 
     $self->api_name =~ /serial\.(\w*)_note/;
@@ -1984,22 +1984,42 @@ sub create_note {
     my $e = new_editor(xact=>1, authtoken=>$authtoken);
     return $e->event unless $e->checkauth;
 
-    # FIXME: restore permission support
-#    my $item = $e->retrieve_serial_item(
-#        [
-#            $note->item
-#        ]
-#    );
-#
-#    return $e->event unless
-#        $e->allowed('CREATE_COPY_NOTE', $item->call_number->owning_lib);
+    if ($type eq 'item') {
+        my $sitem = $e->retrieve_serial_item([
+            $note->item, {
+                "flesh" => 2, "flesh_fields" => {
+                    "sitem" => ["stream"], "sstr" => ["distribution"]
+                }
+            }
+        ]) or return $e->die_event;
 
-    $note->create_date('now');
-    $note->creator($e->requestor->id);
+        return $e->die_event unless $e->allowed(
+            "ADMIN_SERIAL_ITEM", $sitem->stream->distribution->holding_lib
+        );
+    } elsif ($type eq 'distribution') {
+        my $sdist = $e->retrieve_serial_distribution($note->distribution)
+            or return $e->die_event;
+
+        return $e->die_event unless
+            $e->allowed("ADMIN_SERIAL_DISTRIBUTION", $sdist->holding_lib);
+    } else { # subscription
+        my $sub = $e->retrieve_serial_subscription($note->subscription)
+            or return $e->die_event;
+
+        return $e->die_event unless
+            $e->allowed("ADMIN_SERIAL_SUBSCRIPTION", $sub->owning_lib);
+    }
+
     $note->pub( ($U->is_true($note->pub)) ? 't' : 'f' );
-    $note->clear_id;
-
-    my $method = "create_serial_${type}_note";
+    my $method;
+    if ($note->isnew) {
+        $note->create_date('now');
+        $note->creator($e->requestor->id);
+        $note->clear_id;
+        $method = "create_serial_${type}_note";
+    } else {
+        $method = "update_serial_${type}_note";
+    }
     $e->$method($note) or return $e->event;
     $e->commit;
     return $note->id;
@@ -2052,11 +2072,31 @@ sub delete_note {
         $noteid,
     ]) or return $e->die_event;
 
-# FIXME: restore permissions check
-#    if( $note->creator ne $e->requestor->id ) {
-#        return $e->die_event unless
-#            $e->allowed('DELETE_COPY_NOTE', $note->item->call_number->owning_lib);
-#    }
+    if ($type eq 'item') {
+        my $sitem = $e->retrieve_serial_item([
+            $note->item, {
+                "flesh" => 2, "flesh_fields" => {
+                    "sitem" => ["stream"], "sstr" => ["distribution"]
+                }
+            }
+        ]) or return $e->die_event;
+
+        return $e->die_event unless $e->allowed(
+            "ADMIN_SERIAL_ITEM", $sitem->stream->distribution->holding_lib
+        );
+    } elsif ($type eq 'distribution') {
+        my $sdist = $e->retrieve_serial_distribution($note->distribution)
+            or return $e->die_event;
+
+        return $e->die_event unless
+            $e->allowed("ADMIN_SERIAL_DISTRIBUTION", $sdist->holding_lib);
+    } else { # subscription
+        my $sub = $e->retrieve_serial_subscription($note->subscription)
+            or return $e->die_event;
+
+        return $e->die_event unless
+            $e->allowed("ADMIN_SERIAL_SUBSCRIPTION", $sub->owning_lib);
+    }
 
     $method = "delete_serial_${type}_note";
     $e->$method($note) or return $e->die_event;
