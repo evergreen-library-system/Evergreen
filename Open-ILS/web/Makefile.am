@@ -8,7 +8,7 @@ opacjsdir = $(DESTDIR)$(WEBDIR)/opac/common/js
 jsdojodir = $(DESTDIR)$(WEBDIR)/js/dojo
 jsdojoosrfdir = $(DESTDIR)$(WEBDIR)/js/dojo/opensrf
 opacextrasdir = $(DESTDIR)$(WEBDIR)/opac/extras/xsl/
-reportsdir = $(DESTDIR)$(WEBDIR)/reports/
+reportsdir = $(WEBDIR)/reports/
 
 if BUILDILSWEB
 OILSWEB_INST = webcore-install offline-install
@@ -63,7 +63,7 @@ offline-install:
 	@echo "Installing offline CGIs to $(CGIDIR)/offline";
 	$(MKDIR_P) $(TMP)
 	$(MKDIR_P) $(DESTDIR)$(CGIDIR)/offline;
-	$(MKDIR_P) $(datadir)/offline;
+	$(MKDIR_P) $(DESTDIR)$(datadir)/offline;
 	perl -pe "s{##CONFIG##}{@sysconfdir@}" < @top_srcdir@/Open-ILS/src/offline/offline.pl > $(TMP)/offline.pl;
 	cp $(TMP)/offline.pl $(DESTDIR)$(CGIDIR)/offline/
 	chmod +x $(DESTDIR)$(CGIDIR)/offline/offline.pl
