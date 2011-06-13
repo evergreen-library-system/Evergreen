@@ -246,6 +246,7 @@
 <!ENTITY staff.browse_list.circulate "Circulate">
 <!ENTITY staff.browse_list.copy_number "Copy Number">
 <!ENTITY staff.browse_list.create_date "Creation Date">
+<!ENTITY staff.browse_list.active_date "Active Date">
 <!ENTITY staff.browse_list.creator "Creator">
 <!ENTITY staff.browse_list.deposit "Deposit">
 <!ENTITY staff.browse_list.deposit_amount "Deposit Amount">
@@ -2687,6 +2688,7 @@
 <!ENTITY staff.cat.copy_summary.created.label "Created:">
 <!ENTITY staff.cat.copy_summary.edited.label "Edited:">
 <!ENTITY staff.cat.copy_summary.age_protect.label "Age Protect:">
+<!ENTITY staff.cat.copy_summary.active_date.label "Active Date:">
 <!ENTITY staff.cat.copy_summary.total_circs.label "Total Circulations:">
 <!ENTITY staff.cat.copy_summary.alternate_view.label "Alternate View">
 <!ENTITY staff.cat.copy_summary.alternate_view.accesskey "">
@@ -3487,6 +3489,7 @@
 <!ENTITY staff.circ.alternate_copy_summary.Copy_Location.label "Copy Location">
 <!ENTITY staff.circ.alternate_copy_summary.Renewal_Type.label "Renewal Type">
 <!ENTITY staff.circ.alternate_copy_summary.Date_Created.label "Date Created">
+<!ENTITY staff.circ.alternate_copy_summary.Date_Active.label "Date Active">
 <!ENTITY staff.circ.alternate_copy_summary.Status_Changed_Time.label "Status Changed">
 <!ENTITY staff.circ.alternate_copy_summary.Due_Date.label "Due Date">
 <!ENTITY staff.circ.alternate_copy_summary.Edition.label "Edition">

@@ -47,6 +47,7 @@ CREATE TABLE config.hold_matrix_matchpoint (
     marc_vr_format          TEXT,
     juvenile_flag           BOOL,
     ref_flag                BOOL,
+    item_age                INTERVAL,
     -- "Result" Fields
     holdable                BOOL    NOT NULL DEFAULT TRUE,                -- Hard "can't hold" flag requiring an override
     distance_is_from_owner  BOOL    NOT NULL DEFAULT FALSE,                -- How to calculate transit_range.  True means owning lib, false means copy circ lib
@@ -58,7 +59,7 @@ CREATE TABLE config.hold_matrix_matchpoint (
 );
 
 -- Nulls don't count for a constraint match, so we have to coalesce them into something that does.
-CREATE UNIQUE INDEX chmm_once_per_paramset ON config.hold_matrix_matchpoint (COALESCE(user_home_ou::TEXT, ''), COALESCE(request_ou::TEXT, ''), COALESCE(pickup_ou::TEXT, ''), COALESCE(item_owning_ou::TEXT, ''), COALESCE(item_circ_ou::TEXT, ''), COALESCE(usr_grp::TEXT, ''), COALESCE(requestor_grp::TEXT, ''), COALESCE(circ_modifier, ''), COALESCE(marc_type, ''), COALESCE(marc_form, ''), COALESCE(marc_bib_level, ''), COALESCE(marc_vr_format, ''), COALESCE(juvenile_flag::TEXT, ''), COALESCE(ref_flag::TEXT, '')) WHERE active;
+CREATE UNIQUE INDEX chmm_once_per_paramset ON config.hold_matrix_matchpoint (COALESCE(user_home_ou::TEXT, ''), COALESCE(request_ou::TEXT, ''), COALESCE(pickup_ou::TEXT, ''), COALESCE(item_owning_ou::TEXT, ''), COALESCE(item_circ_ou::TEXT, ''), COALESCE(usr_grp::TEXT, ''), COALESCE(requestor_grp::TEXT, ''), COALESCE(circ_modifier, ''), COALESCE(marc_type, ''), COALESCE(marc_form, ''), COALESCE(marc_bib_level, ''), COALESCE(marc_vr_format, ''), COALESCE(juvenile_flag::TEXT, ''), COALESCE(ref_flag::TEXT, ''), COALESCE(item_age::TEXT, '')) WHERE active;
 
 CREATE OR REPLACE FUNCTION action.find_hold_matrix_matchpoint(pickup_ou integer, request_ou integer, match_item bigint, match_user integer, match_requestor integer)
   RETURNS integer AS
@@ -68,6 +69,7 @@ DECLARE
     user_object         actor.usr%ROWTYPE;
     item_object         asset.copy%ROWTYPE;
     item_cn_object      asset.call_number%ROWTYPE;
+    my_item_age         INTERVAL;
     rec_descriptor      metabib.rec_descriptor%ROWTYPE;
     matchpoint          config.hold_matrix_matchpoint%ROWTYPE;
     weights             config.hold_matrix_weights%ROWTYPE;
@@ -78,6 +80,10 @@ BEGIN
     SELECT INTO item_object         * FROM asset.copy               WHERE id = match_item;
     SELECT INTO item_cn_object      * FROM asset.call_number        WHERE id = item_object.call_number;
     SELECT INTO rec_descriptor      * FROM metabib.rec_descriptor   WHERE record = item_cn_object.record;
+
+    IF item_object.active_date IS NOT NULL THEN
+        SELECT INTO my_item_age age(item_object.active_date);
+    END IF;
 
     -- The item's owner should probably be the one determining if the item is holdable
     -- How to decide that is debatable. Decided to default to the circ library (where the item lives)
@@ -99,7 +105,7 @@ BEGIN
         SELECT INTO weights hw.*
           FROM config.weight_assoc wa
                JOIN config.hold_matrix_weights hw ON (hw.id = wa.hold_weights)
-               JOIN actor.org_unit_ancestors_distance( cn_object.owning_lib ) d ON (wa.org_unit = d.id)
+               JOIN actor.org_unit_ancestors_distance( item_cn_object.owning_lib ) d ON (wa.org_unit = d.id)
           WHERE active
           ORDER BY d.distance
           LIMIT 1;
@@ -121,6 +127,7 @@ BEGIN
         weights.marc_vr_format  := 1.0;
         weights.juvenile_flag   := 4.0;
         weights.ref_flag        := 0.0;
+        weights.item_age        := 0.0;
     END IF;
 
     -- Determine the max (expected) depth (+1) of the org tree and max depth of the permisson tree
@@ -176,6 +183,7 @@ BEGIN
             AND (m.marc_bib_level       IS NULL OR m.marc_bib_level = rec_descriptor.bib_level)
             AND (m.marc_vr_format       IS NULL OR m.marc_vr_format = rec_descriptor.vr_format)
             AND (m.ref_flag             IS NULL OR m.ref_flag = item_object.ref)
+            AND (m.item_age             IS NULL OR (my_item_age IS NOT NULL AND m.item_age > my_item_age))
       ORDER BY
             -- Permission Groups
             CASE WHEN rpgad.distance    IS NOT NULL THEN 2^(2*weights.requestor_grp - (rpgad.distance/denominator)) ELSE 0.0 END +
@@ -193,7 +201,11 @@ BEGIN
             CASE WHEN m.marc_type       IS NOT NULL THEN 4^weights.marc_type ELSE 0.0 END +
             CASE WHEN m.marc_form       IS NOT NULL THEN 4^weights.marc_form ELSE 0.0 END +
             CASE WHEN m.marc_vr_format  IS NOT NULL THEN 4^weights.marc_vr_format ELSE 0.0 END +
-            CASE WHEN m.ref_flag        IS NOT NULL THEN 4^weights.ref_flag ELSE 0.0 END DESC,
+            CASE WHEN m.ref_flag        IS NOT NULL THEN 4^weights.ref_flag ELSE 0.0 END +
+            -- Item age has a slight adjustment to weight based on value.
+            -- This should ensure that a shorter age limit comes first when all else is equal.
+            -- NOTE: This assumes that intervals will normally be in days.
+            CASE WHEN m.item_age            IS NOT NULL THEN 4^weights.item_age - 86400/EXTRACT(EPOCH FROM m.item_age) ELSE 0.0 END DESC,
             -- Final sort on id, so that if two rules have the same sorting in the previous sort they have a defined order
             -- This prevents "we changed the table order by updating a rule, and we started getting different results"
             m.id;
@@ -217,6 +229,8 @@ DECLARE
     ou_skip              actor.org_unit_setting%ROWTYPE;
     result            action.matrix_test_result;
     hold_test        config.hold_matrix_matchpoint%ROWTYPE;
+    use_active_date   TEXT;
+    age_protect_date  TIMESTAMP WITH TIME ZONE;
     hold_count        INT;
     hold_transit_prox    INT;
     frozen_hold_count    INT;
@@ -357,8 +371,17 @@ BEGIN
 
     IF item_object.age_protect IS NOT NULL THEN
         SELECT INTO age_protect_object * FROM config.rule_age_hold_protect WHERE id = item_object.age_protect;
-
-        IF item_object.create_date + age_protect_object.age > NOW() THEN
+        IF hold_test.distance_is_from_owner THEN
+            SELECT INTO use_active_date value FROM actor.org_unit_ancestor_setting('circ.holds.age_protect.active_date', item_cn_object.owning_lib);
+        ELSE
+            SELECT INTO use_active_date value FROM actor.org_unit_ancestor_setting('circ.holds.age_protect.active_date', item_object.circ_lib);
+        END IF;
+        IF use_active_date = 'true' THEN
+            age_protect_date := COALESCE(item_object.active_date, NOW());
+        ELSE
+            age_protect_date := item_object.create_date;
+        END IF;
+        IF age_protect_date + age_protect_object.age > NOW() THEN
             IF hold_test.distance_is_from_owner THEN
                 SELECT INTO item_cn_object * FROM asset.call_number WHERE id = item_object.call_number;
                 SELECT INTO hold_transit_prox prox FROM actor.org_unit_proximity WHERE from_org = item_cn_object.owning_lib AND to_org = pickup_ou;

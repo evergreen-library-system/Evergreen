@@ -15,6 +15,7 @@
 									<td>&rdetail.cn.location;</td>
 									<td name='age_protect_label' class='hide_me'>&rdetail.cn.hold.age;</td>
 									<td name='create_date_label' class='hide_me'>&rdetail.cn.genesis;</td>
+                                    <td name='active_date_label' class='hide_me'>&rdetail.cn.active;</td>
 									<td name='holdable_label' class='hide_me'>&rdetail.cn.holdable;</td>
 									<td name='due_date_label' class='hide_me'>&rdetail.cn.due;</td>
 								</tr>
@@ -33,6 +34,7 @@
 									<td name='location'> </td>
 									<td name='age_protect_value' class='hide_me'>&rdetail.cn.disabled;</td>
 									<td name='create_date_value' class='hide_me'> </td>
+                                    <td name='active_date_value' class='hide_me'> </td>
 	
 									<td name='copy_holdable_td' class='hide_me'>
 										<span name='copy_is_holdable'> </span>

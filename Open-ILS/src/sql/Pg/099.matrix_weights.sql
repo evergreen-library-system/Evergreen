@@ -19,7 +19,8 @@ CREATE TABLE config.circ_matrix_weights (
     juvenile_flag           NUMERIC(6,2)   NOT NULL,
     is_renewal              NUMERIC(6,2)   NOT NULL,
     usr_age_lower_bound     NUMERIC(6,2)   NOT NULL,
-    usr_age_upper_bound     NUMERIC(6,2)   NOT NULL
+    usr_age_upper_bound     NUMERIC(6,2)   NOT NULL,
+    item_age                NUMERIC(6,2)   NOT NULL
 );
 
 -- Hold Matrix Weights
@@ -39,7 +40,8 @@ CREATE TABLE config.hold_matrix_weights (
     marc_bib_level          NUMERIC(6,2)   NOT NULL,
     marc_vr_format          NUMERIC(6,2)   NOT NULL,
     juvenile_flag           NUMERIC(6,2)   NOT NULL,
-    ref_flag                NUMERIC(6,2)   NOT NULL
+    ref_flag                NUMERIC(6,2)   NOT NULL,
+    item_age                NUMERIC(6,2)   NOT NULL
 );
 
 -- Linking between weights and org units

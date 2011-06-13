@@ -215,22 +215,22 @@ INSERT INTO config.rule_age_hold_protect VALUES
 	(2, oils_i18n_gettext(2, '6month', 'crahp', 'name'), '6 months', 2);
 SELECT SETVAL('config.rule_age_hold_protect_id_seq'::TEXT, 100);
 
-INSERT INTO config.copy_status (id,name,holdable,opac_visible) VALUES (0,oils_i18n_gettext(0, 'Available', 'ccs', 'name'),'t','t');
-INSERT INTO config.copy_status (id,name,holdable,opac_visible) VALUES (1,oils_i18n_gettext(1, 'Checked out', 'ccs', 'name'),'t','t');
+INSERT INTO config.copy_status (id,name,holdable,opac_visible,copy_active) VALUES (0,oils_i18n_gettext(0, 'Available', 'ccs', 'name'),'t','t','t');
+INSERT INTO config.copy_status (id,name,holdable,opac_visible,copy_active) VALUES (1,oils_i18n_gettext(1, 'Checked out', 'ccs', 'name'),'t','t','t');
 INSERT INTO config.copy_status (id,name) VALUES (2,oils_i18n_gettext(2, 'Bindery', 'ccs', 'name'));
 INSERT INTO config.copy_status (id,name) VALUES (3,oils_i18n_gettext(3, 'Lost', 'ccs', 'name'));
 INSERT INTO config.copy_status (id,name) VALUES (4,oils_i18n_gettext(4, 'Missing', 'ccs', 'name'));
 INSERT INTO config.copy_status (id,name,holdable,opac_visible) VALUES (5,oils_i18n_gettext(5, 'In process', 'ccs', 'name'),'t','t');
 INSERT INTO config.copy_status (id,name,holdable,opac_visible) VALUES (6,oils_i18n_gettext(6, 'In transit', 'ccs', 'name'),'t','t');
-INSERT INTO config.copy_status (id,name,holdable,opac_visible) VALUES (7,oils_i18n_gettext(7, 'Reshelving', 'ccs', 'name'),'t','t');
-INSERT INTO config.copy_status (id,name,holdable,opac_visible) VALUES (8,oils_i18n_gettext(8, 'On holds shelf', 'ccs', 'name'),'t','t');
+INSERT INTO config.copy_status (id,name,holdable,opac_visible,copy_active) VALUES (7,oils_i18n_gettext(7, 'Reshelving', 'ccs', 'name'),'t','t','t');
+INSERT INTO config.copy_status (id,name,holdable,opac_visible,copy_active) VALUES (8,oils_i18n_gettext(8, 'On holds shelf', 'ccs', 'name'),'t','t','t');
 INSERT INTO config.copy_status (id,name,holdable,opac_visible) VALUES (9,oils_i18n_gettext(9, 'On order', 'ccs', 'name'),'t','t');
-INSERT INTO config.copy_status (id,name) VALUES (10,oils_i18n_gettext(10, 'ILL', 'ccs', 'name'));
+INSERT INTO config.copy_status (id,name,copy_active) VALUES (10,oils_i18n_gettext(10, 'ILL', 'ccs', 'name'),'t');
 INSERT INTO config.copy_status (id,name) VALUES (11,oils_i18n_gettext(11, 'Cataloging', 'ccs', 'name'));
-INSERT INTO config.copy_status (id,name,opac_visible) VALUES (12,oils_i18n_gettext(12, 'Reserves', 'ccs', 'name'),'t');
+INSERT INTO config.copy_status (id,name,opac_visible,copy_active) VALUES (12,oils_i18n_gettext(12, 'Reserves', 'ccs', 'name'),'t','t');
 INSERT INTO config.copy_status (id,name) VALUES (13,oils_i18n_gettext(13, 'Discard/Weed', 'ccs', 'name'));
 INSERT INTO config.copy_status (id,name) VALUES (14,oils_i18n_gettext(14, 'Damaged', 'ccs', 'name'));
-INSERT INTO config.copy_status (id,name) VALUES (15,oils_i18n_gettext(15, 'On reservation shelf', 'ccs', 'name'));
+INSERT INTO config.copy_status (id,name,copy_active) VALUES (15,oils_i18n_gettext(15, 'On reservation shelf', 'ccs', 'name'),'t');
 
 SELECT SETVAL('config.copy_status_id_seq'::TEXT, 100);
 
@@ -2278,20 +2278,20 @@ INSERT INTO asset.call_number VALUES (-1,1,NOW(),1,NOW(),-1,1,'UNCATALOGED');
 -- circ matrix
 INSERT INTO config.circ_matrix_matchpoint (org_unit,grp,circulate,duration_rule,recurring_fine_rule,max_fine_rule) VALUES (1,1,true,11,1,1);
 
-INSERT INTO config.circ_matrix_weights(name, org_unit, grp, circ_modifier, marc_type, marc_form, marc_bib_level, marc_vr_format, copy_circ_lib, copy_owning_lib, user_home_ou, ref_flag, juvenile_flag, is_renewal, usr_age_upper_bound, usr_age_lower_bound) VALUES 
-    ('Default', 10.0, 11.0, 5.0, 4.0, 3.0, 2.0, 2.0, 8.0, 8.0, 8.0, 1.0, 6.0, 7.0, 0.0, 0.0),
-    ('Org_Unit_First', 11.0, 10.0, 5.0, 4.0, 3.0, 2.0, 2.0, 8.0, 8.0, 8.0, 1.0, 6.0, 7.0, 0.0, 0.0),
-    ('Item_Owner_First', 8.0, 8.0, 5.0, 4.0, 3.0, 2.0, 2.0, 10.0, 11.0, 8.0, 1.0, 6.0, 7.0, 0.0, 0.0),
-    ('All_Equal', 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+INSERT INTO config.circ_matrix_weights(name, org_unit, grp, circ_modifier, marc_type, marc_form, marc_bib_level, marc_vr_format, copy_circ_lib, copy_owning_lib, user_home_ou, ref_flag, juvenile_flag, is_renewal, usr_age_upper_bound, usr_age_lower_bound, item_age) VALUES 
+    ('Default', 10.0, 11.0, 5.0, 4.0, 3.0, 2.0, 2.0, 8.0, 8.0, 8.0, 1.0, 6.0, 7.0, 0.0, 0.0, 0.0),
+    ('Org_Unit_First', 11.0, 10.0, 5.0, 4.0, 3.0, 2.0, 2.0, 8.0, 8.0, 8.0, 1.0, 6.0, 7.0, 0.0, 0.0, 0.0),
+    ('Item_Owner_First', 8.0, 8.0, 5.0, 4.0, 3.0, 2.0, 2.0, 10.0, 11.0, 8.0, 1.0, 6.0, 7.0, 0.0, 0.0, 0.0),
+    ('All_Equal', 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 
 -- hold matrix - 110.hold_matrix.sql:
 INSERT INTO config.hold_matrix_matchpoint (requestor_grp) VALUES (1);
 
-INSERT INTO config.hold_matrix_weights(name, user_home_ou, request_ou, pickup_ou, item_owning_ou, item_circ_ou, usr_grp, requestor_grp, circ_modifier, marc_type, marc_form, marc_bib_level, marc_vr_format, juvenile_flag, ref_flag) VALUES
-    ('Default', 5.0, 5.0, 5.0, 5.0, 5.0, 7.0, 8.0, 4.0, 3.0, 2.0, 1.0, 1.0, 4.0, 0.0),
-    ('Item_Owner_First', 5.0, 5.0, 5.0, 8.0, 7.0, 5.0, 5.0, 4.0, 3.0, 2.0, 1.0, 1.0, 4.0, 0.0),
-    ('User_Before_Requestor', 5.0, 5.0, 5.0, 5.0, 5.0, 8.0, 7.0, 4.0, 3.0, 2.0, 1.0, 1.0, 4.0, 0.0),
-    ('All_Equal', 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+INSERT INTO config.hold_matrix_weights(name, user_home_ou, request_ou, pickup_ou, item_owning_ou, item_circ_ou, usr_grp, requestor_grp, circ_modifier, marc_type, marc_form, marc_bib_level, marc_vr_format, juvenile_flag, ref_flag, item_age) VALUES
+    ('Default', 5.0, 5.0, 5.0, 5.0, 5.0, 7.0, 8.0, 4.0, 3.0, 2.0, 1.0, 1.0, 4.0, 0.0, 0.0),
+    ('Item_Owner_First', 5.0, 5.0, 5.0, 8.0, 7.0, 5.0, 5.0, 4.0, 3.0, 2.0, 1.0, 1.0, 4.0, 0.0, 0.0),
+    ('User_Before_Requestor', 5.0, 5.0, 5.0, 5.0, 5.0, 8.0, 7.0, 4.0, 3.0, 2.0, 1.0, 1.0, 4.0, 0.0, 0.0),
+    ('All_Equal', 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 
 -- dynamic weight associations
 INSERT INTO config.weight_assoc(active, org_unit, circ_weights, hold_weights) VALUES
@@ -2426,6 +2426,11 @@ INSERT into config.org_unit_setting_type
     oils_i18n_gettext('circ.holds.min_estimated_wait_interval', 'Holds: Minimum Estimated Wait', 'coust', 'label'),
     oils_i18n_gettext('circ.holds.min_estimated_wait_interval', 'When predicting the amount of time a patron will be waiting for a hold to be fulfilled, this is the minimum estimated length of time to assume an item will be checked out. Examples: "2 weeks", "5 days"', 'coust', 'description'),
     'interval'),
+
+( 'circ.holds.age_protect.active_date',
+    oils_i18n_gettext('circ.holds.age_protect.active_date', 'Holds: Use Active Date for Age Protection', 'coust', 'label'),
+    oils_i18n_gettext('circ.holds.age_protect.active_date', 'When calculating age protection rules use the active date instead of the creation date.', 'coust', 'description'),
+    'bool'),
 
 ( 'circ.selfcheck.patron_login_timeout',
     oils_i18n_gettext('circ.selfcheck.patron_login_timeout', 'Selfcheck: Patron Login Timeout (in seconds)', 'coust', 'label'),

@@ -45,7 +45,7 @@ __PACKAGE__->columns( Essential => qw/call_number barcode creator create_date ed
 				   fine_level circulate deposit price ref opac_visible dummy_isbn
 				   circ_as_type circ_modifier deposit_amount location mint_condition
 				   holdable dummy_title dummy_author deleted alert_message
-				   age_protect floating summary_contents detailed_contents/ );
+				   age_protect floating summary_contents detailed_contents active_date/ );
 
 #-------------------------------------------------------------------------------
 package serial::record_entry;

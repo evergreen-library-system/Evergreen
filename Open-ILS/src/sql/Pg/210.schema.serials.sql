@@ -230,6 +230,11 @@ CREATE TRIGGER sunit_status_changed_trig
     BEFORE UPDATE ON serial.unit
     FOR EACH ROW EXECUTE PROCEDURE asset.acp_status_changed();
 
+-- ditto
+CREATE TRIGGER sunit_created_trig
+    BEFORE INSERT ON serial.unit
+    FOR EACH ROW EXECUTE PROCEDURE asset.acp_created();
+
 CREATE TABLE serial.item (
 	id              SERIAL  PRIMARY KEY,
 	creator         INT     NOT NULL
