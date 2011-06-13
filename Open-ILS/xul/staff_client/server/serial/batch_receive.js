@@ -996,7 +996,8 @@ function BatchReceiver() {
              * they start or end in spaces, we'll unintentionally create
              * a new, different CN if we trim that */
             var cn_string = this._row_field_value(id, "call_number");
-            var barcode = this._row_field_value(id, "barcode").trim();
+            var barcode = this._row_field_value(id, "barcode");
+            if (barcode && barcode.trim) barcode = barcode.trim();
 
             if (barcode && cn_string.length) {
                 var unit = new sunit();
