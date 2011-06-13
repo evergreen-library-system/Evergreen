@@ -763,7 +763,7 @@ function renderOpenLibraryLinks(response) {
             );
         } else if (ol_ebooks[isbn]['similar_lendable']) {
             createOpenLibraryLink(
-                isbn, ol_ebooks[isbn]['similar_full'], 'Borrow similar online'
+                isbn, ol_ebooks[isbn]['similar_lendable'], 'Borrow similar online'
             );
         }
     }

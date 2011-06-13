@@ -331,22 +331,40 @@ sub fetch_items_response {
     return $book_results->{items};
 }
 
-
 # returns a cover image from the list of associated items
 # TODO: Look for the best match in the array of items
 sub fetch_cover_response {
     my( $self, $size, $key ) = @_;
 
-    my $items = $self->fetch_items_response($key);
+    my $cover;
 
-    if (!$items) {
+    my $response = $self->fetch_response($key);
+
+    # Short-circuit if we get an empty response, or a response
+    #with no matching records
+    if (!$response or scalar(keys %$response) == 0) {
         return $AC->get_url($blank_img);
     }
+
+    # Try to return a cover image from the record->data metadata
+    foreach my $rec_key (keys %{$response->{records}}) {
+        my $record = $response->{records}->{$rec_key};
+        if (exists $record->{data}->{cover}->{$size}) {
+            $cover = $record->{data}->{cover}->{$size};
+        }
+        if ($cover) {
+            return $AC->get_url($cover);
+        }
+    }
+
+    # If we didn't find a cover in the record metadata, look in the items
+    # Seems unlikely, but might as well try.
+    my $items = $response->{items};
 
     $logger->debug("$key: items request got " . scalar(@$items) . " items back");
 
     foreach my $item (@$items) {
-        if ($item->{cover}) {
+        if (exists $item->{cover}->{$size}) {
             return $AC->get_url($item->{cover}->{$size}) || 0;
         }
     }
