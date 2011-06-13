@@ -12,7 +12,7 @@ CREATE OR REPLACE FUNCTION unapi.ccs ( obj_id BIGINT, format TEXT,  ename TEXT, 
                 name status,
                 XMLATTRIBUTES(
                     CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
-                    id AS ident
+                    id AS ident,
                     holdable,
                     opac_visible
                 ),
