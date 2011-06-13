@@ -22,7 +22,7 @@ if [ -f "$UPDATE_LOC/patch/${CHANNEL}VERSION" ]; then
 	[ -n "$DETAILSURL" ] && DETAILSURL=" detailsURL=\"$DETAILSURL\""
 	if [ -n "$CURVERSION" -a "$VERSION" != "$CURVERSION" ]; then
 		if [ -f "$UPDATE_LOC/pub/${CHANNEL}$CURVERSION.mar" -a -f "$UPDATE_LOC/patch/${CHANNEL}$CURVERSION.patchline" ]; then
-			echo "<update type=\"minor\" version=\"$CURVERSION\"$DETAILSURL>"
+			echo "<update type=\"minor\" version=\"$CURVERSION\" extensionVersion=\"$CURVERSION\"$DETAILSURL>"
 			sed -e "s|URL=\"|URL=\"$URLBASE|" "$UPDATE_LOC/patch/${CHANNEL}$CURVERSION.patchline"
 			if [ -f "$UPDATE_LOC/pub/${CHANNEL}$VERSION-$CURVERSION.mar" -a -f "$UPDATE_LOC/patch/${CHANNEL}$VERSION-$CURVERSION.patchline" ]; then
 				sed -e "s|URL=\"|URL=\"$URLBASE|" "$UPDATE_LOC/patch/${CHANNEL}$VERSION-$CURVERSION.patchline"

@@ -834,8 +834,11 @@ sub buildSQL {
     my $suffix = $self->suffix || '';
 
     $prefix = "'$prefix' ||" if $prefix;
-    my $suffix_op = ":$suffix" if $suffix;
-    my $suffix_after = "|| '$suffix_op'" if $suffix;
+    my $suffix_op = '';
+    my $suffix_after = '';
+
+    $suffix_op = ":$suffix" if $suffix;
+    $suffix_after = "|| '$suffix_op'" if $suffix;
 
     $sql = "to_tsquery('$classname', COALESCE(NULLIF($prefix '(' || btrim(regexp_replace($sql,E'(?:\\\\s+|:)','$suffix_op&','g'),'&|') $suffix_after || ')', '()'), ''))";
 

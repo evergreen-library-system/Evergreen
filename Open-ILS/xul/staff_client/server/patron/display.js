@@ -631,7 +631,7 @@ patron.display.prototype = {
                             } else {
                                 error = js2JSON(E).substr(0,100);
                             }
-                            location.href = urls.XUL_PATRON_BARCODE_ENTRY + '?error=' + window.escape(error);
+                            xulG.set_tab(urls.XUL_PATRON_BARCODE_ENTRY + '?error=' + window.escape(error),{},{});
                         } catch(F) {
                             alert(F);
                         }

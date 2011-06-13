@@ -2730,7 +2730,19 @@ INSERT into config.org_unit_setting_type
 ( 'opac.fully_compressed_serial_holdings',
     oils_i18n_gettext('opac.fully_compressed_serial_holdings', 'OPAC: Use fully compressed serial holdings', 'coust', 'label'),
     oils_i18n_gettext('opac.fully_compressed_serial_holdings', 'Show fully compressed serial holdings for all libraries at and below the current context unit', 'coust', 'description'),
-    'bool')
+    'bool'),
+
+( 'org.patron_opt_boundary',
+    oils_i18n_gettext( 'org.patron_opt_boundary', 'Circ: Patron Opt-In Boundary', 'coust', 'label'),
+    oils_i18n_gettext( 'org.patron_opt_boundary', 'This determines at which depth above which patrons must be opted in, and below which patrons will be assumed to be opted in.', 'coust', 'label'),
+    'integer'),
+
+( 'org.patron_opt_default',
+    oils_i18n_gettext( 'org.patron_opt_default', 'Circ: Patron Opt-In Default', 'coust', 'label'),
+    oils_i18n_gettext( 'org.patron_opt_default', 'This is the default depth at which a patron is opted in; it is calculated as an org unit relative to the current workstation.', 'coust', 'label'),
+    'integer');
+
+COMMIT;
 ;
 
 UPDATE config.org_unit_setting_type

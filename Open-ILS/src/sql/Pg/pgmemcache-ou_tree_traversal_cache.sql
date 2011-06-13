@@ -69,7 +69,7 @@ BEGIN
             FOR curr_org IN
                 SELECT  *
                   FROM  actor.org_unit
-                  WHERE id IN ( SELECT * FROM explode_array( STRING_TO_ARRAY( cached_value.x, ',' ) ) )
+                  WHERE id IN ( SELECT * FROM unnest( STRING_TO_ARRAY( cached_value.x, ',' ) ) )
             LOOP
                 RETURN NEXT curr_org;
             END LOOP;

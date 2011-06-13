@@ -639,7 +639,8 @@ sub patron_search {
 	my $sort = shift;
 	my $inactive = shift;
 	my $ws_ou = shift;
-	my $ws_ou_depth = shift || 0;
+	my $search_org = shift || $ws_ou;
+	my $opt_boundary = shift || 0;
 
     my $penalty_sort = 0;
 
@@ -757,11 +758,16 @@ sub patron_search {
 		$ws_ou = actor::org_unit->search( { parent_ou => undef } )->next->id;
 	}
 
-	my $opt_in_join = '';
+	my $descendants = "actor.org_unit_descendants($search_org)";
+
 	my $opt_in_where = '';
 	if (lc($strict_opt_in) eq 'true') {
-		$opt_in_join = "LEFT JOIN $opt_in_table oi ON (oi.org_unit = $ws_ou AND users.id = oi.usr)";
-		$opt_in_where = "AND (oi.id IS NOT NULL OR users.home_ou = $ws_ou)";
+		$opt_in_where = "AND (";
+		$opt_in_where .= "EXISTS (select id FROM $opt_in_table ";
+		$opt_in_where .= " WHERE org_unit in (select (actor.org_unit_ancestors($ws_ou)).id)";
+		$opt_in_where .= " AND usr = users.id) ";
+		$opt_in_where .= "OR";
+		$opt_in_where .= " users.home_ou IN (select (actor.org_unit_descendants($ws_ou,$opt_boundary)).id))";
 	}
 
 	my $penalty_join = '';
@@ -775,15 +781,12 @@ sub patron_search {
         SQL
     }
 
-	my $descendants = "actor.org_unit_descendants($ws_ou, $ws_ou_depth)";
-
 	$select = "JOIN ($select) AS search ON (search.id = users.id)" if ($select);
 	$select = <<"	SQL";
 		SELECT	$distinct_list
 		  FROM	$u_table AS users $card
 			JOIN $descendants d ON (d.id = users.home_ou)
 			$select
-			$opt_in_join
 			$clone_select
             $penalty_join
 		  WHERE	users.deleted = FALSE

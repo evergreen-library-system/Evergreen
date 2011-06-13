@@ -86,7 +86,7 @@ CREATE TRIGGER no_overlapping_deps
     BEFORE INSERT OR UPDATE ON config.db_patch_dependencies
     FOR EACH ROW EXECUTE PROCEDURE evergreen.array_overlap_check ('deprecates');
 
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0549', :eg_version); -- phasefx/berick
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0556', :eg_version); -- dbs
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -840,17 +840,17 @@ CREATE OR REPLACE FUNCTION evergreen.upgrade_list_applied_supersedes ( my_db_pat
 $$ LANGUAGE SQL;
 
 -- List applied db patches that deprecates (and block the application of) my_db_patch
-CREATE OR REPLACE FUNCTION evergreen.upgrade_list_applied_deprecated ( my_db_patch TEXT ) RETURNS TEXT AS $$
+CREATE FUNCTION evergreen.upgrade_list_applied_deprecated ( my_db_patch TEXT ) RETURNS SETOF TEXT AS $$
     SELECT  db_patch
       FROM  config.db_patch_dependencies
-      WHERE ARRAY[$1]::TEXT[] && deprecates 
+      WHERE ARRAY[$1]::TEXT[] && deprecates
 $$ LANGUAGE SQL;
 
 -- List applied db patches that supersedes (and block the application of) my_db_patch
-CREATE OR REPLACE FUNCTION evergreen.upgrade_list_applied_superseded ( my_db_patch TEXT ) RETURNS TEXT AS $$
+CREATE FUNCTION evergreen.upgrade_list_applied_superseded ( my_db_patch TEXT ) RETURNS SETOF TEXT AS $$
     SELECT  db_patch
       FROM  config.db_patch_dependencies
-      WHERE ARRAY[$1]::TEXT[] && supersedes 
+      WHERE ARRAY[$1]::TEXT[] && supersedes
 $$ LANGUAGE SQL;
 
 -- Make sure that no deprecated or superseded db patches are currently applied
