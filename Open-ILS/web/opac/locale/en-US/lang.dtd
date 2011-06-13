@@ -2618,6 +2618,8 @@
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.save_columns.label "Save Columns">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_refresh_list.label "Refresh Listing">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_refresh_list.accesskey "R">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.print.label "Print">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.print.accesskey "P">
 <!ENTITY staff.cat.copy_buckets.window_title "Copy Buckets">
 <!ENTITY staff.cat.copy_buckets_overlay.pending_copies "Pending Copies">
 <!ENTITY staff.cat.copy_buckets_overlay.bucket_view "Bucket View">

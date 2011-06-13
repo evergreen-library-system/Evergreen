@@ -438,6 +438,12 @@ OpenILS.data.prototype = {
                     'header' : 'This item needs to be routed to <b>%route_to%</b>:<br/>\r\n%route_to_org_fullname%<br/>\r\n%street1%<br/>\r\n%street2%<br/>\r\n%city_state_zip%<br/>\r\n<br/>\r\nBarcode: %item_barcode%<br/>\r\nTitle: %item_title%<br/>\r\nAuthor: %item_author%<br>\r\n<br/>\r\n%hold_for_msg%<br/>\r\nBarcode: %PATRON_BARCODE%<br/>\r\nNotify by phone: %notify_by_phone%<br/>\r\nNotify by email: %notify_by_email%<br/>\r\n',
                     'line_item' : '%formatted_note%<br/>\r\n',
                     'footer' : '<br/>\r\nRequest date: %request_date%<br/>\r\nSlip Date: %TODAY_TRIM%<br/>\r\nPrinted by %STAFF_FIRSTNAME% at %SHORTNAME%<br/>\r\n<br/>\r\n'
+                },
+                'holdings_maintenance' : {
+                    'type' : 'items',
+                    'header' : 'Title: %title%<br/>\r\nAuthor: %author%<br/>\r\nISBN: %isbn% Edition: %edition% PubDate: %pubdate%<br/>\r\nTCN: %tcn_value% Record ID: %mvr_doc_id%<br/>\r\nCreator: %creator% Create Date: %create_date%<br/>\r\nEditor: %editor% Edit Date: %edit_date%<hr/>\r\n',
+                    'line_item' : '%prefix% %tree_location% %suffix% %parts% %acp_status%<br/>\r\n',
+                    'footer' : '<hr />%SHORTNAME% %TODAY_TRIM%<br/>\r\n<br/>\r\n'
                 }
             }; 
 

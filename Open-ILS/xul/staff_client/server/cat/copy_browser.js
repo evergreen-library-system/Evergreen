@@ -998,6 +998,24 @@ cat.copy_browser.prototype = {
                                 }
                                 obj.refresh_list();
                             }
+                        ],
+
+                        'cmd_print_tree' : [
+                            ['command'],
+                            function() {
+                                try {
+                                    var p = {
+                                        'template' : 'holdings_maintenance',
+                                        'mvr_id' : obj.docid,
+                                        'print_data' : {}
+                                    };
+                                    bib_brief_overlay(p);
+                                    p.data = p.print_data;
+                                    obj.list.print(p);
+                                } catch(E) {
+                                    alert('Error in copy_browser.js, cmd_print_tree: ' + E);
+                                }
+                            }
                         ]
                     }
                 }
@@ -1769,6 +1787,9 @@ cat.copy_browser.prototype = {
                     },
                 }
             );
+
+            $('list_actions').appendChild( obj.list.render_list_actions() );
+            obj.list.set_list_actions();
 
         } catch(E) {
             this.error.sdump('D_ERROR','cat.copy_browser.list_init: ' + E + '\n');
