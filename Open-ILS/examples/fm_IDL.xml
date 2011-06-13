@@ -9158,6 +9158,29 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
+	<class id="coustl" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::org_unit_setting_type_log" oils_persist:tablename="config.org_unit_setting_type_log" reporter:label="Organizational Unit Setting Type Log">
+		<fields oils_persist:primary="date_applied">
+			<field name="date_applied" reporter:datatype="timestamp"/>
+			<field name="org" reporter:datatype="link"/>
+			<field name="original_value" reporter:datatype="text"/>
+			<field name="new_value" reporter:datatype="text"/>
+			<field name="field_name" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="field_name" reltype="has_a" key="name" map="" class="coust"/>
+			<link field="org" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_ORG_UNIT_SETTING_TYPE" global_required="true"/>
+				<retrieve/>
+				<update permission="ADMIN_ORG_UNIT_SETTING_TYPE_LOG" global_required="true"/>
+				<delete permission="ADMIN_ORG_UNIT_SETTING_TYPE_LOG" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
+
 	<!-- ********************************************************************************************************************* -->
 
 </IDL>

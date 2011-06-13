@@ -23,7 +23,7 @@
     <head>
         <title>&staff.server.admin.org_unit_settings.title;</title>
         <link type='text/css' rel='stylesheet' href='admin.css' />
-        <script type="text/javascript" src='/IDL2js?aou,aout,pgt,au,coust,aous,csg' />
+        <script type="text/javascript" src='/IDL2js?aou,aout,pgt,au,coust,aous,csg,coustl' />
         <script type="text/javascript" djConfig="parseOnLoad: true,isDebug:false" src="/js/dojo/dojo/dojo.js" />
         <script type="text/javascript" djConfig="parseOnLoad: true,isDebug:false" src="/js/dojo/dojo/openils_dojo.js" />
         <script type="text/javascript" src='org_unit_settings.js' />
@@ -35,6 +35,7 @@
             }
         </style>
     </head>
+
     <body class="tundra tall">
         <div dojoType="dijit.layout.LayoutContainer" orientation="vertical" class="tall">
             <div dojoType="dijit.layout.ContentPane" layoutAlign='top'>
@@ -51,9 +52,8 @@
                         <button type="submit" dojoType='dijit.form.Button'>&staff.server.admin.org_unit_settings.filter;</button>
                         <button dojoType='dijit.form.Button' onClick="clearSearch();">&staff.server.admin.org_unit_settings.clear_filter;</button>
                     </form>
-                        <button dojoType='dijit.form.Button' onClick="osToJson();">&staff.server.admin.org_unit_settings.export;</button>
-                        <button dojoType='dijit.form.Button' onClick="osFromJson();">&staff.server.admin.org_unit_settings.import;</button>
-
+                    <button dojoType='dijit.form.Button' onClick="osToJson();">&staff.server.admin.org_unit_settings.export;</button>
+                    <button dojoType='dijit.form.Button' onClick="osFromJson();">&staff.server.admin.org_unit_settings.import;</button>
             </div>
             <div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
                 <div class='hide_me' id='no-perms'><b>&staff.server.admin.org_unit_settings.no_perms;</b></div>
@@ -75,7 +75,7 @@
                         ]]
                     }];
                 </script>
-                <div dojoType='dojox.Grid' jsId='osGrid'> </div>
+                <div dojoType='dojox.Grid' jsId='osGrid' />
             </div>
         </div>
 
@@ -118,12 +118,17 @@
                     </tr>
                 </tbody>
             </table>
-        </div> <!-- edit dialog -->
+        </div> <!-- /edit dialog -->
+        
+        <div dojoType="openils.widget.ProgressDialog" jsId="progressDialog" indeterminate="true" />
+        
+        <!--i18n, use the &translation; here, then grab innerHTML in JS later.-->
+        <div id='proci18n' class='hidden'>&staff.server.admin.org_unit_settings.processing;</div>
+        <div id='noresults' class='hidden'>&staff.server.admin.org_unit_settings.no_results;</div>
         <span id='os-true' class='hidden'>&common.true;</span>
         <span id='os-false' class='hidden'>&common.false;</span>
-        <div dojoType="openils.widget.ProgressDialog" jsId="progressDialog" indeterminate="true"></div>
-        <div id='proci18n' class="hidden">&staff.server.admin.org_unit_settings.processing;</div>
-        <div id="noresults" class="hidden">&staff.server.admin.org_unit_settings.no_results;</div>
+        
+        <!--Export Dialog-->
         <div id="jsonOutputDialog" dojoType="dijit.Dialog" jsId='osJSONOutDialog' title="&staff.server.admin.org_unit_settings.export;">
             <table class="form_table">
                 <tr><td>&staff.server.admin.org_unit_settings.export_copy_label;</td></tr>
@@ -131,6 +136,8 @@
                 <tr><td><button dojoType='dijit.form.Button' onclick='osJsonOutputCopy();'>&staff.server.admin.org_unit_settings.copy;</button></td></tr>
             </table>
         </div>
+        
+        <!--Import Dialog-->
         <div id="jsonInputDialog" dojoType="dijit.Dialog" jsId='osJSONInDialog' title="&staff.server.admin.org_unit_settings.import;">
             <table class="form_table">
                 <tr><td>&staff.server.admin.org_unit_settings.import_paste_label;</td></tr>
@@ -138,5 +145,6 @@
                 <tr><td><button dojoType='dijit.form.Button' onclick='osJsonInputPaste();'>&staff.server.admin.org_unit_settings.paste;</button><button type="submit"  dojoType='dijit.form.Button' onclick='osFromJsonSubmit();'>&staff.server.admin.org_unit_settings.submit;</button></td></tr>
             </table>
         </div>
+        
     </body>
 </html>

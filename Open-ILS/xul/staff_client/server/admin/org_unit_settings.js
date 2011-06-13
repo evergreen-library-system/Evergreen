@@ -27,6 +27,8 @@ var osEditAutoWidget;
 var perm_codes = {};
 var osGroups = {};
 var searchAssist = [];
+var pcrud;
+var osHistory = {};
 
 function osInit(data) {
     authtoken = new openils.CGI().param('ses') || dojo.cookie('ses');
@@ -34,10 +36,13 @@ function osInit(data) {
     contextOrg = user.user.ws_ou();
     openils.User.authtoken = authtoken;
     
-    var grps = new openils.PermaCrud({authtoken:authtoken}).retrieveAll('csg');
-    dojo.forEach(grps, function(grp) { osGroups[grp.name()] = grp.label(); });
-
+    pcrud = new openils.PermaCrud({authtoken:authtoken});
     
+    var grps = pcrud.retrieveAll('csg');
+    dojo.forEach(grps, function(grp) { osGroups[grp.name()] = grp.label(); });
+    
+    //osHistory = pcrud.retrieveAll('coustl');
+        
     var connect = function() { 
         dojo.connect(contextOrg, 'onChange', osChangeContext); 
 
@@ -442,10 +447,12 @@ function osEditSetting(deleteMe) {
             }
         }
     }
-    osUpdateSetting(obj, osEditContextSelector.getValue());
+    osUpdateSetting(obj, osEditContextSelector.getValue(), name);
 }
 
-function osUpdateSetting(obj, context) {
+function osUpdateSetting(obj, context, name) {
+    
+    
     fieldmapper.standardRequest(
         ['open-ils.actor', 'open-ils.actor.org_unit.settings.update'],
         {   async: true,

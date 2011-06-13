@@ -913,4 +913,53 @@ CREATE TABLE config.barcode_completion (
 
 CREATE TYPE evergreen.barcode_set AS (type TEXT, id BIGINT, barcode TEXT);
 
+-- Add support for logging, only keep the most recent five rows for each category. 
+
+
+CREATE TABLE config.org_unit_setting_type_log (
+    date_applied    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW() PRIMARY KEY,
+    org             SERIAL    REFERENCES actor.org_unit (id),
+    original_value  TEXT,
+    new_value       TEXT,
+    field_name      TEXT      REFERENCES config.org_unit_setting_type (name)
+);
+
+CREATE OR REPLACE FUNCTION limit_oustl() RETURNS TRIGGER AS $oustl_limit$
+    BEGIN
+        -- Only keeps the most recent five settings changes.
+        DELETE FROM config.org_unit_setting_type_log WHERE field_name = NEW.field_name AND date_applied NOT IN 
+        (SELECT date_applied FROM config.org_unit_setting_type_log WHERE field_name = NEW.field_name ORDER BY date_applied DESC LIMIT 4);
+        
+        IF (TG_OP = 'UPDATE') THEN
+            RETURN NEW;
+        ELSIF (TG_OP = 'INSERT') THEN
+            RETURN NEW;
+        END IF;
+        RETURN NULL;
+    END;
+$oustl_limit$ LANGUAGE plpgsql;
+
+CREATE TRIGGER limit_logs_oust
+    BEFORE INSERT OR UPDATE ON config.org_unit_setting_type_log
+    FOR EACH ROW EXECUTE PROCEDURE limit_oustl();
+    
+
+-- Log each change in oust to oustl, so admins can see what they messed up if someting stops working.
+CREATE OR REPLACE FUNCTION ous_change_log() RETURNS TRIGGER AS $ous_change_log$
+    DECLARE
+    original TEXT;
+    BEGIN
+        -- Check for which setting is being updated, and log it.
+        SELECT INTO original value FROM actor.org_unit_setting WHERE name = NEW.name AND org_unit = NEW.org_unit;
+                
+        INSERT INTO config.org_unit_setting_type_log (org,original_value,new_value,field_name) VALUES (NEW.org_unit, original, NEW.value, NEW.name);
+        
+        RETURN NEW;
+    END;
+$ous_change_log$ LANGUAGE plpgsql;    
+
+CREATE TRIGGER log_ous_change
+    BEFORE INSERT OR UPDATE ON actor.org_unit_setting
+    FOR EACH ROW EXECUTE PROCEDURE ous_change_log();
+
 COMMIT;
