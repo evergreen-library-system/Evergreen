@@ -2494,7 +2494,7 @@
 <!ENTITY staff.hold_list.cancel_hold_dialog.cancel_btn.accesskey "C">
 <!ENTITY staff.hold_list.cancel_hold_dialog.apply_btn.label "Apply">
 <!ENTITY staff.hold_list.cancel_hold_dialog.apply_btn.accesskey "A">
-<!ENTITY staff.cat.manage_multi_bib_items.caption "Manage Foreign Items">
+<!ENTITY staff.cat.manage_multi_bib_items.caption "Manage Conjoined Items">
 <!ENTITY staff.cat.manage_multi_bib_items.actions.menu.label "Actions for Selected Items">
 <!ENTITY staff.cat.manage_multi_bib_items.actions.menu.accesskey "f">
 <!ENTITY staff.cat.manage_multi_bib_items.actions.menu_entry.show_in_opac.label "Show in Catalog">
