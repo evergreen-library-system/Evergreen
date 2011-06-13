@@ -12,13 +12,6 @@
                     src='[% ctx.media_prefix %]/opac/extras/ac/jacket/medium/[% ident %]' /></a>
                 [% END %]
                 <br />
-                <div class='jacket_attrib hide_me' id='rdetail.jacket_attrib_div'>
-                    <div>[% l("Image provided by") %]</div>
-                    <div>
-                        <a target='_blank' href='[% l("http://amazon.com/dp/") %]'
-                            class='classic_link' id='rdetail.jacket_attrib_link'>[% l("Amazon") %]</a>
-                    </div>
-                </div>
             </td>
     
             <td valign="top">
@@ -98,6 +91,16 @@
                             <td valign="top" id='rdetail_pubdate'>[% attrs.pubdate %]</td>
                         </tr>
                     </table>
+
+                    <!-- hold/copy summary -->
+                    <div style="padding-top:15px;">
+                        <div>
+                            [% l("[quant,_1,Hold,Holds] with [quant,_2,total copy,total copies]", 
+                                ctx.record_hold_count, ctx.copy_summary.0.count) %]
+                        </div>
+                        <div>[% l('[quant,_1,Copy,Copies] available', ctx.copy_summary.0.available) %]</div>
+                    </div>
+
                 </div>
             </td>
         </tr>

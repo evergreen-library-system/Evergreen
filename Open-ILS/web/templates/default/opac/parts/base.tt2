@@ -14,5 +14,6 @@
         [% content %] 
         [% INCLUDE 'default/opac/parts/footer.tt2' %]
         [% INCLUDE 'default/opac/parts/js.tt2' %]
+        [% INCLUDE 'default/opac/parts/chilifresh.tt2' %]
     </body>
 </html>

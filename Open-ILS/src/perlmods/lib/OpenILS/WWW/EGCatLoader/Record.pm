@@ -37,6 +37,7 @@ sub load_record {
     $ctx->{copy_offset} = $copy_offset;
 
     $ctx->{have_holdings_to_show} = 0;
+    $self->get_hold_copy_summary($rec_id, $org);
 
     # XXX TODO we'll also need conditional logic to show MFHD-based holdings
     if (
@@ -184,5 +185,17 @@ sub get_expanded_holdings {
     )->gather(1);
 }
 
+
+sub get_hold_copy_summary {
+    my ($self, $rec_id, $org) = @_;
+    
+    my $req1 = OpenSRF::AppSession->create('open-ils.search')->request(
+        'open-ils.search.biblio.record.copy_count', $org, $rec_id); 
+
+    $self->ctx->{record_hold_count} = $U->simplereq(
+        'open-ils.circ', 'open-ils.circ.bre.holds.count', $rec_id);
+
+    $self->ctx->{copy_summary} = $req1->recv->content;
+}
 
 1;

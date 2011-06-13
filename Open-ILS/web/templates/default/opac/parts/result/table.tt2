@@ -1,7 +1,7 @@
 [%  PROCESS "default/opac/parts/misc_util.tt2";
 
     ctx.result_start = 1 + ctx.page_size * page;
-    ctx.result_stop = 1 + ctx.page_size * (page + 1);
+    ctx.result_stop = ctx.page_size * (page + 1);
     IF ctx.result_stop > ctx.hit_count; ctx.result_stop = ctx.hit_count; END;
 
     result_count = ctx.result_start;
@@ -75,7 +75,7 @@
                                                 name="results_row_count">[%
                                                     result_count; result_count = result_count + 1
                                                 %].</td>
-                                            <td class='result_table_pic_header'
+                                            <td class='result_table_pic_header' align='center'
                                                 width="78" nowrap="nowrap" valign="top">
                                                 [% ident = attrs.isbn_clean || attrs.upc; IF ident; %]
                                                 <a href="[% ctx.opac_root %]/record/[% rec.id _ propagator %]"><img alt="[% l('Image of item') %]"
@@ -208,23 +208,15 @@
                                                 </div>
                                             </td>
                                         </tr>
-
-                                        <!-- Placeholder for ChiliFresh Review -->
-                                        <tr class="hide_me" name="chilifreshReview">
-                                            <td></td>
-                                            <td valign="top" colspan="5">
-                                                <div style="position:relative;left:-19px;">
-                                                    <span name="chilifreshReviewLink" class="chili_review"></span>
-                                                    <div name="chilifreshReviewResult" style="display:none"></div>
-                                                </div>
-                                            </td>
-                                        </tr>
                                         <tr>
-                                            <td colspan="5">
-                                                <div style="height:0px;border-top:1px solid #b7b7b7;border-bottom:1px solid #d4d4d4;margin:15px 0px;"></div>
-                                                <!-- <hr class='opac-auto-013' color="#FFCC33" /> -->
+                                            <td/>
+                                            <td align='center'>
+                                                <!-- Chilifresh link and reviews panel --> 
+                                                <div class="chili_review" id="isbn_[% attrs.isbn_clean %]"> </div>
+                                                <div id="chili_review_[% attrs.isbn_clean %]" style="display: none;" align="center" width="100%"></div>
                                             </td>
                                         </tr>
+                                        <tr><td colspan="5"><div style="height:0px;border-top:1px solid #b7b7b7;border-bottom:1px solid #d4d4d4;margin:15px 0px;"></div></td></tr>
                                     </tbody>
                                 </table>
                             </td>

@@ -3,20 +3,28 @@
     myopac_page = "prefs_notify";
     prefs_page = 'settings' %]
 
-    <form method='GET'>
+
+    <form method='POST'>
 
         <div style="float:right;width:65px;">
             <div style="position:absolute">
                 <div style="position:relative;top:75px;">
-                    <a id='acct_prefs_save' href="#"><img alt="[% l('Save') %]"
-                         src="[% ctx.media_prefix %]/images/save-btn.png" /></a>
+                    <input type="image" alt="[% l('Save') %]" src="[% ctx.media_prefix %]/images/save-btn.png"/>
                 </div>
             </div>
         </div>
 
-
         <table class="full-width data_grid" id="acct_search_main">
             <tbody>
+
+                [% IF ctx.updated_user_settings %]
+                <tr><td colspan='2'>
+                    <div class='renew-summary'>
+                        [% l('Account Successfully Updated') %]
+                    </div>
+                </td></tr>
+                [% END %]
+
                 <tr >
                     <td width='20%'>[% l("Search hits per page") %]</td>
                     <td>

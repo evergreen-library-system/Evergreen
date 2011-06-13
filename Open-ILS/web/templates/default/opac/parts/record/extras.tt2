@@ -1,44 +1,19 @@
 <div id="rdetail_main_div">
     <div id='rdetail_extras_div' style='width: 100%;'> 
-        <!-- SAMPLE AWARDS LAYOUT / MOVE TO INCLUDE'D TEMPLATE
-        <div id='rdetail_awards_div' class='rdetail_extras_div hide_me'> 
-            <strong>[% l('Awards:') %]</strong>
-            <div id='rdetail_awards_cont' style="margin-bottom:20px;"></div>
-                <strong>[% l('Patron Reviews:') %]</strong>
-                <div id='rdetail_chilifresh_reviews' class='hide_me' style="margin-bottom:20px;">
-                    <div id='chilifreshReviewLink' name='chilifreshReviewLink' class='chili_review'></div>
-                    <div id='chilifreshReviewResult' name='chilifreshReviewResult' class='hidden'></div>
-                </div>
-                <strong>[% l('Reviews:') %]</strong>
-                <div id='rdetail_review_container' style="margin-bottom:20px;"></div>
-                <strong>[% l('Suggested Reads:') %]</strong>
-                <div id='rdetail_novelist_div' class='rdetail_extras_div'>
-                <div id="NoveListSelect" class="NoveListSelect">
-                    <div id="NoveListAnchor" class="NoveListSelect"></div>
-                    <div id="novsuggestions"></div>
-                    <div id="nextreads"></div>
-                    <div id="novrelatedauthors"></div>
-                    <div id="novrelateditems"></div>
-                </div>
-            </div>
-        </div>
-        -->
 
         [%  # Hidden extras are not yet implemented.  Some may require JS
-
         extras = [
-            {name => 'summary',  label => l('Summary &amp; More'), hide => 1}, # Content Cafe
+            {name => 'summary',  label => l('Summaries &amp; More'), hide => 1}, # Content Cafe
             {name => 'content',  label => l('Contents'), hide => 1}, # ToC
             {name => 'authors',  label => l('Authors')}, 
             {name => 'series',   label => l('Series'), hide => 1}, 
             {name => 'awards',   label => l('Series'), hide => 1}, 
             {name => 'subjects', label => l('Subject')}, 
             {name => 'annotation', label => l('Annotation'), hide => 1}, 
-            {name => 'reviews',  label => l('Reviews'), hide => 1}, 
+            {name => 'awards',  label => l('Awards, Reviews, & Suggested Reads')}, 
             {name => 'excerpt',  label => l('Excerpt'), hide => 1},
             {name => 'issues',   label => l('Issues Held'), hide => !ctx.have_holdings_to_show},
             {name => 'preview',  label => l('Preview'), hide => 1}, 
-            {name => 'novelist', label => l('Suggestions by NoveList'), hide => 1},
             {name => 'cnbrowse', label => l('Shelf Browser'), hide => 1},
             {name => 'copyinfo', label => l('Copy Summary'), hide => 1}, 
             {name => 'marchtml', label => l('MARC Record')}
