@@ -155,7 +155,8 @@ serial.sdist_editor.prototype = {
                 'label',
                 { 
                     input: 'c = function(v){ obj.apply("label",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.setAttribute("value",obj.editor_values.label); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
-                    value_key: 'label'
+                    value_key: 'label',
+                    required: true
                 }
             ],
             [
@@ -248,6 +249,7 @@ serial.sdist_editor.prototype = {
         };
         for (i in obj.panes_and_field_names) {
             obj.panes_and_field_names[obj.xul_id_prefix + i] = obj.panes_and_field_names[i];
+            delete obj.panes_and_field_names[i];
         }
     },
 
