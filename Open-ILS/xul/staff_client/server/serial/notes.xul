@@ -97,12 +97,12 @@
 						btn.setAttribute('accesskey', $('catStrings').getString('staff.cat.copy_notes.render_notes.accesskey'));
 						btn.setAttribute('oncommand','new_note()');
 
+			var hb; // keep button bar reference for adding close button
 			for (var i = 0; i < g.notes.length; i++) {
 
 				/* template */
 				var node = $('note_template').cloneNode(true); np.appendChild(node); node.hidden = false;
 				apply(node,'create_date',g.notes[i].create_date().toString().substr(0,10));
-				node.flex = 2;
 				util.widgets.apply(node,'name','create_date',
 					function(n) {
 						n.setAttribute(
@@ -121,7 +121,7 @@
 				apply(node,'creator',g.notes[i].creator());
 
 				/* button bar */
-				var hb = document.createElement('hbox'); np.appendChild(hb);
+				hb = document.createElement('hbox'); np.appendChild(hb);
 					var btn0 = document.createElement('button'); hb.appendChild(btn0);
 						btn0.setAttribute('label', $('serialStrings').getString('staff.serial.notes.do_edit_note.label'));
 						btn0.setAttribute('image',"/xul/server/skin/media/images/up_arrow.gif");
@@ -157,13 +157,15 @@
 							false
 						);
 			}
-			var lowerhb = document.createElement('hbox');
-			lowerhb.flex = 1;
-			lowerhb.align = 'end';
-			np.appendChild(lowerhb);
+
+			// add close button
+			if (!hb) { // no notes yet, fill the space and add a bar
+				var spacer = document.createElement('spacer'); np.appendChild(spacer); spacer.flex = 1;
+				hb = document.createElement('hbox'); np.appendChild(hb);
+			}
 			var spacer = document.createElement('spacer');
-			lowerhb.appendChild(spacer); spacer.flex = 1;
-			var btn2 = document.createElement('button'); lowerhb.appendChild(btn2);
+			hb.appendChild(spacer); spacer.flex = 1;
+			var btn2 = document.createElement('button'); hb.appendChild(btn2);
 			btn2.setAttribute('label', $('catStrings').getString('staff.cat.copy_notes.delete_note.close_window'));
 			btn2.setAttribute('oncommand','window.close();');
 
