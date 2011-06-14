@@ -294,8 +294,12 @@ util.print.prototype = {
                 if (typeof params.data != 'undefined') {
                     for (var i in params.data) {
                         var re = new RegExp('%'+i+'%',"g");
-                        if (typeof params.data[i] == 'string') {
+                        if (typeof params.data[i] == 'string' || typeof params.data[i] == 'number') {
                             try{b = s; s=s.replace(re, params.data[i]);}
+                                catch(E){s = b; this.error.standard_unexpected_error_alert('print.js, template_sub(): 3 string = <' + s + '>',E);}
+                        } else {
+                            /* likely a null, print as an empty string */
+                            try{b = s; s=s.replace(re, '');}
                                 catch(E){s = b; this.error.standard_unexpected_error_alert('print.js, template_sub(): 3 string = <' + s + '>',E);}
                         }
                     }
