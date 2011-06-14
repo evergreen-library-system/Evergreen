@@ -1817,6 +1817,11 @@
 <!ENTITY staff.server.admin.org_unit_settings.submit "Submit">
 <!ENTITY staff.server.admin.org_unit_settings.copy "Copy">
 <!ENTITY staff.server.admin.org_unit_settings.paste "Paste">
+<!ENTITY staff.server.admin.org_unit_settings.history "History">
+<!ENTITY staff.server.admin.org_unit_settings.history_unit "Location">
+<!ENTITY staff.server.admin.org_unit_settings.history_date "Date Changed">
+<!ENTITY staff.server.admin.org_unit_settings.history_orig "Original Value">
+<!ENTITY staff.server.admin.org_unit_settings.history_new "New Value">
 <!ENTITY staff.server.admin.offline.xacts.caption "Offline Sessions">
 <!ENTITY staff.server.admin.offline.xacts.refresh.accesskey "R">
 <!ENTITY staff.server.admin.offline.xacts.create.label "Create">

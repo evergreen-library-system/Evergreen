@@ -17,20 +17,23 @@ dojo.require('openils.widget.OrgUnitFilteringSelect');
 dojo.require('openils.PermaCrud');
 dojo.require('openils.widget.AutoFieldWidget');
 dojo.require('openils.widget.ProgressDialog');
+dojo.require('dijit.Toolbar');
 
 var authtoken;
 var contextOrg;
 var user;
 var osSettings = {};
 var ouSettingValues = {};
+var ouSettingNames = {};
 var osEditAutoWidget;
 var perm_codes = {};
 var osGroups = {};
 var searchAssist = [];
 var pcrud;
-var osHistory = {};
 
 function osInit(data) {
+    showProcessingDialog(true);
+    
     authtoken = new openils.CGI().param('ses') || dojo.cookie('ses');
     user = new openils.User({authtoken:authtoken});
     contextOrg = user.user.ws_ou();
@@ -41,8 +44,6 @@ function osInit(data) {
     var grps = pcrud.retrieveAll('csg');
     dojo.forEach(grps, function(grp) { osGroups[grp.name()] = grp.label(); });
     
-    //osHistory = pcrud.retrieveAll('coustl');
-        
     var connect = function() { 
         dojo.connect(contextOrg, 'onChange', osChangeContext); 
 
@@ -71,6 +72,8 @@ function osInit(data) {
             }
         }
     );
+    
+    showProcessingDialog(false);
 }
 dojo.addOnLoad(osInit);
 
@@ -148,27 +151,27 @@ function osLimitSeen(text) {
     //Don't update on an empty list as this causes bizarre errors.
     if(names.length == 0) {
         showProcessingDialog(false);
-        
-        var noresults = dojo.byId('noresults').innerHTML;
-        myDialog = new dijit.Dialog({ content: noresults});
-        myDialog.show();
+        showAlert(dojo.byId('noresults').innerHTML);
         return;
     }
     
     ouSettingValues = {}; // Clear the values.
-    osDrawNames(names);
+    osDrawNames(names); // Repopulate setting values with the ones we want.
 }
 
 function doSearch() {
-    var query = dojo.byId("searchBox").value;
+    var query = dojo.byId('searchBox').value;
+    
     osLimitSeen(query);
     
     return false; //Keep form from submitting
 }
 
 function clearSearch() {
-    dojo.byId("searchBox").value = "";
-    osDraw();
+    if(dojo.byId('searchBox').value != '') { // Don't refresh on blank.
+        dojo.byId('searchBox').value = '';
+        doSearch();
+    }
 }
 
 function osToJson() {
@@ -185,11 +188,13 @@ function osToJson() {
     osJSONOutDialog.show();
 }
 
+// Copies the text from the json output to the clipboard.
 function osJsonOutputCopy() {
     document.popupNode = dojo.byId('jsonOutput');
-    document.getElementById('jsonOutput').focus();
-    document.getElementById('jsonOutput').select();
+    dojo.byId('jsonOutput').focus();
+    dojo.byId('jsonOutput').select();
     util.clipboard.copy();
+    showAlert(dojo.byId('os-copy').innerHTML);
 }
 
 function osJsonInputPaste() {
@@ -451,8 +456,6 @@ function osEditSetting(deleteMe) {
 }
 
 function osUpdateSetting(obj, context, name) {
-    
-    
     fieldmapper.standardRequest(
         ['open-ils.actor', 'open-ils.actor.org_unit.settings.update'],
         {   async: true,
@@ -465,4 +468,59 @@ function osUpdateSetting(obj, context, name) {
             }
         }
     );
+}
+
+function osGetHistoryLink(rowIdx) {
+    var data = this.grid.model.getRow(rowIdx);
+    if(!data) return '';
+    return data.name;
+}
+
+function osFormatHistoryLink(name) {
+    return this.value.replace(/SETTING/, name);
+}
+
+function osLaunchHistory(name) {
+    showProcessingDialog(true);
+    
+    dojo.byId('osHistName').innerHTML = osSettings[name].label;
+    
+    var data = dojo.byId('histTitle').innerHTML;
+    var thisHist = pcrud.search('coustl', {'field_name':name});
+    for(var i in thisHist) {
+         data += "<tr><td>" + thisHist[i].date_applied() + "</td><td>" + 
+         thisHist[i].org() + "</td><td>" + thisHist[i].original_value() +
+         "</td><td>" + thisHist[i].new_value() + "</td></tr>";
+    }
+        
+    dojo.byId('historyData').innerHTML = data;
+    
+    showProcessingDialog(false);
+    osHistDialog.show();
+
+}
+
+function showAlert(message, timeout) {
+     if(timeout == null)
+        timeout = 3000;
+        
+    dojo.removeClass('msgCont', 'hidden');
+    
+    dojo.byId('msgInner').innerHTML = message;
+    
+    var fadeArgs = {
+        node: "msgCont"
+    };
+    dojo.fadeIn(fadeArgs).play();
+    
+    window.setTimeout('hideAlert()', timeout);
+    
+}
+
+function hideAlert() {
+    var fadeArgs = {
+        node: "msgCont"
+    };
+    dojo.fadeOut(fadeArgs).play();
+    dojo.addClass('msgCont', 'hidden');
 }

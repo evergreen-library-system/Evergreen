@@ -29,31 +29,76 @@
         <script type="text/javascript" src='org_unit_settings.js' />
         <script type="text/javascript" src="/xul/server/util/clipboard.js" />
         <style type="text/css">
+            h1 {
+                display:inline;
+                padding:5px;
+            } 
+            
             .form_table textarea {
                 width:500px;
                 height:15em;
             }
+            
+            #searchform {
+                display:inline;
+            }
+            
+            .message {
+                float:left;
+                left:-50%;
+                text-align:center;
+                
+                padding:5px;
+                
+                position:relative;
+                background-color:#D9E8F9;
+                
+                /*Standards compliant*/
+                border-bottom-left-radius:5px;
+                border-bottom-right-radius:5px;
+                
+                /*Old staff client compliant, It could be worse, we could be using IE!*/
+                -moz-border-radius-bottomleft:5px;
+                -moz-border-radius-bottomright:5px; 
+            }
+            
+            .message_container {
+                float:left;
+                left:50%;
+                top:0%;
+                position: absolute;
+                opacity:0;
+            }
+            
         </style>
     </head>
 
-    <body class="tundra tall">
-        <div dojoType="dijit.layout.LayoutContainer" orientation="vertical" class="tall">
-            <div dojoType="dijit.layout.ContentPane" layoutAlign='top'>
-                <h1>&staff.server.admin.org_unit_settings.title;</h1><br/>
-                <span>&staff.server.admin.org_unit_settings.context_loc;</span>
-                <span>
-                    <select dojoType="openils.widget.OrgUnitFilteringSelect" jsId='osContextSelector'
-                        searchAttr="shortname" autocomplete="true" labelAttr='shortname' onchange='osChangeContext();'> 
-                    </select>
-                </span>
-                <span>&staff.server.admin.org_unit_settings.uninherited;</span>
-                    <form onSubmit="return doSearch()">
-                        <input type="text" dojoType="dijit.form.TextBox" id="searchBox" />
-                        <button type="submit" dojoType='dijit.form.Button'>&staff.server.admin.org_unit_settings.filter;</button>
-                        <button dojoType='dijit.form.Button' onClick="clearSearch();">&staff.server.admin.org_unit_settings.clear_filter;</button>
+    <body class='tundra tall'>
+        <div dojoType='dijit.layout.LayoutContainer' orientation='vertical' class='tall'>
+            <div dojoType='dijit.layout.ContentPane' layoutAlign='top'>
+                <div id="toolbar1" dojoType="dijit.Toolbar">
+                    <strong>&staff.server.admin.org_unit_settings.title;</strong>
+                    
+                    <span dojoType="dijit.ToolbarSeparator" />
+                    
+                    <span>&staff.server.admin.org_unit_settings.context_loc;</span>
+                    <select dojoType='openils.widget.OrgUnitFilteringSelect' jsId='osContextSelector'
+                            searchAttr='shortname' autocomplete='true' labelAttr='shortname' onchange='osChangeContext();' />
+                    
+                    <span dojoType="dijit.ToolbarSeparator" />
+                    
+                    <form id='searchform' onSubmit='return doSearch()'>
+                            <input type='text' dojoType='dijit.form.TextBox' id='searchBox' />
+                            <button type='submit' dojoType='dijit.form.Button'>&staff.server.admin.org_unit_settings.filter;</button>
+                            <button dojoType='dijit.form.Button' onClick='clearSearch();'>&staff.server.admin.org_unit_settings.clear_filter;</button>
                     </form>
-                    <button dojoType='dijit.form.Button' onClick="osToJson();">&staff.server.admin.org_unit_settings.export;</button>
-                    <button dojoType='dijit.form.Button' onClick="osFromJson();">&staff.server.admin.org_unit_settings.import;</button>
+                    
+                    <span dojoType="dijit.ToolbarSeparator" />
+
+                    <button dojoType='dijit.form.Button' onClick='osToJson();'>&staff.server.admin.org_unit_settings.export;</button>
+                    <button dojoType='dijit.form.Button' onClick='osFromJson();'>&staff.server.admin.org_unit_settings.import;</button>
+                </div>
+                <span>&staff.server.admin.org_unit_settings.uninherited;</span>
             </div>
             <div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
                 <div class='hide_me' id='no-perms'><b>&staff.server.admin.org_unit_settings.no_perms;</b></div>
@@ -67,6 +112,11 @@
                                 value: '&lt;a href=&quot;javascript:void(0);&quot; onclick=&quot;osLaunchEditor(\'SETTING\');&quot;>&staff.server.admin.org_unit_settings.edit;&lt;/a>',
                                 get: osGetEditLink, 
                                 formatter : osFormatEditLink
+                            },
+                            {   name: '&staff.server.admin.org_unit_settings.history;', 
+                                value: '&lt;a href=&quot;javascript:void(0);&quot; onclick=&quot;osLaunchHistory(\'SETTING\');&quot;>&staff.server.admin.org_unit_settings.history;&lt;/a>',
+                                get: osGetHistoryLink, 
+                                formatter : osFormatHistoryLink
                             },
                             {name: '&staff.server.admin.org_unit_settings.group;', get: osGetGridData, field:'grp'},
                             {name: '&staff.server.admin.org_unit_settings.setting;', get: osGetGridData, field:'label', width:'auto', styles:'text-align:left;'},
@@ -127,24 +177,46 @@
         <div id='noresults' class='hidden'>&staff.server.admin.org_unit_settings.no_results;</div>
         <span id='os-true' class='hidden'>&common.true;</span>
         <span id='os-false' class='hidden'>&common.false;</span>
+        <span id='os-copy' class='hidden'>&staff.server.admin.org_unit_settings.copy;</span>
         
         <!--Export Dialog-->
-        <div id="jsonOutputDialog" dojoType="dijit.Dialog" jsId='osJSONOutDialog' title="&staff.server.admin.org_unit_settings.export;">
-            <table class="form_table">
+        <div id='jsonOutputDialog' dojoType='dijit.Dialog' jsId='osJSONOutDialog' title='&staff.server.admin.org_unit_settings.export;'>
+            <table class='form_table'>
                 <tr><td>&staff.server.admin.org_unit_settings.export_copy_label;</td></tr>
-                <tr><td><textarea id="jsonOutput" /></td></tr>
+                <tr><td><textarea id='jsonOutput' /></td></tr>
                 <tr><td><button dojoType='dijit.form.Button' onclick='osJsonOutputCopy();'>&staff.server.admin.org_unit_settings.copy;</button></td></tr>
             </table>
         </div>
         
         <!--Import Dialog-->
-        <div id="jsonInputDialog" dojoType="dijit.Dialog" jsId='osJSONInDialog' title="&staff.server.admin.org_unit_settings.import;">
-            <table class="form_table">
+        <div id='jsonInputDialog' dojoType='dijit.Dialog' jsId='osJSONInDialog' title='&staff.server.admin.org_unit_settings.import;'>
+            <table class='form_table'>
                 <tr><td>&staff.server.admin.org_unit_settings.import_paste_label;</td></tr>
-                <tr><td><textarea id="jsonInput" /></td></tr>
-                <tr><td><button dojoType='dijit.form.Button' onclick='osJsonInputPaste();'>&staff.server.admin.org_unit_settings.paste;</button><button type="submit"  dojoType='dijit.form.Button' onclick='osFromJsonSubmit();'>&staff.server.admin.org_unit_settings.submit;</button></td></tr>
+                <tr><td><textarea id='jsonInput' /></td></tr>
+                <tr><td><button dojoType='dijit.form.Button' onclick='osJsonInputPaste();'>&staff.server.admin.org_unit_settings.paste;</button><button type='submit'  dojoType='dijit.form.Button' onclick='osFromJsonSubmit();'>&staff.server.admin.org_unit_settings.submit;</button></td></tr>
             </table>
         </div>
         
+        <!--History Dialog-->
+        <div id="historyDialog" dojoType="dijit.Dialog" jsId="osHistDialog" title="&staff.server.admin.org_unit_settings.history;">
+            <span id='osHistName' />
+            
+            <!--Headers grabbed from this table are put in the next one by the js.-->
+            <table id="histTitle" class="hidden">
+                <tr>
+                    <td>&staff.server.admin.org_unit_settings.history_date;</td>
+                    <td>&staff.server.admin.org_unit_settings.history_unit;</td>
+                    <td>&staff.server.admin.org_unit_settings.history_orig;</td>
+                    <td>&staff.server.admin.org_unit_settings.history_new;</td>
+                </tr>
+            </table>
+            
+            <table class="form_table" id="historyData" />
+        </div>
+        
+        <!--Displays alerts at the top of the screen, much nicer than alert() or dojo equiv.-->
+        <div class="message_container" id="msgCont">
+            <div class="message" id='msgInner' />
+        </div>
     </body>
 </html>
