@@ -52,6 +52,7 @@ PAY_ONLINE=Business-OnlinePayment-3.00_08.tar.gz
 PAY_ONLINE_HOST=http://ftp.perl.org/pub/CPAN/authors/id/I/IV/IVAN/
 
 APT_TOOL=aptitude -yq
+APT_BACKPORT_TOOL=aptitude -t squeeze-backports -yq
 
 # 64 or 32 bit os?
 LBITS=$(shell getconf LONG_BIT)
@@ -201,7 +202,9 @@ PGSQL_90_RPMS = \
 	postgresql90-server
 
 PGSQL_CLIENT_DEBS_90 = \
-	postgresql-client
+	libpq5 \
+	libpq-dev \
+	postgresql-client-9.0
 
 PGSQL_SERVER_DEBS_90 = \
 	postgresql-9.0 \
@@ -362,11 +365,17 @@ debian_sys_config:
 install_debs:
 	$(APT_TOOL) install $(DEBS)
 
+# libpq5 / libpq-dev get installed as part of OpenSRF (a dependency
+# of apache2-prefork-dev), but these are the 8.4 versions and they
+# conflict with the 9.0 versions - so remove them, install the pinned
+# backports of 9.0, then reinstall the apache2-prefork-dev package
 install_pgsql_client_debs_90:
-	$(APT_TOOL) install $(PGSQL_CLIENT_DEBS_90)
+	$(APT_TOOL) remove libpq5 libpq-dev
+	$(APT_BACKPORT_TOOL) install $(PGSQL_CLIENT_DEBS_90)
+	$(APT_TOOL) install apache2-prefork-dev
 
 install_pgsql_server_debs_90:
-	$(APT_TOOL) install $(PGSQL_SERVER_DEBS_90)
+	$(APT_BACKPORT_TOOL) install $(PGSQL_SERVER_DEBS_90)
 
 # Install the debian-specific dependencies for more modern distros
 install_extra_debs_squeeze: install_extra_debs
