@@ -20,11 +20,13 @@ dojo.require('openils.widget.ProgressDialog');
 dojo.require('dijit.Toolbar');
 
 var authtoken;
+var query;
 var contextOrg;
 var user;
 var osSettings = {};
 var ouSettingValues = {};
 var ouSettingNames = {};
+var ouNames = {};
 var osEditAutoWidget;
 var perm_codes = {};
 var osGroups = {};
@@ -35,6 +37,7 @@ function osInit(data) {
     showProcessingDialog(true);
     
     authtoken = new openils.CGI().param('ses') || dojo.cookie('ses');
+    query = new openils.CGI().param('filter');
     user = new openils.User({authtoken:authtoken});
     contextOrg = user.user.ws_ou();
     openils.User.authtoken = authtoken;
@@ -55,6 +58,7 @@ function osInit(data) {
                 dojo.removeClass('no-perms', 'hide_me');
             }
         });
+        
     };
 
     new openils.User().buildPermOrgSelector('VIEW_ORG_SETTINGS', osContextSelector, null, connect);
@@ -72,6 +76,9 @@ function osInit(data) {
             }
         }
     );
+    
+    var aous = pcrud.retrieveAll('aou');
+    dojo.forEach(aous, function(ou) { ouNames[ou.id()] = ou.shortname(); });
     
     showProcessingDialog(false);
 }
@@ -348,7 +355,7 @@ function osGetEditLink(rowIdx) {
 }
 
 function osFormatEditLink(name) {
-    return this.value.replace(/SETTING/, name);
+    return this.value.replace(/SETTING/g, name);
 }
 
 function osLaunchEditor(name) {
@@ -489,7 +496,7 @@ function osLaunchHistory(name) {
     var thisHist = pcrud.search('coustl', {'field_name':name});
     for(var i in thisHist) {
          data += "<tr><td>" + thisHist[i].date_applied() + "</td><td>" + 
-         thisHist[i].org() + "</td><td>" + thisHist[i].original_value() +
+         ouNames[thisHist[i].org()] + "</td><td>" + thisHist[i].original_value() +
          "</td><td>" + thisHist[i].new_value() + "</td></tr>";
     }
         
@@ -508,9 +515,7 @@ function showAlert(message, timeout) {
     
     dojo.byId('msgInner').innerHTML = message;
     
-    var fadeArgs = {
-        node: "msgCont"
-    };
+    var fadeArgs = { node: "msgCont" };
     dojo.fadeIn(fadeArgs).play();
     
     window.setTimeout('hideAlert()', timeout);
@@ -518,9 +523,7 @@ function showAlert(message, timeout) {
 }
 
 function hideAlert() {
-    var fadeArgs = {
-        node: "msgCont"
-    };
+    var fadeArgs = { node: "msgCont" };
     dojo.fadeOut(fadeArgs).play();
     dojo.addClass('msgCont', 'hidden');
 }
