@@ -250,8 +250,10 @@ patron.bills.prototype = {
                             'cmd_bill_apply_payment' : [
                                 ['command'],
                                 function() {
-                                    try { 
+                                    try {
+                                        obj.controller.view.cmd_bill_apply_payment.setAttribute('disabled','true');
                                         obj.apply_payment(); 
+                                        obj.controller.view.cmd_bill_apply_payment.setAttribute('disabled','false');
                                     } catch(E) { 
                                         obj.error.standard_unexpected_error_alert('bills -> cmd_bill_apply_payment',E);    
                                     }
