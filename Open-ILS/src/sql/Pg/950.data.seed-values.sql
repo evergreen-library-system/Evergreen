@@ -5855,22 +5855,22 @@ SELECT SETVAL('action_trigger.event_definition_id_seq'::TEXT, 100);
 
 INSERT INTO config.org_unit_setting_type (name, label, description, datatype) VALUES (
     'circ.holds.org_unit_target_weight',
-    'Org Unit Target Weight',
-    'Org Units can be organized into hold target groups based on a weight.  Potential copies from org units with the same weight are chosen at random.',
+    oils_i18n_gettext('circ.holds.org_unit_target_weight', 'Org Unit Target Weight', 'coust', 'label'),
+    oils_i18n_gettext('circ.holds.org_unit_target_weight', 'Org Units can be organized into hold target groups based on a weight.  Potential copies from org units with the same weight are chosen at random.', 'coust', 'description'),
     'integer'
 );
 
 INSERT INTO config.org_unit_setting_type (name, label, description, datatype) VALUES (
     'circ.holds.target_holds_by_org_unit_weight',
-    'Use weight-based hold targeting',
-    'Use library weight based hold targeting',
+    oils_i18n_gettext('circ.holds.target_holds_by_org_unit_weight', 'Use weight-based hold targeting', 'coust', 'label'),
+    oils_i18n_gettext('circ.holds.target_holds_by_org_unit_weight', 'Use library weight based hold targeting', 'coust', 'description'),
     'bool'
 );
 
 INSERT INTO config.org_unit_setting_type (name, label, description, datatype) VALUES (
     'circ.holds.max_org_unit_target_loops',
-    'Maximum library target attempts',
-    'When this value is set and greater than 0, the system will only attempt to find a copy at each possible branch the configured number of times',
+    oils_i18n_gettext('circ.holds.max_org_unit_target_loops', 'Maximum library target attempts', 'coust', 'label'),
+    oils_i18n_gettext('circ.holds.max_org_unit_target_loops', 'When this value is set and greater than 0, the system will only attempt to find a copy at each possible branch the configured number of times', 'coust', 'description'),
     'integer'
 );
 
@@ -5878,24 +5878,30 @@ INSERT INTO config.org_unit_setting_type (name, label, description, datatype) VA
 -- Org setting for overriding the circ lib of a precat copy
 INSERT INTO config.org_unit_setting_type (name, label, description, datatype) VALUES (
     'circ.pre_cat_copy_circ_lib',
-    'Pre-cat Item Circ Lib',
-    'Override the default circ lib of "here" with a pre-configured circ lib for pre-cat items.  The value should be the "shortname" (aka policy name) of the org unit',
+    oils_i18n_gettext('circ.pre_cat_copy_circ_lib', 'Pre-cat Item Circ Lib', 'coust', 'label'),
+    oils_i18n_gettext('circ.pre_cat_copy_circ_lib', 'Override the default circ lib of "here" with a pre-configured circ lib for pre-cat items.  The value should be the "shortname" (aka policy name) of the org unit', 'coust', 'description'),
     'string'
 );
 
 -- Circ auto-renew interval setting
 INSERT INTO config.org_unit_setting_type (name, label, description, datatype) VALUES (
     'circ.checkout_auto_renew_age',
-    'Checkout auto renew age',
-    'When an item has been checked out for at least this amount of time, an attempt to check out the item to the patron that it is already checked out to will simply renew the circulation',
+    oils_i18n_gettext('circ.checkout_auto_renew_age', 'Checkout auto renew age', 'coust', 'label'),
+    oils_i18n_gettext('circ.checkout_auto_renew_age', 'When an item has been checked out for at least this amount of time, an attempt to check out the item to the patron that it is already checked out to will simply renew the circulation', 'coust', 'description'),
     'interval'
 );
 
 -- Setting for behind the desk hold pickups
 INSERT INTO config.org_unit_setting_type (name, label, description, datatype) VALUES (
     'circ.holds.behind_desk_pickup_supported',
-    'Behind Desk Pickup Supported',
-    'If a branch supports both a public holds shelf and behind-the-desk pickups, set this value to true.  This gives the patron the option to enable behind-the-desk pickups for their holds',
+    oils_i18n_gettext('circ.holds.behind_desk_pickup_supported',
+        'Behind Desk Pickup Supported',
+        'coust',
+        'label'),
+    oils_i18n_gettext('circ.holds.behind_desk_pickup_supported',
+        'If a branch supports both a public holds shelf and behind-the-desk pickups, set this value to true.  This gives the patron the option to enable behind-the-desk pickups for their holds',
+        'coust',
+        'description'),
     'bool'
 );
 
@@ -6137,8 +6143,8 @@ INSERT INTO
     config.org_unit_setting_type ( name, label, description, datatype )
     VALUES (
         'circ.claim_never_checked_out.mark_missing',
-        'Claim Never Checked Out: Mark copy as missing', 
-        'When a circ is marked as claims-never-checked-out, mark the copy as missing',
+        oils_i18n_gettext('circ.claim_never_checked_out.mark_missing', 'Claim Never Checked Out: Mark copy as missing', 'coust', 'label'),
+        oils_i18n_gettext('circ.claim_never_checked_out.mark_missing', 'When a circ is marked as claims-never-checked-out, mark the copy as missing', 'coust', 'description'),
         'bool'
     );
 
@@ -6147,8 +6153,8 @@ INSERT INTO
     config.org_unit_setting_type ( name, label, description, datatype )
     VALUES (
         'circ.damaged.void_ovedue',
-        'Mark item damaged voids overdues',
-        'When an item is marked damaged, overdue fines on the most recent circulation are voided.',
+        oils_i18n_gettext('circ.damaged.void_ovedue', 'Mark item damaged voids overdues', 'coust', 'label'),
+        oils_i18n_gettext('circ.damaged.void_ovedue', 'When an item is marked damaged, overdue fines on the most recent circulation are voided.', 'coust', 'description'),
         'bool'
     );
 
@@ -6156,32 +6162,32 @@ INSERT INTO
 INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
     VALUES (
         'circ.holds.canceled.display_count',
-        'Canceled holds display count',
-        'How many canceled holds to show in patron holds interfaces',
+        oils_i18n_gettext('circ.holds.canceled.display_count', 'Canceled holds display count', 'coust', 'label'),
+        oils_i18n_gettext('circ.holds.canceled.display_count', 'How many canceled holds to show in patron holds interfaces', 'coust', 'description'),
         'integer'
     );
 
 INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
     VALUES (
         'circ.holds.canceled.display_age',
-        'Canceled holds display age',
-        'Show all canceled holds that were canceled within this amount of time',
+        oils_i18n_gettext('circ.holds.canceled.display_age', 'Canceled holds display age', 'coust', 'label'),
+        oils_i18n_gettext('circ.holds.canceled.display_age', 'Show all canceled holds that were canceled within this amount of time', 'coust', 'description'),
         'interval'
     );
 
 INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
     VALUES (
         'circ.holds.uncancel.reset_request_time',
-        'Reset request time on un-cancel',
-        'When a hold is uncanceled, reset the request time to push it to the end of the queue',
+        oils_i18n_gettext('circ.holds.uncancel.reset_request_time', 'Reset request time on un-cancel','coust', 'label'),
+        oils_i18n_gettext('circ.holds.uncancel.reset_request_time', 'When a hold is uncanceled, reset the request time to push it to the end of the queue',- 'coust', 'description'),
         'bool'
     );
 
 INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
     VALUES (
         'circ.holds.default_shelf_expire_interval',
-        'Default hold shelf expire interval',
-        '',
+        oils_i18n_gettext('circ.holds.default_shelf_expire_interval', 'Default hold shelf expire interval', 'coust', 'label'),
+        oils_i18n_gettext('circ.holds.default_shelf_expire_interval', '', 'coust', 'description'),
         'interval'
 );
 
@@ -8961,24 +8967,24 @@ INSERT into config.org_unit_setting_type
 INSERT INTO config.org_unit_setting_type 
 ( name, label, description, datatype ) VALUES 
 ( 'circ.user_merge.delete_addresses', 
-  'Patron Merge Address Delete', 
-  'Delete address(es) of subordinate user(s) in a patron merge', 
+  oils_i18n_gettext('circ.user_merge.delete_addresses','Patron Merge Address Delete', 'coust', 'label'),
+  oils_i18n_gettext('circ.user_merge.delete_addresses','Delete address(es) of subordinate user(s) in a patron merge', 'coust', 'description'),
    'bool'
 );
 
 INSERT INTO config.org_unit_setting_type 
 ( name, label, description, datatype ) VALUES 
 ( 'circ.user_merge.delete_cards', 
-  'Patron Merge Barcode Delete', 
-  'Delete barcode(s) of subordinate user(s) in a patron merge', 
+  oils_i18n_gettext('circ.user_merge.delete_cards','Patron Merge Barcode Delete', 'coust', 'label'),
+  oils_i18n_gettext('circ.user_merge.delete_cards','Delete barcode(s) of subordinate user(s) in a patron merge', 'coust', 'description'),
   'bool'
 );
 
 INSERT INTO config.org_unit_setting_type 
 ( name, label, description, datatype ) VALUES 
 ( 'circ.user_merge.deactivate_cards', 
-  'Patron Merge Deactivate Card', 
-  'Mark barcode(s) of subordinate user(s) in a patron merge as inactive', 
+  oils_i18n_gettext('circ.user_merge.deactivate_cards','Patron Merge Deactivate Card', 'coust', 'label'),
+  oils_i18n_gettext('circ.user_merge.deactivate_cards','Mark barcode(s) of subordinate user(s) in a patron merge as inactive', 'coust', 'description'),
   'bool'
 );
 

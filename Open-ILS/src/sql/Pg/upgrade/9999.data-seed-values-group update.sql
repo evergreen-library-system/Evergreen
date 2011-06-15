@@ -6,18 +6,17 @@ BEGIN;
 INSERT INTO config.upgrade_log (version) VALUES ('9999');
 
 
--- FIXME these need i18n, along with their descriptions: reported in bug# 797809
-UPDATE config.org_unit_setting_type SET label = 'Behind Desk Pickup Supported' WHERE name = 'circ.holds.behind_desk_pickup_supported';
-UPDATE config.org_unit_setting_type SET label = 'Canceled holds display age' WHERE name = 'circ.holds.canceled.display_age';
-UPDATE config.org_unit_setting_type SET label = 'Canceled holds display count' WHERE name = 'circ.holds.canceled.display_count';
-UPDATE config.org_unit_setting_type SET label = 'Defines the control number identifier used in 003 and 035 fields.' WHERE name = 'cat.marc_control_number_identifier';
-UPDATE config.org_unit_setting_type SET label = 'Maximum library target attempts' WHERE name = 'circ.holds.max_org_unit_target_loops';
-UPDATE config.org_unit_setting_type SET label = 'Org Unit Target Weight' WHERE name = 'circ.holds.org_unit_target_weight';
-UPDATE config.org_unit_setting_type SET label = 'Patron Merge Address Delete' WHERE name = 'circ.user_merge.delete_addresses';
-UPDATE config.org_unit_setting_type SET label = 'Patron Merge Barcode Delete' WHERE name = 'circ.user_merge.delete_cards';
-UPDATE config.org_unit_setting_type SET label = 'Patron Merge Deactivate Card' WHERE name = 'circ.user_merge.deactivate_cards';
-UPDATE config.org_unit_setting_type SET label = 'Reset request time on un-cancel' WHERE name = 'circ.holds.uncancel.reset_request_time';
-UPDATE config.org_unit_setting_type SET label = 'Use weight-based hold targeting' WHERE name = 'circ.holds.target_holds_by_org_unit_weight';
+UPDATE config.org_unit_setting_type SET label = oils_i18n_gettext('circ.holds.behind_desk_pickup_supported', 'Behind Desk Pickup Supported', 'coust', 'label') WHERE name = 'circ.holds.behind_desk_pickup_supported';
+UPDATE config.org_unit_setting_type SET label = oils_i18n_gettext('circ.holds.canceled.display_age', 'Canceled holds display age', 'coust', 'label') WHERE name = 'circ.holds.canceled.display_age';
+UPDATE config.org_unit_setting_type SET label = oils_i18n_gettext('circ.holds.canceled.display_count', 'Canceled holds display count', 'coust', 'label') WHERE name = 'circ.holds.canceled.display_count';
+UPDATE config.org_unit_setting_type SET label = oils_i18n_gettext('cat.marc_control_number_identifier', 'Defines the control number identifier used in 003 and 035 fields.', 'coust', 'label') WHERE name = 'cat.marc_control_number_identifier';
+UPDATE config.org_unit_setting_type SET label = oils_i18n_gettext('circ.holds.max_org_unit_target_loops', 'Maximum library target attempts', 'coust', 'label') WHERE name = 'circ.holds.max_org_unit_target_loops';
+UPDATE config.org_unit_setting_type SET label = oils_i18n_gettext('circ.holds.org_unit_target_weight', 'Org Unit Target Weight', 'coust', 'label') WHERE name = 'circ.holds.org_unit_target_weight';
+UPDATE config.org_unit_setting_type SET label = oils_i18n_gettext('circ.user_merge.delete_addresses','Patron Merge Address Delete', 'coust', 'label') WHERE name = 'circ.user_merge.delete_addresses';
+UPDATE config.org_unit_setting_type SET label = oils_i18n_gettext('circ.user_merge.delete_cards','Patron Merge Barcode Delete', 'coust', 'label') WHERE name = 'circ.user_merge.delete_cards';
+UPDATE config.org_unit_setting_type SET label = oils_i18n_gettext('circ.user_merge.deactivate_cards','Patron Merge Deactivate Card', 'coust', 'label') WHERE name = 'circ.user_merge.deactivate_cards';
+UPDATE config.org_unit_setting_type SET label = oils_i18n_gettext('circ.holds.uncancel.reset_request_time', 'Reset request time on un-cancel','coust', 'label') WHERE name = 'circ.holds.uncancel.reset_request_time';
+UPDATE config.org_unit_setting_type SET label = oils_i18n_gettext('circ.holds.target_holds_by_org_unit_weight', 'Use weight-based hold targeting', 'coust', 'label') WHERE name = 'circ.holds.target_holds_by_org_unit_weight';
 
 
 UPDATE config.org_unit_setting_type SET label = oils_i18n_gettext('cat.bib.delete_on_no_copy_via_acq_lineitem_cancel','Delete bib if all copies are deleted via Acquisitions lineitem cancellation.', 'coust', 'label') WHERE name = 'cat.bib.delete_on_no_copy_via_acq_lineitem_cancel';
