@@ -6172,7 +6172,7 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
 INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
     VALUES (
         'circ.holds.uncancel.reset_request_time',
-        'Holds: Reset request time on un-cancel',
+        'Reset request time on un-cancel',
         'When a hold is uncanceled, reset the request time to push it to the end of the queue',
         'bool'
     );
@@ -8189,7 +8189,7 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) 
         'cat.marc_control_number_identifier',
         oils_i18n_gettext(
             'cat.marc_control_number_identifier', 
-            'Cat: Defines the control number identifier used in 003 and 035 fields.', 
+            'Defines the control number identifier used in 003 and 035 fields.', 
             'coust', 
             'label'),
         oils_i18n_gettext(
@@ -8317,7 +8317,7 @@ VALUES (
     'serial.prev_issuance_copy_location',
     oils_i18n_gettext(
         'serial.prev_issuance_copy_location',
-        'Serials: Previous Issuance Copy Location',
+        'Previous Issuance Copy Location',
         'coust',
         'label'
     ),
@@ -8537,7 +8537,7 @@ INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
         )
         ,('cat.spine.line.width',
             oils_i18n_gettext('cat.spine.line.width',
-                'Cataloging: Spine label line width', 'coust', 'label'),
+                'Spine label line width', 'coust', 'label'),
             oils_i18n_gettext('cat.spine.line.width',
                 'Set the default line width for spine labels in number of characters. This specifies the boundary at which lines must be wrapped.',
                 'coust', 'description'),
@@ -8545,7 +8545,7 @@ INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
         )
         ,('cat.spine.line.height',
             oils_i18n_gettext('cat.spine.line.height',
-                'Cataloging: Spine label maximum lines', 'coust', 'label'),
+                'Spine label maximum lines', 'coust', 'label'),
             oils_i18n_gettext('cat.spine.line.height',
                 'Set the default maximum number of lines for spine labels.',
                 'coust', 'description'),
@@ -8553,7 +8553,7 @@ INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
         )
         ,('cat.spine.line.margin',
             oils_i18n_gettext('cat.spine.line.margin',
-                'Cataloging: Spine label left margin', 'coust', 'label'),
+                'Spine label left margin', 'coust', 'label'),
             oils_i18n_gettext('cat.spine.line.margin',
                 'Set the left margin for spine labels in number of characters.',
                 'coust', 'description'),
@@ -8561,7 +8561,7 @@ INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
         )
         ,('cat.label.font.weight',
             oils_i18n_gettext('cat.label.font.weight',
-                'Cataloging: Spine and pocket label font weight', 'coust', 'label'),
+                'Spine and pocket label font weight', 'coust', 'label'),
             oils_i18n_gettext('cat.label.font.weight',
                 'Set the preferred font weight for spine and pocket labels. You can specify "normal", "bold", "bolder", or "lighter".',
                 'coust', 'description'),
@@ -8829,7 +8829,7 @@ INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
     VALUES
         ('circ.holds.recall_threshold',
         oils_i18n_gettext( 'circ.holds.recall_threshold',
-            'Recalls: Circulation duration that triggers a recall.', 'coust', 'label'),
+            'Circulation duration that triggers a recall.', 'coust', 'label'),
         oils_i18n_gettext( 'circ.holds.recall_threshold',
             'Recalls: A hold placed on an item with a circulation duration longer than this will trigger a recall. For example, "14 days" or "3 weeks".', 'coust', 'description'),
         'interval')
@@ -8839,7 +8839,7 @@ INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
     VALUES
         ('circ.holds.recall_return_interval',
         oils_i18n_gettext( 'circ.holds.recall_return_interval',
-            'Recalls: Truncated loan period.', 'coust', 'label'),
+            'Truncated loan period.', 'coust', 'label'),
         oils_i18n_gettext( 'circ.holds.recall_return_interval',
             'Recalls: When a recall is triggered, this defines the adjusted loan period for the item. For example, "4 days" or "1 week".', 'coust', 'description'),
         'interval')
@@ -8849,7 +8849,7 @@ INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
     VALUES
         ('circ.holds.recall_fine_rules',
         oils_i18n_gettext( 'circ.holds.recall_fine_rules',
-            'Recalls: An array of fine amount, fine interval, and maximum fine.', 'coust', 'label'),
+            'An array of fine amount, fine interval, and maximum fine.', 'coust', 'label'),
         oils_i18n_gettext( 'circ.holds.recall_fine_rules',
             'Recalls: An array of fine amount, fine interval, and maximum fine. For example, to specify a new fine rule of $5.00 per day, with a maximum fine of $50.00, use: [5.00,"1 day",50.00]', 'coust', 'description'),
         'array')

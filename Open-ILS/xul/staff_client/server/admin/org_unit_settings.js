@@ -293,8 +293,8 @@ function osLoadGrid(data) {
         function(a, b) {
             var seta = osSettings[a.name];
             var setb = osSettings[b.name];
-            if(seta.label > setb.label) return 1;
-            if(seta.label < setb.label) return -1;
+            if(seta.grp + "" + seta.label > setb.grp + "" + setb.label) return 1;
+            if(seta.grp + "" + seta.label < setb.grp + "" + setb.label) return -1;
             return 0;
         }
     );
