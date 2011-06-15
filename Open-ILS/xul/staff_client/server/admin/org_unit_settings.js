@@ -379,6 +379,12 @@ function osLaunchEditor(name) {
 
     var fmClass = osSettings[name].fm_class;
 
+    if(osEditAutoWidget) {
+        osEditAutoWidget.domNode.parentNode.removeChild(osEditAutoWidget.domNode);
+        osEditAutoWidget.destroy();
+        osEditAutoWidget = null;
+    }
+    
     if(fmClass) {
 
         if(osEditAutoWidget) {
