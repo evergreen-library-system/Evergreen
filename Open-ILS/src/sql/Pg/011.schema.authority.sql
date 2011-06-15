@@ -176,6 +176,10 @@ BEGIN
         EXIT WHEN heading_text <> '';
     END LOOP;
 
+    IF thes_code = 'z' THEN
+        thes_code := oils_xpath_string('//*[@tag="040"]/*[@code="f"][1]', marcxml);
+    END IF;
+
     IF heading_text <> '' THEN
         IF no_thesaurus IS TRUE THEN
             heading_text := tag_used || ' ' || public.naco_normalize(heading_text);
