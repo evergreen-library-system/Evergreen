@@ -178,7 +178,9 @@ function event_listeners() {
             'command',
             function(ev) {
                 try {
+                    $('apply_payment_btn').disabled = true;
                     apply_payment();
+                    $('apply_payment_btn').disabled = false;
                 } catch(E) {
                     alert('Error in bill2.js, apply_payment_btn: ' + E);
                 }
