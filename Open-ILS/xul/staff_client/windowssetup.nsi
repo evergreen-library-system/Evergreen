@@ -5,7 +5,7 @@
 ;!define /file PRODUCT_VERSION "client/VERSION"
 !define PRODUCT_TAG "2.1"
 !define PRODUCT_INSTALL_TAG "${PRODUCT_TAG}"
-!define UI_IMAGESET "beta"
+!define UI_IMAGESET "rc1"
 ;!define UI_IMAGESET "release"
 !define PRODUCT_NAME "Evergreen Staff Client ${PRODUCT_TAG}"
 !define PRODUCT_PUBLISHER "Evergreen Community"
