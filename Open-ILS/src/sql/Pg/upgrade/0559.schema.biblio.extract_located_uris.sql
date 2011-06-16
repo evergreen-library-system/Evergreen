@@ -1,3 +1,16 @@
+-- Evergreen DB patch 0559.schema.biblio.extract_located_uris.sql
+--
+-- * Add a stored procedure to reingest problematic URIs
+-- * Avoid duplicate row issues in biblio.extract_located_uris
+-- * Fix LP 797304 and 797307 - asset.uri parsing bugs
+--
+BEGIN;
+
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0559', :eg_version);
+
+-- FIXME: add/check SQL statements to perform the upgrade
 CREATE OR REPLACE FUNCTION biblio.extract_located_uris( bib_id BIGINT, marcxml TEXT, editor_id INT ) RETURNS VOID AS $func$
 DECLARE
     uris            TEXT[];
@@ -135,3 +148,6 @@ $func$ LANGUAGE PLPGSQL;
 
 -- Kick off the reingest; this may take a while
 SELECT biblio.reingest_uris();
+
+
+COMMIT;
