@@ -689,7 +689,7 @@ sub create_lineitem_detail_debit {
                 $lid->fund->currency_type, # destination currency
                 $li->estimated_unit_price # source amount
             ]
-        })->[0]->{value};
+        })->[0]->{'acq.exchange_ratio'};
     }
 
     my $debit = create_fund_debit(
