@@ -827,9 +827,13 @@ BEGIN
             uri_xml     := uris[i];
 
             uri_href    := (oils_xpath('//*[@code="u"]/text()',uri_xml))[1];
-            uri_label   := (oils_xpath('//*[@code="y"]/text()|//*[@code="3"]/text()|//*[@code="u"]/text()',uri_xml))[1];
+            uri_label   := (oils_xpath('//*[@code="y"]/text()|//*[@code="3"]/text()',uri_xml))[1];
             uri_use     := (oils_xpath('//*[@code="z"]/text()|//*[@code="2"]/text()|//*[@code="n"]/text()',uri_xml))[1];
-            CONTINUE WHEN uri_href IS NULL OR uri_label IS NULL;
+
+            IF uri_label IS NULL THEN
+                uri_label := uri_href;
+            END IF;
+            CONTINUE WHEN uri_href IS NULL;
 
             -- Get the distinct list of libraries wanting to use 
             SELECT  ARRAY_ACCUM(
@@ -849,13 +853,27 @@ BEGIN
             IF ARRAY_UPPER(uri_owner_list,1) > 0 THEN
 
                 -- look for a matching uri
-                SELECT id INTO uri_id FROM asset.uri WHERE label = uri_label AND href = uri_href AND use_restriction = uri_use AND active;
-                IF NOT FOUND THEN -- create one
-                    INSERT INTO asset.uri (label, href, use_restriction) VALUES (uri_label, uri_href, uri_use);
-                    IF uri_use IS NULL THEN
-                        SELECT id INTO uri_id FROM asset.uri WHERE label = uri_label AND href = uri_href AND use_restriction IS NULL AND active;
-                    ELSE
-                        SELECT id INTO uri_id FROM asset.uri WHERE label = uri_label AND href = uri_href AND use_restriction = uri_use AND active;
+                IF uri_use IS NULL THEN
+                    SELECT id INTO uri_id
+                        FROM asset.uri
+                        WHERE label = uri_label AND href = uri_href AND use_restriction IS NULL AND active
+                        ORDER BY id LIMIT 1;
+                    IF NOT FOUND THEN -- create one
+                        INSERT INTO asset.uri (label, href, use_restriction) VALUES (uri_label, uri_href, uri_use);
+                        SELECT id INTO uri_id
+                            FROM asset.uri
+                            WHERE label = uri_label AND href = uri_href AND use_restriction IS NULL AND active;
+                    END IF;
+                ELSE
+                    SELECT id INTO uri_id
+                        FROM asset.uri
+                        WHERE label = uri_label AND href = uri_href AND use_restriction = uri_use AND active
+                        ORDER BY id LIMIT 1;
+                    IF NOT FOUND THEN -- create one
+                        INSERT INTO asset.uri (label, href, use_restriction) VALUES (uri_label, uri_href, uri_use);
+                        SELECT id INTO uri_id
+                            FROM asset.uri
+                            WHERE label = uri_label AND href = uri_href AND use_restriction = uri_use AND active;
                     END IF;
                 END IF;
 
