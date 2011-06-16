@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chapter xml:id="report-exporting-report-templates-using-phpPgAdmin" xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="EN"
+    xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<info>
+        	<title>Exporting Report Templates Using phpPgAdmin</title>
+	</info>
+	<para>Once the data is exported. Database Administrators/Systems Administrators can easily import this data into the templates folder to make it available in the client.</para>
+	<simplesect xml:id="dump-entire-reports-template-table">
+		<title>Dump the Entire Reports Template Table</title>
+		<para>The data exported in this method can create issues importing into a different system if you do not have a matching folder and owner.  This is going to export report templates created in your system.  The most important fields for importing into the new system are <emphasis>name</emphasis>, <emphasis>description</emphasis>, and <emphasis>data</emphasis>. Data defines the actual structure of the report. The <emphasis>owner</emphasis> and <emphasis>folder</emphasis> fields will unique to the system they were exported from and will have to be altered to ensure they match the appropriate owner and folder information for the new system.</para>
+		
+		<orderedlist>
+			<listitem>Go to the <emphasis role="bold">Reporter</emphasis> schema.  Report templates are located in the <emphasis role="bold">Template</emphasis> table</listitem>
+			<listitem>Click on the link to the <emphasis role="bold">Template</emphasis> table</listitem>
+			<listitem>Click the <emphasis role="bold">export</emphasis> button at the top right of the phpPgAdmin screen</listitem>
+			<listitem>Make sure the following is selected
+				<orderedlist>
+					<listitem>Data Only (checked)</listitem>
+					<listitem>Format: Select CSV or Tabbed did get the data in a text format</listitem>
+					<listitem>Download checked</listitem>
+				</orderedlist>
+			</listitem>
+			<listitem>Click export button at the bottom</listitem>
+			<listitem>A text file will download to your local system</listitem>
+		</orderedlist>
+
+	</simplesect>
+	<simplesect xml:id="dump-data-sql-statement">
+		<title>Dump Data with an SQL Statement</title>
+		<para>The following statement could be used to grab the data in the folder and dump it with admin account as the owner and the first folder in your system.</para>
+		<screen>SELECT 1 as owner, name, description, data, 1 as folder FROM reporter.template</screen>
+		<para>or use the following to capture your folder names for export</para>
+		<screen>SELECT 1 as owner, t.name, t.description, t.data, f.name as folder FROM reporter.template t JOIN reporter.template_folder f ON t.folder=f.id</screen>
+		
+		<orderedlist>
+	 <listitem>Run the above query</listitem>
+	 <listitem>Click the <emphasis role="bold">download</emphasis> link at the bottom of the page</listitem>
+	 <listitem>Select the file format (CSV or Tabbed)</listitem>
+	 <listitem>Check download</listitem>
+	 <listitem>A text file with the report template data will be downloaded.</listitem>
+		</orderedlist>
+		
+	</simplesect>
+</chapter>
+
+
+
+
+
+
+
+
+

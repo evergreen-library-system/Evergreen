@@ -83,7 +83,14 @@
 		</info>
 		<xi:include href="reports/report-intro.xml"/>
 		<xi:include href="reports/report-startingreporter.xml"/>
-		
+		<xi:include href="reports/report-folder.xml"/>
+		<xi:include href="reports/report-create-template.xml"/>
+		<xi:include href="reports/report-generate-report.xml"/>
+ 		<xi:include href="reports/report-view-output.xml"/>
+ 		<xi:include href="reports/report-shared-template.xml"/>
+ 		<xi:include href="reports/report-recurring-report.xml"/>
+ 		<xi:include href="reports/report-template-terminology.xml"/>
+ 		<xi:include href="reports/report-exporting-report-templates-using-phppgadmin.xml"/>
 	</part>
 
 	<part xml:id="software_integration">
