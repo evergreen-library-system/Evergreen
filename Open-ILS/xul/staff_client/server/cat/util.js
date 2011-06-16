@@ -9,7 +9,9 @@ cat.util.EXPORT_OK    = [
     'spawn_copy_editor', 'add_copies_to_bucket', 'show_in_opac', 'spawn_spine_editor', 'transfer_copies', 
     'transfer_title_holds', 'mark_item_missing', 'mark_item_damaged', 'replace_barcode', 'fast_item_add', 
     'make_bookable', 'edit_new_brsrc', 'edit_new_bresv', 'batch_edit_volumes', 'render_fine_level',
-    'render_loan_duration', 'mark_item_as_missing_pieces', 'transfer_specific_title_holds'
+    'render_loan_duration', 'mark_item_as_missing_pieces', 'render_callnumbers_for_bib_menu',
+    'render_cn_prefix_menuitems', 'render_cn_suffix_menuitems', 'render_cn_class_menu',
+    'render_cn_prefix_menu', 'render_cn_suffix_menu', 'transfer_specific_title_holds'
 ];
 cat.util.EXPORT_TAGS    = { ':all' : cat.util.EXPORT_OK };
 
@@ -915,6 +917,204 @@ cat.util.mark_item_as_missing_pieces = function(copy_ids) {
     } catch(E) {
         alert('Error in cat.util.mark_item_as_missing_pieces: ' + E);
         return false;
+    }
+}
+
+cat.util.render_callnumbers_for_bib_menu = function(node, doc_id, label_class) {
+    try {
+        var cn_blob;
+        try {
+            cn_blob = g.network.simple_request('BLOB_MARC_CALLNUMBERS_RETRIEVE',[doc_id, label_class]);
+        } catch(E) {
+            cn_blob = [];
+        }
+        var hbox = typeof node == 'string' ? document.getElementById(node) : node;
+        JSAN.use('util.widgets');
+        JSAN.use('util.functional');
+        var ml = util.widgets.make_menulist(
+            [
+                [ '', '' ]
+            ].concat(
+                util.functional.map_list(
+                    cn_blob,
+                    function(o) {
+                        for (var i in o) {
+                            return [ o[i], i ];
+                        }
+                    }
+                )
+            )
+        ); hbox.appendChild(ml);
+        ml.setAttribute('editable','true');
+        ml.setAttribute('width', '200');
+        ml.setAttribute('id', hbox.id + '_menulist');
+    } catch(E) {
+        alert('Error in cat.util.render_callnumbers_for_bib_menu: ' + E);
+    }
+}
+
+cat.util.render_cn_prefix_menuitems = function(menupopup,ou_id) {
+    try {
+        JSAN.use('OpenILS.data');
+        var data = new OpenILS.data(); data.stash_retrieve();
+        JSAN.use('util.network');
+        var network = new util.network();
+
+        if (typeof data.list['acnp_for_lib_'+ou_id] == 'undefined') {
+            data.list['acnp_for_lib_'+ou_id] = network.simple_request(
+                'FM_ACNP_RETRIEVE_VIA_PCRUD',
+                [ ses(), {"owning_lib":{"=":ou_id}}, {"order_by":{"acnp":"label_sortkey"}} ]
+            );
+            data.stash('list');
+        }
+        for (var i = 0; i < data.list['acnp_for_lib_'+ou_id].length; i++) {
+            var my_acnp = data.list['acnp_for_lib_'+ou_id][i];
+            var menuitem = document.createElement('menuitem');
+            menupopup.appendChild(menuitem);
+                menuitem.setAttribute(
+                    'label',
+                    my_acnp.id() == -1 ? '' :
+                    $('catStrings').getFormattedString(
+                        'staff.cat.volume_copy_creator.call_number_prefix.menuitem_label',
+                        [
+                            my_acnp.label(),
+                            data.hash.aou[ ou_id ].shortname()
+                        ]
+                    )
+                );
+                menuitem.setAttribute('value',my_acnp.id());
+        }
+    } catch(E) {
+        alert('Error in cat.util.render_cn_prefix_menuitems: ' + E);
+    }
+}
+
+cat.util.render_cn_suffix_menuitems = function(menupopup,ou_id) {
+    try {
+        JSAN.use('OpenILS.data');
+        var data = new OpenILS.data(); data.stash_retrieve();
+        JSAN.use('util.network');
+        var network = new util.network();
+
+        if (typeof data.list['acns_for_lib_'+ou_id] == 'undefined') {
+            data.list['acns_for_lib_'+ou_id] = network.simple_request(
+                'FM_ACNS_RETRIEVE_VIA_PCRUD',
+                [ ses(), {"owning_lib":{"=":ou_id}}, {"order_by":{"acns":"label_sortkey"}} ]
+            );
+            data.stash('list');
+        }
+        for (var i = 0; i < data.list['acns_for_lib_'+ou_id].length; i++) {
+            var my_acns = data.list['acns_for_lib_'+ou_id][i];
+            var menuitem = document.createElement('menuitem');
+            menupopup.appendChild(menuitem);
+                menuitem.setAttribute(
+                    'label',
+                    my_acns.id() == -1 ? '' :
+                    $('catStrings').getFormattedString(
+                        'staff.cat.volume_copy_creator.call_number_suffix.menuitem_label',
+                        [
+                            my_acns.label(),
+                            data.hash.aou[ ou_id ].shortname()
+                        ]
+                    )
+                );
+                menuitem.setAttribute('value',my_acns.id());
+        }
+    } catch(E) {
+        alert('Error in cat.util.render_cn_suffix_menuitems: ' + E);
+    }
+}
+
+cat.util.render_cn_class_menu = function(extra_menuitems,menu_default) {
+    try {
+        JSAN.use('util.widgets');
+        JSAN.use('OpenILS.data');
+        var data = new OpenILS.data(); data.stash_retrieve();
+
+        var menulist = util.widgets.make_menulist(
+            (extra_menuitems || []).concat(
+                util.functional.map_list(
+                    data.list.acnc,
+                    function(o) {
+                        return [ o.name(), o.id() ];
+                    }
+                )
+            )
+        );
+
+        if (typeof menu_default != 'undefined') {
+            menulist.setAttribute('value',menu_default);
+        }
+        return menulist;
+
+    } catch(E) {
+        alert('Error in cat.util.render_cn_class_menu: ' + E);
+    }
+}
+
+cat.util.render_cn_prefix_menu = function(ou_ids,extra_menuitems,menu_default) {
+    try {
+        JSAN.use('util.widgets');
+        var menulist = util.widgets.make_menulist(extra_menuitems||[],menu_default);
+            var menupopup = menulist.firstChild;
+            var org_list;
+            if (ou_ids.length == 1) {
+                JSAN.use('OpenILS.data');
+                var data = new OpenILS.data(); data.stash_retrieve();
+                var org = data.hash.aou[ ou_ids[0] ];
+                org_list = []; // order from top of consortium to owning lib
+                while(org) {
+                    org_list.unshift(org.id());
+                    org = org.parent_ou();
+                    if (org && typeof org != 'object') {
+                        org = data.hash.aou[ org ];
+                    }
+                }
+            } else {
+                org_list = ou_ids;
+            }
+            for (var i = 0; i < org_list.length; i++) {
+                cat.util.render_cn_prefix_menuitems(menupopup,org_list[i]);
+            }
+        if (typeof menu_default != 'undefined') {
+            menulist.setAttribute('value',menu_default);
+        }
+        return menulist;
+    } catch(E) {
+        alert('Error in cat.util.render_cn_prefix_menu('+ou_id+'): ' + E);
+    }
+}
+
+cat.util.render_cn_suffix_menu = function(ou_ids,extra_menuitems,menu_default) {
+    try {
+        JSAN.use('util.widgets');
+        var menulist = util.widgets.make_menulist(extra_menuitems||[],menu_default);
+            var menupopup = menulist.firstChild;
+            var org_list;
+            if (ou_ids.length == 1) {
+                JSAN.use('OpenILS.data');
+                var data = new OpenILS.data(); data.stash_retrieve();
+                var org = data.hash.aou[ ou_ids[0] ];
+                org_list = []; // order from top of consortium to owning lib
+                while(org) {
+                    org_list.unshift(org.id());
+                    org = org.parent_ou();
+                    if (org && typeof org != 'object') {
+                        org = data.hash.aou[ org ];
+                    }
+                }
+            } else {
+                org_list = ou_ids;
+            }
+            for (var i = 0; i < org_list.length; i++) {
+                cat.util.render_cn_suffix_menuitems(menupopup,org_list[i]);
+            }
+        if (typeof menu_default != 'undefined') {
+            menulist.setAttribute('value',menu_default);
+        }
+        return menulist;
+    } catch(E) {
+        alert('Error in cat.util.render_cn_suffix_menu('+ou_id+'): ' + E);
     }
 }
 

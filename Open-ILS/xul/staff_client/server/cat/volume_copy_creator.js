@@ -192,7 +192,8 @@ function my_init() {
         /* For the batch drop downs */
 
         g.list_classes();
-        g.list_callnumbers(g.doc_id, g.label_class);
+        JSAN.use('cat.util');
+        cat.util.render_callnumbers_for_bib_menu('marc_cn',g.doc_id, g.label_class);
         g.render_batch_button();
 
         /***********************************************************************************************************/
@@ -1252,14 +1253,7 @@ g.save_prefs = function () {
 }
 
 g.render_class_menu = function(call_number_tb) {
-    var ml = util.widgets.make_menulist(
-        util.functional.map_list(
-            g.data.list.acnc,
-            function(o) {
-                return [ o.name(), o.id() ];
-            }
-        )
-    );
+    var ml = cat.util.render_cn_class_menu();
     ml.setAttribute('rel_vert_pos',rel_vert_pos_call_number_classification);
     ml.addEventListener(
         'command',
@@ -1273,22 +1267,7 @@ g.render_class_menu = function(call_number_tb) {
 
 g.render_prefix_menu = function(call_number_tb) {
     var ou_id = call_number_tb.getAttribute('ou_id');
-    var org = g.data.hash.aou[ ou_id ];
-    var menulist = document.createElement('menulist');
-        var menupopup = document.createElement('menupopup');
-        menulist.appendChild(menupopup);
-        var org_list = []; // order from top of consortium to owning lib
-        while(org) {
-            org_list.unshift(org.id());
-            org = org.parent_ou();
-            if (org && typeof org != 'object') {
-                org = g.data.hash.aou[ org ];
-            }
-        }
-        for (var i = 0; i < org_list.length; i++) {
-            g.render_prefix_menu_items(menupopup,org_list[i]);
-        }
-
+    var menulist = cat.util.render_cn_prefix_menu([ou_id]);
     menulist.setAttribute('rel_vert_pos',rel_vert_pos_call_number_prefix);
     menulist.addEventListener(
         'command',
@@ -1300,51 +1279,9 @@ g.render_prefix_menu = function(call_number_tb) {
     return menulist;
 }
 
-g.render_prefix_menu_items = function(menupopup,ou_id) {
-    if (typeof g.data.list['acnp_for_lib_'+ou_id] == 'undefined') {
-        g.data.list['acnp_for_lib_'+ou_id] = g.network.simple_request(
-            'FM_ACNP_RETRIEVE_VIA_PCRUD',
-            [ ses(), {"owning_lib":{"=":ou_id}}, {"order_by":{"acnp":"label_sortkey"}} ]
-        );
-        g.data.stash('list');
-    }
-    for (var i = 0; i < g.data.list['acnp_for_lib_'+ou_id].length; i++) {
-        var my_acnp = g.data.list['acnp_for_lib_'+ou_id][i];
-        var menuitem = document.createElement('menuitem');
-        menupopup.appendChild(menuitem);
-            menuitem.setAttribute(
-                'label',
-                my_acnp.id() == -1 ? '' :
-                $('catStrings').getFormattedString(
-                    'staff.cat.volume_copy_creator.call_number_prefix.menuitem_label',
-                    [
-                        my_acnp.label(),
-                        g.data.hash.aou[ ou_id ].shortname()
-                    ]
-                )
-            );
-            menuitem.setAttribute('value',my_acnp.id());
-    }
-}
-
 g.render_suffix_menu = function(call_number_tb) {
     var ou_id = call_number_tb.getAttribute('ou_id');
-    var org = g.data.hash.aou[ ou_id ];
-    var menulist = document.createElement('menulist');
-        var menupopup = document.createElement('menupopup');
-        menulist.appendChild(menupopup);
-        var org_list = []; // order from top of consortium to owning lib
-        while(org) {
-            org_list.unshift(org.id());
-            org = org.parent_ou();
-            if (org && typeof org != 'object') {
-                org = g.data.hash.aou[ org ];
-            }
-        }
-        for (var i = 0; i < org_list.length; i++) {
-            g.render_suffix_menu_items(menupopup,org_list[i]);
-        }
-
+    var menulist = cat.util.render_cn_suffix_menu([ou_id]);
     menulist.setAttribute('rel_vert_pos',rel_vert_pos_call_number_suffix);
     menulist.addEventListener(
         'command',
@@ -1356,74 +1293,12 @@ g.render_suffix_menu = function(call_number_tb) {
     return menulist;
 }
 
-g.render_suffix_menu_items = function(menupopup,ou_id) {
-    if (typeof g.data.list['acns_for_lib_'+ou_id] == 'undefined') {
-        g.data.list['acns_for_lib_'+ou_id] = g.network.simple_request(
-            'FM_ACNS_RETRIEVE_VIA_PCRUD',
-            [ ses(), {"owning_lib":{"=":ou_id}}, {"order_by":{"acns":"label_sortkey"}} ]
-        );
-        g.data.stash('list');
-    }
-    for (var i = 0; i < g.data.list['acns_for_lib_'+ou_id].length; i++) {
-        var my_acns = g.data.list['acns_for_lib_'+ou_id][i];
-        var menuitem = document.createElement('menuitem');
-        menupopup.appendChild(menuitem);
-            menuitem.setAttribute(
-                'label',
-                my_acns.id() == -1 ? '' :
-                $('catStrings').getFormattedString(
-                    'staff.cat.volume_copy_creator.call_number_suffix.menuitem_label',
-                    [
-                        my_acns.label(),
-                        g.data.hash.aou[ ou_id ].shortname()
-                    ]
-                )
-            );
-            menuitem.setAttribute('value',my_acns.id());
-    }
-}
-
-
-g.list_callnumbers = function(doc_id, label_class) {
-    var cn_blob;
-    try {
-        cn_blob = g.network.simple_request('BLOB_MARC_CALLNUMBERS_RETRIEVE',[g.doc_id, label_class]);
-    } catch(E) {
-        cn_blob = [];
-    }
-    var hbox = document.getElementById('marc_cn');
-    var ml = util.widgets.make_menulist(
-        [
-            [ '', '' ]
-        ].concat(
-            util.functional.map_list(
-                cn_blob,
-                function(o) {
-                    for (var i in o) {
-                        return [ o[i], i ];
-                    }
-                }
-            )
-        )
-    ); hbox.appendChild(ml);
-    ml.setAttribute('editable','true');
-    ml.setAttribute('width', '200');
-    ml.setAttribute('id', 'marc_cn_menulist');
-}
-
 g.list_classes = function() {
     var hbox = $('batch_class');
-    var ml = util.widgets.make_menulist(
+    var ml = cat.util.render_cn_class_menu(
         [
             [ '<No Change>', false ]
-        ].concat(
-            util.functional.map_list(
-                g.data.list.acnc,
-                function(o) {
-                    return [ o.name(), o.id() ];
-                }
-            )
-        )
+        ]
     ); hbox.appendChild(ml);
     ml.setAttribute('id','batch_class_menulist');
     ml.addEventListener(
@@ -1444,15 +1319,14 @@ g.list_classes = function() {
 
 g.list_prefixes = function() {
     var hbox = $('batch_prefix');
-    var ml = util.widgets.make_menulist(
+    var ml = cat.util.render_cn_prefix_menu(
+        g.common_ancestor_ou_ids,
         [
             [ '<No Change>', false ]
         ]
-    ); hbox.appendChild(ml);
-    for (var i = 0; i < g.common_ancestor_ou_ids.length; i++) {
-        g.render_prefix_menu_items(ml.firstChild,g.common_ancestor_ou_ids[i]);
-    }
+    );
     ml.setAttribute('id','batch_prefix_menulist');
+    hbox.appendChild(ml);
     ml.addEventListener(
         'command',
         function() {
@@ -1471,15 +1345,14 @@ g.list_prefixes = function() {
 
 g.list_suffixes = function() {
     var hbox = $('batch_suffix');
-    var ml = util.widgets.make_menulist(
+    var ml = cat.util.render_cn_suffix_menu(
+        g.common_ancestor_ou_ids,
         [
             [ '<No Change>', false ]
         ]
-    ); hbox.appendChild(ml);
-    for (var i = 0; i < g.common_ancestor_ou_ids.length; i++) {
-        g.render_suffix_menu_items(ml.firstChild,g.common_ancestor_ou_ids[i]);
-    }
+    );
     ml.setAttribute('id','batch_suffix_menulist');
+    hbox.appendChild(ml);
     ml.addEventListener(
         'command',
         function() {
