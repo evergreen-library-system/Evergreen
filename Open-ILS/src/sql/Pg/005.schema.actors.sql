@@ -468,6 +468,24 @@ $$;
 
 CREATE INDEX actor_org_unit_setting_usr_idx ON actor.org_unit_setting (org_unit);
 
+-- Log each change in oust to oustl, so admins can see what they messed up if someting stops working.
+CREATE OR REPLACE FUNCTION ous_change_log() RETURNS TRIGGER AS $ous_change_log$
+    DECLARE
+    original TEXT;
+    BEGIN
+        -- Check for which setting is being updated, and log it.
+        SELECT INTO original value FROM actor.org_unit_setting WHERE name = NEW.name AND org_unit = NEW.org_unit;
+                
+        INSERT INTO config.org_unit_setting_type_log (org,original_value,new_value,field_name) VALUES (NEW.org_unit, original, NEW.value, NEW.name);
+        
+        RETURN NEW;
+    END;
+$ous_change_log$ LANGUAGE plpgsql;    
+
+CREATE TRIGGER log_ous_change
+    BEFORE INSERT OR UPDATE ON actor.org_unit_setting
+    FOR EACH ROW EXECUTE PROCEDURE ous_change_log();
+
 
 CREATE TABLE actor.usr_address (
 	id			SERIAL	PRIMARY KEY,
