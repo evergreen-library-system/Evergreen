@@ -1157,7 +1157,7 @@ BEGIN
     add_query := $$
             INSERT INTO asset.opac_visible_copies (copy_id, circ_lib, record)
               SELECT id, circ_lib, record FROM (
-                SELECT  cp.id, cp.circ_lib, cn.record, cn.id AS call_number
+                SELECT  cp.id, cp.circ_lib, cn.record, cn.id AS call_number, cp.location, cp.status
                   FROM  asset.copy cp
                         JOIN asset.call_number cn ON (cn.id = cp.call_number)
                         JOIN actor.org_unit a ON (cp.circ_lib = a.id)
@@ -1172,7 +1172,7 @@ BEGIN
                         AND cp.opac_visible
                         AND a.opac_visible
                             UNION
-                SELECT  cp.id, cp.circ_lib, pbcm.peer_record AS record, NULL AS call_number
+                SELECT  cp.id, cp.circ_lib, pbcm.peer_record AS record, NULL AS call_number, cp.location, cp.status
                   FROM  asset.copy cp
                         JOIN biblio.peer_bib_copy_map pbcm ON (pbcm.target_copy = cp.id)
                         JOIN actor.org_unit a ON (cp.circ_lib = a.id)
@@ -1317,11 +1317,11 @@ BEGIN
     ELSIF NEW.opac_visible THEN -- add rows
 
         IF TG_TABLE_NAME = 'org_unit' THEN
-            add_query := add_query || 'AND cp.circ_lib = ' || NEW.id || ';';
+            add_query := add_query || 'WHERE x.circ_lib = ' || NEW.id || ';';
         ELSIF TG_TABLE_NAME = 'copy_location' THEN
-            add_query := add_query || 'AND cp.location = ' || NEW.id || ';';
+            add_query := add_query || 'WHERE x.location = ' || NEW.id || ';';
         ELSIF TG_TABLE_NAME = 'copy_status' THEN
-            add_query := add_query || 'AND cp.status = ' || NEW.id || ';';
+            add_query := add_query || 'WHERE x.status = ' || NEW.id || ';';
         END IF;
  
         EXECUTE add_query;
