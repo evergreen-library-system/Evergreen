@@ -342,7 +342,7 @@
 								<userinput>
 	# as the root user:
 	echo "/openils/lib"   > /etc/ld.so.conf.d/osrf.conf
-	echo "/usr/local/lib >> /etc/ld.so.conf.d/osrf.conf
+	echo "/usr/local/lib" >> /etc/ld.so.conf.d/osrf.conf
 	ldconfig</userinput>
 							</screen>
 						</step>
