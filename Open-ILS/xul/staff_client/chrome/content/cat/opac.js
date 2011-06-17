@@ -465,6 +465,9 @@ function set_opac() {
                                 item = mfhd_delete_menu.appendItem(label);
                                 item.setAttribute('oncommand','delete_mfhd('+mfhd_details.id+')');
                             }
+                            var change_event = document.createEvent("Event");
+                            change_event.initEvent("MFHDChange",false,false);
+                            window.dispatchEvent(change_event);
                         }
                     }
                 );
@@ -532,7 +535,7 @@ function create_mfhd() {
             throw(r);
         }
         alert("MFHD record created."); //TODO: better success message
-        //TODO: refresh opac display
+        browser_frame.contentWindow.g.browser.controller.view.cmd_reload.doCommand();
     } catch(E) {
         g.error.standard_unexpected_error_alert("Create MFHD failed", E); //TODO: better error handling
     }
@@ -554,7 +557,7 @@ function delete_mfhd(sre_id) {
             alert(document.getElementById('offlineStrings').getFormattedString('cat.opac.record_deleted.error',  [docid, robj.textcode, robj.desc]) + '\n');
         } else {
             alert(document.getElementById('offlineStrings').getString('cat.opac.record_deleted'));
-            //TODO: refresh opac display
+            browser_frame.contentWindow.g.browser.controller.view.cmd_reload.doCommand();
         }
     }
 }

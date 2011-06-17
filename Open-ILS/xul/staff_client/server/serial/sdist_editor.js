@@ -23,24 +23,11 @@ serial.sdist_editor = function (params) {
     // setup sre arrays
     this.sre_id_map = {};
     this.sres_ou_map = {};
-    var parent_g = window.parent.g;
-    if (parent_g.mfhd) {
-        var mfhd_details = parent_g.mfhd.details;
-        for (var i = 0; i < mfhd_details.length; i++) {
-            var mfhd_detail = {};
-            for (j in mfhd_details[i]) {
-                mfhd_detail[j] = mfhd_details[i][j];
-            }
-            mfhd_detail.label = mfhd_detail.label + ' (' + (mfhd_detail.entryNum + 1) + ')';
-            var sre_id = mfhd_detail.id;
-            var org_unit_id = mfhd_detail.owning_lib;
-            this.sre_id_map[sre_id] = mfhd_detail;
-            if (!this.sres_ou_map[org_unit_id]) {
-                this.sres_ou_map[org_unit_id] = [];
-            }
-            this.sres_ou_map[org_unit_id].push(mfhd_detail);
-        }
-    }
+    this.build_sre_maps();
+
+    // update sre maps on demand
+    var obj = this;
+    window.parent.addEventListener("MFHDChange", function() {obj.build_sre_maps()}, false);
 };
 
 serial.sdist_editor.prototype = {
@@ -291,6 +278,37 @@ serial.sdist_editor.prototype = {
 
     /******************************************************************************************************/
     'save_attributes' : serial.editor_base.editor_base_save_attributes,
+
+    /******************************************************************************************************/
+    /* Build maps of sre details for both display and selection purposes */
+
+    'build_sre_maps' : function() {
+        var obj = this;
+        try {
+            obj.sre_id_map = {};
+            obj.sres_ou_map = {};
+            var parent_g = window.parent.g;
+            if (parent_g.mfhd) {
+                var mfhd_details = parent_g.mfhd.details;
+                for (var i = 0; i < mfhd_details.length; i++) {
+                    var mfhd_detail = {};
+                    for (j in mfhd_details[i]) {
+                        mfhd_detail[j] = mfhd_details[i][j];
+                    }
+                    mfhd_detail.label = mfhd_detail.label + ' (' + (mfhd_detail.entryNum + 1) + ')';
+                    var sre_id = mfhd_detail.id;
+                    var org_unit_id = mfhd_detail.owning_lib;
+                    obj.sre_id_map[sre_id] = mfhd_detail;
+                    if (!obj.sres_ou_map[org_unit_id]) {
+                        obj.sres_ou_map[org_unit_id] = [];
+                    }
+                    obj.sres_ou_map[org_unit_id].push(mfhd_detail);
+                }
+            }
+        } catch(E) {
+            obj.error.standard_unexpected_error_alert('build_sre_maps',E);
+        }
+    },
 
     /******************************************************************************************************/
     /* This returns a list of sre details appropriate for the distributions being edited */
