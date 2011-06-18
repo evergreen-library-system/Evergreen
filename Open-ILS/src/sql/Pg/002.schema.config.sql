@@ -58,7 +58,7 @@ CREATE TABLE config.upgrade_log (
 );
 
 INSERT INTO config.upgrade_log (version) VALUES ('2.1-rc1');
-INSERT INTO config.upgrade_log (version) VALUES ('0559'); -- dbs via miker
+INSERT INTO config.upgrade_log (version) VALUES ('0560'); -- tsbere via gmc
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
