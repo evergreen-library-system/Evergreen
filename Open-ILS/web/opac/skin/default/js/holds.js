@@ -878,7 +878,7 @@ function holdsCheckPossibility(pickuplib, hold, recurse) {
 function holdsBuildOrgSelector(node) {
 
 	if(!node) node = globalOrgTree;
-	if(!isTrue(node.opac_visible())) return;
+	if(!isTrue(node.opac_visible()) && !isXUL()) return;
 
 	var render_this_org = true;
 	var orgHiding = checkOrgHiding(); // value here is cached so not too painful with the recursion
