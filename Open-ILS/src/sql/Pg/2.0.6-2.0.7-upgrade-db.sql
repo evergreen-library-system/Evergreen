@@ -3,6 +3,165 @@ BEGIN;
 INSERT INTO config.upgrade_log (version) VALUES ('2.0.7');
 
 INSERT INTO config.upgrade_log (version) VALUES ('0534'); --gmc
+-- Superseded below, but keep the number in the log
+
+INSERT INTO config.upgrade_log (version) VALUES ('0535'); --dbs
+
+CREATE INDEX authority_record_deleted_idx ON authority.record_entry(deleted) WHERE deleted IS FALSE OR deleted = false;
+
+CREATE INDEX authority_full_rec_subfield_a_idx ON authority.full_rec (value) WHERE subfield = 'a';
+
+INSERT INTO config.upgrade_log (version) VALUES ('0538'); -- senator
+
+UPDATE action_trigger.event_definition
+SET template = '[% FILTER collapse %]' || template
+WHERE id = 22 AND
+    SUBSTR(template, 0, 24) NOT LIKE '%FILTER collapse%';
+
+-- Bring serial.unit into line with asset.copy
+INSERT INTO config.upgrade_log (version) VALUES ('0540'); -- dbwells
+
+CREATE TRIGGER sunit_status_changed_trig
+    BEFORE UPDATE ON serial.unit
+    FOR EACH ROW EXECUTE PROCEDURE asset.acp_status_changed();
+
+SELECT auditor.create_auditor ( 'serial', 'unit' );
+CREATE INDEX aud_serial_unit_hist_creator_idx      ON auditor.serial_unit_history ( creator );
+CREATE INDEX aud_serial_unit_hist_editor_idx       ON auditor.serial_unit_history ( editor );
+
+INSERT INTO config.upgrade_log (version) VALUES ('0541'); -- dbwells
+
+ALTER TABLE asset.call_number ALTER COLUMN label_class DROP DEFAULT;
+
+CREATE OR REPLACE FUNCTION asset.label_normalizer() RETURNS TRIGGER AS $func$
+DECLARE
+    sortkey        TEXT := '';
+BEGIN
+    sortkey := NEW.label_sortkey;
+
+    IF NEW.label_class IS NULL THEN
+        NEW.label_class := COALESCE(
+            (
+                SELECT substring(value from E'\\d+')::integer
+                FROM actor.org_unit_setting
+                WHERE name = 'cat.default_classification_scheme'
+                AND org_unit = NEW.owning_lib
+            ), 1
+        );
+    END IF;
+
+    EXECUTE 'SELECT ' || acnc.normalizer || '(' ||
+       quote_literal( NEW.label ) || ')'
+       FROM asset.call_number_class acnc
+       WHERE acnc.id = NEW.label_class
+       INTO sortkey;
+    NEW.label_sortkey = sortkey;
+    RETURN NEW;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+-- Reformat generated_coverage to be JSON arrays rather than simple comma-
+-- separated lists.
+
+-- This upgrade script is technically imperfect, but should do the right thing
+-- in 99.9% of cases, and any mistakes will be self-healing as more serials
+-- activity happens
+
+INSERT INTO config.upgrade_log (version) VALUES ('0543'); -- dbwells
+
+UPDATE serial.basic_summary SET generated_coverage = '["' || regexp_replace(regexp_replace(generated_coverage, '"', E'\\"', 'g'), ', ', '","', 'g') || '"]' WHERE generated_coverage <> '';
+
+UPDATE serial.supplement_summary SET generated_coverage = '["' || regexp_replace(regexp_replace(generated_coverage, '"', E'\\"', 'g'), ', ', '","', 'g') || '"]' WHERE generated_coverage <> '';
+
+UPDATE serial.index_summary SET generated_coverage = '["' || regexp_replace(regexp_replace(generated_coverage, '"', E'\\"', 'g'), ', ', '","', 'g') || '"]' WHERE generated_coverage <> '';
+
+-- Evergreen DB patch 0551.unnest_metabib_remap_metarecord_for_bib.sql
+--
+-- Replace usage of custom explode_array() function with native unnest()
+--
+
+INSERT INTO config.upgrade_log (version) VALUES ('0551'); -- dbs
+
+CREATE OR REPLACE FUNCTION metabib.remap_metarecord_for_bib( bib_id BIGINT, fp TEXT ) RETURNS BIGINT AS $func$
+DECLARE
+    source_count    INT;
+    old_mr          BIGINT;
+    tmp_mr          metabib.metarecord%ROWTYPE;
+    deleted_mrs     BIGINT[];
+BEGIN
+
+    DELETE FROM metabib.metarecord_source_map WHERE source = bib_id; -- Rid ourselves of the search-estimate-killing linkage
+
+    FOR tmp_mr IN SELECT  m.* FROM  metabib.metarecord m JOIN metabib.metarecord_source_map s ON (s.metarecord = m.id) WHERE s.source = bib_id LOOP
+
+        IF old_mr IS NULL AND fp = tmp_mr.fingerprint THEN -- Find the first fingerprint-matching
+            old_mr := tmp_mr.id;
+        ELSE
+            SELECT COUNT(*) INTO source_count FROM metabib.metarecord_source_map WHERE metarecord = tmp_mr.id;
+            IF source_count = 0 THEN -- No other records
+                deleted_mrs := ARRAY_APPEND(deleted_mrs, tmp_mr.id);
+                DELETE FROM metabib.metarecord WHERE id = tmp_mr.id;
+            END IF;
+        END IF;
+
+    END LOOP;
+
+    IF old_mr IS NULL THEN -- we found no suitable, preexisting MR based on old source maps
+        SELECT id INTO old_mr FROM metabib.metarecord WHERE fingerprint = fp; -- is there one for our current fingerprint?
+        IF old_mr IS NULL THEN -- nope, create one and grab its id
+            INSERT INTO metabib.metarecord ( fingerprint, master_record ) VALUES ( fp, bib_id );
+            SELECT id INTO old_mr FROM metabib.metarecord WHERE fingerprint = fp;
+        ELSE -- indeed there is. update it with a null cache and recalcualated master record
+            UPDATE  metabib.metarecord
+              SET   mods = NULL,
+                    master_record = ( SELECT id FROM biblio.record_entry WHERE fingerprint = fp ORDER BY quality DESC LIMIT 1)
+              WHERE id = old_mr;
+        END IF;
+    ELSE -- there was one we already attached to, update its mods cache and master_record
+        UPDATE  metabib.metarecord
+          SET   mods = NULL,
+                master_record = ( SELECT id FROM biblio.record_entry WHERE fingerprint = fp ORDER BY quality DESC LIMIT 1)
+          WHERE id = old_mr;
+    END IF;
+
+    INSERT INTO metabib.metarecord_source_map (metarecord, source) VALUES (old_mr, bib_id); -- new source mapping
+
+    IF ARRAY_UPPER(deleted_mrs,1) > 0 THEN
+        UPDATE action.hold_request SET target = old_mr WHERE target IN ( SELECT unnest(deleted_mrs) ) AND hold_type = 'M'; -- if we had to delete any MRs above, make sure their holds are moved
+    END IF;
+
+    RETURN old_mr;
+
+END;
+$func$ LANGUAGE PLPGSQL;
+
+-- Evergreen DB patch 0552.unnest_biblio_map_authority_linking.sql
+--
+-- Replace usage of custom explode_array() function with native unnest()
+--
+
+INSERT INTO config.upgrade_log (version) VALUES ('0552'); -- dbs
+
+CREATE OR REPLACE FUNCTION biblio.map_authority_linking (bibid BIGINT, marc TEXT) RETURNS BIGINT AS $func$
+    DELETE FROM authority.bib_linking WHERE bib = $1;
+    INSERT INTO authority.bib_linking (bib, authority)
+        SELECT  y.bib,
+                y.authority
+          FROM (    SELECT  DISTINCT $1 AS bib,
+                            BTRIM(remove_paren_substring(txt))::BIGINT AS authority
+                      FROM  unnest(oils_xpath('//*[@code="0"]/text()',$2)) x(txt)
+                      WHERE BTRIM(remove_paren_substring(txt)) ~ $re$^\d+$$re$
+                ) y JOIN authority.record_entry r ON r.id = y.authority;
+    SELECT $1;
+$func$ LANGUAGE SQL;
+
+-- Evergreen DB patch 0553.unnest_action_hold_request_permit_test.sql
+--
+-- Replace usage of custom explode_array() function with native unnest()
+--
+
+INSERT INTO config.upgrade_log (version) VALUES ('0553'); -- dbs
+
 CREATE OR REPLACE FUNCTION action.hold_request_permit_test( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT, retargetting BOOL ) RETURNS SETOF action.matrix_test_result AS $func$
 DECLARE
     matchpoint_id        INT;
@@ -111,7 +270,7 @@ BEGIN
           FROM  actor.usr_standing_penalty usp
                 JOIN config.standing_penalty csp ON (csp.id = usp.standing_penalty)
           WHERE usr = match_user
-                AND usp.org_unit IN ( SELECT * FROM explode_array(context_org_list) )
+                AND usp.org_unit IN ( SELECT * FROM unnest(context_org_list) )
                 AND (usp.stop_date IS NULL or usp.stop_date > NOW())
                 AND csp.block_list LIKE '%HOLD%' LOOP
 
@@ -127,7 +286,7 @@ BEGIN
               FROM  actor.usr_standing_penalty usp
                     JOIN config.standing_penalty csp ON (csp.id = usp.standing_penalty)
               WHERE usr = match_user
-                    AND usp.org_unit IN ( SELECT * FROM explode_array(context_org_list) )
+                    AND usp.org_unit IN ( SELECT * FROM unnest(context_org_list) )
                     AND (usp.stop_date IS NULL or usp.stop_date > NOW())
                     AND csp.block_list LIKE '%CIRC%' LOOP
     
@@ -182,77 +341,13 @@ BEGIN
 END;
 $func$ LANGUAGE plpgsql;
 
-INSERT INTO config.upgrade_log (version) VALUES ('0535'); --dbs
+-- Evergreen DB patch 0554.unnest_search_query_parser_fts.sql
+--
+-- Replace usage of custom explode_array() function with native unnest()
+--
 
-CREATE INDEX authority_record_deleted_idx ON authority.record_entry(deleted) WHERE deleted IS FALSE OR deleted = false;
+INSERT INTO config.upgrade_log (version) VALUES ('0554'); -- dbs
 
-CREATE INDEX authority_full_rec_subfield_a_idx ON authority.full_rec (value) WHERE subfield = 'a';
-
-INSERT INTO config.upgrade_log (version) VALUES ('0538'); -- senator
-
-UPDATE action_trigger.event_definition
-SET template = '[% FILTER collapse %]' || template
-WHERE id = 22 AND
-    SUBSTR(template, 0, 24) NOT LIKE '%FILTER collapse%';
-
--- Bring serial.unit into line with asset.copy
-INSERT INTO config.upgrade_log (version) VALUES ('0540'); -- dbwells
-
-CREATE TRIGGER sunit_status_changed_trig
-    BEFORE UPDATE ON serial.unit
-    FOR EACH ROW EXECUTE PROCEDURE asset.acp_status_changed();
-
-SELECT auditor.create_auditor ( 'serial', 'unit' );
-CREATE INDEX aud_serial_unit_hist_creator_idx      ON auditor.serial_unit_history ( creator );
-CREATE INDEX aud_serial_unit_hist_editor_idx       ON auditor.serial_unit_history ( editor );
-
-INSERT INTO config.upgrade_log (version) VALUES ('0541'); -- dbwells
-
-ALTER TABLE asset.call_number ALTER COLUMN label_class DROP DEFAULT;
-
-CREATE OR REPLACE FUNCTION asset.label_normalizer() RETURNS TRIGGER AS $func$
-DECLARE
-    sortkey        TEXT := '';
-BEGIN
-    sortkey := NEW.label_sortkey;
-
-    IF NEW.label_class IS NULL THEN
-        NEW.label_class := COALESCE(
-            (
-                SELECT substring(value from E'\\d+')::integer
-                FROM actor.org_unit_setting
-                WHERE name = 'cat.default_classification_scheme'
-                AND org_unit = NEW.owning_lib
-            ), 1
-        );
-    END IF;
-
-    EXECUTE 'SELECT ' || acnc.normalizer || '(' ||
-       quote_literal( NEW.label ) || ')'
-       FROM asset.call_number_class acnc
-       WHERE acnc.id = NEW.label_class
-       INTO sortkey;
-    NEW.label_sortkey = sortkey;
-    RETURN NEW;
-END;
-$func$ LANGUAGE PLPGSQL;
-
--- Reformat generated_coverage to be JSON arrays rather than simple comma-
--- separated lists.
-
--- This upgrade script is technically imperfect, but should do the right thing
--- in 99.9% of cases, and any mistakes will be self-healing as more serials
--- activity happens
-
-INSERT INTO config.upgrade_log (version) VALUES ('0543'); -- dbwells
-
-UPDATE serial.basic_summary SET generated_coverage = '["' || regexp_replace(regexp_replace(generated_coverage, '"', E'\\"', 'g'), ', ', '","', 'g') || '"]' WHERE generated_coverage <> '';
-
-UPDATE serial.supplement_summary SET generated_coverage = '["' || regexp_replace(regexp_replace(generated_coverage, '"', E'\\"', 'g'), ', ', '","', 'g') || '"]' WHERE generated_coverage <> '';
-
-UPDATE serial.index_summary SET generated_coverage = '["' || regexp_replace(regexp_replace(generated_coverage, '"', E'\\"', 'g'), ', ', '","', 'g') || '"]' WHERE generated_coverage <> '';
-
--- performance improvement for staff-client bib searches per lp#795737 (commit 86cf8555)
 CREATE OR REPLACE FUNCTION search.query_parser_fts (
 
     param_search_ou INT,
@@ -321,7 +416,7 @@ BEGIN
 
         check_count := check_count + 1;
 
-        PERFORM 1 FROM biblio.record_entry b WHERE NOT b.deleted AND b.id IN ( SELECT * FROM search.explode_array( core_result.records ) );
+        PERFORM 1 FROM biblio.record_entry b WHERE NOT b.deleted AND b.id IN ( SELECT * FROM unnest( core_result.records ) );
         IF NOT FOUND THEN
             -- RAISE NOTICE ' % were all deleted ... ', core_result.records;
             deleted_count := deleted_count + 1;
@@ -332,7 +427,7 @@ BEGIN
           FROM  biblio.record_entry b
                 JOIN config.bib_source s ON (b.source = s.id)
           WHERE s.transcendant
-                AND b.id IN ( SELECT * FROM search.explode_array( core_result.records ) );
+                AND b.id IN ( SELECT * FROM unnest( core_result.records ) );
 
         IF FOUND THEN
             -- RAISE NOTICE ' % were all transcendant ... ', core_result.records;
@@ -365,8 +460,8 @@ BEGIN
                 AND cn.label = '##URI##'
                 AND uri.active
                 AND ( param_locations IS NULL OR array_upper(param_locations, 1) IS NULL )
-                AND cn.record IN ( SELECT * FROM search.explode_array( core_result.records ) )
-                AND cn.owning_lib IN ( SELECT * FROM search.explode_array( search_org_list ) )
+                AND cn.record IN ( SELECT * FROM unnest( core_result.records ) )
+                AND cn.owning_lib IN ( SELECT * FROM unnest( search_org_list ) )
           LIMIT 1;
 
         IF FOUND THEN
@@ -399,9 +494,9 @@ BEGIN
                     JOIN asset.copy cp ON (cp.call_number = cn.id)
               WHERE NOT cn.deleted
                     AND NOT cp.deleted
-                    AND cp.status IN ( SELECT * FROM search.explode_array( param_statuses ) )
-                    AND cn.record IN ( SELECT * FROM search.explode_array( core_result.records ) )
-                    AND cp.circ_lib IN ( SELECT * FROM search.explode_array( search_org_list ) )
+                    AND cp.status IN ( SELECT * FROM unnest( param_statuses ) )
+                    AND cn.record IN ( SELECT * FROM unnest( core_result.records ) )
+                    AND cp.circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
               LIMIT 1;
 
             IF NOT FOUND THEN
@@ -419,9 +514,9 @@ BEGIN
                     JOIN asset.copy cp ON (cp.call_number = cn.id)
               WHERE NOT cn.deleted
                     AND NOT cp.deleted
-                    AND cp.location IN ( SELECT * FROM search.explode_array( param_locations ) )
-                    AND cn.record IN ( SELECT * FROM search.explode_array( core_result.records ) )
-                    AND cp.circ_lib IN ( SELECT * FROM search.explode_array( search_org_list ) )
+                    AND cp.location IN ( SELECT * FROM unnest( param_locations ) )
+                    AND cn.record IN ( SELECT * FROM unnest( core_result.records ) )
+                    AND cp.circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
               LIMIT 1;
 
             IF NOT FOUND THEN
@@ -436,8 +531,8 @@ BEGIN
 
             PERFORM 1
               FROM  asset.opac_visible_copies
-              WHERE circ_lib IN ( SELECT * FROM search.explode_array( search_org_list ) )
-                    AND record IN ( SELECT * FROM search.explode_array( core_result.records ) )
+              WHERE circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
+                    AND record IN ( SELECT * FROM unnest( core_result.records ) )
               LIMIT 1;
 
             IF NOT FOUND THEN
@@ -453,15 +548,15 @@ BEGIN
                     JOIN asset.copy cp ON (cp.call_number = cn.id)
               WHERE NOT cn.deleted
                     AND NOT cp.deleted
-                    AND cp.circ_lib IN ( SELECT * FROM search.explode_array( search_org_list ) )
-                    AND cn.record IN ( SELECT * FROM search.explode_array( core_result.records ) )
+                    AND cp.circ_lib IN ( SELECT * FROM unnest( search_org_list ) )
+                    AND cn.record IN ( SELECT * FROM unnest( core_result.records ) )
               LIMIT 1;
 
             IF NOT FOUND THEN
 
                 PERFORM 1
                   FROM  asset.call_number cn
-                  WHERE cn.record IN ( SELECT * FROM search.explode_array( core_result.records ) )
+                  WHERE cn.record IN ( SELECT * FROM unnest( core_result.records ) )
                   LIMIT 1;
 
                 IF FOUND THEN
@@ -513,5 +608,334 @@ BEGIN
 
 END;
 $func$ LANGUAGE PLPGSQL;
+
+-- Evergreen DB patch 0555.unnest_oils_xpath_table.sql
+--
+-- Replace usage of custom explode_array() function with native unnest()
+--
+
+INSERT INTO config.upgrade_log (version) VALUES ('0555'); -- dbs
+
+CREATE OR REPLACE FUNCTION oils_xpath_table ( key TEXT, document_field TEXT, relation_name TEXT, xpaths TEXT, criteria TEXT ) RETURNS SETOF RECORD AS $func$
+DECLARE
+    xpath_list  TEXT[];
+    select_list TEXT[];
+    where_list  TEXT[];
+    q           TEXT;
+    out_record  RECORD;
+    empty_test  RECORD;
+BEGIN
+    xpath_list := STRING_TO_ARRAY( xpaths, '|' );
+
+    select_list := ARRAY_APPEND( select_list, key || '::INT AS key' );
+
+    FOR i IN 1 .. ARRAY_UPPER(xpath_list,1) LOOP
+        IF xpath_list[i] = 'null()' THEN
+            select_list := ARRAY_APPEND( select_list, 'NULL::TEXT AS c_' || i );
+        ELSE
+            select_list := ARRAY_APPEND(
+                select_list,
+                $sel$
+                unnest(
+                    COALESCE(
+                        NULLIF(
+                            oils_xpath(
+                                $sel$ ||
+                                    quote_literal(
+                                        CASE
+                                            WHEN xpath_list[i] ~ $re$/[^/[]*@[^/]+$$re$ OR xpath_list[i] ~ $re$text\(\)$$re$ THEN xpath_list[i]
+                                            ELSE xpath_list[i] || '//text()'
+                                        END
+                                    ) ||
+                                $sel$,
+                                $sel$ || document_field || $sel$
+                            ),
+                           '{}'::TEXT[]
+                        ),
+                        '{NULL}'::TEXT[]
+                    )
+                ) AS c_$sel$ || i
+            );
+            where_list := ARRAY_APPEND(
+                where_list,
+                'c_' || i || ' IS NOT NULL'
+            );
+        END IF;
+    END LOOP;
+
+    q := $q$
+SELECT * FROM (
+    SELECT $q$ || ARRAY_TO_STRING( select_list, ', ' ) || $q$ FROM $q$ || relation_name || $q$ WHERE ($q$ || criteria || $q$)
+)x WHERE $q$ || ARRAY_TO_STRING( where_list, ' OR ' );
+    -- RAISE NOTICE 'query: %', q;
+
+    FOR out_record IN EXECUTE q LOOP
+        RETURN NEXT out_record;
+    END LOOP;
+
+    RETURN;
+END;
+$func$ LANGUAGE PLPGSQL IMMUTABLE;
+
+-- Evergreen DB patch 0556.unnest_biblio_extract_metabib_field_entry.sql
+--
+-- Replace usage of custom explode_array() function with native unnest()
+--
+
+INSERT INTO config.upgrade_log (version) VALUES ('0556'); -- dbs
+
+CREATE OR REPLACE FUNCTION biblio.extract_metabib_field_entry ( rid BIGINT, default_joiner TEXT ) RETURNS SETOF metabib.field_entry_template AS $func$
+DECLARE
+    bib     biblio.record_entry%ROWTYPE;
+    idx     config.metabib_field%ROWTYPE;
+    xfrm        config.xml_transform%ROWTYPE;
+    prev_xfrm   TEXT;
+    transformed_xml TEXT;
+    xml_node    TEXT;
+    xml_node_list   TEXT[];
+    facet_text  TEXT;
+    raw_text    TEXT;
+    curr_text   TEXT;
+    joiner      TEXT := default_joiner; -- XXX will index defs supply a joiner?
+    output_row  metabib.field_entry_template%ROWTYPE;
+BEGIN
+
+    -- Get the record
+    SELECT INTO bib * FROM biblio.record_entry WHERE id = rid;
+
+    -- Loop over the indexing entries
+    FOR idx IN SELECT * FROM config.metabib_field ORDER BY format LOOP
+
+        SELECT INTO xfrm * from config.xml_transform WHERE name = idx.format;
+
+        -- See if we can skip the XSLT ... it's expensive
+        IF prev_xfrm IS NULL OR prev_xfrm <> xfrm.name THEN
+            -- Can't skip the transform
+            IF xfrm.xslt <> '---' THEN
+                transformed_xml := oils_xslt_process(bib.marc,xfrm.xslt);
+            ELSE
+                transformed_xml := bib.marc;
+            END IF;
+
+            prev_xfrm := xfrm.name;
+        END IF;
+
+        xml_node_list := oils_xpath( idx.xpath, transformed_xml, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]] );
+
+        raw_text := NULL;
+        FOR xml_node IN SELECT x FROM unnest(xml_node_list) AS x LOOP
+            CONTINUE WHEN xml_node !~ E'^\\s*<';
+
+            curr_text := ARRAY_TO_STRING(
+                oils_xpath( '//text()',
+                    REGEXP_REPLACE( -- This escapes all &s not followed by "amp;".  Data ise returned from oils_xpath (above) in UTF-8, not entity encoded
+                        REGEXP_REPLACE( -- This escapes embeded <s
+                            xml_node,
+                            $re$(>[^<]+)(<)([^>]+<)$re$,
+                            E'\\1&lt;\\3',
+                            'g'
+                        ),
+                        '&(?!amp;)',
+                        '&amp;',
+                        'g'
+                    )
+                ),
+                ' '
+            );
+
+            CONTINUE WHEN curr_text IS NULL OR curr_text = '';
+
+            IF raw_text IS NOT NULL THEN
+                raw_text := raw_text || joiner;
+            END IF;
+
+            raw_text := COALESCE(raw_text,'') || curr_text;
+
+            -- insert raw node text for faceting
+            IF idx.facet_field THEN
+
+                IF idx.facet_xpath IS NOT NULL AND idx.facet_xpath <> '' THEN
+                    facet_text := oils_xpath_string( idx.facet_xpath, xml_node, joiner, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]] );
+                ELSE
+                    facet_text := curr_text;
+                END IF;
+
+                output_row.field_class = idx.field_class;
+                output_row.field = -1 * idx.id;
+                output_row.source = rid;
+                output_row.value = BTRIM(REGEXP_REPLACE(facet_text, E'\\s+', ' ', 'g'));
+
+                RETURN NEXT output_row;
+            END IF;
+
+        END LOOP;
+
+        CONTINUE WHEN raw_text IS NULL OR raw_text = '';
+
+        -- insert combined node text for searching
+        IF idx.search_field THEN
+            output_row.field_class = idx.field_class;
+            output_row.field = idx.id;
+            output_row.source = rid;
+            output_row.value = BTRIM(REGEXP_REPLACE(raw_text, E'\\s+', ' ', 'g'));
+
+            RETURN NEXT output_row;
+        END IF;
+
+    END LOOP;
+
+END;
+$func$ LANGUAGE PLPGSQL;
+
+-- Evergreen DB patch 0559.schema.biblio.extract_located_uris.sql
+--
+-- * Add a stored procedure to reingest problematic URIs
+-- * Avoid duplicate row issues in biblio.extract_located_uris
+-- * Fix LP 797304 and 797307 - asset.uri parsing bugs
+--
+
+
+-- check whether patch can be applied
+INSERT INTO config.upgrade_log (version) VALUES ('0559'); -- dbs
+
+-- FIXME: add/check SQL statements to perform the upgrade
+CREATE OR REPLACE FUNCTION biblio.extract_located_uris( bib_id BIGINT, marcxml TEXT, editor_id INT ) RETURNS VOID AS $func$
+DECLARE
+    uris            TEXT[];
+    uri_xml         TEXT;
+    uri_label       TEXT;
+    uri_href        TEXT;
+    uri_use         TEXT;
+    uri_owner_list  TEXT[];
+    uri_owner       TEXT;
+    uri_owner_id    INT;
+    uri_id          INT;
+    uri_cn_id       INT;
+    uri_map_id      INT;
+BEGIN
+
+    -- Clear any URI mappings and call numbers for this bib.
+    -- This leads to acn / auricnm inflation, but also enables
+    -- old acn/auricnm's to go away and for bibs to be deleted.
+    FOR uri_cn_id IN SELECT id FROM asset.call_number WHERE record = bib_id AND label = '##URI##' AND NOT deleted LOOP
+        DELETE FROM asset.uri_call_number_map WHERE call_number = uri_cn_id;
+        DELETE FROM asset.call_number WHERE id = uri_cn_id;
+    END LOOP;
+
+    uris := oils_xpath('//*[@tag="856" and (@ind1="4" or @ind1="1") and (@ind2="0" or @ind2="1")]',marcxml);
+    IF ARRAY_UPPER(uris,1) > 0 THEN
+        FOR i IN 1 .. ARRAY_UPPER(uris, 1) LOOP
+            -- First we pull info out of the 856
+            uri_xml     := uris[i];
+
+            uri_href    := (oils_xpath('//*[@code="u"]/text()',uri_xml))[1];
+            uri_label   := (oils_xpath('//*[@code="y"]/text()|//*[@code="3"]/text()',uri_xml))[1];
+            uri_use     := (oils_xpath('//*[@code="z"]/text()|//*[@code="2"]/text()|//*[@code="n"]/text()',uri_xml))[1];
+
+            IF uri_label IS NULL THEN
+                uri_label := uri_href;
+            END IF;
+            CONTINUE WHEN uri_href IS NULL;
+
+            -- Get the distinct list of libraries wanting to use 
+            SELECT  ARRAY_ACCUM(
+                        DISTINCT REGEXP_REPLACE(
+                            x,
+                            $re$^.*?\((\w+)\).*$$re$,
+                            E'\\1'
+                        )
+                    ) INTO uri_owner_list
+              FROM  UNNEST(
+                        oils_xpath(
+                            '//*[@code="9"]/text()|//*[@code="w"]/text()|//*[@code="n"]/text()',
+                            uri_xml
+                        )
+                    )x;
+
+            IF ARRAY_UPPER(uri_owner_list,1) > 0 THEN
+
+                -- look for a matching uri
+                IF uri_use IS NULL THEN
+                    SELECT id INTO uri_id
+                        FROM asset.uri
+                        WHERE label = uri_label AND href = uri_href AND use_restriction IS NULL AND active
+                        ORDER BY id LIMIT 1;
+                    IF NOT FOUND THEN -- create one
+                        INSERT INTO asset.uri (label, href, use_restriction) VALUES (uri_label, uri_href, uri_use);
+                        SELECT id INTO uri_id
+                            FROM asset.uri
+                            WHERE label = uri_label AND href = uri_href AND use_restriction IS NULL AND active;
+                    END IF;
+                ELSE
+                    SELECT id INTO uri_id
+                        FROM asset.uri
+                        WHERE label = uri_label AND href = uri_href AND use_restriction = uri_use AND active
+                        ORDER BY id LIMIT 1;
+                    IF NOT FOUND THEN -- create one
+                        INSERT INTO asset.uri (label, href, use_restriction) VALUES (uri_label, uri_href, uri_use);
+                        SELECT id INTO uri_id
+                            FROM asset.uri
+                            WHERE label = uri_label AND href = uri_href AND use_restriction = uri_use AND active;
+                    END IF;
+                END IF;
+
+                FOR j IN 1 .. ARRAY_UPPER(uri_owner_list, 1) LOOP
+                    uri_owner := uri_owner_list[j];
+
+                    SELECT id INTO uri_owner_id FROM actor.org_unit WHERE shortname = uri_owner;
+                    CONTINUE WHEN NOT FOUND;
+
+                    -- we need a call number to link through
+                    SELECT id INTO uri_cn_id FROM asset.call_number WHERE owning_lib = uri_owner_id AND record = bib_id AND label = '##URI##' AND NOT deleted;
+                    IF NOT FOUND THEN
+                        INSERT INTO asset.call_number (owning_lib, record, create_date, edit_date, creator, editor, label)
+                            VALUES (uri_owner_id, bib_id, 'now', 'now', editor_id, editor_id, '##URI##');
+                        SELECT id INTO uri_cn_id FROM asset.call_number WHERE owning_lib = uri_owner_id AND record = bib_id AND label = '##URI##' AND NOT deleted;
+                    END IF;
+
+                    -- now, link them if they're not already
+                    SELECT id INTO uri_map_id FROM asset.uri_call_number_map WHERE call_number = uri_cn_id AND uri = uri_id;
+                    IF NOT FOUND THEN
+                        INSERT INTO asset.uri_call_number_map (call_number, uri) VALUES (uri_cn_id, uri_id);
+                    END IF;
+
+                END LOOP;
+
+            END IF;
+
+        END LOOP;
+    END IF;
+
+    RETURN;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION biblio.reingest_uris() RETURNS VOID AS $func$
+DECLARE
+    rec_id BIGINT;
+BEGIN
+    -- Get the distinct set of record IDs that need to be reingested
+    -- (assuming that href = label is a reasonable red flag)
+    FOR rec_id IN SELECT rec_uris.id FROM (
+        SELECT acn.record AS id
+            FROM asset.call_number acn
+                INNER JOIN asset.uri_call_number_map auricnm ON auricnm.call_number = acn.id
+                INNER JOIN asset.uri auri ON auri.id = auricnm.uri
+            WHERE auri.href = auri.label
+            GROUP BY acn.record
+            ORDER BY acn.record
+        ) AS rec_uris
+    LOOP
+        -- Reingest the offending records
+        PERFORM biblio.extract_located_uris(rec_id, bre.marc, 1)
+            FROM biblio.record_entry bre
+            WHERE bre.id = rec_id;
+    END LOOP;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+-- Kick off the reingest; this may take a while
+SELECT biblio.reingest_uris();
+
 
 COMMIT;
