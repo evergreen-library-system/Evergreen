@@ -151,5 +151,7 @@ $func$ LANGUAGE PLPGSQL;
 -- Kick off the reingest; this may take a while
 SELECT biblio.reingest_uris();
 
+-- Hopefully this isn't something we'll need to run again
+DROP FUNCTION biblio.reingest_uris();
 
 COMMIT;
