@@ -149,6 +149,12 @@
                                         if (item_cnt >= max_items) {
                                             return output.innerHTML;
                                         }
+                                        if (vol.getAttribute('deleted') == 't') {
+                                            return;
+                                        }
+                                        if (vol.getAttribute('opac_visible') == 'f') {
+                                            return;
+                                        }
                                         dojo.query('copy', vol).forEach(function (cp) {
                                             if (item_cnt >= max_items) {
                                                 return;
@@ -159,6 +165,25 @@
                                             if (cp.getAttribute('opac_visible') == 'f') {
                                                 return;
                                             }
+
+                                            /* Ensure the status is visible */
+                                            var visible_status;
+                                            dojo.query('status', cp).forEach(function (status) {
+                                                visible_status = status.getAttribute('opac_visible');
+                                            });
+                                            if (visible_status == 'f') {
+                                                return;
+                                            }
+
+                                            /* Ensure the circulation library is visible */
+                                            var lib_vis;
+                                            dojo.query('circlib', cp).forEach(function (status) {
+                                                lib_vis = status.getAttribute('opac_visible');
+                                            });
+                                            if (lib_vis != 't') {
+                                                return;
+                                            }
+
                                             var cp_entry = dojo.create('div');
                                             var loc_visible;
                                             var vol_appended = false;
