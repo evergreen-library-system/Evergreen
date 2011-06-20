@@ -133,7 +133,9 @@ BEGIN
             FROM asset.call_number acn
                 INNER JOIN asset.uri_call_number_map auricnm ON auricnm.call_number = acn.id
                 INNER JOIN asset.uri auri ON auri.id = auricnm.uri
+                INNER JOIN biblio.record_entry bre ON acn.record = bre.id
             WHERE auri.href = auri.label
+                AND xml_is_well_formed(bre.marc)
             GROUP BY acn.record
             ORDER BY acn.record
         ) AS rec_uris
