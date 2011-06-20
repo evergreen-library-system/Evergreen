@@ -918,13 +918,13 @@ CREATE TYPE evergreen.barcode_set AS (type TEXT, id BIGINT, barcode TEXT);
 
 CREATE TABLE config.org_unit_setting_type_log (
     date_applied    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW() PRIMARY KEY,
-    org             SERIAL    REFERENCES actor.org_unit (id),
+    org             SERIAL,   --REFERENCES actor.org_unit (id),
     original_value  TEXT,
     new_value       TEXT,
     field_name      TEXT      REFERENCES config.org_unit_setting_type (name)
 );
 
-COMMENT ON TABLE config.org_unit_setting_log IS $$
+COMMENT ON TABLE config.org_unit_setting_type_log IS $$
 Org Unit setting Logs
 
 This table contains the most recent changes to each setting 
