@@ -1,0 +1,72 @@
+[% WRAPPER default/base.tt2 %]
+<style type="text/css">
+    .control-set-metadata-holder { text-align: left }
+</style>
+[% ctx.page_title = "Configure Authority Thesauri" %]
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class="oils-header-panel">
+        <div>Thesauri</div>
+        <div>
+            <button dojoType="dijit.form.Button" onClick="at_grid.showCreateDialog()">New Thesaurus</button>
+            <button dojoType="dijit.form.Button" onClick="at_grid.deleteSelected()">Delete Selected</button>
+        </div>
+    </div>
+    <div id="control-set-metadata-holder" class="hidden">
+        Showing only thesauri linked to <a href="control_set">control set</a>:
+        <span id="control-set-metadata"></span>
+    </div>
+    <div>
+        <table  jsId="at_grid"
+                dojoType="openils.widget.AutoGrid"
+                autoHeight="true"
+                defaultCellWidth="'auto'"
+                fieldOrder="['code','control_set','name','description']"
+                suppressEditFields="['id']"
+                query="{id: '*'}"
+                fmClass="at"
+                editOnEnter="true">
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    dojo.require("openils.widget.AutoGrid");
+    dojo.require("openils.CGI");
+    dojo.require("openils.PermaCrud");
+
+    dojo.requireLocalization("openils.authority", "authority");
+    var localeStrings =
+        dojo.i18n.getLocalization("openils.authority", "authority");
+
+    var cgi, pcrud;
+
+    function render_control_set_metadata(control_set) {
+        var span = dojo.byId("control-set-metadata");
+        span.innerHTML = dojo.string.substitute(
+            localeStrings.CONTROL_SET_METADATA, [
+                control_set.id(), control_set.name(), control_set.description()
+            ]
+        );
+        openils.Util.show("control-set-metadata-holder");
+    }
+
+    function my_init() {
+        var control_set;
+        var where = {"code": {"!=": null}};
+
+        cgi = new openils.CGI();
+        pcrud = new openils.PermaCrud();
+
+        control_set = cgi.param("acs");
+        if (control_set) {
+            control_set = pcrud.retrieve("acs", control_set);
+            where.control_set = control_set.id();
+            render_control_set_metadata(control_set);
+        }
+
+        at_grid.loadAll({"order_by": {"at": "code"}}, where);
+    }
+
+    openils.Util.addOnLoad(my_init);
+</script>
+[% END %]
