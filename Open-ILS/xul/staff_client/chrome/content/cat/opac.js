@@ -449,10 +449,12 @@ function set_opac() {
                                 item = mfhd_delete_menu.appendItem(label);
                                 item.setAttribute('oncommand','delete_mfhd('+mfhd_details.id+')');
                             }
-                            var change_event = document.createEvent("Event");
-                            change_event.initEvent("MFHDChange",false,false);
-                            window.dispatchEvent(change_event);
+                        } else if (g.mfhd) { // clear from previous runs if deleting last MFHD
+                            delete g.mfhd;
                         }
+                        var change_event = document.createEvent("Event");
+                        change_event.initEvent("MFHDChange",false,false);
+                        window.dispatchEvent(change_event);
                     }
                 );
             },

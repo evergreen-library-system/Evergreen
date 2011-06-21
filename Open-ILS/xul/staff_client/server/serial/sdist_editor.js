@@ -72,15 +72,24 @@ serial.sdist_editor.prototype = {
     'apply' : function(field,value) {
         var obj = this;
 
+        var field_name_list = ['bind_call_number','receive_call_number','bind_unit_template','receive_unit_template','record_entry'];
+
         // null out call number if the holding lib is changed
         obj.holding_lib_changed = (field == 'holding_lib');
         var loop_func = function(sdist) {
             if (obj.holding_lib_changed) {
-                var field_name_list = ['bind_call_number','receive_call_number','bind_unit_template','receive_unit_template','record_entry'];
                 for (var i = 0; i < field_name_list.length; i++) {
                     sdist[field_name_list[i]](null);
                     obj.changed[fieldmapper.IDL.fmclasses.sdist.field_map[field_name_list[i]].label] = true;
                 }
+            }
+        }
+
+        // check for blank drop-down submits
+        for (var i = 0; i < field_name_list.length; i++) {
+            if (field == field_name_list[i] && value === '') {
+                value = null;
+                break;
             }
         }
         obj.editor_base_apply(field, value, loop_func);
@@ -311,7 +320,7 @@ serial.sdist_editor.prototype = {
             var lib_id = typeof obj.sdists[0].holding_lib() == 'object' ? obj.sdists[0].holding_lib().id() : obj.sdists[0].holding_lib();
             var sre_details_list = obj.sres_ou_map[lib_id];
             if (sre_details_list == null) {
-                return [];
+                return [{'label' : $('serialStrings').getString('staff.serial.sdist_editor.no_mfhd_available.label'), 'id' : ''}];
             } else {
                 return sre_details_list;
             }

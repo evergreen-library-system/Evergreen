@@ -122,7 +122,7 @@ sub bib_to_svr {
 	my $mfhd_parser = OpenILS::Utils::MFHDParser->new();
 	foreach (@$sdists) {
         my $svr;
-        if (ref $_->record_entry) {
+        if (ref $_->record_entry and !$U->is_true($_->record_entry->deleted)) {
             $svr = $mfhd_parser->generate_svr($_->record_entry->id, $_->record_entry->marc, $_->record_entry->owning_lib);
         } else {
             $svr = Fieldmapper::serial::virtual_record->new;
