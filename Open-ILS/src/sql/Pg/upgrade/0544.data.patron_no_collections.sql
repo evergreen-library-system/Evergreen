@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('XXX');
+INSERT INTO config.upgrade_log (version) VALUES ('0544');
 
 INSERT INTO config.usr_setting_type 
 ( name, opac_visible, label, description, datatype) VALUES 
