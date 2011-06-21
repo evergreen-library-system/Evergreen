@@ -69,6 +69,7 @@ CREATE TABLE config.circ_matrix_matchpoint (
     is_renewal           BOOL,
     usr_age_lower_bound  INTERVAL,
     usr_age_upper_bound  INTERVAL,
+    item_age             INTERVAL,
     -- "Result" Fields
     circulate            BOOL,   -- Hard "can't circ" flag requiring an override
     duration_rule        INT     REFERENCES config.rule_circ_duration (id) DEFERRABLE INITIALLY DEFERRED,
@@ -83,7 +84,7 @@ CREATE TABLE config.circ_matrix_matchpoint (
 );
 
 -- Nulls don't count for a constraint match, so we have to coalesce them into something that does.
-CREATE UNIQUE INDEX ccmm_once_per_paramset ON config.circ_matrix_matchpoint (org_unit, grp, COALESCE(circ_modifier, ''), COALESCE(marc_type, ''), COALESCE(marc_form, ''), COALESCE(marc_bib_level,''), COALESCE(marc_vr_format, ''), COALESCE(copy_circ_lib::TEXT, ''), COALESCE(copy_owning_lib::TEXT, ''), COALESCE(user_home_ou::TEXT, ''), COALESCE(ref_flag::TEXT, ''), COALESCE(juvenile_flag::TEXT, ''), COALESCE(is_renewal::TEXT, ''), COALESCE(usr_age_lower_bound::TEXT, ''), COALESCE(usr_age_upper_bound::TEXT, '')) WHERE active;
+CREATE UNIQUE INDEX ccmm_once_per_paramset ON config.circ_matrix_matchpoint (org_unit, grp, COALESCE(circ_modifier, ''), COALESCE(marc_type, ''), COALESCE(marc_form, ''), COALESCE(marc_bib_level,''), COALESCE(marc_vr_format, ''), COALESCE(copy_circ_lib::TEXT, ''), COALESCE(copy_owning_lib::TEXT, ''), COALESCE(user_home_ou::TEXT, ''), COALESCE(ref_flag::TEXT, ''), COALESCE(juvenile_flag::TEXT, ''), COALESCE(is_renewal::TEXT, ''), COALESCE(usr_age_lower_bound::TEXT, ''), COALESCE(usr_age_upper_bound::TEXT, ''), COALESCE(item_age::TEXT, '')) WHERE active;
 
 -- Tests for max items out by circ_modifier
 CREATE TABLE config.circ_matrix_circ_mod_test (
@@ -109,6 +110,7 @@ DECLARE
     matchpoint      config.circ_matrix_matchpoint%ROWTYPE;
     weights         config.circ_matrix_weights%ROWTYPE;
     user_age        INTERVAL;
+    my_item_age     INTERVAL;
     denominator     NUMERIC(6,2);
     row_list        INT[];
     result          action.found_circ_matrix_matchpoint;
@@ -124,6 +126,9 @@ BEGIN
     IF user_object.dob IS NOT NULL THEN
         SELECT INTO user_age age(user_object.dob);
     END IF;
+
+    -- Ditto
+    SELECT INTO my_item_age age(coalesce(item_object.active_date, now()));
 
     -- Grab the closest set circ weight setting.
     SELECT INTO weights cw.*
@@ -151,6 +156,7 @@ BEGIN
         weights.is_renewal          := 7.0;
         weights.usr_age_lower_bound := 0.0;
         weights.usr_age_upper_bound := 0.0;
+        weights.item_age            := 0.0;
     END IF;
 
     -- Determine the max (expected) depth (+1) of the org tree and max depth of the permisson tree
@@ -194,6 +200,7 @@ BEGIN
                 AND (m.marc_bib_level           IS NULL OR m.marc_bib_level = rec_descriptor.bib_level)
                 AND (m.marc_vr_format           IS NULL OR m.marc_vr_format = rec_descriptor.vr_format)
                 AND (m.ref_flag                 IS NULL OR m.ref_flag = item_object.ref)
+                AND (m.item_age                 IS NULL OR (my_item_age IS NOT NULL AND m.item_age > my_item_age))
           ORDER BY
                 -- Permission Groups
                 CASE WHEN upgad.distance        IS NOT NULL THEN 2^(2*weights.grp - (upgad.distance/denominator)) ELSE 0.0 END +
@@ -213,7 +220,11 @@ BEGIN
                 CASE WHEN m.marc_type           IS NOT NULL THEN 4^weights.marc_type ELSE 0.0 END +
                 CASE WHEN m.marc_form           IS NOT NULL THEN 4^weights.marc_form ELSE 0.0 END +
                 CASE WHEN m.marc_vr_format      IS NOT NULL THEN 4^weights.marc_vr_format ELSE 0.0 END +
-                CASE WHEN m.ref_flag            IS NOT NULL THEN 4^weights.ref_flag ELSE 0.0 END DESC,
+                CASE WHEN m.ref_flag            IS NOT NULL THEN 4^weights.ref_flag ELSE 0.0 END +
+                -- Item age has a slight adjustment to weight based on value.
+                -- This should ensure that a shorter age limit comes first when all else is equal.
+                -- NOTE: This assumes that intervals will normally be in days.
+                CASE WHEN m.item_age            IS NOT NULL THEN 4^weights.item_age - 1 + 86400/EXTRACT(EPOCH FROM m.item_age) ELSE 0.0 END DESC,
                 -- Final sort on id, so that if two rules have the same sorting in the previous sort they have a defined order
                 -- This prevents "we changed the table order by updating a rule, and we started getting different results"
                 m.id LOOP

@@ -31,6 +31,7 @@ function cpdBuild( contextTbody, contextRow, record, callnumber, orgid, depth, c
 		/* unhide before we unhide/clone the parent */
 		unHideMe($n(templateRow, 'age_protect_label'));
 		unHideMe($n(templateRow, 'create_date_label'));
+        unHideMe($n(templateRow, 'active_date_label'));
 		unHideMe($n(templateRow, 'holdable_label'));
 	}
 
@@ -205,6 +206,7 @@ function cpdDrawCopies(r) {
 		/* unhide before we unhide/clone the parent */
 		unHideMe($n(copyrow, 'age_protect_value'));
 		unHideMe($n(copyrow, 'create_date_value'));
+        unHideMe($n(copyrow, 'active_date_value'));
 		unHideMe($n(copyrow, 'copy_holdable_td'));
 	}
 
@@ -342,6 +344,12 @@ function cpdDrawCopy(r) {
 		var cd = copy.create_date();
 		cd = cd.replace(/T.*/, '');
 		$n(row, 'create_date_value').appendChild(text(cd));
+
+        var ad = copy.active_date();
+        if(ad) {
+            ad = ad.replace(/T.*/, '');
+            $n(row, 'active_date_value').appendChild(text(ad));
+        }
 
 		var yes = $('rdetail.yes').innerHTML;
 		var no = $('rdetail.no').innerHTML;

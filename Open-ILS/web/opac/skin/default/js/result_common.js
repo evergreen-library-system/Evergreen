@@ -5,8 +5,9 @@ var opac_strings = dojo.i18n.getLocalization("openils.opac", "opac");
 var recordsHandled = 0;
 var recordsCache = [];
 var lowHitCount = 4;
-var isbnList = '';
+var isbnList = new Array();
 var googleBooksLink = true;
+var OpenLibraryLinks = true;
 
 var resultFetchAllRecords = false;
 var resultCompiledSearch = null;
@@ -16,7 +17,7 @@ if( findCurrentPage() == MRESULT || findCurrentPage() == RRESULT ) {
 	G.evt.result.hitCountReceived.push(resultSetHitInfo);
 	G.evt.result.recordReceived.push(resultDisplayRecord, resultAddCopyCounts);
 	G.evt.result.copyCountsReceived.push(resultDisplayCopyCounts);
-	G.evt.result.allRecordsReceived.push( function(){unHideMe($('result_info_2'))}, fetchGoogleBooksLink, fetchChiliFreshReviews);
+	G.evt.result.allRecordsReceived.push( function(){unHideMe($('result_info_2'))}, fetchOpenLibraryLinks, fetchGoogleBooksLink, fetchChiliFreshReviews);
 
 	attachEvt('result','lowHits',resultLowHits);
 	attachEvt('result','zeroHits',resultZeroHits);
@@ -450,16 +451,22 @@ function resultDisplayRecord(rec, pos, is_mr) {
 	var r = table.rows[pos + 1];
     var currentISBN = cleanISBN(rec.isbn());
 
-    if (googleBooksLink) {
-	    var gbspan = $n(r, "googleBooksLink");
-        if (currentISBN) {
+    if (currentISBN) {
+        isbnList.push(currentISBN);
+        if (OpenLibraryLinks) {
+            var olspan = $n(r, 'openLibraryLink');
+            olspan.setAttribute('name', olspan.getAttribute('name') + 
+                '-' + currentISBN
+            );
+        }
+
+        if (googleBooksLink) {
+            var gbspan = $n(r, "googleBooksLink");
             gbspan.setAttribute(
                 'name',
                 gbspan.getAttribute('name') + '-' + currentISBN
             );
 
-            if (isbnList) isbnList += ', ';
-            isbnList += currentISBN;
         }
     }
 
@@ -676,13 +683,116 @@ function resultBuildFormatIcons( row, rec, is_mr ) {
 	}
 }
 
+function fetchOpenLibraryLinks() {
+    if (isbnList.length > 0 && OpenLibraryLinks) {
+        /* OpenLibrary supports a number of different identifiers:
+         * ISBN: isbn:<isbn>
+         * LCCN: lccn:<lccn>
+         * OpenLibrary ID: olid:<openlibrary-ID>
+         *
+         * We'll just fire off ISBNs for now.
+         */
+
+        var isbns = '';
+        dojo.forEach(isbnList, function(isbn) {
+            isbns += 'isbn:' + isbn + '|';
+        });
+        isbns = isbns.replace(/.$/, '');
+    }
+
+    dojo.xhrGet({
+        "url": "/opac/extras/ac/proxy/json/" + isbns,
+        "handleAs": "json",
+        "load": function (data) { renderOpenLibraryLinks(data); }
+    });
+
+}
+
+function renderOpenLibraryLinks(response) {
+    var ol_ebooks = {};
+
+    /* Iterate over each identifier we requested */
+    for (var item_id in response) {
+
+        var isbn = item_id.replace(/^isbn:/, '');
+        /* Iterate over each matching item; OpenLibrary supplies access info:
+         *  * match: "exact" or "similar"
+         *  * status: "full access" or "lendable"
+         */
+        dojo.forEach(response[item_id].items, function(item) {
+            ol_ebooks[isbn] = {};
+            if (item.match == 'exact') {
+                if (item.status == 'full access') {
+                    ol_ebooks[isbn]['exact_full'] = item.itemURL;
+                } else {
+                    ol_ebooks[isbn]['exact_lendable'] = item.itemURL;
+                }
+            } else {
+                if (item.status == 'full access') {
+                    ol_ebooks[isbn]['similar_full'] = item.itemURL;
+                } else {
+                    ol_ebooks[isbn]['similar_lendable'] = item.itemURL;
+                }
+            }
+        });
+
+        /* If there are no books to read or borrow, move on */
+        if (!ol_ebooks[isbn]) {
+            continue;
+        }
+
+        /* Now populate the results page with our ebook goodness*/
+        /* Go for the jugular - exact match with full access */
+        if (ol_ebooks[isbn]['exact_full']) {
+            createOpenLibraryLink(
+                isbn, ol_ebooks[isbn]['exact_full'], 'Read online'
+            );
+            continue;
+        }
+
+        /* Fall back to slightly less palatable options */
+        else if (ol_ebooks[isbn]['exact_lendable']) {
+            createOpenLibraryLink(
+                isbn, ol_ebooks[isbn]['exact_lendable'], 'Borrow online'
+            );
+        }
+
+        if (ol_ebooks[isbn]['similar_full']) {
+            createOpenLibraryLink(
+                isbn, ol_ebooks[isbn]['similar_full'], 'Read similar online'
+            );
+        } else if (ol_ebooks[isbn]['similar_lendable']) {
+            createOpenLibraryLink(
+                isbn, ol_ebooks[isbn]['similar_lendable'], 'Borrow similar online'
+            );
+        }
+    }
+}
+
+function createOpenLibraryLink(isbn, url, text) {
+    var ol_span = $n(document.documentElement, 'openLibraryLink-' + isbn);
+
+    var ol_a_span = dojo.create('a', {
+            "href": url,
+            "class": "classic_link"
+        }, ol_span
+    );
+    dojo.create('img', {
+            "src": "/opac/images/openlibrary.gif"
+        }, ol_a_span
+    );
+    dojo.create('br', null, ol_a_span);
+    ol_a_span.appendChild(dojo.doc.createTextNode(text));
+    dojo.removeClass(ol_span, 'hide_me');
+}
+
 function fetchGoogleBooksLink () {
-    if (isbnList && googleBooksLink) {
+    if (isbnList.length > 0 && googleBooksLink) {
         var scriptElement = document.createElement("script");
         scriptElement.setAttribute("id", "jsonScript");
         scriptElement.setAttribute("src",
             "http://books.google.com/books?bibkeys=" + 
-            escape(isbnList) + "&jscmd=viewapi&callback=unhideGoogleBooksLink");
+            escape(isbnList.join(', ')) + "&jscmd=viewapi&callback=unhideGoogleBooksLink");
         scriptElement.setAttribute("type", "text/javascript");
         // make the request to Google Book Search
         document.documentElement.firstChild.appendChild(scriptElement);

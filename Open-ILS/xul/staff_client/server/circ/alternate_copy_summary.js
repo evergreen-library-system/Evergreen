@@ -135,6 +135,7 @@ function load_item() {
         set("floating", '');
         set("copy_number", '');
         set("copy_create_date", '');
+        set("copy_active_date", '');
         set("status_changed_time", '');
         set("copy_creator", '');
         set("deleted", '');
@@ -197,6 +198,7 @@ function load_item() {
             set("floating", get_localized_bool( details.copy.floating() )); 
             set("copy_number", details.copy.copy_number()); 
             set("copy_create_date", util.date.formatted_date( details.copy.create_date(), '%{localized}' )); 
+            set("copy_active_date", util.date.formatted_date( details.copy.active_date(), '%{localized}' ));
             set("status_changed_time", util.date.formatted_date( details.copy.status_changed_time(), '%{localized}' )); 
             set("copy_creator", details.copy.creator()); 
             set("deleted", details.copy.deleted()); 

@@ -80,6 +80,7 @@ CREATE TABLE asset.copy (
 	floating		BOOL				NOT NULL DEFAULT FALSE,
 	dummy_isbn      TEXT,
 	status_changed_time TIMESTAMP WITH TIME ZONE,
+	active_date TIMESTAMP WITH TIME ZONE,
 	mint_condition      BOOL        NOT NULL DEFAULT TRUE,
     cost    NUMERIC(8,2)
 );
@@ -118,6 +119,23 @@ RETURNS TRIGGER AS $$
 BEGIN
     IF NEW.status <> OLD.status THEN
         NEW.status_changed_time := now();
+        IF NEW.active_date IS NULL AND NEW.status IN (SELECT id FROM config.copy_status WHERE copy_active = true) THEN
+            NEW.active_date := now();
+        END IF;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Need to check on initial create. Fast adds, manual edit of status at create, etc.
+CREATE OR REPLACE FUNCTION asset.acp_created()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.active_date IS NULL AND NEW.status IN (SELECT id FROM config.copy_status WHERE copy_active = true) THEN
+        NEW.active_date := now();
+    END IF;
+    IF NEW.status_changed_time IS NULL THEN
+        NEW.status_changed_time := now();
     END IF;
     RETURN NEW;
 END;
@@ -126,6 +144,10 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER acp_status_changed_trig
     BEFORE UPDATE ON asset.copy
     FOR EACH ROW EXECUTE PROCEDURE asset.acp_status_changed();
+
+CREATE TRIGGER acp_created_trig
+    BEFORE INSERT ON asset.copy
+    FOR EACH ROW EXECUTE PROCEDURE asset.acp_created();
 
 CREATE TABLE asset.stat_cat_sip_fields (
     field   CHAR(2) PRIMARY KEY,

@@ -119,8 +119,8 @@
                                 <textbox name="checkout_workstation" readonly="true" context="clipboard"/>
                             </row>
                             <row>
-                                <label value="&staff.circ.alternate_copy_summary.Status_Changed_Time.label;" />
-                                <textbox name="status_changed_time" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Date_Active.label;" />
+                                <textbox name="copy_active_date" readonly="true" context="clipboard"/>
                                 <label value="&staff.circ.alternate_copy_summary.Fine_Level.label;" />
                                 <textbox name="fine_level" readonly="true" context="clipboard"/>
                                 <label value="&staff.circ.alternate_copy_summary.Total_Circs___Prev_Year.label;" />
@@ -129,8 +129,8 @@
                                 <textbox name="duration_rule" readonly="true" context="clipboard"/>
                             </row>
                             <row>
-                                <label value="&staff.circ.alternate_copy_summary.Copy_ID.label;" />
-                                <textbox name="copy_id" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Status_Changed_Time.label;" />
+                                <textbox name="status_changed_time" readonly="true" context="clipboard"/>
                                 <label value="&staff.circ.alternate_copy_summary.Reference.label;" />
                                 <textbox name="ref" readonly="true" context="clipboard"/>
                                 <!--
@@ -143,8 +143,8 @@
                                 <textbox name="recurring_fine_rule" readonly="true" context="clipboard"/>
                             </row>
                             <row>
-                                <label value="&staff.circ.alternate_copy_summary.TCN.label;" />
-                                <textbox name="tcn" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Copy_ID.label;" />
+                                <textbox name="copy_id" readonly="true" context="clipboard"/>
                                 <label value="&staff.circ.alternate_copy_summary.OPAC_Visible.label;" />
                                 <textbox name="opac_visible" readonly="true" context="clipboard"/>
                                 <label value="&staff.circ.alternate_copy_summary.Remaining_Renewals.label;" />
@@ -153,8 +153,8 @@
                                 <textbox name="max_fine_rule" readonly="true" context="clipboard"/>
                             </row>
                             <row>
-                                <label value="&staff.circ.alternate_copy_summary.Floating.label;" />
-                                <textbox name="floating" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.TCN.label;" />
+                                <textbox name="tcn" readonly="true" context="clipboard"/>
                                 <label value="&staff.circ.alternate_copy_summary.Holdable.label;" />
                                 <textbox name="holdable" readonly="true" context="clipboard"/>
                                 <spacer /><spacer />
@@ -162,7 +162,8 @@
                                 <textbox name="checkin_time" readonly="true" context="clipboard"/>
                             </row>
                             <row>
-                                <spacer /><spacer />
+                                <label value="&staff.circ.alternate_copy_summary.Floating.label;" />
+                                <textbox name="floating" readonly="true" context="clipboard"/>
                                 <label value="&staff.circ.alternate_copy_summary.Circulate.label;" />
                                 <textbox name="circulate" readonly="true" context="clipboard"/>
                                 <!--
