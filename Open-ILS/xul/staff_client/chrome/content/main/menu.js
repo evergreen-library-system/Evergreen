@@ -961,7 +961,7 @@ main.menu.prototype = {
             ],
             'cmd_server_admin_authority_control_set': [
                 ['oncommand'],
-                function(event) { open_eg_web_page('authority/control_set', null, event); }
+                function(event) { open_eg_web_page('cat/authority/control_set', null, event); }
             ],
             'cmd_server_admin_booking_resource': [
                 ['oncommand'],

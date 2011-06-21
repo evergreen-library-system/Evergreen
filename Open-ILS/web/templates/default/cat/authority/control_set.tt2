@@ -29,9 +29,9 @@
 
 <script type="text/javascript">
     dojo.require("openils.widget.AutoGrid");
-    dojo.requireLocalization('openils.authority', 'authority');
+    dojo.requireLocalization("openils.authority", "authority");
     var localeStrings =
-        dojo.i18n.getLocalization('openils.authority', 'authority');
+        dojo.i18n.getLocalization("openils.authority", "authority");
     var acs_cache = {};
 
     function format_acs_id(id) {
@@ -78,7 +78,6 @@
             acs_grid.onPostCreate = function(obj) {acs_cache[obj.id()] = obj;};
             acs_grid.dataLoader = acs_grid_loader;
             acs_grid_loader();
-            //acs_grid.loadAll({order_by:{acs : "name"}}, {"id": {"!=": null}});
         }
     );
 </script>
