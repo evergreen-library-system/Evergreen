@@ -81,9 +81,7 @@ BEGIN
     SELECT INTO item_cn_object      * FROM asset.call_number        WHERE id = item_object.call_number;
     SELECT INTO rec_descriptor      * FROM metabib.rec_descriptor   WHERE record = item_cn_object.record;
 
-    IF item_object.active_date IS NOT NULL THEN
-        SELECT INTO my_item_age age(item_object.active_date);
-    END IF;
+    SELECT INTO my_item_age age(coalesce(item_object.active_date, now()));
 
     -- The item's owner should probably be the one determining if the item is holdable
     -- How to decide that is debatable. Decided to default to the circ library (where the item lives)

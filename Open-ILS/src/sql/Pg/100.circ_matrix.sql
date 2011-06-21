@@ -128,9 +128,7 @@ BEGIN
     END IF;
 
     -- Ditto
-    IF item_object.active_date IS NOT NULL THEN
-        SELECT INTO my_item_age age(item_object.active_date);
-    END IF;
+    SELECT INTO my_item_age age(coalesce(item_object.active_date, now()));
 
     -- Grab the closest set circ weight setting.
     SELECT INTO weights cw.*

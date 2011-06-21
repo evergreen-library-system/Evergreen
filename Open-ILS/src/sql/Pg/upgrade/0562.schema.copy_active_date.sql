@@ -1,3 +1,12 @@
+-- Evergreen DB patch 0562.schema.copy_active_date.sql
+--
+-- Active Date
+
+BEGIN;
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0562', :eg_version);
+
 ALTER TABLE asset.copy
     ADD COLUMN active_date TIMESTAMP WITH TIME ZONE;
 
@@ -277,9 +286,7 @@ BEGIN
     END IF;
 
     -- Ditto
-    IF item_object.active_date IS NOT NULL THEN
-        SELECT INTO my_item_age age(item_object.active_date);
-    END IF;
+    SELECT INTO my_item_age age(coalesce(item_object.active_date, now()));
 
     -- Grab the closest set circ weight setting.
     SELECT INTO weights cw.*
@@ -460,9 +467,7 @@ BEGIN
     SELECT INTO item_cn_object      * FROM asset.call_number        WHERE id = item_object.call_number;
     SELECT INTO rec_descriptor      * FROM metabib.rec_descriptor   WHERE record = item_cn_object.record;
 
-    IF item_object.active_date IS NOT NULL THEN
-        SELECT INTO my_item_age age(item_object.active_date);
-    END IF;
+    SELECT INTO my_item_age age(coalesce(item_object.active_date, now()));
 
     -- The item's owner should probably be the one determining if the item is holdable
     -- How to decide that is debatable. Decided to default to the circ library (where the item lives)
@@ -616,3 +621,5 @@ UPDATE asset.copy SET active_date = create_date WHERE id IN (SELECT id FROM exte
 
 -- Assume create date for status change time while we are at it. Because being created WAS a change in status.
 UPDATE asset.copy SET status_changed_time = create_date WHERE status_changed_time IS NULL;
+
+COMMIT;
