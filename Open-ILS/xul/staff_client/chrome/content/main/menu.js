@@ -959,6 +959,10 @@ main.menu.prototype = {
                 ['oncommand'],
                 function(event) { open_eg_web_page('conify/global/config/usr_setting_type', null, event); }
             ],
+            'cmd_server_admin_authority_control_set': [
+                ['oncommand'],
+                function(event) { open_eg_web_page('authority/control_set', null, event); }
+            ],
             'cmd_server_admin_booking_resource': [
                 ['oncommand'],
                 function(event) { open_eg_web_page('conify/global/booking/resource', null, event); }
@@ -1157,8 +1161,11 @@ main.menu.prototype = {
             'cmd_authority_manage' : [
                 ['oncommand'],
                 function(event) {
-                    obj.data.stash_retrieve();
-                    obj.command_tab(event,obj.url_prefix(urls.AUTHORITY_MANAGE),{},{});
+                    open_eg_web_page(
+                        urls.AUTHORITY_MANAGE,
+                        "menu.cmd_authority_manage.tab",
+                        event
+                    );
                 }
             ],
 

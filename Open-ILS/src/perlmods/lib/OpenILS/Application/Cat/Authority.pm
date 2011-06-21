@@ -226,4 +226,48 @@ sub count_linked_bibs {
     return $link_count;
 }
 
+__PACKAGE__->register_method(
+    "method" => "retrieve_acs",
+    "api_name" => "open-ils.cat.authority.control_set.retrieve",
+    "api_level" => 1,
+    "stream" => 1,
+    "argc" => 2,
+    "signature" => {
+        "desc" => q/Retrieve authority.control_set objects with fleshed
+        thesauri and authority fields/,
+        "params" => [
+            {"name" => "limit",  "desc" => "limit (optional; default 15)", "type" => "number"},
+            {"name" => "offset",  "desc" => "offset doptional; default 0)", "type" => "number"},
+            {"name" => "id",  "desc" => "acs id (optional; default all)", "type" => "number"}
+        ]
+    }
+);
+
+# XXX I don't think this really needs to be protected by perms, or does it?
+sub retrieve_acs {
+    my $self = shift;
+    my $client = shift;
+
+    my ($limit, $offset, $id) = map int, @_;
+
+    $limit ||= 15;
+    $offset ||= 0;
+    $id ||= undef;
+
+    my $e = new_editor;
+    my $where = {"id" => ($id ? $id : {"!=" => undef})};
+    my $sets = $e->search_authority_control_set([
+        $where, {
+            "flesh" => 1,
+            "flesh_fields" => {"acs" => [qw/thesauri authority_fields/]},
+            "order_by" => {"acs" => "name"}
+        }
+    ]) or return $e->die_event;
+
+    $e->disconnect;
+
+    $client->respond($_) foreach @$sets;
+    return undef;
+}
+
 1;

@@ -1759,7 +1759,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="acs" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="authority::control_set" oils_persist:tablename="authority.control_set" reporter:label="Authority Control Set">
-		<fields oils_persist:primary="id" oils_persist:sequence="authority.contol_set_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="authority.control_set_id_seq">
 			<field reporter:label="Control Set ID" name="id" reporter:datatype="id" reporter:selector="name"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true" />
 			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true" />
@@ -1772,16 +1772,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="CREATE_AUTHORITY_CONTROLSET" global_required="true"/>
+				<create permission="CREATE_AUTHORITY_CONTROL_SET" global_required="true"/>
 				<retrieve/>
-				<update permission="UPDATE_AUTHORITY_CONTROLSET" global_required="true"/>
-				<delete permission="DELETE_AUTHORITY_CONTROLSET" global_required="true"/>
+				<update permission="UPDATE_AUTHORITY_CONTROL_SET" global_required="true"/>
+				<delete permission="DELETE_AUTHORITY_CONTROL_SET" global_required="true"/>
 			</actions>
 		</permacrud>
 	</class>
 
 	<class id="acsaf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="authority::control_set_authority_field" oils_persist:tablename="authority.control_set_authority_field" reporter:label="Authority Control Set Authority Field">
-		<fields oils_persist:primary="id" oils_persist:sequence="authority.contol_set_authority_field_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="authority.control_set_authority_field_id_seq">
 			<field reporter:label="Control Set Authority Field ID" name="id" reporter:datatype="id" reporter:selector="name"/>
 			<field reporter:label="Main Entry" name="main_entry" reporter:datatype="link"/>
 			<field reporter:label="Control Set" name="control_set" reporter:datatype="link"/>
@@ -1804,16 +1804,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="CREATE_AUTHORITY_CONTROLSET" global_required="true"/>
+				<create permission="CREATE_AUTHORITY_CONTROL_SET" global_required="true"/>
 				<retrieve/>
-				<update permission="UPDATE_AUTHORITY_CONTROLSET" global_required="true"/>
-				<delete permission="UPDATE_AUTHORITY_CONTROLSET" global_required="true"/>
+				<update permission="UPDATE_AUTHORITY_CONTROL_SET" global_required="true"/>
+				<delete permission="UPDATE_AUTHORITY_CONTROL_SET" global_required="true"/>
 			</actions>
 		</permacrud>
 	</class>
 
 	<class id="acsbf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="authority::control_set_bib_field" oils_persist:tablename="authority.control_set_bib_field" reporter:label="Authority Control Set Bib Field">
-		<fields oils_persist:primary="id" oils_persist:sequence="authority.contol_set_bib_field_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="authority.control_set_bib_field_id_seq">
 			<field reporter:label="Controlled Bib Field ID" name="id" reporter:datatype="id" reporter:selector="name"/>
 			<field reporter:label="Controlling Authority Field" name="authority_field" reporter:datatype="link"/>
 			<field reporter:label="Tag" name="tag" reporter:datatype="text" oils_obj:required="true" oils_obj:validate="^.{3}$"/>
@@ -1823,10 +1823,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="CREATE_AUTHORITY_CONTROLSET" global_required="true"/>
+				<create permission="CREATE_AUTHORITY_CONTROL_SET" global_required="true"/>
 				<retrieve/>
-				<update permission="UPDATE_AUTHORITY_CONTROLSET" global_required="true"/>
-				<delete permission="UPDATE_AUTHORITY_CONTROLSET" global_required="true"/>
+				<update permission="UPDATE_AUTHORITY_CONTROL_SET" global_required="true"/>
+				<delete permission="UPDATE_AUTHORITY_CONTROL_SET" global_required="true"/>
 			</actions>
 		</permacrud>
 	</class>
@@ -1843,10 +1843,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="CREATE_AUTHORITY_CONTROLSET" global_required="true"/>
+				<create permission="CREATE_AUTHORITY_CONTROL_SET" global_required="true"/>
 				<retrieve/>
-				<update permission="UPDATE_AUTHORITY_CONTROLSET" global_required="true"/>
-				<delete permission="UPDATE_AUTHORITY_CONTROLSET" global_required="true"/>
+				<update permission="UPDATE_AUTHORITY_CONTROL_SET" global_required="true"/>
+				<delete permission="UPDATE_AUTHORITY_CONTROL_SET" global_required="true"/>
 			</actions>
 		</permacrud>
 	</class>
@@ -1865,10 +1865,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="CREATE_AUTHORITY_CONTROLSET" global_required="true"/>
+				<create permission="CREATE_AUTHORITY_CONTROL_SET" global_required="true"/>
 				<retrieve/>
-				<update permission="UPDATE_AUTHORITY_CONTROLSET" global_required="true"/>
-				<delete permission="UPDATE_AUTHORITY_CONTROLSET" global_required="true"/>
+				<update permission="UPDATE_AUTHORITY_CONTROL_SET" global_required="true"/>
+				<delete permission="UPDATE_AUTHORITY_CONTROL_SET" global_required="true"/>
 			</actions>
 		</permacrud>
 	</class>
@@ -1885,10 +1885,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
-                <create permission="CREATE_AUTHORITY_CONTROLSET" global_required="true"/>
+                <create permission="CREATE_AUTHORITY_CONTROL_SET" global_required="true"/>
                 <retrieve/>
-                <update permission="UPDATE_AUTHORITY_CONTROLSET" global_required="true"/>
-                <delete permission="UPDATE_AUTHORITY_CONTROLSET" global_required="true"/>
+                <update permission="UPDATE_AUTHORITY_CONTROL_SET" global_required="true"/>
+                <delete permission="UPDATE_AUTHORITY_CONTROL_SET" global_required="true"/>
             </actions>
         </permacrud>
     </class>

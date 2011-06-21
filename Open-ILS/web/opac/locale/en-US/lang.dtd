@@ -783,6 +783,11 @@
 <!ENTITY staff.main.menu.admin.server_admin.acq.exchange_rate.label "Exchange Rates">
 <!ENTITY staff.main.menu.admin.server_admin.acq.exchange_rate.accesskey "X">
 
+<!ENTITY staff.main.menu.admin.server_admin.authority.label "Authorities">
+<!ENTITY staff.main.menu.admin.server_admin.authority.accesskey "U">
+<!ENTITY staff.main.menu.admin.server_admin.authority.control_set.label "Control Sets">
+<!ENTITY staff.main.menu.admin.server_admin.authority.control_set.accesskey "C">
+
 <!ENTITY staff.main.menu.admin.server_admin.booking.label "Booking">
 <!ENTITY staff.main.menu.admin.server_admin.booking.accesskey "B">
 <!ENTITY staff.main.menu.admin.server_admin.booking.resource.label "Resources">
