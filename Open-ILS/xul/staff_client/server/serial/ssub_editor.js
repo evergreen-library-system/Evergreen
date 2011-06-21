@@ -126,7 +126,8 @@ serial.ssub_editor.prototype = {
                 { 
                     render: 'fm.start_date() == null ? "" : util.date.formatted_date( fm.start_date(), "%F");',
                     input: 'c = function(v){ obj.apply("start_date",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.setAttribute("value",obj.editor_values.start_date); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
-                    value_key: 'start_date'
+                    value_key: 'start_date',
+                    required: true
                 }
             ],
             [

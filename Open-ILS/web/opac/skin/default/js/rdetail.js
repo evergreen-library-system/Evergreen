@@ -352,19 +352,20 @@ function loadMarcEditor(recId) {
  */
 function _holdingsDraw(h) {
     holdings = h.getResultObject();
-    if (!holdings) { return null; }
 
-    // Only draw holdings within our OU scope
-    var here = findOrgUnit(getLocation());
-    var entryNum = 0;
-    dojo.forEach(holdings, function (item) {
-        if (orgIsMine(here, findOrgUnit(item.owning_lib()))) {
-            _holdingsDrawMFHD(item, entryNum);
-            entryNum++;
-        }
-    });
+    if (holdings) {
+        // Only draw holdings within our OU scope
+        var here = findOrgUnit(getLocation());
+        var entryNum = 0;
+        dojo.forEach(holdings, function (item) {
+            if (orgIsMine(here, findOrgUnit(item.owning_lib()))) {
+                _holdingsDrawMFHD(item, entryNum);
+                entryNum++;
+            }
+        });
+    }
 
-    // Populate XUL menus
+    // Populate (or unpopulate) XUL menus
     if (isXUL()) {
         runEvt('rdetail','MFHDDrawn');
     }
