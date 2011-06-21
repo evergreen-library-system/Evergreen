@@ -13,6 +13,9 @@ ALTER TABLE asset.copy
 ALTER TABLE auditor.asset_copy_history
     ADD COLUMN active_date TIMESTAMP WITH TIME ZONE;
 
+ALTER TABLE auditor.serial_unit_history
+    ADD COLUMN active_date TIMESTAMP WITH TIME ZONE;
+
 ALTER TABLE config.copy_status
     ADD COLUMN copy_active BOOL NOT NULL DEFAULT FALSE;
 
