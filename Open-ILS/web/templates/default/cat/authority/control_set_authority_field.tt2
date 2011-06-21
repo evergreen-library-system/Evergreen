@@ -1,0 +1,82 @@
+[% WRAPPER default/base.tt2 %]
+<style type="text/css">
+    .control-set-metadata-holder { text-align: left }
+</style>
+[% ctx.page_title = "Configure Authority Authority Fields" %]
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class="oils-header-panel">
+        <div>Authority Fields</div>
+        <div>
+            <button dojoType="dijit.form.Button" onClick="acsaf_grid.showCreateDialog()">New Authority Fields</button>
+            <button dojoType="dijit.form.Button" onClick="acsaf_grid.deleteSelected()">Delete Selected</button>
+        </div>
+    </div>
+    <div id="control-set-metadata-holder" class="hidden">
+        Showing only authority fields linked to
+        <a href="control_set">control set</a>:
+        <span id="control-set-metadata"></span>
+    </div>
+    <div>
+        <table  jsId="acsaf_grid"
+                dojoType="openils.widget.AutoGrid"
+                autoHeight="true"
+                defaultCellWidth="'auto'"
+                fieldOrder="['id','name','description','main_entry','control_set','tag','sf_list']"
+                suppressEditFields="['id']"
+                query="{id: '*'}"
+                fmClass="acsaf"
+                editOnEnter="true">
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    dojo.require("openils.widget.AutoGrid");
+    dojo.require("openils.CGI");
+    dojo.require("openils.PermaCrud");
+
+    dojo.requireLocalization("openils.authority", "authority");
+    var localeStrings =
+        dojo.i18n.getLocalization("openils.authority", "authority");
+
+    var cgi, pcrud;
+
+    function render_control_set_metadata(control_set) {
+        var span = dojo.byId("control-set-metadata");
+        span.innerHTML = dojo.string.substitute(
+            localeStrings.CONTROL_SET_METADATA, [
+                control_set.id(), control_set.name(), control_set.description()
+            ]
+        );
+        openils.Util.show("control-set-metadata-holder");
+    }
+
+    function my_init() {
+        var control_set;
+        var where = {"id": {"!=": null}};
+
+        cgi = new openils.CGI();
+        pcrud = new openils.PermaCrud();
+
+        control_set = cgi.param("acs");
+        if (control_set) {
+            control_set = pcrud.retrieve("acs", control_set);
+            where.control_set = control_set.id();
+            render_control_set_metadata(control_set);
+            /* XXX TODO
+               1) put render_control_set_metadata() somewhere that it doesn't
+               have to be repeated.
+               2) when browsing by control_set, make it impossible to
+               create/edit acsaf objects with any other control_set.
+               */
+        }
+
+        acsaf_grid.loadAll(
+            {"order_by": {"acsaf": ["main_entry DESC", "id"]}},
+            where
+        );
+    }
+
+    openils.Util.addOnLoad(my_init);
+</script>
+[% END %]
