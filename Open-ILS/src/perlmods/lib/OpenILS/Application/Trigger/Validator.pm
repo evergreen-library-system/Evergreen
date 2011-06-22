@@ -77,6 +77,8 @@ sub HoldIsAvailable {
         !$hold->cancel_time and
         $hold->capture_time and 
         $hold->current_copy and
+        $hold->shelf_time and
+        !$hold->fulfillment_time and
         $hold->current_copy->status == OILS_COPY_STATUS_ON_HOLDS_SHELF;
 
     return 0;
