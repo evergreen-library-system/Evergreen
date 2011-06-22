@@ -44,10 +44,10 @@
                 acs_cache[id].authority_fields().length : 0;
 
             return "<a href='" + oilsBasePath +
-                "/cat/authority/thesaurus?acs=" + id + "'>" +
+                "/conify/global/cat/authority/thesaurus?acs=" + id + "'>" +
                 dojo.string.substitute(localeStrings.THESAURI, [tlen]) +
                 "</a> &nbsp;" + " <a href='" + oilsBasePath +
-                "/cat/authority/control_set_authority_field?acs=" +
+                "/conify/global/cat/authority/control_set_authority_field?acs=" +
                 id + "'>" +
                 dojo.string.substitute(localeStrings.AUTHORITY_FIELDS, [alen]) +
                 "</a>";
