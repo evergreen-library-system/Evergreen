@@ -36,11 +36,18 @@ patron.search_result.prototype = {
             'au_family_name' : { 'hidden' : false },
             'au_first_given_name' : { 'hidden' : false },
             'au_second_given_name' : { 'hidden' : false },
-            'au_dob' : { 'hidden' : false }
+            'au_dob' : { 'hidden' : false },
+            'au_profile' : { 'remove_me' : true },
+            'au_ident_type' : { 'remove_me' : true },
+            'au_ident_type2' : { 'remove_me' : true }
         }).concat(
             obj.list.fm_columns('ac',{
                 '*' : { 'remove_virtual' : true, 'expanded_label' : true, 'hidden' : true },
                 'ac_barcode' : { 'hidden' : false }
+            })
+        ).concat(
+            obj.list.fm_columns('pgt',{
+                '*' : { 'remove_virtual' : true, 'expanded_label' : true, 'hidden' : true }
             })
         ).concat(
             obj.list.fm_columns('aua',{
@@ -60,6 +67,24 @@ patron.search_result.prototype = {
                     'hidden' : true
                 }
             },'mailing_')
+        ).concat(
+            obj.list.fm_columns('cit',{
+                '*' : {
+                    'dataobj' : 'ident_type',
+                    'remove_virtual' : true,
+                    'label_prefix' : $('patronStrings').getString('staff.patron.search_result.ident_type_column_label_prefix'),
+                    'hidden' : true
+                }
+            },'ident_type_')
+        ).concat(
+            obj.list.fm_columns('cit',{
+                '*' : {
+                    'dataobj' : 'ident_type2',
+                    'remove_virtual' : true,
+                    'label_prefix' : $('patronStrings').getString('staff.patron.search_result.ident_type2_column_label_prefix'),
+                    'hidden' : true
+                }
+            },'ident_type2_')
         );
 
         obj.list.init(
@@ -80,6 +105,9 @@ patron.search_result.prototype = {
                                 row.my.ac = row.my.au.card();
                                 row.my.billing_aua = row.my.au.billing_address();
                                 row.my.mailing_aua = row.my.au.mailing_address();
+                                row.my.pgt = typeof row.my.au.profile() == 'object' ? row.my.au.profile() : obj.OpenILS.data.hash.pgt[ row.my.au.profile() ];
+                                row.my.ident_type = typeof row.my.au.ident_type() == 'object' ? row.my.au.ident_type() : obj.OpenILS.data.hash.cit[ row.my.au.ident_type() ];
+                                row.my.ident_type2 = typeof row.my.au.ident_type2() == 'object' ? row.my.au.ident_type2() : obj.OpenILS.data.hash.cit[ row.my.au.ident_type2() ];
                                 if (typeof params.on_retrieve == 'function') {
                                     params.on_retrieve(row);
                                 } else {
