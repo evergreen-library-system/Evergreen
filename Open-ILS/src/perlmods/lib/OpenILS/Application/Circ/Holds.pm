@@ -3453,6 +3453,8 @@ sub change_hold_title {
 
     $e->commit;
 
+    _reset_hold($self, $e->requestor, $_) for @$holds;
+
     return 1;
 }
 
