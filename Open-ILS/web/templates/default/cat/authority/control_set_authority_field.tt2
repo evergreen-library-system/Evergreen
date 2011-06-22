@@ -1,7 +1,4 @@
 [% WRAPPER default/base.tt2 %]
-<style type="text/css">
-    .control-set-metadata-holder { text-align: left }
-</style>
 [% ctx.page_title = "Configure Authority Authority Fields" %]
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class="oils-header-panel">
@@ -27,7 +24,7 @@
                 editOnEnter="true">
             <thead>
                 <tr>
-                    <th field="bib_fields" name="Controlled Bib Fields"></th>
+                    <th field="bib_fields" name="Controlled Bib Fields" get="get_just_id" formatter="format_bib_fields"></th>
                     <th field="axis_maps" name="Axes"></th>
                 </tr>
             </thead>
@@ -73,6 +70,22 @@
         );
     }
 
+    function get_just_id(row_index, item) {
+        if (item) return this.grid.store.getValue(item, "id");
+    }
+
+    function format_bib_fields(id) {
+        if (id) {
+            var text = acsaf_cache[id].bib_fields().map(
+                function(f) { return f.tag(); }
+            ).sort().join(", ");
+            var href = "control_set_bib_field?";
+            if (control_set)
+                href += "acs=" + control_set.id() + "&amp;";
+            href += "acsaf=" + id;
+            return "<a href='" + href + "'>"  + text + "</a>";
+        }
+    }
 
     function my_init() {
         cgi = new openils.CGI();
@@ -82,10 +95,11 @@
         if (control_set) {
             control_set = pcrud.retrieve("acs", control_set);
             render_control_set_metadata(control_set);
-            /* XXX TODO
-               when browsing by control_set, make it impossible to
-               create/edit acsaf objects with any other control_set.
-               */
+
+            acsaf_grid.overrideEditWidgets.control_set =
+                new dijit.form.TextBox({"disabled": true});
+            acsaf_grid.overrideEditWidgets.control_set.shove =
+                {"create": control_set.id()};
         }
 
         acsaf_grid.onPostCreate = function(o) { acsaf_cache[o.id()] = o; };

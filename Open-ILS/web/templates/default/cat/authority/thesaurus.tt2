@@ -1,7 +1,4 @@
 [% WRAPPER default/base.tt2 %]
-<style type="text/css">
-    .control-set-metadata-holder { text-align: left }
-</style>
 [% ctx.page_title = "Configure Authority Thesauri" %]
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class="oils-header-panel">
@@ -53,6 +50,11 @@
             control_set = pcrud.retrieve("acs", control_set);
             where.control_set = control_set.id();
             render_control_set_metadata(control_set);
+
+            at_grid.overrideEditWidgets.control_set =
+                new dijit.form.TextBox({"disabled": true});
+            at_grid.overrideEditWidgets.control_set.shove =
+                {"create": control_set.id()};
         }
 
         at_grid.loadAll({"order_by": {"at": "code"}}, where);
