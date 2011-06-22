@@ -117,7 +117,12 @@
                 {"create": control_set.id()};
         }
 
-        acsaf_grid.onPostCreate = function(o) { acsaf_cache[o.id()] = o; };
+        acsaf_grid.onPostCreate = function(o) {
+            o.bib_fields([]);
+            o.axis_maps([]);
+            acsaf_cache[o.id()] = o;
+        };
+
         acsaf_grid.dataLoader = acsaf_grid_loader;
         acsaf_grid_loader();
     }
