@@ -238,7 +238,7 @@ __PACKAGE__->register_method(
         "params" => [
             {"name" => "limit",  "desc" => "limit (optional; default 15)", "type" => "number"},
             {"name" => "offset",  "desc" => "offset doptional; default 0)", "type" => "number"},
-            {"name" => "id",  "desc" => "acs id (optional; default all)", "type" => "number"}
+            {"name" => "focus",  "desc" => "optionally make sure the acs object with ID matching this value comes at the top of the result set (only works with offset 0)", "type" => "number"}
         ]
     }
 );
@@ -248,25 +248,101 @@ sub retrieve_acs {
     my $self = shift;
     my $client = shift;
 
-    my ($limit, $offset, $id) = map int, @_;
+    my ($limit, $offset, $focus) = map int, @_;
 
     $limit ||= 15;
     $offset ||= 0;
-    $id ||= undef;
+    $focus ||= undef;
 
     my $e = new_editor;
-    my $where = {"id" => ($id ? $id : {"!=" => undef})};
+    my $order_by = [
+        {"class" => "acs", "field" => "name"}
+    ];
+
+    # Here is the magic that let's us say that a given acsaf
+    # will be our first result.
+    unshift @$order_by, {
+        "class" => "acs", "field" => "id",
+        "transform" => "numeric_eq", "params" => [$focus],
+        "direction" => "desc"
+    } if $focus;
+
     my $sets = $e->search_authority_control_set([
-        $where, {
+        {"id" => {"!=" => undef}}, {
             "flesh" => 1,
             "flesh_fields" => {"acs" => [qw/thesauri authority_fields/]},
-            "order_by" => {"acs" => "name"}
+            "order_by" => $order_by,
+            "limit" => $limit,
+            "offset" => $offset
         }
     ]) or return $e->die_event;
 
     $e->disconnect;
 
     $client->respond($_) foreach @$sets;
+    return undef;
+}
+
+__PACKAGE__->register_method(
+    "method" => "retrieve_acsaf",
+    "api_name" => "open-ils.cat.authority.control_set_authority_field.retrieve",
+    "api_level" => 1,
+    "stream" => 1,
+    "argc" => 2,
+    "signature" => {
+        "desc" => q/Retrieve authority.control_set_authority_field objects with
+        fleshed bib_fields and axes/,
+        "params" => [
+            {"name" => "limit",  "desc" => "limit (optional; default 15)", "type" => "number"},
+            {"name" => "offset",  "desc" => "offset (optional; default 0)", "type" => "number"},
+            {"name" => "control_set",  "desc" => "optionally constrain by value of acsaf.control_set field", "type" => "number"},
+            {"name" => "focus", "desc" => "optionally make sure the acsaf object with ID matching this value comes at the top of the result set (only works with offset 0)"}
+        ]
+    }
+);
+
+sub retrieve_acsaf {
+    my $self = shift;
+    my $client = shift;
+
+    my ($limit, $offset, $control_set, $focus) = map int, @_;
+
+    $limit ||= 15;
+    $offset ||= 0;
+    $control_set ||= undef;
+    $focus ||= undef;
+
+    my $e = new_editor;
+    my $where = {
+        "control_set" => ($control_set ? $control_set : {"!=" => undef})
+    };
+    my $order_by = [
+        {"class" => "acsaf", "field" => "main_entry", "direction" => "desc"},
+        {"class" => "acsaf", "field" => "id"}
+    ];
+
+    unshift @$order_by, {
+        "class" => "acsaf", "field" => "id",
+        "transform" => "numeric_eq", "params" => [$focus],
+        "direction" => "desc"
+    } if $focus;
+
+    my $fields = $e->search_authority_control_set_authority_field([
+        $where, {
+            "flesh" => 2,
+            "flesh_fields" => {
+                "acsaf" => ["bib_fields", "axis_maps"],
+                "abaafm" => ["axis"]
+            },
+            "order_by" => $order_by,
+            "limit" => $limit,
+            "offset" => $offset
+        }
+    ]) or return $e->die_event;
+
+    $e->disconnect;
+
+    $client->respond($_) foreach @$fields;
     return undef;
 }
 

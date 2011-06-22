@@ -12,8 +12,8 @@
         </div>
     </div>
     <div id="control-set-metadata-holder" class="hidden">
-        Showing only thesauri linked to <a href="control_set">control set</a>:
-        <span id="control-set-metadata"></span>
+        Showing only thesauri linked to control set:
+        <a id="control-set-metadata"></a>
     </div>
     <div>
         <table  jsId="at_grid"
@@ -28,7 +28,8 @@
         </table>
     </div>
 </div>
-
+<script type="text/javascript"
+    src="[% ctx.media_prefix %]/js/ui/default/cat/authority/common.js"></script>
 <script type="text/javascript">
     dojo.require("openils.widget.AutoGrid");
     dojo.require("openils.CGI");
@@ -39,16 +40,6 @@
         dojo.i18n.getLocalization("openils.authority", "authority");
 
     var cgi, pcrud;
-
-    function render_control_set_metadata(control_set) {
-        var span = dojo.byId("control-set-metadata");
-        span.innerHTML = dojo.string.substitute(
-            localeStrings.CONTROL_SET_METADATA, [
-                control_set.id(), control_set.name(), control_set.description()
-            ]
-        );
-        openils.Util.show("control-set-metadata-holder");
-    }
 
     function my_init() {
         var control_set;

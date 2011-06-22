@@ -29,10 +29,12 @@
 
 <script type="text/javascript">
     dojo.require("openils.widget.AutoGrid");
+    dojo.require("openils.CGI");
     dojo.requireLocalization("openils.authority", "authority");
     var localeStrings =
         dojo.i18n.getLocalization("openils.authority", "authority");
     var acs_cache = {};
+    var cgi;
 
     function format_acs_id(id) {
         if (id) {
@@ -59,7 +61,7 @@
         fieldmapper.standardRequest(
             ["open-ils.cat", "open-ils.cat.authority.control_set.retrieve"], {
                 "async": true,
-                "params": [acs_grid.displayLimit, acs_grid.displayOffset],
+                "params": [acs_grid.displayLimit, acs_grid.displayOffset, cgi.param("focus")],
                 "onresponse": function(r) {
                     if (r = openils.Util.readResponse(r)) {
                         acs_cache[r.id()] = r;
@@ -75,6 +77,8 @@
 
     openils.Util.addOnLoad(
         function() {
+            cgi = new openils.CGI();
+
             acs_grid.onPostCreate = function(obj) {acs_cache[obj.id()] = obj;};
             acs_grid.dataLoader = acs_grid_loader;
             acs_grid_loader();
