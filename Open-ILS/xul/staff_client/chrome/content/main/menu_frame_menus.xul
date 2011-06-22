@@ -201,6 +201,7 @@
              />
 
     <command id="cmd_server_admin_authority_control_set" />
+    <command id="cmd_server_admin_authority_browse_axis" />
 
     <command id="cmd_server_admin_booking_resource" />
     <command id="cmd_server_admin_booking_resource_type" />
@@ -525,6 +526,7 @@
                 <menu id="main.menu.admin.server.authority" label="&staff.main.menu.admin.server_admin.authority.label;" accesskey="&staff.main.menu.admin.server_admin.authority.accesskey;">
                     <menupopup id="main.menu.admin.server.authority.popup">
                         <menuitem label="&staff.main.menu.admin.server_admin.authority.control_set.label;" command="cmd_server_admin_authority_control_set" accesskey="&staff.main.menu.admin.server_admin.authority.control_set.accesskey;"/>
+                        <menuitem label="&staff.main.menu.admin.server_admin.authority.browse_axis.label;" command="cmd_server_admin_authority_browse_axis" accesskey="&staff.main.menu.admin.server_admin.authority.browse_axis.accesskey;"/>
                     </menupopup>
                 </menu>
 

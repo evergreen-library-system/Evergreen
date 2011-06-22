@@ -963,6 +963,10 @@ main.menu.prototype = {
                 ['oncommand'],
                 function(event) { open_eg_web_page('cat/authority/control_set', null, event); }
             ],
+            'cmd_server_admin_authority_browse_axis': [
+                ['oncommand'],
+                function(event) { open_eg_web_page('cat/authority/browse_axis', null, event); }
+            ],
             'cmd_server_admin_booking_resource': [
                 ['oncommand'],
                 function(event) { open_eg_web_page('conify/global/booking/resource', null, event); }

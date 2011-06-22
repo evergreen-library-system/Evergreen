@@ -24,8 +24,10 @@
                 editOnEnter="true">
             <thead>
                 <tr>
-                    <th field="bib_fields" name="Controlled Bib Fields" get="get_just_id" formatter="format_bib_fields"></th>
-                    <th field="axis_maps" name="Axes"></th>
+                    <th field="bib_fields" name="Controlled Bib Fields"
+                        get="get_just_id" formatter="format_bib_fields"></th>
+                    <th field="axis_maps" name="Axes"
+                        get="get_just_id" formatter="format_axis_maps"></th>
                 </tr>
             </thead>
         </table>
@@ -74,11 +76,24 @@
         if (item) return this.grid.store.getValue(item, "id");
     }
 
+    function format_axis_maps(id) {
+        if (id) {
+            var text = acsaf_cache[id].axis_maps().map(
+                function(f) { return f.axis().name(); }
+            ).sort().join(", ") || localeStrings.NONE_LINK;
+            var href = "browse_axis_authority_field_map?";
+            if (control_set)
+                href += "acs=" + control_set.id() + "&amp;";
+            href += "acsaf=" + id;
+            return "<a href='" + href + "'>"  + text + "</a>";
+        }
+    }
+
     function format_bib_fields(id) {
         if (id) {
             var text = acsaf_cache[id].bib_fields().map(
                 function(f) { return f.tag(); }
-            ).sort().join(", ");
+            ).sort().join(", ") || localeStrings.NONE_LINK;
             var href = "control_set_bib_field?";
             if (control_set)
                 href += "acs=" + control_set.id() + "&amp;";
