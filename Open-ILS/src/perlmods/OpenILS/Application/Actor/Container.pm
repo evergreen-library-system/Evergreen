@@ -163,6 +163,7 @@ __PACKAGE__->register_method(
 	method	=> "bucket_retrieve_class",
 	api_name	=> "open-ils.actor.container.retrieve_by_class",
 	argc		=> 3, 
+	authoritative	=> 3, 
 	notes		=> <<"	NOTES");
 		Retrieves all un-fleshed buckets by class assigned to given user 
 		PARAMS(authtoken, bucketOwnerId, class [, type])
