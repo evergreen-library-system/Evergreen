@@ -364,7 +364,7 @@ sub show_template {
             var bucketStore = new dojo.data.ItemFileReadStore(
                 { data : cbreb.toStoreData(
                         fieldmapper.standardRequest(
-                            ['open-ils.actor','open-ils.actor.container.retrieve_by_class'],
+                            ['open-ils.actor','open-ils.actor.container.retrieve_by_class.authoritative'],
                             [u.authtoken, u.user.id(), 'biblio', 'staff_client']
                         )
                     )
