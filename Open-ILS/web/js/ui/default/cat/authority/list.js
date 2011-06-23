@@ -326,7 +326,7 @@ function displayRecords(parms) {
 
     dojo.query("#authlist-div div").orphan();
 
-    var url = '/opac/extras/browse/marcxml/'
+    var url = '/opac/extras/browse/marcxml/authority.'
         + dijit.byId('authAxis').attr('value')
         // + '/' + dijit.byId('authOU').attr('value')
         + '/1' // replace with preceding line if OUs gain some meaning

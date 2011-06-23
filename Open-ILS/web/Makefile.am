@@ -52,7 +52,7 @@ webcore-install:
 	cp @top_srcdir@/Open-ILS/xsl/*.xsl $(DESTDIR)$(XSLDIR)
 	cp -r $(DESTDIR)$(WEBDIR)/opac/skin/default/* $(DESTDIR)$(WEBDIR)/opac/skin/craftsman/
 	cp -r @top_srcdir@/Open-ILS/web/opac/skin/craftsman/* $(DESTDIR)$(WEBDIR)/opac/skin/craftsman/
-	for i in mresult.xml rresult.xml rdetail.xml advanced.xml myopac.xml cnbrowse.xml; do \
+	for i in mresult.xml rresult.xml rdetail.xml advanced.xml myopac.xml cnbrowse.xml authbrowse.xml; do \
 		cd $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/ && rm -f $$i && $(LN_S) index.xml $$i; \
 	done
 	for i in mresult.xml rresult.xml rdetail.xml advanced.xml myopac.xml cnbrowse.xml; do \

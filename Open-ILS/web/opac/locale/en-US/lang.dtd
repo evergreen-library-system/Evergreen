@@ -789,6 +789,8 @@
 <!ENTITY staff.main.menu.admin.server_admin.authority.control_set.accesskey "C">
 <!ENTITY staff.main.menu.admin.server_admin.authority.browse_axis.label "Browse Axes">
 <!ENTITY staff.main.menu.admin.server_admin.authority.browse_axis.accesskey "B">
+<!ENTITY staff.main.menu.admin.server_admin.authority.thesaurus.label "Thesauri">
+<!ENTITY staff.main.menu.admin.server_admin.authority.thesaurus.accesskey "T">
 
 <!ENTITY staff.main.menu.admin.server_admin.booking.label "Booking">
 <!ENTITY staff.main.menu.admin.server_admin.booking.accesskey "B">

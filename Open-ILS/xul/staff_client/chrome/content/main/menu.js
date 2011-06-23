@@ -967,6 +967,10 @@ main.menu.prototype = {
                 ['oncommand'],
                 function(event) { open_eg_web_page('conify/global/cat/authority/browse_axis', null, event); }
             ],
+            'cmd_server_admin_authority_thesaurus': [
+                ['oncommand'],
+                function(event) { open_eg_web_page('conify/global/cat/authority/thesaurus', null, event); }
+            ],
             'cmd_server_admin_booking_resource': [
                 ['oncommand'],
                 function(event) { open_eg_web_page('conify/global/booking/resource', null, event); }

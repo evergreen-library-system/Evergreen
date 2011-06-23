@@ -18,6 +18,7 @@ function advInit() {
 	setEnterFunc($('adv_quick_text'), advGenericSearch);
 
 	unHideMe($('adv_marc_search_sidebar'));
+	unHideMe($('adv_authority_browse_sidebar'));
 }
 
 
@@ -174,5 +175,13 @@ function advDrawBarcode(r) {
     location.href = buildOPACLink(args);
 }
 
-
+function authBrowseSubmit() {
+    var selector = dojo.byId("authority_browse_axis");
+    var args = {"page": AUTHBROWSE};
+    args[PARAM_AUTHORITY_BROWSE_AXIS] =
+        selector.options[selector.selectedIndex].value;
+    args[PARAM_AUTHORITY_BROWSE_TERM] =
+        dojo.byId("authority_browse_term").value;
+    location.href = buildOPACLink(args);
+}
 

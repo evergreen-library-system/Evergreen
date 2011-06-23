@@ -22,6 +22,12 @@
                 query="{id: '*'}"
                 fmClass="at"
                 editOnEnter="true">
+            <thead>
+                <tr>
+                    <th field="control_set" get="get_control_set"
+                        formatter="format_control_set"></th>
+                </tr>
+            </thead>
         </table>
     </div>
 </div>
@@ -37,9 +43,38 @@
         dojo.i18n.getLocalization("openils.authority", "authority");
 
     var cgi, pcrud;
+    var control_set;
+
+    function get_control_set(rowidx, item) {
+        if (item) {
+            /* I'm /sure/ there's a better way to do the following */
+            this._tmp = openils.widget.AutoGrid.defaultGetter;
+            var ordinary = this._tmp(rowidx, item); 
+            delete this._tmp;
+
+            if (control_set) {
+                return ordinary;
+            } else {
+                var id = this.grid.store.getValue(item, "control_set");
+                return {
+                    "id": id, "text": ordinary
+                };
+            }
+        }
+    }
+
+    function format_control_set(f) {
+        if (typeof f == "object") {
+            return '<a href="' + oilsBasePath +
+                '/conify/global/cat/authority/control_set?focus=' + f.id +
+                '">' + f.text + "</a>";
+        } else {
+            return f;
+        }
+
+    }
 
     function my_init() {
-        var control_set;
         var where = {"code": {"!=": null}};
 
         cgi = new openils.CGI();

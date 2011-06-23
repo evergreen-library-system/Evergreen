@@ -47,6 +47,8 @@ var PARAM_PUBD_AFTER = 'pda';
 var PARAM_PUBD_BETWEEN = 'pdt';
 var PARAM_PUBD_DURING = 'pdd';
 var PARAM_NOPERSIST_SEARCH = 'nps';
+var PARAM_AUTHORITY_BROWSE_AXIS = "ax";
+var PARAM_AUTHORITY_BROWSE_TERM = "bt";
 
 /* URL param values (see comments above) */
 var TERM;  
@@ -113,6 +115,7 @@ var HOME			= "home";
 var BBAGS		= "bbags";
 var REQITEMS	= "reqitems";
 var CNBROWSE	= "cnbrowse";
+var AUTHBROWSE	= "authbrowse";
 
 /* search type (STYPE) options */
 var STYPE_AUTHOR	= "author";
@@ -225,6 +228,7 @@ config.page[RDETAIL]		= "rdetail.xml";
 config.page[BBAGS]		= "bbags.xml";
 config.page[REQITEMS]	= "reqitems.xml";
 config.page[CNBROWSE]	= "cnbrowse.xml";
+config.page[AUTHBROWSE]	= "authbrowse.xml";
 
 /* themes */
 config.themes = {};

@@ -1853,7 +1853,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 	<class id="aba" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="authority::browse_axis" oils_persist:tablename="authority.browse_axis" reporter:label="Authority Browse Axis">
 		<fields oils_persist:primary="code">
-			<field reporter:label="Code" name="code" reporter:datatype="id" reporter:selector="name"/>
+			<field reporter:label="Code" name="code" reporter:datatype="id" reporter:selector="name" oils_obj:validate="^\S+$"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true"/>
 			<field reporter:label="Description" name="description" reporter:datatype="text"/>
 			<field reporter:label="Authority Fields" name="fields" reporter:datatype="link" oils_persist:virtual="true"/>
