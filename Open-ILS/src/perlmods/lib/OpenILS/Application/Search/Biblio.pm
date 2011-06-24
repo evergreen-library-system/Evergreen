@@ -636,7 +636,7 @@ __PACKAGE__->register_method(
             { desc => 'Biblio record entry Id', type => 'number' }
         ],
         return => {
-            desc => 'True if specified id can be found in biblio.peer_record_copy_map.peer_record.',
+            desc => 'True if specified id can be found in biblio.peer_bib_copy_map.peer_record.',
             type => 'bool'
         }
     }
