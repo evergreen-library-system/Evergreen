@@ -26,6 +26,7 @@ use OpenSRF::AppSession;
 my $U = "OpenILS::Application::AppUtils";
 my $conf;
 my %marctemplates;
+my $assetcom = 'OpenILS::Application::Cat::AssetCommon';
 
 __PACKAGE__->register_method(
     method   => "retrieve_marc_template",
@@ -868,21 +869,20 @@ sub fleshed_volume_update {
         if( $vol->isdeleted ) {
 
             $logger->info("vol-update: deleting volume");
-            return $editor->event unless
+            return $editor->die_event unless
                 $editor->allowed('UPDATE_VOLUME', $vol->owning_lib);
-            my $cs = $editor->search_asset_copy(
-                { call_number => $vol->id, deleted => 'f' } );
-            return OpenILS::Event->new(
-                'VOLUME_NOT_EMPTY', payload => $vol->id ) if @$cs;
 
-            $vol->deleted('t');
-            return $editor->event unless
+            if(my $evt = $assetcom->delete_volume($editor, $vol, $override, $$options{force_delete_copies})) {
+                $editor->rollback;
+                return $evt;
+            }
+
+            return $editor->die_event unless
                 $editor->update_asset_call_number($vol);
 
-            
         } elsif( $vol->isnew ) {
             $logger->info("vol-update: creating volume");
-            $evt = OpenILS::Application::Cat::AssetCommon->create_volume( $override, $editor, $vol );
+            $evt = $assetcom->create_volume( $override, $editor, $vol );
             return $evt if $evt;
 
         } elsif( $vol->ischanged ) {
@@ -895,7 +895,7 @@ sub fleshed_volume_update {
         # now update any attached copies
         if( $copies and @$copies and !$vol->isdeleted ) {
             $_->call_number($vol->id) for @$copies;
-            $evt = OpenILS::Application::Cat::AssetCommon->update_fleshed_copies(
+            $evt = $assetcom->update_fleshed_copies(
                 $editor, $override, $vol, $copies, $delete_stats, $retarget_holds, undef);
             return $evt if $evt;
         }
