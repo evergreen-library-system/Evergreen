@@ -150,7 +150,7 @@ EXTRA_DIST = @srcdir@/perlmods @srcdir@/templates @top_srcdir@/Open-ILS/xsl @src
 
 # Install header files
 
-oilsincludedir = $(DESTDIR)@includedir@/openils
+oilsincludedir = @includedir@/openils
 headsdir = @top_srcdir@/Open-ILS/include/openils
 oilsinclude_HEADERS = $(headsdir)/idl_fieldmapper.h $(headsdir)/oils_constants.h $(headsdir)/oils_event.h $(headsdir)/oils_idl.h $(headsdir)/oils_utils.h
 
@@ -167,13 +167,13 @@ uninstall-hook:
 #perl-install and string-templates-install	
 ilscore-install:
 	@echo $@
-	$(MKDIR_P) $(TEMPLATEDIR)
-	cp -r @srcdir@/templates/marc $(TEMPLATEDIR)
-	cp -r @srcdir@/templates/password-reset $(TEMPLATEDIR)
-	@echo "Installing string templates to $(TEMPLATEDIR)"
-	$(MKDIR_P) $(TEMPLATEDIR)
-	$(MKDIR_P) $(datadir)/overdue/
-	cp -r @srcdir@/templates/strings $(TEMPLATEDIR)
+	$(MKDIR_P) $(DESTDIR)$(TEMPLATEDIR)
+	cp -r @srcdir@/templates/marc $(DESTDIR)$(TEMPLATEDIR)
+	cp -r @srcdir@/templates/password-reset $(DESTDIR)$(TEMPLATEDIR)
+	@echo "Installing string templates to $(DESTDIR)$(TEMPLATEDIR)"
+	$(MKDIR_P) $(DESTDIR)$(TEMPLATEDIR)
+	$(MKDIR_P) $(DESTDIR)$(datadir)/overdue/
+	cp -r @srcdir@/templates/strings $(DESTDIR)$(TEMPLATEDIR)
 	sed -i 's|LOCALSTATEDIR|@localstatedir@|g' '$(DESTDIR)@sysconfdir@/oils_sip.xml.example'
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@sysconfdir@/oils_sip.xml.example'
 	sed -i 's|LOCALSTATEDIR|@localstatedir@|g' '$(DESTDIR)@sysconfdir@/opensrf_core.xml.example'
