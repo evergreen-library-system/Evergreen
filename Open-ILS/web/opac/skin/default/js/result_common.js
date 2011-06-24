@@ -494,8 +494,12 @@ function resultDisplayRecord(rec, pos, is_mr) {
 	} catch(e){ }
 */
 
-	var pic = $n(r, config.names.result.item_jacket);
-	pic.setAttribute("src", buildISBNSrc(currentISBN));
+    var pic = $n(r, config.names.result.item_jacket);
+    if (currentISBN) {
+        pic.setAttribute("src", buildISBNSrc(currentISBN));
+    } else {
+        pic.setAttribute("src", "/opac/images/blank.png");
+    }
 
 	var title_link = $n(r, config.names.result.item_title);
 	var author_link = $n(r, config.names.result.item_author);
