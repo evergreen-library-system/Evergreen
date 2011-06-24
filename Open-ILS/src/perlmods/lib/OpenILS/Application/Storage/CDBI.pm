@@ -506,6 +506,15 @@ sub modify_from_fieldmapper {
 
 	action::survey_answer->has_a( question => 'action::survey_question' );
 
+	biblio::peer_bib_copy_map->has_a( target_copy => 'asset::copy' );
+	biblio::peer_bib_copy_map->has_a( peer_record => 'biblio::record_entry' );
+	biblio::peer_bib_copy_map->has_a( peer_type => 'biblio::peer_type' );
+
+	asset::copy_part_map->has_a( target_copy => 'asset::copy' );
+	asset::copy_part_map->has_a( part => 'biblio::monograph_part' );
+
+	biblio::peer_type->has_many( records => 'biblio::record_entry' );
+
 	asset::copy_note->has_a( owning_copy => 'asset::copy' );
 	asset::copy_note->has_a( creator => 'actor::user' );
 
@@ -514,6 +523,9 @@ sub modify_from_fieldmapper {
 
 	asset::copy->has_many( stat_cat_entries => [ 'asset::stat_cat_entry_copy_map' => 'stat_cat_entry' ] );
 	asset::copy->has_many( stat_cat_entry_copy_maps => 'asset::stat_cat_entry_copy_map' );
+	asset::copy->has_many( peer_bib_copy_maps => 'biblio::peer_bib_copy_map' );
+
+	asset::copy->has_many( part_maps => 'asset::copy_part_map' );
 
 	asset::copy->has_a( call_number => 'asset::call_number' );
 	asset::copy->has_a( creator => 'actor::user' );
