@@ -1,5 +1,5 @@
 README for Evergreen master
-========================
+===========================
 
 Installing prerequisites:
 -------------------------
@@ -108,13 +108,87 @@ chown -R opensrf:opensrf /openils
 Configure the Apache Web server:
 --------------------------------
 
-Use the example configuration files in `Open-ILS/examples/apache/` to configure
+1. Use the example configuration files in `Open-ILS/examples/apache/` to configure
 your Web server for the Evergreen catalog, staff client, Web services, and
 administration interfaces.
++
+.Debian and Ubuntu
+[source,bash]
+------------------------------------------------------------------------------
+cp Open-ILS/examples/apache/eg.conf       /etc/apache2/sites-available/
+cp Open-ILS/examples/apache/eg_vhost.conf /etc/apache2/
+cp Open-ILS/examples/apache/startup.pl    /etc/apache2/
+# Now set up SSL
+mkdir /etc/apache2/ssl
+cd /etc/apache2/ssl
+------------------------------------------------------------------------------
++
+.Fedora
+[source,bash]
+------------------------------------------------------------------------------
+cp Open-ILS/examples/apache/eg.conf       /etc/httpd/sites-available/
+cp Open-ILS/examples/apache/eg_vhost.conf /etc/httpd/
+cp Open-ILS/examples/apache/startup.pl    /etc/httpd/
+# Now set up SSL
+mkdir /etc/httpd/ssl
+cd /etc/httpd/ssl
+------------------------------------------------------------------------------
++
+2. Create an SSL key for the Apache server:
++
+[source,bash]
+------------------------------------------------------------------------------
+openssl req -new -x509 -days 365 -nodes -out server.crt -keyout server.key
+------------------------------------------------------------------------------
++
+The `openssl` command cuts a new SSL key for your Apache server. For a
+production server, you should purchase a signed SSL certificate, but you can
+just use a self-signed certificate and accept the warnings in the staff client
+and browser during testing and development
++
+3. Edit the `eg.conf` file that you copied into place.
+  a. Replace `Allow from 10.0.0.0/8` with `Allow from all` (to enable
+     access to the offline upload / execute interface from any workstation on
+     any network - note that you must secure this for a production instance)
+  b. Comment the line `Listen 443` as it conflicts with the same declaration
+     elsewhere in the Apache configuration files.
+4. Change the user for the Apache server.
+  * (Debian and Ubuntu): As the root user, edit `/etc/apache2/envvars`.
+    Change `export APACHE_RUN_USER=www-data` to 
+    `export APACHE_RUN_USER=opensrf`.
+  * (Fedora): As the root user, edit `/etc/httpd/conf/httpd.conf`. Change
+    `User apache` to `User opensrf`.
+5. Configure Apache with performance settings appropriate for Evergreen:
+  * (Debian and Ubuntu): As the root user, edit `/etc/apache2/apache2.conf`:
+  * (Fedora): As the root user, edit `/etc/httpd/conf/httpd.conf`:
+    a. Change `KeepAliveTimeout` to `1`. Higher values reduce the chance of
+       a request timing out unexpectedly, but increase the risk of using up
+       all available Apache child processes.
+    b. 'Optional': Change `MaxKeepAliveRequests` to `100`
+    c. Update the prefork configuration section to suit your environment. The
+       following settings apply to a busy system:
++
+[source,bash]
+------------------------------------------------------------------------------
+<IfModule mpm_prefork_module>
+   StartServers           20
+   MinSpareServers         5
+   MaxSpareServers        15
+   MaxClients            150
+   MaxRequestsPerChild 10000
+</IfModule>
+------------------------------------------------------------------------------
++
+6. (Debian and Ubuntu): As the root user, enable the Evergreen site:
++
+[source,bash]
+------------------------------------------------------------------------------
+a2dissite default  # OPTIONAL: disable the default site (the "It Works" page)
+a2ensite eg.conf
+------------------------------------------------------------------------------
 
 Configure OpenSRF for the Evergreen application:
 ------------------------------------------------
-
 There are a number of example OpenSRF configuration files in `/openils/conf/`
 that you can use as a template for your Evergreen installation.
 
