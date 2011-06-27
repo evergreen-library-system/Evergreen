@@ -145,6 +145,7 @@ var api = {
     'FM_AHR_RESET' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold.reset' },
     'FM_AHR_STATUS' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold.status.retrieve' },
     'TRANSFER_TITLE_HOLDS' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold.change_title' },
+    'TRANSFER_SPECIFIC_TITLE_HOLDS' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold.change_title.specific_holds' },
     'FM_AHRCC_PCRUD_SEARCH' : { 'app' : 'open-ils.pcrud', 'method' : 'open-ils.pcrud.search.ahrcc.atomic', 'secure' : false },
     'FM_AIHU_CREATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.in_house_use.create' },
     'FM_ANCC_RETRIEVE_VIA_ID' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.non_cataloged_circulation.retrieve' },
