@@ -494,6 +494,7 @@ Please see a librarian to renew your account.">
 <!ENTITY rdetail.cn.location "Location">
 <!ENTITY rdetail.cn.hold.age "Age Hold Protection">
 <!ENTITY rdetail.cn.genesis "Create Date">
+<!ENTITY rdetail.cn.active "Active Date">
 <!ENTITY rdetail.cn.holdable "Holdable">
 <!ENTITY rdetail.cn.due "Due Date">
 <!ENTITY rdetail.cn.more "more info...">

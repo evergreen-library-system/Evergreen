@@ -82,6 +82,8 @@
                 if (attr == 'opac_visible' && typeof n != 'string')
                     this.setValue(item, 'opac_visible', n ? 't' : 'f');
 
+                if (attr == 'copy_active' && typeof n != 'string')
+                    this.setValue(item, 'copy_active', n ? 't' : 'f');
             };
 
             dojo.addOnUnload( function (event) {
@@ -208,6 +210,18 @@
 											var r = window.status_data_model.getRow(row);
 											if (r) {
 												var h = r.opac_visible;
+												if (h == 't' || h === true) return true;
+												return false;
+											}
+										  }
+										},
+										{ name : ccs_strings.COPY_ACTIVE,
+										  field : "copy_active",
+										  editor : dojox.grid.editors.bool,
+										  get : function (row) {
+											var r = window.status_data_model.getRow(row);
+											if (r) {
+												var h = r.copy_active;
 												if (h == 't' || h === true) return true;
 												return false;
 											}

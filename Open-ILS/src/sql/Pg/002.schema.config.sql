@@ -86,7 +86,7 @@ CREATE TRIGGER no_overlapping_deps
     BEFORE INSERT OR UPDATE ON config.db_patch_dependencies
     FOR EACH ROW EXECUTE PROCEDURE evergreen.array_overlap_check ('deprecates');
 
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0559', :eg_version); -- dbs via miker
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0567', :eg_version); -- miker/berick
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -349,7 +349,8 @@ CREATE TABLE config.copy_status (
 	id		SERIAL	PRIMARY KEY,
 	name		TEXT	NOT NULL UNIQUE,
 	holdable	BOOL	NOT NULL DEFAULT FALSE,
-	opac_visible	BOOL	NOT NULL DEFAULT FALSE
+	opac_visible	BOOL	NOT NULL DEFAULT FALSE,
+    copy_active  BOOL    NOT NULL DEFAULT FALSE
 );
 COMMENT ON TABLE config.copy_status IS $$
 Copy Statuses

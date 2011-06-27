@@ -815,7 +815,7 @@ sub generate_fines {
             next unless ($c->fine_interval);
         }
         #TODO: reservation grace periods
-        my $grace_period = ($is_reservation ? 0 : $c->grace_period);
+        my $grace_period = ($is_reservation ? 0 : interval_to_seconds($c->grace_period));
 
 		try {
 			if ($self->method_lookup('open-ils.storage.transaction.current')->run) {

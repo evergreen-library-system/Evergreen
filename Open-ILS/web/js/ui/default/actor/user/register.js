@@ -593,6 +593,10 @@ function uEditDrawSettingRow(tbody, dividerRow, template, stype) {
     dojo.connect(cb, 'onChange', function(newVal) { userSettingsToUpdate[stype.name()] = newVal; });
     tbody.insertBefore(row, dividerRow.nextSibling);
     openils.Util.show(row, 'table-row');
+
+    if(stype.name() == 'circ.collections.exempt') {
+        checkCollectionsExemptPerm(cb);
+    }
 }
 
 function uEditUpdateUserSettings(userId) {
@@ -894,6 +898,22 @@ function checkClaimsNoCheckoutCountPerm() {
     );
 }
 
+var collectExemptCBox;
+function checkCollectionsExemptPerm(cbox) {
+    if(cbox) collectExemptCBox = cbox;
+    new openils.User().getPermOrgList(
+        'UPDATE_PATRON_COLLECTIONS_EXEMPT',
+        function(orgList) { 
+            if(orgList.indexOf(patron.home_ou()) == -1) 
+                collectExemptCBox.attr('disabled', true);
+            else
+                collectExemptCBox.attr('disabled', false);
+        },
+        true, 
+        true
+    );
+}
+
 
 function attachWidgetEvents(fmcls, fmfield, widget) {
 
@@ -1085,6 +1105,7 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
                     function(newVal) { 
                         checkClaimsReturnCountPerm(); 
                         checkClaimsNoCheckoutCountPerm();
+                        checkCollectionsExemptPerm();
                     }
                 );
                 return;

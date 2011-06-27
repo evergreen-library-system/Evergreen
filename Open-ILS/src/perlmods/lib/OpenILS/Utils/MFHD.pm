@@ -357,6 +357,8 @@ sub get_compressed_holdings {
         @decomp_holdings = $self->get_decompressed_holdings($caption, {'dedupe' => 1});
     }
 
+    return () if !@decomp_holdings;
+
     my $runner = $decomp_holdings[0]->clone->increment;   
     my $curr_holding = shift(@decomp_holdings);
     $curr_holding = $curr_holding->clone;
@@ -414,6 +416,9 @@ sub get_decompressed_holdings {
     my $link_id = $caption->link_id;
     $htag =~ s/^85/86/;
     my @holdings = $self->holdings($htag, $link_id);
+
+    return () if !@holdings;
+
     my @decomp_holdings;
 
     foreach my $holding (@holdings) {

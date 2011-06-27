@@ -24,7 +24,7 @@ install: build-perl
 	./Build install
 
 build-perl:
-	perl Build.PL || make -s build-perl-fail
+	perl Build.PL --destdir $(DESTDIR) || make -s build-perl-fail
 
 build-perl-fail:
 	echo

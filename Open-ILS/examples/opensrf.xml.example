@@ -279,16 +279,28 @@ vim:et:ts=4:sw=4:
 
 
         <added_content>
-
             <!-- load the OpenLibrary added content module -->
             <module>OpenILS::WWW::AddedContent::OpenLibrary</module>
 
             <!--
             Max number of seconds to wait for an added content request to 
             return data.  Data not returned within the timeout is considered
-            a failure
+            a failure.
+
+            Note that the pool of Apache processes used by the AddedContent
+            module is the same pool used by core Evergreen processes such as
+            search, circulation, etc. Therefore, the higher you set this
+            timeout value, the more likely you are to run out of available
+            Apache processes resulting in an accidental (or purposeful) denial
+            of service - particularly if the added content server starts
+            responding abnormally slowly.
+
+            The safest option is to disable the AddedContent module completely,
+            but 3 seconds is a compromise between the threat of a denial of
+            service and the enhanced user experience offered by successful added
+            content requests.
             -->
-            <timeout>30</timeout>
+            <timeout>3</timeout>
 
             <!--
             After added content lookups have been disabled due to too many

@@ -1716,6 +1716,7 @@ util.list.prototype = {
                 var col_id = prefix + hint + '_' + my_field.name;
                 var dataobj = hint;
                 var datafield = my_field.name;
+                var fleshed_display_field;
                 if (column_extras) {
                     if (column_extras['*']) {
                         if (column_extras['*']['dataobj']) {
@@ -1728,6 +1729,9 @@ util.list.prototype = {
                         }
                         if (column_extras[col_id]['datafield']) {
                             datafield = column_extras[col_id]['datafield'];
+                        }
+                        if (column_extras[col_id]['fleshed_display_field']) {
+                            fleshed_display_field = column_extras[col_id]['fleshed_display_field'];
                         }
                     }
                 }
@@ -1743,7 +1747,24 @@ util.list.prototype = {
                 // my_field.datatype => bool float id int interval link money number org_unit text timestamp
                 if (my_field.datatype == 'link') {
                     def.render = function(my) { 
-                        return typeof my[dataobj][datafield]() == 'object' ? my[dataobj][datafield]()[my_field.key]() : my[dataobj][datafield](); 
+                        // is the object fleshed?
+                        return my[dataobj][datafield]() && typeof my[dataobj][datafield]() == 'object'
+                            // yes, show the display field
+                            ? my[dataobj][datafield]()[fleshed_display_field||my_field.key]()
+                            // no, do we have its class in data.hash?
+                            : ( typeof data.hash[ my[dataobj].Structure.field_map[datafield].class ] != 'undefined'
+                                // yes, do we have this particular object cached?
+                                ? ( data.hash[ my[dataobj].Structure.field_map[datafield].class ][ my[dataobj][datafield]() ]
+                                    // yes, show the display field
+                                    ? data.hash[ my[dataobj].Structure.field_map[datafield].class ][ my[dataobj][datafield]() ][
+                                        fleshed_display_field||my_field.key
+                                    ]()
+                                    // no, just show the raw value
+                                    : my[dataobj][datafield]()
+                                )
+                                // no, just show the raw value
+                                : my[dataobj][datafield]()
+                            ); 
                     }
                 } else {
                     def.render = function(my) { return my[dataobj][datafield](); }

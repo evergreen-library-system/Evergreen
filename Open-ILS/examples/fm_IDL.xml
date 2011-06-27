@@ -1154,6 +1154,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             <field reporter:label="MARC Form" name="marc_form" oils_persist:primitive="string" reporter:datatype="float"/>
             <field reporter:label="Videorecording Format" name="marc_vr_format" oils_persist:primitive="string" reporter:datatype="float"/>
             <field reporter:label="Reference?" name="ref_flag" reporter:datatype="float"/>
+            <field reporter:label="Item Age &lt;" name="item_age" reporter:datatype="float"/>
         </fields>
         <links/>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
@@ -1182,6 +1183,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             <field reporter:label="Reference?" name="ref_flag" reporter:datatype="float"/>
             <field reporter:label="User Age: Lower Bound" name="usr_age_lower_bound" reporter:datatype="float"/>
             <field reporter:label="User Age: Upper Bound" name="usr_age_upper_bound" reporter:datatype="float"/>
+            <field reporter:label="Item Age &lt;" name="item_age" reporter:datatype="float"/>
         </fields>
         <links/>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
@@ -1235,6 +1237,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="MARC Bib Level" name="marc_bib_level" oils_persist:primitive="string" reporter:datatype="link"/>
 			<field reporter:label="Videorecording Format" name="marc_vr_format" oils_persist:primitive="string" reporter:datatype="link"/>
 			<field reporter:label="Reference?" name="ref_flag" reporter:datatype="bool"/>
+            <field reporter:label="Item Age &lt;" name="item_age" reporter:datatype="text"/>
 			<field reporter:label="Holdable?" name="holdable" reporter:datatype="bool"/>
 			<field reporter:label="Range is from Owning Lib?" name="distance_is_from_owner" reporter:datatype="bool"/>
 			<field reporter:label="Transit Range" name="transit_range" reporter:datatype="link"/>
@@ -1287,6 +1290,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             <field reporter:label="Juvenile?" name="juvenile_flag" reporter:datatype="bool"/>
 			<field reporter:label="User Age: Lower Bound" name="usr_age_lower_bound" reporter:datatype="text"/>
 			<field reporter:label="User Age: Upper Bound" name="usr_age_upper_bound" reporter:datatype="text"/>
+            <field reporter:label="Item Age &lt;" name="item_age" reporter:datatype="text"/>
 			<field reporter:label="Circulate?" name="circulate" reporter:datatype="bool"/>
 			<field reporter:label="Duration Rule" name="duration_rule" reporter:datatype="link"/>
 			<field reporter:label="Recurring Fine Rule" name="recurring_fine_rule" reporter:datatype="link"/>
@@ -2711,6 +2715,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="id" reporter:selector="name" reporter:datatype="id"/>
 			<field name="name"  reporter:datatype="text" oils_persist:i18n="true"/>
 			<field name="opac_visible" reporter:datatype="bool"/>
+            <field name="copy_active" reporter:datatype="bool"/>
 		</fields>
 		<links/>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
@@ -3789,6 +3794,7 @@ SELECT  usr,
 			<field reporter:label="Can Circulate" name="circulate" reporter:datatype="bool"/>
 			<field reporter:label="Copy Number on Volume" name="copy_number" reporter:datatype="text"/>
 			<field reporter:label="Creation Date/Time" name="create_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Active Date/Time" name="active_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Creating User" name="creator" reporter:datatype="link"/>
 			<field reporter:label="Is Deleted" name="deleted" reporter:datatype="bool"/>
 			<field reporter:label="Dummy ISBN" name="dummy_isbn" reporter:datatype="text"/>
@@ -4815,6 +4821,7 @@ SELECT  usr,
 			<field reporter:label="Can Circulate" name="circulate" reporter:datatype="bool"/>
 			<field reporter:label="Copy Number on Volume" name="copy_number" reporter:datatype="text"/>
 			<field reporter:label="Creation Date/Time" name="create_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Active Date/Time" name="active_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Creating User" name="creator" reporter:datatype="link"/>
 			<field reporter:label="Is Deleted" name="deleted" reporter:datatype="bool"/>
 			<field reporter:label="Dummy ISBN" name="dummy_isbn" reporter:datatype="text"/>

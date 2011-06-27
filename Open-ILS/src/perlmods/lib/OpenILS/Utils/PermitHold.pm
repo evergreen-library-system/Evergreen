@@ -162,13 +162,19 @@ sub check_age_protect {
 		{ order_by => 'age' }
 	);
 
-	# Now, now many seconds old is this copy
-	my $create_date = DateTime::Format::ISO8601
-		->new
-		->parse_datetime( OpenSRF::Utils::cleanse_ISO8601($copy->create_date) )
-		->epoch;
+    my $age_protect_date = $copy->create_date;
+    $age_protect_date = $copy->active_date if($U->ou_ancestor_setting_value($copy->circ_lib, 'circ.holds.age_protect.active_date'));
 
-	my $age = time - $create_date;
+    my $age = 0;
+    my $age_protect_parsed;
+    if($age_protect_date) {
+    	# Now, now many seconds old is this copy
+	    $age_protect_parsed = DateTime::Format::ISO8601
+		    ->new
+    		->parse_datetime( OpenSRF::Utils::cleanse_ISO8601($age_protect_date) )
+	    	->epoch;
+	    $age = time - $age_protect_parsed;
+    }
 
 	for my $protection ( @$protection_list ) {
 
@@ -180,7 +186,7 @@ sub check_age_protect {
 		# How many seconds old does the copy have to be to escape age protection
 		my $interval = OpenSRF::Utils::interval_to_seconds($protection->age);
 
-		$logger->info("age_protect interval=$interval, create_date=$create_date, age=$age");
+		$logger->info("age_protect interval=$interval, age_protect_date=$age_protect_parsed, age=$age");
 
 		if( $interval > $age ) { 
 			# if age of the item is less than the protection interval, 
