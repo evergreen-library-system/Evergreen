@@ -36,7 +36,11 @@ patron.search_result.prototype = {
             'au_family_name' : { 'hidden' : false },
             'au_first_given_name' : { 'hidden' : false },
             'au_second_given_name' : { 'hidden' : false },
-            'au_dob' : { 'hidden' : false }
+            'au_dob' : { 'hidden' : false },
+            'au_profile' : { 'fleshed_display_field' : 'name' },
+            'au_ident_type' : { 'fleshed_display_field' : 'name' },
+            'au_ident_type2' : { 'fleshed_display_field' : 'name' },
+            'au_net_access_level' : { 'fleshed_display_field' : 'name' }
         }).concat(
             obj.list.fm_columns('ac',{
                 '*' : { 'remove_virtual' : true, 'expanded_label' : true, 'hidden' : true },
