@@ -2,7 +2,7 @@
 BEGIN;
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0567', :eg_version);
 
 INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
     'circ.lost.generate_overdue_on_checkin',
