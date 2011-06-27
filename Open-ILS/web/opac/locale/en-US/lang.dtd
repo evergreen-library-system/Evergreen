@@ -723,6 +723,7 @@
 <!ENTITY staff.main.menu.admin.server_admin.conify.copy_status.label "Copy Statuses">
 <!ENTITY staff.main.menu.admin.server_admin.conify.marc_record_attrs.label "MARC Record Attributes">
 <!ENTITY staff.main.menu.admin.server_admin.conify.coded_value_maps.label "MARC Coded Value Maps">
+<!ENTITY staff.main.menu.admin.server_admin.conify.metabib_field.label "MARC Search/Facet Fields">
 <!ENTITY staff.main.menu.admin.server_admin.conify.acn_prefix.label "Call Number Prefixes">
 <!ENTITY staff.main.menu.admin.server_admin.conify.acn_suffix.label "Call Number Suffixes">
 <!ENTITY staff.main.menu.admin.server_admin.conify.billing_type.label "Billing Types">
