@@ -83,6 +83,20 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
                 COM : {start : 6, len : 1, def : ' ' }
             }
         },
+        RecStat : {
+            ldr : {
+                BKS : {start : 5, len : 1, def : 'n' },
+                SER : {start : 5, len : 1, def : 'n' },
+                VIS : {start : 5, len : 1, def : 'n' },
+                MIX : {start : 5, len : 1, def : 'n' },
+                MAP : {start : 5, len : 1, def : 'n' },
+                SCO : {start : 5, len : 1, def : 'n' },
+                REC : {start : 5, len : 1, def : 'n' },
+                COM : {start : 5, len : 1, def : 'n' },
+                MFHD: {start : 5, len : 1, def : 'n' },
+                AUT : {start : 5, len : 1, def : 'n' }
+            }
+        },
         Type : {
             ldr : {
                 BKS : {start : 6, len : 1, def : 'a' },
@@ -329,7 +343,7 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
                 SER : {start : 16, len : 1, def : ' ' }
             }
         },
-        "GeoDiv" : {
+        "GeoSubd" : {
             "_8" : {
                 "AUT" : {"start" : 6, "len" : 1, "def" : ' ' }
             }
@@ -344,7 +358,7 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
                 "AUT" : {"start" : 8, "len" : 1, "def" : ' ' }
             }
         },
-        "Kind" : {
+        "Auth/Ref" : {
             "_8" : {
                 "AUT" : {"start" : 9, "len" : 1, "def" : ' ' }
             }
@@ -354,12 +368,12 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
                 "AUT" : {"start" : 10, "len" : 1, "def" : ' ' }
             }
         },
-        "SHSys" : {
+        "Subj" : {
             "_8" : {
                 "AUT" : {"start" : 11, "len" : 1, "def" : ' ' }
             }
         },
-        "SerType" : {
+        "Series" : {
             "_8" : {
                 "AUT" : {"start" : 12, "len" : 1, "def" : ' ' }
             }
@@ -369,17 +383,17 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
                 "AUT" : {"start" : 13, "len" : 1, "def" : ' ' }
             }
         },
-        "HeadMain" : {
+        "NameUse" : {
             "_8" : {
                 "AUT" : {"start" : 14, "len" : 1, "def" : ' ' }
             }
         },
-        "HeadSubj" : {
+        "SubjUse" : {
             "_8" : {
                 "AUT" : {"start" : 15, "len" : 1, "def" : ' ' }
             }
         },
-        "HeadSer" : {
+        "SerUse" : {
             "_8" : {
                 "AUT" : {"start" : 16, "len" : 1, "def" : ' ' }
             }
@@ -389,27 +403,27 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
                 "AUT" : {"start" : 17, "len" : 1, "def" : ' ' }
             }
         },
-        "TypeGov" : {
+        "GovtAgn" : {
             "_8" : {
                 "AUT" : {"start" : 28, "len" : 1, "def" : ' ' }
             }
         },
-        "RefEval" : {
+        "RefStatus" : {
             "_8" : {
                 "AUT" : {"start" : 29, "len" : 1, "def" : ' ' }
             }
         },
-        "RecUpd" : {
+        "UpdStatus" : {
             "_8" : {
                 "AUT" : {"start" : 31, "len" : 1, "def" : ' ' }
             }
         },
-        "NameDiff" : {
+        "Name" : {
             "_8" : {
                 "AUT" : {"start" : 32, "len" : 1, "def" : ' ' }
             }
         },
-        "Level" : {
+        "Status" : {
             "_8" : {
                 "AUT" : {"start" : 33, "len" : 1, "def" : ' ' }
             }
@@ -419,7 +433,7 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
                 "AUT" : {"start" : 38, "len" : 1, "def" : ' ' }
             }
         },
-        "CatSrc" : {
+        "Source" : {
             "_8" : {
                 "AUT" : {"start" : 39, "len" : 1, "def" : ' ' }
             }
