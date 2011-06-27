@@ -147,10 +147,10 @@ INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, 
     (14, 'subject', 'topic', oils_i18n_gettext(14, 'Topic Subject', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject/mods32:topic$$, TRUE, '//@xlink:href', FALSE );
 --INSERT INTO config.metabib_field ( id, field_class, name, format, xpath ) VALUES 
 --  ( id, field_class, name, xpath ) VALUES ( 'subject', 'genre', 'mods32', $$//mods32:mods/mods32:genre$$ );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, browse_field ) VALUES 
-    (15, 'keyword', 'keyword', oils_i18n_gettext(15, 'General Keywords', 'cmf', 'label'), 'mods32', $$//mods32:mods/*[not(local-name()='originInfo')]$$, FALSE ); -- /* to fool vim */;
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, browse_field ) VALUES
-    (16, 'subject', 'complete', oils_i18n_gettext(16, 'All Subjects', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject$$, FALSE );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, browse_field, display_field ) VALUES 
+    (15, 'keyword', 'keyword', oils_i18n_gettext(15, 'General Keywords', 'cmf', 'label'), 'mods32', $$//mods32:mods/*[not(local-name()='originInfo')]$$, FALSE, FALSE ); -- /* to fool vim */;
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, browse_field, display_field ) VALUES
+    (16, 'subject', 'complete', oils_i18n_gettext(16, 'All Subjects', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject$$, FALSE, FALSE );
 
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, browse_field ) VALUES
     (17, 'identifier', 'accession', oils_i18n_gettext(17, 'Accession Number', 'cmf', 'label'), 'marcxml', $$//marc:controlfield[@tag='001']$$, FALSE );

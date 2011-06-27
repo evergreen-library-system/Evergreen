@@ -2840,6 +2840,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Browse Field" name="browse_field" reporter:datatype="bool" />
 			<field reporter:label="Browse XPath" name="browse_xpath" reporter:datatype="text" />
 			<field reporter:label="Restrict?" name="restrict" reporter:datatype="bool" />
+			<field reporter:label="Display Field?" name="display_field" reporter:datatype="bool" />
 		</fields>
 		<links>
 			<link field="field_class" reltype="has_a" key="name" map="" class="cmc"/>
