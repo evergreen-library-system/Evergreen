@@ -3,7 +3,12 @@
 
     WRAPPER "default/opac/parts/base.tt2";
     INCLUDE "default/opac/parts/topnav.tt2";
-    ctx.page_title = l("Search Results");
+
+    IF is_advanced;
+        ctx.page_title = l("Search Results");
+    ELSE;
+        ctx.page_title = l("Search Results: ") _ CGI.param('query') | html_entity;
+    END;
 
     page = CGI.param('page') || 0;
     page_count = POSIX.ceil(ctx.hit_count / ctx.page_size);
