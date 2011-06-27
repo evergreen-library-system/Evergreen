@@ -847,6 +847,10 @@ main.menu.prototype = {
                 ['oncommand'],
                 function(event) { open_eg_web_page('conify/global/config/coded_value_map', null, event); }
             ],
+            'cmd_server_admin_metabib_field' : [
+                ['oncommand'],
+                function(event) { open_eg_web_page('conify/global/config/metabib_field', null, event); }
+            ],
             'cmd_server_admin_acn_prefix' : [
                 ['oncommand'],
                 function(event) { open_eg_web_page('conify/global/config/acn_prefix', null, event); }
