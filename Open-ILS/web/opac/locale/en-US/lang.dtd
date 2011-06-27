@@ -299,7 +299,7 @@
 <!ENTITY staff.cat.opac.mark_for_hold_transfer.accesskey "">
 <!ENTITY staff.cat.opac.mark_for_hold_transfer.label "Mark as Title Hold Transfer Destination">
 <!ENTITY staff.cat.opac.transfer_title_holds.accesskey "">
-<!ENTITY staff.cat.opac.transfer_title_holds.label "Transfer Title Holds">
+<!ENTITY staff.cat.opac.transfer_title_holds.label "Transfer All Title Holds">
 <!ENTITY staff.cat.opac.delete_record.accesskey "D">
 <!ENTITY staff.cat.opac.delete_record.label "Delete Record">
 <!ENTITY staff.cat.opac.undelete_record.accesskey "U">

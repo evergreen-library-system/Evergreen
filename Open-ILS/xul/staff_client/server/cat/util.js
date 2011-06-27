@@ -9,7 +9,7 @@ cat.util.EXPORT_OK    = [
     'spawn_copy_editor', 'add_copies_to_bucket', 'show_in_opac', 'spawn_spine_editor', 'transfer_copies', 
     'transfer_title_holds', 'mark_item_missing', 'mark_item_damaged', 'replace_barcode', 'fast_item_add', 
     'make_bookable', 'edit_new_brsrc', 'edit_new_bresv', 'batch_edit_volumes', 'render_fine_level',
-    'render_loan_duration', 'mark_item_as_missing_pieces'
+    'render_loan_duration', 'mark_item_as_missing_pieces', 'transfer_specific_title_holds'
 ];
 cat.util.EXPORT_TAGS    = { ':all' : cat.util.EXPORT_OK };
 
@@ -114,6 +114,37 @@ cat.util.transfer_title_holds = function(old_targets) {
         alert('Error in cat.util.transfer_title.holds(): ' + E);
     }
 }
+
+cat.util.transfer_specific_title_holds = function(hold_ids,unique_targets) {
+    JSAN.use('OpenILS.data'); var data = new OpenILS.data();
+    JSAN.use('util.network'); var network = new util.network();
+    try {
+        data.stash_retrieve();
+        var target = data.marked_record_for_hold_transfer;
+        if (!target) {
+            var m = $("catStrings").getString('staff.cat.opac.title_for_hold_transfer.destination_needed.label');
+            alert(m);
+            return;
+        }
+        if (unique_targets.length > 1) {
+            var m = $("catStrings").getString('staff.cat.opac.title_for_hold_transfer.many_bibs.warning');
+            if (! window.confirm(m)) {
+                return;
+            }
+        }
+        var robj = network.simple_request('TRANSFER_SPECIFIC_TITLE_HOLDS',[ ses(), target, hold_ids ]);
+        if (robj == 1) {
+            var m = $("catStrings").getString('staff.cat.opac.title_for_hold_transfer.success.label');
+            alert(m);
+        } else {
+            var m = $("catStrings").getString('staff.cat.opac.title_for_hold_transfer.failure.label');
+            alert(m);
+        }
+    } catch(E) {
+        alert('Error in cat.util.transfer_title.holds(): ' + E);
+    }
+}
+
 
 cat.util.transfer_copies = function(params) {
     JSAN.use('util.error'); var error = new util.error();

@@ -3422,6 +3422,22 @@ __PACKAGE__->register_method(
     }
 );
 
+__PACKAGE__->register_method(
+    method    => 'change_hold_title_for_specific_holds',
+    api_name  => 'open-ils.circ.hold.change_title.specific_holds',
+    signature => {
+        desc => q/
+            Updates specified holds to target new bib./,
+        params => [
+            { desc => 'Authentication Token', type => 'string' },
+            { desc => 'New Target Bib Id',    type => 'number' },
+            { desc => 'Holds Ids for holds to update',   type => 'array'  },
+        ],
+        return => { desc => '1 on success' }
+    }
+);
+
+
 sub change_hold_title {
     my( $self, $client, $auth, $new_bib_id, $bib_ids ) = @_;
 
@@ -3458,6 +3474,41 @@ sub change_hold_title {
     return 1;
 }
 
+sub change_hold_title_for_specific_holds {
+    my( $self, $client, $auth, $new_bib_id, $hold_ids ) = @_;
+
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
+
+    my $holds = $e->search_action_hold_request(
+        [
+            {
+                cancel_time      => undef,
+                fulfillment_time => undef,
+                hold_type        => 'T',
+                id               => $hold_ids
+            },
+            {
+                flesh        => 1,
+                flesh_fields => { ahr => ['usr'] }
+            }
+        ],
+        { substream => 1 }
+    );
+
+    for my $hold (@$holds) {
+        $e->allowed('UPDATE_HOLD', $hold->usr->home_ou) or return $e->die_event;
+        $logger->info("Changing hold " . $hold->id . " target from " . $hold->target . " to $new_bib_id in title hold target change");
+        $hold->target( $new_bib_id );
+        $e->update_action_hold_request($hold) or return $e->die_event;
+    }
+
+    $e->commit;
+
+    _reset_hold($self, $e->requestor, $_) for @$holds;
+
+    return 1;
+}
 
 __PACKAGE__->register_method(
     method    => 'rec_hold_count',
