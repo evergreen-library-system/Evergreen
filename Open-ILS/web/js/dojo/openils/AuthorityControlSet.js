@@ -173,6 +173,15 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
             return openils.AuthorityControlSet._controlsets[''+this.controlSetId(x)];
         },
 
+        controlSetByThesaurusCode: function (x) {
+            var thes = dojo.filter(
+                openils.AuthorityControlSet._thesaurus_list,
+                function (at) { return at.code() == x }
+            )[0];
+
+            return this.controlSet(thes.controlSet());
+        },
+
         bibFieldByTag: function (x) {
             var me = this;
             return dojo.filter(
