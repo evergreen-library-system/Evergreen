@@ -450,6 +450,7 @@ Please see a librarian to renew your account.">
 <!ENTITY opac.holds.pickupLocation "Pickup location">
 <!ENTITY opac.holds.success "Hold was successfully placed">
 <!ENTITY opac.holds.failure "Hold was not successfully placed">
+<!ENTITY opac.hold.has_parts "The system was not able to place the requested hold.  The item requested has multiple parts to choose from.  Try selecting a specific part for the hold.">
 <!--	================================================================= 
 	Advanced
 	================================================================= -->
