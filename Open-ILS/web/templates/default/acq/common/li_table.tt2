@@ -171,6 +171,18 @@
         </div>
 
         <table id='acq-lit-li-details-table'>
+            <tbody><tr><td class='acq-lit-table-spacer' colspan='0'/></tr></tbody>
+            <tbody style='font-weight:bold;'>
+                <tr>
+                    <td style='margin-top:30px;'>Owning Branch</td>
+                    <td>Shelving Location</td>
+                    <td>Collection Code</td>
+                    <td>Fund</td>
+                    <td>Circ Modifier</td>
+                    <td>Callnumber</td>
+                    <td colspan='0'></td>
+                </tr>
+            </tbody>
             <tbody style='background-color:#ddd;'>
                 <tr id='acq-lit-li-details-batch-row'>
                     <td><div name='owning_lib'></div></td>
@@ -211,7 +223,7 @@
                 </tr>
             </tbody>
 
-            <tbody><tr><td class='acq-lit-table-spacer' colspan='0'/></tr></tbody>
+            <tbody><tr><td class='acq-lit-table-spacer' colspan='0'></td></tr></tbody>
             <tbody style='font-weight:bold;'>
                 <tr>
                     <td style='margin-top:30px;'>Owning Branch</td>
@@ -222,7 +234,7 @@
                     <td>Callnumber</td>
                     <td>Barcode</td>
                     <td>Notes</td>
-                    <td colspan='0'>
+                    <td colspan='0'></td>
                 </tr>
             </tbody>
             <tbody id='acq-lit-li-details-tbody' class='oils-generic-table'>
@@ -270,7 +282,7 @@
                     <td>Circ Modifier</td>
                     <td>Callnumber</td>
                     <td>Barcode</td>
-                    <td colspan='0'>
+                    <td colspan='0'></td>
                 </tr>
             </tbody>
             <tbody id='acq-lit-real-copies-tbody' class='oils-generic-table'>
