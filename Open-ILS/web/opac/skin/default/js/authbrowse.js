@@ -24,6 +24,7 @@ function doAuthorityBrowse(axis, term, page, per_page) {
         + '/' + page
         + '/' + per_page
     ;
+    console.log("doAuthorityBrowse 3: " + url);
     dojo.xhrGet({
         "url": url,
         "handleAs": "xml",
@@ -35,14 +36,20 @@ function doAuthorityBrowse(axis, term, page, per_page) {
 
 function displayAuthorityRecords(doc) {
     console.log("displayAuthorityRecords");
+    var acs_helper = new openils.AuthorityControlSet();
+    console.log("got acs_helper");
     dojo.query("record", doc).forEach(
         function(record) {
             console.log("record");
             var m = new MARC.Record({"xml": record});
+            console.log("got m");
+            var s = m.extractFixedField("Subj");
+            console.log("got s");
+            var cs = acs_helper.controlSetByThesaurusCode(s);
+            console.log("got cs");
             dojo.create(
                 "div", {
-                    "innerHTML": "record here, Subj is " +
-                        m.extractFixedField("Subj")
+                    "innerHTML": "record here, control set is " + cs
                 }, "test-holder"
             );
         }

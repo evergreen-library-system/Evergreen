@@ -1758,7 +1758,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 	</class>
 
-	<class id="acs" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="authority::control_set" oils_persist:tablename="authority.control_set" reporter:label="Authority Control Set">
+	<class id="acs" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="authority::control_set" oils_persist:tablename="authority.control_set" reporter:label="Authority Control Set" oils_persist:field_safe="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="authority.control_set_id_seq">
 			<field reporter:label="Control Set ID" name="id" reporter:datatype="id" reporter:selector="name"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true" />
@@ -1780,7 +1780,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
-	<class id="acsaf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="authority::control_set_authority_field" oils_persist:tablename="authority.control_set_authority_field" reporter:label="Authority Control Set Authority Field">
+	<class id="acsaf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="authority::control_set_authority_field" oils_persist:tablename="authority.control_set_authority_field" reporter:label="Authority Control Set Authority Field" oils_persist:field_safe="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="authority.control_set_authority_field_id_seq">
 			<field reporter:label="Control Set Authority Field ID" name="id" reporter:datatype="id" reporter:selector="name"/>
 			<field reporter:label="Main Entry" name="main_entry" reporter:datatype="link"/>
@@ -1812,7 +1812,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
-	<class id="acsbf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="authority::control_set_bib_field" oils_persist:tablename="authority.control_set_bib_field" reporter:label="Authority Control Set Bib Field">
+	<class id="acsbf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="authority::control_set_bib_field" oils_persist:tablename="authority.control_set_bib_field" reporter:label="Authority Control Set Bib Field" oils_persist:field_safe="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="authority.control_set_bib_field_id_seq">
 			<field reporter:label="Controlled Bib Field ID" name="id" reporter:datatype="id" reporter:selector="name"/>
 			<field reporter:label="Controlling Authority Field" name="authority_field" reporter:datatype="link"/>
@@ -1831,7 +1831,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
-	<class id="at" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="authority::thesaurus" oils_persist:tablename="authority.thesaurus" reporter:label="Authority Thesaurus">
+	<class id="at" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="authority::thesaurus" oils_persist:tablename="authority.thesaurus" reporter:label="Authority Thesaurus" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code">
 			<field reporter:label="Thesaurus Code" name="code" reporter:datatype="id" reporter:selector="name"/>
 			<field reporter:label="Control Set" name="control_set" reporter:datatype="link"/>
@@ -1851,7 +1851,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
-	<class id="aba" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="authority::browse_axis" oils_persist:tablename="authority.browse_axis" reporter:label="Authority Browse Axis">
+	<class id="aba" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="authority::browse_axis" oils_persist:tablename="authority.browse_axis" reporter:label="Authority Browse Axis" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code">
 			<field reporter:label="Code" name="code" reporter:datatype="id" reporter:selector="name" oils_obj:validate="^\S+$"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true"/>
@@ -1873,7 +1873,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
-    <class id="abaafm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="authority::browse_axis_authority_field_map" oils_persist:tablename="authority.browse_axis_authority_field_map" reporter:label="Authority Browse Axis Field Map">
+    <class id="abaafm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="authority::browse_axis_authority_field_map" oils_persist:tablename="authority.browse_axis_authority_field_map" reporter:label="Authority Browse Axis Field Map" oils_persist:field_safe="true">
         <fields oils_persist:primary="id" oils_persist:sequence="authority.browse_axis_authority_field_map_id_seq">
             <field reporter:label="Axis Authority Field Map ID" name="id" reporter:datatype="id"/>
             <field reporter:label="Authority Field" name="field" oils_obj:required="true" reporter:datatype="link"/>

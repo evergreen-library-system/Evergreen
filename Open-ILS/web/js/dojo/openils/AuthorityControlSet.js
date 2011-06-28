@@ -16,8 +16,6 @@
  */
 
 if(!dojo._hasResource["openils.AuthorityControlSet"]) {
-
-    dojo.require('openils.PermaCrud');
     dojo.require('MARC.FixedFields');
 
     dojo._hasResource["openils.AuthorityControlSet"] = true;
@@ -34,15 +32,15 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
 
                 // TODO -- push the raw tree into the oils cache for later reuse
 
-                var pcrud = new openils.PermaCrud({authtoken : ses()});
-
                 // fetch everything up front...
-                openils.AuthorityControlSet._control_set_list = pcrud.retrieveAll('acs');
-                openils.AuthorityControlSet._thesaurus_list = pcrud.retrieveAll('at');
-                openils.AuthorityControlSet._authority_field_list = pcrud.retrieveAll('acsaf');
-                openils.AuthorityControlSet._bib_field_list = pcrud.retrieveAll('acsbf');
-                openils.AuthorityControlSet._browse_axis_list = pcrud.retrieveAll('aba');
-                openils.AuthorityControlSet._browse_field_map_list = pcrud.retrieveAll('abaafm');
+                this._preFetchWithFielder({
+                    "acs": "_control_set_list",
+                    "at": "_thesaurus_list",
+                    "acsaf": "_authority_field_list",
+                    "acsbf": "_bib_field_list",
+                    "aba": "_browse_axis_list",
+                    "abaafm": "_browse_field_map_list"
+                });
 
                 openils.AuthorityControlSet._browse_axis_by_name = {};
                 dojo.forEach( openils.AuthorityControlSet._browse_axis_list, function (ba) {
@@ -164,6 +162,10 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
             }
         },
 
+        _preFetchWithFielder: function(map) {
+            // TODO get pkeys from fieldmapper but use fielder to get everything
+        },
+
         controlSetId: function (x) {
             if (x) this._controlset = ''+x;
             return this._controlset;
@@ -174,10 +176,12 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
         },
 
         controlSetByThesaurusCode: function (x) {
+            console.log("1");
             var thes = dojo.filter(
                 openils.AuthorityControlSet._thesaurus_list,
                 function (at) { return at.code() == x }
             )[0];
+            console.log("2");
 
             return this.controlSet(thes.controlSet());
         },
