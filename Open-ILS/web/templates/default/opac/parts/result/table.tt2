@@ -103,12 +103,6 @@
                                                     </div>
                                                     <table cellpadding="0" cellspacing="0" border="0"
                                                         class="results_info_table">
-                                                        <tr name='bib_cn_list' class='result_table_title_cell'>
-                                                            <td valign='top'>
-                                                                <strong>[% l('Call number:') %]</strong>
-                                                            </td>
-                                                            <td>[% args.holdings.0 %]</td>
-                                                        </tr>
                                                         <tr name="results_pub_tr" class="[% attrs.publisher ? '' : 'hide_me' %]">
                                                             <td valign="top">
                                                                 <strong>[% l('Publisher:') %]</strong>
@@ -135,6 +129,26 @@
                                                                 [% args.phys_desc %]
                                                             </td>
                                                         </tr>
+
+                                                        [% FOR copy IN args.holdings %]
+                                                        <tr name='bib_cn_list' class='result_table_title_cell'>
+                                                            <td valign='top'>
+                                                                <strong>[% l('Call number:') %]</strong>
+                                                            </td>
+                                                            <td>[% copy.label _ ' ' _ copy.location _ ' ' _ copy.library _ ' ' _ copy.status %]</td>
+                                                        </tr>
+                                                        [% END %]
+
+                                                        [% FOR uri IN args.uris%]
+                                                        <tr name='bib_uri_list' class='result_table_title_cell'>
+                                                            <td valign='top'>
+                                                                <strong>[% l('Electronic resource') %]</strong>
+                                                            </td>
+                                                            <td><a href="[% uri.href %]">[% uri.link %]</a>[% ' - ' _ uri.note IF uri.note %]</td>
+                                                        </tr>
+                                                        [% END %]
+
+
                                                     </table>
                                                     <div>
                                                         [% l('[_1] of [quant,_2,copy,copies] available',
