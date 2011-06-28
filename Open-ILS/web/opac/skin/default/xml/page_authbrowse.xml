@@ -1,6 +1,5 @@
 <div id='canvas_main' class='canvas' style='margin-top: 20px;'>
 	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/authbrowse.js'></script>
-    Boo.
+    Records: <div id="test-holder">
+    </div>
 </div>
-
-

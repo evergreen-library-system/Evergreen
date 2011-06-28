@@ -888,6 +888,7 @@ Returns a list of the requested org-scoped record IDs held
 );
 
 sub grab_authority_browse_axes {
+    my ($self, $client, $full) = @_;
 
     unless(scalar(keys(%authority_browse_axis_cache))) {
         my $axes = new_editor->search_authority_browse_axis([
@@ -897,14 +898,26 @@ sub grab_authority_browse_axes {
         $authority_browse_axis_cache{$_->code} = $_ for (@$axes);
     }
 
-    return [keys %authority_browse_axis_cache];
+    if ($full) {
+        return [
+            map { $authority_browse_axis_cache{$_} } sort keys %authority_browse_axis_cache
+        ];
+    } else {
+        return [keys %authority_browse_axis_cache];
+    }
 }
 __PACKAGE__->register_method(
 	method    => 'grab_authority_browse_axes',
 	api_name  => 'open-ils.supercat.authority.browse_axis_list',
 	api_level => 1,
-	argc      => 0,
-	note      => "Returns a list of valid authority browse/startswith axes"
+	argc      => 1,
+	signature =>
+		{ desc     => "Returns a list of valid authority browse/startswith axes",
+		  params   => [
+              { name => 'full', desc => 'Optional. If true, return array containing the full object for each axis, sorted by code. Otherwise just return an array of the codes.', type => 'number' }
+          ],
+		  'return' => { desc => 'Axis codes or whole axes, see "full" param', type => 'array' }
+		}
 );
 
 sub axis_authority_browse {

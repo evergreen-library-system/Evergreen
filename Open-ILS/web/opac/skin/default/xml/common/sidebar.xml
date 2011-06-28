@@ -115,20 +115,13 @@
         </div>
 
         <div style="text-align: left">
-            <select id="authority_browse_axis">
-                <!-- there's a supercat method
-                     open-ils.supercat.authority.browse_axis_list to get us 
-                     this list dynamically, but how do we get that with XML
-                     api? or do we? -->
-                <option value="author">Author</option>
-                <option value="subject">Subject</option>
-                <option value="title">Title</option>
-                <option value="topic">Topic</option>
-            </select>
-            <input id="authority_browse_term" />
+            <select id="authority_browse_axis"></select><input
+                id="authority_browse_term" type="text" size="16"/>
         </div>
 
-        <a id="authority_browse_submit" class="classic_link" href="javascript:authBrowseSubmit();">&common.submit;</a>
+        <div style="margin-top: 8px;">
+            <a id="authority_browse_submit" class="classic_link" href="javascript:advAuthorityBrowse();">&common.submit;</a>
+        </div>
     </div>
 
 	<div id='adv_marc_search_sidebar' class='sidebar_chunk hide_me' 
