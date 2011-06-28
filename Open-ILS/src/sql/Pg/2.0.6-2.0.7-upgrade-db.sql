@@ -942,4 +942,8 @@ SELECT biblio.reingest_uris();
 -- Hopefully this isn't something we'll need to run again
 DROP FUNCTION biblio.reingest_uris();
 
+INSERT INTO config.upgrade_log (version) VALUES ('0561'); -- miker
+
+CREATE INDEX metabib_full_rec_tnf_idx ON metabib.real_full_rec (record, tag, subfield) WHERE tag = 'tnf' AND subfield = 'a';
+
 COMMIT;
