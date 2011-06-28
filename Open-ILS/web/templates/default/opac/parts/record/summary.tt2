@@ -1,6 +1,11 @@
 [% ctx.page_title = attrs.title | html_entity %]
 <!-- ****************** rdetail_summary.xml ***************************** -->
 <abbr class="unapi-id" title='tag:[% ctx.hostname %],[% date.format(date.now, '%Y') %]:biblio-record_entry/[% ctx.bre_id %]'></abbr>
+
+[% IF ctx.refworks.enable == 'true' %]
+    [% INCLUDE 'default/opac/parts/record/refworks.tt2' %]
+[% END %]
+
 <!-- This holds the record summary information -->
 
 <table width="100%" border="0" cellpadding="0" cellspacing="0" id="rdetail_details_table">
