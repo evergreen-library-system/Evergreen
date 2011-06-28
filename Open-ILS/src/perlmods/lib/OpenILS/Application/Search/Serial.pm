@@ -122,7 +122,7 @@ sub bib_to_svr {
 	my $mfhd_parser = OpenILS::Utils::MFHDParser->new();
 	foreach (@$sdists) {
         my $svr;
-        if (ref $_->record_entry and $_->summary_method ne 'use_sdist_only') {
+        if ($_->summary_method ne 'use_sdist_only' and ref $_->record_entry and !$U->is_true($_->record_entry->deleted)) {
             my $skip_all_computable = 0;
             if ($_->summary_method eq 'merge_with_sre') { # 'computable' (85x/86x combos) are handled by generated_coverage when attempting to merge
                 $skip_all_computable = 1;
@@ -130,7 +130,11 @@ sub bib_to_svr {
             $svr = $mfhd_parser->generate_svr($_->record_entry->id, $_->record_entry->marc, $_->record_entry->owning_lib, $skip_all_computable);
         } else {
             $svr = Fieldmapper::serial::virtual_record->new;
-            $svr->sre_id(-1);
+            if (ref $_->record_entry and !$U->is_true($_->record_entry->deleted)) {
+                $svr->sre_id($_->record_entry->id);
+            } else {
+                $svr->sre_id(-1);
+            }
             $svr->location($_->holding_lib->name);
             $svr->owning_lib($_->holding_lib);
             $svr->basic_holdings([]);

@@ -57,6 +57,7 @@ row#row_billing_zip { padding-bottom: 10px; }
 
 .PATRON_HAS_ALERT .patronNameLarge { border: solid thick yellow; padding: 10px }
 .PATRON_HAS_ALERT groupbox.alert { background-color: yellow; color: black; }
+.PATRON_HAS_ALERT [id^=patron_alert] { background: yellow; color: black; }
 .PATRON_HAS_ALERT label.alert_indicator { display: inline; color: #AA4400 }
 
 .PATRON_HAS_NOTES label.note_indicator { display: inline; color: #AA4400 }

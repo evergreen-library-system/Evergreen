@@ -45,17 +45,46 @@
         </hbox>
         <hbox>
             <spacer flex="1" />
-            <checkbox id="auto_merge" label="&staff.cat.volume_editor.automerge.label;" accesskey="&staff.cat.volume_editor.automerge.accesskey;" oils_persist="checked"/>
+            <checkbox id="auto_merge" label="&staff.cat.volume_editor.automerge.label;" accesskey="&staff.cat.volume_editor.automerge.accesskey;" tooltiptext="&staff.cat.volume_editor.automerge.description;" oils_persist="checked"/>
         </hbox>
         <grid flex="1">
             <columns>
                 <column />
                 <column class="cn_class"/>
                 <column class="cn_prefix"/>
-                <column flex="1"/>
+                <column />
                 <column class="cn_suffix"/>
             </columns>
             <rows id="rows">
+                <row id="batch_bar">
+                    <spacer />
+                    <vbox class="cn_class">
+                        <label value="&staff.cat.volume_copy_creator.batch_bar.call_number.classification;"
+                            class="header"/>
+                        <hbox id="batch_class"/>
+                    </vbox>
+                    <vbox class="cn_prefix">
+                        <label value="&staff.cat.volume_copy_creator.batch_bar.call_number.prefix;"
+                            class="header"/>
+                        <hbox id="batch_prefix"/>
+                    </vbox>
+                    <vbox>
+                        <label
+                            value="&staff.cat.volume_copy_creator.batch_bar.call_number.label.label;"
+                            accesskey="&staff.cat.volume_copy_creator.batch_bar.call_number.label.accesskey;"
+                            control="marc_cn_menulist" class="header"/>
+                        <hbox id="marc_cn"/>
+                    </vbox>
+                    <vbox class="cn_suffix">
+                        <label value="&staff.cat.volume_copy_creator.batch_bar.call_number.suffix;"
+                            class="header"/>
+                        <hbox id="batch_suffix"/>
+                    </vbox>
+                    <vbox>
+                        <label class="header" value="&staff.cat.volume_copy_creator.batch_bar;"/>
+                        <hbox id="batch_button_box"/>
+                    </vbox>
+                </row>
                 <row>
                     <label value="&staff.cat.volume_editor.owning_lib;" class="header"/>
                     <label value="&staff.cat.volume_editor.classification;" class="header cn_class"/>

@@ -91,6 +91,7 @@ econst OILS_SETTING_VOID_LOST_PROCESS_FEE_ON_CHECKIN    => 'circ.void_lost_proc_
 econst OILS_SETTING_RESTORE_OVERDUE_ON_LOST_RETURN      => 'circ.restore_overdue_on_lost_return';
 econst OILS_SETTING_LOST_IMMEDIATELY_AVAILABLE          => 'circ.lost_immediately_available';
 econst OILS_SETTING_BLOCK_HOLD_FOR_EXPIRED_PATRON       => 'circ.holds.expired_patron_block';
+econst OILS_SETTING_GENERATE_OVERDUE_ON_LOST_RETURN     => 'circ.lost.generate_overdue_on_checkin';
 
 
 

@@ -246,6 +246,7 @@
 <!ENTITY staff.browse_list.circulate "Circulate">
 <!ENTITY staff.browse_list.copy_number "Copy Number">
 <!ENTITY staff.browse_list.create_date "Creation Date">
+<!ENTITY staff.browse_list.active_date "Active Date">
 <!ENTITY staff.browse_list.creator "Creator">
 <!ENTITY staff.browse_list.deposit "Deposit">
 <!ENTITY staff.browse_list.deposit_amount "Deposit Amount">
@@ -299,7 +300,7 @@
 <!ENTITY staff.cat.opac.mark_for_hold_transfer.accesskey "">
 <!ENTITY staff.cat.opac.mark_for_hold_transfer.label "Mark as Title Hold Transfer Destination">
 <!ENTITY staff.cat.opac.transfer_title_holds.accesskey "">
-<!ENTITY staff.cat.opac.transfer_title_holds.label "Transfer Title Holds">
+<!ENTITY staff.cat.opac.transfer_title_holds.label "Transfer All Title Holds">
 <!ENTITY staff.cat.opac.delete_record.accesskey "D">
 <!ENTITY staff.cat.opac.delete_record.label "Delete Record">
 <!ENTITY staff.cat.opac.undelete_record.accesskey "U">
@@ -722,6 +723,7 @@
 <!ENTITY staff.main.menu.admin.server_admin.conify.copy_status.label "Copy Statuses">
 <!ENTITY staff.main.menu.admin.server_admin.conify.marc_record_attrs.label "MARC Record Attributes">
 <!ENTITY staff.main.menu.admin.server_admin.conify.coded_value_maps.label "MARC Coded Value Maps">
+<!ENTITY staff.main.menu.admin.server_admin.conify.metabib_field.label "MARC Search/Facet Fields">
 <!ENTITY staff.main.menu.admin.server_admin.conify.acn_prefix.label "Call Number Prefixes">
 <!ENTITY staff.main.menu.admin.server_admin.conify.acn_suffix.label "Call Number Suffixes">
 <!ENTITY staff.main.menu.admin.server_admin.conify.billing_type.label "Billing Types">
@@ -2687,6 +2689,7 @@
 <!ENTITY staff.cat.copy_summary.created.label "Created:">
 <!ENTITY staff.cat.copy_summary.edited.label "Edited:">
 <!ENTITY staff.cat.copy_summary.age_protect.label "Age Protect:">
+<!ENTITY staff.cat.copy_summary.active_date.label "Active Date:">
 <!ENTITY staff.cat.copy_summary.total_circs.label "Total Circulations:">
 <!ENTITY staff.cat.copy_summary.alternate_view.label "Alternate View">
 <!ENTITY staff.cat.copy_summary.alternate_view.accesskey "">
@@ -2851,6 +2854,7 @@
 <!ENTITY staff.cat.volume_editor.cancel.accesskey "C">
 <!ENTITY staff.cat.volume_editor.automerge.label "Auto-Merge on Volume Collision">
 <!ENTITY staff.cat.volume_editor.automerge.accesskey "A">
+<!ENTITY staff.cat.volume_editor.automerge.description "If two or more volumes for the same bib record and library are given the same call number label (and prefix/suffix), then merge them (including items they contain) into a single volume if checked.  Otherwise, report an error.">
 <!ENTITY staff.cat.volume_editor.owning_lib "Owning lib">
 <!ENTITY staff.cat.volume_editor.classification "Classification">
 <!ENTITY staff.cat.volume_editor.prefix "Prefix">
@@ -3487,6 +3491,7 @@
 <!ENTITY staff.circ.alternate_copy_summary.Copy_Location.label "Copy Location">
 <!ENTITY staff.circ.alternate_copy_summary.Renewal_Type.label "Renewal Type">
 <!ENTITY staff.circ.alternate_copy_summary.Date_Created.label "Date Created">
+<!ENTITY staff.circ.alternate_copy_summary.Date_Active.label "Date Active">
 <!ENTITY staff.circ.alternate_copy_summary.Status_Changed_Time.label "Status Changed">
 <!ENTITY staff.circ.alternate_copy_summary.Due_Date.label "Due Date">
 <!ENTITY staff.circ.alternate_copy_summary.Edition.label "Edition">

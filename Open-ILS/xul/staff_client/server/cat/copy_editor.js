@@ -866,6 +866,12 @@ g.panes_and_field_names = {
         }
     ],
     [
+        $('catStrings').getString('staff.cat.copy_editor.field.active_date.label'),
+        { 
+            render: 'util.date.formatted_date( fm.active_date(), "%F");',
+        }
+    ],
+    [
         $('catStrings').getString('staff.cat.copy_editor.field.creator.label'),
         { 
             render: 'fm.creator();',

@@ -28,16 +28,13 @@ use Data::Dumper;
 
 my $AC = 'OpenILS::WWW::AddedContent';
 
-# These URLs are always the same for OpenLibrary, so there's no advantage to
-# pulling from opensrf.xml; we hardcode them here
+# This should work for most setups
+my $blank_img = 'http://localhost/opac/images/blank.png';
 
-# jscmd=details is unstable but includes goodies such as Table of Contents
-my $base_url_details = 'http://openlibrary.org/api/books?format=json&jscmd=details&bibkeys=ISBN:';
+# This URL is always the same for OpenLibrary, so there's no advantage to
+# pulling from opensrf.xml
 
-# jscmd=data is stable and contains links to ebooks, excerpts, etc
-my $base_url_data = 'http://openlibrary.org/api/books?format=json&jscmd=data&bibkeys=ISBN:';
-
-my $cover_base_url = 'http://covers.openlibrary.org/b/isbn/';
+my $read_api = 'http://openlibrary.org/api/volumes/brief/json/';
 
 sub new {
     my( $class, $args ) = @_;
@@ -68,7 +65,7 @@ sub jacket_large {
 
 sub ebooks_html {
     my( $self, $key ) = @_;
-    my $book_data_json = $self->fetch_data_response($key)->content();
+    my $book_data_json = $self->fetch_response($key);
 
     $logger->debug("$key: " . $book_data_json);
 
@@ -125,27 +122,17 @@ sub ebooks_html {
 
 sub excerpt_html {
     my( $self, $key ) = @_;
-    my $book_details_json = $self->fetch_details_response($key)->content();
-
-    $logger->debug("$key: $book_details_json");
 
     my $excerpt_html;
-    
-    my $book_details = OpenSRF::Utils::JSON->JSON2perl($book_details_json);
-    my $book_key = (keys %$book_details)[0];
 
-    # We didn't find a matching book; short-circuit our response
-    if (!$book_key) {
-        $logger->debug("$key: no found book");
-        return 0;
-    }
+    my $content = $self->fetch_details_response($key)->content();
 
-    my $first_sentence = $book_details->{$book_key}->{first_sentence};
+    my $first_sentence = $content->{first_sentence};
     if ($first_sentence) {
         $excerpt_html .= "<div class='sentence1'>$first_sentence</div>\n";
     }
 
-    my $excerpts_json = $book_details->{$book_key}->{excerpts};
+    my $excerpts_json = $content->{excerpts};
     if ($excerpts_json && scalar(@$excerpts_json)) {
         # Load up excerpt text with comments in tooltip
         foreach my $excerpt (@$excerpts_json) {
@@ -177,22 +164,12 @@ HTML table.
 
 sub toc_html {
     my( $self, $key ) = @_;
-    my $book_details_json = $self->fetch_details_response($key)->content();
-
-    $logger->debug("$key: " . $book_details_json);
 
     my $toc_html;
     
-    my $book_details = OpenSRF::Utils::JSON->JSON2perl($book_details_json);
-    my $book_key = (keys %$book_details)[0];
+    my $book_data = $self->fetch_data_response($key) || return 0;
 
-    # We didn't find a matching book; short-circuit our response
-    if (!$book_key) {
-        $logger->debug("$key: no found book");
-        return 0;
-    }
-
-    my $toc_json = $book_details->{$book_key}->{details}->{table_of_contents};
+    my $toc_json = $book_data->{table_of_contents};
 
     # No table of contents is available for this book; short-circuit
     if (!$toc_json or !scalar(@$toc_json)) {
@@ -204,7 +181,7 @@ sub toc_html {
     # and page number. Some rows may not contain section numbers, we should
     # protect against empty page numbers too.
     foreach my $chapter (@$toc_json) {
-	my $label = $chapter->{label};
+        my $label = $chapter->{label};
         if ($label) {
             $label .= '. ';
         }
@@ -225,7 +202,7 @@ sub toc_html {
 sub toc_json {
     my( $self, $key ) = @_;
     my $toc = $self->send_json(
-        $self->fetch_details_response($key)
+        $self->fetch_response($key)
     );
 }
 
@@ -264,29 +241,70 @@ sub send_html {
     return { content_type => 'text/html', content => $HTML };
 }
 
+# proxy OpenLibrary requests so that the IP address of the library
+# can be used to determine access rights to materials
+sub proxy_json {
+    my( $self, $key ) = @_;
+
+    my $url = $read_api . $key;
+    $logger->debug("proxy_json with key '$key', url $url");
+
+    $self->send_json($AC->get_url($url)->content());
+}
+
+
 # returns the HTTP response object from the URL fetch
+sub fetch_response {
+    my( $self, $key ) = @_;
+
+    # TODO: OpenLibrary can also accept lccn, oclc, olid...
+    # Hardcoded to only accept ISBNs for now.
+    $key = "isbn:$key";
+
+    my $url = $read_api . $key;
+    my $response = $AC->get_url($url)->content();
+
+    $logger->debug("$key: response was $response");
+
+    my $book_results = OpenSRF::Utils::JSON->JSON2perl($response);
+    my $record = $book_results->{$key};
+
+    # We didn't find a matching book; short-circuit our response
+    if (!$record) {
+        $logger->debug("$key: no found record");
+        return 0;
+    }
+
+    return $record;
+}
+
 sub fetch_data_response {
-    my( $self, $key ) = @_;
-    my $url = $base_url_data . "$key";
-    my $response = $AC->get_url($url);
-    return $response;
+    my ($self, $key) = @_;
+
+    my $book_results = $self->fetch_response($key);
+
+    my $book_key = (keys %{$book_results->{records}})[0];
+
+    $logger->debug("$key: using record key $book_key");
+
+    # We didn't find a matching book; short-circuit our response
+    if (!$book_key || !$book_results->{records}->{$book_key}->{data}) {
+        $logger->debug("$key: no found book");
+        return 0;
+    }
+
+    return $book_results->{records}->{$book_key}->{data};
 }
-# returns the HTTP response object from the URL fetch
+
+
 sub fetch_details_response {
-    my( $self, $key ) = @_;
-    my $url = $base_url_details . "$key";
-    my $response = $AC->get_url($url);
-    return $response;
-}
+    my ($self, $key) = @_;
 
-# returns the HTTP response object from the URL fetch
-sub fetch_cover_response {
-    my( $self, $size, $key ) = @_;
+    my $book_results = $self->fetch_response($key);
 
-    my $response = $self->fetch_data_response($key)->content();
+    my $book_key = (keys %{$book_results->{records}})[0];
 
-    my $book_data = OpenSRF::Utils::JSON->JSON2perl($response);
-    my $book_key = (keys %$book_data)[0];
+    $logger->debug("$key: using record key $book_key");
 
     # We didn't find a matching book; short-circuit our response
     if (!$book_key) {
@@ -294,15 +312,67 @@ sub fetch_cover_response {
         return 0;
     }
 
-    my $covers_json = $book_data->{$book_key}->{cover};
-    if (!$covers_json) {
-        $logger->debug("$key: no covers for this book");
+    return $book_results->{$book_key}->{details};
+}
+
+sub fetch_items_response {
+    my ($self, $key) = @_;
+
+    my $book_results = $self->fetch_response($key) || return 0;
+
+    my $items = $book_results->{items};
+
+    # We didn't find a matching book; short-circuit our response
+    if (!$items || scalar(@$items) == 0) {
+        $logger->debug("$key: no found items");
         return 0;
     }
 
-    $logger->debug("$key: " . $covers_json->{$size});
-    return $AC->get_url($covers_json->{$size}) || 0;
+    return $book_results->{items};
 }
 
+# returns a cover image from the list of associated items
+# TODO: Look for the best match in the array of items
+sub fetch_cover_response {
+    my( $self, $size, $key ) = @_;
+
+    my $cover;
+
+    my $response = $self->fetch_response($key);
+
+    # Short-circuit if we get an empty response, or a response
+    #with no matching records
+    if (!$response or scalar(keys %$response) == 0) {
+        return $AC->get_url($blank_img);
+    }
+
+    # Try to return a cover image from the record->data metadata
+    foreach my $rec_key (keys %{$response->{records}}) {
+        my $record = $response->{records}->{$rec_key};
+        if (exists $record->{data}->{cover}->{$size}) {
+            $cover = $record->{data}->{cover}->{$size};
+        }
+        if ($cover) {
+            return $AC->get_url($cover);
+        }
+    }
+
+    # If we didn't find a cover in the record metadata, look in the items
+    # Seems unlikely, but might as well try.
+    my $items = $response->{items};
+
+    $logger->debug("$key: items request got " . scalar(@$items) . " items back");
+
+    foreach my $item (@$items) {
+        if (exists $item->{cover}->{$size}) {
+            return $AC->get_url($item->{cover}->{$size}) || 0;
+        }
+    }
+
+    $logger->debug("$key: no covers for this book");
+
+    # Return a blank image
+    return $AC->get_url($blank_img);
+}
 
 1;

@@ -9,7 +9,7 @@ export STAFF_CLIENT_STAMP_ID = $$(/bin/cat build/STAMP_ID)
 
 # from http://closure-compiler.googlecode.com/files/compiler-latest.zip  FIXME: Autotools this?
 export CLOSURE_COMPILER_JAR = ~/closure-compiler/compiler.jar
-XULRUNNER_VERSION=1.9.2.17
+XULRUNNER_VERSION=1.9.2.18
 XULRUNNER_WINFILE=xulrunner-$(XULRUNNER_VERSION).en-US.win32.zip
 XULRUNNER_LINUXFILE=xulrunner-$(XULRUNNER_VERSION).en-US.linux-i686.tar.bz2
 XULRUNNER_URL=http://releases.mozilla.org/pub/mozilla.org/xulrunner/releases/$(XULRUNNER_VERSION)/runtimes/
@@ -179,12 +179,12 @@ needwebdir:
 
 server-xul: needwebdir build
 	@echo $@
-	mkdir -p $(WEBDIR)
-	mkdir -p $(WEBDIR)/xul/
+	mkdir -p $(DESTDIR)$(WEBDIR)
+	mkdir -p $(DESTDIR)$(WEBDIR)/xul/
 	@echo "STAMP_ID = $(STAFF_CLIENT_STAMP_ID)"
-	@echo "Copying xul into $(WEBDIR)/xul/$(STAFF_CLIENT_STAMP_ID)"
-	mkdir -p "$(WEBDIR)/xul/$(STAFF_CLIENT_STAMP_ID)"
-	cp -R @top_srcdir@/Open-ILS/xul/staff_client/build/server "${WEBDIR}/xul/${STAFF_CLIENT_STAMP_ID}/"
+	@echo "Copying xul into $(DESTDIR)$(WEBDIR)/xul/$(STAFF_CLIENT_STAMP_ID)"
+	mkdir -p "$(DESTDIR)$(WEBDIR)/xul/$(STAFF_CLIENT_STAMP_ID)"
+	cp -R @top_srcdir@/Open-ILS/xul/staff_client/build/server "$(DESTDIR)${WEBDIR}/xul/${STAFF_CLIENT_STAMP_ID}/"
 
 compress-javascript: build
 	@echo "Size of build/ before compression = " `du -sh build/`
