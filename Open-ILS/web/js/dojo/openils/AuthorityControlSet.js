@@ -162,8 +162,23 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
             }
         },
 
-        _preFetchWithFielder: function(map) {
-            // TODO get pkeys from fieldmapper but use fielder to get everything
+        _preFetchWithFielder: function(cmap) {
+            for (var hint in cmap) {
+                var cache_key = cmap[hint];
+                var method = "open-ils.fielder." + hint + ".atomic";
+                var pkey = fieldmapper.IDL.fmclasses[hint].pkey;
+
+                var query = {};
+                query[pkey] = {"!=": null};
+
+                openils.AuthorityControlSet[cache_key] = dojo.map(
+                    fieldmapper.standardRequest(
+                        ["open-ils.fielder", method],
+                        [{"cache": 1, "query" : query}]
+                    ),
+                    function(h) { return new fieldmapper[hint]().fromHash(h); }
+                );
+            }
         },
 
         controlSetId: function (x) {
@@ -176,14 +191,12 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
         },
 
         controlSetByThesaurusCode: function (x) {
-            console.log("1");
             var thes = dojo.filter(
                 openils.AuthorityControlSet._thesaurus_list,
                 function (at) { return at.code() == x }
             )[0];
-            console.log("2");
 
-            return this.controlSet(thes.controlSet());
+            return this.controlSet(thes.control_set());
         },
 
         bibFieldByTag: function (x) {

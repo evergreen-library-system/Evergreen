@@ -42,9 +42,7 @@ function displayAuthorityRecords(doc) {
         function(record) {
             console.log("record");
             var m = new MARC.Record({"xml": record});
-            console.log("got m");
             var s = m.extractFixedField("Subj");
-            console.log("got s");
             var cs = acs_helper.controlSetByThesaurusCode(s);
             console.log("got cs");
             dojo.create(
