@@ -1,1 +1,853 @@
-#ChangeLog
+2011-06-28  Mike Rylander <mrylander@gmail.com>
+
+	* : commit fe0888063e329eb9afe241f7d0c0127397c9b136 Author: Mike
+	Rylander <mrylander@gmail.com> Date:   Tue Jun 28 14:06:49 2011
+	-0400
+
+
+2011-06-28  Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+	* Open-ILS/web/templates/default/acq/common/li_table.tt2: Michael
+	Peters provided a patch to add some missing labels...  ... to a key acquisitions interface.  It works.  Also fixed some
+	unclosed tags while I was at it.  Wasn't sure whether to copy and paste Michael's sign-off or what,
+	but here's the link to his original patch for purists:
+
+	https://launchpadlibrarian.net/74191964/0001-LP802578-Acquisitions-Batch-copy-update-missing-head.patch
+
+	Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2011-06-24  Dan Scott <dan@coffeecode.net>
+
+	* Open-ILS/web/opac/skin/default/js/result_common.js: Fix broken
+	images for items without ISBNs in search results The search results code happily sets the src attribute of the cover
+	image to an empty string (as returned by cleanISBN()) if currentISBN
+	has not been defined (which is generally the case if an item doesn't
+	have an ISBN, such as a DVD or a thesis or an old book).  Protect against the empty string and set the src attribute to
+	'/opac/images/blank.png' to avoid broken image indicators in search
+	results.
+
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+	Signed-off-by: Dan Scott <dan@coffeecode.net>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-06-22  Jason Stephenson <jstephenson@mvlc.org>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Trigger/Validator.pm: 
+	Check if hold is really available in Trigger::Validator.  Add checks for shelf time and no fulfillment time in HoldIsAvailable
+	in OpenILS::Application::Trigger::Validator.  We've had some issues with poorly migrated data and people messing
+	with holds that causes the original logic to trigger for unfilled
+	holds. Plus, the extra precaution of checking more precise
+	conditions of an actually filled hold can't hurt, can it?
+
+
+	Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-06-22  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Actor/Container.pm,
+	Open-ILS/web/opac/common/js/config.js: Make bucket content retrieval
+	authoritative LP#492036, we neeed all bucket methods to be authoritative.  Some
+	already were, this finishes the job.
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-06-22  Michael Peters <mrpeters@library.in.gov>
+
+	* Open-ILS/xul/staff_client/server/locale/en-US/patron.properties,
+	Open-ILS/xul/staff_client/server/patron/search_result.js: LP#790639:
+	Provide actual text, rather than id values in patron search results
+	for various columns Cleaned up some tabs versus spaces and a needless trailing comma
+	from original patch.  Not porting to master, hoping to use
+	collab/phasefx/fm_columns instead.
+
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+	Signed-off-by: Michael Peters <mrpeters@library.in.gov>
+
+2011-06-21  Dan Wells <dbw2@calvin.edu>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Search/Serial.pm,
+	Open-ILS/web/opac/skin/default/js/rdetail.js,
+	Open-ILS/xul/staff_client/chrome/content/cat/opac.js,
+	Open-ILS/xul/staff_client/server/locale/en-US/serial.properties,
+	Open-ILS/xul/staff_client/server/serial/sdist_editor.js,
+	Open-ILS/xul/staff_client/server/serial/ssub_editor.js: Further
+	clean-up of Serials interfaces When trying to come up with good tests, found a few bugs (imagine!).
+	Some have been nagging for a while now.  1) For 'MFHDDrawn' event, make sure it runs if deleting the last
+	serials data of any kind for that record (to unpopulate the menus
+	properly) 2) Make sure global mfhd member (g.mfhd) is cleared in the same case
+	(i.e. deleting the last serials data for that record) 3) Add a string to better indicate when no MFHD records are
+	available for 'Legacy Record Entry' drop-down 4) Convert submitted empty drop-down values to 'null' as needed in
+	distribution editor 5) Mark subscription 'start date' as a required field 6) Make serial virtual records better handle deleted 'legacy record
+	entries' attached to distributions, and also expose non-deleted
+	record entries even if in 'use_sdist_only' summary mode
+
+	Signed-off-by: Dan Wells <dbw2@calvin.edu>
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2011-06-17  Dan Wells <dbw2@calvin.edu>
+
+	* Open-ILS/xul/staff_client/chrome/content/cat/opac.js,
+	Open-ILS/xul/staff_client/server/serial/sdist_editor.js: Better
+	coordination of MFHD/SRE adding/deleting Adding or deleting MFHD records from the XUL menus requires
+	coordinating the OPAC display, the XUL menus, and the Serial Control
+	distribution editors.  The previous code frequently required some
+	non-obvious manual refreshing to make it work.  This commit keeps them in sync using custom events instead.
+
+	Signed-off-by: Dan Wells <dbw2@calvin.edu>
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2011-06-21  Dan Wells <dbw2@calvin.edu>
+
+	* Open-ILS/src/perlmods/OpenILS/Utils/MFHD.pm: MFHD compressed
+	holdings short-circuit logic If you attempt to get compressed (or uncompressed) holdings from a
+	MFHD record with only a caption, the code should short-circuit and
+	return an empty list.
+
+	Signed-off-by: Dan Wells <dbw2@calvin.edu>
+	Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+2011-06-21  Michael Peters <mrpeters@library.in.gov>
+
+	* Open-ILS/xul/staff_client/server/skin/patron_display.css: 
+	LP#783590 fix patron alert message highlighting
+
+
+	Signed-off-by: Michael Peters <mrpeters@library.in.gov>
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2011-06-21  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/sql/Pg/002.schema.config.sql,
+	Open-ILS/src/sql/Pg/030.schema.metabib.sql,
+	Open-ILS/src/sql/Pg/upgrade/0561.schema.tnf_index.sql: Add "tnf"
+	index for faster title sorting (pre-SVF)
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-06-17  Dan Scott <dan@coffeecode.net>
+
+	* Open-ILS/examples/opensrf.xml.example: Set AC timeout value to 3
+	seconds and describe tradeoffs As discussed on the Evergreen Development mailing list, the higher
+	the AC timeout value, the greater the risk of a denial of service.
+	30 is therefore too high to be comfortable as a default setting, so
+	we're dropping it down to 3 as a compromise between the original
+	value of 1 (which resulted in a number of request timing out where
+	added content was actually available) and the much-less-safe 30.  In addition, we document inline the risk/reward of different values
+	and provide some justification for the default value that we chose,
+	so that Evergreen system administrators will have guidance when
+	tweaking this setting.
+
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-06-20  Dan Scott <dan@coffeecode.net>
+
+	* Open-ILS/src/sql/Pg/2.0.6-2.0.7-upgrade-db.sql,
+	Open-ILS/src/sql/Pg/upgrade/0559.schema.biblio.extract_located_uris
+	.sql: DROP biblio.reingest_uris() after use We will hopefully only need to reingest URIs in bulk once, and can
+	therefore DROP the biblio.reingest_uris() function after it has been
+	successfully invoked.
+
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+	Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-06-20  Dan Scott <dan@coffeecode.net>
+
+	* Open-ILS/src/sql/Pg/2.0.6-2.0.7-upgrade-db.sql,
+	Open-ILS/src/sql/Pg/upgrade/0559.schema.biblio.extract_located_uris
+	.sql: Protect URI reingest from failure due to malformed XML In an ideal world, there would be no malformed XML. But our world is
+	the real world of libraries, and while the well_formed_xml()
+	protects against malformed XML in Evergreen 2.0 systems, in some
+	cases bad XML has been able to find its way into Evergreen systems
+	in the past.  A single biblio.record_entry row containing malformed XML in the
+	marc column will prevent the call to reingest URIs from succeeding.
+	By limiting the set of records to those with well-formed XML, we can
+	increase the chance of the URI reingest succeeding at the cost of
+	more processing time.
+
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+	Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-06-20  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/sql/Pg/2.0.6-2.0.7-upgrade-db.sql: Incorporate
+	explode_array -> unnest change and fix for located URIs into upgrade
+	script
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-06-20  Mike Rylander <mrylander@gmail.com>
+
+	* : commit 9ebe72e82e3eb27cc8eba9ff51f8069cb0c55996 Author: Bill
+	Erickson <berick@esilibrary.com> Date:   Thu Jun 16 11:50:16 2011
+	-0400
+
+
+2011-06-16  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/sql/Pg/002.schema.config.sql,
+	Open-ILS/src/sql/Pg/upgrade/0559.schema.biblio.extract_located_uris
+	.sql,
+	Open-ILS/src/sql/Pg/upgrade/XXXX.biblio.extract_located_uris.sql: 
+	Move the user/dbs/lp797304_lp797307 upgrade script into place with a
+	number
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-06-16  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/sql/Pg/030.schema.metabib.sql,
+	Open-ILS/src/sql/Pg/upgrade/XXXX.biblio.extract_located_uris.sql: 
+	Merging branch user/dbs/lp797304_lp797307  Cherry picking the following: commit 7be2a32620587af27de4316e42a308e913e9314c Author: Dan Scott
+	<dan@coffeecode.net> Date:   Tue Jun 14 22:35:26 2011 -0400     Add a stored procedure to reingest problematic URIs     Assuming that href = label in asset.uri is a red enough flag for
+	    the problem in LP 797307 where the perfectly good label was
+	    being thrown away, reingest the unique set of records connected with
+	    such asset.uri rows.       commit 39fe0c4a8a3074ff4c1e427ad9f00a0760bac260 Author: Dan Scott
+	<dan@coffeecode.net> Date:   Tue Jun 14 21:54:51 2011 -0400     Add unwrapped upgrade script for biblio.extract_located_uris     See XXXX.biblio.extract_located_uris.sql for the upgrade script,
+	    waiting to be signed off and committed.        create mode 100644
+	 Open-ILS/src/sql/Pg/upgrade/XXXX.biblio.extract_located_uris.sql commit 7e6d2bfd7e9a5cbe57e4aacdf0b4b015a566883d Author: Dan Scott
+	<dan@coffeecode.net> Date:   Tue Jun 14 21:34:15 2011 -0400     Avoid duplicate row issues in biblio.extract_located_uris     As there is currently no unique constraint on the non-ID columns
+	    of asset.uri, ensure that we only select a single ID from the
+	    tables until we dedupe the tables. Use an ORDER BY to grab the
+	    matching row with the lowest ID so we can clear out the rows with
+	higher IDs.       commit e79a805299ec734a29ee5bfa77dc74bc1fd208cd Author: Dan Scott
+	<dan@coffeecode.net> Date:   Tue Jun 14 14:02:49 2011 -0400     Fix LP 797304 and 797307 - asset.uri parsing bugs     Per 797304: one would expect asset.uri.label to be populated
+	    with the value of 856 $y, however, it was getting populated with
+	    856 $u - perhaps as a result of the ordering of array entries in
+	    XPATH() not matching the XPath expression. Instead of including 856
+	    $u in the XPath expression for uri_label, just assign its value to
+	    uri_label if uri_label is otherwise NULL.      Per 797307: biblio.extract_located_uris() tries to reuse an
+	    existing active asset.uri entry rather than create a new row;
+	    however, it does not handle the case where there is no public note
+	    aka "use restriction" and will end up creating a duplicate row every
+	    time the record is reingested. Teach it to handle NULL values
+	properly.       (cherry picked
+	from commit da70b778268afff19c3dd4f2e9e4c9e85cfeb7e3)  (cherry picked
+	from commit 6019d97c2a0604675cd0c00ec747f248f3f79849)
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-06-15  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/xul/staff_client/server/patron/bill2.js: lp797321:
+	Disable the Apply Payment button during payment processing to
+	mitigate chance of duplicate payments.  I can't actually reproduce the creation of duplicate payments
+	locally with trunk/2.x, but there are reports of it, and this
+	doesn't seem to hurt.  Not a complete solution, but better than
+	before
+
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+	Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-06-13  Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+	* Open-ILS/xul/staff_client/server/serial/batch_receive.js: Fix a
+	serial batch receive problem reported by Sally Fortin That prevents receiving items when not using units in some cases.
+
+
+	Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+	Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2011-06-13  Dan Scott <dan@coffeecode.net>
+
+	* Open-ILS/examples/opensrf.xml.example: Set a more generous AC
+	timeout value A timeout value of 1 second is a bit too tight for many added
+	content providers; set the default to 30 seconds to avoid too many
+	artificial timeouts.
+
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-06-07  Dan Wells <dbw2@calvin.edu>
+
+	* Open-ILS/xul/staff_client/server/locale/en-US/serial.properties,
+	Open-ILS/xul/staff_client/server/serial/editor_base.js,
+	Open-ILS/xul/staff_client/server/serial/scap_editor.js,
+	Open-ILS/xul/staff_client/server/serial/sdist_editor.js: Support for
+	required fields in Serial Control editors Adds a basic check for any fields marked as 'required', and alerts
+	and prevents submitting if they are blank.
+
+	Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2011-05-31  Dan Scott <dan@coffeecode.net>
+
+	* Open-ILS/web/opac/common/js/Cookies.js,
+	Open-ILS/web/reports/oils_rpt_common.xhtml,
+	Open-ILS/xul/staff_client/server/admin/cash_reports.xhtml,
+	Open-ILS/xul/staff_client/server/admin/copy_locations.xhtml,
+	Open-ILS/xul/staff_client/server/admin/hold_pull_list.xhtml,
+	Open-ILS/xul/staff_client/server/admin/hold_pull_list_classic.xhtml
+	, Open-ILS/xul/staff_client/server/admin/non_cat_types.xhtml,
+	Open-ILS/xul/staff_client/server/admin/stat_cat_editor.xhtml,
+	Open-ILS/xul/staff_client/server/patron/user_edit.xhtml: Remove all
+	references to Cookie(s).js and Cookies.js Dojo toolkit is the new Cookie manager, so any lingering references
+	to Cookie.js (a typo in any case) are no longer valid, and we no
+	longer need to ship Cookies.js with Evergreen.  Cookie.js typo was reported by Steven Chan in LP 790429
+
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+	Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+2011-06-07  Dan Scott <dan@coffeecode.net>
+
+	* Open-ILS/web/opac/skin/default/xml/result/result_table.xml: Use
+	the new status.opac_visible attribute in search summary Until we exposed the OPAC visibility of the status element as set in
+	config.copy_status, We previously had to hardcode the logic for
+	whether a given copy should be displayed based on its status. Now we
+	can simply use the status.opac_visible attribute to determine
+	visibility.
+
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-06-07  Dan Scott <dan@coffeecode.net>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/SuperCat.pm: Add
+	opac_visible attribute to copy and serial unit statuses config.copy_status defines an opac_visible column, but that
+	attribute was not being exposed in the holdings XML, so code that
+	displayed copies and serial units based on the holdings XML had to
+	hardcode the display based on the status ID or name instead of using
+	the configured setting.  To simplify display logic, teach holdings XML about the opac_visible
+	column and expose its value in the status element as a new
+	opac_visible attribute.
+
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-06-06  Dan Scott <dan@coffeecode.net>
+
+	* Open-ILS/web/opac/skin/default/xml/result/result_table.xml: Make
+	copy status visibility match default config.copy_status settings Previous version of this patch had hardcoded copy status settings to
+	0, 7, 12 to match the "Available" settings, rather than the OPAC
+	visibility settings available from config.copy_status for each
+	status.  Until config.copy_status.opac_visible translates into an
+	opac_visible attribute on the status element in the holdings XML,
+	this is probably the best we can do.
+
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-05-30  Dan Scott <dan@coffeecode.net>
+
+	* Open-ILS/web/opac/skin/default/xml/result/result_table.xml: Plug
+	the many OPAC visibility holes in search result item display Check volume and circ_lib and copy status OPAC visibility (and
+	deleted status in the case of volumes) in addition to the existing
+	copy and copy-location checks.  Worst hack is hard-coded copy status IDs of 0, 7, 12 - but this is
+	currently used throughout the code, so one more can't hurt that much (OWWW).
+
+	Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+2011-06-12  Dan Scott <dan@coffeecode.net>
+
+	*
+	Open-ILS/src/sql/Pg/upgrade/0554.unnest_search_query_parser_fts.sql: 
+	Remove 2.1 bits that infiltrated 2.0 database upgrades Core schema was fine, but the cherry-picked upgrade script didn't
+	show any conflicts (naturally) so some pieces of the 2.1 schema that
+	don't exist in 2.0 made their way into the 0554 upgrade script.  Thanks to Ben Shum for catching this.
+
+	Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+2011-06-11  Dan Scott <dan@coffeecode.net>
+
+	* Open-ILS/src/sql/Pg/002.schema.config.sql,
+	Open-ILS/src/sql/Pg/upgrade/0549.unnest_oils_xpath_table.sql,
+	Open-ILS/src/sql/Pg/upgrade/0550.unnest_biblio_extract_metabib_fiel
+	d_entry.sql,
+	Open-ILS/src/sql/Pg/upgrade/0551.unnest_metabib_remap_metarecord_fo
+	r_bib.sql,
+	Open-ILS/src/sql/Pg/upgrade/0552.unnest_biblio_map_authority_linkin
+	g.sql,
+	Open-ILS/src/sql/Pg/upgrade/0553.unnest_action_hold_request_permit_
+	test.sql,
+	Open-ILS/src/sql/Pg/upgrade/0554.unnest_search_query_parser_fts.sql
+	, Open-ILS/src/sql/Pg/upgrade/0555.unnest_oils_xpath_table.sql,
+	Open-ILS/src/sql/Pg/upgrade/0556.unnest_biblio_extract_metabib_fiel
+	d_entry.sql: Update upgrade files that had conflicting numbers 0549 and 0550 were taken by other commits over time.
+
+	Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+2011-06-11  Dan Scott <dan@coffeecode.net>
+
+	* : commit f0ed4253afb59bbcfeffde752f4942eeaad3f9da Author: Galen
+	Charlton <gmc@esilibrary.com> Date:   Fri Jun 10 17:34:51 2011 -0400
+
+
+2011-06-10  Galen Charlton <gmc@esilibrary.com>
+
+	* Open-ILS/src/sql/Pg/300.schema.staged_search.sql: lp#795737:
+	improve staff bib search copy visibility check An errant join in query used to see if a bib is visible in the
+	search OU scope for a bib search initiated from the staff client
+	signficantly degrade the speed of such searches.
+
+	Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+	Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2011-06-10  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties: 
+	missing string for MFHD deletion
+
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+	Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2011-06-10  Thomas Berezansky <tsbere@mvlc.org>
+
+	* Open-ILS/web/js/ui/default/actor/user/register.js: Mark invalid
+	home ous as such in patron editor
+
+	Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+	Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2011-06-07  Dan Scott <dan@coffeecode.net>
+
+	* Open-ILS/src/sql/Pg/002.functions.aggregate.sql,
+	Open-ILS/src/sql/Pg/002.functions.config.sql,
+	Open-ILS/src/sql/Pg/002.schema.config.sql,
+	Open-ILS/src/sql/Pg/030.schema.metabib.sql,
+	Open-ILS/src/sql/Pg/110.hold_matrix.sql,
+	Open-ILS/src/sql/Pg/300.schema.staged_search.sql,
+	Open-ILS/src/sql/Pg/pgmemcache-ou_tree_traversal_cache.sql,
+	Open-ILS/src/sql/Pg/upgrade/0549.unnest_oils_xpath_table.sql,
+	Open-ILS/src/sql/Pg/upgrade/0550.unnest_biblio_extract_metabib_fiel
+	d_entry.sql,
+	Open-ILS/src/sql/Pg/upgrade/0551.unnest_metabib_remap_metarecord_fo
+	r_bib.sql,
+	Open-ILS/src/sql/Pg/upgrade/0552.unnest_biblio_map_authority_linkin
+	g.sql,
+	Open-ILS/src/sql/Pg/upgrade/0553.unnest_action_hold_request_permit_
+	test.sql,
+	Open-ILS/src/sql/Pg/upgrade/0554.unnest_search_query_parser_fts.sql: 
+	Use native unnest() db function instead of explode_array() Per LP 789747, the custom explode_array() database function was
+	found to generate significantly slower results for searches than
+	using the native (and equivalent) unnest() array function. Given
+	that unnest() has been part of PostgreSQL since 8.4 and Evergreen
+	2.0 requires a minimum of PostgreSQL 8.4, this patch removes the
+	definition of the explode_array() functions and replaces its usage
+	with unnest().
+
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-06-03  Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+	* Open-ILS/web/js/ui/default/actor/user/register.js: Prevent future
+	dates of birth in patron editor The patron editor form allowed staff to enter a date of birth that
+	takes place in the future. While it is theoretically conceivable
+	(hah) that a library might register patrons that have yet to be
+	born, it is unlikely enough that we will not even assign this
+	behavior to an org-unit setting, but we will take the bold move of
+	using a regular expression to prevent a future dates of birth at
+	all.  Note that if a library system travels into the past, this will cause
+	all sorts of problems in the patron editor interface (not to mention
+	overdues). Please do not mix Evergreen and time travel.
+
+
+	Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+	Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+2011-06-02  Dan Wells <dbw2@calvin.edu>
+
+	* Open-ILS/web/opac/skin/default/js/rdetail.js: Fix false MFHD
+	editing cues (LP #791974) The in-DB serial holdings use the same general display code as the
+	MFHD records, but were falsely triggering MFHD administration
+	widgets when in fact no MFHD record exists.  These holdings were
+	already being marked, so this fix honors that mark.
+
+	Signed-off-by: Dan Wells <dbw2@calvin.edu>
+	Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+2011-06-02  Dan Wells <dbw2@calvin.edu>
+
+	* Open-ILS/web/opac/skin/default/js/rdetail.js: Tweak MFHD scoping Three changes: 1) Add a closure for 'entryNum' value (currently used for some
+	display placement and menu-entry correlation) 2) Remove depth-climb to simplify code and better approximate copy
+	scoping 3) Move 'here' assignment out of the foreach
+
+	Signed-off-by: Dan Wells <dbw2@calvin.edu>
+	Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+2011-05-27  Dan Scott <dan@coffeecode.net>
+
+	* Open-ILS/web/opac/skin/default/js/rdetail.js: Fix rendering of
+	MFHD records when ownership is out of scope Dojo would die with a null reference error when an MFHD record was
+	retrieved that was outside of the current OU search scope.  For
+	example, if a given bib record had one linked MFHD record for BR1,
+	and one linked MFHD record for BR4, the details page would choke
+	trying to draw the MFHD holdings in a scope that only included BR1
+	and end up drawing nothing. Ungood.  Moving the ownership check and invoking _holdingsDrawMFHD() only
+	after ensuring that the record is within our scope resolves the
+	problem.
+
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-06-06  Dan Scott <dan@coffeecode.net>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Search/Biblio.pm,
+	Open-ILS/web/opac/common/js/config.js: LP 791546: advanced search
+	ISBN/ISSN in .staff mode In 1.6, advanced search ISBN/ISSN searches always operated in .staff
+	mode, returning results whether the results should have been visible
+	to the user or not. This confused patrons who saw records to which
+	they had no access.  In 2.0, this behaviour changed so that advanced search ISBN/ISSN
+	searches never operated in .staff mode. This confused staff who were
+	used to retrieving records via the ISBN/ISSN search when they wanted
+	to add holdings for their own library to the records.  The pattern for addressing this problem and satisfying both use
+	cases is the same - use the multiclass.query.staff method if we
+	invoke the ISBN or ISSN searches with the .staff method name.  One could easily refactor many of the search method bodies in this
+	module to use the exact same logic, keying off the method name to
+	identify the identifier field and the .staff portion of the method
+	name to determine whether to invoke .staff mode or not. For now we
+	just address the ISBN and ISSN entry points.
+
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+	Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2011-06-03  Bill Erickson <berick@esilibrary.com>
+
+	* Open-ILS/web/js/ui/default/acq/po/view_po.js: PO activation date
+	display improvement Use the smarter Util.js date parsing code to prevent small time
+	offsets in PO activation date display.
+
+	Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2011-06-01  Dan Scott <dan@coffeecode.net>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Reporter.pm: Whitespace
+	cleanup in aisle 3 (O:A:Reporter)
+
+	Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+2011-06-01  Michael Peters <mrpeters@library.in.gov>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Reporter.pm: LP#740466
+	Sort report folders by name Add order_by to Reporter.pm to sort report folders by name
+
+
+	Signed-off-by: Michael Peters <mrpeters@library.in.gov>
+	Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+2011-06-01  Dan Wells <dbw2@calvin.edu>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Search/Serial.pm,
+	Open-ILS/src/perlmods/OpenILS/Application/Serial.pm,
+	Open-ILS/src/sql/Pg/002.schema.config.sql,
+	Open-ILS/src/sql/Pg/upgrade/0543.data.reformat_generated_coverage.s
+	ql: Serial holdings display consistency fix When holdings are sourced from both MFHD and the DB, display may be
+	inconsistent due to a hard-coded ', ' in Serial.pm.  This patch
+	works around the problem by storing generated_coverage as a JSON
+	array instead of a string, leaving display formatting to the OPAC.
+
+	Signed-off-by: Dan Wells <dbw2@calvin.edu>
+	Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+2011-05-31  Michael Peters <mrpeters@library.in.gov>
+
+	* Open-ILS/web/opac/locale/en-US/opac.dtd: LP#739444 Incrementing
+	opac.dtd copyright date
+
+
+	Signed-off-by: Michael Peters <mrpeters@library.in.gov>
+	Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+2011-05-27  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/web/opac/locale/en-US/lang.dtd: indicate what date format
+	to use for offline patron registration
+
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2011-05-27  Thomas Berezansky <tsbere@mvlc.org>
+
+	* Open-ILS/xul/staff_client/server/circ/checkin.xul: Fix Hold
+	Capture checkin mode oils_persist was trumping hardcoded values.  Also, change how
+	checked is set/unset for reliability.
+
+	Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2011-05-26  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/web/opac/skin/default/xml/home/index_body.xml: Patch
+	suggested by Jason Boyer for LP#788601 The <script> tag for the chrome frame message has a misplaced
+	semicolon, which causes an odd looking display issue in Internet
+	Explorer. I realize that ideally very few people will be using IE,
+	but even if they're not interested in a quality browsing experience
+	we should probably put our best face forward.   (cherry picked
+	from commit bbc874ddb42ac05130ccfad92fc55ccebd6af882)
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-05-26  Dan Wells <dbw2@calvin.edu>
+
+	* Open-ILS/xul/staff_client/server/serial/manage_dists.js,
+	Open-ILS/xul/staff_client/server/serial/manage_dists.xul,
+	Open-ILS/xul/staff_client/server/serial/manage_subs.js,
+	Open-ILS/xul/staff_client/server/serial/manage_subs.xul: Distinguish
+	between 'Show Groups' checkboxes in Serial Control Two different checkboxes ended up with the same ID, which, as one
+	might expect, kinda worked and kinda didn't.
+
+	Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2011-05-26  Dan Wells <dbw2@calvin.edu>
+
+	* Open-ILS/xul/staff_client/server/serial/manage_dists.js,
+	Open-ILS/xul/staff_client/server/serial/manage_subs.js: Checking for
+	'twisty' leads to false negatives in Serial Control Since a tree can be opened with a double-click, we can't rely on
+	'twisty' being set to load the child data.
+
+	Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2011-05-25  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/xul/staff_client/chrome/content/util/network.js: missed
+	this way back when.  fix multiple event override handling (for
+	ilsevent lacking events), re: lp#757634.  Also add some missing
+	typeof's
+
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2011-05-25  Dan Scott <dan@coffeecode.net>
+
+	* Open-ILS/src/support-scripts/authority_control_fields.pl: Fix
+	authority linking script typo Problem reported by Ditty Mulder <dmu@iisg.nl>
+
+	Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+2011-05-25  Dan Wells <dbw2@calvin.edu>
+
+	*
+	Open-ILS/src/sql/Pg/upgrade/0538.data.at-event-def-acq-invoice-prin
+	t.sql,
+	Open-ILS/src/sql/Pg/upgrade/0540.schema.missing_serial_unit_trigger
+	s.sql: upgrade_deps_block_check() is not in the branches at this
+	point
+
+	Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2011-05-24  Dan Scott <dan@coffeecode.net>
+
+	*
+	Open-ILS/src/sql/Pg/upgrade/0541.schema.call_number_honor_default_c
+	lass.sql: Use the right upgrade log format for 2.0 upgrade
+
+	Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+2011-05-24  Dan Scott <dan@coffeecode.net>
+
+	* Open-ILS/src/sql/Pg/040.schema.asset.sql,
+	Open-ILS/src/sql/Pg/upgrade/0541.schema.call_number_honor_default_c
+	lass.sql: Trivial line-wrapping patch for call number class defaults
+
+	Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+2011-05-24  Dan Wells <dbw2@calvin.edu>
+
+	* Open-ILS/src/sql/Pg/002.schema.config.sql,
+	Open-ILS/src/sql/Pg/040.schema.asset.sql,
+	Open-ILS/src/sql/Pg/upgrade/0541.schema.call_number_honor_default_c
+	lass.sql: Make label_class on any new call numbers default to
+	org_unit setting Evergreen 2.0 added a label_class column to the call number table
+	with one major purpose being the generation of correct sort keys.
+	You can also specify a default label class as an org unit setting.
+	However: 1) There are no interface elements for setting the label class of an
+	individual call number.  2) The default setting from the actor.org_unit_setting
+	'cat.default_classification_scheme' value, if set, is not consulted
+	(that is, not set in the call number table) when new call numbers
+	are created.  These two facts together greatly reduce the utility of this very
+	valuable feature, as all new call numbers end up in the 'Generic'
+	class.  While #1 has been addressed in 2.1+, there is still work to be done
+	in setting this class on import. Also, which interface parts (if
+	any) make it back to 2.0 is subject to debate.  This commit addresses #2.  See lp #787150.
+
+	Signed-off-by: Dan Wells <dbw2@calvin.edu>
+	Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+2011-05-24  Dan Wells <dbw2@calvin.edu>
+
+	* Open-ILS/src/sql/Pg/002.schema.config.sql,
+	Open-ILS/src/sql/Pg/210.schema.serials.sql,
+	Open-ILS/src/sql/Pg/901.audit-tables.sql,
+	Open-ILS/src/sql/Pg/upgrade/0540.schema.missing_serial_unit_trigger
+	s.sql: Bring serial.unit in line with asset.copy
+
+	Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2011-05-24  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/web/js/ui/default/actor/user/register.js: remove
+	restriction on resetting pw to random number when Use Phone Password
+	setting is active.  uEditMakeRandomPw will still get called for new
+	users, but should get overwritten once a phone number is entered
+
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2011-05-17  Galen Charlton <gmc@esilibrary.com>
+
+	* Open-ILS/src/sql/Pg/110.hold_matrix.sql,
+	Open-ILS/src/sql/Pg/upgrade/0534.schema.fix_hold_permit_test.sql: 
+	stop hold permit check from crashing if age protection in effect
+
+	Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-05-23  Mike Rylander <mrylander@gmail.com>
+
+	* : commit 3094fedd8aab0223868667d6a9d6ceaa824d2735 Author: Mike
+	Rylander <mrylander@gmail.com> Date:   Mon May 23 11:07:20 2011
+	-0400
+
+
+2011-05-23  Dan Scott <dan@coffeecode.net>
+
+	* Open-ILS/src/extras/Makefile.install: Update Lenny prereqs for
+	MARC::Record 2.0.1+ 2.0 requires MARC::Record 2.0.1+, and the packaged version of
+	MARC::Record is just 2.0.0. This causes mysterious failures of
+	various open-ils.search.biblio.* methods - so teach the prereq
+	installer to get a new enough version of MARC::Record on Lenny.  Aside: The juggling of prereqs in a single Makefile for multiple
+	distros is starting to get extremely complex, perhaps it's time to
+	split them out to a single Makefile per distro?
+
+	Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+2011-05-23  Dan Wells <dbw2@calvin.edu>
+
+	* Open-ILS/examples/apache/eg.conf: Apply Apache file expiration to
+	the current official Javascript content type At least on Ubuntu 10.04, Javascript files are generally delivered
+	with a Content-Type header of 'application/javascript', not
+	'application/x-javascript'.  This change applies the much shorter 18
+	hour expiration to the affected files, rather than allowing them to
+	default to 1 month.
+
+	Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2011-05-20  Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+	* Open-ILS/src/sql/Pg/002.schema.config.sql,
+	Open-ILS/src/sql/Pg/950.data.seed-values.sql,
+	Open-ILS/src/sql/Pg/upgrade/0538.data.at-event-def-acq-invoice-prin
+	t.sql: Fix bad seed data in an A/T template The action_trigger event def template for printing acq invoices was
+	syntatically broken.  The collapse filter isn't important per se,
+	but it balances the extra [% END %] at the bottom of the template,
+	and it was there originally, and I see no reason not to put it back.  Incidentally, maybe the database upgrade script in the commit will
+	be the first in master to successfully use the new
+	evergreen.upgrade_deps_block_check() function ? Reported by Sally Fortin.
+
+	Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2011-05-20  Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Circ/Holds.pm: Fix a
+	problem with open-ils.circ.holds.retrieve_all_from_title Anoop Atre spotted this bug that's triggered by selecting "View
+	Holds" from "Actions for Selected Record" in the catalog seen
+	through the staff client.  Said method would error out like this: [2011-05-20 10:04:03] open-ils.circ [ERR
+	:31866:CStoreEditor.pm:109:13058333633194115] editor[0|1] request
+	error open-ils.cstore.direct.serial.issuance.id_list.atomic :
+	{"subscription":[]} : Exception:
+	OpenSRF::DomainObject::oilsMethodException 2011-05-20T10:04:03
+	OpenILS::Utils::CStoreEditor
+	/openils/lib/perl5/OpenILS/Utils/CStoreEditor.pm:412 <500>  Severe
+	query error -- see error log for more details because when trying to gather issuance-type holds, it didn't
+	properly test whether there actually were any subscriptions and
+	issuances related to the bib record in question.
+
+	Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2011-05-19  Galen Charlton <gmc@esilibrary.com>
+
+	* Open-ILS/src/sql/Pg/1.6.1-2.0-upgrade-db.sql: add missing upgrade
+	step to create staging schema
+
+	Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-05-18  Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Cat.pm: Add permission
+	checking for updating and deleting volumes.  This addresses LP #784062 reported by Ben Shum, and I think others? Creating volumes was already covered.  The ability to delete volumes
+	without permission would be less often an issue in practice since
+	you would need permission to delete the volume's copies before you
+	could delete the volume itself.  Anyway, this should square things.
+
+	Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2011-05-17  Dan Scott <dan@coffeecode.net>
+
+	* Open-ILS/src/sql/Pg/002.schema.config.sql,
+	Open-ILS/src/sql/Pg/011.schema.authority.sql,
+	Open-ILS/src/sql/Pg/upgrade/0535.schema.authority_indexes.sql: 
+	LP#783486: Improve authority lookup performance Testing showed that the two indexes added herein improve authority
+	lookup performance radically; on a 16 GB RAM database server with
+	1.1M records, lookup times decreased from 5500 ms to 0.223 ms.
+	Recommended, would EXPLAIN ANALYZE again.
+
+	Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+2011-05-16  Mike Rylander <mrylander@gmail.com>
+
+	*
+	Open-ILS/src/perlmods/OpenILS/Application/Storage/Publisher/authori
+	ty.pm: Ignore "deleted" authority records when using the
+	tag-validation method
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-05-16  Dan Wells <dbw2@calvin.edu>
+
+	* Open-ILS/src/perlmods/OpenILS/Utils/MFHD/Date.pm: Borrow
+	on_or_after() from MFHD/Caption.pm in MFHD/Date.pm
+
+	Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2011-05-13  dbwells <dbwells@dcc99617-32d9-48b4-a31d-7c20da2025e4>
+
+	* Open-ILS/src/perlmods/OpenILS/Utils/MFHD/Caption.pm,
+	Open-ILS/src/perlmods/OpenILS/Utils/MFHD/Date.pm,
+	Open-ILS/src/perlmods/OpenILS/Utils/MFHD/Holding.pm,
+	Open-ILS/src/perlmods/OpenILS/Utils/MFHD/test/mfhd.t,
+	Open-ILS/src/perlmods/OpenILS/Utils/MFHD/test/mfhddata.txt: A bevy
+	of MFHD bug fixes (and test cases) 1) Remove hard-coded 'gap' text from format_part() 2) Honor $ypm## for chron_to_date() for annuals 3) Removed overly simple check on $w as digit 4) Allow for combined chronologies other than 2nd level 5) Make calendar changes trump $u counts 6) Honor issue restarts at calendar changes 7) Rudimentary support of $u counts for non-restarting issue
+	numbering 8) Special interpretation of $yps for early winters (i.e. winter is
+	the first season of the calendar year) 9) Teach chron_to_date() about early winters The last two points deserve some special attention.  A large number
+	of journals consider 'Winter' to be the first season of the year, so
+	Winter 2011 means (roughly) January 2011, not December 2011.
+	However, there is no explicit way to indicate this in the standard,
+	and also the code relies in many ways on the fact that 24
+	(chronology code for winter) is greater than 21 (code for spring).
+	To work around this, we are interpreting a certain ambiguous pattern
+	in a particular way.  Specifically, if you set $w to a digit, then
+	set $y to 'ps24,21,22,23' (or some variation with '24' as the first
+	value), you will get this winter-first behavior.  Also, the season
+	is treated internally as '20' then converted to '24' when processing
+	is completed.  git-svn-id: svn://svn.open-ils.org/ILS/branches/rel_2_0@20472
+	dcc99617-32d9-48b4-a31d-7c20da2025e4
+
+
+2011-05-12  miker <miker@dcc99617-32d9-48b4-a31d-7c20da2025e4>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Circ/Circulate.pm: Patch
+	from James Fournie addressing LP#781803: Multiple renewal fails on
+	MAX_FINES circs git-svn-id: svn://svn.open-ils.org/ILS/branches/rel_2_0@20463
+	dcc99617-32d9-48b4-a31d-7c20da2025e4
+
+
+2011-05-12  miker <miker@dcc99617-32d9-48b4-a31d-7c20da2025e4>
+
+	*
+	Open-ILS/src/perlmods/OpenILS/Application/Storage/Publisher/actor.p
+	m: Wrap proximity refreshing in a transaction to avoid timespans
+	where there is no such information git-svn-id: svn://svn.open-ils.org/ILS/branches/rel_2_0@20457
+	dcc99617-32d9-48b4-a31d-7c20da2025e4
+
+
+2011-05-12  miker <miker@dcc99617-32d9-48b4-a31d-7c20da2025e4>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Vandelay.pm: Address
+	LP#779975; Status of Available (0) not honored because 0==false --
+	use ternary op with defined() instead git-svn-id: svn://svn.open-ils.org/ILS/branches/rel_2_0@20454
+	dcc99617-32d9-48b4-a31d-7c20da2025e4
+
+
+2011-05-12  dbwells <dbwells@dcc99617-32d9-48b4-a31d-7c20da2025e4>
+
+	* Add missing permission checks to Serial.pm git-svn-id: svn://svn.open-ils.org/ILS/branches/rel_2_0@20451
+	dcc99617-32d9-48b4-a31d-7c20da2025e4
+
+
