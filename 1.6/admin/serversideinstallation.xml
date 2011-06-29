@@ -87,7 +87,7 @@
 				<primary>OpenSRF</primary>
 				<secondary>installation</secondary>
 			</indexterm>
-			<title>Installing OpenSRF 1.4.x On <systemitem class="osname">Ubuntu</systemitem> or
+			<title>Installing OpenSRF 1.6.x On <systemitem class="osname">Ubuntu</systemitem> or
 				<systemitem class="osname">Debian</systemitem></title>
 			<indexterm>
 				<primary>Linux</primary>
@@ -159,17 +159,17 @@
 						<secondary>download</secondary>
 					</indexterm>
 					<para>The latest version of OpenSRF can be found here:
-					<ulink url="http://evergreen-ils.org/downloads/OpenSRF-1.4.0.tar.gz"></ulink> .
+					<ulink url="http://evergreen-ils.org/downloads/opensrf-1.6.3.tar.gz"></ulink> .
 					As the <systemitem class="username">opensrf</systemitem> user, change to
 					the directory <filename class="directory">/home/opensrf</filename> then download
 					and extract OpenSRF. The new subdirectory
-					<filename class="directory">/home/opensrf/OpenSRF-1.4.0</filename> will be created:</para>
+					<filename class="directory">/home/opensrf/opensrf-1.6.3</filename> will be created:</para>
 					<screen>
 						<userinput>
 	# as the opensrf user:
 	cd /home/opensrf
-	wget http://evergreen-ils.org/downloads/OpenSRF-1.4.0.tar.gz
-	tar zxf OpenSRF-1.4.0.tar.gz</userinput>
+	wget http://evergreen-ils.org/downloads/opensrf-1.6.3.tar.gz
+	tar zxf opensrf-1.6.3.tar.gz</userinput>
 					</screen>
 				</step>
 				<step>
@@ -188,7 +188,7 @@
 					<screen>
 						<userinput>
 	# as the root user:
-	cd /home/opensrf/OpenSRF-1.4.0
+	cd /home/opensrf/opensrf-1.6.3
 	make -f src/extras/Makefile.install [DISTRIBUTION]</userinput>
 					</screen>
 					<table xml:id="serversideinstallation-keywords-opensrf">
@@ -270,7 +270,7 @@
 							<screen>
 								<userinput>
 	# as the opensrf user:
-	cd /home/opensrf/OpenSRF-1.4.0
+	cd /home/opensrf/opensrf-1.6.3
 	./configure --prefix=/openils --sysconfdir=/openils/conf
 	make</userinput>
 							</screen>
@@ -285,7 +285,7 @@
 							<screen>
 								<userinput>
 	# as the root user:
-	cd /home/opensrf/OpenSRF-1.4.0
+	cd /home/opensrf/opensrf-1.6.3
 	make install</userinput>
 							</screen>
 							<para>This step will take several minutes to complete.</para>
@@ -828,17 +828,17 @@
 				<step>
 					<title>Download and Unpack Latest Evergreen Version</title>
 					<para>The latest version of Evergreen can be found here:
-					<ulink url="http://evergreen-ils.org/downloads/Evergreen-ILS-1.6.1.6.tar.gz"></ulink> .
+					<ulink url="http://evergreen-ils.org/downloads/Evergreen-ILS-1.6.1.8.tar.gz"></ulink> .
 					As the <systemitem class="username">opensrf</systemitem> user, change to
 					the directory <filename class="directory">/home/opensrf</filename> then download
 					and extract Evergreen. The new subdirectory
-					<filename class="directory">/home/opensrf/Evergreen-ILS-1.6.1.6</filename> will be created:</para>
+					<filename class="directory">/home/opensrf/Evergreen-ILS-1.6.1.8</filename> will be created:</para>
 					<screen>
 						<userinput>
 	# as the opensrf user:
 	cd /home/opensrf
-	wget http://evergreen-ils.org/downloads/Evergreen-ILS-1.6.1.6.tar.gz
-	tar zxf Evergreen-ILS-1.6.1.6.tar.gz</userinput>
+	wget http://evergreen-ils.org/downloads/Evergreen-ILS-1.6.1.8.tar.gz
+	tar zxf Evergreen-ILS-1.6.1.8.tar.gz</userinput>
 					</screen>
 				</step>
 				<step xml:id="serversideinstallation-installprereq">
@@ -859,7 +859,7 @@
 					<screen>
 						<userinput>
 	# as the root user:
-	cd /home/opensrf/Evergreen-ILS-1.6.1.6
+	cd /home/opensrf/Evergreen-ILS-1.6.1.8
 	make -f Open-ILS/src/extras/Makefile.install [DISTRIBUTION]</userinput>
 					</screen>
 					<table xml:id="serversideinstallation-keywords-evergreen">
@@ -934,7 +934,7 @@
 					for more information.</para>
 					<note>
 						<para>PostgreSQL versions 8.3 or 8.4 are the recommended versions to work 
-						with Evergreen version 1.6.1.6 . If you have an older version of PostgreSQL, 
+						with Evergreen version 1.6.1.8 . If you have an older version of PostgreSQL, 
 						you should upgrade before installing Evergreen. To find your current version 
 						of PostgreSQL, as the <systemitem class="username">postgres</systemitem> 
 						user execute the command <command>psql</command>, then type 
@@ -1011,7 +1011,7 @@
 					<screen>
 						<userinput>
 	# as the opensrf user:
-	cd /home/opensrf/Evergreen-ILS-1.6.1.6
+	cd /home/opensrf/Evergreen-ILS-1.6.1.8
 	./configure --prefix=/openils --sysconfdir=/openils/conf
 	make</userinput>
 					</screen>
@@ -1025,14 +1025,14 @@
 					<screen>
 						<userinput>
 	# as the root user:
-	cd /home/opensrf/Evergreen-ILS-1.6.1.6
-	make STAFF_CLIENT_BUILD_ID=rel_1_6_1_6 install</userinput>
+	cd /home/opensrf/Evergreen-ILS-1.6.1.8
+	make STAFF_CLIENT_BUILD_ID=rel_1_6_1_8 install</userinput>
 					</screen>
 					<para>The Staff Client will also be automatically built, but you must remember
 					to set the variable <envar>STAFF_CLIENT_BUILD_ID</envar> to match the version of the 
 					Staff Client you will use to connect to the Evergreen server.</para>
 					<para>The above commands will create a new subdirectory
-					<filename class="directory">/openils/var/web/xul/rel_1_6_1_6</filename> 
+					<filename class="directory">/openils/var/web/xul/rel_1_6_1_8</filename> 
 					containing the Staff Client.</para>
 					<para>To complete the Staff Client installation, as the
 					<systemitem class="username">root</systemitem> user execute the following commands to
@@ -1044,7 +1044,7 @@
 						<userinput>
 	# as the root user:
 	cd /openils/var/web/xul
-	ln -sf rel_1_6_1_6/server server</userinput>
+	ln -sf rel_1_6_1_8/server server</userinput>
 					</screen>
 				</step>
 				<step>
@@ -1140,7 +1140,7 @@
 							<screen>
 								<userinput>
 	# as the root user:
-	cd /home/opensrf/Evergreen-ILS-1.6.1.6
+	cd /home/opensrf/Evergreen-ILS-1.6.1.8
 	perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
 	  --service all --create-schema --create-bootstrap --create-offline \
 	  --hostname HOSTNAME --port PORT \
@@ -1204,7 +1204,7 @@
 							<screen>
 								<userinput>
 	# as the root user:
-	cd /home/opensrf/Evergreen-ILS-1.6.1.6
+	cd /home/opensrf/Evergreen-ILS-1.6.1.8
 	cp Open-ILS/examples/apache/eg.conf	/etc/apache2/sites-available/
 	cp Open-ILS/examples/apache/eg_vhost.conf  /etc/apache2/
 	cp Open-ILS/examples/apache/startup.pl     /etc/apache2/</userinput>
@@ -1663,7 +1663,7 @@
 							<userinput>
 	# as the opensrf user:
 	cd /home/opensrf
-	./Evergreen-ILS-1.6.1.6/Open-ILS/src/support-scripts/settings-tester.pl</userinput>
+	./Evergreen-ILS-1.6.1.8/Open-ILS/src/support-scripts/settings-tester.pl</userinput>
 						</screen>
 						<para>If the output of <command>settings-tester.pl</command> does not help you
 						find the problem, please do not make any significant changes to your
@@ -1695,7 +1695,7 @@
 				<screen>
 					<userinput>
 	# as the root user:
-	xulrunner /home/opensrf/Evergreen-ILS-1.6.1.6/Open-ILS/xul/staff_client/build/application.ini</userinput>
+	xulrunner /home/opensrf/Evergreen-ILS-1.6.1.8/Open-ILS/xul/staff_client/build/application.ini</userinput>
 				</screen>
 				<para>A login screen for the Staff Client similar to this should appear:</para>
 				<mediaobject>
@@ -1836,7 +1836,7 @@
 				<filename>/openils/conf/lib_ips.txt</filename> and modifying the Apache startup script
 				<filename>/etc/apache2/startup.pl</filename>.</para>
 				<para>First, copy the sample file
-				<filename>/home/opensrf/Evergreen-ILS-1.6.1.2/Open-ILS/examples/lib_ips.txt.example</filename>
+				<filename>/home/opensrf/Evergreen-ILS-1.6.1.8/Open-ILS/examples/lib_ips.txt.example</filename>
 				to <filename>/openils/conf/lib_ips.txt</filename>. The example file contains the single
 				line: <literal>"MY-LIB 127.0.0.1 127.0.0.254"</literal>. You must modify the file to use
 				the IP address ranges for your library system. Add new lines to represent the IP address
@@ -2280,7 +2280,7 @@ OpenILS::WWW::Redirect->parse_ips_file('/openils/conf/lib_ips.txt');
 							<screen>
 								<userinput>
 	# as the opensrf user
-	cd /home/opensrf/Evergreen-ILS-1.6.1.4/Open-ILS
+	cd /home/opensrf/Evergreen-ILS-1.6.1.8/Open-ILS
 	xulrunner-1.9 xul/staff_client/build/application.ini</userinput>
 							</screen>
 							<para>Connect to 
@@ -2345,10 +2345,10 @@ OpenILS::WWW::Redirect->parse_ips_file('/openils/conf/lib_ips.txt');
 							by getting your host-based connection running (see 
 							<xref linkend="serversideinstallation-virtual-vm-host-based"/>).
 							Once you have a host-based connection, you can install and use the
-							<systemitem class="osname">Windows</systemitem> 1.6.1.4 staff
+							<systemitem class="osname">Windows</systemitem> 1.6.1.8 staff
 							client available from
-							<ulink url="http://evergreen-ils.org/downloads/evergreen-setup-rel_1_6_1_4.exe">
-							http://evergreen-ils.org/downloads/evergreen-setup-rel_1_6_1_4.exe</ulink>
+							<ulink url="http://evergreen-ils.org/downloads/evergreen-setup-rel_1_6_1_8.exe">
+							http://evergreen-ils.org/downloads/evergreen-setup-rel_1_6_1_8.exe</ulink>
 							to connect to the virtual Evergreen system from another
 							<systemitem class="osname">Windows</systemitem> machine.</para>
 						</step>
