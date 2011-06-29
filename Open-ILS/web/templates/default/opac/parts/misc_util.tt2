@@ -27,10 +27,59 @@
         args.isbn_clean = args.isbn.replace('\ .*', '');
 
         args.holdings = [];
-        FOR holding IN xml.findnodes('//*[local-name()="volumes"]/*[local-name()="volume"]');
-            args.holdings.push(
-                holding.getAttribute('label')
-            );
+        args.uris = [];
+
+        # URI info is in volumes/volume/uris/volume, instead of uri element
+        FOR volume IN xml.findnodes('//*[local-name()="volumes"]/*[local-name()="volume"]');
+
+            # Check volume visibility - could push this into XPath
+            vol.label = volume.getAttribute('label');
+            vol.id = volume.getAttribute('id');
+            NEXT IF volume.getAttribute('opac_visible') == 'false';
+            NEXT IF volume.getAttribute('deleted') == 'true';
+
+            IF vol.label == '##URI##';
+                FOR uri IN volume.findnodes('./*[local-name()="uris"]/*[local-name()="volume"]');
+                    res.href = uri.getAttribute('href');
+                    res.link = uri.getAttribute('label');
+                    res.note = uri.getAttribute('use_restriction');
+                    args.uris.push(res);
+                END;
+                NEXT;
+            ELSE;
+                copies = volume.findnodes('./*[local-name()="copies"]/*[local-name()="copy"]');
+                FOR copy IN copies;
+                    # Check copy visibility
+                    cp.deleted = copy.getAttribute('deleted');    
+                    cp.visible = copy.getAttribute('opac_visible');
+                    NEXT IF (cp.deleted == 'true' OR cp.visible == 'false');
+
+                    # Iterate through all of the children to determine visibility
+                    FOR node IN cp.childNodes;
+                        NEXT IF cp.visible == 'false';
+                        vis = node.getAttribute('opac_visible');
+                        del = node.getAttribute('deleted');
+                        IF vis == 'false' or del == 'true';
+                            cp.visible = 'false';
+                        END;
+                    END;
+
+                    NEXT IF cp.visible == 'false';
+                    
+                    loc = copy.findnodes('./*[local-name()="location"]');
+                    circlib = copy.findnodes('./*[local-name()="circlib"]');
+                    status = copy.findnodes('./*[local-name()="status"]');
+
+                    holding = {
+                        label => vol.label,
+                        location => loc.textContent,
+                        library => circlib.textContent,
+                        status => status.textContent
+                        barcode => copy.getAttribute('barcode')
+                    };
+                    args.holdings.push(holding);
+                END;
+            END;
         END;
 
         # Extract the copy count summary
