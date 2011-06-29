@@ -300,7 +300,7 @@
 <!ENTITY staff.cat.opac.mark_for_hold_transfer.accesskey "">
 <!ENTITY staff.cat.opac.mark_for_hold_transfer.label "Mark as Title Hold Transfer Destination">
 <!ENTITY staff.cat.opac.transfer_title_holds.accesskey "">
-<!ENTITY staff.cat.opac.transfer_title_holds.label "Transfer Title Holds">
+<!ENTITY staff.cat.opac.transfer_title_holds.label "Transfer All Title Holds">
 <!ENTITY staff.cat.opac.delete_record.accesskey "D">
 <!ENTITY staff.cat.opac.delete_record.label "Delete Record">
 <!ENTITY staff.cat.opac.undelete_record.accesskey "U">
@@ -2854,6 +2854,7 @@
 <!ENTITY staff.cat.volume_editor.cancel.accesskey "C">
 <!ENTITY staff.cat.volume_editor.automerge.label "Auto-Merge on Volume Collision">
 <!ENTITY staff.cat.volume_editor.automerge.accesskey "A">
+<!ENTITY staff.cat.volume_editor.automerge.description "If two or more volumes for the same bib record and library are given the same call number label (and prefix/suffix), then merge them (including items they contain) into a single volume if checked.  Otherwise, report an error.">
 <!ENTITY staff.cat.volume_editor.owning_lib "Owning lib">
 <!ENTITY staff.cat.volume_editor.classification "Classification">
 <!ENTITY staff.cat.volume_editor.prefix "Prefix">

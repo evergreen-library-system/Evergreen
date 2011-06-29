@@ -1212,7 +1212,7 @@ BEGIN
 
         IF TG_TABLE_NAME IN ('copy', 'unit') THEN
             add_base_query := add_base_query || ' AND cp.id = ' || NEW.id;
-            EXECUTE add_front || add_basequery || add_back;
+            EXECUTE add_front || add_base_query || add_back;
         END IF;
 
         RETURN NEW;

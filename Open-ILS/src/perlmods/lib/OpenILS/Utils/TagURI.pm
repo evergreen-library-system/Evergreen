@@ -101,4 +101,33 @@ sub parse {
     return $self;
 }
 
+sub toURI {
+    my $class = shift;
+    my $parts = shift || {};
 
+    my $self = ref($class) ? $class : $class->new;
+
+    $self->$_($$parts{$_}) for keys %$parts;
+    return undef unless (defined($self->classname) && defined($self->id));
+
+    my $tag = 'tag:';
+
+    if ($self->host) {
+        $tag .= $self->host;
+        $tag .= ',' . $self->validity if ($self->validity);
+    }
+
+    $tag .= ':';
+
+    $tag .= 'U2@' if ($self->version == 2);
+    $tag .= $self->classname . '/' . $self->id;
+    $tag .= '['. join(',', @{ $self->paging }) . ']' if defined($self->paging);
+    $tag .= '{'. join(',', @{ $self->includes }) . '}' if defined($self->includes);
+    $tag .= '/' . $self->location if defined($self->location);
+    $tag .= '/' . $self->depth if defined($self->depth);
+    $tag .= '/' . $self->pathinfo if defined($self->pathinfo);
+
+    return $tag;
+}
+
+1;
