@@ -77,76 +77,54 @@ sub do_checkout {
 
     my $override = 0;
 
+    if ($is_renew) {
+        $method = 'open-ils.circ.renew';
+    } else {
+        $method = 'open-ils.circ.checkout.full';
+    }
+
     while (1) {
-        if ($is_renew) {
-            $method = 'open-ils.circ.renew';
-            $method .= '.override' if ($override);
-            $resp = $U->simplereq('open-ils.circ', $method, $self->{authtoken}, $args);
-        } else {
-            $method = 'open-ils.circ.checkout.permit';
-            $method .= '.override' if ($override);
-            $resp = $U->simplereq('open-ils.circ', $method, $self->{authtoken}, $args);
+        $method .= '.override' if ($override);
+        $resp = $U->simplereq('open-ils.circ', $method, $self->{authtoken}, $args);
 
-            $resp = [$resp] unless ref $resp eq 'ARRAY';
+        $resp = [$resp] unless ref $resp eq 'ARRAY';
 
-            syslog('LOG_DEBUG', "OILS: $method returned event: " . OpenSRF::Utils::JSON->perl2JSON($resp));
+        syslog('LOG_DEBUG', "OILS: $method returned event: " . OpenSRF::Utils::JSON->perl2JSON($resp));
 
-            if (@$resp == 1 && !$U->event_code($$resp[0])) {
-                my $key = $$resp[0]->{payload};
-                syslog('LOG_INFO', "OILS: circ permit key => $key");
-                # --------------------------------------------------------------------
-                # Now do the actual checkout
-                # --------------------------------------------------------------------
-                my $cko_args = $args;
-                $cko_args->{permit_key} = $key;
-                $method = 'open-ils.circ.checkout';
-                $resp = $U->simplereq('open-ils.circ', $method, $self->{authtoken}, $cko_args);
-            } else {
-                # We got one or more non-success events
-                $self->screen_msg('');
-                for my $r (@$resp) {
-                    if ( my $code = $U->event_code($r) ) {
-                        my $txt = $r->{textcode};
-                        syslog('LOG_INFO', "OILS: $method failed with event $code : $txt");
+        if (@$resp > 1 || $U->event_code($$resp[0])) {
+            # We got one or more non-success events
+            $self->screen_msg('');
+            for my $r (@$resp) {
+                if ( my $code = $U->event_code($r) ) {
+                    my $txt = $r->{textcode};
+                    syslog('LOG_INFO', "OILS: $method failed with event $code : $txt");
 
-                        if ($override_events{$txt} && $method !~ /override$/) {
-                            # Found an event we've been configured to override.
-                            $override = 1;
-                        } elsif ( $txt eq 'OPEN_CIRCULATION_EXISTS' ) {
-                            $self->screen_msg(OILS_SIP_MSG_CIRC_EXISTS);
-                            return 0;
-                        } else {
-                            $self->screen_msg(OILS_SIP_MSG_CIRC_PERMIT_FAILED);
-                            return 0;
-                        }
+                    if ($override_events{$txt} && $method !~ /override$/) {
+                        # Found an event we've been configured to override.
+                        $override = 1;
+                    } elsif ( $txt eq 'OPEN_CIRCULATION_EXISTS' ) {
+                        $self->screen_msg(OILS_SIP_MSG_CIRC_EXISTS);
+                        return 0;
+                    } else {
+                        $self->screen_msg(OILS_SIP_MSG_CIRC_PERMIT_FAILED);
+                        return 0;
                     }
                 }
-                # This looks potentially dangerous, but we shouldn't
-                # end up here if the loop iterated with $override = 1;
-                next if ($override && $method !~ /override$/);
             }
-        }
-        syslog('LOG_INFO', "OILS: $method returned event: " . OpenSRF::Utils::JSON->perl2JSON($resp));
-        # XXX Check for events
-        if ( $resp ) {
+            # This looks potentially dangerous, but we shouldn't
+            # end up here if the loop iterated with $override = 1;
+            next if ($override && $method !~ /override$/);
+        } else {
+            # We appear to have success.
+            # De-arrayify the response.
+            $resp = $$resp[0];
 
-            if ( my $code = $U->event_code($resp) ) {
-                my $txt = $resp->{textcode};
-                if ($override_events{$txt} && $method !~ /override$/) {
-                    $override = 1;
-                } else {
-                    syslog('LOG_INFO', "OILS: $method failed with event $code : $txt");
-                    $self->screen_msg('Checkout failed.  Please contact a librarian');
-                    last;
-                }
-            } else {
-                syslog('LOG_INFO', "OILS: $method succeeded");
+            syslog('LOG_INFO', "OILS: $method succeeded");
 
-                my $circ = $resp->{payload}->{circ};
-                $self->{'due'} = OpenILS::SIP->format_date($circ->due_date, 'due');
-                $self->ok(1);
-                last;
-            }
+            my $circ = $resp->{payload}->{circ};
+            $self->{'due'} = OpenILS::SIP->format_date($circ->due_date, 'due');
+            $self->ok(1);
+            last;
 
         }
         last if ($method =~ /override$/);
