@@ -16,4 +16,15 @@ ctx.refworks.url = 'http://www.refworks.com';
 # in addition, you might want to proxy access to RefWorks - for example:
 # ctx.refworks.url = 'http://librweb.laurentian.ca/login?url=http://refworks.scholarsportal.info';
 
+##############################################################################
+# OpenURL resolution
+##############################################################################
+# Evergreen provides the ability to point at an OpenURL resolver to find
+# electronic resources for a given ISSN or ISBN. Currently, only the SFX
+# resolver is supported.
+##############################################################################
+
+openurl.enabled = 'false';
+openurl.baseurl = 'http://sfx.example.com/instance';
+
 %]
