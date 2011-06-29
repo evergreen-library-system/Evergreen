@@ -1,7 +1,7 @@
 <div class="big-block">
     <div class="float-right">
         <div class="pos-rel">
-            <img src="[% ctx.media_prefix %]/images/utils-corner-left.png" class="float-left" />
+            <img src="[% ctx.media_prefix %]/images/utils-corner-left.png" class="float-left" alt="" />
             <div class="left-corner"> 
                 <a href="javascript:history.go(-1)"
                     id="util_back_btn"><img alt="[% l('Back') %]"
@@ -19,7 +19,7 @@
                     id="util_forw_btn"><img alt="[% l('Forward') %]"
                     src="[% ctx.media_prefix %]/images/tool_forward.png" /></a>
             </div>
-            <img src="[% ctx.media_prefix %]/images/utils-corner-right.png" class="float-left" />
+            <img src="[% ctx.media_prefix %]/images/utils-corner-right.png" class="float-left" alt="" />
         </div>
     </div>
 </div>

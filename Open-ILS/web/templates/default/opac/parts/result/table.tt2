@@ -180,22 +180,17 @@
                                                                 href="[% ctx.opac_root %]/place_hold[% propagator; propagator.length > 1 ? "&amp;" : ""; %]hold_target=[% rec.id %]&amp;hold_type=T" 
                                                                     name="place_hold_link" class="no-dec"><img
                                                                 src="[% ctx.media_prefix %]/images/green_check.png"
-                                                                alt="[% l('Place hold') %]"/><span style="position:relative;top:-3px;left:3px;">[% l('Place Hold') %]</span></a>
+                                                                alt=""/><span style="position:relative;top:-3px;left:3px;">[% l('Place Hold') %]</span></a>
                                                         </div>
                                                         <div class="results_aux_utils opac-auto-011">
-                                                            [%  operation = ctx.mylist.grep(rec.id).size ? "delete" : "add";
-                                                                label = (operation == "add") ? l("Add to") : l("Remove from"); %]
-                                                            <form action="[% ctx.opac_root %]/mylist/[% operation %]" method="POST">
-                                                                <input type="hidden" name="record" value="[% rec.id %]" />
-                                                            <div style="position:absolute;">
-                                                                <div style="position:relative;top:5px; left: 25px;">
-                                                                    <input type="submit" title="[% l(label _ ' my list') %]" value="[% l(label _ ' my list') %]" class="subtle-button" />
-                                                                </div>
-                                                            </div>
-                                                                <input type="image"
-                                                                alt="[% l(label _ ' my list') %]"
-                                                                src="[% ctx.media_prefix %]/images/clipboard.png" />
-                                                        </form>
+                                                            [%  
+                                                                operation = ctx.mylist.grep(rec.id).size ? "delete" : "add";
+                                                                label = (operation == "add") ? l("Add to my list") : l("Remove from my list");
+                                                            %]      
+                                                            <a href="[% ctx.opac_root %]/mylist/[% operation %]?record=[% rec.id %]" class="no-dec">
+                                                                <img src="[% ctx.media_prefix %]/images/clipboard.png" alt="" />
+                                                                [% label %]
+                                                            </a>
                                                         </div>
                                                         <!-- <div style="padding-top:7px;" class="results_aux_utils">
                                                             <a title="Reviews and More" target="_blank" class="no-dec"
