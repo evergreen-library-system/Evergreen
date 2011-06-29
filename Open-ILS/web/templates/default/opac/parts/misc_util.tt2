@@ -61,7 +61,6 @@
             END;
         END;
 
-        # URI info is in volumes/volume/uris/volume, instead of uri element
         FOR volume IN xml.findnodes('//*[local-name()="volumes"]/*[local-name()="volume"]');
 
             # Check volume visibility - could push this into XPath
@@ -71,7 +70,7 @@
             NEXT IF volume.getAttribute('deleted') == 'true';
 
             IF vol.label == '##URI##';
-                FOR uri IN volume.findnodes('./*[local-name()="uris"]/*[local-name()="volume"]');
+                FOR uri IN volume.findnodes('./*[local-name()="uris"]/*[local-name()="uri"]');
                     res.href = uri.getAttribute('href');
                     res.link = uri.getAttribute('label');
                     res.note = uri.getAttribute('use_restriction');
