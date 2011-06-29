@@ -1,0 +1,20 @@
+[%  PROCESS "default/opac/parts/header.tt2";
+    PROCESS "default/opac/parts/misc_util.tt2";
+    WRAPPER "default/opac/parts/base.tt2";
+    INCLUDE "default/opac/parts/topnav.tt2";
+    ctx.page_title = l("Record Detail") %]
+    <div id="search-wrapper">
+        [% INCLUDE "default/opac/parts/printnav.tt2" %]
+        [% INCLUDE "default/opac/parts/searchbar.tt2" %]
+    </div>
+    <div id="content-wrapper">
+        <div id="main-content">
+            [%  IF ctx.mylist.size;
+                    INCLUDE "default/opac/parts/anon_list.tt2";
+                ELSE %]
+                <div class="opac-auto-171 opac-auto-097">[% l("You have not created a list yet."); %]</div>
+                [% END %]
+            <div class="common-full-pad"></div>	
+        </div>
+    </div>
+[% END %]

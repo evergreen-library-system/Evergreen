@@ -1,0 +1,23 @@
+[%
+    BLOCK build_org_selector_options; %]
+        <option value='[% walker.id %]' [% IF walker.id == value %] selected='selected' [% END %]>
+            [%
+                pad = walker.ou_type.depth * 2;
+                FOR idx IN [0..pad]; '&nbsp;'; END;
+                walker.name;
+            %]
+        </option>
+        [%  FOR child IN walker.children;
+            PROCESS build_org_selector_options walker=child value=value;
+        END;
+    END;
+
+    # XXX TODO probably put this BLOCK somewhere else so it can be used widely.
+    # Org Unit Selector Widget :
+    #   PROCESS build_org_selector id='selector-id' name='selector-name'
+    BLOCK build_org_selector;
+%]
+    <select [% IF id %] id='[% id %]' [% END %] name='[% name %]'>
+    [% PROCESS build_org_selector_options walker=(org_unit || ctx.aou_tree) value=value %]
+    </select>
+[%  END %]

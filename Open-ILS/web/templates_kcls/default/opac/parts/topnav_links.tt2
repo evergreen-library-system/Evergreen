@@ -1,0 +1,13 @@
+<div id="gold-links-holder">
+    <div id="gold-links">
+        <div id="header-links">
+            <a href="http://www.kcls.org/usingthelibrary/index.cfm">Using the Library</a>
+            <a href="http://www.kcls.org/booksandreading/">Books &amp; Reading</a>
+            <a href="http://www.kcls.org/research/index.cfm">Research &amp; Homework</a>
+            <a href="http://www.kcls.org/programs/">Programs &amp; Classes</a>
+            <a href="http://www.kcls.org/events/">Events</a>
+            <a href="/opac/extras/mobile/">Mobile Catalog</a>
+            <a href="http://www.kcls.org/about/">About KCLS</a>
+        </div>
+    </div>
+</div>

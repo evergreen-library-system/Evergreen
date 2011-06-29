@@ -1,0 +1,67 @@
+[% 
+    subjects = [
+        {
+            label => l('Genre: '),
+            xpath => '//*[@tag="655"]|//*[@tag="659"]'
+        }, {
+            label => l('Topic Heading: '),
+            xpath => '//*[@tag="690"]'
+        }, {
+            label => l('Geographic Setting: '),
+            xpath => '//*[@tag="691"]'
+        }, {
+            label => l('Biographical Subject: '),
+            xpath => '//*[@tag="692"]'
+        }, {
+            label => l('Character Attributes: '),
+            xpath => '//*[@tag="693"]'
+        }, {
+            label => l('Setting: '),
+            xpath => '//*[@tag="698"]'
+        }, {
+            label => l('Time Period: '),
+            xpath => '//*[@tag="699"]'
+        }
+    ];
+
+    BLOCK render_subject;
+        loc = CGI.param('loc') | uri;
+        xpath = xpath || '//*[starts-with(@tag,"6")]';
+        FOR node IN ctx.marc_xml.findnodes(xpath);
+            all_terms = [];
+            FOR subfield IN node.childNodes;
+                NEXT UNLESS subfield.nodeName == "subfield";
+                code = subfield.getAttribute('code');
+                NEXT UNLESS code.match('[a-z]');
+                IF code.match('[vxyz]'); " &mdash; "; END;
+                # at this point, we actually have a partial term to use.
+                single_term = subfield.textContent | html;
+                all_terms.push(subfield.textContent);
+                total_term = all_terms.join(" ").replace('\s+$', '') | uri;
+                '<a href="' _ ctx.opac_root _ '/results?qtype=subject&amp;query=' _ total_term _ '&amp;loc=' _ loc _ '">' _ single_term _ '</a>';
+            END;
+            IF all_terms.size; "<br/>"; END;
+        END;
+    END 
+%]
+
+<div id='rdetail_subject_div'>
+    <table cellpadding="0" cellspacing="0" border="0">
+    [%  any_subjects = 0;
+        FOREACH subj IN subjects;
+            content = PROCESS render_subject(xpath=subj.xpath);
+            IF content.match('\S');
+                any_subjects = 1; %]
+            <tr>
+                <td width="1" style="padding:5px 7px 0px 0px;" valign="top">
+                    <strong>[% subj.label %]</strong>
+                </td>
+                <td style="padding-top:5px;"><div>[% content %] </div></td>
+            </tr>
+            [% END; %]
+        [% END; %]
+    [% IF any_subjects == 0 %]
+        <tr><td><i>[% l('No Subjects') %]</i></td></tr>
+    [% END; %]
+    </table>
+</div>

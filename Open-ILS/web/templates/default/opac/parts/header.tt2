@@ -1,0 +1,55 @@
+[%- USE money = format(l('$%.2f'));
+    USE date;
+    USE CGI = CGI_utf8;
+    USE EGI18N;
+    USE POSIX;
+    SET DATE_FORMAT = l('%m/%d/%Y');
+
+    # Don't wrap in l() here; do that where this format string is actually used.
+    SET HUMAN_NAME_FORMAT = '[_1] [_2] [_3] [_4] [_5]';
+
+    # x and y are artifacts of using <input type="image" /> tags instead of
+    # true submit buttons, and their values are never used. page is used, but
+    # currently none of the use cases for rendering the query_string back
+    # into page output call for propagating the value of the page variable.
+
+    query_string = CGI.query_string |
+        replace(';x=\d+','') | replace(';y=\d+','') | replace(';page=\d*', '') |
+        replace(';', '&') | replace('&', '&amp;');
+
+    propagator = '?' _ query_string;
+
+    is_advanced = CGI.param("_adv").size;
+%]
+
+
+[%# XXX KCLS Note... Remove me soon...
+BEGIN;
+INSERT INTO config.record_attr_definition (name, label, tag, sf_list)
+    VALUES ('mattype', 'Material Type', '998', 'd');
+INSERT INTO config.coded_value_map (ctype, code, value)
+    VALUES
+        ('mattype', 'a', 'Book'),
+        ('mattype', 'i', 'Book on cassette'),
+        ('mattype', 'n', 'Book on CD'),
+        ('mattype', 'x', 'Download music'),
+        ('mattype', 'y', 'Download video'),
+        ('mattype', 'h', 'DVD'),
+        ('mattype', 'w', 'eBook - Audio'),
+        ('mattype', 'v', 'eBook - Text'),
+        ('mattype', 'e', 'Equipment'),
+        ('mattype', 'f', 'Films'),
+        ('mattype', 'o', 'Kit'),
+        ('mattype', 'q', 'Large print'),
+        ('mattype', 'b', 'Magazine'),
+        ('mattype', 'd', 'Microform'),
+        ('mattype', 'k', 'Music cassette'),                                                                                                                                                              ('mattype', 'j', 'Music CD'),
+        ('mattype', 'l', 'Music LP'),                                                                                                                                                                    ('mattype', 'p', 'Newspaper'),
+        ('mattype', 't', 'Online'),                                                                                                                                                                      ('mattype', 'u', 'Player'),
+        ('mattype', 'c', 'Printed music / scores'),                                                                                                                                                      ('mattype', '2', 'Read along with cassette'),
+        ('mattype', '5', 'Read along with CD'),                                                                                                                                                          ('mattype', 'm', 'Software'),
+        ('mattype', 'g', 'Video'),                                                                                                                                                                       ('mattype', 'r', '3-D Object'),
+        ('mattype', 'z', 'Map'),                                                                                                                                                                         ('mattype', 's', 'Slide set');
+COMMIT;
+%]
+

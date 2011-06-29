@@ -1,0 +1,91 @@
+<table class="hide_me">
+    <tbody>
+        <tr class='opac-auto-009' id='rdetail_volume_details_row' templateRow='1'>
+            <td colspan='10'>
+                <div style='text-align: center; margin-top: 6px; margin-bottom: 6px'>
+                    <a name='print' href='#' class='classic_link'>[% l("print these details") %]</a>
+                    <table class='data_grid data_grid_center' style='width: 100%'>
+                        <tbody name='copies_tbody' class='copy_details_table' width='100%'>
+
+                                <!-- XXX keeping for now for reference...
+                                <td>
+                                    <span name='barcode'> </span>
+                                    <a class='hide_me classic_link copy_more_info'
+                                        name='details_link'>[% l("more info...") %]</a>
+                                    <a class='hide_me classic_link copy_more_info'
+                                        name='less_details_link'>[% l("less info") %]</a>
+                                    <a class='hide_me classic_link copy_more_info'
+                                        name='copy_hold_link' href='#'>[% l("place hold") %]</a>
+                                </td>
+                                <td name='status'> </td>
+                                <td name='location'> </td>
+                                <td name='age_protect_value' class='hide_me'>[% l("- Disabled -") %]</td>
+                                <td name='create_date_value' class='hide_me'> </td>
+                                <td name='copy_holdable_td' class='hide_me'>
+                                    <span name='copy_is_holdable'> </span>
+                                </td>
+                                <td name='copy_due_date_td' class='hide_me'>
+                                    <span name='copy_due_date'> </span>
+                                </td>
+                            </tr>
+                                -->
+
+                            <tr name='copy_extras_row' class='hide_me'>
+                                <td colspan='10'>
+                                    <table width='100%' class='data_grid'>
+                                        <tbody name='extras_tbody'>
+                                            <tr name='extras_row' class='hide_me'>
+                                                <td name='type' width='20%'>
+                                                    <span name='note' class='hide_me'>
+                                                        <b>[% l("Copy Note") %]</b>
+                                                    </span>
+                                                    <span name='cat' class='hide_me'>
+                                                        <b>[% l("Copy Category") %]</b>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span name='key'> </span> : <span name='value'> </span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<span class='hide_me' id='rdetail.yes'>[% l("Yes") %]</span>
+<span class='hide_me' id='rdetail.no'>[% l("No") %]</span>
+
+<div id='rdetail_print_details' class='hide_me'>
+    <div style='text-align: center; padding: 20px; width: 100%'>
+        <div style='width:100%; border: 2px solid #E0F0E0; margin-bottom: 20px;'>
+            <input type='submit' value='[% l("Print Page") %]' onclick='window.print();' />
+        </div>
+        <div name='body'>
+            <table>
+                <tbody name='tbody'>
+                    <tr><td>[% l("Library") %]</td><td colspan='2' name='lib'></td></tr>
+                    <tr><td>[% l("Title") %]</td><td colspan='2' name='title'></td></tr>
+                    <tr><td>[% l("Author") %]</td><td colspan='2' name='author'></td></tr>
+                    <tr><td>[% l("Edition") %]</td><td colspan='2' name='edition'></td></tr>
+                    <tr><td>[% l("Publication Date") %]</td><td colspan='2' name='pubdate'></td></tr>
+                    <tr><td>[% l("Publisher") %]</td><td colspan='2' name='publisher'></td></tr>
+                    <tr><td>[% l("Physical Description") %]</td><td colspan='2' name='phys'></td></tr>
+                    <tr>
+                        <td colspan='3' class='opac-auto-004'> </td>
+                    </tr>
+                    <tr name='cnrow'>
+                        <td><b>[% l("Call Number") %]</b></td>
+                        <td><b colspan='2' name='cn'></b></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

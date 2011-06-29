@@ -1,0 +1,78 @@
+[% PROCESS "default/opac/parts/org_selector.tt2" %]
+<div id="search-box">    
+    [% UNLESS took_care_of_form -%]
+    <form action="[% ctx.opac_root %]/results" method="GET">
+    [%- END %]
+    <table cellpadding="0" cellspacing="10" border="0">
+        <tr>
+            <td colspan="3">
+                <span class="search_catalog_lbl">[% l('Search the Catalog') %]</span>
+                <a href="[% ctx.opac_root %]/advanced"
+                    id="home_adv_search_link"><span
+                    class="adv_search_font">[% l('Advanced Search') %]</span></a>
+            </td>
+        </tr>
+        <tr>
+            [% IF is_advanced %]
+            <td colspan="2">
+                <input type="hidden" name="_adv" value="1" />
+            [% ELSE %]
+            <td>
+            [% INCLUDE "default/opac/parts/qtype_selector.tt2" %]
+            </td>
+            [% END %]
+            [% IF ctx.processed_search_query OR NOT is_advanced %]
+            <td>
+                <div id="search_box_wrapper">
+                    <!-- Note: when common browsers support HTML5 placeholder text, we can remove the JS -->
+                    <input type="text" id="search_box" name="query" value="[% is_advanced ? ctx.processed_search_query : CGI.param('query') || l("Search Keyword") | html %]"
+                        [% IF is_advanced %]style="width: 450px"[% END %]
+                        onfocus="if (this.value=='[% l("Search Keyword") %]'){this.value='';this.style.color='#000';}"
+                        onblur="if (this.value==''){this.value='[% l("Search Keyword") %]';this.style.color='#999';}"
+                        x-webkit-speech />
+                </div>
+                <input name='page' type='hidden' value="0" />
+            </td>
+            <td valign="top">
+                <div class="pos-abs">
+                    <div class="opac-auto-143">
+                        <input id='search-submit-go' type="image" alt="[% l('Search') %]" src="[% ctx.media_prefix %]/images/go-btn.png"
+                            onmouseover="this.src='[% ctx.media_prefix %]/images/go-btn-hover.png';"
+                            onmouseout="this.src='[% ctx.media_prefix %]/images/go-btn.png';" 
+                            onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden"}, 2000)'/>
+                        <img id='search-submit-spinner' src='/opac/images/progressbar_green.gif' style='height:16px;width:16px;' class='hidden'/>
+                    </div>
+                </div>
+            </td>
+            [% END %]
+        </tr>
+        [% UNLESS is_advanced %]
+        <tr>
+            <td>
+                [% INCLUDE "default/opac/parts/coded_value_selector.tt2" attr=["mattype", "item_type"] none_ok=1 %]
+            </td>
+            <td>
+                <span id='depth_selector_span'>
+                    [% PROCESS build_org_selector name='loc' value=CGI.param('loc') %]
+                </span>
+                <span id='lib_selector_span'>
+                    <a id='lib_selector_link' class='classic_link'
+                        href='#'>[% l("Choose a library to search") %]</a>
+                </span>
+            </td>
+        </tr>
+        [% END %]
+    </table>
+    [% UNLESS took_care_of_form %]</form>[% END %]
+    [% IF is_advanced AND CGI.param('qtype') %]
+    <div class="opac-auto-102">
+        [ <a href="[% ctx.opac_root %]/advanced?[% query_string %]">[%
+            l('Click to Refine Your Original Search')
+        %]</a> ]
+    </div>
+    [% END %]
+    <div id="breadcrumb">
+        <a href="[% ctx.opac_root %]/home">[% l('Catalog Home') %]</a> &gt;
+    </div>
+    <div class="clear-both"></div>
+</div>

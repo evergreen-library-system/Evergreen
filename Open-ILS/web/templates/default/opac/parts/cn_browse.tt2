@@ -1,0 +1,44 @@
+<!-- ****************** cn_browse.xml ***************************** -->
+<div id='cn_browse' class='cn_browser'>
+    <div id='cn_browse_loading' class='cn_browse_loading hide_me'>
+        [% l("Loading Callnumber Page...") %]
+    </div>
+    <div id='cn_browse_div'> 
+        <div class='color_4'>
+            <span>[% l("You are now browsing") %]</span>
+            <b id='cn_browse_where'> </b>
+        </div>
+        <table class='data_grid bookshelf' width='100%'>
+            <thead>
+                <tr>
+                    <td>
+                        <a id='cn_browse_next' class='classic_link' 
+                        href='javascript:cnBrowsePrev();'><b>[% l("&lt;&lt; Previous Page") %]</b></a>
+                    </td>
+                    <td colspan='1' align='center'>[% l("Shelf Browser") %]</td>
+                    <td>
+                        <a id='cn_browse_prev' class='classic_link' 
+                            href='javascript:cnBrowseNext();'><b>[% l("Next Page &gt;&gt;") %]</b></a>
+                    </td>
+                </tr>
+            </thead>
+            <tbody id='cn_tbody'>
+                <tr id='cn_browse_row'>
+                    <td id='cn_browse_td' class='cn_browse_item' width='25%' valign='top'>
+                        <a><img height='60' width='50' 
+                            class='cn_browse_info' name='cn_browse_pic' border='0' /></a>
+                        <div class='cn_browse_info bold' name='cn_browse_cn'></div>
+                        <div class='cn_browse_info'>
+                            <a name='cn_browse_title' class='classic_link'></a>
+                        </div>
+                        <div class='cn_browse_info'>
+                            <a name='cn_browse_author' class='classic_link'>  </a>
+                        </div>
+                        <div class='cn_browse_info' name='cn_browse_lib'>  </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- ****************** end: cn_browse.xml ***************************** -->

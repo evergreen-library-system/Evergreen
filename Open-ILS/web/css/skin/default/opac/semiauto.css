@@ -1,0 +1,183 @@
+/* once done renaming and everything, combine with style.css */
+
+/* Verfied in-use classes --------------------------- */
+.opac-auto-004 { background: #E0F0E0; }
+.opac-auto-009 { border: 3px solid #E0E0E0; }
+.opac-auto-010 { border-bottom: 1px dotted #ccc; padding-top: 10px; }
+.opac-auto-011 { border-bottom: 1px dotted #ccc; padding-top: 6px; }
+.opac-auto-012 { border-bottom: none; }
+.opac-auto-013 { border-bottom: none; *height: 0px; }
+.opac-auto-015 { border-left: 1px solid #e9ebf3; padding-right: 27px; }
+.opac-auto-017 { border: none; width: 100%; }
+.opac-auto-018 { border-top: 1px dotted #ccc; padding-top: 17px; }
+.clear-both { clear: both; }
+.common-no-pad { clear: both; height: 0px; margin: 0px; padding: 0px; }
+.common-full-pad { clear: both; height: 15px; }
+.opac-auto-029 { color: #333; font-weight: bold; font-size: 13px; }
+.opac-auto-030 { color: #545454; }
+.opac-auto-031 { color: #9999FF; padding-left: 10px; font-size: 7pt; font-weight: 300; }
+.red { color: red; }
+.bold-red { color: red; font-weight: bold }
+.pointer { cursor: pointer; }
+/* ------------------------------------------- */
+
+
+#lib_selector_span { display: none }
+.float-left { float: left; }
+.bookbag-share { float: left; padding: 5px 0; }
+.bookbag-controls { float: left; padding: 5px 0px 0px 10px; }
+.left-corner { float: left; width: 163px; height: 30px; background: url('/images/utils-corner-mid.png') repeat-x top; }
+.float-right { float: right; }
+.opac-auto-045 { float: right; margin-right: 17px; }
+.opac-auto-046 { float: right; width: 214px; }
+.opac-auto-047 { float: right; width: 353px; background: #ccc; padding: 10px; margin-top: 7px; }
+.opac-auto-048 { float: right; width: 65px; }
+#they_said_dont_touch { float: right; width: 675px; height: 213px; color: green; overflow: hidden; }
+.opac-auto-050 { float: right; width: 85px; }
+.ten-px { font-size: 10px; }
+.eleven-px { font-size: 11px; }
+.eight-pt { font-size: 8pt; }
+.opac-auto-054 { font-size: 8pt; padding-left: 20px; }
+.bold { font-weight: bold; }
+.opac-auto-057 { font-weight: bold; padding: 5px; margin: 5px; width: 100%; }
+.opac-auto-058 { font-weight: bold; padding-left: 10px; }
+#anon_list_name { font-weight: bold; padding-right: 10px; }
+.opac-auto-060 { font-weight: normal; }
+.opac-auto-061 { height: 0px; border-top: 1px solid #b7b7b7; border-bottom: 1px solid #d4d4d4; margin: 15px 0px; }
+.small-height { height: 10px; }
+.normal-height { height: 15px; }
+.big-height { height: 20px; }
+.very-big-height { height: 30px; }
+#gold-links-holder { height: 24px; background: #252525; }
+.opac-auto-067 { margin: 3px; width: 100%; }
+.big-block { margin: auto; width: 974px; height: 0px; }
+.opac-auto-069 { margin-bottom: 10px; }
+.opac-auto-070 { margin-bottom: 20px; }
+.opac-auto-071 { margin-bottom: 5px; }
+.opac-auto-072 { margin-left: 20px; }
+.bookbag-list { margin-left: 5px; margin-top: 5px; width: 91%; border: 0;}
+#cn_browse_where { margin-left: 6px; }
+.opac-auto-075 { margin-right: 20px; }
+.opac-auto-076 { margin-right: 3px; }
+.opac-auto-077 { margin-right: 4px; position: relative; top: -10px; }
+.opac-auto-078 { margin-right: 7px; }
+.opac-auto-079 { margin-top: 10px; }
+.opac-auto-080 { margin-top: 10px; margin-bottom: 10px; }
+.opac-auto-081 { margin-top: 13px; }
+.opac-auto-082 { margin-top: 29px; }
+.opac-auto-083 { margin-top: 2px; }
+.opac-auto-084 { margin-top: 5px; }
+.opac-auto-085 { margin-top: 6px; margin-left: 20px; width: 250px; padding: 5px; }
+.opac-auto-086 { margin-top: 8px; }
+.opac-auto-087 { max-width: 11em; }
+.opac-auto-088 { padding: 0px; }
+.opac-auto-089 { padding: 0px 10px; }
+.opac-auto-090 { padding: 10px; }
+.opac-auto-091 { padding: 10px 0px; }
+.opac-auto-092 { padding: 4px; text-align: center; }
+.pad-bottom-five { padding: 5px; }
+.opac-auto-094 { padding: 5px 7px 0px 0px; }
+.opac-auto-095 { padding: 5px 7px 0px 0px; white-space: nowrap; }
+.opac-auto-096 { padding: 6px }
+.opac-auto-097 { padding: 8px 0px 6px 0px; width: 100%; border: 0; }
+.opac-auto-097b { padding: 8px 0px 6px 0px; border: 0; }
+.opac-auto-098 { padding-bottom: 10px; }
+.opac-auto-099 { padding-bottom: 12px; color: #666; }
+.opac-auto-100 { padding-bottom: 16px; }
+.opac-auto-101 { padding-bottom: 1px; }
+.opac-auto-102 { padding-bottom: 7px; }
+.opac-auto-103 { padding-left: 10px; }
+.opac-auto-104 { padding-left: 11px; padding-right: 11px; }
+.opac-auto-105 { padding-left: 11px; padding-right: 13px; }
+.opac-auto-106 { padding-left: 15px; }
+.opac-auto-107 { padding-left: 15px; padding-bottom: 10px; }
+.opac-auto-108 { padding-left: 5px; }
+.opac-auto-109 { padding-left: 5px; padding-bottom: 10px; }
+.opac-auto-110 { padding-left: 6px; }
+.opac-auto-111 { padding-left: 8px; }
+.opac-auto-112 { padding-left: 9px; }
+.opac-auto-113 { padding-right: 10px; }
+.opac-auto-114 { padding-right: 15px; padding-left: 15px; }
+.opac-auto-115 { padding-right: 20px; }
+.opac-auto-116 { padding-right: 5px; }
+.opac-auto-117 { padding-right: 7px; }
+.pad-top-ten { padding-top: 10px; }
+.opac-auto-119 { padding-top: 14px; }
+.opac-auto-120 { padding-top: 5px; }
+.opac-auto-121 { padding-top: 6px; }
+.opac-auto-122 { padding-top: 7px; }
+.opac-auto-123 { padding-top: 8px; }
+.pos-abs { position: absolute; }
+#new_cat_link_holder { position: absolute; z-index: 101; }
+#new_cat_link_holder a { display: block; width: 675px; height: 213px; }
+.pos-rel { position: relative; }
+#search-box table { position: relative; left: -10px; }
+.opac-auto-129 { position: relative; left: -19px; }
+.opac-auto-130 { position: relative; left: 80px; }
+.opac-auto-131 { position: relative; top: 0px; left: 55px; }
+.opac-auto-132 { position: relative; top: 13px; }
+.opac-auto-133 { position: relative; top: -13px; left: 2px; font-size: 10px; }
+.opac-auto-134 { position: relative; top: -15px; left: 172px; }
+.opac-auto-135 { position: relative; top: -15px; left: -23px; }
+.opac-auto-136 { position: relative; top: 161px; left: 172px; }
+.opac-auto-137 { position: relative; top: 161px; left: -23px; }
+#home_adv_search_link { position: relative; top: -1px; left: 10px; }
+#util_back_btn { position: relative; top: 1px; left: 10px; }
+.opac-auto-140 { position: relative; top: -2px; }
+#util_help_btn { position: relative; top: 2px; left: 40px; }
+#util_forw_btn { position: relative; top: 2px; left: 50px; }
+.opac-auto-143 { position: relative; top: -3px; }
+#util_home_btn { position: relative; top: 3px; left: 20px; }
+.opac-auto-145 { position: relative; top: -3px; left: 3px; }
+.opac-auto-146 { position: relative; top: -3px; left: -5px; }
+.opac-auto-147 { position: relative; top: -5px; }
+.pos-rel-top-5 { position: relative; top: 5px; }
+.opac-auto-149 { position: relative; top: 5px; left: 25px; }
+#util_print_btn { position: relative; top: 5px; left: 30px; }
+.opac-auto-151 { position: relative; top: 75px; }
+#adv_reset { position: relative; top: -9px; }
+.opac-auto-153 { position: relative; z-index: 100; }
+.text-center { text-align: center; }
+.opac-auto-156 { text-align: center; font-weight: bold; }
+#adv_quick_search_sidebar { text-align: center; margin-top: 20px; width: 400px; }
+.opac-auto-158 { text-align: center; margin-top: 6px; margin-bottom: 6px }
+.opac-auto-159 { text-align: center; padding: 20px; width: 100% }
+.opac-auto-160 { text-align: center; padding-bottom: 8px; }
+.opac-auto-161 { text-align: right; padding-right: 7px; width: 62px; }
+.opac-auto-162 { vertical-align: top; }
+.nowrap { white-space: nowrap; }
+.opac-auto-164 { white-space: nowrap; padding-left: 5px; }
+.full-width { width: 100%; }
+.opac-auto-167 { width: 100%; border: 1px solid black; padding: 6px; margin-top: 5px; }
+.opac-auto-168 { width: 100%; border: 2px solid #E0F0E0; margin-bottom: 20px; }
+.opac-auto-169 { width: 100%; height: 100%; }
+.opac-auto-170 { width: 100%; margin-top: 20px; border-top: 1px dotted #ccc; padding-top: 8px; }
+.opac-auto-171 { font-size: 120%; text-align: center; font-style: italic; }
+.opac-auto-172 { width: 100%; text-align: center; padding-bottom: 5px; }
+.opac-auto-173 { width: 10px; }
+.opac-auto-174 { width: 111px; height: 25px; }
+.opac-auto-175 { width: 125px; height: 21px; }
+.opac-auto-176 { width: 129px; }
+#search_box { width: 162px; }
+.opac-auto-178 { width: 174px; }
+.opac-auto-179 { width: 175px; margin-right: 11px; }
+.opac-auto-179 optgroup { margin-left: 1em; font-weight: normal; font-style: italic; }
+.opac-auto-179-inner-option { margin-left: 2em; } /* XXX ".opac-auto-179 optgroup option" doesn't work!? */
+.opac-auto-180 { width: 182px; color: black; padding: 5px 25px; }
+.opac-auto-181 { width: 195px; }
+.opac-auto-182 { width: 230px; text-align: left; margin-top: 3px; }
+.opac-auto-183 { width: 250px; text-align: left; }
+.opac-auto-184 { width: 26px; height: 23px; margin-top: 6px; margin-bottom: 6px; }
+.opac-auto-185 { width: 324px; }
+.opac-auto-186 { width: 400px; margin-top: 20px; }
+.opac-auto-187 { width: 662px; }
+.opac-auto-188 { width: 700px; height: 30px; border: 1px solid red; }
+.opac-auto-189 { width: 742px; float: left; }
+.opac-auto-190 { width: 88px; }
+.opac-auto-191 { width: 90px; }
+#cn_browse_div > div { width: 90%; text-align: center; margin: 10px; }
+.opac-auto-193 { width: 91px; }
+#cn_browse { width: 95%; text-align: center; padding: 15px; }
+.opac-auto-195 { width: 99%; text-align: center }
+#homesearch_thing { width: 664px; height: 117px; background: #bda964; }
+#mystery_thing { width: 664px; height: 35px; background: #ffffff; }

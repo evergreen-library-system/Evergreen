@@ -1,0 +1,102 @@
+[%  PROCESS "default/opac/parts/header.tt2";
+    PROCESS "default/opac/parts/misc_util.tt2";
+    WRAPPER "default/opac/parts/myopac/base.tt2";
+    myopac_page = "circs"
+    limit = ctx.circ_history_limit;
+    offset = ctx.circ_history_offset;
+%]
+
+<div style="padding:0px;">
+    
+    <div id="acct_checked_tabs" style="padding-bottom: 12px;color:#666;">
+        <div class="align selected">
+            <a href='circs'><img src="[% ctx.media_prefix %]/images/sub_checked_out_off.jpg"/></a>
+        </div>
+        <div class="align">
+            <img src="[% ctx.media_prefix %]/images/sub_checked_hist_on.jpg"/>
+        </div>
+        <div class="clear-both"></div>
+    </div>
+
+    <div class="header_middle">
+        <span class="float-left">[% l('Previously Checked Out Items') %]</span>
+        <span class='float-left' style='padding-left: 10px;'>
+            <a href='circ_history?limit=[% limit %]&amp;offset=[% offset - limit %]'
+                [% IF offset == 0 %] class='invisible' [% END %]><span class="nav_arrow_fix">&#9668;</span>[% l('Previous') %]</a>
+            [%# TODO: get total to prevent paging off then end of the list.. %]
+            <a href='circ_history?limit=[% limit %]&amp;offset=[% offset + limit %]'
+               [% IF ctx.circs.size < limit %] class='invisible' [% END %] >[% l('Next') %]<span class="nav_arrow_fix">&#9658;</span></a>
+        </span>
+        <span class="float-right">
+            <a class="hide_me" href="#">[% l('Export List') %]</a>
+        </span>
+    </div>
+    <div class="clear-both"></div>
+
+    [% IF ctx.circs.size < 1 %]
+    <div class="opac-auto-079">
+        <big><strong>[% l('There are no items in your circulation history.') %]</strong></big>
+    </div>
+    [% ELSE %]
+
+    <div id='checked_main'>
+        <table style='border-collapse:collapse;'>
+            <thead id="acct_checked_main_header">
+                <tr>
+                    <td width="32%" style="padding-left:5px;">
+                        <span title="Click to sort" class='pointer'>[% l('Title') %]</span> /
+                        <span title="Click to sort" class='pointer'>[% l('Author') %]</span>
+                    </td>
+                    <td width="10%" style="padding-left:5px;">
+                        <span title="Click to sort" class='pointer'>[% l('Checkout Date') %]</span>
+                    </td>
+                    <td width="10%" style="padding-left:5px;">
+                        <span title="Click to sort" class='pointer'>[% l('Due Date') %]</span>
+                    </td>
+                    <td width="10%" style="padding-left:5px;">
+                        <span title="Click to sort" class='pointer'>[% l('Date Returned') %]</span>
+                    </td>
+                    <td width="16%">
+                        <span title="Click to sort" class='pointer'>[% l('Barcode') %]</span>
+                    </td>
+                    <td width="22%">
+                        <span title="Click to sort" class='pointer'>[% l('Call Number') %]</span>
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                [% FOR circ IN ctx.circs;
+                    attrs = {marc_xml => circ.marc_xml};
+                    PROCESS get_marc_attrs args=attrs; %]
+                    <tr>
+                        <td style="padding-left:5px;padding-bottom:10px;">
+                            <a href="[% ctx.opac_root %]/record/[% circ.circ.target_copy.call_number.record.id %]" 
+                                name="[% l('Catalog record') %]">[% attrs.title %]</a>
+                            [% IF attrs.author %] /
+                            <a href="[% ctx.opac_root %]/results?qtype=author&amp;query=[% attrs.author | replace('[,\.:;]', '') | url %]">[% attrs.author %]</a>
+                            [% END %]
+                        </td>
+                        <td style="padding-left:5px;">
+                            [% date.format(ctx.parse_datetime(circ.circ.xact_start),DATE_FORMAT); %]
+                        </td>
+                        <td style="padding-left:5px;">
+                            [% date.format(ctx.parse_datetime(circ.circ.due_date),DATE_FORMAT); %]
+                        </td>
+                        <td style="padding-left:5px;">
+                            [% 
+                                IF circ.circ.checkin_time; 
+                                    date.format(ctx.parse_datetime(circ.circ.checkin_time),DATE_FORMAT); 
+                                ELSE; %]
+                                <span style='color:blue;'>*</span><!-- meh -->
+                            [% END; %]
+                        </td>
+                        <td>[% circ.circ.target_copy.barcode %]</td>
+                        <td>[% circ.circ.target_copy.call_number.label %]</td>
+                    </tr>
+                [% END %]
+            </tbody>
+        </table>
+    </div>
+    [% END %]
+</div>
+[% END %]
