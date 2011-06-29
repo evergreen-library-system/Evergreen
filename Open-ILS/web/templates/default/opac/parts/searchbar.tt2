@@ -28,7 +28,8 @@
                     <input type="text" id="search_box" name="query" value="[% is_advanced ? ctx.processed_search_query : CGI.param('query') || l("Search Keyword") | html %]"
                         [% IF is_advanced %]style="width: 450px"[% END %]
                         onfocus="if (this.value=='[% l("Search Keyword") %]'){this.value='';this.style.color='#000';}"
-                        onblur="if (this.value==''){this.value='[% l("Search Keyword") %]';this.style.color='#999';}" />
+                        onblur="if (this.value==''){this.value='[% l("Search Keyword") %]';this.style.color='#999';}"
+                        x-webkit-speech />
                 </div>
                 <input name='page' type='hidden' value="0" />
             </td>
