@@ -1198,16 +1198,23 @@ patron.holds.prototype = {
                         ['command'],
                         function() {
                             try {
-                                var targets = [];
+                                var hids = [];
+                                var unique_targets = [];
+                                var seen_target = {};
                                 for (var i = 0; i < obj.retrieve_ids.length; i++) {
-                                    var htarget = obj.retrieve_ids[i].target;
+                                    var hid = obj.retrieve_ids[i].id;
+                                    var htarget = obj.retrieve_ids[i].id;
                                     var htype = obj.retrieve_ids[i].type;
                                     switch(htype) {
                                         case 'M' :
                                             continue; // not supported
                                         break;
                                         case 'T' :
-                                            targets.push( htarget );
+                                            hids.push( hid );
+                                            if (! seen_target[htarget]) {
+                                                unique_targets.push( htarget );
+                                                seen_target[htarget] = 1;
+                                            }
                                         break;
                                         case 'V' :
                                             continue; // not supported
@@ -1221,7 +1228,7 @@ patron.holds.prototype = {
                                     }
                                 }
                                 JSAN.use('cat.util');
-                                cat.util.transfer_title_holds(targets);
+                                cat.util.transfer_specific_title_holds(hids,unique_targets);
                                 obj.clear_and_retrieve();
                             } catch(E) {
                                 obj.error.standard_unexpected_error_alert('',E);
