@@ -6,6 +6,7 @@
 
     result_count = ctx.result_start;
 %]
+
 <div style="height: 10px;"></div>
 [% BLOCK results_count_header %]
 <div class="results_header_nav1">
@@ -129,16 +130,6 @@
                                                                 [% args.phys_desc %]
                                                             </td>
                                                         </tr>
-
-                                                        [% FOR copy IN args.holdings %]
-                                                        <tr name='bib_cn_list' class='result_table_title_cell'>
-                                                            <td valign='top'>
-                                                                <strong>[% l('Call number:') %]</strong>
-                                                            </td>
-                                                            <td>[% copy.label _ ' ' _ copy.location _ ' ' _ copy.library _ ' ' _ copy.status %]</td>
-                                                        </tr>
-                                                        [% END %]
-
                                                         [% FOR uri IN args.uris%]
                                                         <tr name='bib_uri_list' class='result_table_title_cell'>
                                                             <td valign='top'>
@@ -147,8 +138,30 @@
                                                             <td><a href="[% uri.href %]">[% uri.link %]</a>[% ' - ' _ uri.note IF uri.note %]</td>
                                                         </tr>
                                                         [% END %]
-
-
+                                                        [% IF args.holdings.size > 0 %]
+                                                        <tr name='bib_cn_list' class='result_table_title_cell'>
+                                                            <td colspan='2'>
+                                                                <table class='result_holdings_table'>
+                                                                    <thead><tr>
+                                                                        <th>[% l('Library') %]</th>
+                                                                        <th>[% l('Shelving location') %]</th>
+                                                                        <th>[% l('Call number') %]</th>
+                                                                        <th>[% l('Status') %]</th>
+                                                                    </tr></thead>
+                                                                    <tbody>
+                                                            [% FOR copy IN args.holdings %]
+                                                                    <tr>
+                                                                        <td>[% copy.library %]</td>
+                                                                        <td>[% copy.location %]</td>
+                                                                        <td>[% copy.label %]</td>
+                                                                        <td>[% copy.status %]</td>
+                                                                    </tr>
+                                                            [% END %]
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                        [% END %]
                                                     </table>
                                                     <div>
                                                         [% l('[_1] of [quant,_2,copy,copies] available',
