@@ -106,18 +106,22 @@
                                                     </div>
                                                     <table cellpadding="0" cellspacing="0" border="0"
                                                         class="results_info_table">
-                                                        <tr name="results_pub_tr" class="[% attrs.publisher ? '' : 'hide_me' %]">
+                                                    [% IF attrs.publisher %]
+                                                        <tr name="results_pub_tr">
                                                             <td valign="top">
                                                                 <strong>[% l('Publisher:') %]</strong>
                                                             </td>
                                                             <td>[% attrs.publisher; %]</td>
                                                         </tr>
-                                                        <tr name="results_isbn_tr" class="[% attrs.isbn ? '' : 'hide_me' %]">
+                                                    [% END %]
+                                                    [% IF attrs.isbn %]
+                                                        <tr name="results_isbn_tr">
                                                             <td valign="top">
                                                                 <strong>[% l('ISBN:') %]</strong>
                                                             </td>
                                                             <td>[% attrs.isbn %]</td>
                                                         </tr>
+                                                    [% END %]
                                                         [% IF openurl.enabled == 'true';
                                                             FOR issn IN args.issns;
                                                                 sfx = ResolverResolver.resolve_issn(issn, openurl.baseurl);
@@ -134,13 +138,16 @@
                                                             [% END %]
                                                         [% END %]
 
-                                                        <tr name="results_edition_tr" class="[% attrs.edition ? '' : 'hide_me' %]">
+                                                    [% IF attrs.edition %]
+                                                        <tr name="results_edition_tr">
                                                             <td valign="top">
                                                                 <strong>[% l('Edition:') %]</strong>
                                                             </td>
                                                             <td>[% attrs.edition %]</td>
                                                         </tr>
-                                                        <tr name="results_phys_desc_tr" class="[% attrs.phys_desc ? '' : 'hide_me' %]">
+                                                    [% END %]
+                                                    [% IF attrs.phys_desc %]
+                                                        <tr name="results_phys_desc_tr">
                                                             <td nowrap="nowrap" valign="top">
                                                                 <strong>[% l('Phys. Desc.:') %]</strong>
                                                             </td>
@@ -148,7 +155,8 @@
                                                                 [% args.phys_desc %]
                                                             </td>
                                                         </tr>
-                                                        [% FOR uri IN args.uris%]
+                                                    [% END %]
+                                                        [% FOR uri IN args.uris %]
                                                         <tr name='bib_uri_list' class='result_table_title_cell'>
                                                             <td valign='top'>
                                                                 <strong>[% l('Electronic resource') %]</strong>
