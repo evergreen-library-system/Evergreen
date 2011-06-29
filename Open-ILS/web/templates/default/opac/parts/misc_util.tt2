@@ -28,6 +28,38 @@
 
         args.holdings = [];
         args.uris = [];
+        args.issns = [];
+
+        # we use $9 of ISBN and ISSN as a flag for e-version
+        sfx_isbn = xml.findnodes('//*[@tag="020"]/*[@code="9"]');
+        IF sfx_isbn;
+            IF sfx_isbn.textContent == "SFX";
+                my_parent = sfx_isbn.parentNode();
+                sfx_isbn = my_parent.findnodes('./*[@code="a"]');
+                sfx_isbn.replace('-', '');
+                args.resolver_isbn = sfx_isbn.replace('\ .*', '');
+            END;
+        END;
+
+        sfx_issn = xml.findnodes('//*[@tag="022"]/*[@code="9"]');
+        IF sfx_issn;
+            IF sfx_issn.textContent == "SFX";
+                my_parent = sfx_issn.parentNode();
+                sfx_issn = my_parent.findnodes('./*[@code="a"]');
+                args.issns.push(
+                    sfx_issn.textContent.replace('[^\d\-X]', '')
+                );
+            END;
+        END;
+
+        # we snag all issns if no SFX available
+        IF args.issns.size == 0;
+            FOR rawissn IN xml.findnodes('//*[@tag="022"]/*[@code="a"]');
+                args.issns.push(
+                    rawissn.textContent.replace('[^\d\-X]', '')
+                );
+            END;
+        END;
 
         # URI info is in volumes/volume/uris/volume, instead of uri element
         FOR volume IN xml.findnodes('//*[local-name()="volumes"]/*[local-name()="volume"]');

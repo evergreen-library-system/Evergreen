@@ -1,5 +1,7 @@
 [%  PROCESS "default/opac/parts/misc_util.tt2";
 
+    USE ResolverResolver;
+
     ctx.result_start = 1 + ctx.page_size * page;
     ctx.result_stop = ctx.page_size * (page + 1);
     IF ctx.result_stop > ctx.hit_count; ctx.result_stop = ctx.hit_count; END;
@@ -116,6 +118,22 @@
                                                             </td>
                                                             <td>[% attrs.isbn %]</td>
                                                         </tr>
+                                                        [% IF openurl.enabled == 'true';
+                                                            FOR issn IN args.issns;
+                                                                sfx = ResolverResolver.resolve_issn(issn, openurl.baseurl);
+                                                                FOR res IN sfx;
+                                                        %]
+                                                        <tr name="results_issn_tr">
+                                                            <td valign="top">
+                                                                <strong><a href="[% res.target_url %]">
+                                                                [% res.public_name %]</a></strong>
+                                                            </td>
+                                                            <td>[% res.target_coverage %]</td>
+                                                        </tr>
+                                                                [% END %]
+                                                            [% END %]
+                                                        [% END %]
+
                                                         <tr name="results_edition_tr" class="[% attrs.edition ? '' : 'hide_me' %]">
                                                             <td valign="top">
                                                                 <strong>[% l('Edition:') %]</strong>
