@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Item Hold/Recall Placement -->
+
+<!-- /////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+
+<!-- /////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
+<!-- /////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="place_hold_win" 
+    onload="try{my_init();font_helper();persist_helper();}catch(E){alert(E);}"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <!-- /////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
+    <script type="text/javascript">
+        var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true;
+    </script>
+    <scripts id="openils_util_scripts"/>
+
+    <messagecatalog id="patronStrings"
+        src='/xul/server/locale/<!--#echo var="locale"-->/patron.properties'/>
+
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script type="text/javascript" src="place_hold.js"/>
+
+    <vbox flex="1">
+    <groupbox>
+        <caption label="&staff.item.batch.hold.groupbox_caption;"/>
+
+        <grid>
+            <columns>
+                <column/>
+                <column/>
+            </columns>
+            <rows>
+                <row>
+                    <label control="hold_usr_textbox"
+                        value="&staff.item.batch.hold.hold_usr.label;"
+                        accesskey="&staff.item.batch.hold.hold_usr.accesskey;"/>
+                    <textbox id="hold_usr_textbox"/>
+                </row>
+                <row>
+                    <spacer/>
+                    <label id="hold_usr_name"/>
+                </row>
+                <row>
+                    <label control="hold_type_menu"
+                        value="&staff.item.batch.hold.hold_type_menu.label;"
+                        accesskey="&staff.item.batch.hold.hold_type_menu.accesskey;"/>
+                    <hbox>
+                        <menulist id="hold_type_menu" oils_persist="value">
+                            <menupopup>
+                                <menuitem value="C"
+                                    label="&staff.item.batch.hold.hold_type_menuentry.copy_hold;"/>
+                                <menuitem value="R"
+                                    label="&staff.item.batch.hold.hold_type_menuentry.recall_hold;"/>
+                                <menuitem value="F"
+                                    label="&staff.item.batch.hold.hold_type_menuentry.force_hold;"/>
+                            </menupopup>
+                        </menulist>
+                    </hbox>
+                </row>
+                <row>
+                    <label
+                        value="&staff.item.batch.hold.pick_up_lib_menu.label;"
+                        accesskey="&staff.item.batch.hold.pick_up_lib_menu.accesskey;"/>
+                    <hbox id="pickup_lib_menu_placeholder"/>
+                </row>
+                <row>
+                    <spacer/>
+                    <hbox>
+                        <button id="cancel_btn"
+                            label="&staff.item.batch.hold.cancel_btn.label;"
+                            accesskey="&staff.item.batch.hold.cancel_btn.accesskey;"/>
+                        <button id="request_btn"
+                            label="&staff.item.batch.hold.request_btn.label;"
+                            accesskey="&staff.item.batch.hold.request_btn.accesskey;"/>
+                        <progressmeter id="progress_meter"
+                            mode="undetermined"
+                            hidden="true" />
+                    </hbox>
+                </row>
+            </rows>
+        </grid>
+
+    </groupbox>
+    <description id="desc" hidden="true">
+        &staff.item.batch.hold.failures_and_settings;
+    </description>
+    <vbox id="msgs" flex="1" class="my_overflow"/>
+    </vbox>
+
+</window>
+

@@ -67,6 +67,7 @@ circ.copy_status.prototype = {
                             obj.controller.view.cmd_triggered_events.setAttribute('disabled','true');
                             obj.controller.view.cmd_create_brt.setAttribute('disabled','true');
                             obj.controller.view.cmd_book_item_now.setAttribute('disabled','true');
+                            obj.controller.view.cmd_request_items.setAttribute('disabled','true');
                             obj.controller.view.cmd_find_acq_po.setAttribute('disabled','true');
                             obj.controller.view.sel_spine.setAttribute('disabled','true');
                             obj.controller.view.sel_transit_abort.setAttribute('disabled','true');
@@ -98,6 +99,7 @@ circ.copy_status.prototype = {
                             } else {
                                 obj.controller.view.cmd_book_item_now.setAttribute('disabled','true');
                             }
+                            obj.controller.view.cmd_request_items.setAttribute('disabled','false');
                             obj.controller.view.cmd_create_brt.setAttribute('disabled','false');
                             obj.controller.view.cmd_find_acq_po.setAttribute("disabled", obj.selection_list.length == 1 ? "false" : "true");
                             obj.controller.view.sel_spine.setAttribute('disabled','false');
@@ -230,6 +232,20 @@ circ.copy_status.prototype = {
                             if (results) {
                                 cat.util.edit_new_bresv(results);
                             }
+                        }
+                    ],
+                    'cmd_request_items' : [
+                        ['command'],
+                        function() {
+                            JSAN.use('cat.util'); JSAN.use('util.functional');
+
+                            var list = util.functional.map_list(
+                                obj.selection_list, function (o) {
+                                    return o.copy_id;
+                                }
+                            );
+
+                            cat.util.request_items( list );
                         }
                     ],
                     "cmd_find_acq_po" : [

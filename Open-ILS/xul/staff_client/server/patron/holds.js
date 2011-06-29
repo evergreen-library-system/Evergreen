@@ -1163,6 +1163,8 @@ patron.holds.prototype = {
                                             opac_url = xulG.url_prefix( urls.opac_rdetail) + '?r=' + my_acn.record();
                                         break;
                                         case 'C' :
+                                        case 'R' :
+                                        case 'F' :
                                             var my_acp = obj.network.simple_request( 'FM_ACP_RETRIEVE', [ htarget ]);
                                             var my_acn;
                                             if (typeof my_acp.call_number() == 'object') {
@@ -1539,6 +1541,8 @@ patron.holds.prototype = {
                 holds = [];
                 if (robj != null) {
                     holds = holds.concat( robj.copy_holds );
+                    holds = holds.concat( robj.recall_holds );
+                    holds = holds.concat( robj.force_holds );
                     holds = holds.concat( robj.volume_holds );
                     holds = holds.concat( robj.title_holds );
                     holds = holds.concat( robj.part_holds );

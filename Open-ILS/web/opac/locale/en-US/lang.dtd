@@ -2285,6 +2285,8 @@
 <!ENTITY staff.circ.copy_status_overlay.cmd_triggered_events.accesskey "T">
 <!ENTITY staff.circ.copy_status_overlay.cmd_book_item_now.label "Book Item Now">
 <!ENTITY staff.circ.copy_status_overlay.cmd_book_item_now.accesskey "N">
+<!ENTITY staff.circ.copy_status_overlay.cmd_request_items.label "Request Item">
+<!ENTITY staff.circ.copy_status_overlay.cmd_request_items.accesskey "R">
 <!ENTITY staff.circ.copy_status_overlay.cmd_create_brt.label "Make Item Bookable">
 <!ENTITY staff.circ.copy_status_overlay.cmd_create_brt.accesskey "K">
 <!ENTITY staff.circ.copy_status_overlay.cmd_find_acq_po.label "Find Originating Acquisition">
@@ -2553,6 +2555,8 @@
 <!ENTITY staff.cat.copy_browser.actions.cmd_transfer_volume.accesskey "T">
 <!ENTITY staff.cat.copy_browser.actions.cmd_delete_items.label "Delete Items">
 <!ENTITY staff.cat.copy_browser.actions.cmd_delete_volumes.label "Delete Volumes">
+<!ENTITY staff.cat.copy_browser.actions.cmd_request_items.label "Request Item">
+<!ENTITY staff.cat.copy_browser.actions.cmd_request_items.accesskey "R">
 <!ENTITY staff.cat.copy_browser.actions.sel_mark_items_damaged.label "Mark Item Damaged">
 <!ENTITY staff.cat.copy_browser.actions.sel_mark_items_damaged.accesskey "D">
 <!ENTITY staff.cat.copy_browser.actions.sel_mark_items_missing.label "Mark Item Missing">
@@ -2639,6 +2643,8 @@
 <!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.cmd_copy_buckets_export.label "Export">
 <!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.batch.label "Batch:">
 <!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.cmd_export_to_copy_status.label "Show Status">
+<!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.cmd_request_items.label "Request Items">
+<!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.cmd_request_items.accesskey "R">
 <!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_transfer_to_volume.label "Transfer to Specific Volume">
 <!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_batch_copy_edit.label "Edit Item Attributes">
 <!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_batch_copy_delete.label "Delete All from Catalog">
@@ -3582,3 +3588,18 @@
 <!ENTITY staff.client.portal.receipts "Edit Receipt Templates">
 <!ENTITY staff.client.portal.copyright "Copyright &copy; 2006-2011 Georgia Public Library Service, and others">
 <!ENTITY staff.client.portal.poweredby "Powered by">
+<!ENTITY staff.item.batch.hold.groupbox_caption "Request Details">
+<!ENTITY staff.item.batch.hold.hold_type_menu.label "Hold Type">
+<!ENTITY staff.item.batch.hold.hold_type_menu.accesskey "T">
+<!ENTITY staff.item.batch.hold.hold_type_menuentry.copy_hold "Copy Hold">
+<!ENTITY staff.item.batch.hold.hold_type_menuentry.recall_hold "Recall Hold">
+<!ENTITY staff.item.batch.hold.hold_type_menuentry.force_hold "Force Hold">
+<!ENTITY staff.item.batch.hold.pick_up_lib_menu.label "Pickup Library">
+<!ENTITY staff.item.batch.hold.pick_up_lib_menu.accesskey "P">
+<!ENTITY staff.item.batch.hold.hold_usr.label "Hold User Barcode">
+<!ENTITY staff.item.batch.hold.hold_usr.accesskey "U">
+<!ENTITY staff.item.batch.hold.request_btn.label "Make Request">
+<!ENTITY staff.item.batch.hold.request_btn.accesskey "M">
+<!ENTITY staff.item.batch.hold.cancel_btn.label "Cancel">
+<!ENTITY staff.item.batch.hold.cancel_btn.accesskey "C">
+<!ENTITY staff.item.batch.hold.failures_and_settings "The settings above may be changed for retries and overrides.">

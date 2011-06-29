@@ -11,7 +11,8 @@ cat.util.EXPORT_OK    = [
     'make_bookable', 'edit_new_brsrc', 'edit_new_bresv', 'batch_edit_volumes', 'render_fine_level',
     'render_loan_duration', 'mark_item_as_missing_pieces', 'render_callnumbers_for_bib_menu',
     'render_cn_prefix_menuitems', 'render_cn_suffix_menuitems', 'render_cn_class_menu',
-    'render_cn_prefix_menu', 'render_cn_suffix_menu', 'transfer_specific_title_holds'
+    'render_cn_prefix_menu', 'render_cn_suffix_menu', 'transfer_specific_title_holds',
+    'request_items'
 ];
 cat.util.EXPORT_TAGS    = { ':all' : cat.util.EXPORT_OK };
 
@@ -1115,6 +1116,33 @@ cat.util.render_cn_suffix_menu = function(ou_ids,extra_menuitems,menu_default) {
         return menulist;
     } catch(E) {
         alert('Error in cat.util.render_cn_suffix_menu('+ou_id+'): ' + E);
+    }
+}
+
+cat.util.request_items = function(copy_ids) {
+    var error;
+    try {
+        JSAN.use('util.error');
+        error = new util.error();
+
+        JSAN.use('util.functional');
+        if (!copy_ids) { return; }
+        copy_ids = util.functional.filter_list(
+            copy_ids,
+            function(o) { return o != null; }
+        );
+        if (copy_ids.length < 1) { return; }
+
+        xulG.new_tab(
+            urls.XUL_HOLD_PLACEMENT,
+            {},
+            {
+                'copy_ids' : copy_ids
+            }
+        );
+
+    } catch(E) {
+        alert('Error in cat.util.request_items: ' + E);
     }
 }
 

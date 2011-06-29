@@ -81,6 +81,7 @@ vim:noet:sw=4:ts=4:
         <command id="cmd_show_all_libs" />
         <command id="cmd_show_libs_with_copies" />
 
+        <command id="cmd_request_items" />
         <command id="sel_mark_items_damaged" />
         <command id="sel_mark_items_missing" />
         <command id="cmd_add_items"/>
@@ -126,6 +127,7 @@ vim:noet:sw=4:ts=4:
             <menuitem command="cmd_delete_items" label="&staff.cat.copy_browser.actions.cmd_delete_items.label;" accesskey=""/>
             <menuitem command="cmd_delete_volumes" label="&staff.cat.copy_browser.actions.cmd_delete_volumes.label;" accesskey=""/>
             <menuseparator/>
+            <menuitem command="cmd_request_items" label="&staff.cat.copy_browser.actions.cmd_request_items.label;" accesskey="&staff.cat.copy_browser.actions.cmd_request_items.accesskey;"/>
             <menuitem command="sel_mark_items_damaged" label="&staff.cat.copy_browser.actions.sel_mark_items_damaged.label;" accesskey="&staff.cat.copy_browser.actions.sel_mark_items_damaged.accesskey;"/>
             <menuitem command="sel_mark_items_missing" label="&staff.cat.copy_browser.actions.sel_mark_items_missing.label;" accesskey="&staff.cat.copy_browser.actions.sel_mark_items_missing.accesskey;"/>
             <menuseparator/>
@@ -181,6 +183,7 @@ vim:noet:sw=4:ts=4:
                         <menuitem command="cmd_delete_items" label="&staff.cat.copy_browser.holdings_maintenance.cmd_delete_items.label;" accesskey=""/>
                         <menuitem command="cmd_delete_volumes" label="&staff.cat.copy_browser.holdings_maintenance.cmd_delete_volumes.label;" accesskey=""/>
                         <menuseparator/>
+                        <menuitem command="cmd_request_items" label="&staff.cat.copy_browser.actions.cmd_request_items.label;" accesskey="&staff.cat.copy_browser.actions.cmd_request_items.accesskey;"/>
                         <menuitem command="sel_mark_items_damaged" label="&staff.cat.copy_browser.holdings_maintenance.sel_mark_items_damaged.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.sel_mark_items_damaged.accesskey;"/>
                         <menuitem command="sel_mark_items_missing" label="&staff.cat.copy_browser.holdings_maintenance.sel_mark_items_missing.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.sel_mark_items_missing.accesskey;"/>
                         <menuseparator/>

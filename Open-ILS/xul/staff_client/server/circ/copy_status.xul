@@ -72,6 +72,19 @@
                         }
                     ) || [];
                 }
+                if (xulG.copy_ids) {
+                    JSAN.use('util.functional');
+                    JSAN.use('util.network');
+                    var net = new util.network();
+                    g.barcodes = g.barcodes.concat(
+                        util.functional.map_list(
+                            net.simple_request('FM_ACP_UNFLESHED_BATCH_RETRIEVE',[xulG.copy_ids]),
+                            function(o) {
+                                return o.barcode();
+                            }
+                        )
+                    );
+                }
 
                 window.xulG.fetched_copy_details = {};
 
@@ -117,6 +130,7 @@
         <command id="cmd_find_acq_po" disabled="true"/>
         <command id="cmd_create_brt" disabled="true"/>
         <command id="cmd_book_item_now" disabled="true"/>
+        <command id="cmd_request_items" disabled="true"/>
         <command id="sel_copy_details" disabled="true"/>
         <command id="sel_mark_items_damaged" disabled="true"/>
         <command id="sel_mark_items_missing" disabled="true"/>

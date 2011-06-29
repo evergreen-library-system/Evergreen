@@ -111,6 +111,18 @@ cat.copy_browser.prototype = {
                                 obj.list.clear();
                             }
                         ],
+                        'cmd_request_items' : [
+                            ['command'],
+                            function() {
+                                JSAN.use('cat.util'); JSAN.use('util.functional');
+
+                                var list = util.functional.filter_list( obj.sel_list, function (o) { return o.split(/_/)[0] == 'acp'; });
+
+                                list = util.functional.map_list( list, function (o) { return o.split(/_/)[1]; });
+
+                                cat.util.request_items( list );
+                            }
+                        ],
                         'sel_mark_items_damaged' : [
                             ['command'],
                             function() {
