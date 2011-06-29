@@ -1,8 +1,6 @@
 [%  PROCESS "default/opac/parts/misc_util.tt2";
 
-    IF openurl.enabled == 'true';
-        USE ResolverResolver;
-    END;
+    USE ResolverResolver;
 
     ctx.result_start = 1 + ctx.page_size * page;
     ctx.result_stop = ctx.page_size * (page + 1);
@@ -120,9 +118,11 @@
                                                             </td>
                                                             <td>[% attrs.isbn %]</td>
                                                         </tr>
-                                                        [% IF openurl.enabled == 'true'; FOR issn IN args.issns %]
-                                                            [% sfx = ResolverResolver.resolve_issn(issn, openurl.baseurl)%]
-                                                            [% FOR res IN sfx %]
+                                                        [% IF openurl.enabled == 'true';
+                                                            FOR issn IN args.issns;
+                                                                sfx = ResolverResolver.resolve_issn(issn, openurl.baseurl);
+                                                                FOR res IN sfx;
+                                                        %]
                                                         <tr name="results_issn_tr">
                                                             <td valign="top">
                                                                 <strong><a href="[% res.target_url %]">
@@ -130,6 +130,7 @@
                                                             </td>
                                                             <td>[% res.target_coverage %]</td>
                                                         </tr>
+                                                                [% END %]
                                                             [% END %]
                                                         [% END %]
 
