@@ -135,6 +135,7 @@
     </thead>
     <tbody class="copy_details_table">
         [% FOR copy_info IN ctx.copies %]
+        [% NEXT IF copy_info.call_number_label == '##URI##' %]
         <tr>
             <td>[%
                 # XXX KCLS-specific kludging
