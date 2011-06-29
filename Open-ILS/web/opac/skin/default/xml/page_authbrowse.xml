@@ -1,5 +1,13 @@
 <div id='canvas_main' class='canvas' style='margin-top: 20px;'>
 	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/authbrowse.js'></script>
-    Records: <div id="test-holder">
+
+    <div class="authority-pager">
+        <a id="authority-page-up" href="#" class="classic_link">&common.cn.previous;</a>
+    </div>
+
+    <div id="authority-record-holder"></div>
+
+    <div class="authority-pager">
+        <a id="authority-page-down" href="#" class="classic_link">&common.cn.next;</a>
     </div>
 </div>

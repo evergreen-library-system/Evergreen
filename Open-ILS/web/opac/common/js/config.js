@@ -47,8 +47,10 @@ var PARAM_PUBD_AFTER = 'pda';
 var PARAM_PUBD_BETWEEN = 'pdt';
 var PARAM_PUBD_DURING = 'pdd';
 var PARAM_NOPERSIST_SEARCH = 'nps';
-var PARAM_AUTHORITY_BROWSE_AXIS = "ax";
+var PARAM_AUTHORITY_BROWSE_AXIS = "bx";
 var PARAM_AUTHORITY_BROWSE_TERM = "bt";
+var PARAM_AUTHORITY_BROWSE_PAGE = "bp";
+var PARAM_AUTHORITY_BROWSE_PER_PAGE = "be";
 
 /* URL param values (see comments above) */
 var TERM;  
