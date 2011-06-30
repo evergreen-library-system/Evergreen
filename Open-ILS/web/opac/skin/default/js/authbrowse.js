@@ -2,7 +2,7 @@ dojo.require("openils.CGI");
 dojo.require("openils.Util");
 dojo.require("MARC.FixedFields");
 dojo.require("openils.AuthorityControlSet");
-var cgi, acs_helper;
+var cgi, acs_helper, last_fetched_length = 0;
 
 attachEvt("common", "init", doAuthorityBrowse);
 
@@ -18,8 +18,6 @@ function doAuthorityBrowse(axis, term, page, per_page) {
         per_page = cgi.param(PARAM_AUTHORITY_BROWSE_PER_PAGE) || 20;
     }
 
-    setPagingLinks(axis, term, page, per_page);
-
     var url = '/opac/extras/browse/marcxml/authority.'
         + axis
         + '/1' /* this will be OU if OU ever means anything for authorities */
@@ -32,28 +30,38 @@ function doAuthorityBrowse(axis, term, page, per_page) {
         "handleAs": "xml",
         "content": {"format": "marcxml"},
         "preventCache": true,
-        "load": displayAuthorityRecords
+        "load": function(doc) {
+            displayAuthorityRecords(doc);
+            setPagingLinks(axis, term, page, per_page);
+        }
     });
 }
 
 function setPagingLinks(axis, term, page, per_page) {
-    /* XXX since authority browse drops us into the middle of the record set,
-     * we need additional complexity to find out if we're have more records
-     * above and below, so just assume we always do for now.
-     */
     var up_page = Number(page) - 1;
     var down_page = Number(page) + 1;
 
+    unHideMe(dojo.byId("authority-page-up"));
     dojo.attr(
         "authority-page-up", "onclick", function() {
             doAuthorityBrowse(axis, term, up_page, per_page);
         }
     );
-    dojo.attr(
-        "authority-page-down", "onclick", function() {
-            doAuthorityBrowse(axis, term, down_page, per_page);
-        }
-    );
+
+    /* XXX In theory this would generally stop the "next page" link from
+     * showing up when it's unwanted, but in practice the supercat/unapi
+     * call we make doesn't return the number of records it's supposed to.
+     */
+//    if (last_fetched_length == per_page) {
+        unHideMe(dojo.byId("authority-page-down"));
+        dojo.attr(
+            "authority-page-down", "onclick", function() {
+                doAuthorityBrowse(axis, term, down_page, per_page);
+            }
+        );
+//    } else {
+//        hideMe(dojo.byId("authority-page-down"));
+//    }
 }
 
 function renderAuthorityTagContent(m, af) {
@@ -168,8 +176,15 @@ function displayAuthorityRecords(doc) {
      * from record to record when different control sets were in use.
      */
     var auth_ids = [];
+
     dojo.empty("authority-record-holder");
-    dojo.query("record", doc).forEach(
+
+    var records = dojo.query("record", doc);
+    last_fetched_length = records.length;
+    console.log("length here is " + last_fetched_length);
+
+    dojo.forEach(
+        records,
         function(record) {
             var m = new MARC.Record({"xml": record});
 

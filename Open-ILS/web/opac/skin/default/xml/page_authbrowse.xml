@@ -2,12 +2,12 @@
 	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/authbrowse.js'></script>
 
     <div class="authority-pager">
-        <a id="authority-page-up" href="#" class="classic_link">&common.cn.previous;</a>
+        <a id="authority-page-up" href="#" class="hide_me classic_link">&common.cn.previous;</a>
     </div>
 
     <div id="authority-record-holder"></div>
 
     <div class="authority-pager">
-        <a id="authority-page-down" href="#" class="classic_link">&common.cn.next;</a>
+        <a id="authority-page-down" href="#" class="hide_me classic_link">&common.cn.next;</a>
     </div>
 </div>
