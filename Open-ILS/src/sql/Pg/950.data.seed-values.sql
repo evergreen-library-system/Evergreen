@@ -4164,7 +4164,7 @@ INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('type
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('item_type','Type','Type');
 INSERT INTO config.record_attr_definition (name,label,phys_char_sf) values ('vr_format','Videorecording format',72);
 INSERT INTO config.record_attr_definition (name,label,sorter,filter,tag) values ('titlesort','Title',TRUE,FALSE,'tnf');
-INSERT INTO config.record_attr_definition (name,label,sorter,filter,tag) values ('authorsort','Author',TRUE,FALSE,'1%');
+INSERT INTO config.record_attr_definition (name,label,sorter,filter,tag,sf_list) values ('authorsort','Author',TRUE,FALSE,'1%','abcdefgklmnopqrstvxyz');
 
 -- TO-DO: Auto-generate these values from CLDR
 -- XXX These are the values used in MARC records ... does that match CLDR, including deprecated languages?
