@@ -95,6 +95,8 @@ INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath )
     (26, 'identifier', 'tcn', oils_i18n_gettext(26, 'Title Control Number', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='901']/marc:subfield[@code='a']$$ );
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
     (27, 'identifier', 'bibid', oils_i18n_gettext(27, 'Internal ID', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='901']/marc:subfield[@code='c']$$ );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, search_field, facet_field) VALUES
+    (28, 'identifier', 'authority_id', oils_i18n_gettext(28, 'Authority Record ID', 'cmf', 'label'), 'marcxml', '//marc:datafield/marc:subfield[@code="0"]', FALSE, TRUE);
 
 SELECT SETVAL('config.metabib_field_id_seq'::TEXT, (SELECT MAX(id) FROM config.metabib_field), TRUE);
 
@@ -5893,6 +5895,15 @@ INSERT INTO config.metabib_field_index_norm_map (field,norm,params)
             config.index_normalizer i
       WHERE i.func IN ('replace')
             AND m.id IN (19);
+
+INSERT INTO config.metabib_field_index_norm_map (field,norm,pos)
+    SELECT  m.id,
+            i.id,
+            -1
+      FROM  config.metabib_field m,
+            config.index_normalizer i
+      WHERE i.func = 'remove_paren_substring'
+            AND m.id IN (28);
 
 INSERT INTO config.record_attr_index_norm_map (attr,norm,pos)
     SELECT  m.name, i.id, 0
