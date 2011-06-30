@@ -51,8 +51,7 @@
          It's possible to override individual or sets of templates by putting them into
          a path in front of the default template path -->
     <template_paths>
-        <!-- XXX we should really move these out of the default web root -->
-        <path>/openils/var/web/templates</path>
+        <path>/openils/var/templates</path>
     </template_paths>
 
     <handlers>
