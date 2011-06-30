@@ -81,7 +81,7 @@
 					<item name='login' value='true'/>
 					<item name='patron information' value='true'/>
 					<item name='end patron session' value='true'/>
-					<item name='fee paid' value='false'/>
+					<item name='fee paid' value='true'/>
 					<item name='item information' value='true'/>
 					<item name='item status update' value='false'/>
 					<item name='patron enable' value='false'/>
