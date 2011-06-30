@@ -1,7 +1,9 @@
 [% 
 
+##############################################################################
 # This file contains skin-level configuration settings.
 # Many of these settings will probably migrate into actor.org_unit_settings.
+##############################################################################
 
 ##############################################################################
 # RefWorks configuration
@@ -22,6 +24,9 @@ ctx.refworks.url = 'http://www.refworks.com';
 # Evergreen provides the ability to point at an OpenURL resolver to find
 # electronic resources for a given ISSN or ISBN. Currently, only the SFX
 # resolver is supported.
+#
+# You must enable the open-ils.resolver instance in opensrf.xml to use
+# this feature.
 ##############################################################################
 
 openurl.enabled = 'false';
