@@ -220,6 +220,7 @@ function displayRecordCount(id, count) {
     var args = {};
     args.page = RRESULT;
     args[PARAM_DEPTH] = depthSelGetDepth();
+    args[PARAM_FORM] = "all";
     args[PARAM_LOCATION] = depthSelGetNewLoc();
     args[PARAM_TERM] = "identifier|authority_id[" + id + "]";
 
