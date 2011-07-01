@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('0yyy', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0570', :eg_version);
 
 -- Not everything in 1XX tags should become part of the authorsort field
 -- ($0 for example).  The list of subfields chosen here is a superset of all
