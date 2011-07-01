@@ -1864,7 +1864,7 @@ COMMIT;
 	<section xml:id="catalogingtemplates">
 		<title>Cataloging Templates</title>
 		<indexterm><primary>cataloging</primary><secondary>templates</secondary></indexterm>
-		<para>Cataloging templates are essential for making the cataloging process more efficient. Templates are used that that the basic structure of specific types of cataloging records can 			loaded when the cataloger adds a new record</para>
+		<para>Cataloging templates are essential for making the cataloging process more efficient. Templates are used so that the basic structure of specific types of cataloging records can be loaded when the cataloger adds a new record</para>
 		<procedure>
 			<title>Adding Cataloging Templates</title>
 			<step>
@@ -2231,7 +2231,7 @@ WHERE id = 17;
 		<section xml:id="Holdnotifications">
 			<title>Hold Notifications</title>
 			<indexterm><primary>notifications</primary><secondary>hold</secondary></indexterm>
-			<para>Hold notifications can be used that that library users are sent an email when their items are available for pickup. This notification is triggered when the item being held 
+			<para>Hold notifications can be used so that library users are sent an email when their items are available for pickup. This notification is triggered when the item being held 
 			is <emphasis>captured</emphasis> by a library staff member and the item is in the <emphasis>on holds shelf</emphasis> status. </para>
 			<simplesect>			
 				<title>Hold Notifications using the Action Trigger</title> 
