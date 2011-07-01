@@ -10,7 +10,7 @@
         <grid id="bib_brief_grid" flex="0">
             <columns>
                 <column />
-                <column />
+                <column flex="1" />
                 <column />
                 <column />
                 <column />
