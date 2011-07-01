@@ -135,6 +135,43 @@ CREATE INDEX metabib_facet_entry_field_idx ON metabib.facet_entry (field);
 CREATE INDEX metabib_facet_entry_value_idx ON metabib.facet_entry (SUBSTRING(value,1,1024));
 CREATE INDEX metabib_facet_entry_source_idx ON metabib.facet_entry (source);
 
+CREATE OR REPLACE FUNCTION metabib.facet_normalize_trigger () RETURNS TRIGGER AS $$
+DECLARE
+    normalizer  RECORD;
+    facet_text  TEXT;
+BEGIN
+    facet_text := NEW.value;
+
+    FOR normalizer IN
+        SELECT  n.func AS func,
+                n.param_count AS param_count,
+                m.params AS params
+          FROM  config.index_normalizer n
+                JOIN config.metabib_field_index_norm_map m ON (m.norm = n.id)
+          WHERE m.field = NEW.field AND m.pos < 0
+          ORDER BY m.pos LOOP
+
+            EXECUTE 'SELECT ' || normalizer.func || '(' ||
+                quote_literal( facet_text ) ||
+                CASE
+                    WHEN normalizer.param_count > 0
+                        THEN ',' || REPLACE(REPLACE(BTRIM(normalizer.params,'[]'),E'\'',E'\\\''),E'"',E'\'')
+                        ELSE ''
+                    END ||
+                ')' INTO facet_text;
+
+    END LOOP;
+
+    NEW.value = facet_text;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER facet_normalize_tgr
+	BEFORE UPDATE OR INSERT ON metabib.facet_entry
+	FOR EACH ROW EXECUTE PROCEDURE metabib.facet_normalize_trigger();
+
 CREATE OR REPLACE FUNCTION evergreen.facet_force_nfc() RETURNS TRIGGER AS $$
 BEGIN
     NEW.value := force_unicode_normal_form(NEW.value,'NFC');
