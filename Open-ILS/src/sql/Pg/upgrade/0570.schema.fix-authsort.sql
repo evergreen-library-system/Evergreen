@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('0570', :eg_version);
+INSERT INTO config.upgrade_log (version) VALUES ('0570');
 
 -- Not everything in 1XX tags should become part of the authorsort field
 -- ($0 for example).  The list of subfields chosen here is a superset of all
