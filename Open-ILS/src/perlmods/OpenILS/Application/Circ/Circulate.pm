@@ -3236,6 +3236,14 @@ sub do_renew {
     $self->renewal_remaining( $circ->renewal_remaining - 1 );
     $self->circ($circ);
 
+    # Opac renewal - re-use circ library from original circ (unless told not to)
+    if($self->opac_renewal) {
+        my $use_circ_lib = $self->editor->retrieve_config_global_flag('circ.opac_renewal.use_original_circ_lib');
+        if($use_circ_lib and $U->is_true($use_circ_lib->enabled)) {
+            $self->circ_lib($circ->circ_lib);
+        }
+    }
+
     # Run the fine generator against the old circ
     $self->generate_fines_start;
 
