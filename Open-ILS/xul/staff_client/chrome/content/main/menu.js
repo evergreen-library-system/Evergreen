@@ -265,6 +265,12 @@ main.menu.prototype = {
                     }
                 }
             ],
+            'cmd_portal' : [
+                ['oncommand'],
+                function() {
+                    obj.set_tab();
+                }
+            ],
             'cmd_close_tab' : [
                 ['oncommand'],
                 function() { obj.close_tab(); }
