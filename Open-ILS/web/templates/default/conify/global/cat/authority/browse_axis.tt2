@@ -13,7 +13,7 @@
                 dojoType="openils.widget.AutoGrid"
                 autoHeight="true"
                 defaultCellWidth="'auto'"
-                fieldOrder="['code','name','description']"
+                fieldOrder="['code','name','description','sorter']"
                 suppressEditFields="['id']"
                 query="{id: '*'}"
                 fmClass="aba"
@@ -25,6 +25,9 @@
     dojo.require("openils.widget.AutoGrid");
 
     function my_init() {
+        aba_grid.overrideWidgetArgs.sorter = {
+            "dijitArgs": {"query": {"sorter": "t"}}
+        };
         aba_grid.loadAll({"order_by": {"aba": "code"}});
     }
 

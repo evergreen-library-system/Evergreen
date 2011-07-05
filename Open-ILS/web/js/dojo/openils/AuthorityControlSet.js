@@ -42,7 +42,7 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
                     "abaafm": "_browse_field_map_list"
                 });
 
-                openils.AuthorityControlSet._browse_axis_by_name = {};
+                openils.AuthorityControlSet._browse_axis_by_code = {};
                 dojo.forEach( openils.AuthorityControlSet._browse_axis_list, function (ba) {
                     ba.maps(
                         dojo.filter(
@@ -50,7 +50,7 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
                             function (m) { return m.axis() == ba.code() }
                         )
                     );
-                    openils.AuthorityControlSet._browse_axis_by_name[ba.code()] = ba;
+                    openils.AuthorityControlSet._browse_axis_by_code[ba.code()] = ba;
                 });
 
                 // loop over each acs
@@ -199,6 +199,10 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
             return this.controlSet(thes.control_set());
         },
 
+        browseAxisByCode: function(code) {
+            return openils.AuthorityControlSet._browse_axis_by_code[code];
+        },
+
         bibFieldByTag: function (x) {
             var me = this;
             return dojo.filter(
@@ -213,15 +217,15 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
 
         bibFieldBrowseAxes : function (t) {
             var blist = [];
-            for (var bname in openils.AuthorityControlSet._browse_axis_by_name) {
+            for (var bcode in openils.AuthorityControlSet._browse_axis_by_code) {
                 dojo.forEach(
-                    openils.AuthorityControlSet._browse_axis_by_name[bname].maps(),
+                    openils.AuthorityControlSet._browse_axis_by_code[bcode].maps(),
                     function (m) {
                         if (dojo.filter(
                                 m.field().bib_fields(),
                                 function (b) { return b.tag() == t }
                             ).length > 0
-                        ) blist.push(bname);
+                        ) blist.push(bcode);
                     }
                 );
             }

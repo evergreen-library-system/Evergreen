@@ -31,7 +31,7 @@ function doAuthorityBrowse(axis, term, page, per_page) {
         "content": {"format": "marcxml"},
         "preventCache": true,
         "load": function(doc) {
-            displayAuthorityRecords(doc);
+            displayAuthorityRecords(axis, doc);
             setPagingLinks(axis, term, page, per_page);
         }
     });
@@ -167,7 +167,7 @@ function renderAuthorityRecord(m, control_set, auth_id) {
  * records, display each one in a table using the apporiate control set to
  * determine which fields to show.
  */
-function displayAuthorityRecords(doc) {
+function displayAuthorityRecords(axis, doc) {
     if (!acs_helper)
         acs_helper = new openils.AuthorityControlSet();
 
@@ -181,7 +181,6 @@ function displayAuthorityRecords(doc) {
 
     var records = dojo.query("record", doc);
     last_fetched_length = records.length;
-    console.log("length here is " + last_fetched_length);
 
     dojo.forEach(
         records,
@@ -202,11 +201,11 @@ function displayAuthorityRecords(doc) {
             );
         }
     );
-    displayRecordCounts(auth_ids);
+    displayRecordCounts(axis, auth_ids);
     swapCanvas(dojo.byId("canvas_main"));
 }
 
-function displayRecordCounts(auth_ids) {
+function displayRecordCounts(axis, auth_ids) {
     fieldmapper.standardRequest(
         ["open-ils.cat", "open-ils.cat.authority.records.count_linked_bibs"], {
             "params": [auth_ids],
@@ -215,7 +214,7 @@ function displayRecordCounts(auth_ids) {
                 if ((r = openils.Util.readResponse(r))) {
                     dojo.forEach(r, function(blob) {
                         if (blob.bibs > 0) {
-                            displayRecordCount(blob.authority, blob.bibs);
+                            displayRecordCount(axis, blob.authority, blob.bibs);
                         }
                     });
                 }
@@ -224,7 +223,7 @@ function displayRecordCounts(auth_ids) {
     );
 }
 
-function displayRecordCount(id, count) {
+function displayRecordCount(axis, id, count) {
     /* 1) put record count where we can see it */
     dojo.query("#authority_" + id + " .authority-count-holder")[0].innerHTML =
         "(" + count + ")"; /* XXX i18n ? */
@@ -238,6 +237,10 @@ function displayRecordCount(id, count) {
     args[PARAM_FORM] = "all";
     args[PARAM_LOCATION] = depthSelGetNewLoc();
     args[PARAM_TERM] = "identifier|authority_id[" + id + "]";
+
+    var axis_obj = acs_helper.browseAxisByCode(axis);
+    if (axis_obj.sorter())
+        args[PARAM_TERM] += " sort(" + axis_obj.sorter() + ")";
 
     dojo.create(
         "a", {

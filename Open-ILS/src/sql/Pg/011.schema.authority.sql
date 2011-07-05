@@ -54,6 +54,7 @@ CREATE TABLE authority.thesaurus (
 CREATE TABLE authority.browse_axis (
     code        TEXT    PRIMARY KEY,
     name        TEXT    UNIQUE NOT NULL, -- i18n
+    sorter      TEXT    REFERENCES config.record_attr_definition (name) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     description TEXT
 );
 
