@@ -14,6 +14,7 @@ my %scripts;
 my $script_libs;
 my $legacy_script_support = 0;
 my $booking_status;
+my $opac_renewal_use_circ_lib;
 
 sub determine_booking_status {
     unless (defined $booking_status) {
@@ -3318,10 +3319,16 @@ sub do_renew {
 
     # Opac renewal - re-use circ library from original circ (unless told not to)
     if($self->opac_renewal) {
-        my $use_circ_lib = $self->editor->retrieve_config_global_flag('circ.opac_renewal.use_original_circ_lib');
-        if($use_circ_lib and $U->is_true($use_circ_lib->enabled)) {
-            $self->circ_lib($circ->circ_lib);
+        unless(defined($opac_renewal_use_circ_lib)) {
+            my $use_circ_lib = $self->editor->retrieve_config_global_flag('circ.opac_renewal.use_original_circ_lib');
+            if($use_circ_lib and $U->is_true($use_circ_lib->enabled)) {
+                $opac_renewal_use_circ_lib = 1;
+            }
+            else {
+                $opac_renewal_use_circ_lib = 0;
+            }
         }
+        $self->circ_lib($circ->circ_lib) if($opac_renewal_use_circ_lib);
     }
 
     # Run the fine generator against the old circ
