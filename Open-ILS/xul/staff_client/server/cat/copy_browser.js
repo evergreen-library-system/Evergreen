@@ -111,6 +111,18 @@ cat.copy_browser.prototype = {
                                 obj.list.clear();
                             }
                         ],
+                        'cmd_request_items' : [
+                            ['command'],
+                            function() {
+                                JSAN.use('cat.util'); JSAN.use('util.functional');
+
+                                var list = util.functional.filter_list( obj.sel_list, function (o) { return o.split(/_/)[0] == 'acp'; });
+
+                                list = util.functional.map_list( list, function (o) { return o.split(/_/)[1]; });
+
+                                cat.util.request_items( list );
+                            }
+                        ],
                         'sel_mark_items_damaged' : [
                             ['command'],
                             function() {
@@ -986,6 +998,24 @@ cat.copy_browser.prototype = {
                                 }
                                 obj.refresh_list();
                             }
+                        ],
+
+                        'cmd_print_tree' : [
+                            ['command'],
+                            function() {
+                                try {
+                                    var p = {
+                                        'template' : 'holdings_maintenance',
+                                        'mvr_id' : obj.docid,
+                                        'print_data' : {}
+                                    };
+                                    bib_brief_overlay(p);
+                                    p.data = p.print_data;
+                                    obj.list.print(p);
+                                } catch(E) {
+                                    alert('Error in copy_browser.js, cmd_print_tree: ' + E);
+                                }
+                            }
                         ]
                     }
                 }
@@ -1757,6 +1787,9 @@ cat.copy_browser.prototype = {
                     },
                 }
             );
+
+            $('list_actions').appendChild( obj.list.render_list_actions() );
+            obj.list.set_list_actions();
 
         } catch(E) {
             this.error.sdump('D_ERROR','cat.copy_browser.list_init: ' + E + '\n');

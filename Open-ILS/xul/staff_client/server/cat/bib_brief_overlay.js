@@ -35,7 +35,11 @@ function bib_brief_overlay(params) {
         }
 
         JSAN.use('util.widgets');
-        function set(name,value) { 
+        function set(name,value) {
+            if (params.print_data) {
+                params.print_data[name] = value;
+                return 1;
+            }
             var nodes = document.getElementsByAttribute('name',name); 
             for (var i = 0; i < nodes.length; i++) {
                 util.widgets.set_text( nodes[i], value ); 
@@ -43,6 +47,10 @@ function bib_brief_overlay(params) {
             return nodes.length;
         }
         function set_tooltip(name,value) { 
+            if (params.print_data) {
+                params.print_data[name] = value;
+                return 1;
+            }
             var nodes = document.getElementsByAttribute('name',name); 
             for (var i = 0; i < nodes.length; i++) {
                 nodes[i].setAttribute('tooltiptext',value);

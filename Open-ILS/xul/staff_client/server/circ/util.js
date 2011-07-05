@@ -2467,6 +2467,22 @@ circ.util.hold_columns = function(modify,params) {
         },
         {
             'persist' : 'hidden width ordinal',
+            'id' : 'hold_note_text',
+            'label' : document.getElementById('circStrings').getString('staff.circ.utils.hold_note_text'),
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false, 'render' : function(my) {
+                var s = '';
+                var notes = my.ahr.notes();
+                for (var i = 0; i < notes.length; i++) {
+                    s += notes[i].title() + ':' + notes[i].body() + '; \n';
+                }
+                return s;
+            }
+        },
+        {
+            'persist' : 'hidden width ordinal',
             'id' : 'staff_hold',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.staff_hold'),
             'flex' : 1,

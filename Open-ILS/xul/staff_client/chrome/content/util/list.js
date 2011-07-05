@@ -1165,22 +1165,31 @@ util.list.prototype = {
     '_dump_tree_with_keys' : function(params) {
         var obj = this;
         var dump = [];
-        for (var i = 0; i < this.treechildren.childNodes.length; i++) {
-            var row = {};
-            var treeitem = this.treechildren.childNodes[i];
-            var treerow = treeitem.firstChild;
-            for (var j = 0; j < treerow.childNodes.length; j++) {
-                if (typeof obj.columns[j] == 'undefined') {
-                    dump('=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n');
-                    dump('_dump_tree_with_keys @ ' + location.href + '\n');
-                    dump('\ttreerow.childNodes.length='+treerow.childNodes.length+' j='+j+' obj.columns.length='+obj.columns.length+'\n');
-                    debugger;
-                } else {
-                    row[ obj.columns[j].id ] = treerow.childNodes[j].getAttribute('label');
+
+        function process_tree(treechildren) {
+            for (var i = 0; i < treechildren.childNodes.length; i++) {
+                var row = {};
+                var treeitem = treechildren.childNodes[i];
+                var treerow = treeitem.firstChild;
+                for (var j = 0; j < treerow.childNodes.length; j++) {
+                    if (typeof obj.columns[j] == 'undefined') {
+                        dump('=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n');
+                        dump('_dump_tree_with_keys @ ' + location.href + '\n');
+                        dump('\ttreerow.childNodes.length='+treerow.childNodes.length+' j='+j+' obj.columns.length='+obj.columns.length+'\n');
+                        debugger;
+                    } else {
+                        row[ obj.columns[j].id ] = treerow.childNodes[j].getAttribute('label');
+                    }
+                }
+                dump.push( row );
+                if (treeitem.childNodes.length > 1) {
+                    process_tree(treeitem.lastChild);
                 }
             }
-            dump.push( row );
         }
+
+        process_tree(this.treechildren);
+
         return dump;
     },
 
@@ -1214,16 +1223,25 @@ util.list.prototype = {
             _dump += '"' + obj.columns[ ord_cols[j][1] ].label.replace(/"/g, '""') + '"';
         }
         _dump += '\r\n';
-        for (var i = 0; i < this.treechildren.childNodes.length; i++) {
-            var row = '';
-            var treeitem = this.treechildren.childNodes[i];
-            var treerow = treeitem.firstChild;
-            for (var j = 0; j < ord_cols.length; j++) {
-                if (row) row += ',';
-                row += '"' + treerow.childNodes[ ord_cols[j][1] ].getAttribute('label').replace(/"/g, '""') + '"';
+
+        function process_tree(treechildren) {
+            for (var i = 0; i < treechildren.childNodes.length; i++) {
+                var row = '';
+                var treeitem = treechildren.childNodes[i];
+                var treerow = treeitem.firstChild;
+                for (var j = 0; j < ord_cols.length; j++) {
+                    if (row) row += ',';
+                    row += '"' + treerow.childNodes[ ord_cols[j][1] ].getAttribute('label').replace(/"/g, '""') + '"';
+                }
+                _dump +=  row + '\r\n';
+                if (treeitem.childNodes.length > 1) {
+                    process_tree(treeitem.lastChild);
+                }
             }
-            _dump +=  row + '\r\n';
         }
+
+        process_tree(this.treechildren);
+
         return _dump;
     },
 
@@ -1252,15 +1270,24 @@ util.list.prototype = {
             if ( Number( a[0] ) > Number( b[0] ) ) return 1; 
             return 0;
         } );
-        for (var i = 0; i < this.treechildren.childNodes.length; i++) {
-            var row = document.getElementById('offlineStrings').getString('list.dump_extended_format.record_separator') + '\r\n';
-            var treeitem = this.treechildren.childNodes[i];
-            var treerow = treeitem.firstChild;
-            for (var j = 0; j < ord_cols.length; j++) {
-                row += obj.columns[ ord_cols[j][1] ].label + ': ' + treerow.childNodes[ ord_cols[j][1] ].getAttribute('label') + '\r\n';
+
+        function process_tree(treechildren) {
+            for (var i = 0; i < treechildren.childNodes.length; i++) {
+                var row = document.getElementById('offlineStrings').getString('list.dump_extended_format.record_separator') + '\r\n';
+                var treeitem = treechildren.childNodes[i];
+                var treerow = treeitem.firstChild;
+                for (var j = 0; j < ord_cols.length; j++) {
+                    row += obj.columns[ ord_cols[j][1] ].label + ': ' + treerow.childNodes[ ord_cols[j][1] ].getAttribute('label') + '\r\n';
+                }
+                _dump +=  row + '\r\n';
+                if (treeitem.childNodes.length > 1) {
+                    process_tree(treeitem.lastChild);
+                }
             }
-            _dump +=  row + '\r\n';
         }
+
+        process_tree(this.treechildren);
+
         return _dump;
     },
 

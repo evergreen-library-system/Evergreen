@@ -300,7 +300,7 @@
 <!ENTITY staff.cat.opac.mark_for_hold_transfer.accesskey "">
 <!ENTITY staff.cat.opac.mark_for_hold_transfer.label "Mark as Title Hold Transfer Destination">
 <!ENTITY staff.cat.opac.transfer_title_holds.accesskey "">
-<!ENTITY staff.cat.opac.transfer_title_holds.label "Transfer Title Holds">
+<!ENTITY staff.cat.opac.transfer_title_holds.label "Transfer All Title Holds">
 <!ENTITY staff.cat.opac.delete_record.accesskey "D">
 <!ENTITY staff.cat.opac.delete_record.label "Delete Record">
 <!ENTITY staff.cat.opac.undelete_record.accesskey "U">
@@ -2285,6 +2285,8 @@
 <!ENTITY staff.circ.copy_status_overlay.cmd_triggered_events.accesskey "T">
 <!ENTITY staff.circ.copy_status_overlay.cmd_book_item_now.label "Book Item Now">
 <!ENTITY staff.circ.copy_status_overlay.cmd_book_item_now.accesskey "N">
+<!ENTITY staff.circ.copy_status_overlay.cmd_request_items.label "Request Item">
+<!ENTITY staff.circ.copy_status_overlay.cmd_request_items.accesskey "R">
 <!ENTITY staff.circ.copy_status_overlay.cmd_create_brt.label "Make Item Bookable">
 <!ENTITY staff.circ.copy_status_overlay.cmd_create_brt.accesskey "K">
 <!ENTITY staff.circ.copy_status_overlay.cmd_find_acq_po.label "Find Originating Acquisition">
@@ -2553,6 +2555,8 @@
 <!ENTITY staff.cat.copy_browser.actions.cmd_transfer_volume.accesskey "T">
 <!ENTITY staff.cat.copy_browser.actions.cmd_delete_items.label "Delete Items">
 <!ENTITY staff.cat.copy_browser.actions.cmd_delete_volumes.label "Delete Volumes">
+<!ENTITY staff.cat.copy_browser.actions.cmd_request_items.label "Request Item">
+<!ENTITY staff.cat.copy_browser.actions.cmd_request_items.accesskey "R">
 <!ENTITY staff.cat.copy_browser.actions.sel_mark_items_damaged.label "Mark Item Damaged">
 <!ENTITY staff.cat.copy_browser.actions.sel_mark_items_damaged.accesskey "D">
 <!ENTITY staff.cat.copy_browser.actions.sel_mark_items_missing.label "Mark Item Missing">
@@ -2614,6 +2618,8 @@
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.save_columns.label "Save Columns">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_refresh_list.label "Refresh Listing">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_refresh_list.accesskey "R">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.print.label "Print">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.print.accesskey "P">
 <!ENTITY staff.cat.copy_buckets.window_title "Copy Buckets">
 <!ENTITY staff.cat.copy_buckets_overlay.pending_copies "Pending Copies">
 <!ENTITY staff.cat.copy_buckets_overlay.bucket_view "Bucket View">
@@ -2639,6 +2645,8 @@
 <!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.cmd_copy_buckets_export.label "Export">
 <!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.batch.label "Batch:">
 <!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.cmd_export_to_copy_status.label "Show Status">
+<!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.cmd_request_items.label "Request Items">
+<!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.cmd_request_items.accesskey "R">
 <!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_transfer_to_volume.label "Transfer to Specific Volume">
 <!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_batch_copy_edit.label "Edit Item Attributes">
 <!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_batch_copy_delete.label "Delete All from Catalog">
@@ -2854,6 +2862,7 @@
 <!ENTITY staff.cat.volume_editor.cancel.accesskey "C">
 <!ENTITY staff.cat.volume_editor.automerge.label "Auto-Merge on Volume Collision">
 <!ENTITY staff.cat.volume_editor.automerge.accesskey "A">
+<!ENTITY staff.cat.volume_editor.automerge.description "If two or more volumes for the same bib record and library are given the same call number label (and prefix/suffix), then merge them (including items they contain) into a single volume if checked.  Otherwise, report an error.">
 <!ENTITY staff.cat.volume_editor.owning_lib "Owning lib">
 <!ENTITY staff.cat.volume_editor.classification "Classification">
 <!ENTITY staff.cat.volume_editor.prefix "Prefix">
@@ -3581,3 +3590,18 @@
 <!ENTITY staff.client.portal.receipts "Edit Receipt Templates">
 <!ENTITY staff.client.portal.copyright "Copyright &copy; 2006-2011 Georgia Public Library Service, and others">
 <!ENTITY staff.client.portal.poweredby "Powered by">
+<!ENTITY staff.item.batch.hold.groupbox_caption "Request Details">
+<!ENTITY staff.item.batch.hold.hold_type_menu.label "Hold Type">
+<!ENTITY staff.item.batch.hold.hold_type_menu.accesskey "T">
+<!ENTITY staff.item.batch.hold.hold_type_menuentry.copy_hold "Copy Hold">
+<!ENTITY staff.item.batch.hold.hold_type_menuentry.recall_hold "Recall Hold">
+<!ENTITY staff.item.batch.hold.hold_type_menuentry.force_hold "Force Hold">
+<!ENTITY staff.item.batch.hold.pick_up_lib_menu.label "Pickup Library">
+<!ENTITY staff.item.batch.hold.pick_up_lib_menu.accesskey "P">
+<!ENTITY staff.item.batch.hold.hold_usr.label "Hold User Barcode">
+<!ENTITY staff.item.batch.hold.hold_usr.accesskey "U">
+<!ENTITY staff.item.batch.hold.request_btn.label "Make Request">
+<!ENTITY staff.item.batch.hold.request_btn.accesskey "M">
+<!ENTITY staff.item.batch.hold.cancel_btn.label "Cancel">
+<!ENTITY staff.item.batch.hold.cancel_btn.accesskey "C">
+<!ENTITY staff.item.batch.hold.failures_and_settings "The settings above may be changed for retries and overrides.">

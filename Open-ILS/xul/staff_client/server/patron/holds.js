@@ -1163,6 +1163,8 @@ patron.holds.prototype = {
                                             opac_url = xulG.url_prefix( urls.opac_rdetail) + '?r=' + my_acn.record();
                                         break;
                                         case 'C' :
+                                        case 'R' :
+                                        case 'F' :
                                             var my_acp = obj.network.simple_request( 'FM_ACP_RETRIEVE', [ htarget ]);
                                             var my_acn;
                                             if (typeof my_acp.call_number() == 'object') {
@@ -1198,16 +1200,23 @@ patron.holds.prototype = {
                         ['command'],
                         function() {
                             try {
-                                var targets = [];
+                                var hids = [];
+                                var unique_targets = [];
+                                var seen_target = {};
                                 for (var i = 0; i < obj.retrieve_ids.length; i++) {
-                                    var htarget = obj.retrieve_ids[i].target;
+                                    var hid = obj.retrieve_ids[i].id;
+                                    var htarget = obj.retrieve_ids[i].id;
                                     var htype = obj.retrieve_ids[i].type;
                                     switch(htype) {
                                         case 'M' :
                                             continue; // not supported
                                         break;
                                         case 'T' :
-                                            targets.push( htarget );
+                                            hids.push( hid );
+                                            if (! seen_target[htarget]) {
+                                                unique_targets.push( htarget );
+                                                seen_target[htarget] = 1;
+                                            }
                                         break;
                                         case 'V' :
                                             continue; // not supported
@@ -1221,7 +1230,7 @@ patron.holds.prototype = {
                                     }
                                 }
                                 JSAN.use('cat.util');
-                                cat.util.transfer_title_holds(targets);
+                                cat.util.transfer_specific_title_holds(hids,unique_targets);
                                 obj.clear_and_retrieve();
                             } catch(E) {
                                 obj.error.standard_unexpected_error_alert('',E);
@@ -1532,6 +1541,8 @@ patron.holds.prototype = {
                 holds = [];
                 if (robj != null) {
                     holds = holds.concat( robj.copy_holds );
+                    holds = holds.concat( robj.recall_holds );
+                    holds = holds.concat( robj.force_holds );
                     holds = holds.concat( robj.volume_holds );
                     holds = holds.concat( robj.title_holds );
                     holds = holds.concat( robj.part_holds );

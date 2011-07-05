@@ -862,7 +862,7 @@ $F$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION unapi.auri ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit INT DEFAULT NULL, soffset INT DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
         SELECT  XMLELEMENT(
-                    name volume,
+                    name uri,
                     XMLATTRIBUTES(
                         CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
                         'tag:open-ils.org:U2@auri/' || uri.id AS id,

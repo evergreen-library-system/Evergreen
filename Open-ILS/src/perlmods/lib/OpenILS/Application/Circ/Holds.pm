@@ -39,6 +39,105 @@ use OpenSRF::Utils::Cache;
 my $apputils = "OpenILS::Application::AppUtils";
 my $U = $apputils;
 
+__PACKAGE__->register_method(
+    method    => "test_and_create_hold_batch",
+    api_name  => "open-ils.circ.holds.test_and_create.batch",
+    stream => 1,
+    signature => {
+        desc => q/This is for batch creating a set of holds where every field is identical except for the targets./,
+        params => [
+            { desc => 'Authentication token', type => 'string' },
+            { desc => 'Hash of named parameters.  Same as for open-ils.circ.title_hold.is_possible, though the pertinent target field is automatically populated based on the hold_type and the specified list of targets.', type => 'object'},
+            { desc => 'Array of target ids', type => 'array' }
+        ],
+        return => {
+            desc => 'Array of hold ID on success, -1 on missing arg, event (or ref to array of events) on error(s)',
+        },
+    }
+);
+
+__PACKAGE__->register_method(
+    method    => "test_and_create_hold_batch",
+    api_name  => "open-ils.circ.holds.test_and_create.batch.override",
+    stream => 1,
+    signature => {
+        desc  => '@see open-ils.circ.holds.test_and_create.batch',
+    }
+);
+
+
+sub test_and_create_hold_batch {
+	my( $self, $conn, $auth, $params, $target_list ) = @_;
+
+	my $override = 1 if $self->api_name =~ /override/;
+
+	my $e = new_editor(authtoken=>$auth);
+	return $e->die_event unless $e->checkauth;
+    $$params{'requestor'} = $e->requestor->id;
+
+    my $target_field;
+    if ($$params{'hold_type'} eq 'T') { $target_field = 'titleid'; }
+    elsif ($$params{'hold_type'} eq 'C') { $target_field = 'copy_id'; }
+    elsif ($$params{'hold_type'} eq 'R') { $target_field = 'copy_id'; }
+    elsif ($$params{'hold_type'} eq 'F') { $target_field = 'copy_id'; }
+    elsif ($$params{'hold_type'} eq 'I') { $target_field = 'issuanceid'; }
+    elsif ($$params{'hold_type'} eq 'V') { $target_field = 'volume_id'; }
+    elsif ($$params{'hold_type'} eq 'M') { $target_field = 'mrid'; }
+    elsif ($$params{'hold_type'} eq 'P') { $target_field = 'partid'; }
+    else { return undef; }
+
+    foreach (@$target_list) {
+        $$params{$target_field} = $_;
+        my $res;
+        if (! $override) {        
+            ($res) = $self->method_lookup(
+                'open-ils.circ.title_hold.is_possible')->run($auth, $params);
+        }
+        if ($override || $res->{'success'} == 1) {
+            my $ahr = construct_hold_request_object($params);
+            my ($res2) = $self->method_lookup(
+                $override
+                ? 'open-ils.circ.holds.create.override'
+                : 'open-ils.circ.holds.create'
+            )->run($auth, $ahr);
+            $res2 = {
+                'target' => $$params{$target_field},
+                'result' => $res2
+            };
+            $conn->respond($res2);
+        } else {
+            $res = {
+                'target' => $$params{$target_field},
+                'result' => $res
+            };
+            $conn->respond($res);
+        }
+    }
+    return undef;
+}
+
+sub construct_hold_request_object {
+    my ($params) = @_;
+
+    my $ahr = Fieldmapper::action::hold_request->new;
+    $ahr->isnew('1');
+
+    foreach my $field (keys %{ $params }) {
+        if ($field eq 'depth') { $ahr->selection_depth($$params{$field}); }
+        elsif ($field eq 'patronid') {
+            $ahr->usr($$params{$field}); }
+        elsif ($field eq 'titleid') { $ahr->target($$params{$field}); }
+        elsif ($field eq 'copy_id') { $ahr->target($$params{$field}); }
+        elsif ($field eq 'issuanceid') { $ahr->target($$params{$field}); }
+        elsif ($field eq 'volume_id') { $ahr->target($$params{$field}); }
+        elsif ($field eq 'mrid') { $ahr->target($$params{$field}); }
+        elsif ($field eq 'partid') { $ahr->target($$params{$field}); }
+        else {
+            $ahr->$field($$params{$field});
+        }
+    }
+    return $ahr;
+}
 
 __PACKAGE__->register_method(
     method    => "create_hold_batch",
@@ -2750,7 +2849,7 @@ sub all_rec_holds {
     $args->{fulfillment_time} = undef; #  we don't want to see old fulfilled holds
 	$args->{cancel_time} = undef;
 
-	my $resp = { volume_holds => [], copy_holds => [], metarecord_holds => [], part_holds => [], issuance_holds => [] };
+	my $resp = { volume_holds => [], copy_holds => [], recall_holds => [], force_holds => [], metarecord_holds => [], part_holds => [], issuance_holds => [] };
 
     my $mr_map = $e->search_metabib_metarecord_source_map({source => $title_id})->[0];
     if($mr_map) {
@@ -2822,6 +2921,20 @@ sub all_rec_holds {
 	$resp->{copy_holds} = $e->search_action_hold_request(
 		{ 
 			hold_type => OILS_HOLD_TYPE_COPY,
+			target => $copies,
+			%$args }, 
+		{idlist=>1} );
+
+	$resp->{recall_holds} = $e->search_action_hold_request(
+		{ 
+			hold_type => OILS_HOLD_TYPE_RECALL,
+			target => $copies,
+			%$args }, 
+		{idlist=>1} );
+
+	$resp->{force_holds} = $e->search_action_hold_request(
+		{ 
+			hold_type => OILS_HOLD_TYPE_FORCE,
 			target => $copies,
 			%$args }, 
 		{idlist=>1} );
@@ -2965,7 +3078,7 @@ sub find_hold_mvr {
 
         $tid = $part->record;
 
-	} elsif( $hold->hold_type eq OILS_HOLD_TYPE_COPY ) {
+	} elsif( $hold->hold_type eq OILS_HOLD_TYPE_COPY || $hold->hold_type eq OILS_HOLD_TYPE_RECALL || $hold->hold_type eq OILS_HOLD_TYPE_FORCE ) {
 		$copy = $e->retrieve_asset_copy([
             $hold->target, 
             {flesh => 1, flesh_fields => {acp => ['call_number']}}
@@ -3422,6 +3535,22 @@ __PACKAGE__->register_method(
     }
 );
 
+__PACKAGE__->register_method(
+    method    => 'change_hold_title_for_specific_holds',
+    api_name  => 'open-ils.circ.hold.change_title.specific_holds',
+    signature => {
+        desc => q/
+            Updates specified holds to target new bib./,
+        params => [
+            { desc => 'Authentication Token', type => 'string' },
+            { desc => 'New Target Bib Id',    type => 'number' },
+            { desc => 'Holds Ids for holds to update',   type => 'array'  },
+        ],
+        return => { desc => '1 on success' }
+    }
+);
+
+
 sub change_hold_title {
     my( $self, $client, $auth, $new_bib_id, $bib_ids ) = @_;
 
@@ -3458,6 +3587,41 @@ sub change_hold_title {
     return 1;
 }
 
+sub change_hold_title_for_specific_holds {
+    my( $self, $client, $auth, $new_bib_id, $hold_ids ) = @_;
+
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
+
+    my $holds = $e->search_action_hold_request(
+        [
+            {
+                cancel_time      => undef,
+                fulfillment_time => undef,
+                hold_type        => 'T',
+                id               => $hold_ids
+            },
+            {
+                flesh        => 1,
+                flesh_fields => { ahr => ['usr'] }
+            }
+        ],
+        { substream => 1 }
+    );
+
+    for my $hold (@$holds) {
+        $e->allowed('UPDATE_HOLD', $hold->usr->home_ou) or return $e->die_event;
+        $logger->info("Changing hold " . $hold->id . " target from " . $hold->target . " to $new_bib_id in title hold target change");
+        $hold->target( $new_bib_id );
+        $e->update_action_hold_request($hold) or return $e->die_event;
+    }
+
+    $e->commit;
+
+    _reset_hold($self, $e->requestor, $_) for @$holds;
+
+    return 1;
+}
 
 __PACKAGE__->register_method(
     method    => 'rec_hold_count',
