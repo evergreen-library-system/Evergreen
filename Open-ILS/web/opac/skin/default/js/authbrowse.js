@@ -15,7 +15,7 @@ function doAuthorityBrowse(axis, term, page, per_page) {
         axis = cgi.param(PARAM_AUTHORITY_BROWSE_AXIS);
         term = cgi.param(PARAM_AUTHORITY_BROWSE_TERM);
         page = cgi.param(PARAM_AUTHORITY_BROWSE_PAGE) || 0;
-        per_page = cgi.param(PARAM_AUTHORITY_BROWSE_PER_PAGE) || 20;
+        per_page = cgi.param(PARAM_AUTHORITY_BROWSE_PER_PAGE) || 21;
     }
 
     var url = '/opac/extras/browse/marcxml/authority.'
@@ -236,6 +236,8 @@ function displayRecordCount(axis, id, count) {
     args[PARAM_DEPTH] = depthSelGetDepth();
     args[PARAM_FORM] = "all";
     args[PARAM_LOCATION] = depthSelGetNewLoc();
+    args[PARAM_STYPE] = "keyword";
+    args[PARAM_RTYPE] = "keyword";
     args[PARAM_TERM] = "identifier|authority_id[" + id + "]";
 
     var axis_obj = acs_helper.browseAxisByCode(axis);
