@@ -5,6 +5,8 @@ function my_init(orientation) {
 
         ui_init(); // JSAN, etc.
 
+        if (! orientation) { orientation = 'horizontal'; }
+
         JSAN.use('OpenILS.data');
         g.data = new OpenILS.data();
         g.data.stash_retrieve();
@@ -52,6 +54,7 @@ function my_init(orientation) {
                                 try {
                                     g.meta = req2.getResultObject()[0];
                                     set_caption();
+                                    dynamic_grid_replacement(orientation);
                                     bib_brief_overlay({
                                         'mvr' : g.mods,
                                         'bre' : g.meta
@@ -200,5 +203,103 @@ function ui_init() {
     JSAN.addRepository('/xul/server/');
     JSAN.use('util.error'); g.error = new util.error();
     g.error.sdump('D_TRACE','my_init() for cat_bib_brief.xul');
+}
+
+function dynamic_grid_replacement(orientation) {
+    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    var prefs = Components.classes[
+        '@mozilla.org/preferences-service;1'
+    ].getService(
+        Components.interfaces['nsIPrefBranch']
+    );
+    if (! prefs.prefHasUserValue(
+            'oils.bib_brief.'+orientation+'.dynamic_grid_replacement.data'
+        )
+    ) {
+        return;
+    }
+
+    var gridData = JSON2js(
+        prefs.getCharPref(
+            'oils.bib_brief.'+orientation+'.dynamic_grid_replacement.data'
+        )
+    );
+
+    var grid = document.getElementById('bib_brief_grid');
+    if (!grid) { return; }
+
+    JSAN.use('util.widgets');
+
+    util.widgets.remove_children(grid);
+
+    var columns = document.createElement('columns');
+    grid.appendChild(columns);
+
+    var maxColumns = 0;
+    for (var i = 0; i < gridData.length; i++) {
+        if (gridData[i].length > maxColumns) {
+            maxColumns = gridData[i].length;
+        }
+    }
+
+    for (var i = 0; i < maxColumns; i++) {
+        var columnA = document.createElement('column');
+        columns.appendChild(columnA);
+        var columnB = document.createElement('column');
+        columns.appendChild(columnB);
+    }
+
+    // Flex the column where the title usually goes
+    columns.firstChild.nextSibling.setAttribute('flex','1');
+
+    var rows = document.createElement('rows');
+    grid.appendChild(rows);
+
+/*
+    <row id="bib_brief_grid_row1" position="1">
+        <label control="title" class="emphasis"
+            value="&staff.cat.bib_brief.title.label;"
+            accesskey="&staff.cat.bib_brief.title.accesskey;"/>
+        <textbox id="title"
+            name="title" readonly="true" context="clipboard"
+            class="plain" onfocus="this.select()"/>
+    </row>
+*/
+
+    var catStrings = document.getElementById('catStrings');
+
+    for (var i = 0; i < gridData.length; i++) {
+        var row = document.createElement('row');
+        row.setAttribute('id','bib_brief_grid_row'+i);
+        rows.appendChild(row);
+
+        for (var j = 0; j < gridData[i].length; j++) {
+            var name = gridData[i][j];
+
+            var label = document.createElement('label');
+            label.setAttribute('control',name);
+            label.setAttribute('class','emphasis');
+            label.setAttribute('value',
+                catStrings.testString('staff.cat.bib_brief.'+name+'.label')
+                ? catStrings.getString('staff.cat.bib_brief.'+name+'.label')
+                : name
+            );
+            label.setAttribute('accesskey',
+                catStrings.testString('staff.cat.bib_brief.'+name+'.accesskey')
+                ? catStrings.getString('staff.cat.bib_brief.'+name+'.accesskey')
+                : name
+            );
+            row.appendChild(label);
+
+            var textbox = document.createElement('textbox');
+            textbox.setAttribute('id',name);
+            textbox.setAttribute('name',name);
+            textbox.setAttribute('readonly','true');
+            textbox.setAttribute('context','clipboard');
+            textbox.setAttribute('class','plain');
+            textbox.setAttribute('onfocus','this.select()');
+            row.appendChild(textbox);
+        }
+    }
 }
 
