@@ -1560,7 +1560,7 @@ sub print_hold_pull_list_stream {
                 "flesh_fields" => {
                     "ahr" => ["usr", "current_copy"],
                     "au"  => ["card"],
-                    "acp" => ["location", "call_number"],
+                    "acp" => ["location", "call_number", "parts"],
                     "acn" => ["record","prefix","suffix"]
                 }
             }
