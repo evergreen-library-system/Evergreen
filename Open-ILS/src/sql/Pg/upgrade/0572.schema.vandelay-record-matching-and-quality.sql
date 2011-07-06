@@ -1,12 +1,10 @@
--- Evergreen DB patch XXXX.vandelay-record-matching-and-quality.sql
---
--- FIXME: insert description of change, if needed
+-- Evergreen DB patch 0572.vandelay-record-matching-and-quality.sql
 --
 BEGIN;
 
 
 -- check whether patch can be applied
---SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0572', :eg_version);
 
 CREATE OR REPLACE FUNCTION evergreen.array_remove_item_by_value(inp ANYARRAY, el ANYELEMENT) RETURNS anyarray AS $$ SELECT ARRAY_ACCUM(x.e) FROM UNNEST( $1 ) x(e) WHERE x.e <> $2; $$ LANGUAGE SQL;
 
