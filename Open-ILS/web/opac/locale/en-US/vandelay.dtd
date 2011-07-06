@@ -1,10 +1,14 @@
 <!ENTITY vandelay.add.existing.queue "or Add to an Existing Queue">
 <!ENTITY vandelay.auth.attrs "Authority attributes">
 <!ENTITY vandelay.auth.records "Authority Records">
-<!ENTITY vandelay.auto.import.noncolliding "Auto-Import Non-Colliding Records">
-<!ENTITY vandelay.auto.import.auto_overlay_exact "Auto Merge/Overlay Exact Matches">
-<!ENTITY vandelay.auto.import.auto_overlay_1match "Auto Merge/Overlay When Exactly 1 Match is Found">
-<!ENTITY vandelay.auto.import.merge_profile "Merge/Overlay Profile">
+<!ENTITY vandelay.import.actions "Record Import Actions">
+<!ENTITY vandelay.auto.import.noncolliding "Import Non-Matching Records">
+<!ENTITY vandelay.auto.import.auto_overlay_exact "Merge On Exact Match (901c)">
+<!ENTITY vandelay.auto.import.auto_overlay_1match "Merge On Single Match">
+<!ENTITY vandelay.auto.import.auto_overlay_best "Merge On Best Match">
+<!ENTITY vandelay.auto.import.auto_overlay_best_ratio "Best/Single Match Minimum Quality Ratio">
+<!ENTITY vandelay.auto.import.auto_overlay_best_ratio.desc "New Record Quaility / Quality of Best Match">
+<!ENTITY vandelay.auto.import.merge_profile "Merge Profile">
 <!ENTITY vandelay.auto.width "Auto Width">
 <!ENTITY vandelay.back.to.import.queue "Back To Import Queue">
 <!ENTITY vandelay.bib.attrs "Bibliographic attributes">
@@ -24,10 +28,11 @@
 <!ENTITY vandelay.dest.match.point "Destination Match Point">
 <!ENTITY vandelay.display "Display">
 <!ENTITY vandelay.done "Done">
-<!ENTITY vandelay.edit.attributes "Edit Attributes">
-<!ENTITY vandelay.edit.attrs "Edit Attributes">
-<!ENTITY vandelay.edit.profiles "Edit Merge / Overlay Profiles">
-<!ENTITY vandelay.edit.import_item_attrs "Edit Import Item Attributes">
+<!ENTITY vandelay.edit.attributes "Record Display Attributes">
+<!ENTITY vandelay.edit.attrs "Record Display Attributes">
+<!ENTITY vandelay.edit.profiles "Merge / Overlay Profiles">
+<!ENTITY vandelay.edit.match_set "Record Match Sets">
+<!ENTITY vandelay.edit.import_item_attrs "Import Item Attributes">
 <!ENTITY vandelay.false "False">
 <!ENTITY vandelay.file.to.upload "File to Upload:">
 <!ENTITY vandelay.for.example "Example">
@@ -36,22 +41,23 @@
 <!ENTITY vandelay.id "ID">
 <!ENTITY vandelay.import.matches "Import Matches">
 <!ENTITY vandelay.import.records "Import Records">
-<!ENTITY vandelay.import.selected "Import Selected">
-<!ENTITY vandelay.import.all "Import All">
+<!ENTITY vandelay.import.selected "Import Selected Records">
+<!ENTITY vandelay.import.all "Import All  Records">
 <!ENTITY vandelay.import.time "Import Time">
 <!ENTITY vandelay.inspect.queue "Inspect Queue">
 <!ENTITY vandelay.last.edit.date "Last Edit Date">
-<!ENTITY vandelay.limit.to.collision.matches "Limit to Collision Matches">
+<!ENTITY vandelay.limit.to.collision.matches "Limit to Records with Matches">
 <!ENTITY vandelay.limit.to.non.imported "Limit to Non-Imported Records">
+<!ENTITY vandelay.limit.to.import_error "Limit to Records with Import Errors">
 <!ENTITY vandelay.marc.file.upload "Evergreen MARC File Upload">
 <!ENTITY vandelay.marc.record "MARC Record">
 <!ENTITY vandelay.matches "Matches">
-<!ENTITY vandelay.next.page "Next Page &#187;">
-<!ENTITY vandelay.overlay.selected.record "Overlay selected record with imported record">
-<!ENTITY vandelay.overlay.target "Overlay Target">
+<!ENTITY vandelay.next.page "Next &#187;">
+<!ENTITY vandelay.overlay.selected.record "Merge selected record with imported record">
+<!ENTITY vandelay.overlay.target "Merge Target">
 <!ENTITY vandelay.page "Page">
 <!ENTITY vandelay.powered.by.evergreen "Powered by Evergreen!">
-<!ENTITY vandelay.prev.page "&#171; Previous Page">
+<!ENTITY vandelay.prev.page "&#171; Previous">
 <!ENTITY vandelay.processing "Processing... ">
 <!ENTITY vandelay.queue "Queue">
 <!ENTITY vandelay.queue.type "Queue Type">
@@ -60,7 +66,7 @@
 <!ENTITY vandelay.refresh "Refresh">
 <!ENTITY vandelay.remove.advanced "Remove (advanced)">
 <!ENTITY vandelay.remove "Remove">
-<!ENTITY vandelay.results.per.page "Results Per Page">
+<!ENTITY vandelay.results.per.page "Records Per Page">
 <!ENTITY vandelay.retrieve.queue "Retrieve Queue">
 <!ENTITY vandelay.return "Return">
 <!ENTITY vandelay.select.cols "Select Columns">
@@ -106,7 +112,7 @@
 <!ENTITY vandelay.export.field_no_hint "(starting from 0)">
 <!ENTITY vandelay.export.bucket "Record Bucket ID">
 <!ENTITY vandelay.select_actions "-- Actions --">
-<!ENTITY vandelay.queue.total "Total:">
-<!ENTITY vandelay.queue.imported "Imported:">
+<!ENTITY vandelay.queue.total "Records in Queue:">
+<!ENTITY vandelay.queue.imported "Records Imported:">
 <!ENTITY vandelay.queue.column_picker.title "Column Picker">
 <!ENTITY vandelay.import.bib_sources "Select a Record Source">

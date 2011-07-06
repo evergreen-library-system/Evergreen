@@ -8,18 +8,15 @@
                     name: '&vandelay.overlay.target;', 
                     get: vlGetOverlayTargetSelector,
                     formatter : vlFormatOverlayTargetSelector,
-                    /*
-                    value: '&lt;input type="checkbox" name="vl-overlay-target-RECID" '+
-                        'onclick="vlHandleOverlayTargetSelected(ID, GRIDID);" gridid="GRIDID" match="ID"/>'
-                        */
                 },
-                {name:'&vandelay.source.match.point;', field:'src_matchpoint'},
-                {name:'&vandelay.dest.match.point;', field:'dest_matchpoint'},
                 {name: '&vandelay.id;', field:'id'},
                 {   name: '&vandelay.view.marc;', 
                     get: vlGetViewMARC, 
                     formatter : vlFormatViewMatchMARC
                 },
+                {name: 'Match Score', field:'match_score'},
+                {name: 'Queued Record Quality', field:'rec_quality'},
+                {name: 'Matched Record Quality', field:'match_quality'},
                 {name: '&vandelay.creator;', get: vlGetCreator},
                 {name: '&vandelay.create.date;', field:'create_date', get: vlGetDateTimeField},
                 {name: '&vandelay.last.edit.date;', field:'edit_date', get: vlGetDateTimeField},

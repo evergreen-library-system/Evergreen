@@ -951,6 +951,10 @@ main.menu.prototype = {
                 ['oncommand'],
                 function(event) { open_eg_web_page('conify/global/config/org_unit_setting_type', null, event); }
             ],
+            'cmd_server_admin_import_match_set' : [
+                ['oncommand'],
+                function(event) { open_eg_web_page('conify/global/vandelay/match_set', null, event); }
+            ],
             'cmd_server_admin_usr_setting_type' : [
                 ['oncommand'],
                 function(event) { open_eg_web_page('conify/global/config/usr_setting_type', null, event); }

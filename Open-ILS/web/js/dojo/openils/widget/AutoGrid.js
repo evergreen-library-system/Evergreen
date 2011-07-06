@@ -640,6 +640,13 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
         */
 
         return autoWidget.getDisplayString();
-    }
+    };
+
+    openils.widget.AutoGrid.orgUnitGetter = function(rowIndex, item) {
+        if (!item) return "";
+        return fieldmapper.aou.findOrgUnit(
+            this.grid.store.getValue(item, this.field)
+        ).shortname();
+    };
 }
 

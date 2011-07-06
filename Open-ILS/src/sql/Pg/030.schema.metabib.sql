@@ -409,6 +409,27 @@ CREATE OR REPLACE FUNCTION biblio.extract_metabib_field_entry ( BIGINT ) RETURNS
 	SELECT * FROM biblio.extract_metabib_field_entry($1, ' ');
 $func$ LANGUAGE SQL;
 
+CREATE OR REPLACE FUNCTION authority.flatten_marc ( rid BIGINT ) RETURNS SETOF authority.full_rec AS $func$
+DECLARE
+	auth	authority.record_entry%ROWTYPE;
+	output	authority.full_rec%ROWTYPE;
+	field	RECORD;
+BEGIN
+	SELECT INTO auth * FROM authority.record_entry WHERE id = rid;
+
+	FOR field IN SELECT * FROM vandelay.flatten_marc( auth.marc ) LOOP
+		output.record := rid;
+		output.ind1 := field.ind1;
+		output.ind2 := field.ind2;
+		output.tag := field.tag;
+		output.subfield := field.subfield;
+		output.value := field.value;
+
+		RETURN NEXT output;
+	END LOOP;
+END;
+$func$ LANGUAGE PLPGSQL;
+
 CREATE OR REPLACE FUNCTION biblio.flatten_marc ( rid BIGINT ) RETURNS SETOF metabib.full_rec AS $func$
 DECLARE
 	bib	biblio.record_entry%ROWTYPE;
@@ -417,19 +438,13 @@ DECLARE
 BEGIN
 	SELECT INTO bib * FROM biblio.record_entry WHERE id = rid;
 
-	FOR field IN SELECT * FROM biblio.flatten_marc( bib.marc ) LOOP
+	FOR field IN SELECT * FROM vandelay.flatten_marc( bib.marc ) LOOP
 		output.record := rid;
 		output.ind1 := field.ind1;
 		output.ind2 := field.ind2;
 		output.tag := field.tag;
 		output.subfield := field.subfield;
-		IF field.subfield IS NOT NULL AND field.tag NOT IN ('020','022','024') THEN -- exclude standard numbers and control fields
-			output.value := naco_normalize(field.value, field.subfield);
-		ELSE
-			output.value := field.value;
-		END IF;
-
-		CONTINUE WHEN output.value IS NULL;
+		output.value := field.value;
 
 		RETURN NEXT output;
 	END LOOP;
@@ -580,7 +595,7 @@ CREATE OR REPLACE FUNCTION biblio.marc21_extract_fixed_field( rid BIGINT, ff TEX
     SELECT * FROM vandelay.marc21_extract_fixed_field( (SELECT marc FROM biblio.record_entry WHERE id = $1), $2 );
 $func$ LANGUAGE SQL;
 
-CREATE TYPE biblio.record_ff_map AS (record BIGINT, ff_name TEXT, ff_value TEXT);
+-- CREATE TYPE biblio.record_ff_map AS (record BIGINT, ff_name TEXT, ff_value TEXT);
 CREATE OR REPLACE FUNCTION vandelay.marc21_extract_all_fixed_fields( marc TEXT ) RETURNS SETOF biblio.record_ff_map AS $func$
 DECLARE
     tag_data    TEXT;
@@ -619,43 +634,6 @@ $func$ LANGUAGE PLPGSQL;
 CREATE OR REPLACE FUNCTION biblio.marc21_extract_all_fixed_fields( rid BIGINT ) RETURNS SETOF biblio.record_ff_map AS $func$
     SELECT $1 AS record, ff_name, ff_value FROM vandelay.marc21_extract_all_fixed_fields( (SELECT marc FROM biblio.record_entry WHERE id = $1) );
 $func$ LANGUAGE SQL;
-
-CREATE TYPE biblio.marc21_physical_characteristics AS ( id INT, record BIGINT, ptype TEXT, subfield INT, value INT );
-CREATE OR REPLACE FUNCTION vandelay.marc21_physical_characteristics( marc TEXT) RETURNS SETOF biblio.marc21_physical_characteristics AS $func$
-DECLARE
-    rowid   INT := 0;
-    _007    TEXT;
-    ptype   config.marc21_physical_characteristic_type_map%ROWTYPE;
-    psf     config.marc21_physical_characteristic_subfield_map%ROWTYPE;
-    pval    config.marc21_physical_characteristic_value_map%ROWTYPE;
-    retval  biblio.marc21_physical_characteristics%ROWTYPE;
-BEGIN
-
-    _007 := oils_xpath_string( '//*[@tag="007"]', marc );
-
-    IF _007 IS NOT NULL AND _007 <> '' THEN
-        SELECT * INTO ptype FROM config.marc21_physical_characteristic_type_map WHERE ptype_key = SUBSTRING( _007, 1, 1 );
-
-        IF ptype.ptype_key IS NOT NULL THEN
-            FOR psf IN SELECT * FROM config.marc21_physical_characteristic_subfield_map WHERE ptype_key = ptype.ptype_key LOOP
-                SELECT * INTO pval FROM config.marc21_physical_characteristic_value_map WHERE ptype_subfield = psf.id AND value = SUBSTRING( _007, psf.start_pos + 1, psf.length );
-
-                IF pval.id IS NOT NULL THEN
-                    rowid := rowid + 1;
-                    retval.id := rowid;
-                    retval.ptype := ptype.ptype_key;
-                    retval.subfield := psf.id;
-                    retval.value := pval.id;
-                    RETURN NEXT retval;
-                END IF;
-
-            END LOOP;
-        END IF;
-    END IF;
-
-    RETURN;
-END;
-$func$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION biblio.marc21_physical_characteristics( rid BIGINT ) RETURNS SETOF biblio.marc21_physical_characteristics AS $func$
     SELECT id, $1 AS record, ptype, subfield, value FROM vandelay.marc21_physical_characteristics( (SELECT marc FROM biblio.record_entry WHERE id = $1) );
@@ -1159,7 +1137,7 @@ BEGIN
             IF TG_OP = 'INSERT' OR OLD.deleted THEN -- initial insert OR revivication
                 INSERT INTO metabib.record_attr (id, attrs) VALUES (NEW.id, new_attrs);
             ELSE
-                UPDATE metabib.record_attr SET attrs = attrs || new_attrs WHERE id = NEW.id;
+                UPDATE metabib.record_attr SET attrs = new_attrs WHERE id = NEW.id;
             END IF;
 
         END IF;

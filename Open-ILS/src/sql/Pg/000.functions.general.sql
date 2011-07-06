@@ -15,6 +15,8 @@ $$ LANGUAGE plpgsql;
 
 SELECT evergreen.change_db_setting('search_path', ARRAY['evergreen','public','pg_catalog']);
 
+CREATE OR REPLACE FUNCTION evergreen.array_remove_item_by_value(inp ANYARRAY, el ANYELEMENT) RETURNS anyarray AS $$ SELECT ARRAY_ACCUM(x.e) FROM UNNEST( $1 ) x(e) WHERE x.e <> $2; $$ LANGUAGE SQL;
+
 CREATE OR REPLACE FUNCTION evergreen.lowercase( TEXT ) RETURNS TEXT AS $$
     return lc(shift);
 $$ LANGUAGE PLPERLU STRICT IMMUTABLE;
