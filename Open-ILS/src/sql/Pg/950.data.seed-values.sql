@@ -8816,13 +8816,7 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) 
     ),
     'bool'
 );
-INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'general.unknown', oils_i18n_gettext('general.unknown', 'Import or Overlay failed', 'vie', 'description') );
-INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'import.item.duplicate.barcode', oils_i18n_gettext('import.item.duplicate.barcode', 'Import failed due to barcode collision', 'vie', 'description') );
-INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'import.duplicate.sysid', oils_i18n_gettext('import.duplicate.sysid', 'Import failed due to system id collision', 'vie', 'description') );
-INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'overlay.missing.sysid', oils_i18n_gettext('overlay.missing.sysid', 'Overlay failed due to missing system id', 'vie', 'description') );
-INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'import.auth.duplicate.acn', oils_i18n_gettext('import.auth.duplicate.acn', 'Import failed due to Accession Number collision', 'vie', 'description') );
-INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'import.xml.malformed', oils_i18n_gettext('import.xml.malformed', 'Malformed record cause Import failure', 'vie', 'description') );
-INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'overlay.xml.malformed', oils_i18n_gettext('overlay.xml.malformed', 'Malformed record cause Overlay failure', 'vie', 'description') );
+
 ----------------------------------------------------------------
 -- Seed data for queued record/item exports
 ----------------------------------------------------------------
@@ -8940,7 +8934,7 @@ INSERT INTO action_trigger.event_definition (
         granularity,
         template
     ) VALUES (
-        38,
+        39,
         TRUE,
         1,
         'Print Output for Queued Bib Records',
@@ -8982,8 +8976,8 @@ $$
 ;
 
 INSERT INTO action_trigger.environment ( event_def, path) VALUES (
-    38, 'attributes')
-    ,( 38, 'queue')
+    39, 'attributes')
+    ,( 39, 'queue')
 ;
 
 INSERT INTO action_trigger.event_definition (
@@ -8998,7 +8992,7 @@ INSERT INTO action_trigger.event_definition (
         granularity,
         template
     ) VALUES (
-        39,
+        40,
         TRUE,
         1,
         'CSV Output for Queued Bib Records',
@@ -9017,8 +9011,8 @@ $$
 ;
 
 INSERT INTO action_trigger.environment ( event_def, path) VALUES (
-    39, 'attributes')
-    ,( 39, 'queue')
+    40, 'attributes')
+    ,( 40, 'queue')
 ;
 
 INSERT INTO action_trigger.event_definition (
@@ -9033,7 +9027,7 @@ INSERT INTO action_trigger.event_definition (
         granularity,
         template
     ) VALUES (
-        40,
+        41,
         TRUE,
         1,
         'Email Output for Queued Bib Records',
@@ -9079,9 +9073,9 @@ $$
 ;
 
 INSERT INTO action_trigger.environment ( event_def, path) VALUES (
-    40, 'attributes')
-    ,( 40, 'queue')
-    ,( 40, 'queue.owner')
+    41, 'attributes')
+    ,( 41, 'queue')
+    ,( 41, 'queue.owner')
 ;
 
 INSERT INTO action_trigger.event_definition (
@@ -9096,7 +9090,7 @@ INSERT INTO action_trigger.event_definition (
         granularity,
         template
     ) VALUES (
-        41,
+        42,
         TRUE,
         1,
         'Print Output for Queued Authority Records',
@@ -9124,8 +9118,8 @@ $$
 ;
 
 INSERT INTO action_trigger.environment ( event_def, path) VALUES (
-    41, 'attributes')
-    ,( 41, 'queue')
+    42, 'attributes')
+    ,( 42, 'queue')
 ;
 
 INSERT INTO action_trigger.event_definition (
@@ -9140,7 +9134,7 @@ INSERT INTO action_trigger.event_definition (
         granularity,
         template
     ) VALUES (
-        42,
+        43,
         TRUE,
         1,
         'CSV Output for Queued Authority Records',
@@ -9159,8 +9153,8 @@ $$
 ;
 
 INSERT INTO action_trigger.environment ( event_def, path) VALUES (
-    42, 'attributes')
-    ,( 42, 'queue')
+    43, 'attributes')
+    ,( 43, 'queue')
 ;
 
 INSERT INTO action_trigger.event_definition (
@@ -9175,7 +9169,7 @@ INSERT INTO action_trigger.event_definition (
         granularity,
         template
     ) VALUES (
-        43,
+        44,
         TRUE,
         1,
         'Email Output for Queued Authority Records',
@@ -9207,9 +9201,9 @@ $$
 ;
 
 INSERT INTO action_trigger.environment ( event_def, path) VALUES (
-    43, 'attributes')
-    ,( 43, 'queue')
-    ,( 43, 'queue.owner')
+    44, 'attributes')
+    ,( 44, 'queue')
+    ,( 44, 'queue.owner')
 ;
 
 INSERT INTO action_trigger.event_definition (
@@ -9224,7 +9218,7 @@ INSERT INTO action_trigger.event_definition (
         granularity,
         template
     ) VALUES (
-        44,
+        45,
         TRUE,
         1,
         'Print Output for Import Items from Queued Bib Records',
@@ -9276,43 +9270,6 @@ $$
 ;
 
 INSERT INTO action_trigger.environment ( event_def, path) VALUES (
-    44, 'record')
-    ,( 44, 'record.attributes')
-    ,( 44, 'record.queue')
-    ,( 44, 'record.queue.owner')
-;
-
-INSERT INTO action_trigger.event_definition (
-        id,
-        active,
-        owner,
-        name,
-        hook,
-        validator,
-        reactor,
-        group_field,
-        granularity,
-        template
-    ) VALUES (
-        45,
-        TRUE,
-        1,
-        'CSV Output for Import Items from Queued Bib Records',
-        'vandelay.import_items.csv',
-        'NOOP_True',
-        'ProcessTemplate',
-        'record.queue.owner',
-        'print-on-demand',
-$$
-[%- USE date -%]
-"Import Item ID","Title of work","ISBN","Attribute Definition","Import Error","Import Error Detail","Owning Library","Circulating Library","Call Number","Copy Number","Status","Shelving Location","Circulate","Deposit","Deposit Amount","Reference","Holdable","Price","Barcode","Circulation Modifier","Circulate As MARC Type","Alert Message","Public Note","Private Note","OPAC Visible"
-[% FOR vii IN target %]"[% vii.id | replace('"', '""') %]","[% helpers.get_queued_bib_attr('title',vii.record.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('isbn',vii.record.attributes) | replace('"', '""') %]","[% vii.definition | replace('"', '""') %]","[% vii.import_error | replace('"', '""') %]","[% vii.error_detail | replace('"', '""') %]","[% vii.owning_lib | replace('"', '""') %]","[% vii.circ_lib | replace('"', '""') %]","[% vii.call_number | replace('"', '""') %]","[% vii.copy_number | replace('"', '""') %]","[% vii.status.name | replace('"', '""') %]","[% vii.location.name | replace('"', '""') %]","[% vii.circulate | replace('"', '""') %]","[% vii.deposit | replace('"', '""') %]","[% vii.deposit_amount | replace('"', '""') %]","[% vii.ref | replace('"', '""') %]","[% vii.holdable | replace('"', '""') %]","[% vii.price | replace('"', '""') %]","[% vii.barcode | replace('"', '""') %]","[% vii.circ_modifier | replace('"', '""') %]","[% vii.circ_as_type | replace('"', '""') %]","[% vii.alert_message | replace('"', '""') %]","[% vii.pub_note | replace('"', '""') %]","[% vii.priv_note | replace('"', '""') %]","[% vii.opac_visible | replace('"', '""') %]"
-[% END %]
-$$
-    )
-;
-
-INSERT INTO action_trigger.environment ( event_def, path) VALUES (
     45, 'record')
     ,( 45, 'record.attributes')
     ,( 45, 'record.queue')
@@ -9332,6 +9289,43 @@ INSERT INTO action_trigger.event_definition (
         template
     ) VALUES (
         46,
+        TRUE,
+        1,
+        'CSV Output for Import Items from Queued Bib Records',
+        'vandelay.import_items.csv',
+        'NOOP_True',
+        'ProcessTemplate',
+        'record.queue.owner',
+        'print-on-demand',
+$$
+[%- USE date -%]
+"Import Item ID","Title of work","ISBN","Attribute Definition","Import Error","Import Error Detail","Owning Library","Circulating Library","Call Number","Copy Number","Status","Shelving Location","Circulate","Deposit","Deposit Amount","Reference","Holdable","Price","Barcode","Circulation Modifier","Circulate As MARC Type","Alert Message","Public Note","Private Note","OPAC Visible"
+[% FOR vii IN target %]"[% vii.id | replace('"', '""') %]","[% helpers.get_queued_bib_attr('title',vii.record.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('isbn',vii.record.attributes) | replace('"', '""') %]","[% vii.definition | replace('"', '""') %]","[% vii.import_error | replace('"', '""') %]","[% vii.error_detail | replace('"', '""') %]","[% vii.owning_lib | replace('"', '""') %]","[% vii.circ_lib | replace('"', '""') %]","[% vii.call_number | replace('"', '""') %]","[% vii.copy_number | replace('"', '""') %]","[% vii.status.name | replace('"', '""') %]","[% vii.location.name | replace('"', '""') %]","[% vii.circulate | replace('"', '""') %]","[% vii.deposit | replace('"', '""') %]","[% vii.deposit_amount | replace('"', '""') %]","[% vii.ref | replace('"', '""') %]","[% vii.holdable | replace('"', '""') %]","[% vii.price | replace('"', '""') %]","[% vii.barcode | replace('"', '""') %]","[% vii.circ_modifier | replace('"', '""') %]","[% vii.circ_as_type | replace('"', '""') %]","[% vii.alert_message | replace('"', '""') %]","[% vii.pub_note | replace('"', '""') %]","[% vii.priv_note | replace('"', '""') %]","[% vii.opac_visible | replace('"', '""') %]"
+[% END %]
+$$
+    )
+;
+
+INSERT INTO action_trigger.environment ( event_def, path) VALUES (
+    46, 'record')
+    ,( 46, 'record.attributes')
+    ,( 46, 'record.queue')
+    ,( 46, 'record.queue.owner')
+;
+
+INSERT INTO action_trigger.event_definition (
+        id,
+        active,
+        owner,
+        name,
+        hook,
+        validator,
+        reactor,
+        group_field,
+        granularity,
+        template
+    ) VALUES (
+        47,
         TRUE,
         1,
         'Email Output for Import Items from Queued Bib Records',
@@ -9386,10 +9380,10 @@ $$
 ;
 
 INSERT INTO action_trigger.environment ( event_def, path) VALUES (
-    46, 'record')
-    ,( 46, 'record.attributes')
-    ,( 46, 'record.queue')
-    ,( 46, 'record.queue.owner')
+    47, 'record')
+    ,( 47, 'record.attributes')
+    ,( 47, 'record.queue')
+    ,( 47, 'record.queue.owner')
 ;
 
 
