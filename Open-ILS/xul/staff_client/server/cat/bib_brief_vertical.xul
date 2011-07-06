@@ -22,7 +22,7 @@ vim: noet:sw=4:ts=4:
 <?xul-overlay href="/xul/server/cat/bib_brief_overlay_vertical.xul"?>
 
 <window id="cat_bib_brief_win" 
-    onload="try { my_init('vertical'); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+    onload="try { bib_brief_init('vertical'); font_helper(); persist_helper(); } catch(E) { alert(E); }"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
     <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->

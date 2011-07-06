@@ -1,11 +1,11 @@
 var docid;
 
-function my_init(orientation) {
+function bib_brief_init(mode) {
     try {
 
         ui_init(); // JSAN, etc.
 
-        if (! orientation) { orientation = 'horizontal'; }
+        if (! mode) { mode = 'horizontal'; }
 
         JSAN.use('OpenILS.data');
         g.data = new OpenILS.data();
@@ -54,7 +54,7 @@ function my_init(orientation) {
                                 try {
                                     g.meta = req2.getResultObject()[0];
                                     set_caption();
-                                    dynamic_grid_replacement(orientation);
+                                    dynamic_grid_replacement(mode);
                                     bib_brief_overlay({
                                         'mvr' : g.mods,
                                         'bre' : g.meta
@@ -205,7 +205,7 @@ function ui_init() {
     g.error.sdump('D_TRACE','my_init() for cat_bib_brief.xul');
 }
 
-function dynamic_grid_replacement(orientation) {
+function dynamic_grid_replacement(mode) {
     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
     var prefs = Components.classes[
         '@mozilla.org/preferences-service;1'
@@ -213,20 +213,20 @@ function dynamic_grid_replacement(orientation) {
         Components.interfaces['nsIPrefBranch']
     );
     if (! prefs.prefHasUserValue(
-            'oils.bib_brief.'+orientation+'.dynamic_grid_replacement.data'
+            'oils.bib_brief.'+mode+'.dynamic_grid_replacement.data'
         )
     ) {
-        return;
+        return false;
     }
 
     var gridData = JSON2js(
         prefs.getCharPref(
-            'oils.bib_brief.'+orientation+'.dynamic_grid_replacement.data'
+            'oils.bib_brief.'+mode+'.dynamic_grid_replacement.data'
         )
     );
 
     var grid = document.getElementById('bib_brief_grid');
-    if (!grid) { return; }
+    if (!grid) { return false; }
 
     JSAN.use('util.widgets');
 
@@ -301,5 +301,6 @@ function dynamic_grid_replacement(orientation) {
             row.appendChild(textbox);
         }
     }
+    return true;
 }
 
