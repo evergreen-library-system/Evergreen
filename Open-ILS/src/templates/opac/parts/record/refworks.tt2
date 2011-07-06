@@ -1,6 +1,6 @@
 [%
-    # Default to aou.id = 1 in the absence of a specific library
-    loc = 1;
+    # Default to the root of the org unit tree in the absence of a specific library
+    loc = ctx.aou_tree.id;
     IF CGI.param('loc');
         loc = CGI.param('loc');
     END;
