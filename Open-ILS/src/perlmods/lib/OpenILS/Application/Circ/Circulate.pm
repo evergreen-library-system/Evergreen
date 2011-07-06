@@ -1174,11 +1174,11 @@ sub run_indb_circ_test {
         $logger->info("circulator: circ policy test found matchpoint built via rows " . $results->[0]->{buildrows});
         $self->circ_matrix_matchpoint($self->editor->retrieve_config_circ_matrix_matchpoint($mp));
         $self->circ_matrix_matchpoint->duration_rule($self->editor->retrieve_config_rules_circ_duration($results->[0]->{duration_rule}));
-        if($results->[0]->{renewals}) {
+        if(defined($results->[0]->{renewals})) {
             $self->circ_matrix_matchpoint->duration_rule->max_renewals($results->[0]->{renewals});
         }
         $self->circ_matrix_matchpoint->recurring_fine_rule($self->editor->retrieve_config_rules_recurring_fine($results->[0]->{recurring_fine_rule}));
-        if($results->[0]->{grace_period}) {
+        if(defined($results->[0]->{grace_period})) {
             $self->circ_matrix_matchpoint->recurring_fine_rule->grace_period($results->[0]->{grace_period});
         }
         $self->circ_matrix_matchpoint->max_fine_rule($self->editor->retrieve_config_rules_max_fine($results->[0]->{max_fine_rule}));
