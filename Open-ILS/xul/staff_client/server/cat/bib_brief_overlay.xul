@@ -8,7 +8,7 @@
         <script type="text/javascript" src="/xul/server/cat/bib_brief_overlay.js"/>
 
         <grid id="bib_brief_grid" flex="0">
-            <columns>
+            <columns id="bib_brief_grid_columns">
                 <column />
                 <column flex="1" />
                 <column />
@@ -29,7 +29,7 @@
                     <label value="&staff.cat.bib_brief.created_by.label;" accesskey="&staff.cat.bib_brief.created_by.accesskey;" control="creator" class="emphasis"/>
                     <textbox id="creator" name="creator" readonly="true" context="clipboard" class="plain" onfocus="this.select()"/>
                 </row>
-                <row position="2">
+                <row id="bib_brief_grid_row2" position="2">
                     <label value="&staff.cat.bib_brief.author.label;" accesskey="&staff.cat.bib_brief.author.accesskey;" control="author" class="emphasis"/>
                     <textbox id="author" name="author" readonly="true" context="clipboard" class="plain" onfocus="this.select()"/>
                     <label value="&staff.cat.bib_brief.pub_date.label;" accesskey="&staff.cat.bib_brief.pub_date.accesskey;" control="pubdate" class="emphasis"/>
