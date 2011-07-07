@@ -88,7 +88,7 @@
                     <span dojoType="dijit.ToolbarSeparator" />
                     
                     <form id='searchform' onSubmit='return doSearch()'>
-                            <input type='text' dojoType='dijit.form.TextBox' id='searchBox' />
+                            <input type='text' dojoType='dijit.form.TextBox' id='searchBox' onkeypress='osSearchChange();' />
                             <button type='submit' dojoType='dijit.form.Button'>&staff.server.admin.org_unit_settings.filter;</button>
                             <button dojoType='dijit.form.Button' onClick='clearSearch();'>&staff.server.admin.org_unit_settings.clear_filter;</button>
                     </form>
@@ -141,8 +141,7 @@
                         <td>&staff.server.admin.org_unit_settings.context;</td>
                         <td> 
                             <select dojoType="openils.widget.OrgUnitFilteringSelect" jsId='osEditContextSelector'
-                                searchAttr="shortname" autocomplete="true" labelAttr='shortname'> 
-                            </select>
+                                searchAttr="shortname" autocomplete="true" labelAttr='shortname' />
                         </td>
                     </tr>
                     <tr>
@@ -178,6 +177,8 @@
         <span id='os-true' class='hidden'>&common.true;</span>
         <span id='os-false' class='hidden'>&common.false;</span>
         <span id='os-copy' class='hidden'>&staff.server.admin.org_unit_settings.copy;</span>
+        <span id='os-revert' class='hidden'>&staff.server.admin.org_unit_settings.history_revert;</span>
+        <span id='os-not-chosen' class='hidden'>&staff.server.admin.org_unit_settings.not_chosen;</span>
         
         <!--Export Dialog-->
         <div id='jsonOutputDialog' dojoType='dijit.Dialog' jsId='osJSONOutDialog' title='&staff.server.admin.org_unit_settings.export;'>

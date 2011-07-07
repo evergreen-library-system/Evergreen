@@ -131,6 +131,17 @@ function osDraw(specific_setting) {
     osDrawNames(names);
 }
 
+/**
+ * Auto searches 500ms after entering text.
+ */
+var osCurrentSearchTimeout;
+function osSearchChange() {
+    if(osCurrentSearchTimeout != null)
+        clearTimeout(osCurrentSearchTimeout);
+        
+    osCurrentSearchTimeout = setTimeout("doSearch()", 500);
+}
+
 //Limits those functions seen to the ones that have similar text to 
 //that which is provided. Not case sensitive.
 function osLimitSeen(text) {
@@ -167,6 +178,8 @@ function osLimitSeen(text) {
 }
 
 function doSearch() {
+    osCurrentSearchTimeout = null;
+    
     var query = dojo.byId('searchBox').value;
     
     osLimitSeen(query);
@@ -434,9 +447,7 @@ function osEditSetting(deleteMe) {
     var obj = {};
     if(deleteMe) {
         obj[name] = null;
-
     } else {
-
         if(osSettings[name].fm_class) {
             var val = osEditAutoWidget.attr('value');
             osEditAutoWidget.domNode.parentNode.removeChild(osEditAutoWidget.domNode);
@@ -478,9 +489,24 @@ function osUpdateSetting(obj, context, name) {
                 if(e = openils.Event.parse(res))
                     return alert(e);
                 osDraw(obj);
+                if(context != osContextSelector.getValue())
+                    showAlert(dojo.byId('os-not-chosen').innerHTML);
             }
         }
     );
+}
+
+function osRevertSetting(context, name, value) {
+    osHistDialog.hide();
+
+    var obj = {};
+    
+    if(value == 'null' || value == null)
+        obj[name] = null;
+    else
+        obj[name] = value;
+    
+    osUpdateSetting(obj, context, name);
 }
 
 function osGetHistoryLink(rowIdx) {
@@ -500,23 +526,33 @@ function osLaunchHistory(name) {
     
     var data = dojo.byId('histTitle').innerHTML;
     var thisHist = pcrud.search('coustl', {'field_name':name});
-    for(var i in thisHist) {
-         data += "<tr><td>" + thisHist[i].date_applied() + "</td><td>" + 
-         ouNames[thisHist[i].org()] + "</td><td>" + thisHist[i].original_value() +
-         "</td><td>" + thisHist[i].new_value() + "</td></tr>";
+    for(var i in thisHist.reverse()) {
+        d = thisHist[i].date_applied();
+        a = ouNames[thisHist[i].org()];
+        o = thisHist[i].original_value();
+        n = thisHist[i].new_value();
+        r = thisHist[i].org();
+        // Table is: Date | Org Name | Orig Value | New Value | Revert
+        data += "<tr><td>" + d + "</td><td>" + a + "</td><td>" + o +
+        "</td><td>" + n + "</td><td>" +
+        "<a href='javascript:void(0);' onclick='osRevertSetting(" + r + ", &quot;" + name +"&quot;,"+o+");'>"+dojo.byId('os-revert').innerHTML+"</a></td></tr>";
     }
         
     dojo.byId('historyData').innerHTML = data;
     
     showProcessingDialog(false);
     osHistDialog.show();
-
 }
 
 function showAlert(message, timeout) {
-     if(timeout == null)
+    if(timeout == null) {
         timeout = 3000;
-        
+        if(message.length > 50)
+            timeout = 5000;
+        if(message.length > 80)
+            timeout = 8000;
+    }
+    
     dojo.removeClass('msgCont', 'hidden');
     
     dojo.byId('msgInner').innerHTML = message;

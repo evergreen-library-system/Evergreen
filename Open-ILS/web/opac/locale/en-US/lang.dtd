@@ -1822,6 +1822,8 @@
 <!ENTITY staff.server.admin.org_unit_settings.history_date "Date Changed">
 <!ENTITY staff.server.admin.org_unit_settings.history_orig "Original Value">
 <!ENTITY staff.server.admin.org_unit_settings.history_new "New Value">
+<!ENTITY staff.server.admin.org_unit_settings.history_revert "Revert">
+<!ENTITY staff.server.admin.org_unit_settings.not_chosen "The setting you edited is not the currently chosen org unit, therefore the changes you made are not visible.">
 <!ENTITY staff.server.admin.offline.xacts.caption "Offline Sessions">
 <!ENTITY staff.server.admin.offline.xacts.refresh.accesskey "R">
 <!ENTITY staff.server.admin.offline.xacts.create.label "Create">
