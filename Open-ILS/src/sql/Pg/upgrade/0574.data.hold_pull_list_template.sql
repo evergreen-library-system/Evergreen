@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('xxxx');
+SELECT evergreen.upgrade_deps_block_check('0574', :eg_version);
 
 UPDATE action_trigger.event_definition SET template =
 $$
