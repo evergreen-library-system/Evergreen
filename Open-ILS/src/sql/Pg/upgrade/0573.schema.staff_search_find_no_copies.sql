@@ -1,3 +1,12 @@
+-- Evergreen DB patch 0573.schema.staff_search_find_no_copies.sql
+--
+--
+BEGIN;
+
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0573', :eg_version);
+
 CREATE OR REPLACE FUNCTION search.query_parser_fts (
 
     param_search_ou INT,
@@ -304,3 +313,6 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
+
+
+COMMIT;
