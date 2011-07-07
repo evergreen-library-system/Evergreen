@@ -28,3 +28,23 @@ table.dijitTooltipTable { border-collapse: separate; }
 .export_tr_border td { border-top: 1px solid #808080; }
 .nav_row_div {padding:1px; text-align:center; }
 .toolbar_selected { border: 2px dashed #808080; text-decoration:underline; font-weight:bold;}
+
+#vl-import-error-record { margin: 10px; }
+#vl-import-error-record tr:nth-child(even) {background: #EEE}
+#vl-import-error-record td:first-child { text-decoration: underline; }
+#vl-import-error-record td { padding: 5px; }
+#vl-error-import-error { font-weight: bold; }
+
+#vl-queue-filter-fieldset { padding-top: 3px; border:2px dashed #d9e8f9; }
+#vl-queue-filter-fieldset { margin: 5px; }
+#vl-queue-filter-fieldset td { padding: 5px; }
+#vl-queue-filter-fieldset th { padding: 5px; }
+#vl-queue-filter-fieldset legend { font-weight: bold; font-size: 1.3em }
+
+#vl-queue-filter-table { margin-left: 15px; padding-left: 15px; border-left: 2px dashed #d9e8f9;}
+#vl-queue-summary-table { margin-left: 15px; padding-left: 15px; border-left: 2px dashed #d9e8f9;}
+.queue-nav-table tr:nth-child(even) {background: #EEE}
+.queue-nav-table-label { font-weight: bold; text-decoration:underline;}
+.queue-pager-span { padding-right: 5px; margin-right: 5px; border-right: 2px solid #e8e1cf; }
+#vl-queue-paging-table td { padding-bottom: 0px; }
+#vl-file-label { margin-right: 10px; }

@@ -13,11 +13,16 @@
     </div>
     <table  jsId="pGrid"
             dojoType="openils.widget.AutoGrid"
-            fieldOrder="['name', 'owner', 'preserve_spec', 'replace_spec', 'add_spec', 'strip_spec']"
+            fieldOrder="['name', 'owner', 'preserve_spec', 'replace_spec', 'add_spec', 'strip_spec', 'lwm_ratio']"
             query="{id: '*'}"
-            defaultCellWidth='"auto"'
+            defaultCellWidth='"14%"'
             fmClass='vmp'
             showPaginator='true'
             editOnEnter='true'>
+        <thead>
+            <tr>
+                <th field='owner' get='vlGetOrg'/>
+            </tr>
+        </thead>
     </table>
 </div>

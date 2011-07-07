@@ -60,6 +60,7 @@ sub create_bib_queue {
     my $name = shift;
     my $owner = shift;
     my $type = shift;
+    my $match_set = shift;
     my $import_def = shift;
 
     my $e = new_editor(authtoken => $auth, xact => 1);
@@ -78,6 +79,7 @@ sub create_bib_queue {
     $queue->owner( $owner );
     $queue->queue_type( $type ) if ($type);
     $queue->item_attr_def( $import_def ) if ($import_def);
+    $queue->match_set($match_set) if $match_set;
 
     my $new_q = $e->create_vandelay_bib_queue( $queue );
     return $e->die_event unless ($new_q);
@@ -100,6 +102,7 @@ sub create_auth_queue {
     my $name = shift;
     my $owner = shift;
     my $type = shift;
+    my $match_set = shift;
 
     my $e = new_editor(authtoken => $auth, xact => 1);
 
@@ -366,8 +369,57 @@ __PACKAGE__->register_method(
     stream      => 1,
     record_type => 'bib'
 );
+__PACKAGE__->register_method(
+    api_name    => "open-ils.vandelay.bib_queue.records.retrieve.export.print",
+    method      => 'retrieve_queued_records',
+    api_level   => 1,
+    argc        => 2,
+    stream      => 1,
+    record_type => 'bib'
+);
+__PACKAGE__->register_method(
+    api_name    => "open-ils.vandelay.bib_queue.records.retrieve.export.csv",
+    method      => 'retrieve_queued_records',
+    api_level   => 1,
+    argc        => 2,
+    stream      => 1,
+    record_type => 'bib'
+);
+__PACKAGE__->register_method(
+    api_name    => "open-ils.vandelay.bib_queue.records.retrieve.export.email",
+    method      => 'retrieve_queued_records',
+    api_level   => 1,
+    argc        => 2,
+    stream      => 1,
+    record_type => 'bib'
+);
+
 __PACKAGE__->register_method(  
     api_name    => "open-ils.vandelay.auth_queue.records.retrieve",
+    method      => 'retrieve_queued_records',
+    api_level   => 1,
+    argc        => 2,
+    stream      => 1,
+    record_type => 'auth'
+);
+__PACKAGE__->register_method(
+    api_name    => "open-ils.vandelay.auth_queue.records.retrieve.export.print",
+    method      => 'retrieve_queued_records',
+    api_level   => 1,
+    argc        => 2,
+    stream      => 1,
+    record_type => 'auth'
+);
+__PACKAGE__->register_method(
+    api_name    => "open-ils.vandelay.auth_queue.records.retrieve.export.csv",
+    method      => 'retrieve_queued_records',
+    api_level   => 1,
+    argc        => 2,
+    stream      => 1,
+    record_type => 'auth'
+);
+__PACKAGE__->register_method(
+    api_name    => "open-ils.vandelay.auth_queue.records.retrieve.export.email",
     method      => 'retrieve_queued_records',
     api_level   => 1,
     argc        => 2,
@@ -396,18 +448,19 @@ __PACKAGE__->register_method(
     signature   => {
         desc => q/Only retrieve queued authority records that have matches against existing records/
     }
-
 );
 
 sub retrieve_queued_records {
     my($self, $conn, $auth, $queue_id, $options) = @_;
-    my $e = new_editor(authtoken => $auth, xact => 1);
-    return $e->die_event unless $e->checkauth;
+
     $options ||= {};
     my $limit = $$options{limit} || 20;
     my $offset = $$options{offset} || 0;
-
     my $type = $self->{record_type};
+
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->die_event unless $e->checkauth;
+
     my $queue;
     if($type eq 'bib') {
         $queue = $e->retrieve_vandelay_bib_queue($queue_id) or return $e->die_event;
@@ -418,38 +471,245 @@ sub retrieve_queued_records {
     return $evt if ($evt);
 
     my $class = ($type eq 'bib') ? 'vqbr' : 'vqar';
-    my $search = ($type eq 'bib') ? 
-        'search_vandelay_queued_bib_record' : 'search_vandelay_queued_authority_record';
+    my $query = {
+        select => {$class => ['id']},
+        from => $class,
+        where => {queue => $queue_id},
+        distinct => 1,
+        order_by => {$class => ['id']}, 
+        limit => $limit,
+        offset => $offset,
+    };
+    if($self->api_name =~ /export/) {
+        delete $query->{limit};
+        delete $query->{offset};
+    }
+
+    $query->{where}->{import_time} = undef if $$options{non_imported};
+
+    if($$options{with_import_error}) {
+
+        $query->{from} = {$class => {vii => {type => 'left'}}};
+        $query->{where}->{'-or'} = [
+            {'+vqbr' => {import_error => {'!=' => undef}}},
+            {'+vii' => {import_error => {'!=' => undef}}}
+        ];
+
+    } else {
+        
+        if($$options{with_rec_import_error}) {
+            $query->{where}->{import_error} = {'!=' => undef};
+
+        } elsif( $$options{with_item_import_error} and $type eq 'bib') {
+
+            $query->{from} = {$class => 'vii'};
+            $query->{where}->{'+vii'} = {import_error => {'!=' => undef}};
+        }
+    }
+
+    if($self->api_name =~ /matches/) {
+        # find only records that have matches
+        my $mclass = $type eq 'bib' ? 'vbm' : 'vam';
+        $query->{from} = {$class => {$mclass => {type => 'right'}}};
+    } 
+
+    my $record_ids = $e->json_query($query);
+
     my $retrieve = ($type eq 'bib') ? 
         'retrieve_vandelay_queued_bib_record' : 'retrieve_vandelay_queued_authority_record';
+    my $search = ($type eq 'bib') ? 
+        'search_vandelay_queued_bib_record' : 'search_vandelay_queued_authority_record';
 
-    my $filter = ($$options{non_imported}) ? {import_time => undef} : {};
+    if ($self->api_name =~ /export/) {
+        my $rec_list = $e->$search({id => [map { $_->{id} } @$record_ids]});
+        if ($self->api_name =~ /print/) {
 
-    my $record_ids;
-    if($self->api_name =~ /matches/) {
-        # fetch only matched records
-        $record_ids = queued_records_with_matches($e, $type, $queue_id, $limit, $offset, $filter);
+            $e->rollback;
+            return $U->fire_object_event(
+                undef,
+                'vandelay.queued_'.$type.'_record.print',
+                $rec_list,
+                $e->requestor->ws_ou
+            );
+
+        } elsif ($self->api_name =~ /csv/) {
+
+            $e->rollback;
+            return $U->fire_object_event(
+                undef,
+                'vandelay.queued_'.$type.'_record.csv',
+                $rec_list,
+                $e->requestor->ws_ou
+            );
+
+        } elsif ($self->api_name =~ /email/) {
+
+            $conn->respond_complete(1);
+
+            for my $rec (@$rec_list) {
+                $U->create_events_for_hook(
+                    'vandelay.queued_'.$type.'_record.email',
+                    $rec,
+                    $e->requestor->home_ou,
+                    undef,
+                    undef,
+                    1
+                );
+            }
+
+        }
     } else {
-        # fetch all queue records
-        $record_ids = $e->$search([
-                {queue => $queue_id, %$filter}, 
-                {order_by => {$class => 'id'}, limit => $limit, offset => $offset}
-            ],
-            {idlist => 1}
-        );
+        for my $rec_id (@$record_ids) {
+            my $flesh = ['attributes', 'matches'];
+            push(@$flesh, 'import_items') if $$options{flesh_import_items};
+            my $params = {flesh => 1, flesh_fields => {$class => $flesh}};
+            my $rec = $e->$retrieve([$rec_id->{id}, $params]);
+            $rec->clear_marc if $$options{clear_marc};
+            $conn->respond($rec);
+        }
     }
 
-
-    for my $rec_id (@$record_ids) {
-        my $params = {   
-            flesh => 1,
-            flesh_fields => {$class => ['attributes', 'matches']},
-        };
-        my $rec = $e->$retrieve([$rec_id, $params]);
-        $rec->clear_marc if $$options{clear_marc};
-        $conn->respond($rec);
-    }
     $e->rollback;
+    return undef;
+}
+
+__PACKAGE__->register_method(  
+    api_name    => 'open-ils.vandelay.import_item.queue.retrieve',
+    method      => 'retrieve_queue_import_items',
+    api_level   => 1,
+    argc        => 2,
+    stream      => 1,
+    authoritative => 1,
+    signature => q/
+        Returns Import Item (vii) objects for the selected queue.
+        Filter options:
+            with_import_error : only return items that failed to import
+    /
+);
+__PACKAGE__->register_method(
+    api_name    => 'open-ils.vandelay.import_item.queue.export.print',
+    method      => 'retrieve_queue_import_items',
+    api_level   => 1,
+    argc        => 2,
+    stream      => 1,
+    authoritative => 1,
+    signature => q/
+        Returns template-generated printable output of Import Item (vii) objects for the selected queue.
+        Filter options:
+            with_import_error : only return items that failed to import
+    /
+);
+__PACKAGE__->register_method(
+    api_name    => 'open-ils.vandelay.import_item.queue.export.csv',
+    method      => 'retrieve_queue_import_items',
+    api_level   => 1,
+    argc        => 2,
+    stream      => 1,
+    authoritative => 1,
+    signature => q/
+        Returns template-generated CSV output of Import Item (vii) objects for the selected queue.
+        Filter options:
+            with_import_error : only return items that failed to import
+    /
+);
+__PACKAGE__->register_method(
+    api_name    => 'open-ils.vandelay.import_item.queue.export.email',
+    method      => 'retrieve_queue_import_items',
+    api_level   => 1,
+    argc        => 2,
+    stream      => 1,
+    authoritative => 1,
+    signature => q/
+        Emails template-generated output of Import Item (vii) objects for the selected queue.
+        Filter options:
+            with_import_error : only return items that failed to import
+    /
+);
+
+sub retrieve_queue_import_items {
+    my($self, $conn, $auth, $q_id, $options) = @_;
+
+    $options ||= {};
+    my $limit = $$options{limit} || 20;
+    my $offset = $$options{offset} || 0;
+
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+
+    my $queue = $e->retrieve_vandelay_bib_queue($q_id) or return $e->event;
+    my $evt = check_queue_perms($e, 'bib', $queue);
+    return $evt if $evt;
+
+    my $query = {
+        select => {vii => ['id']},
+        from => {
+            vii => {
+                vqbr => {
+                    join => {
+                        'vbq' => {
+                            field => 'id',
+                            fkey => 'queue',
+                            filter => {id => $q_id}
+                        }
+                    }
+                }
+            }
+        },
+        order_by => {'vii' => ['record','id']},
+        limit => $limit,
+        offset => $offset
+    };
+    if($self->api_name =~ /export/) {
+        delete $query->{limit};
+        delete $query->{offset};
+    }
+
+    $query->{where} = {'+vii' => {import_error => {'!=' => undef}}}
+        if $$options{with_import_error};
+
+    my $items = $e->json_query($query);
+    my $item_list = $e->search_vandelay_import_item({id => [map { $_->{id} } @$items]});
+    if ($self->api_name =~ /export/) {
+        if ($self->api_name =~ /print/) {
+
+            return $U->fire_object_event(
+                undef,
+                'vandelay.import_items.print',
+                $item_list,
+                $e->requestor->ws_ou
+            );
+
+        } elsif ($self->api_name =~ /csv/) {
+
+            return $U->fire_object_event(
+                undef,
+                'vandelay.import_items.csv',
+                $item_list,
+                $e->requestor->ws_ou
+            );
+
+        } elsif ($self->api_name =~ /email/) {
+
+            $conn->respond_complete(1);
+
+            for my $item (@$item_list) {
+                $U->create_events_for_hook(
+                    'vandelay.import_items.email',
+                    $item,
+                    $e->requestor->home_ou,
+                    undef,
+                    undef,
+                    1
+                );
+            }
+
+        }
+    } else {
+        for my $item (@$item_list) {
+            $conn->respond($item);
+        }
+    }
+
     return undef;
 }
 
@@ -492,7 +752,7 @@ sub import_record_list {
     return $e->die_event unless $e->checkauth;
     $args ||= {};
     my $err = import_record_list_impl($self, $conn, $rec_ids, $e->requestor, $args);
-    $e->rollback;
+    try {$e->rollback} otherwise {}; 
     return $err if $err;
     return {complete => 1};
 }
@@ -505,7 +765,13 @@ __PACKAGE__->register_method(
     argc        => 2,
     stream      => 1,
     max_chunk_size => 0,
-    record_type => 'bib'
+    record_type => 'bib',
+    signature => {
+        desc => q/
+            Attempts to import all non-imported records for the selected queue.
+            Will also attempt import of all non-imported items.
+        /
+    }
 );
 
 __PACKAGE__->register_method(  
@@ -517,31 +783,7 @@ __PACKAGE__->register_method(
     max_chunk_size => 0,
     record_type => 'auth'
 );
-__PACKAGE__->register_method(  
-    api_name    => "open-ils.vandelay.bib_queue.nomatch.import",
-    method      => 'import_queue',
-    api_level   => 1,
-    argc        => 2,
-    stream      => 1,
-    signature   => {
-        desc => q/Only import records that have no collisions/
-    },
-    max_chunk_size => 0,
-    record_type => 'bib'
-);
 
-__PACKAGE__->register_method(  
-    api_name    => "open-ils.vandelay.auth_queue.nomatch.import",
-    method      => 'import_queue',
-    api_level   => 1,
-    argc        => 2,
-    stream      => 1,
-    signature   => {
-        desc => q/Only import records that have no collisions/
-    },
-    max_chunk_size => 0,
-    record_type => 'auth'
-);
 sub import_queue {
     my($self, $conn, $auth, $q_id, $options) = @_;
     my $e = new_editor(authtoken => $auth, xact => 1);
@@ -550,16 +792,31 @@ sub import_queue {
     my $type = $self->{record_type};
     my $class = ($type eq 'bib') ? 'vqbr' : 'vqar';
 
+    # First, collect the not-yet-imported records
     my $query = {queue => $q_id, import_time => undef};
+    my $search = ($type eq 'bib') ? 
+        'search_vandelay_queued_bib_record' : 
+        'search_vandelay_queued_authority_record';
+    my $rec_ids = $e->$search($query, {idlist => 1});
 
-    if($self->api_name =~ /nomatch/) {
-        my $matched_recs = queued_records_with_matches($e, $type, $q_id, undef, undef, {import_time => undef});
-        $query->{id} = {'not in' => $matched_recs} if @$matched_recs;
+    # Now add any imported records that have un-imported items
+
+    if($type eq 'bib') {
+        my $item_recs = $e->json_query({
+            select => {vqbr => ['id']},
+            from => {vqbr => 'vii'},
+            where => {
+                '+vqbr' => {
+                    queue => $q_id,
+                    import_time => {'!=' => undef}
+                },
+                '+vii' => {import_time => undef}
+            },
+            distinct => 1
+        });
+        push(@$rec_ids, map {$_->{id}} @$item_recs);
     }
 
-    my $search = ($type eq 'bib') ? 
-        'search_vandelay_queued_bib_record' : 'search_vandelay_queued_authority_record';
-    my $rec_ids = $e->$search($query, {idlist => 1});
     my $err = import_record_list_impl($self, $conn, $rec_ids, $e->requestor, $options);
     try {$e->rollback} otherwise {}; # only using this to make the read authoritative -- don't die from it
     return $err if $err;
@@ -568,6 +825,7 @@ sub import_queue {
 
 # returns a list of queued record IDs for a given queue that 
 # have at least one entry in the match table
+# XXX DEPRECATED?
 sub queued_records_with_matches {
     my($e, $type, $q_id, $limit, $offset, $filter) = @_;
 
@@ -606,25 +864,33 @@ sub queued_records_with_matches {
     return [ map {$_->{queued_record}} @$data ];
 }
 
+
 sub import_record_list_impl {
     my($self, $conn, $rec_ids, $requestor, $args) = @_;
 
     my $overlay_map = $args->{overlay_map} || {};
     my $type = $self->{record_type};
-    my $total = @$rec_ids;
-    my $count = 0;
     my %queues;
 
-    my $step = 1;
+    my $report_args = {
+        progress => 1,
+        step => 1,
+        conn => $conn,
+        total => scalar(@$rec_ids),
+        report_all => $$args{report_all}
+    };
 
     my $auto_overlay_exact = $$args{auto_overlay_exact};
     my $auto_overlay_1match = $$args{auto_overlay_1match};
+    my $auto_overlay_best = $$args{auto_overlay_best_match};
+    my $match_quality_ratio = $$args{match_quality_ratio};
     my $merge_profile = $$args{merge_profile};
     my $bib_source = $$args{bib_source};
-    my $report_all = $$args{report_all};
+    my $import_no_match = $$args{import_no_match};
 
     my $overlay_func = 'vandelay.overlay_bib_record';
     my $auto_overlay_func = 'vandelay.auto_overlay_bib_record';
+    my $auto_overlay_best_func = 'vandelay.auto_overlay_bib_record_with_best'; # XXX bib-only
     my $retrieve_func = 'retrieve_vandelay_queued_bib_record';
     my $update_func = 'update_vandelay_queued_bib_record';
     my $search_func = 'search_vandelay_queued_bib_record';
@@ -632,13 +898,11 @@ sub import_record_list_impl {
     my $update_queue_func = 'update_vandelay_bib_queue';
     my $rec_class = 'vqbr';
 
-    my %bib_sources;
     my $editor = new_editor();
-    my $sources = $editor->search_config_bib_source({id => {'!=' => undef}});
 
-    foreach my $src (@$sources) {
-        $bib_sources{$src->id} = $src->source;
-    }
+    my %bib_sources;
+    my $sources = $editor->search_config_bib_source({id => {'!=' => undef}});
+    $bib_sources{$_->id} = $_->source for @$sources;
 
     if($type eq 'auth') {
         $overlay_func =~ s/bib/auth/o;
@@ -654,11 +918,15 @@ sub import_record_list_impl {
     my @success_rec_ids;
     for my $rec_id (@$rec_ids) {
 
+        my $error = 0;
         my $overlay_target = $overlay_map->{$rec_id};
 
-        my $error = 0;
         my $e = new_editor(xact => 1);
         $e->requestor($requestor);
+
+        $$report_args{e} = $e;
+        $$report_args{evt} = undef;
+        $$report_args{import_error} = undef;
 
         my $rec = $e->$retrieve_func([
             $rec_id,
@@ -668,16 +936,20 @@ sub import_record_list_impl {
         ]);
 
         unless($rec) {
-            $conn->respond({total => $total, progress => ++$count, imported => $rec_id, err_event => $e->event});
-            $e->rollback;
+            $$report_args{evt} = $e->event;
+            finish_rec_import_attempt($report_args);
             next;
         }
 
         if($rec->import_time) {
+            # if the record is already imported, that means it may have 
+            # un-imported copies.  Add to success list for later processing.
+            push(@success_rec_ids, $rec_id);
             $e->rollback;
             next;
         }
 
+        $$report_args{rec} = $rec;
         $queues{$rec->queue} = 1;
 
         my $record;
@@ -690,7 +962,7 @@ sub import_record_list_impl {
                 {
                     from => [
                         $overlay_func,
-                        $rec->id, 
+                        $rec_id,
                         $overlay_target, 
                         $merge_profile
                     ]
@@ -700,8 +972,8 @@ sub import_record_list_impl {
             if($res and ($res = $res->[0])) {
 
                 if($res->{$overlay_func} eq 't') {
-                    $logger->info("vl: $type direct overlay succeeded for queued rec " . 
-                        $rec->id . " and overlay target $overlay_target");
+                    $logger->info("vl: $type direct overlay succeeded for queued rec ".
+                        "$rec_id and overlay target $overlay_target");
                     $imported = 1;
                 }
 
@@ -712,34 +984,45 @@ sub import_record_list_impl {
 
         } else {
 
-            if($auto_overlay_1match) { 
-                # caller says to overlay if there is exactly 1 match
+            if($auto_overlay_1match) { # overlay if there is exactly 1 match
 
                 my %match_recs = map { $_->eg_record => 1 } @{$rec->matches};
 
                 if( scalar(keys %match_recs) == 1) { # all matches point to the same record
 
+                    # $auto_overlay_best_func will find the 1 match and 
+                    # overlay if the quality ratio allows it
+
                     my $res = $e->json_query(
                         {
                             from => [
-                                $overlay_func,
-                                $rec->id, 
-                                $rec->matches->[0]->eg_record,
-                                $merge_profile
+                                $auto_overlay_best_func,
+                                $rec_id, 
+                                $merge_profile,
+                                $match_quality_ratio
                             ]
                         }
                     );
 
                     if($res and ($res = $res->[0])) {
     
-                        if($res->{$overlay_func} eq 't') {
-                            $logger->info("vl: $type overlay-1match succeeded for queued rec " . $rec->id);
+                        if($res->{$auto_overlay_best_func} eq 't') {
+                            $logger->info("vl: $type overlay-1match succeeded for queued rec $rec_id");
                             $imported = 1;
+
+                            # re-fetch the record to pick up the imported_as value from the DB
+                            $$report_args{rec} = $rec = $e->$retrieve_func([
+                                $rec_id, {flesh => 1, flesh_fields => {$rec_class => ['matches']}}]);
+
+
+                        } else {
+                            $$report_args{import_error} = 'overlay.record.quality' if $match_quality_ratio > 0;
+                            $logger->info("vl: $type overlay-1match failed for queued rec $rec_id");
                         }
 
                     } else {
                         $error = 1;
-                        $logger->error("vl: Error attempting overlay with func=$overlay_func, profile=$merge_profile, record=$rec_id");
+                        $logger->error("vl: Error attempting overlay with func=$auto_overlay_best_func, profile=$merge_profile, record=$rec_id");
                     }
                 }
             }
@@ -747,12 +1030,13 @@ sub import_record_list_impl {
             if(!$imported and !$error and $auto_overlay_exact and scalar(@{$rec->matches}) == 1 ) {
                 
                 # caller says to overlay if there is an /exact/ match
+                # $auto_overlay_func only proceeds and returns true on exact matches
 
                 my $res = $e->json_query(
                     {
                         from => [
                             $auto_overlay_func,
-                            $rec->id, 
+                            $rec_id,
                             $merge_profile
                         ]
                     }
@@ -761,8 +1045,15 @@ sub import_record_list_impl {
                 if($res and ($res = $res->[0])) {
 
                     if($res->{$auto_overlay_func} eq 't') {
-                        $logger->info("vl: $type auto-overlay succeeded for queued rec " . $rec->id);
+                        $logger->info("vl: $type auto-overlay succeeded for queued rec $rec_id");
                         $imported = 1;
+
+                        # re-fetch the record to pick up the imported_as value from the DB
+                        $$report_args{rec} = $rec = $e->$retrieve_func([
+                            $rec_id, {flesh => 1, flesh_fields => {$rec_class => ['matches']}}]);
+
+                    } else {
+                        $logger->info("vl: $type auto-overlay failed for queued rec $rec_id");
                     }
 
                 } else {
@@ -771,45 +1062,90 @@ sub import_record_list_impl {
                 }
             }
 
-            if(!$imported and !$error) {
+            if(!$imported and !$error and $auto_overlay_best and scalar(@{$rec->matches}) > 0 ) {
+
+                # caller says to overlay the best match
+
+                my $res = $e->json_query(
+                    {
+                        from => [
+                            $auto_overlay_best_func,
+                            $rec_id,
+                            $merge_profile,
+                            $match_quality_ratio
+                        ]
+                    }
+                );
+
+                if($res and ($res = $res->[0])) {
+
+                    if($res->{$auto_overlay_best_func} eq 't') {
+                        $logger->info("vl: $type auto-overlay-best succeeded for queued rec $rec_id");
+                        $imported = 1;
+
+                        # re-fetch the record to pick up the imported_as value from the DB
+                        $$report_args{rec} = $rec = $e->$retrieve_func([
+                            $rec_id, {flesh => 1, flesh_fields => {$rec_class => ['matches']}}]);
+
+                    } else {
+                        $$report_args{import_error} = 'overlay.record.quality' if $match_quality_ratio > 0;
+                        $logger->info("vl: $type auto-overlay-best failed for queued rec $rec_id");
+                    }
+
+                } else {
+                    $error = 1;
+                    $logger->error("vl: Error attempting overlay with func=$auto_overlay_best_func, ".
+                        "quality_ratio=$match_quality_ratio, profile=$merge_profile, record=$rec_id");
+                }
+            }
+
+            if(!$imported and !$error and $import_no_match and scalar(@{$rec->matches}) == 0) {
             
                 # No overlay / merge occurred.  Do a traditional record import by creating a new record
             
+                $logger->info("vl: creating new $type record for queued record $rec_id");
                 if($type eq 'bib') {
-                    $record = OpenILS::Application::Cat::BibCommon->biblio_record_xml_import($e, $rec->marc, $bib_sources{$rec->bib_source});
+                    $record = OpenILS::Application::Cat::BibCommon->biblio_record_xml_import(
+                        $e, $rec->marc, $bib_sources{$rec->bib_source}, undef, 1);
                 } else {
 
                     $record = OpenILS::Application::Cat::AuthCommon->import_authority_record($e, $rec->marc); #$source);
                 }
 
                 if($U->event_code($record)) {
-
-                    $e->event($record); 
-                    $e->rollback;
+                    $$report_args{import_error} = 'import.duplicate.tcn' 
+                        if $record->{textcode} eq 'OPEN_TCN_NOT_FOUND';
+                    $$report_args{evt} = $record;
 
                 } else {
 
                     $logger->info("vl: successfully imported new $type record");
                     $rec->imported_as($record->id);
-                    $rec->import_time('now');
-
-                    $imported = 1 if $e->$update_func($rec);
+                    $imported = 1;
                 }
             }
         }
 
         if($imported) {
-            push @success_rec_ids, $rec_id;
-            $e->commit;
-        } else {
-            # Send an update whenever there's an error
-            $conn->respond({total => $total, progress => ++$count, imported => $rec_id, err_event => $e->event});
+
+            $rec->import_time('now');
+            $rec->clear_import_error;
+            $rec->clear_error_detail;
+
+            if($e->$update_func($rec)) {
+
+                push @success_rec_ids, $rec_id;
+                finish_rec_import_attempt($report_args);
+
+            } else {
+                $imported = 0;
+            }
         }
 
-        if($report_all or (++$count % $step) == 0) {
-            $conn->respond({total => $total, progress => $count, imported => $rec_id});
-            # report often at first, climb quickly, then hold steady
-            $step *= 2 unless $step == 256;
+        if(!$imported) {
+            $logger->info("vl: record $rec_id was not imported");
+            $$report_args{evt} = $e->event unless $$report_args{evt};
+            finish_rec_import_attempt($report_args);
         }
     }
 
@@ -833,11 +1169,69 @@ sub import_record_list_impl {
     	$e->rollback;
     }
 
-    import_record_asset_list_impl($conn, \@success_rec_ids, $requestor);
+    # import the copies
+    import_record_asset_list_impl($conn, \@success_rec_ids, $requestor) if @success_rec_ids;
 
-    $conn->respond({total => $total, progress => $count});
+    $conn->respond({total => $$report_args{total}, progress => $$report_args{progress}});
     return undef;
 }
+
+# tracks any import errors, commits the current xact, responds to the client
+sub finish_rec_import_attempt {
+    my $args = shift;
+    my $evt = $$args{evt};
+    my $rec = $$args{rec};
+    my $e = $$args{e};
+
+    my $error = $$args{import_error};
+    $error = 'general.unknown' if $evt and not $error;
+
+    # error tracking
+    if($rec) {
+
+        if($error or $evt) {
+            # failed import
+            # since an error occurred, there's no guarantee the transaction wasn't 
+            # rolled back.  force a rollback and create a new editor.
+            $e->rollback;
+            $e = new_editor(xact => 1);
+            $rec->import_error($error);
+
+            if($evt) {
+                my $detail = sprintf("%s : %s", $evt->{textcode}, substr($evt->{desc}, 0, 140));
+                $rec->error_detail($detail);
+            }
+
+            my $method = 'update_vandelay_queued_bib_record';
+            $method =~ s/bib/authority/ if $$args{type} eq 'auth';
+            $e->$method($rec) and $e->commit or $e->rollback;
+
+        } else {
+            # commit the successful import
+            $e->commit;
+        }
+
+    } else {
+        # requested queued record was not found
+        $e->rollback;
+    }
+        
+    # respond to client
+    if($$args{report_all} or ($$args{progress} % $$args{step}) == 0) {
+        $$args{conn}->respond({
+            total => $$args{total}, 
+            progress => $$args{progress}, 
+            imported => ($rec) ? $rec->id : undef,
+            err_event => $evt
+        });
+        $$args{step} *= 2 unless $$args{step} == 256;
+    }
+
+    $$args{progress}++;
+}
+
+
+
 
 
 __PACKAGE__->register_method(  
@@ -991,11 +1385,48 @@ sub retrieve_queue_summary {
     my $search = 'search_vandelay_queued_bib_record';
     $search =~ s/bib/authority/ if $type ne 'bib';
 
-    return {
+    my $summary = {
         queue => $queue,
         total => scalar(@{$e->$search({queue => $queue_id}, {idlist=>1})}),
         imported => scalar(@{$e->$search({queue => $queue_id, import_time => {'!=' => undef}}, {idlist=>1})}),
     };
+
+    my $class = ($type eq 'bib') ? 'vqbr' : 'vqar';
+    $summary->{rec_import_errors} = $e->json_query({
+        select => {$class => [{alias => 'count', column => 'id', transform => 'count', aggregate => 1}]},
+        from => $class,
+        where => {queue => $queue_id, import_error => {'!=' => undef}}
+    })->[0]->{count};
+
+    if($type eq 'bib') {
+        
+        # count of all items attached to records in the queue in question
+        my $query = {
+            select => {vii => [{alias => 'count', column => 'id', transform => 'count', aggregate => 1}]},
+            from => 'vii',
+            where => {
+                record => {
+                    in => {
+                        select => {vqbr => ['id']},
+                        from => 'vqbr',
+                        where => {queue => $queue_id}
+                    }
+                }
+            }
+        };
+        $summary->{total_items} = $e->json_query($query)->[0]->{count};
+
+        # count of items we attempted to import, but errored, attached to records in the queue in question
+        $query->{where}->{import_error} = {'!=' => undef};
+        $summary->{item_import_errors} = $e->json_query($query)->[0]->{count};
+
+        # count of items we successfully imported attached to records in the queue in question
+        delete $query->{where}->{import_error};
+        $query->{where}->{import_time} = {'!=' => undef};
+        $summary->{total_items_imported} = $e->json_query($query)->[0]->{count};
+    }
+
+    return $summary;
 }
 
 # --------------------------------------------------------------------------------
@@ -1004,20 +1435,40 @@ sub retrieve_queue_summary {
 sub import_record_asset_list_impl {
     my($conn, $rec_ids, $requestor) = @_;
 
-    my $total = @$rec_ids;
-    my $try_count = 0;
-    my $in_count = 0;
     my $roe = new_editor(xact=> 1, requestor => $requestor);
+
+    # for speed, filter out any records have not been 
+    # imported or have no import items to load
+    $rec_ids = $roe->json_query({
+        select => {vqbr => ['id']},
+        from => {vqbr => 'vii'},
+        where => {'+vqbr' => {
+            id => $rec_ids,
+            import_time => {'!=' => undef}
+        }},
+        distinct => 1
+    });
+    $rec_ids = [map {$_->{id}} @$rec_ids];
+
+    my $report_args = {
+        conn => $conn,
+        total => scalar(@$rec_ids),
+        step => 1, # how often to respond
+        progress => 1,
+        in_count => 0,
+    };
 
     for my $rec_id (@$rec_ids) {
         my $rec = $roe->retrieve_vandelay_queued_bib_record($rec_id);
-        next unless $rec and $rec->import_time;
         my $item_ids = $roe->search_vandelay_import_item({record => $rec->id}, {idlist=>1});
 
         for my $item_id (@$item_ids) {
             my $e = new_editor(requestor => $requestor, xact => 1);
             my $item = $e->retrieve_vandelay_import_item($item_id);
-            $try_count++;
+            $$report_args{import_item} = $item;
+            $$report_args{e} = $e;
+            $$report_args{import_error} = undef;
+            $$report_args{evt} = undef;
 
             # --------------------------------------------------------------------------------
             # Find or create the volume
@@ -1027,7 +1478,9 @@ sub import_record_asset_list_impl {
                     $e, $item->call_number, $rec->imported_as, $item->owning_lib);
 
             if($evt) {
-                respond_with_status($conn, $total, $try_count, $in_count, $evt);
+
+                $$report_args{evt} = $evt;
+                respond_with_status($report_args);
                 next;
             }
 
@@ -1055,15 +1508,25 @@ sub import_record_asset_list_impl {
             # --------------------------------------------------------------------------------
             # see if a valid circ_modifier was provided
             # --------------------------------------------------------------------------------
-            #if($copy->circ_modifier and not $e->retrieve_config_circ_modifier($item->circ_modifier)) {
             if($copy->circ_modifier and not $e->search_config_circ_modifier({code=>$item->circ_modifier})->[0]) {
-                respond_with_status($conn, $total, $try_count, $in_count, $e->die_event);
+                $$report_args{evt} = $e->die_event;
+                $$report_args{import_error} = 'import.item.invalid.circ_modifier';
+                respond_with_status($report_args);
+                next;
+            }
+
+            if($copy->location and not $e->retrieve_asset_copy_location($copy->location)) {
+                $$report_args{evt} = $e->die_event;
+                $$report_args{import_error} = 'import.item.invalid.location';
+                respond_with_status($report_args);
                 next;
             }
 
             if($evt = OpenILS::Application::Cat::AssetCommon->create_copy($e, $vol, $copy)) {
-                try { $e->rollback } otherwise {}; # sometimes calls die_event, sometimes not
-                respond_with_status($conn, $total, $try_count, $in_count, $evt);
+                $$report_args{evt} = $evt;
+                $$report_args{import_error} = 'import.item.duplicate.barcode'
+                    if $evt->{textcode} eq 'ITEM_BARCODE_EXISTS';
+                respond_with_status($report_args);
                 next;
             }
 
@@ -1074,7 +1537,8 @@ sub import_record_asset_list_impl {
                 $e, $copy, '', $item->pub_note, 1) if $item->pub_note;
 
             if($evt) {
-                respond_with_status($conn, $total, $try_count, $in_count, $evt);
+                $$report_args{evt} = $evt;
+                respond_with_status($report_args);
                 next;
             }
 
@@ -1082,7 +1546,18 @@ sub import_record_asset_list_impl {
                 $e, $copy, '', $item->priv_note, 1) if $item->priv_note;
 
             if($evt) {
-                respond_with_status($conn, $total, $try_count, $in_count, $evt);
+                $$report_args{evt} = $evt;
+                respond_with_status($report_args);
+                next;
+            }
+
+            # set the import data on the import item
+            $item->imported_as($copy->id); # $copy->id is set by create_copy() ^--
+            $item->import_time('now');
+
+            unless($e->update_vandelay_import_item($item)) {
+                $$report_args{evt} = $e->die_event;
+                respond_with_status($report_args);
                 next;
             }
 
@@ -1090,22 +1565,158 @@ sub import_record_asset_list_impl {
             # Item import succeeded
             # --------------------------------------------------------------------------------
             $e->commit;
-            respond_with_status($conn, $total, $try_count, ++$in_count, undef, imported_as => $copy->id);
+            $$report_args{in_count}++;
+            respond_with_status($report_args);
+            $logger->info("vl: successfully imported item " . $item->barcode);
         }
+
     }
+
     $roe->rollback;
     return undef;
 }
 
 
 sub respond_with_status {
-    my($conn, $total, $try_count, $success_count, $err, %args) = @_;
-    $conn->respond({
-        total => $total, 
-        progress => $try_count, 
-        err_event => $err, 
-        success_count => $success_count, %args }) if $err or ($try_count % 5 == 0);
+    my $args = shift;
+    my $e = $$args{e};
+
+    #  If the import failed, track the failure reason
+
+    my $error = $$args{import_error};
+    my $evt = $$args{evt};
+
+    if($error or $evt) {
+
+        my $item = $$args{import_item};
+        $logger->info("vl: unable to import item " . $item->barcode);
+
+        $error ||= 'general.unknown';
+        $item->import_error($error);
+
+        if($evt) {
+            my $detail = sprintf("%s : %s", $evt->{textcode}, substr($evt->{desc}, 0, 140));
+            $item->error_detail($detail);
+        }
+
+        # state of the editor is unknown at this point.  Force a rollback and start over.
+        $e->rollback;
+        $e = new_editor(xact => 1);
+        $e->update_vandelay_import_item($item);
+        $e->commit;
+    }
+
+    if($$args{report_all} or ($$args{progress} % $$args{step}) == 0) {
+        $$args{conn}->respond({
+            total => $$args{total},
+            progress => $$args{progress},
+            success_count => $$args{success_count},
+            err_event => $evt
+        });
+        $$args{step} *= 2 unless $$args{step} == 256;
+    }
+
+    $$args{progress}++;
 }
 
+__PACKAGE__->register_method(  
+    api_name    => "open-ils.vandelay.match_set.get_tree",
+    method      => "match_set_get_tree",
+    api_level   => 1,
+    argc        => 2,
+    signature   => {
+        desc    => q/For a given vms object, return a tree of match set points
+                    represented by a vmsp object with recursively fleshed
+                    children./
+    }
+);
+
+sub match_set_get_tree {
+    my ($self, $conn, $authtoken, $match_set_id) = @_;
+
+    $match_set_id = int($match_set_id) or return;
+
+    my $e = new_editor("authtoken" => $authtoken);
+    $e->checkauth or return $e->die_event;
+
+    my $set = $e->retrieve_vandelay_match_set($match_set_id) or
+        return $e->die_event;
+
+    $e->allowed("ADMIN_IMPORT_MATCH_SET", $set->owner) or
+        return $e->die_event;
+
+    my $tree = $e->search_vandelay_match_set_point([
+        {"match_set" => $match_set_id, "parent" => undef},
+        {"flesh" => -1, "flesh_fields" => {"vmsp" => ["children"]}}
+    ]) or return $e->die_event;
+
+    return pop @$tree;
+}
+
+
+__PACKAGE__->register_method(
+    api_name    => "open-ils.vandelay.match_set.update",
+    method      => "match_set_update_tree",
+    api_level   => 1,
+    argc        => 3,
+    signature   => {
+        desc => q/Replace any vmsp objects associated with a given (by ID) vms
+                with the given objects (recursively fleshed vmsp tree)./
+    }
+);
+
+sub _walk_new_vmsp {
+    my ($e, $match_set_id, $node, $parent_id) = @_;
+
+    my $point = new Fieldmapper::vandelay::match_set_point;
+    $point->parent($parent_id);
+    $point->match_set($match_set_id);
+    $point->$_($node->$_) for (qw/bool_op svf tag subfield negate quality/);
+
+    $e->create_vandelay_match_set_point($point) or return $e->die_event;
+
+    $parent_id = $e->data->id;
+    if ($node->children && @{$node->children}) {
+        for (@{$node->children}) {
+            return $e->die_event if
+                _walk_new_vmsp($e, $match_set_id, $_, $parent_id);
+        }
+    }
+
+    return;
+}
+
+sub match_set_update_tree {
+    my ($self, $conn, $authtoken, $match_set_id, $tree) = @_;
+
+    my $e = new_editor("xact" => 1, "authtoken" => $authtoken);
+    $e->checkauth or return $e->die_event;
+
+    my $set = $e->retrieve_vandelay_match_set($match_set_id) or
+        return $e->die_event;
+
+    $e->allowed("ADMIN_IMPORT_MATCH_SET", $set->owner) or
+        return $e->die_event;
+
+    my $existing = $e->search_vandelay_match_set_point([
+        {"match_set" => $match_set_id},
+        {"order_by" => {"vmsp" => "id DESC"}}
+    ]) or return $e->die_event;
+
+    # delete points, working up from leaf points to the root
+    while(@$existing) {
+        for my $point (shift @$existing) {
+            if( grep {$_->parent eq $point->id} @$existing) {
+                push(@$existing, $point);
+            } else {
+                $e->delete_vandelay_match_set_point($point) or return $e->die_event;
+            }
+        }
+    }
+
+    _walk_new_vmsp($e, $match_set_id, $tree);
+
+    $e->commit or return $e->die_event;
+}
 
 1;

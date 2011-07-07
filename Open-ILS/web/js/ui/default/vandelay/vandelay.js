@@ -57,7 +57,8 @@ var globalDivs = [
     'vl-attr-editor-div',
     'vl-marc-export-div',
     'vl-profile-editor-div',
-    'vl-item-attr-editor-div'
+    'vl-item-attr-editor-div',
+    'vl-import-error-div'
 ];
 
 var authtoken;
@@ -85,13 +86,15 @@ var cgi = new openils.CGI();
 var vlQueueGridColumePicker = {};
 var vlBibSources = [];
 var importItemDefs = [];
+var matchSets = {};
+var mergeProfiles = [];
 
 /**
   * Grab initial data
   */
 function vlInit() {
     authtoken = openils.User.authtoken;
-    var initNeeded = 6; // how many async responses do we need before we're init'd 
+    var initNeeded = 7; // how many async responses do we need before we're init'd 
     var initCount = 0; // how many async reponses we've received
 
     openils.Util.registerEnterHandler(
@@ -104,13 +107,13 @@ function vlInit() {
             runStartupCommands();
     }
 
-    var profiles = new openils.PermaCrud().retrieveAll('vmp');
-    vlUploadMergeProfile.store = new dojo.data.ItemFileReadStore({data:fieldmapper.vmp.toStoreData(profiles)});
+    mergeProfiles = new openils.PermaCrud().retrieveAll('vmp');
+    vlUploadMergeProfile.store = new dojo.data.ItemFileReadStore({data:fieldmapper.vmp.toStoreData(mergeProfiles)});
     vlUploadMergeProfile.labelAttr = 'name';
     vlUploadMergeProfile.searchAttr = 'name';
     vlUploadMergeProfile.startup();
 
-    vlUploadMergeProfile2.store = new dojo.data.ItemFileReadStore({data:fieldmapper.vmp.toStoreData(profiles)});
+    vlUploadMergeProfile2.store = new dojo.data.ItemFileReadStore({data:fieldmapper.vmp.toStoreData(mergeProfiles)});
     vlUploadMergeProfile2.labelAttr = 'name';
     vlUploadMergeProfile2.searchAttr = 'name';
     vlUploadMergeProfile2.startup();
@@ -164,7 +167,25 @@ function vlInit() {
         }
     );
 
+    new openils.PermaCrud().search('vms',
+        {owner: owner.map(function(org) { return org.id(); })},
+        {   async: true,
+            oncomplete: function(r) {
+                var sets = openils.Util.readResponse(r);
+                dojo.forEach(sets, 
+                    function(set) {
+                        if(!matchSets[set.mtype()])
+                            matchSets[set.mtype()] = [];
+                        matchSets[set.mtype()].push(set);
+                    }
+                );
+                checkInitDone();
+            }
+        }
+    );
+
     vlAttrEditorInit();
+    vlExportInit();
 }
 
 
@@ -257,6 +278,10 @@ function displayGlobalDiv(id) {
     openils.Util.removeCSSClass(dojo.byId('vl-menu-queue-select'), 'toolbar_selected');
     openils.Util.removeCSSClass(dojo.byId('vl-menu-attr-editor'), 'toolbar_selected');
     openils.Util.removeCSSClass(dojo.byId('vl-menu-profile-editor'), 'toolbar_selected');
+    openils.Util.removeCSSClass(dojo.byId('vl-menu-match-set-editor'), 'toolbar_selected');
+
+    if(dojo.byId('vl-match-set-iframe'))
+        dojo.byId('vl-match-set-editor-div').removeChild(dojo.byId('vl-match-set-iframe'));
 
     switch(id) {
         case 'vl-marc-export-div':
@@ -276,6 +301,9 @@ function displayGlobalDiv(id) {
             break;
         case 'vl-item-attr-editor-div':
             openils.Util.addCSSClass(dojo.byId('vl-menu-import-item-attr-editor'), 'toolbar_selected');
+            break;
+        case 'vl-match-set-editor-div':
+            openils.Util.addCSSClass(dojo.byId('vl-menu-match-set-editor'), 'toolbar_selected');
             break;
     }
 }
@@ -311,13 +339,13 @@ function uploadMARC(onload){
 /**
   * Creates a new vandelay queue
   */
-function createQueue(queueName, type, onload, importDefId) {
+function createQueue(queueName, type, onload, importDefId, matchSet) {
     var name = (type=='bib') ? 'bib' : 'authority';
     var method = 'open-ils.vandelay.'+ name +'_queue.create'
     fieldmapper.standardRequest(
         ['open-ils.vandelay', method],
         {   async: true,
-            params: [authtoken, queueName, null, name, importDefId],
+            params: [authtoken, queueName, null, name, matchSet, importDefId],
             oncomplete : function(r) {
                 var queue = r.recv().content();
                 if(e = openils.Event.parse(queue)) 
@@ -348,47 +376,117 @@ function processSpool(key, queueId, type, onload) {
     );
 }
 
-function retrieveQueuedRecords(type, queueId, onload) {
+function vlExportInit() {
+
+    // queue export
+    var qsel = dojo.byId('vl-queue-export-options');
+    qsel.onchange = function(newVal) {
+        var value = qsel.options[qsel.selectedIndex].value;
+        qsel.selectedIndex = 0;
+        if(!value) return;
+        if(!confirm('Export as "' + value + '"?')) return; // TODO: i18n
+        retrieveQueuedRecords(
+            currentType, 
+            currentQueueId, 
+            function(r) { 
+                exportHandler(value, r);
+                displayGlobalDiv('vl-queue-div');
+            },
+            value
+        );
+    }
+
+    // item export
+    var isel = dojo.byId('vl-item-export-options');
+    isel.onchange = function(newVal) {
+        var value = isel.options[isel.selectedIndex].value;
+        isel.selectedIndex = 0;
+        if(!value) return;
+        if(!confirm('Export as "' + value + '"?')) return; // TODO: i18n
+
+        displayGlobalDiv('vl-generic-progress');
+        var method = 'open-ils.vandelay.import_item.queue.export.' + value + '.atomic';
+
+        fieldmapper.standardRequest(
+            ['open-ils.vandelay', method],
+            {
+                params : [
+                    authtoken, 
+                    currentQueueId, 
+                    {with_import_error: (vlImportItemsShowErrors.checked) ? 1 : null}
+                ],
+                async : true,
+                oncomplete : function(r) {exportHandler(value, r)}
+            }
+        );
+    }
+}
+
+function exportHandler(type, response) {
+    displayGlobalDiv('vl-import-error-div');
+    try {
+        var content = openils.Util.readResponse(response);
+        if (type=='email') {
+            if (content==1) { alert('Email sent.'); return; }
+            throw(content);
+        }
+        /* handle .atomic versus non-atomic method calls */
+        content = content.constructor == Array
+            ? content[0].template_output().data()
+            : content.template_output().data();
+        switch(type) {
+            case 'print':
+                openils.Util.printHtmlString(content);
+            break;
+            case 'csv':
+                //content = content.replace(/\\t/g,'\t'); // if we really wanted to do .tsv instead
+                openils.XUL.contentToFileSaveDialog(content);
+            break;
+            default:
+                alert('response = ' + response + '\tcontent:\n' + content);
+        }
+    } catch(E) {
+        alert('Error exporting data: ' + E);
+    }
+}
+
+function retrieveQueuedRecords(type, queueId, onload, doExport) {
     displayGlobalDiv('vl-generic-progress');
     queuedRecords = [];
     queuedRecordsMap = {};
     currentOverlayRecordsMap = {};
     currentOverlayRecordsMapGid = {};
     selectableGridRecords = {};
-    //resetVlQueueGridLayout();
 
     if(!type) type = currentType;
     if(!queueId) queueId = currentQueueId;
     if(!onload) onload = handleRetrieveRecords;
 
-    var method = 'open-ils.vandelay.'+type+'_queue.records.retrieve.atomic';
+    var method = 'open-ils.vandelay.'+type+'_queue.records.retrieve';
+
+    if(doExport) method += '.export.' + doExport;
     if(vlQueueGridShowMatches.checked)
         method = method.replace('records', 'records.matches');
+
+    method += '.atomic';
 
     var sel = dojo.byId('vl-queue-display-limit-selector');
     var limit = parseInt(sel.options[sel.selectedIndex].value);
     var offset = limit * parseInt(vlQueueDisplayPage.attr('value')-1);
 
-    var params =  [authtoken, queueId, {clear_marc: 1, offset: offset, limit: limit}];
+    var params =  [authtoken, queueId, {clear_marc: 1, offset: offset, limit: limit, flesh_import_items:1}];
     if(vlQueueGridShowNonImport.checked)
         params[2].non_imported = 1;
+
+    if(vlQueueGridShowImportErrors.checked)
+        params[2].with_import_error = 1;
 
     fieldmapper.standardRequest(
         ['open-ils.vandelay', method],
         {   async: true,
             params: params,
-            /*
-            onresponse: function(r) {
-                console.log("ONREPONSE");
-                var rec = r.recv().content();
-                if(e = openils.Event.parse(rec))
-                    return alert(e);
-                console.log("got record " + rec.id());
-                queuedRecords.push(rec);
-                queuedRecordsMap[rec.id()] = rec;
-            },
-            */
             oncomplete: function(r){
+                if(doExport) return onload(r);
                 var recs = r.recv().content();
                 if(e = openils.Event.parse(recs[0]))
                     return alert(e);
@@ -405,7 +503,8 @@ function retrieveQueuedRecords(type, queueId, onload) {
 
 function vlLoadMatchUI(recId) {
     displayGlobalDiv('vl-generic-progress');
-    var matches = queuedRecordsMap[recId].matches();
+    var queuedRec = queuedRecordsMap[recId];
+    var matches = queuedRec.matches();
     var records = [];
     currentImportRecId = recId;
     for(var i = 0; i < matches.length; i++)
@@ -415,7 +514,7 @@ function vlLoadMatchUI(recId) {
     var params = [records];
     if(currentType == 'auth') {
         retrieve = ['open-ils.cat', 'open-ils.cat.authority.record.retrieve'];
-        parmas = [authtoken, records, {clear_marc:1}];
+        params = [authtoken, records, {clear_marc:1}];
     }
 
     fieldmapper.standardRequest(
@@ -435,7 +534,7 @@ function vlLoadMatchUI(recId) {
 
                 // build the data store of records with match information
                 var dataStore = bre.toStoreData(recs, null, 
-                    {virtualFields:['dest_matchpoint', 'src_matchpoint', '_id']});
+                    {virtualFields:['_id', 'match_score', 'match_quality', 'rec_quality']});
                 dataStore.identifier = '_id';
 
                 var matchSeenMap = {};
@@ -446,9 +545,10 @@ function vlLoadMatchUI(recId) {
                     for(var j = 0; j < matches.length; j++) {
                         var match = matches[j];
                         if(match.eg_record() == item.id && !matchSeenMap[match.id()]) {
-                            item.dest_matchpoint = match.field_type();
-                            var attr = getRecAttrFromMatch(queuedRecordsMap[recId], match);
-                            item.src_matchpoint = getRecAttrDefFromAttr(attr, currentType).code();
+                            if(match.match_score)
+                                item.match_score = match.match_score();
+                            item.match_quality = match.quality();
+                            item.rec_quality = queuedRec.quality();
                             matchSeenMap[match.id()] = 1;
                             break;
                         }
@@ -525,6 +625,7 @@ function getRecMatchesFromAttrCode(rec, attrCode) {
 }
 */
 
+/*
 function getRecAttrFromMatch(rec, match) {
     for(var i = 0; i < rec.attributes().length; i++) {
         var attr = rec.attributes()[i];
@@ -532,6 +633,7 @@ function getRecAttrFromMatch(rec, match) {
             return attr;
     }
 }
+*/
 
 function getRecAttrDefFromAttr(attr, type) {
     var defs = (type == 'bib') ? bibAttrDefs : authAttrDefs;
@@ -566,6 +668,128 @@ function vlGetViewMatches(rowIdx, item) {
 function vlFormatViewMatches(id) {
     if(id == -1) return '';
     return '<a href="javascript:void(0);" onclick="vlLoadMatchUI(' + id + ');">' + this.name + '</a>';
+}
+
+function vlGetViewErrors(rowIdx, item) {
+    if(item) {
+        var id = this.grid.store.getValue(item, 'id');
+        var rec = queuedRecordsMap[id];
+        // id:rec_error:item_import_error_count
+        return id + ':' + 
+            (rec.import_error() ? 1 : '') + ':' + 
+            (typeof rec.import_items == 'function'
+                ? rec.import_items().filter(function(i) {return i.import_error()}).length
+                :''
+            );
+    }
+    return -1
+}
+
+function vlFormatViewErrors(chunk) {
+    if(chunk == -1) return '';
+    var id = chunk.split(':')[0];
+    var rec = chunk.split(':')[1];
+    var count = chunk.split(':')[2];
+    var links = '';
+    if(rec) 
+        links += '<a href="javascript:void(0);" onclick="vlLoadErrorUI(' + id + ');">Record</a><br/>'; // TODO I18N
+    if(Number(count))
+        links += '<a href="javascript:void(0);" onclick="vlLoadErrorUI(' + id + ');">Items ('+count+')</a>'; // TODO I18N
+    return links;
+}
+
+//var vlItemErrorColumnPicker;
+function vlLoadErrorUI(id) {
+
+    displayGlobalDiv('vl-import-error-div');
+    openils.Util.hide('vl-import-error-grid-all');
+    openils.Util.show('vl-import-error-record');
+
+    var rec = queuedRecordsMap[id];
+
+    dojo.byId('vl-error-id').innerHTML = rec.id();
+    dojo.forEach( // TODO sane authority rec. fields
+        ['title', 'author', 'isbn', 'issn', 'upc'],
+        function(field) {
+            var attr =  getRecAttrFromCode(rec, field);
+            var eid = 'vl-error-' + field;
+            if(attr) {
+                openils.Util.show(dojo.byId(eid).parentNode, 'table-row');
+                dojo.byId(eid).innerHTML = attr.attr_value();
+            } else {
+                openils.Util.hide(dojo.byId(eid).parentNode);
+            }
+        }
+    );
+    var iediv = dojo.byId('vl-error-import-error');
+    var eddiv = dojo.byId('vl-error-error-detail');
+    if(rec.import_error()) {
+        openils.Util.show(iediv.parentNode, 'table-row');
+        openils.Util.show(eddiv.parentNode, 'table-row');
+        iediv.innerHTML = rec.import_error();
+        eddiv.innerHTML = rec.error_detail();
+    } else {
+        openils.Util.hide(iediv.parentNode);
+        openils.Util.hide(eddiv.parentNode);
+    }
+
+    var errorItems = rec.import_items().filter(function(i) {return i.import_error()});
+    if(errorItems.length) {
+        openils.Util.show('vl-import-error-grid-some');
+        storeData = vqbr.toStoreData(errorItems);
+        var store = new dojo.data.ItemFileReadStore({data:storeData});
+        vlImportErrorGrid.setStore(store);
+        vlImportErrorGrid.update();
+    } else {
+        openils.Util.hide('vl-import-error-grid-some');
+    }
+}
+
+function vlLoadErrorUIAll() {
+
+    displayGlobalDiv('vl-import-error-div');
+    openils.Util.hide('vl-import-error-grid-some');
+    openils.Util.hide('vl-import-error-record');
+    openils.Util.show('vl-import-error-grid-all');
+    vlAllImportErrorGrid.resetStore();
+
+    vlImportErrorGrid.displayOffset = 0;
+
+    vlAllImportErrorGrid.dataLoader = function() {
+
+        vlAllImportErrorGrid.showLoadProgressIndicator();
+
+        fieldmapper.standardRequest(
+            ['open-ils.vandelay', 'open-ils.vandelay.import_item.queue.retrieve'],
+            {
+                async : true,
+                params : [
+                    authtoken, currentQueueId, {   
+                        with_import_error: (vlImportItemsShowErrors.checked) ? 1 : null,
+                        offset : vlAllImportErrorGrid.displayOffset,
+                        limit : vlAllImportErrorGrid.displayLimit
+                    }
+                ],
+                onresponse : function(r) {
+                    var item = openils.Util.readResponse(r);
+                    if(!item) return;
+                    vlAllImportErrorGrid.store.newItem(vii.toStoreItem(item));
+                },
+                oncomplete : function() {
+                    vlAllImportErrorGrid.hideLoadProgressIndicator();
+                }
+            }
+        );
+    };
+
+    vlAllImportErrorGrid.dataLoader();
+}
+
+function vlGetOrg(rowIdx, item) {
+    if(!item) return '';
+    var value = this.grid.store.getValue(item, this.field);
+    if(value) return fieldmapper.aou.findOrgUnit(value).shortname();
+    return '';
 }
 
 function vlFormatViewMatchMARC(id) {
@@ -668,6 +892,9 @@ var valLastQueueType = null;
 var vlQueueGridLayout = null;
 function buildRecordGrid(type) {
     displayGlobalDiv('vl-queue-div');
+
+    vlBibQueueGrid.canSort = function(col){ if(Math.abs(col) == 1) { return false; } else { return true; } }; 
+    vlAuthQueueGrid.canSort = function(col){ if(Math.abs(col) == 1) { return false; } else { return true; } }; 
 
     if(type == 'bib') {
         openils.Util.show('vl-bib-queue-grid-wrapper');
@@ -785,6 +1012,10 @@ var handleRetrieveRecords = function() {
             dojo.byId('vl-queue-summary-name').innerHTML = summary.queue.name();
             dojo.byId('vl-queue-summary-total-count').innerHTML = summary.total +'';
             dojo.byId('vl-queue-summary-import-count').innerHTML = summary.imported + '';
+            dojo.byId('vl-queue-summary-import-item-count').innerHTML = summary.total_items + '';
+            dojo.byId('vl-queue-summary-import-item-imported-count').innerHTML = summary.total_items_imported + '';
+            dojo.byId('vl-queue-summary-rec-error-count').innerHTML = summary.rec_import_errors + '';
+            dojo.byId('vl-queue-summary-item-error-count').innerHTML = summary.item_import_errors + '';
         }
     );
 }
@@ -804,9 +1035,13 @@ function vlFetchQueueSummary(qId, type, onload) {
     );
 }
 
+var _importCancelHandler;
+var _importGoHandler;
 function vlHandleQueueItemsAction(action) {
 
-    dojo.connect(
+    if(_importCancelHandler) dojo.disconnect(_importCancelHandler);
+
+    _importCancelHandler = dojo.connect(
         queueItemsImportCancelButton, 
         'onClick', 
         function() {
@@ -814,17 +1049,22 @@ function vlHandleQueueItemsAction(action) {
         }
     );
 
-    dojo.connect(
+    if(_importGoHandler)
+        dojo.disconnect(_importGoHandler);
+
+    _importGoHandler = dojo.connect(
         queueItemsImportGoButton,
         'onClick', 
         function() {
             queueItemsImportDialog.hide();
 
             // hack to set the widgets the import funcs will be looking at.  Reset them below.
-            vlUploadQueueAutoImport.attr('value',  vlUploadQueueAutoImport2.attr('value'));
+            vlUploadQueueImportNoMatch.attr('value',  vlUploadQueueImportNoMatch2.attr('value'));
             vlUploadQueueAutoOverlayExact.attr('value',  vlUploadQueueAutoOverlayExact2.attr('value'));
             vlUploadQueueAutoOverlay1Match.attr('value',  vlUploadQueueAutoOverlay1Match2.attr('value'));
             vlUploadMergeProfile.attr('value',  vlUploadMergeProfile2.attr('value'));
+            vlUploadQueueAutoOverlayBestMatch.attr('value',  vlUploadQueueAutoOverlayBestMatch2.attr('value'));
+            vlUploadQueueAutoOverlayBestMatchRatio.attr('value',  vlUploadQueueAutoOverlayBestMatchRatio2.attr('value'));
 
             if(action == 'import') {
                 vlImportSelectedRecords();
@@ -833,14 +1073,18 @@ function vlHandleQueueItemsAction(action) {
             }
             
             // reset the widgets to prevent accidental future actions
-            vlUploadQueueAutoImport.attr('value',  false);
-            vlUploadQueueAutoImport2.attr('value', false);
+            vlUploadQueueImportNoMatch.attr('value',  false);
+            vlUploadQueueImportNoMatch2.attr('value', false);
             vlUploadQueueAutoOverlayExact.attr('value', false);
             vlUploadQueueAutoOverlayExact2.attr('value', false);
             vlUploadQueueAutoOverlay1Match.attr('value', false);
             vlUploadQueueAutoOverlay1Match2.attr('value', false);
             vlUploadMergeProfile.attr('value', '');
             vlUploadMergeProfile2.attr('value', '');
+            vlUploadQueueAutoOverlayBestMatch.attr('value', false);
+            vlUploadQueueAutoOverlayBestMatch2.attr('value', false);
+            vlUploadQueueAutoOverlayBestMatchRatio.attr('value', '0.0');
+            vlUploadQueueAutoOverlayBestMatchRatio2.attr('value', '0.0');
         }
     );
 
@@ -848,8 +1092,8 @@ function vlHandleQueueItemsAction(action) {
 }
     
 
+/* import user-selected records */
 function vlImportSelectedRecords() {
-    displayGlobalDiv('vl-generic-progress-with-total');
     var records = [];
 
     for(var id in selectableGridRecords) {
@@ -861,74 +1105,78 @@ function vlImportSelectedRecords() {
         }
     }
 
-    var options = {overlay_map : currentOverlayRecordsMap};
-
-    if(vlUploadQueueAutoOverlayExact.checked) {
-        options.auto_overlay_exact = true;
-        vlUploadQueueAutoOverlayExact.checked = false;
-    }
-
-    if(vlUploadQueueAutoOverlay1Match.checked) {
-        options.auto_overlay_1match = true;
-        vlUploadQueueAutoOverlay1Match.checked = false;
-    }
-    
-    var profile = vlUploadMergeProfile.attr('value');
-    if(profile != null && profile != '') {
-        options.merge_profile = profile;
-    }
-
-    fieldmapper.standardRequest(
-        ['open-ils.vandelay', 'open-ils.vandelay.'+currentType+'_record.list.import'],
-        {   async: true,
-            params: [authtoken, records, options],
-            onresponse: function(r) {
-                var resp = r.recv().content();
-                if(e = openils.Event.parse(resp))
-                    return alert(e);
-                if(resp.complete) {
-                    return retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
-                } else {
-                    vlControlledProgressBar.update({maximum:resp.total, progress:resp.progress});
-                }
-            }, 
+    vlImportRecordQueue(
+        currentType, 
+        currentQueueId, 
+        records,
+        function(){
+            retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
         }
     );
 }
 
+/* import all (non-imported) queue records */
 function vlImportAllRecords() {
-    vlImportRecordQueue(currentType, currentQueueId, false,
-        function(){displayGlobalDiv('vl-queue-div');});
+    vlImportRecordQueue(
+        currentType, 
+        currentQueueId, 
+        null,
+        function(){
+            retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
+        }
+    );
 }
 
-function vlImportRecordQueue(type, queueId, noMatchOnly, onload) {
+/* if recList has values, import only those records */
+function vlImportRecordQueue(type, queueId, recList, onload) {
     displayGlobalDiv('vl-generic-progress-with-total');
-    var method = 'open-ils.vandelay.bib_queue.import';
-    if(noMatchOnly)
-        method = method.replace('import', 'nomatch.import');
-    if(type == 'auth')
-        method = method.replace('bib', 'auth');
 
-    var options = {};
+    /* set up options */
+    var options = {overlay_map : currentOverlayRecordsMap};
+
+    if(vlUploadQueueImportNoMatch.checked) {
+        options.import_no_match = true;
+        vlUploadQueueImportNoMatch.checked = false;
+    }
+
     if(vlUploadQueueAutoOverlayExact.checked) {
         options.auto_overlay_exact = true;
         vlUploadQueueAutoOverlayExact.checked = false;
     }
 
+    if(vlUploadQueueAutoOverlayBestMatch.checked) {
+        options.auto_overlay_best_match = true;
+        vlUploadQueueAutoOverlayBestMatch.checked = false;
+        options.match_quality_ratio = vlUploadQueueAutoOverlayBestMatchRatio.attr('value');
+    }
+
     if(vlUploadQueueAutoOverlay1Match.checked) {
         options.auto_overlay_1match = true;
         vlUploadQueueAutoOverlay1Match.checked = false;
+        options.match_quality_ratio = vlUploadQueueAutoOverlayBestMatchRatio.attr('value');
     }
-    
+
     var profile = vlUploadMergeProfile.attr('value');
     if(profile != null && profile != '') {
         options.merge_profile = profile;
+    }
+
+    /* determine which method we're calling */
+
+    var method = 'open-ils.vandelay.bib_queue.import';
+    if(type == 'auth')
+        method = method.replace('bib', 'auth');
+
+    var params = [authtoken, queueId, options];
+    if(recList) {
+        method = 'open-ils.vandelay.'+currentType+'_record.list.import';
+        params[1] = recList;
     }
 
     fieldmapper.standardRequest(
         ['open-ils.vandelay', method],
         {   async: true,
-            params: [authtoken, queueId, options],
+            params: params,
             onresponse: function(r) {
                 var resp = r.recv().content();
                 if(e = openils.Event.parse(resp))
@@ -949,16 +1197,20 @@ function batchUpload() {
     currentType = dijit.byId('vl-record-type').getValue();
 
     var handleProcessSpool = function() {
-        if(vlUploadQueueAutoImport.checked || vlUploadQueueAutoOverlayExact.checked || vlUploadQueueAutoOverlay1Match.checked) {
-            var noMatchOnly = !vlUploadQueueAutoOverlayExact.checked && !vlUploadQueueAutoOverlay1Match.checked;
-            vlImportRecordQueue(
-                currentType, 
-                currentQueueId, 
-                noMatchOnly,
-                function() {
-                    retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
-                }
-            );
+        if( 
+            vlUploadQueueImportNoMatch.checked || 
+            vlUploadQueueAutoOverlayExact.checked || 
+            vlUploadQueueAutoOverlay1Match.checked ||
+            vlUploadQueueAutoOverlayBestMatch.checked ) {
+
+                vlImportRecordQueue(
+                    currentType, 
+                    currentQueueId, 
+                    null,
+                    function() {
+                        retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
+                    }
+                );
         } else {
             retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
         }
@@ -978,7 +1230,10 @@ function batchUpload() {
         currentQueueId = vlUploadQueueSelector.getValue();
         uploadMARC(handleUploadMARC);
     } else {
-        createQueue(queueName, currentType, handleCreateQueue, vlUploadQueueHoldingsImportProfile.attr('value'));
+        createQueue(queueName, currentType, handleCreateQueue, 
+            vlUploadQueueHoldingsImportProfile.attr('value'),
+            vlUploadQueueMatchSet.attr('value')
+        );
     }
 }
 
@@ -990,6 +1245,50 @@ function vlFleshQueueSelect(selector, type) {
     selector.setDisplayedValue('');
     if(data[0])
         selector.setValue(data[0].id());
+
+    var qInput = dijit.byId('vl-queue-name');
+
+    var selChange = function(val) {
+        console.log('selector onchange');
+        // user selected a queue from the selector;  clear the input and 
+        // set the item import profile already defined for the queue
+        var queue = allUserBibQueues.filter(function(q) { return (q.id() == val) })[0];
+        if(val) {
+            vlUploadQueueHoldingsImportProfile.attr('value', queue.item_attr_def() || '');
+            vlUploadQueueHoldingsImportProfile.attr('disabled', true);
+            vlUploadQueueMatchSet.attr('value', queue.match_set() || '');
+            vlUploadQueueMatchSet.attr('disabled', true);
+        } else {
+            vlUploadQueueHoldingsImportProfile.attr('value', '');
+            vlUploadQueueHoldingsImportProfile.attr('disabled', false);
+            vlUploadQueueMatchSet.attr('value', '');
+            vlUploadQueueMatchSet.attr('disabled', false);
+        }
+        dojo.disconnect(qInput._onchange);
+        qInput.attr('value', '');
+        qInput._onchange = dojo.connect(qInput, 'onChange', inputChange);
+    }
+    
+    var inputChange = function(val) {
+        console.log('qinput onchange');
+        // user entered a new queue name. clear the selector 
+        vlUploadQueueHoldingsImportProfile.attr('value', '');
+        vlUploadQueueHoldingsImportProfile.attr('disabled', false);
+        vlUploadQueueMatchSet.attr('value', '');
+        vlUploadQueueMatchSet.attr('disabled', false);
+        dojo.disconnect(selector._onchange);
+        selector.attr('value', '');
+        selector._onchange = dojo.connect(selector, 'onChange', selChange);
+    }
+
+    selector._onchange = dojo.connect(selector, 'onChange', selChange);
+    qInput._onchange = dojo.connect(qInput, 'onChange', inputChange);
+}
+
+function vlUpdateMatchSetSelector(type) {
+    type = (type.match(/bib/)) ? 'biblio' : 'authority';
+    vlUploadQueueMatchSet.store = 
+        new dojo.data.ItemFileReadStore({data:vms.toStoreData(matchSets[type])});
 }
 
 function vlShowUploadForm() {
@@ -1000,11 +1299,46 @@ function vlShowUploadForm() {
     vlUploadSourceSelector.setValue(vlBibSources[0].id());
     vlUploadQueueHoldingsImportProfile.store = 
         new dojo.data.ItemFileReadStore({data:viiad.toStoreData(importItemDefs)});
+    vlUpdateMatchSetSelector(vlUploadRecordType.getValue());
+
+    // use ratio from the merge profile if it's set
+    dojo.connect(
+        vlUploadMergeProfile, 
+        'onChange',
+        function(val) {
+            if(!val) return;
+            var profile = mergeProfiles.filter(function(p) { return (p.id() == val); })[0];
+            if(profile.lwm_ratio() != null)
+               vlUploadQueueAutoOverlayBestMatchRatio.attr('value', profile.lwm_ratio()+''); 
+        }
+    );
+    dojo.connect(
+        vlUploadMergeProfile2, 
+        'onChange',
+        function(val) {
+            if(!val) return;
+            var profile = mergeProfiles.filter(function(p) { return (p.id() == val); })[0];
+            if(profile.lwm_ratio() != null)
+               vlUploadQueueAutoOverlayBestMatchRatio2.attr('value', profile.lwm_ratio()+''); 
+        }
+    );
+
 }
 
 function vlShowQueueSelect() {
     displayGlobalDiv('vl-queue-select-div');
     vlFleshQueueSelect(vlQueueSelectQueueList, vlQueueSelectType.getValue());
+}
+
+function vlShowMatchSetEditor() {
+    displayGlobalDiv('vl-match-set-editor-div');
+    dojo.byId('vl-match-set-editor-div').appendChild(
+        dojo.create('iframe', {
+            id : 'vl-match-set-iframe',
+            src : oilsBasePath + '/eg/conify/global/vandelay/match_set',
+            style : 'width:100%; height:500px; border:none; margin:0px;'
+        })
+    );
 }
 
 function vlFetchQueueFromForm() {
@@ -1163,7 +1497,6 @@ function onAttrEditorClick() {
     var parsed_xpath = xpathParser.parse(this.store.getValue(row, 'xpath'));
     dijit.byId('attr-editor-tags').attr('value', parsed_xpath.tags);
     dijit.byId('attr-editor-subfields').attr('value', parsed_xpath.subfields);
-    dijit.byId('attr-editor-identifier').attr('value', this.store.getValue(row, 'ident'));
     dijit.byId('attr-editor-xpath').attr('value', this.store.getValue(row, 'xpath'));
     dijit.byId('attr-editor-remove').attr('value', this.store.getValue(row, 'remove'));
 

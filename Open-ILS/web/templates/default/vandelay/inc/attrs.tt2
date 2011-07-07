@@ -38,15 +38,6 @@
                 </td>
             </tr>
             <tr>
-                <td><label for="ident">&vandelay.id.field;: </label></td>
-                <td>
-                    <select dojoType="dijit.form.FilteringSelect" name="ident" id="attr-editor-identifier">
-                        <option value='f' selected='selected'>&vandelay.false;</option>
-                        <option value='t'>&vandelay.true;</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
                 <td><label for="attr-editor-xpath">&vandelay.xpath.advanced;: </label></td>
 
                 <td><input dojoType="dijit.form.TextBox" id="attr-editor-xpath" name="xpath"></input></td>
@@ -90,7 +81,6 @@
                 <th field='description' width='auto'>&vandelay.descrip;</th>
                 <th field='tag' get='attrGridGetTag'>&vandelay.tag;</th>
                 <th field='subfield' get='attrGridGetSubfield'>&vandelay.subfield;</th>
-                <th field='ident'>&vandelay.identifier;</th>
                 <th field='xpath' width='auto'>&vandelay.xpath;</th>
                 <th field='remove' width='auto'>&vandelay.remove;</th>
             </tr>

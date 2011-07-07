@@ -148,6 +148,57 @@ my $_TT_helpers = {
         }
         return;
     },
+
+    get_queued_bib_attr => sub {
+        my $name = shift or return;     # the first arg is always the name
+        my ($attr) = @_;
+        # use Data::Dumper; $logger->warn("get_queued_bib_attr: " . Dumper($attr));
+        ($name and @$attr) or return;
+
+        my $query = {
+            select => {'vqbrad' => ['id']},
+            from => 'vqbrad',
+            where => {code => $name}
+        };
+
+        my $def_ids = new_editor()->json_query($query);
+        @$def_ids or return;
+
+        my $length;
+        $name =~ s/^(\D+)_(\d+)$/$1/ and $length = $2;
+        foreach (@$attr) {
+            $_->field eq @{$def_ids}[0]->{id} or next;
+            next if $length and $length != length($_->attr_value);
+            return $_->attr_value;
+        }
+        return;
+    },
+
+    get_queued_auth_attr => sub {
+        my $name = shift or return;     # the first arg is always the name
+        my ($attr) = @_;
+        # use Data::Dumper; $logger->warn("get_queued_auth_attr: " . Dumper($attr));
+        ($name and @$attr) or return;
+
+        my $query = {
+            select => {'vqarad' => ['id']},
+            from => 'vqarad',
+            where => {code => $name}
+        };
+
+        my $def_ids = new_editor()->json_query($query);
+        @$def_ids or return;
+
+        my $length;
+        $name =~ s/^(\D+)_(\d+)$/$1/ and $length = $2;
+        foreach (@$attr) {
+            $_->field eq @{$def_ids}[0]->{id} or next;
+            next if $length and $length != length($_->attr_value);
+            return $_->attr_value;
+        }
+        return;
+    },
+
 };
 
 

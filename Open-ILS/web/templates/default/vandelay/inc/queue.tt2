@@ -1,106 +1,84 @@
-<div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
-    <table class='wide'>
-        <tr>
-            <td align='left'>
-                <h1>&vandelay.record.queue; <span style='font-style:italic;' id='vl-queue-summary-name'/></h1><br/>
-            </td>
-            <td align='right'>
-                &vandelay.queue.total; <span style='font-weight:bold;' id='vl-queue-summary-total-count'/>
-                &vandelay.queue.imported; <span style='font-weight:bold;' id='vl-queue-summary-import-count'/>
-            </td>
-        </tr>
-    </table>
-</div>
-
-<br/>
-
-<div jsId='queueItemsImportDialog' dojoType="dijit.Dialog" title="Import Items">
-    <div dojoType="dijit.layout.ContentPane">
-        <table class='form_table'>
-            <tbody>
+<div dojoType="dijit.layout.ContentPane" layoutAlign='client' style='margin-top:10px;'>
+    <fieldset id='vl-queue-filter-fieldset'>
+        <legend>Queue <span style='font-style:italic;' id='vl-queue-summary-name'/></legend>
+        <table width='100%'><tr>
+            <td> <!-- big left td -->
+            <table>
                 <tr>
-                    <td>&vandelay.auto.import.noncolliding;</td>
-                    <td colspan='4'>
-                        <input jsId='vlUploadQueueAutoImport2' dojoType='dijit.form.CheckBox'/>
+                    <td valign='top'>
+                        <table class='queue-nav-table'>
+                            <thead><tr><th colspan='2' class='queue-nav-table-label'>Queue Actions</th></tr></thead>
+                            <tbody>
+                                <tr><td><a href='javascript:;' onclick='vlHandleQueueItemsAction("import")'>&vandelay.import.selected;</a></td></tr>
+                                <tr><td><a href='javascript:;' onclick='vlHandleQueueItemsAction("import_all")'>&vandelay.import.all;</a></td></tr>
+                                <tr><td><a href='javascript:;' onclick='vlLoadErrorUIAll();'>View Import Items</a></td></tr>
+                                <tr><td><a href='javascript:;' onclick='
+                                    if(confirm("&vandelay.sure.to.delete.queue;")) {
+                                        vlDeleteQueue(currentType, currentQueueId, 
+                                            function() { displayGlobalDiv("vl-marc-upload-div"); });}'>&vandelay.delete.queue;</a></td></tr>
+                            </tbody>
+                        </table>
+                    </td>
+
+                    <td valign='top'>
+                        <table  id='vl-queue-summary-table' class='queue-nav-table'>
+                            <thead><tr><th colspan='2' class='queue-nav-table-label'>Queue Summary</th></tr></thead>
+                            <tbody>
+                                <tr><td>&vandelay.queue.total;</td><td> <span style='font-weight:bold;' id='vl-queue-summary-total-count'/></td></tr>
+                                <tr><td>&vandelay.queue.imported;</td><td> <span style='font-weight:bold;' id='vl-queue-summary-import-count'/></td></tr>
+                                <tr><td>Record Import Failures</td><td> <span style='font-weight:bold;' id='vl-queue-summary-rec-error-count'/></td></tr>
+                                <tr><td>Items in Queue</td><td> <span style='font-weight:bold;' id='vl-queue-summary-import-item-count'/></td></tr>
+                                <tr><td>Items Imported</td><td> <span style='font-weight:bold;' id='vl-queue-summary-import-item-imported-count'/></td></tr>
+                                <tr><td>Item Import Failures</td><td> <span style='font-weight:bold;' id='vl-queue-summary-item-error-count'/></td></tr>
+                            </tbody>
+                        </table>
+                    </td>
+
+                    <td valign='top'> <!-- filters -->
+                        <table id='vl-queue-filter-table' class='queue-nav-table'>
+                            <thead><tr><th colspan='2' class='queue-nav-table-label'>Queue Filters</th></tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td>&vandelay.limit.to.collision.matches;</td>
+                                    <td>
+                                        <input dojoType='dijit.form.CheckBox' 
+                                            jsId='vlQueueGridShowMatches' onchange='retrieveQueuedRecords();'/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&vandelay.limit.to.non.imported;</td>
+                                    <td>
+                                        <input dojoType='dijit.form.CheckBox' 
+                                            jsId='vlQueueGridShowNonImport' onchange='retrieveQueuedRecords();'/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&vandelay.limit.to.import_error;</td>
+                                    <td>
+                                        <input dojoType='dijit.form.CheckBox' 
+                                            jsId='vlQueueGridShowImportErrors' onchange='retrieveQueuedRecords();'/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </td>
                 </tr>
-                <tr>
-                    <td>&vandelay.auto.import.auto_overlay_exact;</td>
-                    <td colspan='4'>
-                        <input jsId='vlUploadQueueAutoOverlayExact2' dojoType='dijit.form.CheckBox'/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>&vandelay.auto.import.auto_overlay_1match;</td>
-                    <td colspan='4'>
-                        <input jsId='vlUploadQueueAutoOverlay1Match2' dojoType='dijit.form.CheckBox'/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>&vandelay.auto.import.merge_profile;</td>
-                    <td colspan='4'>
-                        <div jsId='vlUploadMergeProfile2' 
-                            dojoType='dijit.form.FilteringSelect' required='false' labelAttr='name' searchAttr='name'/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <button dojoType='dijit.form.Button' jsId='queueItemsImportCancelButton'>Cancel</button>
-                    </td>
-                    <td>
-                        <button dojoType='dijit.form.Button' jsId='queueItemsImportGoButton'>Import</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+            </table>
+        </td>
 
-<!-- queue grid navigation row -->
-<div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
-
-    <table width='100%' style='margin-bottom:0px;'>
-        <tr>
-            <td align='left' valign='bottom'>
-                <select id='vl-queue-actions-selector'>
-                    <option selected='selected' disabled='disabled' value='select-actions'>&vandelay.select_actions;</option>
-                    <option value='import'>&vandelay.import.selected;</option>
-                    <option value='import_all'>&vandelay.import.all;</option>
-                    <option value='delete_queue'>&vandelay.delete.queue;</option>
-                </select>
-                <script type="text/javascript">
-                    var sel = dojo.byId('vl-queue-actions-selector');
-                    sel.onchange = function(evt) {
-                        switch(openils.Util.selectorValue(evt.target)) {
-                            case 'import': vlHandleQueueItemsAction('import'); break;;
-                            case 'import_all': vlHandleQueueItemsAction('import_all'); break;;
-                            case 'delete_queue': 
-                                if(confirm('&vandelay.sure.to.delete.queue;')) {
-                                    vlDeleteQueue(currentType, currentQueueId, 
-                                        function() { displayGlobalDiv('vl-marc-upload-div'); });
-                                }
-                        }
-                        evt.target.selectedIndex = 0;
-                    }
-                </script>
-            </td>
-            <td align='middle' valign='bottom'>
-                <style type="text/css">.filter_span { padding-right: 5px; border-right: 2px solid #e8e1cf; } </style>
-                <table><tr>
-                    <td>
-                        <span>&vandelay.limit.to.collision.matches;</span>
-                        <span class='filter_span'>
-                            <input dojoType='dijit.form.CheckBox' jsId='vlQueueGridShowMatches' onchange='retrieveQueuedRecords();'/>
-                        </span>
-
-                        <span>&vandelay.limit.to.non.imported;</span>
-                        <span class='filter_span'>
-                            <input dojoType='dijit.form.CheckBox' jsId='vlQueueGridShowNonImport' 
-                                checked='checked' onchange='retrieveQueuedRecords();'/>
-                        </span>
-
-                        <span>&vandelay.results.per.page;</span>
-                        <span class='filter_span'>
+        <td align='right' valign='bottom'> <!-- big right td -->
+            <table id='vl-queue-paging-table' class='queue-nav-table'>
+                <tbody>
+                    <tr><td valign='bottom' align='right'>
+                        <select id='vl-queue-export-options' style='margin-right: 10px;'>
+                            <!-- TODO I18N -->
+                            <option value=''>Export Queue As...</option>
+                            <option value='print'>Print</option>
+                            <option value='csv'>CSV</option>
+                            <option value='email'>Email</option>
+                        </select>
+                        <span style='padding-right:5px;'>&vandelay.results.per.page;</span>
+                        <span class='queue-pager-span'>
                             <select jsId='vlQueueDisplayLimit' id='vl-queue-display-limit-selector'
                                 value='10' onchange='retrieveQueuedRecords();'>
                                 <option value='10'>10</option>
@@ -110,23 +88,24 @@
                             </select>
                         </span>
 
-                        <span style='padding-left:5px;'>&vandelay.page;</span>
-                        <input style='width:36px;' dojoType='dijit.form.TextBox' jsId='vlQueueDisplayPage' value='1'/>
-                    </td>
-                </tr></table>
-            </td>
-            <td align='right' valign='bottom'>
-                <span style='padding-right:4px;'>
-                    <a href='javascript:void(0);' onclick='vlQueueGridPrevPage();'>&vandelay.prev.page;</a>
-                </span>
-                <span style='padding-right:10px;'>
-                    <a href='javascript:void(0);' onclick='vlQueueGridNextPage();'>&vandelay.next.page;</a>
-                </span>
-            </td>
-        </tr>
-    </table>
-</div>
+                        <span class='queue-pager-span'>
+                            <span style='padding-left:5px;'>&vandelay.page;</span>
+                            <input style='width:36px;' dojoType='dijit.form.TextBox' jsId='vlQueueDisplayPage' value='1'/>
+                        </span>
 
+                        <span style='padding-right:8px;'>
+                            <a href='javascript:void(0);' onclick='vlQueueGridPrevPage();'>&vandelay.prev.page;</a>
+                        </span>
+                        <span style='padding-right:10px;'>
+                            <a href='javascript:void(0);' onclick='vlQueueGridNextPage();'>&vandelay.next.page;</a>
+                        </span>
+                    </td></tr>
+                </tbody>
+            </table>
+        </td>
+    </tr></table>
+    </fieldset>
+</div>
 
 <!-- Bib Queue Grid -->
 <div class='' id='vl-bib-queue-grid-wrapper' dojoType='dijit.layout.ContentPane'>
@@ -137,6 +116,7 @@
                     field='+row_selector'
                     get='vlQueueGridDrawSelectBox'
                     formatter='vlQueueGridFormatSelectBox'
+                    width='16'
                     styles='text-align: center;'
                     nonSelectable='true'>
                         <input id="vl-queue-grid-row-selector" type="checkbox" onclick="vlToggleQueueGridSelect();"></input>
@@ -153,6 +133,12 @@
                     formatter='vlFormatViewMatches'
                     styles='text-align: center;'
                     nonSelectable='true'>&vandelay.matches;</th>
+                <th
+                    field='+get_errors'
+                    get='vlGetViewErrors'
+                    formatter='vlFormatViewErrors'
+                    styles='text-align: center;'
+                    nonSelectable='true'>Import Failures</th>
                 <th
                     field='import_time'
                     styles='text-align: center;'
@@ -189,6 +175,12 @@
                     styles='text-align: center;'
                     nonSelectable='true'>&vandelay.matches;</th>
                 <th
+                    field='+get_errors'
+                    get='vlGetViewErrors'
+                    formatter='vlFormatViewErrors'
+                    styles='text-align: center;'
+                    nonSelectable='true'>Import Failures</th>
+                <th
                     field='import_time'
                     styles='text-align: center;'
                     get='vlGetDateTimeField'>&vandelay.import.time;</th>
@@ -197,5 +189,59 @@
     </table>
     <div/>
 </div>
+
+<div jsId='queueItemsImportDialog' dojoType="dijit.Dialog" title="Import Items">
+    <div dojoType="dijit.layout.ContentPane">
+        <table class='form_table'>
+            <tbody>
+                <tr>
+                    <td>&vandelay.auto.import.merge_profile;</td>
+                    <td colspan='4'>
+                        <div jsId='vlUploadMergeProfile2' 
+                            dojoType='dijit.form.FilteringSelect' required='false' labelAttr='name' searchAttr='name'/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>&vandelay.auto.import.noncolliding;</td>
+                    <td colspan='4'>
+                        <input jsId='vlUploadQueueImportNoMatch2' dojoType='dijit.form.CheckBox'/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>&vandelay.auto.import.auto_overlay_exact;</td>
+                    <td colspan='4'>
+                        <input jsId='vlUploadQueueAutoOverlayExact2' dojoType='dijit.form.CheckBox'/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>&vandelay.auto.import.auto_overlay_1match;</td>
+                    <td colspan='4'>
+                        <input jsId='vlUploadQueueAutoOverlay1Match2' dojoType='dijit.form.CheckBox'/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>&vandelay.auto.import.auto_overlay_best;</td>
+                    <td colspan='4'><input jsId='vlUploadQueueAutoOverlayBestMatch2' dojoType='dijit.form.CheckBox'/></td>
+                </tr>
+                <tr>
+                    <td>&vandelay.auto.import.auto_overlay_best_ratio;</td>
+                    <td colspan='4'>
+                        <input style='width:3em' value='0.0' jsId='vlUploadQueueAutoOverlayBestMatchRatio2' dojoType='dijit.form.TextBox'/>
+                        <span style='padding-left: 10px; font-size:90%'>(&vandelay.auto.import.auto_overlay_best_ratio.desc;)</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button dojoType='dijit.form.Button' jsId='queueItemsImportCancelButton'>Cancel</button>
+                    </td>
+                    <td>
+                        <button dojoType='dijit.form.Button' jsId='queueItemsImportGoButton'>Import</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
 
 

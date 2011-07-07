@@ -182,6 +182,7 @@
              perm="ADMIN_GLOBAL_FLAG"
              />
     <command id="cmd_server_admin_org_unit_setting_type" />
+    <command id="cmd_server_admin_import_match_set" />
     <command id="cmd_server_admin_usr_setting_type" />
     <command id="cmd_server_admin_config_hard_due_date"
              perm="CREATE_CIRC_DURATION DELETE_CIRC_DURATION UPDATE_CIRC_DURATION"
@@ -479,6 +480,7 @@
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.z3950_source.label;" command="cmd_server_admin_z39_source"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.circulation_modifier.label;" command="cmd_server_admin_circ_mod"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.global_flag.label;" command="cmd_server_admin_global_flag"/>
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.import_match_set;" command="cmd_server_admin_import_match_set"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.org_unit_setting_type;" command="cmd_server_admin_org_unit_setting_type"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.usr_setting_type;" command="cmd_server_admin_usr_setting_type"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.config_hard_due_date;" command="cmd_server_admin_config_hard_due_date"/>
