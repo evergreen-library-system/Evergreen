@@ -3416,10 +3416,10 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="ADMIN_BOOKING_RESOURCE_TYPE" global_required='true'/>
-				<retrieve />
-				<update permission="ADMIN_BOOKING_RESOURCE_TYPE" global_required='true'/>
-				<delete permission="ADMIN_BOOKING_RESOURCE_TYPE" global_required='true'/>
+				<create permission="ADMIN_BOOKING_RESOURCE_TYPE" context_field='owner'/>
+				<retrieve permission="ADMIN_BOOKING_RESOURCE_TYPE" context_field='owner'/>
+				<update permission="ADMIN_BOOKING_RESOURCE_TYPE" context_field='owner'/>
+				<delete permission="ADMIN_BOOKING_RESOURCE_TYPE" context_field='owner'/>
 			</actions>
 		</permacrud>
 	</class>
@@ -3448,10 +3448,10 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="ADMIN_BOOKING_RESOURCE" global_required='true'/>
-				<retrieve />
-				<update permission="ADMIN_BOOKING_RESOURCE" global_required='true'/>
-				<delete permission="ADMIN_BOOKING_RESOURCE" global_required='true'/>
+				<create permission="ADMIN_BOOKING_RESOURCE" context_field='owner'/>
+				<retrieve permission="ADMIN_BOOKING_RESOURCE" context_field='owner'/>
+				<update permission="ADMIN_BOOKING_RESOURCE" context_field='owner'/>
+				<delete permission="ADMIN_BOOKING_RESOURCE" context_field='owner'/>
 			</actions>
 		</permacrud>
 	</class>
@@ -3474,10 +3474,10 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="ADMIN_BOOKING_RESOURCE_ATTR" global_required='true'/>
-				<retrieve />
-				<update permission="ADMIN_BOOKING_RESOURCE_ATTR" global_required='true'/>
-				<delete permission="ADMIN_BOOKING_RESOURCE_ATTR" global_required='true'/>
+				<create permission="ADMIN_BOOKING_RESOURCE_ATTR" context_field='owner'/>
+				<retrieve permission="ADMIN_BOOKING_RESOURCE_ATTR" context_field='owner'/>
+				<update permission="ADMIN_BOOKING_RESOURCE_ATTR" context_field='owner'/>
+				<delete permission="ADMIN_BOOKING_RESOURCE_ATTR" context_field='owner'/>
 			</actions>
 		</permacrud>
 	</class>
@@ -3499,10 +3499,10 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="ADMIN_BOOKING_RESOURCE_ATTR_VALUE" global_required='true'/>
-				<retrieve />
-				<update permission="ADMIN_BOOKING_RESOURCE_ATTR_VALUE" global_required='true'/>
-				<delete permission="ADMIN_BOOKING_RESOURCE_ATTR_VALUE" global_required='true'/>
+				<create permission="ADMIN_BOOKING_RESOURCE_ATTR_VALUE" context_field='owner'/>
+				<retrieve permission="ADMIN_BOOKING_RESOURCE_ATTR_VALUE" context_field='owner'/>
+				<update permission="ADMIN_BOOKING_RESOURCE_ATTR_VALUE" context_field='owner'/>
+				<delete permission="ADMIN_BOOKING_RESOURCE_ATTR_VALUE" context_field='owner'/>
 			</actions>
 		</permacrud>
 	</class>
@@ -3521,10 +3521,18 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="ADMIN_BOOKING_RESOURCE_ATTR_MAP" global_required='true'/>
-				<retrieve />
-				<update permission="ADMIN_BOOKING_RESOURCE_ATTR_MAP" global_required='true'/>
-				<delete permission="ADMIN_BOOKING_RESOURCE_ATTR_MAP" global_required='true'/>
+				<create permission="ADMIN_BOOKING_RESOURCE_ATTR_MAP">
+                    <context link="resource" field="owner" />
+                </create>
+				<retrieve permission="ADMIN_BOOKING_RESOURCE_ATTR_MAP">
+                    <context link="resource" field="owner" />
+                </retrieve>
+				<update permission="ADMIN_BOOKING_RESOURCE_ATTR_MAP">
+                    <context link="resource" field="owner" />
+                </update>
+				<delete permission="ADMIN_BOOKING_RESOURCE_ATTR_MAP">
+                    <context link="resource" field="owner" />
+                </delete>
 			</actions>
 		</permacrud>
 	</class>
