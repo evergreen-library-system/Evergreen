@@ -1,3 +1,7 @@
+BEGIN;
+
+INSERT INTO config.upgrade_log (version) VALUES ('0573'); --miker
+
 CREATE OR REPLACE FUNCTION search.query_parser_fts (
 
     param_search_ou INT,
@@ -303,4 +307,6 @@ BEGIN
 
 END;
 $func$ LANGUAGE PLPGSQL;
+
+COMMIT;
 
