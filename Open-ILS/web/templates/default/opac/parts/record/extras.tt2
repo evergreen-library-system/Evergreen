@@ -19,7 +19,6 @@
             {name => 'content',  label => l('Contents'), hide => 1}, # ToC
             {name => 'authors',  label => l('Authors')}, 
             {name => 'series',   label => l('Series'), hide => 1}, 
-            {name => 'awards',   label => l('Series'), hide => 1}, 
             {name => 'subjects', label => l('Subject')}, 
             {name => 'annotation', label => l('Annotation'), hide => 1}, 
             {name => 'awards',  label => l('Awards, Reviews, & Suggested Reads')}, 
