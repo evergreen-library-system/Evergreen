@@ -1001,3 +1001,4 @@ a.dash-link:hover { text-decoration: underline !important; }
 .rdetail-author-div { padding-bottom: 10px; }
 
 .invisible { visibility: hidden; }
+.rdetail-extras-summary { margin: 10px; }
