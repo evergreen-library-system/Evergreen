@@ -1560,7 +1560,7 @@ sub print_hold_pull_list_stream {
                 "flesh_fields" => {
                     "ahr" => ["usr", "current_copy"],
                     "au"  => ["card"],
-                    "acp" => ["location", "call_number"],
+                    "acp" => ["location", "call_number", "parts"],
                     "acn" => ["record","prefix","suffix"]
                 }
             }
@@ -2284,11 +2284,13 @@ sub _check_title_hold_is_possible {
                         }
                     },
                     acpl => { field => 'id', filter => { holdable => 't'}, fkey => 'location' },
-                    ccs  => { field => 'id', filter => { holdable => 't'}, fkey => 'status'   }
+                    ccs  => { field => 'id', filter => { holdable => 't'}, fkey => 'status'   },
+                    acpm => { field => 'target_copy', type => 'left' } # ignore part-linked copies
                 }
             }, 
             where => {
-                '+acp' => { circulate => 't', deleted => 'f', holdable => 't', %org_filter }
+                '+acp' => { circulate => 't', deleted => 'f', holdable => 't', %org_filter },
+                '+acpm' => { target_copy => undef } # ignore part-linked copies
             }
         }
     );
@@ -2656,6 +2658,14 @@ sub _check_volume_hold_is_possible {
     my %org_filter = create_ranged_org_filter(new_editor(), $selection_ou, $depth);
 	my $copies = new_editor->search_asset_copy({call_number => $vol->id, %org_filter});
 	$logger->info("checking possibility of volume hold for volume ".$vol->id);
+
+    my $filter_copies = [];
+    for my $copy (@$copies) {
+        # ignore part-mapped copies for regular volume level holds
+        push(@$filter_copies, $copy) unless
+            new_editor->search_asset_copy_part_map({target_copy => $copy->id})->[0];
+    }
+    $copies = $filter_copies;
 
     return (
         0, 0, [

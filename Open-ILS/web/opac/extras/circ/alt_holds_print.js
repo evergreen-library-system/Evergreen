@@ -37,6 +37,11 @@ function do_pull_list() {
                 hold.current_copy.call_number.record = hold_fm.current_copy().call_number().record().toHash(true);
                 hold.current_copy.call_number.prefix = hold_fm.current_copy().call_number().prefix().toHash(true);
                 hold.current_copy.call_number.suffix = hold_fm.current_copy().call_number().suffix().toHash(true);
+                hold.current_copy.parts_stringified = '';
+                dojo.forEach( hold_fm.current_copy().parts(), function(part) {
+                    hold.current_copy.parts_stringified += ' ' + part.label();
+                });
+
 
                 // clone the template's html
                 var tr = dojo.clone(

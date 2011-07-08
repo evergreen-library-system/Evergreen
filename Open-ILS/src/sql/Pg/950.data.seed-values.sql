@@ -8407,11 +8407,11 @@ INSERT INTO action_trigger.event_definition (
 $$
 [%- USE date -%]
 <style>
-    table { border-collapse: collapse; } 
-    td { padding: 5px; border-bottom: 1px solid #888; } 
+    table { border-collapse: collapse; }
+    td { padding: 5px; border-bottom: 1px solid #888; }
     th { font-weight: bold; }
 </style>
-[% 
+[%
     # Sort the holds into copy-location buckets
     # In the main print loop, sort each bucket by callnumber before printing
     SET holds_list = [];
@@ -8438,14 +8438,14 @@ $$
             <th>Author</th>
             <th>Shelving Location</th>
             <th>Call Number</th>
-            <th>Barcode</th>
+            <th>Barcode/Part</th>
             <th>Patron</th>
         </tr>
     </thead>
     <tbody>
     [% FOR loc_data IN holds_list  %]
         [% FOR hold_data IN loc_data.sort('callnumber') %]
-            [% 
+            [%
                 SET hold = hold_data.hold;
                 SET copy_data = helpers.get_copy_bib_basics(hold.current_copy.id);
             %]
@@ -8454,7 +8454,11 @@ $$
                 <td>[% copy_data.author | truncate %]</td>
                 <td>[% hold.current_copy.location.name %]</td>
                 <td>[% hold.current_copy.call_number.label %]</td>
-                <td>[% hold.current_copy.barcode %]</td>
+                <td>[% hold.current_copy.barcode %]
+                    [% FOR part IN hold.current_copy.parts %]
+                       [% part.part.label %]
+                    [% END %]
+                </td>
                 <td>[% hold.usr.card.barcode %]</td>
             </tr>
         [% END %]
@@ -8471,7 +8475,9 @@ INSERT INTO action_trigger.environment (
         (35, 'current_copy.location'),
         (35, 'current_copy.call_number'),
         (35, 'usr.card'),
-        (35, 'pickup_lib')
+        (35, 'pickup_lib'),
+        (35, 'current_copy.parts'),
+        (35, 'current_copy.parts.part')
 ;
 
 -- 0386.data.org-setting-patron-clone-copy-addr.sql

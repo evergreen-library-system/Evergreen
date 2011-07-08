@@ -31,11 +31,11 @@ biblio::peer_type->columns( Essential => qw/id name/ );
 #-------------------------------------------------------------------------------
 
 #-------------------------------------------------------------------------------
-package biblio::peer_record_copy_map;
+package biblio::peer_bib_copy_map;
 use base qw/biblio/;
 
-biblio::peer_record_copy_map->table( 'biblio_peer_record_copy_map' );
-biblio::peer_record_copy_map->columns( Essential => qw/id peer_type peer_record target_copy/ );
+biblio::peer_bib_copy_map->table( 'biblio_peer_bib_copy_map' );
+biblio::peer_bib_copy_map->columns( Essential => qw/id peer_type peer_record target_copy/ );
 #-------------------------------------------------------------------------------
 
 #-------------------------------------------------------------------------------

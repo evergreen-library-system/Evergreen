@@ -4,6 +4,7 @@
     package asset::copy_part_map;
 
     asset::copy_part_map->table( 'asset.copy_part_map' );
+    asset::copy_part_map->sequence( 'asset.copy_part_map_id_seq' );
 
     #-------------------------------------------------------------------------------
     package biblio::monograph_part;
@@ -12,10 +13,10 @@
     biblio::monograph_part->sequence( 'biblio.monograph_part_id_seq' );
 
 	#-------------------------------------------------------------------------------
-	package biblio::peer_record_copy_map;
+	package biblio::peer_bib_copy_map;
 
-	biblio::peer_record_copy_map->table( 'biblio.peer_record_copy_map' );
-	biblio::peer_record_copy_map->sequence( 'biblio.peer_record_copy_map_id_seq' );
+	biblio::peer_bib_copy_map->table( 'biblio.peer_bib_copy_map' );
+	biblio::peer_bib_copy_map->sequence( 'biblio.peer_bib_copy_map_id_seq' );
 
 	#-------------------------------------------------------------------------------
 	package biblio::peer_type;
