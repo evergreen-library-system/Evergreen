@@ -3,39 +3,6 @@
     PROCESS get_marc_attrs args=attrs;
 %]
 <div>
-    <div id='xulholds_box' class='hide_me canvas' style='margin-top: 6px;'>
-        <!-- XXX TODO staff will need this to work ("advanced" hold placement)
-        later -->
-        <center>
-            <table class='data_grid' style='margin-top: 20px;'>
-                <tbody>
-                    <tr>
-                        <td>[% l("Enter recipient barcode") %]:</td>
-                        <td>
-                            <input type='text' id='xul_recipient_barcode' />
-                        </td>
-                        <td>
-                            <input type='submit' value='[% l("Submit") %]'
-                                id='xul_recipient_barcode_submit' />
-                        </td>
-                        <td>
-                            <input type='submit' value='[% l("Cancel") %]' />
-                        </td>
-                        <td>
-                            <input type='submit'
-                                value='[% l("Place hold for my account") %]'
-                                id='xul_recipient_me' />
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </center>
-    </div>
-    <div id='check_holds_box' class='hide_me canvas' 
-        style='margin-top: 6px; width: 100%; text-align: center'>
-        <br/><br/><br/>
-        <b>[% l("Checking for possibility of hold fulfillment...") %]</b>
-    </div>
     <div id='holds_box' class='canvas' style='margin-top: 6px;'>
         [% IF ctx.hold_success %]
         <div><big><strong>[% l("Hold was successfully placed"); %]</strong></big></div>
@@ -69,6 +36,25 @@
             <input type="hidden" name="redirect_to"
                 value="[% new_redirect_to | html %]" />
             <h1>Place Hold</h1>
+            [% IF ctx.is_staff %]
+            <p class="staff-hold">
+                <input type="radio" id="hold_usr_is_requestor_not"
+                    onchange="staff_hold_nicety(this);"
+                    name="hold_usr_is_requestor" value="0" />
+                <label for="hold_usr_is_requestor_not">
+                    [% l("Place hold for patron by barcode:") %]
+                </label>
+                <input type="text" name="hold_usr" id="hold_usr_input" /><br />
+
+                <input type="radio" id="hold_usr_is_requestor"
+                    onchange="staff_hold_nicety(this);"
+                    name="hold_usr_is_requestor" value="1" />
+                <label for="hold_usr_is_requestor">
+                    [% l("Place this hold for me ([_1] [_2])",
+                    ctx.user.first_given_name, ctx.user.family_name) %]
+                </label>
+            </p>
+            [% END %]
             <p>
                 [% | l(attrs.title, ctx.get_aou(ctx.default_pickup_lib).name) %]
                 You would like to place a hold on <strong><q>[_1]</q></strong> to be picked up at [_2].

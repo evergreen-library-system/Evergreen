@@ -366,10 +366,28 @@ sub load_place_hold {
 
     $ctx->{marc_xml} = XML::LibXML->new->parse_string($ctx->{record}->marc);
 
-    if(my $pickup_lib = $cgi->param('pickup_lib')) {
+    if (my $pickup_lib = $cgi->param('pickup_lib')) {
+        my $requestor = $e->requestor->id;
+        my $usr; 
+
+        if ((not $ctx->{"is_staff"}) or
+            ($cgi->param("hold_usr_is_requestor"))) {
+            $usr = $requestor;
+        } else {
+            my $actor = create OpenSRF::AppSession("open-ils.actor");
+            $usr = $actor->request(
+                "open-ils.actor.user.retrieve_id_by_barcode_or_username",
+                $e->authtoken, $cgi->param("hold_usr")
+            )->gather(1);
+
+            if (defined $U->event_code($usr)) {
+                $ctx->{hold_failed} = 1;
+                $ctx->{hold_failed_event} = $usr;
+            }
+        }
 
         my $args = {
-            patronid => $e->requestor->id,
+            patronid => $usr,
             titleid => $ctx->{hold_target}, # XXX
             pickup_lib => $pickup_lib,
             depth => 0, # XXX
@@ -385,8 +403,8 @@ sub load_place_hold {
             my $hold = Fieldmapper::action::hold_request->new;
 
             $hold->pickup_lib($pickup_lib);
-            $hold->requestor($e->requestor->id);
-            $hold->usr($e->requestor->id); # XXX staff
+            $hold->requestor($requestor);
+            $hold->usr($usr);
             $hold->target($ctx->{hold_target});
             $hold->hold_type($ctx->{hold_type});
             # frozen, expired, etc..
