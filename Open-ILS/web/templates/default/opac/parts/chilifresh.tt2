@@ -15,6 +15,6 @@
     <input type="hidden" id="chilifresh_version" name="chilifresh_version" value="onsite_v1" />
     <input type="hidden" id="chilifresh_type" name="chilifresh_type" value="search" />
     <script type="text/javascript" src="[% chili_url %]"></script>
-    <script>try { chili_init(); } catch(E) {}</script>
+    <script>try { setTimeout(chili_init, 0); } catch(E) {}</script>
 [% END %]
 

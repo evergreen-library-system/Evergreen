@@ -1,0 +1,15 @@
+<div class='rdetail_extras_div'> 
+    [%  IF attrs.summary %]
+    <div class='rdetail-extras-summary'>
+        <strong>[% l('Summary: ') %]</strong>[% attrs.summary %]
+    </div>
+    [% END %]
+
+    <!-- Embedded content cafe iframe -->
+    [% ident = attrs.isbn_clean || attrs.upc %]
+    <iframe width="100%" height="400" frameborder="0" 
+        src="http[% CGI.https ? 's' : '' %]://contentcafe2.btol.com/ContentCafeClient/ContentCafe.aspx?UserID=[%- 
+            ENV.OILS_CONTENT_CAFE_USER %]&Password=[% ENV.OILS_CONTENT_CAFE_PASS %]&ItemKey=[% ident %]&Options=Y" >
+    </iframe>
+</div>
+

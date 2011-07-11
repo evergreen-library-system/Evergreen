@@ -6,6 +6,12 @@
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/staff.js"></script>
 [% END %]
 
+[% IF ENV.OILS_NOVELIST_URL AND ctx.page == 'record';
+    url = ENV.OILS_NOVELIST_URL;
+    IF CGI.https; url = url.replace('^http:', 'https:'); END; %]
+<script type='text/javascript' id='EIT' src='[% url %]'></script>
+[% END %]
+
 <!-- Google Analytics -->
 <script type="text/javascript">
 /* uncomment when ready */ /*

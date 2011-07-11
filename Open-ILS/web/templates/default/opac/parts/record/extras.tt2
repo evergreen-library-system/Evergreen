@@ -2,12 +2,23 @@
     <div id='rdetail_extras_div' style='width: 100%;'> 
 
         [%  # Hidden extras are not yet implemented.  Some may require JS
+
+        # Let's see if we should hide the content cafe / simple summary content
+        hide_summary = 1;
+        IF attrs.summary; hide_summary = 0; ELSE;
+            # Expose content cafe if it's reasonable to do so.
+            # This approach only works when using embedded content cafe.
+            IF ENV.OILS_CONTENT_CAFE_USER; 
+                ident = attrs.isbn_clean || attrs.upc; 
+                IF ident; hide_summary = 0; END;
+            END;
+        END;
+
         extras = [
-            {name => 'summary',  label => l('Summaries &amp; More'), hide => 1}, # Content Cafe
+            {name => 'summaryplus',  label => l('Summaries &amp; More'), hide => hide_summary}, 
             {name => 'content',  label => l('Contents'), hide => 1}, # ToC
             {name => 'authors',  label => l('Authors')}, 
             {name => 'series',   label => l('Series'), hide => 1}, 
-            {name => 'awards',   label => l('Series'), hide => 1}, 
             {name => 'subjects', label => l('Subject')}, 
             {name => 'annotation', label => l('Annotation'), hide => 1}, 
             {name => 'awards',  label => l('Awards, Reviews, & Suggested Reads')}, 
