@@ -909,8 +909,8 @@
 					below to build the prerequisites from the software distribution that you just downloaded
 					and unpacked. Remember to replace <emphasis>[DISTRIBUTION]</emphasis> in the following
 					example with the keyword corresponding to the name of one of the 
-					<systemitem class="osname">Linux</systemitem> distributions listed in the following
-					distribution list.
+					<systemitem class="osname">Linux</systemitem> distributions listed in the in the
+					distribution keywords table <xref linkend="serversideinstallation-keywords-evergreen"/>.
 					For example, to install the prerequisites for Ubuntu version 10.05 (Lucid Lynx) you would
 					enter this command: <command>make -f Open-ILS/src/extras/Makefile.install
 					ubuntu-lucid</command>.</para>
@@ -920,6 +920,71 @@
 	cd /home/opensrf/Evergreen-ILS-2.0.4
 	make -f Open-ILS/src/extras/Makefile.install [DISTRIBUTION]</userinput>
 					</screen>
+					
+					<table xml:id="serversideinstallation-keywords-evergreen">
+						<?dbfo keep-together="always" ?>
+						<title>Keyword Targets for Evergreen <application>"make"</application> Command</title>
+						<tgroup align="left" cols="2" colsep="1" rowsep="1">
+							<colspec colname="keyword" colnum="1" colwidth="1.0*"/>
+							<colspec colname="linux_version" colnum="2" colwidth="3.0*"/>
+							<thead>
+								<row>
+									<entry>Keyword</entry>
+									<entry>Linux Version</entry>
+								</row>
+							</thead>
+							<tbody>
+								<row>
+									<entry>debian-squeeze</entry>
+									<entry>Debian "Squeeze" (6.0)</entry>
+								</row>
+								<row>
+									<entry>debian-lenny</entry>
+									<entry>Debian "Lenny" (5.0)</entry>
+								</row>
+								<row>
+									<entry>ubuntu-hardy</entry>
+									<entry>Ubuntu "Hardy Heron" (8.04)</entry>
+								</row>
+								<row>
+									<entry>ubuntu-lucid</entry>
+									<entry>Ubuntu "Lucid Lynx" (10.04)</entry>
+								</row>
+								<row>
+									<entry>fedora13</entry>
+									<entry>Fedora "Goddard" (13)</entry>
+								</row>
+								<row>
+									<entry>centos</entry>
+									<entry>CentOS 5</entry>
+								</row>
+								<row>
+									<entry>rhel</entry>
+									<entry>Red Hat Enterprise Linux 5</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</table>
+					<indexterm>
+						<primary>Linux</primary>
+						<secondary>Debian</secondary>
+					</indexterm>
+					<indexterm>
+						<primary>Linux</primary>
+						<secondary>Fedora</secondary>
+					</indexterm>
+					<indexterm>
+						<primary>Linux</primary>
+						<secondary>Ubuntu</secondary>
+					</indexterm>
+					<indexterm>
+						<primary>Linux</primary>
+						<secondary>CentOS</secondary>
+					</indexterm>
+					<indexterm>
+						<primary>Linux</primary>
+						<secondary>Red Hat</secondary>
+					</indexterm>					
 				</step>
 				<step performance="optional">
 					<title>(OPTIONAL) Install the PostgreSQL Server</title>
@@ -1283,11 +1348,12 @@
 									<para>The following updates are needed to allow the logs
 									to function properly, but it may break other Apache
 									applications on your server:</para>
-									<para>Edit the Apache configuration file and
+									<para>As the <systemitem class="username">root</systemitem> user, edit the Apache configuration file <filename>/etc/apache2/envvars</filename> and
 									change the lines:</para>
 									<screen>
-										<userinput>export APACHE_RUN_USER=www-data</userinput>
-										<userinput>export APACHE_RUN_GROUP=www-data</userinput>
+										<userinput>
+	export APACHE_RUN_USER=www-data
+	export APACHE_RUN_GROUP=www-data</userinput>
 									</screen>
 									<para>to instead read:</para>
 									<screen>
