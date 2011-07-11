@@ -286,6 +286,10 @@ BEGIN
 END;
 $f$ STABLE LANGUAGE PLPGSQL;
 
+CREATE OR REPLACE FUNCTION authority.generate_overlay_template ( BIGINT ) RETURNS TEXT AS $func$
+    SELECT authority.generate_overlay_template( marc ) FROM authority.record_entry WHERE id = $1;
+$func$ LANGUAGE SQL;
+
 CREATE OR REPLACE FUNCTION authority.merge_records ( target_record BIGINT, source_record BIGINT ) RETURNS INT AS $func$
 DECLARE
     moved_objects INT := 0;
