@@ -6,7 +6,7 @@ BEGIN;
 
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0575', :eg_version);
 
 CREATE TABLE authority.control_set (
     id          SERIAL  PRIMARY KEY,
