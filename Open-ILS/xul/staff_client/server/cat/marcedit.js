@@ -42,6 +42,8 @@ var show_auth_menu = false;
 
 function $(id) { return document.getElementById(id); }
 
+var acs; // AuthorityControlSet
+
 function mangle_005() {
     var now = new Date();
     var y = now.getUTCFullYear();
@@ -112,8 +114,6 @@ function wrap_long_fields (node) {
 
 function set_flat_editor (useFlatText) {
 
-    dojo.require('MARC.Record');
-
     var xe = $('xul-editor');
     var te = $('text-editor');
 
@@ -136,7 +136,8 @@ function set_flat_editor (useFlatText) {
 
         // reset the xml record and rerender it
         xml_record = new XML( xml_string );
-        loadRecord(xml_record);
+        if (xml_record..record[0]) xml_record = xml_record..record[0];
+        loadRecord();
     } else {
         var xml_string = xml_record.toXMLString();
 
@@ -153,6 +154,9 @@ function my_init() {
         if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
         JSAN.errorLevel = "die"; // none, warn, or die
         JSAN.addRepository('/xul/server/');
+
+        dojo.require('openils.AuthorityControlSet');
+        acs = new openils.AuthorityControlSet ();
 
         // Fake xulG for standalone...
         try {
@@ -199,7 +203,7 @@ function my_init() {
             'mangle_005(); ' + 
             'var xml_string = xml_escape_unicode( xml_record.toXMLString() ); ' + 
             'save_attempt( xml_string ); ' +
-            'loadRecord(xml_record);'
+            'loadRecord();'
         );
 
         if (window.xulG.record.url) {
@@ -347,7 +351,7 @@ function my_init() {
         }
         req.send(null);
 
-        loadRecord(xml_record);
+        loadRecord();
 
         if (! xulG.fast_add_item) {
             document.getElementById('fastItemAdd_checkbox').hidden = true;
@@ -366,6 +370,8 @@ function my_init() {
 
             buildBibSourceList(authtoken, xulG.record.id);
         }
+
+        dojo.require('MARC.FixedFields');
 
     } catch(E) {
         alert('FIXME, MARC Editor, my_init: ' + E);
@@ -680,13 +686,13 @@ function createMARCTextbox (element,attrs) {
                 }
             } else if (event.keyCode == 64 && event.ctrlKey) { // ctrl + F6
                 createControlField('006','                                        ');
-                loadRecord(xml_record);
+                loadRecord();
             } else if (event.keyCode == 65 && event.ctrlKey) { // ctrl + F7
                 createControlField('007','                                        ');
-                loadRecord(xml_record);
+                loadRecord();
             } else if (event.keyCode == 66 && event.ctrlKey) { // ctrl + F8
                 createControlField('008','                                        ');
-                loadRecord(xml_record);
+                loadRecord();
             }
 
             return true;
@@ -745,596 +751,12 @@ function createMARCTextbox (element,attrs) {
         'keyup', 
         function () {
             if (element.localName() == 'controlfield')
-                eval('fillFixedFields(xml_record);');
+                eval('fillFixedFields();');
         },
         true
     );
 
     return box;
-}
-
-var rec_type = {
-    BKS : { Type : /[at]{1}/,    BLvl : /[acdm]{1}/ },
-    SER : { Type : /[a]{1}/,    BLvl : /[bs]{1}/ },
-    VIS : { Type : /[gkro]{1}/,    BLvl : /[abcdms]{1}/ },
-    MIX : { Type : /[p]{1}/,    BLvl : /[cd]{1}/ },
-    MAP : { Type : /[ef]{1}/,    BLvl : /[abcdms]{1}/ },
-    SCO : { Type : /[cd]{1}/,    BLvl : /[abcdms]{1}/ },
-    REC : { Type : /[ij]{1}/,    BLvl : /[abcdms]{1}/ },
-    COM : { Type : /[m]{1}/,    BLvl : /[abcdms]{1}/ },
-    AUT : { Type : /[z]{1}/,    BLvl : /.{1}/ },
-    MFHD : { Type : /[uvxy]{1}/,  BLvl : /.{1}/ }
-};
-
-var ff_pos = {
-    TrAr : {
-        _8 : {
-            SCO : {start : 33, len : 1, def : ' ' },
-            REC : {start : 33, len : 1, def : 'n' }
-        },
-        _6 : {
-            SCO : {start : 16, len : 1, def : ' ' },
-            REC : {start : 16, len : 1, def : 'n' }
-        }
-    },
-    TMat : {
-        _8 : {
-            VIS : {start : 33, len : 1, def : ' ' }
-        },
-        _6 : {
-            VIS : {start : 16, len : 1, def : ' ' }
-        }
-    },
-    Time : {
-        _8 : {
-            VIS : {start : 18, len : 3, def : ' ' }
-        },
-        _6 : {
-            VIS : {start : 1, len : 3, def : ' ' }
-        }
-    },
-    Tech : {
-        _8 : {
-            VIS : {start : 34, len : 1, def : 'n' }
-        },
-        _6 : {
-            VIS : {start : 17, len : 1, def : 'n' }
-        }
-    },
-    SrTp : {
-        _8 : {
-            SER : {start : 21, len : 1, def : ' ' }
-        },
-        _6 : {
-            SER : {start : 4, len : 1, def : ' ' }
-        }
-    },
-    Srce : {
-        _8 : {
-            BKS : {start : 39, len : 1, def : 'd' },
-            SER : {start : 39, len : 1, def : 'd' },
-            VIS : {start : 39, len : 1, def : 'd' },
-            MIX : {start : 39, len : 1, def : 'd' },
-            MAP : {start : 39, len : 1, def : 'd' },
-            SCO : {start : 39, len : 1, def : 'd' },
-            REC : {start : 39, len : 1, def : 'd' },
-            COM : {start : 39, len : 1, def : 'd' }
-        }
-    },
-    SpFm : {
-        _8 : {
-            MAP : {start : 33, len : 2, def : ' ' }
-        },
-        _6 : {
-            MAP : {start : 16, len : 2, def : ' ' }
-        }
-    },
-    Relf : {
-        _8 : {
-            MAP : {start : 18, len : 4, def : ' ' }
-        },
-        _6 : {
-            MAP : {start : 1, len : 4, def : ' ' }
-        }
-    },
-    Regl : {
-        _8 : {
-            SER : {start : 19, len : 1, def : ' ' }
-        },
-        _6 : {
-            SER : {start : 2, len : 1, def : ' ' }
-        }
-    },
-    Proj : {
-        _8 : {
-            MAP : {start : 22, len : 2, def : ' ' }
-        },
-        _6 : {
-            MAP : {start : 5, len : 2, def : ' ' }
-        }
-    },
-    Part : {
-        _8 : {
-            SCO : {start : 21, len : 1, def : ' ' },
-            REC : {start : 21, len : 1, def : 'n' }
-        },
-        _6 : {
-            SCO : {start : 4, len : 1, def : ' ' },
-            REC : {start : 4, len : 1, def : 'n' }
-        }
-    },
-    Orig : {
-        _8 : {
-            SER : {start : 22, len : 1, def : ' ' }
-        },
-        _6 : {
-            SER : {start : 5, len : 1, def : ' ' }
-        }
-    },
-    LTxt : {
-        _8 : {
-            SCO : {start : 30, len : 2, def : ' ' },
-            REC : {start : 30, len : 2, def : ' ' }
-        },
-        _6 : {
-            SCO : {start : 13, len : 2, def : ' ' },
-            REC : {start : 13, len : 2, def : ' ' }
-        }
-    },
-    Freq : {
-        _8 : {
-            SER : {start : 18, len : 1, def : ' ' }
-        },
-        _6 : {
-            SER : {start : 1, len : 1, def : ' ' }
-        }
-    },
-    FMus : {
-        _8 : {
-            SCO : {start : 20, len : 1, def : ' ' },
-            REC : {start : 20, len : 1, def : 'n' }
-        },
-        _6 : {
-            SCO : {start : 3, len : 1, def : ' ' },
-            REC : {start : 3, len : 1, def : 'n' }
-        }
-    },
-    File : {
-        _8 : {
-            COM : {start : 26, len : 1, def : 'u' }
-        },
-        _6 : {
-            COM : {start : 9, len : 1, def : 'u' }
-        }
-    },
-    EntW : {
-        _8 : {
-            SER : {start : 24, len : 1, def : ' ' }
-        },
-        _6 : {
-            SER : {start : 7, len : 1, def : ' ' }
-        }
-    },
-    AccM : {
-        _8 : {
-            SCO : {start : 24, len : 6, def : ' ' },
-            REC : {start : 24, len : 6, def : ' ' }
-        },
-        _6 : {
-            SCO : {start : 7, len : 6, def : ' ' },
-            REC : {start : 7, len : 6, def : ' ' }
-        }
-    },
-    Comp : {
-        _8 : {
-            SCO : {start : 18, len : 2, def : ' ' },
-            REC : {start : 18, len : 2, def : ' ' }
-        },
-        _6 : {
-            SCO : {start : 1, len : 2, def : ' ' },
-            REC : {start : 1, len : 2, def : ' ' }
-        }
-    },
-    CrTp : {
-        _8 : {
-            MAP : {start : 25, len : 1, def : ' ' }
-        },
-        _6 : {
-            MAP : {start : 8, len : 1, def : ' ' }
-        }
-    },
-    Ctry : {
-        _8 : {
-            BKS : {start : 15, len : 3, def : ' ' },
-            SER : {start : 15, len : 3, def : ' ' },
-            VIS : {start : 15, len : 3, def : ' ' },
-            MIX : {start : 15, len : 3, def : ' ' },
-            MAP : {start : 15, len : 3, def : ' ' },
-            SCO : {start : 15, len : 3, def : ' ' },
-            REC : {start : 15, len : 3, def : ' ' },
-            COM : {start : 15, len : 3, def : ' ' }
-        }
-    },
-    Lang : {
-        _8 : {
-            BKS : {start : 35, len : 3, def : ' ' },
-            SER : {start : 35, len : 3, def : ' ' },
-            VIS : {start : 35, len : 3, def : ' ' },
-            MIX : {start : 35, len : 3, def : ' ' },
-            MAP : {start : 35, len : 3, def : ' ' },
-            SCO : {start : 35, len : 3, def : ' ' },
-            REC : {start : 35, len : 3, def : ' ' },
-            COM : {start : 35, len : 3, def : ' ' }
-        }
-    },
-    MRec : {
-        _8 : {
-            BKS : {start : 38, len : 1, def : ' ' },
-            SER : {start : 38, len : 1, def : ' ' },
-            VIS : {start : 38, len : 1, def : ' ' },
-            MIX : {start : 38, len : 1, def : ' ' },
-            MAP : {start : 38, len : 1, def : ' ' },
-            SCO : {start : 38, len : 1, def : ' ' },
-            REC : {start : 38, len : 1, def : ' ' },
-            COM : {start : 38, len : 1, def : ' ' }
-        }
-    },
-    DtSt : {
-        _8 : {
-            BKS : {start : 6, len : 1, def : ' ' },
-            SER : {start : 6, len : 1, def : 'c' },
-            VIS : {start : 6, len : 1, def : ' ' },
-            MIX : {start : 6, len : 1, def : ' ' },
-            MAP : {start : 6, len : 1, def : ' ' },
-            SCO : {start : 6, len : 1, def : ' ' },
-            REC : {start : 6, len : 1, def : ' ' },
-            COM : {start : 6, len : 1, def : ' ' }
-        }
-    },
-    Type : {
-        ldr : {
-            BKS : {start : 6, len : 1, def : 'a' },
-            SER : {start : 6, len : 1, def : 'a' },
-            VIS : {start : 6, len : 1, def : 'g' },
-            MIX : {start : 6, len : 1, def : 'p' },
-            MAP : {start : 6, len : 1, def : 'e' },
-            SCO : {start : 6, len : 1, def : 'c' },
-            REC : {start : 6, len : 1, def : 'i' },
-            COM : {start : 6, len : 1, def : 'm' },
-            AUT : {start : 6, len : 1, def : 'z' },
-            MFHD : {start : 6, len : 1, def : 'y' }
-        }
-    },
-    Ctrl : {
-        ldr : {
-            BKS : {start : 8, len : 1, def : ' ' },
-            SER : {start : 8, len : 1, def : ' ' },
-            VIS : {start : 8, len : 1, def : ' ' },
-            MIX : {start : 8, len : 1, def : ' ' },
-            MAP : {start : 8, len : 1, def : ' ' },
-            SCO : {start : 8, len : 1, def : ' ' },
-            REC : {start : 8, len : 1, def : ' ' },
-            COM : {start : 8, len : 1, def : ' ' }
-        }
-    },
-    BLvl : {
-        ldr : {
-            BKS : {start : 7, len : 1, def : 'm' },
-            SER : {start : 7, len : 1, def : 's' },
-            VIS : {start : 7, len : 1, def : 'm' },
-            MIX : {start : 7, len : 1, def : 'c' },
-            MAP : {start : 7, len : 1, def : 'm' },
-            SCO : {start : 7, len : 1, def : 'm' },
-            REC : {start : 7, len : 1, def : 'm' },
-            COM : {start : 7, len : 1, def : 'm' }
-        }
-    },
-    Desc : {
-        ldr : {
-            BKS : {start : 18, len : 1, def : ' ' },
-            SER : {start : 18, len : 1, def : ' ' },
-            VIS : {start : 18, len : 1, def : ' ' },
-            MIX : {start : 18, len : 1, def : ' ' },
-            MAP : {start : 18, len : 1, def : ' ' },
-            SCO : {start : 18, len : 1, def : ' ' },
-            REC : {start : 18, len : 1, def : ' ' },
-            COM : {start : 18, len : 1, def : 'i' }
-        }
-    },
-    Item : {
-        ldr : {
-            MFHD : {start : 18, len : 1, def : 'i' }
-        }
-    },
-    ELvl : {
-        ldr : {
-            BKS : {start : 17, len : 1, def : ' ' },
-            SER : {start : 17, len : 1, def : ' ' },
-            VIS : {start : 17, len : 1, def : ' ' },
-            MIX : {start : 17, len : 1, def : ' ' },
-            MAP : {start : 17, len : 1, def : ' ' },
-            SCO : {start : 17, len : 1, def : ' ' },
-            REC : {start : 17, len : 1, def : ' ' },
-            COM : {start : 17, len : 1, def : ' ' },
-            AUT : {start : 17, len : 1, def : 'n' },
-            MFHD : {start : 17, len : 1, def : 'u' }
-        }
-    },
-    Indx : {
-        _8 : {
-            BKS : {start : 31, len : 1, def : '0' },
-            MAP : {start : 31, len : 1, def : '0' }
-        },
-        _6 : {
-            BKS : {start : 14, len : 1, def : '0' },
-            MAP : {start : 14, len : 1, def : '0' }
-        }
-    },
-    Date1 : {
-        _8 : {
-            BKS : {start : 7, len : 4, def : ' ' },
-            SER : {start : 7, len : 4, def : ' ' },
-            VIS : {start : 7, len : 4, def : ' ' },
-            MIX : {start : 7, len : 4, def : ' ' },
-            MAP : {start : 7, len : 4, def : ' ' },
-            SCO : {start : 7, len : 4, def : ' ' },
-            REC : {start : 7, len : 4, def : ' ' },
-            COM : {start : 7, len : 4, def : ' ' }
-        }
-    },
-    Date2 : {
-        _8 : {
-            BKS : {start : 11, len : 4, def : ' ' },
-            SER : {start : 11, len : 4, def : '9' },
-            VIS : {start : 11, len : 4, def : ' ' },
-            MIX : {start : 11, len : 4, def : ' ' },
-            MAP : {start : 11, len : 4, def : ' ' },
-            SCO : {start : 11, len : 4, def : ' ' },
-            REC : {start : 11, len : 4, def : ' ' },
-            COM : {start : 11, len : 4, def : ' ' }
-        }
-    },
-    LitF : {
-        _8 : {
-            BKS : {start : 33, len : 1, def : '0' }
-        },
-        _6 : {
-            BKS : {start : 16, len : 1, def : '0' }
-        }
-    },
-    Biog : {
-        _8 : {
-            BKS : {start : 34, len : 1, def : ' ' }
-        },
-        _6 : {
-            BKS : {start : 17, len : 1, def : ' ' }
-        }
-    },
-    Ills : {
-        _8 : {
-            BKS : {start : 18, len : 4, def : ' ' }
-        },
-        _6 : {
-            BKS : {start : 1, len : 4, def : ' ' }
-        }
-    },
-    Fest : {
-        _8 : {
-            BKS : {start : 30, len : 1, def : '0' }
-        },
-        _6 : {
-            BKS : {start : 13, len : 1, def : '0' }
-        }
-    },
-    Conf : {
-        _8 : {
-            BKS : {start : 29, len : 1, def : '0' },
-            SER : {start : 29, len : 1, def : '0' }
-        },
-        _6 : {
-            BKS : {start : 12, len : 1, def : '0' },
-            SER : {start : 12, len : 1, def : '0' }
-        }
-    },
-    Cont : {
-        _8 : {
-            BKS : {start : 24, len : 4, def : ' ' },
-            SER : {start : 25, len : 3, def : ' ' }
-        },
-        _6 : {
-            BKS : {start : 7, len : 4, def : ' ' },
-            SER : {start : 8, len : 3, def : ' ' }
-        }
-    },
-    GPub : {
-        _8 : {
-            BKS : {start : 28, len : 1, def : ' ' },
-            SER : {start : 28, len : 1, def : ' ' },
-            VIS : {start : 28, len : 1, def : ' ' },
-            MAP : {start : 28, len : 1, def : ' ' },
-            COM : {start : 28, len : 1, def : ' ' }
-        },
-        _6 : {
-            BKS : {start : 11, len : 1, def : ' ' },
-            SER : {start : 11, len : 1, def : ' ' },
-            VIS : {start : 11, len : 1, def : ' ' },
-            MAP : {start : 11, len : 1, def : ' ' },
-            COM : {start : 11, len : 1, def : ' ' }
-        }
-    },
-    Audn : {
-        _8 : {
-            BKS : {start : 22, len : 1, def : ' ' },
-            SER : {start : 22, len : 1, def : ' ' },
-            VIS : {start : 22, len : 1, def : ' ' },
-            SCO : {start : 22, len : 1, def : ' ' },
-            REC : {start : 22, len : 1, def : ' ' },
-            COM : {start : 22, len : 1, def : ' ' }
-        },
-        _6 : {
-            BKS : {start : 5, len : 1, def : ' ' },
-            SER : {start : 5, len : 1, def : ' ' },
-            VIS : {start : 5, len : 1, def : ' ' },
-            SCO : {start : 5, len : 1, def : ' ' },
-            REC : {start : 5, len : 1, def : ' ' },
-            COM : {start : 5, len : 1, def : ' ' }
-        }
-    },
-    Form : {
-        _8 : {
-            BKS : {start : 23, len : 1, def : ' ' },
-            SER : {start : 23, len : 1, def : ' ' },
-            VIS : {start : 29, len : 1, def : ' ' },
-            MIX : {start : 23, len : 1, def : ' ' },
-            MAP : {start : 29, len : 1, def : ' ' },
-            SCO : {start : 23, len : 1, def : ' ' },
-            REC : {start : 23, len : 1, def : ' ' }
-        },
-        _6 : {
-            BKS : {start : 6, len : 1, def : ' ' },
-            SER : {start : 6, len : 1, def : ' ' },
-            VIS : {start : 12, len : 1, def : ' ' },
-            MIX : {start : 6, len : 1, def : ' ' },
-            MAP : {start : 12, len : 1, def : ' ' },
-            SCO : {start : 6, len : 1, def : ' ' },
-            REC : {start : 6, len : 1, def : ' ' }
-        }
-    },
-    'S/L' : {
-        _8 : {
-            SER : {start : 34, len : 1, def : '0' }
-        },
-        _6 : {
-            SER : {start : 17, len : 1, def : '0' }
-        }
-    },
-    'Alph' : {
-        _8 : {
-            SER : {start : 33, len : 1, def : ' ' }
-        },
-        _6 : {
-            SER : {start : 16, len : 1, def : ' ' }
-        }
-    },
-    "GeoDiv" : {
-        "_8" : {
-            "AUT" : {"start" : 6, "len" : 1, "def" : ' ' }
-        }
-    },
-    "Roman" : {
-        "_8" : {
-            "AUT" : {"start" : 7, "len" : 1, "def" : ' ' }
-        }
-    },
-    "CatLang" : {
-        "_8" : {
-            "AUT" : {"start" : 8, "len" : 1, "def" : ' ' }
-        }
-    },
-    "Kind" : {
-        "_8" : {
-            "AUT" : {"start" : 9, "len" : 1, "def" : ' ' }
-        }
-    },
-    "Rules" : {
-        "_8" : {
-            "AUT" : {"start" : 10, "len" : 1, "def" : ' ' }
-        }
-    },
-    "SHSys" : {
-        "_8" : {
-            "AUT" : {"start" : 11, "len" : 1, "def" : ' ' }
-        }
-    },
-    "SerType" : {
-        "_8" : {
-            "AUT" : {"start" : 12, "len" : 1, "def" : ' ' }
-        }
-    },
-    "SerNum" : {
-        "_8" : {
-            "AUT" : {"start" : 13, "len" : 1, "def" : ' ' }
-        }
-    },
-    "HeadMain" : {
-        "_8" : {
-            "AUT" : {"start" : 14, "len" : 1, "def" : ' ' }
-        }
-    },
-    "HeadSubj" : {
-        "_8" : {
-            "AUT" : {"start" : 15, "len" : 1, "def" : ' ' }
-        }
-    },
-    "HeadSer" : {
-        "_8" : {
-            "AUT" : {"start" : 16, "len" : 1, "def" : ' ' }
-        }
-    },
-    "TypeSubd" : {
-        "_8" : {
-            "AUT" : {"start" : 17, "len" : 1, "def" : ' ' }
-        }
-    },
-    "TypeGov" : {
-        "_8" : {
-            "AUT" : {"start" : 28, "len" : 1, "def" : ' ' }
-        }
-    },
-    "RefEval" : {
-        "_8" : {
-            "AUT" : {"start" : 29, "len" : 1, "def" : ' ' }
-        }
-    },
-    "RecUpd" : {
-        "_8" : {
-            "AUT" : {"start" : 31, "len" : 1, "def" : ' ' }
-        }
-    },
-    "NameDiff" : {
-        "_8" : {
-            "AUT" : {"start" : 32, "len" : 1, "def" : ' ' }
-        }
-    },
-    "Level" : {
-        "_8" : {
-            "AUT" : {"start" : 33, "len" : 1, "def" : ' ' }
-        }
-    },
-    "ModRec" : {
-        "_8" : {
-            "AUT" : {"start" : 38, "len" : 1, "def" : ' ' }
-        }
-    },
-    "CatSrc" : {
-        "_8" : {
-            "AUT" : {"start" : 39, "len" : 1, "def" : ' ' }
-        }
-    }
-};
-
-function recordType (rec) {
-    try {
-        var _l = rec.leader.toString();
-
-        var _t = _l.substr(ff_pos.Type.ldr.BKS.start, ff_pos.Type.ldr.BKS.len);
-        var _b = _l.substr(ff_pos.BLvl.ldr.BKS.start, ff_pos.BLvl.ldr.BKS.len);
-
-        for (var t in rec_type) {
-            if (_t.match(rec_type[t].Type) && _b.match(rec_type[t].BLvl)) {
-                document.getElementById('recordTypeLabel').value = t;
-                _record_type = t;
-                return t;
-            }
-        }
-
-        // in case we don't have a valid record type ...
-        _record_type = 'BKS';
-        return _record_type;
-
-    } catch(E) {
-        alert('FIXME, MARC Editor, recordType: ' + E);
-    }
 }
 
 function toggleFFE () {
@@ -1362,16 +784,10 @@ function changeFFEditor (type) {
 
 }
 
-function fillFixedFields (rec) {
+function fillFixedFields () {
     try {
             var grid = document.getElementById('leaderGrid');
-
-            var rtype = _record_type;
-
-            var _l = rec.leader.toString();
-            var _6 = rec.controlfield.(@tag=='006').toString();
-            var _7 = rec.controlfield.(@tag=='007').toString();
-            var _8 = rec.controlfield.(@tag=='008').toString();
+            var marc_rec = new MARC.Record ({ delimiter : '$', marcxml : xml_record.toXMLString() });
 
             var list = [];
             var pre_list = grid.getElementsByTagName('label');
@@ -1383,52 +799,9 @@ function fillFixedFields (rec) {
 
             for (var i in list) {
                 var name = list[i].getAttribute('name');
+                var value = marc_rec.extractFixedField(name, true);
 
-                if (!ff_pos[name])
-                    continue;
-
-                var value = '';
-                if ( ff_pos[name].ldr && ff_pos[name].ldr[rtype] )
-                    value = _l.substr(ff_pos[name].ldr[rtype].start, ff_pos[name].ldr[rtype].len);
-
-                if ( ff_pos[name]._8 && ff_pos[name]._8[rtype] )
-                    value = _8.substr(ff_pos[name]._8[rtype].start, ff_pos[name]._8[rtype].len);
-
-                if ( !value && ff_pos[name]._6 && ff_pos[name]._6[rtype] )
-                    value = _6.substr(ff_pos[name]._6[rtype].start, ff_pos[name]._6[rtype].len);
-
-                if ( ff_pos[name]._7 && ff_pos[name]._7[rtype] )
-                    value = _7.substr(ff_pos[name]._7[rtype].start, ff_pos[name]._7[rtype].len);
-                
-                if (!value) {
-                    var d;
-                    var p;
-                    if (ff_pos[name].ldr && ff_pos[name].ldr[rtype]) {
-                        d = ff_pos[name].ldr[rtype].def;
-                        p = 'ldr';
-                    }
-
-                    if (ff_pos[name]._8 && ff_pos[name]._8[rtype]) {
-                        d = ff_pos[name]._8[rtype].def;
-                        p = '_8';
-                    }
-
-                    if (!value && ff_pos[name]._6 && ff_pos[name]._6[rtype]) {
-                        d = ff_pos[name]._6[rtype].def;
-                        p = '_6';
-                    }
-
-                    if (ff_pos[name]._7 && ff_pos[name]._7[rtype]) {
-                        d = ff_pos[name]._7[rtype].def;
-                        p = '_7';
-                    }
-
-                    if (p && !value) {
-                        for (var j = 0; j < ff_pos[name][p][rtype].len; j++) {
-                            value += d;
-                        }
-                    }
-                }
+                if (value === null) continue;
 
                 list[i].nextSibling.value = value;
             }
@@ -1442,44 +815,15 @@ function fillFixedFields (rec) {
 function updateFixedFields (element) {
     var grid = document.getElementById('leaderGrid');
     var recGrid = document.getElementById('recGrid');
-
-    var rtype = _record_type;
     var new_value = element.value;
 
-    var parts = {
-        ldr : _record.leader,
-        _6 : _record.controlfield.(@tag=='006'),
-        _7 : _record.controlfield.(@tag=='007'),
-        _8 : _record.controlfield.(@tag=='008')
-    };
+    var marc_rec = new MARC.Record ({ delimiter : '$', marcxml : xml_record.toXMLString() });
+    marc_rec.setFixedField(element.getAttribute('name'), new_value);
 
-    var name = element.getAttribute('name');
-    for (var i in ff_pos[name]) {
-
-        if (!ff_pos[name][i][rtype]) continue;
-        if (!parts[i]) {
-            // we're missing the required field.  Add it now.
-
-            var newfield;
-            if (i == '_6') newfield = '006';
-            else if (i == '_7') newfield = '007';
-            else if (i == '_8') newfield = '008';
-            else continue;
-
-            createControlField(newfield,'                                        ');
-            parts[i] = _record.controlfield.(@tag==newfield);
-        }
-
-        var before = parts[i].substr(0, ff_pos[name][i][rtype].start);
-        var after = parts[i].substr(ff_pos[name][i][rtype].start + ff_pos[name][i][rtype].len);
-
-        for (var j = 0; new_value.length < ff_pos[name][i][rtype].len; j++) {
-            new_value += ff_pos[name][i][rtype].def;
-        }
-
-        parts[i].setChildren( before + new_value + after );
-        recGrid.getElementsByAttribute('tag',i)[0].lastChild.value = parts[i].toString();
-    }
+    var xml_string = marc_rec.toXmlString();
+    xml_record = new XML( xml_string );
+    if (xml_record..record[0]) xml_record = xml_record..record[0];
+    loadRecord();
 
     return true;
 }
@@ -1720,26 +1064,27 @@ function marcSubfield (sf) {
     );
 }
 
-function loadRecord(rec) {
+function loadRecord() {
     try {
-            _record = rec;
             var grid_rows = document.getElementById('recGrid').lastChild;
 
             while (grid_rows.firstChild) grid_rows.removeChild(grid_rows.firstChild);
 
-            grid_rows.appendChild( marcLeader( rec.leader ) );
+            grid_rows.appendChild( marcLeader( xml_record.leader ) );
 
-            for (var i in rec.controlfield) {
-                grid_rows.appendChild( marcControlfield( rec.controlfield[i] ) );
+            for (var i in xml_record.controlfield) {
+                grid_rows.appendChild( marcControlfield( xml_record.controlfield[i] ) );
             }
 
-            for (var i in rec.datafield) {
-                grid_rows.appendChild( marcDatafield( rec.datafield[i] ) );
+            for (var i in xml_record.datafield) {
+                grid_rows.appendChild( marcDatafield( xml_record.datafield[i] ) );
             }
 
             grid_rows.getElementsByAttribute('class','marcDatafieldRow')[0].firstChild.focus();
-            changeFFEditor(recordType(rec));
-            fillFixedFields(rec);
+
+            var marc_rec = new MARC.Record ({ delimiter : '$', marcxml : xml_record.toXMLString() });
+            changeFFEditor(marc_rec.recordType());
+            fillFixedFields();
     } catch(E) {
         alert('FIXME, MARC Editor, loadRecord: ' + E);
     }
@@ -1871,116 +1216,6 @@ function getContextMenu (target, type) {
         tt = 't' + target.parentNode.firstChild.value + 'i2';
 
     target.setAttribute('context', tt);
-    return true;
-}
-
-var authority_tag_map = {
-    100 : ['[100,500,700]',100],
-    700 : ['[100,500,700]',100],
-    800 : ['[100,500,700]',100],
-    110 : ['[110,510,710]',110],
-    610 : ['[110,510,710]',110],
-    710 : ['[110,510,710]',110],
-    810 : ['[110,510,710]',110],
-    111 : ['[111,511,711]',111],
-    611 : ['[111,511,711]',111],
-    711 : ['[111,511,711]',111],
-    811 : ['[111,511,711]',111],
-    240 : ['[130,530,730]',130],
-    130 : ['[130,530,730]',130],
-    730 : ['[130,530,730]',130],
-    830 : ['[130,530,730]',130],
-    600 : ['[100,500,580,581,582,585,700,780,781,782,785]',100],
-    630 : ['[130,530,730]',130],
-    648 : ['[148,548]',148],
-    650 : ['[150,550,580,581,582,585,750,780,781,782,785]',150],
-    651 : ['[151,551,580,581,582,585,751,780,781,782,785]',151],
-    655 : ['[155,555,580,581,582,585,755,780,781,782,785]',155]
-};
-
-function getAuthorityContextMenu (target, sf) {
-    var menu_id = sf.parent().@tag + ':' + sf.@code + '-authority-context-' + sf;
-
-    var page = 0;
-    var old = dojo.byId( menu_id );
-    if (old) {
-        page = auth_pages[menu_id];
-        old.parentNode.removeChild(old);
-    } else {
-        auth_pages[menu_id] = 0;
-    }
-
-    var sf_popup = createPopup({ id : menu_id, flex : 1 });
-
-    sf_popup.addEventListener("popuphiding", function(event) {
-        if (show_auth_menu) {
-            show_auth_menu = false;
-            getAuthorityContextMenu(target, sf);
-            dojo.byId(menu_id).openPopup();
-        }  
-    }, false);
-
-    context_menus.appendChild( sf_popup );
-
-    if (!authority_tag_map[sf.parent().@tag]) {
-        sf_popup.appendChild(createLabel( { value : $('catStrings').getString('staff.cat.marcedit.not_authority_field.label') } ) );
-        target.setAttribute('context', 'clipboard');
-        return false;
-    }
-
-    if (sf.toString().replace(/\s*/, '')) {
-        browseAuthority(sf_popup, menu_id, target, sf, 20, page);
-    }
-
-    return true;
-}
-
-/* Apply the complete 1xx */
-function applyFullAuthority ( target, ui_sf, e4x_sf ) {
-    var new_vals = dojo.query('*[tag^="1"]', target);
-    return applyAuthority( target, ui_sf, e4x_sf, new_vals );
-}
-
-function applySelectedAuthority ( target, ui_sf, e4x_sf ) {
-    var new_vals = target.getElementsByAttribute('checked','true');
-    return applyAuthority( target, ui_sf, e4x_sf, new_vals );
-}
-
-function applyAuthority ( target, ui_sf, e4x_sf, new_vals ) {
-    var field = e4x_sf.parent();
-
-    for (var i = 0; i < new_vals.length; i++) {
-
-        var sf_list = field.subfield;
-        for (var j in sf_list) {
-
-            if (sf_list[j].@code == new_vals[i].getAttribute('subfield')) {
-                sf_list[j] = new_vals[i].getAttribute('value');
-                new_vals[i].setAttribute('subfield','');
-                break;
-            }
-        }
-    }
-
-    for (var i = 0; i < new_vals.length; i++) {
-        if (!new_vals[i].getAttribute('subfield')) continue;
-
-        var val = new_vals[i].getAttribute('value');
-
-        var sf = <subfield code="" xmlns="http://www.loc.gov/MARC21/slim">{val}</subfield>;
-        sf.@code = new_vals[i].getAttribute('subfield');
-
-        field.insertChildAfter(field.subfield[field.subfield.length() - 1], sf);
-    }
-
-    var row = marcDatafield( field );
-
-    var node = ui_sf;
-    while (node.nodeName != 'row') {
-        node = node.parentNode;
-    }
-
-    node.parentNode.replaceChild( row, node );
     return true;
 }
 
@@ -2242,6 +1477,97 @@ var control_map = {
     }
 };
 
+function getAuthorityContextMenu (target, sf) {
+    var menu_id = sf.parent().@tag + ':' + sf.@code + '-authority-context-' + sf;
+
+    var page = 0;
+    var old = dojo.byId( menu_id );
+    if (old) {
+        page = auth_pages[menu_id];
+        old.parentNode.removeChild(old);
+    } else {
+        auth_pages[menu_id] = 0;
+    }
+
+    var sf_popup = createPopup({ id : menu_id, flex : 1 });
+
+    sf_popup.addEventListener("popuphiding", function(event) {
+        if (show_auth_menu) {
+            show_auth_menu = false;
+            getAuthorityContextMenu(target, sf);
+            dojo.byId(menu_id).openPopup();
+        }  
+    }, false);
+
+    context_menus.appendChild( sf_popup );
+
+    var found_acs = [];
+    dojo.forEach( acs.controlSetList(), function (acs_id) {
+        if (acs.controlSet(acs_id).control_map[sf.parent().@tag]) found_acs.push(acs_id);
+    });
+
+    if (!found_acs.length) {
+        sf_popup.appendChild(createLabel( { value : $('catStrings').getString('staff.cat.marcedit.not_authority_field.label') } ) );
+        target.setAttribute('context', 'clipboard');
+        return false;
+    }
+
+    if (sf.toString().replace(/\s*/, '')) {
+        return browseAuthority(sf_popup, menu_id, target, sf, 20, page);
+    }
+
+    return true;
+}
+
+/* Apply the complete 1xx */
+function applyFullAuthority ( target, ui_sf, e4x_sf ) {
+    var new_vals = dojo.query('*[tag^="1"]', target);
+    return applyAuthority( target, ui_sf, e4x_sf, new_vals );
+}
+
+function applySelectedAuthority ( target, ui_sf, e4x_sf ) {
+    var new_vals = target.getElementsByAttribute('checked','true');
+    return applyAuthority( target, ui_sf, e4x_sf, new_vals );
+}
+
+function applyAuthority ( target, ui_sf, e4x_sf, new_vals ) {
+    var field = e4x_sf.parent();
+
+    for (var i = 0; i < new_vals.length; i++) {
+
+        var sf_list = field.subfield;
+        for (var j in sf_list) {
+
+            if (sf_list[j].@code == new_vals[i].getAttribute('subfield')) {
+                sf_list[j] = new_vals[i].getAttribute('value');
+                new_vals[i].setAttribute('subfield','');
+                break;
+            }
+        }
+    }
+
+    for (var i = 0; i < new_vals.length; i++) {
+        if (!new_vals[i].getAttribute('subfield')) continue;
+
+        var val = new_vals[i].getAttribute('value');
+
+        var sf = <subfield code="" xmlns="http://www.loc.gov/MARC21/slim">{val}</subfield>;
+        sf.@code = new_vals[i].getAttribute('subfield');
+
+        field.insertChildAfter(field.subfield[field.subfield.length() - 1], sf);
+    }
+
+    var row = marcDatafield( field );
+
+    var node = ui_sf;
+    while (node.nodeName != 'row') {
+        node = node.parentNode;
+    }
+
+    node.parentNode.replaceChild( row, node );
+    return true;
+}
+
 function validateAuthority (button) {
     var grid = document.getElementById('recGrid');
     var label = button.getAttribute('label');
@@ -2252,48 +1578,46 @@ function validateAuthority (button) {
         var row = rows[i];
         var tag = row.firstChild;
 
-        if (!control_map[tag.value]) continue
-        button.setAttribute('label', label + ' - ' + tag.value);
-
-        var ind1 = tag.nextSibling;
-        var ind2 = ind1.nextSibling;
-        var subfields = ind2.nextSibling.childNodes;
-
-        var tags = {};
-
-        for (var j = 0; j < subfields.length; j++) {
-            var sf = subfields[j];
-            var sf_code = sf.childNodes[1].value;
-            var sf_value = sf.childNodes[2].value;
-
-            if (!control_map[tag.value][sf_code]) continue;
-
-            var found = 0;
-            for (var a_tag in control_map[tag.value][sf_code]) {
-                if (!tags[a_tag]) tags[a_tag] = [];
-                tags[a_tag].push({ term : sf_value, subfield : sf_code });
+	var done = false;
+        dojo.forEach(acs.controlSetList(), function (acs_id) {
+            if (done) return;
+            var control_map = acs.controlSet(acs_id).control_map;
+    
+            if (!control_map[tag.value]) return;
+            button.setAttribute('label', label + ' - ' + tag.value);
+    
+            var ind1 = tag.nextSibling;
+            var ind2 = ind1.nextSibling;
+            var subfields = ind2.nextSibling.childNodes;
+    
+            var sf_list = [];
+            for (var j = 0; j < subfields.length; j++) {
+                var sf = subfields[j];
+                sf_list.push( sf.childNodes[1].value );
+                sf_list.push( sf.childNodes[2].value );
             }
 
-        }
-
-        for (var val_tag in tags) {
-            var auth_data = validateBibField( [val_tag], tags[val_tag]);
-            var res = new XML( auth_data.responseText );
-            found = parseInt(res.gw::payload.gw::string.toString());
-            if (found) break;
-        }
-
-        // XXX If adt, etc should be validated separately from vxz, etc then move this up into the above for loop
-        for (var j = 0; j < subfields.length; j++) {
-            var sf = subfields[j];
-            if (!found) {
-                dojo.removeClass(sf.childNodes[2], 'marcValidated');
-                dojo.addClass(sf.childNodes[2], 'marcUnvalidated');
-            } else {
-                dojo.removeClass(sf.childNodes[2], 'marcUnvalidated');
-                dojo.addClass(sf.childNodes[2], 'marcValidated');
+            var matches = acs.findMatchingAuthorities(
+                new MARC.Field({
+                    'tag'       : tag.value,
+                    'subfields' : sf_list
+                })
+            );
+    
+            // XXX If adt, etc should be validated separately from vxz, etc then move this up into the above for loop
+            for (var j = 0; j < subfields.length; j++) {
+                var sf = subfields[j];
+                if (!matches.length) {
+                    dojo.removeClass(sf.childNodes[2], 'marcValidated');
+                    dojo.addClass(sf.childNodes[2], 'marcUnvalidated');
+                } else {
+                    dojo.removeClass(sf.childNodes[2], 'marcUnvalidated');
+                    dojo.addClass(sf.childNodes[2], 'marcValidated');
+                }
             }
-        }
+
+            if (matches.length) done = true;
+        });
     }
 
     button.setAttribute('label', label);
@@ -2302,6 +1626,7 @@ function validateAuthority (button) {
 }
 
 
+/*
 function validateBibField (tags, searches) {
     var url = "/gateway?input_format=json&format=xml&service=open-ils.search&method=open-ils.search.authority.validate.tag";
     url += '&param="tags"&param=' + js2JSON(tags);
@@ -2315,6 +1640,8 @@ function validateBibField (tags, searches) {
     return req;
 
 }
+*/
+
 function searchAuthority (term, tag, sf, limit) {
     var url = "/gateway?input_format=json&format=xml&service=open-ils.search&method=open-ils.search.authority.fts";
     url += '&param="term"&param="' + term + '"';
@@ -2331,42 +1658,25 @@ function searchAuthority (term, tag, sf, limit) {
 
 }
 
+/* TODO new authority browse support for context sets, and use that here */
 function browseAuthority (sf_popup, menu_id, target, sf, limit, page) {
     dojo.require('dojox.xml.parser');
 
     // map tag + subfield to the appropriate authority browse axis:
     // currently authority.author, authority.subject, authority.title, authority.topic
-    // based on mappings in OpenILS::Application::SuperCat
+    // based on mappings in OpenILS::Application::SuperCat, though Authority Control
+    // Sets will change that
 
-    var type;
+    var axis_list = acs.bibFieldBrowseAxes( sf.parent().@tag.toString() );
 
-    // Map based on replacing the first char of the selected tag with '1'
-    switch ('1' + (sf.parent().@tag.toString()).substring(1)) {
-        case "130":
-            type = 'authority.title';
-            break;
-
-        case "100":
-        case "110":
-        case "111":
-            type = 'authority.author';
-            break;
-
-        case "150":
-            type = 'authority.topic';
-            break;
-
-        case "148":
-        case "151":
-        case "155":
-            type = 'authority.subject';
-            break;
-
-        // No matching tag means no authorities to search - shortcut
-        default:
-            return;
+    // No matching tag means no authorities to search - shortcut
+    if (axis_list.length == 0) {
+        target.setAttribute('context', 'clipboard');
+        return false;
     }
 
+    var type = 'authority.' + axis_list[0]; // Just take the first for now
+                                            // TODO support multiple axes ... loop?
     if (!limit) {
         limit = 10;
     }

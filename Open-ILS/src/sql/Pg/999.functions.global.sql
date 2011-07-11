@@ -1378,13 +1378,28 @@ CREATE OR REPLACE FUNCTION authority.propagate_changes (aid BIGINT) RETURNS SETO
     SELECT authority.propagate_changes( authority, bib ) FROM authority.bib_linking WHERE authority = $1;
 $func$ LANGUAGE SQL;
 
--- authority.rec_descriptor appears to be unused currently
+CREATE OR REPLACE FUNCTION authority.map_thesaurus_to_control_set () RETURNS TRIGGER AS $func$
+BEGIN
+    IF NEW.control_set IS NULL THEN
+        SELECT  control_set INTO NEW.control_set
+          FROM  authority.thesaurus
+          WHERE vandelay.marc21_extract_fixed_field(NEW.marc,'Subj') = code;
+    END IF;
+
+    RETURN NEW;
+END;
+$func$ LANGUAGE PLPGSQL;
+
 CREATE OR REPLACE FUNCTION authority.reingest_authority_rec_descriptor( auth_id BIGINT ) RETURNS VOID AS $func$
 BEGIN
     DELETE FROM authority.rec_descriptor WHERE record = auth_id;
---    INSERT INTO authority.rec_descriptor (record, record_status, char_encoding)
---        SELECT  auth_id, ;
-
+    INSERT INTO authority.rec_descriptor (record, record_status, encoding_level, thesaurus)
+        SELECT  auth_id,
+                vandelay.marc21_extract_fixed_field(marc,'RecStat'),
+                vandelay.marc21_extract_fixed_field(marc,'ELvl'),
+                vandelay.marc21_extract_fixed_field(marc,'Subj')
+          FROM  authority.record_entry
+          WHERE id = auth_id;
     RETURN;
 END;
 $func$ LANGUAGE PLPGSQL;
@@ -1424,11 +1439,10 @@ BEGIN
     PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_authority_full_rec' AND enabled;
     IF NOT FOUND THEN
         PERFORM authority.reingest_authority_full_rec(NEW.id);
--- authority.rec_descriptor is not currently used
---        PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_authority_rec_descriptor' AND enabled;
---        IF NOT FOUND THEN
---            PERFORM authority.reingest_authority_rec_descriptor(NEW.id);
---        END IF;
+        PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_authority_rec_descriptor' AND enabled;
+        IF NOT FOUND THEN
+            PERFORM authority.reingest_authority_rec_descriptor(NEW.id);
+        END IF;
     END IF;
 
     RETURN NEW;
@@ -1440,6 +1454,7 @@ CREATE TRIGGER fingerprint_tgr BEFORE INSERT OR UPDATE ON biblio.record_entry FO
 CREATE TRIGGER aaa_indexing_ingest_or_delete AFTER INSERT OR UPDATE ON biblio.record_entry FOR EACH ROW EXECUTE PROCEDURE biblio.indexing_ingest_or_delete ();
 CREATE TRIGGER bbb_simple_rec_trigger AFTER INSERT OR UPDATE OR DELETE ON biblio.record_entry FOR EACH ROW EXECUTE PROCEDURE reporter.simple_rec_trigger ();
 
+CREATE TRIGGER map_thesaurus_to_control_set BEFORE INSERT OR UPDATE ON authority.record_entry FOR EACH ROW EXECUTE PROCEDURE authority.map_thesaurus_to_control_set ();
 CREATE TRIGGER aaa_auth_ingest_or_delete AFTER INSERT OR UPDATE ON authority.record_entry FOR EACH ROW EXECUTE PROCEDURE authority.indexing_ingest_or_delete ();
 
 -- Utility routines, callable via cstore

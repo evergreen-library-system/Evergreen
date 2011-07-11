@@ -7,6 +7,7 @@ function advInit() {
 	/* propogate these? */
 
 	depthSelInit(); 
+	authoritySelInit(); 
 	setEnterFunc( $n( $('advanced.marc.tbody'), 'advanced.marc.value'), advMARCRun );
 
 	unHideMe($('adv_quick_search_sidebar'));
@@ -16,10 +17,30 @@ function advInit() {
 		setSelector($('adv_quick_type'), 'tcn'); */
 
 	setEnterFunc($('adv_quick_text'), advGenericSearch);
+	setEnterFunc($('authority_browse_term'), advAuthorityBrowse);
 
 	unHideMe($('adv_marc_search_sidebar'));
+	unHideMe($('adv_authority_browse_sidebar'));
 }
 
+
+function authoritySelInit() {
+    dojo.require("openils.Util");
+    fieldmapper.standardRequest(
+        ["open-ils.supercat", "open-ils.supercat.authority.browse_axis_list"], {
+            "params": [true /* whole objects */], 
+            "async": true,
+            "oncomplete": function(r) {
+                if ((r = openils.Util.readResponse(r))) {
+                    dojo.empty("authority_browse_axis");
+                    dojo.forEach(r, function(axis) {
+                        dojo.create("option", {"innerHTML": axis.name(), "value": axis.code()}, "authority_browse_axis");
+                    });
+                }
+            }
+        }
+    );
+}
 
 function advAddMARC() {
 	var newt = $('adv_sdbar_table').cloneNode(true);
@@ -174,5 +195,13 @@ function advDrawBarcode(r) {
     location.href = buildOPACLink(args);
 }
 
-
+function advAuthorityBrowse() {
+    var selector = dojo.byId("authority_browse_axis");
+    var args = {"page": AUTHBROWSE};
+    args[PARAM_AUTHORITY_BROWSE_AXIS] =
+        selector.options[selector.selectedIndex].value;
+    args[PARAM_AUTHORITY_BROWSE_TERM] =
+        dojo.byId("authority_browse_term").value;
+    location.href = buildOPACLink(args);
+}
 

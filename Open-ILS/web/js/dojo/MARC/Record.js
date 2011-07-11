@@ -43,6 +43,12 @@ if(!dojo._hasResource["MARC.Record"]) {
                 this.fromBreaker(kwargs.marcbreaker);
                 if (this.onLoad) this.onLoad();
             }
+
+            if (kwargs.rtype == 'AUT') {
+                dojo.require('MARC.FixedFields');
+                this.setFixedField('Type','z');
+            }
+
         },
 
         title : function () { return this.subfield('245','a') },
@@ -59,7 +65,10 @@ if(!dojo._hasResource["MARC.Record"]) {
 
         subfield : function (spec, code) {
             var f = this.field(spec);
-            if (dojo.isArray(f)) f = f[0];
+            if (dojo.isArray(f)) {
+                if (!f.length) return f;
+                f = f[0];
+            }
             return f.subfield(code)
         },
 

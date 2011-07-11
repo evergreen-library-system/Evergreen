@@ -74,6 +74,13 @@ table { border-collapse: collapse; }
 
 /* ---------------------------------------------------------------------- */
 
+table.authority-record { width: 48em; background-color: #ddd; margin: 1em; }
+td.authority-record-right { width: 24em; }
+td.authority-tag-label { font-style: italic; }
+.authority-pager { margin: 1ex 0; }
+.authority-count-holder { padding-left: 1em; font-weight: bold; }
+a.authority-content { font-weight: bold; }
+
 #searchbar { margin-top: 22px; width: 100%; }
 #searchbar table tr td {font-weight: bold; font-size: 8pt; }
 #searchbar select, input { border-collapse: collapse; font-size: 9pt; }
