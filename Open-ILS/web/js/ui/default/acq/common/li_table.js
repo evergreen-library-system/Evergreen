@@ -253,11 +253,19 @@ function AcqLiTable() {
     this.addLineitem = function(li, skip_final_placement) {
         this.liCache[li.id()] = li;
 
+        // insert the row right away so that final order isn't
+        // dependent on how long subsequent async request take
+        // for a given line item
+        var row = self.rowTemplate.cloneNode(true);
+        if (!skip_final_placement) {
+            self.tbody.appendChild(row);
+            self.selectors.push(dojo.query('[name=selectbox]', row)[0]);
+        }
+
         // sort the lineitem notes on edit_time
         if(!li.lineitem_notes()) li.lineitem_notes([]);
 
         var liWrapper = new openils.acq.Lineitem({lineitem:li});
-        var row = self.rowTemplate.cloneNode(true);
         row.setAttribute('li', li.id());
         var tds = dojo.query('[attr]', row);
         dojo.forEach(tds, function(td) {self.setRowAttr(td, liWrapper, td.getAttribute('attr'), td.getAttribute('attr_type'));});
@@ -360,10 +368,7 @@ function AcqLiTable() {
         // show either "mark received" or "unreceive" as appropriate
         this.updateLiState(li, row);
 
-        if (!skip_final_placement) {
-            self.tbody.appendChild(row);
-            self.selectors.push(dojo.query('[name=selectbox]', row)[0]);
-        } else {
+        if (skip_final_placement) {
             return row;
         }
     };
