@@ -39,20 +39,21 @@
             [% IF ctx.is_staff %]
             <p class="staff-hold">
                 <input type="radio" id="hold_usr_is_requestor_not"
-                    onchange="staff_hold_nicety(this);"
+                    onchange="staff_hold_usr_input_disabler(this);"
                     name="hold_usr_is_requestor" value="0" />
                 <label for="hold_usr_is_requestor_not">
                     [% l("Place hold for patron by barcode:") %]
                 </label>
                 <input type="text" name="hold_usr" id="hold_usr_input" /><br />
-
-                <input type="radio" id="hold_usr_is_requestor"
-                    onchange="staff_hold_nicety(this);"
-                    name="hold_usr_is_requestor" value="1" />
-                <label for="hold_usr_is_requestor">
-                    [% l("Place this hold for me ([_1] [_2])",
-                    ctx.user.first_given_name, ctx.user.family_name) %]
-                </label>
+                <span>
+                    <input type="radio" id="hold_usr_is_requestor"
+                        onchange="staff_hold_usr_input_disabler(this);"
+                        name="hold_usr_is_requestor" value="1" />
+                    <label for="hold_usr_is_requestor">
+                        [% l("Place this hold for me ([_1] [_2])",
+                        ctx.user.first_given_name, ctx.user.family_name) %]
+                    </label>
+                </span>
             </p>
             [% END %]
             <p>
