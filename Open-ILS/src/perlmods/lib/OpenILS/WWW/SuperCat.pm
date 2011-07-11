@@ -234,7 +234,13 @@ sub child_init {
         }
     }
 
-    for my $basic_axis ( qw/authority.title authority.author authority.subject authority.topic/ ) {
+    my $auth_axes = $supercat
+        ->request("open-ils.supercat.authority.browse_axis_list")
+        ->gather(1);
+
+
+    for my $axis ( @$auth_axes ) {
+        my $basic_axis = 'authority.' . $axis;
         for my $browse_axis ( ($basic_axis, $basic_axis . ".refs") ) {
             {
                 my $__f = 'marcxml';
@@ -529,6 +535,7 @@ sub unapi {
         $type = 'authority' if ($scheme =~ /^authority/o);
         $command = 'retrieve';
         $command = 'browse' if (grep { $scheme eq $_ } qw/call_number title author subject topic authority.title authority.author authority.subject authority.topic series item-age/);
+        $command = 'browse' if ($scheme =~ /^authority/);
     }
 
     if ($paging) {
@@ -1551,15 +1558,26 @@ sub string_browse {
     $string =~ s/\+/ /go;
     $string =~ s/'//go;
 
-    my $tree = $supercat->request(
-        "open-ils.supercat.$axis.browse",
-        $string,
-        (($axis =~ /^authority/) ? () : ($site)),
-        $page_size,
-        $page,
-        $status,
-        $cpLoc
-    )->gather(1);
+    my $tree;
+    if ($axis =~ /^authority/) {
+        $tree = $supercat->request(
+            "open-ils.supercat.authority.browse.by_axis",
+            $axis,
+            $string,
+            $page_size,
+            $page
+        )->gather(1);
+    } else {
+        $tree = $supercat->request(
+            "open-ils.supercat.$axis.browse",
+            $string,
+            $site,
+            $page_size,
+            $page,
+            $status,
+            $cpLoc
+        )->gather(1);
+    }
 
     (my $norm_format = $format) =~ s/(-full|-uris)$//o;
 
@@ -1616,15 +1634,26 @@ sub string_startwith {
     $string =~ s/\+/ /go;
     $string =~ s/'//go;
 
-    my $tree = $supercat->request(
-        "open-ils.supercat.$axis.startwith",
-        $string,
-        (($axis =~ /^authority/) ? () : ($site)),
-        $page_size,
-        $page,
-        $status,
-        $cpLoc
-    )->gather(1);
+    my $tree;
+    if ($axis =~ /^authority/) {
+        $tree = $supercat->request(
+            "open-ils.supercat.authority.startwith.by_axis",
+            $axis,
+            $string,
+            $page_size,
+            $page
+        )->gather(1);
+    } else {
+        $tree = $supercat->request(
+            "open-ils.supercat.$axis.startwith",
+            $string,
+            $site,
+            $page_size,
+            $page,
+            $status,
+            $cpLoc
+        )->gather(1);
+    }
 
     (my $norm_format = $format) =~ s/(-full|-uris)$//o;
 
@@ -2081,7 +2110,11 @@ sub return_auth_response {
         $recs = [ int($term) ];
     } else {
         $recs = $supercat->request(
-            "open-ils.supercat.authority.$qualifier.startwith", $term, $page_size, $page
+            "open-ils.supercat.authority.startwith.by_axis",
+            $qualifier,
+            $term,
+            $page_size,
+            $page
         )->gather(1);
     }
 

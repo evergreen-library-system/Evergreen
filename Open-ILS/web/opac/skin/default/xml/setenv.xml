@@ -25,6 +25,9 @@
 <!--#elif expr="$DOCUMENT_NAME='reqitems.xml'"-->
 	<!--#set var='OILS_TITLE' value='opac.title.reqitems'-->
 
+<!--#elif expr="$DOCUMENT_NAME='authbrowse.xml'"-->
+	<!--#set var='OILS_TITLE' value='opac.title.cnbrowse'-->
+
 <!--#elif expr="$DOCUMENT_NAME='cnbrowse.xml'"-->
 	<!--#set var='OILS_TITLE' value='opac.title.cnbrowse'-->
 

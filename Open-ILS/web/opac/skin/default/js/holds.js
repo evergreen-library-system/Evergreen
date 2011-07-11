@@ -126,6 +126,9 @@ function holdsDrawEditor(args) {
 	if(holdArgs.editHold) // flesh the args with the existing hold 
 		holdArgsFromHold(holdArgs.editHold, holdArgs);
 
+    $('holds_parts_selector').style.border = 'auto';
+    holdArgs.partsSuggestionMade = false;
+
 	holdsDrawWindow();
 }
 
@@ -1015,7 +1018,17 @@ function holdHandleCreateResponse(r, recurse) {
 		var res = r.getResultObject();
 		if(checkILSEvent(res) || res.success != 1) {
 			if(res.success != 1) {
-				alert($('hold_not_allowed').innerHTML);
+
+                if(!holdArgs.partsSuggestionMade && holdArgs.recordParts && 
+                        holdArgs.recordParts.length && holdArgs.type == 'T') {
+                    // T holds on records that have parts are OK, but if the record has no non-part
+                    // copies, the hold will ultimately fail.  Suggest selecting a part to the user.
+                    $('holds_parts_selector').style.border = '2px solid red';
+                    holdArgs.partsSuggestionMade = true;
+                    alert($('hold_has_parts').innerHTML);
+                } else {
+				    alert($('hold_not_allowed').innerHTML);
+                }
 			} else {
 				if( res.textcode == 'PATRON_BARRED' ) {
 					alertId('hold_failed_patron_barred');
