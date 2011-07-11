@@ -14,6 +14,7 @@ dojo.require('openils.CGI');
 dojo.require('openils.PermaCrud');
 dojo.require('openils.XUL');
 dojo.require('openils.widget.OrgUnitFilteringSelect');
+dojo.require("openils.widget.PCrudAutocompleteBox");
 dojo.requireLocalization("openils.authority", "authority");
 var auth_strings = dojo.i18n.getLocalization("openils.authority", "authority");
 
@@ -325,7 +326,7 @@ function displayRecords(parms) {
 
     dojo.query("#authlist-div div").orphan();
 
-    var url = '/opac/extras/browse/marcxml/'
+    var url = '/opac/extras/browse/marcxml/authority.'
         + dijit.byId('authAxis').attr('value')
         // + '/' + dijit.byId('authOU').attr('value')
         + '/1' // replace with preceding line if OUs gain some meaning

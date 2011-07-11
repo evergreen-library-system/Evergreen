@@ -120,5 +120,6 @@ ALTER TABLE config.org_unit_setting_type ADD CONSTRAINT update_perm_fkey FOREIGN
 ALTER TABLE config.barcode_completion ADD CONSTRAINT config_barcode_completion_org_unit_fkey FOREIGN KEY (org_unit) REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 
 CREATE INDEX by_heading_and_thesaurus ON authority.record_entry (authority.normalize_heading(marc)) WHERE deleted IS FALSE or deleted = FALSE;
+CREATE INDEX by_heading ON authority.record_entry (authority.simple_normalize_heading(marc)) WHERE deleted IS FALSE or deleted = FALSE;
 
 COMMIT;

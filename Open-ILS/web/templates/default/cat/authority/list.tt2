@@ -10,12 +10,19 @@
     </span>
     <span style="white-space: nowrap;">
         <label for="authAxis">Authority type: </label>
-        <select type="text" name="authAxis" value="" dojoType="dijit.form.FilteringSelect" trim="true" id="authAxis" propercase="false" style="width: 10em;">
-            <option value="authority.author">Author</option>
-            <option value="authority.subject">Subject</option>
-            <option value="authority.title">Title</option>
-            <option value="authority.topic">Topic</option>
-        </select>
+        <input
+            id="authAxis"
+            name="authAxis"
+            jsId="authAxis"
+            dojoType="openils.widget.PCrudAutocompleteBox"
+            fmclass="aba"
+            searchAttr="name"
+            fetchProperties="{ sort: [{attribute:'name'}] }"
+            propercase="false"
+            hasDownArrow="true"
+            store_options="{ honor_retrieve_all:true }"
+            trim="true"
+        />
     </span>
 <!-- Not currently useful - see authOUListInit() above -->
 <!--    <label for="authOU">Library: </label><select dojoType="openils.widget.OrgUnitFilteringSelect" id="authOU" name="authOU" searchAttr="shortname" labelAttr="shortname"></select> -->

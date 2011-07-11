@@ -36,12 +36,16 @@ use OpenSRF::Utils::Logger qw($logger);
 # ... and this is our OpenILS object (en|de)coder and psuedo-ORM package.
 use OpenILS::Utils::Fieldmapper;
 
+use OpenILS::Utils::CStoreEditor q/:funcs/;
+
+
 our (
   $_parser,
   $_xslt,
   %record_xslt,
   %metarecord_xslt,
   %holdings_data_cache,
+  %authority_browse_axis_cache,
 );
 
 sub child_init {
@@ -883,6 +887,78 @@ Returns a list of the requested org-scoped record IDs held
 		}
 );
 
+sub grab_authority_browse_axes {
+    my ($self, $client, $full) = @_;
+
+    unless(scalar(keys(%authority_browse_axis_cache))) {
+        my $axes = new_editor->search_authority_browse_axis([
+            { code => { '<>' => undef } },
+            { flesh => 2, flesh_fields => { aba => ['fields'], acsaf => ['bib_fields','sub_entries'] } }
+        ]);
+        $authority_browse_axis_cache{$_->code} = $_ for (@$axes);
+    }
+
+    if ($full) {
+        return [
+            map { $authority_browse_axis_cache{$_} } sort keys %authority_browse_axis_cache
+        ];
+    } else {
+        return [keys %authority_browse_axis_cache];
+    }
+}
+__PACKAGE__->register_method(
+	method    => 'grab_authority_browse_axes',
+	api_name  => 'open-ils.supercat.authority.browse_axis_list',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => "Returns a list of valid authority browse/startswith axes",
+		  params   => [
+              { name => 'full', desc => 'Optional. If true, return array containing the full object for each axis, sorted by code. Otherwise just return an array of the codes.', type => 'number' }
+          ],
+		  'return' => { desc => 'Axis codes or whole axes, see "full" param', type => 'array' }
+		}
+);
+
+sub axis_authority_browse {
+	my $self = shift;
+	my $client = shift;
+    my $axis = shift;
+
+    $axis =~ s/^authority\.//;
+    $axis =~ s/(\.refs)$//;
+    my $refs = $1;
+
+    return undef unless ( grep { /$axis/ } @{ grab_authority_browse_axes() } );
+
+    my @tags;
+    for my $f (@{$authority_browse_axis_cache{$axis}->fields}) {
+        push @tags, $f->tag;
+        if ($refs) {
+            push @tags, $_->tag for @{$f->sub_entries};
+        }
+    }
+
+    return authority_tag_sf_browse($self, $client, \@tags, 'a', @_); # XXX TODO figure out something more correct for the subfield param
+}
+__PACKAGE__->register_method(
+	method    => 'axis_authority_browse',
+	api_name  => 'open-ils.supercat.authority.browse.by_axis',
+	api_level => 1,
+	argc      => 2,
+	signature =>
+		{ desc     => "Returns a list of the requested authority record IDs held",
+		  params   =>
+		  	[ { name => 'axis', desc => 'The target axis', type => 'string' },
+		  	  { name => 'value', desc => 'The target value', type => 'string' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
+		}
+);
+
+=pod
+
 sub general_authority_browse {
 	my $self = shift;
 	my $client = shift;
@@ -1009,6 +1085,8 @@ __PACKAGE__->register_method(
 		}
 );
 
+=cut
+
 sub authority_tag_sf_browse {
     my $self = shift;
     my $client = shift;
@@ -1051,11 +1129,8 @@ sub authority_tag_sf_browse {
         my $before = $_storage->request(
             "open-ils.cstore.json_query.atomic",
             { select    => { afr => [qw/record value/] },
-              from      => { 'are', 'afr' },
-              where     => {
-                '+afr' => { tag => \@ref_tags, subfield => $subfield, value => { '<' => $value } },
-                '+are' => { 'deleted' => 'f' }
-              },
+              from      => 'afr',
+              where     => { tag => \@ref_tags, subfield => $subfield, value => { '<' => $value } },
               order_by  => { afr => { value => 'desc' } },
               limit     => $before_limit,
               offset    => abs($page) * $page_size - $before_offset,
@@ -1068,11 +1143,8 @@ sub authority_tag_sf_browse {
         my $after = $_storage->request(
             "open-ils.cstore.json_query.atomic",
             { select    => { afr => [qw/record value/] },
-              from      => { 'are', 'afr' },
-              where     => {
-                '+afr' => { tag => \@ref_tags, subfield => $subfield, value => { '>=' => $value } },
-                '+are' => { 'deleted' => 'f' }
-              },
+              from      => 'afr',
+              where     => { tag => \@ref_tags, subfield => $subfield, value => { '>=' => $value } },
               order_by  => { afr => { value => 'asc' } },
               limit     => $after_limit,
               offset    => abs($page) * $page_size - $after_offset,
@@ -1397,6 +1469,45 @@ Returns a list of the requested org-scoped record IDs held
 		}
 );
 
+sub axis_authority_startwith {
+	my $self = shift;
+	my $client = shift;
+    my $axis = shift;
+
+    $axis =~ s/^authority\.//;
+    $axis =~ s/(\.refs)$//;
+    my $refs = $1;
+
+    return undef unless ( grep { /$axis/ } @{ grab_authority_browse_axes() } );
+
+    my @tags;
+    for my $f (@{$authority_browse_axis_cache{$axis}->fields}) {
+        push @tags, $f->tag;
+        if ($refs) {
+            push @tags, $_->tag for @{$f->sub_entries};
+        }
+    }
+
+    return authority_tag_sf_startwith($self, $client, \@tags, 'a', @_); # XXX TODO figure out something more correct for the subfield param
+}
+__PACKAGE__->register_method(
+	method    => 'axis_authority_startwith',
+	api_name  => 'open-ils.supercat.authority.startwith.by_axis',
+	api_level => 1,
+	argc      => 2,
+	signature =>
+		{ desc     => "Returns a list of the requested authority record IDs held",
+		  params   =>
+		  	[ { name => 'axis', desc => 'The target axis', type => 'string' },
+		  	  { name => 'value', desc => 'The target value', type => 'string' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 10', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
+		}
+);
+
+=pod
+
 sub general_authority_startwith {
 	my $self = shift;
 	my $client = shift;
@@ -1412,7 +1523,7 @@ __PACKAGE__->register_method(
 		{ desc     => "Returns a list of the requested authority record IDs held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target title', type => 'string' },
-			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 10', type => 'number' },
 			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
 		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
 		}
@@ -1427,7 +1538,7 @@ __PACKAGE__->register_method(
 		{ desc     => "Returns a list of the requested authority record IDs held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target author', type => 'string' },
-			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 10', type => 'number' },
 			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
 		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
 		}
@@ -1442,7 +1553,7 @@ __PACKAGE__->register_method(
 		{ desc     => "Returns a list of the requested authority record IDs held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target subject', type => 'string' },
-			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 10', type => 'number' },
 			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
 		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
 		}
@@ -1457,7 +1568,7 @@ __PACKAGE__->register_method(
 		{ desc     => "Returns a list of the requested authority record IDs held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target topical subject', type => 'string' },
-			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 10', type => 'number' },
 			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
 		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
 		}
@@ -1472,7 +1583,7 @@ __PACKAGE__->register_method(
 		{ desc     => "Returns a list of the requested authority record IDs held, including see (4xx) and see also (5xx) references",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target title', type => 'string' },
-			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 10', type => 'number' },
 			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
 		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
 		}
@@ -1487,7 +1598,7 @@ __PACKAGE__->register_method(
 		{ desc     => "Returns a list of the requested authority record IDs held, including see (4xx) and see also (5xx) references",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target author', type => 'string' },
-			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 10', type => 'number' },
 			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
 		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
 		}
@@ -1502,7 +1613,7 @@ __PACKAGE__->register_method(
 		{ desc     => "Returns a list of the requested authority record IDs held, including see (4xx) and see also (5xx) references",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target subject', type => 'string' },
-			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 10', type => 'number' },
 			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
 		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
 		}
@@ -1517,11 +1628,13 @@ __PACKAGE__->register_method(
 		{ desc     => "Returns a list of the requested authority record IDs held, including see (4xx) and see also (5xx) references",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target topical subject', type => 'string' },
-			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 10', type => 'number' },
 			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
 		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
 		}
 );
+
+=cut
 
 sub authority_tag_sf_startwith {
     my $self = shift;
@@ -1560,11 +1673,8 @@ sub authority_tag_sf_startwith {
         my $before = $_storage->request(
             "open-ils.cstore.json_query.atomic",
             { select    => { afr => [qw/record value/] },
-              from      => { 'afr', 'are' },
-              where     => {
-                '+afr' => { tag => \@ref_tags, subfield => $subfield, value => { '<' => $value } },
-                '+are' => { deleted => 'f' }
-              },
+              from      => 'afr',
+              where     => { tag => \@ref_tags, subfield => $subfield, value => { '<' => $value } },
               order_by  => { afr => { value => 'desc' } },
               limit     => $ref_limit,
               offset    => $offset,
@@ -1577,11 +1687,8 @@ sub authority_tag_sf_startwith {
         my $after = $_storage->request(
             "open-ils.cstore.json_query.atomic",
             { select    => { afr => [qw/record value/] },
-              from      => { 'afr', 'are' },
-              where     => {
-                '+afr' => { tag => \@ref_tags, subfield => $subfield, value => { '>=' => $value } },
-                '+are' => { deleted => 'f' }
-              },
+              from      => 'afr',
+              where     => { tag => \@ref_tags, subfield => $subfield, value => { '>=' => $value } },
               order_by  => { afr => { value => 'asc' } },
               limit     => $ref_limit,
               offset    => $offset,
@@ -1627,7 +1734,7 @@ Returns a list of the requested authority record IDs held
 				  desc => 'The target string',
 				  type => 'string' },
 				{ name => 'page_size',
-				  desc => 'Count of call numbers to retrieve, default is 9',
+				  desc => 'Count of call numbers to retrieve, default is 10',
 				  type => 'number' },
 				{ name => 'page',
 				  desc => 'The page of call numbers to retrieve, calculated based on page_size.  Can be positive, negative or 0.',

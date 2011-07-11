@@ -979,7 +979,7 @@ CREATE OR REPLACE FUNCTION vandelay.add_field ( target_xml TEXT, source_xml TEXT
                         if (exists($fields{$f}{match})) {
                             next unless (grep { $_ =~ $fields{$f}{match}{re} } $to_field->subfield($fields{$f}{match}{sf}));
                         }
-                        my @new_sf = map { ($_ => $from_field->subfield($_)) } @{$fields{$f}{sf}};
+                        my @new_sf = map { ($_ => $from_field->subfield($_)) } grep { defined($from_field->subfield($_)) } @{$fields{$f}{sf}};
                         $to_field->add_subfields( @new_sf );
                     }
                 }
