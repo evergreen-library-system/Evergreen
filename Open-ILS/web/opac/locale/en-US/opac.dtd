@@ -411,6 +411,7 @@ Please see a librarian to renew your account.">
 <!ENTITY sidebar.relevantReviews.headerLabel "Reviews">
 <!ENTITY sidebar.quick.search "Quick Search">
 <!ENTITY sidebar.copy.not.found "No copy with the requested barcode was found">
+<!ENTITY sidebar.copy.not.cataloged "The copy with the requested barcode is not cataloged">
 
 <!--	================================================================= 
 		Search formats
