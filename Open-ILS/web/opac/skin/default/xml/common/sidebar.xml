@@ -100,6 +100,7 @@
 			</div>
 
             <span class='hide_me' id='myopac.copy.not.found'>&sidebar.copy.not.found;</span>
+            <span class='hide_me' id='myopac.copy.not.cataloged'>&sidebar.copy.not.cataloged;</span>
 			<div style='margin-top: 8px;' class='adv_quick_search_submit'>
 				<a id='adv_quick_submit' href='javascript:advGenericSearch();' class='classic_link'>&common.submit;</a>
 			</div>
