@@ -162,6 +162,11 @@ function advDrawBarcode(r) {
         return;
     }
     if(!title_ids) return;
+    if (title_ids[0] == -1) { // pre-cat record
+        alertId('myopac.copy.not.cataloged');
+        return;
+    }
+
     var args = {};
     if (title_ids.length == 1) {
         args.page = RDETAIL;
