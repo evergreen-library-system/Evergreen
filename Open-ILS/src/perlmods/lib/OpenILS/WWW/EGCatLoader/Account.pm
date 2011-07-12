@@ -349,9 +349,36 @@ sub load_place_hold {
     $ctx->{hold_type} = $cgi->param('hold_type');
     $ctx->{default_pickup_lib} = $e->requestor->home_ou; # XXX staff
 
+    # XXX check for failure of the retrieve_* methods called below, and
+    # possibly replace all the if,elsif with a dispatch table (meh, elegance)
+
+    my $target_field;
     if ($ctx->{hold_type} eq 'T') {
+        $target_field = "titleid";
         $ctx->{record} = $e->retrieve_biblio_record_entry($ctx->{hold_target});
+    } elsif ($ctx->{hold_type} eq 'V') {
+        $target_field = "volume_id";
+        my $vol = $e->retrieve_asset_call_number([
+            $ctx->{hold_target}, {
+                "flesh" => 1,
+                "flesh_fields" => {"acn" => ["record"]}
+            }
+        ]);
+        $ctx->{record} = $vol->record;
+    } elsif ($ctx->{hold_type} eq 'C') {
+        $target_field = "copy_id";
+        my $copy = $e->retrieve_asset_copy([
+            $ctx->{hold_target}, {
+                "flesh" => 2,
+                "flesh_fields" => {
+                    "acn" => ["record"],
+                    "acp" => ["call_number"]
+                }
+            }
+        ]);
+        $ctx->{record} = $copy->call_number->record;
     } elsif ($ctx->{hold_type} eq 'I') {
+        $target_field = "issuanceid";
         my $iss = $e->retrieve_serial_issuance([
             $ctx->{hold_target}, {
                 "flesh" => 2,
@@ -388,8 +415,9 @@ sub load_place_hold {
 
         my $args = {
             patronid => $usr,
-            titleid => $ctx->{hold_target}, # XXX
+            $target_field => $ctx->{"hold_target"},
             pickup_lib => $pickup_lib,
+            hold_type => $ctx->{"hold_type"},
             depth => 0, # XXX
         };
 

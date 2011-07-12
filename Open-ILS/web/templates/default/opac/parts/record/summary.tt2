@@ -119,14 +119,15 @@
             [% IF ctx.is_staff %]
             <td>[% l("Age Hold Protection") %]</td>
             <td>[% l("Create Date") %]</td>
-            <td>[% l("Holdable") %]</td>
+            <td>[% l("Holdable?") %]</td>
             [% END %]
             <td>[% l("Status") %]</td>
             <td>[% l("Due Date") %]</td>
         </tr>
     </thead>
     <tbody class="copy_details_table">
-        [% FOR copy_info IN ctx.copies %]
+        [% last_cn = 0;
+        FOR copy_info IN ctx.copies %]
         <tr>
             <td>[%
                 # XXX KCLS-specific kludging
@@ -148,9 +149,22 @@
                 ctx.parse_datetime(copy_info.create_date),
                 DATE_FORMAT
             ) %]</td>
-            <td>[% (copy_info.holdable == 't' AND
-                    copy_info.location_holdable == 't' AND
-                    copy_info.status_holdable == 't') ? l('Yes') : l('No') %]</td>
+            <td>[%  # Show copy/volume hold links to staff (without
+                    # checking whether they have permissions to do those).
+                    overall_holdable = (copy_info.holdable == 't' AND
+                        copy_info.location_holdable == 't' AND
+                        copy_info.status_holdable == 't');
+                    IF overall_holdable;
+                        l("Place on"); %]
+                <a href="[% ctx.opac_root %]/place_hold[% propagator; propagator.length > 1 ? "&amp;" : ""; %]hold_target=[% copy_info.id %]&amp;hold_type=C">[% l("copy") %]</a>
+                [%      IF copy_info.call_number != last_cn;
+                            last_cn = copy_info.call_number;
+                            l(" / "); %]
+                <a href="[% ctx.opac_root %]/place_hold[% propagator; propagator.length > 1 ? "&amp;" : ""; %]hold_target=[% copy_info.call_number %]&amp;hold_type=V">[% l("volume") %]</a>
+                [%      END;
+                    ELSE;
+                        l("No");
+                    END %]</td>
             [% END %]
             <td>[% copy_info.copy_status %]</td>
             <td>[%
