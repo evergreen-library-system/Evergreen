@@ -1,4 +1,4 @@
--- Evergreen DB patch XXXX.fix_maintain_901_quoting.sql
+-- Evergreen DB patch 0576.fix_maintain_901_quoting.sql
 --
 -- Fix for bug LP#809540 - fixes crash when inserting or updating
 -- bib whose tcn_value contains regex metacharacters.
@@ -6,7 +6,7 @@
 BEGIN;
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0576', :eg_version);
 
 CREATE OR REPLACE FUNCTION evergreen.maintain_901 () RETURNS TRIGGER AS $func$
 DECLARE
