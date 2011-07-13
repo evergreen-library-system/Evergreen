@@ -100,10 +100,17 @@ sub do_fee_payment {
         }
     } else {
         # We attempt to pay as many of the patron's bills as possible with the payment provided.
-
         my $results = $U->simplereq('open-ils.actor', 'open-ils.actor.user.transactions.history.have_balance', $self->{authtoken}, $self->patron->internal_id);
         if ($results && ref($results) eq 'ARRAY') {
             syslog('LOG_INFO', 'OILS: ' . scalar @$results . " bills found for " . $self->patron->internal_id);
+
+            # If we get an empty array, we report not bills found and
+            # quit.
+            unless (@$results) {
+                $self->ok(0);
+                $self->screen_msg(OILS_SIP_MSG_NO_BILL);
+                return $self->ok;
+            }
 
             # We fill an array with the payment information as
             # open-ils.circ.money.payment expects it, i.e. an arrayref
