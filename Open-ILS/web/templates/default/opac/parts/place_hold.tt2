@@ -58,15 +58,14 @@
             [% END %]
             <p>
                 [% | l(attrs.title, ctx.get_aou(ctx.default_pickup_lib).name) %]
-                You would like to place a hold on <strong><q>[_1]</q></strong> to be picked up at [_2].
-                If this is correct, press <strong>SUBMIT</strong>.
+                You would like to place a hold on <strong><q>[_1]</q></strong>.<br />
+                If this is correct, confirm your pickup location and click <strong>SUBMIT</strong>.
                 [% END %]
             </p>
             <p>
-                [% l('If you would like to change the library pick up location, select from the location dropdown menu.') %]
-                <br class="clear-both" />
+                [% l('Pickup location:') %]
                 [% PROCESS "default/opac/parts/org_selector.tt2";
-                    PROCESS build_org_selector name='pickup_lib' value=ctx.default_pickup_lib %]
+                    PROCESS build_org_selector name='pickup_lib' value=ctx.default_pickup_lib id='pickup_lib' can_have_vols_only=1 %]
             </p>
             <p>
                 [% |l %]If you use the Traveling Library Center (TLC) and ABC Express

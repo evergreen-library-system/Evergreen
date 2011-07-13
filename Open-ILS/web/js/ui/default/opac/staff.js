@@ -20,6 +20,13 @@ function staff_hold_usr_input_disabler(input) {
 }
 function staff_hold_usr_prepop() {
     if (xulG && xulG.patron_barcode) {
+        var sel = document.getElementById("pickup_lib");
+        for (var i = 0; i < sel.options.length; i++) {
+            if (sel.options[i].value == xulG.patron_home_ou) {
+                sel.selectedIndex = i;
+                break;
+            }
+        }
         document.getElementById("hold_usr_input").value = xulG.patron_barcode;
         document.getElementById("hold_usr_input").disabled = false;
         document.getElementById("hold_usr_is_requestor_not").checked = true;
