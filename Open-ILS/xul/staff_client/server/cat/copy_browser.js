@@ -1060,7 +1060,7 @@ cat.copy_browser.prototype = {
                     ml.getElementsByAttribute('value',obj.org_ids[i])[0].setAttribute('class','has_copies');
                 }
                 ml.firstChild.addEventListener(
-                    'popupshown',
+                    'popupshowing',
                     function(ev) {
                         document.getElementById('legend').setAttribute('hidden','false');
                     },
