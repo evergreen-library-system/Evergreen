@@ -815,14 +815,14 @@ function holdsSetSelectedFormats() {
 
 	var fstring = "";
 
-	if( contains(vals, 'at-d') || contains(vals, 'at-s')) {
+	if( contains(vals, 'at-d') || contains(vals, 'at-s') || contains(vals, 'at')) {
 		if( contains(vals, 'at') ) {
 			fstring = 'at';
 		} else if (contains(vals, 'at-s') && contains(vals, 'at-d')) {
 			fstring = 'at-sd';
 		} else if (!contains(vals, 'at-s')) {
 			fstring = 'at-d';
-	} else {
+		} else {
 			fstring = 'at-s';
 		}
 	}
@@ -853,6 +853,7 @@ function holdsCheckPossibility(pickuplib, hold, recurse) {
 		issuanceid : holdArgs.issuance,
 		copy_id : holdArgs.copy,
 		hold_type : holdArgs.type,
+		holdable_formats : holdArgs.holdable_formats,
 		patronid : holdArgs.recipient.id(),
 		depth : 0, 
 		pickup_lib : pickuplib,
@@ -1000,6 +1001,8 @@ function holdsBuildHoldFromWindow() {
 	if(fstring) { 
 		hold.hold_type('M'); 
 		hold.holdable_formats(fstring);
+		if (fstring)
+			holdArgs.holdable_formats = fstring;
 		hold.target(holdArgs.metarecord);
 	}
 	return hold;
