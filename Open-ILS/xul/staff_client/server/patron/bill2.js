@@ -180,6 +180,7 @@ function event_listeners() {
                 try {
                     $('apply_payment_btn').disabled = true;
                     apply_payment();
+                    tally_all();
                     $('apply_payment_btn').disabled = false;
                 } catch(E) {
                     alert('Error in bill2.js, apply_payment_btn: ' + E);
