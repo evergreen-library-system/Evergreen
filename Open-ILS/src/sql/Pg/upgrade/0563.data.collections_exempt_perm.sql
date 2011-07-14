@@ -6,7 +6,7 @@ BEGIN;
 
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+INSERT INTO config.upgrade_log (version) VALUES ('0563');
 
 INSERT INTO permission.perm_list ( id, code, description ) 
     VALUES ( 510, 'UPDATE_PATRON_COLLECTIONS_EXEMPT', oils_i18n_gettext(510,
