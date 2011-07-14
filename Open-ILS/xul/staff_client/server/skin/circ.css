@@ -48,6 +48,7 @@ treechildren::-moz-tree-row(backdate_failed,selected) {
 .checkin_screen_checkin_clear_shelf_expired { }
 .checkin_screen_checkin_auto_retarget { }
 .checkin_screen_checkin_auto_retarget_all { }
+.checkin_screen_checkin_local_hold_as_transit { }
 
 #background-text { font-size: x-large; font-weight: bold; }
 #do_not_alert_on_precat_indicator { background-color: -moz-dialog; color: -moz-dialog-text; font-size: large; font-weight: bold; }
@@ -57,6 +58,7 @@ treechildren::-moz-tree-row(backdate_failed,selected) {
 #checkin_clear_shelf_expired_indicator { background-color: -moz-dialog; color: -moz-dialog-text; font-size: large; font-weight: bold; }
 #checkin_auto_retarget_indicator { background-color: -moz-dialog; color: -moz-dialog-text; font-size: large; font-weight: bold; }
 #checkin_auto_retarget_all_indicator { background-color: -moz-dialog; color: -moz-dialog-text; font-size: large; font-weight: bold; }
+#checkin_local_hold_as_transit_indicator { background-color: -moz-dialog; color: -moz-dialog-text; font-size: large; font-weight: bold; }
 
 .big_emphasis1 { font-weight: bold; font-size: x-large; }
 .big_emphasis2 { font-weight: bold; font-size: large; }

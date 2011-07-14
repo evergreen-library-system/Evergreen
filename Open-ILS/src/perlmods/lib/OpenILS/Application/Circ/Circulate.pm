@@ -537,6 +537,7 @@ my @AUTOLOAD_FIELDS = qw/
     generate_lost_overdue
     clear_expired
     retarget_mode
+    hold_as_transit
 /;
 
 
@@ -2286,6 +2287,9 @@ sub check_transit_checkin_interval {
         )->[0]
     ); 
 
+    # transit from X to X for whatever reason has no min interval
+    return if $self->transit->source == $self->transit->dest;
+
     my $seconds = OpenSRF::Utils->interval_to_seconds($interval);
     my $t_start = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($self->transit->source_send_time));
     my $horizon = $t_start->add(seconds => $seconds);
@@ -2539,7 +2543,7 @@ sub do_checkin {
     
             $logger->debug("circulator: circlib=$circ_lib, workstation=".$self->circ_lib);
     
-            if( $circ_lib == $self->circ_lib) {
+            if( $circ_lib == $self->circ_lib and not ($self->hold_as_transit and $self->remote_hold) ) {
                 # copy is where it needs to be, either for hold or reshelving
     
                 $self->checkin_handle_precat();
@@ -2701,7 +2705,7 @@ sub checkin_check_holds_shelf {
     $logger->info("circulator: we found a captured, un-fulfilled hold [".
         $hold->id. "] for copy ".$self->copy->barcode);
 
-    if( $hold->pickup_lib == $self->circ_lib ) {
+    if( $hold->pickup_lib == $self->circ_lib and not $self->hold_as_transit ) {
         $logger->info("circulator: hold is for here .. we're done: ".$self->copy->barcode);
         return 1;
     }
@@ -2841,7 +2845,7 @@ sub attempt_checkin_hold_capture {
 
     return 0 if $self->bail_out;
 
-    if( $hold->pickup_lib == $self->circ_lib ) {
+    if( $hold->pickup_lib == $self->circ_lib && not $self->hold_as_transit ) {
 
         # This hold was captured in the correct location
         $copy->status(OILS_COPY_STATUS_ON_HOLDS_SHELF);
@@ -3009,8 +3013,9 @@ sub process_received_transit {
 
     my $transit = $self->transit;
 
-    if( $transit->dest != $self->circ_lib ) {
+    if( $transit->dest != $self->circ_lib or ($self->hold_as_transit && $transit->copy_status == OILS_COPY_STATUS_ON_HOLDS_SHELF) ) {
         # - this item is in-transit to a different location
+        # - Or we are capturing holds as transits, so why create a new transit?
 
         my $tid = $transit->id; 
         my $loc = $self->circ_lib;
