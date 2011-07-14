@@ -1275,6 +1275,9 @@ sub handle_mark_damaged {
         my $ses = OpenSRF::AppSession->create('open-ils.trigger');
         $ses->request('open-ils.trigger.event.autocreate', 'checkout.damaged', $circ, $circ->circ_lib);
 
+        my $evt2 = OpenILS::Utils::Penalty->calculate_penalties($e, $circ->usr->id, $e->requestor->ws_ou);
+        return $evt2 if $evt2;
+
         return undef;
 
     } else {
