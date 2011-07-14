@@ -536,6 +536,7 @@ my @AUTOLOAD_FIELDS = qw/
     use_booking
     generate_lost_overdue
     clear_expired
+    retarget_mode
 /;
 
 
@@ -2294,6 +2295,73 @@ sub check_transit_checkin_interval {
         if $horizon > DateTime->now;
 }
 
+# Retarget local holds at checkin
+sub checkin_retarget {
+    my $self = shift;
+    return unless $self->retarget_mode =~ m/retarget/; # Retargeting?
+    return unless $self->is_checkin; # Renewals need not be checked
+    return if $self->capture eq 'nocapture'; # Not capturing holds anyway? Move on.
+    return if $self->is_precat; # No holds for precats
+    return unless $self->circ_lib == $self->copy->circ_lib; # Item isn't "home"? Don't check.
+    return unless $self->copy->holdable; # Not holdable, shouldn't capture holds.
+    # Specifically target items that are likely new (by status ID)
+    unless ($self->retarget_mode =~ m/\.all/) {
+        my $status = $U->copy_status($self->copy->status)->id;
+        return unless $status == OILS_COPY_STATUS_IN_PROCESS;
+    }
+
+    # Fetch holds for the bib
+    my ($result) = $holdcode->method_lookup('open-ils.circ.holds.retrieve_all_from_title')->run(
+                    $self->editor->authtoken,
+                    $self->title->id,
+                    {
+                        capture_time => undef, # No touching captured holds
+                        frozen => 'f', # Don't bother with frozen holds
+                        pickup_lib => $self->circ_lib # Only holds actually here
+                    }); 
+
+    # Error? Skip the step.
+    return if exists $result->{"ilsevent"};
+
+    # Assemble holds
+    my $holds = [];
+    foreach my $holdlist (keys %{$result}) {
+        push @$holds, @{$result->{$holdlist}};
+    }
+
+    return if scalar(@$holds) == 0; # No holds, no retargeting
+
+    # Loop over holds in request-ish order
+    # Stage 1: Get them into request-ish order
+    # Also grab type and target for skipping low hanging ones
+    $result = $self->editor->json_query({
+        "select" => { "ahr" => ["id", "hold_type", "target"] },
+        "from" => { "ahr" => { "au" => { "fkey" => "usr",  "join" => "pgt"} } },
+        "where" => { "id" => $holds },
+        "order_by" => [
+            { "class" => "pgt", "field" => "hold_priority"},
+            { "class" => "ahr", "field" => "cut_in_line", "direction" => "desc", "transform" => "coalesce", "params" => ['f']},
+            { "class" => "ahr", "field" => "selection_depth", "direction" => "desc"},
+            { "class" => "ahr", "field" => "request_time"}
+        ]
+    });
+
+    # Stage 2: Loop!
+    if (ref $result eq "ARRAY" and scalar @$result) {
+        foreach (@{$result}) {
+            # Copy level, but not this copy?
+            next if ($_->{hold_type} eq 'C' or $_->{hold_type} eq 'R' or $_->{hold_type} eq 'F'
+                and $_->{target} != $self->copy->id);
+            # Volume level, but not this volume?
+            next if ($_->{hold_type} eq 'V' and $_->{target} != $self->volume->id);
+            # So much for easy stuff, attempt a retarget!
+            my $tresult = $U->storagereq('open-ils.storage.action.hold_request.copy_targeter', undef, $_->{id}, $self->copy->id);
+            if(ref $tresult eq "ARRAY" and scalar @$tresult) {
+                last if(exists $tresult->[0]->{found_copy} and $tresult->[0]->{found_copy});
+            }
+        }
+    }
+}
 
 sub do_checkin {
     my $self = shift;
@@ -2304,6 +2372,7 @@ sub do_checkin {
         unless $self->copy;
 
     $self->check_transit_checkin_interval;
+    $self->checkin_retarget;
 
     # the renew code and mk_env should have already found our circulation object
     unless( $self->circ ) {
