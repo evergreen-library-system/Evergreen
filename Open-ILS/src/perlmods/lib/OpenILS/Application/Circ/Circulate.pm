@@ -535,6 +535,7 @@ my @AUTOLOAD_FIELDS = qw/
     skip_rental_fee
     use_booking
     generate_lost_overdue
+    clear_expired
 /;
 
 
@@ -2605,6 +2606,10 @@ sub checkin_check_holds_shelf {
     return 0 unless 
         $U->copy_status($self->copy->status)->id ==
             OILS_COPY_STATUS_ON_HOLDS_SHELF;
+
+    # Attempt to clear shelf expired holds for this copy
+    $holdcode->method_lookup('open-ils.circ.hold.clear_shelf.process')->run($self->editor->authtoken, $self->circ_lib, $self->copy->id)
+        if($self->clear_expired);
 
     # find the hold that put us on the holds shelf
     my $holds = $self->editor->search_action_hold_request(

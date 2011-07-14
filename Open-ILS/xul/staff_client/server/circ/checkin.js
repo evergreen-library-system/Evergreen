@@ -407,6 +407,17 @@ circ.checkin.prototype = {
                         ind.hidden = cb.getAttribute('checked') != 'true'; 
                         document.getElementById('checkin_barcode_entry_textbox').focus();
                         return true;
+                    } ],
+                    'cmd_checkin_clear_shelf_expired' : [ ['command'], function(ev) {
+                        dump('in cmd_checkin_clear_shelf_expired\n');
+                        var bg = document.getElementById('background');
+                        var cb = document.getElementById('checkin_clear_shelf_expired');
+                        var ind = document.getElementById('checkin_clear_shelf_expired_indicator');
+                        var cn = 'checkin_screen_checkin_clear_shelf_expired';
+                        if (cb.getAttribute('checked') == 'true') { addCSSClass(bg,cn); } else { removeCSSClass(bg,cn); }
+                        ind.hidden = cb.getAttribute('checked') != 'true'; 
+                        document.getElementById('checkin_barcode_entry_textbox').focus();
+                        return true;
                     } ]
                 }
             }
@@ -566,6 +577,9 @@ circ.checkin.prototype = {
             var amnesty_mode = document.getElementById('amnesty_mode');
             if (amnesty_mode) amnesty_mode = amnesty_mode.getAttribute('checked') == 'true';
             if (amnesty_mode) params.void_overdues = 1;
+            var clear_shelf_expired_holds = document.getElementById('checkin_clear_shelf_expired');
+            if (clear_shelf_expired_holds) clear_shelf_expired_holds = clear_shelf_expired_holds.getAttribute('checked') == 'true';
+            if (clear_shelf_expired_holds) params.clear_expired = 1;
             circ.util.checkin_via_barcode(
                 ses(), 
                 params,
