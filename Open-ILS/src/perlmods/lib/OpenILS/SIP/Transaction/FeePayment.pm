@@ -80,7 +80,7 @@ sub do_fee_payment {
             syslog('LOG_INFO', 'OILS: pay_bills returned ' . OpenSRF::Utils::JSON->perl2JSON($resp));
             if ($U->event_code($resp)) {
                 $self->ok(0);
-                $self->screen_msg($resp->{descr});
+                $self->screen_msg(($resp->{descr} || $resp->{textcode}));
             } else {
                 $self->ok(1);
             }
@@ -149,7 +149,7 @@ sub do_fee_payment {
                 syslog('LOG_INFO', 'OILS: pay_bills returned ' . OpenSRF::Utils::JSON->perl2JSON($resp));
                 if ($U->event_code($resp)) {
                     $self->ok(0);
-                    $self->screen_msg($resp->{descr});
+                    $self->screen_msg(($resp->{descr} || $resp->{textcode}));
                 } else {
                     $self->ok(1);
                 }
@@ -166,7 +166,7 @@ sub do_fee_payment {
         } else {
             $self->ok(0);
             if ($results && $U->event_code($results)) {
-                $self->screen_msg($results->{descr});
+                $self->screen_msg(($results->{descr} || $results->{textcode}));
             } else {
                 $self->screen_msg(OILS_SIP_MSG_NO_BILL);
             }
