@@ -11,7 +11,8 @@ cat.util.EXPORT_OK    = [
     'make_bookable', 'edit_new_brsrc', 'edit_new_bresv', 'batch_edit_volumes', 'render_fine_level',
     'render_loan_duration', 'mark_item_as_missing_pieces', 'render_callnumbers_for_bib_menu',
     'render_cn_prefix_menuitems', 'render_cn_suffix_menuitems', 'render_cn_class_menu',
-    'render_cn_prefix_menu', 'render_cn_suffix_menu', 'transfer_specific_title_holds'
+    'render_cn_prefix_menu', 'render_cn_suffix_menu', 'transfer_specific_title_holds',
+    'request_items', 'mark_for_overlay'
 ];
 cat.util.EXPORT_TAGS    = { ':all' : cat.util.EXPORT_OK };
 
@@ -1117,5 +1118,134 @@ cat.util.render_cn_suffix_menu = function(ou_ids,extra_menuitems,menu_default) {
         alert('Error in cat.util.render_cn_suffix_menu('+ou_id+'): ' + E);
     }
 }
+
+cat.util.request_items = function(copy_ids) {
+    var error;
+    try {
+        JSAN.use('util.error');
+        error = new util.error();
+
+        JSAN.use('util.functional');
+        if (!copy_ids) { return; }
+        copy_ids = util.functional.filter_list(
+            copy_ids,
+            function(o) { return o != null; }
+        );
+        if (copy_ids.length < 1) { return; }
+
+        xulG.new_tab(
+            urls.XUL_HOLD_PLACEMENT,
+            {},
+            {
+                'copy_ids' : copy_ids
+            }
+        );
+
+    } catch(E) {
+        alert('Error in cat.util.request_items: ' + E);
+    }
+}
+
+cat.util.mark_for_overlay = function(doc_id,doc_mvr) {
+
+    try {
+
+        JSAN.use('OpenILS.data'); var data = new OpenILS.data();
+        data.stash_retrieve();
+        JSAN.use('util.network'); var network = new util.network();
+
+        function gen_statusbar_click_handler(data_key) {
+            return function (ev) {
+
+                if (! data[data_key]) {
+                    return;
+                }
+
+                if (ev.button == 0 /* left click, spawn opac */) {
+                    var opac_url = xulG.url_prefix( urls.opac_rdetail )
+                        + '?r=' + data[data_key];
+                    var content_params = {
+                        'session' : ses(),
+                        'authtime' : ses('authtime'),
+                        'opac_url' : opac_url,
+                    };
+                    xulG.new_tab(
+                        xulG.url_prefix(urls.XUL_OPAC_WRAPPER),
+                        {'tab_name':'Retrieving title...'},
+                        content_params
+                    );
+                }
+
+                if (ev.button == 2 /* right click, remove mark */) {
+                    if ( window.confirm( $('offlineStrings').getString(
+                            'cat.opac.clear_statusbar')
+                    ) ) {
+                        data[data_key] = null;
+                        data.stash(data_key);
+                        ev.target.setAttribute('label','');
+                        if (ev.target.hasAttribute('tooltiptext')) {
+                            ev.target.removeAttribute('tooltiptext');
+                        }
+                    }
+                }
+            }
+        }
+
+        data.marked_record = doc_id;
+        data.stash('marked_record');
+        if (!doc_mvr) {
+            var robj = network.simple_request(
+                'MODS_SLIM_RECORD_RETRIEVE.authoritative',[doc_id]);
+            if (typeof robj.ilsevent == 'undefined') {
+                data.marked_record_mvr = robj;
+            } else {
+                data.marked_record_mvr = null;
+                alert('Error in cat.util.mark_for_overlay #2: ', js2JSON(robj));
+            }
+        } else {
+            data.marked_record_mvr = doc_mvr;
+        }
+        data.stash('marked_record_mvr');
+        if (data.marked_record_mvr) {
+            alert(
+                $('offlineStrings').getFormattedString(
+                    'cat.opac.record_marked_for_overlay.tcn.alert',
+                    [ data.marked_record_mvr.tcn() ]
+                )
+            );
+            xulG.set_statusbar(
+                1,
+                $("offlineStrings").getFormattedString(
+                    'staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label',
+                    [data.marked_record_mvr.tcn()]
+                ),
+                $("offlineStrings").getFormattedString(
+                    'staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label',
+                    [data.marked_record]
+                ),
+                gen_statusbar_click_handler('marked_record')
+            );
+        } else {
+            alert(
+                $('offlineStrings').getFormattedString(
+                    'cat.opac.record_marked_for_overlay.record_id.alert',
+                    [ data.marked_record  ]
+                )
+            );
+            xulG.set_statusbar(
+                1,
+                $("offlineStrings").getFormattedString(
+                    'staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label',
+                    [data.marked_record]
+                ),
+                '',
+                gen_statusbar_click_handler('marked_record')
+            );
+        }
+    } catch(E) {
+        alert('Error in cat.util.mark_for_overlay(): ' + E);
+    }
+}
+
 
 dump('exiting cat/util.js\n');

@@ -283,7 +283,9 @@ BEGIN
 
                     PERFORM 1
                       FROM  asset.call_number cn
+                            JOIN asset.copy cp ON (cp.call_number = cn.id)
                       WHERE cn.record IN ( SELECT * FROM unnest( core_result.records ) )
+                            AND NOT cp.deleted
                       LIMIT 1;
 
                     IF FOUND THEN

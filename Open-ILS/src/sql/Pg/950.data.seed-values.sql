@@ -95,6 +95,8 @@ INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath )
     (26, 'identifier', 'tcn', oils_i18n_gettext(26, 'Title Control Number', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='901']/marc:subfield[@code='a']$$ );
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
     (27, 'identifier', 'bibid', oils_i18n_gettext(27, 'Internal ID', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='901']/marc:subfield[@code='c']$$ );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, search_field, facet_field) VALUES
+    (28, 'identifier', 'authority_id', oils_i18n_gettext(28, 'Authority Record ID', 'cmf', 'label'), 'marcxml', '//marc:datafield/marc:subfield[@code="0"]', FALSE, TRUE);
 
 SELECT SETVAL('config.metabib_field_id_seq'::TEXT, (SELECT MAX(id) FROM config.metabib_field), TRUE);
 
@@ -3186,13 +3188,13 @@ INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath ) VALUES
 INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath ) VALUES (2, 'author', oils_i18n_gettext(2, 'Author of work', 'vqbrad', 'description'),'//*[@tag="100" or @tag="110" or @tag="113"]/*[contains("ad",@code)]');
 INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath ) VALUES (3, 'language', oils_i18n_gettext(3, 'Language of work', 'vqbrad', 'description'),'//*[@tag="240"]/*[@code="l"][1]');
 INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath ) VALUES (4, 'pagination', oils_i18n_gettext(4, 'Pagination', 'vqbrad', 'description'),'//*[@tag="300"]/*[@code="a"][1]');
-INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath, ident, remove ) VALUES (5, 'isbn',oils_i18n_gettext(5, 'ISBN', 'vqbrad', 'description'),'//*[@tag="020"]/*[@code="a"]', TRUE, $r$(?:-|\s.+$)$r$);
-INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath, ident, remove ) VALUES (6, 'issn',oils_i18n_gettext(6, 'ISSN', 'vqbrad', 'description'),'//*[@tag="022"]/*[@code="a"]', TRUE, $r$(?:-|\s.+$)$r$);
+INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath, remove ) VALUES (5, 'isbn',oils_i18n_gettext(5, 'ISBN', 'vqbrad', 'description'),'//*[@tag="020"]/*[@code="a"]', $r$(?:-|\s.+$)$r$);
+INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath, remove ) VALUES (6, 'issn',oils_i18n_gettext(6, 'ISSN', 'vqbrad', 'description'),'//*[@tag="022"]/*[@code="a"]', $r$(?:-|\s.+$)$r$);
 INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath ) VALUES (7, 'price',oils_i18n_gettext(7, 'Price', 'vqbrad', 'description'),'//*[@tag="020" or @tag="022"]/*[@code="c"][1]');
-INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath, ident ) VALUES (8, 'rec_identifier',oils_i18n_gettext(8, 'Accession Number', 'vqbrad', 'description'),'//*[@tag="001"]', TRUE);
-INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath, ident ) VALUES (9, 'eg_tcn',oils_i18n_gettext(9, 'TCN Value', 'vqbrad', 'description'),'//*[@tag="901"]/*[@code="a"]', TRUE);
-INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath, ident ) VALUES (10, 'eg_tcn_source',oils_i18n_gettext(10, 'TCN Source', 'vqbrad', 'description'),'//*[@tag="901"]/*[@code="b"]', TRUE);
-INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath, ident ) VALUES (11, 'eg_identifier',oils_i18n_gettext(11, 'Internal ID', 'vqbrad', 'description'),'//*[@tag="901"]/*[@code="c"]', TRUE);
+INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath) VALUES (8, 'rec_identifier',oils_i18n_gettext(8, 'Accession Number', 'vqbrad', 'description'),'//*[@tag="001"]');
+INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath) VALUES (9, 'eg_tcn',oils_i18n_gettext(9, 'TCN Value', 'vqbrad', 'description'),'//*[@tag="901"]/*[@code="a"]');
+INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath) VALUES (10, 'eg_tcn_source',oils_i18n_gettext(10, 'TCN Source', 'vqbrad', 'description'),'//*[@tag="901"]/*[@code="b"]');
+INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath) VALUES (11, 'eg_identifier',oils_i18n_gettext(11, 'Internal ID', 'vqbrad', 'description'),'//*[@tag="901"]/*[@code="c"]');
 INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath ) VALUES (12, 'publisher',oils_i18n_gettext(12, 'Publisher', 'vqbrad', 'description'),'//*[@tag="260"]/*[@code="b"][1]');
 INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath, remove ) VALUES (13, 'pubdate',oils_i18n_gettext(13, 'Publication Date', 'vqbrad', 'description'),'//*[@tag="260"]/*[@code="c"][1]',$r$\D$r$);
 INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath ) VALUES (14, 'edition',oils_i18n_gettext(14, 'Edition', 'vqbrad', 'description'),'//*[@tag="250"]/*[@code="a"][1]');
@@ -3246,7 +3248,7 @@ INSERT INTO vandelay.import_item_attr_definition (
     'k'
 );
 
-INSERT INTO vandelay.authority_attr_definition (id, code, description, xpath, ident ) VALUES (1, 'rec_identifier',oils_i18n_gettext(1, 'Identifier', 'vqarad', 'description'),'//*[@tag="001"]', TRUE);
+INSERT INTO vandelay.authority_attr_definition (id, code, description, xpath) VALUES (1, 'rec_identifier',oils_i18n_gettext(1, 'Identifier', 'vqarad', 'description'),'//*[@tag="001"]');
 SELECT SETVAL('vandelay.authority_attr_definition_id_seq'::TEXT, 100);
 
 
@@ -3284,6 +3286,8 @@ INSERT INTO config.marc21_rec_type_map (code, type_val, blvl_val) VALUES ('MAP',
 INSERT INTO config.marc21_rec_type_map (code, type_val, blvl_val) VALUES ('SCO','cd','abcdmsi');
 INSERT INTO config.marc21_rec_type_map (code, type_val, blvl_val) VALUES ('REC','ij','abcdmsi');
 INSERT INTO config.marc21_rec_type_map (code, type_val, blvl_val) VALUES ('COM','m','abcdmsi');
+INSERT INTO config.marc21_rec_type_map (code, type_val, blvl_val) VALUES ('AUT','z',' ');
+INSERT INTO config.marc21_rec_type_map (code, type_val, blvl_val) VALUES ('MFHD','uvxy',' ');
 
 
 ------ Physical Characteristics
@@ -4107,6 +4111,7 @@ INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, leng
 INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('ELvl', 'ldr', 'SCO', 17, 1, ' ');
 INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('ELvl', 'ldr', 'SER', 17, 1, ' ');
 INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('ELvl', 'ldr', 'VIS', 17, 1, ' ');
+INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('ELvl', 'ldr', 'AUT', 17, 1, ' ');
 INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('Fest', '006', 'BKS', 13, 1, '0');
 INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('Fest', '008', 'BKS', 30, 1, '0');
 INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('Form', '006', 'BKS', 6, 1, ' ');
@@ -4169,6 +4174,8 @@ INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, leng
 INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('Type', 'ldr', 'SCO', 6, 1, 'c');
 INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('Type', 'ldr', 'SER', 6, 1, 'a');
 INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('Type', 'ldr', 'VIS', 6, 1, 'g');
+INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('Subj', '008', 'AUT', 11, 1, '|');
+INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('RecStat', 'ldr', 'AUT', 5, 1, 'n');
 
 -- record attributes
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('alph','Alph','Alph');
@@ -4198,7 +4205,7 @@ INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('type
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('item_type','Type','Type');
 INSERT INTO config.record_attr_definition (name,label,phys_char_sf) values ('vr_format','Videorecording format',72);
 INSERT INTO config.record_attr_definition (name,label,sorter,filter,tag) values ('titlesort','Title',TRUE,FALSE,'tnf');
-INSERT INTO config.record_attr_definition (name,label,sorter,filter,tag) values ('authorsort','Author',TRUE,FALSE,'1%');
+INSERT INTO config.record_attr_definition (name,label,sorter,filter,tag,sf_list) values ('authorsort','Author',TRUE,FALSE,'1%','abcdefgklmnopqrstvxyz');
 
 -- TO-DO: Auto-generate these values from CLDR
 -- XXX These are the values used in MARC records ... does that match CLDR, including deprecated languages?
@@ -5888,6 +5895,15 @@ INSERT INTO config.metabib_field_index_norm_map (field,norm,params)
             config.index_normalizer i
       WHERE i.func IN ('replace')
             AND m.id IN (19);
+
+INSERT INTO config.metabib_field_index_norm_map (field,norm,pos)
+    SELECT  m.id,
+            i.id,
+            -1
+      FROM  config.metabib_field m,
+            config.index_normalizer i
+      WHERE i.func = 'remove_paren_substring'
+            AND m.id IN (28);
 
 INSERT INTO config.record_attr_index_norm_map (attr,norm,pos)
     SELECT  m.name, i.id, 0
@@ -8407,11 +8423,11 @@ INSERT INTO action_trigger.event_definition (
 $$
 [%- USE date -%]
 <style>
-    table { border-collapse: collapse; } 
-    td { padding: 5px; border-bottom: 1px solid #888; } 
+    table { border-collapse: collapse; }
+    td { padding: 5px; border-bottom: 1px solid #888; }
     th { font-weight: bold; }
 </style>
-[% 
+[%
     # Sort the holds into copy-location buckets
     # In the main print loop, sort each bucket by callnumber before printing
     SET holds_list = [];
@@ -8438,14 +8454,14 @@ $$
             <th>Author</th>
             <th>Shelving Location</th>
             <th>Call Number</th>
-            <th>Barcode</th>
+            <th>Barcode/Part</th>
             <th>Patron</th>
         </tr>
     </thead>
     <tbody>
     [% FOR loc_data IN holds_list  %]
         [% FOR hold_data IN loc_data.sort('callnumber') %]
-            [% 
+            [%
                 SET hold = hold_data.hold;
                 SET copy_data = helpers.get_copy_bib_basics(hold.current_copy.id);
             %]
@@ -8454,7 +8470,11 @@ $$
                 <td>[% copy_data.author | truncate %]</td>
                 <td>[% hold.current_copy.location.name %]</td>
                 <td>[% hold.current_copy.call_number.label %]</td>
-                <td>[% hold.current_copy.barcode %]</td>
+                <td>[% hold.current_copy.barcode %]
+                    [% FOR part IN hold.current_copy.parts %]
+                       [% part.part.label %]
+                    [% END %]
+                </td>
                 <td>[% hold.usr.card.barcode %]</td>
             </tr>
         [% END %]
@@ -8471,7 +8491,9 @@ INSERT INTO action_trigger.environment (
         (35, 'current_copy.location'),
         (35, 'current_copy.call_number'),
         (35, 'usr.card'),
-        (35, 'pickup_lib')
+        (35, 'pickup_lib'),
+        (35, 'current_copy.parts'),
+        (35, 'current_copy.parts.part')
 ;
 
 -- 0386.data.org-setting-patron-clone-copy-addr.sql
@@ -8657,6 +8679,18 @@ INSERT INTO action_trigger.environment (event_def, path) VALUES
     (37, 'circ_lib.billing_address')
 ;
 
+INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'general.unknown', oils_i18n_gettext('general.unknown', 'Import or Overlay failed', 'vie', 'description') );
+INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'import.item.duplicate.barcode', oils_i18n_gettext('import.item.duplicate.barcode', 'Import failed due to barcode collision', 'vie', 'description') );
+INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'import.item.invalid.circ_modifier', oils_i18n_gettext('import.item.invalid.circ_modifier', 'Import failed due to invalid circulation modifier', 'vie', 'description') );
+INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'import.item.invalid.location', oils_i18n_gettext('import.item.invalid.location', 'Import failed due to invalid copy location', 'vie', 'description') );
+INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'import.duplicate.sysid', oils_i18n_gettext('import.duplicate.sysid', 'Import failed due to system id collision', 'vie', 'description') );
+INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'import.duplicate.tcn', oils_i18n_gettext('import.duplicate.sysid', 'Import failed due to system id collision', 'vie', 'description') );
+INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'overlay.missing.sysid', oils_i18n_gettext('overlay.missing.sysid', 'Overlay failed due to missing system id', 'vie', 'description') );
+INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'import.auth.duplicate.acn', oils_i18n_gettext('import.auth.duplicate.acn', 'Import failed due to Accession Number collision', 'vie', 'description') );
+INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'import.xml.malformed', oils_i18n_gettext('import.xml.malformed', 'Malformed record cause Import failure', 'vie', 'description') );
+INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'overlay.xml.malformed', oils_i18n_gettext('overlay.xml.malformed', 'Malformed record cause Overlay failure', 'vie', 'description') );
+INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'overlay.record.quality', oils_i18n_gettext('overlay.record.quality', 'New record had insufficient quality', 'vie', 'description') );
+
 INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
     'ui.cat.volume_copy_editor.horizontal',
     oils_i18n_gettext(
@@ -8804,3 +8838,720 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) 
     ),
     'bool'
 );
+
+----------------------------------------------------------------
+-- Seed data for queued record/item exports
+----------------------------------------------------------------
+
+INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES (
+        'vandelay.queued_bib_record.print',
+        'vqbr', 
+        oils_i18n_gettext(
+            'vandelay.queued_bib_record.print',
+            'Print output has been requested for records in an Importer Bib Queue.',
+            'ath',
+            'description'
+        ), 
+        FALSE
+    )
+    ,(
+        'vandelay.queued_bib_record.csv',
+        'vqbr', 
+        oils_i18n_gettext(
+            'vandelay.queued_bib_record.csv',
+            'CSV output has been requested for records in an Importer Bib Queue.',
+            'ath',
+            'description'
+        ), 
+        FALSE
+    )
+    ,(
+        'vandelay.queued_bib_record.email',
+        'vqbr', 
+        oils_i18n_gettext(
+            'vandelay.queued_bib_record.email',
+            'An email has been requested for records in an Importer Bib Queue.',
+            'ath',
+            'description'
+        ), 
+        FALSE
+    )
+    ,(
+        'vandelay.queued_auth_record.print',
+        'vqar', 
+        oils_i18n_gettext(
+            'vandelay.queued_auth_record.print',
+            'Print output has been requested for records in an Importer Authority Queue.',
+            'ath',
+            'description'
+        ), 
+        FALSE
+    )
+    ,(
+        'vandelay.queued_auth_record.csv',
+        'vqar', 
+        oils_i18n_gettext(
+            'vandelay.queued_auth_record.csv',
+            'CSV output has been requested for records in an Importer Authority Queue.',
+            'ath',
+            'description'
+        ), 
+        FALSE
+    )
+    ,(
+        'vandelay.queued_auth_record.email',
+        'vqar', 
+        oils_i18n_gettext(
+            'vandelay.queued_auth_record.email',
+            'An email has been requested for records in an Importer Authority Queue.',
+            'ath',
+            'description'
+        ), 
+        FALSE
+    )
+    ,(
+        'vandelay.import_items.print',
+        'vii', 
+        oils_i18n_gettext(
+            'vandelay.import_items.print',
+            'Print output has been requested for Import Items from records in an Importer Bib Queue.',
+            'ath',
+            'description'
+        ), 
+        FALSE
+    )
+    ,(
+        'vandelay.import_items.csv',
+        'vii', 
+        oils_i18n_gettext(
+            'vandelay.import_items.csv',
+            'CSV output has been requested for Import Items from records in an Importer Bib Queue.',
+            'ath',
+            'description'
+        ), 
+        FALSE
+    )
+    ,(
+        'vandelay.import_items.email',
+        'vii', 
+        oils_i18n_gettext(
+            'vandelay.import_items.email',
+            'An email has been requested for Import Items from records in an Importer Bib Queue.',
+            'ath',
+            'description'
+        ), 
+        FALSE
+    )
+;
+
+INSERT INTO action_trigger.event_definition (
+        id,
+        active,
+        owner,
+        name,
+        hook,
+        validator,
+        reactor,
+        group_field,
+        granularity,
+        template
+    ) VALUES (
+        39,
+        TRUE,
+        1,
+        'Print Output for Queued Bib Records',
+        'vandelay.queued_bib_record.print',
+        'NOOP_True',
+        'ProcessTemplate',
+        'queue.owner',
+        'print-on-demand',
+$$
+[%- USE date -%]
+<pre>
+Queue ID: [% target.0.queue.id %]
+Queue Name: [% target.0.queue.name %]
+Queue Type: [% target.0.queue.queue_type %]
+Complete? [% target.0.queue.complete %]
+
+    [% FOR vqbr IN target %]
+=-=-=
+ Title of work    | [% helpers.get_queued_bib_attr('title',vqbr.attributes) %]
+ Author of work   | [% helpers.get_queued_bib_attr('author',vqbr.attributes) %]
+ Language of work | [% helpers.get_queued_bib_attr('language',vqbr.attributes) %]
+ Pagination       | [% helpers.get_queued_bib_attr('pagination',vqbr.attributes) %]
+ ISBN             | [% helpers.get_queued_bib_attr('isbn',vqbr.attributes) %]
+ ISSN             | [% helpers.get_queued_bib_attr('issn',vqbr.attributes) %]
+ Price            | [% helpers.get_queued_bib_attr('price',vqbr.attributes) %]
+ Accession Number | [% helpers.get_queued_bib_attr('rec_identifier',vqbr.attributes) %]
+ TCN Value        | [% helpers.get_queued_bib_attr('eg_tcn',vqbr.attributes) %]
+ TCN Source       | [% helpers.get_queued_bib_attr('eg_tcn_source',vqbr.attributes) %]
+ Internal ID      | [% helpers.get_queued_bib_attr('eg_identifier',vqbr.attributes) %]
+ Publisher        | [% helpers.get_queued_bib_attr('publisher',vqbr.attributes) %]
+ Publication Date | [% helpers.get_queued_bib_attr('pubdate',vqbr.attributes) %]
+ Edition          | [% helpers.get_queued_bib_attr('edition',vqbr.attributes) %]
+ Item Barcode     | [% helpers.get_queued_bib_attr('item_barcode',vqbr.attributes) %]
+
+    [% END %]
+</pre>
+$$
+    )
+;
+
+INSERT INTO action_trigger.environment ( event_def, path) VALUES (
+    39, 'attributes')
+    ,( 39, 'queue')
+;
+
+INSERT INTO action_trigger.event_definition (
+        id,
+        active,
+        owner,
+        name,
+        hook,
+        validator,
+        reactor,
+        group_field,
+        granularity,
+        template
+    ) VALUES (
+        40,
+        TRUE,
+        1,
+        'CSV Output for Queued Bib Records',
+        'vandelay.queued_bib_record.csv',
+        'NOOP_True',
+        'ProcessTemplate',
+        'queue.owner',
+        'print-on-demand',
+$$
+[%- USE date -%]
+"Title of work","Author of work","Language of work","Pagination","ISBN","ISSN","Price","Accession Number","TCN Value","TCN Source","Internal ID","Publisher","Publication Date","Edition","Item Barcode"
+[% FOR vqbr IN target %]"[% helpers.get_queued_bib_attr('title',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('author',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('language',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('pagination',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('isbn',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('issn',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('price',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('rec_identifier',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('eg_tcn',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('eg_tcn_source',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('eg_identifier',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('publisher',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('pubdate',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('edition',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('item_barcode',vqbr.attributes) | replace('"', '""') %]"
+[% END %]
+$$
+    )
+;
+
+INSERT INTO action_trigger.environment ( event_def, path) VALUES (
+    40, 'attributes')
+    ,( 40, 'queue')
+;
+
+INSERT INTO action_trigger.event_definition (
+        id,
+        active,
+        owner,
+        name,
+        hook,
+        validator,
+        reactor,
+        group_field,
+        granularity,
+        template
+    ) VALUES (
+        41,
+        TRUE,
+        1,
+        'Email Output for Queued Bib Records',
+        'vandelay.queued_bib_record.email',
+        'NOOP_True',
+        'SendEmail',
+        'queue.owner',
+        NULL,
+$$
+[%- USE date -%]
+[%- SET user = target.0.queue.owner -%]
+To: [%- params.recipient_email || user.email || 'root@localhost' %]
+From: [%- params.sender_email || default_sender %]
+Subject: Bibs from Import Queue
+
+Queue ID: [% target.0.queue.id %]
+Queue Name: [% target.0.queue.name %]
+Queue Type: [% target.0.queue.queue_type %]
+Complete? [% target.0.queue.complete %]
+
+    [% FOR vqbr IN target %]
+=-=-=
+ Title of work    | [% helpers.get_queued_bib_attr('title',vqbr.attributes) %]
+ Author of work   | [% helpers.get_queued_bib_attr('author',vqbr.attributes) %]
+ Language of work | [% helpers.get_queued_bib_attr('language',vqbr.attributes) %]
+ Pagination       | [% helpers.get_queued_bib_attr('pagination',vqbr.attributes) %]
+ ISBN             | [% helpers.get_queued_bib_attr('isbn',vqbr.attributes) %]
+ ISSN             | [% helpers.get_queued_bib_attr('issn',vqbr.attributes) %]
+ Price            | [% helpers.get_queued_bib_attr('price',vqbr.attributes) %]
+ Accession Number | [% helpers.get_queued_bib_attr('rec_identifier',vqbr.attributes) %]
+ TCN Value        | [% helpers.get_queued_bib_attr('eg_tcn',vqbr.attributes) %]
+ TCN Source       | [% helpers.get_queued_bib_attr('eg_tcn_source',vqbr.attributes) %]
+ Internal ID      | [% helpers.get_queued_bib_attr('eg_identifier',vqbr.attributes) %]
+ Publisher        | [% helpers.get_queued_bib_attr('publisher',vqbr.attributes) %]
+ Publication Date | [% helpers.get_queued_bib_attr('pubdate',vqbr.attributes) %]
+ Edition          | [% helpers.get_queued_bib_attr('edition',vqbr.attributes) %]
+ Item Barcode     | [% helpers.get_queued_bib_attr('item_barcode',vqbr.attributes) %]
+
+    [% END %]
+
+$$
+    )
+;
+
+INSERT INTO action_trigger.environment ( event_def, path) VALUES (
+    41, 'attributes')
+    ,( 41, 'queue')
+    ,( 41, 'queue.owner')
+;
+
+INSERT INTO action_trigger.event_definition (
+        id,
+        active,
+        owner,
+        name,
+        hook,
+        validator,
+        reactor,
+        group_field,
+        granularity,
+        template
+    ) VALUES (
+        42,
+        TRUE,
+        1,
+        'Print Output for Queued Authority Records',
+        'vandelay.queued_auth_record.print',
+        'NOOP_True',
+        'ProcessTemplate',
+        'queue.owner',
+        'print-on-demand',
+$$
+[%- USE date -%]
+<pre>
+Queue ID: [% target.0.queue.id %]
+Queue Name: [% target.0.queue.name %]
+Queue Type: [% target.0.queue.queue_type %]
+Complete? [% target.0.queue.complete %]
+
+    [% FOR vqar IN target %]
+=-=-=
+ Record Identifier | [% helpers.get_queued_auth_attr('rec_identifier',vqar.attributes) %]
+
+    [% END %]
+</pre>
+$$
+    )
+;
+
+INSERT INTO action_trigger.environment ( event_def, path) VALUES (
+    42, 'attributes')
+    ,( 42, 'queue')
+;
+
+INSERT INTO action_trigger.event_definition (
+        id,
+        active,
+        owner,
+        name,
+        hook,
+        validator,
+        reactor,
+        group_field,
+        granularity,
+        template
+    ) VALUES (
+        43,
+        TRUE,
+        1,
+        'CSV Output for Queued Authority Records',
+        'vandelay.queued_auth_record.csv',
+        'NOOP_True',
+        'ProcessTemplate',
+        'queue.owner',
+        'print-on-demand',
+$$
+[%- USE date -%]
+"Record Identifier"
+[% FOR vqar IN target %]"[% helpers.get_queued_auth_attr('rec_identifier',vqar.attributes) | replace('"', '""') %]"
+[% END %]
+$$
+    )
+;
+
+INSERT INTO action_trigger.environment ( event_def, path) VALUES (
+    43, 'attributes')
+    ,( 43, 'queue')
+;
+
+INSERT INTO action_trigger.event_definition (
+        id,
+        active,
+        owner,
+        name,
+        hook,
+        validator,
+        reactor,
+        group_field,
+        granularity,
+        template
+    ) VALUES (
+        44,
+        TRUE,
+        1,
+        'Email Output for Queued Authority Records',
+        'vandelay.queued_auth_record.email',
+        'NOOP_True',
+        'SendEmail',
+        'queue.owner',
+        NULL,
+$$
+[%- USE date -%]
+[%- SET user = target.0.queue.owner -%]
+To: [%- params.recipient_email || user.email || 'root@localhost' %]
+From: [%- params.sender_email || default_sender %]
+Subject: Authorities from Import Queue
+
+Queue ID: [% target.0.queue.id %]
+Queue Name: [% target.0.queue.name %]
+Queue Type: [% target.0.queue.queue_type %]
+Complete? [% target.0.queue.complete %]
+
+    [% FOR vqar IN target %]
+=-=-=
+ Record Identifier | [% helpers.get_queued_auth_attr('rec_identifier',vqar.attributes) %]
+
+    [% END %]
+
+$$
+    )
+;
+
+INSERT INTO action_trigger.environment ( event_def, path) VALUES (
+    44, 'attributes')
+    ,( 44, 'queue')
+    ,( 44, 'queue.owner')
+;
+
+INSERT INTO action_trigger.event_definition (
+        id,
+        active,
+        owner,
+        name,
+        hook,
+        validator,
+        reactor,
+        group_field,
+        granularity,
+        template
+    ) VALUES (
+        45,
+        TRUE,
+        1,
+        'Print Output for Import Items from Queued Bib Records',
+        'vandelay.import_items.print',
+        'NOOP_True',
+        'ProcessTemplate',
+        'record.queue.owner',
+        'print-on-demand',
+$$
+[%- USE date -%]
+<pre>
+Queue ID: [% target.0.record.queue.id %]
+Queue Name: [% target.0.record.queue.name %]
+Queue Type: [% target.0.record.queue.queue_type %]
+Complete? [% target.0.record.queue.complete %]
+
+    [% FOR vii IN target %]
+=-=-=
+ Import Item ID         | [% vii.id %]
+ Title of work          | [% helpers.get_queued_bib_attr('title',vii.record.attributes) %]
+ ISBN                   | [% helpers.get_queued_bib_attr('isbn',vii.record.attributes) %]
+ Attribute Definition   | [% vii.definition %]
+ Import Error           | [% vii.import_error %]
+ Import Error Detail    | [% vii.error_detail %]
+ Owning Library         | [% vii.owning_lib %]
+ Circulating Library    | [% vii.circ_lib %]
+ Call Number            | [% vii.call_number %]
+ Copy Number            | [% vii.copy_number %]
+ Status                 | [% vii.status.name %]
+ Shelving Location      | [% vii.location.name %]
+ Circulate              | [% vii.circulate %]
+ Deposit                | [% vii.deposit %]
+ Deposit Amount         | [% vii.deposit_amount %]
+ Reference              | [% vii.ref %]
+ Holdable               | [% vii.holdable %]
+ Price                  | [% vii.price %]
+ Barcode                | [% vii.barcode %]
+ Circulation Modifier   | [% vii.circ_modifier %]
+ Circulate As MARC Type | [% vii.circ_as_type %]
+ Alert Message          | [% vii.alert_message %]
+ Public Note            | [% vii.pub_note %]
+ Private Note           | [% vii.priv_note %]
+ OPAC Visible           | [% vii.opac_visible %]
+
+    [% END %]
+</pre>
+$$
+    )
+;
+
+INSERT INTO action_trigger.environment ( event_def, path) VALUES (
+    45, 'record')
+    ,( 45, 'record.attributes')
+    ,( 45, 'record.queue')
+    ,( 45, 'record.queue.owner')
+;
+
+INSERT INTO action_trigger.event_definition (
+        id,
+        active,
+        owner,
+        name,
+        hook,
+        validator,
+        reactor,
+        group_field,
+        granularity,
+        template
+    ) VALUES (
+        46,
+        TRUE,
+        1,
+        'CSV Output for Import Items from Queued Bib Records',
+        'vandelay.import_items.csv',
+        'NOOP_True',
+        'ProcessTemplate',
+        'record.queue.owner',
+        'print-on-demand',
+$$
+[%- USE date -%]
+"Import Item ID","Title of work","ISBN","Attribute Definition","Import Error","Import Error Detail","Owning Library","Circulating Library","Call Number","Copy Number","Status","Shelving Location","Circulate","Deposit","Deposit Amount","Reference","Holdable","Price","Barcode","Circulation Modifier","Circulate As MARC Type","Alert Message","Public Note","Private Note","OPAC Visible"
+[% FOR vii IN target %]"[% vii.id | replace('"', '""') %]","[% helpers.get_queued_bib_attr('title',vii.record.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('isbn',vii.record.attributes) | replace('"', '""') %]","[% vii.definition | replace('"', '""') %]","[% vii.import_error | replace('"', '""') %]","[% vii.error_detail | replace('"', '""') %]","[% vii.owning_lib | replace('"', '""') %]","[% vii.circ_lib | replace('"', '""') %]","[% vii.call_number | replace('"', '""') %]","[% vii.copy_number | replace('"', '""') %]","[% vii.status.name | replace('"', '""') %]","[% vii.location.name | replace('"', '""') %]","[% vii.circulate | replace('"', '""') %]","[% vii.deposit | replace('"', '""') %]","[% vii.deposit_amount | replace('"', '""') %]","[% vii.ref | replace('"', '""') %]","[% vii.holdable | replace('"', '""') %]","[% vii.price | replace('"', '""') %]","[% vii.barcode | replace('"', '""') %]","[% vii.circ_modifier | replace('"', '""') %]","[% vii.circ_as_type | replace('"', '""') %]","[% vii.alert_message | replace('"', '""') %]","[% vii.pub_note | replace('"', '""') %]","[% vii.priv_note | replace('"', '""') %]","[% vii.opac_visible | replace('"', '""') %]"
+[% END %]
+$$
+    )
+;
+
+INSERT INTO action_trigger.environment ( event_def, path) VALUES (
+    46, 'record')
+    ,( 46, 'record.attributes')
+    ,( 46, 'record.queue')
+    ,( 46, 'record.queue.owner')
+;
+
+INSERT INTO action_trigger.event_definition (
+        id,
+        active,
+        owner,
+        name,
+        hook,
+        validator,
+        reactor,
+        group_field,
+        granularity,
+        template
+    ) VALUES (
+        47,
+        TRUE,
+        1,
+        'Email Output for Import Items from Queued Bib Records',
+        'vandelay.import_items.email',
+        'NOOP_True',
+        'SendEmail',
+        'record.queue.owner',
+        NULL,
+$$
+[%- USE date -%]
+[%- SET user = target.0.record.queue.owner -%]
+To: [%- params.recipient_email || user.email || 'root@localhost' %]
+From: [%- params.sender_email || default_sender %]
+Subject: Import Items from Import Queue
+
+Queue ID: [% target.0.record.queue.id %]
+Queue Name: [% target.0.record.queue.name %]
+Queue Type: [% target.0.record.queue.queue_type %]
+Complete? [% target.0.record.queue.complete %]
+
+    [% FOR vii IN target %]
+=-=-=
+ Import Item ID         | [% vii.id %]
+ Title of work          | [% helpers.get_queued_bib_attr('title',vii.record.attributes) %]
+ ISBN                   | [% helpers.get_queued_bib_attr('isbn',vii.record.attributes) %]
+ Attribute Definition   | [% vii.definition %]
+ Import Error           | [% vii.import_error %]
+ Import Error Detail    | [% vii.error_detail %]
+ Owning Library         | [% vii.owning_lib %]
+ Circulating Library    | [% vii.circ_lib %]
+ Call Number            | [% vii.call_number %]
+ Copy Number            | [% vii.copy_number %]
+ Status                 | [% vii.status.name %]
+ Shelving Location      | [% vii.location.name %]
+ Circulate              | [% vii.circulate %]
+ Deposit                | [% vii.deposit %]
+ Deposit Amount         | [% vii.deposit_amount %]
+ Reference              | [% vii.ref %]
+ Holdable               | [% vii.holdable %]
+ Price                  | [% vii.price %]
+ Barcode                | [% vii.barcode %]
+ Circulation Modifier   | [% vii.circ_modifier %]
+ Circulate As MARC Type | [% vii.circ_as_type %]
+ Alert Message          | [% vii.alert_message %]
+ Public Note            | [% vii.pub_note %]
+ Private Note           | [% vii.priv_note %]
+ OPAC Visible           | [% vii.opac_visible %]
+
+    [% END %]
+$$
+    )
+;
+
+INSERT INTO action_trigger.environment ( event_def, path) VALUES (
+    47, 'record')
+    ,( 47, 'record.attributes')
+    ,( 47, 'record.queue')
+    ,( 47, 'record.queue.owner')
+;
+
+SELECT SETVAL('authority.control_set_id_seq'::TEXT, 100);
+SELECT SETVAL('authority.control_set_authority_field_id_seq'::TEXT, 1000);
+SELECT SETVAL('authority.control_set_bib_field_id_seq'::TEXT, 1000);
+
+INSERT INTO authority.control_set (id, name, description) VALUES (
+    1,
+    oils_i18n_gettext('1','LoC','acs','name'),
+    oils_i18n_gettext('1','Library of Congress standard authority record control semantics','acs','description')
+);
+
+INSERT INTO authority.control_set_authority_field (id, control_set, main_entry, tag, sf_list, name) VALUES
+
+-- Main entries
+    (1, 1, NULL, '100', 'abcdefklmnopqrstvxyz', oils_i18n_gettext('1','Heading -- Personal Name','acsaf','name')),
+    (2, 1, NULL, '110', 'abcdefgklmnoprstvxyz', oils_i18n_gettext('2','Heading -- Corporate Name','acsaf','name')),
+    (3, 1, NULL, '111', 'acdefgklnpqstvxyz', oils_i18n_gettext('3','Heading -- Meeting Name','acsaf','name')),
+    (4, 1, NULL, '130', 'adfgklmnoprstvxyz', oils_i18n_gettext('4','Heading -- Uniform Title','acsaf','name')),
+    (5, 1, NULL, '150', 'abvxyz', oils_i18n_gettext('5','Heading -- Topical Term','acsaf','name')),
+    (6, 1, NULL, '151', 'avxyz', oils_i18n_gettext('6','Heading -- Geographic Name','acsaf','name')),
+    (7, 1, NULL, '155', 'avxyz', oils_i18n_gettext('7','Heading -- Genre/Form Term','acsaf','name')),
+    (8, 1, NULL, '180', 'vxyz', oils_i18n_gettext('8','Heading -- General Subdivision','acsaf','name')),
+    (9, 1, NULL, '181', 'vxyz', oils_i18n_gettext('9','Heading -- Geographic Subdivision','acsaf','name')),
+    (10, 1, NULL, '182', 'vxyz', oils_i18n_gettext('10','Heading -- Chronological Subdivision','acsaf','name')),
+    (11, 1, NULL, '185', 'vxyz', oils_i18n_gettext('11','Heading -- Form Subdivision','acsaf','name')),
+    (12, 1, NULL, '148', 'avxyz', oils_i18n_gettext('12','Heading -- Chronological Term','acsaf','name')),
+
+-- See Also From tracings
+    (21, 1, 1, '500', 'abcdefiklmnopqrstvwxyz4', oils_i18n_gettext('21','See Also From Tracing -- Personal Name','acsaf','name')),
+    (22, 1, 2, '510', 'abcdefgiklmnoprstvwxyz4', oils_i18n_gettext('22','See Also From Tracing -- Corporate Name','acsaf','name')),
+    (23, 1, 3, '511', 'acdefgiklnpqstvwxyz4', oils_i18n_gettext('23','See Also From Tracing -- Meeting Name','acsaf','name')),
+    (24, 1, 4, '530', 'adfgiklmnoprstvwxyz4', oils_i18n_gettext('24','See Also From Tracing -- Uniform Title','acsaf','name')),
+    (25, 1, 5, '550', 'abivwxyz4', oils_i18n_gettext('25','See Also From Tracing -- Topical Term','acsaf','name')),
+    (26, 1, 6, '551', 'aivwxyz4', oils_i18n_gettext('26','See Also From Tracing -- Geographic Name','acsaf','name')),
+    (27, 1, 7, '555', 'aivwxyz4', oils_i18n_gettext('27','See Also From Tracing -- Genre/Form Term','acsaf','name')),
+    (28, 1, 8, '580', 'ivwxyz4', oils_i18n_gettext('28','See Also From Tracing -- General Subdivision','acsaf','name')),
+    (29, 1, 9, '581', 'ivwxyz4', oils_i18n_gettext('29','See Also From Tracing -- Geographic Subdivision','acsaf','name')),
+    (30, 1, 10, '582', 'ivwxyz4', oils_i18n_gettext('30','See Also From Tracing -- Chronological Subdivision','acsaf','name')),
+    (31, 1, 11, '585', 'ivwxyz4', oils_i18n_gettext('31','See Also From Tracing -- Form Subdivision','acsaf','name')),
+    (32, 1, 12, '548', 'aivwxyz4', oils_i18n_gettext('32','See Also From Tracing -- Chronological Term','acsaf','name')),
+
+-- Linking entries
+    (41, 1, 1, '700', 'abcdefghjklmnopqrstvwxyz25', oils_i18n_gettext('41','Established Heading Linking Entry -- Personal Name','acsaf','name')),
+    (42, 1, 2, '710', 'abcdefghklmnoprstvwxyz25', oils_i18n_gettext('42','Established Heading Linking Entry -- Corporate Name','acsaf','name')),
+    (43, 1, 3, '711', 'acdefghklnpqstvwxyz25', oils_i18n_gettext('43','Established Heading Linking Entry -- Meeting Name','acsaf','name')),
+    (44, 1, 4, '730', 'adfghklmnoprstvwxyz25', oils_i18n_gettext('44','Established Heading Linking Entry -- Uniform Title','acsaf','name')),
+    (45, 1, 5, '750', 'abvwxyz25', oils_i18n_gettext('45','Established Heading Linking Entry -- Topical Term','acsaf','name')),
+    (46, 1, 6, '751', 'avwxyz25', oils_i18n_gettext('46','Established Heading Linking Entry -- Geographic Name','acsaf','name')),
+    (47, 1, 7, '755', 'avwxyz25', oils_i18n_gettext('47','Established Heading Linking Entry -- Genre/Form Term','acsaf','name')),
+    (48, 1, 8, '780', 'vwxyz25', oils_i18n_gettext('48','Subdivision Linking Entry -- General Subdivision','acsaf','name')),
+    (49, 1, 9, '781', 'vwxyz25', oils_i18n_gettext('49','Subdivision Linking Entry -- Geographic Subdivision','acsaf','name')),
+    (50, 1, 10, '782', 'vwxyz25', oils_i18n_gettext('50','Subdivision Linking Entry -- Chronological Subdivision','acsaf','name')),
+    (51, 1, 11, '785', 'vwxyz25', oils_i18n_gettext('51','Subdivision Linking Entry -- Form Subdivision','acsaf','name')),
+    (52, 1, 12, '748', 'avwxyz25', oils_i18n_gettext('52','Established Heading Linking Entry -- Chronological Term','acsaf','name')),
+
+-- See From tracings
+    (61, 1, 1, '400', 'abcdefiklmnopqrstvwxyz4', oils_i18n_gettext('61','See Also Tracing -- Personal Name','acsaf','name')),
+    (62, 1, 2, '410', 'abcdefgiklmnoprstvwxyz4', oils_i18n_gettext('62','See Also Tracing -- Corporate Name','acsaf','name')),
+    (63, 1, 3, '411', 'acdefgiklnpqstvwxyz4', oils_i18n_gettext('63','See Also Tracing -- Meeting Name','acsaf','name')),
+    (64, 1, 4, '430', 'adfgiklmnoprstvwxyz4', oils_i18n_gettext('64','See Also Tracing -- Uniform Title','acsaf','name')),
+    (65, 1, 5, '450', 'abivwxyz4', oils_i18n_gettext('65','See Also Tracing -- Topical Term','acsaf','name')),
+    (66, 1, 6, '451', 'aivwxyz4', oils_i18n_gettext('66','See Also Tracing -- Geographic Name','acsaf','name')),
+    (67, 1, 7, '455', 'aivwxyz4', oils_i18n_gettext('67','See Also Tracing -- Genre/Form Term','acsaf','name')),
+    (68, 1, 8, '480', 'ivwxyz4', oils_i18n_gettext('68','See Also Tracing -- General Subdivision','acsaf','name')),
+    (69, 1, 9, '481', 'ivwxyz4', oils_i18n_gettext('69','See Also Tracing -- Geographic Subdivision','acsaf','name')),
+    (70, 1, 10, '482', 'ivwxyz4', oils_i18n_gettext('70','See Also Tracing -- Chronological Subdivision','acsaf','name')),
+    (71, 1, 11, '485', 'ivwxyz4', oils_i18n_gettext('71','See Also Tracing -- Form Subdivision','acsaf','name')),
+    (72, 1, 12, '448', 'aivwxyz4', oils_i18n_gettext('72','See Also Tracing -- Chronological Term','acsaf','name'));
+
+INSERT INTO authority.browse_axis (code,name,description,sorter) VALUES
+    ('title','Title','Title axis','titlesort'),
+    ('author','Author','Author axis','titlesort'),
+    ('subject','Subject','Subject axis','titlesort'),
+    ('topic','Topic','Topic Subject axis','titlesort');
+
+INSERT INTO authority.browse_axis_authority_field_map (axis,field) VALUES
+    ('author',  1 ),
+    ('author',  2 ),
+    ('author',  3 ),
+    ('title',   4 ),
+    ('topic',   5 ),
+    ('subject', 5 ),
+    ('subject', 6 ),
+    ('subject', 7 ),
+    ('subject', 12);
+
+INSERT INTO authority.control_set_bib_field (tag, authority_field) 
+    SELECT '100', id FROM authority.control_set_authority_field WHERE tag IN ('100')
+        UNION
+    SELECT '600', id FROM authority.control_set_authority_field WHERE tag IN ('100','180','181','182','185')
+        UNION
+    SELECT '700', id FROM authority.control_set_authority_field WHERE tag IN ('100')
+        UNION
+    SELECT '800', id FROM authority.control_set_authority_field WHERE tag IN ('100')
+        UNION
+
+    SELECT '110', id FROM authority.control_set_authority_field WHERE tag IN ('110')
+        UNION
+    SELECT '610', id FROM authority.control_set_authority_field WHERE tag IN ('110')
+        UNION
+    SELECT '710', id FROM authority.control_set_authority_field WHERE tag IN ('110')
+        UNION
+    SELECT '810', id FROM authority.control_set_authority_field WHERE tag IN ('110')
+        UNION
+
+    SELECT '111', id FROM authority.control_set_authority_field WHERE tag IN ('111')
+        UNION
+    SELECT '611', id FROM authority.control_set_authority_field WHERE tag IN ('111')
+        UNION
+    SELECT '711', id FROM authority.control_set_authority_field WHERE tag IN ('111')
+        UNION
+    SELECT '811', id FROM authority.control_set_authority_field WHERE tag IN ('111')
+        UNION
+
+    SELECT '130', id FROM authority.control_set_authority_field WHERE tag IN ('130')
+        UNION
+    SELECT '240', id FROM authority.control_set_authority_field WHERE tag IN ('130')
+        UNION
+    SELECT '630', id FROM authority.control_set_authority_field WHERE tag IN ('130')
+        UNION
+    SELECT '730', id FROM authority.control_set_authority_field WHERE tag IN ('130')
+        UNION
+    SELECT '830', id FROM authority.control_set_authority_field WHERE tag IN ('130')
+        UNION
+
+    SELECT '648', id FROM authority.control_set_authority_field WHERE tag IN ('148')
+        UNION
+
+    SELECT '650', id FROM authority.control_set_authority_field WHERE tag IN ('150','180','181','182','185')
+        UNION
+    SELECT '651', id FROM authority.control_set_authority_field WHERE tag IN ('151','180','181','182','185')
+        UNION
+    SELECT '655', id FROM authority.control_set_authority_field WHERE tag IN ('155','180','181','182','185')
+;
+
+INSERT INTO authority.thesaurus (code, name, control_set) VALUES
+    ('a', oils_i18n_gettext('a','Library of Congress Subject Headings','at','name'), 1),
+    ('b', oils_i18n_gettext('b',$$LC subject headings for children's literature$$,'at','name'), 1), -- silly vim '
+    ('c', oils_i18n_gettext('c','Medical Subject Headings','at','name'), 1),
+    ('d', oils_i18n_gettext('d','National Agricultural Library subject authority file','at','name'), 1),
+    ('k', oils_i18n_gettext('k','Canadian Subject Headings','at','name'), 1),
+    ('n', oils_i18n_gettext('n','Not applicable','at','name'), 1),
+    ('r', oils_i18n_gettext('r','Art and Architecture Thesaurus','at','name'), 1),
+    ('s', oils_i18n_gettext('s','Sears List of Subject Headings','at','name'), 1),
+    ('v', oils_i18n_gettext('v','Repertoire de vedettes-matiere','at','name'), 1),
+    ('z', oils_i18n_gettext('z','Other','at','name'), 1),
+    ('|', oils_i18n_gettext('|','No attempt to code','at','name'), 1);
+

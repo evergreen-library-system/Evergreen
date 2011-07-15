@@ -6,7 +6,7 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::AppUtils;
 use XML::LibXML;
 use XML::LibXSLT;
-use OpenILS::Utils::Editor q/:funcs/;
+use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenSRF::Utils::Logger qw/$logger/;
 
 use OpenSRF::Utils::JSON;
@@ -59,6 +59,59 @@ __PACKAGE__->register_method(
         argc		=> 2, 
         note		=> "Searches authority data for existing controlled terms and crossrefs",
 );              
+
+sub search_authority_by_simple_normalize_heading {
+    my $self = shift;
+    my $client = shift;
+    my $marcxml = shift;
+    my $controlset = shift;
+
+    my $query = {
+        select => { are => ['id'] },
+        from   => 'are',
+        where  => {
+            deleted => 'f',
+            marc => { 'startwith' => {
+                transform => 'authority.simple_normalize_heading',
+                value     => [ 'authority.simple_normalize_heading' => $marcxml ]
+            }},
+            defined($controlset) ? ( control_set => $controlset ) : ()
+        }
+    };
+
+    $client->respond($_->{id}) for @{ new_editor()->json_query( $query ) };
+    $client->respond_complete;
+}
+__PACKAGE__->register_method(
+        method		=> "search_authority_by_simple_normalize_heading",
+        api_name	=> "open-ils.search.authority.simple_heading.from_xml",
+        argc		=> 1, 
+        stream      => 1,
+        note		=> "Searches authority data by main entry using marcxml, returning 'are' ids; params are marcxml and optional control-set-id",
+);
+
+sub search_authority_batch_by_simple_normalize_heading {
+    my $self = shift;
+    my $client = shift;
+    my $search_set = [@_];
+
+    my $m = $self->method_lookup('open-ils.search.authority.simple_heading.from_xml.atomic');
+
+    for my $s ( @$search_set ) {
+        for my $k ( keys %$s ) {
+            $client->respond( { $k => $m->run( $s->{$k}, $k ) } );
+        }
+    }
+
+    $client->respond_complete;
+}
+__PACKAGE__->register_method(
+        method		=> "search_authority_batch_by_simple_normalize_heading",
+        api_name	=> "open-ils.search.authority.simple_heading.from_xml.batch",
+        argc		=> 1, 
+        stream      => 1,
+        note		=> "Searches authority data by main entry using marcxml, in control-set batches, returning 'are' ids; params are hashes of { control-set-id => marcxml }",
+);
 
 
 sub crossref_authority {

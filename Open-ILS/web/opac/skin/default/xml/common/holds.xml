@@ -219,6 +219,7 @@
 		<span class='hide_me' id='hold_not_allowed'>
 			&common.hold.failed;
 		</span>
+        <span class='hide_me' id='hold_has_parts'>&opac.hold.has_parts;</span>
 
 	</div>
 

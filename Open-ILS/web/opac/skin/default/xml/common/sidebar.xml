@@ -100,11 +100,30 @@
 			</div>
 
             <span class='hide_me' id='myopac.copy.not.found'>&sidebar.copy.not.found;</span>
+            <span class='hide_me' id='myopac.copy.not.cataloged'>&sidebar.copy.not.cataloged;</span>
 			<div style='margin-top: 8px;' class='adv_quick_search_submit'>
 				<a id='adv_quick_submit' href='javascript:advGenericSearch();' class='classic_link'>&common.submit;</a>
 			</div>
 		</div>
 	</div>
+
+    <div id='adv_authority_browse_sidebar' style='text-align: center'
+        class='sidebar_chunk hide_me'>
+
+        <hr />
+        <div class='adv_quick_search color_4'>
+            <b>&sidebar.authority.browse;</b>
+        </div>
+
+        <div style="text-align: left">
+            <select id="authority_browse_axis"></select><input
+                id="authority_browse_term" type="text" size="16"/>
+        </div>
+
+        <div style="margin-top: 8px;">
+            <a id="authority_browse_submit" class="classic_link" href="javascript:advAuthorityBrowse();">&common.submit;</a>
+        </div>
+    </div>
 
 	<div id='adv_marc_search_sidebar' class='sidebar_chunk hide_me' 
 		style='text-align:center; margin-top: 20px;'> 

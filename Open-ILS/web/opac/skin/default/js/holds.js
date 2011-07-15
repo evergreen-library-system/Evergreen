@@ -126,6 +126,9 @@ function holdsDrawEditor(args) {
 	if(holdArgs.editHold) // flesh the args with the existing hold 
 		holdArgsFromHold(holdArgs.editHold, holdArgs);
 
+    $('holds_parts_selector').style.border = 'auto';
+    holdArgs.partsSuggestionMade = false;
+
 	holdsDrawWindow();
 }
 
@@ -812,14 +815,14 @@ function holdsSetSelectedFormats() {
 
 	var fstring = "";
 
-	if( contains(vals, 'at-d') || contains(vals, 'at-s')) {
+	if( contains(vals, 'at-d') || contains(vals, 'at-s') || contains(vals, 'at')) {
 		if( contains(vals, 'at') ) {
 			fstring = 'at';
 		} else if (contains(vals, 'at-s') && contains(vals, 'at-d')) {
 			fstring = 'at-sd';
 		} else if (!contains(vals, 'at-s')) {
 			fstring = 'at-d';
-	} else {
+		} else {
 			fstring = 'at-s';
 		}
 	}
@@ -850,6 +853,7 @@ function holdsCheckPossibility(pickuplib, hold, recurse) {
 		issuanceid : holdArgs.issuance,
 		copy_id : holdArgs.copy,
 		hold_type : holdArgs.type,
+		holdable_formats : holdArgs.holdable_formats,
 		patronid : holdArgs.recipient.id(),
 		depth : 0, 
 		pickup_lib : pickuplib,
@@ -997,6 +1001,8 @@ function holdsBuildHoldFromWindow() {
 	if(fstring) { 
 		hold.hold_type('M'); 
 		hold.holdable_formats(fstring);
+		if (fstring)
+			holdArgs.holdable_formats = fstring;
 		hold.target(holdArgs.metarecord);
 	}
 	return hold;
@@ -1015,7 +1021,17 @@ function holdHandleCreateResponse(r, recurse) {
 		var res = r.getResultObject();
 		if(checkILSEvent(res) || res.success != 1) {
 			if(res.success != 1) {
-				alert($('hold_not_allowed').innerHTML);
+
+                if(!holdArgs.partsSuggestionMade && holdArgs.recordParts && 
+                        holdArgs.recordParts.length && holdArgs.type == 'T') {
+                    // T holds on records that have parts are OK, but if the record has no non-part
+                    // copies, the hold will ultimately fail.  Suggest selecting a part to the user.
+                    $('holds_parts_selector').style.border = '2px solid red';
+                    holdArgs.partsSuggestionMade = true;
+                    alert($('hold_has_parts').innerHTML);
+                } else {
+				    alert($('hold_not_allowed').innerHTML);
+                }
 			} else {
 				if( res.textcode == 'PATRON_BARRED' ) {
 					alertId('hold_failed_patron_barred');

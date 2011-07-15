@@ -20,6 +20,7 @@
         <menuseparator/>
         <menuitem command="cmd_create_brt" label="&staff.circ.copy_status_overlay.cmd_create_brt.label;" accesskey="&staff.circ.copy_status_overlay.cmd_create_brt.accesskey;"/>
         <menuitem command="cmd_book_item_now" label="&staff.circ.copy_status_overlay.cmd_book_item_now.label;" accesskey="&staff.circ.copy_status_overlay.cmd_book_item_now.accesskey;"/>
+        <menuitem command="cmd_request_items" label="&staff.circ.copy_status_overlay.cmd_request_items.label;" accesskey="&staff.circ.copy_status_overlay.cmd_request_items.accesskey;"/>
         <menuseparator/>
         <menuitem command="cmd_find_acq_po" label="&staff.circ.copy_status_overlay.cmd_find_acq_po.label;" accesskey="&staff.circ.copy_status_overlay.cmd_find_acq_po.accesskey;"/>
         <menuseparator/>
@@ -161,6 +162,7 @@
             <menuseparator />
             <menuitem command="cmd_create_brt" label="&staff.circ.copy_status_overlay.cmd_create_brt.label;" accesskey="&staff.circ.copy_status_overlay.cmd_create_brt.accesskey;"/>
             <menuitem command="cmd_book_item_now" label="&staff.circ.copy_status_overlay.cmd_book_item_now.label;" accesskey="&staff.circ.copy_status_overlay.cmd_book_item_now.accesskey;"/>
+            <menuitem command="cmd_request_items" label="&staff.circ.copy_status_overlay.cmd_request_items.label;" accesskey="&staff.circ.copy_status_overlay.cmd_request_items.accesskey;"/>
             <menuseparator />
             <menuitem command="cmd_find_acq_po" label="&staff.circ.copy_status_overlay.cmd_find_acq_po.label;" accesskey="&staff.circ.copy_status_overlay.cmd_find_acq_po.accesskey;"/>
             <menuseparator/>

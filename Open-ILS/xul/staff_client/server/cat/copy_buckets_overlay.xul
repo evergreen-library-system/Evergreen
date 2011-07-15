@@ -73,6 +73,7 @@
     <hbox style="background: grey">
         <vbox><spacer flex="1"/><label value="&staff.cat.copy_buckets_overlay.copy_buckets.batch.label;" style="font-weight: bold"/><spacer flex="1"/></vbox>
         <button label="&staff.cat.copy_buckets_overlay.copy_buckets.cmd_export_to_copy_status.label;" command="cmd_export_to_copy_status"/>
+        <button command="cmd_request_items" label="&staff.cat.copy_buckets_overlay.copy_buckets.cmd_request_items.label;" accesskey="&staff.cat.copy_buckets_overlay.copy_buckets.cmd_request_items.accesskey;"/>
         <button command="copy_buckets_transfer_to_volume" label="&staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_transfer_to_volume.label;"/>
         <button command="copy_buckets_batch_copy_edit" label="&staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_batch_copy_edit.label;" image="/xul/server/skin/media/images/grinder.gif"/>
         <button command="copy_buckets_batch_copy_delete" label="&staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_batch_copy_delete.label;" />

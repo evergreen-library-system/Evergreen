@@ -87,6 +87,14 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
                 return true;
             }
             return;
+        },
+
+        toString : function() {
+            /* ever so slightly aid debugging */
+            if (this.classname)
+                return "[object fieldmapper." + this.classname + "]";
+            else
+                return Object.prototype.toString();
         }
 
     });

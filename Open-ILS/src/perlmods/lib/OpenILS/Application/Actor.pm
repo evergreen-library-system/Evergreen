@@ -3507,7 +3507,13 @@ sub really_delete_user {
     my $e = new_editor(authtoken => $auth, xact => 1);
     return $e->die_event unless $e->checkauth;
     my $user = $e->retrieve_actor_user($user_id) or return $e->die_event;
+    # No deleting yourself - UI is supposed to stop you first, though.
+    return $e->die_event unless $e->requestor->id != $user->id;
     return $e->die_event unless $e->allowed('DELETE_USER', $user->home_ou);
+    # Check if you are allowed to mess with this patron permission group at all
+    my $session = OpenSRF::AppSession->create( "open-ils.storage" );
+    my $evt = group_perm_failed($session, $e->requestor, $user);
+    return $e->die_event($evt) if $evt;
     my $stat = $e->json_query(
         {from => ['actor.usr_delete', $user_id, $dest_user_id]})->[0] 
         or return $e->die_event;

@@ -135,6 +135,43 @@ CREATE INDEX metabib_facet_entry_field_idx ON metabib.facet_entry (field);
 CREATE INDEX metabib_facet_entry_value_idx ON metabib.facet_entry (SUBSTRING(value,1,1024));
 CREATE INDEX metabib_facet_entry_source_idx ON metabib.facet_entry (source);
 
+CREATE OR REPLACE FUNCTION metabib.facet_normalize_trigger () RETURNS TRIGGER AS $$
+DECLARE
+    normalizer  RECORD;
+    facet_text  TEXT;
+BEGIN
+    facet_text := NEW.value;
+
+    FOR normalizer IN
+        SELECT  n.func AS func,
+                n.param_count AS param_count,
+                m.params AS params
+          FROM  config.index_normalizer n
+                JOIN config.metabib_field_index_norm_map m ON (m.norm = n.id)
+          WHERE m.field = NEW.field AND m.pos < 0
+          ORDER BY m.pos LOOP
+
+            EXECUTE 'SELECT ' || normalizer.func || '(' ||
+                quote_literal( facet_text ) ||
+                CASE
+                    WHEN normalizer.param_count > 0
+                        THEN ',' || REPLACE(REPLACE(BTRIM(normalizer.params,'[]'),E'\'',E'\\\''),E'"',E'\'')
+                        ELSE ''
+                    END ||
+                ')' INTO facet_text;
+
+    END LOOP;
+
+    NEW.value = facet_text;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER facet_normalize_tgr
+	BEFORE UPDATE OR INSERT ON metabib.facet_entry
+	FOR EACH ROW EXECUTE PROCEDURE metabib.facet_normalize_trigger();
+
 CREATE OR REPLACE FUNCTION evergreen.facet_force_nfc() RETURNS TRIGGER AS $$
 BEGIN
     NEW.value := force_unicode_normal_form(NEW.value,'NFC');
@@ -372,6 +409,27 @@ CREATE OR REPLACE FUNCTION biblio.extract_metabib_field_entry ( BIGINT ) RETURNS
 	SELECT * FROM biblio.extract_metabib_field_entry($1, ' ');
 $func$ LANGUAGE SQL;
 
+CREATE OR REPLACE FUNCTION authority.flatten_marc ( rid BIGINT ) RETURNS SETOF authority.full_rec AS $func$
+DECLARE
+	auth	authority.record_entry%ROWTYPE;
+	output	authority.full_rec%ROWTYPE;
+	field	RECORD;
+BEGIN
+	SELECT INTO auth * FROM authority.record_entry WHERE id = rid;
+
+	FOR field IN SELECT * FROM vandelay.flatten_marc( auth.marc ) LOOP
+		output.record := rid;
+		output.ind1 := field.ind1;
+		output.ind2 := field.ind2;
+		output.tag := field.tag;
+		output.subfield := field.subfield;
+		output.value := field.value;
+
+		RETURN NEXT output;
+	END LOOP;
+END;
+$func$ LANGUAGE PLPGSQL;
+
 CREATE OR REPLACE FUNCTION biblio.flatten_marc ( rid BIGINT ) RETURNS SETOF metabib.full_rec AS $func$
 DECLARE
 	bib	biblio.record_entry%ROWTYPE;
@@ -380,95 +438,18 @@ DECLARE
 BEGIN
 	SELECT INTO bib * FROM biblio.record_entry WHERE id = rid;
 
-	FOR field IN SELECT * FROM biblio.flatten_marc( bib.marc ) LOOP
+	FOR field IN SELECT * FROM vandelay.flatten_marc( bib.marc ) LOOP
 		output.record := rid;
 		output.ind1 := field.ind1;
 		output.ind2 := field.ind2;
 		output.tag := field.tag;
 		output.subfield := field.subfield;
-		IF field.subfield IS NOT NULL AND field.tag NOT IN ('020','022','024') THEN -- exclude standard numbers and control fields
-			output.value := naco_normalize(field.value, field.subfield);
-		ELSE
-			output.value := field.value;
-		END IF;
-
-		CONTINUE WHEN output.value IS NULL;
+		output.value := field.value;
 
 		RETURN NEXT output;
 	END LOOP;
 END;
 $func$ LANGUAGE PLPGSQL;
-
-/* Old form of biblio.flatten_marc() relied on contrib/xml2 functions that got all crashy in PostgreSQL 8.4 */
--- CREATE OR REPLACE FUNCTION biblio.flatten_marc ( TEXT, BIGINT ) RETURNS SETOF metabib.full_rec AS $func$
---     SELECT  NULL::bigint AS id, NULL::bigint, 'LDR'::char(3), NULL::TEXT, NULL::TEXT, NULL::TEXT, oils_xpath_string( '//*[local-name()="leader"]', $1 ), NULL::tsvector AS index_vector
---         UNION
---     SELECT  NULL::bigint AS id, NULL::bigint, x.tag::char(3), NULL::TEXT, NULL::TEXT, NULL::TEXT, x.value, NULL::tsvector AS index_vector
---       FROM  oils_xpath_table(
---                 'id',
---                 'marc',
---                 'biblio.record_entry',
---                 '//*[local-name()="controlfield"]/@tag|//*[local-name()="controlfield"]',
---                 'id=' || $2::TEXT
---             )x(record int, tag text, value text)
---         UNION
---     SELECT  NULL::bigint AS id, NULL::bigint, x.tag::char(3), x.ind1, x.ind2, x.subfield, x.value, NULL::tsvector AS index_vector
---       FROM  oils_xpath_table(
---                 'id',
---                 'marc',
---                 'biblio.record_entry',
---                 '//*[local-name()="datafield"]/@tag|' ||
---                 '//*[local-name()="datafield"]/@ind1|' ||
---                 '//*[local-name()="datafield"]/@ind2|' ||
---                 '//*[local-name()="datafield"]/*/@code|' ||
---                 '//*[local-name()="datafield"]/*[@code]',
---                 'id=' || $2::TEXT
---             )x(record int, tag text, ind1 text, ind2 text, subfield text, value text);
--- $func$ LANGUAGE SQL;
-
-CREATE OR REPLACE FUNCTION biblio.flatten_marc ( TEXT ) RETURNS SETOF metabib.full_rec AS $func$
-
-use MARC::Record;
-use MARC::File::XML (BinaryEncoding => 'UTF-8');
-use MARC::Charset;
-
-MARC::Charset->assume_unicode(1);
-
-my $xml = shift;
-my $r = MARC::Record->new_from_xml( $xml );
-
-return_next( { tag => 'LDR', value => $r->leader } );
-
-for my $f ( $r->fields ) {
-	if ($f->is_control_field) {
-		return_next({ tag => $f->tag, value => $f->data });
-	} else {
-		for my $s ($f->subfields) {
-			return_next({
-				tag      => $f->tag,
-				ind1     => $f->indicator(1),
-				ind2     => $f->indicator(2),
-				subfield => $s->[0],
-				value    => $s->[1]
-			});
-
-			if ( $f->tag eq '245' and $s->[0] eq 'a' ) {
-				my $trim = $f->indicator(2) || 0;
-				return_next({
-					tag      => 'tnf',
-					ind1     => $f->indicator(1),
-					ind2     => $f->indicator(2),
-					subfield => 'a',
-					value    => substr( $s->[1], $trim )
-				});
-			}
-		}
-	}
-}
-
-return undef;
-
-$func$ LANGUAGE PLPERLU;
 
 CREATE OR REPLACE FUNCTION vandelay.marc21_record_type( marc TEXT ) RETURNS config.marc21_rec_type_map AS $func$
 DECLARE
@@ -543,7 +524,7 @@ CREATE OR REPLACE FUNCTION biblio.marc21_extract_fixed_field( rid BIGINT, ff TEX
     SELECT * FROM vandelay.marc21_extract_fixed_field( (SELECT marc FROM biblio.record_entry WHERE id = $1), $2 );
 $func$ LANGUAGE SQL;
 
-CREATE TYPE biblio.record_ff_map AS (record BIGINT, ff_name TEXT, ff_value TEXT);
+-- CREATE TYPE biblio.record_ff_map AS (record BIGINT, ff_name TEXT, ff_value TEXT);
 CREATE OR REPLACE FUNCTION vandelay.marc21_extract_all_fixed_fields( marc TEXT ) RETURNS SETOF biblio.record_ff_map AS $func$
 DECLARE
     tag_data    TEXT;
@@ -582,43 +563,6 @@ $func$ LANGUAGE PLPGSQL;
 CREATE OR REPLACE FUNCTION biblio.marc21_extract_all_fixed_fields( rid BIGINT ) RETURNS SETOF biblio.record_ff_map AS $func$
     SELECT $1 AS record, ff_name, ff_value FROM vandelay.marc21_extract_all_fixed_fields( (SELECT marc FROM biblio.record_entry WHERE id = $1) );
 $func$ LANGUAGE SQL;
-
-CREATE TYPE biblio.marc21_physical_characteristics AS ( id INT, record BIGINT, ptype TEXT, subfield INT, value INT );
-CREATE OR REPLACE FUNCTION vandelay.marc21_physical_characteristics( marc TEXT) RETURNS SETOF biblio.marc21_physical_characteristics AS $func$
-DECLARE
-    rowid   INT := 0;
-    _007    TEXT;
-    ptype   config.marc21_physical_characteristic_type_map%ROWTYPE;
-    psf     config.marc21_physical_characteristic_subfield_map%ROWTYPE;
-    pval    config.marc21_physical_characteristic_value_map%ROWTYPE;
-    retval  biblio.marc21_physical_characteristics%ROWTYPE;
-BEGIN
-
-    _007 := oils_xpath_string( '//*[@tag="007"]', marc );
-
-    IF _007 IS NOT NULL AND _007 <> '' THEN
-        SELECT * INTO ptype FROM config.marc21_physical_characteristic_type_map WHERE ptype_key = SUBSTRING( _007, 1, 1 );
-
-        IF ptype.ptype_key IS NOT NULL THEN
-            FOR psf IN SELECT * FROM config.marc21_physical_characteristic_subfield_map WHERE ptype_key = ptype.ptype_key LOOP
-                SELECT * INTO pval FROM config.marc21_physical_characteristic_value_map WHERE ptype_subfield = psf.id AND value = SUBSTRING( _007, psf.start_pos + 1, psf.length );
-
-                IF pval.id IS NOT NULL THEN
-                    rowid := rowid + 1;
-                    retval.id := rowid;
-                    retval.ptype := ptype.ptype_key;
-                    retval.subfield := psf.id;
-                    retval.value := pval.id;
-                    RETURN NEXT retval;
-                END IF;
-
-            END LOOP;
-        END IF;
-    END IF;
-
-    RETURN;
-END;
-$func$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION biblio.marc21_physical_characteristics( rid BIGINT ) RETURNS SETOF biblio.marc21_physical_characteristics AS $func$
     SELECT id, $1 AS record, ptype, subfield, value FROM vandelay.marc21_physical_characteristics( (SELECT marc FROM biblio.record_entry WHERE id = $1) );
@@ -1122,7 +1066,7 @@ BEGIN
             IF TG_OP = 'INSERT' OR OLD.deleted THEN -- initial insert OR revivication
                 INSERT INTO metabib.record_attr (id, attrs) VALUES (NEW.id, new_attrs);
             ELSE
-                UPDATE metabib.record_attr SET attrs = attrs || new_attrs WHERE id = NEW.id;
+                UPDATE metabib.record_attr SET attrs = new_attrs WHERE id = NEW.id;
             END IF;
 
         END IF;

@@ -1378,74 +1378,28 @@ CREATE OR REPLACE FUNCTION authority.propagate_changes (aid BIGINT) RETURNS SETO
     SELECT authority.propagate_changes( authority, bib ) FROM authority.bib_linking WHERE authority = $1;
 $func$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION authority.flatten_marc ( TEXT ) RETURNS SETOF authority.full_rec AS $func$
-
-use MARC::Record;
-use MARC::File::XML (BinaryEncoding => 'UTF-8');
-use MARC::Charset;
-
-MARC::Charset->assume_unicode(1);
-
-my $xml = shift;
-my $r = MARC::Record->new_from_xml( $xml );
-
-return_next( { tag => 'LDR', value => $r->leader } );
-
-for my $f ( $r->fields ) {
-    if ($f->is_control_field) {
-        return_next({ tag => $f->tag, value => $f->data });
-    } else {
-        for my $s ($f->subfields) {
-            return_next({
-                tag      => $f->tag,
-                ind1     => $f->indicator(1),
-                ind2     => $f->indicator(2),
-                subfield => $s->[0],
-                value    => $s->[1]
-            });
-
-        }
-    }
-}
-
-return undef;
-
-$func$ LANGUAGE PLPERLU;
-
-CREATE OR REPLACE FUNCTION authority.flatten_marc ( rid BIGINT ) RETURNS SETOF authority.full_rec AS $func$
-DECLARE
-    auth    authority.record_entry%ROWTYPE;
-    output    authority.full_rec%ROWTYPE;
-    field    RECORD;
+CREATE OR REPLACE FUNCTION authority.map_thesaurus_to_control_set () RETURNS TRIGGER AS $func$
 BEGIN
-    SELECT INTO auth * FROM authority.record_entry WHERE id = rid;
+    IF NEW.control_set IS NULL THEN
+        SELECT  control_set INTO NEW.control_set
+          FROM  authority.thesaurus
+          WHERE vandelay.marc21_extract_fixed_field(NEW.marc,'Subj') = code;
+    END IF;
 
-    FOR field IN SELECT * FROM authority.flatten_marc( auth.marc ) LOOP
-        output.record := rid;
-        output.ind1 := field.ind1;
-        output.ind2 := field.ind2;
-        output.tag := field.tag;
-        output.subfield := field.subfield;
-        IF field.subfield IS NOT NULL THEN
-            output.value := naco_normalize(field.value, field.subfield);
-        ELSE
-            output.value := field.value;
-        END IF;
-
-        CONTINUE WHEN output.value IS NULL;
-
-        RETURN NEXT output;
-    END LOOP;
+    RETURN NEW;
 END;
 $func$ LANGUAGE PLPGSQL;
 
--- authority.rec_descriptor appears to be unused currently
 CREATE OR REPLACE FUNCTION authority.reingest_authority_rec_descriptor( auth_id BIGINT ) RETURNS VOID AS $func$
 BEGIN
     DELETE FROM authority.rec_descriptor WHERE record = auth_id;
---    INSERT INTO authority.rec_descriptor (record, record_status, char_encoding)
---        SELECT  auth_id, ;
-
+    INSERT INTO authority.rec_descriptor (record, record_status, encoding_level, thesaurus)
+        SELECT  auth_id,
+                vandelay.marc21_extract_fixed_field(marc,'RecStat'),
+                vandelay.marc21_extract_fixed_field(marc,'ELvl'),
+                vandelay.marc21_extract_fixed_field(marc,'Subj')
+          FROM  authority.record_entry
+          WHERE id = auth_id;
     RETURN;
 END;
 $func$ LANGUAGE PLPGSQL;
@@ -1485,11 +1439,10 @@ BEGIN
     PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_authority_full_rec' AND enabled;
     IF NOT FOUND THEN
         PERFORM authority.reingest_authority_full_rec(NEW.id);
--- authority.rec_descriptor is not currently used
---        PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_authority_rec_descriptor' AND enabled;
---        IF NOT FOUND THEN
---            PERFORM authority.reingest_authority_rec_descriptor(NEW.id);
---        END IF;
+        PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_authority_rec_descriptor' AND enabled;
+        IF NOT FOUND THEN
+            PERFORM authority.reingest_authority_rec_descriptor(NEW.id);
+        END IF;
     END IF;
 
     RETURN NEW;
@@ -1501,6 +1454,7 @@ CREATE TRIGGER fingerprint_tgr BEFORE INSERT OR UPDATE ON biblio.record_entry FO
 CREATE TRIGGER aaa_indexing_ingest_or_delete AFTER INSERT OR UPDATE ON biblio.record_entry FOR EACH ROW EXECUTE PROCEDURE biblio.indexing_ingest_or_delete ();
 CREATE TRIGGER bbb_simple_rec_trigger AFTER INSERT OR UPDATE OR DELETE ON biblio.record_entry FOR EACH ROW EXECUTE PROCEDURE reporter.simple_rec_trigger ();
 
+CREATE TRIGGER map_thesaurus_to_control_set BEFORE INSERT OR UPDATE ON authority.record_entry FOR EACH ROW EXECUTE PROCEDURE authority.map_thesaurus_to_control_set ();
 CREATE TRIGGER aaa_auth_ingest_or_delete AFTER INSERT OR UPDATE ON authority.record_entry FOR EACH ROW EXECUTE PROCEDURE authority.indexing_ingest_or_delete ();
 
 -- Utility routines, callable via cstore
@@ -1518,3 +1472,353 @@ BEGIN
 	RETURN config.interval_to_seconds( interval_string::INTERVAL );
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION vandelay.ingest_items ( import_id BIGINT, attr_def_id BIGINT ) RETURNS SETOF vandelay.import_item AS $$
+DECLARE
+
+    owning_lib      TEXT;
+    circ_lib        TEXT;
+    call_number     TEXT;
+    copy_number     TEXT;
+    status          TEXT;
+    location        TEXT;
+    circulate       TEXT;
+    deposit         TEXT;
+    deposit_amount  TEXT;
+    ref             TEXT;
+    holdable        TEXT;
+    price           TEXT;
+    barcode         TEXT;
+    circ_modifier   TEXT;
+    circ_as_type    TEXT;
+    alert_message   TEXT;
+    opac_visible    TEXT;
+    pub_note        TEXT;
+    priv_note       TEXT;
+
+    attr_def        RECORD;
+    tmp_attr_set    RECORD;
+    attr_set        vandelay.import_item%ROWTYPE;
+
+    xpath           TEXT;
+
+BEGIN
+
+    SELECT * INTO attr_def FROM vandelay.import_item_attr_definition WHERE id = attr_def_id;
+
+    IF FOUND THEN
+
+        attr_set.definition := attr_def.id;
+
+        -- Build the combined XPath
+
+        owning_lib :=
+            CASE
+                WHEN attr_def.owning_lib IS NULL THEN 'null()'
+                WHEN LENGTH( attr_def.owning_lib ) = 1 THEN '//*[@tag="' || attr_def.tag || '"]/*[@code="' || attr_def.owning_lib || '"]'
+                ELSE '//*[@tag="' || attr_def.tag || '"]/*' || attr_def.owning_lib
+            END;
+
+        circ_lib :=
+            CASE
+                WHEN attr_def.circ_lib IS NULL THEN 'null()'
+                WHEN LENGTH( attr_def.circ_lib ) = 1 THEN '//*[@tag="' || attr_def.tag || '"]/*[@code="' || attr_def.circ_lib || '"]'
+                ELSE '//*[@tag="' || attr_def.tag || '"]/*' || attr_def.circ_lib
+            END;
+
+        call_number :=
+            CASE
+                WHEN attr_def.call_number IS NULL THEN 'null()'
+                WHEN LENGTH( attr_def.call_number ) = 1 THEN '//*[@tag="' || attr_def.tag || '"]/*[@code="' || attr_def.call_number || '"]'
+                ELSE '//*[@tag="' || attr_def.tag || '"]/*' || attr_def.call_number
+            END;
+
+        copy_number :=
+            CASE
+                WHEN attr_def.copy_number IS NULL THEN 'null()'
+                WHEN LENGTH( attr_def.copy_number ) = 1 THEN '//*[@tag="' || attr_def.tag || '"]/*[@code="' || attr_def.copy_number || '"]'
+                ELSE '//*[@tag="' || attr_def.tag || '"]/*' || attr_def.copy_number
+            END;
+
+        status :=
+            CASE
+                WHEN attr_def.status IS NULL THEN 'null()'
+                WHEN LENGTH( attr_def.status ) = 1 THEN '//*[@tag="' || attr_def.tag || '"]/*[@code="' || attr_def.status || '"]'
+                ELSE '//*[@tag="' || attr_def.tag || '"]/*' || attr_def.status
+            END;
+
+        location :=
+            CASE
+                WHEN attr_def.location IS NULL THEN 'null()'
+                WHEN LENGTH( attr_def.location ) = 1 THEN '//*[@tag="' || attr_def.tag || '"]/*[@code="' || attr_def.location || '"]'
+                ELSE '//*[@tag="' || attr_def.tag || '"]/*' || attr_def.location
+            END;
+
+        circulate :=
+            CASE
+                WHEN attr_def.circulate IS NULL THEN 'null()'
+                WHEN LENGTH( attr_def.circulate ) = 1 THEN '//*[@tag="' || attr_def.tag || '"]/*[@code="' || attr_def.circulate || '"]'
+                ELSE '//*[@tag="' || attr_def.tag || '"]/*' || attr_def.circulate
+            END;
+
+        deposit :=
+            CASE
+                WHEN attr_def.deposit IS NULL THEN 'null()'
+                WHEN LENGTH( attr_def.deposit ) = 1 THEN '//*[@tag="' || attr_def.tag || '"]/*[@code="' || attr_def.deposit || '"]'
+                ELSE '//*[@tag="' || attr_def.tag || '"]/*' || attr_def.deposit
+            END;
+
+        deposit_amount :=
+            CASE
+                WHEN attr_def.deposit_amount IS NULL THEN 'null()'
+                WHEN LENGTH( attr_def.deposit_amount ) = 1 THEN '//*[@tag="' || attr_def.tag || '"]/*[@code="' || attr_def.deposit_amount || '"]'
+                ELSE '//*[@tag="' || attr_def.tag || '"]/*' || attr_def.deposit_amount
+            END;
+
+        ref :=
+            CASE
+                WHEN attr_def.ref IS NULL THEN 'null()'
+                WHEN LENGTH( attr_def.ref ) = 1 THEN '//*[@tag="' || attr_def.tag || '"]/*[@code="' || attr_def.ref || '"]'
+                ELSE '//*[@tag="' || attr_def.tag || '"]/*' || attr_def.ref
+            END;
+
+        holdable :=
+            CASE
+                WHEN attr_def.holdable IS NULL THEN 'null()'
+                WHEN LENGTH( attr_def.holdable ) = 1 THEN '//*[@tag="' || attr_def.tag || '"]/*[@code="' || attr_def.holdable || '"]'
+                ELSE '//*[@tag="' || attr_def.tag || '"]/*' || attr_def.holdable
+            END;
+
+        price :=
+            CASE
+                WHEN attr_def.price IS NULL THEN 'null()'
+                WHEN LENGTH( attr_def.price ) = 1 THEN '//*[@tag="' || attr_def.tag || '"]/*[@code="' || attr_def.price || '"]'
+                ELSE '//*[@tag="' || attr_def.tag || '"]/*' || attr_def.price
+            END;
+
+        barcode :=
+            CASE
+                WHEN attr_def.barcode IS NULL THEN 'null()'
+                WHEN LENGTH( attr_def.barcode ) = 1 THEN '//*[@tag="' || attr_def.tag || '"]/*[@code="' || attr_def.barcode || '"]'
+                ELSE '//*[@tag="' || attr_def.tag || '"]/*' || attr_def.barcode
+            END;
+
+        circ_modifier :=
+            CASE
+                WHEN attr_def.circ_modifier IS NULL THEN 'null()'
+                WHEN LENGTH( attr_def.circ_modifier ) = 1 THEN '//*[@tag="' || attr_def.tag || '"]/*[@code="' || attr_def.circ_modifier || '"]'
+                ELSE '//*[@tag="' || attr_def.tag || '"]/*' || attr_def.circ_modifier
+            END;
+
+        circ_as_type :=
+            CASE
+                WHEN attr_def.circ_as_type IS NULL THEN 'null()'
+                WHEN LENGTH( attr_def.circ_as_type ) = 1 THEN '//*[@tag="' || attr_def.tag || '"]/*[@code="' || attr_def.circ_as_type || '"]'
+                ELSE '//*[@tag="' || attr_def.tag || '"]/*' || attr_def.circ_as_type
+            END;
+
+        alert_message :=
+            CASE
+                WHEN attr_def.alert_message IS NULL THEN 'null()'
+                WHEN LENGTH( attr_def.alert_message ) = 1 THEN '//*[@tag="' || attr_def.tag || '"]/*[@code="' || attr_def.alert_message || '"]'
+                ELSE '//*[@tag="' || attr_def.tag || '"]/*' || attr_def.alert_message
+            END;
+
+        opac_visible :=
+            CASE
+                WHEN attr_def.opac_visible IS NULL THEN 'null()'
+                WHEN LENGTH( attr_def.opac_visible ) = 1 THEN '//*[@tag="' || attr_def.tag || '"]/*[@code="' || attr_def.opac_visible || '"]'
+                ELSE '//*[@tag="' || attr_def.tag || '"]/*' || attr_def.opac_visible
+            END;
+
+        pub_note :=
+            CASE
+                WHEN attr_def.pub_note IS NULL THEN 'null()'
+                WHEN LENGTH( attr_def.pub_note ) = 1 THEN '//*[@tag="' || attr_def.tag || '"]/*[@code="' || attr_def.pub_note || '"]'
+                ELSE '//*[@tag="' || attr_def.tag || '"]/*' || attr_def.pub_note
+            END;
+        priv_note :=
+            CASE
+                WHEN attr_def.priv_note IS NULL THEN 'null()'
+                WHEN LENGTH( attr_def.priv_note ) = 1 THEN '//*[@tag="' || attr_def.tag || '"]/*[@code="' || attr_def.priv_note || '"]'
+                ELSE '//*[@tag="' || attr_def.tag || '"]/*' || attr_def.priv_note
+            END;
+
+
+        xpath :=
+            owning_lib      || '|' ||
+            circ_lib        || '|' ||
+            call_number     || '|' ||
+            copy_number     || '|' ||
+            status          || '|' ||
+            location        || '|' ||
+            circulate       || '|' ||
+            deposit         || '|' ||
+            deposit_amount  || '|' ||
+            ref             || '|' ||
+            holdable        || '|' ||
+            price           || '|' ||
+            barcode         || '|' ||
+            circ_modifier   || '|' ||
+            circ_as_type    || '|' ||
+            alert_message   || '|' ||
+            pub_note        || '|' ||
+            priv_note       || '|' ||
+            opac_visible;
+
+        -- RAISE NOTICE 'XPath: %', xpath;
+
+        FOR tmp_attr_set IN
+                SELECT  *
+                  FROM  oils_xpath_table( 'id', 'marc', 'vandelay.queued_bib_record', xpath, 'id = ' || import_id )
+                            AS t( id INT, ol TEXT, clib TEXT, cn TEXT, cnum TEXT, cs TEXT, cl TEXT, circ TEXT,
+                                  dep TEXT, dep_amount TEXT, r TEXT, hold TEXT, pr TEXT, bc TEXT, circ_mod TEXT,
+                                  circ_as TEXT, amessage TEXT, note TEXT, pnote TEXT, opac_vis TEXT )
+        LOOP
+
+            tmp_attr_set.pr = REGEXP_REPLACE(tmp_attr_set.pr, E'[^0-9\\.]', '', 'g');
+            tmp_attr_set.dep_amount = REGEXP_REPLACE(tmp_attr_set.dep_amount, E'[^0-9\\.]', '', 'g');
+
+            tmp_attr_set.pr := NULLIF( tmp_attr_set.pr, '' );
+            tmp_attr_set.dep_amount := NULLIF( tmp_attr_set.dep_amount, '' );
+
+            SELECT id INTO attr_set.owning_lib FROM actor.org_unit WHERE shortname = UPPER(tmp_attr_set.ol); -- INT
+            SELECT id INTO attr_set.circ_lib FROM actor.org_unit WHERE shortname = UPPER(tmp_attr_set.clib); -- INT
+            SELECT id INTO attr_set.status FROM config.copy_status WHERE LOWER(name) = LOWER(tmp_attr_set.cs); -- INT
+
+
+            -- search up the org unit tree for a matching copy location
+
+            WITH RECURSIVE anscestor_depth AS (
+                SELECT  ou.id,
+                    out.depth AS depth,
+                    ou.parent_ou
+                FROM  actor.org_unit ou
+                    JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
+                WHERE ou.id = COALESCE(attr_set.owning_lib, attr_set.circ_lib)
+                    UNION ALL
+                SELECT  ou.id,
+                    out.depth,
+                    ou.parent_ou
+                FROM  actor.org_unit ou
+                    JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
+                    JOIN anscestor_depth ot ON (ot.parent_ou = ou.id)
+            ) SELECT  cpl.id INTO attr_set.location
+                FROM  anscestor_depth a
+                    JOIN asset.copy_location cpl ON (cpl.owning_lib = a.id)
+                WHERE LOWER(cpl.name) = LOWER(tmp_attr_set.cl)
+                ORDER BY a.depth DESC
+                LIMIT 1; 
+
+            attr_set.circulate      :=
+                LOWER( SUBSTRING( tmp_attr_set.circ, 1, 1)) IN ('t','y','1')
+                OR LOWER(tmp_attr_set.circ) = 'circulating'; -- BOOL
+
+            attr_set.deposit        :=
+                LOWER( SUBSTRING( tmp_attr_set.dep, 1, 1 ) ) IN ('t','y','1')
+                OR LOWER(tmp_attr_set.dep) = 'deposit'; -- BOOL
+
+            attr_set.holdable       :=
+                LOWER( SUBSTRING( tmp_attr_set.hold, 1, 1 ) ) IN ('t','y','1')
+                OR LOWER(tmp_attr_set.hold) = 'holdable'; -- BOOL
+
+            attr_set.opac_visible   :=
+                LOWER( SUBSTRING( tmp_attr_set.opac_vis, 1, 1 ) ) IN ('t','y','1')
+                OR LOWER(tmp_attr_set.opac_vis) = 'visible'; -- BOOL
+
+            attr_set.ref            :=
+                LOWER( SUBSTRING( tmp_attr_set.r, 1, 1 ) ) IN ('t','y','1')
+                OR LOWER(tmp_attr_set.r) = 'reference'; -- BOOL
+
+            attr_set.copy_number    := tmp_attr_set.cnum::INT; -- INT,
+            attr_set.deposit_amount := tmp_attr_set.dep_amount::NUMERIC(6,2); -- NUMERIC(6,2),
+            attr_set.price          := tmp_attr_set.pr::NUMERIC(8,2); -- NUMERIC(8,2),
+
+            attr_set.call_number    := tmp_attr_set.cn; -- TEXT
+            attr_set.barcode        := tmp_attr_set.bc; -- TEXT,
+            attr_set.circ_modifier  := tmp_attr_set.circ_mod; -- TEXT,
+            attr_set.circ_as_type   := tmp_attr_set.circ_as; -- TEXT,
+            attr_set.alert_message  := tmp_attr_set.amessage; -- TEXT,
+            attr_set.pub_note       := tmp_attr_set.note; -- TEXT,
+            attr_set.priv_note      := tmp_attr_set.pnote; -- TEXT,
+            attr_set.alert_message  := tmp_attr_set.amessage; -- TEXT,
+
+            RETURN NEXT attr_set;
+
+        END LOOP;
+
+    END IF;
+
+    RETURN;
+
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION vandelay.ingest_bib_items ( ) RETURNS TRIGGER AS $func$
+DECLARE
+    attr_def    BIGINT;
+    item_data   vandelay.import_item%ROWTYPE;
+BEGIN
+
+    IF TG_OP IN ('INSERT','UPDATE') AND NEW.imported_as IS NOT NULL THEN
+        RETURN NEW;
+    END IF;
+
+    SELECT item_attr_def INTO attr_def FROM vandelay.bib_queue WHERE id = NEW.queue;
+
+    FOR item_data IN SELECT * FROM vandelay.ingest_items( NEW.id::BIGINT, attr_def ) LOOP
+        INSERT INTO vandelay.import_item (
+            record,
+            definition,
+            owning_lib,
+            circ_lib,
+            call_number,
+            copy_number,
+            status,
+            location,
+            circulate,
+            deposit,
+            deposit_amount,
+            ref,
+            holdable,
+            price,
+            barcode,
+            circ_modifier,
+            circ_as_type,
+            alert_message,
+            pub_note,
+            priv_note,
+            opac_visible
+        ) VALUES (
+            NEW.id,
+            item_data.definition,
+            item_data.owning_lib,
+            item_data.circ_lib,
+            item_data.call_number,
+            item_data.copy_number,
+            item_data.status,
+            item_data.location,
+            item_data.circulate,
+            item_data.deposit,
+            item_data.deposit_amount,
+            item_data.ref,
+            item_data.holdable,
+            item_data.price,
+            item_data.barcode,
+            item_data.circ_modifier,
+            item_data.circ_as_type,
+            item_data.alert_message,
+            item_data.pub_note,
+            item_data.priv_note,
+            item_data.opac_visible
+        );
+    END LOOP;
+
+    RETURN NULL;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER ingest_item_trigger
+    AFTER INSERT OR UPDATE ON vandelay.queued_bib_record
+    FOR EACH ROW EXECUTE PROCEDURE vandelay.ingest_bib_items();
+

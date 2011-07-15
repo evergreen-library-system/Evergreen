@@ -764,8 +764,11 @@ sub mk_env {
 		my $card = $e->search_actor_card({barcode => $self->patron_barcode})->[0] 
 			or return $self->bail_on_events(OpenILS::Event->new('ACTOR_USER_NOT_FOUND'));
 
-		$patron = $e->search_actor_user([{card => $card->id}, $flesh])->[0]
+		$patron = $e->retrieve_actor_user($card->usr)
 			or return $self->bail_on_events(OpenILS::Event->new('ACTOR_USER_NOT_FOUND'));
+
+        # Use the card we looked up, not the patron's primary, for card active checks
+        $patron->card($card);
 
     } else {
         if( my $copy = $self->copy ) {
@@ -1171,11 +1174,11 @@ sub run_indb_circ_test {
         $logger->info("circulator: circ policy test found matchpoint built via rows " . $results->[0]->{buildrows});
         $self->circ_matrix_matchpoint($self->editor->retrieve_config_circ_matrix_matchpoint($mp));
         $self->circ_matrix_matchpoint->duration_rule($self->editor->retrieve_config_rules_circ_duration($results->[0]->{duration_rule}));
-        if($results->[0]->{renewals}) {
+        if(defined($results->[0]->{renewals})) {
             $self->circ_matrix_matchpoint->duration_rule->max_renewals($results->[0]->{renewals});
         }
         $self->circ_matrix_matchpoint->recurring_fine_rule($self->editor->retrieve_config_rules_recurring_fine($results->[0]->{recurring_fine_rule}));
-        if($results->[0]->{grace_period}) {
+        if(defined($results->[0]->{grace_period})) {
             $self->circ_matrix_matchpoint->recurring_fine_rule->grace_period($results->[0]->{grace_period});
         }
         $self->circ_matrix_matchpoint->max_fine_rule($self->editor->retrieve_config_rules_max_fine($results->[0]->{max_fine_rule}));

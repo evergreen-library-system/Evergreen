@@ -15,5 +15,10 @@
     "CONFIRM_DELETE_RESULT": "Deleted authority record # ${0}.",
     "SAVE": "Save",
     "SAVE_RESULT_SUCCESS": "Record was saved.",
-    "MERGE_RESULT_SUCCESS": "Record merge is complete."
+    "MERGE_RESULT_SUCCESS": "Record merge is complete.",
+    "THESAURI": "Thesauri (${0})",
+    "AUTHORITY_FIELDS": "Authority Fields (${0})",
+    "CONTROL_SET_METADATA": "(${0}) ${1} / ${2}",
+    "AUTHORITY_FIELD_METADATA": "${3} (${1} ‡${2}) ${4}",
+    "NONE_LINK": "[None]"
 }

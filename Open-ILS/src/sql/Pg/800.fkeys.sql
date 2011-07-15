@@ -82,6 +82,8 @@ ALTER TABLE serial.unit ADD CONSTRAINT serial_unit_call_number_fkey FOREIGN KEY 
 ALTER TABLE serial.unit ADD CONSTRAINT serial_unit_creator_fkey FOREIGN KEY (creator) REFERENCES actor.usr (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE serial.unit ADD CONSTRAINT serial_unit_editor_fkey FOREIGN KEY (editor) REFERENCES actor.usr (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 
+ALTER TABLE vandelay.import_item ADD CONSTRAINT imported_as_fkey FOREIGN KEY (imported_as) REFERENCES asset.copy (id) DEFERRABLE INITIALLY DEFERRED;
+
 ALTER TABLE asset.copy_note ADD CONSTRAINT asset_copy_note_copy_fkey FOREIGN KEY (owning_copy) REFERENCES asset.copy (id) DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE asset.copy_note ADD CONSTRAINT asset_copy_note_creator_fkey FOREIGN KEY (creator) REFERENCES actor.usr (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 
@@ -118,5 +120,6 @@ ALTER TABLE config.org_unit_setting_type ADD CONSTRAINT update_perm_fkey FOREIGN
 ALTER TABLE config.barcode_completion ADD CONSTRAINT config_barcode_completion_org_unit_fkey FOREIGN KEY (org_unit) REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 
 CREATE INDEX by_heading_and_thesaurus ON authority.record_entry (authority.normalize_heading(marc)) WHERE deleted IS FALSE or deleted = FALSE;
+CREATE INDEX by_heading ON authority.record_entry (authority.simple_normalize_heading(marc)) WHERE deleted IS FALSE or deleted = FALSE;
 
 COMMIT;

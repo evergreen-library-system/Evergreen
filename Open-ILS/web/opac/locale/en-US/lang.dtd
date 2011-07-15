@@ -730,6 +730,7 @@
 <!ENTITY staff.main.menu.admin.server_admin.conify.z3950_source.label "Z39.50 Servers">
 <!ENTITY staff.main.menu.admin.server_admin.conify.circulation_modifier.label "Circulation Modifiers">
 <!ENTITY staff.main.menu.admin.server_admin.conify.org_unit_setting_type "Organization Unit Setting Types">
+<!ENTITY staff.main.menu.admin.server_admin.conify.import_match_set "Import Match Sets">
 <!ENTITY staff.main.menu.admin.server_admin.conify.usr_setting_type "User Setting Types">
 <!ENTITY staff.main.menu.admin.server_admin.conify.config_hard_due_date "Hard Due Date Changes">
 <!ENTITY staff.main.menu.admin.server_admin.conify.config_rule_circ_duration "Circulation Duration Rules">
@@ -781,6 +782,15 @@
 <!ENTITY staff.main.menu.admin.server_admin.acq.currency_type.accesskey "C">
 <!ENTITY staff.main.menu.admin.server_admin.acq.exchange_rate.label "Exchange Rates">
 <!ENTITY staff.main.menu.admin.server_admin.acq.exchange_rate.accesskey "X">
+
+<!ENTITY staff.main.menu.admin.server_admin.authority.label "Authorities">
+<!ENTITY staff.main.menu.admin.server_admin.authority.accesskey "U">
+<!ENTITY staff.main.menu.admin.server_admin.authority.control_set.label "Control Sets">
+<!ENTITY staff.main.menu.admin.server_admin.authority.control_set.accesskey "C">
+<!ENTITY staff.main.menu.admin.server_admin.authority.browse_axis.label "Browse Axes">
+<!ENTITY staff.main.menu.admin.server_admin.authority.browse_axis.accesskey "B">
+<!ENTITY staff.main.menu.admin.server_admin.authority.thesaurus.label "Thesauri">
+<!ENTITY staff.main.menu.admin.server_admin.authority.thesaurus.accesskey "T">
 
 <!ENTITY staff.main.menu.admin.server_admin.booking.label "Booking">
 <!ENTITY staff.main.menu.admin.server_admin.booking.accesskey "B">
@@ -2285,6 +2295,8 @@
 <!ENTITY staff.circ.copy_status_overlay.cmd_triggered_events.accesskey "T">
 <!ENTITY staff.circ.copy_status_overlay.cmd_book_item_now.label "Book Item Now">
 <!ENTITY staff.circ.copy_status_overlay.cmd_book_item_now.accesskey "N">
+<!ENTITY staff.circ.copy_status_overlay.cmd_request_items.label "Request Item">
+<!ENTITY staff.circ.copy_status_overlay.cmd_request_items.accesskey "R">
 <!ENTITY staff.circ.copy_status_overlay.cmd_create_brt.label "Make Item Bookable">
 <!ENTITY staff.circ.copy_status_overlay.cmd_create_brt.accesskey "K">
 <!ENTITY staff.circ.copy_status_overlay.cmd_find_acq_po.label "Find Originating Acquisition">
@@ -2553,6 +2565,8 @@
 <!ENTITY staff.cat.copy_browser.actions.cmd_transfer_volume.accesskey "T">
 <!ENTITY staff.cat.copy_browser.actions.cmd_delete_items.label "Delete Items">
 <!ENTITY staff.cat.copy_browser.actions.cmd_delete_volumes.label "Delete Volumes">
+<!ENTITY staff.cat.copy_browser.actions.cmd_request_items.label "Request Item">
+<!ENTITY staff.cat.copy_browser.actions.cmd_request_items.accesskey "R">
 <!ENTITY staff.cat.copy_browser.actions.sel_mark_items_damaged.label "Mark Item Damaged">
 <!ENTITY staff.cat.copy_browser.actions.sel_mark_items_damaged.accesskey "D">
 <!ENTITY staff.cat.copy_browser.actions.sel_mark_items_missing.label "Mark Item Missing">
@@ -2614,6 +2628,8 @@
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.save_columns.label "Save Columns">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_refresh_list.label "Refresh Listing">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_refresh_list.accesskey "R">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.print.label "Print">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.print.accesskey "P">
 <!ENTITY staff.cat.copy_buckets.window_title "Copy Buckets">
 <!ENTITY staff.cat.copy_buckets_overlay.pending_copies "Pending Copies">
 <!ENTITY staff.cat.copy_buckets_overlay.bucket_view "Bucket View">
@@ -2639,6 +2655,8 @@
 <!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.cmd_copy_buckets_export.label "Export">
 <!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.batch.label "Batch:">
 <!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.cmd_export_to_copy_status.label "Show Status">
+<!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.cmd_request_items.label "Request Items">
+<!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.cmd_request_items.accesskey "R">
 <!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_transfer_to_volume.label "Transfer to Specific Volume">
 <!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_batch_copy_edit.label "Edit Item Attributes">
 <!ENTITY staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_batch_copy_delete.label "Delete All from Catalog">
@@ -2887,6 +2905,8 @@
 <!ENTITY staff.cat.z3950.page_next.accesskey "M">
 <!ENTITY staff.cat.z3950.list_actions.label "List Actions">
 <!ENTITY staff.cat.z3950.list_actions.accesskey "L">
+<!ENTITY staff.cat.z3950.mark_overlay.label "Mark Local Result as Overlay Target">
+<!ENTITY staff.cat.z3950.mark_overlay.accesskey "">
 <!ENTITY staff.cat.z3950.menuitem.csv_to_clipboard.label "Copy List CSV to Clipboard">
 <!ENTITY staff.cat.z3950.menuitem.csv_to_file.label "Save List CSV to File">
 <!ENTITY staff.cat.z3950.menuitem.csv_to_printer.label "Print List CSV">
@@ -3582,3 +3602,18 @@
 <!ENTITY staff.client.portal.receipts "Edit Receipt Templates">
 <!ENTITY staff.client.portal.copyright "Copyright &copy; 2006-2011 Georgia Public Library Service, and others">
 <!ENTITY staff.client.portal.poweredby "Powered by">
+<!ENTITY staff.item.batch.hold.groupbox_caption "Request Details">
+<!ENTITY staff.item.batch.hold.hold_type_menu.label "Hold Type">
+<!ENTITY staff.item.batch.hold.hold_type_menu.accesskey "T">
+<!ENTITY staff.item.batch.hold.hold_type_menuentry.copy_hold "Copy Hold">
+<!ENTITY staff.item.batch.hold.hold_type_menuentry.recall_hold "Recall Hold">
+<!ENTITY staff.item.batch.hold.hold_type_menuentry.force_hold "Force Hold">
+<!ENTITY staff.item.batch.hold.pick_up_lib_menu.label "Pickup Library">
+<!ENTITY staff.item.batch.hold.pick_up_lib_menu.accesskey "P">
+<!ENTITY staff.item.batch.hold.hold_usr.label "Hold User Barcode">
+<!ENTITY staff.item.batch.hold.hold_usr.accesskey "U">
+<!ENTITY staff.item.batch.hold.request_btn.label "Make Request">
+<!ENTITY staff.item.batch.hold.request_btn.accesskey "M">
+<!ENTITY staff.item.batch.hold.cancel_btn.label "Cancel">
+<!ENTITY staff.item.batch.hold.cancel_btn.accesskey "C">
+<!ENTITY staff.item.batch.hold.failures_and_settings "The settings above may be changed for retries and overrides.">

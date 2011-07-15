@@ -39,6 +39,105 @@ use OpenSRF::Utils::Cache;
 my $apputils = "OpenILS::Application::AppUtils";
 my $U = $apputils;
 
+__PACKAGE__->register_method(
+    method    => "test_and_create_hold_batch",
+    api_name  => "open-ils.circ.holds.test_and_create.batch",
+    stream => 1,
+    signature => {
+        desc => q/This is for batch creating a set of holds where every field is identical except for the targets./,
+        params => [
+            { desc => 'Authentication token', type => 'string' },
+            { desc => 'Hash of named parameters.  Same as for open-ils.circ.title_hold.is_possible, though the pertinent target field is automatically populated based on the hold_type and the specified list of targets.', type => 'object'},
+            { desc => 'Array of target ids', type => 'array' }
+        ],
+        return => {
+            desc => 'Array of hold ID on success, -1 on missing arg, event (or ref to array of events) on error(s)',
+        },
+    }
+);
+
+__PACKAGE__->register_method(
+    method    => "test_and_create_hold_batch",
+    api_name  => "open-ils.circ.holds.test_and_create.batch.override",
+    stream => 1,
+    signature => {
+        desc  => '@see open-ils.circ.holds.test_and_create.batch',
+    }
+);
+
+
+sub test_and_create_hold_batch {
+	my( $self, $conn, $auth, $params, $target_list ) = @_;
+
+	my $override = 1 if $self->api_name =~ /override/;
+
+	my $e = new_editor(authtoken=>$auth);
+	return $e->die_event unless $e->checkauth;
+    $$params{'requestor'} = $e->requestor->id;
+
+    my $target_field;
+    if ($$params{'hold_type'} eq 'T') { $target_field = 'titleid'; }
+    elsif ($$params{'hold_type'} eq 'C') { $target_field = 'copy_id'; }
+    elsif ($$params{'hold_type'} eq 'R') { $target_field = 'copy_id'; }
+    elsif ($$params{'hold_type'} eq 'F') { $target_field = 'copy_id'; }
+    elsif ($$params{'hold_type'} eq 'I') { $target_field = 'issuanceid'; }
+    elsif ($$params{'hold_type'} eq 'V') { $target_field = 'volume_id'; }
+    elsif ($$params{'hold_type'} eq 'M') { $target_field = 'mrid'; }
+    elsif ($$params{'hold_type'} eq 'P') { $target_field = 'partid'; }
+    else { return undef; }
+
+    foreach (@$target_list) {
+        $$params{$target_field} = $_;
+        my $res;
+        if (! $override) {        
+            ($res) = $self->method_lookup(
+                'open-ils.circ.title_hold.is_possible')->run($auth, $params);
+        }
+        if ($override || $res->{'success'} == 1) {
+            my $ahr = construct_hold_request_object($params);
+            my ($res2) = $self->method_lookup(
+                $override
+                ? 'open-ils.circ.holds.create.override'
+                : 'open-ils.circ.holds.create'
+            )->run($auth, $ahr);
+            $res2 = {
+                'target' => $$params{$target_field},
+                'result' => $res2
+            };
+            $conn->respond($res2);
+        } else {
+            $res = {
+                'target' => $$params{$target_field},
+                'result' => $res
+            };
+            $conn->respond($res);
+        }
+    }
+    return undef;
+}
+
+sub construct_hold_request_object {
+    my ($params) = @_;
+
+    my $ahr = Fieldmapper::action::hold_request->new;
+    $ahr->isnew('1');
+
+    foreach my $field (keys %{ $params }) {
+        if ($field eq 'depth') { $ahr->selection_depth($$params{$field}); }
+        elsif ($field eq 'patronid') {
+            $ahr->usr($$params{$field}); }
+        elsif ($field eq 'titleid') { $ahr->target($$params{$field}); }
+        elsif ($field eq 'copy_id') { $ahr->target($$params{$field}); }
+        elsif ($field eq 'issuanceid') { $ahr->target($$params{$field}); }
+        elsif ($field eq 'volume_id') { $ahr->target($$params{$field}); }
+        elsif ($field eq 'mrid') { $ahr->target($$params{$field}); }
+        elsif ($field eq 'partid') { $ahr->target($$params{$field}); }
+        else {
+            $ahr->$field($$params{$field});
+        }
+    }
+    return $ahr;
+}
 
 __PACKAGE__->register_method(
     method    => "create_hold_batch",
@@ -1461,7 +1560,7 @@ sub print_hold_pull_list_stream {
                 "flesh_fields" => {
                     "ahr" => ["usr", "current_copy"],
                     "au"  => ["card"],
-                    "acp" => ["location", "call_number"],
+                    "acp" => ["location", "call_number", "parts"],
                     "acn" => ["record","prefix","suffix"]
                 }
             }
@@ -2077,6 +2176,7 @@ sub do_possibility_checks {
     my $pickup_lib   = $params{pickup_lib};
     my $hold_type    = $params{hold_type}    || 'T';
     my $selection_ou = $params{selection_ou} || $pickup_lib;
+    my $holdable_formats = $params{holdable_formats};
 
 
 	my $copy;
@@ -2127,9 +2227,9 @@ sub do_possibility_checks {
 		my @status = ();
 		for my $rec (@recs) {
 			@status = _check_title_hold_is_possible(
-				$rec, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou
+				$rec, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou, $holdable_formats
 			);
-			last if $status[1];
+			last if $status[0];
 		}
 		return @status;
 	}
@@ -2162,8 +2262,13 @@ sub create_ranged_org_filter {
 
 
 sub _check_title_hold_is_possible {
-    my( $titleid, $depth, $request_lib, $patron, $requestor, $pickup_lib, $selection_ou ) = @_;
+    my( $titleid, $depth, $request_lib, $patron, $requestor, $pickup_lib, $selection_ou, $holdable_formats ) = @_;
    
+    my ($types, $formats, $lang);
+    if (defined($holdable_formats)) {
+        ($types, $formats, $lang) = split '-', $holdable_formats;
+    }
+
     my $e = new_editor();
     my %org_filter = create_ranged_org_filter($e, $selection_ou, $depth);
 
@@ -2181,15 +2286,27 @@ sub _check_title_hold_is_possible {
                                 field  => 'id',
                                 filter => { id => $titleid },
                                 fkey   => 'record'
+                            },
+                            mrd => {
+                                field  => 'record',
+                                fkey   => 'record',
+                                filter => {
+                                    record => $titleid,
+                                    ( $types   ? (item_type => [split '', $types])   : () ),
+                                    ( $formats ? (item_form => [split '', $formats]) : () ),
+                                    ( $lang    ? (item_lang => $lang)                : () )
+                                }
                             }
                         }
                     },
                     acpl => { field => 'id', filter => { holdable => 't'}, fkey => 'location' },
-                    ccs  => { field => 'id', filter => { holdable => 't'}, fkey => 'status'   }
+                    ccs  => { field => 'id', filter => { holdable => 't'}, fkey => 'status'   },
+                    acpm => { field => 'target_copy', type => 'left' } # ignore part-linked copies
                 }
             }, 
             where => {
-                '+acp' => { circulate => 't', deleted => 'f', holdable => 't', %org_filter }
+                '+acp' => { circulate => 't', deleted => 'f', holdable => 't', %org_filter },
+                '+acpm' => { target_copy => undef } # ignore part-linked copies
             }
         }
     );
@@ -2558,6 +2675,14 @@ sub _check_volume_hold_is_possible {
 	my $copies = new_editor->search_asset_copy({call_number => $vol->id, %org_filter});
 	$logger->info("checking possibility of volume hold for volume ".$vol->id);
 
+    my $filter_copies = [];
+    for my $copy (@$copies) {
+        # ignore part-mapped copies for regular volume level holds
+        push(@$filter_copies, $copy) unless
+            new_editor->search_asset_copy_part_map({target_copy => $copy->id})->[0];
+    }
+    $copies = $filter_copies;
+
     return (
         0, 0, [
             new OpenILS::Event(
@@ -2596,7 +2721,8 @@ sub verify_copy_for_hold {
 
     return (
         (not scalar @$permitted), # true if permitted is an empty arrayref
-        (
+        (   # XXX This test is of very dubious value; someone should figure
+            # out what if anything is checking this value
 	        ($copy->circ_lib == $pickup_lib) and 
             ($copy->status == OILS_COPY_STATUS_AVAILABLE)
         ),
@@ -2750,7 +2876,7 @@ sub all_rec_holds {
     $args->{fulfillment_time} = undef; #  we don't want to see old fulfilled holds
 	$args->{cancel_time} = undef;
 
-	my $resp = { volume_holds => [], copy_holds => [], metarecord_holds => [], part_holds => [], issuance_holds => [] };
+	my $resp = { volume_holds => [], copy_holds => [], recall_holds => [], force_holds => [], metarecord_holds => [], part_holds => [], issuance_holds => [] };
 
     my $mr_map = $e->search_metabib_metarecord_source_map({source => $title_id})->[0];
     if($mr_map) {
@@ -2822,6 +2948,20 @@ sub all_rec_holds {
 	$resp->{copy_holds} = $e->search_action_hold_request(
 		{ 
 			hold_type => OILS_HOLD_TYPE_COPY,
+			target => $copies,
+			%$args }, 
+		{idlist=>1} );
+
+	$resp->{recall_holds} = $e->search_action_hold_request(
+		{ 
+			hold_type => OILS_HOLD_TYPE_RECALL,
+			target => $copies,
+			%$args }, 
+		{idlist=>1} );
+
+	$resp->{force_holds} = $e->search_action_hold_request(
+		{ 
+			hold_type => OILS_HOLD_TYPE_FORCE,
 			target => $copies,
 			%$args }, 
 		{idlist=>1} );
@@ -2965,7 +3105,7 @@ sub find_hold_mvr {
 
         $tid = $part->record;
 
-	} elsif( $hold->hold_type eq OILS_HOLD_TYPE_COPY ) {
+	} elsif( $hold->hold_type eq OILS_HOLD_TYPE_COPY || $hold->hold_type eq OILS_HOLD_TYPE_RECALL || $hold->hold_type eq OILS_HOLD_TYPE_FORCE ) {
 		$copy = $e->retrieve_asset_copy([
             $hold->target, 
             {flesh => 1, flesh_fields => {acp => ['call_number']}}

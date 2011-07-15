@@ -86,7 +86,7 @@ CREATE TRIGGER no_overlapping_deps
     BEFORE INSERT OR UPDATE ON config.db_patch_dependencies
     FOR EACH ROW EXECUTE PROCEDURE evergreen.array_overlap_check ('deprecates');
 
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0568', :eg_version); -- miker/tsbere
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0577', :eg_version); -- berick
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -882,8 +882,8 @@ Upgrade script % can not be applied:
   deprecated by %
   superseded by %',
             my_db_patch,
-            deprecates,
-            supersedes,
+            ARRAY_AGG(evergreen.upgrade_list_applied_deprecates(my_db_patch)),
+            ARRAY_AGG(evergreen.upgrade_list_applied_supersedes(my_db_patch)),
             evergreen.upgrade_list_applied_deprecated(my_db_patch),
             evergreen.upgrade_list_applied_superseded(my_db_patch);
     END IF;

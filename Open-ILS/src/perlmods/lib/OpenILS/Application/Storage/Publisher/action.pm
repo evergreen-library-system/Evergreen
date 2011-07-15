@@ -1270,7 +1270,8 @@ sub new_hold_copy_targeter {
 						isTrue($_->location->holdable) && 
 						isTrue($_->holdable) &&
 						!isTrue($_->deleted) &&
-						(isTrue($hold->mint_condition) ? isTrue($_->mint_condition) : 1)
+						(isTrue($hold->mint_condition) ? isTrue($_->mint_condition) : 1) &&
+						($hold->hold_type ne 'P' ? $_->part_maps->count == 0 : 1)
 					} @$all_copies;
 
 			# let 'em know we're still working

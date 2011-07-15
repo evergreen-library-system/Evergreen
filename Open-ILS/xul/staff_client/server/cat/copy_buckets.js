@@ -533,6 +533,28 @@ cat.copy_buckets.prototype = {
                         }
                     ],
 
+                    'cmd_request_items' : [
+                        ['command'],
+                        function() {
+                            try {
+                                obj.list2.select_all();
+
+                                var copy_ids = util.functional.map_list(
+                                    obj.list2.dump_retrieve_ids(),
+                                    function (o) {
+                                        return JSON2js(o)[0]; // acp_id
+                                    }
+                                )
+
+                                JSAN.use('cat.util');
+                                cat.util.request_items(copy_ids); 
+
+                            } catch(E) {
+                                obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_transfer_to_volume.error'), E);
+                            }
+                        }
+                    ],
+
                     'copy_buckets_transfer_to_volume' : [
                         ['command'],
                         function() {
