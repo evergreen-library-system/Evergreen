@@ -8,16 +8,36 @@
         <div><big><strong>[% l("Hold was successfully placed"); %]</strong></big></div>
         [% ELSIF ctx.hold_failed %]
         <div><big><strong>[% l("Hold was not successfully placed"); %]</strong></big></div>
-            [% IF ctx.hold_failed_event %]
+            [% IF ctx.hold_failed_event || ctx.hold_local_alert %]
         <div>
             <strong>[% l('Problem:') %]</strong>
             <span title="[% ctx.hold_failed_event.textcode %]">
                 <em>[% ctx.hold_failed_event.desc ||
                         ctx.hold_failed_event.payload.fail_part ||
-                        ctx.hold_failed_event.textcode %]</em>
+                        ctx.hold_failed_event.textcode ||
+                        (ctx.hold_local_alert ?
+                            l("There is already a copy available at your local library") :
+                            l("Unknown problem")) %]
             </span>
+            [% IF ctx.could_override %]
+            <p>
+                <big>[% l("You have permission to place this hold anyway.") %]</big>
+                <br />
+                [% l("Click submit below to override the system's objection and place your hold.") %]
+            </p>
+            <form method="POST">
+                <input type="hidden" type="name" name="override" value="1" />
+                [% FOR k IN ctx.orig_params.keys %]
+                <input type="hidden" name="[% k %]" value="[% ctx.orig_params.$k | html %]" />
+                [% END %]
+                <input type="image" name="submit" value="submit" title="[% l('Submit') %]"
+                    alt="[% l('Submit') %]" src="[% ctx.media_prefix %]/images/btnSubmit.png" />
+            </form>
+            [% END %]
         </div>
             [% END;
+        ELSIF ctx.hold_local_block;
+            l("There is already a copy available at your local library");
         ELSE %]
         <form method="POST">
             <br/>

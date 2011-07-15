@@ -1,13 +1,16 @@
 [%
     BLOCK build_org_selector_options;
         disabled = '';
+        selected = '';
         IF can_have_vols_only;
-            UNLESS walker.ou_type.can_have_vols == 't';
+            IF walker.ou_type.can_have_vols != 't';
                 disabled = 'disabled="disabled"';
+            ELSIF walker.id == value;
+                selected = 'selected="selected"';
             END;
         END;
 %]
-        <option value='[% walker.id %]' [% IF walker.id == value %] selected='selected' [% END %][% disabled %]>
+        <option value='[% walker.id %]' [% selected %] [% disabled %]>
             [%
                 pad = walker.ou_type.depth * 2;
                 FOR idx IN [0..pad]; '&nbsp;'; END;

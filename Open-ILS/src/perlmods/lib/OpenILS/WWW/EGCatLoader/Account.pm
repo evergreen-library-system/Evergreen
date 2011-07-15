@@ -28,6 +28,37 @@ sub prepare_extended_user_info {
     return;
 }
 
+# Given an event returned by a failed attempt to create a hold, do we have
+# permission to override?  XXX Should the permission check be scoped to a
+# given org_unit context?
+sub test_could_override {
+    my ($self) = @_;
+    my $event = $self->ctx->{"hold_failed_event"};
+
+    return 0 unless $event;
+    return 1 if $self->editor->allowed($event . ".override");
+    return 1 if $event->{"fail_part"} and
+        $self->editor->allowed($event->{"fail_part"} . ".override");
+    return 0;
+}
+
+# Find out whether we care that local copies are available
+sub local_avail_concern {
+    my ($self, $allowed, $request_lib) = @_;
+
+    my ($block, $alert);
+    if ($allowed->{"success"} and $allowed->{"local_avail"}) {
+        $block = $self->ctx->{get_org_setting}->
+            ($request_lib, "circ.holds.hold_has_copy_at.block");
+        $alert = (
+            $self->ctx->{get_org_setting}->
+                ($request_lib, "circ.holds.hold_has_copy_at.alert")
+                and not $self->cgi->param("override")
+        );
+    }
+    return ($block, $alert);
+}
+
 # context additions: 
 #   user : au object, fleshed
 sub load_myopac_prefs {
@@ -341,13 +372,20 @@ sub load_myopac_holds {
 sub load_place_hold {
     my $self = shift;
     my $ctx = $self->ctx;
+    my $gos = $ctx->{get_org_setting};
     my $e = $self->editor;
     my $cgi = $self->cgi;
     $self->ctx->{page} = 'place_hold';
 
     $ctx->{hold_target} = $cgi->param('hold_target');
     $ctx->{hold_type} = $cgi->param('hold_type');
-    $ctx->{default_pickup_lib} = $e->requestor->home_ou; # XXX staff
+
+    # Although in the context of staff placing holds for other users, this
+    # does not yield the appropriate pickup lib, that situation is addressed
+    # in the client with javascript when possible.
+    $ctx->{default_pickup_lib} = $e->requestor->home_ou;
+
+    my $request_lib = $e->requestor->ws_ou || $e->requestor->home_ou;
 
     # XXX check for failure of the retrieve_* methods called below, and
     # possibly replace all the if,elsif with a dispatch table (meh, elegance)
@@ -411,6 +449,7 @@ sub load_place_hold {
                 $ctx->{hold_failed} = 1;
                 $ctx->{hold_failed_event} = $usr;
             }
+            # XXX Does $actor need to be explicity disconnected/destroyed?
         }
 
         my $args = {
@@ -427,7 +466,18 @@ sub load_place_hold {
             $e->authtoken, $args
         );
 
-        if($allowed->{success} == 1) {
+        $logger->info('hold permit result ' . OpenSRF::Utils::JSON->perl2JSON($allowed));
+
+        my ($local_block, $local_alert) =
+            $self->local_avail_concern($allowed, $request_lib);
+
+        if ($local_block) {
+            $ctx->{hold_failed} = 1;
+            $ctx->{hold_local_block} = 1;
+        } elsif ($local_alert) {
+            $ctx->{hold_failed} = 1;
+            $ctx->{hold_local_alert} = 1;
+        } elsif ($allowed->{success}) {
             my $hold = Fieldmapper::action::hold_request->new;
 
             $hold->pickup_lib($pickup_lib);
@@ -437,19 +487,42 @@ sub load_place_hold {
             $hold->hold_type($ctx->{hold_type});
             # frozen, expired, etc..
 
+            my $method =  "open-ils.circ.holds.create";
+            $method .= ".override" if $cgi->param("override");
+
             my $stat = $U->simplereq(
-                'open-ils.circ',
-                'open-ils.circ.holds.create',
-                $e->authtoken, $hold
+                "open-ils.circ", $method, $e->authtoken, $hold
             );
 
-            if($stat and $stat > 0) {
+            # The following did not cover all the possible return values of
+            # open-ils.circ.holds.create
+            #if($stat and $stat > 0) {
+            if ($stat and (not ref $stat) and $stat > 0) {
                 # if successful, return the user to the requesting page
-                $self->apache->log->info("Redirecting back to " . $cgi->param('redirect_to'));
+                $self->apache->log->info(
+                    "Redirecting back to " . $cgi->param('redirect_to')
+                );
                 return $self->generic_redirect;
 
             } else {
                 $ctx->{hold_failed} = 1;
+
+                # Give the original CGI params back to the user in case they
+                # want to try to override something.
+                $ctx->{orig_params} = $cgi->Vars;
+                delete $ctx->{orig_params}{submit};
+
+                if (ref $stat eq 'ARRAY') {
+                    $ctx->{hold_failed_event} = shift @$stat;
+                } elsif (defined $U->event_code($stat)) {
+                    $ctx->{hold_failed_event} = $stat;
+                } else {
+                    $self->apache->log->info(
+                        "attempt to create hold returned $stat"
+                    );
+                }
+
+                $ctx->{could_override} = $self->test_could_override;
             }
         } else { # hold *check* failed
             $ctx->{hold_failed} = 1; # XXX process the events, etc
@@ -457,7 +530,6 @@ sub load_place_hold {
         }
 
         # hold permit failed
-        $logger->info('hold permit result ' . OpenSRF::Utils::JSON->perl2JSON($allowed));
     }
 
     return Apache2::Const::OK;
