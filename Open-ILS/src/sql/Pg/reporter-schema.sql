@@ -266,6 +266,8 @@ SELECT	id,
 			THEN (SELECT cn.record FROM asset.call_number cn JOIN asset.copy cp ON (cn.id = cp.call_number) WHERE cp.id = ahr.target)
 		WHEN hold_type = 'M'
 			THEN (SELECT mr.master_record FROM metabib.metarecord mr WHERE mr.id = ahr.target)
+        WHEN hold_type = 'P'
+            THEN (SELECT bmp.record FROM biblio.monograph_part bmp WHERE bmp.id = ahr.target)
 	END AS bib_record
   FROM	action.hold_request ahr;
 
