@@ -7,5 +7,5 @@ INSERT INTO config.global_flag (name, label, enabled)
             'cgf',
             'label'
         ),
-        TRUE
+        FALSE
     );
