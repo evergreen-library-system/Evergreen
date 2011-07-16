@@ -1,3 +1,7 @@
+BEGIN;
+
+INSERT INTO config.upgrade_log (version) VALUES ('0580'); -- tsbere via miker
+
 CREATE OR REPLACE FUNCTION actor.org_unit_parent_protect () RETURNS TRIGGER AS $$
     DECLARE
         current_aou actor.org_unit%ROWTYPE;
@@ -31,3 +35,6 @@ $$ LANGUAGE PLPGSQL;
 CREATE TRIGGER actor_org_unit_parent_protect_trigger
     BEFORE INSERT OR UPDATE ON actor.org_unit FOR EACH ROW
     EXECUTE PROCEDURE actor.org_unit_parent_protect ();
+
+COMMIT;
+
