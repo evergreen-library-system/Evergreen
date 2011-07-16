@@ -1,3 +1,12 @@
+-- Evergreen DB patch 0580.schema.aou_parent_protec.sql
+--
+--
+BEGIN;
+
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0580', :eg_version);
+
 CREATE OR REPLACE FUNCTION actor.org_unit_parent_protect () RETURNS TRIGGER AS $$
     DECLARE
         current_aou actor.org_unit%ROWTYPE;
@@ -31,3 +40,6 @@ $$ LANGUAGE PLPGSQL;
 CREATE TRIGGER actor_org_unit_parent_protect_trigger
     BEFORE INSERT OR UPDATE ON actor.org_unit FOR EACH ROW
     EXECUTE PROCEDURE actor.org_unit_parent_protect ();
+
+
+COMMIT;
