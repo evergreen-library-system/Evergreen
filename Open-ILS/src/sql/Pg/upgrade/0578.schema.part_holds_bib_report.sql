@@ -1,3 +1,7 @@
+BEGIN;
+
+INSERT INTO config.upgrade_log (version) VALUES ('0578'); -- tsbere via miker
+
 CREATE OR REPLACE VIEW reporter.hold_request_record AS
 SELECT	id,
 	target,
@@ -17,4 +21,6 @@ SELECT	id,
             THEN (SELECT bmp.record FROM biblio.monograph_part bmp WHERE bmp.id = ahr.target)
 	END AS bib_record
   FROM	action.hold_request ahr;
+
+COMMIT;
 
