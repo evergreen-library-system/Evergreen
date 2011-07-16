@@ -211,7 +211,7 @@ CREATE OR REPLACE VIEW action.all_circulation AS
         JOIN asset.call_number cn ON (cp.call_number = cn.id)
         JOIN actor.usr p ON (circ.usr = p.id)
         LEFT JOIN actor.usr_address a ON (p.mailing_address = a.id)
-        LEFT JOIN actor.usr_address b ON (p.billing_address = a.id);
+        LEFT JOIN actor.usr_address b ON (p.billing_address = b.id);
 
 CREATE OR REPLACE FUNCTION action.age_circ_on_delete () RETURNS TRIGGER AS $$
 DECLARE
