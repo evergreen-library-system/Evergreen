@@ -1,3 +1,7 @@
+BEGIN;
+
+INSERT INTO config.upgrade_log (version) VALUES ('0582'); -- miker
+
 CREATE OR REPLACE VIEW action.all_circulation AS
     SELECT  id,usr_post_code, usr_home_ou, usr_profile, usr_birth_year, copy_call_number, copy_location,
         copy_owning_lib, copy_circ_lib, copy_bib_record, xact_start, xact_finish, target_copy,
@@ -20,4 +24,6 @@ CREATE OR REPLACE VIEW action.all_circulation AS
         JOIN actor.usr p ON (circ.usr = p.id)
         LEFT JOIN actor.usr_address a ON (p.mailing_address = a.id)
         LEFT JOIN actor.usr_address b ON (p.billing_address = b.id);
+
+COMMIT;
 
