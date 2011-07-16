@@ -1,3 +1,7 @@
+BEGIN;
+
+INSERT INTO config.upgrade_log (version) VALUES ('0579'); -- tsbere via miker
+
 CREATE OR REPLACE FUNCTION action.item_user_circ_test( circ_ou INT, match_item BIGINT, match_user INT, renewal BOOL ) RETURNS SETOF action.circ_matrix_test_result AS $func$
 DECLARE
     user_object             actor.usr%ROWTYPE;
@@ -189,3 +193,6 @@ BEGIN
     RETURN;
 END;
 $func$ LANGUAGE plpgsql;
+
+COMMIT;
+
