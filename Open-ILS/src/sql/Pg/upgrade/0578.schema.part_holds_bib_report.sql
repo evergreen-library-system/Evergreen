@@ -1,3 +1,13 @@
+-- Evergreen DB patch 0578.schema.part_holds_bib_report.sql
+--
+-- Fix part holds in reporter.hold_request_record
+--
+BEGIN;
+
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0578', :eg_version);
+
 CREATE OR REPLACE VIEW reporter.hold_request_record AS
 SELECT	id,
 	target,
@@ -17,4 +27,6 @@ SELECT	id,
             THEN (SELECT bmp.record FROM biblio.monograph_part bmp WHERE bmp.id = ahr.target)
 	END AS bib_record
   FROM	action.hold_request ahr;
+
+COMMIT;
 
