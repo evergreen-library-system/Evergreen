@@ -1,3 +1,12 @@
+-- Evergreen DB patch 0582.schema.aging_circ_view.sql
+--
+--
+BEGIN;
+
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0582', :eg_version);
+
 CREATE OR REPLACE VIEW action.all_circulation AS
     SELECT  id,usr_post_code, usr_home_ou, usr_profile, usr_birth_year, copy_call_number, copy_location,
         copy_owning_lib, copy_circ_lib, copy_bib_record, xact_start, xact_finish, target_copy,
@@ -21,3 +30,6 @@ CREATE OR REPLACE VIEW action.all_circulation AS
         LEFT JOIN actor.usr_address a ON (p.mailing_address = a.id)
         LEFT JOIN actor.usr_address b ON (p.billing_address = b.id);
 
+
+
+COMMIT;
