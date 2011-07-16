@@ -1,3 +1,7 @@
+BEGIN;
+
+INSERT INTO config.upgrade_log (version) VALUES ('0581'); -- tsbere via miker
+
 INSERT INTO config.global_flag (name, label, enabled)
     VALUES (
         'circ.opac_renewal.use_original_circ_lib',
@@ -9,3 +13,6 @@ INSERT INTO config.global_flag (name, label, enabled)
         ),
         FALSE
     );
+
+COMMIT;
+
