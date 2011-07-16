@@ -7938,7 +7938,7 @@ INSERT INTO config.global_flag (name, label, enabled)
             'cgf',
             'label'
         ),
-        TRUE
+        FALSE
     );
 
 INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
