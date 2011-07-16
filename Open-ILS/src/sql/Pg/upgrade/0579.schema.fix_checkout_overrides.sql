@@ -1,3 +1,12 @@
+-- Evergreen DB patch 0579.schema.fix_checkout_overrides.sql
+--
+--
+BEGIN;
+
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0579', :eg_version);
+
 CREATE OR REPLACE FUNCTION action.item_user_circ_test( circ_ou INT, match_item BIGINT, match_user INT, renewal BOOL ) RETURNS SETOF action.circ_matrix_test_result AS $func$
 DECLARE
     user_object             actor.usr%ROWTYPE;
@@ -189,3 +198,6 @@ BEGIN
     RETURN;
 END;
 $func$ LANGUAGE plpgsql;
+
+
+COMMIT;
