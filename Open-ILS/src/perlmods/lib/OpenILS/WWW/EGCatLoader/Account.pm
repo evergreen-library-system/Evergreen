@@ -400,12 +400,19 @@ sub load_place_hold {
     $ctx->{hold_target} = $cgi->param('hold_target');
     $ctx->{hold_type} = $cgi->param('hold_type');
 
-    # Although in the context of staff placing holds for other users, this
-    # does not yield the appropriate pickup lib, that situation is addressed
-    # in the client with javascript when possible.
-    $ctx->{default_pickup_lib} = $e->requestor->home_ou;
+    $ctx->{default_pickup_lib} = $e->requestor->home_ou; # unless changed below
 
-    my $request_lib = $e->requestor->ws_ou || $e->requestor->home_ou;
+    if (my $bc = $self->cgi->cookie("patron_barcode")) {
+        # passed in from staff client
+        $ctx->{patron_recipient} = $U->simplereq(
+            "open-ils.actor", "open-ils.actor.user.fleshed.retrieve_by_barcode",
+            $self->editor->authtoken, $bc
+        ) or return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+
+        $ctx->{default_pickup_lib} = $ctx->{patron_recipient}->home_ou;
+    }
+
+    my $request_lib = $e->requestor->ws_ou;
 
     # XXX check for failure of the retrieve_* methods called below, and
     # possibly replace all the if,elsif with a dispatch table (meh, elegance)
@@ -527,7 +534,21 @@ sub load_place_hold {
                 $self->apache->log->info(
                     "Redirecting back to " . $cgi->param('redirect_to')
                 );
-                return $self->generic_redirect;
+
+                # We also clear the patron_barcode (from the staff client)
+                # cookie at this point (otherwise it haunts the staff user
+                # later). XXX todo make sure this is best; also see that
+                # template when staff mode calls xulG.opac_hold_placed()
+                return $self->generic_redirect(
+                    undef,
+                    $self->cgi->cookie(
+                        -name => "patron_barcode",
+                        -path => "/",
+                        -secure => 1,
+                        -value => "",
+                        -expires => "-1h"
+                    )
+                );
 
             } else {
                 $ctx->{hold_failed} = 1;

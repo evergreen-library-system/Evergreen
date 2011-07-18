@@ -68,11 +68,13 @@
             <p class="staff-hold">
                 <input type="radio" id="hold_usr_is_requestor_not"
                     onchange="staff_hold_usr_input_disabler(this);"
-                    name="hold_usr_is_requestor" value="0" />
+                    name="hold_usr_is_requestor" value="0"
+                    [% IF ctx.patron_recipient; ' checked="checked"'; END %]
+                    />
                 <label for="hold_usr_is_requestor_not">
                     [% l("Place hold for patron by barcode:") %]
                 </label>
-                <input type="text" name="hold_usr" id="hold_usr_input" /><br />
+                <input type="text" name="hold_usr" id="hold_usr_input" value="[% ctx.patron_recipient.card.barcode %]" /><br />[%# XXX multi-barcode users? %]
                 <span>
                     <input type="radio" id="hold_usr_is_requestor"
                         onchange="staff_hold_usr_input_disabler(this);"

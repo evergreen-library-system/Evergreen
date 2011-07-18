@@ -1309,6 +1309,9 @@ patron.holds.prototype = {
                         ['command'],
                         function(ev) {
                             try {
+                                var use_url = urls.browser;
+                                use_url += use_url.match(/\?/) ? "&" : "?";
+                                use_url += "patron_barcode=" + obj.patron_barcode;
                                 var content_params = {
                                     'show_nav_buttons' : false,
                                     'show_print_button' : true,
@@ -1341,11 +1344,10 @@ patron.holds.prototype = {
                                                 obj.error.standard_unexpected_error_alert('holds.js, opac_hold_placed(): ',E);
                                             }
                                         },
-                                        'patron_barcode' : obj.patron_barcode,
-                                        'patron_home_ou': patron.util.retrieve_au_via_id(ses(),obj.patron_id).home_ou()
+                                        'patron_barcode' : obj.patron_barcode
                                     },
                                     'url_prefix' : xulG.url_prefix,
-                                    'url' : xulG.url_prefix( urls.browser )
+                                    'url' : xulG.url_prefix(use_url)
                                 };
                                 xulG.display_window.g.patron.right_deck.set_iframe( urls.XUL_REMOTE_BROWSER + '?patron_hold=1', {}, content_params);
                             } catch(E) {
