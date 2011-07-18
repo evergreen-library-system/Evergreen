@@ -46,7 +46,6 @@ circ.checkin.prototype = {
         obj.list.init(
             {
                 'columns' : columns,
-                'map_row_to_columns' : circ.util.std_map_row_to_columns(),
                 'retrieve_row' : obj.gen_list_retrieve_row_func(),
                 'on_select' : function(ev) {
                     try {
