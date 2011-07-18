@@ -9,7 +9,7 @@ export STAFF_CLIENT_STAMP_ID = $$(/bin/cat build/STAMP_ID)
 
 # from http://closure-compiler.googlecode.com/files/compiler-latest.zip  FIXME: Autotools this?
 export CLOSURE_COMPILER_JAR = ~/closure-compiler/compiler.jar
-XULRUNNER_VERSION=1.9.2.18
+XULRUNNER_VERSION=1.9.2.19
 XULRUNNER_WINFILE=xulrunner-$(XULRUNNER_VERSION).en-US.win32.zip
 XULRUNNER_LINUXFILE=xulrunner-$(XULRUNNER_VERSION).en-US.linux-i686.tar.bz2
 XULRUNNER_URL=http://releases.mozilla.org/pub/mozilla.org/xulrunner/releases/$(XULRUNNER_VERSION)/runtimes/
