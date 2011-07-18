@@ -49,7 +49,14 @@ util.network.prototype = {
             if (req.cancelled) {
                 result = fake_ilsevent_for_network_errors;
             } else {
-                result = req.getResultObject();    
+                result = req.getResultObject();   
+                if(result && req._reported_events) {
+                    if(typeof result.ilsevent != 'undefined') {
+                        result._reported_events = req._reported_events;
+                    } else {
+                        result[0]._reported_events = req._reported_events;
+                    }
+                } 
             }
         } catch(E) {
             try {
@@ -449,6 +456,7 @@ util.network.prototype = {
         try {
             if (!override_params.text) override_params.text = {};
             if (!override_params.auto_override_these_events) override_params.auto_override_these_events = [];
+            if (!override_params.report_override_on_events) override_params.report_override_on_events = [];
             function override(r) {
                 try {
                     // test to see if we can suppress this dialog and auto-override
@@ -507,6 +515,20 @@ util.network.prototype = {
                     );
                     if (fancy_prompt_data.fancy_status == 'complete') {
                         req = obj._request(app,name + '.override',params);
+                        if (req && override_params.report_override_on_events.length > 0 && typeof result == 'object') {
+                            var reported_events = [];
+                            for (var i = 0; i < r.length; i++) {
+                                if (typeof r[i].ilsevent != 'undefined') {
+                                    if (override_params.report_override_on_events.indexOf( r[i].ilsevent == null ? null : Number(r[i].ilsevent) ) != -1) {
+                                        reported_events.push(Number(r[i].ilsevent));
+                                    }
+                                    if (override_params.report_override_on_events.indexOf( r[i].textcode ) != -1) {
+                                        reported_events.push(r[i].textcode);
+                                    }
+                                }
+                            }
+                            req._reported_events = reported_events;
+                        }
                     }
                     return req;
                 } catch(E) {
