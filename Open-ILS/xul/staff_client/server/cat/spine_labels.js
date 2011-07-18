@@ -163,8 +163,8 @@
                 /* take the call number and split it on whitespace */
                 callnum = String(volume.label());
             }
-            /* handle spine lables differently if using LC */
-            if(volume.label_class() == 3){
+            /* handle spine labels differently if using LC */
+            if (volume.label_class() == 3) {
                 /* for LC, split between classification subclass letters and numbers */
                 var lc_class_re = /^([A-Z]{1,3})([0-9]+.*?)$/i;
                 var lc_class_match = lc_class_re.exec(callnum);
