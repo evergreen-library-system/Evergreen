@@ -952,7 +952,7 @@ patron.display.prototype = {
                         msg += '<dt>';
                         msg += obj.OpenILS.data.hash.aou[ penalties[i].org_unit() ].shortname() + ' : ' + penalties[i].standing_penalty().label() + '<br/>';
                         msg += '</dt><dd>';
-                        msg += penalties[i].note();
+                        msg += (penalties[i].note())?penalties[i].note():'';
                         msg += '</dd>';
                     }
                 }
