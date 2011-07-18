@@ -698,6 +698,8 @@ function add_to_bucket() {
     );
 }
 
+// FIXME: now duplicated in cat.util, which we can't import here, though maybe
+// we can do something at build time
 function mark_for_overlay() {
     g.data.marked_record = docid;
     g.data.stash('marked_record');

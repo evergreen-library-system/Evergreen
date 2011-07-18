@@ -2905,6 +2905,8 @@
 <!ENTITY staff.cat.z3950.page_next.accesskey "M">
 <!ENTITY staff.cat.z3950.list_actions.label "List Actions">
 <!ENTITY staff.cat.z3950.list_actions.accesskey "L">
+<!ENTITY staff.cat.z3950.mark_overlay.label "Mark Local Result as Overlay Target">
+<!ENTITY staff.cat.z3950.mark_overlay.accesskey "">
 <!ENTITY staff.cat.z3950.menuitem.csv_to_clipboard.label "Copy List CSV to Clipboard">
 <!ENTITY staff.cat.z3950.menuitem.csv_to_file.label "Save List CSV to File">
 <!ENTITY staff.cat.z3950.menuitem.csv_to_printer.label "Print List CSV">

@@ -439,8 +439,8 @@ BEGIN
             NEW.marc,
             E'(</(?:[^:]*?:)?record>)',
             E'<datafield tag="901" ind1=" " ind2=" ">' ||
-                '<subfield code="a">' || evergreen.xml_escape(NEW.tcn_value) || E'</subfield>' ||
-                '<subfield code="b">' || evergreen.xml_escape(NEW.tcn_source) || E'</subfield>' ||
+                '<subfield code="a">' || REPLACE(evergreen.xml_escape(NEW.tcn_value), E'\\', E'\\\\') || E'</subfield>' ||
+                '<subfield code="b">' || REPLACE(evergreen.xml_escape(NEW.tcn_source), E'\\', E'\\\\') || E'</subfield>' ||
                 '<subfield code="c">' || NEW.id || E'</subfield>' ||
                 '<subfield code="t">' || TG_TABLE_SCHEMA || E'</subfield>' ||
                 CASE WHEN NEW.owner IS NOT NULL THEN '<subfield code="o">' || NEW.owner || E'</subfield>' ELSE '' END ||

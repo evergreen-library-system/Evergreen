@@ -85,6 +85,7 @@
         <command id="cmd_z3950_csv_to_clipboard" disabled="true" />
         <command id="cmd_z3950_csv_to_file" disabled="true" />
         <command id="save_columns" />
+        <command id="mark_overlay" />
         <command id="toggle_form" />
         <command id="marc_view" />
     </commandset>
@@ -181,6 +182,11 @@
                             <menuitem command="save_columns" label="&staff.cat.z3950.menuitem.save_columns.label;" />
                         </menupopup>
                     </button>
+                    <button id="mark_overlay_btn"
+                        command="mark_overlay"
+                        disabled="true"
+                        label="&staff.cat.z3950.mark_overlay.label;"
+                        accesskey="&staff.cat.z3950.mark_overlay.accesskey;"/>
                     <spacer flex="1"/>
                     <button id="marc_view_btn" command="marc_view" disabled="true"/>
                     <checkbox id="marc_editor" label="&staff.cat.z3950.marc_editor.label;" accesskey="&staff.cat.z3950.marc_editor.accesskey;" oils_persist="checked" checked="true"/> 

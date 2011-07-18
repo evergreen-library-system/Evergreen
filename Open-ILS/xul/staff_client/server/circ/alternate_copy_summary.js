@@ -120,7 +120,15 @@ function load_item() {
             // Should get back .mvr, .copy, .volume, .transit, .circ, .hold
         }
 
-        if (typeof bib_brief_overlay == 'function') bib_brief_overlay( { 'mvr' : details.mvr, 'acp' : details.copy } );
+        if (typeof dynamic_grid_replacement == 'function') {
+            dynamic_grid_replacement('alternate_copy_summary');
+        }
+        if (typeof bib_brief_overlay == 'function') {
+            bib_brief_overlay({
+                'mvr' : details.mvr,
+                'acp' : details.copy
+            });
+        }
 
         set("stat_cat_entries", '');
         set("age_protect", '');

@@ -1686,10 +1686,29 @@ BEGIN
             SELECT id INTO attr_set.circ_lib FROM actor.org_unit WHERE shortname = UPPER(tmp_attr_set.clib); -- INT
             SELECT id INTO attr_set.status FROM config.copy_status WHERE LOWER(name) = LOWER(tmp_attr_set.cs); -- INT
 
-            SELECT  id INTO attr_set.location
-              FROM  asset.copy_location
-              WHERE LOWER(name) = LOWER(tmp_attr_set.cl)
-                    AND asset.copy_location.owning_lib = COALESCE(attr_set.owning_lib, attr_set.circ_lib); -- INT
+
+            -- search up the org unit tree for a matching copy location
+
+            WITH RECURSIVE anscestor_depth AS (
+                SELECT  ou.id,
+                    out.depth AS depth,
+                    ou.parent_ou
+                FROM  actor.org_unit ou
+                    JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
+                WHERE ou.id = COALESCE(attr_set.owning_lib, attr_set.circ_lib)
+                    UNION ALL
+                SELECT  ou.id,
+                    out.depth,
+                    ou.parent_ou
+                FROM  actor.org_unit ou
+                    JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
+                    JOIN anscestor_depth ot ON (ot.parent_ou = ou.id)
+            ) SELECT  cpl.id INTO attr_set.location
+                FROM  anscestor_depth a
+                    JOIN asset.copy_location cpl ON (cpl.owning_lib = a.id)
+                WHERE LOWER(cpl.name) = LOWER(tmp_attr_set.cl)
+                ORDER BY a.depth DESC
+                LIMIT 1; 
 
             attr_set.circulate      :=
                 LOWER( SUBSTRING( tmp_attr_set.circ, 1, 1)) IN ('t','y','1')
