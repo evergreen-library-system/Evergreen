@@ -46,10 +46,10 @@ function my_init() {
 
         var columns = circ.util.transit_columns({});
         transit_list = new util.list('transit');
-        transit_list.init( { 'columns' : columns, 'map_row_to_columns' : circ.util.std_map_row_to_columns(), });
+        transit_list.init( { 'columns' : columns });
 
         hold_list = new util.list('hold');
-        hold_list.init( { 'columns' : columns, 'map_row_to_columns' : circ.util.std_map_row_to_columns(), });
+        hold_list.init( { 'columns' : columns });
 
         // timeout so xulG gets a chance to get pushed in
         setTimeout(

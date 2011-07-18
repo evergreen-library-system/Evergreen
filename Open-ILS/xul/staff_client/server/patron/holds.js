@@ -75,7 +75,6 @@ patron.holds.prototype = {
                         // 'acp_circ_modifier' : { 'hidden' : false }
                     })
                 ),
-                'map_row_to_columns' : circ.util.std_map_row_to_columns(),
                 'retrieve_row' : function(params) {
                     var row = params.row;
                     try {

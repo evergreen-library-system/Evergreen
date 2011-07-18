@@ -45,11 +45,10 @@ function init_lists() {
         list1 = new util.list('work_action_log');
         list2 = new util.list('work_patron_log');
 
-        JSAN.use('circ.util'); var columns = circ.util.work_log_columns({}); var column_mapper_func = circ.util.std_map_row_to_columns();
+        JSAN.use('circ.util'); var columns = circ.util.work_log_columns({});
 
         list1.init( {
             'columns' : columns,
-            'map_row_to_columns' : column_mapper_func,
             'on_select' : function(ev) {
                 JSAN.use('util.functional'); var sel = list1.retrieve_selection();
                 selected1 = util.functional.map_list( sel, function(o) { return JSON2js(o.getAttribute('retrieve_id')); });

@@ -1663,7 +1663,6 @@ cat.copy_browser.prototype = {
                 {
                     'no_auto_select' : true,
                     'columns' : columns,
-                    'map_row_to_columns' : circ.util.std_map_row_to_columns(' '),
                     'retrieve_row' : function(params) {
 
                         var row = params.row;

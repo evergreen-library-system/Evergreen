@@ -2514,63 +2514,6 @@ circ.util.hold_columns = function(modify,params) {
     }
     return c.sort( function(a,b) { if (a.label < b.label) return -1; if (a.label > b.label) return 1; return 0; } );
 };
-/*
-circ.util.std_map_row_to_column = function(error_value) {
-    return function(row,col) {
-        // row contains { 'my' : { 'acp' : {}, 'circ' : {}, 'mvr' : {} } }
-        // col contains one of the objects listed above in columns
-
-        // mimicking some of the obj in circ.checkin and circ.checkout where map_row_to_column is usually defined
-        var obj = {};
-        JSAN.use('util.error'); obj.error = new util.error();
-        JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
-        JSAN.use('util.network'); obj.network = new util.network();
-        JSAN.use('util.money');
-
-        var my = row.my;
-        var value;
-        try {
-            value = eval( col.render );
-        } catch(E) {
-            obj.error.sdump('D_WARN','map_row_to_column: ' + E);
-            if (error_value) value = error_value; else value = '   ';
-        }
-        return value;
-    }
-};
-*/
-circ.util.std_map_row_to_columns = function(error_value) {
-    return function(row,cols,scratch) {
-        // row contains { 'my' : { 'acp' : {}, 'circ' : {}, 'mvr' : {} } }
-        // cols contains all of the objects listed above in columns
-        // scratch is a temporary space shared by all cells/rows (or just per row if not explicitly passed in)
-        if (!scratch) { scratch = {}; }
-
-        var obj = {};
-        JSAN.use('util.error'); obj.error = new util.error();
-        JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
-        JSAN.use('util.network'); obj.network = new util.network();
-        JSAN.use('util.money');
-
-        var my = row.my;
-        var values = [];
-        var cmd = '';
-        try {
-            for (var i = 0; i < cols.length; i++) {
-                switch (typeof cols[i].render) {
-                    case 'function': try { values[i] = cols[i].render(my,scratch); } catch(E) { values[i] = error_value; obj.error.sdump('D_COLUMN_RENDER_ERROR',E); } break;
-                    case 'string' : cmd += 'try { ' + cols[i].render + '; values['+i+'] = v; } catch(E) { values['+i+'] = error_value; }'; break;
-                    default: cmd += 'values['+i+'] = "??? '+(typeof cols[i].render)+'"; ';
-                }
-            }
-            if (cmd) eval( cmd );
-        } catch(E) {
-            obj.error.sdump('D_WARN','map_row_to_column: ' + E);
-            if (error_value) { value = error_value; } else { value = '   ' };
-        }
-        return values;
-    }
-};
 
 circ.util.checkin_via_barcode = function(session,params,backdate,auto_print,async) {
     try {
