@@ -10,6 +10,8 @@ circ.copy_status = function (params) {
     JSAN.use('util.date');
     JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init({'via':'stash'});
     JSAN.use('util.sound'); this.sound = new util.sound();
+    JSAN.use('cat.util');
+
 };
 
 circ.copy_status.prototype = {
@@ -57,6 +59,7 @@ circ.copy_status.prototype = {
                             obj.controller.view.sel_checkin.setAttribute('disabled','true');
                             obj.controller.view.cmd_replace_barcode.setAttribute('disabled','true');
                             obj.controller.view.sel_edit.setAttribute('disabled','true');
+                            obj.controller.view.sel_vol_copy_edit.setAttribute('disabled','true');
                             obj.controller.view.sel_opac.setAttribute('disabled','true');
                             obj.controller.view.sel_bucket.setAttribute('disabled','true');
                             obj.controller.view.sel_record_bucket.setAttribute('disabled','true');
@@ -86,6 +89,7 @@ circ.copy_status.prototype = {
                             obj.controller.view.sel_checkin.setAttribute('disabled','false');
                             obj.controller.view.cmd_replace_barcode.setAttribute('disabled','false');
                             obj.controller.view.sel_edit.setAttribute('disabled','false');
+                            obj.controller.view.sel_vol_copy_edit.setAttribute('disabled','false');
                             obj.controller.view.sel_opac.setAttribute('disabled','false');
                             obj.controller.view.sel_patron.setAttribute('disabled','false');
                             obj.controller.view.cmd_triggered_events.setAttribute('disabled','false');
@@ -741,6 +745,58 @@ circ.copy_status.prototype = {
                         }
 
                     ],
+
+                    'sel_vol_copy_edit' : [
+                        ['command'],
+                        function() {
+                            try {
+                                JSAN.use('util.functional');
+
+                                var list = util.functional.map_list( obj.selection_list, function(o) { return o.copy_id; } );
+
+                                var copies = obj.network.simple_request('FM_ACP_FLESHED_BATCH_RETRIEVE',[list]);
+
+                                if (list.length == 0) { return; }
+
+                                var map_acn = {};
+                                var rec_copy_map = {};
+
+                                for (var i = 0; i < copies.length; i++) {
+                                    var volume_id = copies[i].call_number();
+                                    if (! map_acn[volume_id]) {
+                                        map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ volume_id ]);
+                                    }
+                                    copies[i].call_number( map_acn[ volume_id ] );
+                                    var record_id = map_acn[ volume_id ].record();
+                                    if (!rec_copy_map[record_id]) {
+                                        rec_copy_map[record_id] = [];
+                                    }
+                                    rec_copy_map[record_id].push( copies[i] );
+                                }
+
+                                var timeout = 0; // FIXME: stagger invocation of each tab or they'll break for someone unknown reason
+                                var vol_item_creator = function(items) {
+                                    setTimeout(
+                                        function() {
+                                            xulG.volume_item_creator({ 'existing_copies' : items });
+                                        }, timeout
+                                    );
+                                    timeout += 1000;
+                                }
+                                for (var r in rec_copy_map) {
+                                    if (r == -1) { /* no unified interface for pre-cats */ 
+                                        cat.util.spawn_copy_editor( { 'copy_ids' : rec_copy_map[r], 'edit' : 1 } );
+                                    } else {
+                                        vol_item_creator( rec_copy_map[r] );
+                                    }
+                                }
+
+                            } catch(E) {
+                                obj.error.standard_unexpected_error_alert('copy status -> edit items/volumes per bib',E);
+                            }
+                        }
+                    ],
+
                     'cmd_edit_volumes' : [
                         ['command'],
                         function() {
