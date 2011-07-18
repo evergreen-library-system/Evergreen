@@ -79,7 +79,6 @@ cat.copy_buckets.prototype = {
         obj.list1.init(
             {
                 'columns' : columns,
-                'map_row_to_columns' : circ.util.std_map_row_to_columns(),
                 'retrieve_row' : retrieve_row,
                 'on_select' : function(ev) {
                     try {
@@ -109,7 +108,6 @@ cat.copy_buckets.prototype = {
         obj.list2.init(
             {
                 'columns' : columns,
-                'map_row_to_columns' : circ.util.std_map_row_to_columns(),
                 'retrieve_row' : retrieve_row,
                 'on_select' : function(ev) {
                     try {

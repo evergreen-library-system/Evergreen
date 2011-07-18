@@ -736,7 +736,6 @@ serial.manage_items.prototype = {
 		obj.lists.main.init(
 			{
 				'columns' : columns,
-				'map_row_to_columns' : circ.util.std_map_row_to_columns(),
 				'retrieve_row' : retrieve_row,
 				'on_select' : function(ev) {
                     obj.selected_list = 'main';
@@ -762,7 +761,6 @@ serial.manage_items.prototype = {
 		obj.lists.workarea.init(
 			{
 				'columns' : columns,
-				'map_row_to_columns' : circ.util.std_map_row_to_columns(),
 				'retrieve_row' : retrieve_row,
 				'on_select' : function(ev) {
                     obj.selected_list = 'workarea';

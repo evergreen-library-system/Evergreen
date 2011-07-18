@@ -47,7 +47,6 @@ circ.renew.prototype = {
         obj.list.init(
             {
                 'columns' : columns,
-                'map_row_to_columns' : circ.util.std_map_row_to_columns(),
                 'on_select' : function(ev) {
                     try {
                         JSAN.use('util.functional');
