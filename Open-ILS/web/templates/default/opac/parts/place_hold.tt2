@@ -8,7 +8,9 @@
         <div><big><strong>[% l("Hold was successfully placed"); %]</strong></big></div>
         [% ELSIF ctx.hold_failed %]
         <div><big><strong>[% l("Hold was not successfully placed"); %]</strong></big></div>
-            [% IF ctx.hold_failed_event || ctx.hold_local_alert %]
+            [% IF ctx.hold_local_block %]
+            <div>[% l("There is already a copy available at your local library.") %]</div>
+            [% ELSIF ctx.hold_failed_event || ctx.hold_local_alert %]
         <div>
             <strong>[% l('Problem:') %]</strong>
             <span title="[% ctx.hold_failed_event.textcode %]">
@@ -16,10 +18,16 @@
                         ctx.hold_failed_event.payload.fail_part ||
                         ctx.hold_failed_event.textcode ||
                         (ctx.hold_local_alert ?
-                            l("There is already a copy available at your local library") :
-                            l("Unknown problem")) %]
+                            l("There is already a copy available at your local library.") :
+                            l("Unknown problem")) %]</em>
             </span>
-            [% IF ctx.could_override %]
+
+            [% IF ctx.hold_copy_available %]<p>
+            [% l('Find a copy in the shelving location, "[_1]."',
+                ctx.hold_copy_available.location) %]
+            </p>[% END %]
+
+            [% IF ctx.could_override || ctx.hold_local_alert %]
             <p>
                 <big>[% l("You have permission to place this hold anyway.") %]</big>
                 <br />
@@ -276,8 +284,6 @@
                 </tr>
             </tbody>
         </table>
-        <div class='hide_me' id='holds_success'>[% l("Hold was successfully placed") %]</div>
-        <div class='hide_me' id='holds_failure'>[% l("Hold was not successfully placed") %]</div>
         <span class='hide_me' id='holds_bad_phone'>
             [% l("The phone number does not have the correct format. The expected format is XXX-YYY-ZZZZ") %]
         </span>

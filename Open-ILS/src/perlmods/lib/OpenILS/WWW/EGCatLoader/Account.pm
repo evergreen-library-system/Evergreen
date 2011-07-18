@@ -7,6 +7,8 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::AppUtils;
 use OpenILS::Event;
 use OpenSRF::Utils::JSON;
+use Data::Dumper;
+$Data::Dumper::Indent = 0;
 use DateTime;
 my $U = 'OpenILS::Application::AppUtils';
 
@@ -44,19 +46,37 @@ sub test_could_override {
 
 # Find out whether we care that local copies are available
 sub local_avail_concern {
-    my ($self, $allowed, $request_lib) = @_;
+    my ($self, $allowed, $hold_target, $hold_type, $pickup_lib) = @_;
 
-    my ($block, $alert);
-    if ($allowed->{"success"} and $allowed->{"local_avail"}) {
-        $block = $self->ctx->{get_org_setting}->
-            ($request_lib, "circ.holds.hold_has_copy_at.block");
-        $alert = (
-            $self->ctx->{get_org_setting}->
-                ($request_lib, "circ.holds.hold_has_copy_at.alert")
-                and not $self->cgi->param("override")
+    my $would_block = $self->ctx->{get_org_setting}->
+        ($pickup_lib, "circ.holds.hold_has_copy_at.block");
+    my $would_alert = (
+        $self->ctx->{get_org_setting}->
+            ($pickup_lib, "circ.holds.hold_has_copy_at.alert") and
+                not $self->cgi->param("override")
+    ) unless $would_block;
+
+    if ($allowed->{"success"} and ($would_block or $would_alert)) {
+        my $args = {
+            "hold_target" => $hold_target,
+            "hold_type" => $hold_type,
+            "org_unit" => $pickup_lib
+        };
+        my $local_avail = $U->simplereq(
+            "open-ils.circ",
+            "open-ils.circ.hold.has_copy_at", $self->editor->authtoken, $args
         );
+        $logger->info(
+            "copy availability information for " . Dumper($args) .
+            " is " . Dumper($local_avail)
+        );
+        if (%$local_avail) { # if hash not empty
+            $self->ctx->{hold_copy_available} = $local_avail;
+            return ($would_block, $would_alert);
+        }
     }
-    return ($block, $alert);
+
+    return (0, 0);
 }
 
 # context additions: 
@@ -468,8 +488,13 @@ sub load_place_hold {
 
         $logger->info('hold permit result ' . OpenSRF::Utils::JSON->perl2JSON($allowed));
 
-        my ($local_block, $local_alert) =
-            $self->local_avail_concern($allowed, $request_lib);
+        my ($local_block, $local_alert) = $self->local_avail_concern(
+            $allowed, $args->{$target_field}, $args->{hold_type}, $pickup_lib
+        );
+
+        # Give the original CGI params back to the user in case they
+        # want to try to override something.
+        $ctx->{orig_params} = $cgi->Vars;
 
         if ($local_block) {
             $ctx->{hold_failed} = 1;
@@ -507,9 +532,6 @@ sub load_place_hold {
             } else {
                 $ctx->{hold_failed} = 1;
 
-                # Give the original CGI params back to the user in case they
-                # want to try to override something.
-                $ctx->{orig_params} = $cgi->Vars;
                 delete $ctx->{orig_params}{submit};
 
                 if (ref $stat eq 'ARRAY') {
