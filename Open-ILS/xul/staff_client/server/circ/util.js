@@ -1192,6 +1192,7 @@ circ.util.columns = function(modify,params) {
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.acp.create_date(), '%{localized}' ); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.acp.create_date() ).getTime();; }
         },
         {
             'persist' : 'hidden width ordinal',
