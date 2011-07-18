@@ -1002,6 +1002,7 @@ util.list.prototype = {
                 
                 if ( this.columns[i].editable == false ) { treecell.setAttribute('editable','false'); }
                 var label = '';
+                var sort_value = '';
 
                 // What skip columns is doing is rendering the treecells as blank/empty
                 if (params.skip_columns && (params.skip_columns.indexOf(i) != -1)) {
@@ -1030,15 +1031,27 @@ util.list.prototype = {
         } else if (typeof params.map_row_to_columns == 'function' || typeof this.map_row_to_columns == 'function') {
 
             var labels = [];
+            var sort_values = [];
 
             if (typeof params.map_row_to_columns == 'function') {
 
-                labels = params.map_row_to_columns(params.row,this.columns,this.scratch_data);
+                var values = params.map_row_to_columns(params.row,this.columns,this.scratch_data);
+                if (typeof values.values == 'undefined') {
+                    labels = values;
+                } else {
+                    labels = values.values;
+                    sort_values = values.sort_values;
+                }
 
             } else if (typeof this.map_row_to_columns == 'function') {
 
-                labels = this.map_row_to_columns(params.row,this.columns,this.scratch_data);
-
+                var values = this.map_row_to_columns(params.row,this.columns,this.scratch_data);
+                if (typeof values.values == 'undefined') {
+                    labels = values;
+                } else {
+                    labels = values.values;
+                    sort_values = values.sort_values;
+                }
             }
             for (var i = 0; i < labels.length; i++) {
                 var treecell;
@@ -1053,6 +1066,9 @@ util.list.prototype = {
                     treecell.setAttribute('value', labels[i]);
                 } else {
                     treecell.setAttribute('label',typeof labels[i] == 'string' || typeof labels[i] == 'number' ? labels[i] : '');
+                }
+                if (sort_values[i]) {
+                    treecell.setAttribute('sort_value',js2JSON(sort_values[i]));
                 }
                 s += ('treecell = ' + treecell + ' with label = ' + labels[i] + '\n');
             }
@@ -1463,38 +1479,53 @@ util.list.prototype = {
                             var treeitem = treeitems[i];
                             var treerow = treeitem.firstChild;
                             var treecell = treerow.childNodes[ col_pos ];
-                            value = ( { 'value' : treecell ? treecell.getAttribute('label') : '', 'node' : treeitem } );
+                            value = ( {
+                                'value' : treecell
+                                    ? treecell.getAttribute('label')
+                                    : '',
+                                'sort_value' : treecell ? treecell.hasAttribute('sort_value')
+                                    ? JSON2js(
+                                        treecell.getAttribute('sort_value'))
+                                    : '' : '',
+                                'node' : treeitem
+                            } );
                             rows.push( value );
                         }
                         rows = rows.sort( function(a,b) { 
-                            a = a.value; b = b.value; 
-                            if (col.getAttribute('sort_type')) {
-                                switch(col.getAttribute('sort_type')) {
-                                    case 'date' :
-                                        JSAN.use('util.date'); // to pull in dojo.date.locale
-                                        a = dojo.date.locale.parse(a,{});
-                                        b = dojo.date.locale.parse(b,{});
-                                    break;
-                                    case 'number' :
-                                        a = Number(a); b = Number(b);
-                                    break;
-                                    case 'money' :
-                                        a = util.money.dollars_float_to_cents_integer(a);
-                                        b = util.money.dollars_float_to_cents_integer(b);
-                                    break;
-                                    case 'title' : /* special case for "a" and "the".  doesn't use marc 245 indicator */
-                                        a = String( a ).toUpperCase().replace( /^\s*(THE|A|AN)\s+/, '' );
-                                        b = String( b ).toUpperCase().replace( /^\s*(THE|A|AN)\s+/, '' );
-                                    break;
-                                    default:
+                            if (a.sort_value) {
+                                a = a.sort_value;
+                                b = b.sort_value;
+                            } else {
+                                a = a.value;
+                                b = b.value;
+                                if (col.getAttribute('sort_type')) {
+                                    switch(col.getAttribute('sort_type')) {
+                                        case 'date' :
+                                            JSAN.use('util.date'); // to pull in dojo.date.locale
+                                            a = dojo.date.locale.parse(a,{});
+                                            b = dojo.date.locale.parse(b,{});
+                                        break;
+                                        case 'number' :
+                                            a = Number(a); b = Number(b);
+                                        break;
+                                        case 'money' :
+                                            a = util.money.dollars_float_to_cents_integer(a);
+                                            b = util.money.dollars_float_to_cents_integer(b);
+                                        break;
+                                        case 'title' : /* special case for "a" and "the".  doesn't use marc 245 indicator */
+                                            a = String( a ).toUpperCase().replace( /^\s*(THE|A|AN)\s+/, '' );
+                                            b = String( b ).toUpperCase().replace( /^\s*(THE|A|AN)\s+/, '' );
+                                        break;
+                                        default:
+                                            a = String( a ).toUpperCase();
+                                            b = String( b ).toUpperCase();
+                                        break;
+                                    }
+                                } else {
+                                    if (typeof a == 'string' || typeof b == 'string') {
                                         a = String( a ).toUpperCase();
                                         b = String( b ).toUpperCase();
-                                    break;
-                                }
-                            } else {
-                                if (typeof a == 'string' || typeof b == 'string') {
-                                    a = String( a ).toUpperCase();
-                                    b = String( b ).toUpperCase();
+                                    }
                                 }
                             }
                             //dump('sorting: type = ' + col.getAttribute('sort_type') + ' a = ' + a + ' b = ' + b + ' a<b= ' + (a<b) + ' a>b= ' + (a>b) + '\n');
@@ -1753,6 +1784,9 @@ util.list.prototype = {
                     def.render = function(my) {
                         return util.date.formatted_date( my[dataobj][datafield](), '%{localized}' );
                     }
+                    def.sort_value = function(my) {
+                        return util.date.db_date2Date( my[dataobj][datafield]() ).getTime();
+                    }
                 }
                 if (my_field.datatype == 'org_unit') {
                     def.render = function(my) {
@@ -1763,6 +1797,9 @@ util.list.prototype = {
                     JSAN.use('util.money');
                     def.render = function(my) {
                         return util.money.sanitize( my[dataobj][datafield]() );
+                    }
+                    def.sort_value = function(my) {
+                        return util.money.dollars_float_to_cents_integer( my[dataobj][datafield]() );
                     }
                 }
                 if (column_extras) {
@@ -1832,6 +1869,7 @@ util.list.prototype = {
 
             var my = row.my;
             var values = [];
+            var sort_values = [];
             var cmd = '';
             try {
                 for (var i = 0; i < cols.length; i++) {
@@ -1840,13 +1878,34 @@ util.list.prototype = {
                         case 'string' : cmd += 'try { ' + cols[i].render + '; values['+i+'] = v; } catch(E) { values['+i+'] = error_value; }'; break;
                         default: cmd += 'values['+i+'] = "??? '+(typeof cols[i].render)+'"; ';
                     }
+                    switch (typeof cols[i].sort_value) {
+                        case 'function':
+                            try {
+                                sort_values[i] = cols[i].sort_value(my,scratch);
+                            } catch(E) {
+                                sort_values[i] = error_value;
+                                obj.error.sdump('D_COLUMN_RENDER_ERROR',E);
+                            }
+                        break;
+                        case 'string' :
+                            cmd += 'try { '
+                                + cols[i].sort_value
+                                + '; values['
+                                + i
+                                +'] = v; } catch(E) { sort_values['
+                                + i
+                                + '] = error_value; }';
+                        break;
+                        default:
+                            cmd += 'sort_values['+i+'] = values[' + i + '];';
+                    }
                 }
                 if (cmd) eval( cmd );
             } catch(E) {
                 obj.error.sdump('D_WARN','map_row_to_column: ' + E);
                 if (error_value) { value = error_value; } else { value = '   ' };
             }
-            return values;
+            return { 'values' : values, 'sort_values' : sort_values };
         }
     }
 }
