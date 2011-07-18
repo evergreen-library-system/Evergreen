@@ -2750,9 +2750,8 @@ INSERT into config.org_unit_setting_type
 ( 'org.patron_opt_default',
     oils_i18n_gettext( 'org.patron_opt_default', 'Circ: Patron Opt-In Default', 'coust', 'label'),
     oils_i18n_gettext( 'org.patron_opt_default', 'This is the default depth at which a patron is opted in; it is calculated as an org unit relative to the current workstation.', 'coust', 'label'),
-    'integer');
+    'integer')
 
-COMMIT;
 ;
 
 UPDATE config.org_unit_setting_type
