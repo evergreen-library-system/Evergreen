@@ -61,4 +61,67 @@ while ($rec = testlib::load_MARC_rec($testdata, $testno++)) {
     }
 }
 
+close $testdata;
+
+# test: passthru_open_ended
+open($testdata, "<mfhddata2.txt") or die("Cannot open 'mfhddata2.txt': $!");
+
+$rec = MFHD->new(testlib::load_MARC_rec($testdata, $testno));
+my $rec2 = MFHD->new(testlib::load_MARC_rec($testdata, $testno));
+
+my @holdings_a = $rec->get_decompressed_holdings(($rec->captions('853'))[0], {'passthru_open_ended' => 1});
+my @holdings_b = $rec2->holdings_by_caption(($rec2->captions('853'))[0]);
+
+is_deeply(\@holdings_a, \@holdings_b, 'passthru open ended');
+
+# test: compressed to last
+$testno++;
+
+$rec = MFHD->new(testlib::load_MARC_rec($testdata, $testno));
+$rec2 = MFHD->new(testlib::load_MARC_rec($testdata, $testno));
+
+@holdings_a = $rec->holdings_by_caption(($rec->captions('853'))[0]);
+@holdings_b = $rec2->holdings_by_caption(($rec2->captions('853'))[0]);
+
+is_deeply($holdings_a[0]->compressed_to_last, $holdings_b[0], 'compressed to last, normal');
+is($holdings_a[1]->compressed_to_last, undef, 'compressed to last, open ended');
+
+# test: get compressed holdings, open ended member
+$testno++;
+
+$rec = MFHD->new(testlib::load_MARC_rec($testdata, $testno));
+$rec2 = MFHD->new(testlib::load_MARC_rec($testdata, $testno));
+
+@holdings_a = $rec->get_compressed_holdings(($rec->captions('853'))[0]);
+@holdings_b = $rec2->holdings_by_caption(($rec2->captions('853'))[0]);
+
+is_deeply(\@holdings_a, \@holdings_b, 'get compressed holdings, open ended member');
+
+# test comparisons, for all operands, for all types of holdings
+$testno++;
+
+$rec = MFHD->new(testlib::load_MARC_rec($testdata, $testno));
+$rec2 = MFHD->new(testlib::load_MARC_rec($testdata, $testno));
+
+@holdings_a = $rec->holdings_by_caption(($rec->captions('853'))[0]);
+@holdings_b = $rec2->holdings_by_caption(($rec2->captions('853'))[0]);
+
+unshift(@holdings_a, "zzz I am NOT a holding");
+push(@holdings_b, "zzz I am NOT a holding");
+
+push(@holdings_a, undef);
+unshift(@holdings_b, undef);
+
+@holdings_a = sort { $a cmp $b } @holdings_a;
+my $seqno = 1;
+foreach my $holding (@holdings_a) {
+    if (ref $holding) {
+        $holding->seqno($seqno);
+        $seqno++;
+    }
+}
+
+is_deeply(\@holdings_a, \@holdings_b, 'comparison testing via sort');
+
+close $testdata;
 1;
