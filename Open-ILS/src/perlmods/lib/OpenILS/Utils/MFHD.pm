@@ -252,6 +252,16 @@ sub holdings {
       values %{$self->{_mfhd_HOLDINGS}->{$field}->{$capid}};
 }
 
+sub holdings_by_caption {
+    my $self  = shift;
+    my $caption = shift;
+
+    my $htag    = $caption->tag;
+    my $link_id = $caption->link_id;
+    $htag =~ s/^85/86/;
+    return $self->holdings($htag, $link_id);
+}
+
 sub _holding_date {
     my $self = shift;
     my $holding = shift;
@@ -348,16 +358,21 @@ sub get_compressed_holdings {
     my $opts = shift;
     my $skip_sort = $opts->{'skip_sort'};
 
-    # make sure none are compressed
+    # make sure none are compressed (except for open-ended)
     my @decomp_holdings;
     if ($skip_sort) {
-        @decomp_holdings = $self->get_decompressed_holdings($caption, {'skip_sort' => 1});
+        @decomp_holdings = $self->get_decompressed_holdings($caption, {'skip_sort' => 1, 'passthru_open_ended' => 1});
     } else {
         # sort for best algorithm
-        @decomp_holdings = $self->get_decompressed_holdings($caption, {'dedupe' => 1});
+        @decomp_holdings = $self->get_decompressed_holdings($caption, {'dedupe' => 1, 'passthru_open_ended' => 1});
     }
 
     return () if !@decomp_holdings;
+
+    # if first holding is open-ended, it 'includes' all the rest, so return
+    if ($decomp_holdings[0]->is_open_ended) {
+        return ($decomp_holdings[0]);
+    }
 
     my $runner = $decomp_holdings[0]->clone->increment;   
     my $curr_holding = shift(@decomp_holdings);
@@ -365,15 +380,22 @@ sub get_compressed_holdings {
     my $seqno = 1;
     $curr_holding->seqno($seqno);
     my @comp_holdings;
-#    my $last_holding;
     foreach my $holding (@decomp_holdings) {
         if ($runner eq $holding) {
             $curr_holding->extend;
             $runner->increment;
-#        } elsif ($holding eq $last_holding) {
-#            carp("Found duplicate holding in compression set, skipping");
         } elsif ($runner gt $holding) { # should not happen unless holding is not in series
             carp("Found unexpected holding, skipping");
+        } elsif ($holding->is_open_ended) { # special case, as it will always be the last
+            if ($runner eq $holding->clone->compressed_to_first) {
+                $curr_holding->compressed_end();
+            } else {
+                push(@comp_holdings, $curr_holding);
+                $curr_holding = $holding->clone;
+                $seqno++;
+                $curr_holding->seqno($seqno);
+            }
+            last;
         } else {
             push(@comp_holdings, $curr_holding);
             while ($runner le $holding) {
@@ -383,7 +405,6 @@ sub get_compressed_holdings {
             $seqno++;
             $curr_holding->seqno($seqno);
         }
-#        $last_holding = $holding;
     }
     push(@comp_holdings, $curr_holding);
 
@@ -394,10 +415,12 @@ sub get_compressed_holdings {
 # create an array of single holdings from all holdings for a given caption,
 # decompressing as needed
 #
-# resulting array is returned as they come in the record, unsorted
-#
-# optional argument will reorder and renumber the holdings before returning
-# 
+# optional arguments:
+#    skip_sort: do not sort the returned holdings
+#    dedupe: remove any duplicate holdings from the set
+#    passthru_open_ended: open-ended compressed holdings cannot be logically
+#    decompressed (they are infinite); if set to true these holdings are passed
+#    thru rather than skipped
 # TODO: some of this could be moved to the Caption (and/or Holding) object to
 # allow for decompression in the absense of an overarching MFHD object
 #
@@ -407,15 +430,13 @@ sub get_decompressed_holdings {
     my $opts = shift;
     my $skip_sort = $opts->{'skip_sort'};
     my $dedupe = $opts->{'dedupe'};
+    my $passthru_open_ended = $opts->{'passthru_open_ended'};
 
     if ($dedupe and $skip_sort) {
         carp("Attempted deduplication without sorting, failure likely");
     }
 
-    my $htag    = $caption->tag;
-    my $link_id = $caption->link_id;
-    $htag =~ s/^85/86/;
-    my @holdings = $self->holdings($htag, $link_id);
+    my @holdings = $self->holdings_by_caption($caption);
 
     return () if !@holdings;
 
@@ -424,6 +445,12 @@ sub get_decompressed_holdings {
     foreach my $holding (@holdings) {
         if (!$holding->is_compressed) {
             push(@decomp_holdings, $holding->clone);
+        } elsif ($holding->is_open_ended) {
+            if ($passthru_open_ended) {
+                push(@decomp_holdings, $holding->clone);
+            } else {
+                carp("Open-ended holdings cannot be decompressed, skipping");
+            }
         } else {
             my $base_holding = $holding->clone->compressed_to_first;
             my @new_holdings = $self->generate_predictions(
@@ -453,6 +480,54 @@ sub get_decompressed_holdings {
 
     return @return_holdings;
 }
+
+##
+## close any open-ended holdings which are followed by another holding by
+## combining them
+##
+## This needs more thought about concerning usability (e.g. should it be a
+## mutator?), commenting out for now
+#sub _get_truncated_holdings {
+#    my $self = shift;
+#    my $caption = shift;
+#
+#    my @holdings = $self->holdings_by_caption($caption);
+#
+#    return () if !@holdings;
+#
+#    @holdings = sort {$a cmp $b} @holdings;
+#    
+#    my $current_open_holding;
+#    my @truncated_holdings;
+#    foreach my $holding (@holdings) {
+#        if ($current_open_holding) {
+#            if ($holding->is_open_ended) {
+#                next; # consecutive open holdings are meaningless, as they are contained by the previous
+#            } elsif ($holding->is_compressed) {
+#                $current_open_holding->compressed_end($holding->compressed_to_last);
+#            } else {
+#                $current_open_holding->compressed_end($holding);
+#            }
+#            push(@truncated_holdings, $current_open_holding);
+#            $current_open_holding = undef;
+#        } elsif ($holding->is_open_ended) {
+#            $current_open_holding = $holding;
+#        } else {
+#            push(@truncated_holdings, $holding);
+#        }
+#    }
+#    
+#    # catch possible open holding at end
+#    push(@truncated_holdings, $current_open_holding) if $current_open_holding;
+#
+#    my $seqno = 1;
+#    foreach my $holding (@truncated_holdings) { # renumber sequence
+#        $holding->seqno($seqno);
+#        $seqno++;
+#    }
+#
+#    return @truncated_holdings;
+#}
 
 #
 # format_holdings(): Generate textual display of all holdings in record
