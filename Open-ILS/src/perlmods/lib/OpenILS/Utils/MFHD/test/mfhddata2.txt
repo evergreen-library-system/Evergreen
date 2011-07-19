@@ -1,0 +1,57 @@
+245 00 $aPassthru Open Ended, test data
+853 20 $81$av.$bno.$u12$vr$i(year)$j(month)$wm$x01
+863 40 $81.1$a1$b6-8$i1990$j06-08
+863 40 $81.2$a1-$b11-$i1990-$j11-
+
+245 00 $aPassthru Open Ended, test results
+853 20 $81$av.$bno.$u12$vr$i(year)$j(month)$wm$x01
+863 41 $81.1$a1$b6$i1990$j06
+863 41 $81.2$a1$b7$i1990$j07
+863 41 $81.3$a1$b8$i1990$j08
+863 40 $81.4$a1-$b11-$i1990-$j11-
+
+245 00 $aCompressed to last, part 1
+853 20 $81$av.$bno.$u12$vr$i(year)$j(month)$wm$x01
+863 40 $81.1$a1$b6-8$i1990$j06-08
+863 40 $81.2$a1-$b11-$i1990-$j11-
+
+245 00 $aCompressed to last, part 2
+853 20 $81$av.$bno.$u12$vr$i(year)$j(month)$wm$x01
+863 41 $81.1$a1$b8$i1990$j08
+
+245 00 $aGet compressed holdings, open ended member
+853 20 $81$av.$bno.$u12$vr$i(year)$j(month)$wm$x01
+863 41 $81.1$a1$b4$i1990$j04
+863 41 $81.2$a1$b5$i1990$j05
+863 40 $81.3$a1-$b6-$i1990-$j06-
+863 41 $81.4$a1$b8$i1990$j08
+
+245 00 $aGet compressed holdings, open ended member, result
+853 20 $81$av.$bno.$u12$vr$i(year)$j(month)$wm$x01
+863 40 $81.1$a1-$b4-$i1990-$j04-
+
+245 00 $aComparison test, unsorted
+853 20 $81$av.$bno.$u12$vr$i(year)$j(month)$wm$x01
+863 40 $81.1$a1$b4-7$i1990$j04-07
+863 40 $81.2$a1$b4-7$i1990$j04-07
+863 41 $81.3$a1$b4$i1990$j04
+863 41 $81.4$a1$b4$i1990$j04
+863 40 $81.5$a1-$b3-$i1990-$j03-
+863 40 $81.6$a1$b3-6$i1990$j03-06
+863 40 $81.7$a1$b3-5$i1990$j03-05
+863 41 $81.8$a1$b3$i1990$j03
+863 41 $81.9$a1$b2$i1990$j02
+
+245 00 $aComparison test, sorted
+853 20 $81$av.$bno.$u12$vr$i(year)$j(month)$wm$x01
+863 41 $81.1$a1$b2$i1990$j02
+863 41 $81.2$a1$b3$i1990$j03
+863 40 $81.3$a1$b3-5$i1990$j03-05
+863 40 $81.4$a1$b3-6$i1990$j03-06
+863 40 $81.5$a1-$b3-$i1990-$j03-
+863 41 $81.6$a1$b4$i1990$j04
+863 41 $81.7$a1$b4$i1990$j04
+863 40 $81.8$a1$b4-7$i1990$j04-07
+863 40 $81.9$a1$b4-7$i1990$j04-07
+
+
