@@ -44,7 +44,10 @@ sub new {
                 next;
             }
             if ($self->{_mfhdh_COMPRESSED}) {
-                $self->{_mfhdh_FIELDS}->{$key}{HOLDINGS} = [split(/\-/, $val)];
+                $self->{_mfhdh_FIELDS}->{$key}{HOLDINGS} = [split(/\-/, $val, -1)];
+                if (!defined($self->{_mfhdh_FIELDS}->{$key}{HOLDINGS}[1])) {
+                    $self->{_mfhdh_FIELDS}->{$key}{HOLDINGS}[1] = $self->{_mfhdh_FIELDS}->{$key}{HOLDINGS}[0];
+                }
             } else {
                 $self->{_mfhdh_FIELDS}->{$key}{HOLDINGS} = [$val];
             }
@@ -561,7 +564,7 @@ sub compressed_to_last {
         return $self;
     } elsif ($self->is_open_ended) {
         carp "Holding is open-ended, cannot convert to last member";
-        return $self;
+        return undef;
     }
 
     my %changes;
@@ -573,6 +576,40 @@ sub compressed_to_last {
 
     $self->update(%changes);    # update underlying subfields
     $self->is_compressed(0);    # remove compressed state
+
+    return $self;
+}
+
+#
+# Creates or replaces an end of a compressed holding
+#
+sub compressed_end {
+    my $self = shift;
+    my $end_holding = shift;
+
+    my %changes;
+    if ($end_holding) {
+        foreach my $key (keys %{$self->fields}) {
+            my @values = @{$self->field_values($key)};
+            my @end_values = @{$end_holding->field_values($key)};
+            $values[1] = $end_values[0];
+            $self->fields->{$key}{HOLDINGS} = \@values;
+            $changes{$key} = join('-', @values);
+        }
+    } elsif (!$self->is_open_ended) { # make open-ended if no $end_holding
+        foreach my $key (keys %{$self->fields}) {
+            my @values = @{$self->field_values($key)};
+            $self->fields->{$key}{HOLDINGS} = [$values[0]];
+            $changes{$key} = $values[0] . '-';
+        }
+        $self->{_mfhdh_OPEN_ENDED} = 1; #TODO: setter for this value
+    }
+
+    $self->update(%changes);    # update underlying subfields
+
+    if (!$self->is_compressed) {
+        $self->is_compressed(1);  # add compressed state
+    }
 
     return $self;
 }
@@ -707,17 +744,23 @@ sub _uncombine {
 # Please note that this comparison is based on what the holding represents,
 # not whether it is strictly identical (e.g. the seqno and link may vary)
 #
+# XXX: sorting using this operator is currently not deterministic for
+# nonsensical holdings (e.g. V.10-V.5), and may require further consideration
 use overload ('cmp' => \&_compare,
               'fallback' => 1);
 sub _compare {
-    my ($holding_1, $holding_2) = @_;
+    my ($holding_1, $holding_2, $swap) = @_;
 
     # TODO: this needs some more consideration
     # fall back to 'built-in' comparison
     if (!UNIVERSAL::isa($holding_2, ref $holding_1)) {
         if (defined $holding_2) {
-            carp("Use of non-holding in holding comparison operation");
-            return ( "$holding_1" cmp "$holding_2" );
+            carp("Use of non-holding in holding comparison operation") if $holding_2 ne '~~~';
+            if ($swap) {
+                return ( "$holding_2" cmp "$holding_1" );
+            } else {
+                return ( "$holding_1" cmp "$holding_2" );
+            }
         } else {
             carp("Use of undefined value in holding comparison operation");
             return 1; # similar to built-in, something is "greater than" nothing
@@ -729,7 +772,11 @@ sub _compare {
     # 0 for no compressed, 1 for first compressed, 2 for second compressed, 3 for both compressed
     $found_compressed = 0; 
     if ($holding_1->is_compressed) {
-        $holding_1_last = $holding_1->clone->compressed_to_last;
+        if (!$holding_1->is_open_ended) {
+            $holding_1_last = $holding_1->clone->compressed_to_last;
+        } else {
+            $holding_1_last = '~~~'; # take advantage of string sort fallback
+        }
         $found_compressed += 1;
     } else {
         $holding_1_first = $holding_1;
@@ -753,7 +800,11 @@ sub _compare {
         } else { # check the opposite, 2 ends before 1 starts
             # clone is expensive, wait until we need it (here)
             if (!defined($holding_2_last)) {
-                $holding_2_last = $holding_2->clone->compressed_to_last;
+                if (!$holding_2->is_open_ended) {
+                    $holding_2_last = $holding_2->clone->compressed_to_last;
+                } else {
+                    $holding_2_last = '~~~'; # take advantage of string sort fallback
+                }
             }
             if (!defined($holding_1_first)) {
                 $holding_1_first = $holding_1->clone->compressed_to_first;
@@ -766,7 +817,7 @@ sub _compare {
                 return 1;
             } else {
                 $cmp = ($holding_1_first cmp $holding_2_first);
-                if (!$cmp) { # they are not equal
+                if ($cmp) { # they are not equal
                     carp("Overlapping holdings in comparison, lt and gt based on start value only");
                     return $cmp;
                 } elsif ($found_compressed == 1) {
@@ -777,7 +828,7 @@ sub _compare {
                     return -1; # compressed (second holding) is 'greater than' non-compressed
                 } else { # both holdings compressed, check for full equality
                     $cmp = ($holding_1_last cmp $holding_2_last);
-                    if (!$cmp) { # they are not equal
+                    if ($cmp) { # they are not equal
                         carp("Compressed holdings in comparison have equal starts, lt and gt based on end value only");
                         return $cmp;
                     } else {
