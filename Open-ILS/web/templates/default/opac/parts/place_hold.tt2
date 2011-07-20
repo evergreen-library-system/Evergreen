@@ -1,6 +1,8 @@
 [%  PROCESS "default/opac/parts/misc_util.tt2";
     attrs = {marc_xml => ctx.marc_xml};
     PROCESS get_marc_attrs args=attrs;
+
+    PROCESS "default/opac/parts/hold_error_messages.tt2";
 %]
 <div>
     <div id='holds_box' class='canvas' style='margin-top: 6px;'>
@@ -14,7 +16,14 @@
         <div>
             <strong>[% l('Problem:') %]</strong>
             <span title="[% ctx.hold_failed_event.textcode %]">
-                <em>[% ctx.hold_failed_event.desc ||
+                <em>[%
+                        fail_part_key = ctx.hold_failed_event.payload.fail_part;
+                        event_key = ctx.hold_failed_event.textcode;
+
+                        # display:
+                        l(FAIL_PART_MSG_MAP.$fail_part_key) ||
+                        l(EVENT_MSG_MAP.$event_key) ||
+                        l(ctx.hold_failed_event.desc) ||
                         ctx.hold_failed_event.payload.fail_part ||
                         ctx.hold_failed_event.textcode ||
                         (ctx.hold_local_alert ?
