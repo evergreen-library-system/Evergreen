@@ -139,6 +139,7 @@
         <command id="sel_checkin" disabled="true"/>
         <command id="sel_renew" disabled="true"/>
         <command id="sel_edit" disabled="true"/>
+        <command id="sel_vol_copy_edit" disabled="true"/>
         <command id="sel_opac" disabled="true"/>
         <command id="sel_bucket" disabled="true"/>
         <command id="sel_record_bucket" disabled="true" label="&staff.circ.copy_status_overlay.sel_record_bucket.label;" accesskey="&staff.circ.copy_status_overlay.sel_record_bucket.accesskey;" />
