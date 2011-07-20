@@ -57,6 +57,7 @@ patron.util.mbts_columns = function(modify,params) {
             'persist' : 'hidden width ordinal', 'id' : 'last_billing_ts', 'label' : commonStrings.getString('staff.mbts_last_billing_timestamp_label'), 'flex' : 1,
             'sort_type' : 'date',
             'primary' : false, 'hidden' : true, 'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.mbts.last_billing_ts(), "%{localized}" ); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.mbts.last_billing_ts() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal', 'id' : 'last_payment_note', 'label' : commonStrings.getString('staff.mbts_last_payment_note_label'), 'flex' : 2,
@@ -70,16 +71,19 @@ patron.util.mbts_columns = function(modify,params) {
             'persist' : 'hidden width ordinal', 'id' : 'last_payment_ts', 'label' : commonStrings.getString('staff.mbts_last_payment_timestamp_label'), 'flex' : 1,
             'sort_type' : 'date',
             'primary' : false, 'hidden' : true, 'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.mbts.last_payment_ts(), "%{localized}" ); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.mbts.last_payment_ts() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal', 'id' : 'mbts_xact_start', 'label' : commonStrings.getString('staff.mbts_xact_start_label'), 'flex' : 1,
             'sort_type' : 'date',
             'primary' : false, 'hidden' : false, 'editable' : false, 'render' : function(my) { return my.mbts.xact_start() ? util.date.formatted_date( my.mbts.xact_start(), "%{localized}" ) : ""; }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.mbts.xact_start() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal', 'id' : 'mbts_xact_finish', 'label' : commonStrings.getString('staff.mbts_xact_finish_label'), 'flex' : 1,
             'sort_type' : 'date',
             'primary' : false, 'hidden' : false, 'editable' : false, 'render' : function(my) { return my.mbts.xact_finish() ? util.date.formatted_date( my.mbts.xact_finish(), "%{localized}" ) : ""; }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.mbts.xact_finish() ).getTime(); }
         },
     ];
     for (var i = 0; i < c.length; i++) {
@@ -136,6 +140,7 @@ patron.util.mb_columns = function(modify,params) {
             'persist' : 'hidden width ordinal', 'id' : 'void_time', 'label' : commonStrings.getString('staff.mb_void_time_label'), 'flex' : 1,
             'sort_type' : 'date',
             'primary' : false, 'hidden' : true, 'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.mb.void_time(), "%{localized}" ); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.mb.void_time() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal', 'id' : 'amount', 'label' : commonStrings.getString('staff.mb_amount_label'), 'flex' : 1,
@@ -150,6 +155,7 @@ patron.util.mb_columns = function(modify,params) {
             'persist' : 'hidden width ordinal', 'id' : 'billing_ts', 'label' : commonStrings.getString('staff.mb_billing_ts_label'), 'flex' : 1,
             'sort_type' : 'date',
             'primary' : false, 'hidden' : false, 'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.mb.billing_ts(), "%{localized}" ); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.mb.billing_ts() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal', 'id' : 'note', 'label' : commonStrings.getString('staff.mb_note_label'), 'flex' : 2,
@@ -216,6 +222,7 @@ patron.util.mp_columns = function(modify,params) {
             'persist' : 'hidden width ordinal', 'id' : 'mp_payment_ts', 'label' : commonStrings.getString('staff.mp_payment_timestamp_label'), 'flex' : 1,
             'sort_type' : 'date',
             'primary' : false, 'hidden' : false, 'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.mp.payment_ts(), "%{localized}" ); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.mp.payment_ts() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal', 'id' : 'mp_note', 'label' : commonStrings.getString('staff.mp_note_label'), 'flex' : 2,
@@ -327,6 +334,7 @@ patron.util.ausp_columns = function(modify,params) {
             'primary' : false, 'hidden' : false, 'editable' : false, 'render' : function(my) { 
                 return my.ausp ? util.date.formatted_date( my.ausp.set_date(), "%{localized}" ) : '';
             }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.ausp.set_date() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal', 'id' : 'ausp_note', 'label' : commonStrings.getString('staff.ausp_note_label'), 'flex' : 1,
@@ -435,11 +443,13 @@ patron.util.columns = function(modify,params) {
             'persist' : 'hidden width ordinal', 'id' : 'au_create_date', 'label' : commonStrings.getString('staff.au_create_date_label'), 'flex' : 1, 
             'sort_type' : 'date',
             'primary' : false, 'hidden' : true, 'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.au.create_date(), "%{localized}" ); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.au.create_date() ).getTime(); }
         },
         { 
             'persist' : 'hidden width ordinal', 'id' : 'expire_date', 'label' : commonStrings.getString('staff.au_expire_date_label'), 'flex' : 1, 
             'sort_type' : 'date',
             'primary' : false, 'hidden' : true, 'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.au.expire_date(), "%{localized_date}" ); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.au.expire_date() ).getTime(); }
         },
         { 
             'persist' : 'hidden width ordinal', 'id' : 'home_ou', 'label' : commonStrings.getString('staff.au_home_library_label'), 'flex' : 1, 
@@ -478,6 +488,7 @@ patron.util.columns = function(modify,params) {
             'persist' : 'hidden width ordinal', 'id' : 'dob', 'label' : commonStrings.getString('staff.au_birth_date_label'), 'flex' : 1, 
             'sort_type' : 'date',
             'primary' : false, 'hidden' : true, 'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.au.dob(), "%{localized_date}" ); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.au.dob() ).getTime(); }
         },
         { 
             'persist' : 'hidden width ordinal', 'id' : 'ident_type', 'label' : commonStrings.getString('staff.au_ident_type_label'), 'flex' : 1, 
