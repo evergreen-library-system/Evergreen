@@ -2751,7 +2751,24 @@ INSERT into config.org_unit_setting_type
     oils_i18n_gettext( 'org.patron_opt_default', 'Circ: Patron Opt-In Default', 'coust', 'label'),
     oils_i18n_gettext( 'org.patron_opt_default', 'This is the default depth at which a patron is opted in; it is calculated as an org unit relative to the current workstation.', 'coust', 'label'),
     'integer')
-
+,( 
+        'ui.circ.billing.uncheck_bills_and_unfocus_payment_box',
+        oils_i18n_gettext(
+            'ui.circ.billing.uncheck_bills_and_unfocus_payment_box',
+            'GUI: Uncheck bills by default in the patron billing interface',
+            'coust',
+            'label'
+        ),
+        oils_i18n_gettext(
+            'ui.circ.billing.uncheck_bills_and_unfocus_payment_box',
+            'Uncheck bills by default in the patron billing interface,'
+            || ' and focus on the Uncheck All button instead of the'
+            || ' Payment Received field.',
+            'coust',
+            'description'
+        ),
+        'bool'
+    )
 ;
 
 UPDATE config.org_unit_setting_type
