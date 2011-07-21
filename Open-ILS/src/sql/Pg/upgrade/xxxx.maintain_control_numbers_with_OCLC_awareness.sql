@@ -66,9 +66,7 @@ foreach my $id_field ('001', '003') {
     } else {
         # Delete the other fields, as with more than 1 001/003 we do not know which 003/001 to match
         foreach my $control (@controls) {
-            unless ($control->data() eq $spec_value) {
-                $record->delete_field($control);
-            }
+            $record->delete_field($control);
         }
         $record->insert_fields_ordered(MARC::Field->new($id_field, $spec_value));
         $create = 1;
@@ -94,9 +92,6 @@ if ($munge and not $create) {
     unless (grep $_->subfield('a') eq $scn, @scns) {
         $record->insert_fields_ordered(MARC::Field->new('035', '', '', 'a' => $scn));
     }
-
-    # Update the list of SCNs to avoid duplicates
-    @scns = $record->field('035');
 }
 
 # Set the 001/003 and update the MARC
