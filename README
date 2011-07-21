@@ -50,12 +50,20 @@ Note: `centos` and `rhel` are less tested than the `debian`, `fedora`,
 and `ubuntu` options.  Your patches and suggestions for improvement are
 welcome!
 +
-6. Add `/usr/local/lib/dbd` to the system dynamic library path by issuing 
-   the following commands as the root user:
+6. Add the libdbi-libdbd libraries to the system dynamic library path by
+   issuing the following commands as the root user:
 +
+.Debian / Ubuntu
 [source, bash]
 ------------------------------------------------------------------------------
 echo "/usr/local/lib/dbd" > /etc/ld.so.conf.d/eg.conf
+ldconfig
+------------------------------------------------------------------------------
++
+.Fedora
+[source, bash]
+------------------------------------------------------------------------------
+echo "/usr/lib64/dbd" > /etc/ld.so.conf.d/eg.conf
 ldconfig
 ------------------------------------------------------------------------------
 
