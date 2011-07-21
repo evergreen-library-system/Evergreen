@@ -441,7 +441,7 @@ install_fedora_rpms:
 	yum -y install $(FEDORA_RPMS)
 
 install_fedora_pgsql_server:
-	yum -y install $(PGSQL_84_RPMS)
+	yum -y install $(PGSQL_90_RPMS)
 
 # CENTOS
 install_centos_rpms:
@@ -462,14 +462,14 @@ install_centos_pgsql:
 	wget $(PGSQL_HOST)/$(PGSQL_CENTOS)
 	rpm -Uvh --force ./$(PGSQL_CENTOS)
 	yum update -y
-	yum -y install $(PGSQL_84_RPMS)
+	yum -y install $(PGSQL_90_RPMS)
 
 install_redhat_pgsql:
 	if [ $(LBITS) -eq 64 ]; then yum remove -y postgresql-libs-8.1*i386 apr-util-devel-*i386 ; fi;
 	wget $(PGSQL_HOST)/$(PGSQL_REDHAT)
 	rpm -Uvh --force ./$(PGSQL_REDHAT)
 	yum update -y
-	yum -y install $(PGSQL_84_RPMS)
+	yum -y install $(PGSQL_90_RPMS)
 
 install_centos_perl:
 	for m in $(CENTOS_PERL); do perl -MCPAN -e "install \"$$m\";"; done
