@@ -9,7 +9,7 @@ before you can successfully configure, compile, and install Evergreen.
 
 1. Begin by installing the most recent version of OpenSRF (2.0 or later).
    You can download OpenSRF releases from http://evergreen-ils.org/downloads
-2. On many distributions, it is necessary to install Postgres 9 from external
+2. On many distributions, it is necessary to install PostgreSQL 9 from external
    repositories.
 +
   * On Debian Squeeze, add the following line to `/etc/apt/sources.list`:
@@ -77,10 +77,8 @@ command as the root user to install Evergreen:
 make STAFF_CLIENT_STAMP_ID=rel_2_1 install
 ------------------------------------------------------------------------------
 
-This will install Evergreen, including example configuration files in
+This command installs Evergreen, including example configuration files in
 `/openils/conf/` that you can use as templates for your own configuration files.
-The `STAFF_CLIENT_STAMP_ID` variable stamps the server-side and client-side files
-for the staff client to ensure that they match.
 
 Create the oils_web.xml configuration file:
 -------------------------------------------
@@ -136,12 +134,25 @@ connection information in `opensrf.xml` for you.
 Creating the Evergreen database:
 --------------------------------
 
-PostgreSQL 9.0 will be installed on your system by the `Makefile.install`
-prerequisite installer if packages are available for your distribution, or
-you will have to compile PostgreSQL 9.0 from source and install it (which
-is beyond the scope of this document).
+By default, the `Makefile.install` prerequisite installer does not install
+the PostgreSQL 9.0 database server required by every Evergreen system;
+most libraries install the PostgreSQL database server on a dedicated
+machine. You can install the packages required by Debian, Ubuntu, or Fedora
+using the following commands:
 
-Once the PostgreSQL database server has been installed, you will need to
+.Installing PostgreSQL 9.0 server packages on Debian and Ubuntu
+[source, bash]
+------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install install_pgsql_server_debs_90
+------------------------------------------------------------------------------
+
+.Installing PostgreSQL 9.0 server packages on Fedora
+[source, bash]
+------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install install_fedora_pgsql_server
+------------------------------------------------------------------------------
+
+Once the PostgreSQL database server has been installed, you must
 create the database and add the appropriate languages and extensions to
 support Evergreen. Issue the following commands as the `postgres` user to set
 up a database called `evergreen`. Note that the location of the PostgreSQL
