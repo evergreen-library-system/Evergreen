@@ -33,6 +33,7 @@ sub cl_retrieve_all {
 	}
 
     my $second_cstore_arg = {"no_i18n" => scalar($no_i18n)};
+       $second_cstore_arg->{"order_by"} = {"acpl" => "name"};
     if ($flesh_owning_lib) {
         $second_cstore_arg->{"flesh"} = 1;
         $second_cstore_arg->{"flesh_fields"} = {"acpl" => ["owning_lib"]};
