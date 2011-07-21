@@ -188,7 +188,9 @@ function generate_request_handler_for_penalty_apply(penalty,id) {
                     'row' : {
                         'my' : {
                             'ausp' : penalty,
-                            'csp' : data.hash.csp[ penalty.standing_penalty() ],
+                            'csp' : typeof penalty.standing_penalty() == 'object'
+                                ? penalty.standing_penalty()
+                                : data.hash.csp[ penalty.standing_penalty() ],
                             'au' : xulG.patron,
                         }
                     }
