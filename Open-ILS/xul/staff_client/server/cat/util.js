@@ -297,14 +297,29 @@ cat.util.add_copies_to_bucket = function(selection_list) {
 
 cat.util.add_titles_to_bucket = function(record_ids) {
     JSAN.use('util.window'); var win = new util.window();
-    win.open(
-        xulG.url_prefix(urls.XUL_RECORD_BUCKETS_QUICK),
-        '_blank',
-        'chrome,resizable,modal,center',
-        {
-            record_ids: record_ids 
+    JSAN.use('util.functional');
+    var filtered_record_ids = util.functional.filter_list(
+        record_ids,
+        function(o) {
+            return o != -1; // don't allow the magic pre-cat bib
         }
     );
+    if (filtered_record_ids.length != record_ids.length) {
+        alert($("catStrings").getFormattedString(
+            'staff.cat.util.add_titles_to_bucket.number_of_precats_skipped',
+            [ record_ids.length - filtered_record_ids.length ]
+        ));
+    }
+    if (filtered_record_ids.length > 0) {
+        win.open(
+            xulG.url_prefix(urls.XUL_RECORD_BUCKETS_QUICK),
+            '_blank',
+            'chrome,resizable,modal,center',
+            {
+                record_ids: filtered_record_ids
+            }
+        );
+    }
 }
 
 cat.util.spawn_copy_editor = function(params) {
