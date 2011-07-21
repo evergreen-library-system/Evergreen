@@ -567,6 +567,7 @@ my $cn = $record->field('001')->data();
 if ($cn =~ /^oc[nm]/) {
     $cn =~ s/^oc[nm]0*(\d+)/$1/;
     $record->field('003')->data('OCoLC');
+    $create = 0;
 }
 
 # Now, if we need to munge the 001, we will first push the existing 001/003
@@ -587,13 +588,6 @@ if ($munge and not $create) {
 
 # Set the 001/003 and update the MARC
 if ($create or $munge) {
-    my $scn = "(" . $record->field('003')->data() . ")" . $cn;
-
-    # Do not create duplicate 035 fields
-    unless (grep $_->subfield('a') eq $scn, @scns) {
-        $record->insert_fields_ordered(MARC::Field->new('035', '', '', 'a' => $scn));
-    }
-
     $record->field('001')->data($rec_id);
     $record->field('003')->data($ou_cni);
 
