@@ -43,8 +43,8 @@
                     # to extras.
                     # XXX move this off into a helper function
 
-                    extras_propagator = propagator.replace('&amp;expand=.+($|&|;)', '$1');
-                    extras_propagator = extras_propagator.replace('&amp;cnoffset=.+($|&|;)', '$1');
+                    extras_propagator = propagator.replace('(&amp;)?expand=.+($|&|;)', '$2');
+                    extras_propagator = extras_propagator.replace('(&amp;)?cnoffset=.+($|&|;)', '$2');
 
 
                     href = ctx.full_path _ extras_propagator _ '&amp;expand=' _ name _ '#' _ name; %]

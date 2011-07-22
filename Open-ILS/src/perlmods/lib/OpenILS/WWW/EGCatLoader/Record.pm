@@ -202,14 +202,26 @@ sub any_call_number_label {
 sub browse_call_numbers {
     my ($self) = @_;
 
-    my $cn = $self->any_call_number_label or return [];
+    my $cn = $self->any_call_number_label or
+        return [];
 
-    my $search = create OpenSRF::AppSession("open-ils.search");
+    my $org_unit = $self->ctx->{get_aou}->($self->cgi->param('loc')) ||
+        $self->ctx->{aou_tree}->();
 
-    return $search->request(
-        "open-ils.search.callnumber.browse", 
-        $cn, $self->cgi->param("loc"), 9, $self->cgi->param("cnoffset")
-    )->gather(1);
+    my $supercat = create OpenSRF::AppSession("open-ils.supercat");
+    my $results = $supercat->request(
+        "open-ils.supercat.call_number.browse", 
+        $cn, $org_unit->shortname, 9, $self->cgi->param("cnoffset")
+    )->gather(1) || [];
+
+    return [
+        map {
+            $_->record->marc(
+                (new XML::LibXML)->parse_string($_->record->marc)
+            );
+            $_;
+        } @$results
+    ];
 }
 
 sub get_hold_copy_summary {
