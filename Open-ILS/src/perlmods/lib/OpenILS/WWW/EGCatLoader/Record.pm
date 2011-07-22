@@ -53,6 +53,7 @@ sub load_record {
             scalar(@{$ctx->{holding_summaries}->{supplement}});
     }
 
+    # XXX probably should replace the following with a dispatch table
     for my $expand ($self->cgi->param('expand')) {
         $ctx->{"expand_$expand"} = 1;
         if ($expand eq 'marchtml') {
@@ -60,7 +61,10 @@ sub load_record {
         } elsif ($expand eq 'issues' and $ctx->{have_holdings_to_show}) {
             $ctx->{expanded_holdings} =
                 $self->get_expanded_holdings($rec_id, $org, $depth);
+        } elsif ($expand eq 'cnbrowse') {
+            $ctx->{browsed_call_numbers} = $self->browse_call_numbers();
         }
+
     }
 
     return Apache2::Const::OK;
@@ -185,6 +189,28 @@ sub get_expanded_holdings {
     )->gather(1);
 }
 
+sub any_call_number_label {
+    my ($self) = @_;
+
+    if ($self->ctx->{copies} and @{$self->ctx->{copies}}) {
+        return $self->ctx->{copies}->[0]->{call_number_label};
+    } else {
+        return;
+    }
+}
+
+sub browse_call_numbers {
+    my ($self) = @_;
+
+    my $cn = $self->any_call_number_label or return [];
+
+    my $search = create OpenSRF::AppSession("open-ils.search");
+
+    return $search->request(
+        "open-ils.search.callnumber.browse", 
+        $cn, map { $self->cgi->param($_) } qw/loc cnoffset/, 9
+    )->gather(1);
+}
 
 sub get_hold_copy_summary {
     my ($self, $rec_id, $org) = @_;

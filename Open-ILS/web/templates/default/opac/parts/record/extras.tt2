@@ -25,7 +25,7 @@
             {name => 'excerpt',  label => l('Excerpt'), hide => 1},
             {name => 'issues',   label => l('Issues Held'), hide => !ctx.have_holdings_to_show},
             {name => 'preview',  label => l('Preview'), hide => 1}, 
-            {name => 'cnbrowse', label => l('Shelf Browser'), hide => 1},
+            {name => 'cnbrowse', label => l('Shelf Browser')},
             {name => 'copyinfo', label => l('Copy Summary'), hide => 1}, 
             {name => 'marchtml', label => l('MARC Record')}
         ];
@@ -37,7 +37,17 @@
         <div class="rdetail_extras">
             <div class="rdetail_extras_hr"></div>
             <div class="rdetail_extras_link">
-                [% href = ctx.full_path _ '?expand=' _ name _ '#' _ name; %]
+                [%  # extras_propagator should be used in place of propagator
+                    # in opac extras interfaces... it just avoids duplicating
+                    # the expands CGI param and parameters that are specific
+                    # to extras.
+                    # XXX move this off into a helper function
+
+                    extras_propagator = propagator.replace('&amp;expand=.+($|&|;)', '$1');
+                    extras_propagator = extras_propagator.replace('&amp;cnoffset=.+($|&|;)', '$1');
+
+
+                    href = ctx.full_path _ extras_propagator _ '&amp;expand=' _ name _ '#' _ name; %]
                 <a name='[% name %]' href='[% href %]'><img
                     alt='[% extra.label %]' src="[% ctx.media_prefix %]/images/rdetail_arrow.png" /></a>
                 <a href='[% href %]' class="rdetail_extras_lbl">[% extra.label %]</a>

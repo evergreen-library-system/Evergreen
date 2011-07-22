@@ -1,0 +1,52 @@
+<div id='cn_browse' class='cn_browser'>
+    <div id='cn_browse_div'> 
+        <div class='color_4'>
+            <span>[% l("You are now browsing") %]</span>
+            <strong>[% ctx.get_aou(CGI.param('loc')).name %]</strong>
+        </div>
+        <table class='data_grid bookshelf' width='100%'>
+            <thead>
+                <tr>
+                    <td>[% IF CGI.param("cnoffset") > 0 %]
+                        <a id='cn_browse_prev' class='classic_link' href=">[% ctx.opac_root %]/record/[% ctx.bre_id _ extras_propagator _ '&amp;cnoffset=' _ ((CGI.param('cnoffset') || 0) - 1) _ '&amp;expand=cnbrowse#cnbrowse' %]"<b>[%
+                            l("&lt;&lt; Previous Page")
+                        %]</b></a>
+                        [% END %]</td>
+                    <td colspan='1' align='center'>[% l("Shelf Browser") %]</td>
+                    <td>[% IF ctx.browsed_call_numbers.size == 9 %]
+                        <a id='cn_browse_next' class='classic_link' href="[% ctx.opac_root %]/record/[% ctx.bre_id _ extras_propagator _ '&amp;cnoffset=' _ ((CGI.param('cnoffset') || 0) + 1) _ '&amp;expand=cnbrowse#cnbrowse' %]"<b>[%
+                            l("Next Page &gt;&gt;")
+                        %]</b></a>
+                        [% END %]</td>
+                </tr>
+            </thead>
+            <tbody id='cn_tbody'>
+            [% tr_open = 0; FOR ent IN ctx.browsed_call_numbers %]
+                [%- IF loop.index % 3 == 0; tr_open = 1 %]
+                <tr id='cn_browse_row'>
+                [% END -%]
+                    <td id='cn_browse_td' class='cn_browse_item' width='25%' valign='top'>
+                        [%  # Not to extend to life of the mvr fieldmapper class,
+                            # but should we add a upc field to it to make this better?
+                            IF ent.mods.isbn %]
+                        <a href="[% ctx.opac_root %]/record/[% ent.cn.record _ extras_propagator %]"><img height='60' width='50' 
+                            class='cn_browse_info' name='cn_browse_pic' border='0'
+                            src="[% ctx.media_prefix %]/opac/extras/ac/jacket/small/[% ent.mods.isbn %]" /></a>
+                        [% END %]
+                        <div class='cn_browse_info bold' name='cn_browse_cn'>[% ent.cn.label %]</div>
+                        <div class='cn_browse_info'>
+                            <a name='cn_browse_title' class='classic_link' href="[% ctx.opac_root %]/record/[% ent.cn.record _ extras_propagator %]">[% ent.mods.title %]</a>
+                        </div>
+                        <div class='cn_browse_info'>
+                            <a name='cn_browse_author' class='classic_link'>[% ent.mods.author %]</a>
+                        </div>
+                        <div class='cn_browse_info' name='cn_browse_lib'>[% ctx.get_aou(ent.cn.owning_lib).name %]</div>
+                    </td>
+                [% IF loop.index % 3 == 2; tr_open = 0 %]
+                </tr>
+                [% END %]
+            [% END; IF tr_open %]</tr>[% END %]
+            </tbody>
+        </table>
+    </div>
+</div>
