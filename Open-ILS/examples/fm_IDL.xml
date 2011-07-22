@@ -819,9 +819,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             <field reporter:label="Transmission Format" name="transmission_format"  reporter:datatype="text"/>
             <field reporter:label="Auth" name="auth"  reporter:datatype="bool"/>
             <field reporter:label="Attrs" name="attrs" oils_persist:virtual="true"  reporter:datatype="link"/>
+            <field reporter:label="Use Permission" name="use_perm"  reporter:datatype="link"/>
         </fields>
         <links>
             <link field="attrs" reltype="has_many" key="source" map="" class="cza"/>
+            <link field="use_perm" reltype="has_a" key="id" map="" class="ppl"/>
         </links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
