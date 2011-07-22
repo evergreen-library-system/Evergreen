@@ -37,9 +37,10 @@
                         <div class='cn_browse_info'>
                             <a name='cn_browse_title' class='classic_link' href="[% ctx.opac_root %]/record/[% ent.cn.record _ extras_propagator %]">[% ent.mods.title %]</a>
                         </div>
-                        <div class='cn_browse_info'>
-                            <a name='cn_browse_author' class='classic_link'>[% ent.mods.author %]</a>
-                        </div>
+                        [% IF ent.mods.author %]<div class='cn_browse_info'>
+                            <a name='cn_browse_author' class='classic_link'
+                                href="[% ctx.opac_root %]/results?qtype=author&amp;query=[%- ent.mods.author | replace('[,\.:;]', '') | uri %]&amp;loc=[% CGI.param('loc') | uri %]">[% ent.mods.author %]</a>
+                        </div>[% END %]
                         <div class='cn_browse_info' name='cn_browse_lib'>[% ctx.get_aou(ent.cn.owning_lib).name %]</div>
                     </td>
                 [% IF loop.index % 3 == 2; tr_open = 0 %]
