@@ -7,17 +7,17 @@
         <table class='data_grid bookshelf' width='100%'>
             <thead>
                 <tr>
-                    <td>[% IF CGI.param("cnoffset") > 0 %]
+                    <td>
                         <a id='cn_browse_prev' class='classic_link' href=">[% ctx.opac_root %]/record/[% ctx.bre_id _ extras_propagator _ '&amp;cnoffset=' _ ((CGI.param('cnoffset') || 0) - 1) _ '&amp;expand=cnbrowse#cnbrowse' %]"<b>[%
                             l("&lt;&lt; Previous Page")
                         %]</b></a>
-                        [% END %]</td>
+                    </td>
                     <td colspan='1' align='center'>[% l("Shelf Browser") %]</td>
-                    <td>[% IF ctx.browsed_call_numbers.size == 9 %]
+                    <td>
                         <a id='cn_browse_next' class='classic_link' href="[% ctx.opac_root %]/record/[% ctx.bre_id _ extras_propagator _ '&amp;cnoffset=' _ ((CGI.param('cnoffset') || 0) + 1) _ '&amp;expand=cnbrowse#cnbrowse' %]"<b>[%
                             l("Next Page &gt;&gt;")
                         %]</b></a>
-                        [% END %]</td>
+                    </td>
                 </tr>
             </thead>
             <tbody id='cn_tbody'>

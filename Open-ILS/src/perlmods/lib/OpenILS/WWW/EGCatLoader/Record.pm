@@ -208,7 +208,7 @@ sub browse_call_numbers {
 
     return $search->request(
         "open-ils.search.callnumber.browse", 
-        $cn, map { $self->cgi->param($_) } qw/loc cnoffset/, 9
+        $cn, $self->cgi->param("loc"), 9, $self->cgi->param("cnoffset")
     )->gather(1);
 }
 
