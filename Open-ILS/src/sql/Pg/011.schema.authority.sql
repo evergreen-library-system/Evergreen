@@ -225,7 +225,7 @@ CREATE OR REPLACE VIEW authority.tracing_links AS
             link.id AS link_id,
             link.tag AS link_tag,
             oils_xpath_string('//*[@tag="'||link.tag||'"]/*[local-name()="subfield"]', are.marc) AS link_value,
-            authority.normalize_heading(are.marc) AS normalized_main_value,
+            authority.normalize_heading(are.marc) AS normalized_main_value
       FROM  authority.full_rec main
             JOIN authority.record_entry are ON (main.record = are.id)
             JOIN authority.control_set_authority_field main_entry

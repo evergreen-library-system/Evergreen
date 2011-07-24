@@ -72,6 +72,12 @@ cat.z3950.prototype = {
                                             $('jacket_image').setAttribute('tooltiptext','');
                                         }
                                     }
+                                    if (o.getAttribute('service') == 'native-evergreen-catalog') {
+                                        $('mark_overlay_btn').disabled = false;
+                                        obj.controller.view.mark_overlay.setAttribute('doc_id',o.getAttribute('doc_id'));
+                                    } else {
+                                        $('mark_overlay_btn').disabled = true;
+                                    }
                                     return o.getAttribute('retrieve_id');
                                 }
                             );
@@ -157,6 +163,19 @@ cat.z3950.prototype = {
                                     obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.obj_controller_init.marc_view_error'),E);
                                 }
                             },
+                        ],
+                        'mark_overlay' : [
+                            ['command'],
+                            function() {
+                                try {
+                                    var doc_id = obj.controller.view.mark_overlay.getAttribute('doc_id');
+                                    if (doc_id) {
+                                        cat.util.mark_for_overlay(doc_id);
+                                    }
+                                } catch(E) {
+                                    alert('Error in z3950.js, mark_overlay: ' + E);
+                                }
+                            }
                         ],
                         'marc_import' : [
                             ['command'],
@@ -662,13 +681,33 @@ cat.z3950.prototype = {
                                 'retrieve_id' : String( obj.number_of_result_sets ) + '-' + String( j ),
                                 'row' : {
                                     'my' : {
-                                        'mvr' : function(a){return a;}(obj.result_set[ obj.number_of_result_sets ].records[j].mvr),
+                                        'mvr' : function(a){
+                                            if (a.bibid) {
+                                                // We have col definitions, etc.
+                                                // expecting doc_id
+                                                a.mvr.doc_id( a.bibid );
+                                            }
+                                            return a.mvr;
+                                        }(obj.result_set[ obj.number_of_result_sets ].records[j]),
                                         'service' : results[i].service
                                     }
                                 }
                             }
                         );
                         n.my_node.setAttribute('isbn', function(a){return a;}(obj.result_set[ obj.number_of_result_sets ].records[j].mvr).isbn());
+                        n.my_node.setAttribute(
+                            'service',
+                            function(a){return a;}(
+                                results[i].service
+                            )
+                        );
+                        n.my_node.setAttribute(
+                            'doc_id',
+                            function(a){return a;}(
+                                (obj.result_set[ obj.number_of_result_sets ].records[j].mvr)
+                            ).doc_id()
+                        );
+
                         if (!f) { n.my_node.parentNode.focus(); f = n; } 
                     }
                 } else {

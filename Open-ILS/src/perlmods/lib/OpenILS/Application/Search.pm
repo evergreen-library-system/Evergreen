@@ -88,6 +88,8 @@ sub spellcheck {
 		$logger->debug("spelling dictionary set to $dict");
 	}
 
+	$speller->set_option('ignore-case', 'true');
+
 	my @resp;
 
 	for my $word (split(/\s+/,$phrase) ) {

@@ -2176,6 +2176,7 @@ sub do_possibility_checks {
     my $pickup_lib   = $params{pickup_lib};
     my $hold_type    = $params{hold_type}    || 'T';
     my $selection_ou = $params{selection_ou} || $pickup_lib;
+    my $holdable_formats = $params{holdable_formats};
 
 
 	my $copy;
@@ -2226,9 +2227,9 @@ sub do_possibility_checks {
 		my @status = ();
 		for my $rec (@recs) {
 			@status = _check_title_hold_is_possible(
-				$rec, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou
+				$rec, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou, $holdable_formats
 			);
-			last if $status[1];
+			last if $status[0];
 		}
 		return @status;
 	}
@@ -2261,8 +2262,13 @@ sub create_ranged_org_filter {
 
 
 sub _check_title_hold_is_possible {
-    my( $titleid, $depth, $request_lib, $patron, $requestor, $pickup_lib, $selection_ou ) = @_;
+    my( $titleid, $depth, $request_lib, $patron, $requestor, $pickup_lib, $selection_ou, $holdable_formats ) = @_;
    
+    my ($types, $formats, $lang);
+    if (defined($holdable_formats)) {
+        ($types, $formats, $lang) = split '-', $holdable_formats;
+    }
+
     my $e = new_editor();
     my %org_filter = create_ranged_org_filter($e, $selection_ou, $depth);
 
@@ -2280,6 +2286,16 @@ sub _check_title_hold_is_possible {
                                 field  => 'id',
                                 filter => { id => $titleid },
                                 fkey   => 'record'
+                            },
+                            mrd => {
+                                field  => 'record',
+                                fkey   => 'record',
+                                filter => {
+                                    record => $titleid,
+                                    ( $types   ? (item_type => [split '', $types])   : () ),
+                                    ( $formats ? (item_form => [split '', $formats]) : () ),
+                                    ( $lang    ? (item_lang => $lang)                : () )
+                                }
                             }
                         }
                     },
@@ -2705,7 +2721,8 @@ sub verify_copy_for_hold {
 
     return (
         (not scalar @$permitted), # true if permitted is an empty arrayref
-        (
+        (   # XXX This test is of very dubious value; someone should figure
+            # out what if anything is checking this value
 	        ($copy->circ_lib == $pickup_lib) and 
             ($copy->status == OILS_COPY_STATUS_AVAILABLE)
         ),

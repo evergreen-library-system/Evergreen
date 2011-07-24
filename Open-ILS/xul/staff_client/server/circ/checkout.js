@@ -762,7 +762,7 @@ circ.checkout.prototype = {
 
                 for (var i = 0; i < test_permit.length; i++) {
                     dump('found [' + test_permit[i].ilsevent + ']\n');
-                    switch(test_permit[i].ilsevent == null ? null : Number(test_permit[i].ilsevent)) {
+                    switch(test_permit[i].ilsevent == null || test_permit[i].ilsevent == '' ? null : Number(test_permit[i].ilsevent)) {
                         case null /* custom event */ :
                             found_handled = true;
                         break;

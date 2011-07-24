@@ -85,7 +85,7 @@ sub new {
 
         my $card = $e->search_actor_card([{barcode => $patron_id}, $usr_flesh])->[0];
 
-        if(!$card) {
+        if(!$card or !$U->is_true($card->active)) {
             syslog("LOG_WARNING", "No such patron barcode: $patron_id");
             return undef;
         }
@@ -96,8 +96,13 @@ sub new {
 	    $user = $e->retrieve_actor_user([$patron_id, $usr_flesh]);
     }
 
-    if(!$user) {
+    if(!$user or $U->is_true($user->deleted)) {
         syslog("LOG_WARNING", "OILS: Unable to find patron %s => %s", $key, $patron_id);
+        return undef;
+    }
+
+    if(!$U->is_true($user->active)) {
+        syslog("LOG_WARNING", "OILS: Patron is inactive %s => %s", $key, $patron_id);
         return undef;
     }
 

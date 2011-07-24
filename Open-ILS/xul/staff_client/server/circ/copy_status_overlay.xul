@@ -25,6 +25,7 @@
         <menuitem command="cmd_find_acq_po" label="&staff.circ.copy_status_overlay.cmd_find_acq_po.label;" accesskey="&staff.circ.copy_status_overlay.cmd_find_acq_po.accesskey;"/>
         <menuseparator/>
         <menuitem command="sel_edit" label="&staff.circ.copy_status_overlay.sel_edit.label;" accesskey="&staff.circ.copy_status_overlay.sel_edit.accesskey;" />
+        <menuitem command="sel_vol_copy_edit" label="&staff.circ.copy_status_overlay.sel_vol_copy_edit.label;" accesskey="&staff.circ.copy_status_overlay.sel_vol_copy_edit.accesskey;" />
         <menuseparator/>
         <menuitem command="sel_mark_items_damaged" label="&staff.circ.copy_status_overlay.sel_mark_items_damaged.label;" accesskey="&staff.circ.copy_status_overlay.sel_mark_items_damaged.accesskey;"/>
         <menuseparator/>
@@ -52,6 +53,7 @@
         <menuitem command="sel_patron" label="&staff.circ.copy_status_overlay.sel_patron.label;" accesskey="&staff.circ.copy_status_overlay.sel_patron.accesskey;"/>
         <menuseparator/>
         <menuitem command="sel_edit" label="&staff.circ.copy_status_overlay.sel_edit.label;" accesskey="&staff.circ.copy_status_overlay.sel_edit.accesskey;" />
+        <menuitem command="sel_vol_copy_edit" label="&staff.circ.copy_status_overlay.sel_vol_copy_edit.label;" accesskey="&staff.circ.copy_status_overlay.sel_vol_copy_edit.accesskey;" />
         <menuitem command="cmd_transfer_items" label="&staff.circ.copy_status_overlay.cmd_transfer_items.label;" accesskey="&staff.circ.copy_status_overlay.cmd_transfer_items.accesskey;"/>
         <menuseparator/>
         <menuitem command="cmd_add_volumes" label="&staff.circ.copy_status_overlay.cmd_add_volumes.label;" accesskey="&staff.circ.copy_status_overlay.cmd_add_volumes.accesskey;"/>
@@ -129,6 +131,7 @@
             <menuitem command="cmd_triggered_events" label="&staff.circ.copy_status_overlay.cmd_triggered_events.label;" accesskey="&staff.circ.copy_status_overlay.cmd_triggered_events.accesskey;"/>
             <menuseparator/>
             <menuitem command="sel_edit" label="&staff.circ.copy_status_overlay.sel_edit.label;" accesskey="&staff.circ.copy_status_overlay.sel_edit.accesskey;" />
+            <menuitem command="sel_vol_copy_edit" label="&staff.circ.copy_status_overlay.sel_vol_copy_edit.label;" accesskey="&staff.circ.copy_status_overlay.sel_vol_copy_edit.accesskey;" />
             <menuitem command="cmd_transfer_items" label="&staff.circ.copy_status_overlay.cmd_transfer_items.label;" accesskey="&staff.circ.copy_status_overlay.cmd_transfer_items.accesskey;"/>
             <menuseparator/>
             <menuitem command="cmd_add_volumes" label="&staff.circ.copy_status_overlay.cmd_add_volumes.label;" accesskey="&staff.circ.copy_status_overlay.cmd_add_volumes.accesskey;"/>
@@ -167,6 +170,7 @@
             <menuitem command="cmd_find_acq_po" label="&staff.circ.copy_status_overlay.cmd_find_acq_po.label;" accesskey="&staff.circ.copy_status_overlay.cmd_find_acq_po.accesskey;"/>
             <menuseparator/>
             <menuitem command="sel_edit" label="&staff.circ.copy_status_overlay.sel_edit.label;" accesskey="&staff.circ.copy_status_overlay.sel_edit.accesskey;" />
+            <menuitem command="sel_vol_copy_edit" label="&staff.circ.copy_status_overlay.sel_vol_copy_edit.label;" accesskey="&staff.circ.copy_status_overlay.sel_vol_copy_edit.accesskey;" />
             <menuseparator />
             <menuitem command="sel_mark_items_damaged" label="&staff.circ.copy_status_overlay.sel_mark_items_damaged.label;" accesskey="&staff.circ.copy_status_overlay.sel_mark_items_damaged.accesskey;"/>
             <menuseparator />

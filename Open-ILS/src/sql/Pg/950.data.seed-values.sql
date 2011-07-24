@@ -2750,9 +2750,8 @@ INSERT into config.org_unit_setting_type
 ( 'org.patron_opt_default',
     oils_i18n_gettext( 'org.patron_opt_default', 'Circ: Patron Opt-In Default', 'coust', 'label'),
     oils_i18n_gettext( 'org.patron_opt_default', 'This is the default depth at which a patron is opted in; it is calculated as an org unit relative to the current workstation.', 'coust', 'label'),
-    'integer');
+    'integer')
 
-COMMIT;
 ;
 
 UPDATE config.org_unit_setting_type
@@ -7927,6 +7926,18 @@ INSERT INTO config.global_flag (name, label, enabled)
             'label'
         ),
         TRUE
+    );
+
+INSERT INTO config.global_flag (name, label, enabled)
+    VALUES (
+        'circ.opac_renewal.use_original_circ_lib',
+        oils_i18n_gettext(
+            'circ.opac_renewal.use_original_circ_lib',
+            'Circ: Use original circulation library on opac renewal instead of user home library',
+            'cgf',
+            'label'
+        ),
+        FALSE
     );
 
 INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
