@@ -265,6 +265,7 @@ repository must also install some extra packages and perform
 one more step before they can proceed with the `./configure` step.
 
 Install the following packages:
+
   * autoconf
   * automake
   * libtool
