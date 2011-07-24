@@ -53,6 +53,7 @@ sub load_record {
             scalar(@{$ctx->{holding_summaries}->{supplement}});
     }
 
+    # XXX probably should replace the following with a dispatch table
     for my $expand ($self->cgi->param('expand')) {
         $ctx->{"expand_$expand"} = 1;
         if ($expand eq 'marchtml') {
@@ -60,7 +61,10 @@ sub load_record {
         } elsif ($expand eq 'issues' and $ctx->{have_holdings_to_show}) {
             $ctx->{expanded_holdings} =
                 $self->get_expanded_holdings($rec_id, $org, $depth);
+        } elsif ($expand eq 'cnbrowse') {
+            $ctx->{browsed_call_numbers} = $self->browse_call_numbers();
         }
+
     }
 
     return Apache2::Const::OK;
@@ -185,6 +189,40 @@ sub get_expanded_holdings {
     )->gather(1);
 }
 
+sub any_call_number_label {
+    my ($self) = @_;
+
+    if ($self->ctx->{copies} and @{$self->ctx->{copies}}) {
+        return $self->ctx->{copies}->[0]->{call_number_label};
+    } else {
+        return;
+    }
+}
+
+sub browse_call_numbers {
+    my ($self) = @_;
+
+    my $cn = $self->any_call_number_label or
+        return [];
+
+    my $org_unit = $self->ctx->{get_aou}->($self->cgi->param('loc')) ||
+        $self->ctx->{aou_tree}->();
+
+    my $supercat = create OpenSRF::AppSession("open-ils.supercat");
+    my $results = $supercat->request(
+        "open-ils.supercat.call_number.browse", 
+        $cn, $org_unit->shortname, 9, $self->cgi->param("cnoffset")
+    )->gather(1) || [];
+
+    return [
+        map {
+            $_->record->marc(
+                (new XML::LibXML)->parse_string($_->record->marc)
+            );
+            $_;
+        } @$results
+    ];
+}
 
 sub get_hold_copy_summary {
     my ($self, $rec_id, $org) = @_;

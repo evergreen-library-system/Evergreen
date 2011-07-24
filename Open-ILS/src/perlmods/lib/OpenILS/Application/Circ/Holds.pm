@@ -3370,15 +3370,15 @@ __PACKAGE__->register_method(
                 'available at the library where the user is placing the hold (or, alternatively, '.
                 'at the pickup library) to encourage bypassing the hold placement and just '      .
                 'checking out the item.' ,
-        params => {
+        params => [
             { desc => 'Authentication Token', type => 'string' },
             { desc => 'Method Arguments.  Options include: hold_type, hold_target, org_unit.  ' 
                     . 'hold_type is the hold type code (T, V, C, M, ...).  '
                     . 'hold_target is the identifier of the hold target object.  ' 
                     . 'org_unit is org unit ID.', 
               type => 'object' 
-            },
-        },
+            }
+        ],
         return => { 
             desc => q/Result hash like { "copy" : copy_id, "location" : location_name }, empty hash on misses, event on error./,
             type => 'object' 

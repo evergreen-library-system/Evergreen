@@ -14,6 +14,10 @@ function runEvt(scope, name) {
         for(var i in evt) {evt[i].apply(evt[i], args);}
     } 
 }
+function staff_hold_usr_input_disabler(input) {
+    document.getElementById("hold_usr_input").disabled =
+        Boolean(Number(input.value));
+}
 window.onload = function() {
     // record details page events
     var rec = location.href.match(/\/opac\/record\/(\d+)/);

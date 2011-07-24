@@ -1,56 +1,60 @@
 [%  PROCESS "default/opac/parts/misc_util.tt2";
     attrs = {marc_xml => ctx.marc_xml};
     PROCESS get_marc_attrs args=attrs;
+
+    PROCESS "default/opac/parts/hold_error_messages.tt2";
 %]
 <div>
-    <div id='xulholds_box' class='hide_me canvas' style='margin-top: 6px;'>
-        <!-- XXX TODO staff will need this to work ("advanced" hold placement)
-        later -->
-        <center>
-            <table class='data_grid' style='margin-top: 20px;'>
-                <tbody>
-                    <tr>
-                        <td>[% l("Enter recipient barcode") %]:</td>
-                        <td>
-                            <input type='text' id='xul_recipient_barcode' />
-                        </td>
-                        <td>
-                            <input type='submit' value='[% l("Submit") %]'
-                                id='xul_recipient_barcode_submit' />
-                        </td>
-                        <td>
-                            <input type='submit' value='[% l("Cancel") %]' />
-                        </td>
-                        <td>
-                            <input type='submit'
-                                value='[% l("Place hold for my account") %]'
-                                id='xul_recipient_me' />
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </center>
-    </div>
-    <div id='check_holds_box' class='hide_me canvas' 
-        style='margin-top: 6px; width: 100%; text-align: center'>
-        <br/><br/><br/>
-        <b>[% l("Checking for possibility of hold fulfillment...") %]</b>
-    </div>
     <div id='holds_box' class='canvas' style='margin-top: 6px;'>
         [% IF ctx.hold_success %]
         <div><big><strong>[% l("Hold was successfully placed"); %]</strong></big></div>
         [% ELSIF ctx.hold_failed %]
         <div><big><strong>[% l("Hold was not successfully placed"); %]</strong></big></div>
-            [% IF ctx.hold_failed_event %]
+            [% IF ctx.hold_local_block %]
+            <div>[% l("There is already a copy available at your local library.") %]</div>
+            [% ELSIF ctx.hold_failed_event || ctx.hold_local_alert %]
         <div>
             <strong>[% l('Problem:') %]</strong>
             <span title="[% ctx.hold_failed_event.textcode %]">
-                <em>[% ctx.hold_failed_event.desc ||
+                <em>[%
+                        fail_part_key = ctx.hold_failed_event.payload.fail_part;
+                        event_key = ctx.hold_failed_event.textcode;
+
+                        # display:
+                        l(FAIL_PART_MSG_MAP.$fail_part_key) ||
+                        l(EVENT_MSG_MAP.$event_key) ||
+                        l(ctx.hold_failed_event.desc) ||
                         ctx.hold_failed_event.payload.fail_part ||
-                        ctx.hold_failed_event.textcode %]</em>
+                        ctx.hold_failed_event.textcode ||
+                        (ctx.hold_local_alert ?
+                            l("There is already a copy available at your local library.") :
+                            l("Unknown problem")) %]</em>
             </span>
+
+            [% IF ctx.hold_copy_available %]<p>
+            [% l('Find a copy in the shelving location, "[_1]."',
+                ctx.hold_copy_available.location) %]
+            </p>[% END %]
+
+            [% IF ctx.could_override || ctx.hold_local_alert %]
+            <p>
+                <big>[% l("You have permission to place this hold anyway.") %]</big>
+                <br />
+                [% l("Click submit below to override the system's objection and place your hold.") %]
+            </p>
+            <form method="POST">
+                <input type="hidden" type="name" name="override" value="1" />
+                [% FOR k IN ctx.orig_params.keys %]
+                <input type="hidden" name="[% k %]" value="[% ctx.orig_params.$k | html %]" />
+                [% END %]
+                <input type="image" name="submit" value="submit" title="[% l('Submit') %]"
+                    alt="[% l('Submit') %]" src="[% ctx.media_prefix %]/images/btnSubmit.png" />
+            </form>
+            [% END %]
         </div>
             [% END;
+        ELSIF ctx.hold_local_block;
+            l("There is already a copy available at your local library");
         ELSE %]
         <form method="POST">
             <br/>
@@ -69,17 +73,38 @@
             <input type="hidden" name="redirect_to"
                 value="[% new_redirect_to | html %]" />
             <h1>Place Hold</h1>
+            [% IF ctx.is_staff %]
+            <p class="staff-hold">
+                <input type="radio" id="hold_usr_is_requestor_not"
+                    onchange="staff_hold_usr_input_disabler(this);"
+                    name="hold_usr_is_requestor" value="0"
+                    [% IF ctx.patron_recipient; ' checked="checked"'; END %]
+                    />
+                <label for="hold_usr_is_requestor_not">
+                    [% l("Place hold for patron by barcode:") %]
+                </label>
+                <input type="text" name="hold_usr" id="hold_usr_input" value="[% ctx.patron_recipient.card.barcode %]" /><br />[%# XXX multi-barcode users? %]
+                <span>
+                    <input type="radio" id="hold_usr_is_requestor"
+                        onchange="staff_hold_usr_input_disabler(this);"
+                        name="hold_usr_is_requestor" value="1" />
+                    <label for="hold_usr_is_requestor">
+                        [% l("Place this hold for me ([_1] [_2])",
+                        ctx.user.first_given_name, ctx.user.family_name) %]
+                    </label>
+                </span>
+            </p>
+            [% END %]
             <p>
                 [% | l(attrs.title, ctx.get_aou(ctx.default_pickup_lib).name) %]
-                You would like to place a hold on <strong><q>[_1]</q></strong> to be picked up at [_2].
-                If this is correct, press <strong>SUBMIT</strong>.
+                You would like to place a hold on <strong><q>[_1]</q></strong>.<br />
+                If this is correct, confirm your pickup location and click <strong>SUBMIT</strong>.
                 [% END %]
             </p>
             <p>
-                [% l('If you would like to change the library pick up location, select from the location dropdown menu.') %]
-                <br class="clear-both" />
+                [% l('Pickup location:') %]
                 [% PROCESS "default/opac/parts/org_selector.tt2";
-                    PROCESS build_org_selector name='pickup_lib' value=ctx.default_pickup_lib %]
+                    PROCESS build_org_selector name='pickup_lib' value=ctx.default_pickup_lib id='pickup_lib' can_have_vols_only=1 %]
             </p>
             <p>
                 [% |l %]If you use the Traveling Library Center (TLC) and ABC Express
@@ -270,8 +295,6 @@
                 </tr>
             </tbody>
         </table>
-        <div class='hide_me' id='holds_success'>[% l("Hold was successfully placed") %]</div>
-        <div class='hide_me' id='holds_failure'>[% l("Hold was not successfully placed") %]</div>
         <span class='hide_me' id='holds_bad_phone'>
             [% l("The phone number does not have the correct format. The expected format is XXX-YYY-ZZZZ") %]
         </span>
