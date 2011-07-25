@@ -144,7 +144,11 @@
 
     <!-- Copies table -->
     <div id='acq-lit-li-details' class='hidden'>
-        <h2>Copies</h2>
+
+        <div id='acq-lit-copies-li-summary'></div>
+
+        <h3>Add/Edit Items</h3>
+        <hr/>
 
         <div class='acq-lit-li-menu-bar'>
             <table style='width:100%'>
@@ -169,6 +173,8 @@
                 </tr>
             </table>
         </div>
+
+        <hr/>
 
         <table id='acq-lit-li-details-table'>
             <tbody><tr><td class='acq-lit-table-spacer' colspan='0'/></tr></tbody>
