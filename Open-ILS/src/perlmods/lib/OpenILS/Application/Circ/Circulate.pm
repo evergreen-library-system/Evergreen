@@ -1681,8 +1681,17 @@ sub handle_checkout_holds {
 # ------------------------------------------------------------------------------
 # If the circ.checkout_fill_related_hold setting is turned on and no hold for
 # the patron directly targets the checked out item, see if there is another hold 
-# (with hold_type T or V) for the patron that could be fulfilled by the checked 
-# out item.  Fulfill the oldest hold and only fulfill 1 of them.
+# for the patron that could be fulfilled by the checked out item.  Fulfill the
+# oldest hold and only fulfill 1 of them.
+# 
+# For "another hold":
+#
+# First, check for one that the copy matches via hold_copy_map, ensuring that
+# *any* hold type that this copy could fill may end up filled.
+#
+# Then, if circ.checkout_fill_related_hold_exact_match_only is not enabled, look
+# for a Title (T) or Volume (V) hold that matches the item. This allows items
+# that are non-requestable to count as capturing those hold types.
 # ------------------------------------------------------------------------------
 sub find_related_user_hold {
     my($self, $copy, $patron) = @_;
@@ -1695,6 +1704,40 @@ sub find_related_user_hold {
 
     # find the oldest unfulfilled hold that has not yet hit the holds shelf.
     my $args = {
+        select => {ahr => ['id']}, 
+        from => {
+            ahr => {
+                ahcm => {
+                    field => 'hold',
+                    fkey => 'id'
+                }
+            }
+        }, 
+        where => {
+            '+ahr' => {
+                usr => $patron->id,
+                fulfillment_time => undef,
+                cancel_time => undef,
+               '-or' => [
+                    {expire_time => undef},
+                    {expire_time => {'>' => 'now'}}
+                ]
+            },
+            '+ahcm' => {
+                target_copy => $self->copy->id
+            },
+        },
+        order_by => {ahr => {request_time => {direction => 'asc'}}},
+        limit => 1
+    };
+
+    my $hold_info = $e->json_query($args)->[0];
+    return $e->retrieve_action_hold_request($hold_info->{id}) if $hold_info;
+    return undef if $U->ou_ancestor_setting_value(        
+        $self->circ_lib, 'circ.checkout_fills_related_hold_exact_match_only', $e);
+
+    # find the oldest unfulfilled hold that has not yet hit the holds shelf.
+    $args = {
         select => {ahr => ['id']}, 
         from => {
             ahr => {
@@ -1740,7 +1783,7 @@ sub find_related_user_hold {
         limit => 1
     };
 
-    my $hold_info = $e->json_query($args)->[0];
+    $hold_info = $e->json_query($args)->[0];
     return $e->retrieve_action_hold_request($hold_info->{id}) if $hold_info;
     return undef;
 }

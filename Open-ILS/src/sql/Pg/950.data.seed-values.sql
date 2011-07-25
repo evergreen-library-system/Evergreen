@@ -2592,6 +2592,11 @@ INSERT into config.org_unit_setting_type
     oils_i18n_gettext('circ.checkout_fills_related_hold', 'When a patron checks out an item and they have no holds that directly target the item, the system will attempt to find a hold for the patron that could be fulfilled by the checked out item and fulfills it', 'coust', 'description'),
     'bool'),
 
+( 'circ.checkout_fills_related_hold_exact_match_only',
+    oils_i18n_gettext('circ.checkout_fills_related_hold_exact_match_only', 'Checkout Fills Related Hold On Valid Copy Only', 'coust', 'label'),
+    oils_i18n_gettext('circ.checkout_fills_related_hold_exact_match_only', 'When filling related holds on checkout only match on items that are valid for opportunistic capture for the hold. Without this set a Title or Volume hold could match when the item is not holdable. With this set only holdable items will match.', 'coust', 'description'),
+    'bool'),
+
 ( 'circ.selfcheck.auto_override_checkout_events',
     oils_i18n_gettext('circ.selfcheck.auto_override_checkout_events', 'Selfcheck override events list', 'coust', 'label'),
     oils_i18n_gettext('circ.selfcheck.auto_override_checkout_events', 'List of checkout/renewal events that the selfcheck interface should automatically override instead instead of alerting and stopping the transaction', 'coust', 'description'),
