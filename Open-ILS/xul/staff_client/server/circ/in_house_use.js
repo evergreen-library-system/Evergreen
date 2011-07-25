@@ -37,7 +37,6 @@ circ.in_house_use.prototype = {
         obj.list.init(
             {
                 'columns' : columns,
-                'map_row_to_columns' : circ.util.std_map_row_to_columns(),
                 'on_select' : function() {
                     var sel = obj.list.retrieve_selection();
                     obj.controller.view.sel_clip.setAttribute('disabled', sel.length < 1);
