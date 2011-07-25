@@ -777,7 +777,7 @@ sub load_myopac_payment_form {
     my $self = shift;
     my $r;
 
-    $r = $self->prepare_fines(undef, undef, [$self->cgi->param('xact')]) and return $r;
+    $r = $self->prepare_fines(undef, undef, [$self->cgi->param('xact'), $self->cgi->param('xact_misc')]) and return $r;
     $r = $self->prepare_extended_user_info and return $r;
 
     return Apache2::Const::OK;
@@ -820,7 +820,7 @@ sub load_myopac_pay {
     my $self = shift;
     my $r;
 
-    $r = $self->prepare_fines(undef, undef, [$self->cgi->param('xact')]) and
+    $r = $self->prepare_fines(undef, undef, [$self->cgi->param('xact'), $self->cgi->param('xact_misc')]) and
         return $r;
 
     # balance_owed is computed specifically from the fines we're trying
@@ -828,7 +828,7 @@ sub load_myopac_pay {
     if ($self->ctx->{fines}->{balance_owed} <= 0) {
         $self->apache->log->info(
             sprintf("Can't pay non-positive balance. xacts selected: (%s)",
-                join(", ", map(int, $self->cgi->param("xact"))))
+                join(", ", map(int, $self->cgi->param("xact"), $self->cgi->param('xact_misc'))))
         );
         return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
     }

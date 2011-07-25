@@ -16,6 +16,9 @@
         [% FOR xact IN CGI.param('xact') %]
         <input type="hidden" name="xact" value="[% xact | html %]" />
         [% END %]
+        [% FOR xact IN CGI.param('xact_misc') %]
+        <input type="hidden" name="xact_misc" value="[% xact | html %]" />
+        [% END %]
         <table>
             <tbody>
                 <tr>
@@ -47,8 +50,8 @@
                             [%
                             END;
                             FOR f IN ctx.fines.grocery;
-                                NEXT IF CGI.param('xact').size &&
-                                    !CGI.param('xact').grep(f.xact.id).size %]
+                                NEXT IF CGI.param('xact_misc').size &&
+                                    !CGI.param('xact_misc').grep(f.xact.id).size %]
                                 <tr>
                                     <td>[% f.xact.last_billing_type %]</td>
                                     <td class="text-right">[% money(f.xact.balance_owed) %]</td>

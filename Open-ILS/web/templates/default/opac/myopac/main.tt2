@@ -22,8 +22,9 @@
                     <td>[% l("Date Returned") %]</td>
                     <td>[% l("Balance Owed") %]</td>
                     <td nowrap="nowrap" style="white-space:nowrap;">
-                        <!-- XXX TODO select all js --><input id="pay_fines_box1" checked="checked"
-                            type="checkbox" title="[% l('Click to (un)select all fines') %]" />
+                        <input id="pay_fines_box1" checked="checked"
+                            type="checkbox" onchange="select_all_checkboxes('xact', this.checked)"
+                            title="[% l('Click to (un)select all fines') %]" />
                         <label for="pay_fines_box1">[% l('Pay Fines') %]</label>
                     </td>
                 </tr>
@@ -78,7 +79,8 @@
                     </td>
                     <td>
                         <input type="checkbox" checked="checked" 
-                            title="[% l('Pay this fine') %]" name="xact" value="[% f.xact.id %]" />
+                            title="[% l('Pay this fine') %]" name="xact"
+                            value="[% f.xact.id %]" />
                     </td>
                 </tr>
                 [% END %]
@@ -111,7 +113,7 @@
                     <td width='4%' align="center" nowrap="nowrap"
                         style="white-space:nowrap;">
                         <input id="pay_fines_box2" checked="checked"
-                            type="checkbox"
+                            type="checkbox" onchange="select_all_checkboxes('xact_misc', this.checked)"
                             title="[% l('Click to (un)select all fines') %]" />
                         <label for="pay_fines_box2">[% l("Pay Fines") %]</label>
                     </td>
@@ -143,7 +145,8 @@
                     <td>[% f.xact.last_billing_type %]</td>
                     <td>
                         <input type="checkbox" title='[% l("Pay this fine") %]'
-                            name="xact" value="[% f.xact.id %]" />
+                            name="xact_misc" value="[% f.xact.id %]"
+                            checked="checked" />
                     </td>
                 </tr>
                 [% END %]

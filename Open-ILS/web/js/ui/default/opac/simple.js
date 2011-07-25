@@ -48,3 +48,11 @@ function print_node(node_id) {
     try { iframe.print(); } catch (e) { iwin.print(); }
     setTimeout(function() { iframe.style.display = "none"; }, 3500);
 }
+function select_all_checkboxes(name, checked) {
+    var all = document.getElementsByTagName("input");
+    for (var i = 0; i < all.length; i++) {
+        if (all[i].type == "checkbox" && all[i].name == name) {
+            all[i].checked = checked;
+        }
+    }
+}
