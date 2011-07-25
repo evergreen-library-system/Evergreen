@@ -20,6 +20,7 @@
     </div>
     <div class="clear-both"></div>
 
+    [% IF ctx.payments.size %]
     <table id='myopac_payments_table' width='100%' class='data_grid'>
         <thead><tr>
             <th>[% l('Payment Date') %]</th>
@@ -47,5 +48,8 @@
             [% END %]
         </tbody>
     </table>
+    [% ELSE %]
+    <div>[% l('You have no historical payments to display.') %]</div>
+    [% END %]
 </div>
 [% END %]
