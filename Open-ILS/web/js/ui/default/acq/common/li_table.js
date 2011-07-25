@@ -1118,7 +1118,7 @@ function AcqLiTable() {
 
         if (!self.distribForms) {
             // no formulas, hide the form
-            openils.Util.hide('acq-lit-distrib-formula-tbody');
+            openils.Util.hide('acq-lit-distrib-formula-table');
             return;
         }
 
