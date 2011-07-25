@@ -78,7 +78,7 @@
                     <tr><td>[% l("Publisher") %]</td><td colspan='2' name='publisher'></td></tr>
                     <tr><td>[% l("Physical Description") %]</td><td colspan='2' name='phys'></td></tr>
                     <tr>
-                        <td colspan='3' class='opac-auto-004'> </td>
+                        <td colspan='3' class='rdetail_print_details_cn_spacer'> </td>
                     </tr>
                     <tr name='cnrow'>
                         <td><b>[% l("Call Number") %]</b></td>
