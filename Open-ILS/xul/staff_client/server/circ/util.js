@@ -2432,6 +2432,7 @@ circ.util.hold_columns = function(modify,params) {
                 {
             'persist' : 'hidden width ordinal',
             'id' : 'queue_position',
+            'sort_type' : 'number',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.queue_position'),
             'flex' : 1,
             'primary' : false,
