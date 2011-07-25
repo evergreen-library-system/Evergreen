@@ -921,6 +921,12 @@ function AcqLiTable() {
         if (typeof force_fetch == "undefined")
             force_fetch = false;
 
+        openils.acq.Lineitem.fetchAndRender(liId, {}, 
+            function(li, html) {
+                dojo.byId('acq-lit-copies-li-summary').innerHTML = html;
+            }
+        );
+
         this.show('copies');
         var self = this;
         this.copyCache = {};
@@ -1112,7 +1118,7 @@ function AcqLiTable() {
 
         if (!self.distribForms) {
             // no formulas, hide the form
-            openils.Util.hide('acq-lit-distrib-formula-tbody');
+            openils.Util.hide('acq-lit-distrib-formula-table');
             return;
         }
 
