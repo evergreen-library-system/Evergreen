@@ -126,7 +126,7 @@ function holdsDrawEditor(args) {
 	if(holdArgs.editHold) // flesh the args with the existing hold 
 		holdArgsFromHold(holdArgs.editHold, holdArgs);
 
-    $('holds_parts_selector').style.border = 'auto';
+//    $('holds_parts_selector').style.border = 'auto';
     holdArgs.partsSuggestionMade = false;
 
 	holdsDrawWindow();
