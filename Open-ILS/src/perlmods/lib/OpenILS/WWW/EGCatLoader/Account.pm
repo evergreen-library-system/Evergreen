@@ -797,6 +797,17 @@ sub load_myopac_payments {
     $args->{limit} = $limit if $limit;
     $args->{offset} = $offset if $offset;
 
+    if (my $max_age = $self->ctx->{get_org_setting}->(
+        $e->requestor->home_ou, "opac.payment_history_age_limit"
+    )) {
+        my $min_ts = DateTime->now(
+            "time_zone" => DateTime::TimeZone->new("name" => "local"),
+        )->subtract("seconds" => interval_to_seconds($max_age))->iso8601();
+        
+        $logger->info("XXX min_ts: $min_ts");
+        $args->{"where"} = {"payment_ts" => {">=" => $min_ts}};
+    }
+
     $self->ctx->{payments} = $U->simplereq(
         'open-ils.actor',
         'open-ils.actor.user.payments.retrieve.atomic',
