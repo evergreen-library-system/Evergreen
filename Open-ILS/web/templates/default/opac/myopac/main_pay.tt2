@@ -7,7 +7,7 @@
     [% IF ctx.payment_response.textcode %]
         <div class="payment-error">
             <span title="[% ctx.payment_response.textcode %]">
-                [% ctx.payment_response.desc %]
+                [% ctx.payment_response.desc || ctx.payment_response.textcode %]
             </span><br />
             [% ctx.payment_response.payload.error_message %]
         </div>
