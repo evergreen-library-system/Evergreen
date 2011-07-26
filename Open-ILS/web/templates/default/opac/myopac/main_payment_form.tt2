@@ -3,6 +3,9 @@
     WRAPPER "default/opac/parts/myopac/main_base.tt2";
     myopac_page = "main";
     myopac_main_page = "payment_form";
+
+    last_chance = CGI.param("last_chance");
+
 %]
 [% IF ctx.fines.balance_owed <= 0 %]
 <div>
@@ -11,14 +14,26 @@
 </div>
 [% ELSE %]
 <div id="pay_fines_now">
-    <form action="[% ctx.opac_root %]/myopac/main_pay" method="POST"
-        onsubmit="return confirm('[% l("Are you sure you are ready to charge [_1] to your credit card?", money(ctx.fines.balance_owed)) %]');">
+    [% IF last_chance %]
+    <p><big>[% l("Are you sure you are ready to charge [_1] to your credit card?", money(ctx.fines.balance_owed)) %]</big></p>
+    <form action="[% ctx.opac_root %]/myopac/main_pay" method="POST">
+        [% FOR k IN CGI.Vars;
+            NEXT UNLESS k %]
+        <input type="hidden" name="[% k | html %]" value="[% CGI.param(k) | html %]" />
+        [% END %]
+        <input type="submit" value="[% l('Submit Payment') %]" />
+        <input type="reset" value="[% l('Cancel') %]"
+            onclick="history.go(-1);" />
+    [% ELSE %]
+    <form method="POST">
+        <input type="hidden" name="last_chance" value="1" />
         [% FOR xact IN CGI.param('xact') %]
         <input type="hidden" name="xact" value="[% xact | html %]" />
         [% END %]
         [% FOR xact IN CGI.param('xact_misc') %]
         <input type="hidden" name="xact_misc" value="[% xact | html %]" />
         [% END %]
+
         <table>
             <tbody>
                 <tr>
@@ -157,7 +172,7 @@
                 </tr>
                 <tr>
                     <td colspan='2' align="center">
-                        <input type="submit" value="[% l('Submit Payment') %]" />
+                        <input type="submit" value="[% l('Next') %]" />
                         <input type="reset" value="[% l('Cancel') %]"
                             onclick="history.go(-1);" />
                     </td>
@@ -165,6 +180,7 @@
                 [% INCLUDE "default/opac/parts/myopac/main_refund_policy.tt2" %]
             </tbody>
         </table>
+    [% END %]
     </form>
 </div>
 [% END %]
