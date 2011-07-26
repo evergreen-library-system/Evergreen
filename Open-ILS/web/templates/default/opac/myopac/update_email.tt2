@@ -13,6 +13,9 @@
 [% END %]
 
 <form method='POST' id='account-update-email'>
+    [% IF CGI.param("return_to_referer") %]
+    <input type="hidden" name="redirect_to" value="[% ctx.referer | html %]" />
+    [% END %]
     <table> 
         <tr><td>[% l('Current Email') %]</td><td>[% ctx.user.email | html %]</td></tr>
         <tr><td>[% l('New Email') %]</td><td><input type='text' name='email' value='[% ctx.invalid_email | html %]'/></td></tr>

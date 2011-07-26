@@ -24,8 +24,8 @@
                 <tr>
                     <td colspan='2'><strong>[% l('Billing Information') %]</strong></td>
                     <td rowspan='13' valign='top'>
-                        [% l('Selected fines you are paying for:') %]
-                        <table cellpadding="0" cellspacing="5" border="0">
+                        <p>[% l('Selected fines you are paying for:') %]</p>
+                        <table cellpadding="0" cellspacing="0" border="0" class="myopac_payments_table">
                             <thead>
                                 <tr>
                                     <th>[% l('Name') %]</th>
@@ -75,6 +75,13 @@
                 <tr>
                     <td>[% l('Last Name') %]</td>
                     <td><input type="text" name="billing_last" value="[% ctx.user.family_name | html %]" /></td>
+                </tr>
+                <tr>
+                    <td>[% l('Email Address') %]</td>
+                    <td>
+                        <input type="text" disabled="disabled" readonly="readonly" value="[% ctx.user.email | html %]" />
+                        <a href="[% ctx.opac_root %]/myopac/update_email?return_to_referer=1">[% l("Update") %]</a>
+                    </td>
                 </tr>
                 <tr>
                     <td>[% l('Street Address') %]</td>

@@ -1026,10 +1026,14 @@ sub load_myopac_update_email {
         'open-ils.actor.user.email.update', 
         $e->authtoken, $email);
 
-    my $url = $self->apache->unparsed_uri;
-    $url =~ s/update_email/prefs/;
+    unless ($self->cgi->param("redirect_to")) {
+        my $url = $self->apache->unparsed_uri;
+        $url =~ s/update_email/prefs/;
 
-    return $self->generic_redirect($url);
+        return $self->generic_redirect($url);
+    }
+
+    return $self->generic_redirect;
 }
 
 sub load_myopac_update_username {
