@@ -1,7 +1,7 @@
 BEGIN;
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0586', :eg_version);
 
 INSERT INTO permission.perm_list (id, code, description) VALUES (
     511,
