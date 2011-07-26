@@ -1432,7 +1432,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 509, 'TRANSIT_CHECKIN_INTERVAL_BLOCK.override', oils_i18n_gettext(509,
     'Allows a user to override the TRANSIT_CHECKIN_INTERVAL_BLOCK event', 'ppl', 'description')),
  ( 510, 'UPDATE_PATRON_COLLECTIONS_EXEMPT', oils_i18n_gettext(510,
-    'Allows a user to indicate that a patron is exempt from collections processing', 'ppl', 'description'));
+    'Allows a user to indicate that a patron is exempt from collections processing', 'ppl', 'description')),
+ ( 511, 'PERSISTENT_LOGIN', oils_i18n_gettext( 511,
+    'Allows a user to authenticate and get a long-lived session (length configured in opensrf.xml)', 'ppl', 'description' ));
 
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
@@ -1502,6 +1504,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'CREATE_PURCHASE_REQUEST',
 			'MR_HOLDS',
 			'OPAC_LOGIN',
+			'PERSISTENT_LOGIN',
 			'RENEW_CIRC',
 			'TITLE_HOLDS',
 			'user_request.create'
