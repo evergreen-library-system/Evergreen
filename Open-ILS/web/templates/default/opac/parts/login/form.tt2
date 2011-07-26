@@ -133,7 +133,7 @@
                                         redirect = redirect  | replace('^http:', 'https:');
                                     %]
                                     <input type='hidden' name='redirect_to' value='[% redirect %]'/>
-                                    <input type="checkbox" name="persist" /> [% l('Remember Me?') %]
+                                    <input type="checkbox" name="persist" id="login_persist" /><label for="login_persist"> [% l('Stay logged in?') %]</label>
                                 </div>
                                 <div style="padding-top:14px;">
                                     <input type='image' alt="[% l('Log in') %]" src="[% ctx.media_prefix %]/images/login-btn2.png" />
