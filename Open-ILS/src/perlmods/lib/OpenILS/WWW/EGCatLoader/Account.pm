@@ -1013,6 +1013,9 @@ sub load_myopac_update_email {
     my $ctx = $self->ctx;
     my $email = $self->cgi->param('email') || '';
 
+    # needed for most up-to-date email address
+    if (my $r = $self->prepare_extended_user_info) { return $r };
+
     return Apache2::Const::OK 
         unless $self->cgi->request_method eq 'POST';
 

@@ -878,6 +878,7 @@ div.select-wrapper:hover {
 
 .myopac_payments_table th { text-align: left; }
 .myopac_payments_table thead th { border-bottom: 1px dashed #333; }
+.myopac_payments_table thead th:first-child { width: 8em; }
 .myopac_payments_table tbody tr:nth-child(odd) { background-color: #ddd; }
 .myopac_payments_table form { display: inline; }
 .myopac_payments_table input[type="submit"] { padding: 1px; }
