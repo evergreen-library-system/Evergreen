@@ -1,3 +1,4 @@
+dojo.require('openils.CGI');
 dojo.require('openils.Util');
 dojo.require('openils.User');
 dojo.require('openils.widget.AutoGrid');
@@ -7,12 +8,43 @@ dojo.require('openils.widget.EditPane');
 dojo.require("dijit.layout.StackContainer");
 dojo.require('openils.PermaCrud');
 dojo.requireLocalization("openils.acq", "acq");
+dojo.require('openils.acq.Lineitem');
 
 var contextOrg;
+var contextUsr;
+var contextLI;
+var contextEg_bib;
 var aur_obj;
 var localeStrings = dojo.i18n.getLocalization('openils.acq', 'acq');
+var cgi = new openils.CGI();
 
 function setup() {
+
+    if (cgi.param('eg_bib')) {
+        changeBib(cgi.param('eg_bib'));
+    }
+
+    if (cgi.param('lineitem')) {
+        changeLI(cgi.param('lineitem'));
+    }
+
+    if (cgi.param('usr')) {
+        var usr_obj = fieldmapper.standardRequest(
+            [
+                'open-ils.actor',
+                'open-ils.actor.user.fleshed.retrieve.authoritative'
+            ],
+            {
+                params: [openils.User.authtoken, cgi.param('usr')]
+            }
+        );
+        if (typeof usr_obj.textcode == 'undefined') {
+            changeUser(usr_obj.id(),usr_obj.card().barcode());
+        } else {
+            alert(usr_obj.textcode + ' : ' + usr_obj.desc);
+        }
+    }
+
     if(reqId) {
         drawRequest();
     } else {
@@ -26,6 +58,15 @@ function drawRequest() {
 
     // hide the grid and the context selector
     dijit.byId('stackContainer').forward();
+
+    // purge any previous lineitem display
+    // FIXME: I thought it would be cool to have this, but I can't get it 
+    // to look right with our dojo div/contentPanes.  So just testing for
+    // a DOM hook for now.
+    if (dojo.byId('lineitem')) {
+        //openils.Util.hide( 'lineitem_container' );
+        dojo.byId('lineitem').innerHTML = '';
+    }
 
     // toggle the View Picklist/Add to Picklist button label
     if (aur_obj.lineitem()) {
@@ -46,6 +87,16 @@ function drawRequest() {
     pane.domNode = div;
     pane.hideActionButtons = true;
     pane.startup();
+
+    // lineitem summary
+    if (dojo.byId('lineitem') && aur_obj.lineitem()) {
+        //openils.Util.show( 'lineitem_container' );
+        openils.acq.Lineitem.fetchAndRender(aur_obj.lineitem(), {},
+            function(li, html) {
+                dojo.byId('lineitem').innerHTML = html;
+            }
+        );
+    }
 
     // including ability to add request to a picklist
     // and to "reject" it (aka apply a cancel reason)
@@ -162,18 +213,106 @@ function buildGrid() {
     if(contextOrg == null)
         contextOrg = openils.User.user.ws_ou();
 
+    var query = {
+        cancel_reason : null,
+        '+au' : {
+            home_ou : fieldmapper.aou.descendantNodeList(contextOrg).map(
+            function(item) { return item.id(); })
+        }
+    };
+
+    if (contextUsr) {
+        delete query['+au']['home_ou'];
+        query['+au']['id'] = contextUsr;
+    }
+
+    if (contextEg_bib) {
+        query['eg_bib'] = contextEg_bib;
+    }
+
+    if (contextLI) {
+        query['lineitem'] = contextLI;
+    }
+
+    rGrid.resetStore();
     rGrid.loadAll(
         {   order_by : {aur : 'request_date'},
             join : 'au' 
         },
-        {
-            cancel_reason : null,
-            '+au' : {
-                home_ou : fieldmapper.aou.descendantNodeList(contextOrg).map(
-                    function(item) { return item.id(); })
-            }
-        }
+        query
     );
+}
+
+function changeBib(value) {
+    contextEg_bib = value;
+    rGrid.overrideEditWidgets.eg_bib = new dijit.form.TextBox({"disabled": true});
+    rGrid.overrideEditWidgets.eg_bib.shove = { create : contextEg_bib };
+}
+
+function changeLI(value,display_value) {
+    contextLI = value;
+    contextLITextbox.setValue( contextLI );
+    contextLITextbox.setDisplayedValue( display_value || contextLI );
+    rGrid.overrideEditWidgets.lineitem = new dijit.form.TextBox({"disabled": true});
+    rGrid.overrideEditWidgets.lineitem.shove = { create : contextLI };
+}
+
+function changeLIPrompt() {
+    var lineitem = window.prompt(localeStrings.UR_FILTER_LINEITEM);
+    if(lineitem != '' && (lineitem == null || Number(lineitem) == NaN)) {
+        return;
+    }
+    changeLI(lineitem);
+    buildGrid();
+}
+
+function changeUser(value,display_value) {
+    contextUsr = value;
+    contextUsrTextbox.setValue( contextUsr );
+    contextUsrTextbox.setDisplayedValue( display_value || contextUsr );
+    rGrid.overrideEditWidgets.usr = new dijit.form.TextBox({"disabled": true});
+    rGrid.overrideEditWidgets.usr.shove = { create : contextUsr };
+}
+
+function changeUserPrompt() {
+    var barcode = window.prompt(localeStrings.UR_FILTER_USER);
+    if(barcode == null) {
+        return;
+    }
+    if(typeof xulG != 'undefined' && xulG.get_barcode) {
+        // We have a "complete the barcode" function, call it (actor = users only)
+        var new_barcode = xulG.get_barcode(window, 'actor', barcode);
+        // If we got a result (boolean false is "no result") check it
+        if(new_barcode) {
+            // user_false string means they picked "None of the above"
+            // Abort before any other events can fire
+            if(new_barcode == "user_false") return;
+            // No error means we have a (hopefully valid) completed barcode to use.
+            // Otherwise, fall through to other methods of checking
+            if(typeof new_barcode.ilsevent == 'undefined')
+                barcode = new_barcode.barcode;
+        }
+    }
+    if (barcode == '') {
+        changeUser('','');
+    } else {
+        var usr_obj = fieldmapper.standardRequest(
+            [
+                'open-ils.actor',
+                'open-ils.actor.user.fleshed.retrieve_by_barcode.authoritative'
+            ],
+            {
+                params: [openils.User.authtoken, barcode]
+            }
+        );
+        if (typeof usr_obj.textcode != 'undefined') {
+            alert(usr_obj.textcode + ' : ' + usr_obj.desc);
+            return;
+        } else {
+            changeUser(usr_obj.id(),usr_obj.card().barcode());
+        }
+    }
+    buildGrid();
 }
 
 openils.Util.addOnLoad(setup);

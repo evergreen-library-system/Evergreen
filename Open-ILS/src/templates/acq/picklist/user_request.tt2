@@ -8,20 +8,43 @@
             <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
                 <div>[% ctx.page_title %]</div>
             </div>
-            <div>
-                <span>Context Org Unit</span>
-                <select 
-                    dojoType="openils.widget.OrgUnitFilteringSelect" 
-                    jsId='contextOrgSelector'
-                    searchAttr='shortname' 
-                    labelAttr='shortname'> 
-                </select>
+            <div style="width: 100%">
+                <span>
+                    <span>Context Org Unit</span>
+                    <select 
+                        dojoType="openils.widget.OrgUnitFilteringSelect" 
+                        jsId='contextOrgSelector'
+                        searchAttr='shortname' 
+                        labelAttr='shortname'> 
+                    </select>
+                </span>
+                <span>
+                    <a name="user" href="javascript:changeUserPrompt();">User</a>
+                    <span
+                        name="user"
+                        jsId="contextUsrTextbox"
+                        dojoType="dijit.form.TextBox"
+                        disabled="true">
+                    </span>
+                </span>
+                <span>
+                    <a name="lineitem" href="javascript:changeLIPrompt();">PO Line Item</a>
+                    <span
+                        name="lineitem"
+                        jsId="contextLITextbox"
+                        dojoType="dijit.form.TextBox"
+                        disabled="true">
+                    </span>
+                </span>
+                <button dojoType="dijit.form.Button" onClick="createRequest()">Create Request</button>
             </div>
             <table  jsId="rGrid"
                     dojoType="openils.widget.AutoGrid"
                     query="{id: '*'}"
                     suppressFields='["id", "usr", "pickup_lib", "holdable_formats", "phone_notify", "email_notify", "lineitem", "eg_bib", "max_fee", "cancel_reason"]'
                     fieldOrder='["title", "author", "isxn", "article_title", "article_pages", "request_type", "volume", "pubdate", "publisher", "location", "other_info", "mentioned"]'
+                    editOnEnter='true'
+                    suppressEditFields='["id"]'
                     fmClass='aur'
                     editStyle='pane'
                     autoHeight='true'
