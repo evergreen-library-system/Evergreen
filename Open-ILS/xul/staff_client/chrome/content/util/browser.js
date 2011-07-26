@@ -293,7 +293,7 @@ util.browser.prototype = {
             if (!cw.xulG.volume_item_creator) { cw.xulG.volume_item_creator = function(a) { return window.xulG.volume_item_creator(a); }; }
             if (!cw.xulG.get_new_session) { cw.xulG.get_new_session = function(a) { return window.xulG.get_new_session(a); }; }
             if (!cw.xulG.holdings_maintenance_tab) { cw.xulG.holdings_maintenance_tab = function(a,b,c) { return window.xulG.holdings_maintenance_tab(a,b,c); }; }
-            if (!cw.xulG.url_prefix) { cw.xulG.url_prefix = function(url) { return window.xulG.url_prefix(url); }; }
+            if (!cw.xulG.url_prefix) { cw.xulG.url_prefix = function(url,secure) { return window.xulG.url_prefix(url,secure); }; }
             if (!cw.xulG.urls) { cw.xulG.urls = window.urls; }
             try { s += ('******** cw = ' + cw + ' cw.xulG = ' + (cw.xulG) + '\n'); } catch(E) { s+=E + '\n'; }
             obj.error.sdump('D_BROWSER',s);

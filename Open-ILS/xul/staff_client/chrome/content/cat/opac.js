@@ -521,7 +521,19 @@ function set_opac() {
         content_params.set_help_context = xulG.set_help_context;
         content_params.get_barcode = xulG.get_barcode;
 
-        if (opac_url) { content_params.url = opac_url; } else { content_params.url = xulG.url_prefix( urls.browser ); }
+        var secure_opac = true; // default to secure
+        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+        var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces['nsIPrefBranch']);
+        if (prefs.prefHasUserValue('oils.secure_opac')) {
+            secure_opac = prefs.getBoolPref('oils.secure_opac');
+        }
+        dump('secure_opac = ' + secure_opac + '\n');
+
+        if (opac_url) {
+            content_params.url = xulG.url_prefix( opac_url, secure_opac );
+        } else {
+            content_params.url = xulG.url_prefix( urls.browser, secure_opac );
+        }
         browser_frame = bottom_pane.set_iframe( xulG.url_prefix(urls.XUL_BROWSER) + '?name=Catalog', {}, content_params);
         /* // Remember to use the REMOTE_BROWSER if we ever try to move this to remote xul again
         browser_frame = bottom_pane.set_iframe( xulG.url_prefix(urls.XUL_REMOTE_BROWSER) + '?name=Catalog', {}, content_params);

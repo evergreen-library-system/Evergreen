@@ -596,7 +596,7 @@
             var w = win.open( loc, 'spine_preview', 'chrome,resizable,width=750,height=550');
             w.xulG = { 
                 'url' : 'about:blank',
-                'url_prefix' : function (u) { return xulG.url_prefix(u); },
+                'url_prefix' : function (u,s) { return xulG.url_prefix(u,s); },
                 'show_print_button' : 1,
                 'printer_context' : 'label',
                 'alternate_print' : 1,

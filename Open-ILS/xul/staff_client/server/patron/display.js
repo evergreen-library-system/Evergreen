@@ -206,7 +206,7 @@ patron.display.prototype = {
                                         obj.summary_window.g.summary.controller.render('patron_bill');
                                         obj.bill_window.g.bills.refresh(true);
                                     },
-                                    'url_prefix' : function(url) { return xulG.url_prefix(url); },
+                                    'url_prefix' : function(url,secure) { return xulG.url_prefix(url,secure); },
                                     'get_new_session' : function(a) { return xulG.get_new_session(a); },
                                     'new_tab' : function(a,b,c) { return xulG.new_tab(a,b,c); },
                                     'new_patron_tab' : function(a,b) { return xulG.new_patron_tab(a,b); }
@@ -246,7 +246,7 @@ patron.display.prototype = {
                                             'passthru_content_params' : {
                                                 'spawn_search' : spawn_search,
                                                 'spawn_editor' : spawn_editor,
-                                                'url_prefix' : function(url) { return xulG.url_prefix(url); },
+                                                'url_prefix' : function(url,secure) { return xulG.url_prefix(url,secure); },
                                                 'get_new_session' : function(a) { return xulG.get_new_session(a); },
                                                 'new_tab' : function(a,b,c) { return xulG.new_tab(a,b,c); },
                                                 'new_patron_tab' : function(a,b) { return xulG.new_patron_tab(a,b); },
@@ -291,7 +291,7 @@ patron.display.prototype = {
                                         },
                                         'spawn_search' : spawn_search,
                                         'spawn_editor' : spawn_editor,
-                                        'url_prefix' : function(url) { return xulG.url_prefix(url); },
+                                        'url_prefix' : function(url,secure) { return xulG.url_prefix(url,secure); },
                                         'get_new_session' : function(a) { return xulG.get_new_session(a); },
                                         'new_tab' : function(a,b,c) { return xulG.new_tab(a,b,c); },
                                         'new_patron_tab' : function(a,b) { return xulG.new_patron_tab(a,b); }
@@ -318,7 +318,7 @@ patron.display.prototype = {
                                 {},
                                 {
                                     'patron_id' : obj.patron.id(),
-                                    'url_prefix' : function(url) { return xulG.url_prefix(url); },
+                                    'url_prefix' : function(url,secure) { return xulG.url_prefix(url,secure); },
                                     'get_new_session' : function(a) { return xulG.get_new_session(a); },
                                     'new_tab' : function(a,b,c) { return xulG.new_tab(a,b,c); },
                                     'new_patron_tab' : function(a,b) { return xulG.new_patron_tab(a,b); }
@@ -346,7 +346,7 @@ patron.display.prototype = {
                                 {},
                                 {
                                     'patron_id' : obj.patron.id(),
-                                    'url_prefix' : function(url) { return xulG.url_prefix(url); },
+                                    'url_prefix' : function(url,secure) { return xulG.url_prefix(url,secure); },
                                     'get_new_session' : function(a) { return xulG.get_new_session(a); },
                                     'new_tab' : function(a,b,c) { return xulG.new_tab(a,b,c); },
                                     'new_patron_tab' : function(a,b) { return xulG.new_patron_tab(a,b); }
@@ -362,7 +362,7 @@ patron.display.prototype = {
                                 {},
                                 {
                                     'patron_id' : obj.patron.id(),
-                                    'url_prefix' : function(url) { return xulG.url_prefix(url); },
+                                    'url_prefix' : function(url,secure) { return xulG.url_prefix(url,secure); },
                                     'get_new_session' : function(a) { return xulG.get_new_session(a); },
                                     'new_tab' : function(a,b,c) { return xulG.new_tab(a,b,c); },
                                     'new_patron_tab' : function(a,b) { return xulG.new_patron_tab(a,b); }
@@ -465,7 +465,7 @@ patron.display.prototype = {
                                                 alert(E);
                                             }
                                         },
-                                        'url_prefix' : function(url) { return xulG.url_prefix(url); },
+                                        'url_prefix' : function(url,secure) { return xulG.url_prefix(url,secure); },
                                         'get_new_session' : function(a) { return xulG.get_new_session(a); },
                                         'new_tab' : function(a,b,c) { return xulG.new_tab(a,b,c); },
                                         'new_patron_tab' : function(a,b) { return xulG.new_patron_tab(a,b); }
@@ -488,7 +488,7 @@ patron.display.prototype = {
                                 {
                                     'display_window' : window,
                                     'patron_id' : obj.patron.id(),
-                                    'url_prefix' : function(url) { return xulG.url_prefix(url); },
+                                    'url_prefix' : function(url,secure) { return xulG.url_prefix(url,secure); },
                                     'get_new_session' : function(a) { return xulG.get_new_session(a); },
                                     'new_tab' : function(a,b,c) { return xulG.new_tab(a,b,c); },
                                     'on_money_change' : function(b) {
@@ -991,7 +991,7 @@ patron.display.prototype = {
                 {},
                 {
                     'patron_id' : obj.patron.id(),
-                    'url_prefix' : function(url) { return xulG.url_prefix(url); },
+                    'url_prefix' : function(url,secure) { return xulG.url_prefix(url,secure); },
                     'get_new_session' : function(a) { return xulG.get_new_session(a); },
                     'new_tab' : function(a,b,c) { return xulG.new_tab(a,b,c); },
                     'new_patron_tab' : function(a,b) { return xulG.new_patron_tab(a,b); }
