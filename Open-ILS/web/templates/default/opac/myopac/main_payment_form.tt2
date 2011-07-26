@@ -119,15 +119,7 @@
                     <td><input type="text" name="number" maxlength="16" /></td>
                 </tr>
                 <tr>
-                    <td>
-                        <div style="position:absolute;">
-                            <div style="position:relative;left:80px;">
-                                <a href="#"><img
-                                    src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
-                            </div>
-                        </div>
-                        [% l('Security Code') %]
-                    </td>
+                    <td>[% l('Security Code') %]</td>
                     <td>
                         <input type="text" size="4" maxlength="5" name="cvv2" />
                     </td>
