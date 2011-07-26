@@ -741,7 +741,7 @@ cat.z3950.prototype = {
     },
 
     'replace_tab_with_opac' : function(doc_id) {
-        var opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + doc_id;
+        var opac_url = xulG.url_prefix( urls.opac_rdetail ) + doc_id;
         var content_params = { 
             'session' : ses(),
             'authtime' : ses('authtime'),

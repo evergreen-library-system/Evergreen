@@ -1001,7 +1001,7 @@ function gen_statusbar_click_handler(data_key) {
         }
 
         if (ev.button == 0 /* left click, spawn opac */) {
-            var opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + g.data[data_key];
+            var opac_url = xulG.url_prefix( urls.opac_rdetail ) + g.data[data_key];
             var content_params = {
                 'session' : ses(),
                 'authtime' : ses('authtime'),

@@ -589,7 +589,7 @@ patron.items.prototype = {
                     alert($("patronStrings").getFormattedString('staff.patron.items.show_catalog.barcode_not_cataloged', [retrieve_ids[i].barcode]));
                     continue;
                 }
-                var opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + doc_id;
+                var opac_url = xulG.url_prefix( urls.opac_rdetail ) + doc_id;
                 var content_params = { 
                     'session' : ses(),
                     'authtime' : ses('authtime'),

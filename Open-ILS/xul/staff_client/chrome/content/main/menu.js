@@ -394,7 +394,7 @@ main.menu.prototype = {
                     function spawn_tcn(r,event) {
                         for (var i = 0; i < r.count; i++) {
                             var id = r.ids[i];
-                            var opac_url = obj.url_prefix( urls.opac_rdetail ) + '?r=' + id;
+                            var opac_url = obj.url_prefix( urls.opac_rdetail ) + id;
                             obj.data.stash_retrieve();
                             var content_params = { 
                                 'session' : ses(), 
@@ -444,7 +444,7 @@ main.menu.prototype = {
                     var bib_id = prompt(offlineStrings.getString('menu.cmd_search_bib_id.tab'),'',offlineStrings.getString('menu.cmd_search_bib_id.prompt'));
                     if (!bib_id) return;
 
-                    var opac_url = obj.url_prefix( urls.opac_rdetail ) + '?r=' + bib_id;
+                    var opac_url = obj.url_prefix( urls.opac_rdetail ) + bib_id;
                     var content_params = { 
                         'session' : ses(), 
                         'authtime' : ses('authtime'),
@@ -1133,7 +1133,7 @@ main.menu.prototype = {
                         alert(offlineStrings.getString('menu.cmd_retrieve_last_record.session.error'));
                         return;
                     }
-                    var opac_url = obj.url_prefix( urls.opac_rdetail ) + '?r=' + obj.data.last_record;
+                    var opac_url = obj.url_prefix( urls.opac_rdetail ) + obj.data.last_record;
                     var content_params = {
                         'session' : ses(),
                         'authtime' : ses('authtime'),

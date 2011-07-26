@@ -369,8 +369,9 @@ var api = {
 var urls = {
 
     'opac' : '/opac/' + LOCALE + '/skin/default/xml/advanced.xml?nps=1',
-    'opac_rdetail' : '/opac/' + LOCALE + '/skin/default/xml/rdetail.xml',
+    'opac_rdetail' : '/opac/' + LOCALE + '/skin/default/xml/rdetail.xml?r=',
     'opac_rresult' : '/opac/' + LOCALE + '/skin/default/xml/rresult.xml',
+    'opac_rresult_metarecord' : '/opac/' + LOCALE + '/skin/default/xml/rresult.xml?m=',
     'org_tree' : '/opac/common/js/' + LOCALE + '/OrgTree.js',
     'browser' : '/opac/' + LOCALE + '/skin/default/xml/advanced.xml?nps=1',
     'fieldmapper' : '/opac/common/js/fmall.js',

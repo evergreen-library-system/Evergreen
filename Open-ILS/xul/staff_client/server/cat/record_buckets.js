@@ -781,7 +781,7 @@ cat.record_buckets.prototype = {
                                 for (var i = 0; i < docids.length; i++) {
                                     var doc_id = docids[i];
                                     if (seen[doc_id]) continue; seen[doc_id] = true;
-                                    var opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + doc_id;
+                                    var opac_url = xulG.url_prefix( urls.opac_rdetail ) + doc_id;
                                     var content_params = { 
                                         'session' : ses(),
                                         'authtime' : ses('authtime'),

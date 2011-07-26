@@ -42,6 +42,9 @@
         
         if(textbox && textbox.value != "") {
                 var opac_url =  xulG.url_prefix(urls.opac_rresult) + "?rt=keyword&tp=keyword&l=" + home_ou_id + "&d=" + search_depth +"&f=&t=" + escape(textbox.value);
+                if (urls.opac_rresult.match(/\/eg\/opac\/results/)) {
+                    opac_url =  xulG.url_prefix(urls.opac_rresult) + "?query=" + escape(textbox.value);
+                }
                 var params = {'tab_name':'Catalog'};
                 var content_params = { 'session' : ses(), 'authtime' : ses('authtime'), 'opac_url' : opac_url };
                 xulG.set_tab(urls.XUL_OPAC_WRAPPER, params, content_params);
