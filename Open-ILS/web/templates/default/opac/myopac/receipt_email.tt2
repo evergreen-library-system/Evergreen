@@ -12,4 +12,8 @@
     [% ELSE %]
     <div>[% l('Your receipt will be emailed to [_1]', ctx.user.email) %]</div>
     [% END %]
+    <p>
+        [ <a href="[% ctx.opac_root %]/myopac/main_payments">[%
+            l("Back to Payments History") %]</a> ]
+    </p>
 [% END %]
