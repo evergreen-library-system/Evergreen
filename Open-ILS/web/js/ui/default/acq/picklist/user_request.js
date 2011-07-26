@@ -98,24 +98,6 @@ function viewPicklist() {
     location.href = oilsBasePath + "/acq/picklist/view/" + lineitem.picklist();
 }
 
-function fooPicklist() {
-    if (aur_obj.lineitem()) {
-        viewPicklist();
-    } else {
-        addToPicklist();
-    }
-}
-
-function viewPicklist() {
-    var lineitem = fieldmapper.standardRequest(
-        [ 'open-ils.acq', 'open-ils.acq.lineitem.retrieve' ],
-        {
-            params: [openils.User.authtoken, aur_obj.lineitem()]
-        }
-    );
-    location.href = oilsBasePath + "/acq/picklist/view/" + lineitem.picklist();
-}
-
 function addToPicklist() {
     // reqId, from detail view
     location.href = oilsBasePath + "/acq/picklist/brief_record?ur=" + reqId + "&prepop=" + encodeURIComponent(js2JSON({

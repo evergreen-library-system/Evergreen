@@ -26,7 +26,6 @@
                     editStyle='pane'
                     autoHeight='true'
                     defaultCellWidth='"auto"'
-                    suppressFields="['id']"
                     showPaginator='true'
                     showColumnPicker='true'
                     columnPickerPrefix='"acq.picklist.user_request"'>
