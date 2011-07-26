@@ -244,9 +244,12 @@ CPAN_MODULES_SAFE = \
 CPAN_MODULES_MARC = \
 	Business::ISBN \
 	Business::ISBN::Data \
-    MARC::Charset \
-    MARC::File::XML \
-    Net::Z3950::ZOOM
+	MARC::Charset \
+	MARC::File::XML \
+	Net::Z3950::ZOOM
+
+CPAN_MODULES_MARC_RECORD = \
+	MARC::Record
 
 CPAN_MODULES_FORCE = \
 	Class::DBI::Frozen::301
@@ -271,7 +274,7 @@ squeeze: install_pgsql_client_debs_90  install_extra_debs_squeeze
 generic_debian:  install_debs install debian_sys_config install_cpan_force
 
 ubuntu-lucid: lucid generic_ubuntu
-lucid: install_pgsql_client_debs_90 install_extra_debs
+lucid: install_pgsql_client_debs_90 install_extra_debs install_cpan_marc_record
 generic_ubuntu: install_debs install debian_sys_config install_cpan_more install_cpan_safe install_cpan_force
 
 # - COMMON TARGETS ---------------------------------------------------------
@@ -284,8 +287,11 @@ install_cpan_more:
 	for m in $(CPAN_MODULES_MORE); do perl -MCPAN -e "install \"$$m\";"; done
 
 # Install the CPAN modules for MARC functionality
-install_cpan_marc: 
+install_cpan_marc: install_cpan_marc_record
 	for m in $(CPAN_MODULES_MARC); do perl -MCPAN -e "install \"$$m\";"; done
+
+install_cpan_marc_record:
+	for m in $(CPAN_MODULES_MARC_RECORD); do perl -MCPAN -e "install \"$$m\";"; done
 
 install_cpan_force:
 	for m in $(CPAN_MODULES_FORCE); do \
