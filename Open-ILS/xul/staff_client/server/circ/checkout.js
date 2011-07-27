@@ -663,11 +663,20 @@ circ.checkout.prototype = {
                     ],
                     'auto_override_these_events' : obj.auto_override_events,
                     'text' : {
+                        '1212' : function(r) {
+                            return document.getElementById('circStrings').getString('staff.circ.checkout.override.will_auto');
+                        },
+                        '1213' : function(r) {
+                            return document.getElementById('circStrings').getString('staff.circ.checkout.override.will_auto');
+                        },
                         '1232' : function(r) {
                             return document.getElementById('circStrings').getString('staff.circ.checkout.override.item_deposit_required.warning');
                         },
                         '1233' : function(r) {
                             return document.getElementById('circStrings').getString('staff.circ.checkout.override.item_rental_fee_required.warning');
+                        },
+                        '7002' : function(r) {
+                            return document.getElementById('circStrings').getString('staff.circ.checkout.override.will_auto');
                         },
                         '7004' : function(r) {
                             try {
@@ -679,6 +688,9 @@ circ.checkout.prototype = {
                         },
                         '7010' : function(r) {
                             return r.payload;
+                        },
+                        '7013' : function(r) {
+                            return document.getElementById('circStrings').getString('staff.circ.checkout.override.will_auto');
                         }
                     }
                 }
