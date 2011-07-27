@@ -20,6 +20,7 @@
     propagator = '?' _ query_string;
 
     is_advanced = CGI.param("_adv").size;
+    is_special = CGI.param("_special").size;
 %]
 
 

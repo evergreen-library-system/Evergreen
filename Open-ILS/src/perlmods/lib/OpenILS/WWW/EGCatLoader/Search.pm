@@ -132,6 +132,9 @@ sub load_rresults {
     my $e = $self->editor;
 
     $ctx->{page} = 'rresult';
+
+    return $self->item_barcode_shortcut if $cgi->param("qtype") eq "item_barcode";
+
     my $page = $cgi->param('page') || 0;
     my $facet = $cgi->param('facet');
     my $limit = $self->_get_search_limit;
@@ -213,4 +216,43 @@ sub load_rresults {
     return Apache2::Const::OK;
 }
 
+# Searching by barcode is a special search that does /not/ respect any other
+# of the usual search parameters, not even the ones for sorting and paging!
+sub item_barcode_shortcut {
+    my ($self) = @_;
+
+    my $method = "open-ils.search.multi_home.bib_ids.by_barcode";
+    if (my $search = create OpenSRF::AppSession("open-ils.search")) {
+        my $rec_ids = $search->request(
+            $method, $self->cgi->param("query")
+        )->gather(1);
+
+        if (ref $rec_ids ne 'ARRAY') {
+            if (defined $U->event_code($rec_ids)) {
+                $self->apache->log->warn(
+                    "$method returned event: " . $U->event_code($rec_ids)
+                );
+            } else {
+                $self->apache->log->warn(
+                    "$method returned something unexpected: $rec_ids"
+                );
+            }
+            return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+        }
+
+        my ($facets, @data) = $self->get_records_and_facets(
+            $rec_ids, undef, {flesh => "{holdings_xml,mra}"}
+        );
+
+        $self->ctx->{records} = [@data];
+        $self->ctx->{search_facets} = {};
+        $self->ctx->{hit_count} = scalar @data;
+        $self->ctx->{page_size} = $self->ctx->{hit_count};
+
+        return Apache2::Const::OK;
+    } {
+        $self->apache->log->warn("couldn't connect to open-ils.search");
+        return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+    }
+}
 1;

@@ -1,6 +1,7 @@
 <form id="adv_search_form" action="[% ctx.opac_root %]/results" method="GET">
     <div class="header_middle">[% l("Numeric Search") %]</div>
     <input type="hidden" name="contains" value="contains" />
+    <input type="hidden" name="_special" value="1" />
     <table>
         <tr>
             <td>
@@ -10,7 +11,7 @@
                     <option value="identifier|bib_cn">[% l('Call Number') %]</option>
                     <option value="identifier|lccn">[% l('LCCN') %]</option>
                     <option value="identifier|tcn">[% l('TCN') %]</option>
-                    <option disabled="disabled" value="item_barcode">[% l('Item Barcode') %]</option>[%# XXX have to implement special logic for this later %]
+                    <option value="item_barcode">[% l('Item Barcode') %]</option>
                 </select>
             </td>
             <td>

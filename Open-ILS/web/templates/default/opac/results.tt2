@@ -4,7 +4,7 @@
     WRAPPER "default/opac/parts/base.tt2";
     INCLUDE "default/opac/parts/topnav.tt2";
 
-    IF is_advanced;
+    IF is_advanced || is_special;
         ctx.page_title = l("Search Results");
     ELSE;
         ctx.page_title = l("Search Results: ") _ CGI.param('query') | html_entity;
@@ -43,7 +43,7 @@
                 </div>
                 [% END %]
                 <div class="results_header_div"></div>
-                [% UNLESS is_advanced %]
+                [% UNLESS is_advanced || is_special %]
                     <div class="results_header_lbl">Sort by</div>
                     [% INCLUDE "default/opac/parts/filtersort.tt2" value=CGI.param('sort') %]
                     <div class="results_header_div"></div>
