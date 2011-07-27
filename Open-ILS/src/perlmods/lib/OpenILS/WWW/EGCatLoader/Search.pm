@@ -133,7 +133,14 @@ sub load_rresults {
 
     $ctx->{page} = 'rresult';
 
-    return $self->item_barcode_shortcut if $cgi->param("qtype") eq "item_barcode";
+    if ($cgi->param("_special")) {
+        return $self->marc_expert_search if scalar($cgi->param("tag"));
+        return $self->item_barcode_shortcut if (
+            $cgi->param("qtype") and ($cgi->param("qtype") eq "item_barcode")
+        );
+        return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+    }
+
 
     my $page = $cgi->param('page') || 0;
     my $facet = $cgi->param('facet');
@@ -255,4 +262,62 @@ sub item_barcode_shortcut {
         return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
     }
 }
+
+# like item_barcode_search, this can't take all the usual search params, but
+# this one will at least do site, limit and page
+sub marc_expert_search {
+    my ($self) = @_;
+
+    my @tags = $self->cgi->param("tag");
+    my @subfields = $self->cgi->param("subfield");
+    my @terms = $self->cgi->param("term");
+
+    my $query = [];
+    for (my $i = 0; $i < scalar @tags; $i++) {
+        push @$query, {
+            "term" => $terms[$i],
+            "restrict" => [{"tag" => $tags[$i], "subfield" => $subfields[$i]}]
+        };
+    }
+
+    # loc, limit and offset
+    my $page = $self->cgi->param("page") || 0;
+    my $limit = $self->_get_search_limit;
+    my $org_unit = $self->cgi->param("loc") || $self->ctx->{aou_tree}->()->id;
+    my $offset = $page * $limit;
+
+    if (my $search = create OpenSRF::AppSession("open-ils.search")) {
+        my $results = $search->request(
+            "open-ils.search.biblio.marc", {
+                "searches" => $query, "org_unit" => $org_unit
+            }, $limit, $offset
+        )->gather(1);
+
+        if (defined $U->event_code($results)) {
+            $self->apache->log->warn(
+                "open-ils.search.biblio.marc returned event: " .
+                $U->event_code($results)
+            );
+            return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+        }
+
+        my ($facets, @data) = $self->get_records_and_facets(
+            # filter out nulls that will turn up here
+            [ grep { $_ } @{$results->{ids}} ],
+            undef, {flesh => "{holdings_xml,mra}"}
+        );
+
+        $self->ctx->{records} = [@data];
+        $self->ctx->{search_facets} = {};
+
+        $self->ctx->{page_size} = $limit;
+        $self->ctx->{hit_count} = $results->{count};
+
+        return Apache2::Const::OK;
+    } else {
+        $self->apache->log->warn("couldn't connect to open-ils.search");
+        return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+    }
+}
+
 1;

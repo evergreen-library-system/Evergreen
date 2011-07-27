@@ -1,3 +1,24 @@
-<!-- <form id="adv_search_form" action="[% ctx.opac_root %]/results" method="GET"> -->
+<form id="adv_search_form" action="[% ctx.opac_root %]/results" method="GET">
     <div class="header_middle">[% l("Expert Search") %]</div>
-<!-- </form> -->
+    <input type="hidden" name="_special" value="1" />
+    <table class="expert-search">
+        <tbody id="rows_here">
+            <tr id="clone_this">
+                <th>[% l("Tag:") %]</th>
+                <td><input type="text" name="tag" size="3" /></td>
+                <th>[% l("Subfield:") %]</th>
+                <td><input type="text" name="subfield" size="1" /></td>
+                <th>[% l("Value:") %]</th>
+                <td><input type="text" name="term" size="16" /></td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2"><a href="javascript:alert('XXX coming soon');">[ [% l("Add row") %] ]</a></td>
+                <td colspan="4">
+                    <input type="image" src="[% ctx.media_prefix %]/images/search_btn.gif" alt="[% l('Search') %]" title="[% l('Search') %]" />
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</form>
