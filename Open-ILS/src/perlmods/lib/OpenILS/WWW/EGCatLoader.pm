@@ -102,7 +102,16 @@ sub load {
     # ----------------------------------------------------------------
     if($path =~ m|opac/login|) {
         return $self->redirect_ssl unless $self->cgi->https;
-        return $self->load_login;
+        return $self->load_login unless $self->editor->requestor; # already logged in?
+
+        # This will be less confusing to users than to be shown a login form
+        # when they're already logged in.
+        return $self->generic_redirect(
+            sprintf(
+                "https://%s%s/myopac/main",
+                $self->apache->hostname, $self->ctx->{opac_root}
+            )
+        );
     }
 
     if($path =~ m|opac/logout|) {
