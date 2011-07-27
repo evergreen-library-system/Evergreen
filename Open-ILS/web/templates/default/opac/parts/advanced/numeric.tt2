@@ -1,0 +1,26 @@
+<form id="adv_search_form" action="[% ctx.opac_root %]/results" method="GET">
+    <div class="header_middle">[% l("Numeric Search") %]</div>
+    <input type="hidden" name="contains" value="contains" />
+    <table>
+        <tr>
+            <td>
+                <select name="qtype">
+                    <option value="identifier|isbn">[% l('ISBN') %]</option>
+                    <option value="identifier|issn">[% l('ISSN') %]</option>
+                    <option value="identifier|bib_cn">[% l('Call Number') %]</option>
+                    <option value="identifier|lccn">[% l('LCCN') %]</option>
+                    <option value="identifier|tcn">[% l('TCN') %]</option>
+                    <option disabled="disabled" value="item_barcode">[% l('Item Barcode') %]</option>[%# XXX have to implement special logic for this later %]
+                </select>
+            </td>
+            <td>
+                <input type="text" name="query" size="16" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="right">
+                <input type="image" alt="[% l('Search') %]"
+                    src="[% ctx.media_prefix %]/images/search_btn.gif" />
+            </td>
+    </table>
+</form>

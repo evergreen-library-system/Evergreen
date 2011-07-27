@@ -88,7 +88,9 @@ sub load {
         $path =~ /opac\/my(opac\/lists|list)/;
 
     return $self->load_simple("home") if $path =~ m|opac/home|;
-    return $self->load_simple("advanced") if $path =~ m|opac/advanced|;
+    return $self->load_simple("advanced") if
+        $path =~ m:opac/(advanced|numeric|expert):;
+
     return $self->load_rresults if $path =~ m|opac/results|;
     return $self->load_record if $path =~ m|opac/record|;
 
