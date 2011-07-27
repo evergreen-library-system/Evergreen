@@ -18,7 +18,7 @@
                     <!-- add a new row -->
                     <tr id='adv_global_addrow'>
                         <td align='left' style="padding-top:7px;">
-                            <a href="javascript:;" id="myopac_new_global_row" onclick='addSearchRow();'>Add Search Row</a>
+                            <a href="javascript:;" id="myopac_new_global_row" onclick='addSearchRow();'>[% l('Add Search Row') %]</a>
                         </td>
                     </tr>
                 </tbody>
@@ -27,7 +27,7 @@
     </tr>
     <tr>
         <td align='top'>
-          <div style="width:100%;" class="header_middle">Search Filters</div>
+          <div style="width:100%;" class="header_middle">[% l('Search Filters') %]</div>
           <table cellpadding='10' cellspacing='0' border='0'><tr>
             <td valign='top'>
                 <strong>[% l("Item Type") %]</strong><br />
