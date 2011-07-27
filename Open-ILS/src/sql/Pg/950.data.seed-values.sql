@@ -96,7 +96,8 @@ INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath )
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
     (27, 'identifier', 'bibid', oils_i18n_gettext(27, 'Internal ID', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='901']/marc:subfield[@code='c']$$ );
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, search_field, facet_field) VALUES
-    (28, 'identifier', 'authority_id', oils_i18n_gettext(28, 'Authority Record ID', 'cmf', 'label'), 'marcxml', '//marc:datafield/marc:subfield[@code="0"]', FALSE, TRUE);
+    (28, 'identifier', 'authority_id', oils_i18n_gettext(28, 'Authority Record ID', 'cmf', 'label'), 'marcxml', '//marc:datafield/marc:subfield[@code="0"]', FALSE, TRUE),
+    (29, 'identifier', 'lccn', oils_i18n_gettext(29, 'LCCN', 'cmf', 'label'), 'marcxml', '//marc:datafield[@tag="010"]/marc:subfield[@code="a"]', TRUE, FALSE) ;
 
 SELECT SETVAL('config.metabib_field_id_seq'::TEXT, (SELECT MAX(id) FROM config.metabib_field), TRUE);
 

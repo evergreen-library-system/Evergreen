@@ -288,17 +288,26 @@ div.select-wrapper:hover {
 
 #adv_search {
 	width:156px;
-	background:url('/images/adv_search_on.gif') no-repeat bottom;
+	background:url('/images/adv_search_off.gif') no-repeat bottom;
+}
+#adv_search.on {
+	background: url('/images/adv_search_on.gif') no-repeat bottom !important;
 }
 
 #num_search {
 	width:156px;
 	background:url('/images/num_search_off.gif') no-repeat bottom;
 }
+#num_search.on {
+	background: url('/images/num_search_on.gif') no-repeat bottom !important;
+}
 
 #expert_search {
 	width:156px;
 	background:url('/images/expert_search_off.gif') no-repeat bottom;
+}
+#expert_search.on {
+	background: url('/images/expert_search_on.gif') no-repeat bottom !important;
 }
 
 #acct_tabs, #acct_fines_tabs {
