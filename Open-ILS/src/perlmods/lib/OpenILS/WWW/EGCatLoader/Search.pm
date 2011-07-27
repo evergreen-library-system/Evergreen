@@ -48,7 +48,7 @@ sub _prepare_biblio_search_basics {
 sub _prepare_biblio_search {
     my ($cgi, $ctx) = @_;
 
-    my $query = _prepare_biblio_search_basics($cgi);
+    my $query = _prepare_biblio_search_basics($cgi) || '';
 
     $query = ('#' . $_ . ' ' . $query) foreach ($cgi->param('modifier'));
 
@@ -135,37 +135,52 @@ sub load_rresults {
     my $page = $cgi->param('page') || 0;
     my $facet = $cgi->param('facet');
     my $limit = $self->_get_search_limit;
-    my $loc = $cgi->param('loc');
+    my $loc = $cgi->param('loc') || $ctx->{aou_tree}->()->id;
     my $offset = $page * $limit;
+    my $metarecord = $cgi->param('metarecord');
+    my $results; 
 
     my ($query, $site, $depth) = _prepare_biblio_search($cgi, $ctx);
 
-    return $self->generic_redirect unless $query;
+    if ($metarecord) {
 
-    # Limit and offset will stay here. Everything else should be part of
-    # the query string, not special args.
-    my $args = {'limit' => $limit, 'offset' => $offset};
+        # TODO: other limits, like SVF/format, etc.
+        $results = $U->simplereq(
+            'open-ils.search', 
+            'open-ils.search.biblio.metarecord_to_records',
+            $metarecord, {org => $loc, depth => $depth}
+        );
 
-    # Stuff these into the TT context so that templates can use them in redrawing forms
-    $ctx->{processed_search_query} = $query;
+        # force the metarecord result blob to match the format of regular search results
+        $results->{ids} = [map { [$_] } @{$results->{ids}}]; 
 
-    $query = "$query $facet" if $facet; # TODO
+    } else {
 
-    $logger->activity("EGWeb: [search] $query");
+        return $self->generic_redirect unless $query;
 
-    my $results;
+        # Limit and offset will stay here. Everything else should be part of
+        # the query string, not special args.
+        my $args = {'limit' => $limit, 'offset' => $offset};
 
-    try {
+        # Stuff these into the TT context so that templates can use them in redrawing forms
+        $ctx->{processed_search_query} = $query;
 
-        my $method = 'open-ils.search.biblio.multiclass.query';
-        $method .= '.staff' if $ctx->{is_staff};
-        $results = $U->simplereq('open-ils.search', $method, $args, $query, 1);
+        $query = "$query $facet" if $facet; # TODO
 
-    } catch Error with {
-        my $err = shift;
-        $logger->error("multiclass search error: $err");
-        $results = {count => 0, ids => []};
-    };
+        $logger->activity("EGWeb: [search] $query");
+
+        try {
+
+            my $method = 'open-ils.search.biblio.multiclass.query';
+            $method .= '.staff' if $ctx->{is_staff};
+            $results = $U->simplereq('open-ils.search', $method, $args, $query, 1);
+
+        } catch Error with {
+            my $err = shift;
+            $logger->error("multiclass search error: $err");
+            $results = {count => 0, ids => []};
+        };
+    }
 
     my $rec_ids = [map { $_->[0] } @{$results->{ids}}];
 
