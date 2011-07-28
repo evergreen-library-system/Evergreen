@@ -60,6 +60,7 @@
 <!ENTITY conify.org_unit.addresses_pane.zip "Zip">
 <!ENTITY conify.org_unit.addresses_pane.country "Country">
 <!ENTITY conify.org_unit.addresses_pane.county "County">
+<!ENTITY conify.org_unit.addresses_pane.san "SAN">
 <!-- This is a highlighted label that is followed by the name of the organizational unit -->
 <!ENTITY conify.org_unit.status_bar "Now editing:">
 
