@@ -12,6 +12,7 @@ dojo.require('openils.acq.Lineitem');
 
 var contextOrg;
 var contextUsr;
+var contextUsrObj;
 var contextLI;
 var contextEg_bib;
 var aur_obj;
@@ -39,6 +40,7 @@ function setup() {
             }
         );
         if (typeof usr_obj.textcode == 'undefined') {
+            contextUsrObj = usr_obj;
             changeUser(usr_obj.id(),usr_obj.card().barcode());
         } else {
             alert(usr_obj.textcode + ' : ' + usr_obj.desc);
@@ -294,6 +296,7 @@ function changeUserPrompt() {
         }
     }
     if (barcode == '') {
+        contextUsrObj = null;
         changeUser('','');
     } else {
         var usr_obj = fieldmapper.standardRequest(
@@ -309,10 +312,22 @@ function changeUserPrompt() {
             alert(usr_obj.textcode + ' : ' + usr_obj.desc);
             return;
         } else {
+            contextUsrObj = usr_obj;
             changeUser(usr_obj.id(),usr_obj.card().barcode());
         }
     }
     buildGrid();
+}
+
+function createRequest() {
+    if (!contextUsr) {
+        changeUserPrompt();
+    }
+    if (contextUsr) {
+        rGrid.overrideEditWidgets.pickup_lib = new dijit.form.TextBox({"disabled": true});
+        rGrid.overrideEditWidgets.pickup_lib.shove = { create : contextUsrObj.home_ou() };
+        rGrid.showCreateDialog();
+    }
 }
 
 openils.Util.addOnLoad(setup);

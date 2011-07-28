@@ -44,7 +44,7 @@
                     suppressFields='["id", "usr", "pickup_lib", "holdable_formats", "phone_notify", "email_notify", "lineitem", "eg_bib", "max_fee", "cancel_reason"]'
                     fieldOrder='["title", "author", "isxn", "article_title", "article_pages", "request_type", "volume", "pubdate", "publisher", "location", "other_info", "mentioned"]'
                     editOnEnter='true'
-                    suppressEditFields='["id"]'
+                    suppressEditFields='["id", "holdable_formats", "phone_notify", "email_notify", "lineitem", "eg_bib", "max_fee", "cancel_reason"]'
                     fmClass='aur'
                     editStyle='pane'
                     autoHeight='true'
