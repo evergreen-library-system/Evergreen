@@ -100,6 +100,7 @@
         <command id="cmd_patron_info_triggered_events" />
         <command id="cmd_patron_info_stats" />
         <command id="cmd_patron_info_surveys" />
+        <command id="cmd_patron_info_acq_requests" />
         <command id="cmd_patron_info_groups" />
         <command id="cmd_patron_other" />
         <command id="cmd_patron_alert" />

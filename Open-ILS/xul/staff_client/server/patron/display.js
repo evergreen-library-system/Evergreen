@@ -370,6 +370,19 @@ patron.display.prototype = {
                             );
                         }
                     ],
+                    'cmd_patron_info_acq_requests' : [
+                        ['command'],
+                        function(ev) {
+                            obj.right_deck.set_iframe(
+                                urls.EG_ACQ_USER_REQUESTS + '?usr=' + obj.patron.id(),
+                                {},
+                                {
+                                    'get_barcodes' : function(a) { return xulG.get_barcodes(a); }
+                                }
+                            );
+                        }
+                    ],
+
                     'cmd_patron_info_groups' : [
                         ['command'],
                         function(ev) {

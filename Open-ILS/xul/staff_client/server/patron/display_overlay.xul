@@ -100,6 +100,7 @@
                                         </menupopup>
                                     </menu>
                                     <menuitem label="&staff.patron.info.surveys.label;" accesskey="&staff.patron.info.surveys.accesskey;" command="cmd_patron_info_surveys"/>
+                                    <menuitem label="&staff.patron.info.acq_requests.label;" accesskey="&staff.patron.info.acq_requests.accesskey;" command="cmd_patron_info_acq_requests"/>
                                     <menuitem label="&staff.patron.info.group.label;" accesskey="&staff.patron.info.group.accesskey;" command="cmd_patron_info_groups"/>
                                     <menuitem label="&staff.patron_display.verify_password.label;" accesskey="&staff.patron_display.verify_password.accesskey;" command="cmd_verify_credentials"/>
                                     <menuitem label="&staff.main.menu.admin.user_edit.label;" accesskey="&staff.main.menu.admin.user_edit.accesskey;" command="cmd_perm_editor"/>

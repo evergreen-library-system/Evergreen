@@ -3227,6 +3227,8 @@
 <!ENTITY staff.patron.info.stat_cats.accesskey "S">
 <!ENTITY staff.patron.info.surveys.label "Surveys">
 <!ENTITY staff.patron.info.surveys.accesskey "y">
+<!ENTITY staff.patron.info.acq_requests.label "Acquisition Requests">
+<!ENTITY staff.patron.info.acq_requests.accesskey "q">
 <!ENTITY staff.patron.info.group.label "Group Member Details">
 <!ENTITY staff.patron.info.group.accesskey "G">
 <!ENTITY staff.patron.search_form_overlay.inactive.value "Include inactive patrons?">
