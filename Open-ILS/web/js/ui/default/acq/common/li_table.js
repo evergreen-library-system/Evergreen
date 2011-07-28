@@ -2313,7 +2313,34 @@ function AcqLiTable() {
     this._deleteLiList = function(list, idx) {
         if(idx == null) idx = 0;
         if(idx >= list.length) return;
-        var liId = list[idx].id();
+
+        var li = list[idx];
+        var liId = li.id();
+
+        if (this.isPO && (li.state() == "on-order" || li.state() == "received")) {
+            /* It makes little sense to delete a lineitem from a PO that has
+             * already been marked 'on-order'.  Especially if EDI is in use,
+             * such a purchase order will probably have already been shipped
+             * off to a vendor, and mucking with it at this point could leave
+             * your data in a bad state that doesn't jive with reality.
+             *
+             * I could see making this restriction even firmer.
+             *
+             * I could also see adjusting the li state comparisons, extending
+             * the comparison to the PO's state, and/or providing functions
+             * that house the logic for comparing states in a single location.
+             *
+             * Yes, this will be really annoying if you have selected a lot
+             * of lineitems to cancel that have been ordered. You'll get a
+             * confirm dialog for each one.
+             */
+
+            if (!confirm(localeStrings.DEL_LI_FROM_PO)) {
+                self._deleteLiList(list, ++idx); /* move on to next in list */
+                return;
+            }
+        }
+
         fieldmapper.standardRequest(
             ['open-ils.acq',
              this.isPO ? 'open-ils.acq.purchase_order.lineitem.delete' : 'open-ils.acq.picklist.lineitem.delete'],
