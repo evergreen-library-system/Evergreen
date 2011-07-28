@@ -237,16 +237,22 @@ sub item_barcode_shortcut {
         )->gather(1);
 
         if (ref $rec_ids ne 'ARRAY') {
-            if (defined $U->event_code($rec_ids)) {
-                $self->apache->log->warn(
-                    "$method returned event: " . $U->event_code($rec_ids)
-                );
+
+            if($U->event_equals($rec_ids, 'ASSET_COPY_NOT_FOUND')) {
+                $rec_ids = [];
+
             } else {
-                $self->apache->log->warn(
-                    "$method returned something unexpected: $rec_ids"
-                );
+                if (defined $U->event_code($rec_ids)) {
+                    $self->apache->log->warn(
+                        "$method returned event: " . $U->event_code($rec_ids)
+                    );
+                } else {
+                    $self->apache->log->warn(
+                        "$method returned something unexpected: $rec_ids"
+                    );
+                }
+                return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
             }
-            return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
         }
 
         my ($facets, @data) = $self->get_records_and_facets(
