@@ -1445,6 +1445,9 @@ function updateFixedFields (element) {
 
     var rtype = _record_type;
     var new_value = element.value;
+    // Don't take focus away/adjust the record on partial changes
+    var length = element.getAttribute('maxlength');
+    if(new_value.length < length) return true;
 
     var parts = {
         ldr : _record.leader,
