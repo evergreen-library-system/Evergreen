@@ -140,9 +140,7 @@ sub load_rresults {
         return $self->item_barcode_shortcut if (
             $cgi->param("qtype") and ($cgi->param("qtype") eq "item_barcode")
         );
-        return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
     }
-
 
     my $page = $cgi->param('page') || 0;
     my $facet = $cgi->param('facet');
