@@ -66,7 +66,8 @@ while ($rec = testlib::load_MARC_rec($testdata, $testno++)) {
 close $testdata;
 
 # test: passthru_open_ended
-open($testdata, "<mfhddata2.txt") or die("Cannot open 'mfhddata2.txt': $!");
+my $testfile2 = dirname(__FILE__) . "/mfhddata2.txt";
+open($testdata, "<", $testfile2) or die("Cannot open '$testfile2': $!");
 
 $rec = MFHD->new(testlib::load_MARC_rec($testdata, $testno));
 my $rec2 = MFHD->new(testlib::load_MARC_rec($testdata, $testno));
