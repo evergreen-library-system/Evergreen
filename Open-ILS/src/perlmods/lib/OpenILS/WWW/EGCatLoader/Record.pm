@@ -78,6 +78,12 @@ sub mk_copy_query {
     my $copy_limit = shift;
     my $copy_offset = shift;
 
+    # XXX In the future, $sort_org should be understood to be an abstration
+    # that refers to something configurable, not necessariyl orig_loc.
+
+    my $sort_org = $self->ctx->{orig_loc} || $org ||
+        $self->ctx->{aou_tree}->()->id;
+
     my $query = {
         select => {
             acp => ['id', 'barcode', 'circ_lib', 'create_date', 'age_protect', 'holdable'],
@@ -133,6 +139,8 @@ sub mk_copy_query {
 
         # Order is: copies with circ_lib=org, followed by circ_lib name, followed by call_number label
         order_by => [
+            {class => 'acp', field => 'circ_lib', transform => 'numeric_eq',
+                params => [$sort_org], direction => 'desc'},
             {class => 'aou', field => 'name'}, 
             {class => 'acn', field => 'label'}
         ],

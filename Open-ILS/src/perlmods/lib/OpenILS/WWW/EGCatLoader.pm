@@ -259,7 +259,7 @@ sub get_orig_loc {
         return $orig_loc;
     }
 
-    return $self->cgi->cookie('orig_loc');
+    return $self->cgi->cookie(COOKIE_ORIG_LOC);
 }
 
 
