@@ -29,5 +29,4 @@
             onclick='return killRowIfAtLeast(2, this);'><img src="[% ctx.media_prefix %]/images/adv_row_close_btn.png" /></a>
     </td>
 </tr>
-[%      i = i + 1;
-    END %]
+[% END %]
