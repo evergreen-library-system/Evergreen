@@ -105,6 +105,7 @@
                                         <span name="worksheet"> | <a title='Generate Worksheet' name="worksheet_link" href="javascript:void(0);">&#x270D; worksheet</a></span>
                                         <span name='pl' class='hidden'> | <a title='Select List' name='pl_link' href='javascript:void(0);'>&#x2756; </a></span>
                                         <span name='po' class='hidden'> | <a title='Purchase Order' name='po_link' href='javascript:void(0);'>&#x2318; </a></span>
+                                        <span name="show_requests"> | <a title='Patron Requests' name="show_requests_link" href="javascript:void(0);">requests</a></span> 
                                     </td>
                                 </tr>
                             </tbody>

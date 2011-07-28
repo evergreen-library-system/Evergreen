@@ -21,13 +21,8 @@ var cgi = new openils.CGI();
 
 function setup() {
 
-    if (cgi.param('eg_bib')) {
-        changeBib(cgi.param('eg_bib'));
-    }
-
-    if (cgi.param('lineitem')) {
-        changeLI(cgi.param('lineitem'));
-    }
+    changeBib(cgi.param('eg_bib'));
+    changeLI(cgi.param('lineitem'));
 
     if (cgi.param('usr')) {
         var usr_obj = fieldmapper.standardRequest(

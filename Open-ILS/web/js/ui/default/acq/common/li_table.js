@@ -297,6 +297,9 @@ function AcqLiTable() {
         nodeByName("worksheet_link", row).href =
             oilsBasePath + "/acq/lineitem/worksheet/" + li.id();
 
+        nodeByName("show_requests_link", row).href =
+            oilsBasePath + "/acq/picklist/user_request?lineitem=" + li.id();
+
         dojo.query('[attr=title]', row)[0].onclick = function() {self.drawInfo(li.id())};
         dojo.query('[name=copieslink]', row)[0].onclick = function() {self.drawCopies(li.id())};
         dojo.query('[name=noteslink]', row)[0].onclick = function() {self.drawLiNotes(li)};
