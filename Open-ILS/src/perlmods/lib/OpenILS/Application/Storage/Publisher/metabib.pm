@@ -2906,7 +2906,7 @@ sub query_parser_fts {
 	if (my ($filter) = $query->parse_tree->find_filter('site')) {
             $ou = $filter->args->[0] if (@{$filter->args});
     }
-	$ou = actor::org_unit->search( { shortname => $ou } )->next->id if ($ou and $ou !~ /^\d+$/);
+    $ou = actor::org_unit->search( { shortname => $ou } )->next->id if ($ou and $ou !~ /^(-)?\d+$/);
 
 
     # gather lasso, as with $ou
