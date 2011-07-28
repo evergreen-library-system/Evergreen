@@ -25,6 +25,7 @@ use OpenILS::WWW::EGCatLoader::Container;
 my $U = 'OpenILS::Application::AppUtils';
 
 use constant COOKIE_SES => 'ses';
+use constant COOKIE_ORIG_LOC => 'eg_orig_loc';
 
 sub new {
     my($class, $apache, $ctx) = @_;
@@ -210,6 +211,7 @@ sub load_common {
     $ctx->{unparsed_uri} = $self->apache->unparsed_uri;
     $ctx->{opac_root} = $ctx->{base_path} . "/opac"; # absolute base url
     $ctx->{is_staff} = ($self->apache->headers_in->get('User-Agent') =~ /oils_xulrunner/);
+    $ctx->{orig_loc} = $self->get_orig_loc;
 
     # capture some commonly accessed pages
     $ctx->{home_page} = 'http://' . $self->apache->hostname . $self->ctx->{opac_root} . "/home";
@@ -239,6 +241,27 @@ sub load_common {
 
     return Apache2::Const::OK;
 }
+
+# orig_loc (i.e. "original location") passed in as a URL 
+# param will replace any existing orig_loc stored as a cookie.
+sub get_orig_loc {
+    my $self = shift;
+
+    if(my $orig_loc = $self->cgi->param('orig_loc')) {
+        $self->apache->headers_out->add(
+            "Set-Cookie" => $self->cgi->cookie(
+                -name => COOKIE_ORIG_LOC,
+                -path => $self->ctx->{base_path},
+                -value => $orig_loc,
+                -expires => undef
+            )
+        );
+        return $orig_loc;
+    }
+
+    return $self->cgi->cookie('orig_loc');
+}
+
 
 
 # -----------------------------------------------------------------------------

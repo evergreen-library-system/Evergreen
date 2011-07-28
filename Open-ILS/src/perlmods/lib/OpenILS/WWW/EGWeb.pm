@@ -9,9 +9,9 @@ use Apache2::Log;
 use OpenSRF::EX qw(:try);
 use OpenILS::Utils::CStoreEditor;
 
-use constant OILS_HTTP_COOKIE_SKIN => 'oils:skin';
-use constant OILS_HTTP_COOKIE_THEME => 'oils:theme';
-use constant OILS_HTTP_COOKIE_LOCALE => 'oils:locale';
+use constant OILS_HTTP_COOKIE_SKIN => 'eg_skin';
+use constant OILS_HTTP_COOKIE_THEME => 'eg_theme';
+use constant OILS_HTTP_COOKIE_LOCALE => 'eg_locale';
 
 my $web_config;
 my $web_config_file;
