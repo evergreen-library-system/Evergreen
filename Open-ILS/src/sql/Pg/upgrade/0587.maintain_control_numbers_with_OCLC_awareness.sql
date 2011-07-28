@@ -1,5 +1,7 @@
 BEGIN;
 
+INSERT INTO config.upgrade_log (version) VALUES ('0587'); -- dbs/berick
+
 CREATE OR REPLACE FUNCTION maintain_control_numbers() RETURNS TRIGGER AS $func$
 use strict;
 use MARC::Record;
