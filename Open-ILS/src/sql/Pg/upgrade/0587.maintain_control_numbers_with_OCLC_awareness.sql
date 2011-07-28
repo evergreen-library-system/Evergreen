@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0587', :eg_version);
+
 CREATE OR REPLACE FUNCTION maintain_control_numbers() RETURNS TRIGGER AS $func$
 use strict;
 use MARC::Record;
