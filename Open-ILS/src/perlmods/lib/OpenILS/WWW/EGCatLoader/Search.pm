@@ -6,6 +6,8 @@ use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::AppUtils;
 use OpenSRF::Utils::JSON;
+use Data::Dumper;
+$Data::Dumper::Indent = 0;
 my $U = 'OpenILS::Application::AppUtils';
 
 
@@ -274,12 +276,14 @@ sub marc_expert_search {
 
     my $query = [];
     for (my $i = 0; $i < scalar @tags; $i++) {
+        next if ($tags[$i] eq "" || $subfields[$i] eq "" || $terms[$i] eq "");
         push @$query, {
             "term" => $terms[$i],
             "restrict" => [{"tag" => $tags[$i], "subfield" => $subfields[$i]}]
         };
     }
 
+    $logger->info("query for expert search: " . Dumper($query));
     # loc, limit and offset
     my $page = $self->cgi->param("page") || 0;
     my $limit = $self->_get_search_limit;
