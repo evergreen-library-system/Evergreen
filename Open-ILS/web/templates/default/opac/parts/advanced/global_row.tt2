@@ -26,7 +26,7 @@
         <input type='text' size='18' name='query' value="[% q | html %]" />
         <a href="javascript:;" class="row-remover"
             title="[% l('Remove row') %]" alt="[% l('Remove row') %]"
-            onclick='var row = this.parentNode.parentNode;var tbody = row.parentNode; if( tbody.getElementsByTagName("tr").length > 2 ) row.parentNode.removeChild(row);'><img src="[% ctx.media_prefix %]/images/adv_row_close_btn.png" /></a>
+            onclick='return killRowIfAtLeast(2, this);'><img src="[% ctx.media_prefix %]/images/adv_row_close_btn.png" /></a>
     </td>
 </tr>
 [%      i = i + 1;

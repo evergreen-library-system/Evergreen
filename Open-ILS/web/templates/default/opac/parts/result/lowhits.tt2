@@ -2,7 +2,7 @@
     <div id="zero_search_hits">
         <div>
             <p>[% l('Sorry, no entries were found for') %]
-                [% IF is_advanced; l('your search'); ELSE %]
+                [% IF is_advanced OR is_special; l('your search'); ELSE %]
                 <q>[% CGI.param('query') | html %]</q>
                 [% END %]
                 <br />
