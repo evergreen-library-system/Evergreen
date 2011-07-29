@@ -94,6 +94,7 @@ sub load {
 
     return $self->load_rresults if $path =~ m|opac/results|;
     return $self->load_record if $path =~ m|opac/record|;
+    return $self->load_cnbrowse if $path =~ m|opac/cnbrowse|;
 
     return $self->load_mylist_add if $path =~ m|opac/mylist/add|;
     return $self->load_mylist_move if $path =~ m|opac/mylist/move|;

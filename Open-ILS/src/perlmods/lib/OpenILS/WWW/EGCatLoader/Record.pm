@@ -62,9 +62,8 @@ sub load_record {
             $ctx->{expanded_holdings} =
                 $self->get_expanded_holdings($rec_id, $org, $depth);
         } elsif ($expand eq 'cnbrowse') {
-            $ctx->{browsed_call_numbers} = $self->browse_call_numbers();
+            $self->prepare_browse_call_numbers();
         }
-
     }
 
     return Apache2::Const::OK;
@@ -209,10 +208,10 @@ sub any_call_number_label {
     }
 }
 
-sub browse_call_numbers {
+sub prepare_browse_call_numbers {
     my ($self) = @_;
 
-    my $cn = $self->any_call_number_label or
+    my $cn = ($self->cgi->param("cn") || $self->any_call_number_label) or
         return [];
 
     my $org_unit = $self->ctx->{get_aou}->($self->cgi->param('loc')) ||
@@ -224,7 +223,7 @@ sub browse_call_numbers {
         $cn, $org_unit->shortname, 9, $self->cgi->param("cnoffset")
     )->gather(1) || [];
 
-    return [
+    $self->ctx->{browsed_call_numbers} = [
         map {
             $_->record->marc(
                 (new XML::LibXML)->parse_string($_->record->marc)
@@ -232,6 +231,7 @@ sub browse_call_numbers {
             $_;
         } @$results
     ];
+    $self->ctx->{browsing_ou} = $org_unit;
 }
 
 sub get_hold_copy_summary {

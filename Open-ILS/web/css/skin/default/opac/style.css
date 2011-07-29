@@ -1015,3 +1015,7 @@ a.dash-link:hover { text-decoration: underline !important; }
 .rdetail-extras-summary { margin: 10px; }
 .staff-hold { background-color: #eee; }
 .expert-search tbody tr th { text-align: right; padding-left: 2em; }
+.bookshelf thead tr td {
+    border-bottom: 1px dashed #999;
+    padding-bottom: 1ex;
+}

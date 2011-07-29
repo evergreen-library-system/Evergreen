@@ -135,10 +135,14 @@ sub load_rresults {
 
     $ctx->{page} = 'rresult';
 
+    # Special alternative searches here.  This could all stand to be cleaner.
     if ($cgi->param("_special")) {
         return $self->marc_expert_search if scalar($cgi->param("tag"));
         return $self->item_barcode_shortcut if (
             $cgi->param("qtype") and ($cgi->param("qtype") eq "item_barcode")
+        );
+        return $self->call_number_browse_standalone if (
+            $cgi->param("qtype") and ($cgi->param("qtype") eq "cnbrowse")
         );
     }
 
@@ -326,6 +330,31 @@ sub marc_expert_search {
         $self->apache->log->warn("couldn't connect to open-ils.search");
         return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
     }
+}
+
+sub call_number_browse_standalone {
+    my ($self) = @_;
+
+    if (my $cnfrag = $self->cgi->param("query")) {
+        my $url = sprintf(
+            'http%s://%s%s/cnbrowse?cn=%s',
+            $self->cgi->https ? "s" : "",
+            $self->apache->hostname,
+            $self->ctx->{opac_root},
+            $cnfrag # XXX some kind of escaping needed here?
+        );
+        return $self->generic_redirect($url);
+    } else {
+        return $self->generic_redirect; # return to search page
+    }
+}
+
+sub load_cnbrowse {
+    my ($self) = @_;
+
+    $self->prepare_browse_call_numbers();
+
+    return Apache2::Const::OK;
 }
 
 1;
