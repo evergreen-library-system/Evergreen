@@ -9,7 +9,7 @@
                     <option value="identifier|isbn">[% l('ISBN') %]</option>
                     <option value="identifier|issn">[% l('ISSN') %]</option>
                     <option value="identifier|bib_cn">[% l('Bib Call Number') %]</option>
-                    <option value="cnbrowse">[% l('Shelf Browse') %]</option>
+                    <option value="cnbrowse">[% l('Call Number (Shelf Browse)') %]</option>
                     <option value="identifier|lccn">[% l('LCCN') %]</option>
                     <option value="identifier|tcn">[% l('TCN') %]</option>
                     <option value="item_barcode">[% l('Item Barcode') %]</option>
