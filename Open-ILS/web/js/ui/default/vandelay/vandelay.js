@@ -821,7 +821,7 @@ function vlHandleQueueItemsAction(action) {
             queueItemsImportDialog.hide();
 
             // hack to set the widgets the import funcs will be looking at.  Reset them below.
-            vlUploadQueueAutoImport.attr('value',  vlUploadQueueAutoImport2.attr('value'));
+            vlUploadQueueImportNoMatch.attr('value',  vlUploadQueueImportNoMatch2.attr('value'));
             vlUploadQueueAutoOverlayExact.attr('value',  vlUploadQueueAutoOverlayExact2.attr('value'));
             vlUploadQueueAutoOverlay1Match.attr('value',  vlUploadQueueAutoOverlay1Match2.attr('value'));
             vlUploadMergeProfile.attr('value',  vlUploadMergeProfile2.attr('value'));
@@ -833,8 +833,8 @@ function vlHandleQueueItemsAction(action) {
             }
             
             // reset the widgets to prevent accidental future actions
-            vlUploadQueueAutoImport.attr('value',  false);
-            vlUploadQueueAutoImport2.attr('value', false);
+            vlUploadQueueImportNoMatch.attr('value',  false);
+            vlUploadQueueImportNoMatch2.attr('value', false);
             vlUploadQueueAutoOverlayExact.attr('value', false);
             vlUploadQueueAutoOverlayExact2.attr('value', false);
             vlUploadQueueAutoOverlay1Match.attr('value', false);
@@ -901,23 +901,38 @@ function vlImportAllRecords() {
         function(){displayGlobalDiv('vl-queue-div');});
 }
 
-function vlImportRecordQueue(type, queueId, noMatchOnly, onload) {
+function vlImportRecordQueue(type, queueId, onload) {
     displayGlobalDiv('vl-generic-progress-with-total');
     var method = 'open-ils.vandelay.bib_queue.import';
-    if(noMatchOnly)
-        method = method.replace('import', 'nomatch.import');
     if(type == 'auth')
         method = method.replace('bib', 'auth');
 
+
+    var mergeOpt = false;
     var options = {};
+
+    if(vlUploadQueueImportNoMatch.checked) {
+        options.import_no_match = true;
+        vlUploadQueueImportNoMatch.checked = false;
+    }
+
     if(vlUploadQueueAutoOverlayExact.checked) {
         options.auto_overlay_exact = true;
         vlUploadQueueAutoOverlayExact.checked = false;
+        mergeOpt = true;
     }
 
     if(vlUploadQueueAutoOverlay1Match.checked) {
         options.auto_overlay_1match = true;
         vlUploadQueueAutoOverlay1Match.checked = false;
+        mergeOpt = true;
+    }
+
+    if(!mergeOpt) {
+        // in the interest of speed, if no merge options are 
+        // chosen, tell the back-end code to only process records
+        // that have no matches
+        method = method.replace('\.import', '.nomatch.import');
     }
     
     var profile = vlUploadMergeProfile.attr('value');
@@ -949,16 +964,18 @@ function batchUpload() {
     currentType = dijit.byId('vl-record-type').getValue();
 
     var handleProcessSpool = function() {
-        if(vlUploadQueueAutoImport.checked || vlUploadQueueAutoOverlayExact.checked || vlUploadQueueAutoOverlay1Match.checked) {
-            var noMatchOnly = !vlUploadQueueAutoOverlayExact.checked && !vlUploadQueueAutoOverlay1Match.checked;
-            vlImportRecordQueue(
-                currentType, 
-                currentQueueId, 
-                noMatchOnly,
-                function() {
-                    retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
-                }
-            );
+        if( 
+            vlUploadQueueImportNoMatch.checked || 
+            vlUploadQueueAutoOverlayExact.checked || 
+            vlUploadQueueAutoOverlay1Match.checked) {
+
+                vlImportRecordQueue(
+                    currentType, 
+                    currentQueueId, 
+                    function() {
+                        retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
+                    }
+                );
         } else {
             retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
         }
