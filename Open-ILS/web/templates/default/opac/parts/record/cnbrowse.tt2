@@ -29,9 +29,9 @@ END -%]
             <tbody id='cn_tbody'>
             [% tr_open = 0; FOR cn IN ctx.browsed_call_numbers %]
                 [%- IF loop.index % 3 == 0; tr_open = 1 %]
-                <tr id='cn_browse_row'>
+                <tr class='cn_browse_row'>
                 [% END -%]
-                    <td id='cn_browse_td' class='cn_browse_item' width='25%' valign='top'>
+                    <td class='cn_browse_item' width='25%' valign='top'>
                         [%  rec_attrs = {marc_xml => cn.record.marc};
                             PROCESS get_marc_attrs args=rec_attrs;
                             ident = rec_attrs.isbn_clean || rec_attrs.upc;

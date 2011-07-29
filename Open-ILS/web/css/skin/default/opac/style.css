@@ -1019,3 +1019,4 @@ a.dash-link:hover { text-decoration: underline !important; }
     border-bottom: 1px dashed #999;
     padding-bottom: 1ex;
 }
+.cn_browse_item { padding: 2ex; }
