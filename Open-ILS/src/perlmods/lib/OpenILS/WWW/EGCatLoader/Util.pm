@@ -212,6 +212,8 @@ sub get_records_and_facets {
         $facets = undef;
     }
 
+    $search->kill_me;
+
     return ($facets, @data);
 }
 

@@ -24,9 +24,11 @@ sub load_record {
 
     # run copy retrieval in parallel to bib retrieval
     # XXX unapi
-    my $copy_rec = OpenSRF::AppSession->create('open-ils.cstore')->request(
+    my $cstore = OpenSRF::AppSession->create('open-ils.cstore');
+    my $copy_rec = $cstore->request(
         'open-ils.cstore.json_query.atomic', 
-        $self->mk_copy_query($rec_id, $org, $depth, $copy_limit, $copy_offset));
+        $self->mk_copy_query($rec_id, $org, $depth, $copy_limit, $copy_offset)
+    );
 
     my (undef, @rec_data) = $self->get_records_and_facets([$rec_id], undef, {flesh => '{holdings_xml,mra}'});
     $ctx->{bre_id} = $rec_data[0]->{id};
@@ -38,6 +40,8 @@ sub load_record {
 
     $ctx->{have_holdings_to_show} = 0;
     $self->get_hold_copy_summary($rec_id, $org);
+
+    $cstore->kill_me;
 
     # XXX TODO we'll also need conditional logic to show MFHD-based holdings
     if (
@@ -173,12 +177,14 @@ sub mk_marc_html {
 sub get_holding_summaries {
     my ($self, $rec_id, $org, $depth) = @_;
 
-    return (
-        create OpenSRF::AppSession("open-ils.serial")->request(
-            "open-ils.serial.bib.summary_statements",
-            $rec_id, {"org_id" => $org, "depth" => $depth}
-        )->gather(1)
-    );
+    my $serial = create OpenSRF::AppSession("open-ils.serial");
+    my $result = $serial->request(
+        "open-ils.serial.bib.summary_statements",
+        $rec_id, {"org_id" => $org, "depth" => $depth}
+    )->gather(1);
+
+    $serial->kill_me;
+    return $result;
 }
 
 sub get_expanded_holdings {
@@ -188,7 +194,8 @@ sub get_expanded_holdings {
     my $holding_offset = int($self->cgi->param("holding_offset") || 0);
     my $type = $self->cgi->param("expand_holding_type");
 
-    return create OpenSRF::AppSession("open-ils.serial")->request(
+    my $serial =  create OpenSRF::AppSession("open-ils.serial");
+    my $result = $serial->request(
         "open-ils.serial.received_siss.retrieve.by_bib.atomic",
         $rec_id, {
             "ou" => $org, "depth" => $depth,
@@ -196,6 +203,9 @@ sub get_expanded_holdings {
             "type" => $type
         }
     )->gather(1);
+
+    $serial->kill_me;
+    return $result;
 }
 
 sub any_call_number_label {
@@ -223,6 +233,8 @@ sub prepare_browse_call_numbers {
         $cn, $org_unit->shortname, 9, $self->cgi->param("cnoffset")
     )->gather(1) || [];
 
+    $supercat->kill_me;
+
     $self->ctx->{browsed_call_numbers} = [
         map {
             $_->record->marc(
@@ -237,13 +249,16 @@ sub prepare_browse_call_numbers {
 sub get_hold_copy_summary {
     my ($self, $rec_id, $org) = @_;
     
-    my $req1 = OpenSRF::AppSession->create('open-ils.search')->request(
+    my $search = OpenSRF::AppSession->create('open-ils.search');
+    my $req1 = $search->request(
         'open-ils.search.biblio.record.copy_count', $org, $rec_id); 
 
     $self->ctx->{record_hold_count} = $U->simplereq(
         'open-ils.circ', 'open-ils.circ.bre.holds.count', $rec_id);
 
     $self->ctx->{copy_summary} = $req1->recv->content;
+
+    $search->kill_me;
 }
 
 1;

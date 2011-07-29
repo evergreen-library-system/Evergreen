@@ -237,6 +237,7 @@ sub item_barcode_shortcut {
         my $rec_ids = $search->request(
             $method, $self->cgi->param("query")
         )->gather(1);
+        $search->kill_me;
 
         if (ref $rec_ids ne 'ARRAY') {
 
@@ -304,6 +305,7 @@ sub marc_expert_search {
                 "searches" => $query, "org_unit" => $org_unit
             }, $limit, $offset
         )->gather(1);
+        $search->kill_me;
 
         if (defined $U->event_code($results)) {
             $self->apache->log->warn(

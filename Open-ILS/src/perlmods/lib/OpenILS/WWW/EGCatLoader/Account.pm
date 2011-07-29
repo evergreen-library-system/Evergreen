@@ -225,15 +225,15 @@ sub fetch_user_holds {
 
     my $e = $self->editor;
 
-    my $circ = OpenSRF::AppSession->create('open-ils.circ');
-
     if(!$hold_ids) {
+        my $circ = OpenSRF::AppSession->create('open-ils.circ');
 
         $hold_ids = $circ->request(
             'open-ils.circ.holds.id_list.retrieve.authoritative', 
             $e->authtoken, 
             $e->requestor->id
         )->gather(1);
+        $circ->kill_me;
     
         $hold_ids = [ grep { defined $_ } @$hold_ids[$offset..($offset + $limit - 1)] ] if $limit or $offset;
     }
@@ -476,7 +476,7 @@ sub load_place_hold {
                 $ctx->{hold_failed} = 1;
                 $ctx->{hold_failed_event} = $usr;
             }
-            # XXX Does $actor need to be explicity disconnected/destroyed?
+            $actor->kill_me;
         }
 
         my $args = {
@@ -610,8 +610,6 @@ sub fetch_user_circs {
     }
 
     return [] unless @circ_ids;
-
-    my $cstore = OpenSRF::AppSession->create('open-ils.cstore');
 
     my $qflesh = {
         flesh => 3,
@@ -979,6 +977,8 @@ sub prepare_fines {
             } 
         );
     }
+
+    $cstore->kill_me;
 
     $self->ctx->{"fines"}->{$_} /= 100.0 for (@total_keys);
     return;
