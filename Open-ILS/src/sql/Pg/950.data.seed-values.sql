@@ -9584,7 +9584,7 @@ INSERT INTO authority.control_set_bib_field (tag, authority_field)
 
 INSERT INTO authority.thesaurus (code, name, control_set) VALUES
     ('a', oils_i18n_gettext('a','Library of Congress Subject Headings','at','name'), 1),
-    ('b', oils_i18n_gettext('b',$$LC subject headings for children's literature$$,'at','name'), 1), -- silly vim '
+    ('b', oils_i18n_gettext('b','LC subject headings for children''s literature','at','name'), 1), 
     ('c', oils_i18n_gettext('c','Medical Subject Headings','at','name'), 1),
     ('d', oils_i18n_gettext('d','National Agricultural Library subject authority file','at','name'), 1),
     ('k', oils_i18n_gettext('k','Canadian Subject Headings','at','name'), 1),
