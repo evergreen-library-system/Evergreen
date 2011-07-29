@@ -622,6 +622,7 @@ sub import_record_list_impl {
     my $merge_profile = $$args{merge_profile};
     my $bib_source = $$args{bib_source};
     my $report_all = $$args{report_all};
+    my $import_no_match = $$args{import_no_match};
 
     my $overlay_func = 'vandelay.overlay_bib_record';
     my $auto_overlay_func = 'vandelay.auto_overlay_bib_record';
@@ -771,7 +772,7 @@ sub import_record_list_impl {
                 }
             }
 
-            if(!$imported and !$error) {
+            if(!$imported and !$error and $import_no_match and scalar(@{$rec->matches}) == 0) { # match count test should not be necessary, but is a good fail-safe
             
                 # No overlay / merge occurred.  Do a traditional record import by creating a new record
             

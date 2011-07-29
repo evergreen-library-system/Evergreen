@@ -21,7 +21,7 @@
                 <tr>
                     <td>&vandelay.auto.import.noncolliding;</td>
                     <td colspan='4'>
-                        <input jsId='vlUploadQueueAutoImport2' dojoType='dijit.form.CheckBox'/>
+                        <input jsId='vlUploadQueueImportNoMatch2' dojoType='dijit.form.CheckBox'/>
                     </td>
                 </tr>
                 <tr>
