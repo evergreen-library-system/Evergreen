@@ -50,11 +50,11 @@
                         attrs = {marc_xml => ctx.mylist_marc_xml.$item};
                         PROCESS get_marc_attrs args=attrs %]
                     <tr>
-                        <td class="opac-auto-097b" style="padding-left: 10px;">
+                        <td class="item_list_padding" style="padding-left: 10px;">
                             <input type="checkbox" name="record" value="[% item %]" />
                         </td>
-                        <td class="opac-auto-097b" style="padding-left: 5px;">[% attrs.title %]</td>
-                        <td class="opac-auto-097b" style="padding-left: 5px;">[% attrs.author %]</td>
+                        <td class="item_list_padding" style="padding-left: 5px;">[% attrs.title %]</td>
+                        <td class="item_list_padding" style="padding-left: 5px;">[% attrs.author %]</td>
                     </tr>
                     [% END %]
                 </tbody>

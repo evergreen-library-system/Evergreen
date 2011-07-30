@@ -40,7 +40,7 @@
     <div id='checked_main'>
         <form method="POST" id="circ-form"
             onsubmit="return confirm('[% l("Are you sure you wish to renew the selected item(s)?") %]');">
-        <table cellpadding='0' cellspacing='0' class="opac-auto-097b">
+        <table cellpadding='0' cellspacing='0' class="item_list_padding">
             <tr>
                 <td>
                     <select name="action">
