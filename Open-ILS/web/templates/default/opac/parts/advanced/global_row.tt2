@@ -13,7 +13,7 @@
         q = queries.shift; %]
 <tr[% IF loop.first %] id="adv_global_row"[% END %]>
     <td align='left' width='100%' nowrap='nowrap'>
-        <span class="opac-auto-078">
+        <span class="qtype_selector_margin">
             [% INCLUDE "default/opac/parts/qtype_selector.tt2"
                 query_type=qtype %]
         </span>
