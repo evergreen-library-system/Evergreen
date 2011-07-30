@@ -160,9 +160,9 @@
 .opac-auto-176 { width: 129px; }
 #search_box { width: 162px; }
 .opac-auto-178 { width: 174px; }
-.opac-auto-179 { width: 175px; margin-right: 11px; }
+.selector_actions_for_list { width: 175px; margin-right: 11px; }
 .opac-auto-179 optgroup { margin-left: 1em; font-weight: normal; font-style: italic; }
-.opac-auto-179-inner-option { margin-left: 2em; } /* XXX ".opac-auto-179 optgroup option" doesn't work!? */
+.selector_actions_for_list_inner_option { margin-left: 2em; } /* XXX ".opac-auto-179 optgroup option" doesn't work!? */
 .opac-auto-180 { width: 182px; color: black; padding: 5px 25px; }
 .opac-auto-181 { width: 195px; }
 .opac-auto-182 { width: 230px; text-align: left; margin-top: 3px; }
