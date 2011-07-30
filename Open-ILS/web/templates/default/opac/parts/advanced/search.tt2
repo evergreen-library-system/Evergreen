@@ -62,7 +62,7 @@
             </td>
             <td valign='top'>
             <strong>[% l("Sort Results") %]</strong>
-              <table class='opac-auto-017'>
+              <table class='adv_global_filter_sort'>
                 <tr>
                     <td align='center' width='100%'>
                         [% INCLUDE "default/opac/parts/filtersort.tt2"
