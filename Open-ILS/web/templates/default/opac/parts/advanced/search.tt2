@@ -2,7 +2,7 @@
 <table id='adv_global_search' class='data_grid data_grid_center' width='100%'>
     <tr style='border-bottom: none;'>
         <!-- Contains the user-addable(?) rows to define search class, containment and text -->
-        <td valign='top' class='opac-auto-012'>
+        <td valign='top' class='adv_global_input_container'>
             <table width='100%' id='adv_global_input_table'>
                 <thead>
                     <tr>
