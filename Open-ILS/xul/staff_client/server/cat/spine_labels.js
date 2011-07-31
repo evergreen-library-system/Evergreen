@@ -519,7 +519,7 @@
                     if (!lm) {
                         lm = g.data.hash.aous['cat.spine.line.margin'] || 0;
                     }
-                    var mm = Number($('mm').value); if (mm == NaN) mm = 2; /* middle margin */
+                    var mm = Number($('mm').value); if (isNaN(mm)) mm = 2; /* middle margin */
                     var lw = Number($('lw').value); /* spine label width */
                     if (!lw) {
                         lw = g.data.hash.aous['cat.spine.line.width'] || 8;
