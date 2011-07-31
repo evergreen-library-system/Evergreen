@@ -1101,6 +1101,8 @@
 <!ENTITY staff.main.menu.search.patrons.label "Search for Patrons">
 <!ENTITY staff.main.menu.search.patrons_barcode.accesskey "n">
 <!ENTITY staff.main.menu.search.patrons_barcode.label "Search for patron by Barcode">
+<!ENTITY staff.main.menu.search.patron_db_id.accesskey "">
+<!ENTITY staff.main.menu.search.patron_db_id.label "Retrieve patron via Database ID">
 <!ENTITY staff.main.menu.search.record.accesskey "T">
 <!ENTITY staff.main.menu.search.record.label "Search for record by TCN">
 <!ENTITY staff.main.menu.search.record_via_id.accesskey "D">

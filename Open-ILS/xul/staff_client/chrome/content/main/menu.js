@@ -378,6 +378,23 @@ main.menu.prototype = {
                     obj.set_patron_tab({},{},event);
                 }
             ],
+            'cmd_search_usr_id' : [
+                ['oncommand'],
+                function(event) {
+                    var usr_id = prompt(
+                        offlineStrings.getString('menu.cmd_search_usr_id.tab'),
+                        '',
+                        offlineStrings.getString('menu.cmd_search_usr_id.prompt')
+                    );
+                    if (usr_id != '' && ! isNaN(usr_id)) {
+                        obj.set_patron_tab(
+                            {},
+                            { 'id' : usr_id },
+                            event
+                        );
+                    }
+                }
+            ],
             'cmd_search_opac' : [
                 ['oncommand'],
                 function(event) {
