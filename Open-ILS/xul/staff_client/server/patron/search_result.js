@@ -26,6 +26,13 @@ patron.search_result.prototype = {
         obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init({'via':'stash'});
         var obscure_dob = String( obj.OpenILS.data.hash.aous['circ.obscure_dob'] ) == 'true';
 
+        var result_cap_setting = obj.OpenILS.data.hash.aous[
+            'ui.patron_search.result_cap'
+        ];
+        if (typeof result_cap_setting != 'undefined') {
+            obj.result_cap = Math.abs( result_cap_setting );
+        }
+
         JSAN.use('util.list'); obj.list = new util.list('patron_list');
 
         JSAN.use('patron.util');

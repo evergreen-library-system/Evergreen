@@ -2840,6 +2840,24 @@ INSERT into config.org_unit_setting_type
         ),
         'bool'
     )
+,(
+        'ui.patron_search.result_cap',
+        oils_i18n_gettext(
+            'ui.patron_search.result_cap',
+            'GUI: Cap results in Patron Search at this number.',
+            'coust',
+            'label'
+        ),
+        oils_i18n_gettext(
+            'ui.patron_search.result_cap',
+            'So for example, if you search for John Doe, normally you would get'
+            || ' at most 50 results.  This setting allows you to raise or lower'
+            || ' that limit.',
+            'coust',
+            'description'
+        ),
+        'integer'
+    )
 ;
 
 UPDATE config.org_unit_setting_type
