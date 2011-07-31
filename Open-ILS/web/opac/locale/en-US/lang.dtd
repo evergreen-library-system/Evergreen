@@ -155,7 +155,7 @@
 <!ENTITY staff.au_label_active "Active">
 <!ENTITY staff.au_label_family_name "Family Name">
 <!ENTITY staff.au_label_first_given_name "First Name">
-<!ENTITY staff.au_label_id "Record ID">
+<!ENTITY staff.au_label_id "Database ID">
 <!ENTITY staff.au_label_prefix "Prefix">
 <!ENTITY staff.au_label_second_given_name "Middle Name">
 <!ENTITY staff.au_label_suffix "Suffix">
@@ -912,9 +912,9 @@
 <!ENTITY staff.main.menu.cat.retrieve_last_record.accesskey "L">
 <!ENTITY staff.main.menu.cat.retrieve_last_record.label "Retrieve Last Record">
 <!ENTITY staff.main.menu.cat.search_tcn.accesskey "T">
-<!ENTITY staff.main.menu.cat.search_tcn.label "Retrieve record by TCN">
+<!ENTITY staff.main.menu.cat.search_tcn.label "Retrieve title by TCN">
 <!ENTITY staff.main.menu.cat.search_bib_id.accesskey "D">
-<!ENTITY staff.main.menu.cat.search_bib_id.label "Retrieve record by Record ID">
+<!ENTITY staff.main.menu.cat.search_bib_id.label "Retrieve title via Database ID">
 <!ENTITY staff.main.menu.cat.volume_status.key "V">
 <!ENTITY staff.main.menu.cat.volume_status.label "Display Volume">
 <!ENTITY staff.main.menu.cat.vandelay.label "MARC Batch Import/Export">
@@ -1106,7 +1106,7 @@
 <!ENTITY staff.main.menu.search.record.accesskey "T">
 <!ENTITY staff.main.menu.search.record.label "Search for record by TCN">
 <!ENTITY staff.main.menu.search.record_via_id.accesskey "D">
-<!ENTITY staff.main.menu.search.record_via_id.label "Search for record by Record ID">
+<!ENTITY staff.main.menu.search.record_via_id.label "Retrieve title via Database ID">
 <!ENTITY staff.main.menu.serials.key "l">
 <!ENTITY staff.main.menu.serials.label "Serials">
 <!ENTITY staff.main.menu.tabs.close "Close All Tabs">
@@ -2460,7 +2460,7 @@
 <!-- "TCN" is an abbreviation for "title control number" -->
 <!ENTITY staff.cat.bib_brief.title_control_number.label "TCN:">
 <!ENTITY staff.cat.bib_brief.title_control_number.accesskey "">
-<!ENTITY staff.cat.bib_brief.biblio_record_entry_id.label "Record ID:">
+<!ENTITY staff.cat.bib_brief.biblio_record_entry_id.label "Database ID:">
 <!ENTITY staff.cat.bib_brief.biblio_record_entry_id.accesskey "">
 <!ENTITY staff.cat.bib_brief.biblio_record_entry_owner.label "Record Owner:">
 <!ENTITY staff.cat.bib_brief.biblio_record_entry_owner.accesskey "">
