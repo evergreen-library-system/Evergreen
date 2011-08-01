@@ -149,4 +149,5 @@ listitem { border-bottom: solid thin black; }
 
 .oils_event { color: red; }
 
-
+.blue_bg { background-color: blue; }
+.red_bg { background-color: red; }

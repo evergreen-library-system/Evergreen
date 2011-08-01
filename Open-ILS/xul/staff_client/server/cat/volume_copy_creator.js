@@ -62,8 +62,29 @@ function my_init() {
                 g.save_button_locked = false;
                 document.getElementById("Create").disabled = false;
             }
+            xulG.clear_update_copy_editor_timeout = function() {
+                if (g.update_copy_editor_timeoutID) {
+                    clearTimeout(g.update_copy_editor_timeoutID);
+                    g.gather_copies();
+                }
+            }
+            $('Sync').addEventListener(
+                'command',
+                function() {
+                    // give gather_copies_soon fired off directly/indirectly by
+                    // onchange a chance to go first
+                    setTimeout(
+                        function() {
+                            xulG.enable_copy_editor();
+                        },
+                        0
+                    );
+                },
+                false
+            );
         } else {
             $('Create').hidden = true;
+            $('Sync').hidden = true;
         }
 
         /***********************************************************************************************************/
@@ -268,8 +289,8 @@ g.render_volume_count_entry = function(row,ou_id) {
     }
     util.widgets.apply_vertical_tab_on_enter_handler(
         tb,
-        function() { render_copy_count_entry({'target':tb}); setTimeout(function(){util.widgets.vertical_tab(tb);},0); },
-        g.delay_gather_copies_soon
+        function() { render_copy_count_entry({'target':tb}); setTimeout(function(){util.widgets.vertical_tab(tb);},0); }
+        ,function() { $('Sync').disabled = true; }
     );
     tb.addEventListener( 'change', render_copy_count_entry, false);
     tb.addEventListener( 'change', g.gather_copies_soon, false);
@@ -460,11 +481,11 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
                                     util.widgets.vertical_tab(call_number_column_textbox);
                                 },0
                             );
-                        },
-                        g.delay_gather_copies_soon
+                        }
+                        ,function() { $('Sync').disabled = true; }
                     );
                     call_number_column_textbox.addEventListener( 'change', handle_change_to_callnumber_data, false);
-                    call_number_column_textbox.addEventListener( 'change', g.gather_copies_soon, false);
+                    //call_number_column_textbox.addEventListener( 'change', g.gather_copies_soon, false);
                     call_number_column_textbox.addEventListener( 'focus', function(ev) { g.last_focus = ev.target; }, false );
 
                     /**** CLASSIFICATION COLUMN revisited ****/
@@ -528,8 +549,8 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
                                     util.widgets.vertical_tab(number_of_copies_column_textbox);
                                 },0
                             );
-                        },
-                        g.delay_gather_copies_soon
+                        }
+                        ,function() { $('Sync').disabled = true; }
                     );
                     number_of_copies_column_textbox.addEventListener( 'change', handle_change_number_of_copies_column_textbox, false);
                     number_of_copies_column_textbox.addEventListener( 'change', g.gather_copies_soon, false);
@@ -752,7 +773,7 @@ g.render_barcode_entry = function(node,callnumber_composite_key,count,ou_id) {
                         setTimeout( function() { ev.target.select(); ev.target.focus(); }, 0);
                     }
                 }, false);
-                tb.addEventListener('change', g.gather_copies_soon, false);
+                //tb.addEventListener('change', g.gather_copies_soon, false);
                 tb.addEventListener( 'focus', function(ev) { g.last_focus = ev.target; }, false );
             }
         }
@@ -815,6 +836,10 @@ g.gather_copies_soon = function(ev) {
     try {
         if (!xulG.unified_interface) { return; }
         dump('g.gather_copies_soon()\n');
+        if (typeof xulG.disable_copy_editor == 'function') {
+            xulG.disable_copy_editor();
+        }
+        $('Sync').disabled = true;
         if (g.update_copy_editor_timeoutID) {
             clearTimeout(g.update_copy_editor_timeoutID);
         }
@@ -824,6 +849,8 @@ g.gather_copies_soon = function(ev) {
             function() {
                 try {
                     g.gather_copies();
+                    //xulG.enable_copy_editor();
+                    $('Sync').disabled = false;
                     xulG.refresh_copy_editor();
                 } catch(E) {
                     dump('Error in volume_copy_editor.js with g.gather_copies_soon setTimeout func(): ' + E + '\n');
