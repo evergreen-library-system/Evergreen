@@ -232,7 +232,19 @@ util.widgets.apply_vertical_tab_on_enter_handler = function(node,onfailure,no_en
                     }
                 } else {
                     if (typeof no_enter_func == 'function') {
-                        no_enter_func(ev);
+                        if ([
+                                35 /* end */,
+                                36 /* home */,
+                                37 /* left */,
+                                38 /* up */,
+                                39 /* right */,
+                                40 /* down */,
+                                9 /* tab */
+                            ].indexOf(ev.keyCode) == -1
+                        ) {
+                            // really the no_enter, no_arrow_key, no_tab, etc. func :)
+                            no_enter_func(ev);
+                        }
                     }
                 }
             },
