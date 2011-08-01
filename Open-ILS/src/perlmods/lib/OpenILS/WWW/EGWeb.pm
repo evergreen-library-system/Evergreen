@@ -57,7 +57,15 @@ sub handler {
             EGI18N => 'OpenILS::WWW::EGWeb::I18NFilter',
             CGI_utf8 => 'OpenILS::WWW::EGWeb::CGI_utf8'
         },
-        FILTERS => {l => $text_handler}
+        FILTERS => {
+            # Register a dynamic filter factory for our locale::maketext generator
+            l => [
+                sub {
+                    my($ctx, @args) = @_;
+                    return sub { $text_handler->(shift(), @args); }
+                }, 1
+            ]
+        }
     });
 
     unless($tt->process($template, {ctx => $ctx, ENV => \%ENV, l => $text_handler})) {
