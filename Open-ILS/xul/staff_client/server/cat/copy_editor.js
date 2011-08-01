@@ -188,6 +188,11 @@ function my_init() {
                     for (var i = 0; i < g.applied_templates.length; i++) {
                         g._apply_template( g.applied_templates[i], false);
                     }
+                    if (g.copies.length > 0) {
+                        // Stop tracking these templates once they're applied
+                        // to actual copies
+                        g.applied_templates = [];
+                    }
                     g.summarize( g.copies );
                     g.render();
                     g.check_for_unmet_required_fields();
@@ -285,7 +290,12 @@ g.apply_template = function(apply_volume_editor_template_changes) {
     try {
         var name = g.template_menu.value;
         if (g.templates[ name ] != 'undefined') {
-            g.applied_templates.push( name );
+            if (g.copies == 0) {
+                // We're only tracking these applied templates temporarily,
+                // specifically when they're used prior to copies being
+                // created in the unified interface.
+                g.applied_templates.push( name );
+            }
             g._apply_template(name,apply_volume_editor_template_changes);
             g.summarize( g.copies );
             g.render();
