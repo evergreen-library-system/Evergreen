@@ -1,7 +1,6 @@
 [%- USE money = format(l('$%.2f'));
     USE date;
     USE CGI = CGI_utf8;
-    USE EGI18N;
     USE POSIX;
     SET DATE_FORMAT = l('%m/%d/%Y');
 

@@ -47,6 +47,8 @@ sub handler {
 
     $template = $ctx->{skin} . "/$template";
 
+    my $text_handler = set_text_handler($ctx, $r);
+
     my $tt = Template->new({
         OUTPUT => ($as_xml) ?  sub { parse_as_xml($r, $ctx, @_); } : $r,
         INCLUDE_PATH => $ctx->{template_paths},
@@ -54,10 +56,11 @@ sub handler {
         PLUGINS => {
             EGI18N => 'OpenILS::WWW::EGWeb::I18NFilter',
             CGI_utf8 => 'OpenILS::WWW::EGWeb::CGI_utf8'
-        }
+        },
+        FILTERS => {l => $text_handler}
     });
 
-    unless($tt->process($template, {ctx => $ctx, ENV => \%ENV, l => set_text_handler($ctx, $r)})) {
+    unless($tt->process($template, {ctx => $ctx, ENV => \%ENV, l => $text_handler})) {
         $r->log->warn('egweb: template error: ' . $tt->error);
         return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
     }
@@ -79,8 +82,7 @@ sub set_text_handler {
         $lh_cache{$locale} = $lh_cache{'en_US'};
     }
 
-    return $OpenILS::WWW::EGWeb::I18NFilter::maketext = 
-        sub { return $lh_cache{$locale}->maketext(@_); };
+    return sub { return $lh_cache{$locale}->maketext(@_); };
 }
 
 
