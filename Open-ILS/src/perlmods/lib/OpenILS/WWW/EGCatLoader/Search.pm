@@ -17,12 +17,13 @@ sub _prepare_biblio_search_basics {
     return $cgi->param('query') unless $cgi->param('qtype');
 
     my %parts;
-    my @part_names = qw/qtype contains query/;
+    my @part_names = qw/qtype contains query bool/;
     $parts{$_} = [ $cgi->param($_) ] for (@part_names);
 
+    my $full_query = '';
     my @chunks = ();
     for (my $i = 0; $i < scalar @{$parts{'qtype'}}; $i++) {
-        my ($qtype, $contains, $query) = map { $parts{$_}->[$i] } @part_names;
+        my ($qtype, $contains, $query, $bool) = map { $parts{$_}->[$i] } @part_names;
 
         next unless $query =~ /\S/;
         push(@chunks, $qtype . ':') unless $qtype eq 'keyword' and $i == 0;
@@ -41,10 +42,13 @@ sub _prepare_biblio_search_basics {
             $query =~ s/[\^\$]//g;
             $query = '^' . $query . '$';
         }
+
+        $bool = ($bool and $bool eq 'or') ? '||' : '&&';
+        $full_query = $full_query ? "($full_query $bool $query)" : $query;
         push @chunks, $query;
     }
 
-    return join(' ', @chunks);
+    return $full_query;
 }
 
 sub _prepare_biblio_search {
