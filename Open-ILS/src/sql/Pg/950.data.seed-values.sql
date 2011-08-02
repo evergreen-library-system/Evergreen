@@ -3151,7 +3151,7 @@ INSERT into config.org_unit_setting_type
     'string'),
 ( 'ui.patron.edit.au.day_phone.regex',
     oils_i18n_gettext('ui.patron.edit.au.day_phone.regex', 'GUI: Regex for day_phone field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.day_phone.regex', 'The Regular Expression for validation on the day_phone field in patron registration.', 'coust', 'description'),
+    oils_i18n_gettext('ui.patron.edit.au.day_phone.regex', E'The Regular Expression for validation on the day_phone field in patron registration. Note: The first capture group will be used for the "last 4 digits of phone number" feature, if enabled. Ex: "[2-9]\\d{2}-\\d{3}-(\\d{4})( x\\d+)?" will ignore the extension on a NANP number.', 'coust', 'description'),
     'string'),
 ( 'ui.patron.edit.au.day_phone.require',
     oils_i18n_gettext('ui.patron.edit.au.day_phone.require', 'GUI: Require day_phone field on patron registration', 'coust', 'label'),
@@ -3311,7 +3311,7 @@ INSERT into config.org_unit_setting_type
     'string'),
 ( 'ui.patron.edit.phone.regex',
     oils_i18n_gettext('ui.patron.edit.phone.regex', 'GUI: Regex for phone fields on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.phone.regex', 'The Regular Expression for validation on phone fields in patron registration. Applies to all phone fields without their own setting.', 'coust', 'description'),
+    oils_i18n_gettext('ui.patron.edit.phone.regex', 'The Regular Expression for validation on phone fields in patron registration. Applies to all phone fields without their own setting. NOTE: See description of the day_phone regex for important information about capture groups with it.', 'coust', 'description'),
     'string');
 
 -- *** Has to go below coust definition to satisfy referential integrity ***
