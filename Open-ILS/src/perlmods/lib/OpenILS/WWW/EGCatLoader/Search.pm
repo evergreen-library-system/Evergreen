@@ -6,6 +6,8 @@ use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::AppUtils;
 use OpenSRF::Utils::JSON;
+use Data::Dumper;
+$Data::Dumper::Indent = 0;
 my $U = 'OpenILS::Application::AppUtils';
 
 
@@ -15,12 +17,13 @@ sub _prepare_biblio_search_basics {
     return $cgi->param('query') unless $cgi->param('qtype');
 
     my %parts;
-    my @part_names = qw/qtype contains query/;
+    my @part_names = qw/qtype contains query bool/;
     $parts{$_} = [ $cgi->param($_) ] for (@part_names);
 
+    my $full_query = '';
     my @chunks = ();
     for (my $i = 0; $i < scalar @{$parts{'qtype'}}; $i++) {
-        my ($qtype, $contains, $query) = map { $parts{$_}->[$i] } @part_names;
+        my ($qtype, $contains, $query, $bool) = map { $parts{$_}->[$i] } @part_names;
 
         next unless $query =~ /\S/;
         push(@chunks, $qtype . ':') unless $qtype eq 'keyword' and $i == 0;
@@ -39,16 +42,19 @@ sub _prepare_biblio_search_basics {
             $query =~ s/[\^\$]//g;
             $query = '^' . $query . '$';
         }
+
+        $bool = ($bool and $bool eq 'or') ? '||' : '&&';
+        $full_query = $full_query ? "($full_query $bool $query)" : $query;
         push @chunks, $query;
     }
 
-    return join(' ', @chunks);
+    return $full_query;
 }
 
 sub _prepare_biblio_search {
     my ($cgi, $ctx) = @_;
 
-    my $query = _prepare_biblio_search_basics($cgi);
+    my $query = _prepare_biblio_search_basics($cgi) || '';
 
     $query = ('#' . $_ . ' ' . $query) foreach ($cgi->param('modifier'));
 
@@ -132,40 +138,67 @@ sub load_rresults {
     my $e = $self->editor;
 
     $ctx->{page} = 'rresult';
+
+    # Special alternative searches here.  This could all stand to be cleaner.
+    if ($cgi->param("_special")) {
+        return $self->marc_expert_search if scalar($cgi->param("tag"));
+        return $self->item_barcode_shortcut if (
+            $cgi->param("qtype") and ($cgi->param("qtype") eq "item_barcode")
+        );
+        return $self->call_number_browse_standalone if (
+            $cgi->param("qtype") and ($cgi->param("qtype") eq "cnbrowse")
+        );
+    }
+
     my $page = $cgi->param('page') || 0;
     my $facet = $cgi->param('facet');
     my $limit = $self->_get_search_limit;
-    my $loc = $cgi->param('loc');
+    my $loc = $cgi->param('loc') || $ctx->{aou_tree}->()->id;
     my $offset = $page * $limit;
+    my $metarecord = $cgi->param('metarecord');
+    my $results; 
 
     my ($query, $site, $depth) = _prepare_biblio_search($cgi, $ctx);
 
-    return $self->generic_redirect unless $query;
+    if ($metarecord) {
 
-    # Limit and offset will stay here. Everything else should be part of
-    # the query string, not special args.
-    my $args = {'limit' => $limit, 'offset' => $offset};
+        # TODO: other limits, like SVF/format, etc.
+        $results = $U->simplereq(
+            'open-ils.search', 
+            'open-ils.search.biblio.metarecord_to_records',
+            $metarecord, {org => $loc, depth => $depth}
+        );
 
-    # Stuff these into the TT context so that templates can use them in redrawing forms
-    $ctx->{processed_search_query} = $query;
+        # force the metarecord result blob to match the format of regular search results
+        $results->{ids} = [map { [$_] } @{$results->{ids}}]; 
 
-    $query = "$query $facet" if $facet; # TODO
+    } else {
 
-    $logger->activity("EGWeb: [search] $query");
+        return $self->generic_redirect unless $query;
 
-    my $results;
+        # Limit and offset will stay here. Everything else should be part of
+        # the query string, not special args.
+        my $args = {'limit' => $limit, 'offset' => $offset};
 
-    try {
+        # Stuff these into the TT context so that templates can use them in redrawing forms
+        $ctx->{processed_search_query} = $query;
 
-        my $method = 'open-ils.search.biblio.multiclass.query';
-        $method .= '.staff' if $ctx->{is_staff};
-        $results = $U->simplereq('open-ils.search', $method, $args, $query, 1);
+        $query = "$query $facet" if $facet; # TODO
 
-    } catch Error with {
-        my $err = shift;
-        $logger->error("multiclass search error: $err");
-        $results = {count => 0, ids => []};
-    };
+        $logger->activity("EGWeb: [search] $query");
+
+        try {
+
+            my $method = 'open-ils.search.biblio.multiclass.query';
+            $method .= '.staff' if $ctx->{is_staff};
+            $results = $U->simplereq('open-ils.search', $method, $args, $query, 1);
+
+        } catch Error with {
+            my $err = shift;
+            $logger->error("multiclass search error: $err");
+            $results = {count => 0, ids => []};
+        };
+    }
 
     my $rec_ids = [map { $_->[0] } @{$results->{ids}}];
 
@@ -194,6 +227,138 @@ sub load_rresults {
     }
 
     $ctx->{search_facets} = $facets;
+
+    return Apache2::Const::OK;
+}
+
+# Searching by barcode is a special search that does /not/ respect any other
+# of the usual search parameters, not even the ones for sorting and paging!
+sub item_barcode_shortcut {
+    my ($self) = @_;
+
+    my $method = "open-ils.search.multi_home.bib_ids.by_barcode";
+    if (my $search = create OpenSRF::AppSession("open-ils.search")) {
+        my $rec_ids = $search->request(
+            $method, $self->cgi->param("query")
+        )->gather(1);
+        $search->kill_me;
+
+        if (ref $rec_ids ne 'ARRAY') {
+
+            if($U->event_equals($rec_ids, 'ASSET_COPY_NOT_FOUND')) {
+                $rec_ids = [];
+
+            } else {
+                if (defined $U->event_code($rec_ids)) {
+                    $self->apache->log->warn(
+                        "$method returned event: " . $U->event_code($rec_ids)
+                    );
+                } else {
+                    $self->apache->log->warn(
+                        "$method returned something unexpected: $rec_ids"
+                    );
+                }
+                return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+            }
+        }
+
+        my ($facets, @data) = $self->get_records_and_facets(
+            $rec_ids, undef, {flesh => "{holdings_xml,mra}"}
+        );
+
+        $self->ctx->{records} = [@data];
+        $self->ctx->{search_facets} = {};
+        $self->ctx->{hit_count} = scalar @data;
+        $self->ctx->{page_size} = $self->ctx->{hit_count};
+
+        return Apache2::Const::OK;
+    } {
+        $self->apache->log->warn("couldn't connect to open-ils.search");
+        return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+    }
+}
+
+# like item_barcode_search, this can't take all the usual search params, but
+# this one will at least do site, limit and page
+sub marc_expert_search {
+    my ($self) = @_;
+
+    my @tags = $self->cgi->param("tag");
+    my @subfields = $self->cgi->param("subfield");
+    my @terms = $self->cgi->param("term");
+
+    my $query = [];
+    for (my $i = 0; $i < scalar @tags; $i++) {
+        next if ($tags[$i] eq "" || $subfields[$i] eq "" || $terms[$i] eq "");
+        push @$query, {
+            "term" => $terms[$i],
+            "restrict" => [{"tag" => $tags[$i], "subfield" => $subfields[$i]}]
+        };
+    }
+
+    $logger->info("query for expert search: " . Dumper($query));
+    # loc, limit and offset
+    my $page = $self->cgi->param("page") || 0;
+    my $limit = $self->_get_search_limit;
+    my $org_unit = $self->cgi->param("loc") || $self->ctx->{aou_tree}->()->id;
+    my $offset = $page * $limit;
+
+    if (my $search = create OpenSRF::AppSession("open-ils.search")) {
+        my $results = $search->request(
+            "open-ils.search.biblio.marc", {
+                "searches" => $query, "org_unit" => $org_unit
+            }, $limit, $offset
+        )->gather(1);
+        $search->kill_me;
+
+        if (defined $U->event_code($results)) {
+            $self->apache->log->warn(
+                "open-ils.search.biblio.marc returned event: " .
+                $U->event_code($results)
+            );
+            return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+        }
+
+        my ($facets, @data) = $self->get_records_and_facets(
+            # filter out nulls that will turn up here
+            [ grep { $_ } @{$results->{ids}} ],
+            undef, {flesh => "{holdings_xml,mra}"}
+        );
+
+        $self->ctx->{records} = [@data];
+        $self->ctx->{search_facets} = {};
+
+        $self->ctx->{page_size} = $limit;
+        $self->ctx->{hit_count} = $results->{count};
+
+        return Apache2::Const::OK;
+    } else {
+        $self->apache->log->warn("couldn't connect to open-ils.search");
+        return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+    }
+}
+
+sub call_number_browse_standalone {
+    my ($self) = @_;
+
+    if (my $cnfrag = $self->cgi->param("query")) {
+        my $url = sprintf(
+            'http%s://%s%s/cnbrowse?cn=%s',
+            $self->cgi->https ? "s" : "",
+            $self->apache->hostname,
+            $self->ctx->{opac_root},
+            $cnfrag # XXX some kind of escaping needed here?
+        );
+        return $self->generic_redirect($url);
+    } else {
+        return $self->generic_redirect; # return to search page
+    }
+}
+
+sub load_cnbrowse {
+    my ($self) = @_;
+
+    $self->prepare_browse_call_numbers();
 
     return Apache2::Const::OK;
 }

@@ -105,6 +105,7 @@ sub init_ro_object_cache {
     # Add a special handler for the tree-shaped org unit cache
     $ro_object_subs->{get_aou} = sub {
         my $org_id = shift;
+        return undef unless defined $org_id;
         $ro_object_subs->{aou_tree}->(); # force the org tree to load
         return $cache{map}{aou}{$org_id};
     };
@@ -210,6 +211,8 @@ sub get_records_and_facets {
     } else {
         $facets = undef;
     }
+
+    $search->kill_me;
 
     return ($facets, @data);
 }

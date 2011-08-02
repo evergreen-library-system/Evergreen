@@ -2,7 +2,7 @@
     <div id="zero_search_hits">
         <div>
             <p>[% l('Sorry, no entries were found for') %]
-                [% IF is_advanced; l('your search'); ELSE %]
+                [% IF is_advanced OR is_special; l('your search'); ELSE %]
                 <q>[% CGI.param('query') | html %]</q>
                 [% END %]
                 <br />
@@ -22,7 +22,7 @@
             [% INCLUDE "default/opac/parts/result/lowhits_purchase.tt2" %]
             <p>
                 <strong>Keyword Search Tips</strong><br />
-                Change to <strong>Advanced Keyword Search.</strong>
+                Try changing to <strong>Advanced Search</strong>.
             </p>
             <p>
                 <strong>Adjacency</strong><br />
@@ -34,13 +34,17 @@
             <p>
                 <strong>Truncation</strong><br />
                 Words may be right-hand truncated using an asterisk. Use a single asterisk *
-                to truncate from 1-5 characters. Use a double asterisk ** for open-ended truncation.<br />
+                to truncate any number of characters.<br />
                 (example: <strong>environment* agency</strong>)
             </p>
             <p>
-                <strong>Wildcards</strong><br />
-                You may use a question mark to replace a single character anywhere within a word.<br />
-                example: <strong>wom?</strong>)
+                <strong>Anchored Searching</strong><br />
+                You may use ^ and $ to indicate "phrase begins with" and
+                "phrase ends with," respectively, within a search phrase
+                enclosed in quotation marks.<br />
+                (examples: <strong>"^harry"</strong> for phrases that begin with
+                the term <em>harry</em>.
+                <strong>"stone$"</strong> for phrases that end in <em>stone</em>.)
             </p>
         </div>
     </div>

@@ -4,7 +4,7 @@
     {value => "author", label => l("Author")},
     {value => "subject", label => l("Subject")},
     {value => "series", label => l("Series")},
-    {value => "id|bibcn", label => l("Call Number")}
+    {value => "id|bibcn", label => l("Bib Call Number")}
 ] %]
 <select name="qtype">
     [%  query_type = query_type || CGI.param('qtype');

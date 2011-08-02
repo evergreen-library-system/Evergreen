@@ -9,9 +9,9 @@ use Apache2::Log;
 use OpenSRF::EX qw(:try);
 use OpenILS::Utils::CStoreEditor;
 
-use constant OILS_HTTP_COOKIE_SKIN => 'oils:skin';
-use constant OILS_HTTP_COOKIE_THEME => 'oils:theme';
-use constant OILS_HTTP_COOKIE_LOCALE => 'oils:locale';
+use constant OILS_HTTP_COOKIE_SKIN => 'eg_skin';
+use constant OILS_HTTP_COOKIE_THEME => 'eg_theme';
+use constant OILS_HTTP_COOKIE_LOCALE => 'eg_locale';
 
 my $web_config;
 my $web_config_file;
@@ -47,6 +47,8 @@ sub handler {
 
     $template = $ctx->{skin} . "/$template";
 
+    my $text_handler = set_text_handler($ctx, $r);
+
     my $tt = Template->new({
         OUTPUT => ($as_xml) ?  sub { parse_as_xml($r, $ctx, @_); } : $r,
         INCLUDE_PATH => $ctx->{template_paths},
@@ -54,10 +56,19 @@ sub handler {
         PLUGINS => {
             EGI18N => 'OpenILS::WWW::EGWeb::I18NFilter',
             CGI_utf8 => 'OpenILS::WWW::EGWeb::CGI_utf8'
+        },
+        FILTERS => {
+            # Register a dynamic filter factory for our locale::maketext generator
+            l => [
+                sub {
+                    my($ctx, @args) = @_;
+                    return sub { $text_handler->(shift(), @args); }
+                }, 1
+            ]
         }
     });
 
-    unless($tt->process($template, {ctx => $ctx, ENV => \%ENV, l => set_text_handler($ctx, $r)})) {
+    unless($tt->process($template, {ctx => $ctx, ENV => \%ENV, l => $text_handler})) {
         $r->log->warn('egweb: template error: ' . $tt->error);
         return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
     }
@@ -79,8 +90,7 @@ sub set_text_handler {
         $lh_cache{$locale} = $lh_cache{'en_US'};
     }
 
-    return $OpenILS::WWW::EGWeb::I18NFilter::maketext = 
-        sub { return $lh_cache{$locale}->maketext(@_); };
+    return sub { return $lh_cache{$locale}->maketext(@_); };
 }
 
 

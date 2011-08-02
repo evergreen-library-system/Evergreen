@@ -1,20 +1,26 @@
+[%- IF ctx.page == "record";
+    prev_next_root = "/record/" _ ctx.bre_id _ extras_propagator;
+ELSE;
+    cn = CGI.param('cn') | uri;
+    prev_next_root = "/cnbrowse?cn=" _ cn;
+END -%]
 <div id='cn_browse' class='cn_browser'>
     <div id='cn_browse_div'> 
         <div class='color_4'>
             <span>[% l("You are now browsing") %]</span>
-            <strong>[% ctx.get_aou(CGI.param('loc')).name %]</strong>
+            <strong>[% ctx.browsing_ou.name %]</strong>
         </div>
         <table class='data_grid bookshelf' width='100%'>
             <thead>
                 <tr>
                     <td>
-                        <a id='cn_browse_prev' class='classic_link' href="[% ctx.opac_root %]/record/[% ctx.bre_id _ extras_propagator _ '&amp;cnoffset=' _ ((CGI.param('cnoffset') || 0) - 1) _ '&amp;expand=cnbrowse#cnbrowse' %]"<b>[%
+                        <a id='cn_browse_prev' class='classic_link' href="[% ctx.opac_root _ prev_next_root _ '&amp;cnoffset=' _ ((CGI.param('cnoffset') || 0) - 1) _ '&amp;expand=cnbrowse#cnbrowse' %]"<b>[%
                             l("&lt;&lt; Previous Page")
                         %]</b></a>
                     </td>
                     <td colspan='1' align='center'>[% l("Shelf Browser") %]</td>
                     <td>
-                        <a id='cn_browse_next' class='classic_link' href="[% ctx.opac_root %]/record/[% ctx.bre_id _ extras_propagator _ '&amp;cnoffset=' _ ((CGI.param('cnoffset') || 0) + 1) _ '&amp;expand=cnbrowse#cnbrowse' %]"<b>[%
+                        <a id='cn_browse_next' class='classic_link' href="[% ctx.opac_root _ prev_next_root _ '&amp;cnoffset=' _ ((CGI.param('cnoffset') || 0) + 1) _ '&amp;expand=cnbrowse#cnbrowse' %]"<b>[%
                             l("Next Page &gt;&gt;")
                         %]</b></a>
                     </td>
@@ -23,9 +29,9 @@
             <tbody id='cn_tbody'>
             [% tr_open = 0; FOR cn IN ctx.browsed_call_numbers %]
                 [%- IF loop.index % 3 == 0; tr_open = 1 %]
-                <tr id='cn_browse_row'>
+                <tr class='cn_browse_row'>
                 [% END -%]
-                    <td id='cn_browse_td' class='cn_browse_item' width='25%' valign='top'>
+                    <td class='cn_browse_item' width='25%' valign='top'>
                         [%  rec_attrs = {marc_xml => cn.record.marc};
                             PROCESS get_marc_attrs args=rec_attrs;
                             ident = rec_attrs.isbn_clean || rec_attrs.upc;

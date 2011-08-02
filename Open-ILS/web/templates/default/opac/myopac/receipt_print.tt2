@@ -18,5 +18,8 @@
                 ) %]
         </div>
         [% END %]
+        <hr />
+        <p>[ <a href="[% ctx.opac_root %]/myopac/main_payments">[%
+            l("Back to Payments History") %]</a> ]</p>
     </body>
 </html>

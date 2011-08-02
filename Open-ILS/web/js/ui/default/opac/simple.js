@@ -14,7 +14,7 @@ function addClass(node, cls) {
 function unHideMe(node) { removeClass(node, "hide_me"); }
 function hideMe(node) { addClass(node, "hide_me"); }
 
-var _search_row_template;
+var _search_row_template, _expert_row_template;
 function addSearchRow() {
     if (!_search_row_template) {
         t = $("adv_global_row").cloneNode(true);
@@ -27,6 +27,23 @@ function addSearchRow() {
         $("adv_global_addrow")
     );
 }
+function addExpertRow() {
+    if (!_expert_row_template) {
+        t = $("adv_expert_row").cloneNode(true);
+        t.id = null;
+        _expert_row_template = t;
+    }
+
+    $("adv_expert_rows_here").appendChild(
+        _expert_row_template.cloneNode(true)
+    );
+}
+function killRowIfAtLeast(min, link) {
+    var row = link.parentNode.parentNode;
+    if (row.parentNode.getElementsByTagName("tr").length > min)
+        row.parentNode.removeChild(row);
+    return false;
+}
 function print_node(node_id) {
     var iframe = document.createElement("iframe");
     var source_node = document.getElementById(node_id);
@@ -38,7 +55,7 @@ function print_node(node_id) {
      * hurt FF/Chrome. */
     iwin.document.open();
     iwin.document.write(    /* XXX make better/customizable? */
-        "<html><head><title>Recipt</title></head><body></body></html>"
+        "<html><head><title>Receipt</title></head><body></body></html>"
     );
     iwin.document.close();
 
@@ -47,4 +64,12 @@ function print_node(node_id) {
 
     try { iframe.print(); } catch (e) { iwin.print(); }
     setTimeout(function() { iframe.style.display = "none"; }, 3500);
+}
+function select_all_checkboxes(name, checked) {
+    var all = document.getElementsByTagName("input");
+    for (var i = 0; i < all.length; i++) {
+        if (all[i].type == "checkbox" && all[i].name == name) {
+            all[i].checked = checked;
+        }
+    }
 }

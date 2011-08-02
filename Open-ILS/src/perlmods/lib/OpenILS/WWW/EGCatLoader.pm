@@ -25,6 +25,7 @@ use OpenILS::WWW::EGCatLoader::Container;
 my $U = 'OpenILS::Application::AppUtils';
 
 use constant COOKIE_SES => 'ses';
+use constant COOKIE_ORIG_LOC => 'eg_orig_loc';
 
 sub new {
     my($class, $apache, $ctx) = @_;
@@ -88,9 +89,12 @@ sub load {
         $path =~ /opac\/my(opac\/lists|list)/;
 
     return $self->load_simple("home") if $path =~ m|opac/home|;
-    return $self->load_simple("advanced") if $path =~ m|opac/advanced|;
+    return $self->load_simple("advanced") if
+        $path =~ m:opac/(advanced|numeric|expert):;
+
     return $self->load_rresults if $path =~ m|opac/results|;
     return $self->load_record if $path =~ m|opac/record|;
+    return $self->load_cnbrowse if $path =~ m|opac/cnbrowse|;
 
     return $self->load_mylist_add if $path =~ m|opac/mylist/add|;
     return $self->load_mylist_move if $path =~ m|opac/mylist/move|;
@@ -102,7 +106,16 @@ sub load {
     # ----------------------------------------------------------------
     if($path =~ m|opac/login|) {
         return $self->redirect_ssl unless $self->cgi->https;
-        return $self->load_login;
+        return $self->load_login unless $self->editor->requestor; # already logged in?
+
+        # This will be less confusing to users than to be shown a login form
+        # when they're already logged in.
+        return $self->generic_redirect(
+            sprintf(
+                "https://%s%s/myopac/main",
+                $self->apache->hostname, $self->ctx->{opac_root}
+            )
+        );
     }
 
     if($path =~ m|opac/logout|) {
@@ -199,6 +212,7 @@ sub load_common {
     $ctx->{unparsed_uri} = $self->apache->unparsed_uri;
     $ctx->{opac_root} = $ctx->{base_path} . "/opac"; # absolute base url
     $ctx->{is_staff} = ($self->apache->headers_in->get('User-Agent') =~ /oils_xulrunner/);
+    $ctx->{orig_loc} = $self->get_orig_loc;
 
     # capture some commonly accessed pages
     $ctx->{home_page} = 'http://' . $self->apache->hostname . $self->ctx->{opac_root} . "/home";
@@ -228,6 +242,27 @@ sub load_common {
 
     return Apache2::Const::OK;
 }
+
+# orig_loc (i.e. "original location") passed in as a URL 
+# param will replace any existing orig_loc stored as a cookie.
+sub get_orig_loc {
+    my $self = shift;
+
+    if(my $orig_loc = $self->cgi->param('orig_loc')) {
+        $self->apache->headers_out->add(
+            "Set-Cookie" => $self->cgi->cookie(
+                -name => COOKIE_ORIG_LOC,
+                -path => $self->ctx->{base_path},
+                -value => $orig_loc,
+                -expires => undef
+            )
+        );
+        return $orig_loc;
+    }
+
+    return $self->cgi->cookie(COOKIE_ORIG_LOC);
+}
+
 
 
 # -----------------------------------------------------------------------------
