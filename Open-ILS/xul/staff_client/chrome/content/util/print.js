@@ -220,35 +220,35 @@ util.print.prototype = {
             JSAN.use('util.date');
             var s = msg; var b;
 
-            try{b = s; s = s.replace(/%LINE_NO%/,Number(params.row_idx)+1);}
+            try{b = s; s = s.replace(/%LINE_NO%/g,Number(params.row_idx)+1);}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 
-            try{b = s; s = s.replace(/%patron_barcode%/,params.patron_barcode);}
+            try{b = s; s = s.replace(/%patron_barcode%/g,params.patron_barcode);}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 
-            try{b = s; s = s.replace(/%LIBRARY%/,params.lib.name());}
+            try{b = s; s = s.replace(/%LIBRARY%/g,params.lib.name());}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-            try{b = s; s = s.replace(/%PINES_CODE%/,params.lib.shortname());}
+            try{b = s; s = s.replace(/%PINES_CODE%/g,params.lib.shortname());}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-            try{b = s; s = s.replace(/%SHORTNAME%/,params.lib.shortname());}
+            try{b = s; s = s.replace(/%SHORTNAME%/g,params.lib.shortname());}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-            try{b = s; s = s.replace(/%STAFF_FIRSTNAME%/,params.staff.first_given_name());}
+            try{b = s; s = s.replace(/%STAFF_FIRSTNAME%/g,params.staff.first_given_name());}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-            try{b = s; s = s.replace(/%STAFF_LASTNAME%/,params.staff.family_name());}
+            try{b = s; s = s.replace(/%STAFF_LASTNAME%/g,params.staff.family_name());}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-            try{b = s; s = s.replace(/%STAFF_BARCODE%/,params.staff.barcode); }
+            try{b = s; s = s.replace(/%STAFF_BARCODE%/g,params.staff.barcode); }
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-            try{b = s; s = s.replace(/%STAFF_PROFILE%/,obj.data.hash.pgt[ params.staff.profile() ].name() ); }
+            try{b = s; s = s.replace(/%STAFF_PROFILE%/g,obj.data.hash.pgt[ params.staff.profile() ].name() ); }
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-            try{b = s; s = s.replace(/%PATRON_ALIAS_OR_FIRSTNAME%/,(params.patron.alias() == '' || params.patron.alias() == null) ? params.patron.first_given_name() : params.patron.alias());}
+            try{b = s; s = s.replace(/%PATRON_ALIAS_OR_FIRSTNAME%/g,(params.patron.alias() == '' || params.patron.alias() == null) ? params.patron.first_given_name() : params.patron.alias());}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-            try{b = s; s = s.replace(/%PATRON_ALIAS%/,(params.patron.alias() == '' || params.patron.alias() == null) ? '' : params.patron.alias());}
+            try{b = s; s = s.replace(/%PATRON_ALIAS%/g,(params.patron.alias() == '' || params.patron.alias() == null) ? '' : params.patron.alias());}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-            try{b = s; s = s.replace(/%PATRON_FIRSTNAME%/,params.patron.first_given_name());}
+            try{b = s; s = s.replace(/%PATRON_FIRSTNAME%/g,params.patron.first_given_name());}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-            try{b = s; s = s.replace(/%PATRON_LASTNAME%/,params.patron.family_name());}
+            try{b = s; s = s.replace(/%PATRON_LASTNAME%/g,params.patron.family_name());}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-            try{b = s; s = s.replace(/%PATRON_BARCODE%/,typeof params.patron.card() == 'object' ? params.patron.card().barcode() : util.functional.find_id_object_in_list( params.patron.cards(), params.patron.card() ).barcode() ) ;}
+            try{b = s; s = s.replace(/%PATRON_BARCODE%/g,typeof params.patron.card() == 'object' ? params.patron.card().barcode() : util.functional.find_id_object_in_list( params.patron.cards(), params.patron.card() ).barcode() ) ;}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 
             try{b = s; s=s.replace(/%TODAY%/g,(new Date()));}
