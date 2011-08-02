@@ -146,7 +146,8 @@ label[for="attr_search_type_scalar"] { vertical-align: top; }
 .acq-lit-po-heading td span a[attr="name"] { font-weight: bold; }
 #acq-lit-info-tbody td {padding:5px;}
 #acq-lit-info-related { margin-top: 10px; }
-#acq-lit-li-details-table {margin-top:20px;}
+#acq-lit-distrib-formula-table { margin-top: 10px; margin-bottom: 5px;}
+#acq-lit-li-details-table {margin-top:5px; border-top;}
 #acq-lit-li-details-table td {padding:0px 3px 1px 3px;}
 #acq-lit-li-details-table th {padding:0px 3px 1px 3px; font-weight:bold;}
 #acq-lit-li-details-table .dijit {width:130px;}
@@ -252,3 +253,8 @@ span[name="bib_origin"] img { vertical-align: middle; }
 #acq-litpager-controls[disabled="true"] { color: #ccc; }
 
 .acq-po-info th { text-align: right; }
+#acq-lit-copies-li-summary { 
+    border: 1px #666 dashed;
+    margin-bottom: 15px;
+    padding: 4px;
+}

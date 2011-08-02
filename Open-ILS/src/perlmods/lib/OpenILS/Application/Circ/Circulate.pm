@@ -535,6 +535,9 @@ my @AUTOLOAD_FIELDS = qw/
     skip_rental_fee
     use_booking
     generate_lost_overdue
+    clear_expired
+    retarget_mode
+    hold_as_transit
 /;
 
 
@@ -1681,8 +1684,17 @@ sub handle_checkout_holds {
 # ------------------------------------------------------------------------------
 # If the circ.checkout_fill_related_hold setting is turned on and no hold for
 # the patron directly targets the checked out item, see if there is another hold 
-# (with hold_type T or V) for the patron that could be fulfilled by the checked 
-# out item.  Fulfill the oldest hold and only fulfill 1 of them.
+# for the patron that could be fulfilled by the checked out item.  Fulfill the
+# oldest hold and only fulfill 1 of them.
+# 
+# For "another hold":
+#
+# First, check for one that the copy matches via hold_copy_map, ensuring that
+# *any* hold type that this copy could fill may end up filled.
+#
+# Then, if circ.checkout_fill_related_hold_exact_match_only is not enabled, look
+# for a Title (T) or Volume (V) hold that matches the item. This allows items
+# that are non-requestable to count as capturing those hold types.
 # ------------------------------------------------------------------------------
 sub find_related_user_hold {
     my($self, $copy, $patron) = @_;
@@ -1695,6 +1707,40 @@ sub find_related_user_hold {
 
     # find the oldest unfulfilled hold that has not yet hit the holds shelf.
     my $args = {
+        select => {ahr => ['id']}, 
+        from => {
+            ahr => {
+                ahcm => {
+                    field => 'hold',
+                    fkey => 'id'
+                }
+            }
+        }, 
+        where => {
+            '+ahr' => {
+                usr => $patron->id,
+                fulfillment_time => undef,
+                cancel_time => undef,
+               '-or' => [
+                    {expire_time => undef},
+                    {expire_time => {'>' => 'now'}}
+                ]
+            },
+            '+ahcm' => {
+                target_copy => $self->copy->id
+            },
+        },
+        order_by => {ahr => {request_time => {direction => 'asc'}}},
+        limit => 1
+    };
+
+    my $hold_info = $e->json_query($args)->[0];
+    return $e->retrieve_action_hold_request($hold_info->{id}) if $hold_info;
+    return undef if $U->ou_ancestor_setting_value(        
+        $self->circ_lib, 'circ.checkout_fills_related_hold_exact_match_only', $e);
+
+    # find the oldest unfulfilled hold that has not yet hit the holds shelf.
+    $args = {
         select => {ahr => ['id']}, 
         from => {
             ahr => {
@@ -1740,7 +1786,7 @@ sub find_related_user_hold {
         limit => 1
     };
 
-    my $hold_info = $e->json_query($args)->[0];
+    $hold_info = $e->json_query($args)->[0];
     return $e->retrieve_action_hold_request($hold_info->{id}) if $hold_info;
     return undef;
 }
@@ -2241,6 +2287,9 @@ sub check_transit_checkin_interval {
         )->[0]
     ); 
 
+    # transit from X to X for whatever reason has no min interval
+    return if $self->transit->source == $self->transit->dest;
+
     my $seconds = OpenSRF::Utils->interval_to_seconds($interval);
     my $t_start = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($self->transit->source_send_time));
     my $horizon = $t_start->add(seconds => $seconds);
@@ -2250,6 +2299,73 @@ sub check_transit_checkin_interval {
         if $horizon > DateTime->now;
 }
 
+# Retarget local holds at checkin
+sub checkin_retarget {
+    my $self = shift;
+    return unless $self->retarget_mode =~ m/retarget/; # Retargeting?
+    return unless $self->is_checkin; # Renewals need not be checked
+    return if $self->capture eq 'nocapture'; # Not capturing holds anyway? Move on.
+    return if $self->is_precat; # No holds for precats
+    return unless $self->circ_lib == $self->copy->circ_lib; # Item isn't "home"? Don't check.
+    return unless $self->copy->holdable; # Not holdable, shouldn't capture holds.
+    # Specifically target items that are likely new (by status ID)
+    unless ($self->retarget_mode =~ m/\.all/) {
+        my $status = $U->copy_status($self->copy->status)->id;
+        return unless $status == OILS_COPY_STATUS_IN_PROCESS;
+    }
+
+    # Fetch holds for the bib
+    my ($result) = $holdcode->method_lookup('open-ils.circ.holds.retrieve_all_from_title')->run(
+                    $self->editor->authtoken,
+                    $self->title->id,
+                    {
+                        capture_time => undef, # No touching captured holds
+                        frozen => 'f', # Don't bother with frozen holds
+                        pickup_lib => $self->circ_lib # Only holds actually here
+                    }); 
+
+    # Error? Skip the step.
+    return if exists $result->{"ilsevent"};
+
+    # Assemble holds
+    my $holds = [];
+    foreach my $holdlist (keys %{$result}) {
+        push @$holds, @{$result->{$holdlist}};
+    }
+
+    return if scalar(@$holds) == 0; # No holds, no retargeting
+
+    # Loop over holds in request-ish order
+    # Stage 1: Get them into request-ish order
+    # Also grab type and target for skipping low hanging ones
+    $result = $self->editor->json_query({
+        "select" => { "ahr" => ["id", "hold_type", "target"] },
+        "from" => { "ahr" => { "au" => { "fkey" => "usr",  "join" => "pgt"} } },
+        "where" => { "id" => $holds },
+        "order_by" => [
+            { "class" => "pgt", "field" => "hold_priority"},
+            { "class" => "ahr", "field" => "cut_in_line", "direction" => "desc", "transform" => "coalesce", "params" => ['f']},
+            { "class" => "ahr", "field" => "selection_depth", "direction" => "desc"},
+            { "class" => "ahr", "field" => "request_time"}
+        ]
+    });
+
+    # Stage 2: Loop!
+    if (ref $result eq "ARRAY" and scalar @$result) {
+        foreach (@{$result}) {
+            # Copy level, but not this copy?
+            next if ($_->{hold_type} eq 'C' or $_->{hold_type} eq 'R' or $_->{hold_type} eq 'F'
+                and $_->{target} != $self->copy->id);
+            # Volume level, but not this volume?
+            next if ($_->{hold_type} eq 'V' and $_->{target} != $self->volume->id);
+            # So much for easy stuff, attempt a retarget!
+            my $tresult = $U->storagereq('open-ils.storage.action.hold_request.copy_targeter', undef, $_->{id}, $self->copy->id);
+            if(ref $tresult eq "ARRAY" and scalar @$tresult) {
+                last if(exists $tresult->[0]->{found_copy} and $tresult->[0]->{found_copy});
+            }
+        }
+    }
+}
 
 sub do_checkin {
     my $self = shift;
@@ -2260,6 +2376,7 @@ sub do_checkin {
         unless $self->copy;
 
     $self->check_transit_checkin_interval;
+    $self->checkin_retarget;
 
     # the renew code and mk_env should have already found our circulation object
     unless( $self->circ ) {
@@ -2426,7 +2543,7 @@ sub do_checkin {
     
             $logger->debug("circulator: circlib=$circ_lib, workstation=".$self->circ_lib);
     
-            if( $circ_lib == $self->circ_lib) {
+            if( $circ_lib == $self->circ_lib and not ($self->hold_as_transit and $self->remote_hold) ) {
                 # copy is where it needs to be, either for hold or reshelving
     
                 $self->checkin_handle_precat();
@@ -2563,6 +2680,10 @@ sub checkin_check_holds_shelf {
         $U->copy_status($self->copy->status)->id ==
             OILS_COPY_STATUS_ON_HOLDS_SHELF;
 
+    # Attempt to clear shelf expired holds for this copy
+    $holdcode->method_lookup('open-ils.circ.hold.clear_shelf.process')->run($self->editor->authtoken, $self->circ_lib, $self->copy->id)
+        if($self->clear_expired);
+
     # find the hold that put us on the holds shelf
     my $holds = $self->editor->search_action_hold_request(
         { 
@@ -2584,7 +2705,7 @@ sub checkin_check_holds_shelf {
     $logger->info("circulator: we found a captured, un-fulfilled hold [".
         $hold->id. "] for copy ".$self->copy->barcode);
 
-    if( $hold->pickup_lib == $self->circ_lib ) {
+    if( $hold->pickup_lib == $self->circ_lib and not $self->hold_as_transit ) {
         $logger->info("circulator: hold is for here .. we're done: ".$self->copy->barcode);
         return 1;
     }
@@ -2724,7 +2845,7 @@ sub attempt_checkin_hold_capture {
 
     return 0 if $self->bail_out;
 
-    if( $hold->pickup_lib == $self->circ_lib ) {
+    if( $hold->pickup_lib == $self->circ_lib && not $self->hold_as_transit ) {
 
         # This hold was captured in the correct location
         $copy->status(OILS_COPY_STATUS_ON_HOLDS_SHELF);
@@ -2892,8 +3013,9 @@ sub process_received_transit {
 
     my $transit = $self->transit;
 
-    if( $transit->dest != $self->circ_lib ) {
+    if( $transit->dest != $self->circ_lib or ($self->hold_as_transit && $transit->copy_status == OILS_COPY_STATUS_ON_HOLDS_SHELF) ) {
         # - this item is in-transit to a different location
+        # - Or we are capturing holds as transits, so why create a new transit?
 
         my $tid = $transit->id; 
         my $loc = $self->circ_lib;

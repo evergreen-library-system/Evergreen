@@ -35,6 +35,9 @@
     <command id="cmd_suppress_holds_and_transits" />
     <command id="cmd_amnesty_mode" />
     <command id="cmd_checkin_auto_print_slips" />
+    <command id="cmd_checkin_clear_shelf_expired" />
+    <command id="cmd_checkin_auto_retarget" />
+    <command id="cmd_checkin_local_hold_as_transit" />
 </commandset>
 
 
@@ -74,6 +77,10 @@
                 <description id="suppress_holds_and_transits_indicator" hidden="true">&staff.circ.checkin_overlay.suppress_holds_and_transits.label;</description>
                 <description id="amnesty_mode_indicator" hidden="true">&staff.circ.checkin_overlay.amnesty_mode.label;</description>
                 <description id="checkin_auto_print_slips_indicator" hidden="true">&staff.circ.checkin_overlay.checkin_auto_print_slips.label;</description>
+                <description id="checkin_clear_shelf_expired_indicator" hidden="true">&staff.circ.checkin_overlay.checkin_clear_shelf_expired.label;</description>
+                <description id="checkin_auto_retarget_indicator" hidden="true">&staff.circ.checkin_overlay.checkin_auto_retarget.label;</description>
+                <description id="checkin_auto_retarget_all_indicator" hidden="true">&staff.circ.checkin_overlay.checkin_auto_retarget_all_ind.label;</description>
+                <description id="checkin_local_hold_as_transit_indicator" hidden="true">&staff.circ.checkin_overlay.checkin_local_hold_as_transit.label;</description>
             </vbox>
         </vbox>
         <spacer flex="1"/>
@@ -173,6 +180,14 @@
                 label="&staff.circ.checkin_overlay.amnesty_mode.label;" accesskey="&staff.circ.checkin_overlay.amnesty_mode.accesskey;"/>
             <menuitem type="checkbox" id="checkin_auto_print_slips" oils_persist="checked" command="cmd_checkin_auto_print_slips"
                 label="&staff.circ.checkin_overlay.checkin_auto_print_slips.label;" accesskey="&staff.circ.checkin_overlay.checkin_auto_print_slips.accesskey;"/>
+            <menuitem type="checkbox" id="checkin_clear_shelf_expired" oils_persist="checked" command="cmd_checkin_clear_shelf_expired"
+                label="&staff.circ.checkin_overlay.checkin_clear_shelf_expired.label;" accesskey="&staff.circ.checkin_overlay.checkin_clear_shelf_expired.accesskey;"/>
+            <menuitem type="checkbox" id="checkin_auto_retarget" oils_persist="checked" command="cmd_checkin_auto_retarget"
+                label="&staff.circ.checkin_overlay.checkin_auto_retarget.label;" accesskey="&staff.circ.checkin_overlay.checkin_auto_retarget.accesskey;"/>
+            <menuitem type="checkbox" id="checkin_auto_retarget_all" oils_persist="checked" command="cmd_checkin_auto_retarget"
+                label="&staff.circ.checkin_overlay.checkin_auto_retarget_all.label;" accesskey="&staff.circ.checkin_overlay.checkin_auto_retarget_all.accesskey;"/>
+            <menuitem type="checkbox" id="checkin_local_hold_as_transit" oils_persist="checked" command="cmd_checkin_local_hold_as_transit"
+                label="&staff.circ.checkin_overlay.checkin_local_hold_as_transit.label;" accesskey="&staff.circ.checkin_overlay.checkin_local_hold_as_transit;"/>
         </menupopup>
     </button>
 </hbox>

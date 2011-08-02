@@ -118,6 +118,11 @@
                     <event>COPY_ALERT_MESSAGE</event>
                 </checkout_override>
 
+                <!-- If uncommented, SIP2 checkins will capture local holds as transits, instead of marking as ready for pickup. -->
+                <!--
+                <checkin_hold_as_transit>1</checkin_hold_as_transit>
+                -->
+
                 <!-- If uncommented, overrides the legacy_script_support value in opensrf.xml for SIP. -->
                 <!--
                 <legacy_script_support>false</legacy_script_support>

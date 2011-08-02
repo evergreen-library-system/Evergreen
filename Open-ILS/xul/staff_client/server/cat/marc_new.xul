@@ -111,7 +111,7 @@
 
                                             /* Replace tab with OPAC-view of record */
 
-                                            var opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + robj.id();
+                                            var opac_url = xulG.url_prefix( urls.opac_rdetail ) + robj.id();
                                             var content_params = {
                                                 'session' : ses(),
                                                 'authtime' : ses('authtime'),

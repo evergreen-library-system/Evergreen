@@ -77,5 +77,6 @@
     "NUM_CLAIMS_EXISTING" : "Claims (${0} existing)",
     "LOAD_TERMS_FIRST" : "You can't retrieve records until you've loaded a CSV file\nwith bibliographic IDs in the first column.",
     "SELECT_SEARCH_FIELD": "Select Search Field",
-    "LIBRARY_INITIATED": "Library Initiated"
+    "LIBRARY_INITIATED": "Library Initiated",
+    "DEL_LI_FROM_PO": "That item has already been ordered!  Deleting it now will not revoke or modify any order that has been placed with a vendor.  Deleting the item may put the system's idea of your purchase order in a state that is inconsistent with reality.  Are you sure you mean to do this?"
 }

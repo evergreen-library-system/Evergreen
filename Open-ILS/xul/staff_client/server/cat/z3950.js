@@ -53,7 +53,6 @@ cat.z3950.prototype = {
             obj.list.init(
                 {
                     'columns' : columns,
-                    'map_row_to_columns' : circ.util.std_map_row_to_columns(),
                     'on_select' : function(ev) {
                         try {
                             JSAN.use('util.functional');
@@ -742,7 +741,7 @@ cat.z3950.prototype = {
     },
 
     'replace_tab_with_opac' : function(doc_id) {
-        var opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + doc_id;
+        var opac_url = xulG.url_prefix( urls.opac_rdetail ) + doc_id;
         var content_params = { 
             'session' : ses(),
             'authtime' : ses('authtime'),

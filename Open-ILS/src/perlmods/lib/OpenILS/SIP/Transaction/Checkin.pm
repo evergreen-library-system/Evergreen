@@ -29,6 +29,8 @@ my %fields = (
 #   hold             => undef,
 );
 
+my $hold_as_transit = 0;
+
 sub new {
     my $class = shift;;
     my $self = $class->SUPER::new(@_);              # start with an Transaction object
@@ -40,6 +42,8 @@ sub new {
     @{$self}{keys %fields} = values %fields;        # copying defaults into object
 
     $self->load_override_events;
+
+    $hold_as_transit = OpenILS::SIP->config->{implementation_config}->{checkin_hold_as_transit};
 
     return bless $self, $class;
 }
@@ -77,6 +81,7 @@ sub do_checkin {
     my $phys_location = $sip_handler->{login_session}->ws_ou;
 
     my $args = {barcode => $self->{item}->id};
+    $args->{hold_as_transit} = 1 if $hold_as_transit;
 
     if($return_date) {
         # SIP date format is YYYYMMDD.  Translate to ISO8601

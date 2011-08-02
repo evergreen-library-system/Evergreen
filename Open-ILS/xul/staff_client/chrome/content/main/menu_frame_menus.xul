@@ -38,6 +38,7 @@
     <command id="cmd_public_opac" />
     <command id="cmd_search_tcn" />
     <command id="cmd_search_bib_id" />
+    <command id="cmd_search_usr_id" />
 <!-- Perhaps add group_application.user here as well? -->
     <command id="cmd_patron_register"
              perm="CREATE_USER" 
@@ -365,6 +366,10 @@
         <menuitem label="&staff.main.menu.search.record_via_id.label;" accesskey="&staff.main.menu.search.record_via_id.accesskey;" command="cmd_search_bib_id" />
         <menuitem label="&staff.main.menu.search.copies.label;" accesskey="&staff.main.menu.search.copies.accesskey;" command="cmd_copy_status"/>
         <menuitem label="&staff.main.menu.search.patrons_barcode.label;" accesskey="&staff.main.menu.search.patrons_barcode.accesskey;" command="cmd_circ_checkout"/>
+        <menuitem
+            command="cmd_search_usr_id"
+            label="&staff.main.menu.search.patron_db_id.label;"
+            accesskey="&staff.main.menu.search.patron_db_id.accesskey;"/>
     </menupopup>
 </menu>
 

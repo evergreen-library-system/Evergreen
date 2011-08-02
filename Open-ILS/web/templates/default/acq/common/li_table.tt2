@@ -144,7 +144,11 @@
 
     <!-- Copies table -->
     <div id='acq-lit-li-details' class='hidden'>
-        <h2>Copies</h2>
+
+        <div id='acq-lit-copies-li-summary'></div>
+
+        <h3>Add/Edit Items</h3>
+        <hr/>
 
         <div class='acq-lit-li-menu-bar'>
             <table style='width:100%'>
@@ -157,9 +161,7 @@
                                 constraints="{min:0,max:1000,places:0}" style='width:40px' value='0'></input> 
                             <div dojoType='dijit.form.Button' jsId='acqLitAddCopyCount' scrollOnFocus='false'>Go</div>
                         </span>
-                    </td>
-                    <td class="acq-lit-li-menu-right">
-                        <span>
+                        <span style='margin-left:10px;padding-left:10px;border-left:2px solid #aaa;'>
                             <div dojoType='dijit.form.Button' jsId='acqLitSaveCopies' scrollOnFocus='false'>Save Changes</div>
                         </span>
                         <span id='acq-lit-update-copies-progress' class='hidden'>
@@ -169,6 +171,31 @@
                 </tr>
             </table>
         </div>
+
+        <hr/>
+        <table id='acq-lit-distrib-formula-table'>
+            <tbody id='acq-lit-distrib-formula-tbody'>
+                <tr id='acq-lit-distrib-form-row'>
+                    <td colspan='0'>
+                        <span>Distribution Formulas</span>
+                        <div name='selector'></div>
+                        <div name='set_button'></div>
+                        <div name="reset_button"></div>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody id="acq-lit-distrib-applied-tbody" class="hidden">
+                <tr>
+                    <td colspan="5" id="acq-lit-distrib-applied-heading">
+                        Distribution formulas applied to this lineitem:
+                    </td>
+                </tr>
+                <tr id="acq-lit-distrib-applied-row" class="acq-lit-distrib-applied-row">
+                    <th></th>
+                    <td colspan="4"></td>
+                </tr>
+            </tbody>
+        <table>
 
         <table id='acq-lit-li-details-table'>
             <tbody><tr><td class='acq-lit-table-spacer' colspan='0'/></tr></tbody>
@@ -197,31 +224,6 @@
                 </tr>
             </tbody>
 
-            <tbody><tr><td class='acq-lit-table-spacer' colspan='0'/></tr></tbody>
-
-            <tbody id='acq-lit-distrib-formula-tbody'>
-                <tr id='acq-lit-distrib-form-row'>
-                    <td colspan='0'>
-                        <span>Distribution Formulas</span>
-                        <div name='selector'></div>
-                        <div name='set_button'></div>
-                        <div name="reset_button"></div>
-                    </td>
-                </tr>
-            </tbody>
-
-            <tbody><tr><td class='acq-lit-table-spacer' colspan='0'/></tr></tbody>
-            <tbody id="acq-lit-distrib-applied-tbody" class="hidden">
-                <tr>
-                    <td colspan="5" id="acq-lit-distrib-applied-heading">
-                        Distribution formulas applied to this lineitem:
-                    </td>
-                </tr>
-                <tr id="acq-lit-distrib-applied-row" class="acq-lit-distrib-applied-row">
-                    <th></th>
-                    <td colspan="4"></td>
-                </tr>
-            </tbody>
 
             <tbody><tr><td class='acq-lit-table-spacer' colspan='0'></td></tr></tbody>
             <tbody style='font-weight:bold;'>

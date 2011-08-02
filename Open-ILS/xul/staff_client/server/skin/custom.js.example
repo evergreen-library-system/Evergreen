@@ -1,6 +1,18 @@
 /* Settings here override default values from constants.js;for example:
  
     urls['AUDIO_good'] = '/xul/server/skin/media/custom/good.wav';
+
+    urls['AUDIO_special_checkin.cataloging'] = '/xul/server/skin/media/custom/cataloging.wav';
+    urls['AUDIO_special_checkin.error'] = '/xul/server/skin/media/custom/error.wav';
+    urls['AUDIO_special_checkin.hold_capture_delayed'] = '/xul/server/skin/media/custom/hold_capture_delayed.wav';
+    urls['AUDIO_special_checkin.hold_shelf'] = '/xul/server/skin/media/custom/hold_shelf.wav';
+    urls['AUDIO_special_checkin.no_change'] = '/xul/server/skin/media/custom/no_change.wav';
+    urls['AUDIO_special_checkin.not_found'] = '/xul/server/skin/media/custom/not_found.wav';
+    urls['AUDIO_special_checkin.reservation_shelf'] = '/xul/server/skin/media/custom/reservation_shelf.wav';
+    urls['AUDIO_special_checkin.success'] = '/xul/server/skin/media/custom/success.wav';
+    urls['AUDIO_special_checkin.transit'] = '/xul/server/skin/media/custom/transit.wav';
+    urls['AUDIO_special_checkin.transit_for_hold'] = '/xul/server/skin/media/custom/transit_for_hold.wav';
+
     urls['opac'] = '/opac/' + LOCALE + '/skin/mylib/xml/advanced.xml?nps=1';
     urls['opac_rdetail'] = '/opac/' + LOCALE + '/skin/mylib/xml/rdetail.xml';
     urls['opac_rresult'] = '/opac/' + LOCALE + '/skin/mylib/xml/rresult.xml';

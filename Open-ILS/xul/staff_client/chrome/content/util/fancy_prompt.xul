@@ -102,7 +102,7 @@
                 var snd_obj = xul_param('sound_object',{'modal_xulG':true});
                 if (snd) {
                     try {
-                        var params = { 'interval' : 500, 'sig' : 'fancy_prompt_my_init' };
+                        var params = { 'sig' : 'fancy_prompt_my_init' };
                         if (snd_obj) { params.reuse_queue_from_this_snd_obj = snd_obj; }
                         JSAN.use('util.sound'); var sound = new util.sound(params);
                         if (snd) { sound[ snd ](); }

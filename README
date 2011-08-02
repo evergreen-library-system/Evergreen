@@ -9,7 +9,7 @@ before you can successfully configure, compile, and install Evergreen.
 
 1. Begin by installing the most recent version of OpenSRF (2.0 or later).
    You can download OpenSRF releases from http://evergreen-ils.org/downloads
-2. On many distributions, it is necessary to install Postgres 9 from external
+2. On many distributions, it is necessary to install PostgreSQL 9 from external
    repositories.
 +
   * On Debian Squeeze, add the following line to `/etc/apt/sources.list`:
@@ -45,10 +45,27 @@ deb http://archive.ubuntu.com/ubuntu lucid-backports main universe multiverse re
 ------------------------------------------------------------------------------
 make -f Open-ILS/src/extras/Makefile.install <osname>
 ------------------------------------------------------------------------------
-
++
 Note: `centos` and `rhel` are less tested than the `debian`, `fedora`,
 and `ubuntu` options.  Your patches and suggestions for improvement are
 welcome!
++
+6. Add the libdbi-libdbd libraries to the system dynamic library path by
+   issuing the following commands as the root user:
++
+.Debian / Ubuntu
+[source, bash]
+------------------------------------------------------------------------------
+echo "/usr/local/lib/dbd" > /etc/ld.so.conf.d/eg.conf
+ldconfig
+------------------------------------------------------------------------------
++
+.Fedora
+[source, bash]
+------------------------------------------------------------------------------
+echo "/usr/lib64/dbd" > /etc/ld.so.conf.d/eg.conf
+ldconfig
+------------------------------------------------------------------------------
 
 Configuration and compilation instructions:
 -------------------------------------------
@@ -69,18 +86,27 @@ make
 Installation instructions:
 --------------------------
 
-Once you have configured and compiled Evergreen, issue the following
-command as the root user to install Evergreen:
-
+1. Once you have configured and compiled Evergreen, issue the following
+   command as the root user to install Evergreen, build the server portion of
+   the staff client, and copy example configuration files to `/openils/conf`.
+   Change the value of the `STAFF_CLIENT_STAMP_ID` variable to match the version
+   of the staff client that you will use to connect to the Evergreen server.
++
 [source, bash]
 ------------------------------------------------------------------------------
-make STAFF_CLIENT_STAMP_ID=rel_trunk install
+make STAFF_CLIENT_STAMP_ID=rel_name install
 ------------------------------------------------------------------------------
-
-This will install Evergreen, including example configuration files in
-`/openils/conf/` that you can use as templates for your own configuration files.
-The `STAFF_CLIENT_STAMP_ID` variable stamps the server-side and client-side files
-for the staff client to ensure that they match.
++
+2. The server portion of the staff client expects `http://hostname/xul/server`
+   to resolve. The following command creates a symbolic link pointing to the
+   `server` subdirectory of the server portion of the staff client that we just
+   built using the staff client ID 'rel_name':
++
+[source, bash]
+------------------------------------------------------------------------------
+cd /openils/var/web/xul
+ln -sf rel_name/server server
+------------------------------------------------------------------------------
 
 Create the oils_web.xml configuration file:
 -------------------------------------------
@@ -198,24 +224,63 @@ cp /openils/conf/opensrf_core.xml.example /openils/conf/opensrf_core.xml
 cp /openils/conf/opensrf.xml.example /openils/conf/opensrf.xml
 ------------------------------------------------------------------------------
 
-When you installed OpenSRF, you will have created four Jabber users on two
+When you installed OpenSRF, you created four Jabber users on two
 separate domains and edited the `opensrf_core.xml` file accordingly. Please
 refer back to the OpenSRF README and edit the Evergreen version of the
 `opensrf_core.xml` file using the same Jabber users and domains as you used
 while installing and testing OpenSRF.
 
-`eg_db_config.pl`, described in the following section, will set the database
+`eg_db_config.pl`, described in the following section, sets the database
 connection information in `opensrf.xml` for you.
 
 Creating the Evergreen database:
 --------------------------------
 
-PostgreSQL 9.0 will be installed on your system by the `Makefile.install`
-prerequisite installer if packages are available for your distribution, or
-you will have to compile PostgreSQL 9.0 from source and install it (which
-is beyond the scope of this document).
+By default, the `Makefile.install` prerequisite installer does not install
+the PostgreSQL 9.0 database server required by every Evergreen system;
+for production use, most libraries install the PostgreSQL database server on a
+dedicated machine. You can install the packages required by Debian, Ubuntu, or
+Fedora on the machine of your choice using the following commands:
 
-Once the PostgreSQL database server has been installed, you will need to
+.(Debian / Ubuntu) Installing PostgreSQL 9.0 server packages
+[source, bash]
+------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install install_pgsql_server_debs_90
+------------------------------------------------------------------------------
+
+.(Fedora 15) Installing PostgreSQL 9.0 server packages
+[source, bash]
+------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install install_fedora_pgsql_server
+------------------------------------------------------------------------------
+
+For a standalone PostgreSQL server, install the following Perl modules as the
+root user:
+
+.(Debian / Ubuntu) Installing additional Perl modules on a standalone PostgreSQL 9.0 server
+[source, bash]
+------------------------------------------------------------------------------
+aptitude install gcc libxml-libxml-perl libxml-libxslt-perl
+cpan Business::ISBN
+cpan JSON::XS
+cpan Library::CallNumber::LC
+cpan MARC::Record
+cpan MARC::File::XML
+cpan UUID::Tiny
+------------------------------------------------------------------------------
+
+.(Fedora 15) Installing additional Perl modules on a standalone PostgreSQL 9.0 server
+[source, bash]
+------------------------------------------------------------------------------
+yum install gcc perl-XML-LibXML perl-XML-LibXSLT perl-Business-ISBN
+cpan JSON::XS
+cpan Library::CallNumber::LC
+cpan MARC::Record
+cpan MARC::File::XML
+cpan UUID::Tiny
+------------------------------------------------------------------------------
+
+Once the PostgreSQL database server has been installed, you must
 create the database and add the appropriate languages and extensions to
 support Evergreen. Issue the following commands as the `postgres` user to set
 up a database called `evergreen`. Note that the location of the PostgreSQL
@@ -236,12 +301,12 @@ psql -f /usr/share/postgresql/9.0/contrib/hstore.sql -d evergreen
 
 Once you have created the Evergreen database, you need to create a PostgreSQL
 user to access the database. Issue the following command as the `postgres`
-user to create a new PostgreSQL user named `evergreen`. When prompted, enter
-the new user's password and answer `yes` to make the new role a superuser:
+user to create a new PostgreSQL superuser named `evergreen`. When prompted,
+enter the new user's password:
 
 [source, bash]
 ------------------------------------------------------------------------------
-createuser -P evergreen
+createuser -s -P evergreen
 ------------------------------------------------------------------------------
 
 Once you have created the Evergreen database, you also need to create the
@@ -260,7 +325,7 @@ perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
        --database <dbname> --admin-user <admin-user> --admin-pass <admin-pass>
 ------------------------------------------------------------------------------
 
-This will create the database schema and configure all of the services in
+This creates the database schema and configures all of the services in
 your `/openils/conf/opensrf.xml` configuration file to point to that database.
 It also creates the configuration files required by the Evergreen cgi-bin
 administration scripts, and set the user name and password for the default
@@ -270,10 +335,11 @@ Developer instructions:
 -----------------------
 
 Developers working directly with the source code from the Git
-repository will also need to install some extra packages and perform
+repository must also install some extra packages and perform
 one more step before they can proceed with the `./configure` step.
 
 Install the following packages:
+
   * autoconf
   * automake
   * libtool
@@ -297,6 +363,114 @@ wget http://download.dojotoolkit.org/release-1.3.3/dojo-release-1.3.3.tar.gz
 tar -C /openils/var/web/js -xzf dojo-release-1.3.3.tar.gz
 cp -r /openils/var/web/js/dojo-release-1.3.3/* /openils/var/web/js/dojo/.
 ------------------------------------------------------------------------------
+
+Starting Evergreen
+------------------
+1. As the root user, start the `memcached` and `ejabberd` services (if they aren't already running):
++
+[source, bash]
+------------------------------------------------------------------------------
+/etc/init.d/ejabberd start
+/etc/init.d/memcached start
+------------------------------------------------------------------------------
++
+2. As the opensrf user, start Evergreen. The `-l` flag in the following command
+is only necessary if you want to force Evergreen to treat the hostname as
+`localhost`; if you configured `opensrf.xml` using the real hostname
+of your machine as returned by `perl -ENet::Domain 'print
+Net::Domain::hostfqdn() . "\n";'`, you should not use the `-l` flag.
++
+[source, bash]
+------------------------------------------------------------------------------
+osrf_ctl.sh -l -a start_all</code>
+------------------------------------------------------------------------------
++
+  ** If you receive the error message `bash: osrf_ctl.sh: command not found`,
+     then your environment variable `PATH` does not include the `/openils/bin`
+     directory; this should have been set in the opensrf user's `.bashrc`
+     configuration file. To manually set the `PATH` variable, edit the
+     configuration file `~/.bashrc` as the opensrf user and add the following
+     line:
++
+[source, bash]
+------------------------------------------------------------------------------
+export PATH=$PATH:/openils/bin
+------------------------------------------------------------------------------
++
+3. As the `opensrf` user, generate the Web files needed by the staff client
+   and catalogue and update the organization unit proximity (you need to do
+   this the first time you start Evergreen, and after that each time you
+   change the library hierarchy in `config.cgi`):
++
+[source, bash]
+------------------------------------------------------------------------------
+autogen.sh -u
+------------------------------------------------------------------------------
++
+4. As the `root` user, restart the Apache Web server:
++
+[source, bash]
+------------------------------------------------------------------------------
+/etc/init.d/apache2 restart
+------------------------------------------------------------------------------
++
+If the Apache Web server was running when you started the OpenSRF services, you
+might not be able to successfully log in to the OPAC or staff client until the
+Apache Web server is restarted.
+
+Testing connections to Evergreen
+--------------------------------
+
+Once you have installed and started Evergreen, test your connection to
+Evergreen via `srfsh`. Start `srfsh` and try to log onto the Evergreen server
+using the administrator user name and password that you set using the
+`eg_db_config.pl` command:
+
+[source, bash]
+------------------------------------------------------------------------------
+/openils/bin/srfsh
+srfsh% login <admin-user> <admin-pass>
+------------------------------------------------------------------------------
+
+You should see a result like:
+
+    Received Data: "250bf1518c7527a03249858687714376"
+    ------------------------------------
+    Request Completed Successfully
+    Request Time in seconds: 0.045286
+    ------------------------------------
+
+    Received Data: {
+       "ilsevent":0,
+       "textcode":"SUCCESS",
+       "desc":" ",
+       "pid":21616,
+       "stacktrace":"oils_auth.c:304",
+       "payload":{
+          "authtoken":"e5f9827cc0f93b503a1cc66bee6bdd1a",
+          "authtime":420
+       }
+
+    }
+
+    ------------------------------------
+    Request Completed Successfully
+    Request Time in seconds: 1.336568
+    ------------------------------------
+
+If this does not work, it's time to do some troubleshooting.
+
+  * As the opensrf user, run the `settings-tester.pl` script to see if it
+    finds any system configuration problems. The script is found at
+    `Open-ILS/src/support-scripts/settings-tester.pl` in the Evergreen source
+    tree.
+  * Follow the steps in the http://evergreen-ils.org/dokuwiki/doku.php?id=troubleshooting:checking_for_errors[troubleshooting guide].
+  * If you have faithfully followed the entire set of installation steps
+    listed here, you are probably extremely close to a working system.
+    Gather your configuration files and log files and contact the
+    http://open-ils.org/listserv.php[Evergreen development mailing list]
+    for assistance before making any drastic changes to your system
+    configuration.
 
 Getting help:
 -------------

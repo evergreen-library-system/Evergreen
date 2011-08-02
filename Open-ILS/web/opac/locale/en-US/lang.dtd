@@ -155,7 +155,7 @@
 <!ENTITY staff.au_label_active "Active">
 <!ENTITY staff.au_label_family_name "Family Name">
 <!ENTITY staff.au_label_first_given_name "First Name">
-<!ENTITY staff.au_label_id "Record ID">
+<!ENTITY staff.au_label_id "Database ID">
 <!ENTITY staff.au_label_prefix "Prefix">
 <!ENTITY staff.au_label_second_given_name "Middle Name">
 <!ENTITY staff.au_label_suffix "Suffix">
@@ -912,9 +912,9 @@
 <!ENTITY staff.main.menu.cat.retrieve_last_record.accesskey "L">
 <!ENTITY staff.main.menu.cat.retrieve_last_record.label "Retrieve Last Record">
 <!ENTITY staff.main.menu.cat.search_tcn.accesskey "T">
-<!ENTITY staff.main.menu.cat.search_tcn.label "Retrieve record by TCN">
+<!ENTITY staff.main.menu.cat.search_tcn.label "Retrieve title by TCN">
 <!ENTITY staff.main.menu.cat.search_bib_id.accesskey "D">
-<!ENTITY staff.main.menu.cat.search_bib_id.label "Retrieve record by Record ID">
+<!ENTITY staff.main.menu.cat.search_bib_id.label "Retrieve title via Database ID">
 <!ENTITY staff.main.menu.cat.volume_status.key "V">
 <!ENTITY staff.main.menu.cat.volume_status.label "Display Volume">
 <!ENTITY staff.main.menu.cat.vandelay.label "MARC Batch Import/Export">
@@ -1101,10 +1101,12 @@
 <!ENTITY staff.main.menu.search.patrons.label "Search for Patrons">
 <!ENTITY staff.main.menu.search.patrons_barcode.accesskey "n">
 <!ENTITY staff.main.menu.search.patrons_barcode.label "Search for patron by Barcode">
+<!ENTITY staff.main.menu.search.patron_db_id.accesskey "">
+<!ENTITY staff.main.menu.search.patron_db_id.label "Retrieve patron via Database ID">
 <!ENTITY staff.main.menu.search.record.accesskey "T">
 <!ENTITY staff.main.menu.search.record.label "Search for record by TCN">
 <!ENTITY staff.main.menu.search.record_via_id.accesskey "D">
-<!ENTITY staff.main.menu.search.record_via_id.label "Search for record by Record ID">
+<!ENTITY staff.main.menu.search.record_via_id.label "Retrieve title via Database ID">
 <!ENTITY staff.main.menu.serials.key "l">
 <!ENTITY staff.main.menu.serials.label "Serials">
 <!ENTITY staff.main.menu.tabs.close "Close All Tabs">
@@ -2215,6 +2217,15 @@
 <!ENTITY staff.circ.checkin_overlay.checkin_auto_print_slips.accesskey "P">
 <!ENTITY staff.circ.checkin_overlay.checkin_modifiers_btn.label "Checkin Modifiers">
 <!ENTITY staff.circ.checkin_overlay.checkin_modifiers_btn.accesskey "M">
+<!ENTITY staff.circ.checkin_overlay.checkin_clear_shelf_expired.label "Clear Shelf-Expired Holds">
+<!ENTITY staff.circ.checkin_overlay.checkin_clear_shelf_expired.accesskey "C">
+<!ENTITY staff.circ.checkin_overlay.checkin_auto_retarget.label "Retarget Local Holds">
+<!ENTITY staff.circ.checkin_overlay.checkin_auto_retarget.accesskey "R">
+<!ENTITY staff.circ.checkin_overlay.checkin_auto_retarget_all.label "Retarget All Statuses">
+<!ENTITY staff.circ.checkin_overlay.checkin_auto_retarget_all.accesskey "e">
+<!ENTITY staff.circ.checkin_overlay.checkin_auto_retarget_all_ind.label "Always Retarget Local Holds">
+<!ENTITY staff.circ.checkin_overlay.checkin_local_hold_as_transit.label "Capture Local Holds as Transits">
+<!ENTITY staff.circ.checkin_overlay.checkin_local_hold_as_transit.accesskey "L">
 <!ENTITY staff.circ.renew_overlay.background_text "Renew Item">
 <!ENTITY staff.circ.renew_overlay.sel_clip.label "Copy to Clipboard">
 <!ENTITY staff.circ.renew_overlay.sel_clip.accesskey "C">
@@ -2449,7 +2460,7 @@
 <!-- "TCN" is an abbreviation for "title control number" -->
 <!ENTITY staff.cat.bib_brief.title_control_number.label "TCN:">
 <!ENTITY staff.cat.bib_brief.title_control_number.accesskey "">
-<!ENTITY staff.cat.bib_brief.biblio_record_entry_id.label "Record ID:">
+<!ENTITY staff.cat.bib_brief.biblio_record_entry_id.label "Database ID:">
 <!ENTITY staff.cat.bib_brief.biblio_record_entry_id.accesskey "">
 <!ENTITY staff.cat.bib_brief.biblio_record_entry_owner.label "Record Owner:">
 <!ENTITY staff.cat.bib_brief.biblio_record_entry_owner.accesskey "">

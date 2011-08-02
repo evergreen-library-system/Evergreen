@@ -47,9 +47,21 @@ function my_init() {
             $('credit_forward').setAttribute('value',util.money.sanitize( g.patron.credit_forward_balance() ));
         }
 
-        default_focus();
-
-        tally_all();
+        if (g.data.hash.aous['ui.circ.billing.uncheck_bills_and_unfocus_payment_box']) {
+            g.funcs.push(
+                function() {
+                    $('uncheck_all').focus();
+                    tally_all();
+                }
+            );
+        } else {
+            g.funcs.push(
+                function() {
+                    default_focus();
+                    tally_all();
+                }
+            );
+        }
 
     } catch(E) {
         var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/bill2.xul', E]);
@@ -406,8 +418,31 @@ function check_all_refunds() {
 
 function gen_list_append_func(r) {
     return function() {
-        if (typeof r == 'object') { g.row_map[ r.id() ] = g.bill_list.append( { 'retrieve_id' : r.id(), 'flesh_immediately' : true, 'row' : { 'my' : { 'checked' : true, 'mbts' : r } } } );
-        } else { g.row_map[r] = g.bill_list.append( { 'retrieve_id' : r, 'flesh_immediately' : true, 'row' : { 'my' : { 'checked' : true } } } ); }
+        var default_check_state = g.data.hash.aous[
+            'ui.circ.billing.uncheck_bills_and_unfocus_payment_box'
+        ] ? false : true;
+        if (typeof r == 'object') {
+            g.row_map[ r.id() ] = g.bill_list.append( {
+                'retrieve_id' : r.id(),
+                'flesh_immediately' : true,
+                'row' : {
+                    'my' : {
+                        'checked' : default_check_state,
+                        'mbts' : r
+                    }
+                }
+            } );
+        } else {
+            g.row_map[r] = g.bill_list.append( {
+                'retrieve_id' : r,
+                'flesh_immediately' : true,
+                'row' : {
+                    'my' : {
+                        'checked' : default_check_state
+                    }
+                }
+            } );
+        }
     }
 }
 
