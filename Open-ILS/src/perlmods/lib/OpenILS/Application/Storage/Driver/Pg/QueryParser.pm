@@ -437,10 +437,10 @@ __PACKAGE__->add_search_filter( 'estimation_strategy' );
 __PACKAGE__->add_search_modifier( 'available' );
 __PACKAGE__->add_search_modifier( 'staff' );
 
-# Start from container data (bre, acn, acp)
+# Start from container data (bre, acn, acp): container(bre,bookbag,123,deadb33fdeadb33fdeadb33fdeadb33f)
 __PACKAGE__->add_search_filter( 'container' );
 
-# Start from a list of record ids
+# Start from a list of record ids, either bre or metarecords, depending on the #metabib modifier
 __PACKAGE__->add_search_filter( 'record_list' );
 
 # used internally, but generally not user-settable
@@ -599,7 +599,7 @@ sub toSQL {
 
         my $perm_join = '';
         my $rec_join = '';
-        my $rec_field = 'ci.id';
+        my $rec_field = 'ci.target_biblio_record_entry';
 
         if ($class eq 'bre') {
             $class = 'biblio_record_entry';
@@ -618,8 +618,8 @@ sub toSQL {
         } else { $class = undef };
 
         if ($class) {
-            my ($u,$e) = $apputils->checksesperm($token); if ($token);
-            $perm_join = 'OR c.owner = ' . $u->id if ($u && !$e)
+            my ($u,$e) = $apputils->checksesperm($token) if ($token);
+            $perm_join = 'OR c.owner = ' . $u->id if ($u && !$e);
 
             $container = <<"            SQL";
         JOIN ( SELECT $rec_field AS container_item
@@ -637,7 +637,7 @@ sub toSQL {
     }
 
     if ($record_list and @{$record_list->args} > 0) {
-        $record_list = '(VALUES (' . join('::BIGINT),(', map  { $self->QueryParser->quote_value($_) } @{ $record_list->args}) . "::BIGINT)) record_list(id) ON (record_list.id = $key)"
+        $record_list = 'JOIN (VALUES (' . join('),(', map  { $self->QueryParser->quote_value($_) } @{ $record_list->args}) . ")) record_list(id) ON (record_list.id = $key)"
     } else {
         $record_list = '';
     }
