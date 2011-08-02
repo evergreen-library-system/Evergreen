@@ -1,11 +1,6 @@
--- Evergreen DB patch XXXX.schema.replace_field-default-value.sql
---
--- Return the input XML when no replace rule is provided
---
 BEGIN;
 
--- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+INSERT INTO config.upgrade_log (version) VALUES ('0588');
 
 CREATE OR REPLACE FUNCTION vandelay.replace_field ( target_xml TEXT, source_xml TEXT, field TEXT ) RETURNS TEXT AS $_$
 DECLARE
