@@ -88,9 +88,9 @@ INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath )
     (27, 'identifier', 'bibid', oils_i18n_gettext(27, 'Internal ID', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='901']/marc:subfield[@code='c']$$ );
 -- 28 == authority_id in master
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath) VALUES
-    (29, 'identifier', 'scn', oils_i18n_gettext(28, 'System Control Number', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='035']/marc:subfield[@code="a"]$$);
+    (29, 'identifier', 'scn', oils_i18n_gettext(29, 'System Control Number', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='035']/marc:subfield[@code="a"]$$);
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath) VALUES
-    (30, 'identifier', 'lccn', oils_i18n_gettext(28, 'LC Control Number', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='010']/marc:subfield[@code="a" or @code='z']$$);
+    (30, 'identifier', 'lccn', oils_i18n_gettext(30, 'LC Control Number', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='010']/marc:subfield[@code="a" or @code='z']$$);
 
 SELECT SETVAL('config.metabib_field_id_seq'::TEXT, (SELECT MAX(id) FROM config.metabib_field), TRUE);
 
