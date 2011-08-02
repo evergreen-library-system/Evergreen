@@ -19,7 +19,7 @@
     <td align='left' width='100%' nowrap='nowrap'>
 
         <!-- bool selector.  hide for first row.  safe to ignore first bool value in form submission -->
-        <select name='bool' [% IF loop.first %] class='invisible' [% END %]>
+        <select name='bool' style='width: auto' [% IF loop.first %] class='invisible' [% END %]>
             <option value='and' [% b == 'and' ? 'selected="selected"' : '' %]>[% l('And') %]</option>
             <option value='or' [% b == 'or' ? 'selected="selected"' : '' %]>[% l('Or') %]</option>
         </select>
