@@ -51,6 +51,9 @@ if(location.href.match(/&place_hold=1/)) {
     hideMe(dojo.byId('canvas_main'));
 }
 
+dojo.require("dijit.Dialog");
+dojo.require("dijit.form.TextBox");
+
 /* serials are currently the only use of Dojo strings in the OPAC */
 if (rdetailDisplaySerialHoldings) {
 	dojo.require("dijit.Menu");
@@ -675,13 +678,23 @@ function rdetailAddBookbags(r) {
 }
 
 var _actions = {};
-function rdetailNewBookbag() {
-	var name = prompt($('rdetail_bb_new').innerHTML,"");
-	if(!name) return;
-
+/**
+ * Adds a new bookbag and exits.
+ * 
+ * exitstatus should be 0 if the status is to be read.
+ */
+function finishBookbag(exitstatus) {
+	var name = bbName.attr('value');
+	
+	newBBDialog.hide();	
+	bbName.attr("value", ""); // Do this after hide so the text doesn't disappear.
+	
+	if(exitstatus != 0) return; // If the user canceled, just drop off here.
+	
 	var id;
+	
 	if( id = containerCreate( name ) ) {
-		alert($('rdetail_bb_success').innerHTML);
+		new dijit.Dialog({content: $('rdetail_bb_success').innerHTML,}).show();
 		var selector = $('rdetail_more_actions_selector');
 		insertSelectorVal( selector, nextContainerIndex++, name, 
 				"container_" + id, rdetailAddToBookbag, 1 );
@@ -689,6 +702,12 @@ function rdetailNewBookbag() {
 	}
 }
 
+/**
+ * Creates a new Bookbag for the user.
+ */
+function rdetailNewBookbag() {
+	newBBDialog.show(); // Show the bookbag dialog.
+}
 
 function rdetailAddToBookbag() {
 	var selector = $('rdetail_more_actions_selector');
