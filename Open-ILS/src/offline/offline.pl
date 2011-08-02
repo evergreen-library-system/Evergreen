@@ -10,11 +10,12 @@ use OpenSRF::EX qw/:try/;
 use Data::Dumper;
 use OpenILS::Utils::Fieldmapper;
 use Digest::MD5 qw/md5_hex/;
-use OpenSRF::Utils qw/:daemon/;
+use OpenSRF::Utils qw/:daemon cleanse_ISO8601/;
 use OpenILS::Utils::OfflineStore;
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils;
 use DateTime;
+use DateTime::Format::ISO8601;
 
 use DBI;
 $DBI::trace = 1;
@@ -698,8 +699,28 @@ sub ol_handle_checkout {
 	}
 
     if( $args->{barcode} ) {
+
+        # $c becomes the Copy
+        # $e possibily becomes the Exception
         my( $c, $e ) = $U->fetch_copy_by_barcode($args->{barcode});
         return $e if $e;
+
+        my $barcode = $args->{barcode};
+        # Have to have this config option & a status_changed_time for skippage
+        if ( ($config{skip_late}) && (length($c->status_changed_time())) ) {
+            my $cts = DateTime::Format::ISO8601->parse_datetime( cleanse_ISO8601($c->status_changed_time()) )->epoch();
+            my $xts = $command->{timestamp}; # Transaction Time Stamp
+            $logger->activity("offline: ol_handle_checkout: barcode=$barcode, cts=$cts, xts=$xts");
+
+            # Asset has changed after this transaction, ignore
+            if ($cts >= $xts) {
+                return OpenILS::Event->new(
+                    'SKIP_ASSET_CHANGED',
+                    payload => 'The Asset has been update since this transaction, so it will be ignored'
+                );
+            }
+    #       $logger->activity("offline: fetch_copy_by_barcode: " . Dumper($c->real_fields()));
+        }
     }
 
     my $evt = $U->simplereq(
