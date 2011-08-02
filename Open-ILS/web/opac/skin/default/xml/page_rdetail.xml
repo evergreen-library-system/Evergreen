@@ -83,7 +83,11 @@
 
 	<div class='hide_me' id='rdetail_bb_none'>&rdetail.none;</div>
 	<div class='hide_me' id='rdetail_bb_item_success'>&rdetail.bookbag.add.success;</div>
-	<div class='hide_me' id='rdetail_bb_new'>&rdetail.bookbag.name;</div>
+	<div dojoType='dijit.Dialog' id='newBBDialog' jsId='newBBDialog' title='&rdetail.bookbag.name;'>
+        <input id='bbName' jsId='bbName' dojoType='dijit.form.TextBox'></input><br/>
+        <button id='bbok' dojoType='dijit.form.Button' onClick='finishBookbag(0);' type='button'>&advanced.go;</button>
+        <button id='bbca' dojoType='dijit.form.Button' onClick='finishBookbag(1);' type='button'>&common.cancel;</button>
+    </div>
 	<div class='hide_me' id='rdetail_bb_success'>&rdetail.bookbag.create.success;</div>
 
 </div>
