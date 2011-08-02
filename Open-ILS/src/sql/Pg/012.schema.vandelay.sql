@@ -449,6 +449,7 @@ DECLARE
 BEGIN
 
     parsed_target := vandelay.strip_field( target_xml, ''); -- this dance normalizes the format of the xml for the IF below
+    xml_output := parsed_target; -- if there are no replace rules, just return the input
 
     FOR curr_field IN SELECT UNNEST( STRING_TO_ARRAY(field, ',') ) LOOP -- naive split, but it's the same we use in the perl
 
