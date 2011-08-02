@@ -2589,7 +2589,10 @@ Dear [% user.family_name %], [% user.first_given_name %]
 As a reminder, the following items are due in 3 days.
 
 [% FOR circ IN target %]
-    Title: [% circ.target_copy.call_number.record.simple_record.title %] 
+    [%- copy_details = helpers.get_copy_bib_basics(circ.target_copy.id) -%]
+    Title: [% copy_details.title %]
+    Author: [% copy_details.author %]
+    Call Number: [% circ.target_copy.call_number.label %]
     Barcode: [% circ.target_copy.barcode %] 
     Due: [% date.format(helpers.format_date(circ.due_date), '%Y-%m-%d') %]
     Item Cost: [% helpers.get_copy_price(circ.target_copy) %]
@@ -2600,7 +2603,8 @@ As a reminder, the following items are due in 3 days.
 $$);
 
 INSERT INTO action_trigger.environment (event_def, path) VALUES 
-    (6, 'target_copy.call_number.record.simple_record'),
+    (6, 'target_copy.call_number'),
+    (6, 'target_copy.location'),
     (6, 'usr'),
     (6, 'circ_lib.billing_address');
 
@@ -2728,8 +2732,9 @@ length of time.  If you would still like to receive these items,
 no action is required.
 
 [% FOR hold IN target %]
-    Title: [% hold.bib_rec.bib_record.simple_record.title %]
-    Author: [% hold.bib_rec.bib_record.simple_record.author %]
+    [%- copy_details = helpers.get_copy_bib_basics(hold.current_copy.id) -%]
+    Title: [% copy_details.title %]
+    Author: [% copy_details.author %]
 [% END %]
 $$
 );
@@ -2740,7 +2745,7 @@ INSERT INTO action_trigger.environment (
     ) VALUES
     (9, 'pickup_lib'),
     (9, 'usr'),
-    (9, 'bib_rec.bib_record.simple_record');
+    (9, 'current_copy.call_number');
 
 INSERT INTO action_trigger.hook (key, core_type, description, passive) 
     VALUES (

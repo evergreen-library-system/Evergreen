@@ -6288,18 +6288,23 @@ Dear [% user.family_name %], [% user.first_given_name %]
 Our records indicate the following items are overdue.
 
 [% FOR circ IN target %]
-    Title: [% circ.target_copy.call_number.record.simple_record.title %] 
-    Barcode: [% circ.target_copy.barcode %] 
+    [%- copy_details = helpers.get_copy_bib_basics(circ.target_copy.id) -%]
+    Title: [% copy_details.title %]
+    Author: [% copy_details.author %]
+    Call Number: [% circ.target_copy.call_number.label %]
+    Barcode: [% circ.target_copy.barcode %]
     Due: [% date.format(helpers.format_date(circ.due_date), '%Y-%m-%d') %]
     Item Cost: [% helpers.get_copy_price(circ.target_copy) %]
-    Total Owed For Transaction: [% circ.billable_transaction.summary.total_owed %]
+    Total Owed For Transaction: [% circ.billable_transaction.summary.balance_owed %]
     Library: [% circ.circ_lib.name %]
+
 [% END %]
 
 $$);
 
 INSERT INTO action_trigger.environment (event_def, path) VALUES 
-    (1, 'target_copy.call_number.record.simple_record'),
+    (1, 'target_copy.call_number'),
+    (1, 'target_copy.location'),
     (1, 'usr'),
     (1, 'billable_transaction.summary'),
     (1, 'circ_lib.billing_address');
@@ -6308,6 +6313,9 @@ INSERT INTO action_trigger.environment (event_def, path) VALUES
 
 INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, delay, delay_field) 
     VALUES (2, 'f', 1, '90 Day Overdue Mark Lost', 'checkout.due', 'CircIsOverdue', 'MarkItemLost', '90 days', 'due_date');
+
+INSERT INTO action_trigger.event_params (event_def, param, value) VALUES
+    (2, 'editor', '\'1\'');
 
 -- Sample Auto Mark Lost Notice --
 
@@ -6324,11 +6332,14 @@ Dear [% user.family_name %], [% user.first_given_name %]
 The following items are 90 days overdue and have been marked LOST.
 
 [% FOR circ IN target %]
-    Title: [% circ.target_copy.call_number.record.simple_record.title %] 
-    Barcode: [% circ.target_copy.barcode %] 
+    [%- copy_details = helpers.get_copy_bib_basics(circ.target_copy.id) -%]
+    Title: [% copy_details.title %], by [% copy_details.author %]
+    Call Number: [% circ.target_copy.call_number.label %]
+    Shelving Location: [% circ.target_copy.location.name %
+    Barcode: [% circ.target_copy.barcode %]
     Due: [% date.format(helpers.format_date(circ.due_date), '%Y-%m-%d') %]
     Item Cost: [% helpers.get_copy_price(circ.target_copy) %]
-    Total Owed For Transaction: [% circ.billable_transaction.summary.total_owed %]
+    Total Owed For Transaction: [% circ.billable_transaction.summary.balance_owed %]
     Library: [% circ.circ_lib.name %]
 [% END %]
 
@@ -6336,10 +6347,12 @@ $$);
 
 
 INSERT INTO action_trigger.environment (event_def, path) VALUES 
-    (3, 'target_copy.call_number.record.simple_record'),
+    (3, 'target_copy.call_number'),
     (3, 'usr'),
     (3, 'billable_transaction.summary'),
-    (3, 'circ_lib.billing_address');
+    (3, 'circ_lib.billing_address')
+    (3, 'target_copy.location');
+
 
 -- Sample Purchase Order HTML Template --
 
@@ -6498,8 +6511,9 @@ Dear [% user.family_name %], [% user.first_given_name %]
 The item(s) you requested are available for pickup from the Library.
 
 [% FOR hold IN target %]
-    Title: [% hold.current_copy.call_number.record.simple_record.title %]
-    Author: [% hold.current_copy.call_number.record.simple_record.author %]
+    [%- copy_details = helpers.get_copy_bib_basics(hold.current_copy.id) -%]
+    Title: [% copy_details.title %]
+    Author: [% copy_details.author %]
     Call Number: [% hold.current_copy.call_number.label %]
     Barcode: [% hold.current_copy.barcode %]
     Library: [% hold.pickup_lib.name %]
@@ -6521,7 +6535,7 @@ INSERT INTO action_trigger.hook (
     );
 
 INSERT INTO action_trigger.environment (event_def, path) VALUES
-    (5, 'current_copy.call_number.record.simple_record'),
+    (5, 'current_copy.call_number'),
     (5, 'usr'),
     (5, 'pickup_lib.billing_address');
 
@@ -6630,17 +6644,18 @@ length of time.  If you would still like to receive these items,
 no action is required.
 
 [% FOR hold IN target %]
-    Title: [% hold.bib_rec.bib_record.simple_record.title %]
-    Author: [% hold.bib_rec.bib_record.simple_record.author %]
+    [%- copy_details = helpers.get_copy_bib_basics(hold.current_copy.id) -%]
+    Title: [% copy_details.title %]
+    Author: [% copy_details.author %]
 [% END %]
 $$
 );
 
 INSERT INTO action_trigger.environment (event_def, path)
     VALUES
-        (9, 'pickup_lib'),
-        (9, 'usr'),
-        (9, 'bib_rec.bib_record.simple_record');
+    (9, 'pickup_lib'),
+    (9, 'usr'),
+    (9, 'current_copy.call_number');
 
 -- trigger data related to acq user requests
 
