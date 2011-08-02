@@ -124,6 +124,7 @@
             <menupopup tooltiptext="">
                 <menuitem label="&staff.main.menu.search.patrons.label;" accesskey="&staff.main.menu.search.patrons.accesskey;" command="cmd_patron_search" />
                 <menuitem label="&staff.main.menu.search.patrons_barcode.label;" accesskey="&staff.main.menu.search.patrons_barcode.accesskey;" command="cmd_circ_checkout"/>
+                <menuitem label="&staff.main.menu.search.patron_db_id.label;" accesskey="&staff.main.menu.search.patron_db_id.accesskey;" command="cmd_search_usr_id"/>
             </menupopup>
         </toolbarbutton>
         <toolbarbutton
