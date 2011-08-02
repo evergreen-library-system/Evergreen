@@ -192,7 +192,7 @@ function merge_records() {
         if (typeof xulG.on_merge == 'function') {
             xulG.on_merge(robj);
         }
-        var opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + lead_record;
+        var opac_url = xulG.url_prefix( urls.opac_rdetail ) + lead_record;
         var content_params = {
             'session' : ses(),
             'authtime' : ses('authtime'),

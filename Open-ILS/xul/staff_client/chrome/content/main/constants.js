@@ -139,6 +139,7 @@ var api = {
     'FM_AHR_ONSHELF_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.captured_holds.on_shelf.retrieve' },
     'FM_AHR_ID_LIST_ONSHELF_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.captured_holds.id_list.on_shelf.retrieve', 'secure' : false },
     'FM_AHR_ID_LIST_EXPIRED_ONSHELF_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.captured_holds.id_list.expired_on_shelf.retrieve', 'secure' : false },
+    'FM_AHR_COUNT_FOR_BRE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.bre.holds.count', 'secure' : false },
     'FM_AHR_COUNT_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.hold_requests.count', 'cacheable' : true, 'ttl' : 60000  },
     'FM_AHR_COUNT_RETRIEVE.authoritative' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.hold_requests.count.authoritative', 'cacheable' : true, 'ttl' : 60000  },
     'FM_AHR_CANCEL' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold.cancel' },
@@ -368,8 +369,9 @@ var api = {
 var urls = {
 
     'opac' : '/opac/' + LOCALE + '/skin/default/xml/advanced.xml?nps=1',
-    'opac_rdetail' : '/opac/' + LOCALE + '/skin/default/xml/rdetail.xml',
+    'opac_rdetail' : '/opac/' + LOCALE + '/skin/default/xml/rdetail.xml?r=',
     'opac_rresult' : '/opac/' + LOCALE + '/skin/default/xml/rresult.xml',
+    'opac_rresult_metarecord' : '/opac/' + LOCALE + '/skin/default/xml/rresult.xml?m=',
     'org_tree' : '/opac/common/js/' + LOCALE + '/OrgTree.js',
     'browser' : '/opac/' + LOCALE + '/skin/default/xml/advanced.xml?nps=1',
     'fieldmapper' : '/opac/common/js/fmall.js',

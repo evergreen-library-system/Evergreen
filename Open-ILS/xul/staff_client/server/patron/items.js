@@ -589,7 +589,7 @@ patron.items.prototype = {
                     alert($("patronStrings").getFormattedString('staff.patron.items.show_catalog.barcode_not_cataloged', [retrieve_ids[i].barcode]));
                     continue;
                 }
-                var opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + doc_id;
+                var opac_url = xulG.url_prefix( urls.opac_rdetail ) + doc_id;
                 var content_params = { 
                     'session' : ses(),
                     'authtime' : ses('authtime'),
@@ -730,7 +730,6 @@ patron.items.prototype = {
         obj.list.init(
             {
                 'columns' : columns,
-                'map_row_to_columns' : circ.util.std_map_row_to_columns(),
                 'retrieve_row' : retrieve_row,
                 'on_select' : function(ev) {
                     JSAN.use('util.functional');
@@ -758,7 +757,6 @@ patron.items.prototype = {
         obj.list2.init(
             {
                 'columns' : columns2,
-                'map_row_to_columns' : circ.util.std_map_row_to_columns(),
                 'retrieve_row' : retrieve_row,
                 'on_select' : function(ev) {
                     JSAN.use('util.functional');

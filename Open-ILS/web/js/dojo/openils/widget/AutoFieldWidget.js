@@ -534,14 +534,15 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                         oncomplete(openils.Util.readResponse(r, false, true));
                     };
 
+                    this.searchOptions = dojo.mixin(
+                        {async : !this.forceSync, oncomplete : _cb},
+                        this.searchOptions
+                    );
+
                     if (this.searchFilter) {
-                        new openils.PermaCrud().search(linkClass, this.searchFilter, {
-                            async : !this.forceSync, oncomplete : _cb
-                        });
+                        new openils.PermaCrud().search(linkClass, this.searchFilter, this.searchOptions);
                     } else {
-                        new openils.PermaCrud().retrieveAll(linkClass, {
-                            async : !this.forceSync, oncomplete : _cb
-                        });
+                        new openils.PermaCrud().retrieveAll(linkClass, this.searchOptions);
                     }
                 }
             }

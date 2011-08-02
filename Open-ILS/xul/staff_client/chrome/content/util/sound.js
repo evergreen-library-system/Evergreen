@@ -28,7 +28,12 @@ util.sound = function (params) {
             } else {
                 this._funcs = [];
             }
-            JSAN.use('util.exec'); this._exec = new util.exec(); var intervalId = this._exec.timer( this._funcs, params.interval || 500 );
+            JSAN.use('util.exec');
+            this._exec = new util.exec();
+            var delay = params.interval;
+            if (!delay) { delay = _sound_delay_interval; /* define this in server/skin/custom.js */ }
+            if (!delay) { delay = 2000; }
+            var intervalId = this._exec.timer( this._funcs, delay );
             dump('SOUND('+this.sig+'): starting timer with intervalId = ' + intervalId + '\n');
         }
 
@@ -98,6 +103,12 @@ util.sound.prototype = {
 
     'event' : function event(evt) {
         var key = 'AUDIO_' + arguments.callee.name + '_' + evt.textcode;
+        dump('SOUND('+this.sig+'): key = ' + key + '\n');
+        this.play_url( urls[key] );
+    },
+
+    'special' : function special(e) {
+        var key = 'AUDIO_' + arguments.callee.name + '_' + e;
         dump('SOUND('+this.sig+'): key = ' + key + '\n');
         this.play_url( urls[key] );
     },

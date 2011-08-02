@@ -162,7 +162,7 @@
         var chilifresh = '<!--#echo var="OILS_CHILIFRESH_ACCOUNT"-->';
         if (chilifresh == '(none)') { chilifresh = false; }
     </script>
-    <!--if expr="${OILS_CHILIFRESH_ACCOUNT} && ${OILS_CHILIFRESH_ACCOUNT}!='(none)'"-->
+    <!--#if expr="${OILS_CHILIFRESH_ACCOUNT} && ${OILS_CHILIFRESH_ACCOUNT}!='(none)'"-->
         <input type="hidden" id="chilifresh_account" name="chilifresh_account"
             value="<!--#echo var='OILS_CHILIFRESH_ACCOUNT'-->" />
         <input type="hidden" id="chilifresh_profile" name="chilifresh_profile"
@@ -170,12 +170,12 @@
         <input type="hidden" id="chilifresh_version" name="chilifresh_version" value="onsite_v1" />
         <input type="hidden" id="chilifresh_type" name="chilifresh_type" value="search" />
         <script language="javascript" type="text/javascript" src="<!--#echo var='OILS_CHILIFRESH_URL'-->"></script>
-    <!--endif-->
+    <!--#endif-->
 
     <!-- Novelist setup -->
-    <!--if expr="${OILS_NOVELIST_URL} && ${OILS_NOVELIST_URL}!='(none)'"-->
+    <!--#if expr="${OILS_NOVELIST_URL} && ${OILS_NOVELIST_URL}!='(none)'"-->
         <script type="text/javascript" id="EIT" src="<!--#echo var='OILS_NOVELIST_URL'-->"></script>
-    <!--endif-->
+    <!--#endif-->
     <script language='javascript' type='text/javascript'>
         var novelist = '<!--#echo var="OILS_NOVELIST_URL"-->';
         if (novelist == '(none)') { novelist = false; }

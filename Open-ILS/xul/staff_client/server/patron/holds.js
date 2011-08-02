@@ -75,7 +75,6 @@ patron.holds.prototype = {
                         // 'acp_circ_modifier' : { 'hidden' : false }
                     })
                 ),
-                'map_row_to_columns' : circ.util.std_map_row_to_columns(),
                 'retrieve_row' : function(params) {
                     var row = params.row;
                     try {
@@ -1148,19 +1147,19 @@ patron.holds.prototype = {
                                     var opac_url;
                                     switch(htype) {
                                         case 'M' :
-                                            opac_url = xulG.url_prefix( urls.opac_rresult ) + '?m=' + htarget;
+                                            opac_url = xulG.url_prefix( urls.opac_rresult_metarecord ) + htarget;
                                         break;
                                         case 'T' :
                                         case 'P' :
-                                            opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + htarget;
+                                            opac_url = xulG.url_prefix( urls.opac_rdetail ) + htarget;
                                         break;
                                         case 'I' :
                                             opac_url = xulG.url_prefix( urls.opac_rdetail )
-                                            + '?r=' + obj.hold_subscription_map[ obj.retrieve_ids[i].id ].record_entry();
+                                            + obj.hold_subscription_map[ obj.retrieve_ids[i].id ].record_entry();
                                         break;
                                         case 'V' :
                                             var my_acn = obj.network.simple_request( 'FM_ACN_RETRIEVE.authoritative', [ htarget ]);
-                                            opac_url = xulG.url_prefix( urls.opac_rdetail) + '?r=' + my_acn.record();
+                                            opac_url = xulG.url_prefix( urls.opac_rdetail) + my_acn.record();
                                         break;
                                         case 'C' :
                                         case 'R' :
@@ -1173,7 +1172,7 @@ patron.holds.prototype = {
                                                 my_acn = obj.network.simple_request( 'FM_ACN_RETRIEVE.authoritative',
                                                     [ my_acp.call_number() ]);
                                             }
-                                            opac_url = xulG.url_prefix( urls.opac_rdetail) + '?r=' + my_acn.record();
+                                            opac_url = xulG.url_prefix( urls.opac_rdetail) + my_acn.record();
                                         break;
                                         default:
                                             obj.error.standard_unexpected_error_alert($("patronStrings").getFormattedString('staff.patron.holds.show_catalog.unknown_htype', [htype]), obj.retrieve_ids[i]);

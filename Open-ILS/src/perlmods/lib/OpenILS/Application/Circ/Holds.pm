@@ -3227,7 +3227,10 @@ __PACKAGE__->register_method(
 );
 
 sub clear_shelf_process {
-	my($self, $client, $auth, $org_id) = @_;
+	my($self, $client, $auth, $org_id, $match_copy) = @_;
+
+    my $current_copy = { '!=' => undef };
+    $current_copy = { '=' => $match_copy } if $match_copy;
 
 	my $e = new_editor(authtoken=>$auth, xact => 1);
 	$e->checkauth or return $e->die_event;
@@ -3246,7 +3249,7 @@ sub clear_shelf_process {
             fulfillment_time  => undef,
             shelf_time        => {'!=' => undef},
             capture_time      => {'!=' => undef},
-            current_copy      => {'!=' => undef},
+            current_copy      => $current_copy,
         },
         { idlist => 1 }
     );
@@ -3297,7 +3300,7 @@ sub clear_shelf_process {
             my $copy = $hold->current_copy;
             my ($alt_hold) = __PACKAGE__->find_nearest_permitted_hold($e, $copy, $e->requestor, 1);
 
-            if($alt_hold) {
+            if($alt_hold and !$match_copy) {
 
                 push(@{$cache_data{hold}}, $hold->id); # copy is needed for a hold
 

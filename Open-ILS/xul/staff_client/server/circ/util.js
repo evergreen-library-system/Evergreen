@@ -1103,6 +1103,7 @@ circ.util.columns = function(modify,params) {
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.acp.status_changed_time(), '%{localized}' ); },
             'persist' : 'hidden width ordinal'
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.acp.status_changed_time() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1136,6 +1137,7 @@ circ.util.columns = function(modify,params) {
                     return "";
                 }
             }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.circ.xact_start() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1153,6 +1155,7 @@ circ.util.columns = function(modify,params) {
                     return "";
                 }
             }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.circ.checkin_time() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1164,6 +1167,7 @@ circ.util.columns = function(modify,params) {
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return my.circ ? util.date.formatted_date( my.circ.xact_finish(), '%{localized}' ) : ""; },
+            'sort_value' : function(my) { return util.date.db_date2Date( my.circ.xact_finish() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1181,6 +1185,7 @@ circ.util.columns = function(modify,params) {
                     return "";
                 }
             }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.circ.due_date() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1192,6 +1197,7 @@ circ.util.columns = function(modify,params) {
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.acp.create_date(), '%{localized}' ); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.acp.create_date() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1203,6 +1209,7 @@ circ.util.columns = function(modify,params) {
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.acp.edit_date(), '%{localized}' ); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.acp.edit_date() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1354,6 +1361,7 @@ circ.util.columns = function(modify,params) {
                     return "";
                 }
             }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.circ.stop_fines_time() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1449,6 +1457,7 @@ circ.util.columns = function(modify,params) {
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return my.circ ? util.date.formatted_date( my.circ.checkin_scan_time(), '%{localized}' ) : ""; },
+            'sort_value' : function(my) { return util.date.db_date2Date( my.circ.checkin_scan_time() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1490,6 +1499,7 @@ circ.util.columns = function(modify,params) {
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return my.bre ? util.date.formatted_date( my.bre.create_date(), '%{localized}' ) : ''; }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.bre.create_date() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1501,6 +1511,7 @@ circ.util.columns = function(modify,params) {
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return my.bre ? util.date.formatted_date( my.bre.edit_date(), '%{localized}' ) : ''; }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.bre.edit_date() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1690,6 +1701,7 @@ circ.util.transit_columns = function(modify,params) {
             'primary' : false,
             'hidden' : false,
             'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.atc.source_send_time(), '%{localized}' ); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.atc.source_send_time() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1715,6 +1727,7 @@ circ.util.transit_columns = function(modify,params) {
             'primary' : false,
             'hidden' : false,
             'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.atc.dest_recv_time(), '%{localized}' ); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.atc.dest_recv_time() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1779,6 +1792,7 @@ circ.util.hold_columns = function(modify,params) {
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.ahr.cancel_time(), '%{localized}' ); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.ahr.cancel_time() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1837,6 +1851,7 @@ circ.util.hold_columns = function(modify,params) {
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.ahr.request_time(), '%{localized}' ); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.ahr.request_time() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1847,6 +1862,7 @@ circ.util.hold_columns = function(modify,params) {
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.ahr.shelf_time(), '%{localized}' ); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.ahr.shelf_time() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1857,6 +1873,7 @@ circ.util.hold_columns = function(modify,params) {
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.ahr.shelf_expire_time(), '%{localized}' ); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.ahr.shelf_expire_time() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1875,6 +1892,16 @@ circ.util.hold_columns = function(modify,params) {
                 }
                 return "";
             }
+            ,'sort_value' : function(my) {
+                return util.date.db_date2Date( my.acp.create_date() ).getTime();
+                if (my.ahr.transit() && my.ahr.transit().dest_recv_time()) {
+                    return util.date.db_date2Date( my.ahr.transit().dest_recv_time() ).getTime();
+                }
+                if (!my.ahr.transit() && my.ahr.capture_time()) {
+                    return util.date.db_date2Date( my.ahr.capture_time() ).getTime();
+                }
+                return 0;
+            }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1885,6 +1912,7 @@ circ.util.hold_columns = function(modify,params) {
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return my.ahr.capture_time() ? util.date.formatted_date( my.ahr.capture_time(), '%{localized}' ) : ""; }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.ahr.capture_time() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1973,6 +2001,7 @@ circ.util.hold_columns = function(modify,params) {
                     return util.date.formatted_date( my.ahr.thaw_date(), '%{localized}' );
                 }
             }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.ahr.thaw_date() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -2054,6 +2083,7 @@ circ.util.hold_columns = function(modify,params) {
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return my.ahr.expire_time() ? util.date.formatted_date( my.ahr.expire_time(), '%{localized}' ) : ''; }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.ahr.expire_time() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -2064,6 +2094,7 @@ circ.util.hold_columns = function(modify,params) {
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.ahr.fulfillment_time(), '%{localized}' ); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.ahr.fulfillment_time() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -2119,6 +2150,7 @@ circ.util.hold_columns = function(modify,params) {
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.ahr.prev_check_time(), '%{localized}' ); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.ahr.prev_check_time() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -2250,6 +2282,7 @@ circ.util.hold_columns = function(modify,params) {
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.ahr.notify_time(), '%{localized}' ); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.ahr.notify_time() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -2284,6 +2317,7 @@ circ.util.hold_columns = function(modify,params) {
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return my.ahr.transit() ?  util.date.formatted_date( my.ahr.transit().source_send_time(), '%{localized}' ) : ""; }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.ahr.transit().source_send_time() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -2303,6 +2337,7 @@ circ.util.hold_columns = function(modify,params) {
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return my.ahr.transit() ?  util.date.formatted_date( my.ahr.transit().dest_recv_time(), '%{localized}' ) : ""; }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.ahr.transit().dest_recv_time() ).getTime(); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -2432,6 +2467,7 @@ circ.util.hold_columns = function(modify,params) {
                 {
             'persist' : 'hidden width ordinal',
             'id' : 'queue_position',
+            'sort_type' : 'number',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.queue_position'),
             'flex' : 1,
             'primary' : false,
@@ -2527,63 +2563,6 @@ circ.util.hold_columns = function(modify,params) {
 
     }
     return c.sort( function(a,b) { if (a.label < b.label) return -1; if (a.label > b.label) return 1; return 0; } );
-};
-/*
-circ.util.std_map_row_to_column = function(error_value) {
-    return function(row,col) {
-        // row contains { 'my' : { 'acp' : {}, 'circ' : {}, 'mvr' : {} } }
-        // col contains one of the objects listed above in columns
-
-        // mimicking some of the obj in circ.checkin and circ.checkout where map_row_to_column is usually defined
-        var obj = {};
-        JSAN.use('util.error'); obj.error = new util.error();
-        JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
-        JSAN.use('util.network'); obj.network = new util.network();
-        JSAN.use('util.money');
-
-        var my = row.my;
-        var value;
-        try {
-            value = eval( col.render );
-        } catch(E) {
-            obj.error.sdump('D_WARN','map_row_to_column: ' + E);
-            if (error_value) value = error_value; else value = '   ';
-        }
-        return value;
-    }
-};
-*/
-circ.util.std_map_row_to_columns = function(error_value) {
-    return function(row,cols,scratch) {
-        // row contains { 'my' : { 'acp' : {}, 'circ' : {}, 'mvr' : {} } }
-        // cols contains all of the objects listed above in columns
-        // scratch is a temporary space shared by all cells/rows (or just per row if not explicitly passed in)
-        if (!scratch) { scratch = {}; }
-
-        var obj = {};
-        JSAN.use('util.error'); obj.error = new util.error();
-        JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
-        JSAN.use('util.network'); obj.network = new util.network();
-        JSAN.use('util.money');
-
-        var my = row.my;
-        var values = [];
-        var cmd = '';
-        try {
-            for (var i = 0; i < cols.length; i++) {
-                switch (typeof cols[i].render) {
-                    case 'function': try { values[i] = cols[i].render(my,scratch); } catch(E) { values[i] = error_value; obj.error.sdump('D_COLUMN_RENDER_ERROR',E); } break;
-                    case 'string' : cmd += 'try { ' + cols[i].render + '; values['+i+'] = v; } catch(E) { values['+i+'] = error_value; }'; break;
-                    default: cmd += 'values['+i+'] = "??? '+(typeof cols[i].render)+'"; ';
-                }
-            }
-            if (cmd) eval( cmd );
-        } catch(E) {
-            obj.error.sdump('D_WARN','map_row_to_column: ' + E);
-            if (error_value) { value = error_value; } else { value = '   ' };
-        }
-        return values;
-    }
 };
 
 circ.util.checkin_via_barcode = function(session,params,backdate,auto_print,async) {
@@ -2802,6 +2781,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
             if (check.ilsevent == 3 /* NO_CHANGE */) {
                 //msg = 'This item is already checked in.\n';
                 check.what_happened = 'no_change';
+                sound.special('checkin.no_change');
                 if (no_change_label) {
                     var m = no_change_label.getAttribute('value');
                     var text = document.getElementById('circStrings').getFormattedString('staff.circ.utils.item_checked_in', [params.barcode]);
@@ -2817,6 +2797,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
             }
             if (check.ilsevent == 1202 /* ITEM_NOT_CATALOGED */ && check.copy.status() != 11) {
                 check.what_happened = 'error';
+                sound.special('checkin.error');
                 var copy_status = (data.hash.ccs[ check.copy.status() ] ? data.hash.ccs[ check.copy.status() ].name() : check.copy.status().name() );
                 var err_msg = document.getElementById('commonStrings').getString('common.error');
                 err_msg += '\nFIXME --';
@@ -2829,6 +2810,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                 case 0: /* AVAILABLE */
                 case 7: /* RESHELVING */
                     check.what_happened = 'success';
+                    sound.special('checkin.success');
                     if (msg) {
                         print_data.route_to_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
                         print_data.route_to = check.route_to;
@@ -2838,10 +2820,12 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                 break;
                 case 8: /* ON HOLDS SHELF */
                     check.what_happened = 'hold_shelf';
+                    sound.special('checkin.hold_shelf');
                     check.route_to = document.getElementById('circStrings').getString('staff.circ.route_to.hold_shelf');
                     if (check.payload.hold) {
                         if (check.payload.hold.pickup_lib() != data.list.au[0].ws_ou()) {
                             check.what_happened = 'error';
+                            sound.special('checkin.error');
                             var err_msg = document.getElementById('commonStrings').getString('common.error');
                             err_msg += '\nFIXME: ';
                             err_msg += document.getElementById('circStrings').getString('staff.circ.utils.route_item_error');
@@ -2878,6 +2862,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                         }
                     } else {
                         check.what_happened = 'error';
+                        sound.special('checkin.error');
                         var err_msg = document.getElementById('commonStrings').getString('common.error');
                         err_msg += '\nFIXME: ';
                         err_msg += document.getElementById('circStrings').getString('staff.circ.utils.route_item_status_error');
@@ -3062,6 +3047,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                 break;
                 case 6: /* IN TRANSIT */
                     check.what_happened = 'error';
+                    sound.special('checkin.error');
                     check.route_to = 'TRANSIT SHELF??';
                     print_data.route_to;
                     var err_msg = document.getElementById('commonStrings').getString('common.error');
@@ -3071,6 +3057,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                 break;
                 case 11: /* CATALOGING */
                     check.what_happened = 'cataloging';
+                    sound.special('checkin.cataloging');
                     check.route_to = 'CATALOGING';
                     print_data.route_to;
                     var suppress_popups = data.hash.aous['ui.circ.suppress_checkin_popups'];
@@ -3101,6 +3088,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                 case 15: // ON_RESERVATION_SHELF
                     check.route_to = 'RESERVATION SHELF';
                     check.what_happened = "reservation_shelf";
+                    sound.special('checkin.reservation_shelf');
                     if (check.payload.reservation) {
                         if (check.payload.reservation.pickup_lib() != data.list.au[0].ws_ou()) {
                             msg += document.getElementById('commonStrings').getString('common.error');
@@ -3188,6 +3176,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                 break;
                 default:
                     check.what_happened = 'error';
+                    sound.special('checkin.error');
                     msg += document.getElementById('commonStrings').getString('common.error');
                     var copy_status = data.hash.ccs[check.copy.status()] ? data.hash.ccs[check.copy.status()].name() : check.copy.status().name();
                     msg += '\n';
@@ -3212,6 +3201,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
         } else /* ROUTE_ITEM */ if (check.ilsevent == 7000) {
 
             check.what_happened = 'transit';
+            sound.special('checkin.transit');
             var lib = data.hash.aou[ check.org ];
             check.route_to = lib.shortname();
             print_data.route_to = check.route_to;
@@ -3269,6 +3259,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
             JSAN.use('util.date');
             if (check.payload.hold) {
                 check.what_happened = 'transit_for_hold';
+                sound.special('checkin.transit_for_hold');
                 JSAN.use('patron.util');
                 var au_obj = patron.util.retrieve_fleshed_au_via_id( session, check.payload.hold.usr() );
                 print_data.user = au_obj;
@@ -3454,6 +3445,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
         } else /* ASSET_COPY_NOT_FOUND */ if (check.ilsevent == 1502) {
 
             check.what_happened = 'not_found';
+            sound.special('checkin.not_found');
             check.route_to = 'CATALOGING';
             var mis_scan_msg = document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.status.copy_not_found', [params.barcode]);
             var suppress_popups = data.hash.aous['ui.circ.suppress_checkin_popups'];
@@ -3485,6 +3477,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
         } else /* HOLD_CAPTURE_DELAYED */ if (check.ilsevent == 7019) {
 
             check.what_happened = 'hold_capture_delayed';
+            sound.special('checkin.hold_capture_delayed');
             var rv = 0;
             msg += document.getElementById('circStrings').getString('staff.circ.utils.hold_capture_delayed.description');
             var suppress_popups = data.hash.aous['ui.circ.suppress_checkin_popupst'];
@@ -3508,6 +3501,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 
         } else /* NETWORK TIMEOUT */ if (check.ilsevent == -1) {
             check.what_happened = 'error';
+            sound.special('checkin.error');
             error.standard_network_error_alert(document.getElementById('circStrings').getString('staff.circ.checkin.suggest_offline'));
         } else {
 

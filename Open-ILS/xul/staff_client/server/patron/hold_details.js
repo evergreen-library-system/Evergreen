@@ -115,7 +115,6 @@ function init_list() {
     g.list.init(
         {
             'columns' : columns,
-            'map_row_to_columns' : circ.util.std_map_row_to_columns(),
             'retrieve_row' : function(params) {
                 var row = params.row;
                 if (typeof params.on_retrieve == 'function') {

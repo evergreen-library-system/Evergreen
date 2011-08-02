@@ -38,9 +38,19 @@ main.menu.prototype = {
     'toolbar_mode' : 'both',
     'toolbar_labelpos' : 'side',
 
-    'url_prefix' : function(url) {
+    'url_prefix' : function(url,secure) {
+        // if host unspecified URL with leading /, prefix the remote hostname
         if (url.match(/^\//)) url = urls.remote + url;
-        if (! url.match(/^(http|chrome):\/\//) && ! url.match(/^data:/) ) url = 'http://' + url;
+        // if it starts with http:// and we want secure, convert to https://
+        if (secure && url.match(/^http:\/\//)) {
+            url = url.replace(/^http:\/\//, 'https://');
+        }
+        // if it doesn't start with a known protocol, add http(s)://
+        if (! url.match(/^(http|https|chrome):\/\//) && ! url.match(/^data:/) ) {
+            url = secure
+                ? 'https://' + url
+                : 'http://' + url;
+        }
         dump('url_prefix = ' + url + '\n');
         return url;
     },
@@ -368,6 +378,23 @@ main.menu.prototype = {
                     obj.set_patron_tab({},{},event);
                 }
             ],
+            'cmd_search_usr_id' : [
+                ['oncommand'],
+                function(event) {
+                    var usr_id = prompt(
+                        offlineStrings.getString('menu.cmd_search_usr_id.tab'),
+                        '',
+                        offlineStrings.getString('menu.cmd_search_usr_id.prompt')
+                    );
+                    if (usr_id != '' && ! isNaN(usr_id)) {
+                        obj.set_patron_tab(
+                            {},
+                            { 'id' : usr_id },
+                            event
+                        );
+                    }
+                }
+            ],
             'cmd_search_opac' : [
                 ['oncommand'],
                 function(event) {
@@ -384,7 +411,7 @@ main.menu.prototype = {
                     function spawn_tcn(r,event) {
                         for (var i = 0; i < r.count; i++) {
                             var id = r.ids[i];
-                            var opac_url = obj.url_prefix( urls.opac_rdetail ) + '?r=' + id;
+                            var opac_url = obj.url_prefix( urls.opac_rdetail ) + id;
                             obj.data.stash_retrieve();
                             var content_params = { 
                                 'session' : ses(), 
@@ -434,7 +461,7 @@ main.menu.prototype = {
                     var bib_id = prompt(offlineStrings.getString('menu.cmd_search_bib_id.tab'),'',offlineStrings.getString('menu.cmd_search_bib_id.prompt'));
                     if (!bib_id) return;
 
-                    var opac_url = obj.url_prefix( urls.opac_rdetail ) + '?r=' + bib_id;
+                    var opac_url = obj.url_prefix( urls.opac_rdetail ) + bib_id;
                     var content_params = { 
                         'session' : ses(), 
                         'authtime' : ses('authtime'),
@@ -1123,7 +1150,7 @@ main.menu.prototype = {
                         alert(offlineStrings.getString('menu.cmd_retrieve_last_record.session.error'));
                         return;
                     }
-                    var opac_url = obj.url_prefix( urls.opac_rdetail ) + '?r=' + obj.data.last_record;
+                    var opac_url = obj.url_prefix( urls.opac_rdetail ) + obj.data.last_record;
                     var content_params = {
                         'session' : ses(),
                         'authtime' : ses('authtime'),
@@ -2081,7 +2108,7 @@ commands:
         content_params.set_tab_name = function(name) { tab.label = tab.curindex + ' ' + name; tab.origlabel = name; };
         content_params.set_help_context = function(params) { return obj.set_help_context(params); };
         content_params.open_chrome_window = function(a,b,c) { return xulG.window.open(a,b,c); };
-        content_params.url_prefix = function(url) { return obj.url_prefix(url); };
+        content_params.url_prefix = function(url,secure) { return obj.url_prefix(url,secure); };
         content_params.network_meter = obj.network_meter;
         content_params.page_meter = obj.page_meter;
         content_params.get_barcode = obj.get_barcode;

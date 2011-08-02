@@ -1042,6 +1042,7 @@ sub new_hold_copy_targeter {
 	my $client = shift;
 	my $check_expire = shift;
 	my $one_hold = shift;
+    my $find_copy = shift;
 
 	local $OpenILS::Application::Storage::WRITE = 1;
 
@@ -1288,6 +1289,8 @@ sub new_hold_copy_targeter {
 			}
 
 			my $copy_count = @$all_copies;
+            my $found_copy = undef;
+            $found_copy = 1 if($find_copy and grep $_ == $find_copy, @$all_copies);
 
 			# map the potentials, so that we can pick up checkins
 			# XXX Loop-based targeting may require that /only/ copies from this loop should be added to
@@ -1489,7 +1492,8 @@ sub new_hold_copy_targeter {
 				{ hold => $hold->id,
 				  old_target => ($old_best ? $old_best->id : undef),
 				  eligible_copies => $copy_count,
-				  target => ($best ? $best->id : undef) };
+				  target => ($best ? $best->id : undef),
+                  found_copy => $found_copy };
 
 		} otherwise {
 			my $e = shift;

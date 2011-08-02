@@ -126,7 +126,7 @@ function holdsDrawEditor(args) {
 	if(holdArgs.editHold) // flesh the args with the existing hold 
 		holdArgsFromHold(holdArgs.editHold, holdArgs);
 
-    $('holds_parts_selector').style.border = 'auto';
+     removeCSSClass($('holds_parts_selector'), 'parts-warning');
     holdArgs.partsSuggestionMade = false;
 
 	holdsDrawWindow();
@@ -1026,7 +1026,7 @@ function holdHandleCreateResponse(r, recurse) {
                         holdArgs.recordParts.length && holdArgs.type == 'T') {
                     // T holds on records that have parts are OK, but if the record has no non-part
                     // copies, the hold will ultimately fail.  Suggest selecting a part to the user.
-                    $('holds_parts_selector').style.border = '2px solid red';
+                    addCSSClass($('holds_parts_selector'), 'parts-warning');
                     holdArgs.partsSuggestionMade = true;
                     alert($('hold_has_parts').innerHTML);
                 } else {
