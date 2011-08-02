@@ -24,7 +24,11 @@
 <script type ="text/javascript">
     dojo.require('openils.widget.AutoGrid');
     openils.Util.addOnLoad(
-        function() { cradGrid.loadAll({order_by : {crad : 'name'}}) }
+        function() {
+            // avoid loading the entire config.xml_transform object
+            cradGrid.overrideWidgetArgs.format = {searchOptions : {"select":{"cxt":["name"]}}};
+            cradGrid.loadAll({order_by : {crad : 'name'}}) 
+        }
     );
 </script>
 
