@@ -257,7 +257,7 @@ cat.util.show_in_opac = function(selection_list) {
                 continue;
             }
             seen[doc_id] = true;
-            var opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + doc_id;
+            var opac_url = xulG.url_prefix( urls.opac_rdetail ) + doc_id;
             var content_params = { 
                 'session' : ses(),
                 'authtime' : ses('authtime'),
@@ -1163,7 +1163,7 @@ cat.util.mark_for_overlay = function(doc_id,doc_mvr) {
 
                 if (ev.button == 0 /* left click, spawn opac */) {
                     var opac_url = xulG.url_prefix( urls.opac_rdetail )
-                        + '?r=' + data[data_key];
+                        + data[data_key];
                     var content_params = {
                         'session' : ses(),
                         'authtime' : ses('authtime'),

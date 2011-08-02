@@ -35,6 +35,10 @@ function bib_brief_overlay(params) {
         }
 
         JSAN.use('util.widgets');
+        function exists(name) {
+            var nodes = document.getElementsByAttribute('name',name);
+            return nodes.length > 0;
+        }
         function set(name,value) {
             if (params.print_data) {
                 params.print_data[name] = value;
@@ -90,28 +94,76 @@ function bib_brief_overlay(params) {
             }
         }
 
-        // Let's fetch a bib call number
-        JSAN.use('OpenILS.data');
-        var data = new OpenILS.data();
-        var label_class = data.hash.aous['cat.default_classification_scheme'];
-        if (!label_class) {
-            label_class = 1;
-        }
-        var cn_blob_array = net.simple_request('BLOB_MARC_CALLNUMBERS_RETRIEVE',[params.mvr_id, label_class]);
-        if (! cn_blob_array) { cn_blob_array = []; }
-        var tooltip_text = '';
-        for (var i = 0; i < cn_blob_array.length; i++) {
-            var cn_blob_obj = cn_blob_array[i];
-            for (var j in cn_blob_obj) {
-                tooltip_text += j + ' : ' + cn_blob_obj[j] + '\n';
+        // Let's fetch a bib call number, if the "bib_call_number" field exists
+        // in our display
+        if (exists('bib_call_number')) {
+            JSAN.use('OpenILS.data');
+            var data = new OpenILS.data();
+            var label_class = data.hash.aous[
+                'cat.default_classification_scheme'
+            ];
+            if (!label_class) {
+                label_class = 1;
             }
+            net.simple_request(
+                'BLOB_MARC_CALLNUMBERS_RETRIEVE',
+                [params.mvr_id, label_class],
+                function(req) {
+                    var cn_blob_array = req.getResultObject();
+                    if (! cn_blob_array) { cn_blob_array = []; }
+                    var tooltip_text = '';
+                    for (var i = 0; i < cn_blob_array.length; i++) {
+                        var cn_blob_obj = cn_blob_array[i];
+                        for (var j in cn_blob_obj) {
+                            tooltip_text += j + ' : ' + cn_blob_obj[j] + '\n';
+                        }
+                    }
+                    if (tooltip_text) {
+                        var cn_blob_obj = cn_blob_array[0];
+                        for (var j in cn_blob_obj) {
+                            set('bib_call_number',cn_blob_obj[j]);
+                        }
+                        set_tooltip('bib_call_number',tooltip_text);
+                    }
+                }
+            );
         }
-        if (tooltip_text) {
-            var cn_blob_obj = cn_blob_array[0];
-            for (var j in cn_blob_obj) {
-                set('bib_call_number',cn_blob_obj[j]);
-            }
-            set_tooltip('bib_call_number',tooltip_text);
+
+        // Let's fetch the hold count for the bib, if the "holds" field exists
+        // in our display
+        if (exists('holds')) {
+            net.simple_request(
+                'FM_AHR_COUNT_FOR_BRE',
+                [params.mvr_id],
+                function(req) {
+                    var hold_count = req.getResultObject();
+                    set('holds',hold_count);
+                }
+            );
+        }
+
+        // Let's fetch the item count for the bib, if the "items" field exists
+        // in our display
+        if (exists('items')) {
+            JSAN.use('OpenILS.data');
+            var data = new OpenILS.data();
+            net.simple_request(
+                'FM_ACP_COUNT.authoritative',
+                [ data.tree.aou.id(), params.mvr_id ],
+                function(req){
+                    var count_blob = req.getResultObject()[0];
+                    set('items',count_blob.count);
+                    set_tooltip(
+                        'items',
+                        $('catStrings')
+                        ? $('catStrings').getFormattedString(
+                            'staff.cat.bib_brief.items.available.tooltip',
+                            [count_blob.available]
+                        )
+                        : count_blob.available
+                    );
+                }
+            );
         }
 
     } catch(E) {

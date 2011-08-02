@@ -97,6 +97,10 @@ INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath )
     (27, 'identifier', 'bibid', oils_i18n_gettext(27, 'Internal ID', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='901']/marc:subfield[@code='c']$$ );
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, search_field, facet_field) VALUES
     (28, 'identifier', 'authority_id', oils_i18n_gettext(28, 'Authority Record ID', 'cmf', 'label'), 'marcxml', '//marc:datafield/marc:subfield[@code="0"]', FALSE, TRUE);
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath) VALUES
+    (29, 'identifier', 'scn', oils_i18n_gettext(29, 'System Control Number', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='035']/marc:subfield[@code="a"]$$);
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath) VALUES
+    (30, 'identifier', 'lccn', oils_i18n_gettext(30, 'LC Control Number', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='010']/marc:subfield[@code="a" or @code='z']$$);
 
 SELECT SETVAL('config.metabib_field_id_seq'::TEXT, (SELECT MAX(id) FROM config.metabib_field), TRUE);
 
@@ -1432,7 +1436,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 509, 'TRANSIT_CHECKIN_INTERVAL_BLOCK.override', oils_i18n_gettext(509,
     'Allows a user to override the TRANSIT_CHECKIN_INTERVAL_BLOCK event', 'ppl', 'description')),
  ( 510, 'UPDATE_PATRON_COLLECTIONS_EXEMPT', oils_i18n_gettext(510,
-    'Allows a user to indicate that a patron is exempt from collections processing', 'ppl', 'description'));
+    'Allows a user to indicate that a patron is exempt from collections processing', 'ppl', 'description')),
+ ( 511, 'PERSISTENT_LOGIN', oils_i18n_gettext( 511,
+    'Allows a user to authenticate and get a long-lived session (length configured in opensrf.xml)', 'ppl', 'description' ));
 
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
@@ -1502,6 +1508,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'CREATE_PURCHASE_REQUEST',
 			'MR_HOLDS',
 			'OPAC_LOGIN',
+			'PERSISTENT_LOGIN',
 			'RENEW_CIRC',
 			'TITLE_HOLDS',
 			'user_request.create'
@@ -2592,6 +2599,11 @@ INSERT into config.org_unit_setting_type
     oils_i18n_gettext('circ.checkout_fills_related_hold', 'When a patron checks out an item and they have no holds that directly target the item, the system will attempt to find a hold for the patron that could be fulfilled by the checked out item and fulfills it', 'coust', 'description'),
     'bool'),
 
+( 'circ.checkout_fills_related_hold_exact_match_only',
+    oils_i18n_gettext('circ.checkout_fills_related_hold_exact_match_only', 'Checkout Fills Related Hold On Valid Copy Only', 'coust', 'label'),
+    oils_i18n_gettext('circ.checkout_fills_related_hold_exact_match_only', 'When filling related holds on checkout only match on items that are valid for opportunistic capture for the hold. Without this set a Title or Volume hold could match when the item is not holdable. With this set only holdable items will match.', 'coust', 'description'),
+    'bool'),
+
 ( 'circ.selfcheck.auto_override_checkout_events',
     oils_i18n_gettext('circ.selfcheck.auto_override_checkout_events', 'Selfcheck override events list', 'coust', 'label'),
     oils_i18n_gettext('circ.selfcheck.auto_override_checkout_events', 'List of checkout/renewal events that the selfcheck interface should automatically override instead instead of alerting and stopping the transaction', 'coust', 'description'),
@@ -2751,7 +2763,24 @@ INSERT into config.org_unit_setting_type
     oils_i18n_gettext( 'org.patron_opt_default', 'Circ: Patron Opt-In Default', 'coust', 'label'),
     oils_i18n_gettext( 'org.patron_opt_default', 'This is the default depth at which a patron is opted in; it is calculated as an org unit relative to the current workstation.', 'coust', 'label'),
     'integer')
-
+,( 
+        'ui.circ.billing.uncheck_bills_and_unfocus_payment_box',
+        oils_i18n_gettext(
+            'ui.circ.billing.uncheck_bills_and_unfocus_payment_box',
+            'GUI: Uncheck bills by default in the patron billing interface',
+            'coust',
+            'label'
+        ),
+        oils_i18n_gettext(
+            'ui.circ.billing.uncheck_bills_and_unfocus_payment_box',
+            'Uncheck bills by default in the patron billing interface,'
+            || ' and focus on the Uncheck All button instead of the'
+            || ' Payment Received field.',
+            'coust',
+            'description'
+        ),
+        'bool'
+    )
 ;
 
 UPDATE config.org_unit_setting_type

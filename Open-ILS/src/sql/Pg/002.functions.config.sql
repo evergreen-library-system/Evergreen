@@ -553,20 +553,27 @@ foreach my $id_field ('001', '003') {
     } else {
         # Delete the other fields, as with more than 1 001/003 we do not know which 003/001 to match
         foreach my $control (@controls) {
-            unless ($control->data() eq $spec_value) {
-                $record->delete_field($control);
-            }
+            $record->delete_field($control);
         }
         $record->insert_fields_ordered(MARC::Field->new($id_field, $spec_value));
         $create = 1;
     }
 }
 
+my $cn = $record->field('001')->data();
+# Special handling of OCLC numbers, often found in records that lack 003
+if ($cn =~ /^oc[nm]/) {
+    $cn =~ s/^oc[nm]0*(\d+)/$1/;
+    $record->field('003')->data('OCoLC');
+    $create = 0;
+}
+
 # Now, if we need to munge the 001, we will first push the existing 001/003
 # into the 035; but if the record did not have one (and one only) 001 and 003
 # to begin with, skip this process
 if ($munge and not $create) {
-    my $scn = "(" . $record->field('003')->data() . ")" . $record->field('001')->data();
+
+    my $scn = "(" . $record->field('003')->data() . ")" . $cn;
 
     # Do not create duplicate 035 fields
     unless (grep $_->subfield('a') eq $scn, @scns) {

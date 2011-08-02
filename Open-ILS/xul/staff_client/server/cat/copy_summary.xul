@@ -82,7 +82,6 @@
                 g.list.init(
                     {
                         'columns' : columns,
-                        'map_row_to_columns' : circ.util.std_map_row_to_columns(),
                     }
                 );
                 $('list_actions').appendChild( g.list.render_list_actions() );

@@ -142,7 +142,7 @@
                 <hbox>
                     <hbox id="bill_list_actions" />
                     <button label="&staff.patron.bills_overlay.check_all.label;" accesskey="&staff.patron.bills_overlay.check_all.accesskey;" oncommand="check_all();"/>
-                    <button label="&staff.patron.bills_overlay.uncheck_all.label;" accesskey="&staff.patron.bills_overlay.uncheck_all.accesskey;" oncommand="uncheck_all();"/>
+                    <button id="uncheck_all" label="&staff.patron.bills_overlay.uncheck_all.label;" accesskey="&staff.patron.bills_overlay.uncheck_all.accesskey;" oncommand="uncheck_all();"/>
                     <button label="&staff.patron.bills_overlay.check_all_refunds.label;" accesskey="&staff.patron.bills_overlay.check_all_refunds.accesskey;" oncommand="check_all_refunds();"/>
                     <button id="print" label="&staff.patron.bills_overlay.print_bills.label;" accesskey="&staff.patron.bills_overlay.print_bills.accesskey;" oncommand="print_bills();"/>
                     <spacer flex="1"/>
