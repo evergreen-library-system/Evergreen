@@ -309,10 +309,11 @@ sub fetch_user_holds {
 sub handle_hold_update {
     my $self = shift;
     my $action = shift;
+    my $hold_ids = shift;
     my $e = $self->editor;
     my $url;
 
-    my @hold_ids = $self->cgi->param('hold_id'); # for non-_all actions
+    my @hold_ids = ($hold_ids) ? @$hold_ids : $self->cgi->param('hold_id'); # for non-_all actions
     @hold_ids = @{$self->fetch_user_holds(undef, 1)} if $action =~ /_all/;
 
     my $circ = OpenSRF::AppSession->create('open-ils.circ');
@@ -375,16 +376,16 @@ sub load_myopac_holds {
     my $e = $self->editor;
     my $ctx = $self->ctx;
     
-
     my $limit = $self->cgi->param('limit') || 0;
     my $offset = $self->cgi->param('offset') || 0;
     my $action = $self->cgi->param('action') || '';
+    my $hold_id = $self->cgi->param('id');
     my $available = int($self->cgi->param('available') || 0);
 
     my $hold_handle_result;
     $hold_handle_result = $self->handle_hold_update($action) if $action;
 
-    $ctx->{holds} = $self->fetch_user_holds(undef, 0, 1, $available, $limit, $offset);
+    $ctx->{holds} = $self->fetch_user_holds($hold_id ? [$hold_id] : undef, 0, 1, $available, $limit, $offset);
 
     return defined($hold_handle_result) ? $hold_handle_result : Apache2::Const::OK;
 }
