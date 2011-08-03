@@ -30,7 +30,7 @@ sub load_record {
         $self->mk_copy_query($rec_id, $org, $depth, $copy_limit, $copy_offset)
     );
 
-    my (undef, @rec_data) = $self->get_records_and_facets([$rec_id], undef, {flesh => '{holdings_xml,mra}'});
+    my (undef, @rec_data) = $self->get_records_and_facets([$rec_id], undef, {flesh => '{holdings_xml,mra,acp}'});
     $ctx->{bre_id} = $rec_data[0]->{id};
     $ctx->{marc_xml} = $rec_data[0]->{marc_xml};
 

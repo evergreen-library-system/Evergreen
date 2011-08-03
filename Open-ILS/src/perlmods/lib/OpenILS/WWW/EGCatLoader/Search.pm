@@ -212,7 +212,7 @@ sub load_rresults {
     my ($facets, @data) = $self->get_records_and_facets(
         $rec_ids, $results->{facet_key}, 
         {
-            flesh => '{holdings_xml,mra}',
+            flesh => '{holdings_xml,mra,acp}',
             site => $site,
             depth => $depth
         }

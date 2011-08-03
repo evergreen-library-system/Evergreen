@@ -168,6 +168,9 @@ uninstall-hook:
 ilscore-install:
 	@echo $@
 	$(MKDIR_P) $(DESTDIR)$(TEMPLATEDIR)
+	cp -r @srcdir@/templates/base.tt2 $(DESTDIR)$(TEMPLATEDIR)
+	cp -r @srcdir@/templates/login.tt2 $(DESTDIR)$(TEMPLATEDIR)
+	cp -r @srcdir@/templates/default $(DESTDIR)$(TEMPLATEDIR)
 	cp -r @srcdir@/templates/marc $(DESTDIR)$(TEMPLATEDIR)
 	cp -r @srcdir@/templates/password-reset $(DESTDIR)$(TEMPLATEDIR)
 	@echo "Installing string templates to $(DESTDIR)$(TEMPLATEDIR)"

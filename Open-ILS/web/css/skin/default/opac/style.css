@@ -398,6 +398,11 @@ div.select-wrapper:hover {
 	padding-right: 10px;
 }
 
+.rdetail_uri {
+    border: thin black solid;
+    padding: 3px;
+}
+
 .rdetail_aux_utils {
 	border-left:1px dotted #ccc;
 	padding-left: 17px;
