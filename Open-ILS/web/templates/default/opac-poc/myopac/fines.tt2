@@ -1,0 +1,107 @@
+[% BLOCK html_head %]
+<style>
+    table { width: 100%; text-align: center; padding: 20px; margin-top: 30px; }
+    table { border-collapse: collapse; }
+    table { padding: 3px; border-bottom: 1px solid #ddd; text-align: left;}
+    table tr:nth-child(odd) { background-color:#ded; }
+    h2 { margin-bottom: 0; }
+</style>
+[% END %]
+
+[% PROCESS "default/opac/common.tt2" %]
+[% WRAPPER "default/opac/base.tt2" %]
+[% INCLUDE "default/opac/myopac/_links.tt2" myopac_page = "fines" %]
+<h2>Summary</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Total Owed</th>
+            <th>Total Paid</th>
+            <th>Balance Owed</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>[% money(ctx.fines.total_owed) %]</td>
+            <td>[% money(ctx.fines.total_paid) %]</td>
+            <td>[% money(ctx.fines.balance_owed) %]</td>
+        </tr>
+    </tbody>
+</table>
+
+[% IF ctx.fines.circulation.size > 0 %]
+<h2>Overdue materials</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Checkout Date</th>
+            <th>Due Date</th>
+            <th>Date Returned</th>
+            <th>Balance Owed</th>
+        </tr>
+    </thead>
+    <tbody>
+    [% FOR f IN ctx.fines.circulation %]
+        [% attrs = {marc_xml => f.marc_xml}; %]
+        [% PROCESS get_marc_attrs args=attrs; %]
+        <tr>
+            <td>[% attrs.title %]</td>
+            <td>[% attrs.author %]</td>
+            <td>[% date.format(
+                ctx.parse_datetime(f.xact.circulation.xact_start), "%Y-%m-%d"
+            ) %]</td>
+            <td>[% date.format(
+                ctx.parse_datetime(f.xact.circulation.due_date), "%Y-%m-%d"
+            ) %]</td>
+            <td>[%
+                IF f.xact.circulation.checkin_time;
+                    date.format(
+                        ctx.parse_datetime(f.xact.circulation.checkin_time),
+                        "%Y-%m-%d"
+                    );
+                END %]</td><!-- XXX TODO display stop_fines_time if set? Display something instead of blank like "fines accruing" ? -->
+            <td>[% money(f.xact.balance_owed) %]</td>
+        </tr>
+    [% END %]
+    </tbody>
+</table>
+[% END %]
+
+[% IF ctx.fines.grocery.size > 0 %]
+<h2>Other Fees</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Transaction Start Time</th>
+            <th>Last Payment Time</th>
+            <th>Initial Amount Owed</th>
+            <th>Total Amount Paid</th>
+            <th>Balance Owed</th>
+            <th>Billing Type</th>
+        </tr>
+    </thead>
+    <tbody>
+    [% FOR f IN ctx.fines.grocery %]
+        <tr>
+            <td>[%
+                date.format(
+                    ctx.parse_datetime(f.xact.xact_start), "%Y-%m-%d"
+                ) %]</td>
+            <td>[% IF f.xact.last_payment_ts;
+                    date.format(
+                        ctx.parse_datetime(f.xact.last_payment_ts), "%Y-%m-%d"
+                        );
+                    END %]</td>
+            <td>[% money(f.xact.total_owed) %]</td>
+            <td>[% money(f.xact.total_paid) %]</td>
+            <td>[% money(f.xact.balance_owed) %]</td>
+            <td>[% f.xact.last_billing_type %]</td>
+        </tr>
+    [% END %]
+    </tbody>
+</table>
+[% END %]
+
+[% END %]

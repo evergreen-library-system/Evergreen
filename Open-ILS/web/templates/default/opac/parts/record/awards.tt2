@@ -1,0 +1,32 @@
+<div class='rdetail_extras_div'> 
+    <div style="margin-bottom:20px;"></div>
+
+        <!-- Chilifresh patron reviews -->
+        <strong>[% l('Patron Reviews:') %]</strong>
+        <div style="margin-bottom:20px;">
+            <div class="chili_review" id="isbn_[% attrs.isbn_clean %]"> </div>
+            <div id="chili_review_[% attrs.isbn_clean %]" style="display: none;" align="center" width="100%"></div>
+        </div>
+    
+        <!-- Reviews from added content provider -->
+        [% IF 0 %] 
+        <strong>[% l('Reviews:') %]</strong>
+        <div id='rdetail_review_container' style="margin-bottom:20px;"></div>
+        [% END %]
+
+        <!-- Novelist suggestions-->
+        [% IF ENV.OILS_NOVELIST_URL %] 
+        <strong>[% l('Similar Books:') %]</strong>
+        <div class='rdetail_extras_div'>
+            <div id="NoveListSelect" class="NoveListSelect">
+                <div id="NoveListAnchor" class="NoveListSelect"></div>
+                <div id="novsuggestions"></div>
+                <div id="nextreads"></div>
+                <div id="novrelatedauthors"></div>
+                <div id="novrelateditems"></div>
+            </div>
+        </div>
+        [% END %]
+    </div>
+</div>
+

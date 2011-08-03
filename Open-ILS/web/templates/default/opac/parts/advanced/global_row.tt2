@@ -1,0 +1,44 @@
+[%
+    contains_options = [
+        {value => 'contains', label => l('Contains')},
+        {value => 'nocontains', label => l('Does not contain')},
+        {value => 'phrase', label => l('Contains phrase')},
+        {value => 'exact', label => l('Matches exactly')}
+    ];
+    contains = CGI.param('contains');
+    queries = CGI.param('query');
+    bools = CGI.param('bool') || ['and' x 3];
+    qtypes = CGI.param('qtype') || ['keyword' x 3];
+    FOR qtype IN qtypes;
+        c = contains.shift;
+        b = bools.shift;
+        q = queries.shift; %]
+
+<!-- tag the second row so the bool column won't be hidden -->
+<tr[% IF loop.index == 1 %] id="adv_global_row"[% END %]>
+    <td align='left' width='100%' nowrap='nowrap'>
+
+        <!-- bool selector.  hide for first row.  safe to ignore first bool value in form submission -->
+        <select name='bool' style='width: auto' [% IF loop.first %] class='invisible' [% END %]>
+            <option value='and' [% b == 'and' ? 'selected="selected"' : '' %]>[% l('And') %]</option>
+            <option value='or' [% b == 'or' ? 'selected="selected"' : '' %]>[% l('Or') %]</option>
+        </select>
+
+        <!-- keyword, subject, etc. selector -->
+        <span class="opac-auto-078">
+            [% INCLUDE "default/opac/parts/qtype_selector.tt2"
+                query_type=qtype %]
+        </span>
+
+        <select name='contains' style='margin-right: 7px;'>
+            [% FOR o IN contains_options; -%]
+            <option value="[% o.value %]" [% c == o.value ? ' selected="selected"' : '' %]>[% o.label %]</option>
+            [% END %]
+        </select>
+        <input type='text' size='18' name='query' value="[% q | html %]" />
+        <a href="javascript:;" class="row-remover"
+            title="[% l('Remove row') %]" alt="[% l('Remove row') %]"
+            onclick='return killRowIfAtLeast(2, this);'><img src="[% ctx.media_prefix %]/images/adv_row_close_btn.png" /></a>
+    </td>
+</tr>
+[% END %]

@@ -1,0 +1,11 @@
+<!-- ****************** tips.xml ***************************** -->
+<div class="hide_me">
+    <div id='tips' class='tips hide_me'>
+        <div class='hide_me'>
+            <span>[% l("Click on a folder icon in the sidebar to access related quick searches") %]</span>
+            <span>[% l("If you don't find what you want try expanding your search using the range selector at the right of the search bar") %]</span>
+        </div>
+        <strong>[% l("Tip:") %]</strong>
+    </div>
+</div>
+<!-- ****************** end: tips.xml ***************************** -->

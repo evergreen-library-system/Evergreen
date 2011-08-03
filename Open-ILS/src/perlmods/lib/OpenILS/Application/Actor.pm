@@ -1820,39 +1820,31 @@ __PACKAGE__->register_method(
 );
 	
 sub hold_request_count {
-	my( $self, $client, $login_session, $userid ) = @_;
+	my( $self, $client, $authtoken, $user_id ) = @_;
+    my $e = new_editor(authtoken => $authtoken);
+    return $e->event unless $e->checkauth;
 
-	my( $user_obj, $target, $evt ) = $apputils->checkses_requestor(
-		$login_session, $userid, 'VIEW_HOLD' );
-	return $evt if $evt;
-	
+    $user_id = $e->requestor->id unless defined $user_id;
 
-	my $holds = $apputils->simple_scalar_request(
-			"open-ils.cstore",
-			"open-ils.cstore.direct.action.hold_request.search.atomic",
-			{ 
-				usr => $userid,
-				fulfillment_time => {"=" => undef },
-				cancel_time => undef,
-			}
-	);
+    if($e->requestor->id ne $user_id) {
+        my $user = $e->retrieve_actor_user($user_id);
+        return $e->event unless $e->allowed('VIEW_HOLD', $user->home_ou);
+    }
 
-	my @ready;
-	for my $h (@$holds) {
-		next unless $h->capture_time and $h->current_copy;
+    my $holds = $e->json_query({
+        select => {ahr => ['shelf_time']},
+        from => 'ahr',
+        where => {
+            usr => $user_id,
+            fulfillment_time => {"=" => undef },
+            cancel_time => undef,
+        }
+    });
 
-		my $copy = $apputils->simple_scalar_request(
-			"open-ils.cstore",
-			"open-ils.cstore.direct.asset.copy.retrieve",
-			$h->current_copy
-		);
-
-		if ($copy and $copy->status == 8) {
-			push @ready, $h;
-		}
-	}
-
-	return { total => scalar(@$holds), ready => scalar(@ready) };
+	return { 
+        total => scalar(@$holds), 
+        ready => scalar(grep { $_->{shelf_time} } @$holds) 
+    };
 }
 
 __PACKAGE__->register_method(

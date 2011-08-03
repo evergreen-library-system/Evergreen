@@ -1,0 +1,65 @@
+        [% IF ctx.mylist.size %]
+        <form action="[% ctx.opac_root %]/mylist/move" method="POST">
+        <div id='acct_list_template2'>
+            <div style="width:100%">
+                <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                        <td id='anon_list_name'>
+                            [% l('Temporary List') %]
+                        </td>
+                        <td>
+                            <!-- <a href="#"><img
+                                alt="[% l('Anonymous List Help') %]"
+                                src="[% ctx.media_prefix %]/images/question-mark.png" /></a>-->
+                        </td>
+                    </tr>
+                </table>
+                <div class="float-right"></div>
+                <div class="clear-both pad-bottom-five"></div>
+            </div>
+            <table cellpadding='0' cellspacing='0' border='0'>
+                <thead id="acct_list_header_anon">
+                    <tr>
+                        <td width="1%" style="padding-left:10px;">
+                            <input type="checkbox" onclick="
+                                var inputs=document.getElementsByTagName('input'); 
+                                for (i = 0; i < inputs.length; i++) { 
+                                    if (inputs[i].name == 'record' && !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
+                        </td>
+                        <td width="49%" style="padding-left:5px;">[% l('Title') %]</td>
+                        <td width="49%" style="padding-left:5px;">[% l('Author(s)') %]</td>
+                        <td width="1%" class="nowrap">
+                            <select class="opac-auto-179" name="action">
+                                <option>[% l('-- Actions for this list --') %]</option>
+                                <!-- XXX not ready <option value="hold">[% l('Place Hold') %]</option> -->
+                                <option value="delete">[% l('Remove Items') %]</option>
+                                [% IF ctx.user AND ctx.bookbags.size %]
+                                <optgroup label="Move selected items to">
+                                    [% FOR bbag IN ctx.bookbags %]]
+                                    <option value="[% bbag.id %]" class="opac-auto-179-inner-option">[% bbag.name %]</option>
+                                    [% END %]
+                                </optgroup>
+                                [% END %]
+                            </select>
+                            <input type="submit" value="[% l('Go') %]" />
+                        </td>
+                    </tr>
+                </thead>
+                <tbody id='anon_list_tbody'>
+                    [% FOR item IN ctx.mylist;
+                        attrs = {marc_xml => ctx.mylist_marc_xml.$item};
+                        PROCESS get_marc_attrs args=attrs %]
+                    <tr>
+                        <td class="opac-auto-097b" style="padding-left: 10px;">
+                            <input type="checkbox" name="record" value="[% item %]" />
+                        </td>
+                        <td class="opac-auto-097b" style="padding-left: 5px;">[% attrs.title %]</td>
+                        <td class="opac-auto-097b" style="padding-left: 5px;">[% attrs.author %]</td>
+                    </tr>
+                    [% END %]
+                </tbody>
+            </table>
+            <br /><br />
+        </div>
+        </form>
+        [% END %]

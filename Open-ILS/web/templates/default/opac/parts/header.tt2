@@ -1,0 +1,23 @@
+[%- USE money = format(l('$%.2f'));
+    USE date;
+    USE CGI = CGI_utf8;
+    USE POSIX;
+    SET DATE_FORMAT = l('%m/%d/%Y');
+
+    # Don't wrap in l() here; do that where this format string is actually used.
+    SET HUMAN_NAME_FORMAT = '[_1] [_2] [_3] [_4] [_5]';
+
+    # x and y are artifacts of using <input type="image" /> tags instead of
+    # true submit buttons, and their values are never used. page is used, but
+    # currently none of the use cases for rendering the query_string back
+    # into page output call for propagating the value of the page variable.
+
+    query_string = CGI.query_string |
+        replace(';x=\d+','') | replace(';y=\d+','') | replace(';page=\d*', '') |
+        replace(';', '&') | replace('&', '&amp;');
+
+    propagator = '?' _ query_string;
+
+    is_advanced = CGI.param("_adv").size;
+    is_special = CGI.param("_special").size;
+%]

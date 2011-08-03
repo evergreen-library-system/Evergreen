@@ -9,14 +9,43 @@
         files have the following filename extension -->
     <default_template_extension>tt2</default_template_extension>
 
-    <!-- media_prefix can be a remote server.  
-         E.g. <media_prefix>http://static.example.com/media</media_prefix> -->
+    <!-- Media Prefix.  Allows static files to be served from an alternate domain/server
+
+            Examples:
+
+                # local URL path
+                <media_prefix>/media</media_prefix> 
+
+                # server w/ path.  
+                <media_prefix>static.example.com/media</media_prefix> 
+
+                ===
+                In the first 2 examples, the request protocol (http vs https) will
+                match the protocol of the current page
+                ===
+
+                # full-qualified with static protocol
+                <media_prefix>http://static.example.com/media</media_prefix> 
+     -->
     <media_prefix/>
 
     <!-- If set to true, all output will be parsed as XML before delivery to the client.  
         If XML parsing fails, the error message, with HTML included, will be output as text/plain.
         XML parsing adds overhead, so this should only be used for debugging -->
     <force_valid_xml>false</force_valid_xml>
+
+    <!-- Turn on template-toolkit debugging, which reports on undefined blocks, macros, etc. -->
+    <debug_template>false</debug_template>
+
+    <!-- 
+        Supported locales.  Locales with no message catalog will use the native template strings.
+        All locales will fall back to native strings when a given string is not in the catalog
+    -->
+    <locales>
+        <en_US/>
+        <en_CA>/openils/var/data/locale/messages.en_CA.po</en_CA>
+        <fr_CA>/openils/var/data/locale/messages.fr_CA.po</fr_CA>
+    </locales>
 
     <!-- Where templates can be found.  Paths will be checked in the order entered here.
          It's possible to override individual or sets of templates by putting them into

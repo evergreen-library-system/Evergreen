@@ -1,0 +1,52 @@
+[% BLOCK html_head %]
+<style>
+    table { width: 100%; text-align: center; padding: 20px; margin-top: 30px; }
+    table { border-collapse: collapse; }
+    table { padding: 3px; border-bottom: 1px solid #ddd; text-align: left;}
+    table tr:nth-child(odd) { background-color:#ded; }
+    #action_div { width: 95%; }
+    #action-buttons { float:right; }
+</style>
+[% END %]
+
+[% WRAPPER "default/opac/base.tt2" %]
+[% INCLUDE "default/opac/myopac/_links.tt2" myopac_page = "bookbags" %]
+
+[% IF ctx.bookbags.size == 0 %]
+<b>No Bookbags</b>
+[% STOP; END %]
+
+<form method='POST' id='bbag-form'>
+    <div id='action_div'>
+        <div id='action-buttons'>
+            <select name='action'>
+                <option value='delete'>Delete Selected</option>
+                <option value='delete_all'>Delete All</option>
+            </select>
+            <input type='submit' value='Go'/>
+        </div>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Public</th>
+                <th>Created On</th>
+                <th>Items</th>
+            </tr>
+        </thead>
+        <tbody>
+            [% FOR bbag IN ctx.bookbags %]
+                <tr [% IF loop.count % 2 == 1 %] class='bbag-table-odd' [% END %]>
+                    <td>[% bbag.name %]</td>
+                    <td>[% bbag.pub == 't' ? 'Yes' : 'No' %]</td>
+                    <td>[% date.format(ctx.parse_datetime(bbag.create_time),'%Y-%m-%d') %]</td>
+                    <td>XXX</td>
+                </tr>
+            [% END %]
+        </tbody>
+    </table>
+</form>
+
+
+[% END %]

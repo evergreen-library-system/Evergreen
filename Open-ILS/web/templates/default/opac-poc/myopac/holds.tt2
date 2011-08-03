@@ -1,0 +1,94 @@
+[% BLOCK html_head %]
+<style>
+    table { width: 100%; text-align: center; padding: 20px; margin-top: 30px; }
+    table { border-collapse: collapse; }
+    table { padding: 3px; border-bottom: 1px solid #ddd; text-align: left;}
+    table tr:nth-child(odd) { background-color:#ded; }
+    #action_div { width: 95%; }
+    #action-buttons { float:right; }
+</style>
+[% END %]
+
+[%  PROCESS "default/opac/common.tt2";
+    WRAPPER "default/opac/base.tt2";
+    INCLUDE "default/opac/myopac/_links.tt2" myopac_page = "holds" %]
+
+[% IF ctx.holds.size == 0 %]
+<b>No Items On Hold</b>
+[% STOP; END %]
+
+<form method='POST'>
+
+    <div id='action_div'>
+        <div id='action-buttons'>
+            <select name='action'>
+                <option value='cancel'>Cancel Selected</option>
+                <option value='cancel_all'>Cancel All</option>
+                <option value='suspend'>Suspend Selected</option>
+                <option value='suspend_all'>Suspend All</option>
+                <option value='activate'>Activate Selected</option>
+                <option value='activate_all'>Activate All</option>
+            </select>
+            <input type='Submit' value='Go'/>
+        </div>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Formats</th>
+                <th>Pickup Location</th>
+                <th>Status</th>
+                <th>Active</th>
+                <th>Activate on...</th>
+                <th>Expiration Date</th>
+                <th>Select</th>
+            </tr>
+        </thead>
+        <tbody>
+            [% FOR hold IN ctx.holds %]
+                [% attrs = {marc_xml => hold.marc_xml}; %]
+                [% PROCESS get_marc_attrs args=attrs; %]
+            <tr>
+                <td><a href='../record/[% hold.hold.bre.id %]'>[% attrs.title %]</a></td>
+                <td><a href='../results?query=au:[% attrs.author | url %]'>[% attrs.author %]</a></td>
+                <td>
+                    [%
+                        key = attrs.mattype;
+                        format_desc = ctx.find_citm(key).value;
+                        icon_filename = icon_by_mattype.$key;
+                        IF icon_filename;
+                    %]<!-- XXX in situations where we might show M-type holds, this won't be good enough -->
+                    <img alt="[% format_desc %]" title="[% format_desc %]"
+                        src="/images/mattype/[% icon_filename %]" />
+                    [%  END %]
+                </td>
+                <td>[% ctx.find_aou(hold.hold.hold.pickup_lib).name %]</td>
+                <td>[%
+                    IF hold.hold.status == 4;
+                        "Available";
+                    ELSIF hold.hold.estimated_wait;
+                        "Estimated wait (days): "; hold.hold.estimated_wait;
+                    ELSIF hold.hold.status == 3;
+                        "In Transit";
+                    ELSIF hold.hold.status < 3;
+                        "Waiting for copy";
+                    END;
+                %]</td>
+                <td>[% IF hold.hold.hold.frozen == 't' %] No [% ELSE %] Yes [% END %]</td>
+                <td>[% 
+                    IF hold.hold.hold.frozen == 't' AND hold.hold.hold.thaw_date;
+                        date.format(ctx.parse_datetime(hold.hold.hold.thaw_date),'%Y-%m-%d'); 
+                    ELSE;
+                        '-';
+                    END 
+                %]</td>
+                <td>[% hold.hold.hold.expire_time ? hold.hold.hold.expire_time : '-' %]</td>
+                <td><input type='checkbox' name='hold_id' value='[% hold.hold.hold.id %]'/></td>
+            </tr>
+            [% END %]
+        </tbody>
+    </table>
+</form> 
+[% END %]

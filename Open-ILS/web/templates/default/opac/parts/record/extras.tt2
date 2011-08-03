@@ -1,0 +1,75 @@
+<div id="rdetail_main_div">
+    <div id='rdetail_extras_div' style='width: 100%;'> 
+
+        [%  # Hidden extras are not yet implemented.  Some may require JS
+
+        # Let's see if we should hide the content cafe / simple summary content
+        hide_summary = 1;
+        IF attrs.summary; hide_summary = 0; ELSE;
+            # Expose content cafe if it's reasonable to do so.
+            # This approach only works when using embedded content cafe.
+            IF ENV.OILS_CONTENT_CAFE_USER; 
+                ident = attrs.isbn_clean || attrs.upc; 
+                IF ident; hide_summary = 0; END;
+            END;
+        END;
+
+        extras = [
+            {name => 'summaryplus',  label => l('Summaries &amp; More'), hide => hide_summary}, 
+            {name => 'content',  label => l('Contents'), hide => 1}, # ToC
+            {name => 'authors',  label => l('Authors')}, 
+            {name => 'series',   label => l('Series'), hide => 1}, 
+            {name => 'subjects', label => l('Subject')}, 
+            {name => 'annotation', label => l('Annotation'), hide => 1}, 
+            {name => 'awards',  label => l('Awards, Reviews, & Suggested Reads')}, 
+            {name => 'excerpt',  label => l('Excerpt'), hide => 1},
+            {name => 'issues',   label => l('Issues Held'), hide => !ctx.have_holdings_to_show},
+            {name => 'preview',  label => l('Preview'), hide => 1}, 
+            {name => 'cnbrowse', label => l('Shelf Browser')},
+            {name => 'copyinfo', label => l('Copy Summary'), hide => 1}, 
+            {name => 'marchtml', label => l('MARC Record')}
+        ];
+
+        FOREACH extra IN extras;
+            IF extra.hide; NEXT; END; 
+            name = extra.name;
+        %]
+        <div class="rdetail_extras">
+            <div class="rdetail_extras_hr"></div>
+            <div class="rdetail_extras_link">
+                [%  # extras_propagator should be used in place of propagator
+                    # in opac extras interfaces... it just avoids duplicating
+                    # the expands CGI param and parameters that are specific
+                    # to extras.
+                    # XXX move this off into a helper function
+
+                    extras_propagator = propagator.replace('(&amp;)?expand=.+($|&|;)', '$2');
+                    extras_propagator = extras_propagator.replace('(&amp;)?cnoffset=.+($|&|;)', '$2');
+
+
+                    href = ctx.full_path _ extras_propagator _ '&amp;expand=' _ name _ '#' _ name; %]
+                <a name='[% name %]' href='[% href %]'><img
+                    alt='[% extra.label %]' src="[% ctx.media_prefix %]/images/rdetail_arrow.png" /></a>
+                <a href='[% href %]' class="rdetail_extras_lbl">[% extra.label %]</a>
+            </div>
+        </div>
+        <div class='rdetail_extras_div'>
+            [%  exp_name = 'expand_' _ name;
+                IF ctx.$exp_name;
+                    IF name == 'marchtml';
+                        ctx.marchtml;
+                    ELSE;
+                        # Load the template for the selected extra
+                        INCLUDE "default/opac/parts/record/${name}.tt2";
+                    END;
+                END; 
+            %]
+        </div>
+        [% END %]
+    </div>
+    <!--
+    <div id='rdetail_preview_full_text' class='hide_me'>[% l("Full text") %]</div>
+    <div id='rdetail_preview_title' class='hide_me'>[% l("See the full text of this book.") %]</div>
+    <div id='rdetail_preview_badge' class='hide_me'>[% l("Show a preview of this book from Google Book Search") %]</div>
+    -->
+</div>

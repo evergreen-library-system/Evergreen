@@ -51,53 +51,90 @@ sub parse_ips_file {
 }
 
 
+my %org_cache;
 sub handler {
+	my $apache = shift;
 
-	my $user_ip = $ENV{REMOTE_ADDR};
-	my $apache_obj = shift;
-	my $cgi = CGI->new( $apache_obj );
-
-
-	my $skin = $apache_obj->dir_config('OILSRedirectSkin') || 'default';
-	my $depth = $apache_obj->dir_config('OILSRedirectDepth');
-	my $locale = $apache_obj->dir_config('OILSRedirectLocale') || 'en-US';
-
+	my $cgi = CGI->new( $apache );
+	my $port = $cgi->server_port();
 	my $hostname = $cgi->server_name();
-	my $port		= $cgi->server_port();
+    my $proto = ($cgi->https) ? 'https' : 'http';
+	my $user_ip = $ENV{REMOTE_ADDR};
 
-	my $proto = "http";
-	if($cgi->https) { $proto = "https"; }
+    # Apache config values
+	my $skin = $apache->dir_config('OILSRedirectSkin') || 'default';
+	my $depth = $apache->dir_config('OILSRedirectDepth');
+	my $locale = $apache->dir_config('OILSRedirectLocale') || 'en-US';
+    my $use_tt = ($apache->dir_config('OILSRedirectTpac') || '') =~ /true/i;
+    my $orig_loc;
 
-	my $url = "$proto://$hostname:$port/opac/$locale/skin/$skin/xml/index.xml";
-	my $path = $apache_obj->path_info();
+    $apache->log->debug("Redirector sees client frim $user_ip");
 
-	$logger->debug("Apache client connecting from $user_ip");
-
+    # parse the IP file
 	my ($shortname, $nskin, $nhostname) = redirect_libs($user_ip);
-	if ($shortname) {
 
+	if ($shortname) { # we have a config
+
+        # Read any override vars from the ips txt file
 		if ($nskin =~ m/[^\s]/) { $skin = $nskin; }
 		if ($nhostname =~ m/[^\s]/) { $hostname = $nhostname; }
 
-		$logger->info("Apache redirecting $user_ip to $shortname with skin $skin and host $hostname");
-		my $session = OpenSRF::AppSession->create("open-ils.actor");
+        if($org_cache{$shortname}) {
+            $orig_loc = $org_cache{$shortname};
 
-		$url = "$proto://$hostname:$port/opac/$locale/skin/$skin/xml/index.xml";
+        } else {
 
-		my $org = $session->request(
-            'open-ils.actor.org_unit.retrieve_by_shortname',
-			 $shortname)->gather(1);
+		    my $session = OpenSRF::AppSession->create("open-ils.actor");
+		    my $org = $session->request(
+                'open-ils.actor.org_unit.retrieve_by_shortname',
+			    $shortname)->gather(1);
 
-		if($org) { 
-            $url .= "?ol=" . $org->id; 
-            $url .= "&d=$depth" if defined $depth;
+            $org_cache{$shortname} = $orig_loc = $org->id if $org;
         }
 	}
 
-	print "Location: $url\n\n"; 
-	return Apache2::Const::REDIRECT;
+    my $url = "$proto://$hostname:$port";
 
-	return print_page($url);
+    if($use_tt) {
+
+        $url .= "/eg/opac/home";
+        $url .= "?orig_loc=$orig_loc" if $orig_loc;
+
+=head potential locale/skin implementation
+        if($locale ne 'en-US') {
+            $apache->headers_out->add(
+                "Set-Cookie" => $cgi->cookie(
+                    -name => "oils:locale", # see EGWeb.pm
+                    -path => "/eg",
+                    -value => $locale,
+                    -expires => undef
+                )
+            );
+        }
+
+        if($skin ne 'default') {
+            $apache->headers_out->add(
+                "Set-Cookie" => $cgi->cookie(
+                    -name => "oils:skin", # see EGWeb.pm
+                    -path => "/eg",
+                    -value => $skin,
+                    -expires => undef
+                )
+            );
+        }
+=cut
+
+    } else {
+        $url .= "/opac/$locale/skin/$skin/xml/index.xml";
+        if($orig_loc) {
+            $url .= "?ol=" . $orig_loc;
+            $url .= "&d=$depth" if defined $depth;
+        }
+    }
+
+    $logger->info("Apache redirecting $user_ip to $url");
+    $apache->headers_out->add('Location' => "$url");
+	return Apache2::Const::REDIRECT;
 }
 
 sub redirect_libs {
@@ -113,48 +150,12 @@ sub redirect_libs {
                 my $range = new Net::IP( $block->[0] . ' - ' . $block->[1] );
                 if( $source_ip->overlaps($range)==$IP_A_IN_B_OVERLAP ||
                     $source_ip->overlaps($range)==$IP_IDENTICAL ) {
-                    return ($shortname, $block->[2], $block->[3]);
+                    return ($shortname, $block->[2] || '', $block->[3] || '');
                 }
             }
         }
 	}
 	return 0;
 }
-
-
-sub print_page {
-
-	my $url = shift;
-
-	print "Content-type: text/html; charset=utf-8\n\n";
-	print <<"	HTML";
-	<html>
-		<head>
-			<meta HTTP-EQUIV='Refresh' CONTENT="0; URL=$url"/> 
-			<style  TYPE="text/css">
-				.loading_div {
-					text-align:center;
-					margin-top:30px;
-				font-weight:bold;
-						background: lightgrey;
-					color:black;
-					width:100%;
-				}
-			</style>
-		</head>
-		<body>
-			<br/><br/>
-			<div class="loading_div">
-				<h4>Loading...</h4>
-			</div>
-			<br/><br/>
-			<center><img src='/opac/images/main_logo.jpg'/></center>
-		</body>
-	</html>
-	HTML
-
-	return Apache2::Const::OK;
-}
-
 
 1;

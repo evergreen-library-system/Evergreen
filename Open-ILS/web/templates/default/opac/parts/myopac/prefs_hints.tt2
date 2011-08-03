@@ -1,0 +1,5 @@
+<p>
+    [% l('Ensure your account has a valid email address so that we can notify
+          you about available holds, items that are about to be overdue, and
+          overdue items!') %]
+</p>

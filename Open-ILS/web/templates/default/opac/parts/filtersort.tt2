@@ -1,0 +1,15 @@
+<select class="results_header_sel" id='opac.result.sort' name="sort">
+    <option value=''>[% l("Sort by Relevance") %]</option>
+    <optgroup label='[% l("Sort by Title") %]'>
+        <option value='title'[% value == 'title' ? ' selected="selected"' : '' %]>[% l("Title: A to Z") %]</option>
+        <option value='title.desc'[% value == 'title.desc' ? ' selected="selected"' : '' %]>[% l("Title: Z to A") %]</option>
+    </optgroup>
+    <optgroup label='[% l("Sort by Author") %]'>
+        <option value='author'[% value == 'author' ? ' selected="selected"' : '' %]>[% l("Author: A to Z") %]</option>
+        <option value='author.desc'[% value == 'author.desc' ? ' selected="selected"' : '' %]>[% l("Author: Z to A") %]</option>
+    </optgroup>
+    <optgroup label='[% l("Sort by Publication Date") %]'>
+        <option value='pubdate.desc'[% value == 'pubdate.desc' ? ' selected="selected"' : '' %]>[% l("Date: Newest to Oldest") %]</option>
+        <option value='pubdate'[% value == 'pubdate' ? ' selected="selected"' : '' %]>[% l("Date: Oldest to Newest") %]</option>
+    </optgroup>
+</select>
