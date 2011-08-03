@@ -91,8 +91,8 @@ sub parse {
         $self->classname($classname);
         $self->id($id);
         $self->paging(($paging ? [ map { s/^\s*//; s/\s*$//; $_ } split(',', $paging) ] : []));
-        $self->includes(($inc? [ map { s/^\s*//; s/\s*$//; $_ } split(',', $inc) ] : []));
-        $self->org($loc);
+        $self->includes(($inc ? { map { /:/ ? split(':') : ($_,undef) } map { s/^\s*//; s/\s*$//; $_ } split(',', $inc) } : {}));
+        $self->location($loc);
         $self->depth($depth);
         $self->pathinfo($mods);
     }
@@ -122,7 +122,7 @@ sub toURI {
     $tag .= 'U2@' if ($self->version == 2);
     $tag .= $self->classname . '/' . $self->id;
     $tag .= '['. join(',', @{ $self->paging }) . ']' if defined($self->paging);
-    $tag .= '{'. join(',', @{ $self->includes }) . '}' if defined($self->includes);
+    $tag .= '{'. join(',', map { $_ . ':' . $self->includes->{$_} } keys %{ $self->includes }) . '}' if defined($self->includes);
     $tag .= '/' . $self->location if defined($self->location);
     $tag .= '/' . $self->depth if defined($self->depth);
     $tag .= '/' . $self->pathinfo if defined($self->pathinfo);
