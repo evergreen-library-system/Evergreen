@@ -1,14 +1,14 @@
 /* once done renaming and everything, combine with style.css */
 
 /* Verfied in-use classes --------------------------- */
-.opac-auto-004 { background: #E0F0E0; }
+.rdetail_print_details_cn_spacer { background: #E0F0E0; }
 .opac-auto-009 { border: 3px solid #E0E0E0; }
 .opac-auto-010 { border-bottom: 1px dotted #ccc; padding-top: 10px; }
 .opac-auto-011 { border-bottom: 1px dotted #ccc; padding-top: 6px; }
-.opac-auto-012 { border-bottom: none; }
+.adv_global_input_container { border-bottom: none; }
 .opac-auto-013 { border-bottom: none; *height: 0px; }
 .opac-auto-015 { border-left: 1px solid #e9ebf3; padding-right: 27px; }
-.opac-auto-017 { border: none; width: 100%; }
+.adv_global_filter_sort { border: none; width: 100%; }
 .opac-auto-018 { border-top: 1px dotted #ccc; padding-top: 17px; }
 .clear-both { clear: both; }
 .common-no-pad { clear: both; height: 0px; margin: 0px; padding: 0px; }
@@ -60,8 +60,8 @@
 .opac-auto-075 { margin-right: 20px; }
 .opac-auto-076 { margin-right: 3px; }
 .opac-auto-077 { margin-right: 4px; position: relative; top: -10px; }
-.opac-auto-078 { margin-right: 7px; }
-.opac-auto-079 { margin-top: 10px; }
+.qtype_selector_margin { margin-right: 7px; }
+.warning_box { margin-top: 10px; }
 .opac-auto-080 { margin-top: 10px; margin-bottom: 10px; }
 .opac-auto-081 { margin-top: 13px; }
 .opac-auto-082 { margin-top: 29px; }
@@ -80,7 +80,7 @@
 .opac-auto-095 { padding: 5px 7px 0px 0px; white-space: nowrap; }
 .opac-auto-096 { padding: 6px }
 .opac-auto-097 { padding: 8px 0px 6px 0px; width: 100%; border: 0; }
-.opac-auto-097b { padding: 8px 0px 6px 0px; border: 0; }
+.item_list_padding { padding: 8px 0px 6px 0px; border: 0; }
 .opac-auto-098 { padding-bottom: 10px; }
 .opac-auto-099 { padding-bottom: 12px; color: #666; }
 .opac-auto-100 { padding-bottom: 16px; }
@@ -160,9 +160,9 @@
 .opac-auto-176 { width: 129px; }
 #search_box { width: 162px; }
 .opac-auto-178 { width: 174px; }
-.opac-auto-179 { width: 175px; margin-right: 11px; }
+.selector_actions_for_list { width: 175px; margin-right: 11px; }
 .opac-auto-179 optgroup { margin-left: 1em; font-weight: normal; font-style: italic; }
-.opac-auto-179-inner-option { margin-left: 2em; } /* XXX ".opac-auto-179 optgroup option" doesn't work!? */
+.selector_actions_for_list_inner_option { margin-left: 2em; } /* XXX ".opac-auto-179 optgroup option" doesn't work!? */
 .opac-auto-180 { width: 182px; color: black; padding: 5px 25px; }
 .opac-auto-181 { width: 195px; }
 .opac-auto-182 { width: 230px; text-align: left; margin-top: 3px; }

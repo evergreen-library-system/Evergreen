@@ -111,7 +111,7 @@
                         <td width="49%" style="padding-left: 5px;">[% l('Title') %]</td>
                         <td width="49%">[% l('Author(s)') %]</td>
                         <td width="1%" class="nowrap">
-                            <select class="opac-auto-179" name="action">
+                            <select class="selector_actions_for_list" name="action">
                                 <option>[% l('-- Actions for this list --') %]</option>
                                 <!-- XXX not ready yet<option value="hold">[% l('Place Hold') %]</option> -->
                                 <option value="del_item">[% l('Remove Items') %]</option>
@@ -131,9 +131,9 @@
                         attrs = {marc_xml => ctx.bookbags_marc_xml.$rec_id};
                         PROCESS get_marc_attrs args=attrs %]
                     <tr>
-                        <td class="opac-auto-097b" style="padding-left: 10px;"><input type="checkbox" name="del_item" value="[% item.id %]" bbag='[% bbag.id %]'/></td>
-                        <td class="opac-auto-097b" style="padding-left: 5px;">[% attrs.title %]</td>
-                        <td class="opac-auto-097b">[% attrs.author %]</td>
+                        <td class="item_list_padding" style="padding-left: 10px;"><input type="checkbox" name="del_item" value="[% item.id %]" bbag='[% bbag.id %]'/></td>
+                        <td class="item_list_padding" style="padding-left: 5px;">[% attrs.title %]</td>
+                        <td class="item_list_padding">[% attrs.author %]</td>
                     </tr>
                     [% END %]
                 </tbody>

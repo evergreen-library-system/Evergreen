@@ -2,7 +2,7 @@
 <table id='adv_global_search' class='data_grid data_grid_center' width='100%'>
     <tr style='border-bottom: none;'>
         <!-- Contains the user-addable(?) rows to define search class, containment and text -->
-        <td valign='top' class='opac-auto-012'>
+        <td valign='top' class='adv_global_input_container'>
             <table width='100%' id='adv_global_input_table'>
                 <thead>
                     <tr>
@@ -62,7 +62,7 @@
             </td>
             <td valign='top'>
             <strong>[% l("Sort Results") %]</strong>
-              <table class='opac-auto-017'>
+              <table class='adv_global_filter_sort'>
                 <tr>
                     <td align='center' width='100%'>
                         [% INCLUDE "default/opac/parts/filtersort.tt2"

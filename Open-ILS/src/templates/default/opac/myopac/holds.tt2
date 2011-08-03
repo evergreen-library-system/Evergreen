@@ -81,7 +81,7 @@
             </tr>
         </table>
         [% IF ctx.holds.size < 1 %]
-        <div class="opac-auto-079">
+        <div class="warning_box">
             <big><strong>[% l('No holds found.') %]</strong></big>
         </div>
         [% ELSE %]

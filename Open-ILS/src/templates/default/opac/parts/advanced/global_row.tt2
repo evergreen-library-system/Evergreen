@@ -25,7 +25,7 @@
         </select>
 
         <!-- keyword, subject, etc. selector -->
-        <span class="opac-auto-078">
+        <span class="qtype_selector_margin">
             [% INCLUDE "default/opac/parts/qtype_selector.tt2"
                 query_type=qtype %]
         </span>

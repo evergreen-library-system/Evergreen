@@ -34,7 +34,7 @@
     <div class="clear-both"></div>
 
     [% IF ctx.circs.size < 1 %]
-    <div class="opac-auto-079">
+    <div class="warning_box">
         <big><strong>[% l('There are no items in your circulation history.') %]</strong></big>
     </div>
     [% ELSE %]
