@@ -414,6 +414,22 @@ function addInvoiceItem(item) {
     updateTotalCost();
 }
 
+function updateReceiveLink(li) {
+    if (!invoiceId)
+        return; /* can't do this with unsaved invoices */
+
+    var link = dojo.byId("acq-view-invoice-receive-link");
+    if (link.onclick) return; /* only need to do this once */
+
+    /* don't do this if there's nothing receivable on the lineitem */
+    if (li.order_summary().recv_count() + li.order_summary().cancel_count() >=
+        li.order_summary().item_count())
+        return;
+
+    openils.Util.show("acq-view-invoice-receive");
+    link.onclick = function() { location.href =  oilsBasePath + '/acq/invoice/receive/' + invoiceId; };
+}
+
 function addInvoiceEntry(entry) {
 
     openils.Util.removeCSSClass(dojo.byId('acq-invoice-entry-header'), 'hidden');
@@ -438,6 +454,8 @@ function addInvoiceEntry(entry) {
             entry.lineitem(li);
             entry.purchase_order(li.purchase_order());
             nodeByName('title_details', row).innerHTML = html;
+
+            updateReceiveLink(li);
 
             dojo.forEach(
                 ['inv_item_count', 'phys_item_count', 'cost_billed', 'amount_paid'],

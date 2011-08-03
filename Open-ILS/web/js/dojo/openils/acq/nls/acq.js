@@ -80,6 +80,7 @@
     "LIBRARY_INITIATED": "Library Initiated",
     "DEL_LI_FROM_PO": "That item has already been ordered!  Deleting it now will not revoke or modify any order that has been placed with a vendor.  Deleting the item may put the system's idea of your purchase order in a state that is inconsistent with reality.  Are you sure you mean to do this?",
     "ADD_LI_TO_PO_BAD_PO_STATE" : "The selected PO has already been activated",
-    "ADD_LI_TO_PO_BAD_LI_STATE" : "The selected lineitem is not in a state that can be added to a purchase order"
-
+    "ADD_LI_TO_PO_BAD_LI_STATE" : "The selected lineitem is not in a state that can be added to a purchase order",
+    "INVOICE_NUMBER": "Invoice #${0}",
+    "COPIES_TO_RECEIVE": "Number of copies to receive: "
 }

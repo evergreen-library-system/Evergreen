@@ -5,7 +5,7 @@
 
     <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
         <div> Invoice </div>
-        <div> </div>
+        <div id="acq-view-invoice-receive" class="hidden"><button id="acq-view-invoice-receive-link">Receive Items</button></div>
     </div>
 
     <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
