@@ -2,12 +2,10 @@
     BLOCK build_org_selector_options;
         disabled = '';
         selected = '';
-        IF can_have_vols_only;
-            IF walker.ou_type.can_have_vols != 't';
-                disabled = 'disabled="disabled"';
-            ELSIF walker.id == value;
-                selected = 'selected="selected"';
-            END;
+        IF can_have_vols_only AND walker.ou_type.can_have_vols != 't';
+            disabled = 'disabled="disabled"';
+        ELSIF walker.id == value;
+            selected = 'selected="selected"';
         END;
 %]
         <option value='[% walker.id %]' [% selected %] [% disabled %]>
