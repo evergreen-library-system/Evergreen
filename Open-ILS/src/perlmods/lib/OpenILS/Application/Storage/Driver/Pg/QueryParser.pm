@@ -627,9 +627,8 @@ sub toSQL {
                       JOIN container.${class}_bucket c ON (c.id = ci.bucket)
                       $rec_join
                 WHERE c.btype = > . $self->QueryParser->quote_value($ctype) .
-                    qq< AND c.id = $cid
-                      AND (c.pub IS TRUE $perm_join)) container ON (container.container_item = mrd.id)
-            >;
+                    qq< AND c.id = > . $self->QueryParser->quote_value($cid) .
+                    qq< AND (c.pub IS TRUE $perm_join)) container ON (container.container_item = mrd.id) >;
         } else {$container = ''};
     } else {
         $container = '';
