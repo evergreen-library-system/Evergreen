@@ -635,7 +635,7 @@ sub toSQL {
     }
 
     if ($record_list and @{$record_list->args} > 0) {
-        $record_list = 'JOIN (VALUES (' . join('),(', map  { $self->QueryParser->quote_value($_) } @{ $record_list->args}) . ")) record_list(id) ON (record_list.id = $key)"
+        $record_list = 'JOIN (VALUES (' . join('),(', map  { $self->QueryParser->quote_value($_) } @{ $record_list->args}) . ")) record_list(id) ON (record_list.id::BIGINT = $key)"
     } else {
         $record_list = '';
     }
