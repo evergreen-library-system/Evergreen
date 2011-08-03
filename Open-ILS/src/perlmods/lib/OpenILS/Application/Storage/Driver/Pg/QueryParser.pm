@@ -621,16 +621,15 @@ sub toSQL {
             my ($u,$e) = $apputils->checksesperm($token) if ($token);
             $perm_join = 'OR c.owner = ' . $u->id if ($u && !$e);
 
-            $container = <<"            SQL";
+            $container = qq<
         JOIN ( SELECT $rec_field AS container_item
                 FROM  container.${class}_bucket_item ci
                       JOIN container.${class}_bucket c ON (c.id = ci.bucket)
                       $rec_join
-                WHERE c.btype = $ctype
-                      AND c.id = $cid
-                      AND (c.pub IS TRUE $perm_join)) container ON ON (container.container_item = mrd.id)
-            SQL
-
+                WHERE c.btype = > . $self->QueryParser->quote_value($ctype) .
+                    qq< AND c.id = $cid
+                      AND (c.pub IS TRUE $perm_join)) container ON (container.container_item = mrd.id)
+            >;
         } else {$container = ''};
     } else {
         $container = '';
