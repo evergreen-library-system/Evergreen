@@ -37,12 +37,12 @@
                             [% END %]
                         </td>
                         <td align="right" valign="top" nowrap="nowrap" style="white-space:nowrap;">
-                            <div style="width:230px;text-align:left;margin-top:3px;">
+                            <div style="width:280px;text-align:left;margin-top:3px;">
                                 <div style="float:right;">
                                     <div class="rdetail_aux_utils opac-auto-010">
                                         <a href="[% ctx.opac_root %]/place_hold[%-
                                             propagator; propagator.length > 1 ? "&amp;" : ""; %]hold_target=[% ctx.bre_id %]&amp;hold_type=T" id="rdetail_place_hold" class="no-dec"><img
-                                            src="[% ctx.media_prefix %]/images/green_check.png" alt="[% l('place hold') %]" /><span 
+                                            src="[% ctx.media_prefix %]/images/green_check.png" alt="" /><span 
                                                 style="position:relative;top:-3px;left:3px;">[% l('Place Hold') %]</span></a>
                                     </div>
                                     <div class="rdetail_aux_utils opac-auto-121">
@@ -50,16 +50,10 @@
                                             operation = ctx.mylist.grep(ctx.bre_id).size ? "delete" : "add";
                                             label = (operation == "add") ? l("Add to my list") : l("Remove from my list"); 
                                         %]
-                                        <form action="[% ctx.opac_root %]/mylist/[% operation %]" method="POST">
-                                            <input type="hidden" name="record" value="[% ctx.bre_id %]" />
-                                            <div class="pos-abs">
-                                                <div class="opac-auto-149">
-                                                    <input type="submit" title="[% label %]" value="[% label %]" class="subtle-button" />
-                                                </div>
-                                            </div>
-                                            <input type="image" alt="[% label %]"
-                                                src="[% ctx.media_prefix %]/images/clipboard.png" />
-                                        </form>
+                                        <a href="[% ctx.opac_root %]/mylist/[% operation %]?record=[% ctx.bre_id %]" class="no-dec">
+                                            <img src="[% ctx.media_prefix %]/images/clipboard.png" alt="" />
+                                            [% label %]
+                                        </a>
                                     </div>
                                 </div>
                                 <div style="float:right;margin-right:17px;">
