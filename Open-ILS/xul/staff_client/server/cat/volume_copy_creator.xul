@@ -121,6 +121,11 @@
                 <button id="CreateWithDefaults" disabled="true" oncommand="g.stash_and_close('noedit');"/>
                 <button id="EditThenCreate" disabled="true" oncommand="g.stash_and_close('edit');"/>
             </hbox>
+            <button id="Sync"
+                label="&staff.cat.volume_copy_creator.ready_item_editor.label;"
+                accesskey="&staff.cat.volume_copy_creator.ready_item_editor.accesskey;"
+                disabled="true"
+                image="/xul/server/skin/media/images/down_arrow.gif"/>
             <button id="Create" disabled="true" oncommand="g.stash_and_close('unified_interface');"/>
         </hbox>
     </vbox>

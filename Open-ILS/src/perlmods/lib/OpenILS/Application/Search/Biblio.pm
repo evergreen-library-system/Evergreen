@@ -789,7 +789,6 @@ sub multiclass_query {
     my $orig_query = $query;
 
     $query =~ s/\+/ /go;
-    $query =~ s/'/ /go;
     $query =~ s/^\s+//go;
 
     # convert convenience classes (e.g. kw for keyword) to the full class name

@@ -1,5 +1,5 @@
 // vim:et:sw=4:ts=4
-var g = {};
+var g = { 'disabled' : false };
 g.map_acn = {};
 
 function $(id) { return document.getElementById(id); }
@@ -164,8 +164,20 @@ function my_init() {
         g.check_for_unmet_required_fields();
 
         if (xulG.unified_interface) {
+            xulG.disable_copy_editor = function(c) {
+                addCSSClass(document.documentElement,'red_bg');
+                g.disabled = true;
+            }
+            xulG.enable_copy_editor = function(c) {
+                removeCSSClass(document.documentElement,'red_bg');
+                g.disabled = false;
+                xulG.refresh_copy_editor();
+            }
             xulG.refresh_copy_editor = function() {
+                dump('refresh_copy_editor\n');
+                addCSSClass(document.documentElement,'blue_bg');
                 try {
+                    xulG.clear_update_copy_editor_timeout();
                     g.copies = xulG.copies;
                     g.edit = g.copies.length > 0;
                     if (g.edit) {
@@ -176,9 +188,19 @@ function my_init() {
                     for (var i = 0; i < g.applied_templates.length; i++) {
                         g._apply_template( g.applied_templates[i], false);
                     }
+                    if (g.copies.length > 0) {
+                        // Stop tracking these templates once they're applied
+                        // to actual copies
+                        g.applied_templates = [];
+                    }
                     g.summarize( g.copies );
                     g.render();
                     g.check_for_unmet_required_fields();
+                    setTimeout(
+                        function() {
+                            removeCSSClass(document.documentElement,'blue_bg');
+                        }, 1000
+                    );
                 } catch(E) {
                     alert('Error in copy_editor.js, xulG.refresh_copy_editor(): ' + E);
                 }
@@ -268,7 +290,12 @@ g.apply_template = function(apply_volume_editor_template_changes) {
     try {
         var name = g.template_menu.value;
         if (g.templates[ name ] != 'undefined') {
-            g.applied_templates.push( name );
+            if (g.copies == 0) {
+                // We're only tracking these applied templates temporarily,
+                // specifically when they're used prior to copies being
+                // created in the unified interface.
+                g.applied_templates.push( name );
+            }
             g._apply_template(name,apply_volume_editor_template_changes);
             g.summarize( g.copies );
             g.render();
@@ -1281,7 +1308,10 @@ g.render_input = function(node,blob) {
 
         function on_click(ev){
             try {
-                if (block) return; block = true;
+                if (block || g.disabled || !g.edit) {
+                    return;
+                }
+                block = true;
 
                 oils_lock_page();
 
