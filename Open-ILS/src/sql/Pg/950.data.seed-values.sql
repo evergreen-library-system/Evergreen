@@ -1957,8 +1957,10 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
     'ADMIN_SERIAL_DISTRIBUTION', 'ppl', 'description' )),
  ( 483, 'ADMIN_SERIAL_STREAM', oils_i18n_gettext( 483, 
     'ADMIN_SERIAL_STREAM', 'ppl', 'description' )),
- ( 484, 'RECEIVE_SERIAL', oils_i18n_gettext(484, 'Receive serial items', 'ppl', 'description'));
-
+ ( 484, 'RECEIVE_SERIAL', oils_i18n_gettext(484,
+	'Receive serial items', 'ppl', 'description')),
+ ( 512, 'ACQ_INVOICE_REOPEN', oils_i18n_gettext( 512,
+    'Allows a user to reopen an Acquisitions invoice', 'ppl', 'description' ));
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
 
@@ -2138,6 +2140,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 -- Add basic acquisitions permissions to the Acquisitions group
 SELECT SETVAL('permission.grp_perm_map_id_seq'::TEXT, (SELECT MAX(id) FROM permission.grp_perm_map));
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (6, (SELECT id FROM permission.perm_list WHERE code = 'GENERAL_ACQ'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (6, (SELECT id FROM permission.perm_list WHERE code = 'ACQ_INVOICE_REOPEN'), 1, false);
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (6, (SELECT id FROM permission.perm_list WHERE code = 'VIEW_PICKLIST'), 1, false);
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (6, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_PICKLIST'), 1, false);
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (6, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_PURCHASE_ORDER'), 1, false);
