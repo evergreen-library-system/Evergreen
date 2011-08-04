@@ -5,21 +5,15 @@
         "default/opac/parts/myopac/base.tt2";
     myopac_page = "holds"; # in this case, just for tab coloring.
 
-    hold = 0;
-    FOR h IN ctx.holds;
-        IF h.hold.hold.id == CGI.param('id');
-            hold = h;
-            ahr = hold.hold.hold;
-            attrs = {marc_xml => hold.marc_xml};
-            PROCESS get_marc_attrs args=attrs;
-            hold.human_status = PROCESS get_hold_status hold=hold;
+    hold = ctx.holds.0;
+    ahr = hold.hold.hold;
+    attrs = {marc_xml => hold.marc_xml};
+    PROCESS get_marc_attrs args=attrs;
+    hold.human_status = PROCESS get_hold_status hold=hold;
 
-            # Do this up front to avoid verbosity later
-            expire_time = ahr.expire_time ? date.format(ctx.parse_datetime(ahr.expire_time), DATE_FORMAT) : '';
-            thaw_date = ahr.thaw_date ? date.format(ctx.parse_datetime(ahr.thaw_date), DATE_FORMAT) : '';
-            LAST;
-        END;
-    END;
+    # Do this up front to avoid verbosity later
+    expire_time = ahr.expire_time ? date.format(ctx.parse_datetime(ahr.expire_time), DATE_FORMAT) : '';
+    thaw_date = ahr.thaw_date ? date.format(ctx.parse_datetime(ahr.thaw_date), DATE_FORMAT) : '';
 %]
 <div class="pad-bottom-five">
     <div class="header_middle">

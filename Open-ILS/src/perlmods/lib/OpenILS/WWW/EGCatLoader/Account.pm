@@ -309,10 +309,11 @@ sub fetch_user_holds {
 sub handle_hold_update {
     my $self = shift;
     my $action = shift;
+    my $hold_ids = shift;
     my $e = $self->editor;
     my $url;
 
-    my @hold_ids = $self->cgi->param('hold_id'); # for non-_all actions
+    my @hold_ids = ($hold_ids) ? @$hold_ids : $self->cgi->param('hold_id'); # for non-_all actions
     @hold_ids = @{$self->fetch_user_holds(undef, 1)} if $action =~ /_all/;
 
     my $circ = OpenSRF::AppSession->create('open-ils.circ');
@@ -375,16 +376,16 @@ sub load_myopac_holds {
     my $e = $self->editor;
     my $ctx = $self->ctx;
     
-
     my $limit = $self->cgi->param('limit') || 0;
     my $offset = $self->cgi->param('offset') || 0;
     my $action = $self->cgi->param('action') || '';
+    my $hold_id = $self->cgi->param('id');
     my $available = int($self->cgi->param('available') || 0);
 
     my $hold_handle_result;
     $hold_handle_result = $self->handle_hold_update($action) if $action;
 
-    $ctx->{holds} = $self->fetch_user_holds(undef, 0, 1, $available, $limit, $offset);
+    $ctx->{holds} = $self->fetch_user_holds($hold_id ? [$hold_id] : undef, 0, 1, $available, $limit, $offset);
 
     return defined($hold_handle_result) ? $hold_handle_result : Apache2::Const::OK;
 }
@@ -726,26 +727,21 @@ sub load_myopac_circ_history {
     $ctx->{circ_history_limit} = $limit;
     $ctx->{circ_history_offset} = $offset;
 
-    my $circs = $e->json_query({
-        from => ['action.usr_visible_circs', $e->requestor->id],
-        #limit => $limit || 25,
-        #offset => $offset || 0,
+    my $circ_ids = $e->json_query({
+        select => {
+            au => [{
+                column => 'id', 
+                transform => 'action.usr_visible_circs', 
+                result_field => 'id'
+            }]
+        },
+        from => 'au',
+        where => {id => $e->requestor->id}, 
+        limit => $limit,
+        offset => $offset
     });
 
-    # XXX: order-by in the json_query above appears to do nothing, so in-query 
-    # paging is not reallly an option.  do the sorting/paging here
-
-    # sort newest to oldest
-    $circs = [ sort { $b->{xact_start} cmp $a->{xact_start} } @$circs ];
-    my @ids = map { $_->{id} } @$circs;
-
-    # find the selected page and trim cruft
-    @ids = @ids[$offset..($offset + $limit - 1)] if $limit;
-    @ids = grep { defined $_ } @ids;
-
-    $ctx->{circs} = $self->fetch_user_circs(1, \@ids);
-    #$ctx->{circs} = $self->fetch_user_circs(1, [map { $_->{id} } @$circs], $limit, $offset);
-
+    $ctx->{circs} = $self->fetch_user_circs(1, [map { $_->{id} } @$circ_ids]);
     return Apache2::Const::OK;
 }
 
@@ -759,15 +755,21 @@ sub load_myopac_hold_history {
     $ctx->{hold_history_limit} = $limit;
     $ctx->{hold_history_offset} = $offset;
 
-
-    my $holds = $e->json_query({
-        from => ['action.usr_visible_holds', $e->requestor->id],
-        limit => $limit || 25,
-        offset => $offset || 0
+    my $hold_ids = $e->json_query({
+        select => {
+            au => [{
+                column => 'id', 
+                transform => 'action.usr_visible_holds', 
+                result_field => 'id'
+            }]
+        },
+        from => 'au',
+        where => {id => $e->requestor->id}, 
+        limit => $limit,
+        offset => $offset
     });
 
-    $ctx->{holds} = $self->fetch_user_holds([map { $_->{id} } @$holds], 0, 1, 0, $limit, $offset);
-
+    $ctx->{holds} = $self->fetch_user_holds([map { $_->{id} } @$hold_ids], 0, 1, 0);
     return Apache2::Const::OK;
 }
 
