@@ -21,12 +21,10 @@ sub _prepare_biblio_search_basics {
     $parts{$_} = [ $cgi->param($_) ] for (@part_names);
 
     my $full_query = '';
-    my @chunks = ();
     for (my $i = 0; $i < scalar @{$parts{'qtype'}}; $i++) {
         my ($qtype, $contains, $query, $bool) = map { $parts{$_}->[$i] } @part_names;
 
         next unless $query =~ /\S/;
-        push(@chunks, $qtype . ':') unless $qtype eq 'keyword' and $i == 0;
 
         # This stuff probably will need refined or rethought to better handle
         # the weird things Real Users will surely type in.
@@ -42,10 +40,10 @@ sub _prepare_biblio_search_basics {
             $query =~ s/[\^\$]//g;
             $query = '^' . $query . '$';
         }
+        $query = "$qtype:$query" unless $qtype eq 'keyword' and $i == 0;
 
         $bool = ($bool and $bool eq 'or') ? '||' : '&&';
         $full_query = $full_query ? "($full_query $bool $query)" : $query;
-        push @chunks, $query;
     }
 
     return $full_query;
