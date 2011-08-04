@@ -166,7 +166,7 @@ sub do_fee_payment {
         } else {
             $self->ok(0);
             if ($results && $U->event_code($results)) {
-                $self->screen_msg(($results->{descr} || $results->{textcode}));
+                $self->screen_msg(OILS_SIP_MSG_BILL_ERR);
             } else {
                 $self->screen_msg(OILS_SIP_MSG_NO_BILL);
             }

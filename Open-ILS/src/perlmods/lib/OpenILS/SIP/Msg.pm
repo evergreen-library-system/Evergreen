@@ -27,6 +27,7 @@ econst OILS_SIP_MSG_CIRC_EXISTS => 'This item is already checked out';
 econst OILS_SIP_MSG_CIRC_PERMIT_FAILED => 'Patron is not allowed to check out the selected item';
 econst OILS_SIP_MSG_NO_BILL => 'Bill not found';
 econst OILS_SIP_MSG_OVERPAYMENT => 'Overpayment not allowed';
+econst OILS_SIP_MSG_BILL_ERR => 'An error occurred while retrieving bills';
 
 %EXPORT_TAGS = ( const => [ @EXPORT_OK ] );
 
