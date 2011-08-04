@@ -1,8 +1,8 @@
--- Evergreen DB patch XXXX.schema.circ_holds_history_repairs.sql
+-- Evergreen DB patch 0591.schema.circ_holds_history_repairs.sql
 BEGIN;
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0591', :eg_version);
 
 CREATE OR REPLACE FUNCTION action.usr_visible_circs (usr_id INT) RETURNS SETOF action.circulation AS $func$
 DECLARE
