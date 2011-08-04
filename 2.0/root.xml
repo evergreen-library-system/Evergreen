@@ -52,8 +52,7 @@
 		</info>
 		<xi:include href="stafftasks/stafftasks_intro.xml"/>
 		<xi:include href="stafftasks/booking.xml"/>
-		<xi:include href="stafftasks/acquisitions_module-GPLS.xml"/>
-		<xi:include href="stafftasks/kcls_acquisitions.xml"/>
+		<xi:include href="stafftasks/acquisitions.xml"/>
 		<xi:include href="stafftasks/serials-gpls.xml"/>
 		<xi:include href="stafftasks/alternate_serial_control.xml"/>
 		<xi:include href="stafftasks/cataloging.xml"/>
