@@ -2,6 +2,8 @@
 
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0592', :eg_version);
+
 INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 512, 'ACQ_INVOICE_REOPEN', oils_i18n_gettext( 512,
     'Allows a user to reopen an Acquisitions invoice', 'ppl', 'description' ));
