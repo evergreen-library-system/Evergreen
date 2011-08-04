@@ -755,15 +755,21 @@ sub load_myopac_hold_history {
     $ctx->{hold_history_limit} = $limit;
     $ctx->{hold_history_offset} = $offset;
 
-
-    my $holds = $e->json_query({
-        from => ['action.usr_visible_holds', $e->requestor->id],
-        limit => $limit || 25,
-        offset => $offset || 0
+    my $hold_ids = $e->json_query({
+        select => {
+            au => [{
+                column => 'id', 
+                transform => 'action.usr_visible_holds', 
+                result_field => 'id'
+            }]
+        },
+        from => 'au',
+        where => {id => $e->requestor->id}, 
+        limit => $limit,
+        offset => $offset
     });
 
-    $ctx->{holds} = $self->fetch_user_holds([map { $_->{id} } @$holds], 0, 1, 0, $limit, $offset);
-
+    $ctx->{holds} = $self->fetch_user_holds([map { $_->{id} } @$hold_ids], 0, 1, 0);
     return Apache2::Const::OK;
 }
 
