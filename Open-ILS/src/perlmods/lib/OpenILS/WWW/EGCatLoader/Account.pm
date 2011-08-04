@@ -727,26 +727,21 @@ sub load_myopac_circ_history {
     $ctx->{circ_history_limit} = $limit;
     $ctx->{circ_history_offset} = $offset;
 
-    my $circs = $e->json_query({
-        from => ['action.usr_visible_circs', $e->requestor->id],
-        #limit => $limit || 25,
-        #offset => $offset || 0,
+    my $circ_ids = $e->json_query({
+        select => {
+            au => [{
+                column => 'id', 
+                transform => 'action.usr_visible_circs', 
+                result_field => 'id'
+            }]
+        },
+        from => 'au',
+        where => {id => $e->requestor->id}, 
+        limit => $limit,
+        offset => $offset
     });
 
-    # XXX: order-by in the json_query above appears to do nothing, so in-query 
-    # paging is not reallly an option.  do the sorting/paging here
-
-    # sort newest to oldest
-    $circs = [ sort { $b->{xact_start} cmp $a->{xact_start} } @$circs ];
-    my @ids = map { $_->{id} } @$circs;
-
-    # find the selected page and trim cruft
-    @ids = @ids[$offset..($offset + $limit - 1)] if $limit;
-    @ids = grep { defined $_ } @ids;
-
-    $ctx->{circs} = $self->fetch_user_circs(1, \@ids);
-    #$ctx->{circs} = $self->fetch_user_circs(1, [map { $_->{id} } @$circs], $limit, $offset);
-
+    $ctx->{circs} = $self->fetch_user_circs(1, [map { $_->{id} } @$circ_ids]);
     return Apache2::Const::OK;
 }
 
