@@ -706,8 +706,16 @@ sub ol_handle_checkout {
         return $e if $e;
 
         my $barcode = $args->{barcode};
-        # Have to have this config option & a status_changed_time for skippage
-        if ( ($config{skip_late}) && (length($c->status_changed_time())) ) {
+        # Have to have this config option (or org setting) and a
+        # status_changed_time for skippage
+        if ((
+                ol_get_org_setting(
+                    'circ.offline.skip_checkout_if_newer_status_changed_time'
+                )
+                || $config{skip_late}
+            )
+            && length($c->status_changed_time())
+        ) {
             my $cts = DateTime::Format::ISO8601->parse_datetime( cleanse_ISO8601($c->status_changed_time()) )->epoch();
             my $xts = $command->{timestamp}; # Transaction Time Stamp
             $logger->activity("offline: ol_handle_checkout: barcode=$barcode, cts=$cts, xts=$xts");
@@ -715,8 +723,7 @@ sub ol_handle_checkout {
             # Asset has changed after this transaction, ignore
             if ($cts >= $xts) {
                 return OpenILS::Event->new(
-                    'SKIP_ASSET_CHANGED',
-                    payload => 'The Asset has been update since this transaction, so it will be ignored'
+                    'SKIP_ASSET_CHANGED'
                 );
             }
     #       $logger->activity("offline: fetch_copy_by_barcode: " . Dumper($c->real_fields()));
@@ -746,6 +753,38 @@ sub ol_handle_renew {
 	my $command = shift;
 	my $args = ol_circ_args_from_command($command);
 	my $t = time;
+
+    if( $args->{barcode} ) {
+
+        # $c becomes the Copy
+        # $e possibily becomes the Exception
+        my( $c, $e ) = $U->fetch_copy_by_barcode($args->{barcode});
+        return $e if $e;
+
+        my $barcode = $args->{barcode};
+        # Have to have this config option (or org setting) and a
+        # status_changed_time for skippage
+        if ((
+                ol_get_org_setting(
+                    'circ.offline.skip_renew_if_newer_status_changed_time'
+                )
+                || $config{skip_late}
+            )
+            && length($c->status_changed_time())
+        ) {
+            my $cts = DateTime::Format::ISO8601->parse_datetime( cleanse_ISO8601($c->status_changed_time()) )->epoch();
+            my $xts = $command->{timestamp}; # Transaction Time Stamp
+            $logger->activity("offline: ol_handle_renew: barcode=$barcode, cts=$cts, xts=$xts");
+
+            # Asset has changed after this transaction, ignore
+            if ($cts >= $xts) {
+                return OpenILS::Event->new(
+                    'SKIP_ASSET_CHANGED'
+                );
+            }
+        }
+    }
+
 	return $U->simplereq(
 		'open-ils.circ', 'open-ils.circ.renew.override', $authtoken, $args );
 }
@@ -764,6 +803,36 @@ sub ol_handle_checkin {
 
 	$logger->activity("offline: checkin : requestor=". $requestor->id.
 		", realtime=$realtime, ".  "workstation=$ws, barcode=$barcode, backdate=$backdate");
+
+    if( $barcode ) {
+
+        # $c becomes the Copy
+        # $e possibily becomes the Exception
+        my( $c, $e ) = $U->fetch_copy_by_barcode($barcode);
+        return $e if $e;
+
+        # Have to have this config option (or org setting) and a
+        # status_changed_time for skippage
+        if ((
+                ol_get_org_setting(
+                    'circ.offline.skip_checkin_if_newer_status_changed_time'
+                )
+                || $config{skip_late}
+            )
+            && length($c->status_changed_time())
+        ) {
+            my $cts = DateTime::Format::ISO8601->parse_datetime( cleanse_ISO8601($c->status_changed_time()) )->epoch();
+            my $xts = $command->{timestamp}; # Transaction Time Stamp
+            $logger->activity("offline: ol_handle_checkin: barcode=$barcode, cts=$cts, xts=$xts");
+
+            # Asset has changed after this transaction, ignore
+            if ($cts >= $xts) {
+                return OpenILS::Event->new(
+                    'SKIP_ASSET_CHANGED'
+                );
+            }
+        }
+    }
 
 	return $U->simplereq(
 		'open-ils.circ', 
