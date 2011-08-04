@@ -2,6 +2,8 @@
 
 BEGIN;
 
+INSERT INTO config.upgrade_log (version) VALUES ('0592');
+
 INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 512, 'ACQ_INVOICE_REOPEN', oils_i18n_gettext( 512,
     'Allows a user to reopen an Acquisitions invoice', 'ppl', 'description' ));
