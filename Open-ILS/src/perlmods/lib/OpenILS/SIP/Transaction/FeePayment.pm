@@ -166,8 +166,11 @@ sub do_fee_payment {
         } else {
             $self->ok(0);
             if ($results && $U->event_code($results)) {
+                syslog('LOG_INFO', 'OILS: open-ils.actor.user.transactions.history.have_balance returned '
+                       . OpenSRF::Utils::JSON->perl2JSON($results));
                 $self->screen_msg(OILS_SIP_MSG_BILL_ERR);
             } else {
+                syslog('LOG_INFO', 'OILS: open-ils.actor.user.transactions.history.have_balance returned nothing');
                 $self->screen_msg(OILS_SIP_MSG_NO_BILL);
             }
         }
