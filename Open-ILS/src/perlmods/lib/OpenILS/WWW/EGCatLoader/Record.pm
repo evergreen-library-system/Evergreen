@@ -98,43 +98,25 @@ sub mk_copy_query {
             ],
             circ => ['due_date'],
         },
+
         from => {
             acp => {
-                acn => {},
+                acn => {
+                    join => {bre => {filter => {id => $rec_id }}},
+                    filter => {deleted => 'f'}
+                },
+                circ => { # If the copy is circulating, retrieve the open circ
+                    type => 'left',
+                    filter => {checkin_time => undef}
+                },
                 acpl => {},
                 ccs => {},
-                circ => {type => 'left'},
                 aou => {}
             }
         },
-        where => {
-            '+acp' => {
-                deleted => 'f',
-                call_number => {
-                    in => {
-                        select => {acn => ['id']},
-                        from => 'acn',
-                        where => {record => $rec_id}
-                    }
-                },
-                circ_lib => {
-                    in => {
-                        select => {aou => [{
-                            column => 'id', 
-                            transform => 'actor.org_unit_descendants', 
-                            result_field => 'id', 
-                            params => [$depth]
-                        }]},
-                        from => 'aou',
-                        where => {id => $org}
-                    }
-                }
-            },
-            '+acn' => {deleted => 'f'},
-            '+circ' => {checkin_time => undef}
-        },
 
-        # Order is: copies with circ_lib=org, followed by circ_lib name, followed by call_number label
+        where => {'+acp' => {deleted => 'f' }},
+
         order_by => [
             {class => 'aou', field => 'name'}, 
             {class => 'acn', field => 'label'}
@@ -154,15 +136,36 @@ sub mk_copy_query {
         };
     }
 
+    if($org != $self->ctx->{aou_tree}->()->id) { 
+        # no need to add the org join filter if we're not actually filtering
+        $query->{from}->{acp}->{aou} = {
+            fkey => 'circ_lib',
+            field => 'id',
+            filter => {
+                id => {
+                    in => {
+                        select => {aou => [{
+                            column => 'id', 
+                            transform => 'actor.org_unit_descendants', 
+                            result_field => 'id', 
+                            params => [$depth]
+                        }]},
+                        from => 'aou',
+                        where => {id => $org}
+                    }
+                }
+            }
+        }
+    };
+
     # Filter hidden items if this is the public catalog
     unless($self->ctx->{is_staff}) { 
         $query->{where}->{'+acp'}->{opac_visible} = 't';
-        $query->{where}->{'+acpl'}->{opac_visible} = 't';
-        $query->{where}->{'+ccs'}->{opac_visible} = 't';
+        $query->{from}->{'acp'}->{'acpl'}->{filter} = {opac_visible => 't'};
+        $query->{from}->{'acp'}->{'ccs'}->{filter} = {opac_visible => 't'};
     }
 
     return $query;
-    #return $self->editor->json_query($query);
 }
 
 sub mk_marc_html {
