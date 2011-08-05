@@ -2610,13 +2610,24 @@ sub rec_to_mr_rec_descriptors {
         my $good_records = $e->json_query(
             { distinct => 1,
               select   => { 'bre' => ['id'] },
-              from     => { 'bre' => { 'acn' => { 'join' => { 'acp' } } } },
+              from     => {
+                  'bre' => {
+                      'acn' => {
+                          'join' => {
+                              'acp' => {"join" => {"acpl" => {}, "ccs" => {}}}
+                            }
+                        }
+                   }
+              },
               where    => {
                 '+bre' => { id => \@recs },
                 '+acp' => {
+                    holdable => 't',
                     circ_lib => [ map { $_->{id} } @$orgs ],
                     deleted  => 'f'
-                }
+                },
+                "+ccs" => { holdable => 't' },
+                "+acpl" => { holdable => 't' }
               }
             }
         );
