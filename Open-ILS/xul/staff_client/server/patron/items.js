@@ -522,7 +522,7 @@ patron.items.prototype = {
                     if (typeof robj.ilsevent != 'undefined') { 
                         if (robj.ilsevent != 0 && robj.textcode != 'PATRON_EXCEEDS_CLAIMS_RETURN_COUNT' ) {
                             do_not_move_these[ barcodes[i] ] = true;
-                            obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.items.items_claimed_returned.not_marked_claimed_returned'),E);
+                            obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.items.items_claimed_returned.not_marked_claimed_returned'),robj);
                         }
                         if (robj.textcode == 'PATRON_EXCEEDS_CLAIMS_RETURN_COUNT') {
                             do_not_move_these[ barcodes[i] ] = true;
