@@ -816,6 +816,9 @@ function updateFixedFields (element) {
     var grid = document.getElementById('leaderGrid');
     var recGrid = document.getElementById('recGrid');
     var new_value = element.value;
+    // Don't take focus away/adjust the record on partial changes
+    var length = element.getAttribute('maxlength');
+    if(new_value.length < length) return true;
 
     var marc_rec = new MARC.Record ({ delimiter : '$', marcxml : xml_record.toXMLString() });
     marc_rec.setFixedField(element.getAttribute('name'), new_value);

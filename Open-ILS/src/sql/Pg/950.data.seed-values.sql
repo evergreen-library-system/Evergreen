@@ -1438,8 +1438,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 510, 'UPDATE_PATRON_COLLECTIONS_EXEMPT', oils_i18n_gettext(510,
     'Allows a user to indicate that a patron is exempt from collections processing', 'ppl', 'description')),
  ( 511, 'PERSISTENT_LOGIN', oils_i18n_gettext( 511,
-    'Allows a user to authenticate and get a long-lived session (length configured in opensrf.xml)', 'ppl', 'description' ));
-
+    'Allows a user to authenticate and get a long-lived session (length configured in opensrf.xml)', 'ppl', 'description' )),
+ ( 512, 'ACQ_INVOICE_REOPEN', oils_i18n_gettext( 512,
+    'Allows a user to reopen an Acquisitions invoice', 'ppl', 'description' ));
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
 
@@ -2151,6 +2152,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 		pgt.name = 'Acquisitions Administrator' AND
 		aout.name = 'Consortium' AND
 		perm.code IN (
+			'ACQ_INVOICE_REOPEN',
 			'ACQ_XFER_MANUAL_DFUND_AMOUNT',
 			'ADMIN_ACQ_CANCEL_CAUSE',
 			'ADMIN_ACQ_CLAIM',
@@ -9590,7 +9592,7 @@ INSERT INTO authority.control_set_bib_field (tag, authority_field)
 
 INSERT INTO authority.thesaurus (code, name, control_set) VALUES
     ('a', oils_i18n_gettext('a','Library of Congress Subject Headings','at','name'), 1),
-    ('b', oils_i18n_gettext('b',$$LC subject headings for children's literature$$,'at','name'), 1), -- silly vim '
+    ('b', oils_i18n_gettext('b','LC subject headings for children''s literature','at','name'), 1), 
     ('c', oils_i18n_gettext('c','Medical Subject Headings','at','name'), 1),
     ('d', oils_i18n_gettext('d','National Agricultural Library subject authority file','at','name'), 1),
     ('k', oils_i18n_gettext('k','Canadian Subject Headings','at','name'), 1),

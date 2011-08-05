@@ -437,6 +437,12 @@ __PACKAGE__->add_search_filter( 'estimation_strategy' );
 __PACKAGE__->add_search_modifier( 'available' );
 __PACKAGE__->add_search_modifier( 'staff' );
 
+# Start from container data (bre, acn, acp): container(bre,bookbag,123,deadb33fdeadb33fdeadb33fdeadb33f)
+__PACKAGE__->add_search_filter( 'container' );
+
+# Start from a list of record ids, either bre or metarecords, depending on the #metabib modifier
+__PACKAGE__->add_search_filter( 'record_list' );
+
 # used internally, but generally not user-settable
 __PACKAGE__->add_search_filter( 'preferred_language' );
 __PACKAGE__->add_search_filter( 'preferred_language_weight' );
@@ -458,6 +464,9 @@ package OpenILS::Application::Storage::Driver::Pg::QueryParser::query_plan;
 use base 'QueryParser::query_plan';
 use OpenSRF::Utils::Logger qw($logger);
 use Data::Dumper;
+use OpenILS::Application::AppUtils;
+my $apputils = "OpenILS::Application::AppUtils";
+
 
 sub toSQL {
     my $self = shift;
@@ -558,6 +567,8 @@ sub toSQL {
     my ($after) = $self->find_filter('after');
     my ($during) = $self->find_filter('during');
     my ($between) = $self->find_filter('between');
+    my ($container) = $self->find_filter('container');
+    my ($record_list) = $self->find_filter('record_list');
 
     if ($before and @{$before->args} == 1) {
         $before = "AND (mrd.attrs->'date1') <= " . $self->QueryParser->quote_value($before->args->[0]);
@@ -583,6 +594,52 @@ sub toSQL {
         $between = '';
     }
 
+    if ($container and @{$container->args} >= 3) {
+        my ($class, $ctype, $cid, $token) = @{ $container->args };
+
+        my $perm_join = '';
+        my $rec_join = '';
+        my $rec_field = 'ci.target_biblio_record_entry';
+
+        if ($class eq 'bre') {
+            $class = 'biblio_record_entry';
+        } elsif ($class eq 'acn') {
+            $class = 'call_number';
+            $rec_field = 'cn.record';
+            $rec_join = 'JOIN asset.call_number cn ON (ci.target_call_number = cn.id)';
+        } elsif ($class eq 'acp') {
+            $class = 'copy';
+            $rec_field = 'cn.record';
+            $rec_join = 'JOIN asset.copy cp ON (ci.target_copy = cp.id) JOIN asset.call_number cn ON (cp.call_number = cn.id)';
+#        } elsif ($class eq 'au') {
+#            $class = 'user';
+#            $rec_field = 'cn.record';
+#            $rec_join = 'JOIN asset.call_number cn ON ci.target_call_number = cn.id';
+        } else { $class = undef };
+
+        if ($class) {
+            my ($u,$e) = $apputils->checksesperm($token) if ($token);
+            $perm_join = 'OR c.owner = ' . $u->id if ($u && !$e);
+
+            $container = qq<
+        JOIN ( SELECT $rec_field AS container_item
+                FROM  container.${class}_bucket_item ci
+                      JOIN container.${class}_bucket c ON (c.id = ci.bucket)
+                      $rec_join
+                WHERE c.btype = > . $self->QueryParser->quote_value($ctype) .
+                    qq< AND c.id = > . $self->QueryParser->quote_value($cid) .
+                    qq< AND (c.pub IS TRUE $perm_join)) container ON (container.container_item = mrd.id) >;
+        } else {$container = ''};
+    } else {
+        $container = '';
+    }
+
+    if ($record_list and @{$record_list->args} > 0) {
+        $record_list = 'JOIN (VALUES (' . join('),(', map  { $self->QueryParser->quote_value($_) } @{ $record_list->args}) . ")) record_list(id) ON (record_list.id::BIGINT = $key)"
+    } else {
+        $record_list = '';
+    }
+
     my $core_limit = $self->QueryParser->core_limit || 25000;
 
     my $flat_where = $$flat_plan{where};
@@ -600,6 +657,8 @@ SELECT  $key AS id,
         FIRST(mrd.attrs->'date1') AS tie_break
   FROM  metabib.metarecord_source_map m
         JOIN metabib.record_attr mrd ON (m.source = mrd.id)
+        $container
+        $record_list
         $$flat_plan{from}
   WHERE 1=1
         $before

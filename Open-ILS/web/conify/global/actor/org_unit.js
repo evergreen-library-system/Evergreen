@@ -159,5 +159,6 @@ function set_addr_inputs (type) {
     window[type + '_addr_country'].setValue( window['current_' + type + '_address'].country() || '' );
     window[type + '_addr_state'].setValue( window['current_' + type + '_address'].state() || '' );
     window[type + '_addr_post_code'].setValue( window['current_' + type + '_address'].post_code() || '' );
+    window[type + '_addr_san'].setValue( window['current_' + type + '_address'].san() || '' );
 }
 
