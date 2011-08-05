@@ -446,6 +446,13 @@ patron.util.columns = function(modify,params) {
             ,'sort_value' : function(my) { return util.date.db_date2Date( my.au.create_date() ).getTime(); }
         },
         { 
+            'persist' : 'hidden width ordinal', 'id' : 'au_last_update_date', 'label' : commonStrings.getString('staff.au_last_update_date_label'), 'flex' : 1, 
+            'sort_type' : 'date',
+            'primary' : false, 'hidden' : true, 'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.au.last_update_date(), "%{localized}" ); }
+            ,'sort_value' : function(my) { return util.date.db_date2Date( my.au.last_update_date() ).getTime(); }
+        },
+
+        { 
             'persist' : 'hidden width ordinal', 'id' : 'expire_date', 'label' : commonStrings.getString('staff.au_expire_date_label'), 'flex' : 1, 
             'sort_type' : 'date',
             'primary' : false, 'hidden' : true, 'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.au.expire_date(), "%{localized_date}" ); }
