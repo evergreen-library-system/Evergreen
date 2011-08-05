@@ -39,6 +39,8 @@ patron.holds.prototype = {
 
         var obj = this;
 
+        dojo.require("openils.Util");
+
         obj.patron_id = params['patron_id'];
         obj.patron_barcode = params['patron_barcode'];
         obj.docid = params['docid'];
@@ -1266,44 +1268,9 @@ patron.holds.prototype = {
                     'cmd_clear_expired_onshelf_holds' : [
                         ['command'],
                         function(ev) {
-                            try {
-                                // I could put this with the "retrieval" methods, but since it has side effects, seems cleaner to invoke it here
-                                var robj = obj.network.simple_request( 'CLEAR_HOLD_SHELF', [ ses(), obj.filter_lib || obj.data.list.au[0].ws_ou() ] );
-                                if (robj == null) { robj = []; }
-                                if (typeof robj.ilsevent != 'undefined') { throw(robj); }
-                                if (typeof robj.length == 'undefined') { robj = [ robj ]; }
-
-                                // Disable anything such as filters that can have us accidentally lose these non-repeatable results
-                                var x_lib_filter_checkbox = document.getElementById('lib_filter_checkbox');
-                                if (x_lib_filter_checkbox) { x_lib_filter_checkbox.checked = false; }
-                                var x_lib_type_menu = document.getElementById('lib_type_menu');
-                                if (x_lib_type_menu) { x_lib_type_menu.disabled = true; }
-                                var x_lib_menu_placeholder = document.getElementById('lib_menu_placeholder');
-                                if (x_lib_menu_placeholder) { x_lib_menu_placeholder.firstChild.disabled = true; }
-                                obj.controller.view.cmd_view_expired_onshelf_holds.setAttribute('disabled', 'true');
-                                obj.controller.view.cmd_clear_expired_onshelf_holds.setAttribute('disabled', 'true');
-
-                                // id's in xulG.holds will prevent the normal retrieval method from firing
-                                JSAN.use('util.functional');
-                                xulG.holds = util.functional.map_list(
-                                    robj.sort(function(a,b) {
-                                        if (a.action > b.action) { return 1; }
-                                        if (a.action < b.action) { return -1; }
-                                        return 0;
-                                    }),
-                                    function (element, idx) {
-                                        obj.post_clear_shelf_hold_action_map[ element.hold_id ] = element.action; // necessary side-effect
-                                        return element.hold_id;
-                                    }
-                                );
-                                obj.clear_and_retrieve();
-                            } catch(E) {
-                                if (E.ilsevent == 5000 /* PERM_FAILURE */ ) { return; /* handled by network.js */ }
-                                obj.error.standard_unexpected_error_alert('Error in holds.js, cmd_clear_expired_onshelf_holds', E);
-                            }
+                            obj.cmd_clear_expired_onshelf_holds();
                         }
                     ],
-
                     'cmd_search_opac' : [
                         ['command'],
                         function(ev) {
@@ -1657,6 +1624,86 @@ patron.holds.prototype = {
 
         } catch(E) {
             this.error.standard_unexpected_error_alert('rendering lib menu',E);
+        }
+    },
+
+    'cmd_clear_expired_onshelf_holds' : function() {
+        var obj = this;
+        try {
+            // Disable anything such as filters that can have us accidentally
+            // lose these non-repeatable results.  Well, now that they're cached
+            // it's less of an issue.
+            if ($('lib_filter_checkbox')) {
+                $('lib_filter_checkbox').checked = false;
+            }
+            if ($('lib_type_menu')) {
+                $('lib_type_menu').disabled = true;
+            }
+            if ($('lib_menu_placeholder')) {
+                $('lib_menu_placeholder').firstChild.disabled = true;
+            }
+            obj.controller.view.cmd_view_expired_onshelf_holds.setAttribute(
+                'disabled', 'true');
+            obj.controller.view.cmd_clear_expired_onshelf_holds.setAttribute(
+                'disabled', 'true');
+
+            // I could put this with the "retrieval" methods, but since it has
+            // side effects, seems cleaner to invoke it here
+            var robj = obj.network.simple_request(
+                'CLEAR_HOLD_SHELF',
+                [
+                    ses(),
+                    obj.filter_lib || obj.data.list.au[0].ws_ou()
+                ]
+            );
+            if (typeof robj.ilsevent != 'undefined') { throw(robj); }
+            if (typeof robj.cache_key == 'undefined') { throw(robj); }
+
+            var cache_key = robj.cache_key;
+
+            // id's in xulG.holds will prevent the normal retrieval method from
+            // firing.  Let's put our affected hold.id's in here:
+            xulG.holds = [];
+
+            // Start the progress meter
+            $('progress').value = 0;
+            $('progress').hidden = false;
+
+            // Fetch the affected holds
+            fieldmapper.standardRequest(
+                [ 'open-ils.circ', 'open-ils.circ.hold.clear_shelf.get_cache' ],
+                {
+                    'async' : true,
+                    'params' : [ ses(), cache_key ],
+                    'onresponse' : function(r) {
+                        dojo.forEach(
+                            openils.Util.readResponse(r),
+                            function(resp) {
+                                if (resp.maximum) {
+                                    $('progress').value = Number(resp.progress)
+                                        * 100/resp.maximum;
+                                    return;
+                                }
+                                obj.post_clear_shelf_hold_action_map[
+                                    resp.hold_details.id
+                                ] = resp.action;
+                                xulG.holds.push( resp.hold_details.id );
+                            }
+                        )
+                    },
+                    'oncomplete' : function() {
+                        obj.clear_and_retrieve();
+                        $('progress').hidden = true;
+                    }
+                }
+            );
+
+        } catch(E) {
+            if (E.ilsevent == 5000 /* PERM_FAILURE */ ) {
+                return; /* handled by network.js */
+            }
+            obj.error.standard_unexpected_error_alert(
+                'Error in holds.js, cmd_clear_expired_onshelf_holds', E);
         }
     }
 }

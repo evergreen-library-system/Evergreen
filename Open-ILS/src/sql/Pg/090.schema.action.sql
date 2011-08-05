@@ -638,7 +638,7 @@ BEGIN
           WHERE usr = usr_id
                 AND parent_circ IS NULL
                 AND xact_start > NOW() - view_age
-          ORDER BY xact_start
+          ORDER BY xact_start DESC
     LOOP
         RETURN NEXT c;
     END LOOP;
@@ -681,14 +681,14 @@ BEGIN
 
     IF usr_view_age.value IS NOT NULL THEN
         -- User opted in and supplied a retention age
-        IF oils_json_to_string(usr_view_age.value)::INTERVAL > AGE(NOW(), oils_json_to_string(usr_view_start.value)::TIMESTAMPTZ) THEN
-            view_age := AGE(NOW(), oils_json_to_string(usr_view_start.value)::TIMESTAMPTZ);
+        IF oils_json_to_text(usr_view_age.value)::INTERVAL > AGE(NOW(), oils_json_to_text(usr_view_start.value)::TIMESTAMPTZ) THEN
+            view_age := AGE(NOW(), oils_json_to_text(usr_view_start.value)::TIMESTAMPTZ);
         ELSE
-            view_age := oils_json_to_string(usr_view_age.value)::INTERVAL;
+            view_age := oils_json_to_text(usr_view_age.value)::INTERVAL;
         END IF;
     ELSE
         -- User opted in
-        view_age := AGE(NOW(), oils_json_to_string(usr_view_start.value)::TIMESTAMPTZ);
+        view_age := AGE(NOW(), oils_json_to_text(usr_view_start.value)::TIMESTAMPTZ);
     END IF;
 
     IF usr_view_count.value IS NOT NULL THEN

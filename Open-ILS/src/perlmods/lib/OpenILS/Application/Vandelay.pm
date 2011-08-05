@@ -1543,7 +1543,7 @@ sub import_record_asset_list_impl {
             }
 
             $evt = OpenILS::Application::Cat::AssetCommon->create_copy_note(
-                $e, $copy, '', $item->priv_note, 1) if $item->priv_note;
+                $e, $copy, '', $item->priv_note) if $item->priv_note;
 
             if($evt) {
                 $$report_args{evt} = $evt;

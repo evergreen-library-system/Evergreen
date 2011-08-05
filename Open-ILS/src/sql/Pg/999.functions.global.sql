@@ -1325,14 +1325,14 @@ BEGIN
     ELSIF NEW.opac_visible THEN -- add rows
 
         IF TG_TABLE_NAME = 'org_unit' THEN
-            add_base_query := add_base_query || ' AND cp.circ_lib = ' || NEW.id || ';';
-            add_peer_query := add_peer_query || ' AND cp.circ_lib = ' || NEW.id || ';';
+            add_base_query := add_base_query || ' AND cp.circ_lib = ' || NEW.id;
+            add_peer_query := add_peer_query || ' AND cp.circ_lib = ' || NEW.id;
         ELSIF TG_TABLE_NAME = 'copy_location' THEN
-            add_base_query := add_base_query || ' AND cp.location = ' || NEW.id || ';';
-            add_peer_query := add_peer_query || ' AND cp.location = ' || NEW.id || ';';
+            add_base_query := add_base_query || ' AND cp.location = ' || NEW.id;
+            add_peer_query := add_peer_query || ' AND cp.location = ' || NEW.id;
         ELSIF TG_TABLE_NAME = 'copy_status' THEN
-            add_base_query := add_base_query || ' AND cp.status = ' || NEW.id || ';';
-            add_peer_query := add_peer_query || ' AND cp.status = ' || NEW.id || ';';
+            add_base_query := add_base_query || ' AND cp.status = ' || NEW.id;
+            add_peer_query := add_peer_query || ' AND cp.status = ' || NEW.id;
         END IF;
  
         EXECUTE add_front || add_base_query || ' UNION ' || add_peer_query || add_back;

@@ -67,12 +67,12 @@ class DojoResource (basel10n.BaseL10N):
 
         for key, value in bundle.iteritems():
             if value in msgids:
-                msgids[str(value)].occurrences.append((os.path.basename(source), str(key)))
+                msgids[unicode(value)].occurrences.append((os.path.basename(source), str(key)))
             else:
                 poe = polib.POEntry()
                 poe.occurrences = [(os.path.basename(source), str(key))]
-                poe.msgid = str(value)
-                msgids[str(value)] = poe
+                poe.msgid = unicode(value)
+                msgids[unicode(value)] = poe
 
         # Now add the POEntries to our POFile
         for poe in msgids.values():
