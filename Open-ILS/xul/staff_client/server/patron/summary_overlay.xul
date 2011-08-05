@@ -47,6 +47,9 @@
         <row id="pdsgr5aa">
             <description id="patron_date_of_exp" class="copyable expire_date value"/>
         </row>
+        <row id="pdsgr5aaa">
+            <description id="patron_date_of_last_update" class="copyable last_update_time value"/>
+        </row>
     </rows></grid>
     <grid id="PatronSummaryStatus_grid" flex="1"/>
 

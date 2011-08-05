@@ -545,6 +545,20 @@ patron.summary.prototype = {
                             };
                         }
                     ],
+                    'patron_date_of_last_update' : [
+                        ['render'],
+                        function(e) {
+                            return function() {
+                                util.widgets.set_text(e,
+                                    patronStrings.getString('staff.patron.summary.updated_on') + ' ' + (
+                                        obj.patron.last_update_time() ?
+                                        util.date.formatted_date( obj.patron.last_update_time(), '%{localized_date}' ) :
+                                        patronStrings.getString('staff.patron.field.unset')
+                                    )
+                                );
+                            };
+                        }
+                    ],
                     'patron_hold_alias' : [
                         ['render'],
                         function(e) {
