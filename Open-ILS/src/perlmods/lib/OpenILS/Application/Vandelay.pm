@@ -1460,7 +1460,10 @@ sub import_record_asset_list_impl {
 
     for my $rec_id (@$rec_ids) {
         my $rec = $roe->retrieve_vandelay_queued_bib_record($rec_id);
-        my $item_ids = $roe->search_vandelay_import_item({record => $rec->id}, {idlist=>1});
+        my $item_ids = $roe->search_vandelay_import_item(
+            {record => $rec->id, import_error => undef}, 
+            {idlist=>1}
+        );
 
         for my $item_id (@$item_ids) {
             my $e = new_editor(requestor => $requestor, xact => 1);
@@ -1506,22 +1509,8 @@ sub import_record_asset_list_impl {
             $copy->circ_modifier($item->circ_modifier);
 
             # --------------------------------------------------------------------------------
-            # see if a valid circ_modifier was provided
+            # Check for dupe barcode
             # --------------------------------------------------------------------------------
-            if($copy->circ_modifier and not $e->search_config_circ_modifier({code=>$item->circ_modifier})->[0]) {
-                $$report_args{evt} = $e->die_event;
-                $$report_args{import_error} = 'import.item.invalid.circ_modifier';
-                respond_with_status($report_args);
-                next;
-            }
-
-            if($copy->location and not $e->retrieve_asset_copy_location($copy->location)) {
-                $$report_args{evt} = $e->die_event;
-                $$report_args{import_error} = 'import.item.invalid.location';
-                respond_with_status($report_args);
-                next;
-            }
-
             if($evt = OpenILS::Application::Cat::AssetCommon->create_copy($e, $vol, $copy)) {
                 $$report_args{evt} = $evt;
                 $$report_args{import_error} = 'import.item.duplicate.barcode'

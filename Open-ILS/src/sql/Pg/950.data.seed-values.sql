@@ -8808,6 +8808,21 @@ INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'import.xml.mal
 INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'overlay.xml.malformed', oils_i18n_gettext('overlay.xml.malformed', 'Malformed record cause Overlay failure', 'vie', 'description') );
 INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'overlay.record.quality', oils_i18n_gettext('overlay.record.quality', 'New record had insufficient quality', 'vie', 'description') );
 
+INSERT INTO vandelay.import_error ( code, description ) VALUES ( 
+    'import.item.invalid.status', oils_i18n_gettext('import.item.invalid.status', 'Invalid value for "status"', 'vie', 'description') );
+INSERT INTO vandelay.import_error ( code, description ) VALUES ( 
+    'import.item.invalid.price', oils_i18n_gettext('import.item.invalid.price', 'Invalid value for "price"', 'vie', 'description') );
+INSERT INTO vandelay.import_error ( code, description ) VALUES ( 
+    'import.item.invalid.deposit_amount', oils_i18n_gettext('import.item.invalid.deposit_amount', 'Invalid value for "deposit_amount"', 'vie', 'description') );
+INSERT INTO vandelay.import_error ( code, description ) VALUES ( 
+    'import.item.invalid.owning_lib', oils_i18n_gettext('import.item.invalid.owning_lib', 'Invalid value for "owning_lib"', 'vie', 'description') );
+INSERT INTO vandelay.import_error ( code, description ) VALUES ( 
+    'import.item.invalid.circ_lib', oils_i18n_gettext('import.item.invalid.circ_lib', 'Invalid value for "circ_lib"', 'vie', 'description') );
+INSERT INTO vandelay.import_error ( code, description ) VALUES ( 
+    'import.item.invalid.copy_number', oils_i18n_gettext('import.item.invalid.copy_number', 'Invalid value for "copy_number"', 'vie', 'description') );
+INSERT INTO vandelay.import_error ( code, description ) VALUES ( 
+    'import.item.invalid.circ_as_type', oils_i18n_gettext('import.item.invalid.circ_as_type', 'Invalid value for "circ_as_type"', 'vie', 'description') );
+
 INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
     'ui.cat.volume_copy_editor.horizontal',
     oils_i18n_gettext(
