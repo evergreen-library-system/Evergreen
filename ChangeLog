@@ -1,1 +1,608 @@
-#ChangeLog
+2011-08-08  Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Search/Biblio.pm: In a
+	middle-layer method for returning holdable formats on a metarecord, Do a better test of copy holdability than we were doing previously.
+	We can't do a perfect test: we don't really know what patron we're
+	doing this for, and even if we did, from here it's nontrivial to
+	figure out whether we're doing indb holds or script-based, much less
+	run the tests.  Still, we can test whether a copy's in a holdable status, a holdable
+	location, and is itself not explicitly marked unholdable.
+
+
+	Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-04  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/sql/Pg/002.schema.config.sql,
+	Open-ILS/src/sql/Pg/upgrade/0592.data.ACQ_INVOICE_REOPEN-perm.sql,
+	Open-ILS/src/sql/Pg/upgrade/XXXX.lp818311.sql: Stamped upgrade
+	script for ACQ_INVOICE_REOPEN permission addition
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-04  Jason Stephenson <jstephenson@mvlc.org>
+
+	* Open-ILS/src/sql/Pg/upgrade/XXXX.lp818311.sql: Upgrade script for
+	LP818311 branch.
+
+
+	Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-04  Michael Peters <mrpeters@library.in.gov>
+
+	* Open-ILS/src/sql/Pg/950.data.seed-values.sql: LP#818311:
+	ACQ_INVOICE_REOPEN is missing This patch adds the missing ACQ_INVOICE_REOPEN to the Acquisitions
+	Administrator user.
+
+
+	Signed-off-by: Michael Peters <mrpeters@library.in.gov>
+	Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+2011-08-04  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/xul/staff_client/server/patron/items.js: mrpeters caught
+	this; wrong variable fed to error dialog
+
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2011-08-04  Bill Erickson <berick@esilibrary.com>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Cat/AssetCommon.pm,
+	Open-ILS/src/perlmods/OpenILS/Application/Vandelay.pm: Repaired copy
+	private/public note vandelay bug Previously, all copy notes imported through vandelay were coming in
+	as public copy notes.
+
+	Signed-off-by: Bill Erickson <berick@esilibrary.com>
+	Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2011-07-28  Thomas Berezansky <tsbere@mvlc.org>
+
+	* Open-ILS/xul/staff_client/server/cat/marcedit.js: Only update MARC
+	on full entry of fixed fields AKA: Lang is 3 characters long. Entering 1 character would cause
+	focus to leave.  MARC would also update incorrectly.  This only triggers the update when the full 3 characters are
+	entered.  This not only prevents issues with catalogers editing
+	multi-character fixed fields but also makes it less likely they
+	accidentally corrupt the records.
+
+	Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-07-21  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/xul/staff_client/server/cat/util.js,
+	Open-ILS/xul/staff_client/server/locale/en-US/cat.properties: 
+	lp#792595: Don't allow pre-cats into record buckets via Item Status
+	-> Actions for Catalogers Alerts with the number of pre-cat records skipped prior to invoking
+	the title bucket dialog.
+
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2011-07-28  James Fournie <jfournie@sitka.bclibraries.ca>
+
+	* Open-ILS/web/conify/global/actor/org_unit.html,
+	Open-ILS/web/conify/global/actor/org_unit.js,
+	Open-ILS/web/opac/locale/en-US/conify.dtd: This adds a SAN box to
+	the org unit editor's address editor pane.
+
+
+	Signed-off-by: James Fournie <jfournie@sitka.bclibraries.ca>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-07-29  Dan Wells <dbw2@calvin.edu>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Vandelay.pm,
+	Open-ILS/web/js/ui/default/vandelay/vandelay.js,
+	Open-ILS/web/templates/default/vandelay/inc/queue.tt2,
+	Open-ILS/web/templates/default/vandelay/inc/upload.tt2: Vandelay fix
+	for merging without loading new This fix is derivative of da3a453442050482a419deff91d3dc92fdbf132a
+	in master, but with new feature code removed for backport to 2.1 and
+	2.0.  It does the following: - renames 'vlUploadQueueAutoImport' to 'vlUploadQueueImportNoMatch'
+	  to match identical change in master and to increase code clarity - honors this flag when doing a merge.  Previously, if you checked one of the two auto-merge boxes, any
+	records which did not merge loaded as new records even if the
+	'Auto-Import Non-Colliding Records' box was not checked.  You can
+	now do one, the other, or both together (auto-importing and merging)
+	as needed.
+
+	Signed-off-by: Dan Wells <dbw2@calvin.edu>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-07-20  Liam Whalen <lwhalen@evergreen-dev.catalogue.nrcan.gc.ca>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Search/Biblio.pm: 
+	Deleted a line the removed single quotes (') from search strings The multiclass_query function replaces single quotes with spaces (')
+	( ).  This causes a problem when toggling between Advanced and Basic
+	search.  If a search is conducted with a ' in it, that quote appears
+	in the basic search box displayed above the results.  However, if
+	the user then clicks the 'Advanced' button to toggle to the advanced
+	search the single quote is missing from the search term.  By
+	removing the line $query =~ /s/'/ /go; from Biblio.pm this problem
+	is resolved.
+
+	Signed-off-by: Liam Whalen <lwhalen@evergreen-dev.catalogue.nrcan.gc.ca>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-03  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/sql/Pg/002.schema.config.sql,
+	Open-ILS/src/sql/Pg/upgrade/0589.money.materialized_summary_payment
+	-triggers.sql: Upgrade script for a patch from Steven Callender
+	addressing payment types in money.materialized_summary_payment
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-07-28  Steven Callender <stevecallender@esilibrary.com>
+
+	* Open-ILS/src/sql/Pg/080.schema.money.sql,
+	Open-ILS/src/sql/Pg/1.4.0.5-1.6.0.0-upgrade-db.sql: A fix so that
+	the last payment types will be cash_payment and check_payment rather
+	than bnm_payment for cash and check payments.
+
+
+	Signed-off-by: Steven Callender <stevecallender@esilibrary.com>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-02  Bill Erickson <berick@esilibrary.com>
+
+	* Open-ILS/src/sql/Pg/002.schema.config.sql,
+	Open-ILS/src/sql/Pg/upgrade/0588.schema.replace_field-default-value
+	.sql,
+	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.replace_field-default-value
+	.sql: Stamped upgrade script for user/miker/replace_field_fix
+
+	Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2011-08-02  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/sql/Pg/012.schema.vandelay.sql,
+	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.replace_field-default-value
+	.sql: Have replace_field return input XML when no replace rule is
+	provided
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+	Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2011-07-14  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Circ.pm: calculate
+	penalties when letting Mark Item Damaged add bills
+
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+	Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-08-02  Thomas Berezansky <tsbere@mvlc.org>
+
+	* Open-ILS/src/sql/Pg/950.data.seed-values.sql: Fix
+	oils_i18n_gettext id numbers config.metabib_field ids 29/30 had 28 for translation id.
+
+	Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+
+2011-07-31  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/xul/staff_client/server/cat/spine_labels.js: use isNaN
+	here, since NaN == NaN => false
+
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2011-07-21  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/xul/staff_client/server/patron/standing_penalties.js: 
+	Correctly populate certain columns in the patron Messages interface When applying penalties, the csp's referenced by the ausp's are
+	fleshed.
+
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+	Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2011-07-28  Dan Scott <dan@coffeecode.net>
+
+	* Open-ILS/src/perlmods/OpenILS/Utils/MFHD/test/mfhd.t: Fix broken
+	builds due to test that can't find its data LP 817699 reports a problem that began with commit
+	e9cd992fa4dbf1013346336193cb7469ecee10a8, reintroducing a problem
+	that had previously been resolved with commit
+	f017d1261c369b9b5cc3c9cfc4f50d3cdf12a445. In short, tests can and
+	are run from different directories, but a new test opened a file
+	without making any allowance that the test might be run from
+	anything other than the /test/ directory.  This fix uses the dirname(__FILE__) approach to provide the
+	appropriate relative directory for the test data, and enables the
+	tests to be processed without dying.
+
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+	Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2011-07-28  Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+	* Open-ILS/web/js/dojo/openils/acq/nls/acq.js,
+	Open-ILS/web/js/ui/default/acq/common/li_table.js: Make users
+	confirm they really want to delete lineitems from POs...  ... when they've already been ordered. There's really no reason to
+	ever make such a deletion this that I can think of, but I use a
+	confirm() instead of stricter measures in case I'm missing
+	something.
+
+
+	Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+	Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-07-28  Bill Erickson <berick@esilibrary.com>
+
+	* Open-ILS/src/sql/Pg/002.schema.config.sql,
+	Open-ILS/src/sql/Pg/upgrade/0587.maintain_control_numbers_with_OCLC
+	_awareness.sql,
+	Open-ILS/src/sql/Pg/upgrade/xxxx.maintain_control_numbers_with_OCLC
+	_awareness.sql: Stamped upgrade for user/dbs/oclcnumbers
+
+	Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2011-07-21  Dan Wells <dbw2@calvin.edu>
+
+	* Open-ILS/src/sql/Pg/002.functions.config.sql,
+	Open-ILS/src/sql/Pg/upgrade/xxxx.maintain_control_numbers_with_OCLC
+	_awareness.sql: Prevent control numbers from duplicating In maintain_control_numbers(), if you have more than one 001 or 003,
+	and at least one is the correct one, you will end up duplicating the
+	correct number every time the record is saved.  For example, if the incoming record was record ID # 12345, and the
+	record contained: 001: 12345 001: ocm10202 ... then after maintain_control_numbers() ran, the record would
+	contain: 001: 12345 001: 12345 Also, clean up some leftovers from the refactor I suggested in the
+	previous commit.
+
+	Signed-off-by: Dan Wells <dbw2@calvin.edu>
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-07-21  Dan Scott <dan@coffeecode.net>
+
+	* Open-ILS/src/sql/Pg/002.functions.config.sql,
+	Open-ILS/src/sql/Pg/950.data.seed-values.sql,
+	Open-ILS/src/sql/Pg/upgrade/xxxx.maintain_control_numbers_with_OCLC
+	_awareness.sql: Add an unwrapped upgrade script for OCLC-aware
+	control numbers The upgrade script creates the SCN and LCCN search indexes and
+	populates them using metabib.full_rec as a source; cheating, but the
+	normalized values will work for non-exact search purposes. Sites can
+	reingest all of their bibs if they want exact search to work.  Also, refactor maintain_control_numbers() using a suggestion by Dan
+	Wells to eliminate some duplicate code.
+
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+	Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2011-07-21  Dan Scott <dan@coffeecode.net>
+
+	* Open-ILS/src/sql/Pg/002.functions.config.sql,
+	Open-ILS/src/sql/Pg/950.data.seed-values.sql: Treat OCLC numbers
+	specially in maintain_control_numbers For some reason, many records that come with OCLC numbers in the 001
+	field are not populated with a 003 field. This resulted in the OCLC
+	number being thrown away entirely, rather than being moved into the
+	035, as there was no corresponding control number identifier field.  However, given that we know that control numbers starting with "ocm"
+	or "ocn" are special OCLC numbers, we can generate the 035
+	accordingly even in the absence of a 003. This update to
+	maintain_control_numbers() teaches it to do the right thing for OCLC
+	numbers.  In addition, add an identifier search index so we can easily find
+	records by their system control numbers (035 $a subfields).
+
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+	Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2011-07-25  Dan Scott <dan@coffeecode.net>
+
+	* Open-ILS/src/extras/Makefile.install: Ubuntu Lucid needs
+	MARC::Record from CPAN As Ubuntu Lucid ships with MARC::Record 2.0.0, and Serials requires
+	2.0.1 or greater, we must install MARC::Record from CPAN or face
+	failing open-ils.search requests.
+
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-07-21  Michael Peters <mrpeters@library.in.gov>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Circ/CopyLocations.pm: 
+	LP#813151 Copy Location sort order in Advanced Search This patch addresses the unintuitive copy location sort order in
+	Advanced Search when searching at a specific branch. Thanks to Dan
+	Wells for the code suggestion which changes the order in the listbox
+	to alphabetical sort by asset.copy_location.name.  Tested, and
+	confirmed working in 2.0.4 test and production environments.
+
+
+	Signed-off-by: Michael Peters <mrpeters@library.in.gov>
+	Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+
+2011-06-10  James Fournie <jfournie@sitka.bclibraries.ca>
+
+	* Open-ILS/web/opac/skin/default/xml/rdetail/rdetail_extras.xml,
+	Open-ILS/web/opac/skin/default/xml/result/result_table.xml: 
+	NOVELIST/CHILIFRESH include statements missing a hash which was
+	causing (none) errors.
+
+
+	Signed-off-by: James Fournie <jfournie@sitka.bclibraries.ca>
+	Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+
+2011-07-20  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/xul/staff_client/server/circ/util.js: sort hold Queue
+	Position column correctly in xul lists
+
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+	Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2011-07-20  Michael Peters <mrpeters@library.in.gov>
+
+	* Open-ILS/xul/staff_client/server/circ/checkout.js: LP#647121 Event
+	handling on override abort Discussed on IRC, phasefx discovered that several events were not
+	being properly handled when they were empty strings.  Tested and
+	working on Evergreen 2.0.4.
+
+
+	Signed-off-by: Michael Peters <mrpeters@library.in.gov>
+	Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+
+2011-07-19  Dan Wells <dbw2@calvin.edu>
+
+	* Open-ILS/src/perlmods/OpenILS/Utils/MFHD.pm,
+	Open-ILS/src/perlmods/OpenILS/Utils/MFHD/Holding.pm,
+	Open-ILS/src/perlmods/OpenILS/Utils/MFHD/test/mfhd.t,
+	Open-ILS/src/perlmods/OpenILS/Utils/MFHD/test/mfhddata2.txt: MFHD
+	compressed holding fixes 1. Add new utility method to MFHD.pm:     holdings_by_caption(): return all holdings attached to a     given caption 2. Add 'passthru_open_ended' option to get_decompressed_holdings()     Previously, attempts to decompress an open-ended holding     would error out.  Now, in the absence of this option,     open-ended holdings are discarded and you get a warning     (since they cannot logically be decompressed), while if     this option is 'true' they are passed back unaffected 3. compressed_to_last() on an open-ended holding now more    correctly returns 'undef' rather than the unaltered holding 4. get_compressed_holdings() will now honor an open-ended holding    by treating it as "infinite", and thus absorbing any holdings    which would follow 5. Overloaded comparison operator now correctly detects "swap"    cases (where only the second operand is a holding) 6. Overloaded comparison operator now consistently treats    open-ended holdings as "greater-than" a single or closed    holding which has the same starting point 7. Fix 2 thinkos in comparison operator for overlapping    compressed holdings 8. Add new compressed_end() method to Holding.pm which can add    or set a new ending to a holding, making compressed if needed 9. Correctly recognize partially compressed holdings     If a holding is defined as:         863 40 $81.1 $a1 $b2-10     this actually means:         863 40 $81.1 $a1-1 $b2-10     so let's make sure to treat it that way.  9. Expand the MFHD test suite to better cover the improvements    in this commit There is also the beginnings of a _get_truncated_holdings() method
+	for handling odd cases where an open-ended holding is followed by a
+	single/closed holding, but it is currently commented out, pending
+	further design consideration.
+
+	Signed-off-by: Dan Wells <dbw2@calvin.edu>
+	Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2011-07-19  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/sql/Pg/upgrade/0582.schema.aging_circ_view.sql: 
+	Thinko in my backport of 0582 to 2.0, spotted in the wild by Lee
+	Dickens
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-07-18  Steven Callender <stevecallender@esilibrary.com>
+
+	* Open-ILS/xul/staff_client/server/patron/display.js: lp#812550:
+	Removed nulls from showing for patron penalties when no note
+	attached to penalty.
+
+
+
+	Signed-off-by: Steven Callender <stevecallender@esilibrary.com>
+	Signed-off-by: Michael Peters <mrpeters@library.in.gov>
+	Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-07-18  Dan Scott <dan@coffeecode.net>
+
+	* Open-ILS/xul/staff_client/server/cat/spine_labels.js: Address
+	minor code formatting consistency The rest of the code has spaces around the conditional clause in an
+	if() statement, so do likewise here.
+
+	Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+2011-06-06  James Fournie <jfournie@sitka.bclibraries.ca>
+
+	* Open-ILS/xul/staff_client/server/cat/spine_labels.js: Spine label
+	editor assumes LC as reported in LP #780665.  This patch encapsulates the LC-assuming code in an IF block which
+	considers the asset.call_number.volume.label_class.  If that is
+	equal to 3, it will use the LC formatting.
+
+
+	Signed-off-by: James Fournie <jfournie@sitka.bclibraries.ca>
+	Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+2011-07-14  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/xul/staff_client/server/patron/bill2.js: fix bill ui
+	display update bug where total owed and total checked were not
+	updated if the total owed as paid off in full
+
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-07-16  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/sql/Pg/002.schema.config.sql,
+	Open-ILS/src/sql/Pg/upgrade/0582.schema.aging_circ_view.sql,
+	Open-ILS/src/sql/Pg/upgrade/XXX.schema.aging_circ_view.sql: Stamping
+	upgrade script for "Bad join condition all_circulation view"
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-07-16  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/sql/Pg/090.schema.action.sql,
+	Open-ILS/src/sql/Pg/upgrade/XXX.schema.aging_circ_view.sql: Bad join
+	condition in secondary (physical) address lookup, causing terrible
+	performance of circ aging
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-07-13  mrpeters-isl <mrpeters@library.in.gov>
+
+	* Open-ILS/xul/staff_client/server/cat/copy_browser.js: LP795032 Fix
+	cursor rendering and dropdown position in holdings maintenance OU
+	dropdown
+
+	Signed-off-by: mrpeters-isl <mrpeters@library.in.gov>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-07-16  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/sql/Pg/002.schema.config.sql,
+	Open-ILS/src/sql/Pg/upgrade/0581.data.opac_renewal_reuse_circ_lib.s
+	ql,
+	Open-ILS/src/sql/Pg/upgrade/XXXX.opac_renewal_reuse_circ_lib.sql: 
+	Stamping upgrade script for "Opac Renewal at original circ library"
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-07-16  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/sql/Pg/950.data.seed-values.sql,
+	Open-ILS/src/sql/Pg/upgrade/XXXX.opac_renewal_reuse_circ_lib.sql: 
+	Default to existing behaviour for the new circ-behaviour global flag
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-07-05  Thomas Berezansky <tsbere@mvlc.org>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Circ/Circulate.pm: Cache
+	global flag at first use This way only the first opac renewal per backend has to ask the
+	database for the global flag.
+
+	Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-07-05  Thomas Berezansky <tsbere@mvlc.org>
+
+	* Open-ILS/src/sql/Pg/upgrade/XXXX.opac_renewal_reuse_circ_lib.sql: 
+	Unwrapped upgrade script
+
+	Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-07-02  Thomas Berezansky <tsbere@mvlc.org>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Circ/Circulate.pm,
+	Open-ILS/src/sql/Pg/950.data.seed-values.sql: Opac Renewal at
+	original circ library Fixes multiple potential issues: 1 - Bad home ou on patron breaks
+	    circ rules Ex. Patron edited while editor would let you pick bad
+	home ou 2 - Item not allowed to circ at patron home ou     Ex. Patron went to where they were allowed to pick it up 3 -
+	    Fines change to patron home ou fine rules Ex. Patron's home ou
+	    doesn't charge fines but circ lib does Ex. Circ lib doesn't charge
+	fines but Patron's home ou does
+
+	Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-07-16  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/sql/Pg/002.schema.config.sql,
+	Open-ILS/src/sql/Pg/upgrade/0580.schema.aou_parent_protect.sql,
+	Open-ILS/src/sql/Pg/upgrade/XXXX.aou_parent_protect.sql: Stamping
+	upgrade script for "Prevent OU loops at DB level"
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-06-15  Thomas Berezansky <tsbere@mvlc.org>
+
+	* Open-ILS/src/sql/Pg/upgrade/XXXX.aou_parent_protect.sql: Unwrapped
+	upgrade script for ou loop protect May need to be split into "create function" and "add trigger"
+	pieces.
+
+	Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-06-15  Thomas Berezansky <tsbere@mvlc.org>
+
+	* Open-ILS/src/sql/Pg/005.schema.actors.sql: Prevent OU loops at DB
+	level Database trigger to prevent actor.org_unit from being parent of self Actually detects any loops, even those above the current point
+
+	Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-07-14  Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Circ/Holds.pm,
+	Open-ILS/web/opac/skin/default/js/holds.js: Corrected the logic of
+	format string building for metarecord holds and...  made hold possiblity checking for metarecord holds respect the
+	format string (so you can't place holds on formats for which there
+	will never be anything targetable) Made possible by much concerted effort from Mike Rylander
+
+	Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2011-07-14  Galen Charlton <gmc@esilibrary.com>
+
+	* Open-ILS/src/sql/Pg/2.0.5-2.0.6-upgrade-db.sql: strip \r in
+	upgrade script For whatever reason, presence of this character causes the script to
+	fail if run from within sloink_execute_script.
+
+	Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-07-13  Galen Charlton <gmc@esilibrary.com>
+
+	* Open-ILS/src/sql/Pg/upgrade/0576.fix_maintain_901_quoting.sql: for
+	realz, this time
+
+	Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-07-13  Galen Charlton <gmc@esilibrary.com>
+
+	* Open-ILS/src/sql/Pg/upgrade/0576.fix_maintain_901_quoting.sql: fix
+	backporting thinko
+
+	Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-07-12  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/src/sql/Pg/002.schema.config.sql,
+	Open-ILS/src/sql/Pg/upgrade/0576.fix_maintain_901_quoting.sql,
+	Open-ILS/src/sql/Pg/upgrade/XXXX.fix_maintain_901_quoting.sql: pin
+	an upgrade version for fix_maintain_901_quoting
+
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2011-07-12  Galen Charlton <gmc@esilibrary.com>
+
+	* Open-ILS/src/sql/Pg/upgrade/XXXX.fix_maintain_901_quoting.sql: 
+	upgrade script for bugfix for lp#809540
+
+	Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2011-07-12  Galen Charlton <gmc@esilibrary.com>
+
+	* Open-ILS/src/sql/Pg/002.functions.config.sql: lp#809540: quote
+	replacement values properly in maintain_901() Prevents a failure if, for example, the tcn_value of a bib to be
+	added or updated contains the string '\1'.
+
+	Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2011-07-12  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/web/opac/locale/en-US/opac.dtd,
+	Open-ILS/web/opac/skin/default/js/advanced.js,
+	Open-ILS/web/opac/skin/default/xml/common/sidebar.xml: alert the
+	user when the OPAC's Quick Search->Item Barcode function returns a
+	pre-cataloged item
+
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+	Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-07-11  Galen Charlton <gmc@esilibrary.com>
+
+	* Open-ILS/web/js/ui/default/acq/common/li_table.js: append line
+	items to table in specified order Prior to this patch, the order that line items were displayed in
+	(e.g.) a purchase order view was effetively randomized based on the
+	amount of time it would take for async calls to fetch additional
+	line item details to return.
+
+	Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+	Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2011-07-07  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/sql/Pg/002.schema.config.sql,
+	Open-ILS/src/sql/Pg/300.schema.staged_search.sql,
+	Open-ILS/src/sql/Pg/upgrade/0573.schema.staff_search_find_no_copies
+	.sql: Backport of staff_search_find_no_copies branch from Thomas
+	Berezansky Hand-backport of:  4d0dae6ee876830cb87ee393a41fcdc478ecc6b0  9a356a2371930c76554fd3dc5a7d10dc21cf914a  a45184da2ac9f490886ebde47fcc8af4227afcf0
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-06-16  Thomas Berezansky <tsbere@mvlc.org>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Actor.pm: Delete
+	protection - Ensure you can touch group Same protection editing a user seems to get: If you don't have the
+	right group_application.user perm, reject
+
+	Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+	Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2011-07-05  Dan Scott <dan@coffeecode.net>
+
+	* LP805971: Specify UTF8 encoding in password reset templates As reported by Liam Whalen in Launchpad bug 805971: "The file
+	/openils/var/template/password-reset/reset-form.tt2 does not display
+	utf-8 characters.  I modified it to include '<meta
+	http-equiv="Content-Type" content="text/html; charset=UTF-8" />'
+	inside the <head> tag, and the fr-CA version of the page now
+	displays correctly." I duplicated the problem in Firefox 5 and confirmed that the
+	addition of the META tag corrects the problem.
+
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
