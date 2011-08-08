@@ -459,7 +459,7 @@ sub create_copy_note {
     my $note = Fieldmapper::asset::copy_note->new;
     $note->owning_copy($copy->id);
     $note->creator($e->requestor->id);
-    $note->pub('t');
+    $note->pub($pub ? 't' : 'f');
     $note->value($value);
     $note->title($title);
     $e->create_asset_copy_note($note) or return $e->die_event;
