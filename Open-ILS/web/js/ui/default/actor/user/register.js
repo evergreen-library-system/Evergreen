@@ -699,6 +699,11 @@ function fleshFMRow(row, fmcls, args) {
         wargs.forceSync = false;
     }
 
+    if(fmcls == 'au' && fmfield == 'home_ou'){
+	wargs.labelAttr = 'name';
+	wargs.searchAttr = 'name';
+    }
+
     var widget = new openils.widget.AutoFieldWidget(wargs);
     widget.build(
         function(w, ww) {
