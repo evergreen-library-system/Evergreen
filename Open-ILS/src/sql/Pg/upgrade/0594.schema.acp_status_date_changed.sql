@@ -11,7 +11,7 @@
 -- upgrade script is doing so much.
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('YYYY', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0594', :eg_version);
 
 CREATE OR REPLACE FUNCTION asset.acp_status_changed()
 RETURNS TRIGGER AS $$
