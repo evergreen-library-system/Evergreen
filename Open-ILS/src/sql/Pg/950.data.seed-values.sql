@@ -47,7 +47,7 @@ INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, 
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_xpath, facet_field ) VALUES 
     (9, 'author', 'conference', oils_i18n_gettext(9, 'Conference Author', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:name[@type='conference' and mods32:role/mods32:roleTerm[text()='creator']]$$, $$//*[local-name()='namePart']$$, TRUE ); -- /* to fool vim */;
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_xpath, facet_field ) VALUES 
-    (10, 'author', 'other', oils_i18n_gettext(10, 'Other Author', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:name[@type='personal' and not(mods32:role)]$$, $$//*[local-name()='namePart']$$, TRUE ); -- /* to fool vim */;
+    (10, 'author', 'other', oils_i18n_gettext(10, 'Other Author', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:name[@type='personal' and not(mods32:role/mods32:roleTerm[text()='creator'])]$$, $$//*[local-name()='namePart']$$, TRUE ); -- /* to fool vim */;
 
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field ) VALUES 
     (11, 'subject', 'geographic', oils_i18n_gettext(11, 'Geographic Subject', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject/mods32:geographic$$, TRUE );
