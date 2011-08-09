@@ -1,11 +1,11 @@
--- Evergreen DB patch XXXX.data.org-setting-ui.patron_search.result_cap.sql
+-- Evergreen DB patch 0595.data.org-setting-ui.patron_search.result_cap.sql
 --
 -- New org setting ui.patron_search.result_cap
 --
 BEGIN;
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0595', :eg_version);
 
 INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
     VALUES (
