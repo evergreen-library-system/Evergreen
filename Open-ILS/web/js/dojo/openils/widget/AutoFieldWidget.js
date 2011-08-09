@@ -557,8 +557,8 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             dojo.require('fieldmapper.OrgUtils');
             dojo.require('openils.widget.FilteringTreeSelect');
             this.widget = new openils.widget.FilteringTreeSelect(this.dijitArgs, this.parentNode);
-            this.widget.searchAttr = 'shortname';
-            this.widget.labelAttr = 'shortname';
+            this.widget.searchAttr = this.searchAttr || 'shortname';
+            this.widget.labelAttr = this.searchAttr || 'shortname';
             this.widget.parentField = 'parent_ou';
             var user = new openils.User();
 
