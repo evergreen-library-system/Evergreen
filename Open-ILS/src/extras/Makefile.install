@@ -274,6 +274,10 @@ CPAN_MODULES_MARC_RECORD = \
 CPAN_MODULES_FORCE = \
 	Class::DBI::Frozen::301
 
+# Lucid needs this because the XML::RPC that comes by default is broken with Evergreen
+LUCID_CPAN = \
+	XML::RPC
+
 # ----------------------------------------------------------------------------
 
 all: 
@@ -299,7 +303,7 @@ generic_debian:  install_debs install debian_sys_config install_cpan_force
 ubuntu-hardy: hardy generic_ubuntu
 ubuntu-lucid: lucid generic_ubuntu
 hardy: install_pgsql_client_debs_82 install_yaz install_cpan_marc install_extra_encode
-lucid: install_pgsql_client_debs_84 install_extra_debs install_cpan_marc_record
+lucid: install_pgsql_client_debs_84 install_extra_debs install_cpan_marc_record install_yaz install_lucid_cpan
 generic_ubuntu: install_debs install debian_sys_config install_cpan_more install_cpan_safe install_cpan_force
 
 # - COMMON TARGETS ---------------------------------------------------------
@@ -333,6 +337,10 @@ install_cpan_fedora:
 	for m in $(FEDORA_CPAN); do \
 		echo "force install $$m" | perl -MCPAN -e shell;\
 	done
+
+# Install the CPAN modules needed for Lucid
+install_cpan_lucid:
+	for m in $(LUCID_CPAN); do perl -MCPAN -e "install \"$$m\";"; done
 
 # Install a known working version of YAZ
 install_yaz:    
