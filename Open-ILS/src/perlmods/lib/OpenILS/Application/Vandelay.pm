@@ -521,7 +521,7 @@ sub retrieve_queued_records {
         'search_vandelay_queued_bib_record' : 'search_vandelay_queued_authority_record';
 
     if ($self->api_name =~ /export/) {
-        my $rec_list = $e->$search({id => [map { $_->{id} } @$record_ids]});
+        my $rec_list = $e->$search({id => [map { $_->{id} } @$record_ids]}, {substream => 1});
         if ($self->api_name =~ /print/) {
 
             $e->rollback;
