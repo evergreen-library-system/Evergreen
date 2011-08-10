@@ -1,7 +1,11 @@
 <div class='rdetail_extras_div'> 
     [%  IF attrs.summary %]
     <div class='rdetail-extras-summary'>
-        <strong>[% l('Summary: ') %]</strong>[% attrs.summary %]
+        <strong>[% l('Summary: ') %]</strong>
+        [% FOR sum IN attrs.summary %]
+            [% IF !loop.first; '<br/>'; END %]
+            <span>[% sum %] </span>
+        [% END %]
     </div>
     [% END %]
 

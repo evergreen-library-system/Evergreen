@@ -10,7 +10,6 @@
         args.author = xml.findnodes('//*[@tag="100"]/*[@code="a"]').textContent;
         args.publisher = xml.findnodes('//*[@tag="260"]/*[@code="b"]').textContent;
         args.pubdate = xml.findnodes('//*[@tag="260"]/*[@code="c"]').textContent;
-        args.summary = xml.findnodes('//*[@tag="520"]/*[@code="a"]').textContent;
         args.edition = xml.findnodes('//*[@tag="250"]/*[@code="a"]').textContent ||
             xml.findnodes('//*[@tag="534"]/*[@code="b"]').textContent ||
             xml.findnodes('//*[@tag="775"]/*[@code="b"]').textContent;
@@ -20,6 +19,12 @@
         phys_content = [];
         FOR p IN phys; phys_content.push(p.textContent); END;
         args.phys_desc = phys_content.join("");
+
+        # capture all of the 520a's
+        args.summary = [];
+        FOR s IN xml.findnodes('//*[@tag="520"]/*[@code="a"]');
+            args.summary.push(s.textContent); 
+        END;
 
         # MARC Callnumber
         args.marc_cn = xml.findnodes('//*[@tag="092" or @tag="099"]/*').textContent;
