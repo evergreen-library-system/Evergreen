@@ -19,7 +19,7 @@
                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
                     <tr>
                         <td valign="top">
-                            <span id='rdetail_title'>[% attrs.title %]</span><br />
+                            <span id='rdetail_title'>[% attrs.title_extended %]</span><br />
                             [% IF attrs.author %]
                             <span class='opac-auto-030'>[% l("Author") %]:</span>
                             <em><a title='[% l("Perform an author search") %]'
