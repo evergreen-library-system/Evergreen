@@ -79,6 +79,10 @@
                         </tr>
                         <tr>
                             <td nowrap='nowrap' valign="top">
+                                <strong>[% IF attrs.marc_cn; l("Call Number"); END %]</strong>
+                            </td>
+                            <td valign="top">[% attrs.marc_cn %]</td>
+                            <td nowrap='nowrap' valign="top">
                                 <strong id="rdetail_ed_lbl">[% IF attrs.edition; l("Edition"); END %]</strong>
                             </td>
                             <td valign="top" id='rdetail_edition'>[% attrs.edition %]</td>
