@@ -82,7 +82,59 @@ sub local_avail_concern {
 #   user : au object, fleshed
 sub load_myopac_prefs {
     my $self = shift;
-    return $self->prepare_extended_user_info || Apache2::Const::OK;
+    my $cgi = $self->cgi;
+    my $e = $self->editor;
+    my $pending_addr = $cgi->param('pending_addr');
+    my $replace_addr = $cgi->param('replace_addr');
+    my $delete_pending = $cgi->param('delete_pending');
+
+    $self->prepare_extended_user_info;
+    my $user = $self->ctx->{user};
+
+    return Apache2::Const::OK unless 
+        $pending_addr or $replace_addr or $delete_pending;
+
+    my @form_fields = qw/address_type street1 street2 city county state country post_code/;
+
+    my $paddr;
+    if( $pending_addr ) { # update an existing pending address
+
+        ($paddr) = grep { $_->id == $pending_addr } @{$user->addresses};
+        return Apache2::Const::HTTP_BAD_REQUEST unless $paddr;
+        $paddr->$_( $cgi->param($_) ) for @form_fields;
+
+    } elsif( $replace_addr ) { # create a new pending address for 'replace_addr'
+
+        $paddr = Fieldmapper::actor::user_address->new;
+        $paddr->isnew(1);
+        $paddr->usr($user->id);
+        $paddr->pending('t');
+        $paddr->replaces($replace_addr);
+        $paddr->$_( $cgi->param($_) ) for @form_fields;
+
+    } elsif( $delete_pending ) {
+        $paddr = $e->retrieve_actor_user_address($delete_pending);
+        return Apache2::Const::HTTP_BAD_REQUEST unless 
+            $paddr and $paddr->usr == $user->id and $U->is_true($paddr->pending);
+        $paddr->isdeleted(1);
+    }
+
+    my $resp = $U->simplereq(
+        'open-ils.actor', 
+        'open-ils.actor.user.address.pending.cud',
+        $e->authtoken, $paddr);
+
+    if( $U->event_code($resp) ) {
+        $logger->error("Error updating pending address: $resp");
+        return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+    }
+
+    # in light of these changes, re-fetch latest data
+    $e->xact_begin; 
+    $self->prepare_extended_user_info;
+    $e->rollback;
+
+    return Apache2::Const::OK;
 }
 
 sub load_myopac_prefs_notify {
