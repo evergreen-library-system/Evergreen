@@ -1,6 +1,9 @@
 [% 
     subjects = [
         {
+            label => l('Subject: '),
+            xpath => '//*[@tag="600" or @tag="610" or @tag="611" or @tag="630" or @tag="650" or @tag="651"]'
+        }, {
             label => l('Genre: '),
             xpath => '//*[@tag="655"]|//*[@tag="659"]'
         }, {
