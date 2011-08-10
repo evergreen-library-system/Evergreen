@@ -115,11 +115,11 @@
                                                             </td>
                                                             <td>[% attrs.publisher; %]</td>
                                                         </tr>
-                                                        <tr name="results_isbn_tr" class="[% attrs.isbn ? '' : 'hide_me' %]">
+                                                        <tr name="results_isbn_tr" class="[% attrs.isbns.0 ? '' : 'hide_me' %]">
                                                             <td valign="top">
                                                                 <strong>[% l('ISBN:') %]</strong>
                                                             </td>
-                                                            <td>[% attrs.isbn %]</td>
+                                                            <td>[% attrs.isbns.0 %]</td>
                                                         </tr>
                                                         <tr name="results_edition_tr" class="[% attrs.edition ? '' : 'hide_me' %]">
                                                             <td valign="top">

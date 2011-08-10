@@ -67,9 +67,11 @@
                     <table border="0" cellpadding="0" width="100%">
                         <tr>
                             <td nowrap='nowrap' valign="top">
-                                [% IF attrs.isbn %]<strong id="rdetail_isbn_lbl">[% l("ISBN") %]</strong>[% END %]
+                                [% IF attrs.isbns.0 %]<strong id="rdetail_isbn_lbl">[% l("ISBN") %]</strong>[% END %]
                             </td>
-                            <td valign="top" id='rdetail_isbn'>[% attrs.isbn %]</td>
+                            <td valign="top" id='rdetail_isbn'>
+                                [% FOR isbn IN attrs.isbns %][% IF !loop.first; %]<br/>[% END; isbn; END %]
+                            </td>
                             <td nowrap='nowrap' valign="top">
                                 [% IF attrs.phys_desc %]<strong id="rdetail_phys_lbl">[% l("Physical Description") %]</strong>[% END %]
                             </td>
