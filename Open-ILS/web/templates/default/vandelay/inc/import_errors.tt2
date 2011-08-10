@@ -37,6 +37,8 @@
                     <tr>
                         <th field='owning_lib' get='vlGetOrg'/>
                         <th field='circ_lib' get='vlGetOrg'/>
+                        <th field='status' get='vlCopyStatus'/>
+                        <th field='location' get='vlCopyLocation'/>
                     </tr>
                 </thead>
         </table>
@@ -69,6 +71,8 @@
                     <tr>
                         <th field='owning_lib' get='vlGetOrg'/>
                         <th field='circ_lib' get='vlGetOrg'/>
+                        <th field='status' get='vlCopyStatus'/>
+                        <th field='location' get='vlCopyLocation'/>
                     </tr>
                 </thead>
         </table>

@@ -157,6 +157,22 @@ patron.items.prototype = {
                     'cmd_items_mark_lost2' : [ ['command'], function() { obj.items_mark_lost(2);  /*obj.retrieve();*/ } ],
                     'cmd_items_claimed_returned' : [ ['command'], function() { obj.items_claimed_returned(1);  /*obj.retrieve();*/ } ],
                     'cmd_items_claimed_returned2' : [ ['command'], function() { obj.items_claimed_returned(2);  /*obj.retrieve();*/ } ],
+                    'cmd_items_claimed_never_checked_out' : [
+                        ['command'],
+                        function() {
+                            obj.items_checkin(
+                                1,{'claims_never_checked_out':true}
+                            );
+                        }
+                    ],
+                    'cmd_items_claimed_never_checked_out2' : [
+                        ['command'],
+                        function() {
+                            obj.items_checkin(
+                                2,{'claims_never_checked_out':true}
+                            );
+                        }
+                    ],
                     'cmd_items_checkin' : [ ['command'], function() { obj.items_checkin(1);  /*obj.retrieve();*/ } ],
                     'cmd_items_checkin2' : [ ['command'], function() { obj.items_checkin(2);  /*obj.retrieve();*/ } ],
                     'cmd_show_catalog' : [ ['command'], function() { obj.show_catalog(1); } ],
@@ -187,6 +203,7 @@ patron.items.prototype = {
         obj.controller.view.sel_patron2.setAttribute('disabled','true');
         obj.controller.view.cmd_triggered_events2.setAttribute('disabled','true');
         obj.controller.view.cmd_items_claimed_returned.setAttribute('disabled','true');
+        obj.controller.view.cmd_items_claimed_never_checked_out.setAttribute('disabled','true');
         obj.controller.view.cmd_items_renew.setAttribute('disabled','true');
         obj.controller.view.cmd_items_renew_with_date.setAttribute('disabled','true');
         obj.controller.view.cmd_items_checkin.setAttribute('disabled','true');
@@ -194,6 +211,7 @@ patron.items.prototype = {
         obj.controller.view.cmd_items_mark_lost.setAttribute('disabled','true');
         obj.controller.view.cmd_show_catalog.setAttribute('disabled','true');
         obj.controller.view.cmd_items_claimed_returned2.setAttribute('disabled','true');
+        obj.controller.view.cmd_items_claimed_never_checked_out2.setAttribute('disabled','true');
         obj.controller.view.cmd_items_renew2.setAttribute('disabled','true');
         obj.controller.view.cmd_items_renew_with_date2.setAttribute('disabled','true');
         obj.controller.view.cmd_items_checkin2.setAttribute('disabled','true');
@@ -542,19 +560,53 @@ patron.items.prototype = {
         }
     },
 
-    'items_checkin' : function(which) {
+    'items_checkin' : function(which,options) {
         var obj = this;
         try {
+            if (!options) { options = {}; }
             var retrieve_ids = ( which == 2 ? obj.retrieve_ids2 : obj.retrieve_ids );
             if (!retrieve_ids || retrieve_ids.length == 0) return;
             JSAN.use('util.functional');
             var msg = '';
-            if (retrieve_ids.length > 1) {
-                msg += $("patronStrings").getFormattedString('staff.patron.items.items_checkin.confirm_item_check_in.plural',
-                    [util.functional.map_list( retrieve_ids, function(o){return o.barcode;}).join(', ')]);
+            if (options.claims_never_checked_out) {
+                if (retrieve_ids.length > 1) {
+                    msg += $("patronStrings").getFormattedString(
+                        'staff.patron.items.items_checkin.confirm_item_claimed_never_checked_out.plural',
+                        [
+                            util.functional.map_list(
+                                retrieve_ids,
+                                function(o){return o.barcode;}
+                            ).join(', ')
+                        ]
+                    );
+                } else {
+                    msg += $("patronStrings").getFormattedString(
+                        'staff.patron.items.items_checkin.confirm_item_claimed_never_checked_out.singular',
+                        [
+                            retrieve_ids[0].barcode,
+                        ]
+                    );
+                }
             } else {
-                msg += $("patronStrings").getFormattedString('staff.patron.items.items_checkin.confirm_item_check_in.singular',
-                    [util.functional.map_list( retrieve_ids, function(o){return o.barcode;}).join(', ')]);
+                if (retrieve_ids.length > 1) {
+                    msg += $("patronStrings").getFormattedString(
+                        'staff.patron.items.items_checkin.confirm_item_check_in.plural',
+                        [
+                            util.functional.map_list(
+                                retrieve_ids,
+                                function(o){return o.barcode;}
+                            ).join(', ')
+                        ]
+                    );
+                } else {
+                    msg += $("patronStrings").getFormattedString(
+                        'staff.patron.items.items_checkin.confirm_item_check_in.singular',
+                        [
+                            retrieve_ids[0].barcode,
+                        ]
+                    );
+                }
+
             }
             var r = window.confirm(msg);
             if (!r) { return; }
@@ -564,9 +616,11 @@ patron.items.prototype = {
             for (var i = 0; i < retrieve_ids.length; i++) {
                 var copy_id = retrieve_ids[i].copy_id;
                 dump('Check in copy_id = ' + copy_id + ' barcode = ' + retrieve_ids[i].barcode + '\n');
+                var opt = JSON2js( js2JSON( options || {} ) ); // clone options
+                opt.copy_id = copy_id;
                 var robj = circ.util.checkin_via_barcode(
                     ses(),
-                    { 'copy_id' : copy_id },
+                    opt,
                     false /* backdate */,
                     auto_print
                 );
@@ -883,6 +937,7 @@ patron.items.prototype = {
         var obj = this;
 
         obj.controller.view.cmd_items_claimed_returned.setAttribute('disabled','false');
+        obj.controller.view.cmd_items_claimed_never_checked_out.setAttribute('disabled','false');
         obj.controller.view.cmd_items_renew.setAttribute('disabled','false');
         obj.controller.view.cmd_items_renew_with_date.setAttribute('disabled','false');
         obj.controller.view.cmd_items_checkin.setAttribute('disabled','false');
@@ -906,6 +961,7 @@ patron.items.prototype = {
         var obj = this;
 
         obj.controller.view.cmd_items_claimed_returned2.setAttribute('disabled','false');
+        obj.controller.view.cmd_items_claimed_never_checked_out2.setAttribute('disabled','false');
         obj.controller.view.cmd_items_renew2.setAttribute('disabled','false');
         obj.controller.view.cmd_items_renew_with_date2.setAttribute('disabled','false');
         obj.controller.view.cmd_items_checkin2.setAttribute('disabled','false');

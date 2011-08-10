@@ -978,8 +978,6 @@
 <!ENTITY staff.main.menu.circ.renew.label "Renew Items">
 <!ENTITY staff.main.menu.circ.renew.accesskey "n">
 <!ENTITY staff.main.menu.circ.checkout.label "Check Out Items">
-<!ENTITY staff.main.menu.circ.claimed_returned.key "C">
-<!ENTITY staff.main.menu.circ.claimed_returned.label 'Mark as "Claimed Returned"'>
 <!ENTITY staff.main.menu.circ.copy_status.key "I">
 <!ENTITY staff.main.menu.circ.copy_status.label "Display Item">
 <!ENTITY staff.main.menu.circ.found.key "F">
@@ -3376,6 +3374,7 @@
 <!ENTITY staff.patron.items_overlay.items_edit.label "Edit Due Date">
 <!ENTITY staff.patron.items_overlay.items_mark_lost.label "Mark Lost (by Patron)">
 <!ENTITY staff.patron.items_overlay.items_claimed_returned.label "Mark Claimed Returned">
+<!ENTITY staff.patron.items_overlay.items_claimed_never_checked_out.label "Mark Claimed Never Checked Out">
 <!ENTITY staff.patron.items_overlay.items_renew.label "Renew">
 <!ENTITY staff.patron.items_overlay.items_renew_all.label "Renew All">
 <!ENTITY staff.patron.items_overlay.items_renew_with_date.label "Renew with Specific Due Date">

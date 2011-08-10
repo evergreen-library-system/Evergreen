@@ -724,7 +724,7 @@ function myOPACShowCircTransaction(trans, record, circ) {
 	$n(row,'myopac_circ_trans_start').
 		appendChild(text(_trimTime(trans.xact_start())));
 	var due = _trimTime(circ.due_date());
-	var checkin = _trimTime(circ.stop_fines_time());
+	var checkin = _trimTime(circ.checkin_time());
 
 	$n(row,'myopac_circ_trans_due').appendChild(text(due))
 	if(checkin)

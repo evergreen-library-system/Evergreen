@@ -905,6 +905,7 @@ patron.display.prototype = {
         // FIXME - replace this generated "stop sign" page with a dedicated XUL file or template
         return function(patron,params) {
             try {
+                obj._already_defaulted_once = true;
                 var msg = ''; obj.stop_checkouts = false;
                 if (patron.alert_message())
                     msg += $("patronStrings").getFormattedString('staff.patron.display.init.network_request.alert_message', [patron.alert_message()]);

@@ -88,13 +88,15 @@ var vlBibSources = [];
 var importItemDefs = [];
 var matchSets = {};
 var mergeProfiles = [];
+var copyStatusCache = {};
+var copyLocationCache = {};
 
 /**
   * Grab initial data
   */
 function vlInit() {
     authtoken = openils.User.authtoken;
-    var initNeeded = 7; // how many async responses do we need before we're init'd 
+    var initNeeded = 8; // how many async responses do we need before we're init'd 
     var initCount = 0; // how many async reponses we've received
 
     openils.Util.registerEnterHandler(
@@ -179,6 +181,16 @@ function vlInit() {
                         matchSets[set.mtype()].push(set);
                     }
                 );
+                checkInitDone();
+            }
+        }
+    );
+
+    new openils.PermaCrud().retrieveAll('ccs',
+        {   async: true,
+            oncomplete: function(r) {
+                var stats = openils.Util.readResponse(r);
+                dojo.forEach(stats, function(stat){copyStatusCache[stat.id()] = stat});
                 checkInitDone();
             }
         }
@@ -789,6 +801,29 @@ function vlGetOrg(rowIdx, item) {
     if(!item) return '';
     var value = this.grid.store.getValue(item, this.field);
     if(value) return fieldmapper.aou.findOrgUnit(value).shortname();
+    return '';
+}
+
+function vlCopyStatus(rowIdx, item) {
+    if(!item) return '';
+    var value = this.grid.store.getValue(item, this.field);
+    if(value) return copyStatusCache[value].name();
+    return '';
+}
+
+// Note, we don't pre-fetch all copy locations because there could be 
+// a lot of them.  Instead, fetch-and-cache on demand.
+function vlCopyLocation(rowIdx, item) {
+    if(item) {
+        var value = this.grid.store.getValue(item, this.field);
+        if(value) {
+            if(!copyLocationCache[value]) {
+                copyLocationCache[value] = 
+                    new openils.PermaCrud().retrieve('acpl', value);
+            }
+            return copyLocationCache[value].name();
+        }
+    }
     return '';
 }
 

@@ -1501,6 +1501,7 @@ DECLARE
     attr_set        vandelay.import_item%ROWTYPE;
 
     xpath           TEXT;
+    tmp_str         TEXT;
 
 BEGIN
 
@@ -1666,8 +1667,6 @@ BEGIN
             priv_note       || '|' ||
             opac_visible;
 
-        -- RAISE NOTICE 'XPath: %', xpath;
-
         FOR tmp_attr_set IN
                 SELECT  *
                   FROM  oils_xpath_table( 'id', 'marc', 'vandelay.queued_bib_record', xpath, 'id = ' || import_id )
@@ -1676,39 +1675,117 @@ BEGIN
                                   circ_as TEXT, amessage TEXT, note TEXT, pnote TEXT, opac_vis TEXT )
         LOOP
 
-            tmp_attr_set.pr = REGEXP_REPLACE(tmp_attr_set.pr, E'[^0-9\\.]', '', 'g');
-            tmp_attr_set.dep_amount = REGEXP_REPLACE(tmp_attr_set.dep_amount, E'[^0-9\\.]', '', 'g');
+            attr_set.import_error := NULL;
+            attr_set.error_detail := NULL;
+            attr_set.deposit_amount := NULL;
+            attr_set.copy_number := NULL;
+            attr_set.price := NULL;
 
-            tmp_attr_set.pr := NULLIF( tmp_attr_set.pr, '' );
-            tmp_attr_set.dep_amount := NULLIF( tmp_attr_set.dep_amount, '' );
+            IF tmp_attr_set.pr != '' THEN
+                tmp_str = REGEXP_REPLACE(tmp_attr_set.pr, E'[^0-9\\.]', '', 'g');
+                IF tmp_str = '' THEN 
+                    attr_set.import_error := 'import.item.invalid.price';
+                    attr_set.error_detail := tmp_attr_set.pr; -- original value
+                    RETURN NEXT attr_set; CONTINUE; 
+                END IF;
+                attr_set.price := tmp_str::NUMERIC(8,2); 
+            END IF;
 
-            SELECT id INTO attr_set.owning_lib FROM actor.org_unit WHERE shortname = UPPER(tmp_attr_set.ol); -- INT
-            SELECT id INTO attr_set.circ_lib FROM actor.org_unit WHERE shortname = UPPER(tmp_attr_set.clib); -- INT
-            SELECT id INTO attr_set.status FROM config.copy_status WHERE LOWER(name) = LOWER(tmp_attr_set.cs); -- INT
+            IF tmp_attr_set.dep_amount != '' THEN
+                tmp_str = REGEXP_REPLACE(tmp_attr_set.dep_amount, E'[^0-9\\.]', '', 'g');
+                IF tmp_str = '' THEN 
+                    attr_set.import_error := 'import.item.invalid.deposit_amount';
+                    attr_set.error_detail := tmp_attr_set.dep_amount; 
+                    RETURN NEXT attr_set; CONTINUE; 
+                END IF;
+                attr_set.deposit_amount := tmp_str::NUMERIC(8,2); 
+            END IF;
 
+            IF tmp_attr_set.cnum != '' THEN
+                tmp_str = REGEXP_REPLACE(tmp_attr_set.cnum, E'[^0-9]', '', 'g');
+                IF tmp_str = '' THEN 
+                    attr_set.import_error := 'import.item.invalid.copy_number';
+                    attr_set.error_detail := tmp_attr_set.cnum; 
+                    RETURN NEXT attr_set; CONTINUE; 
+                END IF;
+                attr_set.copy_number := tmp_str::INT; 
+            END IF;
 
-            -- search up the org unit tree for a matching copy location
+            IF tmp_attr_set.ol != '' THEN
+                SELECT id INTO attr_set.owning_lib FROM actor.org_unit WHERE shortname = UPPER(tmp_attr_set.ol); -- INT
+                IF NOT FOUND THEN
+                    attr_set.import_error := 'import.item.invalid.owning_lib';
+                    attr_set.error_detail := tmp_attr_set.ol;
+                    RETURN NEXT attr_set; CONTINUE; 
+                END IF;
+            END IF;
 
-            WITH RECURSIVE anscestor_depth AS (
-                SELECT  ou.id,
-                    out.depth AS depth,
-                    ou.parent_ou
-                FROM  actor.org_unit ou
-                    JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
-                WHERE ou.id = COALESCE(attr_set.owning_lib, attr_set.circ_lib)
-                    UNION ALL
-                SELECT  ou.id,
-                    out.depth,
-                    ou.parent_ou
-                FROM  actor.org_unit ou
-                    JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
-                    JOIN anscestor_depth ot ON (ot.parent_ou = ou.id)
-            ) SELECT  cpl.id INTO attr_set.location
-                FROM  anscestor_depth a
-                    JOIN asset.copy_location cpl ON (cpl.owning_lib = a.id)
-                WHERE LOWER(cpl.name) = LOWER(tmp_attr_set.cl)
-                ORDER BY a.depth DESC
-                LIMIT 1; 
+            IF tmp_attr_set.clib != '' THEN
+                SELECT id INTO attr_set.circ_lib FROM actor.org_unit WHERE shortname = UPPER(tmp_attr_set.clib); -- INT
+                IF NOT FOUND THEN
+                    attr_set.import_error := 'import.item.invalid.circ_lib';
+                    attr_set.error_detail := tmp_attr_set.clib;
+                    RETURN NEXT attr_set; CONTINUE; 
+                END IF;
+            END IF;
+
+            IF tmp_attr_set.cs != '' THEN
+                SELECT id INTO attr_set.status FROM config.copy_status WHERE LOWER(name) = LOWER(tmp_attr_set.cs); -- INT
+                IF NOT FOUND THEN
+                    attr_set.import_error := 'import.item.invalid.status';
+                    attr_set.error_detail := tmp_attr_set.cs;
+                    RETURN NEXT attr_set; CONTINUE; 
+                END IF;
+            END IF;
+
+            IF tmp_attr_set.circ_mod != '' THEN
+                SELECT code INTO attr_set.circ_modifier FROM config.circ_modifier WHERE code = tmp_attr_set.circ_mod;
+                IF NOT FOUND THEN
+                    attr_set.import_error := 'import.item.invalid.circ_modifier';
+                    attr_set.error_detail := tmp_attr_set.circ_mod;
+                    RETURN NEXT attr_set; CONTINUE; 
+                END IF;
+            END IF;
+
+            IF tmp_attr_set.circ_as != '' THEN
+                SELECT code INTO attr_set.circ_as_type FROM config.coded_value_map WHERE ctype = 'item_type' AND code = tmp_attr_set.circ_as;
+                IF NOT FOUND THEN
+                    attr_set.import_error := 'import.item.invalid.circ_as_type';
+                    attr_set.error_detail := tmp_attr_set.circ_as;
+                    RETURN NEXT attr_set; CONTINUE; 
+                END IF;
+            END IF;
+
+            IF tmp_attr_set.cl != '' THEN
+
+                -- search up the org unit tree for a matching copy location
+                WITH RECURSIVE anscestor_depth AS (
+                    SELECT  ou.id,
+                        out.depth AS depth,
+                        ou.parent_ou
+                    FROM  actor.org_unit ou
+                        JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
+                    WHERE ou.id = COALESCE(attr_set.owning_lib, attr_set.circ_lib)
+                        UNION ALL
+                    SELECT  ou.id,
+                        out.depth,
+                        ou.parent_ou
+                    FROM  actor.org_unit ou
+                        JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
+                        JOIN anscestor_depth ot ON (ot.parent_ou = ou.id)
+                ) SELECT  cpl.id INTO attr_set.location
+                    FROM  anscestor_depth a
+                        JOIN asset.copy_location cpl ON (cpl.owning_lib = a.id)
+                    WHERE LOWER(cpl.name) = LOWER(tmp_attr_set.cl)
+                    ORDER BY a.depth DESC
+                    LIMIT 1; 
+
+                IF NOT FOUND THEN
+                    attr_set.import_error := 'import.item.invalid.location';
+                    attr_set.error_detail := tmp_attr_set.cs;
+                    RETURN NEXT attr_set; CONTINUE; 
+                END IF;
+            END IF;
 
             attr_set.circulate      :=
                 LOWER( SUBSTRING( tmp_attr_set.circ, 1, 1)) IN ('t','y','1')
@@ -1730,14 +1807,8 @@ BEGIN
                 LOWER( SUBSTRING( tmp_attr_set.r, 1, 1 ) ) IN ('t','y','1')
                 OR LOWER(tmp_attr_set.r) = 'reference'; -- BOOL
 
-            attr_set.copy_number    := tmp_attr_set.cnum::INT; -- INT,
-            attr_set.deposit_amount := tmp_attr_set.dep_amount::NUMERIC(6,2); -- NUMERIC(6,2),
-            attr_set.price          := tmp_attr_set.pr::NUMERIC(8,2); -- NUMERIC(8,2),
-
             attr_set.call_number    := tmp_attr_set.cn; -- TEXT
             attr_set.barcode        := tmp_attr_set.bc; -- TEXT,
-            attr_set.circ_modifier  := tmp_attr_set.circ_mod; -- TEXT,
-            attr_set.circ_as_type   := tmp_attr_set.circ_as; -- TEXT,
             attr_set.alert_message  := tmp_attr_set.amessage; -- TEXT,
             attr_set.pub_note       := tmp_attr_set.note; -- TEXT,
             attr_set.priv_note      := tmp_attr_set.pnote; -- TEXT,
@@ -1788,7 +1859,9 @@ BEGIN
             alert_message,
             pub_note,
             priv_note,
-            opac_visible
+            opac_visible,
+            import_error,
+            error_detail
         ) VALUES (
             NEW.id,
             item_data.definition,
@@ -1810,7 +1883,9 @@ BEGIN
             item_data.alert_message,
             item_data.pub_note,
             item_data.priv_note,
-            item_data.opac_visible
+            item_data.opac_visible,
+            item_data.import_error,
+            item_data.error_detail
         );
     END LOOP;
 
