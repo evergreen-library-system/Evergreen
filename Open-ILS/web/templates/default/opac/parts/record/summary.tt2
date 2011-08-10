@@ -198,6 +198,28 @@
             </td>
         [% END %]
         </tr>
+        <tr>
+            <td>
+                [% more_copies_limit = 50 %] [%# TODO: config %]
+                [% IF  ctx.copy_limit != more_copies_limit AND ctx.copies.size >= ctx.copy_limit %]
+                    <div style='margin-top:10px;'>
+                        <img src="[% ctx.media_prefix %]/images/plus_sign.png" />
+                        [% cgi = CGI(); 
+                            SET x = cgi.param('copy_limit', more_copies_limit); 
+                            SET x = cgi.param('copy_offset', 0); %]
+                        <a href="[% cgi.url("-path" => 1, "-query" => 1) %]">[% l('Show more copies') %]</a>
+                    </div>
+                [% ELSIF ctx.copy_limit == more_copies_limit %]
+                    <div style='margin-top:10px;'>
+                        <img src="[% ctx.media_prefix %]/images/minus_sign.png" />
+                        [% cgi = CGI(); 
+                            SET x = cgi.param('copy_limit', '0'); # 0 == fall back to default 
+                            SET x = cgi.param('copy_offset', '0'); %]
+                        <a href="[% cgi.url("-path" => 1, "-query" => 1) %]">[% l('Show fewer copies') %]</a>
+                    </div>
+                [% END %]
+            </td>
+        </tr>
     </tbody>
 </table>
 
