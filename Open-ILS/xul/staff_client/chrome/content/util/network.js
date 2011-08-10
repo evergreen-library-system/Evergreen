@@ -487,7 +487,7 @@ util.network.prototype = {
                     netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
                     var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">' + 
                         '<groupbox><caption label="' + offlineStrings.getString('network.override.exceptions') + '"/>' + 
-                        '<grid><columns><column/><column/></columns><rows>';
+                        '<grid><columns><column/><column flex="1"/></columns><rows>';
                     for (var i = 0; i < r.length; i++) {
                         var t1 = String(r[i].ilsevent).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
                         var t2 = String(r[i].textcode).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
