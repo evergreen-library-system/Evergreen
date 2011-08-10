@@ -1,0 +1,16 @@
+[% 
+    series_tags = ['440', '490', '800', '810', '811', '830', '694']; 
+    loc = CGI.param('loc');
+%]
+
+<div id='rdetail_series_div'>
+    <table cellpadding="0" cellspacing="0" border="0">
+    [%  FOR tag IN series_tags; %]
+        <tr><td style='padding-top:5px;'>
+        [%  FOR node IN ctx.marc_xml.findnodes('//*[@tag="' _ tag _ '"]/*') %]
+            [% IF !loop.first %]<span>&mdash;</span> [% END %]
+            <a href="[% ctx.opac_root %]/results?qtype=series&amp;query=[% node.textContent | uri %]&amp;loc=[% loc %]">[% node.textContent | html %]</a>
+        [% END %]
+    [% END; %]
+    </table>
+</div>

@@ -18,7 +18,7 @@
             {name => 'summaryplus',  label => l('Summaries &amp; More'), hide => hide_summary}, 
             {name => 'content',  label => l('Contents'), hide => 1}, # ToC
             {name => 'authors',  label => l('Authors')}, 
-            {name => 'series',   label => l('Series'), hide => 1}, 
+            {name => 'series',   label => l('Series')},
             {name => 'subjects', label => l('Subject')}, 
             {name => 'annotation', label => l('Annotation'), hide => 1}, 
             {name => 'awards',  label => l('Awards, Reviews, & Suggested Reads')}, 
