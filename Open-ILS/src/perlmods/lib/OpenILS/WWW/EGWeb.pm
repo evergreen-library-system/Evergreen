@@ -4,6 +4,7 @@ use Template;
 use XML::Simple;
 use XML::LibXML;
 use File::stat;
+use Encode;
 use Apache2::Const -compile => qw(OK DECLINED HTTP_INTERNAL_SERVER_ERROR);
 use Apache2::Log;
 use OpenSRF::EX qw(:try);
@@ -67,6 +68,8 @@ sub handler {
             ]
         }
     });
+
+    $ctx->{encode_utf8} = sub {return encode_utf8(shift())};
 
     unless($tt->process($template, {ctx => $ctx, ENV => \%ENV, l => $text_handler})) {
         $r->log->warn('egweb: template error: ' . $tt->error);

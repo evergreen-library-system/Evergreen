@@ -2789,6 +2789,81 @@ INSERT into config.org_unit_setting_type
         ),
         'bool'
     )
+,( 
+        'circ.offline.skip_checkout_if_newer_status_changed_time',
+        oils_i18n_gettext(
+            'circ.offline.skip_checkout_if_newer_status_changed_time',
+            'Offline: Skip offline checkout if newer item Status Changed Time.',
+            'coust',
+            'label'
+        ),
+        oils_i18n_gettext(
+            'circ.offline.skip_checkout_if_newer_status_changed_time',
+            'Skip offline checkout transaction (raise exception when'
+            || ' processing) if item Status Changed Time is newer than the'
+            || ' recorded transaction time.  WARNING: The Reshelving to'
+            || ' Available status rollover will trigger this.',
+            'coust',
+            'description'
+        ),
+        'bool'
+    )
+,( 
+        'circ.offline.skip_renew_if_newer_status_changed_time',
+        oils_i18n_gettext(
+            'circ.offline.skip_renew_if_newer_status_changed_time',
+            'Offline: Skip offline renewal if newer item Status Changed Time.',
+            'coust',
+            'label'
+        ),
+        oils_i18n_gettext(
+            'circ.offline.skip_renew_if_newer_status_changed_time',
+            'Skip offline renewal transaction (raise exception when'
+            || ' processing) if item Status Changed Time is newer than the'
+            || ' recorded transaction time.  WARNING: The Reshelving to'
+            || ' Available status rollover will trigger this.',
+            'coust',
+            'description'
+        ),
+        'bool'
+    )
+,( 
+        'circ.offline.skip_checkin_if_newer_status_changed_time',
+        oils_i18n_gettext(
+            'circ.offline.skip_checkin_if_newer_status_changed_time',
+            'Offline: Skip offline checkin if newer item Status Changed Time.',
+            'coust',
+            'label'
+        ),
+        oils_i18n_gettext(
+            'circ.offline.skip_checkin_if_newer_status_changed_time',
+            'Skip offline checkin transaction (raise exception when'
+            || ' processing) if item Status Changed Time is newer than the'
+            || ' recorded transaction time.  WARNING: The Reshelving to'
+            || ' Available status rollover will trigger this.',
+            'coust',
+            'description'
+        ),
+        'bool'
+    )
+,(
+        'ui.patron_search.result_cap',
+        oils_i18n_gettext(
+            'ui.patron_search.result_cap',
+            'GUI: Cap results in Patron Search at this number.',
+            'coust',
+            'label'
+        ),
+        oils_i18n_gettext(
+            'ui.patron_search.result_cap',
+            'So for example, if you search for John Doe, normally you would get'
+            || ' at most 50 results.  This setting allows you to raise or lower'
+            || ' that limit.',
+            'coust',
+            'description'
+        ),
+        'integer'
+    )
 ;
 
 UPDATE config.org_unit_setting_type
@@ -8738,6 +8813,21 @@ INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'import.auth.du
 INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'import.xml.malformed', oils_i18n_gettext('import.xml.malformed', 'Malformed record cause Import failure', 'vie', 'description') );
 INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'overlay.xml.malformed', oils_i18n_gettext('overlay.xml.malformed', 'Malformed record cause Overlay failure', 'vie', 'description') );
 INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'overlay.record.quality', oils_i18n_gettext('overlay.record.quality', 'New record had insufficient quality', 'vie', 'description') );
+
+INSERT INTO vandelay.import_error ( code, description ) VALUES ( 
+    'import.item.invalid.status', oils_i18n_gettext('import.item.invalid.status', 'Invalid value for "status"', 'vie', 'description') );
+INSERT INTO vandelay.import_error ( code, description ) VALUES ( 
+    'import.item.invalid.price', oils_i18n_gettext('import.item.invalid.price', 'Invalid value for "price"', 'vie', 'description') );
+INSERT INTO vandelay.import_error ( code, description ) VALUES ( 
+    'import.item.invalid.deposit_amount', oils_i18n_gettext('import.item.invalid.deposit_amount', 'Invalid value for "deposit_amount"', 'vie', 'description') );
+INSERT INTO vandelay.import_error ( code, description ) VALUES ( 
+    'import.item.invalid.owning_lib', oils_i18n_gettext('import.item.invalid.owning_lib', 'Invalid value for "owning_lib"', 'vie', 'description') );
+INSERT INTO vandelay.import_error ( code, description ) VALUES ( 
+    'import.item.invalid.circ_lib', oils_i18n_gettext('import.item.invalid.circ_lib', 'Invalid value for "circ_lib"', 'vie', 'description') );
+INSERT INTO vandelay.import_error ( code, description ) VALUES ( 
+    'import.item.invalid.copy_number', oils_i18n_gettext('import.item.invalid.copy_number', 'Invalid value for "copy_number"', 'vie', 'description') );
+INSERT INTO vandelay.import_error ( code, description ) VALUES ( 
+    'import.item.invalid.circ_as_type', oils_i18n_gettext('import.item.invalid.circ_as_type', 'Invalid value for "circ_as_type"', 'vie', 'description') );
 
 INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
     'ui.cat.volume_copy_editor.horizontal',

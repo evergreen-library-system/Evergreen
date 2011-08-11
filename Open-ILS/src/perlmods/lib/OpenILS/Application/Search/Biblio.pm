@@ -2602,34 +2602,47 @@ sub rec_to_mr_rec_descriptors {
 
 	my $desc = $e->search_metabib_record_descriptor($search);
 
-    if ($hard_boundary) { # 0 (or "top") is the same as no setting
-        my $orgs = $e->json_query(
-            { from => [ 'actor.org_unit_descendants' => $pickup_lib, $hard_boundary ] }
-        );
+	my $query = {
+		distinct => 1,
+		select   => { 'bre' => ['id'] },
+		from	 => {
+			'bre' => {
+				'acn' => {
+					'join' => {
+						'acp' => {"join" => {"acpl" => {}, "ccs" => {}}}
+					  }
+				  }
+			 }
+		},
+		where => {
+			'+bre' => { id => \@recs },
+			'+acp' => {
+				holdable => 't',
+				deleted  => 'f'
+			},
+			"+ccs" => { holdable => 't' },
+			"+acpl" => { holdable => 't' }
+		}
+	};
 
-        my $good_records = $e->json_query(
-            { distinct => 1,
-              select   => { 'bre' => ['id'] },
-              from     => { 'bre' => { 'acn' => { 'join' => { 'acp' } } } },
-              where    => {
-                '+bre' => { id => \@recs },
-                '+acp' => {
-                    circ_lib => [ map { $_->{id} } @$orgs ],
-                    deleted  => 'f'
-                }
-              }
-            }
-        );
+	if ($hard_boundary) { # 0 (or "top") is the same as no setting
+		my $orgs = $e->json_query(
+			{ from => [ 'actor.org_unit_descendants' => $pickup_lib, $hard_boundary ] }
+		) or return $e->die_event;
 
-        my @keep;
-        for my $d (@$desc) {
-            if ( grep { $d->record == $_->{id} } @$good_records ) {
-                push @keep, $d;
-            }
-        }
+		$query->{where}->{"+acp"}->{circ_lib} = [ map { $_->{id} } @$orgs ];
+	}
 
-        $desc = \@keep;
-    }
+	my $good_records = $e->json_query($query) or return $e->die_event;
+
+	my @keep;
+	for my $d (@$desc) {
+		if ( grep { $d->record == $_->{id} } @$good_records ) {
+			push @keep, $d;
+		}
+	}
+
+	$desc = \@keep;
 
 	return { metarecord => $mrec, descriptors => $desc };
 }

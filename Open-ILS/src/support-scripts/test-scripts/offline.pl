@@ -81,6 +81,8 @@ sub build_script {
 			backdate			=> $t1
 		};
 	
+        # Here we need to create an option to test the skip_late feature, ask community
+
 		$json .= OpenSRF::Utils::JSON->perl2JSON($checkout) . "\n";
 		$json .= OpenSRF::Utils::JSON->perl2JSON($renew) . "\n" if $renew;
 		$json .= OpenSRF::Utils::JSON->perl2JSON($checkin) . "\n";

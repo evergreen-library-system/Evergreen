@@ -10,11 +10,12 @@ use OpenSRF::EX qw/:try/;
 use Data::Dumper;
 use OpenILS::Utils::Fieldmapper;
 use Digest::MD5 qw/md5_hex/;
-use OpenSRF::Utils qw/:daemon/;
+use OpenSRF::Utils qw/:daemon cleanse_ISO8601/;
 use OpenILS::Utils::OfflineStore;
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils;
 use DateTime;
+use DateTime::Format::ISO8601;
 
 use DBI;
 $DBI::trace = 1;
@@ -24,6 +25,10 @@ my $DB = "OpenILS::Utils::OfflineStore";
 my $SES = "${DB}::Session";
 my $SCRIPT = "OpenILS::Utils::OfflineStore::Script";
 my $user_groups;
+
+# Used by the functionality that produces SKIP_ASSET_CHANGED events
+my %seen_barcode = ();
+my %skip_barcode_for_status_changed = ();
 
 # --------------------------------------------------------------------
 # Load the config
@@ -698,8 +703,42 @@ sub ol_handle_checkout {
 	}
 
     if( $args->{barcode} ) {
+
+        # $c becomes the Copy
+        # $e possibily becomes the Exception
         my( $c, $e ) = $U->fetch_copy_by_barcode($args->{barcode});
         return $e if $e;
+
+        my $barcode = $args->{barcode};
+        # Have to have this config option (or org setting) and a
+        # status_changed_time for skippage, and barcode not seen before
+        if ((
+                ol_get_org_setting(
+                    'circ.offline.skip_checkout_if_newer_status_changed_time'
+                )
+                || $config{skip_late}
+            )
+            && length($c->status_changed_time())
+            && ! $seen_barcode{$barcode}
+        ) {
+            $seen_barcode{$barcode} = 1;
+            my $cts = DateTime::Format::ISO8601->parse_datetime( cleanse_ISO8601($c->status_changed_time()) )->epoch();
+            my $xts = $command->{timestamp}; # Transaction Time Stamp
+            $logger->activity("offline: ol_handle_checkout: considering status_changed_time for barcode=$barcode, cts=$cts, xts=$xts");
+
+            # Asset has changed after this transaction, ignore
+            if ($cts >= $xts) {
+                $skip_barcode_for_status_changed{$barcode} = 1;
+            }
+        } else {
+            $logger->activity("No skip check: barcode=$barcode seen_barcode=".$seen_barcode{$1}." status_changed_time=".$c->status_changed_time." ou_setting=".ol_get_org_setting('circ.offline.skip_checkout_if_newer_status_changed_time'));
+        }
+        if ($skip_barcode_for_status_changed{$barcode}) {
+            $logger->activity("offline: ol_handle_checkout: barcode=$barcode has SKIP_ASSET_CHANGED");
+            return OpenILS::Event->new(
+                'SKIP_ASSET_CHANGED'
+            );
+        }
     }
 
     my $evt = $U->simplereq(
@@ -725,6 +764,46 @@ sub ol_handle_renew {
 	my $command = shift;
 	my $args = ol_circ_args_from_command($command);
 	my $t = time;
+
+    if( $args->{barcode} ) {
+
+        # $c becomes the Copy
+        # $e possibily becomes the Exception
+        my( $c, $e ) = $U->fetch_copy_by_barcode($args->{barcode});
+        return $e if $e;
+
+        my $barcode = $args->{barcode};
+        # Have to have this config option (or org setting) and a
+        # status_changed_time for skippage, and barcode not seen before
+        if ((
+                ol_get_org_setting(
+                    'circ.offline.skip_renew_if_newer_status_changed_time'
+                )
+                || $config{skip_late}
+            )
+            && length($c->status_changed_time())
+            && ! $seen_barcode{$barcode}
+        ) {
+            $seen_barcode{$barcode} = 1;
+            my $cts = DateTime::Format::ISO8601->parse_datetime( cleanse_ISO8601($c->status_changed_time()) )->epoch();
+            my $xts = $command->{timestamp}; # Transaction Time Stamp
+            $logger->activity("offline: ol_handle_renew: considering status_changed_time for barcode=$barcode, cts=$cts, xts=$xts");
+
+            # Asset has changed after this transaction, ignore
+            if ($cts >= $xts) {
+                $skip_barcode_for_status_changed{$barcode} = 1;
+            }
+        } else {
+            $logger->activity("No skip check: barcode=$barcode seen_barcode=".$seen_barcode{$1}." status_changed_time=".$c->status_changed_time." ou_setting=".ol_get_org_setting('circ.offline.skip_renew_if_newer_status_changed_time'));
+        }
+        if ($skip_barcode_for_status_changed{$barcode}) {
+            $logger->activity("offline: ol_handle_renew: barcode=$barcode has SKIP_ASSET_CHANGED");
+            return OpenILS::Event->new(
+                'SKIP_ASSET_CHANGED'
+            );
+        }
+    }
+
 	return $U->simplereq(
 		'open-ils.circ', 'open-ils.circ.renew.override', $authtoken, $args );
 }
@@ -743,6 +822,44 @@ sub ol_handle_checkin {
 
 	$logger->activity("offline: checkin : requestor=". $requestor->id.
 		", realtime=$realtime, ".  "workstation=$ws, barcode=$barcode, backdate=$backdate");
+
+    if( $barcode ) {
+
+        # $c becomes the Copy
+        # $e possibily becomes the Exception
+        my( $c, $e ) = $U->fetch_copy_by_barcode($barcode);
+        return $e if $e;
+
+        # Have to have this config option (or org setting) and a
+        # status_changed_time for skippage, and barcode not seen before
+        if ((
+                ol_get_org_setting(
+                    'circ.offline.skip_checkin_if_newer_status_changed_time'
+                )
+                || $config{skip_late}
+            )
+            && length($c->status_changed_time())
+            && ! $seen_barcode{$barcode}
+        ) {
+            $seen_barcode{$barcode} = 1;
+            my $cts = DateTime::Format::ISO8601->parse_datetime( cleanse_ISO8601($c->status_changed_time()) )->epoch();
+            my $xts = $command->{timestamp}; # Transaction Time Stamp
+            $logger->activity("offline: ol_handle_checkin: considering status_changed_time for barcode=$barcode, cts=$cts, xts=$xts");
+
+            # Asset has changed after this transaction, ignore
+            if ($cts >= $xts) {
+                $skip_barcode_for_status_changed{$barcode} = 1;
+            }
+        } else {
+            $logger->activity("No skip check: barcode=$barcode seen_barcode=".$seen_barcode{$1}." status_changed_time=".$c->status_changed_time." ou_setting=".ol_get_org_setting('circ.offline.skip_checkin_if_newer_status_changed_time'));
+        }
+        if ($skip_barcode_for_status_changed{$barcode}) {
+            $logger->activity("offline: ol_handle_checkin: barcode=$barcode has SKIP_ASSET_CHANGED");
+            return OpenILS::Event->new(
+                'SKIP_ASSET_CHANGED'
+            );
+        }
+    }
 
 	return $U->simplereq(
 		'open-ils.circ', 

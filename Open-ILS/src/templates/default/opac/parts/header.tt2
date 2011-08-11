@@ -7,17 +7,63 @@
     # Don't wrap in l() here; do that where this format string is actually used.
     SET HUMAN_NAME_FORMAT = '[_1] [_2] [_3] [_4] [_5]';
 
-    # x and y are artifacts of using <input type="image" /> tags instead of
-    # true submit buttons, and their values are never used. page is used, but
-    # currently none of the use cases for rendering the query_string back
-    # into page output call for propagating the value of the page variable.
-
-    query_string = CGI.query_string |
-        replace(';x=\d+','') | replace(';y=\d+','') | replace(';page=\d*', '') |
-        replace(';', '&') | replace('&', '&amp;');
-
-    propagator = '?' _ query_string;
-
     is_advanced = CGI.param("_adv").size;
     is_special = CGI.param("_special").size;
+
+    # -----------------------------------------------------------------------------
+    # mkurl( destination_page, params_to_set, params_to_clear )
+    #
+    # Current page, updated params:
+    # mkurl('', {foo => 'bar', boo => 'baz'});
+    #
+    # New page, one param is a list:
+    # mkurl('http://flarg.baz/squz', {foo => 'bar', boo => ['baz', 'faz']});
+    #
+    # New page, clear all existing params before applying new ones:
+    # mkurl('/fuz/buster', {foo => 'bar', boo => 'baz'}, 1); 
+    #
+    # Current page, clear 'some_param' from the existing params:
+    # mkurl('', {foo => 'bar', boo => 'baz'}, ['some_param']);
+    MACRO mkurl(page, params, clear_params) BLOCK;
+
+        # clone the query string to avoid clobberation
+        cgi = CGI.new(CGI.query_string);
+
+        # remove requested params
+        IF clear_params.0; # array
+            FOR p IN clear_params; cgi.delete(p); END;
+        ELSIF clear_params;
+            cgi.delete_all();
+        END;
+
+        # x and y are artifacts of using <input type="image" /> tags 
+        # instead of true submit buttons, and their values are never used.
+        cgi.delete('x', 'y'); 
+
+        # apply user params
+        FOR k IN params.keys;
+            encoded = [];
+            list = params.$k.0 ? params.$k : [params.$k];
+            # CGI croaks on already-decoded strings.  force-encode to be safe.
+            FOR p IN list; encoded.push(ctx.encode_utf8(p)); END;
+            foo = cgi.param("-name", k, "-values", encoded);
+        END;
+
+        # for url brevity, remove any params that have no value
+        FOR p IN cgi.param;
+            val = cgi.param(p);
+            IF val == ''; cgi.delete(p); END;
+        END;
+
+        IF page;
+            IF cgi.query_string;
+                page _ '?' _ cgi.query_string;
+            ELSE;
+                page;
+            END;
+        ELSE;
+            # staying on the current page
+            cgi.url("-path" => 1, "-query" => 1);
+        END;
+    END;
 %]

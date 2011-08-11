@@ -930,6 +930,9 @@
 	<event code='8010' textcode='OFFLINE_SESSION_COMPLETE'>
 		<desc xml:lang="en-US"> No org id was provided </desc>
 	</event>
+	<event code='8011' textcode='SKIP_ASSET_CHANGED'>
+		<desc xml:lang="en-US"> Asset status was changed since the offline transaction was recorded</desc>
+	</event>
 
 	<event code='9000' textcode='REPORT_TEMPLATE_EXISTS'>
 		<desc xml:lang="en-US"> A report template with the given name and folder already exists</desc>

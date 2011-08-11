@@ -3,7 +3,10 @@
     #   get_marc_attrs( { marc_xml => doc } )
     BLOCK get_marc_attrs;
         xml = args.marc_xml;
-        args.isbn = xml.findnodes('//*[@tag="020"]/*[@code="a"]').shift.textContent;
+        args.isbns = [];
+        FOR isbn IN xml.findnodes('//*[@tag="020"]/*[@code="a"]');
+            args.isbns.push(isbn.textContent);
+        END;
         args.upc = xml.findnodes('//*[@tag="024"]/*[@code="a"]').textContent;
         args.issn = xml.findnodes('//*[@tag="022"]/*[@code="a"]').textContent;
         args.title = xml.findnodes('//*[@tag="245"]/*[@code="a"]').textContent;
@@ -25,7 +28,7 @@
         args.marc_cn = xml.findnodes('//*[@tag="092" or @tag="099"]/*').textContent;
 
         # clean up the ISBN
-        args.isbn_clean = args.isbn.replace('\ .*', '');
+        args.isbn_clean = args.isbn.0.replace('\ .*', '');
 
         args.holdings = [];
         args.uris = [];

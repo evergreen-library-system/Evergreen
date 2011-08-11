@@ -28,7 +28,7 @@
                     [%  class = 'search_page_nav_link';
                         href = '#';
                         IF page > 0;
-                            href = propagator _ '&amp;page=' _ (page - 1);
+                            href = mkurl('', {page => page - 1});
                         ELSE; class = class _ ' invisible'; END;
                     %]
                     <a class='[% class %]' href='[% href %]' 
@@ -40,7 +40,7 @@
                     [%  class = 'search_page_nav_link';
                         href = '#';
                         IF (page + 1) < page_count;
-                            href = propagator _ '&amp;page=' _ (page + 1);
+                            href = mkurl('', {page => page + 1});
                         ELSE; class = class _ ' invisible'; END;
                     %]
                     <a class='[% class %]' href='[% href %]' 
@@ -81,7 +81,7 @@
                                             <td class='result_table_pic_header' align='center'
                                                 width="78" nowrap="nowrap" valign="top">
                                                 [% ident = attrs.isbn_clean || attrs.upc; IF ident; %]
-                                                <a href="[% ctx.opac_root %]/record/[% rec.id _ propagator %]"><img alt="[% l('Image of item') %]"
+                                                <a href="[% mkurl(ctx.opac_root _ '/record/' _ rec.id) %]"><img alt="[% l('Image of item') %]"
                                                         name='item_jacket' class='result_table_pic' width="55"
                                                         src='[% ctx.media_prefix %]/opac/extras/ac/jacket/small/[% ident %]' /></a><br />
                                                 [% END %]
@@ -91,16 +91,17 @@
                                                 valign="top">
                                                 <div class="bold">
                                                     <a title="[% attrs.title %]" name='item_title'
-                                                        href="[% ctx.opac_root %]/record/[% rec.id _ propagator %]"
-                                                        class='search_link'>[% attrs.title %]</a>
+                                                        href="[% mkurl(ctx.opac_root _ '/record/' _ rec.id) %]"
+                                                        class='search_link'>[% attrs.title | html_entity%]</a>
                                                 </div>
                                                 <div style="font-size:11px;">
                                                     <div>
                                                         <em><a title="[% l("Perform an Author Search") %]"
                                                                 name='item_author'
-                                                                href="[% ctx.opac_root %]/results?qtype=author&amp;query=[% 
-                                                                    attrs.author | replace('[,\.:;]', '') | uri %]&amp;loc=[% CGI.param('loc') | uri %]"
-                                                                class='search_link'>[% attrs.author %]</a></em>
+                                                                href="[%- 
+                                                                    authorquery = attrs.author | replace('[,\.:;]', '');
+                                                                    mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery})
+                                                                    -%]">[% attrs.author | html_entity %]</a></em>
                                                         &nbsp;&nbsp;
                                                         [% attrs.pubdate %]
                                                     </div>
@@ -114,12 +115,12 @@
                                                             <td>[% attrs.publisher; %]</td>
                                                         </tr>
                                                     [% END %]
-                                                    [% IF attrs.isbn %]
+                                                    [% IF attrs.isbn.0 %]
                                                         <tr name="results_isbn_tr">
                                                             <td valign="top">
                                                                 <strong>[% l('ISBN:') %]</strong>
                                                             </td>
-                                                            <td>[% attrs.isbn %]</td>
+                                                            <td>[% attrs.isbns.0 %]</td>
                                                         </tr>
                                                     [% END %]
                                                         [% IF openurl.enabled == 'true';
@@ -230,7 +231,7 @@
                                                 <div style="width:250px;text-align:left;">
                                                     <div style="float:right;">
                                                         <div class="results_aux_utils opac-auto-010"><a
-                                                                href="[% ctx.opac_root %]/place_hold[% propagator; propagator.length > 1 ? "&amp;" : ""; %]hold_target=[% rec.id %]&amp;hold_type=T" 
+                                                                href="[% mkurl(ctx.opac_root _ '/place_hold', {hold_target => rec.id, hold_type => 'T'}) %]" 
                                                                     name="place_hold_link" class="no-dec"><img
                                                                 src="[% ctx.media_prefix %]/images/green_check.png"
                                                                 alt=""/><span style="position:relative;top:-3px;left:3px;">[% l('Place Hold') %]</span></a>
@@ -240,18 +241,11 @@
                                                                 operation = ctx.mylist.grep(rec.id).size ? "delete" : "add";
                                                                 label = (operation == "add") ? l("Add to my list") : l("Remove from my list");
                                                             %]      
-                                                            <a href="[% ctx.opac_root %]/mylist/[% operation %]?record=[% rec.id %]" class="no-dec">
+                                                            <a href="[% mkurl(ctx.opac_root _ '/mylist/' _ operation, {record => rec.id}, 1) %]" class="no-dec">
                                                                 <img src="[% ctx.media_prefix %]/images/clipboard.png" alt="" />
                                                                 [% label %]
                                                             </a>
                                                         </div>
-                                                        <!-- <div style="padding-top:7px;" class="results_aux_utils">
-                                                            <a title="Reviews and More" target="_blank" class="no-dec"
-                                                                name="reviews_and_more" href="javascript:;"><img
-                                                                alt="[% l('Reviews and more') %]"
-                                                                src="[% ctx.media_prefix %]/images/starz.png" /> <span
-                                                                    style="position:relative;top:-5px;">[% l('Reviews and More') %]</span></a>
-                                                        </div> -->
                                                     </div>
                                                 </div>
                                             </td>
@@ -278,5 +272,4 @@
 </div>
 <div>
     [% ctx.results_count_header %]
-    <!-- ChiliFresh XXX script TODO -->
 </div>

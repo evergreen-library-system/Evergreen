@@ -117,7 +117,7 @@ CREATE UNIQUE INDEX opac_visible_copies_once_per_record_idx on asset.opac_visibl
 CREATE OR REPLACE FUNCTION asset.acp_status_changed()
 RETURNS TRIGGER AS $$
 BEGIN
-    IF NEW.status <> OLD.status THEN
+	IF NEW.status <> OLD.status AND NOT (NEW.status = 0 AND OLD.status = 7) THEN
         NEW.status_changed_time := now();
         IF NEW.active_date IS NULL AND NEW.status IN (SELECT id FROM config.copy_status WHERE copy_active = true) THEN
             NEW.active_date := now();

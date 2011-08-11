@@ -277,26 +277,26 @@ SelfCheckManager.prototype.loadOrgSettings = function() {
 SelfCheckManager.prototype.drawLoginPage = function() {
     var self = this;
 
-    var bcHandler = function(barcode) {
-        // handle patron barcode entry
+    var bcHandler = function(barcode_or_usrname) {
+        // handle patron barcode/usrname entry
 
         if(self.orgSettings[SET_PATRON_PASSWORD_REQUIRED]) {
             
             // password is required.  wire up the scan box to read it
             self.updateScanBox({
                 msg : 'Please enter your password', // TODO i18n 
-                handler : function(pw) { self.loginPatron(barcode, pw); },
+                handler : function(pw) { self.loginPatron(barcode_or_usrname, pw); },
                 password : true
             });
 
         } else {
             // password is not required, go ahead and login
-            self.loginPatron(barcode);
+            self.loginPatron(barcode_or_usrname);
         }
     };
 
     this.updateScanBox({
-        msg : 'Please log in with your library barcode.', // TODO
+        msg : 'Please log in with your username or library barcode.', // TODO
         handler : bcHandler
     });
 }
@@ -304,9 +304,20 @@ SelfCheckManager.prototype.drawLoginPage = function() {
 /**
  * Login the patron.  
  */
-SelfCheckManager.prototype.loginPatron = function(barcode, passwd) {
+SelfCheckManager.prototype.loginPatron = function(barcode_or_usrname, passwd) {
 
     this.setupStaffLogin(true); // verify still valid
+
+    var barcode = null;
+    var usrname = null;
+    console.log('testing ' + barcode_or_usrname);
+    if (barcode_or_usrname.match(this.patronBarcodeRegex)) {
+        console.log('barcode');
+        barcode = barcode_or_usrname;
+    } else {
+        console.log('usrname');
+        usrname = barcode_or_usrname;
+    }
 
     if(this.orgSettings[SET_PATRON_PASSWORD_REQUIRED]) {
         
@@ -320,13 +331,13 @@ SelfCheckManager.prototype.loginPatron = function(barcode, passwd) {
 
         var res = fieldmapper.standardRequest(
             ['open-ils.actor', 'open-ils.actor.verify_user_password'],
-            {params : [this.authtoken, barcode, null, hex_md5(passwd)]}
+            {params : [this.authtoken, barcode, usrname, hex_md5(passwd)]}
         );
 
         if(res == 0) {
             // user-not-found results in login failure
             this.handleAlert(
-                dojo.string.substitute(localeStrings.LOGIN_FAILED, [barcode]),
+                dojo.string.substitute(localeStrings.LOGIN_FAILED, [barcode_or_usrname]),
                 false, 'login-failure'
             );
             this.drawLoginPage();
@@ -334,10 +345,15 @@ SelfCheckManager.prototype.loginPatron = function(barcode, passwd) {
         }
     } 
 
-    // retrieve the fleshed user by barcode
+    var patron_id = fieldmapper.standardRequest(
+        ['open-ils.actor', 'open-ils.actor.user.retrieve_id_by_barcode_or_username'],
+        {params : [this.authtoken, barcode, usrname]}
+    );
+
+    // retrieve the fleshed user by id
     this.patron = fieldmapper.standardRequest(
-        ['open-ils.actor', 'open-ils.actor.user.fleshed.retrieve_by_barcode'],
-        {params : [this.authtoken, barcode]}
+        ['open-ils.actor', 'open-ils.actor.user.fleshed.retrieve.authoritative'],
+        {params : [this.authtoken, patron_id]}
     );
 
     var evt = openils.Event.parse(this.patron);
@@ -345,14 +361,19 @@ SelfCheckManager.prototype.loginPatron = function(barcode, passwd) {
     // verify validity of the card used to log in
     var inactiveCard = false;
     if(!evt) {
-        var card = this.patron.cards().filter(
-            function(c) { return (c.barcode() == barcode); })[0];
+        var card;
+        if (barcode) {
+            card = this.patron.cards().filter(
+                function(c) { return (c.barcode() == barcode); })[0];
+        } else {
+            card = this.patron.card();
+        }
         inactiveCard = !openils.Util.isTrue(card.active());
     }
 
     if(evt || inactiveCard) {
         this.handleAlert(
-            dojo.string.substitute(localeStrings.LOGIN_FAILED, [barcode]),
+            dojo.string.substitute(localeStrings.LOGIN_FAILED, [barcode_or_usrname]),
             false, 'login-failure'
         );
         this.drawLoginPage();

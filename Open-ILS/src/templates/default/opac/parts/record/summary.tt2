@@ -27,23 +27,24 @@
                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
                     <tr>
                         <td valign="top">
-                            <span id='rdetail_title'>[% attrs.title %]</span><br />
+                            <span id='rdetail_title'>[% attrs.title_extended | html_entity %]</span><br />
                             [% IF attrs.author %]
                             <span class='opac-auto-030'>[% l("Author") %]:</span>
                             <em><a title='[% l("Perform an author search") %]'
                                     id='rdetail_author'
-                                    href="[% ctx.opac_root %]/results?qtype=author&amp;query=[%-
-                                        attrs.author | replace('[,\.:;]', '') | uri %]&amp;loc=[% CGI.param('loc') | uri %]">[% attrs.author %]</a></em>
+                                    href="[%- 
+                                        authorquery = attrs.author | replace('[,\.:;]', '');
+                                        mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery})
+                                        -%]">[% attrs.author | html_entity %]</a></em>
                             [% END %]
                         </td>
                         <td align="right" valign="top" nowrap="nowrap" style="white-space:nowrap;">
                             <div style="width:280px;text-align:left;margin-top:3px;">
                                 <div style="float:right;">
                                     <div class="rdetail_aux_utils opac-auto-010">
-                                        <a href="[% ctx.opac_root %]/place_hold[%-
-                                            propagator; propagator.length > 1 ? "&amp;" : ""; %]hold_target=[% ctx.bre_id %]&amp;hold_type=T" id="rdetail_place_hold" class="no-dec"><img
-                                            src="[% ctx.media_prefix %]/images/green_check.png" alt="" /><span 
-                                                style="position:relative;top:-3px;left:3px;">[% l('Place Hold') %]</span></a>
+                                        <a href="[% mkurl(ctx.opac_root _ '/place_hold', {hold_target => ctx.bre_id, hold_type => 'T'}) %]" 
+                                            class="no-dec"><img src="[% ctx.media_prefix %]/images/green_check.png" alt="[% l('place hold') %]" /><span 
+                                                    style="position:relative;top:-3px;left:3px;">[% l('Place Hold') %]</span></a>
                                     </div>
                                     <div class="rdetail_aux_utils opac-auto-121">
                                         [%  
@@ -69,9 +70,11 @@
                     <table border="0" cellpadding="0" width="100%">
                         <tr>
                             <td nowrap='nowrap' valign="top">
-                                [% IF attrs.isbn %]<strong id="rdetail_isbn_lbl">[% l("ISBN") %]</strong>[% END %]
+                                [% IF attrs.isbns.0 %]<strong id="rdetail_isbn_lbl">[% l("ISBN") %]</strong>[% END %]
                             </td>
-                            <td valign="top" id='rdetail_isbn'>[% attrs.isbn %]</td>
+                            <td valign="top" id='rdetail_isbn'>
+                                [% FOR isbn IN attrs.isbns %][% IF !loop.first; %]<br/>[% END; isbn; END %]
+                            </td>
                             <td nowrap='nowrap' valign="top">
                                 [% IF attrs.phys_desc %]<strong id="rdetail_phys_lbl">[% l("Physical Description") %]</strong>[% END %]
                             </td>
@@ -93,6 +96,10 @@
                             [% END %]
                         [% END %]
                         <tr>
+                            <td nowrap='nowrap' valign="top">
+                                <strong>[% IF attrs.marc_cn; l("Call Number"); END %]</strong>
+                            </td>
+                            <td valign="top">[% attrs.marc_cn %]</td>
                             <td nowrap='nowrap' valign="top">
                                 <strong id="rdetail_ed_lbl">[% IF attrs.edition; l("Edition"); END %]</strong>
                             </td>
@@ -182,11 +189,11 @@
                         copy_info.status_holdable == 't');
                     IF overall_holdable;
                         l("Place on"); %]
-                <a href="[% ctx.opac_root %]/place_hold[% propagator; propagator.length > 1 ? "&amp;" : ""; %]hold_target=[% copy_info.id %]&amp;hold_type=C">[% l("copy") %]</a>
+                <a href="[% mkurl(ctx.opac_root _ '/place_hold', {hold_target => copy_info.id, hold_type => 'C'}) %]">[% l("copy") %]</a>
                 [%      IF copy_info.call_number != last_cn;
                             last_cn = copy_info.call_number;
                             l(" / "); %]
-                <a href="[% ctx.opac_root %]/place_hold[% propagator; propagator.length > 1 ? "&amp;" : ""; %]hold_target=[% copy_info.call_number %]&amp;hold_type=V">[% l("volume") %]</a>
+                <a href="[% mkurl(ctx.opac_root _ '/place_hold', {hold_target => copy_info.call_number, hold_type => 'V'}) %]">[% l("volume") %]</a>
                 [%      END;
                     ELSE;
                         l("No");
@@ -209,33 +216,47 @@
             new_offset = ctx.copy_offset - ctx.copy_limit;
             IF new_offset < 0; new_offset = 0; END %]
             <td>
-                <a href="[% ctx.opac_root %]/record/[% ctx.bre_id %]?copy_offset=[% new_offset %]&amp;copy_limit=[% ctx.copy_limit %]">&laquo; [%
-                    l('Previous [_1]', ctx.copy_offset - new_offset)
-                %]</a>
+                <a href="[% mkurl('', {copy_offset => new_offset, copy_limit => ctx.copy_limit}) %]">&laquo; [%
+                    l('Previous [_1]', ctx.copy_offset - new_offset) %]</a>
             </td>
         [% END %]
         [% IF ctx.copies.size >= ctx.copy_limit %]
             <td>
-                <a href="[% ctx.opac_root %]/record/[% ctx.bre_id %]?copy_offset=[% ctx.copy_offset + ctx.copy_limit %]&amp;copy_limit=[% ctx.copy_limit %]">[%
-                    l('Next [_1]', ctx.copy_limit)
-                %] &raquo;</a>
+                <a href="[% mkurl('', {copy_offset => ctx.copy_offset + ctx.copy_limit, copy_limit => ctx.copy_limit}) %]">[%
+                    l('Next [_1]', ctx.copy_limit) %] &raquo;</a>
             </td>
         [% END %]
         </tr>
+        <tr>
+            <td>
+                [% more_copies_limit = 50 %] [%# TODO: config %]
+                [% IF  ctx.copy_limit != more_copies_limit AND ctx.copies.size >= ctx.copy_limit %]
+                    <div style='margin-top:10px;'>
+                        <img src="[% ctx.media_prefix %]/images/plus_sign.png" />
+                        <a href="[% mkurl('', {copy_limit => more_copies_limit, copy_offset => 0}) %]">[% l('Show more copies') %]</a>
+                    </div>
+                [% ELSIF ctx.copy_limit == more_copies_limit %]
+                    <div style='margin-top:10px;'>
+                        <img src="[% ctx.media_prefix %]/images/minus_sign.png" />
+                        <a href="[% mkurl('', {copy_limit => 0, copy_offset => 0}) %]">[% l('Show fewer copies') %]</a>
+                    </div>
+                [% END %]
+            </td>
+        </tr>
+        <tr>
+            <td>
+                [% IF CGI.param('expand') == 'all' %]
+                    <img src="[% ctx.media_prefix %]/images/minus_sign.png" />
+                    <a href="[% mkurl('', {}, ['expand']) %]">[% l('Collapse all tabs') %]</a>
+                [% ELSE %]
+                    <img src="[% ctx.media_prefix %]/images/plus_sign.png" />
+                    <a href="[% mkurl('', {expand => 'all'}) %]">[% l('Expand all tabs') %]</a>
+                [% END %]
+            </td>
+        </tr>
+
     </tbody>
 </table>
-
-<div id="rdetail_locs_expand" class="hide_me">
-    <a href="#"><img
-        src="[% ctx.media_prefix %]/images/plus_sign.png" /></a>
-    <a style="position:relative;top:-3px;" href="#">[% l('Show more locations') %]</a>
-</div>
-
-<div id="rdetail_locs_collapse" class="hide_me">
-    <a href="#"><img
-        src="[% ctx.media_prefix %]/images/plus_sign.png" /></a>
-    <a style="position:relative;top:-3px;" href="#">[% l('Collapse locations') %]</a>
-</div>
 
 <div id="rdetail_extras_expand" class="hide_me">
     <a href="#"><img
@@ -247,42 +268,3 @@
     <a href="#"><img src="[% ctx.media_prefix %]/images/plus_sign.png" /></a>
     <a style="position:relative;top:-3px;" href="#">[% l('Collapse all tabs') %]</a>
 </div>
-
-<div class="hide_me">
-    <table id='' border="0" width="100%">
-        <tbody id='rdetail_details_tbody'>
-            <tr>
-                <td id='' rowspan='2' valign="top" align="center" style="padding-right:10px;">
-                </td>
-                <td class='rdetail_desc' valign="top" colspan="3">
-                    <table border="0" width="100%">
-                        <tr>
-                            <td valign="top">
-                                <div style="padding-bottom:7px;">
-                                    <strong>[% l("Title") %]:</strong>
-                                </div>
-                            </td>
-                            <td width="1" valign="top" align="right" style="white-space:nowrap;">
-                                <a href="[% ctx.opac_root %]/place_hold[% propagator; propagator.length > 1 ? "&amp;" : ""; %]hold_target=[% ctx.bre_id %]&amp;hold_type=T"><img alt="[% l('Place Hold') %]"
-                                    src="[% ctx.media_prefix %]/images/place_hold.gif" /></a>
-                                <a href="#" id="rd_reviews_and_more" target="_blank"><img
-                                    alt="[% l('Reviews and More') %]" src="[% ctx.media_prefix %]/images/reviews.gif" /></a>
-                                <a href="#" id=""><img alt="[% l('Add to My List') %]"
-                                    src="[% ctx.media_prefix %]/images/add_mylist.gif" /></a>
-                            </td>
-                        </tr>
-                    </table>
-                </td>        
-            </tr>
-            <tr>
-                <td nowrap='nowrap' colspan="3" valign="bottom" style="padding-bottom:16px;">
-                </td>
-            </tr>
-            <tr>
-                <td><div style="height:20px;"></div></td>
-            </tr>
-        </tbody>
-    </table>
-</div> <!-- details_body -->
-
-<!-- ****************** end: rdetail_summary.xml ***************************** -->
