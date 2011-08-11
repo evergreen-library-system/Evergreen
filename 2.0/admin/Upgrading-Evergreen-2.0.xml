@@ -14,7 +14,7 @@
 		<para>Evergreen 2.0 has several software requirements:</para>
  		<itemizedlist>
 			<listitem>PostgreSQL: Version 8.4 is the minimum supported version of PostgreSQL. </listitem>
-			<listitem>Linux: Evergreen 2.0 has been tested on Debian Squeeze (6.0) and Ubuntu Lucid Lynx (10.04). If you are runnung an older version of these distributions, 
+			<listitem>Linux: Evergreen 2.0 has been tested on Debian Squeeze (6.0) and Ubuntu Lucid Lynx (10.04). If you are running an older version of these distributions, 
 			you may want to upgrade befor installing Evergreen 2.0. For instructions on upgrading these distributions, visit the 
 			<ulink url="http://www.debian.org/releases/squeeze/">Debian</ulink> or <ulink url="https://help.ubuntu.com/community/LucidUpgrades">Ubuntu</ulink> websites.</listitem>
 		</itemizedlist>
