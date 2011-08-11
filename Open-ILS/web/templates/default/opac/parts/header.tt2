@@ -20,4 +20,51 @@
 
     is_advanced = CGI.param("_adv").size;
     is_special = CGI.param("_special").size;
+
+    # -----------------------------------------------------------------------------
+    # mkurl()
+    #
+    # Current page, updated params:
+    # mkurl('', {foo => 'bar', boo => 'baz'});
+    #
+    # New page, one param is a list:
+    # mkurl('http://flarg.baz/squz', {foo => 'bar', boo => ['baz', 'faz']});
+    #
+    # New page, clear all existing params before applying new ones:
+    # mkurl('/fuz/buster', {foo => 'bar', boo => 'baz'}, 1); 
+    #
+    # Current page, clear the 'some_param' from the existing params:
+    # mkurl('', {foo => 'bar', boo => 'baz'}, ['some_param']);
+    MACRO mkurl(page, params, clear_params) BLOCK;
+
+        # clone the query string to avoid clobberation
+        cgi = CGI.new(CGI.query_string);
+
+        # remove requested params
+        IF clear_params.0; # array
+            FOR p IN clear_params; cgi.delete(p); END;
+        ELSIF clear_params;
+            cgi.delete_all();
+        END;
+
+        # always remove these pesky artifacts
+        cgi.delete('x', 'y'); 
+
+        # apply user params
+        FOR k IN params.keys;
+            foo = cgi.param("-name", k, "-values", params.$k); 
+        END;
+
+        # for url brevity, remove any params that have no value
+        FOR p IN cgi.param;
+            val = cgi.param(p);
+            IF val == ''; cgi.delete(p); END;
+        END;
+
+        IF page;
+            page _ '?' _ cgi.query_string;
+        ELSE;
+            cgi.url("-path" => 1, "-query" => 1);
+        END;
+    END;
 %]
