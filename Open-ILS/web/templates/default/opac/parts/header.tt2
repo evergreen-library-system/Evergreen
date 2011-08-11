@@ -52,7 +52,11 @@
 
         # apply user params
         FOR k IN params.keys;
-            foo = cgi.param("-name", k, "-values", params.$k); 
+            encoded = [];
+            list = params.$k.0 ? params.$k : [params.$k];
+            # CGI croaks on already-decoded strings.  force-encode to be safe
+            FOR p IN list; encoded.push(ctx.encode_utf8(p)); END;
+            foo = cgi.param("-name", k, "-values", encoded);
         END;
 
         # for url brevity, remove any params that have no value
@@ -62,7 +66,11 @@
         END;
 
         IF page;
-            page _ '?' _ cgi.query_string;
+            IF cgi.query_string;
+                page _ '?' _ cgi.query_string;
+            ELSE;
+                page;
+            END;
         ELSE;
             cgi.url("-path" => 1, "-query" => 1);
         END;
