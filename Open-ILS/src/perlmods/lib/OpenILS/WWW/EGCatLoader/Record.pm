@@ -57,16 +57,29 @@ sub load_record {
             scalar(@{$ctx->{holding_summaries}->{supplement}});
     }
 
-    # XXX probably should replace the following with a dispatch table
-    for my $expand ($self->cgi->param('expand')) {
-        $ctx->{"expand_$expand"} = 1;
-        if ($expand eq 'marchtml') {
+    my %expandies = (
+        marchtml => sub {
             $ctx->{marchtml} = $self->mk_marc_html($rec_id);
-        } elsif ($expand eq 'issues' and $ctx->{have_holdings_to_show}) {
+        },
+        issues => sub {
             $ctx->{expanded_holdings} =
-                $self->get_expanded_holdings($rec_id, $org, $depth);
-        } elsif ($expand eq 'cnbrowse') {
+                $self->get_expanded_holdings($rec_id, $org, $depth)
+                if $ctx->{have_holdings_to_show};
+        },
+        cnbrowse => sub {
             $self->prepare_browse_call_numbers();
+        }
+    );
+
+    my @expand = $self->cgi->param('expand');
+    if (grep {$_ eq 'all'} @expand) {
+        $ctx->{expand_all} = 1;
+        $expandies{$_}->() for keys %expandies;
+
+    } else {
+        for my $exp (@expand) {
+            $ctx->{"expand_$exp"} = 1;
+            $expandies{$exp}->() if exists $expandies{$exp};
         }
     }
 

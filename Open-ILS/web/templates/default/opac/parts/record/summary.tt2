@@ -217,6 +217,18 @@
                 [% END %]
             </td>
         </tr>
+        <tr>
+            <td>
+                [% IF CGI.param('expand') == 'all' %]
+                    <img src="[% ctx.media_prefix %]/images/minus_sign.png" />
+                    <a href="[% mkurl('', {}, ['expand']) %]">[% l('Collapse all tabs') %]</a>
+                [% ELSE %]
+                    <img src="[% ctx.media_prefix %]/images/plus_sign.png" />
+                    <a href="[% mkurl('', {expand => 'all'}) %]">[% l('Expand all tabs') %]</a>
+                [% END %]
+            </td>
+        </tr>
+
     </tbody>
 </table>
 
