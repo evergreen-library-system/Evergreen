@@ -82,6 +82,9 @@ util.print.prototype = {
                 line = line.replace(/<block.*?>/gi,'');
                 line = line.replace(/<li.*?>/gi,' * ');
                 line = line.replace(/<.+?>/gi,'');
+                line = line.replace(/&lt;/gi,'<');
+                line = line.replace(/&gt;/gi,'>');
+                line = line.replace(/&amp;/gi,'&');
                 if (line) { new_lines.push(line); }
             } else {
                 new_lines.push(line);
@@ -90,6 +93,10 @@ util.print.prototype = {
         var new_html = new_lines.join('\n');
         //dump('html2txt, after:\n' + new_html + '\nhtml2txt, done.\n');
         return new_html;
+    },
+
+    'escape_html' : function(data) {
+        return data.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     },
 
     'simple' : function(msg,params) {
@@ -222,32 +229,32 @@ util.print.prototype = {
             try{b = s; s = s.replace(/%LINE_NO%/g,Number(params.row_idx)+1);}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 
-            try{b = s; s = s.replace(/%patron_barcode%/g,params.patron_barcode);}
+            try{b = s; s = s.replace(/%patron_barcode%/g,this.escape_html(params.patron_barcode));}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 
-            try{b = s; s = s.replace(/%LIBRARY%/g,params.lib.name());}
+            try{b = s; s = s.replace(/%LIBRARY%/g,this.escape_html(params.lib.name()));}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-            try{b = s; s = s.replace(/%PINES_CODE%/g,params.lib.shortname());}
+            try{b = s; s = s.replace(/%PINES_CODE%/g,this.escape_html(params.lib.shortname()));}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-            try{b = s; s = s.replace(/%SHORTNAME%/g,params.lib.shortname());}
+            try{b = s; s = s.replace(/%SHORTNAME%/g,this.escape_html(params.lib.shortname()));}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-            try{b = s; s = s.replace(/%STAFF_FIRSTNAME%/g,params.staff.first_given_name());}
+            try{b = s; s = s.replace(/%STAFF_FIRSTNAME%/g,this.escape_html(params.staff.first_given_name()));}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-            try{b = s; s = s.replace(/%STAFF_LASTNAME%/g,params.staff.family_name());}
+            try{b = s; s = s.replace(/%STAFF_LASTNAME%/g,this.escape_html(params.staff.family_name()));}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-            try{b = s; s = s.replace(/%STAFF_BARCODE%/g,params.staff.barcode); }
+            try{b = s; s = s.replace(/%STAFF_BARCODE%/g,this.escape_html(params.staff.barcode)); }
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-            try{b = s; s = s.replace(/%STAFF_PROFILE%/g,obj.data.hash.pgt[ params.staff.profile() ].name() ); }
+            try{b = s; s = s.replace(/%STAFF_PROFILE%/g,this.escape_html(obj.data.hash.pgt[ params.staff.profile() ].name() )); }
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-            try{b = s; s = s.replace(/%PATRON_ALIAS_OR_FIRSTNAME%/g,(params.patron.alias() == '' || params.patron.alias() == null) ? params.patron.first_given_name() : params.patron.alias());}
+            try{b = s; s = s.replace(/%PATRON_ALIAS_OR_FIRSTNAME%/g,this.escape_html((params.patron.alias() == '' || params.patron.alias() == null) ? params.patron.first_given_name() : params.patron.alias()));}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-            try{b = s; s = s.replace(/%PATRON_ALIAS%/g,(params.patron.alias() == '' || params.patron.alias() == null) ? '' : params.patron.alias());}
+            try{b = s; s = s.replace(/%PATRON_ALIAS%/g,this.escape_html((params.patron.alias() == '' || params.patron.alias() == null) ? '' : params.patron.alias()));}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-            try{b = s; s = s.replace(/%PATRON_FIRSTNAME%/g,params.patron.first_given_name());}
+            try{b = s; s = s.replace(/%PATRON_FIRSTNAME%/g,this.escape_html(params.patron.first_given_name()));}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-            try{b = s; s = s.replace(/%PATRON_LASTNAME%/g,params.patron.family_name());}
+            try{b = s; s = s.replace(/%PATRON_LASTNAME%/g,this.escape_html(params.patron.family_name()));}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-            try{b = s; s = s.replace(/%PATRON_BARCODE%/g,typeof params.patron.card() == 'object' ? params.patron.card().barcode() : util.functional.find_id_object_in_list( params.patron.cards(), params.patron.card() ).barcode() ) ;}
+            try{b = s; s = s.replace(/%PATRON_BARCODE%/g,this.escape_html(typeof params.patron.card() == 'object' ? params.patron.card().barcode() : util.functional.find_id_object_in_list( params.patron.cards(), params.patron.card() ).barcode() )) ;}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 
             try{b = s; s=s.replace(/%TODAY%/g,(new Date()));}
@@ -277,14 +284,14 @@ util.print.prototype = {
                         alert('debug - please tell the developers that deprecated template code tried to execute');
                         for (var i = 0; i < cols.length; i++) {
                             var re = new RegExp(cols[i],"g");
-                            try{b = s; s=s.replace(re, params.row[i]);}
+                            try{b = s; s=s.replace(re, this.escape_html(params.row[i]));}
                                 catch(E){s = b; this.error.standard_unexpected_error_alert('print.js, template_sub(): 1 string = <' + s + '>',E);}
                         }
                     } else { 
                         /* for dump_with_keys */
                         for (var i in params.row) {
                             var re = new RegExp('%'+i+'%',"g");
-                            try{b = s; s=s.replace(re, params.row[i]);}
+                            try{b = s; s=s.replace(re, this.escape_html(params.row[i]));}
                                 catch(E){s = b; this.error.standard_unexpected_error_alert('print.js, template_sub(): 2 string = <' + s + '>',E);}
                         }
                     }
@@ -294,7 +301,7 @@ util.print.prototype = {
                     for (var i in params.data) {
                         var re = new RegExp('%'+i+'%',"g");
                         if (typeof params.data[i] == 'string' || typeof params.data[i] == 'number') {
-                            try{b = s; s=s.replace(re, params.data[i]);}
+                            try{b = s; s=s.replace(re, this.escape_html(params.data[i]));}
                                 catch(E){s = b; this.error.standard_unexpected_error_alert('print.js, template_sub(): 3 string = <' + s + '>',E);}
                         } else {
                             /* likely a null, print as an empty string */
