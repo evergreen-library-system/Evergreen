@@ -465,11 +465,13 @@ sub decompose {
             s/(^|[^|])\b$alias[:=]/$1$class:/g;
         }
 
-        $search_class_re .= '|' unless ($first_class);
-        $first_class = 0;
+        if (!$seen_classes{$class}) {
+            $search_class_re .= '|' unless ($first_class);
+            $first_class = 0;
 
-        $search_class_re .= $class . '(?:\|\w+)*' if (!$seen_classes{$class});
-        $seen_classes{$class} = 1;
+            $search_class_re .= $class . '(?:\|\w+)*';
+            $seen_classes{$class} = 1;
+        }
     }
     $search_class_re .= '):';
 
