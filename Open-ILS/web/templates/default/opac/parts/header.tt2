@@ -7,22 +7,11 @@
     # Don't wrap in l() here; do that where this format string is actually used.
     SET HUMAN_NAME_FORMAT = '[_1] [_2] [_3] [_4] [_5]';
 
-    # x and y are artifacts of using <input type="image" /> tags instead of
-    # true submit buttons, and their values are never used. page is used, but
-    # currently none of the use cases for rendering the query_string back
-    # into page output call for propagating the value of the page variable.
-
-    query_string = CGI.query_string |
-        replace(';x=\d+','') | replace(';y=\d+','') | replace(';page=\d*', '') |
-        replace(';', '&') | replace('&', '&amp;');
-
-    propagator = '?' _ query_string;
-
     is_advanced = CGI.param("_adv").size;
     is_special = CGI.param("_special").size;
 
     # -----------------------------------------------------------------------------
-    # mkurl()
+    # mkurl( destination_page, params_to_set, params_to_clear )
     #
     # Current page, updated params:
     # mkurl('', {foo => 'bar', boo => 'baz'});
@@ -33,7 +22,7 @@
     # New page, clear all existing params before applying new ones:
     # mkurl('/fuz/buster', {foo => 'bar', boo => 'baz'}, 1); 
     #
-    # Current page, clear the 'some_param' from the existing params:
+    # Current page, clear 'some_param' from the existing params:
     # mkurl('', {foo => 'bar', boo => 'baz'}, ['some_param']);
     MACRO mkurl(page, params, clear_params) BLOCK;
 
@@ -47,14 +36,15 @@
             cgi.delete_all();
         END;
 
-        # always remove these pesky artifacts
+        # x and y are artifacts of using <input type="image" /> tags 
+        # instead of true submit buttons, and their values are never used.
         cgi.delete('x', 'y'); 
 
         # apply user params
         FOR k IN params.keys;
             encoded = [];
             list = params.$k.0 ? params.$k : [params.$k];
-            # CGI croaks on already-decoded strings.  force-encode to be safe
+            # CGI croaks on already-decoded strings.  force-encode to be safe.
             FOR p IN list; encoded.push(ctx.encode_utf8(p)); END;
             foo = cgi.param("-name", k, "-values", encoded);
         END;
@@ -72,6 +62,7 @@
                 page;
             END;
         ELSE;
+            # staying on the current page
             cgi.url("-path" => 1, "-query" => 1);
         END;
     END;
