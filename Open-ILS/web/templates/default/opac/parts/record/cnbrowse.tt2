@@ -1,9 +1,5 @@
-[%- IF ctx.page == "record";
-    prev_next_root = "/record/" _ ctx.bre_id _ extras_propagator;
-ELSE;
-    cn = CGI.param('cn') | uri;
-    prev_next_root = "/cnbrowse?cn=" _ cn;
-END -%]
+[% cnoffset = CGI.param('cnoffset') || 0; %]
+
 <div id='cn_browse' class='cn_browser'>
     <div id='cn_browse_div'> 
         <div class='color_4'>
@@ -14,15 +10,13 @@ END -%]
             <thead>
                 <tr>
                     <td>
-                        <a id='cn_browse_prev' class='classic_link' href="[% ctx.opac_root _ prev_next_root _ '&amp;cnoffset=' _ ((CGI.param('cnoffset') || 0) - 1) _ '&amp;expand=cnbrowse#cnbrowse' %]"<b>[%
-                            l("&lt;&lt; Previous Page")
-                        %]</b></a>
+                        <a id='cn_browse_prev' class='classic_link' 
+                            href="[% mkurl('', {cnoffset => cnoffset - 1}) %]#cnbrowse"><b>[% l("&lt;&lt; Previous Page") %]</b></a>
                     </td>
                     <td colspan='1' align='center'>[% l("Shelf Browser") %]</td>
                     <td>
-                        <a id='cn_browse_next' class='classic_link' href="[% ctx.opac_root _ prev_next_root _ '&amp;cnoffset=' _ ((CGI.param('cnoffset') || 0) + 1) _ '&amp;expand=cnbrowse#cnbrowse' %]"<b>[%
-                            l("Next Page &gt;&gt;")
-                        %]</b></a>
+                        <a id='cn_browse_next' class='classic_link' 
+                            href="[% mkurl('', {cnoffset => cnoffset + 1}) %]#cnbrowse"><b>[% l("Next Page &gt;&gt;") %]</b></a>
                     </td>
                 </tr>
             </thead>
@@ -36,17 +30,21 @@ END -%]
                             PROCESS get_marc_attrs args=rec_attrs;
                             ident = rec_attrs.isbn_clean || rec_attrs.upc;
                             IF ident %]
-                        <a href="[% ctx.opac_root %]/record/[% cn.record.id _ extras_propagator %]"><img height='60' width='50' 
+                        <a href="[% mkurl(ctx.opac_root _ '/record/' _ cn.record.id, {}, 1) %]"><img height='60' width='50' 
                             class='cn_browse_info' name='cn_browse_pic' border='0'
                             src="[% ctx.media_prefix %]/opac/extras/ac/jacket/small/[% ident %]" /></a>
                         [% END %]
                         <div class='cn_browse_info bold' name='cn_browse_cn'>[% cn.label %]</div>
                         <div class='cn_browse_info'>
-                            <a name='cn_browse_title' class='classic_link' href="[% ctx.opac_root %]/record/[% cn.record.id _ extras_propagator %]">[% rec_attrs.title %]</a>
+                            <a name='cn_browse_title' class='classic_link' 
+                                href="[% mkurl(ctx.opac_root _ '/record/' _ cn.record.id, {}, 1) %]">[% rec_attrs.title %]</a>
                         </div>
                         [% IF rec_attrs.author %]<div class='cn_browse_info'>
                             <a name='cn_browse_author' class='classic_link'
-                                href="[% ctx.opac_root %]/results?qtype=author&amp;query=[%- rec_attrs.author | replace('[,\.:;]', '') | uri %]&amp;loc=[% CGI.param('loc') | uri %]">[% rec_attrs.author %]</a>
+                                href="[%-
+                                    authorquery = rec_attrs.author | replace('[,\.:;]', '');
+                                    mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery}, 1)
+                                    -%]">[% rec_attrs.author | html_entity %]</a>
                         </div>[% END %]
                         <div class='cn_browse_info' name='cn_browse_lib'>[% cn.owning_lib.name %]</div>
                     </td>

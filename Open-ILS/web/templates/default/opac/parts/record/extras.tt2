@@ -37,17 +37,7 @@
         <div class="rdetail_extras">
             <div class="rdetail_extras_hr"></div>
             <div class="rdetail_extras_link">
-                [%  # extras_propagator should be used in place of propagator
-                    # in opac extras interfaces... it just avoids duplicating
-                    # the expands CGI param and parameters that are specific
-                    # to extras.
-                    # XXX move this off into a helper function
-
-                    extras_propagator = propagator.replace('(&amp;)?expand=.+($|&|;)', '$2');
-                    extras_propagator = extras_propagator.replace('(&amp;)?cnoffset=.+($|&|;)', '$2');
-
-
-                    href = ctx.full_path _ extras_propagator _ '&amp;expand=' _ name _ '#' _ name; %]
+                [%  href = mkurl('', {expand => name}) _ '#' _ name; %]
                 <a name='[% name %]' href='[% href %]'><img
                     alt='[% extra.label %]' src="[% ctx.media_prefix %]/images/rdetail_arrow.png" /></a>
                 <a href='[% href %]' class="rdetail_extras_lbl">[% extra.label %]</a>
