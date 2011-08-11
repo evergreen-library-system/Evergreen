@@ -19,23 +19,24 @@
                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
                     <tr>
                         <td valign="top">
-                            <span id='rdetail_title'>[% attrs.title_extended %]</span><br />
+                            <span id='rdetail_title'>[% attrs.title_extended | html_entity %]</span><br />
                             [% IF attrs.author %]
                             <span class='opac-auto-030'>[% l("Author") %]:</span>
                             <em><a title='[% l("Perform an author search") %]'
                                     id='rdetail_author'
-                                    href="[% ctx.opac_root %]/results?qtype=author&amp;query=[%-
-                                        attrs.author | replace('[,\.:;]', '') | uri %]&amp;loc=[% CGI.param('loc') | uri %]">[% attrs.author %]</a></em>
+                                    href="[%- 
+                                        authorquery = attrs.author | replace('[,\.:;]');
+                                        mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery})
+                                        -%]">[% attrs.author | html_entity %]</a></em>
                             [% END %]
                         </td>
                         <td align="right" valign="top" nowrap="nowrap" style="white-space:nowrap;">
                             <div style="width:230px;text-align:left;margin-top:3px;">
                                 <div style="float:right;">
                                     <div class="rdetail_aux_utils opac-auto-010">
-                                        <a href="[% ctx.opac_root %]/place_hold[%-
-                                            propagator; propagator.length > 1 ? "&amp;" : ""; %]hold_target=[% ctx.bre_id %]&amp;hold_type=T" id="rdetail_place_hold" class="no-dec"><img
-                                            src="[% ctx.media_prefix %]/images/green_check.png" alt="[% l('place hold') %]" /><span 
-                                                style="position:relative;top:-3px;left:3px;">[% l('Place Hold') %]</span></a>
+                                        <a href="[% mkurl(ctx.opac_root _ '/place_hold', {hold_target => ctx.bre_id, hold_type => 'T'}) %]" 
+                                            class="no-dec"><img src="[% ctx.media_prefix %]/images/green_check.png" alt="[% l('place hold') %]" /><span 
+                                                    style="position:relative;top:-3px;left:3px;">[% l('Place Hold') %]</span></a>
                                     </div>
                                     <div class="rdetail_aux_utils opac-auto-121">
                                         [%  
@@ -162,11 +163,11 @@
                         copy_info.status_holdable == 't');
                     IF overall_holdable;
                         l("Place on"); %]
-                <a href="[% ctx.opac_root %]/place_hold[% propagator; propagator.length > 1 ? "&amp;" : ""; %]hold_target=[% copy_info.id %]&amp;hold_type=C">[% l("copy") %]</a>
+                <a href="[% mkurl(ctx.opac_root _ '/place_hold', {hold_target => copy_info.id, hold_type => 'C'}) %]">[% l("copy") %]</a>
                 [%      IF copy_info.call_number != last_cn;
                             last_cn = copy_info.call_number;
                             l(" / "); %]
-                <a href="[% ctx.opac_root %]/place_hold[% propagator; propagator.length > 1 ? "&amp;" : ""; %]hold_target=[% copy_info.call_number %]&amp;hold_type=V">[% l("volume") %]</a>
+                <a href="[% mkurl(ctx.opac_root _ '/place_hold', {hold_target => copy_info.call_number, hold_type => 'V'}) %]">[% l("volume") %]</a>
                 [%      END;
                     ELSE;
                         l("No");
@@ -189,16 +190,14 @@
             new_offset = ctx.copy_offset - ctx.copy_limit;
             IF new_offset < 0; new_offset = 0; END %]
             <td>
-                <a href="[% ctx.opac_root %]/record/[% ctx.bre_id %]?copy_offset=[% new_offset %]&amp;copy_limit=[% ctx.copy_limit %]">&laquo; [%
-                    l('Previous [_1]', ctx.copy_offset - new_offset)
-                %]</a>
+                <a href="[% mkurl('', {copy_offset => new_offset, copy_limit => ctx.copy_limit}) %]">&laquo; [%
+                    l('Previous [_1]', ctx.copy_offset - new_offset) %]</a>
             </td>
         [% END %]
         [% IF ctx.copies.size >= ctx.copy_limit %]
             <td>
-                <a href="[% ctx.opac_root %]/record/[% ctx.bre_id %]?copy_offset=[% ctx.copy_offset + ctx.copy_limit %]&amp;copy_limit=[% ctx.copy_limit %]">[%
-                    l('Next [_1]', ctx.copy_limit)
-                %] &raquo;</a>
+                <a href="[% mkurl('', {copy_offset => ctx.copy_offset + ctx.copy_limit, copy_limit => ctx.copy_limit}) %]">[%
+                    l('Next [_1]', ctx.copy_limit) %] &raquo;</a>
             </td>
         [% END %]
         </tr>
@@ -208,18 +207,12 @@
                 [% IF  ctx.copy_limit != more_copies_limit AND ctx.copies.size >= ctx.copy_limit %]
                     <div style='margin-top:10px;'>
                         <img src="[% ctx.media_prefix %]/images/plus_sign.png" />
-                        [% cgi = CGI(); 
-                            SET x = cgi.param('copy_limit', more_copies_limit); 
-                            SET x = cgi.param('copy_offset', 0); %]
-                        <a href="[% cgi.url("-path" => 1, "-query" => 1) %]">[% l('Show more copies') %]</a>
+                        <a href="[% mkurl('', {copy_limit => more_copies_limit, copy_offset => 0}) %]">[% l('Show more copies') %]</a>
                     </div>
                 [% ELSIF ctx.copy_limit == more_copies_limit %]
                     <div style='margin-top:10px;'>
                         <img src="[% ctx.media_prefix %]/images/minus_sign.png" />
-                        [% cgi = CGI(); 
-                            SET x = cgi.param('copy_limit', '0'); # 0 == fall back to default 
-                            SET x = cgi.param('copy_offset', '0'); %]
-                        <a href="[% cgi.url("-path" => 1, "-query" => 1) %]">[% l('Show fewer copies') %]</a>
+                        <a href="[% mkurl('', {copy_limit => 0, copy_offset => 0}) %]">[% l('Show fewer copies') %]</a>
                     </div>
                 [% END %]
             </td>
