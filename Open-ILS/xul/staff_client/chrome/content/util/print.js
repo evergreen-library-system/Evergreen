@@ -148,13 +148,11 @@ util.print.prototype = {
 
             switch(content_type) {
                 case 'text/html' :
-                    var jsrc = 'data:text/javascript,' + window.escape('var params = { "data" : ' + js2JSON(params.data) + ', "list" : ' + js2JSON(params.list) + '}; function my_init() { if (typeof go_print == "function") { go_print(); } else { setTimeout( function() { if (typeof go_print == "function") { alert("Please tell the developers that the 2-second go_print workaround executed, and let them know whether this job printed successfully.  Thanks!"); go_print(); } else { alert("Please tell the developers that the 2-second go_print workaround did not work.  We will try to print one more time; there have been reports of wasted receipt paper at this point.  Please check the settings in the print dialog and/or prepare to power off your printer.  Thanks!"); window.print(); } }, 2000 ); } /* FIXME - mozilla bug#301560 - xpcom kills it too */ }');
+                    var jsrc = 'data:text/javascript,' + window.escape('var params = window.arguments[0]; window.go_print = window.arguments[1];');
                     var print_url = 'data:text/html,'
                         + '<html id="top"><head><script src="/xul/server/main/JSAN.js"></script><script src="' + window.escape(jsrc) + '"></script></head>'
-                        + '<body onload="try{my_init();}catch(E){alert(E);}">' + window.escape(msg) + '</body></html>';
-                    w = obj.win.open(print_url,'receipt_temp','chrome,resizable');
-                    w.minimize();
-                    w.go_print = function() { 
+                        + '<body onload="try{go_print();}catch(E){alert(E);}">' + window.escape(msg) + '</body></html>';
+                    w = obj.win.openDialog(print_url,'receipt_temp','chrome,resizable,minimizable', null, { "data" : params.data, "list" : params.list}, function() { 
                         try {
                             obj.NSPrint(w, silent, params);
                         } catch(E) {
@@ -162,7 +160,8 @@ util.print.prototype = {
                             w.print();
                         }
                         w.minimize(); w.close();
-                    }
+                    });
+                    w.minimize();
                 break;
                 default:
                     w = obj.win.open('data:' + content_type + ',' + window.escape(msg),'receipt_temp','chrome,resizable');
