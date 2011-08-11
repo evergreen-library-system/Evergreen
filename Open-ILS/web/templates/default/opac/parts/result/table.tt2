@@ -89,7 +89,7 @@
                                                 <div class="bold">
                                                     <a title="[% attrs.title %]" name='item_title'
                                                         href="[% mkurl(ctx.opac_root _ '/record/' _ rec.id) %]"
-                                                        class='search_link'>[% attrs.title %]</a>
+                                                        class='search_link'>[% attrs.title | html_entity%]</a>
                                                 </div>
                                                 <div style="font-size:11px;">
                                                     <div>
@@ -190,12 +190,12 @@
                                                                 <input type="hidden" name="record" value="[% rec.id %]" />
                                                             <div style="position:absolute;">
                                                                 <div style="position:relative;top:5px; left: 25px;">
-                                                                    <input type="submit" title="[% l(label _ ' my list') %]" 
-                                                                        value="[% l(label _ ' my list') %]" class="subtle-button" />
+                                                                    <input type="submit" title="[% '[_1] my list' | l(label) %]" 
+                                                                        value="[% '[_1] my list' | l(label) %]" class="subtle-button" />
                                                                 </div>
                                                             </div>
                                                                 <input type="image"
-                                                                alt="[% l(label _ ' my list') %]"
+                                                                alt="[% '[_1] my list' | l(label) %]"
                                                                 src="[% ctx.media_prefix %]/images/clipboard.png" />
                                                             </form>
                                                         </div>
@@ -225,5 +225,4 @@
 </div>
 <div>
     [% ctx.results_count_header %]
-    <!-- ChiliFresh XXX script TODO -->
 </div>
