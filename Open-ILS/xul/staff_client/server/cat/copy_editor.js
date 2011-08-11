@@ -165,17 +165,17 @@ function my_init() {
 
         if (xulG.unified_interface) {
             xulG.disable_copy_editor = function(c) {
-                addCSSClass(document.documentElement,'red_bg');
+                addCSSClass(document.documentElement,'disabled_copy_editor');
                 g.disabled = true;
             }
             xulG.enable_copy_editor = function(c) {
-                removeCSSClass(document.documentElement,'red_bg');
+                removeCSSClass(document.documentElement,'disabled_copy_editor');
                 g.disabled = false;
                 xulG.refresh_copy_editor();
             }
             xulG.refresh_copy_editor = function() {
                 dump('refresh_copy_editor\n');
-                addCSSClass(document.documentElement,'blue_bg');
+                addCSSClass(document.documentElement,'enabling_copy_editor');
                 try {
                     xulG.clear_update_copy_editor_timeout();
                     g.copies = xulG.copies;
@@ -198,7 +198,7 @@ function my_init() {
                     g.check_for_unmet_required_fields();
                     setTimeout(
                         function() {
-                            removeCSSClass(document.documentElement,'blue_bg');
+                            removeCSSClass(document.documentElement,'enabling_copy_editor');
                         }, 1000
                     );
                 } catch(E) {
