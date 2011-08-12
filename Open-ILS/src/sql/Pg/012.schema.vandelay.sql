@@ -508,7 +508,7 @@ BEGIN
     -- a side-effect, populate the _vandelay_tmp_[qj]rows tables.
     wq := vandelay.get_expr_from_match_set(match_set_id);
 
-    query_ := 'SELECT bre.id AS record, ';
+    query_ := 'SELECT DISTINCT(bre.id) AS record, ';
 
     -- qrows table is for the quality bits we add to the SELECT clause
     SELECT ARRAY_TO_STRING(
