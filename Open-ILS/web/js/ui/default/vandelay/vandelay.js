@@ -682,14 +682,17 @@ function vlGetViewMatches(rowIdx, item) {
         var id = this.grid.store.getValue(item, 'id');
         var rec = queuedRecordsMap[id];
         if(rec.matches().length > 0)
-            return id;
+            return id + ':' + rec.matches().length;
     }
     return -1
 }
 
 function vlFormatViewMatches(id) {
     if(id == -1) return '';
-    return '<a href="javascript:void(0);" onclick="vlLoadMatchUI(' + id + ');">' + this.name + '</a>';
+    var chunks = id.split(':');
+    id = chunks[0];
+    count = chunks[1];
+    return '<a href="javascript:void(0);" onclick="vlLoadMatchUI(' + id + ');">' + this.name + ' (' + count + ')</a>';
 }
 
 function vlGetViewErrors(rowIdx, item) {
