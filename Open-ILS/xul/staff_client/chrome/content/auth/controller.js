@@ -449,6 +449,8 @@ auth.controller.prototype = {
                 this.on_login_error(E);
             }
         }
+        // Once we are done with it, clear the password
+        this.controller.view.password_prompt.value = '';
 
     },
 
