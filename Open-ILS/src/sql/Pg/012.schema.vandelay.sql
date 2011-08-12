@@ -549,7 +549,13 @@ BEGIN
             ARRAY_ACCUM(value)
         )
         FROM (
-            SELECT tag, subfield, ARRAY_ACCUM(value)::TEXT AS value
+            SELECT
+                tag, subfield,
+                CASE WHEN tag IN ('020', '022', '024') THEN -- caseless
+                    ARRAY_ACCUM(LOWER(value))::TEXT
+                ELSE
+                    ARRAY_ACCUM(value)::TEXT
+                END AS value
                 FROM vandelay.flatten_marc(record_xml)
                 GROUP BY tag, subfield ORDER BY tag, subfield
         ) subquery
@@ -625,14 +631,20 @@ DECLARE
     my_alias    TEXT;
     op          TEXT;
     tagkey      TEXT;
+    caseless    BOOL;
 BEGIN
+    -- remember $1 is tags_rstore, and $2 is svf_rstore
+
     IF node.negate THEN
         op := '<>';
     ELSE
         op := '=';
     END IF;
 
+    caseless := FALSE;
+
     IF node.tag IS NOT NULL THEN
+        caseless := (node.tag IN ('020', '022', '024'));
         tagkey := node.tag;
         IF node.subfield IS NOT NULL THEN
             tagkey := tagkey || node.subfield;
@@ -651,8 +663,15 @@ BEGIN
             jrow := jrow || ' AND ' || my_alias || '.subfield = ''' ||
                 node.subfield || '''';
         END IF;
-        jrow := jrow || ' AND (' || my_alias || '.value ' || op ||
-            ' ANY(($1->''' || tagkey || ''')::TEXT[])))';
+        jrow := jrow || ' AND (';
+
+        IF caseless THEN
+            jrow := jrow || 'LOWER(' || my_alias || '.value) ' || op;
+        ELSE
+            jrow := jrow || my_alias || '.value ' || op;
+        END IF;
+
+        jrow := jrow || ' ANY(($1->''' || tagkey || ''')::TEXT[])))';
     ELSE    -- svf
         jrow := jrow || 'record_attr) ' || my_alias || ' ON (' ||
             my_alias || '.id = bre.id AND (' ||
