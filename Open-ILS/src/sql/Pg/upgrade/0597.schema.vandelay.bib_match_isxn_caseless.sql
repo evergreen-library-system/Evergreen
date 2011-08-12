@@ -3,7 +3,7 @@
 BEGIN;
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0597', :eg_version);
 
 CREATE INDEX metabib_full_rec_isxn_caseless_idx
     ON metabib.real_full_rec (LOWER(value))
