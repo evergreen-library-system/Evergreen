@@ -2,7 +2,7 @@
 --
 -- Change trigger which updates copy status_changed_time to ignore the
 -- Reshelving->Available status rollover
--BEGIN;
+BEGIN;
 
 -- FIXME: 0039.schema.acp_status_date_changed.sql defines this the first time
 -- around, but along with the column itself, etc.  And it gets modified with
