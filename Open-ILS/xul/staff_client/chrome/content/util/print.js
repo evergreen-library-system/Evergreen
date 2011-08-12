@@ -301,7 +301,7 @@ util.print.prototype = {
                     for (var i in params.data) {
                         var re = new RegExp('%'+i+'%',"g");
                         if (typeof params.data[i] == 'string' || typeof params.data[i] == 'number') {
-                            try{b = s; s=s.replace(re, this.escape_html(params.data[i]));}
+                            try{b = s; s=s.replace(re, (typeof params.data[i] == 'string' ? this.escape_html(params.data[i]) : params.data[i]));}
                                 catch(E){s = b; this.error.standard_unexpected_error_alert('print.js, template_sub(): 3 string = <' + s + '>',E);}
                         } else {
                             /* likely a null, print as an empty string */
