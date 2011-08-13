@@ -6,7 +6,7 @@
 BEGIN;
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0599', :eg_version);
 
 UPDATE config.metabib_field 
 SET xpath = $$//mods32:mods/mods32:name[@type='personal' and not(mods32:role/mods32:roleTerm[text()='creator'])]$$
