@@ -1,0 +1,57 @@
+[% BLOCK results_count_header %]
+<div class="results_header_nav1">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tr>
+            <td class="h1" width="116">[% l('Search Results') %]</td>
+            <td valign="bottom" nowrap="nowrap" class="result_number">
+                [% |l(ctx.result_start, ctx.result_stop, ctx.hit_count) %]
+                Results <strong>[_1]</strong> - <strong>[_2]</strong> of <strong>[_3]</strong>
+                [% END %]
+                <span style='padding-left: 6px;'>
+                    [% |l(page + 1, page_count) %](page <strong>[_1]</strong> of <strong>[_2]</strong>)[% END %]
+                </span>
+            </td>
+            <td align="right" valign="bottom">
+                <span class='start_end_links_span'>
+
+                    [%  class = 'search_page_nav_link';
+                        href = '#';
+                        IF page > 0;
+                            href = mkurl('', {page => page - 1});
+                        ELSE; class = class _ ' invisible'; END;
+                    %]
+                    <a class='[% class %]' href='[% href %]' 
+                        title='[% l("Previous page") %]'><span class="nav_arrow_fix">&#9668;</span> [% l('Previous') %] </a>
+
+                    <span style='padding-left: 11px; padding-right:11px;'>
+                        [%  # show links to 4 previous pages, the current page, and 3 more pages.
+                            added = 0;
+                            pageitr = page - 5; 
+                            WHILE (pageitr = pageitr + 1) < page_count;
+                                IF pageitr < 0; NEXT; END;
+                                IF pageitr == page; %]
+                                    <span class='results-paginator-selected'>[% pageitr + 1%]</span>
+                                [% ELSE %]
+                                    <a href="[% mkurl('', {page => pageitr}) %]">[% pageitr + 1%]</a>
+                            [%  END;
+                                added = added + 1;
+                                IF added == 8; LAST; END;
+                            END;
+                        %]
+                    </span>
+
+                    [%  class = 'search_page_nav_link';
+                        href = '#';
+                        IF (page + 1) < page_count;
+                            href = mkurl('', {page => page + 1});
+                        ELSE; class = class _ ' invisible'; END;
+                    %]
+                    <a class='[% class %]' href='[% href %]' 
+                        title='[% l("Next page") %]'> [% l('Next') %] <span class="nav_arrow_fix">&#9658;</span></a>
+                </span>
+            </td>
+        </tr>
+    </table>
+</div>
+[% END %]
+
