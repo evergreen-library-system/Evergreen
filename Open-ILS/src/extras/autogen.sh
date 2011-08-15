@@ -43,7 +43,7 @@ function usage {
 	echo "Examples:";
 	echo "";
 	echo "  Update organization tree and fieldmapper IDL:";
-	echo "    $0 -c SYSCONFDIR/opensrf_core.xml";
+	echo "    $0";
 	echo "";
 	echo "  Update organization tree and refresh proximity:";
 	echo "    $0 -u -c SYSCONFDIR/opensrf_core.xml";
@@ -97,41 +97,41 @@ echo "Updating Evergreen organization tree and IDL using '$CONFIG'"
 echo ""
 
 echo "Updating fieldmapper";
-perl fieldmapper.pl "$CONFIG"	> "$JSDIR/fmall.js";
+perl -MOpenILS::Utils::Configure -e 'print OpenILS::Utils::Configure::fieldmapper();' > "$JSDIR/fmall.js";
 cp "$JSDIR/fmall.js" "$FMDOJODIR/"
 echo " -> $JSDIR/fmall.js";
 
 echo "Updating web_fieldmapper";
-perl fieldmapper.pl "$CONFIG" "web_core"	> "$JSDIR/fmcore.js";
+perl -MOpenILS::Utils::Configure -e 'print OpenILS::Utils::Configure::fieldmapper("web_core");' > "$JSDIR/fmcore.js";
 echo " -> $JSDIR/fmcore.js";
 
 echo "Updating OrgTree";
-perl org_tree_js.pl "$CONFIG" "$JSDIR" "OrgTree.js";
+perl -MOpenILS::Utils::Configure -e "OpenILS::Utils::Configure::org_tree_js('$JSDIR', 'OrgTree.js');'
 cp "$JSDIR/en-US/OrgTree.js" "$FMDOJODIR/"
 echo " -> $JSDIR/*/OrgTree.js";
 
 echo "Updating OrgTree HTML";
-perl org_tree_html_options.pl "$CONFIG" "$SLIMPACDIR" "lib_list.inc";
+perl -MOpenILS::Utils::Configure -e "OpenILS::Utils::Configure::org_tree_html_options('$SLIMPACDIR', 'lib_list.inc');"
 echo " -> $SLIMPACDIR/*/lib_list.inc";
 
 echo "Updating locales selection HTML";
-perl locale_html_options.pl "$CONFIG" "$SLIMPACDIR/locales.inc";
+perl -MOpenILS::Utils::Configure -e "print OpenILS::Utils::Configure::locale_html_options();" > "$SLIMPACDIR/locales.inc"
 echo " -> $SLIMPACDIR/*/locales.inc";
 
 echo "Updating Search Groups";
-perl org_lasso_js.pl "$CONFIG" > "$JSDIR/OrgLasso.js";
+perl -MOpenILS::Utils::Configure -e "print OpenILS::Utils::Configure::org_lasso();" > "$JSDIR/OrgLasso.js";
 cp "$JSDIR/OrgLasso.js" "$FMDOJODIR/"
 echo " -> $JSDIR/OrgLasso.js";
 
 echo "Updating Facet Definitions";
-perl facet_types_js.pl "$CONFIG" "$JSDIR" "FacetDefs.js";
+perl -MOpenILS::Utils::Configure -e "OpenILS::Utils::Configure::facet_types('$JSDIR', 'FacetDefs.js');"
 cp "$JSDIR/en-US/FacetDefs.js" "$FMDOJODIR/"
 echo " -> $JSDIR/*/FacetDefs.js";
 
 if [ ! -z "$PROXIMITY" ]
 then
 	echo "Refreshing proximity of org units";
-	perl org_tree_proximity.pl "$CONFIG";
+    perl -MOpenILS::Utils::Configure -e "OpenILS::Utils::Configure::org_tree_proximity();"
 fi
 
 echo "Creating combined JS..."
