@@ -553,8 +553,10 @@ auth.controller.prototype = {
         this.session.close();
         this.data.menu_perms = false;
         this.data.current_hotkeyset = undefined;
+        this.data.enable_debug = this.data.debug_client;
         this.data.stash('menu_perms');
         this.data.stash('current_hotkeyset');
+        this.data.stash('enable_debug');
 
         /* FIXME - need some locking or object destruction for the async tests */
         /* this.test_server( this.controller.view.server_prompt.value ); */
