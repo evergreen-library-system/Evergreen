@@ -22,6 +22,7 @@
             </td>
             <td align="right" valign="bottom">
                 <span class='start_end_links_span'>
+
                     [%  class = 'search_page_nav_link';
                         href = '#';
                         IF page > 0;
@@ -30,10 +31,24 @@
                     %]
                     <a class='[% class %]' href='[% href %]' 
                         title='[% l("Previous page") %]'><span class="nav_arrow_fix">&#9668;</span> [% l('Previous') %] </a>
-                    <span class='hide_me'
-                        style='padding-left: 11px; padding-right:11px;'>
-                        <span></span>
+
+                    <span style='padding-left: 11px; padding-right:11px;'>
+                        [%  # show links to 4 previous pages, the current page, and 3 more pages.
+                            added = 0;
+                            pageitr = page - 5; 
+                            WHILE (pageitr = pageitr + 1) < page_count;
+                                IF pageitr < 0; NEXT; END;
+                                IF pageitr == page; %]
+                                    <span class='results-paginator-selected'>[% pageitr + 1%]</span>
+                                [% ELSE %]
+                                    <a href="[% mkurl('', {page => pageitr}) %]">[% pageitr + 1%]</a>
+                            [%  END;
+                                added = added + 1;
+                                IF added == 8; LAST; END;
+                            END;
+                        %]
                     </span>
+
                     [%  class = 'search_page_nav_link';
                         href = '#';
                         IF (page + 1) < page_count;
