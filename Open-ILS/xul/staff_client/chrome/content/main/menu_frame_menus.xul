@@ -64,14 +64,25 @@
     <command id="cmd_local_admin" />
     <command id="cmd_toggle_meters" />
 
-    <command id="cmd_extension_manager" />
-    <command id="cmd_theme_manager" />
-    <command id="cmd_about_config" />
+    <command id="cmd_extension_manager"
+             perm="DEBUG_CLIENT"
+             />
+    <command id="cmd_theme_manager"
+             perm="DEBUG_CLIENT"
+             />
+    <command id="cmd_about_config"
+             perm="DEBUG_CLIENT"
+             />
 
     <command id="cmd_adv_user_edit" />
-    <command id="cmd_console" />
-    <command id="cmd_shell" />
-    <command id="cmd_xuleditor" />
+    <command id="cmd_console"
+             perm="DEBUG_CLIENT" />
+    <command id="cmd_shell"
+             perm="DEBUG_CIENT"
+             />
+    <command id="cmd_xuleditor"
+             perm="DEBUG_CLIENT"
+             />
     <command id="cmd_fieldmapper" />
     <command id="cmd_test_html" />
     <command id="cmd_test_xul" />
@@ -220,6 +231,18 @@
     <command id="cmd_toolbar_mode_set" />
     <command id="cmd_toolbar_size_set" />
     <command id="cmd_toolbar_label_position_set" />
+    <command id="cmd_debug_venkman"
+             perm="DEBUG_CLIENT"
+             />
+    <command id="cmd_debug_inspector"
+             perm="DEBUG_CLIENT"
+             />
+    <command id="cmd_debug_chrome_list"
+             perm="DEBUG_CLIENT"
+             />
+    <command id="cmd_debug_chrome_shell"
+             perm="DEBUG_CLIENT"
+             />
 </commandset>
 
 <!-- The File menu on the main menu -->
@@ -534,8 +557,7 @@
                 <menuitem label="&staff.main.menu.admin.fieldmapper.label;" accesskey="&staff.main.menu.admin.fieldmapper.accesskey;" command="cmd_fieldmapper"/>
                 <menuitem label="&staff.main.menu.admin.cmd_console.label;" accesskey="&staff.main.menu.admin.cmd_console.accesskey;" command="cmd_console"/>
                 <menuitem label="&staff.main.menu.admin.cmd_shell.label;" accesskey="&staff.main.menu.admin.cmd_shell.accesskey;" command="cmd_shell"/>
-                <menuitem label="&staff.main.menu.admin.cmd_chrome_shell.label;" accesskey="&staff.main.menu.admin.cmd_chrome_shell.accesskey;" 
-                    oncommand="try{xulG.window.win.start_js_shell();}catch(E){alert(E);}"/>
+                <menuitem label="&staff.main.menu.admin.cmd_chrome_shell.label;" accesskey="&staff.main.menu.admin.cmd_chrome_shell.accesskey;" command="cmd_debug_chrome_shell"/> 
                 <menuitem label="server/main/test.html" accesskey="1" command="cmd_test_html"/>
                 <menuitem label="server/main/test.xul" accesskey="2" command="cmd_test_xul"/>
                 <menuitem label="&staff.main.menu.admin.clear_cache.label;" accesskey="&staff.main.menu.admin.clear_cache.accesskey;" command="cmd_clear_cache"/>
@@ -543,9 +565,9 @@
                 <menuitem label="&staff.main.menu.admin.extension_manager.label;" command="cmd_extension_manager"/>
                 <menuitem label="&staff.main.menu.admin.theme_manager.label;" command="cmd_theme_manager"/>
                 <menuitem label="&staff.main.menu.admin.about_config.label;" command="cmd_about_config"/>
-                <menuitem label="&staff.main.menu.admin.venkman.label;" oncommand="try{xulG.window.win.start_debugger();}catch(E){alert(E);}"/>
-                <menuitem label="&staff.main.auth.debug.inspector;" oncommand="try{xulG.window.win.start_inspector();}catch(E){alert(E);}"/>
-                <menuitem label="&staff.main.auth.debug.chrome_list;" oncommand="try{xulG.window.win.start_chrome_list();}catch(E){alert(E);}"/>
+                <menuitem label="&staff.main.menu.admin.venkman.label;" command="cmd_debug_venkman"/>
+                <menuitem label="&staff.main.auth.debug.inspector;" command="cmd_debug_inspector"/>
+                <menuitem label="&staff.main.auth.debug.chrome_list;" command="cmd_debug_chrome_list"/>
                 <menuitem label="&staff.main.menu.admin.ping;" oncommand="try{netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');JSAN.use('util.network'); var n = new util.network(); alert(n.ping());}catch(E){alert(E);}"/>
             </menupopup>
         </menu>

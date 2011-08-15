@@ -1514,6 +1514,46 @@ main.menu.prototype = {
                         xulG.pref.clearUserPref('open-ils.menu.toolbar.labelbelow');
                 }
             ],
+            'cmd_debug_venkman' : [
+                ['oncommand'],
+                function() {
+                    try{
+                        xulG.window.win.start_debugger();
+                    } catch(E) {
+                        alert(E);
+                    }
+                }
+            ],
+            'cmd_debug_inspector' : [
+                ['oncommand'],
+                function() {
+                    try{
+                        xulG.window.win.start_inspector();
+                    } catch(E) {
+                        alert(E);
+                    }
+                }
+            ],
+            'cmd_debug_chrome_list' : [
+                ['oncommand'],
+                function() {
+                    try{
+                        xulG.window.win.start_chrome_list();
+                    } catch(E) {
+                        alert(E);
+                    }
+                }
+            ],
+            'cmd_debug_chrome_shell' : [
+                ['oncommand'],
+                function() {
+                    try{
+                        xulG.window.win.start_js_shell();
+                    } catch(E) {
+                        alert(E)
+                    }
+                }
+            ],
         };
 
         JSAN.use('util.controller');

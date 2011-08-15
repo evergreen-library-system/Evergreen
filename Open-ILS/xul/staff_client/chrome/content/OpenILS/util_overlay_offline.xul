@@ -63,7 +63,7 @@
             <button label="Inspect" oncommand="try { var dtb = document.getElementById('debug_tb'); var dx = eval( dtb.value ); var ds = ''; for (var di in dx) { ds += di + '=' + dx[di] + '\r\n'; }; window.open('data:text/plain;charset=UTF-8,'+window.escape(ds),'debug_win','chrome,resizable,modal'); } catch(E) { alert(E); }; dtb.focus();"/>
             <button label="js2JSON" oncommand="try { var dtb = document.getElementById('debug_tb'); alert( js2JSON( eval( dtb.value ) ) ); } catch(E) { alert(E); }; dtb.focus();"/>
         </hbox>
-        <keyset><key id="debug_box_key" keycode="VK_F7" modifiers="control,shift" oncommand="var dtb = document.getElementById('debug_tb'); var dx = document.getElementById('debug_box'); dx.hidden = !dx.hidden; if (!dx.hidden) dtb.focus();"/></keyset>
+        <keyset><key id="debug_box_key" keycode="VK_F7" modifiers="control,shift" oncommand="JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'}); var dtb = document.getElementById('debug_tb'); var dx = document.getElementById('debug_box'); if(data.debug_build || data.enable_debug || !dx.hidden) { dx.hidden = !dx.hidden; if(!dx.hidden) dtb.focus();}"/></keyset>
  
     </scripts>
     <script>dump('Loaded OpenILS/util_overlay_offline.xul\n');</script>

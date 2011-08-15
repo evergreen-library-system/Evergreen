@@ -212,6 +212,15 @@ function get_menu_perms(indocument) {
             var r = network.simple_request('BATCH_PERM_RETRIEVE_WORK_OU', [ G.data.session.key, get_menu_perms.perm_list ]);
             for(p in r)
                 r[p] = (typeof(r[p][0]) == 'number');
+            // Developer-enabled clients override permissions and always allow debugging
+            if(G.data.debug_build) {
+                r['DEBUG_CLIENT'] = true;
+            }
+            // If we have DEBUG_CLIENT (by force or otherwise) we can use debugging interfaces
+            // Doing this here because this function gets called at least once per login
+            // Including operator change
+            G.data.enable_debug = (r['DEBUG_CLIENT'] == true);
+            G.data.stash('enable_debug');
             G.data.menu_perms = r;
             G.data.stash('menu_perms');
         }
@@ -523,6 +532,12 @@ function main_init() {
             }
         } catch(E) {
         }
+
+        // If we are showing the debugging frame then we consider this a debug build
+        // This could be a versionless build, a developer-pref enabled build, or otherwise
+        // If set this will enable all debugging commands, even if you normally don't have permission to use them
+        G.data.debug_build = !document.getElementById('debug_gb').hidden;
+        G.data.stash('debug_build');
 
         var appInfo = Components.classes["@mozilla.org/xre/app-info;1"] 
             .getService(Components.interfaces.nsIXULAppInfo); 

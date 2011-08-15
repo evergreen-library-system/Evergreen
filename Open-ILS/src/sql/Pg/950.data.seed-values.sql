@@ -1431,7 +1431,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 510, 'UPDATE_PATRON_COLLECTIONS_EXEMPT', oils_i18n_gettext(510,
     'Allows a user to indicate that a patron is exempt from collections processing', 'ppl', 'description')),
  ( 512, 'ACQ_INVOICE_REOPEN', oils_i18n_gettext( 512,
-    'Allows a user to reopen an Acquisitions invoice', 'ppl', 'description' ));
+    'Allows a user to reopen an Acquisitions invoice', 'ppl', 'description' )),
+ ( 513, 'DEBUG_CLIENT', oils_i18n_gettext( 513,
+    'Allows a user to use debug functions in the staff client', 'ppl', 'description' ));
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
 
