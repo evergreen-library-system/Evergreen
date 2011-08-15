@@ -72,6 +72,9 @@
                                                             </td>
                                                             <td>[% args.holdings.0 %]</td>
                                                         </tr>
+
+                                                        [% IF CGI.param('detail_record_view') %]
+                                                        <!-- These fields are visible when viewing the results page in 'detailed' mode -->
                                                         <tr name="results_pub_tr" class="[% attrs.publisher ? '' : 'hide_me' %]">
                                                             <td valign="top">
                                                                 <strong>[% l('Publisher:') %]</strong>
@@ -98,6 +101,8 @@
                                                                 [% args.phys_desc %]
                                                             </td>
                                                         </tr>
+                                                        [% END %]
+
                                                     </table>
                                                     <div>
                                                         [% l('[_1] of [quant,_2,copy,copies] available',
