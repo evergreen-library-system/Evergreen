@@ -96,42 +96,56 @@ COMPRESSOR="" # TODO: set via ./configure
 echo "Updating Evergreen organization tree and IDL using '$CONFIG'"
 echo ""
 
+OUTFILE="$JSDIR/fmall.js"
 echo "Updating fieldmapper";
-perl -MOpenILS::Utils::Configure -e 'print OpenILS::Utils::Configure::fieldmapper();' > "$JSDIR/fmall.js";
-cp "$JSDIR/fmall.js" "$FMDOJODIR/"
-echo " -> $JSDIR/fmall.js";
+perl -MOpenILS::Utils::Configure -e 'print OpenILS::Utils::Configure::fieldmapper();' > "$OUTFILE"
+cp "$OUTFILE" "$FMDOJODIR/"
+echo " -> $OUTFILE"
+OUTFILES="$OUTFILE"
 
+OUTFILE="$JSDIR/fmcore.js"
 echo "Updating web_fieldmapper";
-perl -MOpenILS::Utils::Configure -e 'print OpenILS::Utils::Configure::fieldmapper("web_core");' > "$JSDIR/fmcore.js";
-echo " -> $JSDIR/fmcore.js";
+perl -MOpenILS::Utils::Configure -e 'print OpenILS::Utils::Configure::fieldmapper("web_core");' > "$OUTFILE"
+echo " -> $OUTFILE"
+OUTFILES="$OUTFILES $OUTFILE"
 
+OUTFILE="$JSDIR/*/OrgTree.js"
 echo "Updating OrgTree";
-perl -MOpenILS::Utils::Configure -e "OpenILS::Utils::Configure::org_tree_js('$JSDIR', 'OrgTree.js');'
+perl -MOpenILS::Utils::Configure -e "OpenILS::Utils::Configure::org_tree_js('$JSDIR', 'OrgTree.js');"
 cp "$JSDIR/en-US/OrgTree.js" "$FMDOJODIR/"
-echo " -> $JSDIR/*/OrgTree.js";
+echo " -> $OUTFILE"
+OUTFILES="$OUTFILES $OUTFILE"
 
+OUTFILE="$SLIMPACDIR/*/lib_list.inc"
 echo "Updating OrgTree HTML";
 perl -MOpenILS::Utils::Configure -e "OpenILS::Utils::Configure::org_tree_html_options('$SLIMPACDIR', 'lib_list.inc');"
-echo " -> $SLIMPACDIR/*/lib_list.inc";
+echo " -> $OUTFILE"
+OUTFILES="$OUTFILES $OUTFILE"
 
+OUTFILE="$SLIMPACDIR/locales.inc"
 echo "Updating locales selection HTML";
-perl -MOpenILS::Utils::Configure -e "print OpenILS::Utils::Configure::locale_html_options();" > "$SLIMPACDIR/locales.inc"
-echo " -> $SLIMPACDIR/*/locales.inc";
+perl -MOpenILS::Utils::Configure -e "print OpenILS::Utils::Configure::locale_html_options();" > "$OUTFILE"
+echo " -> $OUTFILE"
+OUTFILES="$OUTFILES $OUTFILE"
 
+OUTFILE="$JSDIR/OrgLasso.js"
 echo "Updating Search Groups";
-perl -MOpenILS::Utils::Configure -e "print OpenILS::Utils::Configure::org_lasso();" > "$JSDIR/OrgLasso.js";
-cp "$JSDIR/OrgLasso.js" "$FMDOJODIR/"
-echo " -> $JSDIR/OrgLasso.js";
+perl -MOpenILS::Utils::Configure -e "print OpenILS::Utils::Configure::org_lasso();" > "$OUTFILE";
+cp "$OUTFILE" "$FMDOJODIR/"
+echo " -> $OUTFILE"
+OUTFILES="$OUTFILES $OUTFILE"
 
+OUTFILE="$JSDIR/*/FacetDefs.js"
 echo "Updating Facet Definitions";
 perl -MOpenILS::Utils::Configure -e "OpenILS::Utils::Configure::facet_types('$JSDIR', 'FacetDefs.js');"
 cp "$JSDIR/en-US/FacetDefs.js" "$FMDOJODIR/"
-echo " -> $JSDIR/*/FacetDefs.js";
+echo " -> $OUTFILE"
+OUTFILES="$OUTFILES $OUTFILE"
 
 if [ ! -z "$PROXIMITY" ]
 then
 	echo "Refreshing proximity of org units";
-    perl -MOpenILS::Utils::Configure -e "OpenILS::Utils::Configure::org_tree_proximity();"
+	perl -MOpenILS::Utils::Configure -e "OpenILS::Utils::Configure::org_tree_proximity();"
 fi
 
 echo "Creating combined JS..."
@@ -163,7 +177,21 @@ for skin in $(ls $SKINDIR); do
     fi;
 done;
 
+# Generate a hash of the generated files
+(
+	date +%Y%m%d
+	for file in `ls -1 $OUTFILES`; do
+		if [[ -n $file && -f $file ]]
+		then
+			md5sum $file
+		fi
+	done
+) | md5sum | cut -f1 -d' ' | colrm 1 26 > LOCALSTATEDIR/web/eg_cache_hash
+
+echo
+echo -n "Current Evergreen cache key: "
+cat LOCALSTATEDIR/web/eg_cache_hash
+
 echo "Done";
 
 )
-

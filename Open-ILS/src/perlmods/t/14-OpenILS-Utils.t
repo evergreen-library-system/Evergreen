@@ -1,7 +1,8 @@
 #!perl -T
 
-use Test::More tests => 19;
+use Test::More tests => 20;
 
+use_ok( 'OpenILS::Utils::Configure' );
 use_ok( 'OpenILS::Utils::Cronscript' );
 use_ok( 'OpenILS::Utils::CStoreEditor' );
 use_ok( 'OpenILS::Utils::Editor' );
