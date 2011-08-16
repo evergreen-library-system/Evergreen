@@ -863,6 +863,11 @@ function vlImportSelectedRecords() {
 
     var options = {overlay_map : currentOverlayRecordsMap};
 
+    if(vlUploadQueueImportNoMatch.checked) {
+        options.import_no_match = true;
+        vlUploadQueueImportNoMatch.checked = false;
+    }
+
     if(vlUploadQueueAutoOverlayExact.checked) {
         options.auto_overlay_exact = true;
         vlUploadQueueAutoOverlayExact.checked = false;
