@@ -10,6 +10,7 @@
         args.upc = xml.findnodes('//*[@tag="024"]/*[@code="a"]').textContent;
         args.issn = xml.findnodes('//*[@tag="022"]/*[@code="a"]').textContent;
         args.title = xml.findnodes('//*[@tag="245"]/*[@code="a"]').textContent;
+        args.title_extended = xml.findnodes('//*[@tag="245"]').textContent;
         args.author = xml.findnodes('//*[@tag="100"]/*[@code="a"]').textContent;
         args.publisher = xml.findnodes('//*[@tag="260"]/*[@code="b"]').textContent;
         args.pubdate = xml.findnodes('//*[@tag="260"]/*[@code="c"]').textContent;
