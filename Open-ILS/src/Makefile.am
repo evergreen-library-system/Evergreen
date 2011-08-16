@@ -34,16 +34,8 @@ supportscr = @srcdir@/support-scripts
 
 # Collect files to be used by multiple targets
 
-autojsbinscripts = @srcdir@/extras/fieldmapper.pl \
- 	 @srcdir@/extras/locale_html_options.pl \
- 	 @srcdir@/extras/org_tree_js.pl \
-	 @srcdir@/extras/org_lasso_js.pl \
-	 @srcdir@/extras/facet_types_js.pl \
-	 @srcdir@/extras/org_tree_html_options.pl \
-	 @srcdir@/extras/org_tree_proximity.pl \
-	 @srcdir@/extras/autogen.sh \
-	 @srcdir@/extras/cache-generator.sh \
-	 @srcdir@/support-scripts/offline-blocked-list.pl 
+autojsbinscripts = @srcdir@/extras/autogen.sh \
+	@srcdir@/support-scripts/offline-blocked-list.pl 
 
 # Decide which entities to build
 
