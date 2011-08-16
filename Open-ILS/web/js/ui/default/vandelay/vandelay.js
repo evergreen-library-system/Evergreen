@@ -1309,7 +1309,6 @@ function vlFleshQueueSelect(selector, type) {
         // user entered a new queue name. clear the selector 
         vlUploadQueueHoldingsImportProfile.attr('value', '');
         vlUploadQueueHoldingsImportProfile.attr('disabled', false);
-        vlUploadQueueMatchSet.attr('value', '');
         vlUploadQueueMatchSet.attr('disabled', false);
         dojo.disconnect(selector._onchange);
         selector.attr('value', '');
