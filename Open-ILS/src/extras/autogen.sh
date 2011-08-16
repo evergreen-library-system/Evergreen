@@ -28,15 +28,13 @@ set -u
 
 function usage {
 	echo "";
-	echo "usage: $0 [-u] [-c <c_config>]";
+	echo "usage: $0 [-u]";
 	echo "";
 	echo "Updates the Evergreen organization tree and fieldmapper IDL.";
 	echo "Run this every time you change the Evergreen organization tree";
 	echo "or update fm_IDL.xml";
 	echo "";
 	echo "Optional parameters:";
-	echo -e "  -c\t\tfull path to C configuration file (opensrf_core.xml)";
-	echo -e "    \t\t - defaults to SYSCONFDIR/opensrf_core.xml";
 	echo -e "  -u\t\tupdate proximity of library sites in organization tree";
 	echo -e "    \t\t(this is expensive for a large organization tree)";
 	echo "";
@@ -46,7 +44,7 @@ function usage {
 	echo "    $0";
 	echo "";
 	echo "  Update organization tree and refresh proximity:";
-	echo "    $0 -u -c SYSCONFDIR/opensrf_core.xml";
+	echo "    $0 -u";
 	echo "";
 }
 
@@ -55,35 +53,18 @@ function usage {
 cd "BINDIR"
 
 # Initialize our variables
-CONFIG="";
 PROXIMITY="";
 
 # ---------------------------------------------------------------------------
 # Load the command line options and set the global vars
 # ---------------------------------------------------------------------------
-while getopts  "c:u h" flag; do
+while getopts  "u h" flag; do
 	case $flag in	
-		"c")		CONFIG="$OPTARG";;
 		"u")		PROXIMITY="REFRESH";;
 		"h")		usage && exit;;
 	esac;
 done
 shift $((OPTIND - 1))
-
-if [ -z "$CONFIG" ] && [[ ! -z "${1:-}" ]]; then
-	# Support "autogen.sh /path/to/opensrf_core.xml" for legacy invocation
-	CONFIG="$1";
-fi
-if [ -z "$CONFIG" ]; then
-	# Fall back to the configured default
-	CONFIG="SYSCONFDIR/opensrf_core.xml";
-fi
-if [ ! -f "$CONFIG" ]; then
-	echo "ERROR: could not find configuration file '$CONFIG'";
-	echo "";
-	usage;
-	exit 1;
-fi;
 
 JSDIR="LOCALSTATEDIR/web/opac/common/js/";
 FMDOJODIR="LOCALSTATEDIR/web/js/dojo/fieldmapper/";
@@ -93,7 +74,7 @@ SKINDIR='LOCALSTATEDIR/web/opac/skin';
 COMPRESSOR="" # TODO: set via ./configure
 #COMPRESSOR="java -jar /opt/yuicompressor-2.4.2/build/yuicompressor-2.4.2.jar"
 
-echo "Updating Evergreen organization tree and IDL using '$CONFIG'"
+echo "Updating Evergreen organization tree and IDL"
 echo ""
 
 OUTFILE="$JSDIR/fmall.js"
