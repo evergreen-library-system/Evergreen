@@ -9,6 +9,5 @@ all-local:
 # ------------------------------------------------------------------------------
 install-data-local:
 	@echo $@
-	python @srcdir@/setup.py install
-
+	python @srcdir@/setup.py install --root $(DESTDIR)///
 
