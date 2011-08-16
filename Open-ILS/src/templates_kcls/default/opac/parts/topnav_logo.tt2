@@ -1,2 +1,0 @@
-        <a href="http://www.kcls.org"><img alt="[% l('KCLS Logo') %]" 
-            src="[% ctx.media_prefix %]/images/KCLS_logo_horiz.gif" /></a>
