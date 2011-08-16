@@ -27,15 +27,17 @@
                         [%  # show links to 4 previous pages, the current page, and 3 more pages.
                             added = 0;
                             pageitr = page - 5; 
-                            WHILE (pageitr = pageitr + 1) < page_count;
-                                IF pageitr < 0; NEXT; END;
-                                IF pageitr == page; %]
-                                    <span class='results-paginator-selected'>[% pageitr + 1%]</span>
-                                [% ELSE %]
-                                    <a href="[% mkurl('', {page => pageitr}) %]">[% pageitr + 1%]</a>
-                            [%  END;
-                                added = added + 1;
-                                IF added == 8; LAST; END;
+                            IF page_count > 1; # no need to paginate 1 page
+                                WHILE (pageitr = pageitr + 1) < page_count;
+                                    IF pageitr < 0; NEXT; END;
+                                    IF pageitr == page; %]
+                                        <span class='results-paginator-selected'>[% pageitr + 1%]</span>
+                                    [% ELSE %]
+                                        <a href="[% mkurl('', {page => pageitr}) %]">[% pageitr + 1%]</a>
+                                [%  END;
+                                    added = added + 1;
+                                    IF added == 8; LAST; END;
+                                END;
                             END;
                         %]
                     </span>
