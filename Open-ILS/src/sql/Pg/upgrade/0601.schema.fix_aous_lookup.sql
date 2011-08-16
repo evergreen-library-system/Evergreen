@@ -8,7 +8,7 @@ BEGIN;
 
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+INSERT INTO config.upgrade_log (version) VALUES ('0601');
 
 -- FIXME: add/check SQL statements to perform the upgrade
 CREATE OR REPLACE FUNCTION actor.org_unit_ancestor_setting( setting_name TEXT, org_id INT ) RETURNS SETOF actor.org_unit_setting AS $$
