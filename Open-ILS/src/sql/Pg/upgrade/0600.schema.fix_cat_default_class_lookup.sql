@@ -7,7 +7,7 @@ BEGIN;
 
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+INSERT INTO config.upgrade_log (version) VALUES ('0600');
 
 CREATE OR REPLACE FUNCTION asset.label_normalizer() RETURNS TRIGGER AS $func$
 DECLARE
