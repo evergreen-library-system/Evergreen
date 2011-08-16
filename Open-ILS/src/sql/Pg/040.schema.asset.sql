@@ -262,9 +262,7 @@ BEGIN
             NEW.label_class := COALESCE(
             (
                 SELECT substring(value from E'\\d+')::integer
-                FROM actor.org_unit_setting
-                WHERE name = 'cat.default_classification_scheme'
-                AND org_unit = NEW.owning_lib
+                FROM actor.org_unit_ancestor_setting('cat.default_classification_scheme', NEW.owning_lib)
             ), 1
         );
     END IF;

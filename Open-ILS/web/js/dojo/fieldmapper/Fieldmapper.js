@@ -223,7 +223,7 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
     //** FROM HASH **/
     function _fromHash (_hash) {
         for ( var i=0; i < this._fields.length; i++) {
-            if (_hash[this._fields[i]] !== null)
+            if (_hash[this._fields[i]] != null)
                 this[this._fields[i]]( _hash[this._fields[i]] );
         }
         return this;
@@ -233,8 +233,8 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
         var _hash = {};
         var i;
         for (i=0; i < this._fields.length; i++) {
-            if (includeNulls || this[this._fields[i]]() !== null) {
-                if (this[this._fields[i]]() === null)
+            if (includeNulls || this[this._fields[i]]() != null) {
+                if (this[this._fields[i]]() == null)
                     _hash[this._fields[i]] = null;
                 else
                     _hash[this._fields[i]] = '' + this[this._fields[i]]();

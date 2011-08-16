@@ -16,8 +16,12 @@ script='./edi_webrick.rb';
 # This doesn't work?
 #      export RUBYLIB=$lib
 
+echo -n Starting translator in background with logging...
+
 # This is necessary 
-echo export RUBYOPT=rubygems
-     export RUBYOPT=rubygems
-echo ruby $script '&'
-     ruby $script &
+export RUBYOPT=rubygems
+
+# Instead of logging to file, one could pipe to the logger command.
+ruby $script --verbose >> /openils/var/log/edi_webrick.log 2>&1 &
+
+echo done.

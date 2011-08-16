@@ -237,6 +237,10 @@ CREATE INDEX metabib_full_rec_value_idx ON metabib.real_full_rec (substring(valu
 CREATE INDEX metabib_full_rec_value_tpo_index ON metabib.real_full_rec (substring(value,1,1024) text_pattern_ops);
 CREATE INDEX metabib_full_rec_record_idx ON metabib.real_full_rec (record);
 CREATE INDEX metabib_full_rec_index_vector_idx ON metabib.real_full_rec USING GIST (index_vector);
+CREATE INDEX metabib_full_rec_isxn_caseless_idx
+    ON metabib.real_full_rec (LOWER(value))
+    WHERE tag IN ('020', '022', '024');
+
 
 CREATE TRIGGER metabib_full_rec_fti_trigger
 	BEFORE UPDATE OR INSERT ON metabib.real_full_rec

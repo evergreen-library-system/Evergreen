@@ -14,6 +14,7 @@ use OpenILS::SIP::Transaction;
 use OpenILS::SIP::Transaction::Checkout;
 use OpenILS::SIP::Transaction::Checkin;
 use OpenILS::SIP::Transaction::Renew;
+use OpenILS::SIP::Transaction::FeePayment;
 
 use OpenSRF::System;
 use OpenILS::Utils::Fieldmapper;
@@ -408,23 +409,34 @@ sub end_patron_session {
 }
 
 
-#sub pay_fee {
-#    my ($self, $patron_id, $patron_pwd, $fee_amt, $fee_type,
-#	$pay_type, $fee_id, $trans_id, $currency) = @_;
-#    my $trans;
-#    my $patron;
-#
-#    $trans = new ILS::Transaction::FeePayment;
-#
-#    $patron = new ILS::Patron $patron_id;
-#
-#    $trans->transaction_id($trans_id);
-#    $trans->patron($patron);
-#    $trans->ok(1);
-#
-#    return $trans;
-#}
-#
+sub pay_fee {
+    my ($self, $patron_id, $patron_pwd, $fee_amt, $fee_type,
+	$pay_type, $fee_id, $trans_id, $currency) = @_;
+
+    my $xact = OpenILS::SIP::Transaction::FeePayment->new(authtoken => $self->{authtoken});
+    my $patron = $self->find_patron($patron_id);
+
+    if (!$patron) {
+        $xact->screen_msg("Invalid Patron Barcode '$patron_id'");
+        $xact->ok(0);
+        return $xact;
+    }
+
+    $xact->patron($patron);
+    $xact->sip_currency($currency);
+    $xact->fee_amount($fee_amt);
+    $xact->sip_fee_type($fee_type);
+    $xact->transaction_id($trans_id);
+    $xact->fee_id($fee_id);
+    # We don't presently use these, but we might in the future.
+    $xact->patron_password($patron_pwd);
+    $xact->sip_payment_type($pay_type);
+
+    $xact->do_fee_payment();
+
+    return $xact;
+}
+
 #sub add_hold {
 #    my ($self, $patron_id, $patron_pwd, $item_id, $title_id,
 #	$expiry_date, $pickup_location, $hold_type, $fee_ack) = @_;

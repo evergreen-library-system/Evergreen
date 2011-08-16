@@ -314,6 +314,7 @@ BEGIN
         SELECT INTO setting * FROM actor.org_unit_setting WHERE org_unit = cur_org AND name = setting_name;
         IF FOUND THEN
             RETURN NEXT setting;
+            EXIT;
         END IF;
         SELECT INTO cur_org parent_ou FROM actor.org_unit WHERE id = cur_org;
         EXIT WHEN cur_org IS NULL;
