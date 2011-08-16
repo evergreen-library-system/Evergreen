@@ -49,7 +49,7 @@
         [% UNLESS is_advanced OR is_special %]
         <tr>
             <td>
-                [% INCLUDE "default/opac/parts/coded_value_selector.tt2" attr=["mattype", "item_type"] none_ok=1 %]
+                [% INCLUDE "default/opac/parts/coded_value_selector.tt2" attr=["mattype", "item_type"] none_ok=1 none_label=l('All Formats') %]
             </td>
             <td>
                 <span id='depth_selector_span'>

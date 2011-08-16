@@ -10,49 +10,11 @@
 %]
 
 <div style="height: 10px;"></div>
-[% BLOCK results_count_header %]
-<div class="results_header_nav1">
-    <table cellpadding="0" cellspacing="0" border="0" width="100%">
-        <tr>
-            <td class="h1" width="116">[% l('Search Results') %]</td>
-            <td valign="bottom" nowrap="nowrap" class="result_number">
-                [% |l(ctx.result_start, ctx.result_stop, ctx.hit_count) %]
-                Results <strong>[_1]</strong> - <strong>[_2]</strong> of <strong>[_3]</strong>
-                [% END %]
-                <span style='padding-left: 6px;'>
-                    [% |l(page + 1, page_count) %](page <strong>[_1]</strong> of <strong>[_2]</strong>)[% END %]
-                </span>
-            </td>
-            <td align="right" valign="bottom">
-                <span class='start_end_links_span'>
-                    [%  class = 'search_page_nav_link';
-                        href = '#';
-                        IF page > 0;
-                            href = mkurl('', {page => page - 1});
-                        ELSE; class = class _ ' invisible'; END;
-                    %]
-                    <a class='[% class %]' href='[% href %]' 
-                        title='[% l("Previous page") %]'><span class="nav_arrow_fix">&#9668;</span> [% l('Previous') %] </a>
-                    <span class='hide_me'
-                        style='padding-left: 11px; padding-right:11px;'>
-                        <span></span>
-                    </span>
-                    [%  class = 'search_page_nav_link';
-                        href = '#';
-                        IF (page + 1) < page_count;
-                            href = mkurl('', {page => page + 1});
-                        ELSE; class = class _ ' invisible'; END;
-                    %]
-                    <a class='[% class %]' href='[% href %]' 
-                        title='[% l("Next page") %]'> [% l('Next') %] <span class="nav_arrow_fix">&#9658;</span></a>
-                </span>
-            </td>
-        </tr>
-    </table>
-</div>
-[% END %]
+
+[% PROCESS "default/opac/parts/result/paginate.tt2" %] 
 [% ctx.results_count_header = PROCESS results_count_header;
     ctx.results_count_header %]
+
 <div id="result_table_div">
     <table cellpadding="0" cellspacing="0" border="0" width="100%">
         <tr>
@@ -107,22 +69,32 @@
                                                     </div>
                                                     <table cellpadding="0" cellspacing="0" border="0"
                                                         class="results_info_table">
-                                                    [% IF attrs.publisher %]
-                                                        <tr name="results_pub_tr">
-                                                            <td valign="top">
-                                                                <strong>[% l('Publisher:') %]</strong>
+                                                        <tr name='bib_cn_list' class='result_table_title_cell'>
+                                                            <td valign='top'>
+                                                                <strong>[% l('Call number:') %]</strong>
                                                             </td>
-                                                            <td>[% attrs.publisher; %]</td>
+                                                            <td>[% args.holdings.0 %]</td>
                                                         </tr>
-                                                    [% END %]
-                                                    [% IF attrs.isbn.0 %]
-                                                        <tr name="results_isbn_tr">
-                                                            <td valign="top">
-                                                                <strong>[% l('ISBN:') %]</strong>
-                                                            </td>
-                                                            <td>[% attrs.isbns.0 %]</td>
-                                                        </tr>
-                                                    [% END %]
+
+                                                        [% IF CGI.param('detail_record_view') %]
+                                                        <!-- These fields are visible when viewing the results page in 'detailed' mode -->
+
+                                                        [% IF attrs.publisher %]
+                                                            <tr name="results_pub_tr">
+                                                                <td valign="top">
+                                                                    <strong>[% l('Publisher:') %]</strong>
+                                                                </td>
+                                                                <td>[% attrs.publisher; %]</td>
+                                                            </tr>
+                                                        [% END %]
+                                                        [% IF attrs.isbn.0 %]
+                                                            <tr name="results_isbn_tr">
+                                                                <td valign="top">
+                                                                    <strong>[% l('ISBN:') %]</strong>
+                                                                </td>
+                                                                <td>[% attrs.isbns.0 %]</td>
+                                                            </tr>
+                                                        [% END %]
                                                         [% IF openurl.enabled == 'true';
                                                             FOR issn IN args.issns;
                                                                 sfx = ResolverResolver.resolve_issn(issn, openurl.baseurl);
@@ -139,56 +111,57 @@
                                                             [% END %]
                                                         [% END %]
 
-                                                    [% IF attrs.edition %]
-                                                        <tr name="results_edition_tr">
-                                                            <td valign="top">
-                                                                <strong>[% l('Edition:') %]</strong>
-                                                            </td>
-                                                            <td>[% attrs.edition %]</td>
-                                                        </tr>
-                                                    [% END %]
-                                                    [% IF attrs.phys_desc %]
-                                                        <tr name="results_phys_desc_tr">
-                                                            <td nowrap="nowrap" valign="top">
-                                                                <strong>[% l('Phys. Desc.:') %]</strong>
-                                                            </td>
-                                                            <td>
-                                                                [% args.phys_desc %]
-                                                            </td>
-                                                        </tr>
-                                                    [% END %]
+                                                        [% IF attrs.edition %]
+                                                            <tr name="results_edition_tr">
+                                                                <td valign="top">
+                                                                    <strong>[% l('Edition:') %]</strong>
+                                                                </td>
+                                                                <td>[% attrs.edition %]</td>
+                                                            </tr>
+                                                        [% END %]
+                                                        [% IF attrs.phys_desc %]
+                                                            <tr name="results_phys_desc_tr">
+                                                                <td nowrap="nowrap" valign="top">
+                                                                    <strong>[% l('Phys. Desc.:') %]</strong>
+                                                                </td>
+                                                                <td>
+                                                                    [% args.phys_desc %]
+                                                                </td>
+                                                            </tr>
+                                                        [% END %]
                                                         [% FOR uri IN args.uris %]
-                                                        <tr name='bib_uri_list' class='result_table_title_cell'>
-                                                            <td valign='top'>
-                                                                <strong>[% l('Electronic resource') %]</strong>
-                                                            </td>
-                                                            <td><a href="[% uri.href %]">[% uri.link %]</a>[% ' - ' _ uri.note IF uri.note %]</td>
-                                                        </tr>
-                                                        [% END %]
-                                                        [% IF args.holdings.size > 0 %]
-                                                        <tr name='bib_cn_list' class='result_table_title_cell'>
-                                                            <td colspan='2'>
-                                                                <table class='result_holdings_table'>
-                                                                    <thead><tr>
-                                                                        <th>[% l('Library') %]</th>
-                                                                        <th>[% l('Shelving location') %]</th>
-                                                                        <th>[% l('Call number') %]</th>
-                                                                        <th>[% l('Status') %]</th>
-                                                                    </tr></thead>
-                                                                    <tbody>
-                                                            [% FOR copy IN args.holdings %]
-                                                                    <tr>
-                                                                        <td>[% copy.library %]</td>
-                                                                        <td>[% copy.location %]</td>
-                                                                        <td>[% copy.label %]</td>
-                                                                        <td>[% copy.status %]</td>
-                                                                    </tr>
+                                                            <tr name='bib_uri_list' class='result_table_title_cell'>
+                                                                <td valign='top'>
+                                                                    <strong>[% l('Electronic resource') %]</strong>
+                                                                </td>
+                                                                <td><a href="[% uri.href %]">[% uri.link %]</a>[% ' - ' _ uri.note IF uri.note %]</td>
+                                                            </tr>
                                                             [% END %]
-                                                                    </tbody>
-                                                                </table>
-                                                            </td>
-                                                        </tr>
+                                                            [% IF args.holdings.size > 0 %]
+                                                            <tr name='bib_cn_list' class='result_table_title_cell'>
+                                                                <td colspan='2'>
+                                                                    <table class='result_holdings_table'>
+                                                                        <thead><tr>
+                                                                            <th>[% l('Library') %]</th>
+                                                                            <th>[% l('Shelving location') %]</th>
+                                                                            <th>[% l('Call number') %]</th>
+                                                                            <th>[% l('Status') %]</th>
+                                                                        </tr></thead>
+                                                                        <tbody>
+                                                                [% FOR copy IN args.holdings %]
+                                                                        <tr>
+                                                                            <td>[% copy.library %]</td>
+                                                                            <td>[% copy.location %]</td>
+                                                                            <td>[% copy.label %]</td>
+                                                                            <td>[% copy.status %]</td>
+                                                                        </tr>
+                                                                [% END %]
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
                                                         [% END %]
+                                                        [% END %] <!-- END detail_record_view -->
                                                     </table>
                                                     <div>
                                                         [% l('[_1] of [quant,_2,copy,copies] available',
@@ -252,9 +225,13 @@
                                         </tr>
                                         <tr>
                                             <td/>
-                                            <td align='center'>
-                                                <!-- Chilifresh link and reviews panel --> 
+                                            <td align='center'> <!-- Chilifresh reviews link --> 
                                                 <div class="chili_review" id="isbn_[% attrs.isbn_clean %]"> </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td/>
+                                            <td colspan='5'> <!-- Chilifresh reviews panel -->
                                                 <div id="chili_review_[% attrs.isbn_clean %]" style="display: none;" align="center" width="100%"></div>
                                             </td>
                                         </tr>

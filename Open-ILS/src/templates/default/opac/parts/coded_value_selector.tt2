@@ -19,7 +19,7 @@
     multiple ? ' multiple="multiple"' : '';
     size ? (' size="' _ size _ '"') : ''; %]>
 [% IF none_ok %]
-    <option value=''>[% l('-- Any --') %]</option>
+    <option value=''>[% none_label ? none_label : l('-- Any --') %]</option>
 [% END %]
 [% FOR o IN all_values %]
     <option value='[% o.code %]'[% values.grep('^' _ o.code _ '$').size ? ' selected="selected"' : '' %]>[% o.value %]</option>
