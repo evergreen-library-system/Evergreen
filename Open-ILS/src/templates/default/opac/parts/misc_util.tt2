@@ -29,7 +29,7 @@
         args.marc_cn = xml.findnodes('//*[@tag="092" or @tag="099"]/*').textContent;
 
         # clean up the ISBN
-        args.isbn_clean = args.isbn.0.replace('\ .*', '');
+        args.isbn_clean = args.isbns.0.replace('\ .*', '');
 
         args.holdings = [];
         args.uris = [];
@@ -40,8 +40,8 @@
         IF sfx_isbn;
             IF sfx_isbn.textContent == "SFX";
                 my_parent = sfx_isbn.parentNode();
-                sfx_isbn = my_parent.findnodes('./*[@code="a"]');
-                sfx_isbn.replace('-', '');
+                sfx_isbn = my_parent.findnodes('./*[@code="a"]').textContent;
+                sfx_isbn = sfx_isbn.replace('-', '');
                 args.resolver_isbn = sfx_isbn.replace('\ .*', '');
             END;
         END;

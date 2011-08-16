@@ -89,7 +89,7 @@
                                                                 <td>[% attrs.publisher; %]</td>
                                                             </tr>
                                                         [% END %]
-                                                        [% IF attrs.isbn.0 %]
+                                                        [% IF attrs.isbns.size > 0 %]
                                                             <tr name="results_isbn_tr">
                                                                 <td valign="top">
                                                                     <strong>[% l('ISBN:') %]</strong>
