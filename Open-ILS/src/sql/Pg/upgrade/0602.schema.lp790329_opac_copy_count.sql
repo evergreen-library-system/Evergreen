@@ -1,5 +1,7 @@
 BEGIN;
 
+INSERT INTO config.upgrade_log (version) VALUES ('0602'); -- dbs via miker
+
 CREATE OR REPLACE FUNCTION asset.opac_lasso_metarecord_copy_count (i_lasso INT, rid BIGINT) RETURNS TABLE (depth INT, org_unit INT, visible BIGINT, available BIGINT, unshadow BIGINT, transcendant INT) AS $f$
 DECLARE
     ans RECORD;
