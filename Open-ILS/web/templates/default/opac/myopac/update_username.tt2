@@ -6,14 +6,13 @@
 
 [% IF ctx.invalid_username %]
     <div id='account-update-email-error'> <!-- borrow css from update-email page -->
-        [% | l(ctx.invalid_username) %]
-        "<b>[_1]</b>" is not a valid username.  Usernames cannot have any spaces.  Please try a different username.
-        [% END %]
+        [% l('"<b>[_1]</b>" is not a valid username.  Usernames cannot have any spaces.  Please try a different username.', ctx.invalid_username) | html %]
     </div>
 
 [% ELSIF ctx.username_exists %]
     <div id='account-update-email-error'>
-        [% | l(ctx.username_exists) %]
+        [% bad_user = ctx.username_exists | html %]
+        [% | l(bad_user) %]
         The username "<b>[_1]</b>" is taken.  Please try a different username.
         [% END %]
     </div>

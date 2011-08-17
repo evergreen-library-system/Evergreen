@@ -23,14 +23,14 @@
     </div>
     <div id="hold_editor">
         [% IF hold %]
-            <h1>[% attrs.title %]</h1>
-            <h2>[% attrs.author %]</h2>
+            <h1>[% attrs.title | html %]</h1>
+            <h2>[% attrs.author | html %]</h2>
             [% IF attrs.format_icon %]<p>
                 <strong>[% l('Format:') %]</strong>
-                <img src="[% ctx.media_prefix %]/images/[% attrs.format_icon %]" alt="[% attrs.format %]" title="[% attrs.title %]" />
+                <img src="[% ctx.media_prefix %]/images/[% attrs.format_icon %]" alt="[% attrs.format %]" title="[% attrs.title | html %]" />
             </p>[% END %]
             <p>
-                <strong>[% l('Status') %]</strong>: [% hold.human_status %]
+                <strong>[% l('Status') %]</strong>: [% hold.human_status | html %]
             </p>
             <form method="POST">
                 <table id="hold_editor_table">

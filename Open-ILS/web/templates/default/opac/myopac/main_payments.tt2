@@ -32,7 +32,11 @@
             [% FOR payment IN ctx.payments %]
             <tr>
                 <td>[% date.format(ctx.parse_datetime(payment.mp.payment_ts), DATE_FORMAT) %]</td>
-                <td>[% (payment.xact_type == 'grocery') ? payment.last_billing_type : payment.title %]</td>
+                <td>[% 
+                    btype = payment.last_billing_type | html;
+                    ptitle = payment.title | html;
+                    (payment.xact_type == 'grocery') ? btype : ptitle
+                %]</td>
                 <td>[% money(payment.mp.amount) %]</td>
                 <td>
                     <form action="[% ctx.opac_root %]/myopac/receipt_print" method="POST">

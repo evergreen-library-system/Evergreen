@@ -106,9 +106,9 @@
                         <td width="40%"
                             style="padding-left:5px;padding-bottom:10px;"
                             name="author">
-                            <a href="[% ctx.opac_root %]/record/[% circ.circ.target_copy.call_number.record.id %]" name="[% l('Catalog record') %]">[% attrs.title %]</a>
+                            <a href="[% ctx.opac_root %]/record/[% circ.circ.target_copy.call_number.record.id %]" name="[% l('Catalog record') %]">[% attrs.title | html %]</a>
                             [% IF attrs.author %] /
-                            <a href="[% ctx.opac_root %]/results?qtype=author&amp;query=[% attrs.author | replace('[,\.:;]', '') | url %]">[% attrs.author %]</a>
+                            <a href="[% ctx.opac_root %]/results?qtype=author&amp;query=[% attrs.author | replace('[,\.:;]', '') | url %]">[% attrs.author | html %]</a>
                             [% END %]
                         </td>
                         <td width="8%" name="renewals" align="center">
@@ -119,18 +119,18 @@
                             [% date.format(ctx.parse_datetime(circ.circ.due_date),DATE_FORMAT) %]
                         </td>
                         <td width="16%" name="barcode">
-                            [% circ.circ.target_copy.barcode %]
+                            [% circ.circ.target_copy.barcode | html %]
                         </td>
                         <td width="22%" name="call_number">
-                            [% circ.circ.target_copy.call_number.label %]
+                            [% circ.circ.target_copy.call_number.label | html %]
                         </td>
                     </tr>
                     [%  IF circ.renewal_response AND
                             circ.renewal_response.textcode != 'SUCCESS' %]
                     <tr>
                         <td colspan="6">[%# XXX colspan="0" does not work in IE %]
-                            <span class="failure-text" title="[% circ.renewal_response.textcode %] / [% circ.renewal_response.payload.fail_part %]">
-                                [% circ.renewal_response.desc || circ.renewal_response.payload.fail_part || circ.renewal_response.textcode %]
+                            <span class="failure-text" title="[% circ.renewal_response.textcode | html %] / [% circ.renewal_response.payload.fail_part | html %]">
+                                [% (circ.renewal_response.desc || circ.renewal_response.payload.fail_part || circ.renewal_response.textcode) | html %]
                             </span>
                         </td>
                     </tr>
