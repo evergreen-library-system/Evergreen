@@ -288,15 +288,15 @@ sub load_login {
 		'open-ils.auth.authenticate.init', $username);
 
     my $args = {	
-        barcode => $username, 
+        username => $username, 
         password => md5_hex($seed . md5_hex($password)), 
         type => ($persist) ? 'persist' : 'opac' 
     };
 
     my $bc_regex = $ctx->{get_org_setting}->($org_unit, 'opac.barcode_regex');
 
-    $args->{username} = delete $args->{barcode} 
-        if $bc_regex and !($username =~ /$bc_regex/);
+    $args->{barcode} = delete $args->{username} 
+        if $bc_regex and ($username =~ /$bc_regex/);
 
 	my $response = $U->simplereq(
         'open-ils.auth', 'open-ils.auth.authenticate.complete', $args);
