@@ -65,7 +65,7 @@
     [% UNLESS took_care_of_form %]</form>[% END %]
     [% IF (is_advanced AND NOT is_special) AND CGI.param('qtype') %]
     <div class="opac-auto-102">
-        [ <a href="[% ctx.opac_root %]/advanced?[% query_string %]">[%
+        [ <a href="[% mkurl(ctx.opac_root _ '/advanced') %]">[%
             l('Click to Refine Your Original Search')
         %]</a> ]
     </div>
