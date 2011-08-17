@@ -38,7 +38,7 @@
                 [% IF ctx.mylist.size %]
                 <div class="results_header_btns cached_list_div">
                     <a href="[% ctx.opac_root; ctx.user ? '/myopac/lists' : '/mylist' %]"><img
-                        alt="View My List"
+                        alt="[% l('View My List') %]"
                         src="[% ctx.media_prefix %]/images/view_my_list.png"
                         onmouseover="this.src='[% ctx.media_prefix %]/images/view_my_list_hover.png';"
                         onmouseout="this.src='[% ctx.media_prefix %]/images/view_my_list.png';" /></a>
