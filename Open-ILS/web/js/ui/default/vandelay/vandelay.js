@@ -1307,7 +1307,6 @@ function vlFleshQueueSelect(selector, type) {
     var inputChange = function(val) {
         console.log('qinput onchange');
         // user entered a new queue name. clear the selector 
-        vlUploadQueueHoldingsImportProfile.attr('value', '');
         vlUploadQueueHoldingsImportProfile.attr('disabled', false);
         vlUploadQueueMatchSet.attr('disabled', false);
         dojo.disconnect(selector._onchange);
