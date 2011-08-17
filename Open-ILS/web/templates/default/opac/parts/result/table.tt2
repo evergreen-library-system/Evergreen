@@ -42,16 +42,16 @@
                                                 [% ident = attrs.isbn_clean || attrs.upc; IF ident; %]
                                                 <a href="[% mkurl(ctx.opac_root _ '/record/' _ rec.id) %]"><img alt="[% l('Image of item') %]"
                                                         name='item_jacket' class='result_table_pic' width="55"
-                                                        src='[% ctx.media_prefix %]/opac/extras/ac/jacket/small/[% ident %]' /></a><br />
+                                                        src='[% ctx.media_prefix %]/opac/extras/ac/jacket/small/[% ident | uri %]' /></a><br />
                                                 [% END %]
                                             </td>
                                             <td class='result_table_title_cell'
                                                 name='result_table_title_cell'
                                                 valign="top">
                                                 <div class="bold">
-                                                    <a title="[% attrs.title %]" name='item_title'
+                                                    <a title="[% attrs.title | uri %]" name='item_title'
                                                         href="[% mkurl(ctx.opac_root _ '/record/' _ rec.id) %]"
-                                                        class='search_link'>[% attrs.title | html_entity%]</a>
+                                                        class='search_link'>[% attrs.title | html %]</a>
                                                 </div>
                                                 <div style="font-size:11px;">
                                                     <div>
@@ -60,9 +60,9 @@
                                                                 href="[%- 
                                                                     authorquery = attrs.author | replace('[,\.:;]', '');
                                                                     mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery})
-                                                                    -%]">[% attrs.author | html_entity %]</a></em>
+                                                                    -%]">[% attrs.author | html %]</a></em>
                                                         &nbsp;&nbsp;
-                                                        [% attrs.pubdate %]
+                                                        [% attrs.pubdate | html %]
                                                     </div>
                                                     <table cellpadding="0" cellspacing="0" border="0"
                                                         class="results_info_table">
@@ -70,7 +70,7 @@
                                                             <td valign='top'>
                                                                 <strong>[% l('Call number:') %]</strong>
                                                             </td>
-                                                            <td>[% args.holdings.0 %]</td>
+                                                            <td>[% args.holdings.0 | html %]</td>
                                                         </tr>
 
                                                         [% IF CGI.param('detail_record_view') %]
@@ -79,26 +79,26 @@
                                                             <td valign="top">
                                                                 <strong>[% l('Publisher:') %]</strong>
                                                             </td>
-                                                            <td>[% attrs.publisher; %]</td>
+                                                            <td>[% attrs.publisher | html %]</td>
                                                         </tr>
                                                         <tr name="results_isbn_tr" class="[% attrs.isbns.0 ? '' : 'hide_me' %]">
                                                             <td valign="top">
                                                                 <strong>[% l('ISBN:') %]</strong>
                                                             </td>
-                                                            <td>[% attrs.isbns.0 %]</td>
+                                                            <td>[% attrs.isbns.0 | html %]</td>
                                                         </tr>
                                                         <tr name="results_edition_tr" class="[% attrs.edition ? '' : 'hide_me' %]">
                                                             <td valign="top">
                                                                 <strong>[% l('Edition:') %]</strong>
                                                             </td>
-                                                            <td>[% attrs.edition %]</td>
+                                                            <td>[% attrs.edition | html %]</td>
                                                         </tr>
                                                         <tr name="results_phys_desc_tr" class="[% attrs.phys_desc ? '' : 'hide_me' %]">
                                                             <td nowrap="nowrap" valign="top">
                                                                 <strong>[% l('Phys. Desc.:') %]</strong>
                                                             </td>
                                                             <td>
-                                                                [% args.phys_desc %]
+                                                                [% args.phys_desc | html %]
                                                             </td>
                                                         </tr>
                                                         [% END %]
@@ -127,7 +127,7 @@
                                             <td name='result_table_format_cell' class='result_table_format_cell' width="1">
 
                                                 [% IF attrs.format_icon %]
-                                                <img title="[% attrs.format_label %]" alt="[% attrs.format_label %]" src="[% attrs.format_icon %]" />
+                                                <img title="[% attrs.format_label | html %]" alt="[% attrs.format_label | html %]" src="[% attrs.format_icon %]" />
                                                 [% END %]
 
                                                 <!-- unAPI link -->
@@ -173,13 +173,13 @@
                                         <tr>
                                             <td/>
                                             <td align='center'> <!-- Chilifresh reviews link --> 
-                                                <div class="chili_review" id="isbn_[% attrs.isbn_clean %]"> </div>
+                                                <div class="chili_review" id="isbn_[% attrs.isbn_clean | html %]"> </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td/>
                                             <td colspan='5'> <!-- Chilifresh reviews panel -->
-                                                <div id="chili_review_[% attrs.isbn_clean %]" style="display: none;" align="center" width="100%"></div>
+                                                <div id="chili_review_[% attrs.isbn_clean | html %]" style="display: none;" align="center" width="100%"></div>
                                             </td>
                                         </tr>
                                         <tr><td colspan="5"><div style="height:0px;border-top:1px solid #b7b7b7;border-bottom:1px solid #d4d4d4;margin:15px 0px;"></div></td></tr>

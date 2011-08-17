@@ -6,7 +6,7 @@
                 <q>[% CGI.param('query') | html %]</q>
                 [% END %]
                 <br />
-                <span id="zero_hits_label1" class="hide_me">Did you mean
+                <span id="zero_hits_label1" class="hide_me">[% l('Did you mean') %]
                     <strong><a id="spell_check_link" href="javascript:;"></a></strong>?</span>
             </p>
             <table cellpadding="0" cellspacing="0" border="0">
