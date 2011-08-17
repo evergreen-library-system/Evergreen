@@ -22,7 +22,7 @@
                         </td>
                         <td id="dash_corner_mid1a">
                             <span id="dash_user">
-                                [%  l('[_1] [_2]', ctx.user.first_given_name, ctx.user.family_name) %]
+                                [%  l('[_1] [_2]', ctx.user.first_given_name, ctx.user.family_name) | html %]
                             </span>
                         </td>
                         <td id="dash_corner_mid1b">

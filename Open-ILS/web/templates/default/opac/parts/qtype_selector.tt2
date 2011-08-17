@@ -9,8 +9,8 @@
 <select name="qtype">
     [%  query_type = query_type || CGI.param('qtype');
         FOR qt IN query_types -%]
-    <option value='[% qt.value %]'[%
+    <option value='[% qt.value | uri %]'[%
         query_type == qt.value ? ' selected="selected"' : ''
-    %]>[% qt.label %]</option>
+    %]>[% qt.label | html %]</option>
     [% END -%]
 </select>

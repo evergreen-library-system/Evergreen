@@ -8,11 +8,11 @@
             selected = 'selected="selected"';
         END;
 %]
-        <option value='[% walker.id %]' [% selected %] [% disabled %]>
+        <option value='[% walker.id | uri %]' [% selected %] [% disabled %]>
             [%
                 pad = walker.ou_type.depth * 2;
                 FOR idx IN [0..pad]; '&nbsp;'; END;
-                walker.name;
+                walker.name | html;
             %]
         </option>
         [%  FOR child IN walker.children;
