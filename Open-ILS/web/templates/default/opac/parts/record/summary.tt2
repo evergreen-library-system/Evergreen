@@ -150,7 +150,7 @@
             [% IF ctx.is_staff %]
             <td>
                 [% copy_info.age_protect ?
-                    ctx.get_crahp(copy_info.age_protect).name html : l('None') | html %]
+                    ctx.get_crahp(copy_info.age_protect).name : l('None') | html %]
             </td>
             <td>[% date.format(
                 ctx.parse_datetime(copy_info.create_date),
