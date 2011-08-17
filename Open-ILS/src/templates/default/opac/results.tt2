@@ -7,10 +7,12 @@
     IF is_advanced || is_special;
         ctx.page_title = l("Search Results");
     ELSE;
-        ctx.page_title = l("Search Results: ") _ CGI.param('query') | html_entity;
+        ctx.page_title = l("Search Results: ") _ CGI.param('query') | html;
     END;
 
-    page = CGI.param('page') || 0;
+    page = CGI.param('page');
+    page = page.match('^\d+$') ? page : 0; # verify page is a sane value
+
     page_count = ctx.page_size == 0 ? 1 : POSIX.ceil(ctx.hit_count / ctx.page_size);
 %]
     <form action="[% ctx.opac_root %]/results" method="GET">
@@ -44,7 +46,7 @@
                 [% END %]
                 <div class="results_header_div"></div>
                 [% UNLESS is_advanced || is_special %]
-                    <div class="results_header_lbl">Sort by</div>
+                    <div class="results_header_lbl">[% l('Sort by') %]</div>
                     [% INCLUDE "default/opac/parts/filtersort.tt2" value=CGI.param('sort') %]
                     <div class="results_header_div"></div>
 

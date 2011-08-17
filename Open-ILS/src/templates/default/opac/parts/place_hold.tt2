@@ -15,7 +15,7 @@
             [% ELSIF ctx.hold_failed_event || ctx.hold_local_alert %]
         <div>
             <strong>[% l('Problem:') %]</strong>
-            <span title="[% ctx.hold_failed_event.textcode %]">
+            <span title="[% ctx.hold_failed_event.textcode | html %]">
                 <em>[%
                         fail_part_key = ctx.hold_failed_event.payload.fail_part;
                         event_key = ctx.hold_failed_event.textcode;
@@ -32,8 +32,7 @@
             </span>
 
             [% IF ctx.hold_copy_available %]<p>
-            [% l('Find a copy in the shelving location, "[_1]."',
-                ctx.hold_copy_available.location) %]
+            [%  l('Find a copy in the shelving location, "[_1]."', locname) | html %]
             </p>[% END %]
 
             [% IF ctx.could_override || ctx.hold_local_alert %]
@@ -45,7 +44,7 @@
             <form method="POST">
                 <input type="hidden" type="name" name="override" value="1" />
                 [% FOR k IN ctx.orig_params.keys %]
-                <input type="hidden" name="[% k %]" value="[% ctx.orig_params.$k | html %]" />
+                <input type="hidden" name="[% k %]" value="[% ctx.orig_params.$k | uri %]" />
                 [% END %]
                 <input type="image" name="submit" value="submit" title="[% l('Submit') %]"
                     alt="[% l('Submit') %]" src="[% ctx.media_prefix %]/images/btnSubmit.png" />
@@ -83,20 +82,20 @@
                 <label for="hold_usr_is_requestor_not">
                     [% l("Place hold for patron by barcode:") %]
                 </label>
-                <input type="text" name="hold_usr" id="hold_usr_input" value="[% ctx.patron_recipient.card.barcode %]" /><br />[%# XXX multi-barcode users? %]
+                <input type="text" name="hold_usr" id="hold_usr_input" value="[% ctx.patron_recipient.card.barcode | html %]" /><br />[%# XXX multi-barcode users? %]
                 <span>
                     <input type="radio" id="hold_usr_is_requestor"
                         onchange="staff_hold_usr_input_disabler(this);"
                         name="hold_usr_is_requestor" value="1" />
                     <label for="hold_usr_is_requestor">
-                        [% l("Place this hold for me ([_1] [_2])",
-                        ctx.user.first_given_name, ctx.user.family_name) %]
+                        [% l("Place this hold for me ([_1] [_2])", ctx.user.first_given_name, ctx.user.family_name) | html %]
                     </label>
                 </span>
             </p>
             [% END %]
             <p>
-                [% | l(attrs.title, ctx.get_aou(ctx.default_pickup_lib).name) %]
+                [%  title = attrs.title | html; libname = ctx.get_aou(ctx.default_pickup_lib).name | html %]
+                [% | l(title, libname) %]
                 You would like to place a hold on <strong><q>[_1]</q></strong>.<br />
                 If this is correct, confirm your pickup location and click <strong>SUBMIT</strong>.
                 [% END %]
