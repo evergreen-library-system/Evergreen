@@ -59,7 +59,7 @@
                                                                 name='item_author'
                                                                 href="[%- 
                                                                     authorquery = attrs.author | replace('[,\.:;]', '');
-                                                                    mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery})
+                                                                    mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery}, ['page'])
                                                                     -%]">[% attrs.author | html %]</a></em>
                                                         &nbsp;&nbsp;
                                                         [% attrs.pubdate | html %]
