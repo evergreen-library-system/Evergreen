@@ -42,7 +42,7 @@ END;
     NEXT UNLESS author.xpath; 
     links = PROCESS build_author_links(xpath=author.xpath);
     IF links.match('\S') %]
-    <strong>[% author.label %]</strong>
+    <strong>[% author.label | html %]</strong>
     <div class='rdetail-author-div'>[% links %]</div>
     [% END %]
 [% END %]

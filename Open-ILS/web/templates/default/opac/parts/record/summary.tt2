@@ -1,4 +1,4 @@
-[% ctx.page_title = attrs.title | html_entity %]
+[% ctx.page_title = attrs.title | html %]
 <!-- ****************** rdetail_summary.xml ***************************** -->
 <abbr class="unapi-id" title='tag:[% ctx.hostname %],[% date.format(date.now, '%Y') %]:biblio-record_entry/[% ctx.bre_id %]'></abbr>
 <!-- This holds the record summary information -->
@@ -8,9 +8,9 @@
         <tr>
             <td width="90" valign="top" id="rdetail_image_cell">
                 [% ident = attrs.isbn_clean || attrs.upc; IF ident; %]
-                <a id='rdetail_img_link' href='[% ctx.media_prefix %]/opac/extras/ac/jacket/large/[% ident %]'><img
+                <a id='rdetail_img_link' href='[% ctx.media_prefix %]/opac/extras/ac/jacket/large/[% ident | uri %]'><img
                     alt="[% l('Image of item') %]" id='rdetail_image'
-                    src='[% ctx.media_prefix %]/opac/extras/ac/jacket/medium/[% ident %]' /></a>
+                    src='[% ctx.media_prefix %]/opac/extras/ac/jacket/medium/[% ident | uri %]' /></a>
                 [% END %]
                 <br />
             </td>
@@ -19,7 +19,7 @@
                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
                     <tr>
                         <td valign="top">
-                            <span id='rdetail_title'>[% attrs.title_extended | html_entity %]</span><br />
+                            <span id='rdetail_title'>[% attrs.title_extended | html %]</span><br />
                             [% IF attrs.author %]
                             <span class='opac-auto-030'>[% l("Author") %]:</span>
                             <em><a title='[% l("Perform an author search") %]'
@@ -27,7 +27,7 @@
                                     href="[%- 
                                         authorquery = attrs.author | replace('[,\.:;]', '');
                                         mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery})
-                                        -%]">[% attrs.author | html_entity %]</a></em>
+                                        -%]">[% attrs.author | html %]</a></em>
                             [% END %]
                         </td>
                         <td align="right" valign="top" nowrap="nowrap" style="white-space:nowrap;">
@@ -57,7 +57,7 @@
                                 </div>
                                 <div style="float:right;margin-right:17px;">
                                     [% IF attrs.format_icon %]
-                                    <img alt="[% attrs.format_label %]" title="[% attrs.format_label %]" src="[% attrs.format_icon %]" />
+                                    <img alt="[% attrs.format_label %]" title="[% attrs.format_label | html %]" src="[% attrs.format_icon %]" />
                                     [% END %]
                                 </div>
                             </div>
@@ -71,32 +71,32 @@
                                 [% IF attrs.isbns.0 %]<strong id="rdetail_isbn_lbl">[% l("ISBN") %]</strong>[% END %]
                             </td>
                             <td valign="top" id='rdetail_isbn'>
-                                [% FOR isbn IN attrs.isbns %][% IF !loop.first; %]<br/>[% END; isbn; END %]
+                                [% FOR isbn IN attrs.isbns %][% IF !loop.first; %]<br/>[% END; isbn | html ; END %]
                             </td>
                             <td nowrap='nowrap' valign="top">
                                 [% IF attrs.phys_desc %]<strong id="rdetail_phys_lbl">[% l("Physical Description") %]</strong>[% END %]
                             </td>
-                            <td valign="top" id='rdetail_physical_desc'>[% attrs.phys_desc %]</td>
+                            <td valign="top" id='rdetail_physical_desc'>[% attrs.phys_desc | html %]</td>
                         </tr>
                         <tr>
                             <td nowrap='nowrap' valign="top">
                                 <strong>[% IF attrs.marc_cn; l("Call Number"); END %]</strong>
                             </td>
-                            <td valign="top">[% attrs.marc_cn %]</td>
+                            <td valign="top">[% attrs.marc_cn | html %]</td>
                             <td nowrap='nowrap' valign="top">
                                 <strong id="rdetail_ed_lbl">[% IF attrs.edition; l("Edition"); END %]</strong>
                             </td>
-                            <td valign="top" id='rdetail_edition'>[% attrs.edition %]</td>
+                            <td valign="top" id='rdetail_edition'>[% attrs.edition | html %]</td>
                         </tr>
                         <tr>
                             <td nowrap='nowrap' valign="top">
                                 <strong id="rdetail_pub_lbl">[% IF attrs.publisher; l("Publisher"); END %]</strong>
                             </td>
-                            <td valign="top" id='rdetail_publisher'>[% attrs.publisher %]</td>
+                            <td valign="top" id='rdetail_publisher'>[% attrs.publisher | html %]</td>
                             <td nowrap='nowrap' valign="top">
                                 <strong id="rdetail_pubdate_lbl">[% IF attrs.pubdate; l("Publication Date"); END %]</strong>
                             </td>
-                            <td valign="top" id='rdetail_pubdate'>[% attrs.pubdate %]</td>
+                            <td valign="top" id='rdetail_pubdate'>[% attrs.pubdate | html %]</td>
                         </tr>
                     </table>
 
@@ -144,13 +144,13 @@
                 <a href="http://www.kcls.org/[% dir %]/"
                     class="classic_link">[% org_name %]</a>
             </td>
-            <td>[% copy_info.call_number_label %]</td>
-            <td>[% copy_info.barcode %]</td>
-            <td>[% copy_info.copy_location %]</td>
+            <td>[% copy_info.call_number_label | html %]</td>
+            <td>[% copy_info.barcode | html %]</td>
+            <td>[% copy_info.copy_location | html %]</td>
             [% IF ctx.is_staff %]
             <td>
                 [% copy_info.age_protect ?
-                    ctx.get_crahp(copy_info.age_protect).name : l('None') %]
+                    ctx.get_crahp(copy_info.age_protect).name html : l('None') | html %]
             </td>
             <td>[% date.format(
                 ctx.parse_datetime(copy_info.create_date),
@@ -173,7 +173,7 @@
                         l("No");
                     END %]</td>
             [% END %]
-            <td>[% copy_info.copy_status %]</td>
+            <td>[% copy_info.copy_status | html %]</td>
             <td>[%
                 IF copy_info.due_date;
                     date.format(

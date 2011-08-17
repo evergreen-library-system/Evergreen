@@ -11,7 +11,7 @@ FOREACH type IN ctx.holding_summaries.keys;
         <table>
             [% FOR blob IN ctx.expanded_holdings %]
             <tr>
-                <td class="rdetail-issue-issue">[% blob.issuance.label %]</td>
+                <td class="rdetail-issue-issue">[% blob.issuance.label | html %]</td>
                 [% IF blob.has_units %]
                 <td class="rdetail-issue-place-hold">
                     <a href="[% ctx.opac_root %]/place_hold?hold_target=[% blob.issuance.id %]&amp;hold_type=I">[% l("Place Hold") %]</a>
