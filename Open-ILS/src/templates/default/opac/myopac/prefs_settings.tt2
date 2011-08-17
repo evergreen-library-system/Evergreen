@@ -37,9 +37,9 @@
                         [% setting = 'opac.hits_per_page' %]
                         <select name='[% setting %]'>
                             [%  FOR val IN [5, 8, 10, 15, 20, 25, 50] %]
-                                <option value='[% val %]' 
+                                <option value='[% val | uri %]' 
                                     [% IF ctx.user_setting_map.$setting == val %]
-                                        selected='selected'[% END %]>[% val %]</option>
+                                        selected='selected'[% END %]>[% val | html %]</option>
                             [% END %]
                         </select>
                     </td>

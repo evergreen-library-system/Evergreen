@@ -154,7 +154,7 @@
                         </div>
                     </td>
                     <td width="136">
-                        [% ctx.get_aou(ahr.pickup_lib).name %]
+                        [% ctx.get_aou(ahr.pickup_lib).name | html %]
                     </td>
                     <td width="104">
                         <!-- <input

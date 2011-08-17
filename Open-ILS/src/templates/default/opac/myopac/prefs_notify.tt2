@@ -21,10 +21,10 @@
             [% END %]
             [% FOR optin IN ctx.opt_in_settings %]
                 <tr>
-                    <td>[% optin.cust.label %]</td>
+                    <td>[% optin.cust.label | html %]</td>
                     <td>
                         <input type='checkbox' name='setting' 
-                            value='[% optin.cust.name %]' 
+                            value='[% optin.cust.name | uri %]' 
                             [% IF optin.value %] checked='checked' [% END %]/>
                     </td>
                 </tr>

@@ -198,7 +198,7 @@
             <tr>
                 <td class='color_4 light_border'>
                 [% l("Home Library") %]</td>
-                <td class='light_border'>[% ctx.user.home_ou.name %]</td>
+                <td class='light_border'>[% ctx.user.home_ou.name | html %]</td>
                 <td><a href='#'
                    class="hide_me"
                    style='text-decoration: underline;'>[% l("Change") %]</a></td>
@@ -255,7 +255,7 @@
                                 IF addr.pending == "t";
                                     "<strong>" _ l("*** PENDING ***") _ "</strong> ";
                                 END;
-                                addr.address_type | lower | ucfirst;
+                                addr.address_type | lower | ucfirst | html ;
                             %]</td>
                         </tr>
                         <tr>

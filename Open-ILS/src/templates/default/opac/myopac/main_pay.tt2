@@ -37,7 +37,7 @@
                     (ctx.printable_receipt.textcode ? ctx.printable_receipt.textcode _ ' / ' _ ctx.printable_receipt.desc : 0) ||
                     ctx.printable_receipt.error_output.data ||
                     l('No receipt data returned from server')
-                ) %]
+                ) | html %]
         </div>
         [% END %]
         <p>[ <a href="[% ctx.opac_root %]/myopac/main">[%

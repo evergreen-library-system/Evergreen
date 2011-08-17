@@ -80,9 +80,9 @@
                     <big><strong>
                     [% IF bbag.pub == 't' %]
                         [% url = 'http://' _ ctx.hostname _ '/opac/extras/feed/bookbag/html-full/' _ bbag.id %]
-                        <a target='_blank' href='[% url %]'>[% bbag.name %]</a>
+                        <a target='_blank' href='[% url %]'>[% bbag.name | html %]</a>
                     [% ELSE %]
-                    [% bbag.name %]
+                    [% bbag.name | html %]
                     [% END %]
                     </strong></big>
                 </div>
@@ -132,8 +132,8 @@
                         PROCESS get_marc_attrs args=attrs %]
                     <tr>
                         <td class="item_list_padding" style="padding-left: 10px;"><input type="checkbox" name="del_item" value="[% item.id %]" bbag='[% bbag.id %]'/></td>
-                        <td class="item_list_padding" style="padding-left: 5px;">[% attrs.title %]</td>
-                        <td class="item_list_padding">[% attrs.author %]</td>
+                        <td class="item_list_padding" style="padding-left: 5px;">[% attrs.title | html %]</td>
+                        <td class="item_list_padding">[% attrs.author | html %]</td>
                     </tr>
                     [% END %]
                 </tbody>

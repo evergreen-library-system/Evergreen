@@ -59,7 +59,7 @@
                                     attrs.title = f.xact.reservation.target_resource_type.name;
                                 END %]
                                 <tr>
-                                    <td>[% attrs.title %]</td>
+                                    <td>[% attrs.title | html %]</td>
                                     <td class="text-right">[% money(f.xact.balance_owed) %]</td>
                                 </tr>
                             [%
@@ -68,7 +68,7 @@
                                 NEXT IF CGI.param('xact_misc').size &&
                                     !CGI.param('xact_misc').grep(f.xact.id).size %]
                                 <tr>
-                                    <td>[% f.xact.last_billing_type %]</td>
+                                    <td>[% f.xact.last_billing_type | html %]</td>
                                     <td class="text-right">[% money(f.xact.balance_owed) %]</td>
                                 </tr>
                             [% END %]
