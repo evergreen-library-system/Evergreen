@@ -1027,3 +1027,4 @@ a.dash-link:hover { text-decoration: underline !important; }
 .cn_browse_item { padding: 2ex; }
 
 .results-paginator-selected { color: red; }
+.inactive-hold { background: #e5e5e5; }
