@@ -280,56 +280,58 @@ cpan MARC::File::XML
 cpan UUID::Tiny
 ------------------------------------------------------------------------------
 
-Once the PostgreSQL database server has been installed, you must
-create the database and add the appropriate languages and extensions to
-support Evergreen. Issue the following commands as the `postgres` user to set
-up a database called `evergreen`. Note that the location of the PostgreSQL
-`contrib` packages may vary depending on your distribution. In the following
-commands, we assume that you are working with PostgreSQL 9.0 on a Debian-based
-system:
-
-[source, bash]
-------------------------------------------------------------------------------
-createdb --template template0 --lc-ctype=C --lc-collate=C --encoding UNICODE evergreen
-createlang plperl evergreen
-createlang plperlu evergreen
-psql -f /usr/share/postgresql/9.0/contrib/tablefunc.sql -d evergreen
-psql -f /usr/share/postgresql/9.0/contrib/tsearch2.sql -d evergreen
-psql -f /usr/share/postgresql/9.0/contrib/pgxml.sql -d evergreen
-psql -f /usr/share/postgresql/9.0/contrib/hstore.sql -d evergreen
-------------------------------------------------------------------------------
-
-Once you have created the Evergreen database, you need to create a PostgreSQL
-user to access the database. Issue the following command as the `postgres`
-user to create a new PostgreSQL superuser named `evergreen`. When prompted,
-enter the new user's password:
+You need to create a PostgreSQL superuser to create and access the database.
+Issue the following command as the `postgres` user to create a new PostgreSQL
+superuser named `evergreen`. When prompted, enter the new user's password:
 
 [source, bash]
 ------------------------------------------------------------------------------
 createuser -s -P evergreen
 ------------------------------------------------------------------------------
 
-Once you have created the Evergreen database, you also need to create the
-database schema and configure your configuration files to point at the
+Once you have created the Evergreen superuser, you also need to create the
+database and schema, and configure your configuration files to point at the
 database server. Issue the following command as root from inside the Evergreen
 source directory, replacing <user>, <password>, <hostname>, <port>, and <dbname>
-with the appropriate values for your PostgreSQL database, and <admin-user> and
-<admin-pass> with the values you want for the default Evergreen administrator
-account:
+with the appropriate values for your PostgreSQL database (where <user> and
+<password> are for the PostgreSQL superuser you just created), and replace
+<admin-user> and <admin-pass> with the values you want for the default
+Evergreen administrator account:
 
 [source, bash]
 ------------------------------------------------------------------------------
 perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
-       --service all --create-schema --create-offline \
+       --service all --create-database --create-schema --create-offline \
        --user <user> --password <password> --hostname <hostname> --port <port> \
        --database <dbname> --admin-user <admin-user> --admin-pass <admin-pass>
 ------------------------------------------------------------------------------
 
-This creates the database schema and configures all of the services in
+This creates the database and schema and configures all of the services in
 your `/openils/conf/opensrf.xml` configuration file to point to that database.
 It also creates the configuration files required by the Evergreen cgi-bin
-administration scripts, and set the user name and password for the default
+administration scripts, and sets the user name and password for the default
 Evergreen administrator account to your requested values.
+
+Creating the database on a remote server
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In a production instance of Evergreen, your PostgreSQL server should be
+installed on a dedicated server. To create the database in that case, you
+can either:
+
+  *  Install the PostgreSQL contrib modules on the machine on which you
+     are installing the Evergreen code, and use the --create-database
+     option from that machine, or
+  *  Copy the `Open-ILS/src/sql/Pg/create-database.sql` script to your
+     PostgreSQL server and invoke it with:
++
+[source, bash]
+------------------------------------------------------------------------------
+psql -vdb_name=<dbname> -vcontrib_dir=`pg_config --sharedir`/contrib
+------------------------------------------------------------------------------
+
+Then you can issue the `eg_db_config.pl` command as above _without_ the
+`--create-database` argument to create your schema and configure your
+configuration files.
 
 Developer instructions:
 -----------------------
