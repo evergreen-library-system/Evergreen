@@ -129,7 +129,7 @@
                     PROCESS get_marc_attrs args=attrs;
                     ahr = hold.hold.hold %]
                 <tr id="acct_holds_temp" name="acct_holds_temp"
-                    class="acct_holds_temp">
+                    class="acct_holds_temp[% ahr.frozen == 't' ? ' inactive-hold' : '' %]">
                     <td width="36" align="center" style="text-align:center;">
                         <input type="checkbox" name="hold_id" value="[% ahr.id %]" />
                     </td>
