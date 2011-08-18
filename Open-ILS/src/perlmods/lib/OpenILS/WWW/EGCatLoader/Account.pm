@@ -34,11 +34,10 @@ sub prepare_extended_user_info {
 # permission to override?  XXX Should the permission check be scoped to a
 # given org_unit context?
 sub test_could_override {
-    my ($self) = @_;
-    my $event = $self->ctx->{"hold_failed_event"};
+    my ($self, $event) = @_;
 
     return 0 unless $event;
-    return 1 if $self->editor->allowed($event . ".override");
+    return 1 if $self->editor->allowed($event->{textcode} . ".override");
     return 1 if $event->{"fail_part"} and
         $self->editor->allowed($event->{"fail_part"} . ".override");
     return 0;
@@ -46,7 +45,7 @@ sub test_could_override {
 
 # Find out whether we care that local copies are available
 sub local_avail_concern {
-    my ($self, $allowed, $hold_target, $hold_type, $pickup_lib) = @_;
+    my ($self, $hold_target, $hold_type, $pickup_lib) = @_;
 
     my $would_block = $self->ctx->{get_org_setting}->
         ($pickup_lib, "circ.holds.hold_has_copy_at.block");
@@ -56,7 +55,7 @@ sub local_avail_concern {
                 not $self->cgi->param("override")
     ) unless $would_block;
 
-    if ($allowed->{"success"} and ($would_block or $would_alert)) {
+    if ($would_block or $would_alert) {
         my $args = {
             "hold_target" => $hold_target,
             "hold_type" => $hold_type,
@@ -396,185 +395,210 @@ sub load_place_hold {
     my $gos = $ctx->{get_org_setting};
     my $e = $self->editor;
     my $cgi = $self->cgi;
+
     $self->ctx->{page} = 'place_hold';
-
-    $ctx->{hold_target} = $cgi->param('hold_target');
+    my @targets = $cgi->param('hold_target');
     $ctx->{hold_type} = $cgi->param('hold_type');
-
     $ctx->{default_pickup_lib} = $e->requestor->home_ou; # unless changed below
 
+    $logger->info("Looking at hold targets: @targets");
+
+    # if the staff client provides a patron barcode, fetch the patron
     if (my $bc = $self->cgi->cookie("patron_barcode")) {
-        # passed in from staff client
         $ctx->{patron_recipient} = $U->simplereq(
             "open-ils.actor", "open-ils.actor.user.fleshed.retrieve_by_barcode",
             $self->editor->authtoken, $bc
-        ) or return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+        ) or return Apache2::Const::HTTP_BAD_REQUEST;
 
         $ctx->{default_pickup_lib} = $ctx->{patron_recipient}->home_ou;
     }
 
     my $request_lib = $e->requestor->ws_ou;
+    my @hold_data;
+    $ctx->{hold_data} = \@hold_data;
 
-    # XXX check for failure of the retrieve_* methods called below, and
-    # possibly replace all the if,elsif with a dispatch table (meh, elegance)
-
-    my $target_field;
-    if ($ctx->{hold_type} eq 'T') {
-        $target_field = "titleid";
-        $ctx->{record} = $e->retrieve_biblio_record_entry($ctx->{hold_target});
-    } elsif ($ctx->{hold_type} eq 'V') {
-        $target_field = "volume_id";
-        my $vol = $e->retrieve_asset_call_number([
-            $ctx->{hold_target}, {
-                "flesh" => 1,
-                "flesh_fields" => {"acn" => ["record"]}
+    my $type_dispatch = {
+        T => sub {
+            my $recs = $e->batch_retrieve_biblio_record_entry(\@targets, {substream => 1});
+            for my $id (@targets) { # force back into the correct order
+                my ($rec) = grep {$_->id eq $id} @$recs;
+                push(@hold_data, {target => $rec, record => $rec});
             }
-        ]);
-        $ctx->{record} = $vol->record;
-    } elsif ($ctx->{hold_type} eq 'C') {
-        $target_field = "copy_id";
-        my $copy = $e->retrieve_asset_copy([
-            $ctx->{hold_target}, {
-                "flesh" => 2,
-                "flesh_fields" => {
-                    "acn" => ["record"],
-                    "acp" => ["call_number"]
+        },
+        V => sub {
+            my $vols = $e->batch_retrieve_asset_call_number([
+                \@targets, {
+                    "flesh" => 1,
+                    "flesh_fields" => {"acn" => ["record"]}
                 }
+            ], {substream => 1});
+
+            for my $id (@targets) { 
+                my ($vol) = grep {$_->id eq $id} @$vols;
+                push(@hold_data, {target => $vol, record => $vol->record});
             }
-        ]);
-        $ctx->{record} = $copy->call_number->record;
-    } elsif ($ctx->{hold_type} eq 'I') {
-        $target_field = "issuanceid";
-        my $iss = $e->retrieve_serial_issuance([
-            $ctx->{hold_target}, {
-                "flesh" => 2,
-                "flesh_fields" => {
-                    "siss" => ["subscription"], "ssub" => ["record_entry"]
+        },
+        C => sub {
+            my $copies = $e->batch_retrieve_asset_copy([
+                \@targets, {
+                    "flesh" => 2,
+                    "flesh_fields" => {
+                        "acn" => ["record"],
+                        "acp" => ["call_number"]
+                    }
                 }
+            ], {substream => 1});
+
+            for my $id (@targets) { 
+                my ($copy) = grep {$_->id eq $id} @$copies;
+                push(@hold_data, {target => $copy, record => $copy->call_number->record});
             }
-        ]);
-        $ctx->{record} = $iss->subscription->record_entry;
-    }
-    # ...
+        },
+        I => sub {
+            my $isses = $e->batch_retrieve_serial_issuance([
+                \@targets, {
+                    "flesh" => 2,
+                    "flesh_fields" => {
+                        "siss" => ["subscription"], "ssub" => ["record_entry"]
+                    }
+                }
+            ], {substream => 1});
 
-    $ctx->{marc_xml} = XML::LibXML->new->parse_string($ctx->{record}->marc);
-
-    if (my $pickup_lib = $cgi->param('pickup_lib')) {
-        my $requestor = $e->requestor->id;
-        my $usr; 
-
-        if ((not $ctx->{"is_staff"}) or
-            ($cgi->param("hold_usr_is_requestor"))) {
-            $usr = $requestor;
-        } else {
-            my $actor = create OpenSRF::AppSession("open-ils.actor");
-            $usr = $actor->request(
-                "open-ils.actor.user.retrieve_id_by_barcode_or_username",
-                $e->authtoken, $cgi->param("hold_usr")
-            )->gather(1);
-
-            if (defined $U->event_code($usr)) {
-                $ctx->{hold_failed} = 1;
-                $ctx->{hold_failed_event} = $usr;
+            for my $id (@targets) { 
+                my ($iss) = grep {$_->id eq $id} @$isses;
+                push(@hold_data, {target => $iss, record => $iss->subscription->record_entry});
             }
-            $actor->kill_me;
         }
+        # ...
 
-        my $args = {
-            patronid => $usr,
-            $target_field => $ctx->{"hold_target"},
-            pickup_lib => $pickup_lib,
-            hold_type => $ctx->{"hold_type"},
-            depth => 0, # XXX
-        };
+    }->{$ctx->{hold_type}}->();
 
-        my $allowed = $U->simplereq(
-            'open-ils.circ',
-            'open-ils.circ.title_hold.is_possible',
-            $e->authtoken, $args
-        );
+    # caller sent bad target IDs or the wrong hold type
+    return Apache2::Const::HTTP_BAD_REQUEST unless @hold_data;
 
-        $logger->info('hold permit result ' . OpenSRF::Utils::JSON->perl2JSON($allowed));
+    # generate the MARC xml for each record
+    $_->{marc_xml} = XML::LibXML->new->parse_string($_->{record}->marc) for @hold_data;
 
+    my $pickup_lib = $cgi->param('pickup_lib');
+    # no pickup lib means no holds placement
+    return Apache2::Const::OK unless $pickup_lib;
+
+    $ctx->{hold_attempt_made} = 1;
+
+    # Give the original CGI params back to the user in case they
+    # want to try to override something.
+    $ctx->{orig_params} = $cgi->Vars;
+    delete $ctx->{orig_params}{submit};
+    delete $ctx->{orig_params}{hold_target};
+
+    my $usr = $e->requestor->id;
+
+    if ($ctx->{is_staff} and !$cgi->param("hold_usr_is_requestor")) {
+        # find the real hold target
+
+        $usr = $U->simplereq(
+            'open-ils.actor', 
+            "open-ils.actor.user.retrieve_id_by_barcode_or_username",
+            $e->authtoken, $cgi->param("hold_usr"));
+
+        if (defined $U->event_code($usr)) {
+            $ctx->{hold_failed} = 1;
+            $ctx->{hold_failed_event} = $usr;
+        }
+    }
+
+    # First see if we should warn/block for any holds that 
+    # might have locally available items.
+    for my $hdata (@hold_data) {
         my ($local_block, $local_alert) = $self->local_avail_concern(
-            $allowed, $args->{$target_field}, $args->{hold_type}, $pickup_lib
+            $hdata->{target}->id, $ctx->{hold_type}, $pickup_lib);
+    
+        if ($local_block) {
+            $hdata->{hold_failed} = 1;
+            $hdata->{hold_local_block} = 1;
+        } elsif ($local_alert) {
+            $hdata->{hold_failed} = 1;
+            $hdata->{hold_local_alert} = 1;
+        }
+    }
+
+
+    my $method = 'open-ils.circ.holds.test_and_create.batch';
+    $method .= '.override' if $cgi->param('override');
+
+    my @create_targets = map {$_->{target}->id} (grep { !$_->{hold_failed} } @hold_data);
+
+    if(@create_targets) {
+
+        my $bses = OpenSRF::AppSession->create('open-ils.circ');
+        my $breq = $bses->request( 
+            $method, 
+            $e->authtoken, 
+            {   patronid => $usr, 
+                pickup_lib => $pickup_lib, 
+                hold_type => $ctx->{hold_type}
+            }, 
+            \@create_targets
         );
 
-        # Give the original CGI params back to the user in case they
-        # want to try to override something.
-        $ctx->{orig_params} = $cgi->Vars;
+        while (my $resp = $breq->recv) {
 
-        if ($local_block) {
-            $ctx->{hold_failed} = 1;
-            $ctx->{hold_local_block} = 1;
-        } elsif ($local_alert) {
-            $ctx->{hold_failed} = 1;
-            $ctx->{hold_local_alert} = 1;
-        } elsif ($allowed->{success}) {
-            my $hold = Fieldmapper::action::hold_request->new;
+            $resp = $resp->content;
+            $logger->info('batch hold placement result: ' . OpenSRF::Utils::JSON->perl2JSON($resp));
 
-            $hold->pickup_lib($pickup_lib);
-            $hold->requestor($requestor);
-            $hold->usr($usr);
-            $hold->target($ctx->{hold_target});
-            $hold->hold_type($ctx->{hold_type});
-            # frozen, expired, etc..
+            if ($U->event_code($resp)) {
+                $ctx->{general_hold_error} = $resp;
+                last;
+            }
 
-            my $method =  "open-ils.circ.holds.create";
-            $method .= ".override" if $cgi->param("override");
+            my ($hdata) = grep {$_->{target}->id eq $resp->{target}} @hold_data;
+            my $result = $resp->{result};
 
-            my $stat = $U->simplereq(
-                "open-ils.circ", $method, $e->authtoken, $hold
-            );
-
-            # The following did not cover all the possible return values of
-            # open-ils.circ.holds.create
-            #if($stat and $stat > 0) {
-            if ($stat and (not ref $stat) and $stat > 0) {
-                # if successful, return the user to the requesting page
-                $self->apache->log->info(
-                    "Redirecting back to " . $cgi->param('redirect_to')
-                );
-
-                # We also clear the patron_barcode (from the staff client)
-                # cookie at this point (otherwise it haunts the staff user
-                # later). XXX todo make sure this is best; also see that
-                # template when staff mode calls xulG.opac_hold_placed()
-                return $self->generic_redirect(
-                    undef,
-                    $self->cgi->cookie(
-                        -name => "patron_barcode",
-                        -path => "/",
-                        -secure => 1,
-                        -value => "",
-                        -expires => "-1h"
-                    )
-                );
+            if ($U->event_code($result)) {
+                # e.g. permission denied
+                $hdata->{hold_failed} = 1;
+                $hdata->{hold_failed_event} = $result;
 
             } else {
-                $ctx->{hold_failed} = 1;
+                
+                if(not ref $result and $result > 0) {
+                    # successul hold returns the hold ID
 
-                delete $ctx->{orig_params}{submit};
-
-                if (ref $stat eq 'ARRAY') {
-                    $ctx->{hold_failed_event} = shift @$stat;
-                } elsif (defined $U->event_code($stat)) {
-                    $ctx->{hold_failed_event} = $stat;
+                    $hdata->{hold_success} = $result; 
+    
                 } else {
-                    $self->apache->log->info(
-                        "attempt to create hold returned $stat"
-                    );
+                    # hold-specific failure event 
+                    $hdata->{hold_failed} = 1;
+                    $hdata->{hold_failed_event} = $result->{last_event};
+                    $hdata->{could_override} = $self->test_could_override($hdata->{hold_failed_event});
                 }
-
-                $ctx->{could_override} = $self->test_could_override;
             }
-        } else { # hold *check* failed
-            $ctx->{hold_failed} = 1; # XXX process the events, etc
-            $ctx->{hold_failed_event} = $allowed->{last_event};
         }
 
-        # hold permit failed
+        $bses->kill_me;
     }
+
+    # stay on the current page and display the results
+    return Apache2::Const::OK if 
+        (grep {$_->{hold_failed}} @hold_data) or $ctx->{general_hold_error};
+
+    # if successful, do some cleanup and return the 
+    # user to the requesting page.
+
+    # We also clear the patron_barcode (from the staff client)
+    # cookie at this point (otherwise it haunts the staff user
+    # later). XXX todo make sure this is best; also see that
+    # template when staff mode calls xulG.opac_hold_placed()
+    return $self->generic_redirect(
+        undef,
+        $self->cgi->cookie(
+            -name => "patron_barcode",
+            -path => "/",
+            -secure => 1,
+            -value => "",
+            -expires => "-1h"
+        )
+    );
 
     return Apache2::Const::OK;
 }
@@ -1164,10 +1188,10 @@ sub load_myopac_bookbags {
 }
 
 
-# actions are create, delete, show, hide, rename, add_rec, delete_item
+# actions are create, delete, show, hide, rename, add_rec, delete_item, place_hold
 # CGI is action, list=list_id, add_rec/record=bre_id, del_item=bucket_item_id, name=new_bucket_name
 sub load_myopac_bookbag_update {
-    my ($self, $action, $list_id) = @_;
+    my ($self, $action, $list_id, @hold_recs) = @_;
     my $e = $self->editor;
     my $cgi = $self->cgi;
 
@@ -1175,7 +1199,7 @@ sub load_myopac_bookbag_update {
     $list_id ||= $cgi->param('list');
 
     my @add_rec = $cgi->param('add_rec') || $cgi->param('record');
-    my @del_item = $cgi->param('del_item');
+    my @selected_item = $cgi->param('selected_item');
     my $shared = $cgi->param('shared');
     my $name = $cgi->param('name');
     my $success = 0;
@@ -1189,6 +1213,23 @@ sub load_myopac_bookbag_update {
         $list->pub($shared ? 't' : 'f');
         $success = $U->simplereq('open-ils.actor', 
             'open-ils.actor.container.create', $e->authtoken, 'biblio', $list)
+
+    } elsif($action eq 'place_hold') {
+
+        # @hold_recs comes from anon lists redirect; selected_itesm comes from existing buckets
+        unless (@hold_recs) {
+            if (@selected_item) {
+                my $items = $e->search_container_biblio_record_entry_bucket_item({id => \@selected_item});
+                @hold_recs = map { $_->target_biblio_record_entry } @$items;
+            }
+        }
+                
+        return Apache2::Const::OK unless @hold_recs;
+        $logger->info("placing holds from list page on: @hold_recs");
+
+        my $url = $self->ctx->{opac_root} . '/place_hold?hold_type=T';
+        $url .= ';hold_target=' . $_ for @hold_recs;
+        return $self->generic_redirect($url);
 
     } else {
 
@@ -1234,7 +1275,7 @@ sub load_myopac_bookbag_update {
         }
 
     } elsif($action eq 'del_item') {
-        foreach (@del_item) {
+        foreach (@selected_item) {
             $success = $U->simplereq(
                 'open-ils.actor',
                 'open-ils.actor.container.item.delete', $e->authtoken, 'biblio', $_

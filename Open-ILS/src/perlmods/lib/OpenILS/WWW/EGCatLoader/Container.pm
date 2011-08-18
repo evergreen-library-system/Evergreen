@@ -60,6 +60,10 @@ sub load_mylist_add {
 sub load_mylist_move {
     my $self = shift;
     my @rec_ids = $self->cgi->param('record');
+    my $action = $self->cgi->param('action') || '';
+
+    return $self->load_myopac_bookbag_update('place_hold', undef, @rec_ids)
+        if $action eq 'place_hold';
 
     my ($cache_key, $list) = $self->fetch_mylist;
     return $self->mylist_action_redirect unless $cache_key;
@@ -73,7 +77,7 @@ sub load_mylist_move {
         $cache_key, ANON_CACHE_MYLIST, \@keep
     );
 
-    if ($self->ctx->{user} and $self->cgi->param('action') =~ /^\d+$/) {
+    if ($self->ctx->{user} and $action =~ /^\d+$/) {
         # in this case, action becomes list_id
         $self->load_myopac_bookbag_update('add_rec', $self->cgi->param('action'));
         # XXX TODO: test for failure of above

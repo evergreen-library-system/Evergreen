@@ -1,369 +1,81 @@
 [%  PROCESS "default/opac/parts/misc_util.tt2";
-    attrs = {marc_xml => ctx.marc_xml};
-    PROCESS get_marc_attrs args=attrs;
-
     PROCESS "default/opac/parts/hold_error_messages.tt2";
 %]
-<div>
-    <div id='holds_box' class='canvas' style='margin-top: 6px;'>
-        [% IF ctx.hold_success %]
-        <div><big><strong>[% l("Hold was successfully placed"); %]</strong></big></div>
-        [% ELSIF ctx.hold_failed %]
-        <div><big><strong>[% l("Hold was not successfully placed"); %]</strong></big></div>
-            [% IF ctx.hold_local_block %]
-            <div>[% l("There is already a copy available at your local library.") %]</div>
-            [% ELSIF ctx.hold_failed_event || ctx.hold_local_alert %]
-        <div>
-            <strong>[% l('Problem:') %]</strong>
-            <span title="[% ctx.hold_failed_event.textcode | html %]">
-                <em>[%
-                        fail_part_key = ctx.hold_failed_event.payload.fail_part;
-                        event_key = ctx.hold_failed_event.textcode;
 
-                        # display:
-                        l(FAIL_PART_MSG_MAP.$fail_part_key) ||
-                        l(EVENT_MSG_MAP.$event_key) ||
-                        l(ctx.hold_failed_event.desc) ||
-                        ctx.hold_failed_event.payload.fail_part ||
-                        ctx.hold_failed_event.textcode ||
-                        (ctx.hold_local_alert ?
-                            l("There is already a copy available at your local library.") :
-                            l("Unknown problem")) %]</em>
-            </span>
+<div id='holds_box' class='canvas' style='margin-top: 6px;'>
+    <h1>[% l('Place Hold') %]</h1>
+    <form method="POST">
+        <input type="hidden" name="hold_type" value="[% CGI.param('hold_type') | html %]" />
+        [%#
+            new_redirect_to = ctx.referer;
+            IF new_redirect_to.match('redirect_to');
+                new_redirect_to = 'https://' _ ctx.hostname _ ctx.opac_root _ '/home';
+            ELSE;
+                new_redirect_to = new_redirect_to | replace('^http:', 'https:');
+            END;
+        %]
+        <input type="hidden" name="redirect_to" value="[% CGI.param('redirect_to') || CGI.referer | html %]" />
 
-            [% IF ctx.hold_copy_available %]<p>
-            [%  l('Find a copy in the shelving location, "[_1]."', locname) | html %]
-            </p>[% END %]
-
-            [% IF ctx.could_override || ctx.hold_local_alert %]
-            <p>
-                <big>[% l("You have permission to place this hold anyway.") %]</big>
-                <br />
-                [% l("Click submit below to override the system's objection and place your hold.") %]
-            </p>
-            <form method="POST">
-                <input type="hidden" type="name" name="override" value="1" />
-                [% FOR k IN ctx.orig_params.keys %]
-                <input type="hidden" name="[% k %]" value="[% ctx.orig_params.$k | uri %]" />
-                [% END %]
-                <input type="image" name="submit" value="submit" title="[% l('Submit') %]"
-                    alt="[% l('Submit') %]" src="[% ctx.media_prefix %]/images/btnSubmit.png" />
-            </form>
-            [% END %]
-        </div>
-            [% END;
-        ELSIF ctx.hold_local_block;
-            l("There is already a copy available at your local library");
-        ELSE %]
-        <form method="POST">
-            <br/>
-            <input type="hidden" name="hold_target"
-                value="[% CGI.param('hold_target') | html %]" />
-            <input type="hidden" name="hold_type"
-                value="[% CGI.param('hold_type') | html %]" />
-            [%
-                new_redirect_to = ctx.referer;
-                IF new_redirect_to.match('redirect_to');
-                    new_redirect_to = 'https://' _ ctx.hostname _ ctx.opac_root _ '/home';
-                ELSE;
-                    new_redirect_to = new_redirect_to | replace('^http:', 'https:');
-                END;
-            %]
-            <input type="hidden" name="redirect_to"
-                value="[% new_redirect_to | html %]" />
-            <h1>Place Hold</h1>
-            [% IF ctx.is_staff %]
-            <p class="staff-hold">
-                <input type="radio" id="hold_usr_is_requestor_not"
+        [% IF ctx.is_staff %]
+        <p class="staff-hold">
+            <input type="radio" id="hold_usr_is_requestor_not"
+                onchange="staff_hold_usr_input_disabler(this);"
+                name="hold_usr_is_requestor" value="0"
+                [% IF ctx.patron_recipient; ' checked="checked"'; END %] />
+            <label for="hold_usr_is_requestor_not">
+                [% l("Place hold for patron by barcode:") %]
+            </label>
+            <input type="text" name="hold_usr" id="hold_usr_input" value="[% ctx.patron_recipient.card.barcode | html %]" /><br />[%# XXX multi-barcode users? %]
+            <span>
+                <input type="radio" id="hold_usr_is_requestor"
                     onchange="staff_hold_usr_input_disabler(this);"
-                    name="hold_usr_is_requestor" value="0"
-                    [% IF ctx.patron_recipient; ' checked="checked"'; END %]
-                    />
-                <label for="hold_usr_is_requestor_not">
-                    [% l("Place hold for patron by barcode:") %]
+                    name="hold_usr_is_requestor" value="1" />
+                <label for="hold_usr_is_requestor">
+                    [% l("Place this hold for me ([_1] [_2])", ctx.user.first_given_name, ctx.user.family_name) | html %]
                 </label>
-                <input type="text" name="hold_usr" id="hold_usr_input" value="[% ctx.patron_recipient.card.barcode | html %]" /><br />[%# XXX multi-barcode users? %]
-                <span>
-                    <input type="radio" id="hold_usr_is_requestor"
-                        onchange="staff_hold_usr_input_disabler(this);"
-                        name="hold_usr_is_requestor" value="1" />
-                    <label for="hold_usr_is_requestor">
-                        [% l("Place this hold for me ([_1] [_2])", ctx.user.first_given_name, ctx.user.family_name) | html %]
-                    </label>
-                </span>
-            </p>
-            [% END %]
-            <p>
-                [%  title = attrs.title | html; libname = ctx.get_aou(ctx.default_pickup_lib).name | html %]
-                [% | l(title, libname) %]
-                You would like to place a hold on <strong><q>[_1]</q></strong>.<br />
-                If this is correct, confirm your pickup location and click <strong>SUBMIT</strong>.
-                [% END %]
-            </p>
-            <p>
-                [% l('Pickup location:') %]
-                [% PROCESS "default/opac/parts/org_selector.tt2";
-                    PROCESS build_org_selector name='pickup_lib' value=ctx.default_pickup_lib id='pickup_lib' can_have_vols_only=1 %]
-            </p>
-            <p>
-                [% |l %]If you use the Traveling Library Center (TLC) and ABC Express
-                services, please select "Outreach" to have the item delivered
-                during your scheduled visit.[% END %]
-            </p>
-            <input type="image" name="submit" value="submit" title="[% l('Submit') %]"
-                alt="[% l('Submit') %]" src="[% ctx.media_prefix %]/images/btnSubmit.png" />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="javascript:history.go(-1);" id="holds_cancel"><img
-                alt="[% l('Cancel') %]" src="[% ctx.media_prefix %]/images/btnCancel.png" /></a>
-        </form>
-        <br /><br />
+            </span>
+        </p>
+        [% END %]
+
+        <!-- loop through the holds and display status of request where appropriate -->
+        <ul id='hold-items-list'>
+        [% FOR hdata IN ctx.hold_data;
+            attrs = {marc_xml => hdata.marc_xml};
+            PROCESS get_marc_attrs args=attrs %]
+            <li>
+                <input type="hidden" name="hold_target" value="[% hdata.target.id | html %]" />
+                <div class='hold-items-list-title'>[% attrs.title_extended | html %]</div>
+            </li>
+        [% END %]
+        </ul>
+
         <p>
-            [% |l %]* If you need your item today, and it is checked in at your
-            library, please place your hold and then call your library to set it
-            aside. Placing a hold without calling the library will increase your
-            wait time.[% END %]
-            <br /><a href="#">[% l('Library phone numbers.') %]</a>
+            [% l('Pickup location:') %]
+            [% PROCESS "default/opac/parts/org_selector.tt2";
+                PROCESS build_org_selector name='pickup_lib' value=ctx.default_pickup_lib id='pickup_lib' can_have_vols_only=1 %]
         </p>
         <p>
-            [% |l %]* For best possible service, we recommend keeping 
-            a printed copy of your most recent holds list.[% END %]
+            [% |l %]If you use the Traveling Library Center (TLC) and ABC Express
+            services, please select "Outreach" to have the item delivered
+            during your scheduled visit.[% END %]
         </p>
-        [% END %] <!-- ctx.hold_success -->
-        <table width='90%' border="1" class="hide_me">
-            <tbody>
-                <tr>
-                    <td class='holds_cell color_1' 
-                        align='center' colspan='2'>[% l("Create / Edit a Hold") %]</td>
-                </tr>
-                <tr>
-                    <td class='holds_cell'>[% l("Recipient") %]:</td>
-                    <td class='holds_cell' id='holds_recipient'> </td>
-                </tr>
-                <tr>
-                    <td class='holds_cell'>[% l("Title:") %]</td>
-                    <!-- <td class='holds_cell' id='holds_title'> </td> -->
-                </tr>
-                <tr>
-                    <td class='holds_cell'>[% l("Author") %]</td>
-                    <td class='holds_cell' id='holds_author'> </td>
-                </tr>
-                <tr>
-                    <td class='holds_cell'>[% l("Format") %]</td>
-                    <td class='holds_cell' id='holds_format'> </td>
-                </tr>
-                <tr id='hold_physical_desc_row'>
-                    <td class='holds_cell'>[% l("Physical Description:") %]</td>
-                    <td class='holds_cell' id='holds_physical_desc'> </td>
-                </tr>
-
-                <tr class='hide_me' id='holds_cn_row'>
-                    <td class='holds_cell'>[% l("Call Number:") %]</td>
-                    <td class='holds_cell'><b id='holds_cn'/> </td>
-                </tr>
-
-                <tr class='hide_me' id='holds_copy_row'>
-                    <td class='holds_cell'>[% l("Copy Barcode:") %]</td>
-                    <td class='holds_cell'><b id='holds_copy'/> </td>
-                </tr>
-
-                <tr class='hide_me' id='holds_type_row'>
-                    <td class='holds_cell'>[% l("Hold Type:") %]</td>
-                    <td class='holds_cell hide_me' id='holds_is_cn'>
-                        <b>[% l("Volume Hold") %]</b>
-                    </td>
-                    <td class='holds_cell hide_me' id='holds_is_copy'>
-                        <b>[% l("Copy Hold") %]</b>
-                    </td>
-                </tr>
-                <tr>
-                    <td class='holds_cell'>[% l("Contact telephone number") %]:</td>
-                    <td class='holds_cell'>
-                        <input id='holds_phone' size='13' maxlength='12'/>
-                        <span style='margin-left: 4px; font-size: 7pt;'>
-                            [% l("(XXX-YYY-ZZZZ)") %]
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class='holds_cell'>[% l("Enable phone notifications for this hold?") %]</td>
-                    <td class='holds_cell'>
-                        <input type='checkbox' id='holds_enable_phone'
-                            checked='checked' />
-                    </td>
-                </tr>
-                <tr>
-                    <td class='holds_cell'>[% l("Contact email address") %]:</td>
-                    <td class='holds_cell' id='holds_email'> 
-                        <span class='hide_me' id='holds.no_email'>
-                           ([% l("Patron has no configured email address") %])<br/>
-                           ([% l("See") %] <a class='classic_link' id='holds.no_email.my_account'>[% l("My Account") %]</a> [% l("for setting your email address") %])
-                        </span>
-                        <span class='hide_me' id='holds.no_email.xul'>
-                           [% l("(Patron has no configured email address)") %] 
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class='holds_cell'>[% l("Enable email notifications for this hold?") %]</td>
-                    <td class='holds_cell'>
-                        <input type='checkbox' id='holds_enable_email'
-                            checked='checked'/>
-                    </td>
-                </tr>
-                <!--
-                <tr id='holds_depth_selector_row' class='hide_me'>
-                    <td class='holds_cell'>Hold Range</td>
-                    <td class='holds_cell'>
-                        <select id='holds_depth_selector'></select>
-                    </td>
-                </tr>
-                -->
-                <tr>
-                    <td class='holds_cell'>[% l("Pickup location") %]</td>
-                    <td class='holds_cell'>
-                        <!-- <select id='holds_org_selector'> </select> -->
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class='holds_cell'>[% l("Expiration date") %]</td>
-                    <td class='holds_cell'>
-                        <input size='10' maxlength='10'
-                         id='holds_expire_time' />
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class='holds_cell'>
-                        [% l("Suspend this hold") %]
-                        <a class='classic_link'
-                            href='#'>[% l("(Help)") %]</a>
-                        </td>
-                    <td class='holds_cell'>
-                        <input type='checkbox' id='holds_frozen_chkbox' /> 
-                    </td>
-                </tr>
-                <tr id='hold_frozen_thaw_row' class='hide_me'>
-                    <td class='holds_cell'>
-                        <!-- XXX TODO there used to be script here dealing with
-                        frozen holds -->
-                        [% l("Automatically activate hold on:") %]
-                    </td>
-                    <td class='holds_cell'>
-                        <input size='10' maxlength='10'
-                            id='holds_frozen_thaw_input' />
-                    </td>
-                </tr>
-
-                <tr id='holds_alt_formats_row_extras' class='hide_me'>
-                    <td colspan='2' align='center'>
-                        <div style='padding: 8px;'>
-                            <a class='classic_link' href='#'
-                                style='padding: 5px;'>[% l("Advanced Hold Options") %]</a>
-                        </div>
-                    </td>
-                </tr>
-
-                <tr id='holds_alt_formats_row' class='hide_me'>
-
-                    <td class='holds_cell'>
-                        <div style='margin-bottom: 5px;'>
-                            <span>[% l("Acceptable Alternative Formats:") %] </span>
-                            <span><a class='classic_link red' href='#'>[% l("(Help)") %]</a></span>
-                        </div>
-                        <div>[% l("(control-click to select multiple formats)") %]</div>
-                    </td>
-
-                    <td class='holds_cell'>
-                        <select id='hold_alt_form_selector' multiple='multiple' style='width: 14em;'>
-                            <option value='at'    class='hide_me'>[% l("Books") %]</option>
-                            <option value='at-d' class='hide_me'>[% l("Large Print Books") %]</option>
-                            <option value='i'        class='hide_me'>[% l("Audiobooks") %]</option>
-                            <option value='g'        class='hide_me'>[% l("Video Recordings") %]</option>
-                            <option value='j'        class='hide_me'>[% l("Music") %]</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td class='holds_cell' align='center' colspan='2'>
-                        <!-- <button id='holds_submit'>[% l("Place Hold") %]</button> -->
-                        <button class='hide_me' id='holds_update'>[% l("Update Hold") %]</button>
-                        <span style='padding: 20px;'> </span>
-                        <!-- <button id='holds_cancel'>[% l("Cancel") %]</button> -->
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <span class='hide_me' id='holds_bad_phone'>
-            [% l("The phone number does not have the correct format. The expected format is XXX-YYY-ZZZZ") %]
-        </span>
-        <span class='hide_me' id='hold_not_allowed'>
-            [% |l %]No items were found that could fulfill the requested holds.  
-                It's possible that choosing a different format will result in a successful hold.  
-                It is also possible that you have exceeded the number of allowable holds.  
-                For further information, please consult your local librarian.[% END %]
-        </span>
-    </div>
-    <div id="anonListTable" class="hide_me" style="margin-top: 6px;">
-        <select id="holdsCacheSel" class="hide_me"></select><br />
-        <a href="#">Place hold on selected</a><br />
-        <a href="#">Remove selected</a>
-        
-        <table id="temp_list_holds" cellpadding='0' cellspacing='0' border='0'
-            style="margin-top:10px;">
-            <tr>
-                <td width="1%" style="padding-left:10px;">
-                    <input type='checkbox' title='Select All'
-                        id='anon_selector' />
-                </td>
-                <td width="1%">
-                </td>
-                <td width="98%" style="padding-left:40px;">
-                    <strong>Title</strong>
-                </td>
-            </tr>
-        </table>
-        <table width='100%' style="margin-left:7px;margin-bottom:10px;">
-            <thead>
-                <tr><td width='20'></td><td width='30'></td><td></td></tr>
-            </thead>
-            <tbody id="anonListParent">
-                <tr id="anonListTemp">
-                  <td><input type='checkbox' name='anon_selector' /></td>
-                  <td name="curr_row"></td>
-                  <td name="title"></td>
-                </tr>
-            </tbody>
-        </table>
-        <a href="#">Back to search results</a>
-    </div>
-
-    <span class='hide_me' id='format_words'>
-        <span name='at'>[% l("Books") %]</span>
-        <span name='at-d'>[% l("Large Print Books") %]</span>
-        <span name='i'>[% l("Audiobooks") %]</span>
-        <span name='g'>[% l("Video Recordings") %]</span>
-        <span name='j'>[% l("Music") %]</span>
-        <span name='m'>[% l("Electronic Resources") %]</span>
-    </span>
-
-    <span class='hide_me' id='holds_explain_adv'>
-        [% |l %]If you wish to broaden the scope of your hold to include other versions of this title, 
-        select the formats that would be acceptable.  The first available copy will be sent to you.[% END %]
-    </span>
-
-    <span class='hide_me' id='holds_pick_good_org'>[% l("Please select a physical location where your hold can be delivered.") %]</span>
-    <span class='hide_me' id='hold_dup_exists'>[% l("A hold already exists on the requested item.") %]</span>
-    <span class='hide_me' id='hold_dup_exists_override'>[% l("A hold already exists on the requested item. Would you like to create the hold anyway?") %]</span>
-
-    <span id='hold_failed_patron_barred' class='hide_me'>
-        [% |l %]PATRON BARRED. Please see any notes in the "Staff Notes" section of your 
-        "My Account" page or contact your local library.[% END %]
-    </span>
-
-    <span id='invalid_hold' class='hide_me'>
-        [% |l %]This hold is no longer valid. It's likely that the target for the hold was 
-        deleted from the system.  Please cancel this hold and place a new one.[% END %]
-    </span>
-    <span id='holds_invalid_recipient' class='hide_me'>[% l("The patron barcode entered as the hold recipient is invalid.") %]</span>
+        <input type="image" name="submit" value="submit" title="[% l('Submit') %]"
+            alt="[% l('Submit') %]" src="[% ctx.media_prefix %]/images/btnSubmit.png" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="javascript:history.go(-1);" id="holds_cancel"><img
+            alt="[% l('Cancel') %]" src="[% ctx.media_prefix %]/images/btnCancel.png" /></a>
+    </form>
+    <br /><br />
+    <p>
+        [% |l %]* If you need your item today, and it is checked in at your
+        library, please place your hold and then call your library to set it
+        aside. Placing a hold without calling the library will increase your
+        wait time.[% END %]
+        <br /><a href="#">[% l('Library phone numbers.') %]</a>
+    </p>
+    <p>
+        [% |l %]* For best possible service, we recommend keeping 
+        a printed copy of your most recent holds list.[% END %]
+    </p>
 </div>
+

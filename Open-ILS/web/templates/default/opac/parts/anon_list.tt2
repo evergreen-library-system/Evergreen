@@ -31,7 +31,7 @@
                         <td width="1%" class="nowrap">
                             <select class="opac-auto-179" name="action">
                                 <option>[% l('-- Actions for this list --') %]</option>
-                                <!-- XXX not ready <option value="hold">[% l('Place Hold') %]</option> -->
+                                <option value="place_hold">[% l('Place Hold') %]</option>
                                 <option value="delete">[% l('Remove Items') %]</option>
                                 [% IF ctx.user AND ctx.bookbags.size %]
                                 <optgroup label="Move selected items to">

@@ -1,0 +1,103 @@
+[%  PROCESS "default/opac/parts/misc_util.tt2";
+    PROCESS "default/opac/parts/hold_error_messages.tt2";
+    override_ok = [];
+    fail_count = 0;
+%]
+
+<!-- TODO: CSS for big/strong-->
+
+<div id='holds_box' class='canvas' style='margin-top: 6px;'>
+    <h1>[% l('Place Hold') %]</h1>
+
+    <ul id='hold-items-list'>
+
+    [% FOR hdata IN ctx.hold_data;
+        attrs = {marc_xml => hdata.marc_xml};
+        PROCESS get_marc_attrs args=attrs %]
+        <li>
+            <div class='hold-items-list-title'>[% attrs.title_extended | html %]</div>
+            <div>
+                [% IF hdata.hold_success %]
+
+                <div>[% l("Hold was successfully placed"); %]</div>
+
+                [% ELSIF hdata.hold_failed;
+                    fail_count = fail_count + 1 %]
+
+
+                    <div><big><strong>[% l("Hold was not successfully placed"); %]</strong></big></div>
+                    [% IF hdata.hold_local_block %]
+                        <div>[% l("There is already a copy available at your local library.") %]</div>
+                    [% ELSIF hdata.hold_failed_event || hdata.hold_local_alert %]
+                        <div>
+                            <span class='hold-items-list-problem'>[% l('Problem:') %]</span>
+                            <span title="[% hdata.hold_failed_event.textcode | html %]">
+                                <em>[%
+                                        fail_part_key = hdata.hold_failed_event.payload.fail_part;
+                                        event_key = hdata.hold_failed_event.textcode;
+
+                                        # display:
+                                        l(FAIL_PART_MSG_MAP.$fail_part_key) ||
+                                        l(EVENT_MSG_MAP.$event_key) ||
+                                        l(hdata.hold_failed_event.desc) ||
+                                        hdata.hold_failed_event.payload.fail_part ||
+                                        hdata.hold_failed_event.textcode ||
+                                        (hdata.hold_local_alert ?
+                                            l("There is already a copy available at your local library.") :
+                                            l("Unknown problem")) | html
+                                    %]</em>
+                                    [% IF event_key == 'PERM_FAILURE' %]
+                                    <div>[% l('Permission: "[_1]"', hdata.hold_failed_event.ilsperm) | html %]</div>
+                                    [% END %]
+                            </span>
+
+                            [% IF hdata.hold_copy_available %]
+                                <p>[%  l('Find a copy in the shelving location, "[_1]."', locname) | html %]</p>
+                            [% END %]
+
+                            [% IF hdata.could_override || hdata.hold_local_alert %]
+                                [% override_ok.push(hdata.target.id) %]
+                                <p>
+                                    <big>[% l("You have permission to place this hold anyway.") %]</big>
+                                    <br />
+                                    [% l("Click submit below to override and place your hold.") %]
+                                </p>
+                                <form method="POST">
+                                    <input type="hidden" type="name" name="override" value="1" />
+                                    <input type="hidden" name="hold_target" value="[% hdata.target.id | html %]" />
+                                    [% FOR k IN ctx.orig_params.keys %]
+                                    <input type="hidden" name="[% k %]" value="[% ctx.orig_params.$k | html %]" />
+                                    [% END %]
+                                    <input type="image" name="submit" value="submit" title="[% l('Submit') %]"
+                                        alt="[% l('Submit') %]" src="[% ctx.media_prefix %]/images/btnSubmit.png" />
+                                </form>
+                            [% END %]
+                        </div>
+                    [% ELSIF hdata.hold_local_block;
+                        l("There is already a copy available at your local library");
+                    END;
+                END %]
+            </div>
+        </li>
+    [% END %]
+    <div>
+        [% IF fail_count > 1 AND fail_count == override_ok.size %]
+            <hr/>
+            <form method="POST">
+                <input type="hidden" type="name" name="override" value="1" />
+                [% FOR k IN ctx.orig_params.keys %]
+                <input type="hidden" name="[% k %]" value="[% ctx.orig_params.$k | html %]" />
+                [% END %]
+                [% FOR target IN override_ok %]
+                    <input type="hidden" name="hold_target" value="[% target | html %]" />
+                [% END %]
+                <div class='big-strong'>[% l('Override all holds') %]</div>
+                <br/>
+                <input type="image" name="submit" value="submit" title="[% l('Submit') %]"
+                    alt="[% l('Submit') %]" src="[% ctx.media_prefix %]/images/btnSubmit.png" />
+            </form>
+        [% END %]
+    </div>
+    </ul>
+</div>
+

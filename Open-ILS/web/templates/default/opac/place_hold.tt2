@@ -9,7 +9,11 @@
     <div id="content-wrapper">
         <div id="main-content">
             <div class="common-full-pad"></div>	
-            [% INCLUDE "default/opac/parts/place_hold.tt2" %]
+            [% IF ctx.hold_attempt_made %]
+                [% INCLUDE "default/opac/parts/place_hold_result.tt2" %]
+            [% ELSE %]
+                [% INCLUDE "default/opac/parts/place_hold.tt2" %]
+            [% END %]
             <div class="common-full-pad"></div>	
         </div>
     </div>
