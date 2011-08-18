@@ -162,13 +162,11 @@
         FOR copy_info IN ctx.copies;
             NEXT IF copy_info.call_number_label == '##URI##' %]
         <tr>
-            <td>[%
-                # XXX KCLS-specific kludging
+            <td>
+            [%-
                 org_name = ctx.get_aou(copy_info.circ_lib).name;
-                dir = org_name | lower | replace('[^\w]', '') |
-                    replace('.+320th', '320th'); %]
-                <a href="http://www.kcls.org/[% dir %]/"
-                    class="classic_link">[% org_name %]</a>
+                org_name | html
+            -%]
             </td>
             <td>[% copy_info.call_number_label | html %]</td>
             <td>[% copy_info.barcode | html %]</td>
