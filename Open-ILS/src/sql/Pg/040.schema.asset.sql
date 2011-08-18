@@ -533,7 +533,7 @@ BEGIN
           GROUP BY 1,2,6;
 
         IF NOT FOUND THEN
-            RETURN QUERY SELECT ans.depth, ans.id, 0::BIGINT, 0::BIGINT, 0::BIGINT, trans;
+            RETURN QUERY SELECT -1, ans.id, 0::BIGINT, 0::BIGINT, 0::BIGINT, trans;
         END IF;
 
     END LOOP;   
@@ -595,7 +595,7 @@ BEGIN
           GROUP BY 1,2,6;
 
         IF NOT FOUND THEN
-            RETURN QUERY SELECT ans.depth, ans.id, 0::BIGINT, 0::BIGINT, 0::BIGINT, trans;
+            RETURN QUERY SELECT -1, ans.id, 0::BIGINT, 0::BIGINT, 0::BIGINT, trans;
         END IF;
 
     END LOOP;

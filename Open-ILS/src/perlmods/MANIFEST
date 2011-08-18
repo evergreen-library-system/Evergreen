@@ -130,6 +130,7 @@ lib/Template/Plugin/ResolverResolver.pm
 lib/OpenILS/Template/Plugin/Unicode.pm
 lib/OpenILS/Template/Plugin/WebSession.pm
 lib/OpenILS/Template/Plugin/WebUtils.pm
+lib/OpenILS/Utils/Configure.pm
 lib/OpenILS/Utils/Cronscript.pm
 lib/OpenILS/Utils/Cronscript.pm.in
 lib/OpenILS/Utils/CStoreEditor.pm
