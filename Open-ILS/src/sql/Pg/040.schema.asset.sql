@@ -262,9 +262,7 @@ BEGIN
             NEW.label_class := COALESCE(
             (
                 SELECT substring(value from E'\\d+')::integer
-                FROM actor.org_unit_setting
-                WHERE name = 'cat.default_classification_scheme'
-                AND org_unit = NEW.owning_lib
+                FROM actor.org_unit_ancestor_setting('cat.default_classification_scheme', NEW.owning_lib)
             ), 1
         );
     END IF;
@@ -535,7 +533,7 @@ BEGIN
           GROUP BY 1,2,6;
 
         IF NOT FOUND THEN
-            RETURN QUERY SELECT ans.depth, ans.id, 0::BIGINT, 0::BIGINT, 0::BIGINT, trans;
+            RETURN QUERY SELECT -1, ans.id, 0::BIGINT, 0::BIGINT, 0::BIGINT, trans;
         END IF;
 
     END LOOP;   
@@ -597,7 +595,7 @@ BEGIN
           GROUP BY 1,2,6;
 
         IF NOT FOUND THEN
-            RETURN QUERY SELECT ans.depth, ans.id, 0::BIGINT, 0::BIGINT, 0::BIGINT, trans;
+            RETURN QUERY SELECT -1, ans.id, 0::BIGINT, 0::BIGINT, 0::BIGINT, trans;
         END IF;
 
     END LOOP;

@@ -18,6 +18,8 @@ circ.checkout.prototype = {
 
         obj.patron_id = params.patron_id;
 
+        obj.auto_override_events = [];
+
         JSAN.use('circ.util');
         var columns = circ.util.columns( 
             { 
@@ -653,12 +655,28 @@ circ.checkout.prototype = {
                         7016 /* ITEM_ON_HOLDS_SHELF */,
                         7013 /* PATRON_EXCEEDS_FINES */
                     ],
+                    'report_override_on_events' : [ /* Allow auto-override of Patron overrides only */
+                        1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */,
+                        1213 /* PATRON_BARRED */,
+                        7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */,
+                        7013 /* PATRON_EXCEEDS_FINES */
+                    ],
+                    'auto_override_these_events' : obj.auto_override_events,
                     'text' : {
+                        '1212' : function(r) {
+                            return document.getElementById('circStrings').getString('staff.circ.checkout.override.will_auto');
+                        },
+                        '1213' : function(r) {
+                            return document.getElementById('circStrings').getString('staff.circ.checkout.override.will_auto');
+                        },
                         '1232' : function(r) {
                             return document.getElementById('circStrings').getString('staff.circ.checkout.override.item_deposit_required.warning');
                         },
                         '1233' : function(r) {
                             return document.getElementById('circStrings').getString('staff.circ.checkout.override.item_rental_fee_required.warning');
+                        },
+                        '7002' : function(r) {
+                            return document.getElementById('circStrings').getString('staff.circ.checkout.override.will_auto');
                         },
                         '7004' : function(r) {
                             try {
@@ -670,6 +688,9 @@ circ.checkout.prototype = {
                         },
                         '7010' : function(r) {
                             return r.payload;
+                        },
+                        '7013' : function(r) {
+                            return document.getElementById('circStrings').getString('staff.circ.checkout.override.will_auto');
                         }
                     }
                 }
@@ -697,7 +718,9 @@ circ.checkout.prototype = {
             /**********************************************************************************************************************/
             /* Normal case, proceed with checkout */
             if (permit.ilsevent === '0') {
-
+                if(permit._reported_events != 'undefined') {
+                    obj.auto_override_events = obj.auto_override_events.concat(permit._reported_events);
+                }
                 JSAN.use('util.sound'); var sound = new util.sound(); sound.circ_good();
                 params.permit_key = permit.payload;
                 obj._checkout( params, permit ); 

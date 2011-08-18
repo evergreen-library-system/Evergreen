@@ -28,25 +28,23 @@ set -u
 
 function usage {
 	echo "";
-	echo "usage: $0 [-u] [-c <c_config>]";
+	echo "usage: $0 [-u]";
 	echo "";
 	echo "Updates the Evergreen organization tree and fieldmapper IDL.";
 	echo "Run this every time you change the Evergreen organization tree";
 	echo "or update fm_IDL.xml";
 	echo "";
 	echo "Optional parameters:";
-	echo -e "  -c\t\tfull path to C configuration file (opensrf_core.xml)";
-	echo -e "    \t\t - defaults to SYSCONFDIR/opensrf_core.xml";
 	echo -e "  -u\t\tupdate proximity of library sites in organization tree";
 	echo -e "    \t\t(this is expensive for a large organization tree)";
 	echo "";
 	echo "Examples:";
 	echo "";
 	echo "  Update organization tree and fieldmapper IDL:";
-	echo "    $0 -c SYSCONFDIR/opensrf_core.xml";
+	echo "    $0";
 	echo "";
 	echo "  Update organization tree and refresh proximity:";
-	echo "    $0 -u -c SYSCONFDIR/opensrf_core.xml";
+	echo "    $0 -u";
 	echo "";
 }
 
@@ -55,35 +53,18 @@ function usage {
 cd "BINDIR"
 
 # Initialize our variables
-CONFIG="";
 PROXIMITY="";
 
 # ---------------------------------------------------------------------------
 # Load the command line options and set the global vars
 # ---------------------------------------------------------------------------
-while getopts  "c:u h" flag; do
+while getopts  "u h" flag; do
 	case $flag in	
-		"c")		CONFIG="$OPTARG";;
 		"u")		PROXIMITY="REFRESH";;
 		"h")		usage && exit;;
 	esac;
 done
 shift $((OPTIND - 1))
-
-if [ -z "$CONFIG" ] && [[ ! -z "${1:-}" ]]; then
-	# Support "autogen.sh /path/to/opensrf_core.xml" for legacy invocation
-	CONFIG="$1";
-fi
-if [ -z "$CONFIG" ]; then
-	# Fall back to the configured default
-	CONFIG="SYSCONFDIR/opensrf_core.xml";
-fi
-if [ ! -f "$CONFIG" ]; then
-	echo "ERROR: could not find configuration file '$CONFIG'";
-	echo "";
-	usage;
-	exit 1;
-fi;
 
 JSDIR="LOCALSTATEDIR/web/opac/common/js/";
 FMDOJODIR="LOCALSTATEDIR/web/js/dojo/fieldmapper/";
@@ -93,45 +74,59 @@ SKINDIR='LOCALSTATEDIR/web/opac/skin';
 COMPRESSOR="" # TODO: set via ./configure
 #COMPRESSOR="java -jar /opt/yuicompressor-2.4.2/build/yuicompressor-2.4.2.jar"
 
-echo "Updating Evergreen organization tree and IDL using '$CONFIG'"
+echo "Updating Evergreen organization tree and IDL"
 echo ""
 
+OUTFILE="$JSDIR/fmall.js"
 echo "Updating fieldmapper";
-perl fieldmapper.pl "$CONFIG"	> "$JSDIR/fmall.js";
-cp "$JSDIR/fmall.js" "$FMDOJODIR/"
-echo " -> $JSDIR/fmall.js";
+perl -MOpenILS::Utils::Configure -e 'print OpenILS::Utils::Configure::fieldmapper();' > "$OUTFILE"
+cp "$OUTFILE" "$FMDOJODIR/"
+echo " -> $OUTFILE"
+OUTFILES="$OUTFILE"
 
+OUTFILE="$JSDIR/fmcore.js"
 echo "Updating web_fieldmapper";
-perl fieldmapper.pl "$CONFIG" "web_core"	> "$JSDIR/fmcore.js";
-echo " -> $JSDIR/fmcore.js";
+perl -MOpenILS::Utils::Configure -e 'print OpenILS::Utils::Configure::fieldmapper("web_core");' > "$OUTFILE"
+echo " -> $OUTFILE"
+OUTFILES="$OUTFILES $OUTFILE"
 
+OUTFILE="$JSDIR/*/OrgTree.js"
 echo "Updating OrgTree";
-perl org_tree_js.pl "$CONFIG" "$JSDIR" "OrgTree.js";
+perl -MOpenILS::Utils::Configure -e "OpenILS::Utils::Configure::org_tree_js('$JSDIR', 'OrgTree.js');"
 cp "$JSDIR/en-US/OrgTree.js" "$FMDOJODIR/"
-echo " -> $JSDIR/*/OrgTree.js";
+echo " -> $OUTFILE"
+OUTFILES="$OUTFILES $OUTFILE"
 
+OUTFILE="$SLIMPACDIR/*/lib_list.inc"
 echo "Updating OrgTree HTML";
-perl org_tree_html_options.pl "$CONFIG" "$SLIMPACDIR" "lib_list.inc";
-echo " -> $SLIMPACDIR/*/lib_list.inc";
+perl -MOpenILS::Utils::Configure -e "OpenILS::Utils::Configure::org_tree_html_options('$SLIMPACDIR', 'lib_list.inc');"
+echo " -> $OUTFILE"
+OUTFILES="$OUTFILES $OUTFILE"
 
+OUTFILE="$SLIMPACDIR/locales.inc"
 echo "Updating locales selection HTML";
-perl locale_html_options.pl "$CONFIG" "$SLIMPACDIR/locales.inc";
-echo " -> $SLIMPACDIR/*/locales.inc";
+perl -MOpenILS::Utils::Configure -e "print OpenILS::Utils::Configure::locale_html_options();" > "$OUTFILE"
+echo " -> $OUTFILE"
+OUTFILES="$OUTFILES $OUTFILE"
 
+OUTFILE="$JSDIR/OrgLasso.js"
 echo "Updating Search Groups";
-perl org_lasso_js.pl "$CONFIG" > "$JSDIR/OrgLasso.js";
-cp "$JSDIR/OrgLasso.js" "$FMDOJODIR/"
-echo " -> $JSDIR/OrgLasso.js";
+perl -MOpenILS::Utils::Configure -e "print OpenILS::Utils::Configure::org_lasso();" > "$OUTFILE";
+cp "$OUTFILE" "$FMDOJODIR/"
+echo " -> $OUTFILE"
+OUTFILES="$OUTFILES $OUTFILE"
 
+OUTFILE="$JSDIR/*/FacetDefs.js"
 echo "Updating Facet Definitions";
-perl facet_types_js.pl "$CONFIG" "$JSDIR" "FacetDefs.js";
+perl -MOpenILS::Utils::Configure -e "OpenILS::Utils::Configure::facet_types('$JSDIR', 'FacetDefs.js');"
 cp "$JSDIR/en-US/FacetDefs.js" "$FMDOJODIR/"
-echo " -> $JSDIR/*/FacetDefs.js";
+echo " -> $OUTFILE"
+OUTFILES="$OUTFILES $OUTFILE"
 
 if [ ! -z "$PROXIMITY" ]
 then
 	echo "Refreshing proximity of org units";
-	perl org_tree_proximity.pl "$CONFIG";
+	perl -MOpenILS::Utils::Configure -e "OpenILS::Utils::Configure::org_tree_proximity();"
 fi
 
 echo "Creating combined JS..."
@@ -163,7 +158,21 @@ for skin in $(ls $SKINDIR); do
     fi;
 done;
 
+# Generate a hash of the generated files
+(
+	date +%Y%m%d
+	for file in `ls -1 $OUTFILES`; do
+		if [[ -n $file && -f $file ]]
+		then
+			md5sum $file
+		fi
+	done
+) | md5sum | cut -f1 -d' ' | colrm 1 26 > LOCALSTATEDIR/web/eg_cache_hash
+
+echo
+echo -n "Current Evergreen cache key: "
+cat LOCALSTATEDIR/web/eg_cache_hash
+
 echo "Done";
 
 )
-

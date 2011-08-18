@@ -68,23 +68,8 @@ function my_init() {
                     g.gather_copies();
                 }
             }
-            $('Sync').addEventListener(
-                'command',
-                function() {
-                    // give gather_copies_soon fired off directly/indirectly by
-                    // onchange a chance to go first
-                    setTimeout(
-                        function() {
-                            xulG.enable_copy_editor();
-                        },
-                        0
-                    );
-                },
-                false
-            );
         } else {
             $('Create').hidden = true;
-            $('Sync').hidden = true;
         }
 
         /***********************************************************************************************************/
@@ -249,7 +234,7 @@ function my_init() {
         g.load_prefs();
 
         if (g.existing_copies.length > 0) {
-            g.gather_copies_soon();
+            g.gather_copies_soon(true);
         }
 
         try {
@@ -305,10 +290,10 @@ g.render_volume_count_entry = function(row,ou_id) {
     util.widgets.apply_vertical_tab_on_enter_handler(
         tb,
         function() { render_copy_count_entry({'target':tb}); setTimeout(function(){util.widgets.vertical_tab(tb);},0); }
-        ,function() { $('Sync').disabled = true; }
+        ,function() { g.delay_gather_copies_soon(false); }
     );
     tb.addEventListener( 'change', render_copy_count_entry, false);
-    tb.addEventListener( 'change', g.gather_copies_soon, false);
+    //tb.addEventListener( 'change', g.gather_copies_soon, false);
     tb.addEventListener( 'focus', function(ev) { g.last_focus = ev.target; }, false );
     setTimeout(
         function() {
@@ -497,7 +482,7 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
                                 },0
                             );
                         }
-                        ,function() { $('Sync').disabled = true; }
+                        ,function() { g.delay_gather_copies_soon(false); }
                     );
                     call_number_column_textbox.addEventListener( 'change', handle_change_to_callnumber_data, false);
                     //call_number_column_textbox.addEventListener( 'change', g.gather_copies_soon, false);
@@ -565,10 +550,10 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
                                 },0
                             );
                         }
-                        ,function() { $('Sync').disabled = true; }
+                        ,function() { g.delay_gather_copies_soon(false); }
                     );
                     number_of_copies_column_textbox.addEventListener( 'change', handle_change_number_of_copies_column_textbox, false);
-                    number_of_copies_column_textbox.addEventListener( 'change', g.gather_copies_soon, false);
+                    //number_of_copies_column_textbox.addEventListener( 'change', g.gather_copies_soon, false);
                     number_of_copies_column_textbox.addEventListener( 'focus', function(ev) { g.last_focus = ev.target; }, false );
                     if ( !g.last_focus ) { number_of_copies_column_textbox.focus(); g.last_focus = number_of_copies_column_textbox; }
 
@@ -661,7 +646,7 @@ g.render_part_menu = function(barcode_tb) {
                         barcode_tb.setAttribute('bmp_id',menulist.selectedItem.value);
                         button.hidden = true;
                     }
-                    g.gather_copies_soon();
+                    g.gather_copies_soon(true);
                 }
             });
         },
@@ -677,7 +662,7 @@ g.render_part_menu = function(barcode_tb) {
         },
         false
     );
-    menulist.addEventListener('change',g.gather_copies_soon,false);
+    menulist.addEventListener('change',function() { g.gather_copies_soon(true); },false);
     menulist.addEventListener(
         'command',
         function(ev) {
@@ -686,7 +671,7 @@ g.render_part_menu = function(barcode_tb) {
         },
         false
     );
-    menulist.addEventListener('command',g.gather_copies_soon,false);
+    menulist.addEventListener('command',function() { g.gather_copies_soon(true); },false);
 
     return hbox;
 }
@@ -770,12 +755,12 @@ g.render_barcode_entry = function(node,callnumber_composite_key,count,ou_id) {
                 util.widgets.apply_vertical_tab_on_enter_handler(
                     tb,
                     function() { ready_to_create({'target':tb}); setTimeout(function(){util.widgets.vertical_tab(tb);},0); },
-                    g.delay_gather_copies_soon
+                    function() { g.delay_gather_copies_soon(true); }
                 );
                 util.widgets.apply_vertical_tab_on_enter_handler(
                     part_menu.firstChild,
                     function() { setTimeout(function(){util.widgets.vertical_tab(part_menu.firstChild);},0); },
-                    g.delay_gather_copies_soon
+                    function() { g.delay_gather_copies_soon(true); }
                 );
                 tb.addEventListener('change', function(ev) {
                     var barcode = String( ev.target.value ).replace(/\s/g,'');
@@ -793,7 +778,7 @@ g.render_barcode_entry = function(node,callnumber_composite_key,count,ou_id) {
             }
         }
 
-        g.gather_copies_soon();
+        g.gather_copies_soon(true);
         setTimeout( function() { if (g.first_focus) { g.first_focus.focus(); } }, 0 );
 
     } catch(E) {
@@ -831,7 +816,7 @@ g.generate_barcodes = function() {
 
         setTimeout(
             function() {
-                g.gather_copies_soon();
+                g.gather_copies_soon(true);
             },0
         );
 
@@ -840,21 +825,20 @@ g.generate_barcodes = function() {
     }
 }
 
-g.delay_gather_copies_soon = function() {
+g.delay_gather_copies_soon = function(enable_copy_editor) {
     if (xulG.unified_interface) {
         dump('g.delay_gather_copies_soon()\n');
-        g.gather_copies_soon();
+        g.gather_copies_soon(enable_copy_editor);
     }
 }
 
-g.gather_copies_soon = function(ev) {
+g.gather_copies_soon = function(enable_copy_editor) {
     try {
         if (!xulG.unified_interface) { return; }
         dump('g.gather_copies_soon()\n');
         if (typeof xulG.disable_copy_editor == 'function') {
             xulG.disable_copy_editor();
         }
-        $('Sync').disabled = true;
         if (g.update_copy_editor_timeoutID) {
             clearTimeout(g.update_copy_editor_timeoutID);
         }
@@ -864,8 +848,9 @@ g.gather_copies_soon = function(ev) {
             function() {
                 try {
                     g.gather_copies();
-                    //xulG.enable_copy_editor();
-                    $('Sync').disabled = false;
+                    if (enable_copy_editor) {
+                        xulG.enable_copy_editor();
+                    }
                     xulG.refresh_copy_editor();
                 } catch(E) {
                     dump('Error in volume_copy_editor.js with g.gather_copies_soon setTimeout func(): ' + E + '\n');
@@ -1447,7 +1432,7 @@ g.render_batch_button = function() {
             }
             setTimeout(
                 function() {
-                    g.gather_copies_soon();
+                    g.gather_copies_soon(true);
                 },0
             );
             if (g.last_focus) setTimeout( function() { g.last_focus.focus(); }, 0 );

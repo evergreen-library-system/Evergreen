@@ -17,3 +17,6 @@ row#batch_bar { background-color: gray; }
 .cn_suffix { display: none; }
 .part_column { display: none; }
 */
+
+.disabled_copy_editor { }
+.enabling_copy_editor { }
