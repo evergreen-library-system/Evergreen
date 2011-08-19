@@ -236,7 +236,7 @@ sub fetch_marc_xml_by_id {
         "select" => {"bre" => ["id", "marc"]},
         "from" => {"bre" => {}},
         "where" => {"id" => $id_list}
-    }) or return $self->editor->die_event;
+    }, {substream => 1}) or return $self->editor->die_event;
 
     my $marc_xml = {};
     for my $r (@$results) {
