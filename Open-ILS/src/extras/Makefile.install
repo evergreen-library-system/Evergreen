@@ -390,7 +390,7 @@ install_debs:
 # conflict with the 9.0 versions - so remove them, install the pinned
 # backports of 9.0, then reinstall the apache2-prefork-dev package
 install_pgsql_client_debs_90:
-	$(APT_TOOL) remove libpq5 libpq-dev
+	if [ `$(APT_TOOL) versions libpq-dev | grep ^i|sed 's/^i[ \t]*//'|cut -d. -f1` -eq 8 ]; then $(APT_TOOL) remove libpq5 libpq-dev ; fi
 	$(APT_BACKPORT_TOOL) install $(PGSQL_CLIENT_DEBS_90)
 	$(APT_TOOL) install apache2-prefork-dev
 
