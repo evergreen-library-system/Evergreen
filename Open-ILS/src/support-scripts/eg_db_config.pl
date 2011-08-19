@@ -31,6 +31,8 @@ my $build_db_sh = '';
 my $offline_file = '';
 my $prefix = '';
 my $sysconfdir = '';
+my $pg_contribdir = '';
+my $create_db_sql = '';
 my @services;
 
 my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
@@ -124,6 +126,20 @@ sub get_settings {
 	$settings->{pw} = $settings->{pw} || $opensrf_config->findnodes($pw);
 }
 
+=item create_database() - Creates the database using create_database.sql
+=cut
+sub create_database {
+	my $settings = shift;
+
+	$ENV{'PGUSER'} = $settings->{user};
+	$ENV{'PGPASSWORD'} = $settings->{pw};
+	$ENV{'PGPORT'} = $settings->{port};
+	$ENV{'PGHOST'} = $settings->{host};
+	my $cmd = 'psql -vdb_name=' . $settings->{db} . ' -vcontrib_dir=' . $pg_contribdir .
+		' -d postgres -f ' . $create_db_sql;
+	system($cmd);
+}
+
 =item create_schema() - Creates the database schema by calling build-db.sh
 =cut
 sub create_schema {
@@ -164,15 +180,21 @@ sub set_admin_account {
 }
 
 my $offline;
+my $cdatabase;
 my $cschema;
 my $uconfig;
+my $pgconfig;
 my %settings;
 
 GetOptions("create-schema" => \$cschema, 
+		"create-database" => \$cdatabase,
 		"create-offline" => \$offline,
 		"update-config" => \$uconfig,
 		"config-file=s" => \$config_file,
 		"build-db-file=s" => \$build_db_sh,
+		"pg-contrib-dir=s" => \$pg_contribdir,
+		"create-db-sql=s" => \$create_db_sql,
+		"pg-config" => \$pgconfig,
 		"admin-user=s" => \$admin_user,
 		"admin-password=s" => \$admin_pw,
 		"service=s" => \@services,
@@ -207,25 +229,38 @@ if (!$build_db_sh) {
 	$build_db_sh = File::Spec->catfile($script_dir, '../sql/Pg/build-db.sh');
 }
 
+if (!$pg_contribdir) {
+	$pgconfig = 'pg_config' if(!$pgconfig);
+	my @temp = `$pgconfig --sharedir`;
+	chomp $temp[0];
+	$pg_contribdir = File::Spec->catdir($temp[0], 'contrib');
+}
+
+if (!$create_db_sql) {
+	$create_db_sql = File::Spec->catfile($script_dir, '../sql/Pg/create_database.sql');
+}
+
 if (!$offline_file) {
 	$offline_file = File::Spec->catfile($sysconfdir, 'offline-config.pl');
 }
 
 unless (-e $build_db_sh) { die "Error: $build_db_sh does not exist. \n"; }
 unless (-e $config_file) { die "Error: $config_file does not exist. \n"; }
+unless (-d $pg_contribdir || !$cdatabase) { die "Error: $pg_contribdir does not exist. \n"; }
 
 if ($uconfig) { update_config(\@services, \%settings); }
 
 # Get our settings from the config file
 get_settings(\%settings);
 
+if ($cdatabase) { create_database(\%settings); }
 if ($cschema) { create_schema(\%settings); }
 if ($admin_user && $admin_pw) {
 	set_admin_account($admin_user, $admin_pw, \%settings);
 }
 if ($offline) { create_offline_config($offline_file, \%settings); }
 
-if ((!$cschema && !$uconfig && !$offline && !$admin_pw) || $help) {
+if ((!$cdatabase && !$cschema && !$uconfig && !$offline && !$admin_pw) || $help) {
 	print <<HERE;
 
 SYNOPSIS
@@ -260,6 +295,10 @@ COMMANDS
     --create-schema
         Creates the Evergreen database schema according to the settings in
         the file specified by --config-file.  
+
+    --create-database
+        Creates the database itself, provided the user and password options
+        represent a superuser.
 
 SERVICE OPTIONS
     --service

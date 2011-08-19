@@ -2054,7 +2054,7 @@ sub booking_adjusted_due_date {
         my $booking_ses = OpenSRF::AppSession->create( 'open-ils.booking' );
         my $bookings = $booking_ses->request(
             'open-ils.booking.reservations.filtered_id_list', $self->editor->authtoken,
-            { resource => $booking_item->id, search_start => 'now', search_end => $circ->due_date, fields => { cancel_time => undef }}
+            { resource => $booking_item->id, search_start => 'now', search_end => $circ->due_date, fields => { cancel_time => undef, return_time => undef}}
         )->gather(1);
         $booking_ses->disconnect;
         

@@ -612,7 +612,7 @@ sub ls_ftp {   # returns full path like: dir/path/file.ext
             next;
         }
         if ($dirtarget and $dirtarget ne '.' and $dirtarget ne './' and
-            $self->_ftp->is_dir($dirtarget)) {
+            $self->_ftp->dir($dirtarget)) {
             foreach my $file (@part) {   # we ensure full(er) path
                 $file =~ /^$dirtarget\// and next;
                 $logger->debug("ls_ftp: prepending $dirtarget/ to $file");
