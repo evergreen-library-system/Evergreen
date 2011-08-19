@@ -1134,11 +1134,13 @@ sub load_myopac_bookbags {
         offset => $self->cgi->param('offset') || 0
     };
 
-    $ctx->{bookbags} = $e->search_container_biblio_record_entry_bucket([
-        {owner => $self->editor->requestor->id, btype => 'bookbag'},
-        # XXX what to do about the possibility of really large bookbags here?
-        {"flesh" => 1, "flesh_fields" => {"cbreb" => ["items"]}, %$args}
-    ]);
+    $ctx->{bookbags} = $e->search_container_biblio_record_entry_bucket(
+        [
+            {owner => $self->editor->requestor->id, btype => 'bookbag'},
+            {"flesh" => 1, "flesh_fields" => {"cbreb" => ["items"]}, %$args}
+        ], 
+        {substream => 1}
+    );
 
     if(!$ctx->{bookbags}) {
         $e->rollback;
