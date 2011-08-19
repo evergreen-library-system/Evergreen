@@ -1344,23 +1344,30 @@ function buildProfileGrid() {
 /* --- Import Item Attr Grid --------------- */
 
 var itemAttrContextOrg;
+var itemAttrGridFirstTime = true;
 function vlShowImportItemAttrEditor() {
     displayGlobalDiv('vl-item-attr-editor-div');
-    buildImportItemAttrGrid();
 
-    var connect = function() {
-        dojo.connect(itemAttrContextOrgSelector, 'onChange',
-            function() {
-                itemAttrContextOrg = this.attr('value');
-                itemAttrGrid.resetStore();
-                vlShowImportItemAttrEditor();
-            }
-        );
-    };
+    if (itemAttrGridFirstTime) {
 
-    new openils.User().buildPermOrgSelector(
-        'ADMIN_IMPORT_ITEM_ATTR_DEF', 
-            itemAttrContextOrgSelector, null, connect);
+        buildImportItemAttrGrid();
+
+        var connect = function() {
+            dojo.connect(itemAttrContextOrgSelector, 'onChange',
+                function() {
+                    itemAttrContextOrg = this.attr('value');
+                    itemAttrGrid.resetStore();
+                    buildImportItemAttrGrid();
+                }
+            );
+        };
+
+        new openils.User().buildPermOrgSelector(
+            'ADMIN_IMPORT_ITEM_ATTR_DEF', 
+                itemAttrContextOrgSelector, null, connect);
+
+        itemAttrGridFirstTime = false;
+    }
 }
 
 function buildImportItemAttrGrid() {
