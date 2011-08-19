@@ -1465,7 +1465,7 @@ CREATE INDEX metabib_svf_date1_idx ON metabib.record_attr ( (attrs->'date1') );
 CREATE INDEX metabib_svf_dates_idx ON metabib.record_attr ( (attrs->'date1'), (attrs->'date2') );
 
 INSERT INTO metabib.record_attr (id,attrs)
-    SELECT mrd.record, hstore(mrd) - '{id,record}'::TEXT[] FROM metabib.rec_descriptor mrd;
+    SELECT DISTINCT ON (mrd.record) mrd.record, hstore(mrd) - '{id,record}'::TEXT[] FROM metabib.rec_descriptor mrd;
 
 -- Back-compat view ... we're moving to an HSTORE world
 CREATE TYPE metabib.rec_desc_type AS (
@@ -5737,31 +5737,6 @@ return undef;
 
 $func$ LANGUAGE PLPERLU;
 
--- 0529
-INSERT INTO config.org_unit_setting_type 
-( name, label, description, datatype ) VALUES 
-( 'circ.user_merge.delete_addresses', 
-  'Circ:  Patron Merge Address Delete', 
-  'Delete address(es) of subordinate user(s) in a patron merge', 
-   'bool'
-);
-
-INSERT INTO config.org_unit_setting_type 
-( name, label, description, datatype ) VALUES 
-( 'circ.user_merge.delete_cards', 
-  'Circ: Patron Merge Barcode Delete', 
-  'Delete barcode(s) of subordinate user(s) in a patron merge', 
-  'bool'
-);
-
-INSERT INTO config.org_unit_setting_type 
-( name, label, description, datatype ) VALUES 
-( 'circ.user_merge.deactivate_cards', 
-  'Circ:  Patron Merge Deactivate Card', 
-  'Mark barcode(s) of subordinate user(s) in a patron merge as inactive', 
-  'bool'
-);
-
 -- 0530
 CREATE INDEX actor_usr_day_phone_idx_numeric ON actor.usr USING BTREE 
     (evergreen.lowercase(REGEXP_REPLACE(day_phone, '[^0-9]', '', 'g')));
@@ -8488,6 +8463,31 @@ AND format = 'mods32';
 \qecho ) a;
 
 COMMIT;
+
+-- 0529
+INSERT INTO config.org_unit_setting_type 
+( name, label, description, datatype ) VALUES 
+( 'circ.user_merge.delete_addresses', 
+  'Circ:  Patron Merge Address Delete', 
+  'Delete address(es) of subordinate user(s) in a patron merge', 
+   'bool'
+);
+
+INSERT INTO config.org_unit_setting_type 
+( name, label, description, datatype ) VALUES 
+( 'circ.user_merge.delete_cards', 
+  'Circ: Patron Merge Barcode Delete', 
+  'Delete barcode(s) of subordinate user(s) in a patron merge', 
+  'bool'
+);
+
+INSERT INTO config.org_unit_setting_type 
+( name, label, description, datatype ) VALUES 
+( 'circ.user_merge.deactivate_cards', 
+  'Circ:  Patron Merge Deactivate Card', 
+  'Mark barcode(s) of subordinate user(s) in a patron merge as inactive', 
+  'bool'
+);
 
 DROP TRIGGER IF EXISTS mat_summary_add_tgr ON money.cash_payment;
 DROP TRIGGER IF EXISTS mat_summary_upd_tgr ON money.cash_payment;
