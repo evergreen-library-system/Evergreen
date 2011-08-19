@@ -97,7 +97,7 @@
                                                                 <td>[% attrs.isbns.0 | html %]</td>
                                                             </tr>
                                                         [% END %]
-                                                        [% IF openurl.enabled == 'true';
+                                                        [%- IF openurl.enabled == 'true';
                                                             FOR issn IN args.issns;
                                                                 sfx = ResolverResolver.resolve_issn(issn, openurl.baseurl);
                                                                 FOR res IN sfx;

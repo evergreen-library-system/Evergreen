@@ -5,9 +5,9 @@
 <!-- ****************** rdetail_summary.xml ***************************** -->
 <abbr class="unapi-id" title='tag:[% ctx.hostname %],[% date.format(date.now, '%Y') %]:biblio-record_entry/[% ctx.bre_id %]'></abbr>
 
-[% IF ctx.refworks.enable == 'true' %]
+[%- IF ctx.refworks.enabled == 'true' %]
     [% INCLUDE 'default/opac/parts/record/refworks.tt2' %]
-[% END %]
+[%- END %]
 
 <!-- This holds the record summary information -->
 
@@ -80,7 +80,7 @@
                             </td>
                             <td valign="top" id='rdetail_physical_desc'>[% attrs.phys_desc | html %]</td>
                         </tr>
-                        [% IF openurl.enabled == 'true';
+                        [%- IF openurl.enabled == 'true';
                             FOR issn IN args.issns;
                                 sfx = ResolverResolver.resolve_issn(issn, openurl.baseurl);
                                 FOR res IN sfx;

@@ -1,22 +1,24 @@
 <!-- JS imports, etc.  -->
-
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/simple.js"></script>
 
-[% IF ctx.is_staff %]
-<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/staff.js"></script>
-[% END %]
+[%- PROCESS "default/opac/parts/config.tt2"; %]
 
-[% IF ENV.OILS_NOVELIST_URL AND ctx.page == 'record';
+[%- IF ctx.is_staff %]
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/staff.js"></script>
+[%- END %]
+
+[%- IF ENV.OILS_NOVELIST_URL AND ctx.page == 'record';
     url = ENV.OILS_NOVELIST_URL;
     IF CGI.https; url = url.replace('^http:', 'https:'); END; %]
 <script type='text/javascript' id='EIT' src='[% url %]'></script>
-[% END %]
+[%- END %]
 
+[%- IF google_analytics.enabled == 'true' %]
 <!-- Google Analytics -->
 <script type="text/javascript">
 /* uncomment when ready */ /*
   var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-3018520-10']);
+  _gaq.push(['_setAccount', '[% google_analytics.code %]']);
   _gaq.push(['_trackPageview']);
 
   (function() {
@@ -27,4 +29,4 @@
 */
 </script>
 <!-- End Google Analytics -->
-
+[%- END %]

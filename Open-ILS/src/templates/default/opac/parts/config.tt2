@@ -9,7 +9,7 @@
 # RefWorks configuration
 ##############################################################################
 # RefWorks is a Web-based citation manager
-ctx.refworks.enable = 'false';
+ctx.refworks.enabled = 'false';
 
 # Base URL for RefWorks
 ctx.refworks.url = 'http://www.refworks.com';
@@ -31,5 +31,14 @@ ctx.refworks.url = 'http://www.refworks.com';
 
 openurl.enabled = 'false';
 openurl.baseurl = 'http://sfx.example.com/instance';
+
+##############################################################################
+# Google Analytics support
+##############################################################################
+# You can enable Google Analytics support in Evergreen by entering a
+# valid Google Analytics code and changing 'false' to 'true'
+##############################################################################
+google_analytics.enabled = 'false';
+google_analytics.code = 'UA-9999999-99';
 
 %]
