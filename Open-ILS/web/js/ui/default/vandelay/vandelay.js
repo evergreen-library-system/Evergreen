@@ -120,6 +120,16 @@ function vlInit() {
     vlUploadMergeProfile2.searchAttr = 'name';
     vlUploadMergeProfile2.startup();
 
+    vlUploadFtMergeProfile.store = new dojo.data.ItemFileReadStore({data:fieldmapper.vmp.toStoreData(mergeProfiles)});
+    vlUploadFtMergeProfile.labelAttr = 'name';
+    vlUploadFtMergeProfile.searchAttr = 'name';
+    vlUploadFtMergeProfile.startup();
+
+    vlUploadFtMergeProfile2.store = new dojo.data.ItemFileReadStore({data:fieldmapper.vmp.toStoreData(mergeProfiles)});
+    vlUploadFtMergeProfile2.labelAttr = 'name';
+    vlUploadFtMergeProfile2.searchAttr = 'name';
+    vlUploadFtMergeProfile2.startup();
+
 
     // Fetch the bib and authority attribute definitions 
     vlFetchBibAttrDefs(function () { checkInitDone(); });
@@ -1098,6 +1108,7 @@ function vlHandleQueueItemsAction(action) {
             vlUploadQueueAutoOverlayExact.attr('value',  vlUploadQueueAutoOverlayExact2.attr('value'));
             vlUploadQueueAutoOverlay1Match.attr('value',  vlUploadQueueAutoOverlay1Match2.attr('value'));
             vlUploadMergeProfile.attr('value',  vlUploadMergeProfile2.attr('value'));
+            vlUploadFtMergeProfile.attr('value',  vlUploadFtMergeProfile2.attr('value'));
             vlUploadQueueAutoOverlayBestMatch.attr('value',  vlUploadQueueAutoOverlayBestMatch2.attr('value'));
             vlUploadQueueAutoOverlayBestMatchRatio.attr('value',  vlUploadQueueAutoOverlayBestMatchRatio2.attr('value'));
 
@@ -1116,6 +1127,8 @@ function vlHandleQueueItemsAction(action) {
             vlUploadQueueAutoOverlay1Match2.attr('value', false);
             vlUploadMergeProfile.attr('value', '');
             vlUploadMergeProfile2.attr('value', '');
+            vlUploadFtMergeProfile.attr('value', '');
+            vlUploadFtMergeProfile2.attr('value', '');
             vlUploadQueueAutoOverlayBestMatch.attr('value', false);
             vlUploadQueueAutoOverlayBestMatch2.attr('value', false);
             vlUploadQueueAutoOverlayBestMatchRatio.attr('value', '0.0');
@@ -1195,6 +1208,12 @@ function vlImportRecordQueue(type, queueId, recList, onload) {
     if(profile != null && profile != '') {
         options.merge_profile = profile;
     }
+
+    var ftprofile = vlUploadFtMergeProfile.attr('value');
+    if(ftprofile != null && ftprofile != '') {
+        options.fall_through_merge_profile = ftprofile;
+    }
+
 
     /* determine which method we're calling */
 

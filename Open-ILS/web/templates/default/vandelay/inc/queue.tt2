@@ -231,6 +231,12 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>&vandelay.auto.import.ft_merge_profile;</td>
+                    <td colspan='4'>
+                        <div jsId='vlUploadFtMergeProfile2' dojoType='dijit.form.FilteringSelect' required='false' labelAttr='name' searchAttr='name'/>
+                    </td>
+                </tr>
+                <tr>
                     <td>
                         <button dojoType='dijit.form.Button' jsId='queueItemsImportCancelButton'>Cancel</button>
                     </td>
