@@ -1,3 +1,9 @@
+-- 0498
+-- Rather than polluting the public schema with general Evergreen
+-- functions, carve out a dedicated schema.  It might already exist,
+-- so do it before the transaction starts
+CREATE SCHEMA evergreen;
+
 BEGIN;
 
 -- 0425
@@ -6,11 +12,6 @@ ALTER TABLE permission.grp_tree
 
 -- 0430
 ALTER TABLE config.hold_matrix_matchpoint ADD COLUMN strict_ou_match BOOL NOT NULL DEFAULT FALSE;
-
--- 0498
--- Rather than polluting the public schema with general Evergreen
--- functions, carve out a dedicated schema
-CREATE SCHEMA evergreen;
 
 -- Replace all uses of PostgreSQL's built-in LOWER() function with
 -- a more locale-savvy PLPERLU evergreen.lowercase() function
@@ -37,7 +38,7 @@ $func$ LANGUAGE PLPERLU;
 
 CREATE OR REPLACE FUNCTION evergreen.facet_force_nfc() RETURNS TRIGGER AS $$
 BEGIN
-    NEW.value := force_unicode_normal_form(NEW.value,'NFC');
+    NEW.value := evergreen.force_unicode_normal_form(NEW.value,'NFC');
     RETURN NEW;
 END;
 $$ LANGUAGE PLPGSQL;
@@ -239,9 +240,6 @@ CREATE OR REPLACE FUNCTION actor.org_unit_descendants_distance( INT ) RETURNS TA
     )
     SELECT * FROM org_unit_descendants_distance;
 $$ LANGUAGE SQL STABLE;
-
-ALTER TABLE config.circ_matrix_matchpoint
-    ADD COLUMN user_home_ou         INT     REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED;
 
 CREATE TABLE config.circ_matrix_weights (
     id                      SERIAL  PRIMARY KEY,
@@ -629,11 +627,22 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- 0482
--- Drop old (non-functional) constraints
-
+-- 0482, 0487, and parts of others
+-- Circ matchpoint table changes
 ALTER TABLE config.circ_matrix_matchpoint
-    DROP CONSTRAINT ep_once_per_grp_loc_mod_marc;
+    ALTER COLUMN circulate DROP NOT NULL, -- Fallthrough enable
+    ALTER COLUMN circulate DROP DEFAULT, -- Stop defaulting to true to enable default to fallthrough
+    ALTER COLUMN duration_rule DROP NOT NULL, -- Fallthrough enable
+    ALTER COLUMN recurring_fine_rule DROP NOT NULL, -- Fallthrough enable
+    ALTER COLUMN max_fine_rule DROP NOT NULL, -- Fallthrough enable
+    ADD COLUMN renewals INT, -- Renewals override
+    ADD COLUMN user_home_ou INT REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+    ADD COLUMN grace_period INTERVAL,
+    ADD COLUMN marc_bib_level text,
+    DROP CONSTRAINT ep_once_per_grp_loc_mod_marc,
+    DROP CONSTRAINT circ_matrix_matchpoint_marc_form_fkey,
+    DROP CONSTRAINT circ_matrix_matchpoint_marc_type_fkey,
+    DROP CONSTRAINT circ_matrix_matchpoint_marc_vr_format_fkey;
 
 ALTER TABLE config.hold_matrix_matchpoint
     DROP CONSTRAINT hous_once_per_grp_loc_mod_marc;
@@ -948,16 +957,6 @@ SELECT  r.id,
 
 -- 0486
 ALTER TABLE money.credit_card_payment ADD COLUMN cc_order_number TEXT;
-
--- 0487
--- Circ matchpoint table changes
-ALTER TABLE config.circ_matrix_matchpoint
-    ALTER COLUMN circulate DROP NOT NULL, -- Fallthrough enable
-    ALTER COLUMN circulate DROP DEFAULT, -- Stop defaulting to true to enable default to fallthrough
-    ALTER COLUMN duration_rule DROP NOT NULL, -- Fallthrough enable
-    ALTER COLUMN recurring_fine_rule DROP NOT NULL, -- Fallthrough enable
-    ALTER COLUMN max_fine_rule DROP NOT NULL, -- Fallthrough enable
-    ADD COLUMN renewals INT; -- Renewals override
 
 -- Changing return types requires explicit dropping of old versions
 DROP FUNCTION action.find_circ_matrix_matchpoint( context_ou INT, match_item BIGINT, match_user INT, renewal BOOL );
@@ -1420,10 +1419,6 @@ INSERT INTO config.coded_value_map (ctype,code,value,description)
     SELECT 'vr_format' AS ctype, code, value, NULL FROM config.videorecording_format_map;
 
 ALTER TABLE config.i18n_locale DROP CONSTRAINT i18n_locale_marc_code_fkey;
-
-ALTER TABLE config.circ_matrix_matchpoint DROP CONSTRAINT circ_matrix_matchpoint_marc_form_fkey;
-ALTER TABLE config.circ_matrix_matchpoint DROP CONSTRAINT circ_matrix_matchpoint_marc_type_fkey;
-ALTER TABLE config.circ_matrix_matchpoint DROP CONSTRAINT circ_matrix_matchpoint_marc_vr_format_fkey;
 
 ALTER TABLE config.hold_matrix_matchpoint DROP CONSTRAINT hold_matrix_matchpoint_marc_form_fkey;
 ALTER TABLE config.hold_matrix_matchpoint DROP CONSTRAINT hold_matrix_matchpoint_marc_type_fkey;
@@ -2265,9 +2260,6 @@ UPDATE asset.call_number_class
 -- 0503
 -- New Columns
 
-ALTER TABLE config.circ_matrix_matchpoint
-    ADD COLUMN grace_period INTERVAL;
-
 ALTER TABLE config.rule_recurring_fine
     ADD COLUMN grace_period INTERVAL NOT NULL DEFAULT '1 day';
 
@@ -2657,6 +2649,7 @@ ALTER FUNCTION permission.usr_has_perm_at ( INT, TEXT ) ROWS 1;
 ALTER FUNCTION permission.usr_has_perm_at_all ( INT, TEXT ) ROWS 1;
 
 
+DROP TRIGGER IF EXISTS facet_force_nfc_tgr ON metabib.facet_entry;
 CREATE TRIGGER facet_force_nfc_tgr
     BEFORE UPDATE OR INSERT ON metabib.facet_entry
     FOR EACH ROW EXECUTE PROCEDURE evergreen.facet_force_nfc();
@@ -3454,6 +3447,7 @@ BEGIN
 END;
 $F$ LANGUAGE PLPGSQL;
 
+DROP TRIGGER IF EXISTS action_circulation_target_copy_trig ON action.circulation;
 CREATE TRIGGER action_circulation_target_copy_trig AFTER INSERT OR UPDATE ON action.circulation FOR EACH ROW EXECUTE PROCEDURE evergreen.fake_fkey_tgr('target_copy');
 
 -- 0512
@@ -4926,8 +4920,6 @@ ALTER TABLE config.circ_matrix_weights ALTER COLUMN marc_bib_level DROP DEFAULT;
 
 ALTER TABLE config.hold_matrix_weights ALTER COLUMN marc_bib_level DROP DEFAULT;
 
-ALTER TABLE config.circ_matrix_matchpoint ADD COLUMN marc_bib_level text;
-
 ALTER TABLE config.hold_matrix_matchpoint ADD COLUMN marc_bib_level text;
 
 CREATE OR REPLACE FUNCTION action.find_circ_matrix_matchpoint( context_ou INT, item_object asset.copy, user_object actor.usr, renewal BOOL ) RETURNS action.found_circ_matrix_matchpoint AS $func$
@@ -5988,29 +5980,34 @@ INSERT INTO reporter.materialized_simple_record
 
 INSERT INTO config.upgrade_log (version) VALUES ('0542'); -- phasefx
 
-INSERT INTO permission.perm_list VALUES
-    (485, 'CREATE_VOLUME_SUFFIX', oils_i18n_gettext(485, 'Create suffix label definition.', 'ppl', 'description'))
-    ,(486, 'UPDATE_VOLUME_SUFFIX', oils_i18n_gettext(486, 'Update suffix label definition.', 'ppl', 'description'))
-    ,(487, 'DELETE_VOLUME_SUFFIX', oils_i18n_gettext(487, 'Delete suffix label definition.', 'ppl', 'description'))
-    ,(488, 'CREATE_VOLUME_PREFIX', oils_i18n_gettext(488, 'Create prefix label definition.', 'ppl', 'description'))
-    ,(489, 'UPDATE_VOLUME_PREFIX', oils_i18n_gettext(489, 'Update prefix label definition.', 'ppl', 'description'))
-    ,(490, 'DELETE_VOLUME_PREFIX', oils_i18n_gettext(490, 'Delete prefix label definition.', 'ppl', 'description'))
-    ,(491, 'CREATE_MONOGRAPH_PART', oils_i18n_gettext(491, 'Create monograph part definition.', 'ppl', 'description'))
-    ,(492, 'UPDATE_MONOGRAPH_PART', oils_i18n_gettext(492, 'Update monograph part definition.', 'ppl', 'description'))
-    ,(493, 'DELETE_MONOGRAPH_PART', oils_i18n_gettext(493, 'Delete monograph part definition.', 'ppl', 'description'))
-    ,(494, 'ADMIN_CODED_VALUE', oils_i18n_gettext(494, 'Create/Update/Delete SVF Record Attribute Coded Value Map', 'ppl', 'description'))
-    ,(495, 'ADMIN_SERIAL_ITEM', oils_i18n_gettext(495, 'Create/Retrieve/Update/Delete Serial Item', 'ppl', 'description'))
-    ,(496, 'ADMIN_SVF', oils_i18n_gettext(496, 'Create/Update/Delete SVF Record Attribute Defintion', 'ppl', 'description'))
-    ,(497, 'CREATE_BIB_PTYPE', oils_i18n_gettext(497, 'Create Bibliographic Record Peer Type', 'ppl', 'description'))
-    ,(498, 'CREATE_PURCHASE_REQUEST', oils_i18n_gettext(498, 'Create User Purchase Request', 'ppl', 'description'))
-    ,(499, 'DELETE_BIB_PTYPE', oils_i18n_gettext(499, 'Delete Bibliographic Record Peer Type', 'ppl', 'description'))
-    ,(500, 'MAP_MONOGRAPH_PART', oils_i18n_gettext(500, 'Create/Update/Delete Copy Monograph Part Map', 'ppl', 'description'))
-    ,(501, 'MARK_ITEM_MISSING_PIECES', oils_i18n_gettext(501, 'Allows the Mark Item Missing Pieces action.', 'ppl', 'description'))
-    ,(502, 'UPDATE_BIB_PTYPE', oils_i18n_gettext(502, 'Update Bibliographic Record Peer Type', 'ppl', 'description'))
-    ,(503, 'UPDATE_HOLD_REQUEST_TIME', oils_i18n_gettext(503, 'Allows editing of a hold''s request time, and/or its Cut-in-line/Top-of-queue flag.', 'ppl', 'description'))
-    ,(504, 'UPDATE_PICKLIST', oils_i18n_gettext(504, 'Allows update/re-use of an acquisitions pick/selection list.', 'ppl', 'description'))
-    ,(505, 'UPDATE_WORKSTATION', oils_i18n_gettext(505, 'Allows update of a workstation during workstation registration override.', 'ppl', 'description'))
-    ,(506, 'VIEW_USER_SETTING_TYPE', oils_i18n_gettext(506, 'Allows viewing of configurable user setting types.', 'ppl', 'description'))
+INSERT INTO permission.perm_list
+    SELECT  np.*
+      FROM  (VALUES
+                (485, 'CREATE_VOLUME_SUFFIX', oils_i18n_gettext(485, 'Create suffix label definition.', 'ppl', 'description'))
+                ,(486, 'UPDATE_VOLUME_SUFFIX', oils_i18n_gettext(486, 'Update suffix label definition.', 'ppl', 'description'))
+                ,(487, 'DELETE_VOLUME_SUFFIX', oils_i18n_gettext(487, 'Delete suffix label definition.', 'ppl', 'description'))
+                ,(488, 'CREATE_VOLUME_PREFIX', oils_i18n_gettext(488, 'Create prefix label definition.', 'ppl', 'description'))
+                ,(489, 'UPDATE_VOLUME_PREFIX', oils_i18n_gettext(489, 'Update prefix label definition.', 'ppl', 'description'))
+                ,(490, 'DELETE_VOLUME_PREFIX', oils_i18n_gettext(490, 'Delete prefix label definition.', 'ppl', 'description'))
+                ,(491, 'CREATE_MONOGRAPH_PART', oils_i18n_gettext(491, 'Create monograph part definition.', 'ppl', 'description'))
+                ,(492, 'UPDATE_MONOGRAPH_PART', oils_i18n_gettext(492, 'Update monograph part definition.', 'ppl', 'description'))
+                ,(493, 'DELETE_MONOGRAPH_PART', oils_i18n_gettext(493, 'Delete monograph part definition.', 'ppl', 'description'))
+                ,(494, 'ADMIN_CODED_VALUE', oils_i18n_gettext(494, 'Create/Update/Delete SVF Record Attribute Coded Value Map', 'ppl', 'description'))
+                ,(495, 'ADMIN_SERIAL_ITEM', oils_i18n_gettext(495, 'Create/Retrieve/Update/Delete Serial Item', 'ppl', 'description'))
+                ,(496, 'ADMIN_SVF', oils_i18n_gettext(496, 'Create/Update/Delete SVF Record Attribute Defintion', 'ppl', 'description'))
+                ,(497, 'CREATE_BIB_PTYPE', oils_i18n_gettext(497, 'Create Bibliographic Record Peer Type', 'ppl', 'description'))
+                ,(498, 'CREATE_PURCHASE_REQUEST', oils_i18n_gettext(498, 'Create User Purchase Request', 'ppl', 'description'))
+                ,(499, 'DELETE_BIB_PTYPE', oils_i18n_gettext(499, 'Delete Bibliographic Record Peer Type', 'ppl', 'description'))
+                ,(500, 'MAP_MONOGRAPH_PART', oils_i18n_gettext(500, 'Create/Update/Delete Copy Monograph Part Map', 'ppl', 'description'))
+                ,(501, 'MARK_ITEM_MISSING_PIECES', oils_i18n_gettext(501, 'Allows the Mark Item Missing Pieces action.', 'ppl', 'description'))
+                ,(502, 'UPDATE_BIB_PTYPE', oils_i18n_gettext(502, 'Update Bibliographic Record Peer Type', 'ppl', 'description'))
+                ,(503, 'UPDATE_HOLD_REQUEST_TIME', oils_i18n_gettext(503, 'Allows editing of a hold''s request time, and/or its Cut-in-line/Top-of-queue flag.', 'ppl', 'description'))
+                ,(504, 'UPDATE_PICKLIST', oils_i18n_gettext(504, 'Allows update/re-use of an acquisitions pick/selection list.', 'ppl', 'description'))
+                ,(505, 'UPDATE_WORKSTATION', oils_i18n_gettext(505, 'Allows update of a workstation during workstation registration override.', 'ppl', 'description'))
+                ,(506, 'VIEW_USER_SETTING_TYPE', oils_i18n_gettext(506, 'Allows viewing of configurable user setting types.', 'ppl', 'description'))
+            ) AS np(id,code,description)
+            LEFT JOIN permission.perm_list pl USING (id)
+      WHERE pl.id IS NULL;
 ;
 
 
