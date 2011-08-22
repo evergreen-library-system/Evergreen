@@ -691,6 +691,7 @@ function holdsSetFormatSelector() {
     for( var i = 0; i < selector.options.length; i++ ) {
         if (selector.options[i].className.indexOf('hide_me') == -1)
             hideMe(selector.options[i]);
+        selector.options[i].disabled = true;
     }
 
 	for( var i = 0; i < avail_formats.length; i++ ) {
@@ -699,6 +700,7 @@ function holdsSetFormatSelector() {
         if (!opt) continue;
 		if(type=='M') opt.selected=true;
 		unHideMe(opt);
+        opt.disabled = false;
 	}
 
     // If the user selects a format, P-type holds are no longer an option
