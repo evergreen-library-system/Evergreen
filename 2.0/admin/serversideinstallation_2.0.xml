@@ -87,7 +87,7 @@
 		<para>Of course, after you successfully complete and test the entire Evergreen installation you should
 		take a final snapshot backup of your system(s). This can be the first in the series of regularly
 		scheduled system backups that you should probably also begin.</para>
-		<section xml:id="serversideinstallation-opensrf-2.0.0">
+		<section xml:id="serversideinstallation-opensrf-2.0.1">
 			<indexterm>
 				<primary>OpenSRF</primary>
 				<secondary>installation</secondary>
@@ -165,17 +165,17 @@
 						<secondary>download</secondary>
 					</indexterm>
 					<para>The latest version of OpenSRF can be found here:
-					<ulink url="http://evergreen-ils.org/downloads/opensrf-2.0.0.tar.gz"></ulink> .
+					<ulink url="http://evergreen-ils.org/downloads/opensrf-2.0.1.tar.gz"></ulink> .
 					As the <systemitem class="username">opensrf</systemitem> user, change to
 					the directory <filename class="directory">/home/opensrf</filename> then download
 					and extract OpenSRF. The new subdirectory
-					<filename class="directory">/home/opensrf/opensrf-2.0.0</filename> will be created:</para>
+					<filename class="directory">/home/opensrf/opensrf-2.0.1</filename> will be created:</para>
 					<screen>
 						<userinput>
 	# as the opensrf user:
 	cd /home/opensrf
-	wget http://evergreen-ils.org/downloads/opensrf-2.0.0.tar.gz
-	tar zxf opensrf-2.0.0.tar.gz</userinput>
+	wget http://evergreen-ils.org/downloads/opensrf-2.0.1.tar.gz
+	tar zxf opensrf-2.0.1.tar.gz</userinput>
 					</screen>
 				</step>
 				<step>
@@ -194,7 +194,7 @@
 					<screen>
 						<userinput>
 	# as the root user:
-	cd /home/opensrf/opensrf-2.0.0
+	cd /home/opensrf/opensrf-2.0.1
 	make -f src/extras/Makefile.install [DISTRIBUTION]</userinput>
 					</screen>
 					<table xml:id="serversideinstallation-keywords-opensrf">
@@ -308,7 +308,7 @@
 							<screen>
 								<userinput>
 	# as the opensrf user:
-	cd /home/opensrf/opensrf-2.0.0
+	cd /home/opensrf/opensrf-2.0.1
 	./configure --prefix=/openils --sysconfdir=/openils/conf
 	make</userinput>
 							</screen>
@@ -323,7 +323,7 @@
 							<screen>
 								<userinput>
 	# as the root user:
-	cd /home/opensrf/opensrf-2.0.0
+	cd /home/opensrf/opensrf-2.0.1
 	make install</userinput>
 							</screen>
 							<para>This step will take several minutes to complete.</para>
@@ -875,7 +875,7 @@
 					<para>Evergreen software is integrated with and depends on the Open Service
 					Request Framework (OpenSRF) software system. For further information on
 					installing, configuring and testing OpenSRF, see 
-					<xref linkend="serversideinstallation-opensrf-2.0.0"/>.</para>
+					<xref linkend="serversideinstallation-opensrf-2.0.1"/>.</para>
 					<para>Follow the steps outlined in that section and run the specified tests to
 					ensure that OpenSRF is properly installed and configured. Do 
 					<emphasis><emphasis role="bold">not</emphasis></emphasis> continue with
@@ -1596,7 +1596,7 @@
 					<para>Evergreen software is integrated with and depends on the Open Service
 					Request Framework (OpenSRF) software system. For further information on
 					installing, configuring and testing OpenSRF, see 
-					<xref linkend="serversideinstallation-opensrf-2.0.0"/>.</para>
+					<xref linkend="serversideinstallation-opensrf-2.0.1"/>.</para>
 					<para>Follow the steps outlined in that section and run the specified tests to
 					ensure that OpenSRF is properly installed and configured. Do 
 					<emphasis><emphasis role="bold">not</emphasis></emphasis> continue with
