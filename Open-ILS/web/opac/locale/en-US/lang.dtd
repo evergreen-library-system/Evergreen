@@ -650,6 +650,7 @@
 <!ENTITY staff.main.auth.hostname "Hostname">
 <!ENTITY staff.main.auth.hostname.accesskey "H">
 <!ENTITY staff.main.auth.offline.caption "Offline Use">
+<!ENTITY staff.main.auth.offline.message "Offline Transactions Pending">
 <!ENTITY staff.main.auth.offline.export "Export Transactions">
 <!ENTITY staff.main.auth.offline.import "Import Transactions">
 <!ENTITY staff.main.auth.offline.interface "Standalone Interface">

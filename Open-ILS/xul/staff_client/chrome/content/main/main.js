@@ -664,6 +664,16 @@ function main_init() {
             false
         );
 
+        /**
+            @brief Stats for Offline Files / Transactions
+            @launchpad #797408
+        */
+        var px = new util.file('pending_xacts');
+        document.getElementById('offline_message').setAttribute('style','display:none;');
+        if (px._file.exists()) {
+            document.getElementById('offline_message').setAttribute('style','background-color:red;display:block;font-weight:bold;padding:2px;');
+            document.getElementById('offline_import_btn').disabled = true;
+        }
 
     } catch(E) {
         var error = offlineStrings.getFormattedString('common.exception', [E, '']);
