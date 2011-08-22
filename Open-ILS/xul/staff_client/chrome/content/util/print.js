@@ -280,6 +280,23 @@ util.print.prototype = {
             JSAN.use('util.date');
             var s = msg; var b;
 
+            // Includes
+            // Note that we keep track of already included settings
+            // This ensures that we don't infinite loop through includes
+            try {
+                var match;
+                var include_patt=/%INCLUDE\(\s*([^)]*?)\s*\)%/;
+                var included = {};
+                while(match = include_patt.exec(s)) {
+                    if(match[1] == '' || included[match[1]]) {
+                        s = s.replace(match[0], '');
+                    } else {
+                        included[match[1]] = true;
+                        s = s.replace(new RegExp("%INCLUDE\\(\\s*" + match[1].replace(/([.?*+^$[\]\\(){}-])/g, "\\$1") + "\\s*\\)%","g"), obj.data.hash.aous['circ.staff_client.receipt.' + match[1]] || '');
+                    }
+                }
+            } catch(E) { dump(E+'\n'); }
+
             try{b = s; s = s.replace(/%LINE_NO%/g,Number(params.row_idx)+1);}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 
@@ -369,7 +386,7 @@ util.print.prototype = {
             // Date Format
             try {
                 var match;
-                var date_format_patt=/%DATE_FORMAT\(\s*([^,]*?)\s*,\s*([^)]*?)\s*\)%/
+                var date_format_patt=/%DATE_FORMAT\(\s*([^,]*?)\s*,\s*([^)]*?)\s*\)%/;
                 while(match = date_format_patt.exec(s)) {
                     if(match[1] == '' || match[2] == '')
                         s = s.replace(match[0], '');
