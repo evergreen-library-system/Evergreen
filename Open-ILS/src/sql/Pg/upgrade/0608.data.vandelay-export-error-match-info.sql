@@ -1,12 +1,11 @@
--- Evergreen DB patch XXXX.data.vandelay-export-error-match-info.sql
+-- Evergreen DB patch 0608.data.vandelay-export-error-match-info.sql
 --
--- FIXME: insert description of change, if needed
 --
 BEGIN;
 
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0608', :eg_version);
 
 -- Add vqbr.import_error, vqbr.error_detail, and vqbr.matches.size to queue print output
 
@@ -60,3 +59,4 @@ INSERT INTO action_trigger.environment (event_def, path) VALUES (39, 'matches');
 INSERT INTO action_trigger.environment (event_def, path) VALUES (40, 'matches');
 
 COMMIT;
+
