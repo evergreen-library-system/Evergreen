@@ -1024,7 +1024,7 @@ a.dash-link:hover { text-decoration: underline !important; }
 .results-paginator-selected { color: red; }
 .inactive-hold { background: #e5e5e5; }
 
-#hold-items-list li { margin-bottom: 20px; }
+#hold-items-list td { padding: 5px; margin-bottom: 20px; }
 .hold-items-list-title { font-size: 120%; }
 .hold-items-list-problem { color: red; }
 

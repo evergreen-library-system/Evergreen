@@ -38,16 +38,18 @@
         [% END %]
 
         <!-- loop through the holds and display status of request where appropriate -->
-        <ul id='hold-items-list'>
+        <table id='hold-items-list'>
         [% FOR hdata IN ctx.hold_data;
             attrs = {marc_xml => hdata.marc_xml};
             PROCESS get_marc_attrs args=attrs %]
-            <li>
-                <input type="hidden" name="hold_target" value="[% hdata.target.id | html %]" />
-                <div class='hold-items-list-title'>[% attrs.title_extended | html %]</div>
-            </li>
+            <tr>
+                <td>
+                    <input type="hidden" name="hold_target" value="[% hdata.target.id | html %]" />
+                    <div class='hold-items-list-title'>[% attrs.title_extended | html %]</div>
+                </td>
+            </tr>
         [% END %]
-        </ul>
+        </table>
 
         <p>
             [% l('Pickup location:') %]

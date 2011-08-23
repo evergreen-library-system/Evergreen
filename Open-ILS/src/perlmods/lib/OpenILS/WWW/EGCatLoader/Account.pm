@@ -401,6 +401,8 @@ sub load_place_hold {
     $ctx->{hold_type} = $cgi->param('hold_type');
     $ctx->{default_pickup_lib} = $e->requestor->home_ou; # unless changed below
 
+    return $self->post_hold_redirect unless @targets;
+
     $logger->info("Looking at hold targets: @targets");
 
     # if the staff client provides a patron barcode, fetch the patron
@@ -585,6 +587,12 @@ sub load_place_hold {
     # if successful, do some cleanup and return the 
     # user to the requesting page.
 
+    return $self->post_hold_redirect;
+}
+
+sub post_hold_redirect {
+    my $self = shift;
+
     # We also clear the patron_barcode (from the staff client)
     # cookie at this point (otherwise it haunts the staff user
     # later). XXX todo make sure this is best; also see that
@@ -599,8 +607,6 @@ sub load_place_hold {
             -expires => "-1h"
         )
     );
-
-    return Apache2::Const::OK;
 }
 
 
