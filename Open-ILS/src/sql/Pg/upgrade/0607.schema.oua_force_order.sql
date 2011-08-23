@@ -1,3 +1,7 @@
+BEGIN;
+
+INSERT INTO config.upgrade_log (version) VALUES ('0607');
+
 CREATE OR REPLACE FUNCTION actor.org_unit_ancestors( INT ) RETURNS SETOF actor.org_unit AS $$
     WITH RECURSIVE org_unit_ancestors_distance(id, distance) AS (
             SELECT $1, 0
@@ -8,4 +12,6 @@ CREATE OR REPLACE FUNCTION actor.org_unit_ancestors( INT ) RETURNS SETOF actor.o
     )
     SELECT ou.* FROM actor.org_unit ou JOIN org_unit_ancestors_distance ouad USING (id) ORDER BY ouad.distance DESC;
 $$ LANGUAGE SQL ROWS 1;
+
+COMMIT;
 
