@@ -6,6 +6,9 @@ dojo.require("openils.PermaCrud");
 dojo.require('openils.BibTemplate');
 dojo.require('fieldmapper.OrgUtils');
 
+dojo.requireLocalization('openils.acq', 'acq');
+var localeStrings = dojo.i18n.getLocalization('openils.acq', 'acq');
+
 var liTable;
 var identTarget;
 var bibRecord;
@@ -112,6 +115,11 @@ function prepareButtons() {
             acqLitSavePlDialog.show();
         }
     );
+    addToPoButton.onClick = createLi(
+        function() { /* oncomplete */
+            addToPoDialog.show();
+        }
+    );
     createPoButton.onClick = createLi(
         function() { /* oncomplete */
             liTable._loadPOSelect();
@@ -139,6 +147,44 @@ function load() {
 
     prepareButtons();
     fetchRelated();
+    dojo.connect(addToPoSave, 'onClick', addToPo)
+    openils.Util.registerEnterHandler(addToPoInput.domNode, addToPo);
+}
+
+var _addToPoHappened = false;
+function addToPo(args) {
+    var poId = addToPoInput.attr('value');
+    if (!poId) return false;
+    if (_addToPoHappened) return false;
+
+    var liId =  liTable.getSelected()[0].id();
+    console.log("adding li " + liId + " to PO " + poId);
+
+    // hmm, addToPo is invoked twice for some reason...
+    _addToPoHappened = true;
+
+    fieldmapper.standardRequest(
+        ['open-ils.acq', 'open-ils.acq.purchase_order.add_lineitem'],
+        {   async : true,
+            params : [openils.User.authtoken, poId, liId],
+            oncomplete : function(r) {
+                var resp = openils.Util.readResponse(r);
+                if (resp.success) {
+                    location.href = oilsBasePath + '/acq/po/view/' + poId;
+                } else {
+                    _addToPoHappened = false;
+                    if (resp.error == 'bad-po-state') {
+                        alert(localeStrings.ADD_LI_TO_PO_BAD_PO_STATE);
+                    } else if (resp.error == 'bad-li-state') {
+                        alert(localeStrings.ADD_LI_TO_PO_BAD_LI_STATE);
+                    }
+                }
+            }
+        }
+    );
+
+    addToPoDialog.hide();
+    return false; // prevent form submission
 }
 
 openils.Util.addOnLoad(load);
