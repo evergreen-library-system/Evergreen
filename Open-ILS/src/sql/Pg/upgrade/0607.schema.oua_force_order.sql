@@ -1,3 +1,12 @@
+-- Evergreen DB patch 0607.schema.oua_force_order.sql
+--
+--
+BEGIN;
+
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0607', :eg_version);
+
 CREATE OR REPLACE FUNCTION actor.org_unit_ancestors( INT ) RETURNS SETOF actor.org_unit AS $$
     WITH RECURSIVE org_unit_ancestors_distance(id, distance) AS (
             SELECT $1, 0
@@ -9,3 +18,6 @@ CREATE OR REPLACE FUNCTION actor.org_unit_ancestors( INT ) RETURNS SETOF actor.o
     SELECT ou.* FROM actor.org_unit ou JOIN org_unit_ancestors_distance ouad USING (id) ORDER BY ouad.distance DESC;
 $$ LANGUAGE SQL ROWS 1;
 
+
+
+COMMIT;
