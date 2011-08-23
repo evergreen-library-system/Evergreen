@@ -4,7 +4,7 @@
 #
 # Makefile to install prerequisites for OpenSRF and Evergreen
 #
-# Currently supports Debian (lenny/squeeze), Ubuntu (hardy/lucid), and Fedora (13).
+# Currently supports Debian (lenny/squeeze), Ubuntu (hardy/lucid), and Fedora (15).
 # Working towards support of CentOS 5 / RHEL 5.
 # Installs Perl prereqs, libjs with Perl wrapper, libdbi, libdbi-drivers, and libyaz
 #
@@ -17,7 +17,7 @@
 # 	- or -
 # 	make -f Makefile.install ubuntu-lucid
 # 	- or -
-# 	make -f Makefile.install fedora13
+# 	make -f Makefile.install fedora15
 # 	- or -
 # 	make -f Makefile.install centos
 # 	- or -
@@ -154,7 +154,7 @@ CENTOS_PERL = \
 	Net::XMPP \
 	Net::Z3950::ZOOM
 
-FEDORA_13_RPMS = \
+FEDORA_RPMS = \
 	aspell \
 	aspell-en \
 	libdbi \
@@ -189,7 +189,7 @@ FEDORA_13_RPMS = \
 # Note: B:O:AuthorizeNet 3.21 fails with https://rt.cpan.org/Public/Bug/Display.html?id=55172
 # Should be fixed in 3.22
 # MARC::Record 2.0.1 is required but only 2.0.0 is packaged
-FEDORA_13_CPAN = \
+FEDORA_CPAN = \
 	Business::OnlinePayment \
 	Business::OnlinePayment::AuthorizeNet \
 	MARC::Record \
@@ -201,6 +201,13 @@ PGSQL_84_RPMS = \
 	postgresql-devel-8.4* \
 	postgresql-plpe*-8.4* \
 	postgresql-server-8.4*
+
+PGSQL_90_RPMS = \
+	postgresql-9.0* \
+	postgresql-contrib-9.0* \
+	postgresql-devel-9.0* \
+	postgresql-plpe*-9.0* \
+	postgresql-server-9.0*
 
 PGSQL_CLIENT_DEBS_82 = \
 	postgresql-client
@@ -216,6 +223,15 @@ PGSQL_SERVER_DEBS_84 = \
 	postgresql-contrib-8.4 \
 	postgresql-plperl-8.4 \
 	postgresql-server-dev-8.4
+
+PGSQL_CLIENT_DEBS_90 = \
+	postgresql-client-9.0
+
+PGSQL_SERVER_DEBS_90 = \
+	postgresql-9.0 \
+	postgresql-contrib-9.0 \
+	postgresql-plperl-9.0 \
+	postgresql-server-dev-9.0
 
 DEB_APACHE_MODS = \
     expires\
@@ -270,8 +286,9 @@ centos: install_centos_pgsql centos_like
 rhel: install_redhat_pgsql centos_like
 centos_like: install_centos_rpms install_yaz install_cpan_marc install install_centos_perl create_ld_local install_cpan_safe install_cpan_force
 
-fedora13: install_fedora_13_rpms install_cpan install_cpan_fedora install_cpan_marc install_js_sm install_cpan_force
-fedora14: fedora13
+fedora: install_fedora_rpms install_cpan install_cpan_fedora install_cpan_marc install_js_sm install_cpan_force
+fedora14: fedora
+fedora15: fedora
 
 debian-lenny: lenny generic_debian install_cpan_marc install_cpan_more install_cpan_safe
 debian-squeeze: squeeze generic_debian
@@ -311,9 +328,9 @@ install_cpan_force:
 install_cpan_safe: 
 	for m in $(CPAN_MODULES_SAFE); do perl -MCPAN -e "install \"$$m\";"; done
 
-# Install the CPAN modules for Fedora 13
+# Install the CPAN modules for Fedora
 install_cpan_fedora: 
-	for m in $(FEDORA_13_CPAN); do \
+	for m in $(FEDORA_CPAN); do \
 		echo "force install $$m" | perl -MCPAN -e shell;\
 	done
 
@@ -380,6 +397,12 @@ debian_sys_config:
 install_debs:
 	$(APT_TOOL) install $(DEBS)
 
+install_pgsql_client_debs_90:
+	$(APT_TOOL) install $(PGSQL_CLIENT_DEBS_90)
+
+install_pgsql_server_debs_90:
+	$(APT_TOOL) install $(PGSQL_SERVER_DEBS_90)
+
 install_pgsql_client_debs_84:
 	$(APT_TOOL) install $(PGSQL_CLIENT_DEBS_84)
 
@@ -405,13 +428,16 @@ install_extra_encode:
 
 # ------------------------------------------------------------------
 
-# FEDORA 13
-install_fedora_13_rpms:
+# FEDORA 15
+install_fedora_rpms:
 	yum -y update
-	yum -y install $(FEDORA_13_RPMS)
+	yum -y install $(FEDORA_RPMS)
 
-install_fedora_13_pgsql_server:
+install_fedora_14_pgsql_server:
 	yum -y install $(PGSQL_84_RPMS)
+
+install_fedora_15_pgsql_server:
+	yum -y install $(PGSQL_90_RPMS)
 
 # CENTOS
 install_centos_rpms:
