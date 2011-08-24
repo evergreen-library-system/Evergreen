@@ -667,7 +667,7 @@ sub flatten {
                 $from .= "\n\tLEFT JOIN (\n\t\tSELECT fe.*, fe_weight.weight, x.tsq /* search */\n\t\t  FROM  $table AS fe";
                 $from .= "\n\t\t\tJOIN config.metabib_field AS fe_weight ON (fe_weight.id = fe.field)";
 
-                if ($node->tsquery) {
+                if ($node->dummy_count < @{$node->only_atoms} ) {
                     $from .= "\n\t\t\tJOIN (SELECT ". $node->tsquery ." AS tsq ) AS x ON (fe.index_vector @@ x.tsq)";
                 } else {
                     $from .= "\n\t\t\t, (SELECT NULL::tsquery AS tsq ) AS x";
@@ -798,8 +798,6 @@ sub sql {
     my $self = shift;
     my $sql = shift;
 
-    return undef if $self->{dummy};
-
     $self->{sql} = $sql if ($sql);
     
     return $self->{sql} if ($self->{sql});
@@ -810,6 +808,8 @@ sub buildSQL {
     my $self = shift;
 
     my $classname = $self->node->classname;
+
+    return $self->sql("to_tsquery('$classname','')") if $self->{dummy};
 
     my $normalizers = $self->node->plan->QueryParser->query_normalizers( $classname );
     my $fields = $self->node->fields;
@@ -857,13 +857,21 @@ use base 'QueryParser::query_plan::node';
 sub only_atoms {
     my $self = shift;
 
+    $self->{dummy_count} = 0;
+
     my $atoms = $self->query_atoms;
     my @only_atoms;
     for my $a (@$atoms) {
         push(@only_atoms, $a) if (ref($a) && $a->isa('QueryParser::query_plan::node::atom'));
+        $self->{dummy_count}++ if (ref($a) && $a->{dummy});
     }
 
     return \@only_atoms;
+}
+
+sub dummy_count {
+    my $self = shift;
+    return $self->{dummy_count};
 }
 
 sub table {
@@ -894,9 +902,7 @@ sub tsquery {
 
     for my $atom (@{$self->query_atoms}) {
         if (ref($atom)) {
-            my $sql = $atom->sql;
-            next if !defined($sql);
-            $self->{tsquery} .= "\n\t\t\t" .$sql;
+            $self->{tsquery} .= "\n\t\t\t" .$atom->sql;
         } else {
             $self->{tsquery} .= $atom x 2;
         }
