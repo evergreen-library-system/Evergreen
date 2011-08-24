@@ -278,7 +278,7 @@ squeeze: install_pgsql_client_debs_90  install_extra_debs_squeeze
 generic_debian:  install_debs install debian_sys_config install_cpan_force
 
 ubuntu-lucid: lucid generic_ubuntu
-lucid: install_pgsql_client_debs_90 install_extra_debs install_cpan_marc_record install_yaz install_lucid_cpan
+lucid: install_pgsql_client_debs_90 install_extra_debs install_cpan_marc_record install_yaz install_cpan_lucid
 generic_ubuntu: install_debs install debian_sys_config install_cpan_more install_cpan_safe install_cpan_force
 
 # - COMMON TARGETS ---------------------------------------------------------
