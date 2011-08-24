@@ -527,6 +527,8 @@ sub receive_lineitem_detail {
     $copy->status(OILS_COPY_STATUS_IN_PROCESS);
     $copy->edit_date('now');
     $copy->editor($e->requestor->id);
+    $copy->creator($e->requestor->id) if $U->ou_ancestor_setting_value(
+        $e->requestor->ws_ou, 'acq.copy_creator_uses_receiver', $e);
     $e->update_asset_copy($copy) or return 0;
 
     $mgr->add_lid;
