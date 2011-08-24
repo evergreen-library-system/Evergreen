@@ -1,1 +1,306 @@
-#ChangeLog
+2011-08-24  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/perlmods/OpenILS/Application.pm,
+	Open-ILS/src/sql/Pg/002.schema.config.sql, README: Bumping version
+	numbers
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-24  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/sql/Pg/2.0.8-2.0.9-upgrade-db.sql: 2.0.9 upgrade
+	script
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-24  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/sql/Pg/2.0.7-2.0.8-upgrade-db.sql: Adding tag upgrade
+	script to parent branch
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-23  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/sql/Pg/002.schema.config.sql,
+	Open-ILS/src/sql/Pg/upgrade/0607.schema.oua_force_order.sql,
+	Open-ILS/src/sql/Pg/upgrade/XXXX.oua_force_order.sql: 2.[01]-stamped
+	upgrade script for LP#816131
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-22  Thomas Berezansky <tsbere@mvlc.org>
+
+	* Open-ILS/src/sql/Pg/020.schema.functions.sql,
+	Open-ILS/src/sql/Pg/upgrade/XXXX.oua_force_order.sql: Reverse
+	direction of org_unit_ancestors Apparently callers expect it to start at the top of the org tree.
+
+	Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-11  Thomas Berezansky <tsbere@mvlc.org>
+
+	* Open-ILS/src/sql/Pg/upgrade/XXXX.oua_force_order.sql: Unwrapped
+	upgrade script for oua_force_order
+
+	Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-11  Thomas Berezansky <tsbere@mvlc.org>
+
+	* Open-ILS/src/sql/Pg/020.schema.functions.sql: New version of
+	actor.org_unit_ancestors Preserves order through joins Basically actor.org_unit_ancestors_distance with a join to get the
+	entire org units, rather than just IDs and a distance.
+
+	Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-11  Liam Whalen <lwhalen@evergreen-dev.catalogue.nrcan.gc.ca>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Storage/QueryParser.pm: 
+	Fixed seaching for a colon (:) surrounded by white space When searching for a colon surrounded by white space the search
+	would freeze.  An example of such a search would be: Climate change
+	economics and policy : an RFF anthology This was happening because
+	the decompose function within QueryParser.pm Would build a regular
+	expression that would search the query for both classes and class
+	aliases e.g (keyword and kw).  However, when buliding the regex for
+	aliases QueryParser would add extraneous or symbols (|) to the end
+	of the regex without adding the accompanying alias.  This was
+	happening because there was a check to see if the corresponding
+	class to each alias had already been added to the regex.  But, the
+	check to see if the alias had already been appened to the regex
+	happened too late.  I have moved the check to encopase the appending
+	of the or symbols and the class.
+
+	Signed-off-by: Liam Whalen <lwhalen@evergreen-dev.catalogue.nrcan.gc.ca>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-09  Jason Stephenson <jstephenson@mvlc.org>
+
+	* Open-ILS/src/extras/Makefile.install: Branchify patch from LP bug
+	#802523 and backport to rel_2_0.
+
+
+	Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-23  Dan Scott <dan@coffeecode.net>
+
+	* Open-ILS/src/extras/Makefile.install: Add pgsql 9.0 target for
+	Debian / Ubuntu, and a Fedora 15 target People are starting to adopt PostgreSQL 9.0 in Evergreen 2.0 as a
+	stepping stone towards Evergreen 2.1; make it easier for them by
+	providing a target in the 2.0 Makefile.install.  Also, while we're in here, remove the Fedora 13 reference and
+	replace it with Fedora 15, as Fedora 13 is no longer supported and
+	Fedora 15 comes with the power of PostgreSQL 9.0. OH YEAH!
+
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-08-23  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/sql/Pg/000.english.pg90.fts-config.sql: Support
+	Evergreen 2.0 on Pg 9.0
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-19  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Circ/Money.pm: Fix
+	penalty generation during billing creation by passing the editor object referencing the database transaction to
+	xact_org
+
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-22  Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+	* Open-ILS/web/opac/skin/default/js/holds.js: Display only available
+	formats for metarecord holds in IE The OPAC's usual hideMe()/unHideMe() tricks don't work for <option>
+	elements in Internet Explorer 8.  Use the disabled attribute.
+
+
+	Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-19  Bill Erickson <berick@esilibrary.com>
+
+	* Open-ILS/web/js/ui/default/vandelay/vandelay.js: Vandelay: repair
+	item attr context org selector 1. Prevents resetting the context selector to the workstation org
+	unit each time it's changed.  2. Prevent the unintentional pileup of dojo.connect() events, which
+	can lead to exponential growth in the number of server calls to
+	fetch import-item-attribute-definitions with each change of the
+	context org selector.
+
+	Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2011-08-02  Ben Shum <bshum@biblio.org>
+
+	* Open-ILS/src/perlmods/OpenILS/Utils/RemoteAccount.pm: #LP801961,
+	error when running edi_fetcher.pl This patch addresses an error encountered when running
+	edi_fetcher.pl.  The method "is_dir" should be just plain "dir" in
+	RemoteAccount.pm file.
+
+	Signed-off-by: Ben Shum <bshum@biblio.org>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-09  Jason Stephenson <jstephenson@mvlc.org>
+
+	* Open-ILS/web/js/ui/default/actor/user/register.js: Branchify
+	second patch from James Fournie on LP bug #791941.
+
+
+	Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-09  Jason Stephenson <jstephenson@mvlc.org>
+
+	* Open-ILS/web/js/dojo/openils/widget/AutoFieldWidget.js: Branchify
+	first patch from James Fournie on LP bug #791941.
+
+
+	Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-09  Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Circ/Circulate.pm: 
+	Branchify the patch from LP bug #809478.
+
+
+	Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-16  Dan Wells <dbw2@calvin.edu>
+
+	* Open-ILS/web/opac/locale/en-US/vandelay.dtd: Improve Vandelay
+	Import/Merge Checkbox Labels Since these labels are used both for the initial import and also for
+	imports from the queue, the use of the word "Auto" can be confusing
+	and misleading.  This commit reflects changes already made in trunk
+	for these labels.
+
+	Signed-off-by: Dan Wells <dbw2@calvin.edu>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-16  Dan Wells <dbw2@calvin.edu>
+
+	* Open-ILS/web/js/ui/default/vandelay/vandelay.js: Fix importing of
+	'No Match' records from a queue This small change honors the 'No Match' checkbox when importing from
+	a queue.  This bug has existed for a while, but was only recently exposed by
+	06e4d3370068002a303c9a5a03448ee0e1249fc0.  Before that commit,
+	no-match records always imported, even when you didn't want them.
+	After that commit, they import when wanted on the initial load, but
+	could not be imported from the queue.
+
+	Signed-off-by: Dan Wells <dbw2@calvin.edu>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-16  Dan Wells <dbw2@calvin.edu>
+
+	* Open-ILS/src/sql/Pg/002.schema.config.sql,
+	Open-ILS/src/sql/Pg/005.schema.actors.sql,
+	Open-ILS/src/sql/Pg/upgrade/0605.schema.lp826844_org_unit_parent_pr
+	otect_fix.sql: Stricter order for actor.org_unit_parent_protect() actor.org_unit_parent_protect() may not work due to the fact that
+	'IF' conditions in PL/pgSQL are not necessarily processed in the
+	order written. This line: "IF TG_OP = 'INSERT' OR NEW.parent_ou IS DISTINCT FROM OLD.parent_ou
+	THEN" may fail because the 'IS DISTINCT FROM' happens before the 'INSERT'
+	check, and and that fails because there is no 'OLD' variable for
+	INSERTs.  This commit may not be the optimal style for this circumstance in
+	this language, but it works.  It also appears to change more than it
+	really does due to a loss of one level of indentation in the
+	structure.
+
+	Signed-off-by: Dan Wells <dbw2@calvin.edu>
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-08-16  Dan Wells <dbw2@calvin.edu>
+
+	* Open-ILS/src/sql/Pg/005.schema.actors.sql: Whitespace Only Changes Files uses primarily tabs, function used both spaces and tabs.  It
+	now uses all tabs.
+
+	Signed-off-by: Dan Wells <dbw2@calvin.edu>
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-08-16  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/sql/Pg/002.schema.config.sql,
+	Open-ILS/src/sql/Pg/upgrade/0602.schema.lp790329_opac_copy_count.sq
+	l, Open-ILS/src/sql/Pg/upgrade/XXXX.lp790329_opac_copy_count.sql: 
+	Stamped upgrades for LP#790329
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-15  Dan Scott <dan@coffeecode.net>
+
+	*
+	Open-ILS/src/perlmods/OpenILS/Application/Storage/Publisher/metabib
+	.pm, Open-ILS/src/sql/Pg/040.schema.asset.sql,
+	Open-ILS/src/sql/Pg/upgrade/XXXX.lp790329_opac_copy_count.sql: 
+	LP#790329 org_lasso search is broken Fix the JavaScript error when we attempt to create a feed for the
+	shortname of the org_unit_lasso (lassos have no shortname) - which
+	lets the request hit the backend Perl module, which in turn chokes
+	on a test for OU that only allows two conditions: either all digits
+	is treated as a numeric ID for an org unit, or it is a shortname. Of
+	course, lassos are negative integers, so we have to modify the test
+	slightly to make it happier.  There was no depth for org lasso copy counts, and this was handled
+	correctly in the main case by the
+	asset.opac_lasso_record_copy_count() function and its staff variant,
+	but when a copy was not found at a given org_unit in the lasso a
+	request was made for the non-existent depth and the function would
+	error out.
+
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-16  Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+	* Open-ILS/src/edi_translator/edi_webrick.bash: Keep the logging
+	output of the EDI translator by default There is valuable troubleshooting information there that is
+	otherwise hard to find.  This particularly matters when the output
+	of an EDI Action/Trigger template (JEDI) doesn't successfully get
+	translated to EDIFACT for nonobvious reasons.  In production environments, you might instead pipe to logger so that
+	you can collect output with syslog, rather than in a flat file.  As
+	long as output goes *somewhere.*
+
+
+	Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2011-08-16  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/sql/Pg/002.schema.config.sql,
+	Open-ILS/src/sql/Pg/upgrade/0600.schema.fix_cat_default_class_looku
+	p.sql, Open-ILS/src/sql/Pg/upgrade/0601.schema.fix_aous_lookup.sql,
+	Open-ILS/src/sql/Pg/upgrade/XXXX.fix_aous_lookup.sql,
+	Open-ILS/src/sql/Pg/upgrade/XXXX.fix_cat_default_class_lookup.sql: 
+	Stamped upgrades for LP#825303
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-12  Galen Charlton <gmc@esilibrary.com>
+
+	* Open-ILS/src/sql/Pg/020.schema.functions.sql,
+	Open-ILS/src/sql/Pg/upgrade/XXXX.fix_aous_lookup.sql: return only
+	the one applicable OU setting value Correct actor.org_unit_ancestor_setting so that it returns at most
+	 one setting value, rather than the entire set of values defined for
+	the OU and its ancestors.
+
+	Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-12  Galen Charlton <gmc@esilibrary.com>
+
+	* Open-ILS/src/sql/Pg/040.schema.asset.sql,
+	Open-ILS/src/sql/Pg/upgrade/XXXX.fix_cat_default_class_lookup.sql: 
+	lp#825303: fix cat.default_classification_scheme lookup Fixes a bug where the wrong default classification scheme could be
+	chosen when adding a new volume whose classification scheme was not
+	explicitly set.
+
+	Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-10  Jason Etheridge <jason@esilibrary.com>
+
+	* lp#780679, fix misleading label for hold transfer for rel_2_0.  later versions of EG also have a selective hold
+	transfer feature
+
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
