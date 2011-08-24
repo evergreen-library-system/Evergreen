@@ -661,12 +661,17 @@ sub flatten {
                 my $table = $node->table;
                 my $talias = $node->table_alias;
 
-                my $node_rank = $node->rank . " * ${talias}.weight";
+                my $node_rank = 'COALESCE(' . $node->rank . " * ${talias}.weight, 1.0)";
 
                 my $core_limit = $self->QueryParser->core_limit || 25000;
                 $from .= "\n\tLEFT JOIN (\n\t\tSELECT fe.*, fe_weight.weight, x.tsq /* search */\n\t\t  FROM  $table AS fe";
                 $from .= "\n\t\t\tJOIN config.metabib_field AS fe_weight ON (fe_weight.id = fe.field)";
-                $from .= "\n\t\t\tJOIN (SELECT ".$node->tsquery ." AS tsq ) AS x ON (fe.index_vector @@ x.tsq)";
+
+                if ($node->tsquery) {
+                    $from .= "\n\t\t\tJOIN (SELECT ". $node->tsquery ." AS tsq ) AS x ON (fe.index_vector @@ x.tsq)";
+                } else {
+                    $from .= "\n\t\t\t, (SELECT NULL::tsquery AS tsq ) AS x";
+                }
 
                 my @bump_fields;
                 if (@{$node->fields} > 0) {
@@ -701,6 +706,7 @@ sub flatten {
 
                 $where .= '(' . $talias . ".id IS NOT NULL";
                 $where .= ' AND ' . join(' AND ', map {"${talias}.value ~* ".$self->QueryParser->quote_phrase_value($_)} @{$node->phrases}) if (@{$node->phrases});
+                $where .= ' AND ' . join(' AND ', map {"${talias}.value !~* ".$self->QueryParser->quote_phrase_value($_)} @{$node->unphrases}) if (@{$node->unphrases});
                 $where .= ')';
 
                 push @rank_list, $node_rank;
@@ -791,6 +797,8 @@ use base 'QueryParser::query_plan::node::atom';
 sub sql {
     my $self = shift;
     my $sql = shift;
+
+    return undef if $self->{dummy};
 
     $self->{sql} = $sql if ($sql);
     
@@ -886,7 +894,9 @@ sub tsquery {
 
     for my $atom (@{$self->query_atoms}) {
         if (ref($atom)) {
-            $self->{tsquery} .= "\n\t\t\t" .$atom->sql;
+            my $sql = $atom->sql;
+            next if !defined($sql);
+            $self->{tsquery} .= "\n\t\t\t" .$sql;
         } else {
             $self->{tsquery} .= $atom x 2;
         }
