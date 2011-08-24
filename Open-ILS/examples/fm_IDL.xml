@@ -6966,6 +6966,7 @@ SELECT  usr,
 			<field reporter:label="Barcode" name="barcode" reporter:datatype="text" />
 			<field reporter:label="Call Number Label" name="cn_label" reporter:datatype="text" />
 			<field reporter:label="Actual Receive Date" name="recv_time" reporter:datatype="timestamp" />
+			<field reporter:label="Receiving User" name="receiver" reporter:datatype="link" />
 			<field reporter:label="Fund" name="fund" reporter:datatype="link" />
 			<field reporter:label="Fund Debit" name="fund_debit" reporter:datatype="link" />
 			<field reporter:label="Owning Library" name="owning_lib" reporter:datatype="org_unit" />
@@ -6986,6 +6987,7 @@ SELECT  usr,
 			<link field="circ_modifier" reltype="has_a" key="code" map="" class="ccm"/>
 			<link field="cancel_reason" reltype="has_a" key="id" map="" class="acqcr"/>
 			<link field="claims" reltype="has_many" key="lineitem_detail" map="" class="acqcl"/>
+			<link field="receiver" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 	</class>
 

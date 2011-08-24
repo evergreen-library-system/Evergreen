@@ -519,6 +519,7 @@ sub receive_lineitem_detail {
 
     return 1 if $lid->recv_time;
 
+    $lid->receiver($e->requestor->id);
     $lid->recv_time('now');
     $e->update_acq_lineitem_detail($lid) or return 0;
 
@@ -554,6 +555,7 @@ sub rollback_receive_lineitem_detail {
 
     return 1 unless $lid->recv_time;
 
+    $lid->clear_receiver;
     $lid->clear_recv_time;
     $e->update_acq_lineitem_detail($lid) or return 0;
 
