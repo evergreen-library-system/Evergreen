@@ -1,5 +1,7 @@
 BEGIN;
 
+INSERT INTO config.upgrade_log (version) VALUES ('2.0.9');
+
 
 -- Fix LP#825303 by allowing for ancestor OUs to be checked
 -- when retrieving the default classification scheme.
