@@ -236,6 +236,7 @@
                     <td>Callnumber</td>
                     <td>Barcode</td>
                     <td>Notes</td>
+                    <td>Receiver</td>
                     <td colspan='0'></td>
                 </tr>
             </tbody>
@@ -249,6 +250,7 @@
                     <td><div name='cn_label'></div></td>
                     <td><div name='barcode'></div></td>
                     <td><div name='note'></div></td>
+                    <td><div name='receiver'></div></td>
                     <td><a href="javascript:void(0);" name="receive">Mark&nbsp;Received</a><a href="javascript:void(0);" name="unreceive">Un-Receive</a>&nbsp;<a href="javascript:void(0);" name="cancel">Cancel</a><span class="hidden" name="cancel_reason"></span>&nbsp;<a href="javascript:void(0);" name="claim">Claim</a></td>
                     <td><div name='delete' dojoType='dijit.form.Button' style='color:red;' scrollOnFocus='false'>X</div></td>
                 </tr>
