@@ -497,7 +497,7 @@ sub toSQL {
     my $flat_plan = $self->flatten;
 
     # generate the relevance ranking
-    my $rel = "AVG(\n\t\t(" . join(")+\n\t\t(", @{$$flat_plan{rank_list}}) . ")\n\t)";
+    my $rel = "AVG(\n\t\t(" . join(")+\n\t\t(", @{$$flat_plan{rank_list}}) . ")\n\t)+1";
 
     # find any supplied sort option
     my ($sort_filter) = $self->find_filter('sort');
@@ -720,7 +720,7 @@ sub flatten {
                 my $table = $node->table;
                 my $talias = $node->table_alias;
 
-                my $node_rank = 'COALESCE(' . $node->rank . " * ${talias}.weight, 1.0)";
+                my $node_rank = 'COALESCE(' . $node->rank . " * ${talias}.weight, 0.0)";
 
                 my $core_limit = $self->QueryParser->core_limit || 25000;
                 $from .= "\n\tLEFT JOIN (\n\t\tSELECT fe.*, fe_weight.weight, x.tsq /* search */\n\t\t  FROM  $table AS fe";
