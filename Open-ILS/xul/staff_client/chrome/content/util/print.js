@@ -155,10 +155,25 @@ util.print.prototype = {
 
             switch(content_type) {
                 case 'text/html' :
-                    var jsrc = 'data:text/javascript,' + window.escape('var params = window.arguments[0]; window.go_print = window.arguments[1];');
-                    var print_url = 'data:text/html,'
-                        + '<html id="top"><head><script src="/xul/server/main/JSAN.js"></script><script src="' + window.escape(jsrc) + '"></script></head>'
-                        + '<body onload="try{go_print();}catch(E){alert(E);}">' + window.escape(msg) + '</body></html>';
+                    if(!params.type) {
+                        params.type = '';
+                    }
+                    var my_prefix = '/xul/server/';
+                    if(window.location.protocol == "chrome:") {
+                        // Likely in offline interface
+                        my_prefix = 'chrome://open_ils_staff_client/content/';
+                    } else {
+                        if(xulG && xulG.url_prefix) {
+                            my_prefix = xulG.url_prefix(my_prefix);
+                        }
+                    }
+                    var print_url = 'data:text/html,<html id="top"><head>'
+                        + '<script src="' + my_prefix + 'util/print_win.js"></script>'
+                        + '<script src="' + my_prefix + 'util/print_custom.js"></script>';
+                    if(this.data.hash.aous['print.custom_js_file']) {
+                        print_url += '<script src="' + this.data.hash.aous['print.custom_js_file'] + '"></script>';
+                    }
+                    print_url += '</head><body onload="try{print_init(\'' + params.type + '\');}catch(E){alert(E);}">' + window.escape(msg.replace(/<script[^>]*>.*?<\/script>/gi,'')) + '</body></html>';
                     w = obj.win.openDialog(print_url,'receipt_temp','chrome,resizable,minimizable', null, { "data" : params.data, "list" : params.list}, function() { 
                         try {
                             obj.NSPrint(w, silent, params);
@@ -264,6 +279,12 @@ util.print.prototype = {
             }
         }
         if (params.footer) s += this.template_sub( params.footer, cols, params );
+
+        // Sanity check, no javascript in templates
+        // Note: [\s\S] is a workaround for . not including newlines.
+        s=s.replace(/<script[^>]*>[\s\S]*?<\/script[^>]*>/gi,'')
+        s=s.replace(/onload\s*=\s*"[^"]*"/gi,'');
+        s=s.replace(/onload\s*=\s*'[^']*'/gi,'');
 
         if (params.sample_frame) {
             var jsrc = 'data:text/javascript,' + window.escape('var params = { "data" : ' + js2JSON(params.data) + ', "list" : ' + js2JSON(params.list) + '};');
