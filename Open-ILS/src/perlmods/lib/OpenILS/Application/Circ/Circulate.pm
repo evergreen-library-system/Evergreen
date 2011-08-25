@@ -1652,6 +1652,8 @@ sub handle_checkout_holds {
         $hold->clear_prev_check_time; 
         $hold->clear_current_copy;
         $hold->clear_capture_time;
+        $hold->clear_shelf_time;
+        $hold->clear_shelf_expire_time;
 
         return $self->bail_on_event($e->event)
             unless $e->update_action_hold_request($hold);
