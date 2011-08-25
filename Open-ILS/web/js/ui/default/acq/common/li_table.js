@@ -578,51 +578,30 @@ function AcqLiTable() {
         var actUnRecv = nodeByName("action_mark_unrecv", row);
         var actUpdateBarcodes = nodeByName("action_update_barcodes", row);
         var actHoldingsMaint = nodeByName("action_holdings_maint", row);
-
         var actNewInvoice = nodeByName('action_new_invoice', row);
         var actLinkInvoice = nodeByName('action_link_invoice', row);
         var actViewInvoice = nodeByName('action_view_invoice', row);
 
+        // always allow access to LI history
         nodeByName('action_view_history', row).onclick = 
             function() { location.href = oilsBasePath + '/acq/lineitem/history/' + li.id(); };
-
-        var state_cell = nodeByName("li_state", row);
-
-        if (li.state() == "cancelled") {
-            if (typeof li.cancel_reason() == "object") {
-                var holds_state = dojo.create(
-                    "span", {
-                        "style": "border-bottom: 1px dashed #000;",
-                        "innerHTML": li.state()
-                    }, state_cell, "only"
-                );
-                new dijit.Tooltip(
-                    {
-                        "label": "<em>" + li.cancel_reason().label() +
-                            "</em><br />" + li.cancel_reason().description(),
-                        "connectId": [holds_state]
-                    }, dojo.create("span", null, state_cell, "last")
-                );
-            } else {
-                state_cell.innerHTML = li.state(); // TODO i18n state labels
-            }
-        } else {
-            state_cell.innerHTML = li.state(); // TODO i18n state labels
-        }
-
 
         /* handle row coloring for based on LI state */
         openils.Util.removeCSSClass(row, /^oils-acq-li-state-/);
         openils.Util.addCSSClass(row, "oils-acq-li-state-" + li.state());
 
-        /* handle links that appear/disappear based on whether LI is received */
-        if (this.isPO) {
-            var self = this;
+        // Expose invoice actions for any lineitem that is linked to a PO 
+        if( li.purchase_order() ) {
+
+            actNewInvoice.disabled = false;
+            actLinkInvoice.disabled = false;
+            actViewInvoice.disabled = false;
 
             actNewInvoice.onclick = function() {
                 location.href = oilsBasePath + '/acq/invoice/view?create=1&attach_li=' + li.id();
                 nodeByName("action_none", row).selected = true;
             };
+
             actLinkInvoice.onclick = function() {
                 if (!self.invoiceLinkDialogManager) {
                     self.invoiceLinkDialogManager =
@@ -632,6 +611,7 @@ function AcqLiTable() {
                 acqLitLinkInvoiceDialog.show();
                 nodeByName("action_none", row).selected = true;
             };
+
             actViewInvoice.onclick = function() {
                 location.href = oilsBasePath +
                     "/acq/search/unified?so=" +
@@ -639,41 +619,70 @@ function AcqLiTable() {
                     "&rt=invoice";
                 nodeByName("action_none", row).selected = true;
             };
-
-            actNewInvoice.disabled = false;
-            actLinkInvoice.disabled = false;
-            actViewInvoice.disabled = false;
-
-            switch(li.state()) {
-                case "on-order":
-                    actReceive.disabled = false;
-                    actReceive.onclick = function() {
-                        if (self.checkLiAlerts(li.id()))
-                            self.issueReceive(li);
-                        nodeByName("action_none", row).selected = true;
-                    };
-                    return;
-
-                case "received":
-                    actUnRecv.disabled = false;
-                    actUnRecv.onclick = function() {
-                        if (confirm(localeStrings.UNRECEIVE_LI))
-                            self.issueReceive(li, /* rollback */ true);
-                        nodeByName("action_none", row).selected = true;
-                    };
-                    // TODO we should allow editing before receipt, in which case the
-                    // test should be "if 1 or more real (acp) copies exist
-                    actUpdateBarcodes.disabled = false;
-                    actUpdateBarcodes.onclick = function() {
-                        self.showRealCopyEditUI(li);
-                        nodeByName("action_none", row).selected = true;
-                    }
-                    actHoldingsMaint.disabled = false;
-                    actHoldingsMaint.onclick = self.generateMakeRecTab( li.eg_bib_id(), 'copy_browser', row );
-
-                    return;
-            }
         }
+                
+
+        /*
+         * If we haven't fleshed the lineitem_details, default to allowing access to the 
+         * holdings maintenence actions.  The alternative is to flesh LIDs on every lineitem, 
+         * but that will add to page render time.  Let's see if this will suffice...
+         */
+        var lids = li.lineitem_details();
+        if( !lids || 
+                (lids && !lids.filter(function(lid) { return lid.eg_copy_id() })[0] )) {
+
+            actUpdateBarcodes.disabled = false;
+            actUpdateBarcodes.onclick = function() {
+                self.showRealCopyEditUI(li);
+                nodeByName("action_none", row).selected = true;
+            }
+            actHoldingsMaint.disabled = false;
+            actHoldingsMaint.onclick = 
+                self.generateMakeRecTab( li.eg_bib_id(), 'copy_browser', row );
+        }
+
+        var state_cell = nodeByName("li_state", row);
+
+        switch(li.state()) {
+
+            case 'cancelled':
+                if(typeof li.cancel_reason() == "object") {
+                    var holds_state = dojo.create(
+                        "span", {
+                            "style": "border-bottom: 1px dashed #000;",
+                            "innerHTML": li.state()
+                        }, state_cell, "only"
+                    );
+                    new dijit.Tooltip(
+                        {
+                            "label": "<em>" + li.cancel_reason().label() +
+                                "</em><br />" + li.cancel_reason().description(),
+                            "connectId": [holds_state]
+                        }, dojo.create("span", null, state_cell, "last")
+                    );
+                }
+                return; // all done
+
+            case "on-order":
+                actReceive.disabled = false;
+                actReceive.onclick = function() {
+                    if (self.checkLiAlerts(li.id()))
+                        self.issueReceive(li);
+                    nodeByName("action_none", row).selected = true;
+                };
+                break;
+
+            case "received":
+                actUnRecv.disabled = false;
+                actUnRecv.onclick = function() {
+                    if (confirm(localeStrings.UNRECEIVE_LI))
+                        self.issueReceive(li, /* rollback */ true);
+                    nodeByName("action_none", row).selected = true;
+                };
+                break;
+        }
+
+        state_cell.innerHTML = li.state(); // TODO i18n state labels
     };
 
 

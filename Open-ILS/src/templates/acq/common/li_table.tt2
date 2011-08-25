@@ -123,13 +123,13 @@
                             <option name='action_none'>-- Actions --</option>
                             <option name='action_mark_recv' disabled='disabled'>Mark Received</option>
                             <option name='action_mark_unrecv' disabled='disabled'>Un-Receive</option>
-                            <option name='action_update_barcodes' disabled='disabled'>Update Barcodes</option>
-                            <option name='action_holdings_maint' disabled='disabled'>Holdings Maint.</option>
+                            <option name='action_update_barcodes'>Update Barcodes</option>
+                            <option name='action_holdings_maint'>Holdings Maint.</option>
                             <option name='action_new_invoice' disabled='disabled'>New Invoice</option>
                             <option name='action_link_invoice' disabled='disabled'>Link to Invoice</option>
                             <option name='action_view_invoice' disabled='disabled'>View Invoice(s)</option>
                             <option name='action_view_claim_policy'>Apply Claim Policy</option>
-                            <option name='action_manage_claims' disabled='disabled'>Claims</option>
+                            <option name='action_manage_claims'>Claims</option>
                             <option name='action_view_history'>View History</option>
                         </select>
                     </td>
