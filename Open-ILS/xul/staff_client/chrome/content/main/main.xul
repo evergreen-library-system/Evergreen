@@ -181,8 +181,8 @@
             <caption label="&staff.main.auth.offline.caption;"/>
             <hbox><label id="offline_message" value="&staff.main.auth.offline.message;" style="display:none;" /></hbox>
             <hbox><button label="&staff.main.auth.offline.interface;" accesskey="&staff.main.auth.offline.interface.accesskey;" command="cmd_standalone"/></hbox>
-            <hbox><button label="&staff.main.auth.offline.export;" command="cmd_standalone_export"/></hbox>
-            <hbox><button label="&staff.main.auth.offline.import;" command="cmd_standalone_import"/></hbox>
+            <hbox><button id="offline_export_btn" label="&staff.main.auth.offline.export;" command="cmd_standalone_export"/></hbox>
+            <hbox><button id="offline_import_btn" label="&staff.main.auth.offline.import;" command="cmd_standalone_import"/></hbox>
         </groupbox>
 
 </row>
