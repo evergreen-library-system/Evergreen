@@ -13,6 +13,7 @@ our %parser_config = (
             group_start => '(',
             group_end => ')',
             required => '+',
+            disallowed => '-',
             modifier => '#'
         }
     }
@@ -497,18 +498,24 @@ sub decompose {
             s/(^|[^|])\b$alias[:=]/$1$class:/g;
         }
 
-        $search_class_re .= '|' unless ($first_class);
-        $first_class = 0;
+        if (!$seen_classes{$class}) {
+            $search_class_re .= '|' unless ($first_class);
+            $first_class = 0;
 
-        $search_class_re .= $class . '(?:\|\w+)*' if (!$seen_classes{$class});
-        $seen_classes{$class} = 1;
+            $search_class_re .= $class . '(?:\|\w+)*';
+            $seen_classes{$class} = 1;
+        }
     }
     $search_class_re .= '):';
 
     warn " ** Search class RE: $search_class_re\n" if $self->debug;
 
     my $required_re = $pkg->operator('required');
-    $required_re = qr/^\s*\Q$required_re\E/;
+    $required_re = qr/\Q$required_re\E/;
+
+    my $disallowed_re = $pkg->operator('disallowed');
+    $disallowed_re = qr/\Q$disallowed_re\E/;
+
     my $and_re = $pkg->operator('and');
     $and_re = qr/^\s*\Q$and_re\E/;
 
@@ -552,7 +559,7 @@ sub decompose {
         } elsif ($self->filter_count && /$filter_re/) { # found a filter
             warn "Encountered search filter: $1$2 set to $3\n" if $self->debug;
 
-            my $negate = ($1 eq '-') ? 1 : 0;
+            my $negate = ($1 eq $pkg->operator('disallowed')) ? 1 : 0;
             $_ = $';
             $struct->new_filter( $2 => [ split '[,]+', $3 ], $negate );
 
@@ -560,7 +567,7 @@ sub decompose {
         } elsif ($self->filter_count && /$filter_as_class_re/) { # found a filter
             warn "Encountered search filter: $1$2 set to $3\n" if $self->debug;
 
-            my $negate = ($1 eq '-') ? 1 : 0;
+            my $negate = ($1 eq $pkg->operator('disallowed')) ? 1 : 0;
             $_ = $';
             $struct->new_filter( $2 => [ split '[,]+', $3 ], $negate );
 
@@ -618,7 +625,7 @@ sub decompose {
         } elsif ($self->facet_class_count && /$facet_re/) { # changing current class
             warn "Encountered facet: $1$2 => $3\n" if $self->debug;
 
-            my $negate = ($1 eq '-') ? 1 : 0;
+            my $negate = ($1 eq $pkg->operator('disallowed')) ? 1 : 0;
             my $facet = $2;
             my $facet_value = [ split '\s*#\s*', $3 ];
             $struct->new_facet( $facet => $facet_value, $negate );
@@ -639,28 +646,37 @@ sub decompose {
             $_ = $';
 
             $last_type = 'CLASS';
-        } elsif (/^\s*"([^"]+)"/) { # phrase, always anded
-            warn "Encountered phrase: $1\n" if $self->debug;
+        } elsif (/^\s*($required_re|$disallowed_re)?"([^"]+)"/) { # phrase, always anded
+            warn 'Encountered' . ($1 ? " ['$1' modified]" : '') . " phrase: $2\n" if $self->debug;
 
             $struct->joiner( '&' );
-            my $phrase = $1;
+            my $req_ness = $1;
+            my $phrase = $2;
 
             my $class_node = $struct->classed_node($current_class);
-            $class_node->add_phrase( $phrase );
+
+            if ($req_ness eq $pkg->operator('disallowed')) {
+                $class_node->add_dummy_atom( node => $class_node );
+                $class_node->add_unphrase( $phrase );
+                $phrase = '';
+                #$phrase =~ s/(^|\s)\b/$1-/g;
+            } else { 
+                $class_node->add_phrase( $phrase );
+            }
             $_ = $phrase . $';
 
             $last_type = '';
-        } elsif (/$required_re([^\s)]+)/) { # phrase, always anded
-            warn "Encountered required atom (mini phrase): $1\n" if $self->debug;
-
-            my $phrase = $1;
-
-            my $class_node = $struct->classed_node($current_class);
-            $class_node->add_phrase( $phrase );
-            $_ = $phrase . $';
-            $struct->joiner( '&' );
-
-            $last_type = '';
+#        } elsif (/^\s*$required_re([^\s"]+)/) { # phrase, always anded
+#            warn "Encountered required atom (mini phrase): $1\n" if $self->debug;
+#
+#            my $phrase = $1;
+#
+#            my $class_node = $struct->classed_node($current_class);
+#            $class_node->add_phrase( $phrase );
+#            $_ = $phrase . $';
+#            $struct->joiner( '&' );
+#
+#            $last_type = '';
         } elsif (/^\s*([^$group_end\s]+)/o) { # atom
             warn "Encountered atom: $1\n" if $self->debug;
             warn "Remainder: $'\n" if $self->debug;
@@ -671,12 +687,16 @@ sub decompose {
             $_ = $after;
             $last_type = '';
 
-            my $negator = ($atom =~ s/^-//o) ? '!' : '';
+            my $class_node = $struct->classed_node($current_class);
+
+            my $prefix = ($atom =~ s/^$disallowed_re//o) ? '!' : '';
             my $truncate = ($atom =~ s/\*$//o) ? '*' : '';
 
-            if (!grep { $atom eq $_ } ('&','|')) { # throw away & and |, not allowed in tsquery, and not really useful anyway
-                my $class_node = $struct->classed_node($current_class);
-                $class_node->add_fts_atom( $atom, suffix => $truncate, prefix => $negator, node => $class_node );
+            if ($atom ne '' and !grep { $atom =~ /^\Q$_\E+$/ } ('&','|','-','+')) { # throw away & and |, not allowed in tsquery, and not really useful anyway
+#                $class_node->add_phrase( $atom ) if ($atom =~ s/^$required_re//o);
+#                $class_node->add_unphrase( $atom ) if ($prefix eq '!');
+
+                $class_node->add_fts_atom( $atom, suffix => $truncate, prefix => $prefix, node => $class_node );
                 $struct->joiner( '&' );
             }
         } 
@@ -993,11 +1013,29 @@ sub phrases {
     return $self->{phrases};
 }
 
+sub unphrases {
+    my $self = shift;
+    my @phrases = @_;
+
+    $self->{unphrases} ||= [];
+    $self->{unphrases} = \@phrases if (@phrases);
+    return $self->{unphrases};
+}
+
 sub add_phrase {
     my $self = shift;
     my $phrase = shift;
 
     push(@{$self->phrases}, $phrase);
+
+    return $self;
+}
+
+sub add_unphrase {
+    my $self = shift;
+    my $phrase = shift;
+
+    push(@{$self->unphrases}, $phrase);
 
     return $self;
 }
@@ -1021,6 +1059,18 @@ sub add_fts_atom {
 
         $atom = $self->new_atom( content => $content, @parts );
     }
+
+    push(@{$self->query_atoms}, $self->plan->joiner) if (@{$self->query_atoms});
+    push(@{$self->query_atoms}, $atom);
+
+    return $self;
+}
+
+sub add_dummy_atom {
+    my $self = shift;
+    my @parts = @_;
+
+    my $atom = $self->new_atom( @parts, dummy => 1 );
 
     push(@{$self->query_atoms}, $self->plan->joiner) if (@{$self->query_atoms});
     push(@{$self->query_atoms}, $atom);

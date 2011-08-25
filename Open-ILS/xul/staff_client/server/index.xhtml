@@ -91,6 +91,7 @@
                         data.stash_retrieve(); 
                         document.getElementById('staffname').innerHTML = ", " + data.list.au[0].first_given_name(); 
                         home_ou_id = data.list.au[0].ws_ou();
+                        xulG.set_tab_name('Portal');
                 }
                 function jb_open_eg_web_page(path, label) {
                         var loc = urls.XUL_BROWSER + '?url=' + window.escape(xulG.url_prefix(urls.EG_WEB_BASE) + '/' + path);

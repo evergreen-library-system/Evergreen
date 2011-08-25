@@ -29,6 +29,8 @@ function nodeByName(name, context) {
     return dojo.query('[name='+name+']', context)[0];
 }
 
+// for caching linked users.  e.g. lineitem_detail.receiver
+var userCache = {};
 
 var liDetailBatchFields = ['fund', 'owning_lib', 'location', 'collection_code', 'circ_modifier', 'cn_label'];
 var liDetailFields = liDetailBatchFields.concat(['barcode', 'note']);
@@ -1439,6 +1441,21 @@ function AcqLiTable() {
 
         acqLitCopyCountInput.attr('value', self.copyCount()+'');
 
+        var rcvr = copy.receiver();
+        if (rcvr) {
+            if (!userCache[rcvr]) {
+                if(rcvr == openils.User.user.id()) {
+                    userCache[rcvr] = openils.User.user;
+                } else {
+                    userCache[rcvr] = fieldmapper.standardRequest(
+                        ['open-ils.actor', 'open-ils.actor.user.retrieve'],
+                        {params: [openils.User.authtoken, rcvr]}
+                    );
+                }
+            }
+            dojo.query('[name=receiver]', row)[0].innerHTML =  userCache[rcvr].usrname();
+        }
+
         dojo.forEach(liDetailFields,
             function(field) {
                 var searchFilter;
@@ -1463,6 +1480,7 @@ function AcqLiTable() {
                 if(copy.fund_debit() && field == 'fund') {
                     readOnly = true;
                 }
+
 
                 var widget = new openils.widget.AutoFieldWidget({
                     fmObject : copy,

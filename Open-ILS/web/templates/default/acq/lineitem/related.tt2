@@ -40,9 +40,28 @@
         <button jsId="addToPlButton" dojoType="dijit.form.Button">
             Add to Selection List
         </button>
+        <button jsId="addToPoButton" dojoType="dijit.form.Button">
+            Add to Purchase Order
+        </button>
         <button jsId="createPoButton" dojoType="dijit.form.Button">
             Create Purchase Order
         </button>
+    </div>
+
+    <div class="hidden">
+        <div dojoType="dijit.Dialog" jsId='addToPoDialog'>
+            <table class='dijitTooltipTable'>
+                <tr>
+                    <td><label>Enter the PO #: </label></td>
+                    <td><input jsId='addToPoInput' dojoType="dijit.form.TextBox" /></td>
+                </tr>
+                <tr>
+                    <td colspan='2' align='center'>
+                        <button dojoType='dijit.form.Button' jsId='addToPoSave' type="submit">Save</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 
 </div>

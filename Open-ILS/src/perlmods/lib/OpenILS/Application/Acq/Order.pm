@@ -519,6 +519,7 @@ sub receive_lineitem_detail {
 
     return 1 if $lid->recv_time;
 
+    $lid->receiver($e->requestor->id);
     $lid->recv_time('now');
     $e->update_acq_lineitem_detail($lid) or return 0;
 
@@ -526,6 +527,8 @@ sub receive_lineitem_detail {
     $copy->status(OILS_COPY_STATUS_IN_PROCESS);
     $copy->edit_date('now');
     $copy->editor($e->requestor->id);
+    $copy->creator($e->requestor->id) if $U->ou_ancestor_setting_value(
+        $e->requestor->ws_ou, 'acq.copy_creator_uses_receiver', $e);
     $e->update_asset_copy($copy) or return 0;
 
     $mgr->add_lid;
@@ -554,6 +557,7 @@ sub rollback_receive_lineitem_detail {
 
     return 1 unless $lid->recv_time;
 
+    $lid->clear_receiver;
     $lid->clear_recv_time;
     $e->update_acq_lineitem_detail($lid) or return 0;
 
@@ -3171,6 +3175,55 @@ sub clone_distrib_form {
 
     $e->commit;
     return $new_form->id;
+}
+
+__PACKAGE__->register_method(
+	method => 'add_li_to_po',
+	api_name	=> 'open-ils.acq.purchase_order.add_lineitem',
+	signature => {
+        desc => q/Adds a lineitem to an existing purchase order/,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'The purchase order id', type => 'number'},
+            {desc => 'The lineitem ID', type => 'number'},
+        ],
+        return => {desc => 'Streams a total versus completed counts object, event on error'}
+    }
+);
+
+sub add_li_to_po {
+    my($self, $conn, $auth, $po_id, $li_id) = @_;
+
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->die_event unless $e->checkauth;
+
+    my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
+
+    my $po = $e->retrieve_acq_purchase_order($po_id)
+        or return $e->die_event;
+
+    my $li = $e->retrieve_acq_lineitem($li_id)
+        or return $e->die_event;
+
+    return $e->die_event unless 
+        $e->allowed('CREATE_PURCHASE_ORDER', $po->ordering_agency);
+
+    unless ($po->state =~ /new|pending/) {
+        $e->rollback;
+        return {success => 0, po => $po, error => 'bad-po-state'};
+    }
+
+    unless ($li->state =~ /new|order-ready|pending-order/) {
+        $e->rollback;
+        return {success => 0, li => $li, error => 'bad-li-state'};
+    }
+
+    $li->purchase_order($po_id);
+    $li->state('pending-order');
+    update_lineitem($mgr, $li) or return $e->die_event;
+    
+    $e->commit;
+    return {success => 1};
 }
 
 1;

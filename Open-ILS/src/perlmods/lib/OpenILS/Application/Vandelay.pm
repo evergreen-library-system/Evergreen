@@ -885,6 +885,7 @@ sub import_record_list_impl {
     my $auto_overlay_best = $$args{auto_overlay_best_match};
     my $match_quality_ratio = $$args{match_quality_ratio};
     my $merge_profile = $$args{merge_profile};
+    my $ft_merge_profile = $$args{fall_through_merge_profile};
     my $bib_source = $$args{bib_source};
     my $import_no_match = $$args{import_no_match};
 
@@ -990,40 +991,17 @@ sub import_record_list_impl {
 
                 if( scalar(keys %match_recs) == 1) { # all matches point to the same record
 
-                    # $auto_overlay_best_func will find the 1 match and 
-                    # overlay if the quality ratio allows it
-
-                    my $res = $e->json_query(
-                        {
-                            from => [
-                                $auto_overlay_best_func,
-                                $rec_id, 
-                                $merge_profile,
-                                $match_quality_ratio
-                            ]
-                        }
+                    ($imported, $error, $rec) = try_auto_overlay(
+                        $e, $type,
+                        $report_args, 
+                        $auto_overlay_best_func,
+                        $retrieve_func,
+                        $rec_class,
+                        $rec_id, 
+                        $match_quality_ratio, 
+                        $merge_profile, 
+                        $ft_merge_profile
                     );
-
-                    if($res and ($res = $res->[0])) {
-    
-                        if($res->{$auto_overlay_best_func} eq 't') {
-                            $logger->info("vl: $type overlay-1match succeeded for queued rec $rec_id");
-                            $imported = 1;
-
-                            # re-fetch the record to pick up the imported_as value from the DB
-                            $$report_args{rec} = $rec = $e->$retrieve_func([
-                                $rec_id, {flesh => 1, flesh_fields => {$rec_class => ['matches']}}]);
-
-
-                        } else {
-                            $$report_args{import_error} = 'overlay.record.quality' if $match_quality_ratio > 0;
-                            $logger->info("vl: $type overlay-1match failed for queued rec $rec_id");
-                        }
-
-                    } else {
-                        $error = 1;
-                        $logger->error("vl: Error attempting overlay with func=$auto_overlay_best_func, profile=$merge_profile, record=$rec_id");
-                    }
                 }
             }
 
@@ -1063,40 +1041,19 @@ sub import_record_list_impl {
             }
 
             if(!$imported and !$error and $auto_overlay_best and scalar(@{$rec->matches}) > 0 ) {
-
                 # caller says to overlay the best match
 
-                my $res = $e->json_query(
-                    {
-                        from => [
-                            $auto_overlay_best_func,
-                            $rec_id,
-                            $merge_profile,
-                            $match_quality_ratio
-                        ]
-                    }
+                ($imported, $error, $rec) = try_auto_overlay(
+                    $e, $type,
+                    $report_args, 
+                    $auto_overlay_best_func,
+                    $retrieve_func,
+                    $rec_class,
+                    $rec_id, 
+                    $match_quality_ratio, 
+                    $merge_profile, 
+                    $ft_merge_profile
                 );
-
-                if($res and ($res = $res->[0])) {
-
-                    if($res->{$auto_overlay_best_func} eq 't') {
-                        $logger->info("vl: $type auto-overlay-best succeeded for queued rec $rec_id");
-                        $imported = 1;
-
-                        # re-fetch the record to pick up the imported_as value from the DB
-                        $$report_args{rec} = $rec = $e->$retrieve_func([
-                            $rec_id, {flesh => 1, flesh_fields => {$rec_class => ['matches']}}]);
-
-                    } else {
-                        $$report_args{import_error} = 'overlay.record.quality' if $match_quality_ratio > 0;
-                        $logger->info("vl: $type auto-overlay-best failed for queued rec $rec_id");
-                    }
-
-                } else {
-                    $error = 1;
-                    $logger->error("vl: Error attempting overlay with func=$auto_overlay_best_func, ".
-                        "quality_ratio=$match_quality_ratio, profile=$merge_profile, record=$rec_id");
-                }
             }
 
             if(!$imported and !$error and $import_no_match and scalar(@{$rec->matches}) == 0) {
@@ -1175,6 +1132,111 @@ sub import_record_list_impl {
     $conn->respond({total => $$report_args{total}, progress => $$report_args{progress}});
     return undef;
 }
+
+
+sub try_auto_overlay {
+    my $e = shift;
+    my $type = shift;
+    my $report_args = shift;
+    my $overlay_func  = shift;
+    my $retrieve_func = shift; 
+    my $rec_class = shift;
+    my $rec_id  = shift;
+    my $match_quality_ratio = shift;
+    my $merge_profile  = shift;
+    my $ft_merge_profile = shift;
+
+    my $imported = 0;
+    my $error = 0;
+
+    # Find the best match and overlay if the quality ratio allows it.
+    my $res = $e->json_query(
+        {
+            from => [
+                $overlay_func,
+                $rec_id, 
+                $merge_profile,
+                $match_quality_ratio
+            ]
+        }
+    );
+
+    if($res and ($res = $res->[0])) {
+
+        if($res->{$overlay_func} eq 't') {
+
+            # first attempt succeeded
+            $imported = 1;
+
+        } else {
+
+            # quality-limited merge failed with insufficient quality.  If there is a 
+            # fall-through merge profile, re-do the merge with the alternate profile
+            # and no quality restriction.
+
+            if($ft_merge_profile and $match_quality_ratio > 0) {
+
+                $logger->info("vl: $type auto-merge failed with profile $merge_profile; ".
+                    "re-merging with fall-through profile $ft_merge_profile");
+
+                my $res = $e->json_query(
+                    {
+                        from => [
+                            $overlay_func,
+                            $rec_id, 
+                            $ft_merge_profile,
+                            0 # minimum quality not required
+                        ]
+                    }
+                );
+
+                if($res and ($res = $res->[0])) {
+
+                    if($res->{$overlay_func} eq 't') {
+
+                        # second attempt succeeded
+                        $imported = 1;
+
+                    } else {
+
+                        # failed to merge on second attempt
+                        $logger->info("vl: $type auto-merge with fall-through failed for queued rec $rec_id");
+                    }
+                } else {
+                    
+                    # second attempt died 
+                    $error = 1;
+                    $logger->error("vl: Error attempting overlay with func=$overlay_func, profile=$merge_profile, record=$rec_id");
+                }
+
+            } else { 
+
+                # failed to merge on first attempt, no fall-through was provided
+                $$report_args{import_error} = 'overlay.record.quality' if $match_quality_ratio > 0;
+                $logger->info("vl: $type auto-merge failed for queued rec $rec_id");
+            }
+        }
+
+    } else {
+
+        # first attempt died 
+        $error = 1;
+        $logger->error("vl: Error attempting overlay with func=$overlay_func, profile=$merge_profile, record=$rec_id");
+    }
+
+    if($imported) {
+
+        # at least 1 of the attempts succeeded
+        $logger->info("vl: $type auto-merge succeeded for queued rec $rec_id");
+
+        # re-fetch the record to pick up the imported_as value from the DB
+        $$report_args{rec} = $e->$retrieve_func([
+            $rec_id, {flesh => 1, flesh_fields => {$rec_class => ['matches']}}]);
+    }
+
+    return ($imported, $error, $$report_args{rec});
+}
+
 
 # tracks any import errors, commits the current xact, responds to the client
 sub finish_rec_import_attempt {

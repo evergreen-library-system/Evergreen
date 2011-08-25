@@ -120,6 +120,16 @@ function vlInit() {
     vlUploadMergeProfile2.searchAttr = 'name';
     vlUploadMergeProfile2.startup();
 
+    vlUploadFtMergeProfile.store = new dojo.data.ItemFileReadStore({data:fieldmapper.vmp.toStoreData(mergeProfiles)});
+    vlUploadFtMergeProfile.labelAttr = 'name';
+    vlUploadFtMergeProfile.searchAttr = 'name';
+    vlUploadFtMergeProfile.startup();
+
+    vlUploadFtMergeProfile2.store = new dojo.data.ItemFileReadStore({data:fieldmapper.vmp.toStoreData(mergeProfiles)});
+    vlUploadFtMergeProfile2.labelAttr = 'name';
+    vlUploadFtMergeProfile2.searchAttr = 'name';
+    vlUploadFtMergeProfile2.startup();
+
 
     // Fetch the bib and authority attribute definitions 
     vlFetchBibAttrDefs(function () { checkInitDone(); });
@@ -672,14 +682,17 @@ function vlGetViewMatches(rowIdx, item) {
         var id = this.grid.store.getValue(item, 'id');
         var rec = queuedRecordsMap[id];
         if(rec.matches().length > 0)
-            return id;
+            return id + ':' + rec.matches().length;
     }
     return -1
 }
 
 function vlFormatViewMatches(id) {
     if(id == -1) return '';
-    return '<a href="javascript:void(0);" onclick="vlLoadMatchUI(' + id + ');">' + this.name + '</a>';
+    var chunks = id.split(':');
+    id = chunks[0];
+    count = chunks[1];
+    return '<a href="javascript:void(0);" onclick="vlLoadMatchUI(' + id + ');">' + this.name + ' (' + count + ')</a>';
 }
 
 function vlGetViewErrors(rowIdx, item) {
@@ -1098,6 +1111,7 @@ function vlHandleQueueItemsAction(action) {
             vlUploadQueueAutoOverlayExact.attr('value',  vlUploadQueueAutoOverlayExact2.attr('value'));
             vlUploadQueueAutoOverlay1Match.attr('value',  vlUploadQueueAutoOverlay1Match2.attr('value'));
             vlUploadMergeProfile.attr('value',  vlUploadMergeProfile2.attr('value'));
+            vlUploadFtMergeProfile.attr('value',  vlUploadFtMergeProfile2.attr('value'));
             vlUploadQueueAutoOverlayBestMatch.attr('value',  vlUploadQueueAutoOverlayBestMatch2.attr('value'));
             vlUploadQueueAutoOverlayBestMatchRatio.attr('value',  vlUploadQueueAutoOverlayBestMatchRatio2.attr('value'));
 
@@ -1116,6 +1130,8 @@ function vlHandleQueueItemsAction(action) {
             vlUploadQueueAutoOverlay1Match2.attr('value', false);
             vlUploadMergeProfile.attr('value', '');
             vlUploadMergeProfile2.attr('value', '');
+            vlUploadFtMergeProfile.attr('value', '');
+            vlUploadFtMergeProfile2.attr('value', '');
             vlUploadQueueAutoOverlayBestMatch.attr('value', false);
             vlUploadQueueAutoOverlayBestMatch2.attr('value', false);
             vlUploadQueueAutoOverlayBestMatchRatio.attr('value', '0.0');
@@ -1195,6 +1211,12 @@ function vlImportRecordQueue(type, queueId, recList, onload) {
     if(profile != null && profile != '') {
         options.merge_profile = profile;
     }
+
+    var ftprofile = vlUploadFtMergeProfile.attr('value');
+    if(ftprofile != null && ftprofile != '') {
+        options.fall_through_merge_profile = ftprofile;
+    }
+
 
     /* determine which method we're calling */
 
@@ -1690,23 +1712,30 @@ function buildProfileGrid() {
 /* --- Import Item Attr Grid --------------- */
 
 var itemAttrContextOrg;
+var itemAttrGridFirstTime = true;
 function vlShowImportItemAttrEditor() {
     displayGlobalDiv('vl-item-attr-editor-div');
-    buildImportItemAttrGrid();
 
-    var connect = function() {
-        dojo.connect(itemAttrContextOrgSelector, 'onChange',
-            function() {
-                itemAttrContextOrg = this.attr('value');
-                itemAttrGrid.resetStore();
-                vlShowImportItemAttrEditor();
-            }
-        );
-    };
+    if (itemAttrGridFirstTime) {
 
-    new openils.User().buildPermOrgSelector(
-        'ADMIN_IMPORT_ITEM_ATTR_DEF', 
-            itemAttrContextOrgSelector, null, connect);
+        buildImportItemAttrGrid();
+
+        var connect = function() {
+            dojo.connect(itemAttrContextOrgSelector, 'onChange',
+                function() {
+                    itemAttrContextOrg = this.attr('value');
+                    itemAttrGrid.resetStore();
+                    buildImportItemAttrGrid();
+                }
+            );
+        };
+
+        new openils.User().buildPermOrgSelector(
+            'ADMIN_IMPORT_ITEM_ATTR_DEF', 
+                itemAttrContextOrgSelector, null, connect);
+
+        itemAttrGridFirstTime = false;
+    }
 }
 
 function buildImportItemAttrGrid() {

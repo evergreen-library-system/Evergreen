@@ -1,6 +1,5 @@
 [% WRAPPER default/base.tt2 %]
 [% ctx.page_title = 'Resource Types' %]
-<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class="oils-header-panel">
         <div>Resource Types</div>
         <div>
@@ -8,6 +7,15 @@
             <button dojoType='dijit.form.Button' onClick='brtGrid.deleteSelected()'>Delete Selected</button>
         </div>
     </div>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <span>Context Org Unit</span>
+    <select dojoType="openils.widget.OrgUnitFilteringSelect"
+            jsId='contextOrgSelector'
+            searchAttr='shortname'
+            labelAttr='shortname'>
+    </select>
+</div>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <table  jsId="brtGrid"
             dojoType="openils.widget.AutoGrid"
             fieldOrder="['name', 'fine_interval', 'fine_amount',
@@ -17,6 +25,7 @@
             query="{id: '*'}"
             fmClass='brt'
             showPaginator='true'
+            autoHeight='true'
             editOnEnter='true'>
     </table>
 </div>
@@ -24,10 +33,28 @@
 <script type ="text/javascript">
     dojo.require('dijit.form.FilteringSelect');
     dojo.require('openils.widget.AutoGrid');
+    dojo.require('openils.widget.OrgUnitFilteringSelect');
 
+    function filterGrid() {
+        brtGrid.resetStore();
+        var unit = contextOrgSelector.getValue();
+        var list = fieldmapper.aou.findOrgUnit(unit).orgNodeTrail().map( function (i) {return i.id() } );
+
+        if(unit){
+            brtGrid.loadAll({order_by:{brt : 'name'}}, { 'owner' : list });
+        } else {
+            brtGrid.loadAll({order_by:{brt : 'name'}});
+        }
+    }
     openils.Util.addOnLoad(
         function() {
-            brtGrid.loadAll({"order_by": {"brt": "name"}}, {"id": {"!=": null}});
+            var org_id = openils.User.user.ws_ou();
+            var list = fieldmapper.aou.findOrgUnit(org_id).orgNodeTrail().map( function (i) {return i.id() } );
+
+            new openils.User().buildPermOrgSelector('ADMIN_BOOKING_RESOURCE_TYPE', contextOrgSelector, null, function() {
+                dojo.connect(contextOrgSelector, 'onChange', filterGrid);});
+
+            brtGrid.loadAll({"order_by": {"brt": "name"}}, { 'owner' : list });
         }
     );
 </script>

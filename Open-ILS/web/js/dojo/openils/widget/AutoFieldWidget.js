@@ -364,7 +364,12 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 store.fetch({query:query, onComplete:
                     function(list) {
                         if(list[0]) {
-                            self.widgetValue = store.getValue(list[0], linkInfo.vfield.selector);
+                            var item = list[0];
+                            if(self.labelFormat) {
+                                self.widgetValue = self._applyLabelFormat(item, self.labelFormat);
+                            } else {
+                                self.widgetValue = store.getValue(item, linkInfo.vfield.selector);
+                            }
                             found = true;
                         }
                     }
@@ -374,8 +379,10 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             }
 
             // then try the single object cache
-            if(this.cache[this.auth].single[lclass] && this.cache[this.auth].single[lclass][this.widgetValue]) {
-                this.widgetValue = this.cache[this.auth].single[lclass][this.widgetValue];
+            if(this.cache[this.auth].single[lclass] && 
+                    this.cache[this.auth].single[lclass][this.widgetValue] &&
+                    this.cache[this.auth].single[lclass][this.widgetValue][self.labelFormat || '']) {
+                this.widgetValue = this.cache[this.auth].single[lclass][this.widgetValue][self.labelFormat || ''];
                 return;
             }
 
@@ -388,13 +395,24 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 async : !this.forceSync,
                 oncomplete : function(r) {
                     var item = openils.Util.readResponse(r);
+
                     var newvalue = item[linkInfo.vfield.selector]();
+
+                    var labelCacheKey = ''; 
+
+                    if(self.labelFormat) {
+                        labelCacheKey = self.labelFormat;
+                        self.widgetValue = self._applyLabelFormat(item.toStoreItem(), self.labelFormat);
+                    } else {
+                        self.widgetValue = newvalue;
+                    }
 
                     if(!self.cache[self.auth].single[lclass])
                         self.cache[self.auth].single[lclass] = {};
-                    self.cache[self.auth].single[lclass][self.widgetValue] = newvalue;
+                    if(!self.cache[self.auth].single[lclass][self.widgetValue])
+                        self.cache[self.auth].single[lclass][self.widgetValue] = {};
+                    self.cache[self.auth].single[lclass][self.widgetValue][labelCacheKey] = newvalue;
 
-                    self.widgetValue = newvalue;
                     self.widget.startup();
                     self._widgetLoaded();
                 }
@@ -426,6 +444,25 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 linkClass : linkClass,
                 vfield : vfield
             };
+        },
+
+        _applyLabelFormat : function (item, formatList) {
+
+            try {
+
+                // formatList[1..*] are names of fields.  Pull the field
+                // values from each object to determine the values for string substitution
+                var values = [];
+                var format = formatList[0];
+                for(var i = 1; i< formatList.length; i++) 
+                    values.push(item[formatList[i]]);
+
+                return dojo.string.substitute(format, values);
+
+            } catch(E) {
+                throw new Error(
+                    "openils.widget.AutoFieldWidget: Invalid formatList ["+formatList+"] : "+E);
+            }
         },
 
         _buildLinkSelector : function() {
@@ -465,33 +502,13 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 if(self.searchFormat)
                     self.widget.searchAttr = '_search';
 
-                function formatString(item, formatList) {
-
-                    try {
-
-                        // formatList[1..*] are names of fields.  Pull the field
-                        // values from each object to determine the values for string substitution
-                        var values = [];
-                        var format = formatList[0];
-                        for(var i = 1; i< formatList.length; i++) 
-                            values.push(item[formatList[i]]);
-
-                        return dojo.string.substitute(format, values);
-
-                    } catch(E) {
-                        throw new Error(
-                            "openils.widget.AutoFieldWidget: Invalid formatList ["+formatList+"] : "+E);
-                    }
-
-                }
-
                 if(list) {
                     var storeData = {data:fieldmapper[linkClass].toStoreData(list)};
 
                     if(self.labelFormat) {
                         dojo.forEach(storeData.data.items, 
                             function(item) {
-                                item._label = formatString(item, self.labelFormat);
+                                item._label = self._applyLabelFormat(item, self.labelFormat);
                             }
                         );
                     }
@@ -499,7 +516,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                     if(self.searchFormat) {
                         dojo.forEach(storeData.data.items, 
                             function(item) {
-                                item._search = formatString(item, self.searchFormat);
+                                item._search = self._applyLabelFormat(item, self.searchFormat);
                             }
                         );
                     }
@@ -593,8 +610,8 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             dojo.require('fieldmapper.OrgUtils');
             dojo.require('openils.widget.FilteringTreeSelect');
             this.widget = new openils.widget.FilteringTreeSelect(this.dijitArgs, this.parentNode);
-            this.widget.searchAttr = 'shortname';
-            this.widget.labelAttr = 'shortname';
+            this.widget.searchAttr = this.searchAttr || 'shortname';
+            this.widget.labelAttr = this.searchAttr || 'shortname';
             this.widget.parentField = 'parent_ou';
             var user = new openils.User();
 

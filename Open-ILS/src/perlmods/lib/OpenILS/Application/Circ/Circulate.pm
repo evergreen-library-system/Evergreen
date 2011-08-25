@@ -2054,7 +2054,7 @@ sub booking_adjusted_due_date {
         my $booking_ses = OpenSRF::AppSession->create( 'open-ils.booking' );
         my $bookings = $booking_ses->request(
             'open-ils.booking.reservations.filtered_id_list', $self->editor->authtoken,
-            { resource => $booking_item->id, search_start => 'now', search_end => $circ->due_date, fields => { cancel_time => undef }}
+            { resource => $booking_item->id, search_start => 'now', search_end => $circ->due_date, fields => { cancel_time => undef, return_time => undef}}
         )->gather(1);
         $booking_ses->disconnect;
         
@@ -2307,12 +2307,17 @@ sub checkin_retarget {
     return if $self->capture eq 'nocapture'; # Not capturing holds anyway? Move on.
     return if $self->is_precat; # No holds for precats
     return unless $self->circ_lib == $self->copy->circ_lib; # Item isn't "home"? Don't check.
-    return unless $self->copy->holdable; # Not holdable, shouldn't capture holds.
+    return unless $U->is_true($self->copy->holdable); # Not holdable, shouldn't capture holds.
+    my $status = $U->copy_status($self->copy->status);
+    return unless $U->is_true($status->holdable); # Current status not holdable means no hold will ever target the item
     # Specifically target items that are likely new (by status ID)
-    unless ($self->retarget_mode =~ m/\.all/) {
-        my $status = $U->copy_status($self->copy->status)->id;
-        return unless $status == OILS_COPY_STATUS_IN_PROCESS;
+    return unless $status->id == OILS_COPY_STATUS_IN_PROCESS || $self->retarget_mode =~ m/\.all/;
+    my $location = $self->copy->location;
+    if(!ref($location)) {
+        $location = $self->editor->retrieve_asset_copy_location($self->copy->location);
+        $self->copy->location($location);
     }
+    return unless $U->is_true($location->holdable); # Don't bother on non-holdable locations
 
     # Fetch holds for the bib
     my ($result) = $holdcode->method_lookup('open-ils.circ.holds.retrieve_all_from_title')->run(
@@ -2812,7 +2817,11 @@ sub attempt_checkin_hold_capture {
 
     if($self->capture ne 'capture') {
         # see if this item is in a hold-capture-delay location
-        my $location = $self->editor->retrieve_asset_copy_location($self->copy->location);
+        my $location = $self->copy->location;
+        if(!ref($location)) {
+            $location = $self->editor->retrieve_asset_copy_location($self->copy->location);
+            $self->copy->location($location);
+        }
         if($U->is_true($location->hold_verify)) {
             $self->bail_on_events(
                 OpenILS::Event->new('HOLD_CAPTURE_DELAYED', copy_location => $location));

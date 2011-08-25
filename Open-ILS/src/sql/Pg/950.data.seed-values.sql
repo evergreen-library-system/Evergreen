@@ -9128,6 +9128,9 @@ Complete? [% target.0.queue.complete %]
  Publication Date | [% helpers.get_queued_bib_attr('pubdate',vqbr.attributes) %]
  Edition          | [% helpers.get_queued_bib_attr('edition',vqbr.attributes) %]
  Item Barcode     | [% helpers.get_queued_bib_attr('item_barcode',vqbr.attributes) %]
+ Import Error     | [% vqbr.import_error %]
+ Error Detail     | [% vqbr.error_detail %]
+ Match Count      | [% vqbr.matches.size %]
 
     [% END %]
 </pre>
@@ -9138,6 +9141,7 @@ $$
 INSERT INTO action_trigger.environment ( event_def, path) VALUES (
     39, 'attributes')
     ,( 39, 'queue')
+    ,( 39, 'matches')
 ;
 
 INSERT INTO action_trigger.event_definition (
@@ -9163,8 +9167,8 @@ INSERT INTO action_trigger.event_definition (
         'print-on-demand',
 $$
 [%- USE date -%]
-"Title of work","Author of work","Language of work","Pagination","ISBN","ISSN","Price","Accession Number","TCN Value","TCN Source","Internal ID","Publisher","Publication Date","Edition","Item Barcode"
-[% FOR vqbr IN target %]"[% helpers.get_queued_bib_attr('title',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('author',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('language',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('pagination',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('isbn',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('issn',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('price',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('rec_identifier',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('eg_tcn',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('eg_tcn_source',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('eg_identifier',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('publisher',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('pubdate',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('edition',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('item_barcode',vqbr.attributes) | replace('"', '""') %]"
+"Title of work","Author of work","Language of work","Pagination","ISBN","ISSN","Price","Accession Number","TCN Value","TCN Source","Internal ID","Publisher","Publication Date","Edition","Item Barcode","Import Error","Error Detail","Match Count"
+[% FOR vqbr IN target %]"[% helpers.get_queued_bib_attr('title',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('author',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('language',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('pagination',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('isbn',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('issn',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('price',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('rec_identifier',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('eg_tcn',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('eg_tcn_source',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('eg_identifier',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('publisher',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('pubdate',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('edition',vqbr.attributes) | replace('"', '""') %]","[% helpers.get_queued_bib_attr('item_barcode',vqbr.attributes) | replace('"', '""') %]","[% vqbr.import_error | replace('"', '""') %]","[% vqbr.error_detail | replace('"', '""') %]","[% vqbr.matches.size %]"
 [% END %]
 $$
     )
@@ -9173,6 +9177,7 @@ $$
 INSERT INTO action_trigger.environment ( event_def, path) VALUES (
     40, 'attributes')
     ,( 40, 'queue')
+    ,( 40, 'matches')
 ;
 
 INSERT INTO action_trigger.event_definition (
@@ -9692,4 +9697,21 @@ INSERT INTO authority.thesaurus (code, name, control_set) VALUES
     ('v', oils_i18n_gettext('v','Repertoire de vedettes-matiere','at','name'), 1),
     ('z', oils_i18n_gettext('z','Other','at','name'), 1),
     ('|', oils_i18n_gettext('|','No attempt to code','at','name'), 1);
+
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+    'acq.copy_creator_uses_receiver',
+    oils_i18n_gettext( 
+        'acq.copy_creator_uses_receiver',
+        'Acq: Set copy creator as receiver',
+        'coust',
+        'label'
+    ),
+    oils_i18n_gettext( 
+        'acq.copy_creator_uses_receiver',
+        'When receiving a copy in acquisitions, set the copy "creator" to be the staff that received the copy',
+        'coust',
+        'label'
+    ),
+    'bool'
+);
 

@@ -534,6 +534,7 @@ CREATE TABLE acq.lineitem_detail (
     owning_lib  INT         REFERENCES actor.org_unit (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
     location    INT         REFERENCES asset.copy_location (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
     recv_time   TIMESTAMP WITH TIME ZONE,
+	receiver		INT	    REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
 	cancel_reason   INT     REFERENCES acq.cancel_reason( id ) DEFERRABLE INITIALLY DEFERRED
 );
 

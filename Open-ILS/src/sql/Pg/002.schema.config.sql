@@ -86,7 +86,7 @@ CREATE TRIGGER no_overlapping_deps
     BEFORE INSERT OR UPDATE ON config.db_patch_dependencies
     FOR EACH ROW EXECUTE PROCEDURE evergreen.array_overlap_check ('deprecates');
 
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0604', :eg_version); -- miker/dbs
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0610', :eg_version); -- miker/berick
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -440,7 +440,8 @@ CREATE TABLE config.z3950_source (
     db                  TEXT    NOT NULL,
     record_format       TEXT    NOT NULL DEFAULT 'FI',
     transmission_format TEXT    NOT NULL DEFAULT 'usmarc',
-    auth                BOOL    NOT NULL DEFAULT TRUE
+    auth                BOOL    NOT NULL DEFAULT TRUE,
+    use_perm            INT     -- REFERENCES permission.perm_list (id)
 );
 
 COMMENT ON TABLE config.z3950_source IS $$
@@ -457,6 +458,10 @@ COMMENT ON COLUMN config.z3950_source.transmission_format IS $$
 Z39.50 preferred record syntax..
 $$;
 
+COMMENT ON COLUMN config.z3950_source.use_perm IS $$
+If set, this permission is required for the source to be listed in the staff
+client Z39.50 interface.  Similar to permission.grp_tree.application_perm.
+$$;
 
 CREATE TABLE config.z3950_attr (
     id          SERIAL  PRIMARY KEY,

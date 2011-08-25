@@ -82,6 +82,13 @@
                 <span style='padding-left: 10px; font-size:90%'>(&vandelay.auto.import.auto_overlay_best_ratio.desc;)</span>
             </td>
         </tr>
+        <tr>
+            <td>&vandelay.auto.import.ft_merge_profile;</td>
+            <td colspan='4'>
+                <div jsId='vlUploadFtMergeProfile' dojoType='dijit.form.FilteringSelect' required='false' labelAttr='name' searchAttr='name'/>
+            </td>
+        </tr>
+
         <tr><td colspan='2' style='border-bottom:2px solid #888;'></td></tr>
         <tr><td colspan='2' style='padding-bottom: 10px;'></td></tr>
         <tr>

@@ -45,7 +45,9 @@ sysconf_DATA = $(examples)/action_trigger_filters.json.example \
 	       $(examples)/fm_IDL.xml \
 	       $(examples)/oils_sip.xml.example \
 	       $(examples)/oils_web.xml.example \
-	       $(examples)/lib_ips.txt.example
+	       $(examples)/lib_ips.txt.example \
+	       $(examples)/oils_yaz.xml.example \
+	       $(examples)/oils_z3950.xml.example 
 
 #----------------------------
 # Build ILS CORE
@@ -73,7 +75,7 @@ core_scripts =   $(examples)/oils_ctl.sh \
 		 $(supportscr)/action_trigger_runner.pl \
 		 $(srcdir)/extras/openurl_map.pl \
 		 $(srcdir)/extras/import/marc_add_ids
-	 
+
 installautojs = $(autojsbinscripts)
 
 #circ-rules-install
@@ -176,9 +178,6 @@ ilscore-install:
 	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/autogen.sh'
 	sed -i 's|LOCALSTATEDIR|@localstatedir@|g' '$(DESTDIR)@bindir@/autogen.sh'
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@bindir@/autogen.sh'
-	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/cache-generator.sh'
-	sed -i 's|LOCALSTATEDIR|@localstatedir@|g' '$(DESTDIR)@bindir@/cache-generator.sh'
-	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@bindir@/cache-generator.sh'
 	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/reshelving_complete.srfsh'
 	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/clear_expired_circ_history.srfsh'
 	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/update_hard_due_dates.srfsh'
@@ -187,6 +186,8 @@ ilscore-install:
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@bindir@/long-overdue-status-update.pl'
 	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/thaw_expired_frozen_holds.srfsh'
 	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/offline-blocked-list.pl'
+	sed -i 's|LOCALSTATEDIR|@localstatedir@|g' '$(DESTDIR)@bindir@/oils_ctl.sh'
+	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@bindir@/oils_ctl.sh'
 
 reporter-install:
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@bindir@/clark-kent.pl'
