@@ -132,7 +132,7 @@ auth.controller.prototype = {
                                 '', 
                                 'chrome,centerscreen,modal', 
                                 { 
-                                    'location' : 'https://' + obj.controller.view.server_prompt.value, 
+                                    'location' : 'https://' + obj.controller.view.server_prompt.value.match(/^[^\/]*/), 
                                     'prefetchCert' : true 
                                 } 
                             );
@@ -291,6 +291,7 @@ auth.controller.prototype = {
                 obj.controller.view.server_prompt.value = url;
             }
         }
+        url = url.match(/^[^\/]*/).toString(); // Only test the pre-slash URL
         obj.controller.view.submit_button.disabled = true;
         obj.controller.view.server_prompt.disabled = true;
         var s = document.getElementById('status');
@@ -427,7 +428,7 @@ auth.controller.prototype = {
         this.controller.view.password_prompt.disabled = true;
         this.controller.view.submit_button.disabled = true;
         this.controller.view.apply_locale_btn.disabled = true;
-        XML_HTTP_SERVER = this.controller.view.server_prompt.value;
+        XML_HTTP_SERVER = this.controller.view.server_prompt.value.match(/^[^\/]*/).toString();
 
         try {
 

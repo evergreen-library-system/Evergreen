@@ -342,7 +342,7 @@ function main_init() {
 
         G.auth.on_login = function() {
 
-            var url = G.auth.controller.view.server_prompt.value || urls.remote;
+            var url = G.auth.controller.view.server_prompt.value.match(/^[^\/]*/).toString() || urls.remote;
 
             G.data.server_unadorned = url; G.data.stash('server_unadorned'); G.data.stash_retrieve();
 
