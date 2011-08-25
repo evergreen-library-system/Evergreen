@@ -54,7 +54,10 @@ sub _prepare_biblio_search {
 
     my $query = _prepare_biblio_search_basics($cgi) || '';
 
-    $query = ('#' . $_ . ' ' . $query) foreach ($cgi->param('modifier'));
+    foreach ($cgi->param('modifier')) {
+        # The unless bit is to avoid stacking modifiers.
+        $query = ('#' . $_ . ' ' . $query) unless $query =~ qr/\#\Q$_/;
+    }
 
     # filters
     foreach (grep /^fi:/, $cgi->param) {
@@ -63,10 +66,16 @@ sub _prepare_biblio_search {
         $query .= " $1($term)" if length $term;
     }
 
+    # sort is treated specially, even though it's actually a filter
     if ($cgi->param('sort')) {
+        $query =~ s/sort\([^\)]*\)//g;  # override existing sort(). no stacking.
         my ($axis, $desc) = split /\./, $cgi->param('sort');
         $query .= " sort($axis)";
-        $query .= '#descending' if $desc;
+        if ($desc and not $query =~ /\#descending/) {
+            $query .= '#descending';
+        } elsif (not $desc) {
+            $query =~ s/\#descending//;
+        }
     }
 
     if ($cgi->param('pubdate') && $cgi->param('date1')) {
@@ -204,6 +213,7 @@ sub load_rresults {
     $ctx->{search_facets} = {};
     $ctx->{page_size} = $limit;
     $ctx->{hit_count} = $results->{count};
+    $ctx->{parsed_query} = $results->{parsed_query};
 
     return Apache2::Const::OK if @$rec_ids == 0;
 
