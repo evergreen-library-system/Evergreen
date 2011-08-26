@@ -102,6 +102,9 @@ sub do_checkout {
                     if ($override_events{$txt} && $method !~ /override$/) {
                         # Found an event we've been configured to override.
                         $override = 1;
+                    } elsif ($txt =~ /ITEM_(?:DEPOSIT|RENTAL)_FEE_REQUIRED/ && $self->fee_ack) {
+                        # Patron acknowledged the fee.
+                        $override = 1;
                     } elsif ( $txt eq 'OPEN_CIRCULATION_EXISTS' ) {
                         $self->screen_msg(OILS_SIP_MSG_CIRC_EXISTS);
                         return 0;
