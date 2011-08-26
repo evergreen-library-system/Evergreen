@@ -91,27 +91,27 @@ sub do_checkout {
 
         syslog('LOG_DEBUG', "OILS: $method returned event: " . OpenSRF::Utils::JSON->perl2JSON($resp));
 
-        if (@$resp > 1 || $U->event_code($$resp[0])) {
+        my $first_code = $U->event_code($$resp[0]);
+        if (@$resp > 1 || !defined $first_code || $first_code ne '0') {
             # We got one or more non-success events
             $self->screen_msg('');
             for my $r (@$resp) {
-                if ( my $code = $U->event_code($r) ) {
-                    my $txt = $r->{textcode};
-                    syslog('LOG_INFO', "OILS: $method failed with event $code : $txt");
+                my $code = $U->event_code($r);
+                my $txt = $r->{textcode};
+                syslog('LOG_INFO', "OILS: $method failed with event $code : $txt");
 
-                    if ($override_events{$txt} && $method !~ /override$/) {
-                        # Found an event we've been configured to override.
-                        $override = 1;
-                    } elsif ($txt =~ /ITEM_(?:DEPOSIT|RENTAL)_FEE_REQUIRED/ && $self->fee_ack) {
-                        # Patron acknowledged the fee.
-                        $override = 1;
-                    } elsif ( $txt eq 'OPEN_CIRCULATION_EXISTS' ) {
-                        $self->screen_msg(OILS_SIP_MSG_CIRC_EXISTS);
-                        return 0;
-                    } else {
-                        $self->screen_msg(OILS_SIP_MSG_CIRC_PERMIT_FAILED);
-                        return 0;
-                    }
+                if ($override_events{$txt} && $method !~ /override$/) {
+                    # Found an event we've been configured to override.
+                    $override = 1;
+                } elsif ($txt =~ /ITEM_(?:DEPOSIT|RENTAL)_FEE_REQUIRED/ && $self->fee_ack) {
+                    # Patron acknowledged the fee.
+                    $override = 1;
+                } elsif ( $txt eq 'OPEN_CIRCULATION_EXISTS' ) {
+                    $self->screen_msg(OILS_SIP_MSG_CIRC_EXISTS);
+                    return 0;
+                } else {
+                    $self->screen_msg(OILS_SIP_MSG_CIRC_PERMIT_FAILED);
+                    return 0;
                 }
             }
             # This looks potentially dangerous, but we shouldn't
