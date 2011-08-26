@@ -588,7 +588,7 @@ function finishBookbag(exitstatus) {
 	var id;
 	
 	if( id = containerCreate( name ) ) {
-		new dijit.Dialog({content: $('rdetail_bb_success').innerHTML,}).show();
+		alert( $('rdetail_bb_success').innerHTML );
 		var selector = $('rdetail_more_actions_selector');
 		insertSelectorVal( selector, nextContainerIndex++, name, 
 				"container_" + id, rdetailAddToBookbag, 1 );
