@@ -1,3 +1,9 @@
+-- Evergreen DB patch 0611.data.magic_macros.sql
+BEGIN;
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0611', :eg_version);
+
 INSERT into config.org_unit_setting_type
 ( name, label, description, datatype ) VALUES
 (
@@ -80,3 +86,5 @@ INSERT into config.org_unit_setting_type
         ),
         'string'
     );
+
+COMMIT;
