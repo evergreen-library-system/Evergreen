@@ -155,6 +155,10 @@
             l("In Transit");
         ELSIF hold.hold.status < 3;
             l("Waiting for copy");
-        END;
-    END;
+        END %]
+        <div>
+            [% l('[_1] hold on [quant,_2,circulating copy,circulating copies]',
+                    hold.hold.queue_position, hold.hold.potential_copies) %]
+        </div>
+    [% END
 %]
