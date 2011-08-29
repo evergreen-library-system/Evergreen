@@ -89,7 +89,7 @@
             border='0' width="100%">
             <tr>
                 <td width="36" align="center">
-                    <input type="checkbox" id="check_all_holds" />
+                    <input type="checkbox" onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'hold_id' && !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
                 </td>
                 <td width="138">
                     <span title="Click to sort"
