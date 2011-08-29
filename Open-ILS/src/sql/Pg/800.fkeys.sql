@@ -122,4 +122,6 @@ ALTER TABLE config.barcode_completion ADD CONSTRAINT config_barcode_completion_o
 CREATE INDEX by_heading_and_thesaurus ON authority.record_entry (authority.normalize_heading(marc)) WHERE deleted IS FALSE or deleted = FALSE;
 CREATE INDEX by_heading ON authority.record_entry (authority.simple_normalize_heading(marc)) WHERE deleted IS FALSE or deleted = FALSE;
 
+ALTER TABLE config.z3950_source ADD CONSTRAINT use_perm_fkey FOREIGN KEY (use_perm) REFERENCES permission.perm_list (id) ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED;
+
 COMMIT;

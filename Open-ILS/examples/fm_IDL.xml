@@ -819,9 +819,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             <field reporter:label="Transmission Format" name="transmission_format"  reporter:datatype="text"/>
             <field reporter:label="Auth" name="auth"  reporter:datatype="bool"/>
             <field reporter:label="Attrs" name="attrs" oils_persist:virtual="true"  reporter:datatype="link"/>
+            <field reporter:label="Use Permission" name="use_perm"  reporter:datatype="link"/>
         </fields>
         <links>
             <link field="attrs" reltype="has_many" key="source" map="" class="cza"/>
+            <link field="use_perm" reltype="has_a" key="id" map="" class="ppl"/>
         </links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -3416,10 +3418,10 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="ADMIN_BOOKING_RESOURCE_TYPE" global_required='true'/>
-				<retrieve />
-				<update permission="ADMIN_BOOKING_RESOURCE_TYPE" global_required='true'/>
-				<delete permission="ADMIN_BOOKING_RESOURCE_TYPE" global_required='true'/>
+				<create permission="ADMIN_BOOKING_RESOURCE_TYPE" context_field='owner'/>
+				<retrieve permission="ADMIN_BOOKING_RESOURCE_TYPE" context_field='owner'/>
+				<update permission="ADMIN_BOOKING_RESOURCE_TYPE" context_field='owner'/>
+				<delete permission="ADMIN_BOOKING_RESOURCE_TYPE" context_field='owner'/>
 			</actions>
 		</permacrud>
 	</class>
@@ -3448,10 +3450,10 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="ADMIN_BOOKING_RESOURCE" global_required='true'/>
-				<retrieve />
-				<update permission="ADMIN_BOOKING_RESOURCE" global_required='true'/>
-				<delete permission="ADMIN_BOOKING_RESOURCE" global_required='true'/>
+				<create permission="ADMIN_BOOKING_RESOURCE" context_field='owner'/>
+				<retrieve permission="ADMIN_BOOKING_RESOURCE" context_field='owner'/>
+				<update permission="ADMIN_BOOKING_RESOURCE" context_field='owner'/>
+				<delete permission="ADMIN_BOOKING_RESOURCE" context_field='owner'/>
 			</actions>
 		</permacrud>
 	</class>
@@ -3474,10 +3476,10 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="ADMIN_BOOKING_RESOURCE_ATTR" global_required='true'/>
-				<retrieve />
-				<update permission="ADMIN_BOOKING_RESOURCE_ATTR" global_required='true'/>
-				<delete permission="ADMIN_BOOKING_RESOURCE_ATTR" global_required='true'/>
+				<create permission="ADMIN_BOOKING_RESOURCE_ATTR" context_field='owner'/>
+				<retrieve permission="ADMIN_BOOKING_RESOURCE_ATTR" context_field='owner'/>
+				<update permission="ADMIN_BOOKING_RESOURCE_ATTR" context_field='owner'/>
+				<delete permission="ADMIN_BOOKING_RESOURCE_ATTR" context_field='owner'/>
 			</actions>
 		</permacrud>
 	</class>
@@ -3499,10 +3501,10 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="ADMIN_BOOKING_RESOURCE_ATTR_VALUE" global_required='true'/>
-				<retrieve />
-				<update permission="ADMIN_BOOKING_RESOURCE_ATTR_VALUE" global_required='true'/>
-				<delete permission="ADMIN_BOOKING_RESOURCE_ATTR_VALUE" global_required='true'/>
+				<create permission="ADMIN_BOOKING_RESOURCE_ATTR_VALUE" context_field='owner'/>
+				<retrieve permission="ADMIN_BOOKING_RESOURCE_ATTR_VALUE" context_field='owner'/>
+				<update permission="ADMIN_BOOKING_RESOURCE_ATTR_VALUE" context_field='owner'/>
+				<delete permission="ADMIN_BOOKING_RESOURCE_ATTR_VALUE" context_field='owner'/>
 			</actions>
 		</permacrud>
 	</class>
@@ -3521,10 +3523,18 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="ADMIN_BOOKING_RESOURCE_ATTR_MAP" global_required='true'/>
-				<retrieve />
-				<update permission="ADMIN_BOOKING_RESOURCE_ATTR_MAP" global_required='true'/>
-				<delete permission="ADMIN_BOOKING_RESOURCE_ATTR_MAP" global_required='true'/>
+				<create permission="ADMIN_BOOKING_RESOURCE_ATTR_MAP">
+                    <context link="resource" field="owner" />
+                </create>
+				<retrieve permission="ADMIN_BOOKING_RESOURCE_ATTR_MAP">
+                    <context link="resource" field="owner" />
+                </retrieve>
+				<update permission="ADMIN_BOOKING_RESOURCE_ATTR_MAP">
+                    <context link="resource" field="owner" />
+                </update>
+				<delete permission="ADMIN_BOOKING_RESOURCE_ATTR_MAP">
+                    <context link="resource" field="owner" />
+                </delete>
 			</actions>
 		</permacrud>
 	</class>
@@ -6958,6 +6968,7 @@ SELECT  usr,
 			<field reporter:label="Barcode" name="barcode" reporter:datatype="text" />
 			<field reporter:label="Call Number Label" name="cn_label" reporter:datatype="text" />
 			<field reporter:label="Actual Receive Date" name="recv_time" reporter:datatype="timestamp" />
+			<field reporter:label="Receiving User" name="receiver" reporter:datatype="link" />
 			<field reporter:label="Fund" name="fund" reporter:datatype="link" />
 			<field reporter:label="Fund Debit" name="fund_debit" reporter:datatype="link" />
 			<field reporter:label="Owning Library" name="owning_lib" reporter:datatype="org_unit" />
@@ -6978,6 +6989,7 @@ SELECT  usr,
 			<link field="circ_modifier" reltype="has_a" key="code" map="" class="ccm"/>
 			<link field="cancel_reason" reltype="has_a" key="id" map="" class="acqcr"/>
 			<link field="claims" reltype="has_many" key="lineitem_detail" map="" class="acqcl"/>
+			<link field="receiver" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 	</class>
 

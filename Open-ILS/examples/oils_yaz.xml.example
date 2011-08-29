@@ -1,0 +1,14 @@
+<yazgfs>
+  <!-- You can add a listen entry, if you want your z39.50 server to
+       listen on a port other than the default, 9999. -->
+    <server id="server1">
+    <retrievalinfo>
+        <retrieval syntax="xml"/>
+        <retrieval syntax="marc21">
+            <backend syntax="xml">
+                <marc inputformat="xml" outputformat="marc" inputcharset="utf-8" outputcharset="marc-8"/>
+            </backend>
+        </retrieval>
+    </retrievalinfo>
+    </server>
+</yazgfs>

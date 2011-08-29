@@ -720,12 +720,16 @@ function print_bills() {
         var template = 'bills_historical'; if (xul_param('current')) template = 'bills_current';
         JSAN.use('patron.util');
         g.patron = patron.util.retrieve_fleshed_au_via_id(ses(),g.patron_id,null); 
-        var params = { 
-            'patron' : g.patron,
-            'printer_context' : 'receipt',
-            'template' : template
-        };
-        g.bill_list.print(params);
+        g.bill_list.print({ 
+              'patron' : g.patron
+            , 'printer_context' : 'receipt'
+            , 'template' : template
+            , 'data' : {
+                  grand_total_owed:   $('tb_total_owed').value
+                , grand_total_billed: $('total_billed').value
+                , grand_total_paid:   $('tb_total_paid').value
+            }
+         });
     } catch(E) {
         g.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.bill_history.print_bills.print_error'), E);
     }

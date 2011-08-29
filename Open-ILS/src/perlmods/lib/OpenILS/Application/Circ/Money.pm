@@ -700,7 +700,7 @@ sub billing_items_create {
     $billing->amount($amt);
 
     $e->create_money_billing($billing) or return $e->die_event;
-    my $evt = OpenILS::Utils::Penalty->calculate_penalties($e, $xact->usr, $U->xact_org($xact->id));
+    my $evt = OpenILS::Utils::Penalty->calculate_penalties($e, $xact->usr, $U->xact_org($xact->id,$e));
     return $evt if $evt;
     $e->commit;
 

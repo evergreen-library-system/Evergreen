@@ -73,6 +73,7 @@ __PACKAGE__->register_method(
     method    => "query_services",
     api_name  => "open-ils.search.z3950.retrieve_services",
     signature => q/
+        @param auth The login session key
         Returns a list of service names that we have config
         data for
     /
@@ -89,7 +90,7 @@ sub query_services {
     return $e->event unless $e->checkauth;
     return $e->event unless $e->allowed('REMOTE_Z3950_QUERY');
 
-    return fetch_service_defs();
+    return fetch_service_defs($e);
 }
 
 # -------------------------------------------------------------------
@@ -97,10 +98,12 @@ sub query_services {
 # -------------------------------------------------------------------
 sub fetch_service_defs {
 
+    my $editor_with_authtoken = shift;
+
     my $hash = $sclient->config_value('z3950', 'services');
 
     # overlay config file values with in-db values
-    my $e = new_editor();
+    my $e = $editor_with_authtoken || new_editor();
     if($e->can('search_config_z3950_source')) {
 
         my $sources = $e->search_config_z3950_source(
@@ -118,6 +121,8 @@ sub fetch_service_defs {
                 record_format => $s->record_format,
                 transmission_format => $s->transmission_format,
                 auth => $s->auth,
+                use_perm => ($s->use_perm) ? 
+                    $e->retrieve_permission_perm_list($s->use_perm)->code : ''
             };
 
             for my $a ( @{ $s->attrs } ) {
@@ -150,6 +155,19 @@ sub fetch_service_defs {
             item_type => {code => 'item_type', label => 'Item Type'},
         }
     };
+
+    # then filter out any services which the requestor lacks the perm for
+    foreach my $s (keys %{ $hash }) {
+        if ($$hash{$s}{use_perm}) {
+            if ($U->check_perms(
+                $e->requestor->id,
+                $e->requestor->ws_ou,
+                $$hash{$s}{use_perm}
+            )) {
+                delete $$hash{$s};
+            }
+        };
+    }
 
     %services = %$hash; # cache these internally so we can actually use the db-configured sources
     return $hash;

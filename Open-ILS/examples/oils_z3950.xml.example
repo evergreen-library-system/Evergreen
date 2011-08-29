@@ -1,0 +1,36 @@
+<client>
+   <database name="CONS">
+     <!-- Change "localhost" to your server's name as appropriate. -->
+     <zurl>http://localhost/opac/extras/sru/-/holdings</zurl>
+     <option name="sru">get</option>
+     <charset>marc-8</charset>
+     <search>
+       <querytype>cql</querytype>
+       <map use="4"><index>eg.title</index></map>
+       <map use="7"><index>eg.isbn</index></map>
+       <map use="8"><index>eg.issn</index></map>
+       <map use="21"><index>eg.subject</index></map>
+       <map use="1003"><index>eg.author</index></map>
+       <map use="1018"><index>eg.publisher</index></map>
+       <map use="1035"><index>eg.keyword</index></map>
+       <map use="1016"><index>eg.keyword</index></map>
+     </search>
+   </database>
+   <database name="BR1">
+     <!-- Change "localhost" to your server's name as appropriate. -->
+     <zurl>http://localhost/opac/extras/sru/BR1/holdings</zurl>
+     <option name="sru">get</option>
+     <charset>marc-8</charset>
+     <search>
+       <querytype>cql</querytype>
+       <map use="4"><index>eg.title</index></map>
+       <map use="7"><index>eg.isbn</index></map>
+       <map use="8"><index>eg.issn</index></map>
+       <map use="21"><index>eg.subject</index></map>
+       <map use="1003"><index>eg.author</index></map>
+       <map use="1018"><index>eg.publisher</index></map>
+       <map use="1035"><index>eg.keyword</index></map>
+       <map use="1016"><index>eg.keyword</index></map>
+     </search>
+   </database>
+</client>
