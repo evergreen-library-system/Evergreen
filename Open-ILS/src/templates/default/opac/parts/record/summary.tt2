@@ -18,7 +18,7 @@
                 [% ident = attrs.isbn_clean || attrs.upc; IF ident; %]
                 <a id='rdetail_img_link' href='[% ctx.media_prefix %]/opac/extras/ac/jacket/large/[% ident | uri %]'><img
                     alt="[% l('Image of item') %]" id='rdetail_image'
-                    src='[% ctx.media_prefix %]/opac/extras/ac/jacket/medium/[% ident | uri %]' /></a>
+                    src='[% ctx.media_prefix %]/opac/extras/ac/jacket/[% record.summary.jacket_size %]/[% ident | uri %]' /></a>
                 [% END %]
                 <br />
             </td>
