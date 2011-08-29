@@ -73,3 +73,9 @@ function select_all_checkboxes(name, checked) {
         }
     }
 }
+function avail_change_adv_search(checkbox) {
+    if (checkbox.form._adv && !checkbox.checked) {
+        var search_box = document.getElementById("search_box");
+        search_box.value = search_box.value.replace(/#available ?/g, "");
+    }
+}
