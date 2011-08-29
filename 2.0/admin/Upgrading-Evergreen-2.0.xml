@@ -228,7 +228,7 @@ tar xzf Evergreen-ILS-2.0.9.tar.gz
 			<step>
 				<para>As the <systemitem class="username">opensrf</systemitem> user, configure and compile 
 				<application>Evergreen</application>:</para>
-				<screen><userinput>cd /home/opensrf/Evergreen-ILS-2.0.7</userinput></screen>
+				<screen><userinput>cd /home/opensrf/Evergreen-ILS-2.0.9</userinput></screen>
 				<screen><userinput>./configure --prefix=/openils --sysconfdir=/openils/conf</userinput></screen>
 				<screen><userinput>make</userinput></screen>
 			</step>
@@ -253,7 +253,7 @@ ln -s rel_2_0_9/server
 			<step>
 				<para>Change to the <application>Evergreen</application> installation 
 				directory:</para>
-				<screen><userinput>cd /home/opensrf/Evergreen-ILS-2.0.7</userinput></screen>
+				<screen><userinput>cd /home/opensrf/Evergreen-ILS-2.0.9</userinput></screen>
 			</step>
 
 			<step>
