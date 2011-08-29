@@ -364,12 +364,15 @@ sub sip_security_marker {
 }
 
 sub sip_fee_type {
-    return '01';    # FIXME? 01-09 enumerated in spec.  We just use O1-other/unknown.
+    my $self = shift;
+    # Return '06' for rental unless the fee is a deposit, or there is
+    # no fee. In the latter cases, return '01'.
+    return ($self->{copy}->deposit_amount > 0.0 && $self->{copy}->deposit =~ /^f/i) ? '06' : '01';
 }
 
-sub fee {           # TODO
+sub fee {
     my $self = shift;
-    return 0;
+    return $self->{copy}->deposit_amount;
 }
 
 

@@ -203,6 +203,60 @@ util.print.prototype = {
         var s = '';
         if (params.header) s += this.template_sub( params.header, cols, params );
         if (params.list) {
+            // Pre-templating sort
+            // %SORT(field[ AS type][ ASC|DESC][,...])%
+            var sort_blocks = params.line_item.match(/%SORT\([^)]+\)%/g);
+            if(sort_blocks) {
+                for(var i = 0; i < sort_blocks.length; i++) {
+                    sort_blocks[i] = sort_blocks[i].substring(6,sort_blocks[i].length-2);
+                }
+                sort_blocks = sort_blocks.join(',').split(/\s*,\s*/); // Supports %SORT(a,b)% and %SORT(a)% %SORT(b)% methods
+                for(var i = 0; i < sort_blocks.length; i++) {
+                    sort_blocks[i] = sort_blocks[i].match(/([^ ]+)(?:\s+AS\s+([^ ]+))?(?:\s+(ASC|DESC))?/);
+                    sort_blocks[i].shift(); // Removes the "full match" entry
+                }
+
+                function sorter(a, b) {
+                    var return_val = 0;
+                    for(var i = 0; i < sort_blocks.length && return_val == 0; i++) {
+                        var sort = sort_blocks[i];
+                        var a_test = a[sort[0]];
+                        var b_test = b[sort[0]];
+                        sort[1] = sort[1] || '';
+                        sort[2] = sort[2] || 'ASC';
+                        switch(sort[1].toUpperCase()) {
+                            case 'DATE':
+                                a_test = new Date(a_test);
+                                b_test = new Date(b_test);
+                                break;
+                            case 'INT':
+                                a_test = parseInt(a_test);
+                                b_test = parseInt(b_test);
+                                break;
+                            case 'FLOAT':
+                            case 'NUMBER':
+                                a_test = parseFloat(a_test);
+                                b_test = parseFloat(b_test);
+                                break;
+                            case 'LOWER':
+                                a_test = a_test.toLowerCase();
+                                b_test = b_test.toLowerCase();
+                                break;
+                            case 'UPPER':
+                                a_test = a_test.toUpperCase();
+                                b_test = b_test.toUpperCase();
+                                break;
+                        }
+                        if(a_test > b_test) return_val = 1;
+                        if(a_test < b_test) return_val = -1;
+                        if(sort[2] == 'DESC') return_val *= -1;
+                    }
+                    return return_val;
+                }
+                params.list.sort(sorter);
+                params.line_item = params.line_item.replace(/%SORT\([^)]*\)%/g,'');
+            }
+
             for (var i = 0; i < params.list.length; i++) {
                 params.row = params.list[i];
                 params.row_idx = i;
@@ -225,6 +279,23 @@ util.print.prototype = {
             if (!msg) { dump('template sub called with empty string\n'); return; }
             JSAN.use('util.date');
             var s = msg; var b;
+
+            // Includes
+            // Note that we keep track of already included settings
+            // This ensures that we don't infinite loop through includes
+            try {
+                var match;
+                var include_patt=/%INCLUDE\(\s*([^)]*?)\s*\)%/;
+                var included = {};
+                while(match = include_patt.exec(s)) {
+                    if(match[1] == '' || included[match[1]]) {
+                        s = s.replace(match[0], '');
+                    } else {
+                        included[match[1]] = true;
+                        s = s.replace(new RegExp("%INCLUDE\\(\\s*" + match[1].replace(/([.?*+^$[\]\\(){}-])/g, "\\$1") + "\\s*\\)%","g"), obj.data.hash.aous['circ.staff_client.receipt.' + match[1]] || '');
+                    }
+                }
+            } catch(E) { dump(E+'\n'); }
 
             try{b = s; s = s.replace(/%LINE_NO%/g,Number(params.row_idx)+1);}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
@@ -291,7 +362,7 @@ util.print.prototype = {
                         /* for dump_with_keys */
                         for (var i in params.row) {
                             var re = new RegExp('%'+i+'%',"g");
-                            try{b = s; s=s.replace(re, this.escape_html(params.row[i]));}
+                            try{b = s; s=s.replace(re, this.escape_html(params.row[i].toString()));}
                                 catch(E){s = b; this.error.standard_unexpected_error_alert('print.js, template_sub(): 2 string = <' + s + '>',E);}
                         }
                     }
@@ -315,7 +386,7 @@ util.print.prototype = {
             // Date Format
             try {
                 var match;
-                var date_format_patt=/%DATE_FORMAT\(\s*([^,]*?)\s*,\s*([^)]*?)\s*\)%/
+                var date_format_patt=/%DATE_FORMAT\(\s*([^,]*?)\s*,\s*([^)]*?)\s*\)%/;
                 while(match = date_format_patt.exec(s)) {
                     if(match[1] == '' || match[2] == '')
                         s = s.replace(match[0], '');

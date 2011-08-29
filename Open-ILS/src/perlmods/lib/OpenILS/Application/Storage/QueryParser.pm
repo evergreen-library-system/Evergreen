@@ -468,6 +468,7 @@ sub decompose {
     my $current_class = shift || $self->default_search_class;
 
     my $recursing = shift || 0;
+    my $phrase_helper = shift || 0;
 
     # Build the search class+field uber-regexp
     my $search_class_re = '^\s*(';
@@ -649,23 +650,35 @@ sub decompose {
         } elsif (/^\s*($required_re|$disallowed_re)?"([^"]+)"/) { # phrase, always anded
             warn 'Encountered' . ($1 ? " ['$1' modified]" : '') . " phrase: $2\n" if $self->debug;
 
-            $struct->joiner( '&' );
-            my $req_ness = $1;
+            my $req_ness = $1 || '';
             my $phrase = $2;
 
-            my $class_node = $struct->classed_node($current_class);
+            if (!$phrase_helper) {
+                warn "Recursing into decompose with the phrase as a subquery\n" if $self->debug;
+                my $after = $';
+                my ($substruct, $subremainder) = $self->decompose( qq/$req_ness"$phrase"/, $current_class, $recursing + 1, 1 );
+                $struct->add_node( $substruct ) if ($substruct);
+                $_ = $after;
+            } else {
+                warn "Directly parsing the phrase subquery\n" if $self->debug;
+                $struct->joiner( '&' );
 
-            if ($req_ness eq $pkg->operator('disallowed')) {
-                $class_node->add_dummy_atom( node => $class_node );
-                $class_node->add_unphrase( $phrase );
-                $phrase = '';
-                #$phrase =~ s/(^|\s)\b/$1-/g;
-            } else { 
-                $class_node->add_phrase( $phrase );
+                my $class_node = $struct->classed_node($current_class);
+
+                if ($req_ness eq $pkg->operator('disallowed')) {
+                    $class_node->add_dummy_atom( node => $class_node );
+                    $class_node->add_unphrase( $phrase );
+                    $phrase = '';
+                    #$phrase =~ s/(^|\s)\b/$1-/g;
+                } else { 
+                    $class_node->add_phrase( $phrase );
+                }
+                $_ = $phrase . $';
+
             }
-            $_ = $phrase . $';
 
             $last_type = '';
+
 #        } elsif (/^\s*$required_re([^\s"]+)/) { # phrase, always anded
 #            warn "Encountered required atom (mini phrase): $1\n" if $self->debug;
 #

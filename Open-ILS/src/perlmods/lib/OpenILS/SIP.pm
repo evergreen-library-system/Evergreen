@@ -297,16 +297,18 @@ sub offline_ok {
 
 
 ##
-## Checkout(patron_id, item_id, sc_renew):
+## Checkout(patron_id, item_id, sc_renew, fee_ack):
 ##    patron_id & item_id are the identifiers send by the terminal
 ##    sc_renew is the renewal policy configured on the terminal
 ## returns a status opject that can be queried for the various bits
 ## of information that the protocol (SIP or NCIP) needs to generate
 ## the response.
+##    fee_ack is the fee_acknowledged field (BO) sent from the sc
+## when doing chargeable loans.
 ##
 
 sub checkout {
-	my ($self, $patron_id, $item_id, $sc_renew) = @_;
+	my ($self, $patron_id, $item_id, $sc_renew, $fee_ack) = @_;
 	$sc_renew = 0;
 
 	$self->verify_session;
@@ -346,6 +348,21 @@ sub checkout {
 		$xact->screen_msg("Item checked out to another patron");
 		$xact->ok(0);
 	} 
+
+        # Check for fee and $fee_ack. If there is a fee, and $fee_ack
+        # is 'Y', we proceed, otherwise we reject the checkout.
+        if ($item->fee > 0.0) {
+            $xact->fee_amount($item->fee);
+            $xact->sip_fee_type($item->sip_fee_type);
+            $xact->sip_currency($item->fee_currency);
+            if ($fee_ack && $fee_ack eq 'Y') {
+                $xact->fee_ack(1);
+            } else {
+                $xact->screen_msg('Fee required');
+                $xact->ok(0);
+                return $xact;
+            }
+        }
 
 	$xact->do_checkout($sc_renew);
 	$xact->desensitize(!$item->magnetic);

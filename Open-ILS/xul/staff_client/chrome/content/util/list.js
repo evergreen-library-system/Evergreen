@@ -1195,6 +1195,10 @@ util.list.prototype = {
                         debugger;
                     } else {
                         row[ obj.columns[j].id ] = treerow.childNodes[j].getAttribute('label');
+                        var sort = treerow.childNodes[j].getAttribute('sort_value');
+                        if(sort) {
+                            row[ obj.columns[j].id + '_sort_value' ] = sort;
+                        }
                     }
                 }
                 dump.push( row );
