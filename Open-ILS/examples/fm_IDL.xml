@@ -3566,6 +3566,7 @@ SELECT  usr,
 			<field reporter:label="Request Library" name="request_lib" reporter:datatype="link"/>
 			<field reporter:label="Pickup Library" name="pickup_lib" reporter:datatype="link"/>
 			<field reporter:label="Capture Staff" name="capture_staff" reporter:datatype="link"/>
+			<field reporter:label="Notify by Email?" name="email_notify" reporter:datatype="bool"/>
 			<field reporter:label="Attribute Value Maps" name="attr_val_maps" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>

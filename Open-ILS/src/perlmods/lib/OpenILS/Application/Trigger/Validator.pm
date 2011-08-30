@@ -84,6 +84,19 @@ sub HoldIsAvailable {
     return 0;
 }
 
+sub ReservationIsAvailable {
+    my $self = shift;
+    my $env = shift;
+    my $reservation = $env->{target};
+
+    return 1 if
+        !$reservation->cancel_time and
+        $reservation->capture_time and
+        $reservation->current_resource;
+
+    return 0;
+}
+
 sub HoldIsCancelled {
     my $self = shift;
     my $env = shift;

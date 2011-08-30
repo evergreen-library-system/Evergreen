@@ -48,6 +48,10 @@
                         id="pickup_lib_selector" jsId="pickup_lib_selector"
                         searchAttr="shortname" labelAttr="shortname"></select>
                 </div>
+                <div id="contain_email_notify" class="nice_vertical_padding">
+                    <input type="checkbox" name="email_notify" id="email_notify" />
+                    <label class="AUTO_email_notify" for="email_notify"></label>
+                </div>
                 <div class="nice_vertical_padding">
                     <span class="two_buttons">
                         <input type="button"

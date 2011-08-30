@@ -9797,3 +9797,21 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) 
     'bool'
 );
 
+INSERT INTO action_trigger.hook ( key, core_type, description, passive ) VALUES (
+    'reservation.available',
+    'bresv',
+    'A reservation is available for pickup',
+    false
+);
+
+INSERT INTO action_trigger.validator ( module, description ) VALUES (
+    'ReservationIsAvailable',
+    'Checked that a reserved resource is available for checkout'
+);
+
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+    'booking.allow_email_notify',
+    'booking.allow_email_notify',
+    'Permit email notification when a reservation is ready for pickup.',
+    'bool'
+);

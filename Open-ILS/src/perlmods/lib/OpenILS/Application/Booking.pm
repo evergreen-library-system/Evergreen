@@ -192,7 +192,7 @@ __PACKAGE__->register_method(
 sub create_bresv {
     my ($self, $client, $authtoken,
         $target_user_barcode, $datetime_range, $pickup_lib,
-        $brt, $brsrc_list, $attr_values) = @_;
+        $brt, $brsrc_list, $attr_values, $email_notify) = @_;
 
     $brsrc_list = [ undef ] if not defined $brsrc_list;
     return undef if scalar(@$brsrc_list) < 1; # Empty list not ok.
@@ -212,6 +212,7 @@ sub create_bresv {
         $bresv->pickup_lib($pickup_lib);
         $bresv->start_time($datetime_range->[0]);
         $bresv->end_time($datetime_range->[1]);
+        $bresv->email_notify(1) if $email_notify;
 
         # A little sanity checking: don't agree to put a reservation on a
         # brsrc and a brt when they don't match.  In fact, bomb out of
@@ -304,6 +305,7 @@ __PACKAGE__->register_method(
             {type => 'int', desc => 'Booking resource type'},
             {type => 'list', desc => 'Booking resource (undef ok; empty not ok)'},
             {type => 'array', desc => 'Attribute values selected'},
+            {type => 'bool', desc => 'Email notification?'},
         ],
         return => { desc => "A hash containing the new bresv and a list " .
             "of new bravm"}
@@ -1096,6 +1098,12 @@ sub capture_reservation {
     }
 
     $e->commit or return $e->die_event;
+
+    # create action trigger event to notify that reservation is available
+    if ($reservation->email_notify) {
+        my $ses = OpenSRF::AppSession->create('open-ils.trigger');
+        $ses->request('open-ils.trigger.event.autocreate', 'reservation.available', $reservation, $reservation->pickup_lib);
+    }
 
     # XXX I'm not sure whether these last two elements of the payload
     # actually get used anywhere.

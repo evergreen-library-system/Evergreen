@@ -128,7 +128,8 @@ CREATE TABLE booking.reservation (
 	pickup_lib       INT            REFERENCES actor.org_unit(id)
 	                                DEFERRABLE INITIALLY DEFERRED,
 	capture_staff    INT            REFERENCES actor.usr(id)
-	                                DEFERRABLE INITIALLY DEFERRED
+	                                DEFERRABLE INITIALLY DEFERRED,
+	email_notify     BOOLEAN        NOT NULL DEFAULT FALSE
 ) INHERITS (money.billable_xact);
 
 ALTER TABLE booking.reservation ADD PRIMARY KEY (id);
