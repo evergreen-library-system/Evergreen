@@ -163,6 +163,9 @@ sub fetch_optin_prefs {
         'open-ils.actor.event_def.opt_in.settings.atomic',
         $e->authtoken, $e->requestor->home_ou);
 
+    # some opt-ins are staff-only
+    $opt_ins = [ grep { $U->is_true($_->opac_visible) } @$opt_ins ];
+
     # fetch user setting values for each of the opt-in settings
     my $user_set = $U->simplereq(
         'open-ils.actor',
