@@ -8,12 +8,16 @@
 #include "openils/oils_event.h"
 
 #define OILS_AUTH_CACHE_PRFX "oils_auth_"
+#define OILS_AUTH_COUNT_SFFX "_count"
 
 #define MODULENAME "open-ils.auth"
 
 #define OILS_AUTH_OPAC "opac"
 #define OILS_AUTH_STAFF "staff"
 #define OILS_AUTH_TEMP "temp"
+
+#define OILS_AUTH_COUNT_MAX 10
+#define OILS_AUTH_COUNT_INTERVAL 90
 
 int osrfAppInitialize();
 int osrfAppChildInit();
@@ -90,6 +94,7 @@ int oilsAuthInit( osrfMethodContext* ctx ) {
 	char* seed		= NULL;
 	char* md5seed	= NULL;
 	char* key		= NULL;
+	char* countkey	= NULL;
 
 	if( (username = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, 0))) ) {
 
@@ -103,10 +108,16 @@ int oilsAuthInit( osrfMethodContext* ctx ) {
 
 			seed = va_list_to_string( "%d.%ld.%s", time(NULL), (long) getpid(), username );
 			key = va_list_to_string( "%s%s", OILS_AUTH_CACHE_PRFX, username );
+			countkey = va_list_to_string( "%s%s%s", OILS_AUTH_CACHE_PRFX, username, OILS_AUTH_COUNT_SFFX );
+
+			jsonObject* countobject = osrfCacheGetObject( countkey );
+			if(!countobject) {
+				countobject = jsonNewNumberObject( (double) 0 );
+			}
 	
 			md5seed = md5sum(seed);
 			osrfCachePutString( key, md5seed, 30 );
-	
+			osrfCachePutObject( countkey, countobject, OILS_AUTH_COUNT_INTERVAL );
 			osrfLogDebug( OSRF_LOG_MARK, "oilsAuthInit(): has seed %s and key %s", md5seed, key );
 	
 			resp = jsonNewObject(md5seed);	
@@ -115,6 +126,8 @@ int oilsAuthInit( osrfMethodContext* ctx ) {
 			free(seed);
 			free(md5seed);
 			free(key);
+			free( countkey );
+			jsonObjectFree( countobject );
 		}
 
 		jsonObjectFree(resp);
@@ -194,6 +207,23 @@ static int oilsAuthVerifyPassword( const osrfMethodContext* ctx,
 	free(realPassword);
 	free(seed);
 	free(maskedPw);
+
+	char* countkey = va_list_to_string( "%s%s%s", OILS_AUTH_CACHE_PRFX, uname, OILS_AUTH_COUNT_SFFX );
+	jsonObject* countobject = osrfCacheGetObject( countkey );
+	if(countobject) {
+		double failcount = jsonObjectGetNumber( countobject );
+		if(failcount >= OILS_AUTH_COUNT_MAX) {
+			ret = 0;
+            osrfLogInternal(OSRF_LOG_MARK, "oilsAuth found too many recent failures: %d, forcing failure state.", failcount);
+		}
+		if(ret == 0) {
+			failcount += 1;
+		}
+		jsonObjectSetNumber( countobject, failcount );
+		osrfCachePutObject( countkey, countobject, OILS_AUTH_COUNT_INTERVAL );
+		jsonObjectFree(countobject);
+	}
+	free(countkey);
 
 	return ret;
 }
