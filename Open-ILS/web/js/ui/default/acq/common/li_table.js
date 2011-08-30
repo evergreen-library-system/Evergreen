@@ -2323,10 +2323,6 @@ function AcqLiTable() {
     }
 
     this.issueReceive = function(obj, rollback) {
-        /* (For now) there shall be no marking LI or LIDs (un)received
-         * except from the actual "view PO" interface. */
-        if (!this.isPO) return;
-
         var part =
             {"jub": "lineitem", "acqlid": "lineitem_detail"}[obj.classname];
         var method =
