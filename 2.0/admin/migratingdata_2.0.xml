@@ -724,13 +724,13 @@ SELECT DISTINCT bre.id FROM biblio.record_entry AS bre
 				<step> 
 					<para>Run <command>marc2are.pl</command> against the authority records, specifying the user name, password, MARC type (USMARC or XML). Use 
 					<varname>STDOUT</varname> redirection 
-					to either pipe the output directly into the next command or into an output file for inspection. For example, to process a set of authority records 
-					named <filename>auth_small.xml</filename> using the default user name and password and directing the output into a file named <filename>auth.are</filename>:</para>
+					to either pipe the output directly into the next command or into an output file for inspection. For example, to process a file with authority records in MARCXML format
+					named <filename>auth_small.xml</filename> using the default user name and password, and directing the output into a file named <filename>auth.are</filename>:</para>
 <screen>
 <userinput>cd Open-ILS/src/extras/import/</userinput>
-<userinput>perl marc2are.pl --user admin --pass open-ils auth_small.xml > auth.are</userinput>
+<userinput>perl marc2are.pl --user admin --pass open-ils --marctype XML auth_small.xml > auth.are</userinput>
 </screen>
-				
+				<note><para>The MARC type will default to USMARC if the <option>--marctype</option> option is not specified.</para></note>
 				</step>
 				<step> 
 					<para>Run <command>pg_loader.pl</command> to generate the SQL necessary for importing the authority records into your system. To save time for very large batches of records, you could 
