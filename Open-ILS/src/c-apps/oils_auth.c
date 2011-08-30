@@ -8,6 +8,7 @@
 #include "openils/oils_event.h"
 
 #define OILS_AUTH_CACHE_PRFX "oils_auth_"
+#define OILS_AUTH_COUNT_SFFX "_count"
 
 #define MODULENAME "open-ils.auth"
 
@@ -18,6 +19,9 @@
 
 // Default time for extending a persistent session: ten minutes
 #define DEFAULT_RESET_INTERVAL 10 * 60
+
+#define OILS_AUTH_COUNT_MAX 10
+#define OILS_AUTH_COUNT_INTERVAL 90
 
 int osrfAppInitialize();
 int osrfAppChildInit();
@@ -131,8 +135,14 @@ int oilsAuthInit( osrfMethodContext* ctx ) {
 
 			// Build a key and a seed; store them in memcache.
 			char* key  = va_list_to_string( "%s%s", OILS_AUTH_CACHE_PRFX, username );
+			char* countkey = va_list_to_string( "%s%s%s", OILS_AUTH_CACHE_PRFX, username, OILS_AUTH_COUNT_SFFX );
 			char* seed = md5sum( "%d.%ld.%s", (int) time(NULL), (long) getpid(), username );
+			jsonObject* countobject = osrfCacheGetObject( countkey );
+			if(!countobject) {
+				countobject = jsonNewNumberObject( (double) 0 );
+			}
 			osrfCachePutString( key, seed, 30 );
+			osrfCachePutObject( countkey, countobject, OILS_AUTH_COUNT_INTERVAL );
 
 			osrfLogDebug( OSRF_LOG_MARK, "oilsAuthInit(): has seed %s and key %s", seed, key );
 
@@ -141,6 +151,8 @@ int oilsAuthInit( osrfMethodContext* ctx ) {
 
 			free( seed );
 			free( key );
+			free( countkey );
+			jsonObjectFree( countobject );
 		}
 
 		// Return the seed to the client.
@@ -254,6 +266,23 @@ static int oilsAuthVerifyPassword( const osrfMethodContext* ctx,
 		ret = 1;
 
 	free(maskedPw);
+
+	char* countkey = va_list_to_string( "%s%s%s", OILS_AUTH_CACHE_PRFX, uname, OILS_AUTH_COUNT_SFFX );
+	jsonObject* countobject = osrfCacheGetObject( countkey );
+	if(countobject) {
+		double failcount = jsonObjectGetNumber( countobject );
+		if(failcount >= OILS_AUTH_COUNT_MAX) {
+			ret = 0;
+            osrfLogInternal(OSRF_LOG_MARK, "oilsAuth found too many recent failures: %d, forcing failure state.", failcount);
+		}
+		if(ret == 0) {
+			failcount += 1;
+		}
+		jsonObjectSetNumber( countobject, failcount );
+		osrfCachePutObject( countkey, countobject, OILS_AUTH_COUNT_INTERVAL );
+		jsonObjectFree(countobject);
+	}
+	free(countkey);
 
 	return ret;
 }
