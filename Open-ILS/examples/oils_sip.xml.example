@@ -136,6 +136,7 @@
                     -->
 					<path>LOCALSTATEDIR/</path>
                     <path>LOCALSTATEDIR/catalog/</path>
+		    <path>LIBDIR/javascript/</path>
 					<item_config>circ/circ_item_config.js</item_config>
 				</scripts>
 
