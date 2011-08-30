@@ -1928,11 +1928,23 @@ function summarizeField(sf) {
     source_f.ind1 = sf.parent().@ind1.toString();
     source_f.ind1 = sf.parent().@ind2.toString();
 
+    var found_acs = [];
+    dojo.forEach( acs.controlSetList(), function (acs_id) {
+        if (acs.controlSet(acs_id).control_map[sf.parent().@tag]) found_acs.push(acs_id);
+    });
+
+    var cmap;
+    if (!found_acs.length) {
+        return false;
+    } else {
+        cmap = acs.controlSet(found_acs[0]).control_map;
+    }
+
     for (var i = 0; i < sf.parent().subfield.length(); i++) {
         var sf_iter = sf.parent().subfield[i];
 
         /* Filter out subfields that are not controlled for this tag */
-        if (!control_map[source_f.tag][sf_iter.@code.toString()]) {
+        if (!cmap[source_f.tag][sf_iter.@code.toString()]) {
             continue;
         }
 
