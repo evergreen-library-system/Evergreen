@@ -22,6 +22,7 @@ patron.holds.prototype = {
     'filter_lib' : null,
 
     'hold_subscription_map' : {},
+    'hold_part_map' : {},
 
     'expired' : false,
     'post_clear_shelf_hold_action_map' : {},
@@ -92,6 +93,9 @@ patron.holds.prototype = {
                                     row.my.acn = blob.volume;
                                     row.my.mvr = blob.mvr;
                                     row.my.part = blob.part;
+                                    if (blob.part) {
+                                        obj.hold_part_map[ row.my.hold_id ] = row.my.part;
+                                    }
                                     row.my.issuance = blob.issuance;
                                     if (blob.issuance) {
                                         row.my.subscription = blob.issuance.subscription();
@@ -1152,8 +1156,11 @@ patron.holds.prototype = {
                                             opac_url = xulG.url_prefix( urls.opac_rresult_metarecord ) + htarget;
                                         break;
                                         case 'T' :
-                                        case 'P' :
                                             opac_url = xulG.url_prefix( urls.opac_rdetail ) + htarget;
+                                        break;
+                                        case 'P' :
+                                            opac_url = xulG.url_prefix( urls.opac_rdetail )
+                                            + obj.hold_part_map[ obj.retrieve_ids[i].id ].record();
                                         break;
                                         case 'I' :
                                             opac_url = xulG.url_prefix( urls.opac_rdetail )
