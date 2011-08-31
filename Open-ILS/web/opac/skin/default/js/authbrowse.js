@@ -156,6 +156,7 @@ function renderAuthorityRecord(m, control_set, auth_id) {
     var table = dojo.create("table", {"className": "authority-record"});
     var tbody = dojo.create("tbody", {"id": "authority_" + auth_id}, table);
 
+
     dojo.forEach(
         main_entries, function(af) { renderAuthorityMainEntry(m, af, tbody); }
     );
@@ -187,16 +188,20 @@ function displayAuthorityRecords(axis, doc) {
         function(record) {
             var m = new MARC.Record({"xml": record});
 
-            /* is 001 reliable for this? I'm guessing not */
-            var auth_id = m.field("001").data;
+            var auth_id = m.subfield("901","c")[1];
             auth_ids.push(auth_id);
 
-            var cs = acs_helper.controlSetByThesaurusCode(
-                m.extractFixedField("Subj")
-            );
+            /* best guess */
+            var t = m.field(/^1/);
+            if (dojo.isArray(t)) t = t[0];
+
+            var cs = acs_helper.findControlSetsForAuthorityTag( t.tag );
+            if (dojo.isArray(cs)) cs = cs[0];
+
+            acs_helper.controlSetId( cs );
 
             dojo.place(
-                renderAuthorityRecord(m, cs.raw, auth_id),
+                renderAuthorityRecord(m, acs_helper.controlSet().raw, auth_id),
                 "authority-record-holder"
             );
         }

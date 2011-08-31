@@ -259,6 +259,26 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
             return acs_list;
         },
 
+        findControlSetsForAuthorityTag : function (tag) {
+            var me = this;
+            var old_acs = this.controlSetId();
+
+            var acs_list = dojo.filter(
+                me.controlSetList(),
+                function(acs_id) {
+                    var a = me.controlSet(acs_id);
+                    for (var btag in a.control_map) {
+                        for (var sf in a.control_map[btag]) {
+                            if (a.control_map[btag][sf][tag]) return true;
+                        }
+                    }
+                    return false;
+                }
+            );
+            this.controlSetId(old_acs);
+            return acs_list;
+        },
+
         bibToAuthority : function (field) {
             var b_field = this.bibFieldByTag(field.tag);
 
