@@ -48,7 +48,7 @@
     END 
 %]
 
-<div id='rdetail_subject_div'>
+<div>
     <table cellpadding="0" cellspacing="0" border="0">
     [%  any_subjects = 0;
         FOREACH subj IN subjects;

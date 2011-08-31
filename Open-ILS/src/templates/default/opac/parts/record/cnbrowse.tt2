@@ -13,17 +13,17 @@
             <thead>
                 <tr>
                     <td>
-                        <a id='cn_browse_prev' class='classic_link' 
+                        <a class='classic_link' 
                             href="[% mkurl('', {cnoffset => cnoffset - 1}) %]#cnbrowse"><b>[% l("&lt;&lt; Previous Page") %]</b></a>
                     </td>
                     <td colspan='1' align='center'>[% l("Shelf Browser") %]</td>
                     <td>
-                        <a id='cn_browse_next' class='classic_link' 
+                        <a class='classic_link' 
                             href="[% mkurl('', {cnoffset => cnoffset + 1}) %]#cnbrowse"><b>[% l("Next Page &gt;&gt;") %]</b></a>
                     </td>
                 </tr>
             </thead>
-            <tbody id='cn_tbody'>
+            <tbody>
             [% tr_open = 0; FOR cn IN ctx.browsed_call_numbers %]
                 [%- IF loop.index % 3 == 0; tr_open = 1 %]
                 <tr class='cn_browse_row'>

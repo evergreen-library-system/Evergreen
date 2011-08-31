@@ -1,4 +1,4 @@
-<div id="rdetail_main_div">
+<div>
     <div id='rdetail_extras_div' style='width: 100%;'> 
 
         [%  # Hidden extras are not yet implemented.  Some may require JS
@@ -26,7 +26,6 @@
             {name => 'issues',   label => l('Issues Held'), hide => !ctx.have_holdings_to_show},
             {name => 'preview',  label => l('Preview'), hide => 1}, 
             {name => 'cnbrowse', label => l('Shelf Browser')},
-            {name => 'copyinfo', label => l('Copy Summary'), hide => 1}, 
             {name => 'marchtml', label => l('MARC Record')}
         ];
 
@@ -57,9 +56,4 @@
         </div>
         [% END %]
     </div>
-    <!--
-    <div id='rdetail_preview_full_text' class='hide_me'>[% l("Full text") %]</div>
-    <div id='rdetail_preview_title' class='hide_me'>[% l("See the full text of this book.") %]</div>
-    <div id='rdetail_preview_badge' class='hide_me'>[% l("Show a preview of this book from Google Book Search") %]</div>
-    -->
 </div>

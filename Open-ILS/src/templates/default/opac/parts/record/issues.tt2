@@ -1,4 +1,4 @@
-<div id='rdetail_issues_div' class='rdetail_extras_div'>
+<div class='rdetail_extras_div'>
 [%
 base_expando = ctx.full_path _ "?expand=issues";
 FOREACH type IN ctx.holding_summaries.keys;

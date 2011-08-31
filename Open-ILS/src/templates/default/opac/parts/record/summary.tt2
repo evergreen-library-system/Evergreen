@@ -12,11 +12,11 @@
 <!-- This holds the record summary information -->
 
 <table width="100%" border="0" cellpadding="0" cellspacing="0" id="rdetail_details_table">
-    <tbody id="rdetail_details_tbody">
+    <tbody>
         <tr>
             <td width="90" valign="top" id="rdetail_image_cell">
                 [% ident = attrs.isbn_clean || attrs.upc; IF ident; %]
-                <a id='rdetail_img_link' href='[% ctx.media_prefix %]/opac/extras/ac/jacket/large/[% ident | uri %]'><img
+                <a href='[% ctx.media_prefix %]/opac/extras/ac/jacket/large/[% ident | uri %]'><img
                     alt="[% l('Image of item') %]" id='rdetail_image'
                     src='[% ctx.media_prefix %]/opac/extras/ac/jacket/[% record.summary.jacket_size %]/[% ident | uri %]' /></a>
                 [% END %]
@@ -31,7 +31,6 @@
                             [% IF attrs.author %]
                             <span class='opac-auto-030'>[% l("Author") %]:</span>
                             <em><a title='[% l("Perform an author search") %]'
-                                    id='rdetail_author'
                                     href="[%- 
                                         authorquery = attrs.author | replace('[,\.:;]', '');
                                         mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery}, ['page'])
@@ -70,15 +69,15 @@
                     <table border="0" cellpadding="0" width="100%">
                         <tr>
                             <td nowrap='nowrap' valign="top">
-                                [% IF attrs.isbns.0 %]<strong id="rdetail_isbn_lbl">[% l("ISBN") %]</strong>[% END %]
+                                [% IF attrs.isbns.0 %]<strong>[% l("ISBN") %]</strong>[% END %]
                             </td>
-                            <td valign="top" id='rdetail_isbn'>
+                            <td valign="top">
                                 [% FOR isbn IN attrs.isbns %][% IF !loop.first; %]<br/>[% END; isbn | html ; END %]
                             </td>
                             <td nowrap='nowrap' valign="top">
-                                [% IF attrs.phys_desc %]<strong id="rdetail_phys_lbl">[% l("Physical Description") %]</strong>[% END %]
+                                [% IF attrs.phys_desc %]<strong>[% l("Physical Description") %]</strong>[% END %]
                             </td>
-                            <td valign="top" id='rdetail_physical_desc'>[% attrs.phys_desc | html %]</td>
+                            <td valign="top">[% attrs.phys_desc | html %]</td>
                         </tr>
                         [%- IF openurl.enabled == 'true';
                             FOR issn IN args.issns;
@@ -101,19 +100,19 @@
                             </td>
                             <td valign="top">[% attrs.marc_cn | html %]</td>
                             <td nowrap='nowrap' valign="top">
-                                <strong id="rdetail_ed_lbl">[% IF attrs.edition; l("Edition"); END %]</strong>
+                                <strong>[% IF attrs.edition; l("Edition"); END %]</strong>
                             </td>
-                            <td valign="top" id='rdetail_edition'>[% attrs.edition | html %]</td>
+                            <td valign="top">[% attrs.edition | html %]</td>
                         </tr>
                         <tr>
                             <td nowrap='nowrap' valign="top">
-                                <strong id="rdetail_pub_lbl">[% IF attrs.publisher; l("Publisher"); END %]</strong>
+                                <strong>[% IF attrs.publisher; l("Publisher"); END %]</strong>
                             </td>
                             <td valign="top" id='rdetail_publisher'>[% attrs.publisher | html %]</td>
                             <td nowrap='nowrap' valign="top">
-                                <strong id="rdetail_pubdate_lbl">[% IF attrs.pubdate; l("Publication Date"); END %]</strong>
+                                <strong>[% IF attrs.pubdate; l("Publication Date"); END %]</strong>
                             </td>
-                            <td valign="top" id='rdetail_pubdate'>[% attrs.pubdate | html %]</td>
+                            <td valign="top">[% attrs.pubdate | html %]</td>
                         </tr>
                     </table>
 
@@ -143,7 +142,7 @@
 
 <table cellpadding="0" cellspacing="0" border="0" width="100%" id="rdetails_status">
     <thead>
-        <tr id="rdetails_status_head">
+        <tr>
             <td>[% l("Location") %]</td>
             <td>[% l("Call Number") %]</td>
             <td>[% l("Barcode") %]</td>

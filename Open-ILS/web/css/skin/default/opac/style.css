@@ -966,8 +966,6 @@ div.select-wrapper:hover {
     float: left; position: relative; top: 2px;
     left: -2px; margin-right: 4px;
 }
-#rdetail_copy_info_table { font-size: 8pt; }
-#rdetail_copy_info_table td { padding: 3px; }
 .search_page_nav_link { cursor: pointer; }
 #opac.result.sort { width: 160px; }
 .renew-summary { font-size: 125%; font-style: italic; margin: 0.5ex 0; }
