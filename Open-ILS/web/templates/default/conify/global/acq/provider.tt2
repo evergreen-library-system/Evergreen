@@ -59,6 +59,14 @@ function formatName(value) {
         </div>
     </div>
     <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+        <span>Context Org Unit</span>
+        <select dojoType="openils.widget.OrgUnitFilteringSelect"
+            jsId='contextOrgSelector'
+            searchAttr='shortname'
+            labelAttr='shortname'>
+        </select>
+    </div>
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
         <table  jsId="pListGrid"
                 dojoType="openils.widget.AutoGrid"
                 fieldOrder="['id', 'name', 'code', 'owner', 'currency_type']"
