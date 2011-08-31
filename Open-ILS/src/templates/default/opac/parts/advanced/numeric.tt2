@@ -1,4 +1,4 @@
-<form id="adv_search_form" action="[% ctx.opac_root %]/results" method="GET">
+<form action="[% ctx.opac_root %]/results" method="GET">
     <div class="header_middle">[% l("Numeric Search") %]</div>
     <input type="hidden" name="contains" value="contains" />
     <input type="hidden" name="_special" value="1" />
@@ -6,6 +6,7 @@
         <tr>
             <td>
                 <select name="qtype">
+                    <!-- TODO: Pull labels from config.metabib_field.label -->
                     <option value="identifier|isbn">[% l('ISBN') %]</option>
                     <option value="identifier|issn">[% l('ISSN') %]</option>
                     <option value="identifier|bib_cn">[% l('Bib Call Number') %]</option>

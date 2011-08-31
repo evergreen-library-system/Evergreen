@@ -1,4 +1,4 @@
-<form id="adv_search_form" action="[% ctx.opac_root %]/results" method="GET">
+<form action="[% ctx.opac_root %]/results" method="GET">
 <table id='adv_global_search' class='data_grid data_grid_center' width='100%'>
     <tr style='border-bottom: none;'>
         <!-- Contains the user-addable(?) rows to define search class, containment and text -->
@@ -32,8 +32,7 @@
             <td valign='top'>
                 <strong>[% l("Item Type") %]</strong><br />
                 [%  INCLUDE "default/opac/parts/coded_value_selector.tt2"
-                        attr=["mattype", "item_type"] multiple="multiple" size="4"
-                        id="adv_global_item_type_basic" %]
+                        attr=["mattype", "item_type"] multiple="multiple" size="4" %]
             </td>
             <td valign='top'>
                 <strong>[% l("Language") %]</strong><br />
@@ -43,22 +42,8 @@
             <td valign='top'>
                 <strong>[% l("Audience") %]</strong><br />
                     [% INCLUDE "default/opac/parts/coded_value_selector.tt2"
-                        attr="audience" id="adv_global_audience_basic" 
-                        multiple="multiple" size="4" %]
+                        attr="audience" multiple="multiple" size="4" %]
                 </select>
-                    <!--<a id='adv_global_audience_link_adv' class='classic_link adv_adv_link'
-                        href='javascript:void(0);' onclick='
-                        hideMe($("adv_global_audience_basic"));
-                        unHideMe($("adv_global_audience"));
-                        hideMe(this);
-                        unHideMe($("adv_global_audience_link_basic"));
-                        '>[% l("Advanced") %]</a>
-                    <a id='adv_global_audience_link_basic' class='hide_me classic_link adv_adv_link'
-                        href='javascript:void(0);' onclick='
-                        unHideMe($("adv_global_audience_basic"));
-                        hideMe($("adv_global_audience"));
-                        unHideMe($("adv_global_audience_link_adv"));
-                        hideMe(this);'>[% l("Basic") %]</a>-->
             </td>
             <td valign='top'>
             <strong>[% l("Sort Results") %]</strong>
@@ -85,7 +70,7 @@
                                 PROCESS build_org_selector name='loc' value=loc %]
                             <div style="position:relative;top:7px;">
                                 <input type='checkbox' name="modifier"
-                                value="available"[% CGI.param('modifier').grep('available').size ? ' checked="checked"' : '' %]
+                                    value="available"[% CGI.param('modifier').grep('available').size ? ' checked="checked"' : '' %]
                                     id='opac.result.limit2avail' />
                                 <label style="position:relative;top:-2px;"
                                     for='opac.result.limit2avail'>
@@ -94,7 +79,7 @@
                         </td>
                         <td valign='top'>
                             <strong>[% l("Publication Year") %]</strong><br />
-                            <select id='adv_global_pub_date_type' name='pubdate' onchange='
+                            <select name='pubdate' onchange='
                                 if(this.selectedIndex == 3)
                                     unHideMe($("adv_global_pub_date_2_span"));
                                 else
@@ -110,18 +95,19 @@
                                     [%  END; END %]
                             </select>    
                             <div style='margin-top:5px;'>
-                                <input id='adv_global_pub_date_1' name='date1' type='text' size='4' maxlength='4' value="[% CGI.param('date1') | html %]" />
+                                <input name='date1' type='text' size='4' maxlength='4' value="[% CGI.param('date1') | html %]" />
                                 <span id='adv_global_pub_date_2_span' class='[% CGI.param("pubdate") == "between" ? "" : "hide_me" %]'>
-                                   [% l("and") %] <input name='date2' id='adv_global_pub_date_2' type='text' size='4' maxlength='4' value="[% CGI.param('date2') | html %]" />
+                                   [% l("and") %] <input name='date2' type='text' size='4' maxlength='4' value="[% CGI.param('date2') | html %]" />
                                 </span>
                             </div>
                         </td>
                     </tr>
-                    <!-- copy location selector -->
-                    <tr id='adv_copy_location_filter_row' class='hide_me'>
+                    <!-- TODO: Copy Location Filter -->
+                    <tr class='hide_me'>
                         <td align='right'>[% l("Shelving Location") %]</td>
-                        <td align='left' id='adv_copy_location_filter_td'>
-                            <select size='3' id='adv_copy_location_filter_select' multiple='multiple'>
+                        <td align='left'>
+                            <select size='3' multiple='multiple'>
+                                [%# TODO: add filter options... %]
                             </select>
                         </td>
                     </tr>
@@ -134,71 +120,9 @@
             <input type="image" src="[% ctx.media_prefix %]/images/search_btn.gif"
             alt="[% l('Search') %]" class='pointer' />
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="javascript:document.getElementById('adv_search_form').reset();"
-                id="adv_reset">[% l('Reset Form') %]</a>
+            <a href="[% mkurl('', {}, 1) %]">[% l('Reset Form') %]</a>
         </td>
     </tr>
 </table>
 <input type="hidden" name="_adv" value="1" />
 </form>
-<div id='adv_quick_search_sidebar' class='sidebar_chunk hide_me'> 
-    <div id='adv_quick_search'>
-        <div class='adv_quick_search color_4'><b>[% l("Quick Search") %]</b></div>
-        <div style='margin-top: 8px;'>
-            <table><tbody><tr>
-                <td>
-                    <select id='adv_quick_type'>
-                        <option value='isbn'>[% l("ISBN") %]</option>
-                        <option value='issn'>[% l("ISSN") %]</option>
-                        <option value='cn'>[% l("Call Number") %]</option>
-                        <option value='lccn'>[% l("LCCN") %]</option>
-                        <option value='tcn'>[% l("TCN") %]</option>
-                        <option value='barcode'>[% l("Item Barcode") %]</option>
-                    </select>
-                </td><td>
-                    <input type='text' id='adv_quick_text' size='16' />
-                </td>
-            </tr></tbody></table>
-        </div>
-
-        <div style='margin-top: 8px;' class='adv_quick_search_submit'>
-            <!-- XXX TODO make a real form, and make a real submitter (quick
-            submit, FKA advGenericSearch() -->
-            <img src="[% ctx.media_prefix %]/images/search_btn.gif"
-                alt="[% l('Search') %]" id="adv_quick_submit" class='pointer' />
-        </div>
-    </div>
-</div>
-
-
-<div id='adv_marc_search_sidebar' class='sidebar_chunk hide_me'
-    style='width:400px; margin-top: 20px;'> 
-    <div class='adv_quick_search color_4'><b>[% l("MARC Expert Search") %]</b></div>
-    <table style='margin: 3px; width: 100%;' id='adv_sdbar_table'
-        class='border_4_3'>
-        <tbody>
-            <tr>
-                <td align="right">[% l("Tag:") %]</td>
-                <td align="left"><input name='advanced.marc.tag' maxlength='3' size='3' /></td>
-                <td align="right">[% l("Subfield:") %]</td>
-                <td align="left"><input name='advanced.marc.subfield' maxlength='1' size='1' /></td>
-            </tr>
-            <tr>
-                <td align="right">[% l("Value:") %]</td>
-                <td colspan='3' align="left"><input name='advanced.marc.value' size='18' /></td>
-            </tr>
-            <tr name='crow' class='hide_me'>
-                <td colspan='4' align='center'>
-                    <a href='javascript:void(0);' class='classic_link'>[% l("close") %]</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <div id='adv_marc_submit' class='adv_quick_search_submit'>
-        <a style='margin-right: 4px; position:relative;top:-10px;'
-            class='classic_link' href='javascript:advAddMARC();'>[% l("Add Row") %]</a>
-        <!-- XXX TODO make a real form, and make a real submitter (FKA
-        advMARCRun()) -->
-        <img alt="Search" src="[% ctx.media_prefix %]/images/search_btn.gif" class='pointer' />
-    </div>
-</div>
