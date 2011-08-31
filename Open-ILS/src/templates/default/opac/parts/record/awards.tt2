@@ -11,7 +11,7 @@
         <!-- Reviews from added content provider -->
         [% IF 0 %] 
         <strong>[% l('Reviews:') %]</strong>
-        <div id='rdetail_review_container' style="margin-bottom:20px;"></div>
+        <div style="margin-bottom:20px;"></div>
         [% END %]
 
         <!-- Novelist suggestions-->

@@ -37,7 +37,7 @@ BLOCK build_author_links;
 END;
 %]
 
-<div id='rdetail_authors_div' class='rdetail_extras_div'>
+<div class='rdetail_extras_div'>
 [% FOREACH author IN authors;
     NEXT UNLESS author.xpath; 
     links = PROCESS build_author_links(xpath=author.xpath);

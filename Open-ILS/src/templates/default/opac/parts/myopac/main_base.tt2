@@ -37,7 +37,7 @@
             </div>
         </div>
         [% l('Fines:') %]
-        <span id="myopac_sum_fines_bal" class='[% ctx.user_stats.fines.balance_owed ? "red" : ""%]'>
+        <span class='[% ctx.user_stats.fines.balance_owed ? "red" : ""%]'>
             [% money(ctx.user_stats.fines.balance_owed) %]
         </span><br />
 
@@ -52,7 +52,7 @@
 
     <div style="width:662px;">
         <div style="float:left;">
-            <div style="padding:10px 0px;" id="myopac_sum_name"></div>
+            <div style="padding:10px 0px;"></div>
             <div class="acct_sum_row">
                 <table width="100%" cellspacing="0" cellpadding="0">
                     <tr>
