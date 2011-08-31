@@ -541,7 +541,7 @@ $$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION vandelay.flatten_marc_hstore(
     record_xml TEXT
-) RETURNS HSTORE AS $$
+) RETURNS HSTORE AS $func$
 BEGIN
     RETURN (SELECT
         HSTORE(
@@ -549,19 +549,24 @@ BEGIN
             ARRAY_ACCUM(value)
         )
         FROM (
-            SELECT
-                tag, subfield,
-                CASE WHEN tag IN ('020', '022', '024') THEN -- caseless
-                    ARRAY_ACCUM(LOWER(value))::TEXT
-                ELSE
-                    ARRAY_ACCUM(value)::TEXT
-                END AS value
-                FROM vandelay.flatten_marc(record_xml)
+            SELECT  tag, subfield, ARRAY_ACCUM(value)::TEXT AS value
+              FROM  (SELECT tag,
+                            subfield,
+                            CASE WHEN tag = '020' THEN -- caseless -- isbn
+                                LOWER((REGEXP_MATCHES(value,$$^(\S{10,17})$$))[1] || '%')
+                            WHEN tag = '022' THEN -- caseless -- issn
+                                LOWER((REGEXP_MATCHES(value,$$^(\S{4}[- ]?\S{4})$$))[1] || '%')
+                            WHEN tag = '024' THEN -- caseless -- upc (other)
+                                LOWER(value || '%')
+                            ELSE
+                                value
+                            END AS value
+                      FROM  vandelay.flatten_marc(record_xml)) x
                 GROUP BY tag, subfield ORDER BY tag, subfield
         ) subquery
     );
 END;
-$$ LANGUAGE PLPGSQL;
+$func$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION vandelay.get_expr_from_match_set(
     match_set_id INTEGER
@@ -635,12 +640,6 @@ DECLARE
 BEGIN
     -- remember $1 is tags_rstore, and $2 is svf_rstore
 
-    IF node.negate THEN
-        op := '<>';
-    ELSE
-        op := '=';
-    END IF;
-
     caseless := FALSE;
 
     IF node.tag IS NOT NULL THEN
@@ -648,6 +647,20 @@ BEGIN
         tagkey := node.tag;
         IF node.subfield IS NOT NULL THEN
             tagkey := tagkey || node.subfield;
+        END IF;
+    END IF;
+
+    IF node.negate THEN
+        IF caseless THEN
+            op := 'NOT LIKE';
+        ELSE
+            op := '<>';
+        END IF;
+    ELSE
+        IF caseless THEN
+            op := 'LIKE';
+        ELSE
+            op := '=';
         END IF;
     END IF;
 
