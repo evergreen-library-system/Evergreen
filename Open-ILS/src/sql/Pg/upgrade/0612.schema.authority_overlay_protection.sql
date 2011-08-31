@@ -1,12 +1,10 @@
--- Evergreen DB patch XXXX.schema.authority_overlay_protection.sql
---
--- FIXME: insert description of change, if needed
+-- Evergreen DB patch 0612.schema.authority_overlay_protection.sql
 --
 BEGIN;
 
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0612', :eg_version);
 
 -- FIXME: add/check SQL statements to perform the upgrade
 
