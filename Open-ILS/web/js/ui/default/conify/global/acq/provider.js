@@ -3,6 +3,7 @@ dojo.require('openils.widget.AutoGrid');
 dojo.require('dijit.form.FilteringSelect');
 dojo.require('openils.PermaCrud');
 dojo.require('openils.MarcXPathParser');
+dojo.require('openils.widget.OrgUnitFilteringSelect');
 
 
 var provider;
@@ -10,6 +11,19 @@ var xpathParser = new openils.MarcXPathParser();
 var subFields= [];
 
 function draw() {
+    var org_id = openils.User.user.ws_ou();
+    var list = fieldmapper.aou.findOrgUnit(org_id).orgNodeTrail().map(
+        function (i) {return i.id() }
+    );
+
+    new openils.User().buildPermOrgSelector(
+        'VIEW_PROVIDER', contextOrgSelector, null,
+        function() {
+            dojo.connect(contextOrgSelector, 'onChange', filterGrid);
+        }
+    );
+
+
     if(providerId) {
         openils.Util.addCSSClass(dojo.byId('provider-list-div'), 'hidden');
        
@@ -31,7 +45,7 @@ function draw() {
     } else {
         openils.Util.addCSSClass(dojo.byId('provider-details-div'), 'hidden');       
         console.log('in else block');
-        pListGrid.loadAll({order_by:{acqpro : 'name'}});       
+        pListGrid.loadAll({order_by:{acqpro : 'name'}},{'owner':list});
         pListGrid.onPostCreate = function(fmObject) {
             location.href = location.href + '/' + fmObject.id();
         }
@@ -119,5 +133,17 @@ function getParsedSubf(rowIndex, item) {
         return subfields.join(',');
     }
     return'';
+}
+
+function filterGrid() {
+    pListGrid.resetStore();
+    var unit = contextOrgSelector.getValue();
+    var list = fieldmapper.aou.findOrgUnit(unit).orgNodeTrail().map( function (i) {return i.id() } );
+
+    if(unit){
+        pListGrid.loadAll({order_by:{acqpro : 'name'}}, { 'owner' : list });
+    } else {
+        pListGrid.loadAll({order_by:{acqpro : 'name'}});
+    }
 }
 openils.Util.addOnLoad(draw);
