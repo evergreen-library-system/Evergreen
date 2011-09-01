@@ -255,7 +255,37 @@ BEGIN
     END IF;
 
     -- Default to the LoC controll set
-    SELECT COALESCE(control_set,1) INTO cset FROM authority.record_entry WHERE id = auth_id;
+    SELECT control_set INTO cset FROM authority.record_entry WHERE id = auth_id;
+
+    -- if none, make a best guess
+    IF cset IS NULL THEN
+        SELECT  control_set INTO cset
+          FROM  authority.control_set_authority_field
+          WHERE tag IN (
+                    SELECT  UNNEST(XPATH('//*[starts-with(@tag,"1")]/@tag',marc::XML)::TEXT[])
+                      FROM  authority.record_entry
+                      WHERE id = auth_id
+                )
+          LIMIT 1;
+    END IF;
+
+    -- if STILL none, no-op change
+    IF cset IS NULL THEN
+        RETURN XMLELEMENT(
+            name record,
+            XMLATTRIBUTES('http://www.loc.gov/MARC21/slim' AS xmlns),
+            XMLELEMENT( name leader, '00881nam a2200193   4500'),
+            XMLELEMENT(
+                name datafield,
+                XMLATTRIBUTES( '905' AS tag, ' ' AS ind1, ' ' AS ind2),
+                XMLELEMENT(
+                    name subfield,
+                    XMLATTRIBUTES('d' AS code),
+                    '901c'
+                )
+            )
+        )::TEXT;
+    END IF;
 
     FOR main_entry IN SELECT * FROM authority.control_set_authority_field WHERE control_set = cset LOOP
         auth_field := XPATH('//*[@tag="'||main_entry.tag||'"][1]',source_xml::XML);
