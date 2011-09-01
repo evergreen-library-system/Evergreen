@@ -227,7 +227,7 @@ sub find_template {
             }
             last if $template;
             push(@args, pop @parts);
-            $localpath = '/'.join('/', @parts);
+            $localpath = join('/', @parts);
         } 
 
         $page_args = [@args];
