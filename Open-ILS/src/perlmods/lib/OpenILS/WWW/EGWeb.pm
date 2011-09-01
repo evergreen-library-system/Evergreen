@@ -153,6 +153,12 @@ sub load_context {
     $ctx->{skin} = $cgi->cookie(OILS_HTTP_COOKIE_SKIN) || 'default';
     $ctx->{theme} = $cgi->cookie(OILS_HTTP_COOKIE_THEME) || 'default';
 
+    # Any paths configured in Apache will be placed in front of
+    # any paths configured in the global oils_web.xml config.
+    my @template_paths = $r->dir_config->get('OILSTemplatePath');
+    unshift(@{$ctx->{template_paths}}, $_) for reverse @template_paths;
+    $r->log->debug("template paths => @{$ctx->{template_paths}}");
+
     $ctx->{locale} = 
         $cgi->cookie(OILS_HTTP_COOKIE_LOCALE) || 
         parse_accept_lang($r->headers_in->get('Accept-Language')) || 'en-US';
