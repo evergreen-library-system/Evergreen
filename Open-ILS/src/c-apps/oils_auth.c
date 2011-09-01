@@ -20,9 +20,6 @@
 // Default time for extending a persistent session: ten minutes
 #define DEFAULT_RESET_INTERVAL 10 * 60
 
-#define OILS_AUTH_COUNT_MAX 10
-#define OILS_AUTH_COUNT_INTERVAL 90
-
 int osrfAppInitialize();
 int osrfAppChildInit();
 
@@ -30,6 +27,9 @@ static long _oilsAuthOPACTimeout = 0;
 static long _oilsAuthStaffTimeout = 0;
 static long _oilsAuthOverrideTimeout = 0;
 static long _oilsAuthPersistTimeout = 0;
+static long _oilsAuthSeedTimeout = 0;
+static long _oilsAuthBlockTimeout = 0;
+static long _oilsAuthBlockCount = 0;
 
 
 /**
@@ -120,6 +120,42 @@ int osrfAppChildInit() {
 int oilsAuthInit( osrfMethodContext* ctx ) {
 	OSRF_METHOD_VERIFY_CONTEXT(ctx);
 
+	if(!_oilsAuthSeedTimeout) { /* Load the default timeouts */
+
+		jsonObject* value_obj;
+
+		value_obj = osrf_settings_host_value_object(
+			"/apps/open-ils.auth/app_settings/auth_limits/seed" );
+		_oilsAuthSeedTimeout = oilsUtilsIntervalToSeconds( jsonObjectGetString( value_obj ));
+		jsonObjectFree(value_obj);
+		if( -1 == _oilsAuthSeedTimeout ) {
+			osrfLogWarning( OSRF_LOG_MARK, "Invalid timeout for Auth Seeds - Using 30 seconds" );
+			_oilsAuthSeedTimeout = 30;
+		}
+
+		value_obj = osrf_settings_host_value_object(
+			"/apps/open-ils.auth/app_settings/auth_limits/block_time" );
+		_oilsAuthBlockTimeout = oilsUtilsIntervalToSeconds( jsonObjectGetString( value_obj ));
+		jsonObjectFree(value_obj);
+		if( -1 == _oilsAuthBlockTimeout ) {
+			osrfLogWarning( OSRF_LOG_MARK, "Invalid timeout for Blocking Timeout - Using 3x Seed" );
+			_oilsAuthBlockTimeout = _oilsAuthSeedTimeout * 3;
+		}
+
+		value_obj = osrf_settings_host_value_object(
+			"/apps/open-ils.auth/app_settings/auth_limits/block_count" );
+		_oilsAuthBlockCount = oilsUtilsIntervalToSeconds( jsonObjectGetString( value_obj ));
+		jsonObjectFree(value_obj);
+		if( -1 == _oilsAuthBlockCount ) {
+			osrfLogWarning( OSRF_LOG_MARK, "Invalid count for Blocking - Using 10" );
+			_oilsAuthBlockCount = 10;
+		}
+
+		osrfLogInfo(OSRF_LOG_MARK, "Set auth limits: "
+			"seed => %ld : block_timeout => %ld : block_count => %ld",
+			_oilsAuthSeedTimeout, _oilsAuthBlockTimeout, _oilsAuthBlockCount );
+	}
+
 	char* username  = jsonObjectToSimpleString( jsonObjectGetIndex(ctx->params, 0) );
 	if( username ) {
 
@@ -141,8 +177,8 @@ int oilsAuthInit( osrfMethodContext* ctx ) {
 			if(!countobject) {
 				countobject = jsonNewNumberObject( (double) 0 );
 			}
-			osrfCachePutString( key, seed, 30 );
-			osrfCachePutObject( countkey, countobject, OILS_AUTH_COUNT_INTERVAL );
+			osrfCachePutString( key, seed, _oilsAuthSeedTimeout );
+			osrfCachePutObject( countkey, countobject, _oilsAuthBlockTimeout );
 
 			osrfLogDebug( OSRF_LOG_MARK, "oilsAuthInit(): has seed %s and key %s", seed, key );
 
@@ -241,6 +277,9 @@ static int oilsAuthVerifyPassword( const osrfMethodContext* ctx,
 			" (check that memcached is running and can be connected to) "
 		);
 	}
+    
+	// We won't be needing the seed again, remove it
+	osrfCacheRemove( "%s%s", OILS_AUTH_CACHE_PRFX, uname );
 
 	// Get the hashed password from the user object
 	char* realPassword = oilsFMGetString( userObj, "passwd" );
@@ -273,15 +312,15 @@ static int oilsAuthVerifyPassword( const osrfMethodContext* ctx,
 	jsonObject* countobject = osrfCacheGetObject( countkey );
 	if(countobject) {
 		double failcount = jsonObjectGetNumber( countobject );
-		if(failcount >= OILS_AUTH_COUNT_MAX) {
+		if(failcount >= _oilsAuthBlockCount) {
 			ret = 0;
-            osrfLogInternal(OSRF_LOG_MARK, "oilsAuth found too many recent failures: %d, forcing failure state.", failcount);
+		    osrfLogInternal(OSRF_LOG_MARK, "oilsAuth found too many recent failures: %d, forcing failure state.", failcount);
 		}
 		if(ret == 0) {
 			failcount += 1;
 		}
 		jsonObjectSetNumber( countobject, failcount );
-		osrfCachePutObject( countkey, countobject, OILS_AUTH_COUNT_INTERVAL );
+		osrfCachePutObject( countkey, countobject, _oilsAuthBlockTimeout );
 		jsonObjectFree(countobject);
 	}
 	free(countkey);
