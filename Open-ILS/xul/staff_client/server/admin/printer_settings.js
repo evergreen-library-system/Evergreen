@@ -42,7 +42,7 @@ g.toggle_silent_print = function() {
     } else {
         // Setting print.always_print_silent to false is not the same as clearing it, since a false here will prevent
         // gPrintSettings.printSilent = true from working when fed to webBrowserPrint
-        if (g.prefs.HasUserValue('print.always_print_silent')) {
+        if (g.prefs.prefHasUserValue('print.always_print_silent')) {
             g.prefs.clearUserPref('print.always_print_silent');
         }
         dump('Clearing print.always_print_silent\n');
