@@ -1,0 +1,28 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = 'Hold Matrix Weights' %]
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+        <div>Hold Matrix Weights</div>
+        <div>
+            <button dojoType='dijit.form.Button' onClick='ruleHoldWeightsGrid.showCreateDialog()'>New Weight Set</button>
+            <button dojoType='dijit.form.Button' onClick='ruleHoldWeightsGrid.deleteSelected()'>Delete Selected</button>
+        </div>
+    </div>
+    <div>
+    <table  jsId="ruleHoldWeightsGrid"
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['name']"
+            suppressFields="['id']"
+            query="{id: '*'}"
+            fmClass='chmw'
+            editOnEnter='true'/>
+</div>
+
+<script type="text/javascript">
+    dojo.require('openils.Util');
+    dojo.require('openils.widget.AutoGrid');
+    openils.Util.addOnLoad( function() { ruleHoldWeightsGrid.loadAll(); } );
+</script>
+[% END %]
+
+

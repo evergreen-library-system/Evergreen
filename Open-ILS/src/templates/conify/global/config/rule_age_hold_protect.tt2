@@ -1,0 +1,28 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = 'Age Hold Protect Rules' %]
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+        <div>Age Hold Protect Rules</div>
+        <div>
+            <button dojoType='dijit.form.Button' onClick='ruleAgeProtectGrid.showCreateDialog()'>New Age Hold Protect Rule</button>
+            <button dojoType='dijit.form.Button' onClick='ruleAgeProtectGrid.deleteSelected()'>Delete Selected</button>
+        </div>
+    </div>
+    <div>
+    <table  jsId="ruleAgeProtectGrid"
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['name', 'age', 'prox']"
+            suppressFields="['id']"
+            query="{id: '*'}"
+            fmClass='crahp'
+            editOnEnter='true'/>
+</div>
+
+<script type="text/javascript">
+    dojo.require('openils.Util');
+    dojo.require('openils.widget.AutoGrid');
+    openils.Util.addOnLoad( function() { ruleAgeProtectGrid.loadAll(); } );
+</script>
+[% END %]
+
+

@@ -1,0 +1,74 @@
+[% WRAPPER 'base.tt2' %]
+<style type="text/css">
+    @import "[% ctx.media_prefix %]/js/dojo/dojox/form/resources/CheckedMultiSelect.css";
+</style>
+
+<script type="text/javascript">
+    var searchOffset = 0;
+</script>
+
+<div id='oils-acq-search-block' class='container'>
+
+    <form dojoType='dijit.form.Form' action='' method=''>
+        <script type="dojo/method" event="onSubmit">
+            doSearch(this.getValues());
+            return false; /* don't redirect */
+        </script>
+        <div id='oils-acq-search-sources-block'>
+            <div id='oils-acq-search-sources-label'>Search Sources</div>
+            <select style='overflow-y:auto;' id='oils-acq-search-source-select' 
+                    multiple='true' jsId="bibSourceSelect" dojoType="dojox.form.CheckedMultiSelect">
+                <option selected='selected' value='native-evergreen-catalog'>Evergreen Catalog</option>
+            </select>
+        </div>
+        <div id='oils-acq-search-form-block'>
+            <div id='oils-acq-search-fields-label'>Search Fields</div>
+            <div id='oils-acq-search-fields'>
+            </div>
+            <table>
+                <tbody id='oils-acq-search-fields-tbody'>
+                    <tr id='oils-acq-search-fields-template'>
+                        <td name='label'> </td>
+                        <td name='input'> </td>
+                    </tr>
+                    <tr id='oils-acq-seach-fields-count-row'>
+                        <td name='label'>Hits Per Source</td>
+                        <td><input name='limit'
+                            dojoType='dijit.form.NumberSpinner'
+                            constraints='{min:5,max:50}'
+                            value='10'></input>
+                        </td>
+                    </tr>
+                    <tr id='oils-acq-search-fields-submit-block'>
+                        <td><div dojoType='dijit.form.Button' type='submit'>Submit</div></td>
+                        <td><div dojoType='dijit.form.Button' onclick='clearSearchForm()'>Clear Form</div></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </form>
+</div>
+
+<div id='oils-acq-pl-search-results'>
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+        <div>Search Results</div>
+        <div>
+            <div id='oils-acq-update-li-progress' class='hidden'>
+                <div dojoType="dijit.ProgressBar" style="width:300px" jsId="liUpdateProgress"></div>
+            </div>
+            <div dojoType='dijit.form.Button' onClick='showDiv("oils-acq-search-block");'>New Search</div>
+        </div>
+    </div>
+    <div dojoType='dijit.layout.ContentPane' layoutAlign='client'>
+        [% INCLUDE 'acq/common/li_table.tt2' %]
+    </div>
+</div>
+
+<div id='oils-acq-pl-loading' style='width:100%;margin-top:100px;display:none;text-align:center'>
+    <img src='[% ctx.media_prefix %]/opac/images/progressbar_green.gif'/>
+</div>
+
+<script type="text/javascript">dojo.style('oils-acq-pl-search-results', 'display', 'none');</script>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/picklist/bib_search.js'></script>
+[% END %]
+

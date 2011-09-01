@@ -1,0 +1,88 @@
+[% WRAPPER "base.tt2" %]
+<link rel="stylesheet" type="text/css" href="[% ctx.media_prefix %]/css/skin/[% ctx.skin %]/booking.css" />
+<div id="auto_l10n_start_here">
+    <h1 class="booking AUTO_return_h1"></h1>
+    <div class="nice_vertical_padding" id="contains_barcode_control">
+        <form id="lookup" onsubmit="return act(this);">
+            <label for="barcode_type" class="AUTO_barcode_type"></label>
+            <select name="barcode_type" id="barcode_type"
+                onchange="var b = this.form.barcode; b.focus(); b.select();">
+                <option id="option_resource" value="resource"
+                    selected="selected" class="AUTO_resource"></option>
+                <option id="option_patron" value="patron"
+                    class="AUTO_patron"></option>
+            </select>
+            <input id="barcode" name="barcode" />
+            <input type="submit" class="AUTO_ATTR_VALUE_go" />
+        </form>
+    </div>
+    <div class="nice_vertical_padding" id="contains_patron_info">
+        <div id="patron_info"></div>
+    </div>
+    <div class="nice_vertical_padding" id="contains_out_bresv">
+        <h3 class="booking AUTO_out_bresv"></h3>
+        <div class="AUTO_no_out_bresv" id="no_out_bresv"></div>
+        <table id="out_bresv" jsId="out_bresv"
+            dojoType="dojox.grid.DataGrid" query="{id: '*'}"
+            rowSelector="20px" autoHeight="true" width="auto">
+            <thead>
+                <tr><!-- FIXME: i18n problem: init_auto_l10n() runs
+                        too late to take care of the below elements. -->
+                    <th width="35%" field="type">Title</th>
+                    <th width="25%" field="resource">Barcode</th>
+                    <th width="20%" field="pickup_time">Pickup time</th>
+                    <th width="20%" field="end_time">Due time</th>
+                </tr>
+            </thead>
+        </table>
+        <div class="nice_vertical_padding" id="controls_out_bresv">
+            <form>
+                <input type="button" id="return_button"
+                    class="AUTO_ATTR_VALUE_return"
+                    onclick="p.act_on_selected('return', 'out');" />
+            </form>
+        </div>
+    </div>
+    <div class="nice_vertical_padding" id="contains_in_bresv">
+        <hr />
+        <h3 class="booking AUTO_in_bresv"></h3>
+        <div class="AUTO_no_in_bresv" id="no_in_bresv"></div>
+        <table id="in_bresv" jsId="in_bresv"
+            dojoType="dojox.grid.DataGrid" query="{id: '*'}"
+            rowSelector="20px" autoHeight="true" width="auto">
+            <thead>
+                <tr><!-- FIXME: i18n problem: init_auto_l10n() runs
+                        too late to take care of the below elements. -->
+                    <th width="35%" field="type">Title</th>
+                    <th width="25%" field="resource">Barcode</th>
+                    <th width="20%" field="due_time">Due time</th>
+                    <th width="20%" field="return_time">Return time</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div class="nice_vertical_padding" id="contains_misc_controls">
+        <hr />
+        <form>
+            <input type="button" class="AUTO_ATTR_VALUE_reset"
+                onclick="p.reset();" />
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/booking/common.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/booking/populator.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/booking/return.js"></script>
+<script type="text/javascript">
+    dojo.require("dojox.grid.DataGrid");
+    openils.Util.addOnLoad(my_init);
+
+    function act(f) {
+        var key = f.barcode_type.options[f.barcode_type.selectedIndex].value;
+        var obj = {};
+        obj[key] = f.barcode.value;
+        p.populate(obj);
+        return false; /* Always. */
+    }
+</script>
+[% END %]

@@ -1,0 +1,28 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = 'Matrix Weight Associations' %]
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+        <div>Matrix Weight Associations</div>
+        <div>
+            <button dojoType='dijit.form.Button' onClick='ruleWeightAssocGrid.showCreateDialog()'>New Weight Association</button>
+            <button dojoType='dijit.form.Button' onClick='ruleWeightAssocGrid.deleteSelected()'>Delete Selected</button>
+        </div>
+    </div>
+    <div>
+    <table  jsId="ruleWeightAssocGrid"
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['active','org_unit','circ_weights','hold_weights']"
+            suppressFields="['id']"
+            query="{id: '*'}"
+            fmClass='cwa'
+            editOnEnter='true'/>
+</div>
+
+<script type="text/javascript">
+    dojo.require('openils.Util');
+    dojo.require('openils.widget.AutoGrid');
+    openils.Util.addOnLoad( function() { ruleWeightAssocGrid.loadAll(); } );
+</script>
+[% END %]
+
+

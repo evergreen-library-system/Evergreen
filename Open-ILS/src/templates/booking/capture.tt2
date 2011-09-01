@@ -1,0 +1,21 @@
+[% WRAPPER "base.tt2" %]
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/booking/common.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/booking/capture.js"></script>
+<link rel="stylesheet" type="text/css" href="[% ctx.media_prefix %]/css/skin/[% ctx.skin %]/booking.css" id="booking_stylesheet_link" />
+<script type="text/javascript">openils.Util.addOnLoad(my_init);</script>
+<div id="auto_l10n_start_here">
+<!-- XXX This interface will probably go away soon in favor of merging its
+behavior into the regular checkin/process/capture interface. -->
+    <h1 class="AUTO_capture_heading booking"></h1>
+    <form class="nice_vertical_padding"
+        onsubmit="attempt_capture(); return false">
+        <label for="resource_barcode" class="AUTO_resource_barcode"></label>
+        <input id="resource_barcode" onfocus="clear_for_next();" />
+        <input type="button" class="AUTO_ATTR_VALUE_capture"
+            onclick="attempt_capture();" />
+        <span id="result_display"></span>
+    </form>
+    <div class="nice_vertical_padding" id="capture_info_top"></div>
+    <div class="nice_vertical_padding" id="capture_info_bottom"></div>
+</div>
+[% END %]

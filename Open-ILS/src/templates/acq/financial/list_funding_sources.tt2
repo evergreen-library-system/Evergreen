@@ -1,0 +1,51 @@
+[% WRAPPER 'base.tt2' %]
+
+<!-- The main grid lives here -->
+<script type="text/javascript">
+    function getName(rowIndex, item) {
+        if(!item) return '';
+        var name = this.grid.store.getValue(item, 'name');
+        var id = this.grid.store.getValue(item, 'id');
+        // weird hack to pass the data we need to the formatter which is now required for HTML cell values
+        return id + ':' + name;
+    }
+
+    function formatName(value) {
+        if(value) {
+            var vals = value.split(/:/);
+            return '<a href="[% ctx.base_path %]/acq/funding_source/view/'+vals[0]+'">'+vals[1]+'</a>';
+        }
+    }
+</script>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+        <div>Funding Sources</div>
+        <div>
+            <button dojoType='dijit.form.Button' onClick='fsGrid.showCreateDialog()'>New Funding Source</button>
+            <button dojoType='dijit.form.Button' onClick='fsGrid.deleteSelected()'>Delete Selected</button>
+        </div>
+    </div>
+
+    <table  jsId="fsGrid"
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['id', 'name', 'owner', 'code', 'currency_type', 'balance']"
+            query="{name: '*'}"
+            defaultCellWidth='"auto"'
+            fmClass='acqfs'
+            editOnEnter='true'>
+        <thead>
+            <tr>
+                <th field="name" get='getName' formatter='formatName'/>
+                <th field="owner" get='getOrgInfo'/>
+                <th field="balance" get='getBalanceInfo'/>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+<!-- load the page-specific JS -->
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/financial/list_funding_sources.js'></script>
+
+[% END %]

@@ -1,0 +1,150 @@
+[% WRAPPER 'base.tt2' %]
+[% ctx.page_title = 'Vandelay Match Set Editor' %]
+<style type="text/css">
+    h1 { margin: 1ex 0; }
+    .outer { clear: both; margin-bottom: 1ex; }
+    .space-me input { margin: 0 1em; }
+    button { margin: 0 0.5em; }
+    input[type=submit] { padding: 0 0.5em; }
+    #tree-here { margin-bottom: 1.5em; }
+    #vms-table { padding-bottom: 2ex; }
+    #vms-table th { text-align: right; }
+    #vms-table td { padding-left: 1em; }
+    #src-pane { float: left; width: 49%; }
+    #tree-pane { float: right; width: 50%; }
+    #submit-row { clear: both; text-align: center; padding-top: 1.5ex; }
+    #submit-row hr { margin: 1.5ex 0; }
+    #expr-preview-row { margin: 2ex 0; }
+    #expr-preview {
+        font-family: monospace;
+        font-size: 125%;
+        font-weight: bold;
+        background-color: #000066;
+        color: white;
+    }
+    .node-editor { margin-bottom: 1.5ex; }
+    .node-editor td { padding: 0.5ex; }
+    li { background-color: #ddd; }
+    .replace-mode { background-color: #990; color: #fff; }
+</style>
+<h1>[% ctx.page_title %]</h1>
+<table id="vms-table">
+    <tbody>
+        <tr>
+            <th>Match set name:</th>
+            <td><strong id="vms-name"></strong></td>
+        </tr>
+        <tr>
+            <th>Owning Library:</th>
+            <td id="vms-owner"></td>
+        </tr>
+        <tr>
+            <th>Type:</th>
+            <td id="vms-mtype"></td>
+        </tr>
+    </tbody>
+</table>
+<hr />
+<!-- XXX TODO
+    give some indication of which match set we're editing the tree for
+    -->
+<table class="hidden">
+    <tr quality-controls="1">
+        <td>
+            <label for="value-input">Value:</label>
+        </td>
+        <td>
+            <input id="value-input" type="text" fmfield="value" />
+        </td>
+    </tr>
+    <tr consistent-controls="1">
+        <td>
+            <label for="quality-input"
+                title="A relative number representing the impact of this expression on the score of the overall record match"><!-- XXX tooltipize -->
+                Match Score
+            </label>
+        </td>
+        <td>
+            <input id="quality-input" type="text" value="1"
+                size="4" maxlength="3" fmfield="quality" />
+        </td>
+    </tr>
+    <tr point-controls="1">
+        <td>
+            <label for="negate-input">Negate?</label>
+        </td>
+        <td>
+            <input id="negate-input" type="checkbox" fmfield="negate" />
+        </td>
+    </tr>
+</table>
+<div class="outer">
+    <div id="expr-preview-row">
+        <em>Your Expression:</em>
+        <span id="expr-preview"></span>
+    </div>
+    <div id="vmsp-buttons">
+        Add new
+        <button onclick="node_editor.add('svf');">Record Attribute</button>
+        <button onclick="node_editor.add('tag');">MARC Tag and Subfield</button>
+        <button onclick="node_editor.add('bool_op');">Boolean Operator</button>
+    </div>
+</div>
+<div class="outer" style="margin-top: 2ex;">
+    <div id="src-pane">
+        <div><big>Working Match Point</big></div>
+        <div>
+            <form id="node-editor-container" onsubmit="return false;"></form>
+        </div>
+        <ul id="src-here"></ul>
+    </div>
+
+    <div id="tree-pane">
+        <div><big>Your Expression</big></div>
+        <div id="tree-here"></div>
+        <div>
+            <button id="deleter" onclick="delete_selected_in_tree()">
+                Delete Selected Node
+            </button>
+            <button id="replacer" onclick="replace_mode()"></button>
+        </div>
+    </div>
+</div>
+<div id="submit-row">
+    <button onclick="save_tree()">Save Changes To Expression</button>
+</div>
+<hr />
+<div id="quality-editor-wrapper">
+    <div>
+        <div style="float: left; width: 50%;">
+            <big>Quality Metrics for this Match Set</big>
+        </div>
+        <div style="float: right; width: 49%; text-align: right;">
+            <button onclick="qnode_editor.add('svf')">
+                Record Attribute
+            </button>
+            <button onclick="qnode_editor.add('tag')">
+                MARC Tag and Subfield
+            </button>
+            <button onclick="vmsq_grid.deleteSelected()">
+                Delete Selected Metrics
+            </button>
+        </div>
+    </div>
+    <br style="clear: both;" />
+    <table id="qnode-editor-container"></table>
+    <table jsId="vmsq_grid"
+        dojoType="openils.widget.AutoGrid"
+        query="{id: '*'}"
+        defaultCellWidth="'17%'"
+        fmClass="vmsq"
+        fieldOrder="['quality','svf','tag','subfield','value']"
+        suppressFields="['match_set']"
+        showPaginator="true"
+        editOnEnter="false">
+    </table>
+</div>
+<div jsId="progress_dialog" dojoType="openils.widget.ProgressDialog"></div>
+<script type="text/javascript"
+    src="[% ctx.media_prefix %]/js/ui/default/conify/global/vandelay/match_set.js"></script>
+[% END %]

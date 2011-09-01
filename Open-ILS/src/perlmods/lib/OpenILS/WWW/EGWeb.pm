@@ -46,8 +46,6 @@ sub handler {
     return $stat unless $stat == Apache2::Const::OK;
     return Apache2::Const::DECLINED unless $template;
 
-    $template = $ctx->{skin} . "/$template";
-
     my $text_handler = set_text_handler($ctx, $r);
 
     my $tt = Template->new({
@@ -187,9 +185,8 @@ sub find_template {
     my $r = shift;
     my $base = shift;
     my $ctx = shift;
-    my $skin = $ctx->{skin};
     my $path = $r->uri;
-    $path =~ s/$base//og;
+    $path =~ s/$base\/?//og;
     my @parts = split('/', $path);
     my $template = '';
     my $page_args = [];
@@ -221,7 +218,7 @@ sub find_template {
         while(@parts) {
             last unless $localpath;
             for my $tpath (@{$ctx->{template_paths}}) {
-                my $fpath = "$tpath/$skin/$localpath.$ext";
+                my $fpath = "$tpath/$localpath.$ext";
                 $r->log->debug("egweb: looking at possible template $fpath");
                 if(-r $fpath) {
                     $template = "$localpath.$ext";

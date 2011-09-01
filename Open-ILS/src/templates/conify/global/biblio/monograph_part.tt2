@@ -1,0 +1,37 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = 'Configure Monograph Parts' %]
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+        <div>Monograph Parts</div>
+        <div>
+            <button dojoType='dijit.form.Button' onClick='monoPartGrid.showCreateDialog()'>New Monograph Part</button>
+            <button dojoType='dijit.form.Button' onClick='monoPartGrid.deleteSelected()'>Delete Selected</button>
+        </div>
+    </div>
+    <div>
+    <table  jsId="monoPartGrid"
+            dojoType="openils.widget.AutoGrid"
+            autoHeight='true'
+            fieldOrder="['label']"
+            suppressFields="['id','record','label_sortkey']"
+            suppressEditFields="['id','label_sortkey']"
+            query="{id: null}"
+            fmClass='bmp'
+            editOnEnter='true'/>
+</div>
+
+<script type="text/javascript">
+    dojo.require('openils.CGI');
+    dojo.require('openils.Util');
+    dojo.require('openils.widget.AutoGrid');
+
+    var cgi = new openils.CGI();
+    openils.Util.addOnLoad( function() {
+        monoPartGrid.overrideEditWidgets.record = new dijit.form.TextBox({"disabled": true});
+        monoPartGrid.overrideEditWidgets.record.shove = { create : cgi.param('r') };
+        monoPartGrid.loadAll({order_by : {bmp : 'label'}}, {record : cgi.param('r')});
+    });
+</script>
+[% END %]
+
+

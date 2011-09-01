@@ -1,0 +1,166 @@
+[%  PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2";
+    WRAPPER "opac/parts/myopac/base.tt2";
+    myopac_page = "circs"  %]
+<div id='myopac_checked_div' style="padding:0px;">
+
+    <div id="acct_checked_tabs" style="padding-bottom: 12px;color:#666;">
+        <div class="align selected">
+            <img src="[% ctx.media_prefix %]/images/sub_checked_out_on.jpg" />
+        </div>
+        <div class="align">
+            <a href="circ_history"><img
+                src="[% ctx.media_prefix %]/images/sub_checked_hist_off.jpg" /></a>
+        </div>
+        <div class="clear-both"></div>
+    </div>
+
+    <div class="header_middle">
+        <span class="float-left">[% l('Current Items Checked Out') %]</span>
+        <span class="float-right">
+            <a class="hide_me" href="#">[% l('Export List') %]</a>
+        </span>
+    </div>
+    <div class="clear-both"></div>
+    [% IF ctx.circs.size < 1 %]
+    <div class="warning_box">
+        <big><strong>[% l('You have no items checked out.') %]</strong></big>
+    </div>
+    [% ELSE %]
+    [% IF ctx.success_renewals %]
+    <div class="renew-summary">
+        [% l("Successfully renewed [_1] item(s)", ctx.success_renewals) %]
+    </div>
+    [% END %]
+    [% IF ctx.failed_renewals %]
+    <div class="renew-summary red">
+        [% l("Failed to renew [_1] item(s)", ctx.failed_renewals) %]
+    </div>
+    [% END %]
+    <div id='checked_main'>
+        <form method="POST" id="circ-form"
+            onsubmit="return confirm('[% l("Are you sure you wish to renew the selected item(s)?") %]');">
+        <table cellpadding='0' cellspacing='0' class="item_list_padding">
+            <tr>
+                <td>
+                    <select name="action">
+                        <option value="renew">[% l('Renew Selected Titles') %]</option>
+                    </select>
+                </td>
+                <td style="padding-left:9px;">
+                    <input type="image"
+                        alt="[% l('Go') %]" title="[% l('Go') %]"
+                        src="[% ctx.media_prefix %]/images/go-btn.png" /></a>
+                </td>
+                <td style="padding-left:5px;">
+                    <a href="#"><img alt="Renewing Help"
+                        src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
+                </td>
+            </tr>
+        </table>
+        <table id="acct_checked_main_header" cellpadding='0' cellspacing='0'
+            border='0'>
+            <tr>
+                <td width="1%" style="padding-left:10px;">
+                    <input type="checkbox" id="check_all_checked"
+                        onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'circ' && !inputs[i].disabled) inputs[i].checked = this.checked;}"
+                    />
+                </td>
+                <td width="40%" style="padding-left:5px;">
+                    <span title="Click to sort" class='pointer'>
+                        Title
+                    </span> /
+                    <span title="Click to sort" class='pointer'>
+                        Author
+                    </span>
+                </td>
+                <td width="8%" style="padding-right:5px;" align="center">
+                    <span title="Click to sort" class='pointer'>Renews<br />Left
+                    </span>
+                </td>
+                <td width="13%" style="padding-left:5px;">
+                    <span title="Click to sort" class='pointer'>Due Date</span>
+                </td>
+                <td width="16%">
+                    <span title="Click to sort" class='pointer'>barcode</span>
+                </td>
+                <td width="22%">
+                    <span title="Click to sort" class='pointer'>call number</span>
+                </td>
+            </tr>
+        </table>
+   
+        <div id="checked_temp_parent">
+            <div id="acct_checked_temp">
+                <table cellpadding='0' cellspacing='0' border='0'
+                    style="margin-top:5px;">
+                    [% FOR circ IN ctx.circs;
+                        attrs = {marc_xml => circ.marc_xml};
+                        PROCESS get_marc_attrs args=attrs; %]
+                    <tr>
+                        <td width="1%" style="padding-left:10px;" valign="top">
+                            <input type="checkbox" name="circ"
+                                [% IF circ.circ.renewal_remaining < 1; l('disabled="disabled"'); END %]
+                                value="[% circ.circ.id %]" />
+                        </td>
+                        <td width="40%"
+                            style="padding-left:5px;padding-bottom:10px;"
+                            name="author">
+                            <a href="[% ctx.opac_root %]/record/[% circ.circ.target_copy.call_number.record.id %]" name="[% l('Catalog record') %]">[% attrs.title | html %]</a>
+                            [% IF attrs.author %] /
+                            <a href="[% ctx.opac_root %]/results?qtype=author&amp;query=[% attrs.author | replace('[,\.:;]', '') | url %]">[% attrs.author | html %]</a>
+                            [% END %]
+                        </td>
+                        <td width="8%" name="renewals" align="center">
+                            [% circ.circ.renewal_remaining %]
+                        </td>
+                        <td width="13%" style="padding-left:5px;"
+                            name="due_date">
+                            [% date.format(ctx.parse_datetime(circ.circ.due_date),DATE_FORMAT) %]
+                        </td>
+                        <td width="16%" name="barcode">
+                            [% circ.circ.target_copy.barcode | html %]
+                        </td>
+                        <td width="22%" name="call_number">
+                            [% circ.circ.target_copy.call_number.label | html %]
+                        </td>
+                    </tr>
+                    [%  IF circ.renewal_response AND
+                            circ.renewal_response.textcode != 'SUCCESS' %]
+                    <tr>
+                        <td colspan="6">[%# XXX colspan="0" does not work in IE %]
+                            <span class="failure-text" title="[% circ.renewal_response.textcode | html %] / [% circ.renewal_response.payload.fail_part | html %]">
+                                [% (circ.renewal_response.desc || circ.renewal_response.payload.fail_part || circ.renewal_response.textcode) | html %]
+                            </span>
+                        </td>
+                    </tr>
+                    [%  END;
+                    END %]
+                </table>
+            </div>
+        </div>
+        </form>
+    </div>
+    [% END %]
+    <div id='non_cat_circs_div' class='hide_me'>
+        <br/>
+        <div style='text-align: center'><b>[% l("Other Circulations") %]</b></div>
+        <table class='data_grid' width='100%'>
+            <thead>
+                <tr>
+                    <td>[% l("Circulating Library") %]</td>
+                    <td>[% l("Circulation Type") %]</td>
+                    <td>[% l("Please return by ...") %]</td>
+                </tr>
+            </thead>
+            <tbody id='non_cat_circs_tbody'>
+                <tr id='non_cat_circs_row'>
+                    <td name='circ_lib'/>
+                    <td name='item_type'/>
+                    <td name='circ_time'/>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+[% END %]

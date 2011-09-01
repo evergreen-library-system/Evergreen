@@ -1,0 +1,473 @@
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/common/base64.js"> </script>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/common/li_table.js'> </script>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/financial/claim_voucher.js'> </script>
+<div id='acq-lit-table-container'>
+    <div id='acq-lit-table-div' class='hidden'>
+
+        <!-- Lineitem (bib record) list -->
+        <table id='acq-lit-table' class='oils-generic-table'>
+            <thead>
+                <tr>
+                    <th colspan='0'>
+                        <table style='width:100%;'>
+                            <tr>
+                                <td>
+                                    <span>
+                                        <select id="acq-lit-li-actions-selector">
+                                            <option mask='*'  value='_'>--Actions--</option>
+                                            <option mask='sr' value='save_picklist'>Save Items To Selection List</option>
+                                            <option mask='pl' value='selector_ready'>Mark Ready for Selector</option>
+                                            <option mask='pl' value='order_ready'>Mark Ready for Order</option>
+                                            <option mask='*'  value='delete_selected'>Delete Selected Items</option>
+                                            <option mask='*'  value='add_brief_record'>Add Brief Record</option>
+                                            <option mask='*'  value='export_attr_list'>Export Single Attribute List</option>
+                                            <option mask='*'  value='batch_apply_funds'>Apply Funds to Selected Items</option>
+                                            <option mask='po' value='' disabled='disabled'>----PO----</option>
+                                            <option mask='sr|pl' value='create_order'>Create Purchase Order</option>
+                                            <option mask='po' value='create_assets'>Load Bibs and Items</option>
+                                            <option mask='po' value='cancel_lineitems'>Cancel Selected Lineitems</option>
+                                            <option mask='po' value='change_claim_policy'>Change Claim Policy</option>
+                                            <option mask='po' value='receive_po'>Mark Purchase Order as Received</option>
+                                            <option mask='po' value='rollback_receive_po'>Un-Receive Purchase Order</option>
+                                            <option mask='po' value='print_po'>Print Purchase Order</option>
+                                            <option mask='po' value='po_history'>View PO History</option>
+                                        </select>
+                                        <span id="acq-lit-export-attr-holder" class="hidden">
+                                            <input dojoType="dijit.form.FilteringSelect" id="acq-lit-export-attr" jsId="acqLitExportAttrSelector" labelAttr="description" searchAttr="description" />
+                                            <span dojoType="dijit.form.Button" jsId="acqLitExportAttrButton">Export List</span>
+                                        </span>
+                                        <span id="acq-lit-cancel-reason" class="hidden">
+                                            <span id="acq-lit-cancel-reason-selector"></span>
+                                            <span dojoType="dijit.form.Button" jsId="acqLitCancelLineitemsButton">Cancel Line Items</span>
+                                        </span>
+                                    </span>
+                                    <span id='acq-lit-generic-progress' class='hidden'>
+                                        <span dojoType="dijit.ProgressBar" style="width:300px" jsId="litGenericProgress"></span>
+                                    </span>
+                                </td>
+                                <td>
+                                    <div style='width:100%;text-align:right;'>
+                                        <span style='padding-right:15px;'>
+                                            <a href='javascript:void(0);' id='acq-lit-prev' style='visibility:hidden'>&#171; Previous</a>
+                                            <a href='javascript:void(0);' id='acq-lit-next' style='visibility:hidden'>Next &#187;</a>
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </th>
+                </tr>
+            </thead>
+            <tbody><tr><td colspan='0' style='height:20px;'/></tr></tbody>
+            <tbody style='font-weight:bold;border:1px solid #aaa;'>
+                <tr>
+                    <td><span><a id='acq-lit-select-toggle' href='javascript:void(0);'>&#x2713</a></span></td>
+                    <td>Line Items</td>
+                    <td>Items</td>
+                    <td>Notes</td>
+                    <td>Actions</td>
+                    <td>Status</td>
+                    <td>Estimated Price</td>
+                </tr>
+            </tbody>
+            <tbody id='acq-lit-tbody'>
+                <tr id='acq-lit-row' class='acq-lit-row'>
+                    <td name='selector'><input type='checkbox' name='selectbox'/></td>
+                    <td style='width:75%;'>
+                        <table style='width:100%;'>
+                            <tbody>
+                                <tr>
+                                    <td rowspan='3' style='width:43px;'><img style='width:40px;height:65px;' name='jacket'></td>
+                                    <td style='width:70%;font-weight:bold;'>
+                                        <span name="bib_origin" class="hidden">
+                                            <img src="/opac/images/book-icon.png" />
+                                        </span><a attr='title' href='javascript:void(0);'></a>
+                                    </td>
+                                    <td rowspan='2' style='text-align:right'>
+                                    </td>
+                                </tr>
+                                <tr class='acq-lit-alt-row'>
+                                    <td colspan='0'>
+                                        <span attr='author'></span>
+                                        <span attr='isbn'></span>
+                                        <span attr='issn'></span>
+                                        <span attr='edition'></span>
+                                        <span attr='pubdate'></span>
+                                        <span attr='publisher'></span>
+                                        <span name='source_label'></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan='0'>
+                                        <span name="liid"># </span> 
+                                        <span name="catalog" class='hidden'> | <a title='Show In Catalog' name="catalog_link" href="javascript:void(0);">&#x279F; catalog</a></span> 
+                                        <span name="link_to_catalog" class='hidden'> | <a title='Link To Catalog Record' name="link_to_catalog_link" href="javascript:void(0);">&#x27BE; link to catalog</a></span> 
+                                        <span name="worksheet"> | <a title='Generate Worksheet' name="worksheet_link" href="javascript:void(0);">&#x270D; worksheet</a></span>
+                                        <span name='pl' class='hidden'> | <a title='Select List' name='pl_link' href='javascript:void(0);'>&#x2756; </a></span>
+                                        <span name='po' class='hidden'> | <a title='Purchase Order' name='po_link' href='javascript:void(0);'>&#x2318; </a></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                    <td><a title='FOOOBAR' name='copieslink' href='javascript:void(0);'>Copies(<span name='count'>0</span>)</a></td>
+                    <td>
+                        <a name='noteslink' href='javascript:void(0);'>Notes(<span name='notes_count'>0</span>)</a><span name="notes_alert_flag"></span>
+                    </td>
+                    <td>
+                        <select name='actions'>
+                            <option name='action_none'>-- Actions --</option>
+                            <option name='action_mark_recv' disabled='disabled'>Mark Received</option>
+                            <option name='action_mark_unrecv' disabled='disabled'>Un-Receive</option>
+                            <option name='action_update_barcodes' disabled='disabled'>Update Barcodes</option>
+                            <option name='action_holdings_maint' disabled='disabled'>Holdings Maint.</option>
+                            <option name='action_new_invoice' disabled='disabled'>New Invoice</option>
+                            <option name='action_link_invoice' disabled='disabled'>Link to Invoice</option>
+                            <option name='action_view_invoice' disabled='disabled'>View Invoice(s)</option>
+                            <option name='action_view_claim_policy'>Apply Claim Policy</option>
+                            <option name='action_manage_claims' disabled='disabled'>Claims</option>
+                            <option name='action_view_history'>View History</option>
+                        </select>
+                    </td>
+                    <td><span name='li_state'></span></td>
+                    <td><input type='text' size='8' name='price'/></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Bib record / Lineitem info table -->
+    [% INCLUDE "acq/common/info.tt2" which = "Lit" %]
+
+    <!-- Lineitem notes table -->
+    [% INCLUDE "acq/common/notes.tt2" which = "Lit" %]
+
+    <!-- Copies table -->
+    <div id='acq-lit-li-details' class='hidden'>
+
+        <div id='acq-lit-copies-li-summary'></div>
+
+        <h3>Add/Edit Items</h3>
+        <hr/>
+
+        <div class='acq-lit-li-menu-bar'>
+            <table style='width:100%'>
+                <tr>
+                    <td class="acq-lit-li-menu-left">
+                        <div dojoType='dijit.form.Button' id='acq-lit-copies-back-button' scrollOnFocus='false'>&#x2196; Return</div>
+                        <span style='margin-left:10px;padding-left:10px;border-left:2px solid #aaa;'>
+                            Item Count: 
+                            <input dojoType='dijit.form.NumberTextBox' jsId='acqLitCopyCountInput'  
+                                constraints="{min:0,max:1000,places:0}" style='width:40px' value='0'></input> 
+                            <div dojoType='dijit.form.Button' jsId='acqLitAddCopyCount' scrollOnFocus='false'>Go</div>
+                        </span>
+                        <span style='margin-left:10px;padding-left:10px;border-left:2px solid #aaa;'>
+                            <div dojoType='dijit.form.Button' jsId='acqLitSaveCopies' scrollOnFocus='false'>Save Changes</div>
+                        </span>
+                        <span id='acq-lit-update-copies-progress' class='hidden'>
+                            <span dojoType="dijit.ProgressBar" style="width:300px" jsId="litUpdateCopiesProgress"></span>
+                        </span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <hr/>
+        <table id='acq-lit-distrib-formula-table'>
+            <tbody id='acq-lit-distrib-formula-tbody'>
+                <tr id='acq-lit-distrib-form-row'>
+                    <td colspan='0'>
+                        <span>Distribution Formulas</span>
+                        <div name='selector'></div>
+                        <div name='set_button'></div>
+                        <div name="reset_button"></div>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody id="acq-lit-distrib-applied-tbody" class="hidden">
+                <tr>
+                    <td colspan="5" id="acq-lit-distrib-applied-heading">
+                        Distribution formulas applied to this lineitem:
+                    </td>
+                </tr>
+                <tr id="acq-lit-distrib-applied-row" class="acq-lit-distrib-applied-row">
+                    <th></th>
+                    <td colspan="4"></td>
+                </tr>
+            </tbody>
+        <table>
+
+        <table id='acq-lit-li-details-table'>
+            <tbody><tr><td class='acq-lit-table-spacer' colspan='0'/></tr></tbody>
+            <tbody style='font-weight:bold;'>
+                <tr>
+                    <td style='margin-top:30px;'>Owning Branch</td>
+                    <td>Shelving Location</td>
+                    <td>Collection Code</td>
+                    <td>Fund</td>
+                    <td>Circ Modifier</td>
+                    <td>Callnumber</td>
+                    <td colspan='0'></td>
+                </tr>
+            </tbody>
+            <tbody style='background-color:#ddd;'>
+                <tr id='acq-lit-li-details-batch-row'>
+                    <td><div name='owning_lib'></div></td>
+                    <td><div name='location'></div></td>
+                    <td><div name='collection_code'></div></td>
+                    <td><div name='fund'></div></td>
+                    <td><div name='circ_modifier'></div></td>
+                    <td><div name='cn_label'></div></td>
+                    <td colspan='3' style='text-align:left;'>
+                        <div dojoType='dijit.form.Button' jsId='acqLitBatchUpdateCopies' scrollOnFocus='false'>Batch Update</div>
+                    </td>
+                </tr>
+            </tbody>
+
+
+            <tbody><tr><td class='acq-lit-table-spacer' colspan='0'></td></tr></tbody>
+            <tbody style='font-weight:bold;'>
+                <tr>
+                    <td style='margin-top:30px;'>Owning Branch</td>
+                    <td>Shelving Location</td>
+                    <td>Collection Code</td>
+                    <td>Fund</td>
+                    <td>Circ Modifier</td>
+                    <td>Callnumber</td>
+                    <td>Barcode</td>
+                    <td>Notes</td>
+                    <td>Receiver</td>
+                    <td colspan='0'></td>
+                </tr>
+            </tbody>
+            <tbody id='acq-lit-li-details-tbody' class='oils-generic-table'>
+                <tr id='acq-lit-li-details-row'>
+                    <td><div name='owning_lib'></div></td>
+                    <td><div name='location'></div></td>
+                    <td><div name='collection_code'></div></td>
+                    <td><div name='fund'></div></td>
+                    <td><div name='circ_modifier'></div></td>
+                    <td><div name='cn_label'></div></td>
+                    <td><div name='barcode'></div></td>
+                    <td><div name='note'></div></td>
+                    <td><div name='receiver'></div></td>
+                    <td><a href="javascript:void(0);" name="receive">Mark&nbsp;Received</a><a href="javascript:void(0);" name="unreceive">Un-Receive</a>&nbsp;<a href="javascript:void(0);" name="cancel">Cancel</a><span class="hidden" name="cancel_reason"></span>&nbsp;<a href="javascript:void(0);" name="claim">Claim</a></td>
+                    <td><div name='delete' dojoType='dijit.form.Button' style='color:red;' scrollOnFocus='false'>X</div></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <!-- Copies table -->
+    <div id='acq-lit-real-copies-div' class='hidden'>
+        <h2>Copies</h2>
+
+        <div class='acq-lit-li-menu-bar'>
+            <table style='width:100%'>
+                <tr>
+                    <td style='text-align:left;'>
+                        <div dojoType='dijit.form.Button' id='acq-lit-real-copies-back-button' scrollOnFocus='false'>&#x2196; Return</div>
+                    </td>
+                    <td style='text-align:right;'>
+                        <span>
+                            <div dojoType='dijit.form.Button' jsId='acqLitSaveRealCopies' scrollOnFocus='false'>Save Changes</div>
+                        </span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <table id='acq-lit-real-copies-table'>
+            <tbody style='font-weight:bold;'>
+                <tr>
+                    <td style='margin-top:30px;'>Owning Branch</td>
+                    <td>Shelving Location</td>
+                    <td>Circ Modifier</td>
+                    <td>Callnumber</td>
+                    <td>Barcode</td>
+                    <td colspan='0'></td>
+                </tr>
+            </tbody>
+            <tbody id='acq-lit-real-copies-tbody' class='oils-generic-table'>
+                <tr id='acq-lit-real-copies-row'>
+                    <td><div name='owning_lib'></div></td>
+                    <td><div name='location'></div></td>
+                    <td><div name='circ_modifier'></div></td>
+                    <td><div name='label'></div></td>
+                    <td><div name='barcode'></div></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="hidden">
+        <div jsId="acqLitLinkInvoiceDialog" dojoType="dijit.Dialog">
+            [% INCLUDE "acq/common/inv_dialog.tt2" which = "li" %]
+        </div>
+    </div>
+
+    <div class='hidden' id='acq-lit-progress-numbers'>
+        <table class='oils-generic-table'>
+            <tbody>
+                <tr>
+                    <td>Lineitems Processed</td>
+                    <td><span id='acq-pl-lit-li-processed'>0</span></td>
+                </tr>
+                <tr>
+                    <td>Items Processed</td>
+                    <td><span id='acq-pl-lit-lid-processed'>0</span></td>
+                </tr>
+                <tr>
+                    <td>Debits Encumbered</td>
+                    <td><span id='acq-pl-lit-debits-processed'>0</span></td>
+                </tr>
+                <tr>
+                    <td>Bib Records Imported</td>
+                    <td><span id='acq-pl-lit-bibs-processed'>0</span></td>
+                </tr>
+                <tr>
+                    <td>Bib Records Indexed</td>
+                    <td><span id='acq-pl-lit-indexed-processed'>0</span></td>
+                </tr>
+                <tr>
+                    <td>Copies Processed</td>
+                    <td><span id='acq-pl-lit-copies-processed'>0</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class='hidden'>
+        <div dojoType='dijit.Dialog' jsId='acqLitPoCreateDialog'>
+            <table class='oils-generic-table'>
+                <tr>
+                    <td>Ordering Agency</td>
+                    <td><div name='ordering_agency' id='acq-lit-po-agency'></div></td>
+                </tr>
+                <tr>
+                    <td>Provider</td>
+                    <td><div name='provider' id='acq-lit-po-provider'></div></td>
+                </tr>
+                <tr>
+                    <td>Prepayment Required</td>
+                    <td><input id="acq-lit-po-prepay" name="prepayment_required" dojoType="dijit.form.CheckBox"/></td>
+                </tr>
+                <tr>
+                    <td>All Lineitems</td>
+                    <td><input checked='checked' name='create_from' value='all' dojoType='dijit.form.RadioButton'/></td>
+                </tr>
+                <tr>
+                    <td>Selected Lineitems</td>
+                    <td><input name='create_from' value='selected' dojoType='dijit.form.RadioButton'/></td>
+                </tr>
+                <tr>
+                    <td>Import Bibs and Create Copies</td>
+                    <td><input name='create_assets' dojoType='dijit.form.CheckBox'/></td>
+                </tr>
+                <tr>
+                    <td colspan='2'>
+                        <div dojoType='dijit.form.Button' type='submit' jsId='acqLitCreatePoSubmit'>Submit</div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="hidden">
+        <div dojoType="dijit.Dialog" jsId='acqLitSavePlDialog'>
+            <table class='dijitTooltipTable'>
+                <tr>
+                    <td colspan='2'>
+                        <input dojoType="dijit.form.RadioButton" name="which" type='radio' checked='checked' value='selected'/>
+                        <label for="name">Save selected</label>
+                        <input dojoType="dijit.form.RadioButton" name="which" type='radio' value='all'/>
+                        <label for="name">Save all</label>
+                    </td>
+                </tr>
+                <tr><td colspan='2'><hr/></td></tr>
+                <tr>
+                    <td><label for="new_name">Save as Selection List: </label></td>
+                    <td><input dojoType="dijit.form.TextBox" name="new_name"/></td>
+                </tr>
+                <tr>
+                    <td><label for="existing_pl">Add to Selection List: </label></td>
+                    <td>
+                        <input jsId="acqLitAddExistingSelect" dojoType="openils.widget.PCrudAutocompleteBox" fmclass="acqpl" searchAttr="name" name="existing_pl" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan='2' align='center'>
+                        <button dojoType='dijit.form.Button' type="submit" jsId='acqLitSavePlButton'>Save</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div dojoType="dijit.Dialog" jsId="lidCancelDialog">
+            <label for="acq-lit-lid-cancel-reason">Reason:</label>
+            <span id="acq-lit-lid-cancel-reason"></span>
+            <span dojoType="dijit.form.Button"
+                jsId="acqLidCancelButton">Cancel Copy</span>
+        </div>
+        <div dojoType="dijit.Dialog" jsId="liClaimPolicyDialog">
+            <label for="acq-lit-li-claim-policy">Claim policy:</label>
+            <span id="acq-lit-li-claim-policy"></span> &nbsp;
+            <span dojoType="dijit.form.Button"
+                jsId="liClaimPolicySave">Save</span>
+        </div>
+        <div dojoType="dijit.Dialog" jsId="liClaimDialog">
+            [% INCLUDE "acq/common/claim_dialog.tt2" %]
+        </div>
+        <div dojoType="dijit.Dialog" jsId="finalClaimDialog">
+            [% INCLUDE "acq/common/final_claim_dialog.tt2" %]
+        </div>
+        <div dojoType="dijit.Dialog" jsId="batchFundUpdateDialog" title="Batch Update Funds">
+            <div>
+                This will update the fund for all copies attached to these lineitems.<br/>
+                This will also update any existing encumbered or spent debits.
+            </div>
+            <br/>
+            <table class='oils-generic-table'>
+                <tr>
+                    <td>
+                        <span>Select a new fund:</span>
+                    </td>
+                    <td>
+                        <div id='acq-lit-batch-fund-selector'></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><button dojoType='dijit.form.Button' jsId='batchFundUpdateCancel'>Cancel</button></td>
+                    <td><button dojoType='dijit.form.Button' jsId='batchFundUpdateSubmit'>Submit</button></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div dojoType="dijit.Dialog" jsId='acqLitChangeLiStateDialog'>
+        <table class='dijitTooltipTable'>
+            <tr>
+                <td>
+                    <input dojoType="dijit.form.RadioButton" name="which" type='radio' checked='checked' value='selected'/>
+                    <label for="name">Mark selected</label>
+                    <input dojoType="dijit.form.RadioButton" name="which" type='radio' value='all'/>
+                    <label for="name">Mark all</label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan='2' align='center'>
+                    <button dojoType='dijit.form.Button' type="submit" jsId='acqLitCancelLiStateButton'>Cancel</button>
+                    <button dojoType='dijit.form.Button' type="submit" jsId='acqLitSaveLiStateButton'>Go</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
+    <div class='hidden'>
+        <div dojoType='openils.widget.ProgressDialog' jsId='progressDialog'></div>
+    </div>
+
+</div>
+

@@ -1,0 +1,88 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = "Configure Authority Control Sets" %]
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class="oils-header-panel">
+        <div>Control Sets</div>
+        <div>
+            <button dojoType="dijit.form.Button" onClick="acs_grid.showCreateDialog()">New Control Set</button>
+            <button dojoType="dijit.form.Button" onClick="acs_grid.deleteSelected()">Delete Selected</button>
+        </div>
+    </div>
+    <div>
+    <table  jsId="acs_grid"
+            dojoType="openils.widget.AutoGrid"
+            autoHeight="true"
+            defaultCellWidth="'auto'"
+            fieldOrder="['name','description','id']"
+            suppressEditFields="['id']"
+            query="{id: '*'}"
+            fmClass="acs"
+            editOnEnter="true">
+            <thead>
+                <tr>
+                    <th name="Other properties"
+                        field="id" formatter="format_acs_id"></th>
+                </tr>
+            </thead>
+    </table>
+</div>
+
+<script type="text/javascript">
+    dojo.require("openils.widget.AutoGrid");
+    dojo.require("openils.CGI");
+    dojo.requireLocalization("openils.authority", "authority");
+    var localeStrings =
+        dojo.i18n.getLocalization("openils.authority", "authority");
+    var acs_cache = {};
+    var cgi;
+
+    function format_acs_id(id) {
+        if (id) {
+            var tlen = acs_cache[id].thesauri() ?
+                acs_cache[id].thesauri().length : 0;
+            var alen = acs_cache[id].authority_fields() ?
+                acs_cache[id].authority_fields().length : 0;
+
+            return "<a href='" + oilsBasePath +
+                "/conify/global/cat/authority/thesaurus?acs=" + id + "'>" +
+                dojo.string.substitute(localeStrings.THESAURI, [tlen]) +
+                "</a> &nbsp;" + " <a href='" + oilsBasePath +
+                "/conify/global/cat/authority/control_set_authority_field?acs=" +
+                id + "'>" +
+                dojo.string.substitute(localeStrings.AUTHORITY_FIELDS, [alen]) +
+                "</a>";
+        }
+    }
+
+    function acs_grid_loader() {
+        acs_cache = {};
+        acs_grid.resetStore();
+        acs_grid.showLoadProgressIndicator();
+        fieldmapper.standardRequest(
+            ["open-ils.cat", "open-ils.cat.authority.control_set.retrieve"], {
+                "async": true,
+                "params": [acs_grid.displayLimit, acs_grid.displayOffset, cgi.param("focus")],
+                "onresponse": function(r) {
+                    if (r = openils.Util.readResponse(r)) {
+                        acs_cache[r.id()] = r;
+                        acs_grid.store.newItem(r.toStoreItem());
+                    }
+                },
+                "oncomplete": function() {
+                    acs_grid.hideLoadProgressIndicator();
+                }
+            }
+        );
+    }
+
+    openils.Util.addOnLoad(
+        function() {
+            cgi = new openils.CGI();
+
+            acs_grid.onPostCreate = function(obj) {acs_cache[obj.id()] = obj;};
+            acs_grid.dataLoader = acs_grid_loader;
+            acs_grid_loader();
+        }
+    );
+</script>
+[% END %]

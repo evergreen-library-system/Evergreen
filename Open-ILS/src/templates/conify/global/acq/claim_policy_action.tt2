@@ -1,0 +1,35 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = 'Claim Policy Actions' %]
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane"
+         layoutAlign="top" class="oils-header-panel">
+        <div>Claim Policy Actions</div>
+        <div>
+            <button onclick="grid.showCreateDialog()">
+                New Claim Policy Action
+            </button>
+            <button onclick="grid.deleteSelected()">Delete Selected</button>
+        </div>
+    </div>
+    <table jsId="grid"
+        dojoType="openils.widget.AutoGrid"
+        suppressFields="['id']"
+        query="{id: '*'}"
+        defaultCellWidth="20"
+        fmClass="acqclpa"
+        showPaginator="true"
+        editOnEnter="true">
+    </table>
+</div>
+
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/conify/global/acq/claim_grid.js"></script>
+<script type="text/javascript">
+openils.Util.addOnLoad(
+    function() {
+        /* XXX TODO support URI param for claim_policy search constraint */
+        populateGrid();
+    }
+);
+</script>
+[% END %]

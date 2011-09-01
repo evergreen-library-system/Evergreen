@@ -1,0 +1,49 @@
+[% WRAPPER "base.tt2" %]
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/booking/common.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/booking/pull_list.js"></script>
+<link rel="stylesheet" type="text/css" href="[% ctx.media_prefix %]/css/skin/[% ctx.skin %]/booking.css" />
+<script type="text/javascript">openils.Util.addOnLoad(my_init);</script>
+<div id="auto_l10n_start_here">
+    <h1 class="booking AUTO_pull_list_title"></h1>
+    <form onsubmit="populate_pull_list(this); return false;">
+        <div id="owning_lib_selector_row" class="nice_vertical_padding">
+            <label for="owning_lib_selector" class="AUTO_owning_lib_selector">
+            </label>
+            <select dojoType="openils.widget.OrgUnitFilteringSelect"
+                id="owning_lib_selector" jsId="owning_lib_selector"
+                searchAttr="shortname" labelAttr="shortname"></select>
+        </div>
+        <div id="interval_input_row" class="nice_vertical_padding">
+            <label for="interval_in_days" class="AUTO_interval_in_days"></label>
+
+            <!-- XXX Hardcoded values (like the ones below) are bad. -->
+            <input id="interval_in_days" name="interval_in_days"
+                value="5" maxlength="2" />
+
+        </div>
+        <input type="submit" class="AUTO_ATTR_VALUE_fetch" />
+    </form>
+    <hr />
+    <div id="table_goes_here" class="nice_vertical_padding">
+        <table id="the_table" width="100%">
+            <thead>
+                <tr>
+                    <th width="25%" class="AUTO_th_title_or_name"></th>
+                    <th width="10%" class="AUTO_th_barcode"></th>
+                    <th width="15%" class="AUTO_th_call_number"></th>
+                    <th width="10%" class="AUTO_th_copy_location"></th>
+                    <th width="40%" class="AUTO_th_resv_details"></th>
+                </tr>
+            </thead>
+            <tbody id="the_table_body">
+            </tbody>
+        </table>
+        <div id="print_holder" class="nice_vertical_padding">
+            <!-- XXX Print button probably won't stay right here -->
+            <input type="button" class="AUTO_ATTR_VALUE_print"
+                onclick="window.print();" /><!-- XXX too simplistic? -->
+        </div>
+    </div>
+    <div id="no_results" class="AUTO_no_results"></div>
+</div>
+[% END %]

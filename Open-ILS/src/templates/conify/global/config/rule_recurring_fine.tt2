@@ -1,0 +1,28 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = 'Recurring Fine Rules' %]
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+        <div>Recurring Fine Rules</div>
+        <div>
+            <button dojoType='dijit.form.Button' onClick='ruleRecurringFineGrid.showCreateDialog()'>New Recurring Fine Rule</button>
+            <button dojoType='dijit.form.Button' onClick='ruleRecurringFineGrid.deleteSelected()'>Delete Selected</button>
+        </div>
+    </div>
+    <div>
+    <table  jsId="ruleRecurringFineGrid"
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['name', 'recurrence_interval', 'low', 'normal', 'high', 'grace_period']"
+            suppressFields="['id']"
+            query="{id: '*'}"
+            fmClass='crrf'
+            editOnEnter='true'/>
+</div>
+
+<script type="text/javascript">
+    dojo.require('openils.Util');
+    dojo.require('openils.widget.AutoGrid');
+    openils.Util.addOnLoad( function() { ruleRecurringFineGrid.loadAll(); } );
+</script>
+[% END %]
+
+

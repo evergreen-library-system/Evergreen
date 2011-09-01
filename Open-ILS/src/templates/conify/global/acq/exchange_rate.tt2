@@ -1,0 +1,33 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = 'Exchange Rates' %]
+<div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+    <div>Exchange Rates</div>
+    <div>
+        <button dojoType='dijit.form.Button' onClick='erGrid.showCreateDialog()'>New Exchange Rate</button>
+        <button dojoType='dijit.form.Button' onClick='erGrid.deleteSelected()'>Delete Selected</button>
+    </div>
+</div>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <table  jsId="erGrid"
+            autoHeight='true'
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['id', 'from_currency', 'to_currency', 'ratio']"
+            defaultCellWidth='12'
+            query="{id: '*'}"
+            fmClass='acqexr'
+            editOnEnter='true'>
+    </table>
+</div>
+
+<script type="text/javascript">
+    dojo.require('openils.widget.AutoGrid');
+    dojo.require('dijit.form.FilteringSelect');
+    openils.Util.addOnLoad(
+        function() {
+            erGrid.loadAll({order_by:{acqpro : 'name'}});
+        }
+    );
+</script>
+[% END %]
+
+

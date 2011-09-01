@@ -1,0 +1,52 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = "Copy Templates" %]
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/conify/global/asset/copy_template.js"> </script>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane"
+         layoutAlign="top" class="oils-header-panel">
+        <div>Copy Templates</div>
+        <div>
+            <button dojoType="dijit.form.Button"
+                onClick="actGrid.showCreatePane()">New Copy Template</button>
+            <button dojoType="dijit.form.Button"
+                onClick="actGrid.deleteSelected()">Delete Selected</button>
+        </div>
+    </div>
+    <div class="oils-acq-basic-roomy">
+        <span>Show templates available at or above</span>
+        <select
+            dojoType="openils.widget.OrgUnitFilteringSelect"
+            jsId="actOwnerSelect"
+            searchAttr="shortname" labelAttr="shortname">
+        </select>
+    </div>
+    <table jsId="actGrid"
+        dojoType="openils.widget.AutoGrid"
+        fieldOrder="['name','owning_lib','circulate','holdable','opac_visible','loan_duration','fine_level','location','circ_modifier','floating','deposit','ref','mint_condition']"
+        suppressFields="['creator','editor','edit_date','create_date','circ_lib']"
+        suppressEditFields="['creator','editor','edit_date','create_date','circ_lib']"
+        query="{id: '*'}"
+        editStyle="pane"
+        fmClass="act"
+        autoHeight="true"
+        createPaneOnSubmit="create_or_update_act"
+        editPaneOnSubmit="create_or_update_act"
+        editOnEnter="true">
+    </table>
+    <div class="hidden">
+        <!-- these FilteringSelects will be attached manually to actGrid -->
+        <select required="false" dojoType="dijit.form.FilteringSelect"
+            jsId="special_fine_level">
+            <option value="1">Low</option>
+            <option value="2">Normal</option>
+            <option value="3">High</option>
+        </select>
+        <select required="false" dojoType="dijit.form.FilteringSelect"
+            jsId="special_loan_duration">
+            <option value="1">Short</option>
+            <option value="2">Normal</option>
+            <option value="3">Long</option>
+        </select>
+    </div>
+</div>
+[% END %]

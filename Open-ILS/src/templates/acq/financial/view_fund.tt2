@@ -1,0 +1,257 @@
+[% WRAPPER 'base.tt2' %]
+<script type="text/javascript"> var fundID = [% ctx.page_args.0 %] </script>
+
+<div id='oils-acq-list-header' class='container'>
+    <div id='oils-acq-list-header-label'>Fund Details</div>
+</div>
+
+<div class='oils-acq-actions-div' style='margin:8px;'> <!-- XXX CSS -->
+    <!-- Dropdown menu for creating a new funding source credit -->
+    <div dojoType="dijit.form.DropDownButton">
+        <span>Create Allocation</span>
+        <div dojoType="dijit.TooltipDialog" execute="createAllocation(arguments[0]);">
+            <script type='dojo/connect' event='onOpen'>
+                openils.acq.FundingSource.createStore(
+                    function(store) {
+                        fundingSourceSelector.store = 
+                            new dojo.data.ItemFileReadStore({data:store});
+                            fundingSourceSelector.setValue(store.items[0].code);
+                    }, 
+                    'MANAGE_FUNDING_SOURCE'
+                );
+            </script>
+            <table class='dijitTooltipTable'>
+                <tr>
+                    <td><label for="amount">Funding Source: </label></td>
+                    <td>
+                        <input jsId='fundingSourceSelector' name="funding_source" 
+                               dojoType="dijit.form.FilteringSelect" searchAttr='code' labelAttr='code'>
+                        </input>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="amount">Amount: </label></td>
+                    <td>
+                        <input dojoType="dijit.form.CurrencyTextBox" name="amount"> </input>
+                    </td>
+                </tr>
+
+                <!-- Percent-based allocations are not supported.  Will implement or remove later.
+                <tr>
+                    <td><label for="amount">Percent: </label></td>
+                    <td>
+                        <input 
+                             dojoType="dijit.form.NumberTextBox" 
+                             constraints="{min:0,max:100}" 
+                             promptMessage="Please enter an amount between 0 and 100"
+                             name="percent"> 
+                        </input>
+                    </td>
+                </tr>
+                -->
+
+                <tr>
+                    <td><label for="note">Note: </label></td>
+                    <td>
+                        <input dojoType="dijit.form.TextBox" name="note"> </input>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan='2' align='center'>
+                        <button dojoType="dijit.form.Button" type="submit">Apply</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div> 
+    <div dojoType="dijit.form.DropDownButton">
+        <span>Transfer Money</span>
+        <div jsId="xferDialog" dojoType="dijit.TooltipDialog">
+            <script type="dojo/connect" event="onOpen">
+                /* If a fund is selected (from a previous time that the
+                user popped open this dialog), unselect it. Wouldn't want to
+                accidentally encourage a transfer that the user didn't mean. */
+                xferManager.clearFundSelector();
+                xferManager.setFundName(fund);
+            </script>
+            <table id="oils-acq-fund-xfer-table">
+                <tr>
+                    <th>
+                        <label for="oils-acq-fund-xfer-o-amount">
+                            Source amount<br />
+                            <em>Amount to transfer from<br />
+                                <span id="oils-acq-fund-xfer-name-fund"></span>
+                            </em>
+                        </label>
+                    </th>
+                    <td>
+                        <input dojoType="dijit.form.CurrencyTextBox"
+                            id="oils-acq-fund-xfer-o-amount"
+                            name="o_amount" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="oils-acq-fund-xfer-d-selector">
+                            Destination fund
+                        </label>
+                    </th>
+                    <td>
+                        <span id="oils-acq-fund-xfer-d-selector"></span>
+                    </td>
+                </tr>
+                <tr id="oils-acq-fund-xfer-dest-amount" class="hidden">
+                    <th>
+                        <label for="oils-acq-fund-xfer-d-selector">
+                            Destination amount
+                        </label>
+                    </th>
+                    <td>
+                        <div class="oils-acq-basic-roomy">
+                            <input id="oils-acq-fund-xfer-same-o-d"
+                                dojoType="dijit.form.CheckBox" checked="checked"
+                                value="1" name="same_o_d" />
+                            <label for="oils-acq-fund-xfer-same-o-d">
+                                Same as source amount?
+                            </label>
+                        </div>
+                        <div class="oils-acq-basic-roomy">
+                            <input id="oils-acq-fund-xfer-d-amount"
+                                dojoType="dijit.form.CurrencyTextBox"
+                                name="d_amount" disabled="disabled" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="oils-acq-fund-xfer-note">Note</label>
+                    </th>
+                    <td>
+                        <input dojoType="dijit.form.TextBox" name="note"
+                            id="oils-acq-fund-xfer-note" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" id="oils-acq-fund-xfer-submit-row">
+                        <button onclick="xferManager.submit();"
+                            dojoType="dijit.form.Button" type="submit">
+                            Transfer
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="top">
+    <div dojoType="dijit.layout.TabContainer">
+
+        <!-- Fund Summary -->
+        <div dojoType="dijit.layout.ContentPane" 
+             class='oils-acq-detail-content-pane' title="Summary" selected='true'>
+            
+            <div dojoType="dijit.layout.ContentPane" layoutAlign="top"> 
+                <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'> 
+                    <table jsId="fundGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector='20px'> 
+                        <thead> 
+                            <tr> 
+                                <th field="id">ID</th> 
+                                <th field="name">Name</th> 
+                                <th field="code">Code</th> 
+                                <th field="currency_type">Currency Type</th> 
+                                <th field="org" get='getOrgInfo'>Owner</th> 
+                                <th field="combined_balance" get='getSummaryInfo'>Balance</th> 
+                                <th field="allocation_total" get='getSummaryInfo'>Total Allocated</th>
+                                <th field="spent_balance" get='getSummaryInfo'>Spent Balance</th>
+                                <th field="debit_total" get='getSummaryInfo'>Total Debits</th>
+                                <th field="spent_total" get='getSummaryInfo'>Total Spent</th>
+                                <th field="encumbrance_total" get='getSummaryInfo'>Total Encumbered</th>
+                            </tr> 
+                        </thead> 
+                    </table>     
+                </div>
+            </div>
+        </div>
+
+        <!-- Fund Allocations -->
+        <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="Allocations">
+            <script type='dojo/connect' event='onShow'>loadAllocationGrid();</script>
+            
+            <div dojoType="dijit.layout.ContentPane" layoutAlign="top"> 
+                <div dojoType="dijit.layout.ContentPane" layoutAlign="client"> 
+
+                    <table 
+                        jsId="fundAllocationGrid" 
+                        autoHeight='true'
+                        dojoType="openils.widget.AutoGrid"
+                        fieldOrder="['funding_source', 'amount', 'create_time', 'allocator', 'note']"
+                        suppressFields="['id', 'fund']"
+                        defaultCellWidth='"auto"'
+                        fmClass="acqfa"
+                        query="{id: '*'}"
+                        showPaginator='true'>
+
+                        <thead>
+                            <tr>
+                                <th field='funding_source' get='getFundingSource' formatter='formatFundingSource'/>
+                            </tr>
+                        </thead>
+                    </table>
+                </div> 
+            </div> 
+        </div>
+
+        <!--- Fund Debits -->
+        <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="Debits">
+            <script type='dojo/connect' event='onShow'>loadDebitGrid();</script>
+            
+            <div dojoType="dijit.layout.ContentPane" layoutAlign="top" style='height:600px;'> 
+                <button dojoType="dijit.form.Button" onClick="fundDebitGrid.refresh();">Refresh Grid</button>
+                <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+
+                    <table 
+                        jsId="fundDebitGrid" 
+                        autoHeight='true'
+                        dojoType="openils.widget.AutoGrid"
+                        fieldOrder="['amount', 'encumbrance', 'debit_type', 'origin_amount', 'origin_currency_type']"
+                        suppressFields="['id', 'fund']"
+                        defaultCellWidth='"auto"'
+                        fmClass="acqfdeb"
+                        query="{id: '*'}"
+                        showPaginator='true'>
+                    </table>
+                </div> 
+            </div> 
+        </div>
+
+        <div dojoType="dijit.layout.ContentPane" class="oils-acq-detail-content-pane" title="Tags">
+            <script type="dojo/connect" event="onShow">
+                tagManager.displayFund(fund);
+            </script>
+            <div id="oils-acq-tag-manager-display"></div>
+            <div id="oils-acq-tag-manager-add">
+                <div dojoType="dijit.form.DropDownButton">
+                    <span>Add Tag</span>
+                    <div dojoType="dijit.TooltipDialog">
+                        <select dojoType="dijit.form.FilteringSelect"
+                            jsId="tagSelector">
+                        </select>
+                        <button onclick="tagManager.addMapping(
+                            fund, new acqft().fromStoreItem(tagSelector.item)
+                        );" type="submit" dojoType="dijit.form.Button">
+                            Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- load the page-specific JS -->
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/common/tag_manager.js"></script>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/financial/view_fund.js'></script>
+
+[% END %]

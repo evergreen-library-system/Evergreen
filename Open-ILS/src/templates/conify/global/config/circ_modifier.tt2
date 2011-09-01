@@ -1,0 +1,88 @@
+[% WRAPPER base.tt2 %]
+<h1>Circulation Modifier</h1> <br/>
+
+<div class='hidden'>
+    <select dojoType="dijit.form.FilteringSelect" jsId="sip2Selector">
+        <option value='000'>Other</option>
+        <option value='001' selected='selected'>Book</option>
+        <option value='002'>Magazine</option>
+        <option value='003'>Bound Journal</option>
+        <option value='004'>Audio Tape</option>
+        <option value='005'>Video Tape</option>
+        <option value='006'>CD/CDROM</option>
+        <option value='007'>Diskette</option>
+        <option value='008'>Book with diskette</option>
+        <option value='009'>Book with CD</option>
+        <option value='010'>Book with audio tape</option>
+    </select>
+</div>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
+    <div>Circulation Modifier</div>
+    <div>
+        <button dojoType='dijit.form.Button' onClick='cmGrid.showCreateDialog()'>New Circ Modifier</button>
+        <button dojoType='dijit.form.Button' onClick='cmGrid.deleteSelected()'>Delete Selected</button>
+    </div>
+</div>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <table  jsId="cmGrid"
+            autoHeight='true'
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['code', 'name', 'description', 'sip2_media_type', 'magnetic_media']"
+            query="{name: '*'}"
+            defaultCellWidth='"auto"'
+            fmClass='ccm'
+            showPaginator='true'
+            editOnEnter='true'>
+        <thead>
+            <tr>
+                <th field="magnetic_media" options='No,Yes' values='f,t'/>
+                <th field="sip2_media_type" formatter='formatSIPMediaType'/>
+            </tr>
+        </thead>
+    </table>
+ </div>
+
+<script type ="text/javascript">
+
+    dojo.require('dijit.form.FilteringSelect');
+    dojo.require('openils.widget.AutoGrid');
+
+    function formatSIPMediaType(inDatum) {
+        switch (inDatum) {
+            case '000':
+                return 'Other';
+            case '001':
+                return 'Book';
+            case '002':
+                return 'Magazine';
+            case '003':
+                return 'Bound Journal';
+            case '004':
+                return 'Audio Tape';
+            case '005':
+                return 'Video Tape';
+            case '006':
+                return 'CD/CDROM';
+            case '007':
+                return 'Diskette';
+            case '008':
+                return 'Book with diskette';
+            case '009':
+                return 'Book with CD';
+            case '010':
+                return 'Book with audio tape';
+        }
+    }
+
+    openils.Util.addOnLoad(
+        function() {
+            cmGrid.overrideEditWidgets.sip2_media_type = sip2Selector;
+            cmGrid.loadAll({order_by:{ccm : 'name'}});
+        }
+    );
+
+</script>
+
+[% END %]

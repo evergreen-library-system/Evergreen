@@ -1,0 +1,77 @@
+[% ctx.page_title = 'Circulation Policy Configuration' %]
+[% WRAPPER base.tt2 %]
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/config/circ_matrix_matchpoint.js'> </script>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+    <div>Circulation Policy Configuration</div>
+    <div><button dojoType='dijit.form.Button' onClick='cmGrid.showCreatePane()'>New</button></div>
+</div>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <table  jsId="cmGrid"
+            style="height: 600px;"
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['id', 'active', 'grp', 'org_unit', 'copy_circ_lib', 'copy_owning_lib', 'user_home_ou', 'is_renewal', 'juvenile_flag', 'circ_modifier', 'marc_type', 'marc_form', 'marc_bib_level', 'marc_vr_format', 'ref_flag', 'usr_age_lower_bound', 'usr_age_upper_bound', 'item_age', 'circulate', 'duration_rule', 'renewals', 'hard_due_date', 'recurring_fine_rule', 'grace_period', 'max_fine_rule', 'available_copy_hold_ratio', 'total_copy_hold_ratio', 'script_test']"
+            defaultCellWidth='"auto"'
+            query="{id: '*'}"
+            fmClass='ccmm'
+            editStyle='pane'
+            editOnEnter='true'
+            showColumnPicker='true'
+            columnPickerPrefix='"conify.config.circ_matrix_matchpoint"'>
+            <thead>
+                <tr>
+                    <th field="hard_due_date" formatter="format_hard_due_date">
+                    </th>
+                </tr>
+            </thead>
+    </table>
+</div>
+
+<div class='hidden'>
+    <div id='circ-mod-editor' style='border:1px solid #aaa'>
+        <h3>Circ Modifier Count Groups</h3>
+        <table class='oils-generic-table' name='circ-mod-group-table'>
+            <tbody><tr>
+                <td>Total items out</td>
+                <td><input type='text' size='3' name='circ-mod-count'></div></td>
+            </tr><tbody>
+            <tbody name='circ-mod-entry-tbody'>
+                <tr name='circ-mod-entry-row'>
+                    <td name='circ-mod'/>
+                    <td><a name='remove-circ-mod' href='javascript:void(0);'>Remove</a></td>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                    <td><div name='circ-mod-selector'></div></td>
+                    <td><a href='javascript:void(0);' name='add-circ-mod'>Add</a></td>
+                </tr>
+            </tbody>
+        </table>
+        <span name='add-circ-mod-group-span'>
+        <a href='javascript:void(0);' name='add-circ-mod-group'>Create New Group</a>
+        </span>&nbsp;&nbsp;<span>
+        <a href='javascript:void(0);' onclick='applyCircModChanges()'>Apply Circ Modifier Changes</a>
+        </span>
+    </div>
+</div>
+
+<div class='hidden'><div dojoType='openils.widget.ProgressDialog' jsId='progressDialog'/></div>
+
+<script type="text/javascript">
+    function format_hard_due_date(name, id) {
+        var item=this.grid.getItem(id);
+        if(!item) return name;
+        switch (this.grid.store.getValue(this.grid.getItem(id), 'hard_due_date')) {
+            case null :
+            case undefined :
+            case 'unset' :
+                return name;
+            default:
+                return "<a href='" + oilsBasePath +
+                    "/conify/global/config/hard_due_date?name=" +
+                    encodeURIComponent(name) + "'>" + name + "</a>";
+        }
+    }
+</script>
+[% END %]
+

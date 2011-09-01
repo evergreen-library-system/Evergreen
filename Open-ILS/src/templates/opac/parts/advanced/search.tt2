@@ -1,0 +1,128 @@
+<form action="[% ctx.opac_root %]/results" method="GET">
+<table id='adv_global_search' class='data_grid data_grid_center' width='100%'>
+    <tr style='border-bottom: none;'>
+        <!-- Contains the user-addable(?) rows to define search class, containment and text -->
+        <td valign='top' class='adv_global_input_container'>
+            <table width='100%' id='adv_global_input_table'>
+                <thead>
+                    <tr>
+                        <td>
+                            <div style="width:100%;" class="header_middle">
+                                [% l("Search Input") %]
+                            </div>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody id='adv_global_tbody'>
+                    [% INCLUDE "opac/parts/advanced/global_row.tt2" %]
+                    <!-- add a new row -->
+                    <tr id='adv_global_addrow'>
+                        <td align='left' style="padding-top:7px;">
+                            <a href="javascript:;" id="myopac_new_global_row" onclick='addSearchRow();'>[% l('Add Search Row') %]</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td align='top'>
+          <div style="width:100%;" class="header_middle">[% l('Search Filters') %]</div>
+          <table cellpadding='10' cellspacing='0' border='0'><tr>
+            <td valign='top'>
+                <strong>[% l("Item Type") %]</strong><br />
+                [%  INCLUDE "opac/parts/coded_value_selector.tt2"
+                        attr=["mattype", "item_type"] multiple="multiple" size="4" %]
+            </td>
+            <td valign='top'>
+                <strong>[% l("Language") %]</strong><br />
+                [%  INCLUDE "opac/parts/coded_value_selector.tt2"
+                        attr="item_lang" multiple="multiple" size="4" %]
+            </td>
+            <td valign='top'>
+                <strong>[% l("Audience") %]</strong><br />
+                    [% INCLUDE "opac/parts/coded_value_selector.tt2"
+                        attr="audience" multiple="multiple" size="4" %]
+                </select>
+            </td>
+            <td valign='top'>
+            <strong>[% l("Sort Results") %]</strong>
+              <table class='adv_global_filter_sort'>
+                <tr>
+                    <td align='center' width='100%'>
+                        [% INCLUDE "opac/parts/filtersort.tt2"
+                            value=CGI.param('sort') %]
+                    </td>
+                </tr>
+              </table>
+            </td>
+          </tr></table>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <table cellpadding='10' cellspacing='0' border='0'>
+                <tbody>
+                    <tr>
+                        <td valign='top'>
+                            <strong>[% l("Search Library") %]</strong><br />
+                            [% PROCESS "opac/parts/org_selector.tt2";
+                                PROCESS build_org_selector name='loc' value=loc %]
+                            <div style="position:relative;top:7px;">
+                                <input type='checkbox' name="modifier"
+                                    value="available"[% CGI.param('modifier').grep('available').size ? ' checked="checked"' : '' %]
+                                    id='opac.result.limit2avail' />
+                                <label style="position:relative;top:-2px;"
+                                    for='opac.result.limit2avail'>
+                                    [% l("Limit to Available") %]</label>
+                            </div>
+                        </td>
+                        <td valign='top'>
+                            <strong>[% l("Publication Year") %]</strong><br />
+                            <select name='pubdate' onchange='
+                                if(this.selectedIndex == 3)
+                                    unHideMe($("adv_global_pub_date_2_span"));
+                                else
+                                    hideMe($("adv_global_pub_date_2_span"));'>
+                                    [%  FOR opt IN [
+                                            {"code" => "is", "label" => l("Is")},
+                                            {"code" => "before", "label" => l("Before")},
+                                            {"code" => "after", "label" => l("After")},
+                                            {"code" => "between", "label" => l("Between")}
+                                        ];
+                                            |l(opt.code, opt.label) %]
+                                        <option value="[_1]"[% CGI.param('pubdate') == opt.code ? ' selected="selected"' : '' %]>[_2]</option>
+                                    [%  END; END %]
+                            </select>    
+                            <div style='margin-top:5px;'>
+                                <input name='date1' type='text' size='4' maxlength='4' value="[% CGI.param('date1') | html %]" />
+                                <span id='adv_global_pub_date_2_span' class='[% CGI.param("pubdate") == "between" ? "" : "hide_me" %]'>
+                                   [% l("and") %] <input name='date2' type='text' size='4' maxlength='4' value="[% CGI.param('date2') | html %]" />
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- TODO: Copy Location Filter -->
+                    <tr class='hide_me'>
+                        <td align='right'>[% l("Shelving Location") %]</td>
+                        <td align='left'>
+                            <select size='3' multiple='multiple'>
+                                [%# TODO: add filter options... %]
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    <tr class='border_4_2'>
+        <td align="left" colspan='2'>
+            <input type="image" src="[% ctx.media_prefix %]/images/search_btn.gif"
+            alt="[% l('Search') %]" class='pointer' />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="[% mkurl('', {}, 1) %]">[% l('Reset Form') %]</a>
+        </td>
+    </tr>
+</table>
+<input type="hidden" name="_adv" value="1" />
+</form>

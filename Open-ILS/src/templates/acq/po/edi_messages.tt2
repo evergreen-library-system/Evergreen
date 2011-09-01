@@ -1,0 +1,46 @@
+[% WRAPPER "base.tt2" %]
+[% ctx.page_title = "EDI Messages" %]
+[% IF ctx.page_args.0 %]
+<h1>EDI Messages (Purchase Order [% ctx.page_args.0 %])</h1>
+[% ELSE %]
+<h1>EDI Messages</h1>
+[% END  %]
+<br/>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <table  jsId="edimGrid"
+            autoHeight='true'
+            dojoType="openils.widget.AutoGrid"
+            defaultCellWidth="'auto'"
+            query="{id: '*'}"
+            [% IF ctx.page_args.0 %]
+            fieldOrder="['message_type', 'status', 'create_time', 'translate_time', 'process_time', 'error_time', 'error', 'account', 'remote_file']"
+            suppressFields="['id', 'edi', 'jedi', 'purchase_order']"
+            [% ELSE %]
+            fieldOrder="['purchase_order', 'message_type', 'status', 'create_time', 'translate_time', 'process_time', 'error_time', 'error', 'account', 'remote_file']"
+            suppressFields="['id', 'edi', 'jedi']"
+            [% END  %]
+            editStyle='pane'
+            fmClass='acqedim'
+            editOnEnter='true'
+            editReadOnly='true'
+            showPaginator='true'>
+    </table>
+</div>
+
+<script type="text/javascript">
+    dojo.require('openils.Util');
+    dojo.require('openils.widget.AutoGrid');
+    dojo.require('openils.widget.Textarea');
+
+    var poId = "[% ctx.page_args.0 %]";
+    openils.Util.addOnLoad(
+        function() {
+            if (poId) {
+                edimGrid.loadAll({order_by : {acqedim :  'create_time DESC'}}, {purchase_order : poId});
+            } else  {
+                edimGrid.loadAll({order_by : {acqedim :  'create_time DESC'}});
+            }
+        }
+    );
+</script>
+[% END %]

@@ -1,0 +1,115 @@
+[% WRAPPER 'base.tt2' %]
+[% ctx.page_title = 'Lineitem Search' %]
+<!-- later: "[% ctx.page_args.0 %]" -->
+<div id="oils-acq-li-search-form-holder" class="hidden">
+    <h1 class="oils-acq-li-search">Lineitem Search</h1>
+    <form dojoType="dijit.form.Form" action="" method=""
+        id="oils-acq-li-search-form" jsId="searchForm">
+        <script type="dojo/method" event="onSubmit">
+            doSearch(this.getValues());
+            return false; /* no redirect */
+        </script>
+
+        <div class="oils-acq-li-search-form-row">
+            <label class="oils-acq-li-search" for="state_selector">
+                Lineitem state
+            </label>
+            <input class="oils-acq-li-search" name="state"
+                dojoType="dijit.form.FilteringSelect" required="false"
+                id="state_selector" jsId="stateSelector"
+                labelAttr="description" searchAttr="description"
+                />
+            <label class="oils-acq-li-search" for="agency_selector">
+                PO ordering agency
+            </label>
+            <input class="oils-acq-li-search" id="agency_selector" />
+        </div>
+        <div class="oils-acq-li-search-form-row">
+            <input class="oils-acq-li-search" dojoType="dijit.form.RadioButton"
+                name="attr_search_type" jsId="attrSearchTypeNone"
+                id="attr_search_type_none" value="none" checked="checked"
+                onChange="toggleAttrSearchType(this.value, this.checked);" />
+            <label for="attr_search_type_none" class="oils-acq-li-search">
+                No further attributes to search by
+            </label>
+        </div>
+        <div class="oils-acq-li-search-form-row">
+            <!-- the "style" attribute on this input seems to be necessary as
+                I can't get the same effect from CSS for some reason -->
+            <input class="oils-acq-li-search" dojoType="dijit.form.RadioButton"
+                name="attr_search_type" jsId="attrSearchTypeScalar"
+                id="attr_search_type_scalar" value="scalar"
+                style="vertical-align: top;"
+                onChange="toggleAttrSearchType(this.value, this.checked);" />
+            <label for="attr_search_type_scalar" class="oils-acq-li-search">
+                Search by attribute values
+            </label>
+            <div id="oils-acq-li-search-attr-scalar" class="hidden">
+<!--            <div class="oils-acq-li-search-conjunction">
+                    <em>Show results for which:</em><br />
+                    <input dojoType="dijit.form.RadioButton"
+                        id="scalar_search_conjuction_or"
+                        name="scalar_search_conjunction" value="or"
+                        checked="checked" class="oils-acq-li-search" />
+                    <label for="scalar_search_conjuction_or"
+                        class="oils-acq-li-search">ANY of the following terms match</label>
+                    <br />
+                    <input dojoType="dijit.form.RadioButton"
+                        id="scalar_search_conjuction_and"
+                        name="scalar_search_conjunction" value="and"
+                        class="oils-acq-li-search" />
+                    <label for="scalar_search_conjuction_and"
+                        class="oils-acq-li-search">ALL of the following terms match</label>
+                </div> -->
+                <div class="oils-acq-li-search-scalar hidden"
+                    id="oils-acq-li-search-scalar-template">
+                    <input class="oils-acq-li-search" name="def" />
+                    <input class="oils-acq-li-search" name="value" />
+                    <a class="oils-acq-li-search" title="Remove this row"
+                        href="javascript:void(0);" />(X)</a>
+                </div>
+                <div id="oils-acq-li-search-scalar-adder">
+                    <span dojoType="dijit.form.Button"
+                        class="oils-acq-li-search"
+                        onclick="scalarAttrSearchManager.add();">
+                        Add more search terms
+                    </span>
+                    <span dojoType="dijit.form.Button"
+                        class="oils-acq-li-search"
+                        onclick="scalarAttrSearchManager.newBrief();">
+                        New brief record like this
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="oils-acq-li-search-form-row">
+            <input class="oils-acq-li-search" dojoType="dijit.form.RadioButton"
+                name="attr_search_type" jsId="attrSearchTypeArray"
+                id="attr_search_type_array" value="array"
+                onChange="toggleAttrSearchType(this.value, this.checked);" />
+            <label for="attr_search_type_array" class="oils-acq-li-search">
+                Provide a file of search terms
+            </label>
+            <div id="oils-acq-li-search-attr-array" class="hidden">
+                <input class="oils-acq-li-search"
+                    name="array_def" dojoType="dijit.form.FilteringSelect"
+                    jsId="attrArrayDefSelector"
+                    labelAttr="description" searchAttr="description" />
+                <span class="oils-acq-li-search">
+                    <span id="records-up">0</span> term(s) prepared for search
+                </span>
+                <span class="oils-acq-li-search" dojoType="dijit.form.Button"
+                    onClick="loadTermsFromFile();">Add file</span>
+                <span class="oils-acq-li-search" dojoType="dijit.form.Button"
+                    onClick="clearTerms();">Clear loaded search terms</span>
+            </div>
+        </div>
+        <div class="oils-acq-li-search-form-row"
+            id="oils-acq-li-search-attr-submit">
+            <span dojoType="dijit.form.Button" type="submit">Search</span>
+        </div>
+    </form>
+</div>
+[% INCLUDE 'acq/common/li_table.tt2' %]
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/lineitem/search.js"></script>
+[% END %]

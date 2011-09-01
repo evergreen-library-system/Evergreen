@@ -1,0 +1,5 @@
+[% WRAPPER "base.tt2" %]
+[% ctx.page_title = "Create Purchase Order" %]
+<h1>Create Purchase Order</h1>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/po/create.js"> </script>
+[% END %]

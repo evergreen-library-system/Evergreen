@@ -1,0 +1,28 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = 'Invoice Item Types' %]
+<div dojoType="dijit.layout.ContentPane" layoutAlign="top" class="oils-header-panel">
+    <div>Invoice Item Types</div>
+    <div>
+        <button dojoType="dijit.form.Button" onClick="aiitGrid.showCreateDialog();">New Invoice Item Type</button>
+        <button dojoType="dijit.form.Button" onClick="aiitGrid.deleteSelected();">Delete Selected</button>
+    </div>
+</div>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <table  jsId="aiitGrid"
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['code', 'name', 'prorate']"
+            defaultCellWidth="'auto'"
+            query="{id: '*'}"
+            fmClass="aiit"
+            editOnEnter="true">
+    </table>
+</div>
+
+<script type="text/javascript">
+    dojo.require("openils.widget.AutoGrid");
+    dojo.require("dijit.form.FilteringSelect");
+    openils.Util.addOnLoad(
+        function() { aiitGrid.loadAll({"order_by": {"aiit": "name"}}); }
+    );
+</script>
+[% END %]

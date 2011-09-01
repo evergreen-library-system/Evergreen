@@ -1,0 +1,24 @@
+[% WRAPPER "base.tt2" %]
+[% ctx.page_title = "Items by Bibliographic ID" %]
+<div id="acq-frombib-upload-box">
+    <div class="oils-acq-basic-roomy">
+        Provide one or more CSV files whose first columns
+        contain Evergreen bibliographic record IDs.
+    </div>
+    <div class="oils-acq-basic-roomy">
+        <span id="acq-frombib-upload"></span>
+    </div>
+    <div id="acq-frombib-begin-holder" class="oils-acq-basic-roomy hidden">
+        <button id="acq-frombib-begin" onclick="beginSearch();">
+            Retrieve records
+        </button>
+    </div>
+</div>
+<div id="acq-frombib-reload-box" class="oils-acq-basic-roomy hidden">
+    <button onclick="location.href=location.href;">Begin a new search</button>
+</div>
+<hr />
+[% INCLUDE "acq/common/li_table_pager.tt2" %]
+[% INCLUDE "acq/common/li_table.tt2" %]
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/picklist/from_bib.js"> </script>
+[% END %]

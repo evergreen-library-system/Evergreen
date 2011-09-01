@@ -1,0 +1,41 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = 'Group Penalty Thresholds' %]
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
+    <div>Penalty Threshold</div>
+    <div>
+        <button dojoType='dijit.form.Button' onClick='gptGrid.showCreateDialog()'>New Penalty Threshold</button>
+        <button dojoType='dijit.form.Button' onClick='gptGrid.deleteSelected()'>Delete Selected</button>
+    </div>
+</div>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <span>Context Org Unit</span>
+    <select dojoType="openils.widget.OrgUnitFilteringSelect" 
+            jsId='contextOrgSelector' 
+            searchAttr='shortname' 
+            labelAttr='shortname'> 
+    </select>
+</div>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <table  jsId="gptGrid" 
+            autoHeight='true'
+            dojoType="openils.widget.AutoGrid" 
+            fieldOrder="['id', 'grp', 'org_unit', 'penalty', 'threshold']"
+            defaultCellWidth='15'
+            query="{id: '*'}" 
+            fmClass='pgpt' 
+            editOnEnter='true'>
+    </table>    
+</div>
+    
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/permission/grp_penalty_threshold.js'> </script>    
+<script type='javascript/text'>
+    var org_id = openils.User.user.ws_ou();
+    var list = fieldmapper.aou.findOrgUnit(org_id).orgNodeTrail().map( 
+        function (i) { return i.id() } );
+</script>
+
+[% END %]
+

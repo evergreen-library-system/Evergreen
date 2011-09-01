@@ -1,0 +1,63 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = 'Resource Attributes' %]
+<div dojoType="dijit.layout.ContentPane" layoutAlign="top" class="oils-header-panel">
+    <div>Resource Attributes</div>
+    <div>
+        <button dojoType='dijit.form.Button' onClick='braGrid.showCreateDialog()'>New Resource Attribute</button>
+        <button dojoType='dijit.form.Button' onClick='braGrid.deleteSelected()'>Delete Selected</button>
+    </div>
+</div>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <span>Context Org Unit</span>
+    <select dojoType="openils.widget.OrgUnitFilteringSelect"
+            jsId='contextOrgSelector'
+            searchAttr='shortname'
+            labelAttr='shortname'>
+    </select>
+</div>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <table  jsId="braGrid"
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['name', 'owner', 'resource_type', 'required']"
+            query="{id: '*'}"
+            fmClass='bra'
+            autoHeight='true'
+            showPaginator='true'
+            editOnEnter='true'>
+    </table>
+</div>
+
+<script type ="text/javascript">
+    dojo.require("openils.widget.PCrudAutocompleteBox");
+    dojo.require('openils.widget.AutoGrid');
+    dojo.require('openils.widget.OrgUnitFilteringSelect');
+
+    function filterGrid() {
+        braGrid.resetStore();
+        var unit = contextOrgSelector.getValue();
+        var list = fieldmapper.aou.findOrgUnit(unit).orgNodeTrail().map( function (i) {return i.id() } );
+
+        if(unit){
+            braGrid.loadAll({order_by:{bra : 'name'}}, { 'owner' : list });
+        } else {
+            braGrid.loadAll({order_by:{bra : 'name'}});
+        }
+    }
+
+    openils.Util.addOnLoad(
+        function() {
+            braGrid.overrideEditWidgets.resource_type =
+                new openils.widget.PCrudAutocompleteBox({
+                    "fmclass": "brt", "searchAttr": "name"
+                });
+            braGrid.overrideEditWidgets.resource_type.shove = {"create": ""};
+            var org_id = openils.User.user.ws_ou();
+            var list = fieldmapper.aou.findOrgUnit(org_id).orgNodeTrail().map( function (i) {return i.id() } );
+
+            new openils.User().buildPermOrgSelector('ADMIN_BOOKING_RESOURCE_ATTR', contextOrgSelector, null, function() {
+                dojo.connect(contextOrgSelector, 'onChange', filterGrid);});
+            braGrid.loadAll({order_by:{bra : 'name'}}, { 'owner' : list });
+        }
+    );
+</script>
+[% END %]
