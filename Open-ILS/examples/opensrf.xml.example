@@ -363,6 +363,11 @@ vim:et:ts=4:sw=4:
                         <staff>7200</staff>
                         <temp>300</temp>
                     </default_timeout>
+                    <auth_limits>
+                        <seed>30</seed> <!-- amount of time a seed request is valid for -->
+                        <block_time>90</block_time> <!-- amount of time since last auth or seed request to save failure counts -->
+                        <block_count>10</block_count> <!-- number of failures before blocking access -->
+                    </auth_limits>
                 </app_settings>
             </open-ils.auth>
 
