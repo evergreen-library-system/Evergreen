@@ -58,95 +58,21 @@
             </tr>
 
             <tr>
-                <td class='color_4 light_border'>
-                [% l("Day Phone") %]</td>
-
-                <td class='light_border'
-                    id='myopac_summary_dayphone'>[% ctx.user.day_phone | html %]</td>
-
-                <td class='light_border'><a href='#'
-                   class="hide_me"
-                   id='myopac_summary_phone1_change'
-                   style=
-                   'text-decoration: underline;'>[% l("Change") %]</a></td>
-            </tr>
-
-            <tr id='myopac_update_phone1_row'
-                class='hide_me'>
-                <td class='myopac_update_cell'
-                    colspan='3'>
-                    <span class='myopac_update_span'>
-                        Enter New [% l("Day Phone") %]:
-                    </span>
-
-                    <input type='text' size='24' id='myopac_new_phone1' />
-                    <span class='myopac_update_span'>
-                        <button>
-                            <span class='myopac_update_span'>
-                                [% l("Submit") %]</span>
-                        </button>
-                    </span>
-                    <span class='myopac_update_span'>
-                        <button>
-                            <span class='myopac_update_span'>
-                                [% l("Cancel") %]</span>
-                        </button>
-                    </span>
-                </td>
+                <td class='color_4 light_border'>[% l("Day Phone") %]</td>
+                <td class='light_border'>[% ctx.user.day_phone | html %]</td>
+                <td></td>
             </tr>
 
             <tr>
-                <td class='color_4 light_border'>
-                [% l("Evening Phone") %]</td>
-
-                <td class='light_border'
-                    id='myopac_summary_eveningphone'>[% ctx.user.evening_phone | html %]</td>
-
-                <td class='light_border'><a href='#'
-                   class="hide_me"
-                   id='myopac_summary_phone2_change'
-                   style=
-                   'text-decoration: underline;'>[% l("Change") %]</a></td>
-            </tr>
-
-            <tr id='myopac_update_phone2_row'
-                class='hide_me'>
-                <td class='myopac_update_cell'
-                    colspan='3'><span class='myopac_update_span'>New
-                    [% l("Evening Phone") %]:</span>
-                    <input type='text' size='24' id='myopac_new_phone2' />
-                    <span class='myopac_update_span'><button><span class=
-                        'myopac_update_span'>[% l("Submit") %]</span></button></span>
-                    <span class='myopac_update_span'><button><span class=
-                        'myopac_update_span'>[% l("Cancel") %]</span></button></span>
-                </td>
+                <td class='color_4 light_border'>[% l("Evening Phone") %]</td>
+                <td class='light_border'>[% ctx.user.evening_phone | html %]</td>
+                <td></td>
             </tr>
 
             <tr>
-                <td class='color_4 light_border'>
-                [% l("Other Phone") %]</td>
-
-                <td class='light_border'
-                    id='myopac_summary_otherphone'>[% ctx.user.other_phone | html %]</td>
-
-                <td class='light_border'><a href='#'
-                   class="hide_me"
-                   id='myopac_summary_phone3_change'
-                   style=
-                   'text-decoration: underline;'>[% l("Change") %]</a></td>
-            </tr>
-
-            <tr id='myopac_update_phone3_row'
-                class='hide_me'>
-                <td class='myopac_update_cell'
-                    colspan='3'><span class='myopac_update_span'>Enter
-                    New [% l("Other Phone") %]:</span>
-                    <input type='text' size='24' id='myopac_new_phone3' />
-                    <span class='myopac_update_span'><button><span class=
-                        'myopac_update_span'>[% l("Submit") %]</span></button></span>
-                    <span class='myopac_update_span'><button><span class=
-                        'myopac_update_span'>[% l("Cancel") %]</span></button></span>
-                </td>
+                <td class='color_4 light_border'>[% l("Other Phone") %]</td>
+                <td class='light_border'>[% ctx.user.other_phone | html %]</td>
+                <td></td>
             </tr>
 
             <tr>
@@ -187,49 +113,19 @@
             </tr>[% END %]
 
             <tr>
-                <td class='color_4 light_border'>
-                [% l("Active Barcode") %]</td>
-
+                <td class='color_4 light_border'>[% l("Active Barcode") %]</td>
                 <td class='light_border'>[% ctx.user.card.barcode %]</td>
-
                 <td></td>
             </tr>
 
             <tr>
-                <td class='color_4 light_border'>
-                [% l("Home Library") %]</td>
+                <td class='color_4 light_border'>[% l("Home Library") %]</td>
                 <td class='light_border'>[% ctx.user.home_ou.name | html %]</td>
-                <td><a href='#'
-                   class="hide_me"
-                   style='text-decoration: underline;'>[% l("Change") %]</a></td>
+                <td></td>
             </tr>
-            <tr class='hide_me'>
-                <td class='myopac_update_cell'
-                    colspan='3'>
-                    <span class='myopac_update_span'>
-                        New home library:</span>
-                    <select>
-                    </select>
-                    <span class='myopac_update_span'>
-                        <button>
-                            <span class= 'myopac_update_span'>
-                                [% l("Submit") %]</span>
-                        </button>
-                    </span>
-                    <span class='myopac_update_span'>
-                        <button>
-                            <span class= 'myopac_update_span'>
-                                [% l("Cancel") %]</span>
-                        </button>
-                    </span>
-                </td>
-            </tr>
-            <tr class="hide_me">
-                <td class='color_4 light_border'>
-                    [% l("Account Creation Date") %]
-                </td>
-                <td class='light_border'
-                    id='myopac_summary_create_date'></td>
+            <tr>
+                <td class='color_4 light_border'>[% l("Account Creation Date") %]</td>
+                <td class='light_border'>[% date.format(ctx.parse_datetime(ctx.user.create_date), DATE_FORMAT) %]</td>
                 <td></td>
             </tr>
         </tbody>
@@ -334,12 +230,8 @@
                             <tr>
                                 <td><input type='submit' value="[% l('Save Changes') %]"/></td>
                                 <td>
-                                    [% IF pending_addr;
-                                        url = mkurl('', {delete_pending => pending_addr.id}, 1);
-                                    ELSE;
-                                        url = mkurl('', {}, 1);
-                                    END %]
-                                    <a href="[% url %]">[% l('Discard Pending Address') %]</a>
+                                    [% params = (pending_addr) ? {delete_pending => pending_addr.id} : {} %]
+                                    <a href="[% mkurl('', params, 1) %]">[% l('Discard Pending Address') %]</a>
                                 </td>
                             </tr>
                             <tr><td colspan='2'><i>[% l('Address changes will be verified by staff') %]</i></td></tr>

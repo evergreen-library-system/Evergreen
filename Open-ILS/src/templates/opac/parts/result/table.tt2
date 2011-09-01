@@ -19,12 +19,13 @@
     <table cellpadding="0" cellspacing="0" border="0" width="100%">
         <tr>
             <td valign="top" width="1" style="padding-right:20px;">
-                <div style="width:174px;" class="hide_me" id="tehSideBar">SIDEBAR TODO
+                <div style="width:174px;" class="hide_me">
+                    SIDEBAR TODO
                 </div>
             </td>
             <td class='opac-auto-015' width="1"></td>
             <td valign="top">
-                <table id="res_table" cellpadding="0" cellspacing="0"
+                <table cellpadding="0" cellspacing="0"
                     border="0" width="100%" style="margin-top:10px;">
                     <tbody id="result_table">
                     [%  FOR rec IN ctx.records;

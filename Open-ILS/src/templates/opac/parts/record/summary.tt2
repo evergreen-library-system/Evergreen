@@ -108,7 +108,7 @@
                             <td nowrap='nowrap' valign="top">
                                 <strong>[% IF attrs.publisher; l("Publisher"); END %]</strong>
                             </td>
-                            <td valign="top" id='rdetail_publisher'>[% attrs.publisher | html %]</td>
+                            <td valign="top">[% attrs.publisher | html %]</td>
                             <td nowrap='nowrap' valign="top">
                                 <strong>[% IF attrs.pubdate; l("Publication Date"); END %]</strong>
                             </td>

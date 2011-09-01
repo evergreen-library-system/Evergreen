@@ -52,12 +52,8 @@
                 [% INCLUDE "opac/parts/coded_value_selector.tt2" attr=["mattype", "item_type"] none_ok=1 none_label=l('All Formats') %]
             </td>
             <td>
-                <span id='depth_selector_span'>
+                <span>
                     [% PROCESS build_org_selector name='loc' value=CGI.param('loc') %]
-                </span>
-                <span id='lib_selector_span'>
-                    <a id='lib_selector_link' class='classic_link'
-                        href='#'>[% l("Choose a library to search") %]</a>
                 </span>
             </td>
         </tr>
