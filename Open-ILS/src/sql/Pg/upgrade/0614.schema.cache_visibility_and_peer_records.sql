@@ -1,3 +1,7 @@
+BEGIN;
+
+INSERT INTO config.upgrade_log (version) VALUES ('0614'); --miker/phasefx
+
 CREATE OR REPLACE FUNCTION asset.cache_copy_visibility () RETURNS TRIGGER as $func$
 DECLARE
     add_front       TEXT;
@@ -205,3 +209,6 @@ BEGIN
     RETURN NEW;
 END;
 $func$ LANGUAGE PLPGSQL;
+
+COMMIT;
+
