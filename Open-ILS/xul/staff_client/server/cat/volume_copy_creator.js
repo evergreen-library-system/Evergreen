@@ -720,7 +720,7 @@ g.render_barcode_entry = function(node,callnumber_composite_key,count,ou_id) {
                 tb.setAttribute('acp_id', g.org_label_existing_copy_map[ ou_id ][ callnumber_composite_key ][i].id());
                 var temp_parts = g.org_label_existing_copy_map[ ou_id ][ callnumber_composite_key ][i].parts();
                 temp_parts = util.functional.filter_list(
-                    temp_parts,
+                    temp_parts || [],
                     function(p) {
                         return p.record() == g.doc_id; // filter out foreign parts
                     }
