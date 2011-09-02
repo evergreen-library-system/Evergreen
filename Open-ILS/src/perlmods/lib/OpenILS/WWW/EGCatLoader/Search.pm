@@ -297,7 +297,8 @@ sub marc_expert_search {
 
     my $query = [];
     for (my $i = 0; $i < scalar @tags; $i++) {
-        next if ($tags[$i] eq "" || $subfields[$i] eq "" || $terms[$i] eq "");
+        next if ($tags[$i] eq "" || $terms[$i] eq "");
+        $subfields[$i] = '_' unless $subfields[$i];
         push @$query, {
             "term" => $terms[$i],
             "restrict" => [{"tag" => $tags[$i], "subfield" => $subfields[$i]}]
@@ -305,45 +306,45 @@ sub marc_expert_search {
     }
 
     $logger->info("query for expert search: " . Dumper($query));
+
     # loc, limit and offset
     my $page = $self->cgi->param("page") || 0;
     my $limit = $self->_get_search_limit;
     my $org_unit = $self->cgi->param("loc") || $self->ctx->{aou_tree}->()->id;
     my $offset = $page * $limit;
 
-    if (my $search = create OpenSRF::AppSession("open-ils.search")) {
-        my $results = $search->request(
-            "open-ils.search.biblio.marc", {
-                "searches" => $query, "org_unit" => $org_unit
-            }, $limit, $offset
-        )->gather(1);
-        $search->kill_me;
+    $self->ctx->{records} = [];
+    $self->ctx->{search_facets} = {};
+    $self->ctx->{page_size} = $limit;
+    $self->ctx->{hit_count} = 0;
+        
+    # nothing to do
+    return Apache2::Const::OK if @$query == 0;
 
-        if (defined $U->event_code($results)) {
-            $self->apache->log->warn(
-                "open-ils.search.biblio.marc returned event: " .
-                $U->event_code($results)
-            );
-            return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
-        }
+    my $results = $U->simplereq(
+        'open-ils.search', 
+        'open-ils.search.biblio.marc',
+        {searches => $query, org_unit => $org_unit}, $limit, $offset);
 
-        my ($facets, @data) = $self->get_records_and_facets(
-            # filter out nulls that will turn up here
-            [ grep { $_ } @{$results->{ids}} ],
-            undef, {flesh => "{holdings_xml,mra}"}
+    if (defined $U->event_code($results)) {
+        $self->apache->log->warn(
+            "open-ils.search.biblio.marc returned event: " .
+            $U->event_code($results)
         );
-
-        $self->ctx->{records} = [@data];
-        $self->ctx->{search_facets} = {};
-
-        $self->ctx->{page_size} = $limit;
-        $self->ctx->{hit_count} = $results->{count};
-
-        return Apache2::Const::OK;
-    } else {
-        $self->apache->log->warn("couldn't connect to open-ils.search");
         return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
     }
+
+    my ($facets, @data) = $self->get_records_and_facets(
+        # filter out nulls that will turn up here
+        [ grep { $_ } @{$results->{ids}} ],
+        undef, {flesh => "{holdings_xml,mra}"}
+    );
+
+    $self->ctx->{records} = [@data];
+    $self->ctx->{page_size} = $limit;
+    $self->ctx->{hit_count} = $results->{count};
+
+    return Apache2::Const::OK;
 }
 
 sub call_number_browse_standalone {
