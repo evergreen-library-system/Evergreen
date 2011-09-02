@@ -1198,7 +1198,7 @@ BEGIN
 
     IF TG_TABLE_NAME = 'peer_bib_copy_map' THEN
         IF TG_OP = 'INSERT' THEN
-            add_peer_query := add_peer_query || ' AND cp.id = ' || NEW.target_copy || ' AND pbcm.record = ' || NEW.peer_record;
+            add_peer_query := add_peer_query || ' AND cp.id = ' || NEW.target_copy || ' AND pbcm.peer_record = ' || NEW.peer_record;
             EXECUTE add_front || add_peer_query || add_back;
             RETURN NEW;
         ELSE
@@ -1289,7 +1289,7 @@ BEGIN
                 EXECUTE add_front || add_base_query || add_back;
             ELSIF TG_TABLE_NAME = 'record_entry' THEN
                 add_base_query := add_base_query || ' AND cn.record = ' || NEW.id;
-                add_peer_query := add_peer_query || ' AND pbcm.record = ' || NEW.id;
+                add_peer_query := add_peer_query || ' AND pbcm.peer_record = ' || NEW.id;
                 EXECUTE add_front || add_base_query || ' UNION ' || add_peer_query || add_back;
             END IF;
  
