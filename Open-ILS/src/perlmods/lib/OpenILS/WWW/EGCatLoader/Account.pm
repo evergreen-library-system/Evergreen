@@ -647,11 +647,20 @@ sub load_place_hold {
 
 sub post_hold_redirect {
     my $self = shift;
+    
+    # XXX: Leave the barcode cookie in place.  Otherwise, it's not 
+    # possible to place more than one hold for the patron within 
+    # a staff/patron session.  This does leave the barcode to linger 
+    # longer than is ideal, but normal staff work flow will cause the 
+    # cookie to be replaced with each new patron anyway.
+    # TODO:  See about getting the staff client to clear the cookie
+    return $self->generic_redirect;
 
     # We also clear the patron_barcode (from the staff client)
     # cookie at this point (otherwise it haunts the staff user
     # later). XXX todo make sure this is best; also see that
     # template when staff mode calls xulG.opac_hold_placed()
+
     return $self->generic_redirect(
         undef,
         $self->cgi->cookie(
