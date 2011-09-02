@@ -1,3 +1,13 @@
+-- Evergreen DB patch 0614.schema.cache_visibility_and_peer_records.sql
+--
+--  LP#837566 undeleting a bib record causes an error 
+--
+BEGIN;
+
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0614', :eg_version);
+
 CREATE OR REPLACE FUNCTION asset.cache_copy_visibility () RETURNS TRIGGER as $func$
 DECLARE
     add_front       TEXT;
@@ -205,3 +215,6 @@ BEGIN
     RETURN NEW;
 END;
 $func$ LANGUAGE PLPGSQL;
+
+
+COMMIT;
