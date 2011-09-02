@@ -46,7 +46,7 @@
                 [% END %]
                 <div class="results_header_div"></div>
                     <div class="results_header_lbl">[% l('Sort by') %]</div>
-                    [% INCLUDE "opac/parts/filtersort.tt2" value=CGI.param('sort') %]
+                    [% INCLUDE "opac/parts/filtersort.tt2" value=CGI.param('sort') submit_on_change=1 %]
                     <div class="results_header_div"></div>
 
                     <div class='results_header_sel' id='simple-detail-view-links'>
@@ -59,7 +59,7 @@
                     <div class="results_header_div"></div>
 
                     <input type="checkbox" id="limit_to_available" name="modifier" value="available"
-                        onchange="avail_change_adv_search(this)"
+                        onchange="limit_to_avail_onchange(this, true)"
                         [% CGI.param('modifier').grep('available').size ? ' checked="checked"' : '' %] />
 
                     <label for="limit_to_available" class="results_header_lbl">
