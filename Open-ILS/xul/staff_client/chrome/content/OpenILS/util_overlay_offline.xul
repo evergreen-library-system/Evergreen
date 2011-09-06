@@ -30,6 +30,27 @@
     </script>
     <scripts id="openils_util_scripts">
         <script type="text/javascript" src="../main/constants.js" />
+        <script>
+        <![CDATA[
+            try {
+                if (typeof xulG.url_prefix != 'undefined') {
+                    dump('pulling in custom.js in util_overlay_offline.xul\n');
+                    // Pull in local customizations
+                    var r = new XMLHttpRequest();
+                    r.open("GET", xulG.url_prefix('/xul/server/skin/custom.js'), false);
+                    r.send(null);
+                    if (r.status == 200) {
+                        dump('Evaluating /xul/server/skin/custom.js\n');
+                        eval( r.responseText );
+                    }
+                } else {
+                    dump('cannot pull in custom.js in util_overlay_offline.xul\n');
+                }
+            } catch(E) {
+                dump('cannot pull in custom.js in util_overlay_offline.xul: ' + E + '\n');
+            }
+        ]]>
+        </script>
         <script type="text/javascript" src="util/utils.js" />
         <script type="text/javascript" src="util/CGI.js" />
         <script type="text/javascript" src="util/md5.js" />
