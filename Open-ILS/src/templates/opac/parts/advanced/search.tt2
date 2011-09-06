@@ -42,7 +42,7 @@
             <td valign='top'>
                 <strong>[% l("Audience") %]</strong><br />
                     [% INCLUDE "opac/parts/coded_value_selector.tt2"
-                        attr="audience" multiple="multiple" size="4" %]
+                        attr=["audience_group", "audience"] multiple="multiple" size="4" %]
                 </select>
             </td>
             <td valign='top'>
