@@ -3,7 +3,7 @@
 BEGIN;
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0615', :eg_version);
 
 -- evergreen.generic_map_normalizer 
 
