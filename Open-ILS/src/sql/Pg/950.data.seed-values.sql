@@ -6045,6 +6045,13 @@ INSERT INTO config.index_normalizer (name, description, func, param_count) VALUE
 	0
 );
 
+INSERT INTO config.index_normalizer (name, description, func, param_count) VALUES (
+    'Generic Mapping Normalizer', 
+    'Map values or sets of values to new values',
+    'generic_map_normalizer', 
+    1
+);
+
 -- make use of the index normalizers
 
 INSERT INTO config.metabib_field_index_norm_map (field,norm)
