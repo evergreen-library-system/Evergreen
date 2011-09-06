@@ -8680,6 +8680,57 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
+	<class id="rhcrpbap" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="reporter::hold_copy_ratio_per_bib_and_pickup" oils_persist:readonly="true" reporter:label="Hold/Copy Ratio per Bib and Pickup Library">
+		<oils_persist:source_definition>
+            SELECT *,
+                CASE WHEN copy_count_at_pickup_library = 0 THEN 'Infinity'::FLOAT ELSE holds_at_pickup_library::FLOAT/copy_count_at_pickup_library END AS pickup_library_ratio,
+                CASE WHEN copy_count_everywhere = 0 THEN 'Infinity'::FLOAT ELSE holds_everywhere::FLOAT/copy_count_everywhere END AS everywhere_ratio
+            FROM
+                (SELECT bib_record as id, pickup_lib, count(DISTINCT ahr.id) AS holds_at_pickup_library, COALESCE(count(DISTINCT ac.id),0) as copy_count_at_pickup_library
+                    FROM
+                        action.hold_request ahr
+                        JOIN reporter.hold_request_record rhrr USING (id)
+                        LEFT JOIN action.hold_copy_map ahcm ON (ahr.id = ahcm.hold)
+                        LEFT JOIN asset.copy ac ON (ahcm.target_copy = ac.id AND ahr.pickup_lib = ac.circ_lib)
+                    WHERE
+                        ahr.cancel_time IS NULL
+                        AND ahr.fulfillment_time IS NULL
+                    GROUP BY bib_record, pickup_lib
+                )x
+                JOIN
+                (SELECT bib_record as id, count(DISTINCT ahr.id) AS holds_everywhere, COALESCE(count(DISTINCT target_copy),0) as copy_count_everywhere
+                    FROM
+                        action.hold_request ahr
+                        JOIN reporter.hold_request_record rhrr USING (id)
+                        LEFT JOIN action.hold_copy_map ahcm ON (ahr.id = ahcm.hold)
+                    WHERE
+                        ahr.cancel_time IS NULL
+                        AND ahr.fulfillment_time IS NULL
+                    GROUP BY bib_record
+                )y
+                USING (id)
+		</oils_persist:source_definition>
+		<fields oils_persist:primary="id" oils_persist:sequence="biblio.record_entry">
+			<field reporter:label="Record ID" name="id" reporter:datatype="link"/>
+			<field reporter:label="Pickup Library" name="pickup_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Active Holds at Pickup Library" name="holds_at_pickup_library" reporter:datatype="int"/>
+			<field reporter:label="Holdable Copy Count at Pickup Library" name="copy_count_at_pickup_library" reporter:datatype="int"/>
+			<field reporter:label="Active Holds Everywhere" name="holds_everywhere" reporter:datatype="int"/>
+			<field reporter:label="Holdable Copy Count Everywhere" name="copy_count_everywhere" reporter:datatype="int"/>
+			<field reporter:label="Hold/Copy Ratio at Pickup Library" name="pickup_library_ratio" reporter:datatype="float"/>
+			<field reporter:label="Hold/Copy Ratio Everywhere" name="everywhere_ratio" reporter:datatype="float"/>
+		</fields>
+		<links>
+			<link field="id" reltype="has_a" key="id" map="" class="bre"/>
+			<link field="pickup_lib" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve/>
+			</actions>
+		</permacrud>
+	</class>
+
 	<!-- ********************************************************************************************************************* -->
 	<!-- What follows is a set of example extensions that are useful for PINES.  Comment out or remove if you don't want them. -->
 	<!-- ********************************************************************************************************************* -->
