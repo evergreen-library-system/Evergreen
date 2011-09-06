@@ -5221,6 +5221,7 @@ SELECT  usr,
 			<field reporter:label="Stat-Cat entry maps" name="stat_cat_entry_copy_maps" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Circulations" name="circulations" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Total Circulations" name="total_circ_count" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Last Circulation Date" name="last_circ" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Holds" name="holds" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Statistical Category Entries" name="stat_cat_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Monograph Parts" name="parts" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -5242,6 +5243,7 @@ SELECT  usr,
 			<link field="stat_cat_entries" reltype="has_many" key="owning_copy" map="stat_cat_entry" class="ascecm"/>
 			<link field="circulations" reltype="has_many" key="target_copy" map="" class="circ"/>
 			<link field="total_circ_count" reltype="might_have" key="id" map="" class="erfcc"/>
+			<link field="last_circ" reltype="might_have" key="id" map="" class="rlc"/>
 			<link field="circ_modifier" reltype="has_a" key="code" map="" class="ccm"/>
 			<link field="parts" reltype="has_many" key="target_copy" map="part" class="acpm"/>
 			<link field="peer_record_maps" reltype="has_many" key="target_copy" map="" class="bpbcm"/>
@@ -8723,6 +8725,38 @@ SELECT  usr,
 		<links>
 			<link field="id" reltype="has_a" key="id" map="" class="bre"/>
 			<link field="pickup_lib" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="rlc" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="reporter::last_circ_date" oils_persist:readonly="true" reporter:label="Last Circulation Date">
+		<oils_persist:source_definition>
+            SELECT
+                ac.id,
+                coalesce(max(actac.xact_start), ac.create_date) as last_circ_or_create
+            FROM asset.copy ac
+                 LEFT JOIN action.all_circulation actac ON ac.id = actac.target_copy
+            GROUP BY ac.id, ac.create_date
+
+            -- Alternate version, say if you have migrated last checkout information in extend_reporter.legacy_circ_timestamp:
+            --SELECT
+            --    ac.id,
+            --    greatest(max(actac.xact_start), erlct.last_cko_ts, ac.create_date) as last_circ
+            --FROM asset.copy ac
+            --     LEFT JOIN action.all_circulation actac ON ac.id = actac.target_copy
+            --     LEFT JOIN extend_reporter.legacy_circ_timestamp erlct ON ac.id = erlct.id
+            --GROUP BY ac.id, ac.create_date, erlct.last_cko_ts
+		</oils_persist:source_definition>
+		<fields oils_persist:primary="id" oils_persist:sequence="biblio.record_entry">
+			<field reporter:label="Copy ID" name="id" reporter:datatype="link"/>
+			<field reporter:label="Last Circulation or Creation Date" name="last_circ_or_create" reporter:datatype="timestamp"/>
+		</fields>
+		<links>
+			<link field="id" reltype="has_a" key="id" map="" class="acp"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
