@@ -286,7 +286,7 @@ sub initialize_filter_normalizers {
     my $tree = shift; # open-ils.cstore.direct.config.record_attr_index_norm_map.search.atomic { "id" : { "!=" : null } }, { "flesh" : 1, "flesh_fields" : { "crainm" : ["norm"] }, "order_by" : [{ "class" : "crainm", "field" : "pos" }] }
 
     for my $crainm ( @$tree ) {
-        __PACKAGE__->add_filter_normalizer( $crainm->name, $crainm->norm->func, OpenSRF::Utils::JSON->JSON2perl($crainm->params) );
+        __PACKAGE__->add_filter_normalizer( $crainm->attr, $crainm->norm->func, OpenSRF::Utils::JSON->JSON2perl($crainm->params) );
     }
 }
 
