@@ -8785,4 +8785,21 @@ CREATE TRIGGER mat_summary_upd_tgr AFTER UPDATE ON money.check_payment FOR EACH 
 CREATE TRIGGER mat_summary_del_tgr BEFORE DELETE ON money.check_payment FOR EACH ROW EXECUTE PROCEDURE money.materialized_summary_payment_del ('check_payment');
 
 
+UPDATE  metabib.record_attr
+  SET   attrs = attrs || asort
+  FROM  (SELECT record,
+                HSTORE('authorsort',FIRST(value)) AS asort
+          FROM  metabib.full_rec
+          WHERE tag like '1%'
+        GROUP BY 1) x
+  WHERE x.record = metabib.record_attr.id;
+
+UPDATE  metabib.record_attr
+  SET   attrs = attrs || tsort
+  FROM  (SELECT record,
+                HSTORE('titlesort',FIRST(value)) AS tsort
+          FROM  metabib.full_rec
+          WHERE tag = 'tnf'
+        GROUP BY 1) x
+  WHERE x.record = metabib.record_attr.id;
 
