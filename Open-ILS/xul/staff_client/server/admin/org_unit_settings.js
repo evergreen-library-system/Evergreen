@@ -199,12 +199,12 @@ function osFormatEditLink(name) {
 function osLaunchEditor(name) {
     osEditDialog._osattr = name;
     osEditDialog.show();
-    var perm = 'UPDATE_ORG_UNIT_SETTING.' + name;
+    var perms = ['UPDATE_ORG_UNIT_SETTING_ALL'];
     if(osSettings[name].update_perm && perm_codes[osSettings[name].update_perm]) {
-        perm = perm_codes[osSettings[name].update_perm];
+        perms.push(perm_codes[osSettings[name].update_perm]);
     }
     user.buildPermOrgSelector(
-        [perm, 'UPDATE_ORG_UNIT_SETTING_ALL'],
+        perms,
         osEditContextSelector, osSettings[name].context
     );
     dojo.byId('os-edit-name').innerHTML = osSettings[name].label;
