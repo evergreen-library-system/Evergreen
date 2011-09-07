@@ -917,8 +917,9 @@ CREATE TYPE evergreen.barcode_set AS (type TEXT, id BIGINT, barcode TEXT);
 
 
 CREATE TABLE config.org_unit_setting_type_log (
-    date_applied    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW() PRIMARY KEY,
-    org             SERIAL,   --REFERENCES actor.org_unit (id),
+    id              BIGSERIAL   PRIMARY KEY,
+    date_applied    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    org             INT,   --REFERENCES actor.org_unit (id),
     original_value  TEXT,
     new_value       TEXT,
     field_name      TEXT      REFERENCES config.org_unit_setting_type (name)

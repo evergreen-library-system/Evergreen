@@ -6179,7 +6179,7 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
     VALUES (
         'circ.holds.uncancel.reset_request_time',
         oils_i18n_gettext('circ.holds.uncancel.reset_request_time', 'Reset request time on un-cancel','coust', 'label'),
-        oils_i18n_gettext('circ.holds.uncancel.reset_request_time', 'When a hold is uncanceled, reset the request time to push it to the end of the queue',- 'coust', 'description'),
+        oils_i18n_gettext('circ.holds.uncancel.reset_request_time', 'When a hold is uncanceled, reset the request time to push it to the end of the queue', 'coust', 'description'),
         'bool'
     );
 

@@ -3,7 +3,7 @@
 --
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('9999');
+SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
 
 
 UPDATE config.org_unit_setting_type SET label = oils_i18n_gettext('circ.holds.behind_desk_pickup_supported', 'Behind Desk Pickup Supported', 'coust', 'label') WHERE name = 'circ.holds.behind_desk_pickup_supported';

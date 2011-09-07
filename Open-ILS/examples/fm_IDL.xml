@@ -9159,9 +9159,10 @@ SELECT  usr,
 	</class>
 
 	<class id="coustl" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::org_unit_setting_type_log" oils_persist:tablename="config.org_unit_setting_type_log" reporter:label="Organizational Unit Setting Type Log">
-		<fields oils_persist:primary="date_applied">
+		<fields oils_persist:primary="date_applied" oils_persist:sequence="config.org_unit_setting_type_log_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
 			<field name="date_applied" reporter:datatype="timestamp"/>
-			<field name="org" reporter:datatype="link"/>
+			<field name="org" reporter:datatype="org_unit"/>
 			<field name="original_value" reporter:datatype="text"/>
 			<field name="new_value" reporter:datatype="text"/>
 			<field name="field_name" reporter:datatype="link"/>
@@ -9172,10 +9173,10 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="ADMIN_ORG_UNIT_SETTING_TYPE" global_required="true"/>
+				<create permission="ADMIN_ORG_UNIT_SETTING_TYPE" context_field="org"/>
 				<retrieve/>
-				<update permission="ADMIN_ORG_UNIT_SETTING_TYPE_LOG" global_required="true"/>
-				<delete permission="ADMIN_ORG_UNIT_SETTING_TYPE_LOG" global_required="true"/>
+				<update permission="ADMIN_ORG_UNIT_SETTING_TYPE_LOG" context_field="org"/>
+				<delete permission="ADMIN_ORG_UNIT_SETTING_TYPE_LOG" context_field="org"/>
 			</actions>
 		</permacrud>
 	</class>
