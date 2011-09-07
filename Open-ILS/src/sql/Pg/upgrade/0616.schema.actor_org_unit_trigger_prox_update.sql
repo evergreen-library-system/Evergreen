@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('XXX'); -- stevecallender
+SELECT evergreen.upgrade_deps_block_check('0616', :eg_version);
 
 CREATE OR REPLACE FUNCTION actor.org_unit_prox_update () RETURNS TRIGGER as $$
 BEGIN
