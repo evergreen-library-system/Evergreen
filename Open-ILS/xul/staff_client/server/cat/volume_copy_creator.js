@@ -561,9 +561,25 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
                             var acnp_id = callnumber_composite_key.split(/:/)[1];
                             var acns_id = callnumber_composite_key.split(/:/).slice(-1)[0];
                             call_number_column_textbox.value = acn_label;
-                            classification_column_menulist.value = acnc_id;
-                            prefix_column_menulist.value = acnp_id;
-                            suffix_column_menulist.value = acns_id;
+
+                            var _call_number_column_box = call_number_column_textbox.parentNode;
+
+                            var _classification_column_box =
+                                _call_number_column_box.previousSibling.previousSibling; /* two over to the left */
+                            var _classification_column_menulist =
+                                _classification_column_box.firstChild;
+                            var _prefix_column_box =
+                                _call_number_column_box.previousSibling; /* one over to the left */
+                            var _prefix_column_menulist =
+                                _prefix_column_box.firstChild;
+                            var _suffix_column_box =
+                                _call_number_column_box.nextSibling; /* one over to the right */
+                            var _suffix_column_menulist =
+                                _suffix_column_box.firstChild;
+
+                            _classification_column_menulist.value = acnc_id;
+                            _prefix_column_menulist.value = acnp_id;
+                            _suffix_column_menulist.value = acns_id;
                             dump('\tacn_label = ' + acn_label + ' acnc_id = ' + acnc_id + ' acnp_id = ' + acnp_id + ' acns_id = ' + acns_id + '\n');
                             handle_change_to_callnumber_data({'target':call_number_column_textbox});
                         } else {
