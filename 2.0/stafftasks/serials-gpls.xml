@@ -554,7 +554,7 @@ Confirm that the box adjacent to Active is checked.  Click Save Changes.  The ro
 </simplesect>
 
 </simplesect>
-<simplesect>
+<simplesect xml:id="create_an_issuance">
 <title>Issuances</title>
 <simpara>The Issuances tab enables you to manually create an issue in the ILS.  The ILS will use the initial issue that you manually create to predict future issues.</simpara>
 <simplesect>
@@ -568,11 +568,27 @@ Click the Issuances tab in the Subscription Details.
 <step>
 <simpara>
 Click New Issuance.
+<mediaobject>
+	<alt>
+		<phrase>Create an Issuance 1</phrase> 
+	</alt>
+	<imageobject>
+		<imagedata fileref="../media/create_an_issuance1.png" format="PNG" scalefit="1" width="45%"/> 
+	</imageobject>
+</mediaobject>
 </simpara>
 </step>
 <step>
 <simpara>
 The Subscription, Creator, and Editor fields contain subscription and user IDs, respectively.  These fields are disabled because Evergreen automatically fills in these fields.
+<mediaobject>
+	<alt>
+		<phrase>Create an Issuance 2</phrase> 
+	</alt>
+	<imageobject>
+		<imagedata fileref="../media/create_an_issuance2.png" format="PNG" scalefit="1" width="60%"/> 
+	</imageobject>
+</mediaobject>
 </simpara>
 </step>
 <step>
@@ -598,6 +614,14 @@ The Holding Type appears by default and corresponds to the Type that you selecte
 <step>
 <simpara>
 In the holding code area of the New Issuance dialog, click Wizard.  The Wizard enables you to add holdings information.
+<mediaobject>
+	<alt>
+		<phrase>Create an Issuance 3</phrase> 
+	</alt>
+	<imageobject>
+		<imagedata fileref="../media/create_an_issuance3.png" format="PNG" scalefit="1" width="60%"/> 
+	</imageobject>
+</mediaobject>
 </simpara>
 </step>
 <step>
@@ -628,11 +652,27 @@ Enter the day of publication in the day field if applicable.
 <step>
 <simpara>
 Click Compile to generate the holdings code.
+<mediaobject>
+	<alt>
+		<phrase>Create an Issuance 4</phrase> 
+	</alt>
+	<imageobject>
+		<imagedata fileref="../media/create_an_issuance4.png" format="PNG" scalefit="1" width="60%"/> 
+	</imageobject>
+</mediaobject>
 </simpara>
 </step>
 <step>
 <simpara>
 Click Save.  The newly generated issuance will appear in a list in the Issuances tab of the Subscription Details.
+<mediaobject>
+	<alt>
+		<phrase>Create an Issuance 5</phrase> 
+	</alt>
+	<imageobject>
+		<imagedata fileref="../media/create_an_issuance5.png" format="PNG" scalefit="1" width="60%"/> 
+	</imageobject>
+</mediaobject>
 </simpara>
 </step>
 </procedure>
@@ -645,11 +685,27 @@ Click Save.  The newly generated issuance will appear in a list in the Issuances
 <step>
 <simpara>
 Click Subscription Details &#8594; Issuances &#8594; Generate Predictions.
+<mediaobject>
+	<alt>
+		<phrase>Generate item predicitions 1</phrase> 
+	</alt>
+	<imageobject>
+		<imagedata fileref="../media/generate_item_predictions1.png" format="PNG" scalefit="1" width="60%"/> 
+	</imageobject>
+</mediaobject>
 </simpara>
 </step>
 <step>
 <simpara>
 Choose the length of time for which you want to predict issues.  If you select the radio button to predict until end of subscription, then Evergreen will predict issues until the end date that you created when you created the subscription.  See simplesect  . 1 for more information.  If you do not have an end date, select the radio button to predict a certain number of issuances, and enter a number in the field.
+<mediaobject>
+	<alt>
+		<phrase>Generate item predicitions 2</phrase> 
+	</alt>
+	<imageobject>
+		<imagedata fileref="../media/generate_item_predictions2.png" format="PNG" scalefit="1" width="60%"/> 
+	</imageobject>
+</mediaobject>
 </simpara>
 </step>
 <step>
@@ -660,6 +716,14 @@ Click Generate.
 <step>
 <simpara>
 Evergreen will predict a run of issuances and copies.  The prediction will appear in a list.
+<mediaobject>
+	<alt>
+		<phrase>Generate item predicitions 3</phrase> 
+	</alt>
+	<imageobject>
+		<imagedata fileref="../media/generate_item_predictions3.png" format="PNG" scalefit="1" width="60%"/> 
+	</imageobject>
+</mediaobject>
 </simpara>
 </step>
 <step>
@@ -1375,4 +1439,52 @@ Edit the attributes that appear.  When you are finished, click Modify Item(s).
 	</itemizedlist>
 	<simpara>You only need the CREATE_VOLUME permission if you are barcoding items and creating new call numbers per issue.</simpara>
 </section>
+<section id="_serials_creating_a_special_issue_to_receive">  
+	<title>Creating a Special Issue to Receive</title>
+	<simpara>Sometimes you may have to create a special issue to receive that occur outside of the standard publication pattern.  To do this you need to do the following:</simpara>
+	<procedure>
+	<step>
+	<simpara>
+	<link linkend="create_an_issuance"> Create an issuance </link>  for the special edition
+	<mediaobject>
+		<alt>
+			<phrase>Create an Issuance for the Special Edition 1</phrase> 
+		</alt>
+		<imageobject>
+			<imagedata fileref="../media/serial_special_issue1.png" format="PNG" scalefit="1" width="60%"/> 
+		</imageobject>
+	</mediaobject>	
+	</simpara>
+	</step>
+	<step>
+	<simpara>
+	Click on the name of your special issue in the list of issuances
+	<mediaobject>
+		<alt>
+			<phrase>Create an Issuance for the Special Edition 1</phrase> 
+		</alt>
+		<imageobject>
+			<imagedata fileref="../media/serial_special_issue2.png" format="PNG" scalefit="1" width="60%"/>
+		</imageobject>
+	</mediaobject>
+	</simpara>
+	</step>
+	<step>
+	<simpara>
+	Click the New Items button
+	</simpara>
+	</step>
+	<step>
+	<simpara>
+	Enter the appropriate information
+	</simpara>
+	</step>
+	<step>
+	<simpara>
+	The item is now ready to receive.  If you complete the Date Received field and change the status to received then it will receive the issue but it won't create the associated copy record whereas if you leave it blank and receive the item through the Serials Control View or Batch Receive function you can create the Copy Record at that time.
+	</simpara>
+	</step>
+	</procedure>
+</section>
+
 </chapter>
