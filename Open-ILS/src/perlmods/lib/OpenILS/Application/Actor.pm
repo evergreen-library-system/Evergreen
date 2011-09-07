@@ -669,7 +669,9 @@ sub _add_update_addresses {
 
 	my $current_id; # id of the address before creation
 
-	for my $address (@{$patron->addresses()}) {
+	my $addresses = $patron->addresses();
+
+	for my $address (@$addresses) {
 
 		next unless ref $address;
 		$current_id = $address->id();
@@ -779,7 +781,9 @@ sub _add_update_cards {
 	my $evt;
 
 	my $virtual_id; #id of the card before creation
-	for my $card (@{$patron->cards()}) {
+
+	my $cards = $patron->cards();
+	for my $card (@$cards) {
 
 		$card->usr($new_patron->id());
 
