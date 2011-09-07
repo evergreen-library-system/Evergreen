@@ -14,8 +14,6 @@ $Data::Dumper::Indent = 0;
 
 my $U = 'OpenILS::Application::AppUtils';
 
-my $e = new_editor(xact => 1);
-
 # $last_channel_used is:
 # ~ index (not literal value) of last channel used in a callfile
 # ~ index is of position in @channels (zero-based)
@@ -113,6 +111,8 @@ sub rpc_client {
 
 sub handler {
     my ($self, $env) = @_;
+
+    my $e = new_editor(xact => 1);
 
     $logger->info(__PACKAGE__ . ": entered handler");
 
@@ -297,64 +297,69 @@ sub cleanup {
 }
 
 sub retrieve {
-    my $self   = shift or return;
-    my $client = rpc_client();
-    my $resp   = $client->send_request('retrieve');
-    unless ($resp and ref $resp) {
-         $logger->error(
-             __PACKAGE__ . ": Mediator Error: " .
-             ($resp ? 'Bad' : 'No') . " response to retrieve request"
-         );
-         return;
-    }
-
-    # my $count   = $resp{match_count}; # how many files we should have
-    # my @rm_list = ();
-    my @files   = _files($resp);
-    foreach (@files) {
-        my $content  = $resp->{$_}->content;
-        my $filename = $resp->{$_}->filename;
-        unless ($content) {
-            $logger->error(__PACKAGE__ .
-                ": Mediator sent incomplete/unintelligible message for " .
-                "filename " . ($filename || 'UNKNOWN'));
-            next;
-        }
-        my $feedback = feedback_hash($content);
-        my $output   = $e->retrieve_action_trigger_event_output(
-            $feedback->{event_output}
-        );
-        if ($content == $output->data) {
-            $logger->error(
-                __PACKAGE__ . ": Mediator sent duplicate file "
-                . $resp->{$_}->filename . " for event_output " .
-                $feedback->{event_output}
-            );
-        } else {
-            $output->data($content);
-        }
-        $e->commit;     # defer until after loop? probably not
-        my $clean = $client->send_request('cleanup', $filename);
-        # TODO: deletion by (comma-separated) filenames in chunks
-        # instead of individually?
-        # push @rm_list, $_; $client->send_request('cleanup', join(',',@rm_list));
-        unless ($clean and ref $clean) {
-            $logger->error(
-                __PACKAGE__ . ": Mediator Error: " .
-                ($clean ? 'Bad' : 'No') .
-                " response to cleanup $filename request");
-            next;
-        }
-        unless ($clean->{code}->value == 200 and $clean->{delete_count}) {
-            $logger->error(__PACKAGE__ . ": cleanup $filename returned " . (
-                $resp->{faultcode} ? $resp->{faultcode}->value :
-                    $resp->{     code} ? $resp->{     code}->value :
-                        " -- UNKNOWN response '$resp'"
-            ) . " with delete_count " .
-            (defined $clean->{delete_count} ? $clean->{delete_count} : 'UNDEF'));
-        }
-    }
-    return @files;
+	$logger->info("retrieve() not implemented. how'd we get here?"); # XXX
+	return;
 }
+
+#sub retrieve {
+#    my $self   = shift or return;
+#    my $client = rpc_client();
+#    my $resp   = $client->send_request('retrieve');
+#    unless ($resp and ref $resp) {
+#         $logger->error(
+#             __PACKAGE__ . ": Mediator Error: " .
+#             ($resp ? 'Bad' : 'No') . " response to retrieve request"
+#         );
+#         return;
+#    }
+#
+#    # my $count   = $resp{match_count}; # how many files we should have
+#    # my @rm_list = ();
+#    my @files   = _files($resp);
+#    foreach (@files) {
+#        my $content  = $resp->{$_}->content;
+#        my $filename = $resp->{$_}->filename;
+#        unless ($content) {
+#            $logger->error(__PACKAGE__ .
+#                ": Mediator sent incomplete/unintelligible message for " .
+#                "filename " . ($filename || 'UNKNOWN'));
+#            next;
+#        }
+#        my $feedback = feedback_hash($content);
+#        my $output   = $e->retrieve_action_trigger_event_output(
+#            $feedback->{event_output}
+#        );
+#        if ($content == $output->data) {
+#            $logger->error(
+#                __PACKAGE__ . ": Mediator sent duplicate file "
+#                . $resp->{$_}->filename . " for event_output " .
+#                $feedback->{event_output}
+#            );
+#        } else {
+#            $output->data($content);
+#        }
+#        $e->commit;     # defer until after loop? probably not
+#        my $clean = $client->send_request('cleanup', $filename);
+#        # TODO: deletion by (comma-separated) filenames in chunks
+#        # instead of individually?
+#        # push @rm_list, $_; $client->send_request('cleanup', join(',',@rm_list));
+#        unless ($clean and ref $clean) {
+#            $logger->error(
+#                __PACKAGE__ . ": Mediator Error: " .
+#                ($clean ? 'Bad' : 'No') .
+#                " response to cleanup $filename request");
+#            next;
+#        }
+#        unless ($clean->{code}->value == 200 and $clean->{delete_count}) {
+#            $logger->error(__PACKAGE__ . ": cleanup $filename returned " . (
+#                $resp->{faultcode} ? $resp->{faultcode}->value :
+#                    $resp->{     code} ? $resp->{     code}->value :
+#                        " -- UNKNOWN response '$resp'"
+#            ) . " with delete_count " .
+#            (defined $clean->{delete_count} ? $clean->{delete_count} : 'UNDEF'));
+#        }
+#    }
+#    return @files;
+#}
 
 1;
