@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0617', :eg_version);
+
 -- add notify columns to booking.reservation
 ALTER TABLE booking.reservation
   ADD COLUMN email_notify BOOLEAN NOT NULL DEFAULT FALSE;
