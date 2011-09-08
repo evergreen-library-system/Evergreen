@@ -63,7 +63,8 @@ CREATE TABLE actor.usr (
 	alert_message		TEXT,
 	create_date		TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT now(),
 	expire_date		TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT (now() + '3 years'::INTERVAL),
-	claims_never_checked_out_count  INT         NOT NULL DEFAULT 0
+	claims_never_checked_out_count  INT         NOT NULL DEFAULT 0,
+    last_update_time    TIMESTAMP WITH TIME ZONE
 );
 COMMENT ON TABLE actor.usr IS $$
 User objects
@@ -115,6 +116,18 @@ CREATE FUNCTION actor.crypt_pw_update () RETURNS TRIGGER AS $$
 		RETURN NEW;
 	END;
 $$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION actor.au_updated()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.last_update_time := now();
+	RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER au_update_trig
+	BEFORE INSERT OR UPDATE ON actor.usr
+	FOR EACH ROW EXECUTE PROCEDURE actor.au_updated();
 
 CREATE TRIGGER actor_crypt_pw_update_trigger
 	BEFORE UPDATE ON actor.usr FOR EACH ROW

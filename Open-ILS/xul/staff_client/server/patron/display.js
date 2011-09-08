@@ -514,7 +514,10 @@ patron.display.prototype = {
                                     'staff.patron.display.db_data',
                                     [
                                         obj.patron.id(),
-                                        obj.patron.create_date()
+                                        obj.patron.create_date(),
+                                        obj.patron.last_update_time()
+                                            ? obj.patron.last_update_time()
+                                            : ''
                                     ]
                                 );
                                 e.setAttribute('tooltiptext',tooltiptext);
