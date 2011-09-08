@@ -987,11 +987,13 @@ patron.summary.prototype = {
                                 var row; var label1; var label2;
                                 if ($(row_id)) {
                                     row = $(row_id);
+                                    row.setAttribute('class','stat_cat_summary_row');
                                     label1 = row.firstChild;
                                     label2 = row.lastChild;
                                 } else {
                                     row = document.createElement('row');
                                     row.setAttribute('id',row_id);
+                                    row.setAttribute('class','stat_cat_summary_row');
                                     label1 = document.createElement('label');
                                     label2 = document.createElement('label');
                                     row.appendChild(label1);
