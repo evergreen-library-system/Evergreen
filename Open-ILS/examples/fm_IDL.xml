@@ -2593,7 +2593,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="OPAC/Staff Client User Name" name="usrname"  reporter:datatype="text"/>
 			<field reporter:label="OPAC/Staff Client Holds Alias" name="alias"  reporter:datatype="text"/>
 			<field reporter:label="Juvenile" name="juvenile"  reporter:datatype="bool"/>
-			<field reporter:label="Record Last Update Date" name="last_update_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Record Last Update Time" name="last_update_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Additional Permission Groups" name="groups" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Is Deleted" name="deleted" reporter:datatype="bool"/>
 			<field reporter:label="User Notes" name="notes" oils_persist:virtual="true" reporter:datatype="link"/>

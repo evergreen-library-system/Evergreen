@@ -515,8 +515,8 @@ patron.display.prototype = {
                                     [
                                         obj.patron.id(),
                                         obj.patron.create_date(),
-                                        obj.patron.last_update_date()
-                                            ? obj.patron.last_update_date()
+                                        obj.patron.last_update_time()
+                                            ? obj.patron.last_update_time()
                                             : ''
                                     ]
                                 );

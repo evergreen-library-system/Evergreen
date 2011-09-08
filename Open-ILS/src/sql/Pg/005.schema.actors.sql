@@ -64,7 +64,7 @@ CREATE TABLE actor.usr (
 	create_date		TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT now(),
 	expire_date		TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT (now() + '3 years'::INTERVAL),
 	claims_never_checked_out_count  INT         NOT NULL DEFAULT 0,
-    last_update_date    TIMESTAMP WITH TIME ZONE
+    last_update_time    TIMESTAMP WITH TIME ZONE
 );
 COMMENT ON TABLE actor.usr IS $$
 User objects
@@ -120,7 +120,7 @@ $$ LANGUAGE PLPGSQL;
 CREATE OR REPLACE FUNCTION actor.au_updated()
 RETURNS TRIGGER AS $$
 BEGIN
-    NEW.last_update_date := now();
+    NEW.last_update_time := now();
 	RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
