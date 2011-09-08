@@ -1,8 +1,8 @@
--- Evergreen DB patch XXXX.schema.au_last_update_time.sql
+-- Evergreen DB patch 0619.schema.au_last_update_time.sql
 BEGIN;
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0619', :eg_version);
 
 -- Add new column last_update_time to actor.usr, with trigger to maintain it
 -- Add corresponding new column to auditor.actor_usr_history
