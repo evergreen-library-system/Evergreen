@@ -100,7 +100,7 @@
                     <tr>
                         <td width="1%" style="padding-left:10px;" valign="top">
                             <input type="checkbox" name="circ"
-                                [% IF circ.circ.renewal_remaining < 1; l('disabled="disabled"'); END %]
+                                [% IF circ.circ.renewal_remaining < 1 %] disabled="disabled" [% END %]
                                 value="[% circ.circ.id %]" />
                         </td>
                         <td width="40%"

@@ -88,11 +88,9 @@
                                             {"code" => "is", "label" => l("Is")},
                                             {"code" => "before", "label" => l("Before")},
                                             {"code" => "after", "label" => l("After")},
-                                            {"code" => "between", "label" => l("Between")}
-                                        ];
-                                            |l(opt.code, opt.label) %]
-                                        <option value="[_1]"[% CGI.param('pubdate') == opt.code ? ' selected="selected"' : '' %]>[_2]</option>
-                                    [%  END; END %]
+                                            {"code" => "between", "label" => l("Between")} ] %]
+                                        <option value="[% opt.code %]"[% CGI.param('pubdate') == opt.code ? ' selected="selected"' : '' %]>[% opt.label | html %]</option>
+                                    [%  END %]
                             </select>    
                             <div style='margin-top:5px;'>
                                 <input name='date1' type='text' size='4' maxlength='4' value="[% CGI.param('date1') | html %]" />
