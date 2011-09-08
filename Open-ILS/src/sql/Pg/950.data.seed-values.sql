@@ -2478,7 +2478,7 @@ INSERT into config.org_unit_setting_type
 
 ( 'patron.password.use_phone',
     oils_i18n_gettext('patron.password.use_phone', 'Patron: password from phone #', 'coust', 'label'),
-    oils_i18n_gettext('patron.password.use_phone', 'Use the last 4 digits of the patrons phone number as the default password when creating new users', 'coust', 'description'),
+    oils_i18n_gettext('patron.password.use_phone', 'By default, use the last 4 alphanumeric characters of the patrons phone number as the default password when creating new users.  The exact characters used may be configured via the "GUI: Regex for day_phone field on patron registration" setting.', 'coust', 'description'),
     'bool'),
 
 ( 'circ.charge_on_damaged',
