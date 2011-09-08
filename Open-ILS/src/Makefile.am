@@ -162,15 +162,9 @@ uninstall-hook:
 ilscore-install:
 	@echo $@
 	$(MKDIR_P) $(DESTDIR)$(TEMPLATEDIR)
-	cp -r @srcdir@/templates/base.tt2 $(DESTDIR)$(TEMPLATEDIR)
-	cp -r @srcdir@/templates/login.tt2 $(DESTDIR)$(TEMPLATEDIR)
-	cp -r @srcdir@/templates/default $(DESTDIR)$(TEMPLATEDIR)
-	cp -r @srcdir@/templates/marc $(DESTDIR)$(TEMPLATEDIR)
-	cp -r @srcdir@/templates/password-reset $(DESTDIR)$(TEMPLATEDIR)
-	@echo "Installing string templates to $(DESTDIR)$(TEMPLATEDIR)"
-	$(MKDIR_P) $(DESTDIR)$(TEMPLATEDIR)
+	@echo "Installing templates to $(DESTDIR)$(TEMPLATEDIR)"
+	cp -r @srcdir@/templates/* $(DESTDIR)$(TEMPLATEDIR)
 	$(MKDIR_P) $(DESTDIR)$(datadir)/overdue/
-	cp -r @srcdir@/templates/strings $(DESTDIR)$(TEMPLATEDIR)
 	sed -i 's|LOCALSTATEDIR|@localstatedir@|g' '$(DESTDIR)@sysconfdir@/oils_sip.xml.example'
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@sysconfdir@/oils_sip.xml.example'
 	sed -i 's|LIBDIR|@libdir@|g' '$(DESTDIR)@sysconfdir@/oils_sip.xml.example'
