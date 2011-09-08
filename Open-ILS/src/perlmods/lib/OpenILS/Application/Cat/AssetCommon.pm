@@ -580,5 +580,8 @@ sub set_item_lost {
     my $ses = OpenSRF::AppSession->create('open-ils.trigger');
     $ses->request('open-ils.trigger.event.autocreate', 'lost', $circ, $circ->circ_lib);
 
+    my $evt2 = OpenILS::Utils::Penalty->calculate_penalties($e, $circ->usr, $U->xact_org($circ->id,$e));
+    return $evt2 if $evt2;
+
     return undef;
 }
