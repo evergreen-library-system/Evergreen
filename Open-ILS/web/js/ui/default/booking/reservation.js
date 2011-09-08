@@ -293,6 +293,7 @@ function create_bresv(resource_list) {
         alert(localeStrings.INVALID_TS_RANGE);
         return;
     }
+    var email_notify = document.getElementById("email_notify").checked ? true : false;
     var results;
     try {
         results = fieldmapper.standardRequest(
@@ -304,7 +305,8 @@ function create_bresv(resource_list) {
                 pickup_lib_selected,
                 our_brt.id(),
                 resource_list,
-                attr_value_table.get_all_values()
+                attr_value_table.get_all_values(),
+                email_notify
             ]
         );
     } catch (E) {
@@ -590,6 +592,10 @@ function init_resv_iface_sel() {
 }
 
 function init_reservation_interface(widget) {
+    /* Show or hide the email notification checkbox depending on org unit setting. */
+    if (!aous_cache["booking.allow_email_notify"]) {
+        hide_dom_element(document.getElementById("contain_email_notify"));
+    }
     /* Save a global reference to the brt we're going to reserve */
     if (widget && (widget.selectedIndex != undefined)) {
         our_brt = brt_list[widget.selectedIndex];
@@ -804,7 +810,7 @@ function init_aous_cache() {
     /* The following method call could be given a longer
      * list of OU settings to fetch in the future if needed. */
     var results = fieldmapper.aou.fetchOrgSettingBatch(
-        openils.User.user.ws_ou(), ["booking.require_successful_targeting"]
+        openils.User.user.ws_ou(), ["booking.require_successful_targeting", "booking.allow_email_notify"]
     );
     if (results && !is_ils_event(results)) {
         for (var k in results) {

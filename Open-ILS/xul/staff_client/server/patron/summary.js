@@ -81,7 +81,9 @@ patron.summary.prototype = {
                     obj.stat_cat_list.fm_columns( 'actsc', {
                         'actsc_id' : { 'hidden' : true },
                         'actsc_opac_visible' : { 'hidden' : true },
-                        'actsc_usr_summary' : { 'hidden' : true }
+                        'actsc_usr_summary' : { 'hidden' : true },
+                        'actsc_sip_format' : { 'hidden' : true },
+                        'astsc_sip_field' : { 'hidden' : true }
                     } )
                 ).concat(
                     obj.stat_cat_list.fm_columns( 'actscecm', {
@@ -968,6 +970,45 @@ patron.summary.prototype = {
                 obj.controller.render();
                 if ($('stat_cat_tab')) {
                     util.widgets.dispatch('command','stat_cat_tab'); 
+                }
+                if ($('pdcgpr')) {
+                    try {
+                        var rows = $('pdcgpr');
+                        var entries = obj.patron.stat_cat_entries();
+                        for (var i = 0; i < entries.length; i++) {
+                            var stat_cat = obj.OpenILS.data.hash.my_actsc[ entries[i].stat_cat() ];
+                            if (!stat_cat) {
+                                stat_cat = obj.OpenILS.data.lookup('actsc',entries[i].stat_cat());
+                            }
+                            if (!stat_cat) { continue; }
+                            // Only a proud few share the Patron Info pane
+                            if (rows && get_bool( stat_cat.usr_summary() )) {
+                                var row_id = 'stat_cat_id_' + stat_cat.id();
+                                var row; var label1; var label2;
+                                if ($(row_id)) {
+                                    row = $(row_id);
+                                    row.setAttribute('class','stat_cat_summary_row');
+                                    label1 = row.firstChild;
+                                    label2 = row.lastChild;
+                                } else {
+                                    row = document.createElement('row');
+                                    row.setAttribute('id',row_id);
+                                    row.setAttribute('class','stat_cat_summary_row');
+                                    label1 = document.createElement('label');
+                                    label2 = document.createElement('label');
+                                    row.appendChild(label1);
+                                    row.appendChild(label2);
+                                    // Place before the spacer at the end
+                                    rows.insertBefore(row, rows.lastChild);
+                                }
+                                label1.setAttribute('value',stat_cat.name());
+                                label1.setAttribute('tooltiptext','stat cat id ' + stat_cat.id());
+                                label2.setAttribute('value',entries[i].stat_cat_entry());
+                            }
+                        }
+                    } catch(E) {
+                        alert('Error in summary.js: ' + E);
+                    }
                 }
             } );
 

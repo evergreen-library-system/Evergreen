@@ -1078,14 +1078,23 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
 
             case 'day_phone':
                 // if configured, use the last four digits of the day phone number as the password
+                // Alt, use the first capture group of the validator regex
                 if(uEditUsePhonePw && patron.isnew()) {
-                    dojo.connect(widget.widget, 'onChange',
+                    dojo.connect(widget.widget, 'onChange', widget.widget,
                         function(newVal) {
-                            if(newVal && newVal.length >= 4) {
+                            var newPw = false;
+                            if(this.regExp) {
+                                matches = RegExp(this.regExp).exec(newVal);
+                                if(matches.length > 1) newPw = matches[1];
+                            }
+                            if(!newPw && newVal && newVal.length >= 4) {
+                                newPw = newVal.substring(newVal.length - 4);
+                            }
+                            if(newPw) {
                                 var pw1 = findWidget('au', 'passwd').widget;
                                 var pw2 = findWidget('au', 'passwd2').widget;
-                                pw1.attr('value', newVal.substring(newVal.length - 4));
-                                pw2.attr('value', newVal.substring(newVal.length - 4));
+                                pw1.attr('value', newPw);
+                                pw2.attr('value', newPw);
                             }
                         }
                     );

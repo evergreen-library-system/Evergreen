@@ -2478,7 +2478,7 @@ INSERT into config.org_unit_setting_type
 
 ( 'patron.password.use_phone',
     oils_i18n_gettext('patron.password.use_phone', 'Patron: password from phone #', 'coust', 'label'),
-    oils_i18n_gettext('patron.password.use_phone', 'Use the last 4 digits of the patrons phone number as the default password when creating new users', 'coust', 'description'),
+    oils_i18n_gettext('patron.password.use_phone', 'By default, use the last 4 alphanumeric characters of the patrons phone number as the default password when creating new users.  The exact characters used may be configured via the "GUI: Regex for day_phone field on patron registration" setting.', 'coust', 'description'),
     'bool'),
 
 ( 'circ.charge_on_damaged',
@@ -3157,7 +3157,7 @@ INSERT into config.org_unit_setting_type
     'string'),
 ( 'ui.patron.edit.au.day_phone.regex',
     oils_i18n_gettext('ui.patron.edit.au.day_phone.regex', 'GUI: Regex for day_phone field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.day_phone.regex', 'The Regular Expression for validation on the day_phone field in patron registration.', 'coust', 'description'),
+    oils_i18n_gettext('ui.patron.edit.au.day_phone.regex', E'The Regular Expression for validation on the day_phone field in patron registration. Note: The first capture group will be used for the "last 4 digits of phone number" feature, if enabled. Ex: "[2-9]\\d{2}-\\d{3}-(\\d{4})( x\\d+)?" will ignore the extension on a NANP number.', 'coust', 'description'),
     'string'),
 ( 'ui.patron.edit.au.day_phone.require',
     oils_i18n_gettext('ui.patron.edit.au.day_phone.require', 'GUI: Require day_phone field on patron registration', 'coust', 'label'),
@@ -3317,7 +3317,7 @@ INSERT into config.org_unit_setting_type
     'string'),
 ( 'ui.patron.edit.phone.regex',
     oils_i18n_gettext('ui.patron.edit.phone.regex', 'GUI: Regex for phone fields on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.phone.regex', 'The Regular Expression for validation on phone fields in patron registration. Applies to all phone fields without their own setting.', 'coust', 'description'),
+    oils_i18n_gettext('ui.patron.edit.phone.regex', 'The Regular Expression for validation on phone fields in patron registration. Applies to all phone fields without their own setting. NOTE: See description of the day_phone regex for important information about capture groups with it.', 'coust', 'description'),
     'string');
 
 -- *** Has to go below coust definition to satisfy referential integrity ***
@@ -6049,6 +6049,13 @@ INSERT INTO config.index_normalizer (name, description, func, param_count) VALUE
 	'Trim leading and trailing spaces from extracted text.',
 	'btrim',
 	0
+);
+
+INSERT INTO config.index_normalizer (name, description, func, param_count) VALUES (
+    'Generic Mapping Normalizer', 
+    'Map values or sets of values to new values',
+    'generic_map_normalizer', 
+    1
 );
 
 -- make use of the index normalizers
@@ -9796,3 +9803,21 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) 
     'bool'
 );
 
+INSERT INTO action_trigger.hook ( key, core_type, description, passive ) VALUES (
+    'reservation.available',
+    'bresv',
+    'A reservation is available for pickup',
+    false
+);
+
+INSERT INTO action_trigger.validator ( module, description ) VALUES (
+    'ReservationIsAvailable',
+    'Checked that a reserved resource is available for checkout'
+);
+
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+    'booking.allow_email_notify',
+    'booking.allow_email_notify',
+    'Permit email notification when a reservation is ready for pickup.',
+    'bool'
+);

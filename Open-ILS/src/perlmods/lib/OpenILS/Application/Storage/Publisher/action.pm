@@ -12,6 +12,7 @@ use OpenILS::Utils::PermitHold;
 use DateTime;
 use DateTime::Format::ISO8601;
 use OpenILS::Utils::Penalty;
+use POSIX qw(ceil);
 
 sub isTrue {
 	my $v = shift;
@@ -920,10 +921,8 @@ sub generate_fines {
 			}
 
             next if ($last_fine > $now);
-            my $pending_fine_count = int( ($now - $last_fine) / $fine_interval ); 
-
-            # Generate fines for the interval we are currently inside, when the fine interval is some multiple of 1d
-            $pending_fine_count++ if ($fine_interval && ($fine_interval % 86400 == 0));
+            # Generate fines for each past interval, including the one we are inside
+            my $pending_fine_count = ceil( ($now - $last_fine) / $fine_interval );
 
             if ( $last_fine == $due                         # we have no fines yet
                  && $grace_period                           # and we have a grace period

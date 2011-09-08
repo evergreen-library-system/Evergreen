@@ -56,5 +56,6 @@
     "AUTO_arbitrary_resource": "Enter the barcode of a cataloged, bookable resource:",
     "AUTO_explain_bookable": "To reserve an item that is not yet registered as a bookable resource, find it in the catalog or under <em>Display Item</em>, and select <em>Make Item Bookable</em> or <em>Book Item Now</em> there.",
     "AUTO_pickup_lib_selector": "Choose the pickup library for this reservation:",
+    "AUTO_email_notify": "Send email notification when resource is available for pickup.",
     "AUTO_or": "- Or -"
 }

@@ -22,6 +22,7 @@ var user;
 var osSettings = {};
 var ouSettingValues = {};
 var osEditAutoWidget;
+var perm_codes = {};
 
 function osInit(data) {
     authtoken = new openils.CGI().param('ses') || dojo.cookie('ses');
@@ -43,6 +44,20 @@ function osInit(data) {
     };
 
     new openils.User().buildPermOrgSelector('VIEW_ORG_SETTINGS', osContextSelector, null, connect);
+
+    fieldmapper.standardRequest(
+        [   'open-ils.actor',
+            'open-ils.actor.permissions.retrieve'],
+        {   async: true,
+            oncomplete: function(r) {
+                var data = r.recv().content();
+                if(e = openils.Event.parse(data))
+                    return alert(e);
+                for(var key in data)
+                    perm_codes[data[key].id()] = data[key].code();
+            }
+        }
+    );
 }
 dojo.addOnLoad(osInit);
 
@@ -65,7 +80,8 @@ function osDraw(specific_setting) {
                     label : type.label(),
                     desc : type.description(),
                     type : type.datatype(),
-                    fm_class : type.fm_class()
+                    fm_class : type.fm_class(),
+                    update_perm : type.update_perm()
                 }
             }
         );
@@ -183,8 +199,12 @@ function osFormatEditLink(name) {
 function osLaunchEditor(name) {
     osEditDialog._osattr = name;
     osEditDialog.show();
+    var perms = ['UPDATE_ORG_UNIT_SETTING_ALL'];
+    if(osSettings[name].update_perm && perm_codes[osSettings[name].update_perm]) {
+        perms.push(perm_codes[osSettings[name].update_perm]);
+    }
     user.buildPermOrgSelector(
-        ['UPDATE_ORG_UNIT_SETTING.' + name, 'UPDATE_ORG_UNIT_SETTING_ALL'],
+        perms,
         osEditContextSelector, osSettings[name].context
     );
     dojo.byId('os-edit-name').innerHTML = osSettings[name].label;

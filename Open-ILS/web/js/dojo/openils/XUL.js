@@ -148,7 +148,7 @@ if(!dojo._hasResource["openils.XUL"]) {
         }
     };
 
-    openils.XUL.contentToFileSaveDialog = function(content, windowTitle) {
+    openils.XUL.contentToFileSaveDialog = function(content, windowTitle, dispositionArgs) {
         var api = new openils.XUL.SimpleXPCOM();
         api.getPrivilegeManager().enablePrivilege("UniversalXPConnect");
 
@@ -156,6 +156,29 @@ if(!dojo._hasResource["openils.XUL"]) {
         picker.init(
             window, windowTitle || "Save File", api.FP.iface.modeSave
         );
+
+        if (dispositionArgs) {
+            /**
+             * https://developer.mozilla.org/En/NsIFilePicker
+             * Example: 
+             * { defaultString : 'MyExport.csv',
+                 defaultExtension : '.csv',
+                 filterName : 'CSV',
+                 filterExtension : '*.csv',
+                 filterAll : true } */
+
+            picker.defaultString = dispositionArgs.defaultString;
+            picker.defaultExtension = dispositionArgs.defaultExtension;
+            if (dispositionArgs.filterName) {
+                picker.appendFilter(
+                    dispositionArgs.filterName,
+                    dispositionArgs.filterExtension
+                );
+            }
+            if (dispositionArgs.filterAll) 
+                picker.appendFilters(picker.filterAll)
+        }
+
         var result = picker.show();
         if (picker.file &&
                 (result == api.FP.iface.returnOK ||

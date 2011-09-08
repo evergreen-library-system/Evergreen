@@ -1897,3 +1897,29 @@ CREATE TRIGGER ingest_item_trigger
     AFTER INSERT OR UPDATE ON vandelay.queued_bib_record
     FOR EACH ROW EXECUTE PROCEDURE vandelay.ingest_bib_items();
 
+
+-- evergreen.generic_map_normalizer 
+
+CREATE OR REPLACE FUNCTION evergreen.generic_map_normalizer ( TEXT, TEXT ) RETURNS TEXT AS $f$
+my $string = shift;
+my %map;
+
+my $default = $string;
+
+$_ = shift;
+while (/^\s*?(.*?)\s*?=>\s*?(\S+)\s*/) {
+    if ($1 eq '') {
+        $default = $2;
+    } else {
+        $map{$2} = [split(/\s*,\s*/, $1)];
+    }
+    $_ = $';
+}
+
+for my $key ( keys %map ) {
+    return $key if (grep { $_ eq $string } @{ $map{$key} });
+}
+
+return $default;
+
+$f$ LANGUAGE PLPERLU;

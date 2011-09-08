@@ -462,7 +462,13 @@ function exportHandler(type, response) {
             break;
             case 'csv':
                 //content = content.replace(/\\t/g,'\t'); // if we really wanted to do .tsv instead
-                openils.XUL.contentToFileSaveDialog(content);
+                openils.XUL.contentToFileSaveDialog(content, null, {
+                    defaultString : 'VandelayExport.csv',
+                    defaultExtension : '.csv',
+                    filterName : 'CSV',
+                    filterExtension : '*.csv',
+                    filterAll : true
+                } );
             break;
             default:
                 alert('response = ' + response + '\tcontent:\n' + content);
