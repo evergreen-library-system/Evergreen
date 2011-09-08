@@ -2336,615 +2336,2033 @@ INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatyp
 INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
     VALUES ('circ.holds_behind_desk', FALSE, 'Hold is behind Circ Desk', 'Hold is behind Circ Desk', 'bool');
 
+-- Add groups for org_unitu settings
+INSERT INTO config.settings_group (name, label) VALUES
+('sys', oils_i18n_gettext('config.settings_group.system', 'System', 'coust', 'label')),
+('gui', oils_i18n_gettext('config.settings_group.gui', 'GUI', 'coust', 'label')),
+('lib', oils_i18n_gettext('config.settings_group.lib', 'Library', 'coust', 'label')),
+('sec', oils_i18n_gettext('config.settings_group.sec', 'Security', 'coust', 'label')),
+('cat', oils_i18n_gettext('config.settings_group.cat', 'Cataloging', 'coust', 'label')),
+('holds', oils_i18n_gettext('config.settings_group.holds', 'Holds', 'coust', 'label')),
+('circ', oils_i18n_gettext('config.settings_group.circulation', 'Circulation', 'coust', 'label')),
+('self', oils_i18n_gettext('config.settings_group.self', 'Self Check', 'coust', 'label')),
+('opac', oils_i18n_gettext('config.settings_group.opac', 'OPAC', 'coust', 'label')),
+('prog', oils_i18n_gettext('config.settings_group.program', 'Program', 'coust', 'label')),
+('glob', oils_i18n_gettext('config.settings_group.global', 'Global', 'coust', 'label')),
+('finance', oils_i18n_gettext('config.settings_group.finances', 'Finanaces', 'coust', 'label')),
+('credit', oils_i18n_gettext('config.settings_group.ccp', 'Credit Card Processing', 'coust', 'label')),
+('serial', oils_i18n_gettext('config.settings_group.serial', 'Serials', 'coust', 'label')),
+('recall', oils_i18n_gettext('config.settings_group.recall', 'Recalls', 'coust', 'label')),
+('booking', oils_i18n_gettext('config.settings_group.booking', 'Booking', 'coust', 'label')),
+('offline', oils_i18n_gettext('config.settings_group.offline', 'Offline', 'coust', 'label')),
+('receipt_template', oils_i18n_gettext('config.settings_group.receipt_template', 'Receipt Template', 'coust', 'label'));
+
 
 -- org_unit setting types
 INSERT into config.org_unit_setting_type
-( name, label, description, datatype ) VALUES
-
-( 'auth.opac_timeout',
-    oils_i18n_gettext('auth.opac_timeout', 'OPAC Inactivity Timeout (in seconds)', 'coust', 'label'),
-    oils_i18n_gettext('auth.opac_timeout', 'OPAC Inactivity Timeout (in seconds)', 'coust', 'description'),
-    'integer'),
-
-( 'auth.staff_timeout',
-    oils_i18n_gettext('auth.staff_timeout', 'Staff Login Inactivity Timeout (in seconds)', 'coust', 'label'),
-    oils_i18n_gettext('auth.staff_timeout', 'Staff Login Inactivity Timeout (in seconds)', 'coust', 'description'),
-    'integer'),
-
-( 'circ.lost_materials_processing_fee',
-    oils_i18n_gettext('circ.lost_materials_processing_fee', 'Lost Materials Processing Fee', 'coust', 'label'),
-    oils_i18n_gettext('circ.lost_materials_processing_fee', 'Lost Materials Processing Fee', 'coust', 'description'),
-    'currency'),
-
-( 'cat.default_item_price',
-    oils_i18n_gettext('cat.default_item_price', 'Default Item Price', 'coust', 'label'),
-    oils_i18n_gettext('cat.default_item_price', 'Default Item Price', 'coust', 'description'),
-    'currency'),
-
-( 'org.bounced_emails',
-    oils_i18n_gettext('org.bounced_emails', 'Sending email address for patron notices', 'coust', 'label'),
-    oils_i18n_gettext('org.bounced_emails', 'Sending email address for patron notices', 'coust', 'description'),
-    'string'),
-
-( 'circ.hold_expire_alert_interval',
-    oils_i18n_gettext('circ.hold_expire_alert_interval', 'Expire Alert Interval', 'coust', 'label'),
-    oils_i18n_gettext('circ.hold_expire_alert_interval', 'Amount of time before a hold expires at which point the patron should be alerted. Examples: "5 days", "1 hour"', 'coust', 'description'),
-    'interval'),
-
-( 'circ.hold_expire_interval',
-    oils_i18n_gettext('circ.hold_expire_interval', 'Expire Interval', 'coust', 'label'),
-    oils_i18n_gettext('circ.hold_expire_interval', 'Amount of time after a hold is placed before the hold expires.  Example "100 days"', 'coust', 'description'),
-    'interval'),
-
-( 'credit.payments.allow',
-    oils_i18n_gettext('credit.payments.allow', 'Allow Credit Card Payments', 'coust', 'label'),
-    oils_i18n_gettext('credit.payments.allow', 'If enabled, patrons will be able to pay fines accrued at this location via credit card', 'coust', 'description'),
-    'bool'),
-
-( 'global.default_locale',
-    oils_i18n_gettext('global.default_locale', 'Global Default Locale', 'coust', 'label'),
-    oils_i18n_gettext('global.default_locale', 'Global Default Locale', 'coust', 'description'),
-    'string'),
-
-( 'circ.void_overdue_on_lost',
-    oils_i18n_gettext('circ.void_overdue_on_lost', 'Void overdue fines when items are marked lost', 'coust', 'label'),
-    oils_i18n_gettext('circ.void_overdue_on_lost', 'Void overdue fines when items are marked lost', 'coust', 'description'),
-    'bool'),
-
-( 'circ.hold_stalling.soft',
-    oils_i18n_gettext('circ.hold_stalling.soft', 'Soft stalling interval', 'coust', 'label'),
-    oils_i18n_gettext('circ.hold_stalling.soft', 'How long to wait before allowing remote items to be opportunistically captured for a hold.  Example "5 days"', 'coust', 'description'),
-    'interval'),
-
-( 'circ.hold_stalling_hard',
-    oils_i18n_gettext('circ.hold_stalling_hard', 'Hard stalling interval', 'coust', 'label'),
-    oils_i18n_gettext('circ.hold_stalling_hard', 'Holds: Hard stalling interval', 'coust', 'description'),
-    'interval'),
-
-( 'circ.hold_boundary.hard',
-    oils_i18n_gettext('circ.hold_boundary.hard', 'Hard boundary', 'coust', 'label'),
-    oils_i18n_gettext('circ.hold_boundary.hard', 'Holds: Hard boundary', 'coust', 'description'),
-    'integer'),
-
-( 'circ.hold_boundary.soft',
-    oils_i18n_gettext('circ.hold_boundary.soft', 'Soft boundary', 'coust', 'label'),
-    oils_i18n_gettext('circ.hold_boundary.soft', 'Holds: Soft boundary', 'coust', 'description'),
-    'integer'),
-
-( 'opac.barcode_regex',
-    oils_i18n_gettext('opac.barcode_regex', 'Patron barcode format', 'coust', 'label'),
-    oils_i18n_gettext('opac.barcode_regex', 'Regular expression defining the patron barcode format', 'coust', 'description'),
-    'string'),
-
-( 'global.password_regex',
-    oils_i18n_gettext('global.password_regex', 'Password format', 'coust', 'label'),
-    oils_i18n_gettext('global.password_regex', 'Regular expression defining the password format', 'coust', 'description'),
-    'string'),
-
-( 'circ.item_checkout_history.max',
-    oils_i18n_gettext('circ.item_checkout_history.max', 'Maximum previous checkouts displayed', 'coust', 'label'),
-    oils_i18n_gettext('circ.item_checkout_history.max', 'This is the maximum number of previous circulations the staff client will display when investigating item details', 'coust', 'description'),
-    'integer'),
-
-( 'circ.reshelving_complete.interval',
-    oils_i18n_gettext('circ.reshelving_complete.interval', 'Change reshelving status interval', 'coust', 'label'),
-    oils_i18n_gettext('circ.reshelving_complete.interval', 'Amount of time to wait before changing an item from "reshelving" status to "available".  Examples: "1 day", "6 hours"', 'coust', 'description'),
-    'interval'),
-
-( 'circ.holds.default_estimated_wait_interval',
-    oils_i18n_gettext('circ.holds.default_estimated_wait_interval', 'Default Estimated Wait', 'coust', 'label'),
-    oils_i18n_gettext('circ.holds.default_estimated_wait_interval', 'When predicting the amount of time a patron will be waiting for a hold to be fulfilled, this is the default estimated length of time to assume an item will be checked out. Examples: "3 weeks", "7 days"', 'coust', 'description'),
-    'interval'),
-
-( 'circ.holds.min_estimated_wait_interval',
-    oils_i18n_gettext('circ.holds.min_estimated_wait_interval', 'Minimum Estimated Wait', 'coust', 'label'),
-    oils_i18n_gettext('circ.holds.min_estimated_wait_interval', 'When predicting the amount of time a patron will be waiting for a hold to be fulfilled, this is the minimum estimated length of time to assume an item will be checked out. Examples: "2 weeks", "5 days"', 'coust', 'description'),
-    'interval'),
-
-( 'circ.holds.age_protect.active_date',
-    oils_i18n_gettext('circ.holds.age_protect.active_date', 'Holds: Use Active Date for Age Protection', 'coust', 'label'),
-    oils_i18n_gettext('circ.holds.age_protect.active_date', 'When calculating age protection rules use the active date instead of the creation date.', 'coust', 'description'),
-    'bool'),
-
-( 'circ.selfcheck.patron_login_timeout',
-    oils_i18n_gettext('circ.selfcheck.patron_login_timeout', 'Patron Login Timeout (in seconds)', 'coust', 'label'),
-    oils_i18n_gettext('circ.selfcheck.patron_login_timeout', 'Number of seconds of inactivity before the patron is logged out of the selfcheck interface', 'coust', 'description'),
-    'integer'),
-
-( 'circ.selfcheck.alert.popup',
-    oils_i18n_gettext('circ.selfcheck.alert.popup', 'Pop-up alert for errors', 'coust', 'label'),
-    oils_i18n_gettext('circ.selfcheck.alert.popup', 'If true, checkout/renewal errors will cause a pop-up window in addition to the on-screen message', 'coust', 'description'),
-    'bool'),
-
-( 'circ.selfcheck.require_patron_password',
-    oils_i18n_gettext('circ.selfcheck.require_patron_password', 'Require patron password', 'coust', 'label'),
-    oils_i18n_gettext('circ.selfcheck.require_patron_password', 'If true, patrons will be required to enter their password in addition to their username/barcode to log into the selfcheck interface', 'coust', 'description'),
-    'bool'),
-
-( 'global.juvenile_age_threshold',
-    oils_i18n_gettext('global.juvenile_age_threshold', 'Juvenile Age Threshold', 'coust', 'label'),
-    oils_i18n_gettext('global.juvenile_age_threshold', 'The age at which a user is no long considered a juvenile.  For example, "18 years".', 'coust', 'description'),
-    'interval'),
-
-( 'cat.bib.keep_on_empty',
-    oils_i18n_gettext('cat.bib.keep_on_empty', 'Retain empty bib records', 'coust', 'label'),
-    oils_i18n_gettext('cat.bib.keep_on_empty', 'Retain a bib record even when all attached copies are deleted', 'coust', 'description'),
-    'bool'),
-
-( 'cat.bib.alert_on_empty',
-    oils_i18n_gettext('cat.bib.alert_on_empty', 'Alert on empty bib records', 'coust', 'label'),
-    oils_i18n_gettext('cat.bib.alert_on_empty', 'Alert staff when the last copy for a record is being deleted', 'coust', 'description'),
-    'bool'),
-
-( 'patron.password.use_phone',
-    oils_i18n_gettext('patron.password.use_phone', 'Patron: password from phone #', 'coust', 'label'),
-    oils_i18n_gettext('patron.password.use_phone', 'By default, use the last 4 alphanumeric characters of the patrons phone number as the default password when creating new users.  The exact characters used may be configured via the "GUI: Regex for day_phone field on patron registration" setting.', 'coust', 'description'),
-    'bool'),
-
-( 'circ.charge_on_damaged',
-    oils_i18n_gettext('circ.charge_on_damaged', 'Charge item price when marked damaged', 'coust', 'label'),
-    oils_i18n_gettext('circ.charge_on_damaged', 'Charge item price when marked damaged', 'coust', 'description'),
-    'bool'),
-
-( 'circ.charge_lost_on_zero',
-    oils_i18n_gettext('circ.charge_lost_on_zero', 'Charge lost on zero', 'coust', 'label'),
-    oils_i18n_gettext('circ.charge_lost_on_zero', 'Charge lost on zero', 'coust', 'description'),
-    'bool'),
-
-( 'circ.damaged_item_processing_fee',
-    oils_i18n_gettext('circ.damaged_item_processing_fee', 'Charge processing fee for damaged items', 'coust', 'label'),
-    oils_i18n_gettext('circ.damaged_item_processing_fee', 'Charge processing fee for damaged items', 'coust', 'description'),
-    'currency'),
-
-( 'circ.void_lost_on_checkin',
-    oils_i18n_gettext('circ.void_lost_on_checkin', 'Void lost item billing when returned', 'coust', 'label'),
-    oils_i18n_gettext('circ.void_lost_on_checkin', 'Void lost item billing when returned', 'coust', 'description'),
-    'bool'),
-
-( 'circ.max_accept_return_of_lost',
-    oils_i18n_gettext('circ.max_accept_return_of_lost', 'Void lost max interval', 'coust', 'label'),
-    oils_i18n_gettext('circ.max_accept_return_of_lost', 'Items that have been lost this long will not result in voided billings when returned.  E.g. ''6 months''', 'coust', 'description'),
-    'interval'),
-
-( 'circ.void_lost_proc_fee_on_checkin',
-    oils_i18n_gettext('circ.void_lost_proc_fee_on_checkin', 'Void processing fee on lost item return', 'coust', 'label'),
-    oils_i18n_gettext('circ.void_lost_proc_fee_on_checkin', 'Void processing fee when lost item returned', 'coust', 'description'),
-    'bool'),
-
-( 'circ.restore_overdue_on_lost_return',
-    oils_i18n_gettext('circ.restore_overdue_on_lost_return', 'Restore overdues on lost item return', 'coust', 'label'),
-    oils_i18n_gettext('circ.restore_overdue_on_lost_return', 'Restore overdue fines on lost item return', 'coust', 'description'),
-    'bool'),
-
-( 'circ.lost_immediately_available',
-    oils_i18n_gettext('circ.lost_immediately_available', 'Lost items usable on checkin', 'coust', 'label'),
-    oils_i18n_gettext('circ.lost_immediately_available', 'Lost items are usable on checkin instead of going ''home'' first', 'coust', 'description'),
-    'bool'),
-
-( 'circ.holds_fifo',
-    oils_i18n_gettext('circ.holds_fifo', 'FIFO', 'coust', 'label'),
-    oils_i18n_gettext('circ.holds_fifo', 'Force holds to a more strict First-In, First-Out capture', 'coust', 'description'),
-    'bool'),
-
-( 'opac.allow_pending_address',
-    oils_i18n_gettext('opac.allow_pending_address', 'Allow pending addresses', 'coust', 'label'),
-    oils_i18n_gettext('opac.allow_pending_address', 'If enabled, patrons can create and edit existing addresses.  Addresses are kept in a pending state until staff approves the changes', 'coust', 'description'),
-    'bool'),
-
-( 'ui.circ.show_billing_tab_on_bills',
-    oils_i18n_gettext('ui.circ.show_billing_tab_on_bills', 'Show billing tab first when bills are present', 'coust', 'label'),
-    oils_i18n_gettext('ui.circ.show_billing_tab_on_bills', 'If enabled and a patron has outstanding bills and the alert page is not required, show the billing tab by default, instead of the checkout tab, when a patron is loaded', 'coust', 'description'),
-    'bool'),
-
-( 'ui.general.idle_timeout',
-    oils_i18n_gettext('ui.general.idle_timeout', 'Idle timeout', 'coust', 'label'),
-    oils_i18n_gettext('ui.general.idle_timeout', 'If you want staff client windows to be minimized after a certain amount of system idle time, set this to the number of seconds of idle time that you want to allow before minimizing (requires staff client restart).', 'coust', 'description'),
-    'integer'),
-
-( 'ui.circ.in_house_use.entry_cap',
-    oils_i18n_gettext('ui.circ.in_house_use.entry_cap', 'Record In-House Use: Maximum # of uses allowed per entry.', 'coust', 'label'),
-    oils_i18n_gettext('ui.circ.in_house_use.entry_cap', 'The # of uses entry in the Record In-House Use interface may not exceed the value of this setting.', 'coust', 'description'),
-    'integer'),
-
-( 'ui.circ.in_house_use.entry_warn',
-    oils_i18n_gettext('ui.circ.in_house_use.entry_warn', 'Record In-House Use: # of uses threshold for Are You Sure? dialog.', 'coust', 'label'),
-    oils_i18n_gettext('ui.circ.in_house_use.entry_warn', 'In the Record In-House Use interface, a submission attempt will warn if the # of uses field exceeds the value of this setting.', 'coust', 'description'),
-    'integer'),
-
-( 'acq.default_circ_modifier',
-    oils_i18n_gettext('acq.default_circ_modifier', 'Default circulation modifier', 'coust', 'label'),
-    oils_i18n_gettext('acq.default_circ_modifier', 'Default circulation modifier', 'coust', 'description'),
-    'string'),
-
-( 'acq.tmp_barcode_prefix',
-    oils_i18n_gettext('acq.tmp_barcode_prefix', 'Temporary barcode prefix', 'coust', 'label'),
-    oils_i18n_gettext('acq.tmp_barcode_prefix', 'Temporary barcode prefix', 'coust', 'description'),
-    'string'),
-
-( 'acq.tmp_callnumber_prefix',
-    oils_i18n_gettext('acq.tmp_callnumber_prefix', 'Temporary call number prefix', 'coust', 'label'),
-    oils_i18n_gettext('acq.tmp_callnumber_prefix', 'Temporary call number prefix', 'coust', 'description'),
-    'string'),
-
-( 'ui.circ.patron_summary.horizontal',
-    oils_i18n_gettext('ui.circ.patron_summary.horizontal', 'Patron circulation summary is horizontal', 'coust', 'label'),
-    oils_i18n_gettext('ui.circ.patron_summary.horizontal', 'Patron circulation summary is horizontal', 'coust', 'description'),
-    'bool'),
-
-( 'ui.staff.require_initials',
-  oils_i18n_gettext('ui.staff.require_initials', 'Require staff initials for entry/edit of item/patron/penalty notes/messages.', 'coust', 'label'),
-  oils_i18n_gettext('ui.staff.require_initials', 'Appends staff initials and edit date into note content.', 'coust', 'description'),
-    'bool'),
-
-( 'ui.general.button_bar',
-    oils_i18n_gettext('ui.general.button_bar', 'Button bar', 'coust', 'label'),
-    oils_i18n_gettext('ui.general.button_bar', 'Set to "circ" or "cat" for stock circulator or cataloger toolbar, respectively.', 'coust', 'description'),
-    'string'),
-
-( 'ui.general.hotkeyset',
-    oils_i18n_gettext('ui.general.hotkeyset', 'Default Hotkeyset', 'coust', 'label'),
-    oils_i18n_gettext('ui.general.hotkeyset', 'Default Hotkeyset for clients (filename without the .keyset).  Examples: Default, Minimal, and None', 'coust', 'description'),
-    'string'),
-
-( 'circ.hold_shelf_status_delay',
-    oils_i18n_gettext('circ.hold_shelf_status_delay', 'Hold Shelf Status Delay', 'coust', 'label'),
-    oils_i18n_gettext('circ.hold_shelf_status_delay', 'The purpose is to provide an interval of time after an item goes into the on-holds-shelf status before it appears to patrons that it is actually on the holds shelf.  This gives staff time to process the item before it shows as ready-for-pickup. Examples: "5 days", "1 hour"', 'coust', 'description'),
-    'interval'),
-
-( 'circ.patron_invalid_address_apply_penalty',
-    oils_i18n_gettext('circ.patron_invalid_address_apply_penalty', 'Invalid patron address penalty', 'coust', 'label'),
-    oils_i18n_gettext('circ.patron_invalid_address_apply_penalty', 'When set, if a patron address is set to invalid, a penalty is applied.', 'coust', 'description'),
-    'bool'),
-
-( 'circ.checkout_fills_related_hold',
-    oils_i18n_gettext('circ.checkout_fills_related_hold', 'Checkout Fills Related Hold', 'coust', 'label'),
-    oils_i18n_gettext('circ.checkout_fills_related_hold', 'When a patron checks out an item and they have no holds that directly target the item, the system will attempt to find a hold for the patron that could be fulfilled by the checked out item and fulfills it', 'coust', 'description'),
-    'bool'),
-
-( 'circ.checkout_fills_related_hold_exact_match_only',
-    oils_i18n_gettext('circ.checkout_fills_related_hold_exact_match_only', 'Checkout Fills Related Hold On Valid Copy Only', 'coust', 'label'),
-    oils_i18n_gettext('circ.checkout_fills_related_hold_exact_match_only', 'When filling related holds on checkout only match on items that are valid for opportunistic capture for the hold. Without this set a Title or Volume hold could match when the item is not holdable. With this set only holdable items will match.', 'coust', 'description'),
-    'bool'),
-
-( 'circ.selfcheck.auto_override_checkout_events',
-    oils_i18n_gettext('circ.selfcheck.auto_override_checkout_events', 'Selfcheck override events list', 'coust', 'label'),
-    oils_i18n_gettext('circ.selfcheck.auto_override_checkout_events', 'List of checkout/renewal events that the selfcheck interface should automatically override instead instead of alerting and stopping the transaction', 'coust', 'description'),
-    'array'),
-
-( 'circ.staff_client.actor_on_checkout',
-    oils_i18n_gettext('circ.staff_client.actor_on_checkout', 'Load patron from Checkout', 'coust', 'label'),
-    oils_i18n_gettext('circ.staff_client.actor_on_checkout', 'When scanning barcodes into Checkout auto-detect if a new patron barcode is scanned and auto-load the new patron.', 'coust', 'description'),
-    'bool'),
-
-( 'circ.staff_client.do_not_auto_attempt_print',
-    oils_i18n_gettext('circ.staff_client.do_not_auto_attempt_print', 'Disable Automatic Print Attempt Type List', 'coust', 'label'),
-    oils_i18n_gettext('circ.staff_client.do_not_auto_attempt_print', 'Disable automatic print attempts from staff client interfaces for the receipt types in this list.  Possible values: "Checkout", "Bill Pay", "Hold Slip", "Transit Slip", and "Hold/Transit Slip".  This is different from the Auto-Print checkbox in the pertinent interfaces in that it disables automatic print attempts altogether, rather than encouraging silent printing by suppressing the print dialog.  The Auto-Print checkbox in these interfaces have no effect on the behavior for this setting.  In the case of the Hold, Transit, and Hold/Transit slips, this also suppresses the alert dialogs that precede the print dialog (the ones that offer Print and Do Not Print as options).', 'coust', 'description'),
-    'array'),
-
-( 'ui.patron.default_inet_access_level',
-    oils_i18n_gettext('ui.patron.default_inet_access_level', 'Default level of patrons'' internet access', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.default_inet_access_level', 'Default level of patrons'' internet access', 'coust', 'description'),
-    'integer'),
-
-( 'circ.max_patron_claim_return_count',
-    oils_i18n_gettext('circ.max_patron_claim_return_count', 'Max Patron Claims Returned Count', 'coust', 'label'),
-    oils_i18n_gettext('circ.max_patron_claim_return_count', 'When this count is exceeded, a staff override is required to mark the item as claims returned', 'coust', 'description'),
-    'integer'),
-
-( 'circ.obscure_dob',
-    oils_i18n_gettext('circ.obscure_dob', 'Obscure the Date of Birth field', 'coust', 'label'),
-    oils_i18n_gettext('circ.obscure_dob', 'When true, the Date of Birth column in patron lists will default to Not Visible, and in the Patron Summary sidebar the value will display as <Hidden> unless the field label is clicked.', 'coust', 'description'),
-    'bool'),
-
-( 'circ.auto_hide_patron_summary',
-    oils_i18n_gettext('circ.auto_hide_patron_summary', 'Toggle off the patron summary sidebar after first view.', 'coust', 'label'),
-    oils_i18n_gettext('circ.auto_hide_patron_summary', 'When true, the patron summary sidebar will collapse after a new patron sub-interface is selected.', 'coust', 'description'),
-    'bool'),
-
-( 'credit.processor.default',
-    oils_i18n_gettext('credit.processor.default', 'Name default credit processor', 'coust', 'label'),
-    oils_i18n_gettext('credit.processor.default', 'This might be "AuthorizeNet", "PayPal", etc.', 'coust', 'description'),
-    'string'),
-
-( 'credit.processor.authorizenet.enabled',
-    oils_i18n_gettext('credit.processor.authorizenet.enabled', 'Enable AuthorizeNet payments', 'coust', 'label'),
-    oils_i18n_gettext('credit.processor.authorizenet.enabled', 'Enable AuthorizeNet payments', 'coust', 'description'),
-    'bool'),
-
-( 'credit.processor.authorizenet.login',
-    oils_i18n_gettext('credit.processor.authorizenet.login', 'AuthorizeNet login', 'coust', 'label'),
-    oils_i18n_gettext('credit.processor.authorizenet.login', 'AuthorizeNet login', 'coust', 'description'),
-    'string'),
-
-( 'credit.processor.authorizenet.password',
-    oils_i18n_gettext('credit.processor.authorizenet.password', 'AuthorizeNet password', 'coust', 'label'),
-    oils_i18n_gettext('credit.processor.authorizenet.password', 'AuthorizeNet password', 'coust', 'description'),
-    'string'),
-
-( 'credit.processor.authorizenet.server',
-    oils_i18n_gettext('credit.processor.authorizenet.server', 'AuthorizeNet server', 'coust', 'label'),
-    oils_i18n_gettext('credit.processor.authorizenet.server', 'Required if using a developer/test account with AuthorizeNet', 'coust', 'description'),
-    'string'),
-
-( 'credit.processor.authorizenet.testmode',
-    oils_i18n_gettext('credit.processor.authorizenet.testmode', 'AuthorizeNet test mode', 'coust', 'label'),
-    oils_i18n_gettext('credit.processor.authorizenet.testmode', 'AuthorizeNet test mode', 'coust', 'description'),
-    'bool'),
-
-( 'credit.processor.paypal.enabled',
-    oils_i18n_gettext('credit.processor.paypal.enabled', 'Enable PayPal payments', 'coust', 'label'),
-    oils_i18n_gettext('credit.processor.paypal.enabled', 'Enable PayPal payments', 'coust', 'description'),
-    'bool'),
-( 'credit.processor.paypal.login',
-    oils_i18n_gettext('credit.processor.paypal.login', 'PayPal login', 'coust', 'label'),
-    oils_i18n_gettext('credit.processor.paypal.login', 'PayPal login', 'coust', 'description'),
-    'string'),
-( 'credit.processor.paypal.password',
-    oils_i18n_gettext('credit.processor.paypal.password', 'PayPal password', 'coust', 'label'),
-    oils_i18n_gettext('credit.processor.paypal.password', 'PayPal password', 'coust', 'description'),
-    'string'),
-( 'credit.processor.paypal.signature',
-    oils_i18n_gettext('credit.processor.paypal.signature', 'PayPal signature', 'coust', 'label'),
-    oils_i18n_gettext('credit.processor.paypal.signature', 'PayPal signature', 'coust', 'description'),
-    'string'),
-( 'credit.processor.paypal.testmode',
-    oils_i18n_gettext('credit.processor.paypal.testmode', 'PayPal test mode', 'coust', 'label'),
-    oils_i18n_gettext('credit.processor.paypal.testmode', 'PayPal test mode', 'coust', 'description'),
-    'bool'),
-( 'credit.processor.payflowpro.enabled',
-    oils_i18n_gettext('credit.processor.payflowpro.enabled', 'Enable PayflowPro payments', 'coust', 'label'),
-    oils_i18n_gettext('credit.processor.payflowpro.enabled', 'This is NOT the same thing as the settings labeled with just "PayPal."', 'coust', 'description'),
-    'bool'),
-( 'credit.processor.payflowpro.login',
-    oils_i18n_gettext('credit.processor.payflowpro.login', 'PayflowPro login/merchant ID', 'coust', 'label'),
-    oils_i18n_gettext('credit.processor.payflowpro.login', 'Often the same thing as the PayPal manager login', 'coust', 'description'),
-    'string'),
-( 'credit.processor.payflowpro.password',
-    oils_i18n_gettext('credit.processor.payflowpro.password', 'PayflowPro password', 'coust', 'label'),
-    oils_i18n_gettext('credit.processor.payflowpro.password', 'PayflowPro password', 'coust', 'description'),
-    'string'),
-( 'credit.processor.payflowpro.testmode',
-    oils_i18n_gettext('credit.processor.payflowpro.testmode', 'PayflowPro test mode', 'coust', 'label'),
-    oils_i18n_gettext('credit.processor.payflowpro.testmode', 'Do not really process transactions, but stay in test mode - uses pilot-payflowpro.paypal.com instead of the usual host', 'coust', 'description'),
-    'bool'),
-( 'credit.processor.payflowpro.vendor',
-    oils_i18n_gettext('credit.processor.payflowpro.vendor', 'PayflowPro vendor', 'coust', 'label'),
-    oils_i18n_gettext('credit.processor.payflowpro.vendor', 'Often the same thing as the login', 'coust', 'description'),
-    'string'),
-( 'credit.processor.payflowpro.partner',
-    oils_i18n_gettext('credit.processor.payflowpro.partner', 'PayflowPro partner', 'coust', 'label'),
-    oils_i18n_gettext('credit.processor.payflowpro.partner', 'Often "PayPal" or "VeriSign", sometimes others', 'coust', 'description'),
-    'string'),
-
-( 'ui.admin.work_log.max_entries',
-    oils_i18n_gettext('ui.admin.work_log.max_entries', 'Work Log: Maximum Actions Logged', 'coust', 'label'),
-    oils_i18n_gettext('ui.admin.work_log.max_entries', 'Maximum entries for "Most Recent Staff Actions" section of the Work Log interface.', 'coust', 'description'),
-    'interval'),
-
-( 'ui.admin.patron_log.max_entries',
-    oils_i18n_gettext('ui.admin.patron_log.max_entries', 'Work Log: Maximum Patrons Logged', 'coust', 'label'),
-    oils_i18n_gettext('ui.admin.patron_log.max_entries', 'Maximum entries for "Most Recently Affected Patrons..." section of the Work Log interface.', 'coust', 'description'),
-    'interval'),
-
-( 'lib.courier_code',
-    oils_i18n_gettext('lib.courier_code', 'Courier Code', 'coust', 'label'),
-    oils_i18n_gettext('lib.courier_code', 'Courier Code for the library.  Available in transit slip templates as the %courier_code% macro.', 'coust', 'description'),
-    'string'),
-
-( 'circ.block_renews_for_holds',
-    oils_i18n_gettext('circ.block_renews_for_holds', 'Block Renewal of Items Needed for Holds', 'coust', 'label'),
-    oils_i18n_gettext('circ.block_renews_for_holds', 'When an item could fulfill a hold, do not allow the current patron to renew', 'coust', 'description'),
-    'bool'),
-
-( 'circ.password_reset_request_per_user_limit',
-    oils_i18n_gettext('circ.password_reset_request_per_user_limit', 'Maximum concurrently active self-serve password reset requests per user', 'coust', 'label'),
-    oils_i18n_gettext('circ.password_reset_request_per_user_limit', 'When a user has more than this number of concurrently active self-serve password reset requests for their account, prevent the user from creating any new self-serve password reset requests until the number of active requests for the user drops back below this number.', 'coust', 'description'),
-    'string'),
-
-( 'circ.password_reset_request_time_to_live',
-    oils_i18n_gettext('circ.password_reset_request_time_to_live', 'Self-serve password reset request time-to-live', 'coust', 'label'),
-    oils_i18n_gettext('circ.password_reset_request_time_to_live', 'Length of time (in seconds) a self-serve password reset request should remain active.', 'coust', 'description'),
-    'string'),
-
-( 'circ.password_reset_request_throttle',
-    oils_i18n_gettext('circ.password_reset_request_throttle', 'Maximum concurrently active self-serve password reset requests', 'coust', 'label'),
-    oils_i18n_gettext('circ.password_reset_request_throttle', 'Prevent the creation of new self-serve password reset requests until the number of active requests drops back below this number.', 'coust', 'description'),
-    'string'),
-
-( 'opac.fully_compressed_serial_holdings',
-    oils_i18n_gettext('opac.fully_compressed_serial_holdings', 'Use fully compressed serial holdings', 'coust', 'label'),
-    oils_i18n_gettext('opac.fully_compressed_serial_holdings', 'Show fully compressed serial holdings for all libraries at and below the current context unit', 'coust', 'description'),
-    'bool'),
-
-( 'org.patron_opt_boundary',
-    oils_i18n_gettext( 'org.patron_opt_boundary', 'Patron Opt-In Boundary', 'coust', 'label'),
-    oils_i18n_gettext( 'org.patron_opt_boundary', 'This determines at which depth above which patrons must be opted in, and below which patrons will be assumed to be opted in.', 'coust', 'label'),
-    'integer'),
-
-( 'org.patron_opt_default',
-    oils_i18n_gettext( 'org.patron_opt_default', 'Patron Opt-In Default', 'coust', 'label'),
-    oils_i18n_gettext( 'org.patron_opt_default', 'This is the default depth at which a patron is opted in; it is calculated as an org unit relative to the current workstation.', 'coust', 'label'),
-    'integer'),
-
-( 'opac.payment_history_age_limit',
-    oils_i18n_gettext( 'opac.payment_history_age_limit', 'OPAC: Payment History Age Limit', 'coust', 'label'),
-    oils_i18n_gettext( 'opac.payment_history_age_limit', 'The OPAC should not display payments by patrons that are older than any interval defined here.', 'coust', 'label'),
-    'interval'),
-
-( 
-        'ui.circ.billing.uncheck_bills_and_unfocus_payment_box',
-        oils_i18n_gettext(
-            'ui.circ.billing.uncheck_bills_and_unfocus_payment_box',
-            'GUI: Uncheck bills by default in the patron billing interface',
-            'coust',
-            'label'
-        ),
-        oils_i18n_gettext(
-            'ui.circ.billing.uncheck_bills_and_unfocus_payment_box',
-            'Uncheck bills by default in the patron billing interface,'
-            || ' and focus on the Uncheck All button instead of the'
-            || ' Payment Received field.',
-            'coust',
-            'description'
-        ),
-        'bool'
-    )
-,( 
-        'circ.offline.skip_checkout_if_newer_status_changed_time',
-        oils_i18n_gettext(
-            'circ.offline.skip_checkout_if_newer_status_changed_time',
-            'Offline: Skip offline checkout if newer item Status Changed Time.',
-            'coust',
-            'label'
-        ),
-        oils_i18n_gettext(
-            'circ.offline.skip_checkout_if_newer_status_changed_time',
-            'Skip offline checkout transaction (raise exception when'
-            || ' processing) if item Status Changed Time is newer than the'
-            || ' recorded transaction time.  WARNING: The Reshelving to'
-            || ' Available status rollover will trigger this.',
-            'coust',
-            'description'
-        ),
-        'bool'
-    )
-,( 
-        'circ.offline.skip_renew_if_newer_status_changed_time',
-        oils_i18n_gettext(
-            'circ.offline.skip_renew_if_newer_status_changed_time',
-            'Offline: Skip offline renewal if newer item Status Changed Time.',
-            'coust',
-            'label'
-        ),
-        oils_i18n_gettext(
-            'circ.offline.skip_renew_if_newer_status_changed_time',
-            'Skip offline renewal transaction (raise exception when'
-            || ' processing) if item Status Changed Time is newer than the'
-            || ' recorded transaction time.  WARNING: The Reshelving to'
-            || ' Available status rollover will trigger this.',
-            'coust',
-            'description'
-        ),
-        'bool'
-    )
-,( 
-        'circ.offline.skip_checkin_if_newer_status_changed_time',
-        oils_i18n_gettext(
-            'circ.offline.skip_checkin_if_newer_status_changed_time',
-            'Offline: Skip offline checkin if newer item Status Changed Time.',
-            'coust',
-            'label'
-        ),
-        oils_i18n_gettext(
-            'circ.offline.skip_checkin_if_newer_status_changed_time',
-            'Skip offline checkin transaction (raise exception when'
-            || ' processing) if item Status Changed Time is newer than the'
-            || ' recorded transaction time.  WARNING: The Reshelving to'
-            || ' Available status rollover will trigger this.',
-            'coust',
-            'description'
-        ),
-        'bool'
-    )
-,(
-        'ui.patron_search.result_cap',
-        oils_i18n_gettext(
-            'ui.patron_search.result_cap',
-            'GUI: Cap results in Patron Search at this number.',
-            'coust',
-            'label'
-        ),
-        oils_i18n_gettext(
-            'ui.patron_search.result_cap',
-            'So for example, if you search for John Doe, normally you would get'
-            || ' at most 50 results.  This setting allows you to raise or lower'
-            || ' that limit.',
-            'coust',
-            'description'
-        ),
-        'integer'
-    )
-,(
-        'circ.staff_client.receipt.header_text',
-        oils_i18n_gettext(
-            'circ.staff_client.receipt.header_text',
-            'Receipt Template: Content of header_text include',
-            'coust',
-            'label'
-        ),
-        oils_i18n_gettext(
-            'circ.staff_client.receipt.header_text',
-            'Text/HTML/Macros to be inserted into receipt templates in place of %INCLUDE(header_text)%',
-            'coust',
-            'description'
-        ),
-        'string'
-    )
-,(
-        'circ.staff_client.receipt.footer_text',
-        oils_i18n_gettext(
-            'circ.staff_client.receipt.footer_text',
-            'Receipt Template: Content of footer_text include',
-            'coust',
-            'label'
-        ),
-        oils_i18n_gettext(
-            'circ.staff_client.receipt.footer_text',
-            'Text/HTML/Macros to be inserted into receipt templates in place of %INCLUDE(footer_text)%',
-            'coust',
-            'description'
-        ),
-        'string'
-    )
-,(
-        'circ.staff_client.receipt.notice_text',
-        oils_i18n_gettext(
-            'circ.staff_client.receipt.notice_text',
-            'Receipt Template: Content of notice_text include',
-            'coust',
-            'label'
-        ),
-        oils_i18n_gettext(
-            'circ.staff_client.receipt.notice_text',
-            'Text/HTML/Macros to be inserted into receipt templates in place of %INCLUDE(notice_text)%',
-            'coust',
-            'description'
-        ),
-        'string'
-    )
-,(
-        'circ.staff_client.receipt.alert_text',
-        oils_i18n_gettext(
-            'circ.staff_client.receipt.alert_text',
-            'Receipt Template: Content of alert_text include',
-            'coust',
-            'label'
-        ),
-        oils_i18n_gettext(
-            'circ.staff_client.receipt.alert_text',
-            'Text/HTML/Macros to be inserted into receipt templates in place of %INCLUDE(alert_text)%',
-            'coust',
-            'description'
-        ),
-        'string'
-    )
-,(
-        'circ.staff_client.receipt.event_text',
-        oils_i18n_gettext(
-            'circ.staff_client.receipt.event_text',
-            'Receipt Template: Content of event_text include',
-            'coust',
-            'label'
-        ),
-        oils_i18n_gettext(
-            'circ.staff_client.receipt.event_text',
-            'Text/HTML/Macros to be inserted into receipt templates in place of %INCLUDE(event_text)%',
-            'coust',
-            'description'
-        ),
-        'string'
-    )
-
+( name, grp, label, description, datatype, fm_class ) VALUES
+
+( 'acq.copy_creator_uses_receiver', 'lib',
+    oils_i18n_gettext('acq.copy_creator_uses_receiver',
+        'Set copy creator as receiver',
+        'coust', 'label'),
+    oils_i18n_gettext('acq.copy_creator_uses_receiver',
+        'When receiving a copy in acquisitions, set the copy "creator" to be the staff that received the copy',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'acq.default_circ_modifier', 'lib',
+    oils_i18n_gettext('acq.default_circ_modifier',
+        'Default circulation modifier',
+        'coust', 'label'),
+    oils_i18n_gettext('acq.default_circ_modifier',
+        'Default circulation modifier',
+        'coust', 'description'),
+    'string', null)
+
+,( 'acq.default_copy_location', 'lib',
+    oils_i18n_gettext('acq.default_copy_location',
+        'Default copy location',
+        'coust', 'label'),
+    oils_i18n_gettext('acq.default_copy_location',
+        'Default copy location',
+        'coust', 'description'),
+    'link', 'acpl')
+
+,( 'acq.fund.balance_limit.block', 'finance',
+    oils_i18n_gettext('acq.fund.balance_limit.block',
+        'Fund Spending Limit for Block',
+        'coust', 'label'),
+    oils_i18n_gettext('acq.fund.balance_limit.block',
+        'When the amount remaining in the fund, including spent money and encumbrances, goes below this percentage, attempts to spend from the fund will be blocked.',
+        'coust', 'description'),
+    'integer', null)
+
+,( 'acq.fund.balance_limit.warn', 'finance',
+    oils_i18n_gettext('acq.fund.balance_limit.warn',
+        'Fund Spending Limit for Warning',
+        'coust', 'label'),
+    oils_i18n_gettext('acq.fund.balance_limit.warn',
+        'When the amount remaining in the fund, including spent money and encumbrances, goes below this percentage, attempts to spend from the fund will result in a warning to the staff.',
+        'coust', 'description'),
+    'integer', null)
+
+,( 'acq.holds.allow_holds_from_purchase_request', 'lib',
+    oils_i18n_gettext('acq.holds.allow_holds_from_purchase_request',
+        'Allows patrons to create automatic holds from purchase requests.',
+        'coust', 'label'),
+    oils_i18n_gettext('acq.holds.allow_holds_from_purchase_request',
+        'Allows patrons to create automatic holds from purchase requests.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'acq.tmp_barcode_prefix', 'lib',
+    oils_i18n_gettext('acq.tmp_barcode_prefix',
+        'Temporary barcode prefix',
+        'coust', 'label'),
+    oils_i18n_gettext('acq.tmp_barcode_prefix',
+        'Temporary barcode prefix',
+        'coust', 'description'),
+    'string', null)
+
+,( 'acq.tmp_callnumber_prefix', 'lib',
+    oils_i18n_gettext('acq.tmp_callnumber_prefix',
+        'Temporary call number prefix',
+        'coust', 'label'),
+    oils_i18n_gettext('acq.tmp_callnumber_prefix',
+        'Temporary call number prefix',
+        'coust', 'description'),
+    'string', null)
+
+,( 'auth.opac_timeout', 'sec',
+    oils_i18n_gettext('auth.opac_timeout',
+        'OPAC Inactivity Timeout (in seconds)',
+        'coust', 'label'),
+    oils_i18n_gettext('auth.opac_timeout',
+        'OPAC Inactivity Timeout (in seconds)',
+        'coust', 'description'),
+    'integer', null)
+
+,( 'auth.persistent_login_interval', 'sec',
+    oils_i18n_gettext('auth.persistent_login_interval',
+        'Persistent Login Duration',
+        'coust', 'label'),
+    oils_i18n_gettext('auth.persistent_login_interval',
+        'How long a persistent login lasts.  E.g. ''2 weeks''',
+        'coust', 'description'),
+    'interval', null)
+
+,( 'auth.staff_timeout', 'sec',
+    oils_i18n_gettext('auth.staff_timeout',
+        'Staff Login Inactivity Timeout (in seconds)',
+        'coust', 'label'),
+    oils_i18n_gettext('auth.staff_timeout',
+        'Staff Login Inactivity Timeout (in seconds)',
+        'coust', 'description'),
+    'integer', null)
+
+,( 'booking.allow_email_notify', 'booking',
+    oils_i18n_gettext('booking.allow_email_notify',
+        'Allow Email Notify',
+        'coust', 'label'),
+    oils_i18n_gettext('booking.allow_email_notify',
+        'Permit email notification when a reservation is ready for pickup.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'cat.bib.alert_on_empty', 'gui',
+    oils_i18n_gettext('cat.bib.alert_on_empty',
+        'Alert on empty bib records',
+        'coust', 'label'),
+    oils_i18n_gettext('cat.bib.alert_on_empty',
+        'Alert staff when the last copy for a record is being deleted',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'cat.bib.delete_on_no_copy_via_acq_lineitem_cancel', 'cat',
+    oils_i18n_gettext('cat.bib.delete_on_no_copy_via_acq_lineitem_cancel',
+        'Delete bib if all copies are deleted via Acquisitions lineitem cancellation.',
+        'coust', 'label'),
+    oils_i18n_gettext('cat.bib.delete_on_no_copy_via_acq_lineitem_cancel',
+        'Delete bib if all copies are deleted via Acquisitions lineitem cancellation.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'cat.bib.keep_on_empty', 'prog',
+    oils_i18n_gettext('cat.bib.keep_on_empty',
+        'Retain empty bib records',
+        'coust', 'label'),
+    oils_i18n_gettext('cat.bib.keep_on_empty',
+        'Retain a bib record even when all attached copies are deleted',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'cat.default_classification_scheme', 'cat',
+    oils_i18n_gettext('cat.default_classification_scheme',
+        'Default Classification Scheme',
+        'coust', 'label'),
+    oils_i18n_gettext('cat.default_classification_scheme',
+        'Defines the default classification scheme for new call numbers: 1 = Generic; 2 = Dewey; 3 = LC',
+        'coust', 'description'),
+    'link', 'acnc')
+
+,( 'cat.default_copy_status_fast', 'cat',
+    oils_i18n_gettext('cat.default_copy_status_fast',
+        'Default copy status (fast add)',
+        'coust', 'label'),
+    oils_i18n_gettext('cat.default_copy_status_fast',
+        'Default status when a copy is created using the "Fast Add" interface.',
+        'coust', 'description'),
+    'link', 'ccs')
+
+,( 'cat.default_copy_status_normal', 'cat',
+    oils_i18n_gettext('cat.default_copy_status_normal',
+        'Default copy status (normal)',
+        'coust', 'label'),
+    oils_i18n_gettext('cat.default_copy_status_normal',
+        'Default status when a copy is created using the normal volume/copy creator interface.',
+        'coust', 'description'),
+    'link', 'ccs')
+
+,( 'cat.default_item_price', 'finance',
+    oils_i18n_gettext('cat.default_item_price',
+        'Default Item Price',
+        'coust', 'label'),
+    oils_i18n_gettext('cat.default_item_price',
+        'Default Item Price',
+        'coust', 'description'),
+    'currency', null)
+
+,( 'cat.label.font.family', 'cat',
+    oils_i18n_gettext('cat.label.font.family',
+        'Spine and pocket label font family',
+        'coust', 'label'),
+    oils_i18n_gettext('cat.label.font.family',
+        'Set the preferred font family for spine and pocket labels. You can specify a list of fonts, separated by commas, in order of preference; the system will use the first font it finds with a matching name. For example, "Arial, Helvetica, serif".',
+        'coust', 'description'),
+    'string', null)
+
+,( 'cat.label.font.size', 'cat',
+    oils_i18n_gettext('cat.label.font.size',
+        'Spine and pocket label font size',
+        'coust', 'label'),
+    oils_i18n_gettext('cat.label.font.size',
+        'Set the default font size for spine and pocket labels',
+        'coust', 'description'),
+    'integer', null)
+
+,( 'cat.label.font.weight', 'cat',
+    oils_i18n_gettext('cat.label.font.weight',
+        'Spine and pocket label font weight',
+        'coust', 'label'),
+    oils_i18n_gettext('cat.label.font.weight',
+        'Set the preferred font weight for spine and pocket labels. You can specify "normal", "bold", "bolder", or "lighter".',
+        'coust', 'description'),
+    'string', null)
+
+,( 'cat.marc_control_number_identifier', 'cat',
+    oils_i18n_gettext('cat.marc_control_number_identifier',
+        'Defines the control number identifier used in 003 and 035 fields.',
+        'coust', 'label'),
+    oils_i18n_gettext('cat.marc_control_number_identifier',
+        'Cat: Defines the control number identifier used in 003 and 035 fields.',
+        'coust', 'description'),
+    'string', null)
+
+,( 'cat.spine.line.height', 'cat',
+    oils_i18n_gettext('cat.spine.line.height',
+        'Spine label maximum lines',
+        'coust', 'label'),
+    oils_i18n_gettext('cat.spine.line.height',
+        'Set the default maximum number of lines for spine labels.',
+        'coust', 'description'),
+    'integer', null)
+
+,( 'cat.spine.line.margin', 'cat',
+    oils_i18n_gettext('cat.spine.line.margin',
+        'Spine label left margin',
+        'coust', 'label'),
+    oils_i18n_gettext('cat.spine.line.margin',
+        'Set the left margin for spine labels in number of characters.',
+        'coust', 'description'),
+    'integer', null)
+
+,( 'cat.spine.line.width', 'cat',
+    oils_i18n_gettext('cat.spine.line.width',
+        'Spine label line width',
+        'coust', 'label'),
+    oils_i18n_gettext('cat.spine.line.width',
+        'Set the default line width for spine labels in number of characters. This specifies the boundary at which lines must be wrapped.',
+        'coust', 'description'),
+    'integer', null)
+
+,( 'cat.volume.delete_on_empty', 'cat',
+    oils_i18n_gettext('cat.volume.delete_on_empty',
+        'Delete volume with last copy',
+        'coust', 'label'),
+    oils_i18n_gettext('cat.volume.delete_on_empty',
+        'Automatically delete a volume when the last linked copy is deleted',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.auto_hide_patron_summary', 'gui',
+    oils_i18n_gettext('circ.auto_hide_patron_summary',
+        'Toggle off the patron summary sidebar after first view.',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.auto_hide_patron_summary',
+        'When true, the patron summary sidebar will collapse after a new patron sub-interface is selected.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.block_renews_for_holds', 'holds',
+    oils_i18n_gettext('circ.block_renews_for_holds',
+        'Block Renewal of Items Needed for Holds',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.block_renews_for_holds',
+        'When an item could fulfill a hold, do not allow the current patron to renew',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.booking_reservation.default_elbow_room', 'booking',
+    oils_i18n_gettext('circ.booking_reservation.default_elbow_room',
+        'Booking elbow room',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.booking_reservation.default_elbow_room',
+        'Elbow room specifies how far in the future you must make a reservation on an item if that item will have to transit to reach its pickup location.  It secondarily defines how soon a reservation on a given item must start before the check-in process will opportunistically capture it for the reservation shelf.',
+        'coust', 'description'),
+    'interval', null)
+
+,( 'circ.charge_lost_on_zero', 'finance',
+    oils_i18n_gettext('circ.charge_lost_on_zero',
+        'Charge lost on zero',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.charge_lost_on_zero',
+        'Charge lost on zero',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.charge_on_damaged', 'finance',
+    oils_i18n_gettext('circ.charge_on_damaged',
+        'Charge item price when marked damaged',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.charge_on_damaged',
+        'Charge item price when marked damaged',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.checkout_auto_renew_age', 'circ',
+    oils_i18n_gettext('circ.checkout_auto_renew_age',
+        'Checkout auto renew age',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.checkout_auto_renew_age',
+        'When an item has been checked out for at least this amount of time, an attempt to check out the item to the patron that it is already checked out to will simply renew the circulation',
+        'coust', 'description'),
+    'interval', null)
+
+,( 'circ.checkout_fills_related_hold', 'circ',
+    oils_i18n_gettext('circ.checkout_fills_related_hold',
+        'Checkout Fills Related Hold',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.checkout_fills_related_hold',
+        'When a patron checks out an item and they have no holds that directly target the item, the system will attempt to find a hold for the patron that could be fulfilled by the checked out item and fulfills it',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.checkout_fills_related_hold_exact_match_only', 'circ',
+    oils_i18n_gettext('circ.checkout_fills_related_hold_exact_match_only',
+        'Checkout Fills Related Hold On Valid Copy Only',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.checkout_fills_related_hold_exact_match_only',
+        'When filling related holds on checkout only match on items that are valid for opportunistic capture for the hold. Without this set a Title or Volume hold could match when the item is not holdable. With this set only holdable items will match.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.claim_never_checked_out.mark_missing', 'lib',
+    oils_i18n_gettext('circ.claim_never_checked_out.mark_missing',
+        'Claim Never Checked Out: Mark copy as missing',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.claim_never_checked_out.mark_missing',
+        'When a circ is marked as claims-never-checked-out, mark the copy as missing',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.claim_return.copy_status', 'lib',
+    oils_i18n_gettext('circ.claim_return.copy_status',
+        'Claim Return Copy Status',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.claim_return.copy_status',
+        'Claims returned copies are put into this status.  Default is to leave the copy in the Checked Out status',
+        'coust', 'description'),
+    'link', 'ccs')
+
+,( 'circ.damaged.void_ovedue', 'lib',
+    oils_i18n_gettext('circ.damaged.void_ovedue',
+        'Mark item damaged voids overdues',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.damaged.void_ovedue',
+        'When an item is marked damaged, overdue fines on the most recent circulation are voided.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.damaged_item_processing_fee', 'finance',
+    oils_i18n_gettext('circ.damaged_item_processing_fee',
+        'Charge processing fee for damaged items',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.damaged_item_processing_fee',
+        'Charge processing fee for damaged items',
+        'coust', 'description'),
+    'currency', null)
+
+,( 'circ.do_not_tally_claims_returned', 'circ',
+    oils_i18n_gettext('circ.do_not_tally_claims_returned',
+        'Do not include outstanding Claims Returned circulations in lump sum tallies in Patron Display.',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.do_not_tally_claims_returned',
+        'In the Patron Display interface, the number of total active circulations for a given patron is presented in the Summary sidebar and underneath the Items Out navigation button.  This setting will prevent Claims Returned circulations from counting toward these tallies.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.hold_boundary.hard', 'holds',
+    oils_i18n_gettext('circ.hold_boundary.hard',
+        'Hard boundary',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.hold_boundary.hard',
+        'Holds: Hard boundary',
+        'coust', 'description'),
+    'integer', null)
+
+,( 'circ.hold_boundary.soft', 'holds',
+    oils_i18n_gettext('circ.hold_boundary.soft',
+        'Soft boundary',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.hold_boundary.soft',
+        'Holds: Soft boundary',
+        'coust', 'description'),
+    'integer', null)
+
+,( 'circ.hold_expire_alert_interval', 'holds',
+    oils_i18n_gettext('circ.hold_expire_alert_interval',
+        'Expire Alert Interval',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.hold_expire_alert_interval',
+        'Amount of time before a hold expires at which point the patron should be alerted. Examples: "5 days", "1 hour"',
+        'coust', 'description'),
+    'interval', null)
+
+,( 'circ.hold_expire_interval', 'holds',
+    oils_i18n_gettext('circ.hold_expire_interval',
+        'Expire Interval',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.hold_expire_interval',
+        'Amount of time after a hold is placed before the hold expires.  Example "100 days"',
+        'coust', 'description'),
+    'interval', null)
+
+,( 'circ.hold_shelf_status_delay', 'circ',
+    oils_i18n_gettext('circ.hold_shelf_status_delay',
+        'Hold Shelf Status Delay',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.hold_shelf_status_delay',
+        'The purpose is to provide an interval of time after an item goes into the on-holds-shelf status before it appears to patrons that it is actually on the holds shelf.  This gives staff time to process the item before it shows as ready-for-pickup. Examples: "5 days", "1 hour"',
+        'coust', 'description'),
+    'interval', null)
+
+,( 'circ.hold_stalling.soft', 'holds',
+    oils_i18n_gettext('circ.hold_stalling.soft',
+        'Soft stalling interval',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.hold_stalling.soft',
+        'How long to wait before allowing remote items to be opportunistically captured for a hold.  Example "5 days"',
+        'coust', 'description'),
+    'interval', null)
+
+,( 'circ.hold_stalling_hard', 'holds',
+    oils_i18n_gettext('circ.hold_stalling_hard',
+        'Hard stalling interval',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.hold_stalling_hard',
+        'Holds: Hard stalling interval',
+        'coust', 'description'),
+    'interval', null)
+
+,( 'circ.holds.age_protect.active_date', 'holds',
+    oils_i18n_gettext('circ.holds.age_protect.active_date',
+        'Use Active Date for Age Protection',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.holds.age_protect.active_date',
+        'When calculating age protection rules use the active date instead of the creation date.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.holds.behind_desk_pickup_supported', 'holds',
+    oils_i18n_gettext('circ.holds.behind_desk_pickup_supported',
+        'Behind Desk Pickup Supported',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.holds.behind_desk_pickup_supported',
+        'If a branch supports both a public holds shelf and behind-the-desk pickups, set this value to true.  This gives the patron the option to enable behind-the-desk pickups for their holds',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.holds.canceled.display_age', 'holds',
+    oils_i18n_gettext('circ.holds.canceled.display_age',
+        'Canceled holds display age',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.holds.canceled.display_age',
+        'Show all canceled holds that were canceled within this amount of time',
+        'coust', 'description'),
+    'interval', null)
+
+,( 'circ.holds.canceled.display_count', 'holds',
+    oils_i18n_gettext('circ.holds.canceled.display_count',
+        'Canceled holds display count',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.holds.canceled.display_count',
+        'How many canceled holds to show in patron holds interfaces',
+        'coust', 'description'),
+    'integer', null)
+
+,( 'circ.holds.clear_shelf.copy_status', 'holds',
+    oils_i18n_gettext('circ.holds.clear_shelf.copy_status',
+        'Clear shelf copy status',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.holds.clear_shelf.copy_status',
+        'Any copies that have not been put into reshelving, in-transit, or on-holds-shelf (for a new hold) during the clear shelf process will be put into this status.  This is basically a purgatory status for copies waiting to be pulled from the shelf and processed by hand',
+        'coust', 'description'),
+    'link', 'ccs')
+
+,( 'circ.holds.clear_shelf.no_capture_holds', 'holds',
+    oils_i18n_gettext('circ.holds.clear_shelf.no_capture_holds',
+        'Bypass hold capture during clear shelf process',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.holds.clear_shelf.no_capture_holds',
+        'During the clear shelf process, avoid capturing new holds on cleared items.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.holds.default_estimated_wait_interval', 'holds',
+    oils_i18n_gettext('circ.holds.default_estimated_wait_interval',
+        'Default Estimated Wait',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.holds.default_estimated_wait_interval',
+        'When predicting the amount of time a patron will be waiting for a hold to be fulfilled, this is the default estimated length of time to assume an item will be checked out. Examples: "3 weeks", "7 days"',
+        'coust', 'description'),
+    'interval', null)
+
+,( 'circ.holds.default_shelf_expire_interval', 'holds',
+    oils_i18n_gettext('circ.holds.default_shelf_expire_interval',
+        'Default hold shelf expire interval',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.holds.default_shelf_expire_interval',
+        '',
+        'coust', 'description'),
+    'interval', null)
+
+,( 'circ.holds.expired_patron_block', 'circ',
+    oils_i18n_gettext('circ.holds.expired_patron_block',
+        'Block hold request if hold recipient privileges have expired',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.holds.expired_patron_block',
+        'Block hold request if hold recipient privileges have expired',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.holds.hold_has_copy_at.alert', 'holds',
+    oils_i18n_gettext('circ.holds.hold_has_copy_at.alert',
+        'Has Local Copy Alert',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.holds.hold_has_copy_at.alert',
+        'If there is an available copy at the requesting library that could fulfill a hold during hold placement time, alert the patron',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.holds.hold_has_copy_at.block', 'holds',
+    oils_i18n_gettext('circ.holds.hold_has_copy_at.block',
+        'Has Local Copy Block',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.holds.hold_has_copy_at.block',
+        'If there is an available copy at the requesting library that could fulfill a hold during hold placement time, do not allow the hold to be placed',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.holds.max_org_unit_target_loops', 'holds',
+    oils_i18n_gettext('circ.holds.max_org_unit_target_loops',
+        'Maximum library target attempts',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.holds.max_org_unit_target_loops',
+        'When this value is set and greater than 0, the system will only attempt to find a copy at each possible branch the configured number of times',
+        'coust', 'description'),
+    'integer', null)
+
+,( 'circ.holds.min_estimated_wait_interval', 'holds',
+    oils_i18n_gettext('circ.holds.min_estimated_wait_interval',
+        'Minimum Estimated Wait',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.holds.min_estimated_wait_interval',
+        'When predicting the amount of time a patron will be waiting for a hold to be fulfilled, this is the minimum estimated length of time to assume an item will be checked out. Examples: "2 weeks", "5 days"',
+        'coust', 'description'),
+    'interval', null)
+
+,( 'circ.holds.org_unit_target_weight', 'holds',
+    oils_i18n_gettext('circ.holds.org_unit_target_weight',
+        'Org Unit Target Weight',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.holds.org_unit_target_weight',
+        'Org Units can be organized into hold target groups based on a weight.  Potential copies from org units with the same weight are chosen at random.',
+        'coust', 'description'),
+    'integer', null)
+
+,( 'circ.holds.recall_fine_rules', 'recall',
+    oils_i18n_gettext('circ.holds.recall_fine_rules',
+        'An array of fine amount, fine interval, and maximum fine.',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.holds.recall_fine_rules',
+        'Recalls: An array of fine amount, fine interval, and maximum fine. For example, to specify a new fine rule of $5.00 per day, with a maximum fine of $50.00, use: [5.00,"1 day",50.00]',
+        'coust', 'description'),
+    'array', null)
+
+,( 'circ.holds.recall_return_interval', 'recall',
+    oils_i18n_gettext('circ.holds.recall_return_interval',
+        'Truncated loan period.',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.holds.recall_return_interval',
+        'Recalls: When a recall is triggered, this defines the adjusted loan period for the item. For example, "4 days" or "1 week".',
+        'coust', 'description'),
+    'interval', null)
+
+,( 'circ.holds.recall_threshold', 'recall',
+    oils_i18n_gettext('circ.holds.recall_threshold',
+        'Circulation duration that triggers a recall.',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.holds.recall_threshold',
+        'Recalls: A hold placed on an item with a circulation duration longer than this will trigger a recall. For example, "14 days" or "3 weeks".',
+        'coust', 'description'),
+    'interval', null)
+
+,( 'circ.holds.target_holds_by_org_unit_weight', 'holds',
+    oils_i18n_gettext('circ.holds.target_holds_by_org_unit_weight',
+        'Use weight-based hold targeting',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.holds.target_holds_by_org_unit_weight',
+        'Use library weight based hold targeting',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.holds.target_skip_me', 'holds',
+    oils_i18n_gettext('circ.holds.target_skip_me',
+        'Skip For Hold Targeting',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.holds.target_skip_me',
+        'When true, don''t target any copies at this org unit for holds',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.holds.uncancel.reset_request_time', 'holds',
+    oils_i18n_gettext('circ.holds.uncancel.reset_request_time',
+        'Reset request time on un-cancel',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.holds.uncancel.reset_request_time',
+        'When a hold is uncanceled, reset the request time to push it to the end of the queue',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.holds_fifo', 'holds',
+    oils_i18n_gettext('circ.holds_fifo',
+        'FIFO',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.holds_fifo',
+        'Force holds to a more strict First-In, First-Out capture',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.item_checkout_history.max', 'gui',
+    oils_i18n_gettext('circ.item_checkout_history.max',
+        'Maximum previous checkouts displayed',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.item_checkout_history.max',
+        'This is the maximum number of previous circulations the staff client will display when investigating item details',
+        'coust', 'description'),
+    'integer', null)
+
+,( 'circ.lost.generate_overdue_on_checkin', 'circ',
+    oils_i18n_gettext('circ.lost.generate_overdue_on_checkin',
+        'Lost Checkin Generates New Overdues',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.lost.generate_overdue_on_checkin',
+        'Enabling this setting causes retroactive creation of not-yet-existing overdue fines on lost item checkin, up to the point of checkin time (or max fines is reached).  This is different than "restore overdue on lost", because it only creates new overdue fines.  Use both settings together to get the full complement of overdue fines for a lost item',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.lost_immediately_available', 'circ',
+    oils_i18n_gettext('circ.lost_immediately_available',
+        'Lost items usable on checkin',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.lost_immediately_available',
+        'Lost items are usable on checkin instead of going ''home'' first',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.lost_materials_processing_fee', 'finance',
+    oils_i18n_gettext('circ.lost_materials_processing_fee',
+        'Lost Materials Processing Fee',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.lost_materials_processing_fee',
+        'Lost Materials Processing Fee',
+        'coust', 'description'),
+    'currency', null)
+
+,( 'circ.max_accept_return_of_lost', 'circ',
+    oils_i18n_gettext('circ.max_accept_return_of_lost',
+        'Void lost max interval',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.max_accept_return_of_lost',
+        'Items that have been lost this long will not result in voided billings when returned.  E.g. ''6 months''',
+        'coust', 'description'),
+    'interval', null)
+
+,( 'circ.max_fine.cap_at_price', 'circ',
+    oils_i18n_gettext('circ.max_fine.cap_at_price',
+        'Cap Max Fine at Item Price',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.max_fine.cap_at_price',
+        'This prevents the system from charging more than the item price in overdue fines',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.max_patron_claim_return_count', 'circ',
+    oils_i18n_gettext('circ.max_patron_claim_return_count',
+        'Max Patron Claims Returned Count',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.max_patron_claim_return_count',
+        'When this count is exceeded, a staff override is required to mark the item as claims returned',
+        'coust', 'description'),
+    'integer', null)
+
+,( 'circ.missing_pieces.copy_status', 'circ',
+    oils_i18n_gettext('circ.missing_pieces.copy_status',
+        'Item Status for Missing Pieces',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.missing_pieces.copy_status',
+        'This is the Item Status to use for items that have been marked or scanned as having Missing Pieces.  In the absence of this setting, the Damaged status is used.',
+        'coust', 'description'),
+    'link', 'ccs')
+
+,( 'circ.obscure_dob', 'sec',
+    oils_i18n_gettext('circ.obscure_dob',
+        'Obscure the Date of Birth field',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.obscure_dob',
+        'When true, the Date of Birth column in patron lists will default to Not Visible, and in the Patron Summary sidebar the value will display as <Hidden> unless the field label is clicked.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.offline.skip_checkin_if_newer_status_changed_time', 'offline',
+    oils_i18n_gettext('circ.offline.skip_checkin_if_newer_status_changed_time',
+        'Skip offline checkin if newer item Status Changed Time.',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.offline.skip_checkin_if_newer_status_changed_time',
+        'Skip offline checkin transaction (raise exception when processing) if item Status Changed Time is newer than the recorded transaction time.  WARNING: The Reshelving to Available status rollover will trigger this.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.offline.skip_checkout_if_newer_status_changed_time', 'offline',
+    oils_i18n_gettext('circ.offline.skip_checkout_if_newer_status_changed_time',
+        'Skip offline checkout if newer item Status Changed Time.',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.offline.skip_checkout_if_newer_status_changed_time',
+        'Skip offline checkout transaction (raise exception when processing) if item Status Changed Time is newer than the recorded transaction time.  WARNING: The Reshelving to Available status rollover will trigger this.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.offline.skip_renew_if_newer_status_changed_time', 'offline',
+    oils_i18n_gettext('circ.offline.skip_renew_if_newer_status_changed_time',
+        'Skip offline renewal if newer item Status Changed Time.',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.offline.skip_renew_if_newer_status_changed_time',
+        'Skip offline renewal transaction (raise exception when processing) if item Status Changed Time is newer than the recorded transaction time.  WARNING: The Reshelving to Available status rollover will trigger this.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.offline.username_allowed', 'sec',
+    oils_i18n_gettext('circ.offline.username_allowed',
+        'Offline: Patron Usernames Allowed',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.offline.username_allowed',
+        'During offline circulations, allow patrons to identify themselves with usernames in addition to barcode.  For this setting to work, a barcode format must also be defined',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.password_reset_request_per_user_limit', 'sec',
+    oils_i18n_gettext('circ.password_reset_request_per_user_limit',
+        'Maximum concurrently active self-serve password reset requests per user',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.password_reset_request_per_user_limit',
+        'When a user has more than this number of concurrently active self-serve password reset requests for their account, prevent the user from creating any new self-serve password reset requests until the number of active requests for the user drops back below this number.',
+        'coust', 'description'),
+    'string', null)
+
+,( 'circ.password_reset_request_requires_matching_email', 'circ',
+    oils_i18n_gettext('circ.password_reset_request_requires_matching_email',
+        'Require matching email address for password reset requests',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.password_reset_request_requires_matching_email',
+        'Require matching email address for password reset requests',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.password_reset_request_throttle', 'sec',
+    oils_i18n_gettext('circ.password_reset_request_throttle',
+        'Maximum concurrently active self-serve password reset requests',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.password_reset_request_throttle',
+        'Prevent the creation of new self-serve password reset requests until the number of active requests drops back below this number.',
+        'coust', 'description'),
+    'string', null)
+
+,( 'circ.password_reset_request_time_to_live', 'sec',
+    oils_i18n_gettext('circ.password_reset_request_time_to_live',
+        'Self-serve password reset request time-to-live',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.password_reset_request_time_to_live',
+        'Length of time (in seconds) a self-serve password reset request should remain active.',
+        'coust', 'description'),
+    'string', null)
+
+,( 'circ.patron_edit.clone.copy_address', 'circ',
+    oils_i18n_gettext('circ.patron_edit.clone.copy_address',
+        'Patron Registration: Cloned patrons get address copy',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.patron_edit.clone.copy_address',
+        'In the Patron editor, copy addresses from the cloned user instead of linking directly to the address',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.patron_invalid_address_apply_penalty', 'circ',
+    oils_i18n_gettext('circ.patron_invalid_address_apply_penalty',
+        'Invalid patron address penalty',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.patron_invalid_address_apply_penalty',
+        'When set, if a patron address is set to invalid, a penalty is applied.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.pre_cat_copy_circ_lib', 'lib',
+    oils_i18n_gettext('circ.pre_cat_copy_circ_lib',
+        'Pre-cat Item Circ Lib',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.pre_cat_copy_circ_lib',
+        'Override the default circ lib of "here" with a pre-configured circ lib for pre-cat items.  The value should be the "shortname" (aka policy name) of the org unit',
+        'coust', 'description'),
+    'string', null)
+
+,( 'circ.reshelving_complete.interval', 'lib',
+    oils_i18n_gettext('circ.reshelving_complete.interval',
+        'Change reshelving status interval',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.reshelving_complete.interval',
+        'Amount of time to wait before changing an item from "reshelving" status to "available".  Examples: "1 day", "6 hours"',
+        'coust', 'description'),
+    'interval', null)
+
+,( 'circ.restore_overdue_on_lost_return', 'circ',
+    oils_i18n_gettext('circ.restore_overdue_on_lost_return',
+        'Restore overdues on lost item return',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.restore_overdue_on_lost_return',
+        'Restore overdue fines on lost item return',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.selfcheck.alert.popup', 'self',
+    oils_i18n_gettext('circ.selfcheck.alert.popup',
+        'Pop-up alert for errors',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.selfcheck.alert.popup',
+        'If true, checkout/renewal errors will cause a pop-up window in addition to the on-screen message',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.selfcheck.alert.sound', 'self',
+    oils_i18n_gettext('circ.selfcheck.alert.sound',
+        'Audio Alerts',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.selfcheck.alert.sound',
+        'Use audio alerts for selfcheck events',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.selfcheck.auto_override_checkout_events', 'self',
+    oils_i18n_gettext('circ.selfcheck.auto_override_checkout_events',
+        'Selfcheck override events list',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.selfcheck.auto_override_checkout_events',
+        'List of checkout/renewal events that the selfcheck interface should automatically override instead instead of alerting and stopping the transaction',
+        'coust', 'description'),
+    'array', null)
+
+,( 'circ.selfcheck.block_checkout_on_copy_status', 'self',
+    oils_i18n_gettext('circ.selfcheck.block_checkout_on_copy_status',
+        'Block copy checkout status',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.selfcheck.block_checkout_on_copy_status',
+        'List of copy status IDs that will block checkout even if the generic COPY_NOT_AVAILABLE event is overridden',
+        'coust', 'description'),
+    'array', null)
+
+,( 'circ.selfcheck.patron_login_timeout', 'self',
+    oils_i18n_gettext('circ.selfcheck.patron_login_timeout',
+        'Patron Login Timeout (in seconds)',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.selfcheck.patron_login_timeout',
+        'Number of seconds of inactivity before the patron is logged out of the selfcheck interface',
+        'coust', 'description'),
+    'integer', null)
+
+,( 'circ.selfcheck.patron_password_required', 'self',
+    oils_i18n_gettext('circ.selfcheck.patron_password_required',
+        'Require Patron Password',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.selfcheck.patron_password_required',
+        'Patron must log in with barcode and password at selfcheck station',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.selfcheck.require_patron_password', 'self',
+    oils_i18n_gettext('circ.selfcheck.require_patron_password',
+        'Require patron password',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.selfcheck.require_patron_password',
+        'If true, patrons will be required to enter their password in addition to their username/barcode to log into the selfcheck interface',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.selfcheck.workstation_required', 'self',
+    oils_i18n_gettext('circ.selfcheck.workstation_required',
+        'Workstation Required',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.selfcheck.workstation_required',
+        'All selfcheck stations must use a workstation',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.staff_client.actor_on_checkout', 'circ',
+    oils_i18n_gettext('circ.staff_client.actor_on_checkout',
+        'Load patron from Checkout',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.staff_client.actor_on_checkout',
+        'When scanning barcodes into Checkout auto-detect if a new patron barcode is scanned and auto-load the new patron.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.staff_client.do_not_auto_attempt_print', 'prog',
+    oils_i18n_gettext('circ.staff_client.do_not_auto_attempt_print',
+        'Disable Automatic Print Attempt Type List',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.staff_client.do_not_auto_attempt_print',
+        'Disable automatic print attempts from staff client interfaces for the receipt types in this list.  Possible values: "Checkout", "Bill Pay", "Hold Slip", "Transit Slip", and "Hold/Transit Slip".  This is different from the Auto-Print checkbox in the pertinent interfaces in that it disables automatic print attempts altogether, rather than encouraging silent printing by suppressing the print dialog.  The Auto-Print checkbox in these interfaces have no effect on the behavior for this setting.  In the case of the Hold, Transit, and Hold/Transit slips, this also suppresses the alert dialogs that precede the print dialog (the ones that offer Print and Do Not Print as options).',
+        'coust', 'description'),
+    'array', null)
+
+,( 'circ.staff_client.receipt.alert_text', 'receipt_template',
+    oils_i18n_gettext('circ.staff_client.receipt.alert_text',
+        'Content of alert_text include',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.staff_client.receipt.alert_text',
+        'Text/HTML/Macros to be inserted into receipt templates in place of %INCLUDE(alert_text)%',
+        'coust', 'description'),
+    'string', null)
+
+,( 'circ.staff_client.receipt.event_text', 'receipt_template',
+    oils_i18n_gettext('circ.staff_client.receipt.event_text',
+        'Content of event_text include',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.staff_client.receipt.event_text',
+        'Text/HTML/Macros to be inserted into receipt templates in place of %INCLUDE(event_text)%',
+        'coust', 'description'),
+    'string', null)
+
+,( 'circ.staff_client.receipt.footer_text', 'receipt_template',
+    oils_i18n_gettext('circ.staff_client.receipt.footer_text',
+        'Content of footer_text include',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.staff_client.receipt.footer_text',
+        'Text/HTML/Macros to be inserted into receipt templates in place of %INCLUDE(footer_text)%',
+        'coust', 'description'),
+    'string', null)
+
+,( 'circ.staff_client.receipt.header_text', 'receipt_template',
+    oils_i18n_gettext('circ.staff_client.receipt.header_text',
+        'Content of header_text include',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.staff_client.receipt.header_text',
+        'Text/HTML/Macros to be inserted into receipt templates in place of %INCLUDE(header_text)%',
+        'coust', 'description'),
+    'string', null)
+
+,( 'circ.staff_client.receipt.notice_text', 'receipt_template',
+    oils_i18n_gettext('circ.staff_client.receipt.notice_text',
+        'Content of notice_text include',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.staff_client.receipt.notice_text',
+        'Text/HTML/Macros to be inserted into receipt templates in place of %INCLUDE(notice_text)%',
+        'coust', 'description'),
+    'string', null)
+
+,( 'circ.transit.min_checkin_interval', 'circ',
+    oils_i18n_gettext('circ.transit.min_checkin_interval',
+        'Minimum Transit Checkin Interval',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.transit.min_checkin_interval',
+        'In-Transit items checked in this close to the transit start time will be prevented from checking in',
+        'coust', 'description'),
+    'interval', null)
+
+,( 'circ.user_merge.deactivate_cards', 'circ',
+    oils_i18n_gettext('circ.user_merge.deactivate_cards',
+        'Patron Merge Deactivate Card',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.user_merge.deactivate_cards',
+        'Mark barcode(s) of subordinate user(s) in a patron merge as inactive',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.user_merge.delete_addresses', 'circ',
+    oils_i18n_gettext('circ.user_merge.delete_addresses',
+        'Patron Merge Address Delete',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.user_merge.delete_addresses',
+        'Delete address(es) of subordinate user(s) in a patron merge',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.user_merge.delete_cards', 'circ',
+    oils_i18n_gettext('circ.user_merge.delete_cards',
+        'Patron Merge Barcode Delete',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.user_merge.delete_cards',
+        'Delete barcode(s) of subordinate user(s) in a patron merge',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.void_lost_on_checkin', 'circ',
+    oils_i18n_gettext('circ.void_lost_on_checkin',
+        'Void lost item billing when returned',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.void_lost_on_checkin',
+        'Void lost item billing when returned',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.void_lost_proc_fee_on_checkin', 'circ',
+    oils_i18n_gettext('circ.void_lost_proc_fee_on_checkin',
+        'Void processing fee on lost item return',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.void_lost_proc_fee_on_checkin',
+        'Void processing fee when lost item returned',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.void_overdue_on_lost', 'finance',
+    oils_i18n_gettext('circ.void_overdue_on_lost',
+        'Void overdue fines when items are marked lost',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.void_overdue_on_lost',
+        'Void overdue fines when items are marked lost',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'credit.payments.allow', 'finance',
+    oils_i18n_gettext('credit.payments.allow',
+        'Allow Credit Card Payments',
+        'coust', 'label'),
+    oils_i18n_gettext('credit.payments.allow',
+        'If enabled, patrons will be able to pay fines accrued at this location via credit card',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'credit.processor.authorizenet.enabled', 'credit',
+    oils_i18n_gettext('credit.processor.authorizenet.enabled',
+        'Enable AuthorizeNet payments',
+        'coust', 'label'),
+    oils_i18n_gettext('credit.processor.authorizenet.enabled',
+        'Enable AuthorizeNet payments',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'credit.processor.authorizenet.login', 'credit',
+    oils_i18n_gettext('credit.processor.authorizenet.login',
+        'AuthorizeNet login',
+        'coust', 'label'),
+    oils_i18n_gettext('credit.processor.authorizenet.login',
+        'AuthorizeNet login',
+        'coust', 'description'),
+    'string', null)
+
+,( 'credit.processor.authorizenet.password', 'credit',
+    oils_i18n_gettext('credit.processor.authorizenet.password',
+        'AuthorizeNet password',
+        'coust', 'label'),
+    oils_i18n_gettext('credit.processor.authorizenet.password',
+        'AuthorizeNet password',
+        'coust', 'description'),
+    'string', null)
+
+,( 'credit.processor.authorizenet.server', 'credit',
+    oils_i18n_gettext('credit.processor.authorizenet.server',
+        'AuthorizeNet server',
+        'coust', 'label'),
+    oils_i18n_gettext('credit.processor.authorizenet.server',
+        'Required if using a developer/test account with AuthorizeNet',
+        'coust', 'description'),
+    'string', null)
+
+,( 'credit.processor.authorizenet.testmode', 'credit',
+    oils_i18n_gettext('credit.processor.authorizenet.testmode',
+        'AuthorizeNet test mode',
+        'coust', 'label'),
+    oils_i18n_gettext('credit.processor.authorizenet.testmode',
+        'AuthorizeNet test mode',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'credit.processor.default', 'credit',
+    oils_i18n_gettext('credit.processor.default',
+        'Name default credit processor',
+        'coust', 'label'),
+    oils_i18n_gettext('credit.processor.default',
+        'This might be "AuthorizeNet", "PayPal", etc.',
+        'coust', 'description'),
+    'string', null)
+
+,( 'credit.processor.payflowpro.enabled', 'credit',
+    oils_i18n_gettext('credit.processor.payflowpro.enabled',
+        'Enable PayflowPro payments',
+        'coust', 'label'),
+    oils_i18n_gettext('credit.processor.payflowpro.enabled',
+        'This is NOT the same thing as the settings labeled with just "PayPal."',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'credit.processor.payflowpro.login', 'credit',
+    oils_i18n_gettext('credit.processor.payflowpro.login',
+        'PayflowPro login/merchant ID',
+        'coust', 'label'),
+    oils_i18n_gettext('credit.processor.payflowpro.login',
+        'Often the same thing as the PayPal manager login',
+        'coust', 'description'),
+    'string', null)
+
+,( 'credit.processor.payflowpro.partner', 'credit',
+    oils_i18n_gettext('credit.processor.payflowpro.partner',
+        'PayflowPro partner',
+        'coust', 'label'),
+    oils_i18n_gettext('credit.processor.payflowpro.partner',
+        'Often "PayPal" or "VeriSign", sometimes others',
+        'coust', 'description'),
+    'string', null)
+
+,( 'credit.processor.payflowpro.password', 'credit',
+    oils_i18n_gettext('credit.processor.payflowpro.password',
+        'PayflowPro password',
+        'coust', 'label'),
+    oils_i18n_gettext('credit.processor.payflowpro.password',
+        'PayflowPro password',
+        'coust', 'description'),
+    'string', null)
+
+,( 'credit.processor.payflowpro.testmode', 'credit',
+    oils_i18n_gettext('credit.processor.payflowpro.testmode',
+        'PayflowPro test mode',
+        'coust', 'label'),
+    oils_i18n_gettext('credit.processor.payflowpro.testmode',
+        'Do not really process transactions, but stay in test mode - uses pilot-payflowpro.paypal.com instead of the usual host',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'credit.processor.payflowpro.vendor', 'credit',
+    oils_i18n_gettext('credit.processor.payflowpro.vendor',
+        'PayflowPro vendor',
+        'coust', 'label'),
+    oils_i18n_gettext('credit.processor.payflowpro.vendor',
+        'Often the same thing as the login',
+        'coust', 'description'),
+    'string', null)
+
+,( 'credit.processor.paypal.enabled', 'credit',
+    oils_i18n_gettext('credit.processor.paypal.enabled',
+        'Enable PayPal payments',
+        'coust', 'label'),
+    oils_i18n_gettext('credit.processor.paypal.enabled',
+        'Enable PayPal payments',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'credit.processor.paypal.login', 'credit',
+    oils_i18n_gettext('credit.processor.paypal.login',
+        'PayPal login',
+        'coust', 'label'),
+    oils_i18n_gettext('credit.processor.paypal.login',
+        'PayPal login',
+        'coust', 'description'),
+    'string', null)
+
+,( 'credit.processor.paypal.password', 'credit',
+    oils_i18n_gettext('credit.processor.paypal.password',
+        'PayPal password',
+        'coust', 'label'),
+    oils_i18n_gettext('credit.processor.paypal.password',
+        'PayPal password',
+        'coust', 'description'),
+    'string', null)
+
+,( 'credit.processor.paypal.signature', 'credit',
+    oils_i18n_gettext('credit.processor.paypal.signature',
+        'PayPal signature',
+        'coust', 'label'),
+    oils_i18n_gettext('credit.processor.paypal.signature',
+        'PayPal signature',
+        'coust', 'description'),
+    'string', null)
+
+,( 'credit.processor.paypal.testmode', 'credit',
+    oils_i18n_gettext('credit.processor.paypal.testmode',
+        'PayPal test mode',
+        'coust', 'label'),
+    oils_i18n_gettext('credit.processor.paypal.testmode',
+        'PayPal test mode',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'format.date', 'gui',
+    oils_i18n_gettext('format.date',
+        'Format Dates with this pattern.',
+        'coust', 'label'),
+    oils_i18n_gettext('format.date',
+        'Format Dates with this pattern (examples: "yyyy-MM-dd" for "2010-04-26", "MMM d, yyyy" for "Apr 26, 2010")',
+        'coust', 'description'),
+    'string', null)
+
+,( 'format.time', 'gui',
+    oils_i18n_gettext('format.time',
+        'Format Times with this pattern.',
+        'coust', 'label'),
+    oils_i18n_gettext('format.time',
+        'Format Times with this pattern (examples: "h:m:s.SSS a z" for "2:07:20.666 PM Eastern Daylight Time", "HH:mm" for "14:07")',
+        'coust', 'description'),
+    'string', null)
+
+,( 'global.default_locale', 'glob',
+    oils_i18n_gettext('global.default_locale',
+        'Global Default Locale',
+        'coust', 'label'),
+    oils_i18n_gettext('global.default_locale',
+        'Global Default Locale',
+        'coust', 'description'),
+    'string', null)
+
+,( 'global.juvenile_age_threshold', 'lib',
+    oils_i18n_gettext('global.juvenile_age_threshold',
+        'Juvenile Age Threshold',
+        'coust', 'label'),
+    oils_i18n_gettext('global.juvenile_age_threshold',
+        'The age at which a user is no long considered a juvenile.  For example, "18 years".',
+        'coust', 'description'),
+    'interval', null)
+
+,( 'global.password_regex', 'glob',
+    oils_i18n_gettext('global.password_regex',
+        'Password format',
+        'coust', 'label'),
+    oils_i18n_gettext('global.password_regex',
+        'Regular expression defining the password format',
+        'coust', 'description'),
+    'string', null)
+
+,( 'gui.disable_local_save_columns', 'gui',
+    oils_i18n_gettext('gui.disable_local_save_columns',
+        'Disable the ability to save list column configurations locally.',
+        'coust', 'label'),
+    oils_i18n_gettext('gui.disable_local_save_columns',
+        'Disable the ability to save list column configurations locally.  If set, columns may still be manipulated, however, the changes do not persist.  Also, existing local configurations are ignored if this setting is true.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'lib.courier_code', 'lib',
+    oils_i18n_gettext('lib.courier_code',
+        'Courier Code',
+        'coust', 'label'),
+    oils_i18n_gettext('lib.courier_code',
+        'Courier Code for the library.  Available in transit slip templates as the %courier_code% macro.',
+        'coust', 'description'),
+    'string', null)
+
+,( 'notice.telephony.callfile_lines', 'lib',
+    oils_i18n_gettext('notice.telephony.callfile_lines',
+        'Telephony: Arbitrary line(s) to include in each notice callfile',
+        'coust', 'label'),
+    oils_i18n_gettext('notice.telephony.callfile_lines',
+        '
+        This overrides lines from opensrf.xml.
+        Line(s) must be valid for your target server and platform
+        (e.g. Asterisk 1.4).
+        ',
+        'coust', 'description'),
+    'string', null)
+
+,( 'opac.allow_pending_address', 'opac',
+    oils_i18n_gettext('opac.allow_pending_address',
+        'Allow pending addresses',
+        'coust', 'label'),
+    oils_i18n_gettext('opac.allow_pending_address',
+        'If enabled, patrons can create and edit existing addresses.  Addresses are kept in a pending state until staff approves the changes',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'opac.barcode_regex', 'glob',
+    oils_i18n_gettext('opac.barcode_regex',
+        'Patron barcode format',
+        'coust', 'label'),
+    oils_i18n_gettext('opac.barcode_regex',
+        'Regular expression defining the patron barcode format',
+        'coust', 'description'),
+    'string', null)
+
+,( 'opac.fully_compressed_serial_holdings', 'opac',
+    oils_i18n_gettext('opac.fully_compressed_serial_holdings',
+        'Use fully compressed serial holdings',
+        'coust', 'label'),
+    oils_i18n_gettext('opac.fully_compressed_serial_holdings',
+        'Show fully compressed serial holdings for all libraries at and below the current context unit',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'opac.org_unit_hiding.depth', 'opac',
+    oils_i18n_gettext('opac.org_unit_hiding.depth',
+        'Org Unit Hiding Depth',
+        'coust', 'label'),
+    oils_i18n_gettext('opac.org_unit_hiding.depth',
+        'This will hide certain org units in the public OPAC if the Original Location (url param "ol") for the OPAC inherits this setting.  This setting specifies an org unit depth, that together with the OPAC Original Location determines which section of the Org Hierarchy should be visible in the OPAC.  For example, a stock Evergreen installation will have a 3-tier hierarchy (Consortium/System/Branch), where System has a depth of 1 and Branch has a depth of 2.  If this setting contains a depth of 1 in such an installation, then every library in the System in which the Original Location belongs will be visible, and everything else will be hidden.  A depth of 0 will effectively make every org visible.  The embedded OPAC in the staff client ignores this setting.',
+        'coust', 'description'),
+    'integer', null)
+
+,( 'opac.payment_history_age_limit', 'opac',
+    oils_i18n_gettext('opac.payment_history_age_limit',
+        'Payment History Age Limit',
+        'coust', 'label'),
+    oils_i18n_gettext('opac.payment_history_age_limit',
+        'The OPAC should not display payments by patrons that are older than any interval defined here.',
+        'coust', 'description'),
+    'interval', null)
+
+,( 'org.bounced_emails', 'prog',
+    oils_i18n_gettext('org.bounced_emails',
+        'Sending email address for patron notices',
+        'coust', 'label'),
+    oils_i18n_gettext('org.bounced_emails',
+        'Sending email address for patron notices',
+        'coust', 'description'),
+    'string', null)
+
+,( 'org.patron_opt_boundary', 'sec',
+    oils_i18n_gettext('org.patron_opt_boundary',
+        'Patron Opt-In Boundary',
+        'coust', 'label'),
+    oils_i18n_gettext('org.patron_opt_boundary',
+        'This determines at which depth above which patrons must be opted in, and below which patrons will be assumed to be opted in.',
+        'coust', 'description'),
+    'integer', null)
+
+,( 'org.patron_opt_default', 'sec',
+    oils_i18n_gettext('org.patron_opt_default',
+        'Patron Opt-In Default',
+        'coust', 'label'),
+    oils_i18n_gettext('org.patron_opt_default',
+        'This is the default depth at which a patron is opted in; it is calculated as an org unit relative to the current workstation.',
+        'coust', 'description'),
+    'integer', null)
+
+,( 'patron.password.use_phone', 'sec',
+    oils_i18n_gettext('patron.password.use_phone',
+        'Patron: password from phone #',
+        'coust', 'label'),
+    oils_i18n_gettext('patron.password.use_phone',
+        'By default, use the last 4 alphanumeric characters of the patrons phone number as the default password when creating new users.  The exact characters used may be configured via the "GUI: Regex for day_phone field on patron registration" setting.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'serial.prev_issuance_copy_location', 'serial',
+    oils_i18n_gettext('serial.prev_issuance_copy_location',
+        'Previous Issuance Copy Location',
+        'coust', 'label'),
+    oils_i18n_gettext('serial.prev_issuance_copy_location',
+        'When a serial issuance is received, copies (units) of the previous issuance will be automatically moved into the configured shelving location',
+        'coust', 'description'),
+    'link', 'acpl')
+
+,( 'ui.admin.patron_log.max_entries', 'gui',
+    oils_i18n_gettext('ui.admin.patron_log.max_entries',
+        'Work Log: Maximum Patrons Logged',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.admin.patron_log.max_entries',
+        'Maximum entries for "Most Recently Affected Patrons..." section of the Work Log interface.',
+        'coust', 'description'),
+    'interval', null)
+
+,( 'ui.admin.work_log.max_entries', 'gui',
+    oils_i18n_gettext('ui.admin.work_log.max_entries',
+        'Work Log: Maximum Actions Logged',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.admin.work_log.max_entries',
+        'Maximum entries for "Most Recent Staff Actions" section of the Work Log interface.',
+        'coust', 'description'),
+    'interval', null)
+
+,( 'ui.cat.volume_copy_editor.horizontal', 'gui',
+    oils_i18n_gettext('ui.cat.volume_copy_editor.horizontal',
+        'Horizontal layout for Volume/Copy Creator/Editor.',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.cat.volume_copy_editor.horizontal',
+        'The main entry point for this interface is in Holdings Maintenance, Actions for Selected Rows, Edit Item Attributes / Call Numbers / Replace Barcodes.  This setting changes the top and bottom panes for that interface into left and right panes.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.circ.billing.uncheck_bills_and_unfocus_payment_box', 'gui',
+    oils_i18n_gettext('ui.circ.billing.uncheck_bills_and_unfocus_payment_box',
+        'Uncheck bills by default in the patron billing interface',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.circ.billing.uncheck_bills_and_unfocus_payment_box',
+        'Uncheck bills by default in the patron billing interface, and focus on the Uncheck All button instead of the Payment Received field.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.circ.in_house_use.entry_cap', 'gui',
+    oils_i18n_gettext('ui.circ.in_house_use.entry_cap',
+        'Record In-House Use: Maximum # of uses allowed per entry.',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.circ.in_house_use.entry_cap',
+        'The # of uses entry in the Record In-House Use interface may not exceed the value of this setting.',
+        'coust', 'description'),
+    'integer', null)
+
+,( 'ui.circ.in_house_use.entry_warn', 'gui',
+    oils_i18n_gettext('ui.circ.in_house_use.entry_warn',
+        'Record In-House Use: # of uses threshold for Are You Sure? dialog.',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.circ.in_house_use.entry_warn',
+        'In the Record In-House Use interface, a submission attempt will warn if the # of uses field exceeds the value of this setting.',
+        'coust', 'description'),
+    'integer', null)
+
+,( 'ui.circ.patron_summary.horizontal', 'gui',
+    oils_i18n_gettext('ui.circ.patron_summary.horizontal',
+        'Patron circulation summary is horizontal',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.circ.patron_summary.horizontal',
+        'Patron circulation summary is horizontal',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.circ.show_billing_tab_on_bills', 'gui',
+    oils_i18n_gettext('ui.circ.show_billing_tab_on_bills',
+        'Show billing tab first when bills are present',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.circ.show_billing_tab_on_bills',
+        'If enabled and a patron has outstanding bills and the alert page is not required, show the billing tab by default, instead of the checkout tab, when a patron is loaded',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.circ.suppress_checkin_popups', 'circ',
+    oils_i18n_gettext('ui.circ.suppress_checkin_popups',
+        'Suppress popup-dialogs during check-in.',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.circ.suppress_checkin_popups',
+        'Suppress popup-dialogs during check-in.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.general.button_bar', 'gui',
+    oils_i18n_gettext('ui.general.button_bar',
+        'Button bar',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.general.button_bar',
+        'Set to "circ" or "cat" for stock circulator or cataloger toolbar, respectively.',
+        'coust', 'description'),
+    'string', null)
+
+,( 'ui.general.hotkeyset', 'gui',
+    oils_i18n_gettext('ui.general.hotkeyset',
+        'Default Hotkeyset',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.general.hotkeyset',
+        'Default Hotkeyset for clients (filename without the .keyset).  Examples: Default, Minimal, and None',
+        'coust', 'description'),
+    'string', null)
+
+,( 'ui.general.idle_timeout', 'gui',
+    oils_i18n_gettext('ui.general.idle_timeout',
+        'Idle timeout',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.general.idle_timeout',
+        'If you want staff client windows to be minimized after a certain amount of system idle time, set this to the number of seconds of idle time that you want to allow before minimizing (requires staff client restart).',
+        'coust', 'description'),
+    'integer', null)
+
+,( 'ui.patron.default_country', 'gui',
+    oils_i18n_gettext('ui.patron.default_country',
+        'Default Country for New Addresses in Patron Editor',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.default_country',
+        'This is the default Country for new addresses in the patron editor.',
+        'coust', 'description'),
+    'string', null)
+
+,( 'ui.patron.default_ident_type', 'gui',
+    oils_i18n_gettext('ui.patron.default_ident_type',
+        'Default Ident Type for Patron Registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.default_ident_type',
+        'This is the default Ident Type for new users in the patron editor.',
+        'coust', 'description'),
+    'link', 'cit')
+
+,( 'ui.patron.default_inet_access_level', 'sec',
+    oils_i18n_gettext('ui.patron.default_inet_access_level',
+        'Default level of patrons'' internet access',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.default_inet_access_level',
+        'Default level of patrons'' internet access',
+        'coust', 'description'),
+    'integer', null)
+
+,( 'ui.patron.edit.au.active.show', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.active.show',
+        'Show active field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.active.show',
+        'The active field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.active.suggest', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.active.suggest',
+        'Suggest active field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.active.suggest',
+        'The active field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.alert_message.show', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.alert_message.show',
+        'Show alert_message field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.alert_message.show',
+        'The alert_message field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.alert_message.suggest', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.alert_message.suggest',
+        'Suggest alert_message field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.alert_message.suggest',
+        'The alert_message field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.alias.show', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.alias.show',
+        'Show alias field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.alias.show',
+        'The alias field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.alias.suggest', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.alias.suggest',
+        'Suggest alias field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.alias.suggest',
+        'The alias field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.barred.show', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.barred.show',
+        'Show barred field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.barred.show',
+        'The barred field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.barred.suggest', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.barred.suggest',
+        'Suggest barred field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.barred.suggest',
+        'The barred field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.claims_never_checked_out_count.show', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.claims_never_checked_out_count.show',
+        'Show claims_never_checked_out_count field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.claims_never_checked_out_count.show',
+        'The claims_never_checked_out_count field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.claims_never_checked_out_count.suggest', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.claims_never_checked_out_count.suggest',
+        'Suggest claims_never_checked_out_count field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.claims_never_checked_out_count.suggest',
+        'The claims_never_checked_out_count field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.claims_returned_count.show', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.claims_returned_count.show',
+        'Show claims_returned_count field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.claims_returned_count.show',
+        'The claims_returned_count field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.claims_returned_count.suggest', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.claims_returned_count.suggest',
+        'Suggest claims_returned_count field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.claims_returned_count.suggest',
+        'The claims_returned_count field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.day_phone.example', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.day_phone.example',
+        'Example for day_phone field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.day_phone.example',
+        'The Example for validation on the day_phone field in patron registration.',
+        'coust', 'description'),
+    'string', null)
+
+,( 'ui.patron.edit.au.day_phone.regex', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.day_phone.regex',
+        'Regex for day_phone field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.day_phone.regex',
+        E'The Regular Expression for validation on the day_phone field in patron registration. Note: The first capture group will be used for the "last 4 digits of phone number" feature, if enabled. Ex: "[2-9]\\d{2}-\\d{3}-(\\d{4})( x\\d+)?" will ignore the extension on a NANP number.',
+        'coust', 'description'),
+    'string', null)
+
+,( 'ui.patron.edit.au.day_phone.require', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.day_phone.require',
+        'Require day_phone field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.day_phone.require',
+        'The day_phone field will be required on the patron registration screen.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.day_phone.show', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.day_phone.show',
+        'Show day_phone field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.day_phone.show',
+        'The day_phone field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.day_phone.suggest', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.day_phone.suggest',
+        'Suggest day_phone field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.day_phone.suggest',
+        'The day_phone field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.dob.calendar', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.dob.calendar',
+        'Show calendar widget for dob field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.dob.calendar',
+        'If set the calendar widget will appear when editing the dob field on the patron registration form.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.dob.require', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.dob.require',
+        'Require dob field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.dob.require',
+        'The dob field will be required on the patron registration screen.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.dob.show', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.dob.show',
+        'Show dob field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.dob.show',
+        'The dob field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.dob.suggest', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.dob.suggest',
+        'Suggest dob field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.dob.suggest',
+        'The dob field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.email.example', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.email.example',
+        'Example for email field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.email.example',
+        'The Example for validation on the email field in patron registration.',
+        'coust', 'description'),
+    'string', null)
+
+,( 'ui.patron.edit.au.email.regex', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.email.regex',
+        'Regex for email field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.email.regex',
+        'The Regular Expression for validation on the email field in patron registration.',
+        'coust', 'description'),
+    'string', null)
+
+,( 'ui.patron.edit.au.email.require', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.email.require',
+        'Require email field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.email.require',
+        'The email field will be required on the patron registration screen.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.email.show', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.email.show',
+        'Show email field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.email.show',
+        'The email field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.email.suggest', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.email.suggest',
+        'Suggest email field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.email.suggest',
+        'The email field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.evening_phone.example', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.evening_phone.example',
+        'Example for evening_phone field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.evening_phone.example',
+        'The Example for validation on the evening_phone field in patron registration.',
+        'coust', 'description'),
+    'string', null)
+
+,( 'ui.patron.edit.au.evening_phone.regex', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.evening_phone.regex',
+        'Regex for evening_phone field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.evening_phone.regex',
+        'The Regular Expression for validation on the evening_phone field in patron registration.',
+        'coust', 'description'),
+    'string', null)
+
+,( 'ui.patron.edit.au.evening_phone.require', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.evening_phone.require',
+        'Require evening_phone field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.evening_phone.require',
+        'The evening_phone field will be required on the patron registration screen.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.evening_phone.show', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.evening_phone.show',
+        'Show evening_phone field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.evening_phone.show',
+        'The evening_phone field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.evening_phone.suggest', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.evening_phone.suggest',
+        'Suggest evening_phone field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.evening_phone.suggest',
+        'The evening_phone field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.ident_value.show', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.ident_value.show',
+        'Show ident_value field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.ident_value.show',
+        'The ident_value field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.ident_value.suggest', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.ident_value.suggest',
+        'Suggest ident_value field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.ident_value.suggest',
+        'The ident_value field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.ident_value2.show', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.ident_value2.show',
+        'Show ident_value2 field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.ident_value2.show',
+        'The ident_value2 field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.ident_value2.suggest', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.ident_value2.suggest',
+        'Suggest ident_value2 field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.ident_value2.suggest',
+        'The ident_value2 field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.juvenile.show', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.juvenile.show',
+        'Show juvenile field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.juvenile.show',
+        'The juvenile field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.juvenile.suggest', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.juvenile.suggest',
+        'Suggest juvenile field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.juvenile.suggest',
+        'The juvenile field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.master_account.show', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.master_account.show',
+        'Show master_account field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.master_account.show',
+        'The master_account field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.master_account.suggest', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.master_account.suggest',
+        'Suggest master_account field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.master_account.suggest',
+        'The master_account field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.other_phone.example', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.other_phone.example',
+        'Example for other_phone field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.other_phone.example',
+        'The Example for validation on the other_phone field in patron registration.',
+        'coust', 'description'),
+    'string', null)
+
+,( 'ui.patron.edit.au.other_phone.regex', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.other_phone.regex',
+        'Regex for other_phone field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.other_phone.regex',
+        'The Regular Expression for validation on the other_phone field in patron registration.',
+        'coust', 'description'),
+    'string', null)
+
+,( 'ui.patron.edit.au.other_phone.require', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.other_phone.require',
+        'Require other_phone field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.other_phone.require',
+        'The other_phone field will be required on the patron registration screen.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.other_phone.show', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.other_phone.show',
+        'Show other_phone field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.other_phone.show',
+        'The other_phone field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.other_phone.suggest', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.other_phone.suggest',
+        'Suggest other_phone field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.other_phone.suggest',
+        'The other_phone field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.second_given_name.show', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.second_given_name.show',
+        'Show second_given_name field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.second_given_name.show',
+        'The second_given_name field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.second_given_name.suggest', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.second_given_name.suggest',
+        'Suggest second_given_name field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.second_given_name.suggest',
+        'The second_given_name field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.suffix.show', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.suffix.show',
+        'Show suffix field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.suffix.show',
+        'The suffix field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.suffix.suggest', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.suffix.suggest',
+        'Suggest suffix field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.suffix.suggest',
+        'The suffix field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.aua.county.require', 'gui',
+    oils_i18n_gettext('ui.patron.edit.aua.county.require',
+        'Require county field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.aua.county.require',
+        'The county field will be required on the patron registration screen.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.aua.post_code.example', 'gui',
+    oils_i18n_gettext('ui.patron.edit.aua.post_code.example',
+        'Example for post_code field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.aua.post_code.example',
+        'The Example for validation on the post_code field in patron registration.',
+        'coust', 'description'),
+    'string', null)
+
+,( 'ui.patron.edit.aua.post_code.regex', 'gui',
+    oils_i18n_gettext('ui.patron.edit.aua.post_code.regex',
+        'Regex for post_code field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.aua.post_code.regex',
+        'The Regular Expression for validation on the post_code field in patron registration.',
+        'coust', 'description'),
+    'string', null)
+
+,( 'ui.patron.edit.default_suggested', 'gui',
+    oils_i18n_gettext('ui.patron.edit.default_suggested',
+        'Default showing suggested patron registration fields',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.default_suggested',
+        'Instead of All fields, show just suggested fields in patron registration by default.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.phone.example', 'gui',
+    oils_i18n_gettext('ui.patron.edit.phone.example',
+        'Example for phone fields on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.phone.example',
+        'The Example for validation on phone fields in patron registration. Applies to all phone fields without their own setting.',
+        'coust', 'description'),
+    'string', null)
+
+,( 'ui.patron.edit.phone.regex', 'gui',
+    oils_i18n_gettext('ui.patron.edit.phone.regex',
+        'Regex for phone fields on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.phone.regex',
+        'The Regular Expression for validation on phone fields in patron registration. Applies to all phone fields without their own setting. NOTE: See description of the day_phone regex for important information about capture groups with it.',
+        'coust', 'description'),
+    'string', null)
+
+,( 'ui.patron.registration.require_address', 'gui',
+    oils_i18n_gettext('ui.patron.registration.require_address',
+        'Require at least one address for Patron Registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.registration.require_address',
+        'Enforces a requirement for having at least one address for a patron during registration.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron_search.result_cap', 'gui',
+    oils_i18n_gettext('ui.patron_search.result_cap',
+        'Cap results in Patron Search at this number.',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron_search.result_cap',
+        'So for example, if you search for John Doe, normally you would get at most 50 results.  This setting allows you to raise or lower that limit.',
+        'coust', 'description'),
+    'integer', null)
+
+,( 'ui.staff.require_initials', 'gui',
+    oils_i18n_gettext('ui.staff.require_initials',
+        'Require staff initials for entry/edit of item/patron/penalty notes/messages.',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.staff.require_initials',
+        'Appends staff initials and edit date into note content.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.unified_volume_copy_editor', 'gui',
+    oils_i18n_gettext('ui.unified_volume_copy_editor',
+        'Unified Volume/Item Creator/Editor',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.unified_volume_copy_editor',
+        'If true combines the Volume/Copy Creator and Item Attribute Editor in some instances.',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'url.remote_column_settings', 'gui',
+    oils_i18n_gettext('url.remote_column_settings',
+        'URL for remote directory containing list column settings.',
+        'coust', 'label'),
+    oils_i18n_gettext('url.remote_column_settings',
+        'URL for remote directory containing list column settings.  The format and naming convention for the files found in this directory match those in the local settings directory for a given workstation.  An administrator could create the desired settings locally and then copy all the tree_columns_for_* files to the remote directory.',
+        'coust', 'description'),
+    'string', null)
 ;
 
 UPDATE config.org_unit_setting_type
@@ -2957,369 +4375,6 @@ UPDATE config.org_unit_setting_type
         WHERE code = 'ADMIN_CREDIT_CARD_PROCESSING' LIMIT 1)
     WHERE name LIKE 'credit.processor%' AND update_perm IS NULL;
 
--- 0234.data.org-setting-ui.circ.suppress_checkin_popups.sql
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
-        'ui.circ.suppress_checkin_popups',
-        oils_i18n_gettext(
-            'ui.circ.suppress_checkin_popups', 
-            'Suppress popup-dialogs during check-in.', 
-            'coust', 
-            'label'),
-        oils_i18n_gettext(
-            'ui.circ.suppress_checkin_popups', 
-            'Suppress popup-dialogs during check-in.', 
-            'coust', 
-            'description'),
-        'bool'
-);
-
--- 0239.data.org-setting-format.date.time.sql
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
-        'format.date',
-        oils_i18n_gettext(
-            'format.date',
-            'Format Dates with this pattern.', 
-            'coust', 
-            'label'),
-        oils_i18n_gettext(
-            'format.date',
-            'Format Dates with this pattern (examples: "yyyy-MM-dd" for "2010-04-26", "MMM d, yyyy" for "Apr 26, 2010")', 
-            'coust', 
-            'description'),
-        'string'
-), (
-        'format.time',
-        oils_i18n_gettext(
-            'format.time',
-            'Format Times with this pattern.', 
-            'coust', 
-            'label'),
-        oils_i18n_gettext(
-            'format.time',
-            'Format Times with this pattern (examples: "h:m:s.SSS a z" for "2:07:20.666 PM Eastern Daylight Time", "HH:mm" for "14:07")', 
-            'coust', 
-            'description'),
-        'string'
-);
-
--- 0247.data.org-setting-cat.bib.delete_on_no_copy_via_acq_lineitem_cancel.sql
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
-        'cat.bib.delete_on_no_copy_via_acq_lineitem_cancel',
-        oils_i18n_gettext(
-            'cat.bib.delete_on_no_copy_via_acq_lineitem_cancel',
-            'Delete bib if all copies are deleted via Acquisitions lineitem cancellation.', 
-            'coust', 
-            'label'),
-        oils_i18n_gettext(
-            'cat.bib.delete_on_no_copy_via_acq_lineitem_cancel',
-            'Delete bib if all copies are deleted via Acquisitions lineitem cancellation.', 
-            'coust', 
-            'description'),
-        'bool'
-);
-
--- 0250.data.org-setting-url.remote_column_settings.sql
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
-        'url.remote_column_settings',
-        oils_i18n_gettext(
-            'url.remote_column_settings',
-            'URL for remote directory containing list column settings.', 
-            'coust', 
-            'label'),
-        oils_i18n_gettext(
-            'url.remote_column_settings',
-            'URL for remote directory containing list column settings.  The format and naming convention for the files found in this directory match those in the local settings directory for a given workstation.  An administrator could create the desired settings locally and then copy all the tree_columns_for_* files to the remote directory.', 
-            'coust', 
-            'description'),
-        'string'
-);
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
-        'gui.disable_local_save_columns',
-        oils_i18n_gettext(
-            'gui.disable_local_save_columns',
-            'Disable the ability to save list column configurations locally.', 
-            'coust', 
-            'label'),
-        oils_i18n_gettext(
-            'gui.disable_local_save_columns',
-            'Disable the ability to save list column configurations locally.  If set, columns may still be manipulated, however, the changes do not persist.  Also, existing local configurations are ignored if this setting is true.', 
-            'coust', 
-            'description'),
-        'bool'
-);
-
--- 0290.data.org-setting-password-reset-request.sql
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
-        'circ.password_reset_request_requires_matching_email',
-        oils_i18n_gettext(
-            'circ.password_reset_request_requires_matching_email',
-            'Require matching email address for password reset requests', 
-            'coust', 
-            'label'),
-        oils_i18n_gettext(
-            'circ.password_reset_request_requires_matching_email',
-            'Require matching email address for password reset requests', 
-            'coust', 
-            'description'),
-        'bool'
-);
-
--- 0305.data.org-setting-circ.holds.expired_patron_block.sql
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
-        'circ.holds.expired_patron_block',
-        oils_i18n_gettext(
-            'circ.holds.expired_patron_block',
-            'Block hold request if hold recipient privileges have expired', 
-            'coust', 
-            'label'),
-        oils_i18n_gettext(
-            'circ.holds.expired_patron_block',
-            'Block hold request if hold recipient privileges have expired', 
-            'coust', 
-            'description'),
-        'bool'
-);
-
--- 0323.data.booking.elbow_room.sql
-INSERT INTO config.org_unit_setting_type
-    (name, label, description, datatype) VALUES (
-        'circ.booking_reservation.default_elbow_room',
-        oils_i18n_gettext(
-            'circ.booking_reservation.default_elbow_room',
-            'Booking elbow room',
-            'coust',
-            'label'
-        ),
-        oils_i18n_gettext(
-            'circ.booking_reservation.default_elbow_room',
-            'Elbow room specifies how far in the future you must make a reservation on an item if that item will have to transit to reach its pickup location.  It secondarily defines how soon a reservation on a given item must start before the check-in process will opportunistically capture it for the reservation shelf.',
-            'coust',
-            'label'
-        ),
-        'interval'
-    );
-
--- 0XXX.patron_registration.sql
-INSERT into config.org_unit_setting_type
-( name, label, description, datatype ) VALUES
-
-( 'ui.patron.edit.au.active.show',
-    oils_i18n_gettext('ui.patron.edit.au.active.show', 'Show active field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.active.show', 'The active field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.active.suggest',
-    oils_i18n_gettext('ui.patron.edit.au.active.suggest', 'Suggest active field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.active.suggest', 'The active field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.alert_message.show',
-    oils_i18n_gettext('ui.patron.edit.au.alert_message.show', 'Show alert_message field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.alert_message.show', 'The alert_message field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.alert_message.suggest',
-    oils_i18n_gettext('ui.patron.edit.au.alert_message.suggest', 'Suggest alert_message field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.alert_message.suggest', 'The alert_message field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.alias.show',
-    oils_i18n_gettext('ui.patron.edit.au.alias.show', 'Show alias field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.alias.show', 'The alias field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.alias.suggest',
-    oils_i18n_gettext('ui.patron.edit.au.alias.suggest', 'Suggest alias field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.alias.suggest', 'The alias field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.barred.show',
-    oils_i18n_gettext('ui.patron.edit.au.barred.show', 'Show barred field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.barred.show', 'The barred field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.barred.suggest',
-    oils_i18n_gettext('ui.patron.edit.au.barred.suggest', 'Suggest barred field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.barred.suggest', 'The barred field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.claims_never_checked_out_count.show',
-    oils_i18n_gettext('ui.patron.edit.au.claims_never_checked_out_count.show', 'Show claims_never_checked_out_count field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.claims_never_checked_out_count.show', 'The claims_never_checked_out_count field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.claims_never_checked_out_count.suggest',
-    oils_i18n_gettext('ui.patron.edit.au.claims_never_checked_out_count.suggest', 'Suggest claims_never_checked_out_count field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.claims_never_checked_out_count.suggest', 'The claims_never_checked_out_count field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.claims_returned_count.show',
-    oils_i18n_gettext('ui.patron.edit.au.claims_returned_count.show', 'Show claims_returned_count field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.claims_returned_count.show', 'The claims_returned_count field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.claims_returned_count.suggest',
-    oils_i18n_gettext('ui.patron.edit.au.claims_returned_count.suggest', 'Suggest claims_returned_count field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.claims_returned_count.suggest', 'The claims_returned_count field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.day_phone.example',
-    oils_i18n_gettext('ui.patron.edit.au.day_phone.example', 'Example for day_phone field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.day_phone.example', 'The Example for validation on the day_phone field in patron registration.', 'coust', 'description'),
-    'string'),
-( 'ui.patron.edit.au.day_phone.regex',
-    oils_i18n_gettext('ui.patron.edit.au.day_phone.regex', 'Regex for day_phone field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.day_phone.regex', E'The Regular Expression for validation on the day_phone field in patron registration. Note: The first capture group will be used for the "last 4 digits of phone number" feature, if enabled. Ex: "[2-9]\\d{2}-\\d{3}-(\\d{4})( x\\d+)?" will ignore the extension on a NANP number.', 'coust', 'description'),
-    'string'),
-( 'ui.patron.edit.au.day_phone.require',
-    oils_i18n_gettext('ui.patron.edit.au.day_phone.require', 'Require day_phone field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.day_phone.require', 'The day_phone field will be required on the patron registration screen.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.day_phone.show',
-    oils_i18n_gettext('ui.patron.edit.au.day_phone.show', 'Show day_phone field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.day_phone.show', 'The day_phone field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.day_phone.suggest',
-    oils_i18n_gettext('ui.patron.edit.au.day_phone.suggest', 'Suggest day_phone field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.day_phone.suggest', 'The day_phone field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.dob.calendar',
-    oils_i18n_gettext('ui.patron.edit.au.dob.calendar', 'Show calendar widget for dob field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.dob.calendar', 'If set the calendar widget will appear when editing the dob field on the patron registration form.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.dob.require',
-    oils_i18n_gettext('ui.patron.edit.au.dob.require', 'Require dob field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.dob.require', 'The dob field will be required on the patron registration screen.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.dob.show',
-    oils_i18n_gettext('ui.patron.edit.au.dob.show', 'Show dob field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.dob.show', 'The dob field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.dob.suggest',
-    oils_i18n_gettext('ui.patron.edit.au.dob.suggest', 'Suggest dob field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.dob.suggest', 'The dob field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.email.example',
-    oils_i18n_gettext('ui.patron.edit.au.email.example', 'Example for email field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.email.example', 'The Example for validation on the email field in patron registration.', 'coust', 'description'),
-    'string'),
-( 'ui.patron.edit.au.email.regex',
-    oils_i18n_gettext('ui.patron.edit.au.email.regex', 'Regex for email field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.email.regex', 'The Regular Expression for validation on the email field in patron registration.', 'coust', 'description'),
-    'string'),
-( 'ui.patron.edit.au.email.require',
-    oils_i18n_gettext('ui.patron.edit.au.email.require', 'Require email field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.email.require', 'The email field will be required on the patron registration screen.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.email.show',
-    oils_i18n_gettext('ui.patron.edit.au.email.show', 'Show email field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.email.show', 'The email field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.email.suggest',
-    oils_i18n_gettext('ui.patron.edit.au.email.suggest', 'Suggest email field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.email.suggest', 'The email field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.evening_phone.example',
-    oils_i18n_gettext('ui.patron.edit.au.evening_phone.example', 'Example for evening_phone field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.evening_phone.example', 'The Example for validation on the evening_phone field in patron registration.', 'coust', 'description'),
-    'string'),
-( 'ui.patron.edit.au.evening_phone.regex',
-    oils_i18n_gettext('ui.patron.edit.au.evening_phone.regex', 'Regex for evening_phone field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.evening_phone.regex', 'The Regular Expression for validation on the evening_phone field in patron registration.', 'coust', 'description'),
-    'string'),
-( 'ui.patron.edit.au.evening_phone.require',
-    oils_i18n_gettext('ui.patron.edit.au.evening_phone.require', 'Require evening_phone field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.evening_phone.require', 'The evening_phone field will be required on the patron registration screen.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.evening_phone.show',
-    oils_i18n_gettext('ui.patron.edit.au.evening_phone.show', 'Show evening_phone field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.evening_phone.show', 'The evening_phone field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.evening_phone.suggest',
-    oils_i18n_gettext('ui.patron.edit.au.evening_phone.suggest', 'Suggest evening_phone field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.evening_phone.suggest', 'The evening_phone field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.ident_value.show',
-    oils_i18n_gettext('ui.patron.edit.au.ident_value.show', 'Show ident_value field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.ident_value.show', 'The ident_value field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.ident_value.suggest',
-    oils_i18n_gettext('ui.patron.edit.au.ident_value.suggest', 'Suggest ident_value field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.ident_value.suggest', 'The ident_value field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.ident_value2.show',
-    oils_i18n_gettext('ui.patron.edit.au.ident_value2.show', 'Show ident_value2 field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.ident_value2.show', 'The ident_value2 field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.ident_value2.suggest',
-    oils_i18n_gettext('ui.patron.edit.au.ident_value2.suggest', 'Suggest ident_value2 field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.ident_value2.suggest', 'The ident_value2 field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.juvenile.show',
-    oils_i18n_gettext('ui.patron.edit.au.juvenile.show', 'Show juvenile field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.juvenile.show', 'The juvenile field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.juvenile.suggest',
-    oils_i18n_gettext('ui.patron.edit.au.juvenile.suggest', 'Suggest juvenile field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.juvenile.suggest', 'The juvenile field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.master_account.show',
-    oils_i18n_gettext('ui.patron.edit.au.master_account.show', 'Show master_account field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.master_account.show', 'The master_account field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.master_account.suggest',
-    oils_i18n_gettext('ui.patron.edit.au.master_account.suggest', 'Suggest master_account field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.master_account.suggest', 'The master_account field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.other_phone.example',
-    oils_i18n_gettext('ui.patron.edit.au.other_phone.example', 'Example for other_phone field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.other_phone.example', 'The Example for validation on the other_phone field in patron registration.', 'coust', 'description'),
-    'string'),
-( 'ui.patron.edit.au.other_phone.regex',
-    oils_i18n_gettext('ui.patron.edit.au.other_phone.regex', 'Regex for other_phone field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.other_phone.regex', 'The Regular Expression for validation on the other_phone field in patron registration.', 'coust', 'description'),
-    'string'),
-( 'ui.patron.edit.au.other_phone.require',
-    oils_i18n_gettext('ui.patron.edit.au.other_phone.require', 'Require other_phone field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.other_phone.require', 'The other_phone field will be required on the patron registration screen.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.other_phone.show',
-    oils_i18n_gettext('ui.patron.edit.au.other_phone.show', 'Show other_phone field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.other_phone.show', 'The other_phone field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.other_phone.suggest',
-    oils_i18n_gettext('ui.patron.edit.au.other_phone.suggest', 'Suggest other_phone field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.other_phone.suggest', 'The other_phone field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.second_given_name.show',
-    oils_i18n_gettext('ui.patron.edit.au.second_given_name.show', 'Show second_given_name field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.second_given_name.show', 'The second_given_name field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.second_given_name.suggest',
-    oils_i18n_gettext('ui.patron.edit.au.second_given_name.suggest', 'Suggest second_given_name field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.second_given_name.suggest', 'The second_given_name field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.suffix.show',
-    oils_i18n_gettext('ui.patron.edit.au.suffix.show', 'Show suffix field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.suffix.show', 'The suffix field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.au.suffix.suggest',
-    oils_i18n_gettext('ui.patron.edit.au.suffix.suggest', 'Suggest suffix field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.suffix.suggest', 'The suffix field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.aua.county.require',
-    oils_i18n_gettext('ui.patron.edit.aua.county.require', 'Require county field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.aua.county.require', 'The county field will be required on the patron registration screen.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.aua.post_code.example',
-    oils_i18n_gettext('ui.patron.edit.aua.post_code.example', 'Example for post_code field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.aua.post_code.example', 'The Example for validation on the post_code field in patron registration.', 'coust', 'description'),
-    'string'),
-( 'ui.patron.edit.aua.post_code.regex',
-    oils_i18n_gettext('ui.patron.edit.aua.post_code.regex', 'Regex for post_code field on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.aua.post_code.regex', 'The Regular Expression for validation on the post_code field in patron registration.', 'coust', 'description'),
-    'string'),
-( 'ui.patron.edit.default_suggested',
-    oils_i18n_gettext('ui.patron.edit.default_suggested', 'Default showing suggested patron registration fields', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.default_suggested', 'Instead of All fields, show just suggested fields in patron registration by default.', 'coust', 'description'),
-    'bool'),
-( 'ui.patron.edit.phone.example',
-    oils_i18n_gettext('ui.patron.edit.phone.example', 'Example for phone fields on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.phone.example', 'The Example for validation on phone fields in patron registration. Applies to all phone fields without their own setting.', 'coust', 'description'),
-    'string'),
-( 'ui.patron.edit.phone.regex',
-    oils_i18n_gettext('ui.patron.edit.phone.regex', 'Regex for phone fields on patron registration', 'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.phone.regex', 'The Regular Expression for validation on phone fields in patron registration. Applies to all phone fields without their own setting. NOTE: See description of the day_phone regex for important information about capture groups with it.', 'coust', 'description'),
-    'string');
-
 -- *** Has to go below coust definition to satisfy referential integrity ***
 -- In booking, elbow room defines:
 --  a) how far in the future you must make a reservation on a given item if
@@ -3329,17 +4384,15 @@ INSERT into config.org_unit_setting_type
 INSERT INTO actor.org_unit_setting (org_unit, name, value) VALUES (
     (SELECT id FROM actor.org_unit WHERE parent_ou IS NULL),
     'circ.booking_reservation.default_elbow_room',
-    '"1 day"'
-);
+    '"1 day"')
+    ,(1, 'cat.spine.line.margin', 0)
+    ,(1, 'cat.spine.line.height', 9)
+    ,(1, 'cat.spine.line.width', 8)
+    ,(1, 'cat.label.font.family', '"monospace"')
+    ,(1, 'cat.label.font.size', 10)
+    ,(1, 'cat.label.font.weight', '"normal"')
+;
 
--- Org_unit_setting_type(s) that need an fm_class:
-INSERT into config.org_unit_setting_type
-( name, label, description, datatype, fm_class ) VALUES
-( 'acq.default_copy_location',
-  oils_i18n_gettext( 'acq.default_copy_location', 'Default copy location', 'coust', 'label'),
-  oils_i18n_gettext( 'acq.default_copy_location', 'Default copy location', 'coust', 'description'),
-  'link',
-  'acpl' );
 
 -- Staged Search (for default matchpoints)
 INSERT INTO search.relevance_adjustment (field, bump_type, multiplier) VALUES(1, 'first_word', 1.5);
@@ -5851,76 +6904,6 @@ INSERT INTO action_trigger.environment (event_def, path) VALUES
 
 SELECT SETVAL('action_trigger.event_definition_id_seq'::TEXT, 100);
 
--- Org Unit Settings for configuring org unit weights and org unit max-loops for hold targeting
-
-INSERT INTO config.org_unit_setting_type (name, label, description, datatype) VALUES (
-    'circ.holds.org_unit_target_weight',
-    oils_i18n_gettext('circ.holds.org_unit_target_weight', 'Org Unit Target Weight', 'coust', 'label'),
-    oils_i18n_gettext('circ.holds.org_unit_target_weight', 'Org Units can be organized into hold target groups based on a weight.  Potential copies from org units with the same weight are chosen at random.', 'coust', 'description'),
-    'integer'
-);
-
-INSERT INTO config.org_unit_setting_type (name, label, description, datatype) VALUES (
-    'circ.holds.target_holds_by_org_unit_weight',
-    oils_i18n_gettext('circ.holds.target_holds_by_org_unit_weight', 'Use weight-based hold targeting', 'coust', 'label'),
-    oils_i18n_gettext('circ.holds.target_holds_by_org_unit_weight', 'Use library weight based hold targeting', 'coust', 'description'),
-    'bool'
-);
-
-INSERT INTO config.org_unit_setting_type (name, label, description, datatype) VALUES (
-    'circ.holds.max_org_unit_target_loops',
-    oils_i18n_gettext('circ.holds.max_org_unit_target_loops', 'Maximum library target attempts', 'coust', 'label'),
-    oils_i18n_gettext('circ.holds.max_org_unit_target_loops', 'When this value is set and greater than 0, the system will only attempt to find a copy at each possible branch the configured number of times', 'coust', 'description'),
-    'integer'
-);
-
-
--- Org setting for overriding the circ lib of a precat copy
-INSERT INTO config.org_unit_setting_type (name, label, description, datatype) VALUES (
-    'circ.pre_cat_copy_circ_lib',
-    oils_i18n_gettext('circ.pre_cat_copy_circ_lib', 'Pre-cat Item Circ Lib', 'coust', 'label'),
-    oils_i18n_gettext('circ.pre_cat_copy_circ_lib', 'Override the default circ lib of "here" with a pre-configured circ lib for pre-cat items.  The value should be the "shortname" (aka policy name) of the org unit', 'coust', 'description'),
-    'string'
-);
-
--- Circ auto-renew interval setting
-INSERT INTO config.org_unit_setting_type (name, label, description, datatype) VALUES (
-    'circ.checkout_auto_renew_age',
-    oils_i18n_gettext('circ.checkout_auto_renew_age', 'Checkout auto renew age', 'coust', 'label'),
-    oils_i18n_gettext('circ.checkout_auto_renew_age', 'When an item has been checked out for at least this amount of time, an attempt to check out the item to the patron that it is already checked out to will simply renew the circulation', 'coust', 'description'),
-    'interval'
-);
-
--- Setting for behind the desk hold pickups
-INSERT INTO config.org_unit_setting_type (name, label, description, datatype) VALUES (
-    'circ.holds.behind_desk_pickup_supported',
-    oils_i18n_gettext('circ.holds.behind_desk_pickup_supported',
-        'Behind Desk Pickup Supported',
-        'coust',
-        'label'),
-    oils_i18n_gettext('circ.holds.behind_desk_pickup_supported',
-        'If a branch supports both a public holds shelf and behind-the-desk pickups, set this value to true.  This gives the patron the option to enable behind-the-desk pickups for their holds',
-        'coust',
-        'description'),
-    'bool'
-);
-
--- 0227.data.org-setting-acq.holds.allow_holds_from_purchase_request.sql
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
-        'acq.holds.allow_holds_from_purchase_request',
-        oils_i18n_gettext(
-            'acq.holds.allow_holds_from_purchase_request', 
-            'Allows patrons to create automatic holds from purchase requests.', 
-            'coust', 
-            'label'),
-        oils_i18n_gettext(
-            'acq.holds.allow_holds_from_purchase_request', 
-            'Allows patrons to create automatic holds from purchase requests.', 
-            'coust', 
-            'description'),
-        'bool'
-);
-
 -- Hold cancel action/trigger hooks
 
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES (
@@ -5945,16 +6928,6 @@ INSERT INTO action_trigger.hook (key,core_type,description) VALUES (
     'hold_request.cancel.patron',
     'ahr',
     'A hold is cancelled by the patron'
-);
-
-
-
--- hold targeter skip me
-INSERT INTO config.org_unit_setting_type (name, label, description, datatype) VALUES (
-    'circ.holds.target_skip_me',
-    'Skip For Hold Targeting',
-    'When true, don''t target any copies at this org unit for holds',
-    'bool'
 );
 
 
@@ -6138,60 +7111,6 @@ INSERT INTO config.record_attr_index_norm_map (attr,norm,pos)
       WHERE i.func IN ('approximate_high_date')
             AND m.name IN ('date2');
 
--- claims never checked out mark item missing 
-INSERT INTO
-    config.org_unit_setting_type ( name, label, description, datatype )
-    VALUES (
-        'circ.claim_never_checked_out.mark_missing',
-        oils_i18n_gettext('circ.claim_never_checked_out.mark_missing', 'Claim Never Checked Out: Mark copy as missing', 'coust', 'label'),
-        oils_i18n_gettext('circ.claim_never_checked_out.mark_missing', 'When a circ is marked as claims-never-checked-out, mark the copy as missing', 'coust', 'description'),
-        'bool'
-    );
-
--- mark damaged void overdue setting
-INSERT INTO
-    config.org_unit_setting_type ( name, label, description, datatype )
-    VALUES (
-        'circ.damaged.void_ovedue',
-        oils_i18n_gettext('circ.damaged.void_ovedue', 'Mark item damaged voids overdues', 'coust', 'label'),
-        oils_i18n_gettext('circ.damaged.void_ovedue', 'When an item is marked damaged, overdue fines on the most recent circulation are voided.', 'coust', 'description'),
-        'bool'
-    );
-
--- hold cancel display limits
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
-    VALUES (
-        'circ.holds.canceled.display_count',
-        oils_i18n_gettext('circ.holds.canceled.display_count', 'Canceled holds display count', 'coust', 'label'),
-        oils_i18n_gettext('circ.holds.canceled.display_count', 'How many canceled holds to show in patron holds interfaces', 'coust', 'description'),
-        'integer'
-    );
-
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
-    VALUES (
-        'circ.holds.canceled.display_age',
-        oils_i18n_gettext('circ.holds.canceled.display_age', 'Canceled holds display age', 'coust', 'label'),
-        oils_i18n_gettext('circ.holds.canceled.display_age', 'Show all canceled holds that were canceled within this amount of time', 'coust', 'description'),
-        'interval'
-    );
-
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
-    VALUES (
-        'circ.holds.uncancel.reset_request_time',
-        oils_i18n_gettext('circ.holds.uncancel.reset_request_time', 'Reset request time on un-cancel','coust', 'label'),
-        oils_i18n_gettext('circ.holds.uncancel.reset_request_time', 'When a hold is uncanceled, reset the request time to push it to the end of the queue', 'coust', 'description'),
-        'bool'
-    );
-
-INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
-    VALUES (
-        'circ.holds.default_shelf_expire_interval',
-        oils_i18n_gettext('circ.holds.default_shelf_expire_interval', 'Default hold shelf expire interval', 'coust', 'label'),
-        oils_i18n_gettext('circ.holds.default_shelf_expire_interval', '', 'coust', 'description'),
-        'interval'
-);
-
-
 -- Sample Pre-due Notice --
 
 INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, delay, delay_field, group_field, max_delay, template) 
@@ -6243,54 +7162,6 @@ INSERT INTO action_trigger.reactor (module,description) VALUES
         'description'
     )
 );
-
-
-INSERT INTO config.org_unit_setting_type (name, label, description, datatype, fm_class)
-    VALUES (
-        'circ.claim_return.copy_status', 
-        'Claim Return Copy Status', 
-        'Claims returned copies are put into this status.  Default is to leave the copy in the Checked Out status',
-        'link', 
-        'ccs' 
-    );
-
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) 
-    VALUES ( 
-        'circ.max_fine.cap_at_price',
-        oils_i18n_gettext('circ.max_fine.cap_at_price', 'Cap Max Fine at Item Price', 'coust', 'label'),
-        oils_i18n_gettext('circ.max_fine.cap_at_price', 'This prevents the system from charging more than the item price in overdue fines', 'coust', 'description'),
-        'bool' 
-    );
-
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype, fm_class ) 
-    VALUES ( 
-        'circ.holds.clear_shelf.copy_status',
-        oils_i18n_gettext('circ.holds.clear_shelf.copy_status', 'Clear shelf copy status', 'coust', 'label'),
-        oils_i18n_gettext('circ.holds.clear_shelf.copy_status', 'Any copies that have not been put into reshelving, in-transit, or on-holds-shelf (for a new hold) during the clear shelf process will be put into this status.  This is basically a purgatory status for copies waiting to be pulled from the shelf and processed by hand', 'coust', 'description'),
-        'link',
-        'ccs'
-    );
-
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
-    VALUES ( 
-        'circ.selfcheck.workstation_required',
-        oils_i18n_gettext('circ.selfcheck.workstation_required', 'Workstation Required', 'coust', 'label'),
-        oils_i18n_gettext('circ.selfcheck.workstation_required', 'All selfcheck stations must use a workstation', 'coust', 'description'),
-        'bool'
-    ), (
-        'circ.selfcheck.patron_password_required',
-        oils_i18n_gettext('circ.selfcheck.patron_password_required', 'Require Patron Password', 'coust', 'label'),
-        oils_i18n_gettext('circ.selfcheck.patron_password_required', 'Patron must log in with barcode and password at selfcheck station', 'coust', 'description'),
-        'bool'
-    );
-
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
-    VALUES ( 
-        'circ.selfcheck.alert.sound',
-        oils_i18n_gettext('circ.selfcheck.alert.sound', 'Audio Alerts', 'coust', 'label'),
-        oils_i18n_gettext('circ.selfcheck.alert.sound', 'Use audio alerts for selfcheck events', 'coust', 'description'),
-        'bool'
-    );
 
 -- self-check checkout receipt
 
@@ -6785,19 +7656,6 @@ INSERT INTO action_trigger.environment (event_def, path) VALUES
   (23, 'provider'),
   (23, 'provider.edi_default');
 
-INSERT INTO
-    config.org_unit_setting_type (name, label, description, datatype)
-    VALUES (
-        'notice.telephony.callfile_lines',
-        'Telephony: Arbitrary line(s) to include in each notice callfile',
-        $$
-        This overrides lines from opensrf.xml.
-        Line(s) must be valid for your target server and platform
-        (e.g. Asterisk 1.4).
-        $$,
-        'string'
-    );
-
 INSERT INTO action_trigger.reactor (module, description) VALUES (
     'AstCall', 'Possibly place a phone call with Asterisk'
 );
@@ -6837,14 +7695,6 @@ INSERT INTO
         (DEFAULT, 24, 'target_copy.call_number.record.simple_record'),
         (DEFAULT, 24, 'usr')
     ;
-
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
-    VALUES ( 
-        'circ.offline.username_allowed',
-        oils_i18n_gettext('circ.offline.username_allowed', 'Offline: Patron Usernames Allowed', 'coust', 'label'),
-        oils_i18n_gettext('circ.offline.username_allowed', 'During offline circulations, allow patrons to identify themselves with usernames in addition to barcode.  For this setting to work, a barcode format must also be defined', 'coust', 'description'),
-        'bool'
-    );
 
 -- 0285.data.history_format.sql
 
@@ -7388,24 +8238,6 @@ INSERT INTO action_trigger.environment (
         ,( 32, 'items.target_biblio_record_entry.notes' )
         ,( 32, 'items.target_biblio_record_entry.full_record_entries' )
 ;
-
--- Org unit settings for fund spending limits
-
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
-VALUES (
-    'acq.fund.balance_limit.warn',
-    oils_i18n_gettext('acq.fund.balance_limit.warn', 'Fund Spending Limit for Warning', 'coust', 'label'),
-    oils_i18n_gettext('acq.fund.balance_limit.warn', 'When the amount remaining in the fund, including spent money and encumbrances, goes below this percentage, attempts to spend from the fund will result in a warning to the staff.', 'coust', 'descripton'),
-    'integer'
-);
-
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
-VALUES (
-    'acq.fund.balance_limit.block',
-    oils_i18n_gettext('acq.fnd.balance_limit.block', 'Fund Spending Limit for Block', 'coust', 'label'),
-    oils_i18n_gettext('acq.fund.balance_limit.block', 'When the amount remaining in the fund, including spent money and encumbrances, goes below this percentage, attempts to spend from the fund will be blocked.', 'coust', 'description'),
-    'integer'
-);
 
 INSERT INTO acq.invoice_item_type (code,name) VALUES ('TAX',oils_i18n_gettext('TAX', 'Tax', 'aiit', 'name'));
 INSERT INTO acq.invoice_item_type (code,name) VALUES ('PRO',oils_i18n_gettext('PRO', 'Processing Fee', 'aiit', 'name'));
@@ -8039,20 +8871,6 @@ INSERT INTO acq.cancel_reason (org_unit, keep_debits, id, label, description) VA
 ;
 -- ZZZ, 'Mutually defined', 'As agreed by the trading partners.'),
 
-
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
-    VALUES (
-        'circ.holds.hold_has_copy_at.alert',
-        oils_i18n_gettext('circ.holds.hold_has_copy_at.alert', 'Has Local Copy Alert', 'coust', 'label'),
-        oils_i18n_gettext('circ.holds.hold_has_copy_at.alert', 'If there is an available copy at the requesting library that could fulfill a hold during hold placement time, alert the patron', 'coust', 'description'),
-        'bool'
-    ),(
-        'circ.holds.hold_has_copy_at.block',
-        oils_i18n_gettext('circ.holds.hold_has_copy_at.block', 'Has Local Copy Block', 'coust', 'label'),
-        oils_i18n_gettext('circ.holds.hold_has_copy_at.block', 'If there is an available copy at the requesting library that could fulfill a hold during hold placement time, do not allow the hold to be placed', 'coust', 'description'),
-        'bool'
-    );
-
 INSERT INTO config.global_flag (name, label, enabled)
     VALUES (
         'circ.holds.usr_not_requestor',
@@ -8182,30 +9000,6 @@ INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatyp
         'integer'
     );
 
--- 0281.data.persistent-login-interval.sql
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
-VALUES (
-    'auth.persistent_login_interval',
-    oils_i18n_gettext('auth.persistent_login_interval', 'Persistent Login Duration', 'coust', 'label'),
-    oils_i18n_gettext('auth.persistent_login_interval', 'How long a persistent login lasts.  E.g. ''2 weeks''', 'coust', 'description'),
-    'interval'
-);
-
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
-        'cat.marc_control_number_identifier',
-        oils_i18n_gettext(
-            'cat.marc_control_number_identifier', 
-            'Defines the control number identifier used in 003 and 035 fields.', 
-            'coust', 
-            'label'),
-        oils_i18n_gettext(
-            'cat.marc_control_number_identifier', 
-            'Cat: Defines the control number identifier used in 003 and 035 fields.', 
-            'coust', 
-            'description'),
-        'string'
-);
-
 -- 0311.data.query-seed-datatypes.sql
 -- Define the most common datatypes in query.datatype.  Note that none of
 -- these stock datatypes specifies a width or precision.
@@ -8297,65 +9091,6 @@ INSERT INTO config.usr_setting_type (name, opac_visible, label, description, dat
         ),
         'string'
     );
-
-INSERT INTO config.org_unit_setting_type (name, label, description, datatype) 
-    VALUES (
-        'circ.selfcheck.block_checkout_on_copy_status',
-        oils_i18n_gettext(
-            'circ.selfcheck.block_checkout_on_copy_status',
-            'Block copy checkout status',
-            'coust',
-            'label'
-        ),
-        oils_i18n_gettext(
-            'circ.selfcheck.block_checkout_on_copy_status',
-            'List of copy status IDs that will block checkout even if the generic COPY_NOT_AVAILABLE event is overridden',
-            'coust',
-            'description'
-        ),
-        'array'
-    );
-
--- 0359.data.setting-prev-iss-copy-loc.sql
-
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype, fm_class )
-VALUES (
-    'serial.prev_issuance_copy_location',
-    oils_i18n_gettext(
-        'serial.prev_issuance_copy_location',
-        'Previous Issuance Copy Location',
-        'coust',
-        'label'
-    ),
-    oils_i18n_gettext(
-        'serial.prev_issuance_copy_location',
-        'When a serial issuance is received, copies (units) of the previous issuance will be automatically moved into the configured shelving location',
-        'coust',
-        'descripton'
-        ),
-    'link',
-    'acpl'
-);
-
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype, fm_class )
-VALUES (
-    'cat.default_classification_scheme',
-    oils_i18n_gettext(
-        'cat.default_classification_scheme',
-        'Default Classification Scheme',
-        'coust',
-        'label'
-    ),
-    oils_i18n_gettext(
-        'cat.default_classification_scheme',
-        'Defines the default classification scheme for new call numbers: 1 = Generic; 2 = Dewey; 3 = LC',
-        'coust',
-        'descripton'
-        ),
-    'link',
-    'acnc'
-);
-
 
 -- 0355.data.missing_pieces_format.sql
 
@@ -8480,127 +9215,6 @@ INSERT INTO action_trigger.environment (
         ,( 34, 'circ_lib.billing_address')
 ;
 
--- 0373.data.org-setting-opac.org_unit_hiding.depth.sql
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
-        'opac.org_unit_hiding.depth',
-        oils_i18n_gettext(
-            'opac.org_unit_hiding.depth',
-            'Org Unit Hiding Depth', 
-            'coust', 
-            'label'),
-        oils_i18n_gettext(
-            'opac.org_unit_hiding.depth',
-            'This will hide certain org units in the public OPAC if the Original Location (url param "ol") for the OPAC inherits this setting.  This setting specifies an org unit depth, that together with the OPAC Original Location determines which section of the Org Hierarchy should be visible in the OPAC.  For example, a stock Evergreen installation will have a 3-tier hierarchy (Consortium/System/Branch), where System has a depth of 1 and Branch has a depth of 2.  If this setting contains a depth of 1 in such an installation, then every library in the System in which the Original Location belongs will be visible, and everything else will be hidden.  A depth of 0 will effectively make every org visible.  The embedded OPAC in the staff client ignores this setting.', 
-            'coust', 
-            'description'),
-        'integer'
-);
-
-INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
-    VALUES
-        ('circ.holds.clear_shelf.no_capture_holds',
-        oils_i18n_gettext( 'circ.holds.clear_shelf.no_capture_holds',
-            'Bypass hold capture during clear shelf process', 'coust', 'label'),
-        oils_i18n_gettext( 'circ.holds.clear_shelf.no_capture_holds',
-            'During the clear shelf process, avoid capturing new holds on cleared items.', 'coust', 'description'),
-        'bool')
-;
-
--- 0379.data.org-setting-circ.missing_pieces.copy_status.sql
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype, fm_class ) VALUES (
-        'circ.missing_pieces.copy_status',
-        oils_i18n_gettext(
-            'circ.missing_pieces.copy_status',
-            'Item Status for Missing Pieces', 
-            'coust', 
-            'label'),
-        oils_i18n_gettext(
-            'circ.missing_pieces.copy_status',
-            'This is the Item Status to use for items that have been marked or scanned as having Missing Pieces.  In the absence of this setting, the Damaged status is used.',
-            'coust', 
-            'description'),
-        'link',
-        'ccs'
-);
-
--- 0380.data.spine_label.sql Add spine label preferences
-INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
-    VALUES
-        ('cat.label.font.size',
-            oils_i18n_gettext('cat.label.font.size',
-                'Spine and pocket label font size', 'coust', 'label'),
-            oils_i18n_gettext('cat.label.font.size',
-                'Set the default font size for spine and pocket labels', 'coust', 'description'),
-            'integer'
-        )
-        ,('cat.label.font.family',
-            oils_i18n_gettext('cat.label.font.family',
-                'Spine and pocket label font family', 'coust', 'label'),
-            oils_i18n_gettext('cat.label.font.family',
-                'Set the preferred font family for spine and pocket labels. You can specify a list of fonts, separated by commas, in order of preference; the system will use the first font it finds with a matching name. For example, "Arial, Helvetica, serif".',
-                'coust', 'description'),
-            'string'
-        )
-        ,('cat.spine.line.width',
-            oils_i18n_gettext('cat.spine.line.width',
-                'Spine label line width', 'coust', 'label'),
-            oils_i18n_gettext('cat.spine.line.width',
-                'Set the default line width for spine labels in number of characters. This specifies the boundary at which lines must be wrapped.',
-                'coust', 'description'),
-            'integer'
-        )
-        ,('cat.spine.line.height',
-            oils_i18n_gettext('cat.spine.line.height',
-                'Spine label maximum lines', 'coust', 'label'),
-            oils_i18n_gettext('cat.spine.line.height',
-                'Set the default maximum number of lines for spine labels.',
-                'coust', 'description'),
-            'integer'
-        )
-        ,('cat.spine.line.margin',
-            oils_i18n_gettext('cat.spine.line.margin',
-                'Spine label left margin', 'coust', 'label'),
-            oils_i18n_gettext('cat.spine.line.margin',
-                'Set the left margin for spine labels in number of characters.',
-                'coust', 'description'),
-            'integer'
-        )
-        ,('cat.label.font.weight',
-            oils_i18n_gettext('cat.label.font.weight',
-                'Spine and pocket label font weight', 'coust', 'label'),
-            oils_i18n_gettext('cat.label.font.weight',
-                'Set the preferred font weight for spine and pocket labels. You can specify "normal", "bold", "bolder", or "lighter".',
-                'coust', 'description'),
-            'string'
-        )
-;
-
-INSERT INTO actor.org_unit_setting (org_unit, name, value) VALUES
-    (1, 'cat.spine.line.margin', 0)
-    ,(1, 'cat.spine.line.height', 9)
-    ,(1, 'cat.spine.line.width', 8)
-    ,(1, 'cat.label.font.family', '"monospace"')
-    ,(1, 'cat.label.font.size', 10)
-    ,(1, 'cat.label.font.weight', '"normal"')
-;
-
--- 0383.data.org-setting-circ.do_not_tally_claims_returned.sql
-
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
-        'circ.do_not_tally_claims_returned',
-        oils_i18n_gettext(
-            'circ.do_not_tally_claims_returned',
-            'Do not include outstanding Claims Returned circulations in lump sum tallies in Patron Display.', 
-            'coust', 
-            'label'),
-        oils_i18n_gettext(
-            'circ.do_not_tally_claims_returned',
-            'In the Patron Display interface, the number of total active circulations for a given patron is presented in the Summary sidebar and underneath the Items Out navigation button.  This setting will prevent Claims Returned circulations from counting toward these tallies.',
-            'coust', 
-            'description'),
-        'bool'
-);
-
 -- 0384.data.hold_pull_list_template.sql
 
 INSERT INTO action_trigger.hook (key,core_type,description,passive) 
@@ -8713,75 +9327,6 @@ INSERT INTO action_trigger.environment (
         (35, 'current_copy.parts.part')
 ;
 
--- 0386.data.org-setting-patron-clone-copy-addr.sql
-
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
-        'circ.patron_edit.clone.copy_address',
-        oils_i18n_gettext(
-            'circ.patron_edit.clone.copy_address',
-            'Patron Registration: Cloned patrons get address copy',
-            'coust', 
-            'label'
-        ),
-        oils_i18n_gettext(
-            'circ.patron_edit.clone.copy_address',
-            'In the Patron editor, copy addresses from the cloned user instead of linking directly to the address',
-            'coust', 
-            'description'
-        ),
-        'bool'
-);
-
--- 0388.data.org-setting-ui.patron.editor_defaults.sql
-
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype, fm_class ) VALUES (
-        'ui.patron.default_ident_type',
-        oils_i18n_gettext(
-            'ui.patron.default_ident_type',
-            'Default Ident Type for Patron Registration', 
-            'coust', 
-            'label'),
-        oils_i18n_gettext(
-            'ui.patron.default_ident_type',
-            'This is the default Ident Type for new users in the patron editor.',
-            'coust', 
-            'description'),
-        'link',
-        'cit'
-);
-
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
-        'ui.patron.default_country',
-        oils_i18n_gettext(
-            'ui.patron.default_country',
-            'Default Country for New Addresses in Patron Editor', 
-            'coust', 
-            'label'),
-        oils_i18n_gettext(
-            'ui.patron.default_country',
-            'This is the default Country for new addresses in the patron editor.',
-            'coust', 
-            'description'),
-        'string'
-);
-
--- 0392.data.org-setting-ui.patron.editor_address_requirement.sql
-
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
-        'ui.patron.registration.require_address',
-        oils_i18n_gettext(
-            'ui.patron.registration.require_address',
-            'Require at least one address for Patron Registration', 
-            'coust', 
-            'label'),
-        oils_i18n_gettext(
-            'ui.patron.registration.require_address',
-            'Enforces a requirement for having at least one address for a patron during registration.',
-            'coust', 
-            'description'),
-        'bool'
-);
-
 -- 0412.data.trigger.validator.HoldIsCancelled.sql
 
 INSERT INTO action_trigger.validator (module, description) VALUES (
@@ -8828,37 +9373,6 @@ INSERT INTO action_trigger.event_definition (
         'MarkItemLost',
         'due_date'
     )
-;
-
--- 0460 schema for recalls triggered by holds
-INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
-    VALUES
-        ('circ.holds.recall_threshold',
-        oils_i18n_gettext( 'circ.holds.recall_threshold',
-            'Circulation duration that triggers a recall.', 'coust', 'label'),
-        oils_i18n_gettext( 'circ.holds.recall_threshold',
-            'Recalls: A hold placed on an item with a circulation duration longer than this will trigger a recall. For example, "14 days" or "3 weeks".', 'coust', 'description'),
-        'interval')
-;
-
-INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
-    VALUES
-        ('circ.holds.recall_return_interval',
-        oils_i18n_gettext( 'circ.holds.recall_return_interval',
-            'Truncated loan period.', 'coust', 'label'),
-        oils_i18n_gettext( 'circ.holds.recall_return_interval',
-            'Recalls: When a recall is triggered, this defines the adjusted loan period for the item. For example, "4 days" or "1 week".', 'coust', 'description'),
-        'interval')
-;
-
-INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
-    VALUES
-        ('circ.holds.recall_fine_rules',
-        oils_i18n_gettext( 'circ.holds.recall_fine_rules',
-            'An array of fine amount, fine interval, and maximum fine.', 'coust', 'label'),
-        oils_i18n_gettext( 'circ.holds.recall_fine_rules',
-            'Recalls: An array of fine amount, fine interval, and maximum fine. For example, to specify a new fine rule of $5.00 per day, with a maximum fine of $50.00, use: [5.00,"1 day",50.00]', 'coust', 'description'),
-        'array')
 ;
 
 INSERT INTO action_trigger.hook (key,core_type,description)
@@ -8923,105 +9437,6 @@ INSERT INTO vandelay.import_error ( code, description ) VALUES (
 INSERT INTO vandelay.import_error ( code, description ) VALUES ( 
     'import.item.invalid.circ_as_type', oils_i18n_gettext('import.item.invalid.circ_as_type', 'Invalid value for "circ_as_type"', 'vie', 'description') );
 
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
-    'ui.cat.volume_copy_editor.horizontal',
-    oils_i18n_gettext(
-        'ui.cat.volume_copy_editor.horizontal',
-        'Horizontal layout for Volume/Copy Creator/Editor.',
-        'coust', 'label'),
-    oils_i18n_gettext(
-        'ui.cat.volume_copy_editor.horizontal',
-        'The main entry point for this interface is in Holdings Maintenance, Actions for Selected Rows, Edit Item Attributes / Call Numbers / Replace Barcodes.  This setting changes the top and bottom panes for that interface into left and right panes.',
-        'coust', 'description'),
-    'bool'
-);
-
-INSERT into config.org_unit_setting_type
-( name, label, description, datatype, fm_class ) VALUES
-( 'cat.default_copy_status_fast',
-  oils_i18n_gettext( 'cat.default_copy_status_fast', 'Default copy status (fast add)', 'coust', 'label'),
-  oils_i18n_gettext( 'cat.default_copy_status_fast', 'Default status when a copy is created using the "Fast Add" interface.', 'coust', 'description'),
-  'link', 'ccs'
-);
-
-INSERT into config.org_unit_setting_type
-( name, label, description, datatype, fm_class ) VALUES
-( 'cat.default_copy_status_normal',
-  oils_i18n_gettext( 'cat.default_copy_status_normal', 'Default copy status (normal)', 'coust', 'label'),
-  oils_i18n_gettext( 'cat.default_copy_status_normal', 'Default status when a copy is created using the normal volume/copy creator interface.', 'coust', 'description'),
-  'link', 'ccs'
-);
-
--- 0524.data.toggle_unified_volume_copy_editor.sql
-
-INSERT into config.org_unit_setting_type
-( name, label, description, datatype ) VALUES
-( 'ui.unified_volume_copy_editor',
-  oils_i18n_gettext( 'ui.unified_volume_copy_editor', 'Unified Volume/Item Creator/Editor', 'coust', 'label'),
-  oils_i18n_gettext( 'ui.unified_volume_copy_editor', 'If true combines the Volume/Copy Creator and Item Attribute Editor in some instances.', 'coust', 'description'),
-  'bool'
-);
-
--- add patron merge org unit settings
-
-INSERT INTO config.org_unit_setting_type 
-( name, label, description, datatype ) VALUES 
-( 'circ.user_merge.delete_addresses', 
-  oils_i18n_gettext('circ.user_merge.delete_addresses','Patron Merge Address Delete', 'coust', 'label'),
-  oils_i18n_gettext('circ.user_merge.delete_addresses','Delete address(es) of subordinate user(s) in a patron merge', 'coust', 'description'),
-   'bool'
-);
-
-INSERT INTO config.org_unit_setting_type 
-( name, label, description, datatype ) VALUES 
-( 'circ.user_merge.delete_cards', 
-  oils_i18n_gettext('circ.user_merge.delete_cards','Patron Merge Barcode Delete', 'coust', 'label'),
-  oils_i18n_gettext('circ.user_merge.delete_cards','Delete barcode(s) of subordinate user(s) in a patron merge', 'coust', 'description'),
-  'bool'
-);
-
-INSERT INTO config.org_unit_setting_type 
-( name, label, description, datatype ) VALUES 
-( 'circ.user_merge.deactivate_cards', 
-  oils_i18n_gettext('circ.user_merge.deactivate_cards','Patron Merge Deactivate Card', 'coust', 'label'),
-  oils_i18n_gettext('circ.user_merge.deactivate_cards','Mark barcode(s) of subordinate user(s) in a patron merge as inactive', 'coust', 'description'),
-  'bool'
-);
-
-INSERT INTO config.usr_setting_type 
-( name, opac_visible, label, description, datatype) VALUES 
-( 'circ.collections.exempt',
-  FALSE, 
-  oils_i18n_gettext('circ.collections.exempt', 'Collections: Exempt', 'cust', 'description'),
-  oils_i18n_gettext('circ.collections.exempt', 'User is exempt from collections tracking/processing', 'cust', 'description'),
-  'bool'
-);
-
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
-    'circ.transit.min_checkin_interval',
-    oils_i18n_gettext( 
-        'circ.transit.min_checkin_interval', 
-        'Minimum Transit Checkin Interval',
-        'coust',
-        'label'
-    ),
-    oils_i18n_gettext( 
-        'circ.transit.min_checkin_interval', 
-        'In-Transit items checked in this close to the transit start time will be prevented from checking in',
-        'coust',
-        'label'
-    ),
-    'interval'
-);
-
-INSERT INTO config.org_unit_setting_type 
-( name, label, description, datatype ) VALUES 
-( 'cat.volume.delete_on_empty',
-  oils_i18n_gettext('cat.volume.delete_on_empty', 'Cat: Delete volume with last copy', 'coust', 'label'),
-  oils_i18n_gettext('cat.volume.delete_on_empty', 'Automatically delete a volume when the last linked copy is deleted', 'coust', 'description'),
-  'bool'
-);
-
 -- Event def for email notice for hold cancelled due to lack of target -----
 
 INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, delay, delay_field, group_field, template)
@@ -9052,24 +9467,6 @@ INSERT INTO action_trigger.environment (event_def, path) VALUES
     (38, 'usr'),
     (38, 'pickup_lib'),
     (38, 'bib_rec.bib_record.simple_record');
-
-
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
-    'circ.lost.generate_overdue_on_checkin',
-    oils_i18n_gettext( 
-        'circ.lost.generate_overdue_on_checkin',
-        'Circ:  Lost Checkin Generates New Overdues',
-        'coust',
-        'label'
-    ),
-    oils_i18n_gettext( 
-        'circ.lost.generate_overdue_on_checkin',
-        'Enabling this setting causes retroactive creation of not-yet-existing overdue fines on lost item checkin, up to the point of checkin time (or max fines is reached).  This is different than "restore overdue on lost", because it only creates new overdue fines.  Use both settings together to get the full complement of overdue fines for a lost item',
-        'coust',
-        'label'
-    ),
-    'bool'
-);
 
 ----------------------------------------------------------------
 -- Seed data for queued record/item exports
@@ -9792,23 +10189,6 @@ INSERT INTO authority.thesaurus (code, name, control_set) VALUES
     ('z', oils_i18n_gettext('z','Other','at','name'), 1),
     ('|', oils_i18n_gettext('|','No attempt to code','at','name'), 1);
 
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
-    'acq.copy_creator_uses_receiver',
-    oils_i18n_gettext( 
-        'acq.copy_creator_uses_receiver',
-        'Acq: Set copy creator as receiver',
-        'coust',
-        'label'
-    ),
-    oils_i18n_gettext( 
-        'acq.copy_creator_uses_receiver',
-        'When receiving a copy in acquisitions, set the copy "creator" to be the staff that received the copy',
-        'coust',
-        'label'
-    ),
-    'bool'
-);
-
 INSERT INTO action_trigger.hook ( key, core_type, description, passive ) VALUES (
     'reservation.available',
     'bresv',
@@ -9820,225 +10200,3 @@ INSERT INTO action_trigger.validator ( module, description ) VALUES (
     'ReservationIsAvailable',
     'Checked that a reserved resource is available for checkout'
 );
-
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
-    'booking.allow_email_notify',
-    'booking.allow_email_notify',
-    'Permit email notification when a reservation is ready for pickup.',
-    'bool'
-);
-
--- Add groups to config settings.
-
--- config settings groups
-INSERT INTO config.settings_group (name, label) VALUES
-('sys', oils_i18n_gettext('config.settings_group.system', 'System', 'coust', 'label')),
-('gui', oils_i18n_gettext('config.settings_group.gui', 'GUI', 'coust', 'label')),
-('lib', oils_i18n_gettext('config.settings_group.lib', 'Library', 'coust', 'label')),
-('sec', oils_i18n_gettext('config.settings_group.sec', 'Security', 'coust', 'label')),
-('cat', oils_i18n_gettext('config.settings_group.cat', 'Cataloging', 'coust', 'label')),
-('holds', oils_i18n_gettext('config.settings_group.holds', 'Holds', 'coust', 'label')),
-('circ', oils_i18n_gettext('config.settings_group.circulation', 'Circulation', 'coust', 'label')),
-('self', oils_i18n_gettext('config.settings_group.self', 'Self Check', 'coust', 'label')),
-('opac', oils_i18n_gettext('config.settings_group.opac', 'OPAC', 'coust', 'label')),
-('prog', oils_i18n_gettext('config.settings_group.program', 'Program', 'coust', 'label')),
-('glob', oils_i18n_gettext('config.settings_group.global', 'Global', 'coust', 'label')),
-('finance', oils_i18n_gettext('config.settings_group.finances', 'Finanaces', 'coust', 'label')),
-('credit', oils_i18n_gettext('config.settings_group.ccp', 'Credit Card Processing', 'coust', 'label')),
-('serial', oils_i18n_gettext('config.settings_group.serial', 'Serials', 'coust', 'label')),
-('recall', oils_i18n_gettext('config.settings_group.recall', 'Recalls', 'coust', 'label'));
-
--- Set up all of the config.org_unit_setting_type[s] with a proper group.
-UPDATE config.org_unit_setting_type SET grp = 'cat' WHERE name = 'cat.bib.delete_on_no_copy_via_acq_lineitem_cancel';
-UPDATE config.org_unit_setting_type SET grp = 'cat' WHERE name = 'cat.default_classification_scheme';
-UPDATE config.org_unit_setting_type SET grp = 'cat' WHERE name = 'cat.label.font.family';
-UPDATE config.org_unit_setting_type SET grp = 'cat' WHERE name = 'cat.label.font.size';
-UPDATE config.org_unit_setting_type SET grp = 'cat' WHERE name = 'cat.label.font.weight';
-UPDATE config.org_unit_setting_type SET grp = 'cat' WHERE name = 'cat.marc_control_number_identifier';
-UPDATE config.org_unit_setting_type SET grp = 'cat' WHERE name = 'cat.spine.line.height';
-UPDATE config.org_unit_setting_type SET grp = 'cat' WHERE name = 'cat.spine.line.margin';
-UPDATE config.org_unit_setting_type SET grp = 'cat' WHERE name = 'cat.spine.line.width';
-UPDATE config.org_unit_setting_type SET grp = 'circ' WHERE name = 'circ.checkout_auto_renew_age';
-UPDATE config.org_unit_setting_type SET grp = 'circ' WHERE name = 'circ.checkout_fills_related_hold';
-UPDATE config.org_unit_setting_type SET grp = 'circ' WHERE name = 'circ.do_not_tally_claims_returned';
-UPDATE config.org_unit_setting_type SET grp = 'circ' WHERE name = 'circ.holds.expired_patron_block';
-UPDATE config.org_unit_setting_type SET grp = 'circ' WHERE name = 'circ.hold_shelf_status_delay';
-UPDATE config.org_unit_setting_type SET grp = 'circ' WHERE name = 'circ.lost_immediately_available';
-UPDATE config.org_unit_setting_type SET grp = 'circ' WHERE name = 'circ.max_accept_return_of_lost';
-UPDATE config.org_unit_setting_type SET grp = 'circ' WHERE name = 'circ.max_fine.cap_at_price';
-UPDATE config.org_unit_setting_type SET grp = 'circ' WHERE name = 'circ.max_patron_claim_return_count';
-UPDATE config.org_unit_setting_type SET grp = 'circ' WHERE name = 'circ.missing_pieces.copy_status';
-UPDATE config.org_unit_setting_type SET grp = 'circ' WHERE name = 'circ.password_reset_request_requires_matching_email';
-UPDATE config.org_unit_setting_type SET grp = 'circ' WHERE name = 'circ.patron_edit.clone.copy_address';
-UPDATE config.org_unit_setting_type SET grp = 'circ' WHERE name = 'circ.patron_invalid_address_apply_penalty';
-UPDATE config.org_unit_setting_type SET grp = 'circ' WHERE name = 'circ.restore_overdue_on_lost_return';
-UPDATE config.org_unit_setting_type SET grp = 'circ' WHERE name = 'circ.void_lost_on_checkin';
-UPDATE config.org_unit_setting_type SET grp = 'circ' WHERE name = 'circ.void_lost_proc_fee_on_checkin';
-UPDATE config.org_unit_setting_type SET grp = 'circ' WHERE name = 'ui.circ.suppress_checkin_popups';
-UPDATE config.org_unit_setting_type SET grp = 'credit' WHERE name = 'credit.processor.authorizenet.enabled';
-UPDATE config.org_unit_setting_type SET grp = 'credit' WHERE name = 'credit.processor.authorizenet.login';
-UPDATE config.org_unit_setting_type SET grp = 'credit' WHERE name = 'credit.processor.authorizenet.password';
-UPDATE config.org_unit_setting_type SET grp = 'credit' WHERE name = 'credit.processor.authorizenet.server';
-UPDATE config.org_unit_setting_type SET grp = 'credit' WHERE name = 'credit.processor.authorizenet.testmode';
-UPDATE config.org_unit_setting_type SET grp = 'credit' WHERE name = 'credit.processor.default';
-UPDATE config.org_unit_setting_type SET grp = 'credit' WHERE name = 'credit.processor.payflowpro.enabled';
-UPDATE config.org_unit_setting_type SET grp = 'credit' WHERE name = 'credit.processor.payflowpro.login';
-UPDATE config.org_unit_setting_type SET grp = 'credit' WHERE name = 'credit.processor.payflowpro.partner';
-UPDATE config.org_unit_setting_type SET grp = 'credit' WHERE name = 'credit.processor.payflowpro.password';
-UPDATE config.org_unit_setting_type SET grp = 'credit' WHERE name = 'credit.processor.payflowpro.testmode';
-UPDATE config.org_unit_setting_type SET grp = 'credit' WHERE name = 'credit.processor.payflowpro.vendor';
-UPDATE config.org_unit_setting_type SET grp = 'credit' WHERE name = 'credit.processor.paypal.enabled';
-UPDATE config.org_unit_setting_type SET grp = 'credit' WHERE name = 'credit.processor.paypal.login';
-UPDATE config.org_unit_setting_type SET grp = 'credit' WHERE name = 'credit.processor.paypal.password';
-UPDATE config.org_unit_setting_type SET grp = 'credit' WHERE name = 'credit.processor.paypal.signature';
-UPDATE config.org_unit_setting_type SET grp = 'credit' WHERE name = 'credit.processor.paypal.testmode';
-UPDATE config.org_unit_setting_type SET grp = 'finance' WHERE name = 'acq.fund.balance_limit.block';
-UPDATE config.org_unit_setting_type SET grp = 'finance' WHERE name = 'acq.fund.balance_limit.warn';
-UPDATE config.org_unit_setting_type SET grp = 'finance' WHERE name = 'cat.default_item_price';
-UPDATE config.org_unit_setting_type SET grp = 'finance' WHERE name = 'circ.charge_lost_on_zero';
-UPDATE config.org_unit_setting_type SET grp = 'finance' WHERE name = 'circ.charge_on_damaged';
-UPDATE config.org_unit_setting_type SET grp = 'finance' WHERE name = 'circ.damaged_item_processing_fee';
-UPDATE config.org_unit_setting_type SET grp = 'finance' WHERE name = 'circ.lost_materials_processing_fee';
-UPDATE config.org_unit_setting_type SET grp = 'finance' WHERE name = 'circ.void_overdue_on_lost';
-UPDATE config.org_unit_setting_type SET grp = 'finance' WHERE name = 'credit.payments.allow';
-UPDATE config.org_unit_setting_type SET grp = 'glob' WHERE name = 'global.default_locale';
-UPDATE config.org_unit_setting_type SET grp = 'glob' WHERE name = 'global.password_regex';
-UPDATE config.org_unit_setting_type SET grp = 'glob' WHERE name = 'opac.barcode_regex';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'cat.bib.alert_on_empty';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'circ.auto_hide_patron_summary';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'circ.item_checkout_history.max';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'format.date';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'format.time';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'gui.disable_local_save_columns';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.admin.patron_log.max_entries';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.admin.work_log.max_entries';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.circ.in_house_use.entry_cap';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.circ.in_house_use.entry_warn';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.circ.patron_summary.horizontal';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.circ.show_billing_tab_on_bills';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.general.button_bar';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.general.idle_timeout';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.default_country';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.default_ident_type';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.aua.county.require';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.active.show';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.active.suggest';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.alert_message.show';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.alert_message.suggest';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.alias.show';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.alias.suggest';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.aua.post_code.example';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.aua.post_code.regex';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.barred.show';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.barred.suggest';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.claims_never_checked_out_count.show';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.claims_never_checked_out_count.suggest';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.claims_returned_count.show';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.claims_returned_count.suggest';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.day_phone.example';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.day_phone.regex';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.day_phone.require';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.day_phone.show';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.day_phone.suggest';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.dob.calendar';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.dob.require';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.dob.show';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.dob.suggest';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.email.example';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.email.regex';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.email.require';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.email.show';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.email.suggest';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.evening_phone.example';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.evening_phone.regex';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.evening_phone.require';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.evening_phone.show';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.evening_phone.suggest';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.ident_value2.show';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.ident_value2.suggest';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.ident_value.show';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.ident_value.suggest';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.juvenile.show';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.juvenile.suggest';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.master_account.show';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.master_account.suggest';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.other_phone.example';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.other_phone.regex';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.other_phone.require';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.other_phone.show';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.other_phone.suggest';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.second_given_name.show';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.second_given_name.suggest';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.suffix.show';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.au.suffix.suggest';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.default_suggested';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.phone.example';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.edit.phone.regex';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.patron.registration.require_address';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'ui.staff.require_initials';
-UPDATE config.org_unit_setting_type SET grp = 'gui' WHERE name = 'url.remote_column_settings';
-UPDATE config.org_unit_setting_type SET grp = 'holds' WHERE name = 'circ.block_renews_for_holds';
-UPDATE config.org_unit_setting_type SET grp = 'holds' WHERE name = 'circ.hold_boundary.hard';
-UPDATE config.org_unit_setting_type SET grp = 'holds' WHERE name = 'circ.hold_boundary.soft';
-UPDATE config.org_unit_setting_type SET grp = 'holds' WHERE name = 'circ.hold_expire_alert_interval';
-UPDATE config.org_unit_setting_type SET grp = 'holds' WHERE name = 'circ.hold_expire_interval';
-UPDATE config.org_unit_setting_type SET grp = 'holds' WHERE name = 'circ.holds.behind_desk_pickup_supported';
-UPDATE config.org_unit_setting_type SET grp = 'holds' WHERE name = 'circ.holds.canceled.display_age';
-UPDATE config.org_unit_setting_type SET grp = 'holds' WHERE name = 'circ.holds.canceled.display_count';
-UPDATE config.org_unit_setting_type SET grp = 'holds' WHERE name = 'circ.holds.clear_shelf.copy_status';
-UPDATE config.org_unit_setting_type SET grp = 'holds' WHERE name = 'circ.holds.clear_shelf.no_capture_holds';
-UPDATE config.org_unit_setting_type SET grp = 'holds' WHERE name = 'circ.holds.default_estimated_wait_interval';
-UPDATE config.org_unit_setting_type SET grp = 'holds' WHERE name = 'circ.holds.default_shelf_expire_interval';
-UPDATE config.org_unit_setting_type SET grp = 'holds' WHERE name = 'circ.holds_fifo';
-UPDATE config.org_unit_setting_type SET grp = 'holds' WHERE name = 'circ.holds.hold_has_copy_at.alert';
-UPDATE config.org_unit_setting_type SET grp = 'holds' WHERE name = 'circ.holds.hold_has_copy_at.block';
-UPDATE config.org_unit_setting_type SET grp = 'holds' WHERE name = 'circ.holds.max_org_unit_target_loops';
-UPDATE config.org_unit_setting_type SET grp = 'holds' WHERE name = 'circ.holds.min_estimated_wait_interval';
-UPDATE config.org_unit_setting_type SET grp = 'holds' WHERE name = 'circ.holds.org_unit_target_weight';
-UPDATE config.org_unit_setting_type SET grp = 'holds' WHERE name = 'circ.hold_stalling_hard';
-UPDATE config.org_unit_setting_type SET grp = 'holds' WHERE name = 'circ.hold_stalling.soft';
-UPDATE config.org_unit_setting_type SET grp = 'holds' WHERE name = 'circ.holds.target_holds_by_org_unit_weight';
-UPDATE config.org_unit_setting_type SET grp = 'holds' WHERE name = 'circ.holds.target_skip_me';
-UPDATE config.org_unit_setting_type SET grp = 'holds' WHERE name = 'circ.holds.uncancel.reset_request_time';
-UPDATE config.org_unit_setting_type SET grp = 'lib' WHERE name = 'acq.default_circ_modifier';
-UPDATE config.org_unit_setting_type SET grp = 'lib' WHERE name = 'acq.default_copy_location';
-UPDATE config.org_unit_setting_type SET grp = 'lib' WHERE name = 'acq.holds.allow_holds_from_purchase_request';
-UPDATE config.org_unit_setting_type SET grp = 'lib' WHERE name = 'acq.tmp_barcode_prefix';
-UPDATE config.org_unit_setting_type SET grp = 'lib' WHERE name = 'acq.tmp_callnumber_prefix';
-UPDATE config.org_unit_setting_type SET grp = 'lib' WHERE name = 'circ.booking_reservation.default_elbow_room';
-UPDATE config.org_unit_setting_type SET grp = 'lib' WHERE name = 'circ.claim_never_checked_out.mark_missing';
-UPDATE config.org_unit_setting_type SET grp = 'lib' WHERE name = 'circ.claim_return.copy_status';
-UPDATE config.org_unit_setting_type SET grp = 'lib' WHERE name = 'circ.damaged.void_ovedue';
-UPDATE config.org_unit_setting_type SET grp = 'lib' WHERE name = 'circ.pre_cat_copy_circ_lib';
-UPDATE config.org_unit_setting_type SET grp = 'lib' WHERE name = 'circ.reshelving_complete.interval';
-UPDATE config.org_unit_setting_type SET grp = 'lib' WHERE name = 'global.juvenile_age_threshold';
-UPDATE config.org_unit_setting_type SET grp = 'lib' WHERE name = 'lib.courier_code';
-UPDATE config.org_unit_setting_type SET grp = 'lib' WHERE name = 'notice.telephony.callfile_lines';
-UPDATE config.org_unit_setting_type SET grp = 'opac' WHERE name = 'opac.allow_pending_address';
-UPDATE config.org_unit_setting_type SET grp = 'opac' WHERE name = 'opac.fully_compressed_serial_holdings';
-UPDATE config.org_unit_setting_type SET grp = 'opac' WHERE name = 'opac.org_unit_hiding.depth';
-UPDATE config.org_unit_setting_type SET grp = 'prog' WHERE name = 'cat.bib.keep_on_empty';
-UPDATE config.org_unit_setting_type SET grp = 'prog' WHERE name = 'circ.staff_client.do_not_auto_attempt_print';
-UPDATE config.org_unit_setting_type SET grp = 'prog' WHERE name = 'org.bounced_emails';
-UPDATE config.org_unit_setting_type SET grp = 'recall' WHERE name = 'circ.holds.recall_fine_rules';
-UPDATE config.org_unit_setting_type SET grp = 'recall' WHERE name = 'circ.holds.recall_return_interval';
-UPDATE config.org_unit_setting_type SET grp = 'recall' WHERE name = 'circ.holds.recall_threshold';
-UPDATE config.org_unit_setting_type SET grp = 'sec' WHERE name = 'auth.opac_timeout';
-UPDATE config.org_unit_setting_type SET grp = 'sec' WHERE name = 'auth.persistent_login_interval';
-UPDATE config.org_unit_setting_type SET grp = 'sec' WHERE name = 'auth.staff_timeout';
-UPDATE config.org_unit_setting_type SET grp = 'sec' WHERE name = 'circ.obscure_dob';
-UPDATE config.org_unit_setting_type SET grp = 'sec' WHERE name = 'circ.offline.username_allowed';
-UPDATE config.org_unit_setting_type SET grp = 'sec' WHERE name = 'circ.password_reset_request_per_user_limit';
-UPDATE config.org_unit_setting_type SET grp = 'sec' WHERE name = 'circ.password_reset_request_throttle';
-UPDATE config.org_unit_setting_type SET grp = 'sec' WHERE name = 'circ.password_reset_request_time_to_live';
-UPDATE config.org_unit_setting_type SET grp = 'sec' WHERE name = 'patron.password.use_phone';
-UPDATE config.org_unit_setting_type SET grp = 'sec' WHERE name = 'ui.patron.default_inet_access_level';
-UPDATE config.org_unit_setting_type SET grp = 'self' WHERE name = 'circ.selfcheck.alert.popup';
-UPDATE config.org_unit_setting_type SET grp = 'self' WHERE name = 'circ.selfcheck.alert.sound';
-UPDATE config.org_unit_setting_type SET grp = 'self' WHERE name = 'circ.selfcheck.auto_override_checkout_events';
-UPDATE config.org_unit_setting_type SET grp = 'self' WHERE name = 'circ.selfcheck.block_checkout_on_copy_status';
-UPDATE config.org_unit_setting_type SET grp = 'self' WHERE name = 'circ.selfcheck.patron_login_timeout';
-UPDATE config.org_unit_setting_type SET grp = 'self' WHERE name = 'circ.selfcheck.patron_password_required';
-UPDATE config.org_unit_setting_type SET grp = 'self' WHERE name = 'circ.selfcheck.require_patron_password';
-UPDATE config.org_unit_setting_type SET grp = 'self' WHERE name = 'circ.selfcheck.workstation_required';
-UPDATE config.org_unit_setting_type SET grp = 'serial' WHERE name = 'serial.prev_issuance_copy_location';

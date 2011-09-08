@@ -530,7 +530,9 @@ function osLaunchHistory(name) {
         d = thisHist[i].date_applied();
         a = ouNames[thisHist[i].org()];
         o = thisHist[i].original_value();
+        if(o) o=o.replace(/\&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
         n = thisHist[i].new_value();
+        if(n) n=n.replace(/\&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
         r = thisHist[i].org();
         // Table is: Date | Org Name | Orig Value | New Value | Revert
         data += "<tr><td>" + d + "</td><td>" + a + "</td><td>" + o +
