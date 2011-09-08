@@ -22,7 +22,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER au_update_trig
-	BEFORE UPDATE ON actor.usr
+	BEFORE INSERT OR UPDATE ON actor.usr
 	FOR EACH ROW EXECUTE PROCEDURE actor.au_updated();
 
 COMMIT;
