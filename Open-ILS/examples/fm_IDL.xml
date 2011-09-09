@@ -5830,7 +5830,7 @@ SELECT  usr,
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.user_request_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id" reporter:selector='label'/>
 			<field reporter:label="User" name="usr" reporter:datatype="link" />
-			<field reporter:label="Request Type" name="request_type" reporter:datatype="link" />
+			<field reporter:label="Request Type" name="request_type" oils_obj:required="true" reporter:datatype="link" />
 			<field reporter:label="Place Hold" name="hold" reporter:datatype="bool" />
 			<field reporter:label="Pickup Library" name="pickup_lib" reporter:datatype="link" />
 			<field reporter:label="Holdable Formats" name="holdable_formats" reporter:datatype="text" />
