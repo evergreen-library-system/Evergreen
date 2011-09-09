@@ -17,7 +17,7 @@
     <table> 
         <tr><td>[% l('Current Email') %]</td><td>[% ctx.user.email | html %]</td></tr>
         <tr><td>[% l('New Email') %]</td><td><input type='text' name='email' value='[% ctx.invalid_email | html %]'/></td></tr>
-        <tr><td colspan='2' align='center'><input type='submit'/></td></tr>
+        <tr><td colspan='2' align='center'><input value="[% l('Submit') %]" type='submit'/></td></tr>
     </table>
 </form>
 
