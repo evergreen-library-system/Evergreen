@@ -109,7 +109,7 @@ sub retrieve_usr_penalties {
     return $e->search_actor_user_standing_penalty([
         {
             usr => $user_id, 
-            org_unit => $U->get_org_ancestors($context_org),
+            org_unit => $U->get_org_full_path($context_org),
             '-or' => [
                 {stop_date => undef},
                 {stop_date => {'>' => 'now'}}
