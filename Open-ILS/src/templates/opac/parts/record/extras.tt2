@@ -29,6 +29,11 @@
             {name => 'marchtml', label => l('MARC Record')}
         ];
 
+        MACRO tab_is_active(tab) BLOCK;
+            exp_name = 'expand_' _ tab;
+            IF ctx.$exp_name OR ctx.expand_all; 1; END;
+        END;
+
         FOREACH extra IN extras;
             IF extra.hide; NEXT; END; 
             name = extra.name;
@@ -36,15 +41,15 @@
         <div class="rdetail_extras">
             <div class="rdetail_extras_hr"></div>
             <div class="rdetail_extras_link">
-                [%  href = mkurl('', {expand => name}) _ '#' _ name; %]
-                <a name='[% name %]' href='[% href %]'><img
-                    alt='[% extra.label %]' src="[% ctx.media_prefix %]/images/rdetail_arrow.png" /></a>
+                [%  href = mkurl('', {expand => name}) _ '#' _ name; 
+                    img_url = ctx.media_prefix _ '/images/rdetail_arrow' _ (tab_is_active(name) ? '_down' : '') _ '.png' 
+                %]
+                <a name='[% name %]' href='[% href %]'><img alt='[% extra.label %]' src='[% img_url %]'/></a>
                 <a href='[% href %]' class="rdetail_extras_lbl">[% extra.label %]</a>
             </div>
         </div>
         <div class='rdetail_extras_div'>
-            [%  exp_name = 'expand_' _ name;
-                IF ctx.$exp_name OR ctx.expand_all;
+            [%  IF tab_is_active(name);
                     IF name == 'marchtml';
                         ctx.marchtml;
                     ELSE;
