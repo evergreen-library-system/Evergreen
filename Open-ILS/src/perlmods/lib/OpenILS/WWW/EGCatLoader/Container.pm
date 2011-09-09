@@ -56,7 +56,21 @@ sub load_mylist_add {
     return $self->mylist_action_redirect($cache_key);
 }
 
-# Removes a record ID from My List, or moves to an actual bookbag
+sub load_mylist_delete {
+    my $self = shift;
+    my $rec_id = $self->cgi->param('record');
+
+    my ($cache_key, $list) = $self->fetch_mylist;
+    $list = [ grep { $_ ne $rec_id } @$list ];
+
+    $cache_key = $U->simplereq(
+        'open-ils.actor',
+        'open-ils.actor.anon_cache.set_value', 
+        $cache_key, ANON_CACHE_MYLIST, $list);
+
+    return $self->mylist_action_redirect($cache_key);
+}
+
 sub load_mylist_move {
     my $self = shift;
     my @rec_ids = $self->cgi->param('record');
@@ -112,8 +126,16 @@ sub mylist_action_redirect {
     my $self = shift;
     my $cache_key = shift;
 
+    my $url;
+    if( my $anchor = $self->cgi->param('anchor') ) {
+        # on the results page, we want to redirect 
+        # back to record that was affected
+        $url = $self->ctx->{referer};
+        $url =~ s/#.*|$/#$anchor/g;
+    } 
+
     return $self->generic_redirect(
-        undef, 
+        $url,
         $self->cgi->cookie(
             -name => COOKIE_ANON_CACHE,
             -path => '/',

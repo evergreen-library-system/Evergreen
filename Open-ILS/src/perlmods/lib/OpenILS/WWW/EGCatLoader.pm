@@ -97,6 +97,7 @@ sub load {
     return $self->load_cnbrowse if $path =~ m|opac/cnbrowse|;
 
     return $self->load_mylist_add if $path =~ m|opac/mylist/add|;
+    return $self->load_mylist_delete if $path =~ m|opac/mylist/delete|;
     return $self->load_mylist_move if $path =~ m|opac/mylist/move|;
     return $self->load_mylist if $path =~ m|opac/mylist|;
     return $self->load_cache_clear if $path =~ m|opac/cache/clear|;

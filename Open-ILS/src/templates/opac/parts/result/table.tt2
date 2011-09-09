@@ -53,7 +53,7 @@
                                                 name='result_table_title_cell'
                                                 valign="top">
                                                 <div class="bold">
-                                                    <a title="[% attrs.title | uri %]" name='item_title'
+                                                    <a name='record_[% rec.id %]' title="[% attrs.title | uri %]" name='item_title'
                                                         href="[% mkurl(ctx.opac_root _ '/record/' _ rec.id) %]"
                                                         class='search_link'>[% attrs.title | html %]</a>
                                                 </div>
@@ -216,8 +216,10 @@
                                                             [%  
                                                                 operation = ctx.mylist.grep(rec.id).size ? "delete" : "add";
                                                                 label = (operation == "add") ? l("Add to my list") : l("Remove from my list");
+                                                                href = mkurl(ctx.opac_root _ '/mylist/' _ operation, 
+                                                                        {record => rec.id, anchor => 'record_' _ rec.id}, 1);
                                                             %]      
-                                                            <a href="[% mkurl(ctx.opac_root _ '/mylist/' _ operation, {record => rec.id}, 1) %]" class="no-dec">
+                                                            <a href="[% href %]" class="no-dec">
                                                                 <img src="[% ctx.media_prefix %]/images/clipboard.png" alt="" />
                                                                 [% label %]
                                                             </a>
