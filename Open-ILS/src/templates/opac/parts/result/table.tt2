@@ -224,6 +224,17 @@
                                                                 [% label %]
                                                             </a>
                                                         </div>
+                                                        [% IF ENV.OILS_CONTENT_CAFE_USER %]
+                                                        <div class="results_aux_utils opac-auto-011">
+                                                            <a title="[% l('Reviews and More') %]" target='_blank' 
+                                                                href="[% ctx.proto %]://contentcafe2.btol.com/ContentCafeClient/ContentCafe.aspx?UserID=[%- 
+                                                                    ENV.OILS_CONTENT_CAFE_USER %]&amp;Password=[%-
+                                                                    ENV.OILS_CONTENT_CAFE_PASS %]&amp;ItemKey=[% ident | uri %]&Options=Y">
+                                                                <img src='[% ctx.media_prefix %]/images/starz.png'/> 
+                                                                <span style='position:relative;top:-5px;'>[% l('Reviews &amp; More') %]</span>
+                                                            </a>
+                                                        </div>
+                                                        [% END %]
                                                     </div>
                                                 </div>
                                             </td>

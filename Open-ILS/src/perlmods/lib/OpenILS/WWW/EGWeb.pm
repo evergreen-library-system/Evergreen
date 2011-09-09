@@ -152,6 +152,7 @@ sub load_context {
     $ctx->{base_url} = $cgi->url(-base => 1);
     $ctx->{skin} = $cgi->cookie(OILS_HTTP_COOKIE_SKIN) || 'default';
     $ctx->{theme} = $cgi->cookie(OILS_HTTP_COOKIE_THEME) || 'default';
+    $ctx->{proto} = $cgi->https ? 'https' : 'http';
 
     # Any paths configured in Apache will be placed in front of
     # any paths configured in the global oils_web.xml config.
