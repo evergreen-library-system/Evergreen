@@ -1,5 +1,6 @@
 [%  PROCESS "opac/parts/header.tt2";
     PROCESS "opac/parts/misc_util.tt2";
+    PROCESS "opac/parts/hold_status.tt2";
     PROCESS "opac/parts/org_selector.tt2";
     WRAPPER "opac/parts/base.tt2" + "opac/parts/myopac/base.tt2";
     myopac_page = "holds"; # in this case, just for tab coloring.
