@@ -365,6 +365,7 @@ util.print.prototype = {
                     + ' => ' + ( params.print_strategy || obj.data.print_strategy[obj.context] || obj.data.print_strategy['default'] ) + '\n');
                 switch(params.print_strategy || obj.data.print_strategy[obj.context] || obj.data.print_strategy['default']) {
                     case 'dos.print':
+                        params.dos_print = true;
                     case 'custom.print':
                         if (typeof w != 'string') {
                             try {
