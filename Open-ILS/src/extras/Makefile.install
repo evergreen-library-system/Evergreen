@@ -178,7 +178,7 @@ FEDORA_RPMS = \
 	perl-Text-CSV \
 	perl-Text-CSV_XS \
 	perl-XML-Writer \
-	postgresql90-devel \
+	postgresql-devel \
 	readline-devel \
 	tcp_wrappers-devel \
 	wget \
@@ -333,8 +333,13 @@ install_libjs:
 	mkdir -p $(JS_INSTALL_PREFIX)/include/js/
 	cp js/src/*.h $(JS_INSTALL_PREFIX)/include/js/
 	cp js/src/*.tbl $(JS_INSTALL_PREFIX)/include/js/
-	cp js/src/Linux_All_DBG.OBJ/*.so $(JS_INSTALL_PREFIX)/lib/
-	cp js/src/Linux_All_DBG.OBJ/*.a $(JS_INSTALL_PREFIX)/lib/
+	if [ ! -z $(FEDORA_64) ]; then \
+		cp js/src/Linux_All_DBG.OBJ/*.so $(JS_INSTALL_PREFIX)/lib64/ && \
+		cp js/src/Linux_All_DBG.OBJ/*.a $(JS_INSTALL_PREFIX)/lib64/; \
+	else \
+		cp js/src/Linux_All_DBG.OBJ/*.so $(JS_INSTALL_PREFIX)/lib/ && \
+		cp js/src/Linux_All_DBG.OBJ/*.a $(JS_INSTALL_PREFIX)/lib/; \
+	fi;
 
 install_spidermonkey:
 	if [ ! -f $(LIBJS_PERL).tar.gz ]; then wget $(LIBJS_PERL_URL); fi;
