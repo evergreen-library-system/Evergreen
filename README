@@ -26,9 +26,6 @@ deb http://backports.debian.org/debian-backports squeeze-backports main contrib
 deb http://archive.ubuntu.com/ubuntu lucid-backports main universe multiverse restricted
 ------------------------------------------------------------------------------
 +
-  * On Fedora 14, follow the http://yum.pgrpms.org/howtoyum.php[instructions
-    in the Yum HOWTO] to enable the PostgreSQL RPM Building Project yum
-    repository.
   * Fedora 15 comes with PostgreSQL 9, so no additional steps are required.
 +
 3. On Debian and Ubuntu, run `aptitude update` to retrieve the new packages
@@ -38,7 +35,7 @@ deb http://archive.ubuntu.com/ubuntu lucid-backports main universe multiverse re
    installer.
 5. Issue the following commands as the root user to install prerequisites
    using the Makefile.install prerequisite installer, substituting
-   `debian-squeeze`, `fedora15`, `fedora14`, `ubuntu-lucid`, `centos`, or
+   `debian-squeeze`, `fedora15`, `ubuntu-lucid`, `centos`, or
    `rhel` for <osname> below:
 +
 [source, bash]

@@ -4,7 +4,7 @@
 #
 # Makefile to install prerequisites for OpenSRF and Evergreen
 #
-# Currently supports Debian (squeeze), Ubuntu (lucid), and Fedora (14).
+# Currently supports Debian (squeeze), Ubuntu (lucid), and Fedora (15).
 # Working towards support of CentOS 5 / RHEL 5.
 # Installs Perl prereqs, libjs with Perl wrapper, libdbi, libdbi-drivers, and libyaz
 #
@@ -13,7 +13,7 @@
 # 	- or -
 # 	make -f Makefile.install ubuntu-lucid
 # 	- or -
-# 	make -f Makefile.install fedora14
+# 	make -f Makefile.install fedora15
 # 	- or -
 # 	make -f Makefile.install centos
 # 	- or -
@@ -272,8 +272,7 @@ centos: install_centos_pgsql centos_like
 rhel: install_redhat_pgsql centos_like
 centos_like: install_centos_rpms install_yaz install_cpan_marc install install_centos_perl create_ld_local install_cpan_safe install_cpan_force
 
-fedora14: install_fedora_rpms install_cpan install_cpan_fedora install_cpan_marc install_js_sm install_cpan_force
-fedora15: fedora14
+fedora15: install_fedora_rpms install_cpan install_cpan_fedora install_cpan_marc install_js_sm install_cpan_force
 
 debian-squeeze: squeeze generic_debian
 squeeze: install_pgsql_client_debs_90  install_extra_debs_squeeze
@@ -309,7 +308,7 @@ install_cpan_force:
 install_cpan_safe: 
 	for m in $(CPAN_MODULES_SAFE); do perl -MCPAN -e "install \"$$m\";"; done
 
-# Install the CPAN modules for Fedora 13
+# Install the CPAN modules for Fedora
 install_cpan_fedora: 
 	for m in $(FEDORA_CPAN); do \
 		echo "force install $$m" | perl -MCPAN -e shell;\
@@ -427,7 +426,7 @@ install_extra_encode:
 
 # ------------------------------------------------------------------
 
-# FEDORA 13
+# FEDORA
 install_fedora_rpms:
 	yum -y update
 	yum -y install $(FEDORA_RPMS)
