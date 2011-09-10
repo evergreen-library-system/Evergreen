@@ -342,6 +342,7 @@ install_libjs:
 		cp js/src/Linux_All_DBG.OBJ/*.so $(JS_INSTALL_PREFIX)/lib/ && \
 		cp js/src/Linux_All_DBG.OBJ/*.a $(JS_INSTALL_PREFIX)/lib/; \
 	fi;
+	ldconfig
 
 install_spidermonkey:
 	if [ ! -f $(LIBJS_PERL).tar.gz ]; then wget $(LIBJS_PERL_URL); fi;
