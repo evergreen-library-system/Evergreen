@@ -465,8 +465,8 @@ BEGIN
         RETURN NEXT result;
     END IF;
 
-    -- Apparently....use the circ matchpoint org unit to determine what org units are valid.
-    SELECT INTO context_org_list ARRAY_ACCUM(id) FROM actor.org_unit_full_path( circ_matchpoint.org_unit );
+    -- Use Circ OU for penalties and such
+    SELECT INTO context_org_list ARRAY_ACCUM(id) FROM actor.org_unit_full_path( circ_ou );
 
     IF renewal THEN
         penalty_type = '%RENEW%';

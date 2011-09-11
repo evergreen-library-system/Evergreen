@@ -33,6 +33,7 @@ my $prefix = '';
 my $sysconfdir = '';
 my $pg_contribdir = '';
 my $create_db_sql = '';
+my $create_db_sql_9_1 = '';
 my @services;
 
 my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
@@ -135,9 +136,36 @@ sub create_database {
 	$ENV{'PGPASSWORD'} = $settings->{pw};
 	$ENV{'PGPORT'} = $settings->{port};
 	$ENV{'PGHOST'} = $settings->{host};
-	my $cmd = 'psql -vdb_name=' . $settings->{db} . ' -vcontrib_dir=' . $pg_contribdir .
-		' -d postgres -f ' . $create_db_sql;
-	system($cmd);
+	my @temp = `psql -d postgres -qtc 'show server_version;' | xargs | cut -c1,3`;
+	chomp $temp[0];
+	my $pgversion = $temp[0];
+	my $cmd;
+	# If it looks like it is 9.1 or greater, use create_database_9_1.sql
+	# Otherwise use create_database.sql
+	if($pgversion >= '91') {
+		$cmd = 'psql -vdb_name=' . $settings->{db} . ' -d postgres -f ' . $create_db_sql_9_1;
+	} else {
+		$cmd = 'psql -vdb_name=' . $settings->{db} . ' -vcontrib_dir=' . $pg_contribdir .
+			' -d postgres -f ' . $create_db_sql;
+	}
+	my @output = `$cmd 2>&1`;
+	if(grep(/(ERROR|No such file or directory)/,@output)) {
+		push(@output, "\n------------------------------------------------------------------------------\n",
+			"There was a problem creating the database.\n",
+			"See above for more information.\n");
+		if(grep/unsupported language/, @output) {
+			push(@output, "\nYou may need to install the postgresql plperl package on the database server.\n");
+		}
+		if(grep/No such file or directory/, @output) {
+			if($pgversion >= '91') {
+				push(@output, "\nYou may need to install the postgresql contrib package on the database server.\n"); 
+			} else {
+				push(@output, "\nYou may need to install the postgresql contrib package on this server.\n");
+			}
+		}
+		push(@output, "------------------------------------------------------------------------------\n");
+		die(@output);
+	}
 }
 
 =item create_schema() - Creates the database schema by calling build-db.sh
@@ -194,6 +222,7 @@ GetOptions("create-schema" => \$cschema,
 		"build-db-file=s" => \$build_db_sh,
 		"pg-contrib-dir=s" => \$pg_contribdir,
 		"create-db-sql=s" => \$create_db_sql,
+		"create-db-sql-9-1=s" => \$create_db_sql_9_1,
 		"pg-config=s" => \$pgconfig,
 		"admin-user=s" => \$admin_user,
 		"admin-password=s" => \$admin_pw,
@@ -240,13 +269,16 @@ if (!$create_db_sql) {
 	$create_db_sql = File::Spec->catfile($script_dir, '../sql/Pg/create_database.sql');
 }
 
+if (!$create_db_sql_9_1) {
+	$create_db_sql_9_1 = File::Spec->catfile($script_dir, '../sql/Pg/create_database_9_1.sql');
+}
+
 if (!$offline_file) {
 	$offline_file = File::Spec->catfile($sysconfdir, 'offline-config.pl');
 }
 
 unless (-e $build_db_sh) { die "Error: $build_db_sh does not exist. \n"; }
 unless (-e $config_file) { die "Error: $config_file does not exist. \n"; }
-unless (-d $pg_contribdir || !$cdatabase) { die "Error: $pg_contribdir does not exist. \n"; }
 
 if ($uconfig) { update_config(\@services, \%settings); }
 

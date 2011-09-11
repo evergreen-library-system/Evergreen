@@ -2916,7 +2916,7 @@ sub new_flesh_user {
                         {stop_date => undef},
                         {stop_date => {'>' => 'now'}}
                     ],
-                    org_unit => $U->get_org_ancestors($e->requestor->ws_ou)
+                    org_unit => $U->get_org_full_path($e->requestor->ws_ou)
                 },
                 {   flesh => 1,
                     flesh_fields => {ausp => ['standing_penalty']}
