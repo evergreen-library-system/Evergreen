@@ -17,7 +17,6 @@ use constant OILS_HTTP_COOKIE_LOCALE => 'eg_locale';
 my $web_config;
 my $web_config_file;
 my $web_config_edit_time;
-my %lh_cache; # locale handlers
 
 sub import {
     my $self = shift;
@@ -82,16 +81,13 @@ sub set_text_handler {
     my $r = shift;
 
     my $locale = $ctx->{locale};
-    $locale =~ s/-/_/g;
 
     $r->log->debug("egweb: messages locale = $locale");
 
-    unless($lh_cache{$locale}) {
-        $r->log->info("egweb: Unsupported locale: $locale");
-        $lh_cache{$locale} = $lh_cache{'en_US'};
-    }
-
-    return sub { return $lh_cache{$locale}->maketext(@_); };
+    return sub {
+        my $lh = OpenILS::WWW::EGWeb::I18N->get_handle($locale);
+        return $lh->maketext(@_);
+    };
 }
 
 
@@ -162,7 +158,7 @@ sub load_context {
 
     $ctx->{locale} = 
         $cgi->cookie(OILS_HTTP_COOKIE_LOCALE) || 
-        parse_accept_lang($r->headers_in->get('Accept-Language')) || 'en-US';
+        parse_accept_lang($r->headers_in->get('Accept-Language')) || 'en_us';
 
     my $mprefix = $ctx->{media_prefix};
     if($mprefix and $mprefix !~ /^http/ and $mprefix !~ /^\//) {
@@ -174,13 +170,14 @@ sub load_context {
 }
 
 # turn Accept-Language into sometihng EG can understand
+# TODO: try all langs, not just the first
 sub parse_accept_lang {
     my $al = shift;
     return undef unless $al;
     my ($locale) = split(/,/, $al);
     ($locale) = split(/;/, $locale);
     return undef unless $locale;
-    $locale =~ s/-(.*)/eval '-'.uc("$1")/e;
+    $locale =~ s/-/_/og;
     return $locale;
 }
 
@@ -268,16 +265,31 @@ sub load_locale_handlers {
     my $ctx = shift;
     my $locales = $ctx->{locales};
 
-    $locales->{en_US} = {} unless exists $locales->{en_US};
+    my @locale_tags = sort { length($a) <=> length($b) } keys %$locales;
 
-    for my $lang (keys %$locales) {
-        my $messages = $locales->{$lang};
+    for my $idx (0..$#locale_tags) {
+
+        my $tag = $locale_tags[$idx];
+        my $parent_tag = '';
+        my $sub_idx = $idx;
+
+        # find the parent locale if possible.  It will be 
+        # longest left-anchored substring of the current tag
+        while( --$sub_idx >= 0 ) {
+            my $ptag = $locale_tags[$sub_idx];
+            if( substr($tag, 0, length($ptag)) eq $ptag ) {
+                $parent_tag = "::$ptag";
+                last;
+            }
+        }
+
+        my $messages = $locales->{$tag};
         $messages = '' if ref $messages; # empty {}
 
         # TODO Can we do this without eval?
-        my $eval = <<EVAL;
-            package OpenILS::WWW::EGWeb::I18N::$lang;
-            use base 'OpenILS::WWW::EGWeb::I18N';
+        my $eval = <<"        EVAL";
+            package OpenILS::WWW::EGWeb::I18N::$tag;
+            use base 'OpenILS::WWW::EGWeb::I18N$parent_tag';
             if(\$messages) {
                 use Locale::Maketext::Lexicon::Gettext;
                 if(open F, '$messages') {
@@ -287,10 +299,9 @@ sub load_locale_handlers {
                     warn "EGWeb: unable to open messages file: $messages"; 
                 }
             }
-EVAL
+        EVAL
         eval $eval;
         warn "$@\n" if $@; # TODO better logging
-        $lh_cache{$lang} = "OpenILS::WWW::EGWeb::I18N::$lang"->new;
     }
 }
 
