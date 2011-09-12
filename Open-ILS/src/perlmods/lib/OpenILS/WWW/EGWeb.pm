@@ -229,6 +229,9 @@ sub load_locale_handlers {
 
     my @locale_tags = sort { length($a) <=> length($b) } keys %locales;
 
+    # If no locales are defined, fall back to en_us so that at least 1 handler exists
+    push(@locale_tags, 'en_us') unless @registered_locales or @locale_tags;
+
     for my $idx (0..$#locale_tags) {
 
         my $tag = $locale_tags[$idx];
@@ -247,8 +250,7 @@ sub load_locale_handlers {
             }
         }
 
-        my $messages = $locales{$tag};
-        $messages = '' if ref $messages; # empty {}
+        my $messages = $locales{$tag} || '';
 
         # TODO Can we do this without eval?
         my $eval = <<"        EVAL";
