@@ -174,16 +174,15 @@ util.print.prototype = {
                         print_url += '<script src="' + this.data.hash.aous['print.custom_js_file'] + '"></script>';
                     }
                     print_url += '</head><body onload="try{print_init(\'' + params.type + '\');}catch(E){alert(E);}">' + window.escape(msg.replace(/<script[^>]*>.*?<\/script>/gi,'')) + '</body></html>';
-                    w = obj.win.openDialog(print_url,'receipt_temp','chrome,resizable,minimizable', null, { "data" : params.data, "list" : params.list}, function() { 
+                    obj.win.openDialog(print_url,'receipt_temp','chrome,resizable,modal', null, { "data" : params.data, "list" : params.list}, function(w) { 
                         try {
                             obj.NSPrint(w, silent, params);
                         } catch(E) {
                             obj.error.standard_unexpected_error_alert("Print Error in util.print.simple.  After this dialog we'll try a second print attempt. content_type = " + content_type,E);
                             w.print();
                         }
-                        w.minimize(); w.close();
+                        w.close();
                     });
-                    w.minimize();
                 break;
                 default:
                     w = obj.win.open('data:' + content_type + ',' + window.escape(msg),'receipt_temp','chrome,resizable');
