@@ -43,12 +43,12 @@
                     <input type="submit"
                         value="[% l('Submit') %]"
                         alt="[% l('Submit') %]"
-                        class="submit-button"/>
+                        class="opac-button"/>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <input type="reset"
                         value="[% l('Cancel') %]"
                         alt="[% l('Cancel') %]"
-                        class="submit-button" />
+                        class="opac-button" />
                 </td>
             </tr>
         </table>

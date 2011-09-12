@@ -62,10 +62,10 @@
             during your scheduled visit.[% END %]
         </p>
         <input type="submit" name="submit" value="[% l('Submit') %]" title="[% l('Submit') %]"
-            alt="[% l('Submit') %]" class="submit-button" />
+            alt="[% l('Submit') %]" class="opac-button" />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <input type="reset" name="cancel" onclick="javascript:history.go(-1);"
-            value="[% l('Cancel') %]" id="holds_cancel" class="submit-button" />
+            value="[% l('Cancel') %]" id="holds_cancel" class="opac-button" />
     </form>
     <br /><br />
     <p>

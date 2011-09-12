@@ -9,7 +9,7 @@
         <div style="float:right;width:65px;">
             <div style="position:absolute">
                 <div style="position:relative;top:75px;">
-                    <input type="submit" value="[% l('Save') %]" alt="[% l('Save') %]" class="submit-button"/>
+                    <input type="submit" value="[% l('Save') %]" alt="[% l('Save') %]" class="opac-button"/>
                 </div>
             </div>
         </div>

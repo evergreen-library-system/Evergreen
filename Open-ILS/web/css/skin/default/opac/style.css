@@ -1034,11 +1034,11 @@ a.dash-link:hover { text-decoration: underline !important; }
 .big-strong {font-weight: bold; font-size: 120%; }
 
 /* TODO: gradients */
-.submit-button { 
+.opac-button { 
     color: white; 
     font-weight: bold; 
     -moz-border-radius: 15%; 
     border-radius: 15%;
     background: #1784c7; 
 }
-.submit-button:hover { background: #359ee0; }
+.opac-button:hover { background: #359ee0; }

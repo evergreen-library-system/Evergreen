@@ -162,7 +162,7 @@
             value="[% l('Pay selected fines') %]"
             alt="[% l('Pay selected fines') %]"
             title="[% l('Pay selected fines') %]"
-            class="submit-button" />
+            class="opac-button" />
     </div>
     [% END %]
 </form>

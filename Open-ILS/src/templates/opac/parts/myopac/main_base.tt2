@@ -43,7 +43,7 @@
 
         <form action="[% ctx.opac_root %]/myopac/main_payment_form" method="GET"><input
             type="submit" title="[% l('Pay Fines') %]" alt="[% l('Pay Fines') %]"
-            value=[% l('Pay Fines') %] class="pos-rel-top-5 submit-button" /></form>
+            value=[% l('Pay Fines') %] class="pos-rel-top-5 opac-button" /></form>
     </div>
     [% END %]
 

@@ -86,12 +86,12 @@
             <span style='padding-right: 10px;'>
                 <input type="submit" name="submit" value="[% l('Submit') %]"
                     title="[% l('Submit') %]" alt="[% l('Submit') %]"
-                    class="submit-button" />
+                    class="opac-button" />
             </span>
         [% END %]
         <span>
         <input type="reset" onclick="javascript:history.go(-1);"
-            id="holds_cancel" value="[% l('Cancel') %]" class="submit-button" />
+            id="holds_cancel" value="[% l('Cancel') %]" class="opac-button" />
         </span>
     </form>
 </div>

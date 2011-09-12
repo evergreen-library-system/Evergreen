@@ -36,7 +36,7 @@
             <td valign="top">
                 <div class="pos-abs">
                     <div class="opac-auto-143">
-                        <input id='search-submit-go' type="submit" value="[% l('Search') %]" alt="[% l('Search') %]" class="submit-button"
+                        <input id='search-submit-go' type="submit" value="[% l('Search') %]" alt="[% l('Search') %]" class="opac-button"
                             onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden"}, 2000)'/>
                         <img id='search-submit-spinner' src='/opac/images/progressbar_green.gif' style='height:16px;width:16px;' class='hidden' alt=''/>
                     </div>

@@ -117,11 +117,11 @@
         <td align="left" colspan='2'>
             <input type="submit"
                 value="[% l('Search') %]"
-                class='pointer submit-button' />
+                class='pointer opac-button' />
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <input type="reset"
                 value="[% l('Reset form') %]"
-                class="submit-button" />
+                class="opac-button" />
         </td>
     </tr>
 </table>

@@ -51,7 +51,7 @@
                     <input type="submit"
                         value="[% l('Go') %]"
                         alt="[% l('Go') %]" title="[% l('Go') %]"
-                        class="submit-button" />
+                        class="opac-button" />
                 </td>
                 <td style="padding-left:5px;">
                     <a href="#"><img alt="Renewing Help"

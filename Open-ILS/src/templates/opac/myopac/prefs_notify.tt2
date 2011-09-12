@@ -9,7 +9,7 @@
         <input type='submit' 
             value="[% l('Save') %]"
             alt="[% l('Save') %]"
-            class="submit-button" />
+            class="opac-button" />
     </div>
 
     <table>
