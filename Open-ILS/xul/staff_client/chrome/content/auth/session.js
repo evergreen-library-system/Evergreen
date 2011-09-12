@@ -60,6 +60,15 @@ auth.session.prototype = {
                         data.stash('ws_info');
                         data.ws_name = null; data.stash('ws_name');
                         params.type = 'temp';
+                        // We need to get a new seed
+                        init = this.network.request(
+                            api.AUTH_INIT.app,
+                            api.AUTH_INIT.method,
+                            [ this.view.name_prompt.value ]
+                        );
+                        if(init) {
+                            params.password = hex_md5(init + hex_md5( this.view.password_prompt.value ));
+                        }
                         robj = this.network.simple_request('AUTH_COMPLETE',[ params ]);
                         if (robj.ilsevent == 0) {
                             this.key = robj.payload.authtoken;
