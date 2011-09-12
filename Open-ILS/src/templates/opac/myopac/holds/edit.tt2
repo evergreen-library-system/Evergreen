@@ -30,7 +30,7 @@
                 <img src="[% ctx.media_prefix %]/images/[% attrs.format_icon %]" alt="[% attrs.format %]" title="[% attrs.title | html %]" />
             </p>[% END %]
             <p>
-                <strong>[% l('Status') %]</strong>: [% hold.human_status | html %]
+                <strong>[% l('Status') %]</strong>: [% hold.human_status %]
             </p>
             <form method="POST">
                 <table id="hold_editor_table">
