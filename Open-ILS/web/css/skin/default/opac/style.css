@@ -286,6 +286,8 @@ div.select-wrapper:hover {
 	display: block;
 	margin: 10px 7px 10px 0px;
     padding: 10px 0px 10px 0px;
+    -moz-border-radius: 5%; 
+    border-radius: 5%;
 }
 
 #adv_search, #num_search, #expert_search {
