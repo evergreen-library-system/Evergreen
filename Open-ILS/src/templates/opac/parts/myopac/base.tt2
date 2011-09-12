@@ -25,7 +25,7 @@
                         cls_which = "acct-tab-off";
                     END -%]
                 <a href="[% ctx.opac_root _ '/myopac/' _ page.url %]"
-                    class="[% cls_which %] acct-tab">[% page.name; %]</a>
+                    class="[% cls_which %]">[% page.name; %]</a>
                 [% END %]
             </div>
         </div>

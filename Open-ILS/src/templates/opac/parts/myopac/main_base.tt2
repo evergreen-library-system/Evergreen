@@ -86,11 +86,11 @@
     <div id='fines_payments_wrapper'>
         <div id='acct_fines_tabs'>
             [% IF myopac_main_page == 'main' %]
-            <a href='#'><img src='[% ctx.media_prefix %]/images/acct_fines_on.jpg'/></a>
-            <a href='main_payments'><img src='[% ctx.media_prefix %]/images/acct_payments_off.jpg'/></a>
+            <a href='#' class="acct-tab-on">[% l("Fines") %]</a>
+            <a href='main_payments' class="acct-tab-off">[% l("Payments") %]</a>
             [% ELSE %]
-            <a href='main'><img src='[% ctx.media_prefix %]/images/acct_fines_off.jpg'/></a>
-            <a href='#'><img src='[% ctx.media_prefix %]/images/acct_payments_on.jpg'/></a>
+            <a href='main' class="acct-tab-off">[% l("Fines") %]</a>
+            <a href='#' class="acct-tab-on">[% l("Payments") %]</a>
             [% END %]
         </div>
     </div>
