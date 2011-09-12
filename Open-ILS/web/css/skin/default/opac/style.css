@@ -273,23 +273,24 @@ div.select-wrapper:hover {
 	color: white;
 	font-size: 10px;
 }
-#adv_search_tabs, #acct_tabs, #acct_fines_tabs {
+
+#adv_search_tabs, #acct_tabs, #acct_fines_tabs, #acct_checked_tabs {
 	height: 40px;
 	width:974px;
 	margin:auto;
 }
 
-#adv_search_tabs a, #acct_tabs a, #acct_fines_tabs a {
+#adv_search_tabs a, #acct_tabs a, #acct_fines_tabs a, #acct_checked_tabs a {
     float: left;
-	text-align: center;
+    text-align: center;
     vertical-align: middle;
-	display: block;
-	margin: 10px 7px 10px 0px;
+    display: block;
+    margin: 10px 7px 10px 0px;
     padding: 10px 0px 10px 0px;
     -moz-border-radius: 5%; 
     border-radius: 5%;
     font-weight: bold;
-	width:156px;
+    width:156px;
     color: 45709b;
     background: #9ad0f1;
     font-weight: bold;
@@ -307,6 +308,22 @@ div.select-wrapper:hover {
 
 .acct-tab-off {
     background: #9ad0f1;
+}
+
+#acct_checked_tabs a {
+    margin-top: 0px;
+    font-size: 10px;
+    color: #333333;
+}
+
+#acct_checked_tabs div.selected a {
+    background: #e1e1e1;
+    color: #333333;
+}
+
+#acct_checked_tabs {
+    padding-bottom: 12px;
+    color: #666;
 }
 
 #rdetail_header {
@@ -997,3 +1014,9 @@ a.opac-button {
     position: relative;
     top: 10px;
 }
+
+#myopac_checked_div {
+    padding: 0px;
+}
+
+
