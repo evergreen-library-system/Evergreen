@@ -9,13 +9,13 @@
                         <table class='queue-nav-table'>
                             <thead><tr><th colspan='2' class='queue-nav-table-label'>Queue Actions</th></tr></thead>
                             <tbody>
-                                <tr><td><a href='javascript:;' onclick='vlHandleQueueItemsAction("import")'>&vandelay.import.selected;</a></td></tr>
-                                <tr><td><a href='javascript:;' onclick='vlHandleQueueItemsAction("import_all")'>&vandelay.import.all;</a></td></tr>
+                                <tr><td><a href='javascript:;' onclick='vlHandleQueueItemsAction("import")'>[% l('Import Selected Records') %]</a></td></tr>
+                                <tr><td><a href='javascript:;' onclick='vlHandleQueueItemsAction("import_all")'>[% l('Import All  Records') %]</a></td></tr>
                                 <tr><td><a href='javascript:;' onclick='vlLoadErrorUIAll();'>View Import Items</a></td></tr>
                                 <tr><td><a href='javascript:;' onclick='
-                                    if(confirm("&vandelay.sure.to.delete.queue;")) {
+                                    if(confirm("[% l('Are you sure you want to delete this queue?') %]")) {
                                         vlDeleteQueue(currentType, currentQueueId, 
-                                            function() { displayGlobalDiv("vl-marc-upload-div"); });}'>&vandelay.delete.queue;</a></td></tr>
+                                            function() { displayGlobalDiv("vl-marc-upload-div"); });}'>[% l('Delete Queue') %]</a></td></tr>
                             </tbody>
                         </table>
                     </td>
@@ -24,8 +24,8 @@
                         <table  id='vl-queue-summary-table' class='queue-nav-table'>
                             <thead><tr><th colspan='2' class='queue-nav-table-label'>Queue Summary</th></tr></thead>
                             <tbody>
-                                <tr><td>&vandelay.queue.total;</td><td> <span style='font-weight:bold;' id='vl-queue-summary-total-count'/></td></tr>
-                                <tr><td>&vandelay.queue.imported;</td><td> <span style='font-weight:bold;' id='vl-queue-summary-import-count'/></td></tr>
+                                <tr><td>[% l('Records in Queue:') %]</td><td> <span style='font-weight:bold;' id='vl-queue-summary-total-count'/></td></tr>
+                                <tr><td>[% l('Records Imported:') %]</td><td> <span style='font-weight:bold;' id='vl-queue-summary-import-count'/></td></tr>
                                 <tr><td>Record Import Failures</td><td> <span style='font-weight:bold;' id='vl-queue-summary-rec-error-count'/></td></tr>
                                 <tr><td>Items in Queue</td><td> <span style='font-weight:bold;' id='vl-queue-summary-import-item-count'/></td></tr>
                                 <tr><td>Items Imported</td><td> <span style='font-weight:bold;' id='vl-queue-summary-import-item-imported-count'/></td></tr>
@@ -39,21 +39,21 @@
                             <thead><tr><th colspan='2' class='queue-nav-table-label'>Queue Filters</th></tr></thead>
                             <tbody>
                                 <tr>
-                                    <td>&vandelay.limit.to.collision.matches;</td>
+                                    <td>[% l('Limit to Records with Matches') %]</td>
                                     <td>
                                         <input dojoType='dijit.form.CheckBox' 
                                             jsId='vlQueueGridShowMatches' onchange='retrieveQueuedRecords();'/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>&vandelay.limit.to.non.imported;</td>
+                                    <td>[% l('Limit to Non-Imported Records') %]</td>
                                     <td>
                                         <input dojoType='dijit.form.CheckBox' 
                                             jsId='vlQueueGridShowNonImport' onchange='retrieveQueuedRecords();'/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>&vandelay.limit.to.import_error;</td>
+                                    <td>[% l('Limit to Records with Import Errors') %]</td>
                                     <td>
                                         <input dojoType='dijit.form.CheckBox' 
                                             jsId='vlQueueGridShowImportErrors' onchange='retrieveQueuedRecords();'/>
@@ -77,7 +77,7 @@
                             <option value='csv'>CSV</option>
                             <option value='email'>Email</option>
                         </select>
-                        <span style='padding-right:5px;'>&vandelay.results.per.page;</span>
+                        <span style='padding-right:5px;'>[% l('Records Per Page') %]</span>
                         <span class='queue-pager-span'>
                             <select jsId='vlQueueDisplayLimit' id='vl-queue-display-limit-selector'
                                 value='10' onchange='retrieveQueuedRecords();'>
@@ -89,15 +89,15 @@
                         </span>
 
                         <span class='queue-pager-span'>
-                            <span style='padding-left:5px;'>&vandelay.page;</span>
+                            <span style='padding-left:5px;'>[% l('Page') %]</span>
                             <input style='width:36px;' dojoType='dijit.form.TextBox' jsId='vlQueueDisplayPage' value='1'/>
                         </span>
 
                         <span style='padding-right:8px;'>
-                            <a href='javascript:void(0);' onclick='vlQueueGridPrevPage();'>&vandelay.prev.page;</a>
+                            <a href='javascript:void(0);' onclick='vlQueueGridPrevPage();'>[% l('&#171; Previous') %]</a>
                         </span>
                         <span style='padding-right:10px;'>
-                            <a href='javascript:void(0);' onclick='vlQueueGridNextPage();'>&vandelay.next.page;</a>
+                            <a href='javascript:void(0);' onclick='vlQueueGridNextPage();'>[% l('Next &#187;') %]</a>
                         </span>
                     </td></tr>
                 </tbody>
@@ -126,13 +126,13 @@
                     get='vlGetViewMARC'
                     formatter='vlFormatViewMARC' 
                     styles='text-align: center;'
-                    nonSelectable='true'>&vandelay.view.marc;</th>
+                    nonSelectable='true'>[% l('View MARC') %]</th>
                 <th
                     field='+get_matches'
                     get='vlGetViewMatches'
                     formatter='vlFormatViewMatches'
                     styles='text-align: center;'
-                    nonSelectable='true'>&vandelay.matches;</th>
+                    nonSelectable='true'>[% l('Matches') %]</th>
                 <th
                     field='+get_errors'
                     get='vlGetViewErrors'
@@ -142,7 +142,7 @@
                 <th
                     field='import_time'
                     styles='text-align: center;'
-                    get='vlGetDateTimeField'>&vandelay.import.time;</th>
+                    get='vlGetDateTimeField'>[% l('Import Time') %]</th>
             </tr>
         </thead>
     </table>
@@ -167,13 +167,13 @@
                     get='vlGetViewMARC'
                     formatter='vlFormatViewMARC' 
                     styles='text-align: center;'
-                    nonSelectable='true'>&vandelay.view.marc;</th>
+                    nonSelectable='true'>[% l('View MARC') %]</th>
                 <th
                     field='+get_matches'
                     get='vlGetViewMatches'
                     formatter='vlFormatViewMatches'
                     styles='text-align: center;'
-                    nonSelectable='true'>&vandelay.matches;</th>
+                    nonSelectable='true'>[% l('Matches') %]</th>
                 <th
                     field='+get_errors'
                     get='vlGetViewErrors'
@@ -183,7 +183,7 @@
                 <th
                     field='import_time'
                     styles='text-align: center;'
-                    get='vlGetDateTimeField'>&vandelay.import.time;</th>
+                    get='vlGetDateTimeField'>[% l('Import Time') %]</th>
             </tr>
         </thead>
     </table>
@@ -195,43 +195,43 @@
         <table class='form_table'>
             <tbody>
                 <tr>
-                    <td>&vandelay.auto.import.merge_profile;</td>
+                    <td>[% l('Merge Profile') %]</td>
                     <td colspan='4'>
                         <div jsId='vlUploadMergeProfile2' 
                             dojoType='dijit.form.FilteringSelect' required='false' labelAttr='name' searchAttr='name'/>
                     </td>
                 </tr>
                 <tr>
-                    <td>&vandelay.auto.import.noncolliding;</td>
+                    <td>[% l('Import Non-Matching Records') %]</td>
                     <td colspan='4'>
                         <input jsId='vlUploadQueueImportNoMatch2' dojoType='dijit.form.CheckBox'/>
                     </td>
                 </tr>
                 <tr>
-                    <td>&vandelay.auto.import.auto_overlay_exact;</td>
+                    <td>[% l('Merge On Exact Match (901c)') %]</td>
                     <td colspan='4'>
                         <input jsId='vlUploadQueueAutoOverlayExact2' dojoType='dijit.form.CheckBox'/>
                     </td>
                 </tr>
                 <tr>
-                    <td>&vandelay.auto.import.auto_overlay_1match;</td>
+                    <td>[% l('Merge On Single Match') %]</td>
                     <td colspan='4'>
                         <input jsId='vlUploadQueueAutoOverlay1Match2' dojoType='dijit.form.CheckBox'/>
                     </td>
                 </tr>
                 <tr>
-                    <td>&vandelay.auto.import.auto_overlay_best;</td>
+                    <td>[% l('Merge On Best Match') %]</td>
                     <td colspan='4'><input jsId='vlUploadQueueAutoOverlayBestMatch2' dojoType='dijit.form.CheckBox'/></td>
                 </tr>
                 <tr>
-                    <td>&vandelay.auto.import.auto_overlay_best_ratio;</td>
+                    <td>[% l('Best/Single Match Minimum Quality Ratio') %]</td>
                     <td colspan='4'>
                         <input style='width:3em' value='0.0' jsId='vlUploadQueueAutoOverlayBestMatchRatio2' dojoType='dijit.form.TextBox'/>
-                        <span style='padding-left: 10px; font-size:90%'>(&vandelay.auto.import.auto_overlay_best_ratio.desc;)</span>
+                        <span style='padding-left: 10px; font-size:90%'>[% l('New Record Quality / Quality of Best Match') %]</span>
                     </td>
                 </tr>
                 <tr>
-                    <td>&vandelay.auto.import.ft_merge_profile;</td>
+                    <td>[% l('Insufficient Quality Fall-Through Profile') %]</td>
                     <td colspan='4'>
                         <div jsId='vlUploadFtMergeProfile2' dojoType='dijit.form.FilteringSelect' required='false' labelAttr='name' searchAttr='name'/>
                     </td>

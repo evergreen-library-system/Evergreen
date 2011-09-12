@@ -44,7 +44,6 @@ sysconf_DATA = $(examples)/action_trigger_filters.json.example \
 	       $(examples)/opensrf_core.xml.example \
 	       $(examples)/fm_IDL.xml \
 	       $(examples)/oils_sip.xml.example \
-	       $(examples)/oils_web.xml.example \
 	       $(examples)/lib_ips.txt.example \
 	       $(examples)/oils_yaz.xml.example \
 	       $(examples)/oils_z3950.xml.example 

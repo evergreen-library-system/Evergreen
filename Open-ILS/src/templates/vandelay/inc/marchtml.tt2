@@ -1,10 +1,10 @@
 <!-- MARC as HTML -->
-<h1>&vandelay.marc.record;</h1><br/>
-<span class='hidden' id='vl-marc-edit-save-label'>&vandelay.save;</span>
-<span class='hidden' id='vl-marc-edit-complete-label'>&vandelay.record_saved;</span>
+<h1>[% l('MARC Record') %]</h1><br/>
+<span class='hidden' id='vl-marc-edit-save-label'>[% l('Save Changes') %]</span>
+<span class='hidden' id='vl-marc-edit-complete-label'>[% l('Record Saved') %]</span>
 <div>
-    <button id='vl-marc-html-done-button' dojoType='dijit.form.Button'>&#x2196; &vandelay.return;</button>
-    <button id='vl-marc-html-edit-button' dojoType='dijit.form.Button'>&vandelay.edit;</button>
+    <button id='vl-marc-html-done-button' dojoType='dijit.form.Button'>&#x2196; [% l('Return') %]</button>
+    <button id='vl-marc-html-edit-button' dojoType='dijit.form.Button'>[% l('Edit') %]</button>
 </div>
 <div>
     <style type="text/css">#vl-marc-record-html td {padding:0px;}</style>

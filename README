@@ -105,17 +105,6 @@ cd /openils/var/web/xul
 ln -sf rel_name/server server
 ------------------------------------------------------------------------------
 
-Create the oils_web.xml configuration file:
--------------------------------------------
-Many administration interfaces, such as acquisitions, bookings, and various
-configuration screens, depend on the correct configuration of HTML templates.
-Copying the sample configuration file into place should work in most cases:
-
-[source, bash]
-------------------------------------------------------------------------------
-cp /openils/conf/oils_web.xml.example /openils/conf/oils_web.xml
-------------------------------------------------------------------------------
-
 Change ownership of the Evergreen files:
 ----------------------------------------
 

@@ -1,72 +1,72 @@
 <div style='float: left; margin-top: 8px;'>
     <input dojoType="dijit.form.RadioButton" name="attrEditorGroup" value="bib" 
         id="aegB" onclick="setAttrEditorGroup('bib');" checked="checked"/>
-    <label for="aegB" style="margin-right: 1em;">&vandelay.bib.attrs;</label>
+    <label for="aegB" style="margin-right: 1em;">[% l('Bibliographic attributes') %]</label>
     <input dojoType="dijit.form.RadioButton" name="attrEditorGroup" value="auth" 
         id="aegA" onclick="setAttrEditorGroup('auth');"/>
-    <label for="aegA" style="margin-right: 1em;">&vandelay.auth.attrs;</label>
+    <label for="aegA" style="margin-right: 1em;">[% l('Authority attributes') %]</label>
 </div>
 <div dojoType="dijit.form.DropDownButton" id="vl-create-attr-editor-button">
-    <span name="create">&vandelay.create.attr.def;</span>
+    <span name="create">[% l('Create Attribute Definition') %]</span>
     <div dojoType="dijit.TooltipDialog" execute="vlSaveAttrDefinition(arguments[0]);" id="attr-editor-dialog">
         <script type='dojo/connect' event='onOpen'>onAttrEditorOpen();</script>
         <script type='dojo/connect' event='onClose'>onAttrEditorClose();</script>
         <table class='dijitTooltipTable'>
             <tr>
-                <td><label for="code">&vandelay.code;:</label></td>
+                <td><label for="code">[% l('Code') %]:</label></td>
                 <td><input id='attr-editor-code' name="code" dojoType="dijit.form.TextBox"/></td>
             </tr>
             <tr>
-                <td><label for="description">&vandelay.descrip;:</label></td>
+                <td><label for="description">[% l('Description') %]:</label></td>
                 <td><input id='attr-editor-description' dojoType="dijit.form.TextBox" name="description"> </input></td>
             </tr>
             <tr>
-                <td><label for="amount">&vandelay.tags;:</label></td>
+                <td><label for="amount">[% l('Tag(s)') %]:</label></td>
                 <td><input id="attr-editor-tags" dojoType="dijit.form.TextBox" name="tag"></input>
                 <div class="hidden" id="attr-editor-tags-tip">
-                <p>&vandelay.tooltip.tags;</p>
-                <p>&vandelay.for.example;:<code>120, 220, 300</code> or <code>120 220 330</code></p></div>
+                <p>[% l('You can enter multiple tags, separated by spaces and/or commas') %]</p>
+                <p>[% l('Example') %]:<code>120, 220, 300</code> or <code>120 220 330</code></p></div>
                 </td>
             </tr>
 
             <tr>
-                <td><label for="amount">&vandelay.subfields;:</label></td>
+                <td><label for="amount">[% l('Subfield(s)') %]:</label></td>
                 <td><input dojoType="dijit.form.TextBox" name="subfield" id="attr-editor-subfields"></input>
                     <div class="hidden" id="attr-editor-subfields-tip">
-                    <p>&vandelay.tooltip.subfields;</p>
-                    <p>&vandelay.for.example;: <code>a, b, j, x</code> or <code>a b j x</code></p></div>
+                    <p>[% l('You can enter multiple subfields, separated by spaces and/or commas') %]</p>
+                    <p>[% l('Example') %]: <code>a, b, j, x</code> or <code>a b j x</code></p></div>
                 </td>
             </tr>
             <tr>
-                <td><label for="attr-editor-xpath">&vandelay.xpath.advanced;: </label></td>
+                <td><label for="attr-editor-xpath">[% l('XPath (advanced)') %]: </label></td>
 
                 <td><input dojoType="dijit.form.TextBox" id="attr-editor-xpath" name="xpath"></input></td>
             </tr>
             <tr>
-                <td><label for="attr-editor-remove">&vandelay.remove.advanced;: </label></td>
+                <td><label for="attr-editor-remove">[% l('Remove (advanced)') %]: </label></td>
 
                 <td><input dojoType="dijit.form.TextBox" id="attr-editor-remove" name="remove"></input></td>
             </tr>
             <tr id="attr-editor-create-bar">
                 <td colspan='2' align='center'>
                     <button dojoType="dijit.form.Button" type="submit" 
-                        id="attr-editor-create-button">&vandelay.create;</button>
+                        id="attr-editor-create-button">[% l('Create') %]</button>
                     <button type="button" dojoType="dijit.form.Button"
-                        onclick="dijit.byId('attr-editor-dialog').onCancel();">&vandelay.cancel;</button>
+                        onclick="dijit.byId('attr-editor-dialog').onCancel();">[% l('Cancel') %]</button>
                 </td>
             </tr>
             <tr id="attr-editor-update-bar">
                 <td colspan='2' align='center'>
                     <button dojoType="dijit.form.Button" type="submit" 
-                        id="attr-editor-update-button">&vandelay.update;</button>
+                        id="attr-editor-update-button">[% l('Update') %]</button>
                     <button type="button" dojoType="dijit.form.Button"
-                        onclick="dijit.byId('attr-editor-dialog').onCancel();">&vandelay.cancel;</button>
+                        onclick="dijit.byId('attr-editor-dialog').onCancel();">[% l('Cancel') %]</button>
                     <button dojoType="dijit.form.Button" 
                         type="button" 
                         id="attr-editor-delete-button"
                         style="padding-left: 2em;"
-                        onclick="if(confirm('&vandelay.sure.to.delete;')) { vlAttrDelete(); }">
-                            &vandelay.delete.record;</button>
+                        onclick="if(confirm('[% l('Are you sure you want to delete this record?') %]')) { vlAttrDelete(); }">
+                            [% l('Delete record') %]</button>
                 </td>
             </tr>
         </table>
@@ -76,13 +76,13 @@
     <table dojoType='dojox.grid.DataGrid' jsId='attrEditorGrid' query="{id: '*'}" autoHeight='true'> 
         <thead>
             <tr>
-                <th field='id'>&vandelay.id;</th>
-                <th field='code' width='auto'>&vandelay.code;</th>
-                <th field='description' width='auto'>&vandelay.descrip;</th>
-                <th field='tag' get='attrGridGetTag'>&vandelay.tag;</th>
-                <th field='subfield' get='attrGridGetSubfield'>&vandelay.subfield;</th>
-                <th field='xpath' width='auto'>&vandelay.xpath;</th>
-                <th field='remove' width='auto'>&vandelay.remove;</th>
+                <th field='id'>[% l('ID') %]</th>
+                <th field='code' width='auto'>[% l('Code') %]</th>
+                <th field='description' width='auto'>[% l('Description') %]</th>
+                <th field='tag' get='attrGridGetTag'>[% l('Tag') %]</th>
+                <th field='subfield' get='attrGridGetSubfield'>[% l('Subfield') %]</th>
+                <th field='xpath' width='auto'>[% l('XPath') %]</th>
+                <th field='remove' width='auto'>[% l('Remove') %]</th>
             </tr>
         </thead>
     </table>

@@ -14,24 +14,11 @@ use constant OILS_HTTP_COOKIE_SKIN => 'eg_skin';
 use constant OILS_HTTP_COOKIE_THEME => 'eg_theme';
 use constant OILS_HTTP_COOKIE_LOCALE => 'eg_locale';
 
-my $web_config;
-my $web_config_file;
-my $web_config_edit_time;
-
-sub import {
-    my $self = shift;
-    $web_config_file = shift || '';
-    unless(-r $web_config_file) {
-        warn "Invalid web config $web_config_file\n";
-        return;
-    }
-    check_web_config();
-}
-
+# cache string bundles
+my @registered_locales;
 
 sub handler {
     my $r = shift;
-    check_web_config($r); # option to disable this
     my $ctx = load_context($r);
     my $base = $ctx->{base_path};
 
@@ -65,6 +52,11 @@ sub handler {
             ]
         }
     });
+
+    if (!$tt) {
+        $r->log->error("Error creating template processor: $@");
+        return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+    }   
 
     $ctx->{encode_utf8} = sub {return encode_utf8(shift())};
 
@@ -138,23 +130,26 @@ sub parse_as_xml {
     $r->print($data) if ($success);
 }
 
-
 sub load_context {
     my $r = shift;
     my $cgi = CGI->new;
     my $ctx = {}; # new context for each page load
-    $ctx->{$_} = $web_config->{base_ctx}->{$_} for keys %{$web_config->{base_ctx}};
+
+    $ctx->{base_path} = $r->dir_config('OILSWebBasePath');
+    $ctx->{web_dir} = $r->dir_config('OILSWebWebDir');
+    $ctx->{debug_template} = ($r->dir_config('OILSWebDebugTemplate') =~ /true/io);
+    $ctx->{media_prefix} = $r->dir_config('OILSWebMediaPrefix');
     $ctx->{hostname} = $r->hostname;
     $ctx->{base_url} = $cgi->url(-base => 1);
     $ctx->{skin} = $cgi->cookie(OILS_HTTP_COOKIE_SKIN) || 'default';
     $ctx->{theme} = $cgi->cookie(OILS_HTTP_COOKIE_THEME) || 'default';
     $ctx->{proto} = $cgi->https ? 'https' : 'http';
 
-    # Any paths configured in Apache will be placed in front of
-    # any paths configured in the global oils_web.xml config.
-    my @template_paths = $r->dir_config->get('OILSTemplatePath');
-    unshift(@{$ctx->{template_paths}}, $_) for reverse @template_paths;
-    $r->log->debug("template paths => @{$ctx->{template_paths}}");
+    my @template_paths = $r->dir_config->get('OILSWebTemplatePath');
+    $ctx->{template_paths} = [ reverse @template_paths ];
+
+    my %locales = $r->dir_config->get('OILSWebLocale');
+    load_locale_handlers($ctx, %locales);
 
     $ctx->{locale} = 
         $cgi->cookie(OILS_HTTP_COOKIE_LOCALE) || 
@@ -191,85 +186,54 @@ sub find_template {
     my $ctx = shift;
     my $path = $r->uri;
     $path =~ s/$base\/?//og;
-    my @parts = split('/', $path);
     my $template = '';
     my $page_args = [];
-    my $as_xml = $ctx->{force_valid_xml};
-    my $handler = $web_config->{handlers};
+    my $as_xml = $r->dir_config('OILSWebForceValidXML');
+    my $ext = $r->dir_config('OILSWebDefaultTemplateExtension');
 
+    my @parts = split('/', $path);
+    my $localpath = $path;
+    my @args;
     while(@parts) {
-        my $part = shift @parts;
-        next unless $part;
-        my $t = $handler->{$part};
-        if(ref($t) eq 'PathConfig') {
-            $template = $t->{template};
-            $as_xml = ($t->{as_xml} and $t->{as_xml} =~ /true/io) || $as_xml;
-            $page_args = [@parts];
-            last;
-        } else {
-            $handler = $t;
-        }
-    }
-
-    unless($template) { # no template configured
-
-        # see if we can magically find the template based on the path and default extension
-        my $ext = $ctx->{default_template_extension};
-
-        my @parts = split('/', $path);
-        my $localpath = $path;
-        my @args;
-        while(@parts) {
-            last unless $localpath;
-            for my $tpath (@{$ctx->{template_paths}}) {
-                my $fpath = "$tpath/$localpath.$ext";
-                $r->log->debug("egweb: looking at possible template $fpath");
-                if(-r $fpath) {
-                    $template = "$localpath.$ext";
-                    last;
-                }
+        last unless $localpath;
+        for my $tpath (@{$ctx->{template_paths}}) {
+            my $fpath = "$tpath/$localpath.$ext";
+            $r->log->debug("egweb: looking at possible template $fpath");
+            if(-r $fpath) {
+                $template = "$localpath.$ext";
+                last;
             }
-            last if $template;
-            push(@args, pop @parts);
-            $localpath = join('/', @parts);
-        } 
-
-        $page_args = [@args];
-
-        # no template configured or found
-        unless($template) {
-            $r->log->debug("egweb: No template configured for path $path");
-            return ();
         }
+        last if $template;
+        push(@args, pop @parts);
+        $localpath = join('/', @parts);
+    } 
+
+    $page_args = [@args];
+
+    # no template configured or found
+    unless($template) {
+        $r->log->debug("egweb: No template configured for path $path");
+        return ();
     }
 
     $r->log->debug("egweb: template = $template : page args = @$page_args");
     return ($template, $page_args, $as_xml);
 }
 
-# if the web configuration file has never been loaded or has
-# changed since the last load, reload it
-sub check_web_config {
-    my $r = shift;
-    my $epoch = stat($web_config_file)->mtime;
-    unless($web_config_edit_time and $web_config_edit_time == $epoch) {
-        $r->log->debug("egweb: Reloading web config after edit...") if $r;
-        $web_config_edit_time = $epoch;
-        $web_config = parse_config($web_config_file);
-    }
-}
-
 # Create an I18N sub-module for each supported locale
 # Each module creates its own MakeText lexicon by parsing .po/.mo files
 sub load_locale_handlers {
     my $ctx = shift;
-    my $locales = $ctx->{locales};
+    my %locales = @_;
 
-    my @locale_tags = sort { length($a) <=> length($b) } keys %$locales;
+    my @locale_tags = sort { length($a) <=> length($b) } keys %locales;
 
     for my $idx (0..$#locale_tags) {
 
         my $tag = $locale_tags[$idx];
+        next if grep { $_ eq $tag } @registered_locales;
+
         my $parent_tag = '';
         my $sub_idx = $idx;
 
@@ -283,7 +247,7 @@ sub load_locale_handlers {
             }
         }
 
-        my $messages = $locales->{$tag};
+        my $messages = $locales{$tag};
         $messages = '' if ref $messages; # empty {}
 
         # TODO Can we do this without eval?
@@ -301,58 +265,15 @@ sub load_locale_handlers {
             }
         EVAL
         eval $eval;
-        warn "$@\n" if $@; # TODO better logging
-    }
-}
 
-
-
-sub parse_config {
-    my $cfg_file = shift;
-    my $data = XML::Simple->new->XMLin($cfg_file);
-    my $ctx = {};
-    my $handlers = {};
-
-    $ctx->{media_prefix} = (ref $data->{media_prefix}) ? '' : $data->{media_prefix};
-    $ctx->{base_path} = (ref $data->{base_path}) ? '' : $data->{base_path};
-    $ctx->{template_paths} = [];
-    $ctx->{force_valid_xml} = ( ($data->{force_valid_xml}||'') =~ /true/io) ? 1 : 0;
-    $ctx->{debug_template} = ( ($data->{debug_template}||'')  =~ /true/io) ? 1 : 0;
-    $ctx->{default_template_extension} = $data->{default_template_extension} || 'tt2';
-    $ctx->{web_dir} = $data->{web_dir};
-    $ctx->{locales} = $data->{locales};
-    load_locale_handlers($ctx);
-
-    my $tpaths = $data->{template_paths}->{path};
-    $tpaths = [$tpaths] unless ref $tpaths;
-    push(@{$ctx->{template_paths}}, $_) for @$tpaths;
-
-    for my $handler (@{$data->{handlers}->{handler}}) {
-        my @parts = split('/', $handler->{path});
-        my $h = $handlers;
-        my $pcount = scalar(@parts);
-        for(my $i = 0; $i < $pcount; $i++) {
-            my $p = $parts[$i];
-            unless(defined $h->{$p}) {
-                if($i == $pcount - 1) {
-                    $h->{$p} = PathConfig->new(%$handler);
-                    last;
-                } else {
-                    $h->{$p} = {};
-                }
-            }
-            $h = $h->{$p};
+        if ($@) {
+            warn "$@\n" if $@;
+        } else {
+            push(@registered_locales, $tag);
         }
     }
-
-    return {base_ctx => $ctx, handlers => $handlers};
 }
 
-package PathConfig;
-sub new {
-    my($class, %args) = @_;
-    return bless(\%args, $class);
-}
 
 # base class for all supported locales
 package OpenILS::WWW::EGWeb::I18N;
