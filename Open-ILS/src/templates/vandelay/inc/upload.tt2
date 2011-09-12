@@ -1,23 +1,23 @@
-<h1>&vandelay.marc.file.upload;</h1><br/>
+<h1>[% l('Evergreen MARC File Upload') %]</h1><br/>
 <form id="vl-marc-upload-form" enctype="multipart/form-data">
     <input type='hidden' name='ses' id='vl-ses-input'/>
     <table class='form_table'>
         <tr>
-            <td>&vandelay.record.type;</td>
+            <td>[% l('Record Type') %]</td>
             <td colspan='4'>
                 <select id='vl-record-type' dojoType='dijit.form.FilteringSelect' 
                         jsId='vlUploadRecordType' onchange='vlShowUploadForm();'>
-                    <option value='bib' selected='selected'>&vandelay.bib.records;</option>
-                    <option value='auth'>&vandelay.auth.records;</option>
+                    <option value='bib' selected='selected'>[% l('Bibliographic Records') %]</option>
+                    <option value='auth'>[% l('Authority Records') %]</option>
                 </select>
             </td>
         </tr>
         <tr>
-            <td>&vandelay.create.upload.queue;</td>
+            <td>[% l('Create a New Upload Queue') %]</td>
             <td>
                 <input type='text' dojoType='dijit.form.TextBox' id='vl-queue-name' size='32'></input>
             </td>
-            <td>&vandelay.add.existing.queue;</td>
+            <td>[% l('or Add to an Existing Queue') %]</td>
             <td>
                 <select jsId='vlUploadQueueSelector' dojoType='dijit.form.FilteringSelect' required='false'>
                 </select>
@@ -38,52 +38,52 @@
             </td>
         </tr>
         <tr>
-            <td>&vandelay.import.bib_sources;</td>
+            <td>[% l('Select a Record Source') %]</td>
             <td>
                 <select name='bib_source' jsId='vlUploadSourceSelector' 
                     dojoType='dijit.form.FilteringSelect' labelAttr='source' searchAttr='source'/>
             </td>
         </tr>
         <tr><td colspan='2' style='margin-top:10px;border-bottom:1px solid #888;border-top:2px solid #888'>
-            <b>&vandelay.import.actions;</b>
+            <b>[% l('Record Import Actions') %]</b>
         </td></tr>
         <tr>
-            <td>&vandelay.auto.import.merge_profile;</td>
+            <td>[% l('Merge Profile') %]</td>
             <td colspan='4'>
                 <div jsId='vlUploadMergeProfile' dojoType='dijit.form.FilteringSelect' required='false' labelAttr='name' searchAttr='name'/>
             </td>
         </tr>
         <tr>
-            <td>&vandelay.auto.import.noncolliding;</td>
+            <td>[% l('Import Non-Matching Records') %]</td>
             <td colspan='4'>
                 <input jsId='vlUploadQueueImportNoMatch' dojoType='dijit.form.CheckBox'/>
             </td>
         </tr>
         <tr>
-            <td>&vandelay.auto.import.auto_overlay_exact;</td>
+            <td>[% l('Merge On Exact Match (901c)') %]</td>
             <td colspan='4'>
                 <input jsId='vlUploadQueueAutoOverlayExact' dojoType='dijit.form.CheckBox'/>
             </td>
         </tr>
         <tr>
-            <td>&vandelay.auto.import.auto_overlay_1match;</td>
+            <td>[% l('Merge On Single Match') %]</td>
             <td colspan='4'>
                 <input jsId='vlUploadQueueAutoOverlay1Match' dojoType='dijit.form.CheckBox'/>
             </td>
         </tr>
         <tr>
-            <td>&vandelay.auto.import.auto_overlay_best;</td>
+            <td>[% l('Merge On Best Match') %]</td>
             <td colspan='4'><input jsId='vlUploadQueueAutoOverlayBestMatch' dojoType='dijit.form.CheckBox'/></td>
         </tr>
         <tr>
-            <td>&vandelay.auto.import.auto_overlay_best_ratio;</td>
+            <td>[% l('Best/Single Match Minimum Quality Ratio') %]</td>
             <td colspan='4'>
                 <input style='width:3em' value='0.0' jsId='vlUploadQueueAutoOverlayBestMatchRatio' dojoType='dijit.form.TextBox'/>
-                <span style='padding-left: 10px; font-size:90%'>(&vandelay.auto.import.auto_overlay_best_ratio.desc;)</span>
+                <span style='padding-left: 10px; font-size:90%'>[% l('New Record Quality / Quality of Best Match') %]</span>
             </td>
         </tr>
         <tr>
-            <td>&vandelay.auto.import.ft_merge_profile;</td>
+            <td>[% l('Insufficient Quality Fall-Through Profile') %]</td>
             <td colspan='4'>
                 <div jsId='vlUploadFtMergeProfile' dojoType='dijit.form.FilteringSelect' required='false' labelAttr='name' searchAttr='name'/>
             </td>
@@ -93,9 +93,9 @@
         <tr><td colspan='2' style='padding-bottom: 10px;'></td></tr>
         <tr>
             <td colspan='5'>
-                <span id="vl-file-label">&vandelay.file.to.upload;</span>
+                <span id="vl-file-label">[% l('File to Upload:') %]</span>
                 <input size='48' style='border:1px solid #888;' type="file" name="marc_upload"/>
-                <span style='margin-left:10px;'><button dojoType="dijit.form.Button" onclick="batchUpload()">&vandelay.upload;</button></span>
+                <span style='margin-left:10px;'><button dojoType="dijit.form.Button" onclick="batchUpload()">[% l('Upload') %]</button></span>
             </td>
         </tr>
     </table>

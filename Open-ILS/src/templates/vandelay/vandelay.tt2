@@ -31,7 +31,7 @@
     [% INCLUDE 'vandelay/inc/queueselect.tt2' %]
 </div>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client"  id="vl-attr-editor-div" 
-        class='hidden attr-editor-detail-content-pane content' title='&vandelay.edit.attrs;'>
+        class='hidden attr-editor-detail-content-pane content' title='[% l('Record Display Attributes') %]'>
     [% INCLUDE 'vandelay/inc/attrs.tt2' %]
 </div>
 <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-profile-editor-div' class='hidden content'>
