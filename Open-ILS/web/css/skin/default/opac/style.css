@@ -274,40 +274,29 @@ div.select-wrapper:hover {
 	font-size: 10px;
 }
 #adv_search_tabs {
-	height:33px;
+	height: 40px;
 	width:974px;
 	margin:auto;
 }
 
 #adv_search_tabs a {
-	float: left;
+    float: left;
+	text-align: center;
+    vertical-align: middle;
 	display: block;
-	height:33px;
-	margin-right:7px;
+	margin: 10px 7px 10px 0px;
+    padding: 10px 0px 10px 0px;
 }
 
-#adv_search {
+#adv_search, #num_search, #expert_search {
 	width:156px;
-	background:url('/images/adv_search_off.gif') no-repeat bottom;
+    color: 45709b;
+    background: #9ad0f1;
+    font-weight: bold;
 }
-#adv_search.on {
-	background: url('/images/adv_search_on.gif') no-repeat bottom !important;
-}
-
-#num_search {
-	width:156px;
-	background:url('/images/num_search_off.gif') no-repeat bottom;
-}
-#num_search.on {
-	background: url('/images/num_search_on.gif') no-repeat bottom !important;
-}
-
-#expert_search {
-	width:156px;
-	background:url('/images/expert_search_off.gif') no-repeat bottom;
-}
-#expert_search.on {
-	background: url('/images/expert_search_on.gif') no-repeat bottom !important;
+#adv_search.on, #num_search.on, #expert_search.on {
+    color: #333333;
+    background: white;
 }
 
 #acct_tabs, #acct_fines_tabs {
@@ -1042,3 +1031,10 @@ a.dash-link:hover { text-decoration: underline !important; }
     background: #1784c7; 
 }
 .opac-button:hover { background: #359ee0; }
+
+a.opac-button {
+    margin: 10px;
+    padding: 5px 10px 5px 10px;
+}
+
+
