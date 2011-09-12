@@ -1039,4 +1039,7 @@ a.opac-button {
     padding: 5px 10px 5px 10px;
 }
 
-
+#dash_wrapper .opac-button {
+    position: relative;
+    top: 10px;
+}

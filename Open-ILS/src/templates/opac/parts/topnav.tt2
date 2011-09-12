@@ -29,18 +29,11 @@
                         </td>
                         <td id="dash_corner_mid1c">
 
-                            <a href="[% ctx.opac_root %]/myopac/main" class="pos-rel-top4"><img
-                                alt="[% l('My Account') %]"
-                                src="[% ctx.media_prefix %]/images/acct-btn.png"
-                                onmouseover="this.src='[% ctx.media_prefix %]/images/acct-btn-hover.png';"
-                                onmouseout="this.src='[% ctx.media_prefix %]/images/acct-btn.png';" /></a>
+                            <a href="[% ctx.opac_root %]/myopac/main" 
+                                class="opac-button">[% l('My Account') %]</a>
 
-                            <a href="[% ctx.opac_root %]/logout" class="pos-rel-top4"
-                                id="logout_link"><img
-                                alt="[% l('Logout') %]"
-                                src="[% ctx.media_prefix %]/images/logout-btn.png"
-                                onmouseover="this.src='[% ctx.media_prefix %]/images/logout-btn-hover.png';"
-                                onmouseout="this.src='[% ctx.media_prefix %]/images/logout-btn.png';" /></a>
+                            <a href="[% ctx.opac_root %]/logout" class="opac-button"
+                                id="logout_link">[% l('Logout') %]</a>
                         </td>
                         <td>
                             <img src="[% ctx.media_prefix %]/images/dash-corner-right1.png" />
