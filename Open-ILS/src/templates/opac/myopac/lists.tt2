@@ -40,12 +40,15 @@
                         src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
                 </td>
                 <td class="list-create-table-buttons">
-                    <input type="image" alt="[% l('Submit') %]" src="[% ctx.media_prefix %]/images/btnSubmit.png"/>
+                    <input type="submit"
+                        value="[% l('Submit') %]"
+                        alt="[% l('Submit') %]"
+                        class="submit-button"/>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href="javascript:void(0);"
-                        onclick="document.getElementById('create_form').reset(); return false"><img
+                    <input type="reset"
+                        value="[% l('Cancel') %]"
                         alt="[% l('Cancel') %]"
-                        src="[% ctx.media_prefix %]/images/btnCancel.png" /></a>
+                        class="submit-button" />
                 </td>
             </tr>
         </table>

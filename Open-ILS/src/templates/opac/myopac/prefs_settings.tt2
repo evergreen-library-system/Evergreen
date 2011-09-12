@@ -9,7 +9,7 @@
         <div style="float:right;width:65px;">
             <div style="position:absolute">
                 <div style="position:relative;top:75px;">
-                    <input type="image" alt="[% l('Save') %]" src="[% ctx.media_prefix %]/images/save-btn.png"/>
+                    <input type="submit" value="[% l('Save') %]" alt="[% l('Save') %]" class="submit-button"/>
                 </div>
             </div>
         </div>

@@ -53,9 +53,9 @@
                     </select>
                 </td>
                 <td width="1" style="padding-left:9px;">
-                    <input type="image"
+                    <input type="submit" value="[% l('Go') %]"
                         alt="[% l('Go') %]" title="[% l('Go') %]"
-                        src="[% ctx.media_prefix %]/images/go-btn.png" />
+                        class="submit-button" />
                 </td>
                 <td width="1" style="padding-left:5px;">
                     <a href="#"><img

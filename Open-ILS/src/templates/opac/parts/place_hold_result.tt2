@@ -84,13 +84,14 @@
                 [% |l %]You have permission to override some of the failed holds.<br/>  Click Submit to override and place your hold on the selected items.[% END %]
             </div>
             <span style='padding-right: 10px;'>
-                <input type="image" name="submit" value="submit" title="[% l('Submit') %]"
-                    alt="[% l('Submit') %]" src="[% ctx.media_prefix %]/images/btnSubmit.png" />
+                <input type="submit" name="submit" value="[% l('Submit') %]"
+                    title="[% l('Submit') %]" alt="[% l('Submit') %]"
+                    class="submit-button" />
             </span>
         [% END %]
         <span>
-        <a href="[% CGI.param('redirect_to') || CGI.referer | html %]" id="holds_cancel"><img
-            alt="[% l('Cancel') %]" src="[% ctx.media_prefix %]/images/btnCancel.png" /></a>
+        <input type="reset" onclick="javascript:history.go(-1);"
+            id="holds_cancel" value="[% l('Cancel') %]" class="submit-button" />
         </span>
     </form>
 </div>

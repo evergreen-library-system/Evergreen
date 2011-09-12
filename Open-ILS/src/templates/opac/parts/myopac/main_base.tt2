@@ -42,11 +42,8 @@
         </span><br />
 
         <form action="[% ctx.opac_root %]/myopac/main_payment_form" method="GET"><input
-            type="image" title="[% l('Pay Fines') %]" alt="[% l('Pay Fines') %]"
-            onmouseover="this.src='[% ctx.media_prefix %]/images/pay-fines-btn-hover.png';"
-            onmouseout="this.src='[% ctx.media_prefix %]/images/pay-fines-btn.png';"
-            src="[% ctx.media_prefix %]/images/pay-fines-btn.png"
-            class="pos-rel-top-5" /></form>
+            type="submit" title="[% l('Pay Fines') %]" alt="[% l('Pay Fines') %]"
+            value=[% l('Pay Fines') %] class="pos-rel-top-5 submit-button" /></form>
     </div>
     [% END %]
 

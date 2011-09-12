@@ -158,12 +158,11 @@
     <div>[% l('You have no current fines.') %]</div>
     [% ELSE %]
     <div class="text-right pad-top-ten">
-        <input type="image"
+        <input type="submit"
+            value="[% l('Pay selected fines') %]"
             alt="[% l('Pay selected fines') %]"
             title="[% l('Pay selected fines') %]"
-            onmouseover="this.src='[% ctx.media_prefix %]/images/pay-fines-btn-hover.png';"
-            onmouseout="this.src='[% ctx.media_prefix %]/images/pay-fines-btn.png';"
-            src="[% ctx.media_prefix %]/images/pay-fines-btn.png" />
+            class="submit-button" />
     </div>
     [% END %]
 </form>

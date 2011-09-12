@@ -91,14 +91,16 @@
                     </tr>
                     <tr>
                         <td colspan="2" class="hold-editor-controls">
-                            <input type="image"
-                                src="[% ctx.media_prefix %]/images/btnSubmit.png"
+                            <input type="submit"
+                                value="[% l('Submit') %]"
                                 alt="[% l('Submit') %]"
-                                title="[% l('Submit') %]" />
-                            <a href="[% ctx.opac_root %]/myopac/holds"><img
-                                src="[% ctx.media_prefix %]/images/btnCancel.png"
+                                title="[% l('Submit') %]"
+                                class="submit-button" />
+                            <input type="reset"
+                                value="[% l('Submit') %]"
                                 alt="[% l('Cancel') %]"
-                                title="[% l('Cancel') %]" /></a>
+                                title="[% l('Cancel') %]"
+                                class="submit-button" />
                         </td>
                     </tr>
                 </table>

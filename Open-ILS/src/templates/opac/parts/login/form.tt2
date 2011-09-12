@@ -136,7 +136,7 @@
                                     <input type="checkbox" name="persist" id="login_persist" /><label for="login_persist"> [% l('Stay logged in?') %]</label>
                                 </div>
                                 <div style="padding-top:14px;">
-                                    <input type='image' alt="[% l('Log in') %]" src="[% ctx.media_prefix %]/images/login-btn2.png" />
+                                    <input type="submit" value="[% l('Log in') %]" alt="[% l('Log in') %]" class="submit-button" />
                                     <!-- TODO
                                     <a href="reset_password"
                                         style="position:relative;top:-13px;left:2px;font-size:10px;">Forgot your PIN?</a>
