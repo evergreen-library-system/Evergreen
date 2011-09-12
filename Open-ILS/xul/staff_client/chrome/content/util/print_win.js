@@ -14,7 +14,7 @@ function print_init(type) {
         print_check_noprint();
     }
     if (do_print) {
-        go_print();
+        go_print(window);
     } else {
         window.close();
     }
