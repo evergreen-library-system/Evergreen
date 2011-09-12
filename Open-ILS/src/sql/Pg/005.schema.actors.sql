@@ -457,7 +457,8 @@ CREATE TABLE actor.org_unit_setting (
 	org_unit	INT		NOT NULL REFERENCES actor.org_unit ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	name		TEXT	NOT NULL REFERENCES config.org_unit_setting_type DEFERRABLE INITIALLY DEFERRED,
 	value		TEXT		NOT NULL,
-	CONSTRAINT ou_once_per_key UNIQUE (org_unit,name)
+	CONSTRAINT ou_once_per_key UNIQUE (org_unit,name),
+	CONSTRAINT aous_must_be_json CHECK ( evergreen.is_json(value) )
 );
 COMMENT ON TABLE actor.org_unit_setting IS $$
 Org Unit settings
