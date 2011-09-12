@@ -279,7 +279,7 @@ div.select-wrapper:hover {
 	margin:auto;
 }
 
-#adv_search_tabs a {
+#adv_search_tabs a, #acct_tabs a {
     float: left;
 	text-align: center;
     vertical-align: middle;
@@ -307,7 +307,7 @@ div.select-wrapper:hover {
 	margin:auto;
 }
 
-#acct_tabs a, #acct_fines_tabs a {
+#acct_fines_tabs a {
 	float: left;
 	display: block;
 	height:33px;
@@ -315,44 +315,14 @@ div.select-wrapper:hover {
 }
 
 .acct-tab {
-    background-repeat: no-repeat;
-    background-position: bottom;
     width:156px;
+    background: #9ad0f1;
+    font-weight: bold;
 }
 
-.acct-main-off {
-	background-image:url('/images/acct_summary_off.gif');
-}
-.acct-main-on {
-	background-image:url('/images/acct_summary_on.gif');
-}
-
-.acct-circs-off {
-	background-image:url('/images/acct_checked_out_off.gif');
-}
-.acct-circs-on {
-	background-image:url('/images/acct_checked_out_on.gif');
-}
-
-.acct-holds-off {
-	background-image:url('/images/acct_holds_off.gif');
-}
-.acct-holds-on {
-	background-image:url('/images/acct_holds_on.gif');
-}
-
-.acct-prefs-off {
-	background-image:url('/images/acct_prefs_off.gif');
-}
-.acct-prefs-on {
-	background-image:url('/images/acct_prefs_on.gif');
-}
-
-.acct-lists-off {
-	background-image:url('/images/acct_lists_off.gif');
-}
-.acct-lists-on {
-	background-image:url('/images/acct_lists_on.gif');
+.acct-tab-on {
+    color: #333333;
+    background: white;
 }
 
 #rdetail_header {
