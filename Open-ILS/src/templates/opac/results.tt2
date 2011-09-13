@@ -1,0 +1,73 @@
+[%  PROCESS "opac/parts/header.tt2";
+    USE POSIX;
+
+    WRAPPER "opac/parts/base.tt2";
+    INCLUDE "opac/parts/topnav.tt2";
+
+    IF is_advanced || is_special;
+        ctx.page_title = l("Search Results");
+    ELSE;
+        ctx.page_title = l("Search Results: ") _ CGI.param('query') | html;
+    END;
+
+    page = CGI.param('page');
+    page = page.match('^\d+$') ? page : 0; # verify page is a sane value
+
+    page_count = ctx.page_size == 0 ? 1 : POSIX.ceil(ctx.hit_count / ctx.page_size);
+%]
+    <form action="[% ctx.opac_root %]/results" method="GET">
+    <div id="search-wrapper">
+        [% INCLUDE "opac/parts/printnav.tt2" %]
+        [% INCLUDE "opac/parts/searchbar.tt2" took_care_of_form=1 %]
+    </div>
+    <div class="almost-content-wrapper">
+        <div id="results_header_bar">
+            <div id="results_header_inner">
+                <div class="results_header_btns">
+                    <a href="[% ctx.opac_root %]/home">[% l('Another Search') %]</a>
+                </div>
+                <div class="results_header_btns">
+                    <a href="[% ctx.opac_root %]/advanced">[% l('Advanced Search') %]</a>
+                </div>
+                [% IF ctx.mylist.size %]
+                <div class="results_header_btns cached_list_div">
+                    <a href="[% ctx.opac_root; ctx.user ? '/myopac/lists' : '/mylist' %]">[% l('View My List') %]</a>
+                </div>
+                [% END %]
+                <div class="results_header_div"></div>
+                    <div class="results_header_lbl">[% l('Sort by') %]</div>
+                    [% INCLUDE "opac/parts/filtersort.tt2" value=CGI.param('sort') submit_on_change=1 %]
+                    <div class="results_header_div"></div>
+
+                    <div class='results_header_sel' id='simple-detail-view-links'>
+                        [% IF CGI.param('detail_record_view') %]
+                        <a href="[% mkurl('', {detail_record_view => ''}) %]">[% l('Simple View') %]</a>
+                        [% ELSE %]
+                        <a href="[% mkurl('', {detail_record_view => 1}) %]">[% l('Detailed View') %]</a>
+                        [% END %]
+                    </div>
+                    <div class="results_header_div"></div>
+
+                    <input type="checkbox" id="limit_to_available" name="modifier" value="available"
+                        onchange="limit_to_avail_onchange(this, true)"
+                        [% CGI.param('modifier').grep('available').size ? ' checked="checked"' : '' %] />
+
+                    <label for="limit_to_available" class="results_header_lbl">
+                        [% l('Limit to available items') %]
+                    </label>
+                <div class="clear-both"></div>
+            </div>
+        </div>
+    </div>
+    </form>
+    <div id="content-wrapper">
+        <div id="main-content">
+            <div id="tehResultsPage">
+                [% path = "opac/parts/result/" _
+                    (ctx.records.size ? "table.tt2" : "lowhits.tt2");
+                INCLUDE $path %]
+            </div>
+            <div class="common-full-pad"></div>    
+        </div>
+    </div>
+[% END %]

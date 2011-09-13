@@ -1,0 +1,32 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = 'Metabib Field' %]
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+        <div>Metabib Field</div>
+        <div>
+            <button dojoType='dijit.form.Button' onClick='mbFieldGrid.showCreateDialog()'>New Field</button>
+            <button dojoType='dijit.form.Button' onClick='mbFieldGrid.deleteSelected()'>Delete Selected</button>
+        </div>
+    </div>
+    <div>
+    <table  jsId="mbFieldGrid"
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['name', 'label', 'field_class', 'weight', 'format', 'search_field', 'facet_field', 'xpath']"
+            query="{field: '*'}"
+            fmClass='cmf'
+            autoHeight='true'
+            editOnEnter='true'>
+        <thead>
+            <tr><th field='xpath' width='25%'/></tr>
+        </thead>
+    </table>
+</div>
+
+<script type="text/javascript">
+    dojo.require('openils.Util');
+    dojo.require('openils.widget.AutoGrid');
+    openils.Util.addOnLoad( function() { mbFieldGrid.loadAll(); } );
+</script>
+[% END %]
+
+

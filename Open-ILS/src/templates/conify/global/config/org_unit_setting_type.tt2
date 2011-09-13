@@ -1,0 +1,64 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = 'Org Unit Setting Types' %]
+
+<div class='hidden'>
+    <select dojoType="dijit.form.FilteringSelect" jsId="dTypeSelector">
+        <option value='string' selected='selected'>String</option>
+        <option value='bool'>Boolean</option>
+        <option value='integer'>Integer</option>
+        <option value='float'>Float</option>
+        <option value='currency'>Currency</option>
+        <option value='interval'>Interval</option>
+        <option value='date'>Date</option>
+        <option value='object'>Object</option>
+        <option value='array'>Array</option>
+        <option value='link'>Link</option>
+    </select>
+</div>
+
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
+    <div>Org Unit Setting Types</div>
+    <div>
+        <button dojoType='dijit.form.Button' onClick='ostGrid.showCreateDialog()'>New Org Setting Type</button>
+        <button dojoType='dijit.form.Button' onClick='ostGrid.deleteSelected()'>Delete Selected</button>
+    </div>
+</div>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <table  jsId="ostGrid"
+            autoHeight='true'
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['name', 'label', 'datatype', 'description', 'fm_class']"
+            query="{name: '*'}"
+            defaultCellWidth='"auto"'
+            fmClass='coust'
+            showPaginator='true'
+            editOnEnter='true'>
+        <thead>
+            <tr>
+                <th field="datatype" formatter="formatDtype"/>
+            </tr>
+        </thead>
+    </table>
+ </div>
+
+<script type ="text/javascript">
+    dojo.require('dijit.form.FilteringSelect');
+    dojo.require('openils.widget.AutoGrid');
+
+    openils.Util.addOnLoad(
+        function() {
+            ostGrid.overrideEditWidgets.datatype = dTypeSelector;
+            ostGrid.loadAll({order_by:{coust : 'name'}});
+        }
+    );
+
+    function formatDatatype(dtype) {
+        // pull the label from the type selector
+        return dojo.query('[value=' + dtype +']', dTypeSelector.domNode)[0].innerHTML;
+    }
+
+</script>
+
+[% END %]

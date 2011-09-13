@@ -1,0 +1,30 @@
+[% WRAPPER "base.tt2" %]
+[% ctx.page_title = "PO History" %]
+<h1>Purchase Order History</h1>
+<br/>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <table  jsId="pohGrid"
+            autoHeight='true'
+            dojoType="openils.widget.AutoGrid"
+            defaultCellWidth="'auto'"
+            fieldOrder="['audit_time', 'name', 'state', 'ordering_agency', 'provider', 'create_time', 'edit_time', 'order_date', 'creator', 'editor', 'owner']"
+            query="{audit_id: '*'}"
+            suppressFields='["id", "audit_id", "audit_action"]'
+            fmClass='acqpoh'
+            editOnEnter='true'
+            editReadOnly='true'
+            showPaginator='true'>
+    </table>
+</div>
+
+<script type="text/javascript">
+    dojo.require('openils.Util');
+    dojo.require('openils.widget.AutoGrid');
+    var poId = "[% ctx.page_args.0 %]";
+    openils.Util.addOnLoad(
+        function() {
+            pohGrid.loadAll({order_by : {acqpoh :  'audit_time DESC'}}, {id : poId});
+        }
+    );
+</script>
+[% END %]

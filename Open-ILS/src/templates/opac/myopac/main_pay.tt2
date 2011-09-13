@@ -1,0 +1,47 @@
+[%  PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2";
+    WRAPPER "opac/parts/myopac/base.tt2";
+    myopac_page = "main";
+    myopac_main_page = "pay" %]
+<div id="myopac_summary_div">
+    [% IF ctx.payment_response.textcode %]
+        <div class="payment-error">
+            <span title="[% ctx.payment_response.textcode %]">
+                [% ctx.payment_response.desc || ctx.payment_response.textcode %]
+            </span><br />
+            [% ctx.payment_response.note %]
+            [% ctx.payment_response.payload.error_message %]
+        </div>
+        <p>
+            <a href="[% ctx.opac_root %]/myopac/main"
+                onclick="history.go(-1); return false;">[% l('Go back') %]</a>
+            [% l('to try again or to cancel this payment attempt.') %]
+        </p>
+    [% ELSE %]
+        <p><big>[% l('Your payment has been approved.') %]</big></p>
+        [% IF ctx.printable_receipt.template_output;
+            print_args = [];
+            FOR p IN ctx.payment_response.payments;
+                print_args.push('payment=' _ p);
+            END %]
+        <p>[ <a href="[% ctx.opac_root %]/myopac/receipt_print?[% print_args.join('&amp;') %]"
+            target="_egrecpt"
+            onclick="try { print_node('printable-receipt'); } catch (e) { window.print(); } return false;">[% l('Print receipt') %]</a> ]</p>
+        <tt id="printable-receipt">
+            [% ctx.printable_receipt.template_output.data %]
+        </tt>
+        [% ELSE %]
+        <div class="payment-error">
+            [% l(
+                'Error creating receipt: [_1]',
+                    (ctx.printable_receipt.textcode ? ctx.printable_receipt.textcode _ ' / ' _ ctx.printable_receipt.desc : 0) ||
+                    ctx.printable_receipt.error_output.data ||
+                    l('No receipt data returned from server')
+                ) | html %]
+        </div>
+        [% END %]
+        <p>[ <a href="[% ctx.opac_root %]/myopac/main">[%
+            l("Back to Account Summary") %]</a> ]</p>
+    [% END %]
+</div>
+[% END %]

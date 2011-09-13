@@ -1,0 +1,59 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = 'Resource Attribute Values' %]
+<div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+    <div>Resource Attribute Values</div>
+    <div>
+        <button dojoType='dijit.form.Button' onClick='bravGrid.showCreateDialog()'>New Resource Attribute Value</button>
+        <button dojoType='dijit.form.Button' onClick='bravGrid.deleteSelected()'>Delete Selected</button>
+    </div>
+</div>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <span>Context Org Unit</span>
+    <select dojoType="openils.widget.OrgUnitFilteringSelect"
+            jsId='contextOrgSelector'
+            searchAttr='shortname'
+            labelAttr='shortname'>
+    </select>
+</div>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <table  jsId="bravGrid"
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['owner', 'attr', 'valid_value']"
+            query="{id: '*'}"
+            fmClass='brav'
+            autoHeight='true'
+            showPaginator='true'
+            editOnEnter='true'>
+    </table>
+</div>
+
+<script type ="text/javascript">
+    dojo.require('dijit.form.FilteringSelect');
+    dojo.require('openils.widget.AutoGrid');
+    dojo.require('openils.widget.OrgUnitFilteringSelect');
+
+    function filterGrid() {
+        bravGrid.resetStore();
+        var unit = contextOrgSelector.getValue();
+        var list = fieldmapper.aou.findOrgUnit(unit).orgNodeTrail().map( function (i) {return i.id() } );
+
+        if(unit){
+            bravGrid.loadAll({order_by:{brav : 'attr'}}, { 'owner' : list });
+        } else {
+            bravGrid.loadAll({order_by:{brav : 'attr'}});
+        }
+    }
+
+    openils.Util.addOnLoad(
+        function() {
+            var org_id = openils.User.user.ws_ou();
+            var list = fieldmapper.aou.findOrgUnit(org_id).orgNodeTrail().map( function (i) {return i.id() } );
+
+            new openils.User().buildPermOrgSelector('ADMIN_BOOKING_RESOURCE_ATTR_VALUE', contextOrgSelector, null, function() {
+                dojo.connect(contextOrgSelector, 'onChange', filterGrid);});
+
+            bravGrid.loadAll({order_by:{brav : 'attr'}}, { 'owner' : list });
+        }
+    );
+</script>
+[% END %]

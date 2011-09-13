@@ -1,0 +1,41 @@
+<script type="text/javascript">
+    var vlMatchGridLayout;
+    function resetVlMatchGridLayout() {
+        vlMatchGridLayout = [{
+            defaultCell: {styles: 'text-align: center;'},
+            cells : [[
+                {
+                    name: '[% l('Merge Target') %]', 
+                    get: vlGetOverlayTargetSelector,
+                    formatter : vlFormatOverlayTargetSelector,
+                },
+                {name: '[% l('ID') %]', field:'id'},
+                {   name: '[% l('View MARC') %]', 
+                    get: vlGetViewMARC, 
+                    formatter : vlFormatViewMatchMARC
+                },
+                {name: 'Match Score', field:'match_score'},
+                {name: 'Queued Record Quality', field:'rec_quality'},
+                {name: 'Matched Record Quality', field:'match_quality'},
+                {name: '[% l('Creator') %]', get: vlGetCreator},
+                {name: '[% l('Create Date') %]', field:'create_date', get: vlGetDateTimeField},
+                {name: '[% l('Last Edit Date') %]', field:'edit_date', get: vlGetDateTimeField},
+                {name: '[% l('Source') %]', field:'source'},
+                {name: '[% l('TCN Source') %]', field:'tcn_source'},
+                {name: '[% l('TCN Value') %]', field:'tcn_value'}
+            ]]
+        }];
+    }
+</script>
+<h1>[% l('Import Matches') %]</h1><br/>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
+    <button dojoType='dijit.form.Button' 
+        onclick="displayGlobalDiv('vl-queue-div');">&#x2196; [% l('Back To Import Queue') %]</button>
+</div>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
+    <table dojoType='dojox.grid.DataGrid' jsId='vlMatchGrid' query='{id:"*"}' autoHeight='true'> 
+    </table>
+</div>
+

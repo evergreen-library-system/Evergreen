@@ -1,0 +1,64 @@
+[% WRAPPER base.tt2 %]
+
+<!-- grid -->
+
+ <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class="oils-header-panel">
+            <div>PO Triggered Events</div>
+            <div>
+                <button dojoType="dijit.form.Button" onClick="eventGrid.cancelSelected()">Cancel Selected</button>
+                <button dojoType="dijit.form.Button" onClick="eventGrid.resetSelected()">Reset Selected</button>
+            </div>
+        </div>
+        <div class="oils-acq-basic-form-div">
+            <span>
+                <label for="state">State</label>
+                <select name="state"
+                    dojoType="dijit.form.FilteringSelect"
+                    jsId="eventStateSelect"
+                    searchAttr="name"
+                    labelAttr="name"></select>
+            </span>
+            <span>
+                <label for="orgUnit">Context Org Unit</label>
+                <select name="orgUnit" 
+                    dojoType="openils.widget.OrgUnitFilteringSelect" 
+                    jsId="eventContextOrgSelect"
+                    searchAttr="shortname" 
+                    labelAttr="shortname"></select>
+            </span>
+            <span>
+                <label for="startDate">Start Date Range</label>
+                <input name="startDate"
+                    type="text"
+                    dojoType="dijit.form.DateTextBox"
+                    jsId="eventStartDatePicker" />
+            </span>
+            <span>
+                <label for="endDate">End Date Range</label>
+                <input name="endDate"
+                    type="text"
+                    dojoType="dijit.form.DateTextBox"
+                    jsId="eventEndDatePicker" />
+            </span>
+            <button dojoType="dijit.form.Button" onClick="eventGrid.doSearch()">Search</button>
+        </div>
+        <table  jsId="eventGrid"
+                dojoType="openils.widget.AutoGrid"
+                query="{id: '*'}"
+                fmClass="atev"
+                suppressFields="['update_process','user_data','template_output','error_output','async_output','event_def']"
+                defaultCellWidth="'auto'"
+                editOnEnter="false">
+            <thead>
+                <tr>
+                    <th field="target" formatter="format_po_link">Purchase Order</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/po/events.js"> </script>
+[% END %]
+
+

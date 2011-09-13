@@ -1,0 +1,65 @@
+[% WRAPPER base.tt2 %]
+<style type="text/css">
+    @import "[% ctx.media_prefix %]/js/dojo/dojox/form/resources/CheckedMultiSelect.css";
+</style>
+<h1>Standing Penalty Types</h1><br/>
+
+  <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+            <div>Standing Penalty Types</div>
+            <div>
+                <button dojoType='dijit.form.Button' onClick='spGrid.showCreateDialog()'>New Penalty Type</button>
+                <button dojoType='dijit.form.Button' onClick='spGrid.deleteSelected()'>Delete Selected</button>
+            </div>
+        </div>
+
+        <table  jsId="spGrid"
+                dojoType="openils.widget.AutoGrid"
+                fieldOrder="['id', 'name', 'label', 'block_list']"
+                query="{name: '*'}"
+                defaultCellWidth='"auto"'
+                fmClass='csp'
+                editOnEnter='true'>
+            <thead>
+                <tr> <th field="id" formatter='formatId'/> </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/config/standing_penalty.js'></script>
+<script type="text/javascript">
+
+    if(!dojo._hasResource['openils.widget.StandingPenaltyBlockedSelector']) {
+        dojo.provide('openils.widget.StandingPenaltyBlockedSelector');
+        dojo.require('dojox.form.CheckedMultiSelect');
+        dojo.require('dojo.data.ItemFileReadStore');
+        dojo.declare(
+            'openils.widget.StandingPenaltyBlockedSelector',
+            [dojox.form.CheckedMultiSelect],
+            {
+                postCreate : function() {
+                    this._multiValue = true;
+                    this.addOption({value:'CIRC', label:'CIRC'});
+                    this.addOption({value:'RENEW', label:'RENEW'});
+                    this.addOption({value:'HOLD', label:'HOLD'});
+                },
+                attr : function(name, value) {
+                    if(name == 'value' && value == null) {
+                        var val = this.inherited('attr', arguments);
+                        var str = '';
+                        for(var i in val)
+                            str += val[i] + '|';
+                        return str.substring(0, str.length - 1);
+                    } else {
+                        return this.inherited('attr', arguments);
+                    }
+                }
+            }
+        );
+    }
+
+</script>
+[% END %]
+
+

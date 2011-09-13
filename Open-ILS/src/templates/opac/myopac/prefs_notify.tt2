@@ -1,0 +1,39 @@
+[%  PROCESS "opac/parts/header.tt2";
+    WRAPPER "opac/parts/myopac/prefs_base.tt2";
+    myopac_page = "prefs_notify";
+    prefs_page = 'notify' %]
+
+<form method='POST'>
+
+    <div style="float:right;width:65px;">
+        <input type='submit' 
+            value="[% l('Save') %]"
+            alt="[% l('Save') %]"
+            class="opac-button" />
+    </div>
+
+    <table>
+        <thead><tr>
+            <th>[% l('Notifation Type') %]</th>
+            <th>[% l('Enabled') %]</th>
+        </tr></thead>
+        <tbody class='data_grid'>
+            [% IF optin.size == 0 %]
+                <strong>[% l('No notification preferences are configured') %]</strong>
+            [% END %]
+            [% FOR optin IN ctx.opt_in_settings %]
+                <tr>
+                    <td>[% optin.cust.label | html %]</td>
+                    <td>
+                        <input type='checkbox' name='setting' 
+                            value='[% optin.cust.name | uri %]' 
+                            [% IF optin.value %] checked='checked' [% END %]/>
+                    </td>
+                </tr>
+            [% END %]
+        </tbody>
+    </table>
+</form>
+[% END %]
+
+

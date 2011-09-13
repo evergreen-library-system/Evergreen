@@ -44,7 +44,6 @@ sysconf_DATA = $(examples)/action_trigger_filters.json.example \
 	       $(examples)/opensrf_core.xml.example \
 	       $(examples)/fm_IDL.xml \
 	       $(examples)/oils_sip.xml.example \
-	       $(examples)/oils_web.xml.example \
 	       $(examples)/lib_ips.txt.example \
 	       $(examples)/oils_yaz.xml.example \
 	       $(examples)/oils_z3950.xml.example 
@@ -162,12 +161,9 @@ uninstall-hook:
 ilscore-install:
 	@echo $@
 	$(MKDIR_P) $(DESTDIR)$(TEMPLATEDIR)
-	cp -r @srcdir@/templates/marc $(DESTDIR)$(TEMPLATEDIR)
-	cp -r @srcdir@/templates/password-reset $(DESTDIR)$(TEMPLATEDIR)
-	@echo "Installing string templates to $(DESTDIR)$(TEMPLATEDIR)"
-	$(MKDIR_P) $(DESTDIR)$(TEMPLATEDIR)
+	@echo "Installing templates to $(DESTDIR)$(TEMPLATEDIR)"
+	cp -r @srcdir@/templates/* $(DESTDIR)$(TEMPLATEDIR)
 	$(MKDIR_P) $(DESTDIR)$(datadir)/overdue/
-	cp -r @srcdir@/templates/strings $(DESTDIR)$(TEMPLATEDIR)
 	sed -i 's|LOCALSTATEDIR|@localstatedir@|g' '$(DESTDIR)@sysconfdir@/oils_sip.xml.example'
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@sysconfdir@/oils_sip.xml.example'
 	sed -i 's|LIBDIR|@libdir@|g' '$(DESTDIR)@sysconfdir@/oils_sip.xml.example'

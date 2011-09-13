@@ -1,0 +1,28 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = 'Actor Stat Cat Sip Fields' %]
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+        <div>Actor Stat Cat Sip Fields</div>
+        <div>
+            <button dojoType='dijit.form.Button' onClick='actorSipFieldsGrid.showCreateDialog()'>New Sip Field</button>
+            <button dojoType='dijit.form.Button' onClick='actorSipFieldsGrid.deleteSelected()'>Delete Selected</button>
+        </div>
+    </div>
+    <div>
+    <table  jsId="actorSipFieldsGrid"
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['field', 'name', 'one_only']"
+            query="{field: '*'}"
+            fmClass='actscsf'
+            defaultCellWidth='15'
+            editOnEnter='true'/>
+</div>
+
+<script type="text/javascript">
+    dojo.require('openils.Util');
+    dojo.require('openils.widget.AutoGrid');
+    openils.Util.addOnLoad( function() { actorSipFieldsGrid.loadAll(); } );
+</script>
+[% END %]
+
+

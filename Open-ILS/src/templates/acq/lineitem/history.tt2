@@ -1,0 +1,30 @@
+[% WRAPPER "base.tt2" %]
+[% ctx.page_title = "Lineitem History" %]
+<h1>Lineitem History</h1>
+<br/>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <table  jsId="lhGrid"
+            autoHeight='true'
+            dojoType="openils.widget.AutoGrid"
+            defaultCellWidth="'auto'"
+            fieldOrder="['audit_time', 'state', 'picklist', 'purchase_order', 'provider', 'estimated_unit_price', 'claim_policy', 'create_time', 'edit_time', 'creator', 'editor', 'selector']"
+            query="{audit_id: '*'}"
+            suppressFields='["id", "audit_id", "marc", "audit_action"]'
+            fmClass='acqlih'
+            editOnEnter='true'
+            editReadOnly='true'
+            showPaginator='true'>
+    </table>
+</div>
+
+<script type="text/javascript">
+    dojo.require('openils.Util');
+    dojo.require('openils.widget.AutoGrid');
+    var liId = "[% ctx.page_args.0 %]";
+    openils.Util.addOnLoad(
+        function() {
+            lhGrid.loadAll({order_by : {acqlih :  'audit_time DESC'}}, {id : liId});
+        }
+    );
+</script>
+[% END %]

@@ -1396,7 +1396,7 @@ function vlShowMatchSetEditor() {
     dojo.byId('vl-match-set-editor-div').appendChild(
         dojo.create('iframe', {
             id : 'vl-match-set-iframe',
-            src : oilsBasePath + '/eg/conify/global/vandelay/match_set',
+            src : oilsBasePath + '/conify/global/vandelay/match_set',
             style : 'width:100%; height:500px; border:none; margin:0px;'
         })
     );

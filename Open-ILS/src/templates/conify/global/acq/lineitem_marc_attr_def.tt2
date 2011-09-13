@@ -1,0 +1,33 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = 'Line Item MARC Attributes' %]
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/acq/lineitem_marc_attr_def.js'> </script>
+
+<!-- grid -->
+
+ <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+            <div>Line Item MARC Attribute Definition Editor</div>
+            <div>
+                <button dojoType='dijit.form.Button' onClick='attrGrid.showCreateDialog()'>New Attribute</button>
+                <button dojoType='dijit.form.Button' onClick='attrGrid.deleteSelected()'>Delete Selected</button>
+            </div>
+        </div>
+        <table  jsId="attrGrid"
+                dojoType="openils.widget.AutoGrid"
+                fieldOrder="['id', 'code', 'description', 'tag', 'subfield', 'ident', 'remove', 'xpath']"
+                query="{id: '*'}"
+                defaultCellWidth='"auto"'
+                fmClass='acqlimad'
+                editOnEnter='true'>
+            <thead>
+                <tr>
+                    <th field='tag' get='attrGridGetTag'>Tag</th>
+                    <th field='subfield' get='attrGridGetSubfield'>Subfield</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+[% END %]
+
+

@@ -1,0 +1,28 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = 'Circ Matrix Weights' %]
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+        <div>Circ Matrix Weights</div>
+        <div>
+            <button dojoType='dijit.form.Button' onClick='ruleCircWeightsGrid.showCreateDialog()'>New Weight Set</button>
+            <button dojoType='dijit.form.Button' onClick='ruleCircWeightsGrid.deleteSelected()'>Delete Selected</button>
+        </div>
+    </div>
+    <div>
+    <table  jsId="ruleCircWeightsGrid"
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['name']"
+            suppressFields="['id']"
+            query="{id: '*'}"
+            fmClass='ccmw'
+            editOnEnter='true'/>
+</div>
+
+<script type="text/javascript">
+    dojo.require('openils.Util');
+    dojo.require('openils.widget.AutoGrid');
+    openils.Util.addOnLoad( function() { ruleCircWeightsGrid.loadAll(); } );
+</script>
+[% END %]
+
+

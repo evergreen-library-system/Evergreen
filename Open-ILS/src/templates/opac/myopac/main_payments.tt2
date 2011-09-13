@@ -1,0 +1,59 @@
+[%  PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2";
+    WRAPPER "opac/parts/myopac/main_base.tt2";
+    myopac_page = "main";
+    myopac_main_page = "payments";
+    limit = ctx.payment_history_limit;
+    offset = ctx.payment_history_offset;
+%]
+
+<div>
+    <div class="header_middle">
+        <span class="float-left">[% l('Payments History') %]</span>
+        <span class='float-left' style='padding-left: 10px;'>
+            <a href='main_payments?limit=[% limit %]&amp;offset=[% offset - limit %]'
+                [% IF offset == 0 %] class='invisible' [% END %]><span class="nav_arrow_fix">&#9668;</span>[% l('Previous') %]</a>
+            [%# TODO: get total to prevent paging off then end of the list.. %]
+            <a href='main_payments?limit=[% limit %]&amp;offset=[% offset + limit %]'
+               [% IF ctx.payments.size < limit %] class='invisible' [% END %] >[% l('Next') %]<span class="nav_arrow_fix">&#9658;</span></a>
+        </span>
+    </div>
+    <div class="clear-both"></div>
+
+    [% IF ctx.payments.size %]
+    <table class='myopac_payments_table data_grid' width='100%'>
+        <thead><tr>
+            <th>[% l('Payment Date') %]</th>
+            <th>[% l('Payment For') %]</th>
+            <th>[% l('Amount') %]</th>
+            <th>[% l('Receipt') %]</th> 
+        </tr></thead>
+        <tbody>
+            [% FOR payment IN ctx.payments %]
+            <tr>
+                <td>[% date.format(ctx.parse_datetime(payment.mp.payment_ts), DATE_FORMAT) %]</td>
+                <td>[% 
+                    btype = payment.last_billing_type | html;
+                    ptitle = payment.title | html;
+                    (payment.xact_type == 'grocery') ? btype : ptitle
+                %]</td>
+                <td>[% money(payment.mp.amount) %]</td>
+                <td>
+                    <form action="[% ctx.opac_root %]/myopac/receipt_print" method="POST">
+                        <input type="hidden" name="payment" value="[% payment.mp.id %]" />
+                        <input type="submit" value="[% l('Print') %]" />
+                    </form>
+                    <form action="[% ctx.opac_root %]/myopac/receipt_email" method="POST">
+                        <input type="hidden" name="payment" value="[% payment.mp.id %]" />
+                        <input type="submit" value="[% l('Email') %]" />
+                    </form>
+                </td>
+            </tr>
+            [% END %]
+        </tbody>
+    </table>
+    [% ELSE %]
+    <div>[% l('You have no historical payments to display.') %]</div>
+    [% END %]
+</div>
+[% END %]

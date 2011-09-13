@@ -1,0 +1,142 @@
+[% 
+    # Extract MARC fields from XML
+    #   get_marc_attrs( { marc_xml => doc } )
+    BLOCK get_marc_attrs;
+        xml = args.marc_xml;
+        args.isbns = [];
+        FOR isbn IN xml.findnodes('//*[@tag="020"]/*[@code="a"]');
+            args.isbns.push(isbn.textContent);
+        END;
+        args.upc = xml.findnodes('//*[@tag="024"]/*[@code="a"]').textContent;
+        args.issn = xml.findnodes('//*[@tag="022"]/*[@code="a"]').textContent;
+        args.title = xml.findnodes('//*[@tag="245"]/*[@code="a"]').textContent;
+        args.title_extended = xml.findnodes('//*[@tag="245"]').textContent;
+        args.author = xml.findnodes('//*[@tag="100"]/*[@code="a"]').textContent;
+        args.publisher = xml.findnodes('//*[@tag="260"]/*[@code="b"]').textContent;
+        args.pubdate = xml.findnodes('//*[@tag="260"]/*[@code="c"]').textContent;
+        args.summary = xml.findnodes('//*[@tag="520"]/*[@code="a"]').textContent;
+        args.edition = xml.findnodes('//*[@tag="250"]/*[@code="a"]').textContent ||
+            xml.findnodes('//*[@tag="534"]/*[@code="b"]').textContent ||
+            xml.findnodes('//*[@tag="775"]/*[@code="b"]').textContent;
+        phys = xml.findnodes(
+            '//*[@tag="300"]/*[@code="a" or @code="b" or @code="c" or @code="e"]'
+        );
+        phys_content = [];
+        FOR p IN phys; phys_content.push(p.textContent); END;
+        args.phys_desc = phys_content.join("");
+
+        # MARC Callnumber
+        args.marc_cn = xml.findnodes('//*[@tag="092" or @tag="099"]/*').textContent;
+
+        # clean up the ISBN
+        args.isbn_clean = args.isbns.0.replace('\ .*', '');
+
+        args.holdings = [];
+        args.uris = [];
+        args.issns = [];
+
+        # we use $9 of ISBN and ISSN as a flag for e-version
+        sfx_isbn = xml.findnodes('//*[@tag="020"]/*[@code="9"]');
+        IF sfx_isbn;
+            IF sfx_isbn.textContent == "SFX";
+                my_parent = sfx_isbn.parentNode();
+                sfx_isbn = my_parent.findnodes('./*[@code="a"]').textContent;
+                sfx_isbn = sfx_isbn.replace('-', '');
+                args.resolver_isbn = sfx_isbn.replace('\ .*', '');
+            END;
+        END;
+
+        sfx_issn = xml.findnodes('//*[@tag="022"]/*[@code="9"]');
+        IF sfx_issn;
+            IF sfx_issn.textContent == "SFX";
+                my_parent = sfx_issn.parentNode();
+                sfx_issn = my_parent.findnodes('./*[@code="a"]');
+                args.issns.push(
+                    sfx_issn.textContent.replace('[^\d\-X]', '')
+                );
+            END;
+        END;
+
+        # we snag all issns if no SFX available
+        IF args.issns.size == 0;
+            FOR rawissn IN xml.findnodes('//*[@tag="022"]/*[@code="a"]');
+                args.issns.push(
+                    rawissn.textContent.replace('[^\d\-X]', '')
+                );
+            END;
+        END;
+
+        FOR volume IN xml.findnodes('//*[local-name()="volumes"]/*[local-name()="volume"]');
+
+            # Check volume visibility - could push this into XPath
+            vol.label = volume.getAttribute('label');
+            vol.id = volume.getAttribute('id');
+            NEXT IF volume.getAttribute('opac_visible') == 'false';
+            NEXT IF volume.getAttribute('deleted') == 'true';
+
+            IF vol.label == '##URI##';
+                FOR uri IN volume.findnodes('./*[local-name()="uris"]/*[local-name()="uri"]');
+                    res.href = uri.getAttribute('href');
+                    res.link = uri.getAttribute('label');
+                    res.note = uri.getAttribute('use_restriction');
+                    args.uris.push(res);
+                END;
+                NEXT;
+            ELSE;
+                copies = volume.findnodes('./*[local-name()="copies"]/*[local-name()="copy"]');
+                FOR copy IN copies;
+                    # Check copy visibility
+                    cp.deleted = copy.getAttribute('deleted');    
+                    cp.visible = copy.getAttribute('opac_visible');
+                    NEXT IF (cp.deleted == 'true' OR cp.visible == 'false');
+
+                    # Iterate through all of the children to determine visibility
+                    FOR node IN cp.childNodes;
+                        NEXT IF cp.visible == 'false';
+                        vis = node.getAttribute('opac_visible');
+                        del = node.getAttribute('deleted');
+                        IF vis == 'false' or del == 'true';
+                            cp.visible = 'false';
+                        END;
+                    END;
+
+                    NEXT IF cp.visible == 'false';
+                    
+                    loc = copy.findnodes('./*[local-name()="location"]');
+                    circlib = copy.findnodes('./*[local-name()="circlib"]');
+                    status = copy.findnodes('./*[local-name()="status"]');
+
+                    holding = {
+                        label => vol.label,
+                        location => loc.textContent,
+                        library => circlib.textContent,
+                        status => status.textContent
+                        barcode => copy.getAttribute('barcode')
+                    };
+                    args.holdings.push(holding);
+                END;
+            END;
+        END;
+
+        # Extract the copy count summary
+        count_type = (ctx.is_staff) ? 'staff' : 'public';
+        xpath = '//*[local-name()="counts"]/*[local-name()="count"][@type="' _ count_type _ '"]';
+        FOR node IN xml.findnodes(xpath);
+            args.copy_counts = {};
+            FOR attr IN ['count', 'available', 'unshadow', 'transcendant']; 
+                args.copy_counts.$attr = node.getAttribute(attr);
+            END;
+        END;
+
+        # "mattype" == "custom marc format specifier"
+        FOR icon_style IN ['mattype', 'item_type']; 
+            node = xml.findnodes(
+                '//*[local-name()="attributes"]/*[local-name()="field"][@name="' _ icon_style _ '"]');
+            IF node AND node.textContent;
+                args.format_label = node.getAttribute('coded-value')
+                args.format_icon = ctx.media_prefix _ '/images/format_icons/' _ icon_style _ '/' _ node.textContent _ '.png';
+                LAST;
+            END;
+        END;
+    END;
+%]

@@ -1,0 +1,92 @@
+<div style='float: left; margin-top: 8px;'>
+    <input dojoType="dijit.form.RadioButton" name="attrEditorGroup" value="bib" 
+        id="aegB" onclick="setAttrEditorGroup('bib');" checked="checked"/>
+    <label for="aegB" style="margin-right: 1em;">[% l('Bibliographic attributes') %]</label>
+    <input dojoType="dijit.form.RadioButton" name="attrEditorGroup" value="auth" 
+        id="aegA" onclick="setAttrEditorGroup('auth');"/>
+    <label for="aegA" style="margin-right: 1em;">[% l('Authority attributes') %]</label>
+</div>
+<div dojoType="dijit.form.DropDownButton" id="vl-create-attr-editor-button">
+    <span name="create">[% l('Create Attribute Definition') %]</span>
+    <div dojoType="dijit.TooltipDialog" execute="vlSaveAttrDefinition(arguments[0]);" id="attr-editor-dialog">
+        <script type='dojo/connect' event='onOpen'>onAttrEditorOpen();</script>
+        <script type='dojo/connect' event='onClose'>onAttrEditorClose();</script>
+        <table class='dijitTooltipTable'>
+            <tr>
+                <td><label for="code">[% l('Code') %]:</label></td>
+                <td><input id='attr-editor-code' name="code" dojoType="dijit.form.TextBox"/></td>
+            </tr>
+            <tr>
+                <td><label for="description">[% l('Description') %]:</label></td>
+                <td><input id='attr-editor-description' dojoType="dijit.form.TextBox" name="description"> </input></td>
+            </tr>
+            <tr>
+                <td><label for="amount">[% l('Tag(s)') %]:</label></td>
+                <td><input id="attr-editor-tags" dojoType="dijit.form.TextBox" name="tag"></input>
+                <div class="hidden" id="attr-editor-tags-tip">
+                <p>[% l('You can enter multiple tags, separated by spaces and/or commas') %]</p>
+                <p>[% l('Example') %]:<code>120, 220, 300</code> or <code>120 220 330</code></p></div>
+                </td>
+            </tr>
+
+            <tr>
+                <td><label for="amount">[% l('Subfield(s)') %]:</label></td>
+                <td><input dojoType="dijit.form.TextBox" name="subfield" id="attr-editor-subfields"></input>
+                    <div class="hidden" id="attr-editor-subfields-tip">
+                    <p>[% l('You can enter multiple subfields, separated by spaces and/or commas') %]</p>
+                    <p>[% l('Example') %]: <code>a, b, j, x</code> or <code>a b j x</code></p></div>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="attr-editor-xpath">[% l('XPath (advanced)') %]: </label></td>
+
+                <td><input dojoType="dijit.form.TextBox" id="attr-editor-xpath" name="xpath"></input></td>
+            </tr>
+            <tr>
+                <td><label for="attr-editor-remove">[% l('Remove (advanced)') %]: </label></td>
+
+                <td><input dojoType="dijit.form.TextBox" id="attr-editor-remove" name="remove"></input></td>
+            </tr>
+            <tr id="attr-editor-create-bar">
+                <td colspan='2' align='center'>
+                    <button dojoType="dijit.form.Button" type="submit" 
+                        id="attr-editor-create-button">[% l('Create') %]</button>
+                    <button type="button" dojoType="dijit.form.Button"
+                        onclick="dijit.byId('attr-editor-dialog').onCancel();">[% l('Cancel') %]</button>
+                </td>
+            </tr>
+            <tr id="attr-editor-update-bar">
+                <td colspan='2' align='center'>
+                    <button dojoType="dijit.form.Button" type="submit" 
+                        id="attr-editor-update-button">[% l('Update') %]</button>
+                    <button type="button" dojoType="dijit.form.Button"
+                        onclick="dijit.byId('attr-editor-dialog').onCancel();">[% l('Cancel') %]</button>
+                    <button dojoType="dijit.form.Button" 
+                        type="button" 
+                        id="attr-editor-delete-button"
+                        style="padding-left: 2em;"
+                        onclick="if(confirm('[% l('Are you sure you want to delete this record?') %]')) { vlAttrDelete(); }">
+                            [% l('Delete record') %]</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <table dojoType='dojox.grid.DataGrid' jsId='attrEditorGrid' query="{id: '*'}" autoHeight='true'> 
+        <thead>
+            <tr>
+                <th field='id'>[% l('ID') %]</th>
+                <th field='code' width='auto'>[% l('Code') %]</th>
+                <th field='description' width='auto'>[% l('Description') %]</th>
+                <th field='tag' get='attrGridGetTag'>[% l('Tag') %]</th>
+                <th field='subfield' get='attrGridGetSubfield'>[% l('Subfield') %]</th>
+                <th field='xpath' width='auto'>[% l('XPath') %]</th>
+                <th field='remove' width='auto'>[% l('Remove') %]</th>
+            </tr>
+        </thead>
+    </table>
+    <div/>
+</div>
+
+

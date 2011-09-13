@@ -1,0 +1,132 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = "Configure Authority Authority Fields" %]
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class="oils-header-panel">
+        <div>Authority Fields</div>
+        <div>
+            <button dojoType="dijit.form.Button" onClick="acsaf_grid.showCreateDialog()">New Authority Field</button>
+            <button dojoType="dijit.form.Button" onClick="acsaf_grid.deleteSelected()">Delete Selected</button>
+        </div>
+    </div>
+    <div id="control-set-metadata-holder" class="hidden">
+        Showing only authority fields linked to control set:
+        <a id="control-set-metadata"></a>
+    </div>
+    <div>
+        <table  jsId="acsaf_grid"
+                dojoType="openils.widget.AutoGrid"
+                autoHeight="true"
+                defaultCellWidth="'12%'"
+                fieldOrder="['id','name','description','main_entry','control_set','tag','sf_list','bib_fields','axis_maps']"
+                suppressEditFields="['id']"
+                query="{id: '*'}"
+                fmClass="acsaf"
+                editOnEnter="true">
+            <thead>
+                <tr>
+                    <th field="bib_fields" name="Controlled Bib Fields"
+                        get="get_just_id" formatter="format_bib_fields"></th>
+                    <th field="axis_maps" name="Axes"
+                        get="get_just_id" formatter="format_axis_maps"></th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<script type="text/javascript"
+    src="[% ctx.media_prefix %]/js/ui/default/conify/global/cat/authority/common.js"></script>
+<script type="text/javascript">
+    dojo.require("openils.widget.AutoGrid");
+    dojo.require("openils.CGI");
+    dojo.require("openils.PermaCrud");
+
+    dojo.requireLocalization("openils.authority", "authority");
+    var localeStrings =
+        dojo.i18n.getLocalization("openils.authority", "authority");
+
+    var cgi, pcrud, control_set;
+    var acsaf_cache = {};
+
+    function acsaf_grid_loader() {
+        acsaf_cache = {};
+        acsaf_grid.resetStore();
+        acsaf_grid.showLoadProgressIndicator();
+        fieldmapper.standardRequest(
+            ["open-ils.cat",
+                "open-ils.cat.authority.control_set_authority_field.retrieve"],{
+                "async": true,
+                "params": [
+                    acsaf_grid.displayLimit, acsaf_grid.displayOffset,
+                    control_set.id(), cgi.param("focus")
+                ],
+                "onresponse": function(r) {
+                    if (r = openils.Util.readResponse(r)) {
+                        acsaf_cache[r.id()] = r;
+                        acsaf_grid.store.newItem(r.toStoreItem());
+                    }
+                },
+                "oncomplete": function() {
+                    acsaf_grid.hideLoadProgressIndicator();
+                }
+            }
+        );
+    }
+
+    function get_just_id(row_index, item) {
+        if (item) return this.grid.store.getValue(item, "id");
+    }
+
+    function format_axis_maps(id) {
+        if (id) {
+            var text = acsaf_cache[id].axis_maps().map(
+                function(f) { return f.axis().name(); }
+            ).sort().join(", ") || localeStrings.NONE_LINK;
+            var href = "browse_axis_authority_field_map?";
+            if (control_set)
+                href += "acs=" + control_set.id() + "&amp;";
+            href += "acsaf=" + id;
+            return "<a href='" + href + "'>"  + text + "</a>";
+        }
+    }
+
+    function format_bib_fields(id) {
+        if (id) {
+            var text = acsaf_cache[id].bib_fields().map(
+                function(f) { return f.tag(); }
+            ).sort().join(", ") || localeStrings.NONE_LINK;
+            var href = "control_set_bib_field?";
+            if (control_set)
+                href += "acs=" + control_set.id() + "&amp;";
+            href += "acsaf=" + id;
+            return "<a href='" + href + "'>"  + text + "</a>";
+        }
+    }
+
+    function my_init() {
+        cgi = new openils.CGI();
+        pcrud = new openils.PermaCrud();
+
+        control_set = cgi.param("acs");
+        if (control_set) {
+            control_set = pcrud.retrieve("acs", control_set);
+            render_control_set_metadata(control_set);
+
+            acsaf_grid.overrideEditWidgets.control_set =
+                new dijit.form.TextBox({"disabled": true});
+            acsaf_grid.overrideEditWidgets.control_set.shove =
+                {"create": control_set.id()};
+        }
+
+        acsaf_grid.onPostCreate = function(o) {
+            o.bib_fields([]);
+            o.axis_maps([]);
+            acsaf_cache[o.id()] = o;
+        };
+
+        acsaf_grid.dataLoader = acsaf_grid_loader;
+        acsaf_grid_loader();
+    }
+
+    openils.Util.addOnLoad(my_init);
+</script>
+[% END %]

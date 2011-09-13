@@ -2764,8 +2764,14 @@ INSERT into config.org_unit_setting_type
 ( 'org.patron_opt_default',
     oils_i18n_gettext( 'org.patron_opt_default', 'Circ: Patron Opt-In Default', 'coust', 'label'),
     oils_i18n_gettext( 'org.patron_opt_default', 'This is the default depth at which a patron is opted in; it is calculated as an org unit relative to the current workstation.', 'coust', 'label'),
-    'integer')
-,( 
+    'integer'),
+
+( 'opac.payment_history_age_limit',
+    oils_i18n_gettext( 'opac.payment_history_age_limit', 'OPAC: Payment History Age Limit', 'coust', 'label'),
+    oils_i18n_gettext( 'opac.payment_history_age_limit', 'The OPAC should not display payments by patrons that are older than any interval defined here.', 'coust', 'label'),
+    'interval'),
+
+( 
         'ui.circ.billing.uncheck_bills_and_unfocus_payment_box',
         oils_i18n_gettext(
             'ui.circ.billing.uncheck_bills_and_unfocus_payment_box',

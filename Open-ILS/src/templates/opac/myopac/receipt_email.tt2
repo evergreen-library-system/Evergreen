@@ -1,0 +1,21 @@
+[%  PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2";
+    WRAPPER "opac/parts/myopac/base.tt2";
+    myopac_page = "prefs"  %]
+    [% IF ctx.email_receipt_result; # result should be undef on success %]
+    <div class="payment-error">
+        [% l('Error preparing receipt:') %]
+        <span title="[% ctx.email_receipt_result.textcode | html %]">
+            [% ctx.email_receipt_result.desc | html %]
+        </span>
+    </div>
+    [% ELSE %]
+    <div>
+        [% l('Your receipt will be emailed to [_1]', ctx.user.email) | html %]
+    </div>
+    [% END %]
+    <p>
+        [ <a href="[% ctx.opac_root %]/myopac/main_payments">[%
+            l("Back to Payments History") %]</a> ]
+    </p>
+[% END %]

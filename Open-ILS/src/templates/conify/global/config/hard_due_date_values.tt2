@@ -1,0 +1,73 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = "Hard Due Date Values" %]
+<script type="text/javascript">
+    dojo.require("openils.CGI");
+    dojo.require("openils.PermaCrud");
+    dojo.require("openils.Util");
+    dojo.require("openils.widget.AutoGrid");
+    dojo.require("dijit.form.TextBox");
+
+    openils.Util.addOnLoad(
+        function() {
+            var filter = null;
+            var chdd_id = (new openils.CGI()).param("chdd");
+
+            if (chdd_id) {
+                filter = {"hard_due_date": chdd_id};
+                var hard_due_date =
+                    (new openils.PermaCrud()).retrieve("chdd", chdd_id);
+
+                dojo.byId("linked_chdd_name").innerHTML = hard_due_date.name();
+                dojo.byId("linked_chdd_link").innerHTML = hard_due_date.id();
+                dojo.byId("linked_chdd_link").onclick = function() {
+                    location.href = oilsBasePath +
+                        "/conify/global/config/hard_due_date?id=" +
+                        hard_due_date.id();
+                };
+                openils.Util.show("linked_chdd");
+            }
+
+            chddvGrid.overrideEditWidgets.hard_due_date =
+                new dijit.form.TextBox({"disabled": true});
+            chddvGrid.overrideEditWidgets.hard_due_date.shove = {
+                "create": chdd_id
+            };
+
+            chddvGrid.loadAll({"order_by": {"chddv": "active_date"}}, filter);
+        }
+    );
+</script>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane"
+        layoutAlign="top" class="oils-header-panel">
+        <div>Hard Due Date Values</div>
+        <div>
+            <button
+                dojoType="dijit.form.Button"
+                onClick="chddvGrid.showCreateDialog();">New Hard Due Date Value</button>
+            <button
+                dojoType="dijit.form.Button"
+                onClick="chddvGrid.deleteSelected();">Deleted Selected</button>
+        </div>
+    </div>
+    <div class="hidden" id="linked_chdd">
+        <em>Showing only hard due date values related to hard due date object</em>
+        <strong id="linked_chdd_name"></strong> (#
+        <a href="javascript:void(0);" id="linked_chdd_link"></a>)
+    </div>
+    <div>
+        <table jsId="chddvGrid"
+            dojoType="openils.widget.AutoGrid"
+            showPaginator="true"
+            query="{name: '*'}"
+            defaultCellWidth="'auto'"
+            fieldOrder="['hard_due_date', 'ceiling_date', 'active_date']"
+            suppressFields="['hard_due_date']"
+            suppressEditFields="['id']"
+            fmClass="chddv"
+            hideSelector="true"
+            editOnEnter="true">
+        </table>
+    </div>
+</div>
+[% END %]

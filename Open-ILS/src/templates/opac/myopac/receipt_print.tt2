@@ -1,0 +1,25 @@
+[%# sic! no wrapper %]
+<html>
+    <head>
+        <title>[% l('Receipt') %]</title>
+    </head>
+    <body onload="if (document.getElementById('printable-receipt')) window.print();">
+        [% IF ctx.printable_receipt.template_output %]
+        <tt id="printable-receipt">
+            [% ctx.printable_receipt.template_output.data %]
+        </tt>
+        [% ELSE %]
+        <div class="payment-error">
+            [% l(
+                'Error preparing receipt: [_1]',
+                    (ctx.printable_receipt.textcode ? ctx.printable_receipt.textcode _ ' / ' _ ctx.printable_receipt.desc : 0) ||
+                    ctx.printable_receipt.error_output.data ||
+                    l('No receipt data returned from server')
+                ) | html %]
+        </div>
+        [% END %]
+        <hr />
+        <p>[ <a href="[% ctx.opac_root %]/myopac/main_payments">[%
+            l("Back to Payments History") %]</a> ]</p>
+    </body>
+</html>

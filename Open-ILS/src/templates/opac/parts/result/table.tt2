@@ -1,0 +1,268 @@
+[%  PROCESS "opac/parts/misc_util.tt2";
+
+    USE ResolverResolver;
+
+    ctx.result_start = 1 + ctx.page_size * page;
+    ctx.result_stop = ctx.page_size * (page + 1);
+    IF ctx.result_stop > ctx.hit_count; ctx.result_stop = ctx.hit_count; END;
+
+    result_count = ctx.result_start;
+%]
+
+<div style="height: 10px;"></div>
+
+[% PROCESS "opac/parts/result/paginate.tt2" %] 
+[% ctx.results_count_header = PROCESS results_count_header;
+    ctx.results_count_header %]
+
+<div id="result_table_div">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tr>
+            <td valign="top" width="1" style="padding-right:20px;">
+                <div style="width:174px;" class="hide_me">
+                    SIDEBAR TODO
+                </div>
+            </td>
+            <td class='opac-auto-015' width="1"></td>
+            <td valign="top">
+                <table cellpadding="0" cellspacing="0"
+                    border="0" width="100%" style="margin-top:10px;">
+                    <tbody id="result_table">
+                    [%  FOR rec IN ctx.records;
+                            attrs = {marc_xml => rec.marc_xml};
+                            PROCESS get_marc_attrs args=attrs %]
+                        <tr>
+                            <td class='result_table_row' align='left' width='100%'>
+                                <table cellpadding="0" cellspacing="0" class='result_table_subtable'>
+                                    <tbody class='result_table_subtbody'>
+                                        <tr name='counts_row'>
+                                            <td width="58" valign="top"
+                                                style="font-weight:bold;padding-left:10px;"
+                                                name="results_row_count">[%
+                                                    result_count; result_count = result_count + 1
+                                                %].</td>
+                                            <td class='result_table_pic_header' align='center'
+                                                width="78" nowrap="nowrap" valign="top">
+                                                [% ident = attrs.isbn_clean || attrs.upc; IF ident; %]
+                                                <a href="[% mkurl(ctx.opac_root _ '/record/' _ rec.id) %]"><img alt="[% l('Image of item') %]"
+                                                        name='item_jacket' class='result_table_pic' width="55"
+                                                        src='[% ctx.media_prefix %]/opac/extras/ac/jacket/small/[% ident | uri %]' /></a><br />
+                                                [% END %]
+                                            </td>
+                                            <td class='result_table_title_cell'
+                                                name='result_table_title_cell'
+                                                valign="top">
+                                                <div class="bold">
+                                                    <a name='record_[% rec.id %]' title="[% attrs.title | uri %]" name='item_title'
+                                                        href="[% mkurl(ctx.opac_root _ '/record/' _ rec.id) %]"
+                                                        class='search_link'>[% attrs.title | html %]</a>
+                                                </div>
+                                                <div style="font-size:11px;">
+                                                    <div>
+                                                        <em><a title="[% l("Perform an Author Search") %]"
+                                                                name='item_author'
+                                                                href="[%- 
+                                                                    authorquery = attrs.author | replace('[,\.:;]', '');
+                                                                    mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery}, ['page'])
+                                                                    -%]">[% attrs.author | html %]</a></em>
+                                                        &nbsp;&nbsp;
+                                                        [% attrs.pubdate | html %]
+                                                    </div>
+                                                    <table cellpadding="0" cellspacing="0" border="0"
+                                                        class="results_info_table">
+                                                        [% IF args.holdings.size > 0 %]
+                                                        <tr name='bib_cn_list' class='result_table_title_cell'>
+                                                            <td valign='top'>
+                                                                <strong>[% l('Call number:') %]</strong>
+                                                            </td>
+                                                            <td>[% args.holdings.0.label | html %]</td>
+                                                        </tr>
+                                                        [% END %]
+
+                                                        [% IF CGI.param('detail_record_view') %]
+                                                        <!-- These fields are visible when viewing the results page in 'detailed' mode -->
+
+                                                        [% IF attrs.publisher %]
+                                                            <tr name="results_pub_tr">
+                                                                <td valign="top">
+                                                                    <strong>[% l('Publisher:') %]</strong>
+                                                                </td>
+                                                                <td>[% attrs.publisher | html %]</td>
+                                                            </tr>
+                                                        [% END %]
+                                                        [% IF attrs.isbns.size > 0 %]
+                                                            <tr name="results_isbn_tr">
+                                                                <td valign="top">
+                                                                    <strong>[% l('ISBN:') %]</strong>
+                                                                </td>
+                                                                <td>[% attrs.isbns.0 | html %]</td>
+                                                            </tr>
+                                                        [% END %]
+                                                        [%- IF openurl.enabled == 'true';
+                                                            FOR issn IN args.issns;
+                                                                sfx = ResolverResolver.resolve_issn(issn, openurl.baseurl);
+                                                                FOR res IN sfx;
+                                                        %]
+                                                        <tr name="results_issn_tr">
+                                                            <td valign="top">
+                                                                <strong><a href="[% res.target_url %]">
+                                                                [% res.public_name | html %]</a></strong>
+                                                            </td>
+                                                            <td>[% res.target_coverage | html %]</td>
+                                                        </tr>
+                                                                [% END %]
+                                                            [% END %]
+                                                        [% END %]
+
+                                                        [% IF attrs.edition %]
+                                                            <tr name="results_edition_tr">
+                                                                <td valign="top">
+                                                                    <strong>[% l('Edition:') %]</strong>
+                                                                </td>
+                                                                <td>[% attrs.edition | html %]</td>
+                                                            </tr>
+                                                        [% END %]
+                                                        [% IF attrs.phys_desc %]
+                                                            <tr name="results_phys_desc_tr">
+                                                                <td nowrap="nowrap" valign="top">
+                                                                    <strong>[% l('Phys. Desc.:') %]</strong>
+                                                                </td>
+                                                                <td>
+                                                                    [% args.phys_desc | html %]
+                                                                </td>
+                                                            </tr>
+                                                        [% END %]
+                                                        [% FOR uri IN args.uris %]
+                                                            <tr name='bib_uri_list' class='result_table_title_cell'>
+                                                                <td valign='top'>
+                                                                    <strong>[% l('Electronic resource') %]</strong>
+                                                                </td>
+                                                                <td><a href="[% uri.href %]">[% uri.link | html %]</a>[% ' - ' _ uri.note | html IF uri.note %]</td>
+                                                            </tr>
+                                                            [% END %]
+                                                            [% IF args.holdings.size > 0 %]
+                                                            <tr name='bib_cn_list' class='result_table_title_cell'>
+                                                                <td colspan='2'>
+                                                                    <table class='result_holdings_table'>
+                                                                        <thead><tr>
+                                                                            <th>[% l('Library') %]</th>
+                                                                            <th>[% l('Shelving location') %]</th>
+                                                                            <th>[% l('Call number') %]</th>
+                                                                            <th>[% l('Status') %]</th>
+                                                                        </tr></thead>
+                                                                        <tbody>
+                                                                [% FOR copy IN args.holdings %]
+                                                                        <tr>
+                                                                            <td>[% copy.library | html %]</td>
+                                                                            <td>[% copy.location | html %]</td>
+                                                                            <td>[% copy.label | html %]</td>
+                                                                            <td>[% copy.status | html %]</td>
+                                                                        </tr>
+                                                                [% END %]
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                        [% END %]
+                                                        [% END %] <!-- END detail_record_view -->
+                                                    </table>
+                                                    <div>
+                                                        [% l('[_1] of [quant,_2,copy,copies] available',
+                                                            attrs.copy_counts.available, attrs.copy_counts.count) # XXX s/count/nshadow/ ?
+                                                            #rec.copy_counts.available, rec.copy_counts.visible) 
+                                                        %]
+                                                    </div>
+                                                </div>
+                                                <div class="hide_me">
+                                                    <span name='result_table_extra_span' class='hide_me'>
+                                                        <span name='result_table_pub_box'
+                                                            style='padding-left: 10px;'>
+                                                            <span name='result_table_edition_span'
+                                                                style='padding-left: 10px;'></span> |
+                                                            <span name='result_table_pub_span'> </span> |
+                                                            <span name='result_table_phys_span'> </span>
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                            </td>
+
+                                            <td name='result_table_format_cell' class='result_table_format_cell' width="1">
+
+                                                [% IF attrs.format_icon %]
+                                                <img title="[% attrs.format_label | html %]" alt="[% attrs.format_label | html %]" src="[% attrs.format_icon %]" />
+                                                [% END %]
+
+                                                <!-- unAPI link -->
+                                                <abbr class="unapi-id" title='tag:[% ctx.hostname %],[% date.format(date.now, '%Y') %]:biblio-record_entry/[% rec.id %]'></abbr>
+
+                                                <!-- Empty span used for creating Google Book Search-->
+                                                <span name="googleBooksLink" class="hide_me">
+                                                    <a style='padding-left: 8px;'
+                                                        class='classic_link hide_me'
+                                                        name="googleBooks-link">[% l("Browse in Google Books Search") %]</a>
+                                                </span>
+
+                                            </td>
+                                            <td nowrap='nowrap' width="1" align="right">
+                                                <div style="width:250px;text-align:left;">
+                                                    <div style="float:right;">
+                                                        <div class="results_aux_utils opac-auto-010"><a
+                                                                href="[% mkurl(ctx.opac_root _ '/place_hold', {hold_target => rec.id, hold_type => 'T'}) %]" 
+                                                                    name="place_hold_link" class="no-dec"><img
+                                                                src="[% ctx.media_prefix %]/images/green_check.png"
+                                                                alt=""/><span style="position:relative;top:-3px;left:3px;">[% l('Place Hold') %]</span></a>
+                                                        </div>
+                                                        <div class="results_aux_utils opac-auto-011">
+                                                            [%  
+                                                                operation = ctx.mylist.grep(rec.id).size ? "delete" : "add";
+                                                                label = (operation == "add") ? l("Add to my list") : l("Remove from my list");
+                                                                href = mkurl(ctx.opac_root _ '/mylist/' _ operation, 
+                                                                        {record => rec.id, anchor => 'record_' _ rec.id}, 1);
+                                                            %]      
+                                                            <a href="[% href %]" class="no-dec">
+                                                                <img src="[% ctx.media_prefix %]/images/clipboard.png" alt="" />
+                                                                [% label %]
+                                                            </a>
+                                                        </div>
+                                                        [% IF ENV.OILS_CONTENT_CAFE_USER %]
+                                                        <div class="results_aux_utils opac-auto-011">
+                                                            <a title="[% l('Reviews and More') %]" target='_blank' 
+                                                                href="[% ctx.proto %]://contentcafe2.btol.com/ContentCafeClient/ContentCafe.aspx?UserID=[%- 
+                                                                    ENV.OILS_CONTENT_CAFE_USER %]&amp;Password=[%-
+                                                                    ENV.OILS_CONTENT_CAFE_PASS %]&amp;ItemKey=[% ident | uri %]&Options=Y">
+                                                                <img src='[% ctx.media_prefix %]/images/starz.png'/> 
+                                                                <span style='position:relative;top:-5px;'>[% l('Reviews &amp; More') %]</span>
+                                                            </a>
+                                                        </div>
+                                                        [% END %]
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td/>
+                                            <td align='center'> <!-- Chilifresh reviews link --> 
+                                                <div class="chili_review" id="isbn_[% attrs.isbn_clean | html %]"> </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td/>
+                                            <td colspan='5'> <!-- Chilifresh reviews panel -->
+                                                <div id="chili_review_[% attrs.isbn_clean | html %]" style="display: none;" align="center" width="100%"></div>
+                                            </td>
+                                        </tr>
+                                        <tr><td colspan="5"><div style="height:0px;border-top:1px solid #b7b7b7;border-bottom:1px solid #d4d4d4;margin:15px 0px;"></div></td></tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    [% END %]
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+<div>
+    [% ctx.results_count_header %]
+</div>

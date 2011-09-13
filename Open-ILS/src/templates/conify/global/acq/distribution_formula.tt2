@@ -1,0 +1,100 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = 'Distribution Formulas' %]
+
+<div id='formula-list-div'>
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
+            <div>Distribution Formulas</div>
+            <div>
+                <button dojoType='dijit.form.Button' onClick='fListGrid.showCreateDialog()'>New Formula</button>
+                <button dojoType='dijit.form.Button' onClick='fListGrid.deleteSelected()'>Delete Selected</button>
+                <button dojoType='dijit.form.Button' onClick='cloneSelectedFormula()'>Clone Selected</button>
+            </div>
+        </div>
+        <table  jsId="fListGrid"
+                dojoType="openils.widget.AutoGrid"
+                fieldOrder="['id', 'name', 'owner', 'item_count']"
+                suppressFields="['skip_count']"
+                query="{id: '*'}"
+                defaultCellWidth='12'
+                fmClass='acqdf'
+                autoHeight='true'
+                editOnEnter='true'>
+            <thead>
+                <tr>
+                    <th field='name' get='getFormulaName' formatter='formatName'/>
+                    <th field='item_count' get='getItemCount'/>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+
+<div id='formula-entry-div'>
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
+        <div><a href='javascript:void(0);' id="formula_head"></a></div>
+        <div>
+        </div>
+    </div>
+    <br/>
+    <div>
+        <button dojoType='dijit.form.Button' onClick='addEntry()'>New Entry</button>
+        <span style='padding-right:20px;'></span>
+        <button dojoType='dijit.form.Button' onClick='saveFormula()'>Apply Changes</button>
+    </div>
+    <br/>
+    <table class='oils-generic-table'>
+        <thead>
+            <tr>
+                <th></th>
+                <th>Owning Library</th>
+                <th>Shelving Location</th>
+                <th>Item Count</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id='formula-entry-tbody'>
+            <tr id='formula-entry-tempate'>
+                <td><div name='delete' dojoType='dijit.form.Button' style='color:red;' scrollOnFocus='false'>X</div></td>
+                <td><div name='owning_lib'></td>
+                <td><div name='location'></td>
+                <td><div name='item_count'></td>
+                <td>
+                    <img src='[% ctx.media_prefix %]/images/dimple.png'/>
+                    <img src='[% ctx.media_prefix %]/images/dimple.png'/>
+                    <img src='[% ctx.media_prefix %]/images/dimple.png'/>
+                <td>
+            </tr>
+        </tbody>
+    </table>
+    <br/>
+    <div>
+        <button dojoType='dijit.form.Button' onClick='addEntry()'>New Entry</button>
+        <span style='padding-right:20px;'></span>
+        <button dojoType='dijit.form.Button' onClick='saveFormula()'>Apply Changes</button>
+    </div>
+</div>
+
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/acq/distribution_formula.js'></script>
+
+<script type="text/javascript"> 
+    var formulaId = '[% ctx.page_args.0 %]';
+
+    function getFormulaName(rowIndex, item) {
+        if(!item) return '';
+        var name = this.grid.store.getValue(item, 'name');
+        var id = this.grid.store.getValue(item, 'id');
+        return id + ':' + name;
+    }
+
+    function formatName(value) {
+        if(value) {
+            var vals = value.split(/:/);
+            return '<a href="'+location.href+ '/'+vals[0]+'">'+vals[1]+'</a>';
+        }
+    }
+</script>
+
+[% END %]
+

@@ -1,0 +1,55 @@
+[% 
+
+##############################################################################
+# This file contains skin-level configuration settings.
+# Many of these settings will probably migrate into actor.org_unit_settings.
+##############################################################################
+
+##############################################################################
+# RefWorks configuration
+##############################################################################
+# RefWorks is a Web-based citation manager
+ctx.refworks.enabled = 'false';
+
+# Base URL for RefWorks
+ctx.refworks.url = 'http://www.refworks.com';
+
+# Some sites have a hosted RefWorks instance at a different URL;
+# in addition, you might want to proxy access to RefWorks - for example:
+# ctx.refworks.url = 'http://librweb.laurentian.ca/login?url=http://refworks.scholarsportal.info';
+
+##############################################################################
+# OpenURL resolution
+##############################################################################
+# Evergreen provides the ability to point at an OpenURL resolver to find
+# electronic resources for a given ISSN or ISBN. Currently, only the SFX
+# resolver is supported.
+#
+# You must enable the open-ils.resolver instance in opensrf.xml to use
+# this feature.
+##############################################################################
+
+openurl.enabled = 'false';
+openurl.baseurl = 'http://sfx.example.com/instance';
+
+##############################################################################
+# Google Analytics support
+##############################################################################
+# You can enable Google Analytics support in Evergreen by entering a
+# valid Google Analytics code and changing 'false' to 'true'
+##############################################################################
+google_analytics.enabled = 'false';
+google_analytics.code = 'UA-9999999-99';
+
+##############################################################################
+# Misc. UI Settings
+##############################################################################
+
+##############################################################################
+# Size of the jacket image to display on the record detail summary.
+# Sizes vary depending on added content provider.
+# Options are "small", "medium", and "large"
+record.summary.jacket_size = 'medium';
+
+
+%]

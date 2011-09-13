@@ -1,8 +1,7 @@
 <div id='copyright_block'>
 		<div id='footer_links'>
 				<span class='footer_link'>
-					<a class='classic_link'
-						href='/opac/<!--#echo var="locale"-->/extras/slimpac/start.html'>&opac.basic;</a>
+					<a class='classic_link' href='/eg/opac/home'>&opac.basic;</a>
 				</span> 
 				<span> | </span>
 				<span class='footer_link'>

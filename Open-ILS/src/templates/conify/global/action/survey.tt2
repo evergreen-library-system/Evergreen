@@ -1,0 +1,96 @@
+[% WRAPPER base.tt2 %]
+   <div dojoType="dijit.layout.ContentPane" layoutAlign='top'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+            <div>Survey List</div>
+            <div>
+                <button dojoType='dijit.form.Button' onclick='svNewSurvey();'>Add New Survey</button>
+                <button dojoType='dijit.form.Button' onclick='deleteFromGrid();'>Delete Selected</button>
+                <button dojoType='dijit.form.Button' onclick='endSurvey();'>End Selected Surveys</button>
+            </div>
+        </div>
+
+<!-- grid -->
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:400px'>
+    <table jsId="svGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}">
+        <thead>
+            <tr>
+                <th field="id">Survey ID</th>
+                <th field="name" formatter='formatName' width='auto'>Name</th>
+                <th field="description" width='auto'>Description</th>                    
+                <th field="owner" get='getOrgInfo'>Owning Library</th>
+                <th field="start_date" width='auto' get='getDateTimeField'>Survey Start Date</th>
+                <th field="end_date" width='auto' get='getDateTimeField'>End Date</th>
+                <th field="opac" formatter='formatBool'>OPAC Survey?</th>                
+                <th field="poll" formatter='formatBool' >Poll Style?</th>
+                <th field="required" formatter='formatBool'>Is Required?</th>
+                <th field="usr_summary" formatter='formatBool'>Display in User Summary?</th>
+            </tr>
+        </thead>
+    </table>    
+</div>
+
+<div style='display:none;' dojoType="dijit.Dialog" jsId='svSurveyDialog' title='New Survey' execute='svCreate(arguments[0]);'>
+
+        <table id='surveyDialog'>
+            <tr>
+                <td>Name</td>
+                <td><input dojoType='dijit.form.TextBox' name='svName'/></td>
+            </tr>
+            <tr>
+                <td>Description</td>
+                <td><input dojoType='dijit.form.TextBox' name='svDescription'></td>
+            </tr>
+            <tr>
+                <td>Owning Library</td>
+                <td><select dojoType='openils.widget.OrgUnitFilteringSelect' name='svOwner' jsId='asvOwningOrg' searchAttr='shortname' labelAttr='shortname'/></td>
+            </tr>
+            <tr>
+                <td>Start Date</td>
+                <td><input dojoType='dijit.form.TextBox' name='svStart_date'></td>
+            </tr>
+            <tr>
+                <td>End Date</td>
+                <td><input dojoType='dijit.form.TextBox' name='svEnd_date'></td>
+            </tr>
+            <tr>
+                <td>OPAC Survey?</td>
+                <td><input dojoType='dijit.form.CheckBox' name='svOpac'></td>
+            </tr>
+            <tr>
+                <td>Poll Style?</td>
+                <td><input dojoType='dijit.form.CheckBox' name='svPoll'></td>
+            </tr>
+            <tr>
+                <td>Is Required?</td>
+                <td><input dojoType='dijit.form.CheckBox' name='svRequired'></td>
+            </tr>
+            <tr>
+                <td>Display in User Summary?</td>
+                <td><input dojoType='dijit.form.CheckBox' name='svUsr_summary'></td>
+            </tr>
+            <tr>
+                <td colspan='2' align='center'>
+                    <button jsId='createSave' dojoType='dijit.form.Button' type='submit'>Save Changes</button>
+
+                    
+                </td>
+            </tr>
+            
+        </table>
+</div>
+
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/action/survey.js'></script>
+<script type="text/javascript">
+    function formatName(inDatum) {
+        for(var i in svCache){
+            var sv = svCache[i];
+            var id = sv.id();
+            if (inDatum  == sv.name()){
+                return '<a href="[% ctx.base_path %]/conify/global/action/survey/edit/'+id+'">'+inDatum+'</a>';
+            }
+        }
+    }
+</script>
+[% END %]
+
+

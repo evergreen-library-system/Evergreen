@@ -1,0 +1,64 @@
+<h1>[% l('Export Records') %]</h1><br/>
+<form method="POST" enctype="multipart/form-data" action='https://[% ctx.hostname %]/exporter'>
+    <table class='form_table'>
+        <tr class='export_tr_border'>
+            <td>[% l('Use Field Number') %]</td>
+            <td>
+                <input dojoType='dijit.form.TextBox' type="text" size="2" maxlength="2" name="idcolumn" value="0"/>
+                [% l('(starting from 0)') %]
+            </td>
+        </tr>
+        <tr>
+            <td>[% l('From CSV File') %]</td>
+            <td><input type="file" name="idfile"/></td>
+        </tr>
+        <tr><td colspan='2'><b>[% l('Or') %]</b></td></tr>
+        <tr class='export_tr_border'>
+            <td>[% l('Record ID') %]</td>
+            <td><input dojoType='dijit.form.TextBox' type="text" size="12" maxlength="12" name="id"/></td>
+        </tr>
+        <tr><td colspan='2'><b>[% l('Or') %]</b></td></tr>
+        <tr class='export_tr_border'>
+            <td>[% l('Record Bucket ID') %]</td>
+            <td><input dojoType='dijit.form.TextBox' type='text' name='containerid'/></td>
+        </tr>
+        <tr class='export_tr_border'>
+            <td>[% l('Record Type') %]</td>
+            <td>
+                <select name="rectype" dojoType='dijit.form.FilteringSelect'>
+                    <option value="biblio">[% l('Bibliographic Records') %]</option>
+                    <option value="authority">[% l('Authority Records') %]</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>[% l('Record Format') %]</td>
+            <td>
+                <select name="format" dojoType='dijit.form.FilteringSelect'>
+                    <option value="USMARC">[% l('MARC21') %]</option>
+                    <option value="UNIMARC">[% l('UNIMARC') %]</option>
+                    <option value="XML">[% l('MARC XML') %]</option>
+                    <option value="BRE">[% l('Evergreen Record Entry') %]</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>[% l('Record Encoding') %]</td>
+            <td>
+                <select name="encoding" dojoType='dijit.form.FilteringSelect'>
+                    <option value="UTF-8">[% l('UTF-8') %]</option>
+                    <option value="MARC8">[% l('MARC8') %]</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>[% l('Include holdings in Bibliographic Records') %]</td>
+            <td><input dojoType='dijit.form.CheckBox' type="checkbox" name="holdings" value="1"/></td>
+        </tr>
+        <tr>
+            <td colspan='2'>
+                <button dojoType='dijit.form.Button' type="submit" value="Retrieve Records">[% l('Retrieve Records') %]</button>
+            </td>
+        </tr>
+    </table>
+</form>

@@ -2531,6 +2531,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="xact" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field name="grocery" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field name="circulation" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field name="reservation" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field name="billing_location" reporter:datatype="link"/>
 		</fields>
 		<links>
@@ -2538,6 +2539,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="xact" reltype="might_have" key="id" map="" class="mbt"/>
 			<link field="circulation" reltype="might_have" key="id" map="" class="circ"/>
 			<link field="grocery" reltype="might_have" key="id" map="" class="mg"/>
+			<link field="reservation" reltype="might_have" key="id" map="" class="bresv"/>
 			<link field="billing_location" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>

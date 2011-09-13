@@ -1,0 +1,28 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = 'Circ Duration Rules' %]
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+        <div>Circ Duration Rules</div>
+        <div>
+            <button dojoType='dijit.form.Button' onClick='ruleCircDurationGrid.showCreateDialog()'>New Duration Rule</button>
+            <button dojoType='dijit.form.Button' onClick='ruleCircDurationGrid.deleteSelected()'>Delete Selected</button>
+        </div>
+    </div>
+    <div>
+    <table  jsId="ruleCircDurationGrid"
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['name', 'max_renewals', 'shrt', 'normal', 'extended']"
+            suppressFields="['id']"
+            query="{id: '*'}"
+            fmClass='crcd'
+            editOnEnter='true'/>
+</div>
+
+<script type="text/javascript">
+    dojo.require('openils.Util');
+    dojo.require('openils.widget.AutoGrid');
+    openils.Util.addOnLoad( function() { ruleCircDurationGrid.loadAll(); } );
+</script>
+[% END %]
+
+

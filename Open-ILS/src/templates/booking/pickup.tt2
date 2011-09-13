@@ -1,0 +1,78 @@
+[% WRAPPER "base.tt2" %]
+<link rel="stylesheet" type="text/css" href="[% ctx.media_prefix %]/css/skin/[% ctx.skin %]/booking.css" />
+<div id="auto_l10n_start_here">
+    <h1 class="booking AUTO_h1"></h1>
+    <div class="nice_vertical_padding" id="contains_barcode_control">
+        <form id="lookup" onsubmit="return act(this);">
+            <label for="patron_barcode" class="AUTO_patron_barcode"></label>
+            <input id="patron_barcode" name="patron_barcode" />
+            <input type="submit" class="AUTO_ATTR_VALUE_go" />
+        </form>
+    </div>
+    <div class="nice_vertical_padding" id="contains_patron_info">
+        <div id="patron_info"></div>
+    </div>
+    <div class="nice_vertical_padding" id="contains_ready_bresv">
+        <h3 class="booking AUTO_ready_bresv"></h3>
+        <div class="AUTO_no_ready_bresv" id="no_ready_bresv"></div>
+        <table id="ready_bresv" jsId="ready_bresv"
+            dojoType="dojox.grid.DataGrid" query="{id: '*'}"
+            rowSelector="20px" autoHeight="true" width="auto">
+            <thead>
+                <tr><!-- FIXME: i18n problem: init_auto_l10n() runs
+                        too late to take care of the below elements. -->
+                    <th width="35%" field="type">Title</th>
+                    <th width="25%" field="resource">Barcode</th>
+                    <th width="20%" field="start_time">Start time</th>
+                    <th width="20%" field="end_time">End time</th>
+                </tr>
+            </thead>
+        </table>
+        <div class="nice_vertical_padding" id="controls_ready_bresv">
+            <form>
+                <input type="button" id="pickup_button"
+                    class="AUTO_ATTR_VALUE_pickup"
+                    onclick="p.act_on_selected('pickup', 'ready');" />
+            </form>
+        </div>
+    </div>
+    <div class="nice_vertical_padding" id="contains_out_bresv">
+        <hr />
+        <h3 class="booking AUTO_out_bresv"></h3>
+        <div class="AUTO_no_out_bresv" id="no_out_bresv"></div>
+        <table id="out_bresv" jsId="out_bresv"
+            dojoType="dojox.grid.DataGrid" query="{id: '*'}"
+            rowSelector="20px" autoHeight="true" width="auto">
+            <thead>
+                <tr><!-- FIXME: i18n problem: init_auto_l10n() runs
+                        too late to take care of the below elements. -->
+                    <th width="35%" field="type">Title</th>
+                    <th width="25%" field="resource">Barcode</th>
+                    <th width="20%" field="pickup_time">Pickup time</th>
+                    <th width="20%" field="end_time">Due time</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div class="nice_vertical_padding" id="contains_misc_controls">
+        <hr />
+        <form>
+            <input type="button" class="AUTO_ATTR_VALUE_reset"
+                onclick="p.reset();" />
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/booking/common.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/booking/populator.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/booking/pickup.js"></script>
+<script type="text/javascript">
+    dojo.require("dojox.grid.DataGrid");
+    openils.Util.addOnLoad(my_init);
+
+    function act(f) {
+        p.populate({"patron": f.patron_barcode.value});
+        return false; /* Always. */
+    }
+</script>
+[% END %]

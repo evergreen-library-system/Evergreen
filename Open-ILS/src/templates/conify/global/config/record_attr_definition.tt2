@@ -1,0 +1,35 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = 'MARC Record Attribute Definitions' %]
+<h1>Record Attribute Definitions</h1> <br/>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
+    <div>Record Attribute Definitions</div>
+    <div>
+        <button dojoType='dijit.form.Button' onClick='cradGrid.showCreateDialog()'>New Attr. Definition</button>
+        <button dojoType='dijit.form.Button' onClick='cradGrid.deleteSelected()'>Delete Selected</button>
+    </div>
+</div>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <table  jsId="cradGrid"
+            autoHeight='true'
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['name', 'label']",
+            query="{name: '*'}"
+            fmClass='crad'
+            showPaginator='true'
+            editOnEnter='true'/>
+ </div>
+
+<script type ="text/javascript">
+    dojo.require('openils.widget.AutoGrid');
+    openils.Util.addOnLoad(
+        function() {
+            // avoid loading the entire config.xml_transform object
+            cradGrid.overrideWidgetArgs.format = {searchOptions : {"select":{"cxt":["name"]}}};
+            cradGrid.loadAll({order_by : {crad : 'name'}}) 
+        }
+    );
+</script>
+
+[% END %]

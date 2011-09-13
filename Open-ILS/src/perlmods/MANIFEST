@@ -126,6 +126,7 @@ lib/OpenILS/SIP/Transaction.pm
 lib/OpenILS/SIP/Transaction/Checkin.pm
 lib/OpenILS/SIP/Transaction/Checkout.pm
 lib/OpenILS/SIP/Transaction/Renew.pm
+lib/Template/Plugin/ResolverResolver.pm
 lib/OpenILS/Template/Plugin/Unicode.pm
 lib/OpenILS/Template/Plugin/WebSession.pm
 lib/OpenILS/Template/Plugin/WebUtils.pm

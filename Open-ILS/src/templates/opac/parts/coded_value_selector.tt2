@@ -1,0 +1,28 @@
+
+[%- 
+    # If caller passes a list of possible attribute types, 
+    # search all until we find some values
+
+    IF !attr.size; attr = [attr]; END;
+    all_values = [];
+    attr_class = '';
+    FOR attr_class IN attr;
+        all_values = ctx.search_ccvm('ctype', attr_class);
+        IF all_values.size > 0; LAST; END;
+    END;
+    name = name || "fi:" _ attr_class;
+    id = id || attr_class _ "_selector";
+    values = values || CGI.param(name); 
+-%]
+
+<select id='[% id %]' name='[% name %]'[%
+    multiple ? ' multiple="multiple"' : '';
+    size ? (' size="' _ size _ '"') : ''; %]>
+[% IF none_ok %]
+    <option value=''>[% none_label ? none_label : l('-- Any --') %]</option>
+[% END %]
+[% FOR o IN all_values %]
+    <option value='[% o.code | uri %]'[% values.grep('^' _ o.code _ '$').size ? ' selected="selected"' : '' %]>[% o.value | html %]</option>
+[%  END -%]
+</select>
+

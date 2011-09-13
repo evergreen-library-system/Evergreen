@@ -1,0 +1,29 @@
+[% BLOCK get_hold_status %]
+    <div>
+    [% 
+        IF hold.hold.status == 4;
+            l("Available") | html;
+            IF ahr.shelf_expire_time;
+                '<br/>';
+                l('Expires [_1]', 
+                    date.format(ctx.parse_datetime(ahr.shelf_expire_time), DATE_FORMAT)) | html;
+            END;
+
+        ELSIF hold.hold.estimated_wait AND hold.hold.estimated_wait > 0;
+            # estimated wait is delivered as seconds.
+            SET hwait = POSIX.ceil(hold.hold.estimated_wait / 86400);
+            l("Estimated wait: [quant,_1,day,days]", hwait) | html;
+
+        ELSIF hold.hold.status == 3;
+            l("In Transit") | html;
+
+        ELSIF hold.hold.status < 3;
+            l("Waiting for copy") | html;
+        END 
+    %]
+    </div>
+    <div>
+        [% l('[_1] hold on [quant,_2,circulating copy,circulating copies]', 
+            hold.hold.queue_position, hold.hold.potential_copies) | html %]
+    </div>
+[% END %]

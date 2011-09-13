@@ -103,6 +103,7 @@ DEBS =  \
 	libtext-csv-perl\
 	libuniversal-require-perl\
 	libnet-ip-perl\
+	liblocale-maketext-lexicon-perl\
 	libunix-syslog-perl
 
 # Debian Lenny and Ubuntu Intrepid bundle recent versions of yaz
@@ -230,6 +231,7 @@ CPAN_MODULES = \
     Business::EDI \
     Library::CallNumber::LC \
     Net::Z3950::Simple2ZOOM \
+	Template::Plugin::POSIX \
     SRU
 
 # More chronically unpackaged CPAN modules (available in Squeeze though)

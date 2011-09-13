@@ -1,0 +1,25 @@
+<!-- Form for choosing which queue to view -->
+<h1>[% l('Select a Queue to Inspect') %]</h1><br/>
+<table class='form_table'>
+    <tr>
+        <td>[% l('Queue Type') %]</td>
+        <td>
+            <select jsId='vlQueueSelectType' dojoType='dijit.form.FilteringSelect' onchange='vlShowQueueSelect();'>
+                <option value='bib' selected='selected'>[% l('Bibliographic Records') %]</option>
+                <option value='auth'>[% l('Authority Records') %]</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>[% l('Queue') %]</td>
+        <td>
+            <select jsId='vlQueueSelectQueueList' dojoType='dijit.form.FilteringSelect'>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td colspan='2'>
+            <button dojoType='dijit.form.Button' onclick='vlFetchQueueFromForm();'>[% l('Retrieve Queue') %]</button>
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,122 @@
+[% WRAPPER "base.tt2" %]
+<link rel="stylesheet" type="text/css" href="[% ctx.media_prefix %]/css/skin/[% ctx.skin %]/booking.css" />
+<div id="auto_l10n_start_here">
+    <div id="brt_search_block" class="container">
+        <h1 class="booking AUTO_choose_a_brt"></h1>
+        <form onsubmit="return false;">
+            <div id="select_noncat_brt_block">
+                <div id="brt_selector_here" class="nice_vertical_padding"></div>
+                <div class="nice_vertical_padding">
+                    <input type="button" class="AUTO_ATTR_VALUE_next"
+                        onclick="init_resv_iface_sel(); return false"
+                        />
+                </div>
+                <hr />
+                <div class="nice_vertical_padding AUTO_or" id="or"></div>
+            </div>
+            <div id="arbitrary_resource_block">
+                <label for="arbitrary_resource" class="AUTO_arbitrary_resource">
+                </label>
+                <input id="arbitrary_resource" name="arbitrary_resource" />
+                <input type="button"
+                    onclick="init_resv_iface_arb(); return false;"
+                    class="AUTO_ATTR_VALUE_next" />
+                <p class="AUTO_explain_bookable"></p>
+            </div>
+        </form>
+    </div>
+
+    <div id="brt_reserve_block" class="container">
+        <form onsubmit="return false;">
+            <div id="brsrc_available_outer">
+                <h1 class="booking" id="brsrc_list_header"></h1>
+                <!-- I'm reluctantly hardcoding the size attribute below to 12
+                    since you can't get the behavior of the size attribute with
+                    anything in CSS. -->
+                <select id="brsrc_list" name="brsrc_list" multiple="multiple"
+                    size="12"></select>
+                <div id="contain_patron_barcode" class="nice_vertical_padding">
+                    <label class="AUTO_patron_barcode"
+                        for="patron_barcode" /></label>
+                    <input name="patron_barcode" id="patron_barcode"
+                        onchange="update_bresv_grid();" />
+                </div>
+                <div id="pickup_lib_selector_row" class="nice_vertical_padding">
+                    <label for="pickup_lib_selector"
+                        class="AUTO_pickup_lib_selector"></label>
+                    <select dojoType="openils.widget.OrgUnitFilteringSelect"
+                        id="pickup_lib_selector" jsId="pickup_lib_selector"
+                        searchAttr="shortname" labelAttr="shortname"></select>
+                </div>
+                <div id="contain_email_notify" class="nice_vertical_padding">
+                    <input type="checkbox" name="email_notify" id="email_notify" />
+                    <label class="AUTO_email_notify" for="email_notify"></label>
+                </div>
+                <div class="nice_vertical_padding">
+                    <span class="two_buttons">
+                        <input type="button"
+                            class="AUTO_ATTR_VALUE_reserve_brsrc"
+                            onclick="create_bresv_on_brsrc();" />
+                        &nbsp;
+                        <input type="button"
+                            class="AUTO_ATTR_VALUE_reserve_brt"
+                            onclick="create_bresv_on_brt();" />
+                    </span>
+                </div>
+            </div>
+            <div id="reserve_right_side">
+                <h2 class="booking AUTO_i_need_this_resource"></h2>
+                <div id="reserve_datetime_start">
+                    <label class="reserve_datetime AUTO_starting_at"
+                        for="reserve_date_start"></label><br />
+                    <input id="reserve_date_start" />
+                    <input id="reserve_time_start" />
+                </div>
+                <div id="reserve_datetime_end">
+                    <label class="reserve_datetime AUTO_ending_at"
+                        for="reserve_date_end"></label><br />
+                    <input id="reserve_date_end" />
+                    <input id="reserve_time_end" />
+                </div>
+                <h2 id="bra_and_brav_header"
+                    class="booking AUTO_with_these_attr"></h2>
+                <div id="bra_and_brav"></div>
+            </div>
+        </form>
+    </div>
+
+    <div id="reserve_under">
+        <hr />
+        <h2 class="booking" id="existing_reservation_patron_line"></h2>
+        <div id="bresv_grid_alt_explanation"></div>
+        <table id="bresv_grid" jsId="bresvGrid"
+            dojoType="dojox.grid.DataGrid" query="{id: '*'}"
+            rowSelector="20px" autoHeight="true" width="auto">
+            <thead>
+                <tr><!-- FIXME: i18n problem: init_auto_l10n() runs
+                        too late to take care of the below elements. -->
+                    <th width="35%" field="type">Type</th>
+                    <th width="25%" field="resource">Resource</th>
+                    <th width="20%" field="start_time">Start time</th>
+                    <th width="20%" field="end_time">End time</th>
+                </tr>
+            </thead>
+        </table>
+        <div class="nice_vertical_padding"
+            id="existing_bresv_under_buttons">
+            <!-- <input type="button" id="button_edit_existing"
+                class="AUTO_ATTR_VALUE_button_edit_existing" /> -->
+            <input type="button" id="button_cancel_existing"
+                class="AUTO_ATTR_VALUE_button_cancel_existing"
+                onclick="cancel_selected_bresv(bresvGrid.selection.getSelected());" />
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/booking/common.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/booking/reservation.js"></script>
+<script type="text/javascript">
+    dojo.require("dojox.grid.DataGrid");
+    openils.Util.addOnLoad(my_init);
+</script>
+[% END %]

@@ -1,0 +1,100 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = "Configure Authority Thesauri" %]
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class="oils-header-panel">
+        <div>Thesauri</div>
+        <div>
+            <button dojoType="dijit.form.Button" onClick="at_grid.showCreateDialog()">New Thesaurus</button>
+            <button dojoType="dijit.form.Button" onClick="at_grid.deleteSelected()">Delete Selected</button>
+        </div>
+    </div>
+    <div id="control-set-metadata-holder" class="hidden">
+        Showing only thesauri linked to control set:
+        <a id="control-set-metadata"></a>
+    </div>
+    <div>
+        <table  jsId="at_grid"
+                dojoType="openils.widget.AutoGrid"
+                autoHeight="true"
+                defaultCellWidth="'auto'"
+                fieldOrder="['code','control_set','name','description']"
+                suppressEditFields="['id']"
+                query="{id: '*'}"
+                fmClass="at"
+                editOnEnter="true">
+            <thead>
+                <tr>
+                    <th field="control_set" get="get_control_set"
+                        formatter="format_control_set"></th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<script type="text/javascript"
+    src="[% ctx.media_prefix %]/js/ui/default/conify/global/cat/authority/common.js"></script>
+<script type="text/javascript">
+    dojo.require("openils.widget.AutoGrid");
+    dojo.require("openils.CGI");
+    dojo.require("openils.PermaCrud");
+
+    dojo.requireLocalization("openils.authority", "authority");
+    var localeStrings =
+        dojo.i18n.getLocalization("openils.authority", "authority");
+
+    var cgi, pcrud;
+    var control_set;
+
+    function get_control_set(rowidx, item) {
+        if (item) {
+            /* I'm /sure/ there's a better way to do the following */
+            this._tmp = openils.widget.AutoGrid.defaultGetter;
+            var ordinary = this._tmp(rowidx, item); 
+            delete this._tmp;
+
+            if (control_set) {
+                return ordinary;
+            } else {
+                var id = this.grid.store.getValue(item, "control_set");
+                return {
+                    "id": id, "text": ordinary
+                };
+            }
+        }
+    }
+
+    function format_control_set(f) {
+        if (typeof f == "object") {
+            return '<a href="' + oilsBasePath +
+                '/conify/global/cat/authority/control_set?focus=' + f.id +
+                '">' + f.text + "</a>";
+        } else {
+            return f;
+        }
+
+    }
+
+    function my_init() {
+        var where = {"code": {"!=": null}};
+
+        cgi = new openils.CGI();
+        pcrud = new openils.PermaCrud();
+
+        control_set = cgi.param("acs");
+        if (control_set) {
+            control_set = pcrud.retrieve("acs", control_set);
+            where.control_set = control_set.id();
+            render_control_set_metadata(control_set);
+
+            at_grid.overrideEditWidgets.control_set =
+                new dijit.form.TextBox({"disabled": true});
+            at_grid.overrideEditWidgets.control_set.shove =
+                {"create": control_set.id()};
+        }
+
+        at_grid.loadAll({"order_by": {"at": "code"}}, where);
+    }
+
+    openils.Util.addOnLoad(my_init);
+</script>
+[% END %]

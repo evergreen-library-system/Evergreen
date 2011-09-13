@@ -1,0 +1,38 @@
+[% WRAPPER base.tt2 %]
+    <h1>Receiving Processing</h1><br/>
+    <div id='oils-acq-recv-search-block' class='container'>
+        <form dojoType='dijit.form.Form' action='' method=''>
+            <script type="dojo/method" event="onSubmit">
+                doSearch(this.getValues());
+                return false; /* don't redirect */
+            </script>
+            <table class='oils-acq-basic-form-table'>
+                <tr>
+                    <td><label for='identifier'>Identifier</label></td>
+                    <td>
+                        <input dojoType='dijit.form.TextBox' name='identifier'/>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="name">Ordering Agency:</label></td>
+                    <td>
+                        <input dojoType="openils.widget.OrgUnitFilteringSelect" jsId='orderingAgencySelect'
+                            searchAttr="shortname" name="ordering_agency" autocomplete="true" labelAttr='shortname'> </input>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan='2'><div dojoType='dijit.form.Button' type='submit'>Search</div></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div dojoType="dijit.ProgressBar" style="width:300px" jsId="searchProgress" id="searchProgress"></div>
+    <script type="text/javascript">dojo.style('searchProgress', 'visibility', 'hidden');</script>
+    <div id='oils-acq-recv-grid' style='height:100%'>
+        [% grid_jsid = 'liGrid'; domprefix = 'oils-acq-recv' %]
+        [% INCLUDE 'acq/common/jubgrid.tt2' %]
+    </div>
+    <script type="text/javascript">dojo.style('oils-acq-recv-grid', 'visibility', 'hidden');</script>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/receiving/process.js'> </script>
+[% END %]
+

@@ -1,0 +1,71 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = "Configure Browse Axis-Authority Field Maps" %]
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class="oils-header-panel">
+        <div>Browse Axis-Authority Field Maps</div>
+        <div>
+            <button dojoType="dijit.form.Button" onClick="abaafm_grid.showCreateDialog()">New Browse Axis-Authority Field Map</button>
+            <button dojoType="dijit.form.Button" onClick="abaafm_grid.deleteSelected()">Delete Selected</button>
+        </div>
+    </div>
+    <div id="authority-field-metadata-holder" class="hidden">
+        Showing only browse axis-authority field maps linked to authority field:
+        <a id="authority-field-metadata"></a>
+    </div>
+    <div>
+        <table  jsId="abaafm_grid"
+                dojoType="openils.widget.AutoGrid"
+                autoHeight="true"
+                defaultCellWidth="'auto'"
+                suppressEditFields="['id']"
+                fieldOrder="['axis','field']"
+                query="{id: '*'}"
+                fmClass="abaafm"
+                editOnEnter="true">
+        </table>
+    </div>
+</div>
+<script type="text/javascript"
+    src="[% ctx.media_prefix %]/js/ui/default/conify/global/cat/authority/common.js"></script>
+<script type="text/javascript">
+    dojo.require("openils.widget.AutoGrid");
+    dojo.require("openils.CGI");
+    dojo.require("openils.PermaCrud");
+
+    dojo.requireLocalization("openils.authority", "authority");
+    var localeStrings =
+        dojo.i18n.getLocalization("openils.authority", "authority");
+
+    var cgi, pcrud;
+
+    function my_init() {
+        var authority_field, control_set_id;
+        var where = {"id": {"!=": null}};
+
+        cgi = new openils.CGI();
+        pcrud = new openils.PermaCrud();
+
+        authority_field = cgi.param("acsaf");
+        control_set_id = cgi.param("acs");
+
+        if (authority_field) {
+            /* This block not only limits the scope of our search for abaafm
+               objects, but makes sure that we create/update only abaafm's
+               that link back to the authority field (acsaf) we're interested
+               in.  */
+            authority_field = pcrud.retrieve("acsaf", authority_field);
+            where.field = authority_field.id();
+            render_authority_field_metadata(authority_field, control_set_id);
+
+            abaafm_grid.overrideEditWidgets.field =
+                new dijit.form.TextBox({"disabled": true});
+            abaafm_grid.overrideEditWidgets.field.shove =
+                {"create": authority_field.id()};
+        }
+
+        abaafm_grid.loadAll({"order_by": {"abaafm": "axis"}}, where);
+    }
+
+    openils.Util.addOnLoad(my_init);
+</script>
+[% END %]

@@ -1,0 +1,80 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = "Hard Due Dates" %]
+<script type="text/javascript">
+    dojo.require("openils.CGI");
+    dojo.require("openils.Util");
+    dojo.require("openils.widget.AutoGrid");
+
+    function get_chdd_name(rowIndex, item) {
+        if (!item) return null;
+        else return {
+            "id": this.grid.store.getValue(item, "id"),
+            "name": this.grid.store.getValue(item, "name")
+        };
+    }
+
+    function format_chdd_name(blob) {
+        if (blob) {
+            return "<a href='" + oilsBasePath +
+                "/conify/global/config/hard_due_date_values?chdd=" +
+                blob.id + "'>" + blob.name + "</a>";
+        } else {
+            return "";
+        }
+    }
+
+    openils.Util.addOnLoad(
+        function() {
+            var cgi = new openils.CGI();
+            var filter = null;
+            var id = cgi.param("id");
+            var name = cgi.param("name");
+            if (id) {
+                filter = {"id": id};
+                openils.Util.show("one_only");
+            } else if (name) {
+                filter = {"name": name};
+                openils.Util.show("one_only");
+            }
+            chddGrid.loadAll({"order_by": {"chdd": "name"}}, filter);
+        }
+    );
+</script>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane"
+        layoutAlign="top" class="oils-header-panel">
+        <div>Hard Due Dates</div>
+        <div>
+            <button
+                dojoType="dijit.form.Button"
+                onClick="chddGrid.showCreateDialog();">New Hard Due Date</button>
+            <button
+                dojoType="dijit.form.Button"
+                onClick="chddGrid.deleteSelected();">Deleted Selected</button>
+        </div>
+    </div>
+    <div id="one_only" class="hidden">
+        <em>Showing only one hard due date.</em> [
+            <a href="./hard_due_date">Show them all</a>
+        ]
+    </div>
+    <div>
+        <table jsId="chddGrid"
+            dojoType="openils.widget.AutoGrid"
+            showPaginator="true"
+            query="{name: '*'}"
+            defaultCellWidth="'auto'"
+            fieldOrder="['name', 'owner', 'ceiling_date', 'forceto']"
+            fmClass="chdd"
+            hideSelector="false"
+            editOnEnter="true">
+            <thead>
+                <tr>
+                    <th field="name" get="get_chdd_name"
+                        formatter="format_chdd_name"></th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+[% END %]

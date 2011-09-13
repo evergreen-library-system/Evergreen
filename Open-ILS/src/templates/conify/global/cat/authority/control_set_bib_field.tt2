@@ -1,0 +1,71 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = "Configure Authority Control Set Bib Fields" %]
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class="oils-header-panel">
+        <div>Control Set Bib Fields</div>
+        <div>
+            <button dojoType="dijit.form.Button" onClick="acsbf_grid.showCreateDialog()">New Control Set Bib Field</button>
+            <button dojoType="dijit.form.Button" onClick="acsbf_grid.deleteSelected()">Delete Selected</button>
+        </div>
+    </div>
+    <div id="authority-field-metadata-holder" class="hidden">
+        Showing only control set bib fields linked to authority field:
+        <a id="authority-field-metadata"></a>
+    </div>
+    <div>
+        <table  jsId="acsbf_grid"
+                dojoType="openils.widget.AutoGrid"
+                autoHeight="true"
+                defaultCellWidth="'auto'"
+                suppressEditFields="['id']"
+                fieldOrder="['tag','authority_field']"
+                query="{id: '*'}"
+                fmClass="acsbf"
+                editOnEnter="true">
+        </table>
+    </div>
+</div>
+<script type="text/javascript"
+    src="[% ctx.media_prefix %]/js/ui/default/conify/global/cat/authority/common.js"></script>
+<script type="text/javascript">
+    dojo.require("openils.widget.AutoGrid");
+    dojo.require("openils.CGI");
+    dojo.require("openils.PermaCrud");
+
+    dojo.requireLocalization("openils.authority", "authority");
+    var localeStrings =
+        dojo.i18n.getLocalization("openils.authority", "authority");
+
+    var cgi, pcrud;
+
+    function my_init() {
+        var authority_field, control_set_id;
+        var where = {"id": {"!=": null}};
+
+        cgi = new openils.CGI();
+        pcrud = new openils.PermaCrud();
+
+        authority_field = cgi.param("acsaf");
+        control_set_id = cgi.param("acs");
+
+        if (authority_field) {
+            /* This block not only limits the scope of our search for acsbf
+               objects, but makes sure that we create/update only acsbf's
+               that link back to the authority field (acsaf) we're interested
+               in.  */
+            authority_field = pcrud.retrieve("acsaf", authority_field);
+            where.authority_field = authority_field.id();
+            render_authority_field_metadata(authority_field, control_set_id);
+
+            acsbf_grid.overrideEditWidgets.authority_field =
+                new dijit.form.TextBox({"disabled": true});
+            acsbf_grid.overrideEditWidgets.authority_field.shove =
+                {"create": authority_field.id()};
+        }
+
+        acsbf_grid.loadAll({"order_by": {"acsbf": "tag"}}, where);
+    }
+
+    openils.Util.addOnLoad(my_init);
+</script>
+[% END %]

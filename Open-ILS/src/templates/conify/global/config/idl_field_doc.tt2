@@ -1,0 +1,32 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = 'Field Documentation' %]
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/config/idl_field_doc.js'> </script>
+<table style='width:100%;margin-bottom:10px;'>
+    <tr>
+        <td align='left'><h3>Field Documentation</h3></td>
+        <td align='right'>
+            <span>Class:</span>
+            <span dojoType='dijit.form.FilteringSelect' jsId='fmClassSelector'></span>
+            <button dojoType='dijit.form.Button' onClick='fdocGrid.showCreateDialog()'>New</button>
+        </td>
+    </tr>
+</table>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <table  jsId="fdocGrid"
+            autoHeight='true'
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['id', 'fm_class', 'owner', 'field', 'string']"
+            query="{id: '*'}"
+            fmClass='fdoc'
+            defaultCellWidth='15'
+            editOnEnter='true'>
+        <thead>
+            <tr><th field='string' width='auto'/></tr>
+        </thead>
+    </table>
+  </div>
+<div class='hidden'>
+    <span dojoType='dijit.form.FilteringSelect' jsId='editClassSelector'></span>
+    <span dojoType='dijit.form.FilteringSelect' jsId='editFieldSelector'></span>
+</div>
+[% END %]

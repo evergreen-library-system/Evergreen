@@ -1,0 +1,52 @@
+[%  
+
+authors = [
+    {
+        type => 'author', 
+        label => l('Authors: '),
+        xpath => '//*[@tag="100"]|//*[@tag="110"]|//*[@tag="111"]'
+    }, {
+        type => 'added', 
+        label => l('Added Authors: '),
+        xpath => '//*[@tag="700"]|//*[@tag="710"]|//*[@tag="711"]'
+    }, {
+        type => 'credits', 
+        label => l('Credits: '),
+        xpath => '//*[@tag="100"]|//*[@tag="110"]|//*[@tag="111"]'
+    }, {
+        type => 'cast', 
+        label => l('Cast: '),
+        xpath => '//*[@tag="508"]'
+    }, {
+        type => 'notes', 
+        label => l('Author Notes: '),
+        xpath => '' # Comes from added content...
+    }
+];
+
+BLOCK build_author_links;
+    FOR node IN ctx.marc_xml.findnodes(xpath);
+        FOR subfield IN node.childNodes;
+            NEXT UNLESS subfield.nodeName == "subfield";
+            code = subfield.getAttribute('code');
+            NEXT UNLESS code.match('[a-z]');
+            term = subfield.textContent | html;
+            url = mkurl(ctx.opac_root _ '/results', {query => subfield.textContent, qtype => 'author'}, ['page', 'expand']);
+            '<br/><a href="' _ url _ '">' _ term _ '</a>';
+        END;
+    END;
+END;
+%]
+
+<div class='rdetail_extras_div'>
+[% FOREACH author IN authors;
+    NEXT UNLESS author.xpath; 
+    links = PROCESS build_author_links(xpath=author.xpath);
+    IF links.match('\S') %]
+    <strong>[% author.label | html %]</strong>
+    <div class='rdetail-author-div'>[% links %]</div>
+    [% END %]
+[% END %]
+</div>
+
+

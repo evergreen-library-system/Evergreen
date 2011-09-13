@@ -1,0 +1,32 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = 'Global Flags' %]
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+        <div>Global Flags</div>
+        <div></div>
+    </div>
+    <div>
+    <table  jsId="gfGrid"
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['name', 'label', 'enabled', 'value']"
+            suppressFields="['name']"
+            query="{name: '*'}"
+            defaultCellWidth='30'
+            fmClass='cgf'
+            hideSelector='true'
+            editOnEnter='true'/>
+</div>
+
+<script type="text/javascript">
+    dojo.require('openils.Util');
+    dojo.require('openils.widget.AutoGrid');
+    openils.Util.addOnLoad( 
+        function() { 
+            gfGrid.overrideWidgetArgs.name = {readOnly : true};
+            gfGrid.loadAll(); 
+        } 
+    );
+</script>
+[% END %]
+
+

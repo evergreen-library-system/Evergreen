@@ -1,0 +1,25 @@
+[%- 
+    USE CGI = CGI_utf8;
+    hostname = CGI.url({'-base' => 1});
+-%]
+<div id="footer">
+    <a href="[% hostname %]">[% l('Dynamic catalog') %]</a> &nbsp;|&nbsp;
+    <a href="http://example.com">[% l('Bottom Link 2') %]</a> &nbsp;|&nbsp;
+    <a href="http://example.com">[% l('Bottom Link 3') %]</a> &nbsp;|&nbsp;
+    <a href="http://example.com">[% l('Bottom Link 4') %]</a> &nbsp;|&nbsp;
+    <a href="http://example.com">[% l('Bottom Link 5') %]</a>
+
+    <div id="copyright_text" style="margin-top: 2em;">
+        [% l('Copyright &copy; 2006-[_1] Georgia Public Library Service, and others', date.format(date.now, '%Y')) %]
+    </div>
+    <div id="footer_logo">
+        [% l('Powered by') %]
+        <a href="http://evergreen-ils.org">
+            <img src="[% ctx.media_prefix %]/opac/images/eg_tiny_logo.jpg"
+                style="border:none; width: 94px; height: 16px;"
+                alt="[% l('Evergreen') %]"
+            />
+        </a>
+    </div>
+</div>
+

@@ -1,0 +1,248 @@
+[%  PROCESS "opac/parts/header.tt2";
+    WRAPPER "opac/parts/myopac/prefs_base.tt2";
+    myopac_page = "prefs";
+    prefs_page = 'personal' %]
+
+<div id="acct_info_main">
+    <div id='myopac.expired.alert'
+         class='hide_me'
+         style='margin-bottom: 20px;'>
+        <table class='data_grid'
+               width='100%'>
+            <tbody>
+                <tr>
+                    <td width='100%' class='red'>
+                        [% l("Your account expired on") %]
+                        <span id='myopac.expired.date'></span>!
+                        [% l("Please see a librarian to renew your account.") %]</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id='myopac.notes.div'
+         class='hide_me'>
+        <table class='data_grid'
+               width='100%'>
+            <thead>
+                <tr>
+                    <td colspan='2'>
+                    <b>[% l("* Staff Notes *") %]</b></td>
+                </tr>
+            </thead>
+
+            <tbody id='myopac.notes.tbody'>
+                <tr id='myopac.notes.tr'>
+                    <td><b name='title'></b> : <span name=
+                    'value'></span></td>
+                </tr>
+            </tbody>
+        </table><br />
+    </div>
+
+    <table width='70%'
+           class='light_border data_grid'>
+        <tbody id='myopac_summary_tbody'>
+            <tr>
+                <td width='30%'
+                    class='color_4 light_border'>[% l("Name") %]</td>
+
+                <td class='light_border'>[% l(
+                    HUMAN_NAME_FORMAT,
+                    ctx.user.prefix, ctx.user.first_given_name,
+                    ctx.user.second_given_name, ctx.user.family_name,
+                    ctx.user.suffix
+                ) | html %]</td>
+
+                <td></td>
+            </tr>
+
+            <tr>
+                <td class='color_4 light_border'>[% l("Day Phone") %]</td>
+                <td class='light_border'>[% ctx.user.day_phone | html %]</td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td class='color_4 light_border'>[% l("Evening Phone") %]</td>
+                <td class='light_border'>[% ctx.user.evening_phone | html %]</td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td class='color_4 light_border'>[% l("Other Phone") %]</td>
+                <td class='light_border'>[% ctx.user.other_phone | html %]</td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td class='color_4 light_border'>
+                    <div style="position:absolute">
+                        <div class="hide_me" style="position:relative;left:70px;top:-3px;">
+                            <a href="#"><img alt="Username Help" src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
+                        </div>
+                    </div>[% l("Username") %]
+                </td>
+                <td class='light_border'>[% ctx.user.usrname | html %]</td>
+                <td class='light_border'><a href='update_username'>[% l("Change") %]</a></td>
+            </tr>
+            <tr>
+                <td class='color_4 light_border'>[% l("Password") %]</td>
+                <td class='light_border'>[% l("(not shown)") %]</td>
+                <td class='light_border'><a href='update_password'>[% l("Change") %]</a></td>
+            </tr>
+            <tr>
+                <td class='color_4 light_border'>[% l("Email Address") %]</td>
+                <td class='light_border'>[% ctx.user.email | html %]</td>
+                <td class='light_border'><a href='update_email'>[% l('Change') %]</a></td>
+            </tr>
+
+            [% IF ctx.user.ident_value %]<tr class="hide_me">
+                <td class='color_4 light_border'>
+                [% l("Primary Identification") %]</td>
+
+                <td class='light_border'>
+                    [%
+                    # l('[_1] ([_2])', ctx.user.ident_value, ctx.user.ident_type.name) | html
+                    # XXX uncomment the above line to show primary
+                    # identification. With a minor tweak it could
+                    # alternatively be shown but partially obscured. 
+                    %]
+                </td>
+                <td></td>
+            </tr>[% END %]
+
+            <tr>
+                <td class='color_4 light_border'>[% l("Active Barcode") %]</td>
+                <td class='light_border'>[% ctx.user.card.barcode %]</td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td class='color_4 light_border'>[% l("Home Library") %]</td>
+                <td class='light_border'>[% ctx.user.home_ou.name | html %]</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class='color_4 light_border'>[% l("Account Creation Date") %]</td>
+                <td class='light_border'>[% date.format(ctx.parse_datetime(ctx.user.create_date), DATE_FORMAT) %]</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table><br />
+    <hr class='opac-auto-013' color="#DCDBDB" />
+    <br />
+
+    <table width='100%' class='light_border data_grid'>
+        <thead>
+            <tr>
+                <td><strong>[% l("Addresses") %]</strong></td>
+                <td><strong>[% l("Pending Addresses") %]</strong></td>
+            </tr>
+        </thead>
+        <tbody>
+            [% 
+                # cycle through the non-pending address.  For each non-pending addr
+                # that has a corresponding pending addr, render the pending addr 
+                # along the right inside it's own edit form
+                pending = {};
+                regular = [];
+                edit_addr_id = CGI.param('edit_address');
+                FOR addr IN ctx.user.addresses;
+                    IF addr.pending == 't';
+                        replaces = addr.replaces;
+                        pending.$replaces = addr;
+                    ELSE;
+                        regular.push(addr);
+                    END;
+                END;
+            FOR addr IN regular;
+                cur_id = addr.id; 
+                pending_addr = pending.$cur_id;
+            %]
+            <tr>
+                <td>
+                    <!-- read-only address display -->
+                    <table class='light_border'>
+                        <tr><td>[% l("Address Type") %]</td><td>[% addr.address_type | html %]</td></tr>
+                        <tr><td>[% l("Street") %]</td><td>[% addr.street1 | html %]</td></tr>
+                        <tr><td>[% l("Street") %]</td><td>[% addr.street2 | html %]</td></tr>
+                        <tr><td>[% l("City") %]</td><td>[% addr.city | html %]</td></tr>
+                        <tr><td>[% l("County") %]</td><td>[% addr.county| html  %]</td></tr>
+                        <tr><td>[% l("State") %]</td><td>[% addr.state | html %]</td></tr>
+                        <tr><td>[% l("Country") %]</td><td>[% addr.country | html %]</td></tr>
+                        <tr><td>[% l("Zip") %]</td><td>[% addr.post_code | html %]</td></tr>
+                        [% IF ctx.get_org_setting(ctx.user.home_ou.id, 'opac.allow_pending_address') 
+                                AND !pending_addr AND edit_addr_id != cur_id %]
+                        <tr>
+                            <td colspan='2'>
+                                <a href='?edit_address=[% addr.id %]'>[% l('Edit Address') %]</a>
+                            </td>
+                        </tr>
+                        [% END %]
+                    </table>
+                </td>
+
+                <!-- pending address form -->
+                [% IF pending_addr OR edit_addr_id == cur_id;
+                    update_addr = pending_addr || addr %]
+                <td>
+                    <form method='POST'>
+                        [% IF pending_addr %]
+                            <input type='hidden' name='pending_addr' value='[% pending_addr.id %]'/>
+                        [% ELSE %]
+                            <input type='hidden' name='replace_addr' value='[% edit_addr_id | html %]'/>
+                        [% END %]
+                        <table class='pending-addr'>
+                            <tr>
+                                <td>[% l("Address Type") %]</td>
+                                <td><input name='address_type' value='[% update_addr.address_type | html %]'/></td>
+                            </tr>
+                            <tr>
+                                <td>[% l("Street") %]</td>
+                                <td><input name='street1' value='[% update_addr.street1 | html %]'/></td>
+                            </tr>
+                            <tr>
+                                <td>[% l("Street") %]</td>
+                                <td><input name='street2' value='[% update_addr.street2 | html %]'/></td>
+                            </tr>
+                            <tr>
+                                <td>[% l("City") %]</td>
+                                <td><input name='city' value='[% update_addr.city | html %]'/></td>
+                            </tr>
+                            <tr>
+                                <td>[% l("County") %]</td>
+                                <td><input name='county' value='[% update_addr.county| html %]'/></td>
+                            </tr>
+                            <tr>
+                                <td>[% l("State") %]</td>
+                                <td><input name='state' value='[% update_addr.state | html %]'</td>
+                            </tr>
+                            <tr>
+                                <td>[% l("Country") %]</td>
+                                <td><input name='country' value='[% update_addr.country | html %]'/></td>
+                            </tr>
+
+                            <tr>
+                                <td>[% l("Zip") %]</td>
+                                <td><input name='post_code' value='[% update_addr.post_code | html %]'/></td>
+                            </tr>
+                            <tr>
+                                <td><input type='submit' value="[% l('Save Changes') %]"/></td>
+                                <td>
+                                    [% params = (pending_addr) ? {delete_pending => pending_addr.id} : {} %]
+                                    <a href="[% mkurl('', params, 1) %]">[% l('Discard Pending Address') %]</a>
+                                </td>
+                            </tr>
+                            <tr><td colspan='2'><i>[% l('Address changes will be verified by staff') %]</i></td></tr>
+                        </table>
+                    </form>
+                </td>
+                [% END %] <!-- if pending_addr -->
+            </tr>
+            [% END %]
+        </tbody>
+    </table>
+</div>
+
+[% END %]

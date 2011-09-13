@@ -1,0 +1,16 @@
+<div dojoType="dijit.Toolbar" id='toolbar'>
+    <div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy" id='vl-menu-marc-export'
+        onclick="displayGlobalDiv('vl-marc-export-div');" showLabel="true">[% l('Export Records') %]</div>
+    <div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy"  id='vl-menu-marc-upload'
+        onclick="displayGlobalDiv('vl-marc-upload-div');" showLabel="true">[% l('Import Records') %]</div>
+    <div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy"  id='vl-menu-queue-select'
+        onclick="vlShowQueueSelect();" showLabel="true">[% l('Inspect Queue') %]</div>
+    <div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy"  id='vl-menu-attr-editor'
+        onclick="vlShowAttrEditor();" showLabel="true">[% l('Record Display Attributes') %]</div>
+    <div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy"  id='vl-menu-profile-editor'
+        onclick="vlShowProfileEditor();" showLabel="true">[% l('Merge / Overlay Profiles') %]</div>
+    <div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy"  id='vl-menu-match-set-editor'
+        onclick="vlShowMatchSetEditor();" showLabel="true">[% l('Record Match Sets') %]</div>
+    <div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy"  id='vl-menu-import-item-attr-editor'
+        onclick="vlShowImportItemAttrEditor();" showLabel="true">[% l('Import Item Attributes') %]</div>
+</div>
