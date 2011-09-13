@@ -14,7 +14,7 @@
     function formatName(value) {
         if (!value) return ""; // XXX
 
-        var link = "<a href='/eg/acq/financial/view_fund/" +
+        var link = "<a href='/eg/acq/fund/view/" +
             value.id + "'>" +
             value.name + "</a>";
 
