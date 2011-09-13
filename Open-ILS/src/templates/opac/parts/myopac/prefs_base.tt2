@@ -2,38 +2,38 @@
     WRAPPER "opac/parts/myopac/base.tt2"; %]
 
 <div id='myopac_prefs_div'>
-    <div id="acct_prefs_tabs" style="padding-bottom: 12px;color:#666;">
+    <div id="acct_prefs_tabs">
         <div style="float:left;">
 
         [% IF prefs_page == 'personal' %]
-            <div class="align">
-                <a href='#'><img src="[% ctx.media_prefix %]/images/sub_prefs_info_on.jpg" /></a>
+            <div class="align selected">
+                <a href='#'>[% l("Personal Information") %]</a>
             </div>
             <div class="align">
-                <a href='prefs_notify'><img src="[% ctx.media_prefix %]/images/sub_prefs_notify_off.jpg" /></a>
+                <a href='prefs_notify'>[% l("Notification Preferences") %]</a>
             </div>
             <div class="align">
-                <a href='prefs_settings'><img src="[% ctx.media_prefix %]/images/sub_prefs_search_off.jpg" /></a>
+                <a href='prefs_settings'>[% l("Search Preferences") %]</a>
             </div>
         [% ELSIF prefs_page == 'notify' %]
             <div class="align">
-                <a href='prefs'><img src="[% ctx.media_prefix %]/images/sub_prefs_info_off.jpg" /></a>
+                <a href='prefs'>[% l("Personal Information") %]</a>
             </div>
-            <div class="align">
-                <a href='#'><img src="[% ctx.media_prefix %]/images/sub_prefs_notify_on.jpg" /></a>
+            <div class="align selected">
+                <a href='#'>[% l("Notification Preferences") %]</a>
             </div>
             <div class="align" >
-                <a href='prefs_settings'><img src="[% ctx.media_prefix %]/images/sub_prefs_search_off.jpg" /></a>
+                <a href='prefs_settings'>[% l("Search Preferences") %]</a>
             </div>
         [% ELSE %]
             <div class="align">
-                <a href='prefs'><img src="[% ctx.media_prefix %]/images/sub_prefs_info_off.jpg" /></a>
+                <a href='prefs'>[% l("Personal Information") %]</a>
             </div>
             <div class="align">
-                <a href='prefs_notify'><img src="[% ctx.media_prefix %]/images/sub_prefs_notify_off.jpg" /></a>
+                <a href='prefs_notify'>[% l("Notification Preferences") %]</a>
             </div>
-            <div class="align" >
-                <a href='#'><img src="[% ctx.media_prefix %]/images/sub_prefs_search_on.jpg" /></a>
+            <div class="align selected" >
+                <a href='#'>[% l("Search Preferences") %]</a>
             </div>
         [% END %]
         </div>

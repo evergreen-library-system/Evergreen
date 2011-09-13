@@ -274,13 +274,13 @@ div.select-wrapper:hover {
 	font-size: 10px;
 }
 
-#adv_search_tabs, #acct_tabs, #acct_fines_tabs, #acct_checked_tabs, #acct_holds_tabs, #results_header_inner{
+#adv_search_tabs, #acct_tabs, #acct_fines_tabs, #acct_checked_tabs, #acct_holds_tabs, #acct_prefs_tabs, #results_header_inner{
 	height: 40px;
 	width:974px;
 	margin:auto;
 }
 
-#adv_search_tabs a, #acct_tabs a, #acct_fines_tabs a, #acct_checked_tabs a, #acct_holds_tabs a {
+#adv_search_tabs a, #acct_tabs a, #acct_fines_tabs a, #acct_checked_tabs a, #acct_holds_tabs a, #acct_prefs_tabs a {
     float: left;
     text-align: center;
     vertical-align: middle;
@@ -313,19 +313,19 @@ div.select-wrapper:hover {
     background: #9ad0f1;
 }
 
-#acct_checked_tabs a, #acct_holds_tabs a {
+#acct_checked_tabs a, #acct_holds_tabs a, #acct_prefs_tabs a {
     margin-top: 0px;
     font-size: 10px;
     color: #333333;
     padding: 10px 10px 10px 10px;
 }
 
-#acct_checked_tabs div.selected a, #acct_holds_tabs div.selected a {
+#acct_checked_tabs div.selected a, #acct_holds_tabs div.selected a, #acct_prefs_tabs div.selected a {
     background: #e1e1e1;
     color: #333333;
 }
 
-#acct_checked_tabs, #acct_holds_tabs {
+#acct_checked_tabs, #acct_holds_tabs, #acct_prefs_tabs {
     padding-bottom: 12px;
     color: #666;
 }
