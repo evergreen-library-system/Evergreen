@@ -59,7 +59,7 @@
         <groupbox flex="0">
             <caption>
                 <label value="&staff.cat.marcedit.toggleFFE.label;" ondblclick="toggleFFE();"/>
-                <label id="recordTypeLabel" context="recordTypeMenu"/>
+                <label id="recordTypeLabel" value="BKS" context="recordTypeMenu"/>
             </caption>
             <vbox flex="0">
                 <grid flex="0" id="leaderGrid" type="BKS" hidden="false" oils_persist="hidden">
