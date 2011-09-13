@@ -8,7 +8,7 @@
 
 <div style="padding:0px;">
     
-    <div id="acct_checked_tabs" style="padding-bottom: 12px;color:#666;">
+    <div id="acct_checked_tabs">
         <div class="align">
             <a href='circs'>[% l("Current Items Checked Out") %]</a>
         </div>
