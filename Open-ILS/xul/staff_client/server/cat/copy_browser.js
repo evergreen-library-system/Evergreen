@@ -42,8 +42,15 @@ cat.copy_browser.prototype = {
             document.getElementById('show_acns').addEventListener(
                 'command',
                 function(ev) {
-                    JSAN.use('util.file'); var file = new util.file('copy_browser_prefs.'+obj.data.server_unadorned);
-                    util.widgets.save_attributes(file, { 'lib_menu' : [ 'value' ], 'show_acns' : [ 'checked' ], 'show_acps' : [ 'checked' ] });
+                    JSAN.use('util.file');
+                    var file = new util.file(
+                        'copy_browser_prefs.'+obj.data.server_unadorned);
+                    util.widgets.save_attributes(file, {
+                        'lib_menu' : [ 'value' ],
+                        'depth_menu' : [ 'value' ],
+                        'show_acns' : [ 'checked' ],
+                        'show_acps' : [ 'checked' ],
+                        'hide_aous' : [ 'checked' ] });
                 },
                 false
             );
@@ -51,8 +58,31 @@ cat.copy_browser.prototype = {
             document.getElementById('show_acps').addEventListener(
                 'command',
                 function(ev) {
-                    JSAN.use('util.file'); var file = new util.file('copy_browser_prefs.'+obj.data.server_unadorned);
-                    util.widgets.save_attributes(file, { 'lib_menu' : [ 'value' ], 'show_acns' : [ 'checked' ], 'show_acps' : [ 'checked' ] });
+                    JSAN.use('util.file');
+                    var file = new util.file(
+                        'copy_browser_prefs.'+obj.data.server_unadorned);
+                    util.widgets.save_attributes(file, {
+                        'lib_menu' : [ 'value' ],
+                        'depth_menu' : [ 'value' ],
+                        'show_acns' : [ 'checked' ],
+                        'show_acps' : [ 'checked' ],
+                        'hide_aous' : [ 'checked' ] });
+                },
+                false
+            );
+
+            document.getElementById('hide_aous').addEventListener(
+                'command',
+                function(ev) {
+                    JSAN.use('util.file');
+                    var file = new util.file(
+                        'copy_browser_prefs.'+obj.data.server_unadorned);
+                    util.widgets.save_attributes(file, {
+                        'lib_menu' : [ 'value' ],
+                        'depth_menu' : [ 'value' ],
+                        'show_acns' : [ 'checked' ],
+                        'show_acps' : [ 'checked' ],
+                        'hide_aous' : [ 'checked' ] });
                 },
                 false
             );
@@ -1058,7 +1088,8 @@ cat.copy_browser.prototype = {
                         'lib_menu' : [ 'value' ],
                         'depth_menu' : [ 'value' ],
                         'show_acns' : [ 'checked' ],
-                        'show_acps' : [ 'checked' ]
+                        'show_acps' : [ 'checked' ],
+                        'hide_aous' : [ 'checked' ]
                     });
                 },
                 false
@@ -1128,7 +1159,8 @@ cat.copy_browser.prototype = {
                             'lib_menu' : [ 'value' ],
                             'depth_menu' : [ 'value' ],
                             'show_acns' : [ 'checked' ],
-                            'show_acps' : [ 'checked' ]
+                            'show_acps' : [ 'checked' ],
+                            'hide_aous' : [ 'checked' ]
                         });
                         obj.refresh_list();
                     },
@@ -1485,8 +1517,19 @@ cat.copy_browser.prototype = {
                         obj.map_acp[ 'acp_' + copies[j].id() ] = function(r){return r;}(copies[j]);
                     }
                 }
-                data.row.my.volume_count = v_count;
+                data.row.my.volume_count = String(v_count);
                 data.row.my.copy_count = '<' + c_count + '>';
+            }
+            if (document.getElementById('hide_aous').checked) {
+                if (org.children().length == 0
+                        && data.row.my.volume_count == '0') {
+                    if (!params) {
+                        params = { 'hidden' : true };
+                    } else {
+                        params['hidden'] = true;
+                    }
+                    dump('hiding org.id() = ' + org.id() + '\n');
+                }
             }
             if (parent_org) {
                 data.node = obj.map_tree[ 'aou_' + parent_org.id() ];

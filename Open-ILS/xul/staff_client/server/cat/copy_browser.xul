@@ -152,8 +152,9 @@ vim:noet:sw=4:ts=4:
         <hbox>
             <checkbox id="show_acns" label="&staff.cat.copy_browser.holdings_maintenance.show_acns;" />
             <checkbox id="show_acps" label="&staff.cat.copy_browser.holdings_maintenance.show_acps;" />
+            <checkbox id="hide_aous" label="&staff.cat.copy_browser.holdings_maintenance.hide_aous;" />
             <button id="refresh_button" label="&staff.cat.copy_browser.holdings_maintenance.refresh_button.label;" command="cmd_refresh_list" />
-            <button label="&staff.cat.copy_browser.holdings_maintenance.show_libs.label;" command="cmd_show_libs_with_copies" accesskey="&staff.cat.copy_browser.holdings_maintenance.show_libs.accesskey;"/>
+            <!-- <button label="Show Libraries With Items" command="cmd_show_libs_with_copies" accesskey="L"/> -->
             <!-- <button label="Show My Libs" command="cmd_show_my_libs" accesskey="M"/>-->
             <!--
             <button label="Show All Libs" command="cmd_show_all_libs" accesskey=""/>
