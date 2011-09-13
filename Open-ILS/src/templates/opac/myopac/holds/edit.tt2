@@ -93,13 +93,9 @@
                         <td colspan="2" class="hold-editor-controls">
                             <input type="submit"
                                 value="[% l('Submit') %]"
-                                alt="[% l('Submit') %]"
-                                title="[% l('Submit') %]"
                                 class="opac-button" />
                             <input type="reset"
-                                value="[% l('Submit') %]"
-                                alt="[% l('Cancel') %]"
-                                title="[% l('Cancel') %]"
+                                value="[% l('Cancel') %]"
                                 class="opac-button" />
                         </td>
                     </tr>
