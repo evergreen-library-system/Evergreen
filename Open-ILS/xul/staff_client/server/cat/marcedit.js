@@ -772,6 +772,7 @@ function toggleFFE () {
 function changeFFEditor (type) {
     var grid = document.getElementById('leaderGrid');
     grid.setAttribute('type',type);
+    document.getElementById('recordTypeLabel').setAttribute('value',type);
 
     // Hide FFEditor rows that we don't need for our current type
     // If all of the labels for a given row do not include our
