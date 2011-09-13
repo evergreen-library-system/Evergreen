@@ -24,24 +24,14 @@
         <div id="results_header_bar">
             <div id="results_header_inner">
                 <div class="results_header_btns">
-                    <a href="[% ctx.opac_root %]/home"><img alt="[% l('Another Search') %]"
-                        src="[% ctx.media_prefix %]/images/another_search.png"
-                        onmouseover="this.src='[% ctx.media_prefix %]/images/another_search_hover.png';"
-                        onmouseout="this.src='[% ctx.media_prefix %]/images/another_search.png';" /></a>
+                    <a href="[% ctx.opac_root %]/home">[% l('Another Search') %]</a>
                 </div>
                 <div class="results_header_btns">
-                    <a href="[% ctx.opac_root %]/advanced"><img alt="[% l('Advanced Search') %]"
-                        src="[% ctx.media_prefix %]/images/adv_search.png"
-                        onmouseover="this.src='[% ctx.media_prefix %]/images/adv_search_hover.png';"
-                        onmouseout="this.src='[% ctx.media_prefix %]/images/adv_search.png';" /></a>
+                    <a href="[% ctx.opac_root %]/advanced">[% l('Advanced Search') %]</a>
                 </div>
                 [% IF ctx.mylist.size %]
                 <div class="results_header_btns cached_list_div">
-                    <a href="[% ctx.opac_root; ctx.user ? '/myopac/lists' : '/mylist' %]"><img
-                        alt="[% l('View My List') %]"
-                        src="[% ctx.media_prefix %]/images/view_my_list.png"
-                        onmouseover="this.src='[% ctx.media_prefix %]/images/view_my_list_hover.png';"
-                        onmouseout="this.src='[% ctx.media_prefix %]/images/view_my_list.png';" /></a>
+                    <a href="[% ctx.opac_root; ctx.user ? '/myopac/lists' : '/mylist' %]">[% l('View My List') %]</a>
                 </div>
                 [% END %]
                 <div class="results_header_div"></div>

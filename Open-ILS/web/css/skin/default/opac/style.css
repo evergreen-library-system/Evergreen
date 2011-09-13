@@ -274,7 +274,7 @@ div.select-wrapper:hover {
 	font-size: 10px;
 }
 
-#adv_search_tabs, #acct_tabs, #acct_fines_tabs, #acct_checked_tabs {
+#adv_search_tabs, #acct_tabs, #acct_fines_tabs, #acct_checked_tabs, #results_header_inner{
 	height: 40px;
 	width:974px;
 	margin:auto;
@@ -596,24 +596,14 @@ div.select-wrapper:hover {
 	margin:0;
 }
 
-
-
-
 #results_header_bar {
 	background: #929292;
 	border-top:1px solid #8b8b8b;
 }
 
 #results_header_inner {
-	height:32px;
-	width:974px;
-	margin:auto;
-	padding-top:6px;
-}
-
-.results_header_btns {
-	float:left;
-	margin-right: 6px;
+    height: 32px;
+    padding-top:6px;
 }
 
 .cached_list_div { width: 111px; height: 25px; }
@@ -640,8 +630,6 @@ div.select-wrapper:hover {
 .results_header_sel {
     /* width: 88px; */
 	float:left;
-	position: relative;
-	top: 2px;
 	margin:0;
 }
 
@@ -995,15 +983,33 @@ a.dash-link:hover { text-decoration: underline !important; }
 
 .big-strong {font-weight: bold; font-size: 120%; }
 
+.results_header_btns, .results_header_sel {
+    float:left;
+    margin-right: 6px;
+    height: 26px;
+}
+
 /* TODO: gradients */
-.opac-button { 
+.opac-button, .results_header_btns, #simple-detail-view-links { 
     color: white; 
     font-weight: bold; 
     -moz-border-radius: 5%;
     border-radius: 5%;
     background: #1784c7; 
 }
-.opac-button:hover { background: #359ee0; }
+
+.results_header_btns a, #simple-detail-view-links a {
+    margin: 10px;
+    padding: 5px 10px 5px 10px;
+    color: white;
+    vertical-align: middle;
+    display: table-cell;
+}
+
+a.opac-button:hover, .results_header_btns a:hover, #simple-detail-view-links a:hover {
+    background: #359ee0;
+    text-decoration: none;
+}
 
 a.opac-button {
     margin: 10px;
