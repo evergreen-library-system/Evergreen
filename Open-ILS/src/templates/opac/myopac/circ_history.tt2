@@ -8,14 +8,13 @@
 
 <div style="padding:0px;">
     
-    <div id="acct_checked_tabs" style="padding-bottom: 12px;color:#666;">
-        <div class="align selected">
-            <a href='circs'><img src="[% ctx.media_prefix %]/images/sub_checked_out_off.jpg"/></a>
-        </div>
+    <div id="acct_checked_tabs">
         <div class="align">
-            <img src="[% ctx.media_prefix %]/images/sub_checked_hist_on.jpg"/>
+            <a href='circs'>[% l("Current Items Checked Out") %]</a>
         </div>
-        <div class="clear-both"></div>
+        <div class="align selected">
+            <a href="#">[% l("Check Out History") %]</a>
+        </div>
     </div>
 
     <div class="header_middle">

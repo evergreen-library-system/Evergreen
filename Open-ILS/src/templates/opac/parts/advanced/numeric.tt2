@@ -22,8 +22,8 @@
         </tr>
         <tr>
             <td colspan="2" align="right">
-                <input type="image" alt="[% l('Search') %]"
-                    src="[% ctx.media_prefix %]/images/search_btn.gif" />
+                <input type="submit" alt="[% l('Search') %]"
+                    value="[% l('Search') %]" class="opac-button" />
             </td>
     </table>
 </form>

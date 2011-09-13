@@ -5,14 +5,13 @@
     myopac_page = "holds"  %]
 <div id='myopac_holds_div'>
 
-    <div id="acct_holds_tabs" style="padding-bottom: 12px;color:#666;">
+    <div id="acct_holds_tabs">
         <div class="align selected">
-            <img src="[% ctx.media_prefix %]/images/sub_holds_on.jpg"/>
+            <a href='#'>[% l("Items on Hold") %]</a>
         </div>
         <div class="align">
-            <a href='hold_history'><img src="[% ctx.media_prefix %]/images/sub_holds_hist_off.jpg"/></a>
+            <a href='hold_history'>[% l("Holds History") %]</a>
         </div>
-        <div class="clear-both"></div>
     </div>
 
     <div class="header_middle">
@@ -53,9 +52,9 @@
                     </select>
                 </td>
                 <td width="1" style="padding-left:9px;">
-                    <input type="image"
+                    <input type="submit" value="[% l('Go') %]"
                         alt="[% l('Go') %]" title="[% l('Go') %]"
-                        src="[% ctx.media_prefix %]/images/go-btn.png" />
+                        class="opac-button" />
                 </td>
                 <td width="1" style="padding-left:5px;">
                     <a href="#"><img

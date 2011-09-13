@@ -8,14 +8,13 @@
 
 <div id='myopac_holds_div'>
 
-    <div id="acct_holds_tabs" style="padding-bottom: 12px;color:#666;">
-        <div class="align selected">
-            <a href='holds'><img src="[% ctx.media_prefix %]/images/sub_holds_off.jpg"/></a>
-        </div>
+    <div id="acct_holds_tabs">
         <div class="align">
-            <img src="[% ctx.media_prefix %]/images/sub_holds_hist_on.jpg"/>
+            <a href='holds'>[% l("Items on Hold") %]</a>
         </div>
-        <div class="clear-both"></div>
+        <div class="align selected">
+            <a href="#">[% l("Holds History") %]</a>
+        </div>
     </div>
 
     <div class="header_middle">

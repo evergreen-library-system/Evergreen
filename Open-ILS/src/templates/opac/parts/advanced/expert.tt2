@@ -21,7 +21,9 @@
             <tr>
                 <td colspan="2"><a href="javascript:addExpertRow();">[ [% l("Add row") %] ]</a></td>
                 <td colspan="4">
-                    <input type="image" src="[% ctx.media_prefix %]/images/search_btn.gif" alt="[% l('Search') %]" title="[% l('Search') %]" />
+                    <input type="submit" value="[% l('Search') %]"
+                        alt="[% l('Search') %]" title="[% l('Search') %]"
+                        class="opac-button" />
                 </td>
             </tr>
         </tfoot>

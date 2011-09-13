@@ -7,9 +7,9 @@
         [% INCLUDE "opac/parts/printnav.tt2" %]
         <div id="adv_search_parent">
             <div id="adv_search_tabs">
-                <a href="?pane=advanced" alt="[% l('Advanced Search') %]" [% IF pane == 'advanced' %]class="on" [% END %]id="adv_search"></a>
-                <a href="?pane=numeric" alt="[% l('Numeric Search') %]" [% IF pane == 'numeric' %]class="on" [% END %]id="num_search"></a>
-                <a href="?pane=expert" alt="[% l('Expert Search') %]" [% IF pane == 'expert' %]class="on" [% END %]id="expert_search"></a>
+                <a href="?pane=advanced" [% IF pane == 'advanced' %]class="on" [% END %]id="adv_search">[% l('Advanced Search') %]</a>
+                <a href="?pane=numeric" [% IF pane == 'numeric' %]class="on" [% END %]id="num_search">[% l('Numeric Search') %]</a>
+                <a href="?pane=expert" [% IF pane == 'expert' %]class="on" [% END %]id="expert_search">[% l('Expert Search') %]</a>
             </div>
         </div>
     </div>

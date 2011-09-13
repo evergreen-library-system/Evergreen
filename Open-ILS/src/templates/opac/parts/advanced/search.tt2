@@ -115,10 +115,13 @@
     </tr>
     <tr class='border_4_2'>
         <td align="left" colspan='2'>
-            <input type="image" src="[% ctx.media_prefix %]/images/search_btn.gif"
-            alt="[% l('Search') %]" class='pointer' />
+            <input type="submit"
+                value="[% l('Search') %]"
+                class='pointer opac-button' />
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="[% mkurl('', {}, 1) %]">[% l('Reset Form') %]</a>
+            <input type="reset"
+                value="[% l('Reset form') %]"
+                class="opac-button" />
         </td>
     </tr>
 </table>
