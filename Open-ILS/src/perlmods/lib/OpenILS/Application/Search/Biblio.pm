@@ -2373,7 +2373,9 @@ __PACKAGE__->register_method(
 
 sub fetch_cn {
 	my( $self, $client, $id ) = @_;
-	my( $cn, $evt ) = $apputils->fetch_callnumber( $id );
+
+	my $e = new_editor();
+	my( $cn, $evt ) = $apputils->fetch_callnumber( $id, 0, $e );
 	return $evt if $evt;
 	return $cn;
 }
@@ -2387,7 +2389,9 @@ __PACKAGE__->register_method(
 
 sub fetch_fleshed_cn {
 	my( $self, $client, $id ) = @_;
-	my( $cn, $evt ) = $apputils->fetch_callnumber( $id, 1 );
+
+	my $e = new_editor();
+	my( $cn, $evt ) = $apputils->fetch_callnumber( $id, 1, $e );
 	return $evt if $evt;
 	return $cn;
 }

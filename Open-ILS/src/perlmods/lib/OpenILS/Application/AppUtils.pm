@@ -713,41 +713,21 @@ sub fetch_copy_location_by_name {
 }
 
 sub fetch_callnumber {
-	my( $self, $id, $flesh ) = @_;
-	my $evt = undef;
+	my( $self, $id, $flesh, $e ) = @_;
 
-	my $e = OpenILS::Event->new( 'ASSET_CALL_NUMBER_NOT_FOUND', id => $id );
-	return( undef, $e ) unless $id;
+	$e ||= OpenILS::Utils::CStoreEditor->new;
+
+	my $evt = OpenILS::Event->new( 'ASSET_CALL_NUMBER_NOT_FOUND', id => $id );
+	return( undef, $evt ) unless $id;
 
 	$logger->debug("Fetching callnumber $id");
 
-	my $cn = $self->simplereq(
-		'open-ils.cstore',
-		'open-ils.cstore.direct.asset.call_number.retrieve', $id );
-	$evt = $e  unless $cn;
+    my $cn = $e->retrieve_asset_call_number([
+        $id,
+        { flesh => $flesh, flesh_fields => { acn => [ 'prefix', 'suffix', 'label_class' ] } },
+    ]);
 
-    if ($flesh && $cn) {
-        $cn->prefix(
-            $self->simplereq(
-                'open-ils.cstore',
-                'open-ils.cstore.direct.asset.call_number_prefix.retrieve', $cn->prefix
-            )
-        );
-        $cn->suffix(
-            $self->simplereq(
-                'open-ils.cstore',
-                'open-ils.cstore.direct.asset.call_number_suffix.retrieve', $cn->suffix
-            )
-        );
-        $cn->label_class(
-            $self->simplereq(
-                'open-ils.cstore',
-                'open-ils.cstore.direct.asset.call_number_class.retrieve', $cn->label_class
-            )
-        );
-    }
-
-	return ( $cn, $evt );
+	return ( $cn, $e->event );
 }
 
 my %ORG_CACHE; # - these rarely change, so cache them..
