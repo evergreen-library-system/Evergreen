@@ -66,7 +66,7 @@
                 if (typeof templates.ilsevent != 'undefined') throw(templates);
                 var default_template;
                 g.prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces['nsIPrefBranch']);
-                var default_template_key = 'oils.marc_new.default_template';
+                var default_template_key = 'oils.marc_new.default_template.' + window.location.hostname;
                 if(g.data.last_marc_template) default_template = g.data.last_marc_template;
                 if(!default_template) {
                     var has_key = g.prefs.prefHasUserValue(default_template_key);
