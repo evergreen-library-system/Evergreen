@@ -2772,6 +2772,8 @@
 <!ENTITY staff.cat.marcedit.source.submit.label "Update source">
 <!ENTITY staff.cat.marc_new.load.label "Load">
 <!ENTITY staff.cat.marc_new.load.accesskey "L">
+<!ENTITY staff.cat.marc_new.set_default.label "Set Workstation Default">
+<!ENTITY staff.cat.marc_new.set_default.accesskey "S">
 <!ENTITY staff.cat.marc_view.title "MARC View">
 <!ENTITY staff.cat.opac.menuitem.opacview.label "OPAC View">
 <!ENTITY staff.cat.opac.menuitem.opacview.accesskey "O">

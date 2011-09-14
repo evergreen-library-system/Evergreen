@@ -64,13 +64,21 @@
 
                 var templates = g.network.simple_request('MARC_XML_TEMPLATE_LIST',[]);
                 if (typeof templates.ilsevent != 'undefined') throw(templates);
+                var default_template;
+                g.prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces['nsIPrefBranch']);
+                var default_template_key = 'oils.marc_new.default_template';
+                if(g.data.last_marc_template) default_template = g.data.last_marc_template;
+                if(!default_template) {
+                    var has_key = g.prefs.prefHasUserValue(default_template_key);
+                    if(has_key) default_template = g.prefs.getCharPref(default_template_key);
+                }
                 var ml = util.widgets.make_menulist(
                     util.functional.map_list(
                         templates.sort(),
                         function(el) {
                             return [ el /* The menu entry label */, el /* The menu entry value */ ];
                         }
-                    )
+                    ), default_template
                 );
                 $('menu_placeholder').appendChild(ml);
 
@@ -87,7 +95,11 @@
                                 [ template_name ]
                             );
                             if (typeof marc.ilsevent != 'undefined') throw(marc);
-    
+
+                            g.data.stash_retrieve();
+                            g.data.last_marc_template = template_name;
+                            g.data.stash('last_marc_template');
+
                             var url = urls.XUL_MARC_EDIT;
                             var params = {
                                 'record' : { 'marc' : marc },
@@ -164,6 +176,24 @@
                     false
                 );
 
+                $('set_default').addEventListener(
+                    'command',
+                    function(ev) {
+                        var template_name;
+                        try {
+                            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                            template_name = $('menu_placeholder').firstChild.value;
+                            g.prefs.setCharPref(default_template_key, template_name);
+                            alert(catStrings.getFormattedString('staff.cat.marc_new.set_default.success', [template_name]));
+                        } catch (E) {
+                            g.error.standard_unexpected_error_alert(
+                                catStrings.getFormattedString('staff.cat.marc_new.set_default.error', [template_name]), E
+                            );
+                        }
+                    },
+                    false
+                );
+
             } catch(E) {
                 g.error.standard_unexpected_error_alert('cat/marc_new.xul',E);
             }
@@ -179,6 +209,7 @@
         <hbox id="actions">
             <hbox id="menu_placeholder" />
             <button id="load" label="&staff.cat.marc_new.load.label;" accesskey="&staff.cat.marc_new.load.accesskey;"/>
+            <button id="set_default" label="&staff.cat.marc_new.set_default.label;" accesskey="&staff.cat.marc_new.set_default.accesskey;"/>
         </hbox>
     </vbox>
 
