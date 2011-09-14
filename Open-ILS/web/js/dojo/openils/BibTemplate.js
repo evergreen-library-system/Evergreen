@@ -242,6 +242,7 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
 
         constructor : function(kwargs) {
             this.place = kwargs.place;
+            this.empty = kwargs.empty;
             this.root = kwargs.root;
             this.xml = kwargs.xml;
             this.feed_uri = kwargs.uri;
@@ -253,19 +254,30 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
             this.relativePosition = 'last';
             if (this.reverseSort) this.relativePosition = 'first';
 
+            this.horizon = new Date().getTime();
+            var horiz = parseInt(this.root.getAttribute('horizon'));
+
+            if (isNaN(horiz) || this.horizon >= horiz) 
+                this.root.setAttribute('horizon', this.horizon);
+
             if (this.nodelay) this.render();
         },
 
         render : function () {
             var me = this;
+
             var process_feed = function (xmldoc) {
-                dojo.query( me.item_query, xmldoc ).forEach(
-                    function (item) {
-                        var template = me.root.cloneNode(true);
-                        dojo.place( template, me.place, me.relativePosition );
-                        new openils.BibTemplate({ delay : false, xml : item, root : template });
-                    }
-                );
+		if (parseInt(me.horizon) >= parseInt(me.root.getAttribute('horizon'))) {
+                    if (me.empty == true) dojo.empty(me.place);
+                    me.root.setAttribute('horizon', this.horizon);
+                    dojo.query( me.item_query, xmldoc ).forEach(
+                        function (item) {
+                            var template = me.root.cloneNode(true);
+                            dojo.place( template, me.place, me.relativePosition );
+                            new openils.BibTemplate({ delay : false, xml : item, root : template });
+                        }
+                    );
+                }
             };
 
             if (this.xml) {
