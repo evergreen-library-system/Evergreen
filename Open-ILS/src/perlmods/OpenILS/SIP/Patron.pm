@@ -266,14 +266,30 @@ sub language {
 }
 
 # How much more detail do we need to check here?
+# sec: adding logic to return false if user is barred, has a circulation block
+# or an expired card
 sub charge_ok {
     my $self = shift;
     my $u = $self->{user};
-    return 
-        $u->barred eq 'f' and 
+
+    # compute expiration date for borrowing privileges
+    my $expire = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($u->expire_date));
+
+    # determine whether patron should be allowed to circulate materials:
+    # not barred, doesn't owe too much wrt fines/fees, privileges haven't
+    # expired
+    my $no_circ = 't' if
+        (($u->barred eq 't') or
+         ($u->standing_penalties and @{$u->standing_penalties}) or
+         (CORE::time > $expire->epoch));
+
+    return
+        !$no_circ and
         $u->active eq 't' and
         $u->card->active eq 't';
 }
+
+
 
 # How much more detail do we need to check here?
 sub renew_ok {
