@@ -24,3 +24,29 @@ window.onload = function() {
     if(rec && rec[1]) { runEvt('rdetail', 'recordRetrieved', rec[1]); }
     // fire other events the staff client is expecting...
 }
+
+function rdetail_next_prev_actions(index, count, prev, next, start, end) {
+    /*  we get the relative URL from the template:  recid?query_args...
+        replace the recid and args on location.href to get the new URL  */
+    function fullurl(url) { return location.href.replace(/\/\d+\??.*/, '/' + url); }
+
+    if (index > 0) {
+        if(prev) 
+            window.rdetailPrev = function() { location.href = fullurl(prev); }
+        if(start) 
+            window.rdetailStart = function() { location.href = fullurl(start); }
+    }
+
+    if (index < count - 1) {
+        if(next) 
+            window.rdetailNext = function() { location.href = fullurl(next); }
+        if(end) 
+            window.rdetailEnd = function() { location.href = fullurl(end); }
+    }
+
+    ol = window.onload;
+    window.onload = function() {
+        if(ol) ol(); 
+        runEvt('rdetail', 'nextPrevDrawn', Number(index), Number(count)); 
+    };
+}

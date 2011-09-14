@@ -65,8 +65,10 @@
         %]</a> ]
     </div>
     [% END %]
+    <!--
     <div id="breadcrumb">
         <a href="[% ctx.opac_root %]/home">[% l('Catalog Home') %]</a> &gt;
     </div>
+    -->
     <div class="clear-both"></div>
 </div>

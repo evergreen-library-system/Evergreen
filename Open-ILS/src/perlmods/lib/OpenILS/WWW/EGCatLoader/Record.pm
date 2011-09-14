@@ -12,7 +12,7 @@ my $U = 'OpenILS::Application::AppUtils';
 sub load_record {
     my $self = shift;
     my $ctx = $self->ctx;
-    $ctx->{page} = 'record';
+    $ctx->{page} = 'record';  
 
     my $org = $self->cgi->param('loc') || $ctx->{aou_tree}->()->id;
     my $depth = $self->cgi->param('depth') || 0;
@@ -26,6 +26,8 @@ sub load_record {
     if ($ctx->{staff_saved_search_size}) {
         $ctx->{saved_searches} = ($self->staff_load_searches)[1];
     }
+
+    $self->fetch_related_search_info($rec_id);
 
     # run copy retrieval in parallel to bib retrieval
     # XXX unapi
@@ -98,6 +100,33 @@ sub load_record {
 
     return Apache2::Const::OK;
 }
+
+# collect IDs and info on the search that lead to this details page
+# If no search query, etc is present, we leave ctx.search_result_index == -1
+sub fetch_related_search_info {
+    my $self = shift;
+    my $rec_id = shift;
+    my $ctx = $self->ctx;
+    $ctx->{search_result_index} = -1;
+
+    $self->load_rresults(internal => 1);
+
+    my @search_ids = @{$ctx->{ids}};
+    return unless @search_ids;
+
+    for my $idx (0..$#search_ids) {
+        if ($search_ids[$idx] == $rec_id) {
+            $ctx->{prev_search_record} = $search_ids[$idx - 1] if $idx > 0;
+            $ctx->{next_search_record} = $search_ids[$idx + 1];
+            $ctx->{search_result_index} = $idx;
+            last;
+        }
+    }
+
+    $ctx->{first_search_record} = $search_ids[0];
+    $ctx->{last_search_record} = $search_ids[-1];
+}
+
 
 sub mk_copy_query {
     my $self = shift;

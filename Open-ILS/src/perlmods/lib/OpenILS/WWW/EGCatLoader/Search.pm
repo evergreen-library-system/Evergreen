@@ -10,6 +10,10 @@ use Data::Dumper;
 $Data::Dumper::Indent = 0;
 my $U = 'OpenILS::Application::AppUtils';
 
+# when fetching "all" search results for staff client 
+# start/end paging, fetch this many IDs at most
+my $all_recs_limit = 10000;
+
 
 sub _prepare_biblio_search_basics {
     my ($cgi) = @_;
@@ -140,15 +144,21 @@ sub _get_search_limit {
 #   records : list of bre's and copy-count objects
 sub load_rresults {
     my $self = shift;
+    my %args = @_;
+    my $internal = $args{internal};
     my $cgi = $self->cgi;
     my $ctx = $self->ctx;
     my $e = $self->editor;
 
-    $ctx->{page} = 'rresult';
+    $ctx->{page} = 'rresult' unless $internal;
+    $ctx->{ids} = [];
+    $ctx->{records} = [];
+    $ctx->{search_facets} = {};
+    $ctx->{hit_count} = 0;
 
     # Special alternative searches here.  This could all stand to be cleaner.
     if ($cgi->param("_special")) {
-        return $self->marc_expert_search if scalar($cgi->param("tag"));
+        return $self->marc_expert_search(%args) if scalar($cgi->param("tag"));
         return $self->item_barcode_shortcut if (
             $cgi->param("qtype") and ($cgi->param("qtype") eq "item_barcode")
         );
@@ -164,6 +174,15 @@ sub load_rresults {
     my $offset = $page * $limit;
     my $metarecord = $cgi->param('metarecord');
     my $results; 
+
+    $ctx->{page_size} = $limit;
+    $ctx->{search_page} = $page;
+
+    # fetch the first hit from the next page
+    if ($internal) {
+        $limit = $all_recs_limit;
+        $offset = 0;
+    }
 
     my ($query, $site, $depth) = _prepare_biblio_search($cgi, $ctx);
 
@@ -184,7 +203,7 @@ sub load_rresults {
         }
     }
 
-    if ($metarecord) {
+    if ($metarecord and !$internal) {
 
         # TODO: other limits, like SVF/format, etc.
         $results = $U->simplereq(
@@ -198,7 +217,10 @@ sub load_rresults {
 
     } else {
 
-        return $self->generic_redirect unless $query;
+        if (!$query) {
+            return Apache2::Const::OK if $internal;
+            return $self->generic_redirect;
+        }
 
         # Limit and offset will stay here. Everything else should be part of
         # the query string, not special args.
@@ -226,13 +248,11 @@ sub load_rresults {
 
     my $rec_ids = [map { $_->[0] } @{$results->{ids}}];
 
-    $ctx->{records} = [];
-    $ctx->{search_facets} = {};
-    $ctx->{page_size} = $limit;
+    $ctx->{ids} = $rec_ids;
     $ctx->{hit_count} = $results->{count};
     $ctx->{parsed_query} = $results->{parsed_query};
 
-    return Apache2::Const::OK if @$rec_ids == 0;
+    return Apache2::Const::OK if @$rec_ids == 0 or $internal;
 
     my ($facets, @data) = $self->get_records_and_facets(
         $rec_ids, $results->{facet_key}, 
@@ -306,7 +326,7 @@ sub item_barcode_shortcut {
 # like item_barcode_search, this can't take all the usual search params, but
 # this one will at least do site, limit and page
 sub marc_expert_search {
-    my ($self) = @_;
+    my ($self, %args) = @_;
 
     my @tags = $self->cgi->param("tag");
     my @subfields = $self->cgi->param("subfield");
@@ -334,9 +354,16 @@ sub marc_expert_search {
     $self->ctx->{search_facets} = {};
     $self->ctx->{page_size} = $limit;
     $self->ctx->{hit_count} = 0;
+    $self->ctx->{ids} = [];
+    $self->ctx->{search_page} = $page;
         
     # nothing to do
     return Apache2::Const::OK if @$query == 0;
+
+    if ($args{internal}) {
+        $limit = $all_recs_limit;
+        $offset = 0;
+    }
 
     my $timeout = 120;
     my $ses = OpenSRF::AppSession->create('open-ils.search');
@@ -357,14 +384,13 @@ sub marc_expert_search {
         return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
     }
 
+    $self->ctx->{ids} = [ grep { $_ } @{$results->{ids}} ];
+
     my ($facets, @data) = $self->get_records_and_facets(
-        # filter out nulls that will turn up here
-        [ grep { $_ } @{$results->{ids}} ],
-        undef, {flesh => "{holdings_xml,mra}"}
+        $self->ctx->{ids}, undef, {flesh => "{holdings_xml,mra}"}
     );
 
     $self->ctx->{records} = [@data];
-    $self->ctx->{page_size} = $limit;
     $self->ctx->{hit_count} = $results->{count};
 
     return Apache2::Const::OK;
