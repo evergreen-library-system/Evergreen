@@ -3316,6 +3316,24 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'interval', null)
 
+,( 'circ.transit.suppress_hold', 'circ',
+    oils_i18n_gettext('circ.transit.suppress_hold',
+        'Suppress Hold Transits Group',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.transit.suppress_hold',
+        'If set to a non-empty string Hold Transits will be suppressed between this OU and others with the same value. If set to an empty string transits will not be suppressed.',
+        'coust', 'description'),
+    'string', null)
+
+,( 'circ.transit.suppress_non_hold', 'circ',
+    oils_i18n_gettext('circ.transit.suppress_non_hold',
+        'Suppress Non-Hold Transits Group',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.transit.suppress_non_hold',
+        'If set to a non-empty string Non-Hold Transits will be suppressed between this OU and others with the same value. If set to an empty string transits will not be suppressed.',
+        'coust', 'description'),
+    'string', null)
+
 ,( 'circ.user_merge.deactivate_cards', 'circ',
     oils_i18n_gettext('circ.user_merge.deactivate_cards',
         'Patron Merge Deactivate Card',

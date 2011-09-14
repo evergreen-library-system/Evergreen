@@ -538,6 +538,7 @@ my @AUTOLOAD_FIELDS = qw/
     clear_expired
     retarget_mode
     hold_as_transit
+    fake_hold_dest
 /;
 
 
@@ -2404,6 +2405,9 @@ sub do_checkin {
     if( $self->checkin_check_holds_shelf() ) {
         $self->bail_on_events(OpenILS::Event->new('NO_CHANGE'));
         $self->hold($U->fetch_open_hold_by_copy($self->copy->id));
+        if($self->fake_hold_dest) {
+            $self->hold->pickup_lib($self->circ_lib);
+        }
         $self->checkin_flesh_events;
         return;
     }
@@ -2478,11 +2482,15 @@ sub do_checkin {
                 $self->reshelve_copy(1);
                 $self->cancelled_hold_transit(1);
                 $self->notify_hold(0); # don't notify for cancelled holds
+                $self->fake_hold_dest(0);
                 return if $self->bail_out;
 
             } else {
 
                 # hold transited to correct location
+                if($self->fake_hold_dest) {
+                    $hold->pickup_lib($self->circ_lib);
+                }
                 $self->checkin_flesh_events;
                 return;
             }
@@ -2549,8 +2557,21 @@ sub do_checkin {
             }
     
             $logger->debug("circulator: circlib=$circ_lib, workstation=".$self->circ_lib);
-    
-            if( $circ_lib == $self->circ_lib and not ($self->hold_as_transit and $self->remote_hold) ) {
+
+            my $suppress_transit = 0;
+
+            if( $circ_lib != $self->circ_lib and not ($self->hold_as_transit and $self->remote_hold) ) {
+                my $suppress_transit_source = $U->ou_ancestor_setting($self->circ_lib, 'circ.transit.suppress_non_hold');
+                if($suppress_transit_source && $suppress_transit_source->{value}) {
+                    my $suppress_transit_dest = $U->ou_ancestor_setting($circ_lib, 'circ.transit.suppress_non_hold');
+                    if($suppress_transit_dest && $suppress_transit_source->{value} eq $suppress_transit_dest->{value}) {
+                        $logger->info("circulator: copy is within transit suppress group: ".$self->copy->barcode." ".$suppress_transit_source->{value});
+                        $suppress_transit = 1;
+                    }
+                }
+            }
+ 
+            if( $suppress_transit or ( $circ_lib == $self->circ_lib and not ($self->hold_as_transit and $self->remote_hold) ) ) {
                 # copy is where it needs to be, either for hold or reshelving
     
                 $self->checkin_handle_precat();
@@ -2712,6 +2733,18 @@ sub checkin_check_holds_shelf {
     $logger->info("circulator: we found a captured, un-fulfilled hold [".
         $hold->id. "] for copy ".$self->copy->barcode);
 
+    if( $hold->pickup_lib != $self->circ_lib and not $self->hold_as_transit ) {
+        my $suppress_transit_circ = $U->ou_ancestor_setting($self->circ_lib, 'circ.transit.suppress_hold');
+        if($suppress_transit_circ && $suppress_transit_circ->{value}) {
+            my $suppress_transit_pickup = $U->ou_ancestor_setting($hold->pickup_lib, 'circ.transit.suppress_hold');
+            if($suppress_transit_pickup && $suppress_transit_circ->{value} eq $suppress_transit_pickup->{value}) {
+                $logger->info("circulator: hold is within hold transit suppress group .. we're done: ".$self->copy->barcode." ".$suppress_transit_circ->{value});
+                $self->fake_hold_dest(1);
+                return 1;
+            }
+        }
+    }
+
     if( $hold->pickup_lib == $self->circ_lib and not $self->hold_as_transit ) {
         $logger->info("circulator: hold is for here .. we're done: ".$self->copy->barcode);
         return 1;
@@ -2856,7 +2889,19 @@ sub attempt_checkin_hold_capture {
 
     return 0 if $self->bail_out;
 
-    if( $hold->pickup_lib == $self->circ_lib && not $self->hold_as_transit ) {
+    my $suppress_transit = 0;
+    if( $hold->pickup_lib != $self->circ_lib and not $self->hold_as_transit ) {
+        my $suppress_transit_circ = $U->ou_ancestor_setting($self->circ_lib, 'circ.transit.suppress_hold');
+        if($suppress_transit_circ && $suppress_transit_circ->{value}) {
+            my $suppress_transit_pickup = $U->ou_ancestor_setting($hold->pickup_lib, 'circ.transit.suppress_hold');
+            if($suppress_transit_pickup && $suppress_transit_circ->{value} eq $suppress_transit_pickup->{value}) {
+                $suppress_transit = 1;
+                $self->hold->pickup_lib($self->circ_lib);
+            }
+        }
+    }
+
+    if( $suppress_transit or ( $hold->pickup_lib == $self->circ_lib && not $self->hold_as_transit ) ) {
 
         # This hold was captured in the correct location
         $copy->status(OILS_COPY_STATUS_ON_HOLDS_SHELF);
@@ -3024,7 +3069,20 @@ sub process_received_transit {
 
     my $transit = $self->transit;
 
-    if( $transit->dest != $self->circ_lib or ($self->hold_as_transit && $transit->copy_status == OILS_COPY_STATUS_ON_HOLDS_SHELF) ) {
+    # Check if we are in a transit suppress range
+    my $suppress_transit = 0;
+    if ( $transit->dest != $self->circ_lib and not ( $self->hold_as_transit and $transit->copy_status == OILS_COPY_STATUS_ON_HOLDS_SHELF ) ) {
+        my $suppress_setting = ($transit->copy_status == OILS_COPY_STATUS_ON_HOLDS_SHELF ?  'circ.transit.suppress_hold' : 'circ.transit.suppress_non_hold');
+        my $suppress_transit_circ = $U->ou_ancestor_setting($self->circ_lib, $suppress_setting);
+        if($suppress_transit_circ && $suppress_transit_circ->{value}) {
+            my $suppress_transit_dest = $U->ou_ancestor_setting($transit->dest, $suppress_setting);
+            if($suppress_transit_dest && $suppress_transit_dest->{value} eq $suppress_transit_circ->{value}) {
+                $suppress_transit = 1;
+                $self->fake_hold_dest(1) if $transit->copy_status == OILS_COPY_STATUS_ON_HOLDS_SHELF;
+            }
+        }
+    }
+    if( not $suppress_transit and ( $transit->dest != $self->circ_lib or ($self->hold_as_transit && $transit->copy_status == OILS_COPY_STATUS_ON_HOLDS_SHELF) ) ) {
         # - this item is in-transit to a different location
         # - Or we are capturing holds as transits, so why create a new transit?
 
