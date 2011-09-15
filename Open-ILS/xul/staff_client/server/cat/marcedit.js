@@ -1927,7 +1927,7 @@ function summarizeField(sf) {
 
     source_f.tag = sf.parent().@tag.toString();
     source_f.ind1 = sf.parent().@ind1.toString();
-    source_f.ind1 = sf.parent().@ind2.toString();
+    source_f.ind2 = sf.parent().@ind2.toString();
 
     var found_acs = [];
     dojo.forEach( acs.controlSetList(), function (acs_id) {
