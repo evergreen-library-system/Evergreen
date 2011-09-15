@@ -3,7 +3,7 @@
 --
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0622', :eg_version);
 
 INSERT INTO config.settings_group (name, label) VALUES
 ('sys', oils_i18n_gettext('config.settings_group.system', 'System', 'coust', 'label')),
