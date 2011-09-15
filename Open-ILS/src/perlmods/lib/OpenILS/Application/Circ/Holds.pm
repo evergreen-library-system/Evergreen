@@ -765,8 +765,11 @@ sub cancel_hold {
     $hold = $e->retrieve_action_hold_request($hold->id) or return $e->die_event;
     $e->rollback;
 
-    $U->create_events_for_hook('hold_request.cancel.staff', $hold, $hold->pickup_lib)
-        if $e->requestor->id != $hold->usr;
+    if ($e->requestor->id == $hold->usr) {
+        $U->create_events_for_hook('hold_request.cancel.patron', $hold, $hold->pickup_lib)
+    } else {
+        $U->create_events_for_hook('hold_request.cancel.staff', $hold, $hold->pickup_lib)
+    }
 
 	return 1;
 }
