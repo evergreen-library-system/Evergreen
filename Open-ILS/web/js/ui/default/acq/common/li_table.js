@@ -391,6 +391,7 @@ function AcqLiTable() {
                     {params: [
                         this.authtoken, li.purchase_order(), {
                             "flesh_price_summary": true,
+                            "flesh_provider" : true,
                             "flesh_lineitem_count": true
                         }
                     ]});
@@ -399,6 +400,11 @@ function AcqLiTable() {
                 var link = nodeByName('po_link', row);
                 link.setAttribute('href', oilsBasePath + '/acq/po/view/' + li.purchase_order());
                 link.innerHTML += po.name();
+
+                openils.Util.show(nodeByName('pro', row), 'inline');
+                link = nodeByName('pro_link', row);
+                link.setAttribute('href', oilsBasePath + '/conify/global/acq/provider/' + po.provider().id())
+                link.innerHTML += po.provider().code();
             }
         }
 
