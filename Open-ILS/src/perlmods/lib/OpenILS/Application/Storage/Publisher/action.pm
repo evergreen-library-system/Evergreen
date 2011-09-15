@@ -13,6 +13,7 @@ use DateTime;
 use DateTime::Format::ISO8601;
 use OpenILS::Utils::Penalty;
 use POSIX qw(ceil);
+use OpenILS::Application::Circ::CircCommon;
 
 sub isTrue {
 	my $v = shift;
@@ -886,38 +887,7 @@ sub generate_fines {
 				$log->info( "Potential first billing for circ ".$c->id );
 				$last_fine = $due;
 
-				if (0) {
-					if (my $h = $hoo{$c->$circ_lib_method}) { 
-
-						$log->info( "Circ lib has an hours-of-operation entry" );
-						# find the day after the due date...
-						$due_dt = $due_dt->add( days => 1 );
-
-						# get the day of the week for that day...
-						my $dow = $due_dt->day_of_week_0;
-						my $dow_open = "dow_${dow}_open";
-						my $dow_close = "dow_${dow}_close";
-
-						my $count = 0;
-						while ( $h->$dow_open eq '00:00:00' and $h->$dow_close eq '00:00:00' ) {
-							# if the circ lib is closed, add a day to the grace period...
-
-							$grace_period+=86400;
-							$log->info( "Grace period for circ ".$c->id." extended to $grace_period [" . seconds_to_interval( $grace_period ) . "]" );
-							$log->info( "Day of week $dow open $dow_open, close $dow_close" );
-
-							$due_dt = $due_dt->add( days => 1 );
-							$dow = $due_dt->day_of_week_0;
-							$dow_open = "dow_${dow}_open";
-							$dow_close = "dow_${dow}_close";
-
-							$count++;
-
-							# and check for up to a week
-							last if ($count > 6);
-						}
-					}
-				}
+				$grace_period = OpenILS::Application::Circ::CircCommon->extend_grace_period($c->$circ_lib_method->to_fieldmapper->id,$c->$due_date_method,$grace_period,undef,$hoo{$c->$circ_lib_method});
 			}
 
             next if ($last_fine > $now);
