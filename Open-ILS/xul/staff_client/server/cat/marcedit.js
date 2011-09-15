@@ -2617,7 +2617,7 @@ function summarizeField(sf) {
 
     source_f.tag = sf.parent().@tag.toString();
     source_f.ind1 = sf.parent().@ind1.toString();
-    source_f.ind1 = sf.parent().@ind2.toString();
+    source_f.ind2 = sf.parent().@ind2.toString();
 
     for (var i = 0; i < sf.parent().subfield.length(); i++) {
         var sf_iter = sf.parent().subfield[i];
