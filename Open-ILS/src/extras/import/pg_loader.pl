@@ -1,8 +1,6 @@
 #!/usr/bin/perl
 use strict;
 
-use lib '/openils/lib/perl5/';
-
 use OpenSRF::System;
 use OpenSRF::EX qw/:try/;
 use OpenSRF::Utils::SettingsClient;

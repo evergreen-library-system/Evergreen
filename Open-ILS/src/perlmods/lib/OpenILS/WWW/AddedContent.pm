@@ -1,8 +1,6 @@
 package OpenILS::WWW::AddedContent;
 use strict; use warnings;
 
-use lib qw(/usr/lib/perl5/Bundle/);
-
 use CGI;
 use Apache2::Log;
 use Apache2::Const -compile => qw(OK REDIRECT DECLINED NOT_FOUND :log);
