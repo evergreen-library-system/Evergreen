@@ -253,6 +253,16 @@ if(!dojo._hasResource["MARC.FixedFields"]) {
         },
         Conf : {
             _8 : {
+                BKS : {start : 29, len : 1, def : '0' },
+                SER : {start : 29, len : 1, def : '0' }
+            },
+            _6 : {
+                BKS : {start : 11, len : 1, def : '0' },
+                SER : {start : 11, len : 1, def : '0' }
+            }
+        },
+        Cont : {
+            _8 : {
                 BKS : {start : 24, len : 4, def : ' ' },
                 SER : {start : 25, len : 3, def : ' ' }
             },
