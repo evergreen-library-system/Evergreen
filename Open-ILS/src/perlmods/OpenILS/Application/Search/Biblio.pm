@@ -842,10 +842,10 @@ sub cat_search_z_style_wrapper {
 	$$searchhash{searches}{author}{term}  = $$args{search}{author}  if $$args{search}{author};
 	$$searchhash{searches}{subject}{term} = $$args{search}{subject} if $$args{search}{subject};
 	$$searchhash{searches}{keyword}{term} = $$args{search}{keyword} if $$args{search}{keyword};
+	$$searchhash{searches}{'identifier|isbn'}{term} = $$args{search}{isbn} if $$args{search}{isbn};
+	$$searchhash{searches}{'identifier|issn'}{term} = $$args{search}{issn} if $$args{search}{issn};
 
 	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{tcn}       if $$args{search}{tcn};
-	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{isbn}      if $$args{search}{isbn};
-	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{issn}      if $$args{search}{issn};
 	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{publisher} if $$args{search}{publisher};
 	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{pubdate}   if $$args{search}{pubdate};
 	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{item_type} if $$args{search}{item_type};
@@ -974,7 +974,7 @@ sub the_quest_for_knowledge {
 
 	# do some simple sanity checking
 	if(!$searchhash->{searches} or
-		( !grep { /^(?:title|author|subject|series|keyword)/ } keys %{$searchhash->{searches}} ) ) {
+		( !grep { /^(?:title|author|subject|series|keyword|identifier\|is[bs]n)/ } keys %{$searchhash->{searches}} ) ) {
 		return { count => 0 };
 	}
 
