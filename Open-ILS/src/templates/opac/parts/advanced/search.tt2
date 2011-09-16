@@ -51,7 +51,7 @@
                 <tr>
                     <td align='center' width='100%'>
                         [% INCLUDE "opac/parts/filtersort.tt2"
-                            value=CGI.param('sort') %]
+                            value=CGI.param('sort') class='results_header_sel' %]
                     </td>
                 </tr>
               </table>

@@ -131,29 +131,53 @@ __PACKAGE__->register_method(
 
 sub item_note_cud {
     my($self, $conn, $auth, $class, $note) = @_;
+
+    return new OpenILS::Event("BAD_PARAMS") unless
+        $note->class_name =~ /bucket_item_note$/;
+
     my $e = new_editor(authtoken => $auth, xact => 1);
     return $e->die_event unless $e->checkauth;
 
-    my $meth = 'retrieve_' . $ctypes{$class};
-    my $nclass = $note->class_name;
-    (my $iclass = $nclass) =~ s/n$//og;
+    my $meat = $ctypes{$class} . "_item_note";
+    my $meth = "retrieve_$meat";
 
-    my $db_note = $e->$meth($note->id, {
-        flesh => 2,
-        flesh_fields => {
-            $nclass => ['item'],
-            $iclass => ['bucket']
-        }
-    });
+    my $item_meat = $ctypes{$class} . "_item";
+    my $item_meth = "retrieve_$item_meat";
 
-    if($db_note->item->bucket->owner ne $e->requestor->id) {
-        return $e->die_event unless 
-            $e->allowed('UPDATE_CONTAINER', $db_note->item->bucket);
+    my $nhint = $Fieldmapper::fieldmap->{$note->class_name}->{hint};
+    (my $ihint = $nhint) =~ s/n$//og;
+
+    my ($db_note, $item);
+
+    if ($note->isnew) {
+        $db_note = $note;
+
+        $item = $e->$item_meth([
+            $note->item, {
+                flesh => 1, flesh_fields => {$ihint => ["bucket"]}
+            }
+        ]) or return $e->die_event;
+    } else {
+        $db_note = $e->$meth([
+            $note->id, {
+                flesh => 2,
+                flesh_fields => {
+                    $nhint => ['item'],
+                    $ihint => ['bucket']
+                }
+            }
+        ]) or return $e->die_event;
+
+        $item = $db_note->item;
     }
 
-    $meth = 'create_' . $ctypes{$class} if $note->isnew;
-    $meth = 'update_' . $ctypes{$class} if $note->ischanged;
-    $meth = 'delete_' . $ctypes{$class} if $note->isdeleted;
+    if($item->bucket->owner ne $e->requestor->id) {
+        return $e->die_event unless $e->allowed("UPDATE_CONTAINER");
+    }
+
+    $meth = 'create_' . $meat if $note->isnew;
+    $meth = 'update_' . $meat if $note->ischanged;
+    $meth = 'delete_' . $meat if $note->isdeleted;
     return $e->die_event unless $e->$meth($note);
     $e->commit;
 }

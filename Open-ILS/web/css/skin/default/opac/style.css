@@ -966,6 +966,7 @@ a.dash-link:hover { text-decoration: underline !important; }
 .hold-editor-controls a { padding-left: 2em; }
 
 .text-right { text-align: right; }
+.text-right-top { text-align: right; vertical-align: top; }
 .rdetail-author-div { padding-bottom: 10px; }
 
 .invisible { visibility: hidden; }
@@ -1030,3 +1031,4 @@ a.opac-button {
 }
 
 
+.bookbag-item-row td { vertical-align: top; }

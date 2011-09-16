@@ -322,8 +322,11 @@ sub title {
 	my $self = shift;
 	my $text = shift;
 	$self->_create_node('/rss/channel',undef,'title', $text);
-	# RSS2 demands a /channel/description element; just dupe title until we give
-	# users the ability to provide a description for their bookbags
+}
+
+sub description {
+	my $self = shift;
+	my $text = shift;
 	$self->_create_node('/rss/channel',undef,'description', $text);
 }
 

@@ -225,6 +225,34 @@ sub _load_user_with_prefs {
     return undef;
 }
 
+sub _get_bookbag_sort_params {
+    my ($self) = @_;
+
+    # The interface that feeds this cgi parameter will provide a single
+    # argument for a QP sort filter, and potentially a modifier after a period.
+    # In practice this means the "sort" parameter will be something like
+    # "titlesort" or "authorsort.descending".
+    my $sorter = $self->cgi->param("sort") || "";
+    my $modifier;
+    if ($sorter) {
+        $sorter =~ s/^(.*?)\.(.*)/$1/;
+        $modifier = $2 || undef;
+    }
+
+    return ($sorter, $modifier);
+}
+
+sub _prepare_bookbag_container_query {
+    my ($self, $container_id, $sorter, $modifier) = @_;
+
+    return sprintf(
+        "container(bre,bookbag,%d,%s)%s%s",
+        $container_id, $self->editor->authtoken,
+        ($sorter ? " sort($sorter)" : ""),
+        ($modifier ? "#$modifier" : "")
+    );
+}
+
 sub load_myopac_prefs_settings {
     my $self = shift;
 
@@ -1214,6 +1242,7 @@ sub load_myopac_bookbags {
     my $e = $self->editor;
     my $ctx = $self->ctx;
 
+    my ($sorter, $modifier) = $self->_get_bookbag_sort_params;
     $e->xact_begin; # replication...
 
     my $rv = $self->load_mylist;
@@ -1222,17 +1251,14 @@ sub load_myopac_bookbags {
         return $rv;
     }
 
-    my $args = {
-        order_by => {cbreb => 'name'},
-        limit => $self->cgi->param('limit') || 10,
-        offset => $self->cgi->param('offset') || 0
-    };
-
     $ctx->{bookbags} = $e->search_container_biblio_record_entry_bucket(
         [
-            {owner => $self->editor->requestor->id, btype => 'bookbag'},
-            {"flesh" => 1, "flesh_fields" => {"cbreb" => ["items"]}, %$args}
-        ], 
+            {owner => $e->requestor->id, btype => 'bookbag'}, {
+                order_by => {cbreb => 'name'},
+                limit => $self->cgi->param('limit') || 10,
+                offset => $self->cgi->param('offset') || 0
+            }
+        ],
         {substream => 1}
     );
 
@@ -1241,17 +1267,33 @@ sub load_myopac_bookbags {
         return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
     }
     
-    # get unique record IDs
-    my %rec_ids = ();
-    foreach my $bbag (@{$ctx->{bookbags}}) {
-        foreach my $rec_id (
-            map { $_->target_biblio_record_entry } @{$bbag->items}
-        ) {
-            $rec_ids{$rec_id} = 1;
-        }
-    }
+    # Here is the loop that uses search to find the bib records in each
+    # bookbag.  XXX This should be parallelized.  Should this be done
+    # with OpenSRF::MultiSession, or is it enough to use OpenSRF::AppSession
+    # and call ->request() without calling ->gather() on any of those objects
+    # until all the requests have been issued?
 
-    $ctx->{bookbags_marc_xml} = $self->fetch_marc_xml_by_id([keys %rec_ids]);
+    foreach my $bookbag (@{$ctx->{bookbags}}) {
+        my $query = $self->_prepare_bookbag_container_query(
+            $bookbag->id, $sorter, $modifier
+        );
+
+        # XXX we need to limit the number of records per bbag; use third arg
+        # of bib_container_items_via_search() i think.
+        my $items = $U->bib_container_items_via_search($bookbag->id, $query)
+            or return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+
+        # Maybe save a little memory by creating only one XML::LibXML::Document
+        # instance for each record, even if record is repeated across bookbags.
+
+        foreach my $rec (map { $_->target_biblio_record_entry } @$items) {
+            next if $ctx->{bookbags_marc_xml}{$rec->id};
+            $ctx->{bookbags_marc_xml}{$rec->id} =
+                (new XML::LibXML)->parse_string($rec->marc);
+        }
+
+        $bookbag->items($items);
+    }
 
     $e->rollback;
     return Apache2::Const::OK;
@@ -1265,19 +1307,33 @@ sub load_myopac_bookbag_update {
     my $e = $self->editor;
     my $cgi = $self->cgi;
 
+    # save_notes is effectively another action, but is passed in a separate
+    # CGI parameter for what are really just layout reasons.
+    $action = 'save_notes' if $cgi->param('save_notes');
     $action ||= $cgi->param('action');
+
     $list_id ||= $cgi->param('list');
 
     my @add_rec = $cgi->param('add_rec') || $cgi->param('record');
     my @selected_item = $cgi->param('selected_item');
     my $shared = $cgi->param('shared');
     my $name = $cgi->param('name');
+    my $description = $cgi->param('description');
     my $success = 0;
     my $list;
 
-    if($action eq 'create') {
+    # This url intentionally leaves off the edit_notes parameter, but
+    # may need to add some back in for paging.
+
+    my $url = "https://" . $self->apache->hostname .
+        $self->ctx->{opac_root} . "/myopac/lists?";
+
+    $url .= 'sort=' . uri_escape($cgi->param("sort")) if $cgi->param("sort");
+
+    if ($action eq 'create') {
         $list = Fieldmapper::container::biblio_record_entry_bucket->new;
         $list->name($name);
+        $list->description($description);
         $list->owner($e->requestor->id);
         $list->btype('bookbag');
         $list->pub($shared ? 't' : 'f');
@@ -1352,13 +1408,144 @@ sub load_myopac_bookbag_update {
             );
             last unless $success;
         }
+    } elsif ($action eq 'save_notes') {
+        $success = $self->update_bookbag_item_notes;
     }
 
-    return $self->generic_redirect if $success;
+    return $self->generic_redirect($url) if $success;
+
+    # XXX FIXME Bucket failure doesn't have a page to show the user anything
+    # right now. User just sees a 404 currently.
 
     $self->ctx->{bucket_action} = $action;
     $self->ctx->{bucket_action_failed} = 1;
     return Apache2::Const::OK;
 }
 
-1
+sub update_bookbag_item_notes {
+    my ($self) = @_;
+    my $e = $self->editor;
+
+    my @note_keys = grep /^note-\d+/, keys(%{$self->cgi->Vars});
+    my @item_keys = grep /^item-\d+/, keys(%{$self->cgi->Vars});
+
+    # We're going to leverage an API call that's already been written to check
+    # permissions appropriately.
+
+    my $a = create OpenSRF::AppSession("open-ils.actor");
+    my $method = "open-ils.actor.container.item_note.cud";
+
+    for my $note_key (@note_keys) {
+        my $note;
+
+        my $id = ($note_key =~ /(\d+)/)[0];
+
+        if (!($note =
+            $e->retrieve_container_biblio_record_entry_bucket_item_note($id))) {
+            my $event = $e->die_event;
+            $self->apache->log->warn(
+                "error retrieving cbrebin id $id, got event " .
+                $event->{textcode}
+            );
+            $a->kill_me;
+            $self->ctx->{bucket_action_event} = $event;
+            return;
+        }
+
+        if (length($self->cgi->param($note_key))) {
+            $note->ischanged(1);
+            $note->note($self->cgi->param($note_key));
+        } else {
+            $note->isdeleted(1);
+        }
+
+        my $r = $a->request($method, $e->authtoken, "biblio", $note)->gather(1);
+
+        if (defined $U->event_code($r)) {
+            $self->apache->log->warn(
+                "attempt to modify cbrebin " . $note->id .
+                " returned event " .  $r->{textcode}
+            );
+            $e->rollback;
+            $a->kill_me;
+            $self->ctx->{bucket_action_event} = $r;
+            return;
+        }
+    }
+
+    for my $item_key (@item_keys) {
+        my $id = int(($item_key =~ /(\d+)/)[0]);
+        my $text = $self->cgi->param($item_key);
+
+        chomp $text;
+        next unless length $text;
+
+        my $note = new Fieldmapper::container::biblio_record_entry_bucket_item_note;
+        $note->isnew(1);
+        $note->item($id);
+        $note->note($text);
+
+        my $r = $a->request($method, $e->authtoken, "biblio", $note)->gather(1);
+
+        if (defined $U->event_code($r)) {
+            $self->apache->log->warn(
+                "attempt to create cbrebin for item " . $note->item .
+                " returned event " .  $r->{textcode}
+            );
+            $e->rollback;
+            $a->kill_me;
+            $self->ctx->{bucket_action_event} = $r;
+            return;
+        }
+    }
+
+    $a->kill_me;
+    return 1;   # success
+}
+
+sub load_myopac_bookbag_print {
+    my ($self) = @_;
+
+    $self->apache->content_type("text/plain; encoding=utf8");
+
+    my $id = int($self->cgi->param("list"));
+
+    my ($sorter, $modifier) = $self->_get_bookbag_sort_params;
+
+    my $item_search =
+        $self->_prepare_bookbag_container_query($id, $sorter, $modifier);
+
+    my $bbag;
+
+    # Get the bookbag object itself, assuming we're allowed to.
+    if ($self->editor->allowed("VIEW_CONTAINER")) {
+
+        $bbag = $self->editor->retrieve_container_biblio_record_entry_bucket($id) or return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+    } else {
+        my $bookbags = $self->editor->search_container_biblio_record_entry_bucket(
+            {
+                "id" => $id,
+                "-or" => {
+                    "owner" => $self->editor->requestor->id,
+                    "pub" => "t"
+                }
+            }
+        ) or return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+
+        $bbag = pop @$bookbags;
+    }
+
+    # If we have a bookbag we're allowed to look at, issue the A/T event
+    # to get CSV, passing as a user param that search query we built before.
+    if ($bbag) {
+        $self->ctx->{csv} = $U->fire_object_event(
+            undef, "container.biblio_record_entry_bucket.csv",
+            $bbag, $self->editor->requestor->home_ou,
+            undef, {"item_search" => $item_search}
+        );
+    }
+
+    return Apache2::Const::OK;
+}
+
+1;

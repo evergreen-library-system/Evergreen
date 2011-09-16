@@ -1,16 +1,15 @@
-<select class="results_header_sel" id='opac.result.sort' name="sort"
-    [% IF submit_on_change %]onchange='this.form.submit()'[% END %]>
+<select [% class ? ('class="' _ class _ '"') : '' %] id='opac.result.sort' name="[% name || 'sort' %]" [% IF submit_on_change %]onchange='this.form.submit()'[% END %]>
     <option value=''>[% l("Sort by Relevance") %]</option>
     <optgroup label='[% l("Sort by Title") %]'>
         <option value='titlesort'[% value == 'titlesort' ? ' selected="selected"' : '' %]>[% l("Title: A to Z") %]</option>
-        <option value='titlesort.desc'[% value == 'titlesort.desc' ? ' selected="selected"' : '' %]>[% l("Title: Z to A") %]</option>
+        <option value='titlesort.descending'[% value == 'titlesort.descending' ? ' selected="selected"' : '' %]>[% l("Title: Z to A") %]</option>
     </optgroup>
     <optgroup label='[% l("Sort by Author") %]'>
         <option value='authorsort'[% value == 'authorsort' ? ' selected="selected"' : '' %]>[% l("Author: A to Z") %]</option>
-        <option value='authorsort.desc'[% value == 'authorsort.desc' ? ' selected="selected"' : '' %]>[% l("Author: Z to A") %]</option>
+        <option value='authorsort.descending'[% value == 'authorsort.descending' ? ' selected="selected"' : '' %]>[% l("Author: Z to A") %]</option>
     </optgroup>
     <optgroup label='[% l("Sort by Publication Date") %]'>
-        <option value='pubdate.desc'[% value == 'pubdate.desc' ? ' selected="selected"' : '' %]>[% l("Date: Newest to Oldest") %]</option>
+        <option value='pubdate.descending'[% value == 'pubdate.descending' ? ' selected="selected"' : '' %]>[% l("Date: Newest to Oldest") %]</option>
         <option value='pubdate'[% value == 'pubdate' ? ' selected="selected"' : '' %]>[% l("Date: Oldest to Newest") %]</option>
     </optgroup>
 </select>

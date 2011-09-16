@@ -1024,6 +1024,7 @@ sub bookbag_feed {
     $feed->id($bucket_tag);
 
     $feed->title("Items in Book Bag [".$bucket->name."]");
+    $feed->description($bucket->description || ("Items in Book Bag [".$bucket->name."]"));
     $feed->creator($host);
     $feed->update_ts();
 

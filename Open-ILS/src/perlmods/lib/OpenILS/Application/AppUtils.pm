@@ -1854,5 +1854,57 @@ sub get_bre_attrs {
     return $attrs;
 }
 
+sub bib_container_items_via_search {
+    my ($class, $container_id, $search_query, $search_args) = @_;
+
+    # First, Use search API to get container items sorted in any way that crad
+    # sorters support.
+    my $search_result = $class->simplereq(
+        "open-ils.search", "open-ils.search.biblio.multiclass.query",
+        $search_args, $search_query
+    );
+    unless ($search_result) {
+        # empty result sets won't cause this, but actual errors should.
+        $logger->warn("bib_container_items_via_search() got nothing from search");
+        return;
+    }
+
+    # Throw away other junk from search, keeping only bib IDs.
+    my $id_list = [ map { pop @$_ } @{$search_result->{ids}} ];
+
+    return [] unless @$id_list;
+
+    # Now get the bib container items themselves...
+    my $e = new OpenILS::Utils::CStoreEditor;
+    unless ($e) {
+        $logger->warn("bib_container_items_via_search() couldn't get cstoreeditor");
+        return;
+    }
+
+    my $items = $e->search_container_biblio_record_entry_bucket_item([
+        {
+            "target_biblio_record_entry" => $id_list,
+            "bucket" => $container_id
+        }, {
+            flesh => 1,
+            flesh_fields => {"cbrebi" => [qw/notes target_biblio_record_entry/]}
+        }
+    ]);
+    unless ($items) {
+        $logger->warn(
+            "bib_container_items_via_search() couldn't get bucket items: " .
+            $e->die_event->{textcode}
+        );
+        return;
+    }
+
+    $e->disconnect;
+
+    # ... and put them in the same order that the search API said they
+    # should be in.
+    my %ordering_hash = map { $_->target_biblio_record_entry->id, $_ } @$items;
+    return [map { $ordering_hash{$_} } @$id_list];
+}
+
 1;
 

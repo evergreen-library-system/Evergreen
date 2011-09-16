@@ -5,6 +5,7 @@ use Template;
 use DateTime;
 use DateTime::Format::ISO8601;
 use Unicode::Normalize;
+use XML::LibXML;
 use OpenSRF::Utils qw/:datetime/;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Application::AppUtils;
@@ -198,6 +199,22 @@ my $_TT_helpers = {
         }
         return;
     },
+
+    csv_datum => sub {
+        my ($str) = @_;
+
+        if ($str =~ /\,/ || $str =~ /"/) {
+            $str =~ s/"/""/g;
+            $str = '"' . $str . '"';
+        }
+
+        return $str;
+    },
+
+    xml_doc => sub {
+        my ($str) = @_;
+        return $str ? (new XML::LibXML)->parse_string($str) : undef;
+    }
 
 };
 
