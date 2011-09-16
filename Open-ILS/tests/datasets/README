@@ -20,7 +20,7 @@ The following table lists the data sets we have collected for testing purposes.
 =====How to load the test MFHD records=====
 
   - First load the MARC21 records:
-    - PERL5LIB=/openils/lib/perl5/ perl ../../src/extras/import/marc2bre.pl --marctype XML --start 1 --idfield 901 --idsubfield a serials_marc21.xml | perl ../../src/extras/import/pg_loader.pl -or bre -or mrd -or mfr -or mtfe -or mafe -or msfe -or mkfe -or msefe -a mrd -a mfr -a mtfe -a mafe -a msfe -a mkfe -a msefe | psql -U evergreen -h localhost
+    - perl ../../src/extras/import/marc2bre.pl --marctype XML --start 1 --idfield 901 --idsubfield a serials_marc21.xml | perl ../../src/extras/import/pg_loader.pl -or bre -or mrd -or mfr -or mtfe -or mafe -or msfe -or mkfe -or msefe -a mrd -a mfr -a mtfe -a mafe -a msfe -a mkfe -a msefe | psql -U evergreen -h localhost
 
   - Then generate the metarecord map:
     - pgsql -f ../../src/extras/import/quick_metarecord_map.sql
@@ -28,6 +28,6 @@ The following table lists the data sets we have collected for testing purposes.
   - Then process and load the MFHD records - ingest is not used. Adjust the
     contents of serials_lib.map to match your library-to-actor.org_unit.id
     mappings:
-    - PERL5LIB=/openils/lib/perl5/ perl ../../src/extras/import/marc2sre.pl --marctype XML --libmap serials_lib.map --password open-ils serials_mfhd.xml | perl ../../src/extras/import/pg_loader.pl -or sre > mfhd21.sql
+    - perl ../../src/extras/import/marc2sre.pl --marctype XML --libmap serials_lib.map --password open-ils serials_mfhd.xml | perl ../../src/extras/import/pg_loader.pl -or sre > mfhd21.sql
     - psql -f mfhd21.sql
 
