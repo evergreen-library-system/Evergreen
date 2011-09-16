@@ -1408,6 +1408,15 @@ INSERT INTO config.record_attr_definition (name,label,phys_char_sf) values ('vr_
 INSERT INTO config.record_attr_definition (name,label,sorter,filter,tag) values ('titlesort','Title',TRUE,FALSE,'tnf');
 INSERT INTO config.record_attr_definition (name,label,sorter,filter,tag) values ('authorsort','Author',TRUE,FALSE,'1%');
 
+INSERT INTO config.upgrade_log (version) VALUES ('0624'); -- miker/tsbere
+-- Cont was typod as Conf. Update the old entries.
+UPDATE config.marc21_ff_pos_map SET fixed_field = 'Cont' WHERE fixed_field = 'Conf' AND length > 1;
+-- Conf thus didn't exist. Add it.
+INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('Conf', '006', 'BKS', 11, 1, ' ');
+INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('Conf', '006', 'SER', 11, 1, ' ');
+INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('Conf', '008', 'BKS', 29, 1, ' ');
+INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('Conf', '008', 'SER', 29, 1, ' ');
+
 INSERT INTO config.coded_value_map (ctype,code,value,description)
     SELECT 'item_lang' AS ctype, code, value, NULL FROM config.language_map
         UNION
