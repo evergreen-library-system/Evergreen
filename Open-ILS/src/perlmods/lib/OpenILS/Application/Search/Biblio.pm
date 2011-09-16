@@ -2161,7 +2161,7 @@ Presently, search uses the cache unconditionally.
 # FIXME: that example above isn't actually tested.
 # TODO: docache option?
 sub marc_search {
-	my( $self, $conn, $args, $limit, $offset ) = @_;
+	my( $self, $conn, $args, $limit, $offset, $timeout ) = @_;
 
 	my $method = 'open-ils.storage.biblio.full_rec.multi_search';
 	$method .= ".staff" if $self->api_name =~ /staff/;
@@ -2170,6 +2170,11 @@ sub marc_search {
     $limit  ||= 10;     # FIXME: what about $args->{limit} ?
     $offset ||=  0;     # FIXME: what about $args->{offset} ?
 
+    # allow caller to pass in a call timeout since MARC searches
+    # can take longer than the default 60-second timeout.  
+    # Default to 2 mins.  Arbitrarily cap at 5 mins.
+    $timeout = 120 if !$timeout or $timeout > 300;
+
 	my @search;
 	push( @search, ($_ => $$args{$_}) ) for (sort keys %$args);
 	my $ckey = $pfx . md5_hex($method . OpenSRF::Utils::JSON->perl2JSON(\@search));
@@ -2177,13 +2182,19 @@ sub marc_search {
 	my $recs = search_cache($ckey, $offset, $limit);
 
 	if(!$recs) {
-		$recs = $U->storagereq($method, %$args) || [];
-		if( $recs ) {
+
+        my $ses = OpenSRF::AppSession->create('open-ils.storage');
+        my $req = $ses->request($method, %$args);
+        my $resp = $req->recv($timeout);
+
+        if($resp and $recs = $resp->content) {
 			put_cache($ckey, scalar(@$recs), $recs);
 			$recs = [ @$recs[$offset..($offset + ($limit - 1))] ];
 		} else {
 			$recs = [];
 		}
+
+        $ses->kill_me;
 	}
 
 	my $count = 0;

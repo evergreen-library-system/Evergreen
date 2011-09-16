@@ -338,10 +338,16 @@ sub marc_expert_search {
     # nothing to do
     return Apache2::Const::OK if @$query == 0;
 
-    my $results = $U->simplereq(
-        'open-ils.search', 
+    my $timeout = 120;
+    my $ses = OpenSRF::AppSession->create('open-ils.search');
+    my $req = $ses->request(
         'open-ils.search.biblio.marc',
-        {searches => $query, org_unit => $org_unit}, $limit, $offset);
+        {searches => $query, org_unit => $org_unit}, 
+        $limit, $offset, $timeout);
+
+    my $resp = $req->recv($timeout);
+    my $results = $resp ? $resp->content : undef;
+    $ses->kill_me;
 
     if (defined $U->event_code($results)) {
         $self->apache->log->warn(
