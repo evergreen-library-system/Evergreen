@@ -25,6 +25,8 @@
         FOR p IN phys; phys_content.push(p.textContent); END;
         args.phys_desc = phys_content.join("");
 
+        args.contents = xml.findnodes('//*[@tag="505"]').textContent;
+
         # MARC Callnumber
         args.marc_cn = xml.findnodes('//*[@tag="092" or @tag="099"]/*').textContent;
 
