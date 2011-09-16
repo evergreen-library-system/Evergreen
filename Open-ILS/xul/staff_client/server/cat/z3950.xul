@@ -86,6 +86,7 @@
         <command id="cmd_z3950_csv_to_file" disabled="true" />
         <command id="save_columns" />
         <command id="mark_overlay" />
+        <command id="show_in_catalog" />
         <command id="toggle_form" />
         <command id="marc_view" />
     </commandset>
@@ -187,6 +188,11 @@
                         disabled="true"
                         label="&staff.cat.z3950.mark_overlay.label;"
                         accesskey="&staff.cat.z3950.mark_overlay.accesskey;"/>
+                    <button id="show_in_catalog_btn"
+                        command="show_in_catalog"
+                        disabled="true"
+                        label="&staff.server.admin.transit.list.show.label;"
+                        accesskey="&staff.server.admin.transit.list.show.accesskey;"/>
                     <spacer flex="1"/>
                     <button id="marc_view_btn" command="marc_view" disabled="true"/>
                     <checkbox id="marc_editor" label="&staff.cat.z3950.marc_editor.label;" accesskey="&staff.cat.z3950.marc_editor.accesskey;" oils_persist="checked" checked="true"/> 

@@ -73,9 +73,11 @@ cat.z3950.prototype = {
                                     }
                                     if (o.getAttribute('service') == 'native-evergreen-catalog') {
                                         $('mark_overlay_btn').disabled = false;
+                                        $('show_in_catalog_btn').disabled = false;
                                         obj.controller.view.mark_overlay.setAttribute('doc_id',o.getAttribute('doc_id'));
                                     } else {
                                         $('mark_overlay_btn').disabled = true;
+                                        $('show_in_catalog_btn').disabled = true;
                                     }
                                     return o.getAttribute('retrieve_id');
                                 }
@@ -173,6 +175,29 @@ cat.z3950.prototype = {
                                     }
                                 } catch(E) {
                                     alert('Error in z3950.js, mark_overlay: ' + E);
+                                }
+                            }
+                        ],
+                        'show_in_catalog' : [
+                            ['command'],
+                            function() {
+                                try {
+                                    var doc_id = obj.controller.view.mark_overlay.getAttribute('doc_id');
+                                    if (doc_id) {
+                                        var opac_url = xulG.url_prefix( urls.opac_rdetail ) + doc_id;
+                                        var content_params = { 
+                                            'session' : ses(),
+                                            'authtime' : ses('authtime'),
+                                            'opac_url' : opac_url,
+                                        };
+                                        xulG.new_tab(
+                                                     xulG.url_prefix(urls.XUL_OPAC_WRAPPER), 
+                                                     {'tab_name': $("catStrings").getString('staff.cat.z3950.replace_tab_with_opac.tab_name')}, 
+                                                     content_params
+                                                     );
+                                    }
+                                } catch(E) {
+                                    alert('Error in z3950.js, show_in_catalog: ' + E);
                                 }
                             }
                         ],
