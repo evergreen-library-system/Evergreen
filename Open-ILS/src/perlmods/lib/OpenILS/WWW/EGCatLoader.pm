@@ -27,6 +27,10 @@ my $U = 'OpenILS::Application::AppUtils';
 use constant COOKIE_SES => 'ses';
 use constant COOKIE_ORIG_LOC => 'eg_orig_loc';
 
+use constant COOKIE_ANON_CACHE => 'anoncache';
+use constant ANON_CACHE_MYLIST => 'mylist';
+use constant ANON_CACHE_STAFF_SEARCH => 'staffsearch';
+
 sub new {
     my($class, $apache, $ctx) = @_;
 

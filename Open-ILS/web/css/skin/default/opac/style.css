@@ -551,6 +551,10 @@ div.select-wrapper:hover {
 #main-content-home { width: 694px; margin: auto; padding-left: 17px; }
 #main-content { width: 974px; margin:auto; padding-left: 0px; }
 
+#main-content-after-bar { float: left; width: 700px; margin: auto; padding-left: 4px; }
+
+#results-side-bar { float: left; width: 274px; background-color: #ddd; color: black; height: 500px; /* XXX to height of container*/  }
+
 #main-content .login_boxes {
 	border: 1px solid #dedede;
 	background:url('/images/login-bg.jpg') top repeat-x;

@@ -61,14 +61,24 @@
         </div>
     </div>
     </form>
+    <br class="clear-both" />
     <div id="content-wrapper">
-        <div id="main-content">
-            <div id="tehResultsPage">
+        [% IF ctx.staff_saved_search_size %]
+        <div id="results-side-bar">
+            <div id="staff-saved-search">
+                [% INCLUDE "opac/parts/staff_saved_searches.tt2" %]
+            </div>
+            <!-- XXX facet display here one day? -->
+        </div>
+        [% END %]
+        <div id="[% ctx.staff_saved_search_size ? 'main-content-after-bar' : 'main-content' %]">
+            <div id="results-page">
                 [% path = "opac/parts/result/" _
                     (ctx.records.size ? "table.tt2" : "lowhits.tt2");
                 INCLUDE $path %]
             </div>
             <div class="common-full-pad"></div>    
         </div>
+        <br class="clear-both" />
     </div>
 [% END %]

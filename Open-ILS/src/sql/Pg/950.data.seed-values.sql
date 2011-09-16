@@ -4363,6 +4363,15 @@ INSERT into config.org_unit_setting_type
         'URL for remote directory containing list column settings.  The format and naming convention for the files found in this directory match those in the local settings directory for a given workstation.  An administrator could create the desired settings locally and then copy all the tree_columns_for_* files to the remote directory.',
         'coust', 'description'),
     'string', null)
+,( 'opac.staff_saved_search.size', 'opac',
+    oils_i18n_gettext('opac.staff_saved_search.size',
+        'OPAC: Number of staff client saved searches to display on left side of results and record details pages',
+        'coust', 'label'),
+    oils_i18n_gettext('opac.staff_saved_search.size',
+        'If unset, the OPAC (only when wrapped in the staff client!) will default to showing you your ten most recent searches on the left side of the results and record details pages.  If you actually don''t want to see this feature at all, set this value to zero at the top of your organizational tree.',
+        'coust', 'description'),
+    'integer', null)
+
 ;
 
 UPDATE config.org_unit_setting_type

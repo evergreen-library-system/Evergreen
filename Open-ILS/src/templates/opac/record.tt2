@@ -7,10 +7,19 @@
         [% INCLUDE "opac/parts/printnav.tt2" %]
         [% INCLUDE "opac/parts/searchbar.tt2" %]
     </div>
+    <br class="clear-both" />
     <div id="content-wrapper" class="content-wrapper-record-page">
-        <div id="main-content">
+        [% IF ctx.staff_saved_search_size %]
+        <div id="results-side-bar">
+            <div id="staff-saved-search">
+                [% INCLUDE "opac/parts/staff_saved_searches.tt2" %]
+            </div>
+        </div>
+        [% END %]
+        <div id="[% ctx.staff_saved_search_size ? 'main-content-after-bar' : 'main-content' %]">
             [% INCLUDE "opac/parts/record/body.tt2" %]
             <div class="common-full-pad"></div>	
         </div>
+        <br class="clear-both" />
     </div>
 [% END %]

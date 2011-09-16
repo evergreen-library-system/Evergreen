@@ -7,23 +7,20 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::AppUtils;
 my $U = 'OpenILS::Application::AppUtils';
 
-use constant COOKIE_ANON_CACHE => 'anoncache';
-use constant ANON_CACHE_MYLIST => 'mylist';
-
 # Retrieve the users cached records AKA 'My List'
 # Returns an empty list if there are no cached records
 sub fetch_mylist {
     my ($self, $with_marc_xml) = @_;
 
     my $list = [];
-    my $cache_key = $self->cgi->cookie(COOKIE_ANON_CACHE);
+    my $cache_key = $self->cgi->cookie((ref $self)->COOKIE_ANON_CACHE);
 
     if($cache_key) {
 
         $list = $U->simplereq(
             'open-ils.actor',
             'open-ils.actor.anon_cache.get_value', 
-            $cache_key, ANON_CACHE_MYLIST);
+            $cache_key, (ref $self)->ANON_CACHE_MYLIST);
 
         if(!$list) {
             $cache_key = undef;
@@ -51,7 +48,7 @@ sub load_mylist_add {
     $cache_key = $U->simplereq(
         'open-ils.actor',
         'open-ils.actor.anon_cache.set_value', 
-        $cache_key, ANON_CACHE_MYLIST, $list);
+        $cache_key, (ref $self)->ANON_CACHE_MYLIST, $list);
 
     return $self->mylist_action_redirect($cache_key);
 }
@@ -66,7 +63,7 @@ sub load_mylist_delete {
     $cache_key = $U->simplereq(
         'open-ils.actor',
         'open-ils.actor.anon_cache.set_value', 
-        $cache_key, ANON_CACHE_MYLIST, $list);
+        $cache_key, (ref $self)->ANON_CACHE_MYLIST, $list);
 
     return $self->mylist_action_redirect($cache_key);
 }
@@ -88,7 +85,7 @@ sub load_mylist_move {
     $cache_key = $U->simplereq(
         'open-ils.actor',
         'open-ils.actor.anon_cache.set_value', 
-        $cache_key, ANON_CACHE_MYLIST, \@keep
+        $cache_key, (ref $self)->ANON_CACHE_MYLIST, \@keep
     );
 
     if ($self->ctx->{user} and $action =~ /^\d+$/) {
@@ -111,7 +108,7 @@ sub clear_anon_cache {
     my $self = shift;
     my $field = shift;
 
-    my $cache_key = $self->cgi->cookie(COOKIE_ANON_CACHE) or return;
+    my $cache_key = $self->cgi->cookie((ref $self)->COOKIE_ANON_CACHE) or return;
 
     $U->simplereq(
         'open-ils.actor',
@@ -137,7 +134,7 @@ sub mylist_action_redirect {
     return $self->generic_redirect(
         $url,
         $self->cgi->cookie(
-            -name => COOKIE_ANON_CACHE,
+            -name => (ref $self)->COOKIE_ANON_CACHE,
             -path => '/',
             -value => ($cache_key) ? $cache_key : '',
             -expires => ($cache_key) ? undef : '-1h'

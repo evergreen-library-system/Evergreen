@@ -167,6 +167,23 @@ sub load_rresults {
 
     my ($query, $site, $depth) = _prepare_biblio_search($cgi, $ctx);
 
+    $self->get_staff_search_settings;
+
+    if ($ctx->{staff_saved_search_size}) {
+        my ($key, $list) = $self->staff_save_search($query);
+        if ($key) {
+            $self->apache->headers_out->add(
+                "Set-Cookie" => $self->cgi->cookie(
+                    -name => (ref $self)->COOKIE_ANON_CACHE,
+                    -path => "/",
+                    -value => ($key || ''),
+                    -expires => ($key ? undef : "-1h")
+                )
+            );
+            $ctx->{saved_searches} = $list;
+        }
+    }
+
     if ($metarecord) {
 
         # TODO: other limits, like SVF/format, etc.
@@ -370,6 +387,69 @@ sub load_cnbrowse {
     $self->prepare_browse_call_numbers();
 
     return Apache2::Const::OK;
+}
+
+sub get_staff_search_settings {
+    my ($self) = @_;
+
+    unless ($self->ctx->{is_staff}) {
+        $self->ctx->{staff_saved_search_size} = 0;
+        return;
+    }
+
+    my $sss_size = $self->ctx->{get_org_setting}->(
+        $self->ctx->{orig_loc} || $self->ctx->{aou_tree}->()->id,
+        "opac.staff_saved_search.size",
+    );
+
+    # Sic: 0 is 0 (off), but undefined is 10.
+    $sss_size = 10 unless defined $sss_size;
+
+    $self->ctx->{staff_saved_search_size} = $sss_size;
+}
+
+sub staff_load_searches {
+    my ($self) = @_;
+
+    my $cache_key = $self->cgi->cookie((ref $self)->COOKIE_ANON_CACHE);
+
+    my $list = [];
+    if ($cache_key) {
+        $list = $U->simplereq(
+            "open-ils.actor",
+            "open-ils.actor.anon_cache.get_value",
+            $cache_key, (ref $self)->ANON_CACHE_STAFF_SEARCH
+        );
+
+        unless ($list) {
+            undef $cache_key;
+            $list = [];
+        }
+    }
+
+    return ($cache_key, $list);
+}
+
+sub staff_save_search {
+    my ($self, $query) = @_;
+
+    my $sss_size = $self->ctx->{staff_saved_search_size}; 
+    return unless $sss_size > 0;
+
+    my ($cache_key, $list) = $self->staff_load_searches;
+    my %already = ( map { $_ => 1 } @$list );
+
+    unshift @$list, $query unless $already{$query};
+
+    splice @$list, $sss_size;
+
+    $cache_key = $U->simplereq(
+        "open-ils.actor",
+        "open-ils.actor.anon_cache.set_value",
+        $cache_key, (ref $self)->ANON_CACHE_STAFF_SEARCH, $list
+    );
+
+    return ($cache_key, $list);
 }
 
 1;

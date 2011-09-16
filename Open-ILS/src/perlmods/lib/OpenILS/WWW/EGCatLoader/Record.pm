@@ -22,6 +22,11 @@ sub load_record {
     my $rec_id = $ctx->{page_args}->[0]
         or return Apache2::Const::HTTP_BAD_REQUEST;
 
+    $self->get_staff_search_settings;
+    if ($ctx->{staff_saved_search_size}) {
+        $ctx->{saved_searches} = ($self->staff_load_searches)[1];
+    }
+
     # run copy retrieval in parallel to bib retrieval
     # XXX unapi
     my $cstore = OpenSRF::AppSession->create('open-ils.cstore');
