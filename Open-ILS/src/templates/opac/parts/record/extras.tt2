@@ -41,8 +41,14 @@
         <div class="rdetail_extras">
             <div class="rdetail_extras_hr"></div>
             <div class="rdetail_extras_link">
-                [%  href = mkurl('', {expand => name}) _ '#' _ name; 
-                    img_url = ctx.media_prefix _ '/images/rdetail_arrow' _ (tab_is_active(name) ? '_down' : '') _ '.png' 
+                [%  
+                    IF tab_is_active(name);
+                        href = mkurl('', {}, ['expand']);
+                        img_url = ctx.media_prefix _ '/images/rdetail_arrow_down.png';
+                    ELSE;
+                        href = mkurl('', {expand => name}) _ '#' _ name; 
+                        img_url = ctx.media_prefix _ '/images/rdetail_arrow.png';
+                    END;
                 %]
                 <a name='[% name %]' href='[% href %]'><img alt='[% extra.label %]' src='[% img_url %]'/></a>
                 <a href='[% href %]' class="rdetail_extras_lbl">[% extra.label %]</a>
