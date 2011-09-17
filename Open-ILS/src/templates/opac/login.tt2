@@ -1,4 +1,5 @@
 [%  PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/config.tt2";
     WRAPPER "opac/parts/base.tt2";
     INCLUDE "opac/parts/topnav.tt2";
     ctx.page_title = l("Account Login") %]
@@ -11,7 +12,7 @@
             [% INCLUDE "opac/parts/login/form.tt2" %]
             <div class="clear-both very-big-height"></div>	
             <script type="text/javascript">
-                /* Note: when common browsers suppor HTML5 "autofocus", we can remove this */
+                /* Note: when common browsers support HTML5 "autofocus", we can remove this */
                 var _onload = window.onload;
                 window.onload = function() {
                     try {

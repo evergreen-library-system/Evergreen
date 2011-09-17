@@ -6,15 +6,6 @@
 	</div>
 	<br/>
 </div>
-<div class="hide_me" id="forget_pw">
-    <h1>Password Reset</h1>
-	Username or Barcode<br />
-	<input type="text" id="forget_pw_user" /><br /><br />
-	Email Address on account<br />
-	<input type="text" id="forget_pw_email" /><br />
-    <a href="#">Submit</a> &nbsp;
-    <a href="#">Cancel</a>
-</div>
 <table id='change_pw_table' class='data_grid hide_me' style='margin-left: 20px;' width='95%'>
 	<thead>
         <tr><td colspan='2' align='center'><b>[% l("Password") %]</b></td></tr>
@@ -137,12 +128,11 @@
                                 </div>
                                 <div style="padding-top:14px;">
                                     <input type="submit" value="[% l('Log in') %]" alt="[% l('Log in') %]" class="opac-button" />
-                                    <!-- TODO
-                                    <a href="reset_password"
-                                        style="position:relative;top:-13px;left:2px;font-size:10px;">Forgot your PIN?</a>
-                                    -->
+                                    [% IF reset_password; loc = ctx.locale.replace('_', '-'); %]
+                                    <a href='/opac/password/[% loc %]/'>[% l('Forgot your password?') %]</a>
+                                    [% END %]
                                 </div>
-	                        </td>
+                            </td>
                         </tr>
                     </table>
                     <br /><br />
