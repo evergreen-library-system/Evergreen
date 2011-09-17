@@ -69,7 +69,7 @@ __PACKAGE__->columns(Essential => qw/xact_start usr target_copy circ_lib
 				     stop_fines xact_finish due_date opac_renewal
 				     checkin_staff circ_staff circ_lib checkin_lib
 				     stop_fines_time checkin_time desk_renewal
-				     phone_renewal create_time/);
+				     phone_renewal create_time copy_location/);
 
 #-------------------------------------------------------------------------------
 

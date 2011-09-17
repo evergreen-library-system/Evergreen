@@ -3264,6 +3264,9 @@ SELECT  usr,
 			<field reporter:label="Billing Totals" name="billing_total" oils_persist:virtual="true" reporter:datatype="money"/>
 			<field reporter:label="Payment Totals" name="payment_total" oils_persist:virtual="true" reporter:datatype="money"/>
 			<field reporter:label="Unrecovered Debt" name="unrecovered" reporter:datatype="bool"/>
+			<field reporter:label="Shelving Location" name="copy_location" reporter:datatype="link"/>
+			<field reporter:label="Archived Patron Stat-Cat Entries" name="aaactsc_entries" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Archived Copy Stat-Cat Entries" name="aaasc_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="billable_transaction" reltype="might_have" key="id" map="" class="mbt"/>
@@ -3285,6 +3288,9 @@ SELECT  usr,
 			<link field="checkin_workstation" reltype="has_a" key="id" map="" class="aws"/>
 			<link field="parent_circ" reltype="has_a" key="id" map="" class="circ"/>
 			<link field="renewals" reltype="has_many" key="parent_circ" map="" class="circ"/>
+			<link field="copy_location" reltype="has_a" key="id" map="" class="acpl"/>
+			<link field="aaactsc_entries" reltype="has_many" key="xact" map="" class="aaactsc"/>
+			<link field="aaasc_entries" reltype="has_many" key="xact" map="" class="aaasc"/>
 		</links>
 	</class>
 	<class id="combcirc" controller="open-ils.cstore" oils_obj:fieldmapper="action::all_circulation" oils_persist:tablename="action.all_circulation" reporter:core="true" reporter:label="Combined Aged and Active Circulations" oils_persist:readonly="true">
@@ -3329,6 +3335,8 @@ SELECT  usr,
 			<field reporter:label="Copy Owning Library" name="copy_owning_lib" reporter:datatype="link"/>
 			<field reporter:label="Copy Circulating Library" name="copy_circ_lib" reporter:datatype="link"/>
 			<field reporter:label="Bib Record" name="copy_bib_record" reporter:datatype="link"/>
+			<field reporter:label="Archived Patron Stat-Cat Entries" name="aaactsc_entries" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Archived Copy Stat-Cat Entries" name="aaasc_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="billable_transaction" reltype="might_have" key="id" map="" class="mbt"/>
@@ -3350,6 +3358,8 @@ SELECT  usr,
 			<link field="copy_owning_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="copy_circ_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="copy_bib_record" reltype="has_a" key="id" map="" class="bre"/>
+			<link field="aaactsc_entries" reltype="has_many" key="xact" map="" class="aaactsc"/>
+			<link field="aaasc_entries" reltype="has_many" key="xact" map="" class="aaasc"/>
 		</links>
 	</class>
 	<class id="acirc" controller="open-ils.cstore" oils_obj:fieldmapper="action::aged_circulation" oils_persist:tablename="action.aged_circulation" reporter:core="true" reporter:label="Aged (patronless) Circulation">
@@ -3398,6 +3408,8 @@ SELECT  usr,
 			<field reporter:label="Copy Owning Library" name="copy_owning_lib" reporter:datatype="link"/>
 			<field reporter:label="Copy Circulating Library" name="copy_circ_lib" reporter:datatype="link"/>
 			<field reporter:label="Bib Record" name="copy_bib_record" reporter:datatype="link"/>
+			<field reporter:label="Archived Patron Stat-Cat Entries" name="aaactsc_entries" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Archived Copy Stat-Cat Entries" name="aaasc_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="billable_transaction" reltype="might_have" key="id" map="" class="mbt"/>
@@ -3423,6 +3435,8 @@ SELECT  usr,
 			<link field="checkin_workstation" reltype="has_a" key="id" map="" class="aws"/>
 			<link field="parent_circ" reltype="might_have" key="id" map="" class="circ"/>
 			<link field="renewals" reltype="has_many" key="parent_circ" map="" class="circ"/>
+			<link field="aaactsc_entries" reltype="has_many" key="xact" map="" class="aaactsc"/>
+			<link field="aaasc_entries" reltype="has_many" key="xact" map="" class="aaasc"/>
 		</links>
 	</class>
 
@@ -4730,6 +4744,7 @@ SELECT  usr,
 			<field reporter:label="SIP Field" name="sip_field" reporter:datatype="link"/>
 			<field reporter:label="SIP Format" name="sip_format" reporter:datatype="text"/>
 			<field reporter:label="Required" name="required" reporter:datatype="bool"/>
+			<field reporter:label="Checkout Archive" name="checkout_archive" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
@@ -4774,6 +4789,7 @@ SELECT  usr,
 			<field reporter:label="User Summary" name="usr_summary" reporter:datatype="bool"/>
 			<field reporter:label="SIP Field" name="sip_field" reporter:datatype="link"/>
 			<field reporter:label="SIP Format" name="sip_format" reporter:datatype="text"/>
+			<field reporter:label="Checkout Archive" name="checkout_archive" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
@@ -9369,6 +9385,30 @@ SELECT  usr,
 				<delete permission="ADMIN_ORG_UNIT_SETTING_TYPE_LOG" context_field="org"/>
 			</actions>
 		</permacrud>
+	</class>
+	<class id="aaactsc" controller="open-ils.reporter-store" oils_obj:fieldmapper="action::archive_actor_stat_cat" oils_persist:tablename="action.archive_actor_stat_cat" reporter:label="Circ-Archived Patron Statistical Category Entries">
+		<fields oils_persist:primary="id" oils_persist:sequence="action.archive_actor_stat_cat_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Circ" name="xact" reporter:datatype="link"/>
+			<field reporter:label="Statistical Category" name="stat_cat" reporter:datatype="link"/>
+			<field reporter:label="Entry Value" name="value" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="xact" reltype="has_a" key="id" map="" class="combcirc"/>
+			<link field="stat_cat" reltype="has_a" key="id" map="" class="actsc"/>
+		</links>
+	</class>
+	<class id="aaasc" controller="open-ils.reporter-store" oils_obj:fieldmapper="action::archive_asset_stat_cat" oils_persist:tablename="action.archive_asset_stat_cat" reporter:label="Circ-Archived Copy Statistical Category Entries">
+		<fields oils_persist:primary="id" oils_persist:sequence="action.archive_actor_stat_cat_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Circ" name="xact" reporter:datatype="link"/>
+			<field reporter:label="Statistical Category" name="stat_cat" reporter:datatype="link"/>
+			<field reporter:label="Entry Value" name="value" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="xact" reltype="has_a" key="id" map="" class="combcirc"/>
+			<link field="stat_cat" reltype="has_a" key="id" map="" class="asc"/>
+		</links>
 	</class>
 
 

@@ -95,6 +95,13 @@
                             <span>&staff.server.admin.stat_cat.off;</span>
                             <input type='radio' name='usr_summary' checked='checked'> </input>
                         </td>
+                        <td>&staff.server.admin.stat_cat.checkout_archive;</td>
+                        <td>
+                            <span>&staff.server.admin.stat_cat.on;</span>
+                            <input type='radio' name='checkout_archive' id='sc_make_checkout_archive'> </input>
+                            <span>&staff.server.admin.stat_cat.off;</span>
+                            <input type='radio' name='checkout_archive' checked='checked'> </input>
+                        </td>
                     </tr>
                     <tr>
                         <td>&staff.server.admin.stat_cat.sip_field;</td>
@@ -158,6 +165,7 @@
                             <td id='sc_usr_summary_label'>&staff.server.admin.stat_cat.usr_summary.label;</td>
                             <td>&staff.server.admin.stat_cat.sip_field.label;</td>
                             <td>&staff.server.admin.stat_cat.sip_format.label;</td>
+                            <td>&staff.server.admin.stat_cat.checkout_archive.label;</td>
                             <td>&staff.server.admin.stat_cat.entries.label;</td>
                             <td>&staff.server.admin.stat_cat.add_entry;</td>
                             <td>&staff.server.admin.stat_cat.edit;</td>
@@ -186,6 +194,10 @@
                                 <span class='hide_me' name='sc_sip_field_value' ></span>
                             </td>
                             <td name='sc_sip_format_td'/>
+                            <td>
+                                <span class='hide_me' name='sc_checkout_archive_on'>&staff.server.admin.stat_cat.on;</span>
+                                <span class='hide_me' name='sc_checkout_archive'>&staff.server.admin.stat_cat.off;</span>
+                            </td>
                             <td>
                                 <select class='selector' name='sc_entries_selector'>
                                     <option>&staff.server.admin.stat_cat.none;</option>
@@ -248,6 +260,9 @@
                 </td>
                 <td name='sc_edit_sip_format_td'>
                     <input type='text' name='sc_edit_sip_format'/>
+                </td>
+                <td>
+                    <input type='checkbox' name='sc_edit_checkout_archive'/>
                 </td>
                 <td colspan='4'>
                     <span class='padded'>

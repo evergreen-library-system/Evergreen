@@ -202,6 +202,10 @@ function scInsertCat( tbody, cat, type ) {
 
     $n(row, 'sc_sip_format_td').appendChild( text( cat.sip_format() ) );
 
+    if(isTrue(cat.checkout_archive()))
+        unHideMe($n(row, 'sc_checkout_archive_on'));
+    else
+        unHideMe($n(row, 'sc_checkout_archive'));
 
     if(type == ACTOR) {
         if(isTrue(cat.usr_summary()))
@@ -350,9 +354,11 @@ function scNew() {
     var visible = 0;
     var required = 0;
     var usr_summary = 0;
+    var checkout_archive = 0;
     if( $('sc_make_opac_visible').checked) visible = 1;
     if( $('sc_make_required').checked) required = 1;
     if( $('sc_make_usr_summary').checked) usr_summary = 1;
+    if( $('sc_make_checkout_archive').checked) checkout_archive = 1;
 
     var cat;
     if( type == ACTOR ) {
@@ -370,6 +376,7 @@ function scNew() {
 
     cat.opac_visible(visible);
     cat.name(name);
+    cat.checkout_archive(checkout_archive);
     cat.owner(getSelectorVal($('sc_owning_lib_selector')));
     cat.isnew(1);
 
@@ -439,6 +446,8 @@ function scEdit( tbody, type, cat ) {
             'sc_edit_opac_visibility').checked = true;
     }
 
+    $n( row, 'sc_edit_checkout_archive' ).checked = isTrue(cat.checkout_archive());
+
     $n(row, 'sc_edit_submit').onclick = 
         function() { scEditGo( type, cat, row, selector ); };
 
@@ -473,6 +482,7 @@ function scEditGo( type, cat, row, selector ) {
     cat.owner( newlib );
     cat.entries(null);
     cat.opac_visible(0);
+    cat.checkout_archive($n(row, 'sc_edit_checkout_archive').checked ? 1 : 0);
     if(sip_field.length == 2) cat.sip_field( sip_field );
     else cat.sip_field(null);
     cat.sip_format($n(row, 'sc_edit_sip_format').value);

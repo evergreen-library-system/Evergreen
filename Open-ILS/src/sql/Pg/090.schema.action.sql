@@ -101,6 +101,20 @@ CREATE TRIGGER action_survey_response_answer_date_fixup_tgr
 	FOR EACH ROW
 	EXECUTE PROCEDURE action.survey_response_answer_date_fixup ();
 
+CREATE TABLE action.archive_actor_stat_cat (
+    id          BIGSERIAL   PRIMARY KEY,
+    xact        BIGINT      NOT NULL, -- action.circulation (+aged/all)
+    stat_cat    INT         NOT NULL,
+    value       TEXT        NOT NULL
+);
+
+CREATE TABLE action.archive_asset_stat_cat (
+    id          BIGSERIAL   PRIMARY KEY,
+    xact        BIGINT      NOT NULL, -- action.circulation (+aged/all)
+    stat_cat    INT         NOT NULL,
+    value       TEXT        NOT NULL
+);
+
 
 CREATE TABLE action.circulation (
 	target_copy		BIGINT				NOT NULL, -- asset.copy.id
@@ -132,6 +146,7 @@ CREATE TABLE action.circulation (
 	checkin_workstation INT        REFERENCES actor.workstation(id)
 	                               ON DELETE SET NULL
 								   DEFERRABLE INITIALLY DEFERRED,
+	copy_location	INT				NOT NULL DEFAULT 1 REFERENCES asset.copy_location (id) DEFERRABLE INITIALLY DEFERRED,
 	checkin_scan_time   TIMESTAMP WITH TIME ZONE
 ) INHERITS (money.billable_xact);
 ALTER TABLE action.circulation ADD PRIMARY KEY (id);
@@ -169,13 +184,40 @@ $$ LANGUAGE PLPGSQL;
 
 CREATE TRIGGER push_due_date_tgr BEFORE INSERT OR UPDATE ON action.circulation FOR EACH ROW EXECUTE PROCEDURE action.push_circ_due_time();
 
+CREATE OR REPLACE FUNCTION action.fill_circ_copy_location () RETURNS TRIGGER AS $$
+BEGIN
+    SELECT INTO NEW.copy_location location FROM asset.copy WHERE id = NEW.target_copy;
+    RETURN NEW;
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER fill_circ_copy_location_tgr BEFORE INSERT ON action.circulation FOR EACH ROW EXECUTE PROCEDURE action.fill_circ_copy_location();
+
+CREATE OR REPLACE FUNCTION action.archive_stat_cats () RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO action.archive_actor_stat_cat(xact, stat_cat, value)
+        SELECT NEW.id, asceum.stat_cat, asceum.stat_cat_entry
+        FROM actor.stat_cat_entry_usr_map asceum
+             JOIN actor.stat_cat sc ON asceum.stat_cat = sc.id
+        WHERE NEW.usr = asceum.target_usr AND sc.checkout_archive;
+    INSERT INTO action.archive_asset_stat_cat(xact, stat_cat, value)
+        SELECT NEW.id, ascecm.stat_cat, asce.value
+        FROM asset.stat_cat_entry_copy_map ascecm
+             JOIN asset.stat_cat sc ON ascecm.stat_cat = sc.id
+             JOIN asset.stat_cat_entry asce ON ascecm.stat_cat_entry = asce.id
+        WHERE NEW.target_copy = ascecm.owning_copy AND sc.checkout_archive;
+    RETURN NULL;
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER archive_stat_cats_tgr AFTER INSERT ON action.circulation FOR EACH ROW EXECUTE PROCEDURE action.archive_stat_cats();
+
 CREATE TABLE action.aged_circulation (
 	usr_post_code		TEXT,
 	usr_home_ou		INT	NOT NULL,
 	usr_profile		INT	NOT NULL,
 	usr_birth_year		INT,
 	copy_call_number	INT	NOT NULL,
-	copy_location		INT	NOT NULL,
 	copy_owning_lib		INT	NOT NULL,
 	copy_circ_lib		INT	NOT NULL,
 	copy_bib_record		BIGINT	NOT NULL,
@@ -201,7 +243,7 @@ CREATE OR REPLACE VIEW action.all_circulation AS
       FROM  action.aged_circulation
             UNION ALL
     SELECT  DISTINCT circ.id,COALESCE(a.post_code,b.post_code) AS usr_post_code, p.home_ou AS usr_home_ou, p.profile AS usr_profile, EXTRACT(YEAR FROM p.dob)::INT AS usr_birth_year,
-        cp.call_number AS copy_call_number, cp.location AS copy_location, cn.owning_lib AS copy_owning_lib, cp.circ_lib AS copy_circ_lib,
+        cp.call_number AS copy_call_number, circ.copy_location, cn.owning_lib AS copy_owning_lib, cp.circ_lib AS copy_circ_lib,
         cn.record AS copy_bib_record, circ.xact_start, circ.xact_finish, circ.target_copy, circ.circ_lib, circ.circ_staff, circ.checkin_staff,
         circ.checkin_lib, circ.renewal_remaining, circ.grace_period, circ.due_date, circ.stop_fines_time, circ.checkin_time, circ.create_time, circ.duration,
         circ.fine_interval, circ.recurring_fine, circ.max_fine, circ.phone_renewal, circ.desk_renewal, circ.opac_renewal, circ.duration_rule,

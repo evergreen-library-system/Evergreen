@@ -177,6 +177,7 @@ CREATE TABLE asset.stat_cat (
 	required	BOOL	NOT NULL DEFAULT FALSE,
     sip_field   CHAR(2) REFERENCES asset.stat_cat_sip_fields(field) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
     sip_format  TEXT,
+    checkout_archive    BOOL NOT NULL DEFAULT FALSE,
 	CONSTRAINT sc_once_per_owner UNIQUE (owner,name)
 );
 

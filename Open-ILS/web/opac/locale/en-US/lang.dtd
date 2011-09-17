@@ -2196,6 +2196,8 @@
 <!ENTITY staff.server.admin.stat_cat.sip_field.label "SIP Field">
 <!ENTITY staff.server.admin.stat_cat.sip_format.label "SIP Format">
 <!ENTITY staff.server.admin.stat_cat.sip_field.none.label "No SIP">
+<!ENTITY staff.server.admin.stat_cat.checkout_archive "Archive with Circs">
+<!ENTITY staff.server.admin.stat_cat.checkout_archive.label "Circ Archive">
 <!ENTITY staff.server.admin.upload_xacts.title "Upload Offline Transactions">
 <!ENTITY staff.server.admin.upload_xacts.header "Uploading transactions...">
 <!ENTITY staff.server.admin.upload_xacts.upload "Upload">

@@ -187,6 +187,7 @@ CREATE TABLE actor.stat_cat (
 	usr_summary     BOOL NOT NULL DEFAULT FALSE,
     sip_field   CHAR(2) REFERENCES actor.stat_cat_sip_fields(field) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
     sip_format  TEXT,
+    checkout_archive    BOOL NOT NULL DEFAULT FALSE,
 	CONSTRAINT sc_once_per_owner UNIQUE (owner,name)
 );
 COMMENT ON TABLE actor.stat_cat IS $$
