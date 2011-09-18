@@ -44,11 +44,11 @@ sub load_record {
     $ctx->{copy_offset} = $copy_offset;
 
     $ctx->{have_holdings_to_show} = 0;
+    $ctx->{have_mfhd_to_show} = 0;
     $self->get_hold_copy_summary($rec_id, $org);
 
     $cstore->kill_me;
 
-    # XXX TODO we'll also need conditional logic to show MFHD-based holdings
     if (
         $ctx->{get_org_setting}->
             ($org, "opac.fully_compressed_serial_holdings")
@@ -60,6 +60,14 @@ sub load_record {
             scalar(@{$ctx->{holding_summaries}->{basic}}) ||
             scalar(@{$ctx->{holding_summaries}->{index}}) ||
             scalar(@{$ctx->{holding_summaries}->{supplement}});
+    } else {
+        $ctx->{mfhd_summaries} =
+            $self->get_mfhd_summaries($rec_id, $org, $depth);
+
+        if ($ctx->{mfhd_summaries} && scalar(@{$ctx->{mfhd_summaries}})
+        ) {
+            $ctx->{have_mfhd_to_show} = 1;
+        };
     }
 
     my %expandies = (
@@ -202,6 +210,21 @@ sub get_holding_summaries {
     my $result = $serial->request(
         "open-ils.serial.bib.summary_statements",
         $rec_id, {"org_id" => $org, "depth" => $depth}
+    )->gather(1);
+
+    $serial->kill_me;
+    return $result;
+}
+
+sub get_mfhd_summaries {
+    my ($self, $rec_id, $org, $depth) = @_;
+
+    # XXX TODO Filter results on OU / depth before returning
+    # Perhaps in a modified form of the osrf method, rather than here
+    my $serial = create OpenSRF::AppSession("open-ils.search");
+    my $result = $serial->request(
+        "open-ils.search.serial.record.bib.retrieve",
+        $rec_id
     )->gather(1);
 
     $serial->kill_me;

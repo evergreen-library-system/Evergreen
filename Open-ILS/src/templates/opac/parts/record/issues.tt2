@@ -23,4 +23,33 @@ FOREACH type IN ctx.holding_summaries.keys;
         [% END %]
     </div>
 [% END %]
+[% IF ctx.mfhd_summaries.size; %]
+    <div class="rdetail-mfhd-holdings">
+        <table>
+[%
+        mfhd = {
+            basic_holdings = l('Volumes'),
+            basic_holdings_add = l('Additional Volume Information'),
+            supplement_holdings = l('Supplements'),
+            supplement_holdings_add = l('Additional Supplement Information'),
+            index_holdings = l('Indexes'),
+            index_holdings_add = l('Additional Index Information'),
+            online = l('Online'),
+            missing = l('Missing'),
+            incomplete = l('Incomplete'),
+        };
+
+        FOREACH serial IN ctx.mfhd_summaries;
+            FOREACH type IN mfhd.keys;
+                NEXT UNLESS serial.$type.size;
+%]
+            <tr>
+                <td class="rdetail-mfhd-type">[% mfhd.$type %]</td>
+                <td class="rdetail-mfhd-contents">[% serial.$type.join(', ') %]</td>
+            </tr>
+        [% END %]
+    [% END %]
+        </table>
+    </div>
+[% END %]
 </div>
