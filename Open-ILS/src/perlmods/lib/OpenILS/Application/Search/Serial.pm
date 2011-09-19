@@ -107,14 +107,48 @@ Given a bib record ID, returns a hash of holdings statements
 #);
 
 sub bib_to_svr {
-	my ($self, $client, $bib) = @_;
+	my ($self, $client, $bib, $ou, $ou_depth) = @_;
 	
 	my $svrs = [];
 
 	my $e = OpenILS::Utils::CStoreEditor->new();
+
+    if (!$ou) {
+        # Get the root of the org_tree
+        my $aous = $e->search_actor_org_unit([{
+            "parent_ou" => undef
+        }]); 
+
+        $ou = $aous->[0]->id();
+    }
+
+    # ou_depth can be undef in get_org_descendants
+    my @orgs = $U->get_org_descendants($ou, $ou_depth);
+
     # TODO: 'deleted' ssub support
-    my $sdists = $e->search_serial_distribution([{ "+ssub" => {"record_entry" => $bib} }, { "flesh" => 1, "flesh_fields" => {'sdist' => [ "record_entry", "holding_lib", "basic_summary", "supplement_summary", "index_summary" ]}, "join" => {"ssub" => {}} }]);
-	my $sres = $e->search_serial_record_entry([{ record => $bib, deleted => 'f', "+sdist" => {"id" => undef} }, { "join" => {"sdist" => { 'type' => 'left' }} }]);
+    my $sdists = $e->search_serial_distribution([
+        {
+            "+ssub" => {"record_entry" => $bib}
+        },
+        {
+            "flesh" => 1,
+            "flesh_fields" => {
+                'sdist' => [ "record_entry", "holding_lib", "basic_summary", "supplement_summary", "index_summary" ]
+            },
+            "join" => {"ssub" => {}}
+        }
+    ]);
+	my $sres = $e->search_serial_record_entry([
+        {
+            record => $bib,
+            deleted => 'f',
+            "owning_lib" => { "in" => @orgs },
+            "+sdist" => {"id" => undef}
+        },
+        {
+            "join" => { "sdist" => { 'type' => 'left' } } 
+        }
+    ]);
 	if (!ref $sres and !ref $sdists) {
 		return undef;
 	}
@@ -189,7 +223,25 @@ __PACKAGE__->register_method(
 	method	=> "bib_to_svr",
 	api_name	=> "open-ils.search.serial.record.bib.retrieve",
 	argc		=> 1, 
-	note		=> "Given a bibliographic record ID, return holdings in svr form"
+    signature => {
+        desc   => 'Given a bibliographic record ID, return holdings in svr form',
+        params => [
+            {   name => 'bibid',
+                desc => 'ID of the bibliographic record to which serial holdings are attached',
+                type => 'number'
+            },
+            {
+                name => 'ou',
+                desc => 'ID of the org_unit on which the search is based',
+                type => 'number'
+            },
+            {
+                name => 'ou_depth',
+                desc => 'Depth of the org tree at which the search should occur', 
+                type => 'number'
+            }
+        ]
+    }
 );
 
 1;

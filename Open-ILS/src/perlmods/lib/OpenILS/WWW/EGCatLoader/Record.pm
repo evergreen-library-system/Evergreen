@@ -219,12 +219,10 @@ sub get_holding_summaries {
 sub get_mfhd_summaries {
     my ($self, $rec_id, $org, $depth) = @_;
 
-    # XXX TODO Filter results on OU / depth before returning
-    # Perhaps in a modified form of the osrf method, rather than here
     my $serial = create OpenSRF::AppSession("open-ils.search");
     my $result = $serial->request(
         "open-ils.search.serial.record.bib.retrieve",
-        $rec_id
+        $rec_id, $org, $depth
     )->gather(1);
 
     $serial->kill_me;
