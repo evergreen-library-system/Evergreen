@@ -375,8 +375,9 @@ div.select-wrapper:hover {
 	padding-right: 50px;
 }
 
-#rdetails_status {
-    margin-top: 1.5em;
+#rdetail_copies {
+    clear: both;
+    padding-top: 1.5em;
 }
 
 #rdetails_status td, #rdetails_status2 td {

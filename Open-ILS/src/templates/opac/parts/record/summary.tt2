@@ -85,43 +85,9 @@
     [% END %]
 </div>
 
-<h2 id='rdetail_record_details'>[% l("Record details") %]</h2>
-<ul>
-    [%- IF attrs.isbns.0; FOR isbn IN attrs.isbns %]
-    <li class='rdetail_isbns'>
-        <strong class='rdetail_label'>[% l('ISBN:'); %]</strong>
-        <span class='rdetail_value'>[% isbn | html  %]</span>
-    </li>
-        [%- END %]
-    [%- END %]
-    [%- IF attrs.issns.0; FOR issn IN attrs.issns %]
-    <li class='rdetail_issns'>
-        <strong class='rdetail_label'>[% l('ISSN:'); %]</strong>
-        <span class='rdetail_value'>[% issn | html  %]</span>
-    </li>
-        [%- END %]
-    [%- END %]
-
-    [%- IF attrs.phys_desc %]
-    <li id='rdetail_phys_desc'>
-        <strong class='rdetail_label'>[% l("Physical Description:") %]</strong>
-        <span class='rdetail_value'>[% attrs.phys_desc | html %]</span>
-    </li>
-    [%- END %]
-    [%- IF attrs.edition %]
-    <li id='rdetail_edition'>
-        <strong class='rdetail_label'>[% l("Edition:") %]</strong>
-        <span class='rdetail_value'>[% attrs.edition | html %]</span>
-    </li>
-    [%- END %]
-    [%- IF attrs.publisher %]
-    <li id='rdetail_publisher'>
-        <strong class='rdetail_label'>[% l("Publisher:") %]</strong>
-        <span class='rdetail_value'>[% attrs.publisher | html %] [% IF attrs.pubdate; attrs.pubdate | html; END %]</span>
-    </li>
-    [%- END %]
-</ul>
-
+[%- IF ctx.copy_summary.0.count %]
+<div id='rdetail_copies'>
+<h2>[% l('Copies') %]</h2>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" id="rdetails_status">
     <thead>
         <tr>
@@ -224,6 +190,46 @@
         </tr>
     </tbody>
 </table>
+</div>
+[%- END %]
+
+<h2 id='rdetail_record_details'>[% l("Record details") %]</h2>
+<ul>
+    [%- IF attrs.isbns.0; FOR isbn IN attrs.isbns %]
+    <li class='rdetail_isbns'>
+        <strong class='rdetail_label'>[% l('ISBN:'); %]</strong>
+        <span class='rdetail_value'>[% isbn | html  %]</span>
+    </li>
+        [%- END %]
+    [%- END %]
+    [%- IF attrs.issns.0; FOR issn IN attrs.issns %]
+    <li class='rdetail_issns'>
+        <strong class='rdetail_label'>[% l('ISSN:'); %]</strong>
+        <span class='rdetail_value'>[% issn | html  %]</span>
+    </li>
+        [%- END %]
+    [%- END %]
+
+    [%- IF attrs.phys_desc %]
+    <li id='rdetail_phys_desc'>
+        <strong class='rdetail_label'>[% l("Physical Description:") %]</strong>
+        <span class='rdetail_value'>[% attrs.phys_desc | html %]</span>
+    </li>
+    [%- END %]
+    [%- IF attrs.edition %]
+    <li id='rdetail_edition'>
+        <strong class='rdetail_label'>[% l("Edition:") %]</strong>
+        <span class='rdetail_value'>[% attrs.edition | html %]</span>
+    </li>
+    [%- END %]
+    [%- IF attrs.publisher %]
+    <li id='rdetail_publisher'>
+        <strong class='rdetail_label'>[% l("Publisher:") %]</strong>
+        <span class='rdetail_value'>[% attrs.publisher | html %] [% IF attrs.pubdate; attrs.pubdate | html; END %]</span>
+    </li>
+    [%- END %]
+</ul>
+
 
 [%- INCLUDE "opac/parts/record/subjects.tt2" %]
 
