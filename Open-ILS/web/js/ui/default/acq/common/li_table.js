@@ -893,7 +893,7 @@ function AcqLiTable() {
                     no_xulG : false, 
                     show_nav_buttons : true, 
                     show_print_button : true, 
-                    opac_url : xulG.url_prefix(xulG.urls.opac_rdetail + '?r=' + bib_id),
+                    opac_url : xulG.url_prefix(xulG.urls.opac_rdetail + bib_id),
                     default_view : default_view
                 }
             );
