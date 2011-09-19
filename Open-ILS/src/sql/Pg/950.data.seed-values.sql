@@ -6677,7 +6677,7 @@ continue to work.
 If you did request a reset of your library system password, please perform
 the following steps to continue the process of resetting your password:
 
-1. Open the following link in a web browser: https://[% params.hostname %]/opac/password/[% params.locale || 'en-US' %]/[% target.uuid %]
+1. Open the following link in a web browser: https://[% params.hostname %]/eg/opac/password_reset/[% target.uuid %]
 The browser displays a password reset form.
 
 2. Enter your new password in the password reset form in the browser. You must

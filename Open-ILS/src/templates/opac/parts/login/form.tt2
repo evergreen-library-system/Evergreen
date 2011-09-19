@@ -128,8 +128,8 @@
                                 </div>
                                 <div style="padding-top:14px;">
                                     <input type="submit" value="[% l('Log in') %]" alt="[% l('Log in') %]" class="opac-button" />
-                                    [% IF reset_password; loc = ctx.locale.replace('_', '-'); %]
-                                    <a href='/opac/password/[% loc %]/'>[% l('Forgot your password?') %]</a>
+                                    [% IF reset_password %]
+                                    <a href='[% mkurl(ctx.opac_root _ '/password_reset', {}, 1) %]'>[% l('Forgot your password?') %]</a>
                                     [% END %]
                                 </div>
                             </td>

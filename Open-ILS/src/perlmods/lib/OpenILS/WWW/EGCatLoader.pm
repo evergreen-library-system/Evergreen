@@ -130,6 +130,8 @@ sub load {
         return $self->load_logout;
     }
 
+    return $self->load_password_reset if $path =~ m|opac/password_reset|;
+
     # ----------------------------------------------------------------
     #  Everything below here requires SSL + authentication
     # ----------------------------------------------------------------

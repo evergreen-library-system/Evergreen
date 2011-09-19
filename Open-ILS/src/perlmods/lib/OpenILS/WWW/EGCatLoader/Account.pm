@@ -1548,4 +1548,72 @@ sub load_myopac_bookbag_print {
     return Apache2::Const::OK;
 }
 
+sub load_password_reset {
+    my $self = shift;
+    my $cgi = $self->cgi;
+    my $ctx = $self->ctx;
+    my $barcode = $cgi->param('barcode');
+    my $username = $cgi->param('username');
+    my $email = $cgi->param('email');
+    my $pwd1 = $cgi->param('pwd1');
+    my $pwd2 = $cgi->param('pwd2');
+    my $uuid = $ctx->{page_args}->[0];
+
+    if ($uuid) {
+
+        $logger->info("patron password reset with uuid $uuid");
+
+        if ($pwd1 and $pwd2) {
+
+            if ($pwd1 eq $pwd2) {
+
+                my $response = $U->simplereq(
+                    'open-ils.actor', 
+                    'open-ils.actor.patron.password_reset.commit',
+                    $uuid, $pwd1);
+
+                $logger->info("patron password reset response " . Dumper($response));
+
+                if ($U->event_code($response)) { # non-success event
+                    
+                    my $code = $response->{textcode};
+                    
+                    if ($code eq 'PATRON_NOT_AN_ACTIVE_PASSWORD_RESET_REQUEST') {
+                        $ctx->{pwreset} = {style => 'error', status => 'NOT_ACTIVE'};
+                    }
+
+                    if ($code eq 'PATRON_PASSWORD_WAS_NOT_STRONG') {
+                        $ctx->{pwreset} = {style => 'error', status => 'NOT_STRONG'};
+                    }
+
+                } else { # success
+
+                    $ctx->{pwreset} = {style => 'success', status => 'SUCCESS'};
+                }
+
+            } else { # passwords not equal
+
+                $ctx->{pwreset} = {style => 'error', status => 'NO_MATCH'};
+            }
+
+        } else { # 2 password values needed
+
+            $ctx->{pwreset} = {style => 'error', status => 'TWO_PASSWORDS'};
+        }
+
+    } elsif ($barcode or $username) {
+
+        my @params = $barcode ? ('barcode', $barcode) : ('username', $username);
+
+        $U->simplereq(
+            'open-ils.actor', 
+            'open-ils.actor.patron.password_reset.request', @params);
+
+        $ctx->{pwreset} = {style => 'plain', status => 'REQUEST_SUCCESS'};
+    }
+
+    $logger->info("patron password reset resulted in " . Dumper($ctx->{pwreset}));
+    return Apache2::Const::OK;
+}
+
 1;
