@@ -7630,10 +7630,10 @@ END;
             ],
             "price":[% li.estimated_unit_price || '0.00' %],
             "desc":[
-                {"BTI":"[% helpers.get_li_attr('title',     '', li.attributes) %]"},
-                {"BPU":"[% helpers.get_li_attr('publisher', '', li.attributes) %]"},
-                {"BPD":"[% helpers.get_li_attr('pubdate',   '', li.attributes) %]"},
-                {"BPH":"[% helpers.get_li_attr('pagination','', li.attributes) %]"}
+                {"BTI":"[% helpers.get_li_attr_jedi('title',     '', li.attributes) %]"},
+                {"BPU":"[% helpers.get_li_attr_jedi('publisher', '', li.attributes) %]"},
+                {"BPD":"[% helpers.get_li_attr_jedi('pubdate',   '', li.attributes) %]"},
+                {"BPH":"[% helpers.get_li_attr_jedi('pagination','', li.attributes) %]"}
             ],
             [%- ftx_vals = []; 
                 FOR note IN li.lineitem_notes; 

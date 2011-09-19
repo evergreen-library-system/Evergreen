@@ -155,7 +155,13 @@ foreach my $def (@$defs) {
             printf STDERR "ERROR: No edi_default account found for $logstr.  File will not be sent!\n";
         }
 
-        $message->jedi($event->template_output()->data);
+        my $jedi = $event->template_output()->data;
+
+        # Crucial identifiers won't contain unicode characters, and EDIFACT
+        # (or at least our translator) generally can't handle them anyway.
+        $jedi =~ s/\\u[0-9a-f]{4}//g;
+
+        $message->jedi($jedi);
 
         print "\ntarget->provider->edi_default->id: ", $target->provider->edi_default->id, "\n";
         my $logstr2 = sprintf "event %s, PO %s, template_output %s", $_->{id}, $message->purchase_order, $event->template_output->id;
