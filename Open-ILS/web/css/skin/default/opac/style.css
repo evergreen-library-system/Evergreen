@@ -1028,6 +1028,20 @@ a.opac-button {
     padding: 0px;
 }
 
+.rdetail-mfhd-head {
+    margin-top: 5px;
+    padding-top: 5px;
+    background-color: #D8D8D8;
+}
+
+.rdetail-mfhd-type {
+    padding-left: 1em;
+}
+
+.rdetail-mfhd-bottom {
+    border-bottom: thin solid black;
+    width: 100%;
+}
 
 .bookbag-item-row td { vertical-align: top; }
 
