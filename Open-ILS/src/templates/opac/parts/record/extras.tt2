@@ -15,10 +15,8 @@
         END;
 
         extras = [
-            {name => 'subjects', label => l('Subject')}, 
             {name => 'summaryplus',  label => l('Summaries &amp; More'), hide => hide_summary}, 
             {name => 'contents',  label => l('Contents'), hide => !attrs.contents},
-            {name => 'authors',  label => l('Authors')}, 
             {name => 'series',   label => l('Series')},
             {name => 'annotation', label => l('Annotation'), hide => 1}, 
             {name => 'awards',  label => l('Awards, Reviews, & Suggested Reads')}, 

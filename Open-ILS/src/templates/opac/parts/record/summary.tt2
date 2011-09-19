@@ -9,151 +9,132 @@
     [% INCLUDE 'opac/parts/record/refworks.tt2' %]
 [%- END %]
 
-<!-- This holds the record summary information -->
-
-<table width="100%" border="0" cellpadding="0" cellspacing="0" id="rdetail_details_table">
-    <tbody>
-        <tr>
-            <td width="90" valign="top" id="rdetail_image_cell">
-                [% ident = attrs.isbn_clean || attrs.upc; IF ident; %]
-                <a href='[% ctx.media_prefix %]/opac/extras/ac/jacket/large/[% ident | uri %]'><img
-                    alt="[% l('Image of item') %]" id='rdetail_image'
-                    src='[% ctx.media_prefix %]/opac/extras/ac/jacket/[% record.summary.jacket_size %]/[% ident | uri %]' /></a>
-                [% END %]
-                <br />
-            </td>
-    
-            <td valign="top">
-                <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                    <tr>
-                        <td valign="top">
-                            <span id='rdetail_title'>[% attrs.title_extended | html %]</span><br />
-                            [% IF attrs.author %]
-                            <span class='opac-auto-030'>[% l("Author") %]:</span>
-                            <em><a title='[% l("Perform an author search") %]'
-                                    href="[%- 
-                                        authorquery = attrs.author | replace('[,\.:;]', '');
-                                        mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery}, ['page'])
-                                        -%]">[% attrs.author | html %]</a></em>
-                            [% END %]
-                        </td>
-                        <td align="right" valign="top" nowrap="nowrap" style="white-space:nowrap;">
-                            <div style="width:280px;text-align:left;margin-top:3px;">
-                                <div style="float:right;">
-                                    <div class="rdetail_aux_utils opac-auto-010">
-                                        <a href="[% mkurl(ctx.opac_root _ '/place_hold', {hold_target => ctx.bre_id, hold_type => 'T'}) %]" 
-                                            class="no-dec"><img src="[% ctx.media_prefix %]/images/green_check.png" alt="[% l('place hold') %]" /><span 
-                                                    style="position:relative;top:-3px;left:3px;">[% l('Place Hold') %]</span></a>
-                                    </div>
-                                    <div class="rdetail_aux_utils opac-auto-121">
-                                        [%  
-                                            operation = ctx.mylist.grep(ctx.bre_id).size ? "delete" : "add";
-                                            label = (operation == "add") ? l("Add to my list") : l("Remove from my list"); 
-                                        %]
-                                        <a href="[% ctx.opac_root %]/mylist/[% operation %]?record=[% ctx.bre_id %]" class="no-dec">
-                                            <img src="[% ctx.media_prefix %]/images/clipboard.png" alt="" />
-                                            [% label %]
-                                        </a>
-                                    </div>
-                                </div>
-                                <div style="float:right;margin-right:17px;">
-                                    [% IF attrs.format_icon %]
-                                    <img alt="[% attrs.format_label %]" title="[% attrs.format_label | html %]" src="[% attrs.format_icon %]" />
-                                    [% END %]
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-                <div class='opac-auto-018'>
-                    <table border="0" cellpadding="0" width="100%">
-                        <tr>
-                            <td nowrap='nowrap' valign="top">
-                                [% IF attrs.isbns.0 %]<strong>[% l("ISBN") %]</strong>[% END %]
-                            </td>
-                            <td valign="top">
-                                [% FOR isbn IN attrs.isbns %][% IF !loop.first; %]<br/>[% END; isbn | html ; END %]
-                            </td>
-                            <td nowrap='nowrap' valign="top">
-                                [% IF attrs.phys_desc %]<strong>[% l("Physical Description") %]</strong>[% END %]
-                            </td>
-                            <td valign="top">[% attrs.phys_desc | html %]</td>
-                        </tr>
-                        [%- IF openurl.enabled == 'true';
-                            FOR issn IN args.issns;
-                                sfx = ResolverResolver.resolve_issn(issn, openurl.baseurl);
-                                FOR res IN sfx;
-                        %]
-                            <tr name="results_issn_tr">
-                                <td valign="top">
-                                    <strong><a href="[% res.target_url %]">
-                                        [% res.public_name %]</a></strong>
-                                </td>
-                                <td>[% res.target_coverage %]</td>
-                            </tr>
-                                [% END %]
-                            [% END %]
-                        [% END %]
-                        <tr>
-                            <td nowrap='nowrap' valign="top">
-                                <strong>[% IF attrs.marc_cn; l("Call Number"); END %]</strong>
-                            </td>
-                            <td valign="top">[% attrs.marc_cn | html %]</td>
-                            <td nowrap='nowrap' valign="top">
-                                <strong>[% IF attrs.edition; l("Edition"); END %]</strong>
-                            </td>
-                            <td valign="top">[% attrs.edition | html %]</td>
-                        </tr>
-                        <tr>
-                            <td nowrap='nowrap' valign="top">
-                                <strong>[% IF attrs.publisher; l("Publisher"); END %]</strong>
-                            </td>
-                            <td valign="top">[% attrs.publisher | html %]</td>
-                            <td nowrap='nowrap' valign="top">
-                                <strong>[% IF attrs.pubdate; l("Publication Date"); END %]</strong>
-                            </td>
-                            <td valign="top">[% attrs.pubdate | html %]</td>
-                        </tr>
-                    </table>
-
-                    <!-- hold/copy summary -->
-                    <div style="padding-top:15px;">
-                        <div>
-                            [% l("[quant,_1,Hold,Holds] with [quant,_2,total copy,total copies]", 
-                                ctx.record_hold_count, ctx.copy_summary.0.count) %]
-                        </div>
-                        <div>[% l('[quant,_1,Copy,Copies] available', ctx.copy_summary.0.available) %]</div>
-                    </div>
-
-                </div>
-            </td>
-        </tr>
-    </tbody>
-</table>
-<br />
-
-[% FOR uri IN args.uris %]
-<div class="rdetail_uri">
-    <a href="[% uri.href %]">[% uri.link %]</a>[% ' - ' _ uri.note IF uri.note %]
+[%- # This holds the record summary information %]
+<div id="rdetail_image_div" style="float: left; margin-right: 1em;">
+    [% ident = attrs.isbn_clean || attrs.upc; IF ident; %]
+    <a href='[% ctx.media_prefix %]/opac/extras/ac/jacket/large/[% ident | uri %]'><img
+        alt="[% l('Image of item') %]" id='rdetail_image'
+        src='[% ctx.media_prefix %]/opac/extras/ac/jacket/[% record.summary.jacket_size %]/[% ident | uri %]' /></a>
+    [% END %]
+    <br />
 </div>
-[% END %]
+ 
+<div id="rdetail_actions_div" style="float: right; margin-left: 1em;">
+    <div class="rdetail_aux_utils opac-auto-010">
+        <a href="[% mkurl(ctx.opac_root _ '/place_hold', {hold_target => ctx.bre_id, hold_type => 'T'}) %]" 
+        class="no-dec"><img src="[% ctx.media_prefix %]/images/green_check.png" alt="[% l('place hold') %]" /><span 
+        style="position:relative;top:-3px;left:3px;">[% l('Place Hold') %]</span></a>
+    </div>
+    <div class="rdetail_aux_utils opac-auto-121">
+    [%-  
+        operation = ctx.mylist.grep(ctx.bre_id).size ? "delete" : "add";
+        label = (operation == "add") ? l("Add to my list") : l("Remove from my list"); 
+    %]
+        <a href="[% ctx.opac_root %]/mylist/[% operation %]?record=[% ctx.bre_id %]" class="no-dec">
+            <img src="[% ctx.media_prefix %]/images/clipboard.png" alt="" />
+            [% label %]
+        </a>
+    </div>
+</div>
 
-<br />
+<div id='rdetail_title_div'>
+    <h1 id='rdetail_title'>[% attrs.title_extended | html %]</h1><br />
+    [%- INCLUDE "opac/parts/record/authors.tt2" %]
+    [%- IF attrs.format_icon %]
+    <div style="float:right;margin-right:17px;">
+        <img alt="[% attrs.format_label %]" title="[% attrs.format_label | html %]" src="[% attrs.format_icon %]" />
+    </div>
+    [%- END %]
+    [%- IF openurl.enabled == 'true';
+        sfx = []
+        FOR issn IN args.issns;
+            sfx = sfx.import(ResolverResolver.resolve_issn(issn, openurl.baseurl));
+        END;
+        IF sfx.size && sfx.0 != '';
+    %]
+        <div id='rdetail_openurl'>
+            <strong class='rdetail_openurl_title'>[% l("Electronic resources") %]</strong>
+    [%-
+            FOR res IN sfx;
+    %]
+            <div class="rdetail_openurl_entry" style="margin-left: 1em;">
+                <strong><a href="[% res.target_url %]">
+                        [% res.public_name %]</a></strong>
+                <span>[% res.target_coverage %]</td>
+            </div>
+        [%- END %]
+    [%- END %]
+    [%- IF sfx.size && sfx.0 != '' %]
+        </div>    
+    [%- END %]
+    [%- FOR uri IN args.uris; %]
+    <div class="rdetail_uri">
+        <a href="[% uri.href %]">[% uri.link %]</a>[% ' - ' _ uri.note IF uri.note %]
+    </div>
+    [%- END %]
+    [%- # hold/copy summary %]
+    [%- IF ctx.copy_summary.0.count %]
+    <div class="rdetail_copy_counts">
+        <span>
+            [%- l("[quant,_1,current hold,current holds] with [quant,_2,total copy,total copies].", 
+                ctx.record_hold_count, ctx.copy_summary.0.count) %]
+        </span>
+        <span>[% l('[quant,_1,copy,copies] currently available.', ctx.copy_summary.0.available) %]</span>
+    </div>
+    [% END %]
+</div>
+
+<h2 id='rdetail_record_details'>[% l("Record details") %]</h2>
+<ul>
+    [%- IF attrs.isbns.0; FOR isbn IN attrs.isbns %]
+    <li class='rdetail_isbns'>
+        <strong class='rdetail_label'>[% l('ISBN:'); %]</strong>
+        <span class='rdetail_value'>[% isbn | html  %]</span>
+    </li>
+        [%- END %]
+    [%- END %]
+    [%- IF attrs.issns.0; FOR issn IN attrs.issns %]
+    <li class='rdetail_issns'>
+        <strong class='rdetail_label'>[% l('ISSN:'); %]</strong>
+        <span class='rdetail_value'>[% issn | html  %]</span>
+    </li>
+        [%- END %]
+    [%- END %]
+
+    [%- IF attrs.phys_desc %]
+    <li id='rdetail_phys_desc'>
+        <strong class='rdetail_label'>[% l("Physical Description:") %]</strong>
+        <span class='rdetail_value'>[% attrs.phys_desc | html %]</span>
+    </li>
+    [%- END %]
+    [%- IF attrs.edition %]
+    <li id='rdetail_edition'>
+        <strong class='rdetail_label'>[% l("Edition:") %]</strong>
+        <span class='rdetail_value'>[% attrs.edition | html %]</span>
+    </li>
+    [%- END %]
+    [%- IF attrs.publisher %]
+    <li id='rdetail_publisher'>
+        <strong class='rdetail_label'>[% l("Publisher:") %]</strong>
+        <span class='rdetail_value'>[% attrs.publisher | html %] [% IF attrs.pubdate; attrs.pubdate | html; END %]</span>
+    </li>
+    [%- END %]
+</ul>
 
 <table cellpadding="0" cellspacing="0" border="0" width="100%" id="rdetails_status">
     <thead>
         <tr>
-            <td>[% l("Location") %]</td>
-            <td>[% l("Call Number") %]</td>
-            <td>[% l("Barcode") %]</td>
-            <td>[% l("Shelving Location") %]</td>
+            <th id='copy_header_library'>[% l("Location") %]</th>
+            <th id='copy_header_callnmber'>[% l("Call Number") %]</th>
+            <th id='copy_header_barcode'>[% l("Barcode") %]</th>
+            <th id='copy_header_shelfloc'>[% l("Shelving Location") %]</th>
             [% IF ctx.is_staff %]
-            <td>[% l("Age Hold Protection") %]</td>
-            <td>[% l("Create Date") %]</td>
-            <td>[% l("Holdable?") %]</td>
+            <th id='copy_header_age_hold'>[% l("Age Hold Protection") %]</th>
+            <th id='copy_header_create_date'>[% l("Create Date") %]</th>
+            <th id='copy_header_holdable'>[% l("Holdable?") %]</th>
             [% END %]
-            <td>[% l("Status") %]</td>
-            <td>[% l("Due Date") %]</td>
+            <th id='copy_header_status'>[% l("Status") %]</th>
+            <th id='copy_header_due_date'>[% l("Due Date") %]</th>
         </tr>
     </thead>
     <tbody class="copy_details_table">
@@ -161,25 +142,25 @@
         FOR copy_info IN ctx.copies;
             NEXT IF copy_info.call_number_label == '##URI##' %]
         <tr>
-            <td>
+            <td header='copy_header_library'>
             [%-
                 org_name = ctx.get_aou(copy_info.circ_lib).name;
                 org_name | html
             -%]
             </td>
-            <td>[% copy_info.call_number_label | html %]</td>
-            <td>[% copy_info.barcode | html %]</td>
-            <td>[% copy_info.copy_location | html %]</td>
+            <td header='copy_header_callnumber'>[% copy_info.call_number_label | html %]</td>
+            <td header='copy_header_barcode'>[% copy_info.barcode | html %]</td>
+            <td header='copy_header_shelfloc'>[% copy_info.copy_location | html %]</td>
             [% IF ctx.is_staff %]
-            <td>
+            <td header='copy_header_age_hold'>
                 [% copy_info.age_protect ?
                     ctx.get_crahp(copy_info.age_protect).name : l('None') | html %]
             </td>
-            <td>[% date.format(
+            <td header='copy_header_date_format'>[% date.format(
                 ctx.parse_datetime(copy_info.create_date),
                 DATE_FORMAT
             ) %]</td>
-            <td>[%  # Show copy/volume hold links to staff (without
+            <td header='copy_header_holdable'>[%  # Show copy/volume hold links to staff (without
                     # checking whether they have permissions to do those).
                     overall_holdable = (copy_info.holdable == 't' AND
                         copy_info.location_holdable == 't' AND
@@ -196,8 +177,8 @@
                         l("No");
                     END %]</td>
             [% END %]
-            <td>[% copy_info.copy_status | html %]</td>
-            <td>[%
+            <td header='copy_header_status'>[% copy_info.copy_status | html %]</td>
+            <td header='due_date'>[%
                 IF copy_info.due_date;
                     date.format(
                         ctx.parse_datetime(copy_info.due_date),
@@ -240,20 +221,23 @@
                 [% END %]
             </td>
         </tr>
-        <tr>
-            <td>
-                [% IF CGI.param('expand') == 'all' %]
-                    <img src="[% ctx.media_prefix %]/images/minus_sign.png" />
-                    <a href="[% mkurl('', {}, ['expand']) %]">[% l('Collapse all tabs') %]</a>
-                [% ELSE %]
-                    <img src="[% ctx.media_prefix %]/images/plus_sign.png" />
-                    <a href="[% mkurl('', {expand => 'all'}) %]">[% l('Expand all tabs') %]</a>
-                [% END %]
-            </td>
-        </tr>
-
     </tbody>
 </table>
+
+[%- INCLUDE "opac/parts/record/subjects.tt2" %]
+
+<h2 class='rdetail_related_series'>[% l('Search for related items by series') %]</h2>
+[%- INCLUDE "opac/parts/record/series.tt2" %]
+
+<div>
+    [%- IF CGI.param('expand') == 'all' %]
+        <img src="[% ctx.media_prefix %]/images/minus_sign.png" />
+        <a href="[% mkurl('', {}, ['expand']) %]">[% l('Collapse all tabs') %]</a>
+    [%- ELSE %]
+        <img src="[% ctx.media_prefix %]/images/plus_sign.png" />
+        <a href="[% mkurl('', {expand => 'all'}) %]">[% l('Expand all tabs') %]</a>
+    [%- END %]
+</div>
 
 <div id="rdetail_extras_expand" class="hide_me">
     <a href="#"><img

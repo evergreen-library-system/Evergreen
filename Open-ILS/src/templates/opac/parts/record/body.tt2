@@ -50,7 +50,5 @@
         [% l("This record has been deleted from the database.  We recommend that you remove this title from any bookbags it may have been added to.") %]
     </div>
     [% INCLUDE "opac/parts/record/summary.tt2" %]
-    <br />
-    [% INCLUDE "opac/parts/record/extras.tt2" %]
 </div>
 <!-- ****************** end; page_rdetail.xml ***************************** -->

@@ -384,21 +384,27 @@ div.select-wrapper:hover {
 	padding-right: 50px;
 }
 
+#rdetails_status {
+    margin-top: 1.5em;
+}
+
 #rdetails_status td, #rdetails_status2 td {
 	white-space:nowrap !important;
 	padding: 7px 0px 3px 13px;
 }
 
-#rdetails_status thead td {
+#rdetails_status thead th {
 	background-color: #d8d8d8;
 	padding: 13px 0px 13px 13px;
 	font-size: 10px;
 	text-transform: uppercase;
 	font-weight: bold;
+    text-align: left;
 }
 
 #rdetails_status tbody td {
-	padding-left: 13px;;
+	padding-left: 13px;
+    text-align: left;
 }
 
 .rdetail_extras {
@@ -1044,7 +1050,30 @@ a.opac-button {
     width: 100%;
 }
 
+.rdetail_copy_counts {
+    margin-top: 1em;
+}
+
+#rdetail_record_details {
+    clear: both;
+    margin-top: 1.5em;
+    padding-top: 1.5em;
+}
+
+.rdetail_subject_type {
+    vertical-align: top;
+    font-weight: bold;
+}
+
 .bookbag-item-row td { vertical-align: top; }
 
 .error { color: red; font-weight: bold; }
 .success { color: green; font-weight: bold; }
+
+.rdetail_related_subjects {
+    margin-top: 1.5em;
+}
+
+.rdetail_related_series {
+    margin-top: 1.5em;
+}
