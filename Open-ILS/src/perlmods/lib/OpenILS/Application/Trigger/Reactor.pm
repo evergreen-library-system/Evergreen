@@ -16,6 +16,23 @@ sub NOOP_True  { return  1 }
 sub NOOP_False { return  0 }
 
 
+# To be used in two places within $_TT_helpers.  Without putting the code out
+# here, we can't really reuse it within that structure.
+sub get_li_attr {
+    my $name = shift or return;     # the first arg is always the name
+    my ($type, $attr) = (scalar(@_) == 1) ? (undef, $_[0]) : @_;
+    # if the next is the last, it's the attributes, otherwise type
+    # use Data::Dumper; $logger->warn("get_li_attr: " . Dumper($attr));
+    ($name and @$attr) or return;
+    my $length;
+    $name =~ s/^(\D+)_(\d+)$/$1/ and $length = $2;
+    foreach (@$attr) {
+        $_->attr_name eq $name or next;
+        next if $length and $length != length($_->attr_value);
+        return $_->attr_value if (! $type) or $type eq $_->attr_type;
+    }
+    return;
+}
 
 # helper functions inserted into the TT environment
 my $_TT_helpers = {
@@ -133,20 +150,29 @@ my $_TT_helpers = {
 
     # helpers.get_li_attr('isbn_13', li.attributes)
     # returns matching line item attribute, or undef
-    get_li_attr => sub {
-        my $name = shift or return;     # the first arg is always the name
-        my ($type, $attr) = (scalar(@_) == 1) ? (undef, $_[0]) : @_;
-        # if the next is the last, it's the attributes, otherwise type
-        # use Data::Dumper; $logger->warn("get_li_attr: " . Dumper($attr));
-        ($name and @$attr) or return;
-        my $length;
-        $name =~ s/^(\D+)_(\d+)$/$1/ and $length = $2;
-        foreach (@$attr) {
-            $_->attr_name eq $name or next;
-            next if $length and $length != length($_->attr_value);
-            return $_->attr_value if (! $type) or $type eq $_->attr_type;
+    get_li_attr => \&get_li_attr,
+
+    get_li_attr_jedi => sub {
+        my $value = get_li_attr(@_);
+        if ($value) {
+            # Here we can add any number of special case transformations to
+            # avoid problems with the EDI translator (or bad JSON).
+
+            # The ? character, if in the final position of a string, breaks
+            # the translator. + or ' or : could be problematic, too.
+            if ($value =~ /[\?\+':]$/) {
+                chop $value;
+            }
+
+            # Make sure any double quotation marks are escaped.
+            $value =~ s/"/\\"/g;
+
+            # What the heck, get rid of [ ] too (although I couldn't get them
+            # to cause any problems for me.
+            $value =~ s/[\[\]]//g;
         }
-        return;
+
+        return $value;
     },
 };
 
