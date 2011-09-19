@@ -1,8 +1,8 @@
--- Evergreen DB patch YYYY.schema.bookbag-goodies.sql
+-- Evergreen DB patch 0626.schema.bookbag-goodies.sql
 
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('YYYY', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0626', :eg_version);
 
 ALTER TABLE container.biblio_record_entry_bucket
     ADD COLUMN description TEXT;

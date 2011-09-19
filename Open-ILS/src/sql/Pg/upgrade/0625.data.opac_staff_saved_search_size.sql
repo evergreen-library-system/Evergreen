@@ -1,8 +1,8 @@
--- Evergreen DB patch XYXY.data.opac_staff_saved_search_size.sql
+-- Evergreen DB patch 0625.data.opac_staff_saved_search_size.sql
 
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XYXY', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0625', :eg_version);
 
 INSERT into config.org_unit_setting_type (name, grp, label, description, datatype)
 VALUES (
