@@ -2460,27 +2460,27 @@ CREATE OR REPLACE VIEW acq.fund_allocation_total AS
     GROUP BY 1;
 
 CREATE OR REPLACE VIEW acq.fund_debit_total AS
-    SELECT  fund.id AS fund,
-            fund_debit.encumbrance AS encumbrance,
-			SUM( COALESCE( fund_debit.amount, 0 ) ) AS amount
-      FROM acq.fund AS fund
-            LEFT JOIN acq.fund_debit AS fund_debit
-                ON ( fund.id = fund_debit.fund )
-      GROUP BY 1,2;
+    SELECT fund.id AS fund,
+           SUM(COALESCE(fund_debit.amount, 0::numeric)) AS amount
+    FROM acq.fund fund
+          LEFT JOIN acq.fund_debit fund_debit ON fund.id = fund_debit.fund
+    GROUP BY fund.id;
 
 CREATE OR REPLACE VIEW acq.fund_encumbrance_total AS
-    SELECT  fund,
-            SUM(amount) AS amount
-      FROM  acq.fund_debit_total
-      WHERE encumbrance IS TRUE
-      GROUP BY 1;
+    SELECT fund.id AS fund,
+           SUM(COALESCE(fund_debit.amount, 0::numeric)) AS amount
+    FROM acq.fund fund
+          LEFT JOIN acq.fund_debit fund_debit ON fund.id = fund_debit.fund
+    WHERE fund_debit.encumbrance
+    GROUP BY fund.id;
 
 CREATE OR REPLACE VIEW acq.fund_spent_total AS
-    SELECT  fund,
-            SUM(amount) AS amount
-      FROM  acq.fund_debit_total
-      WHERE encumbrance IS FALSE
-      GROUP BY 1;
+    SELECT fund.id AS fund,
+           SUM(COALESCE(fund_debit.amount, 0::numeric)) AS amount
+    FROM acq.fund fund
+          LEFT JOIN acq.fund_debit fund_debit ON fund.id = fund_debit.fund
+    WHERE NOT fund_debit.encumbrance
+    GROUP BY fund.id;
 
 CREATE OR REPLACE VIEW acq.fund_combined_balance AS
     SELECT  c.fund,
