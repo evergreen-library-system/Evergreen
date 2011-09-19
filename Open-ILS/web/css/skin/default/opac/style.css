@@ -11,11 +11,6 @@ img {
 
 a {
 	color: #003399;
-	text-decoration: none;
-}
-
-a:hover {
-	text-decoration: underline;
 }
 
 #search-wrapper input[type=text] {
@@ -54,7 +49,7 @@ h1 {
 h2 {
 	margin:0;
 	margin-bottom: 5px;
-	font-size: 14px;
+	font-size: 16px;
 	font-weight:bold;
 }
 
@@ -353,10 +348,6 @@ div.select-wrapper:hover {
 
 #rdetail_details_table {
 	margin-top: 15px;
-}
-
-#rdetail_title {
-	font-size: 18px;
 }
 
 #rdetail_image { border: none; }
@@ -1056,8 +1047,7 @@ a.opac-button {
 
 #rdetail_record_details {
     clear: both;
-    margin-top: 1.5em;
-    padding-top: 1.5em;
+    margin-top: 1em;
 }
 
 .rdetail_subject_type {
@@ -1076,4 +1066,13 @@ a.opac-button {
 
 .rdetail_related_series {
     margin-top: 1.5em;
+}
+
+#rdetail_openurl {
+    margin-top: 1em;
+}
+
+.rdetail_openurl_entry {
+    margin-left: 1em;
+    padding-left: 1em;
 }

@@ -38,7 +38,7 @@
 </div>
 
 <div id='rdetail_title_div'>
-    <h1 id='rdetail_title'>[% attrs.title_extended | html %]</h1><br />
+    <h1 id='rdetail_title'>[% attrs.title_extended | html %]</h1>
     [%- INCLUDE "opac/parts/record/authors.tt2" %]
     [%- IF attrs.format_icon %]
     <div style="float:right;margin-right:17px;">
@@ -54,15 +54,16 @@
     %]
         <div id='rdetail_openurl'>
             <strong class='rdetail_openurl_title'>[% l("Electronic resources") %]</strong>
+            <table><tbody>
     [%-
             FOR res IN sfx;
     %]
-            <div class="rdetail_openurl_entry" style="margin-left: 1em;">
-                <strong><a href="[% res.target_url %]">
-                        [% res.public_name %]</a></strong>
-                <span>[% res.target_coverage %]</td>
-            </div>
+            <tr>
+                <td class='rdetail_openurl_entry'><a href="[% res.target_url %]">[% res.public_name %]</a></td>
+                <td>[% res.target_coverage %]</td>
+            </tr>
         [%- END %]
+        </tbody></table>
     [%- END %]
     [%- IF sfx.size && sfx.0 != '' %]
         </div>    
@@ -228,24 +229,3 @@
 
 <h2 class='rdetail_related_series'>[% l('Search for related items by series') %]</h2>
 [%- INCLUDE "opac/parts/record/series.tt2" %]
-
-<div>
-    [%- IF CGI.param('expand') == 'all' %]
-        <img src="[% ctx.media_prefix %]/images/minus_sign.png" />
-        <a href="[% mkurl('', {}, ['expand']) %]">[% l('Collapse all tabs') %]</a>
-    [%- ELSE %]
-        <img src="[% ctx.media_prefix %]/images/plus_sign.png" />
-        <a href="[% mkurl('', {expand => 'all'}) %]">[% l('Expand all tabs') %]</a>
-    [%- END %]
-</div>
-
-<div id="rdetail_extras_expand" class="hide_me">
-    <a href="#"><img
-        src="[% ctx.media_prefix %]/images/plus_sign.png" /></a>
-    <a style="position:relative;top:-3px;" href="#">[% l('Expand all tabs') %]</a>
-</div>
-
-<div id="rdetail_extras_collapse" class="hide_me">
-    <a href="#"><img src="[% ctx.media_prefix %]/images/plus_sign.png" /></a>
-    <a style="position:relative;top:-3px;" href="#">[% l('Collapse all tabs') %]</a>
-</div>
