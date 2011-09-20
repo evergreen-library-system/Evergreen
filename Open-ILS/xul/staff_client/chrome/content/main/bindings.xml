@@ -179,7 +179,7 @@
                             var x = new XMLHttpRequest();
                             x.open("GET",this.src,false);
                             x.send(null);
-                            if (x.responseText) {
+                            if (x.status == 200 && x.responseText) {
                                 var props = this._props2object(x.responseText);
                                 for (var i in props) {
                                     this._props[i] = props[i];
@@ -194,7 +194,7 @@
                                 var x2 = new XMLHttpRequest();
                                 x2.open("GET",custom_src,false);
                                 x2.send(null);
-                                if (x2.responseText) {
+                                if (x2.status == 200 && x2.responseText) {
                                     var props = this._props2object(x2.responseText);
                                     for (var i in props) {
                                         this._props[i] = props[i];
