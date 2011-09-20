@@ -107,7 +107,6 @@
             //cache_me('/xul/server/util/rbrowser.xul','http');
 
             //cache_me('/xul/server//patron/display.js','http');  
-            //cache_me('/xul/server//patron/bills.js','http');  
             //cache_me('/xul/server//patron/holds.js','http');  
             //cache_me('/xul/server//patron/items.js','http'); 
             //cache_me('/xul/server//patron/search_form.js','http');  
@@ -117,8 +116,6 @@
 
             //cache_me('/xul/server/patron/display.xul','http');  
             //cache_me('/xul/server/patron/display_overlay.xul','http');  
-            //cache_me('/xul/server/patron/bills.xul','http');  
-            //cache_me('/xul/server/patron/bills_overlay.xul','http');  
             //cache_me('/xul/server/patron/holds.xul','http');  
             //cache_me('/xul/server/patron/holds_overlay.xul','http');  
             //cache_me('/xul/server/patron/items.xul','http'); 
