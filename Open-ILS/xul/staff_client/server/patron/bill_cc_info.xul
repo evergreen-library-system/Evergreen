@@ -101,7 +101,7 @@
             g.error.sdump('D_TRACE','my_init() for patron_display.xul');
             g.OpenILS = {}; JSAN.use('OpenILS.data'); g.OpenILS.data = new OpenILS.data();
             g.OpenILS.data.init({'via':'stash'});
-            /* 'true' as a string matches the expectations in bills.js */
+            /* 'true' as a string matches the expectations in bill2.js */
             g.payment_blob = { 'cc_args' : {}, 'cancelled' : 'true' };
             g.OpenILS.data.temp = js2JSON( g.payment_blob );
             g.OpenILS.data.stash('temp');
