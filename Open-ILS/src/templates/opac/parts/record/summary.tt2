@@ -234,3 +234,4 @@
 
 [%- INCLUDE "opac/parts/record/subjects.tt2" %]
 [%- INCLUDE "opac/parts/record/series.tt2" %]
+[%- INCLUDE "opac/parts/record/extras.tt2" %]
