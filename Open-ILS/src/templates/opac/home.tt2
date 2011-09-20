@@ -3,7 +3,6 @@
     INCLUDE "opac/parts/topnav.tt2";
     ctx.page_title = l("Home") %]
     <div id="search-wrapper">
-        [% INCLUDE "opac/parts/printnav.tt2" %]
         [% INCLUDE "opac/parts/searchbar.tt2" %]
     </div>
     <div id="content-wrapper">

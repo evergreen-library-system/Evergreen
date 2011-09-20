@@ -4,7 +4,6 @@
     ctx.page_title = l("Advanced Search");
     pane = CGI.param("pane") || "advanced" %]
     <div id="search-wrapper">
-        [% INCLUDE "opac/parts/printnav.tt2" %]
         <div id="adv_search_parent">
             <div id="adv_search_tabs">
                 <a href="?pane=advanced" [% IF pane == 'advanced' %]class="on" [% END %]id="adv_search">[% l('Advanced Search') %]</a>

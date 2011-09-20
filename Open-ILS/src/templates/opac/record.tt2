@@ -4,7 +4,6 @@
     INCLUDE "opac/parts/topnav.tt2";
     ctx.page_title = l("Record Detail") %]
     <div id="search-wrapper">
-        [% INCLUDE "opac/parts/printnav.tt2" %]
         [% INCLUDE "opac/parts/searchbar.tt2" %]
     </div>
     <br class="clear-both" />
@@ -18,7 +17,7 @@
         [% END %]
         <div id="[% ctx.staff_saved_search_size ? 'main-content-after-bar' : 'main-content' %]">
             [% INCLUDE "opac/parts/record/body.tt2" %]
-            <div class="common-full-pad"></div>	
+            <div class="common-full-pad"></div>
         </div>
         <br class="clear-both" />
     </div>
