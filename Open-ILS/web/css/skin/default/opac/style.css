@@ -220,7 +220,7 @@ div.select-wrapper:hover {
 	background: white;
 }
 
-#search_box_wrapper {
+.search_box_wrapper {
 	border:1px solid #e9ebf3;
 	padding: 1px;
     padding-left: 3px;
