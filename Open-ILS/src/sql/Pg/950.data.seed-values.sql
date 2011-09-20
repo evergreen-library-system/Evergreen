@@ -7570,6 +7570,7 @@ $$
         <div>Author: [% helpers.get_li_attr("author", "", li.attributes) %]</div>
         <div class="count">Item Count: [% li.lineitem_details.size %]</div>
         <div class="lineid">Lineitem ID: [% li.id %]</div>
+        <div>Open Holds: [% helpers.bre_open_hold_count(li.eg_bib_id) %]</div>
 
         [% IF li.distribution_formulas.size > 0 %]
             [% SET forms = [] %]

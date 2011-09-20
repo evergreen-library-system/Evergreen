@@ -237,6 +237,15 @@ my $_TT_helpers = {
         return $str;
     },
 
+
+    bre_open_hold_count => sub {
+        my $bre_id = shift;
+        return 0 unless $bre_id;
+        return $U->simplereq(
+            'open-ils.circ',
+            'open-ils.circ.bre.holds.count', $bre_id);
+    },
+
     xml_doc => sub {
         my ($str) = @_;
         return $str ? (new XML::LibXML)->parse_string($str) : undef;
