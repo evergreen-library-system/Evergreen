@@ -555,11 +555,12 @@ BEGIN
                 ans.id,
                 COUNT( cp.id ),
                 SUM( CASE WHEN cp.status IN (0,7,12) THEN 1 ELSE 0 END ),
-                COUNT( cp.id ),
+                SUM( CASE WHEN cl.opac_visible AND cp.opac_visible THEN 1 ELSE 0 END),
                 trans
           FROM
                 actor.org_unit_descendants(ans.id) d
                 JOIN asset.copy cp ON (cp.circ_lib = d.id AND NOT cp.deleted)
+                JOIN asset.copy_location cl ON (cp.location = cl.id)
                 JOIN asset.call_number cn ON (cn.record = rid AND cn.id = cp.call_number AND NOT cn.deleted)
           GROUP BY 1,2,6;
 
@@ -586,11 +587,12 @@ BEGIN
                 ans.id,
                 COUNT( cp.id ),
                 SUM( CASE WHEN cp.status IN (0,7,12) THEN 1 ELSE 0 END ),
-                COUNT( cp.id ),
+                SUM( CASE WHEN cl.opac_visible AND cp.opac_visible THEN 1 ELSE 0 END),
                 trans
           FROM
                 actor.org_unit_descendants(ans.id) d
                 JOIN asset.copy cp ON (cp.circ_lib = d.id AND NOT cp.deleted)
+                JOIN asset.copy_location cl ON (cp.location = cl.id)
                 JOIN asset.call_number cn ON (cn.record = rid AND cn.id = cp.call_number AND NOT cn.deleted)
           GROUP BY 1,2,6;
 
