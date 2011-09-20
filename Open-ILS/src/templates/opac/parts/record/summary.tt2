@@ -9,6 +9,8 @@
     [% INCLUDE 'opac/parts/record/refworks.tt2' %]
 [%- END %]
 
+<hr style="margin-top: 1em;" />
+
 [%- # This holds the record summary information %]
 <div id="rdetail_image_div" style="float: left; margin-right: 1em;">
     [% ident = attrs.isbn_clean || attrs.upc; IF ident; %]
@@ -38,52 +40,53 @@
 </div>
 
 <div id='rdetail_title_div'>
-    <h1 id='rdetail_title'>[% attrs.title_extended | html %]</h1>
-    [%- INCLUDE "opac/parts/record/authors.tt2" %]
     [%- IF attrs.format_icon %]
     <div style="float:right;margin-right:17px;">
         <img alt="[% attrs.format_label %]" title="[% attrs.format_label | html %]" src="[% attrs.format_icon %]" />
     </div>
     [%- END %]
-    [%- IF openurl.enabled == 'true';
-        sfx = []
-        FOR issn IN args.issns;
-            sfx = sfx.import(ResolverResolver.resolve_issn(issn, openurl.baseurl));
-        END;
-        IF sfx.size && sfx.0 != '';
-    %]
-        <div id='rdetail_openurl'>
-            <strong class='rdetail_openurl_title'>[% l("Electronic resources") %]</strong>
-            <table><tbody>
-    [%-
-            FOR res IN sfx;
-    %]
-            <tr>
-                <td class='rdetail_openurl_entry'><a href="[% res.target_url %]">[% res.public_name %]</a></td>
-                <td>[% res.target_coverage %]</td>
-            </tr>
-        [%- END %]
-        </tbody></table>
-    [%- END %]
-    [%- IF sfx.size && sfx.0 != '' %]
-        </div>    
-    [%- END %]
-    [%- FOR uri IN args.uris; %]
-    <div class="rdetail_uri">
-        <a href="[% uri.href %]">[% uri.link %]</a>[% ' - ' _ uri.note IF uri.note %]
-    </div>
-    [%- END %]
-    [%- # hold/copy summary %]
-    [%- IF ctx.copy_summary.0.count %]
-    <div class="rdetail_copy_counts">
-        <span>
-            [%- l("[quant,_1,current hold,current holds] with [quant,_2,total copy,total copies].", 
-                ctx.record_hold_count, ctx.copy_summary.0.count) %]
-        </span>
-        <span>[% l('[quant,_1,copy,copies] currently available.', ctx.copy_summary.0.available) %]</span>
-    </div>
-    [% END %]
+    <h1 id='rdetail_title'>[% attrs.title_extended | html %]</h1>
+    [%- INCLUDE "opac/parts/record/authors.tt2" %]
 </div>
+
+[%- IF openurl.enabled == 'true';
+    sfx = []
+    FOR issn IN args.issns;
+        sfx = sfx.import(ResolverResolver.resolve_issn(issn, openurl.baseurl));
+    END;
+    IF sfx.size && sfx.0 != '';
+%]
+    <div id='rdetail_openurl'>
+        <strong class='rdetail_openurl_title'>[% l("Electronic resources") %]</strong>
+        <table><tbody>
+[%-
+        FOR res IN sfx;
+%]
+        <tr>
+            <td class='rdetail_openurl_entry'><a href="[% res.target_url %]">[% res.public_name %]</a></td>
+            <td>[% res.target_coverage %]</td>
+        </tr>
+    [%- END %]
+    </tbody></table>
+[%- END %]
+[%- IF sfx.size && sfx.0 != '' %]
+    </div>    
+[%- END %]
+[%- FOR uri IN args.uris; %]
+<div class="rdetail_uri">
+    <a href="[% uri.href %]">[% uri.link %]</a>[% ' - ' _ uri.note IF uri.note %]
+</div>
+[%- END %]
+[%- # hold/copy summary %]
+[%- IF ctx.copy_summary.0.count %]
+<div class="rdetail_copy_counts">
+    <span>
+        [%- l("[quant,_1,current hold,current holds] with [quant,_2,total copy,total copies].", 
+            ctx.record_hold_count, ctx.copy_summary.0.count) %]
+    </span>
+    <span>[% l('[quant,_1,copy,copies] currently available.', ctx.copy_summary.0.available) %]</span>
+</div>
+[% END %]
 
 [%- IF ctx.copy_summary.0.count %]
 <div id='rdetail_copies'>
@@ -95,17 +98,17 @@
             <th id='copy_header_callnmber'>[% l("Call Number") %]</th>
             <th id='copy_header_barcode'>[% l("Barcode") %]</th>
             <th id='copy_header_shelfloc'>[% l("Shelving Location") %]</th>
-            [% IF ctx.is_staff %]
+            [%- IF ctx.is_staff %]
             <th id='copy_header_age_hold'>[% l("Age Hold Protection") %]</th>
             <th id='copy_header_create_date'>[% l("Create Date") %]</th>
             <th id='copy_header_holdable'>[% l("Holdable?") %]</th>
-            [% END %]
+            [%- END %]
             <th id='copy_header_status'>[% l("Status") %]</th>
             <th id='copy_header_due_date'>[% l("Due Date") %]</th>
         </tr>
     </thead>
     <tbody class="copy_details_table">
-        [% last_cn = 0;
+        [%- last_cn = 0;
         FOR copy_info IN ctx.copies;
             NEXT IF copy_info.call_number_label == '##URI##' %]
         <tr>
@@ -118,7 +121,7 @@
             <td header='copy_header_callnumber'>[% copy_info.call_number_label | html %]</td>
             <td header='copy_header_barcode'>[% copy_info.barcode | html %]</td>
             <td header='copy_header_shelfloc'>[% copy_info.copy_location | html %]</td>
-            [% IF ctx.is_staff %]
+            [%- IF ctx.is_staff %]
             <td header='copy_header_age_hold'>
                 [% copy_info.age_protect ?
                     ctx.get_crahp(copy_info.age_protect).name : l('None') | html %]
@@ -135,15 +138,15 @@
                     IF overall_holdable;
                         l("Place on"); %]
                 <a href="[% mkurl(ctx.opac_root _ '/place_hold', {hold_target => copy_info.id, hold_type => 'C'}) %]">[% l("copy") %]</a>
-                [%      IF copy_info.call_number != last_cn;
+                [%-      IF copy_info.call_number != last_cn;
                             last_cn = copy_info.call_number;
                             l(" / "); %]
                 <a href="[% mkurl(ctx.opac_root _ '/place_hold', {hold_target => copy_info.call_number, hold_type => 'V'}) %]">[% l("volume") %]</a>
-                [%      END;
+                [%-      END;
                     ELSE;
                         l("No");
                     END %]</td>
-            [% END %]
+            [%- END %]
             <td header='copy_header_status'>[% copy_info.copy_status | html %]</td>
             <td header='due_date'>[%
                 IF copy_info.due_date;
@@ -155,37 +158,37 @@
                     '-';
                 END %]</td>
         </tr>
-        [% END %]
+        [%- END %]
         <tr>
-        [% IF ctx.copy_offset > 0;
+        [%- IF ctx.copy_offset > 0;
             new_offset = ctx.copy_offset - ctx.copy_limit;
             IF new_offset < 0; new_offset = 0; END %]
             <td>
                 <a href="[% mkurl('', {copy_offset => new_offset, copy_limit => ctx.copy_limit}) %]">&laquo; [%
                     l('Previous [_1]', ctx.copy_offset - new_offset) %]</a>
             </td>
-        [% END %]
-        [% IF ctx.copies.size >= ctx.copy_limit %]
+        [%- END %]
+        [%- IF ctx.copies.size >= ctx.copy_limit %]
             <td>
                 <a href="[% mkurl('', {copy_offset => ctx.copy_offset + ctx.copy_limit, copy_limit => ctx.copy_limit}) %]">[%
                     l('Next [_1]', ctx.copy_limit) %] &raquo;</a>
             </td>
-        [% END %]
+        [%- END %]
         </tr>
         <tr>
             <td>
-                [% more_copies_limit = 50 %] [%# TODO: config %]
-                [% IF  ctx.copy_limit != more_copies_limit AND ctx.copies.size >= ctx.copy_limit %]
+                [%- more_copies_limit = 50 %] [%# TODO: config %]
+                [%- IF  ctx.copy_limit != more_copies_limit AND ctx.copies.size >= ctx.copy_limit %]
                     <div style='margin-top:10px;'>
                         <img src="[% ctx.media_prefix %]/images/plus_sign.png" />
                         <a href="[% mkurl('', {copy_limit => more_copies_limit, copy_offset => 0}) %]">[% l('Show more copies') %]</a>
                     </div>
-                [% ELSIF ctx.copy_limit == more_copies_limit %]
+                [%- ELSIF ctx.copy_limit == more_copies_limit %]
                     <div style='margin-top:10px;'>
                         <img src="[% ctx.media_prefix %]/images/minus_sign.png" />
                         <a href="[% mkurl('', {copy_limit => 0, copy_offset => 0}) %]">[% l('Show fewer copies') %]</a>
                     </div>
-                [% END %]
+                [%- END %]
             </td>
         </tr>
     </tbody>
@@ -209,7 +212,6 @@
     </li>
         [%- END %]
     [%- END %]
-
     [%- IF attrs.phys_desc %]
     <li id='rdetail_phys_desc'>
         <strong class='rdetail_label'>[% l("Physical Description:") %]</strong>
@@ -230,8 +232,5 @@
     [%- END %]
 </ul>
 
-
 [%- INCLUDE "opac/parts/record/subjects.tt2" %]
-
-<h2 class='rdetail_related_series'>[% l('Search for related items by series') %]</h2>
 [%- INCLUDE "opac/parts/record/series.tt2" %]

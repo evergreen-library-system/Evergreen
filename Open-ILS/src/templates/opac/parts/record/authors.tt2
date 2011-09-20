@@ -1,4 +1,4 @@
-[%  
+[%-  
 
 authors = [
     {
@@ -45,13 +45,13 @@ END;
 %]
 
 <div class='rdetail_authors_div'>
-[% FOREACH author IN authors;
+[%- FOREACH author IN authors;
     NEXT UNLESS author.xpath; 
     links = PROCESS build_author_links(xpath=author.xpath, label=author.label);
     IF links.match('\S') %]
     <span class='rdetail-author-div'>[% links %]</span>
-    [% END %]
-[% END %]
+    [%- END %]
+[%- END %]
 </div>
 
 
