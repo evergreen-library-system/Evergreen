@@ -1030,3 +1030,6 @@ a.opac-button {
 
 
 .bookbag-item-row td { vertical-align: top; }
+
+.error { color: red; font-weight: bold; }
+.success { color: green; font-weight: bold; }

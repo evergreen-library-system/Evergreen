@@ -1598,7 +1598,7 @@ sub load_password_reset {
 
         } else { # 2 password values needed
 
-            $ctx->{pwreset} = {style => 'error', status => 'TWO_PASSWORDS'};
+            $ctx->{pwreset} = {status => 'TWO_PASSWORDS'};
         }
 
     } elsif ($barcode or $username) {
@@ -1609,7 +1609,7 @@ sub load_password_reset {
             'open-ils.actor', 
             'open-ils.actor.patron.password_reset.request', @params);
 
-        $ctx->{pwreset} = {style => 'plain', status => 'REQUEST_SUCCESS'};
+        $ctx->{pwreset} = {status => 'REQUEST_SUCCESS'};
     }
 
     $logger->info("patron password reset resulted in " . Dumper($ctx->{pwreset}));
