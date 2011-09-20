@@ -140,9 +140,15 @@ if(!dojo._hasResource["openils.AuthorityControlSet"]) {
 
                     // build the authority_tag_map
                     dojo.forEach( openils.AuthorityControlSet._controlsets[''+cs.id()].bib_fields, function (bf) {
-                        openils.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()] = {};
+
+                        if (!openils.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()])
+                            openils.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()] = {};
+
                         dojo.forEach( bf.authority_field().sf_list().split(''), function (sf_code) {
-                            openils.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()][sf_code] = {};
+
+                            if (!openils.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()][sf_code])
+                                openils.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()][sf_code] = {};
+
                             openils.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()][sf_code][bf.authority_field().tag()] = sf_code;
                         });
                     });
