@@ -68,14 +68,16 @@
                                                 event_key = hdata.hold_failed_event.textcode;
 
                                                 # display:
-                                                FAIL_PART_MSG_MAP.$fail_part_key ||
-                                                EVENT_MSG_MAP.$event_key ||
-                                                l(hdata.hold_failed_event.desc) ||
-                                                hdata.hold_failed_event.payload.fail_part ||
-                                                hdata.hold_failed_event.textcode ||
-                                                (hdata.hold_local_alert ?
-                                                    l("There is already a copy available at your local library.") :
-                                                    l("Unknown problem")) | html
+                                                (hdata.age_protect ?
+                                                    l("All available copies are temporarily unavailable at your pickup library. Placing this hold could result in longer wait times.") :
+                                                    FAIL_PART_MSG_MAP.$fail_part_key ||
+                                                    EVENT_MSG_MAP.$event_key ||
+                                                    l(hdata.hold_failed_event.desc) ||
+                                                    hdata.hold_failed_event.payload.fail_part ||
+                                                    hdata.hold_failed_event.textcode ||
+                                                    (hdata.hold_local_alert ?
+                                                        l("There is already a copy available at your local library.") :
+                                                        l("Unknown problem"))) | html
                                             %]</em>
                                             [% IF event_key == 'PERM_FAILURE' %]
                                             <div>[% l('Permission: "[_1]"', hdata.hold_failed_event.ilsperm) | html %]</div>

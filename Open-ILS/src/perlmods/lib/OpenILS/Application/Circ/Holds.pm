@@ -2256,9 +2256,9 @@ sub check_title_hold {
         };
     } elsif ($status[2]) {
         my $n = scalar @{$status[2]};
-        return {"success" => 0, "last_event" => $status[2]->[$n - 1]};
+        return {"success" => 0, "last_event" => $status[2]->[$n - 1], "age_protected_copy" => $status[3]};
     } else {
-        return {"success" => 0};
+        return {"success" => 0, "age_protected_copy" => $status[3]};
     }
 }
 
@@ -2473,6 +2473,7 @@ sub _check_title_hold_is_possible {
     my $title;
     my %seen;
     my @status;
+    my $age_protect_only = 0;
     OUTER: for my $key (@keys) {
       my @cps = @{$buckets{$key}};
 
@@ -2494,10 +2495,12 @@ sub _check_title_hold_is_possible {
          @status = verify_copy_for_hold(
             $patron, $requestor, $title, $copy, $pickup_lib, $request_lib);
 
+         $age_protect_only ||= $status[3];
          last OUTER if $status[0];
       }
     }
 
+    $status[3] = $age_protect_only;
     return @status;
 }
 
@@ -2599,6 +2602,7 @@ sub _check_issuance_hold_is_possible {
     my $title;
     my %seen;
     my @status;
+    my $age_protect_only = 0;
     OUTER: for my $key (@keys) {
       my @cps = @{$buckets{$key}};
 
@@ -2620,6 +2624,7 @@ sub _check_issuance_hold_is_possible {
          @status = verify_copy_for_hold(
             $patron, $requestor, $title, $copy, $pickup_lib, $request_lib);
 
+         $age_protect_only ||= $status[3];
          last OUTER if $status[0];
       }
     }
@@ -2632,6 +2637,7 @@ sub _check_issuance_hold_is_possible {
 
         return (1,0) if ($empty_ok);
     }
+    $status[3] = $age_protect_only;
     return @status;
 }
 
@@ -2733,6 +2739,7 @@ sub _check_monopart_hold_is_possible {
     my $title;
     my %seen;
     my @status;
+    my $age_protect_only = 0;
     OUTER: for my $key (@keys) {
       my @cps = @{$buckets{$key}};
 
@@ -2754,6 +2761,7 @@ sub _check_monopart_hold_is_possible {
          @status = verify_copy_for_hold(
             $patron, $requestor, $title, $copy, $pickup_lib, $request_lib);
 
+         $age_protect_only ||= $status[3];
          last OUTER if $status[0];
       }
     }
@@ -2766,6 +2774,7 @@ sub _check_monopart_hold_is_possible {
 
         return (1,0) if ($empty_ok);
     }
+    $status[3] = $age_protect_only;
     return @status;
 }
 
@@ -2794,11 +2803,14 @@ sub _check_volume_hold_is_possible {
     ) unless @$copies;
 
     my @status;
+    my $age_protect_only = 0;
 	for my $copy ( @$copies ) {
         @status = verify_copy_for_hold(
 			$patron, $requestor, $title, $copy, $pickup_lib, $request_lib );
+        $age_protect_only ||= $status[3];
         last if $status[0];
 	}
+    $status[3] = $age_protect_only;
 	return @status;
 }
 
@@ -2819,6 +2831,10 @@ sub verify_copy_for_hold {
             show_event_list     => 1
 		} 
 	);
+    my $age_protect_only = 0;
+    if (@$permitted == 1 && @$permitted[0]->{textcode} eq 'ITEM_AGE_PROTECTED') {
+        $age_protect_only = 1;
+    }
 
     return (
         (not scalar @$permitted), # true if permitted is an empty arrayref
@@ -2827,7 +2843,8 @@ sub verify_copy_for_hold {
 	        ($copy->circ_lib == $pickup_lib) and 
             ($copy->status == OILS_COPY_STATUS_AVAILABLE)
         ),
-        $permitted
+        $permitted,
+        $age_protect_only
     );
 }
 

@@ -1022,28 +1022,40 @@ function holdHandleCreateResponse(r, recurse) {
 
 	if(!recurse) {
 		var res = r.getResultObject();
+        var age_protect_override = false;;
 		if(checkILSEvent(res) || res.success != 1) {
-			if(res.success != 1) {
-
-                if(!holdArgs.partsSuggestionMade && holdArgs.recordParts && 
-                        holdArgs.recordParts.length && holdArgs.type == 'T') {
-                    // T holds on records that have parts are OK, but if the record has no non-part
-                    // copies, the hold will ultimately fail.  Suggest selecting a part to the user.
-                    addCSSClass($('holds_parts_selector'), 'parts-warning');
-                    holdArgs.partsSuggestionMade = true;
-                    alert($('hold_has_parts').innerHTML);
+            if(res.success != 1 && res.age_protected_copy == 1) {
+                // There is at least one copy that *could* fill the hold, if it were not age-protected.
+                if( confirm($('hold_age_protected_override').innerHTML) ) {
+                    age_protect_override = true;
                 } else {
-				    alert($('hold_not_allowed').innerHTML);
+    		    	swapCanvas($('holds_box'));
+	    		    return;
                 }
-			} else {
-				if( res.textcode == 'PATRON_BARRED' ) {
-					alertId('hold_failed_patron_barred');
-			} else {
-					alert($('hold_not_allowed').innerHTML);
-				}
-			}
-			swapCanvas($('holds_box'));
-			return;
+            }
+            if(!age_protect_override) {
+    			if(res.success != 1) {
+
+                    if(!holdArgs.partsSuggestionMade && holdArgs.recordParts && 
+                            holdArgs.recordParts.length && holdArgs.type == 'T') {
+                        // T holds on records that have parts are OK, but if the record has no non-part
+                        // copies, the hold will ultimately fail.  Suggest selecting a part to the user.
+                        addCSSClass($('holds_parts_selector'), 'parts-warning');
+                        holdArgs.partsSuggestionMade = true;
+                        alert($('hold_has_parts').innerHTML);
+                    } else {
+			    	    alert($('hold_not_allowed').innerHTML);
+                    }
+    			} else {
+	    			if( res.textcode == 'PATRON_BARRED' ) {
+		    			alertId('hold_failed_patron_barred');
+			    } else {
+				    	alert($('hold_not_allowed').innerHTML);
+    				}
+	    		}
+		    	swapCanvas($('holds_box'));
+			    return;
+            }
 		}
         r._hold.selection_depth(res.depth);
 	}	

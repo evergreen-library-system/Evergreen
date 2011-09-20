@@ -892,7 +892,12 @@ sub attempt_hold_placement {
                         $hdata->{hold_failed_event} = pop @$result;
                     }
 
-                    $hdata->{could_override} = $self->test_could_override($hdata->{hold_failed_event});
+                    if($result->{age_protected_copy}) {
+                        $hdata->{could_override} = 1;
+                        $hdata->{age_protect} = 1;
+                    } else {
+                        $hdata->{could_override} = $self->test_could_override($hdata->{hold_failed_event});
+                    }
                 }
             }
         }
