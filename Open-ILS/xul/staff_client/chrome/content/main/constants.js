@@ -13,9 +13,9 @@ dump('Loading constants.js\n');
 
 /* Get locale from preferences */
 var LOCALE = '';
+netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+var pref = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
 try {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-    var pref = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
     LOCALE = pref.getCharPref('general.useragent.locale');
 } catch (E) {
     dump("Failed to fetch a locale from preferences: " + E + "\n");
@@ -24,6 +24,13 @@ try {
 /* Fall back to en-US if we didn't get a locale from the preferences */
 if (!LOCALE) {
     LOCALE = 'en-US';
+}
+
+var use_tpac = false;
+try {
+    use_tpac = pref.getBoolPref('oils.use_tpac');
+} catch (E) {
+    dump("Failed to get TPac preference: " + E + "\n");
 }
 
 const MODE_RDONLY   = 0x01;
@@ -501,4 +508,12 @@ var urls = {
     'EG_ACQ_PO_VIEW' : '/eg/acq/po/view',
     'EG_ACQ_USER_REQUESTS' : '/eg/acq/picklist/user_request',
     'XUL_SERIAL_BATCH_RECEIVE': '/xul/server/serial/batch_receive.xul'
+}
+
+if(use_tpac) {
+    urls['opac'] = '/eg/opac/advanced';
+    urls['opac_rdetail'] = '/eg/opac/record/';
+    urls['opac_rresult'] = '/eg/opac/results';
+    urls['opac_rresult_metarecord'] = '/eg/opac/results?metarecord=';
+    urls['browser'] = urls.opac;
 }
