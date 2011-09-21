@@ -3642,6 +3642,9 @@
 <!ENTITY staff.client.portal.receipts "Edit Receipt Templates">
 <!ENTITY staff.client.portal.copyright "Copyright &copy; 2006-2011 Georgia Public Library Service, and others">
 <!ENTITY staff.client.portal.poweredby "Powered by">
+<!ENTITY staff.client.portal.toggle_tpac "Toggle Template Toolkit OPAC Use">
+<!ENTITY staff.client.portal.toggle_tpac.message_on "The use of the Template Toolkit OPAC has been enabled. You may need to restart the staff client for this to take effect.">
+<!ENTITY staff.client.portal.toggle_tpac.message_off "The use of the Template Toolkit OPAC has been disabled. You may need to restart the staff client for this to take effect.">
 <!ENTITY staff.item.batch.hold.groupbox_caption "Request Details">
 <!ENTITY staff.item.batch.hold.hold_type_menu.label "Hold Type">
 <!ENTITY staff.item.batch.hold.hold_type_menu.accesskey "T">

@@ -257,6 +257,24 @@
                         else
                                 xulG.set_tab(loc, {}, content_params);
                 }
+                function toggle_tpac(mode) {
+                    var use_tpac = false;
+                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                    var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces['nsIPrefBranch']);
+                    try {
+                        use_tpac = prefs.getBoolPref('oils.use_tpac');
+                    } catch (E) {
+                        dump('Failed to get current use_tpac setting - Assuming false: ' + E);
+                    }
+                    use_tpac = !use_tpac;
+                    prefs.setBoolPref('oils.use_tpac', use_tpac);
+                    var message = document.getElementById('tpac_toggled_on');
+                    if(!use_tpac) {
+                        message = document.getElementById('tpac_toggled_off');
+                    }
+                    message = message.textContent;
+                    alert(message);
+                }
                 // ]]>
   </script>
   <style type="text/css">
@@ -547,8 +565,18 @@
               "#" onclick=
               "try { receipt_editor(false); } catch(E) { alert(E); }; return false;">&staff.client.portal.receipts;</a></td>
             </tr>
+
+            <tr>
+              <td height="50"><img src="skin/media/images/portal/book.png" height="48" width="48"
+              onclick="try { toggle_tpac(); } catch(E) { alert(E) }; return false;" alt="&staff.client.portal.toggle_tpac;" /></td>
+
+              <td><a href="#"
+              onclick="try { toggle_tpac(); } catch(E) { alert(E); }; return false;">&staff.client.portal.toggle_tpac;</a></td>
+            </tr>
           </table>
         </div>
+        <span style="display:none" id="tpac_toggled_on">&staff.client.portal.toggle_tpac.message_on;</span>
+        <span style="display:none" id="tpac_toggled_off">&staff.client.portal.toggle_tpac.message_off;</span>
       </td>
     </tr>
   </table>
