@@ -50,7 +50,6 @@ function payments_tally_selected() {
 function retrieve_mbts_for_list() {
     //var method = 'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_CHARGE';
     var method = 'FM_MBTS_IDS_RETRIEVE_FOR_HISTORY.authoritative';
-    if (xul_param('current')) method = 'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_BALANCE.authoritative';
     var date2 = $('bills_date2').dateValue;
     date2.setDate( date2.getDate() + 1 ); // Javascript will wrap into subsequent months
     var filter = {
@@ -123,7 +122,7 @@ function init_main_list() {
     g.bill_list.init( {
         'columns' : 
             patron.util.mbts_columns({
-                'xact_finish' : { 'hidden' : xul_param('current') ? true : false }
+                'xact_finish' : { 'hidden' : false }
             }).concat( 
             circ.util.columns({ 
                 'title' : { 'hidden' : false, 'flex' : '3' }
@@ -235,13 +234,7 @@ function my_init() {
 
         g.error.sdump('D_TRACE','my_init() for bill_history.xul');
 
-        if (xul_param('current')) {
-            $('caption').setAttribute('label',$("patronStrings").getString('staff.patron.bill_history.my_init.current_bills'));
-            document.title = $("patronStrings").getString('staff.patron.bill_history.my_init.current_bills');
-        } else {
-            $('caption').setAttribute('label',$("patronStrings").getString('staff.patron.bill_history.my_init.bill_history'));
-            document.title = $("patronStrings").getString('staff.patron.bill_history.my_init.bill_history');
-        }
+        document.title = $("patronStrings").getString('staff.patron.bill_history.my_init.bill_history');
 
         g.funcs = []; g.bill_map = {}; g.payments_map = {};
 
@@ -373,7 +366,7 @@ function gen_handle_copy_details(which_list) {
 
 function print_bills() {
     try {
-        var template = 'bills_historical'; if (xul_param('current')) template = 'bills_current';
+        var template = 'bills_historical';
         JSAN.use('patron.util');
         var params = { 
             'patron' : patron.util.retrieve_fleshed_au_via_id(ses(),g.patron_id,null), 
