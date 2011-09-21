@@ -16,13 +16,7 @@ function my_init() {
 
         g.error.sdump('D_TRACE','my_init() for bill2.xul');
 
-        if (xul_param('current')) {
-            $('caption').setAttribute('label',$("patronStrings").getString('staff.patron.bill_history.my_init.current_bills'));
-            document.title = $("patronStrings").getString('staff.patron.bill_history.my_init.current_bills');
-        } else {
-            $('caption').setAttribute('label',$("patronStrings").getString('staff.patron.bill_history.my_init.bill_history'));
-            document.title = $("patronStrings").getString('staff.patron.bill_history.my_init.bill_history');
-        }
+        document.title = $("patronStrings").getString('staff.patron.bill_history.my_init.current_bills');
 
         g.funcs = []; g.bill_map = {}; g.row_map = {}; g.check_map = {};
 
@@ -483,7 +477,7 @@ function init_lists() {
                 }
             ].concat(
                 patron.util.mbts_columns({
-                    'mbts_xact_finish' : { 'hidden' : xul_param('current') ? true : false }
+                    'mbts_xact_finish' : { 'hidden' : true }
                 }
             ).concat( 
                 circ.util.columns({ 
@@ -717,7 +711,7 @@ function handle_details() {
 
 function print_bills() {
     try {
-        var template = 'bills_historical'; if (xul_param('current')) template = 'bills_current';
+        var template = 'bills_current';
         JSAN.use('patron.util');
         g.patron = patron.util.retrieve_fleshed_au_via_id(ses(),g.patron_id,null); 
         g.bill_list.print({ 

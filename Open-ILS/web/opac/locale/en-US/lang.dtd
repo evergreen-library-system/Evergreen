@@ -3035,6 +3035,7 @@
 <!ENTITY staff.patron.bill_history.bills.retrieve.label "Retrieve Transactions">
 <!ENTITY staff.patron.bill_history.bills.retrieve.accesskey "R">
 
+<!ENTITY staff.patron.bill_interface.caption.label "Current Bills">
 <!ENTITY staff.patron.bill_interface.total_owed "Total Owed:">
 <!ENTITY staff.patron.bill_interface.total_checked "Total Checked:">
 <!ENTITY staff.patron.bill_interface.refunds_available "Refunds Available:">
