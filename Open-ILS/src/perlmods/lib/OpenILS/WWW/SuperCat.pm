@@ -36,6 +36,8 @@ my $U = 'OpenILS::Application::AppUtils';
 # set the bootstrap config when this module is loaded
 my ($bootstrap, $supercat, $actor, $parser, $search, $xslt, $cn_browse_xslt, %browse_types, %qualifier_map);
 
+my $authority_axis_re = qr/^authority\.(\w+)(\.refs)?$/;
+
 $browse_types{call_number}{xml} = sub {
     my $tree = shift;
 
@@ -1561,12 +1563,17 @@ sub string_browse {
 
     my $tree;
     if ($axis =~ /^authority/) {
+        my ($realaxis, $refs) = ($axis =~ $authority_axis_re);
+
+        my $method = "open-ils.supercat.authority.browse_center.by_axis";
+        $method .= ".refs" if $refs;
+
         $tree = $supercat->request(
-            "open-ils.supercat.authority.browse.by_axis",
-            $axis,
+            $method,
+            $realaxis,
             $string,
-            $page_size,
-            $page
+            $page,
+            $page_size
         )->gather(1);
     } else {
         $tree = $supercat->request(
@@ -1637,12 +1644,17 @@ sub string_startwith {
 
     my $tree;
     if ($axis =~ /^authority/) {
+        my ($realaxis, $refs) = ($axis =~ $authority_axis_re);
+
+        my $method = "open-ils.supercat.authority.browse_top.by_axis";
+        $method .= ".refs" if $refs;
+
         $tree = $supercat->request(
-            "open-ils.supercat.authority.startwith.by_axis",
-            $axis,
+            $method,
+            $realaxis,
             $string,
-            $page_size,
-            $page
+            $page,
+            $page_size
         )->gather(1);
     } else {
         $tree = $supercat->request(
@@ -2110,12 +2122,17 @@ sub return_auth_response {
     if ($qualifier eq "id") {
         $recs = [ int($term) ];
     } else {
+        my ($realaxis, $refs) = ($qualifier =~ $authority_axis_re);
+
+        my $method = "open-ils.supercat.authority.browse_top.by_axis";
+        $method .= ".refs" if $refs;
+
         $recs = $supercat->request(
-            "open-ils.supercat.authority.startwith.by_axis",
-            $qualifier,
+            $method,
+            $realaxis,
             $term,
-            $page_size,
-            $page
+            $page,
+            $page_size
         )->gather(1);
     }
 

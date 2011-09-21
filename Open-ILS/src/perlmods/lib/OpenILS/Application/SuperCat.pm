@@ -179,6 +179,8 @@ sub child_init {
 
 	register_record_transforms();
 
+	register_new_authorities_methods();
+
 	return 1;
 }
 
@@ -225,6 +227,90 @@ sub register_record_transforms {
 		);
 	}
 }
+
+sub register_new_authorities_methods {
+    my %register_args = (
+        method    => "generic_new_authorities_method",
+        api_level => 1,
+        argc      => 1,
+        signature => {
+            desc => q/Generated method/,
+            params => [
+                {name => "what",
+                    desc => "An axis, an authority tag number, or a bibliographic tag number, depending on invocation",
+                    type => "string"},
+                {name => "term",
+                    desc => "A search term",
+                    type => "string"},
+                {name => "page",
+                    desc => "zero-based page number of results",
+                    type => "number"},
+                {name => "page size",
+                    desc => "number of results per page",
+                    type => "number"}
+            ],
+            return => {
+                desc => "A list of authority record IDs", type => "array"
+            }
+        }
+    );
+
+    foreach my $how (qw/axis atag btag/) {
+        foreach my $action (qw/browse_center browse_top
+            search_rank search_heading/) {
+
+            $register_args{api_name} =
+                "open-ils.supercat.authority.$action.by_$how";
+            __PACKAGE__->register_method(%register_args);
+
+            $register_args{api_name} =
+                "open-ils.supercat.authority.$action.by_$how.refs";
+            __PACKAGE__->register_method(%register_args);
+
+        }
+    }
+}
+
+sub generic_new_authorities_method {
+    my $self = shift;
+    my $client = shift;
+
+    # We want to be extra careful with these arguments, since the next
+    # thing we're doing with them is passing them to a DB procedure.
+    my $what = ''.shift;
+    my $term = ''.shift;
+    my $page = int(shift || 0);
+    my $page_size = shift;
+
+    # undef ok, but other non numbers not ok
+    $page_size = int($page_size) if defined $page_size;
+
+    # Figure out how we were called and what DB procedure we'll call in turn.
+    $self->api_name =~ /\.by_(\w+)($|\.)/;
+    my $metaaxis = $1;
+    my $refs = $2;
+
+    $self->api_name =~ /authority\.(\w+)\./;
+    my $action = $1;
+
+    my $method = "${metaaxis}_$action";
+    $method .= "_refs" if $refs;
+
+    # Match authority.full_rec normalization
+    # XXX don't know whether we need second arg 'subfield'?
+    $term = naco_normalize($term);
+
+    my $storage = create OpenSRF::AppSession("open-ils.storage");
+    my $list = $storage->request(
+        "open-ils.storage.authority.in_db.browse_or_search",
+        $method, $what, $term, $page, $page_size
+    )->gather(1);
+
+    $storage->kill_me;
+
+    return $list;
+}
+
 
 sub tree_walker {
 	my $tree = shift;

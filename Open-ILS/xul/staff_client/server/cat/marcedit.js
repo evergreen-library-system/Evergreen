@@ -1551,6 +1551,13 @@ function applyAuthority ( target, ui_sf, e4x_sf, new_vals ) {
     }
 
     for (var i = 0; i < new_vals.length; i++) {
+
+        /* indicators for the authority datafield are carried over in the main entry linking subfield */
+        if (new_vals[i].getAttribute('subfield') == '0') {
+            field.@ind1 = new_vals[i].getAttribute('ind1');
+            field.@ind2 = new_vals[i].getAttribute('ind2');
+        }
+
         if (!new_vals[i].getAttribute('subfield')) continue;
 
         var val = new_vals[i].getAttribute('value');
@@ -1907,6 +1914,8 @@ function buildAuthorityPopupSelector (field, grid, auth_org, auth_id) {
                 { "label"    : '\u2021' + '0' + ' (' + auth_org + ')' + auth_id,
                   "subfield" : '0',
                   "tag"      : dojo.attr(field, 'tag'),
+                  "ind1"     : dojo.attr(field, 'ind1'),
+                  "ind2"     : dojo.attr(field, 'ind2'),
                   "value"    : '(' + auth_org + ')' + auth_id
                 }
             )

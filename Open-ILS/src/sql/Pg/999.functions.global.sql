@@ -1425,6 +1425,7 @@ BEGIN
     IF NEW.deleted IS TRUE THEN -- If this authority is deleted
         DELETE FROM authority.bib_linking WHERE authority = NEW.id; -- Avoid updating fields in bibs that are no longer visible
         DELETE FROM authority.full_rec WHERE record = NEW.id; -- Avoid validating fields against deleted authority records
+        DELETE FROM authority.simple_heading WHERE record = NEW.id;
           -- Should remove matching $0 from controlled fields at the same time?
         RETURN NEW; -- and we're done
     END IF;
@@ -1435,9 +1436,15 @@ BEGIN
         IF NOT FOUND AND OLD.marc = NEW.marc THEN -- don't do anything if the MARC didn't change
             RETURN NEW;
         END IF;
+
         -- Propagate these updates to any linked bib records
         PERFORM authority.propagate_changes(NEW.id) FROM authority.record_entry WHERE id = NEW.id;
+
+        DELETE FROM authority.simple_heading WHERE record = NEW.id;
     END IF;
+
+    INSERT INTO authority.simple_heading (record,atag,value,sort_value)
+        SELECT record, atag, value, sort_value FROM authority.simple_heading_set(NEW.marc);
 
     -- Flatten and insert the afr data
     PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_authority_full_rec' AND enabled;

@@ -259,6 +259,51 @@ for my $class ( qw/title author subject keyword series identifier/ ) {
 		cachable	=> 1,
 	);
 }
+__PACKAGE__->register_method(
+    api_name	=> "open-ils.storage.authority.in_db.browse_or_search",
+    method		=> "authority_in_db_browse_or_search",
+    api_level	=> 1,
+    argc        => 5,
+    signature   => {
+        desc => q/Use stored procedures to perform authorities-based
+        browses or searches/,
+        params => [
+            {name => "method", type => "string", desc => q/
+                The name of a method within the authority schema to call.  This
+                is an API call on a private service for a reason.  Do not pass
+                unfiltered user input into this API call, especially in this
+                parameter./},
+            {name => "what", type => "string", desc => q/
+                What to search. Could be an axis name, an authority tag
+                number, or a bib tag number/},
+            {name => "term", type => "string", desc => "Search term"},
+            {name => "page", type => "number", desc => "Zero-based page number"},
+            {name => "page_size", type => "number",
+                desc => "Number of records per page"}
+        ],
+        return => {
+            desc => "A list of authority record IDs",
+            type => "array"
+        }
+    }
+);
 
+sub authority_in_db_browse_or_search {
+    my ($self, $shift, $method, @args) = @_;
+
+    return unless $method =~ /^\w+$/;
+
+    my $db = authority::full_rec->db_Main;
+	my $list = $db->selectcol_arrayref(
+        qq/
+            SELECT
+                (SELECT record FROM authority.simple_heading WHERE id = func.heading)
+            FROM authority.$method(?, ?, ?, ?) func(heading)
+        /,
+        {}, @args
+    );
+
+    return $list;
+}
 
 1;
