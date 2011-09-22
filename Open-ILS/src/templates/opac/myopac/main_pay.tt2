@@ -13,8 +13,16 @@
             [% ctx.payment_response.payload.error_message %]
         </div>
         <p>
-            <a href="[% ctx.opac_root %]/myopac/main"
-                onclick="history.go(-1); return false;">[% l('Go back') %]</a>
+            [%
+                url_args = {xact => [], xact_misc => []};
+                FOR k IN ['xact', 'xact_misc'];
+                    FOR val IN CGI.param(k);
+                        url_args.$k.push(val);
+                    END;
+                END;
+                retry_url =  mkurl(ctx.opac_root _ '/myopac/main_payment_form', url_args, 1);
+            %]
+            <a href="[% retry_url %]">[% l('Go back') %]</a>
             [% l('to try again or to cancel this payment attempt.') %]
         </p>
     [% ELSE %]

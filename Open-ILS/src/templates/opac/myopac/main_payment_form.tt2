@@ -18,12 +18,12 @@
     <p><big>[% l("Are you sure you are ready to charge [_1] to your credit card?", money(ctx.fines.balance_owed)) %]</big></p>
     <form action="[% ctx.opac_root %]/myopac/main_pay" method="POST">
         [% FOR k IN CGI.Vars;
-            NEXT UNLESS k %]
-        <input type="hidden" name="[% k | html %]" value="[% CGI.param(k) | html %]" />
-        [% END %]
+            NEXT UNLESS k;
+            FOR val IN CGI.param(k) %]
+        <input type="hidden" name="[% k | html %]" value="[% val | html %]" />
+        [% END; END %]
         <input type="submit" value="[% l('Submit Payment') %]" />
-        <input type="reset" value="[% l('Cancel') %]"
-            onclick="history.go(-1);" />
+        <a href="[% mkurl(ctx.opac_root _ '/myopac/main', {}, 1) %]">[% l('Cancel') %]</a>
     [% ELSE %]
     <form method="POST">
         <input type="hidden" name="last_chance" value="1" />
@@ -173,8 +173,7 @@
                 <tr>
                     <td colspan='2' align="center">
                         <input type="submit" value="[% l('Next') %]" />
-                        <input type="reset" value="[% l('Cancel') %]"
-                            onclick="history.go(-1);" />
+                        <a href="[% mkurl(ctx.opac_root _ '/myopac/main', {}, 1) %]">[% l('Cancel') %]</a>
                     </td>
                 </tr>
                 [% INCLUDE "opac/parts/myopac/main_refund_policy.tt2" %]
