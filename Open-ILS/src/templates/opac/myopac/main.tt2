@@ -23,7 +23,7 @@
                     <td>[% l("Balance Owed") %]</td>
                     <td nowrap="nowrap" style="white-space:nowrap;">
                         <input id="pay_fines_box1" checked="checked"
-                            type="checkbox" onchange="select_all_checkboxes('xact', this.checked)"
+                            type="checkbox" onclick="select_all_checkboxes('xact', this.checked)"
                             title="[% l('Click to (un)select all fines') %]" />
                         <label for="pay_fines_box1">[% l('Pay Fines') %]</label>
                     </td>
@@ -113,7 +113,7 @@
                     <td width='4%' align="center" nowrap="nowrap"
                         style="white-space:nowrap;">
                         <input id="pay_fines_box2" checked="checked"
-                            type="checkbox" onchange="select_all_checkboxes('xact_misc', this.checked)"
+                            type="checkbox" onclick="select_all_checkboxes('xact_misc', this.checked)"
                             title="[% l('Click to (un)select all fines') %]" />
                         <label for="pay_fines_box2">[% l("Pay Fines") %]</label>
                     </td>
