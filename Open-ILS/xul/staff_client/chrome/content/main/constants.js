@@ -516,4 +516,5 @@ if(use_tpac) {
     urls['opac_rresult'] = '/eg/opac/results';
     urls['opac_rresult_metarecord'] = '/eg/opac/results?metarecord=';
     urls['browser'] = urls.opac;
+    pref.setBoolPref('oils.secure_opac',true);
 }
