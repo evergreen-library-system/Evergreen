@@ -43,7 +43,9 @@
         # apply user params
         FOR k IN params.keys;
             encoded = [];
-            list = params.$k.0 ? params.$k : [params.$k];
+            max = params.$k.max;
+            list = (params.$k.0 OR max == -1) ? params.$k : [params.$k];
+            IF list.size == 0; NEXT; END;
             # CGI croaks on already-decoded strings.  force-encode to be safe.
             FOR p IN list; encoded.push(ctx.encode_utf8(p)); END;
             foo = cgi.param("-name", k, "-values", encoded);
