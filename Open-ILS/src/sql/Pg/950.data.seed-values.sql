@@ -6668,7 +6668,7 @@ $$
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || user.home_ou.email || default_sender %]
 Subject: [% user.home_ou.name %]: library account password reset request
-  
+
 You have received this message because you, or somebody else, requested a reset
 of your library system password. If you did not request a reset of your library
 system password, just ignore this message and your current password will

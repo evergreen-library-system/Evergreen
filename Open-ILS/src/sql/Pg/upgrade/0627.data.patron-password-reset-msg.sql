@@ -1,12 +1,11 @@
--- Evergreen DB patch XXXX.data.patron-password-reset-msg.sql
+-- Evergreen DB patch 0627.data.patron-password-reset-msg.sql
 --
--- FIXME: insert description of change, if needed
+-- Updates password reset template to match TPAC reset form
 --
 BEGIN;
 
-
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0627', :eg_version);
 
 UPDATE action_trigger.event_definition SET template = 
 $$
@@ -15,7 +14,7 @@ $$
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || user.home_ou.email || default_sender %]
 Subject: [% user.home_ou.name %]: library account password reset request
-  
+
 You have received this message because you, or somebody else, requested a reset
 of your library system password. If you did not request a reset of your library
 system password, just ignore this message and your current password will
