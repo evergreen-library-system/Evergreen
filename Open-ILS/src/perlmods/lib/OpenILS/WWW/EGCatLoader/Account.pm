@@ -942,8 +942,10 @@ sub load_myopac_pay {
     my $self = shift;
     my $r;
 
-    $r = $self->prepare_fines(undef, undef, [$self->cgi->param('xact'), $self->cgi->param('xact_misc')]) and
-        return $r;
+    my @payment_xacts = ($self->cgi->param('xact'), $self->cgi->param('xact_misc'));
+    $logger->info("tpac paying fines for xacts @payment_xacts");
+
+    $r = $self->prepare_fines(undef, undef, \@payment_xacts) and return $r;
 
     # balance_owed is computed specifically from the fines we're trying
     # to pay in this case.
