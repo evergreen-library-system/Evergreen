@@ -12,6 +12,71 @@
             class="opac-button" />
     </div>
 
+    [% setting = 'opac.hold_notify' %]
+    <input name='[% setting %]' type="hidden"
+        [% IF ctx.user_setting_map.$setting; %] value='[% ctx.user_setting_map.$setting | html %]' [% END %]/>
+
+    <table class="full-width data_grid" id="acct_search_main">
+        <tbody>
+
+            [% IF ctx.updated_user_settings %]
+            <tr><td colspan='2'>
+                <div class='renew-summary'>
+                    [% l('Account Successfully Updated') %]
+                </div>
+            </td></tr>
+            [% END %]
+
+            <tr>
+                <td>[% l('Notify by Email by default when a hold is ready for pickup?') %]</td>
+                <td>
+                    [% setting = 'opac.hold_notify' %]
+                    <input name='[% setting %].email' type="checkbox"
+                        [% IF (matches = ctx.user_setting_map.$setting.match('email')); %] checked='checked' [% END %]/>
+                </td>
+            </tr>
+            <tr>
+                <td>[% l('Notify by Phone by default when a hold is ready for pickup?') %]</td>
+                <td>
+                    [% setting = 'opac.hold_notify' %]
+                    <input name='[% setting %].phone' type="checkbox"
+                        [% IF (matches = ctx.user_setting_map.$setting.match('phone')); %] checked='checked' [% END %]/>
+                </td>
+            </tr>
+            <tr>
+                <td>[% l('Default Phone Number') %]</td>
+                <td>
+                    [% setting = 'opac.default_phone' %]
+                    <input name='[% setting %]' type="text"
+                        [% IF ctx.user_setting_map.$setting; %] value='[% ctx.user_setting_map.$setting | html %]' [% END %]/>
+                </td>
+            </tr>
+            [% IF ctx.get_org_setting(CGI.param('loc') OR ctx.aou_tree.id, 'sms.enable') == 1 %]
+            <tr>
+                <td>[% l('Notify by Text by default when a hold is ready for pickup?') %]</td>
+                <td>
+                    [% setting = 'opac.hold_notify' %]
+                    <input name='[% setting %].sms' type="checkbox"
+                        [% IF (matches = ctx.user_setting_map.$setting.match('sms')); %] checked='checked' [% END %]/>
+                </td>
+            </tr>
+            <tr>
+                <td>[% l('Default Mobile Carrier') %]</td>
+                <td>[% INCLUDE "opac/parts/sms_carrier_selector.tt2" sms_carrier_hide_label="true" %]</td>
+            </tr>
+            <tr>
+                <td>[% l('Default Mobile Number') %]</td>
+                <td>
+                    [% setting = 'opac.default_sms_notify' %]
+                    <input name='[% setting %]' type="text"
+                        [% IF ctx.user_setting_map.$setting; %] value='[% ctx.user_setting_map.$setting | html %]' [% END %]/>
+                    [% l('Hint: use the full 10 digits of your phone #, no spaces, no dashes'); %]
+                </td>
+            </tr>
+            [% END %]
+        </tbody>
+    </table>
+ 
     <table>
         <thead><tr>
             <th>[% l('Notifation Type') %]</th>

@@ -174,9 +174,46 @@ sub load_myopac_prefs_notify {
     $user_prefs = $self->update_optin_prefs($user_prefs)
         if $self->cgi->request_method eq 'POST';
 
-    $self->ctx->{opt_in_settings} = $user_prefs; 
+    $self->ctx->{opt_in_settings} = $user_prefs;
 
-    return Apache2::Const::OK;
+    my %settings;
+    my $set_map = $self->ctx->{user_setting_map};
+ 
+    foreach my $key (qw/
+        opac.default_phone
+        opac.default_sms_notify
+    /) {
+        my $val = $self->cgi->param($key);
+        $settings{$key}= $val unless $$set_map{$key} eq $val;
+    }
+
+    my $key = 'opac.default_sms_carrier';
+    my $val = $self->cgi->param('sms_carrier');
+    $settings{$key}= $val unless $$set_map{$key} eq $val;
+
+    $key = 'opac.hold_notify';
+    my @notify_methods = ();
+    if ($self->cgi->param($key . ".email") eq 'on') {
+        push @notify_methods, "email";
+    }
+    if ($self->cgi->param($key . ".phone") eq 'on') {
+        push @notify_methods, "phone";
+    }
+    if ($self->cgi->param($key . ".sms") eq 'on') {
+        push @notify_methods, "sms";
+    }
+    $val = join("|",@notify_methods);
+    $settings{$key}= $val unless $$set_map{$key} eq $val;
+
+    # Send the modified settings off to be saved
+    $U->simplereq(
+        'open-ils.actor', 
+        'open-ils.actor.patron.settings.update',
+        $self->editor->authtoken, undef, \%settings);
+
+    # re-fetch user prefs 
+    $self->ctx->{updated_user_settings} = \%settings;
+    return $self->_load_user_with_prefs || Apache2::Const::OK;
 }
 
 sub fetch_optin_prefs {
@@ -331,7 +368,7 @@ sub load_myopac_prefs_settings {
             $settings{$key} = undef if $$set_map{$key};
         }
     }
-    
+
     # Send the modified settings off to be saved
     $U->simplereq(
         'open-ils.actor', 
@@ -537,6 +574,14 @@ sub load_place_hold {
 
     $ctx->{hold_type} = $cgi->param('hold_type');
     $ctx->{default_pickup_lib} = $e->requestor->home_ou; # unless changed below
+    $ctx->{email_notify} = $cgi->param('email_notify');
+    if ($cgi->param('phone_notify_checkbox')) {
+        $ctx->{phone_notify} = $cgi->param('phone_notify');
+    }
+    if ($cgi->param('sms_notify_checkbox')) {
+        $ctx->{sms_notify} = $cgi->param('sms_notify');
+        $ctx->{sms_carrier} = $cgi->param('sms_carrier');
+    }
 
     return $self->generic_redirect unless @targets;
 
@@ -550,11 +595,56 @@ sub load_place_hold {
         ) or return Apache2::Const::HTTP_BAD_REQUEST;
 
         $ctx->{default_pickup_lib} = $ctx->{patron_recipient}->home_ou;
+    } else {
+        $ctx->{staff_recipient} = $self->editor->retrieve_actor_user([
+            $e->requestor->id,
+            {
+                flesh => 1,
+                flesh_fields => {
+                    au => ['settings']
+                }
+            }
+        ]) or return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+    }
+    my $user_setting_map = {
+        map { $_->name => OpenSRF::Utils::JSON->JSON2perl($_->value) }
+            @{
+                $ctx->{patron_recipient}
+                ? $ctx->{patron_recipient}->settings
+                : $ctx->{staff_recipient}->settings
+            }
+    };
+    $ctx->{user_setting_map} = $user_setting_map;
+
+    my $default_notify = $$user_setting_map{'opac.hold_notify'} || '';
+    if ($default_notify =~ /email/) {
+        $ctx->{default_email_notify} = 'checked';
+    } else {
+        $ctx->{default_email_notify} = '';
+    }
+    if ($default_notify =~ /phone/) {
+        $ctx->{default_phone_notify} = 'checked';
+    } else {
+        $ctx->{default_phone_notify} = '';
+    }
+    if ($default_notify =~ /sms/) {
+        $ctx->{default_sms_notify} = 'checked';
+    } else {
+        $ctx->{default_sms_notify} = '';
     }
 
     my $request_lib = $e->requestor->ws_ou;
     my @hold_data;
     $ctx->{hold_data} = \@hold_data;
+
+    sub data_filler {
+        my $hdata = shift;
+        if ($ctx->{email_notify}) { $hdata->{email_notify} = $ctx->{email_notify}; }
+        if ($ctx->{phone_notify}) { $hdata->{phone_notify} = $ctx->{phone_notify}; }
+        if ($ctx->{sms_notify}) { $hdata->{sms_notify} = $ctx->{sms_notify}; }
+        if ($ctx->{sms_carrier}) { $hdata->{sms_carrier} = $ctx->{sms_carrier}; }
+        return $hdata;
+    }
 
     my $type_dispatch = {
         T => sub {
@@ -589,12 +679,12 @@ sub load_place_hold {
                     $part_required = 1 if $np_copies->[0]->{count} == 0;
                 }
 
-                push(@hold_data, {
-                    target => $rec, 
+                push(@hold_data, data_filler({
+                    target => $rec,
                     record => $rec,
                     parts => $parts,
                     part_required => $part_required
-                });
+                }));
             }
         },
         V => sub {
@@ -607,7 +697,7 @@ sub load_place_hold {
 
             for my $id (@targets) { 
                 my ($vol) = grep {$_->id eq $id} @$vols;
-                push(@hold_data, {target => $vol, record => $vol->record});
+                push(@hold_data, data_filler({target => $vol, record => $vol->record}));
             }
         },
         C => sub {
@@ -623,7 +713,7 @@ sub load_place_hold {
 
             for my $id (@targets) { 
                 my ($copy) = grep {$_->id eq $id} @$copies;
-                push(@hold_data, {target => $copy, record => $copy->call_number->record});
+                push(@hold_data, data_filler({target => $copy, record => $copy->call_number->record}));
             }
         },
         I => sub {
@@ -638,7 +728,7 @@ sub load_place_hold {
 
             for my $id (@targets) { 
                 my ($iss) = grep {$_->id eq $id} @$isses;
-                push(@hold_data, {target => $iss, record => $iss->subscription->record_entry});
+                push(@hold_data, data_filler({target => $iss, record => $iss->subscription->record_entry}));
             }
         }
         # ...
@@ -758,10 +848,10 @@ sub attempt_hold_placement {
         my $breq = $bses->request( 
             $method, 
             $e->authtoken, 
-            {   patronid => $usr, 
+            data_filler({   patronid => $usr,
                 pickup_lib => $pickup_lib, 
                 hold_type => $hold_type
-            }, 
+            }),
             \@create_targets
         );
 

@@ -1,0 +1,49 @@
+[%  PROCESS "opac/parts/header.tt2";
+    WRAPPER "opac/parts/base.tt2";
+    INCLUDE "opac/parts/topnav.tt2";
+    ctx.page_title = l("Send Call Number via Text/SMS") %]
+    <div id="search-wrapper">
+        [% INCLUDE "opac/parts/searchbar.tt2" %]
+    </div>
+    <div id="content-wrapper">
+        <div id="main-content">
+            <div class="common-full-pad"></div>
+            <div>
+                <p>
+                    [% IF ctx.event != -1 %]
+                    <br/>
+                    [% IF ctx.sms_notify %]
+                    <h1>Your message has been sent!</h1>
+                    <a href="[% ctx.origin %]">Return to record</a>
+                    <pre>[% ctx.event.template_output.data %]</pre>
+                    [% ELSE %]
+                    <h1>Text call number</h1>
+                    <a href="[% ctx.origin %]">Return to record</a>
+                    <pre>[% ctx.event.template_output.data %]</pre>
+                    <blockquote>
+                        <form method="POST">
+                            <blockquote>
+                                <input type="hidden" name="copy_id" value="[% ctx.copy_id %]"/>
+                                <input type="hidden" name="origin" value="[% ctx.origin %]"/>
+                                [% INCLUDE "opac/parts/sms_carrier_selector.tt2" sms_carrier_hide_warning="true" %]<br/>
+                                [% INCLUDE "opac/parts/sms_number_textbox.tt2" %]<br/>
+                                <input type="submit"
+                                    name="submit"
+                                    value="[% l('Submit') %]"
+                                    title="[% l('Submit') %]"
+                                    alt="[% l('Submit') %]"
+                                    class="opac-button" />
+                                <br/>[% l('Note: carrier charges may apply'); %]
+                            </blockquote>
+                        </form>
+                    </blockquote>
+                    [% END %]
+                    [% ELSE %]
+                    <span>SMS not enabled for this site.</span>
+                    [% END %]
+                </p>
+            </div>
+            <div class="common-full-pad"></div>
+        </div>
+    </div>
+[% END %]

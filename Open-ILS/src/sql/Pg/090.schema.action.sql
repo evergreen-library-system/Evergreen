@@ -394,6 +394,8 @@ CREATE TABLE action.hold_request (
 	holdable_formats	TEXT,
 	phone_notify		TEXT,
 	email_notify		BOOL				NOT NULL DEFAULT TRUE,
+	sms_notify		TEXT,
+	sms_carrier		INT REFERENCES config.sms_carrier (id),
 	frozen			BOOL				NOT NULL DEFAULT FALSE,
 	thaw_date		TIMESTAMP WITH TIME ZONE,
 	shelf_time		TIMESTAMP WITH TIME ZONE,
@@ -402,6 +404,11 @@ CREATE TABLE action.hold_request (
 	shelf_expire_time TIMESTAMPTZ,
 	current_shelf_lib INT REFERENCES actor.org_unit DEFERRABLE INITIALLY DEFERRED
 );
+ALTER TABLE action.hold_request ADD CONSTRAINT sms_check CHECK (
+    sms_notify IS NULL
+    OR sms_carrier IS NOT NULL -- and implied sms_notify IS NOT NULL
+);
+
 
 CREATE INDEX hold_request_target_idx ON action.hold_request (target);
 CREATE INDEX hold_request_usr_idx ON action.hold_request (usr);

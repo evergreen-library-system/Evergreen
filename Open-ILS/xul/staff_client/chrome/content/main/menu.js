@@ -1000,6 +1000,10 @@ main.menu.prototype = {
                 ['oncommand'],
                 function(event) { open_eg_web_page('conify/global/acq/distribution_formula', null, event); }
             ],
+            'cmd_server_admin_sms_carrier' : [
+                ['oncommand'],
+                function(event) { open_eg_web_page('conify/global/config/sms_carrier', null, event); }
+            ],
             'cmd_server_admin_z39_source' : [
                 ['oncommand'],
                 function(event) { open_eg_web_page('conify/global/config/z3950_source', null, event); }

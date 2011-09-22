@@ -25,6 +25,12 @@
         <command id="cmd_holds_edit_desire_mint_condition" />
         <command id="cmd_holds_edit_pickup_lib" />
         <command id="cmd_holds_edit_phone_notify" />
+        <command id="cmd_holds_edit_sms_notify"
+            label="&staff.circ.holds.edit_sms_notification;"
+            accesskey="&staff.circ.holds.edit_sms_notification.accesskey;"/>
+        <command id="cmd_holds_edit_sms_carrier"
+            label="&staff.circ.holds.edit_sms_carrier_notification;"
+            accesskey="&staff.circ.holds.edit_sms_carrier_notification.accesskey;"/>
         <command id="cmd_holds_edit_email_notify" />
         <command id="cmd_holds_edit_thaw_date" />
         <command id="cmd_holds_edit_request_date" />
@@ -66,6 +72,8 @@
             <menuitem label="&staff.circ.holds.edit_desire_mint_condition;" command="cmd_holds_edit_desire_mint_condition" accesskey="&staff.circ.holds.edit_desire_mint_condition.accesskey;"/>
             <menuitem label="&staff.circ.holds.edit_pickup_library;" command="cmd_holds_edit_pickup_lib" accesskey="&staff.circ.holds.edit_pickup_library.accesskey;"/>
             <menuitem label="&staff.circ.holds.edit_phone_notification;" command="cmd_holds_edit_phone_notify" accesskey="&staff.circ.holds.edit_phone_notification.accesskey;"/>
+            <menuitem command="cmd_holds_edit_sms_carrier" />
+            <menuitem command="cmd_holds_edit_sms_notify" />
             <menuitem label="&staff.circ.holds.set_email_notification;" command="cmd_holds_edit_email_notify" accesskey="&staff.circ.holds.set_email_notification.accesskey;"/>
             <menuitem label="&staff.circ.holds.edit_expire_time;" command="cmd_holds_edit_expire_time" accesskey="&staff.circ.holds.edit_expire_time.accesskey;"/>
             <menuitem label="&staff.circ.holds.edit_shelf_expire_time;" command="cmd_holds_edit_shelf_expire_time" accesskey="&staff.circ.holds.edit_shelf_expire_time.accesskey;"/>
@@ -149,6 +157,8 @@
                     <menuitem label="&staff.circ.holds.edit_desire_mint_condition;" command="cmd_holds_edit_desire_mint_condition" accesskey="&staff.circ.holds.edit_desire_mint_condition.accesskey;"/>
                     <menuitem label="&staff.circ.holds.edit_pickup_library;" command="cmd_holds_edit_pickup_lib" accesskey="&staff.circ.holds.edit_pickup_library.accesskey;"/>
                     <menuitem label="&staff.circ.holds.edit_phone_notification;" command="cmd_holds_edit_phone_notify" accesskey="&staff.circ.holds.edit_phone_notification.accesskey;"/>
+                    <menuitem command="cmd_holds_edit_sms_carrier" />
+                    <menuitem command="cmd_holds_edit_sms_notify" />
                     <menuitem label="&staff.circ.holds.set_email_notification;" command="cmd_holds_edit_email_notify" accesskey="&staff.circ.holds.set_email_notification.accesskey;"/>
                     <menuitem label="&staff.circ.holds.edit_expire_time;" command="cmd_holds_edit_expire_time" accesskey="&staff.circ.holds.edit_expire_time.accesskey;"/>
                     <menuitem label="&staff.circ.holds.edit_shelf_expire_time;" command="cmd_holds_edit_shelf_expire_time" accesskey="&staff.circ.holds.edit_shelf_expire_time.accesskey;"/>

@@ -70,6 +70,35 @@
             [% PROCESS "opac/parts/org_selector.tt2";
                 PROCESS build_org_selector name='pickup_lib' value=ctx.default_pickup_lib id='pickup_lib' can_have_vols_only=1 %]
         </p>
+        <p>
+            [% l('Notify when hold is ready for pickup?') %]
+            <blockquote>
+                <input type="checkbox" name="email_notify" value="t"
+                    [% IF ctx.default_email_notify %]checked="checked"[% END %]/>
+                    [% l('Yes, by Email') %]<br/>
+                <input type="checkbox" name="phone_notify_checkbox"
+                    [% IF ctx.default_phone_notify %]checked="checked"[% END %]/>
+                    [% l('Yes, by Phone') %]<br/>
+                <blockquote>
+                    [% l('Phone Number:') %]<input type="text" name="phone_notify" [% setting = 'opac.default_phone';
+                    IF ctx.user_setting_map.$setting; %] value='[% ctx.user_setting_map.$setting | html %]' [% END %]/>
+                </blockquote>
+                [% IF ctx.get_org_setting(CGI.param('loc') OR ctx.aou_tree.id, 'sms.enable') == 1 %]
+                <input type="checkbox" name="sms_notify_checkbox"
+                    [% IF ctx.default_sms_notify %]checked="checked"[% END %]/>
+                    [% l('Yes, by Text Messaging') %]<br/>
+                <blockquote>
+                    [% INCLUDE "opac/parts/sms_carrier_selector.tt2" %]<br/>
+                    [% INCLUDE "opac/parts/sms_number_textbox.tt2" %]<br/>
+                </blockquote>
+                [% END %]
+            </blockquote>
+        </p>
+        <p>
+            [% |l %]If you use the Traveling Library Center (TLC) and ABC Express
+            services, please select "Outreach" to have the item delivered
+            during your scheduled visit.[% END %]
+        </p>
         <input type="submit" name="submit" value="[% l('Submit') %]" title="[% l('Submit') %]"
             alt="[% l('Submit') %]" class="opac-button" />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

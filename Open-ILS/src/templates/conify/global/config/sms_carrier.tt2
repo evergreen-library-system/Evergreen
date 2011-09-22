@@ -1,0 +1,27 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = 'SMS Carriers' %]
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/config/sms_carrier.js'> </script>
+
+<!-- grid -->
+
+ <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+            <div>SMS Carriers</div>
+            <div>
+                <button dojoType='dijit.form.Button' onClick='thingGrid.showCreateDialog()'>New Carrier</button>
+                <button dojoType='dijit.form.Button' onClick='thingGrid.deleteSelected()'>Delete Selected</button>
+            </div>
+        </div>
+        <table  jsId="thingGrid"
+                dojoType="openils.widget.AutoGrid"
+                fieldOrder="['id', 'region', 'name', 'email_gateway', 'active']"
+                query="{id: '*'}"
+                defaultCellWidth='20'
+                fmClass='csc'
+                editOnEnter='true'>
+        </table>
+    </div>
+</div>
+[% END %]
+
+

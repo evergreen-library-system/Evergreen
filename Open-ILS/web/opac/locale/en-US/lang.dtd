@@ -729,6 +729,7 @@
 <!ENTITY staff.main.menu.admin.server_admin.conify.acn_prefix.label "Call Number Prefixes">
 <!ENTITY staff.main.menu.admin.server_admin.conify.acn_suffix.label "Call Number Suffixes">
 <!ENTITY staff.main.menu.admin.server_admin.conify.billing_type.label "Billing Types">
+<!ENTITY staff.main.menu.admin.server_admin.conify.sms_carrier.label "SMS Carriers">
 <!ENTITY staff.main.menu.admin.server_admin.conify.z3950_source.label "Z39.50 Servers">
 <!ENTITY staff.main.menu.admin.server_admin.conify.circulation_modifier.label "Circulation Modifiers">
 <!ENTITY staff.main.menu.admin.server_admin.conify.org_unit_setting_type "Organization Unit Setting Types">
@@ -2510,8 +2511,12 @@
 <!ENTITY staff.circ.holds.retrieve_patron.accesskey "P">
 <!ENTITY staff.circ.holds.edit_pickup_library "Edit Pickup Library">
 <!ENTITY staff.circ.holds.edit_pickup_library.accesskey "L">
-<!ENTITY staff.circ.holds.edit_phone_notification "Edit Phone Notification">
+<!ENTITY staff.circ.holds.edit_phone_notification "Edit Phone Number">
 <!ENTITY staff.circ.holds.edit_phone_notification.accesskey "P">
+<!ENTITY staff.circ.holds.edit_sms_notification "Edit Mobile/Text Number">
+<!ENTITY staff.circ.holds.edit_sms_notification.accesskey "T">
+<!ENTITY staff.circ.holds.edit_sms_carrier_notification "Edit Mobile/Text Carrier">
+<!ENTITY staff.circ.holds.edit_sms_carrier_notification.accesskey "C">
 <!ENTITY staff.circ.holds.set_email_notification "Set Email Notification">
 <!ENTITY staff.circ.holds.set_email_notification.accesskey "E">
 <!ENTITY staff.circ.holds.edit_activation_date "Edit Activation Date">

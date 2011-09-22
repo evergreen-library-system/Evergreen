@@ -1241,6 +1241,75 @@ sub create_update_asset_copy_template {
     $e->commit and return $retval;
 }
 
+__PACKAGE__->register_method(
+    method      => "acn_sms_msg",
+    api_name    => "open-ils.cat.acn.send_sms_text",
+    signature   => q^
+        Send an SMS text from an A/T template for specified call numbers.
+
+        First parameter is null or an auth token (whether a null is allowed
+        depends on the sms.disable_authentication_requirement.callnumbers OU
+        setting).
+
+        Second parameter is the id of the context org.
+
+        Third parameter is the code of the SMS carrier from the
+        config.sms_carrier table.
+
+        Fourth parameter is the SMS number.
+
+        Fifth parameter is the ACN id's to target, though currently only the
+        first ACN is used by the template (and the UI is only sending one).
+    ^
+);
+
+sub acn_sms_msg {
+    my($self, $conn, $auth, $org_id, $carrier, $number, $target_ids) = @_;
+
+    my $sms_enable = $U->ou_ancestor_setting_value(
+        $org_id || $U->fetch_org_tree->id,
+        'sms.enable'
+    );
+    # We could maybe make a Validator for this on the templates
+    if (! $U->is_true($sms_enable)) {
+        return -1;
+    }
+
+    my $disable_auth = $U->ou_ancestor_setting_value(
+        $org_id || $U->fetch_org_tree->id,
+        'sms.disable_authentication_requirement.callnumbers'
+    );
+
+    my $e = new_editor(
+        (defined $auth)
+        ? (authtoken => $auth, xact => 1)
+        : (xact => 1)
+    );
+    return $e->event unless $disable_auth || $e->checkauth;
+
+    my $targets = $e->batch_retrieve_asset_call_number($target_ids);
+
+    $e->rollback; # FIXME using transaction because of pgpool/slony setups, but not
+                  # simply making this method authoritative because of weirdness
+                  # with transaction handling in A/T code that causes rollback
+                  # failure down the line if handling many targets
+
+    return undef unless @$targets;
+    return $U->fire_object_event(
+        undef,                    # event_def
+        'acn.format.sms_text',    # hook
+        $targets,
+        $org_id,
+        undef,                    # granularity
+        {                         # user_data
+            sms_carrier => $carrier,
+            sms_notify => $number
+        }
+    );
+}
+
+
+
 1;
 
 # vi:et:ts=4:sw=4

@@ -21,6 +21,7 @@ use OpenILS::WWW::EGCatLoader::Account;
 use OpenILS::WWW::EGCatLoader::Search;
 use OpenILS::WWW::EGCatLoader::Record;
 use OpenILS::WWW::EGCatLoader::Container;
+use OpenILS::WWW::EGCatLoader::SMS;
 
 my $U = 'OpenILS::Application::AppUtils';
 
@@ -127,6 +128,12 @@ sub load {
         );
     }
 
+    my $org_unit = $self->cgi->param('loc') || $self->ctx->{aou_tree}->()->id;
+    my $skip_sms_auth = $self->ctx->{get_org_setting}->($org_unit, 'sms.disable_authentication_requirement.callnumbers');
+    if ($skip_sms_auth) {
+        return $self->load_sms_cn if $path =~ m|opac/sms_cn|;
+    }
+
     # ----------------------------------------------------------------
     #  Everything below here requires authentication
     # ----------------------------------------------------------------
@@ -152,6 +159,7 @@ sub load {
     return $self->load_myopac_prefs_notify if $path =~ m|opac/myopac/prefs_notify|;
     return $self->load_myopac_prefs_settings if $path =~ m|opac/myopac/prefs_settings|;
     return $self->load_myopac_prefs if $path =~ m|opac/myopac/prefs|;
+    return $self->load_sms_cn if $path =~ m|opac/sms_cn|;
 
     return Apache2::Const::OK;
 }

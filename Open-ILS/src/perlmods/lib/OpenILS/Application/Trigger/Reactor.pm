@@ -125,6 +125,40 @@ $_TT_helpers = {
         }
     },
 
+    # given a call number, returns the copy location with the most copies
+    get_most_populous_location => sub {
+        my $acn_id = shift;
+
+        # FIXME - there's probably a more efficient way to do this with json_query/SQL
+        my $call_number = new_editor(xact=>1)->retrieve_asset_call_number([
+            $acn_id,
+            {
+                flesh => 1,
+                flesh_fields => {
+                    acn => ['copies']
+                }
+            }
+        ]);
+        my %location_count = (); my $winning_location; my $winning_total;
+        use Data::Dumper;
+        foreach my $copy (@{$call_number->copies()}) {
+            if (! defined $location_count{ $copy->location() }) {
+                $location_count{ $copy->location() } = 1;
+            } else {
+                $location_count{ $copy->location() } += 1;
+            }
+            if ($location_count{ $copy->location() } > $winning_total) {
+                $winning_total = $location_count{ $copy->location() };
+                $winning_location = $copy->location();
+            }
+        }
+
+        my $location = new_editor(xact=>1)->retrieve_asset_copy_location([
+            $winning_location, {}
+        ]);
+        return $location;
+    },
+
     # returns the org unit setting value
     get_org_setting => sub {
         my($org_id, $setting) = @_;
@@ -271,6 +305,32 @@ $_TT_helpers = {
     xml_doc => sub {
         my ($str) = @_;
         return $str ? (new XML::LibXML)->parse_string($str) : undef;
+    },
+
+    # returns an email addresses derived from sms_carrier and sms_notify
+    get_sms_gateway_email => sub {
+        my $sms_carrier = shift;
+        my $sms_notify = shift;
+
+        if (! defined $sms_notify || $sms_notify eq '') {
+            return '';
+        }
+
+        my $query = {
+            select => {'csc' => ['id','name','email_gateway']},
+            from => 'csc',
+            where => {id => $sms_carrier}
+        };
+        my $carriers = new_editor()->json_query($query);
+
+        my @addresses = ();
+        foreach my $carrier ( @{ $carriers } ) {
+            my $address = $carrier->{email_gateway};
+            $address =~ s/\$number/$sms_notify/g;
+            push @addresses, $address;
+        }
+
+        return join(',',@addresses);
     },
 
     unapi_bre => sub {

@@ -1,0 +1,28 @@
+[%
+    setting = 'opac.default_sms_carrier';
+    IF ctx.user_setting_map.$setting;
+        default_carrier = ctx.user_setting_map.$setting;
+    END;
+
+    temp = ctx.search_csc('active','t');
+
+    # turn the list of objects into a list of hashes to
+    # leverage TT's array.sort('<hashkey>') behavior
+    carriers = [];
+    FOR o IN temp;
+        carriers.push({
+            id => o.id,
+            region => o.region,
+            name => o.name
+        });
+    END;
+%]
+[% IF NOT sms_carrier_hide_label; l('Mobile carrier:'); END; %]
+<select name="sms_carrier">
+    [% FOR carrier IN carriers.sort('name','region') -%]
+    <option value='[% carrier.id | html %]'[%
+        default_carrier == carrier.id ? ' selected="selected"' : ''
+    %]>[% carrier.name | html %] ([% carrier.region | html %])</option>
+    [% END -%]
+</select>
+[% IF NOT sms_carrier_hide_warning; l('Note: carrier charges may apply'); END; %]

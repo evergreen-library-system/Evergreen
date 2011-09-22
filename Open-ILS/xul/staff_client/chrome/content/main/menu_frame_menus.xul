@@ -190,6 +190,7 @@
     <command id="cmd_server_admin_acq_currency_type" />
     <command id="cmd_server_admin_acq_exchange_rate" />
     <command id="cmd_server_admin_acq_distrib_formula" />
+    <command id="cmd_server_admin_sms_carrier" />
     <command id="cmd_server_admin_z39_source" />
     <command id="cmd_server_admin_circ_mod" 
              perm="CREATE_CIRC_MOD DELETE_CIRC_MOD UPDATE_CIRC_MOD ADMIN_CIRC_MOD"
@@ -518,6 +519,7 @@
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.coded_value_maps.label;" command="cmd_server_admin_coded_value_map"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.metabib_field.label;" command="cmd_server_admin_metabib_field"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.billing_type.label;" command="cmd_server_admin_billing_type"/>
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.sms_carrier.label;" command="cmd_server_admin_sms_carrier"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.z3950_source.label;" command="cmd_server_admin_z39_source"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.circulation_modifier.label;" command="cmd_server_admin_circ_mod"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.global_flag.label;" command="cmd_server_admin_global_flag"/>

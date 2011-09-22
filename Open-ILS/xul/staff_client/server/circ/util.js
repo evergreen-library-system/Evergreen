@@ -2146,6 +2146,24 @@ circ.util.hold_columns = function(modify,params) {
         },
         {
             'persist' : 'hidden width ordinal',
+            'id' : 'sms_notify',
+            'label' : document.getElementById('commonStrings').getString('staff.ahr_sms_notify_label'),
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false, 'render' : function(my) { return my.ahr.sms_notify(); }
+        },
+        {
+            'persist' : 'hidden width ordinal',
+            'id' : 'sms_carrier',
+            'label' : document.getElementById('commonStrings').getString('staff.ahr_sms_carrier_label'),
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false, 'render' : function(my) { return data.hash.csc[ my.ahr.sms_carrier() ].name(); }
+        },
+        {
+            'persist' : 'hidden width ordinal',
             'id' : 'prev_check_time',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_prev_check_time_label'),
             'flex' : 1,
@@ -2931,6 +2949,12 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                             msg += print_data.notify_by_phone_msg;
                             msg += '\n';
                         }
+                        if (check.payload.hold.sms_notify()) {
+                            print_data.notify_by_text_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.sms_notify', [check.payload.hold.sms_notify()]);
+                            print_data.notify_by_text = check.payload.hold.sms_notify();
+                            msg += print_data.notify_by_text_msg;
+                            msg += '\n';
+                        }
                         if (get_bool(check.payload.hold.email_notify())) {
                             var payload_email = au_obj.email() ? au_obj.email() : '';
                             print_data.notify_by_email_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.email_notify', [payload_email]);
@@ -3307,6 +3331,12 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                     print_data.notify_by_phone_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.phone_notify', [check.payload.hold.phone_notify()]);
                     print_data.notify_by_phone = check.payload.hold.phone_notify();
                     msg += print_data.notify_by_phone_msg;
+                    msg += '\n';
+                }
+                if (check.payload.hold.sms_notify()) {
+                    print_data.notify_by_text_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.sms_notify', [check.payload.hold.sms_notify()]);
+                    print_data.notify_by_text = check.payload.hold.sms_notify();
+                    msg += print_data.notify_by_text_msg;
                     msg += '\n';
                 }
                 if (get_bool(check.payload.hold.email_notify())) {

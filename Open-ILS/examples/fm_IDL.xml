@@ -725,6 +725,25 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </permacrud>
 	</class>
 
+	<class id="csc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::sms_carrier" oils_persist:tablename="config.sms_carrier" reporter:label="SMS Carrier" oils_persist:field_safe="true">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.sms_carrier_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Region" name="region" reporter:datatype="text" oils_persist:i18n="true"/>
+			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true"/>
+            <field reporter:label="Active" name="active" reporter:datatype="bool" oils_persist:i18n="true"/>
+			<field reporter:label="Email Gateway" name="email_gateway" reporter:datatype="text" oils_persist:i18n="true"/>
+		</fields>
+		<links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_SMS_CARRIER" global_required="true"/>
+                <retrieve/>
+                <update permission="ADMIN_SMS_CARRIER" global_required="true"/>
+                <delete permission="ADMIN_SMS_CARRIER" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
+
 	<class id="mra" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="metabib::record_attr" oils_persist:tablename="metabib.record_attr" reporter:label="SVF Record Attribute" oils_persist:field_safe="true">
 		<fields oils_persist:primary="id">
 			<field reporter:label="Record ID" name="id" reporter:datatype="id" oils_obj:required="true"/>
@@ -4510,6 +4529,8 @@ SELECT  usr,
 			<field reporter:label="Holdable Formats (for M-type hold)" name="holdable_formats" reporter:datatype="text"/>
 			<field reporter:label="Hold ID" name="id" reporter:datatype="id" />
 			<field reporter:label="Notifications Phone Number" name="phone_notify" reporter:datatype="text"/>
+			<field reporter:label="Notifications SMS Number" name="sms_notify" reporter:datatype="text"/>
+			<field reporter:label="Notifications SMS Carrier" name="sms_carrier" reporter:datatype="text"/>
 			<field reporter:label="Pickup Library" name="pickup_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Last Targeting Date/Time" name="prev_check_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Requesting Library" name="request_lib" reporter:datatype="org_unit"/>
@@ -4552,6 +4573,7 @@ SELECT  usr,
 			<link field="cancel_cause" reltype="might_have" key="id" map="" class="ahrcc"/>
 			<link field="notes" reltype="has_many" key="hold" map="" class="ahrn"/>
 			<link field="current_shelf_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="sms_carrier" reltype="might_have" key="code" map="" class="csc"/>
 		</links>
 	</class>
 	<class id="alhr" controller="open-ils.cstore" oils_obj:fieldmapper="action::last_hold_request" reporter:label="Last Captured Hold Request" oils_persist:readonly="true">

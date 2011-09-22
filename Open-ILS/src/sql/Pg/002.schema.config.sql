@@ -955,4 +955,12 @@ CREATE TRIGGER limit_logs_oust
     BEFORE INSERT OR UPDATE ON config.org_unit_setting_type_log
     FOR EACH ROW EXECUTE PROCEDURE limit_oustl();
 
+CREATE TABLE config.sms_carrier (
+    id              SERIAL PRIMARY KEY,
+    region          TEXT,
+    name            TEXT,
+    email_gateway   TEXT,
+    active          BOOLEAN DEFAULT TRUE
+);
+
 COMMIT;

@@ -598,6 +598,133 @@ patron.holds.prototype = {
                             }
                         }
                     ],
+
+                    'cmd_holds_edit_sms_notify' : [
+                        ['command'],
+                        function() {
+                            try {
+                                var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
+                                xml += '<description>'+$("patronStrings").getString('staff.patron.holds.holds_edit_sms_notify.new_phone_number')+'</description>';
+                                xml += '<textbox id="phone" name="fancy_data" context="clipboard"/>';
+                                xml += '</vbox>';
+                                var bot_xml = '<hbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
+                                bot_xml += '<spacer flex="1"/><button label="'+$("patronStrings").getString('staff.patron.holds.holds_edit_sms_notify.btn_done.label')+'"';
+                                bot_xml += ' accesskey="'+$("patronStrings").getString('staff.patron.holds.holds_edit_sms_notify.btn_done.accesskey')+'" name="fancy_submit"/>';
+                                bot_xml += '<button label="'+$("patronStrings").getString('staff.patron.holds.holds_edit_sms_notify.btn_cancel.label')+'"';
+                                bot_xml += ' accesskey="'+$("patronStrings").getString('staff.patron.holds.holds_edit_sms_notify.btn_cancel.accesskey')+'" name="fancy_cancel"/></hbox>';
+                                netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+                                //obj.data.temp_mid = xml; obj.data.stash('temp_mid');
+                                //obj.data.temp_bot = bot_xml; obj.data.stash('temp_bot');
+                                JSAN.use('util.window'); var win = new util.window();
+                                var fancy_prompt_data = win.open(
+                                    urls.XUL_FANCY_PROMPT,
+                                    //+ '?xml_in_stash=temp_mid'
+                                    //+ '&bottom_xml_in_stash=temp_bot'
+                                    //+ '&title=' + window.escape('Choose a Hold Notification Phone Number')
+                                    //+ '&focus=phone',
+                                    'fancy_prompt', 'chrome,resizable,modal',
+                                    { 'xml' : xml, 'bottom_xml' : bot_xml, 'title' : $("patronStrings").getString('staff.patron.holds.holds_edit_sms_notify.choose_phone_number'), 'focus' : 'phone' }
+                                );
+                                if (fancy_prompt_data.fancy_status == 'incomplete') { return; }
+                                var phone = fancy_prompt_data.phone;
+
+                                var hold_list = util.functional.map_list(obj.retrieve_ids, function(o){return o.id;});
+                                var msg = '';
+                                if(obj.retrieve_ids.length > 1) {
+                                    msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_edit_sms_notify.confirm_phone_number_change.plural',[hold_list.join(', '), phone]);
+                                } else {
+                                    msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_edit_sms_notify.confirm_phone_number_change.singular',[hold_list.join(', '), phone]);
+                                }
+                                var r = obj.error.yns_alert(msg,
+                                        $("patronStrings").getString('staff.patron.holds.holds_edit_sms_notify.modifying_holds_title'),
+                                        $("commonStrings").getString('common.yes'),
+                                        $("commonStrings").getString('common.no'),
+                                        null,
+                                        $("commonStrings").getString('common.check_to_confirm')
+                                );
+                                if (r == 0) {
+                                    var hparams = {
+                                        'sms_notify' : phone == '' ? null : phone 
+                                    }
+                                    if (phone == '') {
+                                        hparams.sms_carrier = null;
+                                    }
+                                    circ.util.batch_hold_update(hold_list, hparams, { 'progressmeter' : progressmeter, 'oncomplete' :  function() { obj.clear_and_retrieve(true); } });
+                                }
+                            } catch(E) {
+                                obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.holds.holds_not_modified'),E);
+                            }
+                        }
+                    ],
+
+                    'cmd_holds_edit_sms_carrier' : [
+                        ['command'],
+                        function() {
+                            try {
+                                JSAN.use('util.widgets'); JSAN.use('util.functional');
+
+                                var list = util.functional.map_list(
+                                    obj.data.list.csc,
+                                    function(o) {
+                                        return [
+                                            o.name() + ' (' + o.region() + ')',
+                                            o.id(),
+                                            ( !isTrue(o.active()) ),
+                                            0
+                                        ];
+                                    }
+                                );
+                                ml = util.widgets.make_menulist( list, obj.data.list.au[0].ws_ou() );
+                                ml.setAttribute('id','carrier');
+                                ml.setAttribute('name','fancy_data');
+                                var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
+                                xml += '<description>'+$("patronStrings").getString('staff.patron.holds.holds_edit_sms_carrier.new_carrier')+'</description>';
+                                xml += util.widgets.serialize_node(ml);
+                                xml += '</vbox>';
+                                var bot_xml = '<hbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
+                                bot_xml += '<spacer flex="1"/><button label="'+ $("patronStrings").getString('staff.patron.holds.holds_edit_sms_carrier.btn_done.label') +'"';
+                                bot_xml += ' accesskey="'+$("patronStrings").getString('staff.patron.holds.holds_edit_sms_carrier.btn_done.accesskey')+'" name="fancy_submit"/>';
+                                bot_xml += '<button label="'+$("patronStrings").getString('staff.patron.holds.holds_edit_sms_carrier.btn_cancel.label')+'"';
+                                bot_xml += ' accesskey="'+$("patronStrings").getString('staff.patron.holds.holds_edit_sms_carrier.btn_cancel.accesskey')+'" name="fancy_cancel"/></hbox>';
+                                netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+                                //obj.data.temp_mid = xml; obj.data.stash('temp_mid');
+                                //obj.data.temp_bot = bot_xml; obj.data.stash('temp_bot');
+                                JSAN.use('util.window'); var win = new util.window();
+                                var fancy_prompt_data = win.open(
+                                    urls.XUL_FANCY_PROMPT,
+                                    //+ '?xml_in_stash=temp_mid'
+                                    //+ '&bottom_xml_in_stash=temp_bot'
+                                    //+ '&title=' + window.escape('Choose a Pick Up Library'),
+                                    'fancy_prompt', 'chrome,resizable,modal',
+                                    { 'xml' : xml, 'bottom_xml' : bot_xml, 'title' : $("patronStrings").getString('staff.patron.holds.holds_edit_sms_carrier.choose_carrier') }
+                                );
+                                if (fancy_prompt_data.fancy_status == 'incomplete') { return; }
+                                var sms_carrier = fancy_prompt_data.carrier;
+
+                                var hold_list = util.functional.map_list(obj.retrieve_ids, function(o){return o.id;});
+                                var msg = '';
+
+                                if(obj.retrieve_ids.length > 1) {
+                                    msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_edit_sms_carrier.confirm_carrier_change.plural',[hold_list.join(', '), obj.data.hash.csc[sms_carrier].name()]);
+                                } else {
+                                    msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_edit_sms_carrier.confirm_carrier_change.singular',[hold_list.join(', '), obj.data.hash.csc[sms_carrier].name()]);
+                                }
+                                var r = obj.error.yns_alert(msg,
+                                        $("patronStrings").getString('staff.patron.holds.holds_edit_sms_carrier.modifying_holds_title'),
+                                        $("commonStrings").getString('common.yes'),
+                                        $("commonStrings").getString('common.no'),
+                                        null,
+                                        $("commonStrings").getString('common.check_to_confirm')
+                                );
+                                if (r == 0) {
+                                    circ.util.batch_hold_update(hold_list, { 'sms_carrier' : sms_carrier }, { 'progressmeter' : progressmeter, 'oncomplete' :  function() { obj.clear_and_retrieve(true); } });
+                                }
+                            } catch(E) {
+                                obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.holds.holds_not_modified'),E);
+                            }
+                        }
+                    ],
+
                     'cmd_holds_edit_email_notify' : [
                         ['command'],
                         function() {
