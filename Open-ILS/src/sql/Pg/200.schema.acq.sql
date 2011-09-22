@@ -2459,33 +2459,33 @@ CREATE OR REPLACE VIEW acq.fund_allocation_total AS
     GROUP BY 1;
 
 CREATE OR REPLACE VIEW acq.fund_debit_total AS
-    SELECT fund.id AS fund,
-           SUM(COALESCE(fund_debit.amount, 0::numeric)) AS amount
+    SELECT  fund.id AS fund, 
+            sum(COALESCE(fund_debit.amount, 0::numeric)) AS amount
     FROM acq.fund fund
-          LEFT JOIN acq.fund_debit fund_debit ON fund.id = fund_debit.fund
+        LEFT JOIN acq.fund_debit fund_debit ON fund.id = fund_debit.fund
     GROUP BY fund.id;
 
 CREATE OR REPLACE VIEW acq.fund_encumbrance_total AS
-    SELECT fund.id AS fund,
-           SUM(COALESCE(fund_debit.amount, 0::numeric)) AS amount
+    SELECT 
+        fund.id AS fund, 
+        sum(COALESCE(fund_debit.amount, 0::numeric)) AS amount 
     FROM acq.fund fund
-          LEFT JOIN acq.fund_debit fund_debit ON fund.id = fund_debit.fund
-    WHERE fund_debit.encumbrance
-    GROUP BY fund.id;
+        LEFT JOIN acq.fund_debit fund_debit ON fund.id = fund_debit.fund 
+    WHERE fund_debit.encumbrance GROUP BY fund.id;
 
 CREATE OR REPLACE VIEW acq.fund_spent_total AS
-    SELECT fund.id AS fund,
-           SUM(COALESCE(fund_debit.amount, 0::numeric)) AS amount
+    SELECT  fund.id AS fund, 
+            sum(COALESCE(fund_debit.amount, 0::numeric)) AS amount 
     FROM acq.fund fund
-          LEFT JOIN acq.fund_debit fund_debit ON fund.id = fund_debit.fund
-    WHERE NOT fund_debit.encumbrance
+        LEFT JOIN acq.fund_debit fund_debit ON fund.id = fund_debit.fund 
+    WHERE NOT fund_debit.encumbrance 
     GROUP BY fund.id;
 
 CREATE OR REPLACE VIEW acq.fund_combined_balance AS
-    SELECT  c.fund,
-            c.amount - COALESCE(d.amount,0.0) AS amount
-      FROM  acq.fund_allocation_total c
-            LEFT JOIN acq.fund_debit_total d USING (fund);
+    SELECT  c.fund, 
+            c.amount - COALESCE(d.amount, 0.0) AS amount
+    FROM acq.fund_allocation_total c
+    LEFT JOIN acq.fund_debit_total d USING (fund);
 
 CREATE OR REPLACE VIEW acq.fund_spent_balance AS
     SELECT  c.fund,
