@@ -126,6 +126,9 @@ sub do_fee_payment {
             foreach my $bill (@{$results}) {
                 my $payment;
                 syslog('LOG_INFO', 'OILS: bill '. $bill->id . ' amount ' . $bill->balance_owed);
+                # Skip negative or zero-balance bills. (Not that I've
+                # ever seen any.)
+                next if ($bill->balance_owed <= 0);
                 if ($bill->balance_owed >= $amount_paid) {
                     # We owe as much as or more than we have money
                     # left, so pay what we have left.
@@ -139,10 +142,13 @@ sub do_fee_payment {
                 }
                 # Add the payment to our array.
                 push(@payments, [$bill->id, $payment]);
+                # Attempt to round $amount_paid to avoid floating point error.
+                $amount_paid = sprintf("%.2f", $amount_paid);
+                syslog('LOG_INFO', "OILS: paid $payment on " . $bill->id . " with balance " . $bill->balance_owed . " and $amount_paid remaining");
                 # Leave if we ran out of money.
-                last if ($amount_paid == 0);
+                last if ($amount_paid == 0.00);
             }
-            if (@payments && $amount_paid == 0) {
+            if (@payments && $amount_paid == 0.00) {
                 # pay the bills with a reference to our payments
                 # array.
                 my $resp = $self->pay_bills(\@payments);
