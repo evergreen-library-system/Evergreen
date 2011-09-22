@@ -24,7 +24,7 @@ a:hover {
 	padding:0;
 }
 
-#search-wrapper select {
+#search-wrapper select, .results_header_lbl select {
 	border:1px solid #e9ebf3;
 	margin:0;
 	padding:0;
