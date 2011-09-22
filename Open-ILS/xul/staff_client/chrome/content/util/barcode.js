@@ -11,6 +11,9 @@ util.barcode.EXPORT_TAGS    = { ':all' : util.barcode.EXPORT_OK };
 util.barcode.check = function(bc) {
     if (bc != Number(bc)) return false;
     bc = bc.toString();
+    // "16.00" == Number("16.00"), but the . is bad.
+    // Throw out any barcode that isn't just digits
+    if (bc.search(/\D/) != -1) return false;
     var last_digit = bc.substr(bc.length-1);
     var stripped_barcode = bc.substr(0,bc.length-1);
     return util.barcode.checkdigit(stripped_barcode).toString() == last_digit;
