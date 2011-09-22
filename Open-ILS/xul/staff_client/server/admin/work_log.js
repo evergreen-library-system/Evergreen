@@ -64,7 +64,6 @@ function init_lists() {
 
         list2.init( {
             'columns' : columns,
-            'map_row_to_columns' : column_mapper_func,
             'on_select' : function(ev) {
                 JSAN.use('util.functional'); var sel = list2.retrieve_selection();
                 selected2 = util.functional.map_list( sel, function(o) { return JSON2js(o.getAttribute('retrieve_id')); });
