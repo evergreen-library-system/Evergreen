@@ -443,6 +443,7 @@ sub build_html {
 	print $index <<"	HEADER";
 <html>
 	<head>
+		<meta charset='utf-8'>
 		<title>$$r{report}{name}</title>
 		<style>
 			table { border-collapse: collapse; }
@@ -474,7 +475,7 @@ sub build_html {
 	push @links, "<a class='dim' href='report-data.html.debug.html'>Debugging Info</a>";
 
 	my $debug = new FileHandle (">$file.debug.html") or die "Cannot write to '$file.debug.html'";
-	print $debug "<html><head><title>DEBUG: $$r{report}{name}</title></head><body>";
+	print $debug "<html><head><meta charset='utf-8'><title>DEBUG: $$r{report}{name}</title></head><body>";
 
 	{	no warnings;
 		print $debug '<h1>Generated SQL</h1><pre>' . $r->{resultset}->toSQL() . "</pre><a href='$file'>Back to output index</a><hr/>";
@@ -496,7 +497,7 @@ sub build_html {
 	if ($r->{html_format}) {
 		# create the raw output html file
 		my $raw = new FileHandle (">$file.raw.html") or die "Cannot write to '$file.raw.html'";
-		print $raw "<html><head><title>$$r{report}{name}</title>";
+		print $raw "<html><head><meta charset='utf-8'><title>$$r{report}{name}</title>";
 
 		print $raw <<'		CSS';
 			<style>
