@@ -110,14 +110,29 @@ function my_init() {
         var ou_ids = xul_param('ou_ids',{'concat' : true}) || [];
 
         // Get the default callnumber classification scheme from OU settings
-        dojo.require('fieldmapper.OrgUtils');
-        //fieldmapper.aou.fetchOrgSettingDefault(ses('ws_ou'), 'cat.default_classification_scheme');
-        g.label_class = g.data.hash.aous['cat.default_classification_scheme'];
+        // or a reasonable fall-back
+        function get_default_label_class() {
+            g.label_class = g.data.hash.aous['cat.default_classification_scheme'];
 
-        // Assign a default value if none was returned
-        if (!g.label_class) {
-            g.label_class = g.data.list.acnc[0].id();
+            // Assign a default value if none was returned
+            // Begin by looking for the "Generic" label class by name
+            if (!g.label_class) {
+                for (var i = 0; i < g.data.list.acnc.length; i++) {
+                    if (g.data.list.acnc[i].name() == 'Generic') {
+                        g.label_class = g.data.list.acnc[i].id();
+                        break;
+                    }
+                }
+            }
+            // Maybe this database has renamed or removed their Generic
+            // entry; in that case, just return the first one that we
+            // know exists
+            if (!g.label_class) {
+                g.label_class = g.data.list.acnc[0].id();
+            }
         }
+
+        get_default_label_class();
 
         /***********************************************************************************************************/
         /* If we're passed existing_copies, rig up a copy_shortcut object to leverage existing code for rendering the volume labels, etc.
