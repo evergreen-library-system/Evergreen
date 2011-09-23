@@ -270,6 +270,25 @@ OpenILS.data.prototype = {
                         for (var i in x) {
                             obj.print_list_templates[i] = x[i];
                         }
+                        // handle macro changes
+                        var templates = [ 'bills_current', 'bills_historical' ];
+                        for (var i = 0; i < templates.length; i++) {
+                            if (obj.print_list_templates[templates[i]]) {
+                                // mbts_id
+                                obj.print_list_templates[templates[i]].line_item =
+                                    obj.print_list_templates[templates[i]].line_item.replace(
+                                        /%id%/g, '%mbts_id%');
+                                // mbts_xact_start
+                                obj.print_list_templates[templates[i]].line_item =
+                                    obj.print_list_templates[templates[i]].line_item.replace(
+                                        /%xact_start%/g, '%mbts_xact_start%');
+                                // mbts_xact_finish
+                                obj.print_list_templates[templates[i]].line_item =
+                                    obj.print_list_templates[templates[i]].line_item.replace(
+                                        /%xact_finish%/g, '%mbts_xact_finish%');
+                            }
+                        }
+                        //
                         obj.stash('print_list_templates');
                         obj.data_progress('Saved print templates retrieved from file. ');
                     }
