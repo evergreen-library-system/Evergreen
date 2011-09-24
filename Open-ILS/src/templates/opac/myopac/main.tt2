@@ -3,6 +3,10 @@
     WRAPPER "opac/parts/myopac/main_base.tt2";
     myopac_page = "main";
     myopac_main_page = "main";
+    myopac_cc_allowed = 0;
+    IF (ctx.fines.grocery.size OR ctx.fines.circulation.size) AND ctx.get_org_setting(ctx.user.home_ou, 'credit.payments.allow') == 1;
+        myopac_cc_allowed = 1;
+    END
 %]
 <form action="[% ctx.opac_root %]/myopac/main_payment_form" method="GET">
     [% IF ctx.fines.circulation.size > 0 %]
@@ -21,12 +25,14 @@
                     <td>[% l("Due Date") %]</td>
                     <td>[% l("Date Returned") %]</td>
                     <td>[% l("Balance Owed") %]</td>
+                    [% IF myopac_cc_allowed %]
                     <td nowrap="nowrap" style="white-space:nowrap;">
                         <input id="pay_fines_box1" checked="checked"
                             type="checkbox" onclick="select_all_checkboxes('xact', this.checked)"
                             title="[% l('Click to (un)select all fines') %]" />
                         <label for="pay_fines_box1">[% l('Pay Fines') %]</label>
                     </td>
+                    [% END %]
                 </tr>
             </thead>
             <tbody id='myopac_circ_trans_tbody'>
@@ -77,11 +83,13 @@
                             [% money(f.xact.balance_owed) %]
                         </strong>
                     </td>
+                    [% IF myopac_cc_allowed %]
                     <td>
                         <input type="checkbox" checked="checked" 
                             title="[% l('Pay this fine') %]" name="xact"
                             value="[% f.xact.id %]" />
                     </td>
+                    [% END %]
                 </tr>
                 [% END %]
             </tbody>
@@ -110,6 +118,7 @@
                     <td width='16%'>[% l("Total Amount Paid") %]</td>
                     <td width='16%'>[% l("Balance Owed") %]</td>
                     <td width='16%'>[% l("Billing Type") %]</td>
+                    [% IF myopac_cc_allowed %]
                     <td width='4%' align="center" nowrap="nowrap"
                         style="white-space:nowrap;">
                         <input id="pay_fines_box2" checked="checked"
@@ -117,6 +126,7 @@
                             title="[% l('Click to (un)select all fines') %]" />
                         <label for="pay_fines_box2">[% l("Pay Fines") %]</label>
                     </td>
+                    [% END %]
                 </tr>
             </thead>
             <tbody id='myopac_trans_tbody'>
@@ -143,11 +153,13 @@
                         </strong>
                     </td>
                     <td>[% f.xact.last_billing_type %]</td>
+                    [% IF myopac_cc_allowed %]
                     <td>
                         <input type="checkbox" title='[% l("Pay this fine") %]'
                             name="xact_misc" value="[% f.xact.id %]"
                             checked="checked" />
                     </td>
+                    [% END %]
                 </tr>
                 [% END %]
             </tbody>
@@ -156,7 +168,7 @@
     [% END %]
     [% UNLESS ctx.fines.grocery.size OR ctx.fines.circulation.size %]
     <div>[% l('You have no current fines.') %]</div>
-    [% ELSE %]
+    [% ELSIF myopac_cc_allowed %]
     <div class="text-right pad-top-ten">
         <input type="submit"
             value="[% l('Pay selected fines') %]"

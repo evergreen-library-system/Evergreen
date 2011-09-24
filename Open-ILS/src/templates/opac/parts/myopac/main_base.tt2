@@ -40,10 +40,11 @@
         <span class='[% ctx.user_stats.fines.balance_owed ? "red" : ""%]'>
             [% money(ctx.user_stats.fines.balance_owed) %]
         </span><br />
-
+        [% IF (ctx.fines.grocery.size OR ctx.fines.circulation.size) AND ctx.get_org_setting(ctx.user.home_ou, 'credit.payments.allow') == 1 %]
         <form action="[% ctx.opac_root %]/myopac/main_payment_form" method="GET"><input
             type="submit" title="[% l('Pay Fines') %]" alt="[% l('Pay Fines') %]"
             value="[% l('Pay Fines') %]" class="pos-rel-top-5 opac-button" /></form>
+        [% END %]
     </div>
     [% END %]
 
