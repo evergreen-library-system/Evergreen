@@ -1052,6 +1052,7 @@ function myopacSaveAddress(row, addr, deleteMe) {
 
 function myOPACUpdateUsername() {
 	var username = $('myopac_new_username').value;
+	var curpassword = $('myopac_username_current_password').value;
 	if(username == null || username == "") {
 		alert($('myopac_username_error').innerHTML);
 		return;
@@ -1086,7 +1087,7 @@ function myOPACUpdateUsername() {
 		return;
 	}
 
-	var req = new Request(UPDATE_USERNAME, G.user.session, username );
+	var req = new Request(UPDATE_USERNAME, G.user.session, username, curpassword );
 	req.send(true);
 	if(req.result()) {
 
@@ -1110,12 +1111,13 @@ function myOPACUpdateUsername() {
 
 function myOPACUpdateEmail() {
 	var email = $('myopac_new_email').value;
+	var curpassword = $('myopac_email_current_password').value;
 	if(email == null || email == "") {
 		alert($('myopac_email_error').innerHTML);
 		return;
 	}
 
-	var req = new Request(UPDATE_EMAIL, G.user.session, email );
+	var req = new Request(UPDATE_EMAIL, G.user.session, email, curpassword );
 	req.send(true);
 	if(req.result()) {
 		G.user.email(email);
