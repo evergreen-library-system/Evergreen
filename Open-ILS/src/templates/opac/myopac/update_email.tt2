@@ -9,6 +9,12 @@
         [% bad_email = ctx.invalid_email | html %]
         [% l('The email address "<b>[_1]</b>" is invalid.  Please try a different email address.', bad_email) %]
     </div>
+
+[% ELSIF ctx.password_incorrect %]
+    <div id='account-update-email-error'>
+        [% |l %] Your current password was not correct. [% END %]
+    </div>
+
 [% END %]
 
 <form method='POST' id='account-update-email'>
@@ -17,6 +23,7 @@
     [% END %]
     <table> 
         <tr><td>[% l('Current Email') %]</td><td>[% ctx.user.email | html %]</td></tr>
+        <tr><td>[% l('Current Password') %]</td><td><input type='password' name='current_pw'/></td></tr>
         <tr><td>[% l('New Email') %]</td><td><input type='text' name='email' value='[% ctx.invalid_email | html %]'/></td></tr>
         <tr><td colspan='2' align='center'><input value="[% l('Submit') %]" type='submit'/></td></tr>
     </table>

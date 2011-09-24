@@ -1138,6 +1138,7 @@ sub load_myopac_update_email {
     my $e = $self->editor;
     my $ctx = $self->ctx;
     my $email = $self->cgi->param('email') || '';
+    my $current_pw = $self->cgi->param('current_pw') || '';
 
     # needed for most up-to-date email address
     if (my $r = $self->prepare_extended_user_info) { return $r };
@@ -1153,7 +1154,12 @@ sub load_myopac_update_email {
     my $stat = $U->simplereq(
         'open-ils.actor', 
         'open-ils.actor.user.email.update', 
-        $e->authtoken, $email);
+        $e->authtoken, $email, $current_pw);
+
+    if($U->event_equals($stat, 'INCORRECT_PASSWORD')) {
+        $ctx->{password_incorrect} = 1;
+        return Apache2::Const::OK;
+    }
 
     unless ($self->cgi->param("redirect_to")) {
         my $url = $self->apache->unparsed_uri;
@@ -1170,6 +1176,7 @@ sub load_myopac_update_username {
     my $e = $self->editor;
     my $ctx = $self->ctx;
     my $username = $self->cgi->param('username') || '';
+    my $current_pw = $self->cgi->param('current_pw') || '';
 
     return Apache2::Const::OK 
         unless $self->cgi->request_method eq 'POST';
@@ -1184,7 +1191,12 @@ sub load_myopac_update_username {
         my $evt = $U->simplereq(
             'open-ils.actor', 
             'open-ils.actor.user.username.update', 
-            $e->authtoken, $username);
+            $e->authtoken, $username, $current_pw);
+
+        if($U->event_equals($evt, 'INCORRECT_PASSWORD')) {
+            $ctx->{password_incorrect} = 1;
+            return Apache2::Const::OK;
+        }
 
         if($U->event_equals($evt, 'USERNAME_EXISTS')) {
             $ctx->{username_exists} = $username;
