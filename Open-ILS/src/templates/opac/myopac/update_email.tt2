@@ -6,7 +6,8 @@
 
 [% IF ctx.invalid_email %]
     <div id='account-update-email-error'>
-        [% l('The email address "<b>[_1]</b>" is invalid.  Please try a different email address.', ctx.invalid_email) | html %]
+        [% bad_email = ctx.invalid_email | html %]
+        [% l('The email address "<b>[_1]</b>" is invalid.  Please try a different email address.', bad_email) %]
     </div>
 [% END %]
 
