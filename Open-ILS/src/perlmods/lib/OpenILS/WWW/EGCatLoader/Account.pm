@@ -1217,6 +1217,11 @@ sub load_myopac_update_password {
 
     my $pw_regex = $ctx->{get_org_setting}->($e->requestor->home_ou, 'global.password_regex');
 
+    if(!$pw_regex) {
+        # This regex duplicates the JSPac's default "digit, letter, and 7 characters" rule
+        $pw_regex = '(?=.*\d+.*)(?=.*[A-Za-z]+.*).{7,}';
+    }
+
     if($pw_regex and $new_pw !~ /$pw_regex/) {
         $ctx->{password_invalid} = 1;
         return Apache2::Const::OK;
