@@ -1254,9 +1254,10 @@ __PACKAGE__->register_method(
         desc   => "Update the operator's username", 
         params => [
             { desc => 'Authentication token', type => 'string' },
-            { desc => 'New username',         type => 'string' }
+            { desc => 'New username',         type => 'string' },
+            { desc => 'Current password',     type => 'string' }
         ],
-        return => {desc => '1 on success, Event on error'}
+        return => {desc => '1 on success, Event on error or incorrect current password'}
     }
 );
 
@@ -1267,9 +1268,10 @@ __PACKAGE__->register_method(
         desc   => "Update the operator's email address", 
         params => [
             { desc => 'Authentication token', type => 'string' },
-            { desc => 'New email address',    type => 'string' }
+            { desc => 'New email address',    type => 'string' },
+            { desc => 'Current password',     type => 'string' }
         ],
-        return => {desc => '1 on success, Event on error'}
+        return => {desc => '1 on success, Event on error or incorrect current password'}
     }
 );
 
@@ -1282,12 +1284,14 @@ sub update_passwd {
         or return $e->die_event;
     my $api = $self->api_name;
 
+    # make sure the original password matches the in-database password
+    if (md5_hex($orig_pw) ne $db_user->passwd) {
+        $e->rollback;
+        return new OpenILS::Event('INCORRECT_PASSWORD');
+    }
+
     if( $api =~ /password/o ) {
-        # make sure the original password matches the in-database password
-        if (md5_hex($orig_pw) ne $db_user->passwd) {
-            $e->rollback;
-            return new OpenILS::Event('INCORRECT_PASSWORD');
-        }
+
         $db_user->passwd($new_val);
 
     } else {
