@@ -242,7 +242,10 @@ sub process_spool { # filename
 
 sub bib_queue_import {
     my $rec_ids = shift;
-    my $extra = {auto_overlay_exact => 1};
+    my $extra = {
+        auto_overlay_exact => 1,
+        import_no_match    => 1,
+    };
     $extra->{merge_profile} = $merge_profile if $merge_profile;
 
     my $req;
