@@ -1076,6 +1076,14 @@ function myOPACUpdateUsername() {
         return;
     }
 
+    r = fetchOrgSettingDefault(G.user.home_ou(), 'opac.username_regex');
+    if(r) {
+        if(!username.match(new RegExp(r))) {
+            alert($('myopac_invalid_username').innerHTML);
+            return;
+        }
+    }
+
 	/* first see if the requested username is taken */
 	var req = new Request(CHECK_USERNAME, G.user.session, username);
 	req.send(true);

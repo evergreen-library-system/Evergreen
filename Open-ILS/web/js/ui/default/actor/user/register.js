@@ -166,7 +166,9 @@ function load() {
         'ui.patron.edit.aua.post_code.example',
         'ui.patron.edit.aua.county.require',
         'format.date',
-        'ui.patron.edit.default_suggested'
+        'ui.patron.edit.default_suggested',
+        'opac.barcode_regex',
+        'opac.username_regex'
     ]);
 
     for(k in orgSettings)
@@ -987,6 +989,31 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
         switch(fmfield) {
 
             case 'usrname':
+                widget.widget.isValid = function() {
+                    // No spaces
+                    if(this.attr("value").match(/\s/)) {
+                        return false;
+                    }
+                    // Can look like a barcode (for initial value)
+                    if(orgSettings['opac.barcode_regex']) {
+                        var test_regexp = new RegExp(orgSettings['opac.barcode_regex']);
+                        if(test_regexp.test(this.attr("value"))) {
+                            return true;
+                        }
+                    }
+                    // Can look like a username
+                    if(orgSettings['opac.username_regex']) {
+                        var test_regexp = new RegExp(orgSettings['opac.username_regex']);
+                        if(test_regexp.test(this.attr("value"))) {
+                            return true;
+                        }
+                    }
+                    // If we know what a barcode and username look like and we got here, reject
+                    if(orgSettings['opac.barcode_regex'] && orgSettings['opac.username_regex'])
+                        return false;
+                    // Otherwise we don't have enough info to say either way, let it through.
+                    return true;
+                }
                 dojo.connect(widget.widget, 'onChange', 
                     function() {
                         var input = findWidget('au', 'usrname');

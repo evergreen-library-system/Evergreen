@@ -1186,6 +1186,20 @@ sub load_myopac_update_username {
         return Apache2::Const::OK;
     }
 
+    # New username can't look like a barcode if we have a barcode regex
+    my $regex_check = $ctx->{get_org_setting}->($e->requestor->home_ou, 'opac.barcode_regex');
+    if($regex_check and $username =~ /$regex_check/) {
+        $ctx->{invalid_username} = $username;
+        return Apache2::Const::OK;
+    }
+
+    # New username has to look like a username if we have a username regex
+    $regex_check = $ctx->{get_org_setting}->($e->requestor->home_ou, 'opac.username_regex');
+    if($regex_check and $username !~ /$regex_check/) {
+        $ctx->{invalid_username} = $username;
+        return Apache2::Const::OK;
+    }
+
     if($username ne $e->requestor->usrname) {
 
         my $evt = $U->simplereq(

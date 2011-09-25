@@ -3671,6 +3671,15 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'interval', null)
 
+,( 'opac.username_regex', 'glob',
+    oils_i18n_gettext('opac.username_regex',
+        'Patron username format',
+        'coust', 'label'),
+    oils_i18n_gettext('opac.username_regex',
+        'Regular expression defining the patron username format, used for patron registration and self-service username changing only',
+        'coust', 'description'),
+    'string', null)
+
 ,( 'org.bounced_emails', 'prog',
     oils_i18n_gettext('org.bounced_emails',
         'Sending email address for patron notices',
