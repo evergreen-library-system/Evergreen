@@ -91,6 +91,25 @@ sub load_myopac_prefs {
     $self->prepare_extended_user_info;
     my $user = $self->ctx->{user};
 
+    my $lock_usernames = $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'opac.lock_usernames');
+    if($lock_usernames == 1) {
+        # Policy says no username changes
+        $self->ctx->{username_change_disallowed} = 1;
+    } else {
+        my $username_unlimit = $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'opac.unlimit_usernames');
+        if($username_unlimit != 1) {
+            my $regex_check = $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'opac.barcode_regex');
+            if(!$regex_check) {
+                # Default is "starts with a number"
+                $regex_check = '^\d+';
+            }
+            # You already have a username?
+            if($regex_check and $self->ctx->{user}->usrname !~ /$regex_check/) {
+                $self->ctx->{username_change_disallowed} = 1;
+            }
+        }
+    }
+
     return Apache2::Const::OK unless 
         $pending_addr or $replace_addr or $delete_pending;
 
@@ -1178,6 +1197,36 @@ sub load_myopac_update_username {
     my $username = $self->cgi->param('username') || '';
     my $current_pw = $self->cgi->param('current_pw') || '';
 
+    $self->prepare_extended_user_info;
+
+    my $allow_change = 1;
+    my $regex_check;
+    my $lock_usernames = $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'opac.lock_usernames');
+    if($lock_usernames == 1) {
+        # Policy says no username changes
+        $allow_change = 0;
+    } else {
+        # We want this further down.
+        $regex_check = $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'opac.barcode_regex');
+        my $username_unlimit = $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'opac.unlimit_usernames');
+        if($username_unlimit != 1) {
+            if(!$regex_check) {
+                # Default is "starts with a number"
+                $regex_check = '^\d+';
+            }
+            # You already have a username?
+            if($regex_check and $self->ctx->{user}->usrname !~ /$regex_check/) {
+                $allow_change = 0;
+            }
+        }
+    }
+    if(!$allow_change) {
+        my $url = $self->apache->unparsed_uri;
+        $url =~ s/update_username/prefs/;
+
+        return $self->generic_redirect($url);
+    }
+
     return Apache2::Const::OK 
         unless $self->cgi->request_method eq 'POST';
 
@@ -1187,7 +1236,6 @@ sub load_myopac_update_username {
     }
 
     # New username can't look like a barcode if we have a barcode regex
-    my $regex_check = $ctx->{get_org_setting}->($e->requestor->home_ou, 'opac.barcode_regex');
     if($regex_check and $username =~ /$regex_check/) {
         $ctx->{invalid_username} = $username;
         return Apache2::Const::OK;

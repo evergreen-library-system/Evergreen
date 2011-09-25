@@ -84,7 +84,11 @@
                     </div>[% l("Username") %]
                 </td>
                 <td class='light_border'>[% ctx.user.usrname | html %]</td>
+                [% IF ctx.username_change_disallowed %]
+                <td></td>
+                [% ELSE %]
                 <td class='light_border'><a href='update_username'>[% l("Change") %]</a></td>
+                [% END %]
             </tr>
             <tr>
                 <td class='color_4 light_border'>[% l("Password") %]</td>

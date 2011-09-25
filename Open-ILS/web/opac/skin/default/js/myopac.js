@@ -890,6 +890,22 @@ function _myOPACSummaryShowUer(r) {
 	req.callback(myopacDrawNotes);
 	req.send();
 
+    r = fetchOrgSettingDefault(G.user.home_ou(), 'opac.lock_usernames');
+    if(r) {
+        // No changing username - Policy Lock
+        hideMe($('myopac_summary_username_change'));
+    } else {
+        r = fetchOrgSettingDefault(G.user.home_ou(), 'opac.unlimit_usernames');
+        if(!r) {
+            r = fetchOrgSettingDefault(G.user.home_ou(), 'opac.barcode_regex');
+            if(r) REGEX_BARCODE = new RegExp(r);
+
+            if(!user.usrname().match(REGEX_BARCODE)) {
+                // No changing username - You already have one!
+                hideMe($('myopac_summary_username_change'));
+            }
+        }
+    }
 
 	var tbody = $('myopac_addr_tbody');
 	var template;
@@ -1068,7 +1084,7 @@ function myOPACUpdateUsername() {
 		return;
 	}
 
-    r = fetchOrgSettingDefault(globalOrgTree.id(), 'opac.barcode_regex');
+    r = fetchOrgSettingDefault(G.user.home_ou(), 'opac.barcode_regex');
     if(r) REGEX_BARCODE = new RegExp(r);
 
     if(username.match(REGEX_BARCODE)) {

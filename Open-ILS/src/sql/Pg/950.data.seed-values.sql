@@ -3653,6 +3653,15 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'bool', null)
 
+,( 'opac.lock_usernames', 'glob',
+    oils_i18n_gettext('opac.lock_usernames',
+        'Lock Usernames',
+        'coust', 'label'),
+    oils_i18n_gettext('opac.lock_usernames',
+        'If enabled username changing via the OPAC will be disabled',
+        'coust', 'description'),
+    'bool', null)
+
 ,( 'opac.org_unit_hiding.depth', 'opac',
     oils_i18n_gettext('opac.org_unit_hiding.depth',
         'Org Unit Hiding Depth',
@@ -3670,6 +3679,15 @@ INSERT into config.org_unit_setting_type
         'The OPAC should not display payments by patrons that are older than any interval defined here.',
         'coust', 'description'),
     'interval', null)
+
+,( 'opac.unlimit_usernames', 'glob',
+    oils_i18n_gettext('opac.unlimit_usernames',
+        'Allow multiple username changes',
+        'coust', 'label'),
+    oils_i18n_gettext('opac.unlimit_usernames',
+        'If enabled (and Lock Usernames is not set) patrons will be allowed to change their username when it does not look like a barcode. Otherwise username changing in the OPAC will only be allowed when the patron''s username looks like a barcode.',
+        'coust', 'description'),
+    'bool', null)
 
 ,( 'opac.username_regex', 'glob',
     oils_i18n_gettext('opac.username_regex',
