@@ -1,4 +1,4 @@
-var perms = [ 'RUN_REPORTS', 'SHARE_REPORT_FOLDER' ];
+var perms = [ 'RUN_REPORTS', 'SHARE_REPORT_FOLDER', 'VIEW_REPORT_OUTPUT' ];
 
 function oilsInitReports() {
 	oilsRptIdObjects();
@@ -16,7 +16,7 @@ function oilsInitReports() {
 	if( cgi.param('dbg') ) oilsRptDebugEnabled = true;
 
 	fetchHighestPermOrgs(SESSION, USER.id(), perms);
-	if( PERMS.RUN_REPORTS == -1 ) {
+	if( PERMS.RUN_REPORTS == -1 && PERMS.VIEW_REPORT_OUTPUT == -1 ) {
 		unHideMe(DOM.oils_rpt_permission_denied);
 		hideMe(DOM.oils_rpt_tree_loading);
 		return false;

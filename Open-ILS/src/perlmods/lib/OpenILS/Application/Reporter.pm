@@ -20,6 +20,7 @@ sub create_folder {
 	my $e = new_rstore_editor(xact=>1, authtoken=>$auth);
 	return $e->die_event unless $e->checkauth;
 	return $e->die_event unless $e->allowed('RUN_REPORTS');
+	return $e->die_event unless ($type ne 'template' || $e->allowed('CREATE_REPORT_TEMPLATE'));
 
 	return 0 if $folder->owner ne $e->requestor->id;
 
@@ -63,7 +64,11 @@ sub retrieve_visible_folders {
 	my( $self, $conn, $auth, $type ) = @_;
 	my $e = new_rstore_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
-	return $e->event unless $e->allowed('RUN_REPORTS');
+	if($type eq 'output') {
+		return $e->event unless $e->allowed(['RUN_REPORTS','VIEW_REPORT_OUTPUT']);
+	} else {
+		return $e->event unless $e->allowed('RUN_REPORTS');
+	}
 
 	my $class = 'rrf';
 	$class = 'rtf' if $type eq 'template';
@@ -107,7 +112,11 @@ sub retrieve_folder_data {
 	my( $self, $conn, $auth, $type, $folderid, $limit ) = @_;
 	my $e = new_rstore_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
-	return $e->event unless $e->allowed('RUN_REPORTS');
+	if($type eq 'output') {
+		return $e->event unless $e->allowed(['RUN_REPORTS','VIEW_REPORT_OUTPUT']);
+	} else {
+		return $e->event unless $e->allowed('RUN_REPORTS');
+	}
 	my $meth = "search_reporter_${type}";
 	my $class = 'rr';
 	$class = 'rt' if $type eq 'template';
@@ -127,7 +136,7 @@ sub retrieve_schedules {
 	my( $self, $conn, $auth, $folderId, $limit, $complete ) = @_;
 	my $e = new_rstore_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
-	return $e->event unless $e->allowed('RUN_REPORTS');
+	return $e->event unless $e->allowed(['RUN_REPORTS','VIEW_REPORT_OUTPUT']);
 
 	my $search = { folder => $folderId };
 	my $query = [
@@ -153,7 +162,7 @@ sub retrieve_schedule {
 	my( $self, $conn, $auth, $sched_id ) = @_;
 	my $e = new_rstore_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
-	return $e->event unless $e->allowed('RUN_REPORTS');
+	return $e->event unless $e->allowed(['RUN_REPORTS','VIEW_REPORT_OUTPUT']);
 	my $s = $e->retrieve_reporter_schedule($sched_id)
 		or return $e->event;
 	return $s;
@@ -168,6 +177,7 @@ sub create_template {
 	my $e = new_rstore_editor(authtoken=>$auth, xact=>1);
 	return $e->die_event unless $e->checkauth;
 	return $e->die_event unless $e->allowed('RUN_REPORTS');
+	return $e->die_event unless $e->allowed('CREATE_REPORT_TEMPLATE');
 	$template->owner($e->requestor->id);
 
 	my $existing = $e->search_reporter_template( {owner=>$template->owner,
@@ -229,7 +239,7 @@ sub retrieve_template {
 	my( $self, $conn, $auth, $id ) = @_;
 	my $e = new_rstore_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
-	return $e->event unless $e->allowed('RUN_REPORTS');
+	return $e->event unless $e->allowed(['RUN_REPORTS','VIEW_REPORT_OUTPUT']);
 	my $t = $e->retrieve_reporter_template($id)
 		or return $e->event;
 	return $t;
@@ -243,7 +253,7 @@ sub retrieve_report {
 	my( $self, $conn, $auth, $id ) = @_;
 	my $e = new_rstore_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
-	return $e->event unless $e->allowed('RUN_REPORTS');
+	return $e->event unless $e->allowed(['RUN_REPORTS','VIEW_REPORT_OUTPUT']);
 	my $r = $e->retrieve_reporter_report($id)
 		or return $e->event;
 	return $r;
@@ -258,6 +268,7 @@ sub update_template {
 	my $e = new_rstore_editor(authtoken=>$auth, xact=>1);
 	return $e->die_event unless $e->checkauth;
 	return $e->die_event unless $e->allowed('RUN_REPORTS');
+	return $e->die_event unless $e->allowed('CREATE_REPORT_TEMPLATE');
 	my $t = $e->retrieve_reporter_template($tmpl->id)
 		or return $e->die_event;
 	return 0 if $t->owner ne $e->requestor->id;

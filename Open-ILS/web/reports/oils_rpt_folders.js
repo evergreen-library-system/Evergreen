@@ -169,13 +169,15 @@ oilsRptFolderManager.prototype.createTopFolder = function(type, orgsel) {
 
 oilsRptFolderManager.prototype.fetchFolders = function(auth) {
 	var obj = this;
-	var req = new Request(OILS_RPT_FETCH_FOLDERS, auth, 'template');
-	req.callback( function(r) { obj.drawFolders('template', r.getResultObject()); } );
-	req.send();
+	if(PERMS.RUN_REPORTS != -1) {
+		var req = new Request(OILS_RPT_FETCH_FOLDERS, auth, 'template');
+		req.callback( function(r) { obj.drawFolders('template', r.getResultObject()); } );
+		req.send();
 
-	var req = new Request(OILS_RPT_FETCH_FOLDERS, auth, 'report');
-	req.callback( function(r) { obj.drawFolders('report', r.getResultObject()); } );
-	req.send();
+		var req = new Request(OILS_RPT_FETCH_FOLDERS, auth, 'report');
+		req.callback( function(r) { obj.drawFolders('report', r.getResultObject()); } );
+		req.send();
+	}
 
 	var req = new Request(OILS_RPT_FETCH_FOLDERS, auth, 'output');
 	req.callback( function(r) { obj.drawFolders('output', r.getResultObject()); } );

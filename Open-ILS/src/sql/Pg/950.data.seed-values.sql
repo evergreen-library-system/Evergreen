@@ -1446,7 +1446,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 514, 'UPDATE_PATRON_ACTIVE_CARD', oils_i18n_gettext( 514,
     'Allows a user to manually adjust a patron''s active cards', 'ppl', 'description')),
  ( 515, 'UPDATE_PATRON_PRIMARY_CARD', oils_i18n_gettext( 515,
-    'Allows a user to manually adjust a patron''s primary card', 'ppl', 'description'));
+    'Allows a user to manually adjust a patron''s primary card', 'ppl', 'description')),
+ ( 516, 'CREATE_REPORT_TEMPLATE', oils_i18n_gettext( 516,
+    'Allows a user to create report templates', 'ppl', 'description' ));
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
 
@@ -1795,6 +1797,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'CREATE_COPY_STAT_CAT_ENTRY',
 			'CREATE_COPY_STAT_CAT_ENTRY_MAP',
 			'RUN_REPORTS',
+			'CREATE_REPORT_TEMPLATE',
 			'SHARE_REPORT_FOLDER',
 			'UPDATE_COPY_LOCATION',
 			'UPDATE_COPY_STAT_CAT',
@@ -2195,6 +2198,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'DELETE_INVOICE_METHOD',
 			'DELETE_PROVIDER',
 			'RUN_REPORTS',
+			'CREATE_REPORT_TEMPLATE',
 			'SHARE_REPORT_FOLDER',
 			'UPDATE_ACQ_FUNDING_SOURCE',
 			'UPDATE_INVOICE_ITEM_TYPE',
