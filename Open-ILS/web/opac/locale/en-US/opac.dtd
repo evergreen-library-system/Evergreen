@@ -292,7 +292,7 @@ Please see a librarian to renew your account.">
 <!ENTITY myopac.summary.username.dup "The requested username is not available.  Please choose a different username.">
 <!ENTITY myopac.summary.username.success "Username successfully updated">
 <!ENTITY myopac.summary.username.failure "Username update failed">
-<!ENTITY myopac.summary.username.invalid "Username cannot contain spaces or have the same format as a barcode">
+<!ENTITY myopac.summary.username.invalid "Username cannot contain spaces or have the same format as a barcode, and may be restricted by policy">
 <!ENTITY myopac.summary.email.error "Please enter a valid email address">
 <!ENTITY myopac.summary.email.success "Email address successfully updated">
 <!ENTITY myopac.summary.email.failed "Email address update failed">
