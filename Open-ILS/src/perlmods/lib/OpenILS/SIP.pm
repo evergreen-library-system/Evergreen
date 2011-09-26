@@ -430,6 +430,8 @@ sub pay_fee {
     my ($self, $patron_id, $patron_pwd, $fee_amt, $fee_type,
 	$pay_type, $fee_id, $trans_id, $currency) = @_;
 
+    $self->verify_session;
+
     my $xact = OpenILS::SIP::Transaction::FeePayment->new(authtoken => $self->{authtoken});
     my $patron = $self->find_patron($patron_id);
 
