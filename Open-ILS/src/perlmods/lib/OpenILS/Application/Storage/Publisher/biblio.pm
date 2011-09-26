@@ -241,7 +241,7 @@ __PACKAGE__->register_method(
 );
 
 
-=comment Old version
+=head1 comment Old version
 
 my $org_unit_lookup;
 sub record_copy_count {

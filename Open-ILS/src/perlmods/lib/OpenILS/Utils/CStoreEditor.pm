@@ -129,7 +129,8 @@ sub checkauth {
 	return $self->{requestor} = $content->{userobj};
 }
 
-=head test
+=head1 test
+
 sub checkauth {
 	my $self = shift;
 	$cache = OpenSRF::Utils::Cache->new('global') unless $cache;
@@ -139,6 +140,7 @@ sub checkauth {
 	$self->event(OpenILS::Event->new('NO_SESSION'));
 	return undef;
 }
+
 =cut
 
 

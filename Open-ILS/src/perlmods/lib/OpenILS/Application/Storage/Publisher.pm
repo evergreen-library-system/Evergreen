@@ -463,7 +463,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 		);
 	}
 
-=comment
+=head1 comment
 
 	unless ( __PACKAGE__->is_registered( $api_prefix.'.search_like' ) ) {
 		__PACKAGE__->register_method(
@@ -570,7 +570,7 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 			);
 		}
 
-=comment
+=head1 comment
 
 		unless ( __PACKAGE__->is_registered( $api_prefix.'.search_like.'.$field ) ) {
 			__PACKAGE__->register_method(

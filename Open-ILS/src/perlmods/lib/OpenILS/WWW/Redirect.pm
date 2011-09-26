@@ -100,7 +100,8 @@ sub handler {
         $url .= "/eg/opac/home";
         $url .= "?orig_loc=$orig_loc" if $orig_loc;
 
-=head potential locale/skin implementation
+=head1 potential locale/skin implementation
+
         if($locale ne 'en-US') {
             $apache->headers_out->add(
                 "Set-Cookie" => $cgi->cookie(

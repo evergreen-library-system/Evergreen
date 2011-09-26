@@ -381,8 +381,10 @@ sub retrieve_pl_lineitem {
     return undef;
 }
 
-=head comment
+=head1 comment
+
 request open-ils.cstore open-ils.cstore.json_query.atomic {"select":{"jub":[{"transform":"count", "attregate":1, "column":"id","alias":"count"}]}, "from":"jub","where":{"picklist":1}}
+
 =cut
 
 

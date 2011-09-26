@@ -162,7 +162,8 @@ sub get_field_value {
 	return @string;
 }
 
-=head
+=head1 old implementation
+
 sub _modsdoc_to_values {
 	my( $self, $mods ) = @_;
 	my $data = {};
@@ -179,6 +180,7 @@ sub _modsdoc_to_values {
 	}
 	return $data;
 }
+
 =cut
 
 sub modsdoc_to_values {
