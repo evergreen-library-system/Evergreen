@@ -5,17 +5,33 @@
 
 [%- IF ctx.is_staff %]
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/staff.js"></script>
-    [% IF ctx.page == 'record' AND ctx.search_result_index >= 0 %]
-    <script>
-        rdetail_next_prev_actions(
-            "[% ctx.search_result_index %]",
-            "[% ctx.hit_count %]",
-            "[% ctx.prev_rec_url || '' %]",
-            "[% ctx.next_rec_url || '' %]",
-            "[% mkurl(ctx.first_search_record, {page => 0}) %]",
-            "[% mkurl(ctx.last_search_record, {page => POSIX.floor(ctx.hit_count / ctx.page_size)}) %]"
-        );
-    </script>
+    [% IF ctx.page == 'record' %]
+        [% IF ctx.search_result_index >= 0 %]
+        <script>
+            rdetail_next_prev_actions(
+                "[% ctx.search_result_index %]",
+                "[% ctx.hit_count %]",
+                "[% ctx.prev_rec_url || '' %]",
+                "[% ctx.next_rec_url || '' %]",
+                "[% mkurl(ctx.first_search_record, {page => 0}) %]",
+                "[% mkurl(ctx.last_search_record, {page => POSIX.floor(ctx.hit_count / ctx.page_size)}) %]"
+            );
+        </script>
+        [% END %]
+        [% IF ctx.mfhd_summaries.size %]
+        <script>
+            window.mfhdDetails = [
+                [% FOR summary IN ctx.mfhd_summaries %]
+                {
+                    'id' : '[% summary.sre_id %]', 
+                    'label' : '[% summary.location %]',
+                    'entryNum' : '[% loop.index %]',
+                    'owning_lib' : '[% summary.owning_lib %]'
+                }
+                [% END %]
+            ];
+        </script>
+        [% END %]
     [% END %]
 [%- END %]
 

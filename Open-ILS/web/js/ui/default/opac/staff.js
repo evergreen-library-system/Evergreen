@@ -21,8 +21,10 @@ function staff_hold_usr_input_disabler(input) {
 window.onload = function() {
     // record details page events
     var rec = location.href.match(/\/opac\/record\/(\d+)/);
-    if(rec && rec[1]) { runEvt('rdetail', 'recordRetrieved', rec[1]); }
-    // fire other events the staff client is expecting...
+    if(rec && rec[1]) { 
+        runEvt('rdetail', 'recordRetrieved', rec[1]); 
+        runEvt('rdetail', 'MFHDDrawn');
+    }
 }
 
 function rdetail_next_prev_actions(index, count, prev, next, start, end) {
