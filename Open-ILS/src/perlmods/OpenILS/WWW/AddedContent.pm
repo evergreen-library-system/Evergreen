@@ -80,10 +80,11 @@ sub handler {
     return Apache2::Const::DECLINED if (-e $r->filename);
 
     my $cgi = CGI->new;
-    my $path = $r->path_info;
+    my @path_parts = split( /\//, $r->unparsed_uri );
+    my $type = $path_parts[-3];
+    my $format = $path_parts[-2];
+    my $key = $path_parts[-1];
     my $res;
-
-    my( undef, $type, $format, $key ) = split(/\//, $r->path_info);
 
     child_init() unless $handler;
 
