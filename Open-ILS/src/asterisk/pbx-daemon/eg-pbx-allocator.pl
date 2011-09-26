@@ -79,6 +79,71 @@ Equinox Software, Inc.
 
 =cut
 
+package RevalidatorClient;
+
+use Sys::Syslog qw/:standard :macros/;
+use RPC::XML;
+use RPC::XML::Client;
+use Data::Dumper;
+
+sub new {
+    my $self = bless {}, shift;
+
+    $self->setup(@_);
+    return $self;
+}
+
+sub setup {
+    my ($self, %config) = @_;
+
+    # XXX error_handler, fault_handler, combined_handler
+    # such handlers should syslog and die
+
+    $self->{client} = new RPC::XML::Client($config{revalidator_uri});
+    $self->{config} = \%config;
+}
+
+sub get_event_ids {
+    my ($self, $filename) = @_;
+
+    if (not open FH, "<$filename") {
+        syslog LOG_ERR, "revalidator client could not open $filename";
+        die "revalidator client could not open $filename";
+    }
+
+    my $result = 0;
+    while (<FH>) {
+        next unless /event_ids = ([\d,]+)$/;
+
+        $result = [ map int, split(/,/, $1) ];
+    }
+
+    close FH;
+    return $result;
+}
+
+sub still_valid {
+    my ($self, $filename) = @_;
+    # Here we want to contact Evergreen's open-ils.trigger service and get
+    # a revalidation of the event described in a given file.
+    # We'll return 1 for valid, 0 for invalid.
+
+    my $event_ids = $self->get_event_ids($filename) or return 0;
+
+    print STDERR (Dumper($event_ids), "\n") if $self->{config}->{t};
+
+    my $valid_list = $self->{client}->simple_request(
+        "open-ils.justintime.events.revalidate", $event_ids
+    );
+
+    # NOTE: we require all events to be valid
+    return (scalar(@$valid_list) == scalar(@$event_ids)) ? 1 : 0;
+}
+
+1;
+
+package main;
+
 use warnings;
 use strict;
 
@@ -90,13 +155,13 @@ use File::Spec;
 use Sys::Syslog qw/:standard :macros/;
 use Cwd qw/getcwd/;
 
-our %config;
-our %opts = (
+my %config;
+my %opts = (
     c => "/etc/eg-pbx-daemon.conf",
     v => 0,
     t => 0,
 );
-our $universal_prefix = 'EG';
+my $universal_prefix = 'EG';
 
 sub load_config {
     %config = ParseConfig($opts{c});
@@ -197,27 +262,63 @@ my $out_count = scalar @outgoing;
 my $limit     = $config{queue_limit} || 0;
 my $available = 0;
 
+my @actually  = ();
+
 if ($limit) {
     $available = $limit - $out_count;
-    if ($in_count > $available) {
-        @incoming = @incoming[0..($available-1)];   # slice down to correct size
-    }
     if ($available == 0) {
         $opts{t} or syslog LOG_NOTICE, "Queue is full ($limit)";
     }
+
+    if ($config{revalidator_uri}) { # USE REVALIDATOR
+        # Take as many files from @incoming as it takes to fill up @actually
+        # with files whose contents describe still-valid events.
+
+        my $revalidator = new RevalidatorClient(%config, %opts);
+
+        for (my $i = 0; $i < $available; $i++) {
+            while (@incoming) {
+                my $candidate = shift @incoming;
+
+                if ($revalidator->still_valid($candidate)) {
+                    unshift @actually, $candidate;
+                    last;
+                } else {
+                    my $newpath = ($config{done_path} || "/tmp") .
+                        "/SKIPPED_" . basename($candidate);
+
+                    if ($opts{t}) {
+                        print "rename $candidate $newpath\n";
+                    } else {
+                        rename($candidate, $newpath);
+                    }
+                }
+            }
+        }
+    } else { # DON'T USE REVALIDATOR
+        if ($in_count > $available) {
+            # slice down to correct size
+            @actually = @incoming[0..($available-1)];
+        }
+    }
 }
+
+# XXX Even without a limit we could still filter by still_valid() in theory,
+# but in practive the user should always use a limit.
 
 if ($opts{v}) {
-     printf "incoming (total ): %3d\n", $raw_count;
-     printf "incoming (future): %3d\n", scalar @future;
-     printf "incoming (active): %3d\n", $in_count;
-     printf "queued already   : %3d\n", $out_count;
-     printf "queue_limit      : %3d\n", $limit;
-     printf "available spots  : %3s\n", ($limit ? $available : 'unlimited');
+     printf "incoming (total)   : %3d\n", $raw_count;
+     printf "incoming (future)  : %3d\n", scalar @future;
+     printf "incoming (active)  : %3d\n", $in_count;
+     printf "incoming (filtered): %3d\n", scalar @actually;
+     printf "queued already     : %3d\n", $out_count;
+     printf "queue_limit        : %3d\n", $limit;
+     printf "available spots    : %3s\n", ($limit ? $available : 'unlimited');
 }
 
-foreach (@incoming) {
+foreach (@actually) {
     # $opts{v} and print `ls -l $_`;  # '  ', (stat($_))[9], " - $now = ", (stat($_))[9] - $now, "\n";
     queue($_);
 }
 
+1;

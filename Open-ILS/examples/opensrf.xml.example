@@ -191,6 +191,7 @@ vim:et:ts=4:sw=4:
                 <service>open-ils.actor</service>
                 <service>open-ils.auth</service>
                 <service>open-ils.collections</service>
+                <service>open-ils.justintime</service>
             </allowed_services>
         </xml-rpc>
 
@@ -734,6 +735,26 @@ vim:et:ts=4:sw=4:
                 </app_settings>
             </open-ils.penalty>
 
+            <open-ils.justintime>
+                <keepalive>5</keepalive>
+                <stateless>1</stateless>
+                <language>perl</language>
+                <implementation>OpenILS::Application::JustInTime</implementation>
+                <max_requests>199</max_requests>
+                <unix_config>
+                    <unix_sock>open-ils.justintime_unix.sock</unix_sock>
+                    <unix_pid>open-ils.justintime_unix.pid</unix_pid>
+                    <max_requests>1000</max_requests>
+                    <unix_log>open-ils.justintime_unix.log</unix_log>
+                    <min_children>1</min_children>
+                    <max_children>15</max_children>
+                    <min_spare_children>1</min_spare_children>
+                    <max_spare_children>5</max_spare_children>
+                </unix_config>
+                <app_settings>
+                </app_settings>
+            </open-ils.justintime>
+
             <open-ils.circ> 
                 <keepalive>3</keepalive>
                 <stateless>1</stateless>
@@ -1202,6 +1223,7 @@ vim:et:ts=4:sw=4:
                 <appname>open-ils.auth</appname> 
                 <appname>open-ils.storage</appname>  
                 <appname>open-ils.penalty</appname>  
+                <appname>open-ils.justintime</appname>  
                 <appname>open-ils.cstore</appname>  
                 <appname>open-ils.collections</appname>  
                 <appname>open-ils.ingest</appname>  
