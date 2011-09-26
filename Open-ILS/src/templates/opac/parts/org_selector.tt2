@@ -7,16 +7,18 @@
         ELSIF walker.id == value;
             selected = 'selected="selected"';
         END;
+        IF ctx.is_staff || walker.opac_visible == 't';
 %]
-        <option value='[% walker.id | uri %]' [% selected %] [% disabled %]>
-            [%
-                pad = walker.ou_type.depth * 2;
-                FOR idx IN [0..pad]; '&nbsp;'; END;
-                walker.name | html;
-            %]
-        </option>
-        [%  FOR child IN walker.children;
-            PROCESS build_org_selector_options walker=child value=value;
+            <option value='[% walker.id | uri %]' [% selected %] [% disabled %]>
+                [%
+                    pad = walker.ou_type.depth * 2;
+                    FOR idx IN [0..pad]; '&nbsp;'; END;
+                    walker.name | html;
+                %]
+            </option>
+            [% FOR child IN walker.children;
+                PROCESS build_org_selector_options walker=child value=value;
+            END;
         END;
     END;
 
