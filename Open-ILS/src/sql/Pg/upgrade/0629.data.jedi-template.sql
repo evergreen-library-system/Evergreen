@@ -3,8 +3,7 @@
 --
 BEGIN;
 
--- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('0629', :eg_version);
+INSERT INTO config.upgrade_log (version) VALUES ('0629'); -- senator/miker
 
 UPDATE action_trigger.event_definition
     SET template =
