@@ -131,6 +131,7 @@ CENTOS = \
 	gd-devel \
 	libssh2-devel \
 	openssl-devel \
+	perl-parent \
 	perl-Business-CreditCard \
 	perl-Business-ISBN \
 	perl-Business-ISBN-Data \
