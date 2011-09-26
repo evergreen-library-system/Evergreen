@@ -27,7 +27,7 @@
                     'label' : '[% summary.location %]',
                     'entryNum' : '[% loop.index %]',
                     'owning_lib' : '[% summary.owning_lib %]'
-                }
+                },
                 [% END %]
             ];
         </script>
