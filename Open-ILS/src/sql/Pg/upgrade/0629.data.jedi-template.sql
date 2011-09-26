@@ -4,7 +4,7 @@
 BEGIN;
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0629', :eg_version);
 
 UPDATE action_trigger.event_definition
     SET template =
