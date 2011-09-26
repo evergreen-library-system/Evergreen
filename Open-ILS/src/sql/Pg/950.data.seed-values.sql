@@ -3321,7 +3321,7 @@ INSERT into config.org_unit_setting_type
         'Suppress Hold Transits Group',
         'coust', 'label'),
     oils_i18n_gettext('circ.transit.suppress_hold',
-        'If set to a non-empty string Hold Transits will be suppressed between this OU and others with the same value. If set to an empty string transits will not be suppressed.',
+        'If set to a non-empty value, Hold Transits will be suppressed between this OU and others with the same value. If set to an empty value, transits will not be suppressed.',
         'coust', 'description'),
     'string', null)
 
@@ -3330,7 +3330,7 @@ INSERT into config.org_unit_setting_type
         'Suppress Non-Hold Transits Group',
         'coust', 'label'),
     oils_i18n_gettext('circ.transit.suppress_non_hold',
-        'If set to a non-empty string Non-Hold Transits will be suppressed between this OU and others with the same value. If set to an empty string transits will not be suppressed.',
+        'If set to a non-empty value, Non-Hold Transits will be suppressed between this OU and others with the same value. If set to an empty value, transits will not be suppressed.',
         'coust', 'description'),
     'string', null)
 
