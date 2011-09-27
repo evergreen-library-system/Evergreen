@@ -669,17 +669,17 @@ COMMIT;
 	<section xml:id="exportingbibrecordsintoMARC">
 		<title>Exporting Bibliographic Records into MARC files</title>
 		<indexterm><primary>migrating</primary><secondary>exporting bibliographic records</secondary><tertiary>MARC</tertiary></indexterm>
-		<para>The following procedure explains how to export Evergreen bibliographic records into MARC files using the marc_export support script. All steps should be performed by the 
-		opensrf user from your Evergreen server.</para>
+		<para>The following procedure explains how to export Evergreen bibliographic records into MARC files using the <command>marc_export</command> support script. All steps should be 
+		performed by the opensrf user from your Evergreen server.</para>
 		<procedure>
 			<step> 
-				<para>Create a text file list of the Bibliographic record ids you would like to export from Evergreen. One way to do this is using SQL:</para>
+				<para>Create a text file list of the Bibliographic record IDs you would like to export from Evergreen. One way to do this is using SQL:</para>
 <programlisting language="sql">
 SELECT DISTINCT bre.id FROM biblio.record_entry AS bre
-	JOIN asset.call_number AS acn ON acn.record-bre.id 
-	WHERE bre.deleted='false' and ownling_lib=101 \g /home/opensrf/records.txt;
+	JOIN asset.call_number AS acn ON acn.record = bre.id 
+	WHERE bre.deleted='false' and owning_lib=101 \g /home/opensrf/records.txt;
 </programlisting>
-				<para>This query will create a file called <filename>records.txt</filename> containing a column of distinct ids of items owned by the organizational unit with the 
+				<para>This query creates file called <filename>records.txt</filename> containing a column of distinct IDs of items owned by the organizational unit with the 
 				<database class="field">id</database> <literal>101</literal>.</para>
 			</step>
 			<step>
@@ -689,13 +689,13 @@ SELECT DISTINCT bre.id FROM biblio.record_entry AS bre
 </screen>
 			</step>
 			<step>
-				<para>Run <command>marc_export</command>, using the id file you created in step 1 to define which files to export.</para>
+				<para>Run <command>marc_export</command>, using the ID file you created in step 1 to define which files to export.</para>
 <screen>
 <userinput>cat /home/opensrf/records.txt | ./marc_export -i -c /openils/conf/opensrf_core.xml \
 -x /openils/conf/fm_IDL.xml -f XML --timeout 5 > exported_files.xml
 </userinput>
 </screen>
-				<para>The example above export the records into MARCXML format.</para>
+				<para>The example above exports the records into MARCXML format.</para>
 				<note>
 				<para>For help or for more options when running <command>marc_export</command>, run <command>marc_export</command> with the <option>-h</option> option:</para>
 <screen>
@@ -705,8 +705,8 @@ SELECT DISTINCT bre.id FROM biblio.record_entry AS bre
 				
 			</step>
 				<note>
-				<para>Processing time for exporting records will depond on several factors such as the number of records you are exporting. It is recommended that you divide the 
-				export id files (<filename>records.txt</filename>) into manageable number of records if you are exporting a large number of records.</para> 
+				<para>Processing time for exporting records will depends on several factors such as the number of records you are exporting. It is recommended that you divide the 
+				export ID files (<filename>records.txt</filename>) into manageable number of records if you are exporting a large number of records.</para> 
 				</note>
 		</procedure>
 	</section>	
