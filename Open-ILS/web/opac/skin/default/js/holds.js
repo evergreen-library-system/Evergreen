@@ -544,7 +544,9 @@ function __holdsDrawWindow() {
 				return (i.record() == holdArgs.record);	
 			}
 		);
-		formats = desc[0].item_type();
+		if (desc) {
+			formats = desc[0].item_type();
+		}
 	}
 
 	if( holdArgs.type == 'M' ) {
