@@ -20,7 +20,7 @@
     </table>
 </div>
 
-<div class='hidden'><div dojoType='openils.widget.ProgressDialog' jsId='progressDialog'/></div>
+<div class='hidden'><div dojoType='openils.widget.ProgressDialog' jsId='progressDialog'></div></div>
 
 [% END %]
 

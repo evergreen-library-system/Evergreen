@@ -15,8 +15,8 @@
                 <td><input dojoType='dijit.form.TextBox' jsId='poNumber' disabled='disabled'/></td>
             </tr>
             <tr id='acq-brief-record-row'>
-                <td><div name='name'/></td>
-                <td><div name='widget'/></td>
+                <td><div name='name'></div></td>
+                <td><div name='widget'></div></td>
             </tr>
         </tbody>
         <tbody>

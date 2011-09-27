@@ -50,7 +50,7 @@
         <tr>
             <td>[% l('Merge Profile') %]</td>
             <td colspan='4'>
-                <div jsId='vlUploadMergeProfile' dojoType='dijit.form.FilteringSelect' required='false' labelAttr='name' searchAttr='name'/>
+                <div jsId='vlUploadMergeProfile' dojoType='dijit.form.FilteringSelect' required='false' labelAttr='name' searchAttr='name'></div>
             </td>
         </tr>
         <tr>
@@ -85,7 +85,7 @@
         <tr>
             <td>[% l('Insufficient Quality Fall-Through Profile') %]</td>
             <td colspan='4'>
-                <div jsId='vlUploadFtMergeProfile' dojoType='dijit.form.FilteringSelect' required='false' labelAttr='name' searchAttr='name'/>
+                <div jsId='vlUploadFtMergeProfile' dojoType='dijit.form.FilteringSelect' required='false' labelAttr='name' searchAttr='name'></div>
             </td>
         </tr>
 

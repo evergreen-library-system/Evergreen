@@ -241,6 +241,6 @@
         [% INCLUDE "acq/common/li_table_pager.tt2" %]
         [% INCLUDE "acq/common/li_table.tt2" %]
     </div>
-    <div jsId='progressDialog' dojoType='openils.widget.ProgressDialog'/>
+    <div jsId='progressDialog' dojoType='openils.widget.ProgressDialog'></div>
 </div>
 [% END %]

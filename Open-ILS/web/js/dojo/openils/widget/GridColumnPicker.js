@@ -59,7 +59,7 @@ if(!dojo._hasResource["openils.widget.GridColumnPicker"]) {
             var dialog = new dijit.Dialog({title : 'Column Picker'});
             var table = dojo.create('table', {'class':'oils-generic-table', innerHTML : 
                 "<thead><tr><th width='33%'>Column</th><th width='33%'>Display</th><th width='33%'>Auto Width</th></tr></thead>" +
-                "<tbody><tr><td><div name='cancel_button'/></td><td><div name='save_button'/></td></tr></tbody></table>" });
+                "<tbody><tr><td><div name='cancel_button'></div></td><td><div name='save_button'></div></td></tr></tbody></table>" });
 
             dialog.containerNode.appendChild(table);
 

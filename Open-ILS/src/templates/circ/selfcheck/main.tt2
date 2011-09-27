@@ -41,7 +41,7 @@
             <tr>
                 <td>Choose a location</td>
                 <td><div dojoType='openils.widget.OrgUnitFilteringSelect' jsId='oilsSelfckWsLocSelector' 
-                    searchAttr='shortname' labelAttr='shortname'/></td>
+                    searchAttr='shortname' labelAttr='shortname'></div></td>
             </tr>
             <tr>
                 <td>Enter a workstation name</td>

@@ -18,7 +18,7 @@
             </div>
         </li>
         <li>
-            <div type='opac/slot-data' query='datafield[tag=100] subfield[code=a]'/>
+            <div type='opac/slot-data' query='datafield[tag=100] subfield[code=a]'></div>
         </li>
         <li>
             <div type='opac/slot-data' query='datafield[tag=020]'>
@@ -32,7 +32,7 @@
             </div>
         </li>
         <li>
-            <div type='opac/slot-data' query='datafield[tag=260] subfield[code=c]'/>
+            <div type='opac/slot-data' query='datafield[tag=260] subfield[code=c]'></div>
         </li>
     </ul>
 

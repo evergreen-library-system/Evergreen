@@ -64,10 +64,10 @@
 <div id='marc-div' class='hidden'>
     <button dojoType='dijit.form.Button' onclick='openils.Util.hide("marc-div");'>Hide</button>
     <div style='text-align:left;'>
-        <div id='marc-html-div'/>
+        <div id='marc-html-div'></div>
     </div>
 </div>
-<div jsId='progressDialog' dojoType='openils.widget.ProgressDialog' message='Searching....'/>
+<div jsId='progressDialog' dojoType='openils.widget.ProgressDialog' message='Searching....'></div>
 
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/lineitem/findbib.js"></script>
 [% END %]

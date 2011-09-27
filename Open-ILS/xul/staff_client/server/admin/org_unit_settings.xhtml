@@ -79,13 +79,13 @@
                 <div id="toolbar1" dojoType="dijit.Toolbar">
                     <h2>&staff.server.admin.org_unit_settings.title;</h2>
                     
-                    <span dojoType="dijit.ToolbarSeparator" />
+                    <span dojoType="dijit.ToolbarSeparator" ></span>
                     
                     <span>&staff.server.admin.org_unit_settings.context_loc;</span>
                     <select dojoType='openils.widget.OrgUnitFilteringSelect' jsId='osContextSelector'
                             searchAttr='shortname' autocomplete='true' labelAttr='shortname' onchange='osChangeContext();' />
                     
-                    <span dojoType="dijit.ToolbarSeparator" />
+                    <span dojoType="dijit.ToolbarSeparator" ></span>
                     
                     <form id='searchform' onSubmit='return doSearch()'>
                             <input type='text' dojoType='dijit.form.TextBox' id='searchBox' onkeypress='osSearchChange();' />
@@ -93,7 +93,7 @@
                             <button dojoType='dijit.form.Button' onClick='clearSearch();'>&staff.server.admin.org_unit_settings.clear_filter;</button>
                     </form>
                     
-                    <span dojoType="dijit.ToolbarSeparator" />
+                    <span dojoType="dijit.ToolbarSeparator" ></span>
 
                     <button dojoType='dijit.form.Button' onClick='osToJson();'>&staff.server.admin.org_unit_settings.export;</button>
                     <button dojoType='dijit.form.Button' onClick='osFromJson();'>&staff.server.admin.org_unit_settings.import;</button>
@@ -125,7 +125,7 @@
                         ]]
                     }];
                 </script>
-                <div dojoType='dojox.Grid' jsId='osGrid' />
+                <div dojoType='dojox.Grid' jsId='osGrid' ></div>
             </div>
         </div>
 
@@ -133,8 +133,8 @@
         <div dojoType="dijit.Dialog" jsId='osEditDialog' title="&staff.server.admin.org_unit_settings.edit_setting;">
             <table class='form_table'>
                 <thead>
-                    <tr><td colspan='2' align='center'><div id='os-edit-name'/></td></tr>
-                    <tr><td colspan='2' align='center'><div id='os-edit-desc' style='max-width:600px;'/></td></tr>
+                    <tr><td colspan='2' align='center'><div id='os-edit-name'></div></td></tr>
+                    <tr><td colspan='2' align='center'><div id='os-edit-desc' style='max-width:600px;'></div></td></tr>
                 </thead>
                 <tbody>
                     <tr>
@@ -169,7 +169,7 @@
             </table>
         </div> <!-- /edit dialog -->
         
-        <div dojoType="openils.widget.ProgressDialog" jsId="progressDialog" indeterminate="true" />
+        <div dojoType="openils.widget.ProgressDialog" jsId="progressDialog" indeterminate="true" ></div>
         
         <!--i18n, use the &translation; here, then grab innerHTML in JS later.-->
         <div id='proci18n' class='hidden'>&staff.server.admin.org_unit_settings.processing;</div>
@@ -200,7 +200,7 @@
         
         <!--History Dialog-->
         <div id="historyDialog" dojoType="dijit.Dialog" jsId="osHistDialog" title="&staff.server.admin.org_unit_settings.history;">
-            <span id='osHistName' />
+            <span id='osHistName' ></span>
             
             <!--Headers grabbed from this table are put in the next one by the js.-->
             <table id="histTitle" class="hidden">
@@ -217,7 +217,7 @@
         
         <!--Displays alerts at the top of the screen, much nicer than alert() or dojo equiv.-->
         <div class="message_container" id="msgCont">
-            <div class="message" id='msgInner' />
+            <div class="message" id='msgInner' ></div>
         </div>
     </body>
 </html>

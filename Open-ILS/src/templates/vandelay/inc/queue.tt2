@@ -1,6 +1,6 @@
 <div dojoType="dijit.layout.ContentPane" layoutAlign='client' style='margin-top:10px;'>
     <fieldset id='vl-queue-filter-fieldset'>
-        <legend>Queue <span style='font-style:italic;' id='vl-queue-summary-name'/></legend>
+        <legend>Queue <span style='font-style:italic;' id='vl-queue-summary-name'></span></legend>
         <table width='100%'><tr>
             <td> <!-- big left td -->
             <table>
@@ -24,12 +24,12 @@
                         <table  id='vl-queue-summary-table' class='queue-nav-table'>
                             <thead><tr><th colspan='2' class='queue-nav-table-label'>Queue Summary</th></tr></thead>
                             <tbody>
-                                <tr><td>[% l('Records in Queue:') %]</td><td> <span style='font-weight:bold;' id='vl-queue-summary-total-count'/></td></tr>
-                                <tr><td>[% l('Records Imported:') %]</td><td> <span style='font-weight:bold;' id='vl-queue-summary-import-count'/></td></tr>
-                                <tr><td>Record Import Failures</td><td> <span style='font-weight:bold;' id='vl-queue-summary-rec-error-count'/></td></tr>
-                                <tr><td>Items in Queue</td><td> <span style='font-weight:bold;' id='vl-queue-summary-import-item-count'/></td></tr>
-                                <tr><td>Items Imported</td><td> <span style='font-weight:bold;' id='vl-queue-summary-import-item-imported-count'/></td></tr>
-                                <tr><td>Item Import Failures</td><td> <span style='font-weight:bold;' id='vl-queue-summary-item-error-count'/></td></tr>
+                                <tr><td>[% l('Records in Queue:') %]</td><td> <span style='font-weight:bold;' id='vl-queue-summary-total-count'></span></td></tr>
+                                <tr><td>[% l('Records Imported:') %]</td><td> <span style='font-weight:bold;' id='vl-queue-summary-import-count'></span></td></tr>
+                                <tr><td>Record Import Failures</td><td> <span style='font-weight:bold;' id='vl-queue-summary-rec-error-count'></span></td></tr>
+                                <tr><td>Items in Queue</td><td> <span style='font-weight:bold;' id='vl-queue-summary-import-item-count'></span></td></tr>
+                                <tr><td>Items Imported</td><td> <span style='font-weight:bold;' id='vl-queue-summary-import-item-imported-count'></span></td></tr>
+                                <tr><td>Item Import Failures</td><td> <span style='font-weight:bold;' id='vl-queue-summary-item-error-count'></span></td></tr>
                             </tbody>
                         </table>
                     </td>
@@ -198,7 +198,7 @@
                     <td>[% l('Merge Profile') %]</td>
                     <td colspan='4'>
                         <div jsId='vlUploadMergeProfile2' 
-                            dojoType='dijit.form.FilteringSelect' required='false' labelAttr='name' searchAttr='name'/>
+                            dojoType='dijit.form.FilteringSelect' required='false' labelAttr='name' searchAttr='name'></div>
                     </td>
                 </tr>
                 <tr>
@@ -233,7 +233,7 @@
                 <tr>
                     <td>[% l('Insufficient Quality Fall-Through Profile') %]</td>
                     <td colspan='4'>
-                        <div jsId='vlUploadFtMergeProfile2' dojoType='dijit.form.FilteringSelect' required='false' labelAttr='name' searchAttr='name'/>
+                        <div jsId='vlUploadFtMergeProfile2' dojoType='dijit.form.FilteringSelect' required='false' labelAttr='name' searchAttr='name'></div>
                     </td>
                 </tr>
                 <tr>

@@ -86,7 +86,7 @@
         </thead>
     </table>
     <div class='hidden'>
-        <div jsId='progressDialog' dojoType='openils.widget.ProgressDialog'/>
+        <div jsId='progressDialog' dojoType='openils.widget.ProgressDialog'></div>
     </div>
 </div>
 

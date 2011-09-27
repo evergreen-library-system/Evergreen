@@ -61,7 +61,7 @@
                 <table class='oils-generic-table'>
                     <tr>
                         <td>Barcode of Circulating Copy</td>
-                        <td><div dojoType='dijit.form.TextBox' jsId='circTestBarcode'/></td>
+                        <td><div dojoType='dijit.form.TextBox' jsId='circTestBarcode'></div></td>
                     </tr>
                     <tr>
                         <td colspan='2'><button dojoType='dijit.form.Button' onclick='evtTestCirc'>Go</button></td>

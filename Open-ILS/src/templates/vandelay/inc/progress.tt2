@@ -10,7 +10,7 @@
         <h3>[% l('Uploading...') %]</h3>
     </div>
     <div id='vl-upload-status-processing' class='hidden'>
-        <h3>[% l('Processing... ') %]<span id='vl-upload-status-count'/></h3>
+        <h3>[% l('Processing... ') %]<span id='vl-upload-status-count'></span></h3>
     </div>
 </div>
 

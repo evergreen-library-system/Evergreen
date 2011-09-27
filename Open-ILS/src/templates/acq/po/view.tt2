@@ -11,7 +11,7 @@
                 <tr>
                     <th>ID</th><td><a id="acq-po-view-id"/></td>
                     <th>Prepayment Required?</th>
-                    <td><span id="acq-po-view-prepay"/></td>
+                    <td><span id="acq-po-view-prepay"></span></td>
                 </tr>
                 <tr>
                     <th>Name</th>
@@ -25,7 +25,7 @@
                 </tr>
                 <tr>
                     <th>Provider</th>
-                    <td><span id="acq-po-view-provider"/></td>
+                    <td><span id="acq-po-view-provider"></span></td>
                     <th>Notes</th>
                     <td>
                         <a href="javascript:void(0);"
@@ -34,7 +34,7 @@
                 </tr>
                 <tr>
                     <th>Total Lineitems</th>
-                    <td><span id="acq-po-view-total-li"/></td>
+                    <td><span id="acq-po-view-total-li"></span></td>
                     <th>EDI Messages</th>
                     <td>
                         <a href="javascript:void(0);"
@@ -43,7 +43,7 @@
                 </tr>
                 <tr>
                     <th>Total Estimated</th>
-                    <td>$<span id="acq-po-view-total-estimated"/></td>
+                    <td>$<span id="acq-po-view-total-estimated"></span></td>
                     <th>History</th>
                     <td>
                         <a class="hidden" href="javascript:void(0);"
@@ -52,7 +52,7 @@
                 </tr>
                 <tr>
                     <th>Total Encumbered</th>
-                    <td>$<span id="acq-po-view-total-enc"/></td>
+                    <td>$<span id="acq-po-view-total-enc"></span></td>
                     <th>Invoicing</th>
                     <td id="acq-po-invoice-stuff" class="hidden">
                         <button dojoType="dijit.form.Button"
@@ -84,7 +84,7 @@
                 </tr>
                 <tr>
                     <th>Total Spent</th>
-                    <td>$<span id="acq-po-view-total-spent"/></td>
+                    <td>$<span id="acq-po-view-total-spent"></span></td>
                     <th id="acq-po-cancel-label"></th>
                     <td>
                         <span id="acq-po-view-cancel-reason"></span>

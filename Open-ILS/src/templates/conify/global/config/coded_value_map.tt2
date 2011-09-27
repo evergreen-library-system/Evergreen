@@ -10,7 +10,7 @@
 </div>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
-    <span>Record Attribute Type: </span><div id='attr-def-div'/>
+    <span>Record Attribute Type: </span><div id='attr-def-div'></div>
 </div>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
