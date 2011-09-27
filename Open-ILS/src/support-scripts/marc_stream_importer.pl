@@ -380,10 +380,7 @@ sub process_request {   # The core Net::Server method
         local $SIG{ALRM} = sub { die "alarm\n" };
         alarm $wait_time; # prevent accidental tie ups of backend processes
         local $/ = "\x1D"; # MARC record separator
-        while (my $newline = <STDIN>) {
-            $data .= $newline;
-            alarm $wait_time; # prevent accidental tie ups of backend processes
-        }
+        $data = <STDIN>;
         alarm 0;
     };
 
