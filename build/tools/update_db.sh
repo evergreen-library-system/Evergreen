@@ -55,6 +55,11 @@ function feedback() {
 
 PSQL_ACCESS="-h $DB_HOST -U $DB_USER $DB_NAME";
 
+# Find the current version of Evergreen, which is the installed version to which the upgrade script is being applied
+EGVERSION=$(eg_config --version|cut -f2 -d' ');
+[  $? -gt 0  ] && die "Could not find eg_config, please make sure it is in your path.";
+[  -z "$EGVERSION"  ] && die "Could not determine Evergreen version from eg_config.";
+
 # Need to avoid versions like '1.6.0.4' from throwing off the upgrade
 VERSION=$(psql -c "SELECT MAX(version) FROM config.upgrade_log WHERE version ~ E'^\\\\d+$'" -t $PSQL_ACCESS);
 [  $? -gt 0  ] && die "Database access failed.";
@@ -101,7 +106,7 @@ if [ $COUNT -gt 0 ] ; then
     for (( i=0; i<$COUNT; i++ )) ; do
         echo "* Applying ${FILES[$i]}" >&3;   # to the main script STDOUT
         cat ${FILES[$i]};                     # to the psql pipe
-    done | psql $PSQL_ACCESS ;
+    done | psql -set eg_version="'$EGVERSION'" $PSQL_ACCESS ;
 else
     echo "* Nothing to update";
 fi
