@@ -128,6 +128,12 @@ sub decode_pattern {
     # XXX WRITE ME (?)
 }
 
+sub pattern {
+    my $self = shift;
+
+    return $self->{_mfhdc_PATTERN};
+}
+
 sub compressible {
     my $self = shift;
 

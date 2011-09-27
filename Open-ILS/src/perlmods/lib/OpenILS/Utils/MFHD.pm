@@ -358,6 +358,12 @@ sub get_compressed_holdings {
     my $opts = shift;
     my $skip_sort = $opts->{'skip_sort'};
 
+    # basic check for necessary pattern information
+    if (!scalar keys %{$caption->pattern}) {
+        carp "Cannot compress without pattern data, returning original holdings";
+        return $self->holdings_by_caption($caption);
+    }
+
     # make sure none are compressed (except for open-ended)
     my @decomp_holdings;
     if ($skip_sort) {
