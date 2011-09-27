@@ -146,7 +146,7 @@
             </tr>
         </thead>
     </table>
-    <div/>
+    <div></div>
 </div>
 
 <!-- Auth Queue Grid -->
@@ -187,7 +187,7 @@
             </tr>
         </thead>
     </table>
-    <div/>
+    <div></div>
 </div>
 
 <div jsId='queueItemsImportDialog' dojoType="dijit.Dialog" title="Import Items">

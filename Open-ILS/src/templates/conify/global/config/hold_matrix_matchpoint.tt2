@@ -17,7 +17,7 @@
             showColumnPicker='true'
             columnPickerPrefix='"conify.config.hold_matrix_matchpoint"'>
     </table>
-    <div/>
+    <div></div>
 </div>
 
 <script type="text/javascript">
