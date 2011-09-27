@@ -457,7 +457,8 @@ circ.checkin.prototype = {
                 if (typeof params.on_retrieve == 'function') params.on_retrieve(row);
                 obj.update_no_change_label(params.my_node,row);
                 var bill = row.my.mbts;
-                if (bill && document.getElementById('fine_tally')) {
+                if (bill && document.getElementById('fine_tally') && ! row.already_tallied) {
+                    params.row.already_tallied = true;
                     var amount = util.money.cents_as_dollars(
                         Number( util.money.dollars_float_to_cents_integer( document.getElementById('fine_tally').getAttribute('amount') ) ) 
                         + Number( util.money.dollars_float_to_cents_integer( bill.balance_owed() ) )
@@ -524,6 +525,7 @@ circ.checkin.prototype = {
                         } 
                     },
                     'to_top' : true,
+                    'flesh_immediately' : !async,
                     'on_append' : function(rparams) { obj.row_map[ rparams.unique_row_counter ] = rparams; },
                     'on_remove' : function(unique_row_counter) { delete obj.row_map[ unique_row_counter ]; }
             } );
@@ -610,6 +612,7 @@ circ.checkin.prototype = {
             }
             row_params['retrieve_id'] = retrieve_id;
             row_params['row'] =  {
+                'already_tallied' : false,
                 'my' : {
                     'circ' : checkin.circ,
                     'mbts' : checkin.circ ? checkin.circ.billable_transaction().summary() : null,
