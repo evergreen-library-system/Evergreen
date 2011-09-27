@@ -679,7 +679,7 @@ SELECT DISTINCT bre.id FROM biblio.record_entry AS bre
 	JOIN asset.call_number AS acn ON acn.record = bre.id 
 	WHERE bre.deleted='false' and owning_lib=101 \g /home/opensrf/records.txt;
 </programlisting>
-				<para>This query creates file called <filename>records.txt</filename> containing a column of distinct IDs of items owned by the organizational unit with the 
+				<para>This query creates a file called <filename>records.txt</filename> containing a column of distinct IDs of items owned by the organizational unit with the 
 				<database class="field">id</database> <literal>101</literal>.</para>
 			</step>
 			<step>
