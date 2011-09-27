@@ -691,7 +691,7 @@ COMMIT;
 		<title>Exporting Bibliographic Records into MARC files</title>
 		<indexterm><primary>migrating</primary><secondary>exporting bibliographic records</secondary><tertiary>MARC</tertiary></indexterm>
 			<para>The following procedure explains how to export Evergreen bibliographic records into MARC files using the <command>marc_export</command> support script. All steps should be 
-			performed by the opensrf user from your Evergreen server.</para>
+			performed by the  <systemitem class="username">opensrf</systemitem> user from your Evergreen server.</para>
 		<procedure>
 			<step> 
 				<para>Create a text file list of the Bibliographic record IDs you would like to export from Evergreen. One way to do this is using SQL:</para>
@@ -735,7 +735,7 @@ SELECT DISTINCT bre.id FROM biblio.record_entry AS bre
 		<title>Importing Authority Records</title>
 		<indexterm><primary>migrating</primary><secondary>importing authority records</secondary></indexterm>
 		<para>The following procedure explains how to export Evergreen bibliographic records into MARC files using the marc_export support script. All steps should be performed by the 
-		opensrf user from your Evergreen server.</para>
+		<systemitem class="username">opensrf</systemitem> user from your Evergreen server.</para>
 		<simplesect>
 			<title>Importing Authority Records from Command Line</title>
 			<para>The major advantages of the command line approach are its speed and its convenience for system administrators who can perform bulk loads of authority records in a 
