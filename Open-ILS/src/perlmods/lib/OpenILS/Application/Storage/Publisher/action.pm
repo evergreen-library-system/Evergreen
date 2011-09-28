@@ -2,7 +2,7 @@ package OpenILS::Application::Storage::Publisher::action;
 use parent qw/OpenILS::Application::Storage::Publisher/;
 use strict;
 use warnings;
-use OpenSRF::Utils::Logger qw/:level/;
+use OpenSRF::Utils::Logger qw/:level :logger/;
 use OpenSRF::Utils qw/:datetime/;
 use OpenSRF::Utils::JSON;
 use OpenSRF::AppSession;
@@ -21,6 +21,24 @@ sub isTrue {
 	return 1 if ($v =~ /^t/io);
 	return 1 if ($v =~ /^y/io);
 	return 0;
+}
+
+sub ou_ancestor_setting_value_or_cache {
+	# cache should be specific to setting
+	my ($actor, $org_id, $setting, $cache) = @_;
+
+	if (not exists $cache->{$org_id}) {
+		my $r = $actor->request(
+			'open-ils.actor.ou_setting.ancestor_default', $org_id, $setting
+		)->gather(1);
+
+		if ($r) {
+			$cache->{$org_id} = $r->{value};
+		} else {
+			$cache->{$org_id} = undef;
+		}
+	}
+	return $cache->{$org_id};
 }
 
 my $parser = DateTime::Format::ISO8601->new;
@@ -1108,6 +1126,9 @@ sub new_hold_copy_targeter {
 	my @successes;
 	my $actor = OpenSRF::AppSession->create('open-ils.actor');
 
+	my $target_when_closed = {};
+	my $target_when_closed_if_at_pickup_lib = {};
+
 	for my $hold (@$holds) {
 		try {
 			#start a transaction if needed
@@ -1274,8 +1295,38 @@ sub new_hold_copy_targeter {
 				# current target
 				next if ($c->id eq $hold->current_copy);
 
-				# circ lib is closed
-				next if ( grep { ''.$_->org_unit eq ''.$c->circ_lib } @closed );
+				# skip on circ lib is closed IFF we care
+				my $ignore_closing;
+
+				if (''.$hold->pickup_lib eq ''.$c->circ_lib) {
+					$ignore_closing = ou_ancestor_setting_value_or_cache(
+                        $actor,
+						''.$c->circ_lib,
+						'circ.holds.target_when_closed_if_at_pickup_lib',
+						$target_when_closed_if_at_pickup_lib
+					) || 0;
+				}
+				if (not $ignore_closing) {  # one more chance to find a reason
+											# to ignore OU closedness.
+					$ignore_closing = ou_ancestor_setting_value_or_cache(
+                        $actor,
+						''.$c->circ_lib,
+						'circ.holds.target_when_closed',
+						$target_when_closed
+					) || 0;
+				}
+
+#				$logger->info(
+#					"For hold " . $hold->id . " and copy with circ_lib " .
+#					$c->circ_lib . " we " .
+#					($ignore_closing ? "ignore" : "respect")
+#					. " closed dates"
+#				);
+
+				next if (
+					(not $ignore_closing) and
+					(grep { ''.$_->org_unit eq ''.$c->circ_lib } @closed)
+				);
 
 				# target of another hold
 				next if (action::hold_request

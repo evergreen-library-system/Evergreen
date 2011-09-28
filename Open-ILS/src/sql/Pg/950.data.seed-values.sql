@@ -4456,6 +4456,23 @@ INSERT into config.org_unit_setting_type
         'If unset, the OPAC (only when wrapped in the staff client!) will default to showing you your ten most recent searches on the left side of the results and record details pages.  If you actually don''t want to see this feature at all, set this value to zero at the top of your organizational tree.',
         'coust', 'description'),
     'integer', null)
+,( 'circ.holds.target_when_closed', 'circ',
+    oils_i18n_gettext('circ.holds.target_when_closed',
+        'Target copies for a hold even if copy''s circ lib is closed',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.holds.target_when_closed',
+        'If this setting is true at a given org unit or one of its ancestors, the hold targeter will target copies from this org unit even if the org unit is closed (according to the actor.org_unit.closed_date table).',
+        'coust', 'description'),
+    'bool', null)
+,( 'circ.holds.target_when_closed_if_at_pickup_lib', 'circ',
+    oils_i18n_gettext('circ.holds.target_when_closed_if_at_pickup_lib',
+        'Target copies for a hold even if copy''s circ lib is closed IF the circ lib is the hold''s pickup lib',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.holds.target_when_closed_if_at_pickup_lib',
+        'If this setting is true at a given org unit or one of its ancestors, the hold targeter will target copies from this org unit even if the org unit is closed (according to the actor.org_unit.closed_date table) IF AND ONLY IF the copy''s circ lib is the same as the hold''s pickup lib.',
+        'coust', 'description'),
+    'bool', null)
+
 
 ,( 'opac.staff.jump_to_details_on_single_hit', 'opac',
     oils_i18n_gettext('opac.staff.jump_to_details_on_single_hit',
