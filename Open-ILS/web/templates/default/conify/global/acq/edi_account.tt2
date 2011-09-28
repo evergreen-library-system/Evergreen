@@ -1,7 +1,8 @@
 [% WRAPPER default/base.tt2 %]
 [% ctx.page_title = 'EDI Accounts' %]
 <style type="text/css">
-    .footer_notes { padding-top: 16px; font-size: smaller; }
+    #pListGrid { min-height: 60px; height: 100%; padding-bottom: 5px; }
+    .footer_notes { font-size: smaller; }
 </style>
 
 <div id='main-list-div'>
