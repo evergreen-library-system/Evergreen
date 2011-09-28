@@ -1,0 +1,330 @@
+#!/bin/bash
+
+GIT_ABS=`git rev-parse --show-toplevel`
+GIT_BRANCH=`git rev-parse --abbrev-ref HEAD | sed 's|.*/||'`
+HEADURLBASE="http://git.evergreen-ils.org/Evergreen.git?h=refs/heads/"
+HEADURL="$HEADURLBASE$GIT_BRANCH"
+
+# Drop to the root of the checkout
+cd $GIT_ABS
+
+VERSION=AUTO # -v (version)
+PREV_BRANCH=AUTO # -f (from)
+PREV_VERSION=AUTO # -F (from version)
+NO_UPGRADE=AUTO # -n
+IS_PREVIEW=AUTO # -p
+TAG_ONLY=NO # -t
+BUILD_ONLY=NO # -b
+
+while getopts ":hv:f:F:nptb" opt; do
+    case $opt in
+        v)
+            VERSION=$OPTARG
+        ;;
+        f)
+            PREV_BRANCH=$OPTARG
+        ;;
+        F)
+            PREV_VERSION=$OPTARG
+        ;;
+        n)
+            NO_UPGRADE=YES
+        ;;
+        p)
+            IS_PREVIEW=YES
+        ;;
+        t)
+            TAG_ONLY=YES
+        ;;
+        b)
+            BUILD_ONLY=YES
+        ;;
+        \?)
+            echo "Invalid Option: -$OPTARG"
+            exit 1
+        ;;
+        :)
+            echo "-$OPTARG requires an argument."
+            exit 1
+        ;;
+        h)
+            echo "$0 [-v VERSION] [-f PREV_BRANCH | -t | -b] [-F PREV_VERSION] [-n] [-p]"
+            echo "   VERSION is auto-detected by default and is based on the currently checked out branch."
+            echo "   PREV_BRANCH is auto-detected by default but that isn't reliable. Include remote name!"
+            echo "   PREV_VERSION Is auto-detected by default and is based on the PREV_BRANCH's name."
+            echo "   -n specifies that you don't want an upgrade script to be auto-generated."
+            echo "   -p specifies that this is a preview build."
+            echo "   -t turns on tag only mode."
+            echo "   -b turns on build only mode."
+            echo "   NOTE: -t and -b override PREV_BRANCH/PREV_VERSION, but -b overrides -t."
+            exit -1
+        ;;
+    esac
+done
+
+if [ $TAG_ONLY = "YES" ]; then
+    PREV_BRANCH="TAG"
+fi
+
+if [ $BUILD_ONLY = "YES" ]; then
+    PREV_BRANCH="PACKAGE"
+fi
+
+if [ $VERSION = "AUTO" ]; then
+    # Auto-pick version based on branch name
+    echo AUTO VERSION
+    VERSION=`echo $GIT_BRANCH | sed 's/^rel_\([0-9]\+\)_\([0-9]\+\)_\([0-9]\+\)_\(.\+\)$/\1.\2.\3-\4/'`
+    VERSION=`echo $VERSION | sed 's/^rel_\([0-9]\+\)_\([0-9]\+\)_\([0-9]\+\)$/\1.\2.\3/'`
+    VERSION=`echo $VERSION | sed 's/^rel_\([0-9]\+\)_\([0-9]\+\)_\(.\+\)$/\1.\2-\3/'`
+    VERSION=`echo $VERSION | sed 's/^rel_\([0-9]\+\)_\([0-9]\+\)$/\1.\2/'`
+    if [ "$VERSION" = "$GIT_BRANCH" ]; then
+        echo "AUTO VERSION FAILED."
+        exit 1
+    fi
+fi
+SHORT_VERSION=`echo $VERSION | grep -o '^[0-9]\+\.[0-9]\+'`
+echo "Version: $VERSION Short: $SHORT_VERSION"
+
+# prep a couple alternate represenations
+DASH_VERSION=`echo $VERSION | sed 's/\./-/g'`
+SHORT_DASH_VERSION=`echo $SHORT_VERSION | sed 's/\./-/g'`
+UNDER_VERSION=`echo $VERSION | sed -e 's/\./_/g;s/-/_/g'`
+
+PREVIEW_TEXT=""
+
+if [ "$IS_PREVIEW" == "YES" ]; then
+    PREVIEW_TEXT="previews/"
+fi
+
+# Release Preamble
+# For adding into README for release builds
+# The head is used to check if we have it already (no need to add it twice)
+RELEASE_PREAMBLE_HEAD="Preamble: Getting an Evergreen official release tarball"
+RELEASE_PREAMBLE=$( cat <<PREAMBLE
+$RELEASE_PREAMBLE_HEAD
+-------------------------------------------------------
+
+To download and extract the source for the current release of Evergreen, issue
+the following commands as the *user* Linux account:
+
+[source, bash]
+------------------------------------------------------------------------------
+wget -c http://evergreen-ils.org/downloads/${PREVIEW_TEXT}Evergreen-ILS-$VERSION.tar.gz
+tar xzf Evergreen-ILS-$VERSION.tar.gz
+------------------------------------------------------------------------------
+
+PREAMBLE
+)
+
+# This defines what the preamble comes before
+RELEASE_PREAMBLE_BEFORE="Preamble: Developer instructions"
+
+if [ $PREV_BRANCH != "TAG" -a $PREV_BRANCH != "PACKAGE" ]; then
+    if [ $PREV_BRANCH = "AUTO" ]; then
+        echo "AUTO PREVIOUS BRANCH"
+        PREV_BRANCH=`echo ${UNDER_VERSION%_*}`
+        PREV_BRANCH=`git branch -r | grep "rel_${PREV_BRANCH}_[^_]\+$" | sort -rV | head -n1`
+        PREV_BRANCH=`echo $PREV_BRANCH`
+        read -p "Does branch $PREV_BRANCH look like the previous version (y/n)?"
+        if [ "$REPLY" != "y" -a "$REPLY" != 'Y' ]; then
+            echo "Please specify the previous branch as second parameter. To continue auto-version, use AUTO as first parameter."
+            exit 1
+        fi
+    fi
+    git show $PREV_BRANCH &>/dev/null
+    if [ $? -ne 0 -o -z "$PREV_BRANCH" ]; then
+        echo "PREVIOUS VERSION COMMIT NOT FOUND";
+        exit 1
+    fi
+    if [ $PREV_VERSION = "AUTO" ]; then
+        echo "AUTO PREVIOUS VERSION"
+        PREV_BRANCH_END=`echo $PREV_BRANCH | sed 's|.*/||'`
+        PREV_VERSION=`echo $PREV_BRANCH_END | sed 's/^rel_\([0-9]\+\)_\([0-9]\+\)_\([0-9]\+\)_\(.\+\)$/\1.\2.\3-\4/'`
+        PREV_VERSION=`echo $PREV_VERSION | sed 's/^rel_\([0-9]\+\)_\([0-9]\+\)_\([0-9]\+\)$/\1.\2.\3/'`
+        PREV_VERSION=`echo $PREV_VERSION | sed 's/^rel_\([0-9]\+\)_\([0-9]\+\)_\(.\+\)$/\1.\2-\3/'`
+        PREV_VERSION=`echo $PREV_VERSION | sed 's/^rel_\([0-9]\+\)_\([0-9]\+\)$/\1.\2/'`
+        if [ "$PREV_VERSION" = "$PREV_BRANCH_END" ]; then
+            echo "AUTO PREVIOUS VERSION FAILED."
+            exit 1
+        fi
+    fi
+    echo "Previous Version: $PREV_VERSION"
+else
+    echo "Tagging or packaging, no need for previous version"
+fi
+
+if [ $PREV_BRANCH != "PACKAGE" ]; then
+
+    echo "Applying to Application.pm - HEAD -> $DASH_VERSION"
+    echo "Alt: $SHORT_DASH_VERSION -> $DASH_VERSION"
+    sed -i -e "s/\"$SHORT_DASH_VERSION[^\"]*\"/\"$DASH_VERSION\"/" -e "s/\"HEAD\"/\"$DASH_VERSION\"/" $GIT_ABS/Open-ILS/src/perlmods/lib/OpenILS/Application.pm
+
+    if [ -f "$GIT_ABS/Open-ILS/xul/staff_client/windowssetup.nsi" ]; then
+        echo "Applying to windowssetup.nsi - Master -> $SHORT_VERSION"
+        sed -i "s/Master/$SHORT_VERSION/" $GIT_ABS/Open-ILS/xul/staff_client/windowssetup.nsi
+    fi
+
+    echo "Applying to README:"
+    echo "Header with $VERSION"
+    echo "STAMP_ID with $UNDER_VERSION"
+    sed -i -e "1 s/Evergreen.*/Evergreen $VERSION/;s/STAMP_ID=rel_[^ ]*/STAMP_ID=rel_$UNDER_VERSION/;1h;2g;2 s/./=/g" $GIT_ABS/README
+
+    if [ $PREV_BRANCH != "TAG" ]; then
+        if [ "$(grep "$RELEASE_PREAMBLE_HEAD" $GIT_ABS/README )" ]; then
+            echo "Updating old download links"
+            sed -i -e "s|\(previews/\)\?Evergreen-ILS-.*\.tar\.gz|${PREVIEW_TEXT}Evergreen-ILS-$VERSION.tar.gz|" $GIT_ABS/README
+            sed -i -e "s| Evergreen-ILS-.*\.tar\.gz| Evergreen-ILS-$VERSION.tar.gz|" $GIT_ABS/README
+        else
+            echo "Adding Download Preamble"
+            perl -pi -e "s|^|$RELEASE_PREAMBLE\n\n| if /$RELEASE_PREAMBLE_BEFORE/" $GIT_ABS/README
+        fi
+    fi
+
+    echo "Applying to configure.ac:"
+    echo "AC_INIT and AM_INIT_AUTOMAKE entries"
+    sed -i -e "s/^\(AC_INIT(Open-ILS, \)[^,]*,/\1$VERSION,/" -e "s/^\(AM_INIT_AUTOMAKE(\[[^]]*], \[\)[^]]*]/\1$VERSION]/" configure.ac
+
+    echo "Finding/updating old \$HeadURL\$ entries"
+    HEADURLBASE=`echo ${HEADURLBASE} | sed 's/\?/\\?/'`
+    for file in `grep -Rl --exclude=make_release.sh "$HEADURLBASE" $GIT_ABS`
+    do
+        echo $file
+        sed -i "s|${HEADURLBASE}[A-Za-z0-9_]*|$HEADURL|" $file
+    done
+
+    echo "Applying \$HeadURL\$ - $HEADURL"
+    for file in `grep -Rl --exclude=apply_version.sh '\\$HeadURL\\$' $GIT_ABS`
+    do
+        echo $file
+        sed -i "s|\\\$HeadURL\\\$|$HEADURL|" $file
+    done
+
+    if [ "$PREV_BRANCH" = "TAG" ]; then
+        echo "Committing (but not pushing) the lot of it"
+        git commit -asm "Tagging version"
+        exit 0;
+    fi
+
+    echo "Applying version to 002.schema.config.sql:"
+    echo "config.upgrade_log entry for $VERSION"
+    sed -i -e "s/\(INSERT INTO config.upgrade_log (version[^)]*) VALUES ('\)[0-9]*\('.*;\).*/&\n\1$VERSION\2/" $GIT_ABS/Open-ILS/src/sql/Pg/002.schema.config.sql;
+
+    if [ "$NO_UPGRADE" = "AUTO" ]; then
+        echo "Checking for DB upgrade potential...."
+        git ls-tree --name-only $PREV_BRANCH -- Open-ILS/src/sql/Pg/upgrade/ | cut -d/ -f6 | cut -d. -f1 | sort > old_upgrades.txt
+        git ls-tree --name-only HEAD -- Open-ILS/src/sql/Pg/upgrade/ | cut -d/ -f6 | cut -d. -f1 | sort > new_upgrades.txt
+        UPGRADE_CHECK=`diff old_upgrades.txt new_upgrades.txt | grep '^>' | cut -d' ' -f2`
+        UPGRADE_FILE=Open-ILS/src/sql/Pg/version-upgrade/$PREV_VERSION-$VERSION-upgrade-db.sql
+        if [ -f "$UPGRADE_FILE" ]; then
+            echo "Upgrade script for $PREV_VERSION-$VERSION already exists. Skipping."
+            UPGRADE_FILE=""
+        elif [ -n "$UPGRADE_CHECK" ]; then
+            echo "Found Upgrade Files! Building Upgrade Script."
+            echo "--Upgrade Script for $PREV_VERSION to $VERSION" > $UPGRADE_FILE
+            echo "BEGIN;" >> $UPGRADE_FILE
+            grep "config.upgrade_log.*$VERSION" Open-ILS/src/sql/Pg/002.schema.config.sql >> $UPGRADE_FILE
+            for NUM in $UPGRADE_CHECK; do
+                cat Open-ILS/src/sql/Pg/upgrade/$NUM.* 2>/dev/null | grep -v '^\s*\(BEGIN\|COMMIT\);\s*$' >> $UPGRADE_FILE
+            done;
+            echo "COMMIT;" >> $UPGRADE_FILE
+            MAYBE_DUPES=`grep -oP 'CREATE (OR REPLACE )?FUNCTION +\K[^ ]*(?= *\()' $UPGRADE_FILE | sort | grep -P '^(.*)\n\1$' | sort -u`
+            if [ -n "$MAYBE_DUPES" ]; then
+                echo ""
+                echo "The following functions may be needlessly duplicated in the upgrade script:"
+                echo "$MAYBE_DUPES"
+                echo ""
+                echo "For reference, I am writing the list to maybe_dupes.txt"
+                echo "$MAYBE_DUPES" > maybe_dupes.txt
+            fi
+            echo ""
+            read -p "Please manually check the upgrade file."
+            ${EDITOR:-vi} $UPGRADE_FILE
+            git add $UPGRADE_FILE
+        fi
+    fi
+
+    grep -i -m 1 Signed-off-by ChangeLog &> /dev/null
+    if [ $? -ne 0 ]; then
+        echo "Building ChangeLog"
+        # git2cl doesn't seem to play nice with piping from git log. So write to a file, then push that into git2cl.
+        git log --cherry-pick --right-only --no-merges --pretty --summary --numstat $PREV_BRANCH..HEAD > ChangeLog.temp
+        git2cl < ChangeLog.temp > $GIT_ABS/ChangeLog
+        rm ChangeLog.temp
+    else
+        echo "Not overwriting existing ChangeLog!"
+    fi
+
+    echo "Committing (but not pushing) the lot of it"
+    COMMIT_MESSAGE="Bumping version numbers and adding Changelog"
+    if [ -n "$UPGRADE_FILE" ]; then
+        COMMIT_MESSAGE="Bumping version numbers, adding Upgrade Script and Changelog"
+    fi
+    git commit -asm "$COMMIT_MESSAGE"
+fi
+
+echo "Building release dump"
+cd $GIT_ABS
+mkdir -p ../release
+git archive --prefix=Evergreen-ILS-$VERSION/ HEAD | (cd ../release && tar xf -)
+cd ../release/Evergreen-ILS-$VERSION
+if [ -f ./autogen.sh ]; then
+    echo "Running autogen"
+    ./autogen.sh
+else
+    echo "Running autoreconf"
+    autoreconf -i
+fi
+cd build/i18n
+echo "Building i18n"
+make install_all_locales
+echo "i18n Cleanup"
+cd ..
+rm -rf i18n
+echo "Installing Dojo"
+cd ..
+if [ ! -f "../dojo.tgz" ]; then
+    wget http://evergreen-ils.org/downloads/dojo.tgz -O ../dojo.tgz
+fi
+tar xzf ../dojo.tgz -C Open-ILS/web/js/dojo/
+echo "Grabbing XULRunner (to avoid issues with version changes)"
+cd Open-ILS/xul/staff_client
+XULRUNNER_VERSION=`grep '^XULRUNNER_VERSION' Makefile.am`
+XULRUNNER_VERSION=${XULRUNNER_VERSION##XULRUNNER_VERSION=}
+wget http://download02.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSION/runtimes/xulrunner-$XULRUNNER_VERSION.en-US.win32.zip
+wget http://download02.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSION/runtimes/xulrunner-$XULRUNNER_VERSION.en-US.linux-i686.tar.bz2
+
+echo "Prepping server download files"
+cd ../../../../
+tar czf Evergreen-ILS-$VERSION.tar.gz Evergreen-ILS-$VERSION/
+md5sum Evergreen-ILS-$VERSION.tar.gz > Evergreen-ILS-$VERSION.tar.gz.md5
+if [ $PREV_BRANCH != "PACKAGE" ]; then # We need to have tagged to do this ;)
+    cp Evergreen-ILS-$VERSION/ChangeLog ChangeLog-$PREV_VERSION-$VERSION
+fi
+
+echo "Running enough of configure to build staff client"
+cd Evergreen-ILS-$VERSION/
+./configure --disable-core --disable-web --disable-updates --disable-apache-modules --disable-reporter
+
+echo "Building Release Staff Clients"
+cd Open-ILS/xul/staff_client
+make rigrelease
+make STAFF_CLIENT_STAMP_ID=rel_$UNDER_VERSION build
+make win-client
+mv evergreen_staff_client_setup.exe ../../../../evergreen-setup-$VERSION.exe
+make linux-client
+mv evergreen_staff_client.tar.bz2 ../../../../evergreen-client-$VERSION.tar.bz2
+cd ../../../../
+md5sum evergreen-setup-$VERSION.exe > evergreen-setup-$VERSION.exe.md5
+md5sum evergreen-client-$VERSION.tar.bz2 > evergreen-client-$VERSION.tar.bz2.md5
+
+echo "Removing build directory"
+rm -rf Evergreen-ILS-$VERSION/
+
+echo ""
+echo "FOR YOU TODO:"
+echo "* TEST the release"
+if [ $PREV_BRANCH != "PACKAGE" ]; then
+    echo "* Push release branch"
+fi
+echo "* Upload files"
+echo "* Send emails"
