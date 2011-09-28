@@ -9,6 +9,7 @@
         <link rel="stylesheet" type="text/css" href="[% ctx.media_prefix %]/css/skin/default/opac/style.css" />
         <title>[% l('Catalog - [_1]', ctx.page_title) %]</title>
         <link rel="unapi-server" type="application/xml" title="unAPI" href="/opac/extras/unapi" />
+        [% INCLUDE 'opac/parts/goog_analytics.tt2' %]
     </head>
     <body>
         [% content %] 

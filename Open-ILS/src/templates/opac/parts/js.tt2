@@ -40,21 +40,3 @@
     IF CGI.https; url = url.replace('^http:', 'https:'); END; %]
 <script type='text/javascript' id='EIT' src='[% url %]'></script>
 [%- END %]
-
-[%- IF google_analytics.enabled == 'true' %]
-<!-- Google Analytics -->
-<script type="text/javascript">
-/* uncomment when ready */ /*
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', '[% google_analytics.code %]']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-*/
-</script>
-<!-- End Google Analytics -->
-[%- END %]
