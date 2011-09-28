@@ -3197,6 +3197,8 @@ sub clear_shelf_cache {
                         first_given_name second_given_name family_name alias
                     /],
                     "acn" => ["label"],
+                    "acnp" => [{column => "label", alias => "prefix"}],
+                    "acns" => [{column => "label", alias => "suffix"}],
                     "bre" => ["marc"],
                     "acpl" => ["name"],
                     "ahr" => ["id"]
@@ -3211,6 +3213,12 @@ sub clear_shelf_cache {
                                     "join" => {
                                         "bre" => {
                                             "field" => "id", "fkey" => "record"
+                                        },
+                                        "acnp" => {
+                                            "field" => "id", "fkey" => "prefix"
+                                        },
+                                        "acns" => {
+                                            "field" => "id", "fkey" => "suffix"
                                         }
                                     }
                                 },

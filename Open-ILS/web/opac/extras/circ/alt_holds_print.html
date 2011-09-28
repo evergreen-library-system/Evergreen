@@ -46,6 +46,7 @@
                     cgi.param("ses") || dojo.cookie("ses");
 
                 if (cgi.param("do") == "shelf_expired_holds") {
+                    dojo.query("th[name=barcode_part]")[0].innerHTML = "Barcode";  /* XXX i18n. also, no support for part labels in this interface, at least for now */
                     dojo.byId("clear_holds_launcher").onclick = function() {
                         if (confirm("Are you sure you're ready to clear the expired holds from the shelf?")) { /* XXX i18n */
                             do_clear_holds(cgi);
@@ -81,7 +82,7 @@
                     <th>Author</th>
                     <th>Shelving Location</th>
                     <th>Call Number</th>
-                    <th>Barcode/Part</th>
+                    <th name="barcode_part">Barcode/Part</th>
                 </tr>
             </thead>
             <tbody id='target'>
