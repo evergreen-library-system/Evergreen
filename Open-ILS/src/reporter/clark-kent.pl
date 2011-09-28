@@ -478,13 +478,13 @@ sub build_html {
 	print $debug "<html><head><meta charset='utf-8'><title>DEBUG: $$r{report}{name}</title></head><body>";
 
 	{	no warnings;
-		print $debug '<h1>Generated SQL</h1><pre>' . $r->{resultset}->toSQL() . "</pre><a href='$file'>Back to output index</a><hr/>";
-		print $debug '<h1>Template</h1><pre>' . Dumper( $r->{report}->{template} ) . "</pre><a href='$file'>Back to output index</a><hr/>";
-		print $debug '<h1>Template Data</h1><pre>' . Dumper( OpenSRF::Utils::JSON->JSON2perl( $r->{report}->{template}->{data} ) ) . "</pre><a href='$file'>Back to output index</a><hr/>";
-		print $debug '<h1>Report Parameter</h1><pre>' . Dumper( $r->{report} ) . "</pre><a href='$file'>Back to output index</a><hr/>";
-		print $debug '<h1>Report Parameter Data</h1><pre>' . Dumper( OpenSRF::Utils::JSON->JSON2perl( $r->{report}->{data} ) ) . "</pre><a href='$file'>Back to output index</a><hr/>";
-		print $debug '<h1>Report Run Time</h1><pre>' . $r->{resultset}->relative_time . "</pre><a href='$file'>Back to output index</a><hr/>";
-		print $debug '<h1>OpenILS::Reporter::SQLBuilder::ResultSet Object</h1><pre>' . Dumper( $r->{resultset} ) . "</pre><a href='$file'>Back to output index</a>";
+		print $debug '<h1>Generated SQL</h1><pre>' . $r->{resultset}->toSQL() . "</pre><a href='report-data.html'>Back to output index</a><hr/>";
+		print $debug '<h1>Template</h1><pre>' . Dumper( $r->{report}->{template} ) . "</pre><a href='report-data.html'>Back to output index</a><hr/>";
+		print $debug '<h1>Template Data</h1><pre>' . Dumper( OpenSRF::Utils::JSON->JSON2perl( $r->{report}->{template}->{data} ) ) . "</pre><a href='report-data.html'>Back to output index</a><hr/>";
+		print $debug '<h1>Report Parameter</h1><pre>' . Dumper( $r->{report} ) . "</pre><a href='report-data.html'>Back to output index</a><hr/>";
+		print $debug '<h1>Report Parameter Data</h1><pre>' . Dumper( OpenSRF::Utils::JSON->JSON2perl( $r->{report}->{data} ) ) . "</pre><a href='report-data.html'>Back to output index</a><hr/>";
+		print $debug '<h1>Report Run Time</h1><pre>' . $r->{resultset}->relative_time . "</pre><a href='report-data.html'>Back to output index</a><hr/>";
+		print $debug '<h1>OpenILS::Reporter::SQLBuilder::ResultSet Object</h1><pre>' . Dumper( $r->{resultset} ) . "</pre><a href='report-data.html'>Back to output index</a>";
 	}
 
 	print $debug '</body></html>';
