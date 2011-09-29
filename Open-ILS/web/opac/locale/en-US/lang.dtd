@@ -855,6 +855,7 @@
 <!ENTITY staff.main.menu.admin.client.toolbars.label_position "Label Position">
 <!ENTITY staff.main.menu.admin.client.toolbars.label_position.side "Next to icons">
 <!ENTITY staff.main.menu.admin.client.toolbars.label_position.under "Under icons">
+<!ENTITY staff.main.menu.admin.client.copy_editor.copy_location.label "Copy Editor: Copy Location Name First">
 <!ENTITY staff.main.menu.admin.non_cat_type_edit.accesskey "n">
 <!ENTITY staff.main.menu.admin.non_cat_type_edit.label "Non-Cataloged Type Editor">
 <!ENTITY staff.main.menu.admin.offline_xacts.accesskey "T">

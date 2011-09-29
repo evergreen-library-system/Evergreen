@@ -140,6 +140,14 @@ main.menu.prototype = {
             }
         }
 
+        var cl_first = xulG.pref.getBoolPref('oils.copy_editor.copy_location_name_first');
+        var menuitems = document.getElementsByAttribute('command','cmd_copy_editor_copy_location_first_toggle');
+        for(var i = 0; i < menuitems.length; i++)
+            menuitems[i].setAttribute('checked', cl_first ? 'true' : 'false');
+
+        xulG.pref.addObserver('', this, false);
+        window.addEventListener("unload", function(e) { this.stop_observing(); }, false);
+
         var network_meter = String( obj.data.hash.aous['ui.network.progress_meter'] ) == 'true';
         if (! network_meter) {
             var x = document.getElementById('network_progress');
@@ -1653,6 +1661,13 @@ main.menu.prototype = {
                     }
                 }
             ],
+            'cmd_copy_editor_copy_location_first_toggle' : [
+                ['oncommand'],
+                function() {
+                    var curvalue = xulG.pref.getBoolPref('oils.copy_editor.copy_location_name_first');
+                    xulG.pref.setBoolPref('oils.copy_editor.copy_location_name_first', !curvalue);
+                }
+            ],
         };
 
         JSAN.use('util.controller');
@@ -2436,6 +2451,25 @@ commands:
         else
             // user_false is used to indicate the user said "None of the above" to avoid fall-through erroring later.
             return "user_false";
+    },
+
+    'observe' : function(subject, topic, data) {
+        if (topic != "nsPref:changed") {
+            return;
+        }
+
+        switch(data) {
+            case 'oils.copy_editor.copy_location_name_first':
+                var cl_first = xulG.pref.getBoolPref('oils.copy_editor.copy_location_name_first');
+                var menuitems = document.getElementsByAttribute('command','cmd_copy_editor_copy_location_first_toggle');
+                for(var i = 0; i < menuitems.length; i++)
+                    menuitems[i].setAttribute('checked', cl_first ? 'true' : 'false');
+            break;
+        }
+    },
+
+    'stop_observing' : function() {
+        xulG.pref.removeObserver('oils.copy_editor.*', this);
     }
 }
 

@@ -52,6 +52,15 @@ function my_init() {
 
         g.callnumbers = xul_param('callnumbers',{'concat':true,'JSON2js_if_cgi':true,'JSON2js_if_xpcom':true,'stash_name':'temp_callnumbers','clear_xpcom':true,'modal_xulG':true});
 
+        /******************************************************************************************************/
+        /* Get preference (if it exists) for copy location label order */
+
+        g.cl_first = false; // Default to legacy OU first mode
+        var prefs = Components.classes['@mozilla.org/preferences-service;1']
+            .getService(Components.interfaces['nsIPrefBranch']);
+        try {
+            g.cl_first = prefs.getBoolPref('oils.copy_editor.copy_location_name_first');
+        } catch(E) { }
 
         /******************************************************************************************************/
         /* Quick fix, this was defined inline in the global scope but now needs g.error and g.copies from my_init */
@@ -929,7 +938,7 @@ g.panes_and_field_names = {
         $('catStrings').getString('staff.cat.copy_editor.field.location.label'),
         { 
             render: 'typeof fm.location() == "object" ? fm.location().name() : g.data.lookup("acpl",fm.location()).name()', 
-            input: 'c = function(v){ g.apply("location",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( g.get_acpl_list(), function(obj) { return [ g.data.hash.aou[ obj.owning_lib() ].shortname() + " : " + obj.name(), obj.id() ]; }).sort()); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+            input: 'c = function(v){ g.apply("location",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( g.get_acpl_list(), function(obj) { return [ ' + (g.cl_first ? 'obj.name() + " : " + g.data.hash.aou[ obj.owning_lib() ].shortname()' : 'g.data.hash.aou[ obj.owning_lib() ].shortname() + " : " + obj.name()') + ', obj.id() ]; }).sort()); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 
         }
     ],

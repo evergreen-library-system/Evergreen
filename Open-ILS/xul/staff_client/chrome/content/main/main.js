@@ -321,6 +321,7 @@ function main_init() {
         G =  {};
         
         G.pref = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+        G.pref.QueryInterface(Components.interfaces.nsIPrefBranch2);
         if (! G.pref.prefHasUserValue('general.useragent.override')) {
             G.pref.setCharPref('general.useragent.override',navigator.userAgent + ' oils_xulrunner /xul/server/');
         }

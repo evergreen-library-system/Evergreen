@@ -263,6 +263,7 @@
     <command id="cmd_debug_chrome_shell"
              perm="DEBUG_CLIENT"
              />
+    <command id="cmd_copy_editor_copy_location_first_toggle" />
 </commandset>
 
 <!-- The File menu on the main menu -->
@@ -428,6 +429,7 @@
                 <menuitem label="&staff.server.admin.index.printer;" command="cmd_local_admin_printer"/>
                 <menuitem label="&staff.main.menu.admin.template_edit.label;" accesskey="&staff.main.menu.admin.template_edit.accesskey;" command="cmd_print_list_template_edit"/>
                 <menuitem label="&staff.server.admin.index.fonts_and_sounds;" command="cmd_local_admin_fonts_and_sounds"/>
+                <menuitem type="checkbox" label="&staff.main.menu.admin.client.copy_editor.copy_location.label;" command="cmd_copy_editor_copy_location_first_toggle"/>
                 <menu id="main.menu.admin.client.hotkeys" label="&staff.main.menu.admin.client.hotkeys;">
                     <menupopup id="main.menu.admin.client.hotkeys.popup">
                         <menuitem label="&staff.main.menu.admin.client.hotkeys.toggle.label;" accesskey="&staff.main.menu.admin.client.hotkeys.toggle.accesskey;" type="checkbox" autocheck="false" command="cmd_hotkeys_toggle"/>
