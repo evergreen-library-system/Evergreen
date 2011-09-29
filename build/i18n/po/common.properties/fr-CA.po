@@ -4,19 +4,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > common.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-23 23:36-0400\n"
-"PO-Revision-Date: 2008-09-08 09:34-0500\n"
-"Last-Translator: Warren Layton\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2010-04-09 13:56+0000\n"
+"Last-Translator: Alexandre C <Unknown>\n"
 "Language-Team: NRCan Library\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"X-Generator: Translate Toolkit 1.3.0\n"
+"X-Generator: Translate Toolkit 1.8.1\n"
 "X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-05-18 04:40+0000\n"
+"X-Poedit-Country: Canada\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-Country: Canada\n"
 
 #: common.exception
 msgid ""
@@ -51,6 +51,10 @@ msgstr "Effacer"
 #: common.confirm
 msgid "Check here to confirm this message."
 msgstr "Cochez ici pour confirmer ce message."
+
+#: common.cancelled
+msgid "Action Cancelled"
+msgstr "Action annulée"
 
 #: common.error.default
 msgid "Please report that this happened."
@@ -93,8 +97,8 @@ msgstr "Action terminée."
 
 #. # common.grouping_string = the string that should be inserted between elements of a grouped list
 #: common.grouping_string
-msgid ","
-msgstr ","
+msgid ", "
+msgstr ""
 
 #: common.unimplemented
 msgid "Not yet implemented"
@@ -136,11 +140,16 @@ msgstr ""
 
 #: openils.global_util.content_window.error
 msgid "Error with get_contentWindow(%1$s): %2$s"
-msgstr "Erreur dans la méthode get_contentWindow(%1$s) : %2$s "
+msgstr "Erreur dans la méthode get_contentWindow(%1$s) : %2$s"
 
 #: openils.global_util.font_size.error
 msgid "Error adjusting the font size: %1$s"
 msgstr "Erreur de modification de la taille de la police : %1$s"
+
+#. # Appended to notes with certain settings enabled.  First position is staff initials, and second position is a date for when the initials were added.
+#: staff.initials.format
+msgid "[ %1$s %2$s @ %3$s ]"
+msgstr ""
 
 #: staff.acp_label_barcode
 msgctxt "staff.acp_label_barcode"
@@ -163,9 +172,18 @@ msgstr "Bibliothèque de prêt"
 msgid "Circulation Modifier"
 msgstr "Modificateur de prêt"
 
+#. # %1$s = circ modifier code, %2$s = circ modifier name, %3$s = circ modifier description
+#: staff.circ_modifier.display
+msgid "%1$s : %2$s : %3$s"
+msgstr ""
+
 #: staff.acp_label_copy_number
 msgid "Copy Number"
 msgstr "Numéro d’exemplaire"
+
+#: staff.acp_label_parts
+msgid "Part"
+msgstr ""
 
 #: staff.acp_label_deposit_amount
 msgid "Deposit Amount"
@@ -225,6 +243,14 @@ msgstr "Type"
 msgid "Holdable Formats"
 msgstr "Formats de la mise en réserve"
 
+#: staff.ahr_holdable_part_label
+msgid "Holdable Part"
+msgstr ""
+
+#: staff.ahr_issuance_label_label
+msgid "Issuance Label"
+msgstr ""
+
 #: staff.ahr_id_label
 msgid "Hold ID"
 msgstr "ID de la mise en réserve"
@@ -251,7 +277,7 @@ msgstr "Ampleur de la sélection"
 
 #: staff.ahr_top_of_queue_label
 msgid "Top of Queue"
-msgstr ""
+msgstr "Début de la liste"
 
 #: staff.ahr_status_label
 msgctxt "staff.ahr_status_label"
@@ -273,7 +299,7 @@ msgstr "Date d’échéance"
 
 #: staff.circ_label_due_time
 msgid "Due Time"
-msgstr ""
+msgstr "Heure d'échéance"
 
 #: staff.circ_label_id
 msgid "Circulation ID"
@@ -311,19 +337,19 @@ msgstr "Paiment actuel"
 
 #: staff.csp_id_label
 msgid "Penalty Type ID"
-msgstr ""
+msgstr "ID de type de pénalité"
 
 #: staff.csp_name_label
 msgid "Name"
-msgstr ""
+msgstr "Nom"
 
 #: staff.csp_label_label
 msgid "Label"
-msgstr ""
+msgstr "Étiquette"
 
 #: staff.csp_block_list_label
 msgid "Block List"
-msgstr ""
+msgstr "Bloquer la liste"
 
 #: staff.csp_block_circ_label
 msgid "Blocks Circulations?"
@@ -342,61 +368,60 @@ msgctxt "staff.csp_block_circ_yes"
 msgid "Yes"
 msgstr "Oui"
 
-# extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/common.properties
 #: staff.csp_block_circ_no
+msgctxt "staff.csp_block_circ_no"
+"staff.csp_block_circ_no"
 msgid ""
-"_: staff.csp_block_circ_no\n"
-""
 msgstr ""
-"Project-Id-Version: Evergreen ILS > common.properties.po\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-16 11:08-0400\n"
-"PO-Revision-Date: 2008-09-08 09:34-0500\n"
-"Last-Translator: Warren Layton\n"
-"Language-Team: NRCan Library\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"X-Generator: Translate Toolkit 1.1.1\n"
-"X-Accelerator-Marker: &\n"
-"X-Poedit-Language: French\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-Country: Canada\n"
 
 #: staff.csp_block_renew_yes
 msgctxt "staff.csp_block_renew_yes"
 msgid "Yes"
 msgstr "Oui"
 
+#: staff.csp_block_renew_no
+msgctxt "staff.csp_block_renew_no"
+msgid ""
+msgstr ""
+
 #: staff.csp_block_hold_yes
 msgctxt "staff.csp_block_hold_yes"
 msgid "Yes"
 msgstr "Oui"
 
-#: staff.ausp_id_label
-msgid "Penalty ID"
+#: staff.csp_block_hold_no
+msgctxt "staff.csp_block_hold_no"
+msgid ""
 msgstr ""
+
+#: staff.ausp_id_label
+#, fuzzy
+msgid "Penalty ID "
+msgstr "ID de pénalité"
 
 #: staff.ausp_staff_label
-msgid "Applied By"
-msgstr ""
+#, fuzzy
+msgid "Applied By "
+msgstr "Appliqué par"
 
 #: staff.ausp_set_date_label
-msgid "Applied On"
-msgstr ""
+#, fuzzy
+msgid "Applied On "
+msgstr "Appliqué le"
 
 #: staff.ausp_note_label
-msgctxt "staff.ausp_note_label"
-msgid "Note"
+#, fuzzy
+msgid "Note "
 msgstr "Note"
 
 #: staff.ausp_org_unit_label
-msgid "Library"
-msgstr ""
+#, fuzzy
+msgid "Library "
+msgstr "Bibliothèque"
 
 #: staff.mbts_id_label
-msgid "Bill #"
+#, fuzzy
+msgid "Bill # "
 msgstr "No de facture"
 
 #: staff.mbts_xact_start_label
@@ -784,7 +809,8 @@ msgid "Offline interface synchronized with server."
 msgstr "Interface hors ligne synchronisée avec le serveur."
 
 #: staff.main.gen_offline_widgets.noncat_sort.error
-msgid "error in noncat sorting:"
+#, fuzzy
+msgid "error in noncat sorting: "
 msgstr "erreur de triage des articles non catalogués :"
 
 #: staff.main.gen_offline_widgets.please_wait
@@ -807,21 +833,25 @@ msgstr "Erreur d’inscription au poste de travail (%1$s)"
 msgid "Registration successful"
 msgstr "Inscription terminée"
 
+#: staff.main.gen_offline_widgets.registration.empty
+msgid "Please specify a workstation name"
+msgstr ""
+
 #: staff.util.timestamp_dialog.future_date_disallowed
 msgid "Future dates disallowed."
-msgstr ""
+msgstr "Dates dans le futur refusées."
 
 #: staff.util.timestamp_dialog.past_date_disallowed
 msgid "Past dates disallowed."
-msgstr ""
+msgstr "Dates dans le passé refusées."
 
 #: staff.util.timestamp_dialog.today_disallowed
 msgid "Today disallowed."
-msgstr ""
+msgstr "Aujourd'hui refusé."
 
 #: tab.label.triggered_events_for_copy
 msgid "Triggered Events: %1$s"
-msgstr ""
+msgstr "Évènements déclenchés : %1 $s"
 
 #~ msgid "Expire Time"
 #~ msgstr "Heure d’expiration"

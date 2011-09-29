@@ -4,19 +4,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > patron.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-23 23:36-0400\n"
-"PO-Revision-Date: 2008-11-27 14:04-0500\n"
-"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2011-04-11 17:27+0000\n"
+"Last-Translator: Tubuntu <Unknown>\n"
 "Language-Team: French - Canadian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Translate Toolkit 1.3.0\n"
+"X-Generator: Translate Toolkit 1.8.1\n"
 "X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-05-18 04:47+0000\n"
+"X-Poedit-Country: Canada\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-Country: Canada\n"
 
 #: staff.patron.barcode_entry.user_permission_editor
 msgid "User Permission Editor"
@@ -76,13 +76,19 @@ msgstr "affichage d’ensemble de clients"
 msgid "spawning user perm editor"
 msgstr "éditeur de permission pour l’ensemble des utilisateurs"
 
+#: staff.patron.bill_interface.payment_pending.column_header
+msgid "Payment Pending"
+msgstr "Paiement en suspens"
+
 #: staff.patron.bill_cc_info.need_cc_number
 msgid "You must provide a credit card number"
-msgstr ""
+msgstr "Vous devez fournir un numéro de carte de crédit"
 
 #: staff.patron.bill_cc_info.need_approval_code
 msgid "You must provide an approval code or an imprint slip number"
 msgstr ""
+"Vous devez fournir un code d’approbation ou le numéro du bordereau de "
+"l’adresse bibliographique"
 
 #: staff.patron.bill_details.my_init.error
 msgid "bill_details.xul, my_init:"
@@ -91,30 +97,31 @@ msgstr "bill_details.xul, my_init :"
 #: staff.patron.bill_details.handle_edit_bill_note.note_dialog.title
 msgctxt "staff.patron.bill_details.handle_edit_bill_note.note_dialog.title"
 msgid "Replacement Note"
-msgstr ""
+msgstr "Note concernant le remplacement"
 
 #: staff.patron.bill_details.handle_edit_bill_note.note_dialog.prompt
 msgctxt "staff.patron.bill_details.handle_edit_bill_note.note_dialog.prompt"
 msgid "Enter new note:"
-msgstr ""
+msgstr "Ajoutez une nouvelle note :"
 
 #: staff.patron.bill_details.handle_edit_bill_note.failure
 msgid "Note for selected bills not likely updated."
-msgstr ""
+msgstr "Note for selected bills not likely updated."
 
 #: staff.patron.bill_details.handle_edit_payment_note.note_dialog.title
 msgctxt "staff.patron.bill_details.handle_edit_payment_note.note_dialog.title"
 msgid "Replacement Note"
-msgstr ""
+msgstr "Note concernant le remplacement"
 
 #: staff.patron.bill_details.handle_edit_payment_note.note_dialog.prompt
 msgctxt "staff.patron.bill_details.handle_edit_payment_note.note_dialog.prompt"
 msgid "Enter new note:"
-msgstr ""
+msgstr "Ajoutez une nouvelle note :"
 
 #: staff.patron.bill_details.handle_edit_payment_note.failure
 msgid "Note for selected payments not likely updated."
 msgstr ""
+"La note concernant les paiements sélectionnés n’est probablement pas à jour"
 
 #: staff.patron.bill_details.handle_void.voided_billings.alert
 msgid "All selected billings have already voided."
@@ -150,11 +157,6 @@ msgstr "Cochez ici pour confirmer ce message."
 msgctxt "staff.patron.bill_details.handle_void.voiding_error"
 msgid "Error voiding bills."
 msgstr "Une erreur s’est produite lors de l’annulation des factures."
-
-#: staff.patron.bill_details.handle_void.billings_voided
-msgctxt "staff.patron.bill_details.handle_void.billings_voided"
-msgid "Billings voided."
-msgstr "Facturations annulées."
 
 #: staff.patron.bill_history.retrieve_mbts_for_list.close_win_try_again
 msgid "Please close this window and try again."
@@ -197,9 +199,107 @@ msgctxt "staff.patron.bill_history.handle_add.confirm_message"
 msgid "Check here to confirm this message"
 msgstr "Cochez ici pour confirmer ce message"
 
+#: staff.patron.bill_history.handle_void.message_plural
+msgid "Are you sure you would like to void all billings on bills %1$s?"
+msgstr "Voulez-vous vraiment annuler la création des factures %1$s?"
+
+#: staff.patron.bill_history.handle_void.message_singular
+msgid "Are you sure you would like to void all billings on bill %1$s?"
+msgstr "Voulez-vous vraiment annuler la création de la facture %1$s?"
+
+#: staff.patron.bill_history.handle_void.title
+#, fuzzy
+msgctxt "staff.patron.bill_history.handle_void.title"
+msgid "Void All Billings"
+msgstr "Annuler toutes les factures"
+
+#: staff.patron.bill_history.handle_void.btn_yes
+#, fuzzy
+msgctxt "staff.patron.bill_history.handle_void.btn_yes"
+msgid "Yes"
+msgstr "Oui"
+
+#: staff.patron.bill_history.handle_void.btn_no
+#, fuzzy
+msgctxt "staff.patron.bill_history.handle_void.btn_no"
+msgid "No"
+msgstr "Non"
+
+#: staff.patron.bill_history.handle_void.confirm_message
+#, fuzzy
+msgctxt "staff.patron.bill_history.handle_void.confirm_message"
+msgid "Check here to confirm this message"
+msgstr "Cochez ici pour confirmer ce message."
+
+#: staff.patron.bills.handle_refund.message_plural
+msgid ""
+"Are you sure you would like to refund excess payment on bills %1$s?  This "
+"action will simply put the amount in the Payment Pending column as a "
+"negative value.  You must still select Apply Payment!  Certain types of "
+"payments may not be refunded.  The refund may be applied to checked "
+"transactions that follow the refunded transaction."
+msgstr ""
+"Voulez-vous vraiment rembourser les paiements excédentaires des factures %"
+"1$s? Ce choix affichera le montant comme une valeur négative dans la colonne "
+"« Paiement en suspens ». Vous devez sélectionner la commande « Effectuer le "
+"paiement »!  Certains paiements ne seront peut-être pas remboursés. Le "
+"remboursement s’applique aux transactions cochées qui suivent la transaction "
+"remboursée."
+
+#: staff.patron.bills.handle_refund.message_singular
+msgid ""
+"Are you sure you would like to refund excess payment on bill %1$s?  This "
+"action will simply put the amount in the Payment Pending column as a "
+"negative value.  You must still select Apply Payment!  Certain types of "
+"payments may not be refunded.  The refund may be applied to checked "
+"transactions that follow the refunded transaction."
+msgstr ""
+"Voulez-vous vraiment rembourser les paiements excédentaires de la facture %"
+"1$s? Ce choix affichera le montant comme une valeur négative dans la colonne "
+"« Paiement en suspens ». Vous devez sélectionner la commande « Effectuer le "
+"paiement »!  Certains paiements ne seront peut-être pas remboursés. Le "
+"remboursement s’applique aux transactions qui suivent la transaction "
+"remboursée."
+
+#: staff.patron.bills.handle_refund.title
+msgid "Refund Excess Payment"
+msgstr "Rembourser le paiement excédentaire"
+
+#: staff.patron.bills.handle_refund.btn_yes
+#, fuzzy
+msgctxt "staff.patron.bills.handle_refund.btn_yes"
+msgid "Yes"
+msgstr "Oui"
+
+#: staff.patron.bills.handle_refund.btn_no
+#, fuzzy
+msgctxt "staff.patron.bills.handle_refund.btn_no"
+msgid "No"
+msgstr "Non"
+
+#: staff.patron.bills.handle_refund.confirm_message
+#, fuzzy
+msgctxt "staff.patron.bills.handle_refund.confirm_message"
+msgid "Check here to confirm this message"
+msgstr "Cochez ici pour confirmer ce message."
+
 #: staff.patron.bill_history.print_bills.print_error
 msgid "printing bills"
 msgstr "impression des factures"
+
+#: staff.patron.bill_history.column.xact_type.label
+msgid "Transaction Type"
+msgstr "Type de transaction"
+
+#: staff.patron.bill_history.column.last_billing_type.label
+msgid "Last Billing Type"
+msgstr "Type de la dernière facture"
+
+#: staff.patron.bill_history.column.title.label
+#, fuzzy
+msgctxt "staff.patron.bill_history.column.title.label"
+msgid "Title"
+msgstr "Titre"
 
 #: staff.patron.bills.init_controller.money_summary_label
 msgid "Money Summary"
@@ -238,9 +338,31 @@ msgstr ""
 "une facturation et d’ajouter une facture quelconque pour compenser le solde "
 "négatif."
 
+#: staff.patron.bills.pay.invalid_user_xact_id
+msgid ""
+"%1$s\n"
+"\n"
+"This patron data is stale.  Refreshing patron data.  You should re-attempt "
+"the payment."
+msgstr ""
+"%1$s\n"
+"\n"
+"Les données sur le client ne sont plus à jour. La réactualisation des "
+"données sur le client est en cours. Vous devriez réessayer d’effectuer le "
+"paiement."
+
 #: staff.patron.bills.pay.payment_failed
 msgid "Bill payment likely failed"
 msgstr "Le paiement de la facture a probablement échoué"
+
+#: staff.patron.bills.info_box.label_value.reservation
+msgid "Reservation"
+msgstr "Réservation"
+
+#. # 1 - Resource Barcode  2 - Resource Type Name
+#: staff.patron.bills.info_box.value_format.reservation
+msgid "%1$s : %2$s"
+msgstr "%1$s : %2$s"
 
 #: staff.patron.bills.info_box.label_value.title
 msgctxt "staff.patron.bills.info_box.label_value.title"
@@ -264,8 +386,10 @@ msgid "Refund"
 msgstr "Remboursement"
 
 #: staff.patron.bills.info_box.label_value.void_all_billings
+#, fuzzy
+msgctxt "staff.patron.bills.info_box.label_value.void_all_billings"
 msgid "Void All Billings"
-msgstr "Annuler toutes les facturations"
+msgstr "Annuler toutes les factures"
 
 #: staff.patron.bills.info_box.label_value.full_details
 msgid "Full Details"
@@ -307,9 +431,9 @@ msgid "Error voiding bills."
 msgstr "Une erreur s’est produite lors de l’annulation de factures."
 
 #: staff.patron.bills.void_all_billings.billings_voided
-msgctxt "staff.patron.bills.void_all_billings.billings_voided"
+#, fuzzy
 msgid "Billings voided."
-msgstr "Facturations annulées."
+msgstr "Les factures ont été annulées."
 
 #: staff.patron.bill_wizard.patron_bill_finish.billing_added
 msgid "Billing added."
@@ -319,40 +443,39 @@ msgstr "Facturation ajoutée."
 msgid "No Patron Selected"
 msgstr "Aucun client sélectionné"
 
-#: staff.patron.display.cmd_patron_edit.edit_search
-msgid "Editor would like to search for: %1$s"
-msgstr "L’éditeur désire rechercher : %1$s"
-
 #: staff.patron.display.cmd_patron_delete.dialog.title
 msgid "Delete Patron Account"
-msgstr ""
+msgstr "Supprimer le compte du client"
 
 #: staff.patron.display.cmd_patron_delete.dialog.message
 msgid ""
 "Completely OBLITERATE this patron account, including bills, payments, "
 "bookbags, etc?  This is IRREVERSIBLE."
 msgstr ""
+"Supprimer DÉFINITIVEMENT le compte du client, y compris les factures, les "
+"paiements et les listes de recherche? Cette commande est IRRÉVERSIBLE."
 
 #: staff.patron.display.cmd_patron_delete.dialog.confirmation
-#, fuzzy
 msgid "Check here to confirm this action."
-msgstr "Cochez ici pour confirmer ce message."
+msgstr "Cochez la case pour confirmer ce message"
 
 #: staff.patron.display.cmd_patron_delete.dialog.cancel
 msgid "Cancel Deletion"
-msgstr ""
+msgstr "Annuler la suppression"
 
 #: staff.patron.display.cmd_patron_delete.dialog.okay
 msgid "Delete Account"
-msgstr ""
+msgstr "Supprimer le compte"
 
 #: staff.patron.display.cmd_patron_delete.deny_deletion_of_super_user
 msgid "You may not delete a super user through this interface."
 msgstr ""
+"Vous ne pouvez pas supprimer un super utilisateur par le biais de cette "
+"interface."
 
 #: staff.patron.display.cmd_patron_delete.deny_deletion_of_self
 msgid "You may not delete your own account."
-msgstr ""
+msgstr "Vous ne pouvez pas supprimer votre propre compte."
 
 #: staff.patron.display.cmd_patron_delete.dest_user.prompt
 msgid ""
@@ -360,42 +483,33 @@ msgid ""
 "enter the barcode for a destination user to receive the deleted user's "
 "miscellaneous staff artifacts (reports, etc.):"
 msgstr ""
+"L’utilisateur que vous essayez de supprimer a des privilèges réservés à "
+"STAFF_LOGIN. Veuillez saisir le code barre afin que le destinataire puisse "
+"obtenir les différents documents liés au personnel (p. ex., rapports) "
+"sauvegardés dans le compte de l’utilisateur supprimé :"
 
-# extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/patron.properties
 #: staff.patron.display.cmd_patron_delete.dest_user.default_value
+msgctxt "staff.patron.display.cmd_patron_delete.dest_user.default_value"
 msgid ""
-"_: staff.patron.display.cmd_patron_delete.dest_user.default_value\n"
-""
 msgstr ""
-"Project-Id-Version: Evergreen ILS > patron.properties.po\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-16 11:08-0400\n"
-"PO-Revision-Date: 2008-11-27 14:04-0500\n"
-"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
-"Language-Team: French - Canadian\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Translate Toolkit 1.1.1\n"
-"X-Accelerator-Marker: &\n"
-"X-Poedit-Language: French\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-Country: Canada\n"
 
 #: staff.patron.display.cmd_patron_delete.dest_user.title
 msgid "Destination User"
-msgstr ""
+msgstr "Compte du destinataire"
 
 #: staff.patron.display.cmd_patron_delete.dest_user.failure
 msgid "Failed to retrieve destination user.  User deletion aborted."
 msgstr ""
+"Le compte du destinataire n’a pas été retrouvé. La suppression de "
+"l’utilisateur a échoué."
 
 #: staff.patron.display.cmd_patron_delete.dest_user.self_reference_failure
 msgid ""
 "Cannot specify the deleted user as the destination user.  User deletion "
 "aborted."
 msgstr ""
+"Le compte du destinataire ne peut pas correspondre à l’utilisateur supprimé. "
+"La suppression de l’utilisateur a échoué."
 
 #: staff.patron.display.spawn_editor.editing_related_patron
 msgctxt "staff.patron.display.spawn_editor.editing_related_patron"
@@ -467,6 +581,11 @@ msgstr "Client :"
 
 #: staff.patron.display.no_alerts_or_messages
 msgid "No Alerts, Blocks, or Messages"
+msgstr "Aucune alerte, restriction ou message"
+
+#. # Field 1 = actor.usr.id, Field 2 = actor.usr.create_date
+#: staff.patron.display.db_data
+msgid "Record ID: %1$s Create Date: %2$s "
 msgstr ""
 
 #: staff.patron.hold_notices.tooltiptext
@@ -512,11 +631,8 @@ msgid "The notification was not likely created."
 msgstr "La notification n’a probablement pas été créée."
 
 #: staff.patron.hold_notes.tooltiptext
-#, fuzzy
 msgid "ID: %1$s Hold ID: %2$s Staff ID: %3$s"
-msgstr ""
-"Code d’utilisateur : %1$s ID de la mise en réserve : %2$s ID du personnel "
-"responsable de la notification : %3$s"
+msgstr "No : %1$s No de la demande : %2$s No de l’employé : %3$s"
 
 #: staff.patron.hold_notes.new_note
 msgctxt "staff.patron.hold_notes.new_note"
@@ -535,35 +651,36 @@ msgstr "Note"
 
 #: staff.patron.hold_notes.public
 msgid "Public"
-msgstr ""
+msgstr "Public"
 
 #: staff.patron.hold_notes.private
 msgid "Private"
-msgstr ""
+msgstr "Privé"
 
 #: staff.patron.hold_notes.print_on_slip
 msgid "Print on Slip"
-msgstr ""
+msgstr "Imprimer sur le bordereau"
 
 #: staff.patron.hold_notes.no_print_on_slip
 msgid "No print on Slip"
-msgstr ""
+msgstr "Ne pas imprimer sur le bordereau"
 
 #: staff.patron.hold_notes.by_staff
 msgid "By Staff"
-msgstr ""
+msgstr "Réservé par un employé"
 
 #: staff.patron.hold_notes.by_patron
-msgid "By Patron"
-msgstr ""
+#, fuzzy
+msgid "By Patron "
+msgstr "Réservé par un client"
 
 #: staff.patron.hold_notes.new_note.public
 msgid "Public?"
-msgstr ""
+msgstr "Public?"
 
 #: staff.patron.hold_notes.new_note.slip
 msgid "Print on slip?"
-msgstr ""
+msgstr "Imprimer sur le bordereau?"
 
 #: staff.patron.hold_notes.cancel
 msgctxt "staff.patron.hold_notes.cancel"
@@ -601,6 +718,10 @@ msgid "Error rendering or retrieving hold notifications."
 msgstr ""
 "Une erreur s’est produite lors de la production ou de la récupération des "
 "notifications."
+
+#: staff.patron.holds.total_count
+msgid "Total Holds: %1$s"
+msgstr "Total des demandes : %1$s"
 
 #: staff.patron.holds.holds_edit_selection_depth.choose_hold_range
 msgid "Please choose a Hold Range:"
@@ -822,12 +943,11 @@ msgstr ""
 "l’article mis en réserve %1$s?"
 
 #: staff.patron.holds.holds_edit_email_notify.disable_email.plural
-#, fuzzy
 msgid ""
 "Are you sure you would like to disable email notification for holds %1$s?"
 msgstr ""
-"Êtes vous certain de vouloir désactiver la notification par courriel pour "
-"l’article mis en réserve %1$s?"
+"Voulez-vous vraiment désactiver l’envoi par courriel des avis concernant les "
+"demandes %1$s?"
 
 #: staff.patron.holds.holds_edit_email_notify.mod_holds_title
 msgctxt "staff.patron.holds.holds_edit_email_notify.mod_holds_title"
@@ -839,18 +959,20 @@ msgid ""
 "Move to the front of the holds queue above other holds that are not likewise "
 "flagged Top of Queue?"
 msgstr ""
+"Afficher la demande au début de la liste, au-dessus des autres demandes qui "
+"n’ont pas été marquées « En tête de liste »?"
 
 #: staff.patron.holds.holds_cut_in_line.btn_cut.label
 msgid "Top of Queue"
-msgstr ""
+msgstr "En tête de liste"
 
 #: staff.patron.holds.holds_cut_in_line.btn_cut.accesskey
 msgid "T"
-msgstr ""
+msgstr "T"
 
 #: staff.patron.holds.holds_cut_in_line.btn_no_cut.label
 msgid "No Top of Queue"
-msgstr ""
+msgstr "Pas en tête de liste"
 
 #: staff.patron.holds.holds_cut_in_line.btn_no_cut.accesskey
 msgctxt "staff.patron.holds.holds_cut_in_line.btn_no_cut.accesskey"
@@ -869,35 +991,31 @@ msgstr "C"
 
 #: staff.patron.holds.holds_cut_in_line.set_notifs
 msgid "Set Top of Queue (Force to Front) for Holds"
-msgstr ""
+msgstr "Appliquer l’option « En tête de liste » aux demandes (Placer au début)"
 
 #: staff.patron.holds.holds_cut_in_line.enable_cut.singular
-#, fuzzy
 msgid "Are you sure you would like to enable Top of Queue for hold %1$s?"
 msgstr ""
-"Êtes vous certain de vouloir activer la notification par courriel pour "
-"l’article mis en réserve %1$s?"
+"Voulez-vous vraiment appliquer l’option « En tête de liste » aux demandes %"
+"1$s?"
 
 #: staff.patron.holds.holds_cut_in_line.enable_cut.plural
-#, fuzzy
 msgid "Are you sure you would like to enable Top of Queue for holds %1$s?"
 msgstr ""
-"Êtes vous certain de vouloir activer la notification par courriel pour "
-"l’article mis en réserve %1$s?"
+"Voulez-vous vraiment désactiver l’application de l’option « En tête de liste "
+"» à la demande %1$s?"
 
 #: staff.patron.holds.holds_cut_in_line.disable_cut.singular
-#, fuzzy
 msgid "Are you sure you would like to disable Top of Queue for hold %1$s?"
 msgstr ""
-"Êtes vous certain de vouloir désactiver la notification par courriel pour "
-"l’article mis en réserve %1$s?"
+"Voulez-vous vraiment désactiver l’application de l’option « En tête de liste "
+"» à la demande %1$s?"
 
 #: staff.patron.holds.holds_cut_in_line.disable_cut.plural
-#, fuzzy
 msgid "Are you sure you would like to disable Top of Queue for holds %1$s?"
 msgstr ""
-"Êtes vous certain de vouloir désactiver la notification par courriel pour "
-"l’article mis en réserve %1$s?"
+"Voulez-vous vraiment désactiver l’application de l’option « En tête de liste "
+"» à la demande %1$s?"
 
 #: staff.patron.holds.holds_cut_in_line.mod_holds_title
 msgctxt "staff.patron.holds.holds_cut_in_line.mod_holds_title"
@@ -906,19 +1024,19 @@ msgstr "Modification des articles mis en réserve."
 
 #: staff.patron.holds.holds_desire_mint_condition.description
 msgid "Accept only \"good condition\" copies?"
-msgstr ""
+msgstr "N’accepter que des copies «en bon état»?"
 
 #: staff.patron.holds.holds_desire_mint_condition.btn_good.label
 msgid "Good Condition"
-msgstr ""
+msgstr "Bon état"
 
 #: staff.patron.holds.holds_desire_mint_condition.btn_good.accesskey
 msgid "G"
-msgstr ""
+msgstr "G"
 
 #: staff.patron.holds.holds_desire_mint_condition.btn_mediocre.label
 msgid "Any Condition"
-msgstr ""
+msgstr "Peu importe l’état"
 
 #: staff.patron.holds.holds_desire_mint_condition.btn_mediocre.accesskey
 msgctxt "staff.patron.holds.holds_desire_mint_condition.btn_mediocre.accesskey"
@@ -937,31 +1055,39 @@ msgstr "C"
 
 #: staff.patron.holds.holds_desire_mint_condition.set_notifs
 msgid "Set Desired Copy Quality for Holds"
-msgstr ""
+msgstr "Choisissez la qualité voulue pour les exemplaires demandés"
 
 #: staff.patron.holds.holds_desire_mint_condition.enable_good.singular
 msgid ""
 "Are you sure you would like to restrict to Good Condition copies for hold %"
 "1$s?"
 msgstr ""
+"Voulez-vous vraiment n’accepter que des exemplaires en « Bon état » qui "
+"correspondent à votre demande %1$s?"
 
 #: staff.patron.holds.holds_desire_mint_condition.enable_good.plural
 msgid ""
 "Are you sure you would like to restrict to Good Condition copies for holds %"
 "1$s?"
 msgstr ""
+"Voulez-vous vraiment n’accepter que des exemplaires en « Bon état » qui "
+"correspondent à vos demandes %1$s?"
 
 #: staff.patron.holds.holds_desire_mint_condition.disable_good.singular
 msgid ""
 "Are you sure you would like to NOT restrict to Good Condition copies for "
 "hold %1$s?"
 msgstr ""
+"Voulez-vous vraiment refuser les exemplaires qui correspondent à votre "
+"demande %1$s s’ils ne sont pas en « Bon état »?"
 
 #: staff.patron.holds.holds_desire_mint_condition.disable_good.plural
 msgid ""
 "Are you sure you would like to NOT restrict to Good Condition copies for "
 "holds %1$s?"
 msgstr ""
+"Voulez-vous vraiment refuser les exemplaires qui correspondent à vos "
+"demandes %1$s s’ils ne sont pas en « Bon état »?"
 
 #: staff.patron.holds.holds_desire_mint_condition.mod_holds_title
 msgctxt "staff.patron.holds.holds_desire_mint_condition.mod_holds_title"
@@ -1017,9 +1143,8 @@ msgid "Holds not likely cancelled."
 msgstr "Les articles mis en réserve ne sont probablement pas annulés."
 
 #: staff.patron.holds.holds_uncancel.hold_not_uncancelled
-#, fuzzy
 msgid "Holds not likely un-cancelled."
-msgstr "Les articles mis en réserve ne sont probablement pas annulés."
+msgstr "Les demandes annulées n’ont probablement pas été réactivées."
 
 #: staff.patron.holds.show_catalog.unknown_htype
 msgid ""
@@ -1057,7 +1182,7 @@ msgstr "La tentative de récupération des clients a échoué."
 
 #: staff.patron.info_group.merge_patrons.failed_merging_patrons
 msgid "Failed merging patrons."
-msgstr ""
+msgstr "La fusion des clients a échoué."
 
 #: staff.patron.info_group.clone_patron.register_clone.tab_name
 msgid "Register Patron Clone for Group"
@@ -1067,12 +1192,13 @@ msgstr "Inscrire le clône du client à un groupe"
 msgid "error spawning user editors"
 msgstr "une erreur s’est produite dans les éditeurs d’ensemble des utilisateurs"
 
-#: staff.patron.info_group.spwan_editor.editing_patron
-msgctxt "staff.patron.info_group.spwan_editor.editing_patron"
+#: staff.patron.info_group.spawn_editor.editing_patron
+#, fuzzy
+msgctxt "staff.patron.info_group.spawn_editor.editing_patron"
 msgid "Editing Related Patron"
-msgstr "Édition des clients associés"
+msgstr "Modification du client associé"
 
-#: staff.patron.info_group.spwan_search
+#: staff.patron.info_group.spawn_search
 msgid "spawn search"
 msgstr "recherche dans l’ensemble"
 
@@ -1144,7 +1270,7 @@ msgstr "Transférer le client vers le groupe d’utilisateurs"
 msgid "error linking patron (ID=%1$s)"
 msgstr ""
 "une erreur s’est produite lors de l’établissement de lien vers le client "
-"(ID=%1$s) "
+"(ID=%1$s)"
 
 #: staff.patron.info_group.link_patron.usergroups_updated
 msgid "User groups updated."
@@ -1154,6 +1280,38 @@ msgstr "Groupes d’utilisateurs mis à jour."
 msgid "error linking patrons"
 msgstr ""
 "une erreur s’est produite lors de l’établissement de lien entre les clients"
+
+#: staff.patron.info_group.column.circs_out.label
+msgid "Items Out"
+msgstr "Articles sortis"
+
+#: staff.patron.info_group.column.circs_overdue.label
+msgid "Items Overdue"
+msgstr "Articles en retard"
+
+#: staff.patron.info_group.column.circs_claimed_returned.label
+msgid "Items Claimed Returned"
+msgstr "Articles déclarés remis"
+
+#: staff.patron.info_group.column.circs_long_overdue.label
+msgid "Items Long Overdue"
+msgstr "Articles très en retard"
+
+#: staff.patron.info_group.column.circs_lost.label
+msgid "Items Lost"
+msgstr "Articles perdus"
+
+#: staff.patron.info_group.total_owed.label
+msgid "Total Owed: %1$s"
+msgstr "Total à payer : %1$s"
+
+#: staff.patron.info_group.total_out.label
+msgid "Total Items Out: %1$s"
+msgstr "Total des articles sortis : %1$s"
+
+#: staff.patron.info_group.total_overdue.label
+msgid "Total Items Overdue: %1$s"
+msgstr "Total des articles en retard : %1$s"
 
 #: staff.patron.info_notes.render_notes.add_new_note.label
 msgid "Add New Note"
@@ -1227,6 +1385,10 @@ msgctxt "staff.patron.info_notes.new_note.note.value"
 msgid "Note"
 msgstr "Note"
 
+#: staff.patron.info_notes.new_note.initials.value
+msgid "Initials"
+msgstr "Initiales"
+
 #: staff.patron.info_notes.new_note.cancel.label
 msgctxt "staff.patron.info_notes.new_note.cancel.label"
 msgid "Cancel"
@@ -1248,13 +1410,10 @@ msgid "A"
 msgstr "A"
 
 #: staff.patron.info_notes.new_note.add_note_title
+#, fuzzy
 msgctxt "staff.patron.info_notes.new_note.add_note_title"
 msgid "Add Note"
 msgstr "Ajouter une note"
-
-#: staff.patron.info_notes.new_note.add_note_title
-msgid "Note added."
-msgstr "Note ajoutée."
 
 #: staff.patron.info_notes.new_note.note_not_created
 msgctxt "staff.patron.info_notes.new_note.note_not_created"
@@ -1362,25 +1521,20 @@ msgid "Renew probably did not happen."
 msgstr "Le renouvellement n’a probablement pas été effectué."
 
 #: staff.patron.items.items_edit.renew_with_date.title
+#, fuzzy
+msgctxt "staff.patron.items.items_edit.renew_with_date.title"
 msgid "Renew with Due Date"
-msgstr ""
+msgstr "Renouveler en précisant la date d’échéance"
+
+#: staff.patron.items.items_edit.renew_with_date.description
+#, fuzzy
+msgctxt "staff.patron.items.items_edit.renew_with_date.description"
+msgid "Renew with Due Date"
+msgstr "Renouveler en précisant la date d’échéance"
 
 #: staff.patron.items.items_edit.renew_with_date.prompt
-#, fuzzy
 msgid "Enter a new due date for these items to be renewed: %1$s"
-msgstr "Entrer une nouvelle date d’échéance pour ces articles : %1$s"
-
-#: staff.patron.items.items_edit.cancel_renew_with_date
-msgid "Missing Due Date. Renewal canceled."
-msgstr ""
-
-#: staff.patron.items.items_edit.invalid_date
-msgid "Invalid Date"
-msgstr "Date invalide"
-
-#: staff.patron.items.items_edit.need_later_date
-msgid "Due date needs to be after today."
-msgstr "La date d’échéance doit être ultérieure à la date d’aujourd’hui."
+msgstr "Précisez la nouvelle date d’échéance des articles à renouveler : %1$s"
 
 #: staff.patron.items.items_edit.edit_due_date.singular
 msgid "Edit Due Date"
@@ -1389,6 +1543,10 @@ msgstr "Modifier la date d’échéance"
 #: staff.patron.items.items_edit.edit_due_date.plural
 msgid "Edit Due Dates"
 msgstr "Modifier les dates d’échéance"
+
+#: staff.patron.items.items_edit.edit_due_date.description
+msgid "Due Date"
+msgstr "Date d’échéance"
 
 #: staff.patron.items.items_edit.new_due_date
 msgid "Enter a new due date for these items: %1$s"
@@ -1414,13 +1572,13 @@ msgstr ""
 msgid "The items were not likely marked lost."
 msgstr "Les articles n’ont probablement pas été désignés comme étant perdus."
 
-#: staff.patron.items.items_claimed_returned.date_cannot_be_in_future
-msgid "Claims Returned Date cannot be in the future."
-msgstr "La date des articles demandés retournés ne peut être ultérieure."
-
 #: staff.patron.items.items_claimed_returned.claimed_returned
 msgid "Claimed Returned"
 msgstr "Article demandé retourné"
+
+#: staff.patron.items.items_claimed_returned.claimed_returned.description
+msgid "Date Claimed"
+msgstr "Date déclarée"
 
 #: staff.patron.items.items_claimed_returned.enter_returned_date
 msgid "Enter a claimed returned date for these items: %1$s"
@@ -1433,6 +1591,8 @@ msgstr "Ces articles n’ont probablement pas été désignés comme étant reto
 #: staff.patron.items.set_claim_returned_failure
 msgid "Override set claimed returned failure?"
 msgstr ""
+"La déclaration de l’état « déclaré remis » a échoué. Voulez-vous forcer le "
+"système à exécuter la commande?"
 
 #: staff.patron.items.items_checkin.confirm_item_check_in.singular
 msgid "Are you sure you would like to check in item %1$s?"
@@ -1483,7 +1643,7 @@ msgid ""
 msgstr ""
 "Une erreur s’est produite lors de l’actualisation de la rangée list\n"
 "circ_id = %1$s\n"
-"nparams = %2$s "
+"nparams = %2$s"
 
 #: staff.patron.items.retrieve.err_retrieving_circulations
 msgid "Error retrieving circulations."
@@ -1521,6 +1681,14 @@ msgstr "presse papier de recherche de clients"
 msgid "patron search saving columns"
 msgstr "colonnes de sauvegarde de la recherche de clients"
 
+#: staff.patron.search_result.mailing_address_column_label_prefix
+msgid "Mailing Addr: "
+msgstr ""
+
+#: staff.patron.search_result.billing_address_column_label_prefix
+msgid "Billing Addr: "
+msgstr ""
+
 #: staff.patron.summary.patron_bill.money
 msgid "$ %1$s"
 msgstr "$ %1$s"
@@ -1539,23 +1707,49 @@ msgstr "Expire le"
 
 #: staff.patron.summary.standing_penalty.remove
 msgid "Remove"
-msgstr ""
+msgstr "Enlever"
 
 #: staff.patron.summary.standing_penalty.none
 msgid "No Blocks/Penalties"
-msgstr ""
+msgstr "Pas de restrictions/d’amendes"
+
+#: staff.patron.summary.group_list.column.family_name.label
+msgid "Family Name"
+msgstr "Nom"
+
+#: staff.patron.summary.group_list.column.first_given_name.label
+msgid "First Name"
+msgstr "Prénom"
+
+#: staff.patron.summary.group_list.column.second_given_name.label
+msgid "Middle Name"
+msgstr "Second prénom"
+
+#: staff.patron.summary.group_list.column.home_ou.label
+msgid "Home Lib"
+msgstr "Bibliothèque principale"
+
+#: staff.patron.summary.group_list.column.balance_owed.label
+msgid "Balance Owed"
+msgstr "Solde à payer"
+
+#: staff.patron.summary.tab.group_list_with_total_owed.label
+msgid "Group: %1$s"
+msgstr "Groupe : %1$s"
 
 #: staff.patron.staged.register_patron
 msgid "Registering Pending Patron: %1$s"
-msgstr ""
+msgstr "Inscription du client en suspens : %1$s"
 
 #: staff.patron.staged.confirm_patron_delete
 msgid "Delete the selected patrons?"
-msgstr ""
+msgstr "Supprimer les clients sélectionnés?"
 
 #: staff.patron.staged.error_on_delete
 msgid "Error deleting pending patron with row_id = %1$s"
 msgstr ""
+"Une erreur est survenue pendant la suppression du client en attente dont le "
+"numéro de rangée correspond à %1$s"
 
 #: staff.patron.staged.lib_menus.missing_library_list
 msgctxt "staff.patron.staged.lib_menus.missing_library_list"
@@ -1564,19 +1758,23 @@ msgstr "Liste de bibliothèques manquantes."
 
 #: staff.patron.standing_penalty.apply_error
 msgid "Error applying %1$s block/standing penalty."
-msgstr ""
+msgstr "Erreur lors de l’application de la restriction/amende en cours %1$s."
 
 #: staff.patron.standing_penalty.remove_error
 msgid "Error removing %1$s block/standing penalty."
-msgstr ""
+msgstr "Erreur lors de la suppression de la restriction/amende en cours %1$s."
 
 #: staff.patron.standing_penalty.update_error
 msgid "Error updating block/standing penalty."
 msgstr ""
+"Une erreur est survenue pendant la mise à jour de la restriction ou de "
+"l’amende en vigueur."
 
 #: staff.patron.standing_penalty.retrieve_error
 msgid "Error retrieving block/standing penalty."
 msgstr ""
+"Une erreur est survenue pendant la récupération de la restriction ou de "
+"l’amende en vigueur."
 
 #: staff.patron.ue.uEditInit.session_no_defined
 msgctxt "staff.patron.ue.uEditInit.session_no_defined"
@@ -1620,27 +1818,29 @@ msgstr "-- Sélectionner un --"
 
 #: staff.patron.cmd_verify_credentials.correct_credentials
 msgid "Success testing credentials!"
-msgstr ""
+msgstr "La vérification des justificatifs d’identité a réussi!"
 
 #: staff.patron.cmd_verify_credentials.incorrect_credentials
 msgid "Failure testing credentials!"
-msgstr ""
+msgstr "La vérification des justificatifs d’identité a échoué!"
 
 #: staff.patron.cmd_verify_credentials.name_feedback
 msgid "Username: <%1$s>"
-msgstr ""
+msgstr "Nom d’utilisateur : <%1$s>"
 
 #: staff.patron.cmd_verify_credentials.barcode_feedback
 msgid "Barcode: <%1$s>"
-msgstr ""
+msgstr "Code barre : <%1$s>"
 
 #: staff.patron.usr_buckets.merge_records.merge_lead
 msgid "Merge these records? (Select the \"lead\" record first)"
 msgstr ""
+"Fusionner les fichiers? (Sélectionner le fichier \\\"principal\\\" avant d’y "
+"procéder)"
 
 #: staff.patron.usr_buckets.merge_records.button.label
 msgid "Merge"
-msgstr ""
+msgstr "Fusionner"
 
 #: staff.patron.usr_buckets.merge_records.cancel_button.label
 msgctxt "staff.patron.usr_buckets.merge_records.cancel_button.label"
@@ -1654,37 +1854,37 @@ msgstr "C"
 
 #: staff.patron.usr_buckets.merge_records.lead_record_number
 msgid "Lead Record? # %1$s"
-msgstr ""
+msgstr "Fichier principal? # %1$s"
 
 #: staff.patron.usr_buckets.merge_records.lead
 msgid "Lead"
-msgstr ""
+msgstr "Principal"
 
 #: staff.patron.usr_buckets.merge_records.fancy_prompt_title
 msgid "Record Merging"
-msgstr ""
+msgstr "Fusionnement du fichier"
 
 #: staff.patron.usr_buckets.merge_records.fancy_prompt.alert
 msgid "Merge Aborted"
-msgstr ""
+msgstr "Le fusionnement a été interrompu"
 
 #: staff.patron.usr_buckets.merge_records.success
 msgid "Records were successfully merged."
-msgstr ""
+msgstr "Les fichiers ont été fusionnés."
 
 #: staff.patron.usr_buckets.merge_records.catch.std_unex_error
 msgid "Records were not likely merged."
-msgstr ""
+msgstr "Les fichiers n’ont probablement pas été fusionnés."
 
 #. # The < and > highlight that the value is hidden from immediate display; translate Hidden and change the delimiters as needed
 #: staff.patron.field.hidden
 msgid "<Hidden>"
-msgstr ""
+msgstr "<Masqué>"
 
 #. # The < and > highlight that the value is not set; translate Unset and change the delimiters as needed
 #: staff.patron.field.unset
 msgid "<Unset>"
-msgstr ""
+msgstr "<Pas sélectionné>"
 
 #. # Unused by default but available: %7 is county; %10 is country.
 #: staff.patron.mailable_address_format
@@ -1694,6 +1894,10 @@ msgid ""
 "%5$s\n"
 "%6$s, %8$s %9$s"
 msgstr ""
+"%1$s %2$s %3$s\n"
+"%4$s\n"
+"%5$s\n"
+"%6$s, %8$s %9$s"
 
 #: web.staff.patron.ue.session_no_defined
 msgctxt "web.staff.patron.ue.session_no_defined"
@@ -1713,3 +1917,38 @@ msgstr ""
 msgid ""
 "<div>Replaces address <b>%1$s</b><br/> %2$s %3$s<br/> %4$s, %5$s %6$s</div>"
 msgstr ""
+"<div>Remplace l’adresse <b>%1$s</b><br/> %2$s %3$s<br/> %4$s, %5$s %"
+"6$s</div>"
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode
+#: staff.circ.work_log_patron_edit.message
+msgid "%1$s edited %3$s (%2$s)"
+msgstr "%1$s modifié %3$s (%2$s)"
+
+#, fuzzy
+#~ msgctxt "staff.patron.bills.void_all_billings.billings_voided"
+#~ msgid "Billings voided."
+#~ msgstr "Les factures ont été annulées."
+
+#~ msgid "Editor would like to search for: %1$s"
+#~ msgstr "L’éditeur désire rechercher : %1$s"
+
+#, fuzzy
+#~ msgctxt "staff.patron.info_group.spwan_editor.editing_patron"
+#~ msgid "Editing Related Patron"
+#~ msgstr "Modification du client associé"
+
+#~ msgid "Note added."
+#~ msgstr "Note ajoutée."
+
+#~ msgid "Missing Due Date. Renewal canceled."
+#~ msgstr "Date d’échéance manquante. Renouvellement annulé."
+
+#~ msgid "Invalid Date"
+#~ msgstr "Date invalide"
+
+#~ msgid "Due date needs to be after today."
+#~ msgstr "La date d’échéance doit être ultérieure à la date d’aujourd’hui."
+
+#~ msgid "Claims Returned Date cannot be in the future."
+#~ msgstr "La date des articles demandés retournés ne peut être ultérieure."

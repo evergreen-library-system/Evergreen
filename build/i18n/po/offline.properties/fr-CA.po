@@ -4,18 +4,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > offline.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-23 23:36-0400\n"
-"PO-Revision-Date: 2008-11-27 14:03-0500\n"
-"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2011-07-05 19:54+0000\n"
+"Last-Translator: Quentin Henriet <Unknown>\n"
 "Language-Team: NRCan Library\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.3.0\n"
+"X-Generator: Translate Toolkit 1.8.1\n"
 "X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-07-06 04:41+0000\n"
+"X-Poedit-Country: Canada\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-Country: Canada\n"
 
 #: common.exception
 msgid ""
@@ -28,15 +29,37 @@ msgstr ""
 "administrateur de système ou développeur de logiciel de ce qui suit :\n"
 "%1$s\n"
 "%2$s\n"
-" "
 
 #: common.jsan.missing
 msgid "The JSAN library object is missing."
 msgstr "L’objet JSAN est absent de la bibliothèque"
 
 #: common.ok
+#, fuzzy
+msgctxt "common.ok"
 msgid "Ok"
 msgstr "Ok"
+
+#: common.ok.label
+#, fuzzy
+msgctxt "common.ok.label"
+msgid "Ok"
+msgstr "Ok"
+
+#: common.ok.accesskey
+msgid "O"
+msgstr ""
+
+#: common.cancel.label
+#, fuzzy
+msgctxt "common.cancel.label"
+msgid "Cancel"
+msgstr "Annuler"
+
+#: common.cancel.accesskey
+msgctxt "common.cancel.accesskey"
+msgid "C"
+msgstr ""
 
 #: common.clear
 msgid "Clear"
@@ -52,10 +75,11 @@ msgstr "Veuillez signaler cet incident."
 
 #: common.error.copy_msg
 msgid "Copy Message"
-msgstr ""
+msgstr "Copier le message"
 
 #: common.barcode.status.warning
-msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3."
+#, fuzzy
+msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3$s."
 msgstr ""
 "Avertissement : Pour ce qui est de %1$s, ce code à barres (%2$s) a été "
 "étiquetté %3."
@@ -90,7 +114,7 @@ msgstr "Non"
 
 #: common.no.accesskey
 msgid "N"
-msgstr ""
+msgstr "N"
 
 #: common.yes
 msgid "Yes"
@@ -98,7 +122,7 @@ msgstr "Oui"
 
 #: common.yes.accesskey
 msgid "Y"
-msgstr ""
+msgstr "O"
 
 #: common.unimplemented
 msgid "Not Yet Implemented"
@@ -137,6 +161,8 @@ msgid "Undelete"
 msgstr "Récupérer"
 
 #: cat.opac.cancel
+#, fuzzy
+msgctxt "cat.opac.cancel"
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -167,27 +193,37 @@ msgstr ""
 
 #. # variables: document ID, error code, error description
 #: cat.opac.record_undeleted.error
-#, fuzzy
 msgid "Error undeleting record #%1$s : %2$s : %3$s"
-msgstr ""
-"Une erreur s’est produite lors de la suppression des comptes n° %1$s : %2$s> "
-"[%1$s : %2$s] : %3$s"
+msgstr "Erreur à la récupération des enregistrements #%1$s : %2$s : %3$s"
 
 #: cat.opac.record_marked_for_overlay.record_id.alert
+#, fuzzy
+msgctxt "cat.opac.record_marked_for_overlay.record_id.alert"
 msgid "Record with ID %1$s marked for overlay."
 msgstr "Compte avec ID %1$s désigné pour recouvrement."
 
 #: cat.opac.record_marked_for_overlay.tcn.alert
+#, fuzzy
+msgctxt "cat.opac.record_marked_for_overlay.tcn.alert"
 msgid "Record with TCN %1$s marked for overlay."
 msgstr "Compte avec ID %1$s désigné pour recouvrement."
+
+#: cat.opac.record_marked_for_multi_home.record_id.alert
+msgctxt "cat.opac.record_marked_for_multi_home.record_id.alert"
+msgid "Record with ID %1$s targeted for Multi-Bib items."
+msgstr ""
+
+#: cat.opac.record_marked_for_multi_home.tcn.alert
+msgid "Record with TCN %1$s targeted for Mutli-Bib items."
+msgstr ""
+
+#: cat.opac.clear_statusbar
+msgid "Un-target/un-mark this record?"
+msgstr ""
 
 #: cat.save_record
 msgid "Save Record"
 msgstr "Enregistrer le compte"
-
-#: cat.save.success
-msgid "Record successfully saved."
-msgstr "Compte enregistré."
 
 #: cat.save.failure
 msgid "Record not likely updated."
@@ -502,6 +538,11 @@ msgstr "Modification du client associé"
 msgid "Register Patron"
 msgstr "Inscrire le client"
 
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode
+#: staff.circ.work_log_patron_registration.message
+msgid "%1$s registered %3$s (%2$s)"
+msgstr ""
+
 #: menu.cmd_browse_holds.tab
 msgid "Hold Browser"
 msgstr "Navigateur des articles mis en réserve"
@@ -521,6 +562,10 @@ msgstr "Administration locale"
 #: menu.cmd_open_vandelay.tab
 msgid "MARC Import/Export"
 msgstr "Importer/Exporter des fichiers MARC"
+
+#: menu.cmd_marc_batch_edit.tab
+msgid "MARC Batch Edit"
+msgstr ""
 
 #: menu.cmd_open_conify.tab
 msgid "Server Settings"
@@ -621,6 +666,14 @@ msgstr "Une erreur s’est produite lors de la fermeture de tous les onglets."
 #: menu.new_tab.tab
 msgid "Tab"
 msgstr "Onglet"
+
+#: menu.new_tab.max_tab_dialog
+msgid ""
+"Sorry, we can't create any more tabs in this window.\n"
+"Would you like to create a new tab in another window?"
+msgstr ""
+"Il est impossible d'ajouter de nouveaux onglets dans cette fenêtre.\n"
+"Voulez-vous ajouter un nouvel onglet dans une autre fenêtre ?"
 
 #: main.session_cookie.error
 msgid "Error setting session cookie: %1$s"
@@ -787,32 +840,32 @@ msgstr ""
 
 #: network.override.exceptions
 msgid "Exceptions"
-msgstr ""
+msgstr "Exceptions"
 
 #: network.override.override
-msgid "Override"
+msgid "Override "
 msgstr ""
 
 #: network.override.force.prompt
 msgid "Force this action?"
-msgstr ""
+msgstr "Forcer cette action ?"
 
 #: network.ignore_errors
 msgid "Ignore Errors"
-msgstr ""
+msgstr "Ignorer les erreurs"
 
 #: network.method_not_found.error
 msgid "Method not found for %1$s"
-msgstr ""
+msgstr "méthode non trouvée pour %1$s"
 
 #: network.new_session.authorize
 msgctxt "network.new_session.authorize"
 msgid "Authorize"
-msgstr ""
+msgstr "Autoriser"
 
 #: network.new_session.expired
 msgid "Session Expired"
-msgstr ""
+msgstr "Session expirée"
 
 #: network.new_session.expired.prompt
 msgid "Please enter the credentials for a new login session."
@@ -829,13 +882,14 @@ msgid ""
 msgstr ""
 
 #: network.permission.authorize
+#, fuzzy
 msgctxt "network.permission.authorize"
 msgid "Authorize"
-msgstr ""
+msgstr "Autoriser"
 
 #: network.permission.description.brief
 msgid "Permission Denied: %1$s"
-msgstr ""
+msgstr "Permission Refusée: %1$s"
 
 #: network.permission.description.full
 msgid ""
@@ -848,7 +902,7 @@ msgstr ""
 
 #: network.server_or_method.error
 msgid "Server or method error"
-msgstr ""
+msgstr "Erreur de méthode ou du server"
 
 #: network.server.failure.exception
 msgid ""
@@ -861,11 +915,11 @@ msgstr ""
 
 #: network.server.method
 msgid "method=%1$s"
-msgstr ""
+msgstr "methode=%1$s"
 
 #: network.server.params
 msgid "params=%1$s"
-msgstr ""
+msgstr "paramètres=%1$s"
 
 #: network.server.thrown_label
 msgid "THROWN:"
@@ -873,19 +927,19 @@ msgstr ""
 
 #: network.server.status_label
 msgid "STATUS:"
-msgstr ""
+msgstr "STATUS:"
 
 #: network.network_failure
 msgid "Network Failure"
-msgstr ""
+msgstr "Échec de réseau"
 
 #: network.retry_network
 msgid "Retry Network"
-msgstr ""
+msgstr "Réessayer le réseau"
 
 #: network.unknown_status
 msgid "Unknown status"
-msgstr ""
+msgstr "Statut inconnu"
 
 #: network.window_title.error
 msgid "Error setting window titles to match new login"
@@ -932,6 +986,10 @@ msgstr ""
 msgid "Column configuration saved."
 msgstr ""
 
+#: list.column_save_disabled
+msgid "Column configuration save disabled by server policy."
+msgstr ""
+
 #: list.row_retrieving
 msgid "Retrieving..."
 msgstr ""
@@ -954,6 +1012,7 @@ msgid "Copy Field from Selected Row to Clipboard"
 msgstr ""
 
 #: list.actions.field_to_clipboard.accesskey
+msgctxt "list.actions.field_to_clipboard.accesskey"
 msgid "C"
 msgstr ""
 
@@ -1014,6 +1073,10 @@ msgstr ""
 msgid "Printer Settings Editor"
 msgstr ""
 
+#: menu.cmd_local_admin_do_not_auto_attempt_print_setting.tab
+msgid "'Do Not Attempt Auto-Print' Setting"
+msgstr ""
+
 #: menu.cmd_local_admin_closed_dates.tab
 msgid "Closed Dates Editor"
 msgstr ""
@@ -1041,6 +1104,10 @@ msgstr "Éditeur des catégories statistiques"
 msgid "Reports"
 msgstr ""
 
+#: menu.cmd_local_admin_age_overdue_circulations_to_lost.tab
+msgid "Age to Lost"
+msgstr ""
+
 #: menu.cmd_local_admin_cash_reports.tab
 msgid "Cash Reports"
 msgstr ""
@@ -1049,48 +1116,68 @@ msgstr ""
 msgid "Transits"
 msgstr ""
 
-#: menu.cmd_acq_view_picklist.tab
-msgid "Selection Lists"
+#: menu.cmd_acq_create_invoice.tab
+msgid "New Invoice"
 msgstr ""
 
 #: menu.cmd_acq_bib_search.tab
-msgid "Title Search"
+msgid "MARC Federated Search"
+msgstr ""
+
+#: menu.cmd_acq_from_bib.tab
+msgid "Load Catalog Record IDs"
+msgstr ""
+
+#: menu.cmd_acq_unified_search.tab
+msgid "Acquisitions Search"
 msgstr ""
 
 #: menu.cmd_acq_upload.tab
-msgid "Load Order Record"
+msgid "Load MARC Order Records"
 msgstr ""
 
 #: menu.cmd_acq_new_brief_record.tab
 msgid "New Brief Record"
 msgstr ""
 
-#: menu.cmd_acq_view_po.tab
+#: menu.cmd_acq_po.tab
 msgid "Purchase Orders"
 msgstr ""
 
-#: menu.cmd_acq_view_fund.tab
-msgid "Funds"
+#: menu.cmd_acq_user_requests.tab
+msgid "Patron Requests"
 msgstr ""
 
-#: menu.cmd_acq_view_funding_source.tab
-msgid "Funding Sources"
+#: menu.cmd_acq_claim_eligible.tab
+msgid "Claim-Ready Items"
 msgstr ""
 
-#: menu.cmd_acq_view_provider.tab
-msgid "Providers"
+#: menu.cmd_serial_batch_receive.tab
+msgid "Batch Receive"
 msgstr ""
 
-#: menu.cmd_acq_view_currency_type.tab
-msgid "Currency Types"
+#: menu.cmd_booking_resource.tab
+msgid "Resources"
 msgstr ""
 
-#: menu.cmd_acq_view_exchange_rate.tab
-msgid "Exchange Rates"
+#: menu.cmd_booking_reservation.tab
+msgid "Reservations"
 msgstr ""
 
-#: menu.cmd_acq_view_distrib_formula.tab
-msgid "Distribution Formulas"
+#: menu.cmd_booking_reservation_pickup.tab
+msgid "Reservation Pickup"
+msgstr ""
+
+#: menu.cmd_booking_reservation_return.tab
+msgid "Reservation Return"
+msgstr ""
+
+#: menu.cmd_booking_pull_list.tab
+msgid "Booking Pull List"
+msgstr ""
+
+#: menu.cmd_booking_capture.tab
+msgid "Booking Capture"
 msgstr ""
 
 #: menu.local_admin.circ_matrix_matchpoint.tab
@@ -1103,6 +1190,10 @@ msgstr ""
 
 #: menu.local_admin.work_log.tab
 msgid "Work Log"
+msgstr ""
+
+#: menu.local_admin.patrons_due_refunds.tab
+msgid "Patrons With Negative Balances"
 msgstr ""
 
 #: menu.circulation.staged_patrons.tab
@@ -1118,6 +1209,185 @@ msgstr ""
 #: load_printer_settings_error_title
 msgid "Printer Settings"
 msgstr ""
+
+#: staff.cat.util.copy_editor.batch_edit
+msgid "Batch Edit"
+msgstr ""
+
+#: staff.cat.util.copy_editor.batch_view
+msgid "Batch View"
+msgstr ""
+
+#: staff.cat.util.copy_editor.edit
+msgid "Edit"
+msgstr ""
+
+#: staff.cat.util.copy_editor.view
+msgid "View"
+msgstr ""
+
+#: staff.circ.copy_status.add_volumes.perm_failure
+msgid "You do not have permission to add volumes to the workstation library."
+msgstr ""
+
+#: staff.circ.copy_status.add_volumes.title
+msgid "Add Volume/Item for Record # %1$s"
+msgstr ""
+
+#: staff.cat.copy_browser.marked_record_for_multi_home_indicator.tcn.label
+msgid "Record with TCN %1$s targeted for Multi-Bib items."
+msgstr ""
+
+#: staff.cat.copy_browser.marked_record_for_multi_home_indicator.record_id.label
+msgctxt "staff.cat.copy_browser.marked_record_for_multi_home_indicator.record_id.label"
+msgid "Record with ID %1$s targeted for Multi-Bib items."
+msgstr ""
+
+#: staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label
+#, fuzzy
+msgctxt "staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label"
+msgid "Record with TCN %1$s marked for overlay."
+msgstr "Compte avec ID %1$s désigné pour recouvrement."
+
+#: staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label
+#, fuzzy
+msgctxt "staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label"
+msgid "Record with ID %1$s marked for overlay."
+msgstr "Compte avec ID %1$s désigné pour recouvrement."
+
+#: staff.cat.opac.marked_record_for_hold_transfer_indicator.tcn.label
+msgid "Record with TCN %1$s marked for title hold transfer."
+msgstr ""
+
+#: staff.cat.opac.marked_record_for_hold_transfer_indicator.record_id.label
+msgid "Record with ID %1$s marked for title hold transfer."
+msgstr ""
+
+#: staff.cat.opac.title_for_hold_transfer.destination_needed.label
+msgid "Need to mark a record as a Title Hold Transfer Destination first."
+msgstr ""
+
+#: staff.cat.opac.title_for_hold_transfer.success.label
+msgid "Holds transferred."
+msgstr ""
+
+#: staff.cat.opac.title_for_hold_transfer.failure.label
+msgid "Holds not transferred."
+msgstr ""
+
+#: staff.cat.opac.related_items
+msgid "Related Lineitems"
+msgstr ""
+
+#: staff.cat.opac.serial_alt_mgmt
+msgid "Subscriptions"
+msgstr ""
+
+#: staff.cat.create_or_rebarcode_items
+msgid "Create or Re-barcode Items"
+msgstr ""
+
+#: printing.nothing_to_reprint
+msgid "Nothing to re-print"
+msgstr ""
+
+#: printing.prompt_for_external_print_cmd
+msgid ""
+"Enter external print command and parameters (use %receipt.txt% or %"
+"receipt.html% as the file containing the print data. Those values will be "
+"substituted with the proper path.):"
+msgstr ""
+
+#: printing.print_strategy_saved
+msgid "Print strategy (%1$s) for %2$s context saved to file system."
+msgstr ""
+
+#: text_editor.prompt_for_external_cmd
+msgid ""
+"Enter external text editor command and parameters (use %letter.txt% as the "
+"file containing the text. This value will be substituted with the proper "
+"path.):"
+msgstr ""
+
+#: menu.tab1.accesskey
+msgid "1"
+msgstr ""
+
+#: menu.tab2.accesskey
+msgid "2"
+msgstr ""
+
+#: menu.tab3.accesskey
+msgid "3"
+msgstr ""
+
+#: menu.tab4.accesskey
+msgid "4"
+msgstr ""
+
+#: menu.tab5.accesskey
+msgid "5"
+msgstr ""
+
+#: menu.tab6.accesskey
+msgid "6"
+msgstr ""
+
+#: menu.tab7.accesskey
+msgid "7"
+msgstr ""
+
+#: menu.tab8.accesskey
+msgid "8"
+msgstr ""
+
+#: menu.tab9.accesskey
+msgid "9"
+msgstr ""
+
+#: menu.tab10.accesskey
+msgid "0"
+msgstr ""
+
+#: browser.reload.unsaved_data_warning
+#, fuzzy
+msgid "This page may have unsaved data. Reload it anyway?"
+msgstr ""
+"Cet onglet peut contenir des données non enregistées. Voulez-vous vraiment "
+"le remplacer ?"
+
+#: menu.close_tab.unsaved_data_warning
+#, fuzzy
+msgid "This tab may have unsaved data. Close it anyway?"
+msgstr ""
+"Cet onglet peut contenir des données non enregistées. Voulez-vous vraiment "
+"le remplacer ?"
+
+#: menu.replace_tab.unsaved_data_warning
+msgid "This tab may have unsaved data. Replace it anyway?"
+msgstr ""
+"Cet onglet peut contenir des données non enregistées. Voulez-vous vraiment "
+"le remplacer ?"
+
+#: menu.close_window.unsaved_data_warning
+#, fuzzy
+msgid "This window may have unsaved data. Close it anyway?"
+msgstr ""
+"Cet onglet peut contenir des données non enregistées. Voulez-vous vraiment "
+"le remplacer ?"
+
+#: menu.logoff.unsaved_data_warning
+msgid "This session may have unsaved data. Logoff anyway?"
+msgstr ""
+"Cette session peut avoir des données non enregistées. Voulez-vous vraiment "
+"vous déconnecter ?"
+
+#: menu.shutdown.unsaved_data_warning
+msgid "This application may have unsaved data. Exit it anyway?"
+msgstr ""
+
+#~ msgid "Record successfully saved."
+#~ msgstr "Compte enregistré."
 
 #~ msgid "Success testing credentials!"
 #~ msgstr "Test de qualifications réussi"

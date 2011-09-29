@@ -4,15 +4,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-23 23:35-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-04-18 21:44-0400\n"
+"PO-Revision-Date: 2009-11-24 06:12+0000\n"
+"Last-Translator: Dan Scott <dan@coffeecode.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.3.0\n"
+"X-Generator: Translate Toolkit 1.8.1\n"
 "X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-05-18 04:40+0000\n"
 
 #. Common entities
 #: conify.save_button.label
@@ -72,8 +73,8 @@ msgid "Copy Statuses"
 msgstr "États des exemplaires"
 
 #: conify.admin.marc_code_maps.link
-msgid "MARC Codes"
-msgstr "Codes MARC"
+msgid "Coded Value Maps"
+msgstr ""
 
 #: conify.admin.bottom_pane.title
 msgctxt "conify.admin.bottom_pane.title"
@@ -430,6 +431,10 @@ msgstr "Description"
 msgid "Permission Interval"
 msgstr "Intervalle de permission"
 
+#: conify.grp_tree.hold_priority.label
+msgid "Hold Priority"
+msgstr ""
+
 #: conify.grp_tree.editing_permission.label
 msgid "Editing Permission"
 msgstr "Permission pour modifier"
@@ -490,3 +495,6 @@ msgstr "Sauvegarder les modifications"
 msgctxt "conify.grp_tree.remove_selected.label"
 msgid "Delete Selected"
 msgstr "Supprimer les articles sélectionnés"
+
+#~ msgid "MARC Codes"
+#~ msgstr "Codes MARC"
