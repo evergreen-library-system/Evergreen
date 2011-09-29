@@ -2,20 +2,29 @@
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
-#
+#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/admin.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-11-23 23:36-0400\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
 "PO-Revision-Date: 2010-06-02 09:06+0000\n"
 "Last-Translator: Jonay <jonay.santana@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-06-03 03:35+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Generator: Translate Toolkit 1.8.1\n"
+"X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-05-18 04:38+0000\n"
+
+#: staff.admin.age_overdue_circulations_to_lost.chunks_processed
+msgid "Chunks Processed: %1$s"
+msgstr ""
+
+#: staff.admin.age_overdue_circulations_to_lost.events_created
+msgid "Events Created: %1$s"
+msgstr ""
 
 #: staff.admin.font_settings.sound
 msgid "Sound preference saved to file system."
@@ -35,8 +44,7 @@ msgstr "El sonido fue activado."
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_SMALLER
 msgid "Global Font Adjust set to Smaller than Default"
-msgstr ""
-"Tipografía global configurada en un tamaño menor que el predeterminado"
+msgstr "Tipografía global configurada en un tamaño menor que el predeterminado"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_DEFAULT
 msgid "Global Font Adjust set to Default"
@@ -44,8 +52,7 @@ msgstr "Tipografía global configurada en el tamaño predeterminado"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_LARGER
 msgid "Global Font Adjust set to Larger than Default"
-msgstr ""
-"Tipografía global configurada en un tamaño mayor que el predeterminado"
+msgstr "Tipografía global configurada en un tamaño mayor que el predeterminado"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_XX_SMALL
 msgid "Global Font set to XX-Small"
@@ -137,7 +144,7 @@ msgstr "Lista de bibliotecas faltantes."
 
 #: staff.admin.transit_list.no_match
 msgid "No matching transits."
-msgstr ""
+msgstr "No hay tránsitos correspodientes."
 
 #: staff.admin.transit_list.invalid_date
 msgid "Invalid Date (%1$s), setting to Today"
@@ -165,15 +172,17 @@ msgstr "error obteniendo filas"
 
 #: staff.admin.transit_list.empty_array.error
 msgid "Empty array returned by hold retrieve."
-msgstr ""
+msgstr "Arreglo basido retornado por el recuperador de apartado."
 
 #: staff.admin.transit_list.retrieve_hold.error
 msgid "retrieving hold id = %1$s for transit id = %2$s"
 msgstr ""
+"Recobrando la identificación del apartado = %1$s para la identificación de "
+"tránsito = %2$s"
 
 #: staff.admin.transit_list.transit_id.error
 msgid "retrieving transit id = %1$s"
-msgstr ""
+msgstr "Recobrando la identificación de tránsito = %1$s"
 
 #: staff.admin.offline_manage_xacts.init_list.organization
 msgid "Organization"
@@ -193,7 +202,7 @@ msgstr "Creado por"
 
 #: staff.admin.offline_manage_xacts.init_list.upload_count
 msgid "Upload Count"
-msgstr ""
+msgstr "Cuenta de subidas"
 
 #: staff.admin.offline_manage_xacts.init_list.transactions_processed
 msgid "Transactions Processed"
@@ -225,7 +234,7 @@ msgstr "Subido por"
 
 #: staff.admin.offline_manage_xacts.init_script_list.time_delta
 msgid "Server/Local Time Delta"
-msgstr ""
+msgstr "Servidor/Delta Del Tiempo Local"
 
 #: staff.admin.offline_manage_xacts.init_script_list.workstation
 msgctxt "staff.admin.offline_manage_xacts.init_script_list.workstation"
@@ -271,7 +280,7 @@ msgstr "Fecha de vencimiento"
 
 #: staff.admin.offline_manage_xacts.init_error_list.count
 msgid "In House Use Count"
-msgstr ""
+msgstr "Cuenta De Uso En La Casa"
 
 #: staff.admin.offline_manage_xacts.init_error_list.noncat
 msgid "Non-Cataloged?"
@@ -283,11 +292,11 @@ msgstr "Tipo no catalogado"
 
 #: staff.admin.offline_manage_xacts.init_error_list.noncat_count
 msgid "Non-Cataloged Count"
-msgstr ""
+msgstr "Cuenta De No Catalogado"
 
 #: staff.admin.offline_manage_xacts.init_error_list.backdate
 msgid "Check In Backdate"
-msgstr ""
+msgstr "Rebice En Antedato"
 
 #: staff.admin.offline_manage_xacts.error.check_perm
 msgid "Error checking permissions"
@@ -352,11 +361,11 @@ msgstr "Error archivando el archivo de transacción"
 
 #: staff.admin.offline_manage_xacts.session_upload
 msgid "Please select a session to upload to."
-msgstr ""
+msgstr "Elija una sesión a la que subir"
 
 #: staff.admin.offline_manage_xacts.single_session_upload
 msgid "Please select a single session to upload to."
-msgstr ""
+msgstr "Elija una única sesión a la que subir"
 
 #: staff.admin.offline_manage_xacts.no_transactions
 msgid "No pending transactions to upload."
@@ -380,7 +389,7 @@ msgstr "Por favor ingrese una descripción:"
 
 #: staff.admin.offline_manage_xacts.create_session
 msgid "Create an Offline Transaction Session"
-msgstr ""
+msgstr "Crear una sesión de transacción desconectado"
 
 #: staff.admin.offline_manage_xacts.error.create_session
 msgid "Error creating session"
@@ -392,11 +401,11 @@ msgstr "Error: %1$s"
 
 #: staff.admin.offline_manage_xacts.error.retrieving_sessions
 msgid "Error retrieving offline sessions."
-msgstr ""
+msgstr "Error cargando sesiones desconectadas"
 
 #: staff.admin.offline_manage_xacts.error.rendering_session
 msgid "Error rendering session list"
-msgstr ""
+msgstr "Error mostrando la lista de sesiones"
 
 #: staff.admin.offline_manage_xacts.upload_status
 msgid "Uploaded Transactions for %1$s"
@@ -404,7 +413,7 @@ msgstr "Transacciones subidas para %1$s"
 
 #: staff.admin.offline_manage_xacts.error.rendering_script
 msgid "Error rendering script list"
-msgstr ""
+msgstr "Error mostrando la lista de scripts"
 
 #: staff.admin.offline_manage_xacts.error.rendering_errors
 msgid "Exceptions for %1$s"
@@ -412,7 +421,7 @@ msgstr "Excepciones para %1$s"
 
 #: staff.admin.offline_manage_xacts.error.rendering_error_list
 msgid "Error rendering error list"
-msgstr ""
+msgstr "Error mostrando la lista de errores"
 
 #: staff.admin.offline_manage_xacts.completed
 msgid "Completed"
@@ -425,3 +434,30 @@ msgstr "No"
 #: staff.admin.offline_manage_xacts.yes
 msgid "Yes"
 msgstr "Si"
+
+#: staff.admin.staff.do_not_auto_attempt_print_setting.update_success
+msgid "Setting updated"
+msgstr "Configuración actualizada"
+
+#: staff.admin.staff.do_not_auto_attempt_print_setting.update_failure
+msgid "Setting not updated due to error"
+msgstr "Configuración no actualizada por un error"
+
+#. # 1 - workstation library shortname   2 - setting library shortname
+#: staff.admin.staff.do_not_auto_attempt_print_setting.current_setting_preamble
+msgid ""
+"Workstation library %1$s is currently suppressing auto-print for these "
+"receipt/slip types based on a setting inherited from %2$s:"
+msgstr ""
+"Estación de trabajo en la biblioteca %1$s esta suprimiendo la impresión "
+"automática de estos tipos de recibos/noticias basados en una configuración "
+"heredada de %2$s:"
+
+#. # 1 - workstation library shortname
+#: staff.admin.staff.do_not_auto_attempt_print_setting.current_setting_nonexistent
+msgid ""
+"Workstation library %1$s is not currently suppressing auto-print for any "
+"receipt/slip types."
+msgstr ""
+"Estación de trabajo en la biblioteca %1$s no esta suprimiendo la impresión "
+"automática de estos tipos de recibos/noticias"

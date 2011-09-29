@@ -2,20 +2,21 @@
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
-#
+#. extracted from ../../Open-ILS/web/opac/locale/en-US/conify.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-11-23 23:35-0400\n"
-"PO-Revision-Date: 2010-01-10 01:03+0000\n"
-"Last-Translator: Federico Vera <Unknown>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-04-18 21:44-0400\n"
+"PO-Revision-Date: 2011-09-18 15:20+0000\n"
+"Last-Translator: Antonio Paniagua <Unknown>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-01-10 07:18+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Generator: Translate Toolkit 1.8.1\n"
+"X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-09-19 04:43+0000\n"
 
 #. Common entities
 #: conify.save_button.label
@@ -75,8 +76,8 @@ msgid "Copy Statuses"
 msgstr "Estados de copia"
 
 #: conify.admin.marc_code_maps.link
-msgid "MARC Codes"
-msgstr "Códigos MARC"
+msgid "Coded Value Maps"
+msgstr "Mapa de valores codificados"
 
 #: conify.admin.bottom_pane.title
 msgctxt "conify.admin.bottom_pane.title"
@@ -102,7 +103,7 @@ msgstr "Etiqueta OPAC"
 
 #: conify.org_unit_type.parent_type
 msgid "Parent Type"
-msgstr ""
+msgstr "Tipo padre"
 
 #: conify.org_unit_type.can_have_volumes
 msgid "Can Have Volumes and Copies"
@@ -128,11 +129,11 @@ msgstr "Configuración principal"
 
 #: conify.org_unit.editor_pane.org_unit_name
 msgid "Organization Unit Name"
-msgstr ""
+msgstr "Nombre De La Unidad De Organización"
 
 #: conify.org_unit.editor_pane.org_unit_code
 msgid "Organization Unit Policy Code"
-msgstr ""
+msgstr "Código De La Política De La Unidad De Organización"
 
 #: conify.org_unit.editor_pane.main_email
 msgid "Main Email Address"
@@ -144,20 +145,20 @@ msgstr "Número telefónico principal"
 
 #: conify.org_unit.editor_pane.org_unit_type
 msgid "Organization Unit Type"
-msgstr ""
+msgstr "Tipo De La Unidad De Organización"
 
 #: conify.org_unit.editor_pane.parent
 msgid "Parent Organization Unit"
-msgstr ""
+msgstr "Unidad De Organización Padre"
 
 #: conify.org_unit.editor_pane.opac_visible
 msgid "OPAC Visible"
-msgstr ""
+msgstr "Catálogo En Línea De Acceso Público Visible"
 
 #. Hours of operation
 #: conify.org_unit.hoo_pane.title
 msgid "Hours of Operation"
-msgstr ""
+msgstr "Horas de Operación"
 
 #: conify.org_unit.hoo_pane.open_time
 msgid "Open time"
@@ -210,7 +211,7 @@ msgstr "Dirección física"
 
 #: conify.org_unit.addresses_pane.holds.title
 msgid "Holds Address"
-msgstr ""
+msgstr "Dirección De Apartados"
 
 #: conify.org_unit.addresses_pane.mailing.title
 msgid "Mailing Address"
@@ -290,7 +291,7 @@ msgstr "Eliminar seleccionados"
 
 #: conify.marc_code_maps.title
 msgid "Global :: Configuration :: MARC Code Maps"
-msgstr ""
+msgstr "Global :: Configuración :: Mapas De Código MARC"
 
 #: conify.marc_code_maps.audience_map.title
 msgid "Audience Map"
@@ -326,7 +327,7 @@ msgstr "Guardar cambios"
 
 #: conify.marc_code_maps.bib_level.title
 msgid "Bibliographic Level Map"
-msgstr ""
+msgstr "Mapa Del Nivel Bibliographico"
 
 #: conify.marc_code_maps.bib_level.new.label
 msgid "New Bibliographic Level:"
@@ -339,15 +340,15 @@ msgstr "Añadir"
 
 #: conify.marc_code_maps.item_form.title
 msgid "Item Form Map"
-msgstr ""
+msgstr "Mapa Del Formulario Del Artículo"
 
 #: conify.marc_code_maps.item_form.new.label
 msgid "New Item Form:"
-msgstr ""
+msgstr "Formulario Para Un Nuevo Artículo:"
 
 #: conify.marc_code_maps.item_type.title
 msgid "Item Type Map"
-msgstr ""
+msgstr "Mapa de Tipo de Artículos"
 
 #: conify.marc_code_maps.item_type.new.label
 msgid "New Item Type:"
@@ -363,19 +364,19 @@ msgstr "Nuevo idioma:"
 
 #: conify.marc_code_maps.literary_form.title
 msgid "Literary Form Map"
-msgstr ""
+msgstr "Mapa De Formulario Literario"
 
 #: conify.marc_code_maps.literary_form.new.label
 msgid "New Literary Form:"
-msgstr ""
+msgstr "Nueva Forma Literaria:"
 
 #: conify.marc_code_maps.video.title
 msgid "Videorecording Format Map"
-msgstr ""
+msgstr "Mapa Formato Grabación En Video"
 
 #: conify.marc_code_maps.video.new.label
 msgid "New Video Recording Format:"
-msgstr ""
+msgstr "Nuevo Formato De Grabación En Video:"
 
 #. perm_list.html Entities
 #: conify.perm_list.permission_list.title
@@ -431,7 +432,11 @@ msgstr "Descripción"
 
 #: conify.grp_tree.permission_interval.label
 msgid "Permission Interval"
-msgstr ""
+msgstr "Intervalo de permiso"
+
+#: conify.grp_tree.hold_priority.label
+msgid "Hold Priority"
+msgstr "Mantener prioridad"
 
 #: conify.grp_tree.editing_permission.label
 msgid "Editing Permission"
@@ -466,7 +471,7 @@ msgstr "Permisos de grupo"
 
 #: conify.grp_tree.new_mapping.label
 msgid "New Mapping"
-msgstr ""
+msgstr "Nueva asignación"
 
 #: conify.grp_tree.permission.label
 msgid "Permission:"
@@ -478,11 +483,11 @@ msgstr "Profundidad:"
 
 #: conify.grp_tree.grantable.label
 msgid "Grantable:"
-msgstr ""
+msgstr "Consedible:"
 
 #: conify.grp_tree.add_mapping_button.label
 msgid "Add Mapping"
-msgstr ""
+msgstr "Agregar Asignación"
 
 #: conify.grp_tree.save_changes.label
 msgctxt "conify.grp_tree.save_changes.label"
@@ -493,3 +498,6 @@ msgstr "Guardar cambios"
 msgctxt "conify.grp_tree.remove_selected.label"
 msgid "Delete Selected"
 msgstr "Eliminar seleccionados"
+
+#~ msgid "MARC Codes"
+#~ msgstr "Códigos MARC"

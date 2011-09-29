@@ -1,35 +1,40 @@
+# Spanish translation for evergreen
+# Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2010-06-07 02:03:44-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2011-04-18 21:45:31-0400\n"
+"PO-Revision-Date: 2011-04-19 04:00+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
+"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2011-05-18 04:48+0000\n"
 
 #: reservation.js:AUTO_ending_at
 msgid "and"
-msgstr ""
-
-#: reservation.js:CREATE_BRESV_OK
-msgid "Created ${0} reservation."
-msgstr ""
+msgstr "y"
 
 #: reservation.js:BRSRC_NOT_FOUND
 msgid "Could not locate that resource."
-msgstr ""
+msgstr "No se pudo localizar ese recurso."
 
 #: reservation.js:AUTO_choose_a_brt
 msgid "Choose a Bookable Resource Type"
 msgstr ""
 
+#: reservation.js:CREATE_BRESV_OK
+msgid "Created ${0} reservation(s)"
+msgstr "Creadas ${0} reserva(s)"
+
 #: reservation.js:AUTO_ATTR_VALUE_reserve_brsrc
 msgid "Reserve Selected"
-msgstr ""
+msgstr "Reserva seleccionada"
 
 #: reservation.js:NO_BRT_RESULTS
 msgid "There are no bookable resource types registered."
@@ -37,19 +42,19 @@ msgstr ""
 
 #: reservation.js:AUTO_ATTR_VALUE_next
 msgid "Next"
-msgstr ""
+msgstr "Siguiente"
 
 #: reservation.js:BRSRC_RETRIVE_ERROR
 msgid "Error retrieving resource: "
-msgstr ""
+msgstr "Error obteniendo el recurso: "
 
 #: reservation.js:AUTO_starting_at
 msgid "Between"
-msgstr ""
+msgstr "Entre"
 
 #: reservation.js:AUTO_bresv_grid_resource
 msgid "Resource"
-msgstr ""
+msgstr "Recurso"
 
 #: reservation.js:AUTO_brt_noncat_only
 msgid "Show only non-cataloged bookable resource types"
@@ -61,22 +66,37 @@ msgstr ""
 
 #: reservation.js:AUTO_bresv_grid_type
 msgid "Type"
-msgstr ""
+msgstr "Tipo"
 
 #: reservation.js:AUTO_with_these_attr
 msgid "With these attributes:"
-msgstr ""
+msgstr "Con estos atributos:"
 
 #: reservation.js:WHERES_THE_BARCODE
 msgid "Enter a patron's barcode to make a reservation."
-msgstr ""
+msgstr "Ingrese un patrón de código de barras para hacer una reserva."
 
 #: reservation.js:CREATE_BRESV_SERVER_ERROR
 msgid "Server error trying to create reservation: "
+msgstr "Error del servidor al crear una reserva "
+
+#: reservation.js:CREATE_BRESV_LOCAL_ERROR
+#, fuzzy
+msgid "Exception trying to create reservation: "
+msgstr "Error del servidor al crear una reserva "
+
+#: reservation.js:CREATE_BRESV_OK_MISSING_TARGET
+msgid ""
+"Created ${0} reservation(s), but ${1} of these could not target any resources.\n"
+"\n"
+"This means that it won't be possible to fulfill some of these\n"
+"reservations until a suitable resource becomes available."
 msgstr ""
 
-#: reservation.js:CXL_BRESV_SUCCESS
-msgid "Canceled ${0} reservation."
+#: reservation.js:CREATE_BRESV_OK_MISSING_TARGET_WILL_CANCEL
+msgid ""
+"Since the requested resource could not be targeted, this\n"
+"reservation will now be canceled."
 msgstr ""
 
 #: reservation.js:OUTSTANDING_BRESV
@@ -85,30 +105,33 @@ msgstr ""
 
 #: reservation.js:HERE_ARE_EXISTING_BRESV
 msgid "Existing reservations for"
-msgstr ""
+msgstr "Reservas existentes para"
 
-#: reservation.js:CREATE_BRESV_LOCAL_ERROR
-msgid "Exception trying to create reservation: "
-msgstr ""
+#: reservation.js:CXL_BRESV_SUCCESS
+msgid "Canceled ${0} reservation(s)"
+msgstr "Canceladas ${0} reserva(s)"
 
-#: reservation.js:AUTO_ATTR_VALUE_button_cancel_existing
-msgid "Cancel selcted"
+#: reservation.js:GET_PATRON_NO_RESULT
+msgid "No server response after attempting to look up patron by barcode."
 msgstr ""
 
 #: reservation.js:AUTO_or
 msgid "- Or -"
-msgstr ""
+msgstr "- o -"
 
-#: reservation.js:CXL_BRESV_SUCCESS_PLURAL
-msgid "Canceled ${0} reservations"
+#: reservation.js:SELECT_A_BRSRC_THEN
+msgid ""
+"You have clicked 'Reserve Selected', but nothing is selected!\n"
+"\n"
+"You must select a resource from the large box above.\n"
+"\n"
+"***  If resources that you would select are highlighted in RED, ***\n"
+"these items are not available during the requested time; if\n"
+"possible, choose another resource or change the reservation time."
 msgstr ""
 
 #: reservation.js:AUTO_ATTR_VALUE_reserve_brt
 msgid "Reserve Any"
-msgstr ""
-
-#: reservation.js:GET_PATRON_NO_RESULT
-msgid "No server response after attempting to look up patron by barcode."
 msgstr ""
 
 #: reservation.js:AUTO_patron_barcode
@@ -125,11 +148,11 @@ msgstr ""
 
 #: reservation.js:CXL_BRESV_SELECT_SOMETHING
 msgid "You have not selected any reservations to cancel."
-msgstr ""
+msgstr "No ha seleccionado ninguna reserva para cancelar."
 
 #: reservation.js:AUTO_i_need_this_resource
 msgid "I need this resource..."
-msgstr ""
+msgstr "Necesito este recurso..."
 
 #: reservation.js:NEED_EXACTLY_ONE_BRT_PASSED_IN
 msgid "Can't book multiple resource types at once"
@@ -137,15 +160,18 @@ msgstr ""
 
 #: reservation.js:AUTO_bresv_grid_start_time
 msgid "Start time"
+msgstr "Fecha de Inicio"
+
+#: reservation.js:ERROR_FETCHING_AOUS
+msgid ""
+"Could not retrieve organizational unit settings.\n"
+"This is a non-fatal error, but you may wish to\n"
+"contact your system administrator."
 msgstr ""
 
-#: reservation.js:SELECT_A_BRSRC_THEN
-msgid "Select a resource from the big list above."
-msgstr ""
-
-#: reservation.js:AUTO_bresv_grid_end_time
-msgid "End time"
-msgstr ""
+#: reservation.js:AUTO_ATTR_VALUE_button_cancel_existing
+msgid "Cancel selected"
+msgstr "Cancelar seleccionados"
 
 #: reservation.js:GET_BRESV_LIST_NO_RESULT
 msgid "No results from server retrieving reservation list."
@@ -153,27 +179,15 @@ msgstr ""
 
 #: reservation.js:GET_BRESV_LIST_ERR
 msgid "Error while retrieving reservation list: "
-msgstr ""
+msgstr "Error al obtener la lista de reservas: "
 
 #: reservation.js:AUTO_arbitrary_resource
 msgid "Enter the barcode of a cataloged, bookable resource:"
 msgstr ""
 
-#: reservation.js:CREATE_BRESV_OK_MISSING_TARGET
-msgid ""
-"Created ${0} reservation(s), but ${1} of these couldn't target any resources.\n"
-"\n"
-"This means that it won't be possible to fulfill some of these\n"
-"reservations until a suitable resource becomes available."
-msgstr ""
-
 #: reservation.js:NO_EXISTING_BRESV
 msgid "This user has no existing reservations at this time."
-msgstr ""
-
-#: reservation.js:CREATE_BRESV_OK_PLURAL
-msgid "Created ${0} reservations"
-msgstr ""
+msgstr "Este usuario no tiene reservas existentes."
 
 #: reservation.js:AUTO_explain_bookable
 msgid "To reserve an item that is not yet registered as a bookable resource, find it in the catalog or under <em>Display Item</em>, and select <em>Make Item Bookable</em> or <em>Book Item Now</em> there."
@@ -181,7 +195,7 @@ msgstr ""
 
 #: reservation.js:CXL_BRESV_FAILURE2
 msgid "Error canceling reservations:\n"
-msgstr ""
+msgstr "Error al cancelar las reservas:\n"
 
 #: reservation.js:NO_BRA_RESULTS
 msgid "Couldn't retrieve booking resource attributes."
@@ -190,6 +204,10 @@ msgstr ""
 #: reservation.js:CREATE_BRESV_SERVER_NO_RESPONSE
 msgid "No response from server after trying to create reservation."
 msgstr ""
+
+#: reservation.js:AUTO_bresv_grid_end_time
+msgid "End time"
+msgstr "Hora de finalización"
 
 #: reservation.js:UNTARGETED
 msgid "None targeted"
@@ -219,11 +237,17 @@ msgstr ""
 
 #: reservation.js:AUTO_ATTR_VALUE_button_edit_existing
 msgid "Edit selected"
+msgstr "Editar seleccionados"
+
+#: reservation.js:CREATE_BRESV_OK_MISSING_TARGET_BLOCKED_BY_CIRC
+msgid ""
+"The desired reservation(s) are blocked by circulation(s) with the following due date(s):\n"
+"${0}"
 msgstr ""
 
 #: reservation.js:ANY
 msgid "ANY"
-msgstr ""
+msgstr "CUALQUIERA"
 
 #: reservation.js:CXL_BRESV_FAILURE
 msgid "Error canceling reservations; server silent."

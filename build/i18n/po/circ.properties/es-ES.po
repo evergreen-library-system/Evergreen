@@ -2,20 +2,21 @@
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
-#
+#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/circ.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-11-23 23:36-0400\n"
-"PO-Revision-Date: 2010-01-04 21:08+0000\n"
-"Last-Translator: Federico Vera <Unknown>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2011-09-24 15:06+0000\n"
+"Last-Translator: Fitoschido <fitoschido@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-01-05 04:41+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Generator: Translate Toolkit 1.8.1\n"
+"X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-09-25 04:42+0000\n"
 
 #: staff.circ.alert
 msgid "Alert"
@@ -26,7 +27,6 @@ msgid "Item %1$s has never circulated."
 msgstr "El elemento %1$s nunca estuvo en circulación."
 
 #: staff.circ.invalid_date
-msgctxt "staff.circ.invalid_date"
 msgid "Invalid Date"
 msgstr "Fecha inválida"
 
@@ -36,15 +36,15 @@ msgstr "Fecha futuar"
 
 #: staff.circ.process_item
 msgid "Check In / Process Item"
-msgstr ""
+msgstr "Registar / Procesar Artículo"
 
 #: staff.circ.backdated_checkin
 msgid "Backdated %1$s Check In"
-msgstr ""
+msgstr "Fechado anteriormente %1$s Registrar"
 
 #: staff.circ.backdate.exception
 msgid "Problem setting backdate: %1$s"
-msgstr ""
+msgstr "Problema configurando fecha anterior :%1$s"
 
 #: staff.circ.unimplemented
 msgctxt "staff.circ.unimplemented"
@@ -57,6 +57,8 @@ msgid ""
 "Bad check digit, possibly due to a bad scan.  Use this barcode (\"%1$s\") "
 "anyway?"
 msgstr ""
+"Comprobación de dígito erróneo, posiblemente debido a un mal escaneo. ¿Usar "
+"este código de barras (\"%1$s\") de todas formas?"
 
 #: staff.circ.barcode.bad
 msgid "Bad Barcode"
@@ -125,11 +127,11 @@ msgid "Circ ID %1$s failed backdating due to %2$s"
 msgstr ""
 
 #: staff.circ.backdate.circ_ids.prompt
-msgid "Number of circulations selected: %1$s"
-msgstr "Número de circulaciones seleccionadas: %1$s"
+msgid "Number of circulations selected: %1$s "
+msgstr ""
 
 #: staff.circ.backdate.circ_ids.failed
-msgid "Number of circulations not backdated: %1$s"
+msgid "Number of circulations not backdated: %1$s "
 msgstr ""
 
 #: staff.circ.checkout.sorting.exception
@@ -160,7 +162,7 @@ msgstr ""
 #: staff.circ.checkout.cmd_checkout_submit.too_many.title
 msgctxt "staff.circ.checkout.cmd_checkout_submit.too_many.title"
 msgid "Non-cataloged Circulation"
-msgstr ""
+msgstr "Circulación no catalogada"
 
 #: staff.circ.checkout.ok.btn
 msgctxt "staff.circ.checkout.ok.btn"
@@ -169,12 +171,12 @@ msgstr "OK"
 
 #: staff.circ.checkout.cmd_checkout_submit.confirm.msg
 msgid "Are you sure you want to circulate %1$d %2$s?"
-msgstr ""
+msgstr "¿Estás seguro de que deseas circular %1$d %2$s?"
 
 #: staff.circ.checkout.cmd_checkout_submit.confirm.title
 msgctxt "staff.circ.checkout.cmd_checkout_submit.confirm.title"
 msgid "Non-cataloged Circulation"
-msgstr ""
+msgstr "Circulación no catalogada"
 
 #: staff.circ.checkout.yes.btn
 msgctxt "staff.circ.checkout.yes.btn"
@@ -193,7 +195,7 @@ msgstr ""
 #: staff.circ.checkout.cmd_checkout_submit.non_numeric.title
 msgctxt "staff.circ.checkout.cmd_checkout_submit.non_numeric.title"
 msgid "Non-cataloged Circulation"
-msgstr ""
+msgstr "Circulación no catalogada"
 
 #: staff.circ.checkout.disable.error
 msgid "Error determining whether to disable checkout."
@@ -201,11 +203,11 @@ msgstr ""
 
 #: staff.circ.checkout.date.too_early.error
 msgid "Due date needs to be after today."
-msgstr ""
+msgstr "La fecha de entrega debe ser mas tarde que hoy."
 
 #: staff.circ.checkout.barcode.failed
 msgid "%1$s failed."
-msgstr ""
+msgstr "%1$s fracasado."
 
 #: staff.circ.checkout.non_cataloged.pending
 msgid "Non-cataloged checkout pending..."
@@ -220,24 +222,35 @@ msgid "Check Out Failed %1$s"
 msgstr ""
 
 #: staff.circ.checkout.override.confirm
+#, fuzzy
 msgid "Override Checkout Failure?"
-msgstr ""
+msgstr "¿Sobrepasar Fracaso De Entrega?"
 
 #: staff.circ.checkout.override.item_deposit_required.warning
+#, fuzzy
 msgid ""
 "A billing for an Item Deposit will be added to the patron's account if this "
 "action is overrided."
 msgstr ""
+"Para el artículo con el código de barras %1$s, un cargo por el Deposito Del "
+"Artículo sera agregado a la cuenta del cliente si esta acción es "
+"sobrepasada."
 
 #: staff.circ.checkout.override.item_rental_fee_required.warning
+#, fuzzy
 msgid ""
 "A billing for an Item Rental Fee will be added to the patron's account if "
 "this action is overrided."
 msgstr ""
+"Para el artículo con el código de barras %1$s, un cargo por Cargos De Renta "
+"Del Artículo sera agregado a la cuenta del cliente esta acción es "
+"sobrepasada."
 
 #: staff.circ.checkout.not_cataloged.confirm
 msgid "Mis-scan or non-cataloged item.  Checkout as a pre-cataloged item?"
 msgstr ""
+"Artículo escaneado mal o no catálogado. ¿Prestar como un artículo "
+"previamente catalogado?"
 
 #: staff.circ.pre_cataloged
 msgid "Pre-cataloged"
@@ -256,18 +269,21 @@ msgid ""
 "The card used to retrieve this account is inactive and may not be used to "
 "circulate items."
 msgstr ""
+"The tarjeta usada para cargar este usuario esta inactiva y no puede ser "
+"usada para circular artículo."
 
 #: staff.circ.checkout.barcode.check_out_failed
+#, fuzzy
 msgid "Check Out Failed"
-msgstr ""
+msgstr "Hora Prestado"
 
 #: staff.circ.checkout.account.inactive
 msgid "This account is inactive and may not circulate items."
-msgstr ""
+msgstr "Esta cuenta esta inactiva y no puede circular artículos."
 
 #: staff.circ.checkout.account.expired
 msgid "This account has expired and may not circulate items."
-msgstr ""
+msgstr "Esta cuenta ha expirado y no puede circular artículos."
 
 #: staff.circ.checkout.item_due
 msgid "This item was due on %1$s."
@@ -291,27 +307,30 @@ msgstr "Renovar elemento"
 
 #: staff.circ.checkout.network_failure
 msgid "There was a network failure."
-msgstr ""
+msgstr "Hubo una falla en la red."
 
 #: staff.circ.checkout.copy_status
 msgid "Copy status = %1$s"
-msgstr ""
+msgstr "Estado de copia = %1$s"
 
 #: staff.circ.checkout.alert_message
 msgid "Alert Message = %1$s"
-msgstr ""
+msgstr "Mensaje de Alerta = %1$s"
 
 #: staff.circ.checkout.permission_denied
 msgid "Permission Denied = %1$s"
-msgstr ""
+msgstr "Permiso Negado = %1$s"
 
 #. # "Circulation" - check &staff.main.menu.circ.label; in lang.dtd
 #. # "Offline Interface" - check &staff.main.menu.circ.offline.label; in lang.dtd
 #: staff.circ.checkout.suggest_offline
+#, fuzzy
 msgid ""
 "Check Out Failed.  If you wish to use the offline interface, in the top "
 "menubar select Circulation -> Offline Interface"
 msgstr ""
+"Entrega Fracasada. Si desea usar en interfaz fuera de línea, en el barra de "
+"menú arriba seleccione Circulación-> Interfaz Fuera De Línea"
 
 #: staff.circ.checkout.barcode
 msgctxt "staff.circ.checkout.barcode"
@@ -328,35 +347,35 @@ msgstr ""
 
 #: staff.circ.circ_brief.failure
 msgid "Failure rendering circulation."
-msgstr ""
+msgstr "Fracaso interpretando circulación."
 
 #: staff.circ.copy_details.hold
 msgid "Hold ID = %1$s"
-msgstr ""
+msgstr "Identificación Del Apartado = %1$s"
 
 #: staff.circ.copy_details.transit
 msgid "Transit ID = %1$s"
-msgstr ""
+msgstr "Identificación De Tránsito = %1$s"
 
 #: staff.circ.copy_details.circ
 msgid "Circulation ID = %1$s"
-msgstr ""
+msgstr "Identificación De La Circulación = %1$s"
 
 #: staff.circ.copy_details.last_circ
 msgid "Last Circulation"
-msgstr ""
+msgstr "Última Circulación"
 
 #: staff.circ.copy_details.current_circ
 msgid "Current Circulation"
-msgstr ""
+msgstr "Circulación Presente"
 
 #: staff.circ.copy_details.no_circ
 msgid "This item has yet to circulate."
-msgstr ""
+msgstr "Este artículo aún no ha sido circulado."
 
 #: staff.circ.copy_details.not_transit
 msgid "This item is not in transit."
-msgstr ""
+msgstr "Este artículo no esta en tránsito."
 
 #: staff.circ.copy_details.desk_renewal
 msgid "Desk"
@@ -383,7 +402,7 @@ msgstr ""
 
 #: staff.circ.copy_details.no_hold
 msgid "This item is not captured for a hold."
-msgstr ""
+msgstr "Este artículo no esta capturado para un apartado."
 
 #: staff.circ.copy_details.circ_count_by_year
 msgid "%1$s : %2$s"
@@ -391,7 +410,53 @@ msgstr "%1$s : %2$s"
 
 #: staff.circ.copy_details.circ_count_by_year.legacy_label
 msgid "Legacy/Not Dated"
+msgstr "Legado/Sin Fecha"
+
+#. # From Config::rules::circ_duration, 1 - Name, 2 - ID, 3 - Short, 4 - Normal, 5 - Extended, 6 - Max Renewals
+#: staff.circ.copy_details.duration_rule_format
+msgctxt "staff.circ.copy_details.duration_rule_format"
+msgid "%1$s"
+msgstr "%1$s"
+
+#. # From Config::rules::circ_duration, 1 - Name, 2 - ID, 3 - Short, 4 - Normal, 5 - Extended, 6 - Max Renewals
+#: staff.circ.copy_details.duration_rule_tooltip_format
+msgid "%3$s/%4$s/%5$s - %6$s renewals"
+msgstr "%3$s/%4$s/%5$s - %6$s renovaciones"
+
+#. # From Config::rules::recurring_fine, 1 - Name, 2 - ID, 3 - Low, 4 - Normal, 5 - High, 6 - Recurrence Interval
+#: staff.circ.copy_details.recurring_fine_rule_format
+msgctxt "staff.circ.copy_details.recurring_fine_rule_format"
+msgid "%1$s"
+msgstr "%1$s"
+
+#. # From Config::rules::recurring_fine, 1 - Name, 2 - ID, 3 - Low, 4 - Normal, 5 - High, 6 - Recurrence Interval
+#: staff.circ.copy_details.recurring_fine_rule_tooltip_format
+msgid "%3$s/%4$s/%5$s - %6$s"
+msgstr "%3$s/%4$s/%5$s - %6$s"
+
+#. # From Config::rules::max_fine, 1 - Name, 2 - ID, 3 - Amount, 4 - Is Percent
+#: staff.circ.copy_details.max_fine_rule_format
+msgctxt "staff.circ.copy_details.max_fine_rule_format"
+msgid "%1$s"
+msgstr "%1$s"
+
+#. # From Config::rules::max_fine, 1 - Name, 2 - ID, 3 - Amount, 4 - Is Percent
+#: staff.circ.copy_details.max_fine_rule_tooltip_format
+msgid "%3$s Is Percent? %4$s"
+msgstr "%3$s ¿Es Porcetaje? %4$s"
+
+#. # From asset::copy_location: 1 - Can Circulate?  2 - Is Holdable?  3 - Hold Capture Requires Verification?  4 - Is OPAC Visible?
+#: staff.circ.copy_details.location_tooltip
+msgid "Circulate? %1$s  Holdable? %2$s  Hold Verify? %3$s  OPAC Visible? %4$s"
 msgstr ""
+"¿Circular? %1$s ¿Posible De Apartar? %2$s ¿Verificar Apartado? %3$s "
+"¿Catálogo En Línea De Acceso Público Visible? %4$s"
+
+#. # From config::copy_status: 1 - OPAC Visible?  2 - Is Holdable?
+#: staff.circ.copy_details.copy_status_tooltip
+msgid "OPAC Visible? %1$s  Holdable? %2$s"
+msgstr ""
+"¿Catálogo En Línea De Acceso Público Visible? %1$s ¿Posible De Apartar? %2$s"
 
 #: staff.circ.copy_status.tab_name
 msgid "Item Status"
@@ -403,7 +468,7 @@ msgstr "Acción completa."
 
 #: staff.circ.copy_status.sel_checkin.error
 msgid "Checkin did not likely happen."
-msgstr ""
+msgstr "Entrega probablemente no paso."
 
 #: staff.circ.copy_status.cmd_replace_barcode.error
 msgid "Barcode %1$s was not likely replaced."
@@ -411,19 +476,19 @@ msgstr "El código de barras %1$s no fue reemplazado."
 
 #: staff.circ.copy_status.cmd_replace_barcodes.error
 msgid "Barcode replacements did not likely happen."
-msgstr ""
+msgstr "Reemplazos de códigos de barras probablemente no paso."
 
 #: staff.circ.copy_status.sel_edit.error
 msgid "with copy editor"
-msgstr ""
+msgstr "con editor de copias"
 
 #: staff.circ.copy_status.sel_renew.not_circulating
 msgid "Item with barcode %1$s is not circulating."
-msgstr ""
+msgstr "Artículo con el código de barras %1$s no esta circulando."
 
 #: staff.circ.copy_status.upload_file.title
 msgid "Import Barcode File"
-msgstr ""
+msgstr "Importar Archivo De Código De Barras"
 
 #: staff.circ.copy_status.upload_file.complete
 msgid "File uploaded."
@@ -435,16 +500,16 @@ msgstr "No se encontraron códigos de barras en el archivo."
 
 #: staff.circ.copy_status.add_items.title
 msgid "Add Item for record # %1$s"
-msgstr ""
+msgstr "Agregar Artículo para el registro # %1$s"
 
 #: staff.circ.copy_status.del_items.confirm
 msgid "Are you sure sure you want to delete these items? %1$s"
-msgstr ""
+msgstr "¿Esta seguro que desea borrar estos artículos? %1$s"
 
 #: staff.circ.copy_status.del_items.title
 msgctxt "staff.circ.copy_status.del_items.title"
 msgid "Override Delete Failure?"
-msgstr ""
+msgstr "¿Sobrepasar El Fracaso De Borro?"
 
 #: staff.circ.copy_status.del_items.success
 msgid "Items Deleted"
@@ -456,31 +521,31 @@ msgstr ""
 
 #: staff.circ.copy_status.transfer_items.mark_destination
 msgid "Please mark a volume as the destination and then try this again."
-msgstr ""
+msgstr "Por favor marque el volumen como el destino e intente denuevo."
 
 #: staff.circ.copy_status.transfer_items.problem
 msgid "All copies not likely transferred."
-msgstr ""
+msgstr "No todas las copias probablemente transferidas."
 
 #: staff.circ.copy_status.add_volumes.perm_failure
 msgid "You do not have permission to add volumes to that library."
-msgstr ""
+msgstr "No tiene permisos para agregar volúmenes a esa biblioteca."
 
 #: staff.circ.copy_status.add_volumes.title
 msgid "Add Volume/Item for Record # %1$s"
-msgstr ""
+msgstr "Agrere Volumen/Artículo pare el Registro # %1$s"
 
 #: staff.circ.copy_status.edit_volumes.perm_failure
 msgid "You do not have permission to edit this volume."
-msgstr ""
+msgstr "No tiene permiso para editar este volumen."
 
 #: staff.circ.copy_status.edit_volume.title
 msgid "Volume for record # %1$s"
-msgstr ""
+msgstr "Volumen pare el registro # %1$s"
 
 #: staff.circ.copy_status.edit_volumes.title
 msgid "Volumes for record # %1$s"
-msgstr ""
+msgstr "Volúmenes pare el registro # %1$s"
 
 #: staff.circ.copy_status.edit_volumes.duplicate
 msgid ""
@@ -491,196 +556,208 @@ msgstr ""
 
 #: staff.circ.copy_status.edit_volumes.success
 msgid "Volumes modified."
-msgstr ""
+msgstr "Volúmenes modificados."
 
 #: staff.circ.copy_status.delete_volumes.singular
 msgid "Are you sure you would like to delete this volume?"
-msgstr ""
+msgstr "¿Está seguro que desea eliminar este volumen?"
 
 #: staff.circ.copy_status.delete_volumes.plural
 msgid "Are you sure you would like to delete these volumes?"
-msgstr ""
+msgstr "¿Está seguro que desea eliminar estos volúmenes?"
 
 #: staff.circ.copy_status.delete_volumes.title
 msgid "Delete Volumes?"
-msgstr ""
+msgstr "¿Eliminar Volúmenes?"
 
 #: staff.circ.copy_status.delete_volumes.delete
 msgid "Delete"
-msgstr ""
+msgstr "Borrar"
 
 #: staff.circ.copy_status.delete_volumes.cancel
 msgctxt "staff.circ.copy_status.delete_volumes.cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: staff.circ.copy_status.delete_volumes.override
 msgctxt "staff.circ.copy_status.delete_volumes.override"
 msgid "Override Delete Failure?"
-msgstr ""
+msgstr "¿Sobrepasar El Fracaso De Borro?"
 
 #: staff.circ.copy_status.delete_volumes.delete_copies
 msgid ""
 "You must delete all the copies on the volume before you may delete the "
 "volume itself."
 msgstr ""
+"Debe borrar todas las copias en el volumen antes de que pueda borrar el "
+"volumen."
 
 #: staff.circ.copy_status.delete_volumes.success
 msgid "Volumes deleted."
-msgstr ""
+msgstr "Volúmenes eliminados."
 
 #: staff.circ.copy_status.mark_volume.status
 msgid "Volume marked as Item Transfer Destination"
-msgstr ""
+msgstr "Volúmen marcado como Destino De Transferencia Del Artículo"
 
 #: staff.circ.copy_status.mark_volume.prompt
 msgid "Choose just one Volume to mark as Item Transfer Destination"
 msgstr ""
+"Eliga solo un Volumen para marcar como Destino De Transferencia Del Artículo"
 
 #: staff.circ.copy_status.mark_volume.title
 msgctxt "staff.circ.copy_status.mark_volume.title"
 msgid "Limit Selection"
-msgstr ""
+msgstr "Limitar Selección"
 
 #: staff.circ.copy_status.ok
 msgctxt "staff.circ.copy_status.ok"
 msgid "OK"
-msgstr ""
+msgstr "Aceptar"
 
 #: staff.circ.copy_status.mark_library
 msgid "Library and Record marked as Volume Transfer Destination"
-msgstr ""
+msgstr "Biblioteca y Registro marcado como Destino De Transferencia Del Volúmen"
 
 #: staff.circ.copy_status.mark_library.limit_one
 msgid "Choose just one Library to mark as Volume Transfer Destination"
 msgstr ""
+"Seleccione solo una biblioteca para marcar como Destino De Transferencia Del "
+"Volúmen"
 
 #: staff.circ.copy_status.mark_library.limit_one.title
 msgctxt "staff.circ.copy_status.mark_library.limit_one.title"
 msgid "Limit Selection"
-msgstr ""
+msgstr "Limitar Selección"
 
 #: staff.circ.copy_status.transfer_volume.none
 msgid ""
 "Please mark a library as the destination from within holdings maintenance "
 "and then try this again."
 msgstr ""
+"Marque una biblioteca como destino de mantenimiento de apartados e intente "
+"denuevo."
 
 #: staff.circ.copy_status.transfer_volume.confirm
 msgid "Transfer volumes %1$s to library %2$s on the following record?"
 msgstr ""
+"¿Transferir los volúmenes %1$s a la biblioteca %2$s en el siguiente "
+"registro?"
 
 #: staff.circ.copy_status.transfer_volume.transfer.label
 msgid "Transfer"
-msgstr ""
+msgstr "Transferir"
 
 #: staff.circ.copy_status.transfer_volume.cancel.label
 msgctxt "staff.circ.copy_status.transfer_volume.cancel.label"
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: staff.circ.copy_status.transfer_volume.cancel.accesskey
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: staff.circ.copy_status.transfer_volume.title
 msgid "Volume Transfer"
-msgstr ""
+msgstr "Transferir Volumen"
 
 #: staff.circ.copy_status.transfer_volume.aborted
 msgid "Transfer Aborted"
-msgstr ""
+msgstr "Transferencia Abortada"
 
 #: staff.circ.copy_status.transfer_volume.override_failure
 msgid "Override Volume Transfer Failure?"
-msgstr ""
+msgstr "¿Sobrepasar El Fracaso De Transferencia Del Volumen?"
 
 #: staff.circ.copy_status.transfer_volume.cannot_have_vols
 msgid "That destination cannot have volumes."
-msgstr ""
+msgstr "Ese destino no puede tener volúmenes."
 
 #: staff.circ.copy_status.transfer_volume.success
 msgid "Volumes transferred."
-msgstr ""
+msgstr "Volúmenes transferidos."
 
 #: staff.circ.copy_status.transfer_volume.error
 msgid "All volumes not likely transferred."
-msgstr ""
+msgstr "Todos los volúmenes probablemente no fueron transferidos."
 
 #: staff.circ.copy_status.test_barcode.prompt
+#, fuzzy
 msgctxt "staff.circ.copy_status.test_barcode.prompt"
 msgid ""
 "Bad check digit, possibly due to a bad scan.  Use this barcode (\"%1$s\") "
 "anyway?"
 msgstr ""
+"Comprobación de dígito erróneo, posiblemente debido a un mal escaneo. ¿Usar "
+"este código de barras (\"%1$s\") de todas formas?"
 
 #: staff.circ.copy_status.status.null_result
 msgid "Something weird happened.  Result was null."
-msgstr ""
+msgstr "Algo extraño occurio. El resultado fue nulo."
 
 #: staff.circ.copy_status.status.copy_not_found
 msgid "%1$s was either mis-scanned or is not cataloged."
-msgstr ""
+msgstr "%1$s fue escaneado mal o no esta catalogado."
 
 #: staff.circ.copy_status.status.not_cataloged
 msgctxt "staff.circ.copy_status.status.not_cataloged"
 msgid "Not Cataloged"
-msgstr ""
+msgstr "No Fue Catalogado"
 
 #: staff.circ.copy_status.status.pre_cat
 msgid "Item is a pre-cataloged item."
-msgstr ""
+msgstr "El artículo es un artículo previamente catalogado."
 
 #: staff.circ.copy_status.status.hold
 msgid "Item is captured for a Hold."
-msgstr ""
+msgstr "El artículo fue capturado para un Apartado."
 
 #: staff.circ.copy_status.status.transit
 msgid "Item is in Transit."
-msgstr ""
+msgstr "El artículo esta en Tránsito."
 
 #: staff.circ.copy_status.status.circ
 msgid "Item is circulating."
-msgstr ""
+msgstr "El artículo esta circulando."
 
 #: staff.circ.copy_status.alt_view.label
 msgid "Alternate View"
-msgstr ""
+msgstr "Vista Alterna"
 
 #: staff.circ.copy_status.alt_view.accesskey
 msgctxt "staff.circ.copy_status.alt_view.accesskey"
 msgid "V"
-msgstr ""
+msgstr "V"
 
 #: staff.circ.copy_status.list_view.label
 msgctxt "staff.circ.copy_status.list_view.label"
 msgid "List View"
-msgstr ""
+msgstr "Vista de Lista"
 
 #: staff.circ.copy_status.list_view.accesskey
 msgctxt "staff.circ.copy_status.list_view.accesskey"
 msgid "V"
-msgstr ""
+msgstr "V"
 
 #: staff.circ.hold_capture.print.to_printer
 msgid "To Printer"
-msgstr ""
+msgstr "Para la Impresora"
 
 #. # pad this with whitespace to align with the rest of the staff.circ.hold_capture.print.* entries
 #: staff.circ.hold_capture.print.barcode
 msgctxt "staff.circ.hold_capture.print.barcode"
 msgid "Barcode:"
-msgstr ""
+msgstr "Código de barras:"
 
 #. # pad this with whitespace to align with the rest of the staff.circ.hold_capture.print.* entries
 #: staff.circ.hold_capture.print.title
 msgid "Title:"
-msgstr ""
+msgstr "Título:"
 
 #. # pad this with whitespace to align with the rest of the staff.circ.hold_capture.print.* entries
 #: staff.circ.hold_capture.print.author
 msgid "Author:"
-msgstr ""
+msgstr "Autor:"
 
 #. # pad this with whitespace to align with the rest of the staff.circ.hold_capture.print.* entries
 #: staff.circ.hold_capture.print.route_to
@@ -690,44 +767,44 @@ msgstr ""
 #. # pad this with whitespace to align with the rest of the staff.circ.hold_capture.print.* entries
 #: staff.circ.hold_capture.print.patron
 msgid "Patron:"
-msgstr ""
+msgstr "Cliente:"
 
 #: staff.circ.hold_capture.calling_external
 msgid "circ.hold_capture: Calling external .on_hold_capture()"
-msgstr ""
+msgstr "circ.hold_capture: Llamando externo .on_hold_capture()"
 
 #: staff.circ.hold_capture.no_external
 msgid "circ.hold_capture: No external .on_hold_capture()"
-msgstr ""
+msgstr "circ.hold_capture: No hay externo .on_hold_capture()"
 
 #: staff.circ.hold_capture.capture_failed
 msgid "Could not capture hold."
-msgstr ""
+msgstr "No se pudo capturar el apartado."
 
 #: staff.circ.hold_capture.error
 msgid "FIXME: need special alert and error handling"
-msgstr ""
+msgstr "ARREGLAME: necesita una alerta especial y manejo de errores"
 
 #: staff.circ.route_to.hold_shelf
 msgid "HOLD SHELF"
-msgstr ""
+msgstr "ESTANTE DE APARTADOS"
 
 #: staff.circ.route_to.public_hold_shelf
 msgid "PUBLIC HOLD SHELF"
-msgstr ""
+msgstr "ESTANTE DE APARTADOS PÚBLICO"
 
 #: staff.circ.route_to.private_hold_shelf
 msgid "PRIVATE HOLD SHELF"
-msgstr ""
+msgstr "ESTANTE DE APARTADOS PRIVADOS"
 
 #: staff.circ.in_house_use.tab_name
 msgid "In-House Use"
-msgstr ""
+msgstr "Uso Interno"
 
 #: staff.circ.in_house_use.barcode
 msgctxt "staff.circ.in_house_use.barcode"
 msgid "Barcode:"
-msgstr ""
+msgstr "Código de barras:"
 
 #: staff.circ.in_house_use.noncat_sort_error
 msgid "error in noncat sorting:"
@@ -735,29 +812,29 @@ msgstr ""
 
 #: staff.circ.in_house_use.noncataloged
 msgid "Non-Cataloged"
-msgstr ""
+msgstr "No catalogado"
 
 #: staff.circ.in_house_use.items_dump
-msgid "items ="
+msgid "items = "
 msgstr ""
 
 #: staff.circ.in_house_use.confirm_multiple
 msgid "Are you sure you want to mark %1$s as having been used %2$s times?"
-msgstr ""
+msgstr "¿Esta seguro que desea marcar %1$s como usado %2$s veces?"
 
 #: staff.circ.in_house_use.confirm_multiple.title
 msgid "In-House Use Verification"
-msgstr ""
+msgstr "Uso De Verificación Interno"
 
 #: staff.circ.in_house_use.yes
 msgctxt "staff.circ.in_house_use.yes"
 msgid "Yes"
-msgstr ""
+msgstr "Sí"
 
 #: staff.circ.in_house_use.no
 msgctxt "staff.circ.in_house_use.no"
 msgid "No"
-msgstr ""
+msgstr "No"
 
 #. # adjust Circulation -> Offline Interface to match your translation in lang.dtd
 #: staff.circ.in_house_use.failed.verbose
@@ -765,31 +842,33 @@ msgid ""
 "In House Use Failed.  If you wish to use the offline interface, in the top "
 "menubar select Circulation -> Offline Interface"
 msgstr ""
+"Uso Interno Facrasado. Si desea usar el interfaz fuera de línea, en la barra "
+"del menu arriba seleccione Circulación->Interfaz Fuera De Línea"
 
 #: staff.circ.in_house_use.failed
 msgid "In House Use Failed"
-msgstr ""
+msgstr "Uso Interno Fracasado"
 
 #: staff.circ.in_house_use.ok
 msgctxt "staff.circ.in_house_use.ok"
 msgid "OK"
-msgstr ""
+msgstr "Aceptar"
 
 #: staff.circ.in_house_use.external
 msgid "circ.in_house_use: Calling external .on_in_house_use()"
-msgstr ""
+msgstr "circ.in_house_use: Llamando externo .on_in_house_use()"
 
 #: staff.circ.in_house_use.no_external
 msgid "circ.in_house_use: No external .on_in_house_use()"
-msgstr ""
+msgstr "circ.in_house_use: No hay externo .on_in_house_use()"
 
 #: staff.circ.in_house_use.on_failure.external
 msgid "circ.in_house_use: Calling external .on_failure()"
-msgstr ""
+msgstr "circ.in_house_use: Llamando externo .on_failure()"
 
 #: staff.circ.in_house_use.on_failure.no_external
 msgid "circ.in_house_use: No external .on_failure()"
-msgstr ""
+msgstr "circ.in_house_use: No hay externo .on_failure()"
 
 #: staff.circ.print_list_template.window.title
 msgid "Template Macros"
@@ -797,36 +876,36 @@ msgstr ""
 
 #: staff.circ.print_list_template.window.heading
 msgid "General:"
-msgstr ""
+msgstr "General:"
 
 #: staff.circ.print_list_template.window.template_type
 msgid "For type: %1$s"
-msgstr ""
+msgstr "Para tipo: %1$s"
 
 #: staff.circ.print_list_template.window.close
 msgid "Close Window"
-msgstr ""
+msgstr "Cerrar Ventana"
 
 #: staff.circ.print_list_template.preview
-msgid "preview:"
+msgid "preview: "
 msgstr ""
 
 #: staff.circ.print_list_template.save
 msgid "Template Saved"
-msgstr ""
+msgstr "Plantilla Guardada"
 
 #: staff.circ.print_list_template.save_as
 msgid "Save Templates File As"
-msgstr ""
+msgstr "Guardar Archivo De Plantilla Como"
 
 #: staff.circ.print_list_template.export.error
 msgctxt "staff.circ.print_list_template.export.error"
 msgid "Error exporting templates"
-msgstr ""
+msgstr "Error exportando plantillas"
 
 #: staff.circ.print_list_template.import
 msgid "Import Templates File"
-msgstr ""
+msgstr "Importar Archivo De Planillas"
 
 #: staff.circ.print_list_template.import_results
 msgid "Imported these templates: %1$s"
@@ -834,38 +913,38 @@ msgstr ""
 
 #: staff.circ.print_list_template.reload
 msgid "Please reload this interface."
-msgstr ""
+msgstr "Por favor cargue denuevo este interfaz."
 
 #: staff.circ.print_list_template.import.error
 msgctxt "staff.circ.print_list_template.import.error"
 msgid "Error exporting templates"
-msgstr ""
+msgstr "Error exportando plantillas"
 
 #: staff.circ.print_list_template.tab_name
 msgid "Receipt Template Editor"
-msgstr ""
+msgstr "Editor De La Plantilla Del Recibo"
 
 #: staff.circ.utils.abort_transits.confirm
 msgid "Are you sure you would like to abort transits for copies: %1$s?"
-msgstr ""
+msgstr "¿Esta seguro que desea abortar el tránsito de estas copias: %1$s?"
 
 #: staff.circ.utils.abort_transits.title
 msgid "Aborting Transits"
-msgstr ""
+msgstr "Abortando Tránsitos"
 
 #: staff.circ.utils.yes
 msgctxt "staff.circ.utils.yes"
 msgid "Yes"
-msgstr ""
+msgstr "Sí"
 
 #: staff.circ.utils.no
 msgctxt "staff.circ.utils.no"
 msgid "No"
-msgstr ""
+msgstr "No"
 
 #: staff.circ.utils.abort_transits.not_allowed
 msgid "Copy ID = %1$s"
-msgstr ""
+msgstr "Identificación De Copia = %1$s"
 
 #: staff.circ.utils.abort_transits.not_found
 msgid ""
@@ -879,51 +958,51 @@ msgstr ""
 
 #: staff.circ.utils.retrieve_patron.failure
 msgid "Problem retrieving patron."
-msgstr ""
+msgstr "Problema cargando el cliente."
 
 #: staff.circ.utils.retrieve_copy.failure
 msgid "Problem retrieving copy details."
-msgstr ""
+msgstr "Problema cargado detalles de la copia."
 
 #: staff.circ.utils.retrieve_circs.failure
 msgid "Problem retrieving circulations."
-msgstr ""
+msgstr "Problema cargando circulaciones."
 
 #: staff.circ.utils.offline.timestamp
 msgid "Timestamp"
-msgstr ""
+msgstr "Fecha y hora"
 
 #: staff.circ.utils.offline.checkout_time
 msgid "Check Out Time"
-msgstr ""
+msgstr "Hora Prestado"
 
 #: staff.circ.utils.offline.type
 msgid "Transaction Type"
-msgstr ""
+msgstr "Tipo de Transacción"
 
 #: staff.circ.utils.offline.noncat
 msgid "Non-Cataloged?"
-msgstr ""
+msgstr "¿No Catalogado?"
 
 #: staff.circ.utils.offline.noncat_type
 msgid "Non-Cataloged Type ID"
-msgstr ""
+msgstr "Identificación Tipo No Catalogado"
 
 #: staff.circ.utils.offline.count
 msgid "Count"
-msgstr ""
+msgstr "Cuenta"
 
 #: staff.circ.utils.offline.patron_barcode
 msgid "Patron Barcode"
-msgstr ""
+msgstr "Código de barras del Patrón"
 
 #: staff.circ.utils.offline.item_barcode
 msgid "Item Barcode"
-msgstr ""
+msgstr "Código de barras del Artículo"
 
 #: staff.circ.utils.offline.due_date
 msgid "Due Date"
-msgstr ""
+msgstr "Fecha de Vencimiento"
 
 #: staff.circ.utils.offline.backdate
 msgid "Back Date"
@@ -931,95 +1010,111 @@ msgstr ""
 
 #: staff.circ.utils.offline.use_time
 msgid "Use Time"
-msgstr ""
+msgstr "Hora de Uso"
 
 #: staff.circ.utils.not_cataloged
 msgctxt "staff.circ.utils.not_cataloged"
 msgid "Not Cataloged"
-msgstr ""
+msgstr "No Fue Catalogado"
 
 #: staff.circ.utils.retrieving
 msgid "Retrieving..."
-msgstr ""
+msgstr "Obteniendo…"
 
 #: staff.circ.utils.owning_lib
 msgid "Owning Library"
+msgstr "Biblioteca Dueña"
+
+#: staff.circ.utils.prefix
+msgid "Prefix"
+msgstr ""
+
+#: staff.circ.utils.suffix
+msgid "Suffix"
+msgstr ""
+
+#: staff.circ.utils.label_class
+msgid "Classification"
 msgstr ""
 
 #: staff.circ.utils.loan_duration.short
 msgid "Short"
-msgstr ""
+msgstr "Corto"
 
 #: staff.circ.utils.loan_duration.normal
 msgctxt "staff.circ.utils.loan_duration.normal"
 msgid "Normal"
-msgstr ""
+msgstr "Normal"
 
 #: staff.circ.utils.loan_duration.long
 msgid "Long"
-msgstr ""
+msgstr "Largo"
 
 #: staff.circ.utils.fine_level.low
 msgid "Low"
-msgstr ""
+msgstr "Bajo"
 
 #: staff.circ.utils.fine_level.normal
 msgctxt "staff.circ.utils.fine_level.normal"
 msgid "Normal"
-msgstr ""
+msgstr "Normal"
 
 #: staff.circ.utils.fine_level.high
 msgid "High"
-msgstr ""
+msgstr "Alto"
 
 #: staff.circ.utils.circulate
 msgid "Circulate?"
-msgstr ""
+msgstr "¿Circular?"
 
 #: staff.circ.utils.deleted
 msgid "Deleted?"
-msgstr ""
+msgstr "¿Borrado?"
 
 #: staff.circ.utils.holdable
 msgid "Holdable?"
-msgstr ""
+msgstr "¿Posible de reservar?"
+
+#: staff.circ.utils.floating
+msgid "Floating?"
+msgstr "¿Flotando?"
 
 #: staff.circ.utils.hold_note
 msgid "Hold Note(s)"
-msgstr ""
+msgstr "Nota(s) Del Apartado"
 
 #: staff.circ.utils.staff_hold
 msgid "Staff Hold?"
-msgstr ""
+msgstr "¿Apartado Del Empleado?"
 
 #: staff.circ.utils.opac_visible
 msgid "OPAC Visible?"
-msgstr ""
+msgstr "¿Catálogo En Línea De Acceso Público Visible?"
 
 #: staff.circ.utils.status_changed_time
 msgid "Status Changed Time"
-msgstr ""
+msgstr "Estado Del Tiempo Cambiado"
 
 #: staff.circ.utils.reference
 msgid "Reference?"
-msgstr ""
+msgstr "¿Referencia?"
 
 #: staff.circ.utils.deposit
 msgid "Deposit?"
-msgstr ""
+msgstr "¿Depositar?"
 
 #: staff.circ.utils.acp_mint_condition
 msgid "Quality"
-msgstr ""
+msgstr "Calidad"
 
 #: staff.circ.utils.acp_mint_condition.true
 msgctxt "staff.circ.utils.acp_mint_condition.true"
 msgid "Good"
-msgstr ""
+msgstr "Bueno"
 
 #: staff.circ.utils.acp_mint_condition.false
 msgid "Mediocre"
-msgstr ""
+msgstr "Mediocre"
 
 #. # The < and > highlight that the value is not set; translate Unset and change the delimiters as needed
 #: staff.circ.utils.unset
@@ -1028,27 +1123,27 @@ msgstr ""
 
 #: staff.circ.utils.checkout_lib
 msgid "Checkout or Renew Library"
-msgstr ""
+msgstr "Sacar o Renovar Biblioteca"
 
 #: staff.circ.utils.checkout_workstation
 msgid "Circ or Renewal Workstation"
-msgstr ""
+msgstr "Estación De Trabajo para Circulación o Renovaciones"
 
 #: staff.circ.utils.checkout_workstation_top_of_chain
 msgid "Checkout Workstation"
-msgstr ""
+msgstr "Estación De Trabajo para Prestamos"
 
 #: staff.circ.utils.xact_start
 msgid "Checkout Date"
-msgstr ""
+msgstr "Fecha de Salida"
 
 #: staff.circ.utils.checkin_time
 msgid "Checkin Date"
-msgstr ""
+msgstr "Fecha de Entrada"
 
 #: staff.circ.utils.xact_finish
 msgid "Transaction Finished"
-msgstr ""
+msgstr "Transacción Finalizada"
 
 #: staff.circ.utils.checkin_scan_time
 msgid "Checkin Scan Date"
@@ -1056,64 +1151,68 @@ msgstr ""
 
 #: staff.circ.utils.checkin_workstation
 msgid "Checkin Workstation"
-msgstr ""
+msgstr "Estación de Trabajo de Entrega"
 
 #: staff.circ.utils.create_date
 msgid "Date Created"
-msgstr ""
+msgstr "Fecha de Creación"
 
 #: staff.circ.utils.edit_date
-msgid "Date Last Edited"
+msgid "Date Last Edited "
 msgstr ""
 
 #: staff.circ.utils.bre.create_date
 msgid "Date Record Created"
-msgstr ""
+msgstr "Fecha Que El Registro Fue Creado"
 
 #: staff.circ.utils.bre.edit_date
-msgid "Date Record Last Edited"
+msgid "Date Record Last Edited "
 msgstr ""
 
 #: staff.circ.utils.edition
 msgid "Edition"
-msgstr ""
+msgstr "Edición"
 
 #: staff.circ.utils.isbn
 msgid "ISBN"
-msgstr ""
+msgstr "ISBN"
 
 #: staff.circ.utils.pubdate
 msgid "Publication Date"
-msgstr ""
+msgstr "Fecha de Publicación"
 
 #: staff.circ.utils.publisher
 msgid "Publisher"
-msgstr ""
+msgstr "Editor"
 
 #: staff.circ.utils.creator
 msgid "Created By"
-msgstr ""
+msgstr "Creado por"
+
+#: staff.circ.utils.owner
+msgid "Owned By"
+msgstr "Propiedad de"
 
 #: staff.circ.utils.editor
 msgid "Edited By"
-msgstr ""
+msgstr "Editado por"
 
 #. # TCN is an acronym for Title Control Number
 #: staff.circ.utils.tcn
 msgid "TCN"
-msgstr ""
+msgstr "TCN"
 
 #: staff.circ.utils.tcn_source
 msgid "TCN Source"
-msgstr ""
+msgstr "Fuente TCN"
 
 #: staff.circ.utils.stop_fines
 msgid "Fines Stopped"
-msgstr ""
+msgstr "Multas Detenidas"
 
 #: staff.circ.utils.stop_fines_time
 msgid "Fines Stopped Time"
-msgstr ""
+msgstr "Hora Que Las Multas Fueron Detenidas"
 
 #: staff.circ.utils.route_to
 msgid "Route To"
@@ -1122,27 +1221,27 @@ msgstr ""
 #: staff.circ.utils.message
 msgctxt "staff.circ.utils.message"
 msgid "Message"
-msgstr ""
+msgstr "Mensaje"
 
 #: staff.circ.utils.uses
 msgid "# of Uses"
-msgstr ""
+msgstr "# de Usos"
 
 #: staff.circ.utils.alert_message
 msgid "Alert Message"
-msgstr ""
+msgstr "Mensaje De Alerta"
 
 #: staff.circ.utils.barcode
 msgid "Barcode"
-msgstr ""
+msgstr "Código de barras"
 
 #: staff.circ.utils.title
 msgid "Title"
-msgstr ""
+msgstr "Título"
 
 #: staff.circ.utils.author
 msgid "Author"
-msgstr ""
+msgstr "Autor"
 
 #: staff.circ.utils.callnumber
 msgid "Call Number"
@@ -1150,104 +1249,126 @@ msgstr ""
 
 #: staff.circ.utils.transit_id
 msgid "Transit ID"
-msgstr ""
+msgstr "Identificación Del Tránsito"
 
 #: staff.circ.utils.transit_source
 msgid "Transit Source"
-msgstr ""
+msgstr "Fuente Del Tránsito"
 
 #: staff.circ.utils.transit_source_send_time
 msgid "Transit Send Time"
-msgstr ""
+msgstr "Hora Que El Tránsito Fue Enviado"
 
 #: staff.circ.utils.transit_dest
 msgid "Transit Destination"
-msgstr ""
+msgstr "Destino Del Tránsito"
 
 #: staff.circ.utils.transit_dest_recv_time
 msgid "Transit Completion Time"
-msgstr ""
+msgstr "Hora Que El Tránsito Fue Completado"
 
 #: staff.circ.utils.transit_target_copy
 msgid "Transit Copy ID"
-msgstr ""
+msgstr "Identificación De La Copia En Tránsito"
 
 #: staff.circ.utils.request_lib
 msgid "Request Library (Full Name)"
-msgstr ""
+msgstr "Biblioteca Solicitada (Nombre Completo)"
 
 #: staff.circ.utils.request_lib_shortname
 msgid "Request Library"
-msgstr ""
+msgstr "Biblioteca Solicitada"
 
 #: staff.circ.utils.request_time
+msgctxt "staff.circ.utils.request_time"
 msgid "Request Date"
-msgstr ""
+msgstr "Fecha de Solicitud"
 
 #. # Date the hold became available
 #: staff.circ.utils.available_time
 msgid "Available On"
-msgstr ""
+msgstr "Disponible El"
 
 #. # Date the hold was captured
 #: staff.circ.utils.capture_time
 msgid "Capture Date"
-msgstr ""
+msgstr "Fecha de Captura"
 
 #. # Date the hold was cancelled
 #: staff.circ.utils.hold_cancel_time
 msgid "Cancel Time"
-msgstr ""
+msgstr "Hora Que Fue Cancelado"
 
 #. # Controlled entry for why the hold was cancelled
 #: staff.circ.utils.hold_cancel_cause
 msgid "Cancel Cause"
-msgstr ""
+msgstr "Causa Del Cancelamiento"
 
 #. # Freetext note pertaining to the cancelled hold
 #: staff.circ.utils.hold_cancel_note
 msgid "Cancel Note"
-msgstr ""
+msgstr "Nota Del Cancelamiento"
 
 #: staff.circ.utils.hold_status.1
 msgid "Waiting for copy"
-msgstr ""
+msgstr "Esperando copia"
 
 #: staff.circ.utils.hold_status.2
 msgid "Waiting for capture"
-msgstr ""
+msgstr "Esperando la captura"
 
 #: staff.circ.utils.hold_status.3
 msgid "In-Transit"
-msgstr ""
+msgstr "En Tránsito"
 
 #: staff.circ.utils.hold_status.4
 msgid "Ready for pickup"
-msgstr ""
+msgstr "Listo para ser recogido"
 
 #: staff.circ.utils.hold_status.5
 msgid "Reserved/Pending"
-msgstr ""
+msgstr "Reservado/Pendiente"
+
+#: staff.circ.utils.hold_status.6
+msgid "Canceled"
+msgstr "Cancelado"
+
+#: staff.circ.utils.hold_post_clear_shelf_action.label
+msgid "Post-Clear"
+msgstr "Después De Ser Clarificado"
+
+#: staff.circ.utils.hold_post_clear_shelf_action.hold
+msgid "Need for Hold"
+msgstr "Necesario para un Apartado"
+
+#: staff.circ.utils.hold_post_clear_shelf_action.transit
+msgid "Need for Transit"
+msgstr "Necesario para Tránsito"
+
+#: staff.circ.utils.hold_post_clear_shelf_action.shelf
+msgid "Reshelve"
+msgstr "Devolver al estante"
 
 #: staff.circ.utils.frozen
 msgid "Frozen?"
-msgstr ""
+msgstr "¿Congelado?"
 
 #: staff.circ.utils.active
 msgid "Active?"
-msgstr ""
+msgstr "¿Activo?"
 
 #: staff.circ.utils.thaw_date
+msgctxt "staff.circ.utils.thaw_date"
 msgid "Activation Date"
-msgstr ""
+msgstr "Fecha de Activación"
 
 #: staff.circ.utils.thaw_date.none
 msgid "No Date"
-msgstr ""
+msgstr "Sin Fecha"
 
 #: staff.circ.utils.pickup_lib
 msgid "Pickup Library (Full Name)"
-msgstr ""
+msgstr "Biblioteca De Recolección (Nombre Completo)"
 
 #: staff.circ.utils.current_copy.none
 msgid "No Copy"
@@ -1255,132 +1376,144 @@ msgstr ""
 
 #: staff.circ.utils.title.none
 msgid "No Title?"
-msgstr ""
+msgstr "¿Sin Título?"
 
 #: staff.circ.utils.author.none
 msgid "No Author?"
-msgstr ""
+msgstr "¿Sin Autor?"
 
 #: staff.circ.utils.notify_time
 msgid "Last Notify Time"
-msgstr ""
+msgstr "Última Fecha De Aviso"
 
 #: staff.circ.utils.notify_count
 msgid "Notices"
+msgstr "Avisos"
+
+#: staff.circ.utils.patron_alias
+msgid "Patron Alias"
 msgstr ""
 
 #: staff.circ.utils.patron_family_name
 msgid "Patron Last Name"
-msgstr ""
+msgstr "Apellido Del Cliente"
 
 #: staff.circ.utils.patron_first_given_name
 msgid "Patron First Name"
-msgstr ""
+msgstr "Primer Nombre Del Cliente"
 
 #: staff.circ.utils.checkin.override
 msgid "Override Checkin Failure?"
-msgstr ""
+msgstr "¿Sobrepasar Fracaso De Entrega?"
 
 #: staff.circ.utils.checkin.override.item_deposit_paid.warning
-msgid ""
-"A paid deposit will be owed to this patron if this action is overrided."
+msgid "A paid deposit will be owed to this patron if this action is overrided."
 msgstr ""
+"Un depósito pagado será debido a este cliente si esta acción es sobrepasada."
 
 #: staff.circ.utils.billable.amount
 msgid "Transaction for %1$s billable $%2$s"
-msgstr ""
+msgstr "Transacción para %1$s facturables $%2$s"
 
 #: staff.circ.utils.fine_tally_text
 msgid "Fine Tally: $%1$s"
-msgstr ""
+msgstr "Cuenta De Cobros: $%1$s"
 
 #: staff.circ.utils.transit_hold_cancelled
 msgid "Original hold for transit cancelled."
-msgstr ""
+msgstr "Apartado original para el tránsito cancelado."
 
 #: staff.circ.utils.item_checked_in
 msgid "%1$s was already checked in."
-msgstr ""
+msgstr "%1$s ya fue entregado."
 
 #: staff.circ.utils.item_not_cataloged
 msgid "ITEM_NOT_CATALOGED event but copy status is %1$s"
-msgstr ""
+msgstr "Evento ITEM_NOT_CATALOGED pero el estado de la copia es %1$s"
 
 #: staff.circ.utils.route_to.msg
 msgid "This item needs to be routed to %1$s"
-msgstr ""
+msgstr "Este artículo debe ser mandado a %1$s"
 
 #: staff.circ.utils.route_item_error
 msgid "We should have received a ROUTE_ITEM"
-msgstr ""
+msgstr "Debiamos aver recibido un ROUTE_ITEM"
 
 #: staff.circ.utils.route_item_status_error
 msgid "status of Holds Shelf, but no actual hold found."
-msgstr ""
+msgstr "estado del Estante De Apartados, pero ningun apartado encontrado."
+
+#: staff.circ.utils.reservation_status_error
+msgid "status of Reservation Shelf, but no actual hold found."
+msgstr "esta del Estante De Reservas, pero ningun apartado encontrado."
 
 #: staff.circ.utils.payload.hold.barcode
 msgctxt "staff.circ.utils.payload.hold.barcode"
 msgid "Barcode: %1$s"
-msgstr ""
+msgstr "Código de barras: %1$s"
 
 #: staff.circ.utils.payload.hold.title
+msgctxt "staff.circ.utils.payload.hold.title"
 msgid "Title: %1$s"
-msgstr ""
+msgstr "Título: %1$s"
 
 #: staff.circ.utils.ahr_mint_condition
 msgid "Copy Quality"
-msgstr ""
+msgstr "Calidad De Copia"
 
 #: staff.circ.utils.ahr_mint_condition.true
 msgctxt "staff.circ.utils.ahr_mint_condition.true"
 msgid "Good"
-msgstr ""
+msgstr "Buena"
 
 #: staff.circ.utils.ahr_mint_condition.false
 msgid "Any"
-msgstr ""
+msgstr "Cualquier"
 
 #: staff.circ.utils.holds.shelf_time
 msgid "Shelf Time"
-msgstr ""
+msgstr "Tiempo En El Estante"
 
 #: staff.circ.utils.holds.shelf_expire_time
 msgctxt "staff.circ.utils.holds.shelf_expire_time"
 msgid "Shelf Expire Time"
-msgstr ""
+msgstr "Tiempo Para Expirar En El Estante"
 
 #. # Hold for patron familyName, firstName secondName
 #: staff.circ.utils.payload.hold.patron
 msgid "Hold for patron %1$s, %2$s %3$s"
-msgstr ""
+msgstr "Apartado pare el cliente %1$s, %2$s %3$s"
 
 #: staff.circ.utils.payload.hold.patron_alias
 msgid "Hold for patron %1$s"
-msgstr ""
+msgstr "Apartado para el cliente %1$s"
 
 #: staff.circ.utils.payload.hold.phone_notify
 msgid "Notify by phone: %1$s"
-msgstr ""
+msgstr "Avisar por teléfono: %1$s"
 
 #: staff.circ.utils.payload.hold.email_notify
 msgid "Notify by email: %1$s"
-msgstr ""
+msgstr "Avisar por correo electrónico: %1$s"
 
 #: staff.circ.utils.payload.hold.request_date
+msgctxt "staff.circ.utils.payload.hold.request_date"
 msgid "Request Date: %1$s"
-msgstr ""
+msgstr "Fecha Solicitado: %1$s"
 
 #: staff.circ.utils.payload.hold.slip_date
+#, fuzzy
+msgctxt "staff.circ.utils.payload.hold.slip_date"
 msgid "Slip Date: %1$s"
-msgstr ""
+msgstr "Fecha Iniciado: %1$s"
 
 #: staff.circ.utils.payload.hold.notes.staff_note
 msgid "Staff Note: %1$s : %2$s"
-msgstr ""
+msgstr "Nota Del Empleado: %%1$s : %2$s"
 
 #: staff.circ.utils.payload.hold.notes.patron_note
 msgid "Patron Note: %1$s : %2$s"
-msgstr ""
+msgstr "Nota Del Cliente: %1$s : %2$s"
 
 #: staff.circ.utils.hold_slip
 msgid "Hold Slip"
@@ -1389,12 +1522,60 @@ msgstr ""
 #: staff.circ.utils.hold_slip.print.yes
 msgctxt "staff.circ.utils.hold_slip.print.yes"
 msgid "Print"
-msgstr ""
+msgstr "Imprimir"
 
 #: staff.circ.utils.hold_slip.print.no
 msgctxt "staff.circ.utils.hold_slip.print.no"
 msgid "Do Not Print"
-msgstr ""
+msgstr "No Imprima"
+
+#: staff.circ.utils.payload.reservation.barcode
+msgctxt "staff.circ.utils.payload.reservation.barcode"
+msgid "Barcode: %1$s"
+msgstr "Código de barras: %1$s"
+
+#: staff.circ.utils.payload.reservation.title
+msgctxt "staff.circ.utils.payload.reservation.title"
+msgid "Title: %1$s"
+msgstr "Título: %1$s"
+
+#. # Hold for patron familyName, firstName secondName
+#: staff.circ.utils.payload.reservation.patron
+msgid "Reservation for patron %1$s, %2$s %3$s"
+msgstr "Reservado pare el cliente %1$s, %2$s %3$s"
+
+#: staff.circ.utils.payload.reservation.patron_alias
+msgid "Reservation for patron %1$s"
+msgstr "Reservado para el cliente %1$s"
+
+#: staff.circ.utils.payload.reservation.request_date
+msgctxt "staff.circ.utils.payload.reservation.request_date"
+msgid "Request Date: %1$s"
+msgstr "Fecha Solicitado: %1$s"
+
+#: staff.circ.utils.payload.reservation.start_date
+msgid "Start Date: %1$s"
+msgstr "Fecha Iniciado: %1$s"
+
+#: staff.circ.utils.payload.reservation.slip_date
+#, fuzzy
+msgctxt "staff.circ.utils.payload.reservation.slip_date"
+msgid "Slip Date: %1$s"
+msgstr "Fecha Iniciado: %1$s"
+
+#: staff.circ.utils.reservation_slip
+msgid "Reservation Slip"
+msgstr "Nota De Reservación"
+
+#: staff.circ.utils.reservation_slip.print.yes
+msgctxt "staff.circ.utils.reservation_slip.print.yes"
+msgid "Print"
+msgstr "Imprimir"
+
+#: staff.circ.utils.reservation_slip.print.no
+msgctxt "staff.circ.utils.reservation_slip.print.no"
+msgid "Do Not Print"
+msgstr "No Imprima"
 
 #: staff.circ.utils.transit_slip
 msgid "Transit Slip"
@@ -1403,115 +1584,195 @@ msgstr ""
 #: staff.circ.utils.transit_slip.print.yes
 msgctxt "staff.circ.utils.transit_slip.print.yes"
 msgid "Print"
-msgstr ""
+msgstr "Imprimir"
 
 #: staff.circ.utils.transit_slip.print.no
 msgctxt "staff.circ.utils.transit_slip.print.no"
 msgid "Do Not Print"
-msgstr ""
+msgstr "No Imprima"
 
 #: staff.circ.utils.hold_capture_delayed.description
 msgid ""
 "This item could fulfill a hold request but capture has been delayed by "
 "policy."
 msgstr ""
+"Este artículo puede cumplir una solicitud de apartado pero la captura ha "
+"sido retrasada por política."
 
 #: staff.circ.utils.hold_capture_delayed.titlebar
 msgid "Hold Capture Delayed"
-msgstr ""
+msgstr "Captura Del Apartado Retrasada"
 
 #: staff.circ.utils.hold_capture_delayed.prompt_for_nocapture
-msgid "Do Not Capture"
+msgid "Do Not Capture "
 msgstr ""
 
 #: staff.circ.utils.hold_capture_delayed.prompt_for_capture
 msgid "Capture"
-msgstr ""
+msgstr "Capturar"
+
+#: staff.circ.utils.reservation_capture
+msgid "%1$s has been captured for a reservation."
+msgstr "%1$s ha sido capturado para una reservación."
 
 #: staff.circ.utils.capture
 msgid "%1$s has been captured for a hold."
-msgstr ""
+msgstr "%1$s ha sido capturado para un apartado."
 
 #: staff.circ.utils.needs_cataloging
 msgid "%1$s needs to be cataloged."
-msgstr ""
+msgstr "%1$s necesita ser catalogado."
 
 #: staff.circ.utils.copy_status.error
 msgid "FIXME -- this case \"%1$s\" is unhandled."
-msgstr ""
+msgstr "ARREGLAME -- este caso \"%1$s\" esta sin manejo."
 
 #: staff.circ.utils.msg.ok
 msgctxt "staff.circ.utils.msg.ok"
 msgid "OK"
-msgstr ""
+msgstr "Aceptar"
 
 #: staff.circ.utils.route_to.destination
 msgid "Destination: %1$s."
-msgstr ""
+msgstr "Destino: %1$s."
 
 #: staff.circ.utils.route_to.no_address
 msgid "We do not have a holds address for this library."
-msgstr ""
+msgstr "No tenemos una dirección de apartados para esta biblioteca."
 
 #: staff.circ.utils.route_to.no_address.error
 msgid "Unable to retrieve mailing address."
-msgstr ""
+msgstr "Incapaz de cargar la dirección postal."
 
 #: staff.circ.utils.payload.author
 msgid "Author: %1$s"
-msgstr ""
+msgstr "Autor: %1$s"
 
 #: staff.circ.utils.payload.in_transit
 msgid "%1$s is in transit."
-msgstr ""
+msgstr "%1$s esta en tránsito."
 
 #: staff.circ.utils.estimated_wait
 msgid "Estimated Wait Time"
-msgstr ""
+msgstr "Tiempo Estimado De Espera"
 
 #: staff.circ.utils.potential_copies
-msgid "Potential Copies"
+msgid "Potential Copies "
 msgstr ""
 
 #: staff.circ.utils.queue_position
 msgid "Queue Position"
-msgstr ""
+msgstr "Posición En La Cola"
 
 #: staff.circ.utils.total_holds
 msgid "Total Number of Holds"
+msgstr "Número Total de Apartados"
+
+#: staff.circ.utils.find_acq_po.no_po
+msgid "Lineitem found (%1$s), but without purchase order"
 msgstr ""
 
 #: staff.circ.work_log_column.message
 msgctxt "staff.circ.work_log_column.message"
 msgid "Message"
-msgstr ""
+msgstr "Mensaje"
 
 #: staff.circ.work_log_column.when
 msgid "When"
-msgstr ""
+msgstr "Cuando"
 
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode
 #: staff.circ.work_log_checkout.message
 msgid "%1$s circulated %4$s to %3$s (%2$s)"
-msgstr ""
+msgstr "%1$s circulados %4$s a %3$s (%2$s)"
 
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode
 #: staff.circ.work_log_renew.message
 msgid "%1$s renewed %4$s for %3$s (%2$s)"
+msgstr "%1$s renovados %4$s para %3$s (%2$s)"
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
+#: staff.circ.work_log_checkin_attempt.transit.message
+msgid "%1$s attempted checkin of %4$s, resulting in transit.  Route To = %5$s"
 msgstr ""
+"%1$s atentados de entrega por %4$s, resultando en tránsito. Enviar A = %5$s"
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
+#: staff.circ.work_log_checkin_attempt.transit_for_hold.message
+msgid ""
+"%1$s attempted checkin of %4$s, resulting in a hold-transit.  Route To = %"
+"5$s"
+msgstr ""
+"%1$s atentados de entrega por %4$s, resultando en un tránsito de apartados. "
+"Enviar A = %5$s"
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
+#: staff.circ.work_log_checkin_attempt.no_change.message
+msgid "%1$s attempted checkin of %4$s, but nothing happened.  Route To = %5$s"
+msgstr "%1$s atentados de entrega por %4$s, pero no pasó nada. Enviar A = %5$s"
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
+#: staff.circ.work_log_checkin_attempt.error.message
+msgid "%1$s attempted checkin of %4$s, and an error occurred.  Route To = %5$s"
+msgstr ""
+"%1$s atentados de entrega por %4$s, pero un error se produjo. Enviar A = %"
+"5$s"
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
+#: staff.circ.work_log_checkin_attempt.success.message
+msgid "%1$s attempted checkin of %4$s, which succeeded.  Route To = %5$s"
+msgstr "%1$s intento entrega de %4$s, lo cual triunfo. Enviar A = %5$s"
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
+#: staff.circ.work_log_checkin_attempt.hold_shelf.message
+msgid ""
+"%1$s attempted checkin of %4$s, which routed the item to the Holds Shelf.  "
+"Route To = %5$s"
+msgstr ""
+"%1$s intento entrega de %4$s, lo cual mando el artículo al Estante De "
+"Apartados. Enviar A = %5$s"
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
+#: staff.circ.work_log_checkin_attempt.reservation_shelf.message
+msgid ""
+"%1$s attempted checkin of %4$s, which routed the item to the Reservations "
+"Shelf.  Route To = %5$s"
+msgstr ""
+"%1$s intento entrega de %4$s, lo cual mando el artículo al Estante De "
+"Reservaciones. Enviar A = %5$s"
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
+#: staff.circ.work_log_checkin_attempt.cataloging.message
+msgid ""
+"%1$s attempted checkin of %4$s, which is a pre-cat and was routed to "
+"Cataloging.  Route To = %5$s"
+msgstr ""
+"%1$s intento entrega de %4$s, lo cual es un pre-cat y fue enviado a "
+"Catalogar. Enviar A = %5$s"
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
+#: staff.circ.work_log_checkin_attempt.cataloging.message
+msgid ""
+"%1$s attempted checkin of %4$s, which was not found, and so was routed to "
+"Cataloging.  Route To = %5$s"
+msgstr ""
+"%1$s intento entrega de %4$s, lo cual no fue encontrado, y fue enviado a "
+"Catalogar. Enviar A = %5$s"
 
 #: staff.circ.checkin.hold_capture
 msgid "Hold Capture"
-msgstr ""
+msgstr "Captura Del Apartado"
 
 #: staff.circ.checkin.check_in.tab
 msgid "Item Check In"
-msgstr ""
+msgstr "Entrega De Artículo"
 
 #: staff.circ.renew.tab.label
 msgid "Renew Items"
-msgstr ""
+msgstr "Renovar Artículo"
 
 #: staff.circ.checkin.error
-msgid "Check In Failed (in circ.util.checkin) (%1$s):"
+msgid "Check In Failed (in circ.util.checkin) (%1$s): "
 msgstr ""
 
 #. # "Circulation" - check &staff.main.menu.circ.label; in lang.dtd
@@ -1521,177 +1782,214 @@ msgid ""
 "Check In Failed.  If you wish to use the offline interface, in the top "
 "menubar select Circulation -> Offline Interface"
 msgstr ""
+"Entrega Fracasada. Si desea usar en interfaz fuera de línea, en el barra de "
+"menú arriba seleccione Circulación-> Interfaz Fuera De Línea"
 
 #: staff.circ.checkin.renew_failed.error
 msgid "Renew Failed for %1$s"
-msgstr ""
+msgstr "Renovación Fracasada para %1$s"
 
 #: staff.circ.checkin.renew_failed.override
 msgid "Override Renew Failure?"
-msgstr ""
+msgstr "¿Sobrepasar El Fracaso De Renovación?"
 
 #: staff.circ.renew.barcode
 msgctxt "staff.circ.renew.barcode"
 msgid "Barcode: %1$s"
-msgstr ""
+msgstr "Código de barras: %1$s"
 
 #: staff.circ.renew.barcode.status
 msgid "Barcode: %1$s Status: %2$s"
-msgstr ""
+msgstr "Código de barras: %1$s Estado: %2$s"
 
 #: staff.circ.renew.barcode.msg
 msgid "Barcode: %1$s Message: %2$s"
-msgstr ""
+msgstr "Código de barras: 1%$s Mensaje: %2$s"
 
 #: staff.circ.renew.override.item_deposit_required.warning.barcode
 msgid ""
 "For item with barcode %1$s, a billing for an Item Deposit will be added to "
 "the patron's account if this action is overrided."
 msgstr ""
+"Para el artículo con el código de barras %1$s, un cargo por el Deposito Del "
+"Artículo sera agregado a la cuenta del cliente si esta acción es "
+"sobrepasada."
 
 #: staff.circ.renew.override.item_rental_fee_required.warning.barcode
 msgid ""
 "For item with barcode %1$s, a billing for an Item Rental Fee will be added "
 "to the patron's account if this action is overrided."
 msgstr ""
+"Para el artículo con el código de barras %1$s, un cargo por Cargos De Renta "
+"Del Artículo sera agregado a la cuenta del cliente esta acción es "
+"sobrepasada."
 
 #: staff.circ.holds.activate.prompt
 msgid "Are you sure you would like to activate hold %1$s?"
-msgstr ""
+msgstr "¿Esta seguro que desea activar el apartado %1$s?"
 
 #: staff.circ.holds.activate.prompt.plural
 msgid "Are you sure you would like to activate holds %1$s?"
-msgstr ""
+msgstr "¿Esta seguro que desea activar los apartados %1$s?"
 
 #: staff.circ.holds.suspend.prompt
 msgid "Are you sure you would like to suspend hold %1$s?"
-msgstr ""
+msgstr "¿Esta seguro que desea suspender el apartado %1$s?"
 
 #: staff.circ.holds.suspend.prompt.plural
 msgid "Are you sure you would like to suspend holds %1$s?"
-msgstr ""
+msgstr "¿Esta seguro que desea suspender los apartados %1$s?"
 
 #: staff.circ.holds.activation_date.prompt
 msgid ""
-"Please enter an Activation Date (or leave blank to unset) for hold %1$s.  "
+"Please enter an Activation Date (or choose Remove to unset) for hold %1$s.  "
 "This will also Suspend the hold."
 msgstr ""
+"Por favor ingrese una Fecha De Activación ( o eliga Remover para desmontar) "
+"para el apartado %1$s. Esto también Suspendera el apartado."
 
 #: staff.circ.holds.activation_date.prompt.plural
 msgid ""
-"Please enter an Activation Date (or leave blank to unset) for holds %1$s.  "
-"This will also Suspend the holds."
+"Please enter an Activation Date (or choose Remove to unset) for holds %1$s. "
+" This will also Suspend the holds."
 msgstr ""
+"Por favor ingrese una Fecha De Activación ( o eliga Remover para desmontar) "
+"para los apartados %1$s. Esto también Suspendera los apartados."
 
-#: staff.circ.holds.activation_date.too_early.error
+#: staff.circ.holds.activation_date.dialog.description
+msgctxt "staff.circ.holds.activation_date.dialog.description"
+msgid "Activation Date"
+msgstr "Fecha de Activación"
+
+#: staff.circ.holds.request_date.prompt
 msgid ""
-"Activation Date needs to be either unset or set to fall on a future date."
+"Please enter a new Request Date for hold %1$s.  WARNING: This effectively "
+"reorders the holds queue."
 msgstr ""
+"Por favor ingrese una nueva Fecha De Solicitud para el apartado %1$s. AVISO: "
+"Esto reordena la cola de apartados."
 
-#: staff.circ.holds.activation_date.invalid_date
-msgctxt "staff.circ.holds.activation_date.invalid_date"
-msgid "Invalid Date"
+#: staff.circ.holds.request_date.prompt.plural
+msgid ""
+"Please enter a new Request Date for holds %1$s.  WARNING: This effectively "
+"reorders the holds queue."
 msgstr ""
+"Por favor ingrese una nueva Fecha De Solicitud para los apartados %1$s. "
+"AVISO: Esto reordena la cola de apartados."
+
+#: staff.circ.holds.request_date.dialog.description
+msgctxt "staff.circ.holds.request_date.dialog.description"
+msgid "Request Date"
+msgstr "Fecha de Solicitud"
 
 #: staff.circ.holds.expire_time.prompt
 msgid ""
-"Please enter an Expiration Date (or leave blank to unset) for hold %1$s."
+"Please enter an Expiration Date (or choose Remove to unset) for hold %1$s."
 msgstr ""
+"Por favor ingrese una Fecha De Vencimiento (o eliga Remover para desmontar) "
+"para el apartado %1$s."
 
 #: staff.circ.holds.expire_time.prompt.plural
 msgid ""
-"Please enter an Expiration Date (or leave blank to unset) for holds %1$s."
+"Please enter an Expiration Date (or choose Remove to unset) for holds %1$s."
 msgstr ""
+"Por favor ingrese una Fecha De Vencimiento (o eliga Remover para desmontar) "
+"para los apartados %1$s."
 
-#: staff.circ.holds.expire_time.too_early.error
-msgid ""
-"Expiration Date needs to be either unset or set to fall on a future date."
-msgstr ""
-
-#: staff.circ.holds.expire_time.invalid_date
-msgctxt "staff.circ.holds.expire_time.invalid_date"
-msgid "Invalid Date"
-msgstr ""
+#: staff.circ.holds.expire_time.dialog.description
+msgid "Expiration Date"
+msgstr "Fecha de Expiración"
 
 #: staff.circ.holds.shelf_expire_time.prompt
 msgid "Please enter a Shelf Expiration Date for hold %1$s."
 msgstr ""
+"Por favor ingrese una Fecha De Expiración En El Estante para el apartado %"
+"1$s."
 
 #: staff.circ.holds.shelf_expire_time.prompt.plural
 msgid "Please enter a Shelf Expiration Date for holds %1$s."
 msgstr ""
+"Por favor ingrese una Fecha De Expiración En El Estante para los apartados %"
+"1$s."
 
 #: staff.circ.holds.shelf_expire_time.dialog.description
 msgctxt "staff.circ.holds.shelf_expire_time.dialog.description"
 msgid "Shelf Expire Time"
-msgstr ""
-
-#: staff.circ.holds.shelf_expire_time.invalid_date
-msgctxt "staff.circ.holds.shelf_expire_time.invalid_date"
-msgid "Invalid Date"
-msgstr ""
+msgstr "Fecha De Expiración En El Estante"
 
 #: staff.circ.holds.modifying_holds
 msgid "Modifying Holds"
-msgstr ""
+msgstr "Modificar Apartados"
 
 #: staff.circ.holds.modifying_holds.yes
 msgctxt "staff.circ.holds.modifying_holds.yes"
 msgid "Yes"
-msgstr ""
+msgstr "Sí"
 
 #: staff.circ.holds.modifying_holds.no
 msgctxt "staff.circ.holds.modifying_holds.no"
 msgid "No"
-msgstr ""
+msgstr "No"
 
 #: staff.circ.hold_update.hold_ids.failed
-msgid "Number of holds not updated: %1$s"
+msgid "Number of holds not updated: %1$s "
 msgstr ""
 
 #: staff.circ.holds.already_activated
 msgid "Hold %1$s was already activated."
-msgstr ""
+msgstr "Apartado %1$s ya fue activado."
 
 #: staff.circ.holds.already_activated.plural
 msgid "Holds %1$s were already activated."
-msgstr ""
+msgstr "Apartados %1$s ya fueron activados."
 
 #: staff.circ.holds.already_suspended
 msgid "Hold %1$s was already suspended."
-msgstr ""
+msgstr "Apartado %1$s ya fue suspendido."
 
 #: staff.circ.holds.already_suspended.plural
 msgid "Holds %1$s were already suspended."
-msgstr ""
+msgstr "Apartados %1$s ya fueron suspendidos."
 
 #: staff.circ.holds.unexpected_error.not_likely_modified
 msgid "Holds not likely modified."
-msgstr ""
+msgstr "Apartados probablemente no fueron modificados."
 
 #: staff.circ.holds.unexpected_error.not_likely_activated
 msgid "Holds not likely activated."
-msgstr ""
+msgstr "Apartados probablemente no fueron activados."
 
 #: staff.circ.holds.unexpected_error.not_likely_suspended
 msgid "Holds not likely suspended."
-msgstr ""
+msgstr "Apartados probablemente no fueron suspendidos."
 
 #: staff.circ.holds.alt_view.label
 msgid "Detail View"
-msgstr ""
+msgstr "Vista de Detalle"
 
 #: staff.circ.holds.alt_view.accesskey
 msgctxt "staff.circ.holds.alt_view.accesskey"
 msgid "V"
-msgstr ""
+msgstr "V"
 
 #: staff.circ.holds.list_view.label
 msgctxt "staff.circ.holds.list_view.label"
 msgid "List View"
-msgstr ""
+msgstr "Vista de Lista"
 
 #: staff.circ.holds.list_view.accesskey
 msgctxt "staff.circ.holds.list_view.accesskey"
 msgid "V"
-msgstr ""
+msgstr "V"
+
+#: staff.circ.missing_pieces.scan_item.prompt
+msgid "Enter barcode for item missing pieces:"
+msgstr "Ingrese el código de barras para el artículo que le faltan piezas:"
+
+#: staff.circ.missing_pieces.scan_item.title
+msgid "Missing Pieces"
+msgstr "Piezas Que Faltan"
+
+#: staff.circ.missing_pieces.scan_item.error_alert
+msgid "No item with barcode \"%1$s\""
+msgstr "Ningun artículo con el código de barras \"%1$s\""

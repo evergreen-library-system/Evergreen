@@ -2,25 +2,22 @@
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2010-09-01 22:23-0400\n"
-"PO-Revision-Date: 2010-10-27 22:59+0000\n"
-"Last-Translator: Jose Varela <Unknown>\n"
+"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"POT-Creation-Date: 2011-04-18 21:45:31-0400\n"
+"PO-Revision-Date: 2011-05-22 03:41+0000\n"
+"Last-Translator: Hector A. Mantellini <Unknown>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-10-28 05:08+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2011-05-23 04:39+0000\n"
 
 #: opac.js:PWD_RESET_SUBMIT_PROMPT
-msgid ""
-"To begin the password reset process, enter either your barcode or user name "
-"in the form below and click 'Submit'"
+msgid "To begin the password reset process, enter either your barcode or user name in the form below and click 'Submit'"
 msgstr ""
 "Para empezar el proceso de restablecer la contraseña, ingrese su código de "
 "barras o su nombre de usuario en el formulario debajo y haga clic en "
@@ -46,26 +43,32 @@ msgstr "Se creó un registro MFHD para ${0}"
 msgid "Barcode: "
 msgstr "Código de barras: "
 
+#: opac.js:PWD_RESET_FORGOT_PROMPT
+msgid "Forgot your password?"
+msgstr "Se le olvido la contraseña?"
+
 #: opac.js:SUPPLEMENT_HOLDINGS_ADD
 msgid "Additional Supplement Information"
 msgstr "Información adicional de suplemento"
 
-#: opac.js:DELETED_MFHD_RECORD
-msgid "Deleted MFHD record ${0}"
-msgstr "Eliminar registro MFHD ${0}"
+#: opac.js:MORE_COPIES_FULL_RECORD
+msgid "... more copies listed in full record"
+msgstr "... más copias que estan listadas en todo el registro"
 
-#: opac.js:SAVE_MFHD_LABEL
-msgid "Save MFHD"
-msgstr "Guardar MFHD"
+#: opac.js:HOLD_STATUS_PLURAL
+msgid "hold # ${0} of ${1} total holds and ${2} potential items"
+msgstr ""
+
+#: opac.js:MORE
+msgid "More"
+msgstr "Más"
 
 #: opac.js:EDIT_PROPERTIES
 msgid "Edit Propeties"
 msgstr "Editar propiedades"
 
 #: opac.js:PWD_RESET_SUBMIT_ERROR
-msgid ""
-"The system could not process your request for a password reset. Please try "
-"again, or contact circulation staff for assistance."
+msgid "The system could not process your request for a password reset. Please try again, or contact circulation staff for assistance."
 msgstr ""
 "El sistema no pudo procesar su solicitud para el restablecimiento de su "
 "contraseña. Por favor intente de nuevo, o contacte personal de circulación "
@@ -75,9 +78,9 @@ msgstr ""
 msgid "Edit Record"
 msgstr "Editar registro"
 
-#: opac.js:PWD_RESET_FORGOT_PROMPT
-msgid "Forgot your password?"
-msgstr "Se le olvido la contraseña?"
+#: opac.js:SAVE_MFHD_LABEL
+msgid "Save MFHD"
+msgstr "Guardar MFHD"
 
 #: opac.js:INDEX_HOLDINGS_ADD
 msgid "Additional Index Information"
@@ -94,6 +97,18 @@ msgstr "Volumen actual"
 #: opac.js:MISSING_VOLUMES
 msgid "Missing volumes"
 msgstr "Volúmenes faltantes"
+
+#: opac.js:DELETED_MFHD_RECORD
+msgid "Deleted MFHD record ${0}"
+msgstr "Eliminar registro MFHD ${0}"
+
+#: opac.js:HOLD_STATUS_SINGULAR
+msgid "hold # ${0} of ${1} total holds and ${2} potential item"
+msgstr ""
+
+#: opac.js:PLACE_HOLD
+msgid "Place hold"
+msgstr "Reservar"
 
 #: opac.js:BASIC_HOLDINGS_ADD
 msgid "Additional Volume Information"
@@ -148,10 +163,7 @@ msgid "Are you sure you want to delete this serial record?"
 msgstr "¿Esta seguro de que desea borrar el registro de serie?"
 
 #: opac.js:PWD_RESET_SUBMIT_SUCCESS
-msgid ""
-"Your request to begin the password reset process has been processed. If your "
-"account has a valid email address, you should soon receive an email "
-"containing further instructions for resetting your password."
+msgid "Your request to begin the password reset process has been processed. If your account has a valid email address, you should soon receive an email containing further instructions for resetting your password."
 msgstr ""
 "Su solicitud para iniciar el proceso de reinicializacion de contraseña a "
 "sido procesado. Si su cuenta tiene una dirección de correo electrónico "
@@ -169,3 +181,15 @@ msgstr "Enviando solicitud..."
 #: opac.js:ONLINE_VOLUMES
 msgid "Online volumes"
 msgstr "Volúmenes en línea"
+
+#~ msgid "Edit Properties"
+#~ msgstr "Editar Propiedades"
+
+#~ msgid "Previous indexes"
+#~ msgstr "Índices previos"
+
+#~ msgid "Previous supplements"
+#~ msgstr "Suplementos previos"
+
+#~ msgid "Previous volumes"
+#~ msgstr "Volúmenes previos"

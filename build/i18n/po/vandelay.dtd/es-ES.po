@@ -2,20 +2,21 @@
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
-#
+#. extracted from ../../Open-ILS/web/opac/locale/en-US/vandelay.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-11-23 23:35-0400\n"
-"PO-Revision-Date: 2010-07-07 15:53+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-04-18 21:44-0400\n"
+"PO-Revision-Date: 2011-08-18 20:33+0000\n"
 "Last-Translator: Jonay <jonay.santana@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-07-08 03:52+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Generator: Translate Toolkit 1.8.1\n"
+"X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-08-19 04:38+0000\n"
 
 #: vandelay.add.existing.queue
 msgid "or Add to an Existing Queue"
@@ -32,6 +33,18 @@ msgstr "Registros de la autoridad"
 #: vandelay.auto.import.noncolliding
 msgid "Auto-Import Non-Colliding Records"
 msgstr "Auto importar registros no coincidentes"
+
+#: vandelay.auto.import.auto_overlay_exact
+msgid "Auto Merge/Overlay Exact Matches"
+msgstr "Une o superpone automáticamente las coincidencias exactas"
+
+#: vandelay.auto.import.auto_overlay_1match
+msgid "Auto Merge/Overlay When Exactly 1 Match is Found"
+msgstr "Une o superpone automáticamente cuando una coincidencia es encontrada"
+
+#: vandelay.auto.import.merge_profile
+msgid "Merge/Overlay Profile"
+msgstr "Unir o superponer el perfil"
 
 #. Do not translate this.  Only change the numeric values if you need this dialogue box to appear bigger
 #: vandelay.auto.width
@@ -120,6 +133,14 @@ msgctxt "vandelay.edit.attrs"
 msgid "Edit Attributes"
 msgstr "Editar atributos"
 
+#: vandelay.edit.profiles
+msgid "Edit Merge / Overlay Profiles"
+msgstr "Editar unión / Superponer Perfiles"
+
+#: vandelay.edit.import_item_attrs
+msgid "Edit Import Item Attributes"
+msgstr "Editar atributos de importación de objetos"
+
 #: vandelay.false
 msgid "False"
 msgstr "Falso"
@@ -193,13 +214,12 @@ msgid "Matches"
 msgstr "Coincide"
 
 #: vandelay.next.page
-msgid "Next Page"
-msgstr "Página Siguiente"
+msgid "Next Page &#187;"
+msgstr "Página siguiente &#187;"
 
 #: vandelay.overlay.selected.record
 msgid "Overlay selected record with imported record"
-msgstr ""
-"Superposición del registro seleccionado con el registro de importación"
+msgstr "Superposición del registro seleccionado con el registro de importación"
 
 #: vandelay.overlay.target
 msgid "Overlay Target"
@@ -214,8 +234,8 @@ msgid "Powered by Evergreen!"
 msgstr "¡Powered by Evergreen!"
 
 #: vandelay.prev.page
-msgid "Previous Page"
-msgstr "Página Anterior"
+msgid "&#171; Previous Page"
+msgstr "&#171; Página anterior"
 
 #: vandelay.processing
 msgid "Processing... "
@@ -271,7 +291,7 @@ msgstr "Seleccionar la cola a inspeccionar"
 
 #: vandelay.source.match.point
 msgid "Source Match Point"
-msgstr ""
+msgstr "Punto de coincidencia de fuente"
 
 #: vandelay.source
 msgid "Source"
@@ -311,13 +331,11 @@ msgstr "Valor TCN"
 
 #: vandelay.tooltip.subfields
 msgid "You can enter multiple subfields, separated by spaces and/or commas."
-msgstr ""
-"Puede ingresar múltiples sub-campos, separados por espacios y/o comas."
+msgstr "Puede ingresar múltiples sub-campos, separados por espacios y/o comas."
 
 #: vandelay.tooltip.tags
 msgid "You can enter multiple tags, separated by spaces and/or commas."
-msgstr ""
-"Puede ingresar múltiples etiquetas, separadas por espacios y/o comas."
+msgstr "Puede ingresar múltiples etiquetas, separadas por espacios y/o comas."
 
 #: vandelay.true
 msgid "True"
