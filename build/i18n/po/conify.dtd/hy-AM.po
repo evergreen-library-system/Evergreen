@@ -1,18 +1,19 @@
 # extracted from ../../Open-ILS/web/opac/locale/en-US/conify.dtd
+#. extracted from ../../Open-ILS/web/opac/locale/en-US/conify.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-23 23:35-0400\n"
-"PO-Revision-Date: 2009-12-25 08:27+0000\n"
+"POT-Creation-Date: 2011-04-18 21:44-0400\n"
+"PO-Revision-Date: 2011-04-26 11:08+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-12-26 04:34+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Generator: Translate Toolkit 1.8.1\n"
 "X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-05-18 04:40+0000\n"
 
 #. Common entities
 #: conify.save_button.label
@@ -72,8 +73,8 @@ msgid "Copy Statuses"
 msgstr "Պատճենի կարգավիճակ"
 
 #: conify.admin.marc_code_maps.link
-msgid "MARC Codes"
-msgstr "MARC կոդեր"
+msgid "Coded Value Maps"
+msgstr "Կոդավորված արժեքների քարտեզներ"
 
 #: conify.admin.bottom_pane.title
 msgctxt "conify.admin.bottom_pane.title"
@@ -430,6 +431,10 @@ msgstr "Նկարագրություն"
 msgid "Permission Interval"
 msgstr "Թույլատվության տիրույթ"
 
+#: conify.grp_tree.hold_priority.label
+msgid "Hold Priority"
+msgstr "Պահման առաջնահերթություն"
+
 #: conify.grp_tree.editing_permission.label
 msgid "Editing Permission"
 msgstr "Թույլատվության խմբագրում"
@@ -490,3 +495,6 @@ msgstr "Հիշիր փոփոխությունները"
 msgctxt "conify.grp_tree.remove_selected.label"
 msgid "Delete Selected"
 msgstr "Ջնջիր ընտրվածները"
+
+#~ msgid "MARC Codes"
+#~ msgstr "MARC կոդեր"
