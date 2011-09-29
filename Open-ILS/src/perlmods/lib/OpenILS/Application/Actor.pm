@@ -465,7 +465,8 @@ sub flesh_user {
 		"addresses",
 		"billing_address",
 		"mailing_address",
-		"stat_cat_entries"
+		"stat_cat_entries",
+		"settings"
     ];
     push @$fields, "home_ou" if $home_ou;
 	return new_flesh_user($id, $fields, $e );
