@@ -2,134 +2,108 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-23 23:36-0400\n"
+"POT-Creation-Date: 2011-09-29 16:23-0400\n"
 "PO-Revision-Date: 2009-11-24 07:04+0000\n"
 "Last-Translator: TZ <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-11-25 04:52+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2009-11-25 04:52+0000\n"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:1
-msgctxt ""
-"../../Open-ILS/xul/staff_client/server/locale/en-"
-"US/multiclass_search_help.html:1"
-msgid "Multiclass Search Help"
-msgstr "Բազմադաս որոնման օգնություն"
+#~ msgctxt ""
+#~ "../../Open-ILS/xul/staff_client/server/locale/en-"
+#~ "US/multiclass_search_help.html:1"
+#~ msgid "Multiclass Search Help"
+#~ msgstr "Բազմադաս որոնման օգնություն"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:2
-msgctxt ""
-"../../Open-ILS/xul/staff_client/server/locale/en-"
-"US/multiclass_search_help.html:2"
-msgid "Multiclass Search Help"
-msgstr "Բազմադաս որոնման օգնություն"
+#~ msgctxt ""
+#~ "../../Open-ILS/xul/staff_client/server/locale/en-"
+#~ "US/multiclass_search_help.html:2"
+#~ msgid "Multiclass Search Help"
+#~ msgstr "Բազմադաս որոնման օգնություն"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:3
-msgid "Recognized search keys include:"
-msgstr "Ճանաչված որոնման բանալիները ներառում են"
+#~ msgid "Recognized search keys include:"
+#~ msgstr "Ճանաչված որոնման բանալիները ներառում են"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:4
-msgid "Search key"
-msgstr "Որոնման բանալի"
+#~ msgid "Search key"
+#~ msgstr "Որոնման բանալի"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:5
-msgid "Definition"
-msgstr "Սահմանում"
+#~ msgid "Definition"
+#~ msgstr "Սահմանում"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:6
-msgid ""
-"keyword</strong>, <strong>title</strong>,             "
-"<strong>author</strong>, <strong>subject</strong>, and             "
-"<strong>series</strong> support additional search subclasses,             "
-"specified with a <kbd>|</kbd>. For example:             "
-"<kbd>title|proper:gone with the wind"
-msgstr ""
-"բանալի</strong>, <strong>վերնագիր</strong>,             "
-"<strong>հեղինակr</strong>, <strong>խորագիր</strong>, և             "
-"<strong>մատենաշար</strong> աջակցիր որոնման լրացուցիչ դասերին, սահմանված "
-"<kbd>|</kbd> հէտ: Օրինակ՝             <kbd>վերնագիր|ուղիղ:քամուց քշվածնէրը"
+#~ msgid ""
+#~ "keyword</strong>, <strong>title</strong>,             "
+#~ "<strong>author</strong>, <strong>subject</strong>, and             "
+#~ "<strong>series</strong> support additional search subclasses,             "
+#~ "specified with a <kbd>|</kbd>. For example:             "
+#~ "<kbd>title|proper:gone with the wind"
+#~ msgstr ""
+#~ "բանալի</strong>, <strong>վերնագիր</strong>,             "
+#~ "<strong>հեղինակr</strong>, <strong>խորագիր</strong>, և             "
+#~ "<strong>մատենաշար</strong> աջակցիր որոնման լրացուցիչ դասերին, սահմանված "
+#~ "<kbd>|</kbd> հէտ: Օրինակ՝             <kbd>վերնագիր|ուղիղ:քամուց քշվածնէրը"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:7
-msgid "keyword/kw"
-msgstr "բանալի բառ/kw"
+#~ msgid "keyword/kw"
+#~ msgstr "բանալի բառ/kw"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:8
-msgid "search keyword(s)"
-msgstr "Փնտրիր բանալի բառ"
+#~ msgid "search keyword(s)"
+#~ msgstr "Փնտրիր բանալի բառ"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:9
-msgid "author/au/name"
-msgstr "հեղինակի/au/անուն"
+#~ msgid "author/au/name"
+#~ msgstr "հեղինակի/au/անուն"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:10
-msgid "search author(s)"
-msgstr "Փնտրիր հէղինակին"
+#~ msgid "search author(s)"
+#~ msgstr "Փնտրիր հէղինակին"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:11
-msgid "title/ti"
-msgstr "վերնագիր/ti"
+#~ msgid "title/ti"
+#~ msgstr "վերնագիր/ti"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:12
-msgid "search title"
-msgstr "Փնտրիր վերնագիրը"
+#~ msgid "search title"
+#~ msgstr "Փնտրիր վերնագիրը"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:13
-msgid "subject/su"
-msgstr "խորագիր/su"
+#~ msgid "subject/su"
+#~ msgstr "խորագիր/su"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:14
-msgid "search subject"
-msgstr "Փնտրիր խորագիրը"
+#~ msgid "search subject"
+#~ msgstr "Փնտրիր խորագիրը"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:15
-msgid "series/se"
-msgstr "մատենաշար/se"
+#~ msgid "series/se"
+#~ msgstr "մատենաշար/se"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:16
-msgid "search series"
-msgstr "Փնտրիր մատենաշարը"
+#~ msgid "search series"
+#~ msgstr "Փնտրիր մատենաշարը"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:17
-msgid "lang"
-msgstr "լեզու"
+#~ msgid "lang"
+#~ msgstr "լեզու"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:18
-msgid "limit by language (specifiy multiple langs with lang:l1 lang:l2 ...)"
-msgstr ""
-"սահմանափակիր ըստ լեզվի (սահմանիր շատ լեզուներ ըստ lang:l1 lang:l2 ...)"
+#~ msgid "limit by language (specifiy multiple langs with lang:l1 lang:l2 ...)"
+#~ msgstr ""
+#~ "սահմանափակիր ըստ լեզվի (սահմանիր շատ լեզուներ ըստ lang:l1 lang:l2 ...)"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:19
-msgid "site"
-msgstr "կայք"
+#~ msgid "site"
+#~ msgstr "կայք"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:20
-msgid "search at specified org unit, corresponds to actor.org_unit.shortname"
-msgstr "որոնիր նշված միավորում, համընկնում է  actor.org_unit.shortname"
+#~ msgid "search at specified org unit, corresponds to actor.org_unit.shortname"
+#~ msgstr "որոնիր նշված միավորում, համընկնում է  actor.org_unit.shortname"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:21
-msgid "sort"
-msgstr "տեսակավորել"
+#~ msgid "sort"
+#~ msgstr "տեսակավորել"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:22
-msgid "sort type (title, author, pubdate)"
-msgstr "դասակարքման տեսակ (վերնագիր, հեղինակ, հրատ տարի)"
+#~ msgid "sort type (title, author, pubdate)"
+#~ msgstr "դասակարքման տեսակ (վերնագիր, հեղինակ, հրատ տարի)"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:23
-msgid "dir"
-msgstr "dir"
+#~ msgid "dir"
+#~ msgstr "dir"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:24
-msgid "sort direction (asc, desc)"
-msgstr "տեսակավորման ուղղություն (աճող, նվազող)"
+#~ msgid "sort direction (asc, desc)"
+#~ msgstr "տեսակավորման ուղղություն (աճող, նվազող)"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:25
-msgid "available"
-msgstr "հասանելի"
+#~ msgid "available"
+#~ msgstr "հասանելի"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:26
-msgid ""
-"if set to anything other than \"false\" or \"0\", limits to available items"
-msgstr ""
-"եթե դրված է այլ քան \"կեղծ\" կամ \"0\", սահմանափակում է մատչելի նյութերով"
+#~ msgid ""
+#~ "if set to anything other than \"false\" or \"0\", limits to available items"
+#~ msgstr ""
+#~ "եթե դրված է այլ քան \"կեղծ\" կամ \"0\", սահմանափակում է մատչելի նյութերով"

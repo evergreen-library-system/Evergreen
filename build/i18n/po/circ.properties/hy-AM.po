@@ -1,18 +1,19 @@
 # extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/circ.properties
+#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/circ.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-23 23:36-0400\n"
-"PO-Revision-Date: 2009-12-21 12:14+0000\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2011-04-26 11:07+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-12-22 04:36+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Generator: Translate Toolkit 1.8.1\n"
 "X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-05-18 04:39+0000\n"
 
 #: staff.circ.alert
 msgid "Alert"
@@ -23,9 +24,8 @@ msgid "Item %1$s has never circulated."
 msgstr "%1$s նյութը երբեք չի սպասարկվել:"
 
 #: staff.circ.invalid_date
-msgctxt "staff.circ.invalid_date"
 msgid "Invalid Date"
-msgstr "Սխալ ամսաթիվ"
+msgstr "Սխալ ամսաթիվ:"
 
 #: staff.circ.future_date
 msgid "Future Date"
@@ -54,8 +54,8 @@ msgid ""
 "Bad check digit, possibly due to a bad scan.  Use this barcode (\"%1$s\") "
 "anyway?"
 msgstr ""
-"Վատ ստուգիչ նիշ, հավանաբար վատ սկանի արդյունք: Օգտագործե՞լ այս շտրիխ կոդե "
-"(\"%1$s\")"
+"Վատ ստուգիչ նիշ, հավանաբար վատ սկանի արդյունք: Օգտագործե՞լ այս շտրիխ կոդե (\""
+"%1$s\")"
 
 #: staff.circ.barcode.bad
 msgid "Bad Barcode"
@@ -124,12 +124,12 @@ msgid "Circ ID %1$s failed backdating due to %2$s"
 msgstr "Սպասարկման ID %1$s ձախողվեց գրել հետին ամսաթվով այս պատճառով %2$s"
 
 #: staff.circ.backdate.circ_ids.prompt
-msgid "Number of circulations selected: %1$s"
-msgstr "Ընտրված տացքերի քանակ: %1$s"
+msgid "Number of circulations selected: %1$s "
+msgstr "Ընտրված տացքերի քանակը: %1$s "
 
 #: staff.circ.backdate.circ_ids.failed
-msgid "Number of circulations not backdated: %1$s"
-msgstr "Հետին ամսաթվով չգրված տացքերի քանակ: %1$s"
+msgid "Number of circulations not backdated: %1$s "
+msgstr "Հետին ամսաթվով չգրանցված տացքերի քանակը: %1$s "
 
 #: staff.circ.checkout.sorting.exception
 msgid "error in sorting non-cataloged items: %1$s"
@@ -401,6 +401,51 @@ msgstr "%1$s : %2$s"
 msgid "Legacy/Not Dated"
 msgstr "Ժառանգություն/առանց ամսաթվի"
 
+#. # From Config::rules::circ_duration, 1 - Name, 2 - ID, 3 - Short, 4 - Normal, 5 - Extended, 6 - Max Renewals
+#: staff.circ.copy_details.duration_rule_format
+msgctxt "staff.circ.copy_details.duration_rule_format"
+msgid "%1$s"
+msgstr "%1$s"
+
+#. # From Config::rules::circ_duration, 1 - Name, 2 - ID, 3 - Short, 4 - Normal, 5 - Extended, 6 - Max Renewals
+#: staff.circ.copy_details.duration_rule_tooltip_format
+msgid "%3$s/%4$s/%5$s - %6$s renewals"
+msgstr "%3$s/%4$s/%5$s - %6$s թարմացումներ"
+
+#. # From Config::rules::recurring_fine, 1 - Name, 2 - ID, 3 - Low, 4 - Normal, 5 - High, 6 - Recurrence Interval
+#: staff.circ.copy_details.recurring_fine_rule_format
+msgctxt "staff.circ.copy_details.recurring_fine_rule_format"
+msgid "%1$s"
+msgstr "%1$s"
+
+#. # From Config::rules::recurring_fine, 1 - Name, 2 - ID, 3 - Low, 4 - Normal, 5 - High, 6 - Recurrence Interval
+#: staff.circ.copy_details.recurring_fine_rule_tooltip_format
+msgid "%3$s/%4$s/%5$s - %6$s"
+msgstr "%3$s/%4$s/%5$s - %6$s"
+
+#. # From Config::rules::max_fine, 1 - Name, 2 - ID, 3 - Amount, 4 - Is Percent
+#: staff.circ.copy_details.max_fine_rule_format
+msgctxt "staff.circ.copy_details.max_fine_rule_format"
+msgid "%1$s"
+msgstr "%1$s"
+
+#. # From Config::rules::max_fine, 1 - Name, 2 - ID, 3 - Amount, 4 - Is Percent
+#: staff.circ.copy_details.max_fine_rule_tooltip_format
+msgid "%3$s Is Percent? %4$s"
+msgstr "%3$s տոկո՞ս է %4$s"
+
+#. # From asset::copy_location: 1 - Can Circulate?  2 - Is Holdable?  3 - Hold Capture Requires Verification?  4 - Is OPAC Visible?
+#: staff.circ.copy_details.location_tooltip
+msgid "Circulate? %1$s  Holdable? %2$s  Hold Verify? %3$s  OPAC Visible? %4$s"
+msgstr ""
+"Սպասարկե՞լ:1$s Պահվո՞ղ է: %2$s Համեմատե՞լ պահումը: %3$s ՀՕԱՔ-ը տեսանելի՞ է: "
+"%4$s"
+
+#. # From config::copy_status: 1 - OPAC Visible?  2 - Is Holdable?
+#: staff.circ.copy_details.copy_status_tooltip
+msgid "OPAC Visible? %1$s  Holdable? %2$s"
+msgstr "ՀՕԱՔ-ը տեսանելի՞ է: %1$s Պահվո՞ղ է: %2$s"
+
 #: staff.circ.copy_status.tab_name
 msgid "Item Status"
 msgstr "Նյութի վիճակ"
@@ -546,8 +591,7 @@ msgstr "Հատորը նշված է որպես Item Transfer Destination"
 
 #: staff.circ.copy_status.mark_volume.prompt
 msgid "Choose just one Volume to mark as Item Transfer Destination"
-msgstr ""
-"Ընտրիր պարզապես մեկ հատոր որպեսզի նշես որպես Item Transfer Destination"
+msgstr "Ընտրիր պարզապես մեկ հատոր որպեսզի նշես որպես Item Transfer Destination"
 
 #: staff.circ.copy_status.mark_volume.title
 msgctxt "staff.circ.copy_status.mark_volume.title"
@@ -754,8 +798,8 @@ msgid "Non-Cataloged"
 msgstr "Չքարտագրված"
 
 #: staff.circ.in_house_use.items_dump
-msgid "items ="
-msgstr "նյութեր ="
+msgid "items = "
+msgstr "միավորներ = "
 
 #: staff.circ.in_house_use.confirm_multiple
 msgid "Are you sure you want to mark %1$s as having been used %2$s times?"
@@ -826,8 +870,8 @@ msgid "Close Window"
 msgstr "Փակիր պատուհանը"
 
 #: staff.circ.print_list_template.preview
-msgid "preview:"
-msgstr "նախնական դիտում:"
+msgid "preview: "
+msgstr "նախնական դիտել: "
 
 #: staff.circ.print_list_template.save
 msgid "Template Saved"
@@ -966,6 +1010,18 @@ msgstr "Կանչվում է..."
 msgid "Owning Library"
 msgstr "Սէփականատեր գրադարան"
 
+#: staff.circ.utils.prefix
+msgid "Prefix"
+msgstr "Նախածանց"
+
+#: staff.circ.utils.suffix
+msgid "Suffix"
+msgstr "Վերջածանց"
+
+#: staff.circ.utils.label_class
+msgid "Classification"
+msgstr "Դասակարգում"
+
 #: staff.circ.utils.loan_duration.short
 msgid "Short"
 msgstr "Կարճ"
@@ -1003,6 +1059,10 @@ msgstr "Ջնջվա՞ծ"
 #: staff.circ.utils.holdable
 msgid "Holdable?"
 msgstr "Պահվո՞խ"
+
+#: staff.circ.utils.floating
+msgid "Floating?"
+msgstr "Սահո՞ղ"
 
 #: staff.circ.utils.hold_note
 msgid "Hold Note(s)"
@@ -1083,16 +1143,16 @@ msgid "Date Created"
 msgstr "Ստեղծման ամսաթիվ"
 
 #: staff.circ.utils.edit_date
-msgid "Date Last Edited"
-msgstr "Վերջին խմբագրման ամսաթիվ"
+msgid "Date Last Edited "
+msgstr "Վերջին խմբագրման ամսաթիվ "
 
 #: staff.circ.utils.bre.create_date
 msgid "Date Record Created"
 msgstr "Գրառման ստեղծման ամսաթվ"
 
 #: staff.circ.utils.bre.edit_date
-msgid "Date Record Last Edited"
-msgstr "Գրառման վերջին խմբագրման ամսաթիվ"
+msgid "Date Record Last Edited "
+msgstr "Գրառման վերջին խմբագրման ամսաթիվ "
 
 #: staff.circ.utils.edition
 msgid "Edition"
@@ -1113,6 +1173,10 @@ msgstr "Հրատարակիչ"
 #: staff.circ.utils.creator
 msgid "Created By"
 msgstr "Ստէղծված է"
+
+#: staff.circ.utils.owner
+msgid "Owned By"
+msgstr "Տնորինվում է"
 
 #: staff.circ.utils.editor
 msgid "Edited By"
@@ -1201,6 +1265,7 @@ msgid "Request Library"
 msgstr "Հարցրու գրադարան"
 
 #: staff.circ.utils.request_time
+msgctxt "staff.circ.utils.request_time"
 msgid "Request Date"
 msgstr "Հարցրու ամսաթիվ"
 
@@ -1249,6 +1314,26 @@ msgstr "Պատրաստ վերցվելու համար"
 msgid "Reserved/Pending"
 msgstr "Ռեզերվացված/Սպասող"
 
+#: staff.circ.utils.hold_status.6
+msgid "Canceled"
+msgstr "Չեղյալ անել"
+
+#: staff.circ.utils.hold_post_clear_shelf_action.label
+msgid "Post-Clear"
+msgstr "Մաքրել հետո"
+
+#: staff.circ.utils.hold_post_clear_shelf_action.hold
+msgid "Need for Hold"
+msgstr "Կարիք կա պահման"
+
+#: staff.circ.utils.hold_post_clear_shelf_action.transit
+msgid "Need for Transit"
+msgstr "Կարիք կա տրանզիտի"
+
+#: staff.circ.utils.hold_post_clear_shelf_action.shelf
+msgid "Reshelve"
+msgstr "Վերադասավորիր"
+
 #: staff.circ.utils.frozen
 msgid "Frozen?"
 msgstr "Սառեցվա՞ծ"
@@ -1258,6 +1343,7 @@ msgid "Active?"
 msgstr "Ակտի՞վ"
 
 #: staff.circ.utils.thaw_date
+msgctxt "staff.circ.utils.thaw_date"
 msgid "Activation Date"
 msgstr "Ակտիվացման ամսաթիվ"
 
@@ -1289,6 +1375,10 @@ msgstr "Վերջին նշումի ժամանակ"
 msgid "Notices"
 msgstr "Նշումներ"
 
+#: staff.circ.utils.patron_alias
+msgid "Patron Alias"
+msgstr "Ընթերցողի կեղծանուն"
+
 #: staff.circ.utils.patron_family_name
 msgid "Patron Last Name"
 msgstr "Ընթերցողի ազգանուն"
@@ -1302,8 +1392,7 @@ msgid "Override Checkin Failure?"
 msgstr "Վերագրե՞լ հետ ընդունելու ձախողումը"
 
 #: staff.circ.utils.checkin.override.item_deposit_paid.warning
-msgid ""
-"A paid deposit will be owed to this patron if this action is overrided."
+msgid "A paid deposit will be owed to this patron if this action is overrided."
 msgstr ""
 "Եթե գործողությունը չեղյալ արվի ապա այս ընթերցողին վճարովի դեպոզիտ գումար "
 "պարտք կմնաք"
@@ -1340,12 +1429,17 @@ msgstr "Մենք պետք է ստացած լինենք ROUTE_ITEM"
 msgid "status of Holds Shelf, but no actual hold found."
 msgstr "Վիճակն է Պահում Դարակի վրա, բայց իրական պահում չի գտնված"
 
+#: staff.circ.utils.reservation_status_error
+msgid "status of Reservation Shelf, but no actual hold found."
+msgstr "Նախնական պահման դարակի վիճակ, բայց ընթացիկ պահումմներ չեն գտնված"
+
 #: staff.circ.utils.payload.hold.barcode
 msgctxt "staff.circ.utils.payload.hold.barcode"
 msgid "Barcode: %1$s"
 msgstr "Շտրիխ կոդ: %1$s"
 
 #: staff.circ.utils.payload.hold.title
+msgctxt "staff.circ.utils.payload.hold.title"
 msgid "Title: %1$s"
 msgstr "Վերնագիր: %1$s"
 
@@ -1389,10 +1483,12 @@ msgid "Notify by email: %1$s"
 msgstr "Հիշեցում էլ փոստով: %1$s"
 
 #: staff.circ.utils.payload.hold.request_date
+msgctxt "staff.circ.utils.payload.hold.request_date"
 msgid "Request Date: %1$s"
 msgstr "Հարցման ամսաթիվ: %1$s"
 
 #: staff.circ.utils.payload.hold.slip_date
+msgctxt "staff.circ.utils.payload.hold.slip_date"
 msgid "Slip Date: %1$s"
 msgstr "Կտրոնի ամսաթիվ: %1$s"
 
@@ -1415,6 +1511,53 @@ msgstr "Տպիր"
 
 #: staff.circ.utils.hold_slip.print.no
 msgctxt "staff.circ.utils.hold_slip.print.no"
+msgid "Do Not Print"
+msgstr "Մի տպիր"
+
+#: staff.circ.utils.payload.reservation.barcode
+msgctxt "staff.circ.utils.payload.reservation.barcode"
+msgid "Barcode: %1$s"
+msgstr "Շտրիխ կոդ: %1$s"
+
+#: staff.circ.utils.payload.reservation.title
+msgctxt "staff.circ.utils.payload.reservation.title"
+msgid "Title: %1$s"
+msgstr "Վերնագիր: %1$s"
+
+#. # Hold for patron familyName, firstName secondName
+#: staff.circ.utils.payload.reservation.patron
+msgid "Reservation for patron %1$s, %2$s %3$s"
+msgstr "Պահում ընթերցողի համար %1$s, %2$s %3$s"
+
+#: staff.circ.utils.payload.reservation.patron_alias
+msgid "Reservation for patron %1$s"
+msgstr "Պահում ընթերցողի համար %1$s"
+
+#: staff.circ.utils.payload.reservation.request_date
+msgctxt "staff.circ.utils.payload.reservation.request_date"
+msgid "Request Date: %1$s"
+msgstr "Հարցման ամսաթիվ: %1$s"
+
+#: staff.circ.utils.payload.reservation.start_date
+msgid "Start Date: %1$s"
+msgstr "Սկսելու ամսաթիվ: %1$s"
+
+#: staff.circ.utils.payload.reservation.slip_date
+msgctxt "staff.circ.utils.payload.reservation.slip_date"
+msgid "Slip Date: %1$s"
+msgstr "Կտրոնի ամսաթիվ: %1$s"
+
+#: staff.circ.utils.reservation_slip
+msgid "Reservation Slip"
+msgstr "Պահման կտրոն"
+
+#: staff.circ.utils.reservation_slip.print.yes
+msgctxt "staff.circ.utils.reservation_slip.print.yes"
+msgid "Print"
+msgstr "Տպել"
+
+#: staff.circ.utils.reservation_slip.print.no
+msgctxt "staff.circ.utils.reservation_slip.print.no"
 msgid "Do Not Print"
 msgstr "Մի տպիր"
 
@@ -1445,12 +1588,16 @@ msgid "Hold Capture Delayed"
 msgstr "Պահման որսումը հետաձգվել է"
 
 #: staff.circ.utils.hold_capture_delayed.prompt_for_nocapture
-msgid "Do Not Capture"
-msgstr "Մի որսա"
+msgid "Do Not Capture "
+msgstr "Մի որսա "
 
 #: staff.circ.utils.hold_capture_delayed.prompt_for_capture
 msgid "Capture"
 msgstr "Որսալ"
+
+#: staff.circ.utils.reservation_capture
+msgid "%1$s has been captured for a reservation."
+msgstr "%1$s բռնվել է պահման համառ"
 
 #: staff.circ.utils.capture
 msgid "%1$s has been captured for a hold."
@@ -1494,8 +1641,8 @@ msgid "Estimated Wait Time"
 msgstr "Սպասման գնահատվողժամանակ"
 
 #: staff.circ.utils.potential_copies
-msgid "Potential Copies"
-msgstr "Պոտենցիալ օրինակներ"
+msgid "Potential Copies "
+msgstr "Հավանական պատճեններ "
 
 #: staff.circ.utils.queue_position
 msgid "Queue Position"
@@ -1504,6 +1651,10 @@ msgstr "Հերթի դիրք"
 #: staff.circ.utils.total_holds
 msgid "Total Number of Holds"
 msgstr "Պահումների ընդհանուր քանակ"
+
+#: staff.circ.utils.find_acq_po.no_po
+msgid "Lineitem found (%1$s), but without purchase order"
+msgstr "Գտնվել է գծային նյութ (%1$s), բայց առանց գնման պատվերի"
 
 #: staff.circ.work_log_column.message
 msgctxt "staff.circ.work_log_column.message"
@@ -1514,13 +1665,83 @@ msgstr "Հաղորդում"
 msgid "When"
 msgstr "Երբ"
 
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode
 #: staff.circ.work_log_checkout.message
 msgid "%1$s circulated %4$s to %3$s (%2$s)"
 msgstr "%1$s հաշվված է %4$s մինչև %3$s (%2$s)"
 
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode
 #: staff.circ.work_log_renew.message
 msgid "%1$s renewed %4$s for %3$s (%2$s)"
 msgstr "%1$s թարմացված %4$s համարr %3$s (%2$s)"
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
+#: staff.circ.work_log_checkin_attempt.transit.message
+msgid "%1$s attempted checkin of %4$s, resulting in transit.  Route To = %5$s"
+msgstr ""
+"%1$s փորձ է արել ընդունել սրանք %4$s, որը հանգեցնում է տրանզիտի: Ուղարկիր = "
+"%5$s"
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
+#: staff.circ.work_log_checkin_attempt.transit_for_hold.message
+msgid ""
+"%1$s attempted checkin of %4$s, resulting in a hold-transit.  Route To = %"
+"5$s"
+msgstr ""
+"%1$s փորձ է արել ընդունել սրանք %4$s, որը հանգեցնում է պահման տրանզիտի: "
+"Ուղարկիր = %5$s"
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
+#: staff.circ.work_log_checkin_attempt.no_change.message
+msgid "%1$s attempted checkin of %4$s, but nothing happened.  Route To = %5$s"
+msgstr ""
+"%1$s փորձ է արել ընդունել սրանք %4$s, բայց ոչինչ չի պատահել:Ուղարկիր = %5$s"
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
+#: staff.circ.work_log_checkin_attempt.error.message
+msgid "%1$s attempted checkin of %4$s, and an error occurred.  Route To = %5$s"
+msgstr "%1$s փորձ է արել ընդունել սրանք %4$s, և պատահել է սխալ;Ուղարկիր = %5$s"
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
+#: staff.circ.work_log_checkin_attempt.success.message
+msgid "%1$s attempted checkin of %4$s, which succeeded.  Route To = %5$s"
+msgstr "%1$s փորձ է արվել ընդունել %4$s, ոռը հաջողվեց: Ուղարկի դեպի = %5$s"
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
+#: staff.circ.work_log_checkin_attempt.hold_shelf.message
+msgid ""
+"%1$s attempted checkin of %4$s, which routed the item to the Holds Shelf.  "
+"Route To = %5$s"
+msgstr ""
+"%1$s փորձ է արել ընդունել սրանք %4$s, որը ուղարկել է նյութը Պահման "
+"դարակ;Ուղարկիր = %5$s"
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
+#: staff.circ.work_log_checkin_attempt.reservation_shelf.message
+msgid ""
+"%1$s attempted checkin of %4$s, which routed the item to the Reservations "
+"Shelf.  Route To = %5$s"
+msgstr ""
+"%1$s փորձ է արել ընդունել սրանք %4$s, որը ուղարկել է նյութը Նախնական պահման "
+"դառակ: Ուղարկիր = %5$s"
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
+#: staff.circ.work_log_checkin_attempt.cataloging.message
+msgid ""
+"%1$s attempted checkin of %4$s, which is a pre-cat and was routed to "
+"Cataloging.  Route To = %5$s"
+msgstr ""
+"%1$s փորձ է արել ընդունել սրանք %4$s, որը նախնական քարտագրում է և ուղարկվել "
+"է Մուտքագրման: Ուղարկիր = %5$s"
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
+#: staff.circ.work_log_checkin_attempt.cataloging.message
+msgid ""
+"%1$s attempted checkin of %4$s, which was not found, and so was routed to "
+"Cataloging.  Route To = %5$s"
+msgstr ""
+"%1$s փորձ է արել ընդունել սրանք %4$s, որը չի գտնվել, և այսպիսով ուղարկվել է "
+"Քարտագրման: Ուղարկիր = %5$s"
 
 #: staff.circ.checkin.hold_capture
 msgid "Hold Capture"
@@ -1535,8 +1756,8 @@ msgid "Renew Items"
 msgstr "Թարմացրու նյութերը"
 
 #: staff.circ.checkin.error
-msgid "Check In Failed (in circ.util.checkin) (%1$s):"
-msgstr "Հետ ընդունւոմը ձախողվեց (circ.util.checkin) (%1$s):"
+msgid "Check In Failed (in circ.util.checkin) (%1$s): "
+msgstr "Ստուգիր Ձախողվածներում (circ.util.checkin) (%1$s): "
 
 #. # "Circulation" - check &staff.main.menu.circ.label; in lang.dtd
 #. # "Offline Interface" - check &staff.main.menu.circ.offline.label; in lang.dtd
@@ -1603,56 +1824,63 @@ msgstr "Վստա՞հ ես որ ցանկանում ես կասեցնել պահո
 
 #: staff.circ.holds.activation_date.prompt
 msgid ""
-"Please enter an Activation Date (or leave blank to unset) for hold %1$s.  "
+"Please enter an Activation Date (or choose Remove to unset) for hold %1$s.  "
 "This will also Suspend the hold."
 msgstr ""
-"Մուտք արա Ակտիվացման ամսաթիվը (կամ թող դատարկ) պահման համար %1$s: Սա նաև "
-"կկասեցնի պահումը:"
+"Մուտք արա Ակտիվացման ամսաթիվը (կամ ընտրիր Հեռացնել հետ բերելու համար) %1$s "
+"պահման համար: Սա նաև կկասեցնի Պահումը:"
 
 #: staff.circ.holds.activation_date.prompt.plural
 msgid ""
-"Please enter an Activation Date (or leave blank to unset) for holds %1$s.  "
-"This will also Suspend the holds."
+"Please enter an Activation Date (or choose Remove to unset) for holds %1$s. "
+" This will also Suspend the holds."
 msgstr ""
-"Մուտք արա Ակտիվացման ամսաթիվը (կամ թող դատարկ) պահումների համար %1$s: Սա նաև "
-"կկասեցնի պահումները:"
+"Մուտք արա Ակտիվացման ամսաթիվը (կամ ընտրիր Հեռացնել հետ բերելու համար) %1$s "
+"պահման համար: Սա նաև կկասեցնի Պահումները:"
 
-#: staff.circ.holds.activation_date.too_early.error
+#: staff.circ.holds.activation_date.dialog.description
+msgctxt "staff.circ.holds.activation_date.dialog.description"
+msgid "Activation Date"
+msgstr "Ակտիվացման ամսաթիվ"
+
+#: staff.circ.holds.request_date.prompt
 msgid ""
-"Activation Date needs to be either unset or set to fall on a future date."
+"Please enter a new Request Date for hold %1$s.  WARNING: This effectively "
+"reorders the holds queue."
 msgstr ""
-"Ակտիվացման ամսաթիվը կամ պետք է լինի չուղարկված կամ պատկանի ապագա ամսաթվի:"
+"Մուտք արա առաջարկի նոր ամսաթիվ %1$s պահման համար: ԶԳՈՒՇԱՑՈՒՄ: Սա արդյունավետ "
+"կերպով վերադասավորում է պահման հարցումը:"
 
-#: staff.circ.holds.activation_date.invalid_date
-msgctxt "staff.circ.holds.activation_date.invalid_date"
-msgid "Invalid Date"
-msgstr "Սխալ ամսաթիվ"
+#: staff.circ.holds.request_date.prompt.plural
+msgid ""
+"Please enter a new Request Date for holds %1$s.  WARNING: This effectively "
+"reorders the holds queue."
+msgstr ""
+"Մուտք արա առաջարկի նոր ամսաթիվ %1$s պահման համար: ԶԳՈՒՇԱՑՈՒՄ: Սա արդյունավետ "
+"կերպով վերադասավորում է պահման հարցումը:"
+
+#: staff.circ.holds.request_date.dialog.description
+msgctxt "staff.circ.holds.request_date.dialog.description"
+msgid "Request Date"
+msgstr "Հարցրու ամսաթիվ"
 
 #: staff.circ.holds.expire_time.prompt
 msgid ""
-"Please enter an Expiration Date (or leave blank to unset) for hold %1$s."
+"Please enter an Expiration Date (or choose Remove to unset) for hold %1$s."
 msgstr ""
-"Մուտք արա ժամկետը լրանալու ամսաթիվը (կամ թող դատարկ նախնական վիճակին բերելու "
-"համար) այս պահմանն համար %1$s."
+"Մուտք արա ժամկետի լրանալու ամսաթիվը (կամ ընտրիր Հեռացնել հետ բերելու համար) "
+"%1$s պահման համար:"
 
 #: staff.circ.holds.expire_time.prompt.plural
 msgid ""
-"Please enter an Expiration Date (or leave blank to unset) for holds %1$s."
+"Please enter an Expiration Date (or choose Remove to unset) for holds %1$s."
 msgstr ""
-"Մուտք արա ժամկետը լրանալու ամսաթիվը (կամ թող դատարկ նախնական վիճակին բերելու "
-"համար) այս պահումների համար %1$s."
+"Մուտք արա Ժամկետի լրանալու ամսաթիվը (կամ ընտրիր Հեռացնել հետ բերելու համար) "
+"%1$s պահումների համար:"
 
-#: staff.circ.holds.expire_time.too_early.error
-msgid ""
-"Expiration Date needs to be either unset or set to fall on a future date."
-msgstr ""
-"Ժամկետը լրանալու ամսաթիվը պետք է բերվի կամ կամ նախնական վիճակին կամ համընկնի "
-"ապագա ամսաթվին։"
-
-#: staff.circ.holds.expire_time.invalid_date
-msgctxt "staff.circ.holds.expire_time.invalid_date"
-msgid "Invalid Date"
-msgstr "Սխալ ամսաթիվ"
+#: staff.circ.holds.expire_time.dialog.description
+msgid "Expiration Date"
+msgstr "Ժամկետը լրանալու ամսաթիվ"
 
 #: staff.circ.holds.shelf_expire_time.prompt
 msgid "Please enter a Shelf Expiration Date for hold %1$s."
@@ -1660,18 +1888,12 @@ msgstr "Մուտք արա Դարակի ժամկետը լրանալու ամսա�
 
 #: staff.circ.holds.shelf_expire_time.prompt.plural
 msgid "Please enter a Shelf Expiration Date for holds %1$s."
-msgstr ""
-"Մուտք արա Դարակի ժամկետը լրանալու ամսաթիվը այս պահումների համար %1$s."
+msgstr "Մուտք արա Դարակի ժամկետը լրանալու ամսաթիվը այս պահումների համար %1$s."
 
 #: staff.circ.holds.shelf_expire_time.dialog.description
 msgctxt "staff.circ.holds.shelf_expire_time.dialog.description"
 msgid "Shelf Expire Time"
 msgstr "Դարակի ժամկետի լրանալու ժամ"
-
-#: staff.circ.holds.shelf_expire_time.invalid_date
-msgctxt "staff.circ.holds.shelf_expire_time.invalid_date"
-msgid "Invalid Date"
-msgstr "Սխալ ամսաթիվ"
 
 #: staff.circ.holds.modifying_holds
 msgid "Modifying Holds"
@@ -1688,8 +1910,8 @@ msgid "No"
 msgstr "Ոչ"
 
 #: staff.circ.hold_update.hold_ids.failed
-msgid "Number of holds not updated: %1$s"
-msgstr "Չթարմացված պահումների քանակ: %1$s"
+msgid "Number of holds not updated: %1$s "
+msgstr "Չթարմացված պահումների քանակը: %1$s "
 
 #: staff.circ.holds.already_activated
 msgid "Hold %1$s was already activated."
@@ -1738,6 +1960,80 @@ msgctxt "staff.circ.holds.list_view.accesskey"
 msgid "V"
 msgstr "V"
 
+#: staff.circ.missing_pieces.scan_item.prompt
+msgid "Enter barcode for item missing pieces:"
+msgstr "Մուտք արա շտրիխ կոդը նյութի պակասող մասերի համար"
+
+#: staff.circ.missing_pieces.scan_item.title
+msgid "Missing Pieces"
+msgstr "Պակասող մասեր"
+
+#: staff.circ.missing_pieces.scan_item.error_alert
+msgid "No item with barcode \"%1$s\""
+msgstr "Չկա նյութ այս շտրիխ կոդով \"%1$s\""
+
+#~ msgctxt "staff.circ.invalid_date"
+#~ msgid "Invalid Date"
+#~ msgstr "Սխալ ամսաթիվ"
+
+#~ msgid "items ="
+#~ msgstr "նյութեր ="
+
+#~ msgid "preview:"
+#~ msgstr "նախնական դիտում:"
+
+#~ msgid "Date Last Edited"
+#~ msgstr "Վերջին խմբագրման ամսաթիվ"
+
+#~ msgid "Request Date"
+#~ msgstr "Հարցրու ամսաթիվ"
+
+#~ msgid "Activation Date"
+#~ msgstr "Ակտիվացման ամսաթիվ"
+
+#~ msgid "Title: %1$s"
+#~ msgstr "Վերնագիր: %1$s"
+
+#~ msgid "Request Date: %1$s"
+#~ msgstr "Հարցման ամսաթիվ: %1$s"
+
+#~ msgid "Slip Date: %1$s"
+#~ msgstr "Կտրոնի ամսաթիվ: %1$s"
+
+#~ msgid "Check In Failed (in circ.util.checkin) (%1$s):"
+#~ msgstr "Հետ ընդունւոմը ձախողվեց (circ.util.checkin) (%1$s):"
+
+#~ msgid ""
+#~ "Please enter an Activation Date (or leave blank to unset) for hold %1$s.  "
+#~ "This will also Suspend the hold."
+#~ msgstr ""
+#~ "Մուտք արա Ակտիվացման ամսաթիվը (կամ թող դատարկ) պահման համար %1$s: Սա նաև "
+#~ "կկասեցնի պահումը:"
+
+#~ msgid ""
+#~ "Please enter an Activation Date (or leave blank to unset) for holds %1$s.  "
+#~ "This will also Suspend the holds."
+#~ msgstr ""
+#~ "Մուտք արա Ակտիվացման ամսաթիվը (կամ թող դատարկ) պահումների համար %1$s: Սա նաև "
+#~ "կկասեցնի պահումները:"
+
+#~ msgid ""
+#~ "Activation Date needs to be either unset or set to fall on a future date."
+#~ msgstr ""
+#~ "Ակտիվացման ամսաթիվը կամ պետք է լինի չուղարկված կամ պատկանի ապագա ամսաթվի:"
+
+#~ msgctxt "staff.circ.holds.activation_date.invalid_date"
+#~ msgid "Invalid Date"
+#~ msgstr "Սխալ ամսաթիվ"
+
+#~ msgctxt "staff.circ.holds.expire_time.invalid_date"
+#~ msgid "Invalid Date"
+#~ msgstr "Սխալ ամսաթիվ"
+
+#~ msgctxt "staff.circ.holds.shelf_expire_time.invalid_date"
+#~ msgid "Invalid Date"
+#~ msgstr "Սխալ ամսաթիվ"
+
 #~ msgid "Checkout Timestamp"
 #~ msgstr "Դուրս տրման ժամանակի կնիք"
 
@@ -1762,3 +2058,39 @@ msgstr "V"
 #~ msgstr ""
 #~ "Այն պահումները որոնք գտնվում են տեղափոխման կամ պատրաստ են տրման դրանց "
 #~ "գրադարանը չեք կարող խմբագրել:"
+
+#~ msgid "Number of circulations selected: %1$s"
+#~ msgstr "Ընտրված տացքերի քանակ: %1$s"
+
+#~ msgid "Number of circulations not backdated: %1$s"
+#~ msgstr "Հետին ամսաթվով չգրված տացքերի քանակ: %1$s"
+
+#~ msgid "Date Record Last Edited"
+#~ msgstr "Գրառման վերջին խմբագրման ամսաթիվ"
+
+#~ msgid "Do Not Capture"
+#~ msgstr "Մի որսա"
+
+#~ msgid "Potential Copies"
+#~ msgstr "Պոտենցիալ օրինակներ"
+
+#~ msgid ""
+#~ "Expiration Date needs to be either unset or set to fall on a future date."
+#~ msgstr ""
+#~ "Ժամկետը լրանալու ամսաթիվը պետք է բերվի կամ կամ նախնական վիճակին կամ համընկնի "
+#~ "ապագա ամսաթվին։"
+
+#~ msgid ""
+#~ "Please enter an Expiration Date (or leave blank to unset) for holds %1$s."
+#~ msgstr ""
+#~ "Մուտք արա ժամկետը լրանալու ամսաթիվը (կամ թող դատարկ նախնական վիճակին բերելու "
+#~ "համար) այս պահումների համար %1$s."
+
+#~ msgid ""
+#~ "Please enter an Expiration Date (or leave blank to unset) for hold %1$s."
+#~ msgstr ""
+#~ "Մուտք արա ժամկետը լրանալու ամսաթիվը (կամ թող դատարկ նախնական վիճակին բերելու "
+#~ "համար) այս պահմանն համար %1$s."
+
+#~ msgid "Number of holds not updated: %1$s"
+#~ msgstr "Չթարմացված պահումների քանակ: %1$s"

@@ -1,18 +1,19 @@
 # extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
+#. extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-23 23:36-0400\n"
-"PO-Revision-Date: 2009-12-21 13:45+0000\n"
-"Last-Translator: TZ <tigran@flib.sci.am>\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2011-05-24 12:10+0000\n"
+"Last-Translator: Serj Safarian <serjsafarian@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-12-22 04:36+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Generator: Translate Toolkit 1.8.1\n"
 "X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-05-25 04:40+0000\n"
 
 #: common.exception
 msgid ""
@@ -30,8 +31,28 @@ msgid "The JSAN library object is missing."
 msgstr "JSAN գրադարանը բացակա է:"
 
 #: common.ok
+msgctxt "common.ok"
 msgid "Ok"
 msgstr "Լավ"
+
+#: common.ok.label
+msgctxt "common.ok.label"
+msgid "Ok"
+msgstr "Լավ"
+
+#: common.ok.accesskey
+msgid "O"
+msgstr "O"
+
+#: common.cancel.label
+msgctxt "common.cancel.label"
+msgid "Cancel"
+msgstr "Չեղարկել"
+
+#: common.cancel.accesskey
+msgctxt "common.cancel.accesskey"
+msgid "C"
+msgstr "C"
 
 #: common.clear
 msgid "Clear"
@@ -50,8 +71,8 @@ msgid "Copy Message"
 msgstr "Պատճե հաղորդագրություն"
 
 #: common.barcode.status.warning
-msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3."
-msgstr "Զգուշացում: Սրա համար %1$s, այս շտրիխ կոդը (%2$s) նշված է %3:"
+msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3$s."
+msgstr "Զգուշացում: Առ %1$s, այս շտրիխ կոդը (%2$s) նշվել է %3$s."
 
 #: common.barcode.status.warning.lost
 msgid "Lost"
@@ -114,10 +135,8 @@ msgid "Delete"
 msgstr "Ջնջել"
 
 #: cat.opac.undelete_record.confirm
-msgid ""
-"Are you sure you want to undelete title record #%1$s from the catalog?"
-msgstr ""
-"Վստա՞հ ես որ ցանկանում ես հետ ջնջել վերնագրի գրառումը #%1$s քարտարանից:"
+msgid "Are you sure you want to undelete title record #%1$s from the catalog?"
+msgstr "Վստա՞հ ես որ ցանկանում ես հետ ջնջել վերնագրի գրառումը #%1$s քարտարանից:"
 
 #: cat.opac.undelete_record
 msgid "Undelete Record"
@@ -128,8 +147,9 @@ msgid "Undelete"
 msgstr "Հետ ջնջել"
 
 #: cat.opac.cancel
+msgctxt "cat.opac.cancel"
 msgid "Cancel"
-msgstr "Չեղյալ անել"
+msgstr "Չեղարկել"
 
 #: cat.opac.record_deleted
 msgid "Record deleted."
@@ -160,20 +180,31 @@ msgid "Error undeleting record #%1$s : %2$s : %3$s"
 msgstr "Սխալ գրառման ջնջելու ընթացքում #%1$s : %2$s : %3$s"
 
 #: cat.opac.record_marked_for_overlay.record_id.alert
+msgctxt "cat.opac.record_marked_for_overlay.record_id.alert"
 msgid "Record with ID %1$s marked for overlay."
 msgstr "Այս ID-ով գրառումը %1$s նշված է վերադրման համար։"
 
 #: cat.opac.record_marked_for_overlay.tcn.alert
+msgctxt "cat.opac.record_marked_for_overlay.tcn.alert"
 msgid "Record with TCN %1$s marked for overlay."
 msgstr "Այս TCN-ով գրառումը %1$s նշված է վերադրման համար։"
+
+#: cat.opac.record_marked_for_multi_home.record_id.alert
+msgctxt "cat.opac.record_marked_for_multi_home.record_id.alert"
+msgid "Record with ID %1$s targeted for Multi-Bib items."
+msgstr "Այս ID-ով գրառումը %1$s թիրախավորված է բազմա-մատեն նյութերի համար"
+
+#: cat.opac.record_marked_for_multi_home.tcn.alert
+msgid "Record with TCN %1$s targeted for Mutli-Bib items."
+msgstr "Այս TCN-ով գրառումը %1$s թիրախավորված է բազմա-մատեն նյութերի համար"
+
+#: cat.opac.clear_statusbar
+msgid "Un-target/un-mark this record?"
+msgstr "Քանդե՞լ թիրախը / քանդե՞լ նշումը այս գրառման։"
 
 #: cat.save_record
 msgid "Save Record"
 msgstr "Հիշել գրառումը"
-
-#: cat.save.success
-msgid "Record successfully saved."
-msgstr "Գրառումը հաջողությամբ հիշված է:"
 
 #: cat.save.failure
 msgid "Record not likely updated."
@@ -249,16 +280,15 @@ msgstr "Զգուշացում: Սրա համար %1$s, այս շտրիխ կոդը
 
 #: circ.offline_checkout.barcode.flagged.blocked
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Blocked."
-msgstr ""
-"Զգուշացում: Սրա համար %1$s, այս շտրիխ կոդը (%2$s) նշված է արգելափակված:"
+msgstr "Զգուշացում: Սրա համար %1$s, այս շտրիխ կոդը (%2$s) նշված է արգելափակված:"
 
 #: circ.offline_checkout.barcode.flagged.unknown
 msgid ""
-"Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: "
-"%3$s."
+"Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: %"
+"3$s."
 msgstr ""
-"Զգուշացում: Սրա համար %1$s, այս շտրիխ կոդը (%2$s) նշված է չճանաչված կոդով: "
-"%3$s."
+"Զգուշացում: Սրա համար %1$s, այս շտրիխ կոդը (%2$s) նշված է չճանաչված կոդով: %"
+"3$s."
 
 #: circ.offline_checkout.date.early
 msgid "Due date needs to be after today."
@@ -424,8 +454,7 @@ msgstr "Անվանափոխումը չկայացավ: Շտրիխ կոդը չի կ
 
 #: menu.cmd_replace_barcode.duplicate.error
 msgid "Rename aborted.  Another copy has barcode \"%1$s\"."
-msgstr ""
-"Անվանափոխումը չկայացավ: Նույն շտրիխ կոդը մեկ այլ օրինակ ունի \"%1$s\":"
+msgstr "Անվանափոխումը չկայացավ: Նույն շտրիխ կոդը մեկ այլ օրինակ ունի \"%1$s\":"
 
 #: menu.cmd_replace_barcode.testing.error
 msgid "Error testing replacement barcode \"%1$s\"."
@@ -479,6 +508,11 @@ msgstr "Կապված ենթերցողի խմբագրում"
 msgid "Register Patron"
 msgstr "Գրանցիր ընթերցողին"
 
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode
+#: staff.circ.work_log_patron_registration.message
+msgid "%1$s registered %3$s (%2$s)"
+msgstr "%1$s գրանցված է %3$s (%2$s)"
+
 #: menu.cmd_browse_holds.tab
 msgid "Hold Browser"
 msgstr "Կասեցրու դիտակը"
@@ -498,6 +532,10 @@ msgstr "Տէղային կառավարում"
 #: menu.cmd_open_vandelay.tab
 msgid "MARC Import/Export"
 msgstr "MARC ներմուծում/արտահանում"
+
+#: menu.cmd_marc_batch_edit.tab
+msgid "MARC Batch Edit"
+msgstr "MARC փաթեթով խմբագրում"
 
 #: menu.cmd_open_conify.tab
 msgid "Server Settings"
@@ -596,7 +634,15 @@ msgstr "Սխալ բոլոր տագերը փակելիս"
 
 #: menu.new_tab.tab
 msgid "Tab"
-msgstr "Տաբ"
+msgstr "Tab ստեղն"
+
+#: menu.new_tab.max_tab_dialog
+msgid ""
+"Sorry, we can't create any more tabs in this window.\n"
+"Would you like to create a new tab in another window?"
+msgstr ""
+"Կներեք, այս պատուհանում չենք կարող ստեղծել նոր տաբեր։\n"
+"Կցանկանա՞ս ստեղծել նոր տաբ այլ պատուհանում։"
 
 #: main.session_cookie.error
 msgid "Error setting session cookie: %1$s"
@@ -756,8 +802,8 @@ msgid "Exceptions"
 msgstr "Բացառություններ"
 
 #: network.override.override
-msgid "Override"
-msgstr "Չեղյալ անել"
+msgid "Override "
+msgstr "Վերագրել "
 
 #: network.override.force.prompt
 msgid "Force this action?"
@@ -836,7 +882,8 @@ msgstr ""
 "Կրկնել Ցանցը։ Եթե ցանկանում ես մուտք գործել ավտոնոմ ռեժիմ, ընտրիր Անտեսիր "
 "Սխալները և համապատասխան երկխոսությունները։ Եթե վստահ ես որ այս սխալը "
 "Էվերգրինի թերություններից է և ոչ թե ցանցային պրոբլեմ է, կապվիր օգնւթյան "
-"սեղանի կամ Էվերգրինի աշխատակազմի հետ, և նրանց տրամադրիր այս տեղեկատվությունը։"
+"սեղանի կամ Էվերգրինի աշխատակազմի հետ, և նրանց տրամադրիր այս "
+"տեղեկատվությունը։"
 
 #: network.server.method
 msgid "method=%1$s"
@@ -912,6 +959,10 @@ msgstr ""
 msgid "Column configuration saved."
 msgstr "Սյունակի ձևավորումը հիշված է։"
 
+#: list.column_save_disabled
+msgid "Column configuration save disabled by server policy."
+msgstr "Կայանի աշխատանքից ելնելով սյունակի ձևավորումը արգելափակված է"
+
 #: list.row_retrieving
 msgid "Retrieving..."
 msgstr "Կանչվում է..."
@@ -934,6 +985,7 @@ msgid "Copy Field from Selected Row to Clipboard"
 msgstr "Արտագրիր Դաշտը Ընտրված Տողից դեպի կլիպբորդ"
 
 #: list.actions.field_to_clipboard.accesskey
+msgctxt "list.actions.field_to_clipboard.accesskey"
 msgid "C"
 msgstr "C"
 
@@ -983,8 +1035,7 @@ msgid "=-=-="
 msgstr "=-=-="
 
 #: menu.cmd_survey_wizard.inadequate_perm
-msgid ""
-"You are lacking the CREATE_SURVEY permission and/or working locations."
+msgid "You are lacking the CREATE_SURVEY permission and/or working locations."
 msgstr ""
 "Դու ցանկանում ես ձեռք բերել CREATE_SURVEY արտոնություն և/կամ աշխատանքային "
 "տեղաբաշխումներ։"
@@ -996,6 +1047,10 @@ msgstr "Համընդհանուր ֆոնտի և ձայնի կարգաբերում
 #: menu.cmd_local_admin_printer.tab
 msgid "Printer Settings Editor"
 msgstr "Տպիչի կարգաբերումների խմբագիր"
+
+#: menu.cmd_local_admin_do_not_auto_attempt_print_setting.tab
+msgid "'Do Not Attempt Auto-Print' Setting"
+msgstr "'Մի փորձիր ինքնա տպում' կարգաբերում"
 
 #: menu.cmd_local_admin_closed_dates.tab
 msgid "Closed Dates Editor"
@@ -1021,6 +1076,10 @@ msgstr "Վիճակագրական դասերի խմբագիր"
 msgid "Reports"
 msgstr "Հաշվետվություններ"
 
+#: menu.cmd_local_admin_age_overdue_circulations_to_lost.tab
+msgid "Age to Lost"
+msgstr "Տարիքի կորուստ"
+
 #: menu.cmd_local_admin_cash_reports.tab
 msgid "Cash Reports"
 msgstr "Կանխիկի հաշվետվություններ"
@@ -1029,49 +1088,69 @@ msgstr "Կանխիկի հաշվետվություններ"
 msgid "Transits"
 msgstr "Տրանզիտներ"
 
-#: menu.cmd_acq_view_picklist.tab
-msgid "Selection Lists"
-msgstr "Ընտրության ցուցակ"
+#: menu.cmd_acq_create_invoice.tab
+msgid "New Invoice"
+msgstr "Նոր հաշիվ"
 
 #: menu.cmd_acq_bib_search.tab
-msgid "Title Search"
-msgstr "Վերնագրի փնտրում"
+msgid "MARC Federated Search"
+msgstr "MARC ֆեդերացված որոնում"
+
+#: menu.cmd_acq_from_bib.tab
+msgid "Load Catalog Record IDs"
+msgstr "Բեռնավորիր քարտարանի գրառման բնութագրիչ կոդը"
+
+#: menu.cmd_acq_unified_search.tab
+msgid "Acquisitions Search"
+msgstr "Համալրումների փնտրում"
 
 #: menu.cmd_acq_upload.tab
-msgid "Load Order Record"
-msgstr "Բեռնավորիր Պատվերի գրառումը"
+msgid "Load MARC Order Records"
+msgstr "Բեռնավորիր MARC կարգաբերված գրառումներ"
 
 #: menu.cmd_acq_new_brief_record.tab
 msgid "New Brief Record"
 msgstr "Նոր հակիրճ գրառում"
 
-#: menu.cmd_acq_view_po.tab
+#: menu.cmd_acq_po.tab
 msgid "Purchase Orders"
 msgstr "Գնման պատվեր"
 
-#: menu.cmd_acq_view_fund.tab
-msgid "Funds"
-msgstr "Ֆոնդեր"
+#: menu.cmd_acq_user_requests.tab
+msgid "Patron Requests"
+msgstr "Ընթերցողի հարցումներ"
 
-#: menu.cmd_acq_view_funding_source.tab
-msgid "Funding Sources"
-msgstr "Ֆինանսավորման աղբյուրներ"
+#: menu.cmd_acq_claim_eligible.tab
+msgid "Claim-Ready Items"
+msgstr "Պիտակավորված պատրաստ նյութեր"
 
-#: menu.cmd_acq_view_provider.tab
-msgid "Providers"
-msgstr "Ուղեկցողներ"
+#: menu.cmd_serial_batch_receive.tab
+msgid "Batch Receive"
+msgstr "Փաթեթի ստացում"
 
-#: menu.cmd_acq_view_currency_type.tab
-msgid "Currency Types"
-msgstr "Արտարժոյթի տեսակներ"
+#: menu.cmd_booking_resource.tab
+msgid "Resources"
+msgstr "Պաշարներ"
 
-#: menu.cmd_acq_view_exchange_rate.tab
-msgid "Exchange Rates"
-msgstr "Փոխանակման կուրսեր"
+#: menu.cmd_booking_reservation.tab
+msgid "Reservations"
+msgstr "Նախնական պահումներ"
 
-#: menu.cmd_acq_view_distrib_formula.tab
-msgid "Distribution Formulas"
-msgstr "Տարածման ֆորմուլաներ"
+#: menu.cmd_booking_reservation_pickup.tab
+msgid "Reservation Pickup"
+msgstr "Նախնական պահման ստացում"
+
+#: menu.cmd_booking_reservation_return.tab
+msgid "Reservation Return"
+msgstr "Նախնական պահման վերադարձ"
+
+#: menu.cmd_booking_pull_list.tab
+msgid "Booking Pull List"
+msgstr "Բացվող ցուցակի պատվեր"
+
+#: menu.cmd_booking_capture.tab
+msgid "Booking Capture"
+msgstr "Բացվող ցուցակի որսում"
 
 #: menu.local_admin.circ_matrix_matchpoint.tab
 msgid "Circulation Policies"
@@ -1084,6 +1163,10 @@ msgstr "Պահման կանոնակարգեր"
 #: menu.local_admin.work_log.tab
 msgid "Work Log"
 msgstr "Աշխատանքային լոգ"
+
+#: menu.local_admin.patrons_due_refunds.tab
+msgid "Patrons With Negative Balances"
+msgstr "Բացասական հաշվեկշռով ընթերցողներ"
 
 #: menu.circulation.staged_patrons.tab
 msgid "Pending Patrons"
@@ -1101,8 +1184,230 @@ msgstr ""
 msgid "Printer Settings"
 msgstr "Տպիչի Կարգաբերումներ"
 
+#: staff.cat.util.copy_editor.batch_edit
+msgid "Batch Edit"
+msgstr "Խմբագրել փաթեթով"
+
+#: staff.cat.util.copy_editor.batch_view
+msgid "Batch View"
+msgstr "Դիտում փաթեթով"
+
+#: staff.cat.util.copy_editor.edit
+msgid "Edit"
+msgstr "Խմբագրել"
+
+#: staff.cat.util.copy_editor.view
+msgid "View"
+msgstr "Տեսք"
+
+#: staff.circ.copy_status.add_volumes.perm_failure
+msgid "You do not have permission to add volumes to the workstation library."
+msgstr ""
+"Դու չունես իրավասություններ ավելացնելու հատորներ աշխատանքային կայանի "
+"գրադարանում"
+
+#: staff.circ.copy_status.add_volumes.title
+msgid "Add Volume/Item for Record # %1$s"
+msgstr "Ավելացնել հատոր/նյութ գրառման համար # %1$s"
+
+#: staff.cat.copy_browser.marked_record_for_multi_home_indicator.tcn.label
+msgid "Record with TCN %1$s targeted for Multi-Bib items."
+msgstr "Այս TCN-ով գրառումը %1$s թիրախավորված է բազմա-մատեն նյութերի համար։"
+
+#: staff.cat.copy_browser.marked_record_for_multi_home_indicator.record_id.label
+msgctxt "staff.cat.copy_browser.marked_record_for_multi_home_indicator.record_id.label"
+msgid "Record with ID %1$s targeted for Multi-Bib items."
+msgstr "Այս ID-ով գրառումը %1$s թիրախավորված է բազմա-մատեն նյութերի համար։"
+
+#: staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label
+msgctxt "staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label"
+msgid "Record with TCN %1$s marked for overlay."
+msgstr "Այս TCN-ով գրառումը %1$s նշված է վերադրման համար։"
+
+#: staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label
+msgctxt "staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label"
+msgid "Record with ID %1$s marked for overlay."
+msgstr "Այս ID-ով գրառումը %1$s նշված է վերադրման համար։"
+
+#: staff.cat.opac.marked_record_for_hold_transfer_indicator.tcn.label
+msgid "Record with TCN %1$s marked for title hold transfer."
+msgstr "Գրառումը այս TCN %1$s նշված է վերնագրով տեղափոխելու համար"
+
+#: staff.cat.opac.marked_record_for_hold_transfer_indicator.record_id.label
+msgid "Record with ID %1$s marked for title hold transfer."
+msgstr "Գրառումը այս ID %1$s նշված է վերնագրով տեղափոխման համար"
+
+#: staff.cat.opac.title_for_hold_transfer.destination_needed.label
+msgid "Need to mark a record as a Title Hold Transfer Destination first."
+msgstr ""
+"Սկզբից հարկավոր է գրառումը նշել որպես Վերնագրի Պահման Տարանցման Նպատակակետ"
+
+#: staff.cat.opac.title_for_hold_transfer.success.label
+msgid "Holds transferred."
+msgstr "Պահումները փոխանցված են"
+
+#: staff.cat.opac.title_for_hold_transfer.failure.label
+msgid "Holds not transferred."
+msgstr "Պահումները փոխանցված չեն"
+
+#: staff.cat.opac.related_items
+msgid "Related Lineitems"
+msgstr "Կապված Lineitems"
+
+#: staff.cat.opac.serial_alt_mgmt
+msgid "Subscriptions"
+msgstr "Բաժանորդագրություններ"
+
+#: staff.cat.create_or_rebarcode_items
+msgid "Create or Re-barcode Items"
+msgstr "Ստեղծիր կամ նորից շտրիխ կոդ տուր նյութին"
+
+#: printing.nothing_to_reprint
+msgid "Nothing to re-print"
+msgstr "Վերատպելու համար ոչինչ չկա"
+
+#: printing.prompt_for_external_print_cmd
+msgid ""
+"Enter external print command and parameters (use %receipt.txt% or %"
+"receipt.html% as the file containing the print data. Those values will be "
+"substituted with the proper path.):"
+msgstr ""
+"Մուտք արա արտաքին տպելու հրամանները և պարամետրերը (օգտագործիր %receipt.txt% "
+"or %receipt.html% որպես ֆայլ որը պարունակում է տպելու տվյալները։ Այդ "
+"արժեքները կփոխարինվեն ճիշտ ուղիով):"
+
+#: printing.print_strategy_saved
+msgid "Print strategy (%1$s) for %2$s context saved to file system."
+msgstr "Տպելու ստրատեգիա (%1$s) համար %2$s հիշվել է համակարգում"
+
+#: text_editor.prompt_for_external_cmd
+msgid ""
+"Enter external text editor command and parameters (use %letter.txt% as the "
+"file containing the text. This value will be substituted with the proper "
+"path.):"
+msgstr ""
+"Մուտք արա արտաքին տեքստային խմբագրիչի հրամանը և պարամետրերը։ (օգտագործիր %"
+"letter.txt% որպես ֆայլ որը պարունակում է տեքստը։ Այս արժեքը կփոխարինվի ճիշտ "
+"ուղիով):"
+
+#: menu.tab1.accesskey
+msgid "1"
+msgstr "1"
+
+#: menu.tab2.accesskey
+msgid "2"
+msgstr "2"
+
+#: menu.tab3.accesskey
+msgid "3"
+msgstr "3"
+
+#: menu.tab4.accesskey
+msgid "4"
+msgstr "4"
+
+#: menu.tab5.accesskey
+msgid "5"
+msgstr "5"
+
+#: menu.tab6.accesskey
+msgid "6"
+msgstr "6"
+
+#: menu.tab7.accesskey
+msgid "7"
+msgstr "7"
+
+#: menu.tab8.accesskey
+msgid "8"
+msgstr "8"
+
+#: menu.tab9.accesskey
+msgid "9"
+msgstr "9"
+
+#: menu.tab10.accesskey
+msgid "0"
+msgstr "0"
+
+#: browser.reload.unsaved_data_warning
+msgid "This page may have unsaved data. Reload it anyway?"
+msgstr "Այս էջը կարող է ունենալ չհիշված տվյալ։ Վերաբեռնավորե՞լ այնուամենայնիվ։"
+
+#: menu.close_tab.unsaved_data_warning
+msgid "This tab may have unsaved data. Close it anyway?"
+msgstr "Այս տաբը կարող է ունենալ չհիշված տվյալ։ Փակե՞լ այնուամենայնիվ։"
+
+#: menu.replace_tab.unsaved_data_warning
+msgid "This tab may have unsaved data. Replace it anyway?"
+msgstr "Այս տաբը կարող է ունենալ չհիշված տվյալ։ Փոխարինե՞լ այնուամենայնիվ։"
+
+#: menu.close_window.unsaved_data_warning
+msgid "This window may have unsaved data. Close it anyway?"
+msgstr "Այս պատուհանը կարող է ունենալ չհիշված տվյալ։ Փակե՞լ այնուամենայնիվ։"
+
+#: menu.logoff.unsaved_data_warning
+msgid "This session may have unsaved data. Logoff anyway?"
+msgstr "Այս սեսիան կարող է ունենալ չհիշված տվյալ։ Դուրս գա՞լ այնուամենայնիվ։"
+
+#: menu.shutdown.unsaved_data_warning
+msgid "This application may have unsaved data. Exit it anyway?"
+msgstr ""
+"Այս կիրառությունը կարող է ունենալ չհիշված տվյալ։ Դուրս գա՞լ այնուամենայնիվ։"
+
+#~ msgid "Ok"
+#~ msgstr "Լավ"
+
+#~ msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3."
+#~ msgstr "Զգուշացում: Սրա համար %1$s, այս շտրիխ կոդը (%2$s) նշված է %3:"
+
+#~ msgid "Cancel"
+#~ msgstr "Չեղյալ անել"
+
+#~ msgid "Record successfully saved."
+#~ msgstr "Գրառումը հաջողությամբ հիշված է:"
+
 #~ msgid "About this client..."
 #~ msgstr "Այս հաճախորդի մասին..."
 
 #~ msgid "Open New Window"
 #~ msgstr "Բացիր նոր պատուհան"
+
+#~ msgid "Record with TCN %1$s marked for overlay."
+#~ msgstr "Այս TCN-ով գրառումը %1$s նշված է վերադրման համար։"
+
+#~ msgid "Record with ID %1$s marked for overlay."
+#~ msgstr "Այս ID-ով գրառումը %1$s նշված է վերադրման համար։"
+
+#~ msgid "Override"
+#~ msgstr "Չեղյալ անել"
+
+#~ msgid "C"
+#~ msgstr "C"
+
+#~ msgid "Selection Lists"
+#~ msgstr "Ընտրության ցուցակ"
+
+#~ msgid "Title Search"
+#~ msgstr "Վերնագրի փնտրում"
+
+#~ msgid "Load Order Record"
+#~ msgstr "Բեռնավորիր Պատվերի գրառումը"
+
+#~ msgid "Funds"
+#~ msgstr "Ֆոնդեր"
+
+#~ msgid "Currency Types"
+#~ msgstr "Արտարժոյթի տեսակներ"
+
+#~ msgid "Exchange Rates"
+#~ msgstr "Փոխանակման կուրսեր"
+
+#~ msgid "Funding Sources"
+#~ msgstr "Ֆինանսավորման աղբյուրներ"
+
+#~ msgid "Providers"
+#~ msgstr "Ուղեկցողներ"
+
+#~ msgid "Distribution Formulas"
+#~ msgstr "Տարածման ֆորմուլաներ"

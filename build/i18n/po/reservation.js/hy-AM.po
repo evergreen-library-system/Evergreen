@@ -1,230 +1,279 @@
+# Armenian translation for evergreen
+# Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2010-06-07 02:03:44-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2011-04-18 21:45:31-0400\n"
+"PO-Revision-Date: 2011-04-19 04:00+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
+"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2011-05-18 04:48+0000\n"
 
 #: reservation.js:AUTO_ending_at
 msgid "and"
-msgstr ""
-
-#: reservation.js:CREATE_BRESV_OK
-msgid "Created ${0} reservation."
-msgstr ""
+msgstr "և"
 
 #: reservation.js:BRSRC_NOT_FOUND
 msgid "Could not locate that resource."
-msgstr ""
+msgstr "Չի կարող գտնել պաշարը"
 
 #: reservation.js:AUTO_choose_a_brt
 msgid "Choose a Bookable Resource Type"
-msgstr ""
+msgstr "Ընտրիր պատվիրվող պաշարի տեսակը"
+
+#: reservation.js:CREATE_BRESV_OK
+msgid "Created ${0} reservation(s)"
+msgstr "Ստեղծվել է ${0} պահեստավորումներ"
 
 #: reservation.js:AUTO_ATTR_VALUE_reserve_brsrc
 msgid "Reserve Selected"
-msgstr ""
+msgstr "Պահեստավորի ընտրվածը"
 
 #: reservation.js:NO_BRT_RESULTS
 msgid "There are no bookable resource types registered."
-msgstr ""
+msgstr "Չկան գրանցված պատվիրվող պաշարների տեսակներ"
 
 #: reservation.js:AUTO_ATTR_VALUE_next
 msgid "Next"
-msgstr ""
+msgstr "Հաջորդ"
 
 #: reservation.js:BRSRC_RETRIVE_ERROR
 msgid "Error retrieving resource: "
-msgstr ""
+msgstr "Սխալ պաշարը կանչելիս: "
 
 #: reservation.js:AUTO_starting_at
 msgid "Between"
-msgstr ""
+msgstr "Միջև"
 
 #: reservation.js:AUTO_bresv_grid_resource
 msgid "Resource"
-msgstr ""
+msgstr "Պաշար"
 
 #: reservation.js:AUTO_brt_noncat_only
 msgid "Show only non-cataloged bookable resource types"
-msgstr ""
+msgstr "Ցույց տուր միայն չքարտագրվող պատվիրվող  պաշարի տեսակները"
 
 #: reservation.js:ON_FLY_ERROR
 msgid "Error attempting to make item a bookable resource:"
-msgstr ""
+msgstr "Սխալ երբ նյութը փորձում են դարձնել պատվիրվող պաշար"
 
 #: reservation.js:AUTO_bresv_grid_type
 msgid "Type"
-msgstr ""
+msgstr "Տեսակ"
 
 #: reservation.js:AUTO_with_these_attr
 msgid "With these attributes:"
-msgstr ""
+msgstr "Այս բնութագրիչները"
 
 #: reservation.js:WHERES_THE_BARCODE
 msgid "Enter a patron's barcode to make a reservation."
-msgstr ""
+msgstr "Մուտք արա ընթերցողի շտրիխ կոդը նախնական պատվեր կատարելու համար"
 
 #: reservation.js:CREATE_BRESV_SERVER_ERROR
 msgid "Server error trying to create reservation: "
-msgstr ""
-
-#: reservation.js:CXL_BRESV_SUCCESS
-msgid "Canceled ${0} reservation."
-msgstr ""
-
-#: reservation.js:OUTSTANDING_BRESV
-msgid "Outstanding reservations for patron"
-msgstr ""
-
-#: reservation.js:HERE_ARE_EXISTING_BRESV
-msgid "Existing reservations for"
-msgstr ""
+msgstr "Կայանի սխալ երբ փորձ է արվում ստեղծել նախնական պահում: "
 
 #: reservation.js:CREATE_BRESV_LOCAL_ERROR
 msgid "Exception trying to create reservation: "
-msgstr ""
-
-#: reservation.js:AUTO_ATTR_VALUE_button_cancel_existing
-msgid "Cancel selcted"
-msgstr ""
-
-#: reservation.js:AUTO_or
-msgid "- Or -"
-msgstr ""
-
-#: reservation.js:CXL_BRESV_SUCCESS_PLURAL
-msgid "Canceled ${0} reservations"
-msgstr ""
-
-#: reservation.js:AUTO_ATTR_VALUE_reserve_brt
-msgid "Reserve Any"
-msgstr ""
-
-#: reservation.js:GET_PATRON_NO_RESULT
-msgid "No server response after attempting to look up patron by barcode."
-msgstr ""
-
-#: reservation.js:AUTO_patron_barcode
-msgid "Reserve to patron barcode:"
-msgstr ""
-
-#: reservation.js:COULD_NOT_RETRIEVE_BRT_PASSED_IN
-msgid "Error retrieving booking resource type"
-msgstr ""
-
-#: reservation.js:ACTOR_CARD_NOT_FOUND
-msgid "Patron barcode not found. Please try again."
-msgstr ""
-
-#: reservation.js:CXL_BRESV_SELECT_SOMETHING
-msgid "You have not selected any reservations to cancel."
-msgstr ""
-
-#: reservation.js:AUTO_i_need_this_resource
-msgid "I need this resource..."
-msgstr ""
-
-#: reservation.js:NEED_EXACTLY_ONE_BRT_PASSED_IN
-msgid "Can't book multiple resource types at once"
-msgstr ""
-
-#: reservation.js:AUTO_bresv_grid_start_time
-msgid "Start time"
-msgstr ""
-
-#: reservation.js:SELECT_A_BRSRC_THEN
-msgid "Select a resource from the big list above."
-msgstr ""
-
-#: reservation.js:AUTO_bresv_grid_end_time
-msgid "End time"
-msgstr ""
-
-#: reservation.js:GET_BRESV_LIST_NO_RESULT
-msgid "No results from server retrieving reservation list."
-msgstr ""
-
-#: reservation.js:GET_BRESV_LIST_ERR
-msgid "Error while retrieving reservation list: "
-msgstr ""
-
-#: reservation.js:AUTO_arbitrary_resource
-msgid "Enter the barcode of a cataloged, bookable resource:"
-msgstr ""
+msgstr "բացառություն երբ փորձ է արվում ստեղծել նախնական պահում: "
 
 #: reservation.js:CREATE_BRESV_OK_MISSING_TARGET
 msgid ""
-"Created ${0} reservation(s), but ${1} of these couldn't target any resources.\n"
+"Created ${0} reservation(s), but ${1} of these could not target any resources.\n"
 "\n"
 "This means that it won't be possible to fulfill some of these\n"
 "reservations until a suitable resource becomes available."
 msgstr ""
+"Ստեղծված է ${0} պահումներ, բայց սրանցից ${1} չեն հանդիսանում ոչ մի պաշարի "
+"թիրախ:\n"
+"\n"
+"Սա նշանակում է որ հնարավոր չի լինի իրականացնել այս պահումներից որոշը մինչ "
+"մատչելի պաշարներից որոշը չեն դառնա հասանելի;"
+
+#: reservation.js:CREATE_BRESV_OK_MISSING_TARGET_WILL_CANCEL
+msgid ""
+"Since the requested resource could not be targeted, this\n"
+"reservation will now be canceled."
+msgstr ""
+"Քանի որ պահանջվող պաշարը հնարավոր չէ թիրախավորել, այս\n"
+"պահումը չեղյալ չի արվի:"
+
+#: reservation.js:OUTSTANDING_BRESV
+msgid "Outstanding reservations for patron"
+msgstr "Ընթերցողի համար եզակի պահում"
+
+#: reservation.js:HERE_ARE_EXISTING_BRESV
+msgid "Existing reservations for"
+msgstr "Առկա պահումներ"
+
+#: reservation.js:CXL_BRESV_SUCCESS
+msgid "Canceled ${0} reservation(s)"
+msgstr "Չեղյալ արված ${0} պահումներ"
+
+#: reservation.js:GET_PATRON_NO_RESULT
+msgid "No server response after attempting to look up patron by barcode."
+msgstr ""
+"Չկա կայանի արձագանք երբ փորձ է արվում դիտել ընթերցողներին ըստ շտռիխ կոդերի"
+
+#: reservation.js:AUTO_or
+msgid "- Or -"
+msgstr "- Կամ -"
+
+#: reservation.js:SELECT_A_BRSRC_THEN
+msgid ""
+"You have clicked 'Reserve Selected', but nothing is selected!\n"
+"\n"
+"You must select a resource from the large box above.\n"
+"\n"
+"***  If resources that you would select are highlighted in RED, ***\n"
+"these items are not available during the requested time; if\n"
+"possible, choose another resource or change the reservation time."
+msgstr ""
+"Դու ընտրել ես 'Պահիր Ընտրվածը', բայց ոչինչ չկա ընտրած։\n"
+"\n"
+"Պետք է ընտրես պաշար վերևում առկա լայն վանդակից։\n"
+"\n"
+"***  Եթե պաշարները որ ընտրելու ես, ներկված են ԿԱՐՄԻՐ, ***\n"
+"ապա այս նյութերը պահանջարկի պահին հասանելի չեն; եթե\n"
+"հնարավոր է, ընտրիր մեկ այլ պաշար կամ փոխիր պատվերի ժամը։"
+
+#: reservation.js:AUTO_ATTR_VALUE_reserve_brt
+msgid "Reserve Any"
+msgstr "Պահիր ցանկացածը"
+
+#: reservation.js:AUTO_patron_barcode
+msgid "Reserve to patron barcode:"
+msgstr "Պահիր ընթերցողի շտրիխ կոդի վրա։"
+
+#: reservation.js:COULD_NOT_RETRIEVE_BRT_PASSED_IN
+msgid "Error retrieving booking resource type"
+msgstr "Սխալ երբ կանչվում է պատվերի պաշարի տեսակը"
+
+#: reservation.js:ACTOR_CARD_NOT_FOUND
+msgid "Patron barcode not found. Please try again."
+msgstr "Ընթերցողի շտրիխ կոդը չի գտնված։ Փորձիր նորից։"
+
+#: reservation.js:CXL_BRESV_SELECT_SOMETHING
+msgid "You have not selected any reservations to cancel."
+msgstr "Դու չես ընտրել որևէ նախնական պահում չեղյալ անելու համար։"
+
+#: reservation.js:AUTO_i_need_this_resource
+msgid "I need this resource..."
+msgstr "Ես այս նյութի կարիքն ունեմ..."
+
+#: reservation.js:NEED_EXACTLY_ONE_BRT_PASSED_IN
+msgid "Can't book multiple resource types at once"
+msgstr "Միանգամից չի կարող պատվիրել բազմատեսակ պաշարներ։"
+
+#: reservation.js:AUTO_bresv_grid_start_time
+msgid "Start time"
+msgstr "Սկսելու ժամ"
+
+#: reservation.js:ERROR_FETCHING_AOUS
+msgid ""
+"Could not retrieve organizational unit settings.\n"
+"This is a non-fatal error, but you may wish to\n"
+"contact your system administrator."
+msgstr ""
+"Չի կարող կանչել կազմակերպչական միվորի կարգաբերումները։\n"
+"Սա ճակատրագրական սխալ չէ, բայց դու կարող է ցանկանաս\n"
+"կապնվել համակարգի կառավարչի հետ։contact your system administrator."
+
+#: reservation.js:AUTO_ATTR_VALUE_button_cancel_existing
+msgid "Cancel selected"
+msgstr "Չեղյալ արա ընտրվածը"
+
+#: reservation.js:GET_BRESV_LIST_NO_RESULT
+msgid "No results from server retrieving reservation list."
+msgstr "Պահումների ցուցակը կանչելիս չկան արդյունքներ կայանից։"
+
+#: reservation.js:GET_BRESV_LIST_ERR
+msgid "Error while retrieving reservation list: "
+msgstr "Սխալ պահումների ցուցակը կանչելիս: "
+
+#: reservation.js:AUTO_arbitrary_resource
+msgid "Enter the barcode of a cataloged, bookable resource:"
+msgstr "Մուտք արա քարտագրված և պատվիրվող պաշարի շտրիխ կոդը։"
 
 #: reservation.js:NO_EXISTING_BRESV
 msgid "This user has no existing reservations at this time."
-msgstr ""
-
-#: reservation.js:CREATE_BRESV_OK_PLURAL
-msgid "Created ${0} reservations"
-msgstr ""
+msgstr "Այս օգտվողը տվյալ պահին չունի առկա պահումներ։"
 
 #: reservation.js:AUTO_explain_bookable
 msgid "To reserve an item that is not yet registered as a bookable resource, find it in the catalog or under <em>Display Item</em>, and select <em>Make Item Bookable</em> or <em>Book Item Now</em> there."
 msgstr ""
+"Նյութը նախնական պահման դնելու համար եթե այն գրանցված չէ որպես պատվիրվող "
+"պաշար, գտիր դրան քարտարանում կամ այստեղից  <em>Արտածիր նյութը</em>, ապա "
+"ընտրիր <em>Սարքիր նյութը պատվիրվող</em> կամ <em>Պատվիրի նյութը հիմա</em>."
 
 #: reservation.js:CXL_BRESV_FAILURE2
 msgid "Error canceling reservations:\n"
-msgstr ""
+msgstr "Սխալ երբ չեղյալ է արվել նախնական պահումը:\n"
 
 #: reservation.js:NO_BRA_RESULTS
 msgid "Couldn't retrieve booking resource attributes."
-msgstr ""
+msgstr "Չի կարող բերել պատվիրվող պաշարի բնութագրիչները"
 
 #: reservation.js:CREATE_BRESV_SERVER_NO_RESPONSE
 msgid "No response from server after trying to create reservation."
-msgstr ""
+msgstr "Չկա արձագանք կայանից երբ փորձ է արվել ստեղծել նախնական պահում։"
+
+#: reservation.js:AUTO_bresv_grid_end_time
+msgid "End time"
+msgstr "Ավարտի ժամ"
 
 #: reservation.js:UNTARGETED
 msgid "None targeted"
-msgstr ""
+msgstr "Չթիրախավորված"
 
 #: reservation.js:ON_FLY_NO_RESPONSE
 msgid "No response from server attempting to make item a bookable resource."
-msgstr ""
+msgstr "Չկա պատասխան կայանից, երբ փորձ է արվում նյութը դարձնել պատվիրվող պաշար։"
 
 #: reservation.js:NO_TARG_DIV
 msgid "Could not find target div"
-msgstr ""
+msgstr "Չի կարող գտնել թիրախ բաժինը"
 
 #: reservation.js:INVALID_TS_RANGE
 msgid "You must choose a valid start and end time for the reservation."
-msgstr ""
+msgstr "նախնական պահման համար պետք է ընտրես թույլատրելի սկզբի և ավարտի ժամ։"
 
 #: reservation.js:AUTO_pickup_lib_selector
 msgid "Choose the pickup library for this reservation:"
-msgstr ""
+msgstr "Այս պահման համար ընտրիրվերցնելու գրադարանը։"
 
 #: reservation.js:NO_USABLE_BRSRC
 msgid ""
 "No reservable resources.  Adjust start and end time\n"
 "until a resource is available for reservation."
 msgstr ""
+"Չկան պահվող նյութեր։ հրմարեցրու սկզբի և ավարտի ժնմերը\n"
+"որոնց ընթաքում նյութը հասանելի է նախնական պահման համար։"
 
 #: reservation.js:AUTO_ATTR_VALUE_button_edit_existing
 msgid "Edit selected"
+msgstr "Խմբագրի ընտրվածները"
+
+#: reservation.js:CREATE_BRESV_OK_MISSING_TARGET_BLOCKED_BY_CIRC
+msgid ""
+"The desired reservation(s) are blocked by circulation(s) with the following due date(s):\n"
+"${0}"
 msgstr ""
+"Ցանկալի պահում(ներ)ը արգելափակված են տացքի կողմից վերադարձի հետևյալ "
+"ամսաթվերով:\n"
+"${0}"
 
 #: reservation.js:ANY
 msgid "ANY"
-msgstr ""
+msgstr "ՈՐևԷ ՄԵԿԸ"
 
 #: reservation.js:CXL_BRESV_FAILURE
 msgid "Error canceling reservations; server silent."
-msgstr ""
+msgstr "Սխալ նախնական պահումները չեղյալ անելիս։ կայանը լուռ է"

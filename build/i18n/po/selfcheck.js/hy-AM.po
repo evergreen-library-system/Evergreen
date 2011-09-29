@@ -1,83 +1,60 @@
+# Armenian translation for evergreen
+# Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2010-06-07 02:03:44-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2011-04-18 21:45:31-0400\n"
+"PO-Revision-Date: 2011-04-19 04:00+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
+"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2011-05-18 04:49+0000\n"
 
-#: selfcheck.js:ALREADY_OUT
-msgid "Item ${0} is already checked out"
-msgstr ""
+#: selfcheck.js:FAIL_PART_config_hold_matrix_test_max_holds
+msgid "The patron has reached the maximum number of holds"
+msgstr "Ընթերցողը հասել է պահումների ամենաշատ քանակին։"
 
 #: selfcheck.js:CHECKOUT_SUCCESS
 msgid "Checkout of item ${0} succeeded"
-msgstr ""
+msgstr "Նյութի տրումը ${0} հաջող է"
 
-#: selfcheck.js:OPEN_CIRCULATION_EXISTS
-msgid "Item ${0} is already checked out to another user"
-msgstr ""
-
-#: selfcheck.js:HOLD_STATUS_READY
-msgid "Ready for pickup"
-msgstr ""
-
-#: selfcheck.js:HOLD_STATUS_WAITING
-msgid "#${0} in line with ${1} copies"
-msgstr ""
-
-#: selfcheck.js:RENEW_SUCCESS
-msgid "Renewal of item ${0} succeeded"
-msgstr ""
-
-#: selfcheck.js:WORKSTATION_EXISTS
-msgid "This workstation has already been registered.  Would you like to use it for this self-check station?"
-msgstr ""
+#: selfcheck.js:FAIL_PART_no_ultimate_items
+msgid "The system could not find any items to match this hold request"
+msgstr "Համակարգը չի կարող գտնել որևէ նյութ որը բավարարում է պահման պահանջին։"
 
 #: selfcheck.js:TOTAL_ITEMS_ACCOUNT
 msgid "Total items on account:  <b>${0}</b>."
-msgstr ""
+msgstr "Հաշվի վրա ընդհանուր նյութերի քանակը:  <b>${0}</b>."
 
 #: selfcheck.js:WELCOME_BANNER
 msgid "Welcome, ${0}"
-msgstr ""
+msgstr "Բարի գալուստ, ${0}"
 
-#: selfcheck.js:CC_PAYABLE_BALANCE
-msgid "Total amount to pay: $${0}"
-msgstr ""
+#: selfcheck.js:FAIL_PART_config_hold_matrix_test_holdable
+msgid "Hold rules reject this item as unholdable"
+msgstr "Պահման օրենքները մերժում են այս նյութը որպես չպահվող։"
 
-#: selfcheck.js:UNKNOWN_ERROR
-msgid "An unhandled exception occurred with error code ${0}"
-msgstr ""
+#: selfcheck.js:TOTAL_FINES_ACCOUNT
+msgid "Total fines on account: <b>$${0}</b>."
+msgstr "Հաշվի վրա ընդհանուր տուգանքը: <b>$${0}</b>."
 
-#: selfcheck.js:TOTAL_FINES_SELECTED
-msgid "Selected total: $${0}"
-msgstr ""
+#: selfcheck.js:FAIL_PART_asset_copy_status
+msgid "The item cannot circulate at this time"
+msgstr "Այս պահին հնարավոր չէ սպասարկել այս նյութը։"
 
-#: selfcheck.js:ITEM_NOT_CATALOGED
-msgid "Item ${0} was not found in the system.  Try re-scanning the item."
-msgstr ""
+#: selfcheck.js:FAIL_PART_no_user
+msgid "The system could not find this patron"
+msgstr "Համակարգը չի կարող գտնել այս ընթերցողին։"
 
-#: selfcheck.js:GENERIC_CIRC_FAILURE
-msgid "Unable to check out item ${0}.  Please see staff."
-msgstr ""
-
-#: selfcheck.js:TOTAL_ITEMS_SESSION
-msgid "Total items this session: <b>${0}</b>."
-msgstr ""
-
-#: selfcheck.js:MAX_RENEWALS
-msgid "No more renewals allowed for item ${0}"
-msgstr ""
-
-#: selfcheck.js:HOLDS_READY_FOR_PICKUP
-msgid "You have <b>${0}</b> item(s) ready for pickup."
-msgstr ""
+#: selfcheck.js:FAIL_PART_transit_range
+msgid "The item cannot transit this far"
+msgstr "Նյութը չի կարելի դնել տրանզիտի"
 
 #: selfcheck.js:WORKSTATION_REQUIRED
 msgid ""
@@ -85,15 +62,125 @@ msgid ""
 "\n"
 "Would you like to register a new workstation for this self-check interface?"
 msgstr ""
+"Անհրաժեշտ է աշխատանքային կայան ինքնաստուգման մեջ մուտք գործելու համար։ Դու "
+"կարող ես կարգաբերել աշխատանքային կայանի անունը այս հասցեից param 'ws'.  \n"
+"\n"
+"Ցանկանու՞մ ես գրանցել նոր աշխատանքային կայան այս ինքնաստուգման միջերեսի "
+"համար։"
 
-#: selfcheck.js:LOGIN_FAILED
-msgid "Login for ${0} failed"
-msgstr ""
+#: selfcheck.js:FAIL_PART_config_circ_matrix_test_total_copy_hold_ratio
+msgid "The total item-to-hold ratio is too low"
+msgstr "Նյութ-պահում գործակիցը շատ ցածր է։"
+
+#: selfcheck.js:ALREADY_OUT
+msgid "Item ${0} is already checked out"
+msgstr "Այս նյութը ${0} արդեն սպասարկված է"
+
+#: selfcheck.js:FAIL_PART_config_circ_matrix_test_available_copy_hold_ratio
+msgid "The available item-to-hold ratio is too low"
+msgstr "Հասանելի նյութ-պահում գործակիցը շատ ցածր է։"
+
+#: selfcheck.js:HOLD_STATUS_READY
+msgid "Ready for pickup"
+msgstr "Պատրաստ վերցնելու համար"
+
+#: selfcheck.js:FAIL_PART_circ_holds_target_skip_me
+msgid "The item's circulation library does not fulfill holds"
+msgstr "Այս նյութը սպասարկող գրադարանը չի իրականացնում պահում։"
+
+#: selfcheck.js:HOLD_STATUS_WAITING
+msgid "#${0} in line with ${1} copies"
+msgstr "#${0} համահունչ է ${1} պատճենների հետ"
+
+#: selfcheck.js:RENEW_SUCCESS
+msgid "Renewal of item ${0} succeeded"
+msgstr "Այս նյութի ${0} թարմացումը հաջողվեց"
+
+#: selfcheck.js:FAIL_PART_config_circ_matrix_circ_mod_test
+msgid "The patron has too many items of this type checked out"
+msgstr "Ընթերցողը այս տեսակի նյութի համար ունի չափից շատ վերցրած նյութեր։"
 
 #: selfcheck.js:TOTAL_HOLDS
 msgid "You have <b>${0}</b> total holds."
-msgstr ""
+msgstr "Դու ունես գումարային <b>${0}</b> պահում."
 
-#: selfcheck.js:TOTAL_FINES_ACCOUNT
-msgid "Total fines on account: <b>$${0}</b>."
+#: selfcheck.js:ITEM_NOT_CATALOGED
+msgid "Item ${0} was not found in the system.  Try re-scanning the item."
+msgstr "Այս նյութը ${0} համակարգում չի գտնվել։ Փորձիր նորից սկանավորել նյութը։"
+
+#: selfcheck.js:FAIL_PART_actor_usr_barred
+msgid "The patron is barred"
+msgstr "Ընթերցողը կասեցված է:"
+
+#: selfcheck.js:PAYMENT_INVALID_USER_XACT_ID
+msgid "We cannot proceed with the payment, because your account was updated from another location.  Please refresh the interface or log out and back in to retrieve the latest account information"
 msgstr ""
+"Չենք կարող իրականացնել վճարումը, քանի որ քո հաշիվը թարմացվել է մեկ այլ "
+"վայրից։ Թարմացրու միջերեսը կամ դուրս եկ համակարգից և նորից մուտք գործի, "
+"որպեսզի ստանաս վերջին հաշվի մասին տեղեկատվություն։"
+
+#: selfcheck.js:CC_PAYABLE_BALANCE
+msgid "Total amount to pay: $${0}"
+msgstr "Վճարման ենթակա ընդհանուր գումար: $${0}"
+
+#: selfcheck.js:FAIL_PART_no_item
+msgid "The system could not find this item"
+msgstr "Համակարգը չի կարող գտնել այս նյութը։"
+
+#: selfcheck.js:FAIL_PART_no_matchpoint
+msgid "System rules do not define how to handle this item"
+msgstr "Համակարգի օրենքները չեն սահմանում ինչպես պահել նյութը։"
+
+#: selfcheck.js:FAIL_PART_asset_copy_circulate
+msgid "The item does not circulate"
+msgstr "Նյութը չի սպասարկվում։"
+
+#: selfcheck.js:LOGIN_FAILED
+msgid "Login for ${0} failed"
+msgstr "Մուտքը սրա համարr ${0} ձախողվեց"
+
+#: selfcheck.js:GENERIC_CIRC_FAILURE
+msgid "Unable to check out item ${0}.  Please see staff."
+msgstr "Չի կարող դուրս տալ այս նյութը ${0}։  Դիմիր աշխատակազմին։"
+
+#: selfcheck.js:MAX_RENEWALS
+msgid "No more renewals allowed for item ${0}"
+msgstr "Այս նյութի համար նոր թարմացումներ էլ հնարավոր չէ ${0}"
+
+#: selfcheck.js:HOLDS_READY_FOR_PICKUP
+msgid "You have <b>${0}</b> item(s) ready for pickup."
+msgstr "Դու ունես <b>${0}</b> նյութեր վերցնելու համար"
+
+#: selfcheck.js:FAIL_PART_config_circ_matrix_test_circulate
+msgid "Circulation rules reject this item as non-circulatable"
+msgstr "Սպասարկման օրենքները մերժում են այս նյութը որպես չսպասարկվող։"
+
+#: selfcheck.js:OPEN_CIRCULATION_EXISTS
+msgid "Item ${0} is already checked out to another user"
+msgstr "Այս նյութը ${0} արդեն սպասարկված է մեկ այլ ընթերցողի"
+
+#: selfcheck.js:WORKSTATION_EXISTS
+msgid "This workstation has already been registered.  Would you like to use it for this self-check station?"
+msgstr ""
+"Այս աշխատանքային կայանը արդեն գրանցված է։ Ցանկանու՞մ ես այն օգտագործել այս "
+"ինքնաստուգող կայանի համար։"
+
+#: selfcheck.js:UNKNOWN_ERROR
+msgid "An unhandled exception occurred with error code ${0}"
+msgstr "Պատահել է չվերահսկվող սխալ այս կոդով ${0}"
+
+#: selfcheck.js:FAIL_PART_asset_copy_location_circulate
+msgid "Items from this shelving location do not circulate"
+msgstr "Այս գրադարակի նյութերը չեն սպասարկվում։"
+
+#: selfcheck.js:TOTAL_ITEMS_SESSION
+msgid "Total items this session: <b>${0}</b>."
+msgstr "Այս սեսիայի ընդհանուր նյութերը: <b>${0}</b>."
+
+#: selfcheck.js:FAIL_PART_config_rule_age_hold_protect_prox
+msgid "The item is too new to transit this far"
+msgstr "Նյութը չափից դուրս թարմ է տրանզիտի համար"
+
+#: selfcheck.js:TOTAL_FINES_SELECTED
+msgid "Selected total: $${0}"
+msgstr "Ընդհանուր ընտրված: $${0}"

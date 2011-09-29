@@ -1,18 +1,19 @@
 # extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/cat.properties
+#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/cat.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-23 23:36-0400\n"
-"PO-Revision-Date: 2009-12-21 08:47+0000\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2011-04-26 11:17+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-12-22 04:36+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Generator: Translate Toolkit 1.8.1\n"
 "X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-05-18 04:39+0000\n"
 
 #: bib.no_marc
 msgid "No MARC Record"
@@ -58,6 +59,49 @@ msgstr "(Չքարտագրված)"
 msgid "Item not cataloged."
 msgstr "Նյութը քարտագրված չէ:"
 
+#. # %1$s = Bib Record ID
+#: staff.cat.manage_multi_bib_items.tab_name
+msgid "Manage Foreign Items for Bib %1$s"
+msgstr "Կառավարի օտարերկրյա նյութերը այս մատենի համար %1$s"
+
+#: staff.cat.manage_multi_bib_items.result.column.value.error
+msgid "Error"
+msgstr "Սխալ"
+
+#: staff.cat.manage_multi_bib_items.result.column.value.success
+msgid "Success"
+msgstr "Հաջողված"
+
+#: staff.cat.manage_multi_bib_items.result.column.value.failed
+msgid "Failed"
+msgstr "Տապալվեց"
+
+#: staff.cat.manage_multi_bib_items.result.column.value.item_linked_to_bib
+msgid "Item linked to bib"
+msgstr "Նյութը կապվել է մատենին"
+
+#: staff.cat.manage_multi_bib_items.result.column.value.item_native_to_bib
+msgid "Item native to bib"
+msgstr "Նյութը հարազատ է մատենին"
+
+#: staff.cat.manage_multi_bib_items.result.column.value.peer_type_updated
+msgid "Peer Type updated"
+msgstr "Զույգի տեսակը թարմացված է"
+
+#: staff.cat.manage_multi_bib_items.prompt.title
+msgid "Change Peer Type"
+msgstr "Փոխիր զույգի տեսակը"
+
+#. # %1$s = Bib Record ID
+#: staff.cat.manage_multi_bib_items.prompt.confirm.unlink_item_from_bib.singular
+msgid "Unlink selected item from Bib %1$s"
+msgstr "Քանդիր ընտրված նյութը մատենից %1$s"
+
+#. # %1$s = Bib Record ID, %2$s = Number of selected items
+#: staff.cat.manage_multi_bib_items.prompt.confirm.unlink_item_from_bib.plural
+msgid "Unlink %2$s selected items from Bib %1$s"
+msgstr "Քանդիր %2$s ընտրված նյութերը մատենից %1$s"
+
 #: staff.cat.copy_browser.add_item.title
 msgid "Add Item"
 msgstr "Ավելացրու նյութ"
@@ -69,6 +113,28 @@ msgstr "Դիտակի պատճե -> ավելացրու պատճեներ"
 #: staff.cat.copy_browser.add_items_bucket.error
 msgid "copy browser -> add copies to bucket"
 msgstr "Դիտակի պատճե -> ավելացրու պատճեներ փնջին"
+
+#: staff.cat.copy_browser.make_bookable.create_failed_silent
+msgid "No response from server"
+msgstr "Կայանից չկա արձագանք"
+
+#: staff.cat.copy_browser.make_bookable.create_failed
+msgid ""
+"Error from server: %1$d %2$s\n"
+"%3$s\n"
+"%4$s"
+msgstr ""
+"Կայանից սխալ: %1$d %2$s\n"
+"%3$s\n"
+"%4$s"
+
+#: staff.cat.copy_browser.make_bookable.newtab_failed
+msgid "Could not open new tab"
+msgstr "Չի կարող բացել նոր տաբ"
+
+#: staff.cat.copy_browser.make_bookable.newtab_name
+msgid "Resources"
+msgstr "Պաշարներ"
 
 #: staff.cat.copy_browser.replace_barcode.failed
 msgid "Barcode %1$s not likely replaced."
@@ -95,21 +161,18 @@ msgid "Delete Items?"
 msgstr "Ջնջե՞լ նյութերը:"
 
 #: staff.cat.copy_browser.delete_items.delete
-msgid ""
-"_: staff.cat.copy_browser.delete_items.delete\n"
-"Delete"
+msgctxt "staff.cat.copy_browser.delete_items.delete"
+msgid "Delete"
 msgstr "Ջնջել"
 
 #: staff.cat.copy_browser.delete_items.cancel
-msgid ""
-"_: staff.cat.copy_browser.delete_items.cancel\n"
-"Cancel"
+msgctxt "staff.cat.copy_browser.delete_items.cancel"
+msgid "Cancel"
 msgstr "Չեղյալ անել"
 
 #: staff.cat.copy_browser.delete_items.override
-msgid ""
-"_: staff.cat.copy_browser.delete_items.override\n"
-"Override Delete Failure?"
+msgctxt "staff.cat.copy_browser.delete_items.override"
+msgid "Override Delete Failure?"
 msgstr "Վերակատարե՞լ Ջնջելու ձախողոմը:"
 
 #: staff.cat.copy_browser.delete_items.complete
@@ -121,9 +184,8 @@ msgid "copy browser -> delete items"
 msgstr "Դիտակի պատճե -> ջնջիր նյութերը"
 
 #: staff.cat.copy_browser.print_spine.tab
-msgid ""
-"_: staff.cat.copy_browser.print_spine.tab\n"
-"Spine Labels"
+msgctxt "staff.cat.copy_browser.print_spine.tab"
+msgid "Spine Labels"
 msgstr "Կողի պիտակներ"
 
 #: staff.cat.copy_browser.print_spine.error
@@ -142,40 +204,26 @@ msgstr "Ավելացնել հատոր/նյութ"
 msgid "copy browser -> add volumes"
 msgstr "Դիտակի պատճե -> Ավելացնել հատորներ"
 
-#: staff.cat.copy_browser.edit_volume.permission_error
-msgid "You do not have permission to edit this volume."
-msgstr "Իրավասու չես խմբագրելու այս հատորը:"
+#: staff.cat.edit_volume.permission_error
+msgid "You do not have permission to edit the volume or volumes selected."
+msgstr "Դու չունես իրավասություններ խմբագրելու հատորը կամ ընտրված հատորները"
 
-#: staff.cat.copy_browser.edit_volume.title
+#: staff.cat.edit_volume.title
 msgid "Volume"
 msgstr "Հատոր"
 
-#: staff.cat.copy_browser.edit_volume.title.plural
-msgid ""
-"_: staff.cat.copy_browser.edit_volume.title.plural\n"
-"Volumes"
+#: staff.cat.edit_volume.title.plural
+msgctxt "staff.cat.edit_volume.title.plural"
+msgid "Volumes"
 msgstr "Հատորներ"
 
-#: staff.cat.copy_browser.edit_volume.failed
-msgid ""
-"Edit failed:  You tried to change a volume's callnumber to one that is "
-"already in use for the given library.  You should transfer the items to the "
-"desired callnumber instead."
-msgstr ""
-"Խմբագրումը ձախողվեց:  Փորձեցիր փոխել հատորի դասիչը մեկ այլով, որն արդեն "
-"օգտագործվում է քրադարանում: Պետք է տեղափոխես նյութը:"
+#: staff.cat.edit_volumes.override.confirm
+msgid "Override volume re-labeling collision and merge the volumes?"
+msgstr "Վերագրե՞լ հատորի վերապիտակավորման սխալը և ձուլել հատորները։"
 
-#: staff.cat.copy_browser.edit_volume.success
-msgid "Volumes modified."
-msgstr "Հատորները թարմացվել են:"
-
-#: staff.cat.copy_browser.edit_volume.error
-msgid "volume update error:"
-msgstr "Հատորի թարմացման սխալ"
-
-#: staff.cat.copy_browser.edit_volume.exception
-msgid "Copy Browser -> Volume Edit"
-msgstr "Դիտակի պատճե -> Հատորի խմբագրում"
+#: staff.cat.edit_volumes.label_exists.details
+msgid "%1$s"
+msgstr "%1$s"
 
 #: staff.cat.copy_browser.delete_volume.prompt
 msgid "Are you sure you would like to delete this volume?"
@@ -190,21 +238,18 @@ msgid "Delete Volumes?"
 msgstr "Ջնջե՞լ հատորները:"
 
 #: staff.cat.copy_browser.delete_volume.delete
-msgid ""
-"_: staff.cat.copy_browser.delete_volume.delete\n"
-"Delete"
+msgctxt "staff.cat.copy_browser.delete_volume.delete"
+msgid "Delete"
 msgstr "Ջնջել"
 
 #: staff.cat.copy_browser.delete_volume.cancel
-msgid ""
-"_: staff.cat.copy_browser.delete_volume.cancel\n"
-"Cancel"
+msgctxt "staff.cat.copy_browser.delete_volume.cancel"
+msgid "Cancel"
 msgstr "Չեղյալ անել"
 
 #: staff.cat.copy_browser.delete_volume.override
-msgid ""
-"_: staff.cat.copy_browser.delete_volume.override\n"
-"Override Delete Failure?"
+msgctxt "staff.cat.copy_browser.delete_volume.override"
+msgid "Override Delete Failure?"
 msgstr "Վերակատարե՞լ Ջնջելու ձախողոմը:"
 
 #: staff.cat.copy_browser.delete_volume.copies_remain
@@ -212,10 +257,6 @@ msgid ""
 "You must delete all the copies on the volume before you may delete the "
 "volume itself."
 msgstr "Պետք է ջնջես հատորի բոլոր օրինակները, ապա նոր կարող ես ջնջել հատորը:"
-
-#: staff.cat.copy_browser.delete_volume.success
-msgid "Volumes deleted."
-msgstr "Հատորները ջնջված են:"
 
 #: staff.cat.copy_browser.delete_volume.exception
 msgid "copy browser -> delete volumes"
@@ -230,9 +271,8 @@ msgid "Choose just one Library to mark as Volume Transfer Destination"
 msgstr "Ընտրիր մեկ գրադարան նշելու որպես Volume Transfer Destination"
 
 #: staff.cat.copy_browser.mark_library.title
-msgid ""
-"_: staff.cat.copy_browser.mark_library.title\n"
-"Limit Selection"
+msgctxt "staff.cat.copy_browser.mark_library.title"
+msgid "Limit Selection"
 msgstr "Սահմանափակիր ընտրությունը"
 
 #: staff.cat.copy_browser.mark_volume.alert
@@ -244,9 +284,8 @@ msgid "Choose just one Volume to mark as Item Transfer Destination"
 msgstr "Ընտրիր միայն մեկ հատոր նշելու որպես Item Transfer Destination"
 
 #: staff.cat.copy_browser.mark_volume.title
-msgid ""
-"_: staff.cat.copy_browser.mark_volume.title\n"
-"Limit Selection"
+msgctxt "staff.cat.copy_browser.mark_volume.title"
+msgid "Limit Selection"
 msgstr "Սահմանափակիր ընտրությունը"
 
 #: staff.cat.copy_browser.transfer_volume.alert
@@ -260,21 +299,18 @@ msgid "Transfer volumes %1$s to library %2$s on the following record?"
 msgstr "Տեղափոխե՞լ հատորները %1$s գրադարան %2$s այս գրառման համար:"
 
 #: staff.cat.copy_browser.transfer.submit.label
-msgid ""
-"_: staff.cat.copy_browser.transfer.submit.label\n"
-"Transfer"
+msgctxt "staff.cat.copy_browser.transfer.submit.label"
+msgid "Transfer"
 msgstr "Տեղափոխում"
 
 #: staff.cat.copy_browser.transfer.cancel.label
-msgid ""
-"_: staff.cat.copy_browser.transfer.cancel.label\n"
-"Cancel"
+msgctxt "staff.cat.copy_browser.transfer.cancel.label"
+msgid "Cancel"
 msgstr "Չեղյալ անել"
 
 #: staff.cat.copy_browser.transfer.cancel.accesskey
-msgid ""
-"_: staff.cat.copy_browser.transfer.cancel.accesskey\n"
-"C"
+msgctxt "staff.cat.copy_browser.transfer.cancel.accesskey"
+msgid "C"
 msgstr "C"
 
 #: staff.cat.copy_browser.transfer.title
@@ -282,9 +318,8 @@ msgid "Volume Transfer"
 msgstr "Հատորի տեղափոխում"
 
 #: staff.cat.copy_browser.transfer.incomplete
-msgid ""
-"_: staff.cat.copy_browser.transfer.incomplete\n"
-"Transfer Aborted"
+msgctxt "staff.cat.copy_browser.transfer.incomplete"
+msgid "Transfer Aborted"
 msgstr "Տեղափոխումը վիժեցված է"
 
 #: staff.cat.copy_browser.transfer.override.failure
@@ -304,8 +339,8 @@ msgid "All volumes not likely transferred."
 msgstr "Ցանկալի չէ բոլոր հատորների տեղափոխումը"
 
 #: staff.cat.copy_browser.transfer_items.missing_volume
+msgctxt "staff.cat.copy_browser.transfer_items.missing_volume"
 msgid ""
-"_: staff.cat.copy_browser.transfer_items.missing_volume\n"
 "Please mark a volume as the destination from within holdings maintenance and "
 "then try this again."
 msgstr "Նշիր հատորը պահումների կառավարման համար, և փորձիր նորից:"
@@ -313,6 +348,11 @@ msgstr "Նշիր հատորը պահումների կառավարման համա
 #: staff.cat.copy_browser.transfer_items.unexpected_error
 msgid "All copies not likely transferred."
 msgstr "Ցանկալի չէ բոլոր օրինակների տեղափոխումը"
+
+#: staff.cat.copy_browser.link_as_multi_bib.missing_bib
+msgid ""
+"Please Mark a bib record as a Target for Foreign Items and try this again."
+msgstr "Նշիր մատեն գրառումը որպես Թիրախ օտարրկրյա նյութերի համար և փորձիր նորից"
 
 #: staff.cat.copy_browser.missing_library
 msgid "Missing library list."
@@ -327,9 +367,8 @@ msgid "Location/Barcode"
 msgstr "Տեղաբաշխում/Շտրիխ կոդ"
 
 #: staff.cat.copy_browser.list_init.volume_count
-msgid ""
-"_: staff.cat.copy_browser.list_init.volume_count\n"
-"Volumes"
+msgctxt "staff.cat.copy_browser.list_init.volume_count"
+msgid "Volumes"
 msgstr "Հատորներ"
 
 #: staff.cat.copy_browser.list_init.copy_count
@@ -345,9 +384,8 @@ msgid "Problem refreshing the volume/copy tree."
 msgstr "Խոչընդոտ Հատորի/օրինակի ծառը թարմացնելիս:"
 
 #: staff.cat.copy_buckets.render_pending_copies.complete
-msgid ""
-"_: staff.cat.copy_buckets.render_pending_copies.complete\n"
-"Action completed."
+msgctxt "staff.cat.copy_buckets.render_pending_copies.complete"
+msgid "Action completed."
 msgstr "Գործողությունը ավարտված է:"
 
 #: staff.cat.copy_buckets.retrieve_row.error
@@ -355,27 +393,23 @@ msgid "Error retrieving details for item with copy id = %1$s"
 msgstr "id = %1$s համարի նյութի մանրամասները կանչելիս կա սխալ:"
 
 #: staff.cat.copy_buckets.menulist.render.choose_bucket
-msgid ""
-"_: staff.cat.copy_buckets.menulist.render.choose_bucket\n"
-"Choose a bucket..."
+msgctxt "staff.cat.copy_buckets.menulist.render.choose_bucket"
+msgid "Choose a bucket..."
 msgstr "Ընտրիր փունջը..."
 
 #: staff.cat.copy_buckets.menulist.render.retrieve_bucket
-msgid ""
-"_: staff.cat.copy_buckets.menulist.render.retrieve_bucket\n"
-"Retrieve shared bucket..."
+msgctxt "staff.cat.copy_buckets.menulist.render.retrieve_bucket"
+msgid "Retrieve shared bucket..."
 msgstr "Կանչիր համատեղ փունջը..."
 
 #: staff.cat.copy_buckets.menulist.change_bucket.prompt
-msgid ""
-"_: staff.cat.copy_buckets.menulist.change_bucket.prompt\n"
-"Enter bucket number:"
+msgctxt "staff.cat.copy_buckets.menulist.change_bucket.prompt"
+msgid "Enter bucket number:"
 msgstr "Մուտք արա փնջի համարը:"
 
 #: staff.cat.copy_buckets.menulist.change_bucket.undefined
-msgid ""
-"_: staff.cat.copy_buckets.menulist.change_bucket.undefined\n"
-"Could not find a bucket with ID = %1$s"
+msgctxt "staff.cat.copy_buckets.menulist.change_bucket.undefined"
+msgid "Could not find a bucket with ID = %1$s"
 msgstr "Չի կարող գտնել փունջը ID = %1$s"
 
 #: staff.cat.copy_buckets.menulist.change_bucket.error
@@ -383,15 +417,13 @@ msgid "Error retrieving bucket.  Did you use a valid bucket id?"
 msgstr "Փնջի հետ կանչի սխալ: Արդյո՞ք ճիշտ է փնջի  id:"
 
 #: staff.cat.copy_buckets.copy_buckets_add.error
-msgid ""
-"_: staff.cat.copy_buckets.copy_buckets_add.error\n"
-"Addition likely failed."
+msgctxt "staff.cat.copy_buckets.copy_buckets_add.error"
+msgid "Addition likely failed."
 msgstr "Ավելացումը ձախողվեց:"
 
 #: staff.cat.copy_buckets.copy_buckets_sel_add.error
-msgid ""
-"_: staff.cat.copy_buckets.copy_buckets_sel_add.error\n"
-"Addition likely failed."
+msgctxt "staff.cat.copy_buckets.copy_buckets_sel_add.error"
+msgid "Addition likely failed."
 msgstr "Ավելացումը ձախողվեց:"
 
 #: staff.cat.copy_buckets.copy_buckets_delete_item.error
@@ -399,21 +431,18 @@ msgid "Deletion likely failed."
 msgstr "Հեռացումը ձախողվեց:"
 
 #: staff.cat.copy_buckets.copy_buckets_delete_item.complete
-msgid ""
-"_: staff.cat.copy_buckets.copy_buckets_delete_item.complete\n"
-"Action completed."
+msgctxt "staff.cat.copy_buckets.copy_buckets_delete_item.complete"
+msgid "Action completed."
 msgstr "Գործողությունը ավարտված է:"
 
 #: staff.cat.copy_buckets.copy_buckets_delete_bucket.confirm
-msgid ""
-"_: staff.cat.copy_buckets.copy_buckets_delete_bucket.confirm\n"
-"Delete the bucket named %1$s?"
+msgctxt "staff.cat.copy_buckets.copy_buckets_delete_bucket.confirm"
+msgid "Delete the bucket named %1$s?"
 msgstr "Ջնչել փունջը այս անվանումով %1$s"
 
 #: staff.cat.copy_buckets.copy_buckets_delete_bucket.complete
-msgid ""
-"_: staff.cat.copy_buckets.copy_buckets_delete_bucket.complete\n"
-"Action completed."
+msgctxt "staff.cat.copy_buckets.copy_buckets_delete_bucket.complete"
+msgid "Action completed."
 msgstr "Գործողությունը ավարտված է:"
 
 #: staff.cat.copy_buckets.copy_buckets_delete_bucket.error
@@ -421,21 +450,18 @@ msgid "Bucket deletion likely failed."
 msgstr "Փնջի ջնջումը ձախողվեց:"
 
 #: staff.cat.copy_buckets.copy_buckets_new_bucket.prompt
-msgid ""
-"_: staff.cat.copy_buckets.copy_buckets_new_bucket.prompt\n"
-"What would you like to name the bucket?"
+msgctxt "staff.cat.copy_buckets.copy_buckets_new_bucket.prompt"
+msgid "What would you like to name the bucket?"
 msgstr "Ի՞նչ անուն կտաք փնջին:"
 
 #: staff.cat.copy_buckets.copy_buckets_new_bucket.title
-msgid ""
-"_: staff.cat.copy_buckets.copy_buckets_new_bucket.title\n"
-"Bucket Creation"
+msgctxt "staff.cat.copy_buckets.copy_buckets_new_bucket.title"
+msgid "Bucket Creation"
 msgstr "Փնջի ստեղծում:"
 
 #: staff.cat.copy_buckets.copy_buckets_new_bucket.container_exists
-msgid ""
-"_: staff.cat.copy_buckets.copy_buckets_new_bucket.container_exists\n"
-"You already have a bucket with that name."
+msgctxt "staff.cat.copy_buckets.copy_buckets_new_bucket.container_exists"
+msgid "You already have a bucket with that name."
 msgstr "Դու այդ անունով փունջ արդեն ունէս:"
 
 #: staff.cat.copy_buckets.copy_buckets_new_bucket.success
@@ -443,9 +469,8 @@ msgid "Bucket \"%1$s\" created."
 msgstr "\"%1$s\" փունջը ստեղծված է:"
 
 #: staff.cat.copy_buckets.copy_buckets_new_bucket.error
-msgid ""
-"_: staff.cat.copy_buckets.copy_buckets_new_bucket.error\n"
-"Bucket creation failed."
+msgctxt "staff.cat.copy_buckets.copy_buckets_new_bucket.error"
+msgid "Bucket creation failed."
 msgstr "Փնջի ստեղծումը ձախողվեց:"
 
 #: staff.cat.copy_buckets.batch.error
@@ -463,8 +488,8 @@ msgid ""
 "Transfer the items in bucket \"%1$s\" from their original volumes to the "
 "volume labelled \"%2$s\" for the library \"%3$s\" on the following record?"
 msgstr ""
-"Տեղափոխե՞լ փնջի նյութերը \"%1$s\" իրենց իրական հատորներից դեպի հատորներ "
-"նշված \"%2$s\" այս գրադարանի համար \"%3$s\" հետևյալ գրառումների համար:"
+"Տեղափոխե՞լ փնջի նյութերը \"%1$s\" իրենց իրական հատորներից դեպի հատորներ նշված "
+"\"%2$s\" այս գրադարանի համար \"%3$s\" հետևյալ գրառումների համար:"
 
 #: staff.cat.copy_buckets.copy_buckets_transfer_to_volume.error
 msgid "Items not likely transferred."
@@ -483,27 +508,23 @@ msgid "Copy this item into which bucket?"
 msgstr "Ո՞ր փնջում արտագրել այս նյութը:"
 
 #: staff.cat.copy_buckets_quick.bucket_prompt.plural
-msgid ""
-"_: staff.cat.copy_buckets_quick.bucket_prompt.plural\n"
-"Copy these %1$s items into which bucket?"
+msgctxt "staff.cat.copy_buckets_quick.bucket_prompt.plural"
+msgid "Copy these %1$s items into which bucket?"
 msgstr "Ո՞ր փնջում արտագրել այս %1$s նյութերը:"
 
 #: staff.cat.copy_buckets_quick.copy_buckets_new_bucket.prompt
-msgid ""
-"_: staff.cat.copy_buckets_quick.copy_buckets_new_bucket.prompt\n"
-"What would you like to name the bucket?"
+msgctxt "staff.cat.copy_buckets_quick.copy_buckets_new_bucket.prompt"
+msgid "What would you like to name the bucket?"
 msgstr "Ի՞նչ անուն կուզենաք տալ փնջին:"
 
 #: staff.cat.copy_buckets_quick.copy_buckets_new_bucket.title
-msgid ""
-"_: staff.cat.copy_buckets_quick.copy_buckets_new_bucket.title\n"
-"Bucket Creation"
+msgctxt "staff.cat.copy_buckets_quick.copy_buckets_new_bucket.title"
+msgid "Bucket Creation"
 msgstr "Փնջի ստեղծում"
 
 #: staff.cat.copy_buckets_quick.copy_buckets_new_bucket.error
-msgid ""
-"_: staff.cat.copy_buckets_quick.copy_buckets_new_bucket.error\n"
-"Bucket creation failed."
+msgctxt "staff.cat.copy_buckets_quick.copy_buckets_new_bucket.error"
+msgid "Bucket creation failed."
 msgstr "Փնջի ստեղծումը ձախողվեց:"
 
 #: staff.cat.copy_buckets_quick.addition.error
@@ -515,8 +536,12 @@ msgid "Copy Editor"
 msgstr "Պատճենահանման խմբագիր"
 
 #: staff.cat.copy_editor.create_copies
-msgid "Create Copies"
-msgstr "Ստեղծիր պատճեներ"
+msgid "Modify/Create Copies"
+msgstr "Ձևափոխիր/Ստեղծիր պատճեններ"
+
+#: staff.cat.copy_editor.create_copies.accesskey
+msgid "M"
+msgstr "M"
 
 #: staff.cat.copy_editor.copy_notes
 msgid "Copy Notes"
@@ -583,21 +608,18 @@ msgid "Template %1$s already exists."
 msgstr "Ձևանմուշ %1$s արդեն առկա է:"
 
 #: staff.cat.copy_editor.import_templates.replace.yes
-msgid ""
-"_: staff.cat.copy_editor.import_templates.replace.yes\n"
-"Yes"
+msgctxt "staff.cat.copy_editor.import_templates.replace.yes"
+msgid "Yes"
 msgstr "Այո"
 
 #: staff.cat.copy_editor.import_templates.replace.no
-msgid ""
-"_: staff.cat.copy_editor.import_templates.replace.no\n"
-"No"
+msgctxt "staff.cat.copy_editor.import_templates.replace.no"
+msgid "No"
 msgstr "Ոչ"
 
 #: staff.cat.copy_editor.import_templates.replace.click_here
-msgid ""
-"_: staff.cat.copy_editor.import_templates.replace.click_here\n"
-"Click here"
+msgctxt "staff.cat.copy_editor.import_templates.replace.click_here"
+msgid "Click here"
 msgstr "Սեղմիր այստեղ"
 
 #: staff.cat.copy_editor.import_templates.save.prompt
@@ -609,21 +631,18 @@ msgid "Final warning"
 msgstr "Վերջնական զգուշացում:"
 
 #: staff.cat.copy_editor.import_templates.save.yes
-msgid ""
-"_: staff.cat.copy_editor.import_templates.save.yes\n"
-"Yes"
+msgctxt "staff.cat.copy_editor.import_templates.save.yes"
+msgid "Yes"
 msgstr "Այո"
 
 #: staff.cat.copy_editor.import_templates.save.no
-msgid ""
-"_: staff.cat.copy_editor.import_templates.save.no\n"
-"No"
+msgctxt "staff.cat.copy_editor.import_templates.save.no"
+msgid "No"
 msgstr "Ոչ"
 
 #: staff.cat.copy_editor.import_templates.save.click_here
-msgid ""
-"_: staff.cat.copy_editor.import_templates.save.click_here\n"
-"Click here"
+msgctxt "staff.cat.copy_editor.import_templates.save.click_here"
+msgid "Click here"
 msgstr "Սեղմիր այստեղ"
 
 #: staff.cat.copy_editor.import_templates.save.success
@@ -673,26 +692,19 @@ msgid "%1$s copies"
 msgstr "%1$s օրինակներ"
 
 #: staff.cat.copy_editor.apply.label
-msgid ""
-"_: staff.cat.copy_editor.apply.label\n"
-"Apply"
+msgctxt "staff.cat.copy_editor.apply.label"
+msgid "Apply"
 msgstr "Կիրառել"
 
 #: staff.cat.copy_editor.apply.accesskey
-msgid ""
-"_: staff.cat.copy_editor.apply.accesskey\n"
-"A"
+msgctxt "staff.cat.copy_editor.apply.accesskey"
+msgid "A"
 msgstr "A"
 
 #: staff.cat.copy_editor.cancel.label
-msgid ""
-"_: staff.cat.copy_editor.cancel.label\n"
-"Cancel"
+msgctxt "staff.cat.copy_editor.cancel.label"
+msgid "Cancel"
 msgstr "Չեղյալ անել"
-
-#: staff.cat.copy_editor.handle_update.success
-msgid "Items were added or modified."
-msgstr "Նյութերը ավելացվել կամ ձևափոխվել են:"
 
 #: staff.cat.copy_editor.handle_update.error
 msgid "copy update error:"
@@ -719,9 +731,8 @@ msgid "<Remove Circulate as Type>"
 msgstr "<Հեռացրու սպասարկումը որպես տեսակ>"
 
 #: staff.cat.copy_editor.field.unset_or_null
-msgid ""
-"_: staff.cat.copy_editor.field.unset_or_null\n"
-"<Unset>"
+msgctxt "staff.cat.copy_editor.field.unset_or_null"
+msgid "<Unset>"
 msgstr "<Unset>"
 
 #: staff.cat.copy_editor.field.owning_library.label
@@ -765,15 +776,13 @@ msgid "Circulate?"
 msgstr "Սպասարկե՞լ"
 
 #: staff.cat.copy_editor.field.circulate.yes_or_true
-msgid ""
-"_: staff.cat.copy_editor.field.circulate.yes_or_true\n"
-"Yes"
+msgctxt "staff.cat.copy_editor.field.circulate.yes_or_true"
+msgid "Yes"
 msgstr "Այո"
 
 #: staff.cat.copy_editor.field.circulate.no_or_false
-msgid ""
-"_: staff.cat.copy_editor.field.circulate.no_or_false\n"
-"No"
+msgctxt "staff.cat.copy_editor.field.circulate.no_or_false"
+msgid "No"
 msgstr "Ոչ"
 
 #: staff.cat.copy_editor.field.holdable.label
@@ -781,15 +790,27 @@ msgid "Holdable?"
 msgstr "Պահվո՞խ"
 
 #: staff.cat.copy_editor.field.holdable.yes_or_true
-msgid ""
-"_: staff.cat.copy_editor.field.holdable.yes_or_true\n"
-"Yes"
+msgctxt "staff.cat.copy_editor.field.holdable.yes_or_true"
+msgid "Yes"
 msgstr "Այո"
 
 #: staff.cat.copy_editor.field.holdable.no_or_false
-msgid ""
-"_: staff.cat.copy_editor.field.holdable.no_or_false\n"
-"No"
+msgctxt "staff.cat.copy_editor.field.holdable.no_or_false"
+msgid "No"
+msgstr "Ոչ"
+
+#: staff.cat.copy_editor.field.floating.label
+msgid "Floating?"
+msgstr "Սահո՞ղ"
+
+#: staff.cat.copy_editor.field.floating.yes_or_true
+msgctxt "staff.cat.copy_editor.field.floating.yes_or_true"
+msgid "Yes"
+msgstr "Այո"
+
+#: staff.cat.copy_editor.field.floating.no_or_false
+msgctxt "staff.cat.copy_editor.field.floating.no_or_false"
+msgid "No"
 msgstr "Ոչ"
 
 #: staff.cat.copy_editor.field.age_based_hold_protection.label
@@ -805,9 +826,8 @@ msgid "Short"
 msgstr "Կարճ"
 
 #: staff.cat.copy_editor.field.loan_duration.normal
-msgid ""
-"_: staff.cat.copy_editor.field.loan_duration.normal\n"
-"Normal"
+msgctxt "staff.cat.copy_editor.field.loan_duration.normal"
+msgid "Normal"
 msgstr "Նորմալ"
 
 #: staff.cat.copy_editor.field.loan_duration.extended
@@ -823,9 +843,8 @@ msgid "Low"
 msgstr "Ցածր"
 
 #: staff.cat.copy_editor.field.fine_level.normal
-msgid ""
-"_: staff.cat.copy_editor.field.fine_level.normal\n"
-"Normal"
+msgctxt "staff.cat.copy_editor.field.fine_level.normal"
+msgid "Normal"
 msgstr "Նորմալ"
 
 #: staff.cat.copy_editor.field.fine_level.high
@@ -849,15 +868,13 @@ msgid "Deposit?"
 msgstr "Դեպոզիտ անե՞լ"
 
 #: staff.cat.copy_editor.field.deposit.yes_or_true
-msgid ""
-"_: staff.cat.copy_editor.field.deposit.yes_or_true\n"
-"Yes"
+msgctxt "staff.cat.copy_editor.field.deposit.yes_or_true"
+msgid "Yes"
 msgstr "Այո"
 
 #: staff.cat.copy_editor.field.deposit.no_or_false
-msgid ""
-"_: staff.cat.copy_editor.field.deposit.no_or_false\n"
-"No"
+msgctxt "staff.cat.copy_editor.field.deposit.no_or_false"
+msgid "No"
 msgstr "Ոչ"
 
 #: staff.cat.copy_editor.field.deposit_amount.label
@@ -873,15 +890,13 @@ msgid "OPAC Visible?"
 msgstr "ՀՕԱՔ-ը տեսանելի է՞"
 
 #: staff.cat.copy_editor.field.opac_visible.yes_or_true
-msgid ""
-"_: staff.cat.copy_editor.field.opac_visible.yes_or_true\n"
-"Yes"
+msgctxt "staff.cat.copy_editor.field.opac_visible.yes_or_true"
+msgid "Yes"
 msgstr "Այո"
 
 #: staff.cat.copy_editor.field.opac_visible.no_or_false
-msgid ""
-"_: staff.cat.copy_editor.field.opac_visible.no_or_false\n"
-"No"
+msgctxt "staff.cat.copy_editor.field.opac_visible.no_or_false"
+msgid "No"
 msgstr "Ոչ"
 
 #: staff.cat.copy_editor.field.reference.label
@@ -889,15 +904,13 @@ msgid "Reference?"
 msgstr "Տեղեկատու՞"
 
 #: staff.cat.copy_editor.field.reference.yes_or_true
-msgid ""
-"_: staff.cat.copy_editor.field.reference.yes_or_true\n"
-"Yes"
+msgctxt "staff.cat.copy_editor.field.reference.yes_or_true"
+msgid "Yes"
 msgstr "Այո"
 
 #: staff.cat.copy_editor.field.reference.no_or_false
-msgid ""
-"_: staff.cat.copy_editor.field.reference.no_or_false\n"
-"No"
+msgctxt "staff.cat.copy_editor.field.reference.no_or_false"
+msgid "No"
 msgstr "Ոչ"
 
 #: staff.cat.copy_editor.field.mint_condition.label
@@ -917,9 +930,8 @@ msgid "Add New Note"
 msgstr "Ավելացրու նոր նշում"
 
 #: staff.cat.copy_notes.render_notes.accesskey
-msgid ""
-"_: staff.cat.copy_notes.render_notes.accesskey\n"
-"A"
+msgctxt "staff.cat.copy_notes.render_notes.accesskey"
+msgid "A"
 msgstr "A"
 
 #: staff.cat.copy_notes.widgets_apply.note_id
@@ -951,15 +963,13 @@ msgid "Delete Note"
 msgstr "Նշումը ջնջել:"
 
 #: staff.cat.copy_notes.delete_note.prompt.yes
-msgid ""
-"_: staff.cat.copy_notes.delete_note.prompt.yes\n"
-"Yes"
+msgctxt "staff.cat.copy_notes.delete_note.prompt.yes"
+msgid "Yes"
 msgstr "Այո"
 
 #: staff.cat.copy_notes.delete_note.prompt.no
-msgid ""
-"_: staff.cat.copy_notes.delete_note.prompt.no\n"
-"No"
+msgctxt "staff.cat.copy_notes.delete_note.prompt.no"
+msgid "No"
 msgstr "Ոչ"
 
 #: staff.cat.copy_notes.delete_note.success
@@ -969,6 +979,10 @@ msgstr "Նշումը ջնջված է:"
 #: staff.cat.copy_notes.delete_note.close_window
 msgid "Close Window"
 msgstr "Փակել պատուհանը"
+
+#: staff.cat.copy_notes.delete_note.close_window.accesskey
+msgid "W"
+msgstr "W"
 
 #: staff.cat.copy_notes.new_note.label
 msgid "New Note"
@@ -986,16 +1000,18 @@ msgstr "Վերնագիր"
 msgid "Note"
 msgstr "Նշում"
 
+#: staff.cat.copy_notes.new_note.initials
+msgid "Initials"
+msgstr "սկզբնատառեր"
+
 #: staff.cat.copy_notes.new_note.cancel.label
-msgid ""
-"_: staff.cat.copy_notes.new_note.cancel.label\n"
-"Cancel"
+msgctxt "staff.cat.copy_notes.new_note.cancel.label"
+msgid "Cancel"
 msgstr "Չեղյալ անել"
 
 #: staff.cat.copy_notes.new_note.cancel.accesskey
-msgid ""
-"_: staff.cat.copy_notes.new_note.cancel.accesskey\n"
-"C"
+msgctxt "staff.cat.copy_notes.new_note.cancel.accesskey"
+msgid "C"
 msgstr "C"
 
 #: staff.cat.copy_notes.new_note.add_note.label
@@ -1003,14 +1019,9 @@ msgid "Add Note"
 msgstr "Ավելացնել նշում"
 
 #: staff.cat.copy_notes.new_note.add_note.accesskey
-msgid ""
-"_: staff.cat.copy_notes.new_note.add_note.accesskey\n"
-"A"
+msgctxt "staff.cat.copy_notes.new_note.add_note.accesskey"
+msgid "A"
 msgstr "A"
-
-#: staff.cat.copy_notes.new_note.success
-msgid "Note added."
-msgstr "Նշումը ավելացված է:"
 
 #: staff.cat.copy_notes.new_note.error
 msgid "The note was not likely created."
@@ -1025,26 +1036,31 @@ msgid "Total Circs"
 msgstr "Գումարաճին Circs"
 
 #: staff.cat.copy_summary.yes
-msgid ""
-"_: staff.cat.copy_summary.yes\n"
-"Yes"
+msgctxt "staff.cat.copy_summary.yes"
+msgid "Yes"
 msgstr "Այո"
 
 #: staff.cat.copy_summary.no
-msgid ""
-"_: staff.cat.copy_summary.no\n"
-"No"
+msgctxt "staff.cat.copy_summary.no"
+msgid "No"
 msgstr "Ոչ"
 
 #: staff.cat.copy_summary.unset
-msgid ""
-"_: staff.cat.copy_summary.unset\n"
-"<Unset>"
+msgctxt "staff.cat.copy_summary.unset"
+msgid "<Unset>"
 msgstr "<Unset>"
 
 #: staff.cat.copy_summary.not_cataloged
 msgid "Not Cataloged"
 msgstr "Քարտագրված չէ"
+
+#: staff.cat.marcedit.authority_see_also
+msgid "See also: %1$s"
+msgstr "Տես նաև: %1$s"
+
+#: staff.cat.marcedit.authority_see_from
+msgid "See from: %1$s"
+msgstr "Տես այստեղից: %1$s"
 
 #: staff.cat.marcedit.help.add_row
 msgid "Add Row: CTRL+Enter"
@@ -1122,6 +1138,10 @@ msgstr "Ավելացրու/Փոխարինիր 008"
 msgid "Not a controlled subfield"
 msgstr "Չկառավարվող ենթադաշտ"
 
+#: staff.cat.marcedit.apply_full.label
+msgid "Apply Full Authority (1XX)"
+msgstr "Կիրառիր լրիվ հեղինակայինը (1XX)"
+
 #: staff.cat.marcedit.apply_selected.label
 msgid "Apply Selected"
 msgstr "Կիրառիր ընտրվածները"
@@ -1129,6 +1149,30 @@ msgstr "Կիրառիր ընտրվածները"
 #: staff.cat.marcedit.no_authority_match.label
 msgid "No matching authority records found"
 msgstr "Համընկնող հեղինակավոր գրառումնէր չեն գտնվել"
+
+#: staff.cat.marcedit.next_page.label
+msgid "Next page"
+msgstr "Հաջորդ էջ"
+
+#: staff.cat.marcedit.previous_page.label
+msgid "Previous page"
+msgstr "Նախորդ էջ"
+
+#: staff.cat.marcedit.create_authority.label
+msgid "Create New Authority from this Field"
+msgstr "Ստեղծիր նոր Հեղինակավոր գրառում այս դաշտից"
+
+#: staff.cat.marcedit.create_authority_now.label
+msgid "Create Immediately"
+msgstr "Ստեղծիր անմիջապես"
+
+#: staff.cat.marcedit.create_authority_success.label
+msgid "Created new authority record"
+msgstr "Նոր հեղինակավոր գրառումը ստեղծված է"
+
+#: staff.cat.marcedit.create_authority_edit.label
+msgid "Create and Edit..."
+msgstr "Ստեղծիր և խմբագրի"
 
 #: staff.cat.marc_new.tab_name
 msgid "MARC Template"
@@ -1142,14 +1186,9 @@ msgstr "Ստեղծիր գրառում"
 msgid "System Local"
 msgstr "Համակարգի տեղային"
 
-#: staff.cat.marc_new.record_created.label
-msgid "Record created."
-msgstr "Գրառոմը ստեղծված է:"
-
 #: staff.cat.marc_new.retrieving.label
-msgid ""
-"_: staff.cat.marc_new.retrieving.label\n"
-"Retrieving title..."
+msgctxt "staff.cat.marc_new.retrieving.label"
+msgid "Retrieving title..."
 msgstr "Վերնագրի կանչում"
 
 #: staff.cat.marc_new.creating_record.error
@@ -1176,6 +1215,19 @@ msgstr "Դեռ չի ներդրված: Ընտրիր Պատճենել New Tab ըն
 msgid "Record: %1$s"
 msgstr "Գրառում: %1$s"
 
+#: staff.cat.opac.title_for_hold_transfer.destination_needed.label
+msgid "Need to mark a record as a Title Hold Transfer Destination first."
+msgstr ""
+"Սկզբից հարկավոր է գրառումը նշել որպես Վերնագրի Պահման Տարանցման Նպատակակետ"
+
+#: staff.cat.opac.title_for_hold_transfer.success.label
+msgid "Holds transferred."
+msgstr "Պահումները փոխանցված են"
+
+#: staff.cat.opac.title_for_hold_transfer.failure.label
+msgid "Holds not transferred."
+msgstr "Պահումները փոխանցված չեն"
+
 #: staff.cat.record_buckets.tab_name
 msgid "Record Buckets"
 msgstr "Գրանցիր փնջերը"
@@ -1193,9 +1245,8 @@ msgid "Records could not be exported."
 msgstr "Գրառումները հնարավոր չէ արտահանել:"
 
 #: staff.cat.record_buckets.rednder_pending_records.alert
-msgid ""
-"_: staff.cat.record_buckets.rednder_pending_records.alert\n"
-"Action completed."
+msgctxt "staff.cat.record_buckets.rednder_pending_records.alert"
+msgid "Action completed."
 msgstr "Գործողությունը ավարտված է:"
 
 #: staff.cat.record_buckets.retrieve_row.std_unexpected_error
@@ -1207,21 +1258,18 @@ msgid "Could not retrieve your buckets."
 msgstr "Չի կարողանում բերել փնջերը:"
 
 #: staff.cat.record_buckets.menulist_placeholder.item1
-msgid ""
-"_: staff.cat.record_buckets.menulist_placeholder.item1\n"
-"Choose a bucket..."
+msgctxt "staff.cat.record_buckets.menulist_placeholder.item1"
+msgid "Choose a bucket..."
 msgstr "Ընտրիր փունջը..."
 
 #: staff.cat.record_buckets.menulist_placeholder.item2
-msgid ""
-"_: staff.cat.record_buckets.menulist_placeholder.item2\n"
-"Retrieve shared bucket..."
+msgctxt "staff.cat.record_buckets.menulist_placeholder.item2"
+msgid "Retrieve shared bucket..."
 msgstr "Կանչիր համատեղ փունջը..."
 
 #: staff.cat.record_buckets.change_bucket.bucket_id
-msgid ""
-"_: staff.cat.record_buckets.change_bucket.bucket_id\n"
-"Enter bucket number:"
+msgctxt "staff.cat.record_buckets.change_bucket.bucket_id"
+msgid "Enter bucket number:"
 msgstr "Մուտք արա փնջի համարը:"
 
 #: staff.cat.record_buckets.change_bucket.error
@@ -1229,97 +1277,50 @@ msgid "Error retrieving bucket.  Did you use a valid bucket ID?"
 msgstr "Սխալ՝ փնջի կանչի ընթացքում: Արդյո՞ք օգտագործում ես թույլատեված ID:"
 
 #: staff.cat.record_buckets.delete_bucket_named
-msgid ""
-"_: staff.cat.record_buckets.delete_bucket_named\n"
-"Delete the bucket named %1$s?"
+msgctxt "staff.cat.record_buckets.delete_bucket_named"
+msgid "Delete the bucket named %1$s?"
 msgstr "Ջնջե՞լ %1$s անունով բուկլետը:"
 
 #: staff.cat.record_buckets.new_bucket.bucket_prompt
-msgid ""
-"_: staff.cat.record_buckets.new_bucket.bucket_prompt\n"
-"What would you like to name the bucket?"
+msgctxt "staff.cat.record_buckets.new_bucket.bucket_prompt"
+msgid "What would you like to name the bucket?"
 msgstr "Ի՞նչ անուն կուզենաս տալ այս բուկլետին:"
 
 #: staff.cat.record_buckets.new_bucket.bucket_prompt_title
-msgid ""
-"_: staff.cat.record_buckets.new_bucket.bucket_prompt_title\n"
-"Bucket Creation"
+msgctxt "staff.cat.record_buckets.new_bucket.bucket_prompt_title"
+msgid "Bucket Creation"
 msgstr "Փնջի ստեղծում:"
 
 #: staff.cat.record_buckets.new_bucket.same_name_alert
-msgid ""
-"_: staff.cat.record_buckets.new_bucket.same_name_alert\n"
-"You already have a bucket with that name."
+msgctxt "staff.cat.record_buckets.new_bucket.same_name_alert"
+msgid "You already have a bucket with that name."
 msgstr "Այդ անունւվ փունջ արդեն ունես:"
 
 #: staff.cat.record_buckets.new_bucket.bucket_created
 msgid "Bucket %1$s created."
 msgstr "Փունջը %1$s տեղծված է:"
 
-#: staff.cat.record_buckets.merge_records.merge_lead
-msgid "Merge these records? (Select the \"lead\" record first)"
-msgstr "Միացնե՞լ այս գրառումները: (Ընտրիր սկզբից \"lead\" գրառումը)"
-
-#: staff.cat.record_buckets.merge_records.button.label
-msgid "Merge"
-msgstr "Միաձուլել"
-
-#: staff.cat.record_buckets.merge_records.cancel_button.label
-msgid ""
-"_: staff.cat.record_buckets.merge_records.cancel_button.label\n"
-"Cancel"
-msgstr "Չեղյալ անել"
-
-#: staff.cat.record_buckets.merge_records.cancel_button.accesskey
-msgid ""
-"_: staff.cat.record_buckets.merge_records.cancel_button.accesskey\n"
-"C"
-msgstr "C"
-
-#: staff.cat.record_buckets.merge_records.lead_record_number
-msgid "Lead Record? # %1$s"
-msgstr "Առաջատա՞ր գրառում # %1$s"
-
-#: staff.cat.record_buckets.merge_records.lead
-msgid "Lead"
-msgstr "Առաջատար"
-
 #: staff.cat.record_buckets.merge_records.fancy_prompt_title
 msgid "Record Merging"
 msgstr "Գրառման միաձուլում"
-
-#: staff.cat.record_buckets.merge_records.fancy_prompt.alert
-msgid "Merge Aborted"
-msgstr "Միաձուլւոմը կասեցվեց"
-
-#: staff.cat.record_buckets.merge_records.success
-msgid "Records were successfully merged."
-msgstr "Գրառումները հաջողությամբ միաձուլվել են:"
-
-#: staff.cat.record_buckets.merge_records.catch.std_unex_error
-msgid "Records were not likely merged."
-msgstr "Գրառումները կարծես թե չեն միաձուլվել:"
 
 #: staff.cat.record_buckets.delete_records.xml1
 msgid "Delete these records?"
 msgstr "Ջնջե՞լ այս գրառումները:"
 
 #: staff.cat.record_buckets.delete_records.button.label
-msgid ""
-"_: staff.cat.record_buckets.delete_records.button.label\n"
-"Delete"
+msgctxt "staff.cat.record_buckets.delete_records.button.label"
+msgid "Delete"
 msgstr "Ջնջել"
 
 #: staff.cat.record_buckets.delete_records.cancel_button.label
-msgid ""
-"_: staff.cat.record_buckets.delete_records.cancel_button.label\n"
-"Cancel"
+msgctxt "staff.cat.record_buckets.delete_records.cancel_button.label"
+msgid "Cancel"
 msgstr "Չեղյալ անել"
 
 #: staff.cat.record_buckets.delete_records.cancel_button.accesskey
-msgid ""
-"_: staff.cat.record_buckets.delete_records.cancel_button.accesskey\n"
-"C"
+msgctxt "staff.cat.record_buckets.delete_records.cancel_button.accesskey"
+msgid "C"
 msgstr "C"
 
 #: staff.cat.record_buckets.delete_records.xml2
@@ -1355,9 +1356,8 @@ msgid "Not Yet Implemented"
 msgstr "Դեռ ներդրված չէ:"
 
 #: staff.cat.record_buckets.cmd_sel_opac.tab_name
-msgid ""
-"_: staff.cat.record_buckets.cmd_sel_opac.tab_name\n"
-"Retrieving title..."
+msgctxt "staff.cat.record_buckets.cmd_sel_opac.tab_name"
+msgid "Retrieving title..."
 msgstr "Վերնագիրը կանչվում է..."
 
 #: staff.cat.record_buckets.cmd_sel_opac.catch.std_unex_err
@@ -1365,9 +1365,8 @@ msgid "Showing in OPAC"
 msgstr "Ցույց է տրվում ՀՕԱՔ-ում"
 
 #: staff.cat.record_buckets.submit.query_status
-msgid ""
-"_: staff.cat.record_buckets.submit.query_status\n"
-"Searching..."
+msgctxt "staff.cat.record_buckets.submit.query_status"
+msgid "Searching..."
 msgstr "Որոնում..."
 
 #: staff.cat.record_buckets.prep_record_for_list.std_unex_err
@@ -1379,9 +1378,8 @@ msgid "Copy this record into which bucket?"
 msgstr "Ո՞ր փնջում արտագրել այս գրառումը:"
 
 #: staff.cat.record_buckets_quick.copy_multiple_records
-msgid ""
-"_: staff.cat.record_buckets_quick.copy_multiple_records\n"
-"Copy these %1$s items into which bucket?"
+msgctxt "staff.cat.record_buckets_quick.copy_multiple_records"
+msgid "Copy these %1$s items into which bucket?"
 msgstr "Ո՞ր փնջում արտագրել այս %1$s նյութերը"
 
 #: staff.cat.record_buckets_quick.initing_record_buckets_quick_xul
@@ -1389,32 +1387,27 @@ msgid "Trying to init record_buckets_quick.xul"
 msgstr "Աշխատում է ակտիվացնել record_buckets_quick.xul"
 
 #: staff.cat.record_buckets_quick.name_of_bucket
-msgid ""
-"_: staff.cat.record_buckets_quick.name_of_bucket\n"
-"What would you like to name the bucket?"
+msgctxt "staff.cat.record_buckets_quick.name_of_bucket"
+msgid "What would you like to name the bucket?"
 msgstr "Ի՞նչ անուն տալ փնջին:"
 
 #: staff.cat.record_buckets_quick.name_of_bucket.title
-msgid ""
-"_: staff.cat.record_buckets_quick.name_of_bucket.title\n"
-"Bucket Creation"
+msgctxt "staff.cat.record_buckets_quick.name_of_bucket.title"
+msgid "Bucket Creation"
 msgstr "Փնջի ստեղծում"
 
 #: staff.cat.record_buckets_quick.bucket_creation_failure
-msgid ""
-"_: staff.cat.record_buckets_quick.bucket_creation_failure\n"
-"Bucket creation failed."
+msgctxt "staff.cat.record_buckets_quick.bucket_creation_failure"
+msgid "Bucket creation failed."
 msgstr "Փնջի ստեղծումը ձախողվեց:"
 
 #: staff.cat.record_buckets_quick.add_to_bucket.addition_failed
 msgid "Addition likely failed for bucket = %1$s and record ID = %2$s"
-msgstr ""
-"Հավանաբար փունջը = %1$s և գրառում  ID = %2$s համար հավելումը ձախողվեց:"
+msgstr "Հավանաբար փունջը = %1$s և գրառում  ID = %2$s համար հավելումը ձախողվեց:"
 
 #: staff.cat.record_buckets.menulist.change_bucket.undefined
-msgid ""
-"_: staff.cat.record_buckets.menulist.change_bucket.undefined\n"
-"Could not find a bucket with ID = %1$s"
+msgctxt "staff.cat.record_buckets.menulist.change_bucket.undefined"
+msgid "Could not find a bucket with ID = %1$s"
 msgstr "Չի կարող գտնել փունջը ID = %1$s"
 
 #: staff.cat.spine_labels.copy
@@ -1430,9 +1423,8 @@ msgid "Generate"
 msgstr "Գեներացնել"
 
 #: staff.cat.spine_labels.preview.title
-msgid ""
-"_: staff.cat.spine_labels.preview.title\n"
-"Spine Labels"
+msgctxt "staff.cat.spine_labels.preview.title"
+msgid "Spine Labels"
 msgstr "Կողային պիտակ"
 
 #: staff.cat.spine_labels.preview.std_unexpected_err
@@ -1444,9 +1436,8 @@ msgid "Enter original barcode for the copy:"
 msgstr "Օրինակի համար մուտք արա իսկական շտրիխ կոդը:"
 
 #: staff.cat.util.replace_barcode.old_bc_window_prompt.title
-msgid ""
-"_: staff.cat.util.replace_barcode.old_bc_window_prompt.title\n"
-"Replace Barcode"
+msgctxt "staff.cat.util.replace_barcode.old_bc_window_prompt.title"
+msgid "Replace Barcode"
 msgstr "Փոխարինիր շտրիխ կոդը"
 
 #: staff.cat.util.replace_barcode.error_alert
@@ -1458,9 +1449,8 @@ msgid "Enter the replacement barcode for the copy:"
 msgstr "Պատճեի համար մուտք արա փոխարինման շտրիխ կոդը:"
 
 #: staff.cat.util.replace_barcode.new_bc_window_prompt.title
-msgid ""
-"_: staff.cat.util.replace_barcode.new_bc_window_prompt.title\n"
-"Replace Barcode"
+msgctxt "staff.cat.util.replace_barcode.new_bc_window_prompt.title"
+msgid "Replace Barcode"
 msgstr "Փոխարինիր շտրիխ կոդը"
 
 #: staff.cat.util.replace_barcode.new_bc.failed
@@ -1484,8 +1474,8 @@ msgid "Rename did not likely occur."
 msgstr "Անվանափոխումը կարծես չի կայացել:"
 
 #: staff.cat.util.transfer_copies.unmarked_volume_alert
+msgctxt "staff.cat.util.transfer_copies.unmarked_volume_alert"
 msgid ""
-"_: staff.cat.util.transfer_copies.unmarked_volume_alert\n"
 "Please mark a volume as the destination from within holdings maintenance and "
 "then try this again."
 msgstr "Նշիր հատորը պահումների կառավարման համար, և փորձիր նորից:"
@@ -1499,21 +1489,18 @@ msgstr ""
 "հետևյա գրառումում (և փոխիր սպասարկման գրադարանը համընկնելու համար):"
 
 #: staff.cat.util.transfer_copies.transfer.label
-msgid ""
-"_: staff.cat.util.transfer_copies.transfer.label\n"
-"Transfer"
+msgctxt "staff.cat.util.transfer_copies.transfer.label"
+msgid "Transfer"
 msgstr "Տեղափոխում"
 
 #: staff.cat.util.transfer_copies.cancel.label
-msgid ""
-"_: staff.cat.util.transfer_copies.cancel.label\n"
-"Cancel"
+msgctxt "staff.cat.util.transfer_copies.cancel.label"
+msgid "Cancel"
 msgstr "Չեղյալ անել"
 
 #: staff.cat.util.transfer_copies.cancel.accesskey
-msgid ""
-"_: staff.cat.util.transfer_copies.cancel.accesskey\n"
-"C"
+msgctxt "staff.cat.util.transfer_copies.cancel.accesskey"
+msgid "C"
 msgstr "C"
 
 #: staff.cat.util.transfer_copies.window_title
@@ -1521,9 +1508,8 @@ msgid "Item Transfer"
 msgstr "Նյութի տեղափոխում"
 
 #: staff.cat.util.transfer_copies.aborted_transfer
-msgid ""
-"_: staff.cat.util.transfer_copies.aborted_transfer\n"
-"Transfer Aborted"
+msgctxt "staff.cat.util.transfer_copies.aborted_transfer"
+msgid "Transfer Aborted"
 msgstr "Տեղափոխումը վիժեցված է"
 
 #: staff.cat.util.transfer_copies.override_transfer_failure
@@ -1539,15 +1525,13 @@ msgid "All items not likely transferred."
 msgstr "Ոչ բոլոր նյութերն են տեղափոխվել:"
 
 #: staff.cat.util.spine_editor.tab_name
-msgid ""
-"_: staff.cat.util.spine_editor.tab_name\n"
-"Spine Labels"
+msgctxt "staff.cat.util.spine_editor.tab_name"
+msgid "Spine Labels"
 msgstr "Կողային պիտակներ"
 
 #: staff.cat.util.spine_editor.spine_editor_error
-msgid ""
-"_: staff.cat.util.spine_editor.spine_editor_error\n"
-"Spine Labels"
+msgctxt "staff.cat.util.spine_editor.spine_editor_error"
+msgid "Spine Labels"
 msgstr "Կողային պիտակներ"
 
 #: staff.cat.util.show_in_opac.unknown_barcode
@@ -1559,19 +1543,17 @@ msgid "Error opening catalog for document ID = %1$s"
 msgstr "Սխալ՝ երբ բաշվում է քարտարանը այս փաստաթղթի համար ID = %1$s"
 
 #: staff.cat.util.copy_editor.batch_in_title
-msgid "Batch"
-msgstr "Փաթեթ"
+msgid "Batch "
+msgstr "Փաթեթ "
 
 #: staff.cat.util.copy_editor.edit_in_title
-msgid ""
-"_: staff.cat.util.copy_editor.edit_in_title\n"
-"Edit"
+msgctxt "staff.cat.util.copy_editor.edit_in_title"
+msgid "Edit"
 msgstr "Խմբագրել"
 
 #: staff.cat.util.copy_editor.view_in_title
-msgid ""
-"_: staff.cat.util.copy_editor.view_in_title\n"
-"View"
+msgctxt "staff.cat.util.copy_editor.view_in_title"
+msgid "View"
 msgstr "Դիտել"
 
 #: staff.cat.util.copy_editor.copy_attributes_in_title
@@ -1587,47 +1569,37 @@ msgid "Batch View"
 msgstr "Դիտում փաթեթով"
 
 #: staff.cat.util.copy_editor.edit
-msgid ""
-"_: staff.cat.util.copy_editor.edit\n"
-"Edit"
+msgctxt "staff.cat.util.copy_editor.edit"
+msgid "Edit"
 msgstr "Խմբագրել"
 
 #: staff.cat.util.copy_editor.view
-msgid ""
-"_: staff.cat.util.copy_editor.view\n"
-"View"
+msgctxt "staff.cat.util.copy_editor.view"
+msgid "View"
 msgstr "Դիտել"
-
-#: staff.cat.util.copy_editor.not_modified
-msgid "Copies not modified."
-msgstr "Օրինակնրը թարմացված չէն:"
 
 #: staff.cat.util.mark_item_damaged.af_message
 msgid ""
 "Action failed.  One or more of these items is in a special status such as "
-"\"Checked Out\" or \"In Transit\" and cannot be changed to the Damaged "
-"status."
+"\"Checked Out\" or \"In Transit\" and cannot be changed to the Damaged status."
 msgstr ""
 "Գործողությունը տապալվեց: Այս նյութերից մեկը կամ մի քանիսը գտնվում են հատուկ "
 "կարգավիճակում, ասենք \"Սպասարկված\" կամ \"Տեղափոխման մեջ\" և հնարավոր չէ "
 "կարգավիճակը փոխել Վնասվածի:"
 
 #: staff.cat.util.mark_item_damaged.af_title
-msgid ""
-"_: staff.cat.util.mark_item_damaged.af_title\n"
-"Action failed."
+msgctxt "staff.cat.util.mark_item_damaged.af_title"
+msgid "Action failed."
 msgstr "Գործողությունը տապալվեց:"
 
 #: staff.cat.util.mark_item_damaged.af_ok_label
-msgid ""
-"_: staff.cat.util.mark_item_damaged.af_ok_label\n"
-"OK"
+msgctxt "staff.cat.util.mark_item_damaged.af_ok_label"
+msgid "OK"
 msgstr "Լավ"
 
 #: staff.cat.util.mark_item_damaged.af_confirm_action
-msgid ""
-"_: staff.cat.util.mark_item_damaged.af_confirm_action\n"
-"Check here to confirm this message"
+msgctxt "staff.cat.util.mark_item_damaged.af_confirm_action"
+msgid "Check here to confirm this message"
 msgstr "Հաղորդումը հաստատէլու համարթ ընտրիր սա:"
 
 #: staff.cat.util.mark_item_damaged.md_message
@@ -1639,21 +1611,18 @@ msgid "Mark Damaged"
 msgstr "Նշիր որպես վնասված:"
 
 #: staff.cat.util.mark_item_damaged.md_ok_label
-msgid ""
-"_: staff.cat.util.mark_item_damaged.md_ok_label\n"
-"OK"
+msgctxt "staff.cat.util.mark_item_damaged.md_ok_label"
+msgid "OK"
 msgstr "Լավ"
 
 #: staff.cat.util.mark_item_damaged.md_cancel_label
-msgid ""
-"_: staff.cat.util.mark_item_damaged.md_cancel_label\n"
-"Cancel"
+msgctxt "staff.cat.util.mark_item_damaged.md_cancel_label"
+msgid "Cancel"
 msgstr "Չեղյալ անել"
 
 #: staff.cat.util.mark_item_damaged.md_confirm_action
-msgid ""
-"_: staff.cat.util.mark_item_damaged.md_confirm_action\n"
-"Check here to confirm this action"
+msgctxt "staff.cat.util.mark_item_damaged.md_confirm_action"
+msgid "Check here to confirm this action"
 msgstr "Գործողությունը հաստատէլու համարթ ընտրիր սա:"
 
 #: staff.cat.util.mark_item_damaged.checkin.title
@@ -1665,9 +1634,8 @@ msgid "Normal Checkin"
 msgstr "Նորմալ հետ ընդունում"
 
 #: staff.cat.util.mark_item_damaged.checkin.no_checkin
-msgid ""
-"_: staff.cat.util.mark_item_damaged.checkin.no_checkin\n"
-"Cancel"
+msgctxt "staff.cat.util.mark_item_damaged.checkin.no_checkin"
+msgid "Cancel"
 msgstr "Չեղյալ անել"
 
 #: staff.cat.util.mark_item_damaged.checkin.forgiving_checkin
@@ -1675,49 +1643,42 @@ msgid "Forgiving Checkin"
 msgstr "Հետ ընդունման ներում"
 
 #: staff.cat.util.mark_item_damaged.checkin.confirm_action
-msgid ""
-"_: staff.cat.util.mark_item_damaged.checkin.confirm_action\n"
-"Check here to confirm this action"
+msgctxt "staff.cat.util.mark_item_damaged.checkin.confirm_action"
+msgid "Check here to confirm this action"
 msgstr "Ստուգիր այստեղ հաստատելու գործողությունը"
 
 #: staff.cat.util.mark_item_damaged.item_circulating_to_patron
-msgid "Item %1$s is checked out to patron, %2$s, and is due on %3$s."
+msgid "Item %1$s is checked out to patron, %2$s, and is due on %3$s. "
 msgstr ""
-"Այս նյութը %1$s դուրս է տրված այս ընթերցողին, %2$s, և պետք է վերադարձվի %3$s"
+"Այս նյութը %1$s տրվել է այս ընթերցողին, %2$s, և պետք է վերադարձվի %3$s. "
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.message
 msgid ""
 "Item %1$s will be marked damaged.  Was returned on %3$s for %2$s.  Charge "
-"this patron $%4$s for the damage?"
+"this patron $%4$s for the damage? "
 msgstr ""
-"Այս նյութը %1$s կնշվի որպես վնասված։ Վերադարձվել է՝ %3$s համար %2$s։ Գանձե՞լ "
-"ընթերցողից $%4$ վնասելու համար։"
+"Այս նյութը %1$s կնշվի որպես վնասված։ Վերադարձված է %3$s համար %2$s։  Գանձե՞լ "
+"այս ընթերցողից $%4$s վնասի համար։ "
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.title
-msgid "Charge Patron For Damaged Item?"
-msgstr "Վնասված նյութի համար գանձե՞լ ընթերցողից։"
+msgid "Charge Patron For Damaged Item? "
+msgstr "Գանձե՞լ ընթերցողից վնասված նյութի համար։ "
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.ok_label
-msgid ""
-"_: staff.cat.util.mark_item_damaged.charge_patron_prompt.ok_label\n"
-"OK"
-msgstr "Լավ"
+msgid "OK "
+msgstr "Լավ "
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.change_amount_label
-msgid "Change Amount"
-msgstr "Փոփոխիր գումարը"
+msgid "Change Amount "
+msgstr "Փոխել գումարը "
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.cancel_label
-msgid ""
-"_: staff.cat.util.mark_item_damaged.charge_patron_prompt.cancel_label\n"
-"Cancel"
-msgstr "Չեղյալ անել"
+msgid "Cancel "
+msgstr "Չեղյալ անել "
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.confirm_action
-msgid ""
-"_: staff.cat.util.mark_item_damaged.charge_patron_prompt.confirm_action\n"
-"Check here to confirm this action"
-msgstr "Ստուգիր այստեղ հաստատելու գործողությունը"
+msgid "Check here to confirm this action "
+msgstr "Նշիր այստեղ, այս գործողությունը հաստատելու համար "
 
 #: staff.cat.util.mark_item_damaged.marking_error
 msgid "Error marking item %1$s damaged."
@@ -1734,29 +1695,25 @@ msgstr "%1$s նյութեր նշված են վնասված:"
 #: staff.cat.util.mark_item_missing.af_message
 msgid ""
 "Action failed.  One or more of these items is in a special status such as "
-"\"Checked Out\" or \"In Transit\" and cannot be changed to the Missing "
-"status."
+"\"Checked Out\" or \"In Transit\" and cannot be changed to the Missing status."
 msgstr ""
 "Գործողությունը տապալվեց: Այս նյութերից մեկը կամ մի քանիսը գտնվում են հատուկ "
 "կարգավիճակում, ասենք \"Սպասարկված\" կամ \"Տեղափոխման մեջ\" և հնարավոր չէ "
 "կարգավիճակը փոխել Կորածի:"
 
 #: staff.cat.util.mark_item_missing.af_title
-msgid ""
-"_: staff.cat.util.mark_item_missing.af_title\n"
-"Action failed."
+msgctxt "staff.cat.util.mark_item_missing.af_title"
+msgid "Action failed."
 msgstr "Գործողությունը տապալվեց:"
 
 #: staff.cat.util.mark_item_missing.af_ok_label
-msgid ""
-"_: staff.cat.util.mark_item_missing.af_ok_label\n"
-"OK"
+msgctxt "staff.cat.util.mark_item_missing.af_ok_label"
+msgid "OK"
 msgstr "Լավ"
 
 #: staff.cat.util.mark_item_missing.af_confirm_action
-msgid ""
-"_: staff.cat.util.mark_item_missing.af_confirm_action\n"
-"Check here to confirm this message"
+msgctxt "staff.cat.util.mark_item_missing.af_confirm_action"
+msgid "Check here to confirm this message"
 msgstr "Հաղորդումը հաստատէլու համարթ ընտրիր սա:"
 
 #: staff.cat.util.mark_item_missing.ms_message
@@ -1768,21 +1725,18 @@ msgid "Mark Missing"
 msgstr "Նշիր կորած:"
 
 #: staff.cat.util.mark_item_missing.ms_ok_label
-msgid ""
-"_: staff.cat.util.mark_item_missing.ms_ok_label\n"
-"OK"
+msgctxt "staff.cat.util.mark_item_missing.ms_ok_label"
+msgid "OK"
 msgstr "Լավ"
 
 #: staff.cat.util.mark_item_missing.ms_cancel_label
-msgid ""
-"_: staff.cat.util.mark_item_missing.ms_cancel_label\n"
-"Cancel"
+msgctxt "staff.cat.util.mark_item_missing.ms_cancel_label"
+msgid "Cancel"
 msgstr "Չեղյալ անել"
 
 #: staff.cat.util.mark_item_missing.ms_confirm_action
-msgid ""
-"_: staff.cat.util.mark_item_missing.ms_confirm_action\n"
-"Check here to confirm this action"
+msgctxt "staff.cat.util.mark_item_missing.ms_confirm_action"
+msgid "Check here to confirm this action"
 msgstr "Գործողությունը հաստատէլու համարթ ընտրիր սա:"
 
 #: staff.cat.util.mark_item_missing.marking_error
@@ -1797,15 +1751,106 @@ msgstr "Նյութը նշված է կորած:"
 msgid "%1$s items marked Missing."
 msgstr "%1$s նյութերը նշված են կորած:"
 
+#: staff.cat.util.mark_item_missing_pieces.ms_message
+msgid "Mark these items as missing pieces?  Barcodes: %1$s"
+msgstr "Նշե՞լ այս նյութերը ոռպես կորած մասեր: Շտրիխ կոդեր: %1$s"
+
+#: staff.cat.util.mark_item_missing_pieces.ms_title
+msgid "Mark Missing Pieces"
+msgstr "Նշիր կորած մասերը:"
+
+#: staff.cat.util.mark_item_missing_pieces.ms_ok_label
+msgctxt "staff.cat.util.mark_item_missing_pieces.ms_ok_label"
+msgid "OK"
+msgstr "Լավ"
+
+#: staff.cat.util.mark_item_missing_pieces.ms_cancel_label
+msgctxt "staff.cat.util.mark_item_missing_pieces.ms_cancel_label"
+msgid "Cancel"
+msgstr "Չեղյալ անել"
+
+#: staff.cat.util.mark_item_missing_pieces.ms_confirm_action
+msgctxt "staff.cat.util.mark_item_missing_pieces.ms_confirm_action"
+msgid "Check here to confirm this action"
+msgstr "Ընտրիր այստէղ գործողությունը հաստատելու համար"
+
+#: staff.cat.util.mark_item_missing_pieces.marking_error
+msgid "Error marking item %1$s as missing pieces."
+msgstr "Սխալ երբ նշում ենք այս նյութը %1$s որպես կորած մասեր:"
+
+#: staff.cat.util.mark_item_missing_pieces.one_item_missing_pieces
+msgid "Item marked as missing pieces."
+msgstr "Նյութը նշված է որպես կորած մասեր"
+
+#: staff.cat.util.mark_item_missing_pieces.multiple_item_missing_pieces
+msgid "%1$s items marked as missing pieces."
+msgstr "%1$s նյութերը նշված են որպես կորած կտորներ"
+
+#: staff.cat.util.mark_item_missing_pieces.circ_not_found
+msgid "No circulation found for item with barcode %1$s.  Item left unmodified."
+msgstr ""
+"Չի գտնվել սպասարկում նյութի համար հետևյալ շտրիխ կոդով %1$s: Նյութը թողնված է "
+"չփոփոխված:"
+
 #: staff.cat.volume_buckets.window_tab_name
 msgid "Volume Buckets"
 msgstr "Հատորի փնջեր"
 
 #: staff.cat.volume_copy_creator.my_init.btn.label
-msgid ""
-"_: staff.cat.volume_copy_creator.my_init.btn.label\n"
-"Apply"
+msgctxt "staff.cat.volume_copy_creator.my_init.btn.label"
+msgid "Apply"
 msgstr "Կիրառել"
+
+#: staff.cat.volume_copy_creator.my_init.btn.accesskey
+msgctxt "staff.cat.volume_copy_creator.my_init.btn.accesskey"
+msgid "A"
+msgstr "A"
+
+#: staff.cat.volume_copy_creator.create_part.btn.label
+msgid "Create Part Designator"
+msgstr "Ստեղծիր մասի ցուցիչ"
+
+#: staff.cat.volume_copy_creator.edit_then_create.btn.label
+msgid "Edit then Create"
+msgstr "Խմբագրի և Ստեղծի"
+
+#: staff.cat.volume_copy_creator.edit_then_create.btn.accesskey
+msgctxt "staff.cat.volume_copy_creator.edit_then_create.btn.accesskey"
+msgid "C"
+msgstr "C"
+
+#: staff.cat.volume_copy_creator.create_with_defaults.btn.label
+msgid "Create with Defaults"
+msgstr "Ստեղծիր լռակյացներով"
+
+#: staff.cat.volume_copy_creator.create_with_defaults.btn.accesskey
+msgid "D"
+msgstr "D"
+
+#: staff.cat.volume_copy_creator.create.btn.label
+msgid "Create Volumes/Items"
+msgstr "Ստեղծիր հատոր/նյութ"
+
+#: staff.cat.volume_copy_creator.create.btn.accesskey
+msgctxt "staff.cat.volume_copy_creator.create.btn.accesskey"
+msgid "C"
+msgstr "C"
+
+#: staff.cat.volume_copy_creator.edit_then_rebarcode.btn.label
+msgid "Edit then Re-barcode"
+msgstr "Խմբագրի և վերա գռի շտրիխ կոդը"
+
+#: staff.cat.volume_copy_creator.edit_then_rebarcode.btn.accesskey
+msgid "E"
+msgstr "E"
+
+#: staff.cat.volume_copy_creator.rebarcode.btn.label
+msgid "Re-barcode / Update Items"
+msgstr "Վերա շտրիխավորի / Թարմացրու նյութը"
+
+#: staff.cat.volume_copy_creator.rebarcode.btn.accesskey
+msgid "R"
+msgstr "R"
 
 #: staff.cat.volume_copy_creator.render_volume_count_entry.message
 msgid ""
@@ -1822,13 +1867,29 @@ msgstr "Ամենաշատ նյութի քանակը անցել է:"
 msgid "Ok"
 msgstr "Լավ"
 
+#: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.classification
+msgid "Classification"
+msgstr "Դասակարգում"
+
+#: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.prefix
+msgid "Prefix"
+msgstr "Նախածանց"
+
 #: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.call_nums
 msgid "Call Numbers"
 msgstr "Դասիչներ"
 
+#: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.suffix
+msgid "Suffix"
+msgstr "Վերջածանց"
+
 #: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.num_of_copies
 msgid "# of Copies"
 msgstr "Օրինակների #"
+
+#: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.barcodes_and_parts
+msgid "Barcodes / Part Designation"
+msgstr "Շտրիխ կոդեր / մասի ցուցիչներ"
 
 #: staff.cat.volume_copy_creator.render_barcode_entry.alert_message
 msgid "\"%1$s\" is an invalid barcode."
@@ -1839,9 +1900,8 @@ msgid "Invalid Barcode"
 msgstr "Սխալ շտրիխ կոդ"
 
 #: staff.cat.volume_copy_creator.render_barcode_entry.alert_ok_button
-msgid ""
-"_: staff.cat.volume_copy_creator.render_barcode_entry.alert_ok_button\n"
-"OK"
+msgctxt "staff.cat.volume_copy_creator.render_barcode_entry.alert_ok_button"
+msgid "OK"
 msgstr "Լավ"
 
 #: staff.cat.volume_copy_creator.render_barcode_entry.alert_confirm
@@ -1872,6 +1932,18 @@ msgstr "Սխալ՝ երբ կանչվում էն հիշված նախապատվո�
 msgid "Error storing preferences"
 msgstr "Սխալ՝ երբ հիշվում են նախապատվությունները"
 
+#. # %1$s = Call Number Prefix Label, %2$s = Call Number Prefix Owning Lib Shortname
+#: staff.cat.volume_copy_creator.call_number_prefix.menuitem_label
+msgctxt "staff.cat.volume_copy_creator.call_number_prefix.menuitem_label"
+msgid "%2$s : %1$s"
+msgstr "%2$s : %1$s"
+
+#. # %1$s = Call Number Suffix Label, %2$s = Call Number Suffix Owning Lib Shortname
+#: staff.cat.volume_copy_creator.call_number_suffix.menuitem_label
+msgctxt "staff.cat.volume_copy_creator.call_number_suffix.menuitem_label"
+msgid "%2$s : %1$s"
+msgstr "%2$s : %1$s"
+
 #: staff.cat.z3950.native_catalog
 msgid "Native Catalog"
 msgstr "Հիմնական քարտարան"
@@ -1885,9 +1957,8 @@ msgid "Results View"
 msgstr "Արդյունքների դիտում"
 
 #: staff.cat.z3950.results_view.accesskey
-msgid ""
-"_: staff.cat.z3950.results_view.accesskey\n"
-"V"
+msgctxt "staff.cat.z3950.results_view.accesskey"
+msgid "V"
 msgstr "V"
 
 #: staff.cat.z3950.marc_view.label
@@ -1895,9 +1966,8 @@ msgid "MARC View"
 msgstr "MARC Դիտում"
 
 #: staff.cat.z3950.marc_view.accesskey
-msgid ""
-"_: staff.cat.z3950.marc_view.accesskey\n"
-"V"
+msgctxt "staff.cat.z3950.marc_view.accesskey"
+msgid "V"
 msgstr "V"
 
 #: staff.cat.z3950.hide_top_pane.label
@@ -1905,9 +1975,8 @@ msgid "Hide Top Pane"
 msgstr "Թաքցրու վերին պատուհանիկը"
 
 #: staff.cat.z3950.hide_top_pane.accesskey
-msgid ""
-"_: staff.cat.z3950.hide_top_pane.accesskey\n"
-"T"
+msgctxt "staff.cat.z3950.hide_top_pane.accesskey"
+msgid "T"
 msgstr "T"
 
 #: staff.cat.z3950.unhide_top_pane.label
@@ -1915,9 +1984,8 @@ msgid "Show Top Pane"
 msgstr "Ցույց տուր վերին պատուհանիկը"
 
 #: staff.cat.z3950.unhide_top_pane.accesskey
-msgid ""
-"_: staff.cat.z3950.unhide_top_pane.accesskey\n"
-"T"
+msgctxt "staff.cat.z3950.unhide_top_pane.accesskey"
+msgid "T"
 msgstr "T"
 
 #: staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label
@@ -1963,9 +2031,8 @@ msgstr ""
 "կատարելու հետ միասին"
 
 #: staff.cat.z3950.initial_search.searching
-msgid ""
-"_: staff.cat.z3950.initial_search.searching\n"
-"Searching..."
+msgctxt "staff.cat.z3950.initial_search.searching"
+msgid "Searching..."
 msgstr "Որոնում..."
 
 #: staff.cat.z3950.initial_search.failed_search
@@ -1979,15 +2046,19 @@ msgstr "Մոտավոր Z39.50 PQN փնտրում"
 #: staff.cat.z3950.initial_search.raw_prompt.msg
 msgid ""
 "WARNING: This is not a simple keyword search.  Enter raw z39.50 PQN search "
-"string:"
+"string: "
 msgstr ""
-"ԶԳՈՒՇԱՑՈՒՄ։ Սա վճռորոշ բառով պարզ փնտրում չէ։ Մուտք արա մոտավոր z39.50 PQN "
-"որոնման տողը։"
+"ԶԳՈՒՇԱՑՈՒՄ: Սա պարզ որոնում չէ ըստ վճռորոշ բառի։  Մուտք արա z39.50 PQN "
+"փնտրման տողը: "
+
+#: staff.cat.z3950.initial_search.raw_prompt.default_value
+msgctxt "staff.cat.z3950.initial_search.raw_prompt.default_value"
+msgid ""
+msgstr ""
 
 #: staff.cat.z3950.initial_search.raw_search_unsupported_for_native_catalog
 msgid "Raw z39.50 PQN search not yet implemented for native catalog."
-msgstr ""
-"Մոտավոր z39.50 PQN փնտրումը դեռ ներդրված չէ հիմնական քարտարանի համար։"
+msgstr "Մոտավոր z39.50 PQN փնտրումը դեռ ներդրված չէ հիմնական քարտարանի համար։"
 
 #: staff.cat.z3950.page_next.more_results
 msgid "Retrieving more results..."
@@ -2018,8 +2089,8 @@ msgid "Showing %1$s of %2$s for %3$s"
 msgstr "Ցույց է տալիս %1$s of %2$s սրա համար %3$s"
 
 #: staff.cat.z3950.handle_results.showing_total_results
-msgid "Showing %1$s of %2$s"
-msgstr "Ցույց է տալիս %1$s ընդամենը %2$s"
+msgid "Showing %1$s of %2$s "
+msgstr "Ցույց է տալիս %1$s ընդամենը %2$s "
 
 #: staff.cat.z3950.handle_results.num_of_results
 msgid "%1$s records found"
@@ -2034,14 +2105,17 @@ msgid "Failure during search result handling."
 msgstr "Ձախողում՝ որոնման արդյունքների տրամադրման ժամանակ"
 
 #: staff.cat.z3950.replace_tab_with_opac.tab_name
-msgid ""
-"_: staff.cat.z3950.replace_tab_with_opac.tab_name\n"
-"Retrieving title..."
+msgctxt "staff.cat.z3950.replace_tab_with_opac.tab_name"
+msgid "Retrieving title..."
 msgstr "Վերնագրի կանչում..."
 
+#: staff.cat.z3950.spawn_marc_editor.save_button_label
+msgid "Import Record"
+msgstr "Ներմուծիր գրառում"
+
 #: staff.cat.z3950.spawn_marc_editor.same_tcn
+msgctxt "staff.cat.z3950.spawn_marc_editor.same_tcn"
 msgid ""
-"_: staff.cat.z3950.spawn_marc_editor.same_tcn\n"
 "A record with TCN %1$s already exists.\n"
 "FIXME: add record summary here"
 msgstr ""
@@ -2049,15 +2123,13 @@ msgstr ""
 "FIXME: այստեղ ավելացրու գրառման ընդհանրացումը"
 
 #: staff.cat.z3950.spawn_marc_editor.title
-msgid ""
-"_: staff.cat.z3950.spawn_marc_editor.title\n"
-"Import Collision"
+msgctxt "staff.cat.z3950.spawn_marc_editor.title"
+msgid "Import Collision"
 msgstr "Մուտք արա կոլիզիան"
 
 #: staff.cat.z3950.spawn_marc_editor.btn1_overlay
-msgid ""
-"_: staff.cat.z3950.spawn_marc_editor.btn1_overlay\n"
-"Overlay"
+msgctxt "staff.cat.z3950.spawn_marc_editor.btn1_overlay"
+msgid "Overlay"
 msgstr "Վերածածկում"
 
 #: staff.cat.z3950.spawn_marc_editor.btn2_import
@@ -2065,27 +2137,23 @@ msgid "Import with alternate TCN %1$s"
 msgstr "Մուտքագրէլ այլընտրանքային TCN-ով %1$s"
 
 #: staff.cat.z3950.spawn_marc_editor.permission_error
-msgid ""
-"_: staff.cat.z3950.spawn_marc_editor.permission_error\n"
-"check permission"
+msgctxt "staff.cat.z3950.spawn_marc_editor.permission_error"
+msgid "check permission"
 msgstr "ընտրիր իրավասությունը"
 
 #: staff.cat.z3950.spawn_marc_editor.btn3_cancel_import
-msgid ""
-"_: staff.cat.z3950.spawn_marc_editor.btn3_cancel_import\n"
-"Cancel Import"
+msgctxt "staff.cat.z3950.spawn_marc_editor.btn3_cancel_import"
+msgid "Cancel Import"
 msgstr "Չեղյալ անել ներմուծումը"
 
 #: staff.cat.z3950.spawn_marc_editor.confirm_action
-msgid ""
-"_: staff.cat.z3950.spawn_marc_editor.confirm_action\n"
-"Check here to confirm this action"
+msgctxt "staff.cat.z3950.spawn_marc_editor.confirm_action"
+msgid "Check here to confirm this action"
 msgstr "Ընտրիր այստեղ գործողությունը հաստատելու համար"
 
 #: staff.cat.z3950.spawn_marc_editor.successful_overlay
-msgid ""
-"_: staff.cat.z3950.spawn_marc_editor.successful_overlay\n"
-"Record successfully overlaid."
+msgctxt "staff.cat.z3950.spawn_marc_editor.successful_overlay"
+msgid "Record successfully overlaid."
 msgstr "Գրառումը հաջողությամբ վերածածկված է"
 
 #: staff.cat.z3950.spawn_marc_editor.successful_import_with_new_tcn
@@ -2109,9 +2177,8 @@ msgid "Overlay this record?"
 msgstr "Վերածածկե՞լ այս գրառումը:"
 
 #: staff.cat.z3950.confirm_overlay.lead.label
-msgid ""
-"_: staff.cat.z3950.confirm_overlay.lead.label\n"
-"Overlay"
+msgctxt "staff.cat.z3950.confirm_overlay.lead.label"
+msgid "Overlay"
 msgstr "Վերածածկում"
 
 #: staff.cat.z3950.confirm_overlay.lead.accesskey
@@ -2119,15 +2186,13 @@ msgid "O"
 msgstr "O"
 
 #: staff.cat.z3950.confirm_overlay.cancel.label
-msgid ""
-"_: staff.cat.z3950.confirm_overlay.cancel.label\n"
-"Cancel"
+msgctxt "staff.cat.z3950.confirm_overlay.cancel.label"
+msgid "Cancel"
 msgstr "Չեղյալ անել"
 
 #: staff.cat.z3950.confirm_overlay.cancel.accesskey
-msgid ""
-"_: staff.cat.z3950.confirm_overlay.cancel.accesskey\n"
-"C"
+msgctxt "staff.cat.z3950.confirm_overlay.cancel.accesskey"
+msgid "C"
 msgstr "C"
 
 #: staff.cat.z3950.confirm_overlay.title
@@ -2152,8 +2217,8 @@ msgid "Overlay Record"
 msgstr "Վերածածկիր գրառումը"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.same_tcn
+msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.same_tcn"
 msgid ""
-"_: staff.cat.z3950.spawn_marc_editor_for_overlay.same_tcn\n"
 "A record with TCN %1$s already exists.\n"
 "FIXME: add record summary here"
 msgstr ""
@@ -2161,9 +2226,8 @@ msgstr ""
 "FIXME: ավելացրու գրառման համառոտագրումը այստեղ:"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.import_collision
-msgid ""
-"_: staff.cat.z3950.spawn_marc_editor_for_overlay.import_collision\n"
-"Import Collision"
+msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.import_collision"
+msgid "Import Collision"
 msgstr "Ներմուծման կոլիզիա"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.btn1_overlay
@@ -2171,21 +2235,18 @@ msgid "Overlay with alternate TCN %1$s"
 msgstr "Վերածածկում այլընտրանքային TCN %1$s"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.permission_error
-msgid ""
-"_: staff.cat.z3950.spawn_marc_editor_for_overlay.permission_error\n"
-"check permission"
+msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.permission_error"
+msgid "check permission"
 msgstr "ստուգիր արտոնությունները"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.btn2_cancel
-msgid ""
-"_: staff.cat.z3950.spawn_marc_editor_for_overlay.btn2_cancel\n"
-"Cancel Import"
+msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.btn2_cancel"
+msgid "Cancel Import"
 msgstr "Չեղյալ արա ներմուծումը"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.confirm_action
-msgid ""
-"_: staff.cat.z3950.spawn_marc_editor_for_overlay.confirm_action\n"
-"Check here to confirm this action"
+msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.confirm_action"
+msgid "Check here to confirm this action"
 msgstr "Ստուգիր այստեղ հաստատելու գործողությունը"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.successful_overlay_with_new_TCN
@@ -2197,9 +2258,8 @@ msgid "Record overlay cancelled"
 msgstr "Գրառման վերածածկումը չեղյալ է արված"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.success_overlay
-msgid ""
-"_: staff.cat.z3950.spawn_marc_editor_for_overlay.success_overlay\n"
-"Record successfully overlaid."
+msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.success_overlay"
+msgid "Record successfully overlaid."
 msgstr "Գրառումը հաջողությամբ վերածածկված է"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.overlay_error
@@ -2214,6 +2274,93 @@ msgstr "Սխալ հիշված z39.50 կրէդենտալները կանչելիս
 msgid "Problem storing z39.50 credentials."
 msgstr "Պրոբլեմ z39.50 կրեդենտալները հիշելիս:"
 
+#~ msgid "You do not have permission to edit this volume."
+#~ msgstr "Իրավասու չես խմբագրելու այս հատորը:"
+
+#~ msgctxt "staff.cat.copy_browser.edit_volume.title.plural"
+#~ msgid "Volumes"
+#~ msgstr "Հատորներ"
+
+#~ msgid ""
+#~ "Edit failed:  You tried to change a volume's callnumber to one that is "
+#~ "already in use for the given library.  You should transfer the items to the "
+#~ "desired callnumber instead."
+#~ msgstr ""
+#~ "Խմբագրումը ձախողվեց:  Փորձեցիր փոխել հատորի դասիչը մեկ այլով, որն արդեն "
+#~ "օգտագործվում է քրադարանում: Պետք է տեղափոխես նյութը:"
+
+#~ msgid "Volumes modified."
+#~ msgstr "Հատորները թարմացվել են:"
+
+#~ msgid "volume update error:"
+#~ msgstr "Հատորի թարմացման սխալ"
+
+#~ msgid "Copy Browser -> Volume Edit"
+#~ msgstr "Դիտակի պատճե -> Հատորի խմբագրում"
+
+#~ msgid "Volumes deleted."
+#~ msgstr "Հատորները ջնջված են:"
+
+#~ msgid "Create Copies"
+#~ msgstr "Ստեղծիր պատճեներ"
+
+#~ msgid "Items were added or modified."
+#~ msgstr "Նյութերը ավելացվել կամ ձևափոխվել են:"
+
+#~ msgid "Note added."
+#~ msgstr "Նշումը ավելացված է:"
+
+#~ msgid "Record created."
+#~ msgstr "Գրառոմը ստեղծված է:"
+
+#~ msgid "Merge these records? (Select the \"lead\" record first)"
+#~ msgstr "Միացնե՞լ այս գրառումները: (Ընտրիր սկզբից \"lead\" գրառումը)"
+
+#~ msgid "Merge"
+#~ msgstr "Միաձուլել"
+
+#~ msgctxt "staff.cat.record_buckets.merge_records.cancel_button.label"
+#~ msgid "Cancel"
+#~ msgstr "Չեղյալ անել"
+
+#~ msgctxt "staff.cat.record_buckets.merge_records.cancel_button.accesskey"
+#~ msgid "C"
+#~ msgstr "C"
+
+#~ msgid "Lead Record? # %1$s"
+#~ msgstr "Առաջատա՞ր գրառում # %1$s"
+
+#~ msgid "Lead"
+#~ msgstr "Առաջատար"
+
+#~ msgid "Merge Aborted"
+#~ msgstr "Միաձուլւոմը կասեցվեց"
+
+#~ msgid "Records were successfully merged."
+#~ msgstr "Գրառումները հաջողությամբ միաձուլվել են:"
+
+#~ msgid "Records were not likely merged."
+#~ msgstr "Գրառումները կարծես թե չեն միաձուլվել:"
+
+#~ msgid "Batch"
+#~ msgstr "Փաթեթ"
+
+#~ msgid "Copies not modified."
+#~ msgstr "Օրինակնրը թարմացված չէն:"
+
+#~ msgctxt "staff.cat.util.mark_item_damaged.charge_patron_prompt.ok_label"
+#~ msgid "OK"
+#~ msgstr "Լավ"
+
+#~ msgctxt "staff.cat.util.mark_item_damaged.charge_patron_prompt.cancel_label"
+#~ msgid "Cancel"
+#~ msgstr "Չեղյալ անել"
+
+#~ msgctxt ""
+#~ "staff.cat.util.mark_item_damaged.charge_patron_prompt.confirm_action"
+#~ msgid "Check here to confirm this action"
+#~ msgstr "Ստուգիր այստեղ հաստատելու գործողությունը"
+
 #~ msgid "Add Subfield: CTRL+D"
 #~ msgstr "Ավելացրու ենթադաշտ: CTRL+D"
 
@@ -2223,3 +2370,30 @@ msgstr "Պրոբլեմ z39.50 կրեդենտալները հիշելիս:"
 #~ msgstr ""
 #~ "Փոխէ՞լ այս նյութերի վիճակը վնասվածի: Եթե ցանկանում ես հաշիվ ներկայացնել "
 #~ "ընթերցողին, ապա ձեռքով պետք է կանչես վերջին սպասարկումը: Շտրիխ կոդն է՝ %1$s:"
+
+#~ msgid "Charge Patron For Damaged Item?"
+#~ msgstr "Վնասված նյութի համար գանձե՞լ ընթերցողից։"
+
+#~ msgid ""
+#~ "Item %1$s will be marked damaged.  Was returned on %3$s for %2$s.  Charge "
+#~ "this patron $%4$s for the damage?"
+#~ msgstr ""
+#~ "Այս նյութը %1$s կնշվի որպես վնասված։ Վերադարձվել է՝ %3$s համար %2$s։ Գանձե՞լ "
+#~ "ընթերցողից $%4$ վնասելու համար։"
+
+#~ msgid "Item %1$s is checked out to patron, %2$s, and is due on %3$s."
+#~ msgstr ""
+#~ "Այս նյութը %1$s դուրս է տրված այս ընթերցողին, %2$s, և պետք է վերադարձվի %3$s"
+
+#~ msgid "Change Amount"
+#~ msgstr "Փոփոխիր գումարը"
+
+#~ msgid ""
+#~ "WARNING: This is not a simple keyword search.  Enter raw z39.50 PQN search "
+#~ "string:"
+#~ msgstr ""
+#~ "ԶԳՈՒՇԱՑՈՒՄ։ Սա վճռորոշ բառով պարզ փնտրում չէ։ Մուտք արա մոտավոր z39.50 PQN "
+#~ "որոնման տողը։"
+
+#~ msgid "Showing %1$s of %2$s"
+#~ msgstr "Ցույց է տալիս %1$s ընդամենը %2$s"

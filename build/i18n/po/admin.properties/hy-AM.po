@@ -1,18 +1,27 @@
 # extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/admin.properties
+#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/admin.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-23 23:36-0400\n"
-"PO-Revision-Date: 2009-11-24 05:55+0000\n"
-"Last-Translator: TZ <Unknown>\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2011-04-26 11:07+0000\n"
+"Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-11-25 04:50+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Generator: Translate Toolkit 1.8.1\n"
 "X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-05-18 04:38+0000\n"
+
+#: staff.admin.age_overdue_circulations_to_lost.chunks_processed
+msgid "Chunks Processed: %1$s"
+msgstr "Մշակած կտորներ: %1$s"
+
+#: staff.admin.age_overdue_circulations_to_lost.events_created
+msgid "Events Created: %1$s"
+msgstr "Ստեղծած իրադարձություններ: %1$s"
 
 #: staff.admin.font_settings.sound
 msgid "Sound preference saved to file system."
@@ -419,3 +428,29 @@ msgstr "Ոչ"
 #: staff.admin.offline_manage_xacts.yes
 msgid "Yes"
 msgstr "Այւ"
+
+#: staff.admin.staff.do_not_auto_attempt_print_setting.update_success
+msgid "Setting updated"
+msgstr "Կարգաբերումները թարմացված են"
+
+#: staff.admin.staff.do_not_auto_attempt_print_setting.update_failure
+msgid "Setting not updated due to error"
+msgstr "Կարգաբերումները չեն թարմացվել սխալի պատճառով"
+
+#. # 1 - workstation library shortname   2 - setting library shortname
+#: staff.admin.staff.do_not_auto_attempt_print_setting.current_setting_preamble
+msgid ""
+"Workstation library %1$s is currently suppressing auto-print for these "
+"receipt/slip types based on a setting inherited from %2$s:"
+msgstr ""
+"Աշխատանքային գրադարան %1$s ներկա պահին արգելափակում է ինքնա տպումը այս "
+"տեսակների համար, հիմնված այս կարգաբերումների վրա %2$s:"
+
+#. # 1 - workstation library shortname
+#: staff.admin.staff.do_not_auto_attempt_print_setting.current_setting_nonexistent
+msgid ""
+"Workstation library %1$s is not currently suppressing auto-print for any "
+"receipt/slip types."
+msgstr ""
+"Աշխատանքային գրադարան %1$s այս պահին չի արգելափակում ինքնա տպումը ցանկացած "
+"ձևի համար"

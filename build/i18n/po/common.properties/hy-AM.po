@@ -1,18 +1,19 @@
 # extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/common.properties
+#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/common.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-23 23:36-0400\n"
-"PO-Revision-Date: 2010-01-15 13:34+0000\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2011-05-01 15:57+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-01-16 04:36+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Generator: Translate Toolkit 1.8.1\n"
 "X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-05-18 04:39+0000\n"
 
 #: common.exception
 msgid ""
@@ -45,6 +46,10 @@ msgstr "Մաքրել"
 msgid "Check here to confirm this message."
 msgstr "Այս հաղորդումը հաստատելու համար ստուգիր այստեղ"
 
+#: common.cancelled
+msgid "Action Cancelled"
+msgstr "Գործողությունը չեղյալ է արված"
+
 #: common.error.default
 msgid "Please report that this happened."
 msgstr "Զեկուցիր որ սա պատահել է:"
@@ -62,9 +67,8 @@ msgid "Expired"
 msgstr "Ժամկետանց"
 
 #: common.barcode.status.warning.barred
-msgid ""
-"_: common.barcode.status.warning.barred\n"
-"Barred"
+msgctxt "common.barcode.status.warning.barred"
+msgid "Barred"
 msgstr "Կասեցված"
 
 #: common.barcode.status.warning.blocked
@@ -85,17 +89,16 @@ msgstr "Գործողությունը ավարտված է:"
 
 #. # common.grouping_string = the string that should be inserted between elements of a grouped list
 #: common.grouping_string
-msgid ","
-msgstr ","
+msgid ", "
+msgstr ", "
 
 #: common.unimplemented
 msgid "Not yet implemented"
 msgstr "Դեռ իրականացված չէ"
 
 #: common.yes
-msgid ""
-"_: common.yes\n"
-"Yes"
+msgctxt "common.yes"
+msgid "Yes"
 msgstr "Այւ"
 
 #: common.no
@@ -134,10 +137,14 @@ msgstr "Error with get_contentWindow(%1$s): %2$s"
 msgid "Error adjusting the font size: %1$s"
 msgstr "Սխալ ֆոնտի չափը հավասարեցնելիս: %1$s"
 
+#. # Appended to notes with certain settings enabled.  First position is staff initials, and second position is a date for when the initials were added.
+#: staff.initials.format
+msgid "[ %1$s %2$s @ %3$s ]"
+msgstr "[ %1$s %2$s @ %3$s ]"
+
 #: staff.acp_label_barcode
-msgid ""
-"_: staff.acp_label_barcode\n"
-"Barcode"
+msgctxt "staff.acp_label_barcode"
+msgid "Barcode"
 msgstr "Շտրիխ կոդ"
 
 #: staff.acp_label_call_number
@@ -156,9 +163,18 @@ msgstr "Սպասարկող գրադարան"
 msgid "Circulation Modifier"
 msgstr "Սպասարկման փոխարկիչ"
 
+#. # %1$s = circ modifier code, %2$s = circ modifier name, %3$s = circ modifier description
+#: staff.circ_modifier.display
+msgid "%1$s : %2$s : %3$s"
+msgstr "%1$s : %2$s : %3$s"
+
 #: staff.acp_label_copy_number
 msgid "Copy Number"
 msgstr "Պատճեի համար"
+
+#: staff.acp_label_parts
+msgid "Part"
+msgstr "Մաս"
 
 #: staff.acp_label_deposit_amount
 msgid "Deposit Amount"
@@ -185,9 +201,8 @@ msgid "Price"
 msgstr "Գին"
 
 #: staff.acp_label_status
-msgid ""
-"_: staff.acp_label_status\n"
-"Status"
+msgctxt "staff.acp_label_status"
+msgid "Status"
 msgstr "Վիճակ"
 
 #: staff.ahr_current_copy_label
@@ -211,14 +226,21 @@ msgid "Fulfillment Time"
 msgstr "Կատարման ժամկետ"
 
 #: staff.ahr_hold_type_label
-msgid ""
-"_: staff.ahr_hold_type_label\n"
-"Type"
+msgctxt "staff.ahr_hold_type_label"
+msgid "Type"
 msgstr "Տեսակ"
 
 #: staff.ahr_holdable_formats_label
 msgid "Holdable Formats"
 msgstr "Պաման ձևաչափեր"
+
+#: staff.ahr_holdable_part_label
+msgid "Holdable Part"
+msgstr "Պահվող մաս"
+
+#: staff.ahr_issuance_label_label
+msgid "Issuance Label"
+msgstr "Տրման պիտակ"
 
 #: staff.ahr_id_label
 msgid "Hold ID"
@@ -249,9 +271,8 @@ msgid "Top of Queue"
 msgstr "Հարցման սկիզբ"
 
 #: staff.ahr_status_label
-msgid ""
-"_: staff.ahr_status_label\n"
-"Status"
+msgctxt "staff.ahr_status_label"
+msgid "Status"
 msgstr "Վիճակ"
 
 #: staff.ahr_target_label
@@ -259,9 +280,8 @@ msgid "Target"
 msgstr "Թիրախ"
 
 #: staff.ahr_usr_label
-msgid ""
-"_: staff.ahr_usr_label\n"
-"User"
+msgctxt "staff.ahr_usr_label"
+msgid "User"
 msgstr "Օքտվող"
 
 #: staff.circ_label_due_date
@@ -281,9 +301,8 @@ msgid "Remaining Renewals"
 msgstr "Մնացող թարմացումներ"
 
 #: staff.mvr_label_author
-msgid ""
-"_: staff.mvr_label_author\n"
-"Author"
+msgctxt "staff.mvr_label_author"
+msgid "Author"
 msgstr "Հեղինակ"
 
 #: staff.mvr_label_doc_id
@@ -291,9 +310,8 @@ msgid "Document ID"
 msgstr "Փաստաթղթի ID"
 
 #: staff.mvr_label_title
-msgid ""
-"_: staff.mvr_label_title\n"
-"Title"
+msgctxt "staff.mvr_label_title"
+msgid "Title"
 msgstr "Վերնագիր"
 
 #: staff.bills_xact_dates_label
@@ -337,48 +355,59 @@ msgid "Blocks Holds?"
 msgstr "Արգելափակվա՞ծ պահումներ"
 
 #: staff.csp_block_circ_yes
-msgid ""
-"_: staff.csp_block_circ_yes\n"
-"Yes"
+msgctxt "staff.csp_block_circ_yes"
+msgid "Yes"
 msgstr "Այւ"
+
+#: staff.csp_block_circ_no
+msgctxt "staff.csp_block_circ_no"
+"staff.csp_block_circ_no"
+msgid ""
+msgstr ""
 
 #: staff.csp_block_renew_yes
-msgid ""
-"_: staff.csp_block_renew_yes\n"
-"Yes"
+msgctxt "staff.csp_block_renew_yes"
+msgid "Yes"
 msgstr "Այւ"
+
+#: staff.csp_block_renew_no
+msgctxt "staff.csp_block_renew_no"
+msgid ""
+msgstr ""
 
 #: staff.csp_block_hold_yes
-msgid ""
-"_: staff.csp_block_hold_yes\n"
-"Yes"
+msgctxt "staff.csp_block_hold_yes"
+msgid "Yes"
 msgstr "Այւ"
 
+#: staff.csp_block_hold_no
+msgctxt "staff.csp_block_hold_no"
+msgid ""
+msgstr ""
+
 #: staff.ausp_id_label
-msgid "Penalty ID"
-msgstr "Տուգանքի ID"
+msgid "Penalty ID "
+msgstr "Տուգանքի ID "
 
 #: staff.ausp_staff_label
-msgid "Applied By"
-msgstr "Կիրառված է կողմից"
+msgid "Applied By "
+msgstr "Կիրառված կողմից "
 
 #: staff.ausp_set_date_label
-msgid "Applied On"
-msgstr "Կիրառված է սրա վրա"
+msgid "Applied On "
+msgstr "Կիրառված վրան "
 
 #: staff.ausp_note_label
-msgid ""
-"_: staff.ausp_note_label\n"
-"Note"
-msgstr "Նշում"
+msgid "Note "
+msgstr "Նշում "
 
 #: staff.ausp_org_unit_label
-msgid "Library"
-msgstr "Գրադարան"
+msgid "Library "
+msgstr "Գրադարան "
 
 #: staff.mbts_id_label
-msgid "Bill #"
-msgstr "Հաշիվ #"
+msgid "Bill # "
+msgstr "Հաշիվ # "
 
 #: staff.mbts_xact_start_label
 msgid "Start"
@@ -389,9 +418,8 @@ msgid "Finish"
 msgstr "Ավարտ"
 
 #: staff.mbts_xact_type_label
-msgid ""
-"_: staff.mbts_xact_type_label\n"
-"Type"
+msgctxt "staff.mbts_xact_type_label"
+msgid "Type"
 msgstr "Տեսակ"
 
 #: staff.mbts_total_owed_label
@@ -407,9 +435,8 @@ msgid "Balance Owed"
 msgstr "Բալանս"
 
 #: staff.mbts_usr_label
-msgid ""
-"_: staff.mbts_usr_label\n"
-"User"
+msgctxt "staff.mbts_usr_label"
+msgid "User"
 msgstr "Օգտվող"
 
 #: staff.mbts_last_billing_note_label
@@ -441,15 +468,13 @@ msgid "Billing Type"
 msgstr "Վճարման տեսակ"
 
 #: staff.mb_xact_label
-msgid ""
-"_: staff.mb_xact_label\n"
-"Transaction ID"
+msgctxt "staff.mb_xact_label"
+msgid "Transaction ID"
 msgstr "Տրանզակցիաճի ID"
 
 #: staff.mb_billing_ts_label
-msgid ""
-"_: staff.mb_billing_ts_label\n"
-"When"
+msgctxt "staff.mb_billing_ts_label"
+msgid "When"
 msgstr "Երբ"
 
 #: staff.mb_void_time_label
@@ -457,15 +482,13 @@ msgid "Void Time"
 msgstr "Void ժամ"
 
 #: staff.mb_note_label
-msgid ""
-"_: staff.mb_note_label\n"
-"Note"
+msgctxt "staff.mb_note_label"
+msgid "Note"
 msgstr "Նշում"
 
 #: staff.mb_amount_label
-msgid ""
-"_: staff.mb_amount_label\n"
-"Amount"
+msgctxt "staff.mb_amount_label"
+msgid "Amount"
 msgstr "Գումար"
 
 #: staff.mb_voider_label
@@ -473,9 +496,8 @@ msgid "Voider"
 msgstr "Voider"
 
 #: staff.mb_voided_label
-msgid ""
-"_: staff.mb_voided_label\n"
-"Voided"
+msgctxt "staff.mb_voided_label"
+msgid "Voided"
 msgstr "Voided"
 
 #: staff.mb_id_label
@@ -491,9 +513,8 @@ msgid "Forgive Payment"
 msgstr "Ներված վճարում"
 
 #: staff.mp_payment_timestamp_label
-msgid ""
-"_: staff.mp_payment_timestamp_label\n"
-"When"
+msgctxt "staff.mp_payment_timestamp_label"
+msgid "When"
 msgstr "Երբ"
 
 #: staff.mp_payment_type_label
@@ -501,9 +522,8 @@ msgid "Payment Type"
 msgstr "Վճարման տեսակ"
 
 #: staff.mp_voided_label
-msgid ""
-"_: staff.mp_voided_label\n"
-"Voided"
+msgctxt "staff.mp_voided_label"
+msgid "Voided"
 msgstr "Voided"
 
 #: staff.mp_id_label
@@ -515,9 +535,8 @@ msgid "Goods Payment"
 msgstr "Ապրանքների վճարում"
 
 #: staff.mp_xact_label
-msgid ""
-"_: staff.mp_xact_label\n"
-"Transaction ID"
+msgctxt "staff.mp_xact_label"
+msgid "Transaction ID"
 msgstr "Տրանզակցիաճի ID"
 
 #: staff.mp_credit_payment_label
@@ -529,9 +548,8 @@ msgid "Work Payment"
 msgstr "Աշխատանքային վճարում"
 
 #: staff.mp_note_label
-msgid ""
-"_: staff.mp_note_label\n"
-"Note"
+msgctxt "staff.mp_note_label"
+msgid "Note"
 msgstr "Նշում"
 
 #: staff.mp_cash_payment_label
@@ -539,9 +557,8 @@ msgid "Cash Payment"
 msgstr "Կանխիկ վճարում"
 
 #: staff.mp_amount_label
-msgid ""
-"_: staff.mp_amount_label\n"
-"Amount"
+msgctxt "staff.mp_amount_label"
+msgid "Amount"
 msgstr "Գումար"
 
 #: staff.mp_check_payment_label
@@ -557,9 +574,8 @@ msgid "Staff"
 msgstr "Աշխատակազմ"
 
 #: staff.card_barcode_label
-msgid ""
-"_: staff.card_barcode_label\n"
-"Barcode"
+msgctxt "staff.card_barcode_label"
+msgid "Barcode"
 msgstr "Շտրիխ կոդ"
 
 #: staff.au_active_label
@@ -575,9 +591,8 @@ msgid "Profile"
 msgstr "Պրւֆիլ"
 
 #: staff.au_barred_label
-msgid ""
-"_: staff.au_barred_label\n"
-"Barred"
+msgctxt "staff.au_barred_label"
+msgid "Barred"
 msgstr "Կասեցված"
 
 #: staff.au_alert_message_label
@@ -685,9 +700,8 @@ msgid "Suffix"
 msgstr "Վերջածանց"
 
 #: staff.z39_50.search_class.author
-msgid ""
-"_: staff.z39_50.search_class.author\n"
-"Author"
+msgctxt "staff.z39_50.search_class.author"
+msgid "Author"
 msgstr "Հեղինակ"
 
 #: staff.z39_50.search_class.isbn
@@ -704,7 +718,7 @@ msgstr "Նյութի տեսակ"
 
 #: staff.z39_50.search_class.item_type.all
 msgid "All Formats"
-msgstr "Բոլոր ձևաչափեր"
+msgstr "Բոլոր ձեւաչափերը"
 
 #: staff.z39_50.search_class.item_type.art
 msgid "Papers/Articles"
@@ -716,7 +730,7 @@ msgstr "Գրքեր"
 
 #: staff.z39_50.search_class.item_type.com
 msgid "Computer files"
-msgstr "Համակարգչային ֆայլեր"
+msgstr "Համակարգչային նշոցներ"
 
 #: staff.z39_50.search_class.item_type.map
 msgid "Maps"
@@ -763,9 +777,8 @@ msgid "Accession #"
 msgstr "Մատչելիության #"
 
 #: staff.z39_50.search_class.title
-msgid ""
-"_: staff.z39_50.search_class.title\n"
-"Title"
+msgctxt "staff.z39_50.search_class.title"
+msgid "Title"
 msgstr "Վերնագիր"
 
 #: staff.z39_50_import_interface_label
@@ -781,8 +794,8 @@ msgid "Offline interface synchronized with server."
 msgstr "Օֆլայն միջերեսը սինխրոն է կայանի հետ:"
 
 #: staff.main.gen_offline_widgets.noncat_sort.error
-msgid "error in noncat sorting:"
-msgstr "սխալ noncat տեսակավորումում"
+msgid "error in noncat sorting: "
+msgstr "սխալ ոչ քարտ տեսակավորման մեջ "
 
 #: staff.main.gen_offline_widgets.please_wait
 msgid "Please wait"
@@ -804,6 +817,10 @@ msgstr "աշխատանքային կայանի գրանցման սխալ (%1$s)"
 msgid "Registration successful"
 msgstr "Գրանցումը հաջող է"
 
+#: staff.main.gen_offline_widgets.registration.empty
+msgid "Please specify a workstation name"
+msgstr "Բնութագրի աշխ. կայանի անունը"
+
 #: staff.util.timestamp_dialog.future_date_disallowed
 msgid "Future dates disallowed."
 msgstr "Ապագա ամսաթվերը արվելված են"
@@ -820,5 +837,30 @@ msgstr "Այսօրը արգելված է"
 msgid "Triggered Events: %1$s"
 msgstr "Սկիզբ առնող գործողություններ: %1$s"
 
+#~ msgid ","
+#~ msgstr ","
+
+#~ msgctxt "staff.ausp_note_label"
+#~ msgid "Note"
+#~ msgstr "Նշում"
+
+#~ msgid "Bill #"
+#~ msgstr "Հաշիվ #"
+
+#~ msgid "error in noncat sorting:"
+#~ msgstr "սխալ noncat տեսակավորումում"
+
 #~ msgid "Expire Time"
 #~ msgstr "Լրանալու ժամկետ"
+
+#~ msgid "Applied On"
+#~ msgstr "Կիրառված է սրա վրա"
+
+#~ msgid "Penalty ID"
+#~ msgstr "Տուգանքի ID"
+
+#~ msgid "Applied By"
+#~ msgstr "Կիրառված է կողմից"
+
+#~ msgid "Library"
+#~ msgstr "Գրադարան"

@@ -1,18 +1,19 @@
 # extracted from ../../Open-ILS/web/opac/locale/en-US/opac.dtd
+#. extracted from ../../Open-ILS/web/opac/locale/en-US/opac.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-23 23:35-0400\n"
-"PO-Revision-Date: 2009-12-15 14:11+0000\n"
+"POT-Creation-Date: 2011-04-18 21:44-0400\n"
+"PO-Revision-Date: 2011-07-15 17:50+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-12-16 05:28+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Generator: Translate Toolkit 1.8.1\n"
 "X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-07-16 04:57+0000\n"
 
 # =================================================================
 # Some generic stuff
@@ -86,7 +87,7 @@ msgstr "Մատենաշար"
 
 #: common.keyword
 msgid "Keyword"
-msgstr "Վճռորոշ բառ"
+msgstr "Հիմնաբառ"
 
 #: common.type
 msgid "Search Type"
@@ -115,7 +116,7 @@ msgstr "Գրանցում"
 
 #: common.logout
 msgid "Log Out"
-msgstr "Հեռանալ"
+msgstr "Ելք"
 
 #: common.physical
 msgid "Physical Description"
@@ -215,8 +216,7 @@ msgid "Tips:"
 msgstr "Հնարքներ։"
 
 #: common.tips.tip1
-msgid ""
-"Click on a folder icon in the sidebar to access related quick searches"
+msgid "Click on a folder icon in the sidebar to access related quick searches"
 msgstr ""
 "Սեղմիր կողային մասում առկա թղթապանակի պատկերիկի վրա առագ փնտրումը հասանելի "
 "դարձնելու համար"
@@ -328,10 +328,10 @@ msgstr ""
 "պատկանելիության, ընթերցողի հիմնական գրադարանի, և նյութի պատվերի "
 "դիտարկումները \tորքան ամսաթիվը սահմանում է առաջնայնությունները պահումների "
 "համար. ցուցակը դինամիկ է, փոփոխվաղ \tյուրաքանչյուր տեղադրված պահման հետ։  "
-"Հետևաբար, տեղաբաշխման յուրաքանչյուր ցուցում \tպահման ցուցակում կլինի ոչ "
-"ճիշտ։  PINES-ի պահումների համակարգը նախագծված է \tպահանջվող նյութը "
-"հնարավորինս արագ և արդյունավետ կերպով ստանալու համար։ \tՁեր PINES գրադարանը "
-"կկապվի ձեր հետ երբ պահվող նյութերը կդառնան \tհասանելի։"
+"Հետևաբար, տեղաբաշխման յուրաքանչյուր ցուցում \tպահման ցուցակում կլինի ոչ ճիշտ։ "
+" PINES-ի պահումների համակարգը նախագծված է \tպահանջվող նյութը հնարավորինս "
+"արագ և արդյունավետ կերպով ստանալու համար։ \tՁեր PINES գրադարանը կկապվի ձեր "
+"հետ երբ պահվող նյութերը կդառնան \tհասանելի։"
 
 #: holds.advanced_options
 msgid ""
@@ -421,6 +421,22 @@ msgstr "/"
 msgid "Large"
 msgstr "Լայն"
 
+#: common.googlechromeframe.why
+msgid ""
+"Installing the Google Chrome Frame plugin for Internet Explorer will improve "
+"your Evergreen experience with more speed and advanced features!"
+msgstr ""
+"Google Chrome Frame փլագինի տեղադրում Internet Explorer-ի համար կբարելավի քո "
+"փորձառությունը Evergreen-ի հետ արագության ավելացման հաշվին։"
+
+#: common.googlechromeframe.install
+msgid "Install Now!"
+msgstr "Տեղադրի հիմա"
+
+#: common.googlechromeframe.dontask
+msgid "Don't ask me again"
+msgstr "Այլևս մի հարցրեք"
+
 #: home.js.disabled
 msgid ""
 "JavaScript must be enabled in order for you to use the regular Evergreen "
@@ -429,21 +445,21 @@ msgid ""
 "browser. \n"
 "To use the regular Evergreen Catalog, enable JavaScript by changing your "
 "browser options, then \n"
-"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
-"\n"
+"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. \n"
 "<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
 "<a style='color: blue; text-decoration: underline;' "
 "href='/opac/extras/slimpac/start.html'>here</a>."
 msgstr ""
-"JavaScript-ը պետք է թույլատրված լինի որպեսզի կարողանաս օգտագործել Evergreen-"
-"ի սովորական քարտարանը։ \n"
+"JavaScript-ը պետք է թույլատրված լինի որպեսզի կարողանաս օգտագործել "
+"Evergreen-ի սովորական քարտարանը։ \n"
 "Համենայնդեպս թվում է որ JavaScript-ը արգելափակված է կամ քո դիտակի ւողմից չի "
 "աջակցվում։ \n"
 "Evergreen-ի սովորական քարտարանի օգտագործման համար թույլատրիր JavaScript-ը "
 "փոխելով քո դիտակի ընտրությունները, ապա \n"
 "<a style='color: blue; text-decoration: underline;' href='/'>փորձիր "
 "նորից</a>.\n"
-"<br/><br/>Որպես այլընտրանք կարող ես օգտագործել հիմնական միայն HTML-քարտարանը։"
+"<br/><br/>Որպես այլընտրանք կարող ես օգտագործել հիմնական միայն "
+"HTML-քարտարանը։"
 
 #. =================================================================
 #. MyOPAC bookbag page
@@ -663,14 +679,13 @@ msgstr ""
 "Գրադարանի քաղաքականությունը արգելում է այս պահին այս նյութի թարմացումը։ "
 "Հետագա մանրամասների համար տես գրադարանավարին։"
 
-# =================================================================
-# MyOPAC Fines Page
 #. =================================================================
 #. MyOPAC Fines Page
 #. =================================================================
 #: myopac.fines.title
+msgctxt "myopac.fines.title"
 msgid "Summary"
-msgstr "Ընդհանրացում"
+msgstr "Ամփոփում"
 
 #: myopac.fines.owed
 msgid "Total Owed"
@@ -1061,7 +1076,7 @@ msgstr "Զիպ"
 
 #: myopac.summary.address.edit
 msgid "Edit Address"
-msgstr "Խմբագրիր հասցեն"
+msgstr "Խմբագրել հասցեն"
 
 #: myopac.summary.address.invalid
 msgid "Invalid Address"
@@ -1073,7 +1088,8 @@ msgstr "Մուտք արա օգտվողի անուն"
 
 #: myopac.summary.username.dup
 msgid ""
-"The requested username is not available.  Please choose a different username."
+"The requested username is not available.  Please choose a different "
+"username."
 msgstr "Պահանջվող օգտվողi անունը մատչելի չէ։ Ընտրիր օգտվողի այլ անուն։"
 
 #: myopac.summary.username.success
@@ -1256,7 +1272,7 @@ msgstr "Ենթադաշտ։"
 
 #: search.marc.value
 msgid "Value:"
-msgstr "Արժեք։"
+msgstr "Արժեքը՝"
 
 #: search.marc.add.row
 msgid "Add Row"
@@ -1368,6 +1384,10 @@ msgstr "Իմ փնտրման արդյունքները"
 msgid "My Title Results"
 msgstr "Իմ վերնագրի արդյունքները"
 
+#: navigate.facetRefine
+msgid "Refine your search"
+msgstr "Վերաձևակերպիր քո հարցումը"
+
 #: navigate.title.details
 msgid "My Title Details"
 msgstr "Իմ վերնագրի մանրամասները"
@@ -1419,8 +1439,10 @@ msgid "GALILEO"
 msgstr "GALILEO"
 
 #: footer.copyright
-msgid "Copyright &#xA9; 2006-2008 Georgia Public Library Service"
-msgstr "Հեղինակային իրավունք &#xA9; 2006-2008 Georgia Public Library Service"
+msgid "Copyright &#xA9; 2006-2010 Georgia Public Library Service, and others"
+msgstr ""
+"Հեղինակային իրավունք &#xA9; 2006-2010 Գեորգիայի հանրային գրադարանի "
+"ծառայություն և մյուսներ"
 
 # Introduces the logo for the project
 #. Introduces the logo for the project
@@ -1500,11 +1522,15 @@ msgstr "Գրքեր"
 
 #: opac.search.allFormats
 msgid "All Formats"
-msgstr "Բոլոր ձևաչափերը"
+msgstr "Բոլոր ձեւաչափերը"
 
 #: opac.search.largePrint
 msgid "Large Print Books"
 msgstr "Մեծ տպագիր գրքեր"
+
+#: opac.search.ebook
+msgid "E-Books"
+msgstr "էլ գրքեր"
 
 #: opac.search.audioBooks
 msgid "Audiobooks"
@@ -1743,6 +1769,10 @@ msgstr "Միջև"
 msgid "print these details"
 msgstr "տպիր այս մանրամասները"
 
+#: rdetail.cn.part
+msgid "Part"
+msgstr "Մաս"
+
 #: rdetail.cn.barcode
 msgctxt "rdetail.cn.barcode"
 msgid "Barcode"
@@ -1781,6 +1811,14 @@ msgstr "պակաս տեղեկատվություն"
 msgid "place hold"
 msgstr "տեղադրիր պահումը"
 
+#: rdetail.cn.reserve
+msgid "book now"
+msgstr "պատվիրի հիմա"
+
+#: rdetail.cn.multi_home
+msgid "linked titles"
+msgstr "կապված վերնագրեր"
+
 #: rdetail.cn.disabled
 msgid "- Disabled -"
 msgstr "- Արգելափակված -"
@@ -1815,9 +1853,17 @@ msgstr "Սկսիր"
 msgid "Previous page"
 msgstr "Նախորդ էջ"
 
+#: rdetail.page.previous.short
+msgid "&#171;"
+msgstr "&#171;"
+
 #: rdetail.page.next
 msgid "Next page"
 msgstr "Հաջորդ էջ"
+
+#: rdetail.page.next.short
+msgid "&#187;"
+msgstr "&#187;"
 
 #: rdetail.page.last
 msgid "Last results page"
@@ -1945,6 +1991,11 @@ msgctxt "rdetail.extras.browser"
 msgid "Shelf Browser"
 msgstr "Դարակի դիտակ"
 
+#: rdetail.extras.bib_summary
+msgctxt "rdetail.extras.bib_summary"
+msgid "Summary"
+msgstr "Ամփոփում"
+
 #: rdetail.extras.reviews
 msgctxt "rdetail.extras.reviews"
 msgid "Reviews"
@@ -1974,11 +2025,16 @@ msgstr "Աննոտացիա"
 msgid "MARC Record"
 msgstr "MARC գրառում"
 
+#: rdetail.extras.foreign_items
+msgid "Linked Titles"
+msgstr "Կապված վերնագրեր"
+
 #: rdetail.extras.call.null
 msgid "There are no call numbers for this item at this location."
 msgstr "Այս վայրում այս նյութի համար դասիչավորման համարներ չկան"
 
 #: rdetail.extras.call.local
+msgctxt "rdetail.extras.call.local"
 msgid "Local Call Numbers:"
 msgstr "Տեղային դասիչներ"
 
@@ -1994,9 +2050,13 @@ msgstr "Տես այս գրքի լրիվ տեքստը"
 msgid "Show a preview of this book from Google Book Search"
 msgstr "Ցույց տուր Google Book Search-ից այս գրքի նախնական դիտումը"
 
+#: rdetail.extras.novelist
+msgid "Suggestions by NoveList"
+msgstr "Առաջարկնե արված NoveList"
+
 #: rdetail.loading
-msgid "Loading copy infomation..."
-msgstr "Պատճենի տեղեկատվության բեռնավորում..."
+msgid "Loading copy information..."
+msgstr "Բեռնավորում է պատճենի տեղեկատվությոնը"
 
 #: rdetail.noneAvailable
 msgid " * There are no copies in this location"
@@ -2010,6 +2070,10 @@ msgstr "Առցանց պաշարներ"
 msgctxt "rdetail.summary.subjects"
 msgid "Subjects"
 msgstr "Խորագրեր"
+
+#: rdetail.summary.issues_held
+msgid "Issues Held"
+msgstr "Համարները պահված են"
 
 #: result.sort_by
 msgid "Sort Results by Relevance"
@@ -2061,8 +2125,7 @@ msgstr "Միգուցե՞ դու նկատի ունես"
 
 #: result.lowhits.formats
 msgid "You will find more hits when searching all item formats:"
-msgstr ""
-"Դու կունենաս ավելի շատ հարվածներ երբ որոնես ըստ նյութի բոլոր ձևաչափերի։"
+msgstr "Դու կունենաս ավելի շատ հարվածներ երբ որոնես ըստ նյութի բոլոր ձևաչափերի։"
 
 #: result.lowhits.formats.search
 msgid "Search again with all formats?"
@@ -2112,6 +2175,11 @@ msgstr "Իրականացրու որոնում ըստ Հեղինակի"
 msgid "Browse in Google Books Search"
 msgstr "Դիտիր Google-ի Գրքի փնտրման մեջ"
 
+#: result.localCallNumbers
+msgctxt "result.localCallNumbers"
+msgid "Local Call Numbers:"
+msgstr "Տեղային դասիչներ"
+
 #: common.call.number.label
 msgid "Call Number:"
 msgstr "Դասիչ։"
@@ -2124,9 +2192,17 @@ msgstr "ISBN:"
 msgid "ISSN:"
 msgstr "ISSN:"
 
+#: common.mono_parts.label
+msgid "Monograph Parts:"
+msgstr "Մենագրության մասեր"
+
 #: common.copy.barcode.label
 msgid "Copy Barcode:"
 msgstr "Պատճենահանիր շտրիխ կոդը։"
+
+#: common.issuance_label.label
+msgid "Issuance Label:"
+msgstr "Տրման պիտակ"
 
 #: common.hold.place
 msgid "Place hold for my account"
@@ -2156,6 +2232,10 @@ msgstr "Հատորի պահում"
 msgid "Copy Hold"
 msgstr "Պատճենի պահում"
 
+#: common.hold.issuance
+msgid "Issuance Hold"
+msgstr "Տրման պահում"
+
 #: common.hold.advanced
 msgid "Advanced Hold Options"
 msgstr "Պահման խորացված ընտրանքներ"
@@ -2164,17 +2244,24 @@ msgstr "Պահման խորացված ընտրանքներ"
 msgid "Please select a physical location where your hold can be delivered."
 msgstr "Ընտրեք այն ֆիզիկական տեղաբաշխումը, ուր կարելի է առաքել ձեր պահումը։"
 
+#: common.hold.checked_out
+msgid "This item is already checked out."
+msgstr "Այս նյութը արդեն սպասարկված է"
+
+#: common.hold.checked_out.override
+msgid ""
+"This item is already checked out.  Would you like to place the hold anyway?"
+msgstr "Այս նյութը արդեն սպասարկված է։ Ցանկանում՞ ես կատարել նախնական պատվեր։"
+
 #: common.hold.exists
 msgid "A hold already exists on the requested item."
 msgstr "Պատվիրված նյութի վրա արդեն գոյություն ունի պահում։"
 
 #: common.hold.exists.override
 msgid ""
-"A hold already exists on the requested \n"
-"item. Would you like to create the hold anyway?"
-msgstr ""
-"Պահանջվողի համար արդեն պահում կա։ \n"
-"Ցանկանու՞մ ես ստեղծել պահում։"
+"A hold already exists on the requested item. Would you like to create the "
+"hold anyway?"
+msgstr "Պահանջվող նյութի համար արդեն կա պահում։ Ցանկանում՞ ես կատարել պահում։"
 
 #: common.hold.barred
 msgid ""
@@ -2183,8 +2270,8 @@ msgid ""
 "library."
 msgstr ""
 "ԸՆԹԵՐՑՈՂԸ ԿԱՍԵՑՎԱԾ Է։ տես նշումները \n"
-"\"Իմ հաշվեկշիռ\" էջի \"Աշխատակազմի նշումներ\" բաժնում, կամ կապվիր քո "
-"գրադարանի հետ։"
+"\"Իմ հաշվեկշիռ\" էջի \"Աշխատակազմի նշումներ\" բաժնում, կամ կապվիր քո գրադարանի "
+"հետ։"
 
 #: common.hold.item.invalid
 msgid ""
@@ -2353,8 +2440,7 @@ msgstr ""
 "տեղային գրադարանի հետ։"
 
 #: login.account.inactive
-msgid ""
-"This account has been deactivated.  Please contact your local library."
+msgid "This account has been deactivated.  Please contact your local library."
 msgstr "Այս հաշիվը ապաակտիվացված է։ Կապվիր քո տեղային գրադարանի հետ։"
 
 #: login.failed
@@ -2367,14 +2453,14 @@ msgstr ""
 
 #: button.go
 msgid "Go!"
-msgstr "Գնա"
+msgstr "Առա՛ջ"
 
 #. =================================================================
 #. Slimpac Simple Search
 #. =================================================================
 #: slimpac.language.select
 msgid "Select language"
-msgstr "Ընտրիր լեզու"
+msgstr "Ընտրե՛ք լեզուն"
 
 # =================================================================
 # Slimpac Simple Search
@@ -2570,6 +2656,85 @@ msgstr "Շաբաթ"
 msgid "Sunday"
 msgstr "Կիրակի"
 
+#: circ.fail_part.actor.usr.barred
+msgid "The patron is barred"
+msgstr "Ընթերցողը կասեցված է:"
+
+#: circ.fail_part.asset.copy.circulate
+msgid "The item does not circulate"
+msgstr "Նյութը չի սպասարկվում։"
+
+#: circ.fail_part.asset.copy_location.circulate
+msgid "Items from this shelving location do not circulate"
+msgstr "Այս գրադարակի նյութերը չեն սպասարկվում։"
+
+#: circ.fail_part.asset.copy.status
+msgid "The item cannot circulate at this time"
+msgstr "Այս պահին հնարավոր չէ սպասարկել այս նյութը։"
+
+#: circ.fail_part.circ.holds.target_skip_me
+msgid "The item's circulation library does not fulfill holds"
+msgstr "Այս նյութը սպասարկող գրադարանը չի իրականացնում պահում։"
+
+#: circ.fail_part.config.circ_matrix_circ_mod_test
+msgid "The patron has too many items of this type checked out"
+msgstr "Ընթերցողը այս տեսակի նյութի համար ունի չափից շատ վերցրած նյութեր։"
+
+#: circ.fail_part.config.circ_matrix_test.available_copy_hold_ratio
+msgid "The available item-to-hold ratio is too low"
+msgstr "ասանելի նյութ-պահում գործակիցը շատ ցածր է։"
+
+#: circ.fail_part.config.circ_matrix_test.circulate
+msgid "Circulation rules reject this item as non-circulatable"
+msgstr "Սպասարկման օրենքները մերժում են այս նյութը որպես չսպասարկվող։"
+
+#: circ.fail_part.config.circ_matrix_test.total_copy_hold_ratio
+msgid "The total item-to-hold ratio is too low"
+msgstr "Նյութ-պահում գործակիցը շատ ցածր է։"
+
+#: circ.fail_part.config.hold_matrix_test.holdable
+msgid "Hold rules reject this item as unholdable"
+msgstr "Պահման օրենքները մերժում են այս նյութը որպես չպահվող։"
+
+#: circ.fail_part.config.hold_matrix_test.max_holds
+msgid "The patron has reached the maximum number of holds"
+msgstr "Ընթերցողը հասել է պահումների ամենաշատ քանակին։"
+
+#: circ.fail_part.config.rule_age_hold_protect.prox
+msgid "The item is too new to transit this far"
+msgstr "Նյութը չափից դուրս թարմ է տրանզիտի համար"
+
+#: circ.fail_part.no_item
+msgid "The system could not find this item"
+msgstr "Համակարգը չի կարող գտնել այս նյութը։"
+
+#: circ.fail_part.no_ultimate_items
+msgid "The system could not find any items to match this hold request"
+msgstr "Համակարգը չի կարող գտնել որևէ նյութ որը բավարարում է պահման պահանջին։"
+
+#: circ.fail_part.no_matchpoint
+msgid "System rules do not define how to handle this item"
+msgstr "Համակարգի օրենքները չեն սահմանում ինչպես պահել նյութը։"
+
+#: circ.fail_part.no_user
+msgid "The system could not find this patron"
+msgstr "Համակարգը չի կարող գտնել այս ընթերցողին։"
+
+#: circ.fail_part.transit_range
+msgid "The item cannot transit this far"
+msgstr "Նյութը չի կարել դնել տրանզիտ"
+
+# =================================================================
+# MyOPAC Fines Page
+#~ msgid "Summary"
+#~ msgstr "Ընդհանրացում"
+
+#~ msgid "Local Call Numbers:"
+#~ msgstr "Տեղային դասիչներ"
+
+#~ msgid "Loading copy infomation..."
+#~ msgstr "Պատճենի տեղեկատվության բեռնավորում..."
+
 #~ msgid "details"
 #~ msgstr "մանրամասներ"
 
@@ -2584,3 +2749,13 @@ msgstr "Կիրակի"
 
 #~ msgid " of at least "
 #~ msgstr " ամենաքիչը "
+
+#~ msgid "Copyright &#xA9; 2006-2008 Georgia Public Library Service"
+#~ msgstr "Հեղինակային իրավունք &#xA9; 2006-2008 Georgia Public Library Service"
+
+#~ msgid ""
+#~ "A hold already exists on the requested \n"
+#~ "item. Would you like to create the hold anyway?"
+#~ msgstr ""
+#~ "Պահանջվողի համար արդեն պահում կա։ \n"
+#~ "Ցանկանու՞մ ես ստեղծել պահում։"
