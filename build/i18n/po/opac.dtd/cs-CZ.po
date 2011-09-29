@@ -1,18 +1,19 @@
+#. extracted from ../../Open-ILS/web/opac/locale/en-US/opac.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-23 23:35-0400\n"
-"PO-Revision-Date: 2009-11-24 07:06+0000\n"
-"Last-Translator: Linda Skolková <Unknown>\n"
+"POT-Creation-Date: 2011-04-18 21:44-0400\n"
+"PO-Revision-Date: 2011-09-03 07:18+0000\n"
+"Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <li@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-11-25 04:52+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
-"X-Poedit-Country: CZECH REPUBLIC\n"
+"X-Generator: Translate Toolkit 1.8.1\n"
 "X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-09-04 04:43+0000\n"
+"X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
@@ -21,7 +22,7 @@ msgstr ""
 #. =================================================================
 #: lang.version
 msgid "remote v1"
-msgstr ""
+msgstr "vzdálený v1"
 
 #: lang.description
 msgid "English"
@@ -37,7 +38,7 @@ msgstr "Vše"
 
 #: common.currency
 msgid "$"
-msgstr "&#x25;"
+msgstr "Kč"
 
 #: common.language
 msgid "Language: "
@@ -49,7 +50,7 @@ msgstr "Jméno"
 
 #: common.none
 msgid "None"
-msgstr "Nic"
+msgstr "Žádné"
 
 #: common.title
 msgctxt "common.title"
@@ -88,7 +89,7 @@ msgstr "Klíčové slovo"
 
 #: common.type
 msgid "Search Type"
-msgstr "Druh vyhledávání"
+msgstr "Typ vyhledávání"
 
 #: common.isbn
 msgctxt "common.isbn"
@@ -108,11 +109,11 @@ msgstr "Načítání..."
 #: common.login
 msgctxt "common.login"
 msgid "Login"
-msgstr "Přihlásit"
+msgstr "Přihlásit se"
 
 #: common.logout
 msgid "Log Out"
-msgstr "Odhlásit"
+msgstr "Odhlásit se"
 
 #: common.physical
 msgid "Physical Description"
@@ -140,11 +141,11 @@ msgstr "Status"
 
 #: common.at
 msgid "at"
-msgstr ""
+msgstr "v"
 
 #: common.of
 msgid "of"
-msgstr ""
+msgstr "z"
 
 #: common.no
 msgid "No"
@@ -157,7 +158,7 @@ msgstr "Ano"
 #: common.cancel
 msgctxt "common.cancel"
 msgid "Cancel"
-msgstr "Zrušit"
+msgstr "Storno"
 
 #: common.library
 msgctxt "common.library"
@@ -176,7 +177,7 @@ msgstr "Heslo"
 #: common.submit
 msgctxt "common.submit"
 msgid "Submit"
-msgstr "Odeslat"
+msgstr "Potvrdit"
 
 #: common.close
 msgid "close"
@@ -201,29 +202,30 @@ msgstr "Vyhledávám "
 
 #: common.ofAtLeast
 msgid " of about "
-msgstr " přibližně "
+msgstr " z přibližně "
 
 #: common.relevancy
 msgid "Match Score: "
-msgstr ""
+msgstr "Skóre shody: "
 
 #: common.tips
 msgid "Tips:"
 msgstr "Tipy:"
 
 #: common.tips.tip1
-msgid ""
-"Click on a folder icon in the sidebar to access related quick searches"
+msgid "Click on a folder icon in the sidebar to access related quick searches"
 msgstr ""
-"Klikněte na ikonu složky pro zobrazení souvisejících rychlých vyhledávání"
+"Pro rychlé vyhledání souvisejících dokumentů klikněte na ikonu složky (nebo "
+"vhodný odkaz) v postranním panelu."
 
 #: common.tips.tip2
 msgid ""
 "If you don't find what you want try expanding your search using the range "
 "selector at the right of the search bar"
 msgstr ""
-"Pokud jste nenalezli, co jste hledali, zkuste rozšířit vyhledávání použitím "
-"stupnice rozsahu na pravé straně vyhledávacího pole"
+"Pokud jste nenalezli, co jste hledali, zkuste rozšířit vyhledávací možnosti "
+"pomocí nástrojů napravo od vyhledávacího pole (např. na všechny formáty, "
+"všechny knihovny apod.)."
 
 #: common.org.openAll
 msgid "Expand All"
@@ -236,7 +238,7 @@ msgstr "Zavřít vše"
 #: common.org.cancel
 msgctxt "common.org.cancel"
 msgid "Cancel"
-msgstr "Zrušit"
+msgstr "Storno"
 
 #: common.org.loading
 msgid "Loading library selector..."
@@ -252,12 +254,14 @@ msgid ""
 "Click on a location's name to select it.  Click on the folder icons to "
 "expand a section."
 msgstr ""
-"Zvolte název místa kliknutím. Klikněte na ikonu složky k rozbalení oddílu."
+"Požadovanou knihovnu vyberete kliknutím  na její název. \r\n"
+"Kliknete-li na šipku nebo ikonu složky, zobrazí se další knihovny nebo "
+"jejich části."
 
 #: opac.login.login
 msgctxt "opac.login.login"
 msgid "Login"
-msgstr "Přihlásit"
+msgstr "Přihlásit se"
 
 #: opac.basic
 msgctxt "opac.basic"
@@ -272,7 +276,7 @@ msgid ""
 msgstr ""
 "Heslo musí být minimálně 7 znaků dlouhé, \n"
 "obsahovat nejméně jedno písmeno (a-z/A-Z), \n"
-"a jednu číslici."
+"a nejméně jednu číslici."
 
 #: common.a2z.title
 msgid "Title: A to Z"
@@ -292,15 +296,15 @@ msgstr "Autor: Z až A"
 
 #: common.new2old.pubdate
 msgid "Date: Newest to Oldest"
-msgstr "Datum: Od nejnovějšího po nejstarší"
+msgstr "Datum: od nejnovějšího po nejstarší"
 
 #: common.old2new.pubdate
 msgid "Date: Oldest to Newest"
-msgstr "Datum: Od nejstaršího po nejnovější"
+msgstr "Datum: od nejstaršího po nejnovější"
 
 #: opac.style.reddish
 msgid "Reddish"
-msgstr "Červenější"
+msgstr "Načervenalý"
 
 #: holds.where_am_i
 msgid ""
@@ -314,15 +318,15 @@ msgid ""
 "Your library will contact you when you hold items become \n"
 "available."
 msgstr ""
-"Seznamy rezervací nejsou tak jednoduché jako \n"
-"'první příchozí je první obsloužený'. Složitý systém kombinující \n"
-"ohledy vlastnictví exempláře, klientovy domovské knihovny a datum pořízení "
-"exempláře,  \n"
-"určuje priority pro rezervace. Seznam je dynamický a mění se s každou \n"
-"novou rezervací. Proto je jakékoliv určení umístění \n"
-"na seznamu rezervací nepřesné. Systém rezervací je navržen tak, aby \n"
-"zajistil požadovaný exemplář nejrychlejším a nejefektivnějším způsobem. \n"
-"Vaše knihovna Vás kontaktuje, jakmile bude Vámi rezervovaný exemplář \n"
+"Seznamy rezervací nefungují jednoduše na principu \n"
+"'kdo dřív přijde, ten dřív mele'.  Priority rezervací určuje \n"
+"složitý systém, který bere v úvahu vlastnictví exempláře,\n"
+"domovskou knihovnu čtenáře a datum nákupu exempláře;\n"
+"seznam je dynamický a mění se s každou zadanou rezervací.\n"
+"Proto je pořadí v seznamu rezervací vždy nepřesné. Systém\n"
+"rezervací je nastaven tak, aby byl požadovaný exemplář vždy\n"
+"doručen co nejrychleji a nejefektivněji. Vaše knihovna Vás\n"
+"bude kontaktovat, až budou Vámi rezervované exempláře\n"
 "k dispozici."
 
 #: holds.advanced_options
@@ -331,16 +335,16 @@ msgid ""
 "versions of this title, select the formats that would be acceptable. \n"
 "The first available copy will be sent to you."
 msgstr ""
-"Pokud chcete rozšířit oblast své rezervace tak, aby zahrnovala \n"
+"Pokud chcete rozšířit svou rezervaci tak, aby zahrnovala \n"
 "další verze tohoto titulu, zvolte nosiče, které jsou pro Vás přijatelné. \n"
-"První dostupný exemplář Vám pak bude zaslán."
+"Bude Vám dodán první dostupný exemplář."
 
 #. =================================================================
 #. Events and Permissions
 #. =================================================================
 #: ilsevent.0
 msgid "Operation Succeeded"
-msgstr "Operace dokončena"
+msgstr "Operace úspěšně dokončena"
 
 #: ilsevent.1000
 msgid "Login failed.  The username or password entered was incorrect."
@@ -364,31 +368,33 @@ msgstr "Přístup odmítnut"
 
 #: ilsperm.CREATE_HOLD
 msgid "User is not allowed to create holds for other users at this location"
-msgstr "Uživate zde nemá povoleno vytvářet rezervace pro jiné uživatele"
+msgstr ""
+"Uživatel není oprávněn vytvářet rezervace pro ostatní uživatele v této "
+"knihovně"
 
 #. =================================================================
 #. common/pages
 #. =================================================================
 #: common.cn.loading
 msgid "Loading Callnumber Page..."
-msgstr "Nahrávání stránky signatur..."
+msgstr "Načítání stránky se signaturami..."
 
 #: common.cn.browsing
 msgid "You are now browsing"
-msgstr ""
+msgstr "Nyní prohlížíte"
 
 #: common.cn.previous
 msgid "&lt;&lt; Previous Page"
-msgstr "&lt;&lt; Předchozí strana"
+msgstr "&lt;&lt; Předchozí stránka"
 
 #: common.cn.shelf
 msgctxt "common.cn.shelf"
 msgid "Shelf Browser"
-msgstr ""
+msgstr "Prohlížeč regálů"
 
 #: common.cn.next
 msgid "Next Page &gt;&gt;"
-msgstr "Další strana &gt;&gt;"
+msgstr "Další stránka &gt;&gt;"
 
 #: common.textsize.title
 msgid "Text Size: "
@@ -396,7 +402,7 @@ msgstr "Velikost textu: "
 
 #: common.textsize.regular
 msgid "Regular"
-msgstr "Normální"
+msgstr "Běžná"
 
 #. Regular / Large
 #: common.textsize.separator
@@ -405,7 +411,23 @@ msgstr "/"
 
 #: common.textsize.large
 msgid "Large"
-msgstr "Velký"
+msgstr "Velká"
+
+#: common.googlechromeframe.why
+msgid ""
+"Installing the Google Chrome Frame plugin for Internet Explorer will improve "
+"your Evergreen experience with more speed and advanced features!"
+msgstr ""
+"Instalování doplňku Google Chrome Frame pro Internet Explorer dodá "
+"Evergreenu vyšší rychlost a rozšířené funkce!"
+
+#: common.googlechromeframe.install
+msgid "Install Now!"
+msgstr "Instalovat nyní!"
+
+#: common.googlechromeframe.dontask
+msgid "Don't ask me again"
+msgstr "Již se mě znovu neptat"
 
 #: home.js.disabled
 msgid ""
@@ -415,15 +437,13 @@ msgid ""
 "browser. \n"
 "To use the regular Evergreen Catalog, enable JavaScript by changing your "
 "browser options, then \n"
-"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
-"\n"
+"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. \n"
 "<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
 "<a style='color: blue; text-decoration: underline;' "
 "href='/opac/extras/slimpac/start.html'>here</a>."
 msgstr ""
 "K prohlížení katalogu Evergreen musíte mít povolený JavaScript. \n"
-"Zdá se, že máte buď zakázaný JavaScript, nebo ho Váš prohlížeč nepodporuje. "
-"\n"
+"Zdá se, že máte buď zakázaný JavaScript, nebo ho Váš prohlížeč nepodporuje. \n"
 "K použití katalogu povolte JavaScript změnou nastavení v prohlížeči, potom \n"
 "<a style='color: blue; text-decoration: underline;' href='/'>zkuste "
 "znovu</a>. \n"
@@ -440,7 +460,7 @@ msgid ""
 "bookbag. \n"
 "Are you sure you wish to continue?"
 msgstr ""
-"Toto odebere zvolený seznam knih a všechny exempláře, které obsahuje. \n"
+"Toto odebere zvolený seznam knih a všechny položky, které obsahuje. \n"
 "Chcete pokračovat?"
 
 #: myopac.no.bookbags
@@ -454,15 +474,15 @@ msgstr "Moje seznamy knih"
 
 #: myopac.bookbag.items
 msgid "# Items"
-msgstr "# Exempláře"
+msgstr "Počet exemplářů"
 
 #: myopac.bookbag.shared
 msgid "Shared"
-msgstr "Sdíleno"
+msgstr "Sdílené"
 
 #: myopac.bookbag.toggle
 msgid "Share / Hide"
-msgstr "Sdílet / Skrýt"
+msgstr "Sdílet / Skrýt pro ostatní"
 
 #: myopac.bookbag.delete
 msgid "Delete this bookbag?"
@@ -470,7 +490,7 @@ msgstr "Smazat tento seznam knih?"
 
 #: myopac.items
 msgid "Items"
-msgstr "Exempláře"
+msgstr "Položky"
 
 #: myopac.view
 msgid "(View)"
@@ -478,11 +498,11 @@ msgstr "(Zobrazit)"
 
 #: myopac.atom.feed
 msgid "ATOM Feed"
-msgstr "ATOM kanál"
+msgstr "Kanál ATOM"
 
 #: myopac.bookbag.hide
 msgid "Hide"
-msgstr "Skrýt"
+msgstr "Skrýt pro ostatní"
 
 #: myopac.delete
 msgid "Delete"
@@ -494,7 +514,7 @@ msgstr "Vytvořit nový seznam knih"
 
 #: myopac.bookbag.naming
 msgid "Enter the name of the new Bookbag: "
-msgstr "Zvolte jméno pro nový seznam knih: "
+msgstr "Zvolte název nového seznamu knih: "
 
 #: myopac.bookbag.share
 msgid "Share this Bookbag"
@@ -503,15 +523,15 @@ msgstr "Sdílet tento seznam knih"
 #: myopac.bookbag.refworks
 msgctxt "myopac.bookbag.refworks"
 msgid "Export to RefWorks"
-msgstr ""
+msgstr "Exportovat do RefWorks"
 
 #: myopac.bookbag.no.items
 msgid "The selected bookbag contains no items..."
-msgstr "Zvolený seznam knih neobsahuje žádné exempláře..."
+msgstr "Zvolený seznam knih neobsahuje žádné položky..."
 
 #: myopac.bookbag.remove
 msgid "Remove this item?"
-msgstr "Odebrat tento exemplář?"
+msgstr "Odstranit tuto položku?"
 
 #: myopac.remove.link
 msgid "remove"
@@ -530,7 +550,7 @@ msgstr ""
 
 #: myopac.item.confirm
 msgid "Are you sure you wish to remove this bookbag item?"
-msgstr "Jste si jistý, že chcete odebrat tento exemplář ze seznamu?"
+msgstr "Jste si jisti, že chcete odebrat tut položku ze seznamu?"
 
 #: myopac.publish.confirm
 msgid ""
@@ -539,11 +559,11 @@ msgid ""
 "bookbag?"
 msgstr ""
 "Sdílením tohoto seznamu knih povolíte ostatním, aby \n"
-"viděli jeho obsah. Jste si jistý, že chcete sdílet tento seznam?"
+"viděli jeho obsah. Jste si jisti, že chcete sdílet tento seznam?"
 
 #: myopac.unpublish.confirm
 msgid "Are you sure you wish to hide this bookbag?"
-msgstr "Jste si jistý, že chcete skrýt tento seznam?"
+msgstr "Jste si jistý, že chcete tento seznam pro ostatní skrýt?"
 
 #: myopac.update.success
 msgid "The Bookbag was successfully updated."
@@ -562,12 +582,13 @@ msgid ""
 "we suggest that you do not place said items in a bookbag or that you \n"
 "avoid using bookbags all together.  Thank you."
 msgstr ""
-"Varování: Přidáním exempláře do seznamu vytvoříte spojení mezi sebou a \n"
-"exempláři v databázi. Obsah seznam NENÍ veřejně viditelný, pokud \n"
-"není seznam sdílený. Nicméně pokud nechcete, aby existovalo \n"
-"spojení mezi Vaším klientským záznamem a konkrétními exemplářii, \n"
-"doporučujeme, abyste tyto exempláře do seznamu neumisťovali nebo \n"
-"se zcela vyhnuli vužívání seznamů. Děkujeme."
+"Varování: Přidávání položek do seznamu knih vytváří propojení mezi vámi\n"
+"a položkami v databázi. Obsah seznamu knih NENÍ veřejně viditelný, \n"
+"pokud není seznam knih sdílen. Pokud si však nepřejete, aby\n"
+"existovalo jakékoliv propojení mezi Vaším čtenářským záznamem\n"
+"a konkrétní položkou nebo konkrétními položkami, doporučujeme vám\n"
+"příslušné položky nezařazovat do seznamu knih nebo seznam knih\n"
+"vůbec nepoužívat. Děkujeme."
 
 #: myopac.describe.bookbags
 msgid "Bookbags are..."
@@ -586,7 +607,7 @@ msgstr "Celkový počet výpůjček s překročenou výpůjční lhůtou:"
 
 #: myopac.checked.renew
 msgid "Renew Selected Items"
-msgstr "Prodloužit zvolené výpůjčky"
+msgstr "Prodloužit vybrané výpůjčky"
 
 #: myopac.checked.renewing
 msgid "Renewing..."
@@ -611,11 +632,11 @@ msgstr "Půjčující knihovna"
 
 #: myopac.checked.item.type
 msgid "Circulation Type"
-msgstr "Druh výpůjčky"
+msgstr "Typ výpůjčky"
 
 #: myopac.checked.circ.time
 msgid "Please return by ..."
-msgstr "Vraťte prosím do ..."
+msgstr "Vraťte prosím do..."
 
 #: myopac.checked.renew.success
 msgid "item(s) successfully renewed"
@@ -623,7 +644,8 @@ msgstr "exemplář(e) úspěšně prodloužen(y)"
 
 #: myopac.checked.renew.confirm
 msgid "Are you sure you wish to renew the selected item(s)?"
-msgstr "Jste si jistý, že chcete prodloužit zvolený exemplář?"
+msgstr ""
+"Jste si jisti, že chcete prodloužit vybraný exemplář / vybrané exempláře?"
 
 #: myopac.checked.renew.fail
 msgid ""
@@ -631,27 +653,29 @@ msgid ""
 "means the item is needed to fulfill a hold.  Please see a librarian for "
 "further help."
 msgstr ""
-"Systém v tuto chvíli není schopný prodloužit zvolený exemplář. To obvykle "
-"znamená, že je již rezervován. Pro další informace kontaktujte knihovníka."
+"Systém v tuto chvíli není schopen prodloužit zvolený exemplář. To obvykle "
+"znamená, že je potřebná ke splnění rezervace. Pro další informace "
+"kontaktujte knihovníka."
 
 #: myopac.checked.renew.fail2
 msgid ""
 "Library policy prevents the renewal of this item at this time.  Please see a "
 "librarian for further details."
 msgstr ""
-"Prodloužení exempláře není v tuto chvíli možné. Kontaktujte prosím svého "
-"knihovníka pro bližší informace."
+"Knihovní pravidla znemožňují prodloužení výpůjčky v tuto dobu. Pro získání "
+"podrobnějších informací prosím kontaktujte svého knihovníka."
 
 #. =================================================================
 #. MyOPAC Fines Page
 #. =================================================================
 #: myopac.fines.title
+msgctxt "myopac.fines.title"
 msgid "Summary"
-msgstr "Shrnutí"
+msgstr "Přehled"
 
 #: myopac.fines.owed
 msgid "Total Owed"
-msgstr "Celkový dluh"
+msgstr "Celková dlužná částka"
 
 #: myopac.fines.paid
 msgid "Total Paid"
@@ -672,7 +696,7 @@ msgstr "Exempláře s překročenou výpůjční lhůtou"
 
 #: myopac.fines.checkout
 msgid "Checkout Date"
-msgstr "Datum vypůjčení"
+msgstr "Datum výpůjčky"
 
 #: myopac.fines.due
 msgctxt "myopac.fines.due"
@@ -689,11 +713,11 @@ msgstr "(narůstající pokuty)"
 
 #: myopac.fines.other
 msgid "Other Fees"
-msgstr "Jiné poplatky"
+msgstr "Seznam plateb"
 
 #: myopac.fines.time.start
 msgid "Transaction Start Time"
-msgstr "Datum zahájení transakce"
+msgstr "Čas vzniku transakce"
 
 #: myopac.fines.time.paid
 msgid "Last Payment Time"
@@ -701,7 +725,7 @@ msgstr "Čas poslední platby"
 
 #: myopac.fines.owed.initial
 msgid "Initial Amount Owed"
-msgstr "Počáteční dluh"
+msgstr "Počáteční dlužná částka"
 
 #: myopac.fines.paid.amount
 msgid "Total Amount Paid"
@@ -709,7 +733,7 @@ msgstr "Celkem zaplaceno"
 
 #: myopac.fines.type
 msgid "Billing Type"
-msgstr "Druh platby"
+msgstr "Typ platby"
 
 #. =================================================================
 #. MyOPAC Holds Page
@@ -728,7 +752,7 @@ msgstr "Editovat"
 
 #: myopac.holds.status.none
 msgid "You have no items on hold at this time"
-msgstr "Nemáte žádné rezervované exempláře"
+msgstr "Nemáte žádné splněné rezervace"
 
 #: myopac.holds.status.waiting
 msgid "Waiting for copy"
@@ -736,7 +760,7 @@ msgstr "Čekání na exemplář"
 
 #: myopac.holds.status.intransit
 msgid "In Transit"
-msgstr "Na cestě"
+msgstr "V přepravě"
 
 #: myopac.holds.status.available
 msgid "Ready for Pickup"
@@ -745,18 +769,18 @@ msgstr "Připraveno k vyzvednutí"
 #: myopac.holds.cancel
 msgctxt "myopac.holds.cancel"
 msgid "Cancel"
-msgstr "Zrušit"
+msgstr "Storno"
 
 #: myopac.holds.verify
 msgid ""
 "If you wish to cancel the selected hold, click OK, otherwise click Cancel."
 msgstr ""
-"Pokud si přejete zrušit zvolenou rezervaci, klikněte na OK, jinak klikněte "
-"na Zrušit"
+"Pokud si přejete zrušit vybranou rezervaci, klikněte na OK, jinak klikněte "
+"na Storno"
 
 #: myopac.holds.freeze_selected
 msgid "Suspend"
-msgstr "Přerušit"
+msgstr "Pozastavit"
 
 #: myopac.holds.thaw_selected
 msgid "Activate"
@@ -769,19 +793,19 @@ msgstr "Nastavit datum aktivace"
 #: myopac.holds.cancel_selected
 msgctxt "myopac.holds.cancel_selected"
 msgid "Cancel"
-msgstr "Zrušit"
+msgstr "Storno"
 
 #: myopac.holds.processing
 msgid "Processing holds... This may take a moment."
-msgstr "Zpracování rezervací... Prosím čekejte."
+msgstr "Probíhá zpracování rezervací... Zpracování může chvíli trvat."
 
 #: myopac.holds.actions
 msgid "Actions for selected holds"
-msgstr "Akce pro zvolené rezervace"
+msgstr "Akce pro vybrané rezervace"
 
 #: myopac.holds.cancel.confirm
 msgid "Are you sure you wish to cancel the selected holds?"
-msgstr "Jste si jistý, že chcete zrušit zvolené rezervace?"
+msgstr "Jste si jisti, že chcete zrušit vybrané rezervace?"
 
 #: myopac.holds.freeze.confirm
 msgid ""
@@ -789,25 +813,25 @@ msgid ""
 "If an item has already been selected to fulfill the hold, it will not be "
 "suspended"
 msgstr ""
-"Jste si jistý, že chcete pozastavit zvolené rezervace? \n"
-"Pokud již byl zvolen exemplář pro splnění rezervace, nebude rezervace "
-"pozastavena"
+"Jste si jisti, že chcete pozastavit vybrané rezervace? \n"
+"Pokud již byl získán exemplář pro splnění rezervace, pak tato rezervace "
+"nebude pozastavena."
 
 #: myopac.holds.thaw.confirm
 msgid "Are you sure you wish to activate the selected holds?"
-msgstr "Jste si jistý, že chcete aktivovat zvolené rezervace?"
+msgstr "Jste si jisti, že chcete aktivovat zvolené rezervace?"
 
 #: myopac.holds.thaw_date.confirm
 msgid ""
 "Are you sure you wish to change the activate date for the selected holds?"
-msgstr "Opravdu chcete změnit datum aktivace pro zvolené rezervace?"
+msgstr "Jste si jisti, že chcete změnit datum aktivace pro vybrané rezervace?"
 
 #: myopac.holds.freeze.select_thaw
 msgid ""
 "Select an automatic activation date.  If no date is chosen, the holds will "
 "remain suspended until they are manually activated."
 msgstr ""
-"Zvolte datum automatické aktivace. Pokud není zvoleno datum, rezervace "
+"Vyberte datum automatické aktivace. Pokud datum není vybráno, rezervace "
 "zůstanou pozastaveny, dokud nebudou aktivovány ručně."
 
 #: opac.holds.freeze
@@ -824,11 +848,11 @@ msgstr ""
 
 #: opac.holds.freeze.thaw_date
 msgid "Automatically activate hold on:"
-msgstr "Automaticky aktivovat rezervaci v:"
+msgstr "Automaticky aktivovat rezervaci:"
 
 #: opac.holds.expire_time
 msgid "Expiration date"
-msgstr "Datum výpůjční lhůty"
+msgstr "Rezervovat do"
 
 #: myopac.holds.estimated_wait
 msgid "Estimated Wait (days)"
@@ -851,7 +875,7 @@ msgstr "Standardní velikost písma"
 
 #: myopac.prefs.font.regular
 msgid "Regular Font"
-msgstr "Normální písmo"
+msgstr "Běžné písmo"
 
 #: myopac.prefs.font.large
 msgid "Large Font"
@@ -879,7 +903,7 @@ msgstr "Standardní místo vyhledávání"
 
 #: myopac.prefs.search.home
 msgid "Always search my home library by default."
-msgstr "Vždy prohledávej mou domovskou knihovnu."
+msgstr "Vždy standardně vyhledávej v mé domovské knihovně."
 
 #: myopac.prefs.search.range
 msgid "Default Search Range"
@@ -891,11 +915,11 @@ msgstr "Uložit změny nastavení"
 
 #: myopac.prefs.save.success
 msgid "Preferences successfully updated"
-msgstr "Nastavení úspěšně změněno"
+msgstr "Nastavení úspěšně změněna"
 
 #: myopac.prefs.save.failed
 msgid "Preferences update failed!"
-msgstr "Změna nastavení selhala!"
+msgstr "Změna nastavení se nezdařila!"
 
 #: myopac.prefs.help
 msgid ""
@@ -905,10 +929,10 @@ msgid ""
 "However, you will still have the option to change individual holds "
 "regardless of this setting."
 msgstr ""
-"Toto nastavení definuje, jak budete informovat o rezervací, které jsou "
+"Toto nastavení definuje, jak budete informováni o rezervacích, které jsou "
 "připraveny k vyzvednutí v knihovně. \n"
-"Implicitně bude při rezervacích použit vybraný způsob informování. \n"
-"Budete však mít stále možnost změnit individuální rezervace bez ohledu na "
+"Standardně bude při rezervacích použit vybraný způsob informování. \n"
+"Budete však stále mít možnost změnit individuální rezervace bez ohledu na "
 "toto nastavení."
 
 #: myopac.holds.unfrozen
@@ -917,7 +941,7 @@ msgstr "Aktivní"
 
 #: myopac.holds.frozen.until
 msgid "Activate on..."
-msgstr "Aktivovat v..."
+msgstr "Aktivovat..."
 
 #. =================================================================
 #. MyOPAC Summary page
@@ -927,8 +951,8 @@ msgid ""
 "Your account expired on <span id='myopac.expired.date'/>! \n"
 "Please see a librarian to renew your account."
 msgstr ""
-"Váš účet vypršel v <span id='myopac.expired.date'/>! \n"
-"Kontaktuje prosím knihovníka k obnově vašeho účtu."
+"Vaše konto vypršelo v <span id='myopac.expired.date'/>! \n"
+"Pro obnovu svého konta prosím kontaktujte knihovníka."
 
 #: myopac.summary.notes
 msgid "* Staff Notes *"
@@ -968,7 +992,7 @@ msgstr "Zadejte nové heslo:"
 
 #: myopac.summary.password.reenter
 msgid "Re-enter new password:"
-msgstr "Zadejte nové heslo znovu:"
+msgstr "Znovu zadejte nové heslo:"
 
 #: myopac.summary.email
 msgid "Email Address"
@@ -980,7 +1004,7 @@ msgstr "Zadejte novou e-mailovou adresu:"
 
 #: myopac.summary.id.primary
 msgid "Primary Identification"
-msgstr ""
+msgstr "Číslo dokladu"
 
 #: myopac.summary.barcode
 msgid "Active Barcode"
@@ -992,7 +1016,7 @@ msgstr "Domovská knihovna"
 
 #: myopac.summary.genesis
 msgid "Account Creation Date"
-msgstr "Datum vytvoření účtu"
+msgstr "Datum vytvoření konta"
 
 #: myopac.summary.addresses
 msgid "Addresses"
@@ -1000,11 +1024,11 @@ msgstr "Adresy"
 
 #: myopac.summary.addresses.pending
 msgid "Pending Addresses"
-msgstr ""
+msgstr "Nevyřízené adresy"
 
 #: myopac.summary.address.type
 msgid "Address Type"
-msgstr "Druh adresy"
+msgstr "Typ adresy"
 
 #: myopac.summary.address.street
 msgid "Street"
@@ -1024,7 +1048,7 @@ msgstr "Stát"
 
 #: myopac.summary.address.country
 msgid "Country"
-msgstr ""
+msgstr "Země"
 
 #: myopac.summary.address.zip
 msgid "Zip"
@@ -1032,11 +1056,11 @@ msgstr "PSČ"
 
 #: myopac.summary.address.edit
 msgid "Edit Address"
-msgstr ""
+msgstr "Editovat adresu"
 
 #: myopac.summary.address.invalid
 msgid "Invalid Address"
-msgstr ""
+msgstr "Neplatná adresa"
 
 #: myopac.summary.username.error
 msgid "Please enter a username"
@@ -1044,9 +1068,9 @@ msgstr "Zadejte prosím uživatelské jméno"
 
 #: myopac.summary.username.dup
 msgid ""
-"The requested username is not available.  Please choose a different username."
-msgstr ""
-"Požadované uživatelské jméno není k dispozici. Zvolte si prosím jiné."
+"The requested username is not available.  Please choose a different "
+"username."
+msgstr "Požadované uživatelské jméno není k dispozici. Zvolte si prosím jiné."
 
 #: myopac.summary.username.success
 msgid "Username successfully updated"
@@ -1054,13 +1078,13 @@ msgstr "Uživatelské jméno úspěšně změněno"
 
 #: myopac.summary.username.failure
 msgid "Username update failed"
-msgstr "Změna uživatelského jména selhala"
+msgstr "Změna uživatelského jména se nezdařila"
 
 #: myopac.summary.username.invalid
 msgid "Username cannot contain spaces or have the same format as a barcode"
 msgstr ""
-"Uživatelské jméno nemůže obsahovat mezer nebo být stejného formátu jako "
-"čárový kód"
+"Uživatelské jméno nemůže obsahovat mezery nebo mít stejný formát jako čárový "
+"kód"
 
 #: myopac.summary.email.error
 msgid "Please enter a valid email address"
@@ -1068,11 +1092,11 @@ msgstr "Zadejte prosím platnou e-mailovou adresu"
 
 #: myopac.summary.email.success
 msgid "Email address successfully updated"
-msgstr "E-mailová adresa úspěšně změněna"
+msgstr "E-mailová adresa úspěšně aktualizována"
 
 #: myopac.summary.email.failed
 msgid "Email address update failed"
-msgstr "Změna e-mailové adresy selhala"
+msgstr "Změna e-mailové adresy se nezdařila"
 
 #: myopac.summary.password.error
 msgid "Passwords are empty or do not match"
@@ -1081,30 +1105,30 @@ msgstr "Hesla nejsou vyplněna nebo nesouhlasí"
 #: myopac.summary.password.success
 msgctxt "myopac.summary.password.success"
 msgid "Password successfully updated"
-msgstr "Heslo úspěšně změněno"
+msgstr "Heslo úspěšně aktualizováno"
 
 #: myopac.summary.password.failure
 msgid "Password update failed"
-msgstr "Změna hesla selhala"
+msgstr "Změna hesla se nezdařila"
 
 #. =================================================================
 #. Advanced Search Page
 #. =================================================================
 #: opac.advanced.wizard.contains
 msgid "Selected field contains the following words"
-msgstr "Zvolené pole obsahuje následující slova"
+msgstr "Vybrané pole obsahuje následující slova"
 
 #: opac.advanced.wizard.nocontains
 msgid "Selected field does <u>not</u> contain the following words"
-msgstr "Zvolené pole  <u>neobsahuje</u> následující slova"
+msgstr "Vybrané pole  <u>neobsahuje</u> následující slova"
 
 #: opac.advanced.wizard.exact
 msgid "Selected field contains the <u>exact</u> phrase"
-msgstr "Zvolené pole obsahuje <u>přesný</u> výraz"
+msgstr "Vybrané pole obsahuje <u>přesný</u> výraz"
 
 #: opac.advanced.refined.title
 msgid "Refined Advanced Search"
-msgstr ""
+msgstr "Zúžené pokročilé vyhledávání"
 
 #: opac.advanced.refined.title_contains
 msgid "Title contains the following words"
@@ -1112,11 +1136,11 @@ msgstr "Název obsahuje následující slova"
 
 #: opac.advanced.refined.author_contains
 msgid "Author contains the following words"
-msgstr "Jméno autora obsahuje následující slova"
+msgstr "Autor obsahuje následující slova"
 
 #: opac.advanced.refined.subject_contains
 msgid "Subject contains the following words"
-msgstr "Předmět obsahuje následující slova"
+msgstr "Téma obsahuje následující slova"
 
 #: opac.advanced.refined.series_contains
 msgid "Series contains the following words"
@@ -1188,7 +1212,7 @@ msgstr "LCCN"
 #. title control number
 #: opac.advanced.quick.tcn
 msgid "TCN"
-msgstr "TCN"
+msgstr "Kontrolní číslo záznamu (TCN)"
 
 #: opac.advanced.quick.barcode
 msgid "Item Barcode"
@@ -1201,7 +1225,7 @@ msgstr "Signatura"
 
 #: opac.advanced.copy_loc_filter
 msgid "Shelving Location"
-msgstr ""
+msgstr "Umístění na regále"
 
 #. ==========================================================
 #. MARC expert search
@@ -1248,7 +1272,7 @@ msgstr "Tip:"
 #: opac.session_expiring
 msgid "Your login session will timeout in 1 minute unless there is activity."
 msgstr ""
-"Vaše přihlášení vyprší během minuty, pokud nebude zaznamenána aktivita."
+"Pokud nebude zaznamenána aktivita, přihlášení vám během jedné minuty vyprší."
 
 #: opac.session_expired
 msgid "Your login session has expired"
@@ -1260,7 +1284,7 @@ msgstr "Domů"
 
 #: navigate.home.title
 msgid "Go to the Home page"
-msgstr "Jdi na domovskou stránku"
+msgstr "Jít na domácí stránku"
 
 #: opac.navigate.advanced
 msgctxt "opac.navigate.advanced"
@@ -1269,17 +1293,17 @@ msgstr "Pokročilé vyhledávání"
 
 #: opac.navigate.advanced.title
 msgid "Go to the Advanced Search Page"
-msgstr "Jdi na pokročilé vyhledávání"
+msgstr "Jít na stránku pokročilého vyhledávání"
 
 #: navigate.myopac
 msgctxt "navigate.myopac"
 msgid "My Account"
-msgstr "Můj účet"
+msgstr "Moje konto"
 
 #: opac.navigate.myopac
 msgctxt "opac.navigate.myopac"
 msgid "My Account"
-msgstr "Můj účet"
+msgstr "Moje konto"
 
 #: navigate.myopac.title
 msgid "Go to My OPAC"
@@ -1287,21 +1311,21 @@ msgstr "Jdi na můj OPAC"
 
 #: navigate.login
 msgid "Log in"
-msgstr "Přihlásit"
+msgstr "Přihlásit se"
 
 #: navigate.login.title
 msgid "Log in for personalized features"
-msgstr "Přihlásit pro individuální nastavení"
+msgstr "Přihlásit se pro individuální nastavení"
 
 #: navigate.logout
 msgctxt "navigate.logout"
 msgid "Log out"
-msgstr "Odhlásit"
+msgstr "Odhlásit se"
 
 #: navigate.logout.title
 msgctxt "navigate.logout.title"
 msgid "Log out"
-msgstr "Odhlásit"
+msgstr "Odhlásit se"
 
 #: opac.navigate.selectNewOrg
 msgid "Choose a different library"
@@ -1322,15 +1346,19 @@ msgstr "Přihlášen jako..."
 
 #: navigate.titleGroupResults
 msgid "My Search Results"
-msgstr "Moje výsledky vyhledávání"
+msgstr "Výsledky vyhledávání"
 
 #: navigate.titleResults
 msgid "My Title Results"
-msgstr "Moje výsledky vyhledávání"
+msgstr "Výsledky mého vyhledávání titulů"
+
+#: navigate.facetRefine
+msgid "Refine your search"
+msgstr "Zúžit vyhledávání"
 
 #: navigate.title.details
 msgid "My Title Details"
-msgstr "Moje podrobné záznamy"
+msgstr "Detaily titulů"
 
 #: navigate.record.details
 msgid "Record Details"
@@ -1346,7 +1374,7 @@ msgstr "Základní katalog (pouze HTML)"
 
 #: footer.find.library
 msgid "Find a Library Near Me"
-msgstr "Najít knihovnu v okolí"
+msgstr "Najít knihovnu v mém okolí"
 
 #: footer.find.url
 msgid "http://www.georgialibraries.org/lib/directories/pineslibdir.html"
@@ -1377,8 +1405,10 @@ msgid "GALILEO"
 msgstr "GALILEO"
 
 #: footer.copyright
-msgid "Copyright &#xA9; 2006-2008 Georgia Public Library Service"
-msgstr "Copyright &#xA9; 2006-2008 Georgia Public Library Service"
+msgid "Copyright &#xA9; 2006-2010 Georgia Public Library Service, and others"
+msgstr ""
+"Všechna práva vyhrazena &#xA9; 2006-2010 Georgia Public Library Service a "
+"další"
 
 #. Introduces the logo for the project
 #: footer.logo
@@ -1390,7 +1420,7 @@ msgstr "Vytvořeno"
 #. =================================================================
 #: myopac.account
 msgid "Account Summary"
-msgstr "Přehled účtu"
+msgstr "Osobní údaje"
 
 #: myopac.checkouts
 msgid "Items Checked Out"
@@ -1398,7 +1428,7 @@ msgstr "Vypůjčené exempláře"
 
 #: myopac.holds
 msgid "Items on Hold"
-msgstr "Rezervované exempláře"
+msgstr "Rezervace"
 
 #: myopac.fines
 msgid "Fines"
@@ -1440,7 +1470,7 @@ msgstr "Rychlé vyhledávání"
 
 #: sidebar.copy.not.found
 msgid "No copy with the requested barcode was found"
-msgstr "Žádný exemplář se zadaným čárovým kódem nebyl nalezen"
+msgstr "Nebyl nalezen žádný exemplář se zadaným čárovým kódem"
 
 #. =================================================================
 #. Search formats
@@ -1456,6 +1486,10 @@ msgstr "Všechny nosiče"
 #: opac.search.largePrint
 msgid "Large Print Books"
 msgstr "Knihy s velkými písmeny"
+
+#: opac.search.ebook
+msgid "E-Books"
+msgstr "E-knihy"
 
 #: opac.search.audioBooks
 msgid "Audiobooks"
@@ -1494,7 +1528,7 @@ msgstr "Tituly Evergreenu"
 
 #: opac.title.myopac
 msgid "Evergreen My Account"
-msgstr "Můj účet v Evergreenu"
+msgstr "Moje konto v Evergreenu"
 
 #: opac.title.rdetail
 msgid "Evergreen Title Details"
@@ -1527,12 +1561,12 @@ msgstr "Příjemce"
 #: opac.holds.placeHold
 msgctxt "opac.holds.placeHold"
 msgid "Place Hold"
-msgstr ""
+msgstr "Rezervovat"
 
 #: opac.holds.exportRefWorks
 msgctxt "opac.holds.exportRefWorks"
 msgid "Export to RefWorks"
-msgstr ""
+msgstr "Exportovat do RefWorks"
 
 #: opac.holds.contactPhone
 msgid "Contact telephone number"
@@ -1548,7 +1582,7 @@ msgstr "Místo vyzvednutí"
 
 #: opac.holds.success
 msgid "Hold was successfully placed"
-msgstr "Rezervace úspěšně odeslána"
+msgstr "Rezervace byla úspěšně odeslána"
 
 #: opac.holds.failure
 msgid "Hold was not successfully placed"
@@ -1559,11 +1593,11 @@ msgstr "Rezervace nebyla odeslána"
 #. =================================================================
 #: advanced.search.title
 msgid "Search Input"
-msgstr "Vyhledávací pole"
+msgstr "Údaje pro vyhledávání"
 
 #: advanced.add.row
 msgid "Add Search Row"
-msgstr "Přidat řádek vyhledávání"
+msgstr "Přidat řádek pro vyhledávání"
 
 #: advanced.search.submit
 msgid "Submit Search"
@@ -1579,15 +1613,15 @@ msgstr "Filtry pro vyhledávání"
 
 #: advanced.item.form
 msgid "Item Form"
-msgstr "Formát exempláře"
+msgstr "Formulář exempláře"
 
 #: advanced.item.type
 msgid "Item Type"
-msgstr "Druh exempláře"
+msgstr "Typ exempláře"
 
 #: advanced.link
 msgid "Advanced"
-msgstr "Pokročilé"
+msgstr "Pokročilé vyhledávání"
 
 #: advanced.basic.link
 msgid "Basic"
@@ -1611,7 +1645,7 @@ msgstr "Jazyk"
 
 #: advanced.audience
 msgid "Audience"
-msgstr ""
+msgstr "Čtenářské určení"
 
 #: advanced.adult
 msgid "Adult"
@@ -1623,7 +1657,7 @@ msgstr "Mládež"
 
 #: advanced.general
 msgid "General"
-msgstr "Obecný"
+msgstr "Obecné"
 
 #: advanced.sort.criteria
 msgid "Sort Criteria"
@@ -1643,19 +1677,19 @@ msgstr "Datum vydání"
 
 #: advanced.sort.asc
 msgid "Ascending / A to Z"
-msgstr "Vzestupně / od A po Z"
+msgstr "Vzestupně / od A do Z"
 
 #: advanced.sort.desc
 msgid "Descending / Z to A"
-msgstr "Sestupně / od Z po A"
+msgstr "Sestupně / od Z do A"
 
 #: advanced.frbrize
 msgid "Group Formats and Editions"
-msgstr "Nosiče a edice skupiny"
+msgstr "Seskupit podle nosičů a vydání"
 
 #: advanced.go
 msgid "Go"
-msgstr ""
+msgstr "Vyhledat"
 
 #: advanced.biblevel
 msgid "Bib Level"
@@ -1667,7 +1701,7 @@ msgstr "Rok vydání"
 
 #: advanced.filter.pubyear.equals
 msgid "Is"
-msgstr ""
+msgstr "Je"
 
 #: advanced.filter.pubyear.before
 msgid "Before"
@@ -1686,7 +1720,11 @@ msgstr "Mezi"
 #. =================================================================
 #: rdetail.print
 msgid "print these details"
-msgstr "vytiskni tyto detaily"
+msgstr "Vytiskni tyto detaily"
+
+#: rdetail.cn.part
+msgid "Part"
+msgstr "Část"
 
 #: rdetail.cn.barcode
 msgctxt "rdetail.cn.barcode"
@@ -1699,7 +1737,7 @@ msgstr "Umístění"
 
 #: rdetail.cn.hold.age
 msgid "Age Hold Protection"
-msgstr "Ochrana rezervace z důvodu věku"
+msgstr "Omezení rezervace podle data zařazení do fondu"
 
 #: rdetail.cn.genesis
 msgid "Create Date"
@@ -1724,7 +1762,15 @@ msgstr "méně informací"
 
 #: rdetail.cn.hold
 msgid "place hold"
-msgstr ""
+msgstr "rezervovat"
+
+#: rdetail.cn.reserve
+msgid "book now"
+msgstr "rezervovat nyní"
+
+#: rdetail.cn.multi_home
+msgid "linked titles"
+msgstr "propojené tituly"
 
 #: rdetail.cn.disabled
 msgid "- Disabled -"
@@ -1740,11 +1786,11 @@ msgstr "Kategorie exempláře"
 
 #: rdetail.cn.print
 msgid "Print Page"
-msgstr "Vytiskni stránku"
+msgstr "Tisk stránky"
 
 #: rdetail.page.results
 msgid "First results page"
-msgstr "První strana výsledků"
+msgstr "První stránka výsledků"
 
 #. Result # &common.of; #
 #: rdetail.result
@@ -1753,19 +1799,27 @@ msgstr "Výsledek"
 
 #: rdetail.start
 msgid "Start"
-msgstr "Start"
+msgstr "Začátek"
 
 #: rdetail.page.previous
 msgid "Previous page"
-msgstr "Předchozí strana"
+msgstr "Předchozí stránka"
+
+#: rdetail.page.previous.short
+msgid "&#171;"
+msgstr "&#171;"
 
 #: rdetail.page.next
 msgid "Next page"
-msgstr "Další strana"
+msgstr "Další stránka"
+
+#: rdetail.page.next.short
+msgid "&#187;"
+msgstr "&#187;"
 
 #: rdetail.page.last
 msgid "Last results page"
-msgstr "Poslední strana výsledků"
+msgstr "Poslední stránka výsledků"
 
 #: rdetail.end
 msgid "End"
@@ -1789,28 +1843,28 @@ msgid ""
 "We recommend that you remove this title from any bookbags it may have been "
 "added to."
 msgstr ""
-"Záznam byl vymazán z databáze. \n"
+"Tento záznam byl smazán z databáze. \n"
 "Doporučujeme vám odebrat tento titul ze seznamů knih, do kterých byl přidán."
 
 #: rdetail.none
 msgid "(none)"
-msgstr "(nic)"
+msgstr "(žádné)"
 
 #: rdetail.bookbag.add.success
 msgid "Item successfully added to bookbag"
-msgstr "Exemplář úspěšně vložen do seznamu"
+msgstr "Položka úspěšně přidána do seznamu knih"
 
 #: rdetail.bookbag.name
 msgid "Enter the name of the new bookbag"
-msgstr "Zadejte jméno nového seznamu knih"
+msgstr "Zadejte název nového seznamu knih"
 
 #: rdetail.bookbag.create.success
 msgid "Bookbag successfully created"
-msgstr "Seznam úspěšně vytvořen"
+msgstr "Seznam knih úspěšně vytvořen"
 
 #: rdetail.detailMain.headerLabel
 msgid "Record Summary"
-msgstr "Přehled záznamu"
+msgstr "Detaily záznamu"
 
 #: rdetail.detailMain.subjects
 msgctxt "rdetail.detailMain.subjects"
@@ -1823,7 +1877,7 @@ msgstr "Abstrakt"
 
 #: rdetail.detailMain.viewMarc
 msgid "View MARC"
-msgstr "Zobrazit MARC"
+msgstr "Zobrazit formát MARC"
 
 #: rdetail.detailMain.hideMarc
 msgid "Return to title details"
@@ -1831,7 +1885,7 @@ msgstr "Zpět k detailům titulu"
 
 #: rdetail.author.search
 msgid "Perform an author search"
-msgstr "Provést vyhledání podle autora"
+msgstr "Vyhledávat podle autora"
 
 #: rdetail.copyInfo.headerLabel
 msgid "Copy Information"
@@ -1848,15 +1902,15 @@ msgstr "Signatura"
 
 #: rdetail.copyInfo.copylocation
 msgid "Copy Location"
-msgstr ""
+msgstr "Umístění"
 
 #: rdetail.copyInfo.local
 msgid "View Copy Information for this location only"
-msgstr "Zobrazit informace o exempláři pouze pro toto místo"
+msgstr "Zobrazit pouze informace o exempláři pro toto umístění"
 
 #: rdetail.copyInfo.all
 msgid "View copy information for all libraries"
-msgstr "Zobrazit informace o exempláři pouze pro všechny knihovny"
+msgstr "Zobrazit informace o exempláři pro všechny knihovny"
 
 #: rdetail.copyInfo.actions
 msgid "Actions"
@@ -1864,29 +1918,34 @@ msgstr "Akce"
 
 #: rdetail.copyInfo.print
 msgid "Print Call Numbers for this library"
-msgstr "Vypiš signatury pro tuto knihovnu"
+msgstr "Tisk signatur pro tuto knihovnu"
 
 #: rdetail.copyInfo.details
 msgid "Copy Details"
-msgstr ""
+msgstr "Detaily exempláře"
 
 #: rdetail.copyInfo.browse
 msgid "Browse Call Numbers"
-msgstr ""
+msgstr "Prohlížení regálu"
 
 #: rdetail.copyInfo.hold
 msgctxt "rdetail.copyInfo.hold"
 msgid "Place Hold"
-msgstr ""
+msgstr "Rezervovat"
 
 #: rdetail.extras.summary
 msgid "Copy Summary"
-msgstr "Počet exemplářů"
+msgstr "Přehled exempláře"
 
 #: rdetail.extras.browser
 msgctxt "rdetail.extras.browser"
 msgid "Shelf Browser"
 msgstr "Prohlížení regálu"
+
+#: rdetail.extras.bib_summary
+msgctxt "rdetail.extras.bib_summary"
+msgid "Summary"
+msgstr "Přehled"
 
 #: rdetail.extras.reviews
 msgctxt "rdetail.extras.reviews"
@@ -1903,11 +1962,11 @@ msgstr "Výňatek"
 
 #: rdetail.extras.preview
 msgid "Preview"
-msgstr ""
+msgstr "Náhled"
 
 #: rdetail.extras.author.notes
 msgid "Author Notes"
-msgstr "Autorské poznámky"
+msgstr "Poznámky o autorovi"
 
 #: rdetail.extras.annotation
 msgid "Annotation"
@@ -1915,32 +1974,40 @@ msgstr "Anotace"
 
 #: rdetail.extras.marc
 msgid "MARC Record"
-msgstr "Záznam MARC"
+msgstr "Záznam ve formátu MARC"
+
+#: rdetail.extras.foreign_items
+msgid "Linked Titles"
+msgstr "Připojené názvy"
 
 #: rdetail.extras.call.null
 msgid "There are no call numbers for this item at this location."
-msgstr ""
-"Pro tento exemplář nejsou v tomto umístění k dispozici žádné signatury."
+msgstr "Pro tento exemplář nejsou v tomto umístění k dispozici žádné signatury."
 
 #: rdetail.extras.call.local
+msgctxt "rdetail.extras.call.local"
 msgid "Local Call Numbers:"
 msgstr "Místní signatury:"
 
 #: rdetail.extras.preview.fulltext
 msgid "Full text"
-msgstr ""
+msgstr "Úplný text"
 
 #: rdetail.extras.preview.title
 msgid "See the full text of this book."
-msgstr ""
+msgstr "Zobrazit úplný text této knihy."
 
 #: rdetail.extras.preview.badge
 msgid "Show a preview of this book from Google Book Search"
-msgstr ""
+msgstr "Zobrazit náhled této knihy z Google Book Search"
+
+#: rdetail.extras.novelist
+msgid "Suggestions by NoveList"
+msgstr "Návrhy ze služby NoveList"
 
 #: rdetail.loading
-msgid "Loading copy infomation..."
-msgstr "Nahrávám informace o exempláři..."
+msgid "Loading copy information..."
+msgstr "Načítám informace o exempláři..."
 
 #: rdetail.noneAvailable
 msgid " * There are no copies in this location"
@@ -1955,13 +2022,17 @@ msgctxt "rdetail.summary.subjects"
 msgid "Subjects"
 msgstr "Témata"
 
+#: rdetail.summary.issues_held
+msgid "Issues Held"
+msgstr "Držené rezervace"
+
 #: result.sort_by
 msgid "Sort Results by Relevance"
 msgstr "Řazení výsledků podle relevance"
 
 #: result.sort_by.title
 msgid "Sort Results by Title"
-msgstr "Řazení výsledků podle titulu"
+msgstr "Řazení výsledků podle názvu"
 
 #: result.sort_by.author
 msgid "Sort Results by Author"
@@ -1977,15 +2048,15 @@ msgstr "Omezit na dostupné"
 
 #: result.info.copies
 msgid "Available copies / Total copies"
-msgstr "Dostupné exempláře / Celkový počet"
+msgstr "Dostupné exempláře / Celkový počet exemplářů"
 
 #: result.info.no.items
 msgid "No items with the selected format were found in this location."
-msgstr "Na tomto místě nebyly nalezeny žádné exempláře zvoleného formátu."
+msgstr "V tomto umístění nebyly nalezeny žádné exempláře na vybraném nosiči."
 
 #: result.info.format.items
 msgid "Listed below are all items in the catalog with the chosen format."
-msgstr "Níže jsou vypsány všechny exempláře z katalogu se zvoleným nosičem."
+msgstr "Níže jsou vypsány všechny exempláře v katalogu na vybraném nosiči."
 
 #: result.info.show
 msgid "Show records for"
@@ -1993,11 +2064,11 @@ msgstr "Zobrazit záznamy pro"
 
 #: result.lowhits.few
 msgid "Few hits were returned for your search."
-msgstr "Pro vaše vyhledávání bylo nalezeno pouze několik výsledků."
+msgstr "Na základě vašeho vyhledávání bylo nalezeno pouze několik výsledků."
 
 #: result.lowhits.zero
 msgid "Zero hits were returned for your search."
-msgstr "Pro vaše vyhledávání nebyl nalezen výsledek."
+msgstr "Na základě vašeho vyhledávání nebyl nalezen žádný výsledek."
 
 #: result.lowhits.did.you.mean
 msgid "Maybe you meant:"
@@ -2005,19 +2076,19 @@ msgstr "Možná jste mysleli:"
 
 #: result.lowhits.formats
 msgid "You will find more hits when searching all item formats:"
-msgstr "Vyhledáváním všech nosičů naleznete více výsledků:"
+msgstr "Při vyhledávání všech nosičů naleznete více výsledků:"
 
 #: result.lowhits.formats.search
 msgid "Search again with all formats?"
-msgstr "Vyhledávat znovu pro všechny nosiče?"
+msgstr "Vyhledávat znovu, tentokráte všechny nosiče?"
 
 #: result.lowhits.related
 msgid "You may also like to try these related searches:"
-msgstr "Možná budete chtít vyhledávat také tyto související dotazy:"
+msgstr "Možná budete chtít zkusit také tyto související vyhledávací dotazy:"
 
 #: result.lowhits.expand
 msgid "You may also wish to expand your search range to:"
-msgstr "Možná budete chtít rozšířit rozsah vyhledávání na:"
+msgstr "Možná také budete chtít rozšířit rozsah vyhledávání na:"
 
 #: result.lowhits.class
 msgid "You can try searching the same terms by:"
@@ -2045,15 +2116,20 @@ msgstr "klíčové slovo"
 
 #: result.table.keyword
 msgid "View titles for this record"
-msgstr ""
+msgstr "Zobrazit názvy pro tento záznam"
 
 #: result.table.author
 msgid "Perform an Author Search"
-msgstr "Provést vyhledávání podle autora"
+msgstr "Vyhledávat podle autora"
 
 #: result.googleBooks.browse
 msgid "Browse in Google Books Search"
 msgstr "Prohlížet v Google Books Search"
+
+#: result.localCallNumbers
+msgctxt "result.localCallNumbers"
+msgid "Local Call Numbers:"
+msgstr "Místní signatury:"
 
 #: common.call.number.label
 msgid "Call Number:"
@@ -2067,17 +2143,25 @@ msgstr "ISBN:"
 msgid "ISSN:"
 msgstr "ISSN:"
 
+#: common.mono_parts.label
+msgid "Monograph Parts:"
+msgstr "Části monografie:"
+
 #: common.copy.barcode.label
 msgid "Copy Barcode:"
 msgstr "Čárový kód exempláře:"
 
+#: common.issuance_label.label
+msgid "Issuance Label:"
+msgstr "Štítek ročníku"
+
 #: common.hold.place
 msgid "Place hold for my account"
-msgstr "Zarezervuj pro můj účet"
+msgstr "Rezervovat na mém kontu"
 
 #: common.hold.check
 msgid "Checking for possibility of hold fulfillment..."
-msgstr "Zjišťuji možnost splnění rezervace..."
+msgstr "Zjišťování možnosti splnění rezervace..."
 
 #: common.hold.create
 msgid "Create / Edit a Hold"
@@ -2089,15 +2173,19 @@ msgstr "Aktualizovat rezervaci"
 
 #: common.hold.type.label
 msgid "Hold Type:"
-msgstr "Druh rezervace:"
+msgstr "Typ rezervace:"
 
 #: common.hold.volume
 msgid "Volume Hold"
-msgstr "Rezervace exempláře"
+msgstr "Rezervace svazku"
 
 #: common.hold.copy
 msgid "Copy Hold"
 msgstr "Rezervace exempláře"
+
+#: common.hold.issuance
+msgid "Issuance Hold"
+msgstr "Držená rezervace"
 
 #: common.hold.advanced
 msgid "Advanced Hold Options"
@@ -2105,19 +2193,28 @@ msgstr "Pokročilé možnosti rezervace"
 
 #: common.hold.delivery
 msgid "Please select a physical location where your hold can be delivered."
-msgstr "Zvolte prosím místo, kam může být doručena rezervovaná jednotka."
+msgstr "Vyberte prosím fyzické umístění, kam může být vaše rezervace doručena."
+
+#: common.hold.checked_out
+msgid "This item is already checked out."
+msgstr "Tento exemplář je již vypůjčen."
+
+#: common.hold.checked_out.override
+msgid ""
+"This item is already checked out.  Would you like to place the hold anyway?"
+msgstr "Tento exemplář je již vypůjčen. Chcete jej přesto rezervovat?"
 
 #: common.hold.exists
 msgid "A hold already exists on the requested item."
-msgstr "Na zvolený exemplář již existuje rezervace."
+msgstr "Na požadovaný exemplář již existuje rezervace."
 
 #: common.hold.exists.override
 msgid ""
-"A hold already exists on the requested \n"
-"item. Would you like to create the hold anyway?"
+"A hold already exists on the requested item. Would you like to create the "
+"hold anyway?"
 msgstr ""
-"Na požadovaný exemplář již existuje \n"
-"rezervace. Chcete jej přesto rezervovat?"
+"Na požadovaný exemplář již existuje rezervace. Chtěli byste přesto rezervaci "
+"vytvořit?"
 
 #: common.hold.barred
 msgid ""
@@ -2125,9 +2222,9 @@ msgid ""
 "\"Staff Notes\" section of your \"My Account\" page or contact your local "
 "library."
 msgstr ""
-"UŽIVATEL ZABLOKOVÁN. Zkontrolujte prosím poznámky \n"
-"v sekci \"Staff Notes\"  na stránce \"My Account\" nebo kontaktujte svou "
-"knihovnu."
+"UŽIVATEL BLOKOVÁN. Zkontrolujte prosím poznámky \n"
+"v sekci \"Poznámky zaměstnanců\"  na stránce \"Moje konto\" nebo kontaktujte "
+"svou knihovnu."
 
 #: common.hold.item.invalid
 msgid ""
@@ -2138,7 +2235,7 @@ msgid ""
 msgstr ""
 "Tato rezervace již není platná. Je pravděpodobné, že \n"
 "cíl rezervace byl smazán ze systému. Zrušte prosím tuto rezervaci a \n"
-"udělejte novou."
+"vytvořte novou rezervaci."
 
 #: common.hold.patron.invalid
 msgid "The patron barcode entered as the hold recipient is invalid."
@@ -2153,8 +2250,7 @@ msgstr "(Nápověda)"
 msgid ""
 "The phone number does not have the correct format. The expected format is "
 "XXX-YYY-ZZZZ"
-msgstr ""
-"Telefonní číslo nemá správný formát. Očekávaný formát je XXX-YYY-ZZZZ"
+msgstr "Telefonní číslo nemá správný formát. Očekávaný formát je XXX-YYY-ZZZZ"
 
 #: common.hold.failed
 msgid ""
@@ -2164,10 +2260,10 @@ msgid ""
 "It is also possible that you have exceeded the number of allowable holds. \n"
 "For further information, please consult your local librarian."
 msgstr ""
-"Nebyly nalezeny žádné exempláře pro splnění rezervace. \n"
-"Je možné, že rezervace bude úspěšná, zvolíte-li jiný formát. \n"
-"Je také možné, že jste již překročil počet povolených rezervací. \n"
-"Pro další infomace kontaktujte prosím knihovníka."
+"Nebyly nalezeny žádné exempláře pro splnění požadovaných rezervací. \n"
+"Je možné, že rezervace jiného nosiče bude úspěšná. \n"
+"Je také možné, že jste překročili počet povolených rezervací. \n"
+"Pro další informace prosím kontaktujte svého knihovníka."
 
 #: common.control.click
 msgid "(control-click to select multiple formats)"
@@ -2183,11 +2279,11 @@ msgstr "(XXX-YYY-ZZZZ)"
 
 #: common.phone.enable
 msgid "Enable phone notifications for this hold?"
-msgstr "Povolit oznámení po telefonu pro tuto rezervaci?"
+msgstr "Telefonické oznámení o rezervaci?"
 
 #: common.email.enable
 msgid "Enable email notifications for this hold?"
-msgstr "Povolit oznámení e-mailem pro tuto rezervaci?"
+msgstr "Oznámení o rezervaci e-mailem?"
 
 #: common.email.none
 msgid "(Patron has no configured email address)"
@@ -2198,8 +2294,8 @@ msgid ""
 "(See <a class='classic_link' id='holds.no_email.my_account'>My Account</a> "
 "for setting your email address)"
 msgstr ""
-"(Přejít na <a class='classic_link' id='holds.no_email.my_account'>Můj "
-"účet</a> pro nastavení emailové adresy)"
+"(E-mail nastavíte ve <a class='classic_link' "
+"id='holds.no_email.my_account'>svém kontu</a>)"
 
 #: common.keywords.label
 msgid "Keywords:"
@@ -2244,7 +2340,7 @@ msgstr "Zvolit knihovnu pro vyhledávání"
 
 #: login.username
 msgid "Enter your username or library barcode"
-msgstr "Zadejte své uživatelské jméno nebo čárový kód knihovny"
+msgstr "Zadejte své uživatelské jméno nebo svůj čárový kód"
 
 #: login.password.change
 msgid "Change Password"
@@ -2268,15 +2364,15 @@ msgstr "Zadejte nové heslo"
 
 #: login.password.new.reenter
 msgid "Re-type the new password for verification"
-msgstr "Pro kontrolu zadejte nové heslo znovu"
+msgstr "Pro kontrolu znovu zadejte nové heslo"
 
 #: login.password.update
 msgid "Update Password"
-msgstr "Aktualizuj heslo"
+msgstr "Aktualizovat heslo"
 
 #: login.password.nomatch
 msgid "Passwords do not match"
-msgstr "Heslo nesouhlasí"
+msgstr "Hesla nesouhlasí"
 
 #: login.password.success
 msgctxt "login.password.success"
@@ -2296,9 +2392,8 @@ msgstr ""
 "prosím svou knihovnu."
 
 #: login.account.inactive
-msgid ""
-"This account has been deactivated.  Please contact your local library."
-msgstr "Tento účet byl deaktivován. Kontaktujte prosím svou knihovnu."
+msgid "This account has been deactivated.  Please contact your local library."
+msgstr "Toto konto bylo deaktivováno. Kontaktujte prosím svou knihovnu."
 
 #: login.failed
 msgid ""
@@ -2312,14 +2407,14 @@ msgstr ""
 
 #: button.go
 msgid "Go!"
-msgstr ""
+msgstr "Vyhledat"
 
 #. =================================================================
 #. Slimpac Simple Search
 #. =================================================================
 #: slimpac.language.select
 msgid "Select language"
-msgstr "Zvolte jazyk"
+msgstr "Vyberte jazyk"
 
 #: slimpac.start.title
 msgid "Simple Search"
@@ -2331,7 +2426,7 @@ msgstr "Vyhledávám: "
 
 #: slimpac.start.dynamic
 msgid "Dynamic Catalog"
-msgstr "Dynamický katalog"
+msgstr "Zobrazit záznam v katalogu"
 
 #. =================================================================
 #. Slimpac Advanced Search
@@ -2379,7 +2474,7 @@ msgstr "Heslo"
 #: selfck.submit
 msgctxt "selfck.submit"
 msgid "Submit"
-msgstr "Odeslat"
+msgstr "Potvrdit"
 
 #: selfck.clear
 msgid "Clear"
@@ -2387,11 +2482,11 @@ msgstr "Vymazat"
 
 #: selfck.patron_barcode_label
 msgid "Please scan your library barcode"
-msgstr "Nasnímejte prosím čárový kód průkazky"
+msgstr "Naskenujte prosím čárový kód průkazky"
 
 #: selfck.item_barcode_label
 msgid "Please scan an item to checkout or renew:"
-msgstr "Nasnímejte prosím exemplář pro vypůjčení nebo prodloužení:"
+msgstr "Naskenujte prosím exemplář, který si chcete vypůjčit nebo prodloužit:"
 
 #: selfck.barcode
 msgctxt "selfck.barcode"
@@ -2420,11 +2515,11 @@ msgstr "Zbývající prodloužení"
 
 #: selfck.cotype
 msgid "Type"
-msgstr "Druh"
+msgstr "Typ"
 
 #: selfck.cotype_co
 msgid "Checkout"
-msgstr "Vypůjčit"
+msgstr "Vypůjčení"
 
 #: selfck.cotype_rn
 msgid "Renewal"
@@ -2440,7 +2535,7 @@ msgstr "Vítejte"
 
 #: selfck.printing
 msgid "Printing Receipt..."
-msgstr "Tisknu stvrzenku..."
+msgstr "Tisk stvrzenky..."
 
 #. event messages
 #: selfck.event.co_success
@@ -2453,11 +2548,11 @@ msgstr "Vyskytla se neznámá chyba"
 
 #: selfck.event.dupe_barcode
 msgid "This item has already been checked out during this session"
-msgstr "Exemplář již byla v průběhu této relace vypůjčen"
+msgstr "Exemplář již byl v průběhu této relace vypůjčen"
 
 #: selfck.event.patron_not_found
 msgid "The patron barcode was not found"
-msgstr "Čárový kód uživatele nebyl nalezen"
+msgstr "Čárový kód čtenáře nebyl nalezen"
 
 #: selfck.event.item_noncat
 msgid "The requested item is not in the catalog"
@@ -2465,19 +2560,19 @@ msgstr "Požadovaný exemplář není v katalogu"
 
 #: selfck.event.item_nocirc
 msgid "The requested item is not allowed to circulate"
-msgstr "Požadovaný exemplář není k dispozici k vypůjčení"
+msgstr "Požadovaný exemplář nemůže být vypůjčen"
 
 #: selfck.event.already_out
 msgid "The requested item is already checked out to another patron"
-msgstr "Požadovaný exemplář je již zapůjčen jinému uživateli"
+msgstr "Požadovaný exemplář je již zapůjčen jinému čtenáři"
 
 #: selfck.items_out
 msgid "You checked out the following items"
-msgstr "Vypůjčil jste si následující exempláře"
+msgstr "Vypůjčili jste si následující exempláře"
 
 #: selfck.org_hours
 msgid "Hours of Operation"
-msgstr "Provozní hodiny"
+msgstr "Otevírací doba"
 
 #: selfck.org_phone
 msgid "Library Phone Number"
@@ -2511,5 +2606,71 @@ msgstr "Sobota"
 msgid "Sunday"
 msgstr "Neděle"
 
-#~ msgid "browse"
-#~ msgstr "prohlížet"
+#: circ.fail_part.actor.usr.barred
+msgid "The patron is barred"
+msgstr "Čtenářské konto je blokováno"
+
+#: circ.fail_part.asset.copy.circulate
+msgid "The item does not circulate"
+msgstr "Exemplář není vypůjčen"
+
+#: circ.fail_part.asset.copy_location.circulate
+msgid "Items from this shelving location do not circulate"
+msgstr "Exempláře z tohoto regálu nejsou určeny k absenční výpůjčce."
+
+#: circ.fail_part.asset.copy.status
+msgid "The item cannot circulate at this time"
+msgstr "Exemplář nemůže být v tento okamžik vypůjčen"
+
+#: circ.fail_part.circ.holds.target_skip_me
+msgid "The item's circulation library does not fulfill holds"
+msgstr "Výpůjční knihovna tohoto exempláře nepovoluje rezervace"
+
+#: circ.fail_part.config.circ_matrix_circ_mod_test
+msgid "The patron has too many items of this type checked out"
+msgstr "Čtenář má vypůjčeno příliš mnoho exemplářů tohoto typu"
+
+#: circ.fail_part.config.circ_matrix_test.available_copy_hold_ratio
+msgid "The available item-to-hold ratio is too low"
+msgstr "Poměr dostupných exempářů k rezervaci je příliž nízký"
+
+#: circ.fail_part.config.circ_matrix_test.circulate
+msgid "Circulation rules reject this item as non-circulatable"
+msgstr "Výpůjční pravidla zamítla tento exemplář jako nevypůjčitelný"
+
+#: circ.fail_part.config.circ_matrix_test.total_copy_hold_ratio
+msgid "The total item-to-hold ratio is too low"
+msgstr "Celkový poměr exemplářů k rezervacím je příliš nízký"
+
+#: circ.fail_part.config.hold_matrix_test.holdable
+msgid "Hold rules reject this item as unholdable"
+msgstr "Rezervační pravidla zamítla tento exemplář jako nerezervovatelný"
+
+#: circ.fail_part.config.hold_matrix_test.max_holds
+msgid "The patron has reached the maximum number of holds"
+msgstr "Čtenář dosáhl maximálního počtu rezervací"
+
+#: circ.fail_part.config.rule_age_hold_protect.prox
+msgid "The item is too new to transit this far"
+msgstr "Exemplář je příliš nový, aby ho bylo možné přesunout jinam"
+
+#: circ.fail_part.no_item
+msgid "The system could not find this item"
+msgstr "Systém nemohl najít tento exemplář"
+
+#: circ.fail_part.no_ultimate_items
+msgid "The system could not find any items to match this hold request"
+msgstr ""
+"Systém nenalezl exempláře, které by se shodovaly s požadavkem na rezervaci"
+
+#: circ.fail_part.no_matchpoint
+msgid "System rules do not define how to handle this item"
+msgstr "Nejsou nastavena pravidla pro manipulaci s tímto exemplářem"
+
+#: circ.fail_part.no_user
+msgid "The system could not find this patron"
+msgstr "Systém tohoto čtenáře nenalezl."
+
+#: circ.fail_part.transit_range
+msgid "The item cannot transit this far"
+msgstr "Exemplář není možné přesunout tak daleko"

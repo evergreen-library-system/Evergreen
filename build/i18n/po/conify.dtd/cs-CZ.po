@@ -1,18 +1,19 @@
+#. extracted from ../../Open-ILS/web/opac/locale/en-US/conify.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-23 23:35-0400\n"
-"PO-Revision-Date: 2009-11-24 06:12+0000\n"
-"Last-Translator: Monika Horáková <Unknown>\n"
+"POT-Creation-Date: 2011-04-18 21:44-0400\n"
+"PO-Revision-Date: 2011-08-27 18:07+0000\n"
+"Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-11-25 04:50+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
-"X-Poedit-Country: CZECH REPUBLIC\n"
+"X-Generator: Translate Toolkit 1.8.1\n"
 "X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-08-28 05:19+0000\n"
+"X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
@@ -30,12 +31,12 @@ msgstr "Smazat"
 #: conify.new_kid_button.label
 msgctxt "conify.new_kid_button.label"
 msgid "New Child"
-msgstr "Nový přírůstek"
+msgstr "Přidat nový podřízený typ"
 
 #. Main configuration interface menu
 #: conify.admin.title
 msgid "Global :: Administration"
-msgstr ""
+msgstr "Globální :: Administrace"
 
 #: conify.admin.top_pane.title
 msgctxt "conify.admin.top_pane.title"
@@ -44,7 +45,7 @@ msgstr "Ovládací prvky"
 
 #: conify.admin.configure
 msgid "Configure your ILS"
-msgstr "Konfigurovat své ILS"
+msgstr "Konfigurovat váš knihovní systém"
 
 #: conify.admin.left_pane.controls
 msgctxt "conify.admin.left_pane.controls"
@@ -53,7 +54,7 @@ msgstr "Ovládací prvky"
 
 #: conify.admin.org_unit_type.link
 msgid "Organization Types"
-msgstr "Typy organizací"
+msgstr "Typy organizačních jednotek"
 
 #: conify.admin.org_unit.link
 msgctxt "conify.admin.org_unit.link"
@@ -63,19 +64,19 @@ msgstr "Organizační jednotky"
 #: conify.admin.grp_tree.link
 msgctxt "conify.admin.grp_tree.link"
 msgid "Permission Groups"
-msgstr "Skupiny povolení"
+msgstr "Skupiny oprávnění"
 
 #: conify.admin.perm_list.link
 msgid "Permissions"
-msgstr "Povolení"
+msgstr "Oprávnění"
 
 #: conify.admin.copy_status.link
 msgid "Copy Statuses"
-msgstr "Stavy výtisků"
+msgstr "Statuty exemplářů"
 
 #: conify.admin.marc_code_maps.link
-msgid "MARC Codes"
-msgstr "Kódy MARC"
+msgid "Coded Value Maps"
+msgstr "Hodnoty kódů polí pevné délky"
 
 #: conify.admin.bottom_pane.title
 msgctxt "conify.admin.bottom_pane.title"
@@ -84,8 +85,9 @@ msgstr "Ovládací prvky"
 
 #. Organization unit type configuration interface
 #: conify.org_unit_type.title
+#, fuzzy
 msgid "Global :: Actor :: Organization Unit Types"
-msgstr ""
+msgstr "Globální :: Činitel :: Organizační Jednotky"
 
 #: conify.org_unit_type.type_tree.label
 msgid "Organization Unit Types"
@@ -93,19 +95,19 @@ msgstr "Typy organizačních jednotek"
 
 #: conify.org_unit_type.type_name
 msgid "Type Name"
-msgstr ""
+msgstr "Název typu organizační jednotky"
 
 #: conify.org_unit_type.opac_label
 msgid "OPAC Label"
-msgstr ""
+msgstr "Označení v OPACu"
 
 #: conify.org_unit_type.parent_type
 msgid "Parent Type"
-msgstr ""
+msgstr "Nadřazený typ"
 
 #: conify.org_unit_type.can_have_volumes
 msgid "Can Have Volumes and Copies"
-msgstr "Může mít svazky a výtisky"
+msgstr "Může mít svazky a exempláře"
 
 #: conify.org_unit_type.can_have_users
 msgid "Can Have Users"
@@ -114,7 +116,7 @@ msgstr "Může mít uživatele"
 #. Organization unit configuration interface
 #: conify.org_unit.title
 msgid "Global :: Actor :: Organization Units"
-msgstr ""
+msgstr "Globální :: Činitel :: Organizační Jednotky"
 
 #: conify.org_unit.ou_tree.label
 msgctxt "conify.org_unit.ou_tree.label"
@@ -127,11 +129,11 @@ msgstr "Hlavní nastavení"
 
 #: conify.org_unit.editor_pane.org_unit_name
 msgid "Organization Unit Name"
-msgstr "Název jednotky organizace"
+msgstr "Název organizační jednotky"
 
 #: conify.org_unit.editor_pane.org_unit_code
 msgid "Organization Unit Policy Code"
-msgstr ""
+msgstr "Kód organizační jednotky"
 
 #: conify.org_unit.editor_pane.main_email
 msgid "Main Email Address"
@@ -147,11 +149,11 @@ msgstr "Typ organizační jednotky"
 
 #: conify.org_unit.editor_pane.parent
 msgid "Parent Organization Unit"
-msgstr ""
+msgstr "Nadřazená organizační jednotka"
 
 #: conify.org_unit.editor_pane.opac_visible
 msgid "OPAC Visible"
-msgstr "Viditelný OPAC"
+msgstr "Viditelné v OPACu"
 
 #. Hours of operation
 #: conify.org_unit.hoo_pane.title
@@ -160,11 +162,11 @@ msgstr "Provozní doba"
 
 #: conify.org_unit.hoo_pane.open_time
 msgid "Open time"
-msgstr "Otevřeno"
+msgstr "Čas otevření"
 
 #: conify.org_unit.hoo_pane.close_time
 msgid "Close time"
-msgstr "Zavřeno"
+msgstr "Zavírací hodina"
 
 #: conify.org_unit.hoo_pane.closed
 msgid "Closed"
@@ -205,19 +207,19 @@ msgstr "Adresy"
 
 #: conify.org_unit.addresses_pane.physical.title
 msgid "Physical Address"
-msgstr "Fyzická adresa"
+msgstr ""
 
 #: conify.org_unit.addresses_pane.holds.title
 msgid "Holds Address"
-msgstr "Adresy rezervací"
+msgstr "Adresa pro rezervace"
 
 #: conify.org_unit.addresses_pane.mailing.title
 msgid "Mailing Address"
-msgstr "E-mailová adresa"
+msgstr "Kontaktní adresa"
 
 #: conify.org_unit.addresses_pane.ill.title
 msgid "ILL Address"
-msgstr "Adresa ILL"
+msgstr "Adaresa pro MVS"
 
 #: conify.org_unit.addresses_pane.type
 msgid "Type"
@@ -225,7 +227,7 @@ msgstr "Typ"
 
 #: conify.org_unit.addresses_pane.valid
 msgid "Valid"
-msgstr "Platný"
+msgstr "V platnosti"
 
 #: conify.org_unit.addresses_pane.street1
 msgid "Street 1"
@@ -237,7 +239,7 @@ msgstr "Ulice 2"
 
 #: conify.org_unit.addresses_pane.city
 msgid "City"
-msgstr "Město"
+msgstr "Obec"
 
 #: conify.org_unit.addresses_pane.state
 msgid "State"
@@ -258,19 +260,19 @@ msgstr "Kraj"
 #. This is a highlighted label that is followed by the name of the organizational unit
 #: conify.org_unit.status_bar
 msgid "Now editing:"
-msgstr "Nyní editovat:"
+msgstr "Nyní se edituje"
 
 #: conify.copy_status.title
 msgid "Global :: Configuration :: Copy Status"
-msgstr ""
+msgstr "Globální :: Nastavení :: Status exempláře"
 
 #: conify.copy_status.new_status.label
 msgid "New Status:"
-msgstr "Nový stav:"
+msgstr "Nový status"
 
 #: conify.copy_status.new_status.name
 msgid "New Status Name"
-msgstr ""
+msgstr "Jméno nového statutu"
 
 #: conify.copy_status.new_status.save
 msgctxt "conify.copy_status.new_status.save"
@@ -289,15 +291,15 @@ msgstr "Smazat vybrané"
 
 #: conify.marc_code_maps.title
 msgid "Global :: Configuration :: MARC Code Maps"
-msgstr ""
+msgstr "Globální :: Nastavení :: Kódované údaje MARCu"
 
 #: conify.marc_code_maps.audience_map.title
 msgid "Audience Map"
-msgstr "Přehled návštěv"
+msgstr "Čtenářské určení"
 
 #: conify.marc_code_maps.audience_map.new.label
 msgid "New Audience Map:"
-msgstr "Přehled nových návštěv"
+msgstr "Přidat čtenářské určení"
 
 #: conify.marc_code_maps.new_code
 msgctxt "conify.marc_code_maps.new_code"
@@ -325,7 +327,7 @@ msgstr "Uložit změny"
 
 #: conify.marc_code_maps.bib_level.title
 msgid "Bibliographic Level Map"
-msgstr "Přehled bibiografických úrovní"
+msgstr "Bibliografické úrovně"
 
 #: conify.marc_code_maps.bib_level.new.label
 msgid "New Bibliographic Level:"
@@ -334,27 +336,27 @@ msgstr "Nová bibliografická úroveň"
 #: conify.marc_code_maps.add
 msgctxt "conify.marc_code_maps.add"
 msgid "Add"
-msgstr "Přidat"
+msgstr "Pridano"
 
 #: conify.marc_code_maps.item_form.title
 msgid "Item Form Map"
-msgstr "Přehled forem exemplářů"
+msgstr "Forma popisné jednotky"
 
 #: conify.marc_code_maps.item_form.new.label
 msgid "New Item Form:"
-msgstr "Nová forma exempláře:"
+msgstr "Nová forma popisné jednotky"
 
 #: conify.marc_code_maps.item_type.title
 msgid "Item Type Map"
-msgstr "Přehled typů exemplářů"
+msgstr "Typ záznamu"
 
 #: conify.marc_code_maps.item_type.new.label
 msgid "New Item Type:"
-msgstr "Typ nového exempláře:"
+msgstr "Nový typ záznamu"
 
 #: conify.marc_code_maps.language.title
 msgid "Language Map"
-msgstr "Jazyková mapa"
+msgstr "Jazyky"
 
 #: conify.marc_code_maps.language.new.label
 msgid "New Language:"
@@ -362,24 +364,24 @@ msgstr "Nový jazyk"
 
 #: conify.marc_code_maps.literary_form.title
 msgid "Literary Form Map"
-msgstr "Přehled literárních forem"
+msgstr "Literární forma"
 
 #: conify.marc_code_maps.literary_form.new.label
 msgid "New Literary Form:"
-msgstr "Nová literární forma:"
+msgstr "Nová literární forma"
 
 #: conify.marc_code_maps.video.title
 msgid "Videorecording Format Map"
-msgstr "Přehled videozáznamových formátů"
+msgstr "Formát videozáznamu"
 
 #: conify.marc_code_maps.video.new.label
 msgid "New Video Recording Format:"
-msgstr "Nový videozáznamový formát"
+msgstr "Nový formát videozáznamu"
 
 #. perm_list.html Entities
 #: conify.perm_list.permission_list.title
 msgid "Global :: Permission :: Permission List"
-msgstr ""
+msgstr "Globální :: Oprávnění :: Seznam oprávnění"
 
 #: conify.perm_list.new_code.label
 msgctxt "conify.perm_list.new_code.label"
@@ -403,21 +405,21 @@ msgstr "Smazat vybrané"
 
 #: conify.perm_list.new_permission.label
 msgid "New Permission:"
-msgstr "Nové povolení:"
+msgstr "Nové oprávnění"
 
 #. grp_tree.html Entities
 #: conify.grp_tree.group_tree.title
 msgid "Global :: Permission :: Group Tree"
-msgstr ""
+msgstr "Globální :: Oprávnění :: Stromové zobrazení skupin"
 
 #: conify.grp_tree.permission_groups.label
 msgctxt "conify.grp_tree.permission_groups.label"
 msgid "Permission Groups"
-msgstr "Skupiny povolení"
+msgstr "Skupiny oprávnění"
 
 #: conify.grp_tree.group_config.label
 msgid "Group Configuration"
-msgstr "Konfigurace skupiny"
+msgstr "Nastavení skupiny"
 
 #: conify.grp_tree.group_name.label
 msgid "Group Name"
@@ -430,19 +432,23 @@ msgstr "Popis"
 
 #: conify.grp_tree.permission_interval.label
 msgid "Permission Interval"
-msgstr "Období povolení/interval povolení"
+msgstr "Doba trvání oprávnění"
+
+#: conify.grp_tree.hold_priority.label
+msgid "Hold Priority"
+msgstr "Priorita rezervací"
 
 #: conify.grp_tree.editing_permission.label
 msgid "Editing Permission"
-msgstr "Úprava povolení"
+msgstr "Edituje se povolení"
 
 #: conify.grp_tree.parent_group.label
 msgid "Parent Group"
-msgstr ""
+msgstr "Nadřazená Skupina"
 
 #: conify.grp_tree.user_group.label
 msgid "User Group"
-msgstr "Uživatelská skupina"
+msgstr "Skupina uživatelů"
 
 #: conify.grp_tree.save_button.label
 msgctxt "conify.grp_tree.save_button.label"
@@ -457,19 +463,19 @@ msgstr "Smazat"
 #: conify.grp_tree.new_child_button.label
 msgctxt "conify.grp_tree.new_child_button.label"
 msgid "New Child"
-msgstr "Nový přírůstek"
+msgstr "Přidat novu podřízenou skupinu"
 
 #: conify.grp_tree.group_permissions.title
 msgid "Group Permissions"
-msgstr "Skupiny povolení"
+msgstr "Skupinová oprávnění"
 
 #: conify.grp_tree.new_mapping.label
 msgid "New Mapping"
-msgstr "Nové zobrazení/nové mapování"
+msgstr "Přidat oprávnění"
 
 #: conify.grp_tree.permission.label
 msgid "Permission:"
-msgstr "Povolení:"
+msgstr "Oprávnění:"
 
 #: conify.grp_tree.depth.label
 msgid "Depth:"
@@ -477,11 +483,11 @@ msgstr "Hloubka:"
 
 #: conify.grp_tree.grantable.label
 msgid "Grantable:"
-msgstr "Půjčitelný:"
+msgstr "Může přidělit"
 
 #: conify.grp_tree.add_mapping_button.label
 msgid "Add Mapping"
-msgstr "Přidat zobrazení/mapování"
+msgstr "Přidat"
 
 #: conify.grp_tree.save_changes.label
 msgctxt "conify.grp_tree.save_changes.label"
@@ -492,3 +498,6 @@ msgstr "Uložit změny"
 msgctxt "conify.grp_tree.remove_selected.label"
 msgid "Delete Selected"
 msgstr "Smazat vybrané"
+
+#~ msgid "MARC Codes"
+#~ msgstr "Kódy MARC"

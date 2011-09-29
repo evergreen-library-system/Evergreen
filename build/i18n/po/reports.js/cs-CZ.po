@@ -1,16 +1,17 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2009-11-23 23:36-0400\n"
+"POT-Creation-Date: 2011-04-18 21:45:31-0400\n"
 "PO-Revision-Date: 2009-11-24 07:22+0000\n"
 "Last-Translator: Aneta Plzáková <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-11-25 04:52+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2011-05-18 04:48+0000\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -25,7 +26,7 @@ msgstr "Reálné datum"
 
 #: reports.js:TFORMS_LABEL_MONTH_NAME
 msgid "Month Name'"
-msgstr "Název měaíce"
+msgstr "Název měsíce"
 
 #: reports.js:OPERATORS_IS_NOT_NULL reports.js:FILTERS_LABEL_NOT_NULL
 msgid "Is not NULL"
@@ -37,7 +38,7 @@ msgstr "Šablona"
 
 #: reports.js:FILTERS_LABEL_NE_ANY reports.js:OPERATORS_NE_ANY
 msgid "Does Not Equal Any"
-msgstr ""
+msgstr "Ničemu se nerovná"
 
 #: reports.js:REPORT_EDITOR_INVALID_DATE_ALERT
 msgid "invalid start date -  YYYY-MM-DD"
@@ -63,7 +64,7 @@ msgstr "Změnit záhlaví sloupce na: ${0}"
 
 #: reports.js:LINK_NULLABLE_RIGHT
 msgid "Parent"
-msgstr ""
+msgstr "Nadřazený"
 
 #: reports.js:TEMPLATE_CONF_BETWEEN
 msgid "Field value is between (comma separated):"
@@ -76,9 +77,11 @@ msgstr "Název dne"
 #: reports.js:SOURCE_SETUP_CONFIRM_EXIT
 msgid ""
 "You have started building a template!\n"
-" Selecting a new starting source will destroy the current template and start "
-"over.  Is this OK?"
+" Selecting a new starting source will destroy the current template and start over.  Is this OK?"
 msgstr ""
+"Začali jste sestavovat šablonu!\n"
+" Vybráním nového startovního zdroje zničí současnou šablonu a začne znovu. "
+"Je to v pořádku?"
 
 #: reports.js:WIDGET_YEARS
 msgid "Year(s)"
@@ -106,11 +109,11 @@ msgstr "Hodnota ${0}:"
 
 #: reports.js:TRANSFORMS_COUNT_DISTINCT reports.js:TFORMS_LABEL_COUNT_DISTINCT
 msgid "Count Distinct"
-msgstr ""
+msgstr "Počítadlo rozdílů"
 
 #: reports.js:TRANSFORMS_SUBSTRING
 msgid "Substring"
-msgstr ""
+msgstr "Podřetězec"
 
 #: reports.js:FOLDER_WINDOW_CHANGE_FOLDERS
 msgid "Change Folders"
@@ -138,7 +141,7 @@ msgstr "Den roku"
 
 #: reports.js:TRANSFORMS_SUM reports.js:TFORMS_LABEL_SUM
 msgid "Sum"
-msgstr ""
+msgstr "Celkem"
 
 #: reports.js:TFORMS_LABEL_LOWER reports.js:TRANSFORMS_LOWER
 msgid "Lower case"
@@ -182,7 +185,7 @@ msgstr "Měsíc(e)"
 
 #: reports.js:SOURCE_BROWSE_AGGREGATE
 msgid "Aggregate"
-msgstr ""
+msgstr "Agregace"
 
 #: reports.js:TEMPLATE_CONF_TRUE
 msgid "True"
@@ -198,7 +201,7 @@ msgstr "Žádný"
 
 #: reports.js:TFORMS_LABEL_INT reports.js:TRANSFORMS_INT
 msgid "Drop trailing decimals"
-msgstr ""
+msgstr "Zahodit desetinné tečky"
 
 #: reports.js:TRANSFORMS_HOUR_TRUNC reports.js:TFORMS_LABEL_HOUR_TRUNC
 msgid "Hour"
@@ -218,15 +221,15 @@ msgstr "Poslední hodnota"
 
 #: reports.js:FILTERS_LABEL_EQ_ANY reports.js:OPERATORS_EQ_ANY
 msgid "Equals Any"
-msgstr ""
+msgstr "Jakákoliv rovnost"
 
 #: reports.js:TEMPLATE_CONF_BARE
 msgid "Bare"
-msgstr ""
+msgstr "Holý"
 
 #: reports.js:TEMPLATE_CONF_IN
 msgid "Field matches one of list (comma separated):"
-msgstr ""
+msgstr "Pole se shoduje s jedním ze seznamu (oddělený čárkami):"
 
 #: reports.js:TRANSFORMS_MONTH_TRUNC reports.js:TFORMS_LABEL_MONTH_TRUNC
 msgid "Year + Month"
@@ -234,7 +237,7 @@ msgstr "Rok + Měsíc"
 
 #: reports.js:TRANSFORMS_FIRST_WORD reports.js:TFORMS_LABEL_FIRST_WORD
 msgid "First contiguous non-space string"
-msgstr ""
+msgstr "První následující nemezerový řetězec"
 
 #: reports.js:TEMPLATE_CONF_NOT_BETWEEN
 msgid "Field value is not between (comma separated):"
@@ -251,7 +254,7 @@ msgstr "Všechny dostupné zdroje"
 
 #: reports.js:OPERATORS_LIKE reports.js:FILTERS_LABEL_LIKE
 msgid "Contains Matching substring"
-msgstr ""
+msgstr "Obsahuje Shodující se Podřetězec"
 
 #: reports.js:OPERATORS_EQUALS reports.js:TEMPLATE_CONF_EQUALS
 #: reports.js:FILTERS_LABEL_EQUALS
@@ -264,7 +267,7 @@ msgstr "Čtvrtletí"
 
 #: reports.js:LINK_NULLABLE_LEFT
 msgid "Child"
-msgstr ""
+msgstr "Podřazený"
 
 #: reports.js:TFORMS_LABEL_DATE reports.js:TRANSFORMS_DATE
 msgid "Date"
@@ -276,7 +279,7 @@ msgstr "Počet"
 
 #: reports.js:LINK_NULLABLE_DEFAULT
 msgid "Default"
-msgstr ""
+msgstr "Výchozí"
 
 #: reports.js:FILTERS_LABEL_LESS_THAN reports.js:OPERATORS_LESS_THAN
 msgid "Less than"
@@ -312,7 +315,7 @@ msgstr "Den měsíce"
 
 #: reports.js:SOURCE_BROWSE_NON_AGGREGATE
 msgid "Non-Aggregate"
-msgstr ""
+msgstr "Neseskupující"
 
 #: reports.js:OPERATORS_IS_NULL reports.js:FILTERS_LABEL_NULL
 msgid "Is NULL"
@@ -320,7 +323,7 @@ msgstr "Je nulový"
 
 #: reports.js:TRANSFORMS_MIN reports.js:TFORMS_LABEL_MIN
 msgid "Min"
-msgstr ""
+msgstr "Min"
 
 #: reports.js:FILTERS_LABEL_NOT_NULL_BLANK reports.js:OPERATORS_NOT_NULL_BLANK
 msgid "Is not NULL or Blank"
@@ -332,7 +335,7 @@ msgstr "Den/Dny"
 
 #: reports.js:FOLDER_WINDOW_REPORT_OUTPUT
 msgid "Report Output: ${0}"
-msgstr ""
+msgstr "Výstup Protokolu: ${0}"
 
 #: reports.js:TEMPLATE_CONF_CONFIRM_STATE
 msgid "Click OK for TRUE and Cancel for FALSE."
@@ -344,7 +347,7 @@ msgstr "Šablony"
 
 #: reports.js:WIDGET_RELATIVE_DATE
 msgid "Relative Date"
-msgstr ""
+msgstr "Relativní Datum"
 
 #: reports.js:TRANSFORMS_FIRST reports.js:TFORMS_LABEL_FIRST
 msgid "First Value"
@@ -372,7 +375,7 @@ msgstr "Název měsíce"
 
 #: reports.js:TFORMS_LABEL_FIRST5 reports.js:TRANSFORMS_FIRST5
 msgid "First 5 characters (for US ZIP code)"
-msgstr ""
+msgstr "Prvních 5 znaků (Pro US PSČ)"
 
 #: reports.js:OPERATORS_GTE_TIME reports.js:FILTERS_LABEL_GTE_TIME
 msgid "On or After (Date/Time)"
@@ -414,7 +417,7 @@ msgstr "Není v seznamu"
 
 #: reports.js:OPERATORS_ILIKE reports.js:FILTERS_LABEL_ILIKE
 msgid "Contains Matching substring (ignore case)"
-msgstr ""
+msgstr "Obsahuje Shodující se podřetězec (bez ohledu na velikost)"
 
 #: reports.js:TRANSFORMS_MOY reports.js:TFORMS_LABEL_MOY
 msgid "Month of Year"
@@ -430,4 +433,4 @@ msgstr "Max"
 
 #: reports.js:TEMPLATE_CONF_NOT_IN reports.js:TEMPLATE_CONF_NO_MATCH
 msgid "Field does not match one of list (comma separated):"
-msgstr ""
+msgstr "Pole se neshoduje s jedním ze seznamu (oddělený čárkami):"
