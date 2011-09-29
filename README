@@ -162,8 +162,6 @@ and browser during testing and development
   a. Replace `Allow from 10.0.0.0/8` with `Allow from all` (to enable
      access to the offline upload / execute interface from any workstation on
      any network - note that you must secure this for a production instance)
-  b. Comment the line `Listen 443` as it conflicts with the same declaration
-     elsewhere in the Apache configuration files.
 4. Change the user for the Apache server.
   * (Debian and Ubuntu): As the root user, edit `/etc/apache2/envvars`.
     Change `export APACHE_RUN_USER=www-data` to 
