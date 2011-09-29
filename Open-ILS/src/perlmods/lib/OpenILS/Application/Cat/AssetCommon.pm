@@ -9,6 +9,7 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Const qw/:const/;
 use OpenSRF::AppSession;
 use OpenILS::Event;
+use OpenILS::Utils::Penalty;
 use OpenILS::Application::Circ::CircCommon;
 my $U = 'OpenILS::Application::AppUtils';
 
