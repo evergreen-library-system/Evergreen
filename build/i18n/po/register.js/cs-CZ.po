@@ -1,36 +1,146 @@
+# Czech translation for evergreen
+# Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2010-06-07 02:03:44-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2011-04-23 01:33:28-0400\n"
+"PO-Revision-Date: 2011-08-13 20:06+0000\n"
+"Last-Translator: Eva Cerninakova <Unknown>\n"
+"Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
+"X-Generator: Launchpad (build 13674)\n"
+"X-Launchpad-Export-Date: 2011-08-14 04:47+0000\n"
 
-#: register.js:DUPE_PATRON_ADDR
-msgid "Found ${0} patron(s) with the same address"
-msgstr ""
-
-#: register.js:DUPE_PATRON_IDENT
-msgid "Found ${0} patron(s) with the same identification"
-msgstr ""
+#: register.js:USER_SETTINGS
+msgid "User Settings"
+msgstr "Uživatelská nastavení"
 
 #: register.js:DUPE_PATRON_EMAIL
 msgid "Found ${0} patron(s) with the same email address"
-msgstr ""
+msgstr "Nalezen(o) ${0} uživatel(ů) se stejnou e-mailovou adresou"
 
-#: register.js:DUPE_PATRON_NAME
-msgid "Found ${0} patron(s) with the same name"
-msgstr ""
+#: register.js:ADDRESS_BILLING
+msgid "Billing"
+msgstr "Trvalá adresa"
 
-#: register.js:DUPE_PATRON_PHONE
-msgid "Found ${0} patron(s) with the same phone number"
-msgstr ""
+#: register.js:ADDRESS_OWNED
+msgid "This address is owned by another user: "
+msgstr "Tuto adresu má  jiný uživatel: "
 
 #: register.js:REPLACED_ADDRESS
 msgid "<div>Replaces address <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"
 msgstr ""
+"<div>Nahrazuje adresu <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"
+
+#: register.js:SHOW_REQUIRED
+msgid "Show Only Required Fields"
+msgstr "Zobrazit pouze povinná pole"
+
+#: register.js:DUPE_PATRON_ADDR
+msgid "Found ${0} patron(s) with the same address"
+msgstr "Nalezen(o) ${0} uživatel(ů) se stejnou adresou"
+
+#: register.js:SAVE
+msgid "Save"
+msgstr "Uložit"
+
+#: register.js:DUPE_PATRON_IDENT
+msgid "Found ${0} patron(s) with the same identification"
+msgstr "Nalezen(o) ${0} puživatel(ů) se stejnou identifikací"
+
+#: register.js:ADDRESS_MAILING
+msgid "Mailing"
+msgstr "Kontaktní adresa"
+
+#: register.js:REPLACE_BARCODE
+msgid "Replace Barcode"
+msgstr "Nahradit čárový kód"
+
+#: register.js:NEED_ADDRESS
+msgid "An address is required during registration."
+msgstr "Během registrace je požadována adresa."
+
+#: register.js:PARENT_OR_GUARDIAN
+msgid "Parent/Guardian"
+msgstr "Rodič / opatrovník"
+
+#: register.js:ADDRESS_HEADER
+msgid "Address"
+msgstr "Adresa"
+
+#: register.js:DUPE_PATRON_PHONE
+msgid "Found ${0} patron(s) with the same phone number"
+msgstr "Nalezen(o) ${0} uživatel(ů) se stejným telefonním číslem"
+
+#: register.js:INVALID_FORM
+msgid "Form is invalid.  Please edit and try again."
+msgstr "Formulář není správně vyplněn. Prosím, upravte ho a zkuste to znovu."
+
+#: register.js:BARCODE_IN_USE
+msgid "Barcode is already in use"
+msgstr "Čárový kód již existuje"
+
+#: register.js:EXAMPLE
+msgid "Example: "
+msgstr "Příklad: "
+
+#: register.js:SHOW_SUGGESTED
+msgid "Show Suggested Fields"
+msgstr "Zobrazit navrhovaná pole"
+
+#: register.js:ADDRESS_PENDING
+msgid "This is a pending address: "
+msgstr "Toto je nevyřízená adresa: "
+
+#: register.js:DUPE_USERNAME
+msgid "Username is already in use"
+msgstr "Uživatelské jméno již existuje"
+
+#: register.js:DUPE_PATRON_NAME
+msgid "Found ${0} patron(s) with the same name"
+msgstr "Nalezen(o) ${0} uživatel(ů) se stejným jménem"
+
+#: register.js:DEFAULT_ADDRESS_TYPE
+msgid "MAILING"
+msgstr "Kontaktní adresa"
+
+#: register.js:SHOW_ALL
+msgid "Show All Fields"
+msgstr "Zobrazit všechna pole"
+
+#: register.js:ADDRESS_APPROVE
+msgid "Approve Address"
+msgstr "Potvrdit adresu"
+
+#: register.js:VERIFY_PASSWORD
+msgid "Verify Password"
+msgstr "Verifikace hesla"
+
+#: register.js:SAVE_CLONE
+msgid "Save &amp; Clone"
+msgstr "Uložit a klonovat"
+
+#: register.js:STAT_CATS
+msgid "Statistical Categories"
+msgstr "Statistické kategorie"
+
+#: register.js:ADDRESS_NEW
+msgid "New Address"
+msgstr "Nová adresa"
+
+#: register.js:RESET_PASSWORD
+msgid "Reset Password"
+msgstr "Vygenerovat heslo"
+
+#: register.js:SEE_ALL
+msgid "See All"
+msgstr "Zobrazit vše"
+
+#: register.js:DELETE_ADDRESS
+msgid "Delete address ${0}?"
+msgstr "Vymazat adresu ${0}?"

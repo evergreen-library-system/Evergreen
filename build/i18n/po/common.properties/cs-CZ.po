@@ -1,18 +1,19 @@
+#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/common.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-23 23:36-0400\n"
-"PO-Revision-Date: 2009-11-24 06:10+0000\n"
-"Last-Translator: Vaclav Jansa <Unknown>\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2011-08-11 11:02+0000\n"
+"Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-11-25 04:50+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
-"X-Poedit-Country: CZECH REPUBLIC\n"
+"X-Generator: Translate Toolkit 1.8.1\n"
 "X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-08-12 04:36+0000\n"
+"X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
@@ -28,10 +29,9 @@ msgstr ""
 "%1$s\n"
 "%2$s\n"
 
-# nevím, jak uživatelsky přívětivě sdělit, že systému chybí knihovna Java Skriptu...
 #: common.jsan.missing
 msgid "The JSAN library object is missing."
-msgstr "Chybí část kódu knihovny JSAN"
+msgstr "Chybí objekt knihovny JSAN"
 
 #: common.error
 msgid "Please inform your help desk or developers of this error:"
@@ -48,6 +48,10 @@ msgstr "Vyčistit"
 #: common.confirm
 msgid "Check here to confirm this message."
 msgstr "Zde potvrďte tuto zprávu."
+
+#: common.cancelled
+msgid "Action Cancelled"
+msgstr "Akce zrušena"
 
 #: common.error.default
 msgid "Please report that this happened."
@@ -66,9 +70,8 @@ msgid "Expired"
 msgstr "Prošlé"
 
 #: common.barcode.status.warning.barred
-msgid ""
-"_: common.barcode.status.warning.barred\n"
-"Barred"
+msgctxt "common.barcode.status.warning.barred"
+msgid "Barred"
 msgstr "Omezeno"
 
 #: common.barcode.status.warning.blocked
@@ -89,17 +92,16 @@ msgstr "Proces dokončen"
 
 #. # common.grouping_string = the string that should be inserted between elements of a grouped list
 #: common.grouping_string
-msgid ","
-msgstr ","
+msgid ", "
+msgstr ", "
 
 #: common.unimplemented
 msgid "Not yet implemented"
 msgstr "Zatím neimplementováno"
 
 #: common.yes
-msgid ""
-"_: common.yes\n"
-"Yes"
+msgctxt "common.yes"
+msgid "Yes"
 msgstr "Ano"
 
 #: common.no
@@ -139,10 +141,14 @@ msgstr "Chyba get_contentWindow(%1$s): %2$s"
 msgid "Error adjusting the font size: %1$s"
 msgstr "Chyba změny velikosti písma: %1$s"
 
+#. # Appended to notes with certain settings enabled.  First position is staff initials, and second position is a date for when the initials were added.
+#: staff.initials.format
+msgid "[ %1$s %2$s @ %3$s ]"
+msgstr "[ %1$s %2$s @ %3$s ]"
+
 #: staff.acp_label_barcode
-msgid ""
-"_: staff.acp_label_barcode\n"
-"Barcode"
+msgctxt "staff.acp_label_barcode"
+msgid "Barcode"
 msgstr "Čárový kód"
 
 #: staff.acp_label_call_number
@@ -162,9 +168,18 @@ msgstr "Výpůjční knihovna"
 msgid "Circulation Modifier"
 msgstr "Modifikace výpůjčky"
 
+#. # %1$s = circ modifier code, %2$s = circ modifier name, %3$s = circ modifier description
+#: staff.circ_modifier.display
+msgid "%1$s : %2$s : %3$s"
+msgstr "%1$s : %2$s : %3$s"
+
 #: staff.acp_label_copy_number
 msgid "Copy Number"
 msgstr "Číslo exempláře"
+
+#: staff.acp_label_parts
+msgid "Part"
+msgstr "Část"
 
 #: staff.acp_label_deposit_amount
 msgid "Deposit Amount"
@@ -191,9 +206,8 @@ msgid "Price"
 msgstr "Cena"
 
 #: staff.acp_label_status
-msgid ""
-"_: staff.acp_label_status\n"
-"Status"
+msgctxt "staff.acp_label_status"
+msgid "Status"
 msgstr "Status"
 
 #: staff.ahr_current_copy_label
@@ -217,15 +231,22 @@ msgid "Fulfillment Time"
 msgstr "Čas splnění"
 
 #: staff.ahr_hold_type_label
-msgid ""
-"_: staff.ahr_hold_type_label\n"
-"Type"
+msgctxt "staff.ahr_hold_type_label"
+msgid "Type"
 msgstr "Typ"
 
 # Rezervovatelné formáty - je nutné zdůrazňovat ten formát?
 #: staff.ahr_holdable_formats_label
 msgid "Holdable Formats"
 msgstr "Možno rezervovat"
+
+#: staff.ahr_holdable_part_label
+msgid "Holdable Part"
+msgstr "Držitelná Část"
+
+#: staff.ahr_issuance_label_label
+msgid "Issuance Label"
+msgstr "Śtítek Vydání"
 
 #: staff.ahr_id_label
 msgid "Hold ID"
@@ -254,12 +275,11 @@ msgstr "Hloubka výběru"
 
 #: staff.ahr_top_of_queue_label
 msgid "Top of Queue"
-msgstr ""
+msgstr "Vršek Fronty"
 
 #: staff.ahr_status_label
-msgid ""
-"_: staff.ahr_status_label\n"
-"Status"
+msgctxt "staff.ahr_status_label"
+msgid "Status"
 msgstr "Status"
 
 #: staff.ahr_target_label
@@ -267,9 +287,8 @@ msgid "Target"
 msgstr "Cíl"
 
 #: staff.ahr_usr_label
-msgid ""
-"_: staff.ahr_usr_label\n"
-"User"
+msgctxt "staff.ahr_usr_label"
+msgid "User"
 msgstr "Uživatel"
 
 #: staff.circ_label_due_date
@@ -278,7 +297,7 @@ msgstr "Vrátit do"
 
 #: staff.circ_label_due_time
 msgid "Due Time"
-msgstr ""
+msgstr "Termín"
 
 #: staff.circ_label_id
 msgid "Circulation ID"
@@ -290,9 +309,8 @@ msgid "Remaining Renewals"
 msgstr "Zbývá k prodloužení"
 
 #: staff.mvr_label_author
-msgid ""
-"_: staff.mvr_label_author\n"
-"Author"
+msgctxt "staff.mvr_label_author"
+msgid "Author"
 msgstr "Autor"
 
 #: staff.mvr_label_doc_id
@@ -300,9 +318,8 @@ msgid "Document ID"
 msgstr "ID dokumentu"
 
 #: staff.mvr_label_title
-msgid ""
-"_: staff.mvr_label_title\n"
-"Title"
+msgctxt "staff.mvr_label_title"
+msgid "Title"
 msgstr "Název"
 
 # Dates ve smyslu bib. údaje, údaje o jednotce nebo data výpůjčky?
@@ -320,75 +337,86 @@ msgstr "Aktuální platba"
 
 #: staff.csp_id_label
 msgid "Penalty Type ID"
-msgstr ""
+msgstr "ID Typu Penalizace"
 
 #: staff.csp_name_label
 msgid "Name"
-msgstr ""
+msgstr "Název"
 
 #: staff.csp_label_label
 msgid "Label"
-msgstr ""
+msgstr "Štítek"
 
 #: staff.csp_block_list_label
 msgid "Block List"
-msgstr ""
+msgstr "Seznam Bloků"
 
 #: staff.csp_block_circ_label
 msgid "Blocks Circulations?"
-msgstr ""
+msgstr "Oběh Bloků?"
 
 #: staff.csp_block_renew_label
 msgid "Blocks Renewals?"
-msgstr ""
+msgstr "Obnova Bloků?"
 
 #: staff.csp_block_hold_label
 msgid "Blocks Holds?"
-msgstr ""
+msgstr "Bloky Drží?"
 
 #: staff.csp_block_circ_yes
-msgid ""
-"_: staff.csp_block_circ_yes\n"
-"Yes"
+msgctxt "staff.csp_block_circ_yes"
+msgid "Yes"
 msgstr "Ano"
+
+#: staff.csp_block_circ_no
+msgctxt "staff.csp_block_circ_no"
+"staff.csp_block_circ_no"
+msgid ""
+msgstr ""
 
 #: staff.csp_block_renew_yes
-msgid ""
-"_: staff.csp_block_renew_yes\n"
-"Yes"
+msgctxt "staff.csp_block_renew_yes"
+msgid "Yes"
 msgstr "Ano"
+
+#: staff.csp_block_renew_no
+msgctxt "staff.csp_block_renew_no"
+msgid ""
+msgstr ""
 
 #: staff.csp_block_hold_yes
-msgid ""
-"_: staff.csp_block_hold_yes\n"
-"Yes"
+msgctxt "staff.csp_block_hold_yes"
+msgid "Yes"
 msgstr "Ano"
 
-#: staff.ausp_id_label
-msgid "Penalty ID"
+#: staff.csp_block_hold_no
+msgctxt "staff.csp_block_hold_no"
+msgid ""
 msgstr ""
+
+#: staff.ausp_id_label
+msgid "Penalty ID "
+msgstr "ID Penalizace "
 
 #: staff.ausp_staff_label
-msgid "Applied By"
-msgstr ""
+msgid "Applied By "
+msgstr "Aplikoval "
 
 #: staff.ausp_set_date_label
-msgid "Applied On"
-msgstr ""
+msgid "Applied On "
+msgstr "Aplikováno Na "
 
 #: staff.ausp_note_label
-msgid ""
-"_: staff.ausp_note_label\n"
-"Note"
-msgstr "Poznámka"
+msgid "Note "
+msgstr "Poznámka "
 
 #: staff.ausp_org_unit_label
-msgid "Library"
-msgstr ""
+msgid "Library "
+msgstr "Knihovna "
 
 #: staff.mbts_id_label
-msgid "Bill #"
-msgstr "Účet #"
+msgid "Bill # "
+msgstr "Účet číslo "
 
 #: staff.mbts_xact_start_label
 msgid "Start"
@@ -399,9 +427,8 @@ msgid "Finish"
 msgstr "Konec"
 
 #: staff.mbts_xact_type_label
-msgid ""
-"_: staff.mbts_xact_type_label\n"
-"Type"
+msgctxt "staff.mbts_xact_type_label"
+msgid "Type"
 msgstr "Typ"
 
 #: staff.mbts_total_owed_label
@@ -417,9 +444,8 @@ msgid "Balance Owed"
 msgstr "Dlužná částka"
 
 #: staff.mbts_usr_label
-msgid ""
-"_: staff.mbts_usr_label\n"
-"User"
+msgctxt "staff.mbts_usr_label"
+msgid "User"
 msgstr "Uživatel"
 
 #: staff.mbts_last_billing_note_label
@@ -451,15 +477,13 @@ msgid "Billing Type"
 msgstr "Typ fakturace"
 
 #: staff.mb_xact_label
-msgid ""
-"_: staff.mb_xact_label\n"
-"Transaction ID"
+msgctxt "staff.mb_xact_label"
+msgid "Transaction ID"
 msgstr "ID transakce"
 
 #: staff.mb_billing_ts_label
-msgid ""
-"_: staff.mb_billing_ts_label\n"
-"When"
+msgctxt "staff.mb_billing_ts_label"
+msgid "When"
 msgstr "Kdy"
 
 #: staff.mb_void_time_label
@@ -467,15 +491,13 @@ msgid "Void Time"
 msgstr "Neplatný čas"
 
 #: staff.mb_note_label
-msgid ""
-"_: staff.mb_note_label\n"
-"Note"
+msgctxt "staff.mb_note_label"
+msgid "Note"
 msgstr "Poznámka"
 
 #: staff.mb_amount_label
-msgid ""
-"_: staff.mb_amount_label\n"
-"Amount"
+msgctxt "staff.mb_amount_label"
+msgid "Amount"
 msgstr "Částka"
 
 # nenašla jsem význam
@@ -484,9 +506,8 @@ msgid "Voider"
 msgstr "Ke zrušení"
 
 #: staff.mb_voided_label
-msgid ""
-"_: staff.mb_voided_label\n"
-"Voided"
+msgctxt "staff.mb_voided_label"
+msgid "Voided"
 msgstr "Zrušený"
 
 #: staff.mb_id_label
@@ -502,9 +523,8 @@ msgid "Forgive Payment"
 msgstr "Prominutí platby"
 
 #: staff.mp_payment_timestamp_label
-msgid ""
-"_: staff.mp_payment_timestamp_label\n"
-"When"
+msgctxt "staff.mp_payment_timestamp_label"
+msgid "When"
 msgstr "Kdy"
 
 #: staff.mp_payment_type_label
@@ -512,9 +532,8 @@ msgid "Payment Type"
 msgstr "Typ platby"
 
 #: staff.mp_voided_label
-msgid ""
-"_: staff.mp_voided_label\n"
-"Voided"
+msgctxt "staff.mp_voided_label"
+msgid "Voided"
 msgstr "Zrušený"
 
 #: staff.mp_id_label
@@ -527,9 +546,8 @@ msgid "Goods Payment"
 msgstr "K dobru čtenáře"
 
 #: staff.mp_xact_label
-msgid ""
-"_: staff.mp_xact_label\n"
-"Transaction ID"
+msgctxt "staff.mp_xact_label"
+msgid "Transaction ID"
 msgstr "ID transakce"
 
 # v alephu je credit ve významu k dobru čtenáře. Tady se mi to ale překrývá s goods payment a work payment.... Knihovna obvykle neplatí přes knihovní systém za práci a zboží....
@@ -543,9 +561,8 @@ msgid "Work Payment"
 msgstr "Platba za práci"
 
 #: staff.mp_note_label
-msgid ""
-"_: staff.mp_note_label\n"
-"Note"
+msgctxt "staff.mp_note_label"
+msgid "Note"
 msgstr "Poznámka"
 
 #: staff.mp_cash_payment_label
@@ -553,9 +570,8 @@ msgid "Cash Payment"
 msgstr "Platba v hotovosti"
 
 #: staff.mp_amount_label
-msgid ""
-"_: staff.mp_amount_label\n"
-"Amount"
+msgctxt "staff.mp_amount_label"
+msgid "Amount"
 msgstr "Částka"
 
 #: staff.mp_check_payment_label
@@ -571,9 +587,8 @@ msgid "Staff"
 msgstr "Zaměstnanec"
 
 #: staff.card_barcode_label
-msgid ""
-"_: staff.card_barcode_label\n"
-"Barcode"
+msgctxt "staff.card_barcode_label"
+msgid "Barcode"
 msgstr "Čárový kód"
 
 #: staff.au_active_label
@@ -589,9 +604,8 @@ msgid "Profile"
 msgstr "Profil"
 
 #: staff.au_barred_label
-msgid ""
-"_: staff.au_barred_label\n"
-"Barred"
+msgctxt "staff.au_barred_label"
+msgid "Barred"
 msgstr "Omezeno"
 
 #: staff.au_alert_message_label
@@ -704,9 +718,8 @@ msgid "Suffix"
 msgstr "Titul za jménem"
 
 #: staff.z39_50.search_class.author
-msgid ""
-"_: staff.z39_50.search_class.author\n"
-"Author"
+msgctxt "staff.z39_50.search_class.author"
+msgid "Author"
 msgstr "Autor"
 
 #: staff.z39_50.search_class.isbn
@@ -719,7 +732,7 @@ msgstr "ISSN"
 
 #: staff.z39_50.search_class.item_type
 msgid "Item Type"
-msgstr "Typ dokumentu"
+msgstr "Typ Položky"
 
 #: staff.z39_50.search_class.item_type.all
 msgid "All Formats"
@@ -782,9 +795,8 @@ msgid "Accession #"
 msgstr "Přírůstek #"
 
 #: staff.z39_50.search_class.title
-msgid ""
-"_: staff.z39_50.search_class.title\n"
-"Title"
+msgctxt "staff.z39_50.search_class.title"
+msgid "Title"
 msgstr "Název"
 
 #: staff.z39_50_import_interface_label
@@ -800,10 +812,9 @@ msgstr "Data načtena."
 msgid "Offline interface synchronized with server."
 msgstr "Online připojení na server obnoveno."
 
-# noncat ve smyslu nezkatalogizováno? Nezkatalogizované třídění ??
 #: staff.main.gen_offline_widgets.noncat_sort.error
-msgid "error in noncat sorting:"
-msgstr "chyba třídění:"
+msgid "error in noncat sorting: "
+msgstr "chyba v ne-kat řetězci "
 
 #: staff.main.gen_offline_widgets.please_wait
 msgid "Please wait"
@@ -825,21 +836,22 @@ msgstr "Chyba registrace pracovní stanice (%1$s)"
 msgid "Registration successful"
 msgstr "Registrace byla úspěšná"
 
+#: staff.main.gen_offline_widgets.registration.empty
+msgid "Please specify a workstation name"
+msgstr "Prosím zadejte jméno pracovní stanice"
+
 #: staff.util.timestamp_dialog.future_date_disallowed
 msgid "Future dates disallowed."
-msgstr ""
+msgstr "Budoucí datování zamítnuto"
 
 #: staff.util.timestamp_dialog.past_date_disallowed
 msgid "Past dates disallowed."
-msgstr ""
+msgstr "Datování do minulosti zamítnuto"
 
 #: staff.util.timestamp_dialog.today_disallowed
 msgid "Today disallowed."
-msgstr ""
+msgstr "Dnešek zamítnut"
 
 #: tab.label.triggered_events_for_copy
 msgid "Triggered Events: %1$s"
-msgstr ""
-
-#~ msgid "Expire Time"
-#~ msgstr "Čas expirace"
+msgstr "Spuštěné Události: %1$s"

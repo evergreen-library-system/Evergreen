@@ -2,139 +2,113 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-23 23:36-0400\n"
-"PO-Revision-Date: 2010-02-16 09:32+0000\n"
-"Last-Translator: Konki <pavel.konkol@seznam.cz>\n"
+"POT-Creation-Date: 2011-09-29 16:11-0400\n"
+"PO-Revision-Date: 2011-07-03 15:38+0000\n"
+"Last-Translator: Linda Jansova <Unknown>\n"
 "Language-Team: UISK <PetrKubiska@seznam.cz>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-02-17 05:00+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
-"X-Poedit-Country: CZECH REPUBLIC\n"
+"X-Generator: Launchpad (build 13168)\n"
+"X-Launchpad-Export-Date: 2011-07-04 04:49+0000\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: CZECH REPUBLIC\n"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:1
-msgctxt ""
-"../../Open-ILS/xul/staff_client/server/locale/en-"
-"US/multiclass_search_help.html:1"
-msgid "Multiclass Search Help"
-msgstr "Multimediální vyhledávací pomoc"
+#~ msgctxt ""
+#~ "../../Open-ILS/xul/staff_client/server/locale/en-"
+#~ "US/multiclass_search_help.html:1"
+#~ msgid "Multiclass Search Help"
+#~ msgstr "Nápověda pro vícekriteriální vyhledávání"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:2
-msgctxt ""
-"../../Open-ILS/xul/staff_client/server/locale/en-"
-"US/multiclass_search_help.html:2"
-msgid "Multiclass Search Help"
-msgstr "Multimediální vyhledávací pomoc"
+#~ msgctxt ""
+#~ "../../Open-ILS/xul/staff_client/server/locale/en-"
+#~ "US/multiclass_search_help.html:2"
+#~ msgid "Multiclass Search Help"
+#~ msgstr "Nápověda pro vícekriteriální vyhledávání"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:3
-msgid "Recognized search keys include:"
-msgstr "Rozpoznané vyhledávací klíče obsahují:"
+#~ msgid "Recognized search keys include:"
+#~ msgstr "Rozpoznané klíče pro vyhledávání obsahují:"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:4
-msgid "Search key"
-msgstr "Vyhledávací klíč"
+#~ msgid "Search key"
+#~ msgstr "Klíč pro vyhledávání"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:5
-msgid "Definition"
-msgstr "Definice"
+#~ msgid "Definition"
+#~ msgstr "Definice"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:6
-msgid ""
-"keyword</strong>, <strong>title</strong>,             "
-"<strong>author</strong>, <strong>subject</strong>, and             "
-"<strong>series</strong> support additional search subclasses,             "
-"specified with a <kbd>|</kbd>. For example:             "
-"<kbd>title|proper:gone with the wind"
-msgstr ""
-"klíčové slovo</strong>, <strong>název</strong>,             "
-"<strong>autor</strong>, <strong>předmět</strong>, a             "
-"<strong>edice</strong> podpora dalšíhoí hledání podtřídy,             "
-"stanovené s <kbd>|</kbd>. Například:             <kbd>název|řádné:odešel s "
-"větrem"
+#~ msgid ""
+#~ "keyword</strong>, <strong>title</strong>,             "
+#~ "<strong>author</strong>, <strong>subject</strong>, and             "
+#~ "<strong>series</strong> support additional search subclasses,             "
+#~ "specified with a <kbd>|</kbd>. For example:             "
+#~ "<kbd>title|proper:gone with the wind"
+#~ msgstr ""
+#~ "keyword</strong>, <strong>název</strong>,             "
+#~ "<strong>autor</strong>, <strong>téma</strong>, a             "
+#~ "<strong>edice</strong> podpora dalších podtříd pro vyhledávání,             "
+#~ "specifikovaných <kbd>|</kbd>. Například:             <kbd>název:jih proti "
+#~ "severu"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:7
-msgid "keyword/kw"
-msgstr "klíčové slovo/ks"
+#~ msgid "keyword/kw"
+#~ msgstr "klíčové slovo/kw"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:8
-msgid "search keyword(s)"
-msgstr "hledání klíčového slova(slov)"
+#~ msgid "search keyword(s)"
+#~ msgstr "vyhledávání pomocí klíčového slova (klíčových slov)"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:9
-msgid "author/au/name"
-msgstr "autor/au/jméno"
+#~ msgid "author/au/name"
+#~ msgstr "autor/au/jméno"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:10
-msgid "search author(s)"
-msgstr "hledání autora(y)"
+#~ msgid "search author(s)"
+#~ msgstr "hledávání podle autora/autorů"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:11
-msgid "title/ti"
-msgstr "název/nz"
+#~ msgid "title/ti"
+#~ msgstr "název/ti"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:12
-msgid "search title"
-msgstr "název vyhledávání"
+#~ msgid "search title"
+#~ msgstr "hledávaný název"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:13
-msgid "subject/su"
-msgstr "předmět/su"
+#~ msgid "subject/su"
+#~ msgstr "téma/su"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:14
-msgid "search subject"
-msgstr "hledat předmět"
+#~ msgid "search subject"
+#~ msgstr "hledané téma"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:15
-msgid "series/se"
-msgstr "série/se"
+#~ msgid "series/se"
+#~ msgstr "edice/se"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:16
-msgid "search series"
-msgstr "vyhledávání série"
+#~ msgid "search series"
+#~ msgstr "hledaná edice"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:17
-msgid "lang"
-msgstr "jazyk"
+#~ msgid "lang"
+#~ msgstr "jazyk"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:18
-msgid "limit by language (specifiy multiple langs with lang:l1 lang:l2 ...)"
-msgstr "limitován jazykem (specifikace více jazyků s lang:l1 lang:l2 ...)"
+#~ msgid "limit by language (specifiy multiple langs with lang:l1 lang:l2 ...)"
+#~ msgstr "omezení podle jazyka (více jazyků uveďte takto: lang:l1 lang:l2 ...)"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:19
-msgid "site"
-msgstr "stránka"
+#~ msgid "site"
+#~ msgstr "stránka"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:20
-msgid "search at specified org unit, corresponds to actor.org_unit.shortname"
-msgstr ""
+#~ msgid "search at specified org unit, corresponds to actor.org_unit.shortname"
+#~ msgstr ""
+#~ "hledání v určené organizační jednotce, odpovídá actor.org_unit.shortname"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:21
-msgid "sort"
-msgstr "třídit"
+#~ msgid "sort"
+#~ msgstr "řazení"
 
-# u výrazu PUBDATE jsem nenalezl adékvátní překlad
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:22
-msgid "sort type (title, author, pubdate)"
-msgstr "řadit typ (název, autor, pubdate)"
+#~ msgid "sort type (title, author, pubdate)"
+#~ msgstr "řazení podle (název, autor, datum vydání)"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:23
-msgid "dir"
-msgstr "adr"
+#~ msgid "dir"
+#~ msgstr "adr"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:24
-msgid "sort direction (asc, desc)"
-msgstr "řadit směrem (asc, desc)"
+#~ msgid "sort direction (asc, desc)"
+#~ msgstr "směr řazení (vzestupně, sestupně)"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:25
-msgid "available"
-msgstr "dostupné"
+#~ msgid "available"
+#~ msgstr "dostupné"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:26
-msgid ""
-"if set to anything other than \"false\" or \"0\", limits to available items"
-msgstr ""
-"je-li nastavena na cokoliv jiného než  \"false \" nebo \"0 \", omezení na "
-"dostupné exempláře"
+#~ msgid ""
+#~ "if set to anything other than \"false\" or \"0\", limits to available items"
+#~ msgstr ""
+#~ "je-li nastavena na cokoliv jiného než  \"nepravda\" nebo \"0\", je omezena "
+#~ "na dostupné exempláře"
