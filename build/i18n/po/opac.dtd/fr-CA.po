@@ -6,19 +6,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > opac.dtd.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-23 23:35-0400\n"
-"PO-Revision-Date: 2008-11-27 14:01-0500\n"
-"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
+"POT-Creation-Date: 2011-04-18 21:44-0400\n"
+"PO-Revision-Date: 2011-08-04 21:59+0000\n"
+"Last-Translator: LEROY Jean-Christophe <Unknown>\n"
 "Language-Team: <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Translate Toolkit 1.3.0\n"
+"X-Generator: Translate Toolkit 1.8.1\n"
 "X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-08-05 04:41+0000\n"
+"X-Poedit-Country: CANADA\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-Country: CANADA\n"
 
 # =================================================================
 # Some generic stuff
@@ -47,7 +47,7 @@ msgstr "$"
 
 #: common.language
 msgid "Language: "
-msgstr "Langue :"
+msgstr "Langue : "
 
 #: common.name
 msgid "Name"
@@ -204,7 +204,7 @@ msgstr "Recherche avancée"
 
 #: common.nowSearching
 msgid "Now searching "
-msgstr "Recherche en cours"
+msgstr "Recherche en cours "
 
 #: common.ofAtLeast
 msgid " of about "
@@ -338,7 +338,7 @@ msgstr ""
 "Le \n"
 "système de mise en réserve est conçu pour obtenir un élément de la \n"
 "manière la plus rapide et la plus efficace. Votre bibliothèque vous avertira "
-"lorsque les éléments que vous avez réservés seront disponibles. "
+"lorsque les éléments que vous avez réservés seront disponibles."
 
 #: holds.advanced_options
 msgid ""
@@ -432,6 +432,23 @@ msgstr "/"
 msgid "Large"
 msgstr "Gros"
 
+#: common.googlechromeframe.why
+msgid ""
+"Installing the Google Chrome Frame plugin for Internet Explorer will improve "
+"your Evergreen experience with more speed and advanced features!"
+msgstr ""
+"Installation de 'Google Chrome Frame plugin' pour Internet Explorer "
+"permettra d'améliorer votre expérience Evergreen avec plus de vitesse et des "
+"fonctionnalités avancées!"
+
+#: common.googlechromeframe.install
+msgid "Install Now!"
+msgstr "Installer maintenant!"
+
+#: common.googlechromeframe.dontask
+msgid "Don't ask me again"
+msgstr "Ne me demandez pas de nouveau"
+
 #: home.js.disabled
 msgid ""
 "JavaScript must be enabled in order for you to use the regular Evergreen "
@@ -508,7 +525,7 @@ msgstr "(Visualiser)"
 
 #: myopac.atom.feed
 msgid "ATOM Feed"
-msgstr "Flux ATOM "
+msgstr "Flux ATOM"
 
 #: myopac.bookbag.hide
 msgid "Hide"
@@ -533,7 +550,7 @@ msgstr "Partager ce sac de livres"
 #: myopac.bookbag.refworks
 msgctxt "myopac.bookbag.refworks"
 msgid "Export to RefWorks"
-msgstr ""
+msgstr "Exporter dans RefWorks"
 
 #: myopac.bookbag.no.items
 msgid "The selected bookbag contains no items..."
@@ -679,18 +696,18 @@ msgstr ""
 "La politique de la bibliothèque ne permet pas le renouvellement de cet "
 "article. Veuillez consulter une bibliothécaire pour des renseignements."
 
-# =================================================================
-# MyOPAC Fines Page
 #. =================================================================
 #. MyOPAC Fines Page
 #. =================================================================
 #: myopac.fines.title
+#, fuzzy
+msgctxt "myopac.fines.title"
 msgid "Summary"
 msgstr "Sommaire"
 
 #: myopac.fines.owed
 msgid "Total Owed"
-msgstr "Total dû "
+msgstr "Total dû"
 
 #: myopac.fines.paid
 msgid "Total Paid"
@@ -721,7 +738,7 @@ msgstr "Échéance"
 
 #: myopac.fines.returned
 msgid "Date Returned"
-msgstr "Date de retour "
+msgstr "Date de retour"
 
 #: myopac.fines.accruing
 msgid "(fines accruing)"
@@ -1053,7 +1070,7 @@ msgstr "Adresses"
 
 #: myopac.summary.addresses.pending
 msgid "Pending Addresses"
-msgstr ""
+msgstr "Adresse en attente"
 
 #: myopac.summary.address.type
 msgid "Address Type"
@@ -1076,22 +1093,20 @@ msgid "State"
 msgstr "État"
 
 #: myopac.summary.address.country
-#, fuzzy
 msgid "Country"
-msgstr "Comté"
+msgstr "Pays"
 
 #: myopac.summary.address.zip
 msgid "Zip"
 msgstr "Code postal"
 
 #: myopac.summary.address.edit
-#, fuzzy
 msgid "Edit Address"
-msgstr "Adresse électronique"
+msgstr "Editer Adresse"
 
 #: myopac.summary.address.invalid
 msgid "Invalid Address"
-msgstr ""
+msgstr "Adresse non valide"
 
 #: myopac.summary.username.error
 msgid "Please enter a username"
@@ -1206,7 +1221,7 @@ msgstr "Recherche experte MARC"
 
 #: opac.advanced.marc.tag
 msgid "MARC Tag"
-msgstr "Balise MARC "
+msgstr "Balise MARC"
 
 #: opac.advanced.marc.ind1
 msgid "Indicator 1"
@@ -1360,7 +1375,7 @@ msgstr "Ouverture de session"
 
 #: navigate.login.title
 msgid "Log in for personalized features"
-msgstr "Ouverture de session pour personnaliser des paramètres "
+msgstr "Ouverture de session pour personnaliser des paramètres"
 
 #: navigate.logout
 msgctxt "navigate.logout"
@@ -1396,6 +1411,10 @@ msgstr "Mes résultats de recherche"
 #: navigate.titleResults
 msgid "My Title Results"
 msgstr "Mes résultats de recherche d'ouvrage"
+
+#: navigate.facetRefine
+msgid "Refine your search"
+msgstr "Affiner votre recherche"
 
 #: navigate.title.details
 msgid "My Title Details"
@@ -1448,8 +1467,9 @@ msgid "GALILEO"
 msgstr "GALILEO"
 
 #: footer.copyright
-msgid "Copyright &#xA9; 2006-2008 Georgia Public Library Service"
-msgstr "Droits d'auteur &#xA9; 2006-2008 Georgia Public Library Service"
+msgid "Copyright &#xA9; 2006-2010 Georgia Public Library Service, and others"
+msgstr ""
+"Droit d'auteur &#xA9; 2006-2010 Georgia Public Library Service, et autres."
 
 # Introduces the logo for the project
 #. Introduces the logo for the project
@@ -1535,6 +1555,10 @@ msgstr "Tous les formats"
 msgid "Large Print Books"
 msgstr "Livres à gros caractères"
 
+#: opac.search.ebook
+msgid "E-Books"
+msgstr "Textes électroniques"
+
 #: opac.search.audioBooks
 msgid "Audiobooks"
 msgstr "Livres audio"
@@ -1612,7 +1636,7 @@ msgstr "Mettre en réserve"
 #: opac.holds.exportRefWorks
 msgctxt "opac.holds.exportRefWorks"
 msgid "Export to RefWorks"
-msgstr ""
+msgstr "Exporter dans RefWorks"
 
 #: opac.holds.contactPhone
 msgid "Contact telephone number"
@@ -1772,6 +1796,10 @@ msgstr "Entre"
 msgid "print these details"
 msgstr "Imprimer ces détails"
 
+#: rdetail.cn.part
+msgid "Part"
+msgstr "Partie"
+
 #: rdetail.cn.barcode
 msgctxt "rdetail.cn.barcode"
 msgid "Barcode"
@@ -1783,7 +1811,7 @@ msgstr "Emplacement"
 
 #: rdetail.cn.hold.age
 msgid "Age Hold Protection"
-msgstr "Délai obligatoire avant la mise en réserve "
+msgstr "Délai obligatoire avant la mise en réserve"
 
 #: rdetail.cn.genesis
 msgid "Create Date"
@@ -1809,6 +1837,14 @@ msgstr "moins d'information"
 #: rdetail.cn.hold
 msgid "place hold"
 msgstr "mettre en réserve"
+
+#: rdetail.cn.reserve
+msgid "book now"
+msgstr "Réserver maintenant"
+
+#: rdetail.cn.multi_home
+msgid "linked titles"
+msgstr "titres liés"
 
 #: rdetail.cn.disabled
 msgid "- Disabled -"
@@ -1844,9 +1880,17 @@ msgstr "Début"
 msgid "Previous page"
 msgstr "Page précédente"
 
+#: rdetail.page.previous.short
+msgid "&#171;"
+msgstr "&#171;"
+
 #: rdetail.page.next
 msgid "Next page"
 msgstr "Page suivante"
+
+#: rdetail.page.next.short
+msgid "&#187;"
+msgstr "&#187;"
 
 #: rdetail.page.last
 msgid "Last results page"
@@ -1974,6 +2018,12 @@ msgctxt "rdetail.extras.browser"
 msgid "Shelf Browser"
 msgstr "Auto-navigation"
 
+#: rdetail.extras.bib_summary
+#, fuzzy
+msgctxt "rdetail.extras.bib_summary"
+msgid "Summary"
+msgstr "Sommaire"
+
 #: rdetail.extras.reviews
 msgctxt "rdetail.extras.reviews"
 msgid "Reviews"
@@ -1981,7 +2031,7 @@ msgstr "Critiques"
 
 #: rdetail.extras.toc
 msgid "Table of Contents"
-msgstr "Table des matières "
+msgstr "Table des matières"
 
 #: rdetail.extras.excerpt
 msgid "Excerpt"
@@ -1989,7 +2039,7 @@ msgstr "Extrait"
 
 #: rdetail.extras.preview
 msgid "Preview"
-msgstr ""
+msgstr "Prévisualisation"
 
 #: rdetail.extras.author.notes
 msgid "Author Notes"
@@ -2001,31 +2051,41 @@ msgstr "Annotation"
 
 #: rdetail.extras.marc
 msgid "MARC Record"
-msgstr "Enregistrement MARC "
+msgstr "Enregistrement MARC"
+
+#: rdetail.extras.foreign_items
+msgid "Linked Titles"
+msgstr "Titres liés"
 
 #: rdetail.extras.call.null
 msgid "There are no call numbers for this item at this location."
 msgstr "Il n'y a pas de cote pour cet élément à cet emplacement."
 
 #: rdetail.extras.call.local
+#, fuzzy
+msgctxt "rdetail.extras.call.local"
 msgid "Local Call Numbers:"
-msgstr "Cotes locales :"
+msgstr "Cote(s) locale :"
 
 #: rdetail.extras.preview.fulltext
 msgid "Full text"
-msgstr ""
+msgstr "Texte complet"
 
 #: rdetail.extras.preview.title
 msgid "See the full text of this book."
-msgstr ""
+msgstr "Voir le texte complet de ce livre."
 
 #: rdetail.extras.preview.badge
 msgid "Show a preview of this book from Google Book Search"
-msgstr ""
+msgstr "Voir un aperçu de ce livre à partir de la Recherche Google Book"
+
+#: rdetail.extras.novelist
+msgid "Suggestions by NoveList"
+msgstr "Suggestions par NoveList"
 
 #: rdetail.loading
-msgid "Loading copy infomation..."
-msgstr "Chargement des renseignements sur l'exemplaire..."
+msgid "Loading copy information..."
+msgstr "Chargement d'information de copie..."
 
 #: rdetail.noneAvailable
 msgid " * There are no copies in this location"
@@ -2039,6 +2099,10 @@ msgstr "Ressources en ligne"
 msgctxt "rdetail.summary.subjects"
 msgid "Subjects"
 msgstr "Sujets"
+
+#: rdetail.summary.issues_held
+msgid "Issues Held"
+msgstr "Éditions Tenues"
 
 #: result.sort_by
 msgid "Sort Results by Relevance"
@@ -2144,6 +2208,12 @@ msgstr "Effectuer une recherche par auteur"
 msgid "Browse in Google Books Search"
 msgstr "Parcourir dans Google Books Search"
 
+#: result.localCallNumbers
+#, fuzzy
+msgctxt "result.localCallNumbers"
+msgid "Local Call Numbers:"
+msgstr "Cote(s) locale :"
+
 #: common.call.number.label
 msgid "Call Number:"
 msgstr "Cote :"
@@ -2156,9 +2226,17 @@ msgstr "ISBN :"
 msgid "ISSN:"
 msgstr "ISSN :"
 
+#: common.mono_parts.label
+msgid "Monograph Parts:"
+msgstr "Monographie Parties:"
+
 #: common.copy.barcode.label
 msgid "Copy Barcode:"
 msgstr "Code à barres de l'exemplaire :"
+
+#: common.issuance_label.label
+msgid "Issuance Label:"
+msgstr "Étiquette d’émission :"
 
 #: common.hold.place
 msgid "Place hold for my account"
@@ -2182,11 +2260,15 @@ msgstr "Type de mise en réserve:"
 
 #: common.hold.volume
 msgid "Volume Hold"
-msgstr " Mise en réserve générale"
+msgstr "Mise en réserve générale"
 
 #: common.hold.copy
 msgid "Copy Hold"
-msgstr "Mise en réserve d'un exemplaire "
+msgstr "Mise en réserve d'un exemplaire"
+
+#: common.hold.issuance
+msgid "Issuance Hold"
+msgstr "Émission retenue"
 
 #: common.hold.advanced
 msgid "Advanced Hold Options"
@@ -2198,17 +2280,28 @@ msgstr ""
 "Veuillez sélectionner un emplacement physique pour la livraison de l'élément "
 "mis en réserve."
 
+#: common.hold.checked_out
+msgid "This item is already checked out."
+msgstr "Cet article est déjà prêté."
+
+#: common.hold.checked_out.override
+msgid ""
+"This item is already checked out.  Would you like to place the hold anyway?"
+msgstr ""
+"Cet article est déjà prêté. Aimeriez-vous faire la mise en réserve de toute "
+"façon?"
+
 #: common.hold.exists
 msgid "A hold already exists on the requested item."
 msgstr "L'élément demandé a déjà été mis en réserve."
 
 #: common.hold.exists.override
 msgid ""
-"A hold already exists on the requested \n"
-"item. Would you like to create the hold anyway?"
+"A hold already exists on the requested item. Would you like to create the "
+"hold anyway?"
 msgstr ""
-" L'élément demandé a déjà été mis en réserve. \n"
-"Voulez-vous quand même créer une nouvelle mise en réserve?"
+"L’article demandé fait-il déjà l’objet d’une mise en réserve. Aimeriez-vous "
+"créer la mise en réserve de toute façon"
 
 #: common.hold.barred
 msgid ""
@@ -2454,7 +2547,7 @@ msgstr "Amazon"
 
 #: vendor.base_link
 msgid "http://amazon.com/dp/"
-msgstr ""
+msgstr "http://amazon.com/dp/"
 
 #. =================================================================
 #. Selfcheck
@@ -2606,6 +2699,92 @@ msgstr "Samedi"
 #: selfck.day6
 msgid "Sunday"
 msgstr "Dimanche"
+
+#: circ.fail_part.actor.usr.barred
+msgid "The patron is barred"
+msgstr "Le patron est interdit"
+
+#: circ.fail_part.asset.copy.circulate
+msgid "The item does not circulate"
+msgstr "L’article n’est pas prêté"
+
+#: circ.fail_part.asset.copy_location.circulate
+msgid "Items from this shelving location do not circulate"
+msgstr "Les articles de cette étagère ne sont pas prêtés"
+
+#: circ.fail_part.asset.copy.status
+msgid "The item cannot circulate at this time"
+msgstr "Cet article ne peut pas être prêté pour le moment"
+
+#: circ.fail_part.circ.holds.target_skip_me
+msgid "The item's circulation library does not fulfill holds"
+msgstr "La bibliothèque qui prête cet article ne tient pas de réserves"
+
+#: circ.fail_part.config.circ_matrix_circ_mod_test
+msgid "The patron has too many items of this type checked out"
+msgstr "Le client a emprunté trop d’articles de ce genre"
+
+#: circ.fail_part.config.circ_matrix_test.available_copy_hold_ratio
+msgid "The available item-to-hold ratio is too low"
+msgstr "Le ratio article-mises en réserve disponible est trop bas"
+
+#: circ.fail_part.config.circ_matrix_test.circulate
+msgid "Circulation rules reject this item as non-circulatable"
+msgstr "Les règles de prêt rejettent cet article qui ne peut être prêté"
+
+#: circ.fail_part.config.circ_matrix_test.total_copy_hold_ratio
+msgid "The total item-to-hold ratio is too low"
+msgstr "Le ratio total article-mises en réserve est trop bas"
+
+#: circ.fail_part.config.hold_matrix_test.holdable
+msgid "Hold rules reject this item as unholdable"
+msgstr ""
+"Les règles de mise en réserve rejettent cet article qui ne peut pas être mis "
+"en réserve"
+
+#: circ.fail_part.config.hold_matrix_test.max_holds
+msgid "The patron has reached the maximum number of holds"
+msgstr "Le client a atteint le nombre maximal d’articles mis en réserve"
+
+#: circ.fail_part.config.rule_age_hold_protect.prox
+msgid "The item is too new to transit this far"
+msgstr "L’article est trop nouveau pour être déplacé à cette distance"
+
+#: circ.fail_part.no_item
+msgid "The system could not find this item"
+msgstr "Le système n’a pas pu trouver cet article"
+
+#: circ.fail_part.no_ultimate_items
+msgid "The system could not find any items to match this hold request"
+msgstr ""
+"Le système n’a pu trouver aucun article qui corresponde à la demande de mise "
+"en réserve"
+
+#: circ.fail_part.no_matchpoint
+msgid "System rules do not define how to handle this item"
+msgstr ""
+"Les règles du système ne définissent pas la façon de traiter cet article"
+
+#: circ.fail_part.no_user
+msgid "The system could not find this patron"
+msgstr "Le système n'a pas pu trouver ce patron"
+
+#: circ.fail_part.transit_range
+msgid "The item cannot transit this far"
+msgstr "Cet article ne peut pas être déplacé à cette distance"
+
+#~ msgid "Copyright &#xA9; 2006-2008 Georgia Public Library Service"
+#~ msgstr "Droits d'auteur &#xA9; 2006-2008 Georgia Public Library Service"
+
+#~ msgid "Loading copy infomation..."
+#~ msgstr "Chargement des renseignements sur l'exemplaire..."
+
+#~ msgid ""
+#~ "A hold already exists on the requested \n"
+#~ "item. Would you like to create the hold anyway?"
+#~ msgstr ""
+#~ "L'élément demandé a déjà été mis en réserve. \n"
+#~ "Voulez-vous quand même créer une nouvelle mise en réserve?"
 
 #~ msgid "details"
 #~ msgstr "détails"

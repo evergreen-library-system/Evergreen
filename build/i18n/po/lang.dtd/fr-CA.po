@@ -3,18 +3,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > lang.dtd.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-23 23:35-0400\n"
-"PO-Revision-Date: 2008-11-27 14:00-0500\n"
-"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
+"POT-Creation-Date: 2011-04-18 21:44-0400\n"
+"PO-Revision-Date: 2011-05-20 13:35+0000\n"
+"Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: NRCan Library <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.3.0\n"
+"X-Generator: Translate Toolkit 1.8.1\n"
 "X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-05-21 05:03+0000\n"
+"X-Poedit-Country: CANADA\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-Country: CANADA\n"
 
 #: lang.version
 msgid "remote v1"
@@ -56,6 +57,14 @@ msgstr "Aujourd’hui + 7 jours"
 #: common.date_helper.14_days
 msgid "Today + 14 days"
 msgstr "Aujourd’hui + 14 jours"
+
+#: common.date_helper.21_days
+msgid "Today + 21 days"
+msgstr "Aujourd'hui + 21 jours"
+
+#: common.date_helper.28_days
+msgid "Today + 28 days"
+msgstr "Aujourd'hui + 28 jours"
 
 #: common.date_helper.30_days
 msgid "Today + 30 days"
@@ -222,6 +231,50 @@ msgstr "Vrai"
 #: common.false
 msgid "False"
 msgstr "Faux"
+
+#: common.browser.forward.label
+#: common.browser.forward.accesskey
+msgid "Go Forwar&d"
+msgstr ""
+
+#: common.browser.backward.label
+#: common.browser.backward.accesskey
+msgid "Go &Back"
+msgstr ""
+
+#: common.browser.reload.label
+#: common.browser.reload.accesskey
+#, fuzzy
+msgid "Re&load"
+msgstr "Recharger"
+
+#: common.browser.print.label
+#: common.browser.print.accesskey
+#, fuzzy
+msgid "&Print Page"
+msgstr "Imprimer la page"
+
+#: common.browser.help.label
+#: common.browser.help.accesskey
+#, fuzzy
+msgctxt "common.browser.help.label common.browser.help.accesskey"
+msgid "&Help"
+msgstr "&Aide"
+
+#: common.browser.find.label
+#: common.browser.find.accesskey
+msgid "F&ind in Page"
+msgstr ""
+
+#: common.browser.set_url.label
+#: common.browser.set_url.accesskey
+msgid "Modify &URL"
+msgstr ""
+
+#: common.browser.view_source.label
+#: common.browser.view_source.accesskey
+msgid "&View Source"
+msgstr ""
 
 #: common.textbox.cut
 msgctxt "common.textbox.cut"
@@ -533,7 +586,7 @@ msgstr "Demandes de mise en réserve"
 #. "OU" is an organization unit - typically a library
 #: staff.au_home_ou_label
 msgid "Home OU"
-msgstr "Unité organisationnelle d’accueil "
+msgstr "Unité organisationnelle d’accueil"
 
 #: staff.au_id_label
 msgid "User ID"
@@ -733,11 +786,13 @@ msgid "Start:"
 msgstr "Démarrer :"
 
 #: staff.admin.work_log.list1.header
-msgid "Most Recent Staff Actions"
+msgid "Most Recently Logged Staff Actions"
 msgstr ""
 
 #: staff.admin.work_log.list2.header
-msgid "Most Recently Affected Patrons and Last Action for each"
+msgid ""
+"Most Recently Affected Patrons for Logged Staff Actions and Last Action for "
+"each"
 msgstr ""
 
 #: staff.admin.work_log.refresh_btn.label
@@ -746,9 +801,9 @@ msgid "Refresh"
 msgstr "Actualiser"
 
 #: staff.admin.work_log.refresh_btn.accesskey
+msgctxt "staff.admin.work_log.refresh_btn.accesskey"
+"staff.admin.work_log.refresh_btn.accesskey"
 msgid ""
-"_: staff.admin.work_log.refresh_btn.accesskey\n"
-""
 msgstr ""
 
 #: staff.admin.work_log.list1.retrieve_item_btn.label
@@ -769,13 +824,23 @@ msgstr "Récupérer un client"
 msgid "Retrieve Patro&n"
 msgstr "Récupérer un client"
 
+#: staff.admin.patrons_due_refunds.caption
+msgid "Patrons With Negative Balances"
+msgstr ""
+
+#: staff.admin.patrons_due_refunds.menu.actions.label
+#: staff.admin.patrons_due_refunds.menu.actions.accesskey
+#, fuzzy
+msgid "&Actions for Selected Patrons"
+msgstr "Actions pour les transits sélectionnés"
+
 #: staff.auth.login_header
 msgid "Log in"
 msgstr "Ouvrir une session"
 
 #: staff.auth.logoff_prompt
 msgid "Log off"
-msgstr "Fermeer la session"
+msgstr "Fermer la session"
 
 #: staff.auth.logoff_prompt.accesskey
 msgid "f"
@@ -834,7 +899,9 @@ msgid "Evergreen Staff Client"
 msgstr "Client membre du personnel d’Evergreen"
 
 #: staff.auth.about_btn.label
-msgid "About this client..."
+#: staff.auth.about_btn.accesskey
+#, fuzzy
+msgid "A&bout this client..."
 msgstr "À propos de ce client..."
 
 #: staff.auth.new_window_btn.label
@@ -1102,6 +1169,21 @@ msgstr "Tenue à jour des articles &mis en réserve"
 msgid "Set bottom interface as Default"
 msgstr "Régler l’interface inférieure par défaut"
 
+#: staff.cat.opac.manage_parts.label
+#: staff.cat.opac.manage_parts.accesskey
+msgid "Manage &Parts"
+msgstr ""
+
+#: staff.cat.opac.manage_multi_home_items.label
+#: staff.cat.opac.manage_multi_home_items.accesskey
+msgid "Manage &Foreign Items"
+msgstr ""
+
+#: staff.cat.opac.mark_for_multi_home.label
+#: staff.cat.opac.mark_for_multi_home.accesskey
+msgid "Mark as Target for &Foreign Items"
+msgstr ""
+
 #: staff.cat.opac.marc_edit.label
 #: staff.cat.opac.marc_edit.accesskey
 msgctxt "staff.cat.opac.marc_edit.label staff.cat.opac.marc_edit.accesskey"
@@ -1119,6 +1201,24 @@ msgstr "&Consulter MARC"
 msgid "&Mark for Overlay"
 msgstr "&Marquer pour recouvrement"
 
+#: staff.cat.opac.mark_for_hold_transfer.accesskey
+msgctxt "staff.cat.opac.mark_for_hold_transfer.accesskey"
+msgid ""
+msgstr ""
+
+#: staff.cat.opac.mark_for_hold_transfer.label
+msgid "Mark as Title Hold Transfer Destination"
+msgstr ""
+
+#: staff.cat.opac.transfer_title_holds.accesskey
+msgctxt "staff.cat.opac.transfer_title_holds.accesskey"
+msgid ""
+msgstr ""
+
+#: staff.cat.opac.transfer_title_holds.label
+msgid "Transfer Title Holds"
+msgstr ""
+
 #: staff.cat.opac.delete_record.label
 #: staff.cat.opac.delete_record.accesskey
 msgid "&Delete Record"
@@ -1128,6 +1228,11 @@ msgstr "&Supprimer l’enregistrement"
 #: staff.cat.opac.undelete_record.accesskey
 msgid "&Undelete Record"
 msgstr "Annu&ler la suppression de l’enregistrement"
+
+#: staff.cat.opac.create_brt_from_record.label
+#: staff.cat.opac.create_brt_from_record.accesskey
+msgid "Make I&tem Bookable"
+msgstr ""
 
 #: staff.cat.opac.menu.label
 #: staff.cat.opac.menu.accesskey
@@ -1147,6 +1252,8 @@ msgstr "&Fin"
 
 #: staff.cat.opac.record_next.label
 #: staff.cat.opac.record_next.accesskey
+#, fuzzy
+msgctxt "staff.cat.opac.record_next.label staff.cat.opac.record_next.accesskey"
 msgid "&Next"
 msgstr "Sui&vant"
 
@@ -1175,10 +1282,40 @@ msgctxt "staff.cat.opac.view_holds.label staff.cat.opac.view_holds.accesskey"
 msgid "View Hold&s"
 msgstr "Consulter les articles mis en &réserve"
 
+#: staff.cat.opac.view_orders.label
+#: staff.cat.opac.view_orders.accesskey
+msgid "View/Place O&rders"
+msgstr ""
+
+#: staff.cat.opac.alt_serial.label
+#: staff.cat.opac.alt_serial.accesskey
+msgid "&Alternate Serial Control"
+msgstr ""
+
+#: staff.cat.opac.batch_receive.label
+#: staff.cat.opac.batch_receive.accesskey
+msgid "Ser&ials Batch Receive"
+msgstr ""
+
 #: staff.cat.popup.add_to_bucket
 msgctxt "staff.cat.popup.add_to_bucket"
 msgid "Add to Bucket"
 msgstr "Ajouter dans la case"
+
+#: staff.cat.popup.add_to_bucket.key
+msgctxt "staff.cat.popup.add_to_bucket.key"
+msgid ""
+msgstr ""
+
+#: staff.cat.popup.browse.record.tab.key
+msgctxt "staff.cat.popup.browse.record.tab.key"
+msgid ""
+msgstr ""
+
+#: staff.cat.popup.browse.record.window.key
+msgctxt "staff.cat.popup.browse.record.window.key"
+msgid ""
+msgstr ""
 
 #: staff.cat.popup.browse_record.tab
 msgid "View Copies (Tab)"
@@ -1188,6 +1325,16 @@ msgstr "Afficher les exemplaires (onglet)"
 msgid "View Copies (Window)"
 msgstr "Afficher les exemplaires (fenêtre)"
 
+#: staff.cat.popup.edit.record.tab.key
+msgctxt "staff.cat.popup.edit.record.tab.key"
+msgid ""
+msgstr ""
+
+#: staff.cat.popup.edit.record.window.key
+msgctxt "staff.cat.popup.edit.record.window.key"
+msgid ""
+msgstr ""
+
 #: staff.cat.popup.edit_record.tab
 msgid "Edit Record (Tab)"
 msgstr "Modifier le compte (onglet)"
@@ -1195,6 +1342,30 @@ msgstr "Modifier le compte (onglet)"
 #: staff.cat.popup.edit_record.window
 msgid "Edit Record (Window)"
 msgstr "Modifier le compte (fenêtre)"
+
+#: staff.cat.record_buckets.merge_records.merge_lead
+msgid "Merge these records? (Select the 'lead' record first)"
+msgstr ""
+
+#: staff.cat.record_buckets.merge_records.button.label
+#: staff.cat.record_buckets.merge_records.button.accesskey
+msgid "&Merge"
+msgstr ""
+
+#: staff.cat.record_buckets.merge_records.cancel_button.label
+#: staff.cat.record_buckets.merge_records.cancel_button.accesskey
+#, fuzzy
+msgctxt "staff.cat.record_buckets.merge_records.cancel_button.label staff.cat.record_buckets.merge_records.cancel_button.accesskey"
+msgid "&Cancel"
+msgstr "&Annuler"
+
+#: staff.cat.record_buckets.merge_records.lead
+msgid "Lead Record?"
+msgstr ""
+
+#: staff.cat.record_buckets.merge_records.remove_from_consideration
+msgid "Remove from consideration?"
+msgstr ""
 
 #: staff.cat.search_advanced
 msgid "Advanced"
@@ -1424,10 +1595,20 @@ msgctxt "staff.checkin.print_receipt.label"
 msgid "Print List"
 msgstr "Imprimer la liste"
 
+#: staff.checkin.print_receipt.accesskey
+msgctxt "staff.checkin.print_receipt.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.renew.print_receipt.label
 msgctxt "staff.renew.print_receipt.label"
 msgid "Print List"
 msgstr "Imprimer la liste"
+
+#: staff.renew.print_receipt.accesskey
+msgctxt "staff.renew.print_receipt.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.checkin.reprint_receipt_label
 msgctxt "staff.checkin.reprint_receipt_label"
@@ -1691,7 +1872,7 @@ msgstr "&Transmettre"
 
 #: staff.circ.backdate_post_checkin.header
 msgid "Backdate"
-msgstr ""
+msgstr "Date de retour"
 
 #: staff.circ.backdate_post_checkin.description
 msgid "Backdate Already-Checked-In Circulation"
@@ -1705,10 +1886,9 @@ msgstr "&Annuler"
 
 #: staff.circ.backdate_post_checkin.apply_btn.label
 #: staff.circ.backdate_post_checkin.apply_btn.accesskey
-#, fuzzy
 msgctxt "staff.circ.backdate_post_checkin.apply_btn.label staff.circ.backdate_post_checkin.apply_btn.accesskey"
 msgid "&Apply"
-msgstr "Appliquer"
+msgstr "&Appliquer"
 
 #: staff.circ.renew.caption
 msgctxt "staff.circ.renew.caption"
@@ -2148,6 +2328,11 @@ msgstr "B"
 msgid "Clone Copy"
 msgstr "Copie exacte"
 
+#: staff.copy.clone.key
+msgctxt "staff.copy.clone.key"
+msgid ""
+msgstr ""
+
 #: staff.copy.close
 msgid "Close Window"
 msgstr "Fermer la fenêtre"
@@ -2169,6 +2354,11 @@ msgstr "Valeur"
 #: staff.copy.delete
 msgid "Delete Copy"
 msgstr "Supprimer la copie"
+
+#: staff.copy.delete.key
+msgctxt "staff.copy.delete.key"
+msgid ""
+msgstr ""
 
 #: staff.copy.edit_categories
 msgid "Edit Categories"
@@ -2249,6 +2439,11 @@ msgstr "Le code à barres doit être placé ici"
 msgid "Transfer Copy"
 msgstr "Transférer la copie"
 
+#: staff.copy.transfer.key
+msgctxt "staff.copy.transfer.key"
+msgid ""
+msgstr ""
+
 #: staff.copy.wizard.title
 msgid "Batch Add Copies Wizard"
 msgstr "Assistant d’ajout de copies par lots"
@@ -2303,6 +2498,11 @@ msgstr "&Terminé"
 msgctxt "staff.hold_capture.print_receipt.label"
 msgid "Print List"
 msgstr "Imprimer la liste"
+
+#: staff.hold_capture.print_receipt.accesskey
+msgctxt "staff.hold_capture.print_receipt.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.hold_capture.reprint_receipt_label
 msgctxt "staff.hold_capture.reprint_receipt_label"
@@ -2394,7 +2594,7 @@ msgstr "J"
 
 #: staff.main.auth.debug.debugger
 msgid "Debugger"
-msgstr ""
+msgstr "Débugger"
 
 #: staff.main.auth.debug.debugger.accesskey
 msgctxt "staff.main.auth.debug.debugger.accesskey"
@@ -2403,7 +2603,7 @@ msgstr "D"
 
 #: staff.main.auth.debug.inspector
 msgid "DOM Inspector"
-msgstr ""
+msgstr "Inspecteur DOM"
 
 #: staff.main.auth.debug.inspector.accesskey
 msgctxt "staff.main.auth.debug.inspector.accesskey"
@@ -2414,10 +2614,19 @@ msgstr "I"
 msgid "Chrome List"
 msgstr ""
 
+#: staff.main.auth.debug.chrome_list.accesskey
+msgctxt "staff.main.auth.debug.chrome_list.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.main.auth.debug.js_shell
-#, fuzzy
 msgid "Javascript Shell"
-msgstr "JavaScript Shell"
+msgstr "Console javascript"
+
+#: staff.main.auth.debug.js_shell.accesskey
+msgctxt "staff.main.auth.debug.js_shell.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.main.auth.hostname
 msgid "Hostname"
@@ -2484,30 +2693,63 @@ msgctxt "staff.main.button_bar.check_out.label"
 msgid "Check Out"
 msgstr "Sortie"
 
+#: staff.main.button_bar.check_out.accesskey
+msgctxt "staff.main.button_bar.check_out.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.main.button_bar.check_in.label
 msgctxt "staff.main.button_bar.check_in.label"
 msgid "Check In"
 msgstr "Entrer"
+
+#: staff.main.button_bar.check_in.accesskey
+msgctxt "staff.main.button_bar.check_in.accesskey"
+msgid ""
+msgstr ""
+
+#: staff.main.button_bar.search_opac.label
+msgid "Search Catalog"
+msgstr ""
+
+#: staff.main.button_bar.search_opac.accesskey
+msgctxt "staff.main.button_bar.search_opac.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.main.button_bar.item_status.label
 msgctxt "staff.main.button_bar.item_status.label"
 msgid "Item Status"
 msgstr "État de l’article"
 
+#: staff.main.button_bar.item_status.accesskey
+msgctxt "staff.main.button_bar.item_status.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.main.button_bar.patron_search.label
 msgctxt "staff.main.button_bar.patron_search.label"
 msgid "Patron Search"
 msgstr "Recherche de clients"
 
+#: staff.main.button_bar.patron_search.accesskey
+msgctxt "staff.main.button_bar.patron_search.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.main.button_bar.patron_registration.label
 msgid "Patron Registration"
 msgstr ""
 
+#: staff.main.button_bar.patron_registration.accesskey
+msgctxt "staff.main.button_bar.patron_registration.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.main.menu.acquisitions.label
 #: staff.main.menu.acquisitions.accesskey
-#, fuzzy
 msgid "Ac&quisitions"
-msgstr "Acquisitions"
+msgstr ""
 
 #: staff.main.menu.admin.accesskey
 msgctxt "staff.main.menu.admin.accesskey"
@@ -2544,6 +2786,11 @@ msgstr "Console &JavaScript"
 msgid "JavaScript S&hell"
 msgstr "JavaScript S&hell"
 
+#: staff.main.menu.admin.cmd_chrome_shell.accesskey
+msgctxt "staff.main.menu.admin.cmd_chrome_shell.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.main.menu.admin.cmd_chrome_shell.label
 msgid "JavaScript Shell (Chrome)"
 msgstr ""
@@ -2573,7 +2820,7 @@ msgstr "&Sondages"
 
 #: staff.main.menu.admin.local_admin.conify.idl_field_doc.label
 msgid "Field Documentation"
-msgstr ""
+msgstr "Documentation de champ"
 
 #: staff.main.menu.admin.local_admin.conify.standing_penalty.label
 msgid "Standing Penalties"
@@ -2593,19 +2840,27 @@ msgid "Circulation Policies"
 msgstr "Modificateur de prêt"
 
 #: staff.main.menu.admin.local_admin.hold_matrix_matchpoint.label
-#, fuzzy
 msgid "Hold Policies"
-msgstr "Avis pour les articles mis en réserve"
+msgstr ""
 
 #: staff.main.menu.admin.local_admin.work_log.label
 #: staff.main.menu.admin.local_admin.work_log.accesskey
 msgid "&Work Log"
 msgstr ""
 
+#: staff.main.menu.admin.local_admin.copy_template.label
+#: staff.main.menu.admin.local_admin.copy_template.accesskey
+msgid "Copy &Template Editor"
+msgstr ""
+
+#: staff.main.menu.admin.local_admin.patrons_due_refunds.label
+#: staff.main.menu.admin.local_admin.patrons_due_refunds.accesskey
+msgid "Patrons with &Negative Balances"
+msgstr ""
+
 #: staff.main.menu.admin.server_admin.label
-#, fuzzy
 msgid "Server Administration"
-msgstr "Administration du sondage"
+msgstr "Administration du serveur"
 
 #: staff.main.menu.admin.server_admin.conify.org_unit_type.label
 msgid "Organization Types"
@@ -2629,8 +2884,20 @@ msgstr "Permission"
 msgid "Copy Statuses"
 msgstr "État de l’exemplaire"
 
-#: staff.main.menu.admin.server_admin.conify.marc_code_maps.label
-msgid "MARC Codes"
+#: staff.main.menu.admin.server_admin.conify.marc_record_attrs.label
+msgid "MARC Record Attributes"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.conify.coded_value_maps.label
+msgid "MARC Coded Value Maps"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.conify.acn_prefix.label
+msgid "Call Number Prefixes"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.conify.acn_suffix.label
+msgid "Call Number Suffixes"
 msgstr ""
 
 #: staff.main.menu.admin.server_admin.conify.billing_type.label
@@ -2640,7 +2907,7 @@ msgstr "Type de facturation"
 
 #: staff.main.menu.admin.server_admin.conify.z3950_source.label
 msgid "Z39.50 Servers"
-msgstr ""
+msgstr "Serveurs Z39.50"
 
 #: staff.main.menu.admin.server_admin.conify.circulation_modifier.label
 #, fuzzy
@@ -2654,6 +2921,204 @@ msgstr "Paramètres d'unités organisationnelles"
 
 #: staff.main.menu.admin.server_admin.conify.usr_setting_type
 msgid "User Setting Types"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.conify.config_hard_due_date
+msgid "Hard Due Date Changes"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.conify.config_rule_circ_duration
+msgid "Circulation Duration Rules"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.conify.config_rule_recurring_fine
+msgid "Circulation Recurring Fine Rules"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.conify.config_rule_max_fine
+msgid "Circulation Max Fine Rules"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.conify.config_rule_age_hold_protect
+msgid "Age Hold Protect Rules"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.conify.config_circ_weights
+msgid "Circulation Matchpoint Weights"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.conify.config_hold_weights
+msgid "Hold Matchpoint Weights"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.conify.config_weight_assoc
+msgid "Weights Association"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.conify.global_flag.label
+msgid "Global Flags"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.acq.label
+#: staff.main.menu.admin.server_admin.acq.accesskey
+msgctxt "staff.main.menu.admin.server_admin.acq.label staff.main.menu.admin.server_admin.acq.accesskey"
+msgid "&Acquisitions"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.acq.lineitem_alert.label
+#: staff.main.menu.admin.server_admin.acq.lineitem_alert.accesskey
+msgid "&Line Item Alerts"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.acq.lineitem_marc_attr_def.label
+#: staff.main.menu.admin.server_admin.acq.lineitem_marc_attr_def.accesskey
+msgid "Line I&tem MARC Attribute Definitions"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.acq.invoice_item_type.label
+#: staff.main.menu.admin.server_admin.acq.invoice_item_type.accesskey
+msgid "&Invoice Item Type"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.acq.invoice_payment_method.label
+#: staff.main.menu.admin.server_admin.acq.invoice_payment_method.accesskey
+msgid "Invoice Pa&yment Method"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.acq.fund_tag.label
+#: staff.main.menu.admin.server_admin.acq.fund_tag.accesskey
+msgid "Fund Ta&gs"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.acq.cancel_reason.label
+#: staff.main.menu.admin.server_admin.acq.cancel_reason.accesskey
+msgid "Cancel &Reasons"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.acq.claim_type.label
+#: staff.main.menu.admin.server_admin.acq.claim_type.accesskey
+msgid "Claim &Types"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.acq.claim_event_type.label
+#: staff.main.menu.admin.server_admin.acq.claim_event_type.accesskey
+msgid "Claim &Event Types"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.acq.claim_policy.label
+#: staff.main.menu.admin.server_admin.acq.claim_policy.accesskey
+msgid "Claim P&olicies"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.acq.claim_policy_action.label
+#: staff.main.menu.admin.server_admin.acq.claim_policy_action.accesskey
+msgid "Claim Policy &Actions"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.acq.fund.label
+#: staff.main.menu.admin.server_admin.acq.fund.accesskey
+#, fuzzy
+msgid "&Funds"
+msgstr "Fonds"
+
+#: staff.main.menu.admin.server_admin.acq.funding_source.label
+#: staff.main.menu.admin.server_admin.acq.funding_source.accesskey
+msgid "Funding &Sources"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.acq.provider.label
+#: staff.main.menu.admin.server_admin.acq.provider.accesskey
+#, fuzzy
+msgid "&Providers"
+msgstr "Fournisseurs"
+
+#: staff.main.menu.admin.server_admin.acq.edi_account.label
+#: staff.main.menu.admin.server_admin.acq.edi_account.accesskey
+msgid "EDI Acco&unts"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.acq.edi_message.label
+#: staff.main.menu.admin.server_admin.acq.edi_message.accesskey
+msgid "EDI &Messages"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.acq.distrib_formula.label
+#: staff.main.menu.admin.server_admin.acq.distrib_formula.accesskey
+msgid "&Distribution Formulas"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.acq.currency_type.label
+#: staff.main.menu.admin.server_admin.acq.currency_type.accesskey
+msgid "&Currency Types"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.acq.exchange_rate.label
+#: staff.main.menu.admin.server_admin.acq.exchange_rate.accesskey
+#, fuzzy
+msgid "E&xchange Rates"
+msgstr "Taux d'échange"
+
+#: staff.main.menu.admin.server_admin.booking.label
+#: staff.main.menu.admin.server_admin.booking.accesskey
+msgctxt "staff.main.menu.admin.server_admin.booking.label staff.main.menu.admin.server_admin.booking.accesskey"
+msgid "&Booking"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.booking.resource.label
+#: staff.main.menu.admin.server_admin.booking.resource.accesskey
+msgid "&Resources"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.booking.resource_type.label
+#: staff.main.menu.admin.server_admin.booking.resource_type.accesskey
+msgid "Resource &Types"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.booking.resource_attr.label
+#: staff.main.menu.admin.server_admin.booking.resource_attr.accesskey
+msgid "Resource &Attributes"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.booking.resource_attr_value.label
+#: staff.main.menu.admin.server_admin.booking.resource_attr_value.accesskey
+msgid "Resource Attribute &Values"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.booking.resource_attr_map.label
+#: staff.main.menu.admin.server_admin.booking.resource_attr_map.accesskey
+msgid "Resource Attribute &Maps"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.serial.label
+#: staff.main.menu.admin.server_admin.serial.accesskey
+#, fuzzy
+msgctxt "staff.main.menu.admin.server_admin.serial.label staff.main.menu.admin.server_admin.serial.accesskey"
+msgid "&Serials"
+msgstr "Collections"
+
+#: staff.main.menu.admin.server_admin.serial.subscription.label
+#: staff.main.menu.admin.server_admin.serial.subscription.accesskey
+msgid "&Subscriptions"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.serial.distribution.label
+#: staff.main.menu.admin.server_admin.serial.distribution.accesskey
+msgid "&Distributions"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.serial.stream.label
+#: staff.main.menu.admin.server_admin.serial.stream.accesskey
+msgid "S&treams"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.serial.routing_list_user.label
+#: staff.main.menu.admin.server_admin.serial.routing_list_user.accesskey
+msgid "&Routing List Users"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.serial.caption_and_pattern.label
+#: staff.main.menu.admin.server_admin.serial.caption_and_pattern.accesskey
+msgid "&Captions and Patterns"
 msgstr ""
 
 #: staff.main.menu.admin.developer.label
@@ -2680,9 +3145,8 @@ msgstr "Administration"
 
 #: staff.main.menu.admin.local_admin.label
 #: staff.main.menu.admin.local_admin.accesskey
-#, fuzzy
 msgid "&Local Administration"
-msgstr "Administration du système &local"
+msgstr ""
 
 #: staff.main.menu.admin.non_cat_type_edit.label
 #: staff.main.menu.admin.non_cat_type_edit.accesskey
@@ -2747,11 +3211,16 @@ msgstr "Venkman"
 
 #: staff.main.menu.admin.ping
 msgid "Ping Server"
-msgstr ""
+msgstr "Pinger le serveur"
 
 #: staff.main.menu.admin.toggle_buttonbar.label
 #: staff.main.menu.admin.toggle_buttonbar.accesskey
 msgid "Toggle &Button Bar"
+msgstr ""
+
+#: staff.main.menu.admin.toggle_meters.label
+#: staff.main.menu.admin.toggle_meters.accesskey
+msgid "Toggle Activity &Meters"
 msgstr ""
 
 #: staff.main.menu.cat.label
@@ -2786,11 +3255,16 @@ msgstr "V"
 msgid "Add Volume"
 msgstr "Ajout du volume"
 
+#: staff.main.menu.cat.authority_manage.label
+#: staff.main.menu.cat.authority_manage.accesskey
+msgid "Manage Au&thorities"
+msgstr ""
+
 #: staff.main.menu.cat.bib_search.label
 #: staff.main.menu.cat.bib_search.accesskey
 #, fuzzy
 msgid "&Search the Catalog"
-msgstr "Effectuer une recherche dans le catalogue"
+msgstr "Rechercher dans le &catalogue"
 
 #: staff.main.menu.cat.bib_status.key
 msgctxt "staff.main.menu.cat.bib_status.key"
@@ -2823,9 +3297,8 @@ msgstr "Créer un &nouveau compte MARC"
 
 #: staff.main.menu.cat.dedup.label
 #: staff.main.menu.cat.dedup.accesskey
-#, fuzzy
 msgid "&Merge and Transfer Interface"
-msgstr "Interface de fusion et de transfert"
+msgstr ""
 
 #: staff.main.menu.cat.edit_copy_buckets.label
 #: staff.main.menu.cat.edit_copy_buckets.accesskey
@@ -2851,6 +3324,11 @@ msgstr "Gérer les paniers d’&utilisateur"
 msgctxt "staff.main.menu.cat.key"
 msgid "a"
 msgstr "a"
+
+#: staff.main.menu.cat.marc_batch_edit.label
+#: staff.main.menu.cat.marc_batch_edit.accesskey
+msgid "MARC Batch &Edit"
+msgstr ""
 
 #: staff.main.menu.cat.retrieve_last_record.label
 #: staff.main.menu.cat.retrieve_last_record.accesskey
@@ -2886,52 +3364,116 @@ msgid "Import Record from &Z39.50"
 msgstr "Importer le compte de &Z39.50"
 
 #: staff.main.menu.acq.label
-#, fuzzy
-msgid "Acquisitions"
-msgstr "Acquisitions"
-
-#: staff.main.menu.acq.picklist.label
-msgid "Selection Lists"
+#: staff.main.menu.acq.accesskey
+msgctxt "staff.main.menu.acq.label staff.main.menu.acq.accesskey"
+msgid "&Acquisitions"
 msgstr ""
 
-#: staff.main.menu.acq.bib_search.label
-msgid "Title Search"
+#: staff.main.menu.acq.unified_search.label
+#: staff.main.menu.acq.unified_search.accesskey
+msgid "General &Search"
+msgstr ""
+
+#: staff.main.menu.acq.view_my_pl.label
+#: staff.main.menu.acq.view_my_pl.accesskey
+msgid "My Selection &Lists"
 msgstr ""
 
 #: staff.main.menu.acq.brief_record.label
-msgid "New Brief Record"
+#: staff.main.menu.acq.brief_record.accesskey
+msgid "New &Brief Record"
+msgstr ""
+
+#: staff.main.menu.acq.user_requests.label
+#: staff.main.menu.acq.user_requests.accesskey
+msgid "Patron Re&quests"
+msgstr ""
+
+#: staff.main.menu.acq.bib_search.label
+#: staff.main.menu.acq.bib_search.accesskey
+msgid "MARC &Federated Search"
+msgstr ""
+
+#: staff.main.menu.acq.from_bib.label
+#: staff.main.menu.acq.from_bib.accesskey
+msgid "Load &Catalog Record IDs"
 msgstr ""
 
 #: staff.main.menu.acq.upload.label
-msgid "Load Order Record"
+#: staff.main.menu.acq.upload.accesskey
+msgid "Load &MARC Order Records"
 msgstr ""
 
-#: staff.main.menu.acq.po.label
-msgid "Purchase Orders"
+#: staff.main.menu.acq.view_local_po.label
+#: staff.main.menu.acq.view_local_po.accesskey
+msgid "&Purchase Orders"
 msgstr ""
 
-#: staff.main.menu.acq.fund.label
-msgid "Funds"
+#: staff.main.menu.acq.create_po.label
+#: staff.main.menu.acq.create_po.accesskey
+msgid "Create Purchase &Order"
 msgstr ""
 
-#: staff.main.menu.acq.funding_source.label
-msgid "Funding Sources"
+#: staff.main.menu.acq.claim_eligible.label
+#: staff.main.menu.acq.claim_eligible.accesskey
+msgid "Claim-&Ready Items"
 msgstr ""
 
-#: staff.main.menu.acq.provider.label
-msgid "Providers"
+#: staff.main.menu.acq.view_local_inv.label
+#: staff.main.menu.acq.view_local_inv.accesskey
+msgid "Open &Invoices"
 msgstr ""
 
-#: staff.main.menu.acq.distrib_formula.label
-msgid "Distribution Formulas"
+#: staff.main.menu.acq.create_invoice.label
+#: staff.main.menu.acq.create_invoice.accesskey
+msgid "Create In&voice"
 msgstr ""
 
-#: staff.main.menu.acq.currency_type.label
-msgid "Currency Types"
+#: staff.main.menu.serial.label
+#: staff.main.menu.serial.accesskey
+#, fuzzy
+msgctxt "staff.main.menu.serial.label staff.main.menu.serial.accesskey"
+msgid "&Serials"
+msgstr "Collections"
+
+#: staff.main.menu.serial.batch_receive.label
+#: staff.main.menu.serial.batch_receive.accesskey
+msgid "&Batch Receive"
 msgstr ""
 
-#: staff.main.menu.acq.exchange_rate.label
-msgid "Exchange Rates"
+#: staff.main.menu.booking.label
+#: staff.main.menu.booking.accesskey
+msgctxt "staff.main.menu.booking.label staff.main.menu.booking.accesskey"
+msgid "&Booking"
+msgstr ""
+
+#: staff.main.menu.booking.reservation.label_alt
+msgid "Create or Cancel Reservations"
+msgstr ""
+
+#: staff.main.menu.booking.reservation.label
+#: staff.main.menu.booking.reservation.accesskey
+msgid "&Create Reservations"
+msgstr ""
+
+#: staff.main.menu.booking.pull_list.label
+#: staff.main.menu.booking.pull_list.accesskey
+msgid "Pull &List"
+msgstr ""
+
+#: staff.main.menu.booking.capture.label
+#: staff.main.menu.booking.capture.accesskey
+msgid "C&apture Resources"
+msgstr ""
+
+#: staff.main.menu.booking.reservation_pickup.label
+#: staff.main.menu.booking.reservation_pickup.accesskey
+msgid "&Pick Up Reservations"
+msgstr ""
+
+#: staff.main.menu.booking.reservation_return.label
+#: staff.main.menu.booking.reservation_return.accesskey
+msgid "&Return Reservations"
 msgstr ""
 
 #: staff.main.menu.circ.barcode.retrieve_patron
@@ -2956,13 +3498,13 @@ msgstr "B"
 #: staff.main.menu.circ.checkin.accesskey
 #, fuzzy
 msgid "&Check In Items"
-msgstr "Entrer des articles"
+msgstr "Articles d’&entrée"
 
 #: staff.main.menu.circ.checkout.label
 #: staff.main.menu.circ.checkout.accesskey
 #, fuzzy
 msgid "Check &Out Items"
-msgstr "Sortir des articles"
+msgstr "Articles d’&entrée"
 
 #: staff.main.menu.circ.renew.label
 #: staff.main.menu.circ.renew.accesskey
@@ -3019,6 +3561,11 @@ msgstr "Afficher la liste pour les demandes de &mise en réserve"
 msgid "Record &In-House Use"
 msgstr "Consigner l’utilisation &interne"
 
+#: staff.main.menu.circ.scan_item_as_missing_pieces.label
+#: staff.main.menu.circ.scan_item_as_missing_pieces.accesskey
+msgid "Scan Item as &Missing Pieces"
+msgstr ""
+
 #: staff.main.menu.circ.label
 #: staff.main.menu.circ.accesskey
 #, fuzzy
@@ -3062,7 +3609,7 @@ msgstr "Entrer l’interface &hors ligne"
 #: staff.main.menu.circ.patron_registration.accesskey
 #, fuzzy
 msgid "&Register Patron"
-msgstr "Inscrire le client"
+msgstr "Inscrire le &client"
 
 #: staff.main.menu.circ.staged_patrons.label
 #: staff.main.menu.circ.staged_patrons.accesskey
@@ -3186,9 +3733,8 @@ msgid "Copy"
 msgstr "Copier"
 
 #: staff.main.menu.edit.cut.key
-msgctxt "staff.main.menu.edit.cut.key"
 msgid "t"
-msgstr "t"
+msgstr ""
 
 #: staff.main.menu.edit.cut.label
 msgctxt "staff.main.menu.edit.cut.label"
@@ -3266,13 +3812,28 @@ msgstr "U"
 msgid "Undo"
 msgstr "Annuler"
 
+#: staff.main.menu.entity.bib.key
+msgctxt "staff.main.menu.entity.bib.key"
+msgid ""
+msgstr ""
+
 #: staff.main.menu.entity.bib.label
 msgid "Bib Records"
 msgstr "Comptes de bibliothèque"
 
+#: staff.main.menu.entity.copy.key
+msgctxt "staff.main.menu.entity.copy.key"
+msgid ""
+msgstr ""
+
 #: staff.main.menu.entity.copy.label
 msgid "Items"
 msgstr "Articles"
+
+#: staff.main.menu.entity.patron.key
+msgctxt "staff.main.menu.entity.patron.key"
+msgid ""
+msgstr ""
 
 #: staff.main.menu.entity.patron.label
 msgid "Patrons"
@@ -3282,6 +3843,11 @@ msgstr "Clients"
 msgctxt "staff.main.menu.entity.patron.register.key"
 msgid "R"
 msgstr "R"
+
+#: staff.main.menu.entity.volume.key
+msgctxt "staff.main.menu.entity.volume.key"
+msgid ""
+msgstr ""
 
 #: staff.main.menu.entity.volume.label
 msgctxt "staff.main.menu.entity.volume.label"
@@ -3303,23 +3869,35 @@ msgstr "C"
 msgid "&Close Tab"
 msgstr "&Fermer l’onglet"
 
+#: staff.main.menu.file.close_tab.key
+msgctxt "staff.main.menu.file.close_tab.key"
+msgid ""
+msgstr ""
+
 #: staff.main.menu.file.label
 #: staff.main.menu.file.accesskey
-#, fuzzy
 msgid "&File"
-msgstr "Fichier"
+msgstr ""
 
 #: staff.main.menu.file.new.label
 #: staff.main.menu.file.new.accesskey
-#, fuzzy
 msgid "&New Window"
-msgstr "Nouvelle fenêtre"
+msgstr ""
 
 #: staff.main.menu.file.new_tab.label
 #: staff.main.menu.file.new_tab.accesskey
-#, fuzzy
 msgid "New &Tab"
-msgstr "Nouvel onglet"
+msgstr ""
+
+#: staff.main.menu.file.join_tabs_horizontal.label
+#: staff.main.menu.file.join_tabs_horizontal.accesskey
+msgid "&Join Tabs (Horizontal)"
+msgstr ""
+
+#: staff.main.menu.file.join_tabs_vertical.label
+#: staff.main.menu.file.join_tabs_vertical.accesskey
+msgid "Join Tabs (&Vertical)"
+msgstr ""
 
 #: staff.main.menu.file.open.key
 msgctxt "staff.main.menu.file.open.key"
@@ -3345,6 +3923,11 @@ msgctxt "staff.main.menu.help.label staff.main.menu.help.accesskey"
 msgid "&Help"
 msgstr "&Aide"
 
+#: staff.main.menu.help.active_tab.label
+#: staff.main.menu.help.active_tab.accesskey
+msgid "For &Active Tab"
+msgstr ""
+
 #: staff.main.menu.quit
 msgid "Quit Program"
 msgstr "Quittter le programme"
@@ -3358,6 +3941,11 @@ msgstr "Q"
 msgctxt "staff.main.menu.replace_barcode.label"
 msgid "Replace Barcode"
 msgstr "Remplacer le code à barres"
+
+#: staff.main.menu.reports.key
+msgctxt "staff.main.menu.reports.key"
+msgid ""
+msgstr ""
 
 #: staff.main.menu.reports.label
 msgctxt "staff.main.menu.reports.label"
@@ -3376,9 +3964,8 @@ msgstr "Rechercher des copies par code à &barres"
 
 #: staff.main.menu.search.label
 #: staff.main.menu.search.accesskey
-#, fuzzy
 msgid "Sea&rch"
-msgstr "Recherche"
+msgstr "Reche&rcher"
 
 #: staff.main.menu.search.patrons.label
 #: staff.main.menu.search.patrons.accesskey
@@ -3672,9 +4259,8 @@ msgid "Cont"
 msgstr "Cont"
 
 #: staff.marc.008.BKS.fest.desc
-#, fuzzy
 msgid "Festschrift"
-msgstr "Mélanges"
+msgstr ""
 
 #: staff.marc.008.BKS.fest.field
 msgctxt "staff.marc.008.BKS.fest.field"
@@ -4767,7 +5353,7 @@ msgstr "Solde dû"
 
 #: staff.mbts_id_label
 msgid "Bill # "
-msgstr "No de la facture"
+msgstr "No de la facture "
 
 #: staff.mbts_total_owed_label
 msgctxt "staff.mbts_total_owed_label"
@@ -4846,6 +5432,11 @@ msgstr "&Terminé"
 msgid "Print Receipt"
 msgstr "Imprimer le reçu"
 
+#: staff.patron_display.checkout.print_receipt.accesskey
+msgctxt "staff.patron_display.checkout.print_receipt.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.patron_display.checkout.reprint_receipt_label
 msgid "Re-Print Last Receipt"
 msgstr "Réimpression du dernier reçu"
@@ -4878,6 +5469,53 @@ msgstr "Date d’échéance :"
 #: staff.patron_display.contact.caption
 msgid "Identity &amp; Contact Info"
 msgstr "Identité et coordonnées"
+
+#: staff.patron_display.tab.account_info.label
+msgid "Account Info"
+msgstr ""
+
+#: staff.patron_display.tab.account_info.accesskey
+msgctxt "staff.patron_display.tab.account_info.accesskey"
+msgid ""
+msgstr ""
+
+#: staff.patron_display.patron_info.caption
+msgid "Patron Info"
+msgstr ""
+
+#: staff.patron_display.phone_numbers.caption
+msgid "Phone Numbers"
+msgstr ""
+
+#: staff.patron_display.tab.identification.label
+#, fuzzy
+msgctxt "staff.patron_display.tab.identification.label"
+msgid "Identification"
+msgstr "Identification"
+
+#: staff.patron_display.tab.identification.accesskey
+msgctxt "staff.patron_display.tab.identification.accesskey"
+msgid ""
+msgstr ""
+
+#: staff.patron_display.tab.group.label
+#, fuzzy
+msgid "Group"
+msgstr "&Groupe"
+
+#: staff.patron_display.tab.group.accesskey
+msgctxt "staff.patron_display.tab.group.accesskey"
+msgid ""
+msgstr ""
+
+#: staff.patron_display.tab.stat_cats.label
+msgid "Stat Cats"
+msgstr ""
+
+#: staff.patron_display.tab.stat_cats.accesskey
+msgctxt "staff.patron_display.tab.stat_cats.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.patron_display.credit.label
 msgid "Credit:"
@@ -4965,11 +5603,6 @@ msgstr ""
 msgid "&Delete Patron Account"
 msgstr ""
 
-#: staff.patron_display.mailing.copy
-msgctxt "staff.patron_display.mailing.copy"
-msgid "(Copy)"
-msgstr ""
-
 #: staff.patron_display.mailing.city.label
 msgid "Mailing City:"
 msgstr "Ville :"
@@ -4995,6 +5628,50 @@ msgctxt "staff.patron_display.mailing_address"
 msgid "Mailing Address"
 msgstr "Adresse postale"
 
+#: staff.patron_display.addresses.caption
+#, fuzzy
+msgctxt "staff.patron_display.addresses.caption"
+msgid "Addresses"
+msgstr "Adresses"
+
+#: staff.patron_display.address_export
+msgid "(Copy/Print)"
+msgstr ""
+
+#: staff.patron_display.address_export_popup.copy
+#, fuzzy
+msgctxt "staff.patron_display.address_export_popup.copy"
+msgid "Copy to Clipboard"
+msgstr "Copier dans le presse-papiers"
+
+#: staff.patron_display.address_export_popup.print
+#, fuzzy
+msgctxt "staff.patron_display.address_export_popup.print"
+msgid "Print"
+msgstr "Imprimer"
+
+#: staff.patron_display.radio.mailing_address.label
+#, fuzzy
+msgctxt "staff.patron_display.radio.mailing_address.label"
+msgid "Mailing"
+msgstr "Courrier"
+
+#: staff.patron_display.radio.mailing_address.accesskey
+msgctxt "staff.patron_display.radio.mailing_address.accesskey"
+msgid ""
+msgstr ""
+
+#: staff.patron_display.radio.physical_address.label
+#, fuzzy
+msgctxt "staff.patron_display.radio.physical_address.label"
+msgid "Billing"
+msgstr "Facturation"
+
+#: staff.patron_display.radio.physical_address.accesskey
+msgctxt "staff.patron_display.radio.physical_address.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.patron_display.name.label
 msgctxt "staff.patron_display.name.label"
 msgid "Patron Name"
@@ -5003,11 +5680,6 @@ msgstr "Nom du client"
 #: staff.patron_display.other_phone.label
 msgid "Other Phone:"
 msgstr "Autre numéro de téléphone :"
-
-#: staff.patron_display.physical.copy
-msgctxt "staff.patron_display.physical.copy"
-msgid "(Copy)"
-msgstr ""
 
 #: staff.patron_display.physical.city.label
 msgid "Physical City:"
@@ -5134,16 +5806,15 @@ msgstr "&Annuler"
 
 #: staff.patron_display.apply_penalty_dialog.apply_btn.label
 #: staff.patron_display.apply_penalty_dialog.apply_btn.accesskey
-#, fuzzy
 msgctxt "staff.patron_display.apply_penalty_dialog.apply_btn.label staff.patron_display.apply_penalty_dialog.apply_btn.accesskey"
 msgid "&Apply"
-msgstr "Appliquer"
+msgstr "&Appliquer"
 
 #: staff.patron_display.apply_penalty_dialog.initials_entry.label
 #: staff.patron_display.apply_penalty_dialog.initials_entry.accesskey
 msgctxt "staff.patron_display.apply_penalty_dialog.initials_entry.label staff.patron_display.apply_penalty_dialog.initials_entry.accesskey"
 msgid "&Initials"
-msgstr ""
+msgstr "&Initiales"
 
 #: staff.patron_display.edit_penalty_dialog.title
 msgctxt "staff.patron_display.edit_penalty_dialog.title"
@@ -5189,24 +5860,36 @@ msgstr "&Annuler"
 #: staff.patron_display.edit_penalty_dialog.apply_btn.label
 #: staff.patron_display.edit_penalty_dialog.apply_btn.accesskey
 #, fuzzy
+msgctxt "staff.patron_display.edit_penalty_dialog.apply_btn.label staff.patron_display.edit_penalty_dialog.apply_btn.accesskey"
 msgid "&Modify"
 msgstr "Modifier"
 
 #: staff.patron_display.edit_penalty_dialog.initials_entry.label
 #: staff.patron_display.edit_penalty_dialog.initials_entry.accesskey
+#, fuzzy
 msgctxt "staff.patron_display.edit_penalty_dialog.initials_entry.label staff.patron_display.edit_penalty_dialog.initials_entry.accesskey"
 msgid "&Initials"
-msgstr ""
+msgstr "&Initiales"
 
 #: staff.patron_display.archived_penalty.start_date.label
 msgctxt "staff.patron_display.archived_penalty.start_date.label"
 msgid "Start Date:"
 msgstr "Date de début :"
 
+#: staff.patron_display.archived_penalty.start_date.accesskey
+msgctxt "staff.patron_display.archived_penalty.start_date.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.patron_display.archived_penalty.end_date.label
 msgctxt "staff.patron_display.archived_penalty.end_date.label"
 msgid "End Date:"
 msgstr "Date de fin :"
+
+#: staff.patron_display.archived_penalty.end_date.accesskey
+msgctxt "staff.patron_display.archived_penalty.end_date.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.patron_display.archived_penalty.retrieve.label
 #: staff.patron_display.archived_penalty.retrieve.accesskey
@@ -5221,6 +5904,11 @@ msgstr ""
 msgid "Delete Patron"
 msgstr ""
 
+#: staff.patron_display.staged.menu.actions.cancel.accesskey
+msgctxt "staff.patron_display.staged.menu.actions.cancel.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.patron_display.staged.menu.actions.load.label
 #: staff.patron_display.staged.menu.actions.load.accesskey
 msgid "Load &Patron"
@@ -5229,7 +5917,7 @@ msgstr ""
 #: staff.patron_display.staged.limit.label
 #: staff.patron_display.staged.limit.accesskey
 msgid "Limi&t:"
-msgstr ""
+msgstr "Limi&te"
 
 #: staff.patron_display.staged.home_lib.label
 #: staff.patron_display.staged.home_lib.accesskey
@@ -5239,9 +5927,8 @@ msgstr "Bibliothèque d’origine :"
 
 #: staff.patron_display.staged.reload.label
 #: staff.patron_display.staged.reload.accesskey
-#, fuzzy
 msgid "&Refresh"
-msgstr "Actualiser"
+msgstr "&Rafraîchir"
 
 #: staff.patron_display.trigger_event.caption
 msgid "Modify Triggered Events"
@@ -5286,7 +5973,7 @@ msgstr ""
 #: staff.patron_display.trigger_event.checkbox_filter.error.label
 #: staff.patron_display.trigger_event.checkbox_filter.error.accesskey
 msgid "&Error"
-msgstr ""
+msgstr "&Erreur"
 
 #: staff.patron_editor_interface_label
 msgid "Patron Edit"
@@ -5294,7 +5981,7 @@ msgstr "Modifier le client"
 
 #: staff.patron_interface_label
 msgid "Patron "
-msgstr "Client"
+msgstr "Client "
 
 #: staff.patron_navbar.bills
 msgctxt "staff.patron_navbar.bills"
@@ -5344,6 +6031,14 @@ msgctxt "staff.patron_navbar.alert.accesskey"
 msgid "A"
 msgstr "A"
 
+#: staff.patron_navbar.booking
+msgid "Booking"
+msgstr ""
+
+#: staff.patron_navbar.booking.accesskey
+msgid "k"
+msgstr ""
+
 #: staff.patron_navbar.other
 msgctxt "staff.patron_navbar.other"
 msgid "Other"
@@ -5371,6 +6066,11 @@ msgctxt "staff.patron_navbar.refresh"
 msgid "Refresh"
 msgstr "Actualiser"
 
+#: staff.patron_navbar.refresh.accesskey
+msgctxt "staff.patron_navbar.refresh.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.patron_navbar.retrieve
 msgctxt "staff.patron_navbar.retrieve"
 msgid "Retrieve Patron"
@@ -5389,9 +6089,8 @@ msgstr "&Actions pour cet enregistrement"
 
 #: staff.patron_navbar.actions.menu.standing_penalties.label
 #: staff.patron_navbar.actions.menu.standing_penalties.accesskey
-#, fuzzy
 msgid "&Messages"
-msgstr "Message"
+msgstr "&Messages"
 
 #: staff.patron_register_interface_label
 msgid "New Patron"
@@ -5400,6 +6099,11 @@ msgstr "Nouveau client"
 #: staff.patron_search_form.caption
 msgid "Search for Patron"
 msgstr "Rechercher le client"
+
+#: staff.patron_search_form.city.accesskey
+msgctxt "staff.patron_search_form.city.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.patron_search_form.city.label
 msgid "City:"
@@ -5411,9 +6115,19 @@ msgctxt "staff.patron_search_form.clear.label staff.patron_search_form.clear.acc
 msgid "&Clear Form"
 msgstr "&Effacer le formulaire"
 
+#: staff.patron_search_form.alias.accesskey
+msgctxt "staff.patron_search_form.alias.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.patron_search_form.alias.label
 msgid "Alias:"
 msgstr "Alias :"
+
+#: staff.patron_search_form.email.accesskey
+msgctxt "staff.patron_search_form.email.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.patron_search_form.email.label
 msgctxt "staff.patron_search_form.email.label"
@@ -5425,10 +6139,20 @@ msgstr "Courriel :"
 msgid "&Last Name:"
 msgstr "Nom de &famille :"
 
+#: staff.patron_search_form.first_given_name.accesskey
+msgctxt "staff.patron_search_form.first_given_name.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.patron_search_form.first_given_name.label
 msgctxt "staff.patron_search_form.first_given_name.label"
 msgid "First Name:"
 msgstr "Prénom :"
+
+#: staff.patron_search_form.ident.accesskey
+msgctxt "staff.patron_search_form.ident.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.patron_search_form.ident.label
 msgid "ID:"
@@ -5451,9 +6175,23 @@ msgstr "Code à &barres :"
 msgid "&Phone:"
 msgstr "&Téléphone :"
 
+#: staff.patron_search_form.post_code.accesskey
+msgctxt "staff.patron_search_form.post_code.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.patron_search_form.post_code.label
 msgid "ZIP:"
 msgstr "Code postal :"
+
+#: staff.patron_search_form.profile.accesskey
+msgctxt "staff.patron_search_form.profile.accesskey"
+msgid ""
+msgstr ""
+
+#: staff.patron_search_form.profile.label
+msgid "Filter by Permission Profile:"
+msgstr ""
 
 #: staff.patron_search_form.search.label
 #: staff.patron_search_form.search.accesskey
@@ -5461,10 +6199,20 @@ msgctxt "staff.patron_search_form.search.label staff.patron_search_form.search.a
 msgid "&Search"
 msgstr "&Rechercher"
 
+#: staff.patron_search_form.second_given_name.accesskey
+msgctxt "staff.patron_search_form.second_given_name.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.patron_search_form.second_given_name.label
 msgctxt "staff.patron_search_form.second_given_name.label"
 msgid "Middle Name:"
 msgstr "Second prénom :"
+
+#: staff.patron_search_form.state.accesskey
+msgctxt "staff.patron_search_form.state.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.patron_search_form.state.label
 msgid "State:"
@@ -5474,6 +6222,11 @@ msgstr "État :"
 #: staff.patron_search_form.street1.accesskey
 msgid "A&ddress 1:"
 msgstr "A&dresse 1 :"
+
+#: staff.patron_search_form.street2.accesskey
+msgctxt "staff.patron_search_form.street2.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.patron_search_form.street2.label
 msgid "Address 2:"
@@ -5550,6 +6303,343 @@ msgstr "Cataloguage"
 msgctxt "staff.retrieving.record"
 msgid "Retrieving..."
 msgstr "Récupération..."
+
+#: staff.serial.mfhd_menu.label
+msgid "MFHD Holdings"
+msgstr ""
+
+#: staff.serial.mfhd_menu.add.label
+msgid "Add MFHD Record"
+msgstr ""
+
+#: staff.serial.mfhd_menu.edit.label
+msgid "Edit MFHD Record"
+msgstr ""
+
+#: staff.serial.mfhd_menu.delete.label
+msgid "Delete MFHD Record"
+msgstr ""
+
+#: staff.serial.scap_editor.pattern_wizard.label
+#: staff.serial.scap_editor.pattern_wizard.accesskey
+msgid "Pattern Code Wi&zard"
+msgstr ""
+
+#: staff.serial.scap_editor.modify.label
+#: staff.serial.scap_editor.modify.accesskey
+msgid "&Modify Caption and Pattern(s)"
+msgstr ""
+
+#: staff.serial.scap_editor.create.label
+#: staff.serial.scap_editor.create.accesskey
+msgid "&Create Caption and Pattern(s)"
+msgstr ""
+
+#: staff.serial.scap_editor.notes.label
+#: staff.serial.scap_editor.notes.accesskey
+msgid "Caption and Pattern &Notes"
+msgstr ""
+
+#: staff.serial.sbsum_editor.modify.label
+#: staff.serial.sbsum_editor.modify.accesskey
+msgid "&Modify Basic Summary"
+msgstr ""
+
+#: staff.serial.sisum_editor.modify.label
+#: staff.serial.sisum_editor.modify.accesskey
+msgid "&Modify Index Summary"
+msgstr ""
+
+#: staff.serial.sssum_editor.modify.label
+#: staff.serial.sssum_editor.modify.accesskey
+msgid "&Modify Supplement Summary"
+msgstr ""
+
+#: staff.serial.sdist_editor.modify.label
+#: staff.serial.sdist_editor.modify.accesskey
+msgid "&Modify Distribution(s)"
+msgstr ""
+
+#: staff.serial.sdist_editor.create.label
+#: staff.serial.sdist_editor.create.accesskey
+msgid "&Create Distribution(s)"
+msgstr ""
+
+#: staff.serial.sdist_editor.notes.label
+#: staff.serial.sdist_editor.notes.accesskey
+msgid "Distribution &Notes"
+msgstr ""
+
+#: staff.serial.serctrl_view.label
+msgid "Serial Control View"
+msgstr ""
+
+#: staff.serial.siss_editor.modify.label
+#: staff.serial.siss_editor.modify.accesskey
+msgid "&Modify Issuance(s)"
+msgstr ""
+
+#: staff.serial.siss_editor.create.label
+#: staff.serial.siss_editor.create.accesskey
+msgid "&Create Issuance(s)"
+msgstr ""
+
+#: staff.serial.siss_editor.notes.label
+#: staff.serial.siss_editor.notes.accesskey
+msgid "Issuance &Notes"
+msgstr ""
+
+#: staff.serial.sitem_editor.modify.label
+#: staff.serial.sitem_editor.modify.accesskey
+msgid "&Modify Item(s)"
+msgstr ""
+
+#: staff.serial.sitem_editor.create.label
+#: staff.serial.sitem_editor.create.accesskey
+msgid "&Create Item(s)"
+msgstr ""
+
+#: staff.serial.sitem_editor.notes.label
+#: staff.serial.sitem_editor.notes.accesskey
+msgid "Item &Notes"
+msgstr ""
+
+#: staff.serial.sstr_editor.modify.label
+#: staff.serial.sstr_editor.modify.accesskey
+msgid "&Modify Stream(s)"
+msgstr ""
+
+#: staff.serial.sstr_editor.create.label
+#: staff.serial.sstr_editor.create.accesskey
+msgid "&Create Stream(s)"
+msgstr ""
+
+#: staff.serial.ssub_editor.modify.label
+#: staff.serial.ssub_editor.modify.accesskey
+msgid "&Modify Subscription(s)"
+msgstr ""
+
+#: staff.serial.ssub_editor.create.label
+#: staff.serial.ssub_editor.create.accesskey
+msgid "&Create Subscription(s)"
+msgstr ""
+
+#: staff.serial.ssub_editor.notes.label
+#: staff.serial.ssub_editor.notes.accesskey
+msgid "Subscription &Notes"
+msgstr ""
+
+#: staff.serial.manage_dists.actions.cmd_add_sstr.label
+msgid "Add Stream"
+msgstr ""
+
+#: staff.serial.manage_dists.actions.cmd_delete_sstr.label
+msgid "Delete Stream"
+msgstr ""
+
+#: staff.serial.manage_items.actions.cmd_edit_items.label
+#, fuzzy
+msgctxt "staff.serial.manage_items.actions.cmd_edit_items.label"
+msgid "Edit Item Attributes"
+msgstr "Modifier les attributs de l’article"
+
+#: staff.serial.manage_items.actions.cmd_edit_items.access_key
+msgctxt "staff.serial.manage_items.actions.cmd_edit_items.access_key"
+msgid "E"
+msgstr ""
+
+#: staff.serial.manage_items.actions.cmd_delete_items.label
+#, fuzzy
+msgctxt "staff.serial.manage_items.actions.cmd_delete_items.label"
+msgid "Delete Items"
+msgstr "Supprimer les articles"
+
+#: staff.serial.manage_items.actions.cmd_delete_items.access_key
+msgctxt "staff.serial.manage_items.actions.cmd_delete_items.access_key"
+msgid "D"
+msgstr ""
+
+#: staff.serial.manage_items.actions.cmd_reset_items.label
+msgid "Reset Items to Expected"
+msgstr ""
+
+#: staff.serial.manage_items.workarea_showing
+msgid "Showing: "
+msgstr ""
+
+#: staff.serial.manage_items.workarea_current_unit
+msgid "Current Working Unit: "
+msgstr ""
+
+#: staff.serial.manage_items.workarea_recently_received
+msgid "Recently Received"
+msgstr ""
+
+#: staff.serial.manage_items.mode
+msgid "Mode:"
+msgstr ""
+
+#: staff.serial.manage_items.bind.label
+#, fuzzy
+msgid "Bind"
+msgstr "Trouver"
+
+#: staff.serial.manage_items.receive.label
+msgid "Receive"
+msgstr ""
+
+#: staff.serial.manage_items.show_all.label
+msgid "Show All"
+msgstr ""
+
+#: staff.serial.manage_items.receive_move.label
+msgid "Receive/Move Selected &#8595;"
+msgstr ""
+
+#: staff.serial.manage_items.set_current_unit.label
+msgid "Set Current Unit"
+msgstr ""
+
+#: staff.serial.manage_items.auto_per_item.label
+msgid "Auto per Item"
+msgstr ""
+
+#: staff.serial.manage_items.new_unit.label
+msgid "New Unit"
+msgstr ""
+
+#: staff.serial.manage_items.recent.label
+msgid "Recent"
+msgstr ""
+
+#: staff.serial.manage_items.other_unit.label
+msgid "Other..."
+msgstr ""
+
+#: staff.serial.batch_receive
+msgid "Batch Receive"
+msgstr ""
+
+#: staff.serial.batch_receive.bib_search_term.label
+#: staff.serial.batch_receive.bib_search_term.accesskey
+msgid "Enter an identifier for a &bibliographic record:"
+msgstr ""
+
+#: staff.serial.batch_receive.find_record.label
+#: staff.serial.batch_receive.find_record.accesskey
+msgid "&Find Record"
+msgstr ""
+
+#: staff.serial.batch_receive.title
+#, fuzzy
+msgctxt "staff.serial.batch_receive.title"
+msgid "Title:"
+msgstr "Titre :"
+
+#: staff.serial.batch_receive.author
+#, fuzzy
+msgctxt "staff.serial.batch_receive.author"
+msgid "Author:"
+msgstr "Auteur :"
+
+#: staff.serial.batch_receive.fulfilling_sub
+msgid "Fulfilling Subscription:"
+msgstr ""
+
+#: staff.serial.batch_receive.choose_sub.label
+#: staff.serial.batch_receive.choose_sub.accesskey
+msgid "Choose a &Subscription:"
+msgstr ""
+
+#: staff.serial.batch_receive.choose_issuance.label
+#: staff.serial.batch_receive.choose_issuance.accesskey
+msgid "Choose an &Issuance:"
+msgstr ""
+
+#: staff.serial.batch_receive.next.label
+#: staff.serial.batch_receive.next.accesskey
+#, fuzzy
+msgctxt "staff.serial.batch_receive.next.label staff.serial.batch_receive.next.accesskey"
+msgid "&Next"
+msgstr "Sui&vant"
+
+#: staff.serial.batch_receive.issuance
+msgid "Issuance:"
+msgstr ""
+
+#: staff.serial.batch_receive.no_items
+msgid "There are no items to receive for this subscription."
+msgstr ""
+
+#: staff.serial.batch_receive.org_unit
+msgid "Org Unit"
+msgstr ""
+
+#: staff.serial.batch_receive.barcode
+#, fuzzy
+msgctxt "staff.serial.batch_receive.barcode"
+msgid "Barcode"
+msgstr "Code à barres"
+
+#: staff.serial.batch_receive.circ_modifier
+#, fuzzy
+msgctxt "staff.serial.batch_receive.circ_modifier"
+msgid "Circ Modifier"
+msgstr "Modification de prêt"
+
+#: staff.serial.batch_receive.call_number
+#, fuzzy
+msgctxt "staff.serial.batch_receive.call_number"
+msgid "Call Number"
+msgstr "Cote"
+
+#: staff.serial.batch_receive.note
+#, fuzzy
+msgctxt "staff.serial.batch_receive.note"
+msgid "Note"
+msgstr "Note"
+
+#: staff.serial.batch_receive.location
+#, fuzzy
+msgctxt "staff.serial.batch_receive.location"
+msgid "Copy Location"
+msgstr "Copier l’emplacement"
+
+#: staff.serial.batch_receive.price
+#, fuzzy
+msgctxt "staff.serial.batch_receive.price"
+msgid "Price"
+msgstr "Prix"
+
+#: staff.serial.batch_receive.print_routing
+msgid "Routing List"
+msgstr ""
+
+#: staff.serial.batch_receive.print_routing.tooltip
+msgid "Print this item's routing list upon receipt, if it has one."
+msgstr ""
+
+#: staff.serial.batch_receive.receive
+msgid "Receive?"
+msgstr ""
+
+#: staff.serial.batch_receive.auto_generate
+msgid "Auto-generate?"
+msgstr ""
+
+#: staff.serial.batch_receive.recieve_selected
+msgid "Receive Selected Items"
+msgstr ""
+
+#: staff.serial.batch_receive.start_over.label
+#: staff.serial.batch_receive.start_over.accesskey
+msgid "Start &Over"
+msgstr ""
+
+#: staff.serial.batch_receive.with_units.label
+#: staff.serial.batch_receive.with_units.accesskey
+msgid "Create &Units For Received Items"
+msgstr ""
 
 #: staff.survey.wizard.page1
 msgid "Initial Settings"
@@ -5691,6 +6781,42 @@ msgstr "Titre"
 msgid "Z39.50 Import"
 msgstr "Importation Z39.50"
 
+#: staff.server.admin.do_not_auto_attempt_print_setting.current_inherited_setting.caption
+msgid "Current/Inherited Setting"
+msgstr ""
+
+#: staff.server.admin.do_not_auto_attempt_print_setting.new_setting.caption
+msgid "New Setting"
+msgstr ""
+
+#: staff.server.admin.do_not_auto_attempt_print_setting.receipt_slip_type.prompt
+msgid "Disable auto-print attempts for these receipt/slip types:"
+msgstr ""
+
+#: staff.server.admin.do_not_auto_attempt_print_setting.library_selector.prompt
+msgid "For this library and descendants:"
+msgstr ""
+
+#: staff.server.admin.do_not_auto_attempt_print_setting.checkout
+msgid "Checkout Receipt"
+msgstr ""
+
+#: staff.server.admin.do_not_auto_attempt_print_setting.bill_pay
+msgid "Bill Pay Receipt"
+msgstr ""
+
+#: staff.server.admin.do_not_auto_attempt_print_setting.hold_slip
+msgid "Hold Slip"
+msgstr ""
+
+#: staff.server.admin.do_not_auto_attempt_print_setting.transit_slip
+msgid "Transit Slip"
+msgstr ""
+
+#: staff.server.admin.do_not_auto_attempt_print_setting.hold_transit_slip
+msgid "Hold/Transit Slip"
+msgstr ""
+
 #: staff.server.admin.org_unit_settings.title
 msgid "Organization Unit Settings"
 msgstr "Paramètres d'unités organisationnelles"
@@ -5706,6 +6832,10 @@ msgid ""
 msgstr ""
 " * Indique que le paramètre n'est pas hérité de l'unité organisationnelle "
 "parentale lors de l'exécution du programme"
+
+#: staff.server.admin.org_unit_settings.no_perms
+msgid "You do not have permission to view org unit settings"
+msgstr ""
 
 #: staff.server.admin.org_unit_settings.edit_setting
 msgid "Edit Setting"
@@ -5817,6 +6947,8 @@ msgid "Smaller than Default"
 msgstr "Plus petite que la taille par défaut"
 
 #: staff.server.admin.font.default
+#, fuzzy
+msgctxt "staff.server.admin.font.default"
 msgid "Default"
 msgstr "Défaut"
 
@@ -6046,7 +7178,7 @@ msgstr "Evergreen : Relevé de caisse"
 #: staff.server.admin.cash.welcome
 msgctxt "staff.server.admin.cash.welcome"
 msgid "Welcome "
-msgstr "Bienvenue"
+msgstr "Bienvenue "
 
 #: staff.server.admin.cash.start_date
 msgctxt "staff.server.admin.cash.start_date"
@@ -6069,7 +7201,7 @@ msgstr "(AAAA-MM-JJ)"
 
 #: staff.server.admin.cash.view
 msgid "View reports for : "
-msgstr "Afficher les rapports pour :"
+msgstr "Afficher les rapports pour : "
 
 #: staff.server.admin.cash.submit
 msgctxt "staff.server.admin.cash.submit"
@@ -6091,15 +7223,15 @@ msgstr "Evergreen : Éditeur des dates de fermeture de la bibliothèque"
 #: staff.server.admin.closed_dates.welcome
 msgctxt "staff.server.admin.closed_dates.welcome"
 msgid "Welcome "
-msgstr "Bienvenue"
+msgstr "Bienvenue "
 
 #: staff.server.admin.closed_dates.editor.title
 msgid " Closed Dates Editor "
-msgstr "Éditeur des dates de fermeture"
+msgstr " Éditeur des dates de fermeture "
 
 #: staff.server.admin.closed_dates.editor.for
 msgid "Edit Closed Dates for: "
-msgstr "Modifier les dates de fermeture par :"
+msgstr "Modifier les dates de fermeture par : "
 
 #: staff.server.admin.closed_dates.editor.duration
 msgid "Closed Duration"
@@ -6149,6 +7281,8 @@ msgid "Start Time"
 msgstr "Heure de début"
 
 #: staff.server.admin.closed_dates.date.end
+#, fuzzy
+msgctxt "staff.server.admin.closed_dates.date.end"
 msgid "End Date"
 msgstr "Date de fin"
 
@@ -6162,7 +7296,7 @@ msgstr "Toute la journée"
 
 #: staff.server.admin.closed_dates.editor.reason.label
 msgid "Reason for closing: "
-msgstr "Motif de la fermeture :"
+msgstr "Motif de la fermeture : "
 
 #: staff.server.admin.closed_dates.apply_all
 msgid "Apply to all of my libraries"
@@ -6200,7 +7334,7 @@ msgstr "Evergreen : Éditeur d’emplacement des copies"
 
 #: staff.server.admin.copy_locations.editor
 msgid " Copy Locations Editor "
-msgstr "Éditeur d’emplacement des copies"
+msgstr " Éditeur d’emplacement des copies "
 
 #: staff.server.admin.copy_locations.editor.create
 msgid "Create a new copy location"
@@ -6208,15 +7342,15 @@ msgstr "Créer un nouvel emplacement d’exemplaire"
 
 #: staff.server.admin.copy_locations.editor.name
 msgid "Name: "
-msgstr "Nom :"
+msgstr "Nom : "
 
 #: staff.server.admin.copy_locations.editor.holdable.label
 msgid "Holdable: "
-msgstr "Mise en réserve possible :"
+msgstr "Mise en réserve possible : "
 
 #: staff.server.admin.copy_locations.editor.hold_verify.label
 msgid "Hold Verify: "
-msgstr "Vérification des articles mis en réserve"
+msgstr "Vérification des articles mis en réserve "
 
 #: staff.server.admin.copy_locations.editor.yes
 msgctxt "staff.server.admin.copy_locations.editor.yes"
@@ -6230,11 +7364,11 @@ msgstr "Non"
 
 #: staff.server.admin.copy_locations.editor.opac_visible.label
 msgid "OPAC Visible: "
-msgstr "OPAC visible :"
+msgstr "OPAC visible : "
 
 #: staff.server.admin.copy_locations.editor.circulate.label
 msgid "Circulate: "
-msgstr "Effectuer un prêt :"
+msgstr "Effectuer un prêt : "
 
 #: staff.server.admin.copy_locations.editor.library.label
 msgid "Owning Library:"
@@ -6299,6 +7433,19 @@ msgstr ""
 ": Si des exemplaires sont déjà associés à cet emplacement, l’opération de "
 "suppression échouera."
 
+#: staff.server.admin.copy_locations.editor.prefix
+msgid "Label prefix"
+msgstr ""
+
+#: staff.server.admin.copy_locations.editor.suffix
+msgid "Label suffix"
+msgstr ""
+
+#: staff.server.admin.copy_locations.editor.welcome
+#, fuzzy
+msgid "Welcome"
+msgstr "Bienvenue "
+
 #: staff.server.admin.copy_locations.submit
 msgctxt "staff.server.admin.copy_locations.submit"
 msgid "Submit"
@@ -6320,13 +7467,13 @@ msgstr "Evergreen : Liste d’extraction des articles mis en réserve"
 #. This will be followed by the org_unit name
 #: staff.server.admin.hold_pull.header
 msgid "Evergreen Holds Pull List : "
-msgstr "Evergreen : Liste d’extraction des articles mis en réserve :"
+msgstr "Evergreen : Liste d’extraction des articles mis en réserve : "
 
 #. This will be followed by the user's name
 #: staff.server.admin.hold_pull.greeting
 msgctxt "staff.server.admin.hold_pull.greeting"
 msgid "Welcome "
-msgstr "Bienvenue"
+msgstr "Bienvenue "
 
 #: staff.server.admin.hold_pull.sort.note
 msgid "Note: Click on a column header to sort the column"
@@ -6427,11 +7574,11 @@ msgstr "Evergreen : Éditeur de types non catalogués"
 #: staff.server.admin.non_cat_types.greeting
 msgctxt "staff.server.admin.non_cat_types.greeting"
 msgid "Welcome "
-msgstr "Bienvenue"
+msgstr "Bienvenue "
 
 #: staff.server.admin.non_cat_types.editor.title
 msgid " Non Cataloged Types Editor "
-msgstr "Éditeur de types non catalogués"
+msgstr " Éditeur de types non catalogués "
 
 #: staff.server.admin.non_cat_types.editor.header
 msgid "Create a new non-cataloged type"
@@ -6543,11 +7690,20 @@ msgstr "Rapports de maintenance"
 
 #: staff.server.admin.index.fonts_and_sounds
 msgid "Global Font and Sound Settings"
-msgstr "Paramètres de la police Global Font et du son "
+msgstr "Paramètres de la police Global Font et du son"
 
 #: staff.server.admin.index.printer
 msgid "Printer Settings Editor"
 msgstr "Éditeur des paramètres d’imprimante"
+
+#: staff.server.admin.index.do_not_auto_attempt_print_setting.label
+msgid "'Do Not Attempt Auto-Print' Setting"
+msgstr ""
+
+#: staff.server.admin.index.do_not_auto_attempt_print_setting.accesskey
+msgctxt "staff.server.admin.index.do_not_auto_attempt_print_setting.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.server.admin.index.closed_dates
 msgid "Closed Dates Editor"
@@ -6569,7 +7725,13 @@ msgstr "Éditeur des types non catalogués"
 msgid "Statistical Categories Editor"
 msgstr "Éditeur des catégories statistiques"
 
+#: staff.server.admin.index.expired_holds_shelf
+msgid "Expired Holds Shelf Printable Listing"
+msgstr ""
+
 #: staff.server.admin.index.hold_pull_list
+#, fuzzy
+msgctxt "staff.server.admin.index.hold_pull_list"
 msgid "Pull List for Hold Requests"
 msgstr "Liste d’extraction des demandes d’articles mis en réserve"
 
@@ -6585,6 +7747,39 @@ msgstr "Liste d’extraction des demandes d’articles mis en réserve (classiqu
 msgctxt "staff.server.admin.index.reports"
 msgid "Reports"
 msgstr "Rapports"
+
+#: staff.server.admin.index.age_overdue_circulations_to_lost.label
+msgid "Age Overdue Circs to Lost"
+msgstr ""
+
+#: staff.server.admin.index.age_overdue_circulations_to_lost.accesskey
+msgctxt "staff.server.admin.index.age_overdue_circulations_to_lost.accesskey"
+msgid ""
+msgstr ""
+
+#: staff.server.admin.index.age_overdue_circulations_to_lost.description
+msgid ""
+"Choose the user profile and circulation library for the overdue circulations "
+"you wish to age to a Lost status.  Note that descendents of these values "
+"(sub-groups, sub-libraries) will also be affected."
+msgstr ""
+
+#: staff.server.admin.index.age_overdue_circulations_to_lost.user_profile
+msgid "User Profile:"
+msgstr ""
+
+#: staff.server.admin.index.age_overdue_circulations_to_lost.circ_lib
+#, fuzzy
+msgid "Circulation Library:"
+msgstr "Bibliothèque de prêt"
+
+#: staff.server.admin.index.age_overdue_circulations_to_lost.confirm
+msgid "Are you sure?"
+msgstr ""
+
+#: staff.server.admin.index.age_overdue_circulations_to_lost.action
+msgid "Queue for Aging"
+msgstr ""
 
 #: staff.server.admin.index.cash_reports
 msgid "Cash Reports"
@@ -6603,6 +7798,11 @@ msgstr "Liste des transits"
 msgid "Server Settings"
 msgstr "Paramètres du serveur"
 
+#: staff.server.admin.index.external_text_editor.label
+#: staff.server.admin.index.external_text_editor.accesskey
+msgid "E&xternal Text Editor Command"
+msgstr ""
+
 #: staff.server.admin.org_settings.title
 msgid "Evergreen: Library Settings Editor"
 msgstr "Evergreen : Éditeur des paramètres de bibliothèque"
@@ -6611,21 +7811,21 @@ msgstr "Evergreen : Éditeur des paramètres de bibliothèque"
 #: staff.server.admin.org_settings.greeting
 msgctxt "staff.server.admin.org_settings.greeting"
 msgid "Welcome "
-msgstr "Bienvenue"
+msgstr "Bienvenue "
 
 #: staff.server.admin.org_settings.header
 msgid " Library Settings Editor "
-msgstr "Éditeur des paramètres de bibliothèque"
+msgstr " Éditeur des paramètres de bibliothèque "
 
 #. This will be followed by the library's name
 #: staff.server.admin.org_settings.select_library
 msgid "Edit Settings for : "
-msgstr "Modifier les paramètres de :"
+msgstr "Modifier les paramètres de : "
 
 #. This will be followed by the library's name
 #: staff.server.admin.org_settings.selected_library
 msgid "Library Settings for "
-msgstr "Paramètres de bibliothèque de"
+msgstr "Paramètres de bibliothèque de "
 
 #: staff.server.admin.org_settings.opac_timeout
 msgid "OPAC Inactivity Timeout (in seconds)"
@@ -6637,7 +7837,7 @@ msgstr "Appliquer"
 
 #: staff.server.admin.org_settings.apply_all
 msgid "Apply to all Locations"
-msgstr "S’applique à tous les emplacements "
+msgstr "S’applique à tous les emplacements"
 
 #: staff.server.admin.org_settings.staff_timeout
 msgid "Staff Login Inactivity Timeout (in seconds)"
@@ -6652,9 +7852,8 @@ msgid "Default Item Price"
 msgstr "Prix des articles par défaut"
 
 #: staff.server.admin.org_settings.from_address
-#, fuzzy
 msgid "Sending email address for patron notices"
-msgstr "adresse électronique pour les avis aux clients"
+msgstr ""
 
 #: staff.server.admin.org_settings.bounce_note
 msgid "Email delivery failures will be returned this address"
@@ -6732,13 +7931,10 @@ msgid "Holds: Soft stalling interval"
 msgstr "Articles mis en réserve: Intervalle de délai indulgente"
 
 #: staff.server.admin.org_settings.circ.hold_stalling.soft.desc
-#, fuzzy
 msgid ""
 "How long to wait before allowing remote items to be opportunisticaly "
 "captured for a hold.  Example \"5 days\""
 msgstr ""
-"Le montant de temps d'attente nécessaire avant de permettre des articles à "
-"distance d'être saisie et mis en réserve. Exemple \"5 jours\""
 
 #: staff.server.admin.org_settings.circ.hold_boundary.hard
 msgid "Holds: Hard boundary"
@@ -6754,16 +7950,6 @@ msgstr "Format de code à barres pour les clients"
 
 #: staff.server.admin.org_settings.opac.barcode_regex.desc
 msgid "Regular expression defining the patron barcode format"
-msgstr ""
-"« Regular expression » qui décrit le format du code à barres des clients"
-
-#: staff.server.admin.org_settings.global.password_regex
-msgid "Password format"
-msgstr ""
-
-#: staff.server.admin.org_settings.global.password_regex.desc
-#, fuzzy
-msgid "Regular expression defining the password format"
 msgstr ""
 "« Regular expression » qui décrit le format du code à barres des clients"
 
@@ -6802,6 +7988,15 @@ msgid ""
 "When predicting the amount of time a patron will be waiting for a hold to be "
 "fulfilled,this is the default/average number of days to assume an item will "
 "be checked out."
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.block_renews_for_holds
+msgid "Holds: Block Renewal of Items Needed for Holds"
+msgstr ""
+
+#: staff.server.admin.org_settings.circ.block_renews_for_holds.desc
+msgid ""
+"When an item could fulfill a hold, do not allow the current patron to renew"
 msgstr ""
 
 #: staff.server.admin.org_settings.circ.selfcheck.patron_login_timeout
@@ -6992,11 +8187,11 @@ msgstr "Evergreen : Éditeur de catégorie statistique"
 #: staff.server.admin.stat_cat.greeting
 msgctxt "staff.server.admin.stat_cat.greeting"
 msgid "Welcome "
-msgstr "Bienvenue"
+msgstr "Bienvenue "
 
 #: staff.server.admin.stat_cat.heading
 msgid " Statistical Category Editor"
-msgstr "Éditeur de catégorie statistique"
+msgstr " Éditeur de catégorie statistique"
 
 #: staff.server.admin.stat_cat.create
 msgid "Create a new statistical category"
@@ -7004,15 +8199,24 @@ msgstr "Créer une nouvelle catégorie statistique"
 
 #: staff.server.admin.stat_cat.name
 msgid "Enter the name: "
-msgstr "Entrer le nom :"
+msgstr "Entrer le nom : "
 
 #: staff.server.admin.stat_cat.owning_library
 msgid "Owning Library: "
-msgstr "Bibliothèque propriétaire :"
+msgstr "Bibliothèque propriétaire : "
 
 #: staff.server.admin.stat_cat.opac_visibility
 msgid "OPAC Visibility: "
-msgstr "Visibilité de l’OPAC :"
+msgstr "Visibilité de l’OPAC : "
+
+#: staff.server.admin.stat_cat.required
+#, fuzzy
+msgid "Required: "
+msgstr "Obligatoire :"
+
+#: staff.server.admin.stat_cat.usr_summary
+msgid "Show in Summary: "
+msgstr ""
 
 #: staff.server.admin.stat_cat.on
 msgid "On"
@@ -7024,7 +8228,7 @@ msgstr "Fermé"
 
 #: staff.server.admin.stat_cat.type
 msgid "Type: "
-msgstr "Type :"
+msgstr "Type : "
 
 #: staff.server.admin.stat_cat.patron
 msgctxt "staff.server.admin.stat_cat.patron"
@@ -7078,6 +8282,11 @@ msgstr "Bibliothèque à qui appartient l’article"
 #: staff.server.admin.stat_cat.opac_visibility.label
 msgid "OPAC Visibility"
 msgstr "Visibilité de l’OPAC"
+
+#: staff.server.admin.stat_cat.required.label
+#, fuzzy
+msgid "Required"
+msgstr "Obligatoire :"
 
 #: staff.server.admin.stat_cat.usr_summary.label
 msgid "Show in Summary"
@@ -7135,7 +8344,7 @@ msgstr "Annuler"
 
 #: staff.server.admin.stat_cat.edit_entry_owner
 msgid "Owned By "
-msgstr "Appartient à"
+msgstr "Appartient à "
 
 #: staff.server.admin.stat_cat.edit_entry_name_submit
 msgid "Update Entry Value"
@@ -7147,7 +8356,7 @@ msgstr "Supprimer l’entrée"
 
 #: staff.server.admin.stat_cat.new_entry_name
 msgid "Enter the value of the new entry: "
-msgstr "Entrer la valeur de la nouvelle entrée :"
+msgstr "Entrer la valeur de la nouvelle entrée : "
 
 #: staff.server.admin.stat_cat.new_entry_create
 msgid "Create new entry"
@@ -7223,6 +8432,11 @@ msgctxt "staff.circ.checkin_overlay.sel_mark_items_damaged.label staff.circ.chec
 msgid "Mark Item &Damaged"
 msgstr "Marquer l’article comme « &endommagé »"
 
+#: staff.circ.checkin_overlay.sel_mark_missing_pieces.label
+#: staff.circ.checkin_overlay.sel_mark_missing_pieces.accesskey
+msgid "&Mark Item as Missing Pieces"
+msgstr ""
+
 #: staff.circ.checkin_overlay.sel_transit_abort.label
 msgctxt "staff.circ.checkin_overlay.sel_transit_abort.label"
 msgid "Abort Transit"
@@ -7245,9 +8459,8 @@ msgstr "Entrer ou traiter un article"
 
 #: staff.circ.checkin_overlay.effective_date.label
 #: staff.circ.checkin_overlay.effective_date.accesskey
-#, fuzzy
 msgid "Effective &Date:"
-msgstr "Date de mise en vigueur :"
+msgstr ""
 
 #: staff.circ.checkin_overlay.actions.label
 #: staff.circ.checkin_overlay.actions.accesskey
@@ -7265,6 +8478,10 @@ msgctxt "staff.circ.checkin_overlay.trim_list.label"
 msgid "Trim List (20 rows)"
 msgstr "Ajuster la liste (20 rangées)"
 
+#: staff.circ.checkin_overlay.async_checkin.label
+msgid "Fast Entry (Asynchronous)"
+msgstr ""
+
 #: staff.circ.checkin_overlay.strict_barcode.label
 msgctxt "staff.circ.checkin_overlay.strict_barcode.label"
 msgid "Strict Barcode"
@@ -7272,9 +8489,8 @@ msgstr "Code à barres strict"
 
 #: staff.circ.checkin_overlay.do_not_alert_on_precat.label
 #: staff.circ.checkin_overlay.do_not_alert_on_precat.accesskey
-#, fuzzy
 msgid "&Ignore Pre-cataloged Items"
-msgstr "Ignorer les articles pré-catalogués"
+msgstr ""
 
 #: staff.circ.checkin_overlay.suppress_holds_and_transits.label
 #: staff.circ.checkin_overlay.suppress_holds_and_transits.accesskey
@@ -7403,6 +8619,11 @@ msgctxt "staff.circ.checkout_overlay.barcode.accesskey"
 msgid "C"
 msgstr "C"
 
+#: staff.circ.checkout_overlay.export.accesskey
+msgctxt "staff.circ.checkout_overlay.export.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.circ.checkout_overlay.export.label
 msgctxt "staff.circ.checkout_overlay.export.label"
 msgid "Export"
@@ -7425,7 +8646,7 @@ msgstr "Code à barres strict"
 
 #: staff.circ.circ_brief.patron_id.label
 msgid "Circulation ID: "
-msgstr "Code (ID) du prêt :"
+msgstr "Code (ID) du prêt : "
 
 #: staff.circ.circ_brief.add_billing.label
 msgctxt "staff.circ.circ_brief.add_billing.label"
@@ -7442,6 +8663,8 @@ msgid "Due Date"
 msgstr "Date d’échéance"
 
 #: staff.circ.circ_brief.stop_fines_time.label
+#, fuzzy
+msgctxt "staff.circ.circ_brief.stop_fines_time.label"
 msgid "Stop Fines Time"
 msgstr "Arrêt du temps relatif aux amendes"
 
@@ -7458,6 +8681,8 @@ msgid "Renewal"
 msgstr "Renouvellement"
 
 #: staff.circ.circ_brief.stop_fines.label
+#, fuzzy
+msgctxt "staff.circ.circ_brief.stop_fines.label"
 msgid "Stop Fines Reason"
 msgstr "Arrêt du motif des amendes"
 
@@ -7534,6 +8759,15 @@ msgctxt "staff.circ.copy_status_overlay.sel_bucket.label staff.circ.copy_status_
 msgid "&Add to Item Bucket"
 msgstr "&Ajouter dans le panier d’articles"
 
+#: staff.circ.copy_status_overlay.sel_record_bucket.label
+msgid "Add to Record Bucket"
+msgstr ""
+
+#: staff.circ.copy_status_overlay.sel_record_bucket.accesskey
+msgctxt "staff.circ.copy_status_overlay.sel_record_bucket.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.circ.copy_status_overlay.sel_opac.label
 #: staff.circ.copy_status_overlay.sel_opac.accesskey
 msgctxt "staff.circ.copy_status_overlay.sel_opac.label staff.circ.copy_status_overlay.sel_opac.accesskey"
@@ -7556,6 +8790,23 @@ msgstr "Afficher les &derniers prêts restants"
 #: staff.circ.copy_status_overlay.cmd_triggered_events.accesskey
 msgctxt "staff.circ.copy_status_overlay.cmd_triggered_events.label staff.circ.copy_status_overlay.cmd_triggered_events.accesskey"
 msgid "Show &Triggered Events"
+msgstr ""
+
+#: staff.circ.copy_status_overlay.cmd_book_item_now.label
+#: staff.circ.copy_status_overlay.cmd_book_item_now.accesskey
+msgctxt "staff.circ.copy_status_overlay.cmd_book_item_now.label staff.circ.copy_status_overlay.cmd_book_item_now.accesskey"
+msgid "Book Item &Now"
+msgstr ""
+
+#: staff.circ.copy_status_overlay.cmd_create_brt.label
+#: staff.circ.copy_status_overlay.cmd_create_brt.accesskey
+msgctxt "staff.circ.copy_status_overlay.cmd_create_brt.label staff.circ.copy_status_overlay.cmd_create_brt.accesskey"
+msgid "Ma&ke Item Bookable"
+msgstr ""
+
+#: staff.circ.copy_status_overlay.cmd_find_acq_po.label
+#: staff.circ.copy_status_overlay.cmd_find_acq_po.accesskey
+msgid "&Find Originating Acquisition"
 msgstr ""
 
 #: staff.circ.copy_status_overlay.sel_edit.label
@@ -7600,6 +8851,11 @@ msgstr "&Imprimer l’étiquette au dos de la reliure"
 msgctxt "staff.circ.copy_status_overlay.cmd_replace_barcode.label"
 msgid "Replace Barcode"
 msgstr "Remplacer le code à barres"
+
+#: staff.circ.copy_status_overlay.cmd_replace_barcode.accesskey
+msgctxt "staff.circ.copy_status_overlay.cmd_replace_barcode.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.circ.copy_status_overlay.save_columns.label
 msgctxt "staff.circ.copy_status_overlay.save_columns.label"
@@ -7653,10 +8909,20 @@ msgctxt "staff.circ.copy_status_overlay.cmd_delete_items.label"
 msgid "Delete Items"
 msgstr "Supprimer les articles"
 
+#: staff.circ.copy_status_overlay.cmd_delete_items.accesskey
+msgctxt "staff.circ.copy_status_overlay.cmd_delete_items.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.circ.copy_status_overlay.cmd_delete_volumes.label
 msgctxt "staff.circ.copy_status_overlay.cmd_delete_volumes.label"
 msgid "Delete Volumes"
 msgstr "Supprimer les volumes"
+
+#: staff.circ.copy_status_overlay.cmd_delete_volumes.accesskey
+msgctxt "staff.circ.copy_status_overlay.cmd_delete_volumes.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.circ.copy_status_overlay.copy_actions.sel_mark_items_damaged.label
 #: staff.circ.copy_status_overlay.copy_actions.sel_mark_items_damaged.accesskey
@@ -7711,10 +8977,20 @@ msgctxt "staff.circ.copy_status_overlay.copy_status_export.label"
 msgid "Export"
 msgstr "Exporter"
 
+#: staff.circ.copy_status_overlay.copy_status_export.accesskey
+msgctxt "staff.circ.copy_status_overlay.copy_status_export.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.circ.copy_status_overlay.copy_status_print_export.label
 msgctxt "staff.circ.copy_status_overlay.copy_status_print_export.label"
 msgid "Print Export"
 msgstr "Imprimer la liste exportée"
+
+#: staff.circ.copy_status_overlay.copy_status_print_export.accesskey
+msgctxt "staff.circ.copy_status_overlay.copy_status_print_export.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.circ.copy_status_overlay.trim_list.label
 msgctxt "staff.circ.copy_status_overlay.trim_list.label"
@@ -7916,6 +9192,8 @@ msgstr "E&xporter"
 
 #: staff.circ.print_list.top_ui.description.import.label
 #: staff.circ.print_list.top_ui.description.import.accesskey
+#, fuzzy
+msgctxt "staff.circ.print_list.top_ui.description.import.label staff.circ.print_list.top_ui.description.import.accesskey"
 msgid "&Import"
 msgstr "&Importer"
 
@@ -7967,41 +9245,119 @@ msgid "Record Summary"
 msgstr "Sommaire du compte"
 
 #: staff.cat.bib_brief.title.label
+#, fuzzy
+msgctxt "staff.cat.bib_brief.title.label"
 msgid "Title:"
 msgstr "Titre :"
+
+#: staff.cat.bib_brief.title.accesskey
+msgctxt "staff.cat.bib_brief.title.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.cat.bib_brief.view_marc
 msgid "View MARC"
 msgstr "Consulter MARC"
 
+#: staff.cat.bib_brief.add_volumes
+#, fuzzy
+msgid "Add Volumes"
+msgstr "Ajouter les &volumes"
+
 #: staff.cat.bib_brief.author.label
+#, fuzzy
+msgctxt "staff.cat.bib_brief.author.label"
 msgid "Author:"
 msgstr "Auteur :"
+
+#: staff.cat.bib_brief.author.accesskey
+msgctxt "staff.cat.bib_brief.author.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.cat.bib_brief.edition.label
 msgid "Edition:"
 msgstr "Édition :"
 
+#: staff.cat.bib_brief.edition.accesskey
+msgctxt "staff.cat.bib_brief.edition.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.cat.bib_brief.pub_date.label
-msgid "Publication Date:"
-msgstr "Date de publication :"
+#, fuzzy
+msgid "Pub Date:"
+msgstr "Date de publication"
+
+#: staff.cat.bib_brief.pub_date.accesskey
+msgctxt "staff.cat.bib_brief.pub_date.accesskey"
+msgid ""
+msgstr ""
+
+#: staff.cat.bib_brief.call_number.label
+msgid "Bib Call #:"
+msgstr ""
+
+#: staff.cat.bib_brief.call_number.accesskey
+msgctxt "staff.cat.bib_brief.call_number.accesskey"
+msgid ""
+msgstr ""
 
 #. "TCN" is an abbreviation for "title control number"
 #: staff.cat.bib_brief.title_control_number.label
 msgid "TCN:"
 msgstr "TCN :"
 
+#: staff.cat.bib_brief.title_control_number.accesskey
+msgctxt "staff.cat.bib_brief.title_control_number.accesskey"
+msgid ""
+msgstr ""
+
+#: staff.cat.bib_brief.biblio_record_entry_id.label
+#, fuzzy
+msgid "Record ID:"
+msgstr "ID de l’enregistrement"
+
+#: staff.cat.bib_brief.biblio_record_entry_id.accesskey
+msgctxt "staff.cat.bib_brief.biblio_record_entry_id.accesskey"
+msgid ""
+msgstr ""
+
+#: staff.cat.bib_brief.biblio_record_entry_owner.label
+msgid "Record Owner:"
+msgstr ""
+
+#: staff.cat.bib_brief.biblio_record_entry_owner.accesskey
+msgctxt "staff.cat.bib_brief.biblio_record_entry_owner.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.cat.bib_brief.created_by.label
 msgid "Created By:"
 msgstr "Créé par :"
+
+#: staff.cat.bib_brief.created_by.accesskey
+msgctxt "staff.cat.bib_brief.created_by.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.cat.bib_brief.last_edited_by.label
 msgid "Last Edited By:"
 msgstr "Modifié la dernière fois par :"
 
+#: staff.cat.bib_brief.last_edited_by.accesskey
+msgctxt "staff.cat.bib_brief.last_edited_by.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.cat.bib_brief.last_edited_on.label
 msgid "Last Edited On:"
 msgstr "Modifié la dernière fois le :"
+
+#: staff.cat.bib_brief.last_edited_on.accesskey
+msgctxt "staff.cat.bib_brief.last_edited_on.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.circ.holds.copy_to_clipboard
 msgctxt "staff.circ.holds.copy_to_clipboard"
@@ -8087,6 +9443,14 @@ msgctxt "staff.circ.holds.edit_activation_date.accesskey"
 msgid "D"
 msgstr "D"
 
+#: staff.circ.holds.edit_request_date
+msgid "Edit Request Date"
+msgstr ""
+
+#: staff.circ.holds.edit_request_date.accesskey
+msgid "q"
+msgstr ""
+
 #: staff.circ.holds.edit_expire_time
 #, fuzzy
 msgid "Edit Expiration Date"
@@ -8160,6 +9524,29 @@ msgctxt "staff.circ.holds.set_top_of_queue.accesskey"
 msgid "Q"
 msgstr "Q"
 
+#: staff.circ.holds.title_transfer.label
+msgid "Transfer to Marked Title"
+msgstr ""
+
+#: staff.circ.holds.title_transfer.accesskey
+msgctxt "staff.circ.holds.title_transfer.accesskey"
+msgid ""
+msgstr ""
+
+#: staff.circ.holds.view_expired_onshelf_holds.label
+#: staff.circ.holds.view_expired_onshelf_holds.accesskey
+msgid "View Shelf-E&xpired Holds"
+msgstr ""
+
+#: staff.circ.holds.clear_expired_onshelf_holds.label
+msgid "Clear these Holds"
+msgstr ""
+
+#: staff.circ.holds.clear_expired_onshelf_holds.accesskey
+msgctxt "staff.circ.holds.clear_expired_onshelf_holds.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.circ.holds.mark_item_damaged
 msgid "Mark Item Damaged"
 msgstr "Marquer l’article comme « endommagé »"
@@ -8211,6 +9598,11 @@ msgctxt "staff.circ.holds.save_columns"
 msgid "Save Columns"
 msgstr "Enregistrer les colonnes"
 
+#: staff.circ.holds.save_columns.accesskey
+msgctxt "staff.circ.holds.save_columns.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.hold_list.cancel_hold_dialog.title
 msgctxt "staff.hold_list.cancel_hold_dialog.title"
 msgid "Cancel Hold"
@@ -8236,7 +9628,51 @@ msgstr "&Annuler"
 #, fuzzy
 msgctxt "staff.hold_list.cancel_hold_dialog.apply_btn.label staff.hold_list.cancel_hold_dialog.apply_btn.accesskey"
 msgid "&Apply"
-msgstr "Appliquer"
+msgstr "&Appliquer"
+
+#: staff.cat.manage_multi_bib_items.caption
+msgid "Manage Foreign Items"
+msgstr ""
+
+#: staff.cat.manage_multi_bib_items.actions.menu.label
+#: staff.cat.manage_multi_bib_items.actions.menu.accesskey
+#, fuzzy
+msgid "Actions &for Selected Items"
+msgstr "Actions pour les &articles sélectionnés"
+
+#: staff.cat.manage_multi_bib_items.actions.menu_entry.show_in_opac.label
+#: staff.cat.manage_multi_bib_items.actions.menu_entry.show_in_opac.accesskey
+#, fuzzy
+msgctxt "staff.cat.manage_multi_bib_items.actions.menu_entry.show_in_opac.label staff.cat.manage_multi_bib_items.actions.menu_entry.show_in_opac.accesskey"
+msgid "&Show in Catalog"
+msgstr "A&fficher dans le catalogue"
+
+#: staff.cat.manage_multi_bib_items.actions.menu_entry.change_peer_type.label
+#: staff.cat.manage_multi_bib_items.actions.menu_entry.change_peer_type.accesskey
+msgid "&Change Peer Type"
+msgstr ""
+
+#: staff.cat.manage_multi_bib_items.actions.menu_entry.unlink_from_bib.label
+#: staff.cat.manage_multi_bib_items.actions.menu_entry.unlink_from_bib.accesskey
+msgid "&Remove from Bib"
+msgstr ""
+
+#: staff.cat.manage_multi_bib_items.peer_type.menu.label
+#: staff.cat.manage_multi_bib_items.peer_type.menu.accesskey
+msgid "Peer &Type:"
+msgstr ""
+
+#: staff.cat.manage_multi_bib_items.barcode.textbox.label
+#: staff.cat.manage_multi_bib_items.barcode.textbox.accesskey
+#, fuzzy
+msgctxt "staff.cat.manage_multi_bib_items.barcode.textbox.label staff.cat.manage_multi_bib_items.barcode.textbox.accesskey"
+msgid "&Barcode:"
+msgstr "Code à &barres :"
+
+#: staff.cat.manage_multi_bib_items.barcode.submit.label
+#: staff.cat.manage_multi_bib_items.barcode.submit.accesskey
+msgid "Link to Bib (&Submit)"
+msgstr ""
 
 #: staff.cat.copy_browser.actions.sel_clip.label
 #: staff.cat.copy_browser.actions.sel_clip.accesskey
@@ -8256,6 +9692,18 @@ msgctxt "staff.cat.copy_browser.actions.sel_copy_details.label staff.cat.copy_br
 msgid "Show &Item Details"
 msgstr "Afficher les détails de l’&article"
 
+#: staff.cat.copy_browser.actions.cmd_book_item_now.label
+#: staff.cat.copy_browser.actions.cmd_book_item_now.accesskey
+msgctxt "staff.cat.copy_browser.actions.cmd_book_item_now.label staff.cat.copy_browser.actions.cmd_book_item_now.accesskey"
+msgid "Book Item &Now"
+msgstr ""
+
+#: staff.cat.copy_browser.actions.cmd_create_brt.label
+#: staff.cat.copy_browser.actions.cmd_create_brt.accesskey
+msgctxt "staff.cat.copy_browser.actions.cmd_create_brt.label staff.cat.copy_browser.actions.cmd_create_brt.accesskey"
+msgid "Ma&ke Item Bookable"
+msgstr ""
+
 #: staff.cat.copy_browser.actions.sel_patron.label
 #: staff.cat.copy_browser.actions.sel_patron.accesskey
 msgctxt "staff.cat.copy_browser.actions.sel_patron.label staff.cat.copy_browser.actions.sel_patron.accesskey"
@@ -8265,14 +9713,19 @@ msgstr "Afficher les &derniers prêts restants"
 #: staff.cat.copy_browser.actions.cmd_edit_items.label
 #: staff.cat.copy_browser.actions.cmd_edit_items.accesskey
 msgctxt "staff.cat.copy_browser.actions.cmd_edit_items.label staff.cat.copy_browser.actions.cmd_edit_items.accesskey"
-msgid "&Edit Item Attributes"
-msgstr "&Modifier les attributs de l’article"
+msgid "&Edit Item Attributes / Call Numbers / Replace Barcodes"
+msgstr ""
 
 #: staff.cat.copy_browser.actions.cmd_transfer_items.label
 #: staff.cat.copy_browser.actions.cmd_transfer_items.accesskey
 msgctxt "staff.cat.copy_browser.actions.cmd_transfer_items.label staff.cat.copy_browser.actions.cmd_transfer_items.accesskey"
 msgid "&Transfer Items to Previously Marked Volume"
 msgstr "&Transférer les articles dans le volume marqué précédemment"
+
+#: staff.cat.copy_browser.actions.cmd_link_as_multi_bib.label
+#: staff.cat.copy_browser.actions.cmd_link_as_multi_bib.accesskey
+msgid "Link as &Foreign Items to Previously Marked Bib Record"
+msgstr ""
 
 #: staff.cat.copy_browser.actions.cmd_add_volumes.label
 #: staff.cat.copy_browser.actions.cmd_add_volumes.accesskey
@@ -8338,11 +9791,6 @@ msgctxt "staff.cat.copy_browser.actions.cmd_print_spine_labels.label staff.cat.c
 msgid "&Print Item Spine Labels"
 msgstr "&Imprimer l’étiquette au dos de la reliure des articles"
 
-#: staff.cat.copy_browser.actions.cmd_replace_barcode.label
-msgctxt "staff.cat.copy_browser.actions.cmd_replace_barcode.label"
-msgid "Replace Barcode"
-msgstr "Remplacer le code à barres"
-
 #: staff.cat.copy_browser.actions.save_columns.label
 msgctxt "staff.cat.copy_browser.actions.save_columns.label"
 msgid "Save Columns"
@@ -8359,10 +9807,18 @@ msgid "Holdings Maintenance"
 msgstr "Tenue à jour du fonds documentaire"
 
 #: staff.cat.copy_browser.holdings_maintenance.legend
-msgid "Green in the list below means the library has volumes for this record."
+#, fuzzy
+msgid ""
+"Green and bold in the list below means the library has volumes for this "
+"record."
 msgstr ""
 "La couleur verte dans la liste ci dessous signifie que la bibliothèque a des "
 "volumes associés à ce compte."
+
+#: staff.cat.copy_browser.holdings_maintenance.depth_filter_menu
+#, fuzzy
+msgid "Limit:"
+msgstr "Limi&te"
 
 #: staff.cat.copy_browser.holdings_maintenance.consortial_total
 msgid "Consortial Total:"
@@ -8414,6 +9870,14 @@ msgctxt "staff.cat.copy_browser.holdings_maintenance.sel_copy_details.label staf
 msgid "Show &Item Details"
 msgstr "Afficher les détails de l’&article"
 
+#: staff.cat.copy_browser.holdings_maintenance.cmd_create_brt.label
+msgid "Make This Item Bookable"
+msgstr ""
+
+#: staff.cat.copy_browser.holdings_maintenance.cmd_create_brt.accesskey
+msgid "Y"
+msgstr ""
+
 #: staff.cat.copy_browser.holdings_maintenance.sel_patron.label
 #: staff.cat.copy_browser.holdings_maintenance.sel_patron.accesskey
 msgctxt "staff.cat.copy_browser.holdings_maintenance.sel_patron.label staff.cat.copy_browser.holdings_maintenance.sel_patron.accesskey"
@@ -8423,8 +9887,8 @@ msgstr "Afficher les &derniers prêts manquants"
 #: staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.label
 #: staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.accesskey
 msgctxt "staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.label staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.accesskey"
-msgid "&Edit Item Attributes"
-msgstr "&Modifier les attributs d’article"
+msgid "&Edit Item Attributes / Call Numbers / Replace Barcodes"
+msgstr ""
 
 #: staff.cat.copy_browser.holdings_maintenance.cmd_transfer_items.label
 #: staff.cat.copy_browser.holdings_maintenance.cmd_transfer_items.accesskey
@@ -8629,6 +10093,8 @@ msgid "Transfer to Specific Volume"
 msgstr "Transférer vers le volume spécifique"
 
 #: staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_batch_copy_edit.label
+#, fuzzy
+msgctxt "staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_batch_copy_edit.label"
 msgid "Edit Item Attributes"
 msgstr "Modifier les attributs de l’article"
 
@@ -8706,6 +10172,8 @@ msgid "&Reset"
 msgstr "&Réinitialiser"
 
 #: staff.cat.copy_editor.identification.label
+#, fuzzy
+msgctxt "staff.cat.copy_editor.identification.label"
 msgid "Identification"
 msgstr "Identification"
 
@@ -8824,20 +10292,17 @@ msgctxt "staff.cat.copy_summary.alternate_view.label"
 msgid "Alternate View"
 msgstr "Autre affichage"
 
-#: staff.cat.copy_summary.save_columns.label
-msgctxt "staff.cat.copy_summary.save_columns.label"
-msgid "Save Columns"
-msgstr "Enregistrer les colonnes"
+#: staff.cat.copy_summary.alternate_view.accesskey
+msgctxt "staff.cat.copy_summary.alternate_view.accesskey"
+msgid ""
+msgstr ""
 
-#: staff.cat.copy_summary.sel_clip.label
-msgctxt "staff.cat.copy_summary.sel_clip.label"
-msgid "Copy to Clipboard"
-msgstr "Copier dans le presse-papiers"
-
-#: staff.cat.copy_summary.print_export.label
-msgctxt "staff.cat.copy_summary.print_export.label"
-msgid "Print Export"
-msgstr "Imprimer la liste exportée"
+#: staff.cat.copy_summary.show_in_opac.label
+#: staff.cat.copy_summary.show_in_opac.accesskey
+#, fuzzy
+msgctxt "staff.cat.copy_summary.show_in_opac.label staff.cat.copy_summary.show_in_opac.accesskey"
+msgid "&Show in Catalog"
+msgstr "A&fficher dans le catalogue"
 
 #: staff.cat.marcedit.options.label
 msgid "Options"
@@ -8880,13 +10345,30 @@ msgctxt "staff.cat.marcedit.help.label staff.cat.marcedit.help.accesskey"
 msgid "&Help"
 msgstr "&Aide"
 
+#: staff.cat.marcedit.flatTextEditor.label
+msgid "Flat-Text Editor"
+msgstr ""
+
+#: staff.cat.marcedit.flatTextEditor.accesskey
+msgctxt "staff.cat.marcedit.flatTextEditor.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.cat.marcedit.caption.label
 msgid "MARC Record"
 msgstr "Compte de MARC"
 
 #: staff.cat.marcedit.toggleFFE.label
 msgid "Fixed Fields -- Record type: "
-msgstr "Champs fixes – Type de compte :"
+msgstr "Champs fixes – Type de compte : "
+
+#: staff.cat.marcedit.source.caption
+msgid "Bibliographic source"
+msgstr ""
+
+#: staff.cat.marcedit.source.submit.label
+msgid "Update source"
+msgstr ""
 
 #: staff.cat.marc_new.load.label
 #: staff.cat.marc_new.load.accesskey
@@ -9142,6 +10624,20 @@ msgstr "Lot :"
 msgid "Show All in Catalog"
 msgstr "Afficher tous les articles dans le catalogue"
 
+#: staff.cat.record_buckets_overlay.transfer_title_holds.label
+#: staff.cat.record_buckets_overlay.transfer_title_holds.accesskey
+msgid "&Transfer Title Holds"
+msgstr ""
+
+#: staff.cat.record_buckets_overlay.marc_batch_edit.label
+msgid "MARC Batch Edit"
+msgstr ""
+
+#: staff.cat.record_buckets_overlay.marc_batch_edit.accesskey
+msgctxt "staff.cat.record_buckets_overlay.marc_batch_edit.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.cat.record_buckets_overlay.del_records.label
 msgid "Delete All Records"
 msgstr "Supprimer tous les comptes"
@@ -9218,6 +10714,10 @@ msgstr "&Fermer la fenêtre"
 msgid "Font size (in points):"
 msgstr "Taille de la police (en points) :"
 
+#: staff.cat.spine_labels.font_weight.label
+msgid "Font weight (\"normal\" or \"bold\"):"
+msgstr ""
+
 #: staff.cat.spine_labels.spine_label.label
 msgid "Spine Label"
 msgstr "Étiquette au dos de la reliure"
@@ -9239,6 +10739,10 @@ msgstr "Longueur de l’étiquette (en lignes) :"
 #: staff.cat.spine_labels.pocket_label.label
 msgid "Pocket Label"
 msgstr "Étiquette de poche"
+
+#: staff.cat.spine_labels.pocket_label.enabled.label
+msgid "Enabled"
+msgstr ""
 
 #: staff.cat.spine_labels.pocket_label.middle_margin.label
 msgid "Middle Margin (in characters):"
@@ -9262,6 +10766,10 @@ msgstr ""
 #: staff.cat.spine_labels.on_line.label
 msgid "On line:"
 msgstr "En ligne :"
+
+#: staff.cat.spine_labels.pocket_label.include_author.label
+msgid "Include Author"
+msgstr ""
 
 #: staff.cat.spine_labels.pocket_label.include_title.label
 msgid "Include Title (segment after wrapping)"
@@ -9309,18 +10817,18 @@ msgstr "Créateur de volume et d’exemplaire"
 
 #: staff.cat.volume_copy_creator.check_barcodes.label
 #: staff.cat.volume_copy_creator.check_barcodes.accesskey
-msgid "Check &Barcodes?"
-msgstr "Vérifier les &codes à barres?"
+msgid "Use Checkdigi&t"
+msgstr ""
+
+#: staff.cat.volume_copy_creator.generate_barcodes.label
+#: staff.cat.volume_copy_creator.generate_barcodes.accesskey
+msgid "Auto-&Generate Barcodes?"
+msgstr ""
 
 #: staff.cat.volume_copy_creator.print_labels.label
 #: staff.cat.volume_copy_creator.print_labels.accesskey
 msgid "&Print Labels?"
 msgstr "&Imprimer les étiquettes?"
-
-#: staff.cat.volume_copy_creator.create.label
-#: staff.cat.volume_copy_creator.create.accesskey
-msgid "Edit then &Create"
-msgstr "Modifier puis &créer"
 
 #: staff.cat.volume_copy_creator.library_label.value
 msgctxt "staff.cat.volume_copy_creator.library_label.value"
@@ -9330,6 +10838,29 @@ msgstr "Bibliothèque"
 #: staff.cat.volume_copy_creator.num_of_volumes_label.value
 msgid "# of volumes"
 msgstr "Nombre de volumes"
+
+#: staff.cat.volume_copy_creator.batch_bar
+msgid "BATCH"
+msgstr ""
+
+#: staff.cat.volume_copy_creator.batch_bar.call_number.classification
+msgid "Classification:"
+msgstr ""
+
+#: staff.cat.volume_copy_creator.batch_bar.call_number.prefix
+#, fuzzy
+msgid "Prefix:"
+msgstr "Préfixe"
+
+#: staff.cat.volume_copy_creator.batch_bar.call_number.label.label
+#: staff.cat.volume_copy_creator.batch_bar.call_number.label.accesskey
+msgid "&Label:"
+msgstr ""
+
+#: staff.cat.volume_copy_creator.batch_bar.call_number.suffix
+#, fuzzy
+msgid "Suffix:"
+msgstr "Suffixe"
 
 #: staff.cat.volume_editor.title
 msgctxt "staff.cat.volume_editor.title"
@@ -9341,13 +10872,50 @@ msgid "Volume Editor"
 msgstr "Éditeur de volume"
 
 #: staff.cat.volume_editor.modify.label
-msgid "Modify"
+#: staff.cat.volume_editor.modify.accesskey
+#, fuzzy
+msgctxt "staff.cat.volume_editor.modify.label staff.cat.volume_editor.modify.accesskey"
+msgid "&Modify"
 msgstr "Modifier"
 
 #: staff.cat.volume_editor.cancel.label
-msgctxt "staff.cat.volume_editor.cancel.label"
-msgid "Cancel"
-msgstr "Annuler"
+#: staff.cat.volume_editor.cancel.accesskey
+#, fuzzy
+msgctxt "staff.cat.volume_editor.cancel.label staff.cat.volume_editor.cancel.accesskey"
+msgid "&Cancel"
+msgstr "&Annuler"
+
+#: staff.cat.volume_editor.automerge.label
+#: staff.cat.volume_editor.automerge.accesskey
+msgid "&Auto-Merge on Volume Collision"
+msgstr ""
+
+#: staff.cat.volume_editor.owning_lib
+#, fuzzy
+msgid "Owning lib"
+msgstr "Bibliothèque propriétaire"
+
+#: staff.cat.volume_editor.classification
+msgid "Classification"
+msgstr ""
+
+#: staff.cat.volume_editor.prefix
+#, fuzzy
+msgctxt "staff.cat.volume_editor.prefix"
+msgid "Prefix"
+msgstr "Préfixe"
+
+#: staff.cat.volume_editor.label
+#, fuzzy
+msgctxt "staff.cat.volume_editor.label"
+msgid "Label"
+msgstr "Étiquette"
+
+#: staff.cat.volume_editor.suffix
+#, fuzzy
+msgctxt "staff.cat.volume_editor.suffix"
+msgid "Suffix"
+msgstr "Suffixe"
 
 #: staff.cat.z3950.marc_import.label
 #: staff.cat.z3950.marc_import.accesskey
@@ -9472,15 +11040,23 @@ msgctxt "staff.cat.z3950.marc_view.label staff.cat.z3950.marc_view.accesskey"
 msgid "MARC &View"
 msgstr "&Aperçu de MARC"
 
+#: staff.cat.z3950.marc_editor.label
+#: staff.cat.z3950.marc_editor.accesskey
+#, fuzzy
+msgid "MARC &Editor"
+msgstr "&Éditer MARC"
+
 #: staff.cat.z3950.marc_import_overlay.label
 #: staff.cat.z3950.marc_import_overlay.accesskey
-msgid "MARC Editor for &Overlay"
-msgstr "Éditeur de MARC pour le &recouvrement"
+msgid "&Overlay"
+msgstr ""
 
 #: staff.cat.z3950.result_message.marc_import.label
 #: staff.cat.z3950.result_message.marc_import.accesskey
-msgid "MARC Editor for &Import"
-msgstr "Éditeur de MARC pour l’&importation"
+#, fuzzy
+msgctxt "staff.cat.z3950.result_message.marc_import.label staff.cat.z3950.result_message.marc_import.accesskey"
+msgid "&Import"
+msgstr "&Importer"
 
 #: staff.pat.barcode_entry.retrieve_patron.label
 msgctxt "staff.pat.barcode_entry.retrieve_patron.label"
@@ -9703,10 +11279,107 @@ msgstr ""
 msgid "Selected Paid:"
 msgstr ""
 
+#: staff.patron.bill_history.tab.transactions.label
+#: staff.patron.bill_history.tab.transactions.accesskey
+msgid "&Transactions"
+msgstr ""
+
+#: staff.patron.bill_history.tab.payments.label
+#: staff.patron.bill_history.tab.payments.accesskey
+#, fuzzy
+msgid "Pa&yments"
+msgstr "Paiements"
+
+#: staff.patron.bill_history.payments.start_date.label
+#: staff.patron.bill_history.payments.start_date.accesskey
+#, fuzzy
+msgctxt "staff.patron.bill_history.payments.start_date.label staff.patron.bill_history.payments.start_date.accesskey"
+msgid "&Start Date"
+msgstr "Date de début"
+
+#: staff.patron.bill_history.payments.end_date.label
+#, fuzzy
+msgctxt "staff.patron.bill_history.payments.end_date.label"
+msgid "End Date"
+msgstr "Date de fin"
+
+#: staff.patron.bill_history.payments.end_date.accesskey
+msgctxt "staff.patron.bill_history.payments.end_date.accesskey"
+msgid ""
+msgstr ""
+
+#: staff.patron.bill_history.payments.retrieve.label
+#: staff.patron.bill_history.payments.retrieve.accesskey
+msgid "&Retrieve Payments"
+msgstr ""
+
+#: staff.patron.bill_history.bills.start_date.label
+#: staff.patron.bill_history.bills.start_date.accesskey
+#, fuzzy
+msgctxt "staff.patron.bill_history.bills.start_date.label staff.patron.bill_history.bills.start_date.accesskey"
+msgid "&Start Date"
+msgstr "Date de début"
+
+#: staff.patron.bill_history.bills.end_date.label
+#, fuzzy
+msgctxt "staff.patron.bill_history.bills.end_date.label"
+msgid "End Date"
+msgstr "Date de fin"
+
+#: staff.patron.bill_history.bills.end_date.accesskey
+msgctxt "staff.patron.bill_history.bills.end_date.accesskey"
+msgid ""
+msgstr ""
+
+#: staff.patron.bill_history.bills.retrieve.label
+#: staff.patron.bill_history.bills.retrieve.accesskey
+msgid "&Retrieve Transactions"
+msgstr ""
+
+#: staff.patron.bill_interface.total_owed
+#, fuzzy
+msgid "Total Owed:"
+msgstr "Total dû"
+
+#: staff.patron.bill_interface.total_checked
+msgid "Total Checked:"
+msgstr ""
+
+#: staff.patron.bill_interface.refunds_available
+msgid "Refunds Available:"
+msgstr ""
+
+#: staff.patron.bill_interface.credit_available
+msgid "Credit Available:"
+msgstr ""
+
+#: staff.patron.bill_interface.payment_received.label
+#: staff.patron.bill_interface.payment_received.accesskey
+#, fuzzy
+msgid "Payment &Received:"
+msgstr "Paiement reçu"
+
+#: staff.patron.bill_interface.actions.label
+#: staff.patron.bill_interface.actions.accesskey
+#, fuzzy
+msgid "&Actions for Selected Transactions"
+msgstr "Actions pour les transits sélectionnés"
+
 #: staff.patron.bill_interface.add_billing.label
-msgctxt "staff.patron.bill_interface.add_billing.label"
-msgid "Add Billing"
+#: staff.patron.bill_interface.add_billing.accesskey
+#, fuzzy
+msgid "Add &Billing"
 msgstr "Ajouter la facturation"
+
+#: staff.patron.bill_interface.void_all_billings.label
+#: staff.patron.bill_interface.void_all_billings.accesskey
+msgid "&Void All Billings"
+msgstr ""
+
+#: staff.patron.bill_interface.refund.label
+#: staff.patron.bill_interface.refund.accesskey
+msgid "&Refund"
+msgstr ""
 
 #: staff.patron.bill_interface.full_details.label
 #: staff.patron.bill_interface.full_details.accesskey
@@ -9738,26 +11411,98 @@ msgstr ""
 msgid "Voided this session:"
 msgstr ""
 
+#: staff.patron.bill_interface.change_due_upon_payment.label
+msgid "Change Due Upon Payment:"
+msgstr ""
+
+#: staff.patron.bill_interface.pending.label
+msgid "Pending:"
+msgstr ""
+
+#: staff.patron.bill_interface.total.label
+msgid "Total:"
+msgstr ""
+
+#: staff.patron.bill_interface.checked.label
+msgid "Checked:"
+msgstr ""
+
+#: staff.patron.bill_interface.payment.label
+#, fuzzy
+msgid "Payment"
+msgstr "Paiements"
+
+#: staff.patron.bill_interface.change.label
+#, fuzzy
+msgid "Change"
+msgstr "= Changer"
+
+#: staff.patron.bill_interface.owed.label
+msgid "Owed"
+msgstr ""
+
+#: staff.patron.bill_interface.billed.label
+msgid "Billed"
+msgstr ""
+
+#: staff.patron.bill_interface.paid.label
+msgid "Paid"
+msgstr ""
+
 #: staff.patron.bills_overlay.still_checked_out.label
 msgid "Red Items are still Checked Out"
 msgstr "Les articles en rouge sont toujours non disponibles"
 
 #: staff.patron.bills_overlay.uncheck_all.label
-msgid "Uncheck All"
+#: staff.patron.bills_overlay.uncheck_all.accesskey
+#, fuzzy
+msgid "&Uncheck All"
 msgstr "Désélectionner tout"
 
 #: staff.patron.bills_overlay.check_all.label
-msgid "Check All"
+#: staff.patron.bills_overlay.check_all.accesskey
+#, fuzzy
+msgid "Chec&k All"
 msgstr "Sélectionner tout"
+
+#: staff.patron.bills_overlay.check_all_refunds.label
+#: staff.patron.bills_overlay.check_all_refunds.accesskey
+msgid "Check All Re&funds"
+msgstr ""
 
 #: staff.patron.bills_overlay.print_bills.label
 msgid "Print Bills"
 msgstr "Imprimer les factures"
 
+#: staff.patron.bills_overlay.print_bills.accesskey
+msgctxt "staff.patron.bills_overlay.print_bills.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.patron.bills_overlay.alternate_view.label
 #: staff.patron.bills_overlay.alternate_view.accesskey
 msgid "Alternate &View"
 msgstr "Autre &aperçu"
+
+#: staff.patron.bills_overlay.receipt_options.label
+#: staff.patron.bills_overlay.receipt_options.accesskey
+msgid "Receipt &Options"
+msgstr ""
+
+#: staff.patron.bills_overlay.receipt_upon_payment.label
+#: staff.patron.bills_overlay.receipt_upon_payment.accesskey
+msgid "Receipt &Upon Payment"
+msgstr ""
+
+#: staff.patron.bills_overlay.printer_prompt.label
+#: staff.patron.bills_overlay.printer_prompt.accesskey
+msgid "&Printer Prompt"
+msgstr ""
+
+#: staff.patron.bills_overlay.number_of_copies.label
+#: staff.patron.bills_overlay.number_of_copies.accesskey
+msgid "&Number of Copies:"
+msgstr ""
 
 #: staff.patron.bills_overlay.summary.label
 msgid "Summary"
@@ -9781,8 +11526,8 @@ msgstr "Type de paiement"
 
 #: staff.patron.bills_overlay.payment_type.accesskey
 msgctxt "staff.patron.bills_overlay.payment_type.accesskey"
-msgid "t"
-msgstr "t"
+msgid "T"
+msgstr ""
 
 #: staff.patron.bills_overlay.cash.label
 msgid "Cash"
@@ -9795,6 +11540,11 @@ msgstr "Chèque"
 #: staff.patron.bills_overlay.credit_card.label
 msgid "Credit Card"
 msgstr "Carte de crédit"
+
+#: staff.patron.bills_overlay.patron_credit.label
+#, fuzzy
+msgid "Patron Credit"
+msgstr "ou crédit du client"
 
 #: staff.patron.bills_overlay.word.label
 msgid "Work"
@@ -9840,12 +11590,21 @@ msgid "&History"
 msgstr "&Historique"
 
 #: staff.patron.bills_overlay.annotate_payment.label
-msgid "Annotate Payment"
+#: staff.patron.bills_overlay.annotate_payment.accesskey
+#, fuzzy
+msgid "A&nnotate Payment"
 msgstr "Paiement annoté"
 
 #: staff.patron.bills_overlay.convert_change_to_credit.label
-msgid "Convert Change to Patron Credit"
+#: staff.patron.bills_overlay.convert_change_to_credit.accesskey
+#, fuzzy
+msgid "&Convert Change to Patron Credit"
 msgstr "Convertir le changement à « crédit du client »"
+
+#: staff.patron.bills_overlay.see_distribution.label
+#: staff.patron.bills_overlay.see_distribution.accesskey
+msgid "See &Distribution"
+msgstr ""
 
 #: staff.patron.bills_overlay.apply_payment.label
 #: staff.patron.bills_overlay.apply_payment.accesskey
@@ -10129,6 +11888,16 @@ msgctxt "staff.patron.holds_overlay.print.label staff.patron.holds_overlay.print
 msgid "&Print"
 msgstr "&Impression"
 
+#: staff.patron.holds_overlay.print_full_pull_list.label
+#: staff.patron.holds_overlay.print_full_pull_list.accesskey
+msgid "Print F&ull Pull List"
+msgstr ""
+
+#: staff.patron.holds_overlay.print_alt_pull_list.label
+#: staff.patron.holds_overlay.print_alt_pull_list.accesskey
+msgid "Print Full Pull List (Alternate strateg&y)"
+msgstr ""
+
 #: staff.patron.holds_overlay.place_hold.label
 #: staff.patron.holds_overlay.place_hold.accesskey
 msgctxt "staff.patron.holds_overlay.place_hold.label staff.patron.holds_overlay.place_hold.accesskey"
@@ -10139,8 +11908,18 @@ msgstr "Mettre en &réserve"
 msgid "Show Cancelled Holds"
 msgstr ""
 
+#: staff.patron.holds_overlay.show_cancelled_holds.accesskey
+msgctxt "staff.patron.holds_overlay.show_cancelled_holds.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.patron.holds_overlay.show_uncancelled_holds.label
 msgid "Show Un-Cancelled Holds"
+msgstr ""
+
+#: staff.patron.holds_overlay.show_uncancelled_holds.accesskey
+msgctxt "staff.patron.holds_overlay.show_uncancelled_holds.accesskey"
+msgid ""
 msgstr ""
 
 #: staff.patron.info_group.clone.label
@@ -10168,6 +11947,11 @@ msgstr "Déplacer l’&autre client dans ce groupe de clients."
 #: staff.patron.info_group.retrieve_p.accesskey
 msgid "Retrieve Selected &Patrons"
 msgstr "Récupérer les &clients sélectionnés"
+
+#: staff.patron.info_group.merge_patrons.accesskey
+msgctxt "staff.patron.info_group.merge_patrons.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.patron.info_group.merge_patrons.label
 #, fuzzy
@@ -10217,8 +12001,8 @@ msgstr "&Sondages"
 
 #: staff.patron.info.group.label
 #: staff.patron.info.group.accesskey
-msgid "&Group"
-msgstr "&Groupe"
+msgid "&Group Member Details"
+msgstr ""
 
 #: staff.patron.search_form_overlay.inactive.value
 msgid "Include inactive patrons?"
@@ -10244,6 +12028,8 @@ msgid "Copy to Clipboard"
 msgstr "Copier dans le presse-papiers"
 
 #: staff.patron.search_result_overlay.print.label
+#, fuzzy
+msgctxt "staff.patron.search_result_overlay.print.label"
 msgid "Print"
 msgstr "Imprimer"
 
@@ -10280,6 +12066,17 @@ msgstr "ID et coordonnées"
 #: staff.patron.summary_overlay.opac_login.value
 msgid "OPAC Login:"
 msgstr "Ouverture de session dans OPAC :"
+
+#: staff.patron.summary_overlay.group_tab.retrieve_patron.label
+#, fuzzy
+msgctxt "staff.patron.summary_overlay.group_tab.retrieve_patron.label"
+msgid "Retrieve Patron"
+msgstr "Récupérer un client"
+
+#: staff.patron.summary_overlay.group_tab.retrieve_patron.accesskey
+msgctxt "staff.patron.summary_overlay.group_tab.retrieve_patron.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.patron.user_buckets.stub_not_implemented
 msgid "Just a stub, Not Yet Implemented"
@@ -10347,7 +12144,7 @@ msgstr "Éditeur d’utilisateur d’Evergreen"
 #: staff.patron.ue.user_greeting.label
 msgctxt "staff.patron.ue.user_greeting.label"
 msgid "Welcome "
-msgstr "Bienvenue"
+msgstr "Bienvenue "
 
 #: staff.patron.ue.interface_note.label
 msgid ""
@@ -10428,7 +12225,7 @@ msgstr "Réinitialiser"
 #: staff.patron.ue.re_password.label
 msgctxt "staff.patron.ue.re_password.label"
 msgid "Password: "
-msgstr "Mot de passe :"
+msgstr "Mot de passe : "
 
 #: staff.patron.ue.verify_password.label
 msgctxt "staff.patron.ue.verify_password.label"
@@ -10475,7 +12272,7 @@ msgstr "Type d’identification primaire"
 #: staff.patron.ue.required.label
 msgctxt "staff.patron.ue.required.label"
 msgid " -- Required -- "
-msgstr "-- Requis -- "
+msgstr " -- Requis -- "
 
 #: staff.patron.ue.primary_id.label
 msgctxt "staff.patron.ue.primary_id.label"
@@ -10491,7 +12288,7 @@ msgstr "Type d’identification secondaire"
 #: staff.patron.ue.none_selected.label
 msgctxt "staff.patron.ue.none_selected.label"
 msgid " -- None Selected -- "
-msgstr "-- Aucun sélectionné --"
+msgstr " -- Aucun sélectionné -- "
 
 #: staff.patron.ue.secondary_id.label
 msgctxt "staff.patron.ue.secondary_id.label"
@@ -10715,7 +12512,7 @@ msgid ""
 "class='deleted'>color</span><span>)</span>"
 msgstr ""
 "Renseignements sommaires sur l’utilisateur (Les articles supprimés sont "
-"désingés par une <span class='deleted'>couleur</span><span>)</span> "
+"désingés par une <span class='deleted'>couleur</span><span>)</span>"
 
 #: staff.patron.ue.barcode.label
 msgctxt "staff.patron.ue.barcode.label"
@@ -11104,7 +12901,7 @@ msgstr "Éditeur d’utilisateur d’Evergreen"
 #: ev.staff.patron.ue_xhtml.welcome.label
 msgctxt "ev.staff.patron.ue_xhtml.welcome.label"
 msgid "Welcome "
-msgstr "Bienvenue"
+msgstr "Bienvenue "
 
 #: ev.staff.patron.ue_xhtml.view_errors.label
 msgctxt "ev.staff.patron.ue_xhtml.view_errors.label"
@@ -11184,7 +12981,7 @@ msgstr "Réinitialiser"
 #: ev.staff.patron.ue_xhtml.re_password.label
 msgctxt "ev.staff.patron.ue_xhtml.re_password.label"
 msgid "Password: "
-msgstr "Mot de passe :"
+msgstr "Mot de passe : "
 
 #: ev.staff.patron.ue_xhtml.verify_password.label
 msgctxt "ev.staff.patron.ue_xhtml.verify_password.label"
@@ -11215,7 +13012,7 @@ msgstr "Suffixe"
 #: ev.staff.patron.ue_xhtml.pick_suffix.label
 msgctxt "ev.staff.patron.ue_xhtml.pick_suffix.label"
 msgid "- Pick -"
-msgstr "- Sélectioner - "
+msgstr "- Sélectioner -"
 
 #: ev.staff.patron.ue_xhtml.dob.label
 msgctxt "ev.staff.patron.ue_xhtml.dob.label"
@@ -11379,7 +13176,7 @@ msgstr "Modifier"
 #: ev.staff.patron.ue_xhtml.required.label
 msgctxt "ev.staff.patron.ue_xhtml.required.label"
 msgid " -- Required -- "
-msgstr "-- Requis --"
+msgstr " -- Requis -- "
 
 #: ev.staff.patron.ue_xhtml.account_expiration_date.label
 msgctxt "ev.staff.patron.ue_xhtml.account_expiration_date.label"
@@ -11440,7 +13237,7 @@ msgstr "Valeur"
 #: ev.staff.patron.ue_xhtml.none_selected.label
 msgctxt "ev.staff.patron.ue_xhtml.none_selected.label"
 msgid " -- None Selected -- "
-msgstr "-- Aucun sélectionné --"
+msgstr " -- Aucun sélectionné -- "
 
 #: ev.staff.patron.ue_xhtml.no_surveys_for_location.label
 msgctxt "ev.staff.patron.ue_xhtml.no_surveys_for_location.label"
@@ -11485,10 +13282,14 @@ msgid "Address Label"
 msgstr "Étiquette d’adresse"
 
 #: ev.staff.patron.ue_xhtml.mailing.label
+#, fuzzy
+msgctxt "ev.staff.patron.ue_xhtml.mailing.label"
 msgid "Mailing"
 msgstr "Courrier"
 
 #: ev.staff.patron.ue_xhtml.billing.label
+#, fuzzy
+msgctxt "ev.staff.patron.ue_xhtml.billing.label"
 msgid "Billing"
 msgstr "Facturation"
 
@@ -11592,23 +13393,6 @@ msgstr "Sélecteur de date"
 msgid "Alias"
 msgstr "Alias"
 
-#: staff.portal.title
-msgid "Evergreen Staff Client Portal Page"
-msgstr "Page du portail des clients membres du personnel d’Evergreen"
-
-#: staff.portal.default.welcome
-msgid ""
-"This is the Evergreen staff client portal page. You can customize this with "
-"the information or functionality your organization needs to support its "
-"operations. For example, you could add links to process and procedure "
-"documents."
-msgstr ""
-"Voici la page de portail des clients membres du personnel d’Evergreen. Vous "
-"pouvez personnaliser ceci à l’aide des renseignements ou de la "
-"fonctionnalité dont votre organisation a besoin pour prendre en charge ses "
-"opérations. Par exemple, vous pouvez ajouter des liens au processus et des "
-"documents de procédures."
-
 #: ui.circ.patron_summary.horizontal
 msgid "GUI: Alternative Horizontal Patron Summary Panel"
 msgstr ""
@@ -11651,12 +13435,17 @@ msgid "Barcode"
 msgstr "Code à barres"
 
 #: staff.circ.alternate_copy_summary.Call_Number.label
-msgctxt "staff.circ.alternate_copy_summary.Call_Number.label"
-msgid "Call Number"
-msgstr "Cote"
+msgid "Item Call #"
+msgstr ""
+
+#: staff.circ.alternate_copy_summary.Call_Number.accesskey
+msgctxt "staff.circ.alternate_copy_summary.Call_Number.accesskey"
+msgid ""
+msgstr ""
 
 #: staff.circ.alternate_copy_summary.Cataloging_Info.label
-msgid "Cataloging Info"
+#: staff.circ.alternate_copy_summary.Cataloging_Info.accesskey
+msgid "Cataloging &Info"
 msgstr ""
 
 #: staff.circ.alternate_copy_summary.Checkin_Scan_Time.label
@@ -11686,9 +13475,16 @@ msgctxt "staff.circ.alternate_copy_summary.Circ_Modifier.label"
 msgid "Circ Modifier"
 msgstr "Modification de prêt"
 
-#: staff.circ.alternate_copy_summary.Circulation_History.label
+#: staff.circ.alternate_copy_summary.Circulate.label
 #, fuzzy
-msgid "Circulation History"
+msgctxt "staff.circ.alternate_copy_summary.Circulate.label"
+msgid "Circulate"
+msgstr "Prêter"
+
+#: staff.circ.alternate_copy_summary.Circulation_History.label
+#: staff.circ.alternate_copy_summary.Circulation_History.accesskey
+#, fuzzy
+msgid "Circulation &History"
 msgstr "Bibliothèque de prêt"
 
 #: staff.circ.alternate_copy_summary.Copy_ID.label
@@ -11723,6 +13519,10 @@ msgstr "Échéance"
 msgid "Edition"
 msgstr "Édition :"
 
+#: staff.circ.alternate_copy_summary.Floating.label
+msgid "Floating"
+msgstr ""
+
 #: staff.circ.alternate_copy_summary.Holdable.label
 msgctxt "staff.circ.alternate_copy_summary.Holdable.label"
 msgid "Holdable"
@@ -11736,6 +13536,11 @@ msgstr ""
 msgid "Holds/Transit"
 msgstr ""
 
+#: staff.circ.alternate_copy_summary.Holds_Transit.accesskey
+msgctxt "staff.circ.alternate_copy_summary.Holds_Transit.accesskey"
+msgid ""
+msgstr ""
+
 #: staff.circ.alternate_copy_summary.ISBN.label
 msgctxt "staff.circ.alternate_copy_summary.ISBN.label"
 msgid "ISBN"
@@ -11745,6 +13550,16 @@ msgstr "ISBN"
 msgctxt "staff.circ.alternate_copy_summary.Loan_Duration.label"
 msgid "Loan Duration"
 msgstr "Durée du prêt"
+
+#: staff.circ.alternate_copy_summary.Fine_Level.label
+#, fuzzy
+msgctxt "staff.circ.alternate_copy_summary.Fine_Level.label"
+msgid "Fine Level"
+msgstr "Niveau des amendes"
+
+#: staff.circ.alternate_copy_summary.Most_Recent_Circ_Group.label
+msgid "Most Recent Circ Group"
+msgstr ""
 
 #: staff.circ.alternate_copy_summary.OPAC_Visible.label
 msgctxt "staff.circ.alternate_copy_summary.OPAC_Visible.label"
@@ -11756,10 +13571,24 @@ msgctxt "staff.circ.alternate_copy_summary.Owning_Library.label"
 msgid "Owning Library"
 msgstr "Bibliothèque à qui appartient l’article"
 
+#: staff.circ.alternate_copy_summary.Circ_Library.label
+msgid "Circ Library"
+msgstr ""
+
+#: staff.circ.alternate_copy_summary.Patron_Name.label
+#, fuzzy
+msgctxt "staff.circ.alternate_copy_summary.Patron_Name.label"
+msgid "Patron"
+msgstr "Client"
+
 #: staff.circ.alternate_copy_summary.Price.label
 msgctxt "staff.circ.alternate_copy_summary.Price.label"
 msgid "Price"
 msgstr "Prix"
+
+#: staff.circ.alternate_copy_summary.Previous_Circ_Group.label
+msgid "Previous Circ Group"
+msgstr ""
 
 #: staff.circ.alternate_copy_summary.Pub_Date.label
 #, fuzzy
@@ -11772,7 +13601,8 @@ msgid "Publisher"
 msgstr "Éditeur"
 
 #: staff.circ.alternate_copy_summary.Quick_Summary.label
-msgid "Quick Summary"
+#: staff.circ.alternate_copy_summary.Quick_Summary.accesskey
+msgid "&Quick Summary"
 msgstr ""
 
 #: staff.circ.alternate_copy_summary.Reference.label
@@ -11784,6 +13614,10 @@ msgstr "Référence"
 msgctxt "staff.circ.alternate_copy_summary.Remaining_Renewals.label"
 msgid "Remaining Renewals"
 msgstr "Renouvellements restants"
+
+#: staff.circ.alternate_copy_summary.Renewal_Time.label
+msgid "Last Renewed On"
+msgstr ""
 
 #: staff.circ.alternate_copy_summary.Renewal_Workstation.label
 msgid "Renewal Workstation"
@@ -11798,6 +13632,18 @@ msgctxt "staff.circ.alternate_copy_summary.Status.label"
 msgid "Status"
 msgstr "Statut"
 
+#: staff.circ.alternate_copy_summary.Stop_Fines.label
+#, fuzzy
+msgctxt "staff.circ.alternate_copy_summary.Stop_Fines.label"
+msgid "Stop Fines Reason"
+msgstr "Arrêt du motif des amendes"
+
+#: staff.circ.alternate_copy_summary.Stop_Fines_Time.label
+#, fuzzy
+msgctxt "staff.circ.alternate_copy_summary.Stop_Fines_Time.label"
+msgid "Stop Fines Time"
+msgstr "Arrêt du temps relatif aux amendes"
+
 #: staff.circ.alternate_copy_summary.TCN.label
 msgctxt "staff.circ.alternate_copy_summary.TCN.label"
 msgid "TCN"
@@ -11808,11 +13654,29 @@ msgid "Total Circs - Current Year"
 msgstr ""
 
 #: staff.circ.alternate_copy_summary.Total_Circs.label
+msgctxt "staff.circ.alternate_copy_summary.Total_Circs.label"
 msgid "Total Circs"
 msgstr ""
 
 #: staff.circ.alternate_copy_summary.Total_Circs___Prev_Year.label
 msgid "Total Circs - Prev Year"
+msgstr ""
+
+#: staff.circ.alternate_copy_summary.Total_Circs_for_circ_chain.label
+msgctxt "staff.circ.alternate_copy_summary.Total_Circs_for_circ_chain.label"
+msgid "Total Circs"
+msgstr ""
+
+#: staff.circ.alternate_copy_summary.Duration_Rule.label
+msgid "Duration Rule"
+msgstr ""
+
+#: staff.circ.alternate_copy_summary.Recurring_Fine_Rule.label
+msgid "Recurring Fine Rule"
+msgstr ""
+
+#: staff.circ.alternate_copy_summary.Max_Fine_Rule.label
+msgid "Max Fine Rule"
 msgstr ""
 
 #: staff.util.timestamp_dialog.title
@@ -11840,7 +13704,316 @@ msgstr ""
 #, fuzzy
 msgctxt "staff.util.timestamp_dialog.apply_btn.label staff.util.timestamp_dialog.apply_btn.accesskey"
 msgid "&Apply"
-msgstr "Appliquer"
+msgstr "&Appliquer"
+
+#: staff.printing.set_default
+msgid "Set Default Printer and Print Test Page"
+msgstr ""
+
+#: staff.printing.page_settings
+msgid "Page Settings"
+msgstr ""
+
+#: staff.printing.context.header
+msgid "Printer Context"
+msgstr ""
+
+#: staff.printing.context.desc
+msgid ""
+"Different printer settings may be configured for different contexts within "
+"the staff client (such as circulation, label printing, etc.).  If settings "
+"have not been made for a given context, the staff client will fall back on "
+"the 'default' context."
+msgstr ""
+
+#: staff.printing.context.radio.default.label
+#, fuzzy
+msgctxt "staff.printing.context.radio.default.label"
+msgid "Default"
+msgstr "Défaut"
+
+#: staff.printing.context.radio.receipt.label
+#, fuzzy
+msgid "Receipt"
+msgstr "Reçus"
+
+#: staff.printing.context.radio.label.label
+#, fuzzy
+msgctxt "staff.printing.context.radio.label.label"
+msgid "Label"
+msgstr "Étiquette"
+
+#: staff.printing.context.radio.mail.label
+msgid "Mail"
+msgstr ""
+
+#: staff.printing.context.radio.offline.label
+msgid "Offline"
+msgstr ""
+
+#: staff.printing.normal_settings.header
+msgid "Normal Settings"
+msgstr ""
+
+#: staff.printing.advanced_settings.header
+msgid "Advanced Settings"
+msgstr ""
+
+#: staff.printing.advanced.mozilla_print
+msgid "Use default print strategy (Mozilla Print)"
+msgstr ""
+
+#: staff.printing.advanced.mozilla_print.print_silent
+msgid "Print silently when using Mozilla Print"
+msgstr ""
+
+#: staff.printing.advanced.dos_print
+msgid "Use alternate print strategy (DOS LPT1 Print)"
+msgstr ""
+
+#: staff.printing.advanced.custom_print
+msgid "Use alternate print strategy (Custom/External Print)"
+msgstr ""
+
+#: staff.printing.advanced.dos_print.warning.header
+msgid "Note on DOS LPT1 Print"
+msgstr ""
+
+#: staff.printing.advanced.dos_print.warning.text
+msgid ""
+"This print strategy will ignore the printer settings in the &quot;Normal "
+"Settings&quot; section. In Windows, you must map your printer to the LPT1 "
+"port, under Start Menu -&gt; Printers and Faxes -&gt; your printer -&gt; "
+"right-click, Properties -&gt; Ports. Also, HTML styling such as different "
+"font weights and sizes will be lost, and any advanced templates using "
+"Javascript will not work.  Data is sent to the printer as simple text.  This "
+"option is here for legacy purposes, and the Custom/External Print strategy "
+"is more flexible."
+msgstr ""
+
+#: staff.printing.advanced.custom_print.warning.header
+msgid "Note on Custom/External Print"
+msgstr ""
+
+#: staff.printing.advanced.custom_print.warning.text
+msgid ""
+"This print strategy will ignore the printer settings in the &quot;Normal "
+"Settings&quot; section. Advanced templates using Javascript may not work, "
+"even if the external tool can take the receipt.html file."
+msgstr ""
+
+#: staff.printing.advanced.html_templates.warning.header
+msgid "Also..."
+msgstr ""
+
+#: staff.printing.advanced.html_templates.warning.text
+msgid ""
+"If using Receipt Templates with either the DOS LPT1 Print strategy or the "
+"Custom/External Print strategy (with &quot;receipt.txt&quot;), the client "
+"will try to translate any HTML markup to text, but this process may be "
+"imperfect, and for the best fidelity you should consider reworking your "
+"templates to be plain text if you are using a plain text print strategy.  "
+"However, if using a plain text print strategy with HTML markup, you may "
+"include special character codes in 2-digit hexadecimal in a &quot;hex&quot; "
+"attribute for any given element.  Such codes will be converted to actual "
+"characters and inserted at the place of the tag.  For example, &amp;lt;p "
+"hex=&amp;quot;0C&amp;quot;&amp;gt;Hello World&amp;lt;/p&amp;gt; will "
+"translate to form feed control character + Hello World. "
+"&amp;lt;p&amp;gt;Hello World&amp;lt;/p hex=&amp;quot;0C&amp;quot;&amp;gt; "
+"will translate to Hello World + form feed control character."
+msgstr ""
+
+#: staff.client.portal.title
+#, fuzzy
+msgid "Evergreen Staff Client Portal"
+msgstr "Page du portail des clients membres du personnel d’Evergreen"
+
+#: staff.client.portal.welcome
+msgid "Welcome to Evergreen"
+msgstr ""
+
+#: staff.client.portal.circpatron
+msgid "Circulation and Patrons"
+msgstr ""
+
+#: staff.client.portal.checkout
+#, fuzzy
+msgid "Check Out Items"
+msgstr "Articles d’&entrée"
+
+#: staff.client.portal.retrievebc
+#, fuzzy
+msgid "(Retrieve Patron By Barcode)"
+msgstr "Récupérer un client par code à barres"
+
+#: staff.client.portal.checkin
+#, fuzzy
+msgid "Check In Items"
+msgstr "Articles d’&entrée"
+
+#: staff.client.portal.patronreg
+#, fuzzy
+msgid "Register Patron(s)"
+msgstr "Inscrire le &client"
+
+#: staff.client.portal.patronsearch
+msgid "Search For Patron By Name"
+msgstr ""
+
+#: staff.client.portal.holdlist
+#, fuzzy
+msgctxt "staff.client.portal.holdlist"
+msgid "Pull List for Hold Requests"
+msgstr "Liste d’extraction des demandes d’articles mis en réserve"
+
+#: staff.client.portal.itemcataloging
+msgid "Item Search and Cataloging"
+msgstr ""
+
+#: staff.client.portal.advsearch
+msgid "Advanced Search"
+msgstr ""
+
+#: staff.client.portal.itemstatus
+msgid "Item Status / Display"
+msgstr ""
+
+#: staff.client.portal.marcutil
+#, fuzzy
+msgid "MARC Batch Import / Export"
+msgstr "Importer/Exporter des fichiers MARC par lots"
+
+#: staff.client.portal.z3950
+#, fuzzy
+msgid "z39.50 Import"
+msgstr "Importation Z39.50"
+
+#: staff.client.portal.copybuckets
+#, fuzzy
+msgctxt "staff.client.portal.copybuckets"
+msgid "Copy Buckets"
+msgstr "Copier les paniers"
+
+#: staff.client.portal.recordbuckets
+#, fuzzy
+msgctxt "staff.client.portal.recordbuckets"
+msgid "Record Buckets"
+msgstr "Consigner les paniers"
+
+#: staff.client.portal.admin
+msgid "Administration"
+msgstr ""
+
+#: staff.client.portal.helpdesk
+msgid "Get Help with Evergreen"
+msgstr ""
+
+#: staff.client.portal.reports
+#, fuzzy
+msgctxt "staff.client.portal.reports"
+msgid "Reports"
+msgstr "Rapports"
+
+#: staff.client.portal.receipts
+msgid "Edit Receipt Templates"
+msgstr ""
+
+#: staff.client.portal.copyright
+msgid "Copyright &copy; 2006-2011 Georgia Public Library Service, and others"
+msgstr ""
+
+#: staff.client.portal.poweredby
+msgid "Powered by"
+msgstr ""
+
+#, fuzzy
+#~ msgctxt "staff.patron_display.mailing.copy"
+#~ msgid "(Copy)"
+#~ msgstr "(Copier)"
+
+#~ msgctxt "staff.patron_display.physical.copy"
+#~ msgid "(Copy)"
+#~ msgstr "(Copier)"
+
+#, fuzzy
+#~ msgid "Regular expression defining the password format"
+#~ msgstr ""
+#~ "« Regular expression » qui décrit le format du code à barres des clients"
+
+#~ msgid "Publication Date:"
+#~ msgstr "Date de publication :"
+
+#, fuzzy
+#~ msgctxt "staff.cat.copy_browser.actions.cmd_edit_items.label staff.cat.copy_browser.actions.cmd_edit_items.accesskey"
+#~ msgid "&Edit Item Attributes"
+#~ msgstr "&Modifier les attributs des articles"
+
+#, fuzzy
+#~ msgctxt "staff.cat.copy_browser.actions.cmd_replace_barcode.label"
+#~ msgid "Replace Barcode"
+#~ msgstr "Remplacer le code à barres"
+
+#, fuzzy
+#~ msgctxt "staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.label staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.accesskey"
+#~ msgid "&Edit Item Attributes"
+#~ msgstr "&Modifier les attributs des articles"
+
+#, fuzzy
+#~ msgctxt "staff.cat.copy_summary.save_columns.label"
+#~ msgid "Save Columns"
+#~ msgstr "Enregistrer les colonnes"
+
+#, fuzzy
+#~ msgctxt "staff.cat.copy_summary.sel_clip.label"
+#~ msgid "Copy to Clipboard"
+#~ msgstr "Copier dans le presse-papiers"
+
+#, fuzzy
+#~ msgctxt "staff.cat.copy_summary.print_export.label"
+#~ msgid "Print Export"
+#~ msgstr "Imprimer la liste exportée"
+
+#~ msgid "Check &Barcodes?"
+#~ msgstr "Vérifier les &codes à barres?"
+
+#~ msgid "Edit then &Create"
+#~ msgstr "Modifier puis &créer"
+
+#~ msgid "Modify"
+#~ msgstr "Modifier"
+
+#, fuzzy
+#~ msgctxt "staff.cat.volume_editor.cancel.label"
+#~ msgid "Cancel"
+#~ msgstr "Annuler"
+
+#~ msgid "MARC Editor for &Overlay"
+#~ msgstr "Éditeur de MARC pour le &recouvrement"
+
+#~ msgid "MARC Editor for &Import"
+#~ msgstr "Éditeur de MARC pour l’&importation"
+
+#, fuzzy
+#~ msgctxt "staff.patron.bill_interface.add_billing.label"
+#~ msgid "Add Billing"
+#~ msgstr "Ajouter la facturation"
+
+#~ msgid ""
+#~ "This is the Evergreen staff client portal page. You can customize this with "
+#~ "the information or functionality your organization needs to support its "
+#~ "operations. For example, you could add links to process and procedure "
+#~ "documents."
+#~ msgstr ""
+#~ "Voici la page de portail des clients membres du personnel d’Evergreen. Vous "
+#~ "pouvez personnaliser ceci à l’aide des renseignements ou de la "
+#~ "fonctionnalité dont votre organisation a besoin pour prendre en charge ses "
+#~ "opérations. Par exemple, vous pouvez ajouter des liens au processus et des "
+#~ "documents de procédures."
+
+#, fuzzy
+#~ msgctxt "staff.circ.alternate_copy_summary.Call_Number.label"
+#~ msgid "Call Number"
+#~ msgstr "Cote"
 
 #~ msgid "&Survey Wizard"
 #~ msgstr "Assistant de &sondage"
@@ -11869,9 +14042,6 @@ msgstr "Appliquer"
 
 #~ msgid "Show Notices"
 #~ msgstr "Afficher les avis"
-
-#~ msgid "q"
-#~ msgstr "q"
 
 #~ msgid "r"
 #~ msgstr "r"

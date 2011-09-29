@@ -4,17 +4,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS >> vandelay.dtd.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-23 23:35-0400\n"
-"PO-Revision-Date: 2008-12-01 10:29-0500\n"
-"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
+"POT-Creation-Date: 2011-04-18 21:44-0400\n"
+"PO-Revision-Date: 2010-04-09 13:51+0000\n"
+"Last-Translator: Alexandre C <Unknown>\n"
 "Language-Team: NRCan Library / Bibliothèque de RNCan "
 "<gduimovi[at]nrcan.gc.ca>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.3.0\n"
-"X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: Translate Toolkit 1.8.1\n"
 "X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-05-18 04:48+0000\n"
+"X-Poedit-SourceCharset: utf-8\n"
 
 #: vandelay.add.existing.queue
 msgid "or Add to an Existing Queue"
@@ -31,6 +32,20 @@ msgstr "Enregistrements de l’autorité"
 #: vandelay.auto.import.noncolliding
 msgid "Auto-Import Non-Colliding Records"
 msgstr "Importer automatiquement les enregistrements qui ne sont pas en conflit"
+
+#: vandelay.auto.import.auto_overlay_exact
+msgid "Auto Merge/Overlay Exact Matches"
+msgstr "Fusionner/superposer automatiquement les correspondances exactes"
+
+#: vandelay.auto.import.auto_overlay_1match
+msgid "Auto Merge/Overlay When Exactly 1 Match is Found"
+msgstr ""
+"Fusionner/superposer automatiquement lorsqu’une correspondance exacte est "
+"trouvée"
+
+#: vandelay.auto.import.merge_profile
+msgid "Merge/Overlay Profile"
+msgstr "Fusionner/superposer le profil"
 
 #. Do not translate this.  Only change the numeric values if you need this dialogue box to appear bigger
 #: vandelay.auto.width
@@ -119,6 +134,14 @@ msgctxt "vandelay.edit.attrs"
 msgid "Edit Attributes"
 msgstr "Modifier les attributs"
 
+#: vandelay.edit.profiles
+msgid "Edit Merge / Overlay Profiles"
+msgstr "Modifier les profils fusionnés/superposés"
+
+#: vandelay.edit.import_item_attrs
+msgid "Edit Import Item Attributes"
+msgstr "Modifier les attributs de l’article importé"
+
 #: vandelay.false
 msgid "False"
 msgstr "Faux"
@@ -136,9 +159,8 @@ msgid "Identifier"
 msgstr "Identificateur"
 
 #: vandelay.id.field
-#, fuzzy
 msgid "Identifier Field?"
-msgstr "Champ d’identificateur?"
+msgstr "Champ d'identifiant ?"
 
 #: vandelay.id
 msgid "ID"
@@ -193,8 +215,8 @@ msgid "Matches"
 msgstr "Correspondances"
 
 #: vandelay.next.page
-msgid "Next Page"
-msgstr "Page suivante"
+msgid "Next Page &#187;"
+msgstr "Page suivante &#187;"
 
 #: vandelay.overlay.selected.record
 msgid "Overlay selected record with imported record"
@@ -213,12 +235,12 @@ msgid "Powered by Evergreen!"
 msgstr "Une application d’Evergreen!"
 
 #: vandelay.prev.page
-msgid "Previous Page"
-msgstr "Page précédente"
+msgid "&#171; Previous Page"
+msgstr "&#171; Page précédente"
 
 #: vandelay.processing
 msgid "Processing... "
-msgstr "Traitement en cours..."
+msgstr "Traitement en cours... "
 
 #: vandelay.queue
 msgid "Queue"
@@ -450,4 +472,10 @@ msgstr "Sélectionneur de colonnes"
 
 #: vandelay.import.bib_sources
 msgid "Select a Record Source"
-msgstr ""
+msgstr "Selectionnez une source d'enregistrement"
+
+#~ msgid "Next Page"
+#~ msgstr "Page suivante"
+
+#~ msgid "Previous Page"
+#~ msgstr "Page précédente"
