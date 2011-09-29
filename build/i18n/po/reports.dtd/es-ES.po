@@ -2,20 +2,21 @@
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
-#
+#. extracted from ../../Open-ILS/web/opac/locale/en-US/reports.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-11-23 23:35-0400\n"
-"PO-Revision-Date: 2010-07-30 11:28+0000\n"
-"Last-Translator: Jonay <jonay.santana@gmail.com>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-04-18 21:44-0400\n"
+"PO-Revision-Date: 2011-06-25 19:23+0000\n"
+"Last-Translator: Paco Molinero <paco@byasl.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-07-31 03:41+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Generator: Translate Toolkit 1.8.1\n"
+"X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-06-26 04:37+0000\n"
 
 #. Common Entities
 #: reports.common.logged_in_as
@@ -161,7 +162,7 @@ msgstr "Pista: "
 
 #: reports.oils_rpt_builder.hint_item_details
 msgid "Double-click on an item to see the item details."
-msgstr ""
+msgstr "Haz Doble-Click sobre un objeto para ver sus detalles."
 
 #: reports.oils_rpt_builder.template_types
 msgid "Template Types"
@@ -186,7 +187,7 @@ msgstr "Crear filtro de Agregado"
 
 #: reports.oils_rpt_builder.field_editor_window.label
 msgid "Select how this field should be displayed:"
-msgstr ""
+msgstr "Selecciona como debería de ser mostrado este campo:"
 
 #: reports.oils_rpt_builder.add_item
 msgid "Add Item"
@@ -194,7 +195,7 @@ msgstr "Añadir elemento"
 
 #: reports.oils_rpt_builder.select_filter_to_apply
 msgid "Select what filter should be applied to this field:"
-msgstr ""
+msgstr "Selecciona cual filtro debería de ser aplicado a este campo:"
 
 #: reports.oils_rpt_builder.choose_a_transform
 msgid "Choose a Transform: "
@@ -209,8 +210,9 @@ msgid "Create Filter"
 msgstr "Crear filtro"
 
 #: reports.oils_rpt_builder.aggregate_filter_to_apply
+#, fuzzy
 msgid "Select what aggregate filter should be applied to this field:"
-msgstr ""
+msgstr "Selecciona cual filtro debería de ser aplicado a este campo:"
 
 #: reports.oils_rpt_builder.selected_to_sort_columns
 msgid "Select how the columns should be sorted"
@@ -245,6 +247,8 @@ msgid ""
 "This will destroy the report you are currently constructing.  Are you sure "
 "you wish to do this?"
 msgstr ""
+"Esto destruirá el reporte que estas construyendo actualmente. ¿Estas seguro "
+"que deseas hacer esto?"
 
 #: reports.oils_rpt_common.action_succeeded
 msgid "Action Succeeded"
@@ -321,11 +325,11 @@ msgstr "Salida HTML"
 
 #: reports.oils_rpt_editor.bar_charts
 msgid "Bar Charts"
-msgstr ""
+msgstr "Gráfico de barras"
 
 #: reports.oils_rpt_editor.line_charts
 msgid "Line Charts"
-msgstr ""
+msgstr "Gráfico de líneas"
 
 #: reports.oils_rpt_editor.recurring_report
 msgid "Recurring Report: "
@@ -367,7 +371,7 @@ msgstr "Mediodía"
 
 #: reports.oils_rpt_editor.storage_folder_for_output
 msgid "Choose a folder to store this report's output:"
-msgstr ""
+msgstr "Escoge una carpeta para alamacenar la salida de este reporte:"
 
 #: reports.oils_rpt_editor.save_report
 msgid "Save Report"
@@ -381,7 +385,7 @@ msgstr ""
 
 #: reports.oils_rpt_editor.same_name
 msgid "There is already a report in this folder with the given name."
-msgstr ""
+msgstr "Ya existe un informe en esta carpeta con el nombre seleccionado."
 
 #: reports.oils_rpt_folder_manager.change_folder_name
 msgid "Change folder name"
@@ -488,7 +492,7 @@ msgstr "Clonar informe"
 
 #: reports.oils_rpt_folder_window.schedule_report
 msgid "Schedule report"
-msgstr ""
+msgstr "Programar informe"
 
 #: reports.oils_rpt_folder_window.delete_reports
 msgid "Delete selected report(s)"
@@ -496,11 +500,11 @@ msgstr "Eliminar los informe(s) seleccionados"
 
 #: reports.oils_rpt_folder_window.view_report_output
 msgid "View report output"
-msgstr ""
+msgstr "Ver el reporte de salida"
 
 #: reports.oils_rpt_folder_window.delete_output
 msgid "Delete selected output(s)"
-msgstr ""
+msgstr "Eliminar la(s) salida(s) seleccionada(s)"
 
 #: reports.oils_rpt_folder_window.move_templates
 msgid "Move the selected template(s) to a different folder"
@@ -686,7 +690,7 @@ msgstr "Parámetros"
 
 #: reports.xul.template_builder.applicable_datatypes.label
 msgid "Applicable Datatypes"
-msgstr ""
+msgstr "Tipos de datos aplicables"
 
 #: reports.xul.template_builder.output_type.label
 msgid "Output Type"
@@ -721,9 +725,10 @@ msgid "Base Filters"
 msgstr "Filtros base"
 
 #: reports.xul.template_builder.aggregate_filters.label
+#, fuzzy
 msgctxt "reports.xul.template_builder.aggregate_filters.label"
 msgid "Aggregate Filters"
-msgstr ""
+msgstr "Filtros de Agregado"
 
 #: reports.xul.template_builder.display_name.label
 msgid "Display Name"
