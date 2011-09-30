@@ -74,6 +74,9 @@ function handle_results(req) {
         $('progress_meter').hidden = true;
 
         var results = req.getResultObject();
+        if(typeof(results.length) != "number") {
+            results = [results];
+        }
 
         var successes = [];
         var failures = {};
