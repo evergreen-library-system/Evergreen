@@ -168,7 +168,7 @@ sub load_rresults {
     }
 
     my $page = $cgi->param('page') || 0;
-    my $facet = $cgi->param('facet');
+    my @facets = $cgi->param('facet');
     my $limit = $self->_get_search_limit;
     my $loc = $cgi->param('loc') || $ctx->{aou_tree}->()->id;
     my $offset = $page * $limit;
@@ -229,7 +229,7 @@ sub load_rresults {
         # Stuff these into the TT context so that templates can use them in redrawing forms
         $ctx->{processed_search_query} = $query;
 
-        $query = "$query $facet" if $facet; # TODO
+        $query .= " $_" for @facets;
 
         $logger->activity("EGWeb: [search] $query");
 

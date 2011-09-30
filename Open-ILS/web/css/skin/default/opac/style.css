@@ -886,6 +886,7 @@ div.select-wrapper:hover {
 }
 
 /* some facet styling */
+/*
 .facetClassContainer { margin: 2px; border: 1px solid #CCC; }
 .facetClassLabelContainer { border: 1px solid #CCC; }
 .facetClassLabel { font-weight: bold; text-align: center; }
@@ -897,6 +898,77 @@ div.select-wrapper:hover {
 .facetField { border-top: 1px solid #CCC; }
 .facetFields { padding-left: 5px; }
 .facetFieldLineValue { overflow: hidden; text-overflow: ellipsis; }
+*/
+
+.facet_box_temp {
+	padding-bottom:3px;
+	width:180px;
+	overflow:hidden;
+}
+
+.facet_box_temp .header {
+	width:180px;
+	height:31px;
+	overflow:hidden;
+	background:url('/images/facet_box_bg.png') no-repeat;
+	font-weight:bold;
+	color:#074079;
+	padding-top:4px;
+}
+
+.facet_box_temp .header .title {
+	float:left;
+	padding-top:6px;
+	padding-left:12px;
+	width:134px;
+	overflow:hidden;
+}
+
+.facet_box_temp .header .button {
+	float:right;
+	padding-right:6px;
+}
+
+.facet_box_wrapper .box_wrapper {
+	position:relative;
+	top:-4px;
+	margin-bottom:-5px;
+	*margin-bottom:-6px;
+}
+
+.facet_box_wrapper .box_wrapper .box {
+	width:166px;
+	border-top:1px solid #7ebee5;
+	border-left:1px solid #f3f3f3;
+	border-right:1px solid #f3f3f3;
+	background:white;
+	padding-left:12px;
+	padding-top:6px;
+}
+
+.facet_box_wrapper .box_wrapper .bottom {
+	background:url('/images/facet_box_bg_bottom.png') no-repeat;
+}
+
+.facet_template {
+	padding-bottom:5px;
+}
+
+.facet_template .facet {
+	float:left;
+	width:124px;
+}
+
+.facet_template .count {
+	float:right;
+	color:#818080;
+	padding-right:11px;
+}
+
+.facet_template_selected {
+    background-color: #d7d7d7;
+}
+
 #footer-wrap {
     background: linear-gradient(lightGreen, #252525);
     background: -moz-linear-gradient(lightGreen, #252525);
@@ -904,6 +976,7 @@ div.select-wrapper:hover {
     background: -webkit-linear-gradient(lightGreen, #252525);
     background-color: lightGreen;
 }
+
 #footer {
 	padding-top:5px;
 	padding-bottom: 10px;

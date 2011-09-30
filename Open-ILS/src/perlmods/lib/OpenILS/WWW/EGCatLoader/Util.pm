@@ -201,13 +201,23 @@ sub get_records_and_facets {
     # gather up the unapi recs
     $ses->session_wait(1);
 
-    my $facets;
+    my $facets = {};
     if ($facet_key) {
-        $facets = $facet_req->gather(1);
-        $facets->{$_} = {
-            cmf => $self->ctx->{get_cmf}->($_),
-            data => $facets->{$_}
-        } for keys %$facets;    # quick-n-dirty
+        my $tmp_facets = $facet_req->gather(1);
+        for my $cmf_id (keys %$tmp_facets) {
+
+            # sort highest to lowest match count
+            my @entries;
+            my $entries = $tmp_facets->{$cmf_id};
+            for my $ent (keys %$entries) {
+                push(@entries, {value => $ent, count => $$entries{$ent}});
+            };
+            @entries = sort { $b->{count} <=> $a->{count} } @entries;
+            $facets->{$cmf_id} = {
+                cmf => $self->ctx->{get_cmf}->($cmf_id),
+                data => \@entries
+            }
+        }
     } else {
         $facets = undef;
     }
