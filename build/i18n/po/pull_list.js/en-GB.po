@@ -1,80 +1,93 @@
+# English (United Kingdom) translation for evergreen
+# Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2010-06-07 02:03:44-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2011-04-18 21:45:31-0400\n"
+"PO-Revision-Date: 2011-04-19 04:00+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
+"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2011-05-18 04:48+0000\n"
 
 #: pull_list.js:PULL_LIST_NO_RESPONSE
 msgid "No response from server trying to get pull list!"
-msgstr ""
+msgstr "No response from server trying to get pull list!"
 
 #: pull_list.js:AUTO_interval_in_days
 msgid "Generate list for this many days hence: "
-msgstr ""
+msgstr "Generate list for this many days hence: "
 
 #: pull_list.js:COPY_LOOKUP_ERROR
 msgid "Error looking up copies by barcode: "
-msgstr ""
-
-#: pull_list.js:AUTO_no_results
-msgid "No results"
-msgstr ""
+msgstr "Error looking up copies by barcode: "
 
 #: pull_list.js:COPY_LOOKUP_NO_RESPONSE
 msgid "No response looking up copies by barcode"
-msgstr ""
+msgstr "No response looking up copies by barcode"
+
+#: pull_list.js:FOR
+msgid "for"
+msgstr "for"
 
 #: pull_list.js:AUTO_pull_list_title
 msgid "Booking Pull List"
-msgstr ""
+msgstr "Booking Pull List"
 
-#: pull_list.js:AUTO_th_copy_number
-msgid "Copy number"
-msgstr ""
+#: pull_list.js:AUTO_no_results
+msgid "No results."
+msgstr "No results."
 
 #: pull_list.js:AUTO_th_barcode
 msgid "Barcode"
-msgstr ""
+msgstr "Barcode"
 
 #: pull_list.js:PULL_LIST_ERROR
 msgid "Error trying to fetch pull list: "
-msgstr ""
+msgstr "Error trying to fetch pull list: "
 
 #: pull_list.js:COPY_MISSING
 msgid "Unexpected error: No information for copy: "
-msgstr ""
+msgstr "Unexpected error: No information for copy: "
 
 #: pull_list.js:AUTO_th_call_number
 msgid "Call number"
-msgstr ""
+msgstr "Call number"
 
 #: pull_list.js:AUTO_owning_lib_selector
 msgid "See pull list for library:"
-msgstr ""
+msgstr "See pull list for library:"
 
 #: pull_list.js:AUTO_th_resv_details
 msgid "Reservation details"
-msgstr ""
+msgstr "Reservation details"
+
+#: pull_list.js:AT
+msgid "at"
+msgstr "at"
 
 #: pull_list.js:AUTO_ATTR_VALUE_fetch
 msgid "Fetch"
-msgstr ""
+msgstr "Fetch"
 
 #: pull_list.js:AUTO_th_title_or_name
 msgid "Title or name"
-msgstr ""
+msgstr "Title or name"
 
 #: pull_list.js:AUTO_ATTR_VALUE_print
 msgid "Print"
-msgstr ""
+msgstr "Print"
+
+#: pull_list.js:AUTO_th_pickup_lib
+msgid "Pickup library"
+msgstr "Pickup library"
 
 #: pull_list.js:AUTO_th_copy_location
 msgid "Copy location"
-msgstr ""
+msgstr "Copy location"
