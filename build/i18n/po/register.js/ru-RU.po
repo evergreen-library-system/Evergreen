@@ -1,36 +1,148 @@
+# Russian translation for evergreen
+# Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2010-06-07 02:03:44-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2011-04-23 01:33:28-0400\n"
+"PO-Revision-Date: 2011-07-31 17:37+0000\n"
+"Last-Translator: Alexander Sapronov <Unknown>\n"
+"Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
+"X-Generator: Launchpad (build 13405)\n"
+"X-Launchpad-Export-Date: 2011-08-01 04:42+0000\n"
 
-#: register.js:DUPE_PATRON_ADDR
-msgid "Found ${0} patron(s) with the same address"
-msgstr ""
-
-#: register.js:DUPE_PATRON_IDENT
-msgid "Found ${0} patron(s) with the same identification"
-msgstr ""
+#: register.js:USER_SETTINGS
+msgid "User Settings"
+msgstr "Настройки пользователя"
 
 #: register.js:DUPE_PATRON_EMAIL
 msgid "Found ${0} patron(s) with the same email address"
-msgstr ""
+msgstr "Найдено ${0} пользователь(я,ей) с таким же адресом электронной почты"
 
-#: register.js:DUPE_PATRON_NAME
-msgid "Found ${0} patron(s) with the same name"
-msgstr ""
+#: register.js:ADDRESS_BILLING
+msgid "Billing"
+msgstr "Счет"
 
-#: register.js:DUPE_PATRON_PHONE
-msgid "Found ${0} patron(s) with the same phone number"
-msgstr ""
+#: register.js:ADDRESS_OWNED
+msgid "This address is owned by another user: "
+msgstr "Этот адрес принадлежит другому пользователю: "
 
 #: register.js:REPLACED_ADDRESS
 msgid "<div>Replaces address <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"
 msgstr ""
+"<div>Заменяет адрес <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"
+
+#: register.js:SHOW_REQUIRED
+msgid "Show Only Required Fields"
+msgstr "Показать только обязательные для заполнения поля"
+
+#: register.js:DUPE_PATRON_ADDR
+msgid "Found ${0} patron(s) with the same address"
+msgstr "Найдено $ {0} пользователь(я,ей) с таким же адресом"
+
+#: register.js:SAVE
+msgid "Save"
+msgstr "Сохранить"
+
+#: register.js:DUPE_PATRON_IDENT
+msgid "Found ${0} patron(s) with the same identification"
+msgstr "Найден(о) ${0} пользователь(я,ей) с таким же идентификатором"
+
+#: register.js:ADDRESS_MAILING
+msgid "Mailing"
+msgstr "Рассылка"
+
+#: register.js:REPLACE_BARCODE
+msgid "Replace Barcode"
+msgstr "Замените штрих-код"
+
+#: register.js:NEED_ADDRESS
+msgid "An address is required during registration."
+msgstr "При регистрации требуется адрес"
+
+#: register.js:PARENT_OR_GUARDIAN
+msgid "Parent/Guardian"
+msgstr "Родитель/Опекун"
+
+#: register.js:ADDRESS_HEADER
+msgid "Address"
+msgstr "Почтовый адрес"
+
+#: register.js:DUPE_PATRON_PHONE
+msgid "Found ${0} patron(s) with the same phone number"
+msgstr "Найден(о) ${0} пользователь(я,ей) с таким же номером телефона"
+
+#: register.js:INVALID_FORM
+msgid "Form is invalid.  Please edit and try again."
+msgstr ""
+"Форма является недействительной. Пожалуйста, редактируйте и попробуйте еще "
+"раз."
+
+#: register.js:BARCODE_IN_USE
+msgid "Barcode is already in use"
+msgstr "Штрих-код уже используется"
+
+#: register.js:EXAMPLE
+msgid "Example: "
+msgstr "Например: "
+
+#: register.js:SHOW_SUGGESTED
+msgid "Show Suggested Fields"
+msgstr ""
+
+#: register.js:ADDRESS_PENDING
+msgid "This is a pending address: "
+msgstr ""
+
+#: register.js:DUPE_USERNAME
+msgid "Username is already in use"
+msgstr "Имя пользователя уже используется"
+
+#: register.js:DUPE_PATRON_NAME
+msgid "Found ${0} patron(s) with the same name"
+msgstr "Найден(о) ${0} пользователь(я.ей) с таким же именем"
+
+#: register.js:DEFAULT_ADDRESS_TYPE
+msgid "MAILING"
+msgstr "ПОЧТОВЫЙ"
+
+#: register.js:SHOW_ALL
+msgid "Show All Fields"
+msgstr "Показать все поля"
+
+#: register.js:ADDRESS_APPROVE
+msgid "Approve Address"
+msgstr "Повторить адрес"
+
+#: register.js:VERIFY_PASSWORD
+msgid "Verify Password"
+msgstr "Проверить пароль"
+
+#: register.js:SAVE_CLONE
+msgid "Save &amp; Clone"
+msgstr ""
+
+#: register.js:STAT_CATS
+msgid "Statistical Categories"
+msgstr "Статистические категории"
+
+#: register.js:ADDRESS_NEW
+msgid "New Address"
+msgstr "Новый адрес"
+
+#: register.js:RESET_PASSWORD
+msgid "Reset Password"
+msgstr "Сбросить пароль"
+
+#: register.js:SEE_ALL
+msgid "See All"
+msgstr "Смотреть все"
+
+#: register.js:DELETE_ADDRESS
+msgid "Delete address ${0}?"
+msgstr "Удалить адрес ${0}?"
