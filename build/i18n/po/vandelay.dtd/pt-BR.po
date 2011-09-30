@@ -2,20 +2,21 @@
 # Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR: Job Diógenes Ribeiro Borges, 2009.
-#
+#. extracted from ../../Open-ILS/web/opac/locale/en-US/vandelay.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-11-23 23:35-0400\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-04-18 21:44-0400\n"
 "PO-Revision-Date: 2010-02-22 22:24+0000\n"
 "Last-Translator: jobdrb <jobdrb@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-02-23 05:07+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Generator: Translate Toolkit 1.8.1\n"
+"X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-05-18 04:48+0000\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -35,6 +36,19 @@ msgstr "Registros de autoridade"
 #: vandelay.auto.import.noncolliding
 msgid "Auto-Import Non-Colliding Records"
 msgstr "Auto-importa registro sem colisão"
+
+#: vandelay.auto.import.auto_overlay_exact
+msgid "Auto Merge/Overlay Exact Matches"
+msgstr "Automaticamente Mesclar/Sobrepor Correspondências Exatas"
+
+#: vandelay.auto.import.auto_overlay_1match
+msgid "Auto Merge/Overlay When Exactly 1 Match is Found"
+msgstr ""
+"Automaticamente Mesclar/Sobrepor Quando 1 Correspondências for Encontrada"
+
+#: vandelay.auto.import.merge_profile
+msgid "Merge/Overlay Profile"
+msgstr "Perfil de Mesclar/Sobrepor"
 
 #. Do not translate this.  Only change the numeric values if you need this dialogue box to appear bigger
 #: vandelay.auto.width
@@ -123,6 +137,14 @@ msgctxt "vandelay.edit.attrs"
 msgid "Edit Attributes"
 msgstr "Editar atributos"
 
+#: vandelay.edit.profiles
+msgid "Edit Merge / Overlay Profiles"
+msgstr "Editar Perfis de Mesclar / Sobrepor"
+
+#: vandelay.edit.import_item_attrs
+msgid "Edit Import Item Attributes"
+msgstr "Editar Atributos do Item à Importar"
+
 #: vandelay.false
 msgid "False"
 msgstr "Falso"
@@ -196,8 +218,8 @@ msgid "Matches"
 msgstr "Encontrados"
 
 #: vandelay.next.page
-msgid "Next Page"
-msgstr "Próxima Página"
+msgid "Next Page &#187;"
+msgstr "Próxima Página &#187;"
 
 #: vandelay.overlay.selected.record
 msgid "Overlay selected record with imported record"
@@ -216,8 +238,8 @@ msgid "Powered by Evergreen!"
 msgstr "Powered by Evergreen!"
 
 #: vandelay.prev.page
-msgid "Previous Page"
-msgstr "Página Anterior"
+msgid "&#171; Previous Page"
+msgstr "&#171; Página Anterior"
 
 #: vandelay.processing
 msgid "Processing... "
@@ -452,3 +474,9 @@ msgstr "Escolhedor de coluna"
 #: vandelay.import.bib_sources
 msgid "Select a Record Source"
 msgstr "Selecione a Fonte do Registro"
+
+#~ msgid "Next Page"
+#~ msgstr "Próxima Página"
+
+#~ msgid "Previous Page"
+#~ msgstr "Página Anterior"
