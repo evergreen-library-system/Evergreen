@@ -1,198 +1,49 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2009-11-23 23:36-0400\n"
-"PO-Revision-Date: 2010-04-13 11:38+0000\n"
-"Last-Translator: TZ <tigran@flib.sci.am>\n"
+"POT-Creation-Date: 2011-04-18 21:45:31-0400\n"
+"PO-Revision-Date: 2011-07-31 17:04+0000\n"
+"Last-Translator: Alexander Sapronov <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-04-14 03:51+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Generator: Launchpad (build 13405)\n"
+"X-Launchpad-Export-Date: 2011-08-01 04:42+0000\n"
 
 #: conify.js:SURVEY_ID
 msgid "Survey ID # ${0}"
 msgstr "Опрос ID # ${0}"
 
-#: conify.js:ERROR_FETCHING_HOLDS
-msgid "Problem fetching Holds Address for ${0}"
-msgstr "Проблема извлечения адреса хранений для ${0}"
-
-#: conify.js:ERROR_CALLING_METHOD_CAM
-msgid "Problem calling method to create new ${0}"
-msgstr "Проблема  метода вызова  для создания новых  $ {0}"
-
-#: conify.js:SUCCESS_SAVING_MAILING
-msgid "Saved changes to the Mailing Address of ${0}"
-msgstr "Сохраненные изменения  почтового адреса   $ {0}"
-
-#: conify.js:ERROR_CREATING_PERMISSION
-msgid "Problem creating new Permission"
-msgstr "Проблема  создания новых Полномочий"
-
-#: conify.js:HOLDABLE
-msgid "Holdable"
-msgstr "Сохраняющий"
-
-#: conify.js:ERROR_SAVING_PERM_DATA
-msgid "Problem saving permission data for ${0}"
-msgstr "Проблема при сохранении данных полномочий для  $ (0)"
-
-#: conify.js:SURVEY_DELETE_ANSWER
-msgid "Delete Answer"
-msgstr "Удалить ответ"
-
-#: conify.js:LABEL_GRANTABLE
-msgid "Grantable"
-msgstr "Возможность передачи"
-
-#: conify.js:SUCCESS_CREATING_STATUS
-msgid "New ${0} status created"
-msgstr "Новый ${0} статус создан"
-
-#: conify.js:ERROR_SAVING_STATUS
-msgid "Problem saving ${0}"
-msgstr "Проблема сохранения $ {0}"
-
 #: conify.js:SUCCESS_NEW_PERM_MAP
 msgid "New permission map created"
 msgstr "Создан новый список полномочий"
-
-#: conify.js:STATUS_DELETED
-msgid "${0} deleted"
-msgstr "$ {0} удалены"
-
-#: conify.js:SUCCESS_SAVING_ILL
-msgid "Saved changes to the ILL Address of ${0}"
-msgstr "Сохраненные изменения МБА Адреса ${0}"
-
-#: conify.js:ERROR_CALLING_METHOD_PPL
-msgid "Problem calling method to create new permission"
-msgstr "Проблема вызова метода для создания нового разрешения"
-
-#: conify.js:ERROR_FETCHING_MAILING
-msgid "Problem fetching Mailing Address for ${0}"
-msgstr "Проблема извлечения Почтового адреса для ${0}"
-
-#: conify.js:ERROR_FETCHING_PERMS
-msgid "Problem fetching perms"
-msgstr "Проблема извлечения полномочий"
 
 #: conify.js:END_SURVEY
 msgid "End Survey Now"
 msgstr "Закончить Опрос Сейчас"
 
-#: conify.js:CONFIRM_DELETE
-msgid "Are you sure you want to delete ${0}?"
-msgstr "Вы уверены, что хотите удалить ${0}?"
-
 #: conify.js:SUCCESS_SAVING_DATA conify.js:SUCCESS_SAVE
 msgid "Saved changes to ${0}"
 msgstr "Сохраненные изменения  ${0}"
 
-#: conify.js:CONFIRM_UNSAVED_CHANGES
-msgid ""
-"There are unsaved changes to one or more organization types. Click OK to "
-"save these changes, or Cancel to abandon them."
-msgstr ""
-"Есть несохраненные изменения в одном или нескольких организационных типах. "
-"Нажмите ОК, чтобы сохранить эти изменения, или Отменить, чтобы отказаться от "
-"них."
-
-#: conify.js:ERROR_FETCHING_HOURS
-msgid "Problem fetching hours of operation for ${0}"
-msgstr "Проблема извлечения часов работы для $ (0)"
-
-#: conify.js:LABEL_DESCRIPTION
-msgid "Description"
-msgstr "Описание"
-
-#: conify.js:LABEL_NEW_TYPE
-msgid "New Type"
-msgstr "Новый тип"
-
-#: conify.js:SURVEY_SAVE_CHANGES
-msgid "Save Changes"
-msgstr "Сохранить изменения"
-
-#: conify.js:ERROR_CREATING_PERM_MAP
-msgid "Problem creating new Permission Map"
-msgstr "Проблема создания нового Списка Полномочий"
-
-#: conify.js:ERROR_CALLING_METHOD_PGT
-msgid "Problem calling method to create child Group"
-msgstr "Проблемный метод вызова для создания детской Группы"
-
-#: conify.js:ERROR_FETCHING_ILL
-msgid "Problem fetching ILL Address for ${0}"
-msgstr "Проблема извлечения МБА Адреса для $ (0)"
-
-#: conify.js:ERROR_FETCHING_PERM_MAPS
-msgid "Problem fetching perm maps"
-msgstr "Проблема извлечения Списка Полномочий"
-
-#: conify.js:SUCCESS_NEW_CHILD_GROUP
-msgid "New child Group created for ${0}"
-msgstr "Новая детская Группа создана для $ (0)"
-
-#: conify.js:SUCCESS_CREATING_CHILD_AOUT
-msgid "New child Organization Type created for ${0}"
-msgstr "Новый детский Тип организации создан для $ (0)"
-
-#: conify.js:ERROR_CREATING_CHILD_AOU
-msgid "Problem creating child organizational unit"
-msgstr "Проблема создания детской организационной единицы"
+#: conify.js:ERROR_FETCHING_PHYSICAL
+msgid "Problem fetching Physical Address for ${0}"
+msgstr "Проблема извлечения физического адреса ${0}"
 
 #: conify.js:SURVEY_ADD_ANSWER
 msgid "Add Answer"
 msgstr "Добавить ответ"
 
-#: conify.js:ERROR_FETCHING_ORGS
-msgid "Problem fetching organizational unit data"
-msgstr "Проблема создания  данных  детской организационной единицы"
+#: conify.js:TRANSLATION conify.js:LABEL_TRANSLATION
+msgid "Translation"
+msgstr "Перевод"
 
-#: conify.js:ERROR_CALLING_METHOD_PERM_MAP
-msgid "Problem calling method to create new permission map"
-msgstr "Проблема  метода вызова для создания нового списка  полномочий"
-
-#: conify.js:CONFIRM_EXIT_CCS
-msgid ""
-"There are unsaved changes to one or more copy statuses. Click OK to save "
-"these changes, or Cancel to abandon them."
-msgstr ""
-"Есть несохраненные изменения в одном или нескольких статусах экземляра. "
-"Нажмите ОК, чтобы сохранить эти изменения, или Отменить, чтобы отказаться от "
-"них."
-
-#: conify.js:OPAC_VISIBLE
-msgid "OPAC Visible"
-msgstr "OPAC доступен"
-
-#: conify.js:ERROR_SAVING_PHYSICAL
-msgid "Problem saving Physical Address data for ${0}"
-msgstr "Проблема сохранения Физического Адреса  данных  для $ (0)"
-
-#: conify.js:ID
-msgid "ID"
-msgstr "Внутренний код"
-
-#: conify.js:SURVEY_QUESTION
-msgid "Question:"
-msgstr "Вопрос:"
-
-#: conify.js:ERROR_SAVING_HOLDS
-msgid "Problem saving Holds Address data for ${0}"
-msgstr "Проблема сохранения Адресных данных Хранений  для $ (0)"
-
-#: conify.js:CONFIRM_EXIT_PPL
-msgid ""
-"There are unsaved modified permissions. Click OK to save these changes, or "
-"Cancel to abandon them."
-msgstr ""
-"Есть несохраненные изменённые полномочия.  Нажмите ОК, чтобы сохранить эти "
-"изменения, или Отменить, чтобы отказаться от них."
+#: conify.js:ACQ_DISTRIB_FORMULA_NAME_CLONE
+msgid "${0} (Clone)"
+msgstr "${0} (Клон)"
 
 #: conify.js:ERROR_DELETING_LAST_AOU
 msgid "Cannot delete ${0}, you need at least one organization unit."
@@ -200,32 +51,76 @@ msgstr ""
 "Не удается удалить ${0}, вам потребуется по крайней мере одна "
 "организационная единица."
 
-#: conify.js:ERROR_DELETING_LAST_AOUT
-msgid "Cannot delete ${0}. You need at least one organization type."
-msgstr ""
-"Не удается удалить ${0}. Вам потребуется по крайней мере один "
-"организационный тип"
-
 #: conify.js:SUCCESS_SAVING_HOO
 msgid "Hours of Operation updated for ${0}"
 msgstr "Время работы обновляется для ${0}"
 
-#: conify.js:NAME
-msgid "Name"
-msgstr "Имя"
+#: conify.js:SUCCESS_CREATING_CHILD_AOUT
+msgid "New child Organization Type created for ${0}"
+msgstr "Новый детский Тип организации создан для $ (0)"
 
-#: conify.js:ERROR_CREATING_CHILD_AOUT
-msgid "Problem creating child organization type"
-msgstr "Проблема создания типа  детской организации"
+#: conify.js:LABEL_VALUE
+msgid "Value"
+msgstr "Значение"
 
-#: conify.js:ERROR_SAVING_DATA
-msgid "Problem saving data for ${0}"
-msgstr "Проблема сохранения данных для ${0}"
+#: conify.js:ERROR_DELETING
+msgid "Problem deleting ${0}"
+msgstr "Проблема удаления ${0}"
+
+#: conify.js:SURVEY_SAVE_CHANGES
+msgid "Save Changes"
+msgstr "Сохранить изменения"
+
+#: conify.js:ERROR_CREATING_CHILD_GROUP
+msgid "Problem creating child Group"
+msgstr "Проблема при создании  детской Группы"
+
+#: conify.js:SUCCESS_SAVE_PERM
+msgid "Saved permission changes to ${0}"
+msgstr "Сохраненные полномочия изменены на ${0}"
+
+#: conify.js:SURVEY_DELETE_ANSWER
+msgid "Delete Answer"
+msgstr "Удалить ответ"
+
+#: conify.js:ERROR_FETCHING_GROUPS
+msgid "Problem fetching groups"
+msgstr "Проблема извлечения групп"
+
+#: conify.js:ERROR_FETCHING_STATUSES
+msgid "Problem fetching statuses"
+msgstr "Проблема извлечения статусов"
+
+#: conify.js:ERROR_SAVING_PERM_DATA
+msgid "Problem saving permission data for ${0}"
+msgstr "Проблема при сохранении данных полномочий для  $ (0)"
+
+#: conify.js:SUCCESS_CREATING_STATUS
+msgid "New ${0} status created"
+msgstr "Новый ${0} статус создан"
+
+#: conify.js:SURVEY_DELETE_QUESTION
+msgid "Delete Question & Answers"
+msgstr "Удалить Вопрос и Ответы"
+
+#: conify.js:ERROR_CREATING_PERMISSION
+msgid "Problem creating new Permission"
+msgstr "Проблема  создания новых Полномочий"
+
+#: conify.js:ERROR_CALLING_METHOD_PERM_MAP
+msgid "Problem calling method to create new permission map"
+msgstr "Проблема  метода вызова для создания нового списка  полномочий"
+
+#: conify.js:SURVEY_QUESTION
+msgid "Question:"
+msgstr "Вопрос:"
+
+#: conify.js:ERROR_FETCHING_MAILING
+msgid "Problem fetching Mailing Address for ${0}"
+msgstr "Проблема извлечения Почтового адреса для ${0}"
 
 #: conify.js:CONFIRM_EXIT_AOU
-msgid ""
-"There are unsaved changes to one or more organizational units. Click OK to "
-"save these changes, or Cancel to abandon them."
+msgid "There are unsaved changes to one or more organizational units. Click OK to save these changes, or Cancel to abandon them."
 msgstr ""
 "Есть несохраненные изменения в одном или нескольких организационных "
 "подразделениях. Нажмите ОК, чтобы сохранить эти изменения, или Отменить, "
@@ -239,13 +134,209 @@ msgstr "Сохранить Вопрос и  Добавить Ответ"
 msgid "New Branch"
 msgstr "Новая ветвь"
 
+#: conify.js:SUCCESS_CREATING_CHILD_AOU
+msgid "New child Organizational Unit created for ${0}"
+msgstr "Новая детская Организационная единица создана для ${0}"
+
+#: conify.js:ERROR_ORPHANS
+msgid "Cannot delete ${0}, ${1} subordinates still exist."
+msgstr "Не удается удалить ${0}, ${1} подчиненные все еще существуют."
+
+#: conify.js:ACQ_DISTRIB_FORMULA_NAME_PROMPT
+msgid "Enter new formula name"
+msgstr "Введите новое имя формулы"
+
+#: conify.js:ERROR_DELETING_LAST_AOUT
+msgid "Cannot delete ${0}. You need at least one organization type."
+msgstr ""
+"Не удается удалить ${0}. Вам потребуется по крайней мере один "
+"организационный тип"
+
+#: conify.js:SURVEY_ANSWER
+msgid "Answer:"
+msgstr "Ответ:"
+
+#: conify.js:SUCCESS_NEW_CHILD_GROUP
+msgid "New child Group created for ${0}"
+msgstr "Новая детская Группа создана для $ (0)"
+
+#: conify.js:SUCCESS_SAVING_PHYSICAL
+msgid "Saved changes to the Physical Address of ${0}"
+msgstr "Сохраненные изменения физического адреса $ (0)"
+
+#: conify.js:LABEL_NEW_GROUP
+msgid "New Group"
+msgstr "Новая группа"
+
+#: conify.js:CONFIRM_EXIT_PGT
+msgid "There are unsaved modified permission maps. Click OK to save these changes, or Cancel to abandon them."
+msgstr ""
+"Есть несохраненный измененый список  полномочий. Нажмите ОК, чтобы сохранить "
+"эти изменения, или Отменить, чтобы отказаться от них."
+
+#: conify.js:SUCCESS_SAVING_MAILING
+msgid "Saved changes to the Mailing Address of ${0}"
+msgstr "Сохраненные изменения  почтового адреса   $ {0}"
+
+#: conify.js:ERROR_SAVING_STATUS
+msgid "Problem saving ${0}"
+msgstr "Проблема сохранения $ {0}"
+
+#: conify.js:ERROR_CALLING_METHOD_CAM
+msgid "Problem calling method to create new ${0}"
+msgstr "Проблема  метода вызова  для создания новых  $ {0}"
+
+#: conify.js:ERROR_CALLING_METHOD_PPL
+msgid "Problem calling method to create new permission"
+msgstr "Проблема вызова метода для создания нового разрешения"
+
+#: conify.js:CONFIRM_DELETE
+msgid "Are you sure you want to delete ${0}?"
+msgstr "Вы уверены, что хотите удалить ${0}?"
+
+#: conify.js:CONFIRM_EXIT_PPL
+msgid "There are unsaved modified permissions. Click OK to save these changes, or Cancel to abandon them."
+msgstr ""
+"Есть несохраненные изменённые полномочия.  Нажмите ОК, чтобы сохранить эти "
+"изменения, или Отменить, чтобы отказаться от них."
+
+#: conify.js:CONFIRM_UNSAVED_CHANGES
+msgid "There are unsaved changes to one or more organization types. Click OK to save these changes, or Cancel to abandon them."
+msgstr ""
+"Есть несохраненные изменения в одном или нескольких организационных типах. "
+"Нажмите ОК, чтобы сохранить эти изменения, или Отменить, чтобы отказаться от "
+"них."
+
+#: conify.js:ERROR_FETCHING_HOURS
+msgid "Problem fetching hours of operation for ${0}"
+msgstr "Проблема извлечения часов работы для $ (0)"
+
+#: conify.js:LABEL_NEW_TYPE
+msgid "New Type"
+msgstr "Новый тип"
+
+#: conify.js:ERROR_CREATING_CHILD_AOU
+msgid "Problem creating child organizational unit"
+msgstr "Проблема создания детской организационной единицы"
+
+#: conify.js:ERROR_SAVING_HOLDS
+msgid "Problem saving Holds Address data for ${0}"
+msgstr "Проблема сохранения Адресных данных Хранений  для $ (0)"
+
+#: conify.js:ERROR_CREATING_CHILD_AOUT
+msgid "Problem creating child organization type"
+msgstr "Проблема создания типа  детской организации"
+
+#: conify.js:ERROR_SAVING_DATA
+msgid "Problem saving data for ${0}"
+msgstr "Проблема сохранения данных для ${0}"
+
 #: conify.js:ERROR_FETCHING_TYPES_AOUT
 msgid "Problem fetching organizational unit types"
 msgstr "Проблема извлечения типов организационной единицы"
 
-#: conify.js:SURVEY_DELETE_QUESTION
-msgid "Delete Question & Answers"
-msgstr "Удалить Вопрос и Ответы"
+#: conify.js:ERROR_CALLING_METHOD_CCS
+msgid "Problem calling method to create new copy status"
+msgstr "Проблема метода вызова для создания нового статуса для экземпляра"
+
+#: conify.js:SUCCESS_CREATING_CODE
+msgid "New ${0} ${1} created"
+msgstr "Новые ${0} ${1} созданы"
+
+#: conify.js:LABEL_CODE
+msgid "Code"
+msgstr "Код"
+
+#: conify.js:SURVEY_FOOT_LABEL
+msgid "Questions & Answers"
+msgstr "Вопросы и ответы"
+
+#: conify.js:STATUS_EDITING
+msgid "Now editing ${0}"
+msgstr "Сейчас  отредактированы ${0}"
+
+#: conify.js:SUCCESS_DELETED_PERM_MAP
+msgid "Permission mapping deleted"
+msgstr "Список полномочий удален"
+
+#: conify.js:ERROR_SAVING_ILL
+msgid "Problem saving ILL Address data for ${0}"
+msgstr "Проблема сохранения данных МБА Адреса для ${0}"
+
+#: conify.js:ERROR_FETCHING_HOLDS
+msgid "Problem fetching Holds Address for ${0}"
+msgstr "Проблема извлечения адреса хранений для ${0}"
+
+#: conify.js:SUCCESS_SAVING_ILL
+msgid "Saved changes to the ILL Address of ${0}"
+msgstr "Сохраненные изменения МБА Адреса ${0}"
+
+#: conify.js:HOLDABLE
+msgid "Holdable"
+msgstr "Сохраняющий"
+
+#: conify.js:STATUS_DELETED
+msgid "${0} deleted"
+msgstr "$ {0} удалены"
+
+#: conify.js:LABEL_GRANTABLE
+msgid "Grantable"
+msgstr "Возможность передачи"
+
+#: conify.js:ERROR_FETCHING_PERMS
+msgid "Problem fetching perms"
+msgstr "Проблема извлечения полномочий"
+
+#: conify.js:LABEL_DESCRIPTION
+msgid "Description"
+msgstr "Описание"
+
+#: conify.js:ERROR_CREATING_PERM_MAP
+msgid "Problem creating new Permission Map"
+msgstr "Проблема создания нового Списка Полномочий"
+
+#: conify.js:ERROR_FETCHING_ILL
+msgid "Problem fetching ILL Address for ${0}"
+msgstr "Проблема извлечения МБА Адреса для $ (0)"
+
+#: conify.js:ERROR_FETCHING_PERM_MAPS
+msgid "Problem fetching perm maps"
+msgstr "Проблема извлечения Списка Полномочий"
+
+#: conify.js:ERROR_FETCHING_ORGS
+msgid "Problem fetching organizational unit data"
+msgstr "Проблема создания  данных  детской организационной единицы"
+
+#: conify.js:CONFIRM_EXIT_CCS
+msgid "There are unsaved changes to one or more copy statuses. Click OK to save these changes, or Cancel to abandon them."
+msgstr ""
+"Есть несохраненные изменения в одном или нескольких статусах экземляра. "
+"Нажмите ОК, чтобы сохранить эти изменения, или Отменить, чтобы отказаться от "
+"них."
+
+#: conify.js:OPAC_VISIBLE
+msgid "OPAC Visible"
+msgstr "OPAC доступен"
+
+#: conify.js:ERROR_SAVING_PHYSICAL
+msgid "Problem saving Physical Address data for ${0}"
+msgstr "Проблема сохранения Физического Адреса  данных  для $ (0)"
+
+#: conify.js:ERROR_SAVING_MAILING
+msgid "Problem saving Mailing Address data for ${0}"
+msgstr "Проблема сохранения данных Почтового адреса ${0}"
+
+#: conify.js:NAME
+msgid "Name"
+msgstr "Имя"
+
+#: conify.js:ERROR_SAVING_DATA_CAM
+msgid "Problem saving data for ${0} ${1}"
+msgstr "Проблема сохранения данных для ${0} ${1}"
+
+#: conify.js:SUCCESS_CREATING_PERMISSION
+msgid "New ${0} permission created"
+msgstr "Новое ${0} разрешение создано"
 
 #: conify.js:ERROR_CREATING_STATUS
 msgid "Problem creating new Status"
@@ -255,130 +346,36 @@ msgstr "Проблема создания нового Статуса"
 msgid "Depth"
 msgstr "Глубина"
 
-#: conify.js:SUCCESS_CREATING_CHILD_AOU
-msgid "New child Organizational Unit created for ${0}"
-msgstr "Новая детская Организационная единица создана для ${0}"
-
-#: conify.js:ERROR_CALLING_METHOD_CCS
-msgid "Problem calling method to create new copy status"
-msgstr "Проблема метода вызова для создания нового статуса для экземпляра"
-
-#: conify.js:LABEL_VALUE
-msgid "Value"
-msgstr "Значение"
-
-#: conify.js:ERROR_ORPHANS
-msgid "Cannot delete ${0}, ${1} subordinates still exist."
-msgstr "Не удается удалить ${0}, ${1} подчиненные все еще существуют."
-
-#: conify.js:SUCCESS_CREATING_PERMISSION
-msgid "New ${0} permission created"
-msgstr "Новое ${0} разрешение создано"
-
-#: conify.js:ERROR_DELETING
-msgid "Problem deleting ${0}"
-msgstr "Проблема удаления ${0}"
-
-#: conify.js:SUCCESS_CREATING_CODE
-msgid "New ${0} ${1} created"
-msgstr "Новые ${0} ${1} созданы"
-
-#: conify.js:TRANSLATION conify.js:LABEL_TRANSLATION
-msgid "Translation"
-msgstr "Перевод"
+#: conify.js:ID
+msgid "ID"
+msgstr "Внутренний код"
 
 #: conify.js:SUCCESS_SAVING_HOLDS
 msgid "Saved changes to the Holds Address of ${0}"
 msgstr "Сохраненные изменения по Адресу Хранений ${0}"
 
-#: conify.js:LABEL_CODE
-msgid "Code"
-msgstr "Код"
-
 #: conify.js:ERROR_DELETING_PERM_MAPPING
 msgid "Problem deleting permission mapping ${0}"
 msgstr "Проблема при удалении распределения полномочий $ (0)"
-
-#: conify.js:ERROR_CREATING_CHILD_GROUP
-msgid "Problem creating child Group"
-msgstr "Проблема при создании  детской Группы"
-
-#: conify.js:SUCCESS_SAVE_PERM
-msgid "Saved permission changes to ${0}"
-msgstr "Сохраненные полномочия изменены на ${0}"
-
-#: conify.js:SURVEY_ANSWER
-msgid "Answer:"
-msgstr "Ответ:"
-
-#: conify.js:SURVEY_FOOT_LABEL
-msgid "Questions & Answers"
-msgstr "Вопросы и ответы"
-
-#: conify.js:ERROR_SAVING_DATA_CAM
-msgid "Problem saving data for ${0} ${1}"
-msgstr "Проблема сохранения данных для ${0} ${1}"
-
-#: conify.js:ERROR_FETCHING_GROUPS
-msgid "Problem fetching groups"
-msgstr "Проблема извлечения групп"
-
-#: conify.js:STATUS_EDITING
-msgid "Now editing ${0}"
-msgstr "Сейчас  отредактированы ${0}"
 
 #: conify.js:EVENT_DEF_LABEL
 msgid "${0}: ${1}"
 msgstr "${0}: ${1}"
 
 #: conify.js:CONFIRM_EXIT_CAM
-msgid ""
-"There are unsaved changes to one or more ${0} codes. Click OK to save these "
-"changes, or Cancel to abandon them."
+msgid "There are unsaved changes to one or more ${0} codes. Click OK to save these changes, or Cancel to abandon them."
 msgstr ""
 "Есть несохраненные изменения в одном или нескольких $ (0) кодах. Нажмите ОК, "
 "чтобы сохранить эти изменения, или Отменить, чтобы отказаться от них."
 
-#: conify.js:SUCCESS_SAVING_PHYSICAL
-msgid "Saved changes to the Physical Address of ${0}"
-msgstr "Сохраненные изменения физического адреса $ (0)"
-
-#: conify.js:SUCCESS_DELETED_PERM_MAP
-msgid "Permission mapping deleted"
-msgstr "Список полномочий удален"
+#: conify.js:ERROR_CALLING_METHOD_PGT
+msgid "Problem calling method to create child Group"
+msgstr "Проблемный метод вызова для создания детской Группы"
 
 #: conify.js:ERROR_CALLING_METHOD_AOUT
 msgid "Problem calling method to create child organization type"
 msgstr "Проблема вызова метода для создания типа  детской организации"
 
-#: conify.js:ERROR_FETCHING_STATUSES
-msgid "Problem fetching statuses"
-msgstr "Проблема извлечения статусов"
-
-#: conify.js:LABEL_NEW_GROUP
-msgid "New Group"
-msgstr "Новая группа"
-
-#: conify.js:ERROR_FETCHING_PHYSICAL
-msgid "Problem fetching Physical Address for ${0}"
-msgstr "Проблема извлечения физического адреса ${0}"
-
 #: conify.js:ERROR_SAVING_HOO
 msgid "Problem saving Hours of Operation data for ${0}"
 msgstr "Проблема сохранения данных Часов Работы ${0}"
-
-#: conify.js:ERROR_SAVING_MAILING
-msgid "Problem saving Mailing Address data for ${0}"
-msgstr "Проблема сохранения данных Почтового адреса ${0}"
-
-#: conify.js:CONFIRM_EXIT_PGT
-msgid ""
-"There are unsaved modified permission maps. Click OK to save these changes, "
-"or Cancel to abandon them."
-msgstr ""
-"Есть несохраненный измененый список  полномочий. Нажмите ОК, чтобы сохранить "
-"эти изменения, или Отменить, чтобы отказаться от них."
-
-#: conify.js:ERROR_SAVING_ILL
-msgid "Problem saving ILL Address data for ${0}"
-msgstr "Проблема сохранения данных МБА Адреса для ${0}"

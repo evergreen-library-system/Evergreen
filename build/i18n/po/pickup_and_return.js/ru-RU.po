@@ -1,15 +1,20 @@
+# Russian translation for evergreen
+# Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2010-06-07 02:03:44-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2011-04-18 21:45:31-0400\n"
+"PO-Revision-Date: 2011-07-31 17:43+0000\n"
+"Last-Translator: Alexander Sapronov <Unknown>\n"
+"Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
+"X-Generator: Launchpad (build 13405)\n"
+"X-Launchpad-Export-Date: 2011-08-01 04:42+0000\n"
 
 #: pickup_and_return.js:NO_SUCH_RETURNABLE_RESOURCE
 msgid "No such returnable resource."
@@ -17,6 +22,13 @@ msgstr ""
 
 #: pickup_and_return.js:PICKUP_ERROR
 msgid "Error communicating with server (attempting pickup):"
+msgstr ""
+
+#: pickup_and_return.js:ADDRESS
+msgid ""
+"${0}\n"
+"${1}\n"
+"${2}, ${3} ${4}"
 msgstr ""
 
 #: pickup_and_return.js:AUTO_ready_bresv
@@ -35,17 +47,13 @@ msgstr ""
 msgid "Patron has not returned any resources today."
 msgstr ""
 
-#: pickup_and_return.js:SELECT_SOMETHING
-msgid "You have not selected any reservations."
-msgstr ""
-
 #: pickup_and_return.js:NO_PATRON_BARCODE
 msgid "Please enter a patron barcode."
 msgstr ""
 
 #: pickup_and_return.js:AUTO_ATTR_VALUE_return
 msgid "Return"
-msgstr ""
+msgstr "Назад"
 
 #: pickup_and_return.js:AUTO_no_out_bresv
 msgid "Patron has no more reservations out at this time."
@@ -73,14 +81,26 @@ msgstr ""
 
 #: pickup_and_return.js:AUTO_resource
 msgid "Resource"
+msgstr "Источник"
+
+#: pickup_and_return.js:COPY_ALERT
+msgid ""
+"${0}:\n"
+"${1}\n"
+"\n"
+"Do you wish to process it anyway?"
 msgstr ""
 
 #: pickup_and_return.js:NOTICE_CHANGE_OF_PATRON
 msgid ""
-"Note that the resource scanned was out on reservation to different\n"
+"Note that the resource scanned was out on reservation to a different\n"
 "patron than the last resource you scanned.  If this is not\n"
 "expected, stop to examine outstanding reservations for your patron\n"
 "or on the resource."
+msgstr ""
+
+#: pickup_and_return.js:SELECT_SOMETHING
+msgid "You have not selected any reservations."
 msgstr ""
 
 #: pickup_and_return.js:AUTO_out_bresv

@@ -1,17 +1,18 @@
+#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/cat.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-23 23:36-0400\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
 "PO-Revision-Date: 2010-03-23 07:40+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-03-24 04:54+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Generator: Translate Toolkit 1.8.1\n"
 "X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-05-18 04:39+0000\n"
 
 #: bib.no_marc
 msgid "No MARC Record"
@@ -57,6 +58,49 @@ msgstr "(Не каталогизирован)"
 msgid "Item not cataloged."
 msgstr "Единица не каталогизирована"
 
+#. # %1$s = Bib Record ID
+#: staff.cat.manage_multi_bib_items.tab_name
+msgid "Manage Foreign Items for Bib %1$s"
+msgstr ""
+
+#: staff.cat.manage_multi_bib_items.result.column.value.error
+msgid "Error"
+msgstr ""
+
+#: staff.cat.manage_multi_bib_items.result.column.value.success
+msgid "Success"
+msgstr ""
+
+#: staff.cat.manage_multi_bib_items.result.column.value.failed
+msgid "Failed"
+msgstr ""
+
+#: staff.cat.manage_multi_bib_items.result.column.value.item_linked_to_bib
+msgid "Item linked to bib"
+msgstr ""
+
+#: staff.cat.manage_multi_bib_items.result.column.value.item_native_to_bib
+msgid "Item native to bib"
+msgstr ""
+
+#: staff.cat.manage_multi_bib_items.result.column.value.peer_type_updated
+msgid "Peer Type updated"
+msgstr ""
+
+#: staff.cat.manage_multi_bib_items.prompt.title
+msgid "Change Peer Type"
+msgstr ""
+
+#. # %1$s = Bib Record ID
+#: staff.cat.manage_multi_bib_items.prompt.confirm.unlink_item_from_bib.singular
+msgid "Unlink selected item from Bib %1$s"
+msgstr ""
+
+#. # %1$s = Bib Record ID, %2$s = Number of selected items
+#: staff.cat.manage_multi_bib_items.prompt.confirm.unlink_item_from_bib.plural
+msgid "Unlink %2$s selected items from Bib %1$s"
+msgstr ""
+
 #: staff.cat.copy_browser.add_item.title
 msgid "Add Item"
 msgstr "Добавка библ. единицы"
@@ -68,6 +112,25 @@ msgstr "копи браузер -> добавка копий"
 #: staff.cat.copy_browser.add_items_bucket.error
 msgid "copy browser -> add copies to bucket"
 msgstr "копи браузер -> добавка копий в корзину"
+
+#: staff.cat.copy_browser.make_bookable.create_failed_silent
+msgid "No response from server"
+msgstr ""
+
+#: staff.cat.copy_browser.make_bookable.create_failed
+msgid ""
+"Error from server: %1$d %2$s\n"
+"%3$s\n"
+"%4$s"
+msgstr ""
+
+#: staff.cat.copy_browser.make_bookable.newtab_failed
+msgid "Could not open new tab"
+msgstr ""
+
+#: staff.cat.copy_browser.make_bookable.newtab_name
+msgid "Resources"
+msgstr ""
 
 #: staff.cat.copy_browser.replace_barcode.failed
 msgid "Barcode %1$s not likely replaced."
@@ -94,21 +157,18 @@ msgid "Delete Items?"
 msgstr "Стереть библ. единицы?"
 
 #: staff.cat.copy_browser.delete_items.delete
-msgid ""
-"_: staff.cat.copy_browser.delete_items.delete\n"
-"Delete"
+msgctxt "staff.cat.copy_browser.delete_items.delete"
+msgid "Delete"
 msgstr "Стереть"
 
 #: staff.cat.copy_browser.delete_items.cancel
-msgid ""
-"_: staff.cat.copy_browser.delete_items.cancel\n"
-"Cancel"
+msgctxt "staff.cat.copy_browser.delete_items.cancel"
+msgid "Cancel"
 msgstr "Отклонить"
 
 #: staff.cat.copy_browser.delete_items.override
-msgid ""
-"_: staff.cat.copy_browser.delete_items.override\n"
-"Override Delete Failure?"
+msgctxt "staff.cat.copy_browser.delete_items.override"
+msgid "Override Delete Failure?"
 msgstr "Отвергать ошибку удаления?"
 
 #: staff.cat.copy_browser.delete_items.complete
@@ -120,9 +180,8 @@ msgid "copy browser -> delete items"
 msgstr "копи браузер -> удалить библ. единицы"
 
 #: staff.cat.copy_browser.print_spine.tab
-msgid ""
-"_: staff.cat.copy_browser.print_spine.tab\n"
-"Spine Labels"
+msgctxt "staff.cat.copy_browser.print_spine.tab"
+msgid "Spine Labels"
 msgstr "Ярлыки на корешке"
 
 #: staff.cat.copy_browser.print_spine.error
@@ -141,41 +200,27 @@ msgstr "Добавить том/единицу"
 msgid "copy browser -> add volumes"
 msgstr "копи браузер -> добавить тома"
 
-#: staff.cat.copy_browser.edit_volume.permission_error
-msgid "You do not have permission to edit this volume."
-msgstr "У Вас нет разрешения отредактировать этот том"
+#: staff.cat.edit_volume.permission_error
+msgid "You do not have permission to edit the volume or volumes selected."
+msgstr ""
 
-#: staff.cat.copy_browser.edit_volume.title
+#: staff.cat.edit_volume.title
 msgid "Volume"
 msgstr "Том"
 
-#: staff.cat.copy_browser.edit_volume.title.plural
-msgid ""
-"_: staff.cat.copy_browser.edit_volume.title.plural\n"
-"Volumes"
+#: staff.cat.edit_volume.title.plural
+#, fuzzy
+msgctxt "staff.cat.edit_volume.title.plural"
+msgid "Volumes"
 msgstr "Тома"
 
-#: staff.cat.copy_browser.edit_volume.failed
-msgid ""
-"Edit failed:  You tried to change a volume's callnumber to one that is "
-"already in use for the given library.  You should transfer the items to the "
-"desired callnumber instead."
+#: staff.cat.edit_volumes.override.confirm
+msgid "Override volume re-labeling collision and merge the volumes?"
 msgstr ""
-"Ошибка редактирования: Вы попытались изменить указатель тома на тот, который "
-"уже существуетв этой библиотеке. Взамен вы должны перевести единицы под "
-"желанный указатель."
 
-#: staff.cat.copy_browser.edit_volume.success
-msgid "Volumes modified."
-msgstr "Тома изменены"
-
-#: staff.cat.copy_browser.edit_volume.error
-msgid "volume update error:"
-msgstr "ошибка обновления тома:"
-
-#: staff.cat.copy_browser.edit_volume.exception
-msgid "Copy Browser -> Volume Edit"
-msgstr "Копи браузер -> редактировать том"
+#: staff.cat.edit_volumes.label_exists.details
+msgid "%1$s"
+msgstr ""
 
 #: staff.cat.copy_browser.delete_volume.prompt
 msgid "Are you sure you would like to delete this volume?"
@@ -190,21 +235,18 @@ msgid "Delete Volumes?"
 msgstr "Удалить тома?"
 
 #: staff.cat.copy_browser.delete_volume.delete
-msgid ""
-"_: staff.cat.copy_browser.delete_volume.delete\n"
-"Delete"
+msgctxt "staff.cat.copy_browser.delete_volume.delete"
+msgid "Delete"
 msgstr "Удалить"
 
 #: staff.cat.copy_browser.delete_volume.cancel
-msgid ""
-"_: staff.cat.copy_browser.delete_volume.cancel\n"
-"Cancel"
+msgctxt "staff.cat.copy_browser.delete_volume.cancel"
+msgid "Cancel"
 msgstr "Отклонить"
 
 #: staff.cat.copy_browser.delete_volume.override
-msgid ""
-"_: staff.cat.copy_browser.delete_volume.override\n"
-"Override Delete Failure?"
+msgctxt "staff.cat.copy_browser.delete_volume.override"
+msgid "Override Delete Failure?"
 msgstr "Отвергать ошибку удаления?"
 
 #: staff.cat.copy_browser.delete_volume.copies_remain
@@ -213,10 +255,6 @@ msgid ""
 "volume itself."
 msgstr ""
 "Вы должны удалить все копии тома прежде, чем Вы сможете удалить сам том."
-
-#: staff.cat.copy_browser.delete_volume.success
-msgid "Volumes deleted."
-msgstr "Тома вычеркнуты."
 
 #: staff.cat.copy_browser.delete_volume.exception
 msgid "copy browser -> delete volumes"
@@ -232,9 +270,8 @@ msgstr ""
 "Выберите только одну Библиотеку, чтобы отметить как Том Передачи Назначения"
 
 #: staff.cat.copy_browser.mark_library.title
-msgid ""
-"_: staff.cat.copy_browser.mark_library.title\n"
-"Limit Selection"
+msgctxt "staff.cat.copy_browser.mark_library.title"
+msgid "Limit Selection"
 msgstr "Ограничить выбор"
 
 #: staff.cat.copy_browser.mark_volume.alert
@@ -243,13 +280,11 @@ msgstr "Том отмечен как Единица Передачи Назна�
 
 #: staff.cat.copy_browser.mark_volume.prompt
 msgid "Choose just one Volume to mark as Item Transfer Destination"
-msgstr ""
-"Выберите одну  единицу чтобы отметить как Единица Передачи Назначения"
+msgstr "Выберите одну  единицу чтобы отметить как Единица Передачи Назначения"
 
 #: staff.cat.copy_browser.mark_volume.title
-msgid ""
-"_: staff.cat.copy_browser.mark_volume.title\n"
-"Limit Selection"
+msgctxt "staff.cat.copy_browser.mark_volume.title"
+msgid "Limit Selection"
 msgstr "Ограничить отбор"
 
 #: staff.cat.copy_browser.transfer_volume.alert
@@ -265,21 +300,18 @@ msgid "Transfer volumes %1$s to library %2$s on the following record?"
 msgstr "Перевести тома %1$s в библиотеку %2$s для следующей записи?"
 
 #: staff.cat.copy_browser.transfer.submit.label
-msgid ""
-"_: staff.cat.copy_browser.transfer.submit.label\n"
-"Transfer"
+msgctxt "staff.cat.copy_browser.transfer.submit.label"
+msgid "Transfer"
 msgstr "Перенос"
 
 #: staff.cat.copy_browser.transfer.cancel.label
-msgid ""
-"_: staff.cat.copy_browser.transfer.cancel.label\n"
-"Cancel"
+msgctxt "staff.cat.copy_browser.transfer.cancel.label"
+msgid "Cancel"
 msgstr "Отмена"
 
 #: staff.cat.copy_browser.transfer.cancel.accesskey
-msgid ""
-"_: staff.cat.copy_browser.transfer.cancel.accesskey\n"
-"C"
+msgctxt "staff.cat.copy_browser.transfer.cancel.accesskey"
+msgid "C"
 msgstr "С"
 
 #: staff.cat.copy_browser.transfer.title
@@ -287,9 +319,8 @@ msgid "Volume Transfer"
 msgstr "Перенос тома"
 
 #: staff.cat.copy_browser.transfer.incomplete
-msgid ""
-"_: staff.cat.copy_browser.transfer.incomplete\n"
-"Transfer Aborted"
+msgctxt "staff.cat.copy_browser.transfer.incomplete"
+msgid "Transfer Aborted"
 msgstr "Передача прервана"
 
 #: staff.cat.copy_browser.transfer.override.failure
@@ -309,8 +340,8 @@ msgid "All volumes not likely transferred."
 msgstr "Все тома вряд ли переданы"
 
 #: staff.cat.copy_browser.transfer_items.missing_volume
+msgctxt "staff.cat.copy_browser.transfer_items.missing_volume"
 msgid ""
-"_: staff.cat.copy_browser.transfer_items.missing_volume\n"
 "Please mark a volume as the destination from within holdings maintenance and "
 "then try this again."
 msgstr ""
@@ -320,6 +351,11 @@ msgstr ""
 #: staff.cat.copy_browser.transfer_items.unexpected_error
 msgid "All copies not likely transferred."
 msgstr "Все копии не переданы"
+
+#: staff.cat.copy_browser.link_as_multi_bib.missing_bib
+msgid ""
+"Please Mark a bib record as a Target for Foreign Items and try this again."
+msgstr ""
 
 #: staff.cat.copy_browser.missing_library
 msgid "Missing library list."
@@ -334,9 +370,8 @@ msgid "Location/Barcode"
 msgstr "Место/ штрих-код"
 
 #: staff.cat.copy_browser.list_init.volume_count
-msgid ""
-"_: staff.cat.copy_browser.list_init.volume_count\n"
-"Volumes"
+msgctxt "staff.cat.copy_browser.list_init.volume_count"
+msgid "Volumes"
 msgstr "Тома"
 
 #: staff.cat.copy_browser.list_init.copy_count
@@ -352,9 +387,8 @@ msgid "Problem refreshing the volume/copy tree."
 msgstr "Проблема при восстановлении дерева тома/копии."
 
 #: staff.cat.copy_buckets.render_pending_copies.complete
-msgid ""
-"_: staff.cat.copy_buckets.render_pending_copies.complete\n"
-"Action completed."
+msgctxt "staff.cat.copy_buckets.render_pending_copies.complete"
+msgid "Action completed."
 msgstr "Действие завершено"
 
 #: staff.cat.copy_buckets.retrieve_row.error
@@ -362,27 +396,23 @@ msgid "Error retrieving details for item with copy id = %1$s"
 msgstr "Ошибка при возобновлении деталей для единиц с ID = %1$s"
 
 #: staff.cat.copy_buckets.menulist.render.choose_bucket
-msgid ""
-"_: staff.cat.copy_buckets.menulist.render.choose_bucket\n"
-"Choose a bucket..."
+msgctxt "staff.cat.copy_buckets.menulist.render.choose_bucket"
+msgid "Choose a bucket..."
 msgstr "Подберите  корзину"
 
 #: staff.cat.copy_buckets.menulist.render.retrieve_bucket
-msgid ""
-"_: staff.cat.copy_buckets.menulist.render.retrieve_bucket\n"
-"Retrieve shared bucket..."
+msgctxt "staff.cat.copy_buckets.menulist.render.retrieve_bucket"
+msgid "Retrieve shared bucket..."
 msgstr "Восстановите общую корзину"
 
 #: staff.cat.copy_buckets.menulist.change_bucket.prompt
-msgid ""
-"_: staff.cat.copy_buckets.menulist.change_bucket.prompt\n"
-"Enter bucket number:"
+msgctxt "staff.cat.copy_buckets.menulist.change_bucket.prompt"
+msgid "Enter bucket number:"
 msgstr "Введите  номер корзины"
 
 #: staff.cat.copy_buckets.menulist.change_bucket.undefined
-msgid ""
-"_: staff.cat.copy_buckets.menulist.change_bucket.undefined\n"
-"Could not find a bucket with ID = %1$s"
+msgctxt "staff.cat.copy_buckets.menulist.change_bucket.undefined"
+msgid "Could not find a bucket with ID = %1$s"
 msgstr "Не находит корзину с ID = %1$s"
 
 #: staff.cat.copy_buckets.menulist.change_bucket.error
@@ -391,15 +421,13 @@ msgstr ""
 "Ошибка при восстановлении корзины. Вы использовали правильную корзину ID?"
 
 #: staff.cat.copy_buckets.copy_buckets_add.error
-msgid ""
-"_: staff.cat.copy_buckets.copy_buckets_add.error\n"
-"Addition likely failed."
+msgctxt "staff.cat.copy_buckets.copy_buckets_add.error"
+msgid "Addition likely failed."
 msgstr "Дополнение вероятно не удалось"
 
 #: staff.cat.copy_buckets.copy_buckets_sel_add.error
-msgid ""
-"_: staff.cat.copy_buckets.copy_buckets_sel_add.error\n"
-"Addition likely failed."
+msgctxt "staff.cat.copy_buckets.copy_buckets_sel_add.error"
+msgid "Addition likely failed."
 msgstr "Дополнение вероятно не удалось"
 
 #: staff.cat.copy_buckets.copy_buckets_delete_item.error
@@ -407,21 +435,18 @@ msgid "Deletion likely failed."
 msgstr "Удаление вероятно не удалось"
 
 #: staff.cat.copy_buckets.copy_buckets_delete_item.complete
-msgid ""
-"_: staff.cat.copy_buckets.copy_buckets_delete_item.complete\n"
-"Action completed."
+msgctxt "staff.cat.copy_buckets.copy_buckets_delete_item.complete"
+msgid "Action completed."
 msgstr "Действие завершено"
 
 #: staff.cat.copy_buckets.copy_buckets_delete_bucket.confirm
-msgid ""
-"_: staff.cat.copy_buckets.copy_buckets_delete_bucket.confirm\n"
-"Delete the bucket named %1$s?"
+msgctxt "staff.cat.copy_buckets.copy_buckets_delete_bucket.confirm"
+msgid "Delete the bucket named %1$s?"
 msgstr "Удалите корзину названную %1$s?"
 
 #: staff.cat.copy_buckets.copy_buckets_delete_bucket.complete
-msgid ""
-"_: staff.cat.copy_buckets.copy_buckets_delete_bucket.complete\n"
-"Action completed."
+msgctxt "staff.cat.copy_buckets.copy_buckets_delete_bucket.complete"
+msgid "Action completed."
 msgstr "Действие завершено"
 
 #: staff.cat.copy_buckets.copy_buckets_delete_bucket.error
@@ -429,21 +454,18 @@ msgid "Bucket deletion likely failed."
 msgstr "Удаление корзины вероятно не удалось"
 
 #: staff.cat.copy_buckets.copy_buckets_new_bucket.prompt
-msgid ""
-"_: staff.cat.copy_buckets.copy_buckets_new_bucket.prompt\n"
-"What would you like to name the bucket?"
+msgctxt "staff.cat.copy_buckets.copy_buckets_new_bucket.prompt"
+msgid "What would you like to name the bucket?"
 msgstr "Как вы хотите назвать корзину?"
 
 #: staff.cat.copy_buckets.copy_buckets_new_bucket.title
-msgid ""
-"_: staff.cat.copy_buckets.copy_buckets_new_bucket.title\n"
-"Bucket Creation"
+msgctxt "staff.cat.copy_buckets.copy_buckets_new_bucket.title"
+msgid "Bucket Creation"
 msgstr "Создание корзины"
 
 #: staff.cat.copy_buckets.copy_buckets_new_bucket.container_exists
-msgid ""
-"_: staff.cat.copy_buckets.copy_buckets_new_bucket.container_exists\n"
-"You already have a bucket with that name."
+msgctxt "staff.cat.copy_buckets.copy_buckets_new_bucket.container_exists"
+msgid "You already have a bucket with that name."
 msgstr "Уже существует корзина с таким именем"
 
 #: staff.cat.copy_buckets.copy_buckets_new_bucket.success
@@ -451,9 +473,8 @@ msgid "Bucket \"%1$s\" created."
 msgstr "Корзина \"%1$s\" создана"
 
 #: staff.cat.copy_buckets.copy_buckets_new_bucket.error
-msgid ""
-"_: staff.cat.copy_buckets.copy_buckets_new_bucket.error\n"
-"Bucket creation failed."
+msgctxt "staff.cat.copy_buckets.copy_buckets_new_bucket.error"
+msgid "Bucket creation failed."
 msgstr "Создание корзины не удалось"
 
 #: staff.cat.copy_buckets.batch.error
@@ -473,8 +494,8 @@ msgid ""
 "Transfer the items in bucket \"%1$s\" from their original volumes to the "
 "volume labelled \"%2$s\" for the library \"%3$s\" on the following record?"
 msgstr ""
-"Передать единицы из корзины \"%1$s\"  из оригинальных томов в тома "
-"отмеченные \"%2$s\" для библиотеки \"%3$s\" для этой записи?"
+"Передать единицы из корзины \"%1$s\"  из оригинальных томов в тома отмеченные "
+"\"%2$s\" для библиотеки \"%3$s\" для этой записи?"
 
 #: staff.cat.copy_buckets.copy_buckets_transfer_to_volume.error
 msgid "Items not likely transferred."
@@ -493,27 +514,23 @@ msgid "Copy this item into which bucket?"
 msgstr "В какую корзину скопировать единицу?"
 
 #: staff.cat.copy_buckets_quick.bucket_prompt.plural
-msgid ""
-"_: staff.cat.copy_buckets_quick.bucket_prompt.plural\n"
-"Copy these %1$s items into which bucket?"
+msgctxt "staff.cat.copy_buckets_quick.bucket_prompt.plural"
+msgid "Copy these %1$s items into which bucket?"
 msgstr "В какую корзину скопировать эти %1$s единицы?"
 
 #: staff.cat.copy_buckets_quick.copy_buckets_new_bucket.prompt
-msgid ""
-"_: staff.cat.copy_buckets_quick.copy_buckets_new_bucket.prompt\n"
-"What would you like to name the bucket?"
+msgctxt "staff.cat.copy_buckets_quick.copy_buckets_new_bucket.prompt"
+msgid "What would you like to name the bucket?"
 msgstr "Как хотите назвать корзину?"
 
 #: staff.cat.copy_buckets_quick.copy_buckets_new_bucket.title
-msgid ""
-"_: staff.cat.copy_buckets_quick.copy_buckets_new_bucket.title\n"
-"Bucket Creation"
+msgctxt "staff.cat.copy_buckets_quick.copy_buckets_new_bucket.title"
+msgid "Bucket Creation"
 msgstr "Создание корзины"
 
 #: staff.cat.copy_buckets_quick.copy_buckets_new_bucket.error
-msgid ""
-"_: staff.cat.copy_buckets_quick.copy_buckets_new_bucket.error\n"
-"Bucket creation failed."
+msgctxt "staff.cat.copy_buckets_quick.copy_buckets_new_bucket.error"
+msgid "Bucket creation failed."
 msgstr "Создание корзины не удалось"
 
 #: staff.cat.copy_buckets_quick.addition.error
@@ -525,8 +542,12 @@ msgid "Copy Editor"
 msgstr "Редактор Копий"
 
 #: staff.cat.copy_editor.create_copies
-msgid "Create Copies"
-msgstr "Создать копии"
+msgid "Modify/Create Copies"
+msgstr ""
+
+#: staff.cat.copy_editor.create_copies.accesskey
+msgid "M"
+msgstr ""
 
 #: staff.cat.copy_editor.copy_notes
 msgid "Copy Notes"
@@ -593,21 +614,18 @@ msgid "Template %1$s already exists."
 msgstr "Шаблон %1$s уже есть"
 
 #: staff.cat.copy_editor.import_templates.replace.yes
-msgid ""
-"_: staff.cat.copy_editor.import_templates.replace.yes\n"
-"Yes"
+msgctxt "staff.cat.copy_editor.import_templates.replace.yes"
+msgid "Yes"
 msgstr "Да"
 
 #: staff.cat.copy_editor.import_templates.replace.no
-msgid ""
-"_: staff.cat.copy_editor.import_templates.replace.no\n"
-"No"
+msgctxt "staff.cat.copy_editor.import_templates.replace.no"
+msgid "No"
 msgstr "Нет"
 
 #: staff.cat.copy_editor.import_templates.replace.click_here
-msgid ""
-"_: staff.cat.copy_editor.import_templates.replace.click_here\n"
-"Click here"
+msgctxt "staff.cat.copy_editor.import_templates.replace.click_here"
+msgid "Click here"
 msgstr "Щелкните сюда"
 
 #: staff.cat.copy_editor.import_templates.save.prompt
@@ -619,21 +637,18 @@ msgid "Final warning"
 msgstr "Заключительное предупреждение"
 
 #: staff.cat.copy_editor.import_templates.save.yes
-msgid ""
-"_: staff.cat.copy_editor.import_templates.save.yes\n"
-"Yes"
+msgctxt "staff.cat.copy_editor.import_templates.save.yes"
+msgid "Yes"
 msgstr "Да"
 
 #: staff.cat.copy_editor.import_templates.save.no
-msgid ""
-"_: staff.cat.copy_editor.import_templates.save.no\n"
-"No"
+msgctxt "staff.cat.copy_editor.import_templates.save.no"
+msgid "No"
 msgstr "Нет"
 
 #: staff.cat.copy_editor.import_templates.save.click_here
-msgid ""
-"_: staff.cat.copy_editor.import_templates.save.click_here\n"
-"Click here"
+msgctxt "staff.cat.copy_editor.import_templates.save.click_here"
+msgid "Click here"
 msgstr "Щелкните сюда"
 
 #: staff.cat.copy_editor.import_templates.save.success
@@ -683,26 +698,19 @@ msgid "%1$s copies"
 msgstr "%1$s копий"
 
 #: staff.cat.copy_editor.apply.label
-msgid ""
-"_: staff.cat.copy_editor.apply.label\n"
-"Apply"
+msgctxt "staff.cat.copy_editor.apply.label"
+msgid "Apply"
 msgstr "Применять"
 
 #: staff.cat.copy_editor.apply.accesskey
-msgid ""
-"_: staff.cat.copy_editor.apply.accesskey\n"
-"A"
+msgctxt "staff.cat.copy_editor.apply.accesskey"
+msgid "A"
 msgstr "А"
 
 #: staff.cat.copy_editor.cancel.label
-msgid ""
-"_: staff.cat.copy_editor.cancel.label\n"
-"Cancel"
+msgctxt "staff.cat.copy_editor.cancel.label"
+msgid "Cancel"
 msgstr "Отклонить"
-
-#: staff.cat.copy_editor.handle_update.success
-msgid "Items were added or modified."
-msgstr "Библ. единицы были добавлены или изменены."
 
 #: staff.cat.copy_editor.handle_update.error
 msgid "copy update error:"
@@ -730,9 +738,8 @@ msgid "<Remove Circulate as Type>"
 msgstr "<Удалить циркулировать как Тип>"
 
 #: staff.cat.copy_editor.field.unset_or_null
-msgid ""
-"_: staff.cat.copy_editor.field.unset_or_null\n"
-"<Unset>"
+msgctxt "staff.cat.copy_editor.field.unset_or_null"
+msgid "<Unset>"
 msgstr "<Сброс>"
 
 #: staff.cat.copy_editor.field.owning_library.label
@@ -776,15 +783,13 @@ msgid "Circulate?"
 msgstr "Циркулировать?"
 
 #: staff.cat.copy_editor.field.circulate.yes_or_true
-msgid ""
-"_: staff.cat.copy_editor.field.circulate.yes_or_true\n"
-"Yes"
+msgctxt "staff.cat.copy_editor.field.circulate.yes_or_true"
+msgid "Yes"
 msgstr "Да"
 
 #: staff.cat.copy_editor.field.circulate.no_or_false
-msgid ""
-"_: staff.cat.copy_editor.field.circulate.no_or_false\n"
-"No"
+msgctxt "staff.cat.copy_editor.field.circulate.no_or_false"
+msgid "No"
 msgstr "Нет"
 
 #: staff.cat.copy_editor.field.holdable.label
@@ -792,15 +797,29 @@ msgid "Holdable?"
 msgstr "Удерживаемый"
 
 #: staff.cat.copy_editor.field.holdable.yes_or_true
-msgid ""
-"_: staff.cat.copy_editor.field.holdable.yes_or_true\n"
-"Yes"
+msgctxt "staff.cat.copy_editor.field.holdable.yes_or_true"
+msgid "Yes"
 msgstr "Да"
 
 #: staff.cat.copy_editor.field.holdable.no_or_false
-msgid ""
-"_: staff.cat.copy_editor.field.holdable.no_or_false\n"
-"No"
+msgctxt "staff.cat.copy_editor.field.holdable.no_or_false"
+msgid "No"
+msgstr "Нет"
+
+#: staff.cat.copy_editor.field.floating.label
+msgid "Floating?"
+msgstr ""
+
+#: staff.cat.copy_editor.field.floating.yes_or_true
+#, fuzzy
+msgctxt "staff.cat.copy_editor.field.floating.yes_or_true"
+msgid "Yes"
+msgstr "Да"
+
+#: staff.cat.copy_editor.field.floating.no_or_false
+#, fuzzy
+msgctxt "staff.cat.copy_editor.field.floating.no_or_false"
+msgid "No"
 msgstr "Нет"
 
 #: staff.cat.copy_editor.field.age_based_hold_protection.label
@@ -816,9 +835,8 @@ msgid "Short"
 msgstr "Короткий"
 
 #: staff.cat.copy_editor.field.loan_duration.normal
-msgid ""
-"_: staff.cat.copy_editor.field.loan_duration.normal\n"
-"Normal"
+msgctxt "staff.cat.copy_editor.field.loan_duration.normal"
+msgid "Normal"
 msgstr "Нормальный"
 
 #: staff.cat.copy_editor.field.loan_duration.extended
@@ -834,9 +852,8 @@ msgid "Low"
 msgstr "Низкий"
 
 #: staff.cat.copy_editor.field.fine_level.normal
-msgid ""
-"_: staff.cat.copy_editor.field.fine_level.normal\n"
-"Normal"
+msgctxt "staff.cat.copy_editor.field.fine_level.normal"
+msgid "Normal"
 msgstr "Нормальный"
 
 #: staff.cat.copy_editor.field.fine_level.high
@@ -860,15 +877,13 @@ msgid "Deposit?"
 msgstr "Депозит?"
 
 #: staff.cat.copy_editor.field.deposit.yes_or_true
-msgid ""
-"_: staff.cat.copy_editor.field.deposit.yes_or_true\n"
-"Yes"
+msgctxt "staff.cat.copy_editor.field.deposit.yes_or_true"
+msgid "Yes"
 msgstr "Да"
 
 #: staff.cat.copy_editor.field.deposit.no_or_false
-msgid ""
-"_: staff.cat.copy_editor.field.deposit.no_or_false\n"
-"No"
+msgctxt "staff.cat.copy_editor.field.deposit.no_or_false"
+msgid "No"
 msgstr "Нет"
 
 #: staff.cat.copy_editor.field.deposit_amount.label
@@ -884,15 +899,13 @@ msgid "OPAC Visible?"
 msgstr "OPAC видим?"
 
 #: staff.cat.copy_editor.field.opac_visible.yes_or_true
-msgid ""
-"_: staff.cat.copy_editor.field.opac_visible.yes_or_true\n"
-"Yes"
+msgctxt "staff.cat.copy_editor.field.opac_visible.yes_or_true"
+msgid "Yes"
 msgstr "Да"
 
 #: staff.cat.copy_editor.field.opac_visible.no_or_false
-msgid ""
-"_: staff.cat.copy_editor.field.opac_visible.no_or_false\n"
-"No"
+msgctxt "staff.cat.copy_editor.field.opac_visible.no_or_false"
+msgid "No"
 msgstr "Нет"
 
 #: staff.cat.copy_editor.field.reference.label
@@ -900,15 +913,13 @@ msgid "Reference?"
 msgstr "mapСсылка"
 
 #: staff.cat.copy_editor.field.reference.yes_or_true
-msgid ""
-"_: staff.cat.copy_editor.field.reference.yes_or_true\n"
-"Yes"
+msgctxt "staff.cat.copy_editor.field.reference.yes_or_true"
+msgid "Yes"
 msgstr "Да"
 
 #: staff.cat.copy_editor.field.reference.no_or_false
-msgid ""
-"_: staff.cat.copy_editor.field.reference.no_or_false\n"
-"No"
+msgctxt "staff.cat.copy_editor.field.reference.no_or_false"
+msgid "No"
 msgstr "Нет"
 
 #: staff.cat.copy_editor.field.mint_condition.label
@@ -928,9 +939,8 @@ msgid "Add New Note"
 msgstr "Добавить новую заметку"
 
 #: staff.cat.copy_notes.render_notes.accesskey
-msgid ""
-"_: staff.cat.copy_notes.render_notes.accesskey\n"
-"A"
+msgctxt "staff.cat.copy_notes.render_notes.accesskey"
+msgid "A"
 msgstr "А"
 
 #: staff.cat.copy_notes.widgets_apply.note_id
@@ -962,15 +972,13 @@ msgid "Delete Note"
 msgstr "Удалить заметку"
 
 #: staff.cat.copy_notes.delete_note.prompt.yes
-msgid ""
-"_: staff.cat.copy_notes.delete_note.prompt.yes\n"
-"Yes"
+msgctxt "staff.cat.copy_notes.delete_note.prompt.yes"
+msgid "Yes"
 msgstr "Да"
 
 #: staff.cat.copy_notes.delete_note.prompt.no
-msgid ""
-"_: staff.cat.copy_notes.delete_note.prompt.no\n"
-"No"
+msgctxt "staff.cat.copy_notes.delete_note.prompt.no"
+msgid "No"
 msgstr "Нет"
 
 #: staff.cat.copy_notes.delete_note.success
@@ -980,6 +988,10 @@ msgstr "Заметка удалена"
 #: staff.cat.copy_notes.delete_note.close_window
 msgid "Close Window"
 msgstr "Закрыть окно"
+
+#: staff.cat.copy_notes.delete_note.close_window.accesskey
+msgid "W"
+msgstr ""
 
 #: staff.cat.copy_notes.new_note.label
 msgid "New Note"
@@ -997,16 +1009,18 @@ msgstr "Заглавие"
 msgid "Note"
 msgstr "Зааметка"
 
+#: staff.cat.copy_notes.new_note.initials
+msgid "Initials"
+msgstr ""
+
 #: staff.cat.copy_notes.new_note.cancel.label
-msgid ""
-"_: staff.cat.copy_notes.new_note.cancel.label\n"
-"Cancel"
+msgctxt "staff.cat.copy_notes.new_note.cancel.label"
+msgid "Cancel"
 msgstr "Отклонить"
 
 #: staff.cat.copy_notes.new_note.cancel.accesskey
-msgid ""
-"_: staff.cat.copy_notes.new_note.cancel.accesskey\n"
-"C"
+msgctxt "staff.cat.copy_notes.new_note.cancel.accesskey"
+msgid "C"
 msgstr "С"
 
 #: staff.cat.copy_notes.new_note.add_note.label
@@ -1014,14 +1028,9 @@ msgid "Add Note"
 msgstr "Добавить заметку"
 
 #: staff.cat.copy_notes.new_note.add_note.accesskey
-msgid ""
-"_: staff.cat.copy_notes.new_note.add_note.accesskey\n"
-"A"
+msgctxt "staff.cat.copy_notes.new_note.add_note.accesskey"
+msgid "A"
 msgstr "А"
-
-#: staff.cat.copy_notes.new_note.success
-msgid "Note added."
-msgstr "Заметка добавлена"
 
 #: staff.cat.copy_notes.new_note.error
 msgid "The note was not likely created."
@@ -1036,26 +1045,31 @@ msgid "Total Circs"
 msgstr "Итого Circs"
 
 #: staff.cat.copy_summary.yes
-msgid ""
-"_: staff.cat.copy_summary.yes\n"
-"Yes"
+msgctxt "staff.cat.copy_summary.yes"
+msgid "Yes"
 msgstr "Да"
 
 #: staff.cat.copy_summary.no
-msgid ""
-"_: staff.cat.copy_summary.no\n"
-"No"
+msgctxt "staff.cat.copy_summary.no"
+msgid "No"
 msgstr "Нет"
 
 #: staff.cat.copy_summary.unset
-msgid ""
-"_: staff.cat.copy_summary.unset\n"
-"<Unset>"
+msgctxt "staff.cat.copy_summary.unset"
+msgid "<Unset>"
 msgstr "<Сброс>"
 
 #: staff.cat.copy_summary.not_cataloged
 msgid "Not Cataloged"
 msgstr "Не каталогизирована"
+
+#: staff.cat.marcedit.authority_see_also
+msgid "See also: %1$s"
+msgstr ""
+
+#: staff.cat.marcedit.authority_see_from
+msgid "See from: %1$s"
+msgstr ""
 
 #: staff.cat.marcedit.help.add_row
 msgid "Add Row: CTRL+Enter"
@@ -1133,6 +1147,10 @@ msgstr "Добавить/Заменить 008"
 msgid "Not a controlled subfield"
 msgstr "Не управляемое подполе"
 
+#: staff.cat.marcedit.apply_full.label
+msgid "Apply Full Authority (1XX)"
+msgstr ""
+
 #: staff.cat.marcedit.apply_selected.label
 msgid "Apply Selected"
 msgstr "Применить выбранное"
@@ -1140,6 +1158,30 @@ msgstr "Применить выбранное"
 #: staff.cat.marcedit.no_authority_match.label
 msgid "No matching authority records found"
 msgstr "Не найдены совпадающие авторитетные записи"
+
+#: staff.cat.marcedit.next_page.label
+msgid "Next page"
+msgstr ""
+
+#: staff.cat.marcedit.previous_page.label
+msgid "Previous page"
+msgstr ""
+
+#: staff.cat.marcedit.create_authority.label
+msgid "Create New Authority from this Field"
+msgstr ""
+
+#: staff.cat.marcedit.create_authority_now.label
+msgid "Create Immediately"
+msgstr ""
+
+#: staff.cat.marcedit.create_authority_success.label
+msgid "Created new authority record"
+msgstr ""
+
+#: staff.cat.marcedit.create_authority_edit.label
+msgid "Create and Edit..."
+msgstr ""
 
 #: staff.cat.marc_new.tab_name
 msgid "MARC Template"
@@ -1153,14 +1195,9 @@ msgstr "Создать запись"
 msgid "System Local"
 msgstr "Локальная Система"
 
-#: staff.cat.marc_new.record_created.label
-msgid "Record created."
-msgstr "Запись создана"
-
 #: staff.cat.marc_new.retrieving.label
-msgid ""
-"_: staff.cat.marc_new.retrieving.label\n"
-"Retrieving title..."
+msgctxt "staff.cat.marc_new.retrieving.label"
+msgid "Retrieving title..."
 msgstr "Поиск заглавия"
 
 #: staff.cat.marc_new.creating_record.error
@@ -1187,6 +1224,19 @@ msgstr "Еще не внедрена. Работа ведется. Выбери�
 msgid "Record: %1$s"
 msgstr "Запись: %1$s"
 
+#: staff.cat.opac.title_for_hold_transfer.destination_needed.label
+msgid "Need to mark a record as a Title Hold Transfer Destination first."
+msgstr ""
+
+#: staff.cat.opac.title_for_hold_transfer.success.label
+#, fuzzy
+msgid "Holds transferred."
+msgstr "Тома переданы"
+
+#: staff.cat.opac.title_for_hold_transfer.failure.label
+msgid "Holds not transferred."
+msgstr ""
+
 #: staff.cat.record_buckets.tab_name
 msgid "Record Buckets"
 msgstr "Запись корзины"
@@ -1204,9 +1254,8 @@ msgid "Records could not be exported."
 msgstr "Записи не можно экспортировать"
 
 #: staff.cat.record_buckets.rednder_pending_records.alert
-msgid ""
-"_: staff.cat.record_buckets.rednder_pending_records.alert\n"
-"Action completed."
+msgctxt "staff.cat.record_buckets.rednder_pending_records.alert"
+msgid "Action completed."
 msgstr "Действие выполнено"
 
 #: staff.cat.record_buckets.retrieve_row.std_unexpected_error
@@ -1218,21 +1267,18 @@ msgid "Could not retrieve your buckets."
 msgstr "Не возможно извлечь ваши корзины"
 
 #: staff.cat.record_buckets.menulist_placeholder.item1
-msgid ""
-"_: staff.cat.record_buckets.menulist_placeholder.item1\n"
-"Choose a bucket..."
+msgctxt "staff.cat.record_buckets.menulist_placeholder.item1"
+msgid "Choose a bucket..."
 msgstr "Выберите корзину..."
 
 #: staff.cat.record_buckets.menulist_placeholder.item2
-msgid ""
-"_: staff.cat.record_buckets.menulist_placeholder.item2\n"
-"Retrieve shared bucket..."
+msgctxt "staff.cat.record_buckets.menulist_placeholder.item2"
+msgid "Retrieve shared bucket..."
 msgstr "Извлечь общую корзину"
 
 #: staff.cat.record_buckets.change_bucket.bucket_id
-msgid ""
-"_: staff.cat.record_buckets.change_bucket.bucket_id\n"
-"Enter bucket number:"
+msgctxt "staff.cat.record_buckets.change_bucket.bucket_id"
+msgid "Enter bucket number:"
 msgstr "Введите номер корзины:"
 
 #: staff.cat.record_buckets.change_bucket.error
@@ -1241,97 +1287,50 @@ msgstr ""
 "Ошибка при извлечении корзины. Вы используете действительное ID  корзины?"
 
 #: staff.cat.record_buckets.delete_bucket_named
-msgid ""
-"_: staff.cat.record_buckets.delete_bucket_named\n"
-"Delete the bucket named %1$s?"
+msgctxt "staff.cat.record_buckets.delete_bucket_named"
+msgid "Delete the bucket named %1$s?"
 msgstr "Удалить корзину с именем %1$s?"
 
 #: staff.cat.record_buckets.new_bucket.bucket_prompt
-msgid ""
-"_: staff.cat.record_buckets.new_bucket.bucket_prompt\n"
-"What would you like to name the bucket?"
+msgctxt "staff.cat.record_buckets.new_bucket.bucket_prompt"
+msgid "What would you like to name the bucket?"
 msgstr "Как хотите назвать корзину?"
 
 #: staff.cat.record_buckets.new_bucket.bucket_prompt_title
-msgid ""
-"_: staff.cat.record_buckets.new_bucket.bucket_prompt_title\n"
-"Bucket Creation"
+msgctxt "staff.cat.record_buckets.new_bucket.bucket_prompt_title"
+msgid "Bucket Creation"
 msgstr "Создание корзины"
 
 #: staff.cat.record_buckets.new_bucket.same_name_alert
-msgid ""
-"_: staff.cat.record_buckets.new_bucket.same_name_alert\n"
-"You already have a bucket with that name."
+msgctxt "staff.cat.record_buckets.new_bucket.same_name_alert"
+msgid "You already have a bucket with that name."
 msgstr "Уже существует корзина с таким именем"
 
 #: staff.cat.record_buckets.new_bucket.bucket_created
 msgid "Bucket %1$s created."
 msgstr "Корзина %1$s создана"
 
-#: staff.cat.record_buckets.merge_records.merge_lead
-msgid "Merge these records? (Select the \"lead\" record first)"
-msgstr "Обьединить эти записи? (Выберите сначала \"lead\"запись)"
-
-#: staff.cat.record_buckets.merge_records.button.label
-msgid "Merge"
-msgstr "Обьединить"
-
-#: staff.cat.record_buckets.merge_records.cancel_button.label
-msgid ""
-"_: staff.cat.record_buckets.merge_records.cancel_button.label\n"
-"Cancel"
-msgstr "Отклонить"
-
-#: staff.cat.record_buckets.merge_records.cancel_button.accesskey
-msgid ""
-"_: staff.cat.record_buckets.merge_records.cancel_button.accesskey\n"
-"C"
-msgstr "С"
-
-#: staff.cat.record_buckets.merge_records.lead_record_number
-msgid "Lead Record? # %1$s"
-msgstr "Ведущая запись ? # %1$s"
-
-#: staff.cat.record_buckets.merge_records.lead
-msgid "Lead"
-msgstr "Ведущая"
-
 #: staff.cat.record_buckets.merge_records.fancy_prompt_title
 msgid "Record Merging"
 msgstr "Обьединение записи"
-
-#: staff.cat.record_buckets.merge_records.fancy_prompt.alert
-msgid "Merge Aborted"
-msgstr "Обьединение  прервано"
-
-#: staff.cat.record_buckets.merge_records.success
-msgid "Records were successfully merged."
-msgstr "Записи успешно обьеденены"
-
-#: staff.cat.record_buckets.merge_records.catch.std_unex_error
-msgid "Records were not likely merged."
-msgstr "Записи вероятно не были объединены"
 
 #: staff.cat.record_buckets.delete_records.xml1
 msgid "Delete these records?"
 msgstr "Удалить эти записи?"
 
 #: staff.cat.record_buckets.delete_records.button.label
-msgid ""
-"_: staff.cat.record_buckets.delete_records.button.label\n"
-"Delete"
+msgctxt "staff.cat.record_buckets.delete_records.button.label"
+msgid "Delete"
 msgstr "Удалить"
 
 #: staff.cat.record_buckets.delete_records.cancel_button.label
-msgid ""
-"_: staff.cat.record_buckets.delete_records.cancel_button.label\n"
-"Cancel"
+msgctxt "staff.cat.record_buckets.delete_records.cancel_button.label"
+msgid "Cancel"
 msgstr "Отклонить"
 
 #: staff.cat.record_buckets.delete_records.cancel_button.accesskey
-msgid ""
-"_: staff.cat.record_buckets.delete_records.cancel_button.accesskey\n"
-"C"
+msgctxt "staff.cat.record_buckets.delete_records.cancel_button.accesskey"
+msgid "C"
 msgstr "С"
 
 #: staff.cat.record_buckets.delete_records.xml2
@@ -1367,9 +1366,8 @@ msgid "Not Yet Implemented"
 msgstr "Еще не внедрен"
 
 #: staff.cat.record_buckets.cmd_sel_opac.tab_name
-msgid ""
-"_: staff.cat.record_buckets.cmd_sel_opac.tab_name\n"
-"Retrieving title..."
+msgctxt "staff.cat.record_buckets.cmd_sel_opac.tab_name"
+msgid "Retrieving title..."
 msgstr "Извлечение заглавия..."
 
 #: staff.cat.record_buckets.cmd_sel_opac.catch.std_unex_err
@@ -1377,9 +1375,8 @@ msgid "Showing in OPAC"
 msgstr "Показ в OPAC"
 
 #: staff.cat.record_buckets.submit.query_status
-msgid ""
-"_: staff.cat.record_buckets.submit.query_status\n"
-"Searching..."
+msgctxt "staff.cat.record_buckets.submit.query_status"
+msgid "Searching..."
 msgstr "Поиск..."
 
 #: staff.cat.record_buckets.prep_record_for_list.std_unex_err
@@ -1391,9 +1388,8 @@ msgid "Copy this record into which bucket?"
 msgstr "В какую корзину  скопировать эту запись?"
 
 #: staff.cat.record_buckets_quick.copy_multiple_records
-msgid ""
-"_: staff.cat.record_buckets_quick.copy_multiple_records\n"
-"Copy these %1$s items into which bucket?"
+msgctxt "staff.cat.record_buckets_quick.copy_multiple_records"
+msgid "Copy these %1$s items into which bucket?"
 msgstr "В какую корзину скопировать эти %1$s единицы?"
 
 #: staff.cat.record_buckets_quick.initing_record_buckets_quick_xul
@@ -1401,21 +1397,18 @@ msgid "Trying to init record_buckets_quick.xul"
 msgstr "Попытка иницировать record_buckets_quick.xul"
 
 #: staff.cat.record_buckets_quick.name_of_bucket
-msgid ""
-"_: staff.cat.record_buckets_quick.name_of_bucket\n"
-"What would you like to name the bucket?"
+msgctxt "staff.cat.record_buckets_quick.name_of_bucket"
+msgid "What would you like to name the bucket?"
 msgstr "Как хотите назвать корзину?"
 
 #: staff.cat.record_buckets_quick.name_of_bucket.title
-msgid ""
-"_: staff.cat.record_buckets_quick.name_of_bucket.title\n"
-"Bucket Creation"
+msgctxt "staff.cat.record_buckets_quick.name_of_bucket.title"
+msgid "Bucket Creation"
 msgstr "Создание корзины"
 
 #: staff.cat.record_buckets_quick.bucket_creation_failure
-msgid ""
-"_: staff.cat.record_buckets_quick.bucket_creation_failure\n"
-"Bucket creation failed."
+msgctxt "staff.cat.record_buckets_quick.bucket_creation_failure"
+msgid "Bucket creation failed."
 msgstr "Создание корзины прервано"
 
 #: staff.cat.record_buckets_quick.add_to_bucket.addition_failed
@@ -1423,9 +1416,8 @@ msgid "Addition likely failed for bucket = %1$s and record ID = %2$s"
 msgstr "Дополнение не состоялось для корзины  = %1$s и запись ID = %2$s"
 
 #: staff.cat.record_buckets.menulist.change_bucket.undefined
-msgid ""
-"_: staff.cat.record_buckets.menulist.change_bucket.undefined\n"
-"Could not find a bucket with ID = %1$s"
+msgctxt "staff.cat.record_buckets.menulist.change_bucket.undefined"
+msgid "Could not find a bucket with ID = %1$s"
 msgstr "Не находит корзину с ID = %1$s"
 
 #: staff.cat.spine_labels.copy
@@ -1441,9 +1433,8 @@ msgid "Generate"
 msgstr "Генерировать"
 
 #: staff.cat.spine_labels.preview.title
-msgid ""
-"_: staff.cat.spine_labels.preview.title\n"
-"Spine Labels"
+msgctxt "staff.cat.spine_labels.preview.title"
+msgid "Spine Labels"
 msgstr "Номер на корешке"
 
 #: staff.cat.spine_labels.preview.std_unexpected_err
@@ -1455,9 +1446,8 @@ msgid "Enter original barcode for the copy:"
 msgstr "Ввод  исходного штрих-кода для копии"
 
 #: staff.cat.util.replace_barcode.old_bc_window_prompt.title
-msgid ""
-"_: staff.cat.util.replace_barcode.old_bc_window_prompt.title\n"
-"Replace Barcode"
+msgctxt "staff.cat.util.replace_barcode.old_bc_window_prompt.title"
+msgid "Replace Barcode"
 msgstr "Замена штрих-кода"
 
 #: staff.cat.util.replace_barcode.error_alert
@@ -1469,9 +1459,8 @@ msgid "Enter the replacement barcode for the copy:"
 msgstr "Введите замененный штрих-код для копии"
 
 #: staff.cat.util.replace_barcode.new_bc_window_prompt.title
-msgid ""
-"_: staff.cat.util.replace_barcode.new_bc_window_prompt.title\n"
-"Replace Barcode"
+msgctxt "staff.cat.util.replace_barcode.new_bc_window_prompt.title"
+msgid "Replace Barcode"
 msgstr "Замена шрих-кода"
 
 #: staff.cat.util.replace_barcode.new_bc.failed
@@ -1495,12 +1484,11 @@ msgid "Rename did not likely occur."
 msgstr "Переименование не произашло"
 
 #: staff.cat.util.transfer_copies.unmarked_volume_alert
+msgctxt "staff.cat.util.transfer_copies.unmarked_volume_alert"
 msgid ""
-"_: staff.cat.util.transfer_copies.unmarked_volume_alert\n"
 "Please mark a volume as the destination from within holdings maintenance and "
 "then try this again."
-msgstr ""
-"Пожалуйста отметьте том как назначение из держателя и попробуйте снова"
+msgstr "Пожалуйста отметьте том как назначение из держателя и попробуйте снова"
 
 #: staff.cat.util.transfer_copies.params_message
 msgid ""
@@ -1511,21 +1499,18 @@ msgstr ""
 "следующую запись  (и изменить цыркуляционное libs на совпадающие)?"
 
 #: staff.cat.util.transfer_copies.transfer.label
-msgid ""
-"_: staff.cat.util.transfer_copies.transfer.label\n"
-"Transfer"
+msgctxt "staff.cat.util.transfer_copies.transfer.label"
+msgid "Transfer"
 msgstr "Передача"
 
 #: staff.cat.util.transfer_copies.cancel.label
-msgid ""
-"_: staff.cat.util.transfer_copies.cancel.label\n"
-"Cancel"
+msgctxt "staff.cat.util.transfer_copies.cancel.label"
+msgid "Cancel"
 msgstr "Отмена"
 
 #: staff.cat.util.transfer_copies.cancel.accesskey
-msgid ""
-"_: staff.cat.util.transfer_copies.cancel.accesskey\n"
-"C"
+msgctxt "staff.cat.util.transfer_copies.cancel.accesskey"
+msgid "C"
 msgstr "С"
 
 #: staff.cat.util.transfer_copies.window_title
@@ -1533,9 +1518,8 @@ msgid "Item Transfer"
 msgstr "Передача единицы"
 
 #: staff.cat.util.transfer_copies.aborted_transfer
-msgid ""
-"_: staff.cat.util.transfer_copies.aborted_transfer\n"
-"Transfer Aborted"
+msgctxt "staff.cat.util.transfer_copies.aborted_transfer"
+msgid "Transfer Aborted"
 msgstr "Передача прервана"
 
 #: staff.cat.util.transfer_copies.override_transfer_failure
@@ -1551,15 +1535,13 @@ msgid "All items not likely transferred."
 msgstr "Все единицы возможно не переданы"
 
 #: staff.cat.util.spine_editor.tab_name
-msgid ""
-"_: staff.cat.util.spine_editor.tab_name\n"
-"Spine Labels"
+msgctxt "staff.cat.util.spine_editor.tab_name"
+msgid "Spine Labels"
 msgstr "Номер на корешке"
 
 #: staff.cat.util.spine_editor.spine_editor_error
-msgid ""
-"_: staff.cat.util.spine_editor.spine_editor_error\n"
-"Spine Labels"
+msgctxt "staff.cat.util.spine_editor.spine_editor_error"
+msgid "Spine Labels"
 msgstr "Номер на корешке"
 
 #: staff.cat.util.show_in_opac.unknown_barcode
@@ -1571,19 +1553,18 @@ msgid "Error opening catalog for document ID = %1$s"
 msgstr "Ошибка при открытии документа с ID = %1$s"
 
 #: staff.cat.util.copy_editor.batch_in_title
-msgid "Batch"
+#, fuzzy
+msgid "Batch "
 msgstr "Группа"
 
 #: staff.cat.util.copy_editor.edit_in_title
-msgid ""
-"_: staff.cat.util.copy_editor.edit_in_title\n"
-"Edit"
+msgctxt "staff.cat.util.copy_editor.edit_in_title"
+msgid "Edit"
 msgstr "Редактировать"
 
 #: staff.cat.util.copy_editor.view_in_title
-msgid ""
-"_: staff.cat.util.copy_editor.view_in_title\n"
-"View"
+msgctxt "staff.cat.util.copy_editor.view_in_title"
+msgid "View"
 msgstr "Просмотр"
 
 #: staff.cat.util.copy_editor.copy_attributes_in_title
@@ -1599,47 +1580,37 @@ msgid "Batch View"
 msgstr "Групповой просмотр"
 
 #: staff.cat.util.copy_editor.edit
-msgid ""
-"_: staff.cat.util.copy_editor.edit\n"
-"Edit"
+msgctxt "staff.cat.util.copy_editor.edit"
+msgid "Edit"
 msgstr "Редактировать"
 
 #: staff.cat.util.copy_editor.view
-msgid ""
-"_: staff.cat.util.copy_editor.view\n"
-"View"
+msgctxt "staff.cat.util.copy_editor.view"
+msgid "View"
 msgstr "Просмотр"
-
-#: staff.cat.util.copy_editor.not_modified
-msgid "Copies not modified."
-msgstr "Копии не изменены"
 
 #: staff.cat.util.mark_item_damaged.af_message
 msgid ""
 "Action failed.  One or more of these items is in a special status such as "
-"\"Checked Out\" or \"In Transit\" and cannot be changed to the Damaged "
-"status."
+"\"Checked Out\" or \"In Transit\" and cannot be changed to the Damaged status."
 msgstr ""
 "Действие неудалось. Один или несколько из этих элементов находится в особом "
-"статусе, такие, как \"Выдача\" или \\ \"в передаче\" и не может быть "
-"изменена в состояние Поврежден."
+"статусе, такие, как \"Выдача\" или \\ \"в передаче\" и не может быть изменена в "
+"состояние Поврежден."
 
 #: staff.cat.util.mark_item_damaged.af_title
-msgid ""
-"_: staff.cat.util.mark_item_damaged.af_title\n"
-"Action failed."
+msgctxt "staff.cat.util.mark_item_damaged.af_title"
+msgid "Action failed."
 msgstr "Неудачная попытка"
 
 #: staff.cat.util.mark_item_damaged.af_ok_label
-msgid ""
-"_: staff.cat.util.mark_item_damaged.af_ok_label\n"
-"OK"
+msgctxt "staff.cat.util.mark_item_damaged.af_ok_label"
+msgid "OK"
 msgstr "OK"
 
 #: staff.cat.util.mark_item_damaged.af_confirm_action
-msgid ""
-"_: staff.cat.util.mark_item_damaged.af_confirm_action\n"
-"Check here to confirm this message"
+msgctxt "staff.cat.util.mark_item_damaged.af_confirm_action"
+msgid "Check here to confirm this message"
 msgstr "Отметите здесь, чтобы подтвердить это сообщение"
 
 #: staff.cat.util.mark_item_damaged.md_message
@@ -1651,21 +1622,18 @@ msgid "Mark Damaged"
 msgstr "Отметить как Поврежденный"
 
 #: staff.cat.util.mark_item_damaged.md_ok_label
-msgid ""
-"_: staff.cat.util.mark_item_damaged.md_ok_label\n"
-"OK"
+msgctxt "staff.cat.util.mark_item_damaged.md_ok_label"
+msgid "OK"
 msgstr "OK"
 
 #: staff.cat.util.mark_item_damaged.md_cancel_label
-msgid ""
-"_: staff.cat.util.mark_item_damaged.md_cancel_label\n"
-"Cancel"
+msgctxt "staff.cat.util.mark_item_damaged.md_cancel_label"
+msgid "Cancel"
 msgstr "Отменить"
 
 #: staff.cat.util.mark_item_damaged.md_confirm_action
-msgid ""
-"_: staff.cat.util.mark_item_damaged.md_confirm_action\n"
-"Check here to confirm this action"
+msgctxt "staff.cat.util.mark_item_damaged.md_confirm_action"
+msgid "Check here to confirm this action"
 msgstr "Отметите здесь, чтобы подтвердить это сообщение"
 
 #: staff.cat.util.mark_item_damaged.checkin.title
@@ -1677,9 +1645,8 @@ msgid "Normal Checkin"
 msgstr "Обычный возврат"
 
 #: staff.cat.util.mark_item_damaged.checkin.no_checkin
-msgid ""
-"_: staff.cat.util.mark_item_damaged.checkin.no_checkin\n"
-"Cancel"
+msgctxt "staff.cat.util.mark_item_damaged.checkin.no_checkin"
+msgid "Cancel"
 msgstr "Отмена"
 
 #: staff.cat.util.mark_item_damaged.checkin.forgiving_checkin
@@ -1687,47 +1654,46 @@ msgid "Forgiving Checkin"
 msgstr "Прощение потери"
 
 #: staff.cat.util.mark_item_damaged.checkin.confirm_action
-msgid ""
-"_: staff.cat.util.mark_item_damaged.checkin.confirm_action\n"
-"Check here to confirm this action"
+msgctxt "staff.cat.util.mark_item_damaged.checkin.confirm_action"
+msgid "Check here to confirm this action"
 msgstr "Отметите здесь, чтобы подтвердить это сообщение"
 
 #: staff.cat.util.mark_item_damaged.item_circulating_to_patron
-msgid "Item %1$s is checked out to patron, %2$s, and is due on %3$s."
+#, fuzzy
+msgid "Item %1$s is checked out to patron, %2$s, and is due on %3$s. "
 msgstr "Единица %1$s выдана читателю,  %2$s,  и будет возвращена %3$s."
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.message
+#, fuzzy
 msgid ""
 "Item %1$s will be marked damaged.  Was returned on %3$s for %2$s.  Charge "
-"this patron $%4$s for the damage?"
+"this patron $%4$s for the damage? "
 msgstr ""
 "Единица %1$s будет отмечена повреждённой. Была возвращена  %3$s для %2$s. "
 "Взыскать  этого читателя $%4$s за повреждение?"
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.title
-msgid "Charge Patron For Damaged Item?"
+#, fuzzy
+msgid "Charge Patron For Damaged Item? "
 msgstr "Взыскать с  читателя за повреждённую единицу?"
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.ok_label
-msgid ""
-"_: staff.cat.util.mark_item_damaged.charge_patron_prompt.ok_label\n"
-"OK"
-msgstr "OK"
+msgid "OK "
+msgstr ""
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.change_amount_label
-msgid "Change Amount"
+#, fuzzy
+msgid "Change Amount "
 msgstr "Изменить сумму"
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.cancel_label
-msgid ""
-"_: staff.cat.util.mark_item_damaged.charge_patron_prompt.cancel_label\n"
-"Cancel"
-msgstr "Отмена"
+#, fuzzy
+msgid "Cancel "
+msgstr "Отклонить"
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.confirm_action
-msgid ""
-"_: staff.cat.util.mark_item_damaged.charge_patron_prompt.confirm_action\n"
-"Check here to confirm this action"
+#, fuzzy
+msgid "Check here to confirm this action "
 msgstr "Отметите здесь, чтобы подтвердить это сообщение"
 
 #: staff.cat.util.mark_item_damaged.marking_error
@@ -1745,29 +1711,25 @@ msgstr "%1$s единиц отмечены  как поврежденные"
 #: staff.cat.util.mark_item_missing.af_message
 msgid ""
 "Action failed.  One or more of these items is in a special status such as "
-"\"Checked Out\" or \"In Transit\" and cannot be changed to the Missing "
-"status."
+"\"Checked Out\" or \"In Transit\" and cannot be changed to the Missing status."
 msgstr ""
 "Действие неудалось. Один или несколько из этих элементов находится в особом "
-"статусе, такие, как \"Выдача\" или \\ \"в передаче\" и не может быть "
-"изменена в состояние Утерянный."
+"статусе, такие, как \"Выдача\" или \\ \"в передаче\" и не может быть изменена в "
+"состояние Утерянный."
 
 #: staff.cat.util.mark_item_missing.af_title
-msgid ""
-"_: staff.cat.util.mark_item_missing.af_title\n"
-"Action failed."
+msgctxt "staff.cat.util.mark_item_missing.af_title"
+msgid "Action failed."
 msgstr "Неудачная попытка"
 
 #: staff.cat.util.mark_item_missing.af_ok_label
-msgid ""
-"_: staff.cat.util.mark_item_missing.af_ok_label\n"
-"OK"
+msgctxt "staff.cat.util.mark_item_missing.af_ok_label"
+msgid "OK"
 msgstr "OK"
 
 #: staff.cat.util.mark_item_missing.af_confirm_action
-msgid ""
-"_: staff.cat.util.mark_item_missing.af_confirm_action\n"
-"Check here to confirm this message"
+msgctxt "staff.cat.util.mark_item_missing.af_confirm_action"
+msgid "Check here to confirm this message"
 msgstr "Отметите здесь, чтобы подтвердить это сообщение"
 
 #: staff.cat.util.mark_item_missing.ms_message
@@ -1779,21 +1741,18 @@ msgid "Mark Missing"
 msgstr "Отсутствие знака"
 
 #: staff.cat.util.mark_item_missing.ms_ok_label
-msgid ""
-"_: staff.cat.util.mark_item_missing.ms_ok_label\n"
-"OK"
+msgctxt "staff.cat.util.mark_item_missing.ms_ok_label"
+msgid "OK"
 msgstr "Правильно"
 
 #: staff.cat.util.mark_item_missing.ms_cancel_label
-msgid ""
-"_: staff.cat.util.mark_item_missing.ms_cancel_label\n"
-"Cancel"
+msgctxt "staff.cat.util.mark_item_missing.ms_cancel_label"
+msgid "Cancel"
 msgstr "Отклонить"
 
 #: staff.cat.util.mark_item_missing.ms_confirm_action
-msgid ""
-"_: staff.cat.util.mark_item_missing.ms_confirm_action\n"
-"Check here to confirm this action"
+msgctxt "staff.cat.util.mark_item_missing.ms_confirm_action"
+msgid "Check here to confirm this action"
 msgstr "Отметите здесь, чтобы подтвердить это сообщение"
 
 #: staff.cat.util.mark_item_missing.marking_error
@@ -1808,15 +1767,108 @@ msgstr "Единица отмечена как Отсутствующая"
 msgid "%1$s items marked Missing."
 msgstr "%1$s единиц отмечены как потерянные"
 
+#: staff.cat.util.mark_item_missing_pieces.ms_message
+msgid "Mark these items as missing pieces?  Barcodes: %1$s"
+msgstr ""
+
+#: staff.cat.util.mark_item_missing_pieces.ms_title
+msgid "Mark Missing Pieces"
+msgstr ""
+
+#: staff.cat.util.mark_item_missing_pieces.ms_ok_label
+#, fuzzy
+msgctxt "staff.cat.util.mark_item_missing_pieces.ms_ok_label"
+msgid "OK"
+msgstr "OK"
+
+#: staff.cat.util.mark_item_missing_pieces.ms_cancel_label
+#, fuzzy
+msgctxt "staff.cat.util.mark_item_missing_pieces.ms_cancel_label"
+msgid "Cancel"
+msgstr "Отклонить"
+
+#: staff.cat.util.mark_item_missing_pieces.ms_confirm_action
+#, fuzzy
+msgctxt "staff.cat.util.mark_item_missing_pieces.ms_confirm_action"
+msgid "Check here to confirm this action"
+msgstr "Отметите здесь, чтобы подтвердить это сообщение"
+
+#: staff.cat.util.mark_item_missing_pieces.marking_error
+#, fuzzy
+msgid "Error marking item %1$s as missing pieces."
+msgstr "Ошибка при отметке единицы %1$s как отсутствующий."
+
+#: staff.cat.util.mark_item_missing_pieces.one_item_missing_pieces
+msgid "Item marked as missing pieces."
+msgstr ""
+
+#: staff.cat.util.mark_item_missing_pieces.multiple_item_missing_pieces
+msgid "%1$s items marked as missing pieces."
+msgstr ""
+
+#: staff.cat.util.mark_item_missing_pieces.circ_not_found
+msgid "No circulation found for item with barcode %1$s.  Item left unmodified."
+msgstr ""
+
 #: staff.cat.volume_buckets.window_tab_name
 msgid "Volume Buckets"
 msgstr "Тома  корзин"
 
 #: staff.cat.volume_copy_creator.my_init.btn.label
-msgid ""
-"_: staff.cat.volume_copy_creator.my_init.btn.label\n"
-"Apply"
+msgctxt "staff.cat.volume_copy_creator.my_init.btn.label"
+msgid "Apply"
 msgstr "Применить"
+
+#: staff.cat.volume_copy_creator.my_init.btn.accesskey
+msgctxt "staff.cat.volume_copy_creator.my_init.btn.accesskey"
+msgid "A"
+msgstr ""
+
+#: staff.cat.volume_copy_creator.create_part.btn.label
+msgid "Create Part Designator"
+msgstr ""
+
+#: staff.cat.volume_copy_creator.edit_then_create.btn.label
+msgid "Edit then Create"
+msgstr ""
+
+#: staff.cat.volume_copy_creator.edit_then_create.btn.accesskey
+msgctxt "staff.cat.volume_copy_creator.edit_then_create.btn.accesskey"
+msgid "C"
+msgstr ""
+
+#: staff.cat.volume_copy_creator.create_with_defaults.btn.label
+msgid "Create with Defaults"
+msgstr ""
+
+#: staff.cat.volume_copy_creator.create_with_defaults.btn.accesskey
+msgid "D"
+msgstr ""
+
+#: staff.cat.volume_copy_creator.create.btn.label
+msgid "Create Volumes/Items"
+msgstr ""
+
+#: staff.cat.volume_copy_creator.create.btn.accesskey
+msgctxt "staff.cat.volume_copy_creator.create.btn.accesskey"
+msgid "C"
+msgstr ""
+
+#: staff.cat.volume_copy_creator.edit_then_rebarcode.btn.label
+msgid "Edit then Re-barcode"
+msgstr ""
+
+#: staff.cat.volume_copy_creator.edit_then_rebarcode.btn.accesskey
+msgid "E"
+msgstr ""
+
+#: staff.cat.volume_copy_creator.rebarcode.btn.label
+msgid "Re-barcode / Update Items"
+msgstr ""
+
+#: staff.cat.volume_copy_creator.rebarcode.btn.accesskey
+msgid "R"
+msgstr ""
 
 #: staff.cat.volume_copy_creator.render_volume_count_entry.message
 msgid ""
@@ -1833,13 +1885,29 @@ msgstr "Превышение максимальных единиц"
 msgid "Ok"
 msgstr "Ok"
 
+#: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.classification
+msgid "Classification"
+msgstr ""
+
+#: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.prefix
+msgid "Prefix"
+msgstr ""
+
 #: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.call_nums
 msgid "Call Numbers"
 msgstr "Растановочные Шифры"
 
+#: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.suffix
+msgid "Suffix"
+msgstr ""
+
 #: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.num_of_copies
 msgid "# of Copies"
 msgstr "Копии #"
+
+#: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.barcodes_and_parts
+msgid "Barcodes / Part Designation"
+msgstr ""
 
 #: staff.cat.volume_copy_creator.render_barcode_entry.alert_message
 msgid "\"%1$s\" is an invalid barcode."
@@ -1850,9 +1918,8 @@ msgid "Invalid Barcode"
 msgstr "Неправильный штрих-код"
 
 #: staff.cat.volume_copy_creator.render_barcode_entry.alert_ok_button
-msgid ""
-"_: staff.cat.volume_copy_creator.render_barcode_entry.alert_ok_button\n"
-"OK"
+msgctxt "staff.cat.volume_copy_creator.render_barcode_entry.alert_ok_button"
+msgid "OK"
 msgstr "OK"
 
 #: staff.cat.volume_copy_creator.render_barcode_entry.alert_confirm
@@ -1883,6 +1950,18 @@ msgstr "Ошибка при загрузки  извлеченных предп�
 msgid "Error storing preferences"
 msgstr "Ошибка при сохранении предпочтений"
 
+#. # %1$s = Call Number Prefix Label, %2$s = Call Number Prefix Owning Lib Shortname
+#: staff.cat.volume_copy_creator.call_number_prefix.menuitem_label
+msgctxt "staff.cat.volume_copy_creator.call_number_prefix.menuitem_label"
+msgid "%2$s : %1$s"
+msgstr ""
+
+#. # %1$s = Call Number Suffix Label, %2$s = Call Number Suffix Owning Lib Shortname
+#: staff.cat.volume_copy_creator.call_number_suffix.menuitem_label
+msgctxt "staff.cat.volume_copy_creator.call_number_suffix.menuitem_label"
+msgid "%2$s : %1$s"
+msgstr ""
+
 #: staff.cat.z3950.native_catalog
 msgid "Native Catalog"
 msgstr "Исходный кaтaлог"
@@ -1896,9 +1975,8 @@ msgid "Results View"
 msgstr "Просмотр результатов"
 
 #: staff.cat.z3950.results_view.accesskey
-msgid ""
-"_: staff.cat.z3950.results_view.accesskey\n"
-"V"
+msgctxt "staff.cat.z3950.results_view.accesskey"
+msgid "V"
 msgstr "V"
 
 #: staff.cat.z3950.marc_view.label
@@ -1906,9 +1984,8 @@ msgid "MARC View"
 msgstr "MARC Просмотр"
 
 #: staff.cat.z3950.marc_view.accesskey
-msgid ""
-"_: staff.cat.z3950.marc_view.accesskey\n"
-"V"
+msgctxt "staff.cat.z3950.marc_view.accesskey"
+msgid "V"
 msgstr "V"
 
 #: staff.cat.z3950.hide_top_pane.label
@@ -1916,9 +1993,8 @@ msgid "Hide Top Pane"
 msgstr "Скрыть  верхнюю панель"
 
 #: staff.cat.z3950.hide_top_pane.accesskey
-msgid ""
-"_: staff.cat.z3950.hide_top_pane.accesskey\n"
-"T"
+msgctxt "staff.cat.z3950.hide_top_pane.accesskey"
+msgid "T"
 msgstr "T"
 
 #: staff.cat.z3950.unhide_top_pane.label
@@ -1926,9 +2002,8 @@ msgid "Show Top Pane"
 msgstr "Показ верхней панели"
 
 #: staff.cat.z3950.unhide_top_pane.accesskey
-msgid ""
-"_: staff.cat.z3950.unhide_top_pane.accesskey\n"
-"T"
+msgctxt "staff.cat.z3950.unhide_top_pane.accesskey"
+msgid "T"
 msgstr "T"
 
 #: staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label
@@ -1974,9 +2049,8 @@ msgstr ""
 "поиском"
 
 #: staff.cat.z3950.initial_search.searching
-msgid ""
-"_: staff.cat.z3950.initial_search.searching\n"
-"Searching..."
+msgctxt "staff.cat.z3950.initial_search.searching"
+msgid "Searching..."
 msgstr "Поиск..."
 
 #: staff.cat.z3950.initial_search.failed_search
@@ -1988,12 +2062,18 @@ msgid "Raw Z39.50 PQN Search"
 msgstr "Несовершенный Z39.50 PQN  поиск"
 
 #: staff.cat.z3950.initial_search.raw_prompt.msg
+#, fuzzy
 msgid ""
 "WARNING: This is not a simple keyword search.  Enter raw z39.50 PQN search "
-"string:"
+"string: "
 msgstr ""
 "ВНИМАНИЕ: Это не простой поиск по ключевым словам. Введите  строку "
 "несовершенного z39.50 PQN  поиска"
+
+#: staff.cat.z3950.initial_search.raw_prompt.default_value
+msgctxt "staff.cat.z3950.initial_search.raw_prompt.default_value"
+msgid ""
+msgstr ""
 
 #: staff.cat.z3950.initial_search.raw_search_unsupported_for_native_catalog
 msgid "Raw z39.50 PQN search not yet implemented for native catalog."
@@ -2029,7 +2109,8 @@ msgid "Showing %1$s of %2$s for %3$s"
 msgstr "Показ %1$s of %2$s  за %3$s"
 
 #: staff.cat.z3950.handle_results.showing_total_results
-msgid "Showing %1$s of %2$s"
+#, fuzzy
+msgid "Showing %1$s of %2$s "
 msgstr "Показывает %1$s из %2$s"
 
 #: staff.cat.z3950.handle_results.num_of_results
@@ -2045,14 +2126,17 @@ msgid "Failure during search result handling."
 msgstr "Сбой во время обработки результата поиска."
 
 #: staff.cat.z3950.replace_tab_with_opac.tab_name
-msgid ""
-"_: staff.cat.z3950.replace_tab_with_opac.tab_name\n"
-"Retrieving title..."
+msgctxt "staff.cat.z3950.replace_tab_with_opac.tab_name"
+msgid "Retrieving title..."
 msgstr "Извлечение  заглавия..."
 
+#: staff.cat.z3950.spawn_marc_editor.save_button_label
+msgid "Import Record"
+msgstr ""
+
 #: staff.cat.z3950.spawn_marc_editor.same_tcn
+msgctxt "staff.cat.z3950.spawn_marc_editor.same_tcn"
 msgid ""
-"_: staff.cat.z3950.spawn_marc_editor.same_tcn\n"
 "A record with TCN %1$s already exists.\n"
 "FIXME: add record summary here"
 msgstr ""
@@ -2060,15 +2144,13 @@ msgstr ""
 "FIXME: добавь сводку записи здесь"
 
 #: staff.cat.z3950.spawn_marc_editor.title
-msgid ""
-"_: staff.cat.z3950.spawn_marc_editor.title\n"
-"Import Collision"
+msgctxt "staff.cat.z3950.spawn_marc_editor.title"
+msgid "Import Collision"
 msgstr "Конфликт импорта"
 
 #: staff.cat.z3950.spawn_marc_editor.btn1_overlay
-msgid ""
-"_: staff.cat.z3950.spawn_marc_editor.btn1_overlay\n"
-"Overlay"
+msgctxt "staff.cat.z3950.spawn_marc_editor.btn1_overlay"
+msgid "Overlay"
 msgstr "Наложивание"
 
 #: staff.cat.z3950.spawn_marc_editor.btn2_import
@@ -2076,27 +2158,23 @@ msgid "Import with alternate TCN %1$s"
 msgstr "Импорт с  альтернативным  TCN %1$s"
 
 #: staff.cat.z3950.spawn_marc_editor.permission_error
-msgid ""
-"_: staff.cat.z3950.spawn_marc_editor.permission_error\n"
-"check permission"
+msgctxt "staff.cat.z3950.spawn_marc_editor.permission_error"
+msgid "check permission"
 msgstr "проверь полномочия"
 
 #: staff.cat.z3950.spawn_marc_editor.btn3_cancel_import
-msgid ""
-"_: staff.cat.z3950.spawn_marc_editor.btn3_cancel_import\n"
-"Cancel Import"
+msgctxt "staff.cat.z3950.spawn_marc_editor.btn3_cancel_import"
+msgid "Cancel Import"
 msgstr "Отмена импорта"
 
 #: staff.cat.z3950.spawn_marc_editor.confirm_action
-msgid ""
-"_: staff.cat.z3950.spawn_marc_editor.confirm_action\n"
-"Check here to confirm this action"
+msgctxt "staff.cat.z3950.spawn_marc_editor.confirm_action"
+msgid "Check here to confirm this action"
 msgstr "Отметите здесь, чтобы подтвердить это сообщение"
 
 #: staff.cat.z3950.spawn_marc_editor.successful_overlay
-msgid ""
-"_: staff.cat.z3950.spawn_marc_editor.successful_overlay\n"
-"Record successfully overlaid."
+msgctxt "staff.cat.z3950.spawn_marc_editor.successful_overlay"
+msgid "Record successfully overlaid."
 msgstr "Запись успешно наложена"
 
 #: staff.cat.z3950.spawn_marc_editor.successful_import_with_new_tcn
@@ -2120,9 +2198,8 @@ msgid "Overlay this record?"
 msgstr "Наложить эту запись?"
 
 #: staff.cat.z3950.confirm_overlay.lead.label
-msgid ""
-"_: staff.cat.z3950.confirm_overlay.lead.label\n"
-"Overlay"
+msgctxt "staff.cat.z3950.confirm_overlay.lead.label"
+msgid "Overlay"
 msgstr "Наложить"
 
 #: staff.cat.z3950.confirm_overlay.lead.accesskey
@@ -2130,15 +2207,13 @@ msgid "O"
 msgstr "О"
 
 #: staff.cat.z3950.confirm_overlay.cancel.label
-msgid ""
-"_: staff.cat.z3950.confirm_overlay.cancel.label\n"
-"Cancel"
+msgctxt "staff.cat.z3950.confirm_overlay.cancel.label"
+msgid "Cancel"
 msgstr "Отмена"
 
 #: staff.cat.z3950.confirm_overlay.cancel.accesskey
-msgid ""
-"_: staff.cat.z3950.confirm_overlay.cancel.accesskey\n"
-"C"
+msgctxt "staff.cat.z3950.confirm_overlay.cancel.accesskey"
+msgid "C"
 msgstr "C"
 
 #: staff.cat.z3950.confirm_overlay.title
@@ -2164,8 +2239,8 @@ msgid "Overlay Record"
 msgstr "Наложеие записи"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.same_tcn
+msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.same_tcn"
 msgid ""
-"_: staff.cat.z3950.spawn_marc_editor_for_overlay.same_tcn\n"
 "A record with TCN %1$s already exists.\n"
 "FIXME: add record summary here"
 msgstr ""
@@ -2173,9 +2248,8 @@ msgstr ""
 "FIXME: добавь сводку записи здесь"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.import_collision
-msgid ""
-"_: staff.cat.z3950.spawn_marc_editor_for_overlay.import_collision\n"
-"Import Collision"
+msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.import_collision"
+msgid "Import Collision"
 msgstr "Конфликт импорта"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.btn1_overlay
@@ -2183,21 +2257,18 @@ msgid "Overlay with alternate TCN %1$s"
 msgstr "Наложение с чередующейся TCN %1$s"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.permission_error
-msgid ""
-"_: staff.cat.z3950.spawn_marc_editor_for_overlay.permission_error\n"
-"check permission"
+msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.permission_error"
+msgid "check permission"
 msgstr "проверь полномочия"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.btn2_cancel
-msgid ""
-"_: staff.cat.z3950.spawn_marc_editor_for_overlay.btn2_cancel\n"
-"Cancel Import"
+msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.btn2_cancel"
+msgid "Cancel Import"
 msgstr "Отмените импорт"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.confirm_action
-msgid ""
-"_: staff.cat.z3950.spawn_marc_editor_for_overlay.confirm_action\n"
-"Check here to confirm this action"
+msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.confirm_action"
+msgid "Check here to confirm this action"
 msgstr "Отметите здесь, чтобы подтвердить это сообщение"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.successful_overlay_with_new_TCN
@@ -2209,9 +2280,8 @@ msgid "Record overlay cancelled"
 msgstr "Наложение записи аннулировано"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.success_overlay
-msgid ""
-"_: staff.cat.z3950.spawn_marc_editor_for_overlay.success_overlay\n"
-"Record successfully overlaid."
+msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.success_overlay"
+msgid "Record successfully overlaid."
 msgstr "Запись успешно наложена."
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.overlay_error
@@ -2225,6 +2295,91 @@ msgstr "Ошибка при извлечении сохраненной в z39.5
 #: staff.cat.z3950.save_creds.z3950_cred_error
 msgid "Problem storing z39.50 credentials."
 msgstr "Проблема при сохранении в z39.50 мандатов"
+
+#~ msgid "You do not have permission to edit this volume."
+#~ msgstr "У Вас нет разрешения отредактировать этот том"
+
+#~ msgctxt "staff.cat.copy_browser.edit_volume.title.plural"
+#~ msgid "Volumes"
+#~ msgstr "Тома"
+
+#~ msgid ""
+#~ "Edit failed:  You tried to change a volume's callnumber to one that is "
+#~ "already in use for the given library.  You should transfer the items to the "
+#~ "desired callnumber instead."
+#~ msgstr ""
+#~ "Ошибка редактирования: Вы попытались изменить указатель тома на тот, который "
+#~ "уже существуетв этой библиотеке. Взамен вы должны перевести единицы под "
+#~ "желанный указатель."
+
+#~ msgid "Volumes modified."
+#~ msgstr "Тома изменены"
+
+#~ msgid "volume update error:"
+#~ msgstr "ошибка обновления тома:"
+
+#~ msgid "Copy Browser -> Volume Edit"
+#~ msgstr "Копи браузер -> редактировать том"
+
+#~ msgid "Volumes deleted."
+#~ msgstr "Тома вычеркнуты."
+
+#~ msgid "Create Copies"
+#~ msgstr "Создать копии"
+
+#~ msgid "Items were added or modified."
+#~ msgstr "Библ. единицы были добавлены или изменены."
+
+#~ msgid "Note added."
+#~ msgstr "Заметка добавлена"
+
+#~ msgid "Record created."
+#~ msgstr "Запись создана"
+
+#~ msgid "Merge these records? (Select the \"lead\" record first)"
+#~ msgstr "Обьединить эти записи? (Выберите сначала \"lead\"запись)"
+
+#~ msgid "Merge"
+#~ msgstr "Обьединить"
+
+#~ msgctxt "staff.cat.record_buckets.merge_records.cancel_button.label"
+#~ msgid "Cancel"
+#~ msgstr "Отклонить"
+
+#~ msgctxt "staff.cat.record_buckets.merge_records.cancel_button.accesskey"
+#~ msgid "C"
+#~ msgstr "С"
+
+#~ msgid "Lead Record? # %1$s"
+#~ msgstr "Ведущая запись ? # %1$s"
+
+#~ msgid "Lead"
+#~ msgstr "Ведущая"
+
+#~ msgid "Merge Aborted"
+#~ msgstr "Обьединение  прервано"
+
+#~ msgid "Records were successfully merged."
+#~ msgstr "Записи успешно обьеденены"
+
+#~ msgid "Records were not likely merged."
+#~ msgstr "Записи вероятно не были объединены"
+
+#~ msgid "Copies not modified."
+#~ msgstr "Копии не изменены"
+
+#~ msgctxt "staff.cat.util.mark_item_damaged.charge_patron_prompt.ok_label"
+#~ msgid "OK"
+#~ msgstr "OK"
+
+#~ msgctxt "staff.cat.util.mark_item_damaged.charge_patron_prompt.cancel_label"
+#~ msgid "Cancel"
+#~ msgstr "Отмена"
+
+#~ msgctxt ""
+#~ "staff.cat.util.mark_item_damaged.charge_patron_prompt.confirm_action"
+#~ msgid "Check here to confirm this action"
+#~ msgstr "Отметите здесь, чтобы подтвердить это сообщение"
 
 #~ msgid "Add Subfield: CTRL+D"
 #~ msgstr "Добавить подполе : CTRL + D"
