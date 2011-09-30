@@ -1,83 +1,60 @@
+# English (Canada) translation for evergreen
+# Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2010-06-07 02:03:44-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2011-04-18 21:45:31-0400\n"
+"PO-Revision-Date: 2011-04-19 18:36+0000\n"
+"Last-Translator: Dan Scott <dan@coffeecode.net>\n"
+"Language-Team: English (Canada) <en_CA@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
+"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2011-05-18 04:49+0000\n"
 
-#: selfcheck.js:ALREADY_OUT
-msgid "Item ${0} is already checked out"
-msgstr ""
+#: selfcheck.js:FAIL_PART_config_hold_matrix_test_max_holds
+msgid "The patron has reached the maximum number of holds"
+msgstr "The patron has reached the maximum number of holds"
 
 #: selfcheck.js:CHECKOUT_SUCCESS
 msgid "Checkout of item ${0} succeeded"
-msgstr ""
+msgstr "Checkout of item ${0} succeeded"
 
-#: selfcheck.js:OPEN_CIRCULATION_EXISTS
-msgid "Item ${0} is already checked out to another user"
-msgstr ""
-
-#: selfcheck.js:HOLD_STATUS_READY
-msgid "Ready for pickup"
-msgstr ""
-
-#: selfcheck.js:HOLD_STATUS_WAITING
-msgid "#${0} in line with ${1} copies"
-msgstr ""
-
-#: selfcheck.js:RENEW_SUCCESS
-msgid "Renewal of item ${0} succeeded"
-msgstr ""
-
-#: selfcheck.js:WORKSTATION_EXISTS
-msgid "This workstation has already been registered.  Would you like to use it for this self-check station?"
-msgstr ""
+#: selfcheck.js:FAIL_PART_no_ultimate_items
+msgid "The system could not find any items to match this hold request"
+msgstr "The system could not find any items to match this hold request"
 
 #: selfcheck.js:TOTAL_ITEMS_ACCOUNT
 msgid "Total items on account:  <b>${0}</b>."
-msgstr ""
+msgstr "Total items on account:  <b>${0}</b>."
 
 #: selfcheck.js:WELCOME_BANNER
 msgid "Welcome, ${0}"
-msgstr ""
+msgstr "Welcome, ${0}"
 
-#: selfcheck.js:CC_PAYABLE_BALANCE
-msgid "Total amount to pay: $${0}"
-msgstr ""
+#: selfcheck.js:FAIL_PART_config_hold_matrix_test_holdable
+msgid "Hold rules reject this item as unholdable"
+msgstr "Hold rules reject this item as unholdable"
 
-#: selfcheck.js:UNKNOWN_ERROR
-msgid "An unhandled exception occurred with error code ${0}"
-msgstr ""
+#: selfcheck.js:TOTAL_FINES_ACCOUNT
+msgid "Total fines on account: <b>$${0}</b>."
+msgstr "Total fines on account: <b>$${0}</b>."
 
-#: selfcheck.js:TOTAL_FINES_SELECTED
-msgid "Selected total: $${0}"
-msgstr ""
+#: selfcheck.js:FAIL_PART_asset_copy_status
+msgid "The item cannot circulate at this time"
+msgstr "The item cannot circulate at this time"
 
-#: selfcheck.js:ITEM_NOT_CATALOGED
-msgid "Item ${0} was not found in the system.  Try re-scanning the item."
-msgstr ""
+#: selfcheck.js:FAIL_PART_no_user
+msgid "The system could not find this patron"
+msgstr "The system could not find this patron"
 
-#: selfcheck.js:GENERIC_CIRC_FAILURE
-msgid "Unable to check out item ${0}.  Please see staff."
-msgstr ""
-
-#: selfcheck.js:TOTAL_ITEMS_SESSION
-msgid "Total items this session: <b>${0}</b>."
-msgstr ""
-
-#: selfcheck.js:MAX_RENEWALS
-msgid "No more renewals allowed for item ${0}"
-msgstr ""
-
-#: selfcheck.js:HOLDS_READY_FOR_PICKUP
-msgid "You have <b>${0}</b> item(s) ready for pickup."
-msgstr ""
+#: selfcheck.js:FAIL_PART_transit_range
+msgid "The item cannot transit this far"
+msgstr "The item cannot transit this far"
 
 #: selfcheck.js:WORKSTATION_REQUIRED
 msgid ""
@@ -85,15 +62,124 @@ msgid ""
 "\n"
 "Would you like to register a new workstation for this self-check interface?"
 msgstr ""
+"A workstation is required to log in to selfcheck.  You can set the  "
+"workstation name with URL param 'ws'.  \n"
+"\n"
+"Would you like to register a new workstation for this self-check interface?"
 
-#: selfcheck.js:LOGIN_FAILED
-msgid "Login for ${0} failed"
-msgstr ""
+#: selfcheck.js:FAIL_PART_config_circ_matrix_test_total_copy_hold_ratio
+msgid "The total item-to-hold ratio is too low"
+msgstr "The total item-to-hold ratio is too low"
+
+#: selfcheck.js:ALREADY_OUT
+msgid "Item ${0} is already checked out"
+msgstr "Item ${0} is already checked out"
+
+#: selfcheck.js:FAIL_PART_config_circ_matrix_test_available_copy_hold_ratio
+msgid "The available item-to-hold ratio is too low"
+msgstr "The available item-to-hold ratio is too low"
+
+#: selfcheck.js:HOLD_STATUS_READY
+msgid "Ready for pickup"
+msgstr "Ready for pickup"
+
+#: selfcheck.js:FAIL_PART_circ_holds_target_skip_me
+msgid "The item's circulation library does not fulfill holds"
+msgstr "The item's circulation library does not fulfill holds"
+
+#: selfcheck.js:HOLD_STATUS_WAITING
+msgid "#${0} in line with ${1} copies"
+msgstr "#${0} in line with ${1} copies"
+
+#: selfcheck.js:RENEW_SUCCESS
+msgid "Renewal of item ${0} succeeded"
+msgstr "Renewal of item ${0} succeeded"
+
+#: selfcheck.js:FAIL_PART_config_circ_matrix_circ_mod_test
+msgid "The patron has too many items of this type checked out"
+msgstr "The patron has too many items of this type checked out"
 
 #: selfcheck.js:TOTAL_HOLDS
 msgid "You have <b>${0}</b> total holds."
-msgstr ""
+msgstr "You have <b>${0}</b> total holds."
 
-#: selfcheck.js:TOTAL_FINES_ACCOUNT
-msgid "Total fines on account: <b>$${0}</b>."
+#: selfcheck.js:ITEM_NOT_CATALOGED
+msgid "Item ${0} was not found in the system.  Try re-scanning the item."
+msgstr "Item ${0} was not found in the system.  Try re-scanning the item."
+
+#: selfcheck.js:FAIL_PART_actor_usr_barred
+msgid "The patron is barred"
+msgstr "The patron is barred"
+
+#: selfcheck.js:PAYMENT_INVALID_USER_XACT_ID
+msgid "We cannot proceed with the payment, because your account was updated from another location.  Please refresh the interface or log out and back in to retrieve the latest account information"
 msgstr ""
+"We cannot proceed with the payment, because your account was updated from "
+"another location.  Please refresh the interface or log out and back in to "
+"retrieve the latest account information"
+
+#: selfcheck.js:CC_PAYABLE_BALANCE
+msgid "Total amount to pay: $${0}"
+msgstr "Total amount to pay: $${0}"
+
+#: selfcheck.js:FAIL_PART_no_item
+msgid "The system could not find this item"
+msgstr "The system could not find this item"
+
+#: selfcheck.js:FAIL_PART_no_matchpoint
+msgid "System rules do not define how to handle this item"
+msgstr "System rules do not define how to handle this item"
+
+#: selfcheck.js:FAIL_PART_asset_copy_circulate
+msgid "The item does not circulate"
+msgstr "The item does not circulate"
+
+#: selfcheck.js:LOGIN_FAILED
+msgid "Login for ${0} failed"
+msgstr "Login for ${0} failed"
+
+#: selfcheck.js:GENERIC_CIRC_FAILURE
+msgid "Unable to check out item ${0}.  Please see staff."
+msgstr "Unable to check out item ${0}.  Please see staff."
+
+#: selfcheck.js:MAX_RENEWALS
+msgid "No more renewals allowed for item ${0}"
+msgstr "No more renewals allowed for item ${0}"
+
+#: selfcheck.js:HOLDS_READY_FOR_PICKUP
+msgid "You have <b>${0}</b> item(s) ready for pickup."
+msgstr "You have <b>${0}</b> item(s) ready for pickup."
+
+#: selfcheck.js:FAIL_PART_config_circ_matrix_test_circulate
+msgid "Circulation rules reject this item as non-circulatable"
+msgstr "Circulation rules reject this item as non-circulatable"
+
+#: selfcheck.js:OPEN_CIRCULATION_EXISTS
+msgid "Item ${0} is already checked out to another user"
+msgstr "Item ${0} is already checked out to another user"
+
+#: selfcheck.js:WORKSTATION_EXISTS
+msgid "This workstation has already been registered.  Would you like to use it for this self-check station?"
+msgstr ""
+"This workstation has already been registered.  Would you like to use it for "
+"this self-check station?"
+
+#: selfcheck.js:UNKNOWN_ERROR
+msgid "An unhandled exception occurred with error code ${0}"
+msgstr "An unhandled exception occurred with error code ${0}"
+
+#: selfcheck.js:FAIL_PART_asset_copy_location_circulate
+msgid "Items from this shelving location do not circulate"
+msgstr "Items from this shelving location do not circulate"
+
+#: selfcheck.js:TOTAL_ITEMS_SESSION
+msgid "Total items this session: <b>${0}</b>."
+msgstr "Total items this session: <b>${0}</b>."
+
+#: selfcheck.js:FAIL_PART_config_rule_age_hold_protect_prox
+msgid "The item is too new to transit this far"
+msgstr "The item is too new to transit this far"
+
+#: selfcheck.js:TOTAL_FINES_SELECTED
+msgid "Selected total: $${0}"
+msgstr "Selected total: $${0}"

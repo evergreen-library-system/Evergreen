@@ -1,449 +1,470 @@
 # extracted from ../../Open-ILS/web/opac/locale/en-US/vandelay.dtd
+#. extracted from ../../Open-ILS/web/opac/locale/en-US/vandelay.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > vandelay.dtd.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-23 23:35-0400\n"
-"PO-Revision-Date: 2009-11-24 19:38+0000\n"
-"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
+"POT-Creation-Date: 2011-04-18 21:44-0400\n"
+"PO-Revision-Date: 2011-07-13 13:15+0000\n"
+"Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-11-25 04:52+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
-"X-Poedit-Country: CANADA\n"
+"X-Generator: Translate Toolkit 1.8.1\n"
 "X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-07-14 04:33+0000\n"
+"X-Poedit-Country: CANADA\n"
 "X-Poedit-Language: English\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #: vandelay.add.existing.queue
 msgid "or Add to an Existing Queue"
-msgstr ""
+msgstr "or Add to an Existing Queue"
 
 #: vandelay.auth.attrs
 msgid "Authority attributes"
-msgstr ""
+msgstr "Authority attributes"
 
 #: vandelay.auth.records
 msgid "Authority Records"
-msgstr ""
+msgstr "Authority Records"
 
 #: vandelay.auto.import.noncolliding
 msgid "Auto-Import Non-Colliding Records"
-msgstr ""
+msgstr "Auto-Import Non-Colliding Records"
+
+#: vandelay.auto.import.auto_overlay_exact
+msgid "Auto Merge/Overlay Exact Matches"
+msgstr "Auto Merge/Overlay Exact Matches"
+
+#: vandelay.auto.import.auto_overlay_1match
+msgid "Auto Merge/Overlay When Exactly 1 Match is Found"
+msgstr "Auto Merge/Overlay When Exactly 1 Match is Found"
+
+#: vandelay.auto.import.merge_profile
+msgid "Merge/Overlay Profile"
+msgstr "Merge/Overlay Profile"
 
 #. Do not translate this.  Only change the numeric values if you need this dialogue box to appear bigger
 #: vandelay.auto.width
 msgid "Auto Width"
-msgstr ""
+msgstr "Auto Width"
 
 #: vandelay.back.to.import.queue
 msgid "Back To Import Queue"
-msgstr ""
+msgstr "Back To Import Queue"
 
 #: vandelay.bib.attrs
 msgid "Bibliographic attributes"
-msgstr ""
+msgstr "Bibliographic attributes"
 
 #: vandelay.bib.records
 msgid "Bibliographic Records"
-msgstr ""
+msgstr "Bibliographic Records"
 
 #: vandelay.cancel
 msgid "Cancel"
-msgstr ""
+msgstr "Cancel"
 
 #: vandelay.edit
 msgid "Edit"
-msgstr ""
+msgstr "Edit"
 
 #: vandelay.code
 msgid "Code"
-msgstr ""
+msgstr "Code"
 
 #: vandelay.column
 msgid "Column"
-msgstr ""
+msgstr "Column"
 
 #: vandelay.create.attr.def
 msgid "Create Attribute Definition"
-msgstr ""
+msgstr "Create Attribute Definition"
 
 #: vandelay.create
 msgid "Create"
-msgstr ""
+msgstr "Create"
 
 #: vandelay.create.date
 msgid "Create Date"
-msgstr ""
+msgstr "Create Date"
 
 #: vandelay.create.upload.queue
 msgid "Create a New Upload Queue"
-msgstr ""
+msgstr "Create a New Upload Queue"
 
 #: vandelay.creator
 msgid "Creator"
-msgstr ""
+msgstr "Creator"
 
 #: vandelay.delete.queue
 msgid "Delete Queue"
-msgstr ""
+msgstr "Delete Queue"
 
 #: vandelay.delete.record
 msgid "Delete record"
-msgstr ""
+msgstr "Delete record"
 
 #: vandelay.descrip
 msgid "Description"
-msgstr ""
+msgstr "Description"
 
 #: vandelay.dest.match.point
 msgid "Destination Match Point"
-msgstr ""
+msgstr "Destination Match Point"
 
 #: vandelay.display
 msgid "Display"
-msgstr ""
+msgstr "Display"
 
 #: vandelay.done
 msgid "Done"
-msgstr ""
+msgstr "Done"
 
 #: vandelay.edit.attributes
 msgctxt "vandelay.edit.attributes"
 msgid "Edit Attributes"
-msgstr ""
+msgstr "Edit Attributes"
 
 #: vandelay.edit.attrs
 msgctxt "vandelay.edit.attrs"
 msgid "Edit Attributes"
-msgstr ""
+msgstr "Edit Attributes"
+
+#: vandelay.edit.profiles
+msgid "Edit Merge / Overlay Profiles"
+msgstr "Edit Merge / Overlay Profiles"
+
+#: vandelay.edit.import_item_attrs
+msgid "Edit Import Item Attributes"
+msgstr "Edit Import Item Attributes"
 
 #: vandelay.false
 msgid "False"
-msgstr ""
+msgstr "False"
 
 #: vandelay.file.to.upload
 msgid "File to Upload:"
-msgstr ""
+msgstr "File to Upload:"
 
 #: vandelay.for.example
 msgid "Example"
-msgstr ""
+msgstr "Example"
 
 #: vandelay.identifier
 msgid "Identifier"
-msgstr ""
+msgstr "Identifier"
 
 #: vandelay.id.field
 msgid "Identifier Field?"
-msgstr ""
+msgstr "Identifier Field?"
 
 #: vandelay.id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: vandelay.import.matches
 msgid "Import Matches"
-msgstr ""
+msgstr "Import Matches"
 
 #: vandelay.import.records
 msgid "Import Records"
-msgstr ""
+msgstr "Import Records"
 
 #: vandelay.import.selected
 msgid "Import Selected"
-msgstr ""
+msgstr "Import Selected"
 
 #: vandelay.import.all
 msgid "Import All"
-msgstr ""
+msgstr "Import All"
 
 #: vandelay.import.time
 msgid "Import Time"
-msgstr ""
+msgstr "Import Time"
 
 #: vandelay.inspect.queue
 msgid "Inspect Queue"
-msgstr ""
+msgstr "Inspect Queue"
 
 #: vandelay.last.edit.date
 msgid "Last Edit Date"
-msgstr ""
+msgstr "Last Edit Date"
 
 #: vandelay.limit.to.collision.matches
 msgid "Limit to Collision Matches"
-msgstr ""
+msgstr "Limit to Collision Matches"
 
 #: vandelay.limit.to.non.imported
 msgid "Limit to Non-Imported Records"
-msgstr ""
+msgstr "Limit to Non-Imported Records"
 
 #: vandelay.marc.file.upload
 msgid "Evergreen MARC File Upload"
-msgstr ""
+msgstr "Evergreen MARC File Upload"
 
 #: vandelay.marc.record
 msgid "MARC Record"
-msgstr ""
+msgstr "MARC Record"
 
 #: vandelay.matches
 msgid "Matches"
-msgstr ""
+msgstr "Matches"
 
 #: vandelay.next.page
-msgid "Next Page"
-msgstr ""
+msgid "Next Page &#187;"
+msgstr "Next Page &#187;"
 
 #: vandelay.overlay.selected.record
 msgid "Overlay selected record with imported record"
-msgstr ""
+msgstr "Overlay selected record with imported record"
 
 #: vandelay.overlay.target
 msgid "Overlay Target"
-msgstr ""
+msgstr "Overlay Target"
 
 #: vandelay.page
 msgid "Page"
-msgstr ""
+msgstr "Page"
 
 #: vandelay.powered.by.evergreen
 msgid "Powered by Evergreen!"
-msgstr ""
+msgstr "Powered by Evergreen!"
 
 #: vandelay.prev.page
-msgid "Previous Page"
-msgstr ""
+msgid "&#171; Previous Page"
+msgstr "&#171; Previous Page"
 
 #: vandelay.processing
 msgid "Processing... "
-msgstr ""
+msgstr "Processing... "
 
 #: vandelay.queue
 msgid "Queue"
-msgstr ""
+msgstr "Queue"
 
 #: vandelay.queue.type
 msgid "Queue Type"
-msgstr ""
+msgstr "Queue Type"
 
 #: vandelay.record.queue
 msgid "Record Queue"
-msgstr ""
+msgstr "Record Queue"
 
 #: vandelay.record.type
 msgid "Record Type"
-msgstr ""
+msgstr "Record Type"
 
 #: vandelay.refresh
 msgid "Refresh"
-msgstr ""
+msgstr "Refresh"
 
 #: vandelay.remove.advanced
 msgid "Remove (advanced)"
-msgstr ""
+msgstr "Remove (advanced)"
 
 #: vandelay.remove
 msgid "Remove"
-msgstr ""
+msgstr "Remove"
 
 #: vandelay.results.per.page
 msgid "Results Per Page"
-msgstr ""
+msgstr "Results Per Page"
 
 #: vandelay.retrieve.queue
 msgid "Retrieve Queue"
-msgstr ""
+msgstr "Retrieve Queue"
 
 #: vandelay.return
 msgid "Return"
-msgstr ""
+msgstr "Return"
 
 #: vandelay.select.cols
 msgid "Select Columns"
-msgstr ""
+msgstr "Select Columns"
 
 #: vandelay.select.queue
 msgid "Select a Queue to Inspect"
-msgstr ""
+msgstr "Select a Queue to Inspect"
 
 #: vandelay.source.match.point
 msgid "Source Match Point"
-msgstr ""
+msgstr "Source Match Point"
 
 #: vandelay.source
 msgid "Source"
-msgstr ""
+msgstr "Source"
 
 #: vandelay.subfields
 msgid "Subfield(s)"
-msgstr ""
+msgstr "Subfield(s)"
 
 #: vandelay.subfield
 msgid "Subfield"
-msgstr ""
+msgstr "Subfield"
 
 #: vandelay.sure.to.delete
 msgid "Are you sure you want to delete this record?"
-msgstr ""
+msgstr "Are you sure you want to delete this record?"
 
 #: vandelay.sure.to.delete.queue
 msgid "Are you sure you want to delete this queue?"
-msgstr ""
+msgstr "Are you sure you want to delete this queue?"
 
 #: vandelay.tags
 msgid "Tag(s)"
-msgstr ""
+msgstr "Tag(s)"
 
 #: vandelay.tag
 msgid "Tag"
-msgstr ""
+msgstr "Tag"
 
 #: vandelay.tcn.source
 msgid "TCN Source"
-msgstr ""
+msgstr "TCN Source"
 
 #: vandelay.tcn.value
 msgid "TCN Value"
-msgstr ""
+msgstr "TCN Value"
 
 #: vandelay.tooltip.subfields
 msgid "You can enter multiple subfields, separated by spaces and/or commas."
-msgstr ""
+msgstr "You can enter multiple subfields, separated by spaces and/or commas."
 
 #: vandelay.tooltip.tags
 msgid "You can enter multiple tags, separated by spaces and/or commas."
-msgstr ""
+msgstr "You can enter multiple tags, separated by spaces and/or commas."
 
 #: vandelay.true
 msgid "True"
-msgstr ""
+msgstr "True"
 
 #: vandelay.update
 msgid "Update"
-msgstr ""
+msgstr "Update"
 
 #: vandelay.uploading
 msgid "Uploading..."
-msgstr ""
+msgstr "Uploading..."
 
 #: vandelay.upload.status
 msgid "Upload Status"
-msgstr ""
+msgstr "Upload Status"
 
 #: vandelay.upload
 msgid "Upload"
-msgstr ""
+msgstr "Upload"
 
 #: vandelay.vandelay
 msgid "Vandelay"
-msgstr ""
+msgstr "Vandelay"
 
 #: vandelay.view.marc
 msgid "View MARC"
-msgstr ""
+msgstr "View MARC"
 
 #: vandelay.xpath.advanced
 msgid "XPath (advanced)"
-msgstr ""
+msgstr "XPath (advanced)"
 
 #: vandelay.xpath
 msgid "XPath"
-msgstr ""
+msgstr "XPath"
 
 #: vandelay.save
 msgid "Save Changes"
-msgstr ""
+msgstr "Save Changes"
 
 #: vandelay.record_saved
 msgid "Record Saved"
-msgstr ""
+msgstr "Record Saved"
 
 #: vandelay.export.records
 msgid "Export Records"
-msgstr ""
+msgstr "Export Records"
 
 #: vandelay.export.use_field_no
 msgid "Use Field Number"
-msgstr ""
+msgstr "Use Field Number"
 
 #: vandelay.export.from_csv
 msgid "From CSV File"
-msgstr ""
+msgstr "From CSV File"
 
 #: vandelay.export.record_id
 msgid "Record ID"
-msgstr ""
+msgstr "Record ID"
 
 #: vandelay.export.or
 msgid "Or"
-msgstr ""
+msgstr "Or"
 
 #: vandelay.export.format
 msgid "Record Format"
-msgstr ""
+msgstr "Record Format"
 
 #: vandelay.export.format.marc21
 msgid "MARC21"
-msgstr ""
+msgstr "MARC21"
 
 #: vandelay.export.format.unimarc
 msgid "UNIMARC"
-msgstr ""
+msgstr "UNIMARC"
 
 #: vandelay.export.format.xml
 msgid "MARC XML"
-msgstr ""
+msgstr "MARC XML"
 
 #: vandelay.export.format.bre
 msgid "Evergreen Record Entry"
-msgstr ""
+msgstr "Evergreen Record Entry"
 
 #: vandelay.export.encoding
 msgid "Record Encoding"
-msgstr ""
+msgstr "Record Encoding"
 
 #: vandelay.export.utf8
 msgid "UTF-8"
-msgstr ""
+msgstr "UTF-8"
 
 #: vandelay.export.marc8
 msgid "MARC8"
-msgstr ""
+msgstr "MARC8"
 
 #: vandelay.export.holdings
 msgid "Include holdings in Bibliographic Records"
-msgstr ""
+msgstr "Include holdings in Bibliographic Records"
 
 #: vandelay.export.retrieve
 msgid "Retrieve Records"
-msgstr ""
+msgstr "Retrieve Records"
 
 #: vandelay.export.field_no_hint
 msgid "(starting from 0)"
-msgstr ""
+msgstr "(starting from 0)"
 
 #: vandelay.export.bucket
 msgid "Record Bucket ID"
-msgstr ""
+msgstr "Record Bucket ID"
 
 #: vandelay.select_actions
 msgid "-- Actions --"
-msgstr ""
+msgstr "-- Actions --"
 
 #: vandelay.queue.total
 msgid "Total:"
-msgstr ""
+msgstr "Total:"
 
 #: vandelay.queue.imported
 msgid "Imported:"
-msgstr ""
+msgstr "Imported:"
 
 #: vandelay.queue.column_picker.title
 msgid "Column Picker"
-msgstr ""
+msgstr "Column Picker"
 
 #: vandelay.import.bib_sources
 msgid "Select a Record Source"
-msgstr ""
+msgstr "Select a Record Source"

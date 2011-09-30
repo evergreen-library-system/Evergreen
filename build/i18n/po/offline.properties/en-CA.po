@@ -1,22 +1,19 @@
-# English (Canada) translation for evergreen
-# Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
-# This file is distributed under the same license as the evergreen package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+# extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
 #. extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
 msgid ""
 msgstr ""
-"Project-Id-Version: evergreen\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-22 20:40-0400\n"
-"PO-Revision-Date: 2011-03-28 17:18+0000\n"
-"Last-Translator: Dan Scott <dan@coffeecode.net>\n"
-"Language-Team: English (Canada) <en_CA@li.org>\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2011-07-13 12:38+0000\n"
+"Last-Translator: Warren Layton <Unknown>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.8.1\n"
 "X-Accelerator-Marker: &\n"
-"X-Launchpad-Export-Date: 2011-03-28 17:20+0000\n"
+"X-Launchpad-Export-Date: 2011-07-14 04:33+0000\n"
 
 #: common.exception
 msgid ""
@@ -35,8 +32,28 @@ msgid "The JSAN library object is missing."
 msgstr "The JSAN library object is missing."
 
 #: common.ok
+msgctxt "common.ok"
 msgid "Ok"
-msgstr "OK"
+msgstr "Ok"
+
+#: common.ok.label
+msgctxt "common.ok.label"
+msgid "Ok"
+msgstr "Ok"
+
+#: common.ok.accesskey
+msgid "O"
+msgstr "O"
+
+#: common.cancel.label
+msgctxt "common.cancel.label"
+msgid "Cancel"
+msgstr "Cancel"
+
+#: common.cancel.accesskey
+msgctxt "common.cancel.accesskey"
+msgid "C"
+msgstr "C"
 
 #: common.clear
 msgid "Clear"
@@ -132,6 +149,7 @@ msgid "Undelete"
 msgstr "Undelete"
 
 #: cat.opac.cancel
+msgctxt "cat.opac.cancel"
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -172,6 +190,19 @@ msgstr "Record with ID %1$s marked for overlay."
 msgctxt "cat.opac.record_marked_for_overlay.tcn.alert"
 msgid "Record with TCN %1$s marked for overlay."
 msgstr "Record with TCN %1$s marked for overlay."
+
+#: cat.opac.record_marked_for_multi_home.record_id.alert
+msgctxt "cat.opac.record_marked_for_multi_home.record_id.alert"
+msgid "Record with ID %1$s targeted for Multi-Bib items."
+msgstr "Record with ID %1$s targeted for Multi-Bib items."
+
+#: cat.opac.record_marked_for_multi_home.tcn.alert
+msgid "Record with TCN %1$s targeted for Mutli-Bib items."
+msgstr "Record with TCN %1$s targeted for Mutli-Bib items."
+
+#: cat.opac.clear_statusbar
+msgid "Un-target/un-mark this record?"
+msgstr "Un-target/un-mark this record?"
 
 #: cat.save_record
 msgid "Save Record"
@@ -506,7 +537,7 @@ msgstr "MARC Import/Export"
 
 #: menu.cmd_marc_batch_edit.tab
 msgid "MARC Batch Edit"
-msgstr ""
+msgstr "MARC Batch Edit"
 
 #: menu.cmd_open_conify.tab
 msgid "Server Settings"
@@ -613,6 +644,8 @@ msgid ""
 "Sorry, we can't create any more tabs in this window.\n"
 "Would you like to create a new tab in another window?"
 msgstr ""
+"Sorry, we can't create any more tabs in this window.\n"
+"Would you like to create a new tab in another window?"
 
 #: main.session_cookie.error
 msgid "Error setting session cookie: %1$s"
@@ -956,6 +989,7 @@ msgid "Copy Field from Selected Row to Clipboard"
 msgstr "Copy Field from Selected Row to Clipboard"
 
 #: list.actions.field_to_clipboard.accesskey
+msgctxt "list.actions.field_to_clipboard.accesskey"
 msgid "C"
 msgstr "C"
 
@@ -1176,6 +1210,15 @@ msgstr "You do not have permission to add volumes to the workstation library."
 msgid "Add Volume/Item for Record # %1$s"
 msgstr "Add Volume/Item for Record # %1$s"
 
+#: staff.cat.copy_browser.marked_record_for_multi_home_indicator.tcn.label
+msgid "Record with TCN %1$s targeted for Multi-Bib items."
+msgstr "Record with TCN %1$s targeted for Multi-Bib items."
+
+#: staff.cat.copy_browser.marked_record_for_multi_home_indicator.record_id.label
+msgctxt "staff.cat.copy_browser.marked_record_for_multi_home_indicator.record_id.label"
+msgid "Record with ID %1$s targeted for Multi-Bib items."
+msgstr "Record with ID %1$s targeted for Multi-Bib items."
+
 #: staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label
 msgctxt "staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label"
 msgid "Record with TCN %1$s marked for overlay."
@@ -1248,67 +1291,115 @@ msgstr ""
 
 #: menu.tab1.accesskey
 msgid "1"
-msgstr ""
+msgstr "1"
 
 #: menu.tab2.accesskey
 msgid "2"
-msgstr ""
+msgstr "2"
 
 #: menu.tab3.accesskey
 msgid "3"
-msgstr ""
+msgstr "3"
 
 #: menu.tab4.accesskey
 msgid "4"
-msgstr ""
+msgstr "4"
 
 #: menu.tab5.accesskey
 msgid "5"
-msgstr ""
+msgstr "5"
 
 #: menu.tab6.accesskey
 msgid "6"
-msgstr ""
+msgstr "6"
 
 #: menu.tab7.accesskey
 msgid "7"
-msgstr ""
+msgstr "7"
 
 #: menu.tab8.accesskey
 msgid "8"
-msgstr ""
+msgstr "8"
 
 #: menu.tab9.accesskey
 msgid "9"
-msgstr ""
+msgstr "9"
 
 #: menu.tab10.accesskey
 msgid "0"
-msgstr ""
+msgstr "0"
 
 #: browser.reload.unsaved_data_warning
 msgid "This page may have unsaved data. Reload it anyway?"
-msgstr ""
+msgstr "This page may have unsaved data. Reload it anyway?"
 
 #: menu.close_tab.unsaved_data_warning
 msgid "This tab may have unsaved data. Close it anyway?"
-msgstr ""
+msgstr "This tab may have unsaved data. Close it anyway?"
 
 #: menu.replace_tab.unsaved_data_warning
 msgid "This tab may have unsaved data. Replace it anyway?"
-msgstr ""
+msgstr "This tab may have unsaved data. Replace it anyway?"
 
 #: menu.close_window.unsaved_data_warning
 msgid "This window may have unsaved data. Close it anyway?"
-msgstr ""
+msgstr "This window may have unsaved data. Close it anyway?"
 
 #: menu.logoff.unsaved_data_warning
 msgid "This session may have unsaved data. Logoff anyway?"
-msgstr ""
+msgstr "This session may have unsaved data. Logoff anyway?"
 
 #: menu.shutdown.unsaved_data_warning
 msgid "This application may have unsaved data. Exit it anyway?"
-msgstr ""
+msgstr "This application may have unsaved data. Exit it anyway?"
+
+#~ msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3."
+#~ msgstr "Warning: As of %1$s, this barcode (%2$s) was flagged %3."
+
+#~ msgid "Cancel"
+#~ msgstr "Cancel"
+
+#~ msgid "Record with TCN %1$s marked for overlay."
+#~ msgstr "Record with TCN %1$s marked for overlay."
+
+#~ msgid "Record with ID %1$s marked for overlay."
+#~ msgstr "Record with ID %1$s marked for overlay."
+
+#~ msgid "Record successfully saved."
+#~ msgstr "Record successfully saved."
 
 #~ msgid "Override"
 #~ msgstr "Override"
+
+#~ msgid "C"
+#~ msgstr "C"
+
+#~ msgid "Providers"
+#~ msgstr "Providers"
+
+#~ msgid "Funds"
+#~ msgstr "Funds"
+
+#~ msgid "Selection Lists"
+#~ msgstr "Selection Lists"
+
+#~ msgid "Title Search"
+#~ msgstr "Title Search"
+
+#~ msgid "Load Order Record"
+#~ msgstr "Load Order Record"
+
+#~ msgid "Currency Types"
+#~ msgstr "Currency Types"
+
+#~ msgid "Funding Sources"
+#~ msgstr "Funding Sources"
+
+#~ msgid "Distribution Formulas"
+#~ msgstr "Distribution Formulas"
+
+#~ msgid "Exchange Rates"
+#~ msgstr "Exchange Rates"
+
+#~ msgid "Ok"
+#~ msgstr "OK"

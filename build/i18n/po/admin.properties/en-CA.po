@@ -1,275 +1,284 @@
 # extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/admin.properties
+#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/admin.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > admin.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-23 23:36-0400\n"
-"PO-Revision-Date: 2009-11-24 20:07+0000\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2011-07-18 01:41+0000\n"
 "Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-11-25 04:50+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
-"X-Poedit-Country: CANADA\n"
+"X-Generator: Translate Toolkit 1.8.1\n"
 "X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-07-19 04:39+0000\n"
+"X-Poedit-Country: CANADA\n"
 "X-Poedit-Language: English\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
+#: staff.admin.age_overdue_circulations_to_lost.chunks_processed
+msgid "Chunks Processed: %1$s"
+msgstr "Chunks Processed: %1$s"
+
+#: staff.admin.age_overdue_circulations_to_lost.events_created
+msgid "Events Created: %1$s"
+msgstr "Events Created: %1$s"
+
 #: staff.admin.font_settings.sound
 msgid "Sound preference saved to file system."
-msgstr ""
+msgstr "Sound preference saved to file system."
 
 #: staff.admin.font_settings.save
 msgid "Global Font saved to file system."
-msgstr ""
+msgstr "Global Font saved to file system."
 
 #: staff.admin.font_settings.sound.disabled
 msgid "Sound is now disabled."
-msgstr ""
+msgstr "Sound is now disabled."
 
 #: staff.admin.font_settings.sound.enabled
 msgid "Sound is now enabled."
-msgstr ""
+msgstr "Sound is now enabled."
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_SMALLER
 msgid "Global Font Adjust set to Smaller than Default"
-msgstr ""
+msgstr "Global Font Adjust set to Smaller than Default"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_DEFAULT
 msgid "Global Font Adjust set to Default"
-msgstr ""
+msgstr "Global Font Adjust set to Default"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_LARGER
 msgid "Global Font Adjust set to Larger than Default"
-msgstr ""
+msgstr "Global Font Adjust set to Larger than Default"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_XX_SMALL
 msgid "Global Font set to XX-Small"
-msgstr ""
+msgstr "Global Font set to XX-Small"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_X_SMALL
 msgid "Global Font set to X-Small"
-msgstr ""
+msgstr "Global Font set to X-Small"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_SMALL
 msgid "Global Font set to Small"
-msgstr ""
+msgstr "Global Font set to Small"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_MEDIUM
 msgid "Global Font set to Medium"
-msgstr ""
+msgstr "Global Font set to Medium"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_LARGE
 msgid "Global Font set to Large"
-msgstr ""
+msgstr "Global Font set to Large"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_X_LARGE
 msgid "Global Font set to X-Large"
-msgstr ""
+msgstr "Global Font set to X-Large"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_XX_LARGE
 msgid "Global Font set to XX-Large"
-msgstr ""
+msgstr "Global Font set to XX-Large"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_5PT
 msgid "Global Font set to 5pt"
-msgstr ""
+msgstr "Global Font set to 5pt"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_6PT
 msgid "Global Font set to 6pt"
-msgstr ""
+msgstr "Global Font set to 6pt"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_7PT
 msgid "Global Font set to 7pt"
-msgstr ""
+msgstr "Global Font set to 7pt"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_8PT
 msgid "Global Font set to 8pt"
-msgstr ""
+msgstr "Global Font set to 8pt"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_9PT
 msgid "Global Font set to 9pt"
-msgstr ""
+msgstr "Global Font set to 9pt"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_10PT
 msgid "Global Font set to 10pt"
-msgstr ""
+msgstr "Global Font set to 10pt"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_11PT
 msgid "Global Font set to 11pt"
-msgstr ""
+msgstr "Global Font set to 11pt"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_12PT
 msgid "Global Font set to 12pt"
-msgstr ""
+msgstr "Global Font set to 12pt"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_13PT
 msgid "Global Font set to 13pt"
-msgstr ""
+msgstr "Global Font set to 13pt"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_14PT
 msgid "Global Font set to 14pt"
-msgstr ""
+msgstr "Global Font set to 14pt"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_15PT
 msgid "Global Font set to 15pt"
-msgstr ""
+msgstr "Global Font set to 15pt"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_16PT
 msgid "Global Font set to 16pt"
-msgstr ""
+msgstr "Global Font set to 16pt"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_17PT
 msgid "Global Font set to 17pt"
-msgstr ""
+msgstr "Global Font set to 17pt"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_18PT
 msgid "Global Font set to 18pt"
-msgstr ""
+msgstr "Global Font set to 18pt"
 
 #: staff.admin.transit_list.missing_list
 msgid "Missing library list."
-msgstr ""
+msgstr "Missing library list."
 
 #: staff.admin.transit_list.no_match
 msgid "No matching transits."
-msgstr ""
+msgstr "No matching transits."
 
 #: staff.admin.transit_list.invalid_date
 msgid "Invalid Date (%1$s), setting to Today"
-msgstr ""
+msgstr "Invalid Date (%1$s), setting to Today"
 
 #: staff.admin.transit_list.invalid_date_format
 msgid "Invalid Date (%1$s,%2$s), setting to Today"
-msgstr ""
+msgstr "Invalid Date (%1$s,%2$s), setting to Today"
 
 #: staff.admin.transit_list.date_processing.error
 msgid "error processing date"
-msgstr ""
+msgstr "error processing date"
 
 #: staff.admin.transit_list.retrieving_transit.error
 msgid "error retrieving transits"
-msgstr ""
+msgstr "error retrieving transits"
 
 #: staff.admin.transit_list.preretrieving_transit.error
 msgid "error pre-retrieving transits"
-msgstr ""
+msgstr "error pre-retrieving transits"
 
 #: staff.admin.transit_list.retrieving_row.error
 msgid "error retrieving row"
-msgstr ""
+msgstr "error retrieving row"
 
 #: staff.admin.transit_list.empty_array.error
 msgid "Empty array returned by hold retrieve."
-msgstr ""
+msgstr "Empty array returned by hold retrieve."
 
 #: staff.admin.transit_list.retrieve_hold.error
 msgid "retrieving hold id = %1$s for transit id = %2$s"
-msgstr ""
+msgstr "retrieving hold id = %1$s for transit id = %2$s"
 
 #: staff.admin.transit_list.transit_id.error
 msgid "retrieving transit id = %1$s"
-msgstr ""
+msgstr "retrieving transit id = %1$s"
 
 #: staff.admin.offline_manage_xacts.init_list.organization
 msgid "Organization"
-msgstr ""
+msgstr "Organization"
 
 #: staff.admin.offline_manage_xacts.init_list.description
 msgid "Description"
-msgstr ""
+msgstr "Description"
 
 #: staff.admin.offline_manage_xacts.init_list.date_created
 msgid "Date Created"
-msgstr ""
+msgstr "Date Created"
 
 #: staff.admin.offline_manage_xacts.init_list.created_by
 msgid "Created By"
-msgstr ""
+msgstr "Created By"
 
 #: staff.admin.offline_manage_xacts.init_list.upload_count
 msgid "Upload Count"
-msgstr ""
+msgstr "Upload Count"
 
 #: staff.admin.offline_manage_xacts.init_list.transactions_processed
 msgid "Transactions Processed"
-msgstr ""
+msgstr "Transactions Processed"
 
 #: staff.admin.offline_manage_xacts.init_list.processing
 msgid "Processing?"
-msgstr ""
+msgstr "Processing?"
 
 #: staff.admin.offline_manage_xacts.init_list.date_started
 msgid "Date Started"
-msgstr ""
+msgstr "Date Started"
 
 #: staff.admin.offline_manage_xacts.init_list.date_completed
 msgid "Date Completed"
-msgstr ""
+msgstr "Date Completed"
 
 #: staff.admin.offline_manage_xacts.init_list.session
 msgid "Session"
-msgstr ""
+msgstr "Session"
 
 #: staff.admin.offline_manage_xacts.init_script_list.date_uploaded
 msgid "Date Uploaded"
-msgstr ""
+msgstr "Date Uploaded"
 
 #: staff.admin.offline_manage_xacts.init_script_list.uploaded_by
 msgid "Uploaded By"
-msgstr ""
+msgstr "Uploaded By"
 
 #: staff.admin.offline_manage_xacts.init_script_list.time_delta
 msgid "Server/Local Time Delta"
-msgstr ""
+msgstr "Server/Local Time Delta"
 
 #: staff.admin.offline_manage_xacts.init_script_list.workstation
 msgctxt "staff.admin.offline_manage_xacts.init_script_list.workstation"
 msgid "Workstation"
-msgstr ""
+msgstr "Workstation"
 
 #: staff.admin.offline_manage_xacts.init_error_list.workstation
 msgctxt "staff.admin.offline_manage_xacts.init_error_list.workstation"
 msgid "Workstation"
-msgstr ""
+msgstr "Workstation"
 
 #: staff.admin.offline_manage_xacts.init_error_list.timestamp
 msgid "Timestamp"
-msgstr ""
+msgstr "Timestamp"
 
 #: staff.admin.offline_manage_xacts.init_error_list.type
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 #: staff.admin.offline_manage_xacts.init_error_list.event_code
 msgid "Event Code"
-msgstr ""
+msgstr "Event Code"
 
 #: staff.admin.offline_manage_xacts.init_error_list.event_name
 msgid "Event Name"
-msgstr ""
+msgstr "Event Name"
 
 #: staff.admin.offline_manage_xacts.init_error_list.event_description
 msgid "Event Description"
-msgstr ""
+msgstr "Event Description"
 
 #: staff.admin.offline_manage_xacts.init_error_list.item_barcode
 msgid "Item Barcode"
-msgstr ""
+msgstr "Item Barcode"
 
 #: staff.admin.offline_manage_xacts.init_error_list.patron_barcode
 msgid "Patron Barcode"
-msgstr ""
+msgstr "Patron Barcode"
 
 #: staff.admin.offline_manage_xacts.init_error_list.due_date
 msgid "Due Date"
-msgstr ""
+msgstr "Due Date"
 
 #: staff.admin.offline_manage_xacts.init_error_list.count
 msgid "In House Use Count"
-msgstr ""
+msgstr "In House Use Count"
 
 #: staff.admin.offline_manage_xacts.init_error_list.noncat
 msgid "Non-Cataloged?"
@@ -285,138 +294,166 @@ msgstr "Non-Catalogued Count"
 
 #: staff.admin.offline_manage_xacts.init_error_list.backdate
 msgid "Check In Backdate"
-msgstr ""
+msgstr "Check In Backdate"
 
 #: staff.admin.offline_manage_xacts.error.check_perm
 msgid "Error checking permissions"
-msgstr ""
+msgstr "Error checking permissions"
 
 #: staff.admin.offline_manage_xacts.error.bad_cgi_response
 msgid "Bad response from CGI component"
-msgstr ""
+msgstr "Bad response from CGI component"
 
 #: staff.admin.offline_manage_xacts.error.execute_error
 msgid "Execute error:"
-msgstr ""
+msgstr "Execute error:"
 
 #: staff.admin.offline_manage_xacts.error.session_execute_error
 msgid "Error executing session"
-msgstr ""
+msgstr "Error executing session"
 
 #: staff.admin.offline_manage_xacts.error.session_retrieval
 msgid "Error retrieving session errors:"
-msgstr ""
+msgstr "Error retrieving session errors:"
 
 #: staff.admin.offline_manage_xacts.error.non_existent_file
 msgid "Cannot rename a non-existent file"
-msgstr ""
+msgstr "Cannot rename a non-existent file"
 
 #: staff.admin.offline_manage_xacts.error.renaming_file
 msgid "Error renaming transaction file"
-msgstr ""
+msgstr "Error renaming transaction file"
 
 #: staff.admin.offline_manage_xacts.error.unique_file
 msgid "Taking too long to find a unique filename."
-msgstr ""
+msgstr "Taking too long to find a unique filename."
 
 #: staff.admin.offline_manage_xacts.error.transaction_conflicts
 msgid ""
 "Something bad happened.  New offline transactions were accumulated during "
 "our attempted upload.  Tell your system admin that the file involved is %1$s"
 msgstr ""
+"Something bad happened.  New offline transactions were accumulated during "
+"our attempted upload.  Tell your system admin that the file involved is %1$s"
 
 #: staff.admin.offline_manage_xacts.error.transaction_conflicts.title
 msgid "Transaction conflicts"
-msgstr ""
+msgstr "Transaction conflicts"
 
 #: staff.admin.offline_manage_xacts.error.transaction_conflicts.ok
 msgid "Ok"
-msgstr ""
+msgstr "Ok"
 
 #: staff.admin.offline_manage_xacts.error.transaction_conflicts.confirm
 msgid "Check here to confirm this message"
-msgstr ""
+msgstr "Check here to confirm this message"
 
 #: staff.admin.offline_manage_xacts.error.reverting_file
 msgid "Error reverting transaction file"
-msgstr ""
+msgstr "Error reverting transaction file"
 
 #: staff.admin.offline_manage_xacts.error.archiving_file
 msgid "Error archiving transaction file"
-msgstr ""
+msgstr "Error archiving transaction file"
 
 #: staff.admin.offline_manage_xacts.session_upload
 msgid "Please select a session to upload to."
-msgstr ""
+msgstr "Please select a session to upload to."
 
 #: staff.admin.offline_manage_xacts.single_session_upload
 msgid "Please select a single session to upload to."
-msgstr ""
+msgstr "Please select a single session to upload to."
 
 #: staff.admin.offline_manage_xacts.no_transactions
 msgid "No pending transactions to upload."
-msgstr ""
+msgstr "No pending transactions to upload."
 
 #: staff.admin.offline_manage_xacts.error.uploading_file
 msgid "There was an error:"
-msgstr ""
+msgstr "There was an error:"
 
 #: staff.admin.offline_manage_xacts.error.uploading_transactions
 msgid "Error uploading transactions"
-msgstr ""
+msgstr "Error uploading transactions"
 
 #: staff.admin.offline_manage_xacts.error.retrieving_session
 msgid "Error retrieving session status"
-msgstr ""
+msgstr "Error retrieving session status"
 
 #: staff.admin.offline_manage_xacts.create_session.prompt
 msgid "Please enter a description:"
-msgstr ""
+msgstr "Please enter a description:"
 
 #: staff.admin.offline_manage_xacts.create_session
 msgid "Create an Offline Transaction Session"
-msgstr ""
+msgstr "Create an Offline Transaction Session"
 
 #: staff.admin.offline_manage_xacts.error.create_session
 msgid "Error creating session"
-msgstr ""
+msgstr "Error creating session"
 
 #: staff.admin.offline_manage_xacts.error.create_session.alert
 msgid "Error: %1$s"
-msgstr ""
+msgstr "Error: %1$s"
 
 #: staff.admin.offline_manage_xacts.error.retrieving_sessions
 msgid "Error retrieving offline sessions."
-msgstr ""
+msgstr "Error retrieving offline sessions."
 
 #: staff.admin.offline_manage_xacts.error.rendering_session
 msgid "Error rendering session list"
-msgstr ""
+msgstr "Error rendering session list"
 
 #: staff.admin.offline_manage_xacts.upload_status
 msgid "Uploaded Transactions for %1$s"
-msgstr ""
+msgstr "Uploaded Transactions for %1$s"
 
 #: staff.admin.offline_manage_xacts.error.rendering_script
 msgid "Error rendering script list"
-msgstr ""
+msgstr "Error rendering script list"
 
 #: staff.admin.offline_manage_xacts.error.rendering_errors
 msgid "Exceptions for %1$s"
-msgstr ""
+msgstr "Exceptions for %1$s"
 
 #: staff.admin.offline_manage_xacts.error.rendering_error_list
 msgid "Error rendering error list"
-msgstr ""
+msgstr "Error rendering error list"
 
 #: staff.admin.offline_manage_xacts.completed
 msgid "Completed"
-msgstr ""
+msgstr "Completed"
 
 #: staff.admin.offline_manage_xacts.no
 msgid "No"
-msgstr ""
+msgstr "No"
 
 #: staff.admin.offline_manage_xacts.yes
 msgid "Yes"
+msgstr "Yes"
+
+#: staff.admin.staff.do_not_auto_attempt_print_setting.update_success
+msgid "Setting updated"
+msgstr "Setting updated"
+
+#: staff.admin.staff.do_not_auto_attempt_print_setting.update_failure
+msgid "Setting not updated due to error"
+msgstr "Setting not updated due to error"
+
+#. # 1 - workstation library shortname   2 - setting library shortname
+#: staff.admin.staff.do_not_auto_attempt_print_setting.current_setting_preamble
+msgid ""
+"Workstation library %1$s is currently suppressing auto-print for these "
+"receipt/slip types based on a setting inherited from %2$s:"
 msgstr ""
+"Workstation library %1$s is currently suppressing auto-print for these "
+"receipt/slip types based on a setting inherited from %2$s:"
+
+#. # 1 - workstation library shortname
+#: staff.admin.staff.do_not_auto_attempt_print_setting.current_setting_nonexistent
+msgid ""
+"Workstation library %1$s is not currently suppressing auto-print for any "
+"receipt/slip types."
+msgstr ""
+"Workstation library %1$s is not currently suppressing auto-print for any "
+"receipt/slip types."
