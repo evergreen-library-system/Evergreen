@@ -600,7 +600,12 @@ function finishBookbag(exitstatus) {
  * Creates a new Bookbag for the user.
  */
 function rdetailNewBookbag() {
-	newBBDialog.show(); // Show the bookbag dialog.
+    newBBDialog.show(); // Show the bookbag dialog.
+    dojo.connect(dijit.byId('newBBDialog'), 'onKeyPress', function(evt) {
+        if (evt.keyCode == dojo.keys.ENTER) {
+            finishBookbag(0);
+        }
+    });
 }
 
 function rdetailAddToBookbag() {
