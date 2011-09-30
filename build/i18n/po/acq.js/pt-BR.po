@@ -1,19 +1,39 @@
+# Brazilian Portuguese translation for evergreen
+# Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2010-06-07 02:03:44-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2011-04-18 21:45:31-0400\n"
+"PO-Revision-Date: 2011-04-19 04:00+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
+"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2011-05-18 04:48+0000\n"
+
+#: acq.js:LINEITEM_SUMMARY
+msgid ""
+"<div class='acq-lineitem-summary'><a href='${19}'>${0}</a>, by ${1} (${2})</div>\n"
+"<div class='acq-lineitem-summary-extra'>\n"
+"${3} Ordered, ${4} Received, ${7} Invoiced, ${8} Claimed, ${9} Cancelled</div>\n"
+"<div class='acq-lineitem-summary-extra'>Estimated $${6}, Encumbered $${16}, Paid $${17}</div>\n"
+"<div class='acq-lineitem-summary-extra'>\n"
+"# ${10} <a style='padding-right: 10px;' class='hidden${20}'  href='${11}/acq/po/view/${12}'>&#x2318; ${13} ${18}</a>\n"
+"<a style='padding-right: 10px;' class='hidden${21}' href='${11}/acq/picklist/view/${14}'>&#x2756; ${15}</a></div>"
+msgstr ""
 
 #: acq.js:CHANGE_CLAIM_POLICY
 msgid "Change claim policy"
-msgstr ""
+msgstr "Mudar política de reinvidicação"
+
+#: acq.js:PO_ACTIVATED_ON
+msgid "Activated ${0}"
+msgstr "Ativado ${0}"
 
 #: acq.js:CONFIRM_LI_ALERT
 msgid ""
@@ -32,11 +52,11 @@ msgstr ""
 
 #: acq.js:NO
 msgid "No"
-msgstr ""
+msgstr "Não"
 
 #: acq.js:NO_RESULTS
 msgid "No results."
-msgstr ""
+msgstr "Sem resultados."
 
 #: acq.js:NO_FIND_INVOICE
 msgid ""
@@ -46,11 +66,13 @@ msgstr ""
 
 #: acq.js:NO_LID_TO_CLAIM
 msgid "You have not selected any lineitem details to claim."
-msgstr ""
+msgstr "Você não selecionou nenhum delalhes de lineitem para reivindicar"
 
 #: acq.js:FUND_LIST_ROLLOVER_SUMMARY_FUNDS
 msgid "<b>${1}</b> funds propagated for fiscal year ${0} for the selected locations"
 msgstr ""
+"<b>${1}</b> fundos propragados para o ano fiscal ${0} para as localizações "
+"selecionadas"
 
 #: acq.js:DFA_TIP
 msgid "<strong>Applied by</strong>: ${0}<br /><strong>When</strong>: ${1}"
@@ -84,8 +106,11 @@ msgstr ""
 msgid "Print"
 msgstr ""
 
-#: acq.js:FUND_XFER_CONFIRM
-msgid "Are you sure you're ready to commit this transfer?"
+#: acq.js:CREATE_PO_ASSETS_CONFIRM
+msgid ""
+"This will create bibliographic, call number, and copy records for this purchase order in the ILS.\n"
+"\n"
+"Continue?"
 msgstr ""
 
 #: acq.js:ITS_YOU
@@ -106,6 +131,10 @@ msgstr ""
 
 #: acq.js:OUT_OF_COPIES
 msgid "You have applied distribution formulas to every copy."
+msgstr ""
+
+#: acq.js:SELECT_SEARCH_FIELD
+msgid "Select Search Field"
 msgstr ""
 
 #: acq.js:LI_ATTR_SEARCH_CHOOSE_FILE
@@ -198,20 +227,14 @@ msgstr ""
 msgid "Cancel reason"
 msgstr ""
 
-#: acq.js:LINEITEM_SUMMARY
-msgid ""
-"<div class='acq-lineitem-summary'><a href='${19}'>${0}</a>, by ${1} (${2})</div>\n"
-"<div class='acq-lineitem-summary-extra'>\n"
-"${3} Ordered, ${4} Received, ${7} Invoiced, ${8} Claimed, ${9} Cancelled</div>\n"
-"<div class='acq-lineitem-summary-extra'>Estimated $${6}, Encumbered $${16}, Paid $${17}</div>\n"
-"<div class='acq-lineitem-summary-extra'>\n"
-"<a style='padding-right: 10px;' href='${11}/acq/po/view/${12}'>PO #${13} ${18}</a>\n"
-"<a style='padding-right: 10px;' href='${11}/acq/picklist/view/${14}'>${15}</a></div>"
+#: acq.js:FUND_XFER_CONFIRM
+msgid "Are you sure you're ready to commit this transfer?"
 msgstr ""
 
 #: acq.js:NO_PO_RESULTS
+#, fuzzy
 msgid "No results"
-msgstr ""
+msgstr "Sem resultados."
 
 #: acq.js:CONFIRM_FUNDS_AT_WARNING
 msgid ""
@@ -228,8 +251,9 @@ msgid "Save field values to a file"
 msgstr ""
 
 #: acq.js:NO_LI_TO_CLAIM
+#, fuzzy
 msgid "You have not selected any lineitems to claim."
-msgstr ""
+msgstr "Você não selecionou nenhum delalhes de lineitem para reivindicar"
 
 #: acq.js:LID_CANCEL_CONFIRM
 msgid "Are you SURE you want to cancel this copy?"
@@ -243,10 +267,8 @@ msgstr ""
 msgid "Remove $${0} charge for item '${1}, ${2} [${3}] from the invoice?"
 msgstr ""
 
-#: acq.js:LOAD_TERMS_FIRST
-msgid ""
-"You can't retrieve records until you've loaded a CSV file\n"
-"with bibliographic IDs in the first column."
+#: acq.js:LIBRARY_INITIATED
+msgid "Library Initiated"
 msgstr ""
 
 #: acq.js:VENDOR_PUBLIC
@@ -261,13 +283,6 @@ msgstr ""
 
 #: acq.js:APPLY
 msgid "Apply"
-msgstr ""
-
-#: acq.js:CREATE_PO_ASSETS_CONFIRM
-msgid ""
-"This will create bibliographic, call number, and copy records for this purchase order in the ILS.\n"
-"\n"
-"Continue?"
 msgstr ""
 
 #: acq.js:VENDOR_SAYS_PREPAY_NEEDED
@@ -327,6 +342,12 @@ msgstr ""
 
 #: acq.js:COULD_NOT_DELETE_MAPPING
 msgid "Error removing tag from fund."
+msgstr ""
+
+#: acq.js:LOAD_TERMS_FIRST
+msgid ""
+"You can't retrieve records until you've loaded a CSV file\n"
+"with bibliographic IDs in the first column."
 msgstr ""
 
 #: acq.js:CANCEL

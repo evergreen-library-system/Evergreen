@@ -2,23 +2,32 @@
 # Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR: Job Diógenes Ribeiro Borges <jobdrb@gmail.com>, 2009.
-#
+#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/admin.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-11-23 23:36-0400\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
 "PO-Revision-Date: 2010-03-01 00:06+0000\n"
 "Last-Translator: Teylo Laundos Aguiar <teylo.aguiar@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-03-02 04:42+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Generator: Translate Toolkit 1.8.1\n"
+"X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-05-18 04:38+0000\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: UTF-8\n"
+
+#: staff.admin.age_overdue_circulations_to_lost.chunks_processed
+msgid "Chunks Processed: %1$s"
+msgstr ""
+
+#: staff.admin.age_overdue_circulations_to_lost.events_created
+msgid "Events Created: %1$s"
+msgstr ""
 
 #: staff.admin.font_settings.sound
 msgid "Sound preference saved to file system."
@@ -427,3 +436,29 @@ msgstr "Não"
 #: staff.admin.offline_manage_xacts.yes
 msgid "Yes"
 msgstr "Sim"
+
+#: staff.admin.staff.do_not_auto_attempt_print_setting.update_success
+msgid "Setting updated"
+msgstr "Configuração atualizada"
+
+#: staff.admin.staff.do_not_auto_attempt_print_setting.update_failure
+msgid "Setting not updated due to error"
+msgstr "Configuração não atualizada devido a um erro"
+
+#. # 1 - workstation library shortname   2 - setting library shortname
+#: staff.admin.staff.do_not_auto_attempt_print_setting.current_setting_preamble
+msgid ""
+"Workstation library %1$s is currently suppressing auto-print for these "
+"receipt/slip types based on a setting inherited from %2$s:"
+msgstr ""
+
+#. # 1 - workstation library shortname
+#: staff.admin.staff.do_not_auto_attempt_print_setting.current_setting_nonexistent
+msgid ""
+"Workstation library %1$s is not currently suppressing auto-print for any "
+"receipt/slip types."
+msgstr ""
+
+#~ msgctxt "staff.admin.font_settings.status_msg.ALL_FONTS_DEFAULT"
+#~ msgid "Global Font Adjust set to Default"
+#~ msgstr "«Global Font Adjust » definido para o Padrão"
