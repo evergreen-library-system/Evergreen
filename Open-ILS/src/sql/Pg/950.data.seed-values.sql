@@ -1,10 +1,10 @@
 --002.schema.config.sql:
-INSERT INTO config.bib_source (id, quality, source, transcendant) VALUES 
-    (1, 90, oils_i18n_gettext(1, 'oclc', 'cbs', 'source'), FALSE);
-INSERT INTO config.bib_source (id, quality, source, transcendant) VALUES 
-    (2, 10, oils_i18n_gettext(2, 'System Local', 'cbs', 'source'), FALSE);
-INSERT INTO config.bib_source (id, quality, source, transcendant) VALUES 
-    (3, 1, oils_i18n_gettext(3, 'Project Gutenberg', 'cbs', 'source'), TRUE);
+INSERT INTO config.bib_source (id, quality, source, transcendant, can_have_copies) VALUES 
+    (1, 90, oils_i18n_gettext(1, 'oclc', 'cbs', 'source'), FALSE, TRUE);
+INSERT INTO config.bib_source (id, quality, source, transcendant, can_have_copies) VALUES 
+    (2, 10, oils_i18n_gettext(2, 'System Local', 'cbs', 'source'), FALSE, TRUE);
+INSERT INTO config.bib_source (id, quality, source, transcendant, can_have_copies) VALUES 
+    (3, 1, oils_i18n_gettext(3, 'Project Gutenberg', 'cbs', 'source'), TRUE, TRUE);
 SELECT SETVAL('config.bib_source_id_seq'::TEXT, 100);
 
 INSERT INTO biblio.peer_type (id,name) VALUES

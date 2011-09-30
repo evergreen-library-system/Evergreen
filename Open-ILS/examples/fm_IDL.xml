@@ -4863,6 +4863,7 @@ SELECT  usr,
 			<field name="quality" reporter:datatype="int" />
 			<field name="source" reporter:datatype="text"/>
 			<field name="transcendant" reporter:datatype="bool"/>
+			<field name="can_have_copies" reporter:datatype="bool"/>
 		</fields>
 		<links/>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
