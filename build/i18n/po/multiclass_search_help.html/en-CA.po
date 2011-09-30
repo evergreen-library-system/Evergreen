@@ -2,131 +2,111 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > multiclass_search_help.html.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-23 23:36-0400\n"
-"PO-Revision-Date: 2009-11-24 19:38+0000\n"
-"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
+"POT-Creation-Date: 2011-09-29 22:13-0400\n"
+"PO-Revision-Date: 2011-07-13 12:33+0000\n"
+"Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-11-25 04:52+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
-"X-Poedit-Country: CANADA\n"
+"X-Generator: Launchpad (build 13405)\n"
+"X-Launchpad-Export-Date: 2011-07-14 04:33+0000\n"
 "X-Poedit-Language: English\n"
 "X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Country: CANADA\n"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:1
-msgctxt ""
-"../../Open-ILS/xul/staff_client/server/locale/en-"
-"US/multiclass_search_help.html:1"
-msgid "Multiclass Search Help"
-msgstr ""
+#~ msgctxt ""
+#~ "../../Open-ILS/xul/staff_client/server/locale/en-"
+#~ "US/multiclass_search_help.html:1"
+#~ msgid "Multiclass Search Help"
+#~ msgstr "Multiclass Search Help"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:2
-msgctxt ""
-"../../Open-ILS/xul/staff_client/server/locale/en-"
-"US/multiclass_search_help.html:2"
-msgid "Multiclass Search Help"
-msgstr ""
+#~ msgctxt ""
+#~ "../../Open-ILS/xul/staff_client/server/locale/en-"
+#~ "US/multiclass_search_help.html:2"
+#~ msgid "Multiclass Search Help"
+#~ msgstr "Multiclass Search Help"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:3
-msgid "Recognized search keys include:"
-msgstr ""
+#~ msgid "Recognized search keys include:"
+#~ msgstr "Recognized search keys include:"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:4
-msgid "Search key"
-msgstr ""
+#~ msgid "Search key"
+#~ msgstr "Search key"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:5
-msgid "Definition"
-msgstr ""
+#~ msgid "Definition"
+#~ msgstr "Definition"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:6
-msgid ""
-"keyword</strong>, <strong>title</strong>,             "
-"<strong>author</strong>, <strong>subject</strong>, and             "
-"<strong>series</strong> support additional search subclasses,             "
-"specified with a <kbd>|</kbd>. For example:             "
-"<kbd>title|proper:gone with the wind"
-msgstr ""
+#~ msgid ""
+#~ "keyword</strong>, <strong>title</strong>,             "
+#~ "<strong>author</strong>, <strong>subject</strong>, and             "
+#~ "<strong>series</strong> support additional search subclasses,             "
+#~ "specified with a <kbd>|</kbd>. For example:             "
+#~ "<kbd>title|proper:gone with the wind"
+#~ msgstr ""
+#~ "keyword</strong>, <strong>title</strong>, <strong>author</strong>, "
+#~ "<strong>subject</strong>, and <strong>series</strong> support additional "
+#~ "search subclasses, specified with a <kbd>|</kbd>. For example: "
+#~ "<kbd>title|proper:gone with the wind"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:7
-msgid "keyword/kw"
-msgstr ""
+#~ msgid "keyword/kw"
+#~ msgstr "keyword/kw"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:8
-msgid "search keyword(s)"
-msgstr ""
+#~ msgid "search keyword(s)"
+#~ msgstr "search keyword(s)"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:9
-msgid "author/au/name"
-msgstr ""
+#~ msgid "author/au/name"
+#~ msgstr "author/au/name"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:10
-msgid "search author(s)"
-msgstr ""
+#~ msgid "search author(s)"
+#~ msgstr "search author(s)"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:11
-msgid "title/ti"
-msgstr ""
+#~ msgid "title/ti"
+#~ msgstr "title/ti"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:12
-msgid "search title"
-msgstr ""
+#~ msgid "search title"
+#~ msgstr "search title"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:13
-msgid "subject/su"
-msgstr ""
+#~ msgid "subject/su"
+#~ msgstr "subject/su"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:14
-msgid "search subject"
-msgstr ""
+#~ msgid "search subject"
+#~ msgstr "search subject"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:15
-msgid "series/se"
-msgstr ""
+#~ msgid "series/se"
+#~ msgstr "series/se"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:16
-msgid "search series"
-msgstr ""
+#~ msgid "search series"
+#~ msgstr "search series"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:17
-msgid "lang"
-msgstr ""
+#~ msgid "lang"
+#~ msgstr "lang"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:18
-msgid "limit by language (specifiy multiple langs with lang:l1 lang:l2 ...)"
-msgstr ""
+#~ msgid "limit by language (specifiy multiple langs with lang:l1 lang:l2 ...)"
+#~ msgstr "limit by language (specifiy multiple langs with lang:l1 lang:l2 ...)"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:19
-msgid "site"
-msgstr ""
+#~ msgid "site"
+#~ msgstr "site"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:20
-msgid "search at specified org unit, corresponds to actor.org_unit.shortname"
-msgstr ""
+#~ msgid "search at specified org unit, corresponds to actor.org_unit.shortname"
+#~ msgstr ""
+#~ "search at specified org unit, corresponds to actor.org_unit.shortname"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:21
-msgid "sort"
-msgstr ""
+#~ msgid "sort"
+#~ msgstr "sort"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:22
-msgid "sort type (title, author, pubdate)"
-msgstr ""
+#~ msgid "sort type (title, author, pubdate)"
+#~ msgstr "sort type (title, author, pubdate)"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:23
-msgid "dir"
-msgstr ""
+#~ msgid "dir"
+#~ msgstr "dir"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:24
-msgid "sort direction (asc, desc)"
-msgstr ""
+#~ msgid "sort direction (asc, desc)"
+#~ msgstr "sort direction (asc, desc)"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:25
-msgid "available"
-msgstr ""
+#~ msgid "available"
+#~ msgstr "available"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:26
-msgid ""
-"if set to anything other than \"false\" or \"0\", limits to available items"
-msgstr ""
+#~ msgid ""
+#~ "if set to anything other than \"false\" or \"0\", limits to available items"
+#~ msgstr ""
+#~ "if set to anything other than \"false\" or \"0\", limits to available items"

@@ -1,36 +1,41 @@
+# English (Canada) translation for evergreen
+# Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2010-06-07 02:03:45-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2011-04-18 21:45:32-0400\n"
+"PO-Revision-Date: 2011-07-13 12:22+0000\n"
+"Last-Translator: Warren Layton <Unknown>\n"
+"Language-Team: English (Canada) <en_CA@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
+"X-Generator: Launchpad (build 13405)\n"
+"X-Launchpad-Export-Date: 2011-07-14 04:33+0000\n"
 
 #: TranslatorPopup.js:locale
 msgid "Locale"
-msgstr ""
+msgstr "Locale"
 
 #: TranslatorPopup.js:create
 msgid "Create"
-msgstr ""
+msgstr "Create"
 
 #: TranslatorPopup.js:update
 msgid "Update"
-msgstr ""
+msgstr "Update"
 
 #: TranslatorPopup.js:remove
 msgid "Remove"
-msgstr ""
+msgstr "Remove"
 
 #: TranslatorPopup.js:translation
 msgid "Translation"
-msgstr ""
+msgstr "Translation"
 
 #: TranslatorPopup.js:translate
 msgid "Translate"
-msgstr ""
+msgstr "Translate"
