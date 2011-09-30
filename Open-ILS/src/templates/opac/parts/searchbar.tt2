@@ -7,7 +7,7 @@
         <tr>
             <td colspan="3">
                 <span class="search_catalog_lbl">[% l('Search the Catalog') %]</span>
-                <a href="[% ctx.opac_root %]/advanced"
+                <a href="[% mkurl(ctx.opac_root _ '/advanced') %]"
                     id="home_adv_search_link"><span
                     class="adv_search_font">[% l('Advanced Search') %]</span></a>
             </td>

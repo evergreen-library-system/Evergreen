@@ -9,6 +9,19 @@
     queries = CGI.param('query');
     bools = CGI.param('bool') || ['and' x 3];
     qtypes = CGI.param('qtype') || ['keyword' x 3];
+
+    IF !qtypes.0; # not an array
+        qtypes = [qtypes];
+        bools = [bools];
+        queries = [queries];
+    END;
+
+    WHILE qtypes.size < 3;
+        qtypes.push('keyword');
+        bools.push('and');
+        queries.push('');
+    END;
+
     FOR qtype IN qtypes;
         c = contains.shift;
         b = bools.shift;
