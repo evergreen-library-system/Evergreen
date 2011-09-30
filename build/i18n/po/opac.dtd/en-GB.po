@@ -2,20 +2,21 @@
 # Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
-#
+#. extracted from ../../Open-ILS/web/opac/locale/en-US/opac.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-11-23 23:35-0400\n"
-"PO-Revision-Date: 2010-04-22 10:28+0000\n"
-"Last-Translator: Jonathan Field <Unknown>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-04-18 21:44-0400\n"
+"PO-Revision-Date: 2011-04-21 15:23+0000\n"
+"Last-Translator: Ben Ostrowsky <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-04-23 03:48+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Generator: Translate Toolkit 1.8.1\n"
+"X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-05-18 04:47+0000\n"
 
 #. =================================================================
 #. Some generic stuff
@@ -213,10 +214,8 @@ msgid "Tips:"
 msgstr "Tips:"
 
 #: common.tips.tip1
-msgid ""
-"Click on a folder icon in the sidebar to access related quick searches"
-msgstr ""
-"Click on a folder icon in the sidebar to access related quick searches"
+msgid "Click on a folder icon in the sidebar to access related quick searches"
+msgstr "Click on a folder icon in the sidebar to access related quick searches"
 
 #: common.tips.tip2
 msgid ""
@@ -408,6 +407,22 @@ msgstr "/"
 msgid "Large"
 msgstr "Large"
 
+#: common.googlechromeframe.why
+msgid ""
+"Installing the Google Chrome Frame plugin for Internet Explorer will improve "
+"your Evergreen experience with more speed and advanced features!"
+msgstr ""
+"Installing the Google Chrome Frame plugin for Internet Explorer will improve "
+"your Evergreen experience with more speed and advanced features!"
+
+#: common.googlechromeframe.install
+msgid "Install Now!"
+msgstr "Install Now!"
+
+#: common.googlechromeframe.dontask
+msgid "Don't ask me again"
+msgstr "Don't ask me again"
+
 #: home.js.disabled
 msgid ""
 "JavaScript must be enabled in order for you to use the regular Evergreen "
@@ -416,8 +431,7 @@ msgid ""
 "browser. \n"
 "To use the regular Evergreen Catalog, enable JavaScript by changing your "
 "browser options, then \n"
-"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
-"\n"
+"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. \n"
 "<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
 "<a style='color: blue; text-decoration: underline;' "
 "href='/opac/extras/slimpac/start.html'>here</a>."
@@ -428,8 +442,7 @@ msgstr ""
 "browser. \n"
 "To use the regular Evergreen Catalogue, enable JavaScript by changing your "
 "browser options, then \n"
-"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
-"\n"
+"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. \n"
 "<br/><br/>Alternatively, you can use the basic HTML-only catalogue \n"
 "<a style='color: blue; text-decoration: underline;' "
 "href='/opac/extras/slimpac/start.html'>here</a>."
@@ -653,6 +666,7 @@ msgstr ""
 #. MyOPAC Fines Page
 #. =================================================================
 #: myopac.fines.title
+msgctxt "myopac.fines.title"
 msgid "Summary"
 msgstr "Summary"
 
@@ -1051,9 +1065,11 @@ msgstr "Please enter a username"
 
 #: myopac.summary.username.dup
 msgid ""
-"The requested username is not available.  Please choose a different username."
+"The requested username is not available.  Please choose a different "
+"username."
 msgstr ""
-"The requested username is not available.  Please choose a different username."
+"The requested username is not available.  Please choose a different "
+"username."
 
 #: myopac.summary.username.success
 msgid "Username successfully updated"
@@ -1252,8 +1268,7 @@ msgstr "Tip:"
 #. =================================================================
 #: opac.session_expiring
 msgid "Your login session will timeout in 1 minute unless there is activity."
-msgstr ""
-"Your login session will timeout in 1 minute unless there is activity."
+msgstr "Your login session will timeout in 1 minute unless there is activity."
 
 #: opac.session_expired
 msgid "Your login session has expired"
@@ -1333,6 +1348,10 @@ msgstr "My Search Results"
 msgid "My Title Results"
 msgstr "My Title Results"
 
+#: navigate.facetRefine
+msgid "Refine your search"
+msgstr "Refine your search"
+
 #: navigate.title.details
 msgid "My Title Details"
 msgstr "My Title Details"
@@ -1382,8 +1401,8 @@ msgid "GALILEO"
 msgstr "GALILEO"
 
 #: footer.copyright
-msgid "Copyright &#xA9; 2006-2008 Georgia Public Library Service"
-msgstr "Copyright &#xA9; 2006-2008 Georgia Public Library Service"
+msgid "Copyright &#xA9; 2006-2010 Georgia Public Library Service, and others"
+msgstr "Copyright &#xA9; 2006-2010 Georgia Public Library Service, and others"
 
 #. Introduces the logo for the project
 #: footer.logo
@@ -1461,6 +1480,10 @@ msgstr "All Formats"
 #: opac.search.largePrint
 msgid "Large Print Books"
 msgstr "Large Print Books"
+
+#: opac.search.ebook
+msgid "E-Books"
+msgstr "E-Books"
 
 #: opac.search.audioBooks
 msgid "Audiobooks"
@@ -1693,6 +1716,10 @@ msgstr "Between"
 msgid "print these details"
 msgstr "print these details"
 
+#: rdetail.cn.part
+msgid "Part"
+msgstr "Part"
+
 #: rdetail.cn.barcode
 msgctxt "rdetail.cn.barcode"
 msgid "Barcode"
@@ -1731,6 +1758,14 @@ msgstr "less info"
 msgid "place hold"
 msgstr "place hold"
 
+#: rdetail.cn.reserve
+msgid "book now"
+msgstr "book now"
+
+#: rdetail.cn.multi_home
+msgid "linked titles"
+msgstr "linked titles"
+
 #: rdetail.cn.disabled
 msgid "- Disabled -"
 msgstr "- Disabled -"
@@ -1764,9 +1799,17 @@ msgstr "Start"
 msgid "Previous page"
 msgstr "Previous page"
 
+#: rdetail.page.previous.short
+msgid "&#171;"
+msgstr "&#171;"
+
 #: rdetail.page.next
 msgid "Next page"
 msgstr "Next page"
+
+#: rdetail.page.next.short
+msgid "&#187;"
+msgstr "&#187;"
 
 #: rdetail.page.last
 msgid "Last results page"
@@ -1894,6 +1937,11 @@ msgctxt "rdetail.extras.browser"
 msgid "Shelf Browser"
 msgstr "Shelf Browser"
 
+#: rdetail.extras.bib_summary
+msgctxt "rdetail.extras.bib_summary"
+msgid "Summary"
+msgstr "Summary"
+
 #: rdetail.extras.reviews
 msgctxt "rdetail.extras.reviews"
 msgid "Reviews"
@@ -1923,13 +1971,18 @@ msgstr "Annotation"
 msgid "MARC Record"
 msgstr "MARC Record"
 
+#: rdetail.extras.foreign_items
+msgid "Linked Titles"
+msgstr "Linked Titles"
+
 #: rdetail.extras.call.null
 msgid "There are no call numbers for this item at this location."
 msgstr "There are no call numbers for this item at this location."
 
 #: rdetail.extras.call.local
+msgctxt "rdetail.extras.call.local"
 msgid "Local Call Numbers:"
-msgstr "Local Class Numbers:"
+msgstr "Local Call Numbers:"
 
 #: rdetail.extras.preview.fulltext
 msgid "Full text"
@@ -1943,9 +1996,13 @@ msgstr "See the full text of this book."
 msgid "Show a preview of this book from Google Book Search"
 msgstr "Show a preview of this book from Google Book Search"
 
+#: rdetail.extras.novelist
+msgid "Suggestions by NoveList"
+msgstr "Suggestions by NoveList"
+
 #: rdetail.loading
-msgid "Loading copy infomation..."
-msgstr "Loading copy infomation..."
+msgid "Loading copy information..."
+msgstr "Loading copy information..."
 
 #: rdetail.noneAvailable
 msgid " * There are no copies in this location"
@@ -1959,6 +2016,10 @@ msgstr "Online Resources"
 msgctxt "rdetail.summary.subjects"
 msgid "Subjects"
 msgstr "Subjects"
+
+#: rdetail.summary.issues_held
+msgid "Issues Held"
+msgstr "Issues Held"
 
 #: result.sort_by
 msgid "Sort Results by Relevance"
@@ -2060,6 +2121,11 @@ msgstr "Perform an Author Search"
 msgid "Browse in Google Books Search"
 msgstr "Browse in Google Books Search"
 
+#: result.localCallNumbers
+msgctxt "result.localCallNumbers"
+msgid "Local Call Numbers:"
+msgstr "Local Call Numbers:"
+
 #: common.call.number.label
 msgid "Call Number:"
 msgstr "Class Number:"
@@ -2072,9 +2138,17 @@ msgstr "ISBN:"
 msgid "ISSN:"
 msgstr "ISSN:"
 
+#: common.mono_parts.label
+msgid "Monograph Parts:"
+msgstr "Monograph Parts:"
+
 #: common.copy.barcode.label
 msgid "Copy Barcode:"
 msgstr "Copy Barcode:"
+
+#: common.issuance_label.label
+msgid "Issuance Label:"
+msgstr "Issuance Label:"
 
 #: common.hold.place
 msgid "Place hold for my account"
@@ -2104,6 +2178,10 @@ msgstr "Volume Hold"
 msgid "Copy Hold"
 msgstr "Copy Hold"
 
+#: common.hold.issuance
+msgid "Issuance Hold"
+msgstr "Issuance Hold"
+
 #: common.hold.advanced
 msgid "Advanced Hold Options"
 msgstr "Advanced Hold Options"
@@ -2112,17 +2190,27 @@ msgstr "Advanced Hold Options"
 msgid "Please select a physical location where your hold can be delivered."
 msgstr "Please select a physical location where your hold can be delivered."
 
+#: common.hold.checked_out
+msgid "This item is already checked out."
+msgstr "This item is already checked out."
+
+#: common.hold.checked_out.override
+msgid ""
+"This item is already checked out.  Would you like to place the hold anyway?"
+msgstr ""
+"This item is already checked out.  Would you like to place the hold anyway?"
+
 #: common.hold.exists
 msgid "A hold already exists on the requested item."
 msgstr "A hold already exists on the requested item."
 
 #: common.hold.exists.override
 msgid ""
-"A hold already exists on the requested \n"
-"item. Would you like to create the hold anyway?"
+"A hold already exists on the requested item. Would you like to create the "
+"hold anyway?"
 msgstr ""
-"A hold already exists on the requested \n"
-"item. Would you like to create the hold anyway?"
+"A hold already exists on the requested item. Would you like to create the "
+"hold anyway?"
 
 #: common.hold.barred
 msgid ""
@@ -2302,10 +2390,8 @@ msgstr ""
 "library."
 
 #: login.account.inactive
-msgid ""
-"This account has been deactivated.  Please contact your local library."
-msgstr ""
-"This account has been deactivated.  Please contact your local library."
+msgid "This account has been deactivated.  Please contact your local library."
+msgstr "This account has been deactivated.  Please contact your local library."
 
 #: login.failed
 msgid ""
@@ -2515,3 +2601,90 @@ msgstr "Saturday"
 #: selfck.day6
 msgid "Sunday"
 msgstr "Sunday"
+
+#: circ.fail_part.actor.usr.barred
+msgid "The patron is barred"
+msgstr "The patron is barred"
+
+#: circ.fail_part.asset.copy.circulate
+msgid "The item does not circulate"
+msgstr "The item does not circulate"
+
+#: circ.fail_part.asset.copy_location.circulate
+msgid "Items from this shelving location do not circulate"
+msgstr "Items from this shelving location do not circulate"
+
+#: circ.fail_part.asset.copy.status
+msgid "The item cannot circulate at this time"
+msgstr "The item cannot circulate at this time"
+
+#: circ.fail_part.circ.holds.target_skip_me
+msgid "The item's circulation library does not fulfill holds"
+msgstr "The item's circulation library does not fulfill holds"
+
+#: circ.fail_part.config.circ_matrix_circ_mod_test
+msgid "The patron has too many items of this type checked out"
+msgstr "The patron has too many items of this type checked out"
+
+#: circ.fail_part.config.circ_matrix_test.available_copy_hold_ratio
+msgid "The available item-to-hold ratio is too low"
+msgstr "The available item-to-hold ratio is too low"
+
+#: circ.fail_part.config.circ_matrix_test.circulate
+msgid "Circulation rules reject this item as non-circulatable"
+msgstr "Circulation rules reject this item as non-circulatable"
+
+#: circ.fail_part.config.circ_matrix_test.total_copy_hold_ratio
+msgid "The total item-to-hold ratio is too low"
+msgstr "The total item-to-hold ratio is too low"
+
+#: circ.fail_part.config.hold_matrix_test.holdable
+msgid "Hold rules reject this item as unholdable"
+msgstr "Hold rules reject this item as unholdable"
+
+#: circ.fail_part.config.hold_matrix_test.max_holds
+msgid "The patron has reached the maximum number of holds"
+msgstr "The patron has reached the maximum number of holds"
+
+#: circ.fail_part.config.rule_age_hold_protect.prox
+msgid "The item is too new to transit this far"
+msgstr "The item is too new to transit this far"
+
+#: circ.fail_part.no_item
+msgid "The system could not find this item"
+msgstr "The system could not find this item"
+
+#: circ.fail_part.no_ultimate_items
+msgid "The system could not find any items to match this hold request"
+msgstr "The system could not find any items to match this hold request"
+
+#: circ.fail_part.no_matchpoint
+msgid "System rules do not define how to handle this item"
+msgstr "System rules do not define how to handle this item"
+
+#: circ.fail_part.no_user
+msgid "The system could not find this patron"
+msgstr "The system could not find this patron"
+
+#: circ.fail_part.transit_range
+msgid "The item cannot transit this far"
+msgstr "The item cannot transit this far"
+
+#~ msgid "Summary"
+#~ msgstr "Summary"
+
+#~ msgid "Copyright &#xA9; 2006-2008 Georgia Public Library Service"
+#~ msgstr "Copyright &#xA9; 2006-2008 Georgia Public Library Service"
+
+#~ msgid "Local Call Numbers:"
+#~ msgstr "Local Class Numbers:"
+
+#~ msgid "Loading copy infomation..."
+#~ msgstr "Loading copy infomation..."
+
+#~ msgid ""
+#~ "A hold already exists on the requested \n"
+#~ "item. Would you like to create the hold anyway?"
+#~ msgstr ""
+#~ "A hold already exists on the requested \n"
+#~ "item. Would you like to create the hold anyway?"
