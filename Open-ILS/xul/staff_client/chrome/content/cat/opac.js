@@ -557,6 +557,32 @@ function set_serctrl_view() {
 }
 
 function create_mfhd() {
+    // Check if the source is allowed to have copies, first.
+    try {
+        var bibObj = g.network.request(
+            api.FM_BRE_RETRIEVE_VIA_ID.app,
+            api.FM_BRE_RETRIEVE_VIA_ID.method,
+            [ ses(), [docid] ]
+        );
+
+        bibObj = bibObj[0];
+
+        var cbsObj = g.network.request(
+            api.FM_CBS_RETRIEVE_VIA_PCRUD.app,
+            api.FM_CBS_RETRIEVE_VIA_PCRUD.method,
+            [ ses(), bibObj.source() ]
+        );
+
+        if (cbsObj.can_have_copies() != get_db_true()) {
+            alert(document.getElementById('offlineStrings').getFormattedString('staff.cat.bib_source.can_have_copies.false', [cbsObj.source()]));
+            return;
+        }
+    } catch(E) {
+        g.error.sdump('D_ERROR','can have copies check: ' + E);
+        alert('Error in chrome/content/cat/opac.js, create_mfhd(): ' + E);
+        return;
+    }
+
     try {
         JSAN.use('util.window'); var win = new util.window();
         var select_aou_window = win.open(
@@ -904,6 +930,32 @@ function add_volumes() {
         if (edit==0) {
             alert(document.getElementById('offlineStrings').getString('staff.circ.copy_status.add_volumes.perm_failure'));
             return; // no read-only view for this interface
+        }
+
+        // Check if the source is allowed to have copies.
+        try {
+            var bibObj = g.network.request(
+                api.FM_BRE_RETRIEVE_VIA_ID.app,
+                api.FM_BRE_RETRIEVE_VIA_ID.method,
+				[ ses(), [docid] ]
+            );
+
+			bibObj = bibObj[0];
+
+            var cbsObj = g.network.request(
+                api.FM_CBS_RETRIEVE_VIA_PCRUD.app,
+                api.FM_CBS_RETRIEVE_VIA_PCRUD.method,
+                [ ses(), bibObj.source() ]
+            );
+
+            if (cbsObj.can_have_copies() != get_db_true()) {
+                alert(document.getElementById('offlineStrings').getFormattedString('staff.cat.bib_source.can_have_copies.false', [cbsObj.source()]));
+                return;
+            }
+        } catch(E) {
+            g.error.sdump('D_ERROR','can have copies check: ' + E);
+            alert('Error in chrome/content/cat/opac.js, add_volumes(): ' + E);
+            return;
         }
 
         var title = document.getElementById('offlineStrings').getFormattedString('staff.circ.copy_status.add_volumes.title', [docid]);

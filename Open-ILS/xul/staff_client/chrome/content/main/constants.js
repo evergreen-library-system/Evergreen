@@ -228,6 +228,7 @@ var api = {
     'FM_BRE_DELETE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record_entry.delete', 'secure' : false },
     'FM_BRE_UNDELETE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record_entry.undelete', 'secure' : false },
     'FM_BRN_FROM_MARCXML' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.z3950.marcxml_to_brn', 'secure' : false },
+    'FM_CBS_RETRIEVE_VIA_PCRUD' : { 'app' : 'open-ils.pcrud', 'method' : 'open-ils.pcrud.retrieve.cbs' },
     'FM_CBT_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.billing_type.ranged.retrieve.all', 'secure' : false },
     'FM_CCS_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.config.copy_status.retrieve.all', 'secure' : false },
     'FM_CIRC_AGE_TO_LOST' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.circulation.age_to_lost' },
