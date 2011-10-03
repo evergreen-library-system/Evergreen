@@ -1,4 +1,5 @@
 [% IF !ctx.is_staff %]
+<div id="header-wrap">
 <div id="header">
     <div class="float-left">
         [% INCLUDE "opac/parts/topnav_logo.tt2" %]
@@ -93,6 +94,7 @@
         [% END %]
     </div>
     <div class="common-no-pad"></div>
+</div>
 </div>
 [% END %]
 [% INCLUDE "opac/parts/topnav_links.tt2" %]

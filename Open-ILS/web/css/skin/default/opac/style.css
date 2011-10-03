@@ -2,7 +2,7 @@ body {
 	margin:0;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
-	background:#333;
+	background: #252525;
 }
 
 img {
@@ -138,6 +138,13 @@ div.select-wrapper:hover {
 #dash_holds { color: #ffcc33; }
 #dash_pickup { color: #1dd93c; }
 #dash_fines { color: #f41d36; }
+#header-wrap {
+    background: linear-gradient(lightGreen, #252525);
+    background: -moz-linear-gradient(lightGreen, #252525);
+    background: -o-linear-gradient(lightGreen, #252525);
+    background: -webkit-linear-gradient(lightGreen, #252525);
+    background-color: lightGreen;
+}
 #header {
 	color: #fff;
 	padding: 26px 0px 26px 0px;
@@ -890,20 +897,23 @@ div.select-wrapper:hover {
 .facetField { border-top: 1px solid #CCC; }
 .facetFields { padding-left: 5px; }
 .facetFieldLineValue { overflow: hidden; text-overflow: ellipsis; }
-
+#footer-wrap {
+    background: linear-gradient(lightGreen, #252525);
+    background: -moz-linear-gradient(lightGreen, #252525);
+    background: -o-linear-gradient(lightGreen, #252525);
+    background: -webkit-linear-gradient(lightGreen, #252525);
+    background-color: lightGreen;
+}
 #footer {
 	padding-top:5px;
 	padding-bottom: 10px;
-	color: white;
 	margin: auto;
 	width: 974px;
-	color: #afafaf;
 	font-size: 11px;
 }
 
 #footer a {
-	color: white;
-	color: #afafaf;
+	color: black;
 }
 
 .color_4 {
