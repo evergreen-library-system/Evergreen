@@ -37,6 +37,26 @@
         # clean up the ISBN
         args.isbn_clean = args.isbns.0.replace('\ .*', '');
 
+        # Extract the 856 URLs that are not otherwise represented by asset.uri's
+        args.online_res = [];
+        FOR node IN xml.findnodes('//*[@tag="856"]');
+            IF node.findnodes('./*[@code="9" or @code="w" or @code="n"]'); NEXT; END; # asset.uri's
+            label = node.findnodes('./*[@code="y"]');
+            notes = node.findnodes('./*[@code="z" or @code="3"]');
+            FOR href IN node.findnodes('./*[@code="u"]');
+                NEXT UNLESS href;
+                # it's possible for multiple $u's to exist within 1 856 tag.
+                # in that case, honor the label/notes data for the first $u, but
+                # leave any subsequent $u's as unadorned href's. 
+                # use href/link/note keys to be consistent with args.uri's
+                args.online_res.push({
+                    href => href.textContent, 
+                    link => (loop.first AND label) ? label.textContent : href.textContent,
+                    note => (loop.first) ? notes.textContent : ''
+                });
+            END;
+        END;
+ 
         args.holdings = [];
         args.uris = [];
         args.issns = [];

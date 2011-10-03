@@ -73,7 +73,7 @@
 [%- IF sfx.size && sfx.0 != '' %]
     </div>    
 [%- END %]
-[%- FOR uri IN args.uris; %]
+[%- FOR uri IN args.uris.merge(args.online_res); %]
 <div class="rdetail_uri">
     <a href="[% uri.href %]">[% uri.link %]</a>[% ' - ' _ uri.note IF uri.note %]
 </div>
