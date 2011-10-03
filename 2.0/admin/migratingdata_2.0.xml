@@ -706,7 +706,7 @@ SELECT DISTINCT bre.id FROM biblio.record_entry AS bre
 			</step>
 				<note>
 				<para>Processing time for exporting records depends on several factors such as the number of records you are exporting. It is recommended that you divide the 
-				export ID files (<filename>records.txt</filename>) into manageable number of records if you are exporting a large number of records.</para> 
+				export ID files (<filename>records.txt</filename>) into a manageable number of records if you are exporting a large number of records.</para> 
 				</note>
 		</procedure>
 	</section>	
