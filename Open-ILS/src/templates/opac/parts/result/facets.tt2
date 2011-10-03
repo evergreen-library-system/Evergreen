@@ -28,9 +28,13 @@ FOR facet_label IN labels.sort;
                             IF fct != close_key;
                                 new_close.push(fct);
                             END;
-                        END
+                        END;
+                        expand_url = mkurl('', {close_facet => new_close});
+                        IF new_close.size == 0;
+                            expand_url  = mkurl('', {}, ['close_facet']);
+                        END;
                     %]
-                        <a href="[% mkurl('', {close_facet => new_close}) %]"><img 
+                        <a href="[% expand_url %]"><img 
                             src="[% ctx.media_prefix %]/images/adv_search_plus_btn.png" alt="[% l('Expand') %]" /></a>
                     [% ELSE %]
                         <a href="[% mkurl('', {close_facet => close_facets.merge([close_key])}) %]"><img 
