@@ -1,38 +1,14 @@
-/*
- * Copyright (C) 2007-2010  Equinox Software, Inc.
- * Mike Rylander <miker@esilibrary.com> 
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- */
-
-
-DROP SCHEMA IF EXISTS search CASCADE;
-
+-- Evergreen DB patch XXXX.schema.located_uri_visiblity_fix.sql
+--
+-- FIXME: insert description of change, if needed
+--
 BEGIN;
 
-CREATE SCHEMA search;
 
-CREATE TABLE search.relevance_adjustment (
-    id          SERIAL  PRIMARY KEY,
-    active      BOOL    NOT NULL DEFAULT TRUE,
-    field       INT     NOT NULL REFERENCES config.metabib_field (id) DEFERRABLE INITIALLY DEFERRED,
-    bump_type   TEXT    NOT NULL CHECK (bump_type IN ('word_order','first_word','full_match')),
-    multiplier  NUMERIC NOT NULL DEFAULT 1.0
-);
-CREATE UNIQUE INDEX bump_once_per_field_idx ON search.relevance_adjustment ( field, bump_type );
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
 
-CREATE TYPE search.search_result AS ( id BIGINT, rel NUMERIC, record INT, total INT, checked INT, visible INT, deleted INT, excluded INT );
-CREATE TYPE search.search_args AS ( id INT, field_class TEXT, field_name TEXT, table_alias TEXT, term TEXT, term_type TEXT );
-
+-- FIXME: add/check SQL statements to perform the upgrade
 CREATE OR REPLACE FUNCTION search.query_parser_fts (
 
     param_search_ou INT,
@@ -352,5 +328,6 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
-COMMIT;
 
+
+COMMIT;
