@@ -289,8 +289,8 @@ div.select-wrapper:hover {
     display: block;
     margin: 10px 7px 10px 0px;
     padding: 10px 0px 10px 0px;
-    -moz-border-radius: 5%; 
-    border-radius: 5%;
+    -moz-border-radius: 7px 7px 0px 0px; 
+    border-radius: 7px 7px 0px 0px;
     font-weight: bold;
     color: #45709b;
     background: #9ad0f1;
