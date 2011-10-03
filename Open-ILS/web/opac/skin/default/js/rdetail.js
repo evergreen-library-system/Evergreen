@@ -280,8 +280,9 @@ function _holdingsDraw(h) {
         // Only draw holdings within our OU scope
         var here = findOrgUnit(getLocation());
         var entryNum = 0;
+        var depth = getDepth();
         dojo.forEach(holdings, function (item) {
-            if (orgIsMine(here, findOrgUnit(item.owning_lib()))) {
+            if (orgIsMine(here, findOrgUnit(item.owning_lib()), depth)) {
                 _holdingsDrawMFHD(item, entryNum);
                 entryNum++;
             }

@@ -100,7 +100,7 @@ function orgIsMine(me, org, depth) {
 	if(me.id() == org.id()) {
 		return true;
 	}
-	if (depth) {
+	if (depth !== undefined) {
 		while (depth < findOrgDepth(me)) {
 			me = findOrgUnit( me.parent_ou() );
 		}
@@ -110,7 +110,7 @@ function orgIsMine(me, org, depth) {
 	}
 	var kids = me.children();
 	for( var i = 0; kids && i < kids.length; i++ ) {
-		if(orgIsMine(kids[i], org, false)) {
+		if(orgIsMine(kids[i], org /* intentional lack of 3rd arg */)) {
 			return true;
 		}
 
