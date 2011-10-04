@@ -2726,7 +2726,26 @@ INSERT into config.org_unit_setting_type
 ( 'opac.fully_compressed_serial_holdings',
     oils_i18n_gettext('opac.fully_compressed_serial_holdings', 'OPAC: Use fully compressed serial holdings', 'coust', 'label'),
     oils_i18n_gettext('opac.fully_compressed_serial_holdings', 'Show fully compressed serial holdings for all libraries at and below the current context unit', 'coust', 'description'),
-    'bool')
+    'bool'),
+
+(
+        'print.custom_js_file',
+        oils_i18n_gettext(
+            'print.custom_js_file',
+            'Printing: Custom Javascript File',
+            'coust',
+            'label'
+        ),
+        oils_i18n_gettext(
+            'print.custom_js_file',
+            'Full URL path to a Javascript File to be loaded when printing. Should'
+            || ' implement a print_custom function for DOM manipulation. Can change'
+            || ' the value of the do_print variable to false to cancel printing.',
+            'coust',
+            'description'
+        ),
+        'string'
+    )
 ;
 
 UPDATE config.org_unit_setting_type
