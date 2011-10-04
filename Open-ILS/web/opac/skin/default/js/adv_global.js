@@ -38,7 +38,13 @@ function advgInit() {
 
 	var input = $n($('adv_global_trow'), 'term');
 	input.focus();
-	setEnterFunc(input, advSubmitGlobal);
+
+    var rows = $('adv_global_tbody').getElementsByTagName('tr');
+    for(var t = 0; t < rows.length; t++) {
+        if($n(rows[t], 'term')) {
+            setEnterFunc($n(rows[t], 'term'), advSubmitGlobal);
+        }
+    }
 
     if(getSort() && getSortDir()) {
 	    setSelector($('adv_global_sort_by'), getSort());
