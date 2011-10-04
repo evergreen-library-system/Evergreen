@@ -4430,6 +4430,23 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'integer', null)
 
+,( 'opac.staff.jump_to_details_on_single_hit', 'opac',
+    oils_i18n_gettext('opac.staff.jump_to_details_on_single_hit',
+        'Jump to details on 1 hit (staff client)',
+        'coust', 'label'),
+    oils_i18n_gettext('opac.staff.jump_to_details_on_single_hit',
+        'When a search yields only 1 result, jump directly to the record details page.  This setting only affects the OPAC within the staff client',
+        'coust', 'description'),
+    'bool', null)
+,( 'opac.patron.jump_to_details_on_single_hit', 'opac',
+    oils_i18n_gettext('opac.patron.jump_to_details_on_single_hit',
+        'Jump to details on 1 hit (public)',
+        'coust', 'label'),
+    oils_i18n_gettext('opac.patron.jump_to_details_on_single_hit',
+        'When a search yields only 1 result, jump directly to the record details page.  This setting only affects the public OPAC',
+        'coust', 'description'),
+    'bool', null)
+
 ;
 
 UPDATE config.org_unit_setting_type

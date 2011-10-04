@@ -263,6 +263,9 @@ sub load_rresults {
         }
     );
 
+    my $stat = $self->check_1hit_redirect($rec_ids);
+    return $stat if $stat;
+
     # shove recs into context in search results order
     for my $rec_id (@$rec_ids) {
         push(
@@ -274,6 +277,55 @@ sub load_rresults {
     $ctx->{search_facets} = $facets;
 
     return Apache2::Const::OK;
+}
+
+# If the calling search results in 1 record and the client
+# is configured to do so, redirect the search results to 
+# the record details page.
+sub check_1hit_redirect {
+    my ($self, $rec_ids) = @_;
+    my $ctx = $self->ctx;
+
+    return undef unless $rec_ids and @$rec_ids == 1;
+
+    my ($sname, $org);
+
+    if ($ctx->{is_staff}) {
+        $sname = 'opac.staff.jump_to_details_on_single_hit';
+        $org = $ctx->{user}->ws_ou;
+
+    } else {
+        $sname = 'opac.patron.jump_to_details_on_single_hit';
+        $org = ($ctx->{user}) ? 
+            $ctx->{user}->home_ou : 
+            $ctx->{orig_loc} || 
+            $self->ctx->{aou_tree}->()->id;
+    }
+
+    return undef unless 
+        $self->ctx->{get_org_setting}->($org, $sname);
+
+    my $base_url = sprintf(
+        '%s://%s%s/record/%s',
+        $ctx->{proto}, 
+        $self->apache->hostname,
+        $self->ctx->{opac_root},
+        $$rec_ids[0],
+    );
+    
+    # If we get here from the same record detail page to which we
+    # now wish to redirect, do not perform the redirect.  This
+    # approach seems to work well, with the rare exception of 
+    # performing a new serach directly from the detail page that 
+    # happens to result in the same single hit.  In this case, the 
+    # user will be left on the search results page.  This could be 
+    # overcome w/ additional CGI, etc., but I'm not sure it's necessary.
+    if (my $referer = $ctx->{referer}) {
+        $referer =~ s/([^?]*).*/$1/g;
+        return undef if $base_url eq $referer;
+    }
+
+    return $self->generic_redirect($base_url . '?' . $self->cgi->query_string);
 }
 
 # Searching by barcode is a special search that does /not/ respect any other
@@ -385,13 +437,18 @@ sub marc_expert_search {
     }
 
     $self->ctx->{ids} = [ grep { $_ } @{$results->{ids}} ];
+    $self->ctx->{hit_count} = $results->{count};
+
+    return Apache2::Const::OK if @{$self->ctx->{ids}} == 0 or $args{internal};
+
+    my $stat = $self->check_1hit_redirect($self->ctx->{ids});
+    return $stat if $stat;
 
     my ($facets, @data) = $self->get_records_and_facets(
         $self->ctx->{ids}, undef, {flesh => "{holdings_xml,mra}"}
     );
 
     $self->ctx->{records} = [@data];
-    $self->ctx->{hit_count} = $results->{count};
 
     return Apache2::Const::OK;
 }
