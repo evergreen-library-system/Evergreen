@@ -1,14 +1,9 @@
--- Evergreen DB patch XXXX.schema.located_uri_visiblity_fix.sql
---
--- FIXME: insert description of change, if needed
+-- Evergreen DB patch 0631.schema.located_uri_visiblity_fix.sql
 --
 BEGIN;
-
-
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0631', :eg_version);
 
--- FIXME: add/check SQL statements to perform the upgrade
 CREATE OR REPLACE FUNCTION search.query_parser_fts (
 
     param_search_ou INT,
@@ -327,7 +322,5 @@ BEGIN
 
 END;
 $func$ LANGUAGE PLPGSQL;
-
-
 
 COMMIT;
