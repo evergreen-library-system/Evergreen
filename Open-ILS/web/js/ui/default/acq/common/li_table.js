@@ -181,19 +181,80 @@ function AcqLiTable() {
     };
 
 
+    this.getAll = function(callback, id_only) {
+        /* For some uses of the li table, we may not really know about "all"
+         * the lineitems that the user thinks we know about. If we're a paged
+         * picklist, for example, we only know about the lineitems we've
+         * displayed, but not necessarily all the lineitems on the picklist.
+         * So we reach out to pcrud to inform us.
+         */
+
+        var oncomplete = function(r) {
+            var id_list = openils.Util.readResponse(r);
+            if (id_only)
+                callback(id_list);
+            else
+                self.fetchLineitemsById(id_list, callback);
+        };
+
+        if (this.isPL) {
+            this.pcrud.search(
+                "jub", {"picklist": this.isPL}, {
+                    "id_list": true,    /* sic, even if id_only */
+                    "async": true,
+                    "oncomplete": oncomplete
+                }
+            );
+            return;
+        } else if (this.isPO) {
+            this.pcrud.search(
+                "jub", {"purchase_order": this.isPO}, {
+                    "id_list": true,
+                    "async": true,
+                    "oncomplete": oncomplete
+                }
+            );
+            return;
+        } else if (this.isUni && this.pager) {
+            this.pager.getAllLineitemIDs(oncomplete);
+            return;
+        }
+
+        /* If execution reaches this point, we don't need or can't perform
+         * any special tricks to find out the "real" list of "all" lineitems
+         * in this context, so we fall back to the old method.
+         */
+        callback(this.getSelected(true, null, id_only));
+    };
+
     /** @param all If true, assume all are selected */
-    this.getSelected = function(all) {
-        var selected = [];
+    this.getSelected = function(
+        all,
+        callback /* If you want a "good" idea of "all" lineitems, you must
+        provide a callback that accepts an array parameter, rather than
+        relying on the return value of this method itself. */,
+        id_only
+    ) {
+        if (all && callback)
+            return this.getAll(callback, id_only);
+
         var indices = {};   /* use to uniqify. needed in paging situations. */
-        dojo.forEach(self.selectors, 
+        dojo.forEach(this.selectors,
             function(i) { 
                 if(i.checked || all)
                     indices[i.parentNode.parentNode.getAttribute('li')] = true;
             }
         );
-        return openils.Util.objectProperties(indices).map(
-            function(liId) { return self.liCache[liId]; }
-        );
+
+        var result = openils.Util.objectProperties(indices);
+
+        if (!id_only)
+            result = result.map(function(liId) { return self.liCache[liId]; });
+
+        if (callback)
+            callback(result);
+        else
+            return result;
     };
 
     this.setRowAttr = function(td, liWrapper, field, type) {
@@ -259,8 +320,8 @@ function AcqLiTable() {
         var row = self.rowTemplate.cloneNode(true);
         if (!skip_final_placement) {
             self.tbody.appendChild(row);
-            self.selectors.push(dojo.query('[name=selectbox]', row)[0]);
         }
+        self.selectors.push(dojo.query('[name=selectbox]', row)[0]);
 
         // sort the lineitem notes on edit_time
         if(!li.lineitem_notes()) li.lineitem_notes([]);
@@ -809,6 +870,27 @@ function AcqLiTable() {
                 self._fetchLineitem(liId, function(li){self._drawInfo(li);}); 
             } 
         );
+    };
+
+    /* For a given list of lineitem ids, build a list of full lineitems
+     * re-using the fetching logic that is otherwise typical to use in this
+     * module.
+     *
+     * If we've already got a lineitem in the cache, just use that.
+     *
+     * Once we've built a list of lineitems, call callback(thatlist).
+     */
+    this.fetchLineitemsById = function(id_list, callback) {
+        var total = id_list.length;
+        var result_list = [];
+
+        var inner = function(li) {
+            result_list.push(li)
+            if (--total <= 0)
+                callback(result_list);
+        };
+
+        id_list.forEach(function(id) { self._fetchLineitem(id, inner); });
     };
 
     this._fetchLineitem = function(liId, handler, force) {
@@ -2226,26 +2308,42 @@ function AcqLiTable() {
 
 
     this._createPO = function(fields) {
-        this.show('acq-lit-progress-numbers');
+        var wantall = (fields.create_from == "all");
+
+        /* If we're a picklist or purchase order already and the user wants
+         * all lineitems, we might have pages' worth of lineitems haven't all
+         * been loaded yet, so getSelected() won't find them.  The server,
+         * however, should know about all our lineitems, so let's ask the
+         * server for a complete list.
+         */
+
+        if (wantall) {
+            this.getSelected(
+                true, function(list) {
+                    self._createPOFromLineitems(fields, list);
+                }, /* id_list */ true
+            );
+        } else {
+            this._createPOFromLineitems(fields, this.getSelected(false, null, true /* id_list */));
+        }
+    };
+
+    this._createPOFromLineitems = function(fields, selected) {
+        if (selected.length == 0) return;
+
+        this.show("acq-lit-progress-numbers");
         var po = new fieldmapper.acqpo();
-        po.provider(this.createPoProviderSelector.attr('value'));
-        po.ordering_agency(this.createPoAgencySelector.attr('value'));
+        po.provider(this.createPoProviderSelector.attr("value"));
+        po.ordering_agency(this.createPoAgencySelector.attr("value"));
         po.prepayment_required(fields.prepayment_required[0] ? true : false);
 
-        var selected = this.getSelected( (fields.create_from == 'all') );
-        if(selected.length == 0) return;
-
-        var max = selected.length * 3;
-
-        var self = this;
         fieldmapper.standardRequest(
-            ['open-ils.acq', 'open-ils.acq.purchase_order.create'],
+            ["open-ils.acq", "open-ils.acq.purchase_order.create"],
             {   async: true,
                 params: [
                     openils.User.authtoken, 
-                    po, 
-                    {
-                        lineitems : selected.map(function(li) { return li.id() }),
+                    po, {
+                        lineitems : selected,
                         create_assets : fields.create_assets[0],
                     }
                 ],
@@ -2253,12 +2351,15 @@ function AcqLiTable() {
                 onresponse : function(r) {
                     var resp = openils.Util.readResponse(r);
                     self._updateProgressNumbers(resp);
-                    if(resp.complete) 
-                        location.href = oilsBasePath + '/acq/po/view/' + resp.purchase_order.id();
+                    if (resp.complete) {
+                        location.href = oilsBasePath + "/acq/po/view/" +
+                            resp.purchase_order.id();
+                    }
                 }
             }
         );
-    }
+    };
+
 
     this.batchFundWidget = null;
 
@@ -2392,39 +2493,59 @@ function AcqLiTable() {
     }
 
     this._savePl = function(values) {
-        var self = this;
-        var selected = this.getSelected( (values.which == 'all') );
-        openils.Util.show('acq-lit-generic-progress');
+        this.getSelected(
+            (values.which == 'all'),
+            function(list) { self._savePlFromLineitems(values, list); }
+        );
+    };
+
+    this._savePlFromLineitems = function(values, selected) {
+        openils.Util.show("acq-lit-generic-progress");
 
         if(values.new_name) {
             openils.acq.Picklist.create(
-                {name: values.new_name}, 
+                {name: values.new_name},
                 function(id) {
-                    self._updateLiList(id, selected, 0, 
-                        function(){
-                            location.href = oilsBasePath + '/acq/picklist/view/' + id;
-                        });
+                    self._updateLiList(
+                        id, selected, 0,
+                        function() {
+                            location.href =
+                                oilsBasePath + "/acq/picklist/view/" + id;
+                        }
+                    );
                 }
             );
         } else if(values.existing_pl) {
             // update lineitems to use an existing picklist
-            self._updateLiList(values.existing_pl, selected, 0, 
+            self._updateLiList(
+                values.existing_pl, selected, 0,
                 function(){
-                    location.href = oilsBasePath + '/acq/picklist/view/' + values.existing_pl;
-                });
+                    location.href =
+                        oilsBasePath + "/acq/picklist/view/" +
+                        values.existing_pl;
+                }
+            );
         }
-    }
+    };
 
     this._updateLiState = function(values, state) {
-        var self = this;
-        var selected = this.getSelected( (values.which == 'all') );
+        progressDialog.show(true);
+        this.getSelected(
+            (values.which == 'all'),
+            function(list) {
+                self._updateLiStateFromLineitems(values, state, list);
+            }
+        );
+    };
+
+    this._updateLiStateFromLineitems = function(values, state, selected) {
         if(!selected.length) return;
         dojo.forEach(selected, function(li) {li.state(state);});
-        self._updateLiList(null, selected, 0, 
+        self._updateLiList(null, selected, 0,
             // TODO consider inline updates for efficiency
             function() { location.href = location.href }
         );
-    }
+    };
 
     this._updateLiList = function(pl, list, idx, oncomplete) {
         if(idx >= list.length) return oncomplete();

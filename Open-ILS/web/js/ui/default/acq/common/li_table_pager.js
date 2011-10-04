@@ -4,6 +4,9 @@ function LiTablePager() {
     this.init = function(dataLoader, liTable, offset, limit) {
         this.dataLoader = dataLoader;
         this.liTable = liTable;
+        this.liTable.isUni = true;
+        this.liTable.pager = this;  /* XXX memory leak waiting to happen? */
+
         this.displayLimit = limit || 15;
         this.displayOffset = offset || 0;
 
@@ -55,6 +58,16 @@ function LiTablePager() {
         } else {
             openils.Util.hide("acq-litpager-controls-batch-range");
         }
+    };
+
+    this.getAllLineitemIDs = function(callback) {
+        this.dataLoader({
+            "id_list": true,
+            "atomic": true,
+            "skip_paging": true,
+            "onresponse": null,
+            "oncomplete": callback
+        });
     };
 
     this.init.apply(this, arguments);
