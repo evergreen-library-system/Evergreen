@@ -1,8 +1,6 @@
 -- Evergreen DB patch 0631.schema.located_uri_visiblity_fix.sql
 --
 BEGIN;
--- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('0631', :eg_version);
 
 CREATE OR REPLACE FUNCTION search.query_parser_fts (
 
