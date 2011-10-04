@@ -8943,7 +8943,7 @@ msgstr "Отметь единицу как &Поврежденную"
 #: staff.circ.copy_status_overlay.copy_actions.sel_mark_items_missing.accesskey
 msgctxt "staff.circ.copy_status_overlay.copy_actions.sel_mark_items_missing.label staff.circ.copy_status_overlay.copy_actions.sel_mark_items_missing.accesskey"
 msgid "Mark Item Missin&g"
-msgstr "Отметь единицу как Отсутствующу&"
+msgstr "Отметь единицу как Отсутствующу"
 
 #: staff.circ.copy_status_overlay.item_status.label
 msgctxt "staff.circ.copy_status_overlay.item_status.label"
