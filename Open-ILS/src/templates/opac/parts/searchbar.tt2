@@ -35,7 +35,7 @@
         [% IF ctx.processed_search_query OR (NOT is_advanced AND NOT is_special) %]
         <input name='page' type='hidden' value="0" />
         [% END %]
-    <div>
+    </div>
     [%- END %]
     [% UNLESS took_care_of_form %]</form>[% END %]
     [% IF (is_advanced AND NOT is_special) AND CGI.param('qtype') %]
