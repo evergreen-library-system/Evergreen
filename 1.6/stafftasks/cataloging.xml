@@ -445,7 +445,7 @@
 			<procedure>
 				<title>Removing records from buckets</title>
 				<indexterm><primary>cataloguing</primary><secondary>buckets</secondary><tertiary>removing records</tertiary></indexterm>
-				<step><para>select the desired record.</para></step>
+				<step><para>Select the desired record.</para></step>
 				<step><para>Click <guibutton>Remove Selected from Bucket</guibutton></para></step>
 			</procedure>
 			<para>The same procedure is used for both Record and Copy Buckets</para>
