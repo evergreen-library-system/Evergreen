@@ -136,7 +136,7 @@ span.dash_divider {
 }
 #header {
 	color: #fff;
-	padding: 26px 0px 26px 0px;
+	padding-top: 26px;
 	width: 974px;
 	margin: auto;
 	font-size:11px;
