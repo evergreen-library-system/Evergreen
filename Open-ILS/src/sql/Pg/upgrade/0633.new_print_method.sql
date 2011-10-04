@@ -1,7 +1,6 @@
 BEGIN;
 
--- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('0633', :eg_version);
+INSERT INTO config.upgrade_log (version) VALUES ('0633');
 
 INSERT into config.org_unit_setting_type
 ( name, grp, label, description, datatype ) VALUES
