@@ -37,5 +37,6 @@
     "HOLD_STATUS_PLURAL": "hold # ${0} of ${1} total holds and ${2} potential items",
     "HOLD_STATUS_SINGULAR": "hold # ${0} of ${1} total holds and ${2} potential item",
     "MORE": "More",
-    "MORE_COPIES_FULL_RECORD": "... more copies listed in full record"
+    "MORE_COPIES_FULL_RECORD": "... more copies listed in full record",
+    "SOURCE_CANNOT_HAVE_COPIES": "Records from ${0} cannot have copies."
 }

@@ -365,6 +365,7 @@ var FETCH_ISSUANCE					= 'open-ils.serial:open-ils.serial.issuance.pub_fleshed.b
 var FETCH_COPY_LOCATIONS		= 'open-ils.circ:open-ils.circ.copy_location.retrieve.all';
 var FETCH_COPY_NOTES				= 'open-ils.circ:open-ils.circ.copy_note.retrieve.all';
 var FETCH_COPY_STAT_CATS		= 'open-ils.circ:open-ils.circ.asset.stat_cat_entries.fleshed.retrieve_by_copy';
+var FETCH_BIB_SOURCE            = 'open-ils.pcrud:open-ils.pcrud.retrieve.cbs';
 
 /* XXX deprecated.  Use ccvm's instead  */
 var FETCH_LIT_FORMS             = 'open-ils.search:open-ils.search.biblio.lit_form_map.retrieve.all';
