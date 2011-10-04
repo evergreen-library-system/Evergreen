@@ -1,1 +1,429 @@
-#ChangeLog
+2011-10-04  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/sql/Pg/2.0.9-2.0.10-upgrade-db.sql: Upgrade script
+	for 2.0.10
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-12  Thomas Berezansky <tsbere@mvlc.org>
+
+	* Open-ILS/xul/staff_client/chrome/content/auth/controller.js: Clear
+	password from password_prompt post-login Otherwise it remains as the plain text value.
+
+	Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2011-09-24  Thomas Berezansky <tsbere@mvlc.org>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Actor.pm,
+	Open-ILS/web/opac/skin/default/js/myopac.js,
+	Open-ILS/web/opac/skin/default/xml/myopac/myopac_summary.xml: 
+	Require password to change email/username Alter backend to check password period, not just for password
+	changes.  Add form elements for asking for current password to
+	JSPac.  Add handling for said form elements where needed.
+
+	Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+	Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2011-09-12  Thomas Berezansky <tsbere@mvlc.org>
+
+	* Open-ILS/xul/staff_client/chrome/content/auth/session.js: When
+	workstation is invalid request a new seed The original one may no longer be valid
+
+	Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+	Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2011-09-01  Thomas Berezansky <tsbere@mvlc.org>
+
+	* Open-ILS/examples/opensrf.xml.example,
+	Open-ILS/src/c-apps/oils_auth.c: Make more auth values configurable Amount of time seed is valid Amount of time to keep failure count in
+	memcache since last auth event Number of failures before locking out
+	auth attempts Also, remove seed from memcache once it has been used once.
+
+	Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+	Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2011-08-30  Thomas Berezansky <tsbere@mvlc.org>
+
+	* Open-ILS/src/c-apps/oils_auth.c: Brute Force protection for
+	authentication Count auth failures in memcache.  If 10+ have occurred cause
+	failure.  After 90 seconds of no activity counter resets.
+
+	Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+	Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2011-09-30  Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+	* Open-ILS/examples/fm_IDL.xml: link asset.copy_template.status to
+	config.copy_status in the IDL If nothing else, this provides a dropdown for status in the copy
+	template editor (the one for Serials, under the admin menus, not the
+	one on the copy editing interface).
+
+
+	Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+	Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2011-10-03  Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+	* Open-ILS/web/opac/common/js/org_utils.js,
+	Open-ILS/web/opac/skin/default/js/rdetail.js: JSPAC: Fix a bug (I
+	think) in orgIsMine(), and show more MFHD holdings ...  ... when search scope would have it so.
+
+
+	Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-09-10  Dan Scott <dscott@laurentian.ca>
+
+	* Open-ILS/src/extras/Makefile.install: Refresh dynamic link cache
+	after libjs install The build of SpiderMonkey can fail if it can't find the freshly
+	installed libjs library, so run ldconfig after building libjs to
+	avoid that bit o' fun.
+
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-09-29  Dan Scott <dscott@laurentian.ca>
+
+	* Open-ILS/web/opac/skin/default/js/rdetail.js: LP740320: Make
+	<enter> submit the new bookbag dialog For the keyboard jockeys out there - if the enter key doesn't
+	submit, the UI reviewer will not commit.
+
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-08-26  James Fournie <jfournie@sitka.bclibraries.ca>
+
+	* Open-ILS/web/opac/skin/default/xml/page_rdetail.xml: Initial
+	dialog isn't quite wide enough, here's a hackish way to fix it
+
+
+	Signed-off-by: James Fournie <jfournie@sitka.bclibraries.ca>
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-08-26  James Fournie <jfournie@sitka.bclibraries.ca>
+
+	* Open-ILS/web/opac/skin/default/xml/page_rdetail.xml: Should
+	probably use a more common button rather than the one for the
+	advanced search
+
+
+	Signed-off-by: James Fournie <jfournie@sitka.bclibraries.ca>
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-08-26  James Fournie <jfournie@sitka.bclibraries.ca>
+
+	* Open-ILS/web/opac/skin/default/js/rdetail.js: This makes more
+	sense as an alert; the Dojo dialog has no button which is not
+	user-friendly.
+
+
+	Signed-off-by: James Fournie <jfournie@sitka.bclibraries.ca>
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-08-02  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/web/opac/skin/default/js/rdetail.js,
+	Open-ILS/web/opac/skin/default/xml/page_rdetail.xml: Markup-based
+	dijit.Dialog implementation, inspired by and based on a patch from
+	Joseph Lewis in https://bugs.launchpad.net/evergreen/+bug/787162
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-09-16  Liam Whalen <lwhalen@evergreen-dev.catalogue.nrcan.gc.ca>
+
+	* Open-ILS/xul/staff_client/server/cat/spine_labels.js: Modified
+	spine_labels.js to retain UTF-8 encoding Dan Wells posted a fix to the DEV list for receipt printing that
+	allowed the receipt printer to print UTF-8 characters.  I used the
+	ideas in that fix to modify spine_labels.js.  In spine_labels.js,
+	the url passed to the preview in preview_xul_192 was encoding the
+	url with the javascript encode() function.  This function does not
+	preserve UTF-8 encodings.  I changed the function to
+	encodeURIComponent, and UTF-8 characters are now displayed properly
+	by the spine label printer code.
+
+	Signed-off-by: Liam Whalen <lwhalen@evergreen-dev.catalogue.nrcan.gc.ca>
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-09-28  Michael Peters <mrpeters@library.in.gov>
+
+	* Open-ILS/web/templates/default/conify/global/acq/edi_account.tt2: 
+	A slight modification to prevent clipping in the EDI Accounts
+	interface Just a few tweaks via CSS to make sure the footer notes don't clip
+	off part of the main grid.
+
+
+	Signed-off-by: Michael Peters <mrpeters@library.in.gov>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-09-28  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/reporter/clark-kent.pl: Provide proper hrefs for
+	links back from report debugging pages Reimplementation of a fix provided by Michael Peters.  The
+	originally submitted patch included several fixes provided by an
+	unrelated patch, and a regression in build-time embedded tokens.  Original branch at:
+
+	http://git.evergreen-ils.org/?p=working/Evergreen.git;a=shortlog;h=refs/heads/user/mrpeters-isl/clark_kent_back_links
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-09-22  Dan Scott <dscott@laurentian.ca>
+
+	* Open-ILS/src/reporter/clark-kent.pl: LP856567: Mark HTML report
+	output as Unicode-encoded Non-ASCII characters in report ouput that has been generated in HTML
+	format appears to be corrupted when viewed in a browser. This can be
+	manually corrected by switching the "Encoding" browser option, but
+	it would be better to include <meta charset='utf-8'> in the output
+	HTML to tell the browser directly.
+
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-09-27  Dan Wells <dbw2@calvin.edu>
+
+	* Open-ILS/src/perlmods/OpenILS/Utils/MFHD.pm,
+	Open-ILS/src/perlmods/OpenILS/Utils/MFHD/Caption.pm: MFHD
+	compression fails with pattern-less captions The current code assumes that if you try to compress a range of MFHD
+	holdings, you actually have the necessary pattern information.  This
+	commit introduces a very basic check to avoid the most common
+	failure case.
+
+	Signed-off-by: Dan Wells <dbw2@calvin.edu>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-09-26  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/sql/Pg/upgrade/0629.data.jedi-template.sql: 2.1-ish
+	upgrade script preamble
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-09-26  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/sql/Pg/002.schema.config.sql,
+	Open-ILS/src/sql/Pg/upgrade/0629.data.jedi-template.sql,
+	Open-ILS/src/sql/Pg/upgrade/XXXX.data.jedi-template.sql: Stamping
+	upgrade script for EDI cleanup
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-09-19  Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Trigger/Reactor.pm,
+	Open-ILS/src/sql/Pg/950.data.seed-values.sql,
+	Open-ILS/src/sql/Pg/upgrade/XXXX.data.jedi-template.sql,
+	Open-ILS/src/support-scripts/edi_pusher.pl: Some EDI translation
+	fixes for troublesome input characters This attempts to address enough of the issues in
+	https://bugs.launchpad.net/evergreen/+bug/812593 to move forward.  When the ? character appears in lineitem attributes for a PO that we
+	send off for EDI translation, the translator fails if that ? is the
+	last character of the string.  This commit avoids that situation.  This commit also removes any Unicode characters from the JEDI (the
+	input to the translator process), as they're not going to make it to
+	the EDIFACT output anyhow, and will just confound the translator.  This commit also pre-escapes quotation marks in lineitem attributes
+	so that we don't produce invalid JSON for our JEDI.  This commit also destroys the death star.  Seriously, the right way to fix some of the issues people have had
+	is for somebody to learn Ruby and to address them either in
+	edi_webrick.rb, in edi4r, or in openils-mapper (wherever the issues
+	may be).  Working on that.
+
+
+	Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-09-25  Galen Charlton <gmc@esilibrary.com>
+
+	* Open-ILS/src/support-scripts/marc_stream_importer.pl: lp859190:
+	make marc_stream_import always import non-matches Fixes regression of (implicit, undocumented) functionality
+	introduced in commit da3a45344205.  Current use case for the
+	streaming MARC importer for OCLC Connexion exports assumes that
+	non-matching records should always be added.
+
+	Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+	Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2011-09-21  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/xul/staff_client/chrome/content/main/bindings.xml: 
+	properties in chrome:// return XHR status 0
+
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2011-09-20  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/xul/staff_client/chrome/content/main/bindings.xml: 
+	LP#854760 messagecat fails with certain 404 pages We were failing to check the HTTP status on the underlying XHR
+	requests.
+
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-09-16  Dan Scott <dscott@laurentian.ca>
+
+	* Open-ILS/src/templates/password-reset/request-form.tt2: Can't have
+	two identical IDs on the same page Nobody who cares about the pure Web experience ever noticed that
+	this page has two identical IDs. Chromium and other browsers
+	complain, though, so make them happy.
+
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-25  Bill Erickson <berick@esilibrary.com>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Circ/Circulate.pm: Clear
+	hold shelf [expire] time at checkout to alternate patron When an item on the holds shelf is checked out to an alternate
+	patron (i.e. not the hold user), clear the shelf_time and
+	shelf_expire_time along with capture_time, current_copy, etc. on the
+	hold.  tsbere++ for isolating the problem.
+
+	Signed-off-by: Bill Erickson <berick@esilibrary.com>
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2011-09-14  Jason Etheridge <jason@esilibrary.com>
+
+	* : commit 572607f08126548c30075439e2983b9029fd205b Author: Jason
+	Etheridge <jason@esilibrary.com> Date:   Wed Aug 3 00:44:41 2011
+	-0400
+
+
+2011-09-13  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/xul/staff_client/server/cat/marcedit.js,
+	Open-ILS/xul/staff_client/server/cat/marcedit.xul: Provide a default
+	value for, and explicitly change, the record type so the type
+	dropdown works as intended
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-09-09  Thomas Berezansky <tsbere@mvlc.org>
+
+	* Open-ILS/xul/staff_client/chrome/content/util/print.js: Fix
+	dos_print when NSPrint interface is used By adding params.dos_print = true where needed.
+
+	Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2011-09-07  Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+	*
+	Open-ILS/src/perlmods/OpenILS/Application/Trigger/Reactor/AstCall.p
+	m: A/T reactor 'AstCall' can't have global CStoreEditor It's not good for any Evergreen service to try to have a global
+	cstoreeditor instance.  Scope it to the handler() sub that needs it,
+	and comment out the thus-far unused/unfinished retrieve() sub.
+
+
+	Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-30  Jason Stephenson <jstephenson@mvlc.org>
+
+	* Open-ILS/examples/oils_sip.xml.example, Open-ILS/src/Makefile.am: 
+	Fix for LP bug #702422.  Add @libdir@/javascript/ path in legacy script section of
+	oils_sip.xml.example so that legacy scripts work with SIP2.
+
+
+	Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-08-31  James Fournie <jfournie@sitka.bclibraries.ca>
+
+	* Open-ILS/web/js/ui/default/conify/global/acq/provider.js,
+	Open-ILS/web/templates/default/conify/global/acq/provider.tt2: 
+	Adding org unit context selector to providers screen This helps
+	alleviate the bug reported in LP 731510 and generally improves
+	usability.
+
+
+	Signed-off-by: James Fournie <jfournie@sitka.bclibraries.ca>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-09-06  Dan Wells <dbw2@calvin.edu>
+
+	* Open-ILS/src/extras/org_tree_js.pl: Clear org_unit cache fix for
+	autogen.sh autogen.sh is not properly clearing the org_tree cache.  It is
+	unclear how this hasn't caused a problem before, but this fix works
+	for me and should be at least harmless in other enviroments.
+
+	Signed-off-by: Dan Wells <dbw2@calvin.edu>
+	Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2011-07-20  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/xul/staff_client/server/circ/util.js,
+	Open-ILS/xul/staff_client/server/patron/util.js: adjust legacy xul
+	column definitions for dates/timestamps to ensure correct  sorting
+
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-07-18  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/xul/staff_client/server/admin/transit_list.js,
+	Open-ILS/xul/staff_client/server/admin/work_log.js,
+	Open-ILS/xul/staff_client/server/cat/copy_browser.js,
+	Open-ILS/xul/staff_client/server/cat/copy_buckets.js,
+	Open-ILS/xul/staff_client/server/cat/copy_summary.xul,
+	Open-ILS/xul/staff_client/server/cat/record_buckets.js,
+	Open-ILS/xul/staff_client/server/cat/z3950.js,
+	Open-ILS/xul/staff_client/server/circ/alternate_copy_summary.js,
+	Open-ILS/xul/staff_client/server/circ/checkin.js,
+	Open-ILS/xul/staff_client/server/circ/checkout.js,
+	Open-ILS/xul/staff_client/server/circ/copy_details.xul,
+	Open-ILS/xul/staff_client/server/circ/copy_status.js,
+	Open-ILS/xul/staff_client/server/circ/in_house_use.js,
+	Open-ILS/xul/staff_client/server/circ/renew.js,
+	Open-ILS/xul/staff_client/server/circ/util.js,
+	Open-ILS/xul/staff_client/server/patron/hold_details.js,
+	Open-ILS/xul/staff_client/server/patron/holds.js,
+	Open-ILS/xul/staff_client/server/patron/items.js,
+	Open-ILS/xul/staff_client/server/serial/manage_dists.js,
+	Open-ILS/xul/staff_client/server/serial/manage_items.js,
+	Open-ILS/xul/staff_client/server/serial/manage_subs.js: remove
+	circ.util.std_map_row_to_columns; default to the one provided by
+	list.js
+
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-07-18  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/xul/staff_client/chrome/content/util/list.js,
+	Open-ILS/xul/staff_client/server/circ/util.js: Better sort support
+	for xul lists (see launchpad bug
+	://bugs.launchpad.net/evergreen/+bug/751745) Example of supplying a sort_value function for item Create Date, and
+	automatic sort_value for fm_columns-generated timestamp and money
+	column definitions.  Need to provide more such functions, and
+	eventually move everything over to fm_columns
+
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-09-01  Dan Wells <dbw2@calvin.edu>
+
+	*
+	Open-ILS/src/perlmods/OpenILS/Application/Storage/Publisher/action.
+	pm: Hourly fine periods do not charge enough Hourly fine periods are not charging for the first period of
+	overdue-ness. If an item is due at 2:00pm and has a fine of $.50 per
+	hour, the first fine should be eligible for generation at 2:01pm. As
+	it stands, the first fine does not generate until an entire fine
+	period has elapsed, so in this case, 3:00pm.  The previous version of the code had a special case for day-
+	granular fine periods, so a majority of fines were not affected.
+	This commit expands the same idea (charging for the fine period you
+	are currently "in") to all fine periods.
+
+	Signed-off-by: Dan Wells <dbw2@calvin.edu>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-05-18  Galen Charlton <gmc@esilibrary.com>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Circ/Circulate.pm: avoid
+	error when generating fines on checkin Prevents "No active transaction to commit" error when checking in
+	overdue loans.
+
+	Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+	Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2011-08-10  Michael Peters <mrpeters@library.in.gov>
+
+	* LP#824257 Fix nasty overlapping when patron has more than 6 notes
+
+
+	Signed-off-by: Michael Peters <mrpeters@library.in.gov>
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
