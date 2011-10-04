@@ -1,3 +1,8 @@
+BEGIN;
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0632', :eg_version);
+
 INSERT INTO config.org_unit_setting_type (name, grp, label, description, datatype) VALUES
 ( 'opac.username_regex', 'glob',
     oils_i18n_gettext('opac.username_regex',
@@ -24,3 +29,5 @@ INSERT INTO config.org_unit_setting_type (name, grp, label, description, datatyp
         'coust', 'description'),
     'bool')
 ;
+
+COMMIT;
