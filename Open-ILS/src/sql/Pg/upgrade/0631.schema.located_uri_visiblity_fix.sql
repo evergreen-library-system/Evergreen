@@ -2,6 +2,8 @@
 --
 BEGIN;
 
+INSERT INTO config.upgrade_log (version) VALUES ('0631');
+
 CREATE OR REPLACE FUNCTION search.query_parser_fts (
 
     param_search_ou INT,
