@@ -58,6 +58,7 @@ CREATE TABLE config.upgrade_log (
 );
 
 INSERT INTO config.upgrade_log (version) VALUES ('0634'); -- tsbere/phasefx
+INSERT INTO config.upgrade_log (version) VALUES ('2.1.0');
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,

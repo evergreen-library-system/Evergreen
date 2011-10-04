@@ -1,4 +1,4 @@
-README for Evergreen 2.1
+README for Evergreen 2.1.0
 ========================
 
 Installing prerequisites:
@@ -91,7 +91,7 @@ Installation instructions:
 +
 [source, bash]
 ------------------------------------------------------------------------------
-make STAFF_CLIENT_STAMP_ID=rel_2_1 install
+make STAFF_CLIENT_STAMP_ID=rel_2_1_0 install
 ------------------------------------------------------------------------------
 +
 2. The server portion of the staff client expects `http://hostname/xul/server`
