@@ -603,7 +603,6 @@ function ResultManager(liPager, poGrid, plGrid, invGrid) {
     var self = this;
 
     this.liPager = liPager;
-    this.liPager.liTable.isUni = true;
 
     this.poGrid = poGrid;
     this.plGrid = plGrid;
@@ -693,27 +692,55 @@ function ResultManager(liPager, poGrid, plGrid, invGrid) {
         }
     };
 
-    this._dataLoader = function() {
+    this._dataLoader = function(opts) {
         /* This function must contain references to "self" only, not "this." */
         var grid = self.result_types[self.result_type].interface;
-        self.count_results = 0;
-        self.params[4].offset = grid.displayOffset;
-        self.params[4].limit = grid.displayLimit;
 
-        fieldmapper.standardRequest(
-            ["open-ils.acq", self.method_name], {
-                "params": self.params,
-                "async": true,
-                "onresponse": function(r) {
-                    if (r = openils.Util.readResponse(r)) {
-                        if (!self.count_results++)
-                            self.show(self.result_type);
-                        self.add(self.result_type, r);
-                    }
-                },
-                "oncomplete": function() { self.resultsComplete(); }
-            }
-        );
+        if (!opts)
+            opts = {};
+
+        self.count_results = 0;
+
+        var use_params = dojo.clone(self.params);   /* need copy, not ref */
+
+        if (!opts.skip_paging) {
+            use_params[4].offset = grid.displayOffset;
+            use_params[4].limit = grid.displayLimit;
+        }
+
+        var method = self.method_name;
+        if (opts.atomic)
+            method += ".atomic";
+
+        if (opts.id_list)
+            use_params[4].id_list = true;
+
+        var request_options = {
+            "params": use_params,
+            "async": true
+        };
+
+        if (typeof opts.onresponse != "undefined") {
+            request_options.onresponse = opts.onresponse;
+        } else {
+            /* normal onresponse handler for most times we call this method */
+            request_options.onresponse = function(r) {
+                if (r = openils.Util.readResponse(r)) {
+                    if (!self.count_results++)
+                        self.show(self.result_type);
+                    self.add(self.result_type, r);
+                }
+            };
+        }
+
+        if (typeof opts.oncomplete != "undefined") {
+            request_options.oncomplete = opts.oncomplete;
+        } else {
+            /* normal oncomplete handler for most times we call this method */
+            request_options.oncomplete = function() { self.resultsComplete(); };
+        }
+
+        fieldmapper.standardRequest(["open-ils.acq", method], request_options);
     };
 
     this.add = function(which, what) {
