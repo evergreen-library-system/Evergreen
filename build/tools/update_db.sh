@@ -106,7 +106,7 @@ if [ $COUNT -gt 0 ] ; then
     for (( i=0; i<$COUNT; i++ )) ; do
         echo "* Applying ${FILES[$i]}" >&3;   # to the main script STDOUT
         cat ${FILES[$i]};                     # to the psql pipe
-    done | psql -set eg_version="'$EGVERSION'" $PSQL_ACCESS ;
+    done | psql --set=eg_version="'$EGVERSION'" $PSQL_ACCESS ;
 else
     echo "* Nothing to update";
 fi
