@@ -34,6 +34,8 @@ cat.copy_browser.prototype = {
 
             obj.list_init(params);
 
+            obj.source_init();
+
             obj.controller.render();
 
             obj.default_depth = obj.depth_menu_init();
@@ -339,6 +341,11 @@ cat.copy_browser.prototype = {
 
                                     if (edit==0) return; // no read-only view for this interface
 
+                                    if (!obj.can_have_copies) {
+                                        alert(document.getElementById('catStrings').getFormattedString('staff.cat.copy_browser.can_have_copies.false', obj.source));
+                                        return;
+                                    }
+
                                     var title = document.getElementById('catStrings').getString('staff.cat.copy_browser.add_item.title');
 
                                     var url;
@@ -631,6 +638,11 @@ cat.copy_browser.prototype = {
                                     if (edit==0) {
                                         alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.add_volume.permission_error'));
                                         return; // no read-only view for this interface
+                                    }
+
+                                    if (!obj.can_have_copies) {
+                                        alert(document.getElementById('catStrings').getFormattedString('staff.cat.copy_browser.can_have_copies.false', obj.source));
+                                        return;
                                     }
 
                                     var title = document.getElementById('catStrings').getString('staff.cat.copy_browser.add_volume.title');
@@ -1835,6 +1847,29 @@ cat.copy_browser.prototype = {
 
         } catch(E) {
             this.error.sdump('D_ERROR','cat.copy_browser.list_init: ' + E + '\n');
+            alert(E);
+        }
+    },
+
+    // Sets can_have_copies and source member variables.
+    'source_init' : function() {
+        var obj = this;
+        try {
+            var bibObj = obj.network.request(
+                api.FM_BRE_RETRIEVE_VIA_ID.app,
+                api.FM_BRE_RETRIEVE_VIA_ID.method,
+                [ ses(), [obj.docid] ]
+            );
+            bibObj = bibObj[0];
+            var cbsObj = obj.network.request(
+                api.FM_CBS_RETRIEVE_VIA_PCRUD.app,
+                api.FM_CBS_RETRIEVE_VIA_PCRUD.method,
+                [ ses(), bibObj.source() ]
+            );
+            obj.can_have_copies = (cbsObj.can_have_copies() == get_db_true());
+            obj.source = cbsObj.source();
+        } catch(E) {
+            obj.error.sdump('D_ERROR','can have copies check: ' + E);
             alert(E);
         }
     },
