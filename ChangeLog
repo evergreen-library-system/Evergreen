@@ -1,1 +1,198 @@
-#ChangeLog
+2011-09-12  Thomas Berezansky <tsbere@mvlc.org>
+
+	* Open-ILS/xul/staff_client/chrome/content/auth/session.js: When
+	workstation is invalid request a new seed The original one may no longer be valid
+
+	Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+	Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2011-09-01  Thomas Berezansky <tsbere@mvlc.org>
+
+	* Open-ILS/examples/opensrf.xml.example,
+	Open-ILS/src/c-apps/oils_auth.c: Make more auth values configurable Amount of time seed is valid Amount of time to keep failure count in
+	memcache since last auth event Number of failures before locking out
+	auth attempts Also, remove seed from memcache once it has been used once.
+
+	Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+	Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2011-08-30  Thomas Berezansky <tsbere@mvlc.org>
+
+	* Open-ILS/src/c-apps/oils_auth.c: Brute Force protection for
+	authentication Count auth failures in memcache.  If 10+ have occurred cause
+	failure.  After 90 seconds of no activity counter resets.
+
+	Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+	Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2011-10-04  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/sql/Pg/1.6.1.8-1.6.1.9-upgrade-db.sql: (very slim)
+	Upgrade script for 1.6.1.9
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-06-15  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/xul/staff_client/server/patron/bills.js: lp797321:
+	Disable the Apply Payment button during payment processing to
+	mitigate chance of duplicate payments.  I can't actually reproduce the creation of duplicate payments
+	locally with trunk/2.x, but there are reports of it, and this
+	doesn't seem to hurt.  Not
+
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+	Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-06-01  Dan Scott <dan@coffeecode.net>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Reporter.pm: Whitespace
+	cleanup in aisle 3 (O:A:Reporter)
+
+	Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+2011-06-01  Michael Peters <mrpeters@library.in.gov>
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Reporter.pm: LP#740466
+	Sort report folders by name Add order_by to Reporter.pm to sort report folders by name
+
+
+	Signed-off-by: Michael Peters <mrpeters@library.in.gov>
+	Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+2011-05-31  Michael Peters <mrpeters@library.in.gov>
+
+	* Open-ILS/web/opac/locale/en-US/opac.dtd: LP#739444 Incrementing
+	opac.dtd copyright date
+
+
+	Signed-off-by: Michael Peters <mrpeters@library.in.gov>
+	Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+2011-05-27  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/xul/staff_client/server/circ/checkin.xul: Fix Hold
+	Capture Check-In Mode, similar to
+	9641dcf040798aac1e274253c8ae8a722674bcc2
+
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2010-09-17  senator <senator@dcc99617-32d9-48b4-a31d-7c20da2025e4>
+
+	* Open-ILS/web/js/ui/default/vandelay/vandelay.js: Fix some cases
+	where View MARC upon colliding import broke in Vandelay git-svn-id: svn://svn.open-ils.org/ILS/trunk@17763
+	dcc99617-32d9-48b4-a31d-7c20da2025e4
+
+	Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2011-05-23  Mike Rylander <mrylander@gmail.com>
+
+	*
+	Open-ILS/src/perlmods/OpenILS/Application/Storage/Publisher/actor.p
+	m: Revert "Wrap proximity refreshing in a transaction to avoid
+	timespans where there is no such information" This reverts commit 2e07b250c764a5db6f2d2a4316136440b1b78960.
+
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-05-12  miker <miker@dcc99617-32d9-48b4-a31d-7c20da2025e4>
+
+	*
+	Open-ILS/src/perlmods/OpenILS/Application/Storage/Publisher/actor.p
+	m: Wrap proximity refreshing in a transaction to avoid timespans
+	where there is no such information git-svn-id: svn://svn.open-ils.org/ILS/branches/rel_1_6_1@20460
+	dcc99617-32d9-48b4-a31d-7c20da2025e4
+
+
+2011-04-26  phasefx <phasefx@dcc99617-32d9-48b4-a31d-7c20da2025e4>
+
+	* Open-ILS/xul/staff_client/server/circ/checkin.js: fix disappearing
+	cursor/caret for Check In git-svn-id: svn://svn.open-ils.org/ILS/branches/rel_1_6_1@20319
+	dcc99617-32d9-48b4-a31d-7c20da2025e4
+
+
+2011-04-22  gmc <gmc@dcc99617-32d9-48b4-a31d-7c20da2025e4>
+
+	* Open-ILS/src/sql/Pg/1.6.1.4-1.6.1.5-upgrade-db.sql: LP#768983 -
+	fix version stamp in 1.6.1.4-1.6.1.5 upgrade script  git-svn-id: svn://svn.open-ils.org/ILS/branches/rel_1_6_1@20283
+	dcc99617-32d9-48b4-a31d-7c20da2025e4
+
+	Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-04-20  miker <miker@dcc99617-32d9-48b4-a31d-7c20da2025e4>
+
+	* Open-ILS/src/support-scripts/offline-blocked-list.pl: Patch from
+	Jeff Davis addressing parameter usage issues git-svn-id: svn://svn.open-ils.org/ILS/branches/rel_1_6_1@20249
+	dcc99617-32d9-48b4-a31d-7c20da2025e4
+
+
+2011-04-18  phasefx <phasefx@dcc99617-32d9-48b4-a31d-7c20da2025e4>
+
+	* Open-ILS/xul/staff_client/server/cat/marcedit.xul: in the MARC
+	Editor, put the callnumber and barcode textboxes for Fast Item Add
+	on a separate row git-svn-id: svn://svn.open-ils.org/ILS/branches/rel_1_6_1@20156
+	dcc99617-32d9-48b4-a31d-7c20da2025e4
+
+
+2011-04-18  phasefx <phasefx@dcc99617-32d9-48b4-a31d-7c20da2025e4>
+
+	* Open-ILS/xul/staff_client/server/cat/spine_labels.xul: font_helper
+	in this version depends on JSAN being set up by my_init() git-svn-id: svn://svn.open-ils.org/ILS/branches/rel_1_6_1@20143
+	dcc99617-32d9-48b4-a31d-7c20da2025e4
+
+
+2011-04-15  phasefx <phasefx@dcc99617-32d9-48b4-a31d-7c20da2025e4>
+
+	* Open-ILS/xul/staff_client/server/cat/spine_labels.xul: label
+	interface, run persist_helper() before my_init(), since the latter
+	depends on values set by the former git-svn-id: svn://svn.open-ils.org/ILS/branches/rel_1_6_1@20109
+	dcc99617-32d9-48b4-a31d-7c20da2025e4
+
+
+2011-04-15  miker <miker@dcc99617-32d9-48b4-a31d-7c20da2025e4>
+
+	* Open-ILS/src/c-apps/oils_cstore.c: Backported version of r20094:
+	Protect pcrud-ish retrieve from an empty result set git-svn-id: svn://svn.open-ils.org/ILS/branches/rel_1_6_1@20099
+	dcc99617-32d9-48b4-a31d-7c20da2025e4
+
+
+2011-04-07  phasefx <phasefx@dcc99617-32d9-48b4-a31d-7c20da2025e4>
+
+	* Open-ILS/web/opac/skin/default/js/myopac.js: test for pre-cat
+	slightly off in OPAC My Account, spotted by Steve Callender git-svn-id: svn://svn.open-ils.org/ILS/branches/rel_1_6_1@20021
+	dcc99617-32d9-48b4-a31d-7c20da2025e4
+
+
+2011-03-29  miker <miker@dcc99617-32d9-48b4-a31d-7c20da2025e4>
+
+	* Open-ILS/src/perlmods/OpenILS/SIP/Patron.pm: Patch from Brandon
+	Uhlman addressing SIP2 unavailable holds display.  The unavail_holds() function in OpenILS::SIP::Patron is a
+	placeholder that returns an empty set, instead of an actual list of
+	a patrons' holds not cur rently ready for pickup.  When an SC determines whether a patron has holds ready for pickup by
+	comparing the cardinalities of hold_items() and unavail_holds() [*]
+	using the exi sting unavail_holds() logic, it effectively reports
+	every currently placed hold as ready for pickup, which is generally
+	not true.  The attached patch assumes that unavailable holds are those that
+	meet one of two sets of conditions: - hold requests that are not cancelled (cancel_time = null), not
+	fulfilled (fulfillment time = null), and not captured (capture_time
+	= null) - hold requests that are neither cancelled nor fulfilled (as above),
+	are captured (capture_time != null), and for which, additionally,
+	the current_cop y does not have the status 'On holds shelf' (status
+	= 8). The only items that should meet this condition are those that
+	are in transit to a location w here they will be added to the holds
+	shelf.  The patch iterates through the items meeting each condition, and
+	adds them to a master list of relevant holds, which it then
+	processes (in the same wa y that hold_items is processed) and
+	returns.  This patch was developed against and tested on rel_1_6_0 from SVN (~
+	1.6.0.2), but should apply cleanly against current rel_1_6_0 and
+	trunk; OpenSRF 1 .2.2, PostgreSQL 8.3.8, Ubuntu Hardy 64-bit.  [*] The two cardinalities are returned by SIP message 64 as
+	fixed-length integers in positions 35-38 and 55-58 respectively, so
+	we don't need to itera te through the list ourseles.  git-svn-id: svn://svn.open-ils.org/ILS/branches/rel_1_6_1@19898
+	dcc99617-32d9-48b4-a31d-7c20da2025e4
+
+
+2011-03-18  miker <miker@dcc99617-32d9-48b4-a31d-7c20da2025e4>
+
+	* Allow the "result_field" to be used as the default alias in the
+	output column of a row or set returning transform git-svn-id: svn://svn.open-ils.org/ILS/branches/rel_1_6_1@19804
+	dcc99617-32d9-48b4-a31d-7c20da2025e4
+
+
