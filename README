@@ -21,7 +21,7 @@ follows:
        issuing the `su - opensrf` command.
     ** The *postgres* Linux account is created automatically when you install
        the PostgreSQL database server. You can switch to this account from the
-       *root* account by issuing the `su - opensrf` command.
+       *root* account by issuing the `su - postgres` command.
   * PostgreSQL user accounts:
     ** The *evergreen* PostgreSQL account is a superuser account that you will
        create to connect to the PostgreSQL database server.
