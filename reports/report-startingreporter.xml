@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chapter xml:id="report_starting_reporter_service" xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="EN"
+    xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<info>
+        	<title>Starting and Stopping the Reporter Daemon</title>
+	</info>
+	<para>Before you can view reports, the Evergreen administrator must start the reporter daemon from the command line of the Evergreen server.</para>
+	<para>The reporter daemon periodically checks for requests for new reports or scheduled reports and gets them running.</para>
+	
+	<simplesect xml:id="startingreporter">
+		<title>Starting the Reporter Daemon</title>
+		<para>To start the reporter daemon, run the following command as the opensrf user:</para>
+		<screen>clark-kent.pl --daemon</screen>
+		<para>You can also specify other options:</para>
+		<itemizedlist>
+			<listitem>sleep=interval : number of seconds to sleep between checks for new reports to run; defaults to 10</listitem>
+			<listitem>lockfile=filename : where to place the lockfile for the process; defaults to /tmp/reporter-LOCK</listitem>
+			<listitem>concurrency=integer : number of reporter daemon processes to run; defaults to 1</listitem>	
+			<listitem>boostrap=filename : OpenSRF bootstrap configuration file; defaults to /openils/conf/opensrf_core.xml</listitem>	
+		</itemizedlist>
+		<note>
+			<para>The open-ils.reporter process must be running and enabled on the gateway before the reporter daemon can be started.</para>
+			<para>Remember that if the server is restarted, the reporter daemon will need to be restarted before you can view reports unless you have configured your server to start the daemon 
+			automatically at start up time.</para></note>
+	</simplesect>
+	<simplesect xml:id="stoppingreporter">
+		<title>Stopping the Reporter Daemon</title>
+		<para>To stop the reporter daemon, you have to kill the process and remove the lockfile. Assuming you're running just a single process and that the lockfile is 
+		in the default location, perform the following commands as the opensrf user:</para>
+		<screen>kill `ps wax | grep "Clark Kent" | grep -v grep | cut -b1-6`</screen>
+		<screen>rm /tmp/reporter-LOCK</screen>
+	</simplesect>
+</chapter>
+
+
+
+
+
+
+
+
+

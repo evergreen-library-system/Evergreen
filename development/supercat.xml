@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chapter xml:id="supercat" xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="EN"
+    xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<info>
+        	<title>SuperCat</title>
+	</info>
+	<section xml:id="usingsupercat">>
+		<title>Using SuperCat</title> 
+	<indexterm><primary>SuperCat</primary></indexterm>
+		<para>SuperCat allows Evergreen record and information retrieval from a web browser using a based on a number of open web standards and formats. The following record types are 
+		supported:</para>
+		<itemizedlist>
+			<listitem>isbn</listitem>
+			<listitem>metarecord</listitem>
+			<listitem>record</listitem>
+		</itemizedlist>
+		<simplesect>
+			<title>Return a list of ISBNs for related records</title>
+			<indexterm><primary>SuperCat</primary><secondary>ISBNs</secondary></indexterm>
+			<para>Similar to the OCLC xISBN service, Evergreen can return a list of related records based on its oISBN algorithm:</para>
+			<para><uri>http://&lt;hostname&gt;/opac/extras/osibn/&lt;ISBN&gt;</uri></para>
+			<para>For example, <uri>http://dev.gapines.org/opac/extras/oisbn/0439136350</uri> returns:</para>
+<screen>
+&lt;idlist metarecord="302670"&gt;
+&lt;isbn record="250060"&gt;0790783525&lt;/isbn&gt;
+&lt;isbn record="20717"&gt;0736691316&lt;/isbn&gt;
+&lt;isbn record="250045"&gt;0790783517&lt;/isbn&gt;
+&lt;isbn record="199060"&gt;9500421151&lt;/isbn&gt;
+&lt;isbn record="250061"&gt;0790783495&lt;/isbn&gt;
+&lt;isbn record="154477"&gt;0807286028&lt;/isbn&gt;
+&lt;isbn record="227297"&gt;1594130027&lt;/isbn&gt;
+&lt;isbn record="26682"&gt;0786222743&lt;/isbn&gt;
+&lt;isbn record="17179"&gt;0807282316&lt;/isbn&gt;
+&lt;isbn record="34885"&gt;0807282316&lt;/isbn&gt;
+&lt;isbn record="118019"&gt;8478885196&lt;/isbn&gt;
+&lt;isbn record="1231"&gt;0738301477&lt;/isbn&gt;
+&lt;/idlist&gt;
+</screen>
+		 </simplesect>
+		 <simplesect>
+			<title>Return records</title>
+			<indexterm><primary>SuperCat</primary><secondary>records</secondary></indexterm>
+			<para>SuperCat can return records and metarecords in many different formats (see <xref linkend='supportedsupercatformats' /></para>
+			<para><uri>http://&lt;hostname&gt;/opac/extras/supercat/retrieve/&lt;format&gt;/&lt;record-type&gt;/&lt;bib-ID&gt;</uri></para>
+			<para>For example, <uri>http://dev.gapines.org/opac/extras/supercat/retrieve/mods/record/555</uri> returns:</para>
+<screen>
+&lt;mods:modsCollection version="3.0"&gt;
+	&lt;mods:mods xsi:schemaLocation="http://www.loc.gov/mods/ http://www.loc.gov/standards/mods/mods.xsd"&gt;
+    		&lt;titleInfo&gt;
+     			&lt;title&gt;More Brer Rabbit stories /&lt;/title&gt;
+    		&lt;/titleInfo&gt;
+    		&lt;typeOfResource&gt;text&lt;/typeOfResource&gt;
+    		&lt;originInfo&gt;
+     			&lt;place&gt;
+				&lt;code authority="marc"&gt;xx&lt;/c0de&gt;
+      			&lt;/place&gt;
+      			&lt;publisher&gt;Award Publications&lt;/publisher&gt;
+      			&lt;dateIssued&gt;c1982, 1983&lt;/dateIssued&gt;
+      			&lt;dateIssued encoding="marc" point="start"&gt;1983&lt;/dateIssued&gt;
+      			&lt;dateIssued encoding="marc" point="end"&gt;1982&lt;/dateIssued&gt;
+      			&lt;issuance&gt;monographic&lt;/issuance&gt;
+    			&lt;/originInfo&gt;
+    		&lt;language authority="iso639-2b"&gt;eng&lt;/language&gt;
+    		&lt;physicalDescription&gt;
+      			&lt;form authority="marcform"&gt;print&lt;/form&gt;
+     			&lt;extent&gt;unp. : col. ill.&lt;/extent&gt;
+    		&lt;/physicalDescription&gt;
+    		&lt;note type="statement of responsibility"&gt;ill. by Rene Cloke.&lt;/note&gt;
+    		&lt;subject authority="lcsh"&gt;
+      			&lt;topic&gt;Animals&lt;/topic&gt;
+      			&lt;topic&gt;Fiction&lt;/topic&gt;
+    		&lt;/subject&gt;
+    		&lt;subject authority="lcsh"&gt;
+      			&lt;topic&gt;Fables&lt;/topic&gt;
+    		&lt;/subject&gt;
+    		&lt;recordInfo&gt;
+      			&lt;recordContentSource&gt;(BRO)&lt;/recordContentSource&gt;
+      			&lt;recordCreationDate encoding="marc"&gt;930903&lt;/recordCreationDate&gt;
+      			&lt;recordChangeDate encoding="iso8601"&gt;19990703024637.0&lt;/recordChangeDate&gt;
+      			&lt;recordIdentifier&gt;PIN60000007 &lt;/recordIdentifier&gt;
+    		&lt;/recordInfo&gt;
+  	&lt;/mods:mods&gt;
+&lt;/mods:modsCollection&gt;
+</screen>
+		 </simplesect>
+		 <simplesect>
+			<title>Return a feed of recently edited or created records</title>
+			<indexterm><primary>SuperCat</primary><secondary>recent records</secondary></indexterm>
+			<para>SuperCat can return feeds of recently edited or created authority and bibliographic records:</para>
+			<para><uri>http://&lt;hostname&gt;/opac/extras/feed/freshmeat/&lt;feed-type&gt;/[authority|biblio]/[import|edit]/&lt;limit&gt;/&lt;date&gt;</uri></para>
+			<para>The limit records imported or edited following the supplied date will be returned. If you do not supply a date, then the most recent limit records will be returned.</para>
+			<para>If you do not supply a limit, then up to 10 records will be returned.</para>	
+			<para>Feed-type can be one of atom, html, htmlholdings, marcxml, mods, mods3, or rss2.</para>		
+			<para><uri>For example, http://dev.gapines.org/opac/extras/feed/freshmeat/atom/biblio/import/10/2008-01-01</uri></para>
+		</simplesect>
+		 <simplesect>
+			<title>Browse records</title>
+			<para>SuperCat can browse records in HTML and XML formats:</para>
+			<para><uri>http://&lt;hostname&gt;/opac/extras/supercat/browse/&lt;format&gt;/call_number/&lt;org_unit&gt;/&lt;call_number&gt;</uri></para>
+			<para>For example, <uri>http://dev.gapines.org/opac/extras/browse/xml/call_number/-/GV</uri> returns:</para>
+<screen>
+&lt;hold:volumes xmlns:hold='http://open-ils.org/spec/holdings/v1'&gt;
+	&lt;hold:volume id="tag:open-ils.org,2008:asset-call_number/130607" lib="FRRLS-FA" label="GUTCHEON BETH"&gt;
+	  &lt;act:owning_lib id="tag:open-ils.org,2008:actor-org_unit/111" name="Fayette County Public Library"/&gt;
+	  &lt;record xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/ 
+	      	standards/marcxml/schema/MARC21slim.xsd"
+	      	id="tag:open-ils.org,2008:biblio-record_entry/21669/FRRLS-FA"&gt;
+	      	&lt;leader&gt;09319pam a2200961 a 4500&lt;/leader&gt;
+	      	&lt;controlfield tag="001"/&gt;
+	      	&lt;controlfield tag="005"&gt;20000302124754.0&lt;/controlfield&gt;
+	      	&lt;controlfield tag="008"&gt;990817s2000    nyu           000 1 eng  &lt;/controlfield&gt;
+	      	&lt;datafield tag="010" ind1=" " ind2=" "&gt;
+			&lt;subfield code="a"&gt;   99045936&lt;/subfield&gt;
+	      	&lt;/datafield&gt;
+		      	..
+	    	&lt;/record&gt;
+	    	&lt;record&gt;
+	    		..
+	  &lt;/record&gt;
+	&lt;/hold:volume&gt;
+&lt;/hold:volumes&gt;	
+</screen>
+		</simplesect>
+		 <simplesect xml:id="supportedsupercatformats">
+			<title>Supported formats</title>
+			<indexterm><primary>SuperCat</primary><secondary>formats</secondary></indexterm>
+			<para>SuperCat maintains a list of supported formats for records and metarecords:</para>
+			<para><uri>http://&lt;hostname&gt;/opac/extras/supercat/formats/&lt;record-type&gt;</uri></para>
+			<para>For example, <uri>http://dev.gapines.org/opac/extras/supercat/formats/record</uri> returns:</para>
+<screen>
+&lt;formats&gt;
+  &lt;format&gt;
+    &lt;name&gt;opac&lt;/name&gt;
+    &lt;type&gt;text/html&lt;/type&gt;
+  &lt;/format&gt;
+  &lt;format&gt;
+    &lt;name&gt;htmlholdings&lt;/name&gt;
+    &lt;type&gt;text/html&lt;/type&gt;
+  &lt;/format&gt;
+...
+</screen>
+		</simplesect>
+	</section>
+	<section xml:id="addingsupercatformats">
+		<title>Adding new SuperCat Formats</title>
+		<indexterm><primary>SuperCat</primary><secondary>formats</secondary><tertiary>adding</tertiary></indexterm>
+		<para>Adding SuperCat formats requires experience editing XSL files and familiarity with XML and Perl.</para>	
+		<para>SuperCat web services are based on the OpenSRF service, <systemitem class="service">>open-ils.supercat</systemitem>.</para> 
+		<para>Developers are able to add new formats by adding the <emphasis>xsl</emphasis> stylesheet for the format. By default, the location of the stylesheets is <filename class="directory">/openils/var/xsl/</filename>. You must also add the feed  to the perl 
+		modules <filename>openils/lib/perl5/OpenILS/WWW/SuperCat/feed.pm</filename> and <filename>openils/lib/perl5/OpenILS/WWW/SuperCat.pm</filename>. An Evergreen restart is 
+		required for the feed to be activated.</para>
+		<tip><para>Use an existing xsl stylesheet and Perl module entry as a template for your new format.</para></tip>
+	</section>
+	<section xml:id="editingsupercatformats">
+		<title>Customizing SuperCat Formats</title>
+		<indexterm><primary>SuperCat</primary><secondary>formats</secondary><tertiary>customizing</tertiary></indexterm>	
+		<para>Editing SuperCat formats requires experience editing XSL files and familiarity with XML..</para>	
+		<para>It is possible to customize existing supercat formats using XSL stylesheets. You are able to change the content to be displayed and the design of the pages.</para> 
+		<para>In order to change the display of a specific format, edit the corresponding XSL file(s) for the particular format. The default location for the XSL stylesheets is 
+		<filename class="directory">/openils/var/xsl/</filename>. </para>
+	</section>
+</chapter>
+

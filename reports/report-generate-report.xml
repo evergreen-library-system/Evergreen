@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chapter xml:id="generate-report" xreflabel="Generating Reports from Templates"
+    xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="EN"
+    xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <info>
+
+        <title>Generating Reports from Templates</title>
+    </info>
+
+    <para>Now you are ready to run the report from the template you have created. </para>
+
+   
+        <procedure>
+
+            <step>
+                <informalfigure>
+                    <para>In the <guilabel>My Folders</guilabel> section click the arrow next to
+                            <guimenu>Templates </guimenu>to expand this folder and select
+                            <guimenuitem>circulation</guimenuitem>.</para>
+
+                    <para><mediaobject>
+                        <imageobject>
+                            <imagedata scalefit="0" fileref="../media/generate-report-1.png"/>
+                        </imageobject>
+
+                    </mediaobject></para>
+                </informalfigure>
+            </step>
+
+            <step>
+                <informalfigure><para>Select the box beside <guilabel>Circulations by month for one
+                        library</guilabel>. Select <guimenuitem>Create a new report from selected
+                        template </guimenuitem>from the dropdown menu. Click
+                        <guibutton>Submit</guibutton>. </para>
+
+
+
+               <para> <mediaobject>
+                    <imageobject>
+                        <imagedata scalefit="0" fileref="../media/generate-report-2.png"/>
+                    </imageobject>
+
+                </mediaobject></para></informalfigure>
+            </step>
+            <step>
+                <informalfigure>
+                    <para>Complete the first part of report settings. Only <guilabel>Report
+                        Name</guilabel> <inlinemediaobject>
+                            <imageobject>
+                                <imagedata scalefit="0" fileref="../../media/1.png"/>
+                            </imageobject>
+                        </inlinemediaobject> and <guilabel>Choose a folder...</guilabel> <inlinemediaobject>
+                            <imageobject>
+                                <imagedata scalefit="0" fileref="../../media/6.png"/>
+                            </imageobject>
+                        </inlinemediaobject> are required
+                        fields.</para>
+
+                    <para><mediaobject>
+                        <imageobject>
+                            <imagedata scalefit="0" fileref="../media/generate-report-3.png"/>
+                        </imageobject>
+                    </mediaobject></para>
+                </informalfigure>
+
+                <para>
+                    <inlinemediaobject>
+                        <imageobject>
+                            <imagedata scalefit="0" fileref="../../media/1.png"/>
+                        </imageobject>
+                    </inlinemediaobject>
+                    <guilabel>Template Name, Template Creator</guilabel>, and <guilabel>Template
+                        Description</guilabel> are for informational purposes only. They are hard
+                    coded when the template is created. At the report definition stage it is not
+                    possible to change them.</para>
+
+
+                <para>
+                    <inlinemediaobject>
+                        <imageobject>
+                            <imagedata scalefit="0" fileref="../../media/2.png"/>
+                        </imageobject>
+                    </inlinemediaobject>
+                    <guilabel>Report Name</guilabel> is required. Reports stored in the same folder
+                    must have unique names.</para>
+
+
+                <para>
+                    <inlinemediaobject>
+                        <imageobject>
+                            <imagedata scalefit="0" fileref="../../media/3.png"/>
+                        </imageobject>
+                    </inlinemediaobject>
+                    <guilabel>Report Description</guilabel> is optional but may help distinguish
+                    among similar reports. </para>
+
+                <para>
+                    <inlinemediaobject>
+                        <imageobject>
+                            <imagedata scalefit="0" fileref="../../media/4.png"/>
+                        </imageobject>
+                    </inlinemediaobject>
+                    <guilabel>Report Columns</guilabel> lists the columns that will appear in the
+                    output. This is derived from the template and cannot be changed during report
+                    definition.</para>
+
+                <para>
+                    <inlinemediaobject>
+                        <imageobject>
+                            <imagedata scalefit="0" fileref="../../media/5.png"/>
+                        </imageobject>
+                    </inlinemediaobject>
+                    <guilabel>Pivot Label Column</guilabel> and <guilabel>Pivot Data
+                        Column</guilabel> are optional. Pivot tables are a different way to view
+                    data. If you currently use pivot tables in <application>MS Excel</application>
+                    it is better to select an <application>Excel</application> output and continue
+                    using pivot tables in <application> Excel</application>.</para>
+
+                <para>
+                    <inlinemediaobject>
+                        <imageobject>
+                            <imagedata scalefit="0" fileref="../../media/6.png"/>
+                        </imageobject>
+                    </inlinemediaobject> You must choose a report folder to store this report
+                    definition. Only report folders under <guilabel>My Folders</guilabel> are
+                    available. Click on the desired folder to select it.</para>
+
+            </step>
+           
+
+            <step>
+                <informalfigure>
+                    <para>Select values for the <guilabel>Circulation > Check Out
+                            Date/Time</guilabel>. Use the calendar widget or manually enter the
+                        desired dates, then click <guibutton>Add</guibutton> to include the date on
+                        the list. You may add multiple dates.</para>
+                    <para>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata scalefit="0" fileref="../media/generate-report-8.png"/>
+
+                            </imageobject>
+                        </mediaobject>
+                    </para>
+                </informalfigure>
+                <para>The <guilabel>Transform</guilabel> for this field is <guilabel>Year +
+                        Month</guilabel>, so even if you choose a specific date (2009-10-20) it will
+                    appear as the corresponding month only (2009-10).</para>
+
+                <para>It is possible to select <emphasis role="bold">relative dates</emphasis>. If
+                    you select a relative date <emphasis>1 month ago</emphasis> you can schedule
+                    reports to automatically run each month. If you want to run monthly reports that
+                    also show comparative data from one year ago, select a relative date <emphasis>1
+                        month ago</emphasis>, and <emphasis>13 months ago</emphasis>. </para>
+
+            </step>
+
+
+
+            <step>
+                    <para>Select a value for the <guilabel>Circulating Library</guilabel>.</para>
+		</step>
+
+            <step>
+                <informalfigure>
+                    <para>Complete the bottom portion of the report definition interface, then click
+                            <guibutton>Save</guibutton>.</para>
+
+                    <para>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata scalefit="0" fileref="../media/generate-report-10.png"/>
+                            </imageobject>
+                        </mediaobject>
+                    </para>
+                </informalfigure>
+
+                <para>
+                    <inlinemediaobject>
+                        <imageobject>
+                            <imagedata scalefit="0" fileref="../../media/1.png"/>
+                        </imageobject>
+                    </inlinemediaobject> Select one or more output formats. In this example the
+                    report output will be available as an <application>Excel</application>
+                    spreadsheet, an HTML table (for display in the staff client or browser), and as
+                    a bar chart.</para>
+
+
+                <para>
+                    <inlinemediaobject>
+                        <imageobject>
+                            <imagedata scalefit="0" fileref="../../media/2.png"/>
+                        </imageobject>
+                    </inlinemediaobject> If you want the report to be recurring, check the box and
+                    select the <guilabel>Recurrence Interval</guilabel> as described in <link
+                        linkend="recurring-report">Recurring Reports</link>.  In this
+                    example, as this is a report that will only be run once, the <guilabel>Recurring
+                        Report</guilabel> box is not checked. </para>
+
+
+                <para>
+                    <inlinemediaobject>
+                        <imageobject>
+                            <imagedata scalefit="0" fileref="../../media/3.png"/>
+                        </imageobject>
+                    </inlinemediaobject> Select <guilabel>Run as soon as possible</guilabel> for
+                    immediate output. It is also possible to set up reports that run automatically
+                    at future intervals. </para>
+
+                <para>
+                    <inlinemediaobject>
+                        <imageobject>
+                            <imagedata scalefit="0" fileref="../../media/4.png"/>
+                        </imageobject>
+                    </inlinemediaobject> It is optional to fill out an email address where a
+                    completion notice can be sent. The email will contain a link to
+                    password-protected report output (staff login required). If you have an email
+                    address in your Local System Administrator account it will automatically appear
+                    in the email notification box.  However, you can enter a different email address
+                    or multiple addresses separated by commas.</para>
+
+                <para>
+                    <inlinemediaobject>
+                        <imageobject>
+                            <imagedata scalefit="0" fileref="../../media/5.png"/>
+                        </imageobject>
+                    </inlinemediaobject> Select a folder for the report's output.</para>
+
+            </step>
+
+
+
+
+
+
+            <step>
+                <informalfigure>
+                    <para>You will get a confirmation dialogue box that the <guilabel>Action
+                            Succeeded</guilabel>. Click <guibutton>OK</guibutton>. </para>
+
+                    <para>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata scalefit="0" fileref="../media/generate-report-14.png"/>
+                            </imageobject>
+
+                        </mediaobject>
+                    </para>
+                </informalfigure>
+            </step>
+        </procedure>
+
+        <para>Once saved, reports stay there forever unless you delete them.</para>
+
+
+  
+
+
+   
+
+
+
+
+
+</chapter>

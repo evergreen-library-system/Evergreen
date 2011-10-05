@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude"
+	    xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="customizingstaffclient">
+	<title>Customizing the Staff Client</title>
+	<indexterm><primary>staff client</primary><secondary>customizing</secondary></indexterm>
+	<para>This chapter will give you some guidance on customizing the staff client.</para>  
+	<para>The  files related to the staff client are located in the directory <filename class="directory">/openils/var/web/xul/[staff client version]/server/</filename></para>  
+     	 <section xml:id="staffclient_Changingcolors">
+		 <title>Changing Colors and Images</title>
+		<para>To change or adjust the image  on the main screen edit <filename>/openils/var/web/xul/index.xhtml</filename>. By default, the image on this page is 
+		<filename>main_logo.jpg</filename> which is the same main logo used in the OPAC.</para>
+		 <para>To adjust colors on various staff client pages edit the corresponding cascading style sheets located in 
+		<filename class="directory">/openils/var/web/xul/[staff client version]/server/skin/</filename>. Other display aspects can also be adjusted using these cascading style sheets.</para>	
+      	</section>
+	<section xml:id="staffclient_Changinglabels">
+		 <title>Changing Labels and Messages</title>
+		<indexterm><primary>staff client</primary><secondary>customizing</secondary><tertiary>labels and messages</tertiary></indexterm>
+		 <para>You can customize labels in the staff client by editing the corresponding DTD files. The staff client uses the same <filename>lang.dtd</filename> used by the OPAC. This file is located in <filename class="directory">/openils/var/web/opac/locale/[<emphasis>your locale</emphasis>]</filename>. Other labels are controlled by the staff client specific <filename>lang.dtd</filename> file in <filename class="directory">/openils/var/web/xul/<emphasis>client version</emphasis>]/server/locale/[<emphasis>your locale</emphasis>]/</filename>.</para>
+	</section>
+	 <section xml:id="staffclient_searchskin">
+		 <title>Changing the Search Skin</title>
+		<para>There are a few ways to change the custom skin for OPAC searching in staff client.</para>		
+		<simplesect>
+			<title>Changing the Search Skin on Server - Overriding Local Settings</title> 
+			<para>To change the opac search skins used by the staff client create a file named <filename>custom.js</filename> and place it in the 
+			<filename class="directory">/openils/var/web/xul/[staff client version]/server/skin/</filename> directory. This will effect all staff clients since these settings will 
+			override local settings.</para> 
+			<para>For example, the following text in <filename>custom.js</filename> would set the staff client opac, details page, results page and browse function to the craftsman 
+			skin:</para> 
+<programlisting language="JavaScript">
+urls['opac'] = '/opac/' + LOCALE + '/skin/craftsman/xml/advanced.xml?nps=1';
+urls['opac_rdetail'] = '/opac/' + LOCALE + '/skin/craftsman/xml/rdetail.xml';
+urls['opac_rresult'] = '/opac/' + LOCALE + '/skin/craftsman/xml/rresult.xml';
+urls['browser'] = '/opac/' + LOCALE + '/skin/craftsman/xml/advanced.xml?nps=1';
+</programlisting>
+			<para>Restart the staff client to see the changes.</para> 
+		</simplesect>
+		<simplesect>
+			<title>Changing the Search Skin on an individual Machine</title> 
+			<para>To change the search skin on an individual machine for personal preferences or needs, edit the file 
+			<filename>/[Evergreen staff client path]/build/chrome/content/main/constants.js</filename>.</para> 
+			<para>Find the lines which point to the urls for the OPAC and edit accordingly. For example, here is an example to set the opac, details page, results page and browse 
+			function to the craftsman skin:</para> 
+<programlisting language="JavaScript">
+ 'opac' : '/opac/' + LOCALE + '/skin/craftsman/xml/advanced.xml?nps=1',
+'opac_rdetail' : '/opac/' + LOCALE + '/skin/craftsman/xml/rdetail.xml',
+'opac_rresult' : '/opac/' + LOCALE + '/skin/craftsman/xml/rresult.xml',
+...
+'browser' : '/opac/' + LOCALE + '/skin/craftsman/xml/advanced.xml?nps=1',
+</programlisting>
+			<para>After editing this file, save it and restart the staff client for the changes to take effect.</para> 
+		</simplesect>
+      	</section>
+</chapter>

@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chapter xml:id="usingstaffclient" xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="EN"
+   xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+   <info>
+
+      <title>Using the Staff Client</title>
+
+   </info>
+
+   <section>
+      <info>
+         <title>Logging in to Evergreen</title><indexterm><primary>staff client</primary><secondary>logging into</secondary></indexterm>
+      </info>
+
+      <para>To log in you must first install the Evergreen Staff Client, available for download from
+         the Evergreen site at <link
+            xlink:href="http://downloads.open-ils.org/"
+            >http://downloads.open-ils.org/</link>.</para>
+
+      <para>Each staff member can have their own username and password, or generic logins can be
+         used.</para>
+      <para>
+
+
+
+         <mediaobject xml:id="staffclient-login">
+            <alt>screenshot of staff client login</alt>
+            <imageobject>
+               <imagedata scalefit="0" fileref="../media/staffclient-1.png"/>
+            </imageobject>
+
+         </mediaobject>
+      </para>
+
+
+
+
+      <para>
+         <inlinemediaobject>
+            <imageobject>
+               <imagedata scalefit="0" fileref="../media/1.png"/>
+            </imageobject>
+         </inlinemediaobject> Enter <guilabel>Username</guilabel> and <guilabel>Password</guilabel>
+         for your staff account, then click <guibutton>Login</guibutton>. Under normal circumstances
+         this is all that is required to login. </para>
+
+
+      <para>
+         <inlinemediaobject>
+            <imageobject>
+               <imagedata scalefit="0" fileref="../media/2.png"/>
+            </imageobject>
+         </inlinemediaobject> If the staff client can connect to Evergreen both
+            <guilabel>Status</guilabel> and <guilabel>Version</guilabel> display a green
+            <emphasis>200:OK</emphasis> message. If not, ensure the hostname is
+            correctly entered and click <guibutton>Re-Test
+            Server</guibutton>. If the error message persists make sure your are connected to the
+         internet.</para>
+
+
+      <para>
+         <inlinemediaobject>
+            <imageobject>
+               <imagedata scalefit="0" fileref="../media/3.png"/>
+            </imageobject>
+         </inlinemediaobject>
+         <guilabel>Locale</guilabel> sets the language preferences for the staff client.</para>
+
+      <para>
+         <inlinemediaobject>
+            <imageobject>
+               <imagedata  scalefit="0" fileref="../media/4.png"/>
+            </imageobject>
+         </inlinemediaobject>
+         <guilabel>Workstation</guilabel> identifies your physical computer location. Workstation registration is done by a Local System
+         Administrator when staff clients are first installed. </para>
+
+      <para>
+         <inlinemediaobject>
+            <imageobject>
+               <imagedata scalefit="0" fileref="../media/5.png"/>
+            </imageobject>
+         </inlinemediaobject> If your connection to Evergreen is lost during open hours, click
+            <guibutton>Standalone Interface</guibutton> to continue with check out and patron
+         registration functions until the connection is restored. </para>
+
+      <para>
+         <inlinemediaobject>
+            <imageobject>
+               <imagedata scalefit="0" fileref="../media/6.png"/>
+            </imageobject>
+         </inlinemediaobject>
+         <guilabel>Debug Options</guilabel> are for advanced troubleshooting and can be ignored in
+         normal use. </para>
+
+      <para>
+         <inlinemediaobject>
+            <imageobject>
+               <imagedata scalefit="0" fileref="../media/7.png"/>
+            </imageobject>
+         </inlinemediaobject> Click <guibutton>Clear Cache</guibutton> to remove the staff client's
+         locally cached files. This may be required to see recent changes to administrative settings.</para>
+
+
+
+
+   </section>
+   <section xml:id="staffclient-navigating" >
+      <info>
+         <title>Navigation</title><indexterm><primary>staff client</primary><secondary>navigating</secondary></indexterm>
+      </info>
+
+      <simplesect>
+         <info>
+            <title>Tabs</title>
+         </info>
+         <para><application>Evergreen</application> uses tabs to display functions. Tabs allow all
+            software functionality to be open in one window. You can have up to 9 tabs open at once
+            and you can have more than one tab of a single function open at the same time. You
+            simply move through the tabs to perform your work.</para>
+
+         <itemizedlist>
+            <title>Keyboard shortcuts for working with tabs:</title>
+            <listitem>
+               <para><keycombo>
+                     <keycap>Ctrl</keycap>
+                     <keycap>T</keycap>
+                  </keycombo> new tab</para>
+            </listitem>
+            <listitem>
+               <para><keycombo>
+                     <keycap>Ctrl</keycap>
+                     <keycap>W</keycap>
+                  </keycombo>   close tab</para>
+            </listitem>
+            <listitem>
+               <para><keycombo>
+                     <keycap>Ctrl</keycap>
+                     <keycap>Shift</keycap>
+                     <keycap>W</keycap>
+                  </keycombo>   close all tabs</para>
+            </listitem>
+            <listitem>
+               <para><keycombo>
+                     <keycap>Ctrl</keycap>
+                     <keycap>Tab</keycap>
+                  </keycombo>   tabs forward through open tabs</para>
+            </listitem>
+            <listitem>
+               <para><keycombo>
+                     <keycap>Ctrl</keycap>
+                     <keycap>Shift</keycap>
+                     <keycap>Tab</keycap>
+                  </keycombo>   tabs backward through open tabs</para>
+            </listitem>
+         </itemizedlist>
+         <informalfigure>
+            <para>In the example below, the <guilabel>MARC Template</guilabel> tab is active. Click
+               on any open tab to bring that screen to the front. You can also use <keycombo>
+                  <keycap>Ctrl</keycap>
+                  <keycap>Tab</keycap>
+               </keycombo> to move to the required tab</para>
+
+            <para><mediaobject>
+               <alt>staff client tabs</alt>
+               <imageobject>
+                  <imagedata scalefit="0" fileref="../media/staffclient-2.png"/>
+               </imageobject>
+            </mediaobject></para>
+         </informalfigure>
+         <informalfigure>
+            <para>Now the <guilabel>Check Out</guilabel> tab is the active screen.</para>
+            <para><mediaobject>
+               <alt>staff client tabs</alt>
+               <imageobject>
+                  <imagedata scalefit="0" fileref="../media/staffclient-3.png"/>
+               </imageobject>
+            </mediaobject></para>
+         </informalfigure>
+         <para>Once you are in the selected tab, you can use the drop down menus or keyboard
+            shortcuts to perform required functions. Menu functions and corresponding keyboard
+            shortcuts will be demonstrated throughout this manual.</para>
+      </simplesect>
+      <simplesect>
+         <info>
+            <title>Keyboard Shortcuts</title><indexterm><primary>staff client</primary><secondary>keyboard shortcuts</secondary></indexterm>
+         </info>
+         <para>Most menu items have keyboard shorcuts that can greatly increase efficiency. Below is
+            a selected list of commonly used shortcut keys:</para>
+         <informaltable>
+            <?dbfo keep-together="always" ?>
+            <tgroup cols="2" align="left" colsep="1" rowsep="1">
+               <colspec colnum="1" colname="key" colwidth="1.0*"/>
+               <colspec colnum="2" colname="function" colwidth="3.0*"/>
+               <thead>
+                  <row>
+                     <entry>Key</entry>
+                     <entry>Function</entry>
+                  </row>
+               </thead>
+               <tbody>
+                  <row>
+                     <entry>
+                        <keycap>F1</keycap>
+                     </entry>
+                     <entry>Checkout, or retrieve patron record by barcode</entry>
+                  </row>
+                  <row>
+                     <entry>
+                        <keycap>F2</keycap>
+                     </entry>
+                     <entry>Checkin</entry>
+                  </row>
+                  <row>
+                     <entry>
+                        <keycap>F3</keycap>
+                     </entry>
+                     <entry>Catalogue search</entry>
+                  </row>
+
+                  <row>
+                     <entry>
+                        <keycap>F4</keycap>
+                     </entry>
+                     <entry>Patron search</entry>
+                  </row>
+
+                  <row>
+                     <entry>
+                        <keycap>F5</keycap>
+                     </entry>
+                     <entry>Retrieve copy by barcode</entry>
+                  </row>
+
+                  <row>
+                     <entry>
+                        <keycap>F6</keycap>
+                     </entry>
+                     <entry>Record in house use</entry>
+                  </row>
+
+                  <row>
+                     <entry>
+                        <keycap>F8</keycap>
+                     </entry>
+                     <entry>Retreive last patron</entry>
+                  </row>
+
+                  <row>
+                     <entry>
+                        <keycap>F9</keycap>
+                     </entry>
+                     <entry>Re-print the last receipt</entry>
+                  </row>
+
+                  <row>
+                     <entry>
+                        <keycombo>
+                           <keycap>Shift</keycap>
+                           <keycap>F1</keycap>
+                        </keycombo>
+                     </entry>
+                     <entry>Register new patron</entry>
+                  </row>
+
+                  <row>
+                     <entry>
+                        <keycombo>
+                           <keycap>Shift</keycap>
+                           <keycap>F2</keycap>
+                        </keycombo>
+                     </entry>
+                     <entry>Capture holds</entry>
+                  </row>
+
+                  <row>
+                     <entry>
+                        <keycombo>
+                           <keycap>Shift</keycap>
+                           <keycap>F3</keycap>
+                        </keycombo>
+                     </entry>
+                     <entry>Retrieve record by TCN</entry>
+                  </row>
+
+                  <row>
+                     <entry>
+                        <keycombo>
+                           <keycap>Shift</keycap>
+                           <keycap>F8</keycap>
+                        </keycombo>
+                     </entry>
+                     <entry>Retreive last patron</entry>
+                  </row>
+
+                  <row>
+                     <entry>
+                        <keycombo>
+                           <keycap>Ctrl</keycap>
+                           <keycap>T</keycap>
+                        </keycombo>
+                     </entry>
+                     <entry>Open new tab</entry>
+                  </row>
+
+                  <row>
+                     <entry>
+                        <keycombo>
+                           <keycap>Ctrl</keycap>
+                           <keycap>W</keycap>
+                        </keycombo>
+                     </entry>
+                     <entry>Close current tab</entry>
+                  </row>
+
+                  <row>
+                     <entry>
+                        <keycombo>
+                           <keycap>Ctrl</keycap>
+                           <keycap>Tab</keycap>
+                        </keycombo>
+                     </entry>
+                     <entry>Move forward through tabs</entry>
+                  </row>
+
+                  <row>
+                     <entry>
+                        <keycombo>
+                           <keycap>Ctrl</keycap>
+                           <keycap>Shift</keycap>
+                           <keycap>Tab</keycap>
+                        </keycombo>
+                     </entry>
+                     <entry>Move back through tabs</entry>
+                  </row>
+                  <row>
+                     <entry>
+                        <keycombo>
+                           <keycap>Ctrl</keycap>
+                           <keycap>C</keycap>
+                        </keycombo>
+                     </entry>
+                     <entry>Copy</entry>
+                  </row>
+
+                  <row>
+                     <entry>
+                        <keycombo>
+                           <keycap>Ctrl</keycap>
+                           <keycap>V</keycap>
+                        </keycombo>
+                     </entry>
+                     <entry>Paste</entry>
+                  </row>
+               </tbody>
+            </tgroup>
+         </informaltable>
+      </simplesect>
+      <simplesect>
+         <info>
+            <title>Copy/Paste</title><indexterm><primary>staff client</primary><secondary>copy/paste</secondary></indexterm>
+         </info>
+
+         <para>There are several methods of copying and pasting text in Evergreen, depending on
+            where you are in the staff client and the type of information you are copying</para>
+         <orderedlist>
+            <listitem>
+               <informalfigure>
+                  <formalpara>
+                     <title>Underlined blue text</title>
+                     <para>Clicking on any of the blue links in the
+                           <application>Evergreen</application> client copies the data to the
+                        computer clipboard (left and right click work the same way for these links).
+                        To paste into another location, use <keycombo>
+                           <keycap>Ctrl</keycap>
+                           <keycap>V</keycap>
+                        </keycombo>.</para>
+                  </formalpara>
+                  <para>
+                     <mediaobject>
+                        <alt>copy/paste methods</alt>
+                        <imageobject>
+                           <imagedata scalefit="0" fileref="../media/staffclient-5.png"/>
+                        </imageobject>
+
+                     </mediaobject>
+                     <mediaobject>
+                        <alt>copy/paste methods </alt>
+                        <imageobject>
+                           <imagedata scalefit="0" fileref="../media/staffclient-6.png"/>
+                        </imageobject>
+                     </mediaobject>
+                  </para>
+               </informalfigure>
+            </listitem>
+
+            <listitem>
+               <informalfigure>
+                  <formalpara>
+                     <title>Text displayed in tables</title>
+                     <para>To copy information from a staff client table, first select the desired
+                        row then right-click and choose <guimenuitem>Copy to
+                        Clipboard</guimenuitem>; alternatively select <menuchoice>
+                           <guimenu>Actions for Selected Items</guimenu>
+                           <guimenuitem>Copy to Clipboard</guimenuitem>
+                        </menuchoice>.</para>
+
+                  </formalpara>
+
+                 <para> <mediaobject>
+                     <alt>copy/paste methods</alt>
+                     <imageobject>
+                        <imagedata scalefit="0" fileref="../media/staffclient-6a.png"/>
+                     </imageobject>
+
+                  </mediaobject></para>
+
+               </informalfigure>
+
+               <mediaobject>
+                  <alt>copy/paste methods</alt>
+                  <imageobject>
+                     <imagedata scalefit="0" fileref="../media/staffclient-6b.png"/>
+                  </imageobject>
+
+               </mediaobject>
+
+               <informalfigure>
+                  <para>Next click the desired information in the popup to copy it to the
+                     clipboard</para>
+                  <para>
+                     <mediaobject>
+                        <alt>copy/paste methods</alt>
+                        <imageobject>
+                           <imagedata scalefit="0" fileref="../media/staffclient-6c.png"/>
+                        </imageobject>
+
+                     </mediaobject>
+                  </para>
+               </informalfigure>
+            </listitem>
+
+            <listitem>
+               <informalfigure>
+                  <formalpara>
+                     <title>Text from catalogue search results</title>
+                     <para>There is no right-click menu for copying data from staff client search
+                        results. To copy the ISBN in the example below, highlight it and click <keycombo>
+                           <keycap>Ctrl</keycap>
+                           <keycap>C</keycap>
+                        </keycombo>. To paste into another location use <keycombo>
+                           <keycap>Ctrl</keycap>
+                           <keycap>V</keycap>
+                        </keycombo>.</para>
+                  </formalpara>
+                  <para><mediaobject>
+                     <alt>copy/paste methods</alt>
+                     <imageobject>
+                        <imagedata scalefit="0" fileref="../media/staffclient-6d.png"/>
+                     </imageobject>
+
+                  </mediaobject></para>
+               </informalfigure>
+
+            </listitem>
+         </orderedlist>
+      </simplesect>
+   </section>
+   <section xml:id="staffclient-customizing">
+      <info>
+         <title>Customizing the Staff Client</title><indexterm><primary>staff client</primary><secondary>customizing</secondary></indexterm>
+      </info>
+      <simplesect>
+         <info>
+            <title>Column Picker</title>
+         </info>
+         <informalfigure>
+            <para>From many screens and lists, you can click on the <emphasis>column
+                  picker</emphasis> icon to change which columns are displayed. </para>
+            <para>
+               <mediaobject>
+                  <alt>screenshot of staff client column picker</alt>
+                  <imageobject>
+                     <imagedata width="100%" scalefit="1" fileref="../media/staffclient-4.png"/>
+
+                  </imageobject>
+               </mediaobject>
+            </para>
+         </informalfigure>
+
+         <para>When data is displayed in columns, you can click and drag them, add new ones, or
+            remove them. You can also sort data in a column by clicking on the column header. After
+            customizing the display you may save your changes for future sessions under that login
+            by right-clicking anywhere in the display area and choosing <guimenuitem>Save
+               Columns</guimenuitem> from the drop-down menu. Some libraries use generic accounts
+            and for those who do, staff need to be aware of the implications to other staff members
+            of any changes made to the display.</para>
+      </simplesect>
+
+      <simplesect xml:id="button-bar">
+         <info>
+            <title>Button Bar</title>
+         </info>
+
+
+         <informalfigure>
+            <para>There is an optional toolbar with buttons providing quick access to common staff
+               client functions. When activated the toolbar appears below the menus. </para>
+            <para>
+               <mediaobject>
+                  <alt>staff client button bar</alt>
+                  <imageobject>
+                     <imagedata scalefit="0" fileref="../media/staffclient-9.png"/>
+
+                  </imageobject>
+               </mediaobject>
+            </para>
+         </informalfigure>
+
+         <informalfigure>
+            <para>To turn the buttons on or off select <menuchoice>
+                  <guimenu>Admin (-)</guimenu>
+                  <guimenuitem>Toggle Button Bar</guimenuitem>
+               </menuchoice>. The buttons can be activated by default for a particular library (see
+                  <link linkend="lsa-library-settings">Library Settings</link> for
+               details).</para>
+
+            <para>
+               <mediaobject>
+                  <alt>staff client button bar</alt>
+                  <imageobject>
+                     <imagedata scalefit="0" fileref="../media/staffclient-8.png"/>
+
+                  </imageobject>
+               </mediaobject>
+            </para>
+         </informalfigure>
+
+
+      </simplesect>
+
+      <simplesect>
+         <info>
+            <title>Check-boxes</title>
+         </info>
+
+         <informalfigure>
+            <para>Most staff client check-boxes are "sticky" -- if you select or deselect them, that
+               status persists. For example, <guilabel>Auto-print</guilabel>, which will print the
+               relevant receipts automatically in certain functions, is sticky. If you select it on
+               one login, it will persist for future logins until you uncheck the box.</para>
+
+
+            <para><mediaobject>
+               <alt>staff client tabs</alt>
+               <imageobject>
+                  <imagedata scalefit="0" fileref="../media/staffclient-7.png"/>
+               </imageobject>
+            </mediaobject></para>
+
+         </informalfigure>
+
+         <informalfigure>
+            <para><guilabel>Fast Item Add</guilabel> is another "sticky" check box that makes it
+               possible to add volume and item records from the MARC editor.</para>
+
+
+           <para> <mediaobject>
+               <alt>staff client tabs</alt>
+               <imageobject>
+                  <imagedata width="100%" scalefit="1" fileref="../media/staffclient-7a.png"/>
+               </imageobject>
+            </mediaobject></para>
+
+         </informalfigure>
+
+      </simplesect>
+
+      <simplesect>
+         <title>Font and Sound</title>
+         <para>You may change the size of displayed text or turn staff client sounds on and off.
+            These settings are specific to each physical workstation, not the login account. See
+               <xref linkend="lsa-font"/> for details.</para>
+      </simplesect>
+
+   </section>
+
+
+
+
+</chapter>

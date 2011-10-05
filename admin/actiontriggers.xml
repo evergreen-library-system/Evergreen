@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chapter xml:id="actiontriggers" xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="EN"
+    xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <info>
+        <title>Action Triggers</title>
+	<indexterm><primary>action triggers</primary></indexterm>    
+	</info>
+	<para>Action Triggers were introduced to Evergreen in 1.6. They allow administrators the ability to set up actions for specific events. They are useful for notification events such as 
+	hold notifications.</para>
+	
+			
+	<para>To access the Action Triggers module, select
+		<menuchoice>
+			<guimenu>Admin</guimenu>  
+			<guisubmenu>Local Administration</guisubmenu>
+  			<guisubmenu>Notifications / Action triggers</guisubmenu>
+		</menuchoice>
+	</para>
+	<note><para>You must have Local Administrator permissions to access the Action Triggers module.</para></note>
+	<para>You will notice four tabs on this page: <guilabel><link linkend="eventdefinitions">Event Definitions</link></guilabel>, <guilabel><link linkend="Hooks">Hooks</link></guilabel>, 
+	<guilabel><link linkend="Reactors">Reactors</link></guilabel> and <guilabel><link linkend="Validators">Validators</link></guilabel>.</para>
+		
+	<section xml:id="eventdefinitions">
+		<title>Event Definitions</title>
+		<indexterm><primary>action triggers</primary><secondary>event definitions</secondary></indexterm>   
+		<para><guilabel>Event Definitions</guilabel> is the main tab and contains the key fields when working with action triggers. These fields include:</para>
+			<table xml:id="eventdefinitionstable">
+				<title>Action Trigger Event Definitions</title>
+				<tgroup cols="2">
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="3.0*"/>
+					<thead>
+						<row>
+							<entry>Field</entry>
+							<entry>Description</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry><guilabel>Owning library</guilabel></entry>
+							<entry>The shortname of the library for which the action / trigger / hook is defined.</entry>
+						</row>
+						<row>
+							<entry><guilabel>Name</guilabel></entry>
+							<entry>The name of the trigger event, that links to a trigger event environment containing a set of fields  
+							that will be returned to the <link linkend="Validators">Validators</link> / <link linkend="Reactors">Reactors</link> for processing.</entry>
+						</row>
+						<row>
+							<entry><guilabel><link linkend="Hooks">Hooks</link></guilabel></entry>
+							<entry>The name of the trigger for the trigger event. The underlying action_trigger.hook table defines the Fieldmapper 
+							class in the core_type column off of which the rest of the field definitions <quote>hang</quote>. </entry>
+						</row>
+						<row>
+							<entry><guilabel>Enabled</guilabel></entry>
+							<entry>Sets the given trigger as enabled or disabled. This must be set to enabled for the Action trigger to run.</entry>
+						</row>
+						<row>
+							<entry><guilabel>Processing Delay</guilabel></entry>
+							<entry>Defines how long after a given trigger / hook event has occurred before the associated action (<quote>Reactor</quote>) 
+							will be taken.</entry>
+						</row>
+						<row>
+							<entry><guilabel>Processing Delay Field</guilabel></entry>
+							<entry>Defines the field associated with the event on which the processing delay is calculated. For example, the processing delay 
+							context field on the hold.capture hook (which has a core_type of ahr) is <emphasis>capture_time</emphasis>.</entry>
+						</row>
+						<row>
+							<entry><guilabel>Processing Group Context Field</guilabel></entry>
+							<entry>Used to batch actions based on its associated group.</entry>
+						</row>
+						<row>
+							<entry><guilabel><link linkend="Validators">Validators</link></guilabel></entry>
+							<entry>The subroutines receive the trigger environment as an argument (see the linked <emphasis>Name</emphasis> for 
+							the environment definition) and returns either <emphasis>1</emphasis> if the validator is <emphasis>true</emphasis> or <emphasis>0</emphasis> 
+							if the validator returns <emphasis>false</emphasis>.</entry>
+						</row>
+						<row>
+							<entry><guilabel><link linkend="Reactors">Reactors</link></guilabel></entry>
+							<entry>Links the action trigger to the Reactor.</entry>
+						</row>
+						<row>
+							<entry><guilabel>Max Event Validity Delay</guilabel></entry>
+							<entry>Define the threshold for how far back the action_trigger_runner.pl script should reach to generate 
+							a batch of events.</entry>
+						</row>
+					</tbody>	
+				</tgroup>
+			</table>
+		
+		<procedure>
+		<title>Creating Action Triggers</title>
+		<indexterm><primary>action triggers</primary><secondary>creating</secondary></indexterm>  
+			<step>
+				<para>From the top menu, select
+					<menuchoice>
+						<guimenu>Admin</guimenu>  
+						<guisubmenu>Local Administration</guisubmenu>
+			  			<guisubmenu>Notifications / Action triggers</guisubmenu>
+					</menuchoice>
+				</para>
+			</step>
+			<step><para>Click on the <guibutton>New</guibutton> button.</para></step>
+			<step><para>Select an <guilabel>Owning Library</guilabel>.</para></step>
+			<step><para>Create a unique <guilabel>Name</guilabel> for your new action trigger.</para></step>				
+			<step><para>Select the <guilabel>Hook</guilabel>.</para></step>
+			<step><para>Check the <guilabel>Enabled</guilabel> check box.</para></step>
+		
+			<step><para>Create a unique <guilabel>Name</guilabel> for your new action trigger.</para></step>
+			<step><para>Set the <guilabel>Processing Delay</guilabel> in the appropriate format. Eg. <emphasis class="bold">7 days</emphasis> to run 7 days from the trigger event 
+			or <emphasis class="bold">00:01:00</emphasis> to run 1 hour after the <guilabel>Processing Delay Context Field</guilabel>.</para></step>
+			<step><para>Set the <guilabel>Processing Delay Context Field</guilabel> and <guilabel>Processing Group Context Field</guilabel>.</para></step>	
+			<step><para>Select the <guilabel>Validator</guilabel>, <guilabel>Reactor</guilabel>, <guilabel>Failure Cleanup</guilabel> and <guilabel>Success Cleanup</guilabel>.
+			</para></step>	
+			<step><para>Set the <guilabel>Processing Delay Context Field</guilabel> and <guilabel>Processing Group Context Field</guilabel>.</para></step>	
+			<step preformance="optional"><para>Enter text in the <guilabel>Template</guilabel> text box if required. These are for email messages. Here is an sample 
+			template for sending 90 day overdue notices:</para>
+<programlisting><![CDATA[
+
+[%- USE date -%]
+[%- user = target.0.usr -%]
+To: [%- params.recipient_email || user.email %]
+From: [%- params.sender_email || default_sender %]
+Subject: Overdue Items Marked Lost
+
+Dear [% user.family_name %], [% user.first_given_name %]
+The following items are 90 days overdue and have been marked LOST.
+[%- params.recipient_email || user.email %][%- params.sender_email || default_sender %]
+[% FOR circ IN target %]
+    Title: [% circ.target_copy.call_number.record.simple_record.title %] 
+    Barcode: [% circ.target_copy.barcode %] 
+    Due: [% date.format(helpers.format_date(circ.due_date), '%Y-%m-%d') %]
+    Item Cost: [% helpers.get_copy_price(circ.target_copy) %]
+    Total Owed For Transaction: [% circ.billable_transaction.summary.total_owed %]
+    Library: [% circ.circ_lib.name %]
+[% END %]
+
+
+[% FOR circ IN target %]
+    Title: [% circ.target_copy.call_number.record.simple_record.title %] 
+    Barcode: [% circ.target_copy.barcode %] 
+    Due: [% date.format(helpers.format_date(circ.due_date), '%Y-%m-%d') %]
+    Item Cost: [% helpers.get_copy_price(circ.target_copy) %]
+    Total Owed For Transaction: [% circ.billable_transaction.summary.total_owed %]
+    Library: [% circ.circ_lib.name %]
+[% END %]
+]]>
+</programlisting>	
+			</step>	
+			<step><para>Once you are satisfied with your new event trigger , click the <guibutton>Save</guibutton> button located at the bottom of the 
+			form</para></step>
+		</procedure>
+		<tip><para>A quick and easy way to create new action triggers is to clone an existing action trigger.</para></tip>
+		<procedure>
+			<title>Cloning Existing Action Triggers</title>
+			<step>
+				<para>Check the check box next to the action trigger you wish to clone</para>
+			</step>
+			<step>
+				<para>Click the <guibutton>Clone Selected</guibutton> on the top left of the page.</para>
+			</step>
+			<step>
+				<para>An editing window with open. Notice that the fields will be populated with content from the cloned action trigger. Edit as necessary and 
+			give the new action trigger a unique <guilabel>Name</guilabel>.</para>
+			</step>
+			<step>
+				<para>Click <guilabel>Save</guilabel>.</para>
+			</step>
+		</procedure>
+		<procedure>
+			<title>Editing Action Triggers</title>
+			<step>
+				<para>Check the check box next to the action trigger you wish to delete</para>
+			</step>
+			<step>
+				<para>Click the <guibutton>Delete Selected</guibutton> on the top left of the page.</para>
+			</step>
+		</procedure>
+		
+		<note><para>Before deleting an action trigger, you should consider disabling it through the editing form. This way you can simply enable it if you decide that you would like to use 
+		the action trigger in the future.</para></note>
+		<procedure>
+			<title>Deleting Action Triggers</title>
+			<step>
+				<para>Check the check box next to the action trigger you wish to delete</para>
+			</step>
+			<step>
+				<para>Click the <guibutton>Delete Selected</guibutton> on the top left of the page.</para>
+			</step>
+		</procedure>
+	</section>
+	<section xml:id="Hooks">
+		<title>Hooks</title>
+		<indexterm><primary>action triggers</primary><secondary>hooks</secondary></indexterm>
+		<para><guilabel>Hooks</guilabel> define the Fieldmapper class in the core_type column off of which the rest of the field definitions <quote>hang</quote>.</para>
+		<table xml:id="Hookstable">
+			<title>Hooks</title>
+			<tgroup cols="2">
+				<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+				<colspec colnum="2" colname="col2" colwidth="3.0*"/>
+				<thead>
+					<row>
+						<entry>Field</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry><guilabel>Hook Key</guilabel></entry>
+						<entry>A unique name given to the hook.</entry>
+					</row>
+					<row>
+						<entry><guilabel>Core Type</guilabel></entry>
+						<entry>Used to link the action trigger to the IDL class in fm_IDL.xml</entry>
+					</row>
+					<row>
+						<entry><guilabel>Description</guilabel></entry>
+						<entry>Text to describe the purpose of the hook. </entry>
+					</row>
+					<row>
+						<entry><guilabel>Passive</guilabel></entry>
+						<entry>Indicates whether or not an event is created by direct user action or is circumstantial.</entry>
+					</row>
+				</tbody>	
+			</tgroup>
+		</table>
+		<para>You may also create, edit and delete Hooks but the <guilabel>Core Type</guilabel> must refer to an IDL class in the fm_IDL.xml file.</para>
+	</section>	
+	<section xml:id="Reactors">
+		<title>Reactors</title>
+		<indexterm><primary>action triggers</primary><secondary>reactors</secondary></indexterm>
+		<para><guilabel>Reactors</guilabel> link the trigger definition to the action to be carried out.</para>
+		<table xml:id="Reactorstable">
+			<title>Action Trigger Reactors</title>
+			<tgroup cols="2">
+				<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+				<colspec colnum="2" colname="col2" colwidth="3.0*"/>
+				<thead>
+					<row>
+						<entry>Field</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry><guilabel>Module Name</guilabel></entry>
+						<entry>The name of the Module to run if the action trigger is validated. It must be defined as a subroutine in 
+						<filename>/openils/lib/perl5/OpenILS/Application/Trigger/Reactor.pm</filename> or as a module
+						 in <filename>/openils/lib/perl5/OpenILS/Application/Trigger/Reactor/*.pm</filename>.</entry>
+					</row>
+					<row>
+						<entry><guilabel>Description</guilabel></entry>
+						<entry>Description of the Action to be carried out.</entry>
+					</row>
+				</tbody>	
+			</tgroup>
+		</table>
+		<para>You may also create, edit and delete Reactors. Just remember that their must be an associated subroutine or module in the Reactor Perl module.</para>
+	</section>	
+	<section xml:id="Validators">
+		<title>Validators</title>
+		<indexterm><primary>action triggers</primary><secondary>validators</secondary></indexterm>
+		<para><guilabel>Validators</guilabel> set the validation test to be preformed to determine whether the action trigger is executed.</para>
+		<table xml:id="Validatorstable">
+			<title>Action Trigger Validators</title>
+			
+			<tgroup cols="2">
+				<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+				<colspec colnum="2" colname="col2" colwidth="3.0*"/>
+				<thead>
+					<row>
+						<entry>Field</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry><guilabel>Module Name</guilabel></entry>
+						<entry>The name of the subroutine in 
+						<filename>/openils/lib/perl5/OpenILS/Application/Trigger/Reactor.pm</filename> to validate the action trigger.</entry>
+					</row>
+					<row>
+						<entry><guilabel>Description</guilabel></entry>
+						<entry>Description of validation test to run.</entry>
+					</row>
+				</tbody>	
+			</tgroup>
+		</table>
+		<para>You may also create, edit and delete Validators. Just remember that their must be an associated subroutine in the <filename>Reactor.pm</filename> Perl module.</para>
+	</section>	
+	<section xml:id="ProcessingActionTriggers">	
+		<title>Processing Action Triggers</title>
+		<indexterm><primary>action triggers</primary><secondary>processing</secondary></indexterm>
+		<para>To run the action triggers, an Evergreen administrator will need to run the trigger processing script <command>/openils/bin/action_trigger_runner.pl 
+		<option>--process-hooks</option> <option>--run-pending</option></command>. This should be set up as a cron job to run 
+		periodically.</para> 
+		<para>You have several options when running the script:</para>
+		<itemizedlist>
+			<listitem><option>--run-pending</option>: Run the pending events.</listitem>
+			<listitem><option>--process-hooks</option>: Create hook events</listitem>
+			<listitem><option>--osrf-config=[<varname>config_file</varname>]</option>: OpenSRF core config file.  Defaults to: 
+			<filename>/openils/conf/opensrf_core.xml</filename>.</listitem>
+			<listitem><option>--custom-filters=[<varname>filter_file</varname>]</option>: File containing a JSON Object which describes any hooks that should
+        		use a user-defined filter to find their target objects.  Defaults to: <filename>/openils/conf/action_trigger_filters.json</filename></listitem>
+			<listitem><option>--max-sleep=[<varname>seconds</varname>]</option>: When in process-hooks mode, wait up to [<varname>seconds</varname>] for the lock file to go away.  
+			Defaults to 3600 (1 hour).</listitem>
+			<listitem><option>--hooks=hook1[,hook2,hook3,...]</option>: Define which hooks to create events for.  If none are defined, it defaults to the list of hooks defined 
+			in the <option>--custom-filters</option> option.</listitem>
+			<listitem><option>--debug-stdout</option>: Print server responses to stdout (as JSON) for debugging.</listitem>
+			<listitem><option>--lock-file=[<varname>file_name</varname>]</option>: Sets the lock file for the process.</listitem>
+			<listitem><option>--help</option>: Show help information.</listitem>
+		</itemizedlist>
+	</section>																	
+</chapter>
+

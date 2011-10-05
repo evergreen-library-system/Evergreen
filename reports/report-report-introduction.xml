@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chapter xml:id="report-introduction" xmlns="http://docbook.org/ns/docbook" version="5.0"
+    xml:lang="EN" xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+    <info>
+        <title>Reports overview</title>
+    </info>
+        <para>The reports interface is accessed from the <guimenu>Admin (-)</guimenu> menu, under <menuchoice>
+                <guimenu>Local Administration</guimenu>
+                <guimenuitem>Reports</guimenuitem>
+            </menuchoice>.</para>
+    <para>Only users with Local System Administration permissions can create reports but the output
+        is visible to all staff accounts. Reports are owned by the account used to create them, though it is possible to share reports with other staff in your library, other libraries or the entire system or consortium. </para>
+
+    <para>Evergreen has very powerful reporting functionality. It is possible to report on almost
+        every field in every table in the database. The reporting interface tries to make
+        navigating the database structure easier by pointing at the main database tables.</para>
+
+    <para>These chapters demonstrate how to create reports in Evergreen by introducing the
+        basic concepts of the reporting function. Once you understand how to navigate around the
+        reports interface, you can create your own reports from scratch or take advantage of report templates.</para>
+
+    <para>There are four aspects to creating a report in Evergreen: building a template, choosing a
+        template, defining a report, and running a report to create output. Before anything else you must create at least one <guilabel>Template</guilabel>, <guilabel>Report</guilabel>, and
+        <guilabel>Output</guilabel> folder as described in <xref linkend="folder"/>. 
+    
+    </para>
+
+</chapter>

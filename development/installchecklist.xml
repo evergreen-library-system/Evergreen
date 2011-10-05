@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<appendix xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude"
+xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="install_checklist">
+	<info>
+		<title>Evergreen Installation Checklist</title>
+		<abstract>
+			<para>This appendix is a checklist of things to do to istall and configure Evergreen. It will refer to the necessary chapter with the specific instructions for each item.</para>
+		</abstract>
+	</info>
+	<orderedlist>
+		<listitem>
+			<para><link linkend="serversideinstallation-opensrf">Install OpenSRF</link></para><indexterm><primary>OpenSRF</primary></indexterm>
+		</listitem>
+		<listitem>
+			<para><link linkend="serversideinstallation-ubuntudebian">Install Evergreen server software</link></para>
+		</listitem>
+		<listitem>
+			<para><link linkend="staffclientinstallation">Install Evergreen staff client</link></para><indexterm><primary>staff client</primary></indexterm>
+		</listitem>
+		<listitem>
+			<para><link linkend="backingup">Establish a back up strategy for Evergreen data and files</link></para>
+		</listitem>
+		<listitem>
+			<para><link linkend="configuringPostgreSQL">Configure PostgreSQL for better performance</link></para><indexterm><primary>PostgreSQL</primary></indexterm>
+		</listitem>
+		<listitem>
+			<para><link linkend="logfiles">Configure Evergreen error logging</link></para><indexterm><primary>logs</primary></indexterm>
+		</listitem>
+		<listitem>
+			<para><link linkend="orgtypes">Set up organizational unit types</link></para><indexterm><primary>organizational unit types</primary></indexterm>
+		</listitem>
+		<listitem>
+			<para><link linkend="orgunits">Set up organizational units</link></para><indexterm><primary>organizational units</primary></indexterm>
+		</listitem>
+		<listitem>
+			<para><link linkend="languagesandlocalization">Customize localization and languages</link> (optional)</para><indexterm><primary>localization and languages</primary></indexterm>
+		</listitem>
+		<listitem>
+			<para><link linkend="circmodifiers">Add circ modifiers</link></para><indexterm><primary>circulation modifiers</primary></indexterm>
+		</listitem>
+		<listitem>
+			<para><link linkend="copystatus">Configure copy statuses</link></para><indexterm><primary>copy status</primary></indexterm>
+		</listitem>
+		<listitem>
+			<para><link linkend="catalogingtemplates">Add cataloguing templates</link></para><indexterm><primary>cataloguing </primary><secondary>templates</secondary></indexterm>
+		</listitem>
+		<listitem>
+			<para><link linkend="permissions">Add user groups and assign permissions</link></para><indexterm><primary>permissions</primary></indexterm>
+		</listitem>
+		<listitem>
+			<para><link linkend="lsa">Adjust various Local Administration Settings</link></para>
+		</listitem>
+		<listitem>
+			<para>Adjust circulation policies and <link linkend="lsa-group-penalty">penalty threshholds</link> for groups</para><indexterm><primary>penalty threshholds</primary></indexterm>
+		</listitem>
+		<listitem>
+			<para><link linkend="admin-staff_accounts">Add staff users</link></para>
+		</listitem>
+		<listitem>
+			<para><link linkend="Customizing_OPAC">Customize OPAC</link> as needed</para><indexterm><primary>OPAC</primary><secondary>customizing</secondary></indexterm>
+		</listitem>
+		<listitem>
+			<para><link linkend="migratingdata">Import data</link></para><indexterm><primary>migrating</primary><secondary>importing data</secondary></indexterm>
+		</listitem>
+		<listitem>
+			<para><link linkend="report-introduction">Start the reporter service and set up reports</link></para><indexterm><primary>reports</primary><secondary>starting</secondary></indexterm>
+		</listitem>
+		<listitem>
+			<para><link linkend="notifications">Set up email notifications for holds and overdue items</link></para><indexterm><primary>notifications</primary></indexterm>
+		</listitem>
+		<listitem>
+			<para><link linkend="actiontriggers">Set up action triggers</link></para><indexterm><primary>action triggers</primary></indexterm>
+		</listitem>
+		<listitem>
+			<para><link linkend="z3950">Set up Z39.50 server</link> (optional)</para><indexterm><primary>Z39.50</primary></indexterm>
+		</listitem>
+		<listitem>
+			<para><link linkend="relevancyrankings">Adjust search relevancy settings</link> if required (optional)</para><indexterm><primary>search relevancy</primary></indexterm>
+		</listitem>
+		<listitem>
+			<para><link linkend="sipserver">Install SIP server</link> (optional) - for communications with automated devices such as self check stations, autmated sorters and other devices using SIP</para><indexterm><primary>SIP</primary></indexterm>
+		</listitem>
+	</orderedlist>
+</appendix>

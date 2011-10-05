@@ -1,0 +1,15 @@
+<partintro xmlns:xl="http://www.w3.org/1999/xlink" xml:id="admin_intro">
+	<para>This part of the documentation is intended for Evergreen administrators and requires root access to your <application>Evergreen</application> server(s) and administrator access to 
+	the <application>Evergreen</application> 
+	staff client. It deals with maintaining servers, installation, upgrading, and configuring both system wide and local library settings. 
+	Some sections require understanding of <systemitem class="osname">Linux</systemitem> system administration while others require an understanding of your system hierarchy of locations 
+	and users. Many procedures explained in the following 
+	chapters are accomplished with <systemitem class="osname">Linux</systemitem> commands<indexterm><primary>Linux</primary><secondary>commands</secondary></indexterm> run from the 
+	terminal without a Graphical User Interface (GUI).</para>
+	<para>In order to accomplish some of the tasks, prerequisite knowledge or experience will be required and you may need to consult system administration documentation for your 
+	specific <systemitem class="osname">Linux</systemitem> distribution if you have limited <systemitem class="osname">Linux</systemitem> system experience. A vast ammount of free 
+	resources can be found on the on the web for various experinece levels. You might also consider consulting <link xl:href="http://www.postgresql.org/docs/">
+	<application>PostgreSQL</application></link><indexterm><primary>databases</primary><secondary>PostgreSQL</secondary></indexterm> and 
+	<link xl:href="http://httpd.apache.org/docs/"><application>Apache</application></link><indexterm><primary>Apache</primary></indexterm> documentation for a greater understanding 
+	of the software stack on which <application>Evergreen</application> is built.</para>
+</partintro>

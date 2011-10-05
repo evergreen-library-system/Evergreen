@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="about_evergreen" >
+    <info>
+        <title>About Evergreen</title>
+    </info>
+    <para>Evergreen is an open source library automation software designed to meet the needs of the very smallest to the very largest libraries and consortia.  Through its staff interface, it facilitates the management, cataloging, and circulation of library materials, and through its online public access interface it helps patrons find those materials.</para>
+    <para>The Evergreen software is freely licensed under the GNU General Public License,<indexterm><primary>GNU General Public License</primary></indexterm> meaning that it is free to download, use, view, modify, and share.  It has an active development and user community, as well as several companies offering migration, support, hosting, and development services.</para>
+    <para>The community’s development requirements state that Evergreen must be:</para>
+    <itemizedlist>
+        <listitem><para><emphasis>Stable</emphasis>, even under extreme load.</para></listitem>
+        <listitem><para><emphasis>Robust</emphasis>, and capable of handling a high volume of transactions and simultaneous users.</para></listitem>
+        <listitem><para><emphasis>Flexible</emphasis>, to accommodate the varied needs of libraries.</para></listitem>
+        <listitem><para><emphasis>Secure</emphasis>, to protect our patrons’ privacy and data.</para></listitem>
+        <listitem><para><emphasis>User-friendly</emphasis>, to facilitate patron and staff use of the system.</para></listitem>
+    </itemizedlist>
+    <para>Evergreen, which first launched in 2006 now powers over 544 libraries of every type – public, academic, special, school, and even tribal and home libraries – in over a dozen countries worldwide.</para>
+</chapter>
