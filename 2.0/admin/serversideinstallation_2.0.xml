@@ -2461,7 +2461,7 @@
 				<filename>/openils/conf/lib_ips.txt</filename> and modifying the Apache startup script
 				<filename>/etc/apache2/startup.pl</filename>.</para>
 				<para>First, copy the sample file
-				<filename>/home/opensrf/Evergreen-ILS-2.0.0/Open-ILS/examples/lib_ips.txt.example</filename>
+				<filename>/home/opensrf/Evergreen-ILS-2.0.10/Open-ILS/examples/lib_ips.txt.example</filename>
 				to <filename>/openils/conf/lib_ips.txt</filename>. The example file contains the single
 				line: <literal>"MY-LIB 127.0.0.1 127.0.0.254"</literal>. You must modify the file to use
 				the IP address ranges for your library system. Add new lines to represent the IP address

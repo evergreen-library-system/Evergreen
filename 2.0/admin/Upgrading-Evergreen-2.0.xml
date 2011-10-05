@@ -483,7 +483,7 @@ pg_upgradecluster 8.4 main
 </userinput></screen>
 				</step>
 				<step>
-					<para>as the <systemitem class="username">postgres</systemitem> user, load data from backup into PostgreSQL 2.0.10.0.</para>
+					<para>as the <systemitem class="username">postgres</systemitem> user, load data from backup into PostgreSQL 9.0.</para>
 <screen><userinput><![CDATA[				
 psql < data
 ]]></userinput></screen>
