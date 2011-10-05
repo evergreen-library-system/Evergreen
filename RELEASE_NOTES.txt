@@ -55,6 +55,12 @@ Circulation improvements:
   USE CASE?
 * Mark patron as exempt from collections: It is now possible to mark a patron
   as being exempt from being sent to collections.
+* Hold-driven recalls: It is now possible to define a loan
+  period threshold (such as 60 days) so that if a hold is placed on an item with
+  a loan period beyond that threshold, the system will automatically shorten the
+  loan period to a specified value; change the fine rules; and send email
+  notification to the person who currently holds the item saying "A hold has
+  been placed on this item, get it back before <new_due_date>".
 
 Public interface improvements:
 ------------------------------
