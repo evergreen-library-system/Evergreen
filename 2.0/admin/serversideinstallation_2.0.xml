@@ -885,18 +885,18 @@
 				<step>
 					<title>Download and Unpack Latest Evergreen Version</title>
 					<para>The latest version of Evergreen can be found here:
-					<ulink url="http://evergreen-ils.org/downloads/Evergreen-ILS-2.0.9.tar.gz"></ulink> .
+					<ulink url="http://evergreen-ils.org/downloads/Evergreen-ILS-2.0.10.tar.gz"></ulink> .
 					As the <systemitem class="username">opensrf</systemitem> user, change to
 					the directory <filename class="directory">/home/opensrf</filename> then download
 					and extract Evergreen. The new subdirectory
-					<filename class="directory">/home/opensrf/Evergreen-ILS-2.0.9</filename>
+					<filename class="directory">/home/opensrf/Evergreen-ILS-2.0.10</filename>
 					will be created:</para>
 					<screen>
 						<userinput>
 	# as the opensrf user:
 	cd /home/opensrf
-	wget http://evergreen-ils.org/downloads/Evergreen-ILS-2.0.9.tar.gz
-	tar zxf Evergreen-ILS-2.0.9.tar.gz</userinput>
+	wget http://evergreen-ils.org/downloads/Evergreen-ILS-2.0.10.tar.gz
+	tar zxf Evergreen-ILS-2.0.10.tar.gz</userinput>
 					</screen>
 				</step>
 				<step xml:id="serversideinstallation-installprereq">
@@ -917,7 +917,7 @@
 					<screen>
 						<userinput>
 	# as the root user:
-	cd /home/opensrf/Evergreen-ILS-2.0.9
+	cd /home/opensrf/Evergreen-ILS-2.0.10
 	make -f Open-ILS/src/extras/Makefile.install [DISTRIBUTION]</userinput>
 					</screen>
 					
@@ -1080,7 +1080,7 @@
 					<screen>
 						<userinput>
 	# as the opensrf user:
-	cd /home/opensrf/Evergreen-ILS-2.0.9
+	cd /home/opensrf/Evergreen-ILS-2.0.10
 	./configure --prefix=/openils --sysconfdir=/openils/conf
 	make</userinput>
 					</screen>
@@ -1095,14 +1095,14 @@
 					<screen>
 						<userinput>
 	# as the root user:
-	cd /home/opensrf/Evergreen-ILS-2.0.9
-	make STAFF_CLIENT_BUILD_ID=rel_2_0_9 install</userinput>
+	cd /home/opensrf/Evergreen-ILS-2.0.10
+	make STAFF_CLIENT_BUILD_ID=rel_2_0_10 install</userinput>
 					</screen>
 					<para>The Staff Client will also be automatically built, but you must remember
 					to set the variable <envar>STAFF_CLIENT_BUILD_ID</envar> to match the version of the 
 					Staff Client you will use to connect to the Evergreen server.</para>
 					<para>The above commands will create a new subdirectory
-					<filename class="directory">/openils/var/web/xul/rel_2_0_9</filename> 
+					<filename class="directory">/openils/var/web/xul/rel_2_0_10</filename> 
 					containing the Staff Client.</para>
 					<para>To complete the Staff Client installation, as the
 					<systemitem class="username">root</systemitem> user execute the following commands to
@@ -1114,7 +1114,7 @@
 						<userinput>
 	# as the root user:
 	cd /openils/var/web/xul
-	ln -sf rel_2_0_9/server server</userinput>
+	ln -sf rel_2_0_10/server server</userinput>
 					</screen>
 				</step>
 				<step>
@@ -1210,7 +1210,7 @@
 							<screen>
 								<userinput>
 	# as the root user:
-	cd /home/opensrf/Evergreen-ILS-2.0.9
+	cd /home/opensrf/Evergreen-ILS-2.0.10
 	perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
 	--service all --create-schema --create-offline \
 	--hostname HOSTNAME --port PORT \
@@ -1279,7 +1279,7 @@
 							<screen>
 								<userinput>
 	# as the root user:
-	cd /home/opensrf/Evergreen-ILS-2.0.9
+	cd /home/opensrf/Evergreen-ILS-2.0.10
 	cp Open-ILS/examples/apache/eg.conf	/etc/apache2/sites-available/
 	cp Open-ILS/examples/apache/eg_vhost.conf  /etc/apache2/
 	cp Open-ILS/examples/apache/startup.pl     /etc/apache2/</userinput>
@@ -1606,18 +1606,18 @@
 				<step>
 					<title>Download and Unpack Latest Evergreen Version</title>
 					<para>The latest version of Evergreen can be found here:
-					<ulink url="http://evergreen-ils.org/downloads/Evergreen-ILS-2.0.9.tar.gz"></ulink> .
+					<ulink url="http://evergreen-ils.org/downloads/Evergreen-ILS-2.0.10.tar.gz"></ulink> .
 					As the <systemitem class="username">opensrf</systemitem> user, change to
 					the directory <filename class="directory">/home/opensrf</filename> then 
 					download and extract Evergreen. The new subdirectory
-					<filename class="directory">/home/opensrf/Evergreen-ILS-2.0.9</filename> 
+					<filename class="directory">/home/opensrf/Evergreen-ILS-2.0.10</filename> 
 					will be created:</para>
 					<screen>
 						<userinput>
 	# as the opensrf user:
 	cd /home/opensrf
-	wget http://evergreen-ils.org/downloads/Evergreen-ILS-2.0.9.tar.gz
-	tar zxf Evergreen-ILS-2.0.9.tar.gz</userinput>
+	wget http://evergreen-ils.org/downloads/Evergreen-ILS-2.0.10.tar.gz
+	tar zxf Evergreen-ILS-2.0.10.tar.gz</userinput>
 					</screen>
 				</step>
 				<step xml:id="serversideinstallation-installprereq-2.0">
@@ -1638,7 +1638,7 @@
 					<screen>
 						<userinput>
 	# as the root user:
-	cd /home/opensrf/Evergreen-ILS-2.0.9
+	cd /home/opensrf/Evergreen-ILS-2.0.10
 	make -f Open-ILS/src/extras/Makefile.install [DISTRIBUTION]</userinput>
 					</screen>
 				</step>
@@ -1702,7 +1702,7 @@
 					<screen>
 						<userinput>
 	# as the opensrf user:
-	cd /home/opensrf/Evergreen-ILS-2.0.9
+	cd /home/opensrf/Evergreen-ILS-2.0.10
 	./configure --prefix=/openils --sysconfdir=/openils/conf
 	make</userinput>
 					</screen>
@@ -1717,14 +1717,14 @@
 					<screen>
 						<userinput>
 	# as the root user:
-	cd /home/opensrf/Evergreen-ILS-2.0.9
-	make STAFF_CLIENT_BUILD_ID=rel_2_0_9 install</userinput>
+	cd /home/opensrf/Evergreen-ILS-2.0.10
+	make STAFF_CLIENT_BUILD_ID=rel_2_0_10 install</userinput>
 					</screen>
 					<para>The Staff Client will also be automatically built, but you must remember
 					to set the variable <envar>STAFF_CLIENT_BUILD_ID</envar> to match the version of the 
 					Staff Client you will use to connect to the Evergreen server.</para>
 					<para>The above commands will create a new subdirectory
-					<filename class="directory">/openils/var/web/xul/rel_2_0_9</filename> 
+					<filename class="directory">/openils/var/web/xul/rel_2_0_10</filename> 
 					containing the Staff Client.</para>
 					<para>To complete the Staff Client installation, as the
 					<systemitem class="username">root</systemitem> user execute the following commands
@@ -1736,7 +1736,7 @@
 						<userinput>
 	# as the root user:
 	cd /openils/var/web/xul
-	ln -sf rel_2_0_9/server server</userinput>
+	ln -sf rel_2_0_10/server server</userinput>
 					</screen>
 				</step>
 				<step>
@@ -1869,7 +1869,7 @@
 							<screen>
 								<userinput>
 	# as the root user:
-	cd /home/opensrf/Evergreen-ILS-2.0.9
+	cd /home/opensrf/Evergreen-ILS-2.0.10
 	perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
 	--service all --create-schema --create-offline \
 	--hostname HOSTNAME --port PORT \
@@ -1918,7 +1918,7 @@
 							<screen>
 								<userinput>
 	# as the root user:
-	cd /home/opensrf/Evergreen-ILS-2.0.9
+	cd /home/opensrf/Evergreen-ILS-2.0.10
 	cp Open-ILS/examples/apache/eg.conf	/etc/httpd/conf.d/
 	cp Open-ILS/examples/apache/eg_vhost.conf  /etc/httpd/
 	cp Open-ILS/examples/apache/startup.pl     /etc/httpd/</userinput>
@@ -2287,7 +2287,7 @@
 							<userinput>
 	# as the opensrf user:
 	cd /home/opensrf
-	./Evergreen-ILS-2.0.9/Open-ILS/src/support-scripts/settings-tester.pl</userinput>
+	./Evergreen-ILS-2.0.10/Open-ILS/src/support-scripts/settings-tester.pl</userinput>
 						</screen>
 						<para>If the output of <command>settings-tester.pl</command> does not help
 						you find the problem, please do not make any significant changes to your
@@ -2320,7 +2320,7 @@
 				<screen>
 					<userinput>
 	# as the root user:
-	xulrunner /home/opensrf/Evergreen-ILS-2.0.9/Open-ILS/xul/staff_client/build/application.ini</userinput>
+	xulrunner /home/opensrf/Evergreen-ILS-2.0.10/Open-ILS/xul/staff_client/build/application.ini</userinput>
 				</screen>
 				<para>A login screen for the Staff Client similar to this should appear:</para>
 				<mediaobject>

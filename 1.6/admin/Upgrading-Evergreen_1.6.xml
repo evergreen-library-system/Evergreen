@@ -161,18 +161,18 @@ srfsh#
 		<title>Upgrade <application>Evergreen</application> from 1.4 to 1.6.1</title>
 		<procedure>
 			<step>
-				<para>As the <systemitem class="username">opensrf</systemitem> user, download and extract <application>Evergreen 1.6.1.8</application>
+				<para>As the <systemitem class="username">opensrf</systemitem> user, download and extract <application>Evergreen 1.6.1.9</application>
 				</para>
 <screen><userinput>
-wget http://open-ils.org/downloads/Evergreen-ILS-1.6.1.8.tar.gz
-tar xzf Evergreen-ILS-1.6.1.8.tar.gz
+wget http://open-ils.org/downloads/Evergreen-ILS-1.6.1.9.tar.gz
+tar xzf Evergreen-ILS-1.6.1.9.tar.gz
 </userinput></screen>
 				<note><para>For the latest edition of Evergreen check the Evergreen download page at
 				<ulink url="http://www.open-ils.org/downloads.php" /> and adjust upgrading instructions accordingly.</para></note>
 			</step>
 			<step>
 				<para>As the <systemitem class="username">root</systemitem> user, install the prerequisites:</para> 
-				<screen><userinput>cd /home/opensrf/Evergreen-ILS-1.6.1.8</userinput></screen>	
+				<screen><userinput>cd /home/opensrf/Evergreen-ILS-1.6.1.9</userinput></screen>	
 				<para>On the next command, replace <option>[distribution]</option> with one of 
 				these values for your distribution of Debian or Ubuntu:</para>
 				<itemizedlist>
@@ -205,19 +205,19 @@ tar xzf Evergreen-ILS-1.6.1.8.tar.gz
 			<step>
 				<para>As the <systemitem class="username">opensrf</systemitem> user, configure and compile 
 				<application>Evergreen</application>:</para>
-				<screen><userinput>cd /home/opensrf/Evergreen-ILS-1.6.1.8</userinput></screen>
+				<screen><userinput>cd /home/opensrf/Evergreen-ILS-1.6.1.9</userinput></screen>
 				<screen><userinput>./configure --prefix=/openils --sysconfdir=/openils/conf</userinput></screen>
 				<screen><userinput>make</userinput></screen>
 			</step>
 			<step>
 				<para>As the <systemitem class="username">root</systemitem> user, install 
 				<application>Evergreen</application>:</para>
-				<screen><userinput>make STAFF_CLIENT_BUILD_ID=rel_1_6_1_8 install</userinput></screen>
+				<screen><userinput>make STAFF_CLIENT_BUILD_ID=rel_1_6_1_9 install</userinput></screen>
 			</step>
 			<step>
 				<para>Change to the <application>Evergreen</application> installation 
 				directory:</para>
-				<screen><userinput>cd /home/opensrf/Evergreen-ILS-1.6.1.8</userinput></screen>
+				<screen><userinput>cd /home/opensrf/Evergreen-ILS-1.6.1.9</userinput></screen>
 			</step>
 			<step>
 				<para>As the <emphasis>root</emphasis> user, change all files to be owned by the 
@@ -228,7 +228,7 @@ tar xzf Evergreen-ILS-1.6.1.8.tar.gz
 				<para>As the <systemitem class="username">root</systemitem> user, build <filename>live-db-setup.pl</filename> for the cgi-bin 
 				bootstrapping scripts and <filename>offline-config.pl</filename> for the offline staff client data uploader:</para>
 <screen><userinput>
-cd /home/opensrf/Evergreen-ILS-1.6.1.8
+cd /home/opensrf/Evergreen-ILS-1.6.1.9
 perl Open-ILS/src/support-scripts/eg_db_config.pl --create-bootstrap --create-offline \ 
 --user evergreen --password evergreen --hostname localhost --port 5432 \
 --database evergreen
@@ -239,7 +239,7 @@ perl Open-ILS/src/support-scripts/eg_db_config.pl --create-bootstrap --create-of
 <screen><userinput>
 cd /openils/var/web/xul/
 rm server
-ln -s rel_1_6_1_8/server
+ln -s rel_1_6_1_9/server
 </userinput></screen>
 			</step>
 			<step>
@@ -260,7 +260,8 @@ psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.1.3-1.6.1.4-upgrade-db
 psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.1.4-1.6.1.5-upgrade-db.sql evergreen
 psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.1.5-1.6.1.6-upgrade-db.sql evergreen
 psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.1.6-1.6.1.7-upgrade-db.sql evergreen
-psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.1.8-1.6.1.8-upgrade-db.sql evergreen
+psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.1.7-1.6.1.8-upgrade-db.sql evergreen
+psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.1.8-1.6.1.9-upgrade-db.sql evergreen
 </userinput>
 </screen> 	
 			</step>
@@ -327,6 +328,7 @@ psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.1.4-1.6.1.5-upgrade-db
 psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.1.5-1.6.1.6-upgrade-db.sql evergreen
 psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.1.6-1.6.1.7-upgrade-db.sql evergreen
 psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.1.7-1.6.1.8-upgrade-db.sql evergreen
+psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.1.8-1.6.1.9-upgrade-db.sql evergreen
 </userinput>
 </screen> 	
 			</step>
