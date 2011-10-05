@@ -1,0 +1,73 @@
+Evergreen 2.1 release notes
+===========================
+
+Installation enhancements:
+--------------------------
+* `eg_db_config.pl` now has a `--create-database` option to automatically create
+  the database and add the required contrib modules/extensions, rather than
+  requiring users to carry out a number of error-prone manual steps.
+* README is now the single source of install instructions
+
+Administration enhancements:
+----------------------------
+* Automatic client updates: It is now possible to build staff clients that,
+  when they connect to the Evergreen server, automatically check to see if
+  the staff client has been updated. If so, the staff client can download just
+  the files that have been updated and replace those files in the existing
+  staff client.
+* Printing subsystem: Changes to the staff client should improve the print
+  functionality (both speed and likelihood of success).
+* To protect against exploits between a shared staff client session via
+  operator change, add the requirement for the DEBUG_CLIENT permission to
+  invoke debugging functions such as the Javascript Shell or DOM Inspector
+   in the staff client.
+
+Cataloging enhancements:
+------------------------
+* Unified copy / call number editor: The default holdings maintenance interface
+  now enables cataloguers to edit copies and call numbers on a single screen.
+* Call number prefixes and suffixes: While previous releases of Evergreen
+  supported the automatic prepending or appending of prefixes and suffixes to
+  call numbers based on their shelving location, the functionality was limited
+  primarily to printing spine labels.  As of 2.1, you also have the option to
+  assign prefixes or suffixes for individual call numbers; these will be
+  displayed in the public catalogue and other interfaces, but prefixes in
+  particular do not affect shelf browsing, which is based entirely on the
+  label.
+* Bibliographic parts: This feature adds the ability to designate specific
+  "part" roles for the items attached to a given bibliographic record, such
+  that a user can place holds on a specific kind of item without limiting it
+  to an individual item. For example, libraries may assign parts to each DVD
+  in a season of a popular TV show; or to individual volumes of an
+  encyclopedia. This feature also introduces "part holds".
+* Conjoined items: This feature adds the ability to associate a single barcode
+  with multiple bibliographic records, so that the availability of those
+  records is updated based on that copy. For example, libraries may make an
+  electronic reader available for loan that is preloaded with 1000 electronic
+  books; they can add 1000 bibliographic records to the library system and
+  associate them all with a single barcode, so that when the electronic reader
+  is signed out, the availability for all 1000 records changes to "Checked out".
+
+Circulation improvements:
+-------------------------
+* Transfer selected holds to a different title: It is now possible to select
+  multiple holds on a given title and transfer them to a different title.
+  USE CASE?
+* Mark patron as exempt from collections: It is now possible to mark a patron
+  as being exempt from being sent to collections.
+
+Public interface improvements:
+------------------------------
+* Spell-checking suggestions are now case-insensitive, to avoid generating
+  terms which would yield the same result set.
+* Part holds: patrons are guided to select a specific part if they are
+  placing a hold on a bibliographic record that has parts assigned to its
+  copies.
+* Located URI visibility: Located URIs (856 fields with a subfield $9
+  specifying the shortname of the owning library) now show up in a search with
+  a context library of its owning library or below. For example, a Located URI
+  with an owner of SYS1 WILL cause its record to show up in a search with a
+  context OU of BR1 or SYS1, regardless of depth scoping.
+* Set a JavaScript cache token when `autogen.sh` is run, so that a subsequent
+  run of `autogen.sh` will automatically cause browsers to fetch refreshed
+  copies of generated files.
