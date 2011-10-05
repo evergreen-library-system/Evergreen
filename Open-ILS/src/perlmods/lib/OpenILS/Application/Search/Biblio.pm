@@ -1512,7 +1512,7 @@ sub cache_facets {
             },
             where   => {
                 '+mmrsm' => { $count_field => $results },
-                '+cmf'   => { field_class => { 'not in' => $ignore } }
+                '+cmf'   => { field_class => { 'not in' => $ignore }, facet_field => 't' }
             }
         }
     );
