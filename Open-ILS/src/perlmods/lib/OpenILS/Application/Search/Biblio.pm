@@ -956,7 +956,7 @@ sub cat_search_z_style_wrapper {
 
 	my $list = the_quest_for_knowledge( $self, $client, $searchhash );
 
-	if ($list->{count} > 0) {
+	if ($list->{count} > 0 and @{$list->{ids}}) {
 		$result->{count} = $list->{count};
 
 		my $records = $cstore->request(
