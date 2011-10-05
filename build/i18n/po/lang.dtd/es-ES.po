@@ -1170,7 +1170,7 @@ msgstr ""
 #: staff.cat.opac.add_bucket.accesskey
 msgctxt "staff.cat.opac.add_bucket.label staff.cat.opac.add_bucket.accesskey"
 msgid "Add to &Bucket"
-msgstr "Agregar a %Cubeta"
+msgstr "Agregar a &Cubeta"
 
 #: staff.cat.opac.bib_in_new_tab.label
 msgctxt "staff.cat.opac.bib_in_new_tab.label"
@@ -10179,7 +10179,7 @@ msgstr ""
 #, fuzzy
 msgctxt "staff.cat.copy_buckets_quick.item_buckets.new_bucket.label staff.cat.copy_buckets_quick.item_buckets.new_bucket.accesskey"
 msgid "Add to &New Bucket"
-msgstr "Agregar a %Cubeta"
+msgstr "Agregar a &Cubeta"
 
 #: staff.cat.copy_buckets_quick.item_buckets.cancel.label
 #: staff.cat.copy_buckets_quick.item_buckets.cancel.accesskey
@@ -10482,7 +10482,7 @@ msgstr ""
 #, fuzzy
 msgctxt "staff.cat.opac.menuitem.addtobucket.label staff.cat.opac.menuitem.addtobucket.accesskey"
 msgid "Add to &Bucket"
-msgstr "Agregar a %Cubeta"
+msgstr "Agregar a &Cubeta"
 
 #: staff.cat.opac.menuitem.refreshinterfaces.label
 msgid "Refresh All Interfaces"
@@ -10760,7 +10760,7 @@ msgstr ""
 #, fuzzy
 msgctxt "staff.cat.record_buckets_quick.new_bucket.label staff.cat.record_buckets_quick.new_bucket.accesskey"
 msgid "Add to &New Bucket"
-msgstr "Agregar a %Cubeta"
+msgstr "Agregar a &Cubeta"
 
 #: staff.cat.record_buckets_quick.cancel.label
 #: staff.cat.record_buckets_quick.cancel.accesskey
