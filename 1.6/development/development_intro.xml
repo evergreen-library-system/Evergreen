@@ -1,3 +1,0 @@
-<partintro xmlns:xl="http://www.w3.org/1999/xlink" xml:id="development_intro">
-<para>This part will allow you to customize the Evergreen OPAC, develop useful SQL queries and help you learn the skills necessary for developing new Evergreen applications. It is intended for experienced Evergreen administrators and Evergreen developers who wish to customize Evergreen or enhance their knowledge of the database structure and code. Some of these chapters are introductory in nature, but others assume some level of web development, programming, or database administration experience.</para>
-</partintro>
