@@ -78,23 +78,6 @@ int osrfAppInitialize() {
 		"if found, otherwise returns the NO_SESSION event"
 		"PARAMS( authToken )", 1, 0 );
 
-	return 0;
-}
-
-int osrfAppChildInit() {
-	return 0;
-}
-
-int oilsAuthInit( osrfMethodContext* ctx ) {
-	OSRF_METHOD_VERIFY_CONTEXT(ctx); 
-
-	jsonObject* resp;
-
-	char* username = NULL;
-	char* seed		= NULL;
-	char* md5seed	= NULL;
-	char* key		= NULL;
-	char* countkey	= NULL;
 	if(!_oilsAuthSeedTimeout) { /* Load the default timeouts */
 
 		jsonObject* value_obj;
@@ -130,6 +113,24 @@ int oilsAuthInit( osrfMethodContext* ctx ) {
 			"seed => %ld : block_timeout => %ld : block_count => %ld",
 			_oilsAuthSeedTimeout, _oilsAuthBlockTimeout, _oilsAuthBlockCount );
 	}
+
+	return 0;
+}
+
+int osrfAppChildInit() {
+	return 0;
+}
+
+int oilsAuthInit( osrfMethodContext* ctx ) {
+	OSRF_METHOD_VERIFY_CONTEXT(ctx); 
+
+	jsonObject* resp;
+
+	char* username = NULL;
+	char* seed		= NULL;
+	char* md5seed	= NULL;
+	char* key		= NULL;
+	char* countkey	= NULL;
 
 	if( (username = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, 0))) ) {
 
@@ -249,7 +250,7 @@ static int oilsAuthVerifyPassword( const osrfMethodContext* ctx,
 	char* countkey = va_list_to_string( "%s%s%s", OILS_AUTH_CACHE_PRFX, uname, OILS_AUTH_COUNT_SFFX );
 	jsonObject* countobject = osrfCacheGetObject( countkey );
 	if(countobject) {
-		double failcount = jsonObjectGetNumber( countobject );
+		long failcount = (long) jsonObjectGetNumber( countobject );
 		if(failcount >= _oilsAuthBlockCount) {
 			ret = 0;
 		    osrfLogInternal(OSRF_LOG_MARK, "oilsAuth found too many recent failures: %d, forcing failure state.", failcount);
