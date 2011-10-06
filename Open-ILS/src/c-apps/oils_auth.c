@@ -87,39 +87,6 @@ int osrfAppInitialize() {
 		"if found, otherwise returns the NO_SESSION event"
 		"PARAMS( authToken )", 1, 0 );
 
-	return 0;
-}
-
-/**
-	@brief Dummy placeholder for initializing a server drone.
-
-	There is nothing to do, so do nothing.
-*/
-int osrfAppChildInit() {
-	return 0;
-}
-
-/**
-	@brief Implement the "init" method.
-	@param ctx The method context.
-	@return Zero if successful, or -1 if not.
-
-	Method parameters:
-	- username
-
-	Return to client: Intermediate authentication seed.
-
-	Combine the username with a timestamp and process ID, and take an md5 hash of the result.
-	Store the hash in memcache, with a key based on the username.  Then return the hash to
-	the client.
-
-	However: if the username includes one or more embedded blank spaces, return a dummy
-	hash without storing anything in memcache.  The dummy will never match a stored hash, so
-	any attempt to authenticate with it will fail.
-*/
-int oilsAuthInit( osrfMethodContext* ctx ) {
-	OSRF_METHOD_VERIFY_CONTEXT(ctx);
-
 	if(!_oilsAuthSeedTimeout) { /* Load the default timeouts */
 
 		jsonObject* value_obj;
@@ -155,6 +122,39 @@ int oilsAuthInit( osrfMethodContext* ctx ) {
 			"seed => %ld : block_timeout => %ld : block_count => %ld",
 			_oilsAuthSeedTimeout, _oilsAuthBlockTimeout, _oilsAuthBlockCount );
 	}
+
+	return 0;
+}
+
+/**
+	@brief Dummy placeholder for initializing a server drone.
+
+	There is nothing to do, so do nothing.
+*/
+int osrfAppChildInit() {
+	return 0;
+}
+
+/**
+	@brief Implement the "init" method.
+	@param ctx The method context.
+	@return Zero if successful, or -1 if not.
+
+	Method parameters:
+	- username
+
+	Return to client: Intermediate authentication seed.
+
+	Combine the username with a timestamp and process ID, and take an md5 hash of the result.
+	Store the hash in memcache, with a key based on the username.  Then return the hash to
+	the client.
+
+	However: if the username includes one or more embedded blank spaces, return a dummy
+	hash without storing anything in memcache.  The dummy will never match a stored hash, so
+	any attempt to authenticate with it will fail.
+*/
+int oilsAuthInit( osrfMethodContext* ctx ) {
+	OSRF_METHOD_VERIFY_CONTEXT(ctx);
 
 	char* username  = jsonObjectToSimpleString( jsonObjectGetIndex(ctx->params, 0) );
 	if( username ) {
@@ -309,10 +309,10 @@ static int oilsAuthVerifyPassword( const osrfMethodContext* ctx,
 	char* countkey = va_list_to_string( "%s%s%s", OILS_AUTH_CACHE_PRFX, uname, OILS_AUTH_COUNT_SFFX );
 	jsonObject* countobject = osrfCacheGetObject( countkey );
 	if(countobject) {
-		double failcount = jsonObjectGetNumber( countobject );
+		long failcount = (long) jsonObjectGetNumber( countobject );
 		if(failcount >= _oilsAuthBlockCount) {
 			ret = 0;
-		    osrfLogInternal(OSRF_LOG_MARK, "oilsAuth found too many recent failures: %d, forcing failure state.", failcount);
+		    osrfLogInternal(OSRF_LOG_MARK, "oilsAuth found too many recent failures: %i, forcing failure state.", failcount);
 		}
 		if(ret == 0) {
 			failcount += 1;
