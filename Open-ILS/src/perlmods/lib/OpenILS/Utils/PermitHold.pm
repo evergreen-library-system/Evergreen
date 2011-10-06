@@ -201,6 +201,9 @@ sub check_age_protect {
 
 my $LEGACY_HOLD_EVENT_MAP = {
     'config.hold_matrix_test.holdable' => 'ITEM_NOT_HOLDABLE',
+    'item.holdable' => 'ITEM_NOT_HOLDABLE',
+    'location.holdable' => 'ITEM_NOT_HOLDABLE',
+    'status.holdable' => 'ITEM_NOT_HOLDABLE',
     'transit_range' => 'ITEM_NOT_HOLDABLE',
     'no_matchpoint' => 'NO_POLICY_MATCHPOINT',
     'config.hold_matrix_test.max_holds' => 'MAX_HOLDS',

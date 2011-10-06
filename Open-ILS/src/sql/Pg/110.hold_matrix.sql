@@ -224,6 +224,8 @@ DECLARE
     transit_source        actor.org_unit%ROWTYPE;
     item_object        asset.copy%ROWTYPE;
     item_cn_object     asset.call_number%ROWTYPE;
+    item_status_object  config.copy_status%ROWTYPE;
+    item_location_object    asset.copy_location%ROWTYPE;
     ou_skip              actor.org_unit_setting%ROWTYPE;
     result            action.matrix_test_result;
     hold_test        config.hold_matrix_matchpoint%ROWTYPE;
@@ -283,6 +285,10 @@ BEGIN
         RETURN;
     END IF;
 
+    SELECT INTO item_cn_object * FROM asset.call_number WHERE id = item_object.call_number;
+    SELECT INTO item_status_object * FROM config.copy_status WHERE id = item_object.status;
+    SELECT INTO item_location_object * FROM asset.copy_location WHERE id = item_object.location;
+
     -- Fail if we couldn't find any matchpoint (requires a default)
     IF matchpoint_id IS NULL THEN
         result.fail_part := 'no_matchpoint';
@@ -296,6 +302,27 @@ BEGIN
 
     IF hold_test.holdable IS FALSE THEN
         result.fail_part := 'config.hold_matrix_test.holdable';
+        result.success := FALSE;
+        done := TRUE;
+        RETURN NEXT result;
+    END IF;
+
+    IF item_object.holdable IS FALSE THEN
+        result.fail_part := 'item.holdable';
+        result.success := FALSE;
+        done := TRUE;
+        RETURN NEXT result;
+    END IF;
+
+    IF item_status_object.holdable IS FALSE THEN
+        result.fail_part := 'status.holdable';
+        result.success := FALSE;
+        done := TRUE;
+        RETURN NEXT result;
+    END IF;
+
+    IF item_location_object.holdable IS FALSE THEN
+        result.fail_part := 'location.holdable';
         result.success := FALSE;
         done := TRUE;
         RETURN NEXT result;
