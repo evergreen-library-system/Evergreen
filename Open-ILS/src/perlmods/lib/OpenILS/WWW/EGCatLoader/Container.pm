@@ -128,7 +128,7 @@ sub mylist_action_redirect {
         # on the results page, we want to redirect 
         # back to record that was affected
         $url = $self->ctx->{referer};
-        $url =~ s/#.*|$/#$anchor/g;
+        $url =~ s/#.*|$/#$anchor/;
     } 
 
     return $self->generic_redirect(
