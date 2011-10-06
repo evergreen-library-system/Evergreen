@@ -15,8 +15,10 @@ dojo.require('openils.widget.ProgressDialog');
 dojo.require('openils.PermaCrud');
 dojo.require("openils.widget.PCrudAutocompleteBox");
 
-dojo.requireLocalization('openils.acq', 'acq');
-var localeStrings = dojo.i18n.getLocalization('openils.acq', 'acq');
+if (!localeStrings) {   /* we can do this because javascript doesn't have block scope */
+    dojo.requireLocalization('openils.acq', 'acq');
+    var localeStrings = dojo.i18n.getLocalization('openils.acq', 'acq');
+}
 const XUL_OPAC_WRAPPER = 'chrome://open_ils_staff_client/content/cat/opac.xul';
 var li_exportable_attrs = ["issn", "isbn", "upc"];
 
