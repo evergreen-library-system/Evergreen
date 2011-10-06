@@ -80,7 +80,7 @@ FOR facet_label IN labels.sort;
                     %]
                         <div class="facet_template">
                             <div class="facet">
-                                <a href='[% mkurl('', {facet => selected_facets.merge([param_string])}) %]'>[% display_value %]</a>
+                                <a href='[% mkurl('', {facet => selected_facets.merge([param_string])}, ['page']) %]'>[% display_value %]</a>
                             </div>
                             <div class="count">([% facet_data.count %])</div>
                             <div class="clear">&nbsp;</div>
