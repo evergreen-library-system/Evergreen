@@ -43,6 +43,23 @@
                 <td>
                     <input type="hidden" name="hold_target" value="[% hdata.target.id | html %]" />
                     <div class='hold-items-list-title'>[% attrs.title_extended | html %]</div>
+                    [% IF hdata.parts %]
+                        [% IF hdata.parts.size > 0 %]
+                        <div style='padding-left: 10px'>
+                            <span>[% hdata.part_required ? l('Select a Part:') : l('Select a Part (optional):') %]</span>
+                            <select name='part'>
+                                [% IF !hdata.part_required %]
+                                <option selected='selected' value=''>[% l('- All Parts -') %]</option>
+                                [% END %]
+                                [% FOR part IN hdata.parts %]
+                                <option value='[% part.id %]'>[% part.label | html %]</option>
+                                [% END %]
+                            </select>
+                        </div>
+                        [% ELSE %]
+                        <input type='hidden' name='part' value=''/>
+                        [% END %]
+                    [% END %]
                 </td>
             </tr>
         [% END %]
@@ -53,28 +70,11 @@
             [% PROCESS "opac/parts/org_selector.tt2";
                 PROCESS build_org_selector name='pickup_lib' value=ctx.default_pickup_lib id='pickup_lib' can_have_vols_only=1 %]
         </p>
-        <p>
-            [% |l %]If you use the Traveling Library Center (TLC) and ABC Express
-            services, please select "Outreach" to have the item delivered
-            during your scheduled visit.[% END %]
-        </p>
         <input type="submit" name="submit" value="[% l('Submit') %]" title="[% l('Submit') %]"
             alt="[% l('Submit') %]" class="opac-button" />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <input type="reset" name="cancel" onclick="javascript:history.go(-1);"
             value="[% l('Cancel') %]" id="holds_cancel" class="opac-button" />
     </form>
-    <br /><br />
-    <p>
-        [% |l %]* If you need your item today, and it is checked in at your
-        library, please place your hold and then call your library to set it
-        aside. Placing a hold without calling the library will increase your
-        wait time.[% END %]
-        <br /><a href="#">[% l('Library phone numbers.') %]</a>
-    </p>
-    <p>
-        [% |l %]* For best possible service, we recommend keeping 
-        a printed copy of your most recent holds list.[% END %]
-    </p>
 </div>
 

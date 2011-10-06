@@ -527,12 +527,14 @@ sub load_place_hold {
 
     $self->ctx->{page} = 'place_hold';
     my @targets = $cgi->param('hold_target');
+    my @parts = $cgi->param('part');
+
     $ctx->{hold_type} = $cgi->param('hold_type');
     $ctx->{default_pickup_lib} = $e->requestor->home_ou; # unless changed below
 
     return $self->generic_redirect unless @targets;
 
-    $logger->info("Looking at hold targets: @targets");
+    $logger->info("Looking at hold_type: " . $ctx->{hold_type} . " and targets: @targets");
 
     # if the staff client provides a patron barcode, fetch the patron
     if (my $bc = $self->cgi->cookie("patron_barcode")) {
@@ -551,9 +553,42 @@ sub load_place_hold {
     my $type_dispatch = {
         T => sub {
             my $recs = $e->batch_retrieve_biblio_record_entry(\@targets, {substream => 1});
+
             for my $id (@targets) { # force back into the correct order
                 my ($rec) = grep {$_->id eq $id} @$recs;
-                push(@hold_data, {target => $rec, record => $rec});
+
+                # NOTE: if tpac ever supports locked-down pickup libs,
+                # we'll need to pass a pickup_lib param along with the 
+                # record to filter the set of monographic parts.
+                my $parts = $U->simplereq(
+                    'open-ils.search',
+                    'open-ils.search.biblio.record_hold_parts', 
+                    {record => $rec->id}
+                );
+
+                # T holds on records that have parts are OK, but if the record has 
+                # no non-part copies, the hold will ultimately fail.  When that 
+                # happens, require the user to select a part.
+                my $part_required = 0;
+                if (@$parts) {
+                    my $np_copies = $e->json_query({
+                        select => { acp => [{column => 'id', transform => 'count', alias => 'count'}]}, 
+                        from => {acp => {acn => {}, acpm => {type => 'left'}}}, 
+                        where => {
+                            '+acp' => {deleted => 'f'},
+                            '+acn' => {deleted => 'f', record => $rec->id}, 
+                            '+acpm' => {id => undef}
+                        }
+                    });
+                    $part_required = 1 if $np_copies->[0]->{count} == 0;
+                }
+
+                push(@hold_data, {
+                    target => $rec, 
+                    record => $rec,
+                    parts => $parts,
+                    part_required => $part_required
+                });
             }
         },
         V => sub {
@@ -621,6 +656,7 @@ sub load_place_hold {
     $ctx->{orig_params} = $cgi->Vars;
     delete $ctx->{orig_params}{submit};
     delete $ctx->{orig_params}{hold_target};
+    delete $ctx->{orig_params}{part};
 
     my $usr = $e->requestor->id;
 
@@ -638,11 +674,63 @@ sub load_place_hold {
         }
     }
 
+    # target_id is the true target_id for holds placement.  
+    # needed for attempt_hold_placement()
+    # With the exception of P-type holds, target_id == target->id.
+    $_->{target_id} = $_->{target}->id for @hold_data;
+
+    if ($ctx->{hold_type} eq 'T') {
+
+        # Much like quantum wave-particles, P-type holds pop into 
+        # and out of existence at the user's whim.  For our purposes,
+        # we treat such holds as T(itle) holds with a selected_part 
+        # designation.  When the time comes to pass the hold information 
+        # off for holds possibility testing and placement, make it look 
+        # like a real P-type hold.
+        my (@p_holds, @t_holds);
+        
+        for my $idx (0..$#parts) {
+            my $hdata = $hold_data[$idx];
+            if (my $part = $parts[$idx]) {
+                $hdata->{target_id} = $part;
+                $hdata->{selected_part} = $part;
+                push(@p_holds, $hdata);
+            } else {
+                push(@t_holds, $hdata);
+            }
+        }
+
+        $self->attempt_hold_placement($usr, $pickup_lib, 'P', @p_holds) if @p_holds;
+        $self->attempt_hold_placement($usr, $pickup_lib, 'T', @t_holds) if @t_holds;
+
+    } else {
+        $self->attempt_hold_placement($usr, $pickup_lib, $ctx->{hold_type}, @hold_data);
+    }
+
+    # NOTE: we are leaving the staff-placed patron barcode cookie 
+    # in place.  Otherwise, it's not possible to place more than 
+    # one hold for the patron within a staff/patron session.  This 
+    # does leave the barcode to linger longer than is ideal, but 
+    # normal staff work flow will cause the cookie to be replaced 
+    # with each new patron anyway.
+    # TODO: See about getting the staff client to clear the cookie
+
+    # return to the place_hold page so the results of the hold
+    # placement attempt can be reported to the user
+    return Apache2::Const::OK;
+}
+
+sub attempt_hold_placement {
+    my ($self, $usr, $pickup_lib, $hold_type, @hold_data) = @_;
+    my $cgi = $self->cgi;
+    my $ctx = $self->ctx;
+    my $e = $self->editor;
+
     # First see if we should warn/block for any holds that 
     # might have locally available items.
     for my $hdata (@hold_data) {
         my ($local_block, $local_alert) = $self->local_avail_concern(
-            $hdata->{target}->id, $ctx->{hold_type}, $pickup_lib);
+            $hdata->{target_id}, $hold_type, $pickup_lib);
     
         if ($local_block) {
             $hdata->{hold_failed} = 1;
@@ -653,11 +741,10 @@ sub load_place_hold {
         }
     }
 
-
     my $method = 'open-ils.circ.holds.test_and_create.batch';
     $method .= '.override' if $cgi->param('override');
 
-    my @create_targets = map {$_->{target}->id} (grep { !$_->{hold_failed} } @hold_data);
+    my @create_targets = map {$_->{target_id}} (grep { !$_->{hold_failed} } @hold_data);
 
     if(@create_targets) {
 
@@ -667,7 +754,7 @@ sub load_place_hold {
             $e->authtoken, 
             {   patronid => $usr, 
                 pickup_lib => $pickup_lib, 
-                hold_type => $ctx->{hold_type}
+                hold_type => $hold_type
             }, 
             \@create_targets
         );
@@ -682,7 +769,7 @@ sub load_place_hold {
                 last;
             }
 
-            my ($hdata) = grep {$_->{target}->id eq $resp->{target}} @hold_data;
+            my ($hdata) = grep {$_->{target_id} eq $resp->{target}} @hold_data;
             my $result = $resp->{result};
 
             if ($U->event_code($result)) {
@@ -714,18 +801,6 @@ sub load_place_hold {
 
         $bses->kill_me;
     }
-
-    # NOTE: we are leaving the staff-placed patron barcode cookie 
-    # in place.  Otherwise, it's not possible to place more than 
-    # one hold for the patron within a staff/patron session.  This 
-    # does leave the barcode to linger longer than is ideal, but 
-    # normal staff work flow will cause the cookie to be replaced 
-    # with each new patron anyway.
-    # TODO: See about getting the staff client to clear the cookie
-
-    # return to the place_hold page so the results of the hold
-    # placement attempt can be reported to the user
-    return Apache2::Const::OK;
 }
 
 sub fetch_user_circs {
