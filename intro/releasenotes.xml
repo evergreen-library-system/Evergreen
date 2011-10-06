@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xml:id="releasenotes" xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="EN"
+    xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<chapterinfo>
+	<title>2.0 Feature List</title>
+	</chapterinfo>
+	
+	
+	<simplesect>
+		<title>Circulation</title>
+		<simplesect>
+			<title>Patron Registration Enhancements</title>
+			<itemizedlist>
+				<listitem>Zip code information can be added to a local table which will pre-populate the City/State fields during patron registration. </listitem>
+				<listitem>Added the ability to delete patrons by anonymizing the patron's personally identifiable data and purging the related data from other tables 
+				without destroying information important to the integrity of the database as a whole (does not delete the actor.usr row). </listitem>
+				<listitem>Supports the ability to merge patrons; when it is determined that more than one account exists for a single patron. There is an interface for 
+				side-by-side comparison of the records; ability to delete addresses on merged accounts, delete cards and deactivate cards. Patrons with a status of in collections 
+				are not eligible for merging. </listitem>
+				<listitem>Added quick links for staff to copy and paste patron address information. Information will paste in a standard mailing format. </listitem>
+				<listitem>Patrons with an address alert (invalid/bad address) will be displayed at the top of a duplicates list. </listitem>
+				<listitem>Patrons may create library accounts through the OPAC. These are set as pending until they can be confirmed by staff. The backend support for this 
+				is done.</listitem>
+				<listitem>The system recognizes certain categories of patrons like Card Canceled, Deceased, etc. and will not place holds for these categories. </listitem>
+				
+				<listitem>The patron record screen obscures certain information which can be considered sensitive. </listitem>
+				<listitem>Patrons may create library accounts through the OPAC. These are set as pending until they can be confirmed by staff. The backend support for this 
+				is done.</listitem>
+				<listitem>Evergreen has the ability to automatically enter date, user, and location in messages and notes.</listitem>
+			</itemizedlist> 
+		</simplesect>
+		<simplesect>
+			<title>Item Checkout enhancements</title>
+			<itemizedlist>
+				<listitem>During check-out, the patron's fines list appears first if there is a balance. If there is an alert, the alert page will show first, then fines 
+				screen. </listitem>
+				<listitem>Evergreen has the ability to track hourly checkout stats. Self-check now operates by workstation and it's possible to gather statistics for checkouts 
+				between staff workstations and self-check workstations. (There is a workstation registration wizard built into the self-check UI.) </listitem>
+				<listitem>Audible cue support, for successful and unsuccessful check-out, at self check-out stations has been added. This is customizable at the database level.</listitem>
+				<listitem>Evergreen has fast-add capability. During check-out, if an item is found not to be cataloged,you can pre-cat the item quickly, we've added other field 
+				such as library, ISBN and circ modifier to this pre-cat. </listitem>
+				<listitem>The system supports sets or kits of items and has the ability to display the number of items and a list of descriptions. </listitem>
+				<listitem>Evergreen allows patrons to renew a title as long as they have not exceeded the allowed number of renewals and there are more available items 
+				than there are unfrozen holds. This is an administration setting. </listitem>
+			</itemizedlist> 
+		</simplesect>
+		<simplesect>
+			<title>Self Check module enhancements</title>
+			<itemizedlist>
+				<listitem>In self check and SC, if a staff member checks out an item to a patron that is already checked out to that patron, the item will simply renew. This does 
+				have configurable age-based parameters to prevent a double scan at checkout resulting in a renewal. </listitem>
+				<listitem>For self check receipts, receipts include the same information for renewal as checkouts and includes notes on items that failed to renew. </listitem>
+				<listitem>In the self-check UI, patrons can view holds and patron position vs. the number of circulating copies. </listitem>
+				<listitem>The self check-out station displays holds ready for pickup, then removes each hold as the item is checked out. </listitem>
+				<listitem>Evergreen supports the ability to pay fines with a credit card at self check-out stations. This requires the library to have a merchant account with a credit 
+				card processor like Paypal. The current supported processors include Authorize.net and Paypal.</listitem>
+			</itemizedlist> 
+		</simplesect>
+		<simplesect>
+			<title>Item Check-in enhancements</title>
+			<itemizedlist>
+				<listitem>Evergreen supports a set number of claim returns allowed; beyond that, additional claim returns require supervisor authorization. This is based off the 
+				claims returned counter. This only blocks another claim returned, and circulation can still occur. Also, there is a new permission to allow changing the claims 
+				returned count for a patron. In order to use this feature, staff needs to have the appropriate permission. </listitem>
+				<listitem>There's a new calendar widget in the backdating function in the item check-in module. The system has the ability to select items already checked in 
+				and retroactively backdate those items, using a button with a calendar selector. Any fines resulting from original check-in are removed. When a check-in is backdated, 
+				the item record retains both the actual date of check-in and backdate used. This information will display in the copy details interface. </listitem>
+				<listitem>When marking an item damaged, several library settings are checked to determine whether the patron should be charged the copy price and/or a processing fee. 
+				Staff is prompted with this amount, which can either be applied or modified or canceled. </listitem>
+			</itemizedlist> 
+		</simplesect>
+		<simplesect>
+			<title>Holds Enhancements</title>
+			<itemizedlist>
+				<listitem>Evergreen allows for hold slips to be customized to include any field from the patron record and/or item record, in any position and orientation on the 
+				slip. Font, font size, and font weight are customizable. In addition, the hold slip may include a branch symbol (gif or jpg format) </listitem>
+				<listitem>Evergreen supports behind the desk indicator printing on holds slip for patrons who have this flag in their patron record. (This would be for libraries 
+				with public hold shelves.) </listitem>
+				<listitem>In Evergreen, between the time that a hold is checked in and a hold is placed on the hold shelf, there is a configurable delay before the status is changed 
+				to On Hold Shelf. </listitem>
+				<listitem>Evergreen has the ability to ensure that manually edited copies (either deleting or changing to a non-holdable status) will have their holds 
+				retargeted. </listitem>
+				<listitem>In Evergreen, between the time that a hold is checked in and a hold is placed on the hold shelf, there is a configurable delay before the status is 
+				changed to On Hold Shelf. </listitem>
+				<listitem>The system supports a Clear Hold Shelf process. First, it removes holds from items that have expired on the hold shelf, and generates a report (aka clear 
+				hold shelf report) listing items to be cleared from hold shelf. Then staff can print the list, go out and physically pull the items off of the hold shelf. Next, 
+				staff scan the items in EG to either reset the items to the correct shelving location, capture the next hold or put the items in transit to the correct owning 
+				location.</listitem>
+				<listitem>Staff can extend pickup deadlines for holds.</listitem>
+				<listitem>In the patron view in the SC (staff client), you can select multiple holds in actions for selected holds and choose to change the pickup location. 
+				Evergreen has the ability to change the pickup location for all of a patron's holds in a single process. Additionally, Evergreen has the ability to modify all 
+				holds attached to a bibliographic record, including the ability to change the hold expiration date. This functionality is covered with current bib holds list 
+				interface. </listitem>
+				<listitem>Evergreen allows patrons with specific permissions to place holds on items they have already checked out. All other patrons cannot. This works by warning the 
+				user that the item is already checked out to them and, if they have the permission, the system gives them the ability to override. </listitem>
+				<listitem>The system supports the ability to place holds on titles with status on-order. For additional information, see the Acquisitions notes later in this 
+				document. </listitem>
+				<listitem>Evergreen has the ability to designate specific org units that will not trigger a hold upon check-in. </listitem>
+				<listitem>Evergreen added logic to hold targeting to skip branches that are closed at the time of hold placement and <varname>x</varname> time (<varname>x</varname> 
+				time being a set interval). This is 
+				to prevent the hold being targeted at branches that will be closed Saturday and Sunday (for example), making it impossible for patrons to receive their hold. This 
+				presumes there is another copy available at another branch. </listitem>
+				<listitem>There are more options now for hold settings. One option is library weighting as well as looping. If looping is set, the holds targeter will skip any 
+				libraries that it targeted in a previous loop and will continue doing so until it has tried all libraries at which point it will start the process over again. If max 
+				loops are being used in hold management, at the end of the last determined loop, if there are no copies that could potentially fill a hold, the hold may be canceled. 
+				If there are checked-out copies, the hold stays in queue; otherwise, the hold is canceled and a cancellation notice is sent to the patron. </listitem>
+				<listitem>The system offers the ability to secondarily sort the Holds Pull List by physical shelving location within the library.</listitem>
+				<listitem>The system offers the ability to distinguish between staff-placed holds and patron-placed holds through a column in the holds interface. </listitem>
+				<listitem>Hold cancellation can be displayed, along with information regarding the cancellation (e.g., cause, cancellation type, date, item, patron, etc.) </listitem>
+				<listitem>There is support now in the system to allow configuration to disallow holds for items that are on the shelf at the location from which the patron is 
+				searching. </listitem>
+				<listitem>The system supports patron specific hold notes that can display in the OPAC and print in the hold notice, but do not necessarily print on hold slips. </listitem>
+				<listitem>The system supports ability for staff to move someone to the top of the holds queue. This was developed due to cases where a patron picked up a hold but the 
+				item was damaged. Since the patron had picked up the hold, it was considered filled. </listitem>
+				<listitem>The patron can change the pickup location before the hold is ready for pickup. Then, the item is put in transit &amp; a new holds slip is printed with a 
+				special symbol to indicate that the pickup location has been changed. If the location is changed while the item is in transit, than at next checkin the item is put 
+				in transit to the new location. A new holds slip is printed. </listitem>
+				<listitem>The system supports a separate hold note field for staff use that can print on hold slip.</listitem>
+				<listitem>Ability for patrons to view recently canceled holds and easily re-place holds.</listitem>
+			</itemizedlist> 
+		</simplesect>
+	</simplesect>
+	<simplesect>
+		<title>Staff Client Interface Enhancements</title>
+		<itemizedlist>
+			<listitem>Evergreen includes color-coding into staff view of patrons when there is a bad or invalid address. Also included is an alert to patrons in the My Account view 
+			in the OPAC to alert them to the bad address problem. System automatically blocks /unblocks a patron when an address is marked invalid/valid. </listitem>
+			<listitem>Ability to have the staff client automatically minimize after a settable period of inactivity to protect patron privacy. This is controlled through an org 
+			unit setting.</listitem>
+			<listitem>Summary of bills, checkouts, and holds are visible from all of the patron screens.</listitem>
+			<listitem>Historical summary of paid fines is sortable by column and displays sub-totals for each column; also allows the ability to limit by voided/non-voided 
+			payments. Fines history detail includes more information including location and time/date where item was returned and much more. </listitem>
+			<listitem>More streamlined display of copy information including number of copies, copy status, and number of holds in both staff client interface and patron 
+			OPAC.</listitem>
+			<listitem>The system supports the ability to edit item records from any item record access point. </listitem>
+			<listitem>From holding maintenance or item status by barcode, you can retrieve more item details. For example, total circulations by current and previous year, last 
+			status change, last checkout date &amp; works station, last checkin time and workstation, and more. </listitem>
+			<listitem>The system includes a separate date field for the last change to the item in the item record. </listitem>
+			<listitem>In the item record, the system displays total check-outs and renewals for year-to-date, previous year, and lifetime. </listitem>
+			<listitem>Better audio signal handling.</listitem>
+			<listitem>In Evergreen, there is an org setting to disable all staff client circ popups unless an unhandled exception occurs. The exception handling has been automated 
+			as much as possible, based in settings, to prevent the amount of popups that require staff attention at the circ desk. Alerts are communicated visually (e.g., screen 
+			color change) or audibly. </listitem>
+			<listitem>The system supports two views of patron information: horizontal and vertical. </listitem>
+			<listitem>From the patrons screen, under holds, clicking place hold will bring up an embedded catalog. Placing a hold from the embedded catalog will automatically 
+			generate a hold for the current account of the patron you are viewing. </listitem>
+			<listitem>The system supports a new messages (notes) UI in the info tab of the patron screen. </listitem>
+			<listitem>The system supports a new interface that shows the most recent activity on the workstation (checkout/checkin/ renewal/ patron-reg activity, with links to 
+			relevant patron from each item). This would be helpful to a supervisor trying to backtrack an issue to assist a staff member. </listitem>
+			<listitem>The system now captures and displays check-in and workstation history. </listitem>
+			<listitem>Added the ability to pre-define messages, populated in a drop-down menu, to be applied to patron accounts. Includes: the ability to configure the message to 
+			act as a penalty (if desired), record the date and staff who applied the message, include a flag to mark item as resolved. If item is marked as resolved it will not 
+			display as an alert. </listitem>
+			<listitem>Under grocery billings in Evergreen, billing type can be pre-populated with a list of common fine events (such as types and costs). </listitem>
+			<listitem>Evergreen has the ability to retrieve users by numberic ID (separate from the barcode) in the staff client. This functionality is optional and set to false 
+			by default. </listitem>
+			<listitem>Backend support for other types of receipts (like holds/fines).</listitem>
+		</itemizedlist> 
+	</simplesect>
+	<simplesect>
+		<title>OPAC and My Account Enhancements</title>
+		<itemizedlist>
+			<listitem>There is backend code support for a method to allow patrons to link their records in a way that grant privileges. This could be utilized in future 
+			implementations for social networking features. </listitem>
+			<listitem>Patron passwords are now more flexible in length and content (shorter and numeric-only passwords are now allowed). Libraries can set minimum and maximum 
+			limits on password length in Password format in the Library Settings Editor. </listitem>
+			<listitem>Patrons can select a username, which can then be used to access OPAC and self check-out stations.</listitem>
+			<listitem>My Account can allow patrons to update some information including: street address, e-mail address and preferred pick-up library for holds. Changes to address 
+			will be marked as pending in the patron's file until a staff member verifies the new address and completes the change. </listitem>
+			<listitem>From the My Account interface, patrons can see their estimated wait time for a hold. Evergreen calculates the estimated wait time from the circ mods on the set 
+			of potential copies available to fill the holds on that title. Hold wait estimate is configurable at the consortial level and each Evergreen implementation would need 
+			to take into consideration their avg circulation time, hold wait time or other factors like transit time which might influence hold wait estimates. </listitem>
+			<listitem>Patrons can title their bookbags (aka reading list) and place holds from it. </listitem>
+			<listitem>Backend support has been developed to allow patrons to waive certain kinds of notices. </listitem>
+			<listitem>The system supports combining multiple notices of the same type to the same patron into one event, so long as the system is configured to batch notices 
+			on an approximately daily basis.</listitem>
+		</itemizedlist>
+	</simplesect>
+	<simplesect>
+		<title>Billing, Collections and Fine/Fee Enhancements</title>
+		<itemizedlist>
+			<listitem>Fines now consistently link to item record details.</listitem>
+			<listitem>The fine record includes a comments field, editable by staff. Staff can annotate payments and add notes to a specific billing. Staff can sort on payment 
+			type. When adding note, the current text shows as default in a pop-up window, so it can be appended or over-written. </listitem>
+			<listitem>Staff and users can now only pay using the latest user data, which prevents accidental/duplicate payments against the same transaction or against stale 
+			data. </listitem>
+			<listitem>The system supports setting the maximum fine based on item type (e.g. generic=.50) AND not to exceed the cost of item. This works as an inheritable OU 
+			setting, circ.max_fine.cap_at_price, that changes the max_fine amount to the price IF the price is not null and is less than the rule-based max_fine amount. </listitem>
+			<listitem>The system has the ability to run a report of accounts with users with overall negative balances, including the balance owed and last billing activity 
+			time, optionally filtered by home org. There is an option for issuing refunds for selected accounts on the resulting list. The report also captures patrons with 
+			any refundable transaction. </listitem>
+			<listitem>Evergreen provides 3 distinct and independent types of blocks: system, manual and collections. Manual and collections are set manually by staff. </listitem>
+			<listitem>A new penalty type of <varname>PATRON_IN_COLLECTIONS</varname> has been added. Its set when the collections agency puts the patron into collections, staff can define the blocks 
+			and clear threshold for each group, etc. The system supports removing collection block immediately once charges are paid down to zero (applies to both ecommerce and at 
+			CIRC desk).</listitem>
+		</itemizedlist> 
+	</simplesect>
+	<simplesect>
+		<title>Action/Triggered Event and Notice Enhancements</title>
+		<itemizedlist>
+			<listitem>Action Triggers (AT) support many new notices for events such as items that are about to expire off of the hold shelf; items that are on hold and are about 
+			to reach the max hold time (if one is set); courtesy notices that are prior to due date. AT also logs all notices sent to patrons and this is accessible to staff in the 
+			SC to view all notices or cancel all pending notices.</listitem>
+			<listitem>The system has the ability to cancel unsent notices before they are sent and the ability to search pending notices by item barcode.</listitem>
+			<listitem>Administrators can choose to implement a collections warning prior to sending patrons to collections. When the account balance of the patron meets a 
+			certain threshold, they are sent a bill notice. This is driven by the total amount owed, not by individual bills. The patron is sent to collections after a 
+			configurable number of days since the bill notice was sent. The billing notice is handled with a new PATRON_EXCEEDS_COLLECTIONS_WARNING penalty. Files can be sent via 
+			<systemitem class="protocol">SCP</systemitem> and <systemitem class="protocol">FTP</systemitem>.</listitem>
+		</itemizedlist> 
+	</simplesect>
+	<simplesect>
+		<title>Acquisitions</title>
+		<itemizedlist>
+			<listitem>From within the general acquisitions search page, users are able to search on many fields in the acquisitions /serials workflow. For example on attributes 
+			of invoices, purchase orders, selection lists, bib records, etc.</listitem>
+			<listitem>General catalog searching is now supported for explicit truncation/wildcard searches.</listitem>
+			<listitem>Acquisitions line item searches support NOT searches. </listitem>
+			<listitem>Money can be transferred from one fund to another (or to none).</listitem>
+			<listitem>All transactions (except batch EDI delivery to vendors) post in real time including: purchase orders, invoices, fund balances, vendors balances, vendor 
+			statistics and history. EDI delivery delay is configurable at the system level admin interface.</listitem>
+			<listitem>In the User Interface, users now have access to all active funds, spanning multiple years, in the various ordering/invoicing/etc interfaces.</listitem>
+			<listitem>There is support for year-end fiscal turnover process that closes out funds and transfers encumbered amounts into a new fiscal year. This includes the ability 
+			to selectively roll certain funds over, while not rolling over others. </listitem>
+			<listitem> Evergreen handles validation of ordering, receiving,and invoicing processes, using validated data, to satisfy auditor requirements. In the staff client, 
+			there is a menu option which allows staff to locate the PO that resulted in the purchase of that copy.</listitem>
+			<listitem>Selection lists are collections of bibliographic records (short or full) that temporarily store titles being considered for purchase. Selection lists can be 
+			shared for collaborative input.</listitem>			
+			<listitem>Library staff have the ability to create distribution formulas for ease of receiving, processing and distributing materials. Branch, shelving location, and fund need 
+			to be separate from the distribution formula, so that staff can enter the distribution sets. Staff are able to use that formula for any shelving location they decide. Staff 
+			also have the ability to add multiple distribution formulas together and the ability to override distribution formulas. After applying the distribution formula; it will be an 
+			all or none redistribution of copies from one branch to another. Staff can add or delete individual copies because the distribution pattern may not account for the exact total 
+			of copies. If the total number of copies has not been allocated, the user will receive a flag or warning. This puts the use count for each distribution formula in the DF 
+			dropdown for users to see.</listitem>
+			<listitem>The system supports Batch ISBN/UPC search. This is located in the general Acquisitions search page, where you can choose to search by single isbn, upc, or you can 
+			choose to upload a batch of isbns. The ISBN search method looks at MARC tag 024, where UPC codes are supposed to live. For LI searching, the system uses 
+			open-ils.acq.lineitem.search.ident. Catalog records are included in the batch isbn/upc search and staff can now search catalog records in the acq search. </listitem>
+			<listitem>Backend support has been integrated to give patrons the ability to submit purchase requests through the OPAC. The UI for this has not yet been integrated into the 
+			OPAC.</listitem>
+			<listitem>  The system supports claiming, specifically there is:
+				<itemizedlist>
+					<listitem>a place to store the default claim interval for each vendor</listitem>
+					<listitem>a way to show the selected claim date during the order</listitem>
+	`				<listitem>a way to show the selected claim date during the order</listitem>
+	  				<listitem>a way to override the claim date during order</listitem>
+	    				<listitem>a way to list items/orders that have reached the claim date.</listitem>
+				</itemizedlist>
+			A list of items that meet claims requirements can be generated, but claims must be initiated by librarians. </listitem>
+			<listitem>From the UI, staff can access the lineitem and PO history. Entries in the history table are ordered from most recent to oldest.</listitem>
+			<listitem>The purchase order printout is customizable, including the ability to break up a single order into separate purchase orders. Also, staff can print groups 
+			of POs from a search as a single printout, which can be used to generate physical POs for vendors who do not support EDI. Staff can add notes and there is an indicator 
+			in the PO interface of the existence/number of attached notes. </listitem>
+			<listitem>Staff are able to see all of the lineitems (with prices, copy counts, etc.) for a set of Pos and summary information is listed along the top of the page. 
+			The summary information includes: total price, total # lineitems, and total # of copies. Additionally, staff can do a PO search by vendor for all 
+			activated-but-not-yet-sent Pos (i.e., show me what we are about to order) and view the results.</listitem>
+			<listitem>The system supports flagging prepaid orders so that invoicing is handled correctly.</listitem>
+			<listitem>The system allows building orders based on templates (distribution formulas); by shelving location or owning library.</listitem>
+			<listitem>The system supports the ability to gather orders together and send them all at once, instead of manually and individually, a rolling FTP function that runs 
+			every 15 minutes (or other set interval) with detailed log information and control of frequency and action. Additionally, there is an automatic retrieval of status 
+			reports records from the vendor, which are then automatically inserted into the order records. </listitem>
+			<listitem>Staff have the ability to apply and view notes and cancel causes on purchase orders as well as cancel causes on lineitems. In the UI, there is a staff client 
+			menu entry for cancel cause.</listitem>
+			<listitem>There is an interface in the ACQ system for viewing what was sent to vendors via EDI. There are two ways to approach the viewing of sent orders: via PO 
+			search interface (for the general case) which gives finer detail on EDI orders and the ability to reset failed outbound EDI deliveries. </listitem>
+			<listitem>Pending final UI work in the OPAC, the system has the ability to allow patrons to place volume level and issue level holds. </listitem>
+			<listitem>Ability to create and print routing worksheets for manual receiving processes.</listitem>
+			<listitem>Nothing in the selection lists is holdable (either by patrons or by most staff, apart from acquisitions staff). When an on-order title has been canceled and 
+			the lineitem is canceled, the corresponding bib record and on-order copies will be deleted so the copies will no longer be holdable. The lineitem has a cancel cause to 
+			show why order was canceled. Selection list records are never visible in the OPAC. Catalog records with no visible copies (within the search scope) do not show up in 
+			the public OPAC. This also applies to on-order records. </listitem>
+			<listitem>Deleted bibs, callnumbers, copies, and patrons are retained for reporting purposes. Only patrons can be purged (by staff). “Deleted” items are more 
+			accurately described as “inactive.” However, patrons can now be complete purged, however this isn't recommended as you lose historical data.</listitem>
+			<listitem> The system supports shared and floating items by collection. Item records can be added or removed from the collection group and can be updated in batch 
+			via buckets in the copy edit interface.</listitem>
+			<listitem>ACQ permissions control which workgroups have view/edit access to lineitem and catalog records while PO/PL and copy-level ownership and permission depths 
+			affect viewing in other, more location-specific interfaces. </listitem>			
+			<listitem>The system supports the ability to transfer patron holds queue from one bibliographic record to another, singly or in batch, while preserving the original 
+			hold order. </listitem>
+			<listitem>The system has a reporting view which allows staff to identify bibs (shows ISBNs) for which the last item was removed based on the date of removal. 
+			Report templates can be built from this view for external processes.</listitem>
+			<listitem>The system supports lineitem alerts, lineitem receive alerts, and lineitem detail alerts for EDI messaging.</listitem>
+			<listitem>The system supports the ability to exclude some types of items from patron hold limits.</listitem>
+			<listitem>There is support for new, locally defined, cancel reasons for EDI. There is also support for EG interpretation of EDI defined cancellation standards. </listitem>
+			<listitem>The system supports the ability to send batches of orders to vendors, including orders for multiple accounts. The process of breaking outbound EDI messages 
+			into controlled and timed batch sizes is automated but settable to a specific, preferred, time interval.</listitem>
+			<listitem>The system supports the ability to FTP orders directly to vendors and receive acknowledgements and status reports from vendors. More specifically, the 
+			system supports push and pull of files via <systemitem class="protocol">FTP</systemitem>, <systemitem class="protocol">SFTP</systemitem> and 
+			<systemitem class="protocol">SSH</systemitem>. </listitem>
+			<listitem>The system supports MARC file import with PO data.</listitem>
+			<listitem>The OPAC accepts enhanced content from the following vendors: ChiliFresh, Content Café &amp; Novelist. (note that these are subscription services)
+			</listitem>
+			<listitem>You can set up vendor profiles and flag those that are active. Those that aren't can be saved for historical purposes.</listitem>
+			<listitem>The system supports the ability to “flag” vendor records for vendor who require pre-payment of purchase orders with a number of visual cues in the UI. During 
+			PO creation, the pre-payment flag in the form will show and pre-populate it's value with the value from the chosen provider. During PO activation, if prepayment 
+			is required, a confirmation dialog is inserted before sending the activate request. It indicates in the PO summary when a PO requires pre-payment. </listitem>
+			<listitem>The system supports sequential barcode generation for ease of receiving and processing of new items and easily changing large groups of barcodes. There is 
+			a choice to use auto generated barcodes in interfaces where they would normally be used (such as receiving). Some parameters about the barcode symbology may need to 
+			be entered in the admin interface to correctly calculate the barcodes.</listitem>
+			<listitem>The system supports the ability to manually select libraries to receive items when partial orders are received or when items come in multiple deliveries. 
+			Orders with multiple copies will have an owning library per copy, so staff can pick which copies to mark as received.</listitem>
+			<listitem>The system is compatible with Zebra Z4M thermal transfer printers. </listitem>
+			<listitem>The system supports the ability to create, format and print spine labels. </listitem>
+			<listitem>In the ACQ UI, there is a batch fund updater. When there is a given set of line items, the batch fund updater updates the fund for all attached copies in 
+			batch.</listitem>
+			<listitem>The system has a configurable drop-down of alerts for line items that staff can control. </listitem>
+			<listitem>The system supports the ability to update order records at the receiving stage; the ability to receive partial orders and unreceive orders; and the order 
+			record is updated automatically when the balance of a partial order is received. </listitem>
+			<listitem>The system supports the ability to transfer item records from one bibliographic record to another. </listitem>
+			<listitem>The system supports a worksheet for each title received, to include title, call number, number of copies received, distribution, and processing notes. </listitem>
+			<listitem>The system supports the ability to easily scan over a “dummy” or placeholder barcode in a temporary, brief or on-order record by simply scanning the 
+			<quote>real</quote> barcode.</listitem>
+			<listitem>The system supports the import/export of MARC bibliographic and authority records via Vandelay. An option has been added to use the internal bib ID as the TCN 
+			for all records while retaining the OCLC number in the record. The authority import now matches bib import in overlay/merge functionality.</listitem>
+			<listitem>The system is fully compatible with OCLC Connexion for editing and transferring bibliographic and authority records (Z39.50). </listitem>
+			<listitem>The system supports the ability to create a <quote>short bib</quote> record pending creation of the full MARC record. Short bibs can be created from a lineitem 
+			search. </listitem>
+			<listitem>The system supports a utility to facilitate searching for full bibliographic records and create temporary <quote>short</quote> bibliographic records if no full 
+			records are found. </listitem>
+			<listitem>Added the ability to perform electronic receiving and invoicing as follows: ability to receive electronic packing slips and invoices by purchase order or 
+			invoice number; ability to edit number of copies, amount due, freight and service charges, and tax; ability to delete line items; ability to recalculate total 
+			amounts; ability to authorize payment within ILS.</listitem>
+			<listitem>System supports the ability to do both regular and generic or blanket invoicing (refers to invoices without a purchase order number, e.g., direct charges to 
+			a fund).</listitem>
+			<listitem>System supports simultaneous access to invoice interface.</listitem>
+			<listitem>System supports a number of fields including: date, invoice number, invoice type, shipping vendor name, billing vendor, purchase order number, title, 
+			author, number of copies ordered, number of copies paid or received, number of copies available for payment, number of copies being paid for, amount, notes, 
+			invoice subtotal, freight charge, service charge, tax, invoice total, &amp; vendor order was placed with. </listitem>
+			<listitem>The system prevents overpayment in the invoice view page by linking invoices to PO/Lineitems. </listitem>
+			<listitem>Staff can print a list of invoices paid before/after a specified date. When searching for invoices in the unified search interface, there's now a button that 
+			will print a voucher for whichever invoices have checked checkboxes.</listitem>
+			<listitem>The system supports the ability to search invoices by number or vendor name, with links to vendors, and vendor records include links to invoice history.</listitem>
+			<listitem>Staff can retrieve a PO or lineitem and access all the related invoicing data. </listitem>
+			<listitem>The system supports reopening a closed invoice (example: an invoice was paid from the wrong fund; staff wants to go back and change the fund). There is 
+			a <guibutton>Reopen</guibutton> button, which requires permissions. </listitem>
+			<listitem>The system has the ability to pay a partial invoice for partial receipt of shipment, and then generate claims for the items that were not received. Also, 
+			the system supports invoicing extra copies when a vendor sends more copies than what staff ordered and staff decides to keep the extra copies. </listitem>
+			<listitem>Issues can be automatically moved to a configured shelving location upon receipt of the newer issue. This can be done on a per item basis and is based on 
+			the owning library of the copies. </listitem>
+			<listitem>When using full serials control, the default behavior for serials issue sorting and display in the holdings display will be reverse chronological order.</listitem>
+			<listitem>Staff can label serials issuances with easily identifiable text such as <quote>YYYYMONTH</quote> or <quote>V.12 NO.1</quote>.</listitem>
+			<listitem>In serials receiving staff are able to choose which issues to receive and distribute to which locations.</listitem>	
+			<listitem>Staff can add regular, supplemental, and index issues in the serials interface. </listitem>
+			<listitem>The system supports purchase alert query (aka holds ratio report, holds alert report) compares holds to items and flags titles that need more copies. 
+			The option exists to include inprint/out-of-print status from the bibliographic record. The system also handles the ability to add query results directly to 
+			selection lists, singly or in batch, and the ability to create order records directly from query results. This is handled by an interface for uploading a CSV file 
+			to generate a page of bib records that can have lineitems created from them to go into selection lists and/or POs.</listitem>
+		</itemizedlist> 
+	</simplesect>
+</chapter>
