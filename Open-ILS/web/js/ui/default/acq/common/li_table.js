@@ -84,7 +84,11 @@ function AcqLiTable() {
     };
 
     acqLitCreatePoSubmit.onClick = function() {
-        if (self._confirmPoPrepaySituation()) {
+        if (!self.createPoProviderSelector.attr("value") ||
+                !self.createPoAgencySelector.attr("value")) {
+            alert(localeStrings.CREATE_PO_INVALID);
+            return false;
+        } else if (self._confirmPoPrepaySituation()) {
             acqLitPoCreateDialog.hide();
             self._createPO(acqLitPoCreateDialog.getValues());
         } else {
