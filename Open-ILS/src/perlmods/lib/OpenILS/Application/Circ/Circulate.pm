@@ -2511,6 +2511,17 @@ sub do_checkin {
                 $self->fake_hold_dest(0);
                 return if $self->bail_out;
 
+            } elsif ($hold and $hold->hold_type eq 'R') {
+
+                $self->copy->status(OILS_COPY_STATUS_CATALOGING);
+                $self->notify_hold(0); # No need to notify
+                $self->fake_hold_dest(0);
+                $self->noop(1); # Don't try and capture for other holds/transits now
+                $self->update_copy();
+                $hold->fulfillment_time('now');
+                $self->bail_on_events($self->editor->event)
+                    unless $self->editor->update_action_hold_request($hold);
+
             } else {
 
                 # hold transited to correct location
@@ -2911,12 +2922,24 @@ sub attempt_checkin_hold_capture {
 
     $self->retarget($retarget);
 
+    my $suppress_transit = 0;
+    if( $hold->pickup_lib != $self->circ_lib and not $self->hold_as_transit ) {
+        my $suppress_transit_circ = $U->ou_ancestor_setting($self->circ_lib, 'circ.transit.suppress_hold');
+        if($suppress_transit_circ && $suppress_transit_circ->{value}) {
+            my $suppress_transit_pickup = $U->ou_ancestor_setting($hold->pickup_lib, 'circ.transit.suppress_hold');
+            if($suppress_transit_pickup && $suppress_transit_circ->{value} eq $suppress_transit_pickup->{value}) {
+                $suppress_transit = 1;
+                $self->hold->pickup_lib($self->circ_lib);
+            }
+        }
+    }
+
     $logger->info("circulator: found permitted hold ".$hold->id." for copy, capturing...");
 
     $hold->current_copy($copy->id);
     $hold->capture_time('now');
     $self->put_hold_on_shelf($hold) 
-        if $hold->pickup_lib == $self->circ_lib;
+        if ($suppress_transit || ($hold->pickup_lib == $self->circ_lib and not $self->hold_as_transit) );
 
     # prevent DB errors caused by fetching 
     # holds from storage, and updating through cstore
@@ -2934,26 +2957,22 @@ sub attempt_checkin_hold_capture {
 
     return 0 if $self->bail_out;
 
-    my $suppress_transit = 0;
-    if( $hold->pickup_lib != $self->circ_lib and not $self->hold_as_transit ) {
-        my $suppress_transit_circ = $U->ou_ancestor_setting($self->circ_lib, 'circ.transit.suppress_hold');
-        if($suppress_transit_circ && $suppress_transit_circ->{value}) {
-            my $suppress_transit_pickup = $U->ou_ancestor_setting($hold->pickup_lib, 'circ.transit.suppress_hold');
-            if($suppress_transit_pickup && $suppress_transit_circ->{value} eq $suppress_transit_pickup->{value}) {
-                $suppress_transit = 1;
-                $self->hold->pickup_lib($self->circ_lib);
-            }
-        }
-    }
-
     if( $suppress_transit or ( $hold->pickup_lib == $self->circ_lib && not $self->hold_as_transit ) ) {
 
-        # This hold was captured in the correct location
-        $copy->status(OILS_COPY_STATUS_ON_HOLDS_SHELF);
-        $self->push_events(OpenILS::Event->new('SUCCESS'));
+        if ($hold->hold_type eq 'R') {
+            $copy->status(OILS_COPY_STATUS_CATALOGING);
+            $hold->fulfillment_time('now');
+            $self->noop(1); # Block other transit/hold checks
+            $self->bail_on_events($self->editor->event)
+                unless $self->editor->update_action_hold_request($hold);
+        } else {
+            # This hold was captured in the correct location
+            $copy->status(OILS_COPY_STATUS_ON_HOLDS_SHELF);
+            $self->push_events(OpenILS::Event->new('SUCCESS'));
 
-        #$self->do_hold_notify($hold->id);
-        $self->notify_hold($hold->id);
+            #$self->do_hold_notify($hold->id);
+            $self->notify_hold($hold->id);
+        }
 
     } else {
     
@@ -2967,6 +2986,7 @@ sub attempt_checkin_hold_capture {
 
     # make sure we save the copy status
     $self->update_copy;
+    return 0 if $copy->status == OILS_COPY_STATUS_CATALOGING;
     return 1;
 }
 

@@ -307,7 +307,7 @@ sub nearest_hold {
 		  	AND h.cancel_time IS NULL
 		  	AND (h.expire_time IS NULL OR h.expire_time > NOW())
             AND h.frozen IS FALSE
-		ORDER BY $holdsort
+		ORDER BY CASE WHEN h.hold_type IN ('R','F') THEN 0 ELSE 1 END, $holdsort
 		LIMIT $limit
 	SQL
 	
@@ -1039,7 +1039,7 @@ sub new_hold_copy_targeter {
 							  frozen => 'f',
 							  prev_check_time => { '<=' => $expire_threshold },
 							},
-							{ order_by => 'CASE WHEN hold_type = \'F\' THEN 0 ELSE 1 END, selection_depth DESC, request_time,prev_check_time' } ) ];
+							{ order_by => 'selection_depth DESC, request_time,prev_check_time' } ) ];
 
 			# find all the holds holds needing first time targeting
 			push @$holds, action::hold_request->search(
@@ -1048,7 +1048,7 @@ sub new_hold_copy_targeter {
 				  			prev_check_time => undef,
 							frozen => 'f',
 							cancel_time => undef,
-							{ order_by => 'CASE WHEN hold_type = \'F\' THEN 0 ELSE 1 END, selection_depth DESC, request_time' } );
+							{ order_by => 'selection_depth DESC, request_time' } );
 		} else {
 
 			# find all the holds holds needing first time targeting ONLY
@@ -1058,7 +1058,7 @@ sub new_hold_copy_targeter {
 				  			prev_check_time => undef,
 							cancel_time => undef,
 							frozen => 'f',
-							{ order_by => 'CASE WHEN hold_type = \'F\' THEN 0 ELSE 1 END, selection_depth DESC, request_time' } ) ];
+							{ order_by => 'selection_depth DESC, request_time' } ) ];
 		}
 	} catch Error with {
 		my $e = shift;
@@ -1230,14 +1230,17 @@ sub new_hold_copy_targeter {
 				push @$all_copies, $_cp if $_cp;
 			}
 
-			# trim unholdables
-			@$all_copies = grep {	isTrue($_->status->holdable) && 
-						isTrue($_->location->holdable) && 
-						isTrue($_->holdable) &&
-						!isTrue($_->deleted) &&
-						(isTrue($hold->mint_condition) ? isTrue($_->mint_condition) : 1) &&
-						($hold->hold_type ne 'P' ? $_->part_maps->count == 0 : 1)
-					} @$all_copies;
+            # Force and recall holds bypass pretty much everything
+            if ($hold->hold_type ne 'R' && $hold->hold_type ne 'F') {
+    			# trim unholdables
+	    		@$all_copies = grep {	isTrue($_->status->holdable) && 
+		    				isTrue($_->location->holdable) && 
+			    			isTrue($_->holdable) &&
+				    		!isTrue($_->deleted) &&
+					    	(isTrue($hold->mint_condition) ? isTrue($_->mint_condition) : 1) &&
+						    ($hold->hold_type ne 'P' ? $_->part_maps->count == 0 : 1)
+    					} @$all_copies;
+            }
 
 			# let 'em know we're still working
 			$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
@@ -1351,8 +1354,13 @@ sub new_hold_copy_targeter {
 
 			$all_copies = [grep { $_->status == 0 || $_->status == 7 } grep {''.$_->circ_lib ne $pu_lib } @good_copies];
 			# $all_copies is now a list of copies not at the pickup library
-
-			my $best = choose_nearest_copy($hold, $prox_list);
+			
+            my $best;
+            if  ($hold->hold_type eq 'R' || $hold->hold_type eq 'F') { # Recall/Force holds bypass hold rules.
+                $best = $good_copies[0] if(scalar @good_copies);
+            } else {
+                $best = choose_nearest_copy($hold, $prox_list);
+            }
 			$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
 
 			if (!$best) {

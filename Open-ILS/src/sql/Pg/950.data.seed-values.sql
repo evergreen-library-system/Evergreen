@@ -1448,7 +1448,11 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 515, 'UPDATE_PATRON_PRIMARY_CARD', oils_i18n_gettext( 515,
     'Allows a user to manually adjust a patron''s primary card', 'ppl', 'description')),
  ( 516, 'CREATE_REPORT_TEMPLATE', oils_i18n_gettext( 516,
-    'Allows a user to create report templates', 'ppl', 'description' ));
+    'Allows a user to create report templates', 'ppl', 'description' )),
+ ( 517, 'COPY_HOLDS_FORCE', oils_i18n_gettext( 517, 
+    'Allow a user to place a force hold on a specific copy', 'ppl', 'description' )),
+ ( 518, 'COPY_HOLDS_RECALL', oils_i18n_gettext( 518, 
+    'Allow a user to place a recall hold on a specific copy', 'ppl', 'description' ));
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
 

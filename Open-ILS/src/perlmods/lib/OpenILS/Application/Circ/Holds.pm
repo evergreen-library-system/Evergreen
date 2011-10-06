@@ -288,10 +288,14 @@ sub create_hold {
         return $e->die_event unless $e->allowed('ISSUANCE_HOLDS', $porg);
     } elsif ( $t eq OILS_HOLD_TYPE_COPY ) {
         return $e->die_event unless $e->allowed('COPY_HOLDS',   $porg);
-    } elsif ( $t eq OILS_HOLD_TYPE_FORCE ) {
-        return $e->die_event unless $e->allowed('COPY_HOLDS',   $porg);
-    } elsif ( $t eq OILS_HOLD_TYPE_RECALL ) {
-        return $e->die_event unless $e->allowed('COPY_HOLDS',   $porg);
+    } elsif ( $t eq OILS_HOLD_TYPE_FORCE || $t eq OILS_HOLD_TYPE_RECALL ) {
+		my $copy = $e->retrieve_asset_copy($hold->target)
+			or return $e->die_event;
+        if ( $t eq OILS_HOLD_TYPE_FORCE ) {
+            return $e->die_event unless $e->allowed('COPY_HOLDS_FORCE',   $copy->circ_lib);
+        } elsif ( $t eq OILS_HOLD_TYPE_RECALL ) {
+            return $e->die_event unless $e->allowed('COPY_HOLDS_RECALL',   $copy->circ_lib);
+        }
     }
 
     if( @events ) {
@@ -2285,6 +2289,7 @@ sub do_possibility_checks {
         return $e->event unless $volume = $e->retrieve_asset_call_number($copy->call_number);
         return $e->event unless $title  = $e->retrieve_biblio_record_entry($volume->record);
 
+        return (1, 1, []) if( $hold_type eq OILS_HOLD_TYPE_RECALL || $hold_type eq OILS_HOLD_TYPE_FORCE);
         return verify_copy_for_hold( 
             $patron, $e->requestor, $title, $copy, $pickup_lib, $request_lib
         );
@@ -2847,10 +2852,6 @@ sub find_nearest_permitted_hold {
 			capture_time => undef 
 		} 
 	);
-
-	# hold->type "R" means we need this copy
-	for my $h (@$old_holds) { return ($h) if $h->hold_type eq 'R'; }
-
 
     my $hold_stall_interval = $U->ou_ancestor_setting_value($user->ws_ou, OILS_SETTING_HOLD_SOFT_STALL);
 
@@ -3519,7 +3520,7 @@ sub hold_has_copy_at {
         limit => 1
     };
 
-    if($hold_type eq 'C') {
+    if($hold_type eq 'C' or $hold_type eq 'F' or $hold_type eq 'R') {
 
         $query->{where}->{'+acp'}->{id} = $hold_target;
 
