@@ -851,7 +851,13 @@ sub delete_picklist {
     $picklist = $mgr->editor->retrieve_acq_picklist($picklist) unless ref $picklist;
 
     # delete all 'new' lineitems
-    my $li_ids = $mgr->editor->search_acq_lineitem({picklist => $picklist->id, state => 'new'}, {idlist => 1});
+    my $li_ids = $mgr->editor->search_acq_lineitem(
+        {
+            picklist => $picklist->id,
+            "-or" => {state => "new", purchase_order => undef}
+        },
+        {idlist => 1}
+    );
     for my $li_id (@$li_ids) {
         my $li = $mgr->editor->retrieve_acq_lineitem($li_id);
         return 0 unless delete_lineitem($mgr, $li);
