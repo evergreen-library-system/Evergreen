@@ -21,7 +21,15 @@
 */
 
 // Debugging aids.  _dump_level = 4 enables all dump statements
-_dump_level = 4;
+try {
+    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces['nsIPrefBranch']);
+    if (prefs.prefHasUserValue('oils.dump_level')) {
+        _dump_level = prefs.getIntPref('oils.dump_level');
+    }
+} catch(E) {
+    dump('Error setting _dump_level in custom.js for ' + location.href + '\n');
+}
 
 var _dump_prefix = '0';
 try {
