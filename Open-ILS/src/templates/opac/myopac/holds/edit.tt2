@@ -22,8 +22,13 @@
         <a href="[% ctx.opac_root %]/myopac/holds">[% l('List all holds') %]</a>
     </div>
     <div id="hold_editor">
-        [% IF hold %]
-            <h1>[% attrs.title | html %]</h1>
+        [%  IF hold;
+                title = attrs.title;
+                IF ahr.hold_type == 'P';
+                    title = l('[_1] ([_2])', title, hold.hold.part.label);
+                END 
+        %]
+            <h1>[% title | html %]</h1>
             <h2>[% attrs.author | html %]</h2>
             [% IF attrs.format_icon %]<p>
                 <strong>[% l('Format:') %]</strong>

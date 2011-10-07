@@ -37,18 +37,10 @@
                         <option id='myopac_holds_actions_none' value=''>
                         -- [% l("Actions for selected holds") %] --
                         </option>
-                        <option value='suspend'>
-                            [% l("Suspend") %]
-                        </option>
-                        <option value='activate'>
-                            [% l("Activate") %]
-                        </option>
-                        <!-- XXX maybe later <option value='thaw_date'>
-                            [% l("Set Active Date") %]
-                        </option> -->
-                        <option value='cancel'>
-                            [% l("Cancel") %]
-                        </option>
+                        <option value='suspend'>[% l("Suspend") %]</option>
+                        <option value='activate'>[% l("Activate") %]</option>
+                        <!-- XXX maybe later <option value='thaw_date'>[% l("Set Active Date") %]</option> -->
+                        <option value='cancel'>[% l("Cancel") %]</option>
                     </select>
                 </td>
                 <td width="1" style="padding-left:9px;">
@@ -141,7 +133,13 @@
                     </td>
                     <td width="138">
                         <div style="margin-top:10px;margin-bottom:10px;">
-                            <a href="[% ctx.opac_root %]/record/[% hold.hold.bre_id %]">[% attrs.title | html %]</a>
+                            [% 
+                                title = attrs.title;
+                                IF ahr.hold_type == 'P';
+                                    title = l('[_1] ([_2])', title, hold.hold.part.label);
+                                END;
+                            %]
+                            <a href="[% ctx.opac_root %]/record/[% hold.hold.bre_id %]">[% title | html %]</a>
                         </div>
                     </td>
                     <td width="123">
