@@ -168,7 +168,10 @@ BEGIN
           LIMIT 1;
     END IF;
 
-    IF thes_code = 'z' THEN
+    thes_code := vandelay.marc21_extract_fixed_field(marcxml,'Subj');
+    IF thes_code IS NULL THEN
+        thes_code := '|';
+    ELSIF thes_code = 'z' THEN
         thes_code := COALESCE( oils_xpath_string('//*[@tag="040"]/*[@code="f"][1]', marcxml), '' );
     END IF;
 
