@@ -136,6 +136,14 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL IMMUTABLE;
 
+CREATE OR REPLACE FUNCTION authority.simple_normalize_heading( marcxml TEXT ) RETURNS TEXT AS $func$
+    SELECT authority.normalize_heading($1, TRUE);
+$func$ LANGUAGE SQL IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION authority.normalize_heading( marcxml TEXT ) RETURNS TEXT AS $func$
+    SELECT authority.normalize_heading($1, FALSE);
+$func$ LANGUAGE SQL IMMUTABLE;
+
 
 CREATE TABLE authority.simple_heading (
     id              BIGSERIAL   PRIMARY KEY,
