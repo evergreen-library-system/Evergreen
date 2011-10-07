@@ -426,7 +426,6 @@ function holdsDrawWindow() {
 	$('holds_cancel').onclick = function(){ runEvt('common', 'holdUpdateCanceled'), showCanvas() };
 	$('holds_submit').onclick = function(){holdsPlaceHold(holdsBuildHoldFromWindow())};
 	$('holds_update').onclick = function(){holdsPlaceHold(holdsBuildHoldFromWindow())};
-    $('holds_org_selector').onchange = function(){holdsDrawWindow()};
 	holdFetchObjects(null, 
 		function(){
 			__holdsDrawWindow();
