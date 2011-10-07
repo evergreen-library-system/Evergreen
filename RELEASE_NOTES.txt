@@ -61,6 +61,18 @@ Circulation improvements:
   loan period to a specified value; change the fine rules; and send email
   notification to the person who currently holds the item saying "A hold has
   been placed on this item, get it back before <new_due_date>".
+* Weighting of the individual fields of the in-database circulation and holds
+  rules can now be configured, rather than using hard-coded values. This allows
+  the importance of each field to be adjusted as needed.
+* The in-database circulation rules support "fall-through" wherein some
+  information can be left out of more specific rules and filled in from less
+  specific rules. For example, disabling fines for staff could be accomplished
+  with a single rule setting only the fine rate and/or max fine rules, without
+  having to duplicate all duration related rules in the system.
+* Grace periods are now stored in the database and set via circulation rules,
+  rather than passed into the fine generation code, and can thus differ between
+  different rules. They are also no longer based on a number of fine intervals,
+  but are instead defined by their own specific interval.
 
 Public interface improvements:
 ------------------------------
@@ -77,6 +89,20 @@ Public interface improvements:
 * Set a JavaScript cache token when `autogen.sh` is run, so that a subsequent
   run of `autogen.sh` will automatically cause browsers to fetch refreshed
   copies of generated files.
+
+Staff client improvements:
+--------------------------
+* The client supports new hotkey sets that are selectable per workstation. In
+  addition, there is now a toggle for temporarily disabling hotkeys available
+  on the toolbar and in the admin menu.
+* The client has a second toolbar for cataloging functions as well as options
+  controlling the presence and size of icons and presence and position of
+  labels. To support the preferences of individual staff, each workstation can
+  be configured differently.
+* Patron registration now supports "Suggested" fields that are configurable
+  per library. In addition, library settings allow required fields to be
+  adjusted, and it is possible to specify regular expressions to validate
+  input for many fields in the patron registration interface.
 
 New library settings:
 ---------------------
@@ -147,3 +173,4 @@ New library settings:
 | Recalls: Circulation duration that triggers a recall.                    | Recalls: A hold placed on an item with a circulation duration longer than this will trigger a recall. For example, "14 days" or "3 weeks".
 | Recalls: Truncated loan period.                                          | Recalls: When a recall is triggered, this defines the adjusted loan period for the item. For example, "4 days" or "1 week".
 |===============================
+
