@@ -6,6 +6,9 @@ Installation enhancements:
 * `eg_db_config.pl` now has a `--create-database` option to automatically create
   the database and add the required contrib modules/extensions, rather than
   requiring users to carry out a number of error-prone manual steps.
+* The OpenILS Perl modules are now installed in the system Perl package
+  directories.  In prior versions, they were typically installed in 
+  `/openils/lib/perl5`.
 * README is now the single source of install instructions
 
 Administration enhancements:
