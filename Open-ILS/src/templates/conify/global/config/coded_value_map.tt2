@@ -1,5 +1,5 @@
 [% WRAPPER base.tt2 %]
-<h1>Code Value Maps</h1> <br/>
+<h1>Coded Value Maps</h1> <br/>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
     <div>Coded Value Maps</div>
