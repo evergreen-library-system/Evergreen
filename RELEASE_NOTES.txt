@@ -1,8 +1,8 @@
 Evergreen 2.1 release notes
 ===========================
 
-Installation enhancements:
---------------------------
+Installation enhancements
+-------------------------
 * `eg_db_config.pl` now has a `--create-database` option to automatically create
   the database and add the required contrib modules/extensions, rather than
   requiring users to carry out a number of error-prone manual steps.
@@ -11,8 +11,8 @@ Installation enhancements:
   `/openils/lib/perl5`.
 * README is now the single source of install instructions
 
-Administration enhancements:
-----------------------------
+Administration enhancements
+---------------------------
 * Automatic client updates: It is now possible to build staff clients that,
   when they connect to the Evergreen server, automatically check to see if
   the staff client has been updated. If so, the staff client can download just
@@ -25,8 +25,8 @@ Administration enhancements:
   invoke debugging functions such as the Javascript Shell or DOM Inspector
    in the staff client.
 
-Cataloging enhancements:
-------------------------
+Cataloging enhancements
+-----------------------
 * Unified copy / call number editor: The default holdings maintenance interface
   now enables cataloguers to edit copies and call numbers on a single screen.
 * Call number prefixes and suffixes: While previous releases of Evergreen
@@ -51,8 +51,8 @@ Cataloging enhancements:
   associate them all with a single barcode, so that when the electronic reader
   is signed out, the availability for all 1000 records changes to "Checked out".
 
-Circulation improvements:
--------------------------
+Circulation improvements
+------------------------
 * Transfer selected holds to a different title: It is now possible to select
   multiple holds on a given title and transfer them to a different title.
   USE CASE?
@@ -77,8 +77,8 @@ Circulation improvements:
   different rules. They are also no longer based on a number of fine intervals,
   but are instead defined by their own specific interval.
 
-Public interface improvements:
-------------------------------
+Public interface improvements
+-----------------------------
 * Spell-checking suggestions are now case-insensitive, to avoid generating
   terms which would yield the same result set.
 * Part holds: patrons are guided to select a specific part if they are
@@ -93,8 +93,8 @@ Public interface improvements:
   run of `autogen.sh` will automatically cause browsers to fetch refreshed
   copies of generated files.
 
-Staff client improvements:
---------------------------
+Staff client improvements
+-------------------------
 * The client supports new hotkey sets that are selectable per workstation. In
   addition, there is now a toggle for temporarily disabling hotkeys available
   on the toolbar and in the admin menu.
@@ -107,8 +107,8 @@ Staff client improvements:
   adjusted, and it is possible to specify regular expressions to validate
   input for many fields in the patron registration interface.
 
-New configuration and administration settings:
-----------------------------------------------
+New configuration and administration settings
+---------------------------------------------
 
 New `opensrf.xml` settings
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
