@@ -81,8 +81,48 @@ Public interface improvements:
   run of `autogen.sh` will automatically cause browsers to fetch refreshed
   copies of generated files.
 
-New library settings:
----------------------
+New configuration and administration settings:
+----------------------------------------------
+
+New `opensrf.xml` settings
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+(The path to these settings is relative to `/opensrf/default/apps/`).
+
+* `open-ils.search/app_settings/default_CD_modifiers`: parameters to
+  the cover density ranking function used to calculate relevance during
+  bibliographic searches.
+* `open-ils.trigger/app_settings/parallel/collect`: number of parallel
+  processes that `action_trigger_runner.pl` should use when collecting events.
+  Setting this can decrease the time it takes for Action/Trigger processing to
+  run on large Evergreen databases.
+* `open-ils.trigger/app_settings/parallel/react`: number of parallel
+  processes that `action_trigger_runner.pl` should use when processing event reactors.
+  Setting this can decrease the time it takes for Action/Trigger processing to
+  run on large Evergreen databases.
+* `open-ils.resolver/app_settings/cache_timeout`: how long to cache results
+  from your OpenURL resolver.
+* `open-ils.resolver/app_settings/default_url_base`: set to the base URL
+  of your OpenURL resolver.
+
+In addition, the `default_preferred_language` and `default_preferred_language_weight`
+settings have been moved from the `open-ils.storage` section to the `open-ils.search`
+section of `opensrf.xml`.
+
+New administration pages
+~~~~~~~~~~~~~~~~~~~~~~~~
+The following new administration pages can all be accessed
+from the `Admin | Server Administration` menu item in the staff client:
+
+* Call Number Prefixes
+* Call Number Suffixes
+* Circulation Matchpoint Weights
+* Hold Matchpoint Weights
+* MARC Coded Value Maps
+* MARC Record Attributes
+* Weights Associations
+
+New library settings
+~~~~~~~~~~~~~~~~~~~~
 [options="header"]
 |===============================
 | Label | Description
