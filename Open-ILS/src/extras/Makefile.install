@@ -228,12 +228,14 @@ DEB_APACHE_DISMODS = \
     deflate
 
 # Chronically unpackaged CPAN modules
+# Note older version of Net::Z3950::SimpleServer to avoid yaz 4.1.x dependency
 CPAN_MODULES = \
-    Business::EDI \
-    Library::CallNumber::LC \
-    Net::Z3950::Simple2ZOOM \
+	Business::EDI \
+	Library::CallNumber::LC \
+	M/MI/MIRK/Net-Z3950-SimpleServer-1.12.tar.gz \
+	Net::Z3950::Simple2ZOOM \
 	Template::Plugin::POSIX \
-    SRU
+	SRU
 
 # More chronically unpackaged CPAN modules (available in Squeeze though)
 CPAN_MODULES_MORE = \
