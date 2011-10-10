@@ -65,9 +65,9 @@ FEDORA=$(shell uname -r | grep "\.fc[0-9][0-9]\.")
 FEDORA_64=$(shell uname -r | grep "\.fc[0-9][0-9]\.x86_64")
 
 #RHEL/Centos PGSQL 
-PGSQL_HOST=http://yum.pgsqlrpms.org/reporpms/8.4
-PGSQL_CENTOS=pgdg-centos-8.4-2.noarch.rpm
-PGSQL_REDHAT=pgdg-redhat-8.4-2.noarch.rpm	
+PGSQL_HOST=http://yum.pgsqlrpms.org/reporpms/9.0
+PGSQL_CENTOS=pgdg-centos-9.0-2.noarch.rpm
+PGSQL_REDHAT=pgdg-redhat-9.0-2.noarch.rpm	
 
 # Debian dependencies
 DEBS =  \
