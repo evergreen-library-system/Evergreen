@@ -93,6 +93,25 @@ Public interface improvements
   run of `autogen.sh` will automatically cause browsers to fetch refreshed
   copies of generated files.
 
+Serials enhancements
+--------------------
+* Clone subscriptions: new functionality available in the alternate
+  serials control view to clone subscriptions, thereby speeding initial
+  setup of a lot of subscriptions.
+* MFHD/Distribution summary methods: enable the summary method field for
+  generating summary holdings statements from the distribution and/or
+  the record entry (MFHD).  The four options that are available are:
+  ** Add to record entry
+  ** Merge with record entry
+  ** Use record entry only
+  ** Do not use record entry
+* Advanced receiving: rename the previous serials receiving interface
+  to "advanced receiving".  The new "receive" interface will now show items
+  from an entire subscription, but not allow you to receive directly into
+  a specific unit.
+* Unit-less receiving: new option for receiving serials into a 'no unit',
+  allowing items to be received but not unitized.
+
 Staff client improvements
 -------------------------
 * The client supports new hotkey sets that are selectable per workstation. In
