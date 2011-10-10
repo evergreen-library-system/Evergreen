@@ -1,3 +1,24 @@
+-- Evergreen DB patch 0636.data.grace_period_extend.sql
+--
+-- OU setting turns on grace period auto extension. By default they only do so
+-- when the grace period ends on a closed date, but there are two modifiers to
+-- change that.
+-- 
+-- The first modifier causes grace periods to extend for all closed dates that
+-- they intersect. This is "grace periods are only consumed by open days."
+-- 
+-- The second modifier causes a grace period that ends just before a closed
+-- day, with or without extension having happened, to include the closed day
+-- (and any following it) as well. This is mainly so that a backdate into the
+-- closed period following the grace period will assume the "best case" of the
+-- item having been returned after hours on the last day of the closed date.
+--
+BEGIN;
+
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0636', :eg_version);
+
 INSERT INTO config.org_unit_setting_type(name, grp, label, description, datatype) VALUES
 
 ( 'circ.grace.extend', 'circ',
@@ -26,3 +47,6 @@ INSERT INTO config.org_unit_setting_type(name, grp, label, description, datatype
          'If enabled and Grace Periods auto-extending is turned on grace periods will include closed dates that directly follow the last day of the grace period, to allow a backdate into the closed dates to assume "returned after hours on the last day of the grace period, and thus still within it" automatically.',
         'coust', 'description'),
     'bool', null);
+
+
+COMMIT;
