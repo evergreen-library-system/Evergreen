@@ -95,6 +95,8 @@ Public interface improvements
 
 Serials enhancements
 --------------------
+* Routing lists: it is now possible to define and print routing lists for
+  subscriptions.
 * Clone subscriptions: new functionality available in the alternate
   serials control view to clone subscriptions, thereby speeding initial
   setup of a lot of subscriptions.
@@ -113,6 +115,19 @@ Serials enhancements
   allowing items to be received but not unitized (i.e., created as a
   circulating copy record).  This allows issues to be received for
   reading room or non-circulating use.
+* Caption/pattern enhancements:
+  ** The Caption/Pattern Wizard now includes a graphical way to include
+     regularity information (i.e., the values typically conveyed in the 85x subfield
+     $y).
+  ** Caption and pattern information can now be imported from the 85x fields of the
+     MFHD, allowing the Caption/Pattern Wizard to be bypassed.
+* Can now create one-off issuances for unpredicted or unexpected serial issues.
+* Improvements to the copy template editor for serials, including the addition
+  of reasonable default values for some fields.
+* Various minor interface improvements, including new links between various pages
+  in the serials control interfaces and removing redundant questions from the holding code
+  mini-wizard.
+* Bugfixes to the batch receive interface.
 
 Staff client improvements
 -------------------------
