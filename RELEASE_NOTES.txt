@@ -238,3 +238,33 @@ New library settings
 | Recalls: Truncated loan period.                                          | Recalls: When a recall is triggered, this defines the adjusted loan period for the item. For example, "4 days" or "1 week".
 |===============================
 
+New user permissions
+~~~~~~~~~~~~~~~~~~~~
+[options="header"]
+|===============================
+| Code | Description
+| ADMIN_CODED_VALUE                | Create/Update/Delete SVF Record Attribute Coded Value Map
+| ADMIN_SERIAL_ITEM                | Create/Retrieve/Update/Delete Serial Item
+| ADMIN_SVF                        | Create/Update/Delete SVF Record Attribute Defintion
+| CREATE_BIB_PTYPE                 | Create Bibliographic Record Peer Type
+| CREATE_MONOGRAPH_PART            | Create monograph part definition.
+| CREATE_PURCHASE_REQUEST          | Create User Purchase Request
+| CREATE_VOLUME_PREFIX             | Create prefix label definition.
+| CREATE_VOLUME_SUFFIX             | Create suffix label definition.
+| DEBUG_CLIENT                     | Allows a user to use debug functions in the staff client
+| DELETE_BIB_PTYPE                 | Delete Bibliographic Record Peer Type
+| DELETE_MONOGRAPH_PART            | Delete monograph part definition.
+| DELETE_VOLUME_PREFIX             | Delete prefix label definition.
+| DELETE_VOLUME_SUFFIX             | Delete suffix label definition.
+| MAP_MONOGRAPH_PART               | Create/Update/Delete Copy Monograph Part Map
+| MARK_ITEM_MISSING_PIECES         | Allows the Mark Item Missing Pieces action.
+| UPDATE_BIB_PTYPE                 | Update Bibliographic Record Peer Type
+| UPDATE_HOLD_REQUEST_TIME         | Allows editing of a hold's request time, and/or its Cut-in-line/Top-of-queue flag.
+| UPDATE_MONOGRAPH_PART            | Update monograph part definition.
+| UPDATE_PATRON_COLLECTIONS_EXEMPT | Allows a user to indicate that a patron is exempt from collections processing
+| UPDATE_PICKLIST                  | Allows update/re-use of an acquisitions pick/selection list.
+| UPDATE_VOLUME_PREFIX             | Update prefix label definition.
+| UPDATE_VOLUME_SUFFIX             | Update suffix label definition.
+| UPDATE_WORKSTATION               | Allows update of a workstation during workstation registration override.
+| VIEW_USER_SETTING_TYPE           | Allows viewing of configurable user setting types.
+|===============================
