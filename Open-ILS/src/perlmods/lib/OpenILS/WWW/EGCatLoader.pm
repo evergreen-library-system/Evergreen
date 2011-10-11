@@ -219,7 +219,7 @@ sub load_common {
     $ctx->{full_path} = $ctx->{base_path} . $self->cgi->path_info;
     $ctx->{unparsed_uri} = $self->apache->unparsed_uri;
     $ctx->{opac_root} = $ctx->{base_path} . "/opac"; # absolute base url
-    $ctx->{is_staff} = ($self->apache->headers_in->get('User-Agent') =~ /oils_xulrunner/);
+    $ctx->{is_staff} = 0; # Assume false, check for workstation id later.  Was: ($self->apache->headers_in->get('User-Agent') =~ /oils_xulrunner/);
     $ctx->{orig_loc} = $self->get_orig_loc;
 
     # capture some commonly accessed pages
@@ -238,6 +238,7 @@ sub load_common {
                 'open-ils.actor', 
                 'open-ils.actor.user.opac.vital_stats', 
                 $e->authtoken, $e->requestor->id);
+            $ctx->{is_staff} = 1 if $e->requestor->wsid;
 
         } else {
 
