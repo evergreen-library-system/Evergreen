@@ -252,7 +252,7 @@ static int oilsAuthVerifyPassword( const osrfMethodContext* ctx,
 		double failcount = jsonObjectGetNumber( countobject );
 		if(failcount >= _oilsAuthBlockCount) {
 			ret = 0;
-		    osrfLogInternal(OSRF_LOG_MARK, "oilsAuth found too many recent failures: %d, forcing failure state.", failcount);
+		    osrfLogInfo(OSRF_LOG_MARK, "oilsAuth found too many recent failures for '%s' : %i, forcing failure state.", uname, failcount);
 		}
 		if(ret == 0) {
 			failcount += 1;
