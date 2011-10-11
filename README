@@ -87,12 +87,16 @@ before you can successfully configure, compile, and install Evergreen.
 deb http://backports.debian.org/debian-backports squeeze-backports main contrib
 ------------------------------------------------------------------------------
 +
-  * On Ubuntu Lucid, open `/etc/apt/sources.list` in a text editor as the
-    *root* Linux account and add the following line:
+  * On Ubuntu Lucid, you can use a PPA (personal package archive), which are 
+  package sources hosted on Launchpad. The one most commonly used by Evergreen Community 
+  members is maintained by Martin Pitt, who also maintains the official PostgreSQL 
+  packages for Ubuntu. As the *root* Linux account, issue the following commands 
+  to add the PPA source:
 +
 [source, bash]
 ------------------------------------------------------------------------------
-deb http://archive.ubuntu.com/ubuntu lucid-backports main universe multiverse restricted
+apt-get install python-software-properties
+add-apt-repository ppa:pitti/postgresql
 ------------------------------------------------------------------------------
 +
   * Fedora 15 comes with PostgreSQL 9, so no additional steps are required.
