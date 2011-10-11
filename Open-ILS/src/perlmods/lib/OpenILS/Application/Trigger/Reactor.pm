@@ -7,6 +7,7 @@ use DateTime::Format::ISO8601;
 use Unicode::Normalize;
 use OpenSRF::Utils qw/:datetime/;
 use OpenSRF::Utils::Logger qw(:logger);
+use OpenSRF::Utils::JSON;
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 my $U = 'OpenILS::Application::AppUtils';
@@ -153,6 +154,16 @@ my $_TT_helpers = {
     get_li_attr => \&get_li_attr,
 
     get_li_attr_jedi => sub {
+        # This helper has to mangle data in at least three interesting ways.
+        #
+        # 1) We'll be receiving data that may already have some \-escaped
+        # characters.
+        #
+        # 2) We need our output to be valid JSON.
+        #
+        # 3) We need our output to yield valid and unproblematic EDI when
+        # passed through edi4r by the edi_pusher.pl script.
+
         my $value = get_li_attr(@_);
         if ($value) {
             # Here we can add any number of special case transformations to
@@ -164,13 +175,23 @@ my $_TT_helpers = {
                 chop $value;
             }
 
-            # Make sure any double quotation marks are escaped.
-            $value =~ s/"/\\"/g;
+            # Typical vendors dealing with EDIFACT would seem not to want
+            # any unicode characters, so trash them. Yes, they're already
+            # in the data escaped like this at this point even though we
+            # haven't JSON-escaped things yet.
+            $value =~ s/\\u[0-9a-f]{4}//g;
 
             # What the heck, get rid of [ ] too (although I couldn't get them
-            # to cause any problems for me.
+            # to cause any problems for me, problems have been reported. See
+            # LP #812593).
             $value =~ s/[\[\]]//g;
         }
+
+        $value = OpenSRF::Utils::JSON->perl2JSON($value);
+
+        # Existing action/trigger templates expect an unquoted string.
+        $value =~ s/^"//g;
+        chop $value;
 
         return $value;
     },
