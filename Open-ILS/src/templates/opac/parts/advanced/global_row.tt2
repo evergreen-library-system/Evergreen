@@ -7,20 +7,14 @@
     ];
     contains = CGI.param('contains');
     queries = CGI.param('query');
-    bools = CGI.param('bool') || ['and' x 3];
-    qtypes = CGI.param('qtype') || ['keyword' x 3];
+    bools = CGI.param('bool');
+    qtypes = CGI.param('qtype');
+    rowcount = 3;
 
-    IF !qtypes.0; # not an array
-        qtypes = [qtypes];
-        bools = [bools];
-        queries = [queries];
-    END;
-
-    WHILE qtypes.size < 3;
-        qtypes.push('keyword');
-        bools.push('and');
-        queries.push('');
-    END;
+    # scalar.merge treats the scalar as a 1-item array
+    WHILE queries.size < rowcount; queries = queries.merge(['']); END;
+    WHILE bools.size < rowcount; bools = bools.merge(['and']); END;
+    WHILE qtypes.size < rowcount; qtypes = qtypes.merge(['keyword']); END;
 
     FOR qtype IN qtypes;
         c = contains.shift;
