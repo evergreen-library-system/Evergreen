@@ -1920,9 +1920,9 @@ sub fetch_captured_holds {
 	$org ||= $e->requestor->ws_ou;
 
     my $query = { 
-        select => { ahr => ['id'] },
+        select => { alhr => ['id'] },
         from   => {
-            ahr => {
+            alhr => {
                 acp => {
                     field => 'id',
                     fkey  => 'current_copy'
@@ -1931,18 +1931,22 @@ sub fetch_captured_holds {
         }, 
         where => {
             '+acp' => { status => OILS_COPY_STATUS_ON_HOLDS_SHELF },
-            '+ahr' => {
+            '+alhr' => {
                 capture_time     => { "!=" => undef },
                 current_copy     => { "!=" => undef },
                 fulfillment_time => undef,
                 pickup_lib       => $org,
-                cancel_time      => undef,
+#                cancel_time      => undef,
               }
         }
     };
     if($self->api_name =~ /expired/) {
-        $query->{'where'}->{'+ahr'}->{'shelf_expire_time'} = {'<' => 'now'};
-        $query->{'where'}->{'+ahr'}->{'shelf_time'} = {'!=' => undef};
+#       $query->{'where'}->{'+ahr'}->{'shelf_expire_time'} = {'<' => 'now'};
+        $query->{'where'}->{'+alhr'}->{'shelf_time'} = {'!=' => undef};
+        $query->{'where'}->{'+alhr'}->{'-or'} = {
+                shelf_expire_time => { '<' => 'now'},
+                cancel_time => { '!=' => undef },
+        };
     }
     my $hold_ids = $e->json_query( $query );
 
