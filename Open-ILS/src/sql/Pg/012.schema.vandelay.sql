@@ -411,7 +411,7 @@ BEGIN
     FOR attr_def IN SELECT * FROM config.record_attr_definition WHERE name IN (SELECT * FROM UNNEST(attr_defs)) ORDER BY format LOOP
 
         IF attr_def.tag IS NOT NULL THEN -- tag (and optional subfield list) selection
-            SELECT  ARRAY_TO_STRING(ARRAY_ACCUM(x.value), COALESCE(attr_def.joiner,' ')) INTO attr_value
+            SELECT  STRING_AGG(x.value, COALESCE(attr_def.joiner,' ')) INTO attr_value
               FROM  vandelay.flatten_marc(xml) AS x
               WHERE x.tag LIKE attr_def.tag
                     AND CASE
@@ -489,7 +489,7 @@ END;
 $_$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION vandelay.extract_rec_attrs ( xml TEXT ) RETURNS hstore AS $_$
-    SELECT vandelay.extract_rec_attrs( $1, (SELECT ARRAY_ACCUM(name) FROM config.record_attr_definition));
+    SELECT vandelay.extract_rec_attrs( $1, (SELECT ARRAY_AGG(name) FROM config.record_attr_definition));
 $_$ LANGUAGE SQL;
 
 -- Everything between this comment and the beginning of the definition of
@@ -522,8 +522,8 @@ BEGIN
     query_ := 'SELECT DISTINCT(record), ';
 
     -- qrows table is for the quality bits we add to the SELECT clause
-    SELECT ARRAY_TO_STRING(
-        ARRAY_ACCUM('COALESCE(n' || q::TEXT || '.quality, 0)'), ' + '
+    SELECT STRING_AGG(
+        'COALESCE(n' || q::TEXT || '.quality, 0)', ' + '
     ) INTO coal FROM _vandelay_tmp_qrows;
 
     -- our query string so far is the SELECT clause and the inital FROM.
@@ -531,7 +531,7 @@ BEGIN
     query_ := query_ || coal || ' AS quality ' || E'\n';
 
     -- jrows table is for the joins we must make (and the real text conditions)
-    SELECT ARRAY_TO_STRING(ARRAY_ACCUM(j), E'\n') INTO joins
+    SELECT STRING_AGG(j, E'\n') INTO joins
         FROM _vandelay_tmp_jrows;
 
     -- add those joins and the where clause to our query.
@@ -564,11 +564,11 @@ CREATE OR REPLACE FUNCTION vandelay.flatten_marc_hstore(
 BEGIN
     RETURN (SELECT
         HSTORE(
-            ARRAY_ACCUM(tag || (COALESCE(subfield, ''))),
-            ARRAY_ACCUM(value)
+            ARRAY_AGG(tag || (COALESCE(subfield, ''))),
+            ARRAY_AGG(value)
         )
         FROM (
-            SELECT  tag, subfield, ARRAY_ACCUM(value)::TEXT AS value
+            SELECT  tag, subfield, ARRAY_AGG(value)::TEXT AS value
               FROM  (SELECT tag,
                             subfield,
                             CASE WHEN tag = '020' THEN -- caseless -- isbn
@@ -612,7 +612,7 @@ DECLARE
     children    INTEGER[];
     child       vandelay.match_set_point;
 BEGIN
-    SELECT ARRAY_ACCUM(id) INTO children FROM vandelay.match_set_point
+    SELECT ARRAY_AGG(id) INTO children FROM vandelay.match_set_point
         WHERE parent = node.id;
 
     IF ARRAY_LENGTH(children, 1) > 0 THEN
