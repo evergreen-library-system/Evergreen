@@ -99,7 +99,7 @@
                         <input type="submit" value="[% l('Delete List') %]" />
                     </div>
                 </form>
-                <form action="[% ctx.opac_root %]/myopac/list/print" method="POST" target="_blank">
+                <form action="[% ctx.opac_root %]/myopac/list/print" method="POST">
                     <div class="bookbag-controls">
                         <input type="hidden" name="list" value="[% bbag.id %]" />
                         <input type="hidden" name="sort" value="[% CGI.param('sort') | html %]" />

@@ -1626,6 +1626,15 @@ sub load_myopac_bookbag_print {
         );
     }
 
+    # Create a reasonable filename and set the content disposition to
+    # provoke browser download dialogs.
+    (my $filename = $bbag->id . $bbag->name) =~ s/[^a-z0-9_ -]//gi;
+
+    $self->apache->headers_out->add(
+        "Content-Disposition",
+        "attachment;filename=$filename.csv"
+    );
+
     return Apache2::Const::OK;
 }
 
