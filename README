@@ -88,10 +88,10 @@ deb http://backports.debian.org/debian-backports squeeze-backports main contrib
 ------------------------------------------------------------------------------
 +
   * On Ubuntu Lucid, you can use a PPA (personal package archive), which are 
-  package sources hosted on Launchpad. The one most commonly used by Evergreen Community 
-  members is maintained by Martin Pitt, who also maintains the official PostgreSQL 
-  packages for Ubuntu. As the *root* Linux account, issue the following commands 
-  to add the PPA source:
+    package sources hosted on Launchpad. The one most commonly used by Evergreen
+    Community members is maintained by Martin Pitt, who also maintains the
+    official PostgreSQL packages for Ubuntu. As the *root* Linux account, issue
+    the following commands to add the PPA source:
 +
 [source, bash]
 ------------------------------------------------------------------------------
