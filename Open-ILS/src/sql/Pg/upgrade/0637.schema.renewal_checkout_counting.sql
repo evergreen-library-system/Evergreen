@@ -1,7 +1,7 @@
 -- Patch from Doug Kyle re: https://bugs.launchpad.net/evergreen/+bug/822918
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('0636', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0637', :eg_version);
 
 CREATE OR REPLACE FUNCTION action.item_user_circ_test( circ_ou INT, match_item BIGINT, match_user INT, renewal BOOL ) RETURNS SETOF action.circ_matrix_test_result AS $func$
 DECLARE
