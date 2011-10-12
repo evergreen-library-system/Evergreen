@@ -123,7 +123,16 @@ patron.display.prototype = {
                                         }
                                         params.push( dest_usr.id() );
                                     }
-                                    obj.network.simple_request( 'FM_AU_DELETE', params );
+	                            var robj = obj.network.simple_request( 'FM_AU_DELETE', params );
+				    alert(js2JSON(robj));
+				    if (typeof robj.ilsevent != 'undefined') {
+					switch(Number(robj.ilsevent)) {
+					    case 2004 /* ACTOR_USER_DELETE_OPEN_XACTS */ :
+						alert(document.getElementById('patronStrings').getString('staff.patron.display.cmd_patron_delete.open_xact'));
+						return;
+						break;
+					}
+				    }
                                     obj.refresh_all();
                                 }
                             } catch(E) {
