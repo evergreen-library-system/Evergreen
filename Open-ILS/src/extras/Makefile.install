@@ -217,6 +217,12 @@ PGSQL_SERVER_DEBS_90 = \
 	postgresql-plperl-9.0 \
 	postgresql-server-dev-9.0
 
+PGSQL_SERVER_DEBS_91 = \
+	postgresql-9.1 \
+	postgresql-contrib-9.1 \
+	postgresql-plperl-9.1 \
+	postgresql-server-dev-9.1
+
 DEB_APACHE_MODS = \
     expires\
     include\
@@ -423,6 +429,9 @@ install_pgsql_client_debs_90:
 
 install_pgsql_server_debs_90:
 	$(APT_BACKPORT_TOOL) install $(PGSQL_SERVER_DEBS_90)
+
+install_pgsql_server_debs_91:
+	$(APT_BACKPORT_TOOL) install $(PGSQL_SERVER_DEBS_91)
 
 # Install the debian-specific dependencies for more modern distros
 install_extra_debs_squeeze: install_extra_debs

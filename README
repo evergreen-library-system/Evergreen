@@ -294,7 +294,7 @@ Creating the Evergreen database:
 --------------------------------
 
 By default, the `Makefile.install` prerequisite installer does not install
-the PostgreSQL 9.0 database server required by every Evergreen system;
+the PostgreSQL 9.0/9.1 database server required by every Evergreen system;
 for production use, most libraries install the PostgreSQL database server on a
 dedicated machine. You can install the packages required by Debian, Ubuntu, or
 Fedora on the machine of your choice using the following commands as the *root*
@@ -304,6 +304,12 @@ Linux account:
 [source, bash]
 ------------------------------------------------------------------------------
 make -f Open-ILS/src/extras/Makefile.install install_pgsql_server_debs_90
+------------------------------------------------------------------------------
+
+.(Debian / Ubuntu) Installing PostgreSQL 9.1 server packages
+[source, bash]
+------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install install_pgsql_server_debs_91
 ------------------------------------------------------------------------------
 
 .(Fedora 15) Installing PostgreSQL 9.0 server packages
