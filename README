@@ -294,23 +294,20 @@ Creating the Evergreen database:
 --------------------------------
 
 By default, the `Makefile.install` prerequisite installer does not install
-the PostgreSQL 9.0/9.1 database server required by every Evergreen system;
+the PostgreSQL 9 database server required by every Evergreen system;
 for production use, most libraries install the PostgreSQL database server on a
-dedicated machine. You can install the packages required by Debian, Ubuntu, or
-Fedora on the machine of your choice using the following commands as the *root*
+dedicated machine. You can install the packages required by Debian or Ubuntu
+on the machine of your choice using the following commands as the *root*
 Linux account:
-
-.(Debian / Ubuntu) Installing PostgreSQL 9.0 server packages
-[source, bash]
-------------------------------------------------------------------------------
-make -f Open-ILS/src/extras/Makefile.install install_pgsql_server_debs_90
-------------------------------------------------------------------------------
 
 .(Debian / Ubuntu) Installing PostgreSQL 9.1 server packages
 [source, bash]
 ------------------------------------------------------------------------------
 make -f Open-ILS/src/extras/Makefile.install install_pgsql_server_debs_91
 ------------------------------------------------------------------------------
+
+You can install the packages required by Fedora on the machine of your choice
+using the following commands as the *root* Linux account:
 
 .(Fedora 15) Installing PostgreSQL 9.0 server packages
 [source, bash]
@@ -321,7 +318,7 @@ make -f Open-ILS/src/extras/Makefile.install install_fedora_pgsql_server
 For a standalone PostgreSQL server, install the following Perl modules as the
 *root* Linux account:
 
-.(Debian / Ubuntu) Installing additional Perl modules on a standalone PostgreSQL 9.0 server
+.(Debian / Ubuntu) Installing additional Perl modules on a standalone PostgreSQL 9 server
 [source, bash]
 ------------------------------------------------------------------------------
 aptitude install gcc libxml-libxml-perl libxml-libxslt-perl
@@ -333,7 +330,7 @@ cpan MARC::File::XML
 cpan UUID::Tiny
 ------------------------------------------------------------------------------
 
-.(Fedora 15) Installing additional Perl modules on a standalone PostgreSQL 9.0 server
+.(Fedora 15) Installing additional Perl modules on a standalone PostgreSQL 9 server
 [source, bash]
 ------------------------------------------------------------------------------
 yum install gcc perl-XML-LibXML perl-XML-LibXSLT perl-Business-ISBN
