@@ -1004,7 +1004,7 @@ BEGIN
 			' ind1="' || FIRST(ind1) || '"'  ||
 			' ind2="' || FIRST(ind2) || '">' ||
                         array_to_string(
-                            array_accum(
+                            ARRAY_AGG(
                                 '<subfield code="' || subfield || '">' ||
                                 regexp_replace(
                                     regexp_replace(

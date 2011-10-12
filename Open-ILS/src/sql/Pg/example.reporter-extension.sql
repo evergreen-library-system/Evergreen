@@ -256,7 +256,7 @@ CREATE OR REPLACE VIEW money.open_circ_balance_by_owning_lib AS
 
 CREATE OR REPLACE VIEW money.open_balance_by_owning_lib AS
 	SELECT	owning_lib,
-		ARRAY_TO_STRING(ARRAY_ACCUM(DISTINCT billing_type), ', ') AS billing_types,
+		STRING_AGG(DISTINCT billing_type, ', ') AS billing_types,
 		SUM(billed) - SUM( COALESCE((SELECT SUM(amount) AS paid FROM money.payment WHERE NOT voided AND xact = x.id), 0::NUMERIC) ) AS balance
 	  FROM	money.open_circ_balance_by_owning_lib x
 	  GROUP BY 1;
@@ -283,7 +283,7 @@ CREATE OR REPLACE VIEW money.open_circ_balance_by_circ_and_owning_lib AS
 CREATE OR REPLACE VIEW money.open_balance_by_circ_and_owning_lib AS
 	SELECT	circ_lib,
 		owning_lib,
-		ARRAY_TO_STRING(ARRAY_ACCUM(DISTINCT billing_type), ', ') AS billing_types,
+		STRING_AGG(DISTINCT billing_type, ', ') AS billing_types,
 		SUM(billed) - SUM( COALESCE((SELECT SUM(amount) AS paid FROM money.payment WHERE NOT voided AND xact = x.id), 0::NUMERIC) ) AS balance
 	  FROM	money.open_circ_balance_by_circ_and_owning_lib x
 	  GROUP BY 1,2;
@@ -311,7 +311,7 @@ CREATE OR REPLACE VIEW money.open_circ_balance_by_usr_home_and_owning_lib AS
 CREATE OR REPLACE VIEW money.open_balance_by_usr_home_and_owning_lib AS
 	SELECT	home_ou,
 		owning_lib,
-		ARRAY_TO_STRING(ARRAY_ACCUM(DISTINCT billing_type), ', ') AS billing_types,
+		STRING_AGG(DISTINCT billing_type, ', ') AS billing_types,
 		SUM(billed) - SUM( COALESCE((SELECT SUM(amount) AS paid FROM money.payment WHERE NOT voided AND xact = x.id), 0::NUMERIC) ) AS balance
 	  FROM	money.open_circ_balance_by_usr_home_and_owning_lib x
 	  GROUP BY 1,2;

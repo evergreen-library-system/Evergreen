@@ -703,7 +703,7 @@ BEGIN
                     AND (stop_date IS NULL or stop_date > NOW())
                     AND standing_penalty = 1;
 
-        SELECT INTO context_org_list ARRAY_ACCUM(id) FROM actor.org_unit_full_path( max_fines.org_unit );
+        SELECT INTO context_org_list ARRAY_AGG(id) FROM actor.org_unit_full_path( max_fines.org_unit );
 
         SELECT  SUM(f.balance_owed) INTO current_fines
           FROM  money.materialized_billable_xact_summary f
@@ -1024,7 +1024,7 @@ BEGIN
                     AND (stop_date IS NULL or stop_date > NOW())
                     AND standing_penalty = 4;
 
-        SELECT INTO context_org_list ARRAY_ACCUM(id) FROM actor.org_unit_full_path( max_fines.org_unit );
+        SELECT INTO context_org_list ARRAY_AGG(id) FROM actor.org_unit_full_path( max_fines.org_unit );
 
         SELECT  SUM(f.balance_owed) INTO current_fines
           FROM  money.materialized_billable_xact_summary f
@@ -1087,7 +1087,7 @@ BEGIN
 
     IF max_fines.threshold IS NOT NULL THEN
 
-        SELECT INTO context_org_list ARRAY_ACCUM(id) FROM actor.org_unit_full_path( max_fines.org_unit );
+        SELECT INTO context_org_list ARRAY_AGG(id) FROM actor.org_unit_full_path( max_fines.org_unit );
 
         -- first, see if the user had paid down to the threshold
         SELECT  SUM(f.balance_owed) INTO current_fines

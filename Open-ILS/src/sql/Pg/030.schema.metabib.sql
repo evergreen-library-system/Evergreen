@@ -1112,7 +1112,7 @@ BEGIN
             CONTINUE WHEN uri_href IS NULL;
 
             -- Get the distinct list of libraries wanting to use 
-            SELECT  ARRAY_ACCUM(
+            SELECT  ARRAY_AGG(
                         DISTINCT REGEXP_REPLACE(
                             x,
                             $re$^.*?\((\w+)\).*$$re$,
@@ -1304,7 +1304,7 @@ BEGIN
             FOR attr_def IN SELECT * FROM config.record_attr_definition ORDER BY format LOOP
 
                 IF attr_def.tag IS NOT NULL THEN -- tag (and optional subfield list) selection
-                    SELECT  ARRAY_TO_STRING(ARRAY_ACCUM(value), COALESCE(attr_def.joiner,' ')) INTO attr_value
+                    SELECT  ARRAY_TO_STRING(ARRAY_AGG(value), COALESCE(attr_def.joiner,' ')) INTO attr_value
                       FROM  (SELECT * FROM metabib.full_rec ORDER BY tag, subfield) AS x
                       WHERE record = NEW.id
                             AND tag LIKE attr_def.tag

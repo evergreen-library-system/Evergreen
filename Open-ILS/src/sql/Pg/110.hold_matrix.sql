@@ -239,7 +239,7 @@ DECLARE
     hold_penalty TEXT;
 BEGIN
     SELECT INTO user_object * FROM actor.usr WHERE id = match_user;
-    SELECT INTO context_org_list ARRAY_ACCUM(id) FROM actor.org_unit_full_path( pickup_ou );
+    SELECT INTO context_org_list ARRAY_AGG(id) FROM actor.org_unit_full_path( pickup_ou );
 
     result.success := TRUE;
 

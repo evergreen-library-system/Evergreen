@@ -11,7 +11,7 @@ ROWS 1;
 
 CREATE OR REPLACE FUNCTION evergreen.array_remove_item_by_value(inp ANYARRAY, el ANYELEMENT)
 RETURNS anyarray AS $$
-    SELECT ARRAY_ACCUM(x.e) FROM UNNEST( $1 ) x(e) WHERE x.e <> $2;
+    SELECT ARRAY_AGG(x.e) FROM UNNEST( $1 ) x(e) WHERE x.e <> $2;
 $$ LANGUAGE SQL STABLE;
 
 CREATE OR REPLACE FUNCTION evergreen.rank_ou(lib INT, search_lib INT, pref_lib INT DEFAULT NULL)
