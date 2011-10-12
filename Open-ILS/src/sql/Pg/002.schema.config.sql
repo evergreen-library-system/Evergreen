@@ -332,7 +332,8 @@ CREATE TABLE config.copy_status (
 	name		TEXT	NOT NULL UNIQUE,
 	holdable	BOOL	NOT NULL DEFAULT FALSE,
 	opac_visible	BOOL	NOT NULL DEFAULT FALSE,
-    copy_active  BOOL    NOT NULL DEFAULT FALSE
+    copy_active  BOOL    NOT NULL DEFAULT FALSE,
+	restrict_copy_delete BOOL	  NOT NULL DEFAULT FALSE
 );
 COMMENT ON TABLE config.copy_status IS $$
 Copy Statuses

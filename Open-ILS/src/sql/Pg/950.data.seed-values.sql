@@ -295,14 +295,14 @@ INSERT INTO config.rule_age_hold_protect VALUES
 SELECT SETVAL('config.rule_age_hold_protect_id_seq'::TEXT, 100);
 
 INSERT INTO config.copy_status (id,name,holdable,opac_visible,copy_active) VALUES (0,oils_i18n_gettext(0, 'Available', 'ccs', 'name'),'t','t','t');
-INSERT INTO config.copy_status (id,name,holdable,opac_visible,copy_active) VALUES (1,oils_i18n_gettext(1, 'Checked out', 'ccs', 'name'),'t','t','t');
+INSERT INTO config.copy_status (id,name,holdable,opac_visible,copy_active,restrict_copy_delete) VALUES (1,oils_i18n_gettext(1, 'Checked out', 'ccs', 'name'),'t','t','t','t');
 INSERT INTO config.copy_status (id,name) VALUES (2,oils_i18n_gettext(2, 'Bindery', 'ccs', 'name'));
-INSERT INTO config.copy_status (id,name) VALUES (3,oils_i18n_gettext(3, 'Lost', 'ccs', 'name'));
+INSERT INTO config.copy_status (id,name,restrict_copy_delete) VALUES (3,oils_i18n_gettext(3, 'Lost', 'ccs', 'name'),'t');
 INSERT INTO config.copy_status (id,name) VALUES (4,oils_i18n_gettext(4, 'Missing', 'ccs', 'name'));
 INSERT INTO config.copy_status (id,name,holdable,opac_visible) VALUES (5,oils_i18n_gettext(5, 'In process', 'ccs', 'name'),'t','t');
-INSERT INTO config.copy_status (id,name,holdable,opac_visible) VALUES (6,oils_i18n_gettext(6, 'In transit', 'ccs', 'name'),'t','t');
+INSERT INTO config.copy_status (id,name,holdable,opac_visible,restrict_copy_delete) VALUES (6,oils_i18n_gettext(6, 'In transit', 'ccs', 'name'),'t','t','t');
 INSERT INTO config.copy_status (id,name,holdable,opac_visible,copy_active) VALUES (7,oils_i18n_gettext(7, 'Reshelving', 'ccs', 'name'),'t','t','t');
-INSERT INTO config.copy_status (id,name,holdable,opac_visible,copy_active) VALUES (8,oils_i18n_gettext(8, 'On holds shelf', 'ccs', 'name'),'t','t','t');
+INSERT INTO config.copy_status (id,name,holdable,opac_visible,copy_active,restrict_copy_delete) VALUES (8,oils_i18n_gettext(8, 'On holds shelf', 'ccs', 'name'),'t','t','t','t');
 INSERT INTO config.copy_status (id,name,holdable,opac_visible) VALUES (9,oils_i18n_gettext(9, 'On order', 'ccs', 'name'),'t','t');
 INSERT INTO config.copy_status (id,name,copy_active) VALUES (10,oils_i18n_gettext(10, 'ILL', 'ccs', 'name'),'t');
 INSERT INTO config.copy_status (id,name) VALUES (11,oils_i18n_gettext(11, 'Cataloging', 'ccs', 'name'));
