@@ -980,6 +980,8 @@ BEGIN
 
     IF uri_count > 0 THEN
         
+        -- This returns more nodes than you might expect:
+        -- 7 instead of 1 for an 856 with $u $y $9
         SELECT  COUNT(*) INTO counter
           FROM  oils_xpath_table(
                     'id',
@@ -1017,7 +1019,9 @@ BEGIN
                         'id=' || source_record
                     ) as t(id int,ind1 text, ind2 text,subfield text,data text);
 
-            uri_text := uri_text || uri_datafield;
+            -- As most of the results will be NULL, protect against NULLifying
+            -- the valid content that we do generate
+            uri_text := uri_text || COALESCE(uri_datafield, '');
         END LOOP;
 
         IF uri_text <> '' THEN
