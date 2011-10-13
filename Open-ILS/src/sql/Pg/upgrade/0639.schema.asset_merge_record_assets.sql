@@ -1,12 +1,9 @@
 -- Evergreen DB patch XXXX.schema.asset_merge_record_assets.sql
 --
--- FIXME: insert description of change, if needed
 --
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('XXXX');
-
--- FIXME: add/check SQL statements to perform the upgrade
+INSERT INTO config.upgrade_log (version) VALUES ('0639');
 
 CREATE OR REPLACE FUNCTION asset.merge_record_assets( target_record BIGINT, source_record BIGINT ) RETURNS INT AS $func$
 DECLARE
