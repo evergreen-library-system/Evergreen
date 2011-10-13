@@ -1003,17 +1003,15 @@ BEGIN
 			' tag="856"' ||
 			' ind1="' || FIRST(ind1) || '"'  ||
 			' ind2="' || FIRST(ind2) || '">' ||
-                        array_to_string(
-                            ARRAY_AGG(
-                                '<subfield code="' || subfield || '">' ||
+                        STRING_AGG(
+                            '<subfield code="' || subfield || '">' ||
+                            regexp_replace(
                                 regexp_replace(
-                                    regexp_replace(
-                                        regexp_replace(data,'&','&amp;','g'),
-                                        '>', '&gt;', 'g'
-                                    ),
-                                    '<', '&lt;', 'g'
-                                ) || '</subfield>'
-                            ), ''
+                                    regexp_replace(data,'&','&amp;','g'),
+                                    '>', '&gt;', 'g'
+                                ),
+                                '<', '&lt;', 'g'
+                            ) || '</subfield>', ''
                         ) || '</datafield>' INTO uri_datafield
               FROM  oils_xpath_table(
                         'id',
