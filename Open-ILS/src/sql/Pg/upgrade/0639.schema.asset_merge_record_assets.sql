@@ -1,14 +1,11 @@
 -- Evergreen DB patch XXXX.schema.asset_merge_record_assets.sql
 --
--- FIXME: insert description of change, if needed
 --
 BEGIN;
 
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
-
--- FIXME: add/check SQL statements to perform the upgrade
+SELECT evergreen.upgrade_deps_block_check('0639', :eg_version);
 
 CREATE OR REPLACE FUNCTION asset.merge_record_assets( target_record BIGINT, source_record BIGINT ) RETURNS INT AS $func$
 DECLARE
