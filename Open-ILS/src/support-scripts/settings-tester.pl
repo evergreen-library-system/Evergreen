@@ -80,18 +80,6 @@ $output .= check_libdbd();
 
 check_hostname();
 
-# Check for oils_web.xml, required for acquisitions and many administration
-# interfaces as of Evergreen 1.6
-if (!-T '/openils/conf/oils_web.xml') {
-	my $de = "* WARNING: As of Evergreen 1.6, /openils/conf/oils_web.xml " .
-		"is a required configuration file. Copying " .
-		"/openils/conf/oils_web.xml.example should resolve this " .
-		"problem.\n";
-	$output .= $de;
-	warn $de;
-}
-
-
 if ($gather) {
 	get_debug_info( $tmpdir, $log_dir, $conf_dir, $perloutput, $output );
 }
