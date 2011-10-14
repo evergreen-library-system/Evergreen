@@ -921,6 +921,27 @@ function checkCollectionsExemptPerm(cbox) {
     );
 }
 
+function usePhonePw(newVal) {
+    var newPw = false;
+    if(this.regExp) {
+        matches = RegExp(this.regExp).exec(newVal);
+        if(matches.length > 1) newPw = matches[1];
+    }
+    if(!newPw && newVal && newVal.length >= 4) {
+        newPw = newVal.substring(newVal.length - 4);
+    }
+    if(newPw) {
+        var p1 = findWidget('au', 'passwd');
+        var p2 = findWidget('au', 'passwd2');
+        if (p1 && p2) {
+            p1.widget.attr('value', newPw);
+            p2.widget.attr('value', newPw);
+        }
+        return newPw;
+    } else {
+        return null;
+    }
+}
 
 function attachWidgetEvents(fmcls, fmfield, widget) {
 
@@ -1107,24 +1128,10 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
                 // if configured, use the last four digits of the day phone number as the password
                 // Alt, use the first capture group of the validator regex
                 if(uEditUsePhonePw && patron.isnew()) {
-                    dojo.connect(widget.widget, 'onChange', widget.widget,
-                        function(newVal) {
-                            var newPw = false;
-                            if(this.regExp) {
-                                matches = RegExp(this.regExp).exec(newVal);
-                                if(matches.length > 1) newPw = matches[1];
-                            }
-                            if(!newPw && newVal && newVal.length >= 4) {
-                                newPw = newVal.substring(newVal.length - 4);
-                            }
-                            if(newPw) {
-                                var pw1 = findWidget('au', 'passwd').widget;
-                                var pw2 = findWidget('au', 'passwd2').widget;
-                                pw1.attr('value', newPw);
-                                pw2.attr('value', newPw);
-                            }
-                        }
-                    );
+                    dojo.connect(widget.widget, 'onChange', widget.widget, usePhonePw);
+                    if (patron.day_phone()) {
+                        usePhonePw(patron.day_phone());
+                    }
                 }
             case 'evening_phone':
             case 'other_phone':
