@@ -15,38 +15,38 @@ my $perloutput = '';
 my $result;
 
 my ($gather, $hostname, $core_config, $tmpdir) =
-	(0, Net::Domain::hostfqdn(), '/openils/conf/opensrf_core.xml', '/tmp/');
+    (0, Net::Domain::hostfqdn(), '/openils/conf/opensrf_core.xml', '/tmp/');
 
 GetOptions(
-	'gather' => \$gather,
-	'hostname=s' => \$hostname,
-	'config_file=s' => \$core_config,
-	'tempdir=s' => \$tmpdir,
+    'gather' => \$gather,
+    'hostname=s' => \$hostname,
+    'config_file=s' => \$core_config,
+    'tempdir=s' => \$tmpdir,
 );
 
 while (my $mod = <DATA>) {
-	chomp $mod;
-	my @list = split / /, $mod;
+    chomp $mod;
+    my @list = split / /, $mod;
 
-	my $ok = 0;
-	for my $m (@list) {
-		if ($m->use) {
-			$ok++;
-			my $version = $m->VERSION;
-			print "$m version $version\n" if ($version);
-		}
-	}
+    my $ok = 0;
+    for my $m (@list) {
+        if ($m->use) {
+            $ok++;
+            my $version = $m->VERSION;
+            print "$m version $version\n" if ($version);
+        }
+    }
 
-	unless ($ok) {
-		if (@list == 1) {
-			warn "Please install $mod\n";
-			$perloutput .= "Please install the $mod Perl module.\n";
-		} else {
-			warn "Please install one of the following modules: $mod\n";
-			$perloutput .= "Please install one of the following modules: $mod\n";
-		}
-	}
-			
+    unless ($ok) {
+        if (@list == 1) {
+            warn "Please install $mod\n";
+            $perloutput .= "Please install the $mod Perl module.\n";
+        } else {
+            warn "Please install one of the following modules: $mod\n";
+            $perloutput .= "Please install one of the following modules: $mod\n";
+        }
+    }
+            
 }
 
 use OpenSRF::Transport::SlimJabber::Client;
@@ -93,7 +93,7 @@ if (!-T '/openils/conf/oils_web.xml') {
 
 
 if ($gather) {
-	get_debug_info( $tmpdir, $log_dir, $conf_dir, $perloutput, $output );
+    get_debug_info( $tmpdir, $log_dir, $conf_dir, $perloutput, $output );
 }
 
 sub check_all_database_connections {
@@ -147,51 +147,51 @@ sub check_all_database_connections {
 
 
 sub test_db_connect {
-	my ($db_name, $db_host, $db_port, $db_user, $db_pw, $osrf_xpath) = @_;
+    my ($db_name, $db_host, $db_port, $db_user, $db_pw, $osrf_xpath) = @_;
 
-	my $dsn = "dbi:Pg:dbname=$db_name;host=$db_host;port=$db_port";
-	my $de = undef;
-	my ($dbh, $encoding, $langs);
-	$dbh = DBI->connect($dsn, $db_user, $db_pw);
+    my $dsn = "dbi:Pg:dbname=$db_name;host=$db_host;port=$db_port";
+    my $de = undef;
+    my ($dbh, $encoding, $langs);
+    $dbh = DBI->connect($dsn, $db_user, $db_pw);
 
-	# Short-circuit if we didn't connect successfully
-	unless($dbh) {
-		$de = "* $osrf_xpath :: Unable to connect to database $dsn, user=$db_user, password=$db_pw\n";
-		warn "* $osrf_xpath :: Unable to connect to database $dsn, user=$db_user, password=$db_pw\n";
-		return $de;
-	}
+    # Short-circuit if we didn't connect successfully
+    unless($dbh) {
+        $de = "* $osrf_xpath :: Unable to connect to database $dsn, user=$db_user, password=$db_pw\n";
+        warn "* $osrf_xpath :: Unable to connect to database $dsn, user=$db_user, password=$db_pw\n";
+        return $de;
+    }
 
-	# Get server encoding
-	my $sth = $dbh->prepare("SHOW server_encoding");
-	$sth->execute;
-	$sth->bind_col(1, \$encoding);
-	$sth->fetch;
-	$sth->finish;
+    # Get server encoding
+    my $sth = $dbh->prepare("SHOW server_encoding");
+    $sth->execute;
+    $sth->bind_col(1, \$encoding);
+    $sth->fetch;
+    $sth->finish;
 
-	# Get list of server languages
-	$sth = $dbh->prepare("SELECT lanname FROM pg_catalog.pg_language");
-	$sth->execute;
-	$langs = $sth->fetchall_arrayref([0]);
-	$sth->finish;
+    # Get list of server languages
+    $sth = $dbh->prepare("SELECT lanname FROM pg_catalog.pg_language");
+    $sth->execute;
+    $langs = $sth->fetchall_arrayref([0]);
+    $sth->finish;
 
-	$dbh->disconnect;
-	print "* $osrf_xpath :: Successfully connected to database $dsn\n" unless ($de);
+    $dbh->disconnect;
+    print "* $osrf_xpath :: Successfully connected to database $dsn\n" unless ($de);
 
-	# Check encoding
-	if ($encoding !~ m/(utf-?8|unicode)/i) {
-		$de .= "* ERROR: $osrf_xpath :: Database $dsn has encoding $encoding instead of UTF8 or UNICODE.\n";
-		warn "* ERROR: $osrf_xpath :: Database $dsn has encoding $encoding instead of UTF8 or UNICODE.\n";
-	} else {
-		print "  * Database has the expected server encoding $encoding.\n";
-	}
+    # Check encoding
+    if ($encoding !~ m/(utf-?8|unicode)/i) {
+        $de .= "* ERROR: $osrf_xpath :: Database $dsn has encoding $encoding instead of UTF8 or UNICODE.\n";
+        warn "* ERROR: $osrf_xpath :: Database $dsn has encoding $encoding instead of UTF8 or UNICODE.\n";
+    } else {
+        print "  * Database has the expected server encoding $encoding.\n";
+    }
 
-	my $result = check_db_langs($langs);
-	if ($result) {
-		$de .= $result;
-		warn $result;
-	}
+    my $result = check_db_langs($langs);
+    if ($result) {
+        $de .= $result;
+        warn $result;
+    }
 
-	return ($de) ? $de : "* $osrf_xpath :: Successfully connected to database $dsn with encoding $encoding\n";
+    return ($de) ? $de : "* $osrf_xpath :: Successfully connected to database $dsn with encoding $encoding\n";
 
 }
 
@@ -321,120 +321,120 @@ sub check_all_jabber {
 }
 
 sub check_jabber {
-	my ($j_username, $j_password, $j_domain, $j_port) = @_;
-	print "\nChecking Jabber connection for user $j_username, domain $j_domain\n";
+    my ($j_username, $j_password, $j_domain, $j_port) = @_;
+    print "\nChecking Jabber connection for user $j_username, domain $j_domain\n";
 
-	# connect to jabber 
-	my $client = OpenSRF::Transport::SlimJabber::Client->new(
-		port => $j_port, 
-		username => $j_username, 
-		password => $j_password,
-		host => $j_domain,
-		resource => 'test123'
-	);
+    # connect to jabber 
+    my $client = OpenSRF::Transport::SlimJabber::Client->new(
+        port => $j_port, 
+        username => $j_username, 
+        password => $j_password,
+        host => $j_domain,
+        resource => 'test123'
+    );
 
 
-	my $je = undef;
-	try {
-		unless($client->initialize()) {
-			$je = "* Unable to connect to jabber server $j_domain\n";
-			warn "* Unable to connect to jabber server $j_domain\n";
-		}
-	} catch Error with {
-		$je = "* Error connecting to jabber:\n" . shift() . "\n";
-		warn "* Error connecting to jabber:\n" . shift() . "\n";
-	};
+    my $je = undef;
+    try {
+        unless($client->initialize()) {
+            $je = "* Unable to connect to jabber server $j_domain\n";
+            warn "* Unable to connect to jabber server $j_domain\n";
+        }
+    } catch Error with {
+        $je = "* Error connecting to jabber:\n" . shift() . "\n";
+        warn "* Error connecting to jabber:\n" . shift() . "\n";
+    };
 
-	print "* Jabber successfully connected\n" unless ($je);
-	$output .= ($je) ? $je : "* Jabber successfully connected\n";
+    print "* Jabber successfully connected\n" unless ($je);
+    $output .= ($je) ? $je : "* Jabber successfully connected\n";
 }
 
 sub check_hostname {
-	print "\nChecking hostname\n";
-	my @hosts = $osrfxml->findnodes('/opensrf/hosts/*');
-	foreach my $host (@hosts) {
-		next unless $host->nodeType == XML::LibXML::XML_ELEMENT_NODE;
-		my $osrfhost = $host->nodeName;
-		my $he;
-		if ($osrfhost ne $hostname && $osrfhost ne "localhost") {
-			$result = " * ERROR: expected hostname '$hostname', found '$osrfhost' in <hosts> section of opensrf.xml\n";
-			warn $result;
-			$he = 1;
-		} elsif ($osrfhost eq "localhost") {
-			$result = " * OK: found hostname 'localhost' in <hosts> section of opensrf.xml\n";
-		} else {
-			$result = " * OK: found hostname '$hostname' in <hosts> section of opensrf.xml\n";
-		}
-		print $result unless $he;
-		$output .= $result;
-	}
+    print "\nChecking hostname\n";
+    my @hosts = $osrfxml->findnodes('/opensrf/hosts/*');
+    foreach my $host (@hosts) {
+        next unless $host->nodeType == XML::LibXML::XML_ELEMENT_NODE;
+        my $osrfhost = $host->nodeName;
+        my $he;
+        if ($osrfhost ne $hostname && $osrfhost ne "localhost") {
+            $result = " * ERROR: expected hostname '$hostname', found '$osrfhost' in <hosts> section of opensrf.xml\n";
+            warn $result;
+            $he = 1;
+        } elsif ($osrfhost eq "localhost") {
+            $result = " * OK: found hostname 'localhost' in <hosts> section of opensrf.xml\n";
+        } else {
+            $result = " * OK: found hostname '$hostname' in <hosts> section of opensrf.xml\n";
+        }
+        print $result unless $he;
+        $output .= $result;
+    }
 }
 
 sub check_libdbd {
-	my $results = '';
-	my @location = `/sbin/ldconfig --print | grep libdbdpgsql`; # simple(ton) attempt to filter out build versions
+    my $results = '';
+    my @location = `/sbin/ldconfig --print | grep libdbdpgsql`; # simple(ton) attempt to filter out build versions
     unless(@location) {
-		# This is pretty distro-specific, but let's worry about other distros and operating systems when we get there
+        # This is pretty distro-specific, but let's worry about other distros and operating systems when we get there
         my $res = "libdbi PostgreSQL driver not found in shared library path;
   you may need to edit /etc/ld.so.conf or add an entry to /etc/ld.so.conf.d/
   and run 'ldconfig' as root\n";
         print $res;
         return $res;
     }
-	if ($location[0] !~ m#/usr/local/lib/dbd/#) {
-		my $res = "libdbdpgsql.so was not found in /usr/local/libdbi/dbd/
+    if ($location[0] !~ m#/usr/local/lib/dbd/#) {
+        my $res = "libdbdpgsql.so was not found in /usr/local/libdbi/dbd/
   We have found that system packages don't link against libdbi.so;
   therefore, we strongly recommend compiling libdbi and libdbi-drivers from source.\n";
-		$results .= $res;
-		print $res;
-	}
-	if ($results eq '') {
-		$results = "  * OK - found locally installed libdbi.so and libdbdpgsql.so in shared library path\n";
-		print $results;
-	}
-	return $results;
+        $results .= $res;
+        print $res;
+    }
+    if ($results eq '') {
+        $results = "  * OK - found locally installed libdbi.so and libdbdpgsql.so in shared library path\n";
+        print $results;
+    }
+    return $results;
 }
 
 sub get_debug_info {
-  my $temp_dir = shift; # place we can write files
-  my $log = shift; # location of the log directory
-  my $config = shift; # location of the config files
-  my $perl_test = shift; # output from the Perl prereq testing
-  my $config_test = shift; # output from the config file testing
+    my $temp_dir = shift; # place we can write files
+    my $log = shift; # location of the log directory
+    my $config = shift; # location of the config files
+    my $perl_test = shift; # output from the Perl prereq testing
+    my $config_test = shift; # output from the config file testing
 
-  my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
-  my $oils_time = sprintf("%04d-%02d-%02d_%02dh-%02d-%02d", $year+1900, $mon, $mday, $hour, $min, $sec);
-  
-  # evil approach that requires no other Perl dependencies
-  chdir($temp_dir);
-  my $oils_debug_dir = "$temp_dir/oils_$oils_time";
+    my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
+    my $oils_time = sprintf("%04d-%02d-%02d_%02dh-%02d-%02d", $year+1900, $mon, $mday, $hour, $min, $sec);
 
-  # Replace with something Perlish
-  mkdir($oils_debug_dir) or die $!;
+    # evil approach that requires no other Perl dependencies
+    chdir($temp_dir);
+    my $oils_debug_dir = "$temp_dir/oils_$oils_time";
 
-  # Replace with File::Copy
-  system("cp $log/*log $oils_debug_dir");
+    # Replace with something Perlish
+    mkdir($oils_debug_dir) or die $!;
 
-  # Passwords will go through in the clear for now
-  system("cp $config/*xml $oils_debug_dir");
+    # Replace with File::Copy
+    system("cp $log/*log $oils_debug_dir");
 
-  # Get Perl output
-  open(FH, ">", "$oils_debug_dir/perl_test.out") or die $!;
-  print FH $perl_test;
-  close(FH);
+    # Passwords will go through in the clear for now
+    system("cp $config/*xml $oils_debug_dir");
 
-  # Get XML output
-  open(FH, ">", "$oils_debug_dir/xml_test.out") or die $!;
-  print FH $config_test;
-  close(FH);
-  
-  # Tar this up - does any system not have tar?
-  system("tar czf oils_$oils_time.tar.gz oils_$oils_time");
+    # Get Perl output
+    open(FH, ">", "$oils_debug_dir/perl_test.out") or die $!;
+    print FH $perl_test;
+    close(FH);
 
-  # Clean up after ourselves, somewhat dangerously
-  system("rm -fr $oils_debug_dir");
+    # Get XML output
+    open(FH, ">", "$oils_debug_dir/xml_test.out") or die $!;
+    print FH $config_test;
+    close(FH);
 
-  print "Wrote your debug information to $temp_dir/oils_$oils_time.tar.gz.\n";
+    # Tar this up - does any system not have tar?
+    system("tar czf oils_$oils_time.tar.gz oils_$oils_time");
+
+    # Clean up after ourselves, somewhat dangerously
+    system("rm -fr $oils_debug_dir");
+
+    print "Wrote your debug information to $temp_dir/oils_$oils_time.tar.gz.\n";
 }
 
 __DATA__
