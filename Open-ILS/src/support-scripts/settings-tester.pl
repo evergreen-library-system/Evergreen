@@ -2,7 +2,7 @@
 # vim:et:ts=4:
 use strict;
 use warnings;
-use Test::More tests => 5;
+use Test::More tests => 7;
 use Error qw(:try);
 
 BEGIN {
@@ -11,6 +11,8 @@ BEGIN {
     use_ok( 'Getopt::Long' );
     use_ok( 'MARC::Record', '2.0.1' );
     use_ok( 'Net::Domain' );
+    use_ok( 'Locale::Maketext::Lexicon' );
+    use_ok( 'Template::Plugin::POSIX' );
 }
 
 my $output = '';
