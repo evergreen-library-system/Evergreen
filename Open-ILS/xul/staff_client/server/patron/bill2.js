@@ -161,7 +161,8 @@ function event_listeners() {
                     {
                         'patron_id' : g.patron_id,
                         'refresh' : function() { refresh(); },
-                        'new_tab' : xulG.new_tab
+                        'new_tab' : xulG.new_tab,
+                        'url_prefix' : xulG.url_prefix
                     }
                 );
             },
