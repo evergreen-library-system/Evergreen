@@ -2,13 +2,16 @@
 # vim:et:ts=4:
 use strict;
 use warnings;
-use Test::More tests => 4;
+use Test::More tests => 5;
 use Error qw(:try);
 
-use_ok( 'OpenSRF::Utils::Config' );
-use_ok( 'UNIVERSAL::require' );
-use_ok( 'Getopt::Long' );
-use_ok( 'Net::Domain' );
+BEGIN {
+    use_ok( 'OpenSRF::Utils::Config' );
+    use_ok( 'UNIVERSAL::require' );
+    use_ok( 'Getopt::Long' );
+    use_ok( 'MARC::Record', '2.0.1' );
+    use_ok( 'Net::Domain' );
+}
 
 my $output = '';
 my $perloutput = '';
