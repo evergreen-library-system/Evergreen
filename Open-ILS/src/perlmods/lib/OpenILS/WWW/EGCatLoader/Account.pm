@@ -245,13 +245,13 @@ sub _load_user_with_prefs {
 }
 
 sub _get_bookbag_sort_params {
-    my ($self) = @_;
+    my ($self, $param_name) = @_;
 
     # The interface that feeds this cgi parameter will provide a single
     # argument for a QP sort filter, and potentially a modifier after a period.
     # In practice this means the "sort" parameter will be something like
     # "titlesort" or "authorsort.descending".
-    my $sorter = $self->cgi->param("sort") || "";
+    my $sorter = $self->cgi->param($param_name) || "";
     my $modifier;
     if ($sorter) {
         $sorter =~ s/^(.*?)\.(.*)/$1/;
@@ -271,6 +271,18 @@ sub _prepare_bookbag_container_query {
         ($modifier ? "#$modifier" : "")
     );
 }
+
+sub _prepare_anonlist_sorting_query {
+    my ($self, $list, $sorter, $modifier) = @_;
+
+    return sprintf(
+        "record_list(%s)%s%s",
+        join(",", @$list),
+        ($sorter ? " sort($sorter)" : ""),
+        ($modifier ? "#$modifier" : "")
+    );
+}
+
 
 sub load_myopac_prefs_settings {
     my $self = shift;
@@ -1323,7 +1335,7 @@ sub load_myopac_bookbags {
     my $e = $self->editor;
     my $ctx = $self->ctx;
 
-    my ($sorter, $modifier) = $self->_get_bookbag_sort_params;
+    my ($sorter, $modifier) = $self->_get_bookbag_sort_params("sort");
     $e->xact_begin; # replication...
 
     my $rv = $self->load_mylist;
@@ -1348,13 +1360,18 @@ sub load_myopac_bookbags {
         return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
     }
     
-    # Here is the loop that uses search to find the bib records in each
-    # bookbag.  XXX This should be parallelized.  Should this be done
-    # with OpenSRF::MultiSession, or is it enough to use OpenSRF::AppSession
-    # and call ->request() without calling ->gather() on any of those objects
-    # until all the requests have been issued?
+    # If the user wants a specific bookbag's items, load them.
+    # XXX add bookbag item paging support
 
-    foreach my $bookbag (@{$ctx->{bookbags}}) {
+    if ($self->cgi->param("id")) {
+        my ($bookbag) =
+            grep { $_->id eq $self->cgi->param("id") } @{$ctx->{bookbags}};
+
+        if (!$bookbag) {
+            $e->rollback;
+            return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+        }
+
         my $query = $self->_prepare_bookbag_container_query(
             $bookbag->id, $sorter, $modifier
         );
@@ -1491,6 +1508,7 @@ sub load_myopac_bookbag_update {
         }
     } elsif ($action eq 'save_notes') {
         $success = $self->update_bookbag_item_notes;
+        $url .= "&id=" . uri_escape($cgi->param("id")) if $cgi->param("id");
     }
 
     return $self->generic_redirect($url) if $success;
@@ -1591,7 +1609,7 @@ sub load_myopac_bookbag_print {
 
     my $id = int($self->cgi->param("list"));
 
-    my ($sorter, $modifier) = $self->_get_bookbag_sort_params;
+    my ($sorter, $modifier) = $self->_get_bookbag_sort_params("sort");
 
     my $item_search =
         $self->_prepare_bookbag_container_query($id, $sorter, $modifier);

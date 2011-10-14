@@ -1854,6 +1854,28 @@ sub get_bre_attrs {
     return $attrs;
 }
 
+# Shorter version of bib_container_items_via_search() below, only using
+# the queryparser record_list filter instead of the container filter.
+sub bib_record_list_via_search {
+    my ($class, $search_query, $search_args) = @_;
+
+    # First, Use search API to get container items sorted in any way that crad
+    # sorters support.
+    my $search_result = $class->simplereq(
+        "open-ils.search", "open-ils.search.biblio.multiclass.query",
+        $search_args, $search_query
+    );
+
+    unless ($search_result) {
+        # empty result sets won't cause this, but actual errors should.
+        $logger->warn("bib_record_list_via_search() got nothing from search");
+        return;
+    }
+
+    # Throw away other junk from search, keeping only bib IDs.
+    return [ map { pop @$_ } @{$search_result->{ids}} ];
+}
+
 sub bib_container_items_via_search {
     my ($class, $container_id, $search_query, $search_args) = @_;
 

@@ -33,6 +33,15 @@ sub fetch_mylist {
         $marc_xml = $self->fetch_marc_xml_by_id($list);
     }
 
+    # Leverage QueryParser to sort the items by values of config.metabib_fields
+    # from the items' marc records.
+    if (@$list) {
+        my ($sorter, $modifier) = $self->_get_bookbag_sort_params("anonsort");
+        my $query = $self->_prepare_anonlist_sorting_query($list, $sorter, $modifier);
+        $list = $U->bib_record_list_via_search($query) or
+            return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+    }
+
     return ($cache_key, $list, $marc_xml);
 }
 

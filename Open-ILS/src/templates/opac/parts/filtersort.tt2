@@ -1,4 +1,4 @@
-<select [% class ? ('class="' _ class _ '"') : '' %] id='opac.result.sort' name="[% name || 'sort' %]" [% IF submit_on_change %]onchange='this.form.submit()'[% END %]>
+<select [% class ? ('class="' _ class _ '"') : '' %] id='[% id || "opac.result.sort" %]' name="[% name || 'sort' %]" [% IF submit_on_change %]onchange='this.form.submit()'[% END %]>
     <option value=''>[% l("Sort by Relevance") %]</option>
     <optgroup label='[% l("Sort by Title") %]'>
         <option value='titlesort'[% value == 'titlesort' ? ' selected="selected"' : '' %]>[% l("Title: A to Z") %]</option>

@@ -1149,3 +1149,15 @@ a.opac-button {
     margin-left: 1em;
     padding-left: 1em;
 }
+.bookbag-controls-holder { width: 100%; }
+.bookbag-controls-holder:nth-child(odd) { background-color: #d7d7d7; }
+.bookbag-controls-holder:nth-child(even) { background-color: #e3e3e3; }
+.bookbag-controls-holder .most { padding-left: 0; width: 55%; }
+.bookbag-share .fixed { min-width: 4em; }
+.bookbag-specific { margin-left: 1em; }
+table.bookbag-specific {
+    border-right: 1px solid #999;
+    border-bottom: 1px solid #666;
+    margin-bottom: 2ex;
+}
+.save-notes { padding-bottom: 1.5ex; }

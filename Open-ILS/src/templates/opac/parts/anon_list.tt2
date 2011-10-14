@@ -1,22 +1,20 @@
         [% IF ctx.mylist.size %]
+        <div class="bookbag-specific">
+            <form method="GET">
+                <label for="anonsort">[% l("Sort list items by: ") %]</label>
+                [% INCLUDE "opac/parts/filtersort.tt2"
+                    id="anonsort" name="anonsort" value=CGI.param("anonsort") %]
+                <input type="hidden" name="id"
+                    value="[% CGI.param('id') | html %]" />
+                <!-- just preserve this --><input type="hidden" name="sort"
+                    value="[% CGI.param('sort') | html %]" />
+                <input type="submit" value="[% l('Sort') %]" />
+            </form>
+        </div>
+
         <form action="[% ctx.opac_root %]/mylist/move" method="POST">
         <div>
-            <div style="width:100%">
-                <table cellpadding="0" cellspacing="0" border="0">
-                    <tr>
-                        <td id='anon_list_name'>
-                            [% l('Temporary List') %]
-                        </td>
-                        <td>
-                            <!-- <a href="#"><img
-                                alt="[% l('Anonymous List Help') %]"
-                                src="[% ctx.media_prefix %]/images/question-mark.png" /></a>-->
-                        </td>
-                    </tr>
-                </table>
-                <div class="float-right"></div>
-                <div class="clear-both pad-bottom-five"></div>
-            </div>
+            <p class="big-strong">[% l('Temporary List') %]</p>
             <table cellpadding='0' cellspacing='0' border='0'>
                 <thead id="acct_list_header_anon">
                     <tr>
@@ -26,13 +24,13 @@
                                 for (i = 0; i < inputs.length; i++) { 
                                     if (inputs[i].name == 'record' && !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
                         </td>
-                        <td width="49%" style="padding-left:5px;">[% l('Title') %]</td>
-                        <td width="49%" style="padding-left:5px;">[% l('Author(s)') %]</td>
+                        <td width="49%" class="opac-auto-108"><a href="[% mkurl('', {anonsort=>'titlesort'}) %]">[% l('Title') %]</a></td>
+                        <td width="49%" class="opac-auto-108"><a href="[% mkurl('', {anonsort=>'authorsort'}) %]">[% l('Author(s)') %]</a% l('Author(s)') %]</td>
                         <td width="1%" class="nowrap">
-                            <select class="selector_actions_for_list" name="action">
-                                <option>[% l('-- Actions for this list --') %]</option>
-                                <option value="place_hold">[% l('Place Hold') %]</option>
-                                <option value="delete">[% l('Remove Items') %]</option>
+                            <select name="action">
+                                <option>[% l('-- Actions for these items --') %]</option>
+                                <option value="place_hold">[% l('Place hold') %]</option>
+                                <option value="delete">[% l('Remove from list') %]</option>
                                 [% IF ctx.user AND ctx.bookbags.size %]
                                 <optgroup label="Move selected items to">
                                     [% FOR bbag IN ctx.bookbags %]]
@@ -53,8 +51,15 @@
                         <td class="item_list_padding" style="padding-left: 10px;">
                             <input type="checkbox" name="record" value="[% item %]" />
                         </td>
-                        <td class="item_list_padding" style="padding-left: 5px;">[% attrs.title | html %]</td>
-                        <td class="item_list_padding" style="padding-left: 5px;">[% attrs.author | html %]</td>
+                        <td class="item_list_padding" style="padding-left: 5px;"><a href="[% mkurl(ctx.opac_root _ '/record/' _ item, {}, ['edit_notes', 'id']) %]">[% attrs.title | html %]</a></td>
+                        <td class="item_list_padding" style="padding-left: 5px;"><a href="[%- 
+                            authorquery = attrs.author | replace('[,\.:;]', '');
+                            mkurl(
+                                ctx.opac_root _ '/results',
+                                {qtype => 'author', query => authorquery},
+                                ['page', 'id', 'edit_notes']
+                            )
+                        -%]">[% attrs.author | html %]</a></td>
                     </tr>
                     [% END %]
                 </tbody>
