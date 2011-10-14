@@ -1,8 +1,8 @@
 #!/usr/bin/perl
-# vim:noet:ts=4:
+# vim:et:ts=4:
 use strict;
 use warnings;
-use Test::More tests => 5;
+use Test::More tests => 4;
 use Error qw(:try);
 
 use_ok( 'OpenSRF::Utils::Config' );
@@ -65,148 +65,20 @@ my $logfile    = $conf->bootstrap->logfile;
 my $xmlparser = XML::LibXML->new();
 my $confxml = $xmlparser->parse_file($core_config);
 my $confxpc = XML::LibXML::XPathContext->new($confxml);
-
-foreach my $section (qw/opensrf gateway/) {
-	my $j_username = $confxpc->find("/config/$section/username");
-	my $j_password = $confxpc->find("/config/$section/passwd");
-	my $j_port = $confxpc->find("/config/$section/port");
-	# We should check for a domains element to catch likely upgrade errors
-	my $j_domain = $confxpc->find("/config/$section/domain");
-	check_jabber($j_username, $j_password, $j_domain, $j_port);
-}
-
-my @routers = $confxpc->findnodes("/config/routers/router");
-foreach my $router (@routers) {
-	my $j_username = $router->findvalue("./transport/username");
-	my $j_password = $router->findvalue("./transport/password");
-	my $j_port = $router->findvalue("./transport/port");
-	# We should check for a domains element to catch likely upgrade errors
-	my $j_domain = $router->findvalue("./transport/server");
-	check_jabber($j_username, $j_password, $j_domain, $j_port);
-}
-
 my $osrfxml = $xmlparser->parse_file($settings_config);
-print "\nChecking database connections\n";
-# Check database connections
-my @databases = $osrfxml->findnodes('//database');
 
-# If we have no database connections, this is probably the OpenSRF version
-# of opensrf.xml
-if (!@databases) {
-	my $de = "* WARNING: There are no database connections defined in " .
-		"opensrf.xml. These are defined in services such as " .
-		"open-ils.cstore and open-ils.reporter. Please ensure that " .
-		"your opensrf_core.xml and opensrf.xml configuration files " .
-		"are based on the examples shipped with Evergreen instead of " .
-		"OpenSRF.\n";
-	$output .= $de;
-	warn $de;
-}
-
-foreach my $database (@databases) {
-	my $db_name = $database->findvalue("./db");	
-	if (!$db_name) {
-		$db_name = $database->findvalue("./name");	
-	}
-	my $db_host = $database->findvalue("./host");	
-	my $db_port = $database->findvalue("./port");	
-	my $db_user = $database->findvalue("./user");	
-	my $db_pw = $database->findvalue("./pw");	
-	if (!$db_pw && $database->parentNode->parentNode->nodeName eq 'reporter') {
-		$db_pw = $database->findvalue("./password");
-		if ($db_pw) {
-			my $de = "* WARNING: Deprecated <password> element used for the " .
-				"<reporter> entry. Please use <pw> instead.\n";
-			$output .= $de;
-			warn $de;
-		}
-	}
-
-	my $osrf_xpath;
-	foreach my $node ($database->findnodes("ancestor::node()")) {
-		next unless $node->nodeType == XML::LibXML::XML_ELEMENT_NODE;
-		$osrf_xpath .= "/" . $node->nodeName;
-	}
-	$output .= test_db_connect($db_name, $db_host, $db_port, $db_user, $db_pw, $osrf_xpath);
-}
+check_opensrf_core();
+check_all_jabber();
+check_all_database_connections();
+check_database_drivers();
 
 print "\nChecking postgresql version\n";
 system ("psql", "--version");
 
-print "\nChecking database drivers to ensure <driver> matches <language>\n";
-# Check database drivers
-# if language eq 'C', driver eq 'pgsql'
-# if language eq 'perl', driver eq 'Pg'
-my @drivers = $osrfxml->findnodes('//driver');
-foreach my $driver_node (@drivers) {
-	my $language;
-	my $driver_xpath;
-	my @driver_xpath_nodes;
-	foreach my $node ($driver_node->findnodes("ancestor::node()")) {
-		next unless $node->nodeType == XML::LibXML::XML_ELEMENT_NODE;
-		$driver_xpath .= "/" . $node->nodeName;
-		push @driver_xpath_nodes, $node->nodeName;
-	}
-	my $lang_xpath;
-	my $driver = $driver_node->findvalue("child::text()");
-	while (pop(@driver_xpath_nodes) && scalar(@driver_xpath_nodes) > 0 && !$language) {
-		$lang_xpath = "/" . join('/', @driver_xpath_nodes) . "/language";
-		my @lang_nodes = $osrfxml->findnodes($lang_xpath);
-		next unless scalar(@lang_nodes > 0);
-		$language = $lang_nodes[0]->findvalue("child::text()");
-	}
-	if ($driver eq "pgsql") {
-		if ($driver_xpath =~ m#/reporter/#) {
-			$result = "* ERROR: reporter application must use driver 'Pg', but '$driver' is defined\n";
-			warn $result;
-		} elsif ($language eq "C") {
-			$result = "* OK: $driver language is $language in $lang_xpath\n";
-		} else {
-			$result = "* ERROR: $driver language is $language in $lang_xpath\n";
-			warn $result;
-		}
-	} elsif ($driver eq "Pg") {
-		if ($driver_xpath =~ m#/reporter/#) {
-			$result = "* OK: $driver language is undefined for reporter base configuration\n";
-		} elsif ($language eq "perl") {
-			$result = "* OK: $driver language is $language in $lang_xpath\n";
-		} else {
-			$result = "* ERROR: $driver language is $language in $lang_xpath\n";
-			warn $result;
-		}
-
-	} elsif ($driver eq "SIP") {
-			$result = "* OK SIP from telephony section. \n";
-			warn $result;
-	} else {
-		$result = "* ERROR: Unknown driver $driver in $driver_xpath\n";
-		warn $result;
-	}
-	print $result;
-	$output .= $result;
-}
-
 print "\nChecking libdbi and libdbi-drivers\n";
 $output .= check_libdbd();
 
-print "\nChecking hostname\n";
-my @hosts = $osrfxml->findnodes('/opensrf/hosts/*');
-foreach my $host (@hosts) {
-	next unless $host->nodeType == XML::LibXML::XML_ELEMENT_NODE;
-	my $osrfhost = $host->nodeName;
-	my $he;
-	if ($osrfhost ne $hostname && $osrfhost ne "localhost") {
-		$result = " * ERROR: expected hostname '$hostname', found '$osrfhost' in <hosts> section of opensrf.xml\n";
-		warn $result;
-		$he = 1;
-	} elsif ($osrfhost eq "localhost") {
-		$result = " * OK: found hostname 'localhost' in <hosts> section of opensrf.xml\n";
-	} else {
-		$result = " * OK: found hostname '$hostname' in <hosts> section of opensrf.xml\n";
-	}
-	print $result unless $he;
-	$output .= $result;
-}
+check_hostname();
 
 # Check for oils_web.xml, required for acquisitions and many administration
 # interfaces as of Evergreen 1.6
@@ -223,6 +95,56 @@ if (!-T '/openils/conf/oils_web.xml') {
 if ($gather) {
 	get_debug_info( $tmpdir, $log_dir, $conf_dir, $perloutput, $output );
 }
+
+sub check_all_database_connections {
+    print "\nChecking database connections\n";
+    # Check database connections
+    my @databases = $osrfxml->findnodes('//database');
+
+    # If we have no database connections, this is probably the OpenSRF version
+    # of opensrf.xml
+    if (!@databases) {
+        my $de = "* WARNING: There are no database connections defined in " .
+            "opensrf.xml. These are defined in services such as " .
+            "open-ils.cstore and open-ils.reporter. Please ensure that " .
+            "your opensrf_core.xml and opensrf.xml configuration files " .
+            "are based on the examples shipped with Evergreen instead of " .
+            "OpenSRF.\n";
+        $output .= $de;
+        warn $de;
+    }
+
+    foreach my $database (@databases) {
+        if ($database->parentNode->parentNode->localname eq 'open-ils.qstore') {
+            next;
+        }
+        my $db_name = $database->findvalue("./db");    
+        if (!$db_name) {
+            $db_name = $database->findvalue("./name");    
+        }
+        my $db_host = $database->findvalue("./host");    
+        my $db_port = $database->findvalue("./port");    
+        my $db_user = $database->findvalue("./user");    
+        my $db_pw = $database->findvalue("./pw");    
+        if (!$db_pw && $database->parentNode->parentNode->nodeName eq 'reporter') {
+            $db_pw = $database->findvalue("./password");
+            if ($db_pw) {
+                my $de = "* WARNING: Deprecated <password> element used for the " .
+                    "<reporter> entry. Please use <pw> instead.\n";
+                $output .= $de;
+                warn $de;
+            }
+        }
+
+        my $osrf_xpath;
+        foreach my $node ($database->findnodes("ancestor::node()")) {
+            next unless $node->nodeType == XML::LibXML::XML_ELEMENT_NODE;
+            $osrf_xpath .= "/" . $node->nodeName;
+        }
+        $output .= test_db_connect($db_name, $db_host, $db_port, $db_user, $db_pw, $osrf_xpath);
+    }
+}
+
 
 sub test_db_connect {
 	my ($db_name, $db_host, $db_port, $db_user, $db_pw, $osrf_xpath) = @_;
@@ -273,30 +195,129 @@ sub test_db_connect {
 
 }
 
+sub check_database_drivers {
+    print "\nChecking database drivers to ensure <driver> matches <language>\n";
+    # Check database drivers
+    # if language eq 'C', driver eq 'pgsql'
+    # if language eq 'perl', driver eq 'Pg'
+    my @drivers = $osrfxml->findnodes('//driver');
+    foreach my $driver_node (@drivers) {
+        my $language;
+        my $driver_xpath;
+        my @driver_xpath_nodes;
+        foreach my $node ($driver_node->findnodes("ancestor::node()")) {
+            next unless $node->nodeType == XML::LibXML::XML_ELEMENT_NODE;
+            $driver_xpath .= "/" . $node->nodeName;
+            push @driver_xpath_nodes, $node->nodeName;
+        }
+        my $lang_xpath;
+        my $driver = $driver_node->findvalue("child::text()");
+        while (pop(@driver_xpath_nodes) && scalar(@driver_xpath_nodes) > 0 && !$language) {
+            $lang_xpath = "/" . join('/', @driver_xpath_nodes) . "/language";
+            my @lang_nodes = $osrfxml->findnodes($lang_xpath);
+            next unless scalar(@lang_nodes > 0);
+            $language = $lang_nodes[0]->findvalue("child::text()");
+        }
+        if ($driver eq "pgsql") {
+            if ($driver_xpath =~ m#/reporter/#) {
+                $result = "* ERROR: reporter application must use driver 'Pg', but '$driver' is defined\n";
+                warn $result;
+            } elsif ($language eq "C") {
+                $result = "* OK: $driver language is $language in $lang_xpath\n";
+            } else {
+                $result = "* ERROR: $driver language is $language in $lang_xpath\n";
+                warn $result;
+            }
+        } elsif ($driver eq "Pg") {
+            if ($driver_xpath =~ m#/reporter/#) {
+                $result = "* OK: $driver language is undefined for reporter base configuration\n";
+            } elsif ($language eq "perl") {
+                $result = "* OK: $driver language is $language in $lang_xpath\n";
+            } else {
+                $result = "* ERROR: $driver language is $language in $lang_xpath\n";
+                warn $result;
+            }
+
+        } elsif ($driver eq "SIP") {
+                $result = "* OK SIP from telephony section. \n";
+                warn $result;
+        } else {
+            $result = "* ERROR: Unknown driver $driver in $driver_xpath\n";
+            warn $result;
+        }
+        print $result;
+        $output .= $result;
+    }
+}
+
+sub check_opensrf_core {
+    print "\nChecking $core_config for Evergreen services:\n";
+    my @public_services = $confxpc->findnodes("//services/service");
+    my $found_eg_service = 0;
+    foreach my $service (@public_services) {
+        if ($service->firstChild->nodeValue eq 'open-ils.auth') {
+            $found_eg_service = 1;
+        }
+    }
+    if ($found_eg_service) {
+        my $found .= "* OK: Found a public Evergreen service in $core_config\n";
+        print $found;
+        $output .= $found;
+    } else {
+        my $err = "* WARNING: No public Evergreen services were found in " .
+            "$core_config; this means that you are probably still using " .
+            "the version that ships with OpenSRF. Please use the " .
+            "opensrf.xml.example file that ships with Evergreen.\n";
+        $output .= $err;
+        warn $err;
+    }
+}
+
 sub check_db_langs {
-	my $langs = shift;
+    my $langs = shift;
 
-	my $errors;
+    my $errors;
 
-	# Ensure the following PostgreSQL languages have been enabled
-	my %languages = (
-		'plperl' => 0,
-		'plperlu' => 0,
-		'plpgsql' => 0,
-	);
+    # Ensure the following PostgreSQL languages have been enabled
+    my %languages = (
+        'plperl' => 0,
+        'plperlu' => 0,
+        'plpgsql' => 0,
+    );
 
-	foreach my $lang (@$langs) {
-		my $lower = lc($$lang[0]);
-		$languages{$lower} = 1;
-	}
-	
-	foreach my $lang (keys %languages) {
-		if (!$languages{$lang}) {
-			$errors .= "  * ERROR: Language '$lang' is not enabled in the target database\n";
-		}
-	}
+    foreach my $lang (@$langs) {
+        my $lower = lc($$lang[0]);
+        $languages{$lower} = 1;
+    }
+    
+    foreach my $lang (keys %languages) {
+        if (!$languages{$lang}) {
+            $errors .= "  * ERROR: Language '$lang' is not enabled in the target database\n";
+        }
+    }
 
-	return $errors;
+    return $errors;
+}
+
+sub check_all_jabber {
+    foreach my $section (qw/opensrf gateway/) {
+        my $j_username = $confxpc->find("/config/$section/username");
+        my $j_password = $confxpc->find("/config/$section/passwd");
+        my $j_port = $confxpc->find("/config/$section/port");
+        # We should check for a domains element to catch likely upgrade errors
+        my $j_domain = $confxpc->find("/config/$section/domain");
+        check_jabber($j_username, $j_password, $j_domain, $j_port);
+    }
+
+    my @routers = $confxpc->findnodes("/config/routers/router");
+    foreach my $router (@routers) {
+        my $j_username = $router->findvalue("./transport/username");
+        my $j_password = $router->findvalue("./transport/password");
+        my $j_port = $router->findvalue("./transport/port");
+        # We should check for a domains element to catch likely upgrade errors
+        my $j_domain = $router->findvalue("./transport/server");
+        check_jabber($j_username, $j_password, $j_domain, $j_port);
+    }
 }
 
 sub check_jabber {
@@ -326,6 +347,27 @@ sub check_jabber {
 
 	print "* Jabber successfully connected\n" unless ($je);
 	$output .= ($je) ? $je : "* Jabber successfully connected\n";
+}
+
+sub check_hostname {
+	print "\nChecking hostname\n";
+	my @hosts = $osrfxml->findnodes('/opensrf/hosts/*');
+	foreach my $host (@hosts) {
+		next unless $host->nodeType == XML::LibXML::XML_ELEMENT_NODE;
+		my $osrfhost = $host->nodeName;
+		my $he;
+		if ($osrfhost ne $hostname && $osrfhost ne "localhost") {
+			$result = " * ERROR: expected hostname '$hostname', found '$osrfhost' in <hosts> section of opensrf.xml\n";
+			warn $result;
+			$he = 1;
+		} elsif ($osrfhost eq "localhost") {
+			$result = " * OK: found hostname 'localhost' in <hosts> section of opensrf.xml\n";
+		} else {
+			$result = " * OK: found hostname '$hostname' in <hosts> section of opensrf.xml\n";
+		}
+		print $result unless $he;
+		$output .= $result;
+	}
 }
 
 sub check_libdbd {
