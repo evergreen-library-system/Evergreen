@@ -1,7 +1,7 @@
 -- XXXX.schema-acs-nfi.sql
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0640', :eg_version);
 
 -- AFTER UPDATE OR INSERT trigger for authority.record_entry
 CREATE OR REPLACE FUNCTION authority.indexing_ingest_or_delete () RETURNS TRIGGER AS $func$
