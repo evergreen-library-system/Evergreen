@@ -694,7 +694,7 @@ END;
 $$ LANGUAGE PLPGSQL ROWS 10;
 
 CREATE OR REPLACE FUNCTION authority.axis_authority_tags(a TEXT) RETURNS INT[] AS $$
-    SELECT ARRAY_ACCUM(field) FROM authority.browse_axis_authority_field_map WHERE axis = $1;
+    SELECT ARRAY_AGG(field) FROM authority.browse_axis_authority_field_map WHERE axis = $1;
 $$ LANGUAGE SQL;
 
 
@@ -710,7 +710,7 @@ $$ LANGUAGE SQL;
 
 
 CREATE OR REPLACE FUNCTION authority.btag_authority_tags(btag TEXT) RETURNS INT[] AS $$
-    SELECT ARRAY_ACCUM(authority_field) FROM authority.control_set_bib_field WHERE tag = $1
+    SELECT ARRAY_AGG(authority_field) FROM authority.control_set_bib_field WHERE tag = $1
 $$ LANGUAGE SQL;
 
 
@@ -726,7 +726,7 @@ $$ LANGUAGE SQL;
 
 
 CREATE OR REPLACE FUNCTION authority.atag_authority_tags(atag TEXT) RETURNS INT[] AS $$
-    SELECT ARRAY_ACCUM(id) FROM authority.control_set_authority_field WHERE tag = $1
+    SELECT ARRAY_AGG(id) FROM authority.control_set_authority_field WHERE tag = $1
 $$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION authority.atag_authority_tags_refs(atag TEXT) RETURNS INT[] AS $$
