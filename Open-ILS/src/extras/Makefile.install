@@ -378,7 +378,6 @@ install_spidermonkey:
 install_net_z3950_simpleserver:
 	if [ ! -f $(LIBNET_Z3950_SIMPLESERVER).tar.gz ]; then wget $(LIBNET_Z3950_SIMPLESERVER_URL).tar.gz; fi;
 	tar -zxf $(LIBNET_Z3950_SIMPLESERVER).tar.gz
-	sed -i -e 's/..\/..\/yaz-config/yaz-config/' $(LIBNET_Z3950_SIMPLESERVER)/Makefile.PL;
 	cd $(LIBNET_Z3950_SIMPLESERVER) && perl Makefile.PL && make && make test && make install
 
 # On Ubuntu and possibly Debian, the libdbi0 package prevents the 
