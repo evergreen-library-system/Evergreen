@@ -1912,6 +1912,15 @@ sub sru_search {
         if ( $qualifier ) {
             my ($qset, $qname) = split(/\./, $qualifier);
 
+            # Per http://www.loc.gov/standards/sru/specs/cql.html
+            # "All parts of CQL are case insensitive [...] If any case insensitive
+            # part of CQL is specified with both upper and lower case, it is for
+            # aesthetic purposes only."
+
+            # So fold the qualifier and relation to lower case
+            $qset = lc($qset);
+            $qname = lc($qname);
+
             if ( exists($qualifier_map{$qset}{$qname}) ) {
                 $qualifier = $qualifier_map{$qset}{$qname}{'index'} || 'kw';
                 $log->debug("SRU toEvergreen: $qset, $qname   $qualifier_map{$qset}{$qname}{'index'}\n");
