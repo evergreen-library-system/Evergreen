@@ -36,6 +36,7 @@ my $log = 'OpenSRF::Utils::Logger';
 
 my $cache;
 my $cache_timeout;
+my $default_locale;
 my $parser = XML::LibXML->new();
 my $xslt = XML::LibXSLT->new();
 
@@ -56,6 +57,8 @@ sub initialize {
     $cache_timeout = $conf->config_value(
             "apps", "open-ils.fielder", "app_settings", "cache_timeout" ) || 300;
 
+    $default_locale = $conf->config_value("default", "default_locale") || 'en-US';
+
     generate_methods();
 
 }
@@ -68,6 +71,7 @@ sub fielder_fetch {
     my $client = shift;
     my $obj = shift;
 
+    my $locale = $self->session->session_locale || $default_locale;
     my $query = $obj->{query};
     my $nocache = $obj->{cache} ? 0 : 1;
     my $fields = $obj->{fields};
@@ -98,7 +102,8 @@ sub fielder_fetch {
             $qstring .
             $fstring .
             $distinct .
-            $obj_class
+            $obj_class .
+            $locale
         );
 
         $res = $cache->get_cache( $key );
