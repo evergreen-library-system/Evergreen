@@ -36,6 +36,9 @@ LIBJS_PERL_URL=http://mirror.datapipe.net/pub/CPAN/authors/id/T/TB/TBUSCH/$(LIBJ
 # used for installing libjs lib and header files
 JS_INSTALL_PREFIX=/usr/
 
+LIBNET_Z3950_SIMPLESERVER=Net-Z3950-SimpleServer-1.15
+LIBNET_Z3950_SIMPLESERVER_URL=http://ftp.indexdata.dk/pub/simpleserver/$(LIBNET_Z3950_SIMPLESERVER)
+
 # The libdbi sources can be fetched from sourceforge.net.  They are stored on
 # the open-ils.org site now for ease of direct linking
 LIBDBI=libdbi-0.8.3
@@ -44,7 +47,7 @@ LIBDBI_HOST=http://open-ils.org/~denials/evergreen
 
 # We need a recent version of Yaz
 # Debian Lenny and Ubuntu 8.10 come with 3.0.34
-YAZ=yaz-3.0.47
+YAZ=yaz-4.2.17
 YAZ_HOST=http://ftp.indexdata.dk/pub/yaz
 
 # Business::OnlinePayment is not packaged on CentOS/RHEL
@@ -242,11 +245,9 @@ DEB_APACHE_DISMODS = \
     deflate
 
 # Chronically unpackaged CPAN modules
-# Note older version of Net::Z3950::SimpleServer to avoid yaz 4.1.x dependency
 CPAN_MODULES = \
 	Business::EDI \
 	Library::CallNumber::LC \
-	M/MI/MIRK/Net-Z3950-SimpleServer-1.12.tar.gz \
 	Net::Z3950::Simple2ZOOM \
 	Template::Plugin::POSIX \
 	SRU
@@ -305,7 +306,7 @@ generic_ubuntu: install_debs test_for_libdbi_pkg install debian_sys_config insta
 # - COMMON TARGETS ---------------------------------------------------------
 
 # Install the CPAN modules
-install_cpan: 
+install_cpan: install_net_z3950_simpleserver
 	for m in $(CPAN_MODULES); do perl -MCPAN -e "install \"$$m\";"; done
 
 install_cpan_more: 
@@ -373,6 +374,12 @@ install_spidermonkey:
 		sed -i -e 's/js32.dll/libjs.so/' $(LIBJS_PERL)/Makefile.PL ; \
 	fi;
 	cd $(LIBJS_PERL) && perl Makefile.PL -E4X && make && make test && make install
+
+install_net_z3950_simpleserver:
+	if [ ! -f $(LIBNET_Z3950_SIMPLESERVER).tar.gz ]; then wget $(LIBNET_Z3950_SIMPLESERVER_URL).tar.gz; fi;
+	tar -zxf $(LIBNET_Z3950_SIMPLESERVER).tar.gz
+	sed -i -e 's/..\/..\/yaz-config/yaz-config/' $(LIBNET_Z3950_SIMPLESERVER)/Makefile.PL;
+	cd $(LIBNET_Z3950_SIMPLESERVER) && perl Makefile.PL && make && make test && make install
 
 # On Ubuntu and possibly Debian, the libdbi0 package prevents the 
 # compiled-from-source version from being used and breaks the install.
