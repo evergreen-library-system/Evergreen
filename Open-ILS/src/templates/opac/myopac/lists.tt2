@@ -79,8 +79,8 @@
                     url = mkurl(baseurl, {}, ['id', 'edit_notes']);
                     ltitle = l("Hide items in list");
                 END %]
-                <a class="big-strong" title="[% ltitle %]" href="[% url %]">[% bbag.name | html %]</a>
-                [% IF bbag.description %]<br /><em>[% bbag.description | html %]</em>[% END %]
+                <h2 class="bookbag-name"><a title="[% ltitle %]" href="[% url %]">[% bbag.name | html %]</a></h2>
+                [% IF bbag.description %]<div class="bookbag-description">[% bbag.description | html %]</div>[% END %]
             </div>
             <form action="[% ctx.opac_root %]/myopac/list/update" method="POST">
                 <div class="bookbag-share">
