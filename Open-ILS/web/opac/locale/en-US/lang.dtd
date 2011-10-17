@@ -678,7 +678,7 @@
 <!ENTITY staff.main.button_bar.patron_registration.label "Patron Registration">
 <!ENTITY staff.main.button_bar.patron_registration.accesskey "">
 <!ENTITY staff.main.button_bar.hotkeys_toggle "Toggle Hotkeys">
-<!ENTITY staff.main.button_bar.create_marc "Create Marc Record">
+<!ENTITY staff.main.button_bar.create_marc "Create MARC Record">
 <!ENTITY staff.main.button_bar.authority_manage "Manage Authorities">
 <!ENTITY staff.main.button_bar.retrieve_last_record "Retrieve Last Record">
 <!ENTITY staff.main.menu.acquisitions.accesskey "q">
@@ -895,7 +895,7 @@
 <!ENTITY staff.main.menu.cat.copy_status.key "I">
 <!ENTITY staff.main.menu.cat.copy_status.label "Display Item">
 <!ENTITY staff.main.menu.cat.create_marc.accesskey "N">
-<!ENTITY staff.main.menu.cat.create_marc.label "Create New Marc Record">
+<!ENTITY staff.main.menu.cat.create_marc.label "Create New MARC Record">
 <!ENTITY staff.main.menu.cat.dedup.accesskey "M">
 <!ENTITY staff.main.menu.cat.dedup.label "Merge and Transfer Interface">
 <!ENTITY staff.main.menu.cat.edit_copy_buckets.accesskey "B">
