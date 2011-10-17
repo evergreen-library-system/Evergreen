@@ -346,8 +346,8 @@ sub targetable_holds {
     SQL
     my $sth = action::hold_request->db_Main->prepare_cached($query);
     $sth->execute($check_expire);
+    $client->respond( $_ ) for @{ $sth->fetchall_arrayref };
 
-    $client->respond( $_ ) for ( $sth->fetchall_arrayref );
     return undef;
 }
 

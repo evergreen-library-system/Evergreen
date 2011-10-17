@@ -56,12 +56,16 @@ if ($parallel == 1) {
     );
 
     my $storage = OpenSRF::AppSession->create("open-ils.storage");
-    my $holds = $storage->request('open-ils.storage.action.hold_request.targetable_holds.id_list', '24h')->gather();
-    $storage->disconnect();
 
-    foreach my $hold (@$holds) {
-        $multi_targeter->request( 'open-ils.storage.action.hold_request.copy_targeter', '', $hold->[0], $hold->[1]);
+    my $r = $storage->request('open-ils.storage.action.hold_request.targetable_holds.id_list', '24h');
+    while ( my $h = $r->recv ) {
+        die $r->failed->stringify . "\n" if $r->failed;
+        if (my $hold = $h->content) {
+            $multi_targeter->request( 'open-ils.storage.action.hold_request.copy_targeter', '', $hold->[0], $hold->[1]);
+        }
     }
+
+    $storage->disconnect();
 
     $multi_targeter->session_wait(1);
     $multi_targeter->disconnect;
