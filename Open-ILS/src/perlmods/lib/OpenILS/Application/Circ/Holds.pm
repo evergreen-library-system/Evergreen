@@ -760,6 +760,11 @@ sub cancel_hold {
 
 	$e->commit;
 
+    # re-fetch the hold to pick up the real cancel_time (not "now") for A/T
+    $e->xact_begin;
+    $hold = $e->retrieve_action_hold_request($hold->id) or return $e->die_event;
+    $e->rollback;
+
     $U->create_events_for_hook('hold_request.cancel.staff', $hold, $hold->pickup_lib)
         if $e->requestor->id != $hold->usr;
 
