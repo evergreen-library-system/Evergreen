@@ -115,6 +115,13 @@
                     src="[% ctx.media_prefix %]/images/small-rss.png"/></a>
                 [% END %]
             </div>
+            <div class="bookbag-controls">
+                [% IF bbag.pub == 't'; %]
+                <a href='[%-
+                    mkurl( ctx.opac_root _ '/results', {page => '0', query => 'container(bre,bookbag,' _ bbag.id _ ')'} )
+                -%]'>[% l('HTML View') %]</a>
+                [% END %]
+            </div>
             <div class="clear-both pad-bottom-five"></div>
         </div>
         [% IF CGI.param("id") == bbag.id %]
