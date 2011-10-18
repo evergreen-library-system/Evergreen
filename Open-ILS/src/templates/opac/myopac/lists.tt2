@@ -129,7 +129,7 @@
             <form method="GET">
                 <label for="opac.result.sort">[% l("Sort list items by: ") %]</label>
                 [% INCLUDE "opac/parts/filtersort.tt2"
-                    value=CGI.param('sort') %]
+                    value=CGI.param('sort') mode='bookbag' %]
                 <input type="hidden" name="id"
                     value="[% CGI.param('id') | html %]" />
                 <input type="submit" value="[% l('Sort') %]" />
