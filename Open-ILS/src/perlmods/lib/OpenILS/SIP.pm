@@ -283,7 +283,7 @@ sub checkin_ok {
 }
 
 sub renew_ok {
-	return to_bool($config->{policy}->{renew});
+	return to_bool($config->{policy}->{renewal});
 }
 
 sub status_update_ok {
@@ -309,7 +309,8 @@ sub offline_ok {
 
 sub checkout {
 	my ($self, $patron_id, $item_id, $sc_renew, $fee_ack) = @_;
-	$sc_renew = 0;
+	# In order to allow renewals the selfcheck AND the config have to say they are allowed
+	$sc_renew = (chr($sc_renew) eq 'Y' && $self->renew_ok());
 
 	$self->verify_session;
 
@@ -340,13 +341,23 @@ sub checkout {
 	syslog('LOG_DEBUG', "OILS: OpenILS::Checkout data loaded OK, checking out...");
 
 	if ($item->{patron} && ($item->{patron} eq $patron_id)) {
-		syslog('LOG_INFO', "OILS: OpenILS::Checkout data loaded OK, doing renew...");
-		$sc_renew = 1;
+		$xact->renew_ok(1); # So that accept/reject responses have the correct value later
+		if($sc_renew) {
+			syslog('LOG_INFO', "OILS: OpenILS::Checkout data loaded OK, doing renew...");
+		} else {
+			syslog('LOG_INFO', "OILS: OpenILS::Checkout appears to be renew, but renewal disallowed...");
+			$xact->screen_msg("Renewals not permitted");
+			$xact->ok(0);
+			return $xact; # Don't attempt later
+        }
 	} elsif ($item->{patron} && ($item->{patron} ne $patron_id)) {
 		# I can't deal with this right now
 		# XXX check in then check out?
 		$xact->screen_msg("Item checked out to another patron");
 		$xact->ok(0);
+		return $xact; # Don't wipe out the screen message later
+	} else {
+		$sc_renew = 0;
 	} 
 
         # Check for fee and $fee_ack. If there is a fee, and $fee_ack
