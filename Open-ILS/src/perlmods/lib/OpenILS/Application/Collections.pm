@@ -209,14 +209,30 @@ sub users_of_interest_warning_penalty {
     my $start = time;
     my $query = {
         select => {ausp => ['usr']},
-        from => 'ausp',
+        from => {
+            ausp => {
+                au => {
+                    join => {
+                        aus => {
+                            type => 'left',
+                            filter => {name => 'circ.collections.exempt'}
+                        }
+                    }
+                }
+            }
+        },
         where => {
-            standing_penalty => 4, # PATRON_EXCEEDS_COLLECTIONS_WARNING
-            org_unit => [ map {$_->{id}} @$org_ids ],
-            '-or' => [
-                {stop_date => undef},
-                {stop_date => {'>' => 'now'}}
-            ]
+            '+ausp' => {
+                standing_penalty => 4, # PATRON_EXCEEDS_COLLECTIONS_WARNING
+                org_unit => [ map {$_->{id}} @$org_ids ],
+                '-or' => [
+                    {stop_date => undef},
+                    {stop_date => {'>' => 'now'}}
+                ]
+            },
+            # We are only interested in users that do not have the 
+            # circ.collections.exempt setting applied
+            '+aus' => {value => undef}
         }
     };
 
