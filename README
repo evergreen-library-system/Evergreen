@@ -392,7 +392,7 @@ can either:
   *  Install the PostgreSQL contrib modules on the machine on which you
      are installing the Evergreen code, and use the --create-database
      option from that machine, or
-  *  Copy the `Open-ILS/src/sql/Pg/create-database.sql` script to your
+  *  Copy the `Open-ILS/src/sql/Pg/create_database.sql` script to your
      PostgreSQL server and invoke it as the *postgres* Linux account:
 +
 [source, bash]
