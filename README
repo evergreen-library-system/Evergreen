@@ -390,7 +390,7 @@ PostgreSQL 9.0 you can either:
 +
 [source, bash]
 ------------------------------------------------------------------------------
-psql -vdb_name=<dbname> -vcontrib_dir=`pg_config --sharedir`/contrib
+psql -vdb_name=<dbname> -vcontrib_dir=`pg_config --sharedir`/contrib -f create_database.sql
 ------------------------------------------------------------------------------
 
 Then you can issue the `eg_db_config.pl` command as above _without_ the
@@ -416,7 +416,7 @@ Net::Domain::hostfqdn() . "\n";'`, you should not use the `-l` flag.
 +
 [source, bash]
 ------------------------------------------------------------------------------
-osrf_ctl.sh -l -a start_all</code>
+osrf_ctl.sh -l -a start_all
 ------------------------------------------------------------------------------
 +
   ** If you receive the error message `bash: osrf_ctl.sh: command not found`,
