@@ -32,7 +32,7 @@
                                 <option value="place_hold">[% l('Place hold') %]</option>
                                 <option value="delete">[% l('Remove from list') %]</option>
                                 [% IF ctx.user AND ctx.bookbags.size %]
-                                <optgroup label="Move selected items to">
+                                <optgroup label="[% l('Move selected items to bookbag:') %]">
                                     [% FOR bbag IN ctx.bookbags %]]
                                     <option value="[% bbag.id %]" class="selector_actions_for_list_inner_option">[% bbag.name | html %]</option>
                                     [% END %]
