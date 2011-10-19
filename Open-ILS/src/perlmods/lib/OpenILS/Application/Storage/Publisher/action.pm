@@ -162,41 +162,18 @@ sub complete_reshelving {
 		unless (interval_to_seconds( $window ));
 
 	my $setting = actor::org_unit_setting->table;
-	my $circ = action::circulation->table;
 	my $cp = asset::copy->table;
-	my $atc = action::transit_copy->table;
 
 	my $sql = <<"	SQL";
 		UPDATE	$cp
 		  SET	status = 0
 		  WHERE	id IN (
-			SELECT  id
-			  FROM  (SELECT cp.id, MAX(circ.checkin_time), MAX(trans.dest_recv_time)
-					  FROM  $cp cp
-							JOIN $circ circ ON (circ.target_copy = cp.id)
-							LEFT JOIN $atc trans ON (trans.target_copy = cp.id)
-							LEFT JOIN $setting setting
-								ON (cp.circ_lib = setting.org_unit AND setting.name = 'circ.reshelving_complete.interval')
-					  WHERE circ.checkin_time IS NOT NULL
-							AND cp.status = 7
-					  GROUP BY 1
-					  HAVING (
-						( ( MAX(circ.checkin_time) > MAX(trans.dest_recv_time) or MAX(trans.dest_recv_time) IS NULL )
-						  AND MAX(circ.checkin_time) < NOW() - CAST( COALESCE( BTRIM( FIRST(setting.value),'"' ), ? )  AS INTERVAL) )
-						OR
-						( MAX(trans.dest_recv_time) > MAX(circ.checkin_time)
-						  AND MAX(trans.dest_recv_time) < NOW() - CAST( COALESCE( BTRIM( FIRST(setting.value),'"' ), ? )  AS INTERVAL) )
-					  )
-					) AS foo
-								UNION ALL
-			SELECT  cp.id
-			  FROM  $cp cp 
-					LEFT JOIN $setting setting
-						ON (cp.circ_lib = setting.org_unit AND setting.name = 'circ.reshelving_complete.interval')
-					LEFT JOIN $circ circ ON (circ.target_copy = cp.id)
-			  WHERE cp.status = 7
-					AND circ.id IS NULL
-					AND cp.create_date < NOW() - CAST( COALESCE( BTRIM( setting.value,'"' ), ? )  AS INTERVAL)
+            SELECT cp.id 
+            FROM  $cp cp
+                LEFT JOIN $setting setting
+                    ON (cp.circ_lib = setting.org_unit AND setting.name = 'circ.reshelving_complete.interval')
+            WHERE cp.status = 7
+                AND cp.status_changed_time < NOW() - CAST( COALESCE( BTRIM( setting.value,'"' ), ? )  AS INTERVAL)
 		  )
 	SQL
 	my $sth = action::circulation->db_Main->prepare_cached($sql);
