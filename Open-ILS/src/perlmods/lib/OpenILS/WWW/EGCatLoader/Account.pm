@@ -695,7 +695,13 @@ sub load_place_hold {
                 } else {
                     # hold-specific failure event 
                     $hdata->{hold_failed} = 1;
-                    $hdata->{hold_failed_event} = $result->{last_event};
+
+                    if (ref $result eq 'HASH') {
+                        $hdata->{hold_failed_event} = $result->{last_event};
+                    } elsif (ref $result eq 'ARRAY') {
+                        $hdata->{hold_failed_event} = pop @$result;
+                    }
+
                     $hdata->{could_override} = $self->test_could_override($hdata->{hold_failed_event});
                 }
             }
