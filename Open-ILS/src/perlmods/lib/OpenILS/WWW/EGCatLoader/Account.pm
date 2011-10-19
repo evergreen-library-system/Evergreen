@@ -15,6 +15,11 @@ my $U = 'OpenILS::Application::AppUtils';
 sub prepare_extended_user_info {
     my $self = shift;
     my @extra_flesh = @_;
+    my $e = $self->editor;
+
+    # are we already in a transaction?
+    my $local_xact = !$e->{xact_id}; 
+    $e->xact_begin if $local_xact;
 
     $self->ctx->{user} = $self->editor->retrieve_actor_user([
         $self->ctx->{user}->id,
@@ -25,7 +30,12 @@ sub prepare_extended_user_info {
                 # ...
             }
         }
-    ]) or return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+    ]);
+
+    $e->rollback if $local_xact;
+
+    return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR 
+        unless $self->ctx->{user};
 
     return;
 }
