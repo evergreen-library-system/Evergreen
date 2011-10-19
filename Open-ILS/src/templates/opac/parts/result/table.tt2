@@ -20,6 +20,7 @@
         <tr>
             <td valign="top" width="1" style="padding-right:20px;">
                 <div style="width:174px;">
+                    [% INCLUDE "opac/parts/staff_saved_searches.tt2" %]
                     [% INCLUDE 'opac/parts/result/facets.tt2' %]
                 </div>
             </td>
