@@ -14,7 +14,6 @@ a {
 }
 
 #search-wrapper input[type=text] {
-	border:none;
 	margin:0;
 	padding:0;
 }
@@ -218,9 +217,7 @@ span.dash_divider {
 }
 
 .search_box_wrapper {
-	border:1px solid #e9ebf3;
-	padding: 1px;
-    padding-left: 3px;
+	padding: 1px 1px 1px 3px;
 }
 
 #search-wrapper #breadcrumb {
