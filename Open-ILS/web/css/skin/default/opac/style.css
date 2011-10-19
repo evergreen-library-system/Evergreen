@@ -23,7 +23,7 @@ a {
 	border:1px solid #e9ebf3;
 	margin:0;
 	padding:0;
-	width:168px;
+/*	width:168px; */
 }
 
 /*
@@ -137,7 +137,6 @@ span.dash_divider {
 #header {
 	color: #fff;
 	padding-top: 26px;
-	width: 974px;
 	margin: auto;
 	font-size:11px;
 }
@@ -193,19 +192,16 @@ span.dash_divider {
 
 #gold-links {
 	margin:auto;
-	width:974px;
 	padding-left:0px;
 }
 
 #gold-links-home {
 	margin:auto;
-	width:694px;
 	padding-left:0px;
 }
 
 #util-bar {
 	margin:auto;
-	width:974px;
 	padding-left:0px;
 	height:0px;
 }
@@ -244,7 +240,6 @@ span.dash_divider {
 }
 
 #search-wrapper #search-box {
-	width:974px;
 	margin:auto;
 	padding-left: 0px;
 }
@@ -267,7 +262,6 @@ span.dash_divider {
 
 #adv_search_tabs, #acct_tabs, #acct_fines_tabs, #acct_checked_tabs, #acct_holds_tabs, #acct_prefs_tabs, #results_header_inner{
 	height: 40px;
-	width:974px;
 	margin:auto;
 }
 
@@ -460,7 +454,6 @@ span.dash_divider {
 #hp-buttons {
 	margin: auto;
 	margin-top: 6px;
-	width: 694px; /* 974px; */
 }
 
 #hp-welcome {
@@ -486,7 +479,6 @@ span.dash_divider {
 
 #hp-banner {
 	margin: auto;
-	width: 694px; /* formerly 974px */
 	height: 213px;
 }
 
@@ -510,7 +502,6 @@ span.dash_divider {
 }
 
 #hp-ql-bottom {
-	width: 640px;
 	height: 31px;
 	padding-left: 24px;
 	padding-top: 13px;
@@ -543,10 +534,20 @@ span.dash_divider {
 
 .content-wrapper-record-page { top: -15px; position: relative; }
 
-#main-content-home { width: 694px; margin: auto; padding-left: 17px; }
-#main-content { width: 974px; margin:auto; padding-left: 0px; }
+#main-content-home {
+	margin: auto;
+	padding-left: 17px;
+}
+#main-content {
+	margin:auto;
+	padding-left: 0px;
+}
 
-#main-content-after-bar { float: left; width: 800px; margin: auto; padding-left: 4px; }
+#main-content-after-bar {
+	float: left;
+	margin: auto;
+	padding-left: 4px;
+}
 
 #results-side-bar { float: left; width: 174px;  height: 500px; /* XXX to height of container*/  }
 
@@ -586,7 +587,6 @@ span.dash_divider {
 }
 
 #home-buttons-inner {
-	width:664px;
 	height:117px;
 	background:#bda964;
 }
@@ -625,6 +625,7 @@ span.dash_divider {
 	float: left;
 	font-size: 11px;
 	color: #191919;
+	background: #929292;
 	margin-right: 6px;
 }
 
@@ -743,7 +744,6 @@ span.dash_divider {
 
 .acct_sum_row {
 	padding: 7px 15px;
-	width: 712px;
 	background: #f0f0f0;
 	margin-bottom: 2px;
 	font-size: 10px;
@@ -970,7 +970,6 @@ span.dash_divider {
 	padding-top:5px;
 	padding-bottom: 10px;
 	margin: auto;
-	width: 974px;
 	font-size: 11px;
 }
 
