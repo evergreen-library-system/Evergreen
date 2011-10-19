@@ -1,31 +1,5 @@
 /* once done renaming and everything, combine with style.css */
-
-/* Verfied in-use classes --------------------------- */
-.opac-auto-009 { border: 3px solid #E0E0E0; }
-.opac-auto-010 { border-bottom: 1px dotted #ccc; padding-top: 10px; }
-.opac-auto-011 { border-bottom: 1px dotted #ccc; padding-top: 6px; }
-.adv_global_input_container { border-bottom: none; }
-.opac-auto-013 { border-bottom: none; *height: 0px; }
-.opac-auto-015 { border-left: 1px solid #e9ebf3; padding-right: 27px; }
-.adv_global_filter_sort { border: none; width: 100%; }
-.opac-auto-018 { border-top: 1px dotted #ccc; padding-top: 17px; }
-.clear-both { clear: both; }
-.common-no-pad { clear: both; height: 0px; margin: 0px; padding: 0px; }
-.common-full-pad { clear: both; height: 15px; }
-.opac-auto-029 { color: #333; font-weight: bold; font-size: 13px; }
-.opac-auto-030 { color: #545454; }
-.opac-auto-031 { color: #9999FF; padding-left: 10px; font-size: 7pt; font-weight: 300; }
-.red { color: red; }
-.bold-red { color: red; font-weight: bold }
-.pointer { cursor: pointer; }
-/* ------------------------------------------- */
-
-
-.float-left { float: left; }
-.bookbag-share { float: left; padding: 5px 0; }
-.bookbag-controls { float: left; padding: 5px 0px 0px 10px; }
 .left-corner { float: left; width: 163px; height: 30px; background: url('/images/utils-corner-mid.png') repeat-x top; }
-.float-right { float: right; }
 .opac-auto-045 { float: right; margin-right: 17px; }
 .opac-auto-046 { float: right; width: 214px; }
 .opac-auto-047 { float: right; width: 353px; background: #ccc; padding: 10px; margin-top: 7px; }

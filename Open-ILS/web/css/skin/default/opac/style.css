@@ -200,6 +200,11 @@ span.dash_divider {
 	padding-left:0px;
 }
 
+#gold-links-holder {
+    height: 24px;
+    background: #252525;
+}
+
 #util-bar {
 	margin-left: 1em;
 	padding-left:0px;
@@ -1166,4 +1171,51 @@ table.bookbag-specific {
     border-bottom: 1px solid #666;
     margin-bottom: 2ex;
 }
+.bookbag-share {
+    float: left;
+    padding: 5px 0;
+}
+.bookbag-controls {
+    float: left;
+    padding: 5px 0px 0px 10px;
+}
+
 .save-notes { padding-bottom: 1.5ex; }
+
+/* Moved from semiauto.css */
+.opac-auto-010 {
+    border-bottom: 1px dotted #ccc;
+    padding-top: 10px;
+}
+.opac-auto-011 {
+    border-bottom: 1px dotted #ccc;
+    padding-top: 6px;
+}
+.adv_global_input_container { border-bottom: none; }
+.opac-auto-013 {
+    border-bottom: none;
+    *height: 0px;
+}
+.opac-auto-015 {
+    border-left: 1px solid #e9ebf3;
+    padding-right: 27px;
+}
+.adv_global_filter_sort {
+    border: none;
+    width: 100%;
+}
+.clear-both { clear: both; }
+.common-no-pad {
+    clear: both;
+    height: 0px;
+    margin: 0px;
+    padding: 0px;
+}
+.common-full-pad {
+    clear: both;
+    height: 15px;
+}
+.alert { color: red; }
+.float-left { float: left; }
+.float-right { float: right; }
+

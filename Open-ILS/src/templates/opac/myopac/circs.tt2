@@ -31,7 +31,7 @@
     </div>
     [% END %]
     [% IF ctx.failed_renewals %]
-    <div class="renew-summary red">
+    <div class="renew-summary alert">
         [% l("Failed to renew [_1] item(s)", ctx.failed_renewals) %]
     </div>
     [% END %]

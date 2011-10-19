@@ -37,7 +37,7 @@
             </div>
         </div>
         [% l('Fines:') %]
-        <span class='[% ctx.user_stats.fines.balance_owed ? "red" : ""%]'>
+        <span class='[% ctx.user_stats.fines.balance_owed ? "alert" : ""%]'>
             [% money(ctx.user_stats.fines.balance_owed) %]
         </span><br />
         [% IF (ctx.fines.grocery.size OR ctx.fines.circulation.size) AND ctx.get_org_setting(ctx.user.home_ou, 'credit.payments.allow') == 1 %]
