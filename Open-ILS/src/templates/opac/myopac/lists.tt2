@@ -73,10 +73,10 @@
             <div class="bookbag-controls most">
                 [% baseurl = ctx.opac_root _ '/myopac/lists';
                 IF bbag.id != CGI.param("id");
-                    url = mkurl(baseurl, {id => bbag.id}, ['edit_notes']);
+                    url = mkurl(baseurl,{id => bbag.id},['edit_notes','sort']);
                     ltitle = l("Show items in list");
                 ELSE;
-                    url = mkurl(baseurl, {}, ['id', 'edit_notes']);
+                    url = mkurl(baseurl, {}, ['id', 'edit_notes', 'sort']);
                     ltitle = l("Hide items in list");
                 END %]
                 <h2 class="bookbag-name"><a title="[% ltitle %]" href="[% url %]">[% bbag.name | html %]</a></h2>

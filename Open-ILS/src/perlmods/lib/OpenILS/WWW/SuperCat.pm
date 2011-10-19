@@ -1013,10 +1013,13 @@ sub bookbag_feed {
         return 302;
     }
 
+    # last created first
+    my @sorted_bucket_items = sort { $b->create_time cmp $a->create_time } @{ $bucket->items };
+
     my $feed = create_record_feed(
         'record',
         $type,
-        [ map { $_->target_biblio_record_entry } @{ $bucket->items } ],
+        [ map { $_->target_biblio_record_entry } @sorted_bucket_items ],
         $unapi,
         $org_unit->[0]->shortname,
         undef,
