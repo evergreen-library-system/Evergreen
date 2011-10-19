@@ -2,7 +2,7 @@
         <div class="bookbag-specific">
             <form method="GET">
                 <label for="anonsort">[% l("Sort list items by: ") %]</label>
-                [% INCLUDE "opac/parts/filtersort.tt2"
+                [% INCLUDE "opac/parts/filtersort.tt2" mode='bookbag'
                     id="anonsort" name="anonsort" value=CGI.param("anonsort") %]
                 <input type="hidden" name="id"
                     value="[% CGI.param('id') | html %]" />
