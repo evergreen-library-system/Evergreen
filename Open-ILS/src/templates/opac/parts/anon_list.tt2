@@ -24,8 +24,8 @@
                                 for (i = 0; i < inputs.length; i++) { 
                                     if (inputs[i].name == 'record' && !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
                         </td>
-                        <td width="49%" class="opac-auto-108"><a href="[% mkurl('', {anonsort=>'titlesort'}) %]">[% l('Title') %]</a></td>
-                        <td width="49%" class="opac-auto-108"><a href="[% mkurl('', {anonsort=>'authorsort'}) %]">[% l('Author(s)') %]</a% l('Author(s)') %]</td>
+                        <td width="49%" class="opac-auto-108"><a href="[% mkurl('', {anonsort=>(CGI.param('anonsort') == 'titlesort' ? 'titlesort.descending' : 'titlesort')}) %]">[% l('Title') %]</a></td>
+                        <td width="49%" class="opac-auto-108"><a href="[% mkurl('', {anonsort=>(CGI.param('anonsort') == 'authorsort' ? 'authorsort.descending' : 'authorsort')}) %]">[% l('Author(s)') %]</a% l('Author(s)') %]</td>
                         <td width="1%" class="nowrap">
                             <select name="action">
                                 <option>[% l('-- Actions for these items --') %]</option>
