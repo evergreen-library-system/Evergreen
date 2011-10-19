@@ -696,9 +696,20 @@ sub runmethod {
 
 	} elsif( $action eq 'batch_retrieve' ) {
 		$action = 'search';
-		@arg = ( { id => $arg } );
 		$method =~ s/batch_retrieve/search/o;
 		$method .= '.atomic';
+		my $tt = $type;
+		$tt =~ s/\./::/og;
+		my $fmobj = "Fieldmapper::$tt";
+		my $ident_field = $fmobj->Identity;
+
+		if (ref $arg[0] eq 'ARRAY') {
+			# $arg looks like: ([1, 2, 3], {search_args})
+			@arg = ( { $ident_field => $arg[0] }, @arg[1 .. $#arg] );
+		} else {
+			# $arg looks like: [1, 2, 3]
+			@arg = ( { $ident_field => $arg } );
+		}
 
 	} elsif( $action eq 'retrieve_all' ) {
 		$action = 'search';
