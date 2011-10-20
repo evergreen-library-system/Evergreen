@@ -157,7 +157,7 @@
             </thead>
             <tbody>
                 [% UNLESS bbag.items.size %]
-                <tr><td colspan="4" class="opac-auto-171 opac-auto-097">
+                <tr><td colspan="4" class="list_is_empty">
                     [% l("This list contains no items.") %]
                 </td></tr>
                 [% END %]

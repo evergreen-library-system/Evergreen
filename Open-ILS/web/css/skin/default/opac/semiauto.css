@@ -9,7 +9,6 @@
 .qtype_selector_margin { margin-right: 7px; }
 .warning_box { margin-top: 10px; }
 .pad-bottom-five { padding: 5px; }
-.opac-auto-097 { padding: 8px 0px 6px 0px; width: 100%; border: 0; }
 .item_list_padding { padding: 8px 0px 6px 0px; border: 0; }
 .opac-auto-102 { padding-bottom: 7px; }
 .opac-auto-108 { padding-left: 5px; }
@@ -30,7 +29,6 @@
 .nowrap { white-space: nowrap; }
 .opac-auto-164 { white-space: nowrap; padding-left: 5px; }
 .full-width { width: 100%; }
-.opac-auto-171 { font-size: 120%; text-align: center; font-style: italic; }
 #search_box { width: 162px; }
 .selector_actions_for_list { width: 175px; margin-right: 11px; }
 .selector_actions_for_list_inner_option { margin-left: 2em; } /* XXX ".opac-auto-179 optgroup option" doesn't work!? */
