@@ -368,8 +368,7 @@ sub fetch_user_holds {
         suppress_notices => 1,
         suppress_transits => 1,
         suppress_mvr => 1,
-        suppress_patron_details => 1,
-        include_bre => $flesh ? 1 : 0
+        suppress_patron_details => 1
     };
 
     # ----------------------------------------------------------------
@@ -405,7 +404,10 @@ sub fetch_user_holds {
                 @collected = grep { $_->{hold}->{status} == 4 } @collected;
             }
             while(my $blob = pop(@collected)) {
-                $blob->{marc_xml} = XML::LibXML->new->parse_string($blob->{hold}->{bre}->marc) if $flesh;
+                my (undef, @data) = $self->get_records_and_facets(
+                    [$blob->{hold}->{bre_id}], undef, {flesh => '{mra}'}
+                );
+                $blob->{marc_xml} = $data[0]->{marc_xml};
                 push(@holds, $blob);
             }
         }

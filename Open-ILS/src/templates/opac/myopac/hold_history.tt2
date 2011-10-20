@@ -73,11 +73,8 @@
                     <td width="64">
                         <div style="width:26px;height:23px;margin-top:6px;margin-bottom:6px;">
                             [% IF attrs.format_icon %]
-                            <img src="[% ctx.media_prefix %]/images/[% attrs.form_icon %]"
-                                title="[% attrs.format %]" alt="[% attrs.format %]" />
-                            [% ELSE;
-                                attrs.format;
-                               END %]
+                            <img title="[% attrs.format_label | html %]" alt="[% attrs.format_label | html %]" src="[% attrs.format_icon %]" />
+                            [% END %]
                         </div>
                     </td>
                     <td width="136">

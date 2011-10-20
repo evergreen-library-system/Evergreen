@@ -3049,7 +3049,8 @@ sub uber_hold_impl {
     my $details = retrieve_hold_queue_status_impl($e, $hold);
 
     my $resp = {
-        hold           => $hold,
+        hold    => $hold,
+        bre_id  => $bre->id,
         ($copy     ? (copy           => $copy)     : ()),
         ($volume   ? (volume         => $volume)   : ()),
         ($issuance ? (issuance       => $issuance) : ()),
