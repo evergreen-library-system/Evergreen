@@ -62,7 +62,7 @@
 
                     <td width="138">
                         <div style="margin-top:10px;margin-bottom:10px;">
-                            <a href="[% ctx.opac_root %]/record/[% hold.hold.bre.id %]">[% attrs.title | html %]</a>
+                            <a href="[% ctx.opac_root %]/record/[% hold.hold.bre_id %]">[% attrs.title | html %]</a>
                         </div>
                     </td>
                     <td width="123">
