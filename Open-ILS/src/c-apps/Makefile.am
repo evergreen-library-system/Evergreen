@@ -7,7 +7,7 @@
 AM_CFLAGS = $(DEF_CFLAGS) -DOSRF_LOG_PARAMS -I@top_srcdir@/include/
 AM_LDFLAGS = $(DEF_LDFLAGS) -L$(DBI_LIBS) -lopensrf
 
-bin_PROGRAMS = oils_dataloader dump_idl test_json_query test_qstore
+bin_PROGRAMS = oils_dataloader dump_idl idlval test_json_query test_qstore
 oils_dataloader_SOURCES = oils_dataloader.c
 oils_dataloader_LDFLAGS = $(AM_LDFLAGS) -loils_idl
 oils_dataloader_DEPENDENCIES = liboils_idl.la liboils_utils.la
@@ -15,6 +15,11 @@ oils_dataloader_DEPENDENCIES = liboils_idl.la liboils_utils.la
 dump_idl_SOURCES = dump_idl.c
 dump_idl_LDFLAGS = $(AM_LDFLAGS) -loils_idl
 dump_idl_DEPENDENCIES = liboils_idl.la liboils_utils.la
+
+idlval_SOURCES = idlval.c oils_sql.c
+idlval_CFLAGS = $(AM_CFLAGS)
+idlval_LDFLAGS = $(AM_LDFLAGS) -loils_idl -loils_utils
+idlval_DEPENDENCIES = liboils_idl.la liboils_utils.la
 
 test_json_query_SOURCES = test_json_query.c oils_sql.c
 test_json_query_CFLAGS = $(AM_CFLAGS)
