@@ -7,7 +7,11 @@
         FOR isbn IN xml.findnodes('//*[@tag="020"]/*[@code="a"]');
             args.isbns.push(isbn.textContent);
         END;
-        args.upc = xml.findnodes('//*[@tag="024"]/*[@code="a"]').textContent;
+        args.upcs = [];
+        FOR upc IN xml.findnodes('//*[@tag="024"]/*[@code="a"]');
+            args.upcs.push(upc.textContent);
+        END;
+        args.upc = args.upcs.0; # use first UPC as the default
         args.issn = xml.findnodes('//*[@tag="022"]/*[@code="a"]').textContent;
         args.title = xml.findnodes('//*[@tag="245"]/*[@code="a"]').textContent;
         args.title_extended = xml.findnodes('//*[@tag="245"]').textContent;
