@@ -1293,7 +1293,7 @@ BEGIN
     $$;
     add_front := $$
         INSERT INTO asset.opac_visible_copies (copy_id, circ_lib, record)
-          SELECT id, circ_lib, record FROM (
+          SELECT DISTINCT ON (id, record) id, circ_lib, record FROM (
     $$;
     add_back := $$
         ) AS x
