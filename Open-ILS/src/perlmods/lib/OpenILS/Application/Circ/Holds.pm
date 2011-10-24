@@ -3347,10 +3347,18 @@ sub clear_shelf_process {
         # tell the client we're done
         $client->respond_complete({cache_key => $cache_key});
 
+        # ------------
         # fire off the hold cancelation trigger and wait for response so don't flood the service
+
+        # refetch the holds to pick up the caclulated cancel_time, 
+        # which may be needed by Action/Trigger
+        $e->xact_begin;
+        my $updated_holds = $e->search_action_hold_request({id => $hold_ids}, {substream => 1});
+        $e->rollback;
+
         $U->create_events_for_hook(
             'hold_request.cancel.expire_holds_shelf', 
-            $_, $org_id, undef, undef, 1) for @holds;
+            $_, $org_id, undef, undef, 1) for @$updated_holds;
 
     } else {
         # tell the client we're done
