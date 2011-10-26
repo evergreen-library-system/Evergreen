@@ -2343,6 +2343,11 @@ sub checkin_retarget {
 
     return if scalar(@$holds) == 0; # No holds, no retargeting
 
+    # Check for parts on this copy
+    my $parts = $self->editor->search_asset_copy_part_map({ target_copy => $self->copy->id });
+    my %parts_hash = ();
+    %parts_hash = map {$_->id, 1} @$parts if @$parts;
+
     # Loop over holds in request-ish order
     # Stage 1: Get them into request-ish order
     # Also grab type and target for skipping low hanging ones
@@ -2366,6 +2371,15 @@ sub checkin_retarget {
                 and $_->{target} != $self->copy->id);
             # Volume level, but not this volume?
             next if ($_->{hold_type} eq 'V' and $_->{target} != $self->volume->id);
+            if(@$parts) { # We have parts?
+                # Skip title holds
+                next if ($_->{hold_type} eq 'T');
+                # Skip part holds for parts not on this copy
+                next if ($_->{hold_type} eq 'P' and not $parts_hash{$_->{target}});
+            } else {
+                # No parts, no part holds
+                next if ($_->{hold_type} eq 'P');
+            }
             # So much for easy stuff, attempt a retarget!
             my $tresult = $U->storagereq('open-ils.storage.action.hold_request.copy_targeter', undef, $_->{id}, $self->copy->id);
             if(ref $tresult eq "ARRAY" and scalar @$tresult) {
