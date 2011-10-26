@@ -157,16 +157,18 @@ sub fetch_service_defs {
     };
 
     # then filter out any services which the requestor lacks the perm for
-    foreach my $s (keys %{ $hash }) {
-        if ($$hash{$s}{use_perm}) {
-            if ($U->check_perms(
-                $e->requestor->id,
-                $e->requestor->ws_ou,
-                $$hash{$s}{use_perm}
-            )) {
-                delete $$hash{$s};
-            }
-        };
+    if ($editor_with_authtoken) {
+        foreach my $s (keys %{ $hash }) {
+            if ($$hash{$s}{use_perm}) {
+                if ($U->check_perms(
+                    $e->requestor->id,
+                    $e->requestor->ws_ou,
+                    $$hash{$s}{use_perm}
+                )) {
+                    delete $$hash{$s};
+                }
+            };
+        }
     }
 
     %services = %$hash; # cache these internally so we can actually use the db-configured sources
