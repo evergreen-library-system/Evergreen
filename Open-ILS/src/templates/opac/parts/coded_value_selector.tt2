@@ -20,8 +20,14 @@
     size ? (' size="' _ size _ '"') : ''; %]>
 [% IF none_ok %]
     <option value=''>[% none_label ? none_label : l('-- Any --') %]</option>
-[% END %]
-[% FOR o IN all_values %]
+[% END;
+# turn the list of objects into a list of hashes to 
+# leverage TT's array.sort('<hashkey>') behavior
+sorter = [];
+FOR o IN all_values; 
+    sorter.push({code => o.code, value  => o.value}); 
+END;
+FOR o IN sorter.sort('value') %]
     <option value='[% o.code | uri %]'[% values.grep('^' _ o.code _ '$').size ? ' selected="selected"' : '' %]>[% o.value | html %]</option>
 [%  END -%]
 </select>
