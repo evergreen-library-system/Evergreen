@@ -21,6 +21,10 @@ sub init_ro_object_cache {
     my $e = $self->editor;
     my $ctx = $self->ctx;
 
+    # reset org unit setting cache on each page load to avoid the 
+    # requirement of reloading apache with each org-setting change
+    $cache{org_settings} = {};
+
     if($ro_object_subs) {
         # subs have been built.  insert into the context then move along.
         $ctx->{$_} = $ro_object_subs->{$_} for keys %$ro_object_subs;
