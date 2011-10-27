@@ -1166,3 +1166,11 @@ table.bookbag-specific {
     margin-bottom: 2ex;
 }
 .save-notes { padding-bottom: 1.5ex; }
+.saved-searches-header { width: 100%; font-weight: bold; font-size: 120%; }
+.saved-searches-header .button { float: right; width: 28px; }
+.saved-searches-header .text { float: left; padding-right: 1em; margin: 0.5ex 0;}
+.saved-searches-header {font-weight: bold; font-size: 120%; }
+.saved-searches { border-bottom: 1px solid #666; }
+#staff-saved-search { /* wraps .saved-searches-header and .saved-searches on the record page */
+    border-right: 1px solid #333;
+}

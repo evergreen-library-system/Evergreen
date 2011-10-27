@@ -1,8 +1,26 @@
 [% IF ctx.saved_searches.size %]
-    <div class="saved-searches-header big-strong">[% l("Your recent searches:") %]</div>
-    [% FOR s IN ctx.saved_searches %]
-    <ul>
-        <li><a href="[% ctx.opac_root %]/results?query=[% s | uri %]&amp;_adv=1">[% s | html %]</a></li>
-    </ul>
+
+    <div class="saved-searches-header">
+        <div class="text">
+            [% l("Recent searches") %]
+        </div>
+        <div class="button">
+            [% IF ctx.saved_searches_expanded %]
+            <a href="[% mkurl('', {'sss_expand' => 0}) %]" title="[% l('Collapse') %]"><img src="[% ctx.media_prefix %]/images/adv_search_minus_btn.png" alt="[% l('Collapse') %]" /></a>
+            [% ELSE %]
+            <a href="[% mkurl('', {'sss_expand' => 1}) %]" title="[% l('Expand') %]"><img src="[% ctx.media_prefix %]/images/adv_search_plus_btn.png" alt="[% l('Expand') %]" /></a>
+            [% END %]
+        </div>
+        <div class="clear">&nbsp;</div>
+    </div>
+    <div class="clear">&nbsp;</div>
+    <div class="saved-searches">
+    [% IF ctx.saved_searches_expanded %]
+        [% FOR s IN ctx.saved_searches %]
+        <ul>
+            <li><a href="[% ctx.opac_root %]/results?query=[% s | uri %]&amp;_adv=1">[% s | html %]</a></li>
+        </ul>
+        [% END %]
     [% END %]
+    </div>
 [% END %]

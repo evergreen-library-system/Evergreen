@@ -26,6 +26,7 @@ my $U = 'OpenILS::Application::AppUtils';
 
 use constant COOKIE_SES => 'ses';
 use constant COOKIE_PHYSICAL_LOC => 'eg_physical_loc';
+use constant COOKIE_SSS_EXPAND => 'eg_sss_expand';
 
 use constant COOKIE_ANON_CACHE => 'anoncache';
 use constant ANON_CACHE_MYLIST => 'mylist';
@@ -249,7 +250,33 @@ sub load_common {
         }
     }
 
+    $self->staff_saved_searches_set_expansion_state if $ctx->{is_staff};
+
     return Apache2::Const::OK;
+}
+
+sub staff_saved_searches_set_expansion_state {
+    my $self = shift;
+
+    my $param = $self->cgi->param('sss_expand');
+    my $value;
+    
+    if (defined $param) {
+        $value = ($param ? 1 : 0);
+        $self->apache->headers_out->add(
+            "Set-Cookie" => $self->cgi->cookie(
+                -name => COOKIE_SSS_EXPAND,
+                -path => $self->ctx->{base_path},
+                -secure => 1,   # not strictly necessary, but this feature is staff-only, so may as well
+                -value => $value,
+                -expires => undef
+            )
+        );
+    } else {
+        $value = $self->cgi->cookie(COOKIE_SSS_EXPAND);
+    }
+
+    $self->ctx->{saved_searches_expanded} = $value;
 }
 
 # physical_loc (i.e. "original location") passed in as a URL 
