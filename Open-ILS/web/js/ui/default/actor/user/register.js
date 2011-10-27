@@ -919,6 +919,18 @@ function checkCollectionsExemptPerm(cbox) {
     );
 }
 
+function usePhonePw(newVal) {
+    if(newVal && newVal.length >= 4) {
+        var newPw = newVal.substring(newVal.length - 4);
+        var pw1 = findWidget('au', 'passwd').widget;
+        var pw2 = findWidget('au', 'passwd2').widget;
+        pw1.attr('value', newPw);
+        pw2.attr('value', newPw);
+        return newPw;
+    } else {
+        return false;
+    }
+}
 
 function attachWidgetEvents(fmcls, fmfield, widget) {
 
@@ -1079,16 +1091,10 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
             case 'day_phone':
                 // if configured, use the last four digits of the day phone number as the password
                 if(uEditUsePhonePw && patron.isnew()) {
-                    dojo.connect(widget.widget, 'onChange',
-                        function(newVal) {
-                            if(newVal && newVal.length >= 4) {
-                                var pw1 = findWidget('au', 'passwd').widget;
-                                var pw2 = findWidget('au', 'passwd2').widget;
-                                pw1.attr('value', newVal.substring(newVal.length - 4));
-                                pw2.attr('value', newVal.substring(newVal.length - 4));
-                            }
-                        }
-                    );
+                    dojo.connect(widget.widget, 'onChange', widget.widget, usePhonePw);
+                    if (patron.day_phone()) {
+                        usePhonePw(patron.day_phone());
+                    }
                 }
             case 'evening_phone':
             case 'other_phone':
