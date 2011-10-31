@@ -79,7 +79,7 @@
  
     <table>
         <thead><tr>
-            <th>[% l('Notifation Type') %]</th>
+            <th>[% l('Notification Type') %]</th>
             <th>[% l('Enabled') %]</th>
         </tr></thead>
         <tbody class='data_grid'>
