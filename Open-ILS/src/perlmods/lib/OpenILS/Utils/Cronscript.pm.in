@@ -38,6 +38,9 @@ use File::Basename qw/fileparse/;
 use Data::Dumper;
 use Carp;
 
+# Added for authentication
+use Digest::MD5 qw/md5_hex/;
+
 our @extra_opts = (     # additional keys are stored here
     # 'addlopt'
 );
@@ -280,6 +283,52 @@ sub editor {
     $self->{bootstrapped}  or $self->bootstrap();
     $self->{editor_inited} or $self->editor_init();
     return new_editor(@_);
+}
+
+# Authenticate with the open-ils.auth module.
+# Takes a hash ref of arguments:
+# {
+#   username => username to authenticate as,
+#   password => the user's password,
+#   workstation => the workstation to use (optional),
+#   type => the type of login (optional, but defaults to staff)
+# }
+#
+# returns the authtoken or undef on failure.
+# Also stores the authtoken and authtime as fields on the object.
+sub authenticate {
+    my $self = shift or return;
+    my $args = shift or return;
+    if ($args && ref($args) eq 'HASH') {
+        my $session = $self->session('open-ils.auth');
+        my $seed = $session->request('open-ils.auth.authenticate.init',
+                                    $args->{'username'})->gather(1);
+        $args->{password} = md5_hex($seed . md5_hex($args->{password}));
+        my $req = $session->request('open-ils.auth.authenticate.complete',
+                                    $args);
+        my $response = $req->gather(1);
+        if ($response && ref($response) eq 'HASH' && $response->{payload}) {
+            $self->{authtoken} = $response->{payload}->{authtoken};
+            $self->{authtime} = $response->{payload}->{authtime};
+        } else {
+            $self->{authtoken} = undef;
+            $self->{authtime} = undef;
+        }
+        $session->disconnect();
+        return $self->authtoken;
+    } else {
+        return undef;
+    }
+}
+
+sub authtoken {
+    my $self = shift;
+    return $self->{authtoken};
+}
+
+sub authtime {
+    my $self = shift;
+    return $self->{authtime};
 }
 
 1;
