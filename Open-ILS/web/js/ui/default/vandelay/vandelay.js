@@ -43,6 +43,7 @@ dojo.require('openils.PermaCrud');
 dojo.require('openils.widget.OrgUnitFilteringSelect');
 dojo.require('openils.widget.AutoGrid');
 dojo.require('openils.widget.AutoFieldWidget');
+dojo.require('openils.widget.ProgressDialog');
 
 
 var globalDivs = [
@@ -90,11 +91,16 @@ var matchSets = {};
 var mergeProfiles = [];
 var copyStatusCache = {};
 var copyLocationCache = {};
+var localeStrings;
 
 /**
   * Grab initial data
   */
 function vlInit() {
+
+    dojo.requireLocalization("openils.vandelay", "vandelay");
+    localeStrings = dojo.i18n.getLocalization("openils.vandelay", "vandelay");
+
     authtoken = openils.User.authtoken;
     var initNeeded = 8; // how many async responses do we need before we're init'd 
     var initCount = 0; // how many async reponses we've received
@@ -954,10 +960,12 @@ function buildRecordGrid(type) {
         openils.Util.show('vl-bib-queue-grid-wrapper');
         openils.Util.hide('vl-auth-queue-grid-wrapper');
         vlQueueGrid = vlBibQueueGrid;
+        openils.Util.show('add-to-bucket-action', 'table-row');
     } else {
         openils.Util.show('vl-auth-queue-grid-wrapper');
         openils.Util.hide('vl-bib-queue-grid-wrapper');
         vlQueueGrid = vlAuthQueueGrid;
+        openils.Util.hide('add-to-bucket-action');
     }
 
 
@@ -1070,6 +1078,10 @@ var handleRetrieveRecords = function() {
             dojo.byId('vl-queue-summary-import-item-imported-count').innerHTML = summary.total_items_imported + '';
             dojo.byId('vl-queue-summary-rec-error-count').innerHTML = summary.rec_import_errors + '';
             dojo.byId('vl-queue-summary-item-error-count').innerHTML = summary.item_import_errors + '';
+           
+            if (dojo.byId('create-bucket-dialog-name')) {
+                dojo.byId('create-bucket-dialog-name').value = summary.queue.name();
+            }
         }
     );
 }
@@ -1088,6 +1100,36 @@ function vlFetchQueueSummary(qId, type, onload) {
         }
     );
 }
+
+function handleCreateBucket(args) {
+    var bname = dojo.byId('create-bucket-dialog-name').value;
+    if (!bname) return;
+
+    progressDialog.show(true);
+    fieldmapper.standardRequest(
+        ['open-ils.vandelay', 'open-ils.vandelay.bib_queue.to_bucket'],
+        {   async : true,
+            params : [authtoken, currentQueueId, bname],
+            oncomplete : function(r) {
+                progressDialog.hide();
+                setTimeout(function() { 
+                    var resp = openils.Util.readResponse(r);
+                    if (resp.add_count == 0) {
+                        alert(localeStrings.NO_BUCKET_ITEMS);
+                    } else {
+                        alert(
+                            dojo.string.substitute(
+                                localeStrings.BUCKET_CREATE_SUCCESS,
+                                [resp.add_count, bname, resp.item_count]
+                            )
+                        );
+                    }
+                }, 200); // give the dialog a chance to hide
+            }
+        }
+    );
+}
+    
 
 var _importCancelHandler;
 var _importGoHandler;
@@ -1146,6 +1188,11 @@ function vlHandleQueueItemsAction(action) {
     );
 
     queueItemsImportDialog.show();
+}
+
+function vlHandleCreateBucket() {
+
+    create-bucket-dialog-name
 }
     
 
