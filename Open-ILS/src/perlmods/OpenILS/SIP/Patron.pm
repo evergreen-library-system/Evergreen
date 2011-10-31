@@ -278,13 +278,13 @@ sub charge_ok {
     # determine whether patron should be allowed to circulate materials:
     # not barred, doesn't owe too much wrt fines/fees, privileges haven't
     # expired
-    my $no_circ = 't' if
+    my $circ_is_blocked = 
         (($u->barred eq 't') or
          ($u->standing_penalties and @{$u->standing_penalties}) or
          (CORE::time > $expire->epoch));
 
     return
-        !$no_circ and
+        !$circ_is_blocked and
         $u->active eq 't' and
         $u->card->active eq 't';
 }
