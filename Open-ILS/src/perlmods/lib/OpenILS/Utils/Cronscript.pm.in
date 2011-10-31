@@ -300,7 +300,8 @@ sub authenticate {
     my $self = shift or return;
     my $args = shift or return;
     if ($args && ref($args) eq 'HASH') {
-        my $session = $self->session('open-ils.auth');
+        $self->{bootstrapped}  or $self->bootstrap();
+        my $session = Opensrf::AppSession->create('open-ils.auth');
         my $seed = $session->request('open-ils.auth.authenticate.init',
                                     $args->{'username'})->gather(1);
         $args->{password} = md5_hex($seed . md5_hex($args->{password}));
