@@ -46,6 +46,8 @@ var optInSettings;
 var allCardsTemplate;
 var uEditCloneCopyAddr; // if true, copy addrs on clone instead of link
 var homeOuTypes = {};
+var cardPerms = {};
+var editCard;
 
 var dupeUsrname = false;
 var dupeBarcode = false;
@@ -76,6 +78,11 @@ function load() {
     dojo.byId('parentGuardian').innerHTML = localeStrings.PARENT_OR_GUARDIAN;
     dojo.byId('userSettings').innerHTML = localeStrings.USER_SETTINGS;
     dojo.byId('statCats').innerHTML = localeStrings.STAT_CATS;
+    dojo.byId('uedit-all-cards-barcode').innerHTML = localeStrings.ALL_CARDS_BARCODE;
+    dojo.byId('uedit-all-cards-active').innerHTML = localeStrings.ALL_CARDS_ACTIVE;
+    dojo.byId('uedit-all-cards-primary').innerHTML = localeStrings.ALL_CARDS_PRIMARY;
+    allCardsClose.attr("label", localeStrings.ALL_CARDS_CLOSE);
+    allCardsApply.attr("label", localeStrings.ALL_CARDS_APPLY);
 
     dojo.query("td[name='addressHeader']").forEach( function(item) { item.innerHTML = localeStrings.ADDRESS_HEADER; });
     dojo.query("span[name='mailingAddress']").forEach( function(item) { item.innerHTML = localeStrings.ADDRESS_MAILING; });
@@ -231,8 +238,28 @@ function load() {
 
     dojo.connect(replaceBarcode, 'onClick', replaceCardHandler);
     dojo.connect(allCards, 'onClick', drawAllCards);
-    if(patron.cards().length > 1)
-        dojo.removeClass(dojo.byId('uedit-all-barcodes'), 'hidden');
+    if(patron.isnew()) {
+        dojo.addClass(dojo.byId('uedit-all-barcodes'), 'hidden');
+    } else {
+        new openils.User().getPermOrgList(
+            'UPDATE_PATRON_ACTIVE_CARD',
+            function(orgList) { 
+                if(orgList.indexOf(patron.home_ou()) != -1) 
+                    cardPerms['UPDATE_PATRON_ACTIVE_CARD'] = true;
+            },
+            true, 
+            true
+        );
+        new openils.User().getPermOrgList(
+            'UPDATE_PATRON_PRIMARY_CARD',
+            function(orgList) { 
+                if(orgList.indexOf(patron.home_ou()) != -1) 
+                    cardPerms['UPDATE_PATRON_PRIMARY_CARD'] = true;
+            },
+            true, 
+            true
+        );
+    }
 
     var input = findWidget('ac', 'barcode');
     if (patron.isnew()) {
@@ -313,28 +340,77 @@ function drawAllCards() {
             tbody.removeChild(tbody.childNodes[0]);
     }
 
+    if(cardPerms['UPDATE_PATRON_ACTIVE_CARD'] || cardPerms['UPDATE_PATRON_PRIMARY_CARD']) {
+        dojo.removeClass(dojo.byId('uedit-apply-card-changes'), 'hidden');
+    } else {
+        dojo.addClass(dojo.byId('uedit-apply-card-changes'), 'hidden');
+    }
+
     var first = true;
     dojo.forEach(
-        [patron.card()].concat(patron.cards()), // grab the main card first
+        patron.cards().filter(function(c) { return c.id() == patron.card().id(); }).concat(patron.cards()), // grab the main card first
         function(card) {
             if(!first) {
                 if(card.id() == patron.card().id())
                     return;
             }
             var row = allCardsTemplate.cloneNode(true);
+            row.setAttribute("cardid", card.id());
+            row.card = card;
             getByName(row, 'barcode').innerHTML = card.barcode();
-            getByName(row, 'active').appendChild(
-                openils.Util.isTrue(card.active()) ? 
-                    dojo.byId('true').cloneNode(true) :
-                    dojo.byId('false').cloneNode(true)
-            ); 
-
+            if(cardPerms['UPDATE_PATRON_ACTIVE_CARD']) {
+                row.active_checkbox = new dijit.form.CheckBox({
+                    scrollOnFocus:false,
+                    checked: openils.Util.isTrue(card.active())
+                }, getByName(row, 'active'));
+            } else {
+                getByName(row, 'active').appendChild(
+                    openils.Util.isTrue(card.active()) ? 
+                        dojo.byId('true').cloneNode(true) :
+                        dojo.byId('false').cloneNode(true)
+                );
+            }
+            if(cardPerms['UPDATE_PATRON_PRIMARY_CARD']) {
+                row.primary_radiobutton = new dijit.form.RadioButton({
+                    scrollOnFocus:false,
+                    checked: card.id() == patron.card().id(),
+                    value: card.id(),
+                    name: 'card_primary'
+                }, getByName(row, 'primary'));
+            } else {
+                getByName(row, 'primary').appendChild(
+                    openils.Util.isTrue(card.id() == patron.card().id()) ? 
+                        dojo.byId('true').cloneNode(true) :
+                        dojo.byId('false').cloneNode(true)
+                );
+            }
             tbody.appendChild(row);
             first = false;
         }
     );
 
     allCardsDialog.show();
+}
+
+function applyCardChanges() {
+    var cardrows = dojo.query('[cardid]', allCardsDialog.domNode);
+    dojo.forEach(cardrows,
+        function(row) {
+            if(cardPerms['UPDATE_PATRON_ACTIVE_CARD']) {
+                var active = row.active_checkbox.checked ? 't' : 'f'
+                if(row.card.active() != active) {
+                    row.card.active(active);
+                    row.card.ischanged(1);
+                }
+            }
+            if(cardPerms['UPDATE_PATRON_PRIMARY_CARD']) {
+                if(row.primary_radiobutton.checked && row.card.id() != patron.card().id()) {
+                    patron.card(row.card);
+                }
+            }
+        }
+    );
+    allCardsDialog.hide();
 }
 
 /**
@@ -357,6 +433,7 @@ function replaceCardHandler() {
     newc.isnew(1);
     newc.active('t');
     patron.card(newc);
+    editCard = newc;
     var t = patron.cards();
         if (!t) { t = []; }
         t.push(newc);
@@ -747,7 +824,7 @@ function fleshFMRow(row, fmcls, args) {
     var fmObject = null;
     switch(fmcls) {
         case 'au' : fmObject = patron; break;
-        case 'ac' : fmObject = patron.card(); break;
+        case 'ac' : if(!editCard) editCard = patron.card(); fmObject = editCard; break;
         case 'aua' : 
             fmObject = patron.addresses().filter(
                 function(i) { return (i.id() == args.addr) })[0];
@@ -995,6 +1072,7 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
                                 } else {
                                     dupeBarcode = false;
                                     dojo.addClass(dojo.byId('uedit-dupe-barcode-warning'), 'hidden');
+                                    editCard.barcode(barcode); // Keep the "All" interface up to date
                                     var un = findWidget('au', 'usrname');
                                     if(!un.widget.attr('value'))
                                         un.widget.attr('value', barcode);
@@ -1387,7 +1465,8 @@ function _uEditSave(doClone) {
                 break;
 
             case 'ac':
-                patron.card()[w._fmfield](val);
+                if(!editCard) editCard = patron.card();
+                editCard[w._fmfield](val);
                 break;
 
             case 'aua':
