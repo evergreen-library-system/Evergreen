@@ -60,7 +60,7 @@ if ($parallel == 1) {
 
     my $storage = OpenSRF::AppSession->create("open-ils.storage");
     my $r = $storage->request('open-ils.storage.action.circulation.overdue.id_list');
-    while (my $resp = $r->recv) {
+    while (my $resp = $r->recv(timeout => 600)) {
         my $circ_id = $resp->content;
         $multi_generator->request( 'open-ils.storage.action.circulation.overdue.generate_fines', $circ_id );
     }
