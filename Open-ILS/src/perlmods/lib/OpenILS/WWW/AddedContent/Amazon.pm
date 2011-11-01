@@ -6,6 +6,7 @@ use OpenILS::WWW::AddedContent;
 use OpenSRF::Utils::JSON;
 use OpenSRF::EX qw/:try/;
 use XML::LibXML;
+use Business::ISBN;
 
 my $AC = 'OpenILS::WWW::AddedContent';
 
@@ -66,6 +67,22 @@ sub fetch_content {
 sub fetch_response {
     my( $self, $page, $key ) = @_;
     my $uname = $self->userid;
+
+    # Some sites have entered Amazon IDs in 020 $a, thus we cannot
+    # simply pass all incoming keys to Business::ISBN for normalization
+    if (length($key) > 10) {
+        # Use Business::ISBN to normalize the incoming ISBN
+        my $isbn = Business::ISBN->new( $key );
+        if (!defined $isbn) {
+            $logger->warning("'$key' is not a valid ISBN");
+            return 0;
+        }
+
+        # Amazon prefers ISBN10
+        $isbn = $isbn->as_isbn10 if $isbn->type eq 'ISBN13';
+        $key = $isbn->as_string([]);
+    }
+
     my $url = $self->base_url . "$key.01.$page";
     return $AC->get_url($url);
 }
