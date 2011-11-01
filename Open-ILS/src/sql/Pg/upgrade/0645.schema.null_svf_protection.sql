@@ -1,3 +1,6 @@
+BEGIN;
+
+SELECT evergreen.upgrade_deps_block_check('0645', :eg_version);
 
 CREATE OR REPLACE FUNCTION biblio.indexing_ingest_or_delete () RETURNS TRIGGER AS $func$
 DECLARE
@@ -159,3 +162,4 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
+COMMIT;
