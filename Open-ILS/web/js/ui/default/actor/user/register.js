@@ -394,6 +394,7 @@ function drawAllCards() {
 
 function applyCardChanges() {
     var cardrows = dojo.query('[cardid]', allCardsDialog.domNode);
+    var changed = false;
     dojo.forEach(cardrows,
         function(row) {
             if(cardPerms['UPDATE_PATRON_ACTIVE_CARD']) {
@@ -401,15 +402,21 @@ function applyCardChanges() {
                 if(row.card.active() != active) {
                     row.card.active(active);
                     row.card.ischanged(1);
+                    changed = true;
                 }
             }
             if(cardPerms['UPDATE_PATRON_PRIMARY_CARD']) {
                 if(row.primary_radiobutton.checked && row.card.id() != patron.card().id()) {
                     patron.card(row.card);
+                    changed = true;
                 }
             }
         }
     );
+    if(changed && lock_ready && xulG && typeof xulG.lock_tab == 'function' && !already_locked) {
+        xulG.lock_tab();
+        already_locked = true;
+    }
     allCardsDialog.hide();
 }
 
