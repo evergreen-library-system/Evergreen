@@ -1,3 +1,6 @@
+BEGIN;
+
+INSERT INTO config.upgrade_log (version) VALUES ('0645');
 
 CREATE OR REPLACE FUNCTION biblio.indexing_ingest_or_delete () RETURNS TRIGGER AS $func$
 DECLARE
@@ -120,7 +123,7 @@ BEGIN
             IF TG_OP = 'INSERT' OR OLD.deleted THEN -- initial insert OR revivication
                 INSERT INTO metabib.record_attr (id, attrs) VALUES (NEW.id, new_attrs);
             ELSE
-                UPDATE metabib.record_attr SET attrs = new_attrs WHERE id = NEW.id;
+                UPDATE metabib.record_attr SET attrs = attrs || new_attrs WHERE id = NEW.id;
             END IF;
 
         END IF;
@@ -159,3 +162,4 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
+COMMIT;
