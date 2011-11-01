@@ -1399,14 +1399,13 @@ sub load_myopac_bookbags {
         my $items = $U->bib_container_items_via_search($bookbag->id, $query)
             or return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
 
-        # Maybe save a little memory by creating only one XML::LibXML::Document
-        # instance for each record, even if record is repeated across bookbags.
+        my (undef, @recs) = $self->get_records_and_facets(
+            [ map {$_->target_biblio_record_entry->id} @$items ],
+            undef, 
+            {flesh => '{mra}'}
+        );
 
-        foreach my $rec (map { $_->target_biblio_record_entry } @$items) {
-            next if $ctx->{bookbags_marc_xml}{$rec->id};
-            $ctx->{bookbags_marc_xml}{$rec->id} =
-                (new XML::LibXML)->parse_string($rec->marc);
-        }
+        $ctx->{bookbags_marc_xml}{$_->{id}} = $_->{marc_xml} for @recs;
 
         $bookbag->items($items);
     }
