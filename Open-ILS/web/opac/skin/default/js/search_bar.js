@@ -89,7 +89,9 @@ function searchBarSubmit(isFilterSort) {
 	var text = G.ui.searchbar.text.value;
 	var facet_text = isFrontPage ? '' : G.ui.searchbar.facets.value;
 
-	clearSearchParams();
+    if (!isFilterSort) {	
+        clearSearchParams();
+    }
 
 	if(!text || text == "") return;
 
