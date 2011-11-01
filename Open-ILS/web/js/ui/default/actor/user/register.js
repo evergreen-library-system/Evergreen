@@ -240,7 +240,7 @@ function load() {
     dojo.connect(allCards, 'onClick', drawAllCards);
     if(patron.isnew()) {
         dojo.addClass(dojo.byId('uedit-all-barcodes'), 'hidden');
-    } else {
+    } else if(checkGrpAppPerm(patron.profile())) {
         new openils.User().getPermOrgList(
             'UPDATE_PATRON_ACTIVE_CARD',
             function(orgList) { 
