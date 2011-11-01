@@ -462,7 +462,11 @@ q/order_by clause must be of the long form, like:
     if ($options->{"id_list"}) {
         $conn->respond($_) foreach @id_list;
     } else {
-        $conn->respond($retriever->($e, $_, $options)) foreach @id_list;
+        foreach(@id_list){
+            my $resp = $retriever->($e, $_, $options);
+            next if(ref($resp) ne "Fieldmapper::acq::$ret_type");
+            $conn->respond($resp);
+        }
     }
 
     $e->disconnect;
