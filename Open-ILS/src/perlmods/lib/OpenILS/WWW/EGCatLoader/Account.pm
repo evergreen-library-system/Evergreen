@@ -530,7 +530,7 @@ sub load_place_hold {
     $ctx->{hold_type} = $cgi->param('hold_type');
     $ctx->{default_pickup_lib} = $e->requestor->home_ou; # unless changed below
 
-    return $self->post_hold_redirect unless @targets;
+    return $self->generic_redirect unless @targets;
 
     $logger->info("Looking at hold targets: @targets");
 
@@ -715,44 +715,18 @@ sub load_place_hold {
         $bses->kill_me;
     }
 
-    # stay on the current page and display the results
-    return Apache2::Const::OK if 
-        (grep {$_->{hold_failed}} @hold_data) or $ctx->{general_hold_error};
+    # NOTE: we are leaving the staff-placed patron barcode cookie 
+    # in place.  Otherwise, it's not possible to place more than 
+    # one hold for the patron within a staff/patron session.  This 
+    # does leave the barcode to linger longer than is ideal, but 
+    # normal staff work flow will cause the cookie to be replaced 
+    # with each new patron anyway.
+    # TODO: See about getting the staff client to clear the cookie
 
-    # if successful, do some cleanup and return the 
-    # user to the requesting page.
-
-    return $self->post_hold_redirect;
+    # return to the place_hold page so the results of the hold
+    # placement attempt can be reported to the user
+    return Apache2::Const::OK;
 }
-
-sub post_hold_redirect {
-    my $self = shift;
-    
-    # XXX: Leave the barcode cookie in place.  Otherwise, it's not 
-    # possible to place more than one hold for the patron within 
-    # a staff/patron session.  This does leave the barcode to linger 
-    # longer than is ideal, but normal staff work flow will cause the 
-    # cookie to be replaced with each new patron anyway.
-    # TODO:  See about getting the staff client to clear the cookie
-    return $self->generic_redirect;
-
-    # We also clear the patron_barcode (from the staff client)
-    # cookie at this point (otherwise it haunts the staff user
-    # later). XXX todo make sure this is best; also see that
-    # template when staff mode calls xulG.opac_hold_placed()
-
-    return $self->generic_redirect(
-        undef,
-        $self->cgi->cookie(
-            -name => "patron_barcode",
-            -path => "/",
-            -secure => 1,
-            -value => "",
-            -expires => "-1h"
-        )
-    );
-}
-
 
 sub fetch_user_circs {
     my $self = shift;

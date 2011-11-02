@@ -208,7 +208,8 @@
                                                 <div style="width:250px;text-align:left;">
                                                     <div style="float:right;">
                                                         <div class="results_aux_utils opac-auto-010"><a
-                                                                href="[% mkurl(ctx.opac_root _ '/place_hold', {hold_target => rec.id, hold_type => 'T'}) %]" 
+                                                                href="[% mkurl(ctx.opac_root _ '/place_hold', 
+                                                                    {hold_target => rec.id, hold_type => 'T', hold_source_page => mkurl()}) %]" 
                                                                     name="place_hold_link" class="no-dec"><img
                                                                 src="[% ctx.media_prefix %]/images/green_check.png"
                                                                 alt=""/><span style="position:relative;top:-3px;left:3px;">[% l('Place Hold') %]</span></a>

@@ -14,7 +14,8 @@ FOREACH type IN ctx.holding_summaries.keys;
                 <td class="rdetail-issue-issue">[% blob.issuance.label | html %]</td>
                 [% IF blob.has_units %]
                 <td class="rdetail-issue-place-hold">
-                    <a href="[% ctx.opac_root %]/place_hold?hold_target=[% blob.issuance.id %]&amp;hold_type=I">[% l("Place Hold") %]</a>
+                    <a href="[% mkurl(ctx.opac_root _ '/place_hold', 
+                        {hold_target => blob.issuance.id, hold_type => 'I', hold_source_page => mkurl()}) %]">[% l("Place Hold") %]</a>
                 </td>
                 [% END %]
             </tr>

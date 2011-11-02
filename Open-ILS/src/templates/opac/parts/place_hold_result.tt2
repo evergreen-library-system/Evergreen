@@ -1,6 +1,7 @@
 [%  PROCESS "opac/parts/misc_util.tt2";
     PROCESS "opac/parts/hold_error_messages.tt2";
     override_possible = 0;
+    any_failures = 0;
 %]
 
 <!-- TODO: CSS for big/strong-->
@@ -37,9 +38,9 @@
                     <div>
                         [% IF hdata.hold_success %]
 
-                        <div>[% l("Hold was successfully placed"); %]</div>
+                        <div class='success'>[% l("Hold was successfully placed"); %]</div>
 
-                        [% ELSIF hdata.hold_failed %]
+                        [% ELSIF hdata.hold_failed; any_failures = 1 %]
 
                             <div><big><strong>[% l("Hold was not successfully placed"); %]</strong></big></div>
                             [% IF hdata.hold_local_block %]
@@ -90,8 +91,11 @@
             </span>
         [% END %]
         <span>
-        <input type="reset" onclick="javascript:history.go(-1);"
-            id="holds_cancel" value="[% l('Cancel') %]" class="opac-button" />
+        [% IF any_failures OR ctx.general_hold_error %]
+        <a href="[% CGI.param('redirect_to') || CGI.referer | html %]">[% l('Cancel') %]</a>
+        [% ELSE %]
+        <a href="[% CGI.param('redirect_to') || CGI.referer | html %]">[% l('Continue') %]</a>
+        [% END %]
         </span>
     </form>
 </div>
