@@ -118,6 +118,24 @@ function ReceivableCopyTable() {
 //        return n > 0 ? n : 0;
     };
 
+    this._render_copy_count_info = function() {
+        dojo.byId("inv-copy-count-info").innerHTML =
+            dojo.string.substitute(
+                localeStrings.INVOICE_COPY_COUNT_INFO,
+                [this.copy_number_received, this.copy_number_total]
+            );
+    };
+
+    this._increment_copy_count_info = function(li) {
+        var all_uncanceled = li.lineitem_details().filter(
+            function(lid) { return !lid.cancel_reason(); }
+        );
+        this.copy_number_total += all_uncanceled.length;
+        this.copy_number_received += all_uncanceled.filter(
+            function(lid) { return Boolean(lid.recv_time()); }
+        ).length;
+    };
+
     this._add_lineitem_number_mode = function(details, li, preselect_count) {
         var tr = dojo.create("tr", null, this.tbody);
         var td = dojo.create("td", {
@@ -181,6 +199,10 @@ function ReceivableCopyTable() {
      * that are still receivable, and preselect lineitem details up to the
      * number specified in ie.phys_item_count() */
     this.add_lineitem = function(ie, li, displayHTML) {
+        /* This call only affects the blurb about received vs. total copies
+         * on the invoice near the top of the display. */
+        this._increment_copy_count_info(li);
+
         var receivable_details = this._get_receivable_details(li);
         if (!receivable_details.length) return;
 
@@ -211,6 +233,8 @@ function ReceivableCopyTable() {
 
         this.user_has_acked = [];
         this.li_by_lid = {};
+        this.copy_number_received = 0;
+        this.copy_number_total = 0;
 
         if (this.spinners) {
             for (var key in this.spinners)
@@ -252,6 +276,8 @@ function ReceivableCopyTable() {
                 }
             }
         );
+
+        this._render_copy_count_info();
 
         if (openils.Util.objectProperties(this.li_by_lid).length) {
             openils.Util.show("non-empty");
@@ -343,6 +369,10 @@ function ReceivableCopyTable() {
                 ]
             )
         );
+    };
+
+    this.back_to_invoice = function() {
+        location.href = oilsBasePath + "/acq/invoice/view/" + this.inv_id;
     };
 
     this._init.apply(this, arguments);
