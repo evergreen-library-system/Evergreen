@@ -53,8 +53,8 @@
                                                 event_key = hdata.hold_failed_event.textcode;
 
                                                 # display:
-                                                l(FAIL_PART_MSG_MAP.$fail_part_key) ||
-                                                l(EVENT_MSG_MAP.$event_key) ||
+                                                FAIL_PART_MSG_MAP.$fail_part_key ||
+                                                EVENT_MSG_MAP.$event_key ||
                                                 l(hdata.hold_failed_event.desc) ||
                                                 hdata.hold_failed_event.payload.fail_part ||
                                                 hdata.hold_failed_event.textcode ||
