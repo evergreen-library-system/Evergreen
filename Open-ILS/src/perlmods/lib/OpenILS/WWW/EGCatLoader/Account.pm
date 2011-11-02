@@ -767,18 +767,27 @@ sub fetch_user_circs {
 
     } else {
 
-        my $circ_data = $U->simplereq(
-            'open-ils.actor', 
-            'open-ils.actor.user.checked_out',
-            $e->authtoken, 
-            $e->requestor->id
-        );
+        my $query = {
+            select => {circ => ['id']},
+            from => 'circ',
+            where => {
+                '+circ' => {
+                    usr => $e->requestor->id,
+                    checkin_time => undef,
+                    '-or' => [
+                        {stop_fines => undef},
+                        {stop_fines => {'not in' => ['LOST','CLAIMSRETURNED','LONGOVERDUE']}}
+                    ],
+                }
+            },
+            order_by => {circ => ['due_date']}
+        };
 
-        @circ_ids =  ( @{$circ_data->{overdue}}, @{$circ_data->{out}} );
+        $query->{limit} = $limit if $limit;
+        $query->{offset} = $offset if $offset;
 
-        if($limit or $offset) {
-            @circ_ids = grep { defined $_ } @circ_ids[0..($offset + $limit - 1)];
-        }
+        my $ids = $e->json_query($query);
+        @circ_ids = map {$_->{id}} @$ids;
     }
 
     return [] unless @circ_ids;
