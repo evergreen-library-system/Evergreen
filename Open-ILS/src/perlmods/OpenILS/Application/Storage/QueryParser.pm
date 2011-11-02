@@ -435,6 +435,7 @@ sub decompose {
     my $current_class = shift || $self->default_search_class;
 
     my $recursing = shift || 0;
+    my $phrase_helper = shift || 0;
 
     # Build the search class+field uber-regexp
     my $search_class_re = '^\s*(';
@@ -609,12 +610,22 @@ sub decompose {
         } elsif (/^\s*"([^"]+)"/) { # phrase, always anded
             warn "Encountered phrase: $1\n" if $self->debug;
 
-            $struct->joiner( '&' );
             my $phrase = $1;
 
-            my $class_node = $struct->classed_node($current_class);
-            $class_node->add_phrase( $phrase );
-            $_ = $phrase . $';
+            if (!$phrase_helper) {
+                warn "Recursing into decompose with the phrase as a subquery\n" if $self->debug;
+                my $after = $';
+                my ($substruct, $subremainder) = $self->decompose( qq/"$phrase"/, $current_class, $recursing + 1, 1 );
+                $struct->add_node( $substruct ) if ($substruct);
+                $_ = $after;
+            } else {
+                warn "Directly parsing the phrase subquery\n" if $self->debug;
+                $struct->joiner( '&' );
+
+                my $class_node = $struct->classed_node($current_class);
+                $class_node->add_phrase( $phrase );
+                $_ = $phrase . $';
+            }
 
             $last_type = '';
         } elsif (/$required_re([^\s)]+)/) { # phrase, always anded
