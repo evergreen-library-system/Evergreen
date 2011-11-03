@@ -243,7 +243,7 @@
                                         <tr>
                                             <td/>
                                             <td align='center'> <!-- Chilifresh reviews link --> 
-                                                <div class="chili_review" id="isbn_[% attrs.isbn_clean | html %]"> </div>
+                                                <span class="chili_review" id="isbn_[% attrs.isbn_clean | html %]"> </span>
                                             </td>
                                         </tr>
                                         <tr>
