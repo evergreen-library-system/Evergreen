@@ -1,0 +1,292 @@
+#!/usr/bin/perl
+
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+=head1 NAME
+
+OpenILS::Application::AuthProxy - Negotiator for proxy-style authentication
+
+=head1 AUTHOR
+
+Dan Wells, dbw2@calvin.edu
+
+=cut
+
+package OpenILS::Application::AuthProxy;
+
+use strict;
+use warnings;
+use OpenILS::Application;
+use base qw/OpenILS::Application/;
+use OpenSRF::Utils::Logger qw(:logger);
+use OpenSRF::Utils::SettingsClient;
+use OpenILS::Application::AppUtils;
+use OpenILS::Utils::Fieldmapper;
+use OpenILS::Event;
+use UNIVERSAL::require;
+use Digest::MD5 qw/md5_hex/;
+my $U = 'OpenILS::Application::AppUtils';
+
+# NOTE: code assumes throughout that '0' is never a valid username, barcode,
+# or password; some logic will need to be tweaked to support it if needed.
+
+my @authenticators;
+my %authenticators_by_name;
+my $enabled = 'false';
+
+sub initialize {
+    my $conf = OpenSRF::Utils::SettingsClient->new;
+    my @pfx = ( "apps", "open-ils.auth_proxy", "app_settings" );
+
+    $enabled = $conf->config_value( @pfx, 'enabled' );
+
+    my $auth_configs = $conf->config_value( @pfx, 'authenticators', 'authenticator' );
+    $auth_configs = [$auth_configs] if ref($auth_configs) eq 'HASH';
+
+    if ( !@$auth_configs ) {
+        $logger->error("AuthProxy: authenticators list not found!");
+    } else {
+        foreach my $auth_config (@$auth_configs) {
+            my $auth_handler;
+            if ($auth_config->{'name'} eq 'native') {
+                $auth_handler = 'OpenILS::Application::AuthProxy::Native';
+            } else {
+                $auth_handler = $auth_config->{module};
+                next unless $auth_handler;
+
+                $logger->debug("Attempting to load AuthProxy handler: $auth_handler");
+                $auth_handler->use;
+                if($@) {
+                    $logger->error("Unable to load AuthProxy handler [$auth_handler]: $@");
+                    next;
+                }
+            }
+
+            &_make_option_array($auth_config, 'login_types', 'type');
+            &_make_option_array($auth_config, 'org_units', 'unit');
+
+            my $authenticator = $auth_handler->new($auth_config);
+            push @authenticators, $authenticator;
+            $authenticators_by_name{$authenticator->name} = $authenticator;
+            $logger->debug("Successfully loaded AuthProxy handler: $auth_handler");
+        }
+        $logger->debug("AuthProxy: authenticators loaded");
+    }
+}
+
+# helper function to simplify the config structure
+sub _make_option_array {
+    my ($auth_config, $container_name, $node_name) = @_;
+
+    if (exists $auth_config->{$container_name}
+        and ref $auth_config->{$container_name} eq 'HASH') {
+        my $nodes = $auth_config->{$container_name}{$node_name};
+        if ($nodes) {
+            if (ref $nodes ne 'ARRAY') {
+                $auth_config->{$container_name} = [$nodes];
+            } else {
+                $auth_config->{$container_name} = $nodes;
+            }
+        } else {
+            delete $auth_config->{$container_name};
+        }
+    } else {
+        delete $auth_config->{$container_name};
+    }
+}
+
+
+
+__PACKAGE__->register_method(
+    method    => "enabled",
+    api_name  => "open-ils.auth_proxy.enabled",
+    api_level => 1,
+    stream    => 1,
+    argc      => 0,
+    signature => {
+        desc => q/Check if AuthProxy is enabled/,
+        return => {
+            desc => "True if enabled, false if not",
+            type => "bool"
+        }
+    }
+);
+sub enabled {
+    return (!$enabled or $enabled eq 'false') ? 0 : 1;
+}
+
+__PACKAGE__->register_method(
+    method    => "login",
+    api_name  => "open-ils.auth_proxy.login",
+    api_level => 1,
+    stream    => 1,
+    argc      => 1,
+    signature => {
+        desc => q/Basic single-factor login method/,
+        params => [
+            {name=> "args", desc => q/A hash of arguments.  Valid keys and their meanings:
+    username := Username to authenticate.
+    barcode  := Barcode of user to authenticate (currently supported by 'native' only!)
+    password := Password for verifying the user.
+    type     := Type of login being attempted (Staff Client, OPAC, etc.).
+    org      := Org unit id
+/,
+                type => "hash"}
+        ],
+        return => {
+            desc => "Authentication seed or failure event",
+            type => "mixed"
+        }
+    }
+);
+sub login {
+    my ( $self, $conn, $args ) = @_;
+
+    return OpenILS::Event->new( 'LOGIN_FAILED' )
+      unless (&enabled() and ($args->{'username'} or $args->{'barcode'}));
+
+    my @error_events;
+    my $authenticated = 0;
+    my $auths;
+
+    # if they specify an authenticator by name, only try that one
+    if ($args->{'name'}) {
+        $auths = [$authenticators_by_name{$args->{'name'}}];
+    } else {
+        $auths = \@authenticators;
+    }
+
+    foreach my $authenticator (@$auths) {
+        # skip authenticators specified for a different login type
+        # or org unit id
+        if ($authenticator->login_types and $args->{'type'}) {
+            next unless grep(/^(all|$args->{'type'})$/, @{$authenticator->{'login_types'}});
+        }
+        if ($authenticator->org_units and $args->{'org'}) {
+            next unless grep(/^(all|$args->{'org'})$/, @{$authenticator->{'org_units'}});
+        }
+
+        my $event;
+        # treat native specially
+        if ($authenticator->name eq 'native') {
+            $event = &_do_login($args);
+        } else {
+            $event = $authenticator->authenticate($args);
+        }
+        my $code = $U->event_code($event);
+        if ($code) {
+            push @error_events, $event;
+        } elsif (defined $code) { # code is '0', i.e. SUCCESS
+            if (exists $event->{'payload'}) { # we have a complete native login
+                return $event;
+            } else { # do a 'forced' login
+                return &_do_login($args, 1);
+            }
+        }
+    }
+
+    # if we got this far, we failed
+    # TODO: send back some form of collected error events
+    return OpenILS::Event->new( 'LOGIN_FAILED' );
+}
+
+sub _do_login {
+    my $args = shift;
+    my $authenticated = shift;
+
+    my $seeder = $args->{'username'} ? $args->{'username'} : $args->{'barcode'};
+    my $seed =
+      OpenSRF::AppSession->create("open-ils.auth")
+      ->request( 'open-ils.auth.authenticate.init', $seeder )->gather(1);
+
+    return OpenILS::Event->new( 'LOGIN_FAILED' )
+      unless $seed;
+
+    my $real_password = $args->{'password'};
+    # if we have already authenticated, look up the password needed to finish
+    if ($authenticated) {
+        # barcode-based login is supported only for 'native' logins
+        return OpenILS::Event->new( 'LOGIN_FAILED' ) if !$args->{'username'};
+        my $user = $U->cstorereq(
+            "open-ils.cstore.direct.actor.user.search.atomic",
+            { usrname => $args->{'username'} }
+        );
+        $args->{'password'} = md5_hex( $seed . $user->[0]->passwd );
+    } else {
+        $args->{'password'} = md5_hex( $seed . md5_hex($real_password) );
+    }
+    my $response = OpenSRF::AppSession->create("open-ils.auth")->request(
+        'open-ils.auth.authenticate.complete',
+        $args
+    )->gather(1);
+    $args->{'password'} = $real_password;
+
+    return OpenILS::Event->new( 'LOGIN_FAILED' )
+      unless $response;
+
+    return $response;
+}
+
+__PACKAGE__->register_method(
+    method    => "authenticators",
+    api_name  => "open-ils.auth_proxy.authenticators",
+    api_level => 1,
+    stream    => 1,
+    argc      => 1,
+    signature => {
+        desc => q/Get a list of viable authenticators/,
+        params => [
+            {name=> "args", desc => q/A hash of arguments.  Valid keys and their meanings:
+    type     := Type of login being attempted (Staff Client, OPAC, etc.).
+    org      := Org unit id
+/,
+                type => "hash"}
+        ],
+        return => {
+            desc => "List of viable authenticators",
+            type => "array"
+        }
+    }
+);
+sub authenticators {
+    my ( $self, $conn, $args ) = @_;
+
+    my @viable_auths;
+
+    foreach my $authenticator (@authenticators) {
+        # skip authenticators specified for a different login type
+        # or org unit id
+        if ($authenticator->login_types and $args->{'type'}) {
+            next unless grep(/^(all|$args->{'type'})$/, @{$authenticator->login_types});
+        }
+        if ($authenticator->org_units and $args->{'org'}) {
+            next unless grep(/^(all|$args->{'org'})$/, @{$authenticator->org_units});
+        }
+
+        push @viable_auths, $authenticator->name;
+    }
+
+    return \@viable_auths;
+}
+
+
+# --------------------------------------------------------------------------
+# Stub package for 'native' authenticator
+# --------------------------------------------------------------------------
+package OpenILS::Application::AuthProxy::Native;
+use strict; use warnings;
+use base 'OpenILS::Application::AuthProxy::AuthBase';
+
+1;

@@ -391,6 +391,8 @@ var FETCH_BIB_IDS_BY_BARCODE = 'open-ils.search:open-ils.search.multi_home.bib_i
 var FETCH_ORG_SETTING = 'open-ils.actor:open-ils.actor.ou_setting.ancestor_default';
 var TEST_PEER_BIBS				= 'open-ils.search:open-ils.search.peer_bibs.test';
 var FETCH_PEER_BIBS				= 'open-ils.search:open-ils.search.peer_bibs';
+var AUTH_PROXY_ENABLED			= 'open-ils.auth_proxy:open-ils.auth_proxy.enabled';
+var AUTH_PROXY_LOGIN			= 'open-ils.auth_proxy:open-ils.auth_proxy.login';
 
 /* ---------------------------------------------------------------------------- */
 

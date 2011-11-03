@@ -70,8 +70,16 @@ function userPressedEnter(evt) {
    return false;
 }   
 
-
+/* Using setTimeout in the following function means that goTo is threaded,
+   and multiple calls to it will be processed indeterminately.  Since goTo
+   should effectively end the page, we will only honor the first call. */
+var goToHasRun = false;
 function goTo(url) {
+	if (goToHasRun) {
+		return false;
+	}
+
+	goToHasRun = true;
 	/* setTimeout because ie sux */
 	setTimeout( function(){ location.href = url; }, 0 );
 }

@@ -44,7 +44,20 @@ function init() {
 		}
 	}
 
-	runEvt("common", "run");
+	// show_login trumps normal page running
+	if(location.href.match(/&show_login=1/)) {
+		function reload() {
+			var src = location.href.replace(/&show_login=1/, '');
+			// forceLoginSSL setting (indicated by show_login)
+			// assumes we are not SSL on normal pages
+			src = src.replace(/https:/, 'http:');
+			goTo(src);
+		}
+		attachEvt("common", "loginCanceled", reload);
+		initLogin();
+	} else {
+		runEvt("common", "run");
+	}
 	//checkUserSkin();
 
 	var loc = findOrgLasso(getLasso());

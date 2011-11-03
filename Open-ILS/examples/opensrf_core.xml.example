@@ -22,6 +22,7 @@ Example OpenSRF bootstrap configuration file for Evergreen
           <service>open-ils.actor</service>
           <service>open-ils.acq</service>
           <service>open-ils.auth</service>
+          <service>open-ils.auth_proxy</service>
           <service>open-ils.booking</service>
           <service>open-ils.cat</service>
           <service>open-ils.circ</service>
@@ -89,6 +90,7 @@ Example OpenSRF bootstrap configuration file for Evergreen
       <service>open-ils.circ</service>
       <service>open-ils.actor</service>
       <service>open-ils.auth</service>
+      <service>open-ils.auth_proxy</service>
       <service>open-ils.collections</service>
       <service>open-ils.reporter</service>
     </services>

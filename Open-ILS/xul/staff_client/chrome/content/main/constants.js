@@ -64,6 +64,8 @@ var api = {
     'AUTH_INIT' : { 'app' : 'open-ils.auth', 'method' : 'open-ils.auth.authenticate.init' },
     'AUTH_COMPLETE' : { 'app' : 'open-ils.auth', 'method' : 'open-ils.auth.authenticate.complete' },
     'AUTH_DELETE' : { 'app' : 'open-ils.auth', 'method' : 'open-ils.auth.session.delete' },
+    'AUTH_PROXY_ENABLED' : { 'app' : 'open-ils.auth_proxy', 'method' : 'open-ils.auth_proxy.enabled' },
+    'AUTH_PROXY_LOGIN' : { 'app' : 'open-ils.auth_proxy', 'method' : 'open-ils.auth_proxy.login' },
     'AUTH_WORKSTATION' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.workstation.register' },
     'AUTH_VERIFY_CREDENTIALS' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.verify_user_password' },
     'AUTOGENERATE_BARCODES' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.item.barcode.autogen' },

@@ -190,6 +190,7 @@ vim:et:ts=4:sw=4:
                 <service>open-ils.circ</service>
                 <service>open-ils.actor</service>
                 <service>open-ils.auth</service>
+                <service>open-ils.auth_proxy</service>
                 <service>open-ils.collections</service>
                 <service>open-ils.justintime</service>
             </allowed_services>
@@ -360,6 +361,57 @@ vim:et:ts=4:sw=4:
                     </auth_limits>
                 </app_settings>
             </open-ils.auth>
+
+            <!-- Authentication proxy server -->
+            <open-ils.auth_proxy>
+                <keepalive>5</keepalive>
+                <stateless>1</stateless>
+                <language>perl</language>
+                <implementation>OpenILS::Application::AuthProxy</implementation>
+                <max_requests>93</max_requests>
+
+                <unix_config>
+                    <max_requests>1000</max_requests>
+                    <unix_log>open-ils.auth-proxy_unix.log</unix_log>
+                    <unix_sock>open-ils.auth-proxy_unix.sock</unix_sock>
+                    <unix_pid>open-ils.auth-proxy_unix.pid</unix_pid>
+                    <min_children>1</min_children>
+                    <max_children>15</max_children>
+                    <min_spare_children>1</min_spare_children>
+                    <max_spare_children>5</max_spare_children>
+                </unix_config>
+
+                <app_settings>
+                    <!-- 'enabled' is the master switch; set to 'true' to enable proxied logins -->
+                    <enabled>false</enabled>
+                    <authenticators>
+                        <!-- the following is a sample configuration for the LDAP_Auth module; please adjust as needed -->
+                        <!--
+                        <authenticator>
+                            <name>ldap</name>
+                            <module>OpenILS::Application::AuthProxy::LDAP_Auth</module>
+                            <hostname>name.domain.com</hostname>
+                            <basedn>ou=people,dc=domain,dc=com</basedn>
+                            <authid>cn=username,ou=specials,dc=domain,dc=com</authid>
+                            <password>my_ldap_password_for_authid_user</password>
+                            <login_types>
+                                <type>staff</type>
+                                <type>opac</type>
+                            </login_types>
+                            <org_units>
+                                <unit>103</unit>
+                                <unit>104</unit>
+                            </org_units>
+                        </authenticator>
+                        -->
+                        <!-- 'native' is a proxied version of Evergreen's standard authentication -->
+                        <authenticator>
+                            <name>native</name>
+                            <!-- you can add 'login_types' and 'org_units' limits to this authenticator as well, if needed -->
+                        </authenticator>
+                    </authenticators>
+                </app_settings>
+            </open-ils.auth_proxy>
 
             <!-- Generic search server -->
             <open-ils.search>
@@ -1146,6 +1198,7 @@ vim:et:ts=4:sw=4:
                 <appname>open-ils.circ</appname> 
                 <appname>open-ils.actor</appname> 
                 <appname>open-ils.auth</appname> 
+                <appname>open-ils.auth_proxy</appname> 
                 <appname>open-ils.storage</appname>  
                 <appname>open-ils.penalty</appname>  
                 <appname>open-ils.justintime</appname>  

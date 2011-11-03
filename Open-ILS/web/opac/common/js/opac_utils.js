@@ -712,17 +712,16 @@ function doLogin(suppressEvents) {
 
 	abortAllRequests();
 
+	var auth_proxy_enabled = false;
+	var auth_proxy_enabled_request = new Request( AUTH_PROXY_ENABLED );
+	auth_proxy_enabled_request.request.alertEvent = false;
+	auth_proxy_enabled_request.send(true);
+	if (auth_proxy_enabled_request.result() == 1) {
+		auth_proxy_enabled = true;
+	}
+
 	var uname = G.ui.login.username.value;
-	var passwd = G.ui.login.password.value;	
-
-	var init_request = new Request( LOGIN_INIT, uname );
-   init_request.send(true);
-   var seed = init_request.result();
-
-   if( ! seed || seed == '0') {
-      alert( "Error Communicating with Authentication Server" );
-      return null;
-   }
+	var passwd = G.ui.login.password.value;
 
 	var args = {
 		password : hex_md5(seed + hex_md5(passwd)), 
@@ -731,13 +730,29 @@ function doLogin(suppressEvents) {
 		agent : 'opac'
 	};
 
-    r = fetchOrgSettingDefault(globalOrgTree.id(), 'opac.barcode_regex');
-    if(r) REGEX_BARCODE = new RegExp(r);
-    
-    if( uname.match(REGEX_BARCODE) ) args.barcode = uname;
+	r = fetchOrgSettingDefault(globalOrgTree.id(), 'opac.barcode_regex');
+	if(r) REGEX_BARCODE = new RegExp(r);
+
+	if( uname.match(REGEX_BARCODE) ) args.barcode = uname;
 	else args.username = uname;
 
-   var auth_request = new Request( LOGIN_COMPLETE, args );
+	var auth_request;
+	if (!auth_proxy_enabled) {
+		var init_request = new Request( LOGIN_INIT, uname );
+		init_request.send(true);
+		var seed = init_request.result();
+
+		if( ! seed || seed == '0') {
+			alert( "Error Communicating with Authentication Server" );
+			return null;
+		}
+
+		args.password = hex_md5(seed + hex_md5(passwd));
+		auth_request = new Request( LOGIN_COMPLETE, args );
+	} else {
+		args.password = passwd;
+		auth_request = new Request( AUTH_PROXY_LOGIN, args );
+	}
 
 	auth_request.request.alertEvent = false;
    auth_request.send(true);

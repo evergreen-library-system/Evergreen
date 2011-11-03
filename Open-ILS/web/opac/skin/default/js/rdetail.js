@@ -46,7 +46,7 @@ var rdetailEnd = null;
 var mfhdDetails = [];
 var orgHiding = false;
 
-if(location.href.match(/&place_hold=1/)) {
+if(location.href.match(/&place_hold=1/) || location.href.match(/&show_login=1/)) {
     // prevent load flicker between canvases
     hideMe(dojo.byId('canvas_main'));
 }

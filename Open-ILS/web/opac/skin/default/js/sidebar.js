@@ -83,11 +83,13 @@ function loginDance() {
 }
 
 function loggedInOK() {
-	showCanvas();
-	G.ui.sidebar.username_dest.appendChild(text(G.user.usrname()));
-	unHideMe(G.ui.sidebar.logoutbox);
-	unHideMe(G.ui.sidebar.logged_in_as);
-	hideMe(G.ui.sidebar.loginbox);
+	if (!location.href.match(/&show_login=1/)) {
+		showCanvas();
+		G.ui.sidebar.username_dest.appendChild(text(G.user.usrname()));
+		unHideMe(G.ui.sidebar.logoutbox);
+		unHideMe(G.ui.sidebar.logged_in_as);
+		hideMe(G.ui.sidebar.loginbox);
+	}
 	runEvt( 'common', 'loggedIn');
 	
 	var org = G.user.prefs[PREF_DEF_LOCATION];
@@ -98,6 +100,11 @@ function loggedInOK() {
 		depth = findOrgDepth(org);
 
 	runEvt( "common", "locationChanged", org, depth);
+	if (location.href.match(/&show_login=1/)) {
+		// this redirect should only happen if the runEvt above didn't already
+		// trigger one
+		goTo(location.href.replace(/&show_login=1/, ''));
+	}
 }
 
 
@@ -157,6 +164,16 @@ function strongPassword(pass, alrt) {
 }
 
 function initLogin() {
+    var src = location.href;
+    if(forceLoginSSL && src.match(/^http:/)) {
+        src = src.replace(/^http:/, 'https:');
+        if(!src.match(/&show_login=1/)) {
+            src += '&show_login=1';
+        }
+        goTo(src);
+        return false;
+    }
+
     swapCanvas(G.ui.login.box);
     try{G.ui.login.username.focus();} catch(e) {}
 
