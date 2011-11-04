@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('0646');
+SELECT evergreen.upgrade_deps_block_check('0646', :eg_version);
 
 CREATE OR REPLACE FUNCTION asset.staff_ou_record_copy_count (org INT, rid BIGINT) RETURNS TABLE (depth INT, org_unit INT, visible BIGINT, available BIGINT, unshadow BIGINT, transcendant INT) AS $f$
 DECLARE         
