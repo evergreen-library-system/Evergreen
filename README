@@ -1,5 +1,5 @@
-README for Evergreen 2.1
-========================
+README for Evergreen 2.1.0a
+===========================
 
 Preamble: referenced user accounts
 ----------------------------------
@@ -29,6 +29,18 @@ follows:
     ** The *egadmin* Evergreen account is an administrator account for
        Evergreen that you will use to test connectivity and configure your
        Evergreen instance.
+
+Preamble: Getting an Evergreen official release tarball
+-------------------------------------------------------
+
+To download and extract the source for the current release of Evergreen, issue
+the following commands as the *user* Linux account:
+
+[source, bash]
+------------------------------------------------------------------------------
+wget -c http://evergreen-ils.org/downloads/Evergreen-ILS-2.1.0a.tar.gz
+tar xzf Evergreen-ILS-2.1.0a.tar.gz
+------------------------------------------------------------------------------
 
 Preamble: Developer instructions
 --------------------------------
@@ -160,7 +172,7 @@ Installation instructions:
 +
 [source, bash]
 ------------------------------------------------------------------------------
-make STAFF_CLIENT_STAMP_ID=rel_2_1_x install
+make STAFF_CLIENT_STAMP_ID=rel_2_1_0 install
 ------------------------------------------------------------------------------
 +
 2. The server portion of the staff client expects `http://hostname/xul/server`
