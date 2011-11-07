@@ -68,8 +68,8 @@ tar -C /openils/var/web/js -xzf dojo-release-1.3.3.tar.gz
 cp -r /openils/var/web/js/dojo-release-1.3.3/* /openils/var/web/js/dojo/.
 ------------------------------------------------------------------------------
 
-Installing prerequisites:
--------------------------
+Installing prerequisites
+------------------------
 
 Evergreen has a number of prerequisite packages that must be installed
 before you can successfully configure, compile, and install Evergreen.
@@ -135,8 +135,8 @@ echo "/usr/lib64/dbd" > /etc/ld.so.conf.d/eg.conf
 ldconfig
 ------------------------------------------------------------------------------
 
-Configuration and compilation instructions:
--------------------------------------------
+Configuration and compilation instructions
+------------------------------------------
 
 For the time being, we are still installing everything in the `/openils/`
 directory. From the Evergreen source directory, issue the following commands as
@@ -148,8 +148,8 @@ the *user* Linux account to configure and build Evergreen:
 make
 ------------------------------------------------------------------------------
 
-Installation instructions:
---------------------------
+Installation instructions
+-------------------------
 
 1. Once you have configured and compiled Evergreen, issue the following
    command as the *root* Linux account to install Evergreen, build the server
@@ -175,8 +175,8 @@ cd /openils/var/web/xul
 ln -sf rel_name/server server
 ------------------------------------------------------------------------------
 
-Change ownership of the Evergreen files:
-----------------------------------------
+Change ownership of the Evergreen files
+---------------------------------------
 
 All files in the `/openils/` directory and subdirectories must be owned by the
 `opensrf` user. Issue the following command as the *root* Linux account to
@@ -187,8 +187,8 @@ change the ownership on the files:
 chown -R opensrf:opensrf /openils
 ------------------------------------------------------------------------------
 
-Configure the Apache Web server:
---------------------------------
+Configure the Apache Web server
+-------------------------------
 
 1. Use the example configuration files in `Open-ILS/examples/apache/` to
 configure your Web server for the Evergreen catalog, staff client, Web
@@ -269,8 +269,8 @@ a2dissite default  # OPTIONAL: disable the default site (the "It Works" page)
 a2ensite eg.conf
 ------------------------------------------------------------------------------
 
-Configure OpenSRF for the Evergreen application:
-------------------------------------------------
+Configure OpenSRF for the Evergreen application
+-----------------------------------------------
 There are a number of example OpenSRF configuration files in `/openils/conf/`
 that you can use as a template for your Evergreen installation. Issue the
 following commands as the *opensrf* Linux account:
@@ -296,8 +296,8 @@ domains, you can retrieve the settings from the backup version of the files.
 `eg_db_config.pl`, described in the following section, sets the database
 connection information in `opensrf.xml` for you.
 
-Creating the Evergreen database:
---------------------------------
+Creating the Evergreen database
+-------------------------------
 
 By default, the `Makefile.install` prerequisite installer does not install
 the PostgreSQL 9 database server required by every Evergreen system;
@@ -513,8 +513,8 @@ If this does not work, it's time to do some troubleshooting.
     for assistance before making any drastic changes to your system
     configuration.
 
-Getting help:
--------------
+Getting help
+------------
 
 Need help installing or using Evergreen? Join the mailing lists at
 http://evergreen-ils.org/listserv.php or contact us on the Freenode
