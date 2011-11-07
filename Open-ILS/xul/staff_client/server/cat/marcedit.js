@@ -18,6 +18,10 @@
  * GNU General Public License for more details.  
  *
  */
+// We need whitespace in MARC fields, so disable ignoring it
+XML.ignoreWhitespace = false;
+// Pretty printing kills whitespace too, so disable it.
+XML.prettyPrinting = false;
 var xmlDeclaration = /^<\?xml version[^>]+?>/;
 
 var serializer = new XMLSerializer();
