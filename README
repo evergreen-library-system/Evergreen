@@ -301,8 +301,8 @@ following commands as the *opensrf* Linux account:
 
 [source, bash]
 ------------------------------------------------------------------------------
-cp /openils/conf/opensrf_core.xml.example /openils/conf/opensrf_core.xml
-cp /openils/conf/opensrf.xml.example /openils/conf/opensrf.xml
+cp -b /openils/conf/opensrf_core.xml.example /openils/conf/opensrf_core.xml
+cp -b /openils/conf/opensrf.xml.example /openils/conf/opensrf.xml
 ------------------------------------------------------------------------------
 
 When you installed OpenSRF, you created four Jabber users on two
@@ -310,6 +310,12 @@ separate domains and edited the `opensrf_core.xml` file accordingly. Please
 refer back to the OpenSRF README and, as the *opensrf* Linux account, edit the
 Evergreen version of the `opensrf_core.xml` file using the same Jabber users
 and domains as you used while installing and testing OpenSRF.
+
+[NOTE]
+The `-b` flag tells the `cp` command to create a backup version of the
+destination file. The backup version of the destination file has a tilde (`~`)
+appended to the file name, so if you have forgotten the Jabber users and
+domains, you can retrieve the settings from the backup version of the files.
 
 `eg_db_config.pl`, described in the following section, sets the database
 connection information in `opensrf.xml` for you.
