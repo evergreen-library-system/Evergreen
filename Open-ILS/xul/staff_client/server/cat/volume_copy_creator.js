@@ -451,6 +451,7 @@ g.stash_and_close = function(param) {
             copy.holdable(get_db_true());
             copy.opac_visible(get_db_true());
             copy.ref(get_db_false());
+            copy.mint_condition(get_db_true());
             return copy;
         }
 

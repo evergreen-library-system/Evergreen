@@ -200,6 +200,7 @@ function set_marc_edit() {
                             copy_obj.holdable(get_db_true());
                             copy_obj.opac_visible(get_db_true());
                             copy_obj.ref(get_db_false());
+                            copy_obj.mint_condition(get_db_true());
 
                             JSAN.use('util.window'); var win = new util.window();
                             return cat.util.spawn_copy_editor( { 'handle_update' : 1, 'edit' : 1, 'docid' : doc_id, 'copies' : [ copy_obj ] });
