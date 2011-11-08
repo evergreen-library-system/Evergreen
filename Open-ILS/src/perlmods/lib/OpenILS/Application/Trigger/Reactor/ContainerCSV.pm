@@ -28,9 +28,9 @@ sub handler {
 
     # get items for bookbags (bib containers of btype bookbag)
     if ($env->{user_data}{item_search}) {
-        # use the search api for bib container items
+        # use the search api for bib container items.  fetch record IDs only.
         my $items = $U->bib_container_items_via_search(
-            $env->{target}->id, $env->{user_data}{item_search}
+            $env->{target}->id, $env->{user_data}{item_search}, undef, 1 
         ) or return 0;  # TODO build error output for db?
 
         $env->{items} = $items;

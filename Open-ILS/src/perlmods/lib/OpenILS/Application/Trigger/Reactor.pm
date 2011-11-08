@@ -37,7 +37,8 @@ sub get_li_attr {
 }
 
 # helper functions inserted into the TT environment
-my $_TT_helpers = {
+my $_TT_helpers; # define first so one helper can use another
+$_TT_helpers = {
 
     # turns a date into something TT can understand
     format_date => sub {
@@ -270,8 +271,27 @@ my $_TT_helpers = {
     xml_doc => sub {
         my ($str) = @_;
         return $str ? (new XML::LibXML)->parse_string($str) : undef;
-    }
+    },
 
+    unapi_bre => sub {
+        my ($bre_id, $unapi_args) = @_;
+        $unapi_args ||= {};
+        $unapi_args->{flesh} ||= '{}',
+
+        my $query = { 
+            from => [
+                'unapi.bre', $bre_id, 'marcxml','record', 
+                $unapi_args->{flesh}, 
+                $unapi_args->{site}, 
+                $unapi_args->{depth}, 
+                $unapi_args->{flesh_depth}, 
+            ]
+        };
+
+        my $unapi = new_editor()->json_query($query);
+        return undef unless @$unapi;
+        return $_TT_helpers->{xml_doc}->($unapi->[0]->{'unapi.bre'});
+    }
 };
 
 

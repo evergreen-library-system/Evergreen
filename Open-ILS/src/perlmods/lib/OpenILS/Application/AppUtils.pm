@@ -1876,8 +1876,9 @@ sub bib_record_list_via_search {
     return [ map { pop @$_ } @{$search_result->{ids}} ];
 }
 
+# 'no_flesh' avoids fleshing the target_biblio_record_entry
 sub bib_container_items_via_search {
-    my ($class, $container_id, $search_query, $search_args) = @_;
+    my ($class, $container_id, $search_query, $search_args, $no_flesh) = @_;
 
     # First, Use search API to get container items sorted in any way that crad
     # sorters support.
@@ -1903,13 +1904,16 @@ sub bib_container_items_via_search {
         return;
     }
 
+    my @flesh_fields = qw/notes/;
+    push(@flesh_fields, 'target_biblio_record_entry') unless $no_flesh;
+
     my $items = $e->search_container_biblio_record_entry_bucket_item([
         {
             "target_biblio_record_entry" => $id_list,
             "bucket" => $container_id
         }, {
             flesh => 1,
-            flesh_fields => {"cbrebi" => [qw/notes target_biblio_record_entry/]}
+            flesh_fields => {"cbrebi" => \@flesh_fields}
         }
     ]);
     unless ($items) {
@@ -1920,11 +1924,13 @@ sub bib_container_items_via_search {
         return;
     }
 
-    $e->disconnect;
-
     # ... and put them in the same order that the search API said they
     # should be in.
-    my %ordering_hash = map { $_->target_biblio_record_entry->id, $_ } @$items;
+    my %ordering_hash = map { 
+        ($no_flesh) ? $_->target_biblio_record_entry : $_->target_biblio_record_entry->id, 
+        $_ 
+    } @$items;
+
     return [map { $ordering_hash{$_} } @$id_list];
 }
 
