@@ -55,9 +55,12 @@ Circulation improvements
 ------------------------
 * Transfer selected holds to a different title: It is now possible to select
   multiple holds on a given title and transfer them to a different title.
-  USE CASE?
-* Mark patron as exempt from collections: It is now possible to mark a patron
-  as being exempt from being sent to collections.
+  Use case: Your library acquires another copy of "Pride and Prejudice and
+  Zombies", but as it is a new edition it must be cataloged as a new
+  bibliographic record; however, you would like to spread out some of the holds
+  queue from your current edition to the new edition.
+* Mark patron as exempt from billing collections: It is now possible to mark a
+  patron as being exempt from being sent to collections.
 * Hold-driven recalls: It is now possible to define a loan
   period threshold (such as 60 days) so that if a hold is placed on an item with
   a loan period beyond that threshold, the system will automatically shorten the
@@ -66,7 +69,8 @@ Circulation improvements
   been placed on this item, get it back before <new_due_date>".
 * Weighting of the individual fields of the in-database circulation and holds
   rules can now be configured, rather than using hard-coded values. This allows
-  the importance of each field to be adjusted as needed.
+  the importance of each field to be adjusted as needed through the circulation
+  matrix weighting, hold matrix weighting, and weighting associations settings.
 * The in-database circulation rules support "fall-through" wherein some
   information can be left out of more specific rules and filled in from less
   specific rules. For example, disabling fines for staff could be accomplished
@@ -75,7 +79,8 @@ Circulation improvements
 * Grace periods are now stored in the database and set via circulation rules,
   rather than passed into the fine generation code, and can thus differ between
   different rules. They are also no longer based on a number of fine intervals,
-  but are instead defined by their own specific interval.
+  but are instead defined by their own specific interval. This can eliminate
+  problems with closed date interpretation during grace periods.
 
 Public interface improvements
 -----------------------------
@@ -87,11 +92,13 @@ Public interface improvements
 * Located URI visibility: Located URIs (856 fields with a subfield $9
   specifying the shortname of the owning library) now show up in a search with
   a context library of its owning library or below. For example, a Located URI
-  with an owner of SYS1 WILL cause its record to show up in a search with a
+  with an owner of SYS1 *will* cause its record to show up in a search with a
   context OU of BR1 or SYS1, regardless of depth scoping.
 * Set a JavaScript cache token when `autogen.sh` is run, so that a subsequent
   run of `autogen.sh` will automatically cause browsers to fetch refreshed
-  copies of generated files.
+  copies of generated files. This improves the usability of the catalog after
+  upgrades or certain configuration changes by preventing browsers from relying
+  on stale cached copies of these files.
 
 Serials enhancements
 --------------------
@@ -117,10 +124,11 @@ Serials enhancements
   reading room or non-circulating use.
 * Caption/pattern enhancements:
   ** The Caption/Pattern Wizard now includes a graphical way to include
-     regularity information (i.e., the values typically conveyed in the 85x subfield
-     $y).
-  ** Caption and pattern information can now be imported from the 85x fields of the
-     MFHD, allowing the Caption/Pattern Wizard to be bypassed.
+     regularity information (that is, the values typically conveyed in the `85x`
+     subfield `$y`).
+  ** The Alternate Serials Control interface can now import caption and pattern
+     information from the 85x fields of the MFHD record, allowing the
+     Caption/Pattern Wizard to be bypassed.
 * Can now create one-off issuances for unpredicted or unexpected serial issues.
 * Improvements to the copy template editor for serials, including the addition
   of reasonable default values for some fields.
@@ -137,11 +145,13 @@ Staff client improvements
 * The client has a second toolbar for cataloging functions as well as options
   controlling the presence and size of icons and presence and position of
   labels. To support the preferences of individual staff, each workstation can
-  be configured differently.
+  be configured differently. See the *Admin -> Workstation Administration ->
+  Toolbars* sub-menu for options.
 * Patron registration now supports "Suggested" fields that are configurable
   per library. In addition, library settings allow required fields to be
   adjusted, and it is possible to specify regular expressions to validate
-  input for many fields in the patron registration interface.
+  input for many fields in the patron registration interface. Open *Admin ->
+  Local Administration -> Library Settings Editor* and filter on `GUI`.
 
 New configuration and administration settings
 ---------------------------------------------
@@ -175,13 +185,20 @@ New administration pages
 The following new administration pages can all be accessed
 from the `Admin | Server Administration` menu item in the staff client:
 
-* Call Number Prefixes
-* Call Number Suffixes
-* Circulation Matchpoint Weights
-* Hold Matchpoint Weights
-* MARC Coded Value Maps
-* MARC Record Attributes
-* Weights Associations
+* Call Number Prefixes: Populates a drop down menu in the new Unified Copy /
+  Call Number Editor
+* Call Number Suffixes: Populates a drop down menu in the new Unified Copy /
+  Call Number Editor
+* Circulation Matchpoint Weights: Related to the in-database Circulation and
+  Hold Rule configuration changes
+* Hold Matchpoint Weights: Related to the in-database Circulation and
+  Hold Rule configuration changes
+* MARC Coded Value Maps: Sets labels for fixed fields and extends the set of
+  values for display
+* MARC Record Attributes: Sets labels for fixed fields and extends the set of
+  values for display
+* Weights Associations: Related to the in-database Circulation and
+  Hold Rule configuration changes
 
 New library settings
 ~~~~~~~~~~~~~~~~~~~~
