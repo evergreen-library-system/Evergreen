@@ -1740,6 +1740,7 @@ __PACKAGE__->register_method(
     method    => 'fetch_captured_holds',
     api_name  => 'open-ils.circ.captured_holds.on_shelf.retrieve',
     stream    => 1,
+    authoritative => 1,
     signature => q/
 		Returns a list of un-fulfilled holds (on the Holds Shelf) for a given title id
 		@param authtoken The login session key
@@ -1751,6 +1752,7 @@ __PACKAGE__->register_method(
     method    => 'fetch_captured_holds',
     api_name  => 'open-ils.circ.captured_holds.id_list.on_shelf.retrieve',
     stream    => 1,
+    authoritative => 1,
     signature => q/
 		Returns list ids of un-fulfilled holds (on the Holds Shelf) for a given title id
 		@param authtoken The login session key
@@ -1762,6 +1764,7 @@ __PACKAGE__->register_method(
     method    => 'fetch_captured_holds',
     api_name  => 'open-ils.circ.captured_holds.id_list.expired_on_shelf.retrieve',
     stream    => 1,
+    authoritative => 1,
     signature => q/
 		Returns list ids of shelf-expired un-fulfilled holds for a given title id
 		@param authtoken The login session key
