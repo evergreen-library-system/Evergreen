@@ -1,5 +1,5 @@
-README for Evergreen 2.1
-========================
+README for Evergreen 2.1.0a
+===========================
 
 Preamble: referenced user accounts
 ----------------------------------
@@ -29,6 +29,18 @@ follows:
     ** The *egadmin* Evergreen account is an administrator account for
        Evergreen that you will use to test connectivity and configure your
        Evergreen instance.
+
+Preamble: Getting an Evergreen official release tarball
+-------------------------------------------------------
+
+To download and extract the source for the current release of Evergreen, issue
+the following commands as the *user* Linux account:
+
+[source, bash]
+------------------------------------------------------------------------------
+wget -c http://evergreen-ils.org/downloads/Evergreen-ILS-2.1.0a.tar.gz
+tar xzf Evergreen-ILS-2.1.0a.tar.gz
+------------------------------------------------------------------------------
 
 Preamble: Developer instructions
 --------------------------------
@@ -68,8 +80,8 @@ tar -C /openils/var/web/js -xzf dojo-release-1.3.3.tar.gz
 cp -r /openils/var/web/js/dojo-release-1.3.3/* /openils/var/web/js/dojo/.
 ------------------------------------------------------------------------------
 
-Installing prerequisites:
--------------------------
+Installing prerequisites
+------------------------
 
 Evergreen has a number of prerequisite packages that must be installed
 before you can successfully configure, compile, and install Evergreen.
@@ -135,8 +147,8 @@ echo "/usr/lib64/dbd" > /etc/ld.so.conf.d/eg.conf
 ldconfig
 ------------------------------------------------------------------------------
 
-Configuration and compilation instructions:
--------------------------------------------
+Configuration and compilation instructions
+------------------------------------------
 
 For the time being, we are still installing everything in the `/openils/`
 directory. From the Evergreen source directory, issue the following commands as
@@ -148,8 +160,8 @@ the *user* Linux account to configure and build Evergreen:
 make
 ------------------------------------------------------------------------------
 
-Installation instructions:
---------------------------
+Installation instructions
+-------------------------
 
 1. Once you have configured and compiled Evergreen, issue the following
    command as the *root* Linux account to install Evergreen, build the server
@@ -160,7 +172,7 @@ Installation instructions:
 +
 [source, bash]
 ------------------------------------------------------------------------------
-make STAFF_CLIENT_STAMP_ID=rel_2_1_x install
+make STAFF_CLIENT_STAMP_ID=rel_2_1_0 install
 ------------------------------------------------------------------------------
 +
 2. The server portion of the staff client expects `http://hostname/xul/server`
@@ -175,8 +187,8 @@ cd /openils/var/web/xul
 ln -sf rel_name/server server
 ------------------------------------------------------------------------------
 
-Change ownership of the Evergreen files:
-----------------------------------------
+Change ownership of the Evergreen files
+---------------------------------------
 
 All files in the `/openils/` directory and subdirectories must be owned by the
 `opensrf` user. Issue the following command as the *root* Linux account to
@@ -187,8 +199,8 @@ change the ownership on the files:
 chown -R opensrf:opensrf /openils
 ------------------------------------------------------------------------------
 
-Create the oils_web.xml configuration file:
--------------------------------------------
+Create the oils_web.xml configuration file
+------------------------------------------
 Many administration interfaces, such as acquisitions, bookings, and various
 configuration screens, depend on the correct configuration of HTML templates.
 Copying the sample configuration file into place should work in most cases:
@@ -198,8 +210,8 @@ Copying the sample configuration file into place should work in most cases:
 cp /openils/conf/oils_web.xml.example /openils/conf/oils_web.xml
 ------------------------------------------------------------------------------
 
-Configure the Apache Web server:
---------------------------------
+Configure the Apache Web server
+-------------------------------
 
 1. Use the example configuration files in `Open-ILS/examples/apache/` to
 configure your Web server for the Evergreen catalog, staff client, Web
@@ -280,8 +292,8 @@ a2dissite default  # OPTIONAL: disable the default site (the "It Works" page)
 a2ensite eg.conf
 ------------------------------------------------------------------------------
 
-Configure OpenSRF for the Evergreen application:
-------------------------------------------------
+Configure OpenSRF for the Evergreen application
+-----------------------------------------------
 
 There are a number of example OpenSRF configuration files in `/openils/conf/`
 that you can use as a template for your Evergreen installation. Issue the
@@ -289,8 +301,8 @@ following commands as the *opensrf* Linux account:
 
 [source, bash]
 ------------------------------------------------------------------------------
-cp /openils/conf/opensrf_core.xml.example /openils/conf/opensrf_core.xml
-cp /openils/conf/opensrf.xml.example /openils/conf/opensrf.xml
+cp -b /openils/conf/opensrf_core.xml.example /openils/conf/opensrf_core.xml
+cp -b /openils/conf/opensrf.xml.example /openils/conf/opensrf.xml
 ------------------------------------------------------------------------------
 
 When you installed OpenSRF, you created four Jabber users on two
@@ -299,11 +311,17 @@ refer back to the OpenSRF README and, as the *opensrf* Linux account, edit the
 Evergreen version of the `opensrf_core.xml` file using the same Jabber users
 and domains as you used while installing and testing OpenSRF.
 
+[NOTE]
+The `-b` flag tells the `cp` command to create a backup version of the
+destination file. The backup version of the destination file has a tilde (`~`)
+appended to the file name, so if you have forgotten the Jabber users and
+domains, you can retrieve the settings from the backup version of the files.
+
 `eg_db_config.pl`, described in the following section, sets the database
 connection information in `opensrf.xml` for you.
 
-Creating the Evergreen database:
---------------------------------
+Creating the Evergreen database
+-------------------------------
 
 By default, the `Makefile.install` prerequisite installer does not install
 the PostgreSQL 9.0 database server required by every Evergreen system;
@@ -514,8 +532,8 @@ If this does not work, it's time to do some troubleshooting.
     for assistance before making any drastic changes to your system
     configuration.
 
-Getting help:
--------------
+Getting help
+------------
 
 Need help installing or using Evergreen? Join the mailing lists at
 http://evergreen-ils.org/listserv.php or contact us on the Freenode
