@@ -302,7 +302,7 @@ sub authenticate {
     if ($args && ref($args) eq 'HASH') {
         $self->{bootstrapped} or $self->bootstrap();
 
-        my $session = Opensrf::AppSession->create('open-ils.auth');
+        my $session = OpenSRF::AppSession->create('open-ils.auth');
         my $seed = $session->request(
             'open-ils.auth.authenticate.init', $args->{'username'}
         )->gather(1);
