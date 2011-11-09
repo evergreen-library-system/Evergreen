@@ -916,14 +916,14 @@ sub update_hold_impl {
 
 
     # --------------------------------------------------------------
-    # See if the hold is getting frozen while in transit.  If so, 
-    # make sure that's allowed.
+    # Disallow hold suspencion if the hold is already captured.
     # --------------------------------------------------------------
-    if ($U->is_true($hold->frozen) and !$U->is_true($orig_hold->frozen)) {
+    if ($U->is_true($hold->frozen) and not $U->is_true($orig_hold->frozen)) {
         $hold_status = _hold_status($e, $hold);
-        if ($hold_status == 3) { # in transit
-        
-       }
+        if ($hold_status > 2) { # hold is captured
+            $logger->info("bypassing hold freeze on captured hold");
+            return OpenILS::Event->new('HOLD_SUSPEND_AFTER_CAPTURE');
+        }
     }
 
 
