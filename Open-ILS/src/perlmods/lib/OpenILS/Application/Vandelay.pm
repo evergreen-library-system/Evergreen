@@ -9,6 +9,7 @@ use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Cache;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
+use OpenILS::Utils::Normalize qw/clean_marc/;
 use MARC::Batch;
 use MARC::Record;
 use MARC::File::XML ( BinaryEncoding => 'UTF-8' );
@@ -285,12 +286,7 @@ sub process_spool {
         $logger->info("processing record $count");
 
         try {
-            (my $xml = $r->as_xml_record()) =~ s/\n//sog;
-            $xml =~ s/^<\?xml.+\?\s*>//go;
-            $xml =~ s/>\s+</></go;
-            $xml =~ s/\p{Cc}//go;
-            $xml = $U->entityize($xml);
-            $xml =~ s/[\x00-\x1f]//go;
+            my $xml = clean_marc($r);
 
             my $qrec;
             # Check the leader to ensure we've got something resembling the expected

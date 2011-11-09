@@ -181,6 +181,7 @@ use OpenSRF::Utils::JSON;
 use OpenSRF::AppSession;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
+use OpenILS::Utils::Normalize qw/clean_marc/;
 use OpenILS::Const qw/:const/;
 use OpenSRF::EX q/:try/;
 use OpenILS::Application::AppUtils;
@@ -1258,13 +1259,7 @@ sub upload_records {
         last unless $r;
 
 		try {
-            ($xml = $r->as_xml_record()) =~ s/\n//sog;
-            $xml =~ s/^<\?xml.+\?\s*>//go;
-            $xml =~ s/>\s+</></go;
-            $xml =~ s/\p{Cc}//go;
-            $xml = $U->entityize($xml);
-            $xml =~ s/[\x00-\x1f]//go;
-
+            $xml = clean_marc($r);
 		} catch Error with {
 			$err = shift;
 			$logger->warn("Proccessing XML of record $count in set $key failed with error $err.  Skipping this record");

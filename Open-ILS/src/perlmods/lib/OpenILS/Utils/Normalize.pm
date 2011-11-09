@@ -3,9 +3,13 @@ use strict;
 use warnings;
 use Unicode::Normalize;
 use Encode;
+use UNIVERSAL qw/isa/;
+use MARC::Record;
+use MARC::File::XML ( BinaryEncoding => 'UTF-8' );
+use OpenILS::Application::AppUtils;
 
 use Exporter 'import';
-our @EXPORT_OK = qw( naco_normalize search_normalize );
+our @EXPORT_OK = qw( clean_marc naco_normalize search_normalize );
 
 sub naco_normalize {
     my $str = decode_utf8(shift);
@@ -95,6 +99,26 @@ sub _normalize_codes {
     $str =~ s/\s+$//g;
 
     return lc $str;
+}
+
+# Cleans up a MARC::Record or MARCXML string for storage in the
+# Open-ILS database.
+#
+# Takes either a MARC::Record or a string of MARCXML.
+#
+# Returns a string of MARCXML as Open-ILS likes to store it.
+#
+# Assumes input is already in UTF-8.
+sub clean_marc {
+    my $input = shift;
+    my $xml = (isa $input, 'MARC::Record') ? $input->as_xml_record() : $input;
+    $xml =~ s/\n//sog;
+    $xml =~ s/^<\?xml.+\?\s*>//go;
+    $xml =~ s/>\s+</></go;
+    $xml =~ s/\p{Cc}//go;
+    $xml = OpenILS::Application::AppUtils->entityize($xml);
+    $xml =~ s/[\x00-\x1f]//go;
+    return $xml;
 }
 
 1;
