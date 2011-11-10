@@ -3,7 +3,6 @@ if (!dojo._hasResource["openils.widget.HoldingCode"]) {
     dojo.require("dijit.layout.ContentPane");
     dojo.require("dijit.form.DropDownButton");
     dojo.require("dijit.form.TextBox");
-    dojo.require("dijit.form.NumberTextBox");
 
     var _needed_fields = "abcdefghijklm";
 
@@ -67,13 +66,8 @@ if (!dojo._hasResource["openils.widget.HoldingCode"]) {
                 }
 
                 dojo.create("td", {"innerHTML": field.caption}, tr);
-                var dij = field.subfield > "h" ?
-                    dijit.form.NumberTextBox : dijit.form.TextBox;
-                var input = new dij(
-                    {
-                        "name": field.subfield,
-                        "constraints": {"pattern": "####"}
-                    },
+                var input = new dijit.form.TextBox(
+                    {"name": field.subfield},
                     dojo.create("td", null, tr)
                 );
                 input.startup();
@@ -89,7 +83,7 @@ if (!dojo._hasResource["openils.widget.HoldingCode"]) {
                     inputs.forEach(
                         function(input) {
                             var value = input.input.attr("value");
-                            if (value === null || isNaN(value)) {
+                            if (value === null || value === "") {
                                 /* XXX i18n */
                                 alert("A valid holding code cannot be " +
                                     "produced with any blank fields.");
