@@ -130,6 +130,42 @@ Added Log Comment
 				</xsl:if>
 				<xsl:call-template name="part"></xsl:call-template>
 			</titleInfo>
+			<!-- A form of title that ignores non-filing characters; useful
+				 for not converting "L'Oreal" into "L' Oreal" at index time -->
+			<titleNonfiling>
+				<xsl:variable name="title">
+					<xsl:choose>
+						<xsl:when test="marc:subfield[@code='b']">
+							<xsl:call-template name="specialSubfieldSelect">
+								<xsl:with-param name="axis">b</xsl:with-param>
+								<xsl:with-param name="beforeCodes">afgk</xsl:with-param>
+							</xsl:call-template>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:call-template name="subfieldSelect">
+								<xsl:with-param name="codes">abfgk</xsl:with-param>
+							</xsl:call-template>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<title>
+					<xsl:value-of select="$title"/>
+				</title>
+				<xsl:if test="marc:subfield[@code='b']">
+					<subTitle>
+						<xsl:call-template name="chopPunctuation">
+							<xsl:with-param name="chopString">
+								<xsl:call-template name="specialSubfieldSelect">
+									<xsl:with-param name="axis">b</xsl:with-param>
+									<xsl:with-param name="anyCodes">b</xsl:with-param>
+									<xsl:with-param name="afterCodes">afgk</xsl:with-param>
+								</xsl:call-template>
+							</xsl:with-param>
+						</xsl:call-template>
+					</subTitle>
+				</xsl:if>
+				<xsl:call-template name="part"></xsl:call-template>
+			</titleNonfiling>
 		</xsl:for-each>
 		<xsl:for-each select="marc:datafield[@tag='210']">
 			<titleInfo type="abbreviated">
