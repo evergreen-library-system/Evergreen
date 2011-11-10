@@ -1,3 +1,5 @@
+dojo.require("dijit.form.DateTextBox");
+
 function fresh_scap_selector(grid) {
     /* this really needs to be sync, not async */
     pcrud.search(
