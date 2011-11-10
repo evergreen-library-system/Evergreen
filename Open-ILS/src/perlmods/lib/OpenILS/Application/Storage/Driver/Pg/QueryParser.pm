@@ -359,7 +359,7 @@ sub TEST_SETUP {
     __PACKAGE__->add_relevance_bump( title => translated => full_match => 20 );
     
     __PACKAGE__->add_search_field_id_map( title => proper => 6 => 1 );
-    __PACKAGE__->add_query_normalizer( title => proper => 'naco_normalize' );
+    __PACKAGE__->add_query_normalizer( title => proper => 'search_normalize' );
     __PACKAGE__->add_relevance_bump( title => proper => first_word => 1.5 );
     __PACKAGE__->add_relevance_bump( title => proper => full_match => 20 );
     __PACKAGE__->add_relevance_bump( title => proper => word_order => 10 );
@@ -373,7 +373,7 @@ sub TEST_SETUP {
     __PACKAGE__->add_search_field_id_map( author => personal => 8 => 1 );
     __PACKAGE__->add_relevance_bump( author => personal => first_word => 1.5 );
     __PACKAGE__->add_relevance_bump( author => personal => full_match => 20 );
-    __PACKAGE__->add_query_normalizer( author => personal => 'naco_normalize' );
+    __PACKAGE__->add_query_normalizer( author => personal => 'search_normalize' );
     __PACKAGE__->add_query_normalizer( author => personal => 'split_date_range' );
     
     __PACKAGE__->add_facet_field_id_map( subject => topic => 14 => 1 );
@@ -401,8 +401,8 @@ sub TEST_SETUP {
     __PACKAGE__->add_search_class_alias( series => 'se' );
     __PACKAGE__->add_search_class_alias( keyword => 'dc.identifier' );
     
-    __PACKAGE__->add_query_normalizer( author => corporate => 'naco_normalize' );
-    __PACKAGE__->add_query_normalizer( keyword => keyword => 'naco_normalize' );
+    __PACKAGE__->add_query_normalizer( author => corporate => 'search_normalize' );
+    __PACKAGE__->add_query_normalizer( keyword => keyword => 'search_normalize' );
     
     __PACKAGE__->add_search_field_alias( subject => name => 'bib.subjectName' );
     
@@ -693,13 +693,13 @@ sub rel_bump {
     return '' if (!@$only_atoms);
 
     if ($bump eq 'first_word') {
-        return " /* first_word */ COALESCE(NULLIF( (naco_normalize(".$node->table_alias.".value) ~ ('^'||naco_normalize(".$self->QueryParser->quote_value($only_atoms->[0]->content)."))), FALSE )::INT * $multiplier, 1)";
+        return " /* first_word */ COALESCE(NULLIF( (search_normalize(".$node->table_alias.".value) ~ ('^'||search_normalize(".$self->QueryParser->quote_value($only_atoms->[0]->content)."))), FALSE )::INT * $multiplier, 1)";
     } elsif ($bump eq 'full_match') {
-        return " /* full_match */ COALESCE(NULLIF( (naco_normalize(".$node->table_alias.".value) ~ ('^'||".
-                    join( "||' '||", map { "naco_normalize(".$self->QueryParser->quote_value($_->content).")" } @$only_atoms )."||'\$')), FALSE )::INT * $multiplier, 1)";
+        return " /* full_match */ COALESCE(NULLIF( (search_normalize(".$node->table_alias.".value) ~ ('^'||".
+                    join( "||' '||", map { "search_normalize(".$self->QueryParser->quote_value($_->content).")" } @$only_atoms )."||'\$')), FALSE )::INT * $multiplier, 1)";
     } elsif ($bump eq 'word_order') {
-        return " /* word_order */ COALESCE(NULLIF( (naco_normalize(".$node->table_alias.".value) ~ (".
-                    join( "||'.*'||", map { "naco_normalize(".$self->QueryParser->quote_value($_->content).")" } @$only_atoms ).")), FALSE )::INT * $multiplier, 1)";
+        return " /* word_order */ COALESCE(NULLIF( (search_normalize(".$node->table_alias.".value) ~ (".
+                    join( "||'.*'||", map { "search_normalize(".$self->QueryParser->quote_value($_->content).")" } @$only_atoms ).")), FALSE )::INT * $multiplier, 1)";
     }
 
     return '';

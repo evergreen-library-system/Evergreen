@@ -5,10 +5,9 @@ use Unicode::Normalize;
 use Encode;
 
 use Exporter 'import';
-our @EXPORT_OK = qw( naco_normalize );
+our @EXPORT_OK = qw( naco_normalize search_normalize );
 
 sub naco_normalize {
-
     my $str = decode_utf8(shift);
     my $sf = shift;
 
@@ -18,10 +17,34 @@ sub naco_normalize {
     # Note that unlike a strict reading of the NACO normalization rules,
     # output is returned as lowercase instead of uppercase for compatibility
     # with previous versions of the Evergreen naco_normalize routine.
+    $str = _normalize_substitutions($str, $sf);
+
+    # Remove apostrophes, per NACO specs
+    $str =~ tr/'//d;
+    
+    $str = _normalize_codes($str, $sf);
+
+    return $str;
+}
+
+sub search_normalize {
+    my $str = decode_utf8(shift);
+    my $sf = shift;
+
+    $str = _normalize_substitutions($str, $sf);
+    $str = _normalize_codes($str, $sf);
+    
+    return $str;
+}
+
+sub _normalize_substitutions {
+    my $str = shift;
+    my $sf = shift;
 
     # Convert to upper-case first; even though final output will be lowercase, doing this will
     # ensure that the German eszett (ß) and certain ligatures (ﬀ, ﬁ, ﬄ, etc.) will be handled correctly.
     # If there are any bugs in Perl's implementation of upcasing, they will be passed through here.
+
     $str = uc $str;
 
     # remove non-filing strings
@@ -33,7 +56,14 @@ sub naco_normalize {
     $str =~ s/\x{00C6}/AE/g;
     $str =~ s/\x{00DE}/TH/g;
     $str =~ s/\x{0152}/OE/g;
-    $str =~ tr/\x{0110}\x{00D0}\x{00D8}\x{0141}\x{2113}\x{02BB}\x{02BC}]['/DDOLl/d;
+    $str =~ tr/\x{0110}\x{00D0}\x{00D8}\x{0141}\x{2113}\x{02BB}\x{02BC}][/DDOLl/d;
+
+    return $str;
+}
+
+sub _normalize_codes {
+    my $str = shift;
+    my $sf = shift;
 
     # transformations based on Unicode category codes
     $str =~ s/[\p{Cc}\p{Cf}\p{Co}\p{Cs}\p{Lm}\p{Mc}\p{Me}\p{Mn}]//g;

@@ -7170,6 +7170,13 @@ INSERT INTO config.index_normalizer (name, description, func, param_count) VALUE
     1
 );
 
+INSERT INTO config.index_normalizer (name, description, func, param_count) VALUES (
+	'Search Normalize',
+	'Apply search normalization rules to the extracted text. A less extreme version of NACO normalization.',
+	'search_normalize',
+	0
+);
+
 -- make use of the index normalizers
 
 INSERT INTO config.metabib_field_index_norm_map (field,norm)
@@ -7177,7 +7184,7 @@ INSERT INTO config.metabib_field_index_norm_map (field,norm)
             i.id
       FROM  config.metabib_field m,
         config.index_normalizer i
-      WHERE i.func IN ('naco_normalize','split_date_range')
+      WHERE i.func IN ('search_normalize','split_date_range')
             AND m.id NOT IN (18, 19);
 
 INSERT INTO config.metabib_field_index_norm_map (field,norm,pos)
