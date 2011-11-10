@@ -4,7 +4,7 @@
 #
 # Makefile to install prerequisites for OpenSRF and Evergreen
 #
-# Currently supports Debian (squeeze), Ubuntu (lucid), and Fedora (15).
+# Currently supports Debian (squeeze), Ubuntu (lucid), and Fedora (16).
 # Working towards support of CentOS 5 / RHEL 5.
 # Installs Perl prereqs, libjs with Perl wrapper, libdbi, libdbi-drivers, and libyaz
 #
@@ -13,7 +13,7 @@
 # 	- or -
 # 	make -f Makefile.install ubuntu-lucid
 # 	- or -
-# 	make -f Makefile.install fedora15
+# 	make -f Makefile.install fedora16
 # 	- or -
 # 	make -f Makefile.install centos
 # 	- or -
@@ -175,6 +175,7 @@ FEDORA_RPMS = \
 	perl-Email-Send \
 	perl-Email-Simple \
 	perl-GDGraph3d \
+	perl-JSON-XS \
 	perl-Net-IP \
 	perl-Net-SSH2 \
 	perl-OLE-Storage_Lite \
@@ -205,6 +206,13 @@ PGSQL_90_RPMS = \
 	postgresql90-libs \
 	postgresql90-plperl \
 	postgresql90-server
+
+PGSQL_FEDORA_RPMS = \
+	postgresql \
+	postgresql-contrib \
+	postgresql-libs \
+	postgresql-plperl \
+	postgresql-server
 
 PGSQL_CLIENT_DEBS_90 = \
 	libpq5 \
@@ -284,7 +292,7 @@ centos: install_centos_pgsql centos_like
 rhel: install_redhat_pgsql centos_like
 centos_like: install_centos_rpms install_yaz install_cpan_marc install install_centos_perl create_ld_local install_cpan_safe install_cpan_force
 
-fedora15: install_fedora_rpms install_cpan install_cpan_fedora install_cpan_marc install_js_sm install_cpan_force
+fedora16: install_fedora_rpms install_cpan install_cpan_fedora install_cpan_marc install_js_sm install_cpan_force
 
 debian-squeeze: squeeze generic_debian
 squeeze: install_pgsql_client_debs_90  install_extra_debs_squeeze
@@ -452,7 +460,7 @@ install_fedora_rpms:
 	yum -y install $(FEDORA_RPMS)
 
 install_fedora_pgsql_server:
-	yum -y install $(PGSQL_90_RPMS)
+	yum -y install $(PGSQL_FEDORA_RPMS)
 
 # CENTOS
 install_centos_rpms:
