@@ -74,7 +74,12 @@ util.network.prototype = {
         //obj.error.sdump('D_SES','request '+ app + ' ' + name +' '+obj.error.pretty_print(sparams.slice(1,sparams.length-1))+
         //    '\noverride_params = ' + override_params + '\n_params = ' + _params + '\n');
 
-        try { 
+        try {
+
+            if (typeof _params == 'undefined') {
+                // If we're not using simple_request to get here, let's assume secure by default
+                _params = { 'secure' : true };
+            }
 
             var request =  this._request(app,name,params,f,override_params,_params);
             if (request) {

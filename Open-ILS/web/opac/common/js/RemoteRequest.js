@@ -213,7 +213,7 @@ RemoteRequest.prototype.send = function(blocking) {
 			url = 'http://'+XML_HTTP_SERVER+'/'+XML_HTTP_GATEWAY;
 
 		if( url.match(/^http:/) && 
-				(this.secure || location.href.match(/^https:/)) ) {
+				(this.secure || location.href.match(/^https:/) || location.href.match(/^chrome:/) ) ) {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
 			url = url.replace(/^http:/, 'https:');
 		}
