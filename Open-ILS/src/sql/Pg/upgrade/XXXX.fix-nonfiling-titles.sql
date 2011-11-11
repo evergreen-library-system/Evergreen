@@ -20,7 +20,8 @@ SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
 -- but are you really going to read through the whole XSL below before
 -- seeing this important bit?
 UPDATE config.metabib_field
-    SET xpath = $$//mods32:mods/mods32:titleNonfiling[mods32:title and not (@type)]$$
+    SET xpath = $$//mods32:mods/mods32:titleNonfiling[mods32:title and not (@type)]$$,
+        format = 'mods32'
     WHERE field_class = 'title' AND name = 'proper';
 
 UPDATE config.xml_transform SET xslt=$$<?xml version="1.0" encoding="UTF-8"?>
@@ -3143,3 +3144,13 @@ Added Log Comment
 </xsl:stylesheet>$$ WHERE name = 'mods32';
 
 COMMIT;
+
+-- This could take a long time if you have a very non-English bib database
+-- Run it outside of a transaction to avoid lock escalation
+SELECT metabib.reingest_metabib_field_entries(record)
+    FROM metabib.full_rec
+    WHERE tag = '245'
+    AND ind2 > '0'
+    AND subfield = 'a'
+    AND value LIKE '%''%'
+;
