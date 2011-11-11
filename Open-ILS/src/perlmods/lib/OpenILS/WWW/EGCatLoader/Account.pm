@@ -1738,6 +1738,7 @@ sub load_password_reset {
     } elsif ($barcode or $username) {
 
         my @params = $barcode ? ('barcode', $barcode) : ('username', $username);
+        push(@params, $email) if $email;
 
         $U->simplereq(
             'open-ils.actor', 
