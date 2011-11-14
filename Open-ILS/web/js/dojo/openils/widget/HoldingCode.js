@@ -4,7 +4,27 @@ if (!dojo._hasResource["openils.widget.HoldingCode"]) {
     dojo.require("dijit.form.DropDownButton");
     dojo.require("dijit.form.TextBox");
 
+    /* XXX These variables and functions preceding the call to dojo.declar()
+     * all pollute the window namespace.  They're not written as methods for
+     * the openils.widget.HoldingCode "class," but they should probably move
+     * into there anyway.
+     */
+
     var _needed_fields = "abcdefghijklm";
+    var _season_store = new dojo.data.ItemFileReadStore({
+        "data": {
+            "identifier": "code",
+            "label": "label",
+            "items": [
+                {"code": 21, "label": "Spring"},
+                {"code": 22, "label": "Summer"},
+                {"code": 23, "label": "Fall"},
+                {"code": 24, "label": "Winter"}
+            ]
+        }
+    }); /* XXX i18n the above seasons. Also maybe don't
+         hardcode MFHD seasons here? */
+
 
     function _prepare_ttip_dialog(div, wizard) {
         dojo.empty(div);
@@ -47,6 +67,32 @@ if (!dojo._hasResource["openils.widget.HoldingCode"]) {
         _prepare_ttip_dialog_fields(div, fields, wizard);
     }
 
+    function _generate_dijit_for_field(field, tr) {
+        dojo.create("td", {"innerHTML": field.caption}, tr);
+
+        /* Any more special cases than this and we should switch to a dispatch
+         * table or somethingl. */
+        var input;
+        if (field.subfield == "j") {
+            input = new dijit.form.FilteringSelect(
+                {
+                    "name": field.subfield,
+                    "store": _season_store,
+                    "searchAttr": "label",
+                    "scrollOnFocus": false
+                }, dojo.create("td", null, tr)
+            );
+        } else {
+            input = new dijit.form.TextBox(
+                {"name": field.subfield, "scrollOnFocus": false},
+                dojo.create("td", null, tr)
+            );
+        }
+        input.startup();
+
+        return input;
+    }
+
     function _prepare_ttip_dialog_fields(div, fields, wizard) {
         /* XXX TODO Don't assume these defaults for the indicators and $8, and
          * provide reasonable control over them. */
@@ -65,12 +111,7 @@ if (!dojo._hasResource["openils.widget.HoldingCode"]) {
                         field.caption.slice(1);
                 }
 
-                dojo.create("td", {"innerHTML": field.caption}, tr);
-                var input = new dijit.form.TextBox(
-                    {"name": field.subfield},
-                    dojo.create("td", null, tr)
-                );
-                input.startup();
+                var input = _generate_dijit_for_field(field, tr);
                 wizard.preset_input_by_date(input, field.caption.toLowerCase());
                 inputs.push({"subfield": field.subfield, "input": input});
             }
@@ -95,7 +136,8 @@ if (!dojo._hasResource["openils.widget.HoldingCode"]) {
                     wizard.code_text_box.attr("value", js2JSON(holding_code));
                     wizard.wizard_button.attr("disabled", false);
                     dojo.empty(div);
-                }
+                },
+                "scrollOnFocus": false
             }, dojo.create(
                 "span", null, dojo.create(
                     "td", {"colspan": 2},
