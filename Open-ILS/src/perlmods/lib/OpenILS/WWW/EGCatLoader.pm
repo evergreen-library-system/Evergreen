@@ -108,10 +108,13 @@ sub load {
     return $self->load_cache_clear if $path =~ m|opac/cache/clear|;
 
     # ----------------------------------------------------------------
-    # Logout and login require SSL
+    #  Everything below here requires SSL
     # ----------------------------------------------------------------
+    return $self->redirect_ssl unless $self->cgi->https;
+    return $self->load_password_reset if $path =~ m|opac/password_reset|;
+    return $self->load_logout if $path =~ m|opac/logout|;
+
     if($path =~ m|opac/login|) {
-        return $self->redirect_ssl unless $self->cgi->https;
         return $self->load_login unless $self->editor->requestor; # already logged in?
 
         # This will be less confusing to users than to be shown a login form
@@ -124,20 +127,10 @@ sub load {
         );
     }
 
-    if($path =~ m|opac/logout|) {
-        #return Apache2::Const::FORBIDDEN unless $self->cgi->https; 
-        $self->apache->log->warn("catloader: logout called in non-secure context from " . 
-            ($self->ctx->{referer} || '<no referer>')) unless $self->cgi->https;
-        return $self->load_logout;
-    }
-
-    return $self->load_password_reset if $path =~ m|opac/password_reset|;
-
     # ----------------------------------------------------------------
-    #  Everything below here requires SSL + authentication
+    #  Everything below here requires authentication
     # ----------------------------------------------------------------
-    return $self->redirect_auth
-        unless $self->cgi->https and $self->editor->requestor;
+    return $self->redirect_auth unless $self->editor->requestor;
 
     return $self->load_place_hold if $path =~ m|opac/place_hold|;
     return $self->load_myopac_holds if $path =~ m|opac/myopac/holds|;
