@@ -3240,7 +3240,6 @@ COMMIT;
 SELECT metabib.reingest_metabib_field_entries(record)
     FROM metabib.full_rec
     WHERE tag = '245'
-    AND ind2 > '0'
     AND subfield = 'a'
     AND value LIKE '%''%'
 ;
