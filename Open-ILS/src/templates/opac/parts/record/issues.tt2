@@ -51,7 +51,10 @@ FOREACH type IN ctx.holding_summaries.keys;
 %]
             <tr>
                 <td class="rdetail-mfhd-type">[% mfhd.$type %]</td>
-                <td class="rdetail-mfhd-contents">[% serial.$type.join(', ') %]</td>
+                <td class="rdetail-mfhd-contents">[%
+                    FOR thing IN serial.$type;
+                        thing.join(", ");
+                    END %]</td>
             </tr>
         [% END %]
             <tr>
