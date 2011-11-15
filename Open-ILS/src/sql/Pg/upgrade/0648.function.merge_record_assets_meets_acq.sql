@@ -1,3 +1,7 @@
+BEGIN;
+
+INSERT INTO config.upgrade_log (version) VALUES ('0648');
+
 CREATE OR REPLACE FUNCTION asset.merge_record_assets( target_record BIGINT, source_record BIGINT ) RETURNS INT AS $func$
 DECLARE
     moved_objects INT := 0;
@@ -249,4 +253,5 @@ BEGIN
 END;
 $func$ LANGUAGE plpgsql;
 
+COMMIT;
 
