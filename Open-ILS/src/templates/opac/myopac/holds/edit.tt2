@@ -46,6 +46,9 @@
                                 name='pickup_lib' value=ahr.pickup_lib %]
                         </td>
                     </tr>
+                    [% IF hold.hold.status < 3 %]
+                    [%# The following actions cannot be performed on holds that 
+                        have already been captured... %]
                     <tr>
                         <th>
                             [% l('Cancel unless filled by') %]
@@ -89,14 +92,12 @@
                             <em>[% l('Enter date in MM/DD/YYYY format') %]</em>
                         </td>
                     </tr>
+                    [% END %]
                     <tr>
                         <td colspan="2" class="hold-editor-controls">
-                            <input type="submit"
-                                value="[% l('Submit') %]"
-                                class="opac-button" />
-                            <input type="reset"
-                                value="[% l('Cancel') %]"
-                                class="opac-button" />
+                            <a href="[% ctx.opac_root %]/myopac/holds"><button 
+                                class="opac-button">[% l('Go Back') %]</button></a>
+                            <input type="submit" value="[% l('Submit') %]" class="opac-button" />
                         </td>
                     </tr>
                 </table>

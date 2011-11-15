@@ -743,6 +743,9 @@
 	<event code='1714' textcode='HIGH_LEVEL_HOLD_HAS_NO_COPIES'>
 		<desc xml:lang="en-US">A hold request at a higher level than copy has been attempted, but there are no copies that belonging to the higher-level unit.</desc>
 	</event>
+	<event code='1715' textcode='HOLD_SUSPEND_AFTER_CAPTURE'>
+		<desc xml:lang="en-US">Attempt to suspend a hold after it has been captured.</desc>
+	</event>
 
 
 	<event code='2000' textcode='BAD_PARAMS'>

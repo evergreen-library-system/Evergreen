@@ -467,7 +467,10 @@ sub handle_hold_update {
             push(@$vlist, $vals);
         }
 
-        $circ->request('open-ils.circ.hold.update.batch.atomic', $e->authtoken, undef, $vlist)->gather(1);
+        my $resp = $circ->request('open-ils.circ.hold.update.batch.atomic', $e->authtoken, undef, $vlist)->gather(1);
+        $self->ctx->{hold_suspend_post_capture} = 1 if 
+            grep {$U->event_equals($_, 'HOLD_SUSPEND_AFTER_CAPTURE')} @$resp;
+
     } elsif ($action eq 'edit') {
 
         my @vals = map {
