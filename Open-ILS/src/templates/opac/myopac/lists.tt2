@@ -102,7 +102,7 @@
             <div class="bookbag-controls">
                 [% IF bbag.pub == 't'; %]
                 <a href='[%-
-                    mkurl( ctx.opac_root _ '/results', {page => '0', query => 'container(bre,bookbag,' _ bbag.id _ ')'} )
+                    mkurl( ctx.opac_root _ '/results', {page => '0', bookbag => bbag.id} )
                 -%]'>[% l('HTML View') %]</a>
                 [% END %]
             </div>

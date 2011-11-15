@@ -82,6 +82,10 @@ sub _prepare_biblio_search {
         }
     }
 
+    if ($cgi->param("bookbag")) {
+        $query .= " container(bre,bookbag," . int($cgi->param("bookbag")) . ")";
+    }
+
     if ($cgi->param('pubdate') && $cgi->param('date1')) {
         if ($cgi->param('pubdate') eq 'between') {
             $query .= ' between(' . $cgi->param('date1');
@@ -170,6 +174,62 @@ sub tag_circed_items {
 
     return 0 unless @$sets;
     return 1;
+
+}
+
+# This only loads the bookbag itself (in support of a record results page)
+# if a "bookbag" CGI parameter is specified and if the bookbag is public
+# or owned by the logged-in user (if any).  Bookbag notes are fetched
+# later if applicable.
+sub load_rresults_bookbag {
+    my ($self) = @_;
+
+    my $bookbag_id = int($self->cgi->param("bookbag"));
+    return if $bookbag_id < 1;
+
+    my %authz = $self->ctx->{"user"} ?
+        ("-or" => {"pub" => "t", "owner" => $self->ctx->{"user"}->id}) :
+        ("pub" => "t");
+
+    my $bbag = $self->editor->search_container_biblio_record_entry_bucket(
+        {"id" => $bookbag_id, "btype" => "bookbag", %authz}
+    );
+
+    if (!$bbag) {
+        $self->apache->log->warn(
+            "error from cstore retrieving bookbag $bookbag_id!"
+        );
+        return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+    } elsif (@$bbag) {
+        $self->ctx->{"bookbag"} = shift @$bbag;
+    }
+
+    return;
+}
+
+# assumes context has a bookbag we're already authorized to look at, and
+# a list of rec_ids, reasonably sized (from paged search).
+sub load_rresults_bookbag_item_notes {
+    my ($self, $rec_ids) = @_;
+
+    my $items_with_notes =
+        $self->editor->search_container_biblio_record_entry_bucket_item([
+            {"target_biblio_record_entry" => $rec_ids,
+                "bucket" => $self->ctx->{"bookbag"}->id},
+            {"flesh" => 1, "flesh_fields" => {"cbrebi" => ["notes"]},
+                "order_by" => {"cbrebi" => ["id"]}}
+        ]);
+
+    if (!$items_with_notes) {
+        $self->apache->log->warn("error from cstore retrieving cbrebi objects");
+        return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+    }
+
+    $self->ctx->{"bookbag_items_by_bre_id"} = +{
+        map { $_->target_biblio_record_entry => $_ } @$items_with_notes
+    };
+
+    return;
 }
 
 # context additions: 
@@ -183,6 +243,11 @@ sub load_rresults {
     my $cgi = $self->cgi;
     my $ctx = $self->ctx;
     my $e = $self->editor;
+
+    # load bookbag metadata, if requested.
+    if (my $bbag_err = $self->load_rresults_bookbag) {
+        return $bbag_err;
+    }
 
     $ctx->{page} = 'rresult' unless $internal;
     $ctx->{ids} = [];
@@ -293,6 +358,8 @@ sub load_rresults {
     $ctx->{parsed_query} = $results->{parsed_query};
 
     return Apache2::Const::OK if @$rec_ids == 0 or $internal;
+
+    $self->load_rresults_bookbag_item_notes($rec_ids) if $ctx->{bookbag};
 
     my ($facets, @data) = $self->get_records_and_facets(
         $rec_ids, $results->{facet_key}, 

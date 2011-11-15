@@ -29,6 +29,15 @@
         <img id='search-submit-spinner' src='/opac/images/progressbar_green.gif' style='height:16px;width:16px;' class='hidden' alt=''/>
     </span>
     </div>
+    [% IF ctx.bookbag %]
+    <div id="search-only-bookbag-container">
+        <input type="checkbox" id="search-only-bookbag" name="bookbag"
+            value="[% ctx.bookbag.id | html %]" checked="checked" />
+        <label for="search-only-bookbag">
+            [% l('Search only within the chosen list') %]
+        </label>
+    </div>
+    [% END %]
     [% IF is_advanced || is_special %]
     <div>
         <input type="hidden" name="_adv" value="1" />
