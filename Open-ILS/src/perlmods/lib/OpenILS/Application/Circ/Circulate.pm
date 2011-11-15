@@ -1716,6 +1716,11 @@ sub find_related_user_hold {
                 ahcm => {
                     field => 'hold',
                     fkey => 'id'
+                },
+                acp => {
+                    field => 'id', 
+                    fkey => 'current_copy',
+                    type => 'left' # there may be no current_copy
                 }
             }
         }, 
@@ -1732,6 +1737,12 @@ sub find_related_user_hold {
             '+ahcm' => {
                 target_copy => $self->copy->id
             },
+            '+acp' => {
+                '-or' => [
+                    {id => undef}, # left-join copy may be nonexistent
+                    {status => {'!=' => OILS_COPY_STATUS_ON_HOLDS_SHELF}},
+                ]
+            }
         },
         order_by => {ahr => {request_time => {direction => 'asc'}}},
         limit => 1
