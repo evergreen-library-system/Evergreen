@@ -1,3 +1,7 @@
+BEGIN;
+
+INSERT INTO config.upgrade_log (version) VALUES ('0649');
+
 CREATE OR REPLACE VIEW extend_reporter.full_circ_count AS
  SELECT cp.id, COALESCE(c.circ_count, 0::bigint) + COALESCE(count(DISTINCT circ.id), 0::bigint) + COALESCE(count(DISTINCT acirc.id), 0::bigint) AS circ_count
    FROM asset."copy" cp
@@ -5,3 +9,6 @@ CREATE OR REPLACE VIEW extend_reporter.full_circ_count AS
    LEFT JOIN "action".circulation circ ON circ.target_copy = cp.id
    LEFT JOIN "action".aged_circulation acirc ON acirc.target_copy = cp.id
   GROUP BY cp.id, c.circ_count;
+
+COMMIT;
+
