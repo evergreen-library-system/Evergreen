@@ -2,7 +2,7 @@
 BEGIN;
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0647', :eg_version);
 
 INSERT INTO action_trigger.cleanup ( module, description ) VALUES (
     'CreateHoldNotification',
