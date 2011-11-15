@@ -1,3 +1,11 @@
+-- Evergreen DB patch 0648.function.merge_record_assets_meets_acq.sql
+--
+BEGIN;
+
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0648', :eg_version);
+
 CREATE OR REPLACE FUNCTION asset.merge_record_assets( target_record BIGINT, source_record BIGINT ) RETURNS INT AS $func$
 DECLARE
     moved_objects INT := 0;
@@ -250,3 +258,6 @@ END;
 $func$ LANGUAGE plpgsql;
 
 
+
+
+COMMIT;
