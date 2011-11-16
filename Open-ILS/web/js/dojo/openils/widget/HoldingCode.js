@@ -55,7 +55,7 @@ if (!dojo._hasResource["openils.widget.HoldingCode"]) {
             var value = pattern_code[i + 1];
 
             if (_needed_fields.indexOf(subfield) != -1)
-                fields.push({"subfield": subfield, "caption": value});
+                fields.push({"subfield": subfield, "caption": value, "pattern_value": value});
         }
 
         if (!fields.length) {
@@ -71,9 +71,9 @@ if (!dojo._hasResource["openils.widget.HoldingCode"]) {
         dojo.create("td", {"innerHTML": field.caption}, tr);
 
         /* Any more special cases than this and we should switch to a dispatch
-         * table or somethingl. */
+         * table or something. */
         var input;
-        if (field.subfield == "j") {
+        if (field.pattern_value.match(/season/)) {
             input = new dijit.form.FilteringSelect(
                 {
                     "name": field.subfield,
