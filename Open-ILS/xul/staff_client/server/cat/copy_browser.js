@@ -1855,17 +1855,8 @@ cat.copy_browser.prototype = {
     'source_init' : function() {
         var obj = this;
         try {
-            var bibObj = obj.network.request(
-                api.FM_BRE_RETRIEVE_VIA_ID.app,
-                api.FM_BRE_RETRIEVE_VIA_ID.method,
-                [ ses(), [obj.docid] ]
-            );
-            bibObj = bibObj[0];
-            var cbsObj = obj.network.request(
-                api.FM_CBS_RETRIEVE_VIA_PCRUD.app,
-                api.FM_CBS_RETRIEVE_VIA_PCRUD.method,
-                [ ses(), bibObj.source() ]
-            );
+            JSAN.use('cat.util');
+            var cbsObj = cat.util.get_cbs_for_bre_id(obj.docid);
             obj.can_have_copies = (cbsObj.can_have_copies() == get_db_true());
             obj.source = cbsObj.source();
         } catch(E) {

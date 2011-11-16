@@ -171,20 +171,8 @@ function add_volumes() {
         }
 
         try {
-            var bibObj = g.network.request(
-                api.FM_BRE_RETRIEVE_VIA_ID.app,
-                api.FM_BRE_RETRIEVE_VIA_ID.method,
-				[ ses(), [docid] ]
-            );
-
-            bibObj = bibObj[0];
-
-            var cbsObj = g.network.request(
-                api.FM_CBS_RETRIEVE_VIA_PCRUD.app,
-                api.FM_CBS_RETRIEVE_VIA_PCRUD.method,
-                [ ses(), bibObj.source() ]
-            );
-
+            JSAN.use('cat.util');
+            var cbsObj = cat.util.get_cbs_for_bre_id(docid);
             if (cbsObj.can_have_copies() != get_db_true()) {
                 alert(document.getElementById('offlineStrings').getFormattedString('staff.cat.bib_source.can_have_copies.false', [cbsObj.source()]));
                 return;
