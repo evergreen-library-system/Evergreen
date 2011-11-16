@@ -295,7 +295,7 @@ cat.copy_browser.prototype = {
                                             'doc_id' : obj.docid, 
                                             'ou_ids' : list, 
                                             'copy_shortcut' : copy_shortcut,
-                                            'refresh' : function() { obj.refresh_list(); }
+                                            'onrefresh' : function() { obj.refresh_list(); }
                                         }
                                     );
                                 } catch(E) {
@@ -539,7 +539,7 @@ cat.copy_browser.prototype = {
                                     var w = xulG.new_tab(
                                         window.xulG.url_prefix(urls.XUL_VOLUME_COPY_CREATOR),
                                         { 'tab_name' : title },
-                                        { 'doc_id' : obj.docid, 'ou_ids' : list, 'refresh' : function() { obj.refresh_list(); } }
+                                        { 'doc_id' : obj.docid, 'ou_ids' : list, 'onrefresh' : function() { obj.refresh_list(); } }
                                     );
 
                                 } catch(E) {
