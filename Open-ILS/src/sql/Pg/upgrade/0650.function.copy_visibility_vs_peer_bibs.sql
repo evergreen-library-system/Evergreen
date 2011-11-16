@@ -1,3 +1,12 @@
+-- Evergreen DB patch 0650.function.copy_visibility_vs_peer_bibs.sql
+--
+--
+BEGIN;
+
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0650', :eg_version);
+
 CREATE OR REPLACE FUNCTION asset.cache_copy_visibility () RETURNS TRIGGER as $func$
 DECLARE
     add_front       TEXT;
@@ -205,3 +214,6 @@ BEGIN
     RETURN NEW;
 END;
 $func$ LANGUAGE PLPGSQL;
+
+
+COMMIT;
