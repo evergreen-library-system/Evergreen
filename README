@@ -1,4 +1,4 @@
-README for Evergreen 2.1.0a
+README for Evergreen 2.1.1
 ===========================
 
 Preamble: referenced user accounts
@@ -38,8 +38,8 @@ the following commands as the *user* Linux account:
 
 [source, bash]
 ------------------------------------------------------------------------------
-wget -c http://evergreen-ils.org/downloads/Evergreen-ILS-2.1.0a.tar.gz
-tar xzf Evergreen-ILS-2.1.0a.tar.gz
+wget -c http://evergreen-ils.org/downloads/Evergreen-ILS-2.1.1.tar.gz
+tar xzf Evergreen-ILS-2.1.1.tar.gz
 ------------------------------------------------------------------------------
 
 Preamble: Developer instructions
@@ -172,7 +172,7 @@ Installation instructions
 +
 [source, bash]
 ------------------------------------------------------------------------------
-make STAFF_CLIENT_STAMP_ID=rel_2_1_0 install
+make STAFF_CLIENT_STAMP_ID=rel_2_1_1 install
 ------------------------------------------------------------------------------
 +
 2. The server portion of the staff client expects `http://hostname/xul/server`

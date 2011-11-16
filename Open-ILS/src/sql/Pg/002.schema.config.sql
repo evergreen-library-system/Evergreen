@@ -58,6 +58,7 @@ CREATE TABLE config.upgrade_log (
 );
 
 INSERT INTO config.upgrade_log (version) VALUES ('0650'); -- tsbere/miker
+INSERT INTO config.upgrade_log (version) VALUES ('2.1.1');
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,

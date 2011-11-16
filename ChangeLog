@@ -1,1 +1,778 @@
-#ChangeLog
+2011-11-16  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/sql/Pg/002.schema.config.sql,
+	Open-ILS/src/sql/Pg/upgrade/0650.function.copy_visibility_vs_peer_b
+	ibs.sql, Open-ILS/src/sql/Pg/upgrade/XXXX.temp.sql: Stamping upgrade
+	script for copy visibility vs peer-bibs fix Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-10-24  Thomas Berezansky <tsbere@mvlc.org>
+
+	* Open-ILS/src/sql/Pg/999.functions.global.sql,
+	Open-ILS/src/sql/Pg/upgrade/XXXX.temp.sql: Distinct
+	cache_copy_visibility copy/record Because if you peer bib a copy to the bib it is on things don't like
+	you.  Signed-off-by: Thomas Berezansky <tsbere@mvlc.org> Signed-off-by:
+	Mike Rylander <mrylander@gmail.com>
+
+2011-11-15  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/sql/Pg/002.schema.config.sql,
+	Open-ILS/src/sql/Pg/upgrade/0649.schema.fix_full_circ_count_view.sq
+	l,
+	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fix_full_circ_count_view.sq
+	l: Stamped upgrade for full circ count view fix Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-09-29  Thomas Berezansky <tsbere@mvlc.org>
+
+	* Open-ILS/src/sql/Pg/extend-reporter.sql,
+	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fix_full_circ_count_view.sq
+	l: Use DISTINCT in counts to avoid dupes Otherwise you get: Legacy count + 2(normal count)(aged count) Signed-off-by: Thomas Berezansky <tsbere@mvlc.org> Signed-off-by:
+	Mike Rylander <mrylander@gmail.com>
+
+2011-09-29  Dan Wells <dbw2@calvin.edu>
+
+	* Open-ILS/src/sql/Pg/extend-reporter.sql,
+	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fix_full_circ_count_view.sq
+	l: Full Circ Count View Amplifies Legacy Circs The current extend_reported.full_circ_count sums the legacy circ
+	count column, but this results in amplifying the count by the number
+	of current circs in the system.  This commit adds the legacy count
+	to the GROUP BY instead of summing it.  Signed-off-by: Dan Wells <dbw2@calvin.edu> Signed-off-by: Mike
+	Rylander <mrylander@gmail.com>
+
+2011-09-28  Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+	* Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm,
+	Open-ILS/web/opac/extras/circ/alt_holds_print.html,
+	Open-ILS/web/opac/extras/circ/alt_holds_print.js: Fix a problem in
+	the clear holds shelf list printer This is a "special" interface that you get to via Admin -> For
+	Developers -> Local Administration in the staff client.  The addition features to one "side" of this hackish interface of
+	label affix and parts had caused breakage on the other "side."  This
+	fixes that.  Also improve document printing, making it less likely the progress
+	dialog itself gets printed.  One day this will be replaced with something better.  Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2011-11-15  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/sql/Pg/002.schema.config.sql,
+	Open-ILS/src/sql/Pg/upgrade/0648.function.merge_record_assets_meets
+	_acq.sql,
+	Open-ILS/src/sql/Pg/upgrade/XXXX.function.merge_record_assets_meets
+	_acq.sql: Stamped upgrade for asset.merge_record_assets fix Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-09-13  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/src/sql/Pg/999.functions.global.sql,
+	Open-ILS/src/sql/Pg/upgrade/XXXX.function.merge_record_assets_meets
+	_acq.sql: LP#849143 fix some gaps in bib record merging Tweaks asset.merge_record_assets such that it considers acquisition
+	line items and user requests, serial subscriptions, booking resource
+	types, biblio monograph parts, and biblio peer bib copy maps. I'm
+	not handling vandelay.queued_record.imported_as or any other
+	vandelay tables, but we may wish to do that too. We're also leaving
+	acq.acq_lineitem_history alone.  Signed-off-by: Jason Etheridge <jason@esilibrary.com> Signed-off-by:
+	Mike Rylander <mrylander@gmail.com>
+
+2011-11-01  Liam Whalen <lwhalen@evergreen-dev.catalogue.nrcan.gc.ca>
+
+	* Open-ILS/xul/staff_client/server/cat/marcedit.js: Aligned the MARC
+	editor subfields to 'start' fixes long subfield display When viewing a record in the MARC editor that has extremely long
+	entries in a subfield, the output would align in the center of the
+	subfield making the output hard to read.  This patch adds an align:
+	'start' option to both the subfield, and the subfield code elements
+	 in the marcSubfield function to make the subfields align in a more
+	readable manner.  Signed-off-by: Liam Whalen
+	<lwhalen@evergreen-dev.catalogue.nrcan.gc.ca> Signed-off-by: Mike
+	Rylander <mrylander@gmail.com>
+
+2011-11-15  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/web/js/ui/default/actor/user/register.js: Patch from Jeff
+	Davis (SITKA) fixing cardless patron updates Quoth the bug report
+	(https://bugs.launchpad.net/evergreen/+bug/851110):   On our Evergreen 2.0.8 system, it sometimes arises that a patron's
+	  card gets deleted. If it was the patron's only card, it becomes
+	  impossible to add a new card to the account via the staff client.    How to reproduce:   1. Retrieve a patron record for a patron who has no associated
+	  card.  2. Click the Edit button.    3. Click Replace Barcode and enter a new barcode.    4. Click Save. This does not work - the process hangs, and if you
+	  hit Reload, you will find that your changes were not saved.    I believe this happens because some code in register.js assumes
+	  the patron has at least one card. I have a potential fix that this
+	  comment box is too small to contain ... uh, that is to say, I will
+	  post it momentarily.  Which he did, and I applied.  Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-10-19  Steven Callender <stevecallender@esilibrary.com>
+
+	*
+	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/act
+	ion.pm: Reshelving update.  Update to the reshelving code to make it faster and utilize the new
+	status change time field on asset.copy.  Signed-off-by: Steven Callender <stevecallender@esilibrary.com>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-10-24  Bill Erickson <berick@esilibrary.com>
+
+	* Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm: Clear
+	shelf canceled holds notification fix After cancelling a batch of holds via the clear-shelf process,
+	before we send the holds off to action/trigger for potential
+	notification generation, re-fetch the holds from the DB to pick up
+	the calculated cancel_time value (i.e. get a real value for "now").
+	Otherwise, A/T may die attempting to create a DateTime object by
+	parsing "now".  Signed-off-by: Bill Erickson <berick@esilibrary.com> Signed-off-by:
+	Mike Rylander <mrylander@gmail.com>
+
+2011-10-23  Dan Scott <dscott@laurentian.ca>
+
+	* Open-ILS/src/c-apps/Makefile.am, Open-ILS/src/c-apps/idlval.c: 
+	Make idlval build, rather than be dead code The tool "idlval" contained in Open-ILS/src/c-apps can be used to
+	check the correctness of fieldmapper definitions in files like
+	Open-ILS/examples/fm_IDL.xml - but currently does not have a build
+	target, nor does it compile cleanly due to the use of unspecified
+	OpenSRF header files. This commit adds a build target, fixes the
+	compile problems, and installs the tool in the bin directory.  Signed-off-by: Dan Scott <dscott@laurentian.ca> Signed-off-by: Mike
+	Rylander <mrylander@gmail.com>
+
+2011-11-08  Jason Stephenson <jstephenson@mvlc.org>
+
+	* Open-ILS/examples/fm_IDL.xml: Add link to cbs from bre via
+	bre.source -> cbs.id in fm_IDL.xml.  Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-11-08  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/xul/staff_client/chrome/content/cat/opac.js,
+	Open-ILS/xul/staff_client/server/cat/util.js,
+	Open-ILS/xul/staff_client/server/cat/volume_copy_creator.js: 
+	LP887822 mint_condition/Quality not set correctly during item creation.  Specifically, the Javascript object for a new item (acp) does not
+	explicitly set the mint_condition field, leaving it null. The item
+	attribute editor treats the null as false (which it displays as
+	"Mediocre" for that field). The database has a not null constraint
+	the corresponding column in asset.copy, and defaults to true. So a
+	new item in the attribute editor will show "Mediocre", but when
+	actually created, will become "Good".  This branch just sets mint_condition to true when an item is
+	created.  Signed-off-by: Jason Etheridge <jason@esilibrary.com> Signed-off-by:
+	Mike Rylander <mrylander@gmail.com>
+
+2011-11-14  Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+	* Open-ILS/web/js/dojo/openils/widget/HoldingCode.js: Serials: in
+	the holding code mini-wizard, offer a dropdown for seasons This spares the user from having to remember the MFHD code for the
+	season, when dealing with periodicals issued by season (21 - 24 for
+	Spring - Winter, respectively).  This also applies sets the "scrollOnFocus" attribute to false for
+	the dijits within the mini wizard, as the jumpy behavior you get in
+	less-than-fullscreen staff client windows is otherwise maddening.  Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-10-11  Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+	* Open-ILS/src/perlmods/lib/OpenILS/Application/Trigger/Reactor.pm,
+	Open-ILS/src/support-scripts/edi_pusher.pl: More filtering of
+	characters that could end up in PO JEDI template output Backslashes cause problems too.  Let's JSON encode this thing and
+	get it right once and for all.  Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+	Signed-off-by: Ben Shum <bshum@biblio.org> Signed-off-by: Bill
+	Erickson <berick@esilibrary.com>
+
+2011-11-10  Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+	* Open-ILS/web/js/dojo/openils/widget/HoldingCode.js,
+	Open-ILS/web/js/ui/default/serial/subscription/issuance.js: Serials:
+	allow freer input in holding code mini-wizard In the Subscription Details interface of the Alternate Serials
+	Control View, under the Issuance tab, if you create a new issuance
+	you can now enter things like "01/02" in (say) the month field to
+	denote a combined January/February issue.  All those fields are now
+	free-form, whereas some of them used to be numeric only.  Also, avoid an occasional issue where an error message about
+	dijit.form.DateTextBox not being a constructor would appear in the
+	JavaScript console.  The problem was in a race condition among some
+	co-dependent JavaScript files that were all being loaded at the same
+	time.  Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+	Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2011-11-10  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/examples/apache/eg_vhost.conf,
+	Open-ILS/web/opac/common/js/RemoteRequest.js,
+	Open-ILS/xul/staff_client/chrome/content/util/network.js: LP88653
+	force SSL for requests from local XUL Modifies RemoteRequest.js to convert any http:// request URL to
+	https:// if the requesting location has a chrome:// protocol.  Modifies util/network.js such that any use of util.network.request
+	(as opposed to util.network.simple_request) will assume "secure" for
+	the resulting request.  Adds an example to the bottom of eg_vhost.conf for forcing SSL for
+	an entire site (OPAC and everything), courtesy of Dan Wells.  Signed-off-by: Jason Etheridge <jason@esilibrary.com> Signed-off-by:
+	Dan Wells <dbw2@calvin.edu>
+
+2011-11-09  Thomas Berezansky <tsbere@mvlc.org>
+
+	* Open-ILS/xul/staff_client/server/cat/marcedit.js: 
+	XML.ignoreWhitespace causes syntax errors So remove it.  Disabling pretty printing appears to be enough to fix the marc
+	editor.  Signed-off-by: Thomas Berezansky <tsbere@mvlc.org> Signed-off-by:
+	Jason Etheridge <jason@esilibrary.com>
+
+2011-11-07  Thomas Berezansky <tsbere@mvlc.org>
+
+	* Open-ILS/xul/staff_client/server/cat/marcedit.js: Fix vanishing
+	whitespace in marc editor XML.ignoreWhitespace and XML.prettyPrinting cause whitespace to
+	vanish.  So disable them at the top of marcedit.js.  Signed-off-by: Thomas Berezansky <tsbere@mvlc.org> Signed-off-by:
+	Jason Etheridge <jason@esilibrary.com>
+
+2011-10-31  Galen Charlton <gmc@esilibrary.com>
+
+	* Open-ILS/src/perlmods/lib/OpenILS/SIP/Patron.pm: lp849447: trival
+	stylistic tweaks - rename variable avoid double-negative - avoid 'Variable declared in conditional statement' perlcritic
+	gripe Signed-off-by: Galen Charlton <gmc@esilibrary.com> Signed-off-by:
+	Mike Rylander <mrylander@gmail.com>
+
+2011-09-14  Sarah E. Chodrow <sarah.chodrow@bibliotheca-itg.com>
+
+	* Open-ILS/src/perlmods/lib/OpenILS/SIP/Patron.pm: Initial patch
+	from Sarah Chodrow on LP bug 849447.  Also check for standing penalties and expired cards when checking if
+	it is ok for the patron to checkout, charge_ok.  Developer's Certificate of Origin 1.1 By making a contribution to this project, I certify that: (a) The contribution was created in whole or in part by me and I     have the right to submit it under the open source license     indicated in the file; or (b) The contribution is based upon previous work that, to the best     of my knowledge, is covered under an appropriate open source     license and I have the right under that license to submit that     work with modifications, whether created in whole or in part     by me, under the same open source license (unless I am     permitted to submit under a different license), as indicated     in the file; or (c) The contribution was provided directly to me by some other     person who certified (a), (b) or (c) and I have not modified     it.  (d) I understand and agree that this project and the contribution     are public and that a record of the contribution (including all     personal information I submit with it, including my sign-off) is     maintained indefinitely and may be redistributed consistent with     this project or the open source license(s) involved.  Signed-off-by: Sarah E. Chodrow (sarah.chodrow@bibliotheca-itg.com) Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-11-08  Mike Rylander <mrylander@gmail.com>
+
+	* : commit ebde03846cfa620ccbf857b7ea82cf68f005e771 Author: Mike
+	Rylander <mrylander@gmail.com> Date:   Tue Nov 8 12:43:44 2011 -0500
+
+2011-11-08  Galen Charlton <gmc@esilibrary.com>
+
+	* : Merge remote branch 'working/collab/dbs/rel_2_1-release_notes'
+	into rel_2_1 Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-11-07  Dan Scott <dscott@laurentian.ca>
+
+	* README: README: Use consistent endings (none!) for
+	titles/subtitles Most, but not all, of the titles/subtitles had colons appended. This
+	looks really weird in the Table of Contents, so try to be
+	consistently unweird and have no appended colons.  Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-11-07  Dan Scott <dscott@laurentian.ca>
+
+	* README: Backup the existing opensrf config files before copying Per a suggestion from Wolf Halton <wolf.halton@gmail.com>, create
+	backup versions of the opensrf configuration files when we're
+	copying the Evergreen example versions over, so that we can retrieve
+	the Jabber user names and passwords and domains from the backups (if
+	necessary).  Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-11-07  Dan Scott <dscott@laurentian.ca>
+
+	* README: Add tarball download / untar instructions to README Per suggestions from Yamil Suarez <ysuarez@berklee.edu> and Martha
+	Driscoll <driscoll@noblenet.org> and Wolf Halton
+	<wolf.halton@gmail.com>, restore the version-specific wget / untar
+	instructions to the README.  Aside: Need to remember to update these links in the repo before
+	tagging a release.  Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-10-27  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/web/js/ui/default/actor/user/register.js: LP874597
+	password from phone # when cloning users Patron: password from phone # does not work when cloning users Signed-off-by: Jason Etheridge <jason@esilibrary.com> Signed-off-by:
+	Mike Rylander <mrylander@gmail.com>
+
+2011-09-27  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/web/opac/skin/default/js/holds.js: LP#860845 hold
+	placement UI can break hold placement UI can break and give misleading error on Submit Adds some defensive coding, but since I don't quite grok everything
+	going on here, may not be the best fix.  Signed-off-by: Jason Etheridge <jason@esilibrary.com> Signed-off-by:
+	Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2011-11-01  James Fournie <jfournie@sitka.bclibraries.ca>
+
+	* Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Search.pm: This
+	prevents the acq unified_search method from returning anything other
+	than the objects of the expected type.  This is to address LP 884991 in which Acq users get a perm error for
+	each result of a search that they don't have access to retrieve.
+	They shouldn't even know about the existence of anything they don't
+	have access to retrieve.  Signed-off-by: James Fournie <jfournie@sitka.bclibraries.ca>
+	Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2011-09-20  James Fournie <jfournie@sitka.bclibraries.ca>
+
+	* Open-ILS/src/sql/Pg/002.schema.config.sql,
+	Open-ILS/src/sql/Pg/040.schema.asset.sql,
+	Open-ILS/src/sql/Pg/upgrade/0646.schema.lp854972_copy_counts_unshad
+	ow.sql: Previously invisible copies showed as beige in the staff
+	client, they stopped doing this in 2.0 This is because in 2.0 the copy counts logic was moved from
+	open-ils.storage.biblio.record_entry.copy_count.staff to an
+	in-database function wrapped in
+	open-ils.search.biblio.record.copy_count.staff.  Both methods
+	returned various counts including an 'unshadow' count, however the
+	'unshadow' in the new database function was not completed and it has
+	only been returning a simple copy count rather than a count of opac
+	visible copies as it should be to replicate the old behaviour.  Signed-off-by: James Fournie <jfournie@sitka.bclibraries.ca>
+	Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2011-10-06  Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+	* Open-ILS/web/js/dojo/openils/acq/nls/acq.js,
+	Open-ILS/web/js/ui/default/acq/common/li_table.js: Acq: better error
+	message if trying to create PO without provider or agency Before now, if you leave either the provider or ordering agency
+	fields blank in the "Create Purchase Order" dialog, you get a
+	nonsensical warning about prepayment.  This fixes that.  Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+	Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2011-04-27  dbs <dbs@dcc99617-32d9-48b4-a31d-7c20da2025e4>
+
+	* Open-ILS/src/perlmods/lib/OpenILS/WWW/AddedContent/OpenLibrary.pm: 
+	Turn ebooks AC from OpenLibrary into usable HTML Add <a> elements to turn URLs into links, and use the upper case
+	ebook format as the content of the link. "Read online" is the one
+	i18n-unfriendly exception, but this is a good start.  Signed-off-by: Dan Scott <dscott@laurentian.ca> git-svn-id: svn://svn.open-ils.org/ILS/trunk@20346
+	dcc99617-32d9-48b4-a31d-7c20da2025e4 Signed-off-by: Lebbeous
+	Fogle-Weekley <lebbeous@esilibrary.com>
+
+2011-04-27  dbs <dbs@dcc99617-32d9-48b4-a31d-7c20da2025e4>
+
+	* Open-ILS/src/perlmods/lib/OpenILS/WWW/AddedContent/OpenLibrary.pm: 
+	Teach OpenLibrary.pm how to extract ebook links from OpenLibrary
+	results If the Internet Archive has an available ebook, then OpenLibrary
+	will provide links to it in various formats. For now, we return the
+	results as a plain set of <div> elements with class attributes
+	denoting what kind of ebook was returned; i18n will have to take
+	care of providing an actual label. Oh, and I guess we want to turn
+	these into actual <a> links...  Signed-off-by: Dan Scott <dscott@laurentian.ca> Signed-off-by:
+	Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2011-11-03  Liam Whalen <lwhalen@nrcan-rncan.gc.ca>
+
+	* Open-ILS/src/sql/Pg/1.6.1-2.0-upgrade-db.sql: Modified
+	authority.indexing_ingest_or_delete to update MARC data The authority.indexing_ingest_or_delete trigger in the update script
+	was missing a call to authority.propagate_changes which is
+	responsible for updating the MARC data of records affected by an
+	auhtority merge.  This patch adds the call to
+	authority.propagate_changes as it appears in the
+	authority.indexing_ingest_or_delete trigger from the file
+	999.functions.global.sql.  Signed-off-by: Liam Whalen <lwhalen@nrcan-rncan.gc.ca>
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-10-06  Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+	* Open-ILS/web/js/ui/default/acq/common/li_table.js,
+	Open-ILS/web/js/ui/default/acq/search/unified.js: Acq: fix a bug
+	that sometimes prevents the general search page from loading Within Acquisitions General Search, javascript included from one
+	file in the <head> relies on the variable "localeStrings" being
+	initialized by javascript included from a file in <body>.  Sometimes
+	the wrong javascript wins the race, you get an error about
+	localeStrings being undefined in the Javascript console, and the
+	page stops loading.  Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+	Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2011-11-01  Bill Erickson <berick@esilibrary.com>
+
+	* Open-ILS/src/support-scripts/fine_generator.pl: Fine generator;
+	raise multi-session mode recv timeout When fetching the batch of overdue circ IDs to process for fine
+	generation, wait a little longer for the data to arrive, since it is
+	a longer running DB query than most.  Signed-off-by: Bill Erickson <berick@esilibrary.com> Signed-off-by:
+	Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2011-11-01  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/src/sql/Pg/002.schema.config.sql: forgot to update
+	upgrade_log Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2011-11-01  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/src/sql/Pg/upgrade/0645.schema.null_svf_protection.sql,
+	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.null_svf_protection.sql: pin
+	upgrade script Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2011-11-01  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/sql/Pg/030.schema.metabib.sql,
+	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.null_svf_protection.sql: 
+	Protect SVF normalizers against NULL values Signed-off-by: Mike Rylander <mrylander@gmail.com> Signed-off-by:
+	Jason Etheridge <jason@esilibrary.com>
+
+2011-11-01  Dan Scott <dscott@laurentian.ca>
+
+	* Open-ILS/src/perlmods/lib/OpenILS/WWW/AddedContent/Amazon.pm: 
+	Force Amazon AC requests to use 10-digit ISBNs Inspired by a patch submitted by Ian Bays <ian.bays@ptfs-europe.com>
+	via https://bugs.launchpad.net/evergreen/+bug/870171, this patch
+	takes the incoming key and, if it is longer than 10 characters (a
+	10-digit ISBN or Amazon ID), attempts to normalize it and return a
+	10-digit ISBN.  We don't normalize all incoming keys because some sites are horribly
+	abusing the 020 MARC field to include an Amazon ID instead of an
+	ISBN - but that works in practice and we'd rather not break working
+	installations if we can avoid it.  Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-10-19  Jason Stephenson <jstephenson@mvlc.org>
+
+	* Open-ILS/src/perlmods/lib/OpenILS/Application/Actor.pm: Use ne on
+	line 631 of Actor.pm.  This is so that we stop getting errors like Argument "1319057146.8881216485.4819607085" isn't numeric in numeric
+	ne (!=) at /usr/local/share/perl/5.10.1/OpenILS/Application/Actor.pm
+	line 630.  in /openils/var/log/open-ils.actor_stderr.log Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-10-27  Michael Peters <mrpeters@library.in.gov>
+
+	* Open-ILS/examples/apache/eg.conf: A tweak to eg.conf to prevent
+	against the BEAST exploit in TLS/SSL Based on recommedation from
+
+	https://community.qualys.com/blogs/securitylabs/2011/10/17/mitigating-the-beast-attack-on-tlsSigned-off-by: Michael Peters <mrpeters@library.in.gov>
+	Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-09-27  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/xul/staff_client/server/circ/checkin.js: LP#860685 List
+	Actions and Print List fix List Actions and Print List broken in Check In interface when not
+	using "Fast Entry (Asynchronous)", due to the way we're using
+	list.refresh_row.  This fixes the internal list state for tracking
+	retrieved versus un-retrieved list rows.  Signed-off-by: Jason Etheridge <jason@esilibrary.com> Signed-off-by:
+	Mike Rylander <mrylander@gmail.com>
+
+2011-10-05  Bill Erickson <berick@esilibrary.com>
+
+	* Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm: 
+	Z39.50 local catalog fetch-more repairs Fixes the following problem: When paging through local catalog results in the Z39.50 interface,
+	paging off then end of the local results would result in an unknown
+	server error caused by trying to retrieve an empty list of records.  $list->{count} in this context is the overall hit count, not the
+	counts in the current page of results.  Note also if {count} is
+	zero, the list of IDs will be undef, so we use both.  Signed-off-by: Bill Erickson <berick@esilibrary.com> Signed-off-by:
+	Jason Etheridge <jason@esilibrary.com>
+
+2011-10-06  Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+	* Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Order.pm: Avoid
+	a possible bug in selection list deletion This particularly matters for the "ephemeral," unnamed selection
+	list that Acquisitions General Search uses to hold bib records
+	represented as lineitems, as that list is deleted for the next run
+	of that kind of search.  It's possible to get lineitems onto that list that are in a state
+	other than "new".  Code that deletes this list first deletes the
+	lineitems that belong to it, but that code formerly assumed that
+	there are two types of lineitems. "new" ones (that should be
+	deleted) and ones that belong to purchase orders (that should be
+	deatched).  That doesn't necessarily cover all possible lineitems on
+	the picklist, so deletion ultimately fails.  This fixes that.  [update: now this bugfix incorporates a bugfix, the need for which
+	was detected by Ben Shum. See LP #869581] Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+	Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2011-10-16  Dan Scott <dscott@laurentian.ca>
+
+	* Open-ILS/src/perlmods/lib/OpenILS/WWW/SuperCat.pm: LP875819: Fix
+	SRU and Z39.50 default search index failures Per http://www.loc.gov/standards/sru/specs/cql.html : All parts of CQL are case insensitive [...] If any case insensitive
+	part of CQL is specified with both upper and lower case, it is for
+	aesthetic purposes only.  So fold the SRU qualifier and relation to lower case. This then
+	matches the srw.serverchoice entry that we already have in
+	config.metabib_search_alias so that default searches will
+	successfully point to the keyword index.  Signed-off-by: Dan Scott <dscott@laurentian.ca> Signed-off-by:
+	Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2011-10-19  Dan Scott <dscott@laurentian.ca>
+
+	* README: README: createunderscoredatabase.sql Fix another typo noted by Martha Driscoll Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-10-19  Dan Scott <dscott@laurentian.ca>
+
+	* README: README: Use rel_2_1_x for the staff client build ID Per a suggestion from Martha Driscoll <driscoll@noblenet.org> to
+	have it match the release number - go halfway and at least match the
+	release numbering pattern.  Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-10-19  Dan Scott <dscott@laurentian.ca>
+
+	* README: Fix README issues Martha Driscoll <driscoll@noblenet.org> noted that the
+	create_database.sql script wasn't actually targeted by the psql
+	command, and also that there was an extraneous <code> tag in the
+	OpenSRF start command.  Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-10-19  Bill Erickson <berick@esilibrary.com>
+
+	* Open-ILS/src/perlmods/lib/OpenILS/Utils/CStoreEditor.pm: 
+	CStoreEditor batch_retrieve repairs 1. If the caller provides additional cstore params, like flesh,
+	flesh_fields, etc. make sure we only use the first component of the
+	search (the list of identifier values) for the cstore search.  2. Determine the identifier field from the class being retrieved
+	instead of hard-coding it to be "id" Signed-off-by: Bill Erickson <berick@esilibrary.com> Signed-off-by:
+	Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2011-10-18  Galen Charlton <gmc@esilibrary.com>
+
+	* Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm: add a
+	couple semicolons Not strictly required, but may as well save a picosecond of grief
+	for the next person who adds to this code.  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-09-15  Bill Erickson <berick@esilibrary.com>
+
+	* Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm: 
+	Create events for hold_request.cancel.patron When a patron cancels his/her own hold, create events for the (already-existing) hold_request.cancel.patron A/T hook.  Signed-off-by: Bill Erickson <berick@esilibrary.com> Signed-off-by:
+	Galen Charlton <gmc@esilibrary.com>
+
+2011-10-18  Bill Erickson <berick@esilibrary.com>
+
+	* Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm: 
+	Re-fetch hold for cancel notify to correct timestamp Re-fetch the cancelled hold from the DB before passing it off to
+	action/trigger for notification processing.  Otherwise, A/T attempts
+	to perform date math on "now" instead of a valid timestamp and
+	subsequently croaks.  Signed-off-by: Bill Erickson <berick@esilibrary.com> Signed-off-by:
+	Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2011-10-16  Dan Scott <dscott@laurentian.ca>
+
+	* Open-ILS/src/perlmods/lib/OpenILS/Application/Fielder.pm: Cache
+	open-ils.fielder results by locale The problem was particularly visible in search facets, but existed
+	before: the cache key used for fielder results did not take locale
+	into account, so on a multi-locale system the first locale won and
+	populated the cache for all other locales.  Use a session locale if provided, otherwise default to the locale
+	set in opensrf.xml Signed-off-by: Dan Scott <dscott@laurentian.ca> Signed-off-by:
+	Thomas Berezansky <tsbere@mvlc.org>
+
+2011-10-13  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/xul/staff_client/server/patron/display.js: Fix print_init
+	error in checkout interface Signed-off-by: Jason Etheridge <jason@esilibrary.com> Signed-off-by:
+	Thomas Berezansky <tsbere@mvlc.org>
+
+2011-10-17  Dan Scott <dscott@laurentian.ca>
+
+	* Open-ILS/web/opac/locale/en-US/lang.dtd: Typo: It's MARC, not
+	Marc. Sheesh.  Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-10-04  Thomas Berezansky <tsbere@mvlc.org>
+
+	* Open-ILS/web/opac/skin/default/js/adv_global.js: Add "submit on
+	enter" to all advanced search boxes Instead of just the one with an ID specified.  Signed-off-by: Thomas Berezansky <tsbere@mvlc.org> Signed-off-by:
+	Dan Scott <dscott@laurentian.ca>
+
+2011-10-14  Jason Etheridge <jason@esilibrary.com>
+
+	* Open-ILS/xul/staff_client/server/patron/bill2.js: LP873614
+	print_init error printing bill history xulG.url_prefix needs to be present for anything using util/print.js
+	and the Mozilla print strategy.  Alternately, we could duplicate the
+	logic behind url_prefix and bundle it into print.js :-/ Signed-off-by: Jason Etheridge <jason@esilibrary.com> Signed-off-by:
+	Jason Stephenson <jstephenson@mvlc.org> Signed-off-by: Dan Scott
+	<dscott@laurentian.ca>
+
+2011-10-13  Dan Scott <dscott@laurentian.ca>
+
+	* Open-ILS/src/support-scripts/settings-tester.pl: Add MARC::Record
+	2.0.1 minimum test to settings-tester.pl Wrap the use_ok() tests in a BEGIN block, per the recommendation of
+	the Test::More perldoc.  Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-10-13  Dan Scott <dscott@laurentian.ca>
+
+	* Open-ILS/src/support-scripts/settings-tester.pl: 
+	Settings-tester.pl whitespace Might as well complete the conversion of the file into modernity.  Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-10-13  Dan Scott <dscott@laurentian.ca>
+
+	* Open-ILS/src/support-scripts/settings-tester.pl: Modernize
+	settings-tester.pl a bit * Add a section that checks for Evergreen services in
+	opensrf_core.xml * Ignore the qstore database credentials, as qstore is unused
+	currently * Split things off into subroutines for easier reading Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-10-13  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/sql/Pg/002.schema.config.sql,
+	Open-ILS/src/sql/Pg/upgrade/0639.schema.asset_merge_record_assets.s
+	ql,
+	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.asset_merge_record_assets.s
+	ql: Stamping upgrade for asset.merge_record_assets fix from dbs Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-10-13  Dan Scott <dscott@laurentian.ca>
+
+	* Open-ILS/src/sql/Pg/999.functions.global.sql,
+	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.asset_merge_record_assets.s
+	ql: Fix located URI merging in action.merge_record_assets() Perhaps due to the unexpected results of the XPath expression, which
+	returns a count of nodes for subfields, etc, rather than just a
+	count of the number of 856 datafields, NULL was being concatenated
+	onto a string - which of course made the string NULL.  Use COALESCE() to prevent the NULLness from spreading and enable
+	action.merge_record_assets() to do the right thing.  Signed-off-by: Dan Scott <dscott@laurentian.ca> Signed-off-by: Mike
+	Rylander <mrylander@gmail.com>
+
+2011-10-12  Dan Scott <dscott@laurentian.ca>
+
+	* Open-ILS/xul/staff_client/server/index.xhtml: Give OrgTree.js a
+	locale, always We started generating locale-specific OrgTree.js files many moons
+	ago, and now no longer provide a "default" locale in the root of the
+	common/js directory. The result was that the index.xhtml page for
+	the staff client was throwing an "_l is undefined" exception;
+	largely meaningless, as it seems that the OrgTree isn't even used on
+	that page, but noise that doesn't need to be in the JavaScript
+	console.  Here we correct that exception by providing a locale, and hopefully
+	prevent any further copy/paste mistakes.  Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-10-11  Bill Erickson <berick@esilibrary.com>
+
+	* Open-ILS/src/c-apps/oils_auth.c: Authentication block logging * Login too-many-auth-failures message at Info level instead of
+	Internal * Log the username getting blocked Signed-off-by: Bill Erickson <berick@esilibrary.com> Signed-off-by:
+	Galen Charlton <gmc@esilibrary.com>
+
+2011-10-12  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/sql/Pg/002.schema.config.sql,
+	Open-ILS/src/sql/Pg/990.schema.unapi.sql,
+	Open-ILS/src/sql/Pg/upgrade/0638.schema.unapi.sitem-fix.sql: Fix
+	cut-paste-o in unapi.sitem, re stream and unit subobjects Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-09-16  Jason Stephenson <jstephenson@mvlc.org>
+
+	* Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm: 
+	Fix z39.50 import isbn and issn searches on local catalog.  Make cat_search_z_style_wrapper do identifier searches for isbn and
+	issn.  Modify the_quest_for_knowledge to accept identifier searches for
+	isbn and issn.  Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+	Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-10-11  Dan Scott <dscott@laurentian.ca>
+
+	* README: README: Minor whitespace cleanup Just to get the indentation standardized on second and subsequent
+	lines of bullets. No big whoop.  Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-10-11  Ben Shum <bshum@biblio.org>
+
+	* README: Change PostgreSQL 9 source for Ubuntu Lucid users.  Currently, Ubuntu Lucid does not have backport options for
+	PostgreSQL 9.  Instead, most community members who use Lucid have
+	been using Martin Pitt's PPA as an external repository source.
+	Signed-off-by: Ben Shum <bshum@biblio.org> Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-09-27  Bill Erickson <berick@esilibrary.com>
+
+	* Open-ILS/src/support-scripts/marc_stream_importer.pl: Read STDIN
+	up to record separator then stop The initial (and only known) target for the importer is OCLC
+	Connexion exports, which export 1 record at a time, with each record
+	ending with the standard record separator.  There is no end-of-file
+	/ end-of-transmission indicator, so the while() loop always blocks
+	and fails on the timeout alarm after the first record is read.  Until a more flexible solution is in place, roll back support for
+	reading multiple records via STDIN.  The original commit was 679506975f0efb6e2f6f17b0c19e3c53c5bfda44 Note, the feature being rolled back was not actually necessary to
+	implement the feature in the commit (file-based imports).  It was
+	just an added bonus.  Signed-off-by: Bill Erickson <berick@esilibrary.com> Signed-off-by:
+	Galen Charlton <gmc@esilibrary.com>
+
+2011-10-10  Dan Scott <dscott@laurentian.ca>
+
+	* Open-ILS/src/extras/Makefile.install: Give CentOS / RHEL a chance
+	at installing PostgreSQL 9.0 Evergreen 2.1 requires PostgreSQL 9.0, and we accordingly updated
+	the package names back in the summer to point at PostgreSQL 9.0, but
+	nobody running CentOS / RHEL brought to our attention that the repo
+	target needed to be updated as well. This, although untested, at
+	least gives CentOS / RHEL users a fighting chance of installing
+	Evergreen master / 2.1 on their system.  Signed-off-by: Dan Scott <dscott@laurentian.ca> Signed-off-by: Galen
+	Charlton <gmc@esilibrary.com>
+
+2011-10-10  Dan Scott <dscott@laurentian.ca>
+
+	* Open-ILS/src/extras/Makefile.install: Fix broken
+	Net::Z3950::SimpleServer 1.14 install Pin the install of Net::Z3950::SimpleServer to the
+	known-to-work-with yaz 3.0.x version, 1.12. 1.14 introduced
+	dependencies on yaz 4.1.x that can't be easily worked around.  Signed-off-by: Dan Scott <dscott@laurentian.ca> Signed-off-by: Galen
+	Charlton <gmc@esilibrary.com>
+
+2011-10-10  Mike Rylander <mrylander@gmail.com>
+
+	* Open-ILS/src/sql/Pg/002.schema.config.sql,
+	Open-ILS/src/sql/Pg/100.circ_matrix.sql,
+	Open-ILS/src/sql/Pg/upgrade/0637.schema.renewal_checkout_counting.s
+	ql: Fix, as provided by Doug Kyle, for LP#822918 Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-10-10  Galen Charlton <gmc@esilibrary.com>
+
+	* RELEASE_NOTES.txt: additional serial enhancements for 2.1 release
+	notes Credit: Lebbeous Fogle-Weekley Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-10-10  Galen Charlton <gmc@esilibrary.com>
+
+	* RELEASE_NOTES.txt: add table of new permissions in 2.1 Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-10-10  Galen Charlton <gmc@esilibrary.com>
+
+	* RELEASE_NOTES.txt: tweaks to the serials enhancements release
+	notes Thanks to Dan Wells for the input.  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-10-10  Galen Charlton <gmc@esilibrary.com>
+
+	* RELEASE_NOTES.txt: serials enhancements for 2.1 release notes Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-10-07  Galen Charlton <gmc@esilibrary.com>
+
+	* RELEASE_NOTES.txt: remove trailing colons from headings Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-10-07  Dan Scott <dscott@laurentian.ca>
+
+	* : commit d1daa4452d8839313d13b8326762893b77019a9c Author: Dan
+	Scott <dscott@laurentian.ca> Date:   Fri Oct 7 15:07:28 2011 -0400
+
+2011-10-07  Galen Charlton <gmc@esilibrary.com>
+
+	* RELEASE_NOTES.txt: start expanding list of new configuration
+	settings Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-10-07  Galen Charlton <gmc@esilibrary.com>
+
+	* RELEASE_NOTES.txt: update release notes re: perl module install
+	destination Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-10-07  Galen Charlton <gmc@esilibrary.com>
+
+	* RELEASE_NOTES.txt: add list of new library settings to release
+	notes Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-10-06  Galen Charlton <gmc@esilibrary.com>
+
+	* Open-ILS/src/c-apps/oils_auth.c: fix authentication failure Ensure that the auth_limit values are read when open-ils.auth
+	initializes, not during oilsAuthInit().  This solves a problem
+	observed on brick-based setups where authentication could
+	incorrectly fail because the drone that processes
+	open-ils.auth.authenticate.complete didn't have the the block count
+	value initialized yet.  Also fixed type nit when compare the fail count to the block limit.  Signed-off-by: Galen Charlton <gmc@esilibrary.com> Signed-off-by:
+	Bill Erickson <berick@esilibrary.com>
+
+2011-10-04  Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+	* Open-ILS/web/js/ui/default/acq/common/li_table.js,
+	Open-ILS/web/js/ui/default/acq/common/li_table_pager.js,
+	Open-ILS/web/js/ui/default/acq/search/unified.js: Really add
+	*entire* selection list to a purchase order, when desired, and generally do what a user would expect when, in Acq, the user
+	executes an operation on "all items".  This addresses LaunchPad bug #810030.  The fundamental issue is that an AcqLiTable, which is used in
+	several different ways in different interfaces, may be representing
+	items on a selection list (for example), but it doesn't necessarily
+	know all of the items that belong to that selection list.  It only
+	knows what it has drawn.  This addresses that deficiency by teaching the getSelected() method
+	some new tricks so that it can consult the server in the various
+	ways appropriate to getting a list of /all/ the items on a selection
+	list, a purchase order, a virtual PO, a set of search results, etc.  Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+	Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2011-10-05  Dan Scott <dscott@laurentian.ca>
+
+	* README: Fix copy-paste-o: "su - postgres" to become postgres Thanks to sal_ in IRC who caught this nugget! Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-10-05  Dan Scott <dscott@laurentian.ca>
+
+	* RELEASE_NOTES.txt: Document hold-driven recalls Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-10-05  Dan Scott <dscott@laurentian.ca>
+
+	* RELEASE_NOTES.txt: Add basic Release Notes in AsciiDoc format Basically, walked through the commit log since the git era to try
+	and isolate changes of interest. I'm sure there's plenty more to
+	cover! Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-10-05  Dan Scott <dscott@laurentian.ca>
+
+	* README: README: Explicitly identify accounts for commands Add a preamble to the beginning listing all of the accounts
+	referenced in the instructions (Linux accounts, PostgreSQL accounts,
+	Evergreen administrator accounts). Also move the Developer
+	Instructions to the start to follow the natural order of operations.  Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-10-05  Bill Erickson <berick@esilibrary.com>
+
+	* Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm: 
+	Avoid collecting facet data for non-facet fields If a config.metabib_field (Admin -> Server Admin -> MARC
+	Search/Facet Fields) starts out as a facet field but is later
+	changed, data for that facet can still bubble up since it has
+	already been extracted.  This patch prevents facets for
+	config.metabib_field entries whose facet_field=false from getting
+	collected/cached for search results.  Signed-off-by: Bill Erickson <berick@esilibrary.com> Signed-off-by:
+	Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+2011-09-07  Dan Wells <dbw2@calvin.edu>
+
+	* Open-ILS/src/perlmods/lib/OpenILS/Utils/Configure.pm: Clear
+	org_unit cache fix for autogen.sh autogen.sh is not properly clearing the org_tree cache.  It is
+	unclear how this hasn't caused a problem before, but this fix works
+	for me and should be at least harmless in other enviroments.  Signed-off-by: Dan Wells <dbw2@calvin.edu> Signed-off-by: Lebbeous
+	Fogle-Weekley <lebbeous@esilibrary.com>
+
+2011-10-04  Dan Scott <dscott@laurentian.ca>
+
+	* Open-ILS/web/opac/locale/en-US/lang.dtd: Fix typo in lang.dtd:
+	"instantenous" Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-10-04  Dan Scott <dscott@laurentian.ca>
+
+	* build/i18n/po/lang.dtd/es-ES.po: i18n: Fix es-ES illegal use of
+	'%' in lang.dtd The '%' character is used to include previously defined blocks in
+	DTD files; would be nice if translate-toolkit gave a more obvious
+	error to alert us to this rather than saying the en-US doesn't
+	validate and dying.  Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2011-08-20  Dan Scott <dan@coffeecode.net>
+
+	* Remove cache-generator.sh from Makefile.am In a previous commit, we removed cache-generator.sh. Now we remove
+	the remaining reference to it in the Makefile.am that was generating
+	an error (reported by Ben Webb).  Signed-off-by: Dan Scott <dan@coffeecode.net>
+
