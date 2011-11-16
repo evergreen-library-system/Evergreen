@@ -816,8 +816,6 @@ function fleshFMRow(row, fmcls, args) {
         // not overwritten when the profile groups arrive and update
         wargs.forceSync = true;
         wargs.disableQuery = {usergroup : 'f'};
-        if(!patron.isnew() && !checkGrpAppPerm(patron.profile()))
-            wargs.readOnly = true;
     } else {
         wargs.forceSync = false;
     }
@@ -830,7 +828,12 @@ function fleshFMRow(row, fmcls, args) {
     var widget = new openils.widget.AutoFieldWidget(wargs);
     widget.build(
         function(w, ww) {
-            if(fmfield == 'profile') { trimGrpTree(ww); }
+            if(fmfield == 'profile') {
+                trimGrpTree(ww);
+                if(!patron.isnew() && !checkGrpAppPerm(patron.profile())){
+                    w.attr('disabled', true);
+                }
+            }
         }
     );
 
