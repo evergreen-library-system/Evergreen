@@ -1157,10 +1157,17 @@ a.opac-button {
 h2.bookbag-name { margin-bottom: 0em; padding-bottom: 0em; }
 .bookbag-share .fixed { min-width: 4em; }
 .bookbag-specific { margin-left: 1em; }
+.bookbag-specific div.sort { float: left; width: 45%; text-align: left; }
+.bookbag-specific div.meta { float: right; width: 54%; text-align: right; }
+#bbag-name-desc-form tr th { vertical-align: middle; }
+#bbag-name-desc-form .saver { vertical-align: middle; text-align: center; }
 .bookbag-description {
     padding-top: 0em;
     font-style: italic;
 }
+#bbag-edit-description { width: 20em; }
+#bbag-edit-name { width: 20em; }
+textarea { font-family: sans-serif; }
 table.bookbag-specific {
     border-right: 1px solid #999;
     border-bottom: 1px solid #666;
