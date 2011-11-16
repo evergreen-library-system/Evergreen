@@ -57,7 +57,7 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0649'); -- dbwells/tsbere/miker
+INSERT INTO config.upgrade_log (version) VALUES ('0650'); -- tsbere/miker
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
