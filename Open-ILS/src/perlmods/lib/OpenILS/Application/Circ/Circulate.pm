@@ -3296,21 +3296,7 @@ sub checkin_handle_circ {
         $self->copy->circ_lib->id : $self->copy->circ_lib;
     my $stat = $U->copy_status($self->copy->status)->id;
 
-    # immediately available keeps items lost or missing items from going home before being handled
-    my $lost_immediately_available = $U->ou_ancestor_setting_value(
-        $circ_lib, OILS_SETTING_LOST_IMMEDIATELY_AVAILABLE, $self->editor) || 0;
-
-
-    if ( (!$lost_immediately_available) && ($circ_lib != $self->circ_lib) ) {
-
-        if( ($stat == OILS_COPY_STATUS_LOST or $stat == OILS_COPY_STATUS_MISSING) ) {
-            $logger->info("circulator: not updating copy status on checkin because copy is lost/missing");
-        } else {
-            $self->copy->status($U->copy_status(OILS_COPY_STATUS_RESHELVING));
-            $self->update_copy;
-        }
-
-    } elsif ($stat == OILS_COPY_STATUS_LOST) {
+    if ($stat == OILS_COPY_STATUS_LOST) {
 
         $self->checkin_handle_lost($circ_lib);
 
