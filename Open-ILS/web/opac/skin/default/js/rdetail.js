@@ -1254,7 +1254,7 @@ function rdetailCheckForGBPreview() {
 function searchForGBPreview( isbn ) {
 	dojo.require("dojo.io.script");
 	dojo.io.script.get({"url": "https://www.google.com/jsapi"});
-	dojo.io.script.get({"url": "http://books.google.com/books", "content": { "bibkeys": isbn, "jscmd": "viewapi", "callback": "GBPreviewCallback"}});
+	dojo.io.script.get({"url": "https://www.googleapis.com/books/v1/volumes", "content": { "q": "isbn:" + isbn, "callback": "GBPreviewCallback"}});
 }
 
 /**
@@ -1266,21 +1266,17 @@ function searchForGBPreview( isbn ) {
  * @param {JSON} GBPBookInfo is the JSON object pulled from the Google books service.
  */
 function GBPreviewCallback(GBPBookInfo) {
-	var GBPreviewDiv = document.getElementById("rdetail_preview_div");
-	var GBPBook;
+	if (GBPBookInfo.totalItems < 1) return;
 
-	for ( i in GBPBookInfo ) {
-		GBPBook = GBPBookInfo[i];
-	}
-
-	if ( !GBPBook ) {
+	var accessInfo = GBPBookInfo.items[0].accessInfo;
+	if ( !accessInfo ) {
 		return;
 	}
 
-	if ( GBPBook.preview != "noview" ) {
+	if ( accessInfo.embeddable ) {
 		// Add a button below the book cover image to load the preview.
 		GBPBadge = document.createElement( 'img' );
-		GBPBadge.src = 'http://books.google.com/intl/en/googlebooks/images/gbs_preview_button1.gif';
+		GBPBadge.src = 'https://www.google.com/intl/en/googlebooks/images/gbs_preview_button1.gif';
 		GBPBadge.title = $('rdetail_preview_badge').innerHTML;
 		GBPBadge.style.border = 0;
 		GBPBadgelink = document.createElement( 'a' );
