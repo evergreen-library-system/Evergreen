@@ -2,7 +2,7 @@
 BEGIN;
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0653', :eg_version);
 
 CREATE OR REPLACE FUNCTION evergreen.org_top() RETURNS SETOF actor.org_unit AS $$ SELECT * FROM actor.org_unit WHERE parent_ou IS NULL LIMIT 1; $$ LANGUAGE SQL ROWS 1;
 

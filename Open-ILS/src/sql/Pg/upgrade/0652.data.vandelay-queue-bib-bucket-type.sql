@@ -3,7 +3,7 @@
 BEGIN;
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0652', :eg_version);
 
 INSERT INTO container.biblio_record_entry_bucket_type (code, label) VALUES (
     'vandelay_queue',
