@@ -5,7 +5,7 @@ var opac_strings = dojo.i18n.getLocalization("openils.opac", "opac");
 var recordsHandled = 0;
 var recordsCache = [];
 var lowHitCount = 4;
-var isbnList = '';
+var isbnList = [];
 var googleBooksLink = true;
 
 var resultFetchAllRecords = false;
@@ -424,15 +424,37 @@ function buildunAPISpan (span, type, id) {
 }
 
 function unhideGoogleBooksLink (data) {
-    for ( var i in data ) {
-        //if (data[i].preview == 'noview') continue;
+    for (var i = 0; i < data.items.length; i++) {
+        var item = data.items[i];
 
-        var gbspan = $n(document.documentElement, 'googleBooksLink-' + i);
+        var gbspan;
+        for (var j = 0; j < item.volumeInfo.industryIdentifiers.length; j++) {
+            // XXX: As of 11-17-2011, some items do not return their own ISBN
+            // as an identifier, so this code fails.  For example:
+            // https://www.googleapis.com/books/v1/volumes?q=isbn:0743243560&callback=unhideGoogleBooksLink
+            // It seems the only way around this would be doing a separate
+            // search for each result rather than one search for the whole
+            // page.  Informal testing seems to indicate that these books
+            // are generally Google-unfriendly (no previews, not embeddable),
+            // so we will live without them for now.
+            var ident = item.volumeInfo.industryIdentifiers[j].identifier;
+            gbspan = $n(document.documentElement, 'googleBooksLink-' + ident);
+            if (gbspan) break;
+        }
+        if (!gbspan) continue;
+
         var gba = $n(gbspan, "googleBooks-link");
 
         gba.setAttribute(
             'href',
-            data[i].info_url
+            item.volumeInfo.infoLink
+            // XXX: we might consider constructing the above link ourselves,
+            // as the link provided populates the search box with our original
+            // multi-item search.  Something like:
+            // 'http://books.google.com/books?id=' + item.id
+            // Postive: cleaner display
+            // Negative: more fragile (link format subject to change; likely
+            // enough to matter?)
         );
         removeCSSClass( gbspan, 'hide_me' );
     }
@@ -453,13 +475,16 @@ function resultDisplayRecord(rec, pos, is_mr) {
     if (googleBooksLink) {
 	    var gbspan = $n(r, "googleBooksLink");
         if (currentISBN) {
+            // Google never has dashes in the ISBN, records sometimes do;
+            // remove them to match
+            // XXX: consider making part of cleanISBN(), or we can work around
+            // this if we move to one request per record
             gbspan.setAttribute(
                 'name',
-                gbspan.getAttribute('name') + '-' + currentISBN
+                gbspan.getAttribute('name') + '-' + currentISBN.toString().replace(/-/g,"")
             );
 
-            if (isbnList) isbnList += ', ';
-            isbnList += currentISBN;
+            isbnList.push(currentISBN);
         }
     }
 
@@ -660,12 +685,12 @@ function resultBuildFormatIcons( row, rec, is_mr ) {
 }
 
 function fetchGoogleBooksLink () {
-    if (isbnList && googleBooksLink) {
+    if (isbnList.length > 0 && googleBooksLink) {
         var scriptElement = document.createElement("script");
         scriptElement.setAttribute("id", "jsonScript");
         scriptElement.setAttribute("src",
-            "http://books.google.com/books?bibkeys=" + 
-            escape(isbnList) + "&jscmd=viewapi&callback=unhideGoogleBooksLink");
+            "https://www.googleapis.com/books/v1/volumes?q=" + 
+            escape('isbn:' + isbnList.join(' | isbn:')) + "&callback=unhideGoogleBooksLink");
         scriptElement.setAttribute("type", "text/javascript");
         // make the request to Google Book Search
         document.documentElement.firstChild.appendChild(scriptElement);
