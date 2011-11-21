@@ -297,11 +297,11 @@ fedora16: install_fedora_rpms install_cpan install_cpan_fedora install_cpan_marc
 
 debian-squeeze: squeeze generic_debian
 squeeze: install_pgsql_client_debs_90  install_extra_debs_squeeze
-generic_debian:  install_debs test_for_libdbi_pkg install debian_sys_config install_cpan_force
+generic_debian: install_debs install_yaz test_for_libdbi_pkg install debian_sys_config install_cpan_force
 
 ubuntu-lucid: lucid generic_ubuntu
 lucid: install_pgsql_client_debs_90 install_extra_debs install_cpan_marc_record install_yaz install_cpan_lucid
-generic_ubuntu: install_debs test_for_libdbi_pkg install debian_sys_config install_cpan_more install_cpan_safe install_cpan_force
+generic_ubuntu: install_debs install_yaz test_for_libdbi_pkg install debian_sys_config install_cpan_more install_cpan_safe install_cpan_force
 
 # - COMMON TARGETS ---------------------------------------------------------
 
