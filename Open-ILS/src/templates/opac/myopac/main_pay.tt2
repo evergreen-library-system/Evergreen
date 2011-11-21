@@ -4,6 +4,7 @@
     myopac_page = "main";
     myopac_main_page = "pay" %]
 <div id="myopac_summary_div">
+
     [% IF ctx.payment_response.textcode %]
         <div class="payment-error">
             <span title="[% ctx.payment_response.textcode %]">
@@ -22,6 +23,7 @@
                 END;
                 retry_url =  mkurl(ctx.opac_root _ '/myopac/main_payment_form', url_args, 1);
             %]
+            <br/>
             <a href="[% retry_url %]">[% l('Go back') %]</a>
             [% l('to try again or to cancel this payment attempt.') %]
         </p>

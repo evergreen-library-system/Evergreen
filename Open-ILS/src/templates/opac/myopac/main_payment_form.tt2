@@ -16,7 +16,7 @@
 <div id="pay_fines_now">
     [% IF last_chance %]
     <p><big>[% l("Are you sure you are ready to charge [_1] to your credit card?", money(ctx.fines.balance_owed)) %]</big></p>
-    <form action="[% ctx.opac_root %]/myopac/main_pay" method="POST">
+    <form action="[% ctx.opac_root %]/myopac/main_pay_init" method="POST">
         [% FOR k IN CGI.Vars;
             NEXT UNLESS k;
             FOR val IN CGI.param(k) %]

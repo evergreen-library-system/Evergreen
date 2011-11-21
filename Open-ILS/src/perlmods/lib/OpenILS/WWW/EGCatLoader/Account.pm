@@ -7,6 +7,8 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::AppUtils;
 use OpenILS::Event;
 use OpenSRF::Utils::JSON;
+use OpenSRF::Utils::Cache;
+use Digest::MD5 qw(md5_hex);
 use Data::Dumper;
 $Data::Dumper::Indent = 0;
 use DateTime;
@@ -1167,24 +1169,15 @@ sub load_myopac_payments {
     return Apache2::Const::OK;
 }
 
-sub load_myopac_pay {
+# 1. caches the form parameters
+# 2. loads the credit card payment "Processing..." page
+sub load_myopac_pay_init {
     my $self = shift;
-    my $r;
+    my $cache = OpenSRF::Utils::Cache->new('global');
 
     my @payment_xacts = ($self->cgi->param('xact'), $self->cgi->param('xact_misc'));
-    $logger->info("tpac paying fines for xacts @payment_xacts");
 
-    $r = $self->prepare_fines(undef, undef, \@payment_xacts) and return $r;
-
-    # balance_owed is computed specifically from the fines we're trying
-    # to pay in this case.
-    if ($self->ctx->{fines}->{balance_owed} <= 0) {
-        $self->apache->log->info(
-            sprintf("Can't pay non-positive balance. xacts selected: (%s)",
-                join(", ", map(int, $self->cgi->param("xact"), $self->cgi->param('xact_misc'))))
-        );
-        return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
-    }
+    return $self->generic_redirect unless @payment_xacts;
 
     my $cc_args = {"where_process" => 1};
 
@@ -1194,11 +1187,71 @@ sub load_myopac_pay {
         billing_zip
     /);
 
+    my $cache_args = {
+        cc_args => $cc_args, 
+        user => $self->ctx->{user}->id,
+        xacts => \@payment_xacts
+    };
+
+    # generate a temporary cache token and cache the form data
+    my $token = md5_hex($$ . time() . rand());
+    $cache->put_cache($token, $cache_args, 30);
+
+    $logger->info("tpac caching payment info with token $token and xacts [@payment_xacts]");
+
+    # after we render the processing page, we quickly redirect to submit
+    # the actual payment.  The refresh url contains the payment token.
+    # It also contains the list of xact IDs, which allows us to clear the 
+    # cache at the earliest possible time while leaving a trace of which 
+    # transactions we were processing, so the UI can bring the user back
+    # to the payment form w/ the same xacts if the payment fails.
+
+    my $refresh = "1; url=main_pay/$token?xact=" . pop(@payment_xacts);
+    $refresh .= ";xact=$_" for @payment_xacts;
+    $self->ctx->{refresh} = $refresh;
+
+    return Apache2::Const::OK;
+}
+
+# retrieve the cached CC payment info and send off for processing
+sub load_myopac_pay {
+    my $self = shift;
+    my $token = $self->ctx->{page_args}->[0];
+    return Apache2::Const::HTTP_BAD_REQUEST unless $token;
+
+    my $cache = OpenSRF::Utils::Cache->new('global');
+    my $cache_args = $cache->get_cache($token);
+    $cache->delete_cache($token);
+
+    # this page is loaded immediately after the token is created.
+    # if the cached data is not there, it's because of an invalid
+    # token (or cache failure) and not because of a timeout.
+    return Apache2::Const::HTTP_BAD_REQUEST unless $cache_args;
+
+    my @payment_xacts = @{$cache_args->{xacts}};
+    my $cc_args = $cache_args->{cc_args};
+
+    # as an added security check, verify the user submitting 
+    # the form is the same as the user whose data was cached
+    return Apache2::Const::HTTP_BAD_REQUEST unless
+        $cache_args->{user} == $self->ctx->{user}->id;
+
+    $logger->info("tpac paying fines with token $token and xacts [@payment_xacts]");
+
+    my $r;
+    $r = $self->prepare_fines(undef, undef, \@payment_xacts) and return $r;
+
+    # balance_owed is computed specifically from the fines we're paying
+    if ($self->ctx->{fines}->{balance_owed} <= 0) {
+        $logger->info("tpac can't pay non-positive balance. xacts selected: [@payment_xacts]");
+        return Apache2::Const::HTTP_BAD_REQUEST;
+    }
+
     my $args = {
         "cc_args" => $cc_args,
         "userid" => $self->ctx->{user}->id,
         "payment_type" => "credit_card_payment",
-        "payments" => $self->prepare_fines_for_payment   # should be safe after self->prepare_fines
+        "payments" => $self->prepare_fines_for_payment  # should be safe after self->prepare_fines
     };
 
     my $resp = $U->simplereq("open-ils.circ", "open-ils.circ.money.payment",

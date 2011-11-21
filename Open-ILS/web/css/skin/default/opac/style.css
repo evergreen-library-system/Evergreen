@@ -960,6 +960,13 @@ div.result_place_hold {
     padding: 10px; border: 1px solid #888;
 }
 
+.payment-processing {
+    font-weight: bold; color: green;
+    font-size: 120%;
+    padding: 10px; border: 1px solid #888;
+    text-align: center;
+}
+
 #adv_search_parent {
 	margin-bottom:0px;
 }
