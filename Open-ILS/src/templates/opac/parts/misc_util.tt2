@@ -39,7 +39,7 @@
 
         # Extract the 856 URLs that are not otherwise represented by asset.uri's
         args.online_res = [];
-        FOR node IN xml.findnodes('//*[@tag="856"]');
+        FOR node IN xml.findnodes('//*[@tag="856" and @ind1="4" and (@ind2="0" or @ind2="1")]');
             IF node.findnodes('./*[@code="9" or @code="w" or @code="n"]'); NEXT; END; # asset.uri's
             label = node.findnodes('./*[@code="y"]');
             notes = node.findnodes('./*[@code="z" or @code="3"]');
