@@ -2,8 +2,10 @@
 <html xmlns='http://www.w3.org/1999/xhtml' lang='[% ctx.locale %]' xml:lang='[% ctx.locale %]'>
     <head>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-        [% IF ctx.authtime %]
-        <meta http-equiv="refresh" content="[% ctx.authtime %];[% ctx.logout_page %]">
+        [% IF ctx.refresh %]
+        <meta http-equiv="refresh" content="[% ctx.refresh %]">
+        [% ELSIF ctx.authtime %]
+        <meta http-equiv="refresh" content="[% ctx.authtime %]; url=[% ctx.logout_page %]">
         [% END %]
         <link rel="stylesheet" type="text/css" href="[% ctx.media_prefix %]/css/skin/default/opac/semiauto.css" />
         <link rel="stylesheet" type="text/css" href="[% ctx.media_prefix %]/css/skin/default/opac/style.css" />
