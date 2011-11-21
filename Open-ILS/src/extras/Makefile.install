@@ -287,21 +287,21 @@ all:
 	@echo "please specify an OS" && exit 0
 
 # these should be the same for any distro
-install: install_cpan install_js_sm install_libdbi install_cpan_force
+install: install_cpan install_js_sm install_cpan_force
 
 centos: install_centos_pgsql centos_like
 rhel: install_redhat_pgsql centos_like
-centos_like: install_centos_rpms install_yaz install_cpan_marc install install_centos_perl create_ld_local install_cpan_safe install_cpan_force
+centos_like: install_centos_rpms install_yaz install_cpan_marc install install_centos_perl create_ld_local install_cpan_safe install_libdbi
 
-fedora16: install_fedora_rpms install_cpan install_cpan_fedora install_cpan_marc install_js_sm install_cpan_force
+fedora16: install_fedora_rpms install_cpan_fedora install_cpan_marc install
 
 debian-squeeze: squeeze generic_debian
 squeeze: install_pgsql_client_debs_90  install_extra_debs_squeeze
-generic_debian: install_debs install_yaz test_for_libdbi_pkg install debian_sys_config install_cpan_force
+generic_debian: install_debs install_yaz test_for_libdbi_pkg install debian_sys_config install_libdbi
 
 ubuntu-lucid: lucid generic_ubuntu
 lucid: install_pgsql_client_debs_90 install_extra_debs install_cpan_marc_record install_yaz install_cpan_lucid
-generic_ubuntu: install_debs install_yaz test_for_libdbi_pkg install debian_sys_config install_cpan_more install_cpan_safe install_cpan_force
+generic_ubuntu: install_debs install_yaz test_for_libdbi_pkg install debian_sys_config install_cpan_more install_cpan_safe install_libdbi
 
 # - COMMON TARGETS ---------------------------------------------------------
 
