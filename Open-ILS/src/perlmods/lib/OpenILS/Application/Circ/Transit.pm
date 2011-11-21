@@ -44,6 +44,7 @@ sub copy_transit_receive {
 	($copy, $evt) = $U->fetch_copy_by_barcode($params{barcode}) unless $copy;
 	return $evt if $evt;
 	my $session = $U->start_db_session();
+	$U->set_audit_info($authtoken, $requestor->id, $requestor->wsid);
 	$evt = transit_receive( $self, $copy, $requestor, $session );
 	$U->commit_db_session($session) if $U->event_equals($evt,'SUCCESS');
 	return $evt;
@@ -133,6 +134,7 @@ sub copy_transit_create {
 	my $source		= $requestor->home_ou;
 	my $dest			= $params{destination} || $copy->circ_lib;
 	my $transit		= Fieldmapper::action::transit_copy->new;
+	$U->set_audit_info($authtoken, $requestor->id, $requestor->wsid);
 
 	$logger->activity("User ". $requestor->id ." creating a ".
 		" new copy transit for copy ".$copy->id." to org $dest");

@@ -351,6 +351,7 @@ sub update_patron {
 	$evt = check_group_perm($session, $user_obj, $patron);
 	return $evt if $evt;
 
+	$apputils->set_audit_info($session, $user_session, $user_obj->id, $user_obj->wsid);
 
 	# $new_patron is the patron in progress.  $patron is the original patron
 	# passed in with the method.  new_patron will change as the components
@@ -1037,6 +1038,7 @@ sub set_user_work_ous {
 	return $evt if $evt;
 
 	my $session = $apputils->start_db_session();
+	$apputils->set_audit_info($session, $ses, $requestor->id, $requestor->wsid);
 
 	for my $map (@$maps) {
 
@@ -1077,6 +1079,7 @@ sub set_user_perms {
 
 	my( $user_obj, $evt ) = $U->checkses($ses);
 	return $evt if $evt;
+	$apputils->set_audit_info($session, $ses, $user_obj->id, $user_obj->wsid);
 
 	my $perms = $session->request('open-ils.storage.permission.user_perms.atomic', $user_obj->id)->gather(1);
 

@@ -45,6 +45,18 @@ sub start_db_session {
 	return $session;
 }
 
+sub set_audit_info {
+	my $self = shift;
+	my $session = shift;
+	my $authtoken = shift;
+	my $user_id = shift;
+	my $ws_id = shift;
+	
+	my $audit_req = $session->request( "open-ils.storage.set_audit_info", $authtoken, $user_id, $ws_id );
+	my $audit_resp = $audit_req->recv();
+	$audit_req->finish();
+}
+
 my $PERM_QUERY = {
     select => {
         au => [ {

@@ -586,6 +586,7 @@ sub create_grocery_bill {
 
     $transaction->clear_id;
     my $session = $apputils->start_db_session;
+    $apputils->set_audit_info($login, $staff->id, $staff->wsid);
     my $transid = $session->request(
         'open-ils.storage.direct.money.grocery.create', $transaction)->gather(1);
 

@@ -89,6 +89,7 @@ sub handler {
 
     my $e = OpenSRF::AppSession->connect('open-ils.cstore');
     $e->request('open-ils.cstore.transaction.begin')->gather(1);
+    $e->request('open-ils.cstore.set_audit_info', $authid, $usr->id, $usr->wsid)->gather(1);
 
     # still no records ...
     my $container = $cgi->param('containerid');

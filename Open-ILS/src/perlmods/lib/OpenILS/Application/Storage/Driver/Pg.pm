@@ -145,11 +145,20 @@
 #	}
 
 	my $_xact_session;
+	my $_audit_session;
 
 	sub current_xact_session {
 		my $self = shift;
 		if (defined($_xact_session)) {
 			return $_xact_session;
+		}
+		return undef;
+	}
+
+	sub current_audit_session {
+		my $self = shift;
+		if (defined($_audit_session)) {
+			return $_audit_session;
 		}
 		return undef;
 	}
@@ -183,10 +192,27 @@
 		return $_xact_session;
 	}
 
+	sub set_audit_session {
+		my $self = shift;
+		my $ses = shift;
+		if (!defined($ses)) {
+			return undef;
+		}
+		$_audit_session = $ses;
+		return $_audit_session;
+	}
+
 	sub unset_xact_session {
 		my $self = shift;
 		my $ses = $_xact_session;
 		undef $_xact_session;
+		return $ses;
+	}
+
+	sub unset_audit_session {
+		my $self = shift;
+		my $ses = $_audit_session;
+		undef $_audit_session;
 		return $ses;
 	}
 

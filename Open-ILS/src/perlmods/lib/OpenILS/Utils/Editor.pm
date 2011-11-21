@@ -135,6 +135,18 @@ sub xact_start {
 	$self->log(D, "starting new db session");
 	my $stat = $self->request('open-ils.storage.transaction.begin');
 	$self->log(E, "error starting database transaction") unless $stat;
+    if($self->authtoken) {
+        if(!$self->requestor) {
+            $self->checkauth;
+        }
+        my $user_id = undef;
+        my $ws_id = undef;
+        if($self->requestor) {
+            $user_id = $self->requestor->id;
+            $ws_id = $self->requestor->wsid;
+        }
+        $self->request('open-ils.storage.set_audit_info', $self->authtoken, $user_id, $ws_id);
+    }
 	return $stat;
 }
 

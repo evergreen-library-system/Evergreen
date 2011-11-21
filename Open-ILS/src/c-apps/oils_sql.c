@@ -143,6 +143,8 @@ static int perm_at_threshold = 5;
 static int enforce_pcrud = 0;     // Boolean
 static char* modulename = NULL;
 
+int writeAuditInfo( osrfMethodContext* ctx, const char* user_id, const char* ws_id);
+
 /**
 	@brief Connect to the database.
 	@return A database connection if successful, or NULL if not.
@@ -472,6 +474,14 @@ void userDataFree( void* blob ) {
 			osrfLogWarning( OSRF_LOG_MARK, "Unable to perform rollback: %d %s",
 				errnum, msg ? msg : "(No description available)" );
 		};
+	}
+	if( writehandle ) {
+		if( !dbi_conn_query( writehandle, "SELECT auditor.clear_audit_info();" ) ) {
+			const char* msg;
+			int errnum = dbi_conn_error( writehandle, &msg );
+			osrfLogWarning( OSRF_LOG_MARK, "Unable to perform audit info clearing: %d %s",
+				errnum, msg ? msg : "(No description available)" );
+		}
 	}
 
 	osrfHashFree( hash );
@@ -1406,6 +1416,10 @@ static const jsonObject* verifyUserPCRUD( osrfMethodContext* ctx ) {
 				ctx->request, m );
 
 		free( m );
+		jsonObjectFree( user );
+		user = NULL;
+	} else if( writeAuditInfo( ctx, oilsFMGetStringConst( user, "id" ), oilsFMGetStringConst( user, "wsid" ) ) ) {
+		// Failed to set audit information - But note that write_audit_info already set error information.
 		jsonObjectFree( user );
 		user = NULL;
 	}
@@ -7138,6 +7152,89 @@ static ClassInfo* add_joined_class( const char* alias, const char* classname ) {
 static void clear_query_stack( void ) {
 	while( curr_query )
 		pop_query_frame();
+}
+
+/**
+	@brief Implement the set_audit_info method.
+	@param ctx Pointer to the method context.
+	@return Zero if successful, or -1 if not.
+
+	Issue a SAVEPOINT to the database server.
+
+	Method parameters:
+	- authkey
+	- user id (int)
+	- workstation id (int)
+
+	If user id is not provided the authkey will be used.
+	For PCRUD the authkey is always used, even if a user is provided.
+*/
+int setAuditInfo( osrfMethodContext* ctx ) {
+	if(osrfMethodVerifyContext( ctx )) {
+		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
+		return -1;
+	}
+
+	// Get the user id from the parameters
+	const char* user_id = jsonObjectGetString( jsonObjectGetIndex(ctx->params, 1) );
+
+	if( enforce_pcrud || !user_id ) {
+		timeout_needs_resetting = 1;
+		const jsonObject* user = verifyUserPCRUD( ctx );
+		if( !user )
+			return -1;
+		osrfAppRespondComplete( ctx, NULL );
+		return 0;
+	}
+
+	// Not PCRUD and have a user_id?
+	int result = writeAuditInfo( ctx, user_id, jsonObjectGetString( jsonObjectGetIndex(ctx->params, 2) ) );
+	osrfAppRespondComplete( ctx, NULL );
+	return result;
+}
+
+/**
+	@brief Save a audit info
+	@param ctx Pointer to the method context.
+	@param user_id User ID to write as a string
+	@param ws_id Workstation ID to write as a string
+*/
+int writeAuditInfo( osrfMethodContext* ctx, const char* user_id, const char* ws_id) {
+	if( ctx && ctx->session ) {
+		osrfAppSession* session = ctx->session;
+
+		osrfHash* cache = session->userData;
+
+		// If the session doesn't already have a hash, create one.  Make sure
+		// that the application session frees the hash when it terminates.
+		if( NULL == cache ) {
+			session->userData = cache = osrfNewHash();
+			osrfHashSetCallback( cache, &sessionDataFree );
+			ctx->session->userDataFree = &userDataFree;
+		}
+
+		dbi_result result = dbi_conn_queryf( writehandle, "SELECT auditor.set_audit_info( %s, %s );", user_id, ws_id ? ws_id : "NULL" );
+		if( !result ) {
+			osrfLogWarning( OSRF_LOG_MARK, "BAD RESULT" );
+			const char* msg;
+			int errnum = dbi_conn_error( writehandle, &msg );
+			osrfLogError(
+				OSRF_LOG_MARK,
+				"%s: Error setting auditor information: %d %s",
+				modulename,
+				errnum,
+				msg ? msg : "(No description available)"
+			);
+			osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
+				"osrfMethodException", ctx->request, "Error setting auditor info" );
+			if( !oilsIsDBConnected( writehandle ))
+				osrfAppSessionPanic( ctx->session );
+			return -1;
+		} else {
+			dbi_result_free( result );
+			return 0;
+		}
+	}
 }
 
 /*@}*/

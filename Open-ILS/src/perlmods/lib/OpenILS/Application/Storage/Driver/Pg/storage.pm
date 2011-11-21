@@ -222,6 +222,84 @@
 	        argc            => 1,
 	);
 
+	sub pg_set_audit_info {
+		my $self = shift;
+		my $client = shift;
+		my $authtoken = shift;
+		my $user_id = shift;
+		my $ws_id = shift;
+
+		local $OpenILS::Application::Storage::WRITE = 1;
+
+		$log->debug("Setting auditor information", INFO);
+
+		if($pg->current_audit_session) {
+			$log->debug("Already sent audit data.", INFO);
+			return 1;
+		}
+
+		my $dbh = OpenILS::Application::Storage::CDBI->db_Main;
+		
+		try {
+			if(!$user_id) {
+				my $ses = OpenSRF::AppSession->create('open-ils.auth');
+				my $content = $ses->request('open-ils.auth.session.retrieve', $authtoken, 1)->gather(1);
+				if(!$content or !$content->{userObj}) {
+					return 0;
+				}
+				$user_id = $content->{userObj}->id;
+				$ws_id = $content->{userObj}->wsid;
+			}
+			$ws_id = 'NULL' unless $ws_id;
+			$dbh->do("SELECT auditor.set_audit_info($user_id, $ws_id);");
+		} catch Error with {
+			my $e = shift;
+			$log->debug("Failed to set auditor information: ".$e, INFO);
+			throw $e;
+		};
+
+		$pg->set_audit_session( $client->session );
+
+		my $death_cb = $client->session->register_callback(
+			death => sub {
+				__PACKAGE__->pg_clear_audit_info;
+			}
+		);
+
+		$log->debug("Registered 'death' callback [$death_cb] for clearing audit information", DEBUG);
+
+		$client->session->session_data( death_cb_ai => $death_cb );
+
+		return 1;
+
+	}
+	__PACKAGE__->register_method(
+		method		=> 'pg_set_audit_info',
+		api_name	=> 'open-ils.storage.set_audit_info',
+		api_level	=> 1,
+		argc		=> 3,
+	);
+
+	sub pg_clear_audit_info {
+		my $self = shift;
+
+		try {
+			my $dbh = OpenILS::Application::Storage::CDBI->db_Main;
+			$log->debug("Clearing Audit Information", INFO);
+			$dbh->do("SELECT auditor.clear_audit_info();");
+		} catch Error with {
+			my $e = shift;
+			$log->debug("Failed to clear audit information: ".$e, INFO);
+		};
+
+		$pg->current_audit_session->unregister_callback( death => 
+			$pg->current_audit_session->session_data( 'death_cb_ai' )
+		) if ($pg->current_audit_session);
+
+		$pg->unset_audit_session;
+	}
+
+
 
 	sub copy_create_start {
 		my $self = shift;

@@ -69,6 +69,7 @@ void osrfAppChildExit( void ) {
 	- savepoint.set
 	- savepoint.release
 	- savepoint.rollback
+	- set_audit_info
 
 	For each non-virtual class, create up to eight class-specific methods:
 
@@ -164,6 +165,12 @@ int osrfAppInitialize( void ) {
 	OSRF_BUFFER_ADD(method_name, ".savepoint.rollback");
 	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR(method_name),
 			"rollbackSavepoint", "", 1, 0 );
+
+	buffer_reset(method_name);
+	OSRF_BUFFER_ADD(method_name, modulename );
+	OSRF_BUFFER_ADD(method_name, ".set_audit_info");
+	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR(method_name),
+			"setAuditInfo", "", 3, 0 );
 
 	static const char* global_method[] = {
 		"create",

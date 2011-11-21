@@ -89,6 +89,7 @@ sub handler {
 
     $cstore->connect();
     $cstore->request('open-ils.cstore.transaction.begin')->gather(1);
+    $cstore->request('open-ils.cstore.set_audit_info', $auth_ses, $user->id, $user->wsid)->gather(1);
 
     for my $xact ( @xacts ) {
         try {

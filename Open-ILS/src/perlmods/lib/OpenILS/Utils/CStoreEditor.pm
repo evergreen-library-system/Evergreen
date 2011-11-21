@@ -237,6 +237,18 @@ sub xact_begin {
 	    my $stat = $self->request($self->app . '.transaction.begin');
 	    $self->log(E, "error starting database transaction") unless $stat;
         $self->{xact_id} = $stat;
+        if($self->authtoken) {
+            if(!$self->requestor) {
+                $self->checkauth;
+            }
+            my $user_id = undef;
+            my $ws_id = undef;
+            if($self->requestor) {
+                $user_id = $self->requestor->id;
+                $ws_id = $self->requestor->wsid;
+            }
+            $self->request($self->app . '.set_audit_info', $self->authtoken, $user_id, $ws_id);
+        }
     }
     $self->{xact} = 1;
     return $self->{xact_id};

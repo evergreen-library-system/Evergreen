@@ -56,6 +56,8 @@ int doIdList( osrfMethodContext* ctx );
 int is_identifier( const char* s);
 int is_good_operator( const char* op );
 
+int setAuditInfo( osrfMethodContext* ctx );
+
 #ifdef __cplusplus
 }
 #endif
