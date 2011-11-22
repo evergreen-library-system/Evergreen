@@ -1722,13 +1722,13 @@ function AcqLiTable() {
     };
 
     this.updateLidState = function(copy, row) {
+        var self = this;
+
         if (typeof(row) == "undefined") {
-            row = dojo.query(
-                'tr[copy_id="' + copy.id() + '"]', this.copyTbody
-            )[0];
+            row = dojo.query('tr[copy_id="' + copy.id() + '"]', this.copyTbody)[0];
         }
 
-        var self = this;
+        // action links
         var recv_link = nodeByName("receive", row);
         var unrecv_link = nodeByName("unreceive", row);
         var del_link = nodeByName("delete", row);
@@ -1736,90 +1736,78 @@ function AcqLiTable() {
         var claim_link = nodeByName("claim", row);
         var cxl_reason_link = nodeByName("cancel_reason", row);
 
-        if (copy.cancel_reason()) {
-            openils.Util.hide(del_link.parentNode);
-            openils.Util.hide(recv_link);
-            openils.Util.hide(unrecv_link);
-            openils.Util.hide(cxl_link);
-            openils.Util.hide(claim_link);
+        // by default, hide all the actions
+        openils.Util.hide(del_link.parentNode);
+        openils.Util.hide(recv_link);
+        openils.Util.hide(unrecv_link);
+        openils.Util.hide(cxl_link);
+        openils.Util.hide(claim_link);
+        openils.Util.hide(cxl_reason_link);
 
-            /* XXX the following may leak memory in a long lived table: dijits may not get destroyed... not positive. revisit. */
-            var holds_reason = dojo.create(
-                "span", {
-                    "style": "border-bottom: 1px dashed #000;",
-                    "innerHTML": "Cancelled" /* XXX [sic] and i18n */
-                }, cxl_reason_link, "only"
-            );
-            new dijit.Tooltip(
-                {
-                    "label": "<em>" + copy.cancel_reason().label() +
-                        "</em><br />" + copy.cancel_reason().description(),
-                    "connectId": [holds_reason]
-                }, dojo.create("span", null, cxl_reason_link, "last")
-            );
-            openils.Util.show(cxl_reason_link, "inline");
-        } else if (this.isPO) {
-            /* Only using this in one place so far, but may want it for better
-             * decisions on when to display certain controls. */
-            var li_state = this.liCache[copy.lineitem()].state();
+        if (copy.id() > 0) { // real copies (LIDs)
 
-            openils.Util.hide(del_link.parentNode);
-            openils.Util.hide(cxl_reason_link);
+            if (copy.cancel_reason()) { 
 
-            /* Avoid showing (un)receive links, cancel links, for virt copies */
-            if (copy.id() > 0) {
-                if (copy.recv_time()) {
-                    openils.Util.hide(cxl_link);
-                    openils.Util.hide(recv_link);
-                    openils.Util.hide(claim_link);
+                /* --------- cancelled -------------------------- */
 
-                    openils.Util.show(unrecv_link, "inline");
-                    unrecv_link.onclick = function() {
-                        if (confirm(localeStrings.UNRECEIVE_LID))
-                            self.issueReceive(copy, /* rollback */ true);
-                    };
-                } else {
-                    openils.Util.hide(unrecv_link);
+                /* XXX the following may leak memory in a long lived table: 
+                 * dijits may not get destroyed... not positive. revisit. */
+                var holds_reason = dojo.create(
+                    "span", {
+                        "style": "border-bottom: 1px dashed #000;",
+                        "innerHTML": "Cancelled" /* XXX [sic] and i18n */
+                    }, cxl_reason_link, "only"
+                );
+                new dijit.Tooltip(
+                    {
+                        "label": "<em>" + copy.cancel_reason().label() +
+                            "</em><br />" + copy.cancel_reason().description(),
+                        "connectId": [holds_reason]
+                    }, dojo.create("span", null, cxl_reason_link, "last")
+                );
+                openils.Util.show(cxl_reason_link, "inline");
 
-                    if (this.claimEligibleLid[copy.id()]) {
-                        openils.Util.show(claim_link, "inline");
-                        claim_link.onclick = function() {
-                            self.claimDialog.show(
-                                self.liCache[copy.lineitem()], copy.id()
-                            );
-                        };
-                    } else {
-                        openils.Util.hide(claim_link);
-                    }
+            } else if (copy.recv_time()) { 
 
-                    openils.Util[li_state == "on-order" ? "show" : "hide"](
-                        recv_link, "inline"
-                    );
-                    openils.Util.show(cxl_link, "inline");
-                    recv_link.onclick = function() {
-                        if (self.checkLiAlerts(copy.lineitem()))
-                            self.issueReceive(copy);
-                    };
-                    cxl_link.onclick = function() {
-                        self.cancelLid(copy.id());
-                    };
-                }
+                /* --------- received -------------------------- */
+
+                openils.Util.show(unrecv_link, "inline");
+                unrecv_link.onclick = function() {
+                    if (confirm(localeStrings.UNRECEIVE_LID))
+                        self.issueReceive(copy, /* rollback */ true);
+                };
+
+            } else if (this.liCache[copy.lineitem()].state() == 'on-order') {
+                
+                /* --------- on order -------------------------- */
+
+                openils.Util.show(recv_link, 'inline');
+                openils.Util.show(cxl_link, "inline");
+
+                recv_link.onclick = function() {
+                    if (self.checkLiAlerts(copy.lineitem()))
+                        self.issueReceive(copy);
+                };
+
+                cxl_link.onclick = function() { self.cancelLid(copy.id()) };
+
             } else {
-                openils.Util.hide(cxl_link);
-                openils.Util.hide(unrecv_link);
-                openils.Util.hide(recv_link);
-                openils.Util.hide(claim_link);
+
+                /* --------- pre-order copies  -------------------------- */
+
+                del_link.onclick = function() { self.deleteCopy(row) };
+                openils.Util.show(del_link.parentNode);
+
             }
-        } else {
-            openils.Util.hide(unrecv_link);
-            openils.Util.hide(recv_link);
-            openils.Util.hide(cxl_reason_link);
-            openils.Util.hide(claim_link);
+
+        } else { 
+
+            /* --------- virtual copies  -------------------------- */
 
             del_link.onclick = function() { self.deleteCopy(row) };
             openils.Util.show(del_link.parentNode);
         }
-    }
+    };
 
     this.cancelLid = function(lid_id) {
         lidCancelDialog._lid_id = lid_id;
