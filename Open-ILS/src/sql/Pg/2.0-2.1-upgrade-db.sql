@@ -5669,7 +5669,7 @@ $func$ LANGUAGE plpgsql;
 -- 0505
 UPDATE metabib.facet_entry SET value = evergreen.force_unicode_normal_form(value,'NFC');
 
-UPDATE asset.call_number SET id = id;
+UPDATE asset.call_number SET id = id WHERE deleted IS FALSE or deleted = FALSE;
 
 -- Update reporter.materialized_simple_record with normalized ISBN values
 -- This might not get all of them, but most ISBNs will have more than one hyphen
