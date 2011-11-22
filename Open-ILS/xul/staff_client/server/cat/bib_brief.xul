@@ -38,7 +38,7 @@ vim: noet:sw=4:ts=4:
     <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties"/>
     <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties"/>
 
-    <groupbox id="groupbox" flex="1">
+    <groupbox id="groupbox" flex="1" style="overflow: auto;">
         <caption id="caption">
             <label value="&staff.cat.bib_brief.record_summary;"/>
             <label id="add_volumes_left_paren" value="(" hidden="true"/>
