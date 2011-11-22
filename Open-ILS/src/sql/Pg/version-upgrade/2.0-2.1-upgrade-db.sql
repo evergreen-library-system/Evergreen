@@ -5669,8 +5669,6 @@ $func$ LANGUAGE plpgsql;
 -- 0505
 UPDATE metabib.facet_entry SET value = evergreen.force_unicode_normal_form(value,'NFC');
 
-UPDATE asset.call_number SET id = id;
-
 -- Update reporter.materialized_simple_record with normalized ISBN values
 -- This might not get all of them, but most ISBNs will have more than one hyphen
 DELETE FROM reporter.materialized_simple_record WHERE id IN (
@@ -8855,6 +8853,7 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 513, 'DEBUG_CLIENT', oils_i18n_gettext( 513,
     'Allows a user to use debug functions in the staff client', 'ppl', 'description' ));
 
+UPDATE asset.call_number SET id = id WHERE deleted IS FALSE OR deleted = FALSE;
 
 -- 0529
 INSERT INTO config.org_unit_setting_type 
