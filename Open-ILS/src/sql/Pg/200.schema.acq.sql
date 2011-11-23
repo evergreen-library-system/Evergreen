@@ -379,7 +379,8 @@ CREATE TABLE acq.purchase_order (
 	name			TEXT					NOT NULL,
 	cancel_reason   INT                     REFERENCES acq.cancel_reason( id )
                                             DEFERRABLE INITIALLY DEFERRED,
-	prepayment_required BOOLEAN NOT NULL DEFAULT FALSE
+	prepayment_required BOOLEAN NOT NULL DEFAULT FALSE,
+    CONSTRAINT valid_po_state CHECK (state IN ('new','pending','on-order','received','cancelled'))
 );
 CREATE INDEX po_owner_idx ON acq.purchase_order (owner);
 CREATE INDEX po_provider_idx ON acq.purchase_order (provider);
