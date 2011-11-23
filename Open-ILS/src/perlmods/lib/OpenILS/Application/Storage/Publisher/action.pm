@@ -142,7 +142,6 @@ sub complete_reshelving {
 	throw OpenSRF::EX::InvalidArg ("I need an interval of more than 0 seconds!")
 		unless (interval_to_seconds( $window ));
 
-	my $setting = actor::org_unit_setting->table;
 	my $cp = asset::copy->table;
 
 	my $sql = <<"	SQL";
@@ -151,14 +150,12 @@ sub complete_reshelving {
 		  WHERE	id IN (
             SELECT cp.id 
             FROM  $cp cp
-                LEFT JOIN $setting setting
-                    ON (cp.circ_lib = setting.org_unit AND setting.name = 'circ.reshelving_complete.interval')
             WHERE cp.status = 7
-                AND cp.status_changed_time < NOW() - CAST( COALESCE( BTRIM( setting.value,'"' ), ? )  AS INTERVAL)
+                AND cp.status_changed_time < NOW() - CAST( COALESCE( BTRIM( (SELECT value FROM actor.org_unit_ancestor_setting('circ.reshelving_complete.interval', cp.circ_lib)),'"' ), ? )  AS INTERVAL)
 		  )
 	SQL
 	my $sth = action::circulation->db_Main->prepare_cached($sql);
-	$sth->execute($window, $window, $window);
+	$sth->execute($window);
 
 	return $sth->rows;
 
