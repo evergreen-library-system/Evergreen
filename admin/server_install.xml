@@ -86,7 +86,7 @@ tar xzf Evergreen-ILS-2.1.1.tar.gz</programlisting>
 </simplesect>
 <simplesect id="_preamble_developer_instructions">
 <title>Preamble: Developer instructions</title>
-<note><simpara>Skip this simplesect if you are using an official release tarball downloaded
+<note><simpara>Skip this section if you are using an official release tarball downloaded
 from <ulink url="http://evergreen-ils.org/downloads">http://evergreen-ils.org/downloads</ulink></simpara></note>
 <simpara>Developers working directly with the source code from the Git repository,
 rather than an official release tarball, must install some extra packages
