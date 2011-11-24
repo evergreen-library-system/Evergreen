@@ -44,14 +44,14 @@
 		<info>
 			<title>Public Access Catalog</title>
 		</info>
-		<xi:include href="opac/opac_intro.xml"/>
+	<!--	<xi:include href="opac/opac_intro.xml"/>-->
 	</part>
 	<part xml:id="core_tasks">
 		<info>
 			<title>Core Staff Tasks</title>
 		</info>
-		<xi:include href="stafftasks/stafftasks_intro.xml"/>
-	<!--	<xi:include href="stafftasks/booking.xml"/>
+	<!--	<xi:include href="stafftasks/stafftasks_intro.xml"/>
+		<xi:include href="stafftasks/booking.xml"/>
 		<xi:include href="stafftasks/acquisitions.xml"/>
 		<xi:include href="stafftasks/serials-gpls.xml"/>
 		<xi:include href="stafftasks/alternate_serial_control.xml"/>
@@ -77,8 +77,8 @@
 		<info>
 			<title>Reports</title>
 		</info>
-		<xi:include href="reports/report-intro.xml"/>
-	<!--	<xi:include href="reports/report-startingreporter.xml"/>
+	<!--	<xi:include href="reports/report-intro.xml"/>
+		<xi:include href="reports/report-startingreporter.xml"/>
 		<xi:include href="reports/report-folder.xml"/>
 		<xi:include href="reports/report-create-template.xml"/>
 		<xi:include href="reports/report-generate-report.xml"/>
@@ -99,8 +99,8 @@
 		<info>
 			<title>Development</title>
 		</info>
-		<xi:include href="development/development_intro.xml"/>
-	<!--	<xi:include href="development/directoriesandFiles.xml"/>	
+	<!--	<xi:include href="development/development_intro.xml"/>
+		<xi:include href="development/directoriesandFiles.xml"/>	
 		<xi:include href="development/customizingstaffclient.xml"/>
 		<xi:include href="development/customize_opac.xml"/>
 		<xi:include href="development/OpenSRF_intro.xml"/>
@@ -114,11 +114,11 @@
 		<info>
 			<title>Appendices</title>
 		</info>
-		<xi:include href="appendices/permissions.xml"/>
+	<!--	<xi:include href="appendices/permissions.xml"/>
 		<xi:include href="appendices/schema.xml"/>
 		<xi:include href="appendices/about_this_documentation.xml"/>
 		<xi:include href="appendices/more_info.xml"/>
 		<xi:include href="appendices/glossary.xml"/>
-		<xi:include href="appendices/bookindex.xml"/>
+		<xi:include href="appendices/bookindex.xml"/>-->
 	</part>
 </book>
