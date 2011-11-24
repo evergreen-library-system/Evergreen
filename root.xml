@@ -3,7 +3,7 @@
       xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="EN"
       xmlns:xlink="http://www.w3.org/2001/xlink">
       <info>
-            <title>Evergreen 2.0 Documentation</title>
+            <title>Evergreen 2.1 Documentation</title>
  		<subtitle>Draft Version</subtitle>
 		<corpauthor>Documentation Interest Group</corpauthor>
 	         <mediaobject>
@@ -114,11 +114,11 @@
 		<info>
 			<title>Appendices</title>
 		</info>
-	<!--	<xi:include href="appendices/permissions.xml"/>
+		<xi:include href="appendices/permissions.xml"/>
 		<xi:include href="appendices/schema.xml"/>
 		<xi:include href="appendices/about_this_documentation.xml"/>
 		<xi:include href="appendices/more_info.xml"/>
 		<xi:include href="appendices/glossary.xml"/>
-		<xi:include href="appendices/bookindex.xml"/>-->
+	<!--	<xi:include href="appendices/bookindex.xml"/>-->
 	</part>
 </book>
