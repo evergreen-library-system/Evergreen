@@ -278,6 +278,7 @@ CREATE OR REPLACE FUNCTION unapi.holdings_xml (bid BIGINT, ouid INT, org TEXT, d
                         SELECT  unapi.acn(acn.id,'xml','volume',array_remove_item_by_value( evergreen.array_remove_item_by_value($5,'holdings_xml'),'bre'), $3, $4, $6, $7, FALSE)
                           FROM  asset.call_number acn
                           WHERE acn.record = $1
+                                AND acn.deleted IS FALSE
                                 AND EXISTS (
                                     SELECT  1
                                       FROM  asset.copy acp
