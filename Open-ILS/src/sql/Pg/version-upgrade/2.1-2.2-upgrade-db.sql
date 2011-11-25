@@ -1,6 +1,5 @@
 --Upgrade Script for 2.1 to 2.2-alpha1
-BEGIN;
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('2.2-alpha1');
+
 -- DROP objects that might have existed from a prior run of 0526
 -- Yes this is ironic.
 DROP TABLE IF EXISTS config.db_patch_dependencies;
@@ -8,6 +7,8 @@ ALTER TABLE config.upgrade_log DROP COLUMN applied_to;
 DROP FUNCTION evergreen.upgrade_list_applied_deprecates(TEXT);
 DROP FUNCTION evergreen.upgrade_list_applied_supersedes(TEXT);
 
+BEGIN;
+INSERT INTO config.upgrade_log (version) VALUES ('2.2-alpha1');
 
 INSERT INTO config.upgrade_log (version) VALUES ('0526'); --miker
 
@@ -6121,7 +6122,7 @@ $$ LANGUAGE SQL ROWS 10;
 -- check whether patch can be applied
 SELECT evergreen.upgrade_deps_block_check('0641', :eg_version);
 
-ALTER TABLE actor.org_unit_setting ADD CONSTRAINT aous_must_be_json CHECK ( evergreen.is_json(value) );
+ALTER TABLE actor.org_unit_setting ADD CONSTRAINT aous_must_be_json CHECK ( is_json(value) );
 
 -- Evergreen DB patch 0642.data.acq-worksheet-hold-count.sql
 
