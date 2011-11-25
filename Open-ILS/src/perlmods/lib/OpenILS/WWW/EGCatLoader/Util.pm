@@ -180,7 +180,15 @@ sub get_records_and_facets {
             my($self, $req) = @_;
             my $data = $req->{response}->[0]->content;
             my $xml = XML::LibXML->new->parse_string($data->{'unapi.bre'})->documentElement;
-            my $bre_id =  $xml->find('*[@tag="901"]/*[@code="c"]')->[0]->textContent;
+
+            # Protect against legacy invalid MARCXML that might not have a 901c
+            my $bre_id;
+            my $bre_id_nodes =  $xml->find('*[@tag="901"]/*[@code="c"]');
+            if ($bre_id_nodes) {
+                $bre_id =  $bre_id_nodes->[0]->textContent;
+            } else {
+                $logger->warn("Missing 901 subfield 'c' in " . $xml->toString());
+            }
             push(@data, {id => $bre_id, marc_xml => $xml});
         }
     );
