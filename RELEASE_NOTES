@@ -1,0 +1,36 @@
+Release notes
+=============
+
+Upgrade notes
+-------------
+
+Located URI search scope
+~~~~~~~~~~~~~~~~~~~~~~~~
+Recognizing that electronic resources are often licensed for an entire library
+system rather than just a single library, the search scope for located URIs has
+changed to match from the highest point in the hierarchy down, rather than from
+the bottom up. In previous releases of Evergreen, if you had a MARC record with
+a URI located at 'BR1', a search for that record at the 'SYS1' scope would
+include the record in its results. The current release of Evergreen would not
+include the record in its results; the scope needs to be set at the level of
+'BR1' in the hierarchy or below.
+
+Therefore, you may want to run a SQL statement like the following, edited to
+match the short names of your branches and systems, to change the located
+URIs so that searches at the system level continue to return results for
+located URIs:
+
+------------------------------------------------------------------------------
+UPDATE biblio.record_entry
+    SET marc = replace(
+        replace(
+            marc, 
+            '<subfield code="9">BR1</subfield>',
+            '<subfield code="9">SYS1</subfield>'
+        ),
+        '<subfield code="9">BR3</subfield>',
+        '<subfield code="9">SYS2</subfield>'
+    ) WHERE marc LIKE '<subfield code="9">BR1</subfield>'
+        OR marc LIKE '<subfield code="9">BR3</subfield>'
+;
+------------------------------------------------------------------------------
