@@ -3068,7 +3068,11 @@ sub checkin_handle_lost {
         $self->checkin_handle_lost_now_found_restore_od() if $restore_od && ! $self->void_overdues;
     }
 
-    $self->copy->status($U->copy_status(OILS_COPY_STATUS_RESHELVING));
+    my $immediately_available = $U->ou_ancestor_setting_value(
+        $circ_lib, OILS_SETTING_LOST_IMMEDIATELY_AVAILABLE, $self->editor) || 0;
+
+    $self->copy->status($U->copy_status(OILS_COPY_STATUS_RESHELVING)) if ($immediately_available);
+
     $self->update_copy;
 }
 
