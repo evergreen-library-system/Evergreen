@@ -305,7 +305,7 @@ generic_debian:  install_debs install debian_sys_config install_cpan_force
 ubuntu-hardy: hardy generic_ubuntu
 ubuntu-lucid: lucid generic_ubuntu
 hardy: install_pgsql_client_debs_82 install_yaz install_cpan_marc install_extra_encode
-lucid: install_pgsql_client_debs_90 install_extra_debs install_cpan_marc_record install_yaz install_cpan_lucid
+lucid: install_pgsql_client_debs_84 install_extra_debs install_cpan_marc_record install_yaz install_cpan_lucid
 generic_ubuntu: install_debs install debian_sys_config install_cpan_more install_cpan_safe install_cpan_force
 
 # - COMMON TARGETS ---------------------------------------------------------
