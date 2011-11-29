@@ -1292,13 +1292,13 @@ sub staged_search {
                 $results = [map {[$_->{id}]} @$results];
             }
 
-            tag_circulated_records($search_hash->{authtoken}, $results, $IAmMetabib) 
-                if $search_hash->{tag_circulated_records} and $search_hash->{authtoken};
-
             push @$new_ids, grep {defined($_)} map {$_->[0]} @$results;
             $results = [grep {defined $_->[0]} @$results];
             cache_staged_search_page($key, $page, $summary, $results) if $docache;
         }
+
+        tag_circulated_records($search_hash->{authtoken}, $results, $IAmMetabib) 
+            if $search_hash->{tag_circulated_records} and $search_hash->{authtoken};
 
         $current_page_summary = $summary;
 

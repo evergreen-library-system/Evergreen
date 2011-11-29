@@ -1326,3 +1326,12 @@ table.bookbag-specific {
 #staff-saved-search { /* wraps .saved-searches-header and .saved-searches on the record page */
     border-right: 1px solid #333;
 }
+.result_item_circulated {
+    padding-top: 4px;
+}
+
+.result_item_circulated span {
+    position: relative;
+    top:-3px;
+    left:3px;
+}

@@ -138,6 +138,28 @@ sub _get_search_limit {
     return 10; # default
 }
 
+sub tag_circed_items {
+    my $self = shift;
+    my $e = $self->editor;
+
+    return 0 unless $e->requestor;
+    return 0 unless $self->ctx->{get_org_setting}->(
+        $e->requestor->home_ou, 
+        'opac.search.tag_circulated_items');
+
+    # user has to be opted-in to circ history in some capacity
+    my $sets = $e->search_actor_user_setting({
+        usr => $e->requestor->id, 
+        name => [
+            'history.circ.retention_age', 
+            'history.circ.retention_start'
+        ]
+    });
+
+    return 0 unless @$sets;
+    return 1;
+}
+
 # context additions: 
 #   page_size
 #   hit_count
@@ -174,6 +196,7 @@ sub load_rresults {
     my $offset = $page * $limit;
     my $metarecord = $cgi->param('metarecord');
     my $results; 
+    my $tag_circs = $self->tag_circed_items;
 
     $ctx->{page_size} = $limit;
     $ctx->{search_page} = $page;
@@ -226,6 +249,11 @@ sub load_rresults {
         # the query string, not special args.
         my $args = {'limit' => $limit, 'offset' => $offset};
 
+        if ($tag_circs) {
+            $args->{tag_circulated_records} = 1;
+            $args->{authtoken} = $self->editor->authtoken;
+        }
+
         # Stuff these into the TT context so that templates can use them in redrawing forms
         $ctx->{processed_search_query} = $query;
 
@@ -274,6 +302,16 @@ sub load_rresults {
             @{$ctx->{records}},
             grep { $_->{id} == $rec_id } @data
         );
+    }
+
+    if ($tag_circs) {
+        for my $rec (@{$ctx->{records}}) {
+            my ($res_rec) = grep { $_->[0] == $rec->{id} } @{$results->{ids}};
+            # index 1 in the per-record result array is a boolean which
+            # indicates whether the record in question is in the users
+            # accessible circ history list
+            $rec->{user_circulated} = 1 if $res_rec->[1];
+        }
     }
 
     $ctx->{search_facets} = $facets;

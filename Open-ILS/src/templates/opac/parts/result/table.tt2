@@ -42,9 +42,7 @@
                                                         src='[% ctx.media_prefix %]/opac/extras/ac/jacket/small/[% ident | uri %]' /></a><br />
                                                 [% END %]
                                             </td>
-                                            <td class='result_table_title_cell'
-                                                name='result_table_title_cell'
-                                                valign="top">
+                                            <td class='result_table_title_cell' name='result_table_title_cell' valign="top">
                                                 <div class="bold">
                                                     <a name='record_[% rec.id %]' name='item_title'
                                                         href="[% mkurl(ctx.opac_root _ '/record/' _ rec.id) %]"
@@ -161,6 +159,12 @@
                                                         [% END %] <!-- END detail_record_view -->
                                                     </table>
                                                     [% PROCESS "opac/parts/result/copy_counts.tt2" %]
+                                                    [% IF rec.user_circulated %]
+                                                    <div class="result_item_circulated">
+                                                        <img src="[% ctx.media_prefix %]/images/green_check.png" alt="[% l('Checked Out Before') %]"/>
+                                                        <span>[% l('I have checked this item out before') %]</span>
+                                                    </div>
+                                                    [% END %]
                                                 </div>
                                             </td>
 
@@ -179,7 +183,6 @@
                                                         class='classic_link hide_me'
                                                         name="googleBooks-link">[% l("Browse in Google Books Search") %]</a>
                                                 </span>
-
                                             </td>
                                             <td nowrap='nowrap' width="1" align="right">
                                                 <div class="result_table_utils_cont">
