@@ -63,8 +63,8 @@
 		</info>
 		<xi:include href="admin/admin-intro.xml"/>	
 		<xi:include href="admin/server_install.xml"/>
-		<!--<xi:include href="admin/AdminMisc.xml"/>
-		<xi:include href="admin/sip.xml"/>
+		<xi:include href="admin/upgrading.xml"/>
+		<!--<xi:include href="admin/sip.xml"/>
 		<xi:include href="admin/z3950.xml"/>
 		<xi:include href="admin/troubleshooting.xml"/>		
 		<xi:include href="admin/actiontriggers.xml"/>
