@@ -1,0 +1,818 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xml:id="releasenotes" xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="EN"
+    xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<chapterinfo>
+	<title>Release Notes</title>
+	</chapterinfo>
+
+<simplesect id="_installation_enhancements">
+<title>Installation enhancements</title>
+<itemizedlist>
+<listitem>
+<simpara>
+<literal>eg_db_config.pl</literal> now has a <literal>--create-database</literal> option to automatically create
+  the database and add the required contrib modules/extensions, rather than
+  requiring users to carry out a number of error-prone manual steps.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+The OpenILS Perl modules are now installed in the system Perl package
+  directories.  In prior versions, they were typically installed in
+  <literal>/openils/lib/perl5</literal>.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+README is now the single source of install instructions
+</simpara>
+</listitem>
+</itemizedlist>
+</simplesect>
+<simplesect id="_administration_enhancements">
+<title>Administration enhancements</title>
+<itemizedlist>
+<listitem>
+<simpara>
+Automatic client updates: It is now possible to build staff clients that,
+  when they connect to the Evergreen server, automatically check to see if
+  the staff client has been updated. If so, the staff client can download just
+  the files that have been updated and replace those files in the existing
+  staff client.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Printing subsystem: Changes to the staff client should improve the print
+  functionality (both speed and likelihood of success).
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+To protect against exploits between a shared staff client session via
+  operator change, add the requirement for the DEBUG_CLIENT permission to
+  invoke debugging functions such as the Javascript Shell or DOM Inspector
+   in the staff client.
+</simpara>
+</listitem>
+</itemizedlist>
+</simplesect>
+<simplesect id="_cataloging_enhancements">
+<title>Cataloging enhancements</title>
+<itemizedlist>
+<listitem>
+<simpara>
+Unified copy / call number editor: The default holdings maintenance interface
+  now enables cataloguers to edit copies and call numbers on a single screen.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Call number prefixes and suffixes: While previous releases of Evergreen
+  supported the automatic prepending or appending of prefixes and suffixes to
+  call numbers based on their shelving location, the functionality was limited
+  primarily to printing spine labels.  As of 2.1, you also have the option to
+  assign prefixes or suffixes for individual call numbers; these will be
+  displayed in the public catalogue and other interfaces, but prefixes in
+  particular do not affect shelf browsing, which is based entirely on the
+  label.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Bibliographic parts: This feature adds the ability to designate specific
+  "part" roles for the items attached to a given bibliographic record, such
+  that a user can place holds on a specific kind of item without limiting it
+  to an individual item. For example, libraries may assign parts to each DVD
+  in a season of a popular TV show; or to individual volumes of an
+  encyclopedia. This feature also introduces "part holds".
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Conjoined items: This feature adds the ability to associate a single barcode
+  with multiple bibliographic records, so that the availability of those
+  records is updated based on that copy. For example, libraries may make an
+  electronic reader available for loan that is preloaded with 1000 electronic
+  books; they can add 1000 bibliographic records to the library system and
+  associate them all with a single barcode, so that when the electronic reader
+  is signed out, the availability for all 1000 records changes to "Checked out".
+</simpara>
+</listitem>
+</itemizedlist>
+</simplesect>
+<simplesect id="_circulation_improvements">
+<title>Circulation improvements</title>
+<itemizedlist>
+<listitem>
+<simpara>
+Transfer selected holds to a different title: It is now possible to select
+  multiple holds on a given title and transfer them to a different title.
+  Use case: Your library acquires another copy of "Pride and Prejudice and
+  Zombies", but as it is a new edition it must be cataloged as a new
+  bibliographic record; however, you would like to spread out some of the holds
+  queue from your current edition to the new edition.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Mark patron as exempt from billing collections: It is now possible to mark a
+  patron as being exempt from being sent to collections.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Hold-driven recalls: It is now possible to define a loan
+  period threshold (such as 60 days) so that if a hold is placed on an item with
+  a loan period beyond that threshold, the system will automatically shorten the
+  loan period to a specified value; change the fine rules; and send email
+  notification to the person who currently holds the item saying "A hold has
+  been placed on this item, get it back before &lt;new_due_date&gt;".
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Weighting of the individual fields of the in-database circulation and holds
+  rules can now be configured, rather than using hard-coded values. This allows
+  the importance of each field to be adjusted as needed through the circulation
+  matrix weighting, hold matrix weighting, and weighting associations settings.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+The in-database circulation rules support "fall-through" wherein some
+  information can be left out of more specific rules and filled in from less
+  specific rules. For example, disabling fines for staff could be accomplished
+  with a single rule setting only the fine rate and/or max fine rules, without
+  having to duplicate all duration related rules in the system.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Grace periods are now stored in the database and set via circulation rules,
+  rather than passed into the fine generation code, and can thus differ between
+  different rules. They are also no longer based on a number of fine intervals,
+  but are instead defined by their own specific interval. This can eliminate
+  problems with closed date interpretation during grace periods.
+</simpara>
+</listitem>
+</itemizedlist>
+</simplesect>
+<simplesect id="_public_interface_improvements">
+<title>Public interface improvements</title>
+<itemizedlist>
+<listitem>
+<simpara>
+Spell-checking suggestions are now case-insensitive, to avoid generating
+  terms which would yield the same result set.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Part holds: patrons are guided to select a specific part if they are
+  placing a hold on a bibliographic record that has parts assigned to its
+  copies.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Located URI visibility: Located URIs (856 fields with a subfield $9
+  specifying the shortname of the owning library) now show up in a search with
+  a context library of its owning library or below. For example, a Located URI
+  with an owner of SYS1 <emphasis role="strong">will</emphasis> cause its record to show up in a search with a
+  context OU of BR1 or SYS1, regardless of depth scoping.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Set a JavaScript cache token when <literal>autogen.sh</literal> is run, so that a subsequent
+  run of <literal>autogen.sh</literal> will automatically cause browsers to fetch refreshed
+  copies of generated files. This improves the usability of the catalog after
+  upgrades or certain configuration changes by preventing browsers from relying
+  on stale cached copies of these files.
+</simpara>
+</listitem>
+</itemizedlist>
+</simplesect>
+<simplesect id="_serials_enhancements">
+<title>Serials enhancements</title>
+<itemizedlist>
+<listitem>
+<simpara>
+Routing lists: it is now possible to define and print routing lists for
+  subscriptions.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Clone subscriptions: new functionality available in the alternate
+  serials control view to clone subscriptions, thereby speeding initial
+  setup of a lot of subscriptions.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+MFHD/Distribution summary methods: enable the summary method field for
+  generating summary holdings statements from the distribution and/or
+  the record entry (i.e., the MFHD).  The four options that are available are:
+</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+Add to record entry
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Merge with record entry
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Use record entry only
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Do not use record entry
+</simpara>
+</listitem>
+</itemizedlist>
+</listitem>
+<listitem>
+<simpara>
+Advanced receiving: rename the previous serials receiving interface
+  to "advanced receiving".  The new "receive" interface will now show items
+  from an entire subscription, but not allow you to receive directly into
+  a specific unit.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Unit-less receiving: new option for receiving serials into a <emphasis>no unit</emphasis>,
+  allowing items to be received but not unitized (i.e., created as a
+  circulating copy record).  This allows issues to be received for
+  reading room or non-circulating use.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Caption/pattern enhancements:
+</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+The Caption/Pattern Wizard now includes a graphical way to include
+     regularity information (that is, the values typically conveyed in the <literal>85x</literal>
+     subfield <literal>$y</literal>).
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+The Alternate Serials Control interface can now import caption and pattern
+     information from the 85x fields of the MFHD record, allowing the
+     Caption/Pattern Wizard to be bypassed.
+</simpara>
+</listitem>
+</itemizedlist>
+</listitem>
+<listitem>
+<simpara>
+Can now create one-off issuances for unpredicted or unexpected serial issues.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Improvements to the copy template editor for serials, including the addition
+  of reasonable default values for some fields.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Various minor interface improvements, including new links between various pages
+  in the serials control interfaces and removing redundant questions from the holding code
+  mini-wizard.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Bugfixes to the batch receive interface.
+</simpara>
+</listitem>
+</itemizedlist>
+</simplesect>
+<simplesect id="_staff_client_improvements">
+<title>Staff client improvements</title>
+<itemizedlist>
+<listitem>
+<simpara>
+The client supports new hotkey sets that are selectable per workstation. In
+  addition, there is now a toggle for temporarily disabling hotkeys available
+  on the toolbar and in the admin menu.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+The client has a second toolbar for cataloging functions as well as options
+  controlling the presence and size of icons and presence and position of
+  labels. To support the preferences of individual staff, each workstation can
+  be configured differently. See the <emphasis role="strong">Admin &#8594; Workstation Administration &#8594;
+  Toolbars</emphasis> sub-menu for options.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Patron registration now supports "Suggested" fields that are configurable
+  per library. In addition, library settings allow required fields to be
+  adjusted, and it is possible to specify regular expressions to validate
+  input for many fields in the patron registration interface. Open <emphasis role="strong">Admin &#8594;
+  Local Administration &#8594; Library Settings Editor</emphasis> and filter on <literal>GUI</literal>.
+</simpara>
+</listitem>
+</itemizedlist>
+</simplesect>
+<simplesect id="_new_configuration_and_administration_settings">
+<title>New configuration and administration settings</title>
+<simplesect id="_new_literal_opensrf_xml_literal_settings">
+<title>New <literal>opensrf.xml</literal> settings</title>
+<simpara>(The path to these settings is relative to <literal>/opensrf/default/apps/</literal>).</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<literal>open-ils.search/app_settings/default_CD_modifiers</literal>: parameters to
+  the cover density ranking function used to calculate relevance during
+  bibliographic searches.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<literal>open-ils.trigger/app_settings/parallel/collect</literal>: number of parallel
+  processes that <literal>action_trigger_runner.pl</literal> should use when collecting events.
+  Setting this can decrease the time it takes for Action/Trigger processing to
+  run on large Evergreen databases.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<literal>open-ils.trigger/app_settings/parallel/react</literal>: number of parallel
+  processes that <literal>action_trigger_runner.pl</literal> should use when processing event reactors.
+  Setting this can decrease the time it takes for Action/Trigger processing to
+  run on large Evergreen databases.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<literal>open-ils.resolver/app_settings/cache_timeout</literal>: how long to cache results
+  from your OpenURL resolver.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<literal>open-ils.resolver/app_settings/default_url_base</literal>: set to the base URL
+  of your OpenURL resolver.
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>In addition, the <literal>default_preferred_language</literal> and <literal>default_preferred_language_weight</literal>
+settings have been moved from the <literal>open-ils.storage</literal> simplesect to the <literal>open-ils.search</literal>
+simplesect of <literal>opensrf.xml</literal>.</simpara>
+</simplesect>
+<simplesect id="_new_administration_pages">
+<title>New administration pages</title>
+<simpara>The following new administration pages can all be accessed
+from the <literal>Admin | Server Administration</literal> menu item in the staff client:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+Call Number Prefixes: Populates a drop down menu in the new Unified Copy /
+  Call Number Editor
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Call Number Suffixes: Populates a drop down menu in the new Unified Copy /
+  Call Number Editor
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Circulation Matchpoint Weights: Related to the in-database Circulation and
+  Hold Rule configuration changes
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Hold Matchpoint Weights: Related to the in-database Circulation and
+  Hold Rule configuration changes
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+MARC Coded Value Maps: Sets labels for fixed fields and extends the set of
+  values for display
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+MARC Record Attributes: Sets labels for fixed fields and extends the set of
+  values for display
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Weights Associations: Related to the in-database Circulation and
+  Hold Rule configuration changes
+</simpara>
+</listitem>
+</itemizedlist>
+</simplesect>
+<simplesect id="_new_library_settings">
+<title>New library settings</title>
+<informaltable
+frame="all"
+rowsep="1" colsep="1"
+>
+<tgroup cols="2">
+<colspec colname="col_1" colwidth="50*"/>
+<colspec colname="col_2" colwidth="50*"/>
+<thead>
+<row>
+<entry align="left" valign="top"> Label </entry>
+<entry align="left" valign="top"> Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry align="left" valign="top"><simpara>Cataloging: Default copy status (fast add)</simpara></entry>
+<entry align="left" valign="top"><simpara>Default status when a copy is created using the "Fast Add" interface.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>Cataloging: Default copy status (normal)</simpara></entry>
+<entry align="left" valign="top"><simpara>Default status when a copy is created using the normal volume/copy creator interface.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Default Hotkeyset</simpara></entry>
+<entry align="left" valign="top"><simpara>Default Hotkeyset for clients (filename without the .keyset).  Examples: Default, Minimal, and None</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Default showing suggested patron registration fields</simpara></entry>
+<entry align="left" valign="top"><simpara>Instead of All fields, show just suggested fields in patron registration by default.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Example for day_phone field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The Example for validation on the day_phone field in patron registration.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Example for email field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The Example for validation on the email field in patron registration.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Example for evening_phone field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The Example for validation on the evening_phone field in patron registration.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Example for other_phone field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The Example for validation on the other_phone field in patron registration.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Example for phone fields on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The Example for validation on phone fields in patron registration. Applies to all phone fields without their own setting.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Example for post_code field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The Example for validation on the post_code field in patron registration.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Horizontal layout for Volume/Copy Creator/Editor.</simpara></entry>
+<entry align="left" valign="top"><simpara>The main entry point for this interface is in Holdings Maintenance, Actions for Selected Rows, Edit Item Attributes / Call Numbers / Replace Barcodes.  This setting changes the top and bottom panes for that interface into left and right panes.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Regex for day_phone field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The Regular Expression for validation on the day_phone field in patron registration.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Regex for email field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The Regular Expression for validation on the email field in patron registration.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Regex for evening_phone field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The Regular Expression for validation on the evening_phone field in patron registration.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Regex for other_phone field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The Regular Expression for validation on the other_phone field in patron registration.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Regex for phone fields on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The Regular Expression for validation on phone fields in patron registration. Applies to all phone fields without their own setting.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Regex for post_code field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The Regular Expression for validation on the post_code field in patron registration.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Require county field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The county field will be required on the patron registration screen.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Require day_phone field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The day_phone field will be required on the patron registration screen.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Require dob field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The dob field will be required on the patron registration screen.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Require email field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The email field will be required on the patron registration screen.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Require evening_phone field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The evening_phone field will be required on the patron registration screen.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Require other_phone field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The other_phone field will be required on the patron registration screen.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Show active field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The active field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Show alert_message field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The alert_message field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Show alias field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The alias field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Show barred field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The barred field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Show calendar widget for dob field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>If set the calendar widget will appear when editing the dob field on the patron registration form.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Show claims_never_checked_out_count field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The claims_never_checked_out_count field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Show claims_returned_count field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The claims_returned_count field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Show day_phone field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The day_phone field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Show dob field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The dob field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Show email field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The email field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Show evening_phone field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The evening_phone field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Show ident_value field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The ident_value field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Show ident_value2 field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The ident_value2 field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Show juvenile field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The juvenile field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Show master_account field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The master_account field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Show other_phone field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The other_phone field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Show second_given_name field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The second_given_name field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Show suffix field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The suffix field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Suggest active field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The active field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Suggest alert_message field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The alert_message field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Suggest alias field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The alias field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Suggest barred field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The barred field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Suggest claims_never_checked_out_count field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The claims_never_checked_out_count field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Suggest claims_returned_count field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The claims_returned_count field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Suggest day_phone field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The day_phone field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Suggest dob field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The dob field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Suggest email field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The email field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Suggest evening_phone field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The evening_phone field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Suggest ident_value field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The ident_value field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Suggest ident_value2 field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The ident_value2 field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Suggest juvenile field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The juvenile field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Suggest master_account field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The master_account field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Suggest other_phone field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The other_phone field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Suggest second_given_name field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The second_given_name field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Suggest suffix field on patron registration</simpara></entry>
+<entry align="left" valign="top"><simpara>The suffix field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>GUI: Unified Volume/Item Creator/Editor</simpara></entry>
+<entry align="left" valign="top"><simpara>If true combines the Volume/Copy Creator and Item Attribute Editor in some instances.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>Printing: Custom Javascript File</simpara></entry>
+<entry align="left" valign="top"><simpara>Full URL path to a Javascript File to be loaded when printing. Should implement a print_custom function for DOM manipulation. Can change the value of the do_print variable to false to cancel printing.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>Recalls: An array of fine amount, fine interval, and maximum fine.</simpara></entry>
+<entry align="left" valign="top"><simpara>Recalls: An array of fine amount, fine interval, and maximum fine. For example, to specify a new fine rule of $5.00 per day, with a maximum fine of $50.00, use: [5.00,"1 day",50.00]</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>Recalls: Circulation duration that triggers a recall.</simpara></entry>
+<entry align="left" valign="top"><simpara>Recalls: A hold placed on an item with a circulation duration longer than this will trigger a recall. For example, "14 days" or "3 weeks".</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>Recalls: Truncated loan period.</simpara></entry>
+<entry align="left" valign="top"><simpara>Recalls: When a recall is triggered, this defines the adjusted loan period for the item. For example, "4 days" or "1 week".</simpara></entry>
+</row>
+</tbody>
+</tgroup>
+</informaltable>
+</simplesect>
+<simplesect id="_new_user_permissions">
+<title>New user permissions</title>
+<informaltable
+frame="all"
+rowsep="1" colsep="1"
+>
+<tgroup cols="2">
+<colspec colname="col_1" colwidth="50*"/>
+<colspec colname="col_2" colwidth="50*"/>
+<thead>
+<row>
+<entry align="left" valign="top"> Code </entry>
+<entry align="left" valign="top"> Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry align="left" valign="top"><simpara>ADMIN_CODED_VALUE</simpara></entry>
+<entry align="left" valign="top"><simpara>Create/Update/Delete SVF Record Attribute Coded Value Map</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>ADMIN_SERIAL_ITEM</simpara></entry>
+<entry align="left" valign="top"><simpara>Create/Retrieve/Update/Delete Serial Item</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>ADMIN_SVF</simpara></entry>
+<entry align="left" valign="top"><simpara>Create/Update/Delete SVF Record Attribute Defintion</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>CREATE_BIB_PTYPE</simpara></entry>
+<entry align="left" valign="top"><simpara>Create Bibliographic Record Peer Type</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>CREATE_MONOGRAPH_PART</simpara></entry>
+<entry align="left" valign="top"><simpara>Create monograph part definition.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>CREATE_PURCHASE_REQUEST</simpara></entry>
+<entry align="left" valign="top"><simpara>Create User Purchase Request</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>CREATE_VOLUME_PREFIX</simpara></entry>
+<entry align="left" valign="top"><simpara>Create prefix label definition.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>CREATE_VOLUME_SUFFIX</simpara></entry>
+<entry align="left" valign="top"><simpara>Create suffix label definition.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>DEBUG_CLIENT</simpara></entry>
+<entry align="left" valign="top"><simpara>Allows a user to use debug functions in the staff client</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>DELETE_BIB_PTYPE</simpara></entry>
+<entry align="left" valign="top"><simpara>Delete Bibliographic Record Peer Type</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>DELETE_MONOGRAPH_PART</simpara></entry>
+<entry align="left" valign="top"><simpara>Delete monograph part definition.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>DELETE_VOLUME_PREFIX</simpara></entry>
+<entry align="left" valign="top"><simpara>Delete prefix label definition.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>DELETE_VOLUME_SUFFIX</simpara></entry>
+<entry align="left" valign="top"><simpara>Delete suffix label definition.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>MAP_MONOGRAPH_PART</simpara></entry>
+<entry align="left" valign="top"><simpara>Create/Update/Delete Copy Monograph Part Map</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>MARK_ITEM_MISSING_PIECES</simpara></entry>
+<entry align="left" valign="top"><simpara>Allows the Mark Item Missing Pieces action.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>UPDATE_BIB_PTYPE</simpara></entry>
+<entry align="left" valign="top"><simpara>Update Bibliographic Record Peer Type</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>UPDATE_HOLD_REQUEST_TIME</simpara></entry>
+<entry align="left" valign="top"><simpara>Allows editing of a hold&#8217;s request time, and/or its Cut-in-line/Top-of-queue flag.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>UPDATE_MONOGRAPH_PART</simpara></entry>
+<entry align="left" valign="top"><simpara>Update monograph part definition.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>UPDATE_PATRON_COLLECTIONS_EXEMPT</simpara></entry>
+<entry align="left" valign="top"><simpara>Allows a user to indicate that a patron is exempt from collections processing</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>UPDATE_PICKLIST</simpara></entry>
+<entry align="left" valign="top"><simpara>Allows update/re-use of an acquisitions pick/selection list.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>UPDATE_VOLUME_PREFIX</simpara></entry>
+<entry align="left" valign="top"><simpara>Update prefix label definition.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>UPDATE_VOLUME_SUFFIX</simpara></entry>
+<entry align="left" valign="top"><simpara>Update suffix label definition.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>UPDATE_WORKSTATION</simpara></entry>
+<entry align="left" valign="top"><simpara>Allows update of a workstation during workstation registration override.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>VIEW_USER_SETTING_TYPE</simpara></entry>
+<entry align="left" valign="top"><simpara>Allows viewing of configurable user setting types.</simpara></entry>
+</row>
+</tbody>
+</tgroup>
+</informaltable>
+</simplesect>
+</simplesect>
+</chapter>

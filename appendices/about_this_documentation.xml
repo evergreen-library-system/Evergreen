@@ -21,33 +21,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="about_this_documen
 				</thead>
 				<tbody>	
 					<row>
-						<entry>Jeremy Buhler</entry>
-						<entry>SITKA</entry>
-					</row>					
-					<row>
-						<entry>Paula Burton </entry>
-						<entry>King County Library System</entry>
-					</row>
-					<row>
-						<entry>Matt Carlson</entry>
-						<entry>King County Library System </entry>
-					</row>
-					<row>
 						<entry>Hilary Caws-Elwitt</entry>
 						<entry>Susquehanna County Library</entry>
-					</row>
-					<row>
-						<entry>Sarah Childs</entry>
-						<entry>Hussey-Mayfield Memorial Public Library</entry>
-					</row>
-					
-					<row>
-						<entry>Anton Chuppin</entry>
-						<entry>Nova Scotia Provincial Library</entry>
-					</row>
-					<row>
-						<entry>Marlene Coleman</entry>
-						<entry>Beaufort Country Library</entry>
 					</row>
 					<row>
 						<entry>Karen Collier</entry>
@@ -62,18 +37,6 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="about_this_documen
 						<entry>NRCan Library</entry>
 					</row>
 					<row>
-						<entry>Jennifer Durham</entry>
-						<entry>Statesboro Regional Library System</entry>
-					</row>
-					<row>
-						<entry>Jennifer Finney</entry>
-						<entry>Florence County Library</entry>
-					</row>	
-					<row>
-						<entry>Lynn Floyd</entry>
-						<entry>Anderson County Library</entry>
-					</row>
-					<row>
 						<entry>Sally Fortin</entry>
 						<entry>Equinox Software</entry>
 					</row>	
@@ -84,18 +47,6 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="about_this_documen
 					<row>
 						<entry>Catherine Lemmer</entry>
 						<entry>Indiana State Library</entry>
-					</row>
-					<row>
-						<entry>Roma Matott</entry>
-						<entry>Pioneer Library System</entry>
-					</row>
-					<row>
-						<entry>Andrea Neiman</entry>
-						<entry>Kent County Public Library</entry>
-					</row>
-					<row>
-						<entry>Kevin Pischke</entry>
-						<entry>William Jessup University </entry>
 					</row>
 					<row>
 						<entry>June Rayner</entry>
@@ -143,40 +94,12 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="about_this_documen
 						<entry>International Institute for Social History</entry>
 					</row>
 					<row>
-						<entry>D. Ceabron Williams</entry>
-						<entry>Flint River Regional Library System </entry>
-					</row>
-					<row>
 						<entry>Tigran Zargaryan</entry>
 						<entry>Fundamental Scientific Library of the National Academy of Sciences</entry>
 					</row>
 				</tbody>
 			</tgroup>
 		</table>
-		<table>
-			<title>Past DIG Participants</title>
-			<tgroup align="left" cols="2" colsep="1" rowsep="1">
-				<colspec colnum="1" colwidth="1.0*"/>
-				<colspec colnum="2" colwidth="1.0*"/>
-				<thead>
-					<row>
-						<entry>Name</entry>
-						<entry>Organization</entry>
-						
-					</row>
-				</thead>
-				<tbody>	
-					<row>
-						<entry>Paul Weiss </entry>
-						<entry>Consultant/Sage Library System</entry>
-					</row>					
-					<row>
-						<entry>Karen Schneider</entry>
-						<entry>Equinox Software </entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>	
 	</section>
 	<section xml:id="attributions">
 		<title>Attributions</title>		
