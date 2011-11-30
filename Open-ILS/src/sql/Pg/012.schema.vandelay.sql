@@ -50,9 +50,7 @@ CREATE TABLE vandelay.queue (
 	owner			INT			NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
 	name			TEXT		NOT NULL,
 	complete		BOOL		NOT NULL DEFAULT FALSE,
-	queue_type		TEXT		NOT NULL DEFAULT 'bib' CHECK (queue_type IN ('bib','authority')),
-    match_set       INT         REFERENCES vandelay.match_set (id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
-	CONSTRAINT vand_queue_name_once_per_owner_const UNIQUE (owner,name,queue_type)
+    match_set       INT         REFERENCES vandelay.match_set (id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE TABLE vandelay.queued_record (
@@ -114,8 +112,10 @@ CREATE TABLE vandelay.import_error (
     description TEXT    NOT NULL -- i18n
 );
 
+CREATE TYPE vandelay.bib_queue_queue_type AS ENUM ('bib', 'acq');
+
 CREATE TABLE vandelay.bib_queue (
-	queue_type	    TEXT	NOT NULL DEFAULT 'bib' CHECK (queue_type = 'bib'),
+	queue_type	    vandelay.bib_queue_queue_type	NOT NULL DEFAULT 'bib',
 	item_attr_def	BIGINT REFERENCES vandelay.import_item_attr_definition (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
 	CONSTRAINT vand_bib_queue_name_once_per_owner_const UNIQUE (owner,name,queue_type)
 ) INHERITS (vandelay.queue);
@@ -1518,8 +1518,9 @@ CREATE TABLE vandelay.authority_attr_definition (
 	remove		TEXT	NOT NULL DEFAULT ''
 );
 
+CREATE TYPE vandelay.authority_queue_queue_type AS ENUM ('authority');
 CREATE TABLE vandelay.authority_queue (
-	queue_type	TEXT		NOT NULL DEFAULT 'authority' CHECK (queue_type = 'authority'),
+	queue_type	vandelay.authority_queue_queue_type NOT NULL DEFAULT 'authority',
 	CONSTRAINT vand_authority_queue_name_once_per_owner_const UNIQUE (owner,name,queue_type)
 ) INHERITS (vandelay.queue);
 ALTER TABLE vandelay.authority_queue ADD PRIMARY KEY (id);
