@@ -400,10 +400,8 @@ sub add_bib_holdings {
                 for my $cp ( @$cn_map_list ) {
                     $count{cp}++;
                             
-                    $r->append_fields(
-                        MARC::Field->new(
-                            852, '4', '', 
-                            a => $location,
+                    $r->insert_grouped_field( MARC::Field->new( '852', '4', ' ',
+                            ($location ? ( 'a' => $location ) : ()),
                             b => $orgs{$cn->owning_lib}->shortname,
                             b => $orgs{$cp->circ_lib}->shortname,
                             c => $shelves{$cp->location}->name,
