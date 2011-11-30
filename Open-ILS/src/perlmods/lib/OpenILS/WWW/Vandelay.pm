@@ -66,15 +66,8 @@ sub spool_marc {
 	my $purpose = $cgi->param('purpose') || '';
 	my $infile = $cgi->param('marc_upload') || '';
     my $bib_source = $cgi->param('bib_source') || '';
-    my $provider = $cgi->param('provider') || '';
-    my $picklist = $cgi->param('picklist') || '';
-    my $create_po = $cgi->param('create_po') || '';
-    my $activate_po = $cgi->param('activate_po') || '';
-    my $ordering_agency = $cgi->param('ordering_agency') || '';
-    my $create_assets = $cgi->param('create_assets') || '';
 
-    $logger->debug("purpose = $purpose, infile = $infile, bib_source = $bib_source ".
-        "provider = $provider, picklist = $picklist, create_po = $create_po, ordering_agency = $ordering_agency");
+    $logger->debug("purpose = $purpose, infile = $infile, bib_source = $bib_source");
 
 	my $conf = OpenSRF::Utils::SettingsClient->new;
 	my $dir = $conf->config_value(
@@ -113,11 +106,6 @@ sub spool_marc {
 		    {   purpose => $purpose, 
                 path => $outfile,
                 bib_source => $bib_source,
-                provider => $provider,
-                picklist => $picklist,
-                create_po => $create_po,
-                create_assets => $create_assets,
-                ordering_agency => $ordering_agency
             }
 	    );
     }

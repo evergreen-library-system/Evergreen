@@ -875,6 +875,8 @@ sub import_record_list_impl {
         report_all => $$args{report_all}
     };
 
+    $conn->max_chunk_count(1) if $$args{report_all};
+
     my $auto_overlay_exact = $$args{auto_overlay_exact};
     my $auto_overlay_1match = $$args{auto_overlay_1match};
     my $auto_overlay_best = $$args{auto_overlay_best_match};
@@ -892,6 +894,7 @@ sub import_record_list_impl {
     my $search_func = 'search_vandelay_queued_bib_record';
     my $retrieve_queue_func = 'retrieve_vandelay_bib_queue';
     my $update_queue_func = 'update_vandelay_bib_queue';
+    my $delete_queue_func = 'delete_vandelay_bib_queue';
     my $rec_class = 'vqbr';
 
     my $editor = new_editor();
@@ -908,6 +911,7 @@ sub import_record_list_impl {
         $update_queue_func =~ s/bib/authority/o;
         $update_func =~ s/bib/authority/o;
         $search_func =~ s/bib/authority/o;
+        $delete_queue_func =~ s/bib/authority/o;
         $rec_class = 'vqar';
     }
 
@@ -923,6 +927,7 @@ sub import_record_list_impl {
         $$report_args{e} = $e;
         $$report_args{evt} = undef;
         $$report_args{import_error} = undef;
+        $$report_args{no_import} = 0;
 
         my $rec = $e->$retrieve_func([
             $rec_id,
@@ -1086,6 +1091,19 @@ sub import_record_list_impl {
 
             if($e->$update_func($rec)) {
 
+                if($type eq 'bib') {
+
+                    # see if this record is linked from an acq record.
+                    my $li = $e->search_acq_lineitem(
+                        {queued_record => $rec->id, state => {'!=' => 'canceled'}})->[0];
+
+                    if ($li) { 
+                        # if so, update the acq lineitem to point to the imported record
+                        $li->eg_bib_id($rec->imported_as);
+                        $$report_args{evt} = $e->die_event unless $e->update_acq_lineitem($li);
+                    }
+                }
+
                 push @success_rec_ids, $rec_id;
                 finish_rec_import_attempt($report_args);
 
@@ -1097,6 +1115,7 @@ sub import_record_list_impl {
         if(!$imported) {
             $logger->info("vl: record $rec_id was not imported");
             $$report_args{evt} = $e->event unless $$report_args{evt};
+            $$report_args{no_import} = 1;
             finish_rec_import_attempt($report_args);
         }
     }
@@ -1110,7 +1129,6 @@ sub import_record_list_impl {
 
         unless(@$remaining) {
             my $queue = $e->$retrieve_queue_func($q_id);
-
             unless($U->is_true($queue->complete)) {
                 $queue->complete('t');
                 $e->$update_queue_func($queue) or return $e->die_event;
@@ -1279,6 +1297,8 @@ sub finish_rec_import_attempt {
             total => $$args{total}, 
             progress => $$args{progress}, 
             imported => ($rec) ? $rec->id : undef,
+            import_error => $error,
+            no_import => $$args{no_import},
             err_event => $evt
         });
         $$args{step} *= 2 unless $$args{step} == 256;
