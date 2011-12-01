@@ -497,8 +497,6 @@ as simple as:
 
 Uses and imports the OpenILS::Utils::Fieldmapper so you don't have to.
 
-Includes Data::Dumper, so you don't have to.
-
 =head1 DESCRIPTION
 
 There are a few main problems when writing a new script for Evergreen.
