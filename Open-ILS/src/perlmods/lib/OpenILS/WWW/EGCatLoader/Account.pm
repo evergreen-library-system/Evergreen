@@ -1334,6 +1334,16 @@ sub load_myopac_update_password {
     return $self->generic_redirect($url);
 }
 
+sub _update_bookbag_metadata {
+    my ($self, $bookbag) = @_;
+
+    $bookbag->name($self->cgi->param("name"));
+    $bookbag->description($self->cgi->param("description"));
+
+    return 1 if $self->editor->update_container_biblio_record_entry_bucket($bookbag);
+    return 0;
+}
+
 sub load_myopac_bookbags {
     my $self = shift;
     my $e = $self->editor;
@@ -1374,6 +1384,24 @@ sub load_myopac_bookbags {
         if (!$bookbag) {
             $e->rollback;
             return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+        }
+
+        if ($self->cgi->param("action") eq "editmeta") {
+            if (!$self->_update_bookbag_metadata($bookbag))  {
+                $e->rollback;
+                return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+            } else {
+                $e->commit;
+                my $url = $self->ctx->{opac_root} . '/myopac/lists?id=' .
+                    $bookbag->id;
+
+                # Keep it if we've got it
+                if ($self->cgi->param("sort")) {
+                    $url .= ";sort=" . $self->cgi->param("sort");
+                }
+
+                return $self->generic_redirect($url);
+            }
         }
 
         my $query = $self->_prepare_bookbag_container_query(

@@ -30,5 +30,10 @@
     "SAVE_CLONE" : "Save &amp; Clone",
     "SHOW_REQUIRED" : "Show Only Required Fields",
     "SHOW_SUGGESTED" : "Show Suggested Fields",
-    "SHOW_ALL" : "Show All Fields"
+    "SHOW_ALL" : "Show All Fields",
+    "ALL_CARDS_BARCODE" : "Barcode",
+    "ALL_CARDS_ACTIVE" : "Active",
+    "ALL_CARDS_PRIMARY" : "Primary",
+    "ALL_CARDS_CLOSE" : "Close",
+    "ALL_CARDS_APPLY" : "Apply Changes"
 }
