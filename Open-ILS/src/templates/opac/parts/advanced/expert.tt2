@@ -1,6 +1,8 @@
+[% loc = CGI.param("loc") %]
 <form action="[% ctx.opac_root %]/results" method="GET">
     <div class="header_middle">[% l("Expert Search") %]</div>
     <input type="hidden" name="_special" value="1" />
+    [% IF loc %]<input type="hidden" name="loc" value="[% loc %]" />[% END %]
     <table class="expert-search">
         <tbody id="adv_expert_rows_here">
             <tr id="adv_expert_row">
