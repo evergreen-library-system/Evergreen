@@ -3041,11 +3041,17 @@ sub checkin_handle_circ {
     my $stat = $U->copy_status($self->copy->status)->id;
 
     if ($stat == OILS_COPY_STATUS_LOST) {
-
+        # we will now handle lost fines, but the copy will retain its 'lost'
+        # status if it needs to transit home unless lost_immediately_available
+        # is true
+        #
+        # if we decide to also delay fine handling until the item arrives home,
+        # we will need to call lost fine handling code both when checking items
+        # in and also when receiving transits
         $self->checkin_handle_lost($circ_lib);
-
+    } elsif ($circ_lib != $self->circ_lib and $stat == OILS_COPY_STATUS_MISSING) {
+        $logger->info("circulator: not updating copy status on checkin because copy is missing");
     } else {
-
         $self->copy->status($U->copy_status(OILS_COPY_STATUS_RESHELVING));
         $self->update_copy;
     }
@@ -3102,12 +3108,25 @@ sub checkin_handle_lost {
         $self->checkin_handle_lost_now_found_restore_od() if $restore_od && ! $self->void_overdues;
     }
 
-    my $immediately_available = $U->ou_ancestor_setting_value(
-        $circ_lib, OILS_SETTING_LOST_IMMEDIATELY_AVAILABLE, $self->editor) || 0;
+    if ($circ_lib != $self->circ_lib) {
+        # if the item is not home, check to see if we want to retain the lost
+        # status at this point in the process
+        my $immediately_available = $U->ou_ancestor_setting_value($circ_lib, OILS_SETTING_LOST_IMMEDIATELY_AVAILABLE, $self->editor) || 0;
 
-    $self->copy->status($U->copy_status(OILS_COPY_STATUS_RESHELVING)) if ($immediately_available);
-
-    $self->update_copy;
+        if ($immediately_available) {
+            # lost item status does not need to be retained, so give it a
+            # reshelving status as if it were a normal checkin
+            $self->copy->status($U->copy_status(OILS_COPY_STATUS_RESHELVING));
+            $self->update_copy;
+        } else {
+            $logger->info("circulator: not updating copy status on checkin because copy is lost");
+        }
+    } else {
+        # lost item is home and processed, treat like a normal checkin from
+        # this point on
+        $self->copy->status($U->copy_status(OILS_COPY_STATUS_RESHELVING));
+        $self->update_copy;
+    }
 }
 
 
