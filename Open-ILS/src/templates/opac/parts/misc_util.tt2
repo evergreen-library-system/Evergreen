@@ -96,6 +96,19 @@
 
             # Check volume visibility - could push this into XPath
             vol.label = volume.getAttribute('label');
+
+            # Prepend prefix, if any
+            prefix = volume.findnodes('./*[local-name()="call_number_prefix"][@ident!="-1"]');
+            IF prefix.getAttribute('label') != '';
+                vol.label = prefix.getAttribute('label') _ " " _ vol.label;
+            END;
+
+            # Append prefix, if any
+            suffix = volume.findnodes('./*[local-name()="call_number_suffix"][@ident!="-1"]');
+            IF suffix.getAttribute('label') != '';
+                vol.label = vol.label _ " " _ suffix.getAttribute('label');
+            END;
+
             vol.id = volume.getAttribute('id');
             NEXT IF volume.getAttribute('opac_visible') == 'false';
             NEXT IF volume.getAttribute('deleted') == 'true';

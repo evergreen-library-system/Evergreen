@@ -118,7 +118,19 @@ IF num_uris > 0;
     <tbody class="copy_details_table">
         [%- last_cn = 0;
         FOR copy_info IN ctx.copies;
-            NEXT IF copy_info.call_number_label == '##URI##' %]
+            callnum = copy_info.call_number_label;
+            NEXT IF callnum == '##URI##';
+
+            callnum_prefix = copy_info.call_number_prefix_label;
+            IF callnum_prefix != "";
+                callnum = callnum_prefix _ " " _ callnum;
+            END;
+
+            callnum_suffix = copy_info.call_number_suffix_label;
+            IF callnum_suffix != "";
+                callnum = callnum  _ " " _ callnum_suffix;
+            END;
+        -%]
         <tr>
             <td header='copy_header_library'>
             [%-
@@ -126,7 +138,7 @@ IF num_uris > 0;
                 org_name | html
             -%]
             </td>
-            <td header='copy_header_callnumber'>[% copy_info.call_number_label | html %]</td>
+            <td header='copy_header_callnumber'>[% callnum | html %]</td>
             <td header='copy_header_barcode'>[% copy_info.barcode | html %]</td>
             <td header='copy_header_shelfloc'>[% copy_info.copy_location | html %]</td>
             [%- IF ctx.is_staff %]

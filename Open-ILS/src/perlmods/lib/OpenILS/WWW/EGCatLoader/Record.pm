@@ -37,7 +37,7 @@ sub load_record {
         $self->mk_copy_query($rec_id, $org, $depth, $copy_limit, $copy_offset)
     );
 
-    my (undef, @rec_data) = $self->get_records_and_facets([$rec_id], undef, {flesh => '{holdings_xml,mra,acp}'});
+    my (undef, @rec_data) = $self->get_records_and_facets([$rec_id], undef, {flesh => '{holdings_xml,mra,acp,acnp,acns}'});
     $ctx->{bre_id} = $rec_data[0]->{id};
     $ctx->{marc_xml} = $rec_data[0]->{marc_xml};
 
@@ -152,13 +152,24 @@ sub mk_copy_query {
                 {column => 'id', alias => 'call_number'}
             ],
             circ => ['due_date'],
+            acnp => [
+                {column => 'label', alias => 'call_number_prefix_label'},
+                {column => 'id', alias => 'call_number_prefix'}
+            ],
+            acns => [
+                {column => 'label', alias => 'call_number_suffix_label'},
+                {column => 'id', alias => 'call_number_suffix'}
+            ]
         },
 
         from => {
             acp => {
-                acn => {
-                    join => {bre => {filter => {id => $rec_id }}},
-                    filter => {deleted => 'f'}
+                acn => { 
+                    join => { 
+                        acnp => { fkey => 'prefix' },
+                        acns => { fkey => 'suffix' }
+                    },
+                    filter => [{deleted => 'f'}, {record => $rec_id}],
                 },
                 circ => { # If the copy is circulating, retrieve the open circ
                     type => 'left',
@@ -170,7 +181,9 @@ sub mk_copy_query {
             }
         },
 
-        where => {'+acp' => {deleted => 'f' }},
+        where => {
+            '+acp' => {deleted => 'f' }
+        },
 
         order_by => [
             {class => 'aou', field => 'name'}, 
