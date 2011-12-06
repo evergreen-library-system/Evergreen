@@ -79,6 +79,7 @@ function AcqLiTable() {
             self.fetchClaimInfo(li.id(), /* force update */ true);
         }
     );
+    this.vlAgent = new VLAgent();
 
     dojo.byId("acq-lit-li-actions-selector").onchange = function() { 
         self.applySelectedLiAction(this.options[this.selectedIndex].value);
@@ -154,6 +155,7 @@ function AcqLiTable() {
         openils.Util.hide('acq-lit-li-details');
         openils.Util.hide('acq-lit-notes-div');
         openils.Util.hide('acq-lit-real-copies-div');
+        openils.Util.hide('acq-lit-asset-creator');
         switch(div) {
             case 'list':
                 openils.Util.show('acq-lit-table-div');
@@ -169,6 +171,9 @@ function AcqLiTable() {
                 break;
             case 'notes':
                 openils.Util.show('acq-lit-notes-div');
+                break;
+            case 'asset-creator':
+                openils.Util.show('acq-lit-asset-creator');
                 break;
             default:
                 if(div) 
@@ -2037,7 +2042,7 @@ function AcqLiTable() {
                 break;
 
             case 'create_assets':
-                this.createAssets();
+                this.showAssetCreator();
                 break;
 
             case 'export_attr_list':
@@ -2099,18 +2104,26 @@ function AcqLiTable() {
         );
     };
 
-    this.createAssets = function() {
+    this.showAssetCreator = function(onAssetsCreated) {
+        this.show('asset-creator');
+        if(!this.vlAgent.loaded)
+            this.vlAgent.init();
+        var self = this;
+        dojo.connect(assetCreatorButton, 'onClick', 
+            function() { self.createAssets(onAssetsCreated) });
+    }
+
+    this.createAssets = function(onAssetsCreated) {
         if(!this.isPO) return;
-        if(!confirm(localeStrings.CREATE_PO_ASSETS_CONFIRM)) return;
         this.show('acq-lit-progress-numbers');
         var self = this;
         fieldmapper.standardRequest(
             ['open-ils.acq', 'open-ils.acq.purchase_order.assets.create'],
             {   async: true,
-                params: [this.authtoken, this.isPO],
+                params: [this.authtoken, this.isPO, {vandelay : this.vlAgent.values()}],
                 onresponse: function(r) {
                     var resp = openils.Util.readResponse(r);
-                    self._updateProgressNumbers(resp, true);
+                    self._updateProgressNumbers(resp, !Boolean(onAssetsCreated), onAssetsCreated);
                 }
             }
         );
@@ -2347,16 +2360,15 @@ function AcqLiTable() {
         );
     }
 
-    this._updateProgressNumbers = function(resp, reloadOnComplete) {
-        if(!resp) return;
-        dojo.byId('acq-pl-lit-li-processed').innerHTML = resp.li;
-        dojo.byId('acq-pl-lit-lid-processed').innerHTML = resp.lid;
-        dojo.byId('acq-pl-lit-debits-processed').innerHTML = resp.debits_accrued;
-        dojo.byId('acq-pl-lit-bibs-processed').innerHTML = resp.bibs;
-        dojo.byId('acq-pl-lit-indexed-processed').innerHTML = resp.indexed;
-        dojo.byId('acq-pl-lit-copies-processed').innerHTML = resp.copies;
-        if(resp.complete && reloadOnComplete) 
-            location.href = location.href;
+    this._updateProgressNumbers = function(resp, reloadOnComplete, onComplete) {
+        this.vlAgent.handleResponse(resp,
+            function(resp, res) {
+                if(reloadOnComplete)
+                     location.href = location.href;
+                if (onComplete)
+                    onComplete(resp, res);
+            }
+        );
     }
 
 
@@ -2383,30 +2395,37 @@ function AcqLiTable() {
 
     this._createPOFromLineitems = function(fields, selected) {
         if (selected.length == 0) return;
+        var self = this;
 
-        this.show("acq-lit-progress-numbers");
         var po = new fieldmapper.acqpo();
         po.provider(this.createPoProviderSelector.attr("value"));
         po.ordering_agency(this.createPoAgencySelector.attr("value"));
         po.prepayment_required(fields.prepayment_required[0] ? true : false);
+
+        // if we're creating assets, delay the asset creation 
+        // until after the PO is created.  This will allow us to 
+        // use showAssetCreator() directly.
 
         fieldmapper.standardRequest(
             ["open-ils.acq", "open-ils.acq.purchase_order.create"],
             {   async: true,
                 params: [
                     openils.User.authtoken, 
-                    po, {
-                        lineitems : selected,
-                        create_assets : fields.create_assets[0],
-                    }
+                    po, {lineitems : selected}
                 ],
-
                 onresponse : function(r) {
                     var resp = openils.Util.readResponse(r);
-                    self._updateProgressNumbers(resp);
                     if (resp.complete) {
-                        location.href = oilsBasePath + "/acq/po/view/" +
-                            resp.purchase_order.id();
+                        // self.isPO is needed for showAssetCreator();
+                        self.isPO = resp.purchase_order.id(); 
+                        var redir = oilsBasePath + "/acq/po/view/" + self.isPO;
+                        if (fields.create_assets[0]) {
+                            self.showAssetCreator(
+                                function() {location.href = redir}
+                            );
+                        } else {
+                           location.href = redir;
+                        }
                     }
                 }
             }
