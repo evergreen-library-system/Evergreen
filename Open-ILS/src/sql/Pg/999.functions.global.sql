@@ -2035,3 +2035,53 @@ for my $key ( keys %map ) {
 return $default;
 
 $f$ LANGUAGE PLPERLU;
+
+CREATE OR REPLACE FUNCTION actor.address_alert_matches (
+        org_unit INT, 
+        street1 TEXT, 
+        street2 TEXT, 
+        city TEXT, 
+        county TEXT, 
+        state TEXT, 
+        country TEXT, 
+        post_code TEXT,
+        mailing_address BOOL DEFAULT FALSE,
+        billing_address BOOL DEFAULT FALSE
+    ) RETURNS SETOF actor.address_alert AS $$
+
+SELECT *
+FROM actor.address_alert
+WHERE
+    active
+    AND owner IN (SELECT id FROM actor.org_unit_ancestors($1)) 
+    AND (
+        (NOT mailing_address AND NOT billing_address)
+        OR (mailing_address AND $9)
+        OR (billing_address AND $10)
+    )
+    AND (
+            (
+                match_all
+                AND COALESCE($2, '') ~* COALESCE(street1,   '.*')
+                AND COALESCE($3, '') ~* COALESCE(street2,   '.*')
+                AND COALESCE($4, '') ~* COALESCE(city,      '.*')
+                AND COALESCE($5, '') ~* COALESCE(county,    '.*')
+                AND COALESCE($6, '') ~* COALESCE(state,     '.*')
+                AND COALESCE($7, '') ~* COALESCE(country,   '.*')
+                AND COALESCE($8, '') ~* COALESCE(post_code, '.*')
+            ) OR (
+                NOT match_all 
+                AND (  
+                       $2 ~* street1
+                    OR $3 ~* street2
+                    OR $4 ~* city
+                    OR $5 ~* county
+                    OR $6 ~* state
+                    OR $7 ~* country
+                    OR $8 ~* post_code
+                )
+            )
+        )
+    ORDER BY actor.org_unit_proximity(owner, $1)
+$$ LANGUAGE SQL;
+

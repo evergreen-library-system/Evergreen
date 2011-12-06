@@ -605,4 +605,21 @@ CREATE TABLE actor.usr_saved_search (
 	CONSTRAINT name_once_per_user UNIQUE (owner, name)
 );
 
+CREATE TABLE actor.address_alert (
+    id              SERIAL  PRIMARY KEY,
+    owner           INT     NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+    active          BOOL    NOT NULL DEFAULT TRUE,
+    match_all       BOOL    NOT NULL DEFAULT TRUE,
+    alert_message   TEXT    NOT NULL,
+    street1         TEXT,
+    street2         TEXT,
+    city            TEXT,
+    county          TEXT,
+    state           TEXT,
+    country         TEXT,
+    post_code       TEXT,
+    mailing_address BOOL    NOT NULL DEFAULT FALSE,
+    billing_address BOOL    NOT NULL DEFAULT FALSE
+);
+
 COMMIT;

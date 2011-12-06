@@ -3043,6 +3043,36 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="replaces" reltype="has_a" key="id" map="" class="aua"/>
 		</links>
 	</class>
+	<class id="aal" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::address_alert" oils_persist:tablename="actor.address_alert" reporter:label="Address Alert">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.address_alert_id_seq">
+			<field reporter:label="Address Alert ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Owner" name="owner" reporter:datatype="org_unit" oils_obj:required="true"/>
+			<field reporter:label="Active" name="active" reporter:datatype="bool"/>
+			<field reporter:label="Match All Fields" name="match_all" reporter:datatype="bool" />
+			<field reporter:label="Alert Message" name="alert_message" reporter:datatype="text" oils_obj:required="true"/>
+			<field reporter:label="Street (1)" name="street1"  reporter:datatype="text"/>
+			<field reporter:label="Street (2)" name="street2"  reporter:datatype="text"/>
+			<field reporter:label="City" name="city"  reporter:datatype="text"/>
+			<field reporter:label="County" name="county"  reporter:datatype="text"/>
+			<field reporter:label="State" name="state"  reporter:datatype="text"/>
+			<field reporter:label="Country" name="country"  reporter:datatype="text"/>
+			<field reporter:label="Postal Code" name="post_code" reporter:datatype="text"/>
+			<field reporter:label="Mailing Address" name="mailing_address" reporter:datatype="bool"/>
+			<field reporter:label="Billing Address" name="billing_address" reporter:datatype="bool"/>
+		</fields>
+		<links>
+			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create   context_field='owner' permission="ADMIN_ADDRESS_ALERT"/>
+				<retrieve context_field='owner' permission="ADMIN_ADDRESS_ALERT VIEW_ADDRESS_ALERT CREATE_USER"/>
+				<update   context_field='owner' permission="ADMIN_ADDRESS_ALERT"/>
+				<delete   context_field='owner' permission="ADMIN_ADDRESS_ALERT"/>
+			</actions>
+		</permacrud>
+	</class>
+
 
 	<class id="auss" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::usr_saved_search" oils_persist:tablename="actor.usr_saved_search" reporter:label="User Saved Search">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_saved_search_id_seq">
