@@ -133,7 +133,7 @@ sub build_invoice_api {
                     my $debit = $e->retrieve_acq_fund_debit($item->fund_debit);
                     $debit->encumbrance('t');
                     $e->update_acq_fund_debit($debit) or return $e->die_event;
-                } else {
+                } elsif($item->fund_debit) {
                     $e->delete_acq_fund_debit($e->retrieve_acq_fund_debit($item->fund_debit))
                         or return $e->die_event;
                 }
