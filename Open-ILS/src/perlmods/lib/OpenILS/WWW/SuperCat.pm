@@ -1013,10 +1013,13 @@ sub bookbag_feed {
         return 302;
     }
 
+    # last created first
+    my @sorted_bucket_items = sort { $b->create_time cmp $a->create_time } @{ $bucket->items };
+
     my $feed = create_record_feed(
         'record',
         $type,
-        [ map { $_->target_biblio_record_entry } @{ $bucket->items } ],
+        [ map { $_->target_biblio_record_entry } @sorted_bucket_items ],
         $unapi,
         $org_unit->[0]->shortname,
         undef,
@@ -1953,6 +1956,15 @@ sub sru_search {
         my $query;
         if ( $qualifier ) {
             my ($qset, $qname) = split(/\./, $qualifier);
+
+            # Per http://www.loc.gov/standards/sru/specs/cql.html
+            # "All parts of CQL are case insensitive [...] If any case insensitive
+            # part of CQL is specified with both upper and lower case, it is for
+            # aesthetic purposes only."
+
+            # So fold the qualifier and relation to lower case
+            $qset = lc($qset);
+            $qname = lc($qname);
 
             if ( exists($qualifier_map{$qset}{$qname}) ) {
                 $qualifier = $qualifier_map{$qset}{$qname}{'index'} || 'kw';

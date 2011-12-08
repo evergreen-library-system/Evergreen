@@ -2,7 +2,7 @@
     PROCESS "opac/parts/misc_util.tt2";
     PROCESS "opac/parts/hold_status.tt2";
     PROCESS "opac/parts/org_selector.tt2";
-    WRAPPER "opac/parts/base.tt2" + "opac/parts/myopac/base.tt2";
+    WRAPPER "opac/parts/myopac/base.tt2";
     myopac_page = "holds"; # in this case, just for tab coloring.
 
     hold = ctx.holds.0;
@@ -27,7 +27,7 @@
             <h2>[% attrs.author | html %]</h2>
             [% IF attrs.format_icon %]<p>
                 <strong>[% l('Format:') %]</strong>
-                <img src="[% ctx.media_prefix %]/images/[% attrs.format_icon %]" alt="[% attrs.format %]" title="[% attrs.title | html %]" />
+                <img src="[% attrs.format_icon %]" alt="[% attrs.format_label | html %]" title="[% attrs.format_label | html %]" />
             </p>[% END %]
             <p>
                 <strong>[% l('Status') %]</strong>: [% hold.human_status %]
@@ -46,6 +46,9 @@
                                 name='pickup_lib' value=ahr.pickup_lib %]
                         </td>
                     </tr>
+                    [% IF hold.hold.status < 3 %]
+                    [%# The following actions cannot be performed on holds that 
+                        have already been captured... %]
                     <tr>
                         <th>
                             [% l('Cancel unless filled by') %]
@@ -89,14 +92,12 @@
                             <em>[% l('Enter date in MM/DD/YYYY format') %]</em>
                         </td>
                     </tr>
+                    [% END %]
                     <tr>
                         <td colspan="2" class="hold-editor-controls">
-                            <input type="submit"
-                                value="[% l('Submit') %]"
-                                class="opac-button" />
-                            <input type="reset"
-                                value="[% l('Cancel') %]"
-                                class="opac-button" />
+                            <a href="[% ctx.opac_root %]/myopac/holds"><button 
+                                class="opac-button">[% l('Go Back') %]</button></a>
+                            <input type="submit" value="[% l('Submit') %]" class="opac-button" />
                         </td>
                     </tr>
                 </table>

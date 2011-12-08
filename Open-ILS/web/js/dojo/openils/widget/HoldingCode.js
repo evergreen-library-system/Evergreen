@@ -3,9 +3,28 @@ if (!dojo._hasResource["openils.widget.HoldingCode"]) {
     dojo.require("dijit.layout.ContentPane");
     dojo.require("dijit.form.DropDownButton");
     dojo.require("dijit.form.TextBox");
-    dojo.require("dijit.form.NumberTextBox");
+
+    /* XXX These variables and functions preceding the call to dojo.declar()
+     * all pollute the window namespace.  They're not written as methods for
+     * the openils.widget.HoldingCode "class," but they should probably move
+     * into there anyway.
+     */
 
     var _needed_fields = "abcdefghijklm";
+    var _season_store = new dojo.data.ItemFileReadStore({
+        "data": {
+            "identifier": "code",
+            "label": "label",
+            "items": [
+                {"code": 21, "label": "Spring"},
+                {"code": 22, "label": "Summer"},
+                {"code": 23, "label": "Fall"},
+                {"code": 24, "label": "Winter"}
+            ]
+        }
+    }); /* XXX i18n the above seasons. Also maybe don't
+         hardcode MFHD seasons here? */
+
 
     function _prepare_ttip_dialog(div, wizard) {
         dojo.empty(div);
@@ -36,7 +55,7 @@ if (!dojo._hasResource["openils.widget.HoldingCode"]) {
             var value = pattern_code[i + 1];
 
             if (_needed_fields.indexOf(subfield) != -1)
-                fields.push({"subfield": subfield, "caption": value});
+                fields.push({"subfield": subfield, "caption": value, "pattern_value": value});
         }
 
         if (!fields.length) {
@@ -46,6 +65,32 @@ if (!dojo._hasResource["openils.widget.HoldingCode"]) {
         }
 
         _prepare_ttip_dialog_fields(div, fields, wizard);
+    }
+
+    function _generate_dijit_for_field(field, tr) {
+        dojo.create("td", {"innerHTML": field.caption}, tr);
+
+        /* Any more special cases than this and we should switch to a dispatch
+         * table or something. */
+        var input;
+        if (field.pattern_value.match(/season/)) {
+            input = new dijit.form.FilteringSelect(
+                {
+                    "name": field.subfield,
+                    "store": _season_store,
+                    "searchAttr": "label",
+                    "scrollOnFocus": false
+                }, dojo.create("td", null, tr)
+            );
+        } else {
+            input = new dijit.form.TextBox(
+                {"name": field.subfield, "scrollOnFocus": false},
+                dojo.create("td", null, tr)
+            );
+        }
+        input.startup();
+
+        return input;
     }
 
     function _prepare_ttip_dialog_fields(div, fields, wizard) {
@@ -66,17 +111,7 @@ if (!dojo._hasResource["openils.widget.HoldingCode"]) {
                         field.caption.slice(1);
                 }
 
-                dojo.create("td", {"innerHTML": field.caption}, tr);
-                var dij = field.subfield > "h" ?
-                    dijit.form.NumberTextBox : dijit.form.TextBox;
-                var input = new dij(
-                    {
-                        "name": field.subfield,
-                        "constraints": {"pattern": "####"}
-                    },
-                    dojo.create("td", null, tr)
-                );
-                input.startup();
+                var input = _generate_dijit_for_field(field, tr);
                 wizard.preset_input_by_date(input, field.caption.toLowerCase());
                 inputs.push({"subfield": field.subfield, "input": input});
             }
@@ -89,7 +124,7 @@ if (!dojo._hasResource["openils.widget.HoldingCode"]) {
                     inputs.forEach(
                         function(input) {
                             var value = input.input.attr("value");
-                            if (value === null || isNaN(value)) {
+                            if (value === null || value === "") {
                                 /* XXX i18n */
                                 alert("A valid holding code cannot be " +
                                     "produced with any blank fields.");
@@ -101,7 +136,8 @@ if (!dojo._hasResource["openils.widget.HoldingCode"]) {
                     wizard.code_text_box.attr("value", js2JSON(holding_code));
                     wizard.wizard_button.attr("disabled", false);
                     dojo.empty(div);
-                }
+                },
+                "scrollOnFocus": false
             }, dojo.create(
                 "span", null, dojo.create(
                     "td", {"colspan": 2},

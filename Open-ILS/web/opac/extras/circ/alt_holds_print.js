@@ -117,6 +117,9 @@ function hashify_fields(fields) {
         function(k) { hold.usr[k] = fields[k]; }
     );
 
+    hold.current_copy.call_number.prefix = fields.prefix;
+    hold.current_copy.call_number.suffix = fields.suffix;
+    hold.current_copy.parts_stringified = '';   /* no real support for parts here */
     return hold;
 }
 
@@ -200,10 +203,12 @@ function do_clear_holds_from_cache(cache_key) {
             },
             "oncomplete": function() {
                 progress_dialog.hide();
-                if (any)
-                    window.print();
-                else
-                    alert(dojo.byId("no_results").innerHTML);
+                setTimeout(
+                    function() {
+                        if (any) window.print();
+                        else alert(dojo.byId("no_results").innerHTML);
+                    }, 500  /* give the progress_dialog more time to go away */
+                );
             }
         }
     );

@@ -6,7 +6,7 @@
             <span id='uedit-dupe-barcode-warning' style='color:red; font-weight:bold' class='hidden'>
             </span>
         </td>
-        <td id='uedit-all-barcodes' class='hidden'>
+        <td id='uedit-all-barcodes'>
             <button dojoType='dijit.form.Button' jsId='allCards' scrollOnFocus='false'></button>
         </td>
     </tr>

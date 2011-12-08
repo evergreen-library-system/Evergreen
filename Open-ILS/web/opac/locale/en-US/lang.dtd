@@ -2620,9 +2620,8 @@
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.consortial_available "Available:">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.show_acns "Show Volumes">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.show_acps "Show Items">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.hide_aous "Hide Empty Libs">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.refresh_button.label "Refresh">
-<!ENTITY staff.cat.copy_browser.holdings_maintenance.show_libs.label "Show Libraries With Items">
-<!ENTITY staff.cat.copy_browser.holdings_maintenance.show_libs.accesskey "L">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.actions.label "Actions for Selected Rows">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.actions.accesskey "f">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.sel_clip.label "Copy to Clipboard">

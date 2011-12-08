@@ -227,6 +227,32 @@ sub validate {
     return $self;
 }
  
+sub revalidate_test {
+    my $self = shift;
+
+    if ($self->build_environment->environment->{complete}) {
+        try {
+            $self->valid(
+                OpenILS::Application::Trigger::ModRunner::Validator->new(
+                    $self->event->event_def->validator,
+                    $self->environment
+                )->run->final_result
+            );
+        } otherwise {
+            $log->error("Event revalidation failed with ". shift());
+        };
+
+        return 1 if defined $self->valid and $self->valid;
+        return 0;
+    }
+
+    $logger->error(
+        "revalidate: could not build environment for event " .
+        $self->event->id
+    );
+    return 0;
+}
+ 
 sub cleanedup {
     my $self = shift;
     return undef unless (ref $self);

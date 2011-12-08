@@ -16,6 +16,7 @@
                                     if(confirm("[% l('Are you sure you want to delete this queue?') %]")) {
                                         vlDeleteQueue(currentType, currentQueueId, 
                                             function() { displayGlobalDiv("vl-marc-upload-div"); });}'>[% l('Delete Queue') %]</a></td></tr>
+                                <tr id='add-to-bucket-action'><td><a href='javascript:;' onclick='createBucketDialog.show()'>[% l('Copy To Bucket') %]</a></td></tr>
                             </tbody>
                         </table>
                     </td>
@@ -250,4 +251,14 @@
 </div>
 
 
-
+<div jsId='progressDialog' dojoType='openils.widget.ProgressDialog'></div>
+<div jsId='createBucketDialog' dojoType="dijit.Dialog" class='center' title="[% l('Copy Records to Bucket') %]">
+    <div dojoType="dijit.layout.ContentPane" class='pad-level-1'>
+        <div class='pad-level-1'>[% l('Please enter the name of the bucket to append/create.') %]</div>
+        <div class='pad-level-1'><input dojoType='dijit.form.TextBox' name='name' id='create-bucket-dialog-name'/></div>
+        <div>
+            <button class='pad-level-1' dojoType="dijit.form.Button" type="submit" onClick="handleCreateBucket()">[% l('Apply') %]</button>
+            <button class='pad-level-1' dojoType="dijit.form.Button" type="submit" onClick="createBucketDialog.hide()">[% l('Cancel') %]</button>
+        </div>
+    </div>
+</div>

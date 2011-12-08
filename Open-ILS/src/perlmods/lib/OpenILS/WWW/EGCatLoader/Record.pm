@@ -182,9 +182,9 @@ sub mk_copy_query {
     };
 
     # XXX In the future, $sort_org should be understood to be an abstration
-    # that refers to something configurable, not necessariyl orig_loc.
+    # that refers to something configurable, not necessariyl physical_loc.
 
-    if (my $sort_org = $self->ctx->{orig_loc}) {
+    if (my $sort_org = $self->ctx->{physical_loc}) {
         unshift @{$query->{order_by}}, {
             class => 'acp', field => 'circ_lib', transform => 'numeric_eq',
             params => [$sort_org], direction => 'desc'

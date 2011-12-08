@@ -2,6 +2,7 @@
     <div class="header_middle">[% l("Numeric Search") %]</div>
     <input type="hidden" name="contains" value="contains" />
     <input type="hidden" name="_special" value="1" />
+    [% IF loc %]<input type="hidden" name="loc" value="[% loc %]" />[% END %]
     <table>
         <tr>
             <td>

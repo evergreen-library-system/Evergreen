@@ -966,6 +966,13 @@ DECLARE
     metarec       metabib.metarecord%ROWTYPE;
     hold          action.hold_request%ROWTYPE;
     ser_rec       serial.record_entry%ROWTYPE;
+    ser_sub       serial.subscription%ROWTYPE;
+    acq_lineitem  acq.lineitem%ROWTYPE;
+    acq_request   acq.user_request%ROWTYPE;
+    booking       booking.resource_type%ROWTYPE;
+    source_part   biblio.monograph_part%ROWTYPE;
+    target_part   biblio.monograph_part%ROWTYPE;
+    multi_home    biblio.peer_bib_copy_map%ROWTYPE;
     uri_count     INT := 0;
     counter       INT := 0;
     uri_datafield TEXT;
@@ -1105,6 +1112,99 @@ BEGIN
 		moved_objects := moved_objects + 1;
 	END LOOP;
 
+	-- Find serial subscriptions targeting the source record ...
+	FOR ser_sub IN SELECT * FROM serial.subscription WHERE record_entry = source_record LOOP
+		-- ... and move them to the target record
+		UPDATE	serial.subscription
+		  SET	record_entry = target_record
+		  WHERE	id = ser_sub.id;
+
+		moved_objects := moved_objects + 1;
+	END LOOP;
+
+	-- Find booking resource types targeting the source record ...
+	FOR booking IN SELECT * FROM booking.resource_type WHERE record = source_record LOOP
+		-- ... and move them to the target record
+		UPDATE	booking.resource_type
+		  SET	record = target_record
+		  WHERE	id = booking.id;
+
+		moved_objects := moved_objects + 1;
+	END LOOP;
+
+	-- Find acq lineitems targeting the source record ...
+	FOR acq_lineitem IN SELECT * FROM acq.lineitem WHERE eg_bib_id = source_record LOOP
+		-- ... and move them to the target record
+		UPDATE	acq.lineitem
+		  SET	eg_bib_id = target_record
+		  WHERE	id = acq_lineitem.id;
+
+		moved_objects := moved_objects + 1;
+	END LOOP;
+
+	-- Find acq user purchase requests targeting the source record ...
+	FOR acq_request IN SELECT * FROM acq.user_request WHERE eg_bib = source_record LOOP
+		-- ... and move them to the target record
+		UPDATE	acq.user_request
+		  SET	eg_bib = target_record
+		  WHERE	id = acq_request.id;
+
+		moved_objects := moved_objects + 1;
+	END LOOP;
+
+	-- Find parts attached to the source ...
+	FOR source_part IN SELECT * FROM biblio.monograph_part WHERE record = source_record LOOP
+
+		SELECT	INTO target_part *
+		  FROM	biblio.monograph_part
+		  WHERE	label = source_part.label
+			AND record = target_record;
+
+		-- ... and if there's a conflicting one on the target ...
+		IF FOUND THEN
+
+			-- ... move the copy-part maps to that, and ...
+			UPDATE	asset.copy_part_map
+			  SET	part = target_part.id
+			  WHERE	part = source_part.id;
+
+			-- ... move P holds to the move-target part
+			FOR hold IN SELECT * FROM action.hold_request WHERE target = source_part.id AND hold_type = 'P' LOOP
+		
+				UPDATE	action.hold_request
+				  SET	target = target_part.id
+				  WHERE	id = hold.id;
+		
+				moved_objects := moved_objects + 1;
+			END LOOP;
+
+		-- ... if not ...
+		ELSE
+			-- ... just move the part to the target record
+			UPDATE	biblio.monograph_part
+			  SET	record = target_record
+			  WHERE	id = source_part.id;
+		END IF;
+
+		moved_objects := moved_objects + 1;
+	END LOOP;
+
+	-- Find multi_home items attached to the source ...
+	FOR multi_home IN SELECT * FROM biblio.peer_bib_copy_map WHERE peer_record = source_record LOOP
+		-- ... and move them to the target record
+		UPDATE	biblio.peer_bib_copy_map
+		  SET	peer_record = target_record
+		  WHERE	id = multi_home.id;
+
+		moved_objects := moved_objects + 1;
+	END LOOP;
+
+	-- And delete mappings where the item's home bib was merged with the peer bib
+	DELETE FROM biblio.peer_bib_copy_map WHERE peer_record = (
+		SELECT (SELECT record FROM asset.call_number WHERE id = call_number)
+		FROM asset.copy WHERE id = target_copy
+	);
+
     -- Finally, "delete" the source record
     DELETE FROM biblio.record_entry WHERE id = source_record;
 
@@ -1112,6 +1212,7 @@ BEGIN
 	RETURN moved_objects;
 END;
 $func$ LANGUAGE plpgsql;
+
 
 -- copy OPAC visibility materialized view
 CREATE OR REPLACE FUNCTION asset.refresh_opac_visible_copies_mat_view () RETURNS VOID AS $$
@@ -1192,7 +1293,7 @@ BEGIN
     $$;
     add_front := $$
         INSERT INTO asset.opac_visible_copies (copy_id, circ_lib, record)
-          SELECT id, circ_lib, record FROM (
+          SELECT DISTINCT ON (id, record) id, circ_lib, record FROM (
     $$;
     add_back := $$
         ) AS x

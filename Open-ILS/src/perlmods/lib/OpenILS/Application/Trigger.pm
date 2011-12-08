@@ -600,6 +600,40 @@ __PACKAGE__->register_method(
     argc     => 1
 );
 
+sub revalidate_event_group_test {
+    my $self = shift;
+    my $client = shift;
+    my $events = shift;
+
+    my $e = OpenILS::Application::Trigger::EventGroup->new(@$events);
+
+    my $result = $e->revalidate_test;
+
+    $e->editor->disconnect;
+    OpenILS::Application::Trigger::Event->ClearObjectCache();
+
+    return $result;
+}
+__PACKAGE__->register_method(
+    api_name => 'open-ils.trigger.event_group.revalidate.test',
+    method   => 'revalidate_event_group_test',
+    api_level=> 1,
+    argc     => 1,
+    signature => {
+        desc => q/revalidate a group of events.
+        This does not actually update the events (so there will be no change
+        of atev.state or anything else in the database, unless an event's
+        validator makes changes out-of-band).
+        
+        This returns an array of valid event IDs.
+        /,
+        params => [
+            {name => "events", type => "array", desc => "list of event ids"}
+        ]
+    }
+);
+
+
 sub pending_events {
     my $self = shift;
     my $client = shift;

@@ -12,7 +12,6 @@ use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use MARC::Batch;
 use MARC::Record;
 use MARC::File::XML ( BinaryEncoding => 'UTF-8' );
-use OpenILS::Utils::Fieldmapper;
 use Time::HiRes qw(time);
 use OpenSRF::Utils::Logger qw/$logger/;
 use MIME::Base64;
@@ -1768,6 +1767,103 @@ sub match_set_update_tree {
     _walk_new_vmsp($e, $match_set_id, $tree);
 
     $e->commit or return $e->die_event;
+}
+
+__PACKAGE__->register_method(  
+    api_name    => 'open-ils.vandelay.bib_queue.to_bucket',
+    method      => 'bib_queue_to_bucket',
+    api_level   => 1,
+    argc        => 2,
+    signature   => {
+        desc    => q/Add to or create a new bib container (bucket) with the successfully 
+                    imported contents of a vandelay queue.  Any user that has Vandelay 
+                    queue create permissions can append or create buckets from his-her own queues./,
+        params  => [
+            {desc => 'Authtoken', type => 'string'},
+            {desc => 'Queue ID', type => 'number'},
+            {desc => 'Bucket Name', type => 'string'}
+        ],
+        return  => {desc => q/
+            {bucket => $bucket, addcount => number-of-items-added-to-bucket, item_count => total-bucket-item-count} on success,
+            {add_count => 0} if there is nothing to do, and Event on error/}
+    }
+);
+
+sub bib_queue_to_bucket {
+    my ($self, $conn, $auth, $q_id, $bucket_name) = @_;
+
+    my $e = new_editor(xact => 1, authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
+    
+    my $queue = $e->retrieve_vandelay_bib_queue($q_id)
+        or return $e->die_event;
+
+    return OpenILS::Event->new('BAD_PARAMS', 
+        note => q/Bucket creator must be queue owner/)
+        unless $queue->owner == $e->requestor->id;
+
+    # find the bib IDs that will go into the bucket
+    my $bib_ids = $e->json_query({
+        select => {vqbr => ['imported_as']},
+        from => 'vqbr',
+        where => {queue => $q_id, imported_as => {'!=' => undef}}
+    });
+
+    if (!@$bib_ids) { # no records to add
+        $e->rollback;
+        return {add_count => 0};
+    }
+
+    # allow user to add to an existing bucket by name
+    my $bucket = $e->search_container_biblio_record_entry_bucket({
+        owner => $e->requestor->id, 
+        name => $bucket_name,
+        btype => 'vandelay_queue'
+    })->[0];
+
+    # if the bucket does not exist, create a new one
+    if (!$bucket) { 
+        $bucket = Fieldmapper::container::biblio_record_entry_bucket->new;
+        $bucket->name($bucket_name);
+        $bucket->owner($e->requestor->id);
+        $bucket->btype('vandelay_queue');
+
+        $e->create_container_biblio_record_entry_bucket($bucket)
+            or return $e->die_event;
+    }
+
+    # create the new bucket items
+    for my $bib_id ( map {$_->{imported_as}} @$bib_ids ) {
+        my $item = Fieldmapper::container::biblio_record_entry_bucket_item->new;
+        $item->target_biblio_record_entry($bib_id);
+        $item->bucket($bucket->id);
+        $e->create_container_biblio_record_entry_bucket_item($item)
+            or return $e->die_event;
+    }
+
+    # re-fetch the bucket to pick up the correct create_time
+    $bucket = $e->retrieve_container_biblio_record_entry_bucket($bucket->id)
+        or return $e->die_event;
+
+    # get the total count of items in this bucket
+    my $count = $e->json_query({
+        select => {cbrebi => [{
+            aggregate =>  1,
+            transform => 'count',
+            alias => 'count',
+            column => 'id'
+        }]},
+        from => 'cbrebi',
+        where => {bucket => $bucket->id}
+    })->[0];
+
+    $e->commit;
+
+    return {
+        bucket => $bucket, 
+        add_count => scalar(@$bib_ids), # items added to the bucket
+        item_count => $count->{count} # total items in buckets
+    };
 }
 
 1;

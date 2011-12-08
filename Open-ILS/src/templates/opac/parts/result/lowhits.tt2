@@ -1,6 +1,9 @@
 <div>
     <div id="zero_search_hits">
-        <div>
+        <div class="zero_search_hits_saved">
+            [% INCLUDE "opac/parts/staff_saved_searches.tt2" %]
+        </div>
+        <div class="zero_search_hits_main">
             <p>[% l('Sorry, no entries were found for') %]
                 [% IF is_advanced OR is_special; l('your search'); ELSE %]
                 <q>[% CGI.param('query') | html %]</q>

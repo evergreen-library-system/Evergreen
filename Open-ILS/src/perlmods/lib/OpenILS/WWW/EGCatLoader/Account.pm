@@ -15,6 +15,11 @@ my $U = 'OpenILS::Application::AppUtils';
 sub prepare_extended_user_info {
     my $self = shift;
     my @extra_flesh = @_;
+    my $e = $self->editor;
+
+    # are we already in a transaction?
+    my $local_xact = !$e->{xact_id}; 
+    $e->xact_begin if $local_xact;
 
     $self->ctx->{user} = $self->editor->retrieve_actor_user([
         $self->ctx->{user}->id,
@@ -25,7 +30,12 @@ sub prepare_extended_user_info {
                 # ...
             }
         }
-    ]) or return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+    ]);
+
+    $e->rollback if $local_xact;
+
+    return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR 
+        unless $self->ctx->{user};
 
     return;
 }
@@ -358,8 +368,7 @@ sub fetch_user_holds {
         suppress_notices => 1,
         suppress_transits => 1,
         suppress_mvr => 1,
-        suppress_patron_details => 1,
-        include_bre => $flesh ? 1 : 0
+        suppress_patron_details => 1
     };
 
     # ----------------------------------------------------------------
@@ -395,7 +404,10 @@ sub fetch_user_holds {
                 @collected = grep { $_->{hold}->{status} == 4 } @collected;
             }
             while(my $blob = pop(@collected)) {
-                $blob->{marc_xml} = XML::LibXML->new->parse_string($blob->{hold}->{bre}->marc) if $flesh;
+                my (undef, @data) = $self->get_records_and_facets(
+                    [$blob->{hold}->{bre_id}], undef, {flesh => '{mra}'}
+                );
+                $blob->{marc_xml} = $data[0]->{marc_xml};
                 push(@holds, $blob);
             }
         }
@@ -455,7 +467,10 @@ sub handle_hold_update {
             push(@$vlist, $vals);
         }
 
-        $circ->request('open-ils.circ.hold.update.batch.atomic', $e->authtoken, undef, $vlist)->gather(1);
+        my $resp = $circ->request('open-ils.circ.hold.update.batch.atomic', $e->authtoken, undef, $vlist)->gather(1);
+        $self->ctx->{hold_suspend_post_capture} = 1 if 
+            grep {$U->event_equals($_, 'HOLD_SUSPEND_AFTER_CAPTURE')} @$resp;
+
     } elsif ($action eq 'edit') {
 
         my @vals = map {
@@ -515,7 +530,7 @@ sub load_place_hold {
     $ctx->{hold_type} = $cgi->param('hold_type');
     $ctx->{default_pickup_lib} = $e->requestor->home_ou; # unless changed below
 
-    return $self->post_hold_redirect unless @targets;
+    return $self->generic_redirect unless @targets;
 
     $logger->info("Looking at hold targets: @targets");
 
@@ -685,7 +700,13 @@ sub load_place_hold {
                 } else {
                     # hold-specific failure event 
                     $hdata->{hold_failed} = 1;
-                    $hdata->{hold_failed_event} = $result->{last_event};
+
+                    if (ref $result eq 'HASH') {
+                        $hdata->{hold_failed_event} = $result->{last_event};
+                    } elsif (ref $result eq 'ARRAY') {
+                        $hdata->{hold_failed_event} = pop @$result;
+                    }
+
                     $hdata->{could_override} = $self->test_could_override($hdata->{hold_failed_event});
                 }
             }
@@ -694,44 +715,18 @@ sub load_place_hold {
         $bses->kill_me;
     }
 
-    # stay on the current page and display the results
-    return Apache2::Const::OK if 
-        (grep {$_->{hold_failed}} @hold_data) or $ctx->{general_hold_error};
+    # NOTE: we are leaving the staff-placed patron barcode cookie 
+    # in place.  Otherwise, it's not possible to place more than 
+    # one hold for the patron within a staff/patron session.  This 
+    # does leave the barcode to linger longer than is ideal, but 
+    # normal staff work flow will cause the cookie to be replaced 
+    # with each new patron anyway.
+    # TODO: See about getting the staff client to clear the cookie
 
-    # if successful, do some cleanup and return the 
-    # user to the requesting page.
-
-    return $self->post_hold_redirect;
+    # return to the place_hold page so the results of the hold
+    # placement attempt can be reported to the user
+    return Apache2::Const::OK;
 }
-
-sub post_hold_redirect {
-    my $self = shift;
-    
-    # XXX: Leave the barcode cookie in place.  Otherwise, it's not 
-    # possible to place more than one hold for the patron within 
-    # a staff/patron session.  This does leave the barcode to linger 
-    # longer than is ideal, but normal staff work flow will cause the 
-    # cookie to be replaced with each new patron anyway.
-    # TODO:  See about getting the staff client to clear the cookie
-    return $self->generic_redirect;
-
-    # We also clear the patron_barcode (from the staff client)
-    # cookie at this point (otherwise it haunts the staff user
-    # later). XXX todo make sure this is best; also see that
-    # template when staff mode calls xulG.opac_hold_placed()
-
-    return $self->generic_redirect(
-        undef,
-        $self->cgi->cookie(
-            -name => "patron_barcode",
-            -path => "/",
-            -secure => 1,
-            -value => "",
-            -expires => "-1h"
-        )
-    );
-}
-
 
 sub fetch_user_circs {
     my $self = shift;
@@ -749,18 +744,27 @@ sub fetch_user_circs {
 
     } else {
 
-        my $circ_data = $U->simplereq(
-            'open-ils.actor', 
-            'open-ils.actor.user.checked_out',
-            $e->authtoken, 
-            $e->requestor->id
-        );
+        my $query = {
+            select => {circ => ['id']},
+            from => 'circ',
+            where => {
+                '+circ' => {
+                    usr => $e->requestor->id,
+                    checkin_time => undef,
+                    '-or' => [
+                        {stop_fines => undef},
+                        {stop_fines => {'not in' => ['LOST','CLAIMSRETURNED','LONGOVERDUE']}}
+                    ],
+                }
+            },
+            order_by => {circ => ['due_date']}
+        };
 
-        @circ_ids =  ( @{$circ_data->{overdue}}, @{$circ_data->{out}} );
+        $query->{limit} = $limit if $limit;
+        $query->{offset} = $offset if $offset;
 
-        if($limit or $offset) {
-            @circ_ids = grep { defined $_ } @circ_ids[0..($offset + $limit - 1)];
-        }
+        my $ids = $e->json_query($query);
+        @circ_ids = map {$_->{id}} @$ids;
     }
 
     return [] unless @circ_ids;
@@ -1330,6 +1334,16 @@ sub load_myopac_update_password {
     return $self->generic_redirect($url);
 }
 
+sub _update_bookbag_metadata {
+    my ($self, $bookbag) = @_;
+
+    $bookbag->name($self->cgi->param("name"));
+    $bookbag->description($self->cgi->param("description"));
+
+    return 1 if $self->editor->update_container_biblio_record_entry_bucket($bookbag);
+    return 0;
+}
+
 sub load_myopac_bookbags {
     my $self = shift;
     my $e = $self->editor;
@@ -1372,6 +1386,24 @@ sub load_myopac_bookbags {
             return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
         }
 
+        if ($self->cgi->param("action") eq "editmeta") {
+            if (!$self->_update_bookbag_metadata($bookbag))  {
+                $e->rollback;
+                return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+            } else {
+                $e->commit;
+                my $url = $self->ctx->{opac_root} . '/myopac/lists?id=' .
+                    $bookbag->id;
+
+                # Keep it if we've got it
+                if ($self->cgi->param("sort")) {
+                    $url .= ";sort=" . $self->cgi->param("sort");
+                }
+
+                return $self->generic_redirect($url);
+            }
+        }
+
         my $query = $self->_prepare_bookbag_container_query(
             $bookbag->id, $sorter, $modifier
         );
@@ -1381,14 +1413,13 @@ sub load_myopac_bookbags {
         my $items = $U->bib_container_items_via_search($bookbag->id, $query)
             or return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
 
-        # Maybe save a little memory by creating only one XML::LibXML::Document
-        # instance for each record, even if record is repeated across bookbags.
+        my (undef, @recs) = $self->get_records_and_facets(
+            [ map {$_->target_biblio_record_entry->id} @$items ],
+            undef, 
+            {flesh => '{mra}'}
+        );
 
-        foreach my $rec (map { $_->target_biblio_record_entry } @$items) {
-            next if $ctx->{bookbags_marc_xml}{$rec->id};
-            $ctx->{bookbags_marc_xml}{$rec->id} =
-                (new XML::LibXML)->parse_string($rec->marc);
-        }
+        $ctx->{bookbags_marc_xml}{$_->{id}} = $_->{marc_xml} for @recs;
 
         $bookbag->items($items);
     }
@@ -1712,6 +1743,7 @@ sub load_password_reset {
     } elsif ($barcode or $username) {
 
         my @params = $barcode ? ('barcode', $barcode) : ('username', $username);
+        push(@params, $email) if $email;
 
         $U->simplereq(
             'open-ils.actor', 

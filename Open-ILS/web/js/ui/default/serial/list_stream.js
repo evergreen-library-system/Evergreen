@@ -36,7 +36,7 @@ function load_sdist_display() {
                     var link = dojo.byId("sdist_label_here");
                     link.onclick = function() {
                         location.href = oilsBasePath +
-                            "/eg/serial/subscription?id=" +
+                            "/serial/subscription?id=" +
                             r.subscription() + "&tab=distributions";
                     }
                     link.innerHTML = r.label();

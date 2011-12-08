@@ -8,7 +8,7 @@
     [% IF ctx.search_result_index >= 0 %]
     <div id="rdetail_header">
         <div style="float:left;">
-            <a href='[% mkurl(ctx.opac_root _ '/results', {page => 0}) %]'>[% l('&#9668; Search Results') %]</a>
+            <a href='[% mkurl(ctx.opac_root _ '/results') %]'>[% l('&#9668; Search Results') %]</a>
             <span id="rdetail_result_count">
                 [% l('Showing Item [_1] of [_2]', ctx.search_result_index + 1, ctx.hit_count) %]
             </span>

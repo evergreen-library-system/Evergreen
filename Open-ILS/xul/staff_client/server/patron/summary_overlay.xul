@@ -44,6 +44,9 @@
         <row id="pdsgr5a">
             <description id="patron_net_access" class="copyable net_access value"/>
         </row>
+        <row id="pdsgr5aab">
+            <description id="patron_account_create_date" class="copyable create_date value"/>
+        </row>
         <row id="pdsgr5aa">
             <description id="patron_date_of_exp" class="copyable expire_date value"/>
         </row>

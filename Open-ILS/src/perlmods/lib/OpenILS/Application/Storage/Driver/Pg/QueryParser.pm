@@ -455,6 +455,8 @@ __PACKAGE__->add_search_filter( 'sort' );
 # modifies core query, not configurable
 __PACKAGE__->add_search_modifier( 'descending' );
 __PACKAGE__->add_search_modifier( 'ascending' );
+__PACKAGE__->add_search_modifier( 'nullsfirst' );
+__PACKAGE__->add_search_modifier( 'nullslast' );
 __PACKAGE__->add_search_modifier( 'metarecord' );
 __PACKAGE__->add_search_modifier( 'metabib' );
 
@@ -548,6 +550,9 @@ sub toSQL {
 
     my $desc = 'ASC';
     $desc = 'DESC' if ($self->find_modifier('descending'));
+
+    my $nullpos = 'NULLS LAST';
+    $nullpos = 'NULLS FIRST' if ($self->find_modifier('nullsfirst'));
 
     if (grep {$_ eq $sort_filter} @{$self->QueryParser->dynamic_sorters}) {
         $rank = "FIRST(mrd.attrs->'$sort_filter')"
@@ -668,7 +673,7 @@ SELECT  $key AS id,
         $combined_dyn_filters
         $flat_where
   GROUP BY 1
-  ORDER BY 4 $desc NULLS LAST, 5 DESC NULLS LAST, 3 DESC
+  ORDER BY 4 $desc $nullpos, 5 DESC $nullpos, 3 DESC
   LIMIT $core_limit
 SQL
 

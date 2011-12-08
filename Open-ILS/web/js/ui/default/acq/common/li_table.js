@@ -15,8 +15,10 @@ dojo.require('openils.widget.ProgressDialog');
 dojo.require('openils.PermaCrud');
 dojo.require("openils.widget.PCrudAutocompleteBox");
 
-dojo.requireLocalization('openils.acq', 'acq');
-var localeStrings = dojo.i18n.getLocalization('openils.acq', 'acq');
+if (!localeStrings) {   /* we can do this because javascript doesn't have block scope */
+    dojo.requireLocalization('openils.acq', 'acq');
+    var localeStrings = dojo.i18n.getLocalization('openils.acq', 'acq');
+}
 const XUL_OPAC_WRAPPER = 'chrome://open_ils_staff_client/content/cat/opac.xul';
 var li_exportable_attrs = ["issn", "isbn", "upc"];
 
@@ -84,7 +86,11 @@ function AcqLiTable() {
     };
 
     acqLitCreatePoSubmit.onClick = function() {
-        if (self._confirmPoPrepaySituation()) {
+        if (!self.createPoProviderSelector.attr("value") ||
+                !self.createPoAgencySelector.attr("value")) {
+            alert(localeStrings.CREATE_PO_INVALID);
+            return false;
+        } else if (self._confirmPoPrepaySituation()) {
             acqLitPoCreateDialog.hide();
             self._createPO(acqLitPoCreateDialog.getValues());
         } else {
@@ -385,6 +391,7 @@ function AcqLiTable() {
                     {params: [
                         this.authtoken, li.purchase_order(), {
                             "flesh_price_summary": true,
+                            "flesh_provider" : true,
                             "flesh_lineitem_count": true
                         }
                     ]});
@@ -393,6 +400,11 @@ function AcqLiTable() {
                 var link = nodeByName('po_link', row);
                 link.setAttribute('href', oilsBasePath + '/acq/po/view/' + li.purchase_order());
                 link.innerHTML += po.name();
+
+                openils.Util.show(nodeByName('pro', row), 'inline');
+                link = nodeByName('pro_link', row);
+                link.setAttribute('href', oilsBasePath + '/conify/global/acq/provider/' + po.provider().id())
+                link.innerHTML += po.provider().code();
             }
         }
 

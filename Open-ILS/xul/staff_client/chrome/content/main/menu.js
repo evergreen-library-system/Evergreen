@@ -273,7 +273,31 @@ main.menu.prototype = {
             ],
             'cmd_close_tab' : [
                 ['oncommand'],
-                function() { obj.close_tab(); }
+                function(event) {
+                    var myEvent = event;
+                    var closeAll = false;
+                    if(event && event.sourceEvent) myEvent = event.sourceEvent;
+                    // Note: The last event is not supposed to be myEvent in this if.
+                    if(myEvent && myEvent.explicitOriginalTarget.nodeName.match(/toolbarbutton/) && myEvent.explicitOriginalTarget.command == event.originalTarget.id) {
+                        var value = xulG.pref.getIntPref('ui.key.accelKey');
+                        switch(value) {
+                            case 17:
+                                closeAll = myEvent.ctrlKey;
+                                break;
+                            case 18:
+                                closeAll = myEvent.altKey;
+                                break;
+                            case 224:
+                                closeAll = myEvent.metaKey;
+                                break;
+                        }
+                    }
+                    if(closeAll) {
+                        obj.close_all_tabs();
+                    } else {
+                        obj.close_tab();
+                    }
+                }
             ],
             'cmd_close_all_tabs' : [
                 ['oncommand'],

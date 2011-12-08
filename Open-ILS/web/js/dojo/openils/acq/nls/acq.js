@@ -84,5 +84,6 @@
     "ADD_LI_TO_PO_BAD_PO_STATE" : "The selected PO has already been activated",
     "ADD_LI_TO_PO_BAD_LI_STATE" : "The selected lineitem is not in a state that can be added to a purchase order",
     "INVOICE_NUMBER": "Invoice #${0}",
-    "COPIES_TO_RECEIVE": "Number of copies to receive: "
+    "COPIES_TO_RECEIVE": "Number of copies to receive: ",
+    "CREATE_PO_INVALID": "A purchase order must have an ordering agency and a provider."
 }

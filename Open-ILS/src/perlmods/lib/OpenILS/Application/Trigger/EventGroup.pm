@@ -98,6 +98,25 @@ sub validate {
     return $self;
 }
  
+sub revalidate_test {
+    my $self = shift;
+
+    $self->editor->xact_begin;
+
+    my @valid_events;
+    try {
+        for my $event ( @{ $self->events } ) {
+            push @valid_events, $event->id if $event->revalidate_test;
+        }
+        $self->editor->xact_rollback;
+    } otherwise {
+        $log->error("Event group validation failed with ". shift());
+        $self->editor->xact_rollback;
+    };
+
+    return \@valid_events;
+}
+ 
 sub cleanedup {
     my $self = shift;
     return undef unless (ref $self);

@@ -1716,6 +1716,11 @@ sub find_related_user_hold {
                 ahcm => {
                     field => 'hold',
                     fkey => 'id'
+                },
+                acp => {
+                    field => 'id', 
+                    fkey => 'current_copy',
+                    type => 'left' # there may be no current_copy
                 }
             }
         }, 
@@ -1732,6 +1737,12 @@ sub find_related_user_hold {
             '+ahcm' => {
                 target_copy => $self->copy->id
             },
+            '+acp' => {
+                '-or' => [
+                    {id => undef}, # left-join copy may be nonexistent
+                    {status => {'!=' => OILS_COPY_STATUS_ON_HOLDS_SHELF}},
+                ]
+            }
         },
         order_by => {ahr => {request_time => {direction => 'asc'}}},
         limit => 1
@@ -2343,6 +2354,11 @@ sub checkin_retarget {
 
     return if scalar(@$holds) == 0; # No holds, no retargeting
 
+    # Check for parts on this copy
+    my $parts = $self->editor->search_asset_copy_part_map({ target_copy => $self->copy->id });
+    my %parts_hash = ();
+    %parts_hash = map {$_->id, 1} @$parts if @$parts;
+
     # Loop over holds in request-ish order
     # Stage 1: Get them into request-ish order
     # Also grab type and target for skipping low hanging ones
@@ -2366,6 +2382,15 @@ sub checkin_retarget {
                 and $_->{target} != $self->copy->id);
             # Volume level, but not this volume?
             next if ($_->{hold_type} eq 'V' and $_->{target} != $self->volume->id);
+            if(@$parts) { # We have parts?
+                # Skip title holds
+                next if ($_->{hold_type} eq 'T');
+                # Skip part holds for parts not on this copy
+                next if ($_->{hold_type} eq 'P' and not $parts_hash{$_->{target}});
+            } else {
+                # No parts, no part holds
+                next if ($_->{hold_type} eq 'P');
+            }
             # So much for easy stuff, attempt a retarget!
             my $tresult = $U->storagereq('open-ils.storage.action.hold_request.copy_targeter', undef, $_->{id}, $self->copy->id);
             if(ref $tresult eq "ARRAY" and scalar @$tresult) {
@@ -3271,26 +3296,18 @@ sub checkin_handle_circ {
         $self->copy->circ_lib->id : $self->copy->circ_lib;
     my $stat = $U->copy_status($self->copy->status)->id;
 
-    # immediately available keeps items lost or missing items from going home before being handled
-    my $lost_immediately_available = $U->ou_ancestor_setting_value(
-        $circ_lib, OILS_SETTING_LOST_IMMEDIATELY_AVAILABLE, $self->editor) || 0;
-
-
-    if ( (!$lost_immediately_available) && ($circ_lib != $self->circ_lib) ) {
-
-        if( ($stat == OILS_COPY_STATUS_LOST or $stat == OILS_COPY_STATUS_MISSING) ) {
-            $logger->info("circulator: not updating copy status on checkin because copy is lost/missing");
-        } else {
-            $self->copy->status($U->copy_status(OILS_COPY_STATUS_RESHELVING));
-            $self->update_copy;
-        }
-
-    } elsif ($stat == OILS_COPY_STATUS_LOST) {
-
+    if ($stat == OILS_COPY_STATUS_LOST) {
+        # we will now handle lost fines, but the copy will retain its 'lost'
+        # status if it needs to transit home unless lost_immediately_available
+        # is true
+        #
+        # if we decide to also delay fine handling until the item arrives home,
+        # we will need to call lost fine handling code both when checking items
+        # in and also when receiving transits
         $self->checkin_handle_lost($circ_lib);
-
+    } elsif ($circ_lib != $self->circ_lib and $stat == OILS_COPY_STATUS_MISSING) {
+        $logger->info("circulator: not updating copy status on checkin because copy is missing");
     } else {
-
         $self->copy->status($U->copy_status(OILS_COPY_STATUS_RESHELVING));
         $self->update_copy;
     }
@@ -3349,8 +3366,25 @@ sub checkin_handle_lost {
         $self->checkin_handle_lost_now_found_restore_od($circ_lib) if $restore_od && ! $self->void_overdues;
     }
 
-    $self->copy->status($U->copy_status(OILS_COPY_STATUS_RESHELVING));
-    $self->update_copy;
+    if ($circ_lib != $self->circ_lib) {
+        # if the item is not home, check to see if we want to retain the lost
+        # status at this point in the process
+        my $immediately_available = $U->ou_ancestor_setting_value($circ_lib, OILS_SETTING_LOST_IMMEDIATELY_AVAILABLE, $self->editor) || 0;
+
+        if ($immediately_available) {
+            # lost item status does not need to be retained, so give it a
+            # reshelving status as if it were a normal checkin
+            $self->copy->status($U->copy_status(OILS_COPY_STATUS_RESHELVING));
+            $self->update_copy;
+        } else {
+            $logger->info("circulator: not updating copy status on checkin because copy is lost");
+        }
+    } else {
+        # lost item is home and processed, treat like a normal checkin from
+        # this point on
+        $self->copy->status($U->copy_status(OILS_COPY_STATUS_RESHELVING));
+        $self->update_copy;
+    }
 }
 
 

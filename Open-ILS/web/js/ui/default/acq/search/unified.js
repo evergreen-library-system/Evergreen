@@ -5,6 +5,12 @@ dojo.require("openils.widget.AutoWidget");
 dojo.require("openils.widget.XULTermLoader");
 dojo.require("openils.PermaCrud");
 
+if (!localeStrings) {   /* we can do this because javascript doesn't have block 
+                           scope */
+    dojo.requireLocalization('openils.acq', 'acq');
+    var localeStrings = dojo.i18n.getLocalization('openils.acq', 'acq');
+}
+
 var termSelectorFactory;
 var termManager;
 var resultManager;

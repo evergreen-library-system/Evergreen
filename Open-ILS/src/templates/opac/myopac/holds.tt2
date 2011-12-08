@@ -61,6 +61,12 @@
                         alt="Holds Help"
                         src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
                 </td>
+                <td style="padding-left:5px;" class='error'>
+                    [%  IF ctx.hold_suspend_post_capture;
+                            l('One or more holds could not be suspended because<br/>the item is at (or en route to) the pickup library.');
+                        END;
+                    %]
+                </td>
                 <td align="right">
                     [% l("Show") %] &nbsp; &nbsp;
                     [% IF CGI.param("available") %]
@@ -135,7 +141,7 @@
                     </td>
                     <td width="138">
                         <div style="margin-top:10px;margin-bottom:10px;">
-                            <a href="[% ctx.opac_root %]/record/[% hold.hold.bre.id %]">[% attrs.title | html %]</a>
+                            <a href="[% ctx.opac_root %]/record/[% hold.hold.bre_id %]">[% attrs.title | html %]</a>
                         </div>
                     </td>
                     <td width="123">
@@ -146,11 +152,8 @@
                     <td width="64">
                         <div style="width:26px;height:23px;margin-top:6px;margin-bottom:6px;">
                             [% IF attrs.format_icon %]
-                            <img src="[% ctx.media_prefix %]/images/[% attrs.form_icon %]"
-                                title="[% attrs.format %]" alt="[% attrs.format %]" />
-                            [% ELSE;
-                                attrs.format;
-                               END %]
+                            <img title="[% attrs.format_label | html %]" alt="[% attrs.format_label | html %]" src="[% attrs.format_icon %]" />
+                            [% END %]
                         </div>
                     </td>
                     <td width="136">

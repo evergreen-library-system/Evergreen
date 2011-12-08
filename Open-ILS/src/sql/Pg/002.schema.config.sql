@@ -86,19 +86,22 @@ CREATE TRIGGER no_overlapping_deps
     BEFORE INSERT OR UPDATE ON config.db_patch_dependencies
     FOR EACH ROW EXECUTE PROCEDURE evergreen.array_overlap_check ('deprecates');
 
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0641', :eg_version); -- tsbere/phasefx
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0656', :eg_version); -- dbs/berick
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
 	quality		INT	CHECK ( quality BETWEEN 0 AND 100 ),
 	source		TEXT	NOT NULL UNIQUE,
-	transcendant	BOOL	NOT NULL DEFAULT FALSE
+	transcendant	BOOL	NOT NULL DEFAULT FALSE,
+	can_have_copies	BOOL	NOT NULL DEFAULT TRUE
 );
 COMMENT ON TABLE config.bib_source IS $$
 This is table is used to set up the relative "quality" of each
 MARC source, such as OCLC.  Also identifies "transcendant" sources,
 i.e., sources of bib records that should display in the OPAC
-even if no copies or located URIs are attached.
+even if no copies or located URIs are attached. Also indicates if
+the source is allowed to have actual copies on its bibs. Volumes
+for targeted URIs are unaffected by this setting.
 $$;
 
 CREATE TABLE config.standing (

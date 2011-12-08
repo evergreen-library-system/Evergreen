@@ -2,7 +2,7 @@ package OpenILS::Application::Storage::Publisher::action;
 use parent qw/OpenILS::Application::Storage::Publisher/;
 use strict;
 use warnings;
-use OpenSRF::Utils::Logger qw/:level/;
+use OpenSRF::Utils::Logger qw/:level :logger/;
 use OpenSRF::Utils qw/:datetime/;
 use OpenSRF::Utils::JSON;
 use OpenSRF::AppSession;
@@ -21,6 +21,24 @@ sub isTrue {
 	return 1 if ($v =~ /^t/io);
 	return 1 if ($v =~ /^y/io);
 	return 0;
+}
+
+sub ou_ancestor_setting_value_or_cache {
+	# cache should be specific to setting
+	my ($actor, $org_id, $setting, $cache) = @_;
+
+	if (not exists $cache->{$org_id}) {
+		my $r = $actor->request(
+			'open-ils.actor.ou_setting.ancestor_default', $org_id, $setting
+		)->gather(1);
+
+		if ($r) {
+			$cache->{$org_id} = $r->{value};
+		} else {
+			$cache->{$org_id} = undef;
+		}
+	}
+	return $cache->{$org_id};
 }
 
 my $parser = DateTime::Format::ISO8601->new;
@@ -143,46 +161,20 @@ sub complete_reshelving {
 	throw OpenSRF::EX::InvalidArg ("I need an interval of more than 0 seconds!")
 		unless (interval_to_seconds( $window ));
 
-	my $setting = actor::org_unit_setting->table;
-	my $circ = action::circulation->table;
 	my $cp = asset::copy->table;
-	my $atc = action::transit_copy->table;
 
 	my $sql = <<"	SQL";
 		UPDATE	$cp
 		  SET	status = 0
 		  WHERE	id IN (
-			SELECT  id
-			  FROM  (SELECT cp.id, MAX(circ.checkin_time), MAX(trans.dest_recv_time)
-					  FROM  $cp cp
-							JOIN $circ circ ON (circ.target_copy = cp.id)
-							LEFT JOIN $atc trans ON (trans.target_copy = cp.id)
-							LEFT JOIN $setting setting
-								ON (cp.circ_lib = setting.org_unit AND setting.name = 'circ.reshelving_complete.interval')
-					  WHERE circ.checkin_time IS NOT NULL
-							AND cp.status = 7
-					  GROUP BY 1
-					  HAVING (
-						( ( MAX(circ.checkin_time) > MAX(trans.dest_recv_time) or MAX(trans.dest_recv_time) IS NULL )
-						  AND MAX(circ.checkin_time) < NOW() - CAST( COALESCE( BTRIM( FIRST(setting.value),'"' ), ? )  AS INTERVAL) )
-						OR
-						( MAX(trans.dest_recv_time) > MAX(circ.checkin_time)
-						  AND MAX(trans.dest_recv_time) < NOW() - CAST( COALESCE( BTRIM( FIRST(setting.value),'"' ), ? )  AS INTERVAL) )
-					  )
-					) AS foo
-								UNION ALL
-			SELECT  cp.id
-			  FROM  $cp cp 
-					LEFT JOIN $setting setting
-						ON (cp.circ_lib = setting.org_unit AND setting.name = 'circ.reshelving_complete.interval')
-					LEFT JOIN $circ circ ON (circ.target_copy = cp.id)
-			  WHERE cp.status = 7
-					AND circ.id IS NULL
-					AND cp.create_date < NOW() - CAST( COALESCE( BTRIM( setting.value,'"' ), ? )  AS INTERVAL)
+            SELECT cp.id 
+            FROM  $cp cp
+            WHERE cp.status = 7
+                AND cp.status_changed_time < NOW() - CAST( COALESCE( BTRIM( (SELECT value FROM actor.org_unit_ancestor_setting('circ.reshelving_complete.interval', cp.circ_lib)),'"' ), ? )  AS INTERVAL)
 		  )
 	SQL
 	my $sth = action::circulation->db_Main->prepare_cached($sql);
-	$sth->execute($window, $window, $window);
+	$sth->execute($window);
 
 	return $sth->rows;
 
@@ -1023,7 +1015,7 @@ sub new_hold_copy_targeter {
 	try {
 		if ($one_hold) {
 			$self->method_lookup('open-ils.storage.transaction.begin')->run( $client );
-			$holds = [ action::hold_request->search_where( { id => $one_hold, fulfillment_time => undef, cancel_time => undef } ) ];
+			$holds = [ action::hold_request->search_where( { id => $one_hold, fulfillment_time => undef, cancel_time => undef, frozen => 'f' } ) ];
 		} elsif ( $check_expire ) {
 
 			# what's the retarget time threashold?
@@ -1107,6 +1099,9 @@ sub new_hold_copy_targeter {
 
 	my @successes;
 	my $actor = OpenSRF::AppSession->create('open-ils.actor');
+
+	my $target_when_closed = {};
+	my $target_when_closed_if_at_pickup_lib = {};
 
 	for my $hold (@$holds) {
 		try {
@@ -1274,8 +1269,38 @@ sub new_hold_copy_targeter {
 				# current target
 				next if ($c->id eq $hold->current_copy);
 
-				# circ lib is closed
-				next if ( grep { ''.$_->org_unit eq ''.$c->circ_lib } @closed );
+				# skip on circ lib is closed IFF we care
+				my $ignore_closing;
+
+				if (''.$hold->pickup_lib eq ''.$c->circ_lib) {
+					$ignore_closing = ou_ancestor_setting_value_or_cache(
+                        $actor,
+						''.$c->circ_lib,
+						'circ.holds.target_when_closed_if_at_pickup_lib',
+						$target_when_closed_if_at_pickup_lib
+					) || 0;
+				}
+				if (not $ignore_closing) {  # one more chance to find a reason
+											# to ignore OU closedness.
+					$ignore_closing = ou_ancestor_setting_value_or_cache(
+                        $actor,
+						''.$c->circ_lib,
+						'circ.holds.target_when_closed',
+						$target_when_closed
+					) || 0;
+				}
+
+#				$logger->info(
+#					"For hold " . $hold->id . " and copy with circ_lib " .
+#					$c->circ_lib . " we " .
+#					($ignore_closing ? "ignore" : "respect")
+#					. " closed dates"
+#				);
+
+				next if (
+					(not $ignore_closing) and
+					(grep { ''.$_->org_unit eq ''.$c->circ_lib } @closed)
+				);
 
 				# target of another hold
 				next if (action::hold_request

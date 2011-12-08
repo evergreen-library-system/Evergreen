@@ -300,7 +300,7 @@ sub check_1hit_redirect {
         $sname = 'opac.patron.jump_to_details_on_single_hit';
         $org = ($ctx->{user}) ? 
             $ctx->{user}->home_ou : 
-            $ctx->{orig_loc} || 
+            $ctx->{physical_loc} || 
             $self->ctx->{aou_tree}->()->id;
     }
 
@@ -491,7 +491,7 @@ sub get_staff_search_settings {
     }
 
     my $sss_size = $self->ctx->{get_org_setting}->(
-        $self->ctx->{orig_loc} || $self->ctx->{aou_tree}->()->id,
+        $self->ctx->{physical_loc} || $self->ctx->{aou_tree}->()->id,
         "opac.staff_saved_search.size",
     );
 

@@ -170,6 +170,19 @@ function add_volumes() {
             return; // no read-only view for this interface
         }
 
+        try {
+            JSAN.use('cat.util');
+            var cbsObj = cat.util.get_cbs_for_bre_id(docid);
+            if (cbsObj.can_have_copies() != get_db_true()) {
+                alert(document.getElementById('offlineStrings').getFormattedString('staff.cat.bib_source.can_have_copies.false', [cbsObj.source()]));
+                return;
+            }
+        } catch(E) {
+            g.error.sdump('D_ERROR','can have copies check: ' + E);
+            alert('Error in server/cat/bib_brief.js, add_volumes(): ' + E);
+            return;
+        }
+
         var title = document.getElementById('offlineStrings').getFormattedString('staff.circ.copy_status.add_volumes.title', [docid]);
 
         var url;

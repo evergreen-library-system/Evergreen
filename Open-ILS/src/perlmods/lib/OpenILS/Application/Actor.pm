@@ -628,7 +628,7 @@ sub verify_last_xact {
     return undef unless $xact;
     $logger->info("user xact = $xact, saving with xact " . $patron->last_xact_id);
     return OpenILS::Event->new('XACT_COLLISION')
-        if $xact != $patron->last_xact_id;
+        if $xact ne $patron->last_xact_id;
     return undef;
 }
 

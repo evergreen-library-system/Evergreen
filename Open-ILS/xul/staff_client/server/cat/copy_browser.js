@@ -34,6 +34,8 @@ cat.copy_browser.prototype = {
 
             obj.list_init(params);
 
+            obj.source_init();
+
             obj.controller.render();
 
             obj.default_depth = obj.depth_menu_init();
@@ -42,8 +44,15 @@ cat.copy_browser.prototype = {
             document.getElementById('show_acns').addEventListener(
                 'command',
                 function(ev) {
-                    JSAN.use('util.file'); var file = new util.file('copy_browser_prefs.'+obj.data.server_unadorned);
-                    util.widgets.save_attributes(file, { 'lib_menu' : [ 'value' ], 'show_acns' : [ 'checked' ], 'show_acps' : [ 'checked' ] });
+                    JSAN.use('util.file');
+                    var file = new util.file(
+                        'copy_browser_prefs.'+obj.data.server_unadorned);
+                    util.widgets.save_attributes(file, {
+                        'lib_menu' : [ 'value' ],
+                        'depth_menu' : [ 'value' ],
+                        'show_acns' : [ 'checked' ],
+                        'show_acps' : [ 'checked' ],
+                        'hide_aous' : [ 'checked' ] });
                 },
                 false
             );
@@ -51,8 +60,31 @@ cat.copy_browser.prototype = {
             document.getElementById('show_acps').addEventListener(
                 'command',
                 function(ev) {
-                    JSAN.use('util.file'); var file = new util.file('copy_browser_prefs.'+obj.data.server_unadorned);
-                    util.widgets.save_attributes(file, { 'lib_menu' : [ 'value' ], 'show_acns' : [ 'checked' ], 'show_acps' : [ 'checked' ] });
+                    JSAN.use('util.file');
+                    var file = new util.file(
+                        'copy_browser_prefs.'+obj.data.server_unadorned);
+                    util.widgets.save_attributes(file, {
+                        'lib_menu' : [ 'value' ],
+                        'depth_menu' : [ 'value' ],
+                        'show_acns' : [ 'checked' ],
+                        'show_acps' : [ 'checked' ],
+                        'hide_aous' : [ 'checked' ] });
+                },
+                false
+            );
+
+            document.getElementById('hide_aous').addEventListener(
+                'command',
+                function(ev) {
+                    JSAN.use('util.file');
+                    var file = new util.file(
+                        'copy_browser_prefs.'+obj.data.server_unadorned);
+                    util.widgets.save_attributes(file, {
+                        'lib_menu' : [ 'value' ],
+                        'depth_menu' : [ 'value' ],
+                        'show_acns' : [ 'checked' ],
+                        'show_acps' : [ 'checked' ],
+                        'hide_aous' : [ 'checked' ] });
                 },
                 false
             );
@@ -308,6 +340,11 @@ cat.copy_browser.prototype = {
                                     }
 
                                     if (edit==0) return; // no read-only view for this interface
+
+                                    if (!obj.can_have_copies) {
+                                        alert(document.getElementById('catStrings').getFormattedString('staff.cat.copy_browser.can_have_copies.false', obj.source));
+                                        return;
+                                    }
 
                                     var title = document.getElementById('catStrings').getString('staff.cat.copy_browser.add_item.title');
 
@@ -601,6 +638,11 @@ cat.copy_browser.prototype = {
                                     if (edit==0) {
                                         alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.add_volume.permission_error'));
                                         return; // no read-only view for this interface
+                                    }
+
+                                    if (!obj.can_have_copies) {
+                                        alert(document.getElementById('catStrings').getFormattedString('staff.cat.copy_browser.can_have_copies.false', obj.source));
+                                        return;
                                     }
 
                                     var title = document.getElementById('catStrings').getString('staff.cat.copy_browser.add_volume.title');
@@ -1058,7 +1100,8 @@ cat.copy_browser.prototype = {
                         'lib_menu' : [ 'value' ],
                         'depth_menu' : [ 'value' ],
                         'show_acns' : [ 'checked' ],
-                        'show_acps' : [ 'checked' ]
+                        'show_acps' : [ 'checked' ],
+                        'hide_aous' : [ 'checked' ]
                     });
                 },
                 false
@@ -1128,7 +1171,8 @@ cat.copy_browser.prototype = {
                             'lib_menu' : [ 'value' ],
                             'depth_menu' : [ 'value' ],
                             'show_acns' : [ 'checked' ],
-                            'show_acps' : [ 'checked' ]
+                            'show_acps' : [ 'checked' ],
+                            'hide_aous' : [ 'checked' ]
                         });
                         obj.refresh_list();
                     },
@@ -1485,8 +1529,19 @@ cat.copy_browser.prototype = {
                         obj.map_acp[ 'acp_' + copies[j].id() ] = function(r){return r;}(copies[j]);
                     }
                 }
-                data.row.my.volume_count = v_count;
+                data.row.my.volume_count = String(v_count);
                 data.row.my.copy_count = '<' + c_count + '>';
+            }
+            if (document.getElementById('hide_aous').checked) {
+                if (org.children().length == 0
+                        && data.row.my.volume_count == '0') {
+                    if (!params) {
+                        params = { 'hidden' : true };
+                    } else {
+                        params['hidden'] = true;
+                    }
+                    dump('hiding org.id() = ' + org.id() + '\n');
+                }
             }
             if (parent_org) {
                 data.node = obj.map_tree[ 'aou_' + parent_org.id() ];
@@ -1792,6 +1847,20 @@ cat.copy_browser.prototype = {
 
         } catch(E) {
             this.error.sdump('D_ERROR','cat.copy_browser.list_init: ' + E + '\n');
+            alert(E);
+        }
+    },
+
+    // Sets can_have_copies and source member variables.
+    'source_init' : function() {
+        var obj = this;
+        try {
+            JSAN.use('cat.util');
+            var cbsObj = cat.util.get_cbs_for_bre_id(obj.docid);
+            obj.can_have_copies = (cbsObj.can_have_copies() == get_db_true());
+            obj.source = cbsObj.source();
+        } catch(E) {
+            obj.error.sdump('D_ERROR','can have copies check: ' + E);
             alert(E);
         }
     },

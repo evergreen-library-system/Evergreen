@@ -28,7 +28,7 @@ function load_siss_display() {
                     var link = dojo.byId("siss_label_here");
                     link.onclick = function() {
                         location.href = oilsBasePath +
-                            "/eg/serial/subscription?id=" +
+                            "/serial/subscription?id=" +
                             r.subscription() + "&tab=issuances";
                     }
                     link.innerHTML = r.label();

@@ -12,7 +12,7 @@ cat.util.EXPORT_OK    = [
     'render_loan_duration', 'mark_item_as_missing_pieces', 'render_callnumbers_for_bib_menu',
     'render_cn_prefix_menuitems', 'render_cn_suffix_menuitems', 'render_cn_class_menu',
     'render_cn_prefix_menu', 'render_cn_suffix_menu', 'transfer_specific_title_holds',
-    'request_items', 'mark_for_overlay'
+    'request_items', 'mark_for_overlay', 'get_cbs_for_bre_id'
 ];
 cat.util.EXPORT_TAGS    = { ':all' : cat.util.EXPORT_OK };
 
@@ -603,6 +603,7 @@ cat.util.fast_item_add = function(doc_id,cn_label,cp_barcode) {
         copy_obj.holdable(get_db_true());
         copy_obj.opac_visible(get_db_true());
         copy_obj.ref(get_db_false());
+        copy_obj.mint_condition(get_db_true());
 
         JSAN.use('util.window'); var win = new util.window();
         JSAN.use('cat.util');
@@ -1262,5 +1263,22 @@ cat.util.mark_for_overlay = function(doc_id,doc_mvr) {
     }
 }
 
+cat.util.get_cbs_for_bre_id = function(doc_id) {
+    try {
+        JSAN.use('util.network'); var network = new util.network();
+        var bibObj = network.simple_request(
+            'FM_BRE_RETRIEVE_VIA_ID',
+            [ ses(), [ doc_id ] ]
+        );
+        bibObj = bibObj[0];
+        var cbsObj = network.simple_request(
+            'FM_CBS_RETRIEVE_VIA_PCRUD',
+            [ ses(), bibObj.source() ]
+        );
+        return cbsObj;
+    } catch(E) {
+        alert('Error in cat.util.cbs_can_have_copies(): ' + E);
+    }
+}
 
 dump('exiting cat/util.js\n');

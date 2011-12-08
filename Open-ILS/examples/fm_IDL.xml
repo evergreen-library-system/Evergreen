@@ -2353,6 +2353,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="authority_links" reltype="has_many" key="bib" map="" class="abl"/>
 			<link field="subscriptions" reltype="has_many" key="record_entry" map="" class="ssub"/>
 			<link field="attrs" reltype="might_have" key="id" map="" class="mra"/>
+			<link field="source" reltype="has_a" key="id" map="" class="cbs"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -4862,6 +4863,7 @@ SELECT  usr,
 			<field name="quality" reporter:datatype="int" />
 			<field name="source" reporter:datatype="text"/>
 			<field name="transcendant" reporter:datatype="bool"/>
+			<field name="can_have_copies" reporter:datatype="bool"/>
 		</fields>
 		<links/>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">

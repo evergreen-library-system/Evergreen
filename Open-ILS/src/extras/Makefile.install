@@ -4,7 +4,7 @@
 #
 # Makefile to install prerequisites for OpenSRF and Evergreen
 #
-# Currently supports Debian (squeeze), Ubuntu (lucid), and Fedora (15).
+# Currently supports Debian (squeeze), Ubuntu (lucid), and Fedora (16).
 # Working towards support of CentOS 5 / RHEL 5.
 # Installs Perl prereqs, libjs with Perl wrapper, libdbi, libdbi-drivers, and libyaz
 #
@@ -13,7 +13,7 @@
 # 	- or -
 # 	make -f Makefile.install ubuntu-lucid
 # 	- or -
-# 	make -f Makefile.install fedora15
+# 	make -f Makefile.install fedora16
 # 	- or -
 # 	make -f Makefile.install centos
 # 	- or -
@@ -36,6 +36,9 @@ LIBJS_PERL_URL=http://mirror.datapipe.net/pub/CPAN/authors/id/T/TB/TBUSCH/$(LIBJ
 # used for installing libjs lib and header files
 JS_INSTALL_PREFIX=/usr/
 
+LIBNET_Z3950_SIMPLESERVER=Net-Z3950-SimpleServer-1.15
+LIBNET_Z3950_SIMPLESERVER_URL=http://ftp.indexdata.dk/pub/simpleserver/$(LIBNET_Z3950_SIMPLESERVER)
+
 # The libdbi sources can be fetched from sourceforge.net.  They are stored on
 # the open-ils.org site now for ease of direct linking
 LIBDBI=libdbi-0.8.3
@@ -44,7 +47,7 @@ LIBDBI_HOST=http://open-ils.org/~denials/evergreen
 
 # We need a recent version of Yaz
 # Debian Lenny and Ubuntu 8.10 come with 3.0.34
-YAZ=yaz-3.0.47
+YAZ=yaz-4.2.17
 YAZ_HOST=http://ftp.indexdata.dk/pub/yaz
 
 # Business::OnlinePayment is not packaged on CentOS/RHEL
@@ -175,6 +178,7 @@ FEDORA_RPMS = \
 	perl-Email-Send \
 	perl-Email-Simple \
 	perl-GDGraph3d \
+	perl-JSON-XS \
 	perl-Net-IP \
 	perl-Net-SSH2 \
 	perl-OLE-Storage_Lite \
@@ -206,6 +210,13 @@ PGSQL_90_RPMS = \
 	postgresql90-plperl \
 	postgresql90-server
 
+PGSQL_FEDORA_RPMS = \
+	postgresql \
+	postgresql-contrib \
+	postgresql-libs \
+	postgresql-plperl \
+	postgresql-server
+
 PGSQL_CLIENT_DEBS_90 = \
 	libpq5 \
 	libpq-dev \
@@ -234,11 +245,9 @@ DEB_APACHE_DISMODS = \
     deflate
 
 # Chronically unpackaged CPAN modules
-# Note older version of Net::Z3950::SimpleServer to avoid yaz 4.1.x dependency
 CPAN_MODULES = \
 	Business::EDI \
 	Library::CallNumber::LC \
-	M/MI/MIRK/Net-Z3950-SimpleServer-1.12.tar.gz \
 	Net::Z3950::Simple2ZOOM \
 	Template::Plugin::POSIX \
 	SRU
@@ -278,26 +287,26 @@ all:
 	@echo "please specify an OS" && exit 0
 
 # these should be the same for any distro
-install: install_cpan install_js_sm install_libdbi install_cpan_force
+install: install_cpan install_js_sm install_cpan_force
 
 centos: install_centos_pgsql centos_like
 rhel: install_redhat_pgsql centos_like
-centos_like: install_centos_rpms install_yaz install_cpan_marc install install_centos_perl create_ld_local install_cpan_safe install_cpan_force
+centos_like: install_centos_rpms install_yaz install_cpan_marc install install_centos_perl create_ld_local install_cpan_safe install_libdbi
 
-fedora15: install_fedora_rpms install_cpan install_cpan_fedora install_cpan_marc install_js_sm install_cpan_force
+fedora16: install_fedora_rpms install_cpan_fedora install_cpan_marc install
 
 debian-squeeze: squeeze generic_debian
 squeeze: install_pgsql_client_debs_90  install_extra_debs_squeeze
-generic_debian:  install_debs test_for_libdbi_pkg install debian_sys_config install_cpan_force
+generic_debian: install_debs install_yaz test_for_libdbi_pkg install debian_sys_config install_libdbi
 
 ubuntu-lucid: lucid generic_ubuntu
 lucid: install_pgsql_client_debs_90 install_extra_debs install_cpan_marc_record install_yaz install_cpan_lucid
-generic_ubuntu: install_debs test_for_libdbi_pkg install debian_sys_config install_cpan_more install_cpan_safe install_cpan_force
+generic_ubuntu: install_debs install_yaz test_for_libdbi_pkg install debian_sys_config install_cpan_more install_cpan_safe install_libdbi
 
 # - COMMON TARGETS ---------------------------------------------------------
 
 # Install the CPAN modules
-install_cpan: 
+install_cpan: install_net_z3950_simpleserver
 	for m in $(CPAN_MODULES); do perl -MCPAN -e "install \"$$m\";"; done
 
 install_cpan_more: 
@@ -365,6 +374,11 @@ install_spidermonkey:
 		sed -i -e 's/js32.dll/libjs.so/' $(LIBJS_PERL)/Makefile.PL ; \
 	fi;
 	cd $(LIBJS_PERL) && perl Makefile.PL -E4X && make && make test && make install
+
+install_net_z3950_simpleserver:
+	if [ ! -f $(LIBNET_Z3950_SIMPLESERVER).tar.gz ]; then wget $(LIBNET_Z3950_SIMPLESERVER_URL).tar.gz; fi;
+	tar -zxf $(LIBNET_Z3950_SIMPLESERVER).tar.gz
+	cd $(LIBNET_Z3950_SIMPLESERVER) && perl Makefile.PL && make && make test && make install
 
 # On Ubuntu and possibly Debian, the libdbi0 package prevents the 
 # compiled-from-source version from being used and breaks the install.
@@ -452,7 +466,7 @@ install_fedora_rpms:
 	yum -y install $(FEDORA_RPMS)
 
 install_fedora_pgsql_server:
-	yum -y install $(PGSQL_90_RPMS)
+	yum -y install $(PGSQL_FEDORA_RPMS)
 
 # CENTOS
 install_centos_rpms:

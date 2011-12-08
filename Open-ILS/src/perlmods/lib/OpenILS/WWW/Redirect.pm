@@ -66,7 +66,7 @@ sub handler {
 	my $depth = $apache->dir_config('OILSRedirectDepth');
 	my $locale = $apache->dir_config('OILSRedirectLocale') || 'en-US';
     my $use_tt = ($apache->dir_config('OILSRedirectTpac') || '') =~ /true/i;
-    my $orig_loc;
+    my $physical_loc;
 
     $apache->log->debug("Redirector sees client frim $user_ip");
 
@@ -80,7 +80,7 @@ sub handler {
 		if ($nhostname =~ m/[^\s]/) { $hostname = $nhostname; }
 
         if($org_cache{$shortname}) {
-            $orig_loc = $org_cache{$shortname};
+            $physical_loc = $org_cache{$shortname};
 
         } else {
 
@@ -89,7 +89,7 @@ sub handler {
                 'open-ils.actor.org_unit.retrieve_by_shortname',
 			    $shortname)->gather(1);
 
-            $org_cache{$shortname} = $orig_loc = $org->id if $org;
+            $org_cache{$shortname} = $physical_loc = $org->id if $org;
         }
 	}
 
@@ -98,7 +98,7 @@ sub handler {
     if($use_tt) {
 
         $url .= "/eg/opac/home";
-        $url .= "?orig_loc=$orig_loc" if $orig_loc;
+        $url .= "?physical_loc=$physical_loc" if $physical_loc;
 
 =head1 potential locale/skin implementation
 
@@ -127,8 +127,8 @@ sub handler {
 
     } else {
         $url .= "/opac/$locale/skin/$skin/xml/index.xml";
-        if($orig_loc) {
-            $url .= "?ol=" . $orig_loc;
+        if($physical_loc) {
+            $url .= "?ol=" . $physical_loc;
             $url .= "&d=$depth" if defined $depth;
         }
     }

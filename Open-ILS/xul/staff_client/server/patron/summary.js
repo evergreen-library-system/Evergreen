@@ -531,6 +531,17 @@ patron.summary.prototype = {
                             };
                         }
                     ],
+                    'patron_account_create_date' : [
+                        ['render'],
+                        function(e) {
+                            return function() {
+                                util.widgets.set_text(e,
+                                    patronStrings.getString('staff.patron.summary.create_date') + ' '
+                                    + util.date.formatted_date( obj.patron.create_date(), '%{localized_date}' )
+                                );
+                            };
+                        }
+                    ],
                     'patron_date_of_exp' : [
                         ['render'],
                         function(e) {

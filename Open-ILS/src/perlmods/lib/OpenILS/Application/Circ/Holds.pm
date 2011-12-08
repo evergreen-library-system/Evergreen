@@ -867,6 +867,7 @@ sub batch_update_hold {
 
 sub update_hold_impl {
     my($self, $e, $hold, $values) = @_;
+    my $hold_status;
 
     unless($hold) {
         $hold = $e->retrieve_action_hold_request($values->{id})
@@ -913,15 +914,28 @@ sub update_hold_impl {
 		return $e->die_event unless $e->allowed('UPDATE_HOLD_REQUEST_TIME', $hold->pickup_lib);
 	}
 
+
+    # --------------------------------------------------------------
+    # Disallow hold suspencion if the hold is already captured.
+    # --------------------------------------------------------------
+    if ($U->is_true($hold->frozen) and not $U->is_true($orig_hold->frozen)) {
+        $hold_status = _hold_status($e, $hold);
+        if ($hold_status > 2) { # hold is captured
+            $logger->info("bypassing hold freeze on captured hold");
+            return OpenILS::Event->new('HOLD_SUSPEND_AFTER_CAPTURE');
+        }
+    }
+
+
     # --------------------------------------------------------------
     # if the hold is on the holds shelf or in transit and the pickup 
     # lib changes we need to create a new transit.
     # --------------------------------------------------------------
     if($orig_hold->pickup_lib ne $hold->pickup_lib) {
 
-        my $status = _hold_status($e, $hold);
+        $hold_status = _hold_status($e, $hold) unless $hold_status;
 
-        if($status == 3) { # in transit
+        if($hold_status == 3) { # in transit
 
             return $e->die_event unless $e->allowed('UPDATE_PICKUP_LIB_FROM_TRANSIT', $orig_hold->pickup_lib);
             return $e->die_event unless $e->allowed('UPDATE_PICKUP_LIB_FROM_TRANSIT', $hold->pickup_lib);
@@ -937,7 +951,7 @@ sub update_hold_impl {
             $transit->dest($hold->pickup_lib);
             $e->update_action_hold_transit_copy($transit) or return $e->die_event;
 
-        } elsif($status == 4) { # on holds shelf
+        } elsif($hold_status == 4) { # on holds shelf
 
             return $e->die_event unless $e->allowed('UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF', $orig_hold->pickup_lib);
             return $e->die_event unless $e->allowed('UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF', $hold->pickup_lib);
@@ -1863,6 +1877,7 @@ __PACKAGE__->register_method(
     method    => 'fetch_captured_holds',
     api_name  => 'open-ils.circ.captured_holds.on_shelf.retrieve',
     stream    => 1,
+    authoritative => 1,
     signature => q/
 		Returns a list of un-fulfilled holds (on the Holds Shelf) for a given title id
 		@param authtoken The login session key
@@ -1874,6 +1889,7 @@ __PACKAGE__->register_method(
     method    => 'fetch_captured_holds',
     api_name  => 'open-ils.circ.captured_holds.id_list.on_shelf.retrieve',
     stream    => 1,
+    authoritative => 1,
     signature => q/
 		Returns list ids of un-fulfilled holds (on the Holds Shelf) for a given title id
 		@param authtoken The login session key
@@ -1885,6 +1901,7 @@ __PACKAGE__->register_method(
     method    => 'fetch_captured_holds',
     api_name  => 'open-ils.circ.captured_holds.id_list.expired_on_shelf.retrieve',
     stream    => 1,
+    authoritative => 1,
     signature => q/
 		Returns list ids of shelf-expired un-fulfilled holds for a given title id
 		@param authtoken The login session key
@@ -3049,7 +3066,8 @@ sub uber_hold_impl {
     my $details = retrieve_hold_queue_status_impl($e, $hold);
 
     my $resp = {
-        hold           => $hold,
+        hold    => $hold,
+        bre_id  => $bre->id,
         ($copy     ? (copy           => $copy)     : ()),
         ($volume   ? (volume         => $volume)   : ()),
         ($issuance ? (issuance       => $issuance) : ()),
@@ -3179,6 +3197,8 @@ sub clear_shelf_cache {
                         first_given_name second_given_name family_name alias
                     /],
                     "acn" => ["label"],
+                    "acnp" => [{column => "label", alias => "prefix"}],
+                    "acns" => [{column => "label", alias => "suffix"}],
                     "bre" => ["marc"],
                     "acpl" => ["name"],
                     "ahr" => ["id"]
@@ -3193,6 +3213,12 @@ sub clear_shelf_cache {
                                     "join" => {
                                         "bre" => {
                                             "field" => "id", "fkey" => "record"
+                                        },
+                                        "acnp" => {
+                                            "field" => "id", "fkey" => "prefix"
+                                        },
+                                        "acns" => {
+                                            "field" => "id", "fkey" => "suffix"
                                         }
                                     }
                                 },
@@ -3329,10 +3355,18 @@ sub clear_shelf_process {
         # tell the client we're done
         $client->respond_complete({cache_key => $cache_key});
 
+        # ------------
         # fire off the hold cancelation trigger and wait for response so don't flood the service
+
+        # refetch the holds to pick up the caclulated cancel_time, 
+        # which may be needed by Action/Trigger
+        $e->xact_begin;
+        my $updated_holds = $e->search_action_hold_request({id => $hold_ids}, {substream => 1});
+        $e->rollback;
+
         $U->create_events_for_hook(
             'hold_request.cancel.expire_holds_shelf', 
-            $_, $org_id, undef, undef, 1) for @holds;
+            $_, $org_id, undef, undef, 1) for @$updated_holds;
 
     } else {
         # tell the client we're done

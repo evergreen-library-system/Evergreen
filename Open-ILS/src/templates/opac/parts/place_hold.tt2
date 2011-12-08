@@ -6,15 +6,12 @@
     <h1>[% l('Place Hold') %]</h1>
     <form method="POST">
         <input type="hidden" name="hold_type" value="[% CGI.param('hold_type') | html %]" />
-        [%#
-            new_redirect_to = ctx.referer;
-            IF new_redirect_to.match('redirect_to');
-                new_redirect_to = 'https://' _ ctx.hostname _ ctx.opac_root _ '/home';
-            ELSE;
-                new_redirect_to = new_redirect_to | replace('^http:', 'https:');
-            END;
+        [%  
+            redirect = CGI.param('hold_source_page') || CGI.param('redirect_to') || CGI.referer;
+            # since we have to be logged in to get this far, return to a secure page
+            redirect = redirect.replace('^http:', 'https:') 
         %]
-        <input type="hidden" name="redirect_to" value="[% CGI.param('redirect_to') || CGI.referer | html %]" />
+        <input type="hidden" name="redirect_to" value="[% redirect | html %]" />
 
         [% IF ctx.is_staff %]
         <p class="staff-hold">

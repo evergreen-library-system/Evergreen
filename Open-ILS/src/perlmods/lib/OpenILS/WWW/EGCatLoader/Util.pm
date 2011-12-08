@@ -21,6 +21,10 @@ sub init_ro_object_cache {
     my $e = $self->editor;
     my $ctx = $self->ctx;
 
+    # reset org unit setting cache on each page load to avoid the 
+    # requirement of reloading apache with each org-setting change
+    $cache{org_settings} = {};
+
     if($ro_object_subs) {
         # subs have been built.  insert into the context then move along.
         $ctx->{$_} = $ro_object_subs->{$_} for keys %$ro_object_subs;
@@ -176,7 +180,15 @@ sub get_records_and_facets {
             my($self, $req) = @_;
             my $data = $req->{response}->[0]->content;
             my $xml = XML::LibXML->new->parse_string($data->{'unapi.bre'})->documentElement;
-            my $bre_id =  $xml->find('*[@tag="901"]/*[@code="c"]')->[0]->textContent;
+
+            # Protect against legacy invalid MARCXML that might not have a 901c
+            my $bre_id;
+            my $bre_id_nodes =  $xml->find('*[@tag="901"]/*[@code="c"]');
+            if ($bre_id_nodes) {
+                $bre_id =  $bre_id_nodes->[0]->textContent;
+            } else {
+                $logger->warn("Missing 901 subfield 'c' in " . $xml->toString());
+            }
             push(@data, {id => $bre_id, marc_xml => $xml});
         }
     );

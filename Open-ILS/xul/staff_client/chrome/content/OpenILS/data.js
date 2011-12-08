@@ -270,6 +270,25 @@ OpenILS.data.prototype = {
                         for (var i in x) {
                             obj.print_list_templates[i] = x[i];
                         }
+                        // handle macro changes
+                        var templates = [ 'bills_current', 'bills_historical' ];
+                        for (var i = 0; i < templates.length; i++) {
+                            if (obj.print_list_templates[templates[i]]) {
+                                // mbts_id
+                                obj.print_list_templates[templates[i]].line_item =
+                                    obj.print_list_templates[templates[i]].line_item.replace(
+                                        /%id%/g, '%mbts_id%');
+                                // mbts_xact_start
+                                obj.print_list_templates[templates[i]].line_item =
+                                    obj.print_list_templates[templates[i]].line_item.replace(
+                                        /%xact_start%/g, '%mbts_xact_start%');
+                                // mbts_xact_finish
+                                obj.print_list_templates[templates[i]].line_item =
+                                    obj.print_list_templates[templates[i]].line_item.replace(
+                                        /%xact_finish%/g, '%mbts_xact_finish%');
+                            }
+                        }
+                        //
                         obj.stash('print_list_templates');
                         obj.data_progress('Saved print templates retrieved from file. ');
                     }
@@ -376,13 +395,13 @@ OpenILS.data.prototype = {
                 'bills_historical' : {
                     'type' : 'bills',
                     'header' : 'Welcome to %LIBRARY%!<br/>You had the following bills:<hr/><ol>',
-                    'line_item' : '<dt><b>Bill #%mbts_id%</b> %title% </dt> <dd> <table> <tr valign="top"><td>Date:</td><td>%xact_start%</td></tr> <tr valign="top"><td>Type:</td><td>%xact_type%</td></tr> <tr valign="top"><td>Last Billing:</td><td>%last_billing_type%<br/>%last_billing_note%</td></tr> <tr valign="top"><td>Total Billed:</td><td>$%total_owed%</td></tr> <tr valign="top"><td>Last Payment:</td><td>%last_payment_type%<br/>%last_payment_note%</td></tr> <tr valign="top"><td>Total Paid:</td><td>$%total_paid%</td></tr> <tr valign="top"><td><b>Balance:</b></td><td><b>$%balance_owed%</b></td></tr> </table><br/>',
+                    'line_item' : '<dt><b>Bill #%mbts_id%</b> %title% </dt> <dd> <table> <tr valign="top"><td>Date:</td><td>%mbts_xact_start%</td></tr> <tr valign="top"><td>Type:</td><td>%xact_type%</td></tr> <tr valign="top"><td>Last Billing:</td><td>%last_billing_type%<br/>%last_billing_note%</td></tr> <tr valign="top"><td>Total Billed:</td><td>$%total_owed%</td></tr> <tr valign="top"><td>Last Payment:</td><td>%last_payment_type%<br/>%last_payment_note%</td></tr> <tr valign="top"><td>Total Paid:</td><td>$%total_paid%</td></tr> <tr valign="top"><td><b>Balance:</b></td><td><b>$%balance_owed%</b></td></tr> </table><br/>',
                     'footer' : '</ol><hr />%SHORTNAME% %TODAY_TRIM%<br/>\r\n<br/>\r\n'
                 }, 
                 'bills_current' : {
                     'type' : 'bills',
                     'header' : 'Welcome to %LIBRARY%!<br/>You have the following bills:<hr/><ol>',
-                    'line_item' : '<dt><b>Bill #%id%</b></dt> <dd> <table> <tr valign="top"><td>Date:</td><td>%xact_start%</td></tr> <tr valign="top"><td>Type:</td><td>%xact_type%</td></tr> <tr valign="top"><td>Last Billing:</td><td>%last_billing_type%<br/>%last_billing_note%</td></tr> <tr valign="top"><td>Total Billed:</td><td>$%total_owed%</td></tr> <tr valign="top"><td>Last Payment:</td><td>%last_payment_type%<br/>%last_payment_note%</td></tr> <tr valign="top"><td>Total Paid:</td><td>$%total_paid%</td></tr> <tr valign="top"><td><b>Balance:</b></td><td><b>$%balance_owed%</b></td></tr> </table><br/>',
+                    'line_item' : '<dt><b>Bill #%mbts_id%</b></dt> <dd> <table> <tr valign="top"><td>Date:</td><td>%mbts_xact_start%</td></tr> <tr valign="top"><td>Type:</td><td>%xact_type%</td></tr> <tr valign="top"><td>Last Billing:</td><td>%last_billing_type%<br/>%last_billing_note%</td></tr> <tr valign="top"><td>Total Billed:</td><td>$%total_owed%</td></tr> <tr valign="top"><td>Last Payment:</td><td>%last_payment_type%<br/>%last_payment_note%</td></tr> <tr valign="top"><td>Total Paid:</td><td>$%total_paid%</td></tr> <tr valign="top"><td><b>Balance:</b></td><td><b>$%balance_owed%</b></td></tr> </table><br/>',
                     'footer' : '</ol><hr />%SHORTNAME% %TODAY_TRIM%<br/>\r\n<br/>\r\n'
                 },
                 'offline_checkin' : {

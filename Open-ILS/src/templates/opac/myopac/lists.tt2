@@ -57,10 +57,10 @@
             <div class="bookbag-controls most">
                 [% baseurl = ctx.opac_root _ '/myopac/lists';
                 IF bbag.id != CGI.param("id");
-                    url = mkurl(baseurl, {id => bbag.id}, ['edit_notes']);
+                    url = mkurl(baseurl,{id => bbag.id},['edit_notes','sort']);
                     ltitle = l("Show items in list");
                 ELSE;
-                    url = mkurl(baseurl, {}, ['id', 'edit_notes']);
+                    url = mkurl(baseurl, {}, ['id', 'edit_notes', 'sort']);
                     ltitle = l("Hide items in list");
                 END %]
                 <h2 class="bookbag-name"><a title="[% ltitle %]" href="[% url %]">[% bbag.name | html %]</a></h2>
@@ -110,15 +110,48 @@
         </div>
         [% IF CGI.param("id") == bbag.id %]
         <div class="bookbag-specific">
-            <form method="GET">
-                <label for="opac.result.sort">[% l("Sort list items by: ") %]</label>
-                [% INCLUDE "opac/parts/filtersort.tt2"
-                    value=CGI.param('sort') mode='bookbag' %]
-                <input type="hidden" name="id"
-                    value="[% CGI.param('id') | html %]" />
-                <input type="submit" value="[% l('Sort') %]" />
-            </form>
+            <div class="sort">
+                <form method="GET">
+                    <label for="opac.result.sort">[% l("Sort list items by: ") %]</label>
+                    [% INCLUDE "opac/parts/filtersort.tt2"
+                        value=CGI.param('sort') mode='bookbag' %]
+                    <input type="hidden" name="id"
+                        value="[% CGI.param('id') | html %]" />
+                    <input type="submit" value="[% l('Sort') %]" />
+                </form>
+            </div>
+            <div class="meta">
+                <form method="POST">
+                    <input type="hidden" name="id" value="[% bbag.id %]" />
+                    <input type="hidden" name="action" value="editmeta" />
+                    <input type="hidden" name="sort" value="[% CGI.param('sort') | html %]" />
+                    <table id="bbag-name-desc-form">
+                        <tr>
+                            <th>
+                                <label for="bbag-edit-name">[% l('Name:') %]</label>
+                            </th>
+                            <td>
+                                <input name="name" type="text"
+                                    value="[% bbag.name | html %]"
+                                    id="bbag-edit-name" />
+                            </td>
+                            <td rowspan="2" class="saver">
+                                [% l("Save changes to name or description?") %]<br />
+                                <input type="submit" value="[% l('Save') %]" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label for="bbag-edit-description">[% l('Description:') %]</label></th>
+                            <td>
+                                <textarea name="description"
+                                    id="bbag-edit-description">[% bbag.description | html %]</textarea>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
         </div>
+        <br class="clear-both" />
         <form action="[% ctx.opac_root %]/myopac/list/update" method="POST">
         <input type="hidden" name="list" value="[% bbag.id %]" />
         <input type="hidden" name="sort" value="[% CGI.param('sort') | uri %]" />

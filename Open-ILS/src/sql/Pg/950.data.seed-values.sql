@@ -1,10 +1,10 @@
 --002.schema.config.sql:
-INSERT INTO config.bib_source (id, quality, source, transcendant) VALUES 
-    (1, 90, oils_i18n_gettext(1, 'oclc', 'cbs', 'source'), FALSE);
-INSERT INTO config.bib_source (id, quality, source, transcendant) VALUES 
-    (2, 10, oils_i18n_gettext(2, 'System Local', 'cbs', 'source'), FALSE);
-INSERT INTO config.bib_source (id, quality, source, transcendant) VALUES 
-    (3, 1, oils_i18n_gettext(3, 'Project Gutenberg', 'cbs', 'source'), TRUE);
+INSERT INTO config.bib_source (id, quality, source, transcendant, can_have_copies) VALUES 
+    (1, 90, oils_i18n_gettext(1, 'oclc', 'cbs', 'source'), FALSE, TRUE);
+INSERT INTO config.bib_source (id, quality, source, transcendant, can_have_copies) VALUES 
+    (2, 10, oils_i18n_gettext(2, 'System Local', 'cbs', 'source'), FALSE, TRUE);
+INSERT INTO config.bib_source (id, quality, source, transcendant, can_have_copies) VALUES 
+    (3, 1, oils_i18n_gettext(3, 'Project Gutenberg', 'cbs', 'source'), TRUE, TRUE);
 SELECT SETVAL('config.bib_source_id_seq'::TEXT, 100);
 
 INSERT INTO biblio.peer_type (id,name) VALUES
@@ -1442,7 +1442,11 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 512, 'ACQ_INVOICE_REOPEN', oils_i18n_gettext( 512,
     'Allows a user to reopen an Acquisitions invoice', 'ppl', 'description' )),
  ( 513, 'DEBUG_CLIENT', oils_i18n_gettext( 513,
-    'Allows a user to use debug functions in the staff client', 'ppl', 'description' ));
+    'Allows a user to use debug functions in the staff client', 'ppl', 'description' )),
+ ( 514, 'UPDATE_PATRON_ACTIVE_CARD', oils_i18n_gettext( 514,
+    'Allows a user to manually adjust a patron''s active cards', 'ppl', 'description')),
+ ( 515, 'UPDATE_PATRON_PRIMARY_CARD', oils_i18n_gettext( 515,
+    'Allows a user to manually adjust a patron''s primary card', 'ppl', 'description'));
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
 
@@ -4456,6 +4460,23 @@ INSERT into config.org_unit_setting_type
         'If unset, the OPAC (only when wrapped in the staff client!) will default to showing you your ten most recent searches on the left side of the results and record details pages.  If you actually don''t want to see this feature at all, set this value to zero at the top of your organizational tree.',
         'coust', 'description'),
     'integer', null)
+,( 'circ.holds.target_when_closed', 'circ',
+    oils_i18n_gettext('circ.holds.target_when_closed',
+        'Target copies for a hold even if copy''s circ lib is closed',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.holds.target_when_closed',
+        'If this setting is true at a given org unit or one of its ancestors, the hold targeter will target copies from this org unit even if the org unit is closed (according to the actor.org_unit.closed_date table).',
+        'coust', 'description'),
+    'bool', null)
+,( 'circ.holds.target_when_closed_if_at_pickup_lib', 'circ',
+    oils_i18n_gettext('circ.holds.target_when_closed_if_at_pickup_lib',
+        'Target copies for a hold even if copy''s circ lib is closed IF the circ lib is the hold''s pickup lib',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.holds.target_when_closed_if_at_pickup_lib',
+        'If this setting is true at a given org unit or one of its ancestors, the hold targeter will target copies from this org unit even if the org unit is closed (according to the actor.org_unit.closed_date table) IF AND ONLY IF the copy''s circ lib is the same as the hold''s pickup lib.',
+        'coust', 'description'),
+    'bool', null)
+
 
 ,( 'opac.staff.jump_to_details_on_single_hit', 'opac',
     oils_i18n_gettext('opac.staff.jump_to_details_on_single_hit',
@@ -6324,9 +6345,18 @@ INSERT INTO action_trigger.environment (event_def, path) VALUES
     (4, 'lineitems.lineitem_notes'),
     (4, 'notes');
 
+INSERT INTO action_trigger.cleanup ( module, description ) VALUES (
+    'CreateHoldNotification',
+    oils_i18n_gettext(
+        'CreateHoldNotification',
+        'Creates a hold_notification record for each notified hold',
+        'atclean',
+        'description'
+    )
+);
 
-INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, delay, delay_field, group_field, template)
-    VALUES (5, 'f', 1, 'Hold Ready for Pickup Email Notification', 'hold.available', 'HoldIsAvailable', 'SendEmail', '30 minutes', 'shelf_time', 'usr',
+INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, delay, delay_field, group_field, cleanup_success, template)
+    VALUES (5, 'f', 1, 'Hold Ready for Pickup Email Notification', 'hold.available', 'HoldIsAvailable', 'SendEmail', '30 minutes', 'shelf_time', 'usr', 'CreateHoldNotification',
 $$
 [%- USE date -%]
 [%- user = target.0.usr -%]
@@ -7570,6 +7600,7 @@ $$
         <div>Author: [% helpers.get_li_attr("author", "", li.attributes) %]</div>
         <div class="count">Item Count: [% li.lineitem_details.size %]</div>
         <div class="lineid">Lineitem ID: [% li.id %]</div>
+        <div>Open Holds: [% helpers.bre_open_hold_count(li.eg_bib_id) %]</div>
 
         [% IF li.distribution_formulas.size > 0 %]
             [% SET forms = [] %]
@@ -10369,3 +10400,10 @@ INSERT INTO action_trigger.validator ( module, description ) VALUES (
     'ReservationIsAvailable',
     'Checked that a reserved resource is available for checkout'
 );
+
+INSERT INTO container.biblio_record_entry_bucket_type (code, label) VALUES (
+    'vandelay_queue',
+    oils_i18n_gettext('vandelay_queue', 'Vandelay Queue', 'cbrebt', 'label')
+);
+
+

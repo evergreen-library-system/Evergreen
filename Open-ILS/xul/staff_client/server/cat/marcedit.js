@@ -18,6 +18,8 @@
  * GNU General Public License for more details.  
  *
  */
+// Pretty printing kills whitespace too, so disable it.
+XML.prettyPrinting = false;
 var xmlDeclaration = /^<\?xml version[^>]+?>/;
 
 var serializer = new XMLSerializer();
@@ -1049,6 +1051,7 @@ function marcSubfield (sf) {
             sf.@code,
             { value : sf.@code,
               class : 'plain marcSubfieldCode',
+              align: 'start',
               name : 'marcSubfieldCode',
               onmouseover : 'current_focus = this; getContextMenu(this, "subfield"); getTooltip(this, "subfield");',
               oncontextmenu : 'getContextMenu(this, "subfield");',
@@ -1060,6 +1063,7 @@ function marcSubfield (sf) {
             { value : sf.text(),
               name : sf.parent().@tag + ':' + sf.@code,
               class : 'plain marcSubfield', 
+              align: 'start',
               onmouseover : 'getTooltip(this, "subfield");',
               contextmenu : function (event) { getAuthorityContextMenu(event.target, sf) },
               size : new String(sf.text()).length + 2,

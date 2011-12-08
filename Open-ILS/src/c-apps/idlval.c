@@ -29,8 +29,8 @@ GNU General Public License for more details.
 #include <libxml/debugXML.h>
 #include <libxml/xmlmemory.h>
 
-#include "utils.h"
-#include "osrf_hash.h"
+#include <opensrf/utils.h>
+#include <opensrf/osrf_hash.h>
 
 /* Represents the command line */
 struct Opts {

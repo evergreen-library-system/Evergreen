@@ -27,7 +27,7 @@
                     <a href="[% ctx.opac_root %]/home">[% l('Another Search') %]</a>
                 </div>
                 <div class="results_header_btns">
-                    <a href="[% ctx.opac_root %]/advanced">[% l('Advanced Search') %]</a>
+                    <a href="[% mkurl(ctx.opac_root _ '/advanced') %]">[% l('Advanced Search') %]</a>
                 </div>
                 [% IF ctx.mylist.size %]
                 <div class="results_header_btns cached_list_div">

@@ -25,7 +25,8 @@ use OpenILS::WWW::EGCatLoader::Container;
 my $U = 'OpenILS::Application::AppUtils';
 
 use constant COOKIE_SES => 'ses';
-use constant COOKIE_ORIG_LOC => 'eg_orig_loc';
+use constant COOKIE_PHYSICAL_LOC => 'eg_physical_loc';
+use constant COOKIE_SSS_EXPAND => 'eg_sss_expand';
 
 use constant COOKIE_ANON_CACHE => 'anoncache';
 use constant ANON_CACHE_MYLIST => 'mylist';
@@ -107,10 +108,13 @@ sub load {
     return $self->load_cache_clear if $path =~ m|opac/cache/clear|;
 
     # ----------------------------------------------------------------
-    # Logout and login require SSL
+    #  Everything below here requires SSL
     # ----------------------------------------------------------------
+    return $self->redirect_ssl unless $self->cgi->https;
+    return $self->load_password_reset if $path =~ m|opac/password_reset|;
+    return $self->load_logout if $path =~ m|opac/logout|;
+
     if($path =~ m|opac/login|) {
-        return $self->redirect_ssl unless $self->cgi->https;
         return $self->load_login unless $self->editor->requestor; # already logged in?
 
         # This will be less confusing to users than to be shown a login form
@@ -123,20 +127,10 @@ sub load {
         );
     }
 
-    if($path =~ m|opac/logout|) {
-        #return Apache2::Const::FORBIDDEN unless $self->cgi->https; 
-        $self->apache->log->warn("catloader: logout called in non-secure context from " . 
-            ($self->ctx->{referer} || '<no referer>')) unless $self->cgi->https;
-        return $self->load_logout;
-    }
-
-    return $self->load_password_reset if $path =~ m|opac/password_reset|;
-
     # ----------------------------------------------------------------
-    #  Everything below here requires SSL + authentication
+    #  Everything below here requires authentication
     # ----------------------------------------------------------------
-    return $self->redirect_auth
-        unless $self->cgi->https and $self->editor->requestor;
+    return $self->redirect_auth unless $self->editor->requestor;
 
     return $self->load_place_hold if $path =~ m|opac/place_hold|;
     return $self->load_myopac_holds if $path =~ m|opac/myopac/holds|;
@@ -220,7 +214,7 @@ sub load_common {
     $ctx->{unparsed_uri} = $self->apache->unparsed_uri;
     $ctx->{opac_root} = $ctx->{base_path} . "/opac"; # absolute base url
     $ctx->{is_staff} = 0; # Assume false, check for workstation id later.  Was: ($self->apache->headers_in->get('User-Agent') =~ /oils_xulrunner/);
-    $ctx->{orig_loc} = $self->get_orig_loc;
+    $ctx->{physical_loc} = $self->get_physical_loc;
 
     # capture some commonly accessed pages
     $ctx->{home_page} = 'http://' . $self->apache->hostname . $self->ctx->{opac_root} . "/home";
@@ -249,27 +243,53 @@ sub load_common {
         }
     }
 
+    $self->staff_saved_searches_set_expansion_state if $ctx->{is_staff};
+
     return Apache2::Const::OK;
 }
 
-# orig_loc (i.e. "original location") passed in as a URL 
-# param will replace any existing orig_loc stored as a cookie.
-sub get_orig_loc {
+sub staff_saved_searches_set_expansion_state {
     my $self = shift;
 
-    if(my $orig_loc = $self->cgi->param('orig_loc')) {
+    my $param = $self->cgi->param('sss_expand');
+    my $value;
+    
+    if (defined $param) {
+        $value = ($param ? 1 : 0);
         $self->apache->headers_out->add(
             "Set-Cookie" => $self->cgi->cookie(
-                -name => COOKIE_ORIG_LOC,
+                -name => COOKIE_SSS_EXPAND,
                 -path => $self->ctx->{base_path},
-                -value => $orig_loc,
+                -secure => 1,   # not strictly necessary, but this feature is staff-only, so may as well
+                -value => $value,
                 -expires => undef
             )
         );
-        return $orig_loc;
+    } else {
+        $value = $self->cgi->cookie(COOKIE_SSS_EXPAND);
     }
 
-    return $self->cgi->cookie(COOKIE_ORIG_LOC);
+    $self->ctx->{saved_searches_expanded} = $value;
+}
+
+# physical_loc (i.e. "original location") passed in as a URL 
+# param will replace any existing physical_loc stored as a cookie.
+sub get_physical_loc {
+    my $self = shift;
+
+    if(my $physical_loc = $self->cgi->param('physical_loc')) {
+        $self->apache->headers_out->add(
+            "Set-Cookie" => $self->cgi->cookie(
+                -name => COOKIE_PHYSICAL_LOC,
+                -path => $self->ctx->{base_path},
+                -value => $physical_loc,
+                -expires => undef
+            )
+        );
+        return $physical_loc;
+    }
+
+    return $self->cgi->cookie(COOKIE_PHYSICAL_LOC);
 }
 
 

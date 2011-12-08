@@ -690,7 +690,8 @@ span.dash_divider {
 	padding-bottom:5px;
 }
 
-#zero_search_hits div { float:left;width:300px;margin-top:20px; }
+.zero_search_hits_main { float:left; width:300px; margin-top: 2ex; }
+.zero_search_hits_saved { float:left; width:200px; margin-top: 2ex; margin-right: 2em; }
 
 #zero_search_hits p {
 	margin-top:0;
@@ -1162,11 +1163,18 @@ a.opac-button {
 h2.bookbag-name { margin-bottom: 0em; padding-bottom: 0em; }
 .bookbag-share .fixed { min-width: 4em; }
 .bookbag-specific { margin-left: 1em; }
+.bookbag-specific div.sort { float: left; width: 45%; text-align: left; }
+.bookbag-specific div.meta { float: right; width: 54%; text-align: right; }
+#bbag-name-desc-form tr th { vertical-align: middle; }
+#bbag-name-desc-form .saver { vertical-align: middle; text-align: center; }
 .bookbag-description {
     padding-top: 0em;
     font-style: italic;
     max-width: 40em;
 }
+#bbag-edit-description { width: 20em; }
+#bbag-edit-name { width: 20em; }
+textarea { font-family: sans-serif; }
 table.bookbag-specific {
     border-right: 1px solid #999;
     border-bottom: 1px solid #666;
@@ -1239,3 +1247,11 @@ table.bookbag-specific {
 .float-left { float: left; }
 .float-right { float: right; }
 
+.saved-searches-header { width: 100%; font-weight: bold; font-size: 120%; }
+.saved-searches-header .button { float: right; width: 28px; }
+.saved-searches-header .text { float: left; padding-right: 1em; margin: 0.5ex 0;}
+.saved-searches-header {font-weight: bold; font-size: 120%; }
+.saved-searches { border-bottom: 1px solid #666; }
+#staff-saved-search { /* wraps .saved-searches-header and .saved-searches on the record page */
+    border-right: 1px solid #333;
+}

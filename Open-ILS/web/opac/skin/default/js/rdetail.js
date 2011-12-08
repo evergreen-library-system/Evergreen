@@ -191,9 +191,19 @@ function rdetailDraw() {
 			dojo.place("<div id='mfhd_ad_menu'></div>", "rdetail_details_table", "after");
 			var mfhd_add = new dijit.Menu({style:"float: right;"});
 			new dijit.MenuItem({onClick:function(){
-				var req = new Request(CREATE_MFHD_RECORD, G.user.session, 1, here.id(), getRid());
-				var res = req.send();
-				alert(dojo.string.substitute(opac_strings.CREATED_MFHD_RECORD, [here.name()]));
+				var bibReq = new Request(FETCH_BRE, [getRid()]);
+				bibReq.send(true);
+				var bib = bibReq.result()[0];
+				var sourceReq = new Request(FETCH_BIB_SOURCE, G.user.session, bib.source());
+				sourceReq.send(true);
+				var source = sourceReq.result();
+				if (source.can_have_copies() == 'f') {
+					alert(dojo.string.substitute(opac_strings.SOURCE_CANNOT_HAVE_COPIES, [source.source()]));
+				} else {
+					var req = new Request(CREATE_MFHD_RECORD, G.user.session, 1, here.id(), getRid());
+					var res = req.send();
+					alert(dojo.string.substitute(opac_strings.CREATED_MFHD_RECORD, [here.name()]));
+				}
 			}, label:opac_strings.CREATE_MFHD}).placeAt(mfhd_add);
 			mfhd_add.placeAt(mfhd_ad_menu);
 		}
@@ -1254,7 +1264,7 @@ function rdetailCheckForGBPreview() {
 function searchForGBPreview( isbn ) {
 	dojo.require("dojo.io.script");
 	dojo.io.script.get({"url": "https://www.google.com/jsapi"});
-	dojo.io.script.get({"url": "http://books.google.com/books", "content": { "bibkeys": isbn, "jscmd": "viewapi", "callback": "GBPreviewCallback"}});
+	dojo.io.script.get({"url": "https://www.googleapis.com/books/v1/volumes", "content": { "q": "isbn:" + isbn, "callback": "GBPreviewCallback"}});
 }
 
 /**
@@ -1266,21 +1276,17 @@ function searchForGBPreview( isbn ) {
  * @param {JSON} GBPBookInfo is the JSON object pulled from the Google books service.
  */
 function GBPreviewCallback(GBPBookInfo) {
-	var GBPreviewDiv = document.getElementById("rdetail_preview_div");
-	var GBPBook;
+	if (GBPBookInfo.totalItems < 1) return;
 
-	for ( i in GBPBookInfo ) {
-		GBPBook = GBPBookInfo[i];
-	}
-
-	if ( !GBPBook ) {
+	var accessInfo = GBPBookInfo.items[0].accessInfo;
+	if ( !accessInfo ) {
 		return;
 	}
 
-	if ( GBPBook.preview != "noview" ) {
+	if ( accessInfo.embeddable ) {
 		// Add a button below the book cover image to load the preview.
 		GBPBadge = document.createElement( 'img' );
-		GBPBadge.src = 'http://books.google.com/intl/en/googlebooks/images/gbs_preview_button1.gif';
+		GBPBadge.src = 'https://www.google.com/intl/en/googlebooks/images/gbs_preview_button1.gif';
 		GBPBadge.title = $('rdetail_preview_badge').innerHTML;
 		GBPBadge.style.border = 0;
 		GBPBadgelink = document.createElement( 'a' );

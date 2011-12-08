@@ -523,13 +523,15 @@ sub receive_lineitem_detail {
     $lid->recv_time('now');
     $e->update_acq_lineitem_detail($lid) or return 0;
 
-    my $copy = $e->retrieve_asset_copy($lid->eg_copy_id) or return 0;
-    $copy->status(OILS_COPY_STATUS_IN_PROCESS);
-    $copy->edit_date('now');
-    $copy->editor($e->requestor->id);
-    $copy->creator($e->requestor->id) if $U->ou_ancestor_setting_value(
-        $e->requestor->ws_ou, 'acq.copy_creator_uses_receiver', $e);
-    $e->update_asset_copy($copy) or return 0;
+    if ($lid->eg_copy_id) {
+        my $copy = $e->retrieve_asset_copy($lid->eg_copy_id) or return 0;
+        $copy->status(OILS_COPY_STATUS_IN_PROCESS);
+        $copy->edit_date('now');
+        $copy->editor($e->requestor->id);
+        $copy->creator($e->requestor->id) if $U->ou_ancestor_setting_value(
+            $e->requestor->ws_ou, 'acq.copy_creator_uses_receiver', $e);
+        $e->update_asset_copy($copy) or return 0;
+    }
 
     $mgr->add_lid;
 
@@ -561,11 +563,13 @@ sub rollback_receive_lineitem_detail {
     $lid->clear_recv_time;
     $e->update_acq_lineitem_detail($lid) or return 0;
 
-    my $copy = $e->retrieve_asset_copy($lid->eg_copy_id) or return 0;
-    $copy->status(OILS_COPY_STATUS_ON_ORDER);
-    $copy->edit_date('now');
-    $copy->editor($e->requestor->id);
-    $e->update_asset_copy($copy) or return 0;
+    if ($lid->eg_copy_id) {
+        my $copy = $e->retrieve_asset_copy($lid->eg_copy_id) or return 0;
+        $copy->status(OILS_COPY_STATUS_ON_ORDER);
+        $copy->edit_date('now');
+        $copy->editor($e->requestor->id);
+        $e->update_asset_copy($copy) or return 0;
+    }
 
     $mgr->add_lid;
     return $lid;
@@ -855,7 +859,13 @@ sub delete_picklist {
     $picklist = $mgr->editor->retrieve_acq_picklist($picklist) unless ref $picklist;
 
     # delete all 'new' lineitems
-    my $li_ids = $mgr->editor->search_acq_lineitem({picklist => $picklist->id, state => 'new'}, {idlist => 1});
+    my $li_ids = $mgr->editor->search_acq_lineitem(
+        {
+            picklist => $picklist->id,
+            "-or" => {state => "new", purchase_order => undef}
+        },
+        {idlist => 1}
+    );
     for my $li_id (@$li_ids) {
         my $li = $mgr->editor->retrieve_acq_lineitem($li_id);
         return 0 unless delete_lineitem($mgr, $li);
