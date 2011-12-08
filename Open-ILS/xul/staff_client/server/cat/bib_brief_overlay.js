@@ -94,6 +94,24 @@ function bib_brief_overlay(params) {
             }
         }
 
+        // Let's loop through bre.attrs.attrs and put them with any matching
+        // elements in bib_brief_overlay.xul
+        if (params.bre.attrs()) {
+            // FIXME -- we should do this in the perl; what's below isn't robust
+            var attrs = JSON2js(
+                '{' +
+                params.bre.attrs().attrs().replace(
+                    '=>',':','g').replace('NULL','null','g')
+                + '}'
+            );
+            for (var attr in attrs) {
+                if (exists(attr)) {
+                    set(attr,attrs[attr]);
+                    set_tooltip(attr,attr);
+                }
+            }
+        }
+
         // Let's fetch a bib call number, if the "bib_call_number" field exists
         // in our display
         if (exists('bib_call_number')) {

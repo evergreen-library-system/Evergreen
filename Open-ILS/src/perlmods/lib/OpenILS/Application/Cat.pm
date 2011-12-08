@@ -427,9 +427,9 @@ __PACKAGE__->register_method(
     method        => "biblio_record_record_metadata",
     api_name      => "open-ils.cat.biblio.record.metadata.retrieve",
     authoritative => 1,
-    argc          => 1, #(session_id, biblio_tree ) 
-    notes         => "Walks the tree and commits any changed nodes " .
-                     "adds any new nodes, and deletes any deleted nodes",
+    argc          => 2, #(session_id, list of bre ids )
+    notes         => "Returns a list of slim-downed bre objects based on the " .
+                     "ids passed in",
 );
 
 sub biblio_record_record_metadata {
@@ -448,6 +448,7 @@ sub biblio_record_record_metadata {
             my $rec = $editor->retrieve_biblio_record_entry($_);
         $rec->creator($editor->retrieve_actor_user($rec->creator));
         $rec->editor($editor->retrieve_actor_user($rec->editor));
+        $rec->attrs($editor->retrieve_metabib_record_attr($rec->id));
         $rec->clear_marc; # slim the record down
         push( @results, $rec );
     }
