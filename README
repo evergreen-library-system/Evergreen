@@ -99,14 +99,16 @@ apt-get install python-software-properties
 add-apt-repository ppa:pitti/postgresql
 ------------------------------------------------------------------------------
 +
+  * Ubuntu Precise comes with PostgreSQL 9, so no additional steps are required.
++
   * Fedora 16 comes with PostgreSQL 9, so no additional steps are required.
 +
 3. On Debian and Ubuntu, run `aptitude update` as the *root* Linux account to
    retrieve the new packages from the backports repository.
 4. Issue the following commands as the *root* Linux account to install
    prerequisites using the `Makefile.install` prerequisite installer,
-   substituting `debian-squeeze`, `fedora16`, `ubuntu-lucid`, `centos`, or
-   `rhel` for <osname> below:
+   substituting `debian-squeeze`, `fedora16`, `ubuntu-lucid`, `ubuntu-precise`,
+   `centos`, or `rhel` for <osname> below:
 +
 [source, bash]
 ------------------------------------------------------------------------------
@@ -121,7 +123,11 @@ welcome!
 5. Add the libdbi-libdbd libraries to the system dynamic library path by
    issuing the following commands as the *root* Linux account:
 +
-.Debian / Ubuntu
+[NOTE]
+You should skip this step if installing on Ubuntu 12.04 LTS (Precise
+Pangolin).  The ubuntu-precise target uses libdbd-pgsql from packages.
++
+.Debian / Ubuntu Lucid
 [source, bash]
 ------------------------------------------------------------------------------
 echo "/usr/local/lib/dbd" > /etc/ld.so.conf.d/eg.conf
