@@ -210,6 +210,7 @@ avoid using bookbags all together.  Thank you.">
 <!ENTITY myopac.holds.status.waiting "Waiting for copy">
 <!ENTITY myopac.holds.status.intransit "In Transit">
 <!ENTITY myopac.holds.status.available "Ready for Pickup">
+<!ENTITY myopac.holds.status.suspended "Suspended">
 <!ENTITY myopac.holds.cancel "Cancel">
 <!ENTITY myopac.holds.verify "If you wish to cancel the selected hold, click OK, otherwise click Cancel.">
 <!ENTITY myopac.holds.freeze_selected "Suspend">

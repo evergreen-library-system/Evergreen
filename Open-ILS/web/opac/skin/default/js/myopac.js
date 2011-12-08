@@ -477,7 +477,9 @@ function myOShowHoldStatus(r) {
 		hideMe($n(row, 'myopac_holds_cancel_link'));
 	}
 
-    if (showHoldQueuePosition) {
+    if( qstats.status == 7 ) {
+        unHideMe($n(row, 'hold_status_suspended'));
+    } else if (showHoldQueuePosition) {
         var node = $n(row, 'hold_qstats');
         if (qstats.potential_copies == 1) {
             node.appendChild(text(dojo.string.substitute(opac_strings.HOLD_STATUS_SINGULAR, [qstats.queue_position, qstats.total_holds, qstats.potential_copies])));

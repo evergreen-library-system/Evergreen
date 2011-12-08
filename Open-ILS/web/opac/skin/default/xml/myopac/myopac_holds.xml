@@ -85,6 +85,7 @@
 
 				<td name='myopac_holds_location'></td>
 				<td>
+					<span class='hide_me' name='hold_status_suspended'>&myopac.holds.status.suspended;</span>
 					<span class='hide_me' name='hold_status_waiting'>&myopac.holds.status.waiting;</span>
 					<span class='hide_me' name='hold_status_transit'>&myopac.holds.status.intransit;</span>
 					<span class='hide_me' name='hold_status_available'><b style='color:red'>&myopac.holds.status.available;</b></span>
