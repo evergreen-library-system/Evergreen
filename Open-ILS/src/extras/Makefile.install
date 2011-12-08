@@ -122,6 +122,16 @@ EXTRA_DEBS = \
 EXTRA_DEBS_SQUEEZE = \
     libuuid-tiny-perl
 
+EXTRA_DEBS_PRECISE = \
+    libdbi-dev \
+    libdbd-pgsql \
+    libmarc-record-perl \
+    libbusiness-edi-perl \
+    liblibrary-callnumber-lc-perl \
+    libsru-perl \
+    libnet-z3950-simple2zoom-perl \
+    libuuid-tiny-perl
+
 # Ubuntu Hardy requires libencode-perl # to get a version of Encode
 # > 2.12 - see bug 525069.
 EXTRA_ENCODE = \
@@ -222,6 +232,11 @@ PGSQL_CLIENT_DEBS_90 = \
 	libpq-dev \
 	postgresql-client-9.0
 
+PGSQL_CLIENT_DEBS_91 = \
+	libpq5 \
+	libpq-dev \
+	postgresql-client-9.1
+
 PGSQL_SERVER_DEBS_90 = \
 	postgresql-9.0 \
 	postgresql-contrib-9.0 \
@@ -277,9 +292,16 @@ CPAN_MODULES_MARC_RECORD = \
 CPAN_MODULES_FORCE = \
 	Class::DBI::Frozen::301
 
-# Lucid needs this because the XML::RPC that comes by default is broken with Evergreen
-LUCID_CPAN = \
-	XML::RPC
+# Lucid Lynx needs the following additional CPAN modules.
+CPAN_MODULES_LUCID = \
+    RPC::XML::Function
+
+# Precise Pangolin needs the following CPAN modules. All others are
+# avaialalbe as debs.
+CPAN_MODULES_PRECISE = \
+    Business::CreditCard::Object \
+    Template::Plugin::POSIX \
+    RPC::XML::Function
 
 # ----------------------------------------------------------------------------
 
@@ -299,9 +321,22 @@ debian-squeeze: squeeze generic_debian
 squeeze: install_pgsql_client_debs_90  install_extra_debs_squeeze
 generic_debian: install_debs install_yaz test_for_libdbi_pkg install debian_sys_config install_libdbi
 
+# Needs for Ubuntu Lucid Lynx (10.04 LTS):
 ubuntu-lucid: lucid generic_ubuntu
-lucid: install_pgsql_client_debs_90 install_extra_debs install_cpan_marc_record install_yaz install_cpan_lucid
-generic_ubuntu: install_debs install_yaz test_for_libdbi_pkg install debian_sys_config install_cpan_more install_cpan_safe install_libdbi
+lucid: install_pgsql_client_debs_90 install_extra_debs \
+       install_cpan_marc_record install_yaz install_cpan_more \
+       install_cpan_safe install_cpan_lucid install test_for_libdbi_pkg \
+       install_libdbi
+
+# Needs for Ubuntu Precise Panglin (12.04 LTS):
+ubuntu-precise: precise generic_ubuntu
+precise: install_pgsql_client_debs_91 install_extra_debs_precise \
+	 install_cpan_precise install_js_sm install_cpan_force
+
+# We don't do the "install" target on generic_ubuntu because newer
+# Ubuntu releases, like newer Debian releases, include packages for
+# many of those prerequisites.
+generic_ubuntu: install_debs debian_sys_config
 
 # - COMMON TARGETS ---------------------------------------------------------
 
@@ -337,7 +372,11 @@ install_cpan_fedora:
 
 # Install the CPAN modules needed for Lucid
 install_cpan_lucid:
-	for m in $(LUCID_CPAN); do perl -MCPAN -e "install \"$$m\";"; done
+	for m in $(CPAN_MODULES_LUCID); do perl -MCPAN -e "install \"$$m\";"; done
+
+# Install the CPAN modules needed for Precise
+install_cpan_precise:
+	for m in $(CPAN_MODULES_PRECISE); do perl -MCPAN -e "install \"$$m\";"; done
 
 # Install a known working version of YAZ
 install_yaz:    
@@ -444,12 +483,19 @@ install_pgsql_client_debs_90:
 install_pgsql_server_debs_90:
 	$(APT_BACKPORT_TOOL) install $(PGSQL_SERVER_DEBS_90)
 
+install_pgsql_client_debs_91:
+	$(APT_TOOL) install $(PGSQL_CLIENT_DEBS_91)
+
 install_pgsql_server_debs_91:
 	$(APT_BACKPORT_TOOL) install $(PGSQL_SERVER_DEBS_91)
 
 # Install the debian-specific dependencies for more modern distros
 install_extra_debs_squeeze: install_extra_debs
 	$(APT_TOOL) install $(EXTRA_DEBS_SQUEEZE)
+
+# Install dependencies for Ubuntu 12.04:
+install_extra_debs_precise: install_extra_debs
+	$(APT_TOOL) install $(EXTRA_DEBS_PRECISE)
 
 install_extra_debs:
 	$(APT_TOOL) install $(EXTRA_DEBS)
