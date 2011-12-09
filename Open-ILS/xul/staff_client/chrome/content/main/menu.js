@@ -1048,6 +1048,10 @@ main.menu.prototype = {
                 ['oncommand'],
                 function(event) { open_eg_web_page('conify/global/booking/resource_attr_map', null, event); }
             ],
+            'cmd_local_admin_address_alert' : [
+                ['oncommand'],
+                function(event) { open_eg_web_page('conify/global/actor/address_alert', null, event); }
+            ],
             'cmd_acq_create_invoice' : [
                 ['oncommand'],
                 function(event) { open_eg_web_page('acq/invoice/view?create=1', 'menu.cmd_acq_create_invoice.tab', event); }

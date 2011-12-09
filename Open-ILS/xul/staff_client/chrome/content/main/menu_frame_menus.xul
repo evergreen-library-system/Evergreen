@@ -148,6 +148,9 @@
     <command id="cmd_local_admin_work_log" />
     <command id="cmd_local_admin_patrons_due_refunds" />
     <command id="cmd_local_admin_copy_template" />
+    <command id="cmd_local_admin_address_alert"
+             perm="ADMIN_ADDRESS_ALERT VIEW_ADDRESS_ALERT"
+             />
 
     <!-- server admin menu commands -->
     <command id="cmd_server_admin_org_type"
@@ -497,6 +500,7 @@
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.survey.label;" command="cmd_local_admin_survey"/>
                 <menuitem label="&staff.server.admin.index.transit_list;" command="cmd_local_admin_transit_list"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.work_log.label;" accesskey="&staff.main.menu.admin.local_admin.work_log.accesskey;" command="cmd_local_admin_work_log"/>
+                <menuitem label="&staff.main.menu.admin.local_admin.address_alert.label;" command="cmd_local_admin_address_alert"/>
             </menupopup>
         </menu>
         <menu id="main.menu.admin.server" label="&staff.main.menu.admin.server_admin.label;">

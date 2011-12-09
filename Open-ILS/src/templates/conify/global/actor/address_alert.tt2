@@ -1,0 +1,62 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = l('Address Alert') %]
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+        <div>[% l('Address Alert') %]</div>
+        <div>
+            <button dojoType='dijit.form.Button' onClick='addrAlertGrid.showCreateDialog()'>[% l('New Address Alert') %]</button>
+            <button dojoType='dijit.form.Button' onClick='addrAlertGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
+        </div>
+    </div>
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+        <span>[% l('Context Org Unit') %]</span>
+        <select dojoType="openils.widget.OrgUnitFilteringSelect"
+                jsId='contextOrgSelector'
+                searchAttr='shortname'
+                labelAttr='shortname'>
+        </select>
+    </div>
+    <div>
+        <p>
+            [% |l %]* Address Alert fields support regular expressions and are case-insensitive by default.[% END %]<br/>
+            <span class='pad-level-1'>[% |l %]* Example wildcard match:  742 Evergr.*n Terrace[% END %]</span><br/>
+            <span class='pad-level-1'>[% |l %]* Example case-sensitive match: (?c)742 Evergr.*n Terrace[% END %]</span><br/>
+            [% |l %]* If the billing or mailing address fields are selected, the tested address must be a billing or mailing address to match.[% END %]<br/>
+        </p>
+    </div>
+    <table  jsId="addrAlertGrid"
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['owner', 'active', 'match_all', 'alert_message', 'street1', 'street2', 'city', 'county', 'state', 'country', 'post_code']"
+            query="{field: '*'}"
+            fmClass='aal'
+            autoHeight='true'
+            editOnEnter='true'>
+    </table>
+</div>
+
+<script type="text/javascript">
+    dojo.require('openils.Util');
+    dojo.require('openils.User');
+    dojo.require('openils.widget.AutoGrid');
+    dojo.require('openils.widget.OrgUnitFilteringSelect');
+
+    function loadGrid() {
+        var org = contextOrgSelector.attr('value');
+        addrAlertGrid.resetStore();
+        addrAlertGrid.loadAll({}, {owner : org}); 
+    }
+
+    openils.Util.addOnLoad( 
+        function() { 
+            new openils.User().buildPermOrgSelector('ADMIN_ADDRESS_ALERT', contextOrgSelector, null, 
+                function() {
+                    dojo.connect(contextOrgSelector, 'onChange', loadGrid);
+                    loadGrid();
+                }
+            );
+        } 
+    );
+</script>
+[% END %]
+
+
