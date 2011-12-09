@@ -283,7 +283,7 @@ span.dash_divider {
 }
 
 #adv_search_tabs a, #acct_tabs a, #acct_fines_tabs a {
-    width:156px;
+    padding: 1em 1em 0.5em;
 }
 
 #adv_search.on, #num_search.on, #expert_search.on {
