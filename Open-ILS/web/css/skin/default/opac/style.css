@@ -896,12 +896,11 @@ span.dash_divider {
 
 .facet_box_temp {
 	padding-bottom:3px;
-	width:180px;
+	width: 15em;
 	overflow:hidden;
 }
 
 .facet_box_temp .header {
-	width:180px;
 	height:31px;
 	overflow:hidden;
 	background:url('/images/facet_box_bg.png') no-repeat;
@@ -914,7 +913,6 @@ span.dash_divider {
 	float:left;
 	padding-top:6px;
 	padding-left:12px;
-	width:134px;
 	overflow:hidden;
 }
 
@@ -931,7 +929,7 @@ span.dash_divider {
 }
 
 .facet_box_wrapper .box_wrapper .box {
-	width:166px;
+	width: 14em;
 	border-top:1px solid #7ebee5;
 	border-left:1px solid #f3f3f3;
 	border-right:1px solid #f3f3f3;
@@ -961,6 +959,11 @@ span.dash_divider {
 
 .facet_template_selected {
     background-color: #d7d7d7;
+}
+
+.facet_border {
+    border-left: 1px solid #e9ebf3;
+    padding-right: 0.5em;
 }
 
 #footer-wrap {
@@ -1028,6 +1031,7 @@ a.dash-link:hover { text-decoration: underline !important; }
 }
 .list-create-table-buttons input[type=image] { margin-top: 2px; }
 .result_table_format_cell { padding: 0px 10px; text-align: center; }
+.results_row_count { font-weight: bold; }
 #hold_editor h1 { font-size: 120%; font-weight: bold; }
 #hold_editor h2 { font-size: 111%; font-weight: normal; text-indent: 2em; font-style: italic; }
 #hold_editor h1, #hold_editor h2 { margin: 2px 0; }
@@ -1223,10 +1227,6 @@ table.bookbag-specific {
 .opac-auto-013 {
     border-bottom: none;
     *height: 0px;
-}
-.opac-auto-015 {
-    border-left: 1px solid #e9ebf3;
-    padding-right: 27px;
 }
 .adv_global_filter_sort {
     border: none;

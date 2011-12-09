@@ -18,13 +18,11 @@
 <div id="result_table_div">
     <table cellpadding="0" cellspacing="0" border="0" width="100%">
         <tr>
-            <td valign="top" width="1" style="padding-right:20px;">
-                <div style="width:174px;">
-                    [% INCLUDE "opac/parts/staff_saved_searches.tt2" %]
-                    [% INCLUDE 'opac/parts/result/facets.tt2' %]
-                </div>
+            <td valign="top" width="1">
+                [% INCLUDE "opac/parts/staff_saved_searches.tt2" %]
+                [% INCLUDE 'opac/parts/result/facets.tt2' %]
             </td>
-            <td class='opac-auto-015' width="1"></td>
+            <td class="facet_border" width="1"></td>
             <td valign="top">
                 <table cellpadding="0" cellspacing="0"
                     border="0" width="100%" style="margin-top:10px;">
@@ -37,8 +35,7 @@
                                 <table cellpadding="0" cellspacing="0" class='result_table_subtable'>
                                     <tbody class='result_table_subtbody'>
                                         <tr name='counts_row'>
-                                            <td width="58" valign="top"
-                                                style="font-weight:bold;padding-left:10px;"
+                                            <td valign="top" class="results_row_count"
                                                 name="results_row_count">[%
                                                     result_count; result_count = result_count + 1
                                                 %].</td>
