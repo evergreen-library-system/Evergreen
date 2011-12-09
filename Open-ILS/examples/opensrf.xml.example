@@ -1086,6 +1086,7 @@ vim:et:ts=4:sw=4:
                 </app_settings>
             </open-ils.reporter-store>
 
+<!-- resolver_type defaults to sfx but can also be cufts -->
 <!--
            <open-ils.resolver>
                <keepalive>3</keepalive>
@@ -1105,7 +1106,8 @@ vim:et:ts=4:sw=4:
                </unix_config>
                <app_settings>
                   <cache_timeout>86400</cache_timeout>
-                  <default_url_base>http://path/to/sfx</default_url_base>
+                  <default_url_base>http://path/to/sfx_or_cufts</default_url_base>
+                  <resolver_type>sfx</resolver_type>
                </app_settings>
             </open-ils.resolver>
 -->

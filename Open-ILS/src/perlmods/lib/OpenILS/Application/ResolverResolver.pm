@@ -83,6 +83,7 @@ my $prefix = "open-ils.resolver_"; # Prefix for caching values
 my $cache;
 my $cache_timeout;
 my $default_url_base;              # Default resolver location
+my $resolver_type;              # Default resolver type
 
 our ($ua, $parser);
 
@@ -94,6 +95,8 @@ sub initialize {
         "apps", "open-ils.resolver", "app_settings", "cache_timeout" ) || 300;
     $default_url_base = $sclient->config_value(
         "apps", "open-ils.resolver", "app_settings", "default_url_base");
+    $resolver_type = $sclient->config_value(
+        "apps", "open-ils.resolver", "app_settings", "resolver_type");
 }
 
 sub child_init {
@@ -111,6 +114,124 @@ sub resolve_holdings {
     my $id_type = shift;      # keep it simple for now, either 'issn' or 'isbn'
     my $id_value = shift;     # the normalized ISSN or ISBN
     my $url_base = shift || $default_url_base; 
+
+    if ($resolver_type eq 'cufts') {
+        return cufts_holdings($self,$conn,$id_type,$id_value,$url_base);
+    } else {
+        return sfx_holdings($self,$conn,$id_type,$id_value,$url_base);
+    }
+}
+
+sub cufts_holdings{
+
+    my $self = $_[0];
+    my $conn = $_[1];
+    my $id_type = $_[2];
+    my $id_value = $_[3];
+    my $url_base = $_[4];
+
+    # We'll use this in our cache key
+    my $method = $self->api_name;
+
+    # We might want to return raw JSON for speedier responses
+    my $format = 'fieldmapper';
+    if ($self->api_name =~ /raw$/) {
+        $format = 'raw';
+    }
+
+    # Nice little CUFTS OpenURL request
+    my $url_args = '?';
+
+    if ($id_type eq 'issn') {
+        $url_args .= "&issn=$id_value";
+    } elsif ($id_type eq 'isbn') {
+        $url_args .= "&isbn=$id_value";
+    }
+    
+    my $ckey = $prefix . $method . $url_base . $id_type . $id_value; 
+
+    # Check the cache to see if we've already looked this up
+    # If we have, shortcut our return value
+    my $result = $cache->get_cache($ckey) || undef;
+    if ($result) {
+        $logger->info("Resolver found a cache hit");    
+        return $result;
+    }
+
+    # Otherwise, let's go and grab the info from the CUFTS server
+    my $req = HTTP::Request->new('GET', "$url_base$url_args");
+
+    # Let's see what we we're trying to request
+    $logger->info("Resolving the following request: $url_base$url_args");
+
+    my $res = $ua->request($req);
+
+    my $xml = $res->content;
+    my $parsed_cufts = $parser->parse_string($xml);
+
+    my (@targets) = $parsed_cufts->findnodes('/CUFTS/resource/service[@name="journal"]');
+
+    my @cufts_result;
+    foreach my $target (@targets) {
+        my %full_txt;
+
+        # Ensure we have a name and especially URL to return
+        $full_txt{'name'} = $target->findvalue('../@name[1]');
+        $full_txt{'url'} = $target->findvalue('./result/url') || next;
+        $full_txt{'coverage'} = $target->findvalue('./result/ft_start_date') . ' - ' . $target->findvalue('./result/ft_end_date');
+        my $embargo = "";
+        my $days_embargo = $target->findvalue('./result/embargo_days') || '';
+        if (length($days_embargo) > 0) {
+            $days_embargo = $days_embargo . " days ";
+        }
+        my $months_embargo = $target->findvalue('./result/embargo_months') || '';
+        if (length($months_embargo) > 0) {
+            $months_embargo = $months_embargo . " months ";
+        }
+        my $years_embargo = $target->findvalue('./result/embargo_years') || '';
+        if (length($years_embargo) > 0) {
+            $years_embargo = $years_embargo . " years ";
+        }
+        if (length($years_embargo . $months_embargo . $days_embargo) > 0) {
+            $embargo = "(most recent " . $years_embargo . $months_embargo . $days_embargo . "unavailable due to publisher restrictions)";
+        }
+        $full_txt{'embargo'} = $embargo;
+
+        if ($format eq 'raw') {
+            push @cufts_result, {
+                public_name => $full_txt{'name'},
+                target_url => $full_txt{'url'},
+                target_coverage => $full_txt{'coverage'},
+                target_embargo => $full_txt{'embargo'},
+            };
+        } else {
+            my $rhr = Fieldmapper::resolver::holdings_record->new;
+            $rhr->public_name($full_txt{'name'});
+            $rhr->target_url($full_txt{'url'});
+            $rhr->target_coverage($full_txt{'coverage'});
+            $rhr->target_embargo($full_txt{'embargo'});
+            push @cufts_result, $rhr;
+        }
+    }
+
+    # Stuff this into the cache
+    $cache->put_cache($ckey, \@cufts_result, $cache_timeout);
+    
+    # Don't return the list unless it contains results
+    if (scalar(@cufts_result)) {
+        return \@cufts_result;
+    }
+
+    return undef;
+}
+
+sub sfx_holdings{
+
+    my $self = $_[0];
+    my $conn = $_[1];
+    my $id_type = $_[2];
+    my $id_value = $_[3];
+    my $url_base = $_[4];
 
     # We'll use this in our cache key
     my $method = $self->api_name;
