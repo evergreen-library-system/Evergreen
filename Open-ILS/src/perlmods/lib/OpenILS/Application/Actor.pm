@@ -4363,5 +4363,50 @@ sub get_barcodes {
         return $db_result;
     }
 }
+__PACKAGE__->register_method(
+    method   => 'address_alert_test',
+    api_name => 'open-ils.actor.address_alert.test',
+    signature => {
+        desc => "Tests a set of address fields to determine if they match with an address_alert",
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Org Unit',             type => 'number'},
+            {desc => 'Fields',               type => 'hash'},
+        ],
+        return => {desc => 'List of matching address_alerts'}
+    }
+);
+
+sub address_alert_test {
+    my ($self, $client, $auth, $org_unit, $fields) = @_;
+    return [] unless $fields and grep {$_} values %$fields;
+
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+    return $e->event unless $e->allowed('CREATE_USER', $org_unit);
+    $org_unit ||= $e->requestor->ws_ou;
+
+    my $alerts = $e->json_query({
+        from => [
+            'actor.address_alert_matches',
+            $org_unit,
+            $$fields{street1},
+            $$fields{street2},
+            $$fields{city},
+            $$fields{county},
+            $$fields{state},
+            $$fields{country},
+            $$fields{post_code},
+            $$fields{mailing_address},
+            $$fields{billing_address}
+        ]
+    });
+
+    # map the json_query hashes to real objects
+    return [
+        map {$e->retrieve_actor_address_alert($_)} 
+            (map {$_->{id}} @$alerts)
+    ];
+}
 
 1;
