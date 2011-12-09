@@ -2146,19 +2146,57 @@ sub new_record_holdings {
         }
     ]);
 
-    if ($flesh and $flesh eq 'uris') {
-        %subselect = (
-            owning_lib => \@ou_ids,
-            '-exists'  => {
-                from  => { auricnm => 'auri' },
-                where => {
-                    call_number => { '=' => {'+acn'=>'id'} },
-                    '+auri' => { active => 't' }
-                }
-            }
-        );
-    }
+    # we are dealing with -full or -uris, so we need to flesh things out
+    if ($flesh) {
 
+        # either way we're going to need uris
+        # get all the uris up the tree (see also ba47ecc6196)
+
+        my $uri_orgs = $_storage->request(
+            'open-ils.cstore.json_query.atomic',
+            { from => [ 'actor.org_unit_ancestors', $one_org->id ] }
+        )->gather(1);
+
+        my @uri_ou_ids = map { $_->{id} } @$uri_orgs;
+
+        # we have a -uris, just get the uris
+        if ($flesh == 2) {
+            %subselect = (
+                owning_lib => \@uri_ou_ids,
+                '-exists'  => {
+                    from  => { auricnm => 'auri' },
+                    where => {
+                        call_number => { '=' => {'+acn'=>'id'} },
+                        '+auri' => { active => 't' }
+                    }
+                }
+            );
+        # we have a -full, get all the things
+        } elsif ($flesh == 1) {
+            %subselect = ( '-or' => [
+                { owning_lib => \@ou_ids },
+                { '-exists'  =>
+                    { from  => 'acp',
+                      where => {
+                        call_number => { '=' => {'+acn'=>'id'} },
+                        deleted => 'f',
+                        circ_lib => \@ou_ids
+                      }
+                    }
+                },
+                { '-and' => [
+                    { owning_lib => \@uri_ou_ids },
+                    { '-exists'  => {
+                        from  => { auricnm => 'auri' },
+                        where => {
+                            call_number => { '=' => {'+acn'=>'id'} },
+                            '+auri' => { active => 't' }
+                        }
+                    }}
+                ]}
+            ]);
+        }
+    }
 
 	my $cns = $_storage->request(
 		"open-ils.cstore.direct.asset.call_number.search.atomic",
