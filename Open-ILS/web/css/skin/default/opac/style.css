@@ -349,9 +349,8 @@ span.dash_divider {
 	padding-right: 10px;
 }
 
-.rdetail_uri {
-    border: thin black solid;
-    padding: 3px;
+.rdetail_uris {
+    padding: 1em;
 }
 
 .rdetail_aux_utils {
@@ -369,7 +368,6 @@ span.dash_divider {
 }
 
 #rdetail_copies {
-    clear: both;
     padding-top: 1.5em;
 }
 

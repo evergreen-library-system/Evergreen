@@ -73,13 +73,25 @@
 [%- IF sfx.size && sfx.0 != '' %]
     </div>    
 [%- END %]
-[%- FOR uri IN args.uris.merge(args.online_res); %]
-<div class="rdetail_uri">
-    <a href="[% uri.href %]">[% uri.link %]</a>[% ' - ' _ uri.note IF uri.note %]
+[%- merged_uris = args.uris.merge(args.online_res);
+num_uris = merged_uris.size;
+IF num_uris > 0;
+-%]
+<h2 style="margin-top: 1em;">[% l("Electronic resources") %]</h2>
+<div class="rdetail_uris">
+    [%- IF num_uris > 1 %]<ul>[% END %]
+    [%- FOR uri IN merged_uris %]
+        [%- IF num_uris == 1 %]<p class="rdetail_uri">[% ELSE %]<li class="rdetail_uri">[% END %]
+        <a href="[% uri.href %]">[% uri.link %]</a>[% ' - ' _ uri.note IF uri.note %]
+        [%- IF num_uris == 1 %]</p>[% ELSE %]</li>[% END %]
+    [%- END %]
+    [%- IF num_uris > 1 %]</ul>[% END %]
 </div>
 [%- END %]
 [%- # hold/copy summary %]
 [%- IF ctx.copy_summary.0.count %]
+<div id='rdetail_copies'>
+<h2>[% l('Copies') %]</h2>
 <div class="rdetail_copy_counts">
     <span>
         [%- l("[quant,_1,current hold,current holds] with [quant,_2,total copy,total copies].", 
@@ -87,11 +99,6 @@
     </span>
     <span>[% l('[quant,_1,copy,copies] currently available.', ctx.copy_summary.0.available) %]</span>
 </div>
-[% END %]
-
-[%- IF ctx.copy_summary.0.count %]
-<div id='rdetail_copies'>
-<h2>[% l('Copies') %]</h2>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" id="rdetails_status">
     <thead>
         <tr>
