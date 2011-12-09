@@ -43,6 +43,27 @@
     padding: 20px;
 }
 
+#uedit-address-alert {
+    position: fixed;
+    top:140px;
+    right:30px;
+    width:300px;
+    border:2px dashed #d9e8f9;
+    -moz-border-radius: 10px;
+    font-weight: bold;
+    padding: 10px;
+    text-align: center;
+}
+#uedit-address-alert-header { 
+    color: red; 
+    text-decoration: italic
+    text-align: center;
+}
+
+.uedit-address-alert-divider  {
+    border: 2px dashed red;
+}
+
 .uedit-help {
     width: 25px;
     border:1px solid #e0e0e0;

@@ -40,6 +40,11 @@
     <div><a href='javascript:void(0);' id='uedit-dupe-address-link'></a></div>
 </div>
 
+<div id='uedit-address-alert' class='hidden'>
+    <div id='uedit-address-alert-header'>[% l('Address Alert') %]</div>
+    <div id='uedit-address-alert-message'></div>
+</div>
+
 <div class='hidden'>
     <span id='true' style='color:green;'>&#x2713;</span>
     <span id='false' style='color:red;'>&#x2717;</span>

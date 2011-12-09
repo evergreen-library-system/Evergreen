@@ -48,9 +48,16 @@ var uEditCloneCopyAddr; // if true, copy addrs on clone instead of link
 var homeOuTypes = {};
 var cardPerms = {};
 var editCard;
+var prevBillingAddress;
+var prevMailingAddress;
 
 var dupeUsrname = false;
 var dupeBarcode = false;
+
+// allow for a pause after typing before sending address alert queries
+var addressAlertTimeout = 2000; 
+var addressAlertFields = 
+    ['street1', 'street2', 'city', 'state', 'county', 'country', 'post_code'];
 
 if(!window.xulG) var xulG = null;
 var lock_ready = false;
@@ -1261,48 +1268,129 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
     }
 
     if(fmclass = 'aua') {
-        switch(fmfield) {
-            case 'post_code':
-                dojo.connect(widget.widget, 'onChange',
-                    function(e) { 
-                        fieldmapper.standardRequest(
-                            ['open-ils.search', 'open-ils.search.zip'],
-                            {   async: true,
-                                params: [e],
-                                oncomplete : function(r) {
-                                    var res = openils.Util.readResponse(r);
-                                    if(!res) return;
-                                    var callback = function(w) { return w._addr == widget._addr; };
-                                    if(res.city) findWidget('aua', 'city', callback).widget.attr('value', res.city);
-                                    if(res.state) findWidget('aua', 'state', callback).widget.attr('value', res.state);
-                                    if(res.county) findWidget('aua', 'county', callback).widget.attr('value', res.county);
-                                    if(res.alert) alert(res.alert);
-                                }
-                            }
-                        );
-                    }
-                );
-                return;
 
-            case 'street1':
-            case 'street2':
-            case 'city':
-                dojo.connect(widget.widget, 'onChange',
-                    function(e) {
-                        var callback = function(w) { return w._addr == widget._addr; };
-                        var args = {
-                            street1 : findWidget('aua', 'street1', callback).widget.attr('value'),
-                            street2 : findWidget('aua', 'street2', callback).widget.attr('value'),
-                            city : findWidget('aua', 'city', callback).widget.attr('value'),
-                            post_code : findWidget('aua', 'post_code', callback).widget.attr('value')
-                        };
-                        if(args.street1 && args.city && args.post_code)
-                            uEditDupeSearch('address', args); 
-                    }
-                );
-                return;
+        // map post code to city, state, and county
+        if (fmfield == 'post_code') {
+            dojo.connect(widget.widget, 'onChange',
+                function(e) { 
+                    fieldmapper.standardRequest(
+                        ['open-ils.search', 'open-ils.search.zip'],
+                        {   async: true,
+                            params: [e],
+                            oncomplete : function(r) {
+                                var res = openils.Util.readResponse(r);
+                                if(!res) return;
+                                var callback = function(w) { return w._addr == widget._addr; };
+                                if(res.city) findWidget('aua', 'city', callback).widget.attr('value', res.city);
+                                if(res.state) findWidget('aua', 'state', callback).widget.attr('value', res.state);
+                                if(res.county) findWidget('aua', 'county', callback).widget.attr('value', res.county);
+                                if(res.alert) alert(res.alert);
+                            }
+                        }
+                    );
+                }
+            );
+        }
+
+        // duplicate address search
+        if (['street1', 'street2', 'city'].indexOf(fmfield) > -1) {
+            dojo.connect(widget.widget, 'onChange',
+                function(e) {
+                    var callback = function(w) { return w._addr == widget._addr; };
+                    var args = {
+                        street1 : findWidget('aua', 'street1', callback).widget.attr('value'),
+                        street2 : findWidget('aua', 'street2', callback).widget.attr('value'),
+                        city : findWidget('aua', 'city', callback).widget.attr('value'),
+                        post_code : findWidget('aua', 'post_code', callback).widget.attr('value')
+                    };
+                    if(args.street1 && args.city && args.post_code)
+                        uEditDupeSearch('address', args); 
+                }
+            ); 
+        }
+
+        if (addressAlertFields.indexOf(fmfield) > -1) {
+            dojo.connect(
+                widget.widget, 'onChange', 
+                function() { uEditAddressAlertMarshal(widget._addr) }
+            );
         }
     }
+}
+
+function uEditAddressAlertMarshal(addrId, changeBilling, changeMailing) {
+
+    if (changeBilling) {
+        uEditAddressAlertMarshal(prevBillingAddress);
+        prevBillingAddress = addrId;
+    }
+    
+    if (changeMailing) {
+        uEditAddressAlertMarshal(prevMailingAddress);
+        prevMailingAddress = addrId;
+    }
+
+    var callback = function(w) { return w._addr == addrId; };
+    var args = {};
+    dojo.forEach(addressAlertFields,
+        function(field) {
+            args[field] = findWidget('aua', field, callback).widget.attr('value')
+        }
+    );
+    args.mailing_address = dojo.byId('uedit-mailing-address-' + addrId).checked;
+    args.billing_address = dojo.byId('uedit-billing-address-' + addrId).checked;
+    uEditAddressAlertSearch(args, addrId);
+}
+
+var _addrAlertTimeout = {};
+function uEditAddressAlertSearch(args, addrId) {
+
+    _addrAlertTimeout[addrId] = setTimeout(
+        function() {
+            if (_addrAlertTimeout[addrId]) 
+                clearTimeout(_addrAlertTimeout[addrId]);
+
+            console.log('creating addr alert search for ' + addrId);
+
+            fieldmapper.standardRequest(
+                ['open-ils.actor', 'open-ils.actor.address_alert.test'],
+                {   async: true,
+                    params: [openils.User.authtoken, staff.ws_ou(), args],
+                    oncomplete : function(r) {
+                        var alerts = openils.Util.readResponse(r);
+                        var msgNode = dojo.byId('uedit-address-alert-message');
+                        var headerRow = dojo.filter(
+                            dojo.query('[name=uedit-addr-divider]'),
+                            function(row) { return row.getAttribute('addr') == addrId })[0]
+
+                        msgNode.innerHTML = '';
+
+                        if (alerts.length) {
+
+                            // show the alert box
+                            openils.Util.hide('uedit-help-div');
+                            openils.Util.hide('uedit-dupe-div');
+                            openils.Util.show('uedit-address-alert');
+
+                            // style the address header row
+                            openils.Util.addCSSClass(headerRow, 'uedit-address-alert-divider');
+
+                            dojo.forEach(alerts,
+                                function(addr) {
+                                    msgNode.innerHTML += addr.alert_message() + '<br/>';
+                                }
+                            );
+
+                        } else { 
+                            openils.Util.hide('uedit-address-alert');
+                            openils.Util.removeCSSClass(headerRow, 'uedit-address-alert-divider');
+                        }
+                    }
+                }
+            );
+        }, 
+        addressAlertTimeout
+    );
 }
 
 function uEditDupeSearch(type, value) {
@@ -1360,6 +1448,7 @@ function uEditDupeSearch(type, value) {
                 if(resp && resp.length > 0) {
 
                     openils.Util.hide('uedit-help-div');
+                    openils.Util.hide('uedit-address-alert');
                     openils.Util.show('uedit-dupe-div');
                     var link;
 
@@ -1406,6 +1495,7 @@ function getByName(node, name) {
 
 
 function ueLoadContextHelp(fmcls, fmfield) {
+    openils.Util.hide('uedit-dupe-div');
     openils.Util.hide('uedit-dupe-div');
     openils.Util.show('uedit-help-div');
     dojo.byId('uedit-help-field').innerHTML = fieldmapper.IDL.fmclasses[fmcls].field_map[fmfield].label;
@@ -1720,15 +1810,22 @@ function uEditNewAddr(evt, id, mkLinks) {
                 // billing address
                 var ba = getByName(row, 'billing_address');
                 ba.id = 'uedit-billing-address-' + id;
-                if(mkLinks || (patron.billing_address() && patron.billing_address().id() == id))
+                if(mkLinks || (patron.billing_address() && patron.billing_address().id() == id)) {
                     ba.checked = true;
+                    prevBillingAddress = id;
+                }
 
                 // mailing address
                 var ma = getByName(row, 'mailing_address');
                 ma.id = 'uedit-mailing-address-' + id;
-                if(mkLinks || (patron.mailing_address() && patron.mailing_address().id() == id))
+                if(mkLinks || (patron.mailing_address() && patron.mailing_address().id() == id)) {
                     ma.checked = true;
+                    prevMailingAddress = id;
+                }
 
+                ba.onclick = function() { console.log('ba.onchange ' + id); uEditAddressAlertMarshal(id, true) };
+                ma.onclick = function() { uEditAddressAlertMarshal(id, false, true) };
+                
                 var btn = dojo.query('[name=delete-button]', row)[0];
                 if(btn) btn.onclick = function(){ uEditDeleteAddr(id) };
             }
