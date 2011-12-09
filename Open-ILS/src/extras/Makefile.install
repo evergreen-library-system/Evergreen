@@ -328,7 +328,7 @@ lucid: install_pgsql_client_debs_90 install_extra_debs \
        install_cpan_safe install_cpan_lucid install test_for_libdbi_pkg \
        install_libdbi
 
-# Needs for Ubuntu Precise Panglin (12.04 LTS):
+# Needs for Ubuntu Precise Pangolin (12.04 LTS):
 ubuntu-precise: precise generic_ubuntu
 precise: install_pgsql_client_debs_91 install_extra_debs_precise \
 	 install_cpan_precise install_js_sm install_cpan_force
