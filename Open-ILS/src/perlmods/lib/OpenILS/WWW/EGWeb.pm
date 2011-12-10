@@ -35,6 +35,7 @@ sub handler {
     my $text_handler = set_text_handler($ctx, $r);
 
     my $tt = Template->new({
+        ENCODING => 'utf-8',
         OUTPUT => ($as_xml) ?  sub { parse_as_xml($r, $ctx, @_); } : $r,
         INCLUDE_PATH => $ctx->{template_paths},
         DEBUG => $ctx->{debug_template},
