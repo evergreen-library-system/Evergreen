@@ -260,6 +260,10 @@ CREATE OR REPLACE FUNCTION asset.label_normalizer_dewey(TEXT) RETURNS TEXT AS $f
             }
         }
     }
+    # Pad the first digit_group if there was only one
+    if (1 == $digit_group_count) {
+        $tokens[0] .= '_000000000000000'
+    }
     my $key = join("_", @tokens);
     $key =~ s/[^\p{IsAlnum}_]//g;
 
