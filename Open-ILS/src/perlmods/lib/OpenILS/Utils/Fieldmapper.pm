@@ -37,6 +37,15 @@ sub classes {
 	return keys %$fieldmap;
 }
 
+# Find a Fieldmapper class given the json hint.
+sub class_for_hint {
+    my $hint = shift;
+    foreach (keys %$fieldmap) {
+        return $_ if ($fieldmap->{$_}->{hint} eq $hint);
+    }
+    return undef;
+}
+
 sub get_attribute {
 	my $attr_list = shift;
 	my $attr_name = shift;
