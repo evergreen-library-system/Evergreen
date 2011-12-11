@@ -6,7 +6,7 @@
     loc = CGI.param("loc");
 -%]
     <div id="search-wrapper">
-        <div>
+        <div id="search-box">
             <span class="search_catalog_lbl">[% l('Search the Catalog') %]</span>
             <a href="[% mkurl(ctx.opac_root _ '/home') %]"
                 id="home_adv_search_link"><span
