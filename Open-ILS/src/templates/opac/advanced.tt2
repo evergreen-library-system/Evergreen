@@ -7,17 +7,13 @@
 -%]
     <div id="search-wrapper">
         <div>
-        <span class="search_catalog_lbl">[% l('Search the Catalog') %]</span>
-        <a href="[% mkurl(ctx.opac_root _ '/home') %]"
-            id="home_adv_search_link"><span
-            class="adv_search_font">[% l('Basic Search') %]</span></a>
-            </div>
-
-
+            <span class="search_catalog_lbl">[% l('Search the Catalog') %]</span>
+            <a href="[% mkurl(ctx.opac_root _ '/home') %]"
+                id="home_adv_search_link"><span
+                class="adv_search_font">[%l('Basic Search')%]</span></a>
+        </div>
         <div id="adv_search_parent">
-   
-	 <div id="adv_search_tabs">
-
+            <div id="adv_search_tabs">
                 <a href="?pane=advanced[% IF loc %];loc=[% loc %][% END %]" [% IF pane == 'advanced' %]class="on" [% END %]id="adv_search">[% l('Advanced Search') %]</a>
                 <a href="?pane=numeric[% IF loc %];loc=[% loc %][% END %]" [% IF pane == 'numeric' %]class="on" [% END %]id="num_search">[% l('Numeric Search') %]</a>
                 <a href="?pane=expert[% IF loc %];loc=[% loc %][% END %]" [% IF pane == 'expert' %]class="on" [% END %]id="expert_search">[% l('Expert Search') %]</a>
