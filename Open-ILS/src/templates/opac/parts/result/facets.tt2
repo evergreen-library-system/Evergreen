@@ -19,8 +19,7 @@ FOR facet_label IN labels.sort;
 
         <div class="facet_box_temp">
             <div class="header">
-                <div class="title">[% facet.cmf.label %]</div>
-                <div class="button">
+                <span class="button">
 
                     [% IF close_facets.grep(close_key).0;
                         new_close = [];
@@ -40,8 +39,8 @@ FOR facet_label IN labels.sort;
                         <a href="[% mkurl('', {close_facet => close_facets.merge([close_key])}) %]"><img 
                             src="[% ctx.media_prefix %]/images/adv_search_minus_btn.png" alt="[% l('Collapse') %]" /></a>
                     [% END %]
-                </div>
-                <div class="clear">&nbsp;</div>
+                </span>
+                <div class="title">[% facet.cmf.label %]</div>
             </div>
             [% IF !close_facets.grep(close_key).0 %]
             <div class="box_wrapper">
@@ -88,7 +87,6 @@ FOR facet_label IN labels.sort;
                     [% END %]
                 [% END %]
                 </div>
-                <div class="clear">&nbsp;</div>
             </div> <!-- box_wrapper -->
             [% END %]
         </div> <!-- facet_box_temp -->

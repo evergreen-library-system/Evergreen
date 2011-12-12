@@ -75,11 +75,11 @@
                             <!-- XXX TODO fines aren't really accruing
                                 if circ has hit maxfines. more clarity
                                 here? -->
-                            <span class="red">[% l('(fines accruing)') %]</span>
+                            <span class="alert">[% l('(fines accruing)') %]</span>
                         [%  END %]
                     </td>
                     <td>
-                        <strong class="red">
+                        <strong class="alert">
                             [% money(f.xact.balance_owed) %]
                         </strong>
                     </td>
@@ -147,7 +147,7 @@
                     </td>
                     <td>[% money(f.xact.total_owed) %]</td>
                     <td>[% money(f.xact.total_paid) %]</td>
-                    <td class="red">
+                    <td class="alert">
                         <strong>
                             [% money(f.xact.balance_owed) %]
                         </strong>

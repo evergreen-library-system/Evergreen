@@ -4,22 +4,6 @@
     myopac_page = "lists"  %]
 <div id='myopac_bookbag_div' style="padding:5px;">
 
-    <!-- <div class="header_middle">
-        <span id="acct_holds_header" style="float:left;">[% l('My Lists') %]</span>
-        <span style="float:right;"><a class="hide_me" href="#">[% l('Export List') %]</a></span>
-    </div>
-    <div style="float:right;width:85px;">
-        <div style="position:absolute">
-            <div style="position:relative;top:13px;">
-                <a href="#" style="position:relative;top:-3px;left:-5px;"><img alt="[% l('Saving Help') %]" 
-                    src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
-                <a href="#"><img alt="[% l('Save') %]" src="[% ctx.media_prefix %]/images/save-btn.png"/></a>
-            </div>
-        </div>
-    </div> -->
-    <div id="temp_wrapper">
-
-
     <!-- new list creation -->
     <form action="[% ctx.opac_root %]/myopac/list/update" method="POST" id="create_form">
         <h1>[% l('Create new list') %]</h1><a name="createnewlist"></a>
@@ -174,7 +158,7 @@
         <table class="bookbag-specific" cellpadding='0' cellspacing='0' border='0'>
             <thead id="acct_list_header">
                 <tr>
-                    <td width="1%" style="padding-left: 10px;">
+                    <td class="list_checkbox">
                     <input type="checkbox" onclick="
                         var inputs=document.getElementsByTagName('input'); 
                         for (i = 0; i < inputs.length; i++) { 
@@ -182,19 +166,19 @@
                                 inputs[i].checked = this.checked;}"/>
 
                     </td>
-                    <td width="32%" style="padding-left: 5px;">
+                    <td class="list_entry">
                         <a href="[% mkurl(ctx.opac_root _ '/myopac/lists', {sort=> (CGI.param('sort') == 'titlesort' ? 'titlesort.descending' : 'titlesort')}) %]">[% l('Title') %]</a>
                     </td>
-                    <td width="33%">
+                    <td class="list_entry">
                         <a href="[% mkurl(ctx.opac_root _ '/myopac/lists', {sort=>(CGI.param('sort') == 'authorsort' ? 'authorsort.descending' : 'authorsort')}) %]">[% l('Author(s)') %]</a>
                     </td>
-                    <td width="32%">
+                    <td class="list_entry">
                         [% l('Notes') %]
                         [% IF CGI.param("edit_notes") != bbag.id %]
                         | <a href="[% mkurl(ctx.opac_root _ '/myopac/lists', {edit_notes=> bbag.id}) %]">[% l('Edit') %]</a>
                         [% END %]
                     </td>
-                    <td width="1%" class="nowrap">
+                    <td class="list_actions">
                         <select name="action">
                             <option disabled="disabled">[% l('-- Actions for these items --') %]</option>
                             <option value="place_hold">[% l('Place hold') %]</option>
@@ -206,7 +190,7 @@
             </thead>
             <tbody>
                 [% UNLESS bbag.items.size %]
-                <tr><td colspan="4" class="opac-auto-171 opac-auto-097">
+                <tr><td colspan="4" class="list_is_empty">
                     [% l("This list contains no items.") %]
                 </td></tr>
                 [% END %]
@@ -215,26 +199,26 @@
                     attrs = {marc_xml => ctx.bookbags_marc_xml.$rec_id};
                     PROCESS get_marc_attrs args=attrs %]
                 <tr class="bookbag-item-row">
-                    <td class="item_list_padding" style="padding-left: 10px;">
+                    <td class="list_checkbox">
                         <input type="checkbox" name="selected_item" value="[% item.id %]" bbag='[% bbag.id %]'/>
                     </td>
-                    <td class="item_list_padding" style="padding-left: 5px;">
+                    <td class="list_entry">
                         <a href="[% mkurl(ctx.opac_root _ '/record/' _ rec_id, {}, ['edit_notes', 'id']) %]">[% attrs.title | html %]</a>
                     </td>
-                    <td class="item_list_padding">
+                    <td class="list_entry">
                         <a href="[%- 
                             authorquery = attrs.author | replace('[,\.:;]', '');
                             mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery}, ['page', 'id', 'edit_notes'])
                             -%]">[% attrs.author | html %]</a>
                     [% IF CGI.param("edit_notes") == bbag.id %]
-                    <td class="opac-auto-097b">
+                    <td class="list_entry">
                         [% FOR note IN item.notes %]
                         <input type="text" name="note-[% note.id %]" value="[% note.note | html %]" />
                         [% END %]
                         <input type="text" name="item-[% item.id %]" />
                     </td>
                     [% ELSE %]
-                    <td class="opac-auto-097b">
+                    <td class="list_entry">
                         [% FOR note IN item.notes %]
                         <div>[% note.note | html %]</div>
                         [% END %]
@@ -259,41 +243,11 @@
     </div>
     [% END %]
 
-    <div id='myopac_delete_bookbag_warn' class='hide_me'>
-        [% l("This will remove the selected bookbag and all items contained within the bookbag.  Are you sure you wish to continue?") %]
-    </div>
-    <div style='text-align: center; font-weight: bold;' 
-        class='hide_me' id='myopac_bookbags_none'>[% l("You have not created any bookbags") %]</div>
-    <div style='width: 99%; text-align: center'>
-        <b id='myopac_bookbag_items_name'> </b>
-    </div>
     <span id='bb_publish_text' class='hide_me'>
 [% |l %]Sharing a Bookbag means that the contents 
 of the Bookbag will be visible to others.  
 To see the public view of a shared Bookbag, 
 click on the Bookbag's name in the Bookbag list.[% END %]
     </span>
-    <span id='myopac_remove_bb_item_confirm' class='hide_me'>
-        [% l("Are you sure you wish to remove this bookbag item?") %]
-    </span>
-    <span id='myopac_make_published_confirm' class='hide_me'>
-        [% l("Sharing this bookbag will allow the contents of the bookbag to be seen by others.  Are you sure you wish to share this bookbag?") %]
-    </span>
-    <span id='myopac_make_unpublished_confirm' class='hide_me'>
-        [% l("Are you sure you wish to hide this bookbag?") %]
-    </span>
-    <span id='myopac_bb_update_success' class='hide_me'>
-        [% l("The Bookbag was successfully updated.") %]
-    </span>
-    <span id='bb_create_warning' class='hide_me'>
-        [% l("Warning: Adding items to a bookbag creates a link between you and the items in the database.  The contents of the bookbag are NOT publicly viewable unless the bookbag is shared. However, if you prefer not to have any link between your patron record and a particular item or items, we suggest that you do not place said items in a bookbag or that you avoid using bookbags all together.  Thank you.") %]
-    </span>
-    <span id='myopac_bb_what_are' class='hide_me'>
-        [% l("Bookbags are...") %]
-    </span>
-    <span class='hide_me' id='bb_update_success'>
-        [% l("Bookbag successfully updated") %]
-    </span>
-
 </div>
 [% END %]
