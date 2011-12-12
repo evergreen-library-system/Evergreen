@@ -204,7 +204,7 @@
                                             <td nowrap='nowrap' width="1" align="right">
                                                 <div style="width:250px;text-align:left;">
                                                     <div style="float:right;">
-                                                        <div class="results_aux_utils opac-auto-010"><a
+                                                        <div class="results_aux_utils place_hold"><a
                                                                 href="[% mkurl(ctx.opac_root _ '/place_hold', 
                                                                     {hold_target => rec.id, hold_type => 'T', hold_source_page => mkurl()}) %]" 
                                                                     name="place_hold_link" class="no-dec"><img

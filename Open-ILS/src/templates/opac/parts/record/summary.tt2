@@ -9,10 +9,10 @@
     [% INCLUDE 'opac/parts/record/refworks.tt2' %]
 [%- END %]
 
-<hr style="margin-top: 1em;" />
+<hr />
 
 [%- # This holds the record summary information %]
-<div id="rdetail_image_div" style="float: left; margin-right: 1em;">
+<div id="rdetail_image_div">
     [% ident = attrs.isbn_clean || attrs.upc; IF ident; %]
     <a href='[% ctx.media_prefix %]/opac/extras/ac/jacket/large/[% ident | uri %]'><img
         alt="[% l('Image of item') %]" id='rdetail_image'
@@ -21,14 +21,14 @@
     <br />
 </div>
  
-<div id="rdetail_actions_div" style="float: right; margin-left: 1em;">
-    <div class="rdetail_aux_utils opac-auto-010">
+<div id="rdetail_actions_div">
+    <div class="rdetail_aux_utils place_hold">
         <a href="[% mkurl(ctx.opac_root _ '/place_hold', 
             {hold_target => ctx.bre_id, hold_type => 'T', hold_source_page => mkurl()}) %]" 
         class="no-dec"><img src="[% ctx.media_prefix %]/images/green_check.png" alt="[% l('place hold') %]" /><span 
-        style="position:relative;top:-3px;left:3px;">[% l('Place Hold') %]</span></a>
+        class="place_hold">[% l('Place Hold') %]</span></a>
     </div>
-    <div class="rdetail_aux_utils opac-auto-121">
+    <div class="rdetail_aux_utils toggle_list">
     [%-  
         operation = ctx.mylist.grep(ctx.bre_id).size ? "delete" : "add";
         label = (operation == "add") ? l("Add to my list") : l("Remove from my list"); 
@@ -42,7 +42,7 @@
 
 <div id='rdetail_title_div'>
     [%- IF attrs.format_icon %]
-    <div style="float:right;margin-right:17px;">
+    <div class="format_icon">
         <img alt="[% attrs.format_label %]" title="[% attrs.format_label | html %]" src="[% attrs.format_icon %]" />
     </div>
     [%- END %]
@@ -77,7 +77,7 @@
 num_uris = merged_uris.size;
 IF num_uris > 0;
 -%]
-<h2 style="margin-top: 1em;">[% l("Electronic resources") %]</h2>
+<h2 class="rdetail_uris">[% l("Electronic resources") %]</h2>
 <div class="rdetail_uris">
     [%- IF num_uris > 1 %]<ul>[% END %]
     [%- FOR uri IN merged_uris %]
@@ -189,12 +189,12 @@ IF num_uris > 0;
             <td>
                 [%- more_copies_limit = 50 %] [%# TODO: config %]
                 [%- IF  ctx.copy_limit != more_copies_limit AND ctx.copies.size >= ctx.copy_limit %]
-                    <div style='margin-top:10px;'>
+                    <div class="rdetail_show_copies">
                         <img src="[% ctx.media_prefix %]/images/plus_sign.png" />
                         <a href="[% mkurl('', {copy_limit => more_copies_limit, copy_offset => 0}) %]">[% l('Show more copies') %]</a>
                     </div>
                 [%- ELSIF ctx.copy_limit == more_copies_limit %]
-                    <div style='margin-top:10px;'>
+                    <div  class="rdetail_show_copies">
                         <img src="[% ctx.media_prefix %]/images/minus_sign.png" />
                         <a href="[% mkurl('', {copy_limit => 0, copy_offset => 0}) %]">[% l('Show fewer copies') %]</a>
                     </div>

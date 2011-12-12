@@ -349,8 +349,30 @@ span.dash_divider {
 	padding-right: 10px;
 }
 
-.rdetail_uris {
-    padding: 1em;
+h2.rdetail_uris {
+    margin-top: 1em;
+}
+div.rdetail_uris {
+    padding: 0.5em 1em 0.5em 1em;
+    background-color: lightGray;
+}
+div.rdetail_uris ul li {
+    position: relative;
+    left: 1em;
+}
+
+div.rdetail_show_copies {
+    margin-top: 1em;
+}
+
+#rdetail_image_div {
+    float: left;
+    margin-right: 1em;
+}
+
+#rdetail_image_div {
+    float: right;
+    margin-left: 1em;
 }
 
 .rdetail_aux_utils {
@@ -358,6 +380,24 @@ span.dash_divider {
 	padding-left: 17px;
 	padding-bottom: 6px;
 	padding-right: 70px;
+}
+
+div.place_hold {
+    border-bottom: 1px dotted #ccc;
+    padding-top: 10px;
+}
+
+span.place_hold {
+    position:relative;
+    top:-3px;
+    left:3px;
+}
+
+div.toggle_list { padding-top: 6px; }
+
+div.format_icon {
+    float: right;
+    margin-right: 17px;
 }
 
 .results_aux_utils {
@@ -1213,10 +1253,6 @@ table.bookbag-specific {
 .save-notes { padding-bottom: 1.5ex; }
 
 /* Moved from semiauto.css */
-.opac-auto-010 {
-    border-bottom: 1px dotted #ccc;
-    padding-top: 10px;
-}
 .opac-auto-011 {
     border-bottom: 1px dotted #ccc;
     padding-top: 6px;
