@@ -699,7 +699,7 @@ div.format_icon {
 }
 
 #result_table_div {
-	margin-top: 20px;
+	margin-top: 1em;
 }
 
 .result_numbers {
@@ -931,6 +931,12 @@ div.format_icon {
 .facetFields { padding-left: 5px; }
 .facetFieldLineValue { overflow: hidden; text-overflow: ellipsis; }
 */
+
+div.facet_sidebar {
+    float: left;
+    border-right: 1px solid #F3F3F3;
+    margin-right: 1em;
+}
 
 .facet_box_temp {
 	padding-bottom:3px;

@@ -9,23 +9,18 @@
     result_count = ctx.result_start;
 %]
 
-<div style="height: 10px;"></div>
-
 [% PROCESS "opac/parts/result/paginate.tt2" %] 
 [% ctx.results_count_header = PROCESS results_count_header;
     ctx.results_count_header %]
 
 <div id="result_table_div">
-    <table cellpadding="0" cellspacing="0" border="0" width="100%">
-        <tr>
-            <td valign="top" width="1">
+            <div class="facet_sidebar">
                 [% INCLUDE "opac/parts/staff_saved_searches.tt2" %]
                 [% INCLUDE 'opac/parts/result/facets.tt2' %]
-            </td>
-            <td class="facet_border" width="1"></td>
-            <td valign="top">
+            </div>
+            <div class="result_block">
                 <table cellpadding="0" cellspacing="0"
-                    border="0" width="100%" style="margin-top:10px;">
+                    border="0" style="margin-top:10px;">
                     <tbody id="result_table">
                     [%  FOR rec IN ctx.records;
                             attrs = {marc_xml => rec.marc_xml};
@@ -248,7 +243,7 @@
                                         <tr>
                                             <td/>
                                             <td colspan='5'> <!-- Chilifresh reviews panel -->
-                                                <div id="chili_review_[% attrs.isbn_clean | html %]" style="display: none;" align="center" width="100%"></div>
+                                                <div id="chili_review_[% attrs.isbn_clean | html %]" style="display: none;" align="center"></div>
                                             </td>
                                         </tr>
                                         [%- END %]
@@ -260,9 +255,7 @@
                     [% END %]
                     </tbody>
                 </table>
-            </td>
-        </tr>
-    </table>
+            </div>
 </div>
 <div>
     [% ctx.results_count_header %]
