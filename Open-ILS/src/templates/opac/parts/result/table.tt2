@@ -25,8 +25,8 @@
                     [%  FOR rec IN ctx.records;
                             attrs = {marc_xml => rec.marc_xml};
                             PROCESS get_marc_attrs args=attrs %]
-                        <tr>
-                            <td class='result_table_row' align='left' width='100%'>
+                        <tr class="result_table_row">
+                            <td class="result_table_row" align='left' width='100%'>
                                 <table cellpadding="0" cellspacing="0" class='result_table_subtable'>
                                     <tbody class='result_table_subtbody'>
                                         <tr name='counts_row'>
@@ -247,7 +247,6 @@
                                             </td>
                                         </tr>
                                         [%- END %]
-                                        <tr><td colspan="5"><div style="height:0px;border-top:1px solid #b7b7b7;border-bottom:1px solid #d4d4d4;margin:15px 0px;"></div></td></tr>
                                     </tbody>
                                 </table>
                             </td>

@@ -702,11 +702,18 @@ div.format_icon {
 	margin-top: 1em;
 }
 
+tr.result_table_row td.result_table_row {
+    border-bottom:1px solid #d4d4d4;
+}
+
 .result_numbers {
 	font-size: 11px; padding-left:15px; white-space: nowrap; width: 320px;
 }
 
-.result_table_subtable { width: 100%; border-collapse: collapse; border: 0; }
+.result_table_subtable {
+    width: 100%;
+    padding-top: 1em;
+}
 
 
 
