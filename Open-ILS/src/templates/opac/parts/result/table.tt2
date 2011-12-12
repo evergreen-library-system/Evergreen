@@ -238,6 +238,7 @@
                                                 </div>
                                             </td>
                                         </tr>
+                                        [%- IF ENV.OILS_CHILIFRESH_ACCOUNT %]
                                         <tr>
                                             <td/>
                                             <td align='center'> <!-- Chilifresh reviews link --> 
@@ -250,6 +251,7 @@
                                                 <div id="chili_review_[% attrs.isbn_clean | html %]" style="display: none;" align="center" width="100%"></div>
                                             </td>
                                         </tr>
+                                        [%- END %]
                                         <tr><td colspan="5"><div style="height:0px;border-top:1px solid #b7b7b7;border-bottom:1px solid #d4d4d4;margin:15px 0px;"></div></td></tr>
                                     </tbody>
                                 </table>
