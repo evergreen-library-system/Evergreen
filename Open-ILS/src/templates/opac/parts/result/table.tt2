@@ -50,7 +50,7 @@
                                                         href="[% mkurl(ctx.opac_root _ '/record/' _ rec.id) %]"
                                                         class='search_link'>[% attrs.title | html %]</a>
                                                 </div>
-                                                <div style="font-size:11px;">
+                                                <div>
                                                     <div>
                                                         <em><a title="[% l("Perform an Author Search") %]"
                                                                 name='item_author'
@@ -166,17 +166,6 @@
                                                         %]
                                                     </div>
                                                 </div>
-                                                <div class="hide_me">
-                                                    <span name='result_table_extra_span' class='hide_me'>
-                                                        <span name='result_table_pub_box'
-                                                            style='padding-left: 10px;'>
-                                                            <span name='result_table_edition_span'
-                                                                style='padding-left: 10px;'></span> |
-                                                            <span name='result_table_pub_span'> </span> |
-                                                            <span name='result_table_phys_span'> </span>
-                                                        </span>
-                                                    </span>
-                                                </div>
                                             </td>
 
                                             <td name='result_table_format_cell' class='result_table_format_cell' width="1">
@@ -197,16 +186,16 @@
 
                                             </td>
                                             <td nowrap='nowrap' width="1" align="right">
-                                                <div style="width:250px;text-align:left;">
-                                                    <div style="float:right;">
+                                                <div class="result_table_utils_cont">
+                                                    <div class="result_table_utils">
                                                         <div class="results_aux_utils place_hold"><a
                                                                 href="[% mkurl(ctx.opac_root _ '/place_hold', 
                                                                     {hold_target => rec.id, hold_type => 'T', hold_source_page => mkurl()}) %]" 
                                                                     name="place_hold_link" class="no-dec"><img
                                                                 src="[% ctx.media_prefix %]/images/green_check.png"
-                                                                alt=""/><span style="position:relative;top:-3px;left:3px;">[% l('Place Hold') %]</span></a>
+                                                                alt=""/><span class="result_place_hold">[% l('Place Hold') %]</span></a>
                                                         </div>
-                                                        <div class="results_aux_utils opac-auto-011">
+                                                        <div class="results_aux_utils result_util">
                                                             [%  
                                                                 operation = ctx.mylist.grep(rec.id).size ? "delete" : "add";
                                                                 label = (operation == "add") ? l("Add to my list") : l("Remove from my list");
@@ -219,13 +208,13 @@
                                                             </a>
                                                         </div>
                                                         [% IF ENV.OILS_CONTENT_CAFE_USER %]
-                                                        <div class="results_aux_utils opac-auto-011">
+                                                        <div class="results_aux_utils result_util">
                                                             <a title="[% l('Reviews and More') %]" target='_blank' 
                                                                 href="[% ctx.proto %]://contentcafe2.btol.com/ContentCafeClient/ContentCafe.aspx?UserID=[%- 
                                                                     ENV.OILS_CONTENT_CAFE_USER %]&amp;Password=[%-
                                                                     ENV.OILS_CONTENT_CAFE_PASS %]&amp;ItemKey=[% ident | uri %]&Options=Y">
                                                                 <img src='[% ctx.media_prefix %]/images/starz.png'/> 
-                                                                <span style='position:relative;top:-5px;'>[% l('Reviews &amp; More') %]</span>
+                                                                <span class="results_reviews">[% l('Reviews &amp; More') %]</span>
                                                             </a>
                                                         </div>
                                                         [% END %]

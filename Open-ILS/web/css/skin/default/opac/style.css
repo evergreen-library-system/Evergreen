@@ -407,6 +407,16 @@ div.format_icon {
 	padding-right: 50px;
 }
 
+.result_util {
+    border-bottom: 1px dotted #ccc;
+    padding-top: 6px;
+}
+
+.results_reviews {
+    position: relative;
+    top: -5px;
+}
+
 #rdetail_copies {
     padding-top: 1.5em;
 }
@@ -715,8 +725,20 @@ tr.result_table_row td.result_table_row {
     padding-top: 1em;
 }
 
+div.result_table_utils_cont {
+    width: 250px;
+    text-align:left;
+}
 
+div.result_table_utils {
+    float: right;
+}
 
+div.result_place_hold {
+    position: relative;
+    top: -3px;
+    left:3px;
+}
 
 .icon_text {
 	text-transform:capitalize;
@@ -1266,10 +1288,6 @@ table.bookbag-specific {
 .save-notes { padding-bottom: 1.5ex; }
 
 /* Moved from semiauto.css */
-.opac-auto-011 {
-    border-bottom: 1px dotted #ccc;
-    padding-top: 6px;
-}
 .adv_global_input_container { border-bottom: none; }
 .opac-auto-013 {
     border-bottom: none;
