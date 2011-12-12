@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chapter xml:id="view-output" xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="EN"
+    xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <info>
+
+        <title>Viewing Report Output</title>
+    </info>
+
+    <para>When a report runs Evergreen sends an email with a link to the output to the address
+        defined in the report. Output is also stored in the specified <guilabel>Output</guilabel>
+        folder and will remain there until manually deleted.</para>
+
+    <procedure>
+
+        <step>
+            <para>To view report output in the staff client, open the reports interface from <menuchoice>
+                    <guimenu>Admin (-)</guimenu>
+                    <guisubmenu>Local Administration</guisubmenu>
+                    <guimenuitem>Reports</guimenuitem>
+                </menuchoice></para>
+        </step>
+        <step>
+            <informalfigure>
+                <para>Click on <guimenu>Output</guimenu> to expand the folder. Select
+                        <guimenuitem>Circulation</guimenuitem> (where you just saved the
+                        <emphasis>circulation report output</emphasis>). </para>
+
+                <para>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata scalefit="0" fileref="../media/view-output-1.png"/>
+                        </imageobject>
+
+                    </mediaobject>
+                </para>
+            </informalfigure>
+        </step>
+
+        <step>
+            <para><guimenuitem>View report output</guimenuitem> is the default selection in the
+                dropdown menu. Select <guilabel>Recurring Monthly Circ by Location</guilabel> by
+                clicking the checkbox and click <guibutton>Submit</guibutton>. </para>
+
+
+
+            <para>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata scalefit="0" fileref="../media/view-output-2.png"/>
+                    </imageobject>
+
+                </mediaobject>
+            </para>
+        </step>
+        <step>
+                <para>A new tab will open for the report output. Select either <guilabel>Tabular
+                        Output</guilabel> or <guilabel>Excel Output</guilabel>. If <guilabel>Bar
+                        Charts</guilabel> was selected during report definition the chart will also
+                    appear.</para>   
+        </step>
+
+        <step>
+            <para> Tabular output looks like this: </para>
+
+
+
+            <para><mediaobject>
+                <imageobject>
+                    <imagedata scalefit="0" fileref="../media/view-output-4.png"/>
+                </imageobject>
+
+            </mediaobject></para>
+        </step>
+
+
+        <step>
+            <informalfigure>
+                <para>If you want to manipulate, filter or graph this data, Excel output would be
+                    more useful. Excel output looks like this in Excel: </para>
+                <para>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata scalefit="0" fileref="../media/view-output-5.png"/>
+                        </imageobject>
+
+                    </mediaobject>
+                </para>
+            </informalfigure>
+        </step>
+    </procedure>
+
+
+
+</chapter>
