@@ -961,6 +961,10 @@ sub update_hold_impl {
             # create the new transit
             my $evt = transit_hold($e, $orig_hold, $hold, $e->retrieve_asset_copy($hold->current_copy));
             return $evt if $evt;
+
+            # hold is leaving the shelf  
+            $hold->clear_shelf_time;
+            $hold->clear_shelf_expire_time;
         }
     } 
 
