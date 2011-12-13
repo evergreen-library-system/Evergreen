@@ -2560,16 +2560,24 @@ static char* searchValueTransform( const jsonObject* array ) {
 		if( func_item->type == JSON_NULL ) {
 			buffer_add( sql_buf, "NULL" );
 		} else {
-			char* val = jsonObjectToSimpleString( func_item );
-			if( dbi_conn_quote_string( dbhandle, &val )) {
-				OSRF_BUFFER_ADD( sql_buf, val );
-				free( val );
+			if( func_item->type == JSON_BOOL ) {
+				if( jsonBoolIsTrue(func_item) ) {
+					buffer_add( sql_buf, "TRUE" );
+				} else {
+					buffer_add( sql_buf, "FALSE" );
+				}
 			} else {
-				osrfLogError( OSRF_LOG_MARK, "%s: Error quoting key string [%s]",
-					modulename, val );
-				buffer_free( sql_buf );
-				free( val );
-				return NULL;
+				char* val = jsonObjectToSimpleString( func_item );
+				if( dbi_conn_quote_string( dbhandle, &val )) {
+					OSRF_BUFFER_ADD( sql_buf, val );
+					free( val );
+				} else {
+					osrfLogError( OSRF_LOG_MARK, 
+						"%s: Error quoting key string [%s]", modulename, val );
+					buffer_free( sql_buf );
+					free( val );
+					return NULL;
+				}
 			}
 		}
 	}
