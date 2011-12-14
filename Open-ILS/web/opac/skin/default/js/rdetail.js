@@ -80,6 +80,10 @@ function rdetailSetPaging(ids) {
 			break;
 		}
 	}
+	var cgi = new CGI();   // add the offset if we're not on the first page of results
+	var offset = parseInt(cgi.param('o'));
+	if (offset)
+		i = i + offset;
 
 	$('np_offset').appendChild(text(i + 1));
 	$('np_count').appendChild(text(getHitCount()));
