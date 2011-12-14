@@ -1,9 +1,9 @@
--- Evergreen DB patch XXXX.schema.address-alert.sql
+-- Evergreen DB patch 0657.schema.address-alert.sql
 --
 BEGIN;
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0657', :eg_version);
 
 CREATE TABLE actor.address_alert (
     id              SERIAL  PRIMARY KEY,
