@@ -197,7 +197,7 @@ function rdetailDraw() {
 				var sourceReq = new Request(FETCH_BIB_SOURCE, G.user.session, bib.source());
 				sourceReq.send(true);
 				var source = sourceReq.result();
-				if (source.can_have_copies() == 'f') {
+				if (source && source.can_have_copies() == 'f') {
 					alert(dojo.string.substitute(opac_strings.SOURCE_CANNOT_HAVE_COPIES, [source.source()]));
 				} else {
 					var req = new Request(CREATE_MFHD_RECORD, G.user.session, 1, here.id(), getRid());

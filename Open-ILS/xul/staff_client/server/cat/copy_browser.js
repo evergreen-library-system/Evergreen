@@ -1857,8 +1857,12 @@ cat.copy_browser.prototype = {
         try {
             JSAN.use('cat.util');
             var cbsObj = cat.util.get_cbs_for_bre_id(obj.docid);
-            obj.can_have_copies = (cbsObj.can_have_copies() == get_db_true());
-            obj.source = cbsObj.source();
+            if(cbsObj) {
+                obj.can_have_copies = (cbsObj.can_have_copies() == get_db_true());
+                obj.source = cbsObj.source();
+            } else {
+                obj.can_have_copies = true;
+            }
         } catch(E) {
             obj.error.sdump('D_ERROR','can have copies check: ' + E);
             alert(E);

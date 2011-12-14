@@ -173,7 +173,7 @@ function add_volumes() {
         try {
             JSAN.use('cat.util');
             var cbsObj = cat.util.get_cbs_for_bre_id(docid);
-            if (cbsObj.can_have_copies() != get_db_true()) {
+            if (cbsObj && cbsObj.can_have_copies() != get_db_true()) {
                 alert(document.getElementById('offlineStrings').getFormattedString('staff.cat.bib_source.can_have_copies.false', [cbsObj.source()]));
                 return;
             }
