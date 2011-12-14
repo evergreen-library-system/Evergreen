@@ -3283,23 +3283,15 @@ sub clear_shelf_process {
 
     my $copy_status = $U->ou_ancestor_setting_value($org_id, 'circ.holds.clear_shelf.copy_status');
 
-    # Find holds on the shelf that have been there too long
-    my $hold_ids = $e->search_action_hold_request(
-        {   shelf_expire_time => {'<' => 'now'},
-            pickup_lib        => $org_id,
-            cancel_time       => undef,
-            fulfillment_time  => undef,
-            shelf_time        => {'!=' => undef},
-            capture_time      => {'!=' => undef},
-            current_copy      => $current_copy,
-        },
-        { idlist => 1 }
-    );
+    my @hold_ids = $self->method_lookup(
+        "open-ils.circ.captured_holds.id_list.expired_on_shelf.retrieve"
+    )->run($auth, $org_id);
 
     my @holds;
+    my @canceled_holds; # newly canceled holds
     my $chunk_size = 25; # chunked status updates
     my $counter = 0;
-    for my $hold_id (@$hold_ids) {
+    for my $hold_id (@hold_ids) {
 
         $logger->info("Clear shelf processing hold $hold_id");
         
@@ -3310,10 +3302,13 @@ sub clear_shelf_process {
             }
         ]);
 
-        $hold->cancel_time('now');
-        $hold->cancel_cause(2); # Hold Shelf expiration
-        $e->update_action_hold_request($hold) or return $e->die_event;
-        delete_hold_copy_maps($self, $e, $hold->id) and return $e->die_event;
+        if (!$hold->cancel_time) { # may be canceled but still on the holds shelf
+            $hold->cancel_time('now');
+            $hold->cancel_cause(2); # Hold Shelf expiration
+            $e->update_action_hold_request($hold) or return $e->die_event;
+            delete_hold_copy_maps($self, $e, $hold->id) and return $e->die_event;
+            push(@canceled_holds, $hold_id);
+        }
 
         my $copy = $hold->current_copy;
 
@@ -3369,7 +3364,7 @@ sub clear_shelf_process {
         # refetch the holds to pick up the caclulated cancel_time, 
         # which may be needed by Action/Trigger
         $e->xact_begin;
-        my $updated_holds = $e->search_action_hold_request({id => $hold_ids}, {substream => 1});
+        my $updated_holds = $e->search_action_hold_request({id => \@canceled_holds}, {substream => 1});
         $e->rollback;
 
         $U->create_events_for_hook(
