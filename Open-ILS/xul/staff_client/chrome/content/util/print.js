@@ -96,6 +96,7 @@ util.print.prototype = {
     },
 
     'escape_html' : function(data) {
+        if (typeof data == 'object') { return ''; }
         return data.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     },
 
