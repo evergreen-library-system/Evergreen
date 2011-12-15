@@ -32,7 +32,7 @@ circ.checkin.prototype = {
                 'checkin_time' : { 'hidden' : false }
             },
             {
-                'except_these' : [ 'uses', 'checkin_time_full', 'call_number', 'prefix', 'suffix', 'label_class' ]
+                'except_these' : [ 'uses', 'checkin_time_full' ]
             }
         ).concat(
             patron.util.columns( { 'family_name' : { 'hidden' : 'false' } } )
