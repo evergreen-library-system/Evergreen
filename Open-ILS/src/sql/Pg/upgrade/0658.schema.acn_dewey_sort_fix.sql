@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('xxxx');
+INSERT INTO config.upgrade_log (version) VALUES ('0658');
 
 CREATE OR REPLACE FUNCTION asset.label_normalizer_dewey(TEXT) RETURNS TEXT AS $func$
     # Derived from the Koha C4::ClassSortRoutine::Dewey module
