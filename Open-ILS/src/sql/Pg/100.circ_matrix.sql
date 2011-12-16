@@ -437,22 +437,24 @@ BEGIN
     END LOOP;
 
     -- Fail if the user has too many items with specific circ_modifiers checked out
-    FOR out_by_circ_mod IN SELECT * FROM config.circ_matrix_circ_mod_test WHERE matchpoint = circ_test.id LOOP
-        SELECT  INTO items_out COUNT(*)
-          FROM  action.circulation circ
-            JOIN asset.copy cp ON (cp.id = circ.target_copy)
-          WHERE circ.usr = match_user
-               AND circ.circ_lib IN ( SELECT * FROM unnest(context_org_list) )
-            AND circ.checkin_time IS NULL
-            AND (circ.stop_fines IN ('MAXFINES','LONGOVERDUE') OR circ.stop_fines IS NULL)
-            AND cp.circ_modifier IN (SELECT circ_mod FROM config.circ_matrix_circ_mod_test_map WHERE circ_mod_test = out_by_circ_mod.id);
-        IF items_out >= out_by_circ_mod.items_out THEN
-            result.fail_part := 'config.circ_matrix_circ_mod_test';
-            result.success := FALSE;
-            done := TRUE;
-            RETURN NEXT result;
-        END IF;
-    END LOOP;
+    IF NOT renewal THEN
+        FOR out_by_circ_mod IN SELECT * FROM config.circ_matrix_circ_mod_test WHERE matchpoint = circ_test.id LOOP
+            SELECT  INTO items_out COUNT(*)
+              FROM  action.circulation circ
+                JOIN asset.copy cp ON (cp.id = circ.target_copy)
+              WHERE circ.usr = match_user
+                   AND circ.circ_lib IN ( SELECT * FROM unnest(context_org_list) )
+                AND circ.checkin_time IS NULL
+                AND (circ.stop_fines IN ('MAXFINES','LONGOVERDUE') OR circ.stop_fines IS NULL)
+                AND cp.circ_modifier IN (SELECT circ_mod FROM config.circ_matrix_circ_mod_test_map WHERE circ_mod_test = out_by_circ_mod.id);
+            IF items_out >= out_by_circ_mod.items_out THEN
+                result.fail_part := 'config.circ_matrix_circ_mod_test';
+                result.success := FALSE;
+                done := TRUE;
+                RETURN NEXT result;
+            END IF;
+        END LOOP;
+    END IF;
 
     -- If we passed everything, return the successful matchpoint id
     IF NOT done THEN
