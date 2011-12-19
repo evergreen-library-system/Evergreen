@@ -92,13 +92,29 @@ IF num_uris > 0;
 [%- IF ctx.copy_summary.0.count %]
 <div id='rdetail_copies'>
 <h2>[% l('Copies') %]</h2>
-<div class="rdetail_copy_counts">
+<ul>
+<li class="rdetail_copy_counts">
     <span>
         [%- l("[quant,_1,current hold,current holds] with [quant,_2,total copy,total copies].", 
             ctx.record_hold_count, ctx.copy_summary.0.count) %]
     </span>
-    <span>[% l('[quant,_1,copy,copies] currently available.', ctx.copy_summary.0.available) %]</span>
-</div>
+    <span>[% l('[quant,_1,copy,copies] currently available at [_2].',
+             ctx.copy_summary.0.available,
+             ctx.get_aou(ctx.copy_summary.$depth.org_unit).name) | html %]
+    </span>
+</li>
+[%- depths = ctx.copy_summary.size;
+    depth = 1;
+    WHILE depth < depths;
+%]
+<li class="rdetail_copy_counts">
+[% l('[quant,_1,copy,copies] currently available at [_2].', 
+    ctx.copy_summary.$depth.available,
+    ctx.get_aou(ctx.copy_summary.$depth.org_unit).name)
+    | html %]
+</li>
+[%- depth = depth + 1; END %]
+</ul>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" id="rdetails_status">
     <thead>
         <tr>

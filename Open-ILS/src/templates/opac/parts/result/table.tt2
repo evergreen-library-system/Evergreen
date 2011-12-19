@@ -159,12 +159,18 @@
                                                         [% END %]
                                                         [% END %] <!-- END detail_record_view -->
                                                     </table>
-                                                    <div>
-                                                        [% l('[_1] of [quant,_2,copy,copies] available',
-                                                            attrs.copy_counts.available, attrs.copy_counts.count) # XXX s/count/nshadow/ ?
-                                                            #rec.copy_counts.available, rec.copy_counts.visible) 
+                                                    [%- depths = attrs.copy_counts.size;
+                                                        depth = 0;
+                                                        WHILE depth < depths;
+                                                    %]
+                                                    <div class="result_count">
+                                                        [% l('[_1] of [quant,_2,copy,copies] available at [_3].',
+                                                            attrs.copy_counts.$depth.available,
+                                                            attrs.copy_counts.$depth.count,
+                                                            ctx.get_aou(attrs.copy_counts.$depth.org_unit).name) | html
                                                         %]
                                                     </div>
+                                                    [%- depth = depth + 1; END %]
                                                 </div>
                                             </td>
 

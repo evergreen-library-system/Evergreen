@@ -159,11 +159,14 @@
 
         # Extract the copy count summary
         count_type = (ctx.is_staff) ? 'staff' : 'public';
+
+        # Consortial copy count summary first
         xpath = '//*[local-name()="counts"]/*[local-name()="count"][@type="' _ count_type _ '"]';
+        args.copy_counts = {};
         FOR node IN xml.findnodes(xpath);
-            args.copy_counts = {};
-            FOR attr IN ['count', 'available', 'unshadow', 'transcendant']; 
-                args.copy_counts.$attr = node.getAttribute(attr);
+            FOR attr IN ['count', 'available', 'unshadow', 'transcendant', 'org_unit']; 
+                depth = node.getAttribute('depth');
+                args.copy_counts.$depth.$attr = node.getAttribute(attr);
             END;
         END;
 
