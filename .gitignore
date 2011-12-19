@@ -63,6 +63,7 @@ Open-ILS/src/support-scripts/authority_control_fields.pl
 Open-ILS/src/support-scripts/marc_export
 Open-ILS/updates/Makefile
 Open-ILS/updates/Makefile.in
+Open-ILS/xul/staff_client/client/
 
 # Ignore built or installed locales
 build/i18n/locale/
