@@ -46,8 +46,9 @@
                                                 name='result_table_title_cell'
                                                 valign="top">
                                                 <div class="bold">
-                                                    <a name='record_[% rec.id %]' title="[% attrs.title | uri %]" name='item_title'
+                                                    <a name='record_[% rec.id %]' name='item_title'
                                                         href="[% mkurl(ctx.opac_root _ '/record/' _ rec.id) %]"
+                                                        [% HTML.attributes(title => l('Display record details for "[_1]"', attrs.title)) %]
                                                         class='search_link'>[% attrs.title | html %]</a>
                                                 </div>
                                                 <div>
