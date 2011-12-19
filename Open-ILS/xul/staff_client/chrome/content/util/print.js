@@ -11,18 +11,11 @@ util.print = function (context) {
     JSAN.use('util.functional');
     JSAN.use('util.file');
 
-    this.context = context || 'default';
-
-    var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces['nsIPrefBranch']);
-    var key = 'oils.printer.external.cmd.' + this.context;
-    var has_key = prefs.prefHasUserValue(key);
-    if(!has_key && this.context != 'default') {
-        key = 'oils.printer.external.cmd.default';
-        has_key = prefs.prefHasUserValue(key);
-    }
-    this.oils_printer_external_cmd = has_key ? prefs.getCharPref(key) : '';
+    this.set_context(context, true);
 
     try {
+        var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces['nsIPrefBranch']);
+
         if (prefs.prefHasUserValue('print.always_print_silent')) {
             if (! prefs.getBoolPref('print.always_print_silent')) {
                 prefs.clearUserPref('print.always_print_silent');
@@ -37,6 +30,22 @@ util.print = function (context) {
 
 util.print.prototype = {
 
+    'set_context' : function(context, set_default) {
+        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+
+        this.context = context || 'default';
+        if(set_default) this.default_context = this.context;
+    
+        var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces['nsIPrefBranch']);
+        var key = 'oils.printer.external.cmd.' + this.context;
+        var has_key = prefs.prefHasUserValue(key);
+        if(!has_key && this.context != 'default') {
+            key = 'oils.printer.external.cmd.default';
+            has_key = prefs.prefHasUserValue(key);
+        }
+        this.oils_printer_external_cmd = has_key ? prefs.getCharPref(key) : '';
+    },
+
     'reprint_last' : function() {
         try {
             var obj = this; obj.data.init({'via':'stash'});
@@ -46,12 +55,14 @@ util.print.prototype = {
                 );
                 return;
             }
+            if(obj.data.last_print.context) this.set_context(obj.data.last_print.context);
             var msg = obj.data.last_print.msg;
             var params = obj.data.last_print.params; params.no_prompt = false;
             obj.simple( msg, params );
         } catch(E) {
             this.error.standard_unexpected_error_alert('util.print.reprint_last',E);
         }
+        if(this.context != this.default_context) this.set_context(this.default_context);
     },
 
     'html2txt' : function(html) {
