@@ -337,11 +337,16 @@ function displayGlobalDiv(id) {
 }
 
 function runStartupCommands() {
+    openils.Util.hide(dojo.byId('vl-page-loading'));
+    openils.Util.show(dojo.byId('vl-body-wrapper'));
     currentQueueId = cgi.param('qid');
     currentType = cgi.param('qtype');
     dojo.style('vl-nav-bar', 'visibility', 'visible');
     if(currentQueueId)
         return retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
+    if (cgi.param('page', 'inspectq'))
+        return displayGlobalDiv('vl-queue-select-div');
+        
     vlShowUploadForm();
 }
 

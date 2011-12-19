@@ -2,9 +2,9 @@
     <div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy" id='vl-menu-marc-export'
         onclick="displayGlobalDiv('vl-marc-export-div');" showLabel="true">[% l('Export Records') %]</div>
     <div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy"  id='vl-menu-marc-upload'
-        onclick="displayGlobalDiv('vl-marc-upload-div');" showLabel="true">[% l('Import Records') %]</div>
+        onclick="location.href = oilsBasePath + '/vandelay/vandelay';" showLabel="true">[% l('Import Records') %]</div>
     <div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy"  id='vl-menu-queue-select'
-        onclick="vlShowQueueSelect();" showLabel="true">[% l('Inspect Queue') %]</div>
+        onclick="location.href = oilsBasePath + '/vandelay/vandelay?page=inspectq';" showLabel="true">[% l('Inspect Queue') %]</div>
     <div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy"  id='vl-menu-attr-editor'
         onclick="vlShowAttrEditor();" showLabel="true">[% l('Record Display Attributes') %]</div>
     <div dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconCopy"  id='vl-menu-profile-editor'
