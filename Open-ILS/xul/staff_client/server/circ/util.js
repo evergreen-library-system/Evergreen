@@ -3043,7 +3043,8 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                                     'footer' : data.print_list_templates[ template ].footer,
                                     'type' : data.print_list_templates[ template ].type,
                                     'list' : print_list,
-                                    'data' : print_data
+                                    'data' : print_data,
+                                    'context' : data.print_list_templates[ template ].context,
                                 };
                                 if ($('printer_prompt')) {
                                     if (! $('printer_prompt').checked) { parms.no_prompt = true; }
@@ -3448,7 +3449,8 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                             'footer' : data.print_list_templates[ template ].footer,
                             'type' : data.print_list_templates[ template ].type,
                             'list' : print_list,
-                            'data' : print_data 
+                            'data' : print_data,
+                            'context' : data.print_list_templates[ template ].context,
                         };
                         if ($('printer_prompt')) {
                             if (! $('printer_prompt').checked) { parms.no_prompt = true; }

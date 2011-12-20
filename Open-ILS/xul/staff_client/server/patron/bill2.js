@@ -866,7 +866,8 @@ function apply_payment() {
                             };
                         }
                     ),
-                    'data' : g.previous_summary
+                    'data' : g.previous_summary,
+                    'context' : g.data.print_list_templates[template].context,
                 };
                 g.error.sdump('D_DEBUG',js2JSON(params));
                 if ($('printer_prompt').hasAttribute('checked')) {

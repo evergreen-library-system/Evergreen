@@ -109,6 +109,7 @@ circ.print_list_template_editor.prototype = {
                 obj.controller.view.header.value = tmp.header;
                 obj.controller.view.line_item.value = tmp.line_item;
                 obj.controller.view.footer.value = tmp.footer;
+                obj.controller.view.template_context_menu.value = tmp.context;
                 obj.preview();
             }, 0
         );
@@ -310,6 +311,7 @@ circ.print_list_template_editor.prototype = {
                                             obj.controller.view.header.value = tmp.header;
                                             obj.controller.view.line_item.value = tmp.line_item;
                                             obj.controller.view.footer.value = tmp.footer;
+                                            obj.controller.view.template_context_menu.value = tmp.context;
                                             obj.preview();
                                         },
                                         false
@@ -335,7 +337,28 @@ circ.print_list_template_editor.prototype = {
                                     obj.controller.view.template_type_menu = ml;
                                 }
                             }
+                        ],
+                        'template_context_menu_placeholder' : [
+                            ['render'],
+                            function(e) {
+                                return function() {
+                                    JSAN.use('util.widgets'); JSAN.use('util.functional');
+                                    util.widgets.remove_children(e);
+                                    var ml = util.widgets.make_menulist(
+                                        [['',null]].concat(
+                                            util.functional.map_list(
+                                                obj.data.print_list_contexts,
+                                                function(o) { return [o,o]; }
+                                            )
+                                        )
+                                    );
+                                    ml.setAttribute('id','template_context_menu');
+                                    e.appendChild(ml);
+                                    obj.controller.view.template_context_menu = ml;
+                                }
+                            }
                         ]
+
 
                     }
                 }
@@ -378,6 +401,7 @@ circ.print_list_template_editor.prototype = {
         obj.data.print_list_templates[name].line_item = obj.controller.view.line_item.value;
         obj.data.print_list_templates[name].footer = obj.controller.view.footer.value;
         obj.data.print_list_templates[name].type = obj.controller.view.template_type_menu.value;
+        obj.data.print_list_templates[name].context = obj.controller.view.template_context_menu.value;
         obj.data.stash( 'print_list_templates' );
         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         JSAN.use('util.file'); var file = new util.file('print_list_templates');

@@ -626,6 +626,7 @@ cat.copy_buckets.prototype = {
                                         'footer' : data.print_list_templates.item_status.footer,
                                         'type' : data.print_list_templates.item_status.type,
                                         'list' : obj.list2.dump_with_keys(),
+                                        'context' : data.print_list_templates.item_status.context,
                                     };
                                     JSAN.use('util.print'); var print = new util.print();
                                     print.tree_list( p );

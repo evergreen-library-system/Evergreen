@@ -82,6 +82,8 @@
                 <hbox>
                     <label value="&staff.circ.print_list.top_ui.type.label;" />
                     <hbox id="template_type_menu_placeholder" />
+                    <label value="&staff.circ.print_list.top_ui.context.label;" />
+                    <hbox id="template_context_menu_placeholder" />
                 </hbox>
             </groupbox>
             <groupbox orient="horizontal">

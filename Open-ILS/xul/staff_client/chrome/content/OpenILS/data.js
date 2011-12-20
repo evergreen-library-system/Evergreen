@@ -343,6 +343,16 @@ OpenILS.data.prototype = {
                 'holds', 
                 /* 'patrons' */
             ];
+            // We define this for the benefit of the editor.
+            // We don't assign them here, leaving that to the user.
+            // Without one assigned per template the context the util.print was created with will be used instead.
+            obj.print_list_contexts = [
+                'default',
+                'receipt',
+                'label',
+                'mail',
+                'offline',
+            ]; 
             obj.print_list_templates = { 
                 'item_status' : {
                     'type' : 'items',

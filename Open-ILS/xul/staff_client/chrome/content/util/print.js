@@ -227,6 +227,7 @@ util.print.prototype = {
         }
         var cols = [];
         var s = '';
+        if (params.context) this.set_context(params.context);
         if (params.header) s += this.template_sub( params.header, cols, params );
         if (params.list) {
             // Pre-templating sort
@@ -303,6 +304,7 @@ util.print.prototype = {
         } else {
             this.simple(s,params);
         }
+        if(this.context != this.default_context) this.set_context(this.default_context);
     },
 
     'template_sub' : function( msg, cols, params ) {

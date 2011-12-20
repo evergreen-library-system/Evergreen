@@ -2448,6 +2448,7 @@
 <!ENTITY staff.circ.print_list.top_ui.name.label "Name">
 <!ENTITY staff.circ.print_list.top_ui.name.accesskey "N">
 <!ENTITY staff.circ.print_list.top_ui.type.label "Type">
+<!ENTITY staff.circ.print_list.top_ui.context.label "Force Context">
 <!ENTITY staff.circ.print_list.top_ui.actions.label "Actions">
 <!ENTITY staff.circ.print_list.top_ui.preview.label "Preview">
 <!ENTITY staff.circ.print_list.top_ui.preview.accesskey "P">
