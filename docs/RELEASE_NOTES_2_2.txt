@@ -46,8 +46,22 @@ Prevent bibliographic records from having attached copies
 To enable libraries to designate specific sets of records as only for use
 as electronic resources, it is possible to configure a bibliographic source
 such that physical copies or MFHD records may not be attached to records
-from that source. The 'config.bib_source' table now includes a new Boolean
-column, 'can_have_copies', that controls this behavior. If 'can_have_copies'
-for a given bibliographic source is 'TRUE', then the staff client will prevent
+from that source. The `config.bib_source` table now includes a new Boolean
+column, `can_have_copies`, that controls this behavior. If `can_have_copies`
+for a given bibliographic source is `TRUE`, then the staff client will prevent
 a cataloger from adding volumes or MFHD records to records belonging to that
 source.
+
+Reports
+~~~~~~~
+
+New views for reporting sources
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+To support the creation of collection development reports, the following
+reporting sources have been added:
+
+  * 'Last Circulation or Creation Date' is a source that offers the copy ID,
+    the last circulation date or creation date, and the last circulation date
+  * 'Hold/Copy Ratio per Bib and Pickup Library' is a source that calculates
+    the number of holds per copy per bibliographic record, with granularity
+    by pickup library.
