@@ -34,24 +34,20 @@
                         [% IF override %] checked='checked' [% ELSE %] disabled='disabled' [% END %]/>
                 </td>
                 <td>
-                    <div class='hold-items-list-title'>[% attrs.title_extended | html %]</div>
+                    [%
+                        title = attrs.title_extended;
+                        IF hdata.selected_part AND hdata.parts AND hdata.parts.size > 0;
+                            FOREACH part IN hdata.parts;
+                                IF hdata.selected_part == part.id;
+                                    title = l('[_1] ([_2])', title, part.label);
+                                END;
+                            END;
+                        END;
+                    %]
+                        
+                    <div class='hold-items-list-title'>[% title | html %]</div>
                     [% IF hdata.parts %]
-                        [% IF hdata.parts.size > 0 %]
-                        <div style='padding-left: 10px'>
-                            <span>[% hdata.part_required ? l('Select a Part:') : l('Select a Part (optional):') %]</span>
-                            <select name='part'>
-                                [% IF !hdata.part_required %]
-                                <option [% UNLESS hdata.selected_part %]selected='selected'[% END %] value=''>[% l('- All Parts -') %]</option>
-                                [% END %]
-                                [% FOR part IN hdata.parts %]
-                                <option value='[% part.id %]' 
-                                    [% IF (hdata.selected_part || '') == part.id %]selected='selected'[% END %]>[% part.label | html %]</option>
-                                [% END %]
-                            </select>
-                        </div>
-                        [% ELSE %]
-                        <input type='hidden' name='part' value=''/>
-                        [% END %]
+                        <input type='hidden' name='part' value='[% hdata.selected_part || '' %]'/>
                     [% END %]
                     <div>
                         [% IF hdata.hold_success %]
