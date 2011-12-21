@@ -4507,7 +4507,7 @@ INSERT into config.org_unit_setting_type
     ),
     oils_i18n_gettext(
         'opac.search.tag_circulated_items',
-        'When a user is both logged in and has opted in to circ history tracking, turning on this setting will cause previous (or currenlty) circulated items to be highlighted in search results',
+        'When a user is both logged in and has opted in to circulation history tracking, turning on this setting will cause previous (or currently) circulated items to be highlighted in search results',
         'coust', 'description'
     ),
     'bool', null)
