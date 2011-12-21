@@ -1,0 +1,16 @@
+<span id="rdetail_copy_counts">
+    <h2>[% l('Available copies') %]</h2>
+    <ul>
+    [%- depths = ctx.copy_summary.size;
+        depth = 0;
+        WHILE depth < depths;
+    %]
+    <li>
+    [% l('[quant,_1,copy,copies] at [_2].', 
+        ctx.copy_summary.$depth.available,
+        ctx.get_aou(ctx.copy_summary.$depth.org_unit).name)
+        | html %]
+    </li>
+    [%- depth = depth + 1; END %]
+    </ul>
+</span>

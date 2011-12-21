@@ -46,8 +46,6 @@ h1 {
 }
 
 h2 {
-	margin:0;
-	margin-bottom: 5px;
 	font-size: 16px;
 	font-weight:bold;
 }
@@ -365,14 +363,26 @@ div.rdetail_show_copies {
     margin-top: 1em;
 }
 
-#rdetail_image_div {
-    float: left;
+div#rdetail_actions_div {
+    float: right;
+}
+
+span#rdetail_copy_counts {
+    display: inline-block;
+    border-right: thin;
+    vertical-align: top;
     margin-right: 1em;
+    padding-right: 1em;
+}
+
+span#rdetail_hold_counts {
+    display: inline-block;
+    vertical-align: top;
 }
 
 #rdetail_image_div {
-    float: right;
-    margin-left: 1em;
+    float: left;
+    margin-right: 1em;
 }
 
 .rdetail_aux_utils {
@@ -1193,10 +1203,6 @@ a.opac-button {
 .rdetail-mfhd-bottom {
     border-bottom: thin solid black;
     width: 100%;
-}
-
-.rdetail_copy_counts {
-    margin-top: 1em;
 }
 
 #rdetail_record_details {

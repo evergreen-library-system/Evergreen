@@ -12,42 +12,43 @@
 <hr />
 
 [%- # This holds the record summary information %]
-<div id="rdetail_image_div">
-    [% ident = attrs.isbn_clean || attrs.upc; IF ident; %]
-    <a href='[% ctx.media_prefix %]/opac/extras/ac/jacket/large/[% ident | uri %]'><img
-        alt="[% l('Image of item') %]" id='rdetail_image'
-        src='[% ctx.media_prefix %]/opac/extras/ac/jacket/[% record.summary.jacket_size %]/[% ident | uri %]' /></a>
-    [% END %]
-    <br />
-</div>
- 
-<div id="rdetail_actions_div">
-    <div class="rdetail_aux_utils place_hold">
-        <a href="[% mkurl(ctx.opac_root _ '/place_hold', 
-            {hold_target => ctx.bre_id, hold_type => 'T', hold_source_page => mkurl()}) %]" 
-        class="no-dec"><img src="[% ctx.media_prefix %]/images/green_check.png" alt="[% l('place hold') %]" /><span 
-        class="place_hold">[% l('Place Hold') %]</span></a>
+<div id="rdetail_summary_header">
+    <div id="rdetail_image_div">
+        [% ident = attrs.isbn_clean || attrs.upc; IF ident; %]
+        <a href='[% ctx.media_prefix %]/opac/extras/ac/jacket/large/[% ident | uri %]'><img
+            alt="[% l('Image of item') %]" id='rdetail_image'
+            src='[% ctx.media_prefix %]/opac/extras/ac/jacket/[% record.summary.jacket_size %]/[% ident | uri %]' /></a>
+        [% END %]
+        <br />
     </div>
-    <div class="rdetail_aux_utils toggle_list">
-    [%-  
-        operation = ctx.mylist.grep(ctx.bre_id).size ? "delete" : "add";
-        label = (operation == "add") ? l("Add to my list") : l("Remove from my list"); 
-    %]
-        <a href="[% ctx.opac_root %]/mylist/[% operation %]?record=[% ctx.bre_id %]" class="no-dec">
-            <img src="[% ctx.media_prefix %]/images/clipboard.png" alt="" />
-            [% label %]
-        </a>
-    </div>
-</div>
 
-<div id='rdetail_title_div'>
-    [%- IF attrs.format_icon %]
-    <div class="format_icon">
-        <img alt="[% attrs.format_label %]" title="[% attrs.format_label | html %]" src="[% attrs.format_icon %]" />
+    <div id="rdetail_actions_div">
+        <div class="rdetail_aux_utils place_hold">
+            <a href="[% mkurl(ctx.opac_root _ '/place_hold', 
+                {hold_target => ctx.bre_id, hold_type => 'T', hold_source_page => mkurl()}) %]" 
+            class="no-dec"><img src="[% ctx.media_prefix %]/images/green_check.png" alt="[% l('place hold') %]" /><span 
+            class="place_hold">[% l('Place Hold') %]</span></a>
+        </div>
+        <div class="rdetail_aux_utils toggle_list">
+        [%-  
+            operation = ctx.mylist.grep(ctx.bre_id).size ? "delete" : "add";
+            label = (operation == "add") ? l("Add to my list") : l("Remove from my list"); 
+        %]
+            <a href="[% ctx.opac_root %]/mylist/[% operation %]?record=[% ctx.bre_id %]" class="no-dec">
+                <img src="[% ctx.media_prefix %]/images/clipboard.png" alt="" />
+                [% label %]
+            </a>
+        </div>
     </div>
-    [%- END %]
-    <h1 id='rdetail_title'>[% attrs.title_extended | html %]</h1>
-    [%- INCLUDE "opac/parts/record/authors.tt2" %]
+    <div id='rdetail_title_div'>
+        [%- IF attrs.format_icon %]
+        <div class="format_icon">
+            <img alt="[% attrs.format_label %]" title="[% attrs.format_label | html %]" src="[% attrs.format_icon %]" />
+        </div>
+        [%- END %]
+        <h1 id='rdetail_title'>[% attrs.title_extended | html %]</h1>
+        [%- INCLUDE "opac/parts/record/authors.tt2" %]
+    </div>
 </div>
 
 [%- IF openurl.enabled == 'true';
@@ -88,149 +89,19 @@ IF num_uris > 0;
     [%- IF num_uris > 1 %]</ul>[% END %]
 </div>
 [%- END %]
-[%- # hold/copy summary %]
-[%- IF ctx.copy_summary.0.count %]
-<div id='rdetail_copies'>
-<h2>[% l('Copies') %]</h2>
-<ul>
-<li class="rdetail_copy_counts">
-    <span>
-        [%- l("[quant,_1,current hold,current holds] with [quant,_2,total copy,total copies].", 
-            ctx.record_hold_count, ctx.copy_summary.0.count) %]
-    </span>
-    <span>[% l('[quant,_1,copy,copies] currently available at [_2].',
-             ctx.copy_summary.0.available,
-             ctx.get_aou(ctx.copy_summary.$depth.org_unit).name) | html %]
-    </span>
-</li>
-[%- depths = ctx.copy_summary.size;
-    depth = 1;
-    WHILE depth < depths;
+[%- # Hold/copy summary
+    IF ctx.copy_summary.0.count
 %]
-<li class="rdetail_copy_counts">
-[% l('[quant,_1,copy,copies] currently available at [_2].', 
-    ctx.copy_summary.$depth.available,
-    ctx.get_aou(ctx.copy_summary.$depth.org_unit).name)
-    | html %]
-</li>
-[%- depth = depth + 1; END %]
-</ul>
-<table cellpadding="0" cellspacing="0" border="0" width="100%" id="rdetails_status">
-    <thead>
-        <tr>
-            <th id='copy_header_library'>[% l("Location") %]</th>
-            <th id='copy_header_callnmber'>[% l("Call Number") %]</th>
-            <th id='copy_header_barcode'>[% l("Barcode") %]</th>
-            <th id='copy_header_shelfloc'>[% l("Shelving Location") %]</th>
-            [%- IF ctx.is_staff %]
-            <th id='copy_header_age_hold'>[% l("Age Hold Protection") %]</th>
-            <th id='copy_header_create_date'>[% l("Create Date") %]</th>
-            <th id='copy_header_holdable'>[% l("Holdable?") %]</th>
-            [%- END %]
-            <th id='copy_header_status'>[% l("Status") %]</th>
-            <th id='copy_header_due_date'>[% l("Due Date") %]</th>
-        </tr>
-    </thead>
-    <tbody class="copy_details_table">
-        [%- last_cn = 0;
-        FOR copy_info IN ctx.copies;
-            callnum = copy_info.call_number_label;
-            NEXT IF callnum == '##URI##';
-
-            callnum_prefix = copy_info.call_number_prefix_label;
-            IF callnum_prefix != "";
-                callnum = callnum_prefix _ " " _ callnum;
-            END;
-
-            callnum_suffix = copy_info.call_number_suffix_label;
-            IF callnum_suffix != "";
-                callnum = callnum  _ " " _ callnum_suffix;
-            END;
-        -%]
-        <tr>
-            <td header='copy_header_library'>
-            [%-
-                org_name = ctx.get_aou(copy_info.circ_lib).name;
-                org_name | html
-            -%]
-            </td>
-            <td header='copy_header_callnumber'>[% callnum | html %]</td>
-            <td header='copy_header_barcode'>[% copy_info.barcode | html %]</td>
-            <td header='copy_header_shelfloc'>[% copy_info.copy_location | html %]</td>
-            [%- IF ctx.is_staff %]
-            <td header='copy_header_age_hold'>
-                [% copy_info.age_protect ?
-                    ctx.get_crahp(copy_info.age_protect).name : l('None') | html %]
-            </td>
-            <td header='copy_header_date_format'>[% date.format(
-                ctx.parse_datetime(copy_info.create_date),
-                DATE_FORMAT
-            ) %]</td>
-            <td header='copy_header_holdable'>[%  # Show copy/volume hold links to staff (without
-                    # checking whether they have permissions to do those).
-                    overall_holdable = (copy_info.holdable == 't' AND
-                        copy_info.location_holdable == 't' AND
-                        copy_info.status_holdable == 't');
-                    IF overall_holdable;
-                        l("Place on"); %]
-                <a href="[% mkurl(ctx.opac_root _ '/place_hold', 
-                    {hold_target => copy_info.id, hold_type => 'C', hold_source_page => mkurl()}) %]">[% l("copy") %]</a>
-                [%-      IF copy_info.call_number != last_cn;
-                            last_cn = copy_info.call_number;
-                            l(" / "); %]
-                <a href="[% mkurl(ctx.opac_root _ '/place_hold', 
-                    {hold_target => copy_info.call_number, hold_type => 'V', hold_source_page => mkurl()}) %]">[% l("volume") %]</a>
-                [%-      END;
-                    ELSE;
-                        l("No");
-                    END %]</td>
-            [%- END %]
-            <td header='copy_header_status'>[% copy_info.copy_status | html %]</td>
-            <td header='due_date'>[%
-                IF copy_info.due_date;
-                    date.format(
-                        ctx.parse_datetime(copy_info.due_date),
-                        DATE_FORMAT
-                    );
-                ELSE;
-                    '-';
-                END %]</td>
-        </tr>
-        [%- END %]
-        <tr>
-        [%- IF ctx.copy_offset > 0;
-            new_offset = ctx.copy_offset - ctx.copy_limit;
-            IF new_offset < 0; new_offset = 0; END %]
-            <td>
-                <a href="[% mkurl('', {copy_offset => new_offset, copy_limit => ctx.copy_limit}) %]">&laquo; [%
-                    l('Previous [_1]', ctx.copy_offset - new_offset) %]</a>
-            </td>
-        [%- END %]
-        [%- IF ctx.copies.size >= ctx.copy_limit %]
-            <td>
-                <a href="[% mkurl('', {copy_offset => ctx.copy_offset + ctx.copy_limit, copy_limit => ctx.copy_limit}) %]">[%
-                    l('Next [_1]', ctx.copy_limit) %] &raquo;</a>
-            </td>
-        [%- END %]
-        </tr>
-        <tr>
-            <td>
-                [%- more_copies_limit = 50 %] [%# TODO: config %]
-                [%- IF  ctx.copy_limit != more_copies_limit AND ctx.copies.size >= ctx.copy_limit %]
-                    <div class="rdetail_show_copies">
-                        <img src="[% ctx.media_prefix %]/images/plus_sign.png" />
-                        <a href="[% mkurl('', {copy_limit => more_copies_limit, copy_offset => 0}) %]">[% l('Show more copies') %]</a>
-                    </div>
-                [%- ELSIF ctx.copy_limit == more_copies_limit %]
-                    <div  class="rdetail_show_copies">
-                        <img src="[% ctx.media_prefix %]/images/minus_sign.png" />
-                        <a href="[% mkurl('', {copy_limit => 0, copy_offset => 0}) %]">[% l('Show fewer copies') %]</a>
-                    </div>
-                [%- END %]
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div id="copy_hold_counts">
+[%- INCLUDE "opac/parts/record/copy_counts.tt2" %]
+    <span id="rdetail_hold_counts">
+        <h2>[% l('Current holds') %]</h2>
+        <p>
+            [%- l("[quant,_1,current hold,current holds] with [quant,_2,total copy,total copies].", 
+                ctx.record_hold_count, ctx.copy_summary.0.count) %]
+        </p>
+    </span>
+[%- INCLUDE "opac/parts/record/copy_table.tt2" %]
 </div>
 [%- END %]
 
