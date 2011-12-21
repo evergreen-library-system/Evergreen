@@ -22,7 +22,6 @@ my %fields = (
     # 3M extensions: (most of the data is stored under Item)
 #   collection_code  => undef,
 #   call_number      => undef,
-    destination_loc  => undef,
     alert_type       => undef,  # 00,01,02,03,04 or 99
 #   hold_patron_id   => undef,
 #   hold_patron_name => "",
@@ -139,7 +138,7 @@ sub do_checkin {
 
     $resp->{org} &&= OpenILS::SIP::shortname_from_id($resp->{org}); # Convert id to shortname
 
-    $self->destination_loc($resp->{org}) if $resp->{org};
+    $self->item->destination_loc($resp->{org}) if $resp->{org};
 
     if ($txt eq 'ROUTE_ITEM') {
         # Note, this alert_type will be overridden below if this is a hold transit
