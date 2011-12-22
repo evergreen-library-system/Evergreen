@@ -91,9 +91,10 @@
                                                             </tr>
                                                         [% END %]
                                                         [%- IF openurl.enabled == 'true';
-                                                            FOR issn IN args.issns;
-                                                                sfx = ResolverResolver.resolve_issn(issn, openurl.baseurl);
-                                                                FOR res IN sfx;
+                                                            FOREACH issn IN args.issns;
+                                                                NEXT IF issn == '';
+                                                                res_urls = ResolverResolver.resolve_issn(issn, openurl.baseurl);
+                                                                FOREACH res IN res_urls;
                                                         %]
                                                         <tr name="results_issn_tr">
                                                             <td valign="top">
