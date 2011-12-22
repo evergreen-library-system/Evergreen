@@ -1106,6 +1106,7 @@ vim:et:ts=4:sw=4:
                </unix_config>
                <app_settings>
                   <cache_timeout>86400</cache_timeout>
+                  <request_timeout>10</request_timeout>
                   <default_url_base>http://path/to/sfx_or_cufts</default_url_base>
                   <resolver_type>sfx</resolver_type>
                </app_settings>

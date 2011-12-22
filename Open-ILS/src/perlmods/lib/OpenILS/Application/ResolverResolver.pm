@@ -84,7 +84,7 @@ my $cache;
 my $cache_timeout;
 my $default_url_base;              # Default resolver location
 my $resolver_type;              # Default resolver type
-my $default_lwp_timeout;                    # Default browser timeout
+my $default_request_timeout;                    # Default browser timeout
 
 our ($ua, $parser);
 
@@ -99,8 +99,8 @@ sub initialize {
     $resolver_type = $sclient->config_value(
         "apps", "open-ils.resolver", "app_settings", "resolver_type") || 'sfx';
     # We set a browser timeout
-    $default_lwp_timeout = $sclient->config_value(
-        "apps", "open-ils.resolver", "app_settings", "lwp_timeout" ) || 60;
+    $default_request_timeout = $sclient->config_value(
+        "apps", "open-ils.resolver", "app_settings", "request_timeout" ) || 60;
 }
 
 sub child_init {
@@ -119,7 +119,7 @@ sub resolve_holdings {
     my $id_type = shift;      # keep it simple for now, either 'issn' or 'isbn'
     my $id_value = shift;     # the normalized ISSN or ISBN
     my $url_base = shift || $default_url_base; 
-    my $lwp_timeout = shift || $default_lwp_timeout; 
+    my $request_timeout = shift || $default_request_timeout; 
 
     if (!$id_type) {
         $logger->warn("Resolver was not given an ID type to resolve");
@@ -131,7 +131,7 @@ sub resolve_holdings {
     }
 
     # Need some sort of timeout in case resolver is unreachable
-    $ua->timeout($lwp_timeout);
+    $ua->timeout($request_timeout);
 
     if ($resolver_type eq 'cufts') {
         return cufts_holdings($self,$conn,$id_type,$id_value,$url_base);
@@ -397,8 +397,8 @@ Returns a list of "rhr" objects representing the full-text holdings for a given 
                  desc => 'The base URL for the resolver and instance',
                  type => 'string'
             }, {
-                 name => 'lwp_timeout',
-                 desc => 'The timeout for the LWP request',
+                 name => 'request_timeout',
+                 desc => 'The timeout for the HTTP request',
                  type => 'string'
             },
         ],
@@ -431,8 +431,8 @@ Returns a list of raw JSON objects representing the full-text holdings for a giv
                  desc => 'The base URL for the resolver and instance',
                  type => 'string'
             }, {
-                 name => 'lwp_timeout',
-                 desc => 'The timeout for the LWP request',
+                 name => 'request_timeout',
+                 desc => 'The timeout for the HTTP request',
                  type => 'string'
             },
         ],
@@ -489,8 +489,8 @@ Deletes the cached value of the full-text holdings for a given ISBN or ISSN
                  desc => 'The base URL for the resolver and instance',
                  type => 'string'
             }, {
-                 name => 'lwp_timeout',
-                 desc => 'The timeout for the LWP request',
+                 name => 'request_timeout',
+                 desc => 'The timeout for the HTTP request',
                  type => 'string'
             },
         ],
