@@ -97,16 +97,10 @@ function bib_brief_overlay(params) {
         // Let's loop through bre.attrs.attrs and put them with any matching
         // elements in bib_brief_overlay.xul
         if (params.bre.attrs()) {
-            // FIXME -- we should do this in the perl; what's below isn't robust
-            var attrs = JSON2js(
-                '{' +
-                params.bre.attrs().attrs().replace(
-                    '=>',':','g').replace('NULL','null','g')
-                + '}'
-            );
+            var attrs = params.bre.attrs();
             for (var attr in attrs) {
                 if (exists(attr)) {
-                    set(attr,attrs[attr]);
+                    set(attr,attrs[attr].code);
                     set_tooltip(attr,attr);
                 }
             }

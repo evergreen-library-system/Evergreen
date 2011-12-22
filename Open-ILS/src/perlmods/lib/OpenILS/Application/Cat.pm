@@ -448,7 +448,7 @@ sub biblio_record_record_metadata {
             my $rec = $editor->retrieve_biblio_record_entry($_);
         $rec->creator($editor->retrieve_actor_user($rec->creator));
         $rec->editor($editor->retrieve_actor_user($rec->editor));
-        $rec->attrs($editor->retrieve_metabib_record_attr($rec->id));
+        $rec->attrs($U->get_bre_attrs([$rec->id], $editor)->{$rec->id});
         $rec->clear_marc; # slim the record down
         push( @results, $rec );
     }
