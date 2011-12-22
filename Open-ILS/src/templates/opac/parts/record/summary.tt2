@@ -52,7 +52,7 @@
 </div>
 
 [%- IF openurl.enabled == 'true';
-    openurls = []
+    openurls = [];
     FOREACH issn IN args.issns;
         NEXT IF issn == '';
         openurls = openurls.import(ResolverResolver.resolve_issn(issn, openurl.baseurl));

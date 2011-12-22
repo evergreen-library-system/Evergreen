@@ -477,22 +477,18 @@ __PACKAGE__->register_method(
 Deletes the cached value of the full-text holdings for a given ISBN or ISSN
          DESC
         'params' => [ {
-                name => 'id_type',
-                desc => 'The type of identifier ("issn" or "isbn")',
-                type => 'string' 
-            }, {
-                name => 'id_value',
-                desc => 'The identifier value',
-                type => 'string'
-            }, {
                  name => 'url_base',
                  desc => 'The base URL for the resolver and instance',
                  type => 'string'
             }, {
-                 name => 'request_timeout',
-                 desc => 'The timeout for the HTTP request',
-                 type => 'string'
-            },
+                name => 'id_type',
+                desc => 'The type of identifier ("issn" or "isbn")',
+                type => 'string'
+            }, {
+                name => 'id_value',
+                desc => 'The identifier value',
+                type => 'string'
+            }
         ],
         'return' => {
             desc => 'Deletes the cached value of the full-text holdings for a given ISBN or ISSN',
