@@ -52,6 +52,17 @@ for a given bibliographic source is `TRUE`, then the staff client will prevent
 a cataloger from adding volumes or MFHD records to records belonging to that
 source.
 
+Switch copy location name and library short name in copy editor
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+By default, the copy editor shows the library shortname ('BR1' or 'CONS')
+followed by the copy location name ('Stacks', 'Reference').  A new workstation
+setting, under *Admin -> Workstation Administration -> Copy Editor: Copy
+Location Name First*, enables staff to change the display so that the copy
+location name is displayed first, followed by the library shortname. This
+may be particularly useful for libraries that have defined one set of copy
+locations at the consortial level and want to enable quick keyboard navigation
+to copy locations by typing just the first letters of the copy location.
+
 Reports
 ~~~~~~~
 
