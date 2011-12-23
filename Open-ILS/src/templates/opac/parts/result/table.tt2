@@ -132,7 +132,14 @@
                                                                 <td><a href="[% uri.href %]">[% uri.link | html %]</a>[% ' - ' _ uri.note | html IF uri.note %]</td>
                                                             </tr>
                                                             [% END %]
-                                                            [% IF args.holdings.size > 0 %]
+                                                            [%- IF args.holdings.size > 0;
+                                                                FOREACH copy IN args.holdings;
+                                                                    IF copy.part_label != '';
+                                                                        has_parts = 'true';
+                                                                        LAST;
+                                                                    END;
+                                                                END;
+                                                            %]
                                                             <tr name='bib_cn_list' class='result_table_title_cell'>
                                                                 <td colspan='2'>
                                                                     <table class='result_holdings_table'>
@@ -140,6 +147,9 @@
                                                                             <th>[% l('Library') %]</th>
                                                                             <th>[% l('Shelving location') %]</th>
                                                                             <th>[% l('Call number') %]</th>
+                                                                            [%- IF has_parts == 'true'; %]
+                                                                            <th>[% l('Part') %]</th>
+                                                                            [%- END %]
                                                                             <th>[% l('Status') %]</th>
                                                                         </tr></thead>
                                                                         <tbody>
@@ -148,6 +158,9 @@
                                                                             <td>[% copy.library | html %]</td>
                                                                             <td>[% copy.location | html %]</td>
                                                                             <td>[% copy.label | html %]</td>
+                                                                            [%- IF has_parts == 'true'; %]
+                                                                            <td>[% copy.part_label %]</td>
+                                                                            [%- END %]
                                                                             <td>[% copy.status | html %]</td>
                                                                         </tr>
                                                                 [% END %]
@@ -155,7 +168,9 @@
                                                                     </table>
                                                                 </td>
                                                             </tr>
-                                                        [% END %]
+                                                            [%- has_parts = 'false';
+                                                                END;
+                                                             %]
                                                         [% END %] <!-- END detail_record_view -->
                                                     </table>
                                                     [% PROCESS "opac/parts/result/copy_counts.tt2" %]

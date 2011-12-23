@@ -37,7 +37,7 @@ sub load_record {
         $self->mk_copy_query($rec_id, $org, $depth, $copy_limit, $copy_offset)
     );
 
-    my (undef, @rec_data) = $self->get_records_and_facets([$rec_id], undef, {flesh => '{holdings_xml,mra,acp,acnp,acns}'});
+    my (undef, @rec_data) = $self->get_records_and_facets([$rec_id], undef, {flesh => '{holdings_xml,bmp,mra,acp,acnp,acns}'});
     $ctx->{bre_id} = $rec_data[0]->{id};
     $ctx->{marc_xml} = $rec_data[0]->{marc_xml};
 
@@ -159,6 +159,9 @@ sub mk_copy_query {
             acns => [
                 {column => 'label', alias => 'call_number_suffix_label'},
                 {column => 'id', alias => 'call_number_suffix'}
+            ],
+            bmp => [
+                {column => 'label', alias => 'part_label'},
             ]
         },
 
@@ -177,7 +180,13 @@ sub mk_copy_query {
                 },
                 acpl => {},
                 ccs => {},
-                aou => {}
+                aou => {},
+                acpm => {
+                    type => 'left',
+                    join => {
+                        bmp => { type => 'left' }
+                    }
+                }
             }
         },
 

@@ -285,7 +285,7 @@ sub load_rresults {
     my ($facets, @data) = $self->get_records_and_facets(
         $rec_ids, $results->{facet_key}, 
         {
-            flesh => '{holdings_xml,mra,acp,acnp,acns}',
+            flesh => '{holdings_xml,mra,acp,acnp,acns,bmp}',
             site => $site,
             depth => $depth
         }
@@ -400,7 +400,7 @@ sub item_barcode_shortcut {
         }
 
         my ($facets, @data) = $self->get_records_and_facets(
-            $rec_ids, undef, {flesh => "{holdings_xml,mra,acnp,acns}"}
+            $rec_ids, undef, {flesh => "{holdings_xml,mra,acnp,acns,bmp}"}
         );
 
         $self->ctx->{records} = [@data];

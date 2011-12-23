@@ -1,8 +1,19 @@
+[%-
+FOREACH copy_info IN ctx.copies;
+    IF copy_info.part_label != '';
+        has_parts = 'true';
+        LAST;
+    END;
+END;
+%]
 <table cellpadding="0" cellspacing="0" border="0" width="100%" id="rdetails_status">
     <thead>
         <tr>
             <th id='copy_header_library'>[% l("Location") %]</th>
             <th id='copy_header_callnmber'>[% l("Call Number") %]</th>
+            [%- IF has_parts == 'true' %]
+            <th id='copy_header_part'>[% l("Part") %]</th>
+            [%- END %]
             <th id='copy_header_barcode'>[% l("Barcode") %]</th>
             <th id='copy_header_shelfloc'>[% l("Shelving Location") %]</th>
             [%- IF ctx.is_staff %]
@@ -38,6 +49,9 @@
             -%]
             </td>
             <td header='copy_header_callnumber'>[% callnum | html %]</td>
+            [%- IF has_parts == 'true' %]
+            <td header='copy_header_part'>[% copy_info.part_label | html %]</td>
+            [%- END %]
             <td header='copy_header_barcode'>[% copy_info.barcode | html %]</td>
             <td header='copy_header_shelfloc'>[% copy_info.copy_location | html %]</td>
             [%- IF ctx.is_staff %]

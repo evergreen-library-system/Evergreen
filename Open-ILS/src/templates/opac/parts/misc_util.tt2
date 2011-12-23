@@ -124,6 +124,11 @@
             ELSE;
                 copies = volume.findnodes('./*[local-name()="copies"]/*[local-name()="copy"]');
                 FOR copy IN copies;
+                    parts = copy.findnodes('./*[local-name()="monograph_parts"]/*[local-name()="monograph_part"]');
+                    FOREACH part IN parts;
+                        part_label = part.getAttribute('label');
+                        LAST IF part_label != '';
+                    END;
                     # Check copy visibility
                     cp.deleted = copy.getAttribute('deleted');    
                     cp.visible = copy.getAttribute('opac_visible');
@@ -147,12 +152,14 @@
 
                     holding = {
                         label => vol.label,
+                        part_label => part_label,
                         location => loc.textContent,
                         library => circlib.textContent,
                         status => status.textContent
                         barcode => copy.getAttribute('barcode')
                     };
                     args.holdings.push(holding);
+                    part_label = '';
                 END;
             END;
         END;
