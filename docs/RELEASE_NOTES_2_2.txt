@@ -76,3 +76,10 @@ reporting sources have been added:
   * 'Hold/Copy Ratio per Bib and Pickup Library' is a source that calculates
     the number of holds per copy per bibliographic record, with granularity
     by pickup library.
+
+License
+-------
+This work is licensed under the Creative Commons Attribution-ShareAlike 3.0
+Unported License. To view a copy of this license, visit
+http://creativecommons.org/licenses/by-sa/3.0/ or send a letter to Creative
+Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, USA.
