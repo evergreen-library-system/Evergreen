@@ -1840,7 +1840,7 @@ sub hold_request_count {
     }
 
     my $holds = $e->json_query({
-        select => {ahr => ['shelf_time']},
+        select => {ahr => ['pickup_lib', 'current_shelf_lib']},
         from => 'ahr',
         where => {
             usr => $user_id,
@@ -1851,7 +1851,12 @@ sub hold_request_count {
 
 	return { 
         total => scalar(@$holds), 
-        ready => scalar(grep { $_->{shelf_time} } @$holds) 
+        ready => scalar(
+            grep { 
+                $_->{current_shelf_lib} and # avoid undef warnings
+                $_->{pickup_lib} eq $_->{current_shelf_lib} 
+            } @$holds
+        ) 
     };
 }
 
