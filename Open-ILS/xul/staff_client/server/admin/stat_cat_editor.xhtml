@@ -284,15 +284,20 @@
             </tr>
 
             <tr class='insert_row' id='sc_edit_entry_row'>
-                <td colspan='7'>
+                <td colspan='11'>
                     <span class='padded'>
                         <span>&staff.server.admin.stat_cat.edit_entry_owner;</span><b name='sc_edit_entry_owner'/>
                     </span>
                     <span class='padded'>
                         <input type='text' name='sc_edit_entry_name' class='padded'/>
                     </span>
+                    <span class='hide_me' name='sc_edit_entry_default'>
+                        <input type='checkbox' name='sc_edit_entry_default_set'/>
+                        &staff.server.admin.stat_cat.set_default_entry;
+                        <select name='sc_edit_entry_default_lib'> </select>
+                    </span>
                     <span class='padded'>
-                        <input type='submit' name='sc_edit_entry_name_submit' value='&staff.server.admin.stat_cat.edit_entry_name_submit;' class='padded'/>
+                        <input type='submit' name='sc_edit_entry_submit' value='&staff.server.admin.stat_cat.edit_entry_submit;' class='padded'/>
                     </span>
                     <span class='padded'>
                         <input type='submit' name='sc_edit_entry_delete' value='&staff.server.admin.stat_cat.edit_entry_delete;' class='padded'/>
@@ -304,13 +309,18 @@
             </tr>
 
             <tr class='insert_row' id='sc_new_entry_row'>
-                <td colspan='7'> 
+                <td colspan='11'> 
                     <span>&staff.server.admin.stat_cat.new_entry_name;</span>
                     <span class='padded'>
                         <input type='text' name='sc_new_entry_name'/>
                     </span>
                     <span class='padded'>
                         <select name='sc_new_entry_lib'> </select>
+                    </span>
+                    <span class='hide_me' name='sc_new_entry_default'>
+                        <input type='checkbox' name='sc_new_entry_default_set'/>
+                        &staff.server.admin.stat_cat.set_default_entry;
+                        <select name='sc_new_entry_default_lib'> </select>
                     </span>
                     <span class='padded'>
                         <input type='submit' name='sc_new_entry_create' value='&staff.server.admin.stat_cat.new_entry_create;'/>
