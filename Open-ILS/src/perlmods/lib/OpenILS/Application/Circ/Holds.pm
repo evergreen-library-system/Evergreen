@@ -952,20 +952,23 @@ sub update_hold_impl {
             $transit->dest($hold->pickup_lib);
             $e->update_action_hold_transit_copy($transit) or return $e->die_event;
 
-        } elsif($hold_status == 4) { # on holds shelf
+        } elsif($hold_status == 4 or $hold_status == 8) { # on holds shelf
 
             return $e->die_event unless $e->allowed('UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF', $orig_hold->pickup_lib);
             return $e->die_event unless $e->allowed('UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF', $hold->pickup_lib);
 
             $logger->info("updating pickup lib for hold ".$hold->id." while on holds shelf");
 
-            # create the new transit
-            my $evt = transit_hold($e, $orig_hold, $hold, $e->retrieve_asset_copy($hold->current_copy));
-            return $evt if $evt;
+            if ($hold->pickup_lib eq $orig_hold->current_shelf_lib) {
+                # This can happen if the pickup lib is changed while the hold is 
+                # on the shelf, then changed back to the original pickup lib.
+                # Restore the original shelf_expire_time to prevent abuse.
+                set_hold_shelf_expire_time(undef, $hold, $e, $hold->shelf_time);
 
-            # hold is leaving the shelf  
-            $hold->clear_shelf_time;
-            $hold->clear_shelf_expire_time;
+            } else {
+                # clear to prevent premature shelf expiration
+                $hold->clear_shelf_expire_time;
+            }
         }
     } 
 
@@ -980,6 +983,49 @@ sub update_hold_impl {
 
     return $hold->id;
 }
+
+# this does not update the hold in the DB.  It only 
+# sets the shelf_expire_time field on the hold object.
+# start_time is optional and defaults to 'now'
+sub set_hold_shelf_expire_time {
+    my ($class, $hold, $editor, $start_time) = @_;
+
+    my $shelf_expire = $U->ou_ancestor_setting_value( 
+        $hold->pickup_lib,
+        'circ.holds.default_shelf_expire_interval', 
+        $editor
+    );
+
+    return undef unless $shelf_expire;
+
+    $start_time = ($start_time) ? 
+        DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($start_time)) :
+        DateTime->now;
+
+    my $seconds = OpenSRF::Utils->interval_to_seconds($shelf_expire);
+    my $expire_time = $start_time->add(seconds => $seconds);
+
+    # if the shelf expire time overlaps with a pickup lib's 
+    # closed date, push it out to the first open date
+    my $dateinfo = $U->storagereq(
+        'open-ils.storage.actor.org_unit.closed_date.overlap', 
+        $hold->pickup_lib, $expire_time);
+
+    if($dateinfo) {
+        my $dt_parser = DateTime::Format::ISO8601->new;
+        $expire_time = $dt_parser->parse_datetime(cleanse_ISO8601($dateinfo->{end}));
+
+        # TODO: enable/disable time bump via setting?
+        $expire_time->set(hour => '23', minute => '59', second => '59');
+
+        $logger->info("circulator: shelf_expire_time overlaps".
+            " with closed date, pushing expire time to $expire_time");
+    }
+
+    $hold->shelf_expire_time($expire_time->strftime('%FT%T%z'));
+    return undef;
+}
+
 
 sub transit_hold {
     my($e, $orig_hold, $hold, $copy) = @_;

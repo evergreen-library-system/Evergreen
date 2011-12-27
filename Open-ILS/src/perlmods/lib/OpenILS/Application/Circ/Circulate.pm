@@ -3189,36 +3189,9 @@ sub process_received_transit {
 # ------------------------------------------------------------------
 sub put_hold_on_shelf {
     my($self, $hold) = @_;
-
     $hold->shelf_time('now');
     $hold->current_shelf_lib($self->circ_lib);
-
-    my $shelf_expire = $U->ou_ancestor_setting_value(
-        $self->circ_lib, 'circ.holds.default_shelf_expire_interval', $self->editor);
-
-    return undef unless $shelf_expire;
-
-    my $seconds = OpenSRF::Utils->interval_to_seconds($shelf_expire);
-    my $expire_time = DateTime->now->add(seconds => $seconds);
-
-    # if the shelf expire time overlaps with a pickup lib's 
-    # closed date, push it out to the first open date
-    my $dateinfo = $U->storagereq(
-        'open-ils.storage.actor.org_unit.closed_date.overlap', 
-        $hold->pickup_lib, $expire_time);
-
-    if($dateinfo) {
-        my $dt_parser = DateTime::Format::ISO8601->new;
-        $expire_time = $dt_parser->parse_datetime(cleanse_ISO8601($dateinfo->{end}));
-
-        # TODO: enable/disable time bump via setting?
-        $expire_time->set(hour => '23', minute => '59', second => '59');
-
-        $logger->info("circulator: shelf_expire_time overlaps".
-            " with closed date, pushing expire time to $expire_time");
-    }
-
-    $hold->shelf_expire_time($expire_time->strftime('%FT%T%z'));
+    $holdcode->set_hold_shelf_expire_time($hold, $self->editor);
     return undef;
 }
 
