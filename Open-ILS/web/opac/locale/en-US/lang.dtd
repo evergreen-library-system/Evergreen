@@ -2205,6 +2205,7 @@
 <!ENTITY staff.server.admin.stat_cat.usr_summary.label "Show in Summary">
 <!ENTITY staff.server.admin.stat_cat.entries.label "Entries">
 <!ENTITY staff.server.admin.stat_cat.add_entry "Add Entry">
+<!ENTITY staff.server.admin.stat_cat.set_default_entry "Default entry for">
 <!ENTITY staff.server.admin.stat_cat.edit "Edit">
 <!ENTITY staff.server.admin.stat_cat.none "(none)">
 <!ENTITY staff.server.admin.stat_cat.add.label "Add">
@@ -2215,7 +2216,7 @@
 <!ENTITY staff.server.admin.stat_cat.edit_delete "Delete Statistical Category">
 <!ENTITY staff.server.admin.stat_cat.cancel "Cancel">
 <!ENTITY staff.server.admin.stat_cat.edit_entry_owner "Owned By ">
-<!ENTITY staff.server.admin.stat_cat.edit_entry_name_submit "Update Entry Value">
+<!ENTITY staff.server.admin.stat_cat.edit_entry_submit "Update Entry Value">
 <!ENTITY staff.server.admin.stat_cat.edit_entry_delete "Delete Entry">
 <!ENTITY staff.server.admin.stat_cat.new_entry_name "Enter the value of the new entry: ">
 <!ENTITY staff.server.admin.stat_cat.new_entry_create "Create new entry">
