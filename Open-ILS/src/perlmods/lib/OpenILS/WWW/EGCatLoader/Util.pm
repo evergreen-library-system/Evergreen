@@ -276,4 +276,30 @@ sub fetch_marc_xml_by_id {
     return $marc_xml;
 }
 
+sub _get_search_lib {
+    my $self = shift;
+
+    # loc param takes precedence
+    my $loc = $self->cgi->param('loc');
+    return $loc if $loc;
+
+    if ($self->ctx->{user}) {
+        # See if the user has a search library preference
+        my $lset = $self->editor->search_actor_user_setting({
+            usr => $self->ctx->{user}->id, 
+            name => 'opac.default_search_location'
+        })->[0];
+        return OpenSRF::Utils::JSON->JSON2perl($lset->value) if $lset;
+
+        # Otherwise return the user's home library
+        return $self->ctx->{user}->home_ou;
+    }
+
+    if ($self->cgi->param('physical_loc')) {
+        return $self->cgi->param('physical_loc');
+    }
+
+    return $self->ctx->{aou_tree}->()->id;
+}
+
 1;

@@ -97,7 +97,7 @@ sub _prepare_biblio_search {
     }
 
     my $site;
-    my $org = $cgi->param('loc');
+    my $org = $ctx->{search_ou};
     if (defined($org) and $org ne '' and ($org ne $ctx->{aou_tree}->()->id) and not $query =~ /site\(\S+\)/) {
         $site = $ctx->{get_aou}->($org)->shortname;
         $query .= " site($site)";
@@ -124,6 +124,8 @@ sub _prepare_biblio_search {
             $depth = $org->ou_type->depth;
         }
         $query .= " depth($depth)";
+    } else {
+        $depth = $ctx->{get_aou}->($org)->ou_type->depth;
     }
 
     $logger->info("tpac: site=$site, depth=$depth, query=$query");
@@ -204,7 +206,7 @@ sub load_rresults {
     my $page = $cgi->param('page') || 0;
     my @facets = $cgi->param('facet');
     my $limit = $self->_get_search_limit;
-    my $loc = $cgi->param('loc') || $ctx->{aou_tree}->()->id;
+    $ctx->{search_ou} = $self->_get_search_lib();
     my $offset = $page * $limit;
     my $metarecord = $cgi->param('metarecord');
     my $results; 
@@ -244,7 +246,7 @@ sub load_rresults {
         $results = $U->simplereq(
             'open-ils.search', 
             'open-ils.search.biblio.metarecord_to_records',
-            $metarecord, {org => $loc, depth => $depth}
+            $metarecord, {org => $ctx->{search_ou}, depth => $depth}
         );
 
         # force the metarecord result blob to match the format of regular search results
@@ -348,10 +350,7 @@ sub check_1hit_redirect {
 
     } else {
         $sname = 'opac.patron.jump_to_details_on_single_hit';
-        $org = ($ctx->{user}) ? 
-            $ctx->{user}->home_ou : 
-            $ctx->{physical_loc} || 
-            $self->ctx->{aou_tree}->()->id;
+        $org = $self->_get_search_lib();
     }
 
     return undef unless 
@@ -451,7 +450,7 @@ sub marc_expert_search {
     # loc, limit and offset
     my $page = $self->cgi->param("page") || 0;
     my $limit = $self->_get_search_limit;
-    my $org_unit = $self->cgi->param("loc") || $self->ctx->{aou_tree}->()->id;
+    $self->ctx->{search_ou} = $self->_get_search_lib();
     my $offset = $page * $limit;
 
     $self->ctx->{records} = [];
@@ -473,7 +472,7 @@ sub marc_expert_search {
     my $ses = OpenSRF::AppSession->create('open-ils.search');
     my $req = $ses->request(
         'open-ils.search.biblio.marc',
-        {searches => $query, org_unit => $org_unit}, 
+        {searches => $query, org_unit => $self->ctx->{search_ou}}, 
         $limit, $offset, $timeout);
 
     my $resp = $req->recv($timeout);

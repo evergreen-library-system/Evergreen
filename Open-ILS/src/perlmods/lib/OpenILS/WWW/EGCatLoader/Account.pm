@@ -1239,6 +1239,7 @@ sub load_myopac_main {
     my $self = shift;
     my $limit = $self->cgi->param('limit') || 0;
     my $offset = $self->cgi->param('offset') || 0;
+    $self->ctx->{search_ou} = $self->_get_search_lib();
 
     return $self->prepare_fines($limit, $offset) || Apache2::Const::OK;
 }

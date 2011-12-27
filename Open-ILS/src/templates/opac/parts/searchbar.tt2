@@ -21,7 +21,7 @@
                 x-webkit-speech />
         </span>
         [%- INCLUDE "opac/parts/qtype_selector.tt2";
-            l(' in '); PROCESS build_org_selector name='loc' value=CGI.param('loc');
+            l(' in '); PROCESS build_org_selector name='loc' value=ctx.search_ou;
     %]
     <span>
         <input id='search-submit-go' type="submit" value="[% l('Search') %]" alt="[% l('Search') %]" class="opac-button"

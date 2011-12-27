@@ -183,6 +183,7 @@ sub redirect_auth {
 sub load_simple {
     my ($self, $page) = @_;
     $self->ctx->{page} = $page;
+    $self->ctx->{search_ou} = $self->_get_search_lib();
 
     if (my $patron_barcode = $self->cgi->param("patron_barcode")) {
         # Special CGI variable from staff client; propagate henceforth as cookie

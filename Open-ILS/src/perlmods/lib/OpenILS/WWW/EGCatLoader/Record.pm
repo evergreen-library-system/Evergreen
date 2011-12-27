@@ -14,8 +14,8 @@ sub load_record {
     my $ctx = $self->ctx;
     $ctx->{page} = 'record';  
 
-    my $org = $self->cgi->param('loc') || $ctx->{aou_tree}->()->id;
-    my $depth = $self->cgi->param('depth') || 0;
+    my $org = $self->_get_search_lib();
+    my $depth = $self->cgi->param('depth') || $ctx->{get_aou}->($org)->ou_type->depth;
     my $copy_limit = int($self->cgi->param('copy_limit') || 10);
     my $copy_offset = int($self->cgi->param('copy_offset') || 0);
 
