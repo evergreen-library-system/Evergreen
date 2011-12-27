@@ -946,6 +946,7 @@ sub fleshed_actor_stat_cat {
 
 		my $sc_fm = $cat->to_fieldmapper;
 		$sc_fm->entries( [ map { $_->to_fieldmapper } $cat->entries ] );
+		$sc_fm->default_entries( [ map { $_->to_fieldmapper } $cat->default_entries ] );
 
 		$client->respond( $sc_fm );
 
@@ -995,6 +996,9 @@ sub ranged_actor_stat_cat_all {
 		$sc_fm->entries(
 			[ $self->method_lookup( 'open-ils.storage.ranged.actor.stat_cat_entry.search.stat_cat' )->run($ou,$sc->id) ]
 		) if ($fleshed);
+		$sc_fm->default_entries(
+			[ $self->method_lookup( 'open-ils.storage.actor.stat_cat_entry_default.ancestor.retrieve' )->run($ou,$sc->id) ]
+		) if ($fleshed);
 		$client->respond( $sc_fm );
 	}
 
@@ -1038,7 +1042,8 @@ sub ranged_actor_stat_cat_entry {
         $sth->execute($ou,$sc);
 
         for my $sce ( map { actor::stat_cat_entry->construct($_) } $sth->fetchall_hash ) {
-		$client->respond( $sce->to_fieldmapper );
+		my $sce_fm = $sce->to_fieldmapper;
+		$client->respond( $sce_fm );
 	}
 
         return undef;
@@ -1050,5 +1055,69 @@ __PACKAGE__->register_method(
         method          => 'ranged_actor_stat_cat_entry',
 );
 
+sub actor_stat_cat_entry_default {
+    my $self = shift;
+    my $client = shift;
+    my $ou = ''.shift();
+    my $sc = ''.shift();
+        
+    return undef unless ($ou);
+    my $s_table = actor::stat_cat_entry_default->table;
+
+    my $select = <<"    SQL";
+         SELECT  s.*
+         FROM  $s_table s
+         WHERE owner = ? AND stat_cat = ?
+    SQL
+
+    my $sth = actor::stat_cat->db_Main->prepare_cached($select);
+    $sth->execute($ou,$sc);
+
+    for my $sced ( map { actor::stat_cat_entry_default->construct($_) } $sth->fetchall_hash ) {
+        $client->respond( $sced->to_fieldmapper );
+    }
+
+    return undef;
+}
+__PACKAGE__->register_method(
+    api_name        => 'open-ils.storage.actor.stat_cat_entry_default.retrieve',
+    api_level       => 1,
+    stream          => 1,
+    method          => 'actor_stat_cat_entry_default',
+);
+
+sub actor_stat_cat_entry_default_ancestor {
+    my $self = shift;
+    my $client = shift;
+    my $ou = ''.shift();
+    my $sc = ''.shift();
+        
+    return undef unless ($ou);
+    my $s_table = actor::stat_cat_entry_default->table;
+
+    my $select = <<"    SQL";
+        SELECT  s.*
+        FROM  $s_table s
+        JOIN actor.org_unit_ancestors(?) p ON (p.id = s.owner)
+        WHERE stat_cat = ?
+    SQL
+
+    my $sth = actor::stat_cat->db_Main->prepare_cached($select);
+    $sth->execute($ou,$sc);
+
+    my @sced =  map { actor::stat_cat_entry_default->construct($_) } $sth->fetchall_hash;
+
+    my $ancestor_sced = pop @sced;
+
+    $client->respond( $ancestor_sced->to_fieldmapper ) if $ancestor_sced;
+
+    return undef;
+}
+__PACKAGE__->register_method(
+    api_name        => 'open-ils.storage.actor.stat_cat_entry_default.ancestor.retrieve',
+    api_level       => 1,
+    stream          => 1,
+    method          => 'actor_stat_cat_entry_default_ancestor',
+);
 
 1;
