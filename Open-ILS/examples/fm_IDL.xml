@@ -5058,6 +5058,7 @@ SELECT  usr,
 	<class id="actsc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::stat_cat" oils_persist:tablename="actor.stat_cat" reporter:label="User Statistical Category">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.stat_cat_id_seq">
 			<field reporter:label="Entries" name="entries" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Default Entries" name="default_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Stat Cat ID" name="id" reporter:datatype="id" reporter:selector="name"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field reporter:label="OPAC Visible" name="opac_visible" reporter:datatype="bool"/>
@@ -5073,6 +5074,7 @@ SELECT  usr,
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="sip_field" reltype="has_a" key="field" map="" class="actscsf"/>
 			<link field="entries" reltype="has_many" key="stat_cat" map="" class="actsce"/>
+			<link field="default_entries" reltype="has_many" key="stat_cat" map="" class="actsced"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -5293,10 +5295,25 @@ SELECT  usr,
 			<field reporter:label="Entry Owner" name="owner" reporter:datatype="link"/>
 			<field reporter:label="Stat Cat" name="stat_cat" reporter:datatype="link"/>
 			<field reporter:label="Entry Value" name="value" reporter:datatype="text"/>
+			<field reporter:label="Default Entries" name="default_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="stat_cat" reltype="has_a" key="id" map="" class="actsc"/>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="default_entries" reltype="has_many" key="stat_cat_entry" map="" class="actsced"/>
+		</links>
+	</class>
+	<class id="actsced" controller="open-ils.cstore" oils_obj:fieldmapper="actor::stat_cat_entry_default" oils_persist:tablename="actor.stat_cat_entry_default" reporter:label="User Stat Cat Default Entry">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.stat_cat_entry_default_id_seq">
+			<field reporter:label="Default Entry ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Default Entry Value" name="stat_cat_entry" reporter:datatype="link"/>
+			<field reporter:label="Stat Cat" name="stat_cat" reporter:datatype="link"/>
+			<field reporter:label="Default for Owner" name="owner" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="stat_cat" reltype="has_a" key="id" map="" class="actsc"/>
+			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="stat_cat_entry" reltype="has_a" key="id" map="" class="actsce"/>
 		</links>
 	</class>
 	<class id="cubi" controller="open-ils.cstore" oils_obj:fieldmapper="container::user_bucket_item" oils_persist:tablename="container.user_bucket_item" reporter:label="User Bucket Item">
