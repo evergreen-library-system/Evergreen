@@ -114,6 +114,13 @@ sub init_ro_object_cache {
         return $cache{map}{aou}{$org_id};
     };
 
+    # Returns a flat list of aou objects.  often easier to manage than a tree.
+    $ro_object_subs->{aou_list} = sub {
+        $ro_object_subs->{aou_tree}->(); # force the org tree to load
+        return [ values %{$cache{map}{aou}} ];
+    };
+
+
     # turns an ISO date into something TT can understand
     $ro_object_subs->{parse_datetime} = sub {
         my $date = shift;

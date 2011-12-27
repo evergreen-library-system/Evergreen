@@ -108,13 +108,25 @@ sub _prepare_biblio_search {
         $site ||= $ctx->{aou_tree}->()->shortname;
     }
 
-
     my $depth;
-    if (defined($cgi->param('depth')) and not $query =~ /depth\(\d+\)/) {
-        $depth = defined $cgi->param('depth') ?
-            $cgi->param('depth') : $ctx->{get_aou}->($site)->ou_type->depth;
+    if ($query =~ /depth\(\d+\)/) {
+
+        # depth is encoded in the search query
+        ($depth) = ($query =~ /depth\((\d+)\)/);
+
+    } else {
+
+        if (defined $cgi->param('depth')) {
+            $depth = $cgi->param('depth');
+        } else {
+            # no depth specified.  match the depth to the search org
+            my ($org) = grep { $_->shortname eq $site } @{$ctx->{aou_list}->()};
+            $depth = $org->ou_type->depth;
+        }
         $query .= " depth($depth)";
     }
+
+    $logger->info("tpac: site=$site, depth=$depth, query=$query");
 
     return ($query, $site, $depth);
 }
