@@ -1537,7 +1537,13 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 523, 'ADMIN_TOOLBAR', oils_i18n_gettext( 523,
     'Allows a user to create, edit, and delete custom toolbars', 'ppl', 'description' )),
  ( 524, 'PLACE_UNFILLABLE_HOLD', oils_i18n_gettext( 524,
-    'Allows a user to place a hold that cannot currently be filled.', 'ppl', 'description' ));
+    'Allows a user to place a hold that cannot currently be filled.', 'ppl', 'description' )),
+ ( 525, 'CREATE_PATRON_STAT_CAT_ENTRY_DEFAULT', oils_i18n_gettext( 525, 
+    'User may set a default entry in a patron statistical category', 'ppl', 'description' )),
+ ( 526, 'UPDATE_PATRON_STAT_CAT_ENTRY_DEFAULT', oils_i18n_gettext( 526, 
+    'User may reset a default entry in a patron statistical category', 'ppl', 'description' )),
+ ( 527, 'DELETE_PATRON_STAT_CAT_ENTRY_DEFAULT', oils_i18n_gettext( 527, 
+    'User may unset a default entry in a patron statistical category', 'ppl', 'description' ));
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
 
@@ -2058,12 +2064,14 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'CREATE_NON_CAT_TYPE',
 			'CREATE_PATRON_STAT_CAT',
 			'CREATE_PATRON_STAT_CAT_ENTRY',
+			'CREATE_PATRON_STAT_CAT_ENTRY_DEFAULT',
 			'CREATE_PATRON_STAT_CAT_ENTRY_MAP',
 			'CREATE_USER_GROUP_LINK',
 			'DELETE_BILLING_TYPE',
 			'DELETE_NON_CAT_TYPE',
 			'DELETE_PATRON_STAT_CAT',
 			'DELETE_PATRON_STAT_CAT_ENTRY',
+			'DELETE_PATRON_STAT_CAT_ENTRY_DEFAULT',
 			'DELETE_PATRON_STAT_CAT_ENTRY_MAP',
 			'DELETE_TRANSIT',
 			'group_application.user.staff',
