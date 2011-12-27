@@ -484,8 +484,12 @@ sub modify_from_fieldmapper {
 	action::hold_request->has_many( transits => 'action::hold_transit_copy' );
 
 	actor::stat_cat_entry->has_a( stat_cat => 'actor::stat_cat' );
+	actor::stat_cat_entry->has_many( default_entries => 'actor::stat_cat_entry_default' );
+	actor::stat_cat_entry_default->has_a( stat_cat => 'actor::stat_cat' );
+	actor::stat_cat_entry_default->has_a( stat_cat_entry => 'actor::stat_cat_entry' );
 	actor::stat_cat->has_a( owner => 'actor::org_unit' );
 	actor::stat_cat->has_many( entries => 'actor::stat_cat_entry' );
+	actor::stat_cat->has_many( default_entries => 'actor::stat_cat_entry_default' );
 	actor::stat_cat_entry_user_map->has_a( stat_cat => 'actor::stat_cat' );
 	actor::stat_cat_entry_user_map->has_a( stat_cat_entry => 'actor::stat_cat_entry' );
 	actor::stat_cat_entry_user_map->has_a( target_usr => 'actor::user' );
