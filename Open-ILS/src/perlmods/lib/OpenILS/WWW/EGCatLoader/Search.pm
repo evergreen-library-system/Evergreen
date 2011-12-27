@@ -124,6 +124,8 @@ sub _prepare_biblio_search {
             $depth = $org->ou_type->depth;
         }
         $query .= " depth($depth)";
+    } else {
+        $depth = $ctx->{get_aou}->($org)->ou_type->depth;
     }
 
     $logger->info("tpac: site=$site, depth=$depth, query=$query");
