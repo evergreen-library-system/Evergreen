@@ -1945,14 +1945,11 @@ sub fetch_captured_holds {
                 capture_time     => { "!=" => undef },
                 current_copy     => { "!=" => undef },
                 fulfillment_time => undef,
-                pickup_lib       => $org,
-#                cancel_time      => undef,
-              }
+                current_shelf_lib => $org
+            }
         }
     };
     if($self->api_name =~ /expired/) {
-#       $query->{'where'}->{'+ahr'}->{'shelf_expire_time'} = {'<' => 'now'};
-        $query->{'where'}->{'+alhr'}->{'shelf_time'} = {'!=' => undef};
         $query->{'where'}->{'+alhr'}->{'-or'} = {
                 shelf_expire_time => { '<' => 'now'},
                 cancel_time => { '!=' => undef },
