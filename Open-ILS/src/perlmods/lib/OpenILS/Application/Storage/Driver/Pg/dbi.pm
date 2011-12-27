@@ -519,6 +519,12 @@
 	actor::stat_cat_entry->sequence( 'actor.stat_cat_entry_id_seq' );
 	
 	#---------------------------------------------------------------------
+	package actor::stat_cat_entry_default;
+	
+	actor::stat_cat_entry_default->table( 'actor.stat_cat_entry_default' );
+	actor::stat_cat_entry_default->sequence( 'actor.stat_cat_entry_default_id_seq' );
+
+	#---------------------------------------------------------------------
 	package actor::stat_cat_entry_user_map;
 	
 	actor::stat_cat_entry_user_map->table( 'actor.stat_cat_entry_usr_map' );
