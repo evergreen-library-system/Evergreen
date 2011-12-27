@@ -790,6 +790,37 @@ sub fetch_stat_cat_entry {
 	return ( $entry, $evt );
 }
 
+sub fetch_stat_cat_entry_default {
+    my( $self, $type, $id ) = @_;
+    my( $entry_default, $evt );
+    $logger->debug("Fetching $type stat cat entry default: $id");
+    $entry_default = $self->simplereq(
+        'open-ils.cstore', 
+        "open-ils.cstore.direct.$type.stat_cat_entry_default.retrieve", $id );
+
+    my $e = 'ASSET_STAT_CAT_ENTRY_DEFAULT_NOT_FOUND';
+    $e = 'ACTOR_STAT_CAT_ENTRY_DEFAULT_NOT_FOUND' if $type eq 'actor';
+
+    $evt = OpenILS::Event->new( $e, id => $id ) unless $entry_default;
+    return ( $entry_default, $evt );
+}
+
+sub fetch_stat_cat_entry_default_by_stat_cat_and_org {
+    my( $self, $type, $stat_cat, $orgId ) = @_;
+    my $entry_default;
+    $logger->info("### Fetching $type stat cat entry default with stat_cat $stat_cat owned by org_unit $orgId");
+    $entry_default = $self->simplereq(
+        'open-ils.cstore', 
+        "open-ils.cstore.direct.$type.stat_cat_entry_default.search.atomic", 
+        { stat_cat => $stat_cat, owner => $orgId } );
+
+    $entry_default = $entry_default->[0];
+    return ($entry_default, undef) if $entry_default;
+
+    my $e = 'ASSET_STAT_CAT_ENTRY_DEFAULT_NOT_FOUND';
+    $e = 'ACTOR_STAT_CAT_ENTRY_DEFAULT_NOT_FOUND' if $type eq 'actor';
+    return (undef, OpenILS::Event->new($e) );
+}
 
 sub find_org {
 	my( $self, $org_tree, $orgid )  = @_;
