@@ -154,8 +154,10 @@ sub stat_cat_create {
 
 	my $method = "open-ils.storage.direct.actor.stat_cat.create";
 	my $entry_create = "open-ils.storage.direct.actor.stat_cat_entry.create";
+	my $default_entry_create = "open-ils.storage.direct.actor.stat_cat_entry_default.create";
 	my $perm = 'CREATE_PATRON_STAT_CAT';
 	my $eperm = 'CREATE_PATRON_STAT_CAT_ENTRY';
+	my $edperm = 'CREATE_PATRON_STAT_CAT_ENTRY_DEFAULT';
 
 	if($self->api_name =~ /asset/) {
 		$method = "open-ils.storage.direct.asset.stat_cat.create";
@@ -183,7 +185,16 @@ sub stat_cat_create {
 	if( ref($stat_cat->entries) ) {
 		for my $entry (@{$stat_cat->entries}) {
 			$entry->stat_cat($newid);
-			_create_stat_entry($session, $entry, $entry_create);
+			my $entry_id = _create_stat_entry($session, $entry, $entry_create);
+			if( $self->api_name =~ /actor/ && ref($entry->default_entries) ) {
+				$evt = $apputils->check_perms($user_obj->id, $stat_cat->owner, $edperm);
+				return $evt if $evt;
+
+				for my $default_entry (@{$entry->default_entries}) {
+					$default_entry->stat_cat_entry($entry_id);
+					_create_stat_entry_default($session, $default_entry, $default_entry_create);
+				}
+			}
 		}
 	}
 
@@ -305,6 +316,25 @@ sub update_stat_entry {
 	return 1;
 }
 
+sub _update_stat_entry_default {
+    my( $session, $default_entry, $method) = @_;
+
+    warn "Updating new default stat entry for stat_cat " . $default_entry->stat_cat . 
+        " for org unit " . $default_entry->owner .
+        " with new entry id " . $default_entry->stat_cat_entry . "\n";
+
+    my $req = $session->request($method, $default_entry);
+    my $status = $req->gather(1);
+
+    warn "Default stat entry " . Dumper($default_entry) . "\n";	
+	
+    if(!$status) {
+        throw OpenSRF::EX::ERROR 
+        ("Error updating default stat cat entry"); }
+
+    warn "Default stat cat entry update returned status $status\n";
+    return $status;
+}
 
 __PACKAGE__->register_method(
 	method	=> "update_stat",
@@ -351,10 +381,16 @@ sub create_stat_entry {
 	my( $self, $client, $user_session, $entry ) = @_;
 
 	my $method = "open-ils.storage.direct.actor.stat_cat_entry.create";
+	my $default_entry_create = "open-ils.storage.direct.actor.stat_cat_entry_default.create";
+	my $default_entry_update = "open-ils.storage.direct.actor.stat_cat_entry_default.update";
 	my $perm = 'CREATE_PATRON_STAT_CAT_ENTRY';
+	my $edperm = 'CREATE_PATRON_STAT_CAT_ENTRY_DEFAULT';
+	my $edperm_update = 'UPDATE_PATRON_STAT_CAT_ENTRY_DEFAULT';
+	my $type = 'actor';
 	if($self->api_name =~ /asset/) {
 		$method = "open-ils.storage.direct.asset.stat_cat_entry.create";
 		$perm = 'CREATE_COPY_STAT_CAT_ENTRY';
+		$type = 'asset';
 	}
 
 	my( $user_obj, $evt )  = $apputils->checkses($user_session); 
@@ -362,18 +398,99 @@ sub create_stat_entry {
 	$evt = $apputils->check_perms( $user_obj->id, $entry->owner, $perm );
 	return $evt if $evt;
 
-	$entry->clear_id();
 	my $session = $apputils->start_db_session();
 	$apputils->set_audit_info($session, $user_session, $user_obj->id, $user_obj->wsid);
-	my $req = $session->request($method, $entry); 
-	my $status = $req->gather(1);
+	my $newid = _create_stat_entry($session, $entry, $method);
+
+	if( $self->api_name =~ /actor/ && ref($entry->default_entries) ) {
+		$evt = $apputils->check_perms($user_obj->id, $entry->owner, $edperm);
+		return $evt if $evt;
+
+		for my $default_entry (@{$entry->default_entries}) {
+			$default_entry->stat_cat_entry($newid);
+			my $target;
+			($target, $evt) = $apputils->fetch_stat_cat_entry_default_by_stat_cat_and_org($type, 
+													$default_entry->stat_cat, 
+													$default_entry->owner);
+			if( $target ) {
+				$evt = $apputils->check_perms($user_obj->id, $default_entry->owner, $edperm_update);
+				return $evt if $evt;
+				$target->stat_cat_entry($newid);
+				_update_stat_entry_default($session, $target, $default_entry_update);
+			} else {
+				_create_stat_entry_default($session, $default_entry, $default_entry_create);
+			}
+		}
+	}
+
 	$apputils->commit_db_session($session);
 
-	$logger->info("created stat cat entry $status");
-	return $status;
+	$logger->info("created stat cat entry $newid");
+
+	return $newid;
 }
 
+__PACKAGE__->register_method(
+    method => "create_stat_entry_default",
+    api_name => "open-ils.circ.stat_cat.actor.entry.default.create");
 
+
+sub create_stat_entry_default {
+    my( $self, $client, $user_session, $default_entry ) = @_;
+
+    my $create_method = "open-ils.storage.direct.actor.stat_cat_entry_default.create";
+    my $update_method = "open-ils.storage.direct.actor.stat_cat_entry_default.update";
+    my $create_perm = 'UPDATE_PATRON_STAT_CAT_ENTRY_DEFAULT';
+    my $update_perm = 'CREATE_PATRON_STAT_CAT_ENTRY_DEFAULT';
+    my $type = 'actor';
+    my ($target, $id);
+
+    my( $user_obj, $evt )  = $apputils->checkses($user_session); 
+    return $evt if $evt;
+
+    my $session = $apputils->start_db_session();
+
+    ($target, $evt) = $apputils->fetch_stat_cat_entry_default_by_stat_cat_and_org(
+        $type, 
+        $default_entry->stat_cat, 
+        $default_entry->owner);
+    if( $target ) {
+        $evt = $apputils->check_perms($user_obj->id, $default_entry->owner, $update_perm);
+        return $evt if $evt;
+        $id = $target->id;
+        $default_entry->id($id);
+        _update_stat_entry_default($session, $default_entry, $update_method);
+        $logger->info("updated stat cat default entry $id");
+    } else {
+        $evt = $apputils->check_perms($user_obj->id, $default_entry->owner, $create_perm);
+        return $evt if $evt;
+        $id = _create_stat_entry_default($session, $default_entry, $create_method);
+        $logger->info("created stat cat default entry $id");
+    }
+
+    $apputils->commit_db_session($session);
+
+    return $id;
+}
+
+sub _create_stat_entry_default {
+    my( $session, $stat_entry_default, $method) = @_;
+
+    warn "Creating new default stat entry for stat_cat " . $stat_entry_default->stat_cat . "\n";
+    $stat_entry_default->clear_id();
+
+    my $req = $session->request($method, $stat_entry_default);
+    my $id = $req->gather(1);
+
+    warn "Default stat entry " . Dumper($stat_entry_default) . "\n";	
+
+    if(!$id) {
+        throw OpenSRF::EX::ERROR 
+        ("Error creating new default stat cat entry"); }
+
+    warn "Default stat cat entry create returned id $id\n";
+    return $id;
+}
 
 __PACKAGE__->register_method(
 	method	=> "create_stat_map",
@@ -599,6 +716,41 @@ sub _delete_entry {
 
 
 __PACKAGE__->register_method(
+    method => "delete_entry_default",
+    api_name => "open-ils.circ.stat_cat.actor.entry.default.delete");
+
+sub delete_entry_default {
+    my( $self, $client, $user_session, $target ) = @_;
+
+    my $type = "actor";
+    my $perm = 'DELETE_PATRON_STAT_CAT_ENTRY_DEFAULT';
+
+    my $default_entry;
+    my( $user_obj, $evt )  = $apputils->checkses($user_session); 
+    return $evt if $evt;
+
+    ( $default_entry, $evt ) = $apputils->fetch_stat_cat_entry_default( $type, $target );
+    return $evt if $evt;
+
+    $evt = $apputils->check_perms( $user_obj->id, $default_entry->owner, $perm );
+    return $evt if $evt;
+
+    my $session = OpenSRF::AppSession->create("open-ils.storage");
+    return _delete_entry_default($session, $target, $type);
+}
+
+sub _delete_entry_default {
+    my( $session, $stat_entry, $type) = @_;
+
+    my $method = "open-ils.storage.direct.actor.stat_cat_entry_default.delete";
+    if($type =~ /asset/ ) {
+        $method = "open-ils.storage.direct.asset.stat_cat_entry_default.delete";
+    }
+
+    return $session->request($method, $stat_entry)->gather(1);
+}
+
+__PACKAGE__->register_method(
 	method => 'fetch_stats_by_copy',
 	api_name	=> 'open-ils.circ.asset.stat_cat_entries.fleshed.retrieve_by_copy',
 );
@@ -633,6 +785,19 @@ sub fetch_stats_by_copy {
 	}
 
 	return \@entries;
+}
+
+__PACKAGE__->register_method(
+    method => 'retrieve_entry_default',
+    api_name => "open-ils.circ.stat_cat.actor.entry_default.ancestor_default",
+);
+
+sub retrieve_entry_default {
+    my( $self, $client, $user_session, $orgid, $stat_cat ) = @_;
+	
+    my $method = "open-ils.storage.actor.stat_cat_entry_default.ancestor.retrieve.atomic";
+
+    return $apputils->simple_scalar_request( "open-ils.storage", $method, $orgid, $stat_cat);
 }
 
 
