@@ -478,8 +478,9 @@
 	<event code='1610' textcode='MONEY_CHECK_PAYMENT_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested money_check_payment was not found</desc>
 	</event>
-
-
+	<event code='1611' textcode='ACTOR_STAT_CAT_ENTRY_DEFAULT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_stat_cat_entry_default was not found</desc>
+	</event>
 	<event code='1612' textcode='CONFIG_RULES_MAX_FINE_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested config_rules_max_fine was not found</desc>
 	</event>
