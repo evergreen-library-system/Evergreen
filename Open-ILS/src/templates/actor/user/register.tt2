@@ -46,6 +46,7 @@
 </div>
 
 <div class='hidden'>
+    <div jsId="progressDialog" dojoType="openils.widget.ProgressDialog"></div>
     <span id='true' style='color:green;'>&#x2713;</span>
     <span id='false' style='color:red;'>&#x2717;</span>
     <div dojoType='dijit.Dialog' jsId='allCardsDialog'>

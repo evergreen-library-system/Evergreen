@@ -3166,6 +3166,8 @@
 <!ENTITY staff.patron.display_overlay.has_overdues.value "(Has Overdues)">
 <!ENTITY staff.patron.display_overlay.invalid_dob.value "(Invalid Date of Birth)">
 <!ENTITY staff.patron.display_overlay.invalid_address.value "(Invalid Address)">
+<!ENTITY staff.patron.display_overlay.invalid_email.value "(Invalid Email - See Messages)">
+<!ENTITY staff.patron.display_overlay.invalid_phone.value "(Invalid Phone - See Messages)">
 <!ENTITY staff.patron.display_overlay.exit.label "Exit">
 <!ENTITY staff.patron.display_overlay.exit.accesskey "x">
 <!ENTITY staff.patron.display_overlay.search_form.label "Search Form">

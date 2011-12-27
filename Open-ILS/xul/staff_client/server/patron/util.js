@@ -647,6 +647,10 @@ patron.util.set_penalty_css = function(patron) {
         removeCSSClass(document.documentElement,'NO_PENALTIES');
         removeCSSClass(document.documentElement,'ONE_PENALTY');
         removeCSSClass(document.documentElement,'MULTIPLE_PENALTIES');
+        removeCSSClass(document.documentElement,'INVALID_PATRON_EMAIL_ADDRESS');
+        removeCSSClass(document.documentElement,'INVALID_PATRON_DAY_PHONE');
+        removeCSSClass(document.documentElement,'INVALID_PATRON_EVENING_PHONE');
+        removeCSSClass(document.documentElement,'INVALID_PATRON_OTHER_PHONE');
         removeCSSClass(document.documentElement,'PATRON_HAS_ALERT');
         removeCSSClass(document.documentElement,'PATRON_BARRED');
         removeCSSClass(document.documentElement,'PATRON_INACTIVE');
@@ -690,8 +694,12 @@ patron.util.set_penalty_css = function(patron) {
         data.last_patron = patron.id(); data.stash('last_patron');
         */
 
-        var penalties = patron.standing_penalties();
-        if (!penalties) { penalties = []; }
+        var penalties = patron.standing_penalties() || [];
+        penalties = penalties.filter(
+            function(p) {
+                return (!(p.isdeleted() || p.stop_date()));
+            }
+        );
         for (var i = 0; i < penalties.length; i++) {
             /* this comes from /opac/common/js/utils.js */
             addCSSClass(document.documentElement,penalties[i].standing_penalty().name());

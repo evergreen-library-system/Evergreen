@@ -8,6 +8,7 @@ dojo.require('fieldmapper.IDL');
 dojo.require('openils.PermaCrud');
 dojo.require('openils.widget.AutoGrid');
 dojo.require('openils.widget.AutoFieldWidget');
+dojo.require('openils.widget.ProgressDialog');
 dojo.require('dijit.form.CheckBox');
 dojo.require('dijit.form.Button');
 dojo.require('dojo.date');
@@ -283,6 +284,7 @@ function load() {
         saveCloneButton.attr('disabled', true);
     }
         
+    uUpdateContactInvalidators();
     lock_ready = true;
 }
 
@@ -829,6 +831,17 @@ function fleshFMRow(row, fmcls, args) {
         }
         else if(fieldIdl.datatype == 'timestamp') {
             ftd.appendChild(document.createTextNode(localeStrings.EXAMPLE + dojo.date.locale.format(new Date(1970,0,31),{selector: "date", fullYear: true, datePattern: (orgSettings['format.date'] ? orgSettings['format.date'] : null)})));
+        }
+
+        if (fmcls == "au" && (isphone || fmfield == "email")) {
+            var span = dojo.create(
+                "span", {
+                    "className": "hidden",
+                    "id": "wrap_invalidate_" + fmfield
+                }
+            );
+            uGenerateInvalidatorWidget(span, fmfield);
+            ftd.appendChild(span);
         }
     }
 
@@ -1652,6 +1665,11 @@ function _uEditSave(doClone) {
                     xulG.unlock_tab();
                     already_locked = false;
                 }
+                /* There's something that seems to just make the form reload
+                 * on all saves, so this uUpdate... isn't needed here after
+                 * all. */
+                //uUpdateContactInvalidators();
+
                 newPatron = openils.Util.readResponse(r);
                 if(newPatron) {
                     uEditUpdateUserSettings(newPatron.id());
@@ -1660,6 +1678,50 @@ function _uEditSave(doClone) {
                 }
             }
         }
+    );
+}
+
+function uUpdateContactInvalidators() {
+    /* show invalidator buttons for fields that having anything in them */
+    ["email", "day_phone", "evening_phone", "other_phone"].forEach(
+        function(f) {
+            openils.Util[patron[f]() ? "show" : "hide"]("wrap_invalidate_" + f);
+        }
+    );
+}
+
+function uGenerateInvalidatorWidget(container_node, field) {
+    new dijit.form.Button(
+        {
+            "label": localeStrings.INVALIDATE,
+            "scrollOnFocus": false,
+            "onClick": function() {
+                progressDialog.show(true);
+                fieldmapper.standardRequest(
+                    ["open-ils.actor", "open-ils.actor.invalidate." + field], {
+                        "async": true,
+                        "params": [openils.User.authtoken, patron.id()],
+                        "oncomplete": function(r) {
+                            progressDialog.hide();
+                            // alerts on non-success event
+                            var res = openils.Util.readResponse(r);
+
+                            if (res.payload.last_xact_id) {
+                                for (var id in res.payload.last_xact_id) {
+                                    if (patron.id() == id)
+                                        patron.last_xact_id(
+                                            res.payload.last_xact_id[id]
+                                        );
+                                }
+
+                                findWidget("au",field).widget.attr("value","");
+                                openils.Util.hide(container_node);
+                            }
+                        }
+                    }
+                );
+            }
+        }, dojo.create("span", null, container_node, "only")
     );
 }
 

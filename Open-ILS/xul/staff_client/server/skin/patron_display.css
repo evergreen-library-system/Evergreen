@@ -55,6 +55,11 @@ row#row_billing_zip { padding-bottom: 10px; }
 
 .PATRON_HAS_INVALID_ADDRESS label.invalid_address_indicator { display: inline; color: #CC3300 }
 
+.INVALID_PATRON_EMAIL_ADDRESS label.invalid_email_indicator { display: inline; color: #003399 }
+.INVALID_PATRON_DAY_PHONE label.invalid_phone_indicator { display: inline; color: #003399 }
+.INVALID_PATRON_EVENING_PHONE label.invalid_phone_indicator { display: inline; color: #003399 }
+.INVALID_PATRON_OTHER_PHONE label.invalid_phone_indicator { display: inline; color: #003399 }
+
 .PATRON_HAS_ALERT .patronNameLarge { border: solid thick yellow; padding: 10px }
 .PATRON_HAS_ALERT groupbox.alert { background-color: yellow; color: black; }
 .PATRON_HAS_ALERT [id^=patron_alert] { background: yellow; color: black; }
