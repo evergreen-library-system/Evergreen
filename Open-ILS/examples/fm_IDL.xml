@@ -4520,6 +4520,7 @@ SELECT  usr,
 			<field reporter:label="Is Mint Condition" name="mint_condition" reporter:datatype="bool" />
 			<field reporter:label="Shelf Expire Time" name="shelf_expire_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Notes" name="notes" reporter:datatype="link" oils_persist:virtual="true"/>
+			<field reporter:label="Current Shelf Lib" name="current_shelf_lib" reporter:datatype="org_unit"/>
 		</fields>
 		<links>
 			<link field="fulfillment_lib" reltype="has_a" key="id" map="" class="aou"/>
@@ -4536,6 +4537,7 @@ SELECT  usr,
 			<link field="bib_rec" reltype="might_have" key="id" map="" class="rhrr"/>
 			<link field="cancel_cause" reltype="might_have" key="id" map="" class="ahrcc"/>
 			<link field="notes" reltype="has_many" key="hold" map="" class="ahrn"/>
+			<link field="current_shelf_lib" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
 	<class id="alhr" controller="open-ils.cstore" oils_obj:fieldmapper="action::last_hold_request" reporter:label="Last Captured Hold Request" oils_persist:readonly="true">
@@ -4580,6 +4582,7 @@ SELECT  usr,
 			<field reporter:label="Is Mint Condition" name="mint_condition" reporter:datatype="bool" />
 			<field reporter:label="Shelf Expire Time" name="shelf_expire_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Notes" name="notes" reporter:datatype="link" oils_persist:virtual="true"/>
+			<field reporter:label="Current Shelf Lib" name="current_shelf_lib" reporter:datatype="org_unit"/>
 		</fields>
 		<links>
 			<link field="fulfillment_lib" reltype="has_a" key="id" map="" class="aou"/>
@@ -4596,6 +4599,7 @@ SELECT  usr,
 			<link field="bib_rec" reltype="might_have" key="id" map="" class="rhrr"/>
 			<link field="cancel_cause" reltype="might_have" key="id" map="" class="ahrcc"/>
 			<link field="notes" reltype="has_many" key="hold" map="" class="ahrn"/>
+			<link field="current_shelf_lib" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
 

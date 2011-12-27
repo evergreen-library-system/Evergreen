@@ -357,7 +357,8 @@ CREATE TABLE action.hold_request (
 	shelf_time		TIMESTAMP WITH TIME ZONE,
     cut_in_line     BOOL,
 	mint_condition  BOOL NOT NULL DEFAULT TRUE,
-	shelf_expire_time TIMESTAMPTZ
+	shelf_expire_time TIMESTAMPTZ,
+	current_shelf_lib INT REFERENCES actor.org_unit DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE INDEX hold_request_target_idx ON action.hold_request (target);
