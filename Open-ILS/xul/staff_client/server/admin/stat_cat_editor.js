@@ -6,6 +6,8 @@ var SC_DELETE            = 'open-ils.circ:open-ils.circ.stat_cat.TYPE.delete';
 var SC_ENTRY_CREATE    = 'open-ils.circ:open-ils.circ.stat_cat.TYPE.entry.create';
 var SC_ENTRY_UPDATE    = 'open-ils.circ:open-ils.circ.stat_cat.TYPE.entry.update';
 var SC_ENTRY_DELETE    = 'open-ils.circ:open-ils.circ.stat_cat.TYPE.entry.delete';
+var SC_ENTRY_DEFAULT_CREATE    = 'open-ils.circ:open-ils.circ.stat_cat.actor.entry.default.create';
+var SC_ENTRY_DEFAULT_DELETE    = 'open-ils.circ:open-ils.circ.stat_cat.actor.entry.default.delete';
 
 var ACTOR                = 'actor';
 var ASSET                = 'asset';
@@ -35,6 +37,9 @@ var myPerms = [
     'CREATE_PATRON_STAT_CAT_ENTRY',
     'UPDATE_PATRON_STAT_CAT_ENTRY',
     'DELETE_PATRON_STAT_CAT_ENTRY',
+    'CREATE_PATRON_STAT_CAT_ENTRY_DEFAULT',
+    'UPDATE_PATRON_STAT_CAT_ENTRY_DEFAULT',
+    'DELETE_PATRON_STAT_CAT_ENTRY_DEFAULT',
 
     'CREATE_COPY_STAT_CAT',
     'UPDATE_COPY_STAT_CAT',
@@ -51,6 +56,9 @@ function scSetPerms() {
     PERMS[ACTOR].create_stat_cat_entry = OILS_WORK_PERMS.CREATE_PATRON_STAT_CAT_ENTRY;
     PERMS[ACTOR].update_stat_cat_entry = OILS_WORK_PERMS.UPDATE_PATRON_STAT_CAT_ENTRY;
     PERMS[ACTOR].delete_stat_cat_entry = OILS_WORK_PERMS.DELETE_PATRON_STAT_CAT_ENTRY;
+    PERMS[ACTOR].create_stat_cat_default_entry = OILS_WORK_PERMS.CREATE_PATRON_STAT_CAT_ENTRY_DEFAULT;
+    PERMS[ACTOR].update_stat_cat_default_entry = OILS_WORK_PERMS.UPDATE_PATRON_STAT_CAT_ENTRY_DEFAULT;
+    PERMS[ACTOR].delete_stat_cat_default_entry = OILS_WORK_PERMS.DELETE_PATRON_STAT_CAT_ENTRY_DEFAULT;
 
     PERMS[ASSET].create_stat_cat = OILS_WORK_PERMS.CREATE_COPY_STAT_CAT;
     PERMS[ASSET].update_stat_cat = OILS_WORK_PERMS.UPDATE_COPY_STAT_CAT;
@@ -178,6 +186,7 @@ function scDraw( type, cats ) {
 var scEntryCounter;
 function scInsertCat( tbody, cat, type ) {
 
+    var default_entry_id = -1;
     var row = scRow.cloneNode(true);
     row.id = 'sc_tr_' + cat.id();
     var required = cat.required();
@@ -241,14 +250,31 @@ function scInsertCat( tbody, cat, type ) {
         }
     );
 
-    for( var e in cat.entries() ) 
-        scInsertEntry( cat, cat.entries()[e], $n(row, 'sc_entries_selector'), tbody, type );
+    for( var e in cat.entries() ) { 
+        if (scInsertEntry( cat, cat.entries()[e], $n(row, 'sc_entries_selector'), tbody, type ))
+            default_entry_id =  cat.entries()[e].id();
+    }
+    
+    if (default_entry_id > 0)
+        setSelector($n(row, 'sc_entries_selector'), default_entry_id);
 }
 
 
 function scInsertEntry( cat, entry, selector, tbody, type ) {
-    setSelectorVal( selector, scEntryCounter++, entry.value(), entry.id(), 
+    var val = entry.value();
+    var entry_id = entry.id();
+    var is_default_entry = false;
+
+    if(type == ACTOR) {
+        if( cat.default_entries()[0] && cat.default_entries()[0].stat_cat_entry() == entry_id ) {
+            val = val + "*";
+            is_default_entry = true;
+        }
+    }
+    setSelectorVal( selector, scEntryCounter++, val, entry_id, 
             function(){ scUpdateEntry( cat, entry, tbody, type );} );
+
+    return is_default_entry;
 }
 
 
@@ -275,6 +301,15 @@ function scCreateEntry( type, id, row ) {
     entry.owner(getSelectorVal($n(row, 'sc_new_entry_lib')));
     entry.value(value);
 
+         
+    var default_entry;
+    if ( type == ACTOR && $n(row, 'sc_new_entry_default_set').checked ) {
+        default_entry = new actsced();
+        default_entry.isnew(1);
+        default_entry.stat_cat(id);
+        default_entry.owner(getSelectorVal($n(row, 'sc_new_entry_default_lib')));
+        entry.default_entries([default_entry]);
+    }
     var req = new Request( SC_ENTRY_CREATE.replace(/TYPE/, type), session, entry );
     req.send(true);
     var res = req.result();
@@ -292,6 +327,12 @@ function scNewEntry( type, cat, tbody ) {
     if(r.nextSibling) tbody.insertBefore( row, r.nextSibling );
     else{ tbody.appendChild(row); }
 
+    if(type == ACTOR) {
+        unHideMe($n(row, 'sc_new_entry_default'));
+    } else {
+        hideMe($n(row, 'sc_new_entry_default'));
+    }
+
     $n(row, 'sc_new_entry_create').onclick = 
         function() {
             if( scCreateEntry( type, cat.id(), row ) )
@@ -302,6 +343,8 @@ function scNewEntry( type, cat, tbody ) {
     if(org_list.length == 0) {
         $n(row, 'sc_new_entry_create').disabled = true;
         $n(row, 'sc_new_entry_lib').disabled = true;
+        if (type==ACTOR)
+            $n(row, 'sc_new_entry_default_lib').disabled = true;
         return;
     }
 
@@ -309,9 +352,12 @@ function scNewEntry( type, cat, tbody ) {
     if(!rootOrg) {
         $n(row, 'sc_new_entry_create').disabled = true;
         $n(row, 'sc_new_entry_lib').disabled = true;
+        if (type==ACTOR)
+            $n(row, 'sc_new_entry_default_lib').disabled = true;
         return;
     }
     buildOrgSel($n(row, 'sc_new_entry_lib'), rootOrg, 0, 'shortname');
+    buildOrgSel($n(row, 'sc_new_entry_default_lib'), rootOrg, 0, 'shortname');
     $n(row, 'sc_new_entry_name').focus();
 }
 
@@ -523,15 +569,25 @@ function scUpdateEntry( cat, entry, tbody, type ) {
     else{ tbody.appendChild(row); }
 
     $n(row, 'sc_edit_entry_owner').appendChild(text(findOrgUnit(entry.owner()).name()));
+    
+    var defaultentry = $n(row, 'sc_edit_entry_default_set');
+    if(type == ACTOR) {
+        unHideMe($n(row, 'sc_edit_entry_default'));
+        if( cat.default_entries()[0] && cat.default_entries()[0].stat_cat_entry() == entry.id() )
+            defaultentry.checked =  true;
+    } else {
+        hideMe($n(row, 'sc_edit_entry_default'));
+    }
 
     var name = $n(row, 'sc_edit_entry_name');
     name.value = entry.value();
+    name.value.replace(/\*$/, "");
     name.focus();
     name.select();
 
-    $n(row,'sc_edit_entry_name_submit').onclick = 
+    $n(row,'sc_edit_entry_submit').onclick = 
         function(){
-            if( scEditEntry(cat, entry, name.value, type ) )
+            if( scEditEntry(cat, entry, row, type ) )
                 tbody.removeChild(row);
             };
 
@@ -541,12 +597,23 @@ function scUpdateEntry( cat, entry, tbody, type ) {
 
     var rootEditOrg = findReleventRootOrg(PERMS[type].update_stat_cat_entry, entry.owner());
     var rootDelOrg = findReleventRootOrg(PERMS[type].delete_stat_cat_entry, entry.owner());
+    var org_list = PERMS[type].update_stat_cat_entry;
 
     if(!rootEditOrg || rootEditOrg.id() != entry.owner())
         $n(row,'sc_edit_submit').disabled = true;
 
     if(!rootDelOrg || rootDelOrg.id() != entry.owner())
         $n(row,'sc_edit_delete').disabled = true;
+
+    if(type == ACTOR) {
+        if(!rootEditOrg || org_list.length == 0) {
+            $n(row, 'sc_edit_entry_default_lib').disabled = true;
+            return;
+        }
+        buildOrgSel($n(row, 'sc_edit_entry_default_lib'), rootEditOrg, 0, 'shortname');
+        if( cat.default_entries()[0] )
+           setSelector( $n(row, 'sc_edit_entry_default_lib'), cat.default_entries()[0].owner() );
+    }
 }
 
 function scEntryDelete( cat, entry, type ) {
@@ -559,14 +626,69 @@ function scEntryDelete( cat, entry, type ) {
     scShow(type);
 }
 
-function scEditEntry( cat, entry, newvalue, type ) {
-    if(entry.value() == newvalue) return;
-    entry.value( newvalue );
-    var req = new Request( 
-        SC_ENTRY_UPDATE.replace(/TYPE/, type), session, entry );
-    req.send(true);
-    var res = req.result();
-    if(checkILSEvent(res)) throw res;
-    scShow(type);
+function scEditEntry( cat, entry, row, type ) {
+    var newvalue = $n(row, 'sc_edit_entry_name').value;
+    var curvalue = entry.value();
+    var didupdate = false;
+
+    if( curvalue != newvalue ) {
+        entry.value( newvalue );
+        var req = new Request( 
+            SC_ENTRY_UPDATE.replace(/TYPE/, type), session, entry );
+        req.send(true);
+        var res = req.result();
+        if(checkILSEvent(res)) throw res;
+        didupdate = true;
+    }
+
+    if(type == ACTOR) {
+        didupdate = scEditEntryDefault( cat, entry, row );
+    }
+
+    if (didupdate) scShow(type);
 }
 
+function scEditEntryDefault( cat, entry, row ) {
+    var newsetdefault = $n(row, 'sc_edit_entry_default_set').checked;
+    var newownerdefault = getSelectorVal($n(row, 'sc_edit_entry_default_lib'));
+    var cursetdefault = false;
+    var curownerdefault = null;
+    var default_entry = null;
+
+    if( cat.default_entries && cat.default_entries()[0] && cat.default_entries()[0].stat_cat_entry() == entry.id() ) {
+        cursetdefault = true;
+        default_entry = cat.default_entries()[0];
+        curownerdefault = default_entry.owner();
+    }
+
+    if( cursetdefault == newsetdefault &&
+         (curownerdefault == newownerdefault || curownerdefault == null) ) {
+        return;
+    }
+
+    if( cursetdefault == true &&
+         newsetdefault == false ) {
+        var req = new Request( 
+            SC_ENTRY_DEFAULT_DELETE, session, default_entry.id() );
+        req.send(true);
+        var res = req.result();
+        if(checkILSEvent(res)) throw res;
+    }
+
+    if( newsetdefault == true ) {
+        var cat_id = cat.id();
+        var entry_id = entry.id();
+        default_entry = new actsced();
+        default_entry.isnew(1);
+        default_entry.stat_cat(cat_id);
+        default_entry.stat_cat_entry(entry_id);
+        default_entry.owner(newownerdefault);
+        var req = new Request( 
+            SC_ENTRY_DEFAULT_CREATE, session, default_entry );
+        req.send(true);
+        var res = req.result();
+        if(checkILSEvent(res)) throw res;
+    }
+
+    return true;
+}
