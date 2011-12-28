@@ -1,4 +1,5 @@
 [%  PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/org_selector.tt2";
     WRAPPER "opac/parts/myopac/prefs_base.tt2";
     myopac_page = "prefs_notify";
     prefs_page = 'settings' %]
@@ -6,15 +7,7 @@
 
     <form method='POST'>
 
-        <div style="float:right;width:65px;">
-            <div style="position:absolute">
-                <div style="position:relative;top:75px;">
-                    <input type="submit" value="[% l('Save') %]" alt="[% l('Save') %]" class="opac-button"/>
-                </div>
-            </div>
-        </div>
-
-        <table class="full-width data_grid" id="acct_search_main">
+       <table class="full-width data_grid" id="acct_search_main">
             <tbody>
 
                 [% IF ctx.updated_user_settings %]
@@ -28,20 +21,32 @@
                 <tr >
                     <td width='20%'>[% l("Search hits per page") %]</td>
                     <td>
-                        <div style="position:absolute">
-                            <div style="position:relative;top:0px;left:55px;">
-                                <a href="#"><img alt="[% l('Search Hits Help') %]" 
-                                    src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
-                            </div>
-                        </div>
                         [% setting = 'opac.hits_per_page' %]
                         <select name='[% setting %]'>
-                            [%  FOR val IN [5, 8, 10, 15, 20, 25, 50] %]
+                            [%  UNLESS ctx.user_setting_map.$setting;
+                                    ctx.user_setting_map.$setting = 10;
+                                END;
+                                FOR val IN [5, 8, 10, 15, 20, 25, 50] %]
                                 <option value='[% val | uri %]' 
                                     [% IF ctx.user_setting_map.$setting == val %]
                                         selected='selected'[% END %]>[% val | html %]</option>
                             [% END %]
                         </select>
+                        <a href="#"><img alt="[% l('Search Hits Help') %]" 
+                            src="[% ctx.media_prefix %]/images/question-mark.png"
+                        /></a>
+                    </td>
+                </tr>
+                <tr >
+                    <td width='20%'>[% l("Preferred search location") %]</td>
+                    <td>
+                        [%- setting = 'opac.default_search_location';
+                            thang = ctx.user.home_ou.id;
+                            IF ctx.user_setting_map.$setting;
+                                thang = ctx.user_setting_map.$setting;
+                            END;
+                            PROCESS build_org_selector name=setting value=thang;
+                        %]
                     </td>
                 </tr>
                 <tr>
@@ -71,30 +76,11 @@
                         </select>
                     </td>
                 </tr>
-
-                <tr>
-                    <td>[% l("Default Search Location") %]</td>
-                    <td>
-                        <div style='margin-bottom: 5px;'>
-                            <input type='checkbox' id='myopac_pref_home_lib' />
-                            [% l("Search my home library by default.") %]
-                        </div>
-                        <select id='prefs_def_location'></select>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>[% l("Default Search Range") %]</td>
-                    <td>
-                        <select>
-                            [%# TODO %]
-                        </select>
-                    </td>
-                </tr>
                 -->
 
             </tbody>
         </table>
+        <input type="submit" value="[% l('Save') %]" alt="[% l('Save') %]" class="opac-button"/>
     </form>
     [% INCLUDE "opac/parts/myopac/prefs_hints.tt2" %]
 [% END %]

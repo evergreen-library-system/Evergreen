@@ -297,6 +297,11 @@ sub _prepare_anonlist_sorting_query {
 sub load_myopac_prefs_settings {
     my $self = shift;
 
+    my @user_prefs = qw/
+        opac.hits_per_page
+        opac.default_search_location
+    /;
+
     my $stat = $self->_load_user_with_prefs;
     return $stat if $stat;
 
@@ -310,13 +315,14 @@ sub load_myopac_prefs_settings {
     my %settings;
     my $set_map = $self->ctx->{user_setting_map};
 
-    my $key = 'opac.hits_per_page';
-    my $val = $self->cgi->param($key);
-    $settings{$key}= $val unless $$set_map{$key} eq $val;
+    foreach my $key (@user_prefs) {
+        my $val = $self->cgi->param($key);
+        $settings{$key}= $val unless $$set_map{$key} eq $val;
+    }
 
     my $now = DateTime->now->strftime('%F');
-    for $key (qw/history.circ.retention_start history.hold.retention_start/) {
-        $val = $self->cgi->param($key);
+    foreach my $key (qw/history.circ.retention_start history.hold.retention_start/) {
+        my $val = $self->cgi->param($key);
         if($val and $val eq 'on') {
             # Set the start time to 'now' unless a start time already exists for the user
             $settings{$key} = $now unless $$set_map{$key};
