@@ -1,0 +1,963 @@
+<chapter xml:id="circulation" xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="EN"
+    xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+<info>
+    <title>Circulation</title>
+</info>
+
+<section xml:id="Holds">
+	<title>Holds</title>
+<section id="_placing_holds">
+	<title>Placing Holds</title>
+	<simpara>Holds can be placed by staff in the Staff Client and by patrons in the OPAC. In this chapter we demonstrate placing holds on the Staff Client.</simpara>
+	<simplesect id="_holds_levels">
+	<title>Holds Levels</title>
+	<simpara>Evergreen has five different levels of holds. Library staff can place holds at all five levels, while patrons can only place meta-record, title-level 
+	holds, and parts-level holds. The chart below summarizes the five levels of holds.</simpara>
+	<table
+	frame="all"
+	rowsep="1" colsep="1"
+	>
+	<title>Hold Levels</title>
+	<tgroup cols="6">
+	<colspec colname="col_1" colwidth="14*"/>
+	<colspec colname="col_2" colwidth="14*"/>
+	<colspec colname="col_3" colwidth="14*"/>
+	<colspec colname="col_4" colwidth="14*"/>
+	<colspec colname="col_5" colwidth="14*"/>
+	<colspec colname="col_6" colwidth="14*"/>
+	<colspec colname="col_7" colwidth="14*"/>
+	<thead>
+	<row>
+	<entry align="left" valign="top">Hold level </entry>
+	<entry align="left" valign="top">Abbreviation </entry>
+	<entry align="left" valign="top">When to use </entry>
+	<entry align="left" valign="top">How to use </entry>
+	<entry align="left" valign="top">Who can use </entry>
+	<entry align="left" valign="top">Hold tied to </entry>
+	</row>
+	</thead>
+	<tbody>
+	<row>
+	<entry align="left" valign="top"><simpara>Meta-record</simpara></entry>
+	<entry align="left" valign="top"><simpara>M</simpara></entry>
+	<entry align="left" valign="top"><simpara>Patron wants first available copy of multiple titles of the same/different format</simpara></entry>
+	<entry align="left" valign="top"><simpara>Click on place hold next to the title. From holds confirmation screen, click Advanced hold options and select other 
+	applicable formats.</simpara></entry>
+	<entry align="left" valign="top"><simpara>Patron or staff</simpara></entry>
+	<entry align="left" valign="top"><simpara>Holdings attached to multiple MARC (title) records sharing the same title and author of selected format(s)(book, 
+	video, audiobook, etc.)</simpara></entry>
+	</row>
+
+	<row>
+	<entry align="left" valign="top"><simpara>Title</simpara></entry>
+        <entry align="left" valign="top"><simpara>T</simpara></entry>
+	<entry align="left" valign="top"><simpara>Patron wants first available copy of a title</simpara></entry>
+	<entry align="left" valign="top"><simpara>Staff or patron click on place hold next to title.</simpara></entry>
+	<entry align="left" valign="top"><simpara>Patron or staff</simpara></entry>
+	<entry align="left" valign="top"><simpara>Holdings attached to a single MARC (title) record</simpara></entry>
+	</row>
+
+	<row>
+	<entry align="left" valign="top"><simpara>Parts</simpara></entry>
+	<entry align="left" valign="top"><simpara>P</simpara></entry>
+	<entry align="left" valign="top"><simpara>Patron wants a particular part of title (e.g. volume or disk number)</simpara></entry>
+	<entry align="left" valign="top"><simpara>Staff or patron selects part on the create/edit hold screen when setting holds notification options.</simpara></entry>
+	<entry align="left" valign="top"><simpara>Patron or staff</simpara></entry>
+	<entry align="left" valign="top"><simpara>Holdings with identical parts attached to a single MARC (title) record.</simpara></entry>
+	</row>
+	
+	<row>
+	<entry align="left" valign="top"><simpara>Volume</simpara></entry>
+	<entry align="left" valign="top"><simpara>V</simpara></entry>
+	<entry align="left" valign="top"><simpara>A call number specific volume of a title is required</simpara></entry>
+	<entry align="left" valign="top"><simpara>Staff click place hold on any items shown in holdings list, next to the call number.</simpara></entry>
+	<entry align="left" valign="top"><simpara>Staff</simpara></entry>
+	<entry align="left" valign="top"><simpara>Holdings with identical call numbers owned by the same library and attached to a single MARC (title) record.</simpara></entry>
+	</row>
+	
+	<row>
+	<entry align="left" valign="top"><simpara>Copy</simpara></entry>
+	<entry align="left" valign="top"><simpara>C</simpara></entry>
+	<entry align="left" valign="top"><simpara>Patron or staff want a specific copy of a title</simpara></entry>
+	<entry align="left" valign="top"><simpara>Staff click details to view barcode then place hold next to that barcode.</simpara></entry>
+	<entry align="left" valign="top"><simpara>Staff</simpara></entry>
+	<entry align="left" valign="top"><simpara>Item barcode</simpara></entry>
+	</row>
+
+	</tbody>
+	</tgroup>
+	</table>
+	<simplesect id="_title_level_hold">
+	<title>Title Level Hold</title>
+	<orderedlist numeration="arabic">
+	<listitem>
+	<simpara>
+	To place a title level hold, retrieve the title record on the catalog and click the Place Hold link beside the title on the search results list, or click the Place 
+	Hold link on the title summary screen.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-placing-1.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<listitem>
+	<simpara>
+	Scan or type patron’s barcode into Enter recipient barcode then click Submit.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-placing-2.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<listitem>
+	<simpara>
+	Edit patron hold notification and expiration date fields as required and click Place Hold. Confirm your action in the pop-up window.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata width="100%" scalefit="1" fileref="../media/holds-placing-3.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<tip>
+	<simpara>A default hold expiration date will be displayed if the library has set up a default holds expiration period in their library settings. Uncaptured 
+	holds will not be targeted after theexpiration date.</simpara>
+	<simpara>If you select the Suspend this Hold checkbox, the hold will be suspended and not be captured until you activate it.</simpara>
+	</tip>
+	</orderedlist>
+	</simplesect>
+	<simplesect id="_meta_record_level_hold">
+	<title>Meta-record Level Hold</title>
+	<orderedlist numeration="arabic">
+	<listitem>
+	<simpara>
+	Search for the meta-record on which you want to place a hold. Select the Group by Formats and Editions checkbox from the advanced search screen. Enter 
+	search terms. Click Go.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-placing-4.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<listitem>
+	<simpara>
+	Click Place Hold beside the meta-record on the result list.
+	</simpara>
+	<tip>
+	<simpara>The lit-up icons indicate the system-wide available formats. Click the title to find out the available formats and holdings information at your 
+	library.</simpara>
+	</tip>
+	</listitem>
+	<listitem>
+	<simpara>
+	Type in or scan the patron barcode at the prompt.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	Select the acceptable formats. Use the CTRL key together with a mouse click to select multiple entries. Click Place Hold once done.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-placing-5.png"/>
+	</imageobject>
+	</mediaobject>
+	<tip>
+	<simpara>If you do not select group formats and editions when conducting a search, you can still place a hold on a meta-record. After entering the user’s barcode, 
+	click Advanced Hold Options at the bottom of the screen to select acceptable formats for the hold.</simpara>
+	</tip>
+	</listitem>
+	<listitem>
+	<simpara>
+	After a meta-record hold is placed, if a new MARC record is added and it meets the grouping criteria (title, author and format), items under this new record will 
+	be used to fulfill the existing holds.
+	</simpara>
+	<tip>
+	<simpara>Requested formats are listed in the Holdable Formats column in hold records. Use the Column Picker to display it when the hold record is displayed. 
+	Format information is from the MARC record leader.</simpara>
+	</tip>
+	</listitem>
+	</orderedlist>
+	</simplesect>
+	<simplesect id="_parts_level_hold">
+	<title>Parts Level Hold</title>
+	<orderedlist numeration="arabic">
+	<listitem>
+	<simpara>
+	To place a parts level, retrieve a record with parts-level items attached to the title, such as a multi-disc DVD, an annual travel guide, or a multi-volume book set.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	Place the hold as you would for a title-level hold.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	Scan or type patron’s barcode into Enter recipient barcode then click Submit.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	Select the applicable part from the Parts dropdown menu.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-placing-6.png"/>
+	</imageobject>
+	</mediaobject>
+
+	</listitem>
+	<listitem>
+	<simpara>
+	Click Place Hold once done.
+	</simpara>
+	<tip>
+	<simpara>Requested formats are listed in the Holdable Part column in hold records. Use the Column Picker to display it when the hold record is displayed.</simpara>
+	</tip>
+	</listitem>
+	</orderedlist>
+	<note>
+	<simpara>
+	Parts level holds cannot be placed on meta-records.</simpara>
+	</note>
+	</simplesect>
+	<simplesect id="_volume_level_hold">
+	<title>Volume Level Hold</title>
+	<orderedlist numeration="arabic">
+	<listitem>
+	<simpara>
+	To place a volume level hold, only possible within the Staff Client, retrieve and display the record.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	Choose the appropriate volume record (call number). If not displayed, click View copy Information for all libraries to display all volumes.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	Click Place Hold under Actions for the appropriate volume record. Your hold will be on any copy with the same call number and the same owning library.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-placing-7.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<listitem>
+	<simpara>
+	Scan or type patron’s barcode into Enter recipient barcode then click Submit.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	Edit patron hold notification fields as required and click Place Hold. Note the hold is identified as a Volume Hold.
+	</simpara>
+	</listitem>
+	</orderedlist>
+	</simplesect>
+	<simplesect id="_copy_level_hold">
+	<title>Copy Level Hold</title>
+	<orderedlist numeration="arabic">
+	<listitem>
+	<simpara>
+	To place a copy level hold, repeat steps 1 and 2 in the section called Volume Level Hold.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	Click on Copy details under Actions.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-placing-8.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<listitem>
+	<simpara>
+	Click place hold beside the barcode. Your hold will be on this specific copy.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-placing-9.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<listitem>
+	<simpara>
+	Scan or type patron’s barcode into Enter recipient barcode then click Submit.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	Edit the patron hold notification fields as required and click Place Hold. Note the hold is identified as a Copy Hold.
+	</simpara>
+	</listitem>
+	</orderedlist>
+	</simplesect>
+	</simplesect>
+	<simplesect id="_placing_holds_in_patron_records">
+	<title>Placing Holds in Patron Records</title>
+	<orderedlist numeration="arabic">
+	<listitem>
+	<simpara>
+	Holds can be placed from patron records too. In the patron record Holds screen, click the Place Hold button on the left top corner.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata width="100%" scalefit="1" fileref="../media/holds-placing-10.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<listitem>
+	<simpara>
+	The catalog is displayed in the Holds screen to search for the title on which you want to place a hold.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata width="100%" scalefit="1" fileref="../media/holds-placing-11.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<listitem>
+	<simpara>
+	Search for the title and click the Place Hold link when you are at the appropriate place.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	The patron&#8217;s account information is retrieved automatically. Set up the notification and expiration date fields. Click Place Hold and confirm your action in the 
+	pop-up window.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	You may continue to search for more titles. Once you are done, click the Holds button on top to go back to the Holds screen. Click the Refresh button to reflect your 
+	newly placed holds.
+	</simpara>
+	</listitem>
+	</orderedlist>
+	</simplesect>
+	</section>
+	<section id="_managing_holds">
+	<title>Managing Holds</title>
+	<simpara>Holds can be cancelled at any time by staff or patrons. Before holds are captured, staff or patrons can suspend them or set them as inactive for a period of 
+	time without losing the hold queue position, activate suspended holds, change notification method, phone number, pick-up location (for multi-branch libraries only), 
+	expiration date, activation date for inactive holds, etc. Once a hold is captured, staff can change the pickup location and extend the hold shelf time if required.</simpara>
+	<simpara>Staff can edit holds in either patron&#8217;s records or the title records. Patrons can edit their holds in their account on the OPAC.</simpara>
+
+	<tip><simpara>If you use the column picker to change the holds display from one area of the staff client (e.g. the patron record), it will change the display for all 
+	parts of the staff client that deal with holds, including the title record holds display, the holds shelf display, and the pull list display.</simpara></tip>
+
+	<simplesect id="_managing_holds_in_patron_records">
+	<title>Managing Holds in Patron Records</title>
+	<simplesect id="_actions_for_selected_holds">
+	<title>Actions for Selected Holds</title>
+	<orderedlist numeration="arabic">
+	<listitem>
+	<simpara>
+	Retrieve the patron record and go to the Holds screen.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	Highlight the hold record, then select Actions for Selected Holds.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata width="100%" scalefit="1" fileref="../media/holds-managing-1.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<listitem>
+	<simpara>
+	Manage the hold by choosing an action on the list.
+	</simpara>
+	<orderedlist numeration="loweralpha">
+	<listitem>
+	<simpara>
+	If you want to cancel the hold, click Cancel Hold on the above screen. You are prompted to select a reason and put in a note if required. Once done, click Apply.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-managing-2.png"/>
+	</imageobject>
+	</mediaobject>
+	<note>
+	<simpara>
+	  A captured hold with a status of "On Hold Shelf" can be cancelled by either staff or patrons. But the status of the item will not be changed until staff check it in.
+	</simpara>
+	</note>
+	</listitem>
+	<listitem>
+	<simpara>
+	If you want to suspend a hold or activate a suspended hold, click the appropriate action on the list. You will be prompted to confirm your action. Suspended holds have a 
+	<literal>No</literal> value in the Active? column.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata width="100%" scalefit="1" fileref="../media/holds-managing-3.png"/>
+	</imageobject>
+	</mediaobject>
+	<note><simpara>Suspended holds will not be filled but its hold position will be kept. They will automatically become active on the activation day if there is an activation 
+	date in the record. Without an activation date, the holds will remain inactive until staff or a patron activates them manually.</simpara></note>
+	</listitem>
+	<listitem>
+	<simpara>
+	You may edit the Activation Date and Expiration Date by using the corresponding action entry on the Action for Selected Holds dropdown menu. You will be prompted to 
+	enter the new date. Use the calendar widget to choose a date, then click Apply. Use the Remove button to unset the date.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-managing-4.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<listitem>
+	<simpara>
+	Hold shelf expire time is automatically recorded in the hold record when a hold is filled. You may edit this time by using the Edit Shelf Expire Time on the Action for 
+	Selected Holds dropdown menu. You will be prompted to enter the new date. Use the calendar widget to choose a date, then click Apply.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	If you want to enable or disable phone notification or change the phone number, click Edit Phone Notification. You will be prompted to enter the new phone number. You 
+	must follow the format of XXX-XXX-XXXX. The phone number is used for this hold only and can be different from the one in the patron account. It has no impact on the 
+	patron account. If you leave it blank, no phone number will be printed on the hold slip.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-managing-5.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<listitem>
+	<simpara>
+	If you want to enable or disable email notification for the hold, click Set Email Notification. Click Email or No Email on the prompt screen.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-managing-6.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<listitem>
+	<simpara>
+	Pickup location can be changed by clicking Edit Pickup Library. Click the dropdown list of all libraries and choose the new pickup location. Click Done.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-managing-7.png"/>
+	</imageobject>
+	</mediaobject>
+	<note>
+	<simpara>
+	 Staff can change the pickup location for holds with in-transit status. Item will be sent in transit to the new destination. Staff cannot change the pickup location 
+	once an item is on the holds shelf.
+	</simpara>
+	</note>
+
+	</listitem>
+	<listitem>
+	<simpara>
+	The item&#8217;s physical condition is recorded in the copy record as Good or Mediocre in the Quality field. You may request that your holds be filled with copies 
+	of good quality only. Click Set Desired Copy Quality on the Actions for Selected Holds list. Make your choice in the pop-up window.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-managing-8.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	</orderedlist>
+	</listitem>
+	</orderedlist>
+	</simplesect>
+	<simplesect id="_transferring_holds">
+	<title>Transferring Holds</title>
+	<orderedlist numeration="arabic">
+	<listitem>
+	<simpara>
+	Holds on one title can be transferred to another with the hold request time preserved. To do so, you need to find the destination title, click Actions for this Record → 
+	Mark as Title Hold Transfer Destination.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata width="100%" scalefit="1" fileref="../media/holds-managing-9.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<listitem>
+	<simpara>
+	Select the hold you want to transfer. Click Actions for Selected Holds → Transfer to Marked Title.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-managing-10.png"/>
+	</imageobject>
+	</mediaobject>
+
+	</listitem>
+	</orderedlist>
+	</simplesect>
+	<simplesect id="_cancelled_holds">
+	<title>Cancelled Holds</title>
+	<orderedlist numeration="arabic">
+	<listitem>
+	<simpara>
+	Cancelled holds can be displayed. Click Show Cancelled Holds button on the Holds screen.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-managing-11.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<listitem>
+	<simpara>
+	You can un-cancel holds.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-managing-12.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	</orderedlist>
+	<simpara>Based on your library&#8217;s setting, hold request time can be reset when a hold is un-cancelled.</simpara>
+	</simplesect>
+	<simplesect id="_viewing_details_amp_adding_notes_to_holds">
+	<title>Viewing Details &amp; Adding Notes to Holds</title>
+	<orderedlist numeration="arabic">
+	<listitem>
+	<simpara>
+	You can view details of a hold by selecting a hold then clicking the Detail View button on the Holds screen.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-managing-13.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<listitem>
+	<simpara>
+	You may add a note to a hold in the Detail View.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata width="100%" scalefit="1" fileref="../media/holds-managing-14.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<listitem>
+	<simpara>
+	Notes can be printed on the hold slip if the Print on slip? checkbox is selected. Key in the message then click Add Note.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-managing-15.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	</orderedlist>
+	</simplesect>
+	<simplesect id="_displaying_queue_position">
+	<title>Displaying Queue Position</title>
+	<simpara>Using the Column Picker, you can display Queue Position and Total number of Holds.</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata width="100%" scalefit="1" fileref="../media/holds-managing-16.png"/>
+	</imageobject>
+	</mediaobject>
+	</simplesect>
+	<simplesect id="_managing_holds_in_title_records">
+	<title>Managing Holds in Title Records</title>
+	<orderedlist numeration="arabic">
+	<listitem>
+	<simpara>
+	Retrieve and display the title record in the catalog.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	Click Actions for this Record &#8594; View Holds.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-managing-17.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<listitem>
+	<simpara>
+	All holds on this title to be picked up at your library are displayed. Use Filter checkbox and Pickup Library to view holds to be picked up at other libraries.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-managing-18.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<listitem>
+	<simpara>
+	Highlight the hold you want to edit. Click Actions for Selected Holds and the appropriate action you want to take as described in the Actions for Selected Holds 
+	section of Managing Holds in Patron Records.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-managing-19.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<listitem>
+	<simpara>
+	You can retrieve the hold requestor&#8217;s account by selecting Retrieve Patron on the above dropdown menu.
+	Retargeting Holds
+	</simpara>
+	</listitem>
+	</orderedlist>
+	<simpara>Holds need to be retargeted whenever a new item is added to a record, or after some types of item status changes, for instance when an item is changed from On 
+	Order to In Process. The system does not automatically recognize the newly added items as available to fill holds.</simpara>
+	<orderedlist numeration="arabic">
+	<listitem>
+	<simpara>
+	View the holds for the item.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	Highlight all the holds for the record, which have a status of Waiting for Copy. If there are a lot of holds, it may be helpful to sort the holds by Status.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	Click on the head of the status column.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	Under Actions for Selected Holds (Alt+S) select Find Another Target (Alt+T)
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	A window will open asking if you are sure you would like to reset the holds for these items.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	Click Yes (Alt+Y). Nothing may appear to happen, or if you are retargeting a lot of holds at once, your screen may go blank or seem to freeze for a moment while the holds are retargeted.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	When the screen refreshes, the holds will be retargeted. The system will now recognize the new items as available for holds.
+	</simpara>
+	</listitem>
+	</orderedlist>
+	</simplesect>
+	</simplesect>
+</section>
+<section id="_pulling_amp_capturing_holds">
+	<title>Pulling &amp; Capturing Holds</title>
+	<simplesect id="_holds_pull_list">
+	<title>Holds Pull List</title>
+	<simpara>There are usually four types of status a hold may have: Waiting for Copy, Waiting for Capture, In Transit and Ready for Pickup.</simpara>
+	<orderedlist numeration="arabic">
+	<listitem>
+	<simpara>
+	Waiting-for-copy: all holdable copies are checked out or not available.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	Waiting-for-capture: an available copy is assigned to the hold. The item shows up on the Holds Pull List waiting for staff to search the shelf and capture the hold.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	In Transit: holds are captured at a non-pickup branch and on the way to the pick-up location.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	Ready-for-pick-up: holds are captured and items are on the Hold Shelf waiting for patrons to pick up.
+	Besides capturing holds when checking in items, Evergreen matches holds with available items in your library at regular intervals. Once a matching copy is found, 
+	the item&#8217;s barcode number is assigned to the hold and the item is put on the Holds Pull List. Staff can print the Holds Pull List and search for the items on shelves.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	To retrieve your Holds Pull List select Circulation &#8594; Pull List for Hold Requests.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-pull-1.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<listitem>
+	<simpara>
+	The Holds Pull List is displayed. You may re-sort it by clicking the column labels, e.g. Title. You can also add fields to the display by using the column picker.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata width="100%" scalefit="1" fileref="../media/holds-pull-2.png"/>
+	</imageobject>
+	</mediaobject>
+	<note>
+	<simpara>
+	Column adjustments will only affect the screen display and the CSV download for the holds pull list. It will not affect the printable holds pull list.</simpara>
+	</note>
+	</listitem>
+	<listitem>
+	<simpara>
+	The maximum number of holds initially displayed on the pull list is about 100. Use Fetch More Holds to retrieve more records. You may have to click Reload for those 
+	records to appear in the display.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-pull-3.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<listitem>
+	<simpara>
+	The following options are available for printing the pull list:
+	</simpara>
+	<itemizedlist>
+	<listitem>
+	<simpara>
+	Print Full Pull List prints Title, Author, Shelving Location, Call Number and Item Barcode. This method uses less paper than the alternate strategy.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	Print Full Pull List (Alternate Strategy) prints the same fields as the above option but also includes a patron barcode. This list will also first sort by copy 
+	location, as ordered under Admin&#8594;Local Administration&#8594;Copy Location Order.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	Save List CSV to File – This option is available from the List Actions button and saves all fields in the screen display to a CSV file. This file can then be opened in 
+	Excel or another spreadsheet program. This option provides more flexibility in identifying fields that should be printed.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-pull-4.png"/>
+	</imageobject>
+	</mediaobject>
+	<simpara>With the CSV option, if you are including barcodes in the holds pull list, you will need to take the following steps to make the barcode display properly in 
+	Excel: select the entire the barcode column, right-click and select Format Cells, click Number as the category and then reduce the number of decimal places to 0.</simpara>
+	</listitem>
+	</itemizedlist>
+	</listitem>
+	<listitem>
+	<simpara>
+	You may perform hold management tasks by using the Actions for Selected Holds dropdown list.
+	</simpara>
+	</listitem>
+	</orderedlist>
+	<simpara>The Holds Pull List is updated constantly. Once an item on the list is no longer available or a hold on the list is captured, the items will disappear from the 
+	list. The Holds Pull List should be printed at least once a day.</simpara>
+	</simplesect>
+	<simplesect id="_capturing_holds">
+	<title>Capturing Holds</title>
+	<simpara>Holds can be captured when a checked-out item is returned (checked in) or an item on the Holds Pull List is retrieved and captured. When a hold is captured, the 
+	hold slip will be printed and if the patron has chosen to be notified by email, the email notification will be sent out. The item should be put on the hold shelf.</simpara>
+
+	<orderedlist numeration="arabic">
+	<listitem>
+	<simpara>To capture a hold, Select Circulation -> Capture Holds; click Check In -> Capture Holds on the circulation toolbar; or hit Shift-F2.</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-pull-5.png"/>
+	</imageobject>
+	</mediaobject>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-pull-5a.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<listitem>
+	<simpara>Scan or type barcode and click Submit.</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-pull-6.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<listitem>
+	<simpara>The following hold slip is automatically printed. (This slip will not display on the Capture Holds screen, but will display on a Check In screen not set 
+	to automatically print slips.)</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-pull-7.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<listitem>
+	<simpara>If the item should be sent to another location, a hold transit slip will be printed. (This slip will not display on the screen the Capture Holds screen, but 
+	may display on a Check In screen that is not set to automatically print slips.)</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-pull-8.png"/>
+	</imageobject>
+	</mediaobject>
+	<tip><simpara>If a patron has an OPAC/Staff Client Holds Alias in his/her account, it will be used on the hold slip instead of the patron’s name.
+	Holds can also be captured on the Circulation &#8594; Check In Items screen where you have more control over automatic slip printing.
+	Handling Missing and Damaged Items</simpara></tip>
+	</listitem>
+	</orderedlist>
+
+	<simplesect>
+	<title>Handling Missing and Damaged Items</title>
+	<simpara>If an item on the holds pull list is missing or damaged, you can change its status directly from the holds pull list.</simpara>
+	
+<orderedlist numeration="arabic">
+	<listitem>
+	<simpara>
+	From the Holds Pull List, right-click on the item and either select Mark Item Missing or Mark Item Damaged.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-pull-9.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<listitem>
+	<simpara>
+	Evergreen will update the status of the item and will immediately retarget the hold.
+	</simpara>
+	</listitem>
+	</orderedlist>
+	</simplesect>
+	</simplesect>
+</section>
+<section id="_holds_notification_methods">
+	<title>Holds Notification Methods</title>
+	<orderedlist numeration="arabic">
+	<listitem>
+	<simpara>
+	In Evergreen, patrons can set up their default holds notification method in the Account Preferences area of My Account. Staff cannot set these preferences for patrons; 
+	the patrons must do it when they are logged into the public catalog.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata width="100%" scalefit="1" fileref="../media/holds-notifications-1.png"/>
+	</imageobject>
+	</mediaobject>
+	<simpara>The “phone and email” option is the default for those users who have not yet set a preference.</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	Patrons with a default notification preference for phone and e-mail will see their phone number and e-mail address at the time they place a hold. The checkboxes for email
+	 and phone notification will also automatically be checked.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata width="100%" scalefit="1" fileref="../media/holds-notifications-2.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<listitem>
+	<simpara>
+	The patron can remove these checkmarks at the time they place the hold or they can enter a different phone number if they prefer to be contacted at a different number. 
+	The patron cannot change their e-mail address at this time.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-notifications-4.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<listitem>
+	<simpara>
+	When the patron’s hold becomes available, the system will only send an email if the Enable email notifications for this hold? checkbox was selected at the time the hold 
+	was placed.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	When the hold becomes available, the holds slip will display the patron’s e-mail address only if the patron selected the Enable email notifications for this hold? checkbox. 
+	It will display a phone number only if the patron selected the Enable phone notifications for this hold? checkbox.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-notifications-6.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	</orderedlist>
+	<note><simpara>If the patron changes their contact telephone number when placing the hold, this phone number will display on the holds slip. It will not necessarily be the 
+	same phone number contained in the patron’s record.</simpara></note>
+</section>
+<section id="_clearing_shelf_expired_holds">
+	<title>Clearing Shelf-Expired Holds</title>
+	<orderedlist numeration="arabic">
+	<listitem>
+	<simpara>
+	Items with Ready-for-pickup status are on the Holds Shelf List. The Holds Shelf List can help you manage items on the holds shelf. To see the holds shelf list, 
+	select Circulation -> Browse Holds Shelf.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-clearing-1.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<listitem>
+	<simpara>
+	The Holds Shelf List is displayed. Note the Actions for Selected Holds are available, as in the patron record. You can cancel stale holds here.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata width="100%" scalefit="1" fileref="../media/holds-clearing-2.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<listitem>
+	<simpara>
+	Use the column picker to add and remove fields from this display. Two fields you may want to display are Shelf Expire Time and Shelf Time.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata fileref="../media/holds-clearing-3.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<listitem>
+	<simpara>
+	Check the View Shelf-Expired Holds checkbox to list expired holds only. Click the Print button if you need a printed list.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	The Clear These Holds button is lit up. Click it and the expired holds will be canceled.
+	</simpara>
+	<mediaobject>
+	  <imageobject>
+	<imagedata width="100%" scalefit="1" fileref="../media/holds-clearing-4.png"/>
+	</imageobject>
+	</mediaobject>
+	</listitem>
+	<listitem>
+	<simpara>
+	Bring items down from the hold shelf and check them in.
+	</simpara>
+	</listitem>
+	</orderedlist>
+	<caution><simpara>If you cancel a ready-for-pickup hold, you must check in the item to make it available for circulation or trigger the next hold in line.</simpara></caution>
+	<simpara>Hold shelf expire time is inserted when a hold achieves on-hold-shelf status. It is calculated based on the interval entered in Local Admin&#8594; Library 
+	Settings &#8594; Default hold shelf expire interval.</simpara>
+	<note><simpara>The clear-hold-shelf function cancels shelf-expired holds only. It does not include holds canceled by patron. Staff needs to trace these items manually 
+	according to the hold slip date.</simpara></note>
+</section>
+</section>
+</chapter>

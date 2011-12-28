@@ -1,0 +1,537 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chapter xml:id="cataloging" xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="EN"
+    xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>Cataloging</title>
+<section xml:id="adding_holdings">
+<title>Adding Holdings</title>
+	<simplesect xml:id="Unified_Volume_Copy_Creator" >
+		<title>Unified Volume Copy Creator</title>
+		<simpara>The cataloging module in Evergreen version 2.1 now includes a unified volume/copy creator that enables a user to create volumes and copies in a 
+		unified screen.  This function consolidates the process of creating volume and copy records.</simpara>
+		<simpara><emphasis role="strong">Administrative Settings</emphasis></simpara>
+		<simpara>By default, the cataloging interface that existed in 2.0 will display in 2.1.  To use the <emphasis role="strong">Unified Volume/Copy Creator</emphasis>, 
+		you must turn it on in the Admin module.  You must log out of Evergreen and log back in for the changes to take effect.</simpara>
+		<simpara>To turn on the <emphasis role="strong">Unified Volume/Copy Creator</emphasis>:</simpara>
+		<orderedlist>
+		<listitem>
+		<simpara>
+		Select <emphasis role="strong">Admin &#8594; Local Administration &#8594; Library Settings Editor</emphasis>
+		</simpara>
+		</listitem>
+		<listitem>
+		<simpara>
+		Scroll down to <emphasis role="strong">GUI: Unified Volume/Item Creator/Editor</emphasis>, and click <emphasis role="strong">Edit</emphasis>.
+		</simpara>
+		</listitem>
+		<listitem>
+		<simpara>
+		Select <emphasis role="strong">True</emphasis> to turn on the editor.
+		</simpara>
+		</listitem>
+		</orderedlist>
+		<simpara>After you turn on the <emphasis role="strong">Unified Volume/Copy Creator</emphasis>, it will display, by default, in a vertical panel. You may display the 
+		<emphasis role="strong">Unified Volume/Copy Creator</emphasis> in a horizontal panel.  You must log out of Evergreen and log back in for the changes to take effect.
+		</simpara>
+		<simpara>To choose the horizontal display of the <emphasis role="strong">Unified Volume/Copy Creator</emphasis>:</simpara>
+
+		<orderedlist>
+		<listitem>
+		<simpara>
+		Select <emphasis role="strong">Admin &#8594; Local Administration &#8594; Library Settings Editor</emphasis>.
+		</simpara>
+		</listitem>
+		<listitem>
+		<simpara>
+		Scroll down to <emphasis role="strong">GUI: Horizontal layout for Volume/Copy Creator/Editor</emphasis>, and click <emphasis role="strong">Edit</emphasis>.
+		</simpara>
+		</listitem>
+		<listitem>
+		<simpara>
+		Select <emphasis role="strong">True</emphasis> to view the panel horizontally.
+		</simpara>
+		</listitem>
+		</orderedlist>
+
+		<simpara><emphasis role="strong">Add volumes and items using the Unified Volume/Copy Creator</emphasis></simpara>
+		<simpara>The <emphasis role="strong">Unified Volume/Copy Creator</emphasis> enables you to edit call numbers and copy information in separate panes on a single,
+		unified screen.</simpara>
+		<simpara>The <emphasis role="strong">Unified Volume/Copy Creator</emphasis> appears when you access the following links:</simpara>
+		<itemizedlist>
+		<listitem>
+		<simpara>
+		Holdings Maintenance &#8594; Add items
+		</simpara>
+		</listitem>
+		<listitem>
+		<simpara>
+		Holdings Maintenance &#8594; Add volumes
+		</simpara>
+		</listitem>
+		<listitem>
+		<simpara>
+		Holdings Maintenance &#8594; Edit items
+		</simpara>
+		</listitem>
+		<listitem>
+		<simpara>
+		Holdings Maintenance &#8594; Replace barcode
+		</simpara>
+		</listitem>
+		<listitem>
+		<simpara>
+		Create New MARC Record &#8594; Fast Item Add
+		</simpara>
+		</listitem>
+		<listitem>
+		<simpara>
+		Record Summary &#8594; Add Volumes. 
+		</simpara>
+		<note>
+		<simpara>The ability to <emphasis role="strong">Add Volumes</emphasis> from the <emphasis role="strong">Record Summary</emphasis> 
+		is also a new functionality in 2.1.</simpara>
+		</note>
+		</listitem>
+		</itemizedlist>
+		<simpara>In the following example, you will use the <emphasis role="strong">Unified Volume/Copy Creator</emphasis> to add multiple volumes and copies to 
+		bibliographic record from the Holdings Maintenance screen:</simpara>
+		<orderedlist>
+		<listitem><simpara>Retrieve a record.</simpara></listitem>
+		<listitem><simpara>Click the <emphasis role="strong">Actions for this Record -&#8594; Holdings Maintenance</emphasis></simpara></listitem>
+		
+		<mediaobject>
+		  <imageobject>
+		  <imagedata fileref="../media/unified_volume_copy_creator1.jpg"/>
+		  </imageobject>
+		</mediaobject>
+		
+		<listitem>
+		<simpara>On the <emphasis role="strong">Holdings Maintenance</emphasis> screen, highlight the branch(es) to which you would like to add volumes.</simpara>
+		</listitem>
+		<listitem>
+		<simpara>Right click, and click <emphasis role="strong">Add Volumes.</emphasis></simpara>
+		<mediaobject>
+		  <imageobject>
+		  <imagedata fileref="../media/unified_volume_copy_creator2.jpg"/>
+		  </imageobject>
+		</mediaobject>
+		</listitem>
+		<listitem>
+		<simpara>The <emphasis role="strong">Unified Volume/Copy Creator</emphasis> opens.</simpara>
+		</listitem>
+		<itemizedlist>
+		<listitem>
+		<simpara>The <emphasis role="strong">Record Summary</emphasis> appears in the top panel.</simpara>
+		</listitem>
+		<listitem>
+		<simpara>
+		The <emphasis role="strong">Copy Templates</emphasis> enables you to predefine copy settings.  This panel displayed in the 
+		<emphasis role="strong">Copy Editor</emphasis> 
+		in 2.0.
+		</simpara>
+		</listitem>
+		<listitem>
+		<simpara>
+		The <emphasis role="strong">Volume and Copy Creator</emphasis> enables you to add volumes and copies individually or in batch.
+		</simpara>
+		</listitem>
+		<listitem>
+		<simpara>
+		The <emphasis role="strong">Copy Viewer</emphasis> enables you to set parameters for each copy.
+		</simpara>
+		</listitem>
+		</itemizedlist>
+		<listitem><simpara>A <emphasis role="strong">Classification</emphasis> and a <emphasis role="strong">Call Number</emphasis> appear for each volume.</simpara>
+		<note>
+		<simpara>The <emphasis role="strong">Classification</emphasis> is derived from following setting in the Admin module: <emphasis role="strong">Admin</emphasis> 
+		&#8594; <emphasis role="strong">Local Administration</emphasis> &#8594; <emphasis role="strong">Library Settings Editor</emphasis> &#8594; 
+		<emphasis role="strong">Cataloging: Default Classification Scheme</emphasis>.  The <emphasis role="strong">Call Number</emphasis> is derived from the MARC 
+		record.</simpara>
+		</note>
+		<mediaobject>
+		  <imageobject>
+		  <imagedata width="100%" scalefit="1" fileref="../media/unified_volume_copy_creator3.jpg"/>
+		  </imageobject>
+		</mediaobject>
+		</listitem>
+		<listitem><simpara>You can add volume and copy information to each row individually or in batch.  In the dark gray row, select a classification, prefix, call number, 
+		and suffix (if needed) from the drop down menus and apply those settings in batch to all of the volumes that you created.  Click 
+		<emphasis role="strong">Apply</emphasis>.</simpara>
+		<note><simpara>The prefix and suffix drop down menus are populated by entries in the <emphasis role="strong">Admin</emphasis> menu.  See 
+		<link linkend="Call_Number_Prefixes_and_Suffixes">Call Number Prefixes and Suffixes</link>.
+		</simpara></note>
+		
+		<mediaobject>
+		  <imageobject>
+		  <imagedata width="100%" scalefit="1" fileref="../media/unified_volume_copy_creator4.jpg"/>
+		  </imageobject>
+		</mediaobject>
+		
+		</listitem>
+		<listitem><simpara>Enter the number of copies and barcodes that you want to add. The barcodes that you enter will populate in the 
+		<emphasis role="strong">Copy Editor</emphasis>.</simpara>
+		
+		<mediaobject>
+		  <imageobject>
+		  <imagedata width="100%" scalefit="1" fileref="../media/unified_volume_copy_creator5.jpg"/>
+		  </imageobject>
+		</mediaobject>
+		
+		</listitem>
+		<listitem><simpara>If desired, select a copy template from the template drop down menu, and click <emphasis role="strong">Apply</emphasis>. 
+		 Changes to copies appear in green.</simpara>
+		
+		<mediaobject>
+		  <imageobject>
+		  <imagedata fileref="../media/unified_volume_copy_creator6.jpg"/>
+		  </imageobject>
+		</mediaobject>
+		
+		</listitem>
+		<listitem><simpara>Make any other changes that you would like to make in the <emphasis role="strong">Copy Editor</emphasis>.</simpara></listitem>
+		<listitem><simpara>Click <emphasis role="strong">Create Volumes/Items.</emphasis></simpara></listitem>
+		<listitem>
+		<simpara>The <emphasis role="strong">Holdings Maintenance</emphasis> screen will refresh to show the addition of the volumes and copies.</simpara>
+		</listitem>
+		</orderedlist>
+	</simplesect>
+	<simplesect xml:id="monograph_parts">
+		<title>Monograph Parts</title>
+		<simpara><emphasis role="strong">Monograph Parts</emphasis> enables you to differentiate between parts of monographs or other multi-part items.  This feature 
+		enables catalogers to describe items more precisely by labeling the parts of an item.  For example, catalogers might identify the parts of a monograph or the 
+		discs of a DVD set.  This feature also allows patrons more flexibility when placing holds on multi-part items.  A patron could place a hold on a specific disc 
+		of a DVD set if they want to access a specific season or episode rather than an entire series.</simpara>
+		<simpara>No new permissions or administrative settings are needed to use this feature.</simpara>
+		<simpara>To add a monograph part to an existing record in the catalog:</simpara>
+		<orderedlist>		
+		<listitem>
+		<simpara>Retrieve a record.</simpara>
+		</listitem>
+		<listitem>
+		<simpara>Click <emphasis role="strong">Actions for this Record &#8594; Manage Parts</emphasis></simpara>
+		
+		<mediaobject>
+		  <imageobject>
+		  <imagedata fileref="../media/monograph_parts1.jpg"/>
+		  </imageobject>
+		  <textobject><phrase>monograph_parts1</phrase></textobject>
+		</mediaobject>
+		
+		</listitem>
+		<listitem>
+		<simpara>Click <emphasis role="strong">New Monograph Part</emphasis></simpara>
+		</listitem>
+		<listitem>
+		<simpara>Enter the <emphasis role="strong">label</emphasis> that you want to appear to the user in the catalog, and 
+		click <emphasis role="strong">Save</emphasis>.</simpara> 
+		<simpara>This will create a list of monograph parts from which you can choose when you create a volume and copy.</simpara>
+		
+		<mediaobject>
+		  <imageobject>
+		  <imagedata fileref="../media/monograph_parts2.jpg"/>
+		  </imageobject>
+		</mediaobject>
+		
+		</listitem> 
+		<listitem>		
+		<simpara>Add a volume and copy.  To add a volume and copy to your workstation library, click the <emphasis role="strong">Add Volumes</emphasis> link in the 
+		<emphasis role="strong">Record Summary</emphasis> at the top of the bibliographic record, or click <emphasis role="strong">Actions for this Record &#8594; Add 
+		Volumes</emphasis>.</simpara>
+		<simpara>To add a volume and copy to your workstation library or other libraries, click <emphasis role="strong">Actions for this Record &#8594; Holdings 
+		Maintenance &#8594; Add Volumes</emphasis>.</simpara>
+		
+		<mediaobject>
+		  <imageobject>
+		  <imagedata fileref="../media/monograph_parts3.jpg"/>
+		  </imageobject>
+		</mediaobject>
+		
+		</listitem>
+		<listitem>
+		<simpara>The <emphasis role="strong">Unified Volume/Copy Creator</emphasis> opens. Enter the number of volumes that you want to add to the catalog and 
+		the volume description.</simpara>
+		</listitem>
+		<listitem><simpara>Enter the number of copies and barcode(s) of each item.</simpara>
+		</listitem>
+		<listitem>
+		<simpara>Select the <emphasis role="strong">part designation</emphasis> from the drop down menu adjacent to the barcode field.</simpara>
+		</listitem>
+		<listitem>
+		<simpara>Apply a template to the copies, or edit fields in the <emphasis role="strong">Copy Editor</emphasis>.</simpara>
+		
+		<mediaobject>
+		  <imageobject>
+		  <imagedata width="100%" scalefit="1" fileref="../media/monograph_parts4.jpg"/>
+		  </imageobject>
+		</mediaobject>
+		
+		</listitem>
+		<listitem>
+		<simpara>Click <emphasis role="strong">Create Volumes/Items</emphasis>.</simpara>
+		</listitem>
+		<listitem>
+		<simpara>The <emphasis role="strong">Holdings Maintenance</emphasis> screen will refresh to demonstrate the addition of the volume, copy, and part.  
+		These fields also appear in the OPAC View.</simpara>
+		
+		<mediaobject>
+		  <imageobject>
+		  <imagedata fileref="../media/monograph_parts5.jpg"/>
+		  </imageobject>
+		</mediaobject>
+		
+		</listitem>
+		</orderedlist>
+	</simplesect>
+	<simplesect xml:id="conjoined_items">
+    		<title>Conjoined Items</title>
+		<simpara>Prior to Evergreen version 2.1, items could be attached to only one bibliographic record.  The Conjoined Items feature in Evergreen 2.1 enables catalogers to 
+		link items to multiple bibliographic records.  This feature will enable more precise cataloging.  For example, catalogers will be able to indicate items that 
+		are printed back to back, are bilingual, are part of a bound volume, are part of a set, or are available as an e-reader pre-load.  This feature will also help the 
+		user retrieve more relevant search results.  For example, a librarian catalogs a multi-volume festschrift.  She can create a bibliographic record for the 
+		festschrift and a record for each volume.  She can link the items on each volume to the festschrift record so that a patron could search for a volume or the 
+		festschrift and retrieve information about both works.
+		In the example below, a librarian has created a bibliographic record for two bestselling items.  These books are available as physical copies in the library, and they 
+		are available as e-reader downloads.  The librarian will link the copy of the Kindle to the bibliographic records that are available on the e-reader.</simpara>
+		<simpara>The Conjoined Items feature was designed so that you can link items between bibliographic records when you have the item in hand, or when the item is 
+		not physically present.  Both processes are described here.  The steps are fewer if you have the item in hand, but both processes accomplish the same task.  
+		This documentalso demonstrates the process to edit or delete links between items and bibliographic records. Finally, the permission a cataloger needs to use 
+		this feature is listed.</simpara>
+		<formalpara><title>Scenario 1: I want to link an item to another bibliographic record, but I do not have the item in hand</title><para>1) Retrieve the 
+		bibliographic record to which you would like to link an item.</para></formalpara>
+		<orderedlist>
+		<listitem>
+		<simpara>Click <emphasis role="strong">Actions for this Record &#8594; Mark as Target for Conjoined Items.</emphasis></simpara>
+		
+		<mediaobject>
+ 		 <imageobject>
+  			<imagedata width="100%" scalefit="1" fileref="../media/conj1.jpg"/>
+ 		 </imageobject>
+		</mediaobject>
+		
+		</listitem>
+		<listitem>
+		<simpara>A confirmation message will appear.  Click <emphasis role="strong">OK.</emphasis></simpara>
+		</listitem>
+		<listitem>
+		<simpara>In a new tab, retrieve the bibliographic record with the item that you want to link to the other record.</simpara>
+		</listitem>
+		<listitem>
+		<simpara>Click <emphasis role="strong">Actions for this Record &#8594; Holdings Maintenance.</emphasis></simpara>
+		</listitem>
+		<listitem>
+		<simpara>Select the copy that you want to link to the other bibliographic record.  Right-click, or click <emphasis role="strong">Actions for Selected 
+		Rows &#8594; Link as Conjoined Items to Previously Marked Bib Record.</emphasis></simpara>
+		
+		<mediaobject>
+		  <imageobject>
+		  <imagedata width="100%" scalefit="1" fileref="../media/conj2.jpg"/>
+		  </imageobject>
+		</mediaobject>
+		
+		</listitem>
+		<listitem>
+		<simpara>The <emphasis role="strong">Manage Conjoined Items</emphasis> interface opens in a new tab.  This interface enables you to confirm the success of 
+		the link, and to change the peer type if desired.  The <emphasis role="strong">Result</emphasis> column indicates that you created a successful link between 
+		the item and the bib record.</simpara>
+		
+		<mediaobject>
+		  <imageobject>
+		  <imagedata fileref="../media/conj3.jpg"/>
+		  </imageobject>
+		</mediaobject>
+		
+		<simpara>The default peer type, <emphasis role="strong">Back-to-back</emphasis>, was set as the peer type for our item.  To change a peer type after the 
+		link has been created, right-click or click <emphasis role="strong">Actions for Selected Items &#8594; Change Peer Type</emphasis>.  A drop down menu 
+		will appear.  Select the desired peer type, and click <emphasis role="strong">OK.</emphasis></simpara>
+		
+		<mediaobject>
+		  <imageobject>
+		  <imagedata fileref="../media/conj4.jpg"/>
+		  </imageobject>
+		</mediaobject>
+		
+		</listitem>
+		<listitem>
+		<simpara>The <emphasis role="strong">Result</emphasis> column will indicate that the <emphasis role="strong">Peer Type</emphasis> [has been] 
+		<emphasis role="strong">Updated.</emphasis></simpara>
+		
+		<mediaobject>
+		  <imageobject>
+		  <imagedata fileref="../media/conj5.jpg"/>
+		  </imageobject>
+		</mediaobject>
+		
+		</listitem>
+		<listitem>
+		<simpara>To confirm the link between the item and the desired bib record, reload the tab containing the bib record to which you linked the item. Click the link 
+		for <emphasis role="strong">Linked Titles.</emphasis></simpara>
+		
+		<mediaobject>
+		  <imageobject>
+		  <imagedata fileref="../media/conj6.jpg"/>
+		  </imageobject>
+		</mediaobject>
+		
+		</listitem>
+		<listitem>
+		<simpara>To view the copy details, including the peer type, click <emphasis role="strong">Copy Details.</emphasis></simpara>
+		
+		<mediaobject>
+		  <imageobject>
+		  <imagedata fileref="../media/conj7.jpg"/>
+		  </imageobject>
+		</mediaobject>
+		
+		<simpara>Items can be linked to multiple bibliographic records simultaneously.  If you click the linked titles button in the copy details, then you 
+		will retrieve a list of bibliographic records to which this item is linked.</simpara>
+		
+		<mediaobject>
+		  <imageobject>
+		  <imagedata fileref="../media/conj8.jpg"/>
+		  </imageobject>
+		</mediaobject>
+		
+		</listitem>
+		</orderedlist>
+		<formalpara><title>Scenario 2: I want to link an item to another bibliographic record, and I do have the item in hand</title><para>1) Retrieve the bibliographic 
+		record to which you would like to add the item.</para></formalpara>
+		<orderedlist>
+		<listitem>		
+		<simpara>Click <emphasis role="strong">Actions for this Record &#8594; Manage Conjoined Items.</emphasis></simpara>
+		
+		<mediaobject>
+		  <imageobject>
+		  <imagedata width="100%" scalefit="1" fileref="../media/conj9.jpg"/>
+		  </imageobject>
+		</mediaobject>
+		
+		</listitem>
+		<listitem>
+		<simpara>A note in the bottom left corner of the screen will confirm that the record was targeted for linkage with conjoined items, and the 
+		<emphasis role="strong">Manage Conjoined Items</emphasis> screen will appear.</simpara>
+		</listitem>
+		<listitem>
+		<simpara>Select the peer type from the drop down menu, and scan in the barcode of the item that you want to link to this record.</simpara>
+		</listitem>
+		<listitem>
+		<simpara>Click <emphasis role="strong">Link to Bib (Submit).</emphasis></simpara>
+		
+		<mediaobject>
+		  <imageobject>
+		  <imagedata fileref="../media/conj10.jpg"/>
+		  </imageobject>
+		</mediaobject>
+		
+		</listitem>
+		<listitem>
+		<simpara>The linked item will appear in the screen. The <emphasis role="strong">Result</emphasis> column indicates Success.</simpara>
+		</listitem>	
+		<listitem>
+		<simpara>To confirm the linkage, click <emphasis role="strong">Actions for this Record &#8594; OPAC View.</emphasis></simpara>
+		</listitem>
+		<listitem>
+		<simpara>When the bibliographic record appears, click <emphasis role="strong">Reload.  Linked Titles</emphasis> will show the linked title and item.</simpara>
+		<formalpara><title>Scenario 3: I want to edit or break the link between a copy and a bibliographic record</title><para>1) Retrieve the bibliographic record 
+		that has a copy linked to it.</para></formalpara>
+		</listitem>
+		<listitem>
+		<simpara>Click <emphasis role="strong">Actions for this Record &#8594; Manage Conjoined Items.</emphasis></simpara>
+		</listitem>
+		<listitem>
+		<simpara>Select the copy that you want to edit, and right-click or click <emphasis role="strong">Actions for Selected Items.</emphasis></simpara>
+		</listitem>
+		<listitem>
+		<simpara>Make any changes, and click <emphasis role="strong">OK.</emphasis></simpara>
+		</listitem>
+		</orderedlist>
+		<simpara>Required permission: UPDATE_COPY  -  Link items to bibliographic records</simpara>
+	</simplesect>
+</section>
+<section xml:id="Call_Number_Prefixes_and_Suffixes">
+	 <title>Call Number Prefixes and Suffixes</title>
+	<simpara>In Evergreen version 2.1, you can configure call number prefixes and suffixes in the Admin module.  This feature ensures more precise cataloging because each 
+	cataloger will have access to an identical drop down menu of call number prefixes and suffixes that are used at his library.  In addition, it may streamline 
+	cataloging workflow.  Catalogers can use a drop down menu to enter call number prefixes and suffixes rather than entering them manually.  You can also run reports on 
+	call number prefixes and suffixes that would facilitate collection development and maintenance.</simpara>
+	<simpara><emphasis role="strong">Configure call number prefixes</emphasis>:</simpara>
+	<simpara>Call number prefixes are codes that precede a call number.</simpara>
+	<simpara>To configure call number prefixes:</simpara>
+	<orderedlist numeration="arabic">
+	<listitem>
+	<simpara>
+	Select <emphasis role="strong">Admin &#8594; Server Administration &#8594; Call Number Prefixes</emphasis>.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	Click <emphasis role="strong">New Prefix</emphasis>.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	Enter the <emphasis role="strong">call number label</emphasis> that will appear on the item.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	Select the <emphasis role="strong">owning library</emphasis> from the drop down menu. Staff at this library, and its descendant org units, with the appropriate 
+	permissions, will be able to apply this call number prefix.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	Click <emphasis role="strong">Save</emphasis>.
+	</simpara>
+	</listitem>
+	</orderedlist>
+	
+	<mediaobject>
+	  <imageobject>
+	  <imagedata fileref="../media/Call_Number_Prefixes_and_Suffixes_2_22.jpg"/>
+	  </imageobject>
+	</mediaobject>
+	
+	<simpara><emphasis role="strong">Configure call number suffixes</emphasis>:</simpara>
+	<simpara>Call number suffixes are codes that succeed a call number.</simpara>
+	<simpara>To configure call number suffixes:</simpara>
+	<orderedlist numeration="arabic">
+	<listitem>
+	<simpara>
+	Select <emphasis role="strong">Admin &#8594; Server Administration &#8594; Call Number Suffixes</emphasis>.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	Click <emphasis role="strong">New Suffix</emphasis>.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	Enter the <emphasis role="strong">call number label</emphasis> that will appear on the item.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	Select the <emphasis role="strong">owning library</emphasis> from the drop down menu. Staff at this library, and its descendant org units, with the appropriate 
+	permissions, will be able to apply this call number suffix.
+	</simpara>
+	</listitem>
+	<listitem>
+	<simpara>
+	Click <emphasis role="strong">Save</emphasis>.
+	</simpara>
+	</listitem>
+	</orderedlist>
+	
+	<mediaobject>
+	  <imageobject>
+	  <imagedata fileref="../media/Call_Number_Prefixes_and_Suffixes_2_21.jpg"/>
+	  </imageobject>
+	</mediaobject>
+	
+	<simpara><emphasis role="strong">Apply Call Number Prefixes and Suffixes</emphasis></simpara>
+	<simpara>You can apply call number prefixes and suffixes to items from a pre-configured list in the <emphasis role="strong">Unified Volume/Copy Creator</emphasis>.  See 
+	the section, <link linkend="Unified_Volume_Copy_Creator">Unified Volume Copy Creator</link>, for an example.</simpara>
+</section>
+</chapter>
+
+
