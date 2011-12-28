@@ -243,6 +243,7 @@ sub load_common {
             return $self->load_logout($self->apache->unparsed_uri);
         }
     }
+    $ctx->{search_ou} = $self->_get_search_lib();
 
     $self->staff_saved_searches_set_expansion_state if $ctx->{is_staff};
 
