@@ -14,7 +14,7 @@
             SET hwait = POSIX.ceil(hold.hold.estimated_wait / 86400);
             l("Estimated wait: [quant,_1,day,days]", hwait) | html;
 
-        ELSIF hold.hold.status == 3;
+        ELSIF hold.hold.status == 3 OR hold.hold.status == 8;
             l("In Transit") | html;
 
         ELSIF hold.hold.status < 3;

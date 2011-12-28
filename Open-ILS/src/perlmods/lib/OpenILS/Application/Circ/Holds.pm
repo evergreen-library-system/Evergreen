@@ -1090,6 +1090,7 @@ Returns event on error or:
  5 for 'hold-shelf-delay'
  6 for 'canceled'
  7 for 'suspended'
+ 8 for 'captured, on wrong hold shelf'
 END_OF_DESC
         }
     }
@@ -1118,6 +1119,9 @@ sub _hold_status {
     }
     if ($U->is_true($hold->frozen)) {
         return 7;
+    }
+    if ($hold->current_shelf_lib and $hold->current_shelf_lib ne $hold->pickup_lib) {
+        return 8;
     }
 	return 1 unless $hold->current_copy;
 	return 2 unless $hold->capture_time;

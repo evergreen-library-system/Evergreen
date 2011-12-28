@@ -492,7 +492,7 @@ function myOShowHoldStatus(r) {
 	    if( qstats.status < 3 )
 		    unHideMe($n(row, 'hold_status_waiting'));
     
-	    if( qstats.status == 3 )
+	    if( qstats.status == 3 || qstats.status == 8 )
 		    unHideMe($n(row, 'hold_status_transit'));
     }
 }
