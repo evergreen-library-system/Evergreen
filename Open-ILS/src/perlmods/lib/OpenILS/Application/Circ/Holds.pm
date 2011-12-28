@@ -530,7 +530,17 @@ sub retrieve_holds {
     } else {
 
         # order non-cancelled holds by ready-for-pickup, then active, followed by suspended
-        $holds_query->{order_by} = {ahr => ['shelf_time', 'frozen', 'request_time']};
+        # "compare" sorts false values to the front.  testing pickup_lib != current_shelf_lib
+        # will sort by pl = csl > pl != csl > followed by csl is null;
+        $holds_query->{order_by} = [
+            {   class => 'ahr', 
+                field => 'pickup_lib', 
+                compare => {'!='  => {'+ahr' => 'current_shelf_lib'}}},
+            {class => 'ahr', field => 'shelf_time'},
+            {class => 'ahr', field => 'frozen'},
+            {class => 'ahr', field => 'request_time'}
+
+        ];
         $holds_query->{where}->{cancel_time} = undef;
     }
 
