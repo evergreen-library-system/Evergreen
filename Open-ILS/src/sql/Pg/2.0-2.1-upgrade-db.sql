@@ -5717,6 +5717,18 @@ INSERT INTO permission.perm_list
 
 -- add new perms AND catch up on some missed upgrade data, if needed
 
+-- Prevent conflicts with existing custom permission groups; as of 2.0.10, 
+-- highest permission.grp_tree ID was 10 for Local System Administrator
+UPDATE permission.grp_tree SET id = id + 100 WHERE id > 10;
+UPDATE permission.grp_tree SET parent = parent + 100 WHERE parent > 10;
+UPDATE actor.usr SET profile = profile + 100 WHERE profile > 10;
+UPDATE permission.grp_perm_map SET grp = grp + 100 WHERE grp > 10;
+UPDATE permission.usr_grp_map SET grp = grp + 100 WHERE grp > 10;
+UPDATE permission.grp_penalty_threshold SET grp = grp + 100 WHERE grp > 10;
+UPDATE config.circ_matrix_matchpoint SET grp = grp + 100 WHERE grp > 10;
+UPDATE config.hold_matrix_matchpoint SET requestor_grp = requestor_grp + 100 WHERE requestor_grp > 10;
+UPDATE config.hold_matrix_matchpoint SET usr_grp = usr_grp + 100 WHERE usr_grp > 10;
+
 -- we could get away from these fixed-id inserts here, but then this
 -- upgrade would be ahead of the mainline, I think
 
