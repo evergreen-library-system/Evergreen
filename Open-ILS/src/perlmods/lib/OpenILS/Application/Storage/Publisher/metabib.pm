@@ -10,10 +10,54 @@ use OpenSRF::Utils::JSON;
 use Data::Dumper;
 use Digest::MD5 qw/md5_hex/;
 
+use OpenILS::Application::Storage::QueryParser;
 
 my $log = 'OpenSRF::Utils::Logger';
 
 $VERSION = 1;
+
+sub _initialize_parser {
+    my ($parser) = @_;
+
+    my $cstore = OpenSRF::AppSession->create( 'open-ils.cstore' );
+    $parser->initialize(
+        config_record_attr_index_norm_map =>
+            $cstore->request(
+                'open-ils.cstore.direct.config.record_attr_index_norm_map.search.atomic',
+                { id => { "!=" => undef } },
+                { flesh => 1, flesh_fields => { crainm => [qw/norm/] }, order_by => [{ class => "crainm", field => "pos" }] }
+            )->gather(1),
+        search_relevance_adjustment         =>
+            $cstore->request(
+                'open-ils.cstore.direct.search.relevance_adjustment.search.atomic',
+                { id => { "!=" => undef } }
+            )->gather(1),
+        config_metabib_field                =>
+            $cstore->request(
+                'open-ils.cstore.direct.config.metabib_field.search.atomic',
+                { id => { "!=" => undef } }
+            )->gather(1),
+        config_metabib_search_alias         =>
+            $cstore->request(
+                'open-ils.cstore.direct.config.metabib_search_alias.search.atomic',
+                { alias => { "!=" => undef } }
+            )->gather(1),
+        config_metabib_field_index_norm_map =>
+            $cstore->request(
+                'open-ils.cstore.direct.config.metabib_field_index_norm_map.search.atomic',
+                { id => { "!=" => undef } },
+                { flesh => 1, flesh_fields => { cmfinm => [qw/norm/] }, order_by => [{ class => "cmfinm", field => "pos" }] }
+            )->gather(1),
+        config_record_attr_definition       =>
+            $cstore->request(
+                'open-ils.cstore.direct.config.record_attr_definition.search.atomic',
+                { name => { "!=" => undef } }
+            )->gather(1),
+    );
+
+    $cstore->disconnect;
+    die("Cannot initialize $parser!") unless ($parser->initialization_complete);
+}
 
 sub ordered_records_from_metarecord {
 	my $self = shift;
@@ -2775,6 +2819,71 @@ __PACKAGE__->register_method(
     api_level => 1,
 );
 
+# Takes an abstract query object and recursively turns it back into a string
+# for QueryParser.
+sub abstract_query2str {
+    my ($self, $conn, $query) = @_;
+
+    return QueryParser::Canonicalize::abstract_query2str_impl($query, 0);
+}
+
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.storage.query_parser.abstract_query.canonicalize",
+	method		=> "abstract_query2str",
+	api_level	=> 1,
+    signature   => {
+        params  => [
+            {desc => q/
+Abstract query parser object, with complete config data. For example input,
+see the 'abstract_query' part of the output of an API call like
+open-ils.search.biblio.multiclass.query, when called with the return_abstract
+flag set to true./,
+                type => "object"}
+        ],
+        return => { type => "string", desc => "String representation of abstract query object" }
+    }
+);
+
+sub str2abstract_query {
+    my ($self, $conn, $query, $qp_opts, $with_config) = @_;
+
+    my %use_opts = ( # reasonable defaults? should these even be hardcoded here?
+        superpage => 1,
+        superpage_size => 1000,
+        core_limit => 25000,
+        query => $query,
+        (ref $opts eq 'HASH' ? %$opts : ())
+    );
+
+    $with_config ||= 0;
+
+    # grab the query parser and initialize it
+    my $parser = $OpenILS::Application::Storage::QParser;
+    $parser->use;
+
+    _initialize_parser($parser) unless $parser->initialization_complete;
+
+    my $query = $parser->new(%use_opts)->parse;
+
+    return $query->parse_tree->to_abstract_query(with_config => $with_config);
+}
+
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.storage.query_parser.abstract_query.from_string",
+	method		=> "str2abstract_query",
+	api_level	=> 1,
+    signature   => {
+        params  => [
+            {desc => "Query", type => "string"},
+            {desc => q/Arguments for initializing QueryParser (optional)/,
+                type => "object"},
+            {desc => q/Flag enabling inclusion of QP config in returned object (optional, default false)/,
+                type => "bool"}
+        ],
+        return => { type => "object", desc => "abstract representation of query parser query" }
+    }
+);
+
 sub query_parser_fts {
     my $self = shift;
     my $client = shift;
@@ -2785,47 +2894,7 @@ sub query_parser_fts {
     my $parser = $OpenILS::Application::Storage::QParser;
     $parser->use;
 
-    if (!$parser->initialization_complete) {
-        my $cstore = OpenSRF::AppSession->create( 'open-ils.cstore' );
-        $parser->initialize(
-            config_record_attr_index_norm_map =>
-                $cstore->request(
-                    'open-ils.cstore.direct.config.record_attr_index_norm_map.search.atomic',
-                    { id => { "!=" => undef } },
-                    { flesh => 1, flesh_fields => { crainm => [qw/norm/] }, order_by => [{ class => "crainm", field => "pos" }] }
-                )->gather(1),
-            search_relevance_adjustment         =>
-                $cstore->request(
-                    'open-ils.cstore.direct.search.relevance_adjustment.search.atomic',
-                    { id => { "!=" => undef } }
-                )->gather(1),
-            config_metabib_field                =>
-                $cstore->request(
-                    'open-ils.cstore.direct.config.metabib_field.search.atomic',
-                    { id => { "!=" => undef } }
-                )->gather(1),
-            config_metabib_search_alias         =>
-                $cstore->request(
-                    'open-ils.cstore.direct.config.metabib_search_alias.search.atomic',
-                    { alias => { "!=" => undef } }
-                )->gather(1),
-            config_metabib_field_index_norm_map =>
-                $cstore->request(
-                    'open-ils.cstore.direct.config.metabib_field_index_norm_map.search.atomic',
-                    { id => { "!=" => undef } },
-                    { flesh => 1, flesh_fields => { cmfinm => [qw/norm/] }, order_by => [{ class => "cmfinm", field => "pos" }] }
-                )->gather(1),
-            config_record_attr_definition       =>
-                $cstore->request(
-                    'open-ils.cstore.direct.config.record_attr_definition.search.atomic',
-                    { name => { "!=" => undef } }
-                )->gather(1),
-        );
-
-        $cstore->disconnect;
-        die("Cannot initialize $parser!") unless ($parser->initialization_complete);
-    }
-
+    _initialize_parser($parser) unless $parser->initialization_complete;
 
     # populate the locale/language map
     if (!$locale_map{COMPLETE}) {
@@ -3185,29 +3254,32 @@ sub query_parser_fts_wrapper {
 
     my $base_plan = $parser->new( query => $base_query )->parse;
 
-    $query = "preferred_language($args{preferred_language}) $query"
+    $query = "$query preferred_language($args{preferred_language})"
         if ($args{preferred_language} and !$base_plan->parse_tree->find_filter('preferred_language'));
-    $query = "preferred_language_weight($args{preferred_language_weight}) $query"
+    $query = "$query preferred_language_weight($args{preferred_language_weight})"
         if ($args{preferred_language_weight} and !$base_plan->parse_tree->find_filter('preferred_language_weight') and !$base_plan->parse_tree->find_filter('preferred_language_multiplier'));
 
-    $query = "estimation_strategy($args{estimation_strategy}) $query" if ($args{estimation_strategy});
-    $query = "site($args{org_unit}) $query" if ($args{org_unit});
-    $query = "pref_ou($args{pref_ou}) $query" if ($args{pref_ou});
-    $query = "depth($args{depth}) $query" if (defined($args{depth}));
-    $query = "sort($args{sort}) $query" if ($args{sort});
-    $query = "limit($args{limit}) $query" if ($args{limit});
-    $query = "core_limit($args{core_limit}) $query" if ($args{core_limit});
-    $query = "skip_check($args{skip_check}) $query" if ($args{skip_check});
-    $query = "superpage($args{superpage}) $query" if ($args{superpage});
-    $query = "offset($args{offset}) $query" if ($args{offset});
-    $query = "#metarecord $query" if ($self->api_name =~ /metabib/);
-    $query = "#available $query" if ($args{available});
-    $query = "#descending $query" if ($args{sort_dir} && $args{sort_dir} =~ /^d/i);
-    $query = "#staff $query" if ($self->api_name =~ /staff/);
-    $query = "before($args{before}) $query" if (defined($args{before}) and $args{before} =~ /^\d+$/);
-    $query = "after($args{after}) $query" if (defined($args{after}) and $args{after} =~ /^\d+$/);
-    $query = "during($args{during}) $query" if (defined($args{during}) and $args{during} =~ /^\d+$/);
-    $query = "between($args{between}[0],$args{between}[1]) $query"
+
+    # we add these to the end of the query (last-wins) because in wrapper mode we want to retain the behaviour
+    # of separately specified options taking precidenc -- IOW, the user should not be able to cause a change in,
+    # say, superpage size by adjusting the query string.
+    $query = "$query estimation_strategy($args{estimation_strategy})" if ($args{estimation_strategy});
+    $query = "$query site($args{org_unit})" if ($args{org_unit});
+    $query = "$query depth($args{depth})" if (defined($args{depth}));
+    $query = "$query sort($args{sort})" if ($args{sort});
+    $query = "$query limit($args{limit})" if ($args{limit});
+    $query = "$query core_limit($args{core_limit})" if ($args{core_limit});
+    $query = "$query skip_check($args{skip_check})" if ($args{skip_check});
+    $query = "$query superpage($args{superpage})" if ($args{superpage});
+    $query = "$query offset($args{offset})" if ($args{offset});
+    $query = "$query #metarecord" if ($self->api_name =~ /metabib/);
+    $query = "$query #available" if ($args{available});
+    $query = "$query #descending" if ($args{sort_dir} && $args{sort_dir} =~ /^d/i);
+    $query = "$query #staff" if ($self->api_name =~ /staff/);
+    $query = "$query before($args{before})" if (defined($args{before}) and $args{before} =~ /^\d+$/);
+    $query = "$query after($args{after})" if (defined($args{after}) and $args{after} =~ /^\d+$/);
+    $query = "$query during($args{during})" if (defined($args{during}) and $args{during} =~ /^\d+$/);
+    $query = "$query between($args{between}[0],$args{between}[1])"
         if ( ref($args{between}) and @{$args{between}} == 2 and $args{between}[0] =~ /^\d+$/ and $args{between}[1] =~ /^\d+$/ );
 
 
@@ -3230,7 +3302,7 @@ sub query_parser_fts_wrapper {
             next if (@filter_list == 0);
 
             my $filter_string = join ',', @filter_list;
-            $query = "$filter($filter_string) $query";
+            $query = "$query $filter($filter_string)";
 	    }
     }
 
