@@ -5,7 +5,7 @@
 <div id='myopac_bookbag_div' style="padding:5px;">
 
     <!-- new list creation -->
-    <form action="[% ctx.opac_root %]/myopac/list/update" method="POST" id="create_form">
+    <form action="[% mkurl(ctx.opac_root _ '/myopac/list/update') %]" method="POST" id="create_form">
         <h1>[% l('Create new list') %]</h1><a name="createnewlist"></a>
         <table cellpadding="0" border="0" id="list_create_table">
             <tr>

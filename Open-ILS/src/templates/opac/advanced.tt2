@@ -14,9 +14,15 @@
         </div>
         <div id="adv_search_parent">
             <div id="adv_search_tabs">
-                <a href="?pane=advanced[% IF loc %];loc=[% loc %][% END %]" [% IF pane == 'advanced' %]class="on" [% END %]id="adv_search">[% l('Advanced Search') %]</a>
-                <a href="?pane=numeric[% IF loc %];loc=[% loc %][% END %]" [% IF pane == 'numeric' %]class="on" [% END %]id="num_search">[% l('Numeric Search') %]</a>
-                <a href="?pane=expert[% IF loc %];loc=[% loc %][% END %]" [% IF pane == 'expert' %]class="on" [% END %]id="expert_search">[% l('Expert Search') %]</a>
+                <a href="[% mkurl('', {pane => 'advanced'}) %]"
+                    [% IF pane == 'advanced' %]class="on" [% END %]
+                    id="adv_search">[% l('Advanced Search') %]</a>
+                <a href="[% mkurl('', {pane => 'numeric'}) %]"
+                    [% IF pane == 'numeric' %]class="on" [% END %]
+                    id="num_search">[% l('Numeric Search') %]</a>
+                <a href="[% mkurl('', {pane => 'expert'}) %]"
+                    [% IF pane == 'expert' %]class="on" [% END %]
+                    id="expert_search">[% l('Expert Search') %]</a>
             </div>
         </div>
     </div>

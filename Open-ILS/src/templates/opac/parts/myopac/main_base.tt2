@@ -56,7 +56,7 @@
                     <tr>
                         <td>[% l("Items Currently Checked out ([_1])", ctx.user_stats.checkouts.total_out) %]</td>
                         <td align="right">
-                            <a href="[% ctx.opac_root %]/myopac/circs">[% l("View All") %]</a>
+                            <a href="[% mkurl(ctx.opac_root + '/myopac/circs') %]">[% l("View All") %]</a>
                         </td>
                     </tr>
                 </table>
@@ -66,7 +66,7 @@
                     <tr>
                         <td>[% l('Items Currently on Hold ([_1])', ctx.user_stats.holds.total) %]</td>
                         <td align="right">
-                            <a href="[% ctx.opac_root %]/myopac/holds">[% l('View All') %]</a>
+                            <a href="[% mkurl(ctx.opac_root _ '/myopac/holds') %]">[% l('View All') %]</a>
                         </td>
                     </tr>
                 </table>
@@ -76,7 +76,7 @@
                     <tr>
                         <td>[% l('Items ready for pickup ([_1])', ctx.user_stats.holds.ready) %]</td>
                         <td align="right">
-                            <a href="[% ctx.opac_root %]/myopac/holds?available=1">[% l('View All') %]</a>
+                            <a href="[% mkurl(ctx.opac_root _ '/myopac/holds', {available => 1}) %]">[% l('View All') %]</a>
                         </td>
                     </tr>
                 </table>
@@ -88,9 +88,9 @@
         <div id='acct_fines_tabs'>
             [% IF myopac_main_page == 'main' %]
             <a href='#' class="acct-tab-on">[% l("Fines") %]</a>
-            <a href='main_payments' class="acct-tab-off">[% l("Payments") %]</a>
+            <a href='[% mkurl(ctx.opac_root _ '/myopac/main_payments') %]' class="acct-tab-off">[% l("Payments") %]</a>
             [% ELSE %]
-            <a href='main' class="acct-tab-off">[% l("Fines") %]</a>
+            <a href='[% mkurl(ctx.opac_root _ '/myopac/main') %]' class="acct-tab-off">[% l("Fines") %]</a>
             <a href='#' class="acct-tab-on">[% l("Payments") %]</a>
             [% END %]
         </div>

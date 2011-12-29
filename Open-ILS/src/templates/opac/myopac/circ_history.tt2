@@ -10,7 +10,7 @@
     
     <div id="acct_checked_tabs">
         <div class="align">
-            <a href='circs'>[% l("Current Items Checked Out") %]</a>
+            <a href='[% mkurl('circs') %]'>[% l("Current Items Checked Out") %]</a>
         </div>
         <div class="align selected">
             <a href="#">[% l("Check Out History") %]</a>
@@ -20,10 +20,10 @@
     <div class="header_middle">
         <span class="float-left">[% l('Previously Checked Out Items') %]</span>
         <span class='float-left' style='padding-left: 10px;'>
-            <a href='circ_history?limit=[% limit %]&amp;offset=[% offset - limit %]'
+            <a href='[% mkurl('circ_history', {limit => limit, offset => (offset - limit)}) %]'
                 [% IF offset == 0 %] class='invisible' [% END %]><span class="nav_arrow_fix">&#9668;</span>[% l('Previous') %]</a>
             [%# TODO: get total to prevent paging off then end of the list.. %]
-            <a href='circ_history?limit=[% limit %]&amp;offset=[% offset + limit %]'
+            <a href='[% mkurl('circ_history', {limit => limit, offset => (offset + limit)}) %]'
                [% IF ctx.circs.size < limit %] class='invisible' [% END %] >[% l('Next') %]<span class="nav_arrow_fix">&#9658;</span></a>
         </span>
         <span class="float-right">
@@ -69,10 +69,12 @@
                     PROCESS get_marc_attrs args=attrs; %]
                     <tr>
                         <td style="padding-left:5px;padding-bottom:10px;">
-                            <a href="[% ctx.opac_root %]/record/[% circ.circ.target_copy.call_number.record.id %]" 
+                            <a href="[% mkurl(ctx.opac_root _ '/record/' _ circ.circ.target_copy.call_number.record.id) %]" 
                                 name="[% l('Catalog record') %]">[% attrs.title | html %]</a>
                             [% IF attrs.author %] /
-                            <a href="[% ctx.opac_root %]/results?qtype=author&amp;query=[% attrs.author | replace('[,\.:;]', '') | url %]">[% attrs.author | html %]</a>
+                            <a href="[% mkurl(ctx.opac_root _ '/results',
+                                {qtype => 'author', query => attrs.author.replace('[,\.:;]', '')}
+                            )%]">[% attrs.author | html %]</a>
                             [% END %]
                         </td>
                         <td style="padding-left:5px;">

@@ -10,7 +10,7 @@
             <a href='#'>[% l("Items on Hold") %]</a>
         </div>
         <div class="align">
-            <a href='hold_history'>[% l("Holds History") %]</a>
+            <a href='[% mkurl('hold_history') %]'>[% l("Holds History") %]</a>
         </div>
     </div>
 
@@ -62,11 +62,11 @@
                 <td align="right">
                     [% l("Show") %] &nbsp; &nbsp;
                     [% IF CGI.param("available") %]
-                    <a href="holds">[% l('all') %]</a> |
+                    <a href="[% mkurl('holds') %]">[% l('all') %]</a> |
                     <strong>[% l("only available") %]</strong>
                     [% ELSE %]
                     <strong>[% l("all") %]</strong> |
-                    <a href="holds?available=1">[% l("only available") %]</a>
+                    <a href="[% mkurl('holds', {available => 1}) %]">[% l("only available") %]</a>
                     [% END %] &nbsp; &nbsp;
                     [% l("holds") %]
                     <select class="hide_me" id="holds_sort">
@@ -139,12 +139,14 @@
                                     title = l('[_1] ([_2])', title, hold.hold.part.label);
                                 END;
                             %]
-                            <a href="[% ctx.opac_root %]/record/[% hold.hold.bre_id %]">[% title | html %]</a>
+                            <a href="[% mkurl(ctx.opac_root _ '/record/' _ hold.hold.bre_id) %]">[% title | html %]</a>
                         </div>
                     </td>
                     <td width="123">
                         <div style="margin-top:10px;margin-bottom:10px;">
-                            <a href="[% ctx.opac_root %]/results?qtype=author&amp;query=[% attrs.author | replace('[,\.:;]', '') | url %]">[% attrs.author | html %]</a>
+                            <a href="[% mkurl(ctx.opac_root _ '/results',
+                                {qtype => 'author', query => attrs.author.replace('[,\.:;]', '')}
+                            ) %]">[% attrs.author | html %]</a>
                         </div>
                     </td>
                     <td width="64">
@@ -190,7 +192,7 @@
                         </div>
                     </td>
                     <td class="opac-auto-161">
-                        <a href="[% ctx.opac_root %]/myopac/holds/edit?id=[% ahr.id %]">Edit</a>
+                        <a href="[% mkurl(ctx.opac_root _ '/myopac/holds/edit', {id => ahr.id}) %]">Edit</a>
                     </td>
                 </tr>
                 [% END %]
