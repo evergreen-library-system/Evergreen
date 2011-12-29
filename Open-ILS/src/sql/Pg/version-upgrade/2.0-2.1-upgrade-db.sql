@@ -5795,7 +5795,7 @@ INSERT INTO permission.grp_tree (id, name, parent, description, perm_interval, u
 			id = 15
 	);
 
-
+SELECT SETVAL('permission.grp_tree_id_seq'::TEXT, (SELECT MAX(id) FROM permission.grp_tree));
 
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 	SELECT
