@@ -78,7 +78,7 @@
     <command id="cmd_console"
              perm="DEBUG_CLIENT" />
     <command id="cmd_shell"
-             perm="DEBUG_CIENT"
+             perm="DEBUG_CLIENT"
              />
     <command id="cmd_xuleditor"
              perm="DEBUG_CLIENT"
