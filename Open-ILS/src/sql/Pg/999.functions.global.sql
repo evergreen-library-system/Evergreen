@@ -2085,3 +2085,11 @@ WHERE
     ORDER BY actor.org_unit_proximity(owner, $1)
 $$ LANGUAGE SQL;
 
+CREATE OR REPLACE FUNCTION evergreen.coded_value_map_normalizer( input TEXT, ctype TEXT ) 
+    RETURNS TEXT AS $F$
+        SELECT COALESCE(value,$1) 
+            FROM config.coded_value_map 
+            WHERE ctype = $2 AND code = $1;
+$F$ LANGUAGE SQL;
+
+

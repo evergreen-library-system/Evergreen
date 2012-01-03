@@ -7200,6 +7200,14 @@ INSERT INTO config.index_normalizer (name, description, func, param_count) VALUE
     1
 );
 
+INSERT INTO config.index_normalizer (name, description, func, param_count) VALUES (
+    'Coded Value Map Normalizer', 
+    'Applies coded_value_map mapping of values',
+    'coded_value_map_normalizer', 
+    1
+);
+
+
 -- make use of the index normalizers
 
 INSERT INTO config.metabib_field_index_norm_map (field,norm)
