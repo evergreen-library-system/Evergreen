@@ -174,10 +174,6 @@ patron.display.prototype = {
                         ['command'],
                         function(ev) {
                             try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible( document.getElementById("PatronNavBar_refresh" ) ); } catch(E) {};
-                            obj.network.simple_request(
-                                'RECALCULATE_STANDING_PENALTIES',
-                                [ ses(), obj.patron.id() ]
-                            );
                             obj.refresh_all();
                         }
                     ],
@@ -805,6 +801,10 @@ patron.display.prototype = {
         var obj = this;
         obj.controller.view.patron_name.setAttribute('value', $("patronStrings").getString('staff.patron.display.init.retrieving'));
         document.documentElement.setAttribute('class','');
+        obj.network.simple_request(
+            'RECALCULATE_STANDING_PENALTIES',
+            [ ses(), obj.patron.id() ]
+        );
         try { obj.summary_window.refresh(); } catch(E) { obj.error.sdump('D_ERROR', E + '\n'); }
         try { obj.refresh_deck(); } catch(E) { obj.error.sdump('D_ERROR', E + '\n'); }
     },
