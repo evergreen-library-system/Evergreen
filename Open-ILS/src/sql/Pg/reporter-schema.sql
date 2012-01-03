@@ -158,8 +158,14 @@ SELECT  r.id,
     FIRST(author.value) AS author,
     STRING_AGG(DISTINCT publisher.value, ', ') AS publisher,
     STRING_AGG(DISTINCT SUBSTRING(pubdate.value FROM $$\d+$$), ', ') AS pubdate,
-    ARRAY_AGG( DISTINCT REPLACE(SUBSTRING(isbn.value FROM $$^\S+$$), '-', '') ) AS isbn,
-    ARRAY_AGG( DISTINCT REGEXP_REPLACE(issn.value, E'^\\S*(\\d{4})[-\\s](\\d{3,4}x?)', E'\\1 \\2') ) AS issn
+    CASE WHEN ARRAY_AGG( DISTINCT REPLACE(SUBSTRING(isbn.value FROM $$^\S+$$), '-', '') ) = '{NULL}'
+        THEN NULL
+        ELSE ARRAY_AGG( DISTINCT REPLACE(SUBSTRING(isbn.value FROM $$^\S+$$), '-', '') )
+    END AS isbn,
+    CASE WHEN ARRAY_AGG( DISTINCT REGEXP_REPLACE(issn.value, E'^\\S*(\\d{4})[-\\s](\\d{3,4}x?)', E'\\1 \\2') ) = '{NULL}'
+        THEN NULL
+        ELSE ARRAY_AGG( DISTINCT REGEXP_REPLACE(issn.value, E'^\\S*(\\d{4})[-\\s](\\d{3,4}x?)', E'\\1 \\2') )
+    END AS issn
   FROM  biblio.record_entry r
     LEFT JOIN metabib.full_rec title ON (r.id = title.record AND title.tag = '245' AND title.subfield = 'a')
     LEFT JOIN metabib.full_rec author ON (r.id = author.record AND author.tag IN ('100','110','111') AND author.subfield = 'a')
