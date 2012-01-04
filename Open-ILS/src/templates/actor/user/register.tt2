@@ -83,6 +83,43 @@
     </div>
 </div>
 
+<!-- SECONDARY GROUPS DIALOG -->
+<div class='hidden'>
+    <span id='true' style='color:green;'>&#x2713;</span>
+    <span id='false' style='color:red;'>&#x2717;</span>
+    <div dojoType='dijit.Dialog' jsId='secondaryGroupsDialog'>
+        <table class='oils-generic-table' style='margin:10px;'>
+            <thead>
+                <tr>
+                    <th>[% l('Secondary Permission Groups') %]</th>
+                    <th/>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                  <td colspan="2">
+                    [% l('Assign additional permission groups to users here.<br/>This does not affect circulation policy.') %]
+                  </td>
+                </tr>
+            </tbody>
+            <tbody id='uedit-secondary-groups-tbody'>
+                <tr id='uedit-secondary-groups-tr-template'>
+                    <td><div name='groupname'></div></td>
+                    <td><div name='groupeditbutton'></div></td>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                   <td style='text-align:center;'>
+                       <button dojoType='dijit.form.Button' onClick='saveSecondaryGroups' scrollOnFocus='false'>[% l('Save') %]</button>
+                    </td>
+                    <td/>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
 
 [% END %]
 

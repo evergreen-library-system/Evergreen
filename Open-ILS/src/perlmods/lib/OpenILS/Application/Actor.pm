@@ -2953,6 +2953,7 @@ sub user_retrieve_fleshed_by_id {
     $fields ||= [
         "cards",
         "card",
+        "groups",
         "standing_penalties",
         "addresses",
         "billing_address",

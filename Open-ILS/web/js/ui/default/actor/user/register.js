@@ -10,6 +10,7 @@ dojo.require('openils.PermaCrud');
 dojo.require('openils.widget.AutoGrid');
 dojo.require('openils.widget.AutoFieldWidget');
 dojo.require('openils.widget.ProgressDialog');
+dojo.require('openils.widget.PermGrpFilteringSelect');
 dojo.require('dijit.form.CheckBox');
 dojo.require('dijit.form.Button');
 dojo.require('dojo.date');
@@ -46,6 +47,8 @@ var cloneUserObj;
 var stageUser;
 var optInSettings;
 var allCardsTemplate;
+var secondaryGroupsTemplate;
+var secondaryGroupsChanged = false;
 var uEditCloneCopyAddr; // if true, copy addrs on clone instead of link
 var homeOuTypes = {};
 var holdPickupTypes = {};
@@ -262,6 +265,9 @@ function load() {
 
     dojo.connect(replaceBarcode, 'onClick', replaceCardHandler);
     dojo.connect(allCards, 'onClick', drawAllCards);
+    checkSecondaryGroupsPerm();
+    dojo.connect(secondaryGroupsButton, 'onClick', drawSecondaryGroups);
+
     if(patron.isnew()) {
         dojo.addClass(dojo.byId('uedit-all-barcodes'), 'hidden');
     } else if(checkGrpAppPerm(patron.profile())) {
@@ -430,6 +436,104 @@ function drawAllCards() {
     );
 
     allCardsDialog.show();
+}
+
+/* Additional group editor */
+function drawSecondaryGroups() {
+    var tbody = dojo.byId('uedit-secondary-groups-tbody');
+
+    // create a template for each row we add
+    if(!secondaryGroupsTemplate) {
+        secondaryGroupsTemplate = tbody.removeChild(dojo.byId('uedit-secondary-groups-tr-template'));
+    } else {
+        while(tbody.childNodes[0])
+            tbody.removeChild(tbody.childNodes[0]);
+    }
+
+    // for each of the groups, add the group name and a delete button to the dialog
+    dojo.forEach(patron.groups(),
+        function(group) {
+            if(!group.isdeleted()){
+              var row = secondaryGroupsTemplate.cloneNode(true);
+              getByName(row, 'groupname').innerHTML = group.name();
+              var act = new dijit.form.ToggleButton({label:localeStrings.DELETE, onClick: function() {deleteSecondaryGroup(group.id());} },"deleteButton");
+              getByName(row, 'groupeditbutton').appendChild(act.domNode);
+              tbody.appendChild(row);
+            }
+        }
+    );
+
+    //add a blank row with a selector and an "add" button for adding new groups
+    var row = secondaryGroupsTemplate.cloneNode(true);
+    var editbox = new openils.widget.AutoFieldWidget({fmClass:"pgt",selfReference:true, parentNode:getByName(row,'groupname')});
+    editbox.build(function(w, ww){ trimGrpTree(ww)} );
+    var act = new dijit.form.ToggleButton({label:localeStrings.ADD, onClick: function() {addSecondaryGroup(editbox.widget.value)} },"addButton");
+    getByName(row, 'groupeditbutton').appendChild(act.domNode);
+
+    tbody.appendChild(row);
+
+    secondaryGroupsChanged = true;
+
+    secondaryGroupsDialog.show();
+}
+
+
+function deleteSecondaryGroup(id){
+    // filter out the selected group from our patron.groups()
+    var myGroups = dojo.filter( patron.groups(), function(g){
+        return (g.id() != id )
+        }
+    );
+    patron.groups(myGroups);
+    // redraw dialog
+    drawSecondaryGroups();
+}
+
+function addSecondaryGroup(id){
+    var myGroups = patron.groups() || [];
+    // check if we allowed to add requested group
+    if (!checkGrpAppPerm(id)){
+        alert(localeStrings.SECONDARY_GROUP_NOT_ALLOWED);
+        return;
+    }
+    // check if group is profile
+    if(id == patron.profile()){
+        alert(localeStrings.SECONDARY_GROUP_IS_PROFILE);
+        return;
+    }
+
+    // check if the group exists
+    var old = myGroups.filter(function(c){return ( c.id() == id )})[0];
+    if(old){
+        alert(localeStrings.SECONDARY_GROUP_EXISTS);
+        drawSecondaryGroups();
+        return;
+    }
+
+    // fetch the group from the pgt table
+    dojo.forEach(permGroups,function(newgrp){
+        // add it to our groups list
+        if(newgrp.id() == id){
+            if (!myGroups) { grps = []; }
+            newgrp.isnew(1);
+            myGroups.push(newgrp);
+        }
+    });
+    patron.groups(myGroups);
+    // redraw the dialog
+    drawSecondaryGroups();
+}
+
+function saveSecondaryGroups(){
+    var groupids = dojo.map( patron.groups(), function(grp){ if(!grp.isdeleted()){ return grp.id()} } );
+    var data = fieldmapper.standardRequest(
+        ['open-ils.actor', 'open-ils.actor.user.set_groups'],
+        { params : [openils.User.authtoken, patron.id(), groupids ] }
+    );
+    if(!data){
+        alert(localeStrings.SECONDARY_GROUP_ERROR);
+    }
+    secondaryGroupsDialog.hide()
 }
 
 function applyCardChanges() {
@@ -1235,6 +1339,21 @@ function checkClaimsReturnCountPerm() {
     );
 }
 
+function checkSecondaryGroupsPerm() {
+    new openils.User().getPermOrgList(
+        'CREATE_USER_GROUP_LINK',
+        function(orgList) {
+            if(orgList.indexOf(patron.home_ou()) == -1) {
+                dojo.addClass(dojo.byId('ueditSecondaryGrpButton'), 'hidden');
+                secondaryGroupsChanged = false;
+            } else {
+                dojo.removeClass(dojo.byId('ueditSecondaryGrpButton'), 'hidden');
+            }
+        },
+        true,
+        true
+    );
+}
 
 function checkClaimsNoCheckoutCountPerm() {
     new openils.User().getPermOrgList(
@@ -1948,6 +2067,9 @@ function _uEditSave(doClone) {
             }
         }
     );
+    if(secondaryGroupsChanged){
+        saveSecondaryGroups();
+    }
 }
 
 function uUpdateContactInvalidators() {

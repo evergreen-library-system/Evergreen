@@ -40,7 +40,14 @@
     <tr fmclass='au' fmfield='evening_phone'/>
     <tr fmclass='au' fmfield='other_phone'/>
     <tr fmclass='au' fmfield='home_ou' required='required'/>
-    <tr fmclass='au' fmfield='profile' required='required'/>
+    <tr fmclass='au' fmfield='profile' required='required'>
+        <td/><td/><td/>
+        <td>
+            <span class="hidden" id="ueditSecondaryGrpButton">
+                <button dojoType='dijit.form.Button' jsId='secondaryGroupsButton' scrollOnFocus='false' tabIndex='-1'>[% l('Secondary Groups') %]</button>
+            </span>
+        </td>
+    </tr>
     <tr fmclass='au' fmfield='expire_date' required='required'>
         <td/><td/><td/>
         <td>

@@ -41,5 +41,13 @@
     "HOLD_NOTIFY_EMAIL": "Email: ",
     "HOLD_NOTIFY_SMS": "SMS: ",
     "REQUESTING_USER" : "Account requested by ${0} ${1}",
-    "UPDATE_EXPIRE_DATE": "Update Expire Date"
+    "UPDATE_EXPIRE_DATE": "Update Expire Date",
+    "DELETE": "Delete",
+    "ADD": "Add",
+    "SECONDARY_GROUP_NOT_ALLOWED": "You do not have permission to add this group.",
+    "SECONDARY_GROUP_IS_PROFILE": "That is already the primary profile group for this patron.",
+    "SECONDARY_GROUP_EXISTS": "This group is on the list already.",
+    "SECONDARY_GROUP_ERROR": "Error saving secondary groups."
+
+
 }
