@@ -189,6 +189,7 @@ FEDORA_RPMS = \
 	perl-Email-Simple \
 	perl-GDGraph3d \
 	perl-JSON-XS \
+	perl-Locale-Codes \
 	perl-Net-IP \
 	perl-Net-SSH2 \
 	perl-OLE-Storage_Lite \
