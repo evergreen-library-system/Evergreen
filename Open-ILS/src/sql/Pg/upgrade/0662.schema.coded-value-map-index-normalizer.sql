@@ -1,9 +1,9 @@
--- Evergreen DB patch XXXX.schema.coded-value-map-index-normalizer.sql
+-- Evergreen DB patch 0662.schema.coded-value-map-index-normalizer.sql
 --
 BEGIN;
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0662', :eg_version);
 
 -- create the normalizer
 CREATE OR REPLACE FUNCTION evergreen.coded_value_map_normalizer( input TEXT, ctype TEXT ) 
