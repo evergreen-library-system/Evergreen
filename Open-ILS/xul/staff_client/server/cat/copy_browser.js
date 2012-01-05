@@ -558,7 +558,14 @@ cat.copy_browser.prototype = {
                                         );
                                         if (robj == null) throw(robj);
                                         if (typeof robj.ilsevent != 'undefined') {
-                                            if ( (robj.ilsevent != 0) && (robj.ilsevent != 1227 /* COPY_DELETE_WARNING */) && (robj.ilsevent != 1208 /* TITLE_LAST_COPY */) ) throw(robj);
+                                            if (
+                                                (robj.ilsevent != 0)
+                                                && (robj.ilsevent != 1227 /* COPY_DELETE_WARNING */)
+                                                && (robj.ilsevent != 1208 /* TITLE_LAST_COPY */)
+                                                && (robj.ilsevent != 5000 /* PERM_DENIED */)
+                                            ) {
+                                                throw(robj);
+                                            }
                                         }
                                         obj.refresh_list();
                                     }
@@ -750,6 +757,8 @@ cat.copy_browser.prototype = {
                                                 {
                                                     'title' : document.getElementById('catStrings').getString('staff.cat.copy_browser.delete_volume.override'),
                                                     'overridable_events' : [
+                                                        1208 /* TITLE_LAST_COPY */,
+                                                        1227 /* COPY_DELETE_WARNING */
                                                     ]
                                                 }
                                             );
@@ -769,7 +778,16 @@ cat.copy_browser.prototype = {
                                                         continue loop;
                                                     }
                                                 } else {
-                                                    if (robj.ilsevent != 0) throw(robj);
+                                                    if (typeof robj.ilsevent != 'undefined') {
+                                                        if (
+                                                            (robj.ilsevent != 0)
+                                                            && (robj.ilsevent != 1227 /* COPY_DELETE_WARNING */)
+                                                            && (robj.ilsevent != 1208 /* TITLE_LAST_COPY */)
+                                                            && (robj.ilsevent != 5000 /* PERM_DENIED */)
+                                                        ) {
+                                                            throw(robj);
+                                                        }
+                                                    }
                                                 }
                                             }
                                             break loop;

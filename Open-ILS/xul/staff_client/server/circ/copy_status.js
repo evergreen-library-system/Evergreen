@@ -627,6 +627,7 @@ circ.copy_status.prototype = {
                                     switch(Number(robj.ilsevent)) {
                                         case 1208 /* TITLE_LAST_COPY */:
                                         case 1227 /* COPY_DELETE_WARNING */:
+                                        case 5000 /* PERM_DENIED */:
                                         break;
                                         default:
                                             obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.copy_status.del_items.success.error'), robj);
@@ -882,6 +883,8 @@ circ.copy_status.prototype = {
                                             {
                                                 'title' : document.getElementById('circStrings').getString('staff.circ.copy_status.delete_volumes.override'),
                                                 'overridable_events' : [
+                                                    1208 /* TITLE_LAST_COPY */,
+                                                    1227 /* COPY_DELETE_WARNING */
                                                 ]
                                             }
                                         );
@@ -901,7 +904,16 @@ circ.copy_status.prototype = {
                                                     continue loop;
                                                 }
                                             } else {
-                                                if (robj.ilsevent != 0) { throw(robj); }
+                                                if (typeof robj.ilsevent != 'undefined') {
+                                                    if (
+                                                        (robj.ilsevent != 0)
+                                                        && (robj.ilsevent != 1227 /* COPY_DELETE_WARNING */)
+                                                        && (robj.ilsevent != 1208 /* TITLE_LAST_COPY */)
+                                                        && (robj.ilsevent != 5000 /* PERM_DENIED */)
+                                                    ) {
+                                                        throw(robj);
+                                                    }
+                                                }
                                             }
                                         }
                                         break loop;

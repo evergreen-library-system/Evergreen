@@ -209,7 +209,14 @@ cat.util.transfer_copies = function(params) {
         );
         
         if (typeof robj.ilsevent != 'undefined') {
-            throw(robj);
+            if (
+                (robj.ilsevent != 0)
+                && (robj.ilsevent != 1227 /* COPY_DELETE_WARNING */)
+                && (robj.ilsevent != 1208 /* TITLE_LAST_COPY */)
+                && (robj.ilsevent != 5000 /* PERM_DENIED */)
+            ) {
+                throw(robj);
+            }
         } else {
             alert($("catStrings").getString('staff.cat.util.transfer_copies.successful_transfer'));
         }

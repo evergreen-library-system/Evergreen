@@ -493,25 +493,17 @@ cat.copy_buckets.prototype = {
                                     {
                                         'title' : document.getElementById('catStrings').getString('staff.cat.copy_buckets.batch.error'),
                                         'overridable_events' : [
-                                            1208 /* TITLE_LAST_COPY */
+                                            1208 /* TITLE_LAST_COPY */,
+                                            1227 /* COPY_DELETE_WARNING */
                                         ]
                                     }
                                 );
                                 if (typeof robj.ilsevent != 'undefined') {
                                     switch(Number(robj.ilsevent)) {
                                         case 1208 /* TITLE_LAST_COPY */ :
+                                        case 1227 /* COPY_DELETE_WARNING */ :
+                                        case 5000 /* PERM_DENIED */ :
                                             // ignore this
-                                        break;
-                                        case 1227 /* COPY_DELETE_WARNING */ : 
-                                            var copy;
-                                            for (var i = 0; i < copies.length; i++) { if (copies[i].id()==robj.payload) copy = function(a){return a;}(copies[i]); }
-                                            /* The copy in question is not in an ideal status for deleting */
-                                            var err = '*** ' + robj.desc + ' ***\n';
-                                            /* The barcode for the item is {1} */
-                                            err += $('catStrings').getFormattedString('cat.barcode_for_item',[ copy.barcode() ]) + '\n';
-                                            /* The whole batch operation failed */
-                                            err += $('catStrings').getString('cat.batch_operation_failed') + '\n';
-                                            alert(err);
                                         break;
                                         default:
                                             obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.batch.error'), robj);
