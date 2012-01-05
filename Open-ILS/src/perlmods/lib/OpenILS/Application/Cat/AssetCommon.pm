@@ -319,17 +319,16 @@ sub update_fleshed_copies {
 sub delete_copy {
 	my($class, $editor, $override, $vol, $copy, $retarget_holds, $force_delete_empty_bib, $skip_empty_cleanup) = @_;
 
-   return $editor->event unless 
-      $editor->allowed('DELETE_COPY', $class->copy_perm_org($vol, $copy));
+	return $editor->event unless
+		$editor->allowed('DELETE_COPY', $class->copy_perm_org($vol, $copy));
 
-	my $stat = $U->copy_status($copy->status)->id;
-
-	unless($override) {
-		return OpenILS::Event->new('COPY_DELETE_WARNING', payload => $copy->id )
-			if $stat == OILS_COPY_STATUS_CHECKED_OUT or
-				$stat == OILS_COPY_STATUS_IN_TRANSIT or
-				$stat == OILS_COPY_STATUS_ON_HOLDS_SHELF or
-				$stat == OILS_COPY_STATUS_ILL;
+	my $stat = $U->copy_status($copy->status);
+	if ($U->is_true($stat->restrict_copy_delete)) {
+		if ($override) {
+			return $editor->event unless $editor->allowed('COPY_DELETE_WARNING.override', $class->copy_perm_org($vol, $copy))
+		} else {
+			return OpenILS::Event->new('COPY_DELETE_WARNING', payload => $copy->id )
+		}
 	}
 
 	$logger->info("vol-update: deleting copy ".$copy->id);
