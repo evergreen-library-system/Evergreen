@@ -1477,10 +1477,6 @@ sub cache_facets {
     my $data = $cache->get_cache($key);
     $data ||= {};
 
-    if (!ref($ignore)) {
-        $ignore = ['identifier']; # ignore the identifier class by default
-    }
-
     return undef unless (@$results);
 
     # The query we're constructing
@@ -1494,29 +1490,33 @@ sub cache_facets {
     #   group by 1,2;
 
     my $count_field = $metabib ? 'metarecord' : 'source';
-    my $facets = $U->cstorereq( "open-ils.cstore.json_query.atomic",
-        {   select  => {
-                mfae => [ { column => 'field', alias => 'id'}, 'value' ],
-                mmrsm => [{
-                    transform => 'count',
-                    distinct => 1,
-                    column => $count_field,
-                    alias => 'count',
-                    aggregate => 1
-                }]
-            },
-            from    => {
-                mfae => {
-                    mmrsm => { field => 'source', fkey => 'source' },
-                    cmf   => { field => 'id', fkey => 'field' }
-                }
-            },
-            where   => {
-                '+mmrsm' => { $count_field => $results },
-                '+cmf'   => { field_class => { 'not in' => $ignore }, facet_field => 't' }
+    my $query = {   
+        select  => {
+            mfae => [ { column => 'field', alias => 'id'}, 'value' ],
+            mmrsm => [{
+                transform => 'count',
+                distinct => 1,
+                column => $count_field,
+                alias => 'count',
+                aggregate => 1
+            }]
+        },
+        from    => {
+            mfae => {
+                mmrsm => { field => 'source', fkey => 'source' },
+                cmf   => { field => 'id', fkey => 'field' }
             }
+        },
+        where   => {
+            '+mmrsm' => { $count_field => $results },
+            '+cmf'   => { facet_field => 't' }
         }
-    );
+    };
+
+    $query->{where}->{'+cmf'}->{field_class} = {'not in' => $ignore}
+        if ref($ignore) and @$ignore > 0;
+
+    my $facets = $U->cstorereq("open-ils.cstore.json_query.atomic", $query);
 
     for my $facet (@$facets) {
         next unless ($facet->{value});
