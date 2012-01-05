@@ -60,36 +60,37 @@
         args.holdings = [];
         args.uris = [];
         args.issns = [];
+        args.resolver_isbns = [];
+        args.resolver_issns = [];
 
         # we use $9 of ISBN and ISSN as a flag for e-version
-        sfx_isbn = xml.findnodes('//*[@tag="020"]/*[@code="9"]');
-        IF sfx_isbn;
-            IF sfx_isbn.textContent == "SFX";
-                my_parent = sfx_isbn.parentNode();
-                sfx_isbn = my_parent.findnodes('./*[@code="a"]').textContent;
-                sfx_isbn = sfx_isbn.replace('-', '');
-                args.resolver_isbn = sfx_isbn.replace('\ .*', '');
+        FOR resolver_isbn IN xml.findnodes('//*[@tag="020"]/*[@code="9"]');
+            IF resolver_isbn.textContent == "SFX" || resolver_isbn.textContent == "CUFTS";
+                my_parent = resolver_isbn.parentNode();
+                FOR resolver_isbn_val IN my_parent.findnodes('./*[@code="a"]');
+                    args.resolver_isbns.push(
+                        resolver_isbn_val.textContent.replace('-', '').replace('\ .*', '')
+                    );
+                END;
             END;
         END;
 
-        sfx_issn = xml.findnodes('//*[@tag="022"]/*[@code="9"]');
-        IF sfx_issn;
-            IF sfx_issn.textContent == "SFX";
-                my_parent = sfx_issn.parentNode();
-                sfx_issn = my_parent.findnodes('./*[@code="a"]');
-                args.issns.push(
-                    sfx_issn.textContent.replace('[^\d\-X]', '')
-                );
+        FOR resolver_issn IN xml.findnodes('//*[@tag="022"]/*[@code="9"]');
+            IF resolver_issn.textContent == "SFX" || resolver_issn.textContent == "CUFTS";
+                my_parent = resolver_issn.parentNode();
+                FOR resolver_issn_val IN my_parent.findnodes('./*[@code="a"]');
+                    args.resolver_issns.push(
+                        resolver_issn_val.textContent.replace('[^\d\-X]', '')
+                    );
+                END;
             END;
         END;
 
-        # we snag all issns if no SFX available
-        IF args.issns.size == 0;
-            FOR rawissn IN xml.findnodes('//*[@tag="022"]/*[@code="a"]');
-                args.issns.push(
-                    rawissn.textContent.replace('[^\d\-X]', '')
-                );
-            END;
+        # now snag all issns 
+        FOR rawissn IN xml.findnodes('//*[@tag="022"]/*[@code="a"]');
+            args.issns.push(
+                rawissn.textContent.replace('[^\d\-X]', '')
+            );
         END;
 
         FOR volume IN xml.findnodes('//*[local-name()="volumes"]/*[local-name()="volume"]');

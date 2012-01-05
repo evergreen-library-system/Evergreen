@@ -62,12 +62,12 @@ sub ResolverResolver::params {
 
 sub resolve_issn
 {
-    my ($class, $c, $baseurl) = @_;
+    my ($class, $issn, $baseurl, $timeout) = @_;
 
-    if (length($c) <= 9) {
+    if (length($issn) <= 9) {
            my $session = OpenSRF::AppSession->create("open-ils.resolver");
 	
-           my $request = $session->request("open-ils.resolver.resolve_holdings.raw", "issn", $c, $baseurl)->gather();
+           my $request = $session->request("open-ils.resolver.resolve_holdings.raw", "issn", $issn, $baseurl, $timeout)->gather();
            if ($request) {
                  return $request;
            }
@@ -79,11 +79,11 @@ sub resolve_issn
 
 sub resolve_isbn
 {
-    my ($class, $c, $baseurl) = @_;
+    my ($class, $isbn, $baseurl, $timeout) = @_;
 
     my $session = OpenSRF::AppSession->create("open-ils.resolver");
 	
-    my $request = $session->request("open-ils.resolver.resolve_holdings.raw", "isbn", $c, $baseurl)->gather();
+    my $request = $session->request("open-ils.resolver.resolve_holdings.raw", "isbn", $isbn, $baseurl, $timeout)->gather();
 	
     if ($request) {
             return $request;

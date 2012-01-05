@@ -52,17 +52,18 @@
 </div>
 
 [%- IF openurl.enabled == 'true';
-    sfx = []
-    FOR issn IN args.issns;
-        sfx = sfx.import(ResolverResolver.resolve_issn(issn, openurl.baseurl));
+    openurls = [];
+    FOREACH issn IN args.issns;
+        NEXT IF issn == '';
+        openurls = openurls.import(ResolverResolver.resolve_issn(issn, openurl.baseurl));
     END;
-    IF sfx.size && sfx.0 != '';
+    IF openurls.size && openurls.0 != '';
 %]
     <div id='rdetail_openurl'>
         <strong class='rdetail_openurl_title'>[% l("Electronic resources") %]</strong>
         <table><tbody>
 [%-
-        FOR res IN sfx;
+        FOREACH res IN openurls;
 %]
         <tr>
             <td class='rdetail_openurl_entry'><a href="[% res.target_url %]">[% res.public_name %]</a></td>
@@ -71,7 +72,7 @@
     [%- END %]
     </tbody></table>
 [%- END %]
-[%- IF sfx.size && sfx.0 != '' %]
+[%- IF openurls.size && openurls.0 != '' %]
     </div>    
 [%- END %]
 [%- merged_uris = args.uris.merge(args.online_res);

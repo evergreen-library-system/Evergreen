@@ -84,6 +84,7 @@ my $cache;
 my $cache_timeout;
 my $default_url_base;              # Default resolver location
 my $resolver_type;              # Default resolver type
+my $default_request_timeout;                    # Default browser timeout
 
 our ($ua, $parser);
 
@@ -96,10 +97,14 @@ sub initialize {
     $default_url_base = $sclient->config_value(
         "apps", "open-ils.resolver", "app_settings", "default_url_base");
     $resolver_type = $sclient->config_value(
-        "apps", "open-ils.resolver", "app_settings", "resolver_type");
+        "apps", "open-ils.resolver", "app_settings", "resolver_type") || 'sfx';
+    # We set a browser timeout
+    $default_request_timeout = $sclient->config_value(
+        "apps", "open-ils.resolver", "app_settings", "request_timeout" ) || 60;
 }
 
 sub child_init {
+
     # We need a User Agent to speak to the SFX beast
     $ua = new LWP::UserAgent;
     $ua->agent('SameOrigin/1.0');
@@ -114,6 +119,19 @@ sub resolve_holdings {
     my $id_type = shift;      # keep it simple for now, either 'issn' or 'isbn'
     my $id_value = shift;     # the normalized ISSN or ISBN
     my $url_base = shift || $default_url_base; 
+    my $request_timeout = shift || $default_request_timeout; 
+
+    if (!$id_type) {
+        $logger->warn("Resolver was not given an ID type to resolve");
+        return;
+    }
+    if (!$id_value) {
+        $logger->warn("Resolver was not given an ID value to resolve");
+        return;
+    }
+
+    # Need some sort of timeout in case resolver is unreachable
+    $ua->timeout($request_timeout);
 
     if ($resolver_type eq 'cufts') {
         return cufts_holdings($self,$conn,$id_type,$id_value,$url_base);
@@ -158,13 +176,25 @@ sub cufts_holdings{
         return $result;
     }
 
-    # Otherwise, let's go and grab the info from the CUFTS server
-    my $req = HTTP::Request->new('GET', "$url_base$url_args");
+    my $res = undef;
 
     # Let's see what we we're trying to request
     $logger->info("Resolving the following request: $url_base$url_args");
 
-    my $res = $ua->request($req);
+    # We attempt to deal with potential problems in request
+    eval {
+        $res = $ua->get("$url_base$url_args"); 
+    } or do {
+        $logger->info("execution error");    
+        return bow_out_gracefully("$url_base?ctx_ver=Z39.88-2004&rft.$id_type=$id_value",
+            'Check link for additional holdings information.');
+    };
+
+    if ($res->status_line =~ /timeout/) {
+        $logger->info("timeout error");    
+        return bow_out_gracefully("$url_base?ctx_ver=Z39.88-2004&rft.$id_type=$id_value",
+            'Check link for additional holdings information.');
+    }
 
     my $xml = $res->content;
     my $parsed_cufts = $parser->parse_string($xml);
@@ -264,14 +294,27 @@ sub sfx_holdings{
         return $result;
     }
 
-    # Otherwise, let's go and grab the info from the SFX server
-    my $req = HTTP::Request->new('GET', "$url_base$url_args");
+    my $res = undef;
 
     # Let's see what we we're trying to request
     $logger->info("Resolving the following request: $url_base$url_args");
 
-    my $res = $ua->request($req);
+    # We attempt to deal with potential problems in request
+    eval {
+        $res = $ua->get("$url_base$url_args"); 
+    } or do {
+        $logger->info("execution error");    
+        return bow_out_gracefully("$url_base?ctx_ver=Z39.88-2004&rft.$id_type=$id_value",
+            'Check link for additional holdings information.');
+    };
 
+    if ($res->status_line =~ /timeout/) {
+        $logger->info("timeout error");    
+        return bow_out_gracefully("$url_base?ctx_ver=Z39.88-2004&rft.$id_type=$id_value",
+            'Check link for additional holdings information.');
+    }
+
+    # All clear
     my $xml = $res->content;
     my $parsed_sfx = $parser->parse_string($xml);
 
@@ -315,6 +358,23 @@ sub sfx_holdings{
     return undef;
 }
 
+# This uses the resolver structure for passing back a link directly to the resolver
+sub bow_out_gracefully {
+    my $alt_url = $_[0];
+    my $reason = $_[1];
+
+    my @sfx_result;
+                
+    push @sfx_result, {
+        public_name => "Online holdings",
+        target_url => $alt_url,
+        target_coverage => $reason,
+        target_embargo => "",
+    };
+   
+    return \@sfx_result;
+}
+
 __PACKAGE__->register_method(
     method    => 'resolve_holdings',
     api_name  => 'open-ils.resolver.resolve_holdings',
@@ -335,6 +395,10 @@ Returns a list of "rhr" objects representing the full-text holdings for a given 
             }, {
                  name => 'url_base',
                  desc => 'The base URL for the resolver and instance',
+                 type => 'string'
+            }, {
+                 name => 'request_timeout',
+                 desc => 'The timeout for the HTTP request',
                  type => 'string'
             },
         ],
@@ -365,6 +429,10 @@ Returns a list of raw JSON objects representing the full-text holdings for a giv
             }, {
                  name => 'url_base',
                  desc => 'The base URL for the resolver and instance',
+                 type => 'string'
+            }, {
+                 name => 'request_timeout',
+                 desc => 'The timeout for the HTTP request',
                  type => 'string'
             },
         ],
@@ -409,18 +477,18 @@ __PACKAGE__->register_method(
 Deletes the cached value of the full-text holdings for a given ISBN or ISSN
          DESC
         'params' => [ {
+                 name => 'url_base',
+                 desc => 'The base URL for the resolver and instance',
+                 type => 'string'
+            }, {
                 name => 'id_type',
                 desc => 'The type of identifier ("issn" or "isbn")',
-                type => 'string' 
+                type => 'string'
             }, {
                 name => 'id_value',
                 desc => 'The identifier value',
                 type => 'string'
-            }, {
-                 name => 'url_base',
-                 desc => 'The base URL for the resolver and instance',
-                 type => 'string'
-            },
+            }
         ],
         'return' => {
             desc => 'Deletes the cached value of the full-text holdings for a given ISBN or ISSN',
