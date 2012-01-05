@@ -2,19 +2,20 @@
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 21:44:24-0400\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-04-18 21:44-0400\n"
 "PO-Revision-Date: 2010-05-13 04:18+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Launchpad (build 12959)\n"
 "X-Launchpad-Export-Date: 2011-05-18 04:42+0000\n"
+"X-Generator: Launchpad (build 12959)\n"
 
 #: field.bre.source.label:2042
 msgid "Record Source"
@@ -209,9 +210,8 @@ msgid "Valid Values"
 msgstr "Допустимые  величины"
 
 #: field.sstr.items.label:3678 field.siss.items.label:3747
-#, fuzzy
 msgid "Items"
-msgstr "Единица"
+msgstr ""
 
 #: field.ac.active.label:4355
 msgid "IsActive?"
@@ -452,9 +452,8 @@ msgid "Copy/Shelving Location"
 msgstr "Место хранения экземпляров/стеллажей"
 
 #: field.acqofscred.sort_date.label:6008
-#, fuzzy
 msgid "Sort Date"
-msgstr "Установить дату"
+msgstr ""
 
 #: field.asvr.response_group_id.label:1581
 msgid "Response Group ID"
@@ -473,9 +472,8 @@ msgid "SAN"
 msgstr "SAN (сеть [устройств] хранения данных)"
 
 #: field.accs.checkout_workstation.label:121
-#, fuzzy
 msgid "Checkout Workstation"
-msgstr "Зарегистрированная  рабочая станция"
+msgstr ""
 
 #: class.asc.label:4339
 msgid "Asset Statistical Category"
@@ -486,9 +484,8 @@ msgid "Line Item"
 msgstr "Единица строки"
 
 #: field.cracct.path.label:673 field.acqedi.path.label:6806
-#, fuzzy
 msgid "Path"
-msgstr "XPath"
+msgstr ""
 
 #: field.vii.pub_note.label:205 field.viiad.pub_note.label:253
 msgid "Public Note"
@@ -577,9 +574,8 @@ msgid "Type"
 msgstr "Тип"
 
 #: field.cracct.username.label:670 field.acqedi.username.label:6803
-#, fuzzy
 msgid "Username"
-msgstr "Имя пользователя"
+msgstr ""
 
 #: class.ccnbn.label:4329
 msgid "Call Number Bucket Note"
@@ -765,9 +761,8 @@ msgid "Due Date/Time"
 msgstr "Дата/Время возврата"
 
 #: class.acqafsb.label:6168
-#, fuzzy
 msgid "All Fund Spent Balance"
-msgstr "Баланс израсходованных фондом"
+msgstr ""
 
 #: class.acqafst.label:6158
 msgid "All Fund Spent Total"
@@ -919,9 +914,8 @@ msgid "Renewal?"
 msgstr "Обновления?"
 
 #: field.act.age_protect.label:4870
-#, fuzzy
 msgid "Age Protect"
-msgstr "Возрастная защита"
+msgstr ""
 
 #: field.act.floating.label:4881
 msgid "Floating?"
@@ -998,9 +992,8 @@ msgid "Settings"
 msgstr "Настройки"
 
 #: field.acqafet.amount.label:6151
-#, fuzzy
 msgid "Total Encumbered Amount"
-msgstr "Общая сумма обременения"
+msgstr ""
 
 #: field.qfpd.function_id.label:7646 field.qxp.function_id.label:7686
 #: field.xfunc.function_id.label:7920
@@ -1052,9 +1045,8 @@ msgid "User Work Org Unit Map"
 msgstr "Карта Пользователя рабочей организационной единицы"
 
 #: field.accs.last_checkin_workstation.label:126
-#, fuzzy
 msgid "Last Checkin Workstation"
-msgstr "Зарегистрированная  рабочая станция"
+msgstr ""
 
 #: class.stgu.label:7391
 msgid "User Stage"
@@ -1472,9 +1464,8 @@ msgid "Transfer User"
 msgstr ""
 
 #: field.ccmw.user_home_ou.label:1176 field.ccmm.user_home_ou.label:1277
-#, fuzzy
 msgid "User Home Lib"
-msgstr "Домашняя библиотека пользователя"
+msgstr ""
 
 #: field.ancc.id.label:4991
 msgid "Non-cat Circulation ID"
@@ -1703,9 +1694,8 @@ msgid "Checkin Scan Date/Time"
 msgstr "Регистрировать прием сканированной даты/времени"
 
 #: field.acqinv.payment_auth.label:5668
-#, fuzzy
 msgid "Payment Auth"
-msgstr "Квитанция"
+msgstr ""
 
 #: class.mwp.label:4652
 msgid "Work Payment"
@@ -1805,9 +1795,8 @@ msgid "Form"
 msgstr "Форма"
 
 #: field.bre.subscriptions.label:2059
-#, fuzzy
 msgid "Subscriptions"
-msgstr "Подписка"
+msgstr ""
 
 #: field.acqie.actual_cost.label:5705 field.acqii.actual_cost.label:5742
 msgid "Actual Cost"
@@ -1877,9 +1866,8 @@ msgid "Match ID"
 msgstr "Соответствующий  ID"
 
 #: field.ccmm.juvenile_flag.label:1284
-#, fuzzy
 msgid "Juvenile?"
-msgstr "Юношеский"
+msgstr ""
 
 #: field.actscecm.stat_cat.label:5056
 msgid "Statistical Category"
@@ -1898,9 +1886,8 @@ msgid "Authority-Bibliographic Record Link"
 msgstr ""
 
 #: field.aur.isxn.label:5514
-#, fuzzy
 msgid "ISxN"
-msgstr "ISSN"
+msgstr ""
 
 #: field.acn.edit_date.label:1919 field.sunit.edit_date.label:3792
 #: field.acp.edit_date.label:4796
@@ -2277,9 +2264,8 @@ msgid "Copy Location Orders"
 msgstr "Распоряжения о размещении экземпляра"
 
 #: field.acqafcb.amount.label:6181
-#, fuzzy
 msgid "Total Combined Balance"
-msgstr "Комбинированный баланс фонда"
+msgstr ""
 
 #: field.pgt.usergroup.label:4945
 msgid "Is User Group"
@@ -2512,9 +2498,8 @@ msgid "Formula ID"
 msgstr "ID Формулы"
 
 #: field.act.mint_condition.label:4882
-#, fuzzy
 msgid "Mint Condition?"
-msgstr "Идеальное состояние"
+msgstr ""
 
 #: field.circbyyr.is_renewal.label:8571
 msgid "Renewal"
@@ -2578,9 +2563,8 @@ msgid "Trigger Event Reactor"
 msgstr "Реактор триггера событий"
 
 #: field.acqii.po_item.label:5745 class.acqpoi.label:6448
-#, fuzzy
 msgid "Purchase Order Item"
-msgstr "ID заказа на покупку [приобретение]"
+msgstr ""
 
 #: field.ahr.selection_ou.label:4183
 msgid "Selection Locus"
@@ -2661,9 +2645,8 @@ msgid "Max Fine Amount"
 msgstr "Максимальная сумма штрафа"
 
 #: field.act.deposit.label:4872
-#, fuzzy
 msgid "Deposit?"
-msgstr "Депозит"
+msgstr ""
 
 #: field.auss.target.label:2776 field.acqii.target.label:5746
 #: field.acqpoi.target.label:6459
@@ -2901,9 +2884,8 @@ msgid "Attribute Value Maps"
 msgstr "Карты значения атрибутов"
 
 #: field.scap.start_date.label:3514 field.ssub.start_date.label:3553
-#, fuzzy
 msgid "Start Date"
-msgstr "Дата начала"
+msgstr ""
 
 #: field.acn.label_class.label:1929
 msgid "Classification Scheme"
@@ -3029,9 +3011,8 @@ msgid "Subquery Expression"
 msgstr ""
 
 #: field.qfs.return_type.label:7633
-#, fuzzy
 msgid "Return Type"
-msgstr "Время возврата"
+msgstr ""
 
 #: field.acqfa.id.label:6230 field.acqfap.id.label:6263
 msgid "Allocation ID"
@@ -3071,9 +3052,8 @@ msgid "Authority Record Entry"
 msgstr "Ввод авторитетной записи"
 
 #: field.jub.order_summary.label:6510
-#, fuzzy
 msgid "Order Summary"
-msgstr "Резюме пользователя"
+msgstr ""
 
 #: class.acqfs.label:5945 field.acqfsrcct.funding_source.label:6190
 #: field.acqfsrcat.funding_source.label:6200
@@ -3108,9 +3088,8 @@ msgid "Legacy Stat Cat 2"
 msgstr "Унаследованная Stat Cat 2"
 
 #: field.bre.identifier_field_entries.label:2053
-#, fuzzy
 msgid "Indexed Identifier Field Entries"
-msgstr "Индексированный ряд записей поля"
+msgstr ""
 
 #: field.vbm.field_type.label:371
 msgid "Field Type"
@@ -3166,9 +3145,8 @@ msgid "Capture Time"
 msgstr "Время захвата"
 
 #: class.acqafat.label:6138
-#, fuzzy
 msgid "All Fund Allocation Total"
-msgstr "Итог ассигнований"
+msgstr ""
 
 #: field.asv.start_date.label:4118
 msgid "Survey Start Date/Time"
@@ -3376,9 +3354,8 @@ msgid "Payments"
 msgstr "Платежи"
 
 #: field.acqlih.expected_recv_time.label:6551
-#, fuzzy
 msgid "Expected Receive Time"
-msgstr "Ожидаемая  дата получения"
+msgstr ""
 
 #: field.erfcc.circ_count.label:7130
 msgid "Total Circulation Count"
@@ -3498,9 +3475,8 @@ msgid "Bib Record Note"
 msgstr "Примечание биб. записи"
 
 #: field.jub.distribution_formulas.label:6508
-#, fuzzy
 msgid "Distribution Formulas"
-msgstr "Формула распределения"
+msgstr ""
 
 #: field.acqclet.id.label:7259
 msgid "Claim Event Type ID"
@@ -3591,9 +3567,8 @@ msgid "Facet XPath"
 msgstr ""
 
 #: field.act.opac_visible.label:4880
-#, fuzzy
 msgid "OPAC Visible?"
-msgstr "OPAC  доступен"
+msgstr ""
 
 #: field.rccc.stat_cat_2_value.label:8289
 msgid "Legacy CAT2 Value"
@@ -3704,9 +3679,8 @@ msgid "Origin Amount"
 msgstr "Источник  суммы"
 
 #: field.aur.request_type.label:5503
-#, fuzzy
 msgid "Request Type"
-msgstr "Время запроса"
+msgstr ""
 
 #: class.brn.label:52
 msgid "Record Node"
@@ -3736,9 +3710,8 @@ msgid "Holdable Copy Count"
 msgstr ""
 
 #: field.qsq.id.label:7565
-#, fuzzy
 msgid "Query ID"
-msgstr "ID очерёдности"
+msgstr ""
 
 #: field.circ.fine_interval.label:2930 field.combcirc.fine_interval.label:2992
 #: field.acirc.fine_interval.label:3057 field.brt.fine_interval.label:3124
@@ -3765,9 +3738,8 @@ msgstr "Задержка обработки контекста поля"
 
 #: field.acqcl.lineitem_detail.label:7282
 #: field.acrlid.lineitem_detail.label:8420
-#, fuzzy
 msgid "Lineitem Detail"
-msgstr "Детали единицы строки"
+msgstr ""
 
 #: field.jub.id.label:6487 field.acqlih.id.label:6544
 msgid "Lineitem ID"
@@ -4187,9 +4159,8 @@ msgid "Group ID"
 msgstr "ID Группы"
 
 #: class.ocirccount.label:2835
-#, fuzzy
 msgid "Open Circulation Count"
-msgstr "Подсчёт общей циркуляции"
+msgstr ""
 
 #: field.vii.deposit_amount.label:197 field.viiad.deposit_amount.label:245
 #: field.brsrc.deposit_amount.label:3161 field.sunit.deposit_amount.label:3789
@@ -4593,9 +4564,8 @@ msgid "Case Branch ID"
 msgstr ""
 
 #: class.ocirclist.label:2877
-#, fuzzy
 msgid "Open Circulation List"
-msgstr "Открытая циркуляция"
+msgstr ""
 
 #: field.acpn.owning_copy.label:2449
 msgid "Copy"
@@ -4722,9 +4692,8 @@ msgid "Is Floating"
 msgstr ""
 
 #: field.crad.normalizers.label:591
-#, fuzzy
 msgid "Normalizers"
-msgstr "Нормализатор (сигнала)"
+msgstr ""
 
 #: field.rocit.patron_name.label:8670
 msgid "Patron Name"
@@ -4789,9 +4758,8 @@ msgid "Hold User"
 msgstr "Пользователь Хранения"
 
 #: field.ssub.record_entry.label:3555
-#, fuzzy
 msgid "Bibliographic Record Entry"
-msgstr "Корзина ввода библиографической записи"
+msgstr ""
 
 #: field.au.usrgroup.label:2319
 msgid "Family Linkage or other Group"
@@ -4871,9 +4839,8 @@ msgid "Peer Type"
 msgstr ""
 
 #: field.acqda.debit_amount.label:7225
-#, fuzzy
 msgid "Debit Amount"
-msgstr "Сумма вклада"
+msgstr ""
 
 #: class.acqafcb.label:6178
 msgid "All Fund Combined Total"
@@ -4901,9 +4868,8 @@ msgid "Literal"
 msgstr ""
 
 #: field.acqpron.value.label:5634 field.acqlin.value.label:6612
-#, fuzzy
 msgid "Note Value"
-msgstr "Стоимость голосования"
+msgstr ""
 
 #: field.rsr.summary.label:7048
 msgid "Summary (normalized)"
@@ -4950,9 +4916,8 @@ msgid "Namespace URI"
 msgstr "URI  пространства имён"
 
 #: field.acqpoh.audit_time.label:6382 field.acqlih.audit_time.label:6542
-#, fuzzy
 msgid "Audit Time"
-msgstr "Изменить время"
+msgstr ""
 
 #: field.sra.field.label:4031
 msgid "Index Field"
@@ -5017,9 +4982,8 @@ msgid "Identification Name"
 msgstr "Идентификационное имя"
 
 #: field.sunit.cost.label:3805 field.acp.cost.label:4810
-#, fuzzy
 msgid "Cost"
-msgstr "Сервер"
+msgstr ""
 
 #: field.mbt.circulation.label:4570
 msgid "Circulation Billing link"
@@ -5030,9 +4994,8 @@ msgid "Pretransit Copy Status"
 msgstr "Статус копии до транзита"
 
 #: field.ccmw.copy_owning_lib.label:1175 field.ccmm.copy_owning_lib.label:1276
-#, fuzzy
 msgid "Copy Owning Lib"
-msgstr "Библиотека имеющая копию"
+msgstr ""
 
 #: field.qsq.offset_count.label:7573
 msgid "OFFSET count"
@@ -5116,9 +5079,8 @@ msgid "Hold Request Type"
 msgstr "Тип запроса Хранения"
 
 #: class.bpt.label:1049
-#, fuzzy
 msgid "Bibliographic Record Peer Type"
-msgstr "Вид библиографической записи в Корзине"
+msgstr ""
 
 #: field.acqexr.ratio.label:5574
 msgid "Ratio"
@@ -5179,9 +5141,8 @@ msgid "Selection List"
 msgstr ""
 
 #: field.ssub.issuances.label:3558
-#, fuzzy
 msgid "Issuances"
-msgstr "Выпуск"
+msgstr ""
 
 #: field.jub.item_count.label:6504 field.acqdfe.item_count.label:7163
 #: field.acqlisum.item_count.label:8486
@@ -5393,7 +5354,8 @@ msgid "In House Use"
 msgstr "Для внутреннего пользования"
 
 #: class.ccmcmtm.label:1348
-msgid "Circulation Matrix Circulation Modifier Subtest Circulation Modifier Set"
+msgid ""
+"Circulation Matrix Circulation Modifier Subtest Circulation Modifier Set"
 msgstr ""
 "Матрица  циркуляции Субтест модификатора циркуляции Установка модификатора "
 "циркуляции"
@@ -5488,9 +5450,8 @@ msgid "Audience Code"
 msgstr "Код целевой группы"
 
 #: field.rlcd.last_delete_date.label:8176
-#, fuzzy
 msgid "Delete Date/Time"
-msgstr "Дата/Время получения"
+msgstr ""
 
 #: class.atevdef.label:855
 msgid "Trigger Event Definition"
@@ -5501,9 +5462,8 @@ msgid "Default Price"
 msgstr "Стандартная цена"
 
 #: class.acns.label:1875
-#, fuzzy
 msgid "Call Number/Volume Suffix"
-msgstr "ID Шифра/Тома"
+msgstr ""
 
 #: field.amtr.fail_part.label:109
 msgid "Failure Part"
@@ -5523,9 +5483,8 @@ msgid "Claim Policy"
 msgstr ""
 
 #: class.acqpron.label:5626
-#, fuzzy
 msgid "Provider Note"
-msgstr "Имя провайдера"
+msgstr ""
 
 #: field.auoi.org_unit.label:507
 msgid "Allowed Org Unit"
@@ -5599,9 +5558,8 @@ msgid "Creation Date/Time"
 msgstr "Дата/время создания"
 
 #: class.vii.label:184
-#, fuzzy
 msgid "Import Item"
-msgstr "ID импортированной единицы"
+msgstr ""
 
 #: field.atevparam.param.label:927
 msgid "Parameter Name"
@@ -6336,9 +6294,8 @@ msgid "Audit ID"
 msgstr ""
 
 #: field.scap.end_date.label:3515 field.ssub.end_date.label:3554
-#, fuzzy
 msgid "End Date"
-msgstr "Дата окончания"
+msgstr ""
 
 #: class.brsrc.label:3153 field.bram.resource.label:3239
 msgid "Resource"
@@ -6497,18 +6454,16 @@ msgid "Full Authority Record"
 msgstr "Полная авторитетная запись"
 
 #: field.ocirccount.lost.label:2869 field.ocirclist.lost.label:2911
-#, fuzzy
 msgid "Lost"
-msgstr "Сервер"
+msgstr ""
 
 #: field.au.dob.label:2294 field.rud.dob.label:7067 field.stgu.dob.label:7406
 msgid "Date of Birth"
 msgstr "Дата рождения"
 
 #: field.cmc.fields.label:1773
-#, fuzzy
 msgid "Fields"
-msgstr "Поле"
+msgstr ""
 
 #: field.bre.creator.label:2033
 msgid "Record Creator"
@@ -6595,9 +6550,8 @@ msgid "Parent Expression"
 msgstr ""
 
 #: class.acnp.label:1894
-#, fuzzy
 msgid "Call Number/Volume Prefix"
-msgstr "ID Шифра/Тома"
+msgstr ""
 
 #: field.cmfpm.start_pos.label:8086 field.cmpcsm.start_pos.label:8116
 msgid "Start Postion"
@@ -6685,9 +6639,8 @@ msgid "Copy Status"
 msgstr "Статус Копии"
 
 #: field.acqlisum.encumbrance_amount.label:8492
-#, fuzzy
 msgid "Encumbrance Amount"
-msgstr "Общая сумма обременения"
+msgstr ""
 
 #: field.atevdef.opt_in_setting.label:873
 msgid "Opt-In Setting Type"
@@ -6777,9 +6730,8 @@ msgid "Items Out"
 msgstr "Единицы выданы"
 
 #: field.siss.holding_type.label:3745
-#, fuzzy
 msgid "Holding Type"
-msgstr "Тип хранения"
+msgstr ""
 
 #: class.aoup.label:4081
 msgid "Org Unit Proximity"
@@ -6848,6 +6800,9 @@ msgstr "Платежные Сделки"
 #~ msgid "Pick List"
 #~ msgstr "Список"
 
+#~ msgid "End date"
+#~ msgstr "Дата окончания"
+
 #~ msgid "Bib Summary"
 #~ msgstr "Краткое изложение библиографии"
 
@@ -6856,6 +6811,9 @@ msgstr "Платежные Сделки"
 
 #~ msgid "Field Class"
 #~ msgstr "Тип поля"
+
+#~ msgid "Start date"
+#~ msgstr "Дата начала"
 
 #~ msgid "Binding Unit"
 #~ msgstr "Связующая единица"

@@ -1,0 +1,649 @@
+# Armenian translation for evergreen
+# Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2011-05-17 06:04+0000\n"
+"Last-Translator: TZ <tigran@flib.sci.am>\n"
+"Language-Team: Armenian <hy@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2011-05-18 04:48+0000\n"
+"X-Generator: Launchpad (build 12959)\n"
+
+#: serial.manage_subs.tree_location
+msgid "Location"
+msgstr "Տեղադրությունը"
+
+#: serial.manage_subs.scap_id
+msgid "Caption / Pattern : # %1$s"
+msgstr "Որսում / Ձեւ : # %1$s"
+
+#: staff.serial.editor_base.handle_update.error
+msgid "serial update error:"
+msgstr "պարբերականի թարմացման սխալ։"
+
+#: staff.serial.editor_base.handle_update.success
+msgid "Save Successful"
+msgstr "Հիշվեց հաջողությամբ"
+
+#: staff.serial.sbsum_editor.count
+msgctxt "staff.serial.sbsum_editor.count"
+msgid "1 summary"
+msgstr "1 համառոտագրություն"
+
+#: staff.serial.sbsum_editor.count.plural
+msgctxt "staff.serial.sbsum_editor.count.plural"
+msgid "%1$s summaries"
+msgstr "%1$s համառոտագրություններ"
+
+#: staff.serial.sbsum_editor.modify.label
+msgid "Modify Basic Summary"
+msgstr "Թարմացրու հիմնական համառոտագրությունը"
+
+#: staff.serial.sbsum_editor.modify.accesskey
+msgctxt "staff.serial.sbsum_editor.modify.accesskey"
+msgid "M"
+msgstr "M"
+
+#: staff.serial.sisum_editor.count
+msgctxt "staff.serial.sisum_editor.count"
+msgid "1 summary"
+msgstr "1 համառոտագրություն"
+
+#: staff.serial.sisum_editor.count.plural
+msgctxt "staff.serial.sisum_editor.count.plural"
+msgid "%1$s summaries"
+msgstr "%1$s համառոտագրություններ"
+
+#: staff.serial.sisum_editor.modify.label
+msgid "Modify Index Summary"
+msgstr "Թարմացրու ցուցիչի համառոտագրությունը"
+
+#: staff.serial.sisum_editor.modify.accesskey
+msgctxt "staff.serial.sisum_editor.modify.accesskey"
+msgid "M"
+msgstr "M"
+
+#: staff.serial.sssum_editor.count
+msgctxt "staff.serial.sssum_editor.count"
+msgid "1 summary"
+msgstr "1 համառոտագրություն"
+
+#: staff.serial.sssum_editor.count.plural
+msgctxt "staff.serial.sssum_editor.count.plural"
+msgid "%1$s summaries"
+msgstr "%1$s համառոտագրություններ"
+
+#: staff.serial.sssum_editor.modify.label
+msgid "Modify Supplement Summary"
+msgstr "Թարմացրու հավելվածի համառոտագրությունը"
+
+#: staff.serial.sssum_editor.modify.accesskey
+msgctxt "staff.serial.sssum_editor.modify.accesskey"
+msgid "M"
+msgstr "M"
+
+#: staff.serial.scap_editor.count
+msgid "1 caption and pattern"
+msgstr "1 որսում և ձև"
+
+#: staff.serial.scap_editor.count.plural
+msgid "%1$s caption and patterns"
+msgstr "%1$s որսում և ձևեր"
+
+#: staff.serial.scap_editor.create.label
+msgid "Create Caption and Pattern(s)"
+msgstr "Ստեղծիր որսում և ձև (եր)"
+
+#: staff.serial.scap_editor.create.accesskey
+msgctxt "staff.serial.scap_editor.create.accesskey"
+msgid "C"
+msgstr "C"
+
+#: staff.serial.scap_editor.modify.label
+msgid "Modify Caption and Pattern(s)"
+msgstr "Ձևափոխիր որսումը և ձև(եր)ը"
+
+#: staff.serial.scap_editor.modify.accesskey
+msgctxt "staff.serial.scap_editor.modify.accesskey"
+msgid "M"
+msgstr "M"
+
+#: staff.serial.scap_editor.notes
+msgid "Caption and Pattern Notes"
+msgstr "Որսման և ձևի նշումներ"
+
+#: staff.serial.sdist_editor.count
+msgid "1 distribution"
+msgstr "1 տարածում"
+
+#: staff.serial.sdist_editor.count.plural
+msgid "%1$s distributions"
+msgstr "%1$s տարածումներ"
+
+#: staff.serial.sdist_editor.create.label
+msgid "Create Distribution(s)"
+msgstr "Ստեղծիր տարածում(ներ)"
+
+#: staff.serial.sdist_editor.create.accesskey
+msgctxt "staff.serial.sdist_editor.create.accesskey"
+msgid "C"
+msgstr "C"
+
+#: staff.serial.sdist_editor.modify.label
+msgid "Modify Distribution(s)"
+msgstr "Ձևափոխիր տարածում(ներ)ը"
+
+#: staff.serial.sdist_editor.modify.accesskey
+msgctxt "staff.serial.sdist_editor.modify.accesskey"
+msgid "M"
+msgstr "M"
+
+#: staff.serial.sdist_editor.notes
+msgid "Distribution Notes"
+msgstr "Տարածման նշումներ"
+
+#: staff.serial.siss_editor.count
+msgid "1 issuance"
+msgstr "1 թողարկում"
+
+#: staff.serial.siss_editor.count.plural
+msgid "%1$s issuances"
+msgstr "%1$s թողարկումներ"
+
+#: staff.serial.siss_editor.create.label
+msgid "Create Issuance(s)"
+msgstr "Ստեղծե՞լ թողարկում(ներ)"
+
+#: staff.serial.siss_editor.create.accesskey
+msgctxt "staff.serial.siss_editor.create.accesskey"
+msgid "C"
+msgstr "C"
+
+#: staff.serial.siss_editor.modify.label
+msgid "Modify Issuance(s)"
+msgstr "Ձևափոխել թողարկում(ներ)ը"
+
+#: staff.serial.siss_editor.modify.accesskey
+msgctxt "staff.serial.siss_editor.modify.accesskey"
+msgid "M"
+msgstr "M"
+
+#: staff.serial.siss_editor.notes
+msgid "Issuance Notes"
+msgstr "Թողարկման նշումներ"
+
+#: staff.serial.sitem_editor.count
+msgid "1 item"
+msgstr "1 նյութ"
+
+#: staff.serial.sitem_editor.count.plural
+msgid "%1$s items"
+msgstr "%1$s նյութեր"
+
+#: staff.serial.sitem_editor.create.label
+msgid "Create Item(s)"
+msgstr "Ստեղծիր նյութ(եր)"
+
+#: staff.serial.sitem_editor.create.accesskey
+msgctxt "staff.serial.sitem_editor.create.accesskey"
+msgid "C"
+msgstr "C"
+
+#: staff.serial.sitem_editor.modify.label
+msgid "Modify Item(s)"
+msgstr "Ձևափոխիր նյութ(եր)ը"
+
+#: staff.serial.sitem_editor.modify.accesskey
+msgctxt "staff.serial.sitem_editor.modify.accesskey"
+msgid "M"
+msgstr "M"
+
+#: staff.serial.sitem_editor.notes
+msgid "Item Notes"
+msgstr "Նյութի նշումներ"
+
+#: staff.serial.sstr_editor.count
+msgid "1 stream"
+msgstr "1 հոսք"
+
+#: staff.serial.sstr_editor.count.plural
+msgid "%1$s streams"
+msgstr "%1$s հոսքեր"
+
+#: staff.serial.sstr_editor.create.label
+msgid "Create Stream(s)"
+msgstr "Ստեղծել հոսք(եր)"
+
+#: staff.serial.sstr_editor.create.accesskey
+msgctxt "staff.serial.sstr_editor.create.accesskey"
+msgid "C"
+msgstr "C"
+
+#: staff.serial.sstr_editor.modify.label
+msgid "Modify Stream(s)"
+msgstr "Ձևափոխել հոսք(եր)ը"
+
+#: staff.serial.sstr_editor.modify.accesskey
+msgctxt "staff.serial.sstr_editor.modify.accesskey"
+msgid "M"
+msgstr "M"
+
+#: staff.serial.ssub_editor.count
+msgid "1 subscription"
+msgstr "1 բաժանորդագրություն"
+
+#: staff.serial.ssub_editor.count.plural
+msgid "%1$s subscriptions"
+msgstr "%1$s բաժանորդագրություններ"
+
+#: staff.serial.ssub_editor.create.label
+msgid "Create Subscription(s)"
+msgstr "Ստեղծիր բաժանորդագրություն(ներ)"
+
+#: staff.serial.ssub_editor.create.accesskey
+msgctxt "staff.serial.ssub_editor.create.accesskey"
+msgid "C"
+msgstr "C"
+
+#: staff.serial.ssub_editor.modify.label
+msgid "Modify Subscription(s)"
+msgstr "Ձևափոխիր բաժանորդագրություն(ներ)ը"
+
+#: staff.serial.ssub_editor.modify.accesskey
+msgctxt "staff.serial.ssub_editor.modify.accesskey"
+msgid "M"
+msgstr "M"
+
+#: staff.serial.ssub_editor.notes
+msgid "Subscription Notes"
+msgstr "Բաժանորդագրության նշումներ"
+
+#: staff.serial.manage_dists.add.error
+msgid "error adding object in manage_dists.js:"
+msgstr "սխալ օբյեկտ ավելացնելիսn manage_dists.js:"
+
+#: staff.serial.manage_dists.delete.error
+msgid "error deleting object in manage_dists.js:"
+msgstr "սխալ օբյեկտ ջնջելիս manage_dists.js:"
+
+#: staff.serial.manage_dists.delete_sstr.confirm
+msgid "Are you sure you would like to delete this stream?"
+msgstr "Վստա՞հ ես որ ցանկանում ես ջնջել այս գոլորշին"
+
+#: staff.serial.manage_dists.delete_sstr.confirm.plural
+msgid "Are you sure you would like to delete these %1$s streams?"
+msgstr "Վստա՞հ ես որ ցանկանում ես ջնջել այս %1$s գոլորշիները"
+
+#: staff.serial.manage_dists.delete_sstr.title
+msgid "Delete Streams?"
+msgstr "Ջնջե՞լ գոլորշիները"
+
+#: staff.serial.manage_dists.delete_sstr.override
+msgctxt "staff.serial.manage_dists.delete_sstr.override"
+msgid ""
+"Override Delete Failure? Doing so will delete all attached items as well!"
+msgstr "Վերագրե՞լ Ձախողման Ջնջումը։ Սա անելով կջնջեք բոլոր կից նյութերը։"
+
+#: staff.serial.manage_subs.add.error
+msgid "error adding object in manage_subs.js:"
+msgstr "սխալ երբ ավելացվում է օբյեկտ այստեղ manage_subs.js:"
+
+#: staff.serial.manage_subs.delete.error
+msgid "error deleting object in manage_subs.js:"
+msgstr "սխալ երբ ջնջվում է օբյեկտը այստեղից manage_subs.js:"
+
+#: staff.serial.manage_subs.delete_scap.confirm
+msgid "Are you sure you would like to delete this caption and pattern?"
+msgstr "Վստա՞հ ես որ ցանկանում ես ջնջել այս որսածը և ձևը։"
+
+#: staff.serial.manage_subs.delete_scap.confirm.plural
+msgid ""
+"Are you sure you would like to delete these %1$s caption and patterns?"
+msgstr "Վստա՞հ ես որ ցանկանում ես ջնջել այս %1$s որսածը և ձևերը։"
+
+#: staff.serial.manage_subs.delete_scap.title
+msgid "Delete Caption and Patterns?"
+msgstr "Ջնջել որսածը և ձևերը։"
+
+#: staff.serial.manage_subs.delete_scap.override
+msgid ""
+"Override Delete Failure? Doing so will delete all attached issuances and "
+"items as well!"
+msgstr ""
+"Վերագրե՞լ Ձախողման Ջնջումը։ Սա անելով կջնջեք բոլոր կից թողարկումները և "
+"նյութերը։"
+
+#: staff.serial.manage_subs.delete_sdist.confirm
+msgid "Are you sure you would like to delete this distribution?"
+msgstr "Վստա՞հ ես որ ցանկանում ես ջնջել այս բաշխումը։"
+
+#: staff.serial.manage_subs.delete_sdist.confirm.plural
+msgid "Are you sure you would like to delete these %1$s distributions?"
+msgstr "Վստա՞հ ես որ ցանկանում ես ջնջել այս %1$s բաշխումները։"
+
+#: staff.serial.manage_subs.delete_sdist.title
+msgid "Delete Distributions?"
+msgstr "Ջնջե՞լ բաշխումը։"
+
+#: staff.serial.manage_subs.delete_sdist.override
+msgid "Override Delete Failure?"
+msgstr "Վերագրե՞լ ջնջելու ձախողումը"
+
+#: staff.serial.manage_subs.delete_siss.confirm
+msgid "Are you sure you would like to delete this issuance?"
+msgstr "Վստա՞հ ես որ ցանկանում ես ջնջել այս թողարկումը։"
+
+#: staff.serial.manage_subs.delete_siss.confirm.plural
+msgid "Are you sure you would like to delete these %1$s issuances?"
+msgstr "Վստա՞հ ես որ ցանկանում ես ջնջել այս %1$s թողարկումները։"
+
+#: staff.serial.manage_subs.delete_siss.title
+msgid "Delete Issuances?"
+msgstr "Ջնջե՞լ թողարկումները։"
+
+#: staff.serial.manage_subs.delete_siss.override
+msgctxt "staff.serial.manage_subs.delete_siss.override"
+msgid ""
+"Override Delete Failure? Doing so will delete all attached items as well!"
+msgstr "Վերագրե՞լ Ձախողման Ջնջումը։ Սա անելով կջնջեք բոլոր կից նյութերը։"
+
+#: staff.serial.manage_subs.delete_ssub.confirm
+msgid "Are you sure you would like to delete this subscription?"
+msgstr "Վստա՞հ ես որ ցանկանում ես ջնջել այս բաժանորդագրությունը։"
+
+#: staff.serial.manage_subs.delete_ssub.confirm.plural
+msgid "Are you sure you would like to delete these %1$s subscriptions?"
+msgstr "Վստա՞հ ես որ ցանկանում ես ջնջել այս %1$s բաժանորդագրությունները։"
+
+#: staff.serial.manage_subs.delete_ssub.title
+msgid "Delete Subscriptions?"
+msgstr "Ջնջե՞լ բաժանորդագրությունը։"
+
+#: staff.serial.manage_subs.delete_ssub.override
+msgid ""
+"Override Delete Failure? Doing so will delete all related data as well!"
+msgstr ""
+"Վերագրե՞լ Ձախողման Ջնջումը։ Անելով սա կջնջեք բոլոր կապակցված տվյալները։"
+
+#: batch_receive.bib_lookup.empty
+msgid "Enter a search term."
+msgstr "Մուտք արա որոնման տերմինը։"
+
+#: batch_receive.bib_lookup.multiple
+msgid ""
+"Multiple matching records found. Please use a more specific identifier, or "
+"use the catalog to find the exact record you want."
+msgstr ""
+"Բազմակի համընկնող գրառումներ են գտնված։ Օգտագործիր ավելի մանրամասն "
+"բնութագրիչ, կամ օգտագործիր քարտարանը քեզ հարկավոր գրառումը գտնելու համար։"
+
+#: batch_receive.bib_lookup.not_found
+msgid "No matching records found with any subscriptions attached."
+msgstr ""
+"Համապատասխանող ոչ մի գրառում չի գտնված կցված բաժանորդագրություններով։"
+
+#: batch_receive.issuance_lookup.error
+msgid "Problem retrieving issuances related to subscription."
+msgstr "Բաժանորդագրության հետ կապված թողարկումների կանչման պրոբլեմ։"
+
+#: batch_receive.issuance_lookup.none
+msgid "There are no receivable issuances."
+msgstr "Չկան ստացման ենթակա թողարկումներ։"
+
+#: batch_receive.item_lookup.none
+msgid "Could not retrieve receivable items for this issuance."
+msgstr "Այս թողարկման համար չի կարող կանչել ստացվող նյութերը։"
+
+#: batch_receive.autogen_barcodes.questionable
+msgid ""
+"There are already barcodes entered further down the list than the one you "
+"just entered.\n"
+"Fill the intervening fields with auto-generated barcodes?"
+msgstr ""
+"Քո այս մուտքագրումից առաջ արդեն եղել են ներմուծված շտրիխ կոդեր։\n"
+"Լրացնե՞լ միջանկյալ դաշտերը ինքնագեներացված շտրիխ կոդերով։"
+
+#: batch_receive.autogen_barcodes.remove
+msgid "Clear the barcodes that have already been auto-generated?"
+msgstr "Ջնջե՞լ ինքնագեներացված շտրիխ կոդերը։"
+
+#: batch_receive.none
+msgid "[None]"
+msgstr "[Ոչինչ]"
+
+#: batch_receive.apply
+msgid "Apply"
+msgstr "Կիրառիր"
+
+#: batch_receive.receive_time_note
+msgid "Receive-time Note"
+msgstr "Ստացման ժամանակի նշում"
+
+#: batch_receive.cn_for_lib
+msgid ""
+"Do you want to use this call number at %1$s?\n"
+"It doesn't exist there, and it will have to be created."
+msgstr ""
+"Ցանկանու՞մ ես օգտագործել այս դասիչը սրանում %1$s\n"
+"Այն գոյություն չունի, և պետք է ստեղծվի։"
+
+#: batch_receive.missing_units
+msgid ""
+"You have not provided barcodes and call numbers for all of the selected "
+"items.  Choose OK to receive those items anyway, or choose Cancel to supply "
+"the missing information."
+msgstr ""
+"Ընտրված նյութերի համար դու չես տրամադրել շտրխ կոդեր և դասիչներ։ Ընտրիր ԼԱՎ "
+"այդ նյութերը ստանալու համար, կամ սեղմիր ՉԵՂՅԱԼ ԱՆԵԼ բացակա տվյալները "
+"լրացնելու համար։"
+
+#: batch_receive.missing_cn
+msgid ""
+"You cannot assign a barcode without selecting a call number. Please correct "
+"the non-conforming units."
+msgstr "Չես կարող նշանակել շտրիխ կոդ առանց ընտրելու դասիչը։ Շտկիր սա։"
+
+#: batch_receive.print_routing_list_users
+msgid "Print Routing List"
+msgstr "Տպիր շրջաբերական ցուցակը"
+
+#: pattern_wizard.enumeration.a
+msgctxt "pattern_wizard.enumeration.a"
+msgid "First level"
+msgstr "Առաջին մակարդակ"
+
+#: pattern_wizard.enumeration.b
+msgctxt "pattern_wizard.enumeration.b"
+msgid "Second level"
+msgstr "Երկրորդ մակարդակ"
+
+#: pattern_wizard.enumeration.c
+msgctxt "pattern_wizard.enumeration.c"
+msgid "Third level"
+msgstr "Երրորդ մակարդակ"
+
+#: pattern_wizard.enumeration.d
+msgctxt "pattern_wizard.enumeration.d"
+msgid "Fourth level"
+msgstr "Չորորդ մակարդակ"
+
+#: pattern_wizard.enumeration.e
+msgid "Fifth level"
+msgstr "Հինգերորդ մակարդակ"
+
+#: pattern_wizard.enumeration.f
+msgid "Sixth level"
+msgstr "Վեցերորդ մակարդակ"
+
+#: pattern_wizard.enumeration.g
+msgid "First alternate"
+msgstr "Առաջին այլընտրանք"
+
+#: pattern_wizard.enumeration.h
+msgid "Second alternate"
+msgstr "Երկրորդ այլընտրանք"
+
+#: pattern_wizard.chronology.i
+msgctxt "pattern_wizard.chronology.i"
+msgid "First level"
+msgstr "Առաջին մակարդակ"
+
+#: pattern_wizard.chronology.j
+msgctxt "pattern_wizard.chronology.j"
+msgid "Second level"
+msgstr "Երկրորդ մակարդակ"
+
+#: pattern_wizard.chronology.k
+msgctxt "pattern_wizard.chronology.k"
+msgid "Third level"
+msgstr "Երրորդ մակարդակ"
+
+#: pattern_wizard.chronology.l
+msgctxt "pattern_wizard.chronology.l"
+msgid "Fourth level"
+msgstr "Չորորդ մակարդակ"
+
+#: pattern_wizard.chronology.m
+msgid "Alternative numbering scheme"
+msgstr "Այլընտրանքային հաշվարկման սխեմա։"
+
+#: pattern_wizard.not_removable_row
+msgid ""
+"You cannot remove this row because it's not at the end of the sequence.  "
+"Remove later rows first."
+msgstr ""
+"Չես կարող հեռացնել այս տողը, քանի որ այն չի գտնվում հատվածի վերջում։ "
+"Հեռացրու հետևից եկող տողերը։"
+
+#: pattern_wizard.bad_date_value
+msgid "That is not a valid day for that month."
+msgstr "Այս ամսվա համար դա թույլատրելի օր չէ։"
+
+#: pattern_wizard.weekdays
+msgid "Monday Tuesday Wednesday Thursday Friday Saturday Sunday"
+msgstr "Երկուշաբթի Երեքշաբթի Չորեքշաբթի Հինգշաբթի Ուրբաթ Շաբաթ Կիրակի"
+
+#: pattern_wizard.months
+msgid ""
+"January February March April May June July August September October November "
+"December"
+msgstr ""
+"Հունվար Փետրվար Մարտ Ապրիլ Մայիս Հունիս Հուլիս Օգոստոս Սեպտեմբեր Հոկտեմբեր "
+"նոյեմբեր Դեկտեմբեր"
+
+#: pattern_wizard.weeks
+msgid ""
+"Every.First.Second.Third.Fourth.Fifth.Third from last.Second from last.Last"
+msgstr ""
+"Յուրաքանչյուր.Առաջին.Երկրորդ.Երրորդ.Չորրորդ.Հինգերորդ.Երրորդը "
+"վերջից.Երկրորդը վերջից.Վերջին"
+
+#: pattern_wizard.seasons
+msgid "Spring Summer Autumn Winter"
+msgstr "Գարուն Ամառ Աշուն Ձմեռ"
+
+#: pattern_wizard.week
+msgid "week"
+msgstr "շաբաթ"
+
+#: pattern_wizard.remove_sub_row
+msgid "Remove sub-row"
+msgstr "Հեռացրու ենթատողը"
+
+#: serial.editor_base.unset
+msgid "<Unset>"
+msgstr "<Unset>"
+
+#: serial.manage_dists.streams
+msgid "Streams"
+msgstr "Հոսքեր"
+
+#: serial.manage_dists.stream_num
+msgid "Stream : # %1$s"
+msgstr "Հոսք : # %1$s"
+
+#: serial.manage_dists.sbsum
+msgid "Basic Summary"
+msgstr "Հիմնական համառոտագրություն"
+
+#: serial.manage_dists.sssum
+msgid "Supplement Summary"
+msgstr "Հավելվածի համառոտագրություն"
+
+#: serial.manage_dists.sisum
+msgid "Index Summary"
+msgstr "Ցուցիչի համառոտագրություն"
+
+#: serial.manage_dists.library_label
+msgid "%1$s : %2$s"
+msgstr "%1$s : %2$s"
+
+#: serial.manage_dists.distributions
+msgctxt "serial.manage_dists.distributions"
+msgid "Distributions"
+msgstr "Բաշխումներ"
+
+#: serial.common.default
+msgid "Default"
+msgstr "Նախնական"
+
+#: serial.manage_subs.predict.alert
+msgid "You must select a subscription before predicting issuances."
+msgstr "Թողարկումները կանխատսելուց առաջ պետք է ընտրես բաժանորդագրությունը"
+
+#: serial.manage_subs.predict.prompt
+msgid "How many items (per active pattern) would you like to predict?"
+msgstr "Քանի՞ նյութ (ըստ ակտիվ ձևի) կցանկանաս կանխատեսել։"
+
+#: serial.manage_subs.predict.prompt.text
+msgid "Number of Predicted Issuances"
+msgstr "Կանխատեսված տրումների քանակ"
+
+#: serial.manage_subs.invalid_number
+msgid "Invalid number entered!"
+msgstr "Սխալ համար է մուտք արվել։"
+
+#: serial.manage_subs.predict_success
+msgid "Successfully predicted %1$s item(s) for subscription # %2$s."
+msgstr ""
+"Հաջողությամբ կանխատեսված %1$s նյութ(եր) այս բաժանորդագրության համար # %2$s."
+
+#: serial.manage_subs.distributions
+msgctxt "serial.manage_subs.distributions"
+msgid "Distributions"
+msgstr "Բաշխումներ"
+
+#: serial.manage_subs.issuances
+msgid "Issuances"
+msgstr "Տրումներ"
+
+#: serial.manage_subs.captions_patterns
+msgid "Captions/Patterns"
+msgstr "Որսումներ/Ձևեր"
+
+#: serial.manage_subs.ssub_id
+msgid "Subscription : # %1$s"
+msgstr "Բաժանորդագրություն : # %1$s"
+
+#: serial.manage_subs.subscriptions
+msgid "Subscriptions"
+msgstr "Բաժանորդագրություններ"
+
+#~ msgid ""
+#~ "Override Delete Failure? Doing so will delete all attached items as well!"
+#~ msgstr "Վերագրե՞լ Ձախողման Ջնջումը։ Սա անելով կջնջեք բոլոր կից նյութերը։"
+
+#~ msgid "Successfully predicted %1$s issuance(s) for subscription # %2$s."
+#~ msgstr ""
+#~ "Հաջող կանխատեսումներ %1$s թողարկումներից այս բաժանորդագրության համար # %2$s."
+
+#~ msgid "Number of Predicted Items"
+#~ msgstr "Կանխատեսված նյութերի քանակը։"

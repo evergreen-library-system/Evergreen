@@ -2,21 +2,20 @@
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
-#. extracted from ../../Open-ILS/web/opac/locale/en-US/opac.dtd
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-07 02:02-0400\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-04-18 21:44-0400\n"
 "PO-Revision-Date: 2010-03-02 22:39+0000\n"
 "Last-Translator: Dmagick <Unknown>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
-"X-Launchpad-Export-Date: 2010-03-03 04:46+0000\n"
-"X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-05-18 04:46+0000\n"
+"X-Generator: Launchpad (build 12959)\n"
 
 #. =================================================================
 #. Some generic stuff
@@ -214,7 +213,8 @@ msgid "Tips:"
 msgstr ""
 
 #: common.tips.tip1
-msgid "Click on a folder icon in the sidebar to access related quick searches"
+msgid ""
+"Click on a folder icon in the sidebar to access related quick searches"
 msgstr ""
 
 #: common.tips.tip2
@@ -232,10 +232,9 @@ msgid "Close All"
 msgstr ""
 
 #: common.org.cancel
-#, fuzzy
 msgctxt "common.org.cancel"
 msgid "Cancel"
-msgstr "לבטל"
+msgstr ""
 
 #: common.org.loading
 msgid "Loading library selector..."
@@ -389,6 +388,20 @@ msgstr "/"
 msgid "Large"
 msgstr "גדול"
 
+#: common.googlechromeframe.why
+msgid ""
+"Installing the Google Chrome Frame plugin for Internet Explorer will improve "
+"your Evergreen experience with more speed and advanced features!"
+msgstr ""
+
+#: common.googlechromeframe.install
+msgid "Install Now!"
+msgstr ""
+
+#: common.googlechromeframe.dontask
+msgid "Don't ask me again"
+msgstr ""
+
 #: home.js.disabled
 msgid ""
 "JavaScript must be enabled in order for you to use the regular Evergreen "
@@ -397,7 +410,8 @@ msgid ""
 "browser. \n"
 "To use the regular Evergreen Catalog, enable JavaScript by changing your "
 "browser options, then \n"
-"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. \n"
+"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
+"\n"
 "<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
 "<a style='color: blue; text-decoration: underline;' "
 "href='/opac/extras/slimpac/start.html'>here</a>."
@@ -536,9 +550,8 @@ msgstr ""
 #. MyOPAC Checked Page
 #. =================================================================
 #: myopac.checked.out
-#, fuzzy
 msgid "Total items out:"
-msgstr "פריטים סה\"כ איחור:"
+msgstr ""
 
 #: myopac.checked.overdue
 msgid "Total items overdue:"
@@ -605,8 +618,9 @@ msgstr ""
 #. MyOPAC Fines Page
 #. =================================================================
 #: myopac.fines.title
+msgctxt "myopac.fines.title"
 msgid "Summary"
-msgstr "סיכום"
+msgstr ""
 
 #: myopac.fines.owed
 msgid "Total Owed"
@@ -981,9 +995,8 @@ msgid "Zip"
 msgstr ""
 
 #: myopac.summary.address.edit
-#, fuzzy
 msgid "Edit Address"
-msgstr "כתובת דוא\"ל"
+msgstr ""
 
 #: myopac.summary.address.invalid
 msgid "Invalid Address"
@@ -995,14 +1008,12 @@ msgstr ""
 
 #: myopac.summary.username.dup
 msgid ""
-"The requested username is not available.  Please choose a different "
-"username."
+"The requested username is not available.  Please choose a different username."
 msgstr ""
 
 #: myopac.summary.username.success
-#, fuzzy
 msgid "Username successfully updated"
-msgstr "התיק עודכן בהצלחה."
+msgstr ""
 
 #: myopac.summary.username.failure
 msgid "Username update failed"
@@ -1145,10 +1156,9 @@ msgid "Item Barcode"
 msgstr ""
 
 #: opac.advanced.quick.cn
-#, fuzzy
 msgctxt "opac.advanced.quick.cn"
 msgid "Call Number"
-msgstr "הסב מספר"
+msgstr ""
 
 #: opac.advanced.copy_loc_filter
 msgid "Shelving Location"
@@ -1236,25 +1246,22 @@ msgid "Go to My OPAC"
 msgstr ""
 
 #: navigate.login
-#, fuzzy
 msgid "Log in"
-msgstr "כניסה"
+msgstr ""
 
 #: navigate.login.title
 msgid "Log in for personalized features"
 msgstr ""
 
 #: navigate.logout
-#, fuzzy
 msgctxt "navigate.logout"
 msgid "Log out"
-msgstr "התנתק"
+msgstr ""
 
 #: navigate.logout.title
-#, fuzzy
 msgctxt "navigate.logout.title"
 msgid "Log out"
-msgstr "התנתק"
+msgstr ""
 
 #: opac.navigate.selectNewOrg
 msgid "Choose a different library"
@@ -1281,6 +1288,10 @@ msgstr ""
 msgid "My Title Results"
 msgstr ""
 
+#: navigate.facetRefine
+msgid "Refine your search"
+msgstr ""
+
 #: navigate.title.details
 msgid "My Title Details"
 msgstr ""
@@ -1293,10 +1304,9 @@ msgstr ""
 #. Footer
 #. =================================================================
 #: footer.basic
-#, fuzzy
 msgctxt "footer.basic"
 msgid "Basic Catalog (HTML only)"
-msgstr "קטלוג בסיסי (HTML בלבד)"
+msgstr ""
 
 #: footer.find.library
 msgid "Find a Library Near Me"
@@ -1363,10 +1373,9 @@ msgid "Account Preferences"
 msgstr ""
 
 #: myopac.bookbags
-#, fuzzy
 msgctxt "myopac.bookbags"
 msgid "My Bookbags"
-msgstr "שקיות הספר שלי"
+msgstr ""
 
 #. =================================================================
 #. Sidebar
@@ -1433,9 +1442,8 @@ msgid "Electronic Resources"
 msgstr ""
 
 #: opac.search.nowSearching
-#, fuzzy
 msgid "Now Searching"
-msgstr "כעת מחפשים "
+msgstr ""
 
 #. =================================================================
 #. Page Titles
@@ -1503,9 +1511,8 @@ msgid "Contact email address"
 msgstr ""
 
 #: opac.holds.pickupLocation
-#, fuzzy
 msgid "Pickup location"
-msgstr "מיקום האיסוף"
+msgstr ""
 
 #: opac.holds.success
 msgid "Hold was successfully placed"
@@ -1567,9 +1574,8 @@ msgid "Fiction"
 msgstr ""
 
 #: advanced.language
-#, fuzzy
 msgid "Language"
-msgstr "שפה: "
+msgstr ""
 
 #: advanced.audience
 msgid "Audience"
@@ -1600,9 +1606,8 @@ msgid "Relevance"
 msgstr ""
 
 #: advanced.pubdate
-#, fuzzy
 msgid "Publication date"
-msgstr "תאריך פרסום"
+msgstr ""
 
 #: advanced.sort.asc
 msgid "Ascending / A to Z"
@@ -1625,9 +1630,8 @@ msgid "Bib Level"
 msgstr ""
 
 #: advanced.filter.pubyear
-#, fuzzy
 msgid "Publication Year"
-msgstr "תאריך פרסום"
+msgstr ""
 
 #: advanced.filter.pubyear.equals
 msgid "Is"
@@ -1652,6 +1656,10 @@ msgstr ""
 msgid "print these details"
 msgstr ""
 
+#: rdetail.cn.part
+msgid "Part"
+msgstr ""
+
 #: rdetail.cn.barcode
 msgctxt "rdetail.cn.barcode"
 msgid "Barcode"
@@ -1674,10 +1682,9 @@ msgid "Holdable"
 msgstr ""
 
 #: rdetail.cn.due
-#, fuzzy
 msgctxt "rdetail.cn.due"
 msgid "Due Date"
-msgstr "תאריך יעד"
+msgstr ""
 
 #: rdetail.cn.more
 msgid "more info..."
@@ -1689,6 +1696,14 @@ msgstr ""
 
 #: rdetail.cn.hold
 msgid "place hold"
+msgstr ""
+
+#: rdetail.cn.reserve
+msgid "book now"
+msgstr ""
+
+#: rdetail.cn.multi_home
+msgid "linked titles"
 msgstr ""
 
 #: rdetail.cn.disabled
@@ -1713,9 +1728,8 @@ msgstr ""
 
 #. Result # &common.of; #
 #: rdetail.result
-#, fuzzy
 msgid "Result"
-msgstr "תוצאות"
+msgstr ""
 
 #: rdetail.start
 msgid "Start"
@@ -1754,9 +1768,8 @@ msgid "Add to bookbag"
 msgstr ""
 
 #: rdetail.bookbag.create
-#, fuzzy
 msgid "Create a new bookbag"
-msgstr "צור התיק חדש"
+msgstr ""
 
 #: rdetail.record.deleted
 msgid ""
@@ -1774,24 +1787,21 @@ msgid "Item successfully added to bookbag"
 msgstr ""
 
 #: rdetail.bookbag.name
-#, fuzzy
 msgid "Enter the name of the new bookbag"
-msgstr "הזן את שם התיק החדש: "
+msgstr ""
 
 #: rdetail.bookbag.create.success
-#, fuzzy
 msgid "Bookbag successfully created"
-msgstr "התיק עודכן בהצלחה."
+msgstr ""
 
 #: rdetail.detailMain.headerLabel
 msgid "Record Summary"
 msgstr ""
 
 #: rdetail.detailMain.subjects
-#, fuzzy
 msgctxt "rdetail.detailMain.subjects"
 msgid "Subjects"
-msgstr "נושא"
+msgstr ""
 
 #: rdetail.detailMain.abstract
 msgid "Abstract"
@@ -1814,15 +1824,13 @@ msgid "Copy Information"
 msgstr ""
 
 #: rdetail.copyInfo.library
-#, fuzzy
 msgctxt "rdetail.copyInfo.library"
 msgid "Library"
-msgstr "ספרייה"
+msgstr ""
 
 #: rdetail.copyInfo.callnumber
-#, fuzzy
 msgid "Callnumber"
-msgstr "הסב מספר"
+msgstr ""
 
 #: rdetail.copyInfo.copylocation
 msgid "Copy Location"
@@ -1862,10 +1870,14 @@ msgid "Copy Summary"
 msgstr ""
 
 #: rdetail.extras.browser
-#, fuzzy
 msgctxt "rdetail.extras.browser"
 msgid "Shelf Browser"
-msgstr "הדפדפן מדף"
+msgstr ""
+
+#: rdetail.extras.bib_summary
+msgctxt "rdetail.extras.bib_summary"
+msgid "Summary"
+msgstr ""
 
 #: rdetail.extras.reviews
 msgctxt "rdetail.extras.reviews"
@@ -1896,6 +1908,10 @@ msgstr ""
 msgid "MARC Record"
 msgstr ""
 
+#: rdetail.extras.foreign_items
+msgid "Linked Titles"
+msgstr ""
+
 #: rdetail.extras.call.null
 msgid "There are no call numbers for this item at this location."
 msgstr ""
@@ -1917,6 +1933,10 @@ msgstr ""
 msgid "Show a preview of this book from Google Book Search"
 msgstr ""
 
+#: rdetail.extras.novelist
+msgid "Suggestions by NoveList"
+msgstr ""
+
 #: rdetail.loading
 msgid "Loading copy information..."
 msgstr ""
@@ -1930,10 +1950,13 @@ msgid "Online Resources"
 msgstr ""
 
 #: rdetail.summary.subjects
-#, fuzzy
 msgctxt "rdetail.summary.subjects"
 msgid "Subjects"
-msgstr "נושא"
+msgstr ""
+
+#: rdetail.summary.issues_held
+msgid "Issues Held"
+msgstr ""
 
 #: result.sort_by
 msgid "Sort Results by Relevance"
@@ -2004,29 +2027,24 @@ msgid "You can try searching the same terms by:"
 msgstr ""
 
 #: result.lowhits.title
-#, fuzzy
 msgid "title"
-msgstr "כותר"
+msgstr ""
 
 #: result.lowhits.author
-#, fuzzy
 msgid "author"
-msgstr "מחבר"
+msgstr ""
 
 #: result.lowhits.subject
-#, fuzzy
 msgid "subject"
-msgstr "נושא"
+msgstr ""
 
 #: result.lowhits.series
-#, fuzzy
 msgid "series"
-msgstr "סדרה"
+msgstr ""
 
 #: result.lowhits.keyword
-#, fuzzy
 msgid "keyword"
-msgstr "מילת מפתח"
+msgstr ""
 
 #: result.table.keyword
 msgid "View titles for this record"
@@ -2046,9 +2064,8 @@ msgid "Local Call Numbers:"
 msgstr ""
 
 #: common.call.number.label
-#, fuzzy
 msgid "Call Number:"
-msgstr "הסב מספר"
+msgstr ""
 
 #: common.isbn.label
 msgid "ISBN:"
@@ -2058,8 +2075,16 @@ msgstr ""
 msgid "ISSN:"
 msgstr ""
 
+#: common.mono_parts.label
+msgid "Monograph Parts:"
+msgstr ""
+
 #: common.copy.barcode.label
 msgid "Copy Barcode:"
+msgstr ""
+
+#: common.issuance_label.label
+msgid "Issuance Label:"
 msgstr ""
 
 #: common.hold.place
@@ -2088,6 +2113,10 @@ msgstr ""
 
 #: common.hold.copy
 msgid "Copy Hold"
+msgstr ""
+
+#: common.hold.issuance
+msgid "Issuance Hold"
 msgstr ""
 
 #: common.hold.advanced
@@ -2187,38 +2216,32 @@ msgid ""
 msgstr ""
 
 #: common.keywords.label
-#, fuzzy
 msgid "Keywords:"
-msgstr "מילת מפתח"
+msgstr ""
 
 #: common.physical.label
 msgid "Physical Description:"
 msgstr ""
 
 #: common.series.label
-#, fuzzy
 msgid "Series:"
-msgstr "סדרה"
+msgstr ""
 
 #: common.subject.label
-#, fuzzy
 msgid "Subject:"
-msgstr "נושא"
+msgstr ""
 
 #: common.title.label
-#, fuzzy
 msgid "Title:"
-msgstr "כותר"
+msgstr ""
 
 #: common.author.label
-#, fuzzy
 msgid "Author:"
-msgstr "מחבר"
+msgstr ""
 
 #: common.format.label
-#, fuzzy
 msgid "Format:"
-msgstr "מבנה"
+msgstr ""
 
 #: library.select
 msgid "Find results in"
@@ -2248,14 +2271,12 @@ msgid ""
 msgstr ""
 
 #: login.password.current.enter
-#, fuzzy
 msgid "Enter your current password"
-msgstr "הזן את הסיסמה הנוכחית:"
+msgstr ""
 
 #: login.password.new.enter
-#, fuzzy
 msgid "Enter the new password"
-msgstr "הזן סיסמה חדשה:"
+msgstr ""
 
 #: login.password.new.reenter
 msgid "Re-type the new password for verification"
@@ -2285,7 +2306,8 @@ msgid ""
 msgstr ""
 
 #: login.account.inactive
-msgid "This account has been deactivated.  Please contact your local library."
+msgid ""
+"This account has been deactivated.  Please contact your local library."
 msgstr ""
 
 #: login.failed
@@ -2310,9 +2332,8 @@ msgid "Simple Search"
 msgstr ""
 
 #: slimpac.start.nowSearching
-#, fuzzy
 msgid "Now searching: "
-msgstr "כעת מחפשים "
+msgstr ""
 
 #: slimpac.start.dynamic
 msgid "Dynamic Catalog"
@@ -2326,9 +2347,8 @@ msgid "Item Language"
 msgstr ""
 
 #: slimpac.advanced.create_date
-#, fuzzy
 msgid "Record Creation Date"
-msgstr "תאריך יצירת חשבון"
+msgstr ""
 
 #: slimpac.advanced.edit_date
 msgid "Record Edit Date"
@@ -2358,16 +2378,14 @@ msgid "Library barcode or username"
 msgstr ""
 
 #: selfck.staff_pw
-#, fuzzy
 msgctxt "selfck.staff_pw"
 msgid "Password"
-msgstr "סיסמה"
+msgstr ""
 
 #: selfck.submit
-#, fuzzy
 msgctxt "selfck.submit"
 msgid "Submit"
-msgstr "להגיש"
+msgstr ""
 
 #: selfck.clear
 msgid "Clear"
@@ -2387,28 +2405,24 @@ msgid "Barcode"
 msgstr ""
 
 #: selfck.title
-#, fuzzy
 msgctxt "selfck.title"
 msgid "Title"
-msgstr "כותר"
+msgstr ""
 
 #: selfck.author
-#, fuzzy
 msgctxt "selfck.author"
 msgid "Author"
-msgstr "מחבר"
+msgstr ""
 
 #: selfck.due_date
-#, fuzzy
 msgctxt "selfck.due_date"
 msgid "Due Date"
-msgstr "תאריך יעד"
+msgstr ""
 
 #: selfck.remaining
-#, fuzzy
 msgctxt "selfck.remaining"
 msgid "Renewals Remaining"
-msgstr "חידושים נותרים"
+msgstr ""
 
 #: selfck.cotype
 msgid "Type"
@@ -2423,9 +2437,8 @@ msgid "Renewal"
 msgstr ""
 
 #: selfck.done
-#, fuzzy
 msgid "Done"
-msgstr "ללא"
+msgstr ""
 
 #: selfck.welcome
 msgid "Welcome"
@@ -2503,3 +2516,74 @@ msgstr ""
 #: selfck.day6
 msgid "Sunday"
 msgstr ""
+
+#: circ.fail_part.actor.usr.barred
+msgid "The patron is barred"
+msgstr ""
+
+#: circ.fail_part.asset.copy.circulate
+msgid "The item does not circulate"
+msgstr ""
+
+#: circ.fail_part.asset.copy_location.circulate
+msgid "Items from this shelving location do not circulate"
+msgstr ""
+
+#: circ.fail_part.asset.copy.status
+msgid "The item cannot circulate at this time"
+msgstr ""
+
+#: circ.fail_part.circ.holds.target_skip_me
+msgid "The item's circulation library does not fulfill holds"
+msgstr ""
+
+#: circ.fail_part.config.circ_matrix_circ_mod_test
+msgid "The patron has too many items of this type checked out"
+msgstr ""
+
+#: circ.fail_part.config.circ_matrix_test.available_copy_hold_ratio
+msgid "The available item-to-hold ratio is too low"
+msgstr ""
+
+#: circ.fail_part.config.circ_matrix_test.circulate
+msgid "Circulation rules reject this item as non-circulatable"
+msgstr ""
+
+#: circ.fail_part.config.circ_matrix_test.total_copy_hold_ratio
+msgid "The total item-to-hold ratio is too low"
+msgstr ""
+
+#: circ.fail_part.config.hold_matrix_test.holdable
+msgid "Hold rules reject this item as unholdable"
+msgstr ""
+
+#: circ.fail_part.config.hold_matrix_test.max_holds
+msgid "The patron has reached the maximum number of holds"
+msgstr ""
+
+#: circ.fail_part.config.rule_age_hold_protect.prox
+msgid "The item is too new to transit this far"
+msgstr ""
+
+#: circ.fail_part.no_item
+msgid "The system could not find this item"
+msgstr ""
+
+#: circ.fail_part.no_ultimate_items
+msgid "The system could not find any items to match this hold request"
+msgstr ""
+
+#: circ.fail_part.no_matchpoint
+msgid "System rules do not define how to handle this item"
+msgstr ""
+
+#: circ.fail_part.no_user
+msgid "The system could not find this patron"
+msgstr ""
+
+#: circ.fail_part.transit_range
+msgid "The item cannot transit this far"
+msgstr ""
+
+#~ msgid "Summary"
+#~ msgstr "סיכום"

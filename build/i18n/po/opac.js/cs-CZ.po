@@ -1,23 +1,24 @@
-# 
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 23:09:02-0400\n"
-"PO-Revision-Date: 2011-09-10 17:52+0000\n"
+"POT-Creation-Date: 2011-04-18 23:09-0400\n"
+"PO-Revision-Date: 2011-10-03 20:44+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Launchpad (build 13900)\n"
-"X-Launchpad-Export-Date: 2011-09-11 04:47+0000\n"
+"X-Launchpad-Export-Date: 2011-10-04 05:03+0000\n"
+"X-Generator: Launchpad (build 14071)\n"
 
 #: opac.js:PWD_RESET_SUBMIT_PROMPT
-msgid "To begin the password reset process, enter either your barcode or user name in the form below and click 'Submit'"
+msgid ""
+"To begin the password reset process, enter either your barcode or user name "
+"in the form below and click 'Submit'"
 msgstr ""
-"Pro nastavení nového hesla do formuláře níže vložte buď svůj čárový kód, "
-"nebo své uživatelské jméno a pak klikněte na 'Potvrdit'"
+"Pro nastavení nového hesla vložte do formuláře níže svůj čárový kód vašeho "
+"průkazu, nebo své uživatelské jméno a pak klikněte na 'Potvrdit'"
 
 #: opac.js:PWD_RESET_FORM_TITLE
 msgid "Request password reset"
@@ -49,7 +50,7 @@ msgstr "Další informace o přílohách"
 
 #: opac.js:MORE_COPIES_FULL_RECORD
 msgid "... more copies listed in full record"
-msgstr "... více exemplářů vypsáno v plném záznamu"
+msgstr "... více exemplářů vypsáno v detailním záznamu"
 
 #: opac.js:HOLD_STATUS_PLURAL
 msgid "hold # ${0} of ${1} total holds and ${2} potential items"
@@ -64,10 +65,12 @@ msgid "Edit Properties"
 msgstr "Editovat vlastnosti"
 
 #: opac.js:PWD_RESET_SUBMIT_ERROR
-msgid "The system could not process your request for a password reset. Please try again, or contact circulation staff for assistance."
+msgid ""
+"The system could not process your request for a password reset. Please try "
+"again, or contact circulation staff for assistance."
 msgstr ""
 "Systém nemohl zpracovat Vaší žádost o nastavení nového hesla. Zkuste to "
-"prosím znovu nebo poproste o pomoc u výpůjčního pultu."
+"prosím znovu nebo poproste o pomoc knihovníka."
 
 #: opac.js:EDIT_MFHD_RECORD
 msgid "Edit Record"
@@ -99,7 +102,8 @@ msgstr "Smazaný záznam MFHD ${0}"
 
 #: opac.js:HOLD_STATUS_SINGULAR
 msgid "hold # ${0} of ${1} total holds and ${2} potential item"
-msgstr "rezervace č. ${0} z ${1} celkových rezervací a ${2} možných exemplářů"
+msgstr ""
+"rezervace č. ${0} z ${1} celkových rezervací a ${2} možných exemplářů"
 
 #: opac.js:PLACE_HOLD
 msgid "Place hold"
@@ -158,12 +162,14 @@ msgid "Are you sure you want to delete this serial record?"
 msgstr "Opravdu chcete smazat tento záznam seriálu?"
 
 #: opac.js:PWD_RESET_SUBMIT_SUCCESS
-msgid "Your request to begin the password reset process has been processed. If your account has a valid email address, you should soon receive an email containing further instructions for resetting your password."
+msgid ""
+"Your request to begin the password reset process has been processed. If your "
+"account has a valid email address, you should soon receive an email "
+"containing further instructions for resetting your password."
 msgstr ""
-"Váš požadavek na zahájení procesu nastavení nového hesla hesla byl "
-"zpracován. Pokud máte ve svém kontu uvedenu platnou e-mailovou adresu, měli "
-"byste v brzké době obdržet e-mail s dalšími instrukcemi pro nastevení nového "
-"hesla."
+"Váš požadavek na nastavení nového hesla hesla byl přijat. Pokud máte ve svém "
+"čtenářském kontu uvedenu platnou e-mailovou adresu, měli byste v brzké době "
+"obdržet e-mail s dalšími instrukcemi pro nastevení nového hesla."
 
 #: opac.js:CANCEL_BUTTON_LABEL
 msgid "Cancel"

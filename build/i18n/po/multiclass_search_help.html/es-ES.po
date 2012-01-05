@@ -2,116 +2,143 @@
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-09-29 15:50-0400\n"
+"POT-Creation-Date: 2009-11-23 23:36-0400\n"
 "PO-Revision-Date: 2010-01-02 05:06+0000\n"
 "Last-Translator: Federico Vera <Unknown>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Launchpad (build Unknown)\n"
 "X-Launchpad-Export-Date: 2010-01-03 04:46+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 
-#~ msgctxt ""
-#~ "../../Open-ILS/xul/staff_client/server/locale/en-"
-#~ "US/multiclass_search_help.html:1"
-#~ msgid "Multiclass Search Help"
-#~ msgstr "Ayuda de búsqueda multi-clase"
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:1
+msgctxt ""
+"../../Open-ILS/xul/staff_client/server/locale/en-"
+"US/multiclass_search_help.html:1"
+msgid "Multiclass Search Help"
+msgstr "Ayuda de búsqueda multi-clase"
 
-#~ msgctxt ""
-#~ "../../Open-ILS/xul/staff_client/server/locale/en-"
-#~ "US/multiclass_search_help.html:2"
-#~ msgid "Multiclass Search Help"
-#~ msgstr "Ayuda de búsqueda multi-clase"
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:2
+msgctxt ""
+"../../Open-ILS/xul/staff_client/server/locale/en-"
+"US/multiclass_search_help.html:2"
+msgid "Multiclass Search Help"
+msgstr "Ayuda de búsqueda multi-clase"
 
-#~ msgid "Recognized search keys include:"
-#~ msgstr "Las claves de búsqueda reconocidas son:"
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:3
+msgid "Recognized search keys include:"
+msgstr "Las claves de búsqueda reconocidas son:"
 
-#~ msgid "Search key"
-#~ msgstr "Buscar clave"
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:4
+msgid "Search key"
+msgstr "Buscar clave"
 
-#~ msgid "Definition"
-#~ msgstr "Definición"
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:5
+msgid "Definition"
+msgstr "Definición"
 
-#~ msgid ""
-#~ "keyword</strong>, <strong>title</strong>,             "
-#~ "<strong>author</strong>, <strong>subject</strong>, and             "
-#~ "<strong>series</strong> support additional search subclasses,             "
-#~ "specified with a <kbd>|</kbd>. For example:             "
-#~ "<kbd>title|proper:gone with the wind"
-#~ msgstr ""
-#~ "palabra clave</strong>, <strong>título</strong>,             "
-#~ "<strong>autor</strong>, <strong>asunto</strong>, y             "
-#~ "<strong>series</strong> suporte de búsquedas en subclases adicionales,       "
-#~ "      especificado con un <kbd>|</kbd>. Por ejemplo:             "
-#~ "<kbd>título|proper:gone with the wind"
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:6
+msgid ""
+"keyword</strong>, <strong>title</strong>,             "
+"<strong>author</strong>, <strong>subject</strong>, and             "
+"<strong>series</strong> support additional search subclasses,             "
+"specified with a <kbd>|</kbd>. For example:             "
+"<kbd>title|proper:gone with the wind"
+msgstr ""
+"palabra clave</strong>, <strong>título</strong>,             "
+"<strong>autor</strong>, <strong>asunto</strong>, y             "
+"<strong>series</strong> suporte de búsquedas en subclases adicionales,       "
+"      especificado con un <kbd>|</kbd>. Por ejemplo:             "
+"<kbd>título|proper:gone with the wind"
 
-#~ msgid "keyword/kw"
-#~ msgstr "palabra clave/kw"
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:7
+msgid "keyword/kw"
+msgstr "palabra clave/kw"
 
-#~ msgid "search keyword(s)"
-#~ msgstr "buscar palabra(s) clave"
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:8
+msgid "search keyword(s)"
+msgstr "buscar palabra(s) clave"
 
-#~ msgid "author/au/name"
-#~ msgstr "autor/au/nombre"
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:9
+msgid "author/au/name"
+msgstr "autor/au/nombre"
 
-#~ msgid "search author(s)"
-#~ msgstr "buscar autor(es)"
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:10
+msgid "search author(s)"
+msgstr "buscar autor(es)"
 
-#~ msgid "title/ti"
-#~ msgstr "título/ti"
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:11
+msgid "title/ti"
+msgstr "título/ti"
 
-#~ msgid "search title"
-#~ msgstr "buscar título"
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:12
+msgid "search title"
+msgstr "buscar título"
 
-#~ msgid "subject/su"
-#~ msgstr "asunto/as"
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:13
+msgid "subject/su"
+msgstr "asunto/as"
 
-#~ msgid "search subject"
-#~ msgstr "buscar asunto"
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:14
+msgid "search subject"
+msgstr "buscar asunto"
 
-#~ msgid "series/se"
-#~ msgstr "series/se"
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:15
+msgid "series/se"
+msgstr "series/se"
 
-#~ msgid "search series"
-#~ msgstr "buscar series"
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:16
+msgid "search series"
+msgstr "buscar series"
 
-#~ msgid "lang"
-#~ msgstr "idioma"
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:17
+msgid "lang"
+msgstr "idioma"
 
-#~ msgid "limit by language (specifiy multiple langs with lang:l1 lang:l2 ...)"
-#~ msgstr ""
-#~ "limitar por idioma (especifique múltiples idiomas con idioma:l1 idioma:l2 "
-#~ "...)"
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:18
+msgid "limit by language (specifiy multiple langs with lang:l1 lang:l2 ...)"
+msgstr ""
+"limitar por idioma (especifique múltiples idiomas con idioma:l1 idioma:l2 "
+"...)"
 
-#~ msgid "site"
-#~ msgstr "sitio"
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:19
+msgid "site"
+msgstr "sitio"
 
-#~ msgid "search at specified org unit, corresponds to actor.org_unit.shortname"
-#~ msgstr ""
-#~ "busca en una unidad org especificada, corresponde a actor.org_unit.shortname"
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:20
+msgid "search at specified org unit, corresponds to actor.org_unit.shortname"
+msgstr ""
+"busca en una unidad org especificada, corresponde a actor.org_unit.shortname"
 
-#~ msgid "sort"
-#~ msgstr "ordenar"
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:21
+msgid "sort"
+msgstr "ordenar"
 
-#~ msgid "sort type (title, author, pubdate)"
-#~ msgstr "ordenar tipo (título, autor, fecha de publicación)"
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:22
+msgid "sort type (title, author, pubdate)"
+msgstr "ordenar tipo (título, autor, fecha de publicación)"
 
-#~ msgid "dir"
-#~ msgstr "dir"
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:23
+msgid "dir"
+msgstr "dir"
 
-#~ msgid "sort direction (asc, desc)"
-#~ msgstr "ordenar dirección (asc, desc)"
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:24
+msgid "sort direction (asc, desc)"
+msgstr "ordenar dirección (asc, desc)"
 
-#~ msgid "available"
-#~ msgstr "disponible"
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:25
+msgid "available"
+msgstr "disponible"
 
-#~ msgid ""
-#~ "if set to anything other than \"false\" or \"0\", limits to available items"
-#~ msgstr ""
-#~ "sí es asignado en cualquier cosa que no sea \"falso\" ó \"0\", limita los "
-#~ "elementos disponibles"
+#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:26
+msgid ""
+"if set to anything other than \"false\" or \"0\", limits to available items"
+msgstr ""
+"sí es asignado en cualquier cosa que no sea \"falso\" ó \"0\", limita los "
+"elementos disponibles"

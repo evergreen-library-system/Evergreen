@@ -1,5 +1,4 @@
 # extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/circ.properties
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/circ.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > circ.properties.po\n"
@@ -11,10 +10,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.8.1\n"
-"X-Accelerator-Marker: &\n"
 "X-Launchpad-Export-Date: 2011-07-27 04:35+0000\n"
+"X-Generator: Launchpad (build 13405)\n"
 "X-Poedit-Country: CANADA\n"
+"X-Accelerator-Marker: &\n"
 "X-Poedit-Language: English\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
@@ -440,8 +439,10 @@ msgstr "%3$s Is Percent? %4$s"
 
 #. # From asset::copy_location: 1 - Can Circulate?  2 - Is Holdable?  3 - Hold Capture Requires Verification?  4 - Is OPAC Visible?
 #: staff.circ.copy_details.location_tooltip
-msgid "Circulate? %1$s  Holdable? %2$s  Hold Verify? %3$s  OPAC Visible? %4$s"
-msgstr "Circulate? %1$s  Holdable? %2$s  Hold Verify? %3$s  OPAC Visible? %4$s"
+msgid ""
+"Circulate? %1$s  Holdable? %2$s  Hold Verify? %3$s  OPAC Visible? %4$s"
+msgstr ""
+"Circulate? %1$s  Holdable? %2$s  Hold Verify? %3$s  OPAC Visible? %4$s"
 
 #. # From config::copy_status: 1 - OPAC Visible?  2 - Is Holdable?
 #: staff.circ.copy_details.copy_status_tooltip
@@ -1396,8 +1397,10 @@ msgid "Override Checkin Failure?"
 msgstr "Override Checkin Failure?"
 
 #: staff.circ.utils.checkin.override.item_deposit_paid.warning
-msgid "A paid deposit will be owed to this patron if this action is overrided."
-msgstr "A paid deposit will be owed to this patron if this action is overrided."
+msgid ""
+"A paid deposit will be owed to this patron if this action is overrided."
+msgstr ""
+"A paid deposit will be owed to this patron if this action is overrided."
 
 #: staff.circ.utils.billable.amount
 msgid "Transaction for %1$s billable $%2$s"
@@ -1679,27 +1682,31 @@ msgstr "%1$s renewed %4$s for %3$s (%2$s)"
 
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
 #: staff.circ.work_log_checkin_attempt.transit.message
-msgid "%1$s attempted checkin of %4$s, resulting in transit.  Route To = %5$s"
-msgstr "%1$s attempted checkin of %4$s, resulting in transit.  Route To = %5$s"
+msgid ""
+"%1$s attempted checkin of %4$s, resulting in transit.  Route To = %5$s"
+msgstr ""
+"%1$s attempted checkin of %4$s, resulting in transit.  Route To = %5$s"
 
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
 #: staff.circ.work_log_checkin_attempt.transit_for_hold.message
 msgid ""
-"%1$s attempted checkin of %4$s, resulting in a hold-transit.  Route To = %"
-"5$s"
+"%1$s attempted checkin of %4$s, resulting in a hold-transit.  Route To = %5$s"
 msgstr ""
-"%1$s attempted checkin of %4$s, resulting in a hold-transit.  Route To = %"
-"5$s"
+"%1$s attempted checkin of %4$s, resulting in a hold-transit.  Route To = %5$s"
 
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
 #: staff.circ.work_log_checkin_attempt.no_change.message
-msgid "%1$s attempted checkin of %4$s, but nothing happened.  Route To = %5$s"
-msgstr "%1$s attempted checkin of %4$s, but nothing happened.  Route To = %5$s"
+msgid ""
+"%1$s attempted checkin of %4$s, but nothing happened.  Route To = %5$s"
+msgstr ""
+"%1$s attempted checkin of %4$s, but nothing happened.  Route To = %5$s"
 
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
 #: staff.circ.work_log_checkin_attempt.error.message
-msgid "%1$s attempted checkin of %4$s, and an error occurred.  Route To = %5$s"
-msgstr "%1$s attempted checkin of %4$s, and an error occurred.  Route To = %5$s"
+msgid ""
+"%1$s attempted checkin of %4$s, and an error occurred.  Route To = %5$s"
+msgstr ""
+"%1$s attempted checkin of %4$s, and an error occurred.  Route To = %5$s"
 
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
 #: staff.circ.work_log_checkin_attempt.success.message
@@ -1831,11 +1838,11 @@ msgstr ""
 
 #: staff.circ.holds.activation_date.prompt.plural
 msgid ""
-"Please enter an Activation Date (or choose Remove to unset) for holds %1$s. "
-" This will also Suspend the holds."
+"Please enter an Activation Date (or choose Remove to unset) for holds %1$s.  "
+"This will also Suspend the holds."
 msgstr ""
-"Please enter an Activation Date (or choose Remove to unset) for holds %1$s. "
-" This will also Suspend the holds."
+"Please enter an Activation Date (or choose Remove to unset) for holds %1$s.  "
+"This will also Suspend the holds."
 
 #: staff.circ.holds.activation_date.dialog.description
 msgctxt "staff.circ.holds.activation_date.dialog.description"

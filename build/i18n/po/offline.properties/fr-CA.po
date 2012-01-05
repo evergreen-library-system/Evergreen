@@ -1,5 +1,4 @@
 # extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
-#. extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > offline.properties.po\n"
@@ -11,10 +10,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.8.1\n"
-"X-Accelerator-Marker: &\n"
 "X-Launchpad-Export-Date: 2011-07-06 04:41+0000\n"
+"X-Generator: Launchpad (build 13168)\n"
 "X-Poedit-Country: Canada\n"
+"X-Accelerator-Marker: &\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
@@ -35,23 +34,20 @@ msgid "The JSAN library object is missing."
 msgstr "L’objet JSAN est absent de la bibliothèque"
 
 #: common.ok
-#, fuzzy
 msgctxt "common.ok"
 msgid "Ok"
-msgstr "Ok"
+msgstr ""
 
 #: common.ok.label
-#, fuzzy
 msgctxt "common.ok.label"
 msgid "Ok"
-msgstr "Ok"
+msgstr ""
 
 #: common.ok.accesskey
 msgid "O"
 msgstr ""
 
 #: common.cancel.label
-#, fuzzy
 msgctxt "common.cancel.label"
 msgid "Cancel"
 msgstr "Annuler"
@@ -78,11 +74,8 @@ msgid "Copy Message"
 msgstr "Copier le message"
 
 #: common.barcode.status.warning
-#, fuzzy
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3$s."
 msgstr ""
-"Avertissement : Pour ce qui est de %1$s, ce code à barres (%2$s) a été "
-"étiquetté %3."
 
 #: common.barcode.status.warning.lost
 msgid "Lost"
@@ -135,8 +128,7 @@ msgstr "Comptes de bibliothèque : %1$s"
 #: cat.opac.delete_record.confirm
 msgid "Are you sure you want to delete title record #%1$s from the catalog?"
 msgstr ""
-"Êtes vous certain de vouloir supprimer le compte intitulé #%1$s du "
-"catalogue?"
+"Êtes vous certain de vouloir supprimer le compte intitulé #%1$s du catalogue?"
 
 #: cat.opac.delete_record
 msgid "Delete Record"
@@ -147,10 +139,10 @@ msgid "Delete"
 msgstr "Supprimer"
 
 #: cat.opac.undelete_record.confirm
-msgid "Are you sure you want to undelete title record #%1$s from the catalog?"
+msgid ""
+"Are you sure you want to undelete title record #%1$s from the catalog?"
 msgstr ""
-"Êtes vous certain de vouloir récupérer le compte intitulé #%1$s du "
-"catalogue?"
+"Êtes vous certain de vouloir récupérer le compte intitulé #%1$s du catalogue?"
 
 #: cat.opac.undelete_record
 msgid "Undelete Record"
@@ -161,7 +153,6 @@ msgid "Undelete"
 msgstr "Récupérer"
 
 #: cat.opac.cancel
-#, fuzzy
 msgctxt "cat.opac.cancel"
 msgid "Cancel"
 msgstr "Annuler"
@@ -197,16 +188,14 @@ msgid "Error undeleting record #%1$s : %2$s : %3$s"
 msgstr "Erreur à la récupération des enregistrements #%1$s : %2$s : %3$s"
 
 #: cat.opac.record_marked_for_overlay.record_id.alert
-#, fuzzy
 msgctxt "cat.opac.record_marked_for_overlay.record_id.alert"
 msgid "Record with ID %1$s marked for overlay."
-msgstr "Compte avec ID %1$s désigné pour recouvrement."
+msgstr ""
 
 #: cat.opac.record_marked_for_overlay.tcn.alert
-#, fuzzy
 msgctxt "cat.opac.record_marked_for_overlay.tcn.alert"
 msgid "Record with TCN %1$s marked for overlay."
-msgstr "Compte avec ID %1$s désigné pour recouvrement."
+msgstr ""
 
 #: cat.opac.record_marked_for_multi_home.record_id.alert
 msgctxt "cat.opac.record_marked_for_multi_home.record_id.alert"
@@ -311,8 +300,8 @@ msgstr ""
 
 #: circ.offline_checkout.barcode.flagged.unknown
 msgid ""
-"Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: %"
-"3$s."
+"Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: "
+"%3$s."
 msgstr ""
 "Avertissement : Pour ce qui est de %1$s, ce code à barres (%2$s) a été "
 "étiquetté d’un code inconnu : %3$s."
@@ -465,7 +454,8 @@ msgstr "Remplacer le code à barres"
 
 #: menu.cmd_replace_barcode.retrieval.error
 msgid "We were unable to retrieve an item with barcode \"%1$s\"."
-msgstr "Impossible de récupérer un article dont le code à barres est \"%1$s\"."
+msgstr ""
+"Impossible de récupérer un article dont le code à barres est \"%1$s\"."
 
 #: menu.cmd_replace_barcode.replacement.prompt
 msgid "Enter the replacement barcode for the item:"
@@ -478,7 +468,8 @@ msgstr "Remplacer le code à barres"
 
 #: menu.cmd_replace_barcode.blank.error
 msgid "Rename aborted.  Blank for barcode not allowed."
-msgstr "Impossible de renommer. Espace vide non autorisé pour le code à barres."
+msgstr ""
+"Impossible de renommer. Espace vide non autorisé pour le code à barres."
 
 #: menu.cmd_replace_barcode.duplicate.error
 msgid "Rename aborted.  Another copy has barcode \"%1$s\"."
@@ -882,10 +873,9 @@ msgid ""
 msgstr ""
 
 #: network.permission.authorize
-#, fuzzy
 msgctxt "network.permission.authorize"
 msgid "Authorize"
-msgstr "Autoriser"
+msgstr ""
 
 #: network.permission.description.brief
 msgid "Permission Denied: %1$s"
@@ -971,8 +961,8 @@ msgstr ""
 #: openils.global_util.font_size.error
 msgid "Error adjusting the font size: %1$s"
 msgstr ""
-"Une erreur s’est produite lors de l’ajustement de la taille de la police : %"
-"1$s"
+"Une erreur s’est produite lors de l’ajustement de la taille de la police : "
+"%1$s"
 
 #: list.row_fetch_warning
 msgid ""
@@ -1062,7 +1052,8 @@ msgid "=-=-="
 msgstr ""
 
 #: menu.cmd_survey_wizard.inadequate_perm
-msgid "You are lacking the CREATE_SURVEY permission and/or working locations."
+msgid ""
+"You are lacking the CREATE_SURVEY permission and/or working locations."
 msgstr ""
 
 #: menu.cmd_local_admin_fonts_and_sounds.tab
@@ -1082,23 +1073,20 @@ msgid "Closed Dates Editor"
 msgstr ""
 
 #: menu.cmd_local_admin_copy_locations.tab
-#, fuzzy
 msgid "Copy Locations Editor"
-msgstr "Éditeur d’emplacement des copies"
+msgstr ""
 
 #: menu.cmd_local_admin_lib_settings.tab
 msgid "Library Settings Editor"
 msgstr ""
 
 #: menu.cmd_local_admin_non_cat_types.tab
-#, fuzzy
 msgid "Non-cataloged Types Editor"
-msgstr "Éditeur des types non catalogués"
+msgstr ""
 
 #: menu.cmd_local_admin_stat_cats.tab
-#, fuzzy
 msgid "Statistical Categories Editor"
-msgstr "Éditeur des catégories statistiques"
+msgstr ""
 
 #: menu.cmd_local_admin_reports.tab
 msgid "Reports"
@@ -1239,21 +1227,20 @@ msgid "Record with TCN %1$s targeted for Multi-Bib items."
 msgstr ""
 
 #: staff.cat.copy_browser.marked_record_for_multi_home_indicator.record_id.label
-msgctxt "staff.cat.copy_browser.marked_record_for_multi_home_indicator.record_id.label"
+msgctxt ""
+"staff.cat.copy_browser.marked_record_for_multi_home_indicator.record_id.label"
 msgid "Record with ID %1$s targeted for Multi-Bib items."
 msgstr ""
 
 #: staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label
-#, fuzzy
 msgctxt "staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label"
 msgid "Record with TCN %1$s marked for overlay."
-msgstr "Compte avec ID %1$s désigné pour recouvrement."
+msgstr ""
 
 #: staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label
-#, fuzzy
 msgctxt "staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label"
 msgid "Record with ID %1$s marked for overlay."
-msgstr "Compte avec ID %1$s désigné pour recouvrement."
+msgstr ""
 
 #: staff.cat.opac.marked_record_for_hold_transfer_indicator.tcn.label
 msgid "Record with TCN %1$s marked for title hold transfer."
@@ -1293,8 +1280,8 @@ msgstr ""
 
 #: printing.prompt_for_external_print_cmd
 msgid ""
-"Enter external print command and parameters (use %receipt.txt% or %"
-"receipt.html% as the file containing the print data. Those values will be "
+"Enter external print command and parameters (use %receipt.txt% or "
+"%receipt.html% as the file containing the print data. Those values will be "
 "substituted with the proper path.):"
 msgstr ""
 
@@ -1350,18 +1337,12 @@ msgid "0"
 msgstr ""
 
 #: browser.reload.unsaved_data_warning
-#, fuzzy
 msgid "This page may have unsaved data. Reload it anyway?"
 msgstr ""
-"Cet onglet peut contenir des données non enregistées. Voulez-vous vraiment "
-"le remplacer ?"
 
 #: menu.close_tab.unsaved_data_warning
-#, fuzzy
 msgid "This tab may have unsaved data. Close it anyway?"
 msgstr ""
-"Cet onglet peut contenir des données non enregistées. Voulez-vous vraiment "
-"le remplacer ?"
 
 #: menu.replace_tab.unsaved_data_warning
 msgid "This tab may have unsaved data. Replace it anyway?"
@@ -1370,11 +1351,8 @@ msgstr ""
 "le remplacer ?"
 
 #: menu.close_window.unsaved_data_warning
-#, fuzzy
 msgid "This window may have unsaved data. Close it anyway?"
 msgstr ""
-"Cet onglet peut contenir des données non enregistées. Voulez-vous vraiment "
-"le remplacer ?"
 
 #: menu.logoff.unsaved_data_warning
 msgid "This session may have unsaved data. Logoff anyway?"
@@ -1385,6 +1363,23 @@ msgstr ""
 #: menu.shutdown.unsaved_data_warning
 msgid "This application may have unsaved data. Exit it anyway?"
 msgstr ""
+
+#~ msgid "Ok"
+#~ msgstr "Ok"
+
+#~ msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3."
+#~ msgstr ""
+#~ "Avertissement : Pour ce qui est de %1$s, ce code à barres (%2$s) a été "
+#~ "étiquetté %3."
+
+#~ msgid "Cancel"
+#~ msgstr "Annuler"
+
+#~ msgid "Record with ID %1$s marked for overlay."
+#~ msgstr "Compte avec ID %1$s désigné pour recouvrement."
+
+#~ msgid "Record with TCN %1$s marked for overlay."
+#~ msgstr "Compte avec ID %1$s désigné pour recouvrement."
 
 #~ msgid "Record successfully saved."
 #~ msgstr "Compte enregistré."

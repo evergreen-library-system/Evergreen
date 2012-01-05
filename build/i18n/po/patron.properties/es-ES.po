@@ -2,11 +2,11 @@
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/patron.properties
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:45-0400\n"
 "PO-Revision-Date: 2010-01-04 20:14+0000\n"
 "Last-Translator: Fido <Unknown>\n"
@@ -14,9 +14,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.8.1\n"
-"X-Accelerator-Marker: &\n"
 "X-Launchpad-Export-Date: 2011-05-18 04:47+0000\n"
+"X-Generator: Launchpad (build 12959)\n"
 
 #: staff.patron.barcode_entry.user_permission_editor
 msgid "User Permission Editor"
@@ -102,12 +101,14 @@ msgid "Note for selected bills not likely updated."
 msgstr ""
 
 #: staff.patron.bill_details.handle_edit_payment_note.note_dialog.title
-msgctxt "staff.patron.bill_details.handle_edit_payment_note.note_dialog.title"
+msgctxt ""
+"staff.patron.bill_details.handle_edit_payment_note.note_dialog.title"
 msgid "Replacement Note"
 msgstr ""
 
 #: staff.patron.bill_details.handle_edit_payment_note.note_dialog.prompt
-msgctxt "staff.patron.bill_details.handle_edit_payment_note.note_dialog.prompt"
+msgctxt ""
+"staff.patron.bill_details.handle_edit_payment_note.note_dialog.prompt"
 msgid "Enter new note:"
 msgstr "Ingrese una nueva nota:"
 
@@ -121,7 +122,8 @@ msgstr ""
 
 #: staff.patron.bill_details.handle_void.confirm_void_billing
 msgctxt "staff.patron.bill_details.handle_void.confirm_void_billing"
-msgid "Are you sure you would like to void $%1$s worth of line-item billings?"
+msgid ""
+"Are you sure you would like to void $%1$s worth of line-item billings?"
 msgstr ""
 
 #: staff.patron.bill_details.handle_void.confirm_void_billing_title
@@ -140,7 +142,8 @@ msgid "No"
 msgstr "No"
 
 #: staff.patron.bill_details.handle_void.confirm_void_billing_confirm_message
-msgctxt "staff.patron.bill_details.handle_void.confirm_void_billing_confirm_message"
+msgctxt ""
+"staff.patron.bill_details.handle_void.confirm_void_billing_confirm_message"
 msgid "Check here to confirm this message"
 msgstr "Marque aquí para confirmar este mensaje"
 
@@ -202,22 +205,19 @@ msgid "Void All Billings"
 msgstr ""
 
 #: staff.patron.bill_history.handle_void.btn_yes
-#, fuzzy
 msgctxt "staff.patron.bill_history.handle_void.btn_yes"
 msgid "Yes"
-msgstr "Si"
+msgstr ""
 
 #: staff.patron.bill_history.handle_void.btn_no
-#, fuzzy
 msgctxt "staff.patron.bill_history.handle_void.btn_no"
 msgid "No"
-msgstr "No"
+msgstr ""
 
 #: staff.patron.bill_history.handle_void.confirm_message
-#, fuzzy
 msgctxt "staff.patron.bill_history.handle_void.confirm_message"
 msgid "Check here to confirm this message"
-msgstr "Marque aquí para confirmar este mensaje"
+msgstr ""
 
 #: staff.patron.bills.handle_refund.message_plural
 msgid ""
@@ -242,22 +242,19 @@ msgid "Refund Excess Payment"
 msgstr ""
 
 #: staff.patron.bills.handle_refund.btn_yes
-#, fuzzy
 msgctxt "staff.patron.bills.handle_refund.btn_yes"
 msgid "Yes"
-msgstr "Si"
+msgstr ""
 
 #: staff.patron.bills.handle_refund.btn_no
-#, fuzzy
 msgctxt "staff.patron.bills.handle_refund.btn_no"
 msgid "No"
-msgstr "No"
+msgstr ""
 
 #: staff.patron.bills.handle_refund.confirm_message
-#, fuzzy
 msgctxt "staff.patron.bills.handle_refund.confirm_message"
 msgid "Check here to confirm this message"
-msgstr "Marque aquí para confirmar este mensaje"
+msgstr ""
 
 #: staff.patron.bill_history.print_bills.print_error
 msgid "printing bills"
@@ -272,10 +269,9 @@ msgid "Last Billing Type"
 msgstr ""
 
 #: staff.patron.bill_history.column.title.label
-#, fuzzy
 msgctxt "staff.patron.bill_history.column.title.label"
 msgid "Title"
-msgstr "Título"
+msgstr ""
 
 #: staff.patron.bills.init_controller.money_summary_label
 msgid "Money Summary"
@@ -366,7 +362,8 @@ msgstr ""
 
 #: staff.patron.bills.void_all_billings.void.message
 msgctxt "staff.patron.bills.void_all_billings.void.message"
-msgid "Are you sure you would like to void $%1$s worth of line-item billings?"
+msgid ""
+"Are you sure you would like to void $%1$s worth of line-item billings?"
 msgstr ""
 
 #: staff.patron.bills.void_all_billings.void.title
@@ -443,11 +440,6 @@ msgid ""
 "miscellaneous staff artifacts (reports, etc.):"
 msgstr ""
 
-#: staff.patron.display.cmd_patron_delete.dest_user.default_value
-msgctxt "staff.patron.display.cmd_patron_delete.dest_user.default_value"
-msgid ""
-msgstr ""
-
 #: staff.patron.display.cmd_patron_delete.dest_user.title
 msgid "Destination User"
 msgstr ""
@@ -505,8 +497,7 @@ msgstr "Alerta"
 
 #: staff.patron.display.init.network_request.window_message
 msgid ""
-"Press a navigation button above (for example, Check Out) to clear this "
-"alert."
+"Press a navigation button above (for example, Check Out) to clear this alert."
 msgstr ""
 
 #: staff.patron.display.init.network_request.dump_error_message
@@ -693,14 +684,14 @@ msgstr ""
 
 #: staff.patron.holds.holds_edit_selection_depth.modify_holds_message.singular
 msgid ""
-"Are you sure you would like to change the Hold Range for hold %1$s to \"%"
-"2$s\"?;"
+"Are you sure you would like to change the Hold Range for hold %1$s to "
+"\"%2$s\"?;"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_selection_depth.modify_holds_message.plural
 msgid ""
-"Are you sure you would like to change the Hold Range for holds %1$s to \"%"
-"2$s\"?;"
+"Are you sure you would like to change the Hold Range for holds %1$s to "
+"\"%2$s\"?;"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_selection_depth.modify_holds_title
@@ -743,8 +734,8 @@ msgstr ""
 
 #: staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_message.singular
 msgid ""
-"Are you sure you would like to change the Pick Up Library for hold %1$s to %"
-"2$s?"
+"Are you sure you would like to change the Pick Up Library for hold %1$s to "
+"%2$s?"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_message.plural
@@ -843,7 +834,8 @@ msgid "Set Email Notification for Holds"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_email_notify.enable_email.singular
-msgid "Are you sure you would like to enable email notification for hold %1$s?"
+msgid ""
+"Are you sure you would like to enable email notification for hold %1$s?"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_email_notify.enable_email.plural
@@ -941,7 +933,8 @@ msgid "Any Condition"
 msgstr "Cualquier condición"
 
 #: staff.patron.holds.holds_desire_mint_condition.btn_mediocre.accesskey
-msgctxt "staff.patron.holds.holds_desire_mint_condition.btn_mediocre.accesskey"
+msgctxt ""
+"staff.patron.holds.holds_desire_mint_condition.btn_mediocre.accesskey"
 msgid "A"
 msgstr ""
 
@@ -961,14 +954,14 @@ msgstr ""
 
 #: staff.patron.holds.holds_desire_mint_condition.enable_good.singular
 msgid ""
-"Are you sure you would like to restrict to Good Condition copies for hold %"
-"1$s?"
+"Are you sure you would like to restrict to Good Condition copies for hold "
+"%1$s?"
 msgstr ""
 
 #: staff.patron.holds.holds_desire_mint_condition.enable_good.plural
 msgid ""
-"Are you sure you would like to restrict to Good Condition copies for holds %"
-"1$s?"
+"Are you sure you would like to restrict to Good Condition copies for holds "
+"%1$s?"
 msgstr ""
 
 #: staff.patron.holds.holds_desire_mint_condition.disable_good.singular
@@ -1136,10 +1129,9 @@ msgid "M"
 msgstr ""
 
 #: staff.patron.info_group.link_patron.done.label
-#, fuzzy
 msgctxt "staff.patron.info_group.link_patron.done.label"
 msgid "Done"
-msgstr "Hecho"
+msgstr ""
 
 #: staff.patron.info_group.link_patron.done.accesskey
 msgctxt "staff.patron.info_group.link_patron.done.accesskey"
@@ -1248,36 +1240,32 @@ msgid "Print"
 msgstr ""
 
 #: staff.patron.info_notes.new_note.label
-#, fuzzy
 msgctxt "staff.patron.info_notes.new_note.label"
 msgid "New Note"
-msgstr "Nueva nota"
+msgstr ""
 
 #: staff.patron.info_notes.new_note.patron_visible.value
 msgid "Patron Visible?"
 msgstr ""
 
 #: staff.patron.info_notes.new_note.title.value
-#, fuzzy
 msgctxt "staff.patron.info_notes.new_note.title.value"
 msgid "Title"
-msgstr "Título"
+msgstr ""
 
 #: staff.patron.info_notes.new_note.note.value
-#, fuzzy
 msgctxt "staff.patron.info_notes.new_note.note.value"
 msgid "Note"
-msgstr "Nota"
+msgstr ""
 
 #: staff.patron.info_notes.new_note.initials.value
 msgid "Initials"
 msgstr ""
 
 #: staff.patron.info_notes.new_note.cancel.label
-#, fuzzy
 msgctxt "staff.patron.info_notes.new_note.cancel.label"
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr ""
 
 #: staff.patron.info_notes.new_note.cancel.accesskey
 msgctxt "staff.patron.info_notes.new_note.cancel.accesskey"
@@ -1285,10 +1273,9 @@ msgid "C"
 msgstr ""
 
 #: staff.patron.info_notes.new_note.add.label
-#, fuzzy
 msgctxt "staff.patron.info_notes.new_note.add.label"
 msgid "Add Note"
-msgstr "Añadir nota"
+msgstr ""
 
 #: staff.patron.info_notes.new_note.add.accesskey
 msgctxt "staff.patron.info_notes.new_note.add.accesskey"
@@ -1296,10 +1283,9 @@ msgid "A"
 msgstr ""
 
 #: staff.patron.info_notes.new_note.add_note_title
-#, fuzzy
 msgctxt "staff.patron.info_notes.new_note.add_note_title"
 msgid "Add Note"
-msgstr "Añadir nota"
+msgstr ""
 
 #: staff.patron.info_notes.new_note.note_not_created
 msgctxt "staff.patron.info_notes.new_note.note_not_created"
@@ -1486,7 +1472,8 @@ msgid "Retrieving title..."
 msgstr ""
 
 #: staff.patron.items.retrieve_row.callback_error
-msgid "Error in callback for FM_CIRC_DETAILS.authoritative in patron/items.js"
+msgid ""
+"Error in callback for FM_CIRC_DETAILS.authoritative in patron/items.js"
 msgstr ""
 
 #: staff.patron.items.retrieve_row.error_in_retrieve_row
@@ -1691,10 +1678,9 @@ msgid "Merge"
 msgstr ""
 
 #: staff.patron.usr_buckets.merge_records.cancel_button.label
-#, fuzzy
 msgctxt "staff.patron.usr_buckets.merge_records.cancel_button.label"
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr ""
 
 #: staff.patron.usr_buckets.merge_records.cancel_button.accesskey
 msgctxt "staff.patron.usr_buckets.merge_records.cancel_button.accesskey"

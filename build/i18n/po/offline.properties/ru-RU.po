@@ -1,4 +1,3 @@
-#. extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -10,9 +9,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.8.1\n"
-"X-Accelerator-Marker: &\n"
 "X-Launchpad-Export-Date: 2011-05-18 04:46+0000\n"
+"X-Generator: Launchpad (build 12959)\n"
+"X-Accelerator-Marker: &\n"
 
 #: common.exception
 msgid ""
@@ -32,26 +31,23 @@ msgid "The JSAN library object is missing."
 msgstr "библиотечный объект JSAN отсутствует"
 
 #: common.ok
-#, fuzzy
 msgctxt "common.ok"
 msgid "Ok"
-msgstr "Ok"
+msgstr ""
 
 #: common.ok.label
-#, fuzzy
 msgctxt "common.ok.label"
 msgid "Ok"
-msgstr "Ok"
+msgstr ""
 
 #: common.ok.accesskey
 msgid "O"
 msgstr ""
 
 #: common.cancel.label
-#, fuzzy
 msgctxt "common.cancel.label"
 msgid "Cancel"
-msgstr "Отменить"
+msgstr ""
 
 #: common.cancel.accesskey
 msgctxt "common.cancel.accesskey"
@@ -75,10 +71,8 @@ msgid "Copy Message"
 msgstr "Скопировать сообщение"
 
 #: common.barcode.status.warning
-#, fuzzy
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3$s."
 msgstr ""
-"Предупреждение: что касается %1$s, этот штрих-код (%2$s) был отмечен %3."
 
 #: common.barcode.status.warning.lost
 msgid "Lost"
@@ -141,8 +135,10 @@ msgid "Delete"
 msgstr "Удалить"
 
 #: cat.opac.undelete_record.confirm
-msgid "Are you sure you want to undelete title record #%1$s from the catalog?"
-msgstr "Вы уверены, что хотите восстановить заглавный запись #%1$s из каталога?"
+msgid ""
+"Are you sure you want to undelete title record #%1$s from the catalog?"
+msgstr ""
+"Вы уверены, что хотите восстановить заглавный запись #%1$s из каталога?"
 
 #: cat.opac.undelete_record
 msgid "Undelete Record"
@@ -153,10 +149,9 @@ msgid "Undelete"
 msgstr "Восстановить"
 
 #: cat.opac.cancel
-#, fuzzy
 msgctxt "cat.opac.cancel"
 msgid "Cancel"
-msgstr "Отменить"
+msgstr ""
 
 #: cat.opac.record_deleted
 msgid "Record deleted."
@@ -187,16 +182,14 @@ msgid "Error undeleting record #%1$s : %2$s : %3$s"
 msgstr "Ошибка восстановления записи #%1$s : %2$s : %3$s"
 
 #: cat.opac.record_marked_for_overlay.record_id.alert
-#, fuzzy
 msgctxt "cat.opac.record_marked_for_overlay.record_id.alert"
 msgid "Record with ID %1$s marked for overlay."
-msgstr "Запись с ID %1$s помечена для наложения."
+msgstr ""
 
 #: cat.opac.record_marked_for_overlay.tcn.alert
-#, fuzzy
 msgctxt "cat.opac.record_marked_for_overlay.tcn.alert"
 msgid "Record with TCN %1$s marked for overlay."
-msgstr "Запись с TCN %1$s помечена для наложения."
+msgstr ""
 
 #: cat.opac.record_marked_for_multi_home.record_id.alert
 msgctxt "cat.opac.record_marked_for_multi_home.record_id.alert"
@@ -301,8 +294,8 @@ msgstr ""
 
 #: circ.offline_checkout.barcode.flagged.unknown
 msgid ""
-"Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: %"
-"3$s."
+"Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: "
+"%3$s."
 msgstr ""
 "Предупреждение: По состоянию на %1$s,, этот штрих-код (%2$s) был отмечен с "
 "неизвестным кодом: %3$s."
@@ -818,9 +811,8 @@ msgid "Exceptions"
 msgstr "Исключения"
 
 #: network.override.override
-#, fuzzy
 msgid "Override "
-msgstr "Аннулировать"
+msgstr ""
 
 #: network.override.force.prompt
 msgid "Force this action?"
@@ -930,7 +922,8 @@ msgstr "Неизвестный статус"
 
 #: network.window_title.error
 msgid "Error setting window titles to match new login"
-msgstr "Ошибка при настройке оконных заглавий для соответствия с новым логином"
+msgstr ""
+"Ошибка при настройке оконных заглавий для соответствия с новым логином"
 
 #: openils.global_util.clear_cache.error
 msgid "Problem clearing the cache: %1$s"
@@ -964,8 +957,8 @@ msgid ""
 "like to proceed?"
 msgstr ""
 "ВНИМАНИЕ: Только %1$s из %2$s строк(ки) в этом списке были востановленны для "
-"немедленного просмотра. Сортировка этого листа требует, чтобы все эти "
-"строки были восстановлены и это может занять некоторое время и будут лаги. "
+"немедленного просмотра. Сортировка этого листа требует, чтобы все эти строки "
+"были восстановлены и это может занять некоторое время и будут лаги. "
 "Продолжить?"
 
 #: list.columns_saved
@@ -1048,7 +1041,8 @@ msgid "=-=-="
 msgstr "=-=-="
 
 #: menu.cmd_survey_wizard.inadequate_perm
-msgid "You are lacking the CREATE_SURVEY permission and/or working locations."
+msgid ""
+"You are lacking the CREATE_SURVEY permission and/or working locations."
 msgstr "Вы не имеете CREATE_SURVEY полномочия и/или рабочее место"
 
 #: menu.cmd_local_admin_fonts_and_sounds.tab
@@ -1224,21 +1218,20 @@ msgid "Record with TCN %1$s targeted for Multi-Bib items."
 msgstr ""
 
 #: staff.cat.copy_browser.marked_record_for_multi_home_indicator.record_id.label
-msgctxt "staff.cat.copy_browser.marked_record_for_multi_home_indicator.record_id.label"
+msgctxt ""
+"staff.cat.copy_browser.marked_record_for_multi_home_indicator.record_id.label"
 msgid "Record with ID %1$s targeted for Multi-Bib items."
 msgstr ""
 
 #: staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label
-#, fuzzy
 msgctxt "staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label"
 msgid "Record with TCN %1$s marked for overlay."
-msgstr "Запись с TCN %1$s помечена для наложения."
+msgstr ""
 
 #: staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label
-#, fuzzy
 msgctxt "staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label"
 msgid "Record with ID %1$s marked for overlay."
-msgstr "Запись с ID %1$s помечена для наложения."
+msgstr ""
 
 #: staff.cat.opac.marked_record_for_hold_transfer_indicator.tcn.label
 msgid "Record with TCN %1$s marked for title hold transfer."
@@ -1278,8 +1271,8 @@ msgstr ""
 
 #: printing.prompt_for_external_print_cmd
 msgid ""
-"Enter external print command and parameters (use %receipt.txt% or %"
-"receipt.html% as the file containing the print data. Those values will be "
+"Enter external print command and parameters (use %receipt.txt% or "
+"%receipt.html% as the file containing the print data. Those values will be "
 "substituted with the proper path.):"
 msgstr ""
 
@@ -1361,6 +1354,10 @@ msgstr ""
 #~ msgid "Ok"
 #~ msgstr "Ok"
 
+#~ msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3."
+#~ msgstr ""
+#~ "Предупреждение: что касается %1$s, этот штрих-код (%2$s) был отмечен %3."
+
 #~ msgid "Cancel"
 #~ msgstr "Отменить"
 
@@ -1372,6 +1369,9 @@ msgstr ""
 
 #~ msgid "Record successfully saved."
 #~ msgstr "Запись успешно сохранена"
+
+#~ msgid "Override"
+#~ msgstr "Аннулировать"
 
 #~ msgid "C"
 #~ msgstr "C"

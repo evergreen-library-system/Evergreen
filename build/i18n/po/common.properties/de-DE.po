@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-11-23 23:36-0400\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
 "PO-Revision-Date: 2010-03-08 17:00+0000\n"
 "Last-Translator: Provetin <hamburgskaddi@web.de>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-03-09 04:37+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2011-05-18 04:40+0000\n"
+"X-Generator: Launchpad (build 12959)\n"
 
 #: common.exception
 msgid ""
@@ -49,6 +49,10 @@ msgstr ""
 msgid "Check here to confirm this message."
 msgstr "Klicken Sie hier, um diese Nachricht zu bestätigen."
 
+#: common.cancelled
+msgid "Action Cancelled"
+msgstr ""
+
 #: common.error.default
 msgid "Please report that this happened."
 msgstr "Bitte melden Sie, dass das hier passiert ist."
@@ -66,9 +70,8 @@ msgid "Expired"
 msgstr "Abgelaufen"
 
 #: common.barcode.status.warning.barred
-msgid ""
-"_: common.barcode.status.warning.barred\n"
-"Barred"
+msgctxt "common.barcode.status.warning.barred"
+msgid "Barred"
 msgstr ""
 
 #: common.barcode.status.warning.blocked
@@ -89,17 +92,16 @@ msgstr ""
 
 #. # common.grouping_string = the string that should be inserted between elements of a grouped list
 #: common.grouping_string
-msgid ","
-msgstr ","
+msgid ", "
+msgstr ""
 
 #: common.unimplemented
 msgid "Not yet implemented"
 msgstr ""
 
 #: common.yes
-msgid ""
-"_: common.yes\n"
-"Yes"
+msgctxt "common.yes"
+msgid "Yes"
 msgstr "Ja"
 
 #: common.no
@@ -138,10 +140,14 @@ msgstr "Fehler mit get_contentWindow(%1$s): %2$s"
 msgid "Error adjusting the font size: %1$s"
 msgstr "Fehler beim Einrichten der Schriftgröße: %1$s"
 
+#. # Appended to notes with certain settings enabled.  First position is staff initials, and second position is a date for when the initials were added.
+#: staff.initials.format
+msgid "[ %1$s %2$s @ %3$s ]"
+msgstr ""
+
 #: staff.acp_label_barcode
-msgid ""
-"_: staff.acp_label_barcode\n"
-"Barcode"
+msgctxt "staff.acp_label_barcode"
+msgid "Barcode"
 msgstr "Barcode"
 
 #: staff.acp_label_call_number
@@ -160,8 +166,17 @@ msgstr ""
 msgid "Circulation Modifier"
 msgstr ""
 
+#. # %1$s = circ modifier code, %2$s = circ modifier name, %3$s = circ modifier description
+#: staff.circ_modifier.display
+msgid "%1$s : %2$s : %3$s"
+msgstr ""
+
 #: staff.acp_label_copy_number
 msgid "Copy Number"
+msgstr ""
+
+#: staff.acp_label_parts
+msgid "Part"
 msgstr ""
 
 #: staff.acp_label_deposit_amount
@@ -189,9 +204,8 @@ msgid "Price"
 msgstr ""
 
 #: staff.acp_label_status
-msgid ""
-"_: staff.acp_label_status\n"
-"Status"
+msgctxt "staff.acp_label_status"
+msgid "Status"
 msgstr "Status"
 
 #: staff.ahr_current_copy_label
@@ -215,13 +229,20 @@ msgid "Fulfillment Time"
 msgstr ""
 
 #: staff.ahr_hold_type_label
-msgid ""
-"_: staff.ahr_hold_type_label\n"
-"Type"
+msgctxt "staff.ahr_hold_type_label"
+msgid "Type"
 msgstr ""
 
 #: staff.ahr_holdable_formats_label
 msgid "Holdable Formats"
+msgstr ""
+
+#: staff.ahr_holdable_part_label
+msgid "Holdable Part"
+msgstr ""
+
+#: staff.ahr_issuance_label_label
+msgid "Issuance Label"
 msgstr ""
 
 #: staff.ahr_id_label
@@ -253,9 +274,8 @@ msgid "Top of Queue"
 msgstr ""
 
 #: staff.ahr_status_label
-msgid ""
-"_: staff.ahr_status_label\n"
-"Status"
+msgctxt "staff.ahr_status_label"
+msgid "Status"
 msgstr "Status"
 
 #: staff.ahr_target_label
@@ -263,9 +283,8 @@ msgid "Target"
 msgstr ""
 
 #: staff.ahr_usr_label
-msgid ""
-"_: staff.ahr_usr_label\n"
-"User"
+msgctxt "staff.ahr_usr_label"
+msgid "User"
 msgstr "Benutzer"
 
 #: staff.circ_label_due_date
@@ -285,9 +304,8 @@ msgid "Remaining Renewals"
 msgstr "Verbleibende Verlängerungen"
 
 #: staff.mvr_label_author
-msgid ""
-"_: staff.mvr_label_author\n"
-"Author"
+msgctxt "staff.mvr_label_author"
+msgid "Author"
 msgstr "Autor"
 
 #: staff.mvr_label_doc_id
@@ -295,9 +313,8 @@ msgid "Document ID"
 msgstr ""
 
 #: staff.mvr_label_title
-msgid ""
-"_: staff.mvr_label_title\n"
-"Title"
+msgctxt "staff.mvr_label_title"
+msgid "Title"
 msgstr "Titel"
 
 #: staff.bills_xact_dates_label
@@ -341,47 +358,42 @@ msgid "Blocks Holds?"
 msgstr ""
 
 #: staff.csp_block_circ_yes
-msgid ""
-"_: staff.csp_block_circ_yes\n"
-"Yes"
+msgctxt "staff.csp_block_circ_yes"
+msgid "Yes"
 msgstr "Ja"
 
 #: staff.csp_block_renew_yes
-msgid ""
-"_: staff.csp_block_renew_yes\n"
-"Yes"
+msgctxt "staff.csp_block_renew_yes"
+msgid "Yes"
 msgstr "Ja"
 
 #: staff.csp_block_hold_yes
-msgid ""
-"_: staff.csp_block_hold_yes\n"
-"Yes"
+msgctxt "staff.csp_block_hold_yes"
+msgid "Yes"
 msgstr "Ja"
 
 #: staff.ausp_id_label
-msgid "Penalty ID"
+msgid "Penalty ID "
 msgstr ""
 
 #: staff.ausp_staff_label
-msgid "Applied By"
-msgstr "Angewendet von"
+msgid "Applied By "
+msgstr ""
 
 #: staff.ausp_set_date_label
-msgid "Applied On"
-msgstr "Angewendet auf"
+msgid "Applied On "
+msgstr ""
 
 #: staff.ausp_note_label
-msgid ""
-"_: staff.ausp_note_label\n"
-"Note"
+msgid "Note "
 msgstr ""
 
 #: staff.ausp_org_unit_label
-msgid "Library"
-msgstr "Bibliothek"
+msgid "Library "
+msgstr ""
 
 #: staff.mbts_id_label
-msgid "Bill #"
+msgid "Bill # "
 msgstr ""
 
 #: staff.mbts_xact_start_label
@@ -393,9 +405,8 @@ msgid "Finish"
 msgstr ""
 
 #: staff.mbts_xact_type_label
-msgid ""
-"_: staff.mbts_xact_type_label\n"
-"Type"
+msgctxt "staff.mbts_xact_type_label"
+msgid "Type"
 msgstr ""
 
 #: staff.mbts_total_owed_label
@@ -411,9 +422,8 @@ msgid "Balance Owed"
 msgstr ""
 
 #: staff.mbts_usr_label
-msgid ""
-"_: staff.mbts_usr_label\n"
-"User"
+msgctxt "staff.mbts_usr_label"
+msgid "User"
 msgstr "Benutzer"
 
 #: staff.mbts_last_billing_note_label
@@ -445,15 +455,13 @@ msgid "Billing Type"
 msgstr ""
 
 #: staff.mb_xact_label
-msgid ""
-"_: staff.mb_xact_label\n"
-"Transaction ID"
+msgctxt "staff.mb_xact_label"
+msgid "Transaction ID"
 msgstr ""
 
 #: staff.mb_billing_ts_label
-msgid ""
-"_: staff.mb_billing_ts_label\n"
-"When"
+msgctxt "staff.mb_billing_ts_label"
+msgid "When"
 msgstr ""
 
 #: staff.mb_void_time_label
@@ -461,15 +469,13 @@ msgid "Void Time"
 msgstr ""
 
 #: staff.mb_note_label
-msgid ""
-"_: staff.mb_note_label\n"
-"Note"
+msgctxt "staff.mb_note_label"
+msgid "Note"
 msgstr ""
 
 #: staff.mb_amount_label
-msgid ""
-"_: staff.mb_amount_label\n"
-"Amount"
+msgctxt "staff.mb_amount_label"
+msgid "Amount"
 msgstr ""
 
 #: staff.mb_voider_label
@@ -477,9 +483,8 @@ msgid "Voider"
 msgstr ""
 
 #: staff.mb_voided_label
-msgid ""
-"_: staff.mb_voided_label\n"
-"Voided"
+msgctxt "staff.mb_voided_label"
+msgid "Voided"
 msgstr ""
 
 #: staff.mb_id_label
@@ -495,9 +500,8 @@ msgid "Forgive Payment"
 msgstr ""
 
 #: staff.mp_payment_timestamp_label
-msgid ""
-"_: staff.mp_payment_timestamp_label\n"
-"When"
+msgctxt "staff.mp_payment_timestamp_label"
+msgid "When"
 msgstr ""
 
 #: staff.mp_payment_type_label
@@ -505,9 +509,8 @@ msgid "Payment Type"
 msgstr ""
 
 #: staff.mp_voided_label
-msgid ""
-"_: staff.mp_voided_label\n"
-"Voided"
+msgctxt "staff.mp_voided_label"
+msgid "Voided"
 msgstr ""
 
 #: staff.mp_id_label
@@ -519,9 +522,8 @@ msgid "Goods Payment"
 msgstr ""
 
 #: staff.mp_xact_label
-msgid ""
-"_: staff.mp_xact_label\n"
-"Transaction ID"
+msgctxt "staff.mp_xact_label"
+msgid "Transaction ID"
 msgstr ""
 
 #: staff.mp_credit_payment_label
@@ -533,9 +535,8 @@ msgid "Work Payment"
 msgstr ""
 
 #: staff.mp_note_label
-msgid ""
-"_: staff.mp_note_label\n"
-"Note"
+msgctxt "staff.mp_note_label"
+msgid "Note"
 msgstr ""
 
 #: staff.mp_cash_payment_label
@@ -543,9 +544,8 @@ msgid "Cash Payment"
 msgstr ""
 
 #: staff.mp_amount_label
-msgid ""
-"_: staff.mp_amount_label\n"
-"Amount"
+msgctxt "staff.mp_amount_label"
+msgid "Amount"
 msgstr ""
 
 #: staff.mp_check_payment_label
@@ -561,9 +561,8 @@ msgid "Staff"
 msgstr "Personal"
 
 #: staff.card_barcode_label
-msgid ""
-"_: staff.card_barcode_label\n"
-"Barcode"
+msgctxt "staff.card_barcode_label"
+msgid "Barcode"
 msgstr "Barcode"
 
 #: staff.au_active_label
@@ -579,9 +578,8 @@ msgid "Profile"
 msgstr "Profil"
 
 #: staff.au_barred_label
-msgid ""
-"_: staff.au_barred_label\n"
-"Barred"
+msgctxt "staff.au_barred_label"
+msgid "Barred"
 msgstr ""
 
 #: staff.au_alert_message_label
@@ -689,9 +687,8 @@ msgid "Suffix"
 msgstr ""
 
 #: staff.z39_50.search_class.author
-msgid ""
-"_: staff.z39_50.search_class.author\n"
-"Author"
+msgctxt "staff.z39_50.search_class.author"
+msgid "Author"
 msgstr "Autor"
 
 #: staff.z39_50.search_class.isbn
@@ -767,9 +764,8 @@ msgid "Accession #"
 msgstr ""
 
 #: staff.z39_50.search_class.title
-msgid ""
-"_: staff.z39_50.search_class.title\n"
-"Title"
+msgctxt "staff.z39_50.search_class.title"
+msgid "Title"
 msgstr "Titel"
 
 #: staff.z39_50_import_interface_label
@@ -785,7 +781,7 @@ msgid "Offline interface synchronized with server."
 msgstr ""
 
 #: staff.main.gen_offline_widgets.noncat_sort.error
-msgid "error in noncat sorting:"
+msgid "error in noncat sorting: "
 msgstr ""
 
 #: staff.main.gen_offline_widgets.please_wait
@@ -808,6 +804,10 @@ msgstr ""
 msgid "Registration successful"
 msgstr "Registrierung erfolgreich"
 
+#: staff.main.gen_offline_widgets.registration.empty
+msgid "Please specify a workstation name"
+msgstr ""
+
 #: staff.util.timestamp_dialog.future_date_disallowed
 msgid "Future dates disallowed."
 msgstr ""
@@ -823,3 +823,15 @@ msgstr ""
 #: tab.label.triggered_events_for_copy
 msgid "Triggered Events: %1$s"
 msgstr ""
+
+#~ msgid ","
+#~ msgstr ","
+
+#~ msgid "Library"
+#~ msgstr "Bibliothek"
+
+#~ msgid "Applied On"
+#~ msgstr "Angewendet auf"
+
+#~ msgid "Applied By"
+#~ msgstr "Angewendet von"

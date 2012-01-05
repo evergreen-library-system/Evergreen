@@ -1,17 +1,16 @@
-# 
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 21:45:31-0400\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
 "PO-Revision-Date: 2009-12-24 06:28+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Launchpad (build 12959)\n"
 "X-Launchpad-Export-Date: 2011-05-18 04:40+0000\n"
+"X-Generator: Launchpad (build 12959)\n"
 
 #: conify.js:SURVEY_ID
 msgid "Survey ID # ${0}"
@@ -47,7 +46,8 @@ msgstr "${0} (Կլոն)"
 
 #: conify.js:ERROR_DELETING_LAST_AOU
 msgid "Cannot delete ${0}, you need at least one organization unit."
-msgstr "Չի կարող ջնջել ${0}։ Պետք է ունենաս առնվազն մեկ կազմակերպության միավոր։"
+msgstr ""
+"Չի կարող ջնջել ${0}։ Պետք է ունենաս առնվազն մեկ կազմակերպության միավոր։"
 
 #: conify.js:SUCCESS_SAVING_HOO
 msgid "Hours of Operation updated for ${0}"
@@ -118,7 +118,9 @@ msgid "Problem fetching Mailing Address for ${0}"
 msgstr "Պրոբլեմ Փոստային Հասցեն կաչելիս համար ${0}"
 
 #: conify.js:CONFIRM_EXIT_AOU
-msgid "There are unsaved changes to one or more organizational units. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved changes to one or more organizational units. Click OK to "
+"save these changes, or Cancel to abandon them."
 msgstr ""
 "Կամակերպչական միավորներ ընտրելիս կան մեկ կամ ավել չհիշված փոփոխություններ։ "
 "Սեղմիր ԼԱՎ փոփոխությունները հիշելու, կամ ԱՆՏԵՍԵԼ դրանք մերժելու համար։"
@@ -145,7 +147,8 @@ msgstr "Մուտք արա նոր բանաձևի անունը"
 
 #: conify.js:ERROR_DELETING_LAST_AOUT
 msgid "Cannot delete ${0}. You need at least one organization type."
-msgstr "Չի կարող ջնջել ${0}։ Պետք է ունենաս առնվազն մեկ կազմակերպության տեսակ։"
+msgstr ""
+"Չի կարող ջնջել ${0}։ Պետք է ունենաս առնվազն մեկ կազմակերպության տեսակ։"
 
 #: conify.js:SURVEY_ANSWER
 msgid "Answer:"
@@ -164,7 +167,9 @@ msgid "New Group"
 msgstr "Նոր խումբ"
 
 #: conify.js:CONFIRM_EXIT_PGT
-msgid "There are unsaved modified permission maps. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved modified permission maps. Click OK to save these changes, "
+"or Cancel to abandon them."
 msgstr ""
 "Կան չհիշված ձևափոխված իրավասությունների քարտեզներ։ Սեղմիր ԼԱՎ "
 "փոփոխությունները հիշելու, կամ ԱՆՏԵՍԵԼ դրանք լքելու համար։"
@@ -190,13 +195,17 @@ msgid "Are you sure you want to delete ${0}?"
 msgstr "Դու վստա՞հ ես որ ցանկանում ես ջնջել ${0}"
 
 #: conify.js:CONFIRM_EXIT_PPL
-msgid "There are unsaved modified permissions. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved modified permissions. Click OK to save these changes, or "
+"Cancel to abandon them."
 msgstr ""
 "Կան չհիշված ձևափոխված իրավասություններ։ Սեղմիր ԼԱՎ փոփոխությունները հիշելու, "
 "կամ ԱՆՏԵՍԵԼ դրանք մերժելու համար։"
 
 #: conify.js:CONFIRM_UNSAVED_CHANGES
-msgid "There are unsaved changes to one or more organization types. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved changes to one or more organization types. Click OK to "
+"save these changes, or Cancel to abandon them."
 msgstr ""
 "Մեկ կամ ավել կազմակերպությունների տեսակների համար կան չհիշված "
 "փոփոխություններ։ Սեղմիր ԼԱՎ փոփոխությունները հիշելու համար, կամ ԱՆՏԵՍԵԼ "
@@ -303,7 +312,9 @@ msgid "Problem fetching organizational unit data"
 msgstr "Պրոբլեմ կազմակերպչական միավորի տվյալները ընտրելիս"
 
 #: conify.js:CONFIRM_EXIT_CCS
-msgid "There are unsaved changes to one or more copy statuses. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved changes to one or more copy statuses. Click OK to save "
+"these changes, or Cancel to abandon them."
 msgstr ""
 "Մեկ կամ ավել պատճեններիի վիճակների համար կան չհիշված փոփոխություններ։ Սեղմիր "
 "ԼԱՎ փոփոխությունները հիշելու համար, կամ ԱՆՏԵՍԵԼ կասեցնելու համար։"
@@ -357,7 +368,9 @@ msgid "${0}: ${1}"
 msgstr "${0}: ${1}"
 
 #: conify.js:CONFIRM_EXIT_CAM
-msgid "There are unsaved changes to one or more ${0} codes. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved changes to one or more ${0} codes. Click OK to save these "
+"changes, or Cancel to abandon them."
 msgstr ""
 "Կան չհիշված փոփոխություններ մեկ կամ ավել ${0} կոդերում։ Սեղմիր ԼԱՎ դրանք "
 "հիշելու, կամ ԱՆՏԵՍԵԼ դրանք մերժելու համար։"

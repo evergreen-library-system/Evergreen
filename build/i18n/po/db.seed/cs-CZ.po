@@ -1,57 +1,49 @@
-# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 22:55:45-0400\n"
-"PO-Revision-Date: 2011-09-12 18:59+0000\n"
-"Last-Translator: Linda Jansova <Unknown>\n"
+"POT-Creation-Date: 2011-04-18 22:55-0400\n"
+"PO-Revision-Date: 2011-12-07 14:53+0000\n"
+"Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Launchpad (build 13910)\n"
-"X-Launchpad-Export-Date: 2011-09-13 04:48+0000\n"
+"X-Launchpad-Export-Date: 2011-12-08 05:37+0000\n"
+"X-Generator: Launchpad (build 14443)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-# id::cmf.label__27 id::vqbrad.description__11
 # id::vqbrad.description__11
 #: 950.data.seed-values.sql:97 950.data.seed-values.sql:2490
 msgid "Internal ID"
 msgstr "Interní ID"
 
-# id::ccvm.value__ady
 # id::clm.value__ady
 #: 950.data.seed-values.sql:3506
 msgid "Adygei"
 msgstr "Adygei"
 
-# id::cmc.label__title id::cza.label__5 id::cza.label__14 id::cza.label__23
 # id::cza.label__5 id::cza.label__14 id::cza.label__23
 #: 950.data.seed-values.sql:24 950.data.seed-values.sql:289
 #: 950.data.seed-values.sql:310 950.data.seed-values.sql:329
 msgid "Title"
 msgstr "Název"
 
-# id::coust.description__credit.processor.authorizenet.password
 #: 950.data.seed-values.sql:1952
 msgid "AuthorizeNet password"
 msgstr "Heslo služby AuthorizeNet"
 
-# id::cmf.label__1
 #: 950.data.seed-values.sql:39
 msgid "Series Title"
 msgstr "Název edice"
 
-# id::ccvm.value__204
 # id::clm.value__jav
 #: 950.data.seed-values.sql:3704
 msgid "Javanese"
 msgstr "Javánština"
 
-# id::ccvm.value__520
 # id::clfm.value__p
 #: 950.data.seed-values.sql:4026
 msgid "Poetry"
@@ -62,59 +54,51 @@ msgstr "Poezie"
 msgid "In transit"
 msgstr "V přepravě"
 
-# id::ccvm.value__339
 # id::clm.value__pau
 #: 950.data.seed-values.sql:3839
 msgid "Palauan"
 msgstr "Palauština"
 
-# id::ccs.name__15
 #: 950.data.seed-values.sql:233
 msgid "On reservation shelf"
 msgstr "Na regále s rezervacemi"
 
-# id::ccvm.value__461
 # id::clm.value__vai
 #: 950.data.seed-values.sql:3961
 msgid "Vai"
 msgstr "Vai"
 
-# id::coust.label__credit.processor.payflowpro.vendor
 #: 950.data.seed-values.sql:2002
 msgid "Credit card processing: PayflowPro vendor"
 msgstr "Zpracování kreditní karty: obchodník využívající službu PayflowPro"
 
-# id::coust.description__circ.max_fine.cap_at_price
 #: 950.data.seed-values.sql:5334
-msgid "This prevents the system from charging more than the item price in overdue fines"
+msgid ""
+"This prevents the system from charging more than the item price in overdue "
+"fines"
 msgstr ""
 "Toto zabraňuje systému účtovat v rámci pokut za pozdní vrácení vyšší částku, "
 "než jaká je hodnota exempláře."
 
-# id::coust.description__credit.processor.paypal.login
 #: 950.data.seed-values.sql:1971
 msgid "PayPal login"
 msgstr "Přihlášení do služby PayPal"
 
-# id::ccvm.value__531
 # id::cblvl.value__b
 # možná by bylo lepší užít číslo periodika
 #: 950.data.seed-values.sql:4042
 msgid "Serial component part"
 msgstr "Číslo/svazek seriálu"
 
-# id::ccvm.value__312
 #: 950.data.seed-values.sql:3812
 msgid "Niuean"
 msgstr "Niue"
 
-# id::ccvm.value__131
 # id::clm.value__fat
 #: 950.data.seed-values.sql:3631
 msgid "Fanti"
 msgstr "Fantiština"
 
-# id::coust.label__credit.processor.payflowpro.password
 #: 950.data.seed-values.sql:1994
 msgid "Credit card processing: PayflowPro password"
 msgstr "Zpracování kreditní karty: heslo do služby PayflowPro"
@@ -124,7 +108,6 @@ msgstr "Zpracování kreditní karty: heslo do služby PayflowPro"
 msgid "7_days_0_renew"
 msgstr "7_dní_0_prodloužení"
 
-# id::ccvm.value__317
 # id::clm.value__nor
 #: 950.data.seed-values.sql:3817
 msgid "Norwegian"
@@ -136,107 +119,98 @@ msgstr "Norština"
 msgid "LCCN"
 msgstr "LCCN"
 
-# id::ccvm.value__274
 # id::clm.value__mas
 #: 950.data.seed-values.sql:3774
 msgid "Masai"
 msgstr "Masajština"
 
-# id::ccvm.value__40
 # id::clm.value__bam
 #: 950.data.seed-values.sql:3540
 msgid "Bambara"
 msgstr "Bambarština"
 
-# id::coust.label__circ.block_renews_for_holds
 #: 950.data.seed-values.sql:2026
 msgid "Holds: Block Renewal of Items Needed for Holds"
-msgstr "Rezervace: Blokovat prodloužení exemplářů nutných pro splnění rezervací"
+msgstr ""
+"Rezervace: Blokovat prodloužení exemplářů nutných pro splnění rezervací"
 
-# id::coust.description__ui.patron.edit.default_suggested
 #: 950.data.seed-values.sql:2413
-msgid "Instead of All fields, show just suggested fields in patron registration by default."
+msgid ""
+"Instead of All fields, show just suggested fields in patron registration by "
+"default."
 msgstr ""
 "Při registraci čtenáře standardně zobrazit pouze vybraná pole, nikoliv "
 "všechna pole."
 
-# id::ccvm.value__abk
 # id::clm.value__abk
 #: 950.data.seed-values.sql:3502
 msgid "Abkhaz"
 msgstr "Abchazština"
 
-# id::ccvm.value__370
 #: 950.data.seed-values.sql:3870
 msgid "Santali"
 msgstr "Santálí"
 
-# id::ccvm.value__110
 # id::clm.value__dua
 #: 950.data.seed-values.sql:3610
 msgid "Duala"
 msgstr "Dualština"
 
-# id::cmf.label__21
 #: 950.data.seed-values.sql:85
 msgid "ISMN"
 msgstr "ISMN"
 
-# id::ccvm.value__465
 # id::clm.value__vot
 #: 950.data.seed-values.sql:3965
 msgid "Votic"
 msgstr "Votiatština"
 
-# id::ccvm.value__522
 # id::clfm.value__u
 #: 950.data.seed-values.sql:4028
 msgid "Unknown"
 msgstr "Neznámý"
 
-# id::coust.label__ui.patron.edit.aua.post_code.regex
 #: 950.data.seed-values.sql:2408
 msgid "GUI: Regex for post_code field on patron registration"
 msgstr "GUI: Regex pro post_code field při registraci čtenáře"
 
-# id::aou.name__5
 #: 950.data.seed-values.sql:372
 msgid "Example Branch 2"
 msgstr "Vzorová pobočka 2"
 
-# id::ccvm.value__443
 #: 950.data.seed-values.sql:3943
 msgid "Tsonga"
 msgstr "Tsongština"
 
-# id::coust.description__ui.patron.edit.au.ident_value2.suggest
 #: 950.data.seed-values.sql:2345
-msgid "The ident_value2 field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored."
+msgid ""
+"The ident_value2 field will be suggested on the patron registration screen. "
+"Suggesting a field makes it appear when suggested fields are shown. If the "
+"field is shown or required this setting is ignored."
 msgstr ""
 "Pole ident_value2 bude navrženo na obrazovce s registrací čtenáře. Návrh "
 "pole je zobrazen, pokud jsou zobrazena navrhovaná pole. Pokud je pole "
 "zobrazeno nebo je povinné, toto nastavení není uplatněno."
 
-# id::coust.description__ui.patron.edit.au.master_account.show
 #: 950.data.seed-values.sql:2357
-msgid "The master_account field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored."
+msgid ""
+"The master_account field will be shown on the patron registration screen. "
+"Showing a field makes it appear with required fields even when not required. "
+"If the field is required this setting is ignored."
 msgstr ""
 "Pole master_account bude zobrazeno na obrazovce s registrací čtenáře. Pole "
 "je zobrazeno, pokud jsou zobrazena povinná pole, a to i v případě, že samo "
 "není povinné. Pokud je pole povinné, toto nastavení není uplatněno."
 
-# id::pgt.name__6
 #: 950.data.seed-values.sql:1396
 msgid "Acquisitions"
 msgstr "Akvizice"
 
-# id::ccvm.value__216
 # id::clm.value__kau
 #: 950.data.seed-values.sql:3716
 msgid "Kanuri"
 msgstr "Kanuri"
 
-# id::ccvm.value__457
 # id::clm.value__umb
 #: 950.data.seed-values.sql:3957
 msgid "Umbundu"
@@ -248,44 +222,36 @@ msgstr "Umbundu"
 msgid "10_cent_per_day"
 msgstr "10_centů_za_den"
 
-# id::cmc.label__keyword
 #: 950.data.seed-values.sql:23
 msgid "Keyword"
 msgstr "Klíčové slovo"
 
-# id::cubt.label__folks%3Acirc.renew
 #: 950.data.seed-values.sql:2563
 msgid "Renew Circulations"
 msgstr "Prodloužit výpůjčky"
 
-# id::coust.label__ui.patron.edit.au.day_phone.example
 #: 950.data.seed-values.sql:2256
 msgid "GUI: Example for day_phone field on patron registration"
 msgstr "GUI: Příklad pole day_phone field při registraci čtenáře"
 
-# id::ccvm.value__72
 # id::clm.value__cel
 #: 950.data.seed-values.sql:3572
 msgid "Celtic (Other)"
 msgstr "Keltské jazyky (ostatní)"
 
-# id::cst.value__2
 #: 950.data.seed-values.sql:19
 msgid "Barred"
-msgstr "Blokován"
+msgstr "Omezení transakcí"
 
-# id::ccvm.value__176
 # id::clm.value__hil
 #: 950.data.seed-values.sql:3676
 msgid "Hiligaynon"
 msgstr "Hiligayonština"
 
-# id::coust.label__cat.bib.alert_on_empty
 #: 950.data.seed-values.sql:1781
 msgid "Alert on empty bib records"
-msgstr "Varování u prázdných bibliografických záznamů"
+msgstr "Upozornění u prázdných bibliografických záznamů"
 
-# id::ccvm.value__210
 # id::clm.value__kac
 #: 950.data.seed-values.sql:3710
 msgid "Kachin"
@@ -296,104 +262,95 @@ msgstr "Kačjinština"
 msgid "overdue_max"
 msgstr "zpoždění_max"
 
-# id::coust.description__ui.patron.edit.au.barred.show
 #: 950.data.seed-values.sql:2233
-msgid "The barred field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored."
+msgid ""
+"The barred field will be shown on the patron registration screen. Showing a "
+"field makes it appear with required fields even when not required. If the "
+"field is required this setting is ignored."
 msgstr ""
 "Zablokované pole bude zobrazeno na obrazovce s registrací čtenáře. Pole je "
 "zobrazeno, pokud jsou zobrazena povinná pole, a to i v případě, že samo není "
 "povinné. Pokud je povinné, toto nastavení není uplatněno."
 
-# id::ccvm.value__334
 #: 950.data.seed-values.sql:3834
 msgid "Pangasinan"
 msgstr "Pangsinan"
 
-# id::coust.description__ui.patron.edit.au.evening_phone.require
 #: 950.data.seed-values.sql:2321
-msgid "The evening_phone field will be required on the patron registration screen."
+msgid ""
+"The evening_phone field will be required on the patron registration screen."
 msgstr "Pole evening_phone bude na obrazovce s registrací čtenáře povinné."
 
-# id::coust.description__circ.hold_shelf_status_delay
 #: 950.data.seed-values.sql:1892
-msgid "The purpose is to provide an interval of time after an item goes into the on-holds-shelf status before it appears to patrons that it is actually on the holds shelf.  This gives staff time to process the item before it shows as ready-for-pickup. Examples: \"5 days\", \"1 hour\""
+msgid ""
+"The purpose is to provide an interval of time after an item goes into the on-"
+"holds-shelf status before it appears to patrons that it is actually on the "
+"holds shelf.  This gives staff time to process the item before it shows as "
+"ready-for-pickup. Examples: \"5 days\", \"1 hour\""
 msgstr ""
 "Cílem je poskytnout časový interval mezi dobou, kdy exemplář získá status na "
 "regále s rezervacemi, a dobou, kdy je z hlediska čtenáře reálně na regále s "
-"rezervacemi. To umožňuje zaměstnancům zpracovat exemplář předtím, než je "
+"rezervacemi. To umožňuje personálu zpracovat exemplář předtím, než je "
 "zobrazeno, že je k vyzvednutí. Příklady: \"5 dní\", \"1 hodina\""
 
-# id::aiit.name__TAX
 #: 950.data.seed-values.sql:6483
 msgid "Tax"
 msgstr "Daň"
 
-# id::ccvm.value__336
 # id::clm.value__pam
 #: 950.data.seed-values.sql:3836
 msgid "Pampanga"
 msgstr "Pampangau"
 
-# id::ccvm.value__299
 # id::clm.value__nah
 #: 950.data.seed-values.sql:3799
 msgid "Nahuatl"
 msgstr "Nahuatl"
 
-# id::ccvm.value__478
 # id::clm.value__yid
 #: 950.data.seed-values.sql:3978
 msgid "Yiddish"
 msgstr "Jidiš"
 
-# id::ccvm.value__395
 # id::clm.value__snd
 #: 950.data.seed-values.sql:3895
 msgid "Sindhi"
 msgstr "Sindhština"
 
-# id::coust.description__ui.patron.edit.au.other_phone.require
 #: 950.data.seed-values.sql:2373
-msgid "The other_phone field will be required on the patron registration screen."
+msgid ""
+"The other_phone field will be required on the patron registration screen."
 msgstr "Pole other_phone bude na obrazovce s registrací čtenáře povinné."
 
-# id::ccvm.value__93
 # id::clm.value__cpp
 #: 950.data.seed-values.sql:3593
 msgid "Creoles and Pidgins, Portuguese-based (Other)"
 msgstr "Kreolština a jiné pidginy na základě portugalštiny"
 
-# id::ccvm.value__438
 # id::clm.value__ton
 #: 950.data.seed-values.sql:3938
 msgid "Tongan"
 msgstr "Tongština"
 
-# id::ccvm.value__189
 # id::clm.value__ijo
 #: 950.data.seed-values.sql:3689
 msgid "Ijo"
 msgstr "Idžo"
 
-# id::coust.description__circ.selfcheck.patron_password_required
 #: 950.data.seed-values.sql:5356
 msgid "Patron must log in with barcode and password at selfcheck station"
 msgstr ""
 "Čtenář se na samoobslužné výpůjční stanici musí přihlásit svým čárovým kódem "
 "a heslem."
 
-# id::ccvm.value__153
 #: 950.data.seed-values.sql:3653
 msgid "Gilbertese"
 msgstr "Kiribatština"
 
-# id::ccs.name__14
 #: 950.data.seed-values.sql:232
 msgid "Damaged"
 msgstr "Poškozeno"
 
-# id::cust.label__history.hold.retention_start
-# id::cust.description__history.hold.retention_start
 #: 950.data.seed-values.sql:7235 950.data.seed-values.sql:7236
 msgid "Historical Hold Retention Start Date"
 msgstr "Počáteční datum ponechávání historických rezervací"
@@ -403,52 +360,43 @@ msgstr "Počáteční datum ponechávání historických rezervací"
 msgid "Bookmobile"
 msgstr "Pojízdná knihovna"
 
-# id::ccvm.value__217
 # id::clm.value__kaw
 #: 950.data.seed-values.sql:3717
 msgid "Kawi"
 msgstr "Kawi"
 
-# id::ccvm.value__423
 # id::clm.value__tel
 #: 950.data.seed-values.sql:3923
 msgid "Telugu"
 msgstr "Telugu"
 
-# id::ccvm.value__309
 # id::clm.value__new
 #: 950.data.seed-values.sql:3809
 msgid "Newari"
 msgstr "Névárština"
 
-# id::ccvm.value__228
 # id::clm.value__kok
 #: 950.data.seed-values.sql:3728
 msgid "Konkani"
 msgstr "Konkánština"
 
-# id::ccvm.value__302
 #: 950.data.seed-values.sql:3802
 msgid "Nauru"
 msgstr "Nauruština"
 
-# id::ccvm.value__494
 #: 950.data.seed-values.sql:3996
 msgid "General"
 msgstr "Obecné"
 
-# id::coust.description__credit.processor.payflowpro.login
 #: 950.data.seed-values.sql:1991
 msgid "Often the same thing as the PayPal manager login"
 msgstr "Často totéž jako manažerské přihlášení do služby PayPal"
 
-# id::ccvm.value__369
 # id::clm.value__sas
 #: 950.data.seed-values.sql:3869
 msgid "Sasak"
 msgstr "Sasakština"
 
-# id::ccs.name__0
 #: 950.data.seed-values.sql:218
 msgid "Available"
 msgstr "Dostupné"
@@ -458,130 +406,112 @@ msgstr "Dostupné"
 msgid "35_days_1_renew"
 msgstr "35_dní_1_prodloužení"
 
-# id::ccvm.value__247
 #: 950.data.seed-values.sql:3747
 msgid "Latin"
 msgstr "Latina"
 
-# id::ccvm.value__485
 # id::clm.value__zul
 #: 950.data.seed-values.sql:3985
 msgid "Zulu"
 msgstr "Zuluština"
 
-# id::ccvm.value__111
 #: 950.data.seed-values.sql:3611
 msgid "Dutch, Middle (ca. 1050-1350)"
 msgstr "Nizozemština, střední doba (cca 1050-1350)"
 
-# id::coust.description__cat.bib.keep_on_empty
 #: 950.data.seed-values.sql:1777
 msgid "Retain a bib record even when all attached copies are deleted"
 msgstr ""
 "Ponechat bibliografický záznam i v případě, kdy jsou všechny připojené "
 "exempláře smazány"
 
-# id::ccvm.value__192
 #: 950.data.seed-values.sql:3692
 msgid "Iloko"
 msgstr "Ilokánština"
 
-# id::coust.description__circ.restore_overdue_on_lost_return
 #: 950.data.seed-values.sql:1822
 msgid "Restore overdue fines on lost item return"
 msgstr ""
 "Obnovit pokuty za pozdě vrácené exempláře při vrácení ztraceného exempláře"
 
-# id::ccvm.value__arc
 # id::clm.value__arc
 #: 950.data.seed-values.sql:3520
 msgid "Aramaic"
 msgstr "Aramejština"
 
-# id::coust.description__ui.patron.edit.au.second_given_name.show
 #: 950.data.seed-values.sql:2385
-msgid "The second_given_name field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored."
+msgid ""
+"The second_given_name field will be shown on the patron registration screen. "
+"Showing a field makes it appear with required fields even when not required. "
+"If the field is required this setting is ignored."
 msgstr ""
 "Pole second_given_name bude zobrazeno na obrazovce s registrací čtenáře. "
 "Pole je zobrazeno, pokud jsou zobrazena povinná pole, a to i v případě, že "
 "samo není povinné. Pokud je pole povinné, toto nastavení není uplatněno."
 
-# id::ccvm.value__78 id::ccvm.value__440
 # id::clm.value__chk id::clm.value__-tru
 #: 950.data.seed-values.sql:3578 950.data.seed-values.sql:3940
 msgid "Truk"
 msgstr "Čukčtina"
 
-# id::ccvm.value__341
 # id::clm.value__per
 #: 950.data.seed-values.sql:3841
 msgid "Persian"
 msgstr "Perština"
 
-# id::ccvm.value__430
 # id::clm.value__tib
 #: 950.data.seed-values.sql:3930
 msgid "Tibetan"
 msgstr "Tibetština"
 
-# id::cza.label__7 id::cza.label__16 id::cza.label__25
-# id::vqbrad.description__12
 #: 950.data.seed-values.sql:293 950.data.seed-values.sql:314
 #: 950.data.seed-values.sql:333 950.data.seed-values.sql:2491
 msgid "Publisher"
 msgstr "Nakladatel"
 
-# id::ccvm.value__197
 # id::clm.value__inh
 #: 950.data.seed-values.sql:3697
 msgid "Ingush"
 msgstr "Inguština"
 
-# id::ccvm.value__114
 #: 950.data.seed-values.sql:3614
 msgid "Dzongkha"
 msgstr "Dzongkä"
 
-# id::ccvm.value__166 id::ccvm.value__167
 # id::clm.value__grn id::clm.value__-gua
 #: 950.data.seed-values.sql:3666 950.data.seed-values.sql:3667
 msgid "Guarani"
 msgstr "Guaraní"
 
-# id::ccvm.value__188
 # id::clm.value__iii
 #: 950.data.seed-values.sql:3688
 msgid "Sichuan Yi"
 msgstr "S'čchuanština"
 
-# id::ccvm.value__60
 # id::clm.value__btk
 #: 950.data.seed-values.sql:3560
 msgid "Batak"
 msgstr "Batačtina"
 
-# id::ccvm.value__107
 # id::clm.value__div
 #: 950.data.seed-values.sql:3607
 msgid "Divehi"
 msgstr "Divehi"
 
-# id::ccvm.value__376
 # id::clm.value__sga
 #: 950.data.seed-values.sql:3876
 msgid "Irish, Old (to 1100)"
 msgstr "Irština, stará (do 1100)"
 
-# id::cbt.name__4 id::coust.label__circ.lost_materials_processing_fee
-# id::coust.description__circ.lost_materials_processing_fee
 #: 950.data.seed-values.sql:396 950.data.seed-values.sql:1666
 #: 950.data.seed-values.sql:1667
 msgid "Lost Materials Processing Fee"
 msgstr "Poplatek za zpracování ztracených exemplářů"
 
-# id::coust.description__circ.password_reset_request_throttle
 #: 950.data.seed-values.sql:2042
-msgid "Prevent the creation of new self-serve password reset requests until the number of active requests drops back below this number."
+msgid ""
+"Prevent the creation of new self-serve password reset requests until the "
+"number of active requests drops back below this number."
 msgstr ""
 "Zabránit vytvoření nového požadavku na nastavení nového hesla, dokud počet "
 "aktivních požadavků znovu neklesne pod tento počet."
@@ -591,158 +521,134 @@ msgstr ""
 msgid "3_months_0_renew"
 msgstr "3_měsíce_0_prodloužení"
 
-# id::ccvm.value__355
 #: 950.data.seed-values.sql:3855
 msgid "Romance (Other)"
 msgstr "Románské jazyky (ostatní)"
 
-# id::aiit.name__HND
 #: 950.data.seed-values.sql:6486
 msgid "Handling Charge"
 msgstr "Manipulační poplatek"
 
-# id::ccvm.value__248
 #: 950.data.seed-values.sql:3748
 msgid "Latvian"
 msgstr "Lotyština"
 
-# id::ccvm.value__119
 # id::clm.value__eng
 #: 950.data.seed-values.sql:3619
 msgid "English"
 msgstr "Angličtina"
 
-# id::cgf.label__history.circ.retention_age
-# id::cust.label__history.circ.retention_age
-# id::cust.description__history.circ.retention_age
 #: 950.data.seed-values.sql:7190 950.data.seed-values.sql:7214
 #: 950.data.seed-values.sql:7215
 msgid "Historical Circulation Retention Age"
 msgstr "Doba uchování historických výpůjček"
 
-# id::ccvm.value__487
 # id::cam.value__
 #: 950.data.seed-values.sql:3989
 msgid "Unknown or unspecified"
 msgstr "Neznámý nebo nespecifikovaný"
 
-# id::ccvm.value__373
 # id::clm.value__scr
 #: 950.data.seed-values.sql:3873
 msgid "Croatian"
 msgstr "Chorvatština"
 
-# id::coust.description__credit.payments.allow
 #: 950.data.seed-values.sql:1692
-msgid "If enabled, patrons will be able to pay fines accrued at this location via credit card"
+msgid ""
+"If enabled, patrons will be able to pay fines accrued at this location via "
+"credit card"
 msgstr ""
-"Pokud je to povoleno, čtenáři budou moci v této lokaci platit nahromaděné "
-"pokuty prostřednictvím kreditní karty."
+"Pokud je tato volba aktivní, čtenáři budou moci v této knihovně platit "
+"vzniklé pokuty prostřednictvím kreditní karty."
 
-# id::ccvm.value__77
 # id::clm.value__chi
 #: 950.data.seed-values.sql:3577
 msgid "Chinese"
 msgstr "Čínština"
 
-# id::ccvm.value__473
 # id::clm.value__wol
 #: 950.data.seed-values.sql:3973
 msgid "Wolof"
 msgstr "Wolofština"
 
-# id::ccvm.value__190
 #: 950.data.seed-values.sql:3690
 msgid "Inuktitut"
 msgstr "Inuktitut"
 
-# id::ccvm.value__295
 # id::clm.value__mun
 #: 950.data.seed-values.sql:3795
 msgid "Munda (Other)"
 msgstr "Mundské jazyky (ostatní)"
 
-# id::ccvm.value__344
 # id::clm.value__pli
 #: 950.data.seed-values.sql:3844
 msgid "Pali"
 msgstr "Páli"
 
-# id::ccvm.value__143
 #: 950.data.seed-values.sql:3643
 msgid "Gã"
 msgstr "Ga"
 
-# id::ccvm.value__477
 # id::clm.value__yap
 #: 950.data.seed-values.sql:3977
 msgid "Yapese"
 msgstr "Yapese"
 
-# id::ccvm.value__ara
 # id::clm.value__ara
 #: 950.data.seed-values.sql:3519
 msgid "Arabic"
 msgstr "Arabština"
 
-# id::ccvm.value__462
 # id::clm.value__ven
 #: 950.data.seed-values.sql:3962
 msgid "Venda"
 msgstr "Vendština"
 
-# id::coust.label__circ.restore_overdue_on_lost_return
 #: 950.data.seed-values.sql:1821
 msgid "Circ: Restore overdues on lost item return"
 msgstr ""
-"Výpůjčky: Znovu obnovit pokuty za pozdní vrácení při vrácení ztraceného "
-"exempláře"
+"Výpůjčky: Obnovit pokuty za pozdní vrácení při vrácení ztraceného exempláře"
 
 # id::pgt.name__3
 #: 950.data.seed-values.sql:1390
 msgid "Staff"
-msgstr "Zaměstnanci"
+msgstr "Personál"
 
-# id::coust.label__auth.persistent_login_interval
 #: 950.data.seed-values.sql:7250
 msgid "Persistent Login Duration"
 msgstr "Délka trvalého přihlášení"
 
-# id::ccvm.value''in__169
 # id::clm.value''in__gwi
 #: 950.data.seed-values.sql:3669
 msgid "Gwich"
 msgstr "Gwich'in"
 
-# id::coust.description__ui.patron.edit.au.juvenile.suggest
 #: 950.data.seed-values.sql:2353
-msgid "The juvenile field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored."
+msgid ""
+"The juvenile field will be suggested on the patron registration screen. "
+"Suggesting a field makes it appear when suggested fields are shown. If the "
+"field is shown or required this setting is ignored."
 msgstr ""
-"Pole juvenile bude navrženo na obrazovce s registrací čtenáře. Návrh pole je "
-"zobrazen, pokud jsou zobrazena navržená pole. Pokud je pole zobrazeno nebo "
-"je povinné, toto nastavení není uplatněno."
+"Pole Nezletilý  bude navrženo na obrazovce s registrací čtenáře. Návrh pole "
+"je zobrazen, pokud jsou zobrazena navržená pole. Pokud je pole zobrazeno "
+"nebo je povinné, toto nastavení není uplatněno."
 
-# id::ccvm.value__240
 #: 950.data.seed-values.sql:3740
 msgid "Kutenai"
 msgstr "Kutenai"
 
-# id::coust.label__ui.patron.edit.au.evening_phone.show
 #: 950.data.seed-values.sql:2324
 msgid "GUI: Show evening_phone field on patron registration"
 msgstr "GUI: Zobrazit pole evening_phone při registraci čtenáře"
 
-# id::cmf.label__2
 #: 950.data.seed-values.sql:42
 msgid "Abbreviated Title"
 msgstr "Zkrácený název"
 
-# id::ccvm.value__322
 #: 950.data.seed-values.sql:3822
 msgid "Nyankole"
 msgstr "Nyankolština"
 
-# id::coust.label__circ.holds_fifo
 #: 950.data.seed-values.sql:1831
 msgid "Holds: FIFO"
 msgstr "Rezervace: Kdo dřív přijde, ten dřív mele (FIFO)"
@@ -752,16 +658,18 @@ msgstr "Rezervace: Kdo dřív přijde, ten dřív mele (FIFO)"
 msgid "English (Canada)"
 msgstr "Angličtina (Kanada)"
 
-# id::coust.description__circ.password_reset_request_per_user_limit
 #: 950.data.seed-values.sql:2032
-msgid "When a user has more than this number of concurrently active self-serve password reset requests for their account, prevent the user from creating any new self-serve password reset requests until the number of active requests for the user drops back below this number."
+msgid ""
+"When a user has more than this number of concurrently active self-serve "
+"password reset requests for their account, prevent the user from creating "
+"any new self-serve password reset requests until the number of active "
+"requests for the user drops back below this number."
 msgstr ""
 "Pokud má uživatel více než tento počet současně aktivních požadavků na nové "
 "nastavení hesla, zabránit uživateli ve vytvoření jakéhokoliv dalšího "
 "požadavku na nastavení nového hesla, dokud počet aktivních požadavků znovu "
 "neklesne pod tento počet."
 
-# id::ccvm.value__127
 # id::clm.value__ewo
 #: 950.data.seed-values.sql:3627
 msgid "Ewondo"
@@ -772,94 +680,83 @@ msgstr "Ewondo"
 msgid "Mexican Spanish"
 msgstr "Mexická španělština"
 
-# id::coust.description__ui.patron.edit.au.active.show
 #: 950.data.seed-values.sql:2209
-msgid "The active field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored."
+msgid ""
+"The active field will be shown on the patron registration screen. Showing a "
+"field makes it appear with required fields even when not required. If the "
+"field is required this setting is ignored."
 msgstr ""
 "Aktivní pole bude zobrazeno na obrazovce s přihlašováním čtenáře. Pole je "
 "zobrazeno, pokud jsou zobrazena povinná pole, a to i v případě, že samo není "
 "povinné. Pokud je pole povinné, toto nastavení není uplatněno."
 
-# id::coust.description__ui.patron.edit.au.evening_phone.show
 #: 950.data.seed-values.sql:2325
-msgid "The evening_phone field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored."
+msgid ""
+"The evening_phone field will be shown on the patron registration screen. "
+"Showing a field makes it appear with required fields even when not required. "
+"If the field is required this setting is ignored."
 msgstr ""
 "Pole evening_phne bude zobrazeno na obrazovce s registrací čtenáře. Pole je "
 "zobrazeno, pokud jsou zobrazena povinná pole, a to i v případě, že samo není "
 "povinné. Pokud je pole povinné, toto nastavení není uplatněno."
 
-# id::coust.label__ui.patron.default_inet_access_level
-# id::coust.description__ui.patron.default_inet_access_level
 #: 950.data.seed-values.sql:1916 950.data.seed-values.sql:1917
 msgid "Default level of patrons' internet access"
 msgstr "Standardní úroveň čtenářského přístupu k internetu"
 
-# id::cmf.label__4
 #: 950.data.seed-values.sql:46
 msgid "Alternate Title"
 msgstr "Další název"
 
-# id::coust.label__credit.processor.paypal.signature
 #: 950.data.seed-values.sql:1978
 msgid "Credit card processing: PayPal signature"
 msgstr "Zpracování kreditní karty: Podpis PayPal"
 
-# id::ccvm.value__87
 #: 950.data.seed-values.sql:3587
 msgid "Chamic languages"
 msgstr "Čamské jazyky"
 
-# id::ccvm.value__515
 #: 950.data.seed-values.sql:4021
 msgid "Novels"
 msgstr "Romány"
 
-# id::coust.description__circ.holds_fifo
 #: 950.data.seed-values.sql:1832
 msgid "Force holds to a more strict First-In, First-Out capture"
 msgstr ""
 "Vynutit striktně  zachycení rezervací v pořadí \"kdo dřív přijde, ten dřív "
 "mele\"."
 
-# id::ccvm.value__57
 # id::clm.value__bos
 #: 950.data.seed-values.sql:3557
 msgid "Bosnian"
 msgstr "Bosenština"
 
-# id::ccvm.value__357
 # id::clm.value__rom
 #: 950.data.seed-values.sql:3857
 msgid "Romani"
 msgstr "Romština"
 
-# id::ccvm.value__277
 # id::clm.value__mdr
 #: 950.data.seed-values.sql:3777
 msgid "Mandar"
 msgstr "Mandar"
 
-# id::aout.opac_label__4
 #: 950.data.seed-values.sql:357
 msgid "This Specialized Library"
 msgstr "Tato specializovaná knihovna"
 
-# id::ccvm.value__287
 #: 950.data.seed-values.sql:3787
 msgid "Manchu"
 msgstr "Manchu"
 
-# id::coust.label__credit.processor.authorizenet.login
 #: 950.data.seed-values.sql:1946
 msgid "Credit card processing: AuthorizeNet login"
 msgstr "Zpracování kreditní karty: Přihlášení do služby AuthorizeNet"
 
-# id::aou.name__1
 #: 950.data.seed-values.sql:364
 msgid "Example Consortium"
 msgstr "Vzorové konsorcium"
 
-# id::i18n_l.name__ru-RU id::i18n_l.description__ru-RU id::ccvm.value__360
 # id::clm.value__rus id::i18n_l.name__ru-RU id::i18n_l.description__ru-RU
 # id::clm.value__rus
 #: 950.data.seed-values.sql:268 950.data.seed-values.sql:269
@@ -867,49 +764,52 @@ msgstr "Vzorové konsorcium"
 msgid "Russian"
 msgstr "Ruština"
 
-# id::coust.label__credit.payments.allow
 #: 950.data.seed-values.sql:1691
 msgid "Allow Credit Card Payments"
 msgstr "Povolit platby kreditní kartou"
 
-# id::ccvm.value__218
 # id::clm.value__kaz
 #: 950.data.seed-values.sql:3718
 msgid "Kazakh"
 msgstr "Kazaština"
 
-# id::ccvm.value__433
 # id::clm.value__tiv
 #: 950.data.seed-values.sql:3933
 msgid "Tiv"
 msgstr "Tivština"
 
-# id::coust.description__circ.checkout_fills_related_hold
 #: 950.data.seed-values.sql:1902
-msgid "When a patron checks out an item and they have no holds that directly target the item, the system will attempt to find a hold for the patron that could be fulfilled by the checked out item and fulfills it"
+msgid ""
+"When a patron checks out an item and they have no holds that directly target "
+"the item, the system will attempt to find a hold for the patron that could "
+"be fulfilled by the checked out item and fulfills it"
 msgstr ""
 "Pokud si čtenář půjčuje exemplář a nejsou na něj přímo navázány rezervace, "
 "systém se pokusí najít pro čtenáře rezervaci, která může být splněna "
 "vypůjčeným exemplářem, a splní ji"
 
-# id::coust.description__ui.patron.edit.au.evening_phone.regex
 #: 950.data.seed-values.sql:2317
-msgid "The Regular Expression for validation on the evening_phone field in patron registration."
-msgstr "Regulární výraz pro validaci pole evening_phone při registraci čtenáře."
+msgid ""
+"The Regular Expression for validation on the evening_phone field in patron "
+"registration."
+msgstr ""
+"Regulární výraz pro validaci pole evening_phone při registraci čtenáře."
 
-# id::coust.label__ui.patron.edit.au.claims_returned_count.show
 #: 950.data.seed-values.sql:2248
 msgid "GUI: Show claims_returned_count field on patron registration"
-msgstr "GUI: Zobrazit pole claims_returned_count při registraci čtenáře"
+msgstr ""
+"GUI: Zobrazit pole claims_returned_count (údajně vráceno) při registraci "
+"čtenáře"
 
-# id::ccvm.value__181
 #: 950.data.seed-values.sql:3681
 msgid "Hiri Motu"
 msgstr "Hiri motu"
 
-# id::coust.description__ui.patron.edit.au.email.show
 #: 950.data.seed-values.sql:2305
-msgid "The email field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored."
+msgid ""
+"The email field will be shown on the patron registration screen. Showing a "
+"field makes it appear with required fields even when not required. If the "
+"field is required this setting is ignored."
 msgstr ""
 "Pole email bude zobrazeno na obrazovce s registrací čtenáře. Pole je "
 "zobrazeno, pokud jsou zobrazena povinná pole, a to i v případě, že samo není "
@@ -920,118 +820,106 @@ msgstr ""
 msgid "No Access"
 msgstr "Nepřístupné"
 
-# id::coust.label__credit.processor.payflowpro.enabled
 #: 950.data.seed-values.sql:1986
 msgid "Credit card processing: Enable PayflowPro payments"
 msgstr ""
 "Zpracování kreditní karty: Umožnit platby prostřednictvím služby PayflowPro"
 
-# id::coust.label__lib.courier_code
 #: 950.data.seed-values.sql:2021
 msgid "Courier Code"
 msgstr "Kód kurýra"
 
-# id::i18n_l.description__en-CA
 #: 950.data.seed-values.sql:254
 msgid "Canadian English"
 msgstr "Kanadská angličtina"
 
-# id::cubt.label__folks%3Acirc.view
 #: 950.data.seed-values.sql:2562
 msgid "View Circulations"
 msgstr "Zobrazit výpůjčky"
 
-# id::aiit.name__SUB
 #: 950.data.seed-values.sql:6488
 msgid "Serial Subscription"
 msgstr "Předplatné seriálu"
 
-# id::ccvm.value__386
 # id::clm.value__slv
 #: 950.data.seed-values.sql:3886
 msgid "Slovenian"
 msgstr "Slovinština"
 
-# id::ccvm.value__58
 # id::clm.value__bra
 #: 950.data.seed-values.sql:3558
 msgid "Braj"
 msgstr "Bradžština"
 
-# id::ccvm.value__44
 # id::clm.value__bat
 #: 950.data.seed-values.sql:3544
 msgid "Baltic (Other)"
 msgstr "Baltské jazyky (ostatní)"
 
-# id::ccvm.value__516
 # id::clfm.value__h
 #: 950.data.seed-values.sql:4022
 msgid "Humor, satires, etc."
 msgstr "Humor, satira apod."
 
-# id::coust.description__ui.patron.edit.au.ident_value.suggest
 #: 950.data.seed-values.sql:2337
-msgid "The ident_value field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored."
+msgid ""
+"The ident_value field will be suggested on the patron registration screen. "
+"Suggesting a field makes it appear when suggested fields are shown. If the "
+"field is shown or required this setting is ignored."
 msgstr ""
 "Pole ident_value bude navrženo na obrazovce s registrací čtenáře. Návrh pole "
 "je zobrazen, pokud jsou zobrazena navrhovaná pole. Pokud je pole zobrazeno "
 "nebo je povinné, toto nastavení není uplatněno."
 
-# id::ccvm.value__509
 # id::citm.value__m
 #: 950.data.seed-values.sql:4013
 msgid "Computer file"
 msgstr "Počítačový soubor"
 
-# id::ccvm.value__342
 # id::clm.value__phi
 #: 950.data.seed-values.sql:3842
 msgid "Philippine (Other)"
 msgstr "Filipínské jazyky (ostatní)"
 
-# id::ccvm.value__151
 #: 950.data.seed-values.sql:3651
 msgid "German"
 msgstr "Němčina"
 
-# id::acqim.name__EDI
 #: 950.data.seed-values.sql:6490
 msgid "EDI"
 msgstr "EDI"
 
-# id::coust.description__circ.offline.username_allowed
 #: 950.data.seed-values.sql:5918
-msgid "During offline circulations, allow patrons to identify themselves with usernames in addition to barcode.  For this setting to work, a barcode format must also be defined"
+msgid ""
+"During offline circulations, allow patrons to identify themselves with "
+"usernames in addition to barcode.  For this setting to work, a barcode "
+"format must also be defined"
 msgstr ""
 "Umožnit čtenářům se během offline výpůjček identifikovat nejenom čárovým "
 "kódem, ale i uživatelským jménem. Aby toto nastavení fungovalo, musí být "
 "rovněž definován formát čárového kódu"
 
-# id::ccvm.value__384
 # id::clm.value__sla
 #: 950.data.seed-values.sql:3884
 msgid "Slavic (Other)"
 msgstr "Slovanské jazyky (ostatní)"
 
-# id::coust.label__circ.reshelving_complete.interval
 #: 950.data.seed-values.sql:1741
 msgid "Change reshelving status interval"
-msgstr "Změnit interval statusu zpětného zařazení do regálu"
+msgstr ""
+"Upravit  interval změny statutu exempláře z \" vráceno, dosud nezařazeno\" "
+"na \" dostupné\""
 
-# id::ccvm.value__424
 # id::clm.value__tem
 #: 950.data.seed-values.sql:3924
 msgid "Temne"
 msgstr "Temne"
 
-# id::ccvm.value__42
 # id::clm.value__baq
 #: 950.data.seed-values.sql:3542
 msgid "Basque"
 msgstr "Baskičtina"
 
-# id::ccvm.value__446
 # id::clm.value__tum
 #: 950.data.seed-values.sql:3946
 msgid "Tumbuka"
@@ -1042,37 +930,35 @@ msgstr "Tumbukština"
 msgid "oclc"
 msgstr "oclc"
 
-# id::coust.label__circ.holds.hold_has_copy_at.block
 #: 950.data.seed-values.sql:7124
 msgid "Holds: Has Local Copy Block"
 msgstr "Rezervace: Lokální exemplář je blokován"
 
-# id::ccvm.value__56
 # id::clm.value__bnt
 #: 950.data.seed-values.sql:3556
 msgid "Bantu (Other)"
 msgstr "Bantuské jazyky (ostatní)"
 
-# id::coust.description__ui.patron.edit.au.claims_never_checked_out_count.suggest
 #: 950.data.seed-values.sql:2245
-msgid "The claims_never_checked_out_count field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored."
+msgid ""
+"The claims_never_checked_out_count field will be suggested on the patron "
+"registration screen. Suggesting a field makes it appear when suggested "
+"fields are shown. If the field is shown or required this setting is ignored."
 msgstr ""
-"Pole claims_never_checked_out_count bude navrženo na obrazovce s registrací "
-"čtenáře. Návrh pole je zobrazen, pokud jsou zobrazena navrhovaná pole. Pokud "
-"je pole zobrazeno nebo je povinné, toto nastavení není uplatněno."
+"Pole claims_never_checked_out_count (počet údajně nevypůjčených) bude "
+"navrženo na obrazovce s registrací čtenáře. Návrh pole je zobrazen, pokud "
+"jsou zobrazena navrhovaná pole. Pokud je pole zobrazeno nebo je povinné, "
+"toto nastavení není uplatněno."
 
-# id::ccvm.value__530
 # id::cblvl.value__a
 #: 950.data.seed-values.sql:4041
 msgid "Monographic component part"
 msgstr "Dílčí část monografie"
 
-# id::ccvm.value__149
 #: 950.data.seed-values.sql:3649
 msgid "Germanic (Other)"
 msgstr "Germánské jazyky (ostatní)"
 
-# id::ccvm.value__497
 #: 950.data.seed-values.sql:4001
 msgid "Manuscript language material"
 msgstr "Rukopisný textový dokument"
@@ -1083,165 +969,143 @@ msgstr "Rukopisný textový dokument"
 msgid "Item Type"
 msgstr "Typ exempláře"
 
-# id::ccvm.value__324
 # id::clm.value__nzi
 #: 950.data.seed-values.sql:3824
 msgid "Nzima"
 msgstr "Nzima"
 
-# id::ccvm.value__112
 # id::clm.value__dut
 #: 950.data.seed-values.sql:3612
 msgid "Dutch"
 msgstr "Nizozemština"
 
-# id::ccvm.value__232 id::ccvm.value__239
 #: 950.data.seed-values.sql:3732 950.data.seed-values.sql:3739
 msgid "Kusaie"
 msgstr "Kosrajština (kusaie)"
 
-# id::ccvm.value__117
 # id::clm.value__eka
 #: 950.data.seed-values.sql:3617
 msgid "Ekajuk"
 msgstr "Ekajuk"
 
-# id::ccvm.value__163
 # id::clm.value__grb
 #: 950.data.seed-values.sql:3663
 msgid "Grebo"
 msgstr "Grebo"
 
-# id::crcd.name__2
 #: 950.data.seed-values.sql:167
 msgid "28_days_2_renew"
 msgstr "28_dní_2_prodloužení"
 
-# id::ccvm.value__301
 # id::clm.value__nap
 #: 950.data.seed-values.sql:3801
 msgid "Neapolitan Italian"
 msgstr "Neapolská italština"
 
-# id::ccvm.value__393
 #: 950.data.seed-values.sql:3893
 msgid "Skolt Sami"
 msgstr "Skolt sami"
 
-# id::coust.label__ui.circ.in_house_use.entry_cap
 #: 950.data.seed-values.sql:1851
 msgid "GUI: Record In-House Use: Maximum # of uses allowed per entry."
 msgstr ""
-"GUI: Záznam prezenčního využití: Maximální počet povolených využití na "
+"GUI: Záznam prezenční výpůjčky: Maximální počet povolených výpůjček na "
 "exemplář."
 
-# id::ccs.name__4
 #: 950.data.seed-values.sql:222
 msgid "Missing"
 msgstr "Nezvěstné"
 
-# id::ccvm.value__470
 # id::clm.value__wel
 #: 950.data.seed-values.sql:3970
 msgid "Welsh"
 msgstr "Velština"
 
-# id::coust.label__patron.password.use_phone
 #: 950.data.seed-values.sql:1786
 msgid "Patron: password from phone #"
 msgstr "Čtenář: heslo z telefonního čísla"
 
-# id::ccvm.value__331
 # id::clm.value__ota
 #: 950.data.seed-values.sql:3831
 msgid "Turkish, Ottoman"
 msgstr "Turečtina, osmanská"
 
-# id::cmf.label__19 id::cza.label__6 id::cza.label__15 id::cza.label__24
-# id::vqbrad.description__6
 # id::cza.label__6 id::cza.label__15 id::cza.label__24
+# id::vqbrad.description__6
 #: 950.data.seed-values.sql:81 950.data.seed-values.sql:291
 #: 950.data.seed-values.sql:312 950.data.seed-values.sql:331
 #: 950.data.seed-values.sql:2485
 msgid "ISSN"
 msgstr "ISSN"
 
-# id::coust.description__credit.processor.payflowpro.testmode
 #: 950.data.seed-values.sql:1999
-msgid "Do not really process transactions, but stay in test mode - uses pilot-payflowpro.paypal.com instead of the usual host"
+msgid ""
+"Do not really process transactions, but stay in test mode - uses pilot-"
+"payflowpro.paypal.com instead of the usual host"
 msgstr ""
 "Ve skutečnosti nezpracovávat transakce, ale zůstat v testovacím režimu - "
 "využívá pilot-payflowpro.paypal.com místo obvyklého hostitelského serveru"
 
-# id::coust.label__circ.password_reset_request_per_user_limit
 #: 950.data.seed-values.sql:2031
-msgid "Circulation: Maximum concurrently active self-serve password reset requests per user"
+msgid ""
+"Circulation: Maximum concurrently active self-serve password reset requests "
+"per user"
 msgstr ""
 "Výpůjčky: Maximum současně aktivních požadavků na nastavení nového hesla na "
 "uživatele"
 
-# id::ccvm.value__159
 # id::clm.value__goh
 #: 950.data.seed-values.sql:3659
 msgid "German, Old High (ca. 750-1050)"
 msgstr "Němčina, horní, starší doba (cca 750-1050)"
 
-# id::coust.label__ui.patron.edit.au.dob.show
 #: 950.data.seed-values.sql:2284
 msgid "GUI: Show dob field on patron registration"
 msgstr "GUI: Zobrazit pole dob při registraci čtenáře"
 
-# id::coust.label__ui.patron.edit.au.ident_value2.show
 #: 950.data.seed-values.sql:2340
 msgid "GUI: Show ident_value2 field on patron registration"
 msgstr "GUI: Zobrazit pole ident_value2 při registraci čtenáře"
 
-# id::ccvm.value__49
 #: 950.data.seed-values.sql:3549
 msgid "Berber (Other)"
 msgstr "Berberské jazyky (ostatní)"
 
-# id::cubt.label__folks
 #: 950.data.seed-values.sql:2559
 msgid "Friends"
 msgstr "Přátelé"
 
-# id::ccvm.value__102
 # id::clm.value__day
 #: 950.data.seed-values.sql:3602
 msgid "Dayak"
 msgstr "Dajáčtina"
 
-# id::ccvm.value__160
 # id::clm.value__gon
 #: 950.data.seed-values.sql:3660
 msgid "Gondi"
 msgstr "Góndština"
 
-# id::coust.description__circ.reshelving_complete.interval
 #: 950.data.seed-values.sql:1742
-msgid "Amount of time to wait before changing an item from \"reshelving\" status to \"available\".  Examples: \"1 day\", \"6 hours\""
+msgid ""
+"Amount of time to wait before changing an item from \"reshelving\" status to "
+"\"available\".  Examples: \"1 day\", \"6 hours\""
 msgstr ""
-"Doba čekání před změnou statusu exempláře ze \"zařazován zpět na regál\" na "
+"Doba čekání před změnou statusu exempláře z \"vráceno, dosud nezařazeno\" na "
 "\"dostupné\". Příklady: \"1 den\", \"6 hodin\""
 
-# id::coust.description__credit.processor.paypal.password
 #: 950.data.seed-values.sql:1975
 msgid "PayPal password"
 msgstr "Heslo do služby PayPal"
 
-# id::ccvm.value__212
 # id::clm.value__kam
 #: 950.data.seed-values.sql:3712
 msgid "Kamba"
 msgstr "Kambština"
 
-# id::coust.label__circ.staff_client.do_not_auto_attempt_print
 #: 950.data.seed-values.sql:1911
 msgid "Disable Automatic Print Attempt Type List"
 msgstr "Zakázat automatický typový seznam pokusů o tisk"
 
-# id::ccvm.value__507
 # id::citm.value__i
 #: 950.data.seed-values.sql:4011
 msgid "Nonmusical sound recording"
@@ -1252,27 +1116,22 @@ msgstr "Nehudební zvukový záznam"
 msgid "Patrons"
 msgstr "Čtenáři"
 
-# id::coust.description__credit.processor.default
 #: 950.data.seed-values.sql:1937
 msgid "This might be \"AuthorizeNet\", \"PayPal\", etc."
 msgstr "To může být \"AuthorizeNet\", \"PayPal\" atd."
 
-# id::coust.description__opac.barcode_regex
 #: 950.data.seed-values.sql:1727
 msgid "Regular expression defining the patron barcode format"
 msgstr "Regulární výraz definující formát čárového kódů čtenářů"
 
-# id::ccvm.value__262
 #: 950.data.seed-values.sql:3762
 msgid "Lushai"
 msgstr "Lušáí"
 
-# id::aiit.name__SHP
 #: 950.data.seed-values.sql:6485
 msgid "Shipping Charge"
 msgstr "Poštovné"
 
-# id::ccvm.value__304
 # id::clm.value__nbl
 #: 950.data.seed-values.sql:3804
 msgid "Ndebele (South Africa)"
@@ -1283,114 +1142,92 @@ msgstr "Ndebelština (Jižní Afrika)"
 msgid "1_hour_2_renew"
 msgstr "1_hodina_2_prodloužení"
 
-# id::ccvm.value__517
 # id::clfm.value__i
 # nutný kontext
 #: 950.data.seed-values.sql:4023
 msgid "Letters"
 msgstr "Dopisy"
 
-# id::ccvm.value__268
 # id::clm.value__mak
 #: 950.data.seed-values.sql:3768
 msgid "Makasar"
 msgstr "Makasarština"
 
-# id::cmc.label__series
 #: 950.data.seed-values.sql:27
 msgid "Series"
 msgstr "Edice"
 
-# id::coust.label__circ.charge_lost_on_zero
-# id::coust.description__circ.charge_lost_on_zero
 #: 950.data.seed-values.sql:1796 950.data.seed-values.sql:1797
 msgid "Charge lost on zero"
 msgstr "Poplatek za ztrátu (i v případě nulové ceny)"
 
-# id::ccvm.value__51
 # id::clm.value__bih
 #: 950.data.seed-values.sql:3551
 msgid "Bihari"
 msgstr "Bihárština"
 
-# id::ccvm.value__53
 #: 950.data.seed-values.sql:3553
 msgid "Edo"
 msgstr "Bini"
 
-# id::ccvm.value__225
 # id::clm.value__kin
 #: 950.data.seed-values.sql:3725
 msgid "Kinyarwanda"
 msgstr "Rwandština"
 
-# id::ccvm.value__191
 #: 950.data.seed-values.sql:3691
 msgid "Interlingue"
 msgstr "Interlingua (Mezinárodní pomocná jazyková asociace)"
 
-# id::ccs.name__12
 #: 950.data.seed-values.sql:230
 msgid "Reserves"
 msgstr "Literatura ke kurzům"
 
-# id::ccvm.value__174
 # id::clm.value__heb
 #: 950.data.seed-values.sql:3674
 msgid "Hebrew"
 msgstr "Hebrejština"
 
-# id::coust.label__ui.general.button_bar
-# id::coust.description__ui.general.button_bar
 #: 950.data.seed-values.sql:1886 950.data.seed-values.sql:1887
 msgid "Button bar"
 msgstr "Lišta tlačítek"
 
-# id::ccvm.value__121 id::ccvm.value__123
 # id::clm.value__epo id::clm.value__-esp
 #: 950.data.seed-values.sql:3621 950.data.seed-values.sql:3623
 msgid "Esperanto"
 msgstr "Esperanto"
 
-# id::coust.label__ui.patron.edit.au.second_given_name.show
 #: 950.data.seed-values.sql:2384
 msgid "GUI: Show second_given_name field on patron registration"
 msgstr "GUI: Zobrazit pole second_given_name při registraci čtenáře"
 
-# id::ccvm.value__407 id::ccvm.value__414
 # id::clm.value__ssw id::clm.value__-swz
 #: 950.data.seed-values.sql:3907 950.data.seed-values.sql:3914
 msgid "Swazi"
 msgstr "Svatština"
 
-# id::cubt.label__folks%3Apub_book_bags.view
 #: 950.data.seed-values.sql:2560
 msgid "List Published Book Bags"
 msgstr "Vypsat zveřejněné seznamy knih"
 
-# id::ccvm.value__183
 # id::clm.value__hup
 #: 950.data.seed-values.sql:3683
 msgid "Hupa"
 msgstr "Hupa"
 
-# id::ccvm.value__246 id::ccvm.value__389
 #: 950.data.seed-values.sql:3746 950.data.seed-values.sql:3889
 msgid "Sami"
 msgstr "Sami"
 
-# id::ccvm.value__194
 # id::clm.value__inc
 #: 950.data.seed-values.sql:3694
 msgid "Indic (Other)"
 msgstr "Indo-árijské jazyky (ostatní)"
 
-# id::coust.label__ui.admin.work_log.max_entries
 #: 950.data.seed-values.sql:2011
 msgid "GUI: Work Log: Maximum Actions Logged"
-msgstr "GUI: Pracovní deník: maximum zaznamenaných akcí"
+msgstr "GUI: Pracovní log: maximum zaznamenaných akcí"
 
-# id::cmc.label__author id::cza.label__4 id::cza.label__13 id::cza.label__22
 # id::cza.label__4 id::cza.label__13 id::cza.label__22
 #: 950.data.seed-values.sql:25 950.data.seed-values.sql:287
 #: 950.data.seed-values.sql:308 950.data.seed-values.sql:327
@@ -1403,18 +1240,15 @@ msgstr "Autor"
 msgid "System Local"
 msgstr "Lokální systém"
 
-# id::coust.label__ui.patron.edit.au.evening_phone.require
 #: 950.data.seed-values.sql:2320
 msgid "GUI: Require evening_phone field on patron registration"
 msgstr "GUI: Vyžadovat pole evening_phone při registraci čtenáře"
 
-# id::ccvm.value__226
 # id::clm.value__kir
 #: 950.data.seed-values.sql:3726
 msgid "Kyrgyz"
 msgstr "Kyrgyzština"
 
-# id::ccvm.value__366
 #: 950.data.seed-values.sql:3866
 msgid "Samaritan Aramaic"
 msgstr "Samarština"
@@ -1424,167 +1258,147 @@ msgstr "Samarština"
 msgid "2_months_2_renew"
 msgstr "2_měsíce_2_prodloužení"
 
-# id::cnal.name__2
 #: 950.data.seed-values.sql:240
 msgid "Unfiltered"
 msgstr "Nefiltrováno"
 
-# id::coust.description__ui.patron.edit.aua.post_code.example
 #: 950.data.seed-values.sql:2405
-msgid "The Example for validation on the post_code field in patron registration."
+msgid ""
+"The Example for validation on the post_code field in patron registration."
 msgstr "Příklad pro validaci pole post_code při registraci čtenáře."
 
-# id::ccvm.value__518
 # id::clfm.value__j
 #: 950.data.seed-values.sql:4024
 msgid "Short stories"
 msgstr "Povídky"
 
-# id::coust.description__ui.patron.edit.au.suffix.show
 #: 950.data.seed-values.sql:2393
-msgid "The suffix field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored."
+msgid ""
+"The suffix field will be shown on the patron registration screen. Showing a "
+"field makes it appear with required fields even when not required. If the "
+"field is required this setting is ignored."
 msgstr ""
 "Pole, do něhož se vyplňuje přípona ke jménu, bude zobrazeno na obrazovce s "
-"registrací uživatele. Pole je zobrazeno, pokud jsou zobrazena povinná pole, "
-"a to i v případě, že samo není povinné. Pokud je pole povinné, toto "
-"nastavení není uplatněno."
+"registrací čtenáře. Pole je zobrazeno, pokud jsou zobrazena povinná pole, a "
+"to i v případě, že samo není povinné. Pokud je pole povinné, toto nastavení "
+"není uplatněno."
 
-# id::ccvm.value__141
 # id::clm.value__ful
 #: 950.data.seed-values.sql:3641
 msgid "Fula"
 msgstr "Fulahština"
 
-# id::coust.label__ui.patron.edit.au.barred.suggest
 #: 950.data.seed-values.sql:2236
 msgid "GUI: Suggest barred field on patron registration"
 msgstr "GUI: Navrhnout blokované pole při registraci čtenáře"
 
-# id::coust.description__ui.patron.edit.phone.regex
 #: 950.data.seed-values.sql:2421
-msgid "The Regular Expression for validation on phone fields in patron registration. Applies to all phone fields without their own setting."
+msgid ""
+"The Regular Expression for validation on phone fields in patron "
+"registration. Applies to all phone fields without their own setting."
 msgstr ""
 "Regulární výraz pro validaci polí s telefonními čísly při registraci "
 "čtenáře. Vztahuje se ke všem polím s telefonními čísly bez vlastního "
 "nastavení."
 
-# id::ccvm.value__319
 #: 950.data.seed-values.sql:3819
 msgid "Nubian languages"
 msgstr "Nubijské jazyky"
 
-# id::i18n_l.name__hy-AM id::i18n_l.description__hy-AM id::ccvm.value__arm
 # id::clm.value__arm id::i18n_l.name__hy-AM id::i18n_l.description__hy-AM
 #: 950.data.seed-values.sql:259 950.data.seed-values.sql:260
 #: 950.data.seed-values.sql:3522
 msgid "Armenian"
 msgstr "Arménština"
 
-# id::coust.label__circ.holds.clear_shelf.copy_status
 #: 950.data.seed-values.sql:5341
 msgid "Holds: Clear shelf copy status"
 msgstr "Rezervace: Zrušit status exempláře na regále"
 
-# id::aou.name__2
 #: 950.data.seed-values.sql:366
 msgid "Example System 1"
 msgstr "Vzorový systém 1"
 
-# id::ccvm.value__480
 #: 950.data.seed-values.sql:3980
 msgid "Yupik languages"
 msgstr "Yupik"
 
-# id::aou.name__3
 #: 950.data.seed-values.sql:368
 msgid "Example System 2"
 msgstr "Vzorový systém 2"
 
-# id::ccvm.value__420
 # id::clm.value__tam
 #: 950.data.seed-values.sql:3920
 msgid "Tamil"
 msgstr "Tamilština"
 
-# id::ccvm.value__aus
 # id::clm.value__aus
 #: 950.data.seed-values.sql:3530
 msgid "Australian languages"
 msgstr "Australské jazky"
 
-# id::ccvm.value__356
 # id::clm.value__roh
 #: 950.data.seed-values.sql:3856
 msgid "Raeto-Romance"
 msgstr "Rétorománština"
 
-# id::coust.description__circ.selfcheck.workstation_required
 #: 950.data.seed-values.sql:5351
 msgid "All selfcheck stations must use a workstation"
 msgstr ""
 "Všechny stanice pro samoobslužné půjčování musí používat pracovní stanici"
 
-# id::coust.label__circ.selfcheck.workstation_required
 #: 950.data.seed-values.sql:5350
 msgid "Selfcheck: Workstation Required"
 msgstr "Stanice pro samoobslužné půjčování: Je vyžadována pracovní stanice"
 
-# id::coust.label__ui.patron.edit.default_suggested
 #: 950.data.seed-values.sql:2412
 msgid "GUI: Default showing suggested patron registration fields"
 msgstr "GUI: Při registraci čtenáře standardně zobrazení navržených polí"
 
-# id::ccvm.value__535
 #: 950.data.seed-values.sql:4046
 msgid "Monograph/Item"
 msgstr "Monografie (i vícesvazkové)"
 
-# id::coust.description__ui.patron.edit.aua.county.require
 #: 950.data.seed-values.sql:2401
 msgid "The county field will be required on the patron registration screen."
 msgstr "Pole okres bude na obrazovce s registrací čtenáře povinné."
 
-# id::ccs.name__5
 #: 950.data.seed-values.sql:223
 msgid "In process"
-msgstr "Ve zpracování"
+msgstr "Zpracovává se"
 
-# id::coust.label__circ.selfcheck.auto_override_checkout_events
 #: 950.data.seed-values.sql:1906
 msgid "Selfcheck override events list"
-msgstr "Seznam událostí vztahujících se k samoobslužnému půjčování k překonání"
+msgstr "Seznam událostí samoobslužného půjčování, které byly \"obejity\""
 
-# id::coust.label__circ.patron_invalid_address_apply_penalty
 #: 950.data.seed-values.sql:1896
 msgid "Invalid patron address penalty"
 msgstr "Pokuta za neplatnou adresu čtenáře"
 
-# id::coust.descripton__acq.fund.balance_limit.warn
 #: 950.data.seed-values.sql:6471
-msgid "When the amount remaining in the fund, including spent money and encumbrances, goes below this percentage, attempts to spend from the fund will result in a warning to the staff."
+msgid ""
+"When the amount remaining in the fund, including spent money and "
+"encumbrances, goes below this percentage, attempts to spend from the fund "
+"will result in a warning to the staff."
 msgstr ""
-"Pokud se částka zbývající ve fondu - včetně již utracených peněz a závazků - "
-"dostane pod toto procento, pokusy utrácet peníze z tohoto fondu vyústí ve "
-"varování zaměstnancům."
+"Pokud se částka zbývající ve fondu (včetně již utracených peněz a závazků)  "
+"dostane pod toto procento, při pokusu utratit peníze z tohoto fondu obdží "
+"personál varovnou zprávu."
 
-# id::ccvm.value__524
 # id::cifm.value__b
 #: 950.data.seed-values.sql:4033
 msgid "Microfiche"
 msgstr "Mikrofiš"
 
-# id::ccvm.value__175
 #: 950.data.seed-values.sql:3675
 msgid "Herero"
 msgstr "Herero"
 
-# id::ccvm.value__472
 # id::clm.value__wln
 #: 950.data.seed-values.sql:3972
 msgid "Walloon"
 msgstr "Valonština"
 
-# id::ccvm.value__106
 # id::clm.value__din
 #: 950.data.seed-values.sql:3606
 msgid "Dinka"
@@ -1595,153 +1409,135 @@ msgstr "Dinkština"
 msgid "American English"
 msgstr "Americká angličtina"
 
-# id::czs.label__biblios
 #: 950.data.seed-values.sql:278
 msgid "‡biblios.net"
 msgstr "‡biblios.net"
 
-# id::coust.description__credit.processor.authorizenet.enabled
 #: 950.data.seed-values.sql:1942
 msgid "Enable AuthorizeNet payments"
 msgstr "Povolit platby prostřednictvím služby AuthorizeNet"
 
-# id::coust.description__patron.password.use_phone
 #: 950.data.seed-values.sql:1787
-msgid "Use the last 4 digits of the patrons phone number as the default password when creating new users"
+msgid ""
+"Use the last 4 digits of the patrons phone number as the default password "
+"when creating new users"
 msgstr ""
 "Při vytváření nových uživatelů použít poslední čtyři číslice ze čtenářova "
 "telefonního čísla jako výchozí heslo"
 
-# id::coust.label__ui.patron.edit.au.dob.require
 #: 950.data.seed-values.sql:2280
 msgid "GUI: Require dob field on patron registration"
 msgstr "GUI: Vyžadovat pole dob při registraci čtenáře"
 
-# id::ccvm.value__280
 # id::clm.value__mic
 #: 950.data.seed-values.sql:3780
 msgid "Micmac"
 msgstr "Micmac"
 
-# id::cmf.label__8
 #: 950.data.seed-values.sql:55
 msgid "Personal Author"
 msgstr "Personální autor"
 
-# id::coust.description__circ.holds.default_estimated_wait_interval
 #: 950.data.seed-values.sql:1747
-msgid "When predicting the amount of time a patron will be waiting for a hold to be fulfilled, this is the default estimated length of time to assume an item will be checked out. Examples: \"3 weeks\", \"7 days\""
+msgid ""
+"When predicting the amount of time a patron will be waiting for a hold to be "
+"fulfilled, this is the default estimated length of time to assume an item "
+"will be checked out. Examples: \"3 weeks\", \"7 days\""
 msgstr ""
-"Při odhadování doby, po kterou bude uživatel čekat na splnění rezervace, je "
+"Při odhadování doby, po kterou bude čtenář čekat na splnění rezervace, je "
 "toto standardní odhadovaná doba za předpokladu, že exemplář bude vypůjčen. "
 "Příklady: \"3 týdny\", \"7 dní\""
 
-# id::ccvm.value__264
 # id::clm.value__mad
 #: 950.data.seed-values.sql:3764
 msgid "Madurese"
 msgstr "Madurština"
 
-# id::coust.description__ui.patron.edit.au.claims_returned_count.suggest
 #: 950.data.seed-values.sql:2253
-msgid "The claims_returned_count field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored."
+msgid ""
+"The claims_returned_count field will be suggested on the patron registration "
+"screen. Suggesting a field makes it appear when suggested fields are shown. "
+"If the field is shown or required this setting is ignored."
 msgstr ""
-"Pole claims_returned_count bude navrženo na obrazovce s registrací čtenáře. "
-"Návrh pole je zobrazen, pokud jsou zobrazena navržená pole. Pokud je pole "
-"zobrazeno nebo je povinné, toto nastavení není uplatněno."
+"Pole claims_returned_count (počet údajně vrácených) bude navrženo na "
+"obrazovce s registrací čtenáře. Návrh pole je zobrazen, pokud jsou zobrazena "
+"navržená pole. Pokud je pole zobrazeno nebo je povinné, toto nastavení není "
+"uplatněno."
 
-# id::ccvm.value__227
 # id::clm.value__kmb
 #: 950.data.seed-values.sql:3727
 msgid "Kimbundu"
 msgstr "Kimbundština"
 
-# id::ccvm.value__405
 # id::clm.value__ssa
 #: 950.data.seed-values.sql:3905
 msgid "Nilo-Saharan (Other)"
 msgstr "Nilsko-saharské jazyky (ostatní)"
 
-# id::ccvm.value__362
 # id::clm.value__sag
 #: 950.data.seed-values.sql:3862
 msgid "Sango (Ubangi Creole)"
 msgstr "Sangština (Ubangi Creole)"
 
-# id::ccvm.value__220
 #: 950.data.seed-values.sql:3720
 msgid "Khasi"
 msgstr "Khásí"
 
-# id::cmc.label__subject
 #: 950.data.seed-values.sql:26
 msgid "Subject"
 msgstr "Téma"
 
-# id::ccvm.value__266
 # id::clm.value__mah
 #: 950.data.seed-values.sql:3766
 msgid "Marshallese"
 msgstr "Maršalština"
 
-# id::coust.label__global.default_locale
-# id::coust.description__global.default_locale
 #: 950.data.seed-values.sql:1696 950.data.seed-values.sql:1697
 msgid "Global Default Locale"
-msgstr "Globálně uplatněný standardní jazyk"
+msgstr "Globálně použitá lokalizace"
 
-# id::coust.label__ui.patron.edit.au.master_account.show
 #: 950.data.seed-values.sql:2356
 msgid "GUI: Show master_account field on patron registration"
 msgstr "GUI: Zobrazit pole master_account při registraci čtenáře"
 
-# id::ccvm.value__476
 # id::clm.value__yao
 #: 950.data.seed-values.sql:3976
 msgid "Yao (Africa)"
 msgstr "Jaoština (Afrika)"
 
-# id::ccvm.value__273
 # id::clm.value__mar
 #: 950.data.seed-values.sql:3773
 msgid "Marathi"
 msgstr "Maráthština"
 
-# id::ccvm.value__385
 # id::clm.value__slo
 #: 950.data.seed-values.sql:3885
 msgid "Slovak"
 msgstr "Slovenština"
 
-# id::ccvm.value__365
 # id::clm.value__sal
 #: 950.data.seed-values.sql:3865
 msgid "Salishan languages"
 msgstr "Salishské jazyky"
 
-# id::coust.label__ui.patron.edit.au.other_phone.require
 #: 950.data.seed-values.sql:2372
 msgid "GUI: Require other_phone field on patron registration"
 msgstr "GUI: Vyžadovat pole other_phone při registraci čtenáře"
 
-# id::ccvm.value__367
 # id::clm.value__san
 #: 950.data.seed-values.sql:3867
 msgid "Sanskrit"
 msgstr "Sanskrt"
 
-# id::ccs.name__9
 #: 950.data.seed-values.sql:227
 msgid "On order"
-msgstr "Na objednávku"
+msgstr "Objednáno"
 
-# id::ccvm.value__147
 # id::clm.value__gay
 #: 950.data.seed-values.sql:3647
 msgid "Gayo"
 msgstr "Gayo"
 
-# id::ccvm.value__514
 # id::clfm.value__e
 #: 950.data.seed-values.sql:4020
 msgid "Essays"
@@ -1753,191 +1549,171 @@ msgstr "Eseje"
 msgid "Local Library System"
 msgstr "Lokální knihovní systém"
 
-# id::ccvm.value__528
 # id::cifm.value__r
 #: 950.data.seed-values.sql:4037
 msgid "Regular print reproduction"
 msgstr "Reprodukce běžným písmem"
 
-# id::ccvm.value__206
 # id::clm.value__jpr
 #: 950.data.seed-values.sql:3706
 msgid "Judeo-Persian"
 msgstr "Judeo-perština"
 
-# id::coust.description__circ.selfcheck.alert.sound
 #: 950.data.seed-values.sql:5364
 msgid "Use audio alerts for selfcheck events"
 msgstr ""
-"Použít zvuková varování pro události vztahující se k samoobslužnému "
+"Použít zvuková upozornění pro události vztahující se k samoobslužnému "
 "půjčování"
 
-# id::coust.description__ui.patron.edit.au.dob.suggest
 #: 950.data.seed-values.sql:2289
-msgid "The dob field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored."
+msgid ""
+"The dob field will be suggested on the patron registration screen. "
+"Suggesting a field makes it appear when suggested fields are shown. If the "
+"field is shown or required this setting is ignored."
 msgstr ""
 "Pole dob bude navrženo na obrazovce s registrací čtenáře. Návrh pole je "
 "zobrazen, pokud jsou zobrazena navrhovaná pole. Pokud je pole zobrazeno nebo "
 "je povinné, toto nastavení není uplatněno."
 
-# id::coust.description__circ.password_reset_request_time_to_live
 #: 950.data.seed-values.sql:2037
-msgid "Length of time (in seconds) a self-serve password reset request should remain active."
+msgid ""
+"Length of time (in seconds) a self-serve password reset request should "
+"remain active."
 msgstr ""
 "Délka času (v sekundách), po kterou má zůstat požadavek na nové nastavení "
 "hesla aktivním."
 
-# id::ccvm.value__512
 #: 950.data.seed-values.sql:4018
 msgid "Comic strips"
 msgstr "Kreslené seriály (komiksy)"
 
-# id::coust.label__ui.patron.edit.au.claims_returned_count.suggest
 #: 950.data.seed-values.sql:2252
 msgid "GUI: Suggest claims_returned_count field on patron registration"
-msgstr "GUI: Navrhnout pole claims_returned_count při registraci čtenáře"
+msgstr ""
+"GUI: Navrhnout pole claims_returned_count (počet údajně vrácených) při "
+"registraci čtenáře"
 
-# id::ccpbt.label__misc id::ccnbt.label__misc id::cbrebt.label__misc
-# id::cubt.label__misc
 #: 950.data.seed-values.sql:2548 950.data.seed-values.sql:2551
 #: 950.data.seed-values.sql:2552 950.data.seed-values.sql:2558
 msgid "Miscellaneous"
 msgstr "Různé"
 
-# id::coust.label__circ.hold_boundary.soft
-# id::coust.description__circ.hold_boundary.soft
 #: 950.data.seed-values.sql:1721 950.data.seed-values.sql:1722
 msgid "Holds: Soft boundary"
 msgstr "Rezervace: Tolerantní hranice"
 
-# id::coust.description__cat.bib.alert_on_empty
 #: 950.data.seed-values.sql:1782
 msgid "Alert staff when the last copy for a record is being deleted"
-msgstr "Varovat zaměstnance, pokud je smazán poslední exemplář u záznamu"
+msgstr ""
+"Upozornit personál, pokud je mazán poslední exemplář připojený k záznamu"
 
-# id::aou.name__7
 #: 950.data.seed-values.sql:376
 msgid "Example Branch 4"
 msgstr "Vzorová pobočka 4"
 
-# id::aout.opac_label__1
 #: 950.data.seed-values.sql:348
 msgid "Everywhere"
 msgstr "Všude"
 
-# id::aou.name__6
 #: 950.data.seed-values.sql:374
 msgid "Example Branch 3"
 msgstr "Vzorová pobočka 3"
 
-# id::aou.name__4
 #: 950.data.seed-values.sql:370
 msgid "Example Branch 1"
 msgstr "Vzorová pobočka 1"
 
-# id::ccvm.value__229
 #: 950.data.seed-values.sql:3729
 msgid "Komi"
 msgstr "Komijština"
 
-# id::ccvm.value__179
 # id::clm.value__hit
 #: 950.data.seed-values.sql:3679
 msgid "Hittite"
 msgstr "Chetitština"
 
-# id::ccvm.value__529
 # id::cifm.value__s
 #: 950.data.seed-values.sql:4038
 msgid "Electronic"
 msgstr "Elektronický"
 
-# id::ccvm.value__308
 # id::clm.value__nep
 #: 950.data.seed-values.sql:3808
 msgid "Nepali"
 msgstr "Nepálština"
 
-# id::ccvm.value__445
 # id::clm.value__tuk
 #: 950.data.seed-values.sql:3945
 msgid "Turkmen"
 msgstr "Turkmenština"
 
-# id::coust.label__ui.patron.edit.au.second_given_name.suggest
 #: 950.data.seed-values.sql:2388
 msgid "GUI: Suggest second_given_name field on patron registration"
 msgstr "GUI: Navrhnout pole second_given_name při registraci čtenáře"
 
-# id::ccvm.value__408
 # id::clm.value__suk
 #: 950.data.seed-values.sql:3908
 msgid "Sukuma"
 msgstr "Sukuma"
 
-# id::ccvm.value__502
 #: 950.data.seed-values.sql:4006
 msgid "Mixed materials"
 msgstr "Smíšené dokumenty"
 
-# id::coust.label__acq.fund.balance_limit.warn
 #: 950.data.seed-values.sql:6470
 msgid "Fund Spending Limit for Warning"
-msgstr "Varování při čerpání z fondu od částky"
+msgstr "Limit pro varování při čerpání z fondu"
 
-# id::coust.description__ui.patron.edit.au.day_phone.suggest
 #: 950.data.seed-values.sql:2273
-msgid "The day_phone field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored."
+msgid ""
+"The day_phone field will be suggested on the patron registration screen. "
+"Suggesting a field makes it appear when suggested fields are shown. If the "
+"field is shown or required this setting is ignored."
 msgstr ""
 "Pole day_phone bude navrženo na obrazovce s registrací čtenáře. Návrh pole "
 "je zobrazen, pokud jsou zobrazena navrhovaná pole. Pokud je pole zobrazeno "
 "nebo je povinné, toto nastavení není uplatněno."
 
-# id::ccs.name__8
 #: 950.data.seed-values.sql:226
 msgid "On holds shelf"
 msgstr "Na regále s rezervacemi"
 
-# id::coust.description__circ.hold_expire_interval
 #: 950.data.seed-values.sql:1687
-msgid "Amount of time after a hold is placed before the hold expires.  Example \"100 days\""
-msgstr "Doba expirace rezervace od jejího zadání. Příklad \"100 dní\""
+msgid ""
+"Amount of time after a hold is placed before the hold expires.  Example "
+"\"100 days\""
+msgstr "Doba vypršení rezervace od jejího zadání. Příklad \"100 dní\""
 
-# id::ccvm.value__450
 #: 950.data.seed-values.sql:3950
 msgid "Tuvaluan"
 msgstr "Tuvalština"
 
-# id::coust.description__ui.admin.patron_log.max_entries
 #: 950.data.seed-values.sql:2017
-msgid "Maximum entries for \"Most Recently Affected Patrons...\" section of the Work Log interface."
+msgid ""
+"Maximum entries for \"Most Recently Affected Patrons...\" section of the "
+"Work Log interface."
 msgstr ""
-"Maximální počet záznamů sekce \"Nejnověji postižených čtenářů...\" v rozhraní "
-"pracovního deníku."
+"Maximální počet záznamů sekce \"Nejnověji postižených čtenářů...\" v "
+"rozhraní pracovního deníku."
 
-# id::ccvm.value__bak
 # id::clm.value__bak
 #: 950.data.seed-values.sql:3538
 msgid "Bashkir"
 msgstr "Baškirština"
 
-# id::ccvm.value__236
 #: 950.data.seed-values.sql:3736
 msgid "Kuanyama"
 msgstr "Kuaňamština"
 
-# id::ccvm.value__318
 # id::clm.value__nso
 #: 950.data.seed-values.sql:3818
 msgid "Northern Sotho"
 msgstr "Severní sothoština"
 
-# id::ccvm.value__bai
 #: 950.data.seed-values.sql:3537
 msgid "Bamileke languages"
 msgstr "Bamilecké jazyky"
 
-# id::ccvm.value__45
 #: 950.data.seed-values.sql:3545
 msgid "Beja"
 msgstr "Bedža"
@@ -1947,54 +1723,44 @@ msgstr "Bedža"
 msgid "Spanish (Mexico)"
 msgstr "Španělština (Mexiko)"
 
-# id::coust.description__credit.processor.payflowpro.partner
 #: 950.data.seed-values.sql:2007
 msgid "Often \"PayPal\" or \"VeriSign\", sometimes others"
 msgstr "Často \"PayPal\" nebo \"VeriSign\", někdy jiné"
 
-# id::ccvm.value__209
 #: 950.data.seed-values.sql:3709
 msgid "Kabyle"
 msgstr "Kabulí"
 
-# id::crcd.name__10
 #: 950.data.seed-values.sql:183
 msgid "14_days_2_renew"
 msgstr "14_dní_2_prodloužení"
 
-# id::cit.name__2
 #: 950.data.seed-values.sql:159
 msgid "SSN"
 msgstr "Číslo pasu"
 
-# id::ccvm.value__162
 # id::clm.value__got
 #: 950.data.seed-values.sql:3662
 msgid "Gothic"
 msgstr "gótština"
 
-# id::ccvm.value__436
 #: 950.data.seed-values.sql:3936
 msgid "Tamashek"
 msgstr "Tamašek"
 
-# id::ccvm.value__208
 #: 950.data.seed-values.sql:3708
 msgid "Kara-Kalpak"
 msgstr "Karakalpačtina"
 
-# id::ccvm.value__412
 # id::clm.value__swa
 #: 950.data.seed-values.sql:3912
 msgid "Swahili"
 msgstr "Svahilština"
 
-# id::aiit.name__ITM
 #: 950.data.seed-values.sql:6487
 msgid "Non-library Item"
 msgstr "Neknihovní položka"
 
-# id::ccvm.value__68
 # id::clm.value__car
 #: 950.data.seed-values.sql:3568
 msgid "Carib"
@@ -2005,355 +1771,300 @@ msgstr "Karibština"
 msgid "Sub-library"
 msgstr "Dílčí knihovna"
 
-# id::coust.description__ui.patron.edit.au.evening_phone.suggest
 #: 950.data.seed-values.sql:2329
-msgid "The evening_phone field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored."
+msgid ""
+"The evening_phone field will be suggested on the patron registration screen. "
+"Suggesting a field makes it appear when suggested fields are shown. If the "
+"field is shown or required this setting is ignored."
 msgstr ""
 "Pole evening_phone bude navrženo na obrazovce s registrací čtenáře. Návrh "
 "pole je zobrazen, pokud jsou zobrazena navrhovaná pole. Pokud je pole "
 "zobrazeno nebo je povinné, toto nastavení není uplatněno."
 
-# id::ccvm.value__83
 #: 950.data.seed-values.sql:3583
 msgid "Cherokee"
 msgstr "Cherokee"
 
-# id::ccvm.value__504
 # id::citm.value__f
 #: 950.data.seed-values.sql:4008
 msgid "Manuscript cartographic material"
 msgstr "Rukopisný kartografický dokument"
 
-# id::coust.description__circ.void_lost_proc_fee_on_checkin
 #: 950.data.seed-values.sql:1817
 msgid "Void processing fee when lost item returned"
 msgstr "Zrušit poplatek za zpracování, pokud je ztracený exemplář vrácen"
 
-# id::vqbrad.description__9
 #: 950.data.seed-values.sql:2488
 msgid "TCN Value"
 msgstr "Hodnota kontrolního čísla záznamu (TCN)"
 
-# id::cust.label__history.hold.retention_count
-# id::cust.description__history.hold.retention_count
 #: 950.data.seed-values.sql:7241 950.data.seed-values.sql:7242
 msgid "Historical Hold Retention Count"
 msgstr "Počet ponechávaných historických rezervací"
 
-# id::coust.description__credit.processor.payflowpro.vendor
 #: 950.data.seed-values.sql:2003
 msgid "Often the same thing as the login"
 msgstr "Často totéž co přihlášení"
 
-# id::ccvm.value__265
 #: 950.data.seed-values.sql:3765
 msgid "Magahi"
 msgstr "Magahština"
 
-# id::ccvm.value__333
 #: 950.data.seed-values.sql:3833
 msgid "Papuan (Other)"
 msgstr "Papuánské jazyky (ostatní)"
 
-# id::ccvm.value__284 id::ccvm.value__285
 #: 950.data.seed-values.sql:3784 950.data.seed-values.sql:3785
 msgid "Malagasy"
 msgstr "Malgaština"
 
-# id::ccvm.value__435
 #: 950.data.seed-values.sql:3935
 msgid "Tlingit"
 msgstr "Tlingit"
 
-# id::ccvm.value__271
 #: 950.data.seed-values.sql:3771
 msgid "Maori"
 msgstr "Maorština"
 
-# id::ccvm.value__463
 # id::clm.value__vie
 #: 950.data.seed-values.sql:3963
 msgid "Vietnamese"
 msgstr "Vietnamština"
 
-# id::ccvm.value__138
 #: 950.data.seed-values.sql:3638
 msgid "French, Middle (ca. 1400-1600)"
 msgstr "Francouzština, střední doba (cca 1400-1600)"
 
-# id::coust.label__ui.patron.edit.phone.example
 #: 950.data.seed-values.sql:2416
 msgid "GUI: Example for phone fields on patron registration"
 msgstr "GUI: Příklad polí s telefonními čísly při registraci čtenáře"
 
-# id::coust.label__ui.patron.edit.au.suffix.show
 #: 950.data.seed-values.sql:2392
 msgid "GUI: Show suffix field on patron registration"
 msgstr "GUI: Zobrazit pole přípona při registraci čtenáře"
 
-# id::ccvm.value__185
 #: 950.data.seed-values.sql:3685
 msgid "Igbo"
 msgstr "Igbo"
 
-# id::ccvm.value__241
 #: 950.data.seed-values.sql:3741
 msgid "Ladino"
 msgstr "Ladinština"
 
-# id::ccvm.value__404
 #: 950.data.seed-values.sql:3904
 msgid "Serer"
 msgstr "Serer"
 
-# id::ccvm.value__69
 # id::clm.value__cat
 #: 950.data.seed-values.sql:3569
 msgid "Catalan"
 msgstr "Katalánština"
 
-# id::ccvm.value__234
 #: 950.data.seed-values.sql:3734
 msgid "Kru"
 msgstr "Kru"
 
-# id::ccvm.value__492
 # id::cam.value__e
 #: 950.data.seed-values.sql:3994
 msgid "Adult"
 msgstr "Dospělý"
 
-# id::ccvm.value__343
 #: 950.data.seed-values.sql:3843
 msgid "Phoenician"
 msgstr "Foiničtina"
 
-# id::coust.label__circ.password_reset_request_time_to_live
 #: 950.data.seed-values.sql:2036
 msgid "Circulation: Self-serve password reset request time-to-live"
 msgstr "Výpůjčky: Životnost požadavku na nastavení nového hesla"
 
-# id::ccvm.value__471
 #: 950.data.seed-values.sql:3971
 msgid "Sorbian languages"
 msgstr "Lužická srbština"
 
-# id::ccvm.value__488
 # id::cam.value__a
 #: 950.data.seed-values.sql:3990
 msgid "Preschool"
 msgstr "Předškolní"
 
-# id::ccvm.value__374
 #: 950.data.seed-values.sql:3874
 msgid "Selkup"
 msgstr "Selkupština"
 
-# id::crcd.name__4
 #: 950.data.seed-values.sql:171
 msgid "3_days_1_renew"
 msgstr "3_dní_1_prodloužení"
 
-# id::ccvm.value__314
 #: 950.data.seed-values.sql:3814
 msgid "Norwegian (Bokmål)"
 msgstr "Norština (bokmål)"
 
-# id::coust.label__circ.charge_on_damaged
-# id::coust.description__circ.charge_on_damaged
 #: 950.data.seed-values.sql:1791 950.data.seed-values.sql:1792
 msgid "Charge item price when marked damaged"
-msgstr "Účtovat cenu exempláře, pokud je označen jako poškozený"
+msgstr "Naúčtovat cenu exempláře, pokud je označen jako poškozený"
 
-# id::ccvm.value__bal
 #: 950.data.seed-values.sql:3539
 msgid "Baluchi"
 msgstr "Balúčština"
 
-# id::coust.description__global.password_regex
 #: 950.data.seed-values.sql:1732
 msgid "Regular expression defining the password format"
 msgstr "Regulární výraz definující formát hesla"
 
-# id::coust.label__ui.patron.edit.aua.county.require
 #: 950.data.seed-values.sql:2400
 msgid "GUI: Require county field on patron registration"
 msgstr "GUI: Pole okres povinné při registraci čtenáře"
 
-# id::ccvm.value__337
 #: 950.data.seed-values.sql:3837
 msgid "Panjabi"
 msgstr "Paňdžábština"
 
-# id::ccvm.value__330
 #: 950.data.seed-values.sql:3830
 msgid "Ossetic"
 msgstr "Osetština"
 
-# id::coust.description__credit.processor.authorizenet.login
 #: 950.data.seed-values.sql:1947
 msgid "AuthorizeNet login"
 msgstr "Přihlášení do služby AuthorizeNet"
 
-# id::ccvm.value__352
 #: 950.data.seed-values.sql:3852
 msgid "Rajasthani"
 msgstr "Rádžasthánština"
 
-# id::ccvm.value__310
 #: 950.data.seed-values.sql:3810
 msgid "Nias"
 msgstr "Nias"
 
-# id::acpl.name__1
 #: 950.data.seed-values.sql:1596
 msgid "Stacks"
-msgstr "Sklady"
+msgstr "Regály"
 
-# id::ccvm.value__172
 #: 950.data.seed-values.sql:3672
 msgid "Hausa"
 msgstr "Hauština"
 
-# id::cubt.label__folks%3Ahold.cancel
 #: 950.data.seed-values.sql:2566
 msgid "Cancel Holds"
 msgstr "Zrušit rezervace"
 
-# id::ccvm.value__arn
 #: 950.data.seed-values.sql:3523
 msgid "Mapuche"
 msgstr "Mapuche (araukánština)"
 
-# id::bpt.name__4
 #: 950.data.seed-values.sql:14
 msgid "Set"
 msgstr "Nastavit"
 
-# id::coust.label__ui.patron.edit.au.suffix.suggest
 #: 950.data.seed-values.sql:2396
 msgid "GUI: Suggest suffix field on patron registration"
 msgstr "GUI: Navrhnout pole přípona při registraci čtenáře"
 
-# id::coust.label__circ.hold_boundary.hard
-# id::coust.description__circ.hold_boundary.hard
 #: 950.data.seed-values.sql:1716 950.data.seed-values.sql:1717
 msgid "Holds: Hard boundary"
 msgstr "Rezervace: Pevná hranice"
 
-# id::cmf.label__3
 #: 950.data.seed-values.sql:44
 msgid "Translated Title"
 msgstr "Přeložený název"
 
-# id::ccvm.value__237
 #: 950.data.seed-values.sql:3737
 msgid "Kumyk"
 msgstr "Kumyčtina"
 
-# id::vqbrad.description__14
 #: 950.data.seed-values.sql:2493
 msgid "Edition"
 msgstr "Vydání"
 
-# id::bpt.name__3
 #: 950.data.seed-values.sql:13
 msgid "Back-to-back"
 msgstr "Oboustranná kniha"
 
-# id::coust.description__circ.obscure_dob
 #: 950.data.seed-values.sql:1927
-msgid "When true, the Date of Birth column in patron lists will default to Not Visible, and in the Patron Summary sidebar the value will display as <Hidden> unless the field label is clicked."
+msgid ""
+"When true, the Date of Birth column in patron lists will default to Not "
+"Visible, and in the Patron Summary sidebar the value will display as "
+"<Hidden> unless the field label is clicked."
 msgstr ""
 "Je-li označeno jako pravdivé, potom je sloupec Datum narození v seznamech "
 "čtenářů standardně neviditelný a v postranní liště Přehled o čtenáři se "
 "hodnota zobrazí jako <Skrytá>, pokud se na popisku pole neklikne."
 
-# id::ccvm.value__ava
 #: 950.data.seed-values.sql:3531
 msgid "Avaric"
 msgstr "Avarština"
 
-# id::coust.description__opac.fully_compressed_serial_holdings
 #: 950.data.seed-values.sql:2047
-msgid "Show fully compressed serial holdings for all libraries at and below the current context unit"
+msgid ""
+"Show fully compressed serial holdings for all libraries at and below the "
+"current context unit"
 msgstr ""
 "Zobrazit plně komprimované časopisecké fondy pro všechny knihovny v jednotce "
 "v aktuálním kontextu a pod touto jednotkou"
 
-# id::coust.description__circ.holds.min_estimated_wait_interval
 #: 950.data.seed-values.sql:1752
-msgid "When predicting the amount of time a patron will be waiting for a hold to be fulfilled, this is the minimum estimated length of time to assume an item will be checked out. Examples: \"2 weeks\", \"5 days\""
+msgid ""
+"When predicting the amount of time a patron will be waiting for a hold to be "
+"fulfilled, this is the minimum estimated length of time to assume an item "
+"will be checked out. Examples: \"2 weeks\", \"5 days\""
 msgstr ""
 "Při odhadu doby, po kterou bude čtenář čekat na splnění rezervace, je toto "
 "minimální odhadovaná doba za předpokladu, že exemplář bude vypůjčen. "
 "Příklady: \"2 týdny\", \"5 dní\""
 
-# id::coust.label__credit.processor.authorizenet.testmode
 #: 950.data.seed-values.sql:1961
 msgid "Credit card processing: AuthorizeNet test mode"
 msgstr "Zpracování kreditní karty: Testovací režim AuthorizeNet"
 
-# id::ccvm.value__afa
 # id::clm.value__afa
 #: 950.data.seed-values.sql:3507
 msgid "Afroasiatic (Other)"
 msgstr "Afroasijské jazyky (ostatní)"
 
-# id::coust.description__circ.max_patron_claim_return_count
 #: 950.data.seed-values.sql:1922
-msgid "When this count is exceeded, a staff override is required to mark the item as claims returned"
+msgid ""
+"When this count is exceeded, a staff override is required to mark the item "
+"as claims returned"
 msgstr ""
-"Pokud je tento počet překročen, je nutné jeho překonání zaměstnancem, aby "
-"bylo možné označit exemplář statusem podle čtenáře vráceno"
+"Pokud je tento počet překročen,  aby bylo možné označit exemplář statusem "
+"\"údajně vráceno\", je nutné potvrdit pokračování akce zaměstnancem."
 
-# id::ccvm.value__158
 #: 950.data.seed-values.sql:3658
 msgid "German, Middle High (ca. 1050-1500)"
 msgstr "Němčina, horní, střední doba (cca 1050-1500)"
 
-# id::ccvm.value__223
 #: 950.data.seed-values.sql:3723
 msgid "Khotanese"
 msgstr "Chotánština"
 
-# id::cmf.label__18 id::cza.label__2 id::cza.label__11 id::cza.label__20
-# id::vqbrad.description__5
 # id::cza.label__2 id::cza.label__11 id::cza.label__20
+# id::vqbrad.description__5
 #: 950.data.seed-values.sql:79 950.data.seed-values.sql:283
 #: 950.data.seed-values.sql:304 950.data.seed-values.sql:323
 #: 950.data.seed-values.sql:2484
 msgid "ISBN"
 msgstr "ISBN"
 
-# id::ccvm.value__267
 #: 950.data.seed-values.sql:3767
 msgid "Maithili"
 msgstr "Maithilština"
 
-# id::coust.description__ui.patron.edit.au.email.example
 #: 950.data.seed-values.sql:2293
 msgid "The Example for validation on the email field in patron registration."
 msgstr "Příklad pro validaci pole email při registraci čtenáře."
 
-# id::ccvm.value__418
 #: 950.data.seed-values.sql:3918
 msgid "Tai (Other)"
 msgstr "Thajské jazyky (ostatní)"
 
-# id::ccvm.value__439
 # id::clm.value__tpi
 #: 950.data.seed-values.sql:3939
 msgid "Tok Pisin"
 msgstr "Tok Pisin"
 
-# id::ccvm.value__205
 # id::clm.value__jpn
 #: 950.data.seed-values.sql:3705
 msgid "Japanese"
 msgstr "Japonština"
 
-# id::cmf.label__14
 #: 950.data.seed-values.sql:68
 msgid "Topic Subject"
 msgstr "Věcné téma"
@@ -2363,37 +2074,30 @@ msgstr "Věcné téma"
 msgid "Other"
 msgstr "Ostatní"
 
-# id::ccvm.value__340
 #: 950.data.seed-values.sql:3840
 msgid "Old Persian (ca. 600-400 B.C.)"
 msgstr "Perština, stará (cca 600-400 př. Kr.)"
 
-# id::ccvm.value__505
 #: 950.data.seed-values.sql:4009
 msgid "Notated music"
 msgstr "Hudebnina"
 
-# id::ccvm.value__499
 #: 950.data.seed-values.sql:4003
 msgid "Two-dimensional nonprojectable graphic"
 msgstr "Dvojrozměrná neprojekční grafika"
 
-# id::ccvm.value__41
 #: 950.data.seed-values.sql:3541
 msgid "Balinese"
 msgstr "Balijština"
 
-# id::coust.label__credit.processor.authorizenet.server
 #: 950.data.seed-values.sql:1956
 msgid "Credit card processing: AuthorizeNet server"
 msgstr "Zpracování kreditní karty: server AuthorizeNet"
 
-# id::coust.label__ui.patron.edit.aua.post_code.example
 #: 950.data.seed-values.sql:2404
 msgid "GUI: Example for post_code field on patron registration"
 msgstr "GUI: Příklad pole post_code při registraci čtenáře"
 
-# id::ccvm.value__108
 #: 950.data.seed-values.sql:3608
 msgid "Dogri"
 msgstr "Dógrí"
@@ -2403,7 +2107,6 @@ msgstr "Dógrí"
 msgid "Users"
 msgstr "Uživatelé"
 
-# id::ccvm.value__250
 #: 950.data.seed-values.sql:3750
 msgid "Limburgish"
 msgstr "Limburština"
@@ -2418,367 +2121,320 @@ msgstr "Název díla"
 msgid "Price"
 msgstr "Cena"
 
-# id::ccvm.value__452
 #: 950.data.seed-values.sql:3952
 msgid "Tuvinian"
 msgstr "Tuvština"
 
-# id::cmf.label__9
 #: 950.data.seed-values.sql:57
 msgid "Conference Author"
 msgstr "Konference"
 
-# id::ccvm.value__501
 #: 950.data.seed-values.sql:4005
 msgid "Kit"
 msgstr "Souprava/soubor"
 
-# id::coust.label__ui.general.idle_timeout
 #: 950.data.seed-values.sql:1846
 msgid "GUI: Idle timeout"
-msgstr "GUI: Vypršení času čekání"
+msgstr "GUI: Vypršení času při nečinnosti"
 
-# id::coust.label__ui.circ.show_billing_tab_on_bills
 #: 950.data.seed-values.sql:1841
 msgid "Show billing tab first when bills are present"
-msgstr "Zobrazit panel s účty, pokud jsou účty přítomné"
+msgstr "Zobrazit kartu s účty, pokud má čtenář nevyřízené poplatky"
 
-# id::coust.label__ui.patron.edit.au.other_phone.example
 #: 950.data.seed-values.sql:2364
 msgid "GUI: Example for other_phone field on patron registration"
 msgstr "GUI: Příklad pro pole other_phone při registraci čtenáře"
 
-# id::ccvm.value__294
 #: 950.data.seed-values.sql:3794
 msgid "Multiple languages"
 msgstr "Více jazyků"
 
-# id::ccvm.value__286
 #: 950.data.seed-values.sql:3786
 msgid "Maltese"
 msgstr "Maltština"
 
-# id::ccvm.value__asm
 #: 950.data.seed-values.sql:3527
 msgid "Assamese"
 msgstr "Asámština"
 
-# id::coust.description__acq.fund.balance_limit.block
 #: 950.data.seed-values.sql:6479
-msgid "When the amount remaining in the fund, including spent money and encumbrances, goes below this percentage, attempts to spend from the fund will be blocked."
+msgid ""
+"When the amount remaining in the fund, including spent money and "
+"encumbrances, goes below this percentage, attempts to spend from the fund "
+"will be blocked."
 msgstr ""
 "Pokud se částka zbývající ve fondu - včetně již utracených peněz a závazků - "
 "dostane pod toto procento, pokusy o utrácení z tohoto fondu budou "
 "zablokovány."
 
-# id::ccvm.value__500
 #: 950.data.seed-values.sql:4004
 msgid "Three-dimensional artifact or naturally occurring object"
 msgstr "Trojrozměrný předmět či přírodní objekt"
 
-# id::cmf.label__17 id::vqbrad.description__8
 # id::vqbrad.description__8
 #: 950.data.seed-values.sql:77 950.data.seed-values.sql:2487
 msgid "Accession Number"
 msgstr "Přírůstkové číslo"
 
-# id::ccvm.value__351
 # id::clm.value__que
 #: 950.data.seed-values.sql:3851
 msgid "Quechua"
 msgstr "Kečuánština"
 
-# id::cmf.label__16
 #: 950.data.seed-values.sql:74
 msgid "All Subjects"
 msgstr "Všechna témata"
 
-# id::ccvm.value__442 id::ccvm.value__444
 #: 950.data.seed-values.sql:3942 950.data.seed-values.sql:3944
 msgid "Tswana"
 msgstr "Tswanština (čwanština)"
 
-# id::crmf.name__6
 #: 950.data.seed-values.sql:199
 msgid "overdue_equip_mid"
 msgstr "zpoždění_vybavení_střední"
 
-# id::ccvm.value__88
 #: 950.data.seed-values.sql:3588
 msgid "Coptic"
 msgstr "Koptština"
 
-# id::crmf.name__5
 #: 950.data.seed-values.sql:197
 msgid "overdue_equip_min"
 msgstr "zpoždění_vybavení_minimální"
 
-# id::ccvm.value__255
 #: 950.data.seed-values.sql:3755
 msgid "Letzeburgesch"
 msgstr "Lucemburština"
 
-# id::coust.description__ui.circ.in_house_use.entry_cap
 #: 950.data.seed-values.sql:1852
-msgid "The # of uses entry in the Record In-House Use interface may not exceed the value of this setting."
+msgid ""
+"The # of uses entry in the Record In-House Use interface may not exceed the "
+"value of this setting."
 msgstr ""
-"Záznam o počtu využití v rozhraní Záznam prezenčního využití nemůže "
-"překročit hodnotu tohoto nastavení."
+"Záznam o počtu výpůjček v rozhraní Záznam prezenční výpůjčky nesmí překročit "
+"hodnotu tohoto nastavení."
 
-# id::ccvm.value__298
 #: 950.data.seed-values.sql:3798
 msgid "Mayan languages"
 msgstr "Mayské jazyky"
 
-# id::coust.label__circ.selfcheck.alert.popup
 #: 950.data.seed-values.sql:1761
 msgid "Selfcheck: Pop-up alert for errors"
-msgstr "Samoobslužná výpůjční stanice: Vyskakovací varování týkající se chyb"
+msgstr ""
+"Samoobslužná výpůjční stanice: Varování o chybách ve vyskakovacím okně"
 
-# id::ccs.name__2
 #: 950.data.seed-values.sql:220
 msgid "Bindery"
-msgstr "Knihařská dílna"
+msgstr "Vazba"
 
-# id::cit.name__1
 #: 950.data.seed-values.sql:157
 msgid "Drivers License"
-msgstr "Řidičský průkaz"
+msgstr "Občanský průkaz"
 
-# id::coust.description__credit.processor.payflowpro.password
 #: 950.data.seed-values.sql:1995
 msgid "PayflowPro password"
 msgstr "Heslo do služby PayflowPro"
 
-# id::coust.label__cat.bib.keep_on_empty
 #: 950.data.seed-values.sql:1776
 msgid "Retain empty bib records"
 msgstr "Uchovat prázdné bibliografické záznamy"
 
-# id::ccvm.value__425
 #: 950.data.seed-values.sql:3925
 msgid "Terena"
 msgstr "Tereno"
 
-# id::ccvm.value__75
 # id::clm.value__che
 #: 950.data.seed-values.sql:3575
 msgid "Chechen"
 msgstr "Čečenština"
 
-# id::coust.label__ui.patron.edit.au.alias.show
 #: 950.data.seed-values.sql:2224
 msgid "GUI: Show alias field on patron registration"
 msgstr "GUI: Zobrazit pole alias při registraci čtenáře"
 
-# id::ccvm.value__ave
 #: 950.data.seed-values.sql:3532
 msgid "Avestan"
 msgstr "Avestský jazyk"
 
-# id::cmf.label__24
 #: 950.data.seed-values.sql:91
 msgid "SICI"
 msgstr "SICI"
 
-# id::coust.label__credit.processor.paypal.login
 #: 950.data.seed-values.sql:1970
 msgid "Credit card processing: PayPal login"
 msgstr "Zpracování kreditní karty: přihlášení do služby PayPal"
 
-# id::ccvm.value__281
 #: 950.data.seed-values.sql:3781
 msgid "Minangkabau"
 msgstr "Minangkabau"
 
-# id::coust.label__ui.patron.edit.au.email.show
 #: 950.data.seed-values.sql:2304
 msgid "GUI: Show email field on patron registration"
 msgstr "GUI: Zobrazit pole email při registraci čtenáře"
 
-# id::ccvm.value__150
 # id::clm.value__geo
 #: 950.data.seed-values.sql:3650
 msgid "Georgian"
 msgstr "Gruzínština"
 
-# id::ccvm.value__177
 #: 950.data.seed-values.sql:3677
 msgid "Himachali"
 msgstr "Himáčalí"
 
-# id::coust.label__circ.void_overdue_on_lost
-# id::coust.description__circ.void_overdue_on_lost
 #: 950.data.seed-values.sql:1701 950.data.seed-values.sql:1702
 msgid "Void overdue fines when items are marked lost"
 msgstr ""
 "Zrušit pokuty za pozdní vrácení, pokud jsou exempláře označeny jako ztracené"
 
-# id::ccvm.value__534
 #: 950.data.seed-values.sql:4045
 msgid "Integrating resource"
 msgstr "Integrující zdroj"
 
-# id::coust.label__ui.patron.edit.au.evening_phone.example
 #: 950.data.seed-values.sql:2312
 msgid "GUI: Example for evening_phone field on patron registration"
 msgstr "GUI: Příklad pole evening_phone při registraci čtenáře"
 
-# id::coust.label__ui.patron.edit.au.ident_value2.suggest
 #: 950.data.seed-values.sql:2344
 msgid "GUI: Suggest ident_value2 field on patron registration"
 msgstr "GUI: Navrhnout pole ident_value2 při registraci čtenáře"
 
-# id::ccvm.value__139
 #: 950.data.seed-values.sql:3639
 msgid "French, Old (ca. 842-1400)"
 msgstr "Francouzština, stará (cca 842-1400)"
 
-# id::coust.description__circ.staff_client.do_not_auto_attempt_print
 #: 950.data.seed-values.sql:1912
-msgid "Disable automatic print attempts from staff client interfaces for the receipt types in this list.  Possible values: \"Checkout\", \"Bill Pay\", \"Hold Slip\", \"Transit Slip\", and \"Hold/Transit Slip\".  This is different from the Auto-Print checkbox in the pertinent interfaces in that it disables automatic print attempts altogether, rather than encouraging silent printing by suppressing the print dialog.  The Auto-Print checkbox in these interfaces have no effect on the behavior for this setting.  In the case of the Hold, Transit, and Hold/Transit slips, this also suppresses the alert dialogs that precede the print dialog (the ones that offer Print and Do Not Print as options)."
+msgid ""
+"Disable automatic print attempts from staff client interfaces for the "
+"receipt types in this list.  Possible values: \"Checkout\", \"Bill Pay\", "
+"\"Hold Slip\", \"Transit Slip\", and \"Hold/Transit Slip\".  This is "
+"different from the Auto-Print checkbox in the pertinent interfaces in that "
+"it disables automatic print attempts altogether, rather than encouraging "
+"silent printing by suppressing the print dialog.  The Auto-Print checkbox in "
+"these interfaces have no effect on the behavior for this setting.  In the "
+"case of the Hold, Transit, and Hold/Transit slips, this also suppresses the "
+"alert dialogs that precede the print dialog (the ones that offer Print and "
+"Do Not Print as options)."
 msgstr ""
 "Zakázat pokusy o automatický tisk typů stvrzenek v tomto seznamu z rozhraní "
 "služebního klienta. Možné hodnoty: \"Vypůjčka\", \"Stvrzenka\", \"Stvrzenka "
-"rezervace\", \"Stvrzenka pro přepravu\" a \"Stvrzenka rezervace/pro přepravu\". "
-"Tato volba na rozdíl od zaškrtnutí možnosti automatického tisku v "
-"příslušných rozhraní zcela zakazuje automatický tisk (místo doporučování "
+"rezervace\", \"Stvrzenka pro přepravu\" a \"Stvrzenka rezervace/pro "
+"přepravu\". Tato volba na rozdíl od zaškrtnutí možnosti automatického tisku "
+"v příslušných rozhraní zcela zakazuje automatický tisk (místo doporučování "
 "tichého tisku potlačením tiskového dialogu). Zaškrtnutí možnosti "
 "automatického tisku v těchto rozhraních nemá žádný vliv na chování tohoto "
 "nastavení. V případě stvrzenek rezervací, pro přepravu a rezervací/pro "
 "přepravu toto nastavení také potlačuje varovné zprávy předcházející "
 "tiskovému dialogu (ty, které nabízejí možnost tisku nebo netisknutí)."
 
-# id::aiit.name__PRO
 #: 950.data.seed-values.sql:6484
 msgid "Processing Fee"
 msgstr "Poplatek za zpracování"
 
-# id::coust.label__acq.default_circ_modifier
-# id::coust.description__acq.default_circ_modifier
 #: 950.data.seed-values.sql:1861 950.data.seed-values.sql:1862
 msgid "Default circulation modifier"
 msgstr "Standardní modifikátor výpůjčky"
 
-# id::bpt.name__1
 #: 950.data.seed-values.sql:11
 msgid "Bound Volume"
 msgstr "Svázaný ročník"
 
-# id::ccvm.value__125 id::ccvm.value__152
 # id::clm.value__-eth id::clm.value__gez
 #: 950.data.seed-values.sql:3625 950.data.seed-values.sql:3652
 msgid "Ethiopic"
 msgstr "Etiopština"
 
-# id::coust.label__ui.patron.edit.au.ident_value.show
 #: 950.data.seed-values.sql:2332
 msgid "GUI: Show ident_value field on patron registration"
 msgstr "GUI: Zobrazit pole ident_value při registraci čtenáře"
 
-# id::ccvm.value__387
 #: 950.data.seed-values.sql:3887
 msgid "Southern Sami"
 msgstr "Sami jazyky, jižní"
 
-# id::ccvm.value__92
 #: 950.data.seed-values.sql:3592
 msgid "Creoles and Pidgins, French-based (Other)"
 msgstr "Kreolština a jiné pigdiny na základě francouzštiny"
 
-# id::ccs.name__13
 #: 950.data.seed-values.sql:231
 msgid "Discard/Weed"
 msgstr "Stáhnout/vyřadit"
 
-# id::ccvm.value__89
 #: 950.data.seed-values.sql:3589
 msgid "Cornish"
 msgstr "Kornština"
 
-# id::ccvm.value__63
 # id::clm.value__bul
 #: 950.data.seed-values.sql:3563
 msgid "Bulgarian"
 msgstr "Bulharština"
 
-# id::coust.description__ui.patron.edit.au.evening_phone.example
 #: 950.data.seed-values.sql:2313
-msgid "The Example for validation on the evening_phone field in patron registration."
+msgid ""
+"The Example for validation on the evening_phone field in patron registration."
 msgstr "Příklad pro validaci pole evening_phone v registraci čtenáře."
 
-# id::coust.description__ui.patron.edit.au.alias.show
 #: 950.data.seed-values.sql:2225
-msgid "The alias field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored."
+msgid ""
+"The alias field will be shown on the patron registration screen. Showing a "
+"field makes it appear with required fields even when not required. If the "
+"field is required this setting is ignored."
 msgstr ""
 "Pole alias bude zobrazeno na obrazovce s registrací čtenáře. Pole je "
 "zobrazeno, pokud jsou zobrazena povinná pole, a to i v případě, že samo není "
 "povinné. Pokud je pole povinné, toto nastavení není uplatněno."
 
-# id::ccvm.value__432
 # id::clm.value__tir
 #: 950.data.seed-values.sql:3932
 msgid "Tigrinya"
 msgstr "Tigriňa"
 
-# id::coust.description__credit.processor.paypal.testmode
 #: 950.data.seed-values.sql:1983
 msgid "PayPal test mode"
 msgstr "Testovací režim služby PayPal"
 
-# id::ccvm.value__479
 #: 950.data.seed-values.sql:3979
 msgid "Yoruba"
 msgstr "Jorubština"
 
-# id::ccvm.value__arw
 #: 950.data.seed-values.sql:3526
 msgid "Arawak"
 msgstr "Arawacké jazyky"
 
-# id::cbt.name__2
 #: 950.data.seed-values.sql:392
 msgid "Long Overdue Collection Fee"
 msgstr "Poplatek za dlouhé překročení výpůjční lhůty"
 
-# id::ccvm.value__136
 # id::clm.value__fre
 #: 950.data.seed-values.sql:3636
 msgid "French"
 msgstr "Francouzština"
 
-# id::ccvm.value__437
 #: 950.data.seed-values.sql:3937
 msgid "Tonga (Nyasa)"
 msgstr "Tongština (nyasa)"
 
-# id::ccvm.value__48
 # id::clm.value__ben
 #: 950.data.seed-values.sql:3548
 msgid "Bengali"
 msgstr "Bengálština"
 
-# id::coust.label__opac.allow_pending_address
 #: 950.data.seed-values.sql:1836
 msgid "OPAC: Allow pending addresses"
 msgstr "OPAC: Povolit nevyřízené adresy"
 
-# id::ccvm.value__43
 #: 950.data.seed-values.sql:3543
 msgid "Basa"
 msgstr "Basa"
 
-# id::coust.label__global.juvenile_age_threshold
 #: 950.data.seed-values.sql:1771
 msgid "Juvenile Age Threshold"
-msgstr "Práh věku mládeže"
+msgstr "Hranice zletilosti"
 
-# id::coust.description__ui.patron.edit.au.day_phone.regex
 #: 950.data.seed-values.sql:2261
-msgid "The Regular Expression for validation on the day_phone field in patron registration."
+msgid ""
+"The Regular Expression for validation on the day_phone field in patron "
+"registration."
 msgstr "Regulární výraz pro validaci pole day_phone při registraci čtenáře."
 
-# id::ccvm.value__521
 #: 950.data.seed-values.sql:4027
 msgid "Speeches"
 msgstr "Projevy"
@@ -2788,316 +2444,279 @@ msgstr "Projevy"
 msgid "Paperback Book"
 msgstr "Brožovaná kniha"
 
-# id::coust.label__circ.hold_expire_interval
 #: 950.data.seed-values.sql:1686
 msgid "Holds: Expire Interval"
-msgstr "Rezervace: Interval expirace"
+msgstr "Rezervace: Interval pro vypršení"
 
-# id::ccvm.value__133
 #: 950.data.seed-values.sql:3633
 msgid "Finnish"
 msgstr "Finština"
 
-# id::ccvm.value__409
 #: 950.data.seed-values.sql:3909
 msgid "Sundanese"
 msgstr "Sundština"
 
-# id::ccvm.value__alb
 # id::clm.value__alb
 #: 950.data.seed-values.sql:3513
 msgid "Albanian"
 msgstr "Albánština"
 
-# id::cubt.label__folks%3Ahold.view
 #: 950.data.seed-values.sql:2565
 msgid "View Holds"
 msgstr "Zobrazit rezervace"
 
-# id::coust.description__circ.holds.hold_has_copy_at.alert
 #: 950.data.seed-values.sql:7120
-msgid "If there is an available copy at the requesting library that could fulfill a hold during hold placement time, alert the patron"
+msgid ""
+"If there is an available copy at the requesting library that could fulfill a "
+"hold during hold placement time, alert the patron"
 msgstr ""
 "Upozornit čtenáře, je-li v knihovně, od níž je rezervace požadována, "
 "dostupný exemplář, který by mohl splnit rezervaci během doby platnosti "
 "rezervace"
 
-# id::ccvm.value__329
 #: 950.data.seed-values.sql:3829
 msgid "Osage"
 msgstr "Osage"
 
-# id::vqbrad.description__10
 #: 950.data.seed-values.sql:2489
 msgid "TCN Source"
 msgstr "Zdroj kontrolního čísla záznamu (TCN)"
 
-# id::coust.description__ui.admin.work_log.max_entries
 #: 950.data.seed-values.sql:2012
-msgid "Maximum entries for \"Most Recent Staff Actions\" section of the Work Log interface."
+msgid ""
+"Maximum entries for \"Most Recent Staff Actions\" section of the Work Log "
+"interface."
 msgstr ""
 "Maximální počet záznamů pro sekci \"Nejnovější akce zaměstnanců\" v rozhraní "
-"pracovního deníku."
+"pracovního logu."
 
-# id::cmf.label__13
 #: 950.data.seed-values.sql:66
 msgid "Temporal Subject"
 msgstr "Časové téma"
 
-# id::ccvm.value__416 id::ccvm.value__428
 #: 950.data.seed-values.sql:3916 950.data.seed-values.sql:3928
 msgid "Tagalog"
 msgstr "Tagalština"
 
-# id::ccvm.value__371
 # id::clm.value__scc
 #: 950.data.seed-values.sql:3871
 msgid "Serbian"
 msgstr "Srbština"
 
-# id::ccvm.value__ast
 #: 950.data.seed-values.sql:3528
 msgid "Bable"
 msgstr "Bable"
 
-# id::ccvm.value__533
 #: 950.data.seed-values.sql:4044
 msgid "Subunit"
 msgstr "Dílčí jednotka"
 
-# id::ccvm.value__203
 # id::clm.value__ita
 #: 950.data.seed-values.sql:3703
 msgid "Italian"
 msgstr "Italština"
 
-# id::ccvm.value__74
 #: 950.data.seed-values.sql:3574
 msgid "Chibcha"
 msgstr "Čibča"
 
-# id::aou.name__8
 #: 950.data.seed-values.sql:378
 msgid "Example Sub-library 1"
 msgstr "Vzorová dílčí knihovna 1"
 
-# id::ccvm.value__303
 #: 950.data.seed-values.sql:3803
 msgid "Navajo"
 msgstr "Navahština (navaho)"
 
-# id::ccvm.value__291
 #: 950.data.seed-values.sql:3791
 msgid "Moldavian"
 msgstr "Moldavština"
 
-# id::coust.description__ui.patron.edit.au.claims_never_checked_out_count.show
 #: 950.data.seed-values.sql:2241
-msgid "The claims_never_checked_out_count field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored."
+msgid ""
+"The claims_never_checked_out_count field will be shown on the patron "
+"registration screen. Showing a field makes it appear with required fields "
+"even when not required. If the field is required this setting is ignored."
 msgstr ""
-"Pole claims_never_checked_out bude zobrazeno na obrazovce s registrací "
-"čtenáře. Pole je zobrazeno, pokud jsou zobrazena povinná pole, a to i v "
-"případě, že samo není povinné. Pokud je pole povinné, toto nastavení není "
-"uplatněno."
+"Pole claims_never_checked_out (údajně nevypůjčeno) bude zobrazeno na "
+"obrazovce s registrací čtenáře. Pole je zobrazeno, pokud jsou zobrazena "
+"povinná pole, a to i v případě, že samo není povinné. Pokud je pole povinné, "
+"toto nastavení není uplatněno."
 
-# id::ccvm.value__289
 #: 950.data.seed-values.sql:3789
 msgid "Manobo languages"
 msgstr "Manobo jazyky"
 
-# id::coust.label__circ.selfcheck.alert.sound
 #: 950.data.seed-values.sql:5363
 msgid "Selfcheck: Audio Alerts"
-msgstr "Samoobslužná výpůjční stanice: Zvuková varování"
+msgstr "Samoobslužná výpůjční stanice: Zvuková upozornění"
 
-# id::ccvm.value__73
 #: 950.data.seed-values.sql:3573
 msgid "Chamorro"
 msgstr "Čamoro"
 
-# id::ccvm.value__256
 #: 950.data.seed-values.sql:3756
 msgid "Luba-Lulua"
 msgstr "Luba-luluaština"
 
-# id::coust.label__circ.auto_hide_patron_summary
 #: 950.data.seed-values.sql:1931
 msgid "GUI: Toggle off the patron summary sidebar after first view."
 msgstr ""
-"GUI: Vypnout postranní lištu s přehledem o čtenáři po jejím prvním zobrazení"
+"GUI: Vypnout postranní lištu s přehledem o čtenáři po prvním zobrazení "
+"čtenáře"
 
 # id::pgt.name__4
 #: 950.data.seed-values.sql:1392
 msgid "Catalogers"
 msgstr "Katalogizátoři"
 
-# id::ccvm.value__466
 #: 950.data.seed-values.sql:3966
 msgid "Wakashan languages"
 msgstr "Wakashské jazyky"
 
-# id::ccvm.value__amh
 #: 950.data.seed-values.sql:3516
 msgid "Amharic"
 msgstr "Amharština"
 
-# id::crcd.name__11 id::crmf.name__1 id::crrf.name__1
 #: 950.data.seed-values.sql:185 950.data.seed-values.sql:189
 #: 950.data.seed-values.sql:205
 msgid "default"
 msgstr "standardní"
 
-# id::cbt.name__1
 #: 950.data.seed-values.sql:390
 msgid "Overdue Materials"
 msgstr "Exempláře s překročenou výpůjční lhůtou"
 
-# id::ccvm.value__419 id::ccvm.value__427
 #: 950.data.seed-values.sql:3919 950.data.seed-values.sql:3927
 msgid "Tajik"
 msgstr "Tadžičtina"
 
-# id::ccvm.value__353
 #: 950.data.seed-values.sql:3853
 msgid "Rapanui"
 msgstr "Rapanuiština"
 
-# id::coust.label__ui.patron.edit.au.alias.suggest
 #: 950.data.seed-values.sql:2228
 msgid "GUI: Suggest alias field on patron registration"
 msgstr "GUI: Navrhnout pole alias při registraci čtenáře"
 
-# id::ccvm.value__459
 #: 950.data.seed-values.sql:3959
 msgid "Urdu"
 msgstr "Urdština"
 
-# id::coust.label__acq.tmp_barcode_prefix
-# id::coust.description__acq.tmp_barcode_prefix
 #: 950.data.seed-values.sql:1866 950.data.seed-values.sql:1867
 msgid "Temporary barcode prefix"
 msgstr "Dočasný prefix čárového kódu"
 
-# id::ccvm.value__254
 #: 950.data.seed-values.sql:3754
 msgid "Lozi"
 msgstr "Lozština"
 
-# id::ccvm.value__161
 #: 950.data.seed-values.sql:3661
 msgid "Gorontalo"
 msgstr "Gorontalo"
 
-# id::ccvm.value__76
 #: 950.data.seed-values.sql:3576
 msgid "Chagatai"
 msgstr "Čagatajština"
 
-# id::coust.label__circ.password_reset_request_throttle
 #: 950.data.seed-values.sql:2041
-msgid "Circulation: Maximum concurrently active self-serve password reset requests"
-msgstr "Výpůjčky: Maximum současně aktivních požadavků na nové nastavení hesla"
+msgid ""
+"Circulation: Maximum concurrently active self-serve password reset requests"
+msgstr ""
+"Výpůjčky: Maximum současně aktivních požadavků na nové nastavení hesla"
 
-# id::crcd.name__9
 #: 950.data.seed-values.sql:181
 msgid "28_days_0_renew"
 msgstr "28_dní_0_prodloužení"
 
-# id::ccs.name__11
 #: 950.data.seed-values.sql:229
 msgid "Cataloging"
 msgstr "Katalogizace"
 
-# id::coust.description__circ.max_accept_return_of_lost
 #: 950.data.seed-values.sql:1812
-msgid "Items that have been lost this long will not result in voided billings when returned.  E.g. '6 months'"
+msgid ""
+"Items that have been lost this long will not result in voided billings when "
+"returned.  E.g. '6 months'"
 msgstr ""
 "Exempláře, které byly takto dlouho ztraceny, nevyústí ve zrušení poplatků, "
 "budou-li vráceny. Např. '6 měsíců'"
 
-# id::coust.label__auth.staff_timeout
-# id::coust.description__auth.staff_timeout
 #: 950.data.seed-values.sql:1661 950.data.seed-values.sql:1662
 msgid "Staff Login Inactivity Timeout (in seconds)"
-msgstr "Z důvodu nečinnosti vypršelo přihlášení zaměstnance (v sekundách)"
+msgstr ""
+"Čas, po něm při nečinnosti vypršelí přihlášení zaměstnance (v sekundách)"
 
-# id::ccvm.value__art
 #: 950.data.seed-values.sql:3525
 msgid "Artificial (Other)"
 msgstr "Umělé jazyky (ostatní)"
 
-# id::coust.description__global.juvenile_age_threshold
 #: 950.data.seed-values.sql:1772
-msgid "The age at which a user is no long considered a juvenile.  For example, \"18 years\"."
-msgstr "Věk, v němž již uživatel nepatří mezi mládež. Například \"18 let\"."
+msgid ""
+"The age at which a user is no long considered a juvenile.  For example, \"18 "
+"years\"."
+msgstr ""
+"Věk, v němž již uživatel není považován za nezletilého. Například \"18 let\"."
 
-# id::cbt.name__8
 #: 950.data.seed-values.sql:404
 msgid "Damaged Item Processing Fee"
 msgstr "Poplatek za zpracování poškozeného exempláře"
 
-# id::coust.description__ui.circ.in_house_use.entry_warn
 #: 950.data.seed-values.sql:1857
-msgid "In the Record In-House Use interface, a submission attempt will warn if the # of uses field exceeds the value of this setting."
+msgid ""
+"In the Record In-House Use interface, a submission attempt will warn if the "
+"# of uses field exceeds the value of this setting."
 msgstr ""
-"V rozhraní Záznam prezenčního užití bude při pokusu o zadání dalšího užití "
-"zobrazeno varování, pokud hodnota v poli s počtem užití překročí hodnotu "
+"V rozhraní Záznam prezenční výpůjčky bude při pokusu o zadání další výpůjčky "
+"zobrazeno varování, pokud hodnota v poli s počtem výpůjček překročí hodnotu "
 "tohoto nastavení."
 
-# id::ccvm.value__455
 #: 950.data.seed-values.sql:3955
 msgid "Uighur"
 msgstr "Ujgurština"
 
-# id::ccvm.value__86
 #: 950.data.seed-values.sql:3586
 msgid "Cheyenne"
 msgstr "Čejenština"
 
-# id::bpt.name__2
 #: 950.data.seed-values.sql:12
 msgid "Bilingual"
 msgstr "Dvojjazyčný"
 
-# id::ccvm.value__135
 #: 950.data.seed-values.sql:3635
 msgid "Fon"
 msgstr "Fonština"
 
-# id::ccvm.value__awa
 #: 950.data.seed-values.sql:3533
 msgid "Awadhi"
 msgstr "Avadhština (avadhí)"
 
-# id::ccvm.value__94
 #: 950.data.seed-values.sql:3594
 msgid "Cree"
 msgstr "Cree"
 
-# id::coust.description__ui.patron.edit.au.master_account.suggest
 #: 950.data.seed-values.sql:2361
-msgid "The master_account field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored."
+msgid ""
+"The master_account field will be suggested on the patron registration "
+"screen. Suggesting a field makes it appear when suggested fields are shown. "
+"If the field is shown or required this setting is ignored."
 msgstr ""
 "Pole master_account bude navrženo na obrazovce s registrací čtenáře. Návrh "
 "pole je zobrazen, pokud jsou zobrazena navrhovaná pole. Pokud je pole "
 "zobrazeno nebo je povinné, toto nastavení není uplatněno."
 
-# id::ccvm.value__332
 #: 950.data.seed-values.sql:3832
 msgid "Otomian languages"
 msgstr "Osmanské jazyky"
 
-# id::coust.label__credit.processor.authorizenet.enabled
 #: 950.data.seed-values.sql:1941
 msgid "Credit card processing: Enable AuthorizeNet payments"
-msgstr "Zpracování kreditní karty: Povolit platby prostřednictvím AuthorizeNet"
+msgstr ""
+"Zpracování kreditní karty: Povolit platby prostřednictvím AuthorizeNet"
 
-# id::ccvm.value__ace
 #: 950.data.seed-values.sql:3503
 msgid "Achinese"
 msgstr "Aceh(ština)"
 
-# id::ccvm.value__195
 # id::clm.value__ind
 #: 950.data.seed-values.sql:3695
 msgid "Indonesian"
@@ -3108,89 +2727,74 @@ msgstr "Indonéština"
 msgid "Good"
 msgstr "Dobrý"
 
-# id::ccvm.value__104
 #: 950.data.seed-values.sql:3604
 msgid "Slave"
 msgstr "Otrok"
 
-# id::ccvm.value__454
 #: 950.data.seed-values.sql:3954
 msgid "Ugaritic"
 msgstr "Ugaritština"
 
-# id::ccvm.value__173
 #: 950.data.seed-values.sql:3673
 msgid "Hawaiian"
 msgstr "Havajština"
 
-# id::ccvm.value__263
 # id::clm.value__mac
 #: 950.data.seed-values.sql:3763
 msgid "Macedonian"
 msgstr "Makedonština"
 
-# id::coust.label__ui.patron.edit.au.active.suggest
 #: 950.data.seed-values.sql:2212
 msgid "GUI: Suggest active field on patron registration"
-msgstr "GUI: Navrhnout pole active při registraci čtenáře"
+msgstr "GUI: Navrhnout pole aktivní při registraci čtenáře"
 
-# id::ccvm.value__380
 #: 950.data.seed-values.sql:3880
 msgid "Sidamo"
 msgstr "Sidamo"
 
-# id::ppl.description__484
 #: 950.data.seed-values.sql:1380
 msgid "Receive serial items"
-msgstr "Obdržet části seriálu"
+msgstr "Přijmout exempláře seriálu"
 
-# id::ccvm.value__132
 # id::clm.value__fij
 #: 950.data.seed-values.sql:3632
 msgid "Fijian"
 msgstr "Fidžijština"
 
-# id::ccvm.value__349
 #: 950.data.seed-values.sql:3849
 msgid "Provençal (to 1500)"
 msgstr "Provensálština, stará (do 1500)"
 
-# id::coust.label__circ.damaged_item_processing_fee
-# id::coust.description__circ.damaged_item_processing_fee
 #: 950.data.seed-values.sql:1801 950.data.seed-values.sql:1802
 msgid "Charge processing fee for damaged items"
 msgstr "Účtovat poplatek za zpracování poškozených exemplářů"
 
-# id::ccvm.value__381 id::ccvm.value__396
 #: 950.data.seed-values.sql:3881 950.data.seed-values.sql:3896
 msgid "Sinhalese"
 msgstr "Sinhálština"
 
-# id::ccvm.value__ada
 #: 950.data.seed-values.sql:3505
 msgid "Adangme"
 msgstr "Adangme"
 
-# id::ccvm.value__429
 #: 950.data.seed-values.sql:3929
 msgid "Thai"
 msgstr "Thajština"
 
-# id::ccvm.value__afr
 # id::clm.value__afr
 #: 950.data.seed-values.sql:3509
 msgid "Afrikaans"
 msgstr "Afrikánština"
 
-# id::coust.description__circ.selfcheck.require_patron_password
 #: 950.data.seed-values.sql:1767
-msgid "If true, patrons will be required to enter their password in addition to their username/barcode to log into the selfcheck interface"
+msgid ""
+"If true, patrons will be required to enter their password in addition to "
+"their username/barcode to log into the selfcheck interface"
 msgstr ""
-"Je-li označeno jako pravdivé, čtenáři budou v rozhraní samoobslužné výpůjční "
-"stanice muset zadávat kromě svého uživatelského jména/čárového kódu také "
-"své heslo"
+"Je-li tato hodnota nastavena jako pravdivá, čtenáři budou v rozhraní "
+"samoobslužné výpůjční stanice muset zadávat kromě svého uživatelského "
+"jména/čárového kódu také své heslo"
 
-# id::ccvm.value__496
 #: 950.data.seed-values.sql:4000
 msgid "Language material"
 msgstr "Textový dokument"
@@ -3200,341 +2804,297 @@ msgstr "Textový dokument"
 msgid "Pagination"
 msgstr "Stránkování"
 
-# id::cbt.name__7
 #: 950.data.seed-values.sql:402
 msgid "Damaged Item"
 msgstr "Poškozený exemplář"
 
-# id::ccvm.value__460
 #: 950.data.seed-values.sql:3960
 msgid "Uzbek"
 msgstr "Uzbečtina"
 
-# id::ccvm.value__235
 # id::clm.value__kru
 #: 950.data.seed-values.sql:3735
 msgid "Kurukh"
 msgstr "Kurukh"
 
-# id::ccvm.value__200
 #: 950.data.seed-values.sql:3700
 msgid "Iranian (Other)"
 msgstr "Íránské jazyky (ostatní)"
 
-# id::ccvm.value__482
 #: 950.data.seed-values.sql:3982
 msgid "Zenaga"
 msgstr "Zenaga"
 
-# id::ccvm.value__62
 #: 950.data.seed-values.sql:3562
 msgid "Bugis"
 msgstr "Bugiština"
 
-# id::ccs.name__7
 #: 950.data.seed-values.sql:225
 msgid "Reshelving"
-msgstr "Zařazováno zpět na regál"
+msgstr "Vráceno, dosud nezařazeno"
 
-# id::ccvm.value__64
 #: 950.data.seed-values.sql:3564
 msgid "Burmese"
 msgstr "Barmština"
 
-# id::ccvm.value__ale
 #: 950.data.seed-values.sql:3514
 msgid "Aleut"
 msgstr "Aleutština"
 
-# id::bpt.name__5
 #: 950.data.seed-values.sql:15
 msgid "e-Reader Preload"
 msgstr "Přednahrání pro čtečku e-knih"
 
-# id::cmc.label__identifier id::vqarad.description__1
 # id::vqarad.description__1
 #: 950.data.seed-values.sql:22 950.data.seed-values.sql:2544
 msgid "Identifier"
 msgstr "Identifikátor"
 
-# id::ccvm.value__251
 #: 950.data.seed-values.sql:3751
 msgid "Lingala"
 msgstr "Lingalština"
 
-# id::coust.label__opac.barcode_regex
 #: 950.data.seed-values.sql:1726
 msgid "Patron barcode format"
 msgstr "Formát čárového kódu čtenáře"
 
-# id::cbt.name__6
 #: 950.data.seed-values.sql:400
 msgid "System: Rental"
 msgstr "Systém: Pronájem"
 
-# id::ccs.name__1
 #: 950.data.seed-values.sql:219
 msgid "Checked out"
 msgstr "Vypůjčeno"
 
-# id::ccvm.value__260
 #: 950.data.seed-values.sql:3760
 msgid "Lunda"
 msgstr "Lundština"
 
-# id::coust.description__circ.void_lost_on_checkin
 #: 950.data.seed-values.sql:1807
 msgid "Void lost item billing when returned"
-msgstr "Zrušit poplatek za ztrátu exempláře při jeho vrácení"
+msgstr "Zrušit poplatek za ztracený exemplář po jeho vrácení"
 
-# id::ccvm.value__arg
 #: 950.data.seed-values.sql:3521
 msgid "Aragonese Spanish"
 msgstr "Aragonská španělština"
 
-# id::coust.description__ui.patron.edit.au.alias.suggest
 #: 950.data.seed-values.sql:2229
-msgid "The alias field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored."
+msgid ""
+"The alias field will be suggested on the patron registration screen. "
+"Suggesting a field makes it appear when suggested fields are shown. If the "
+"field is shown or required this setting is ignored."
 msgstr ""
 "Pole alias bude navrženo na obrazovce s registrací čtenáře. Návrh pole je "
 "zobrazen, pokud jsou zobrazena navrhovaná pole. Pokud je pole zobrazeno nebo "
 "je povinné, toto nastavení není uplatněno."
 
-# id::ccvm.value__282
 # id::clm.value__mis
 #: 950.data.seed-values.sql:3782
 msgid "Miscellaneous languages"
 msgstr "Různé jazyky"
 
-# id::ccvm.value__259
 # id::clm.value__lui
 #: 950.data.seed-values.sql:3759
 msgid "Luiseño"
 msgstr "Luiseño"
 
-# id::coust.label__ui.circ.in_house_use.entry_warn
 #: 950.data.seed-values.sql:1856
-msgid "GUI: Record In-House Use: # of uses threshold for Are You Sure? dialog."
+msgid ""
+"GUI: Record In-House Use: # of uses threshold for Are You Sure? dialog."
 msgstr ""
-"GUI: Záznam prezenčního užití: práh počtu užití pro dialog Jste si jisti?"
+"GUI: Záznam prezenční výpůjčky: práh počtu výpůjček pro dialog Jste si jisti?"
 
-# id::ccvm.value__214
 #: 950.data.seed-values.sql:3714
 msgid "Karen"
 msgstr "Karenština"
 
-# id::ccvm.value__164
 #: 950.data.seed-values.sql:3664
 msgid "Greek, Ancient (to 1453)"
 msgstr "Řečtina, starověká (do 1453)"
 
-# id::ccvm.value__142
 #: 950.data.seed-values.sql:3642
 msgid "Friulian"
 msgstr "Friulština (furlanština)"
 
-# id::ccvm.value__323
 #: 950.data.seed-values.sql:3823
 msgid "Nyoro"
 msgstr "Nyorština"
 
-# id::cbrebt.label__template_merge
 #: 950.data.seed-values.sql:2556
 msgid "Template Merge Container"
 msgstr "Kontejner pro sloučení šablon"
 
-# id::coust.label__ui.staff.require_initials
 #: 950.data.seed-values.sql:1881
-msgid "GUI: Require staff initials for entry/edit of item/patron/penalty notes/messages."
+msgid ""
+"GUI: Require staff initials for entry/edit of item/patron/penalty "
+"notes/messages."
 msgstr ""
-"GUI: Vyžadovat iniciály zaměstnance pro zadávání/editaci poznámek/zpráv "
+"GUI: Vyžadovat iniciály personálu pro zadávání/editaci poznámek/zpráv "
 "týkajících se exemplářů/čtenářů/pokut"
 
-# id::ccvm.value__59
 #: 950.data.seed-values.sql:3559
 msgid "Breton"
 msgstr "Bretonština"
 
-# id::coust.label__opac.fully_compressed_serial_holdings
 #: 950.data.seed-values.sql:2046
 msgid "OPAC: Use fully compressed serial holdings"
-msgstr "OPAC: Využít plně komprimovaný časopisecký fond"
+msgstr "OPAC: Zobrazit zhuštěné informace o vlastněných číslech časopisů."
 
-# id::coust.label__circ.obscure_dob
 #: 950.data.seed-values.sql:1926
 msgid "Obscure the Date of Birth field"
 msgstr "Zakrýt pole Datum narození"
 
-# id::ccvm.value__144 id::ccvm.value__154
 # id::clm.value__-gae id::clm.value__gla
 #: 950.data.seed-values.sql:3644 950.data.seed-values.sql:3654
 msgid "Scottish Gaelic"
 msgstr "Skotská gaelština"
 
-# id::ccvm.value__448
 # id::clm.value__tur
 #: 950.data.seed-values.sql:3948
 msgid "Turkish"
 msgstr "Turečtina"
 
-# id::ccvm.value__269
 #: 950.data.seed-values.sql:3769
 msgid "Malayalam"
 msgstr "Malajálamština"
 
-# id::ccs.name__10
 #: 950.data.seed-values.sql:228
 msgid "ILL"
 msgstr "Meziknihovní výpůjční služba"
 
-# id::ccvm.value__103
 #: 950.data.seed-values.sql:3603
 msgid "Delaware"
-msgstr "delaware"
+msgstr "Delaware"
 
-# id::ccvm.value__468
 #: 950.data.seed-values.sql:3968
 msgid "Waray"
 msgstr "Waray"
 
-# id::aout.name__1
 #: 950.data.seed-values.sql:347
 msgid "Consortium"
 msgstr "Konsorcium"
 
-# id::coust.label__ui.patron.edit.au.alert_message.show
 #: 950.data.seed-values.sql:2216
 msgid "GUI: Show alert_message field on patron registration"
-msgstr "GUI: Zobrazit pole alert_message při registraci čtenáře"
+msgstr "GUI: Zobrazit pole alert_message (upozornění) při registraci čtenáře"
 
-# id::coust.description__credit.processor.paypal.signature
 #: 950.data.seed-values.sql:1979
 msgid "PayPal signature"
 msgstr "Podpis pro službu PayPal"
 
-# id::ccvm.value__383
 #: 950.data.seed-values.sql:3883
 msgid "Sino-Tibetan (Other)"
 msgstr "Sinotibetské jazyky (ostatní)"
 
-# id::ccvm.value__481
 #: 950.data.seed-values.sql:3981
 msgid "Zapotec"
 msgstr "Zapotéčtina"
 
-# id::ccvm.value__180
 #: 950.data.seed-values.sql:3680
 msgid "Hmong"
 msgstr "Hmongština"
 
-# id::ccvm.value__400
 #: 950.data.seed-values.sql:3900
 msgid "Songhai"
 msgstr "Songhajština"
 
-# id::ccvm.value__523
 # id::cifm.value__a
 #: 950.data.seed-values.sql:4032
 msgid "Microfilm"
 msgstr "Mikrofilm"
 
-# id::coust.description__circ.patron_invalid_address_apply_penalty
 #: 950.data.seed-values.sql:1897
-msgid "When set, if a patron address is set to invalid, a penalty is applied."
+msgid ""
+"When set, if a patron address is set to invalid, a penalty is applied."
 msgstr ""
 "Pokud je to nastaveno, je-li adresa čtenáře nastavena na validní, je "
 "aplikována pokuta."
 
-# id::coust.label__circ.hold_stalling_hard
-# id::coust.description__circ.hold_stalling_hard
 #: 950.data.seed-values.sql:1711 950.data.seed-values.sql:1712
 msgid "Holds: Hard stalling interval"
 msgstr "Rezervace: Pevný interval pozdržení"
 
-# id::ccvm.value__67 id::ccvm.value__222
 #: 950.data.seed-values.sql:3567 950.data.seed-values.sql:3722
 msgid "Khmer"
 msgstr "Khmérština"
 
-# id::ccvm.value__85
 #: 950.data.seed-values.sql:3585
 msgid "Chuvash"
 msgstr "Čuvaština"
 
-# id::ccvm.value__196
 #: 950.data.seed-values.sql:3696
 msgid "Indo-European (Other)"
 msgstr "Indo-evropské jazyky (ostatní)"
 
-# id::coust.label__circ.void_lost_proc_fee_on_checkin
 #: 950.data.seed-values.sql:1816
 msgid "Circ: Void processing fee on lost item return"
-msgstr "Výpůjčky: Zrušit poplatek za zpracování, je-li ztracený exemplář vrácen"
-
-# id::coust.label__ui.patron.edit.au.claims_never_checked_out_count.suggest
-#: 950.data.seed-values.sql:2244
-msgid "GUI: Suggest claims_never_checked_out_count field on patron registration"
 msgstr ""
-"GUI: Navrhnout pole claims_never_checked_out_count při registraci čtenáře"
+"Výpůjčky: Zrušit poplatek za zpracování, je-li ztracený exemplář vrácen"
 
-# id::cmf.label__5
+#: 950.data.seed-values.sql:2244
+msgid ""
+"GUI: Suggest claims_never_checked_out_count field on patron registration"
+msgstr ""
+"GUI: Navrhnout pole claims_never_checked_out_count (počet údajně "
+"nevypůjčených) při registraci čtenáře"
+
 #: 950.data.seed-values.sql:48
 msgid "Uniform Title"
 msgstr "Unifikovaný název"
 
-# id::cbt.name__3
 #: 950.data.seed-values.sql:394
 msgid "Lost Materials"
 msgstr "Ztracené dokumenty"
 
-# id::coust.description__ui.patron.edit.aua.post_code.regex
 #: 950.data.seed-values.sql:2409
-msgid "The Regular Expression for validation on the post_code field in patron registration."
+msgid ""
+"The Regular Expression for validation on the post_code field in patron "
+"registration."
 msgstr "Regulární výraz pro validaci pole post_code při registraci čtenáře."
 
-# id::coust.description__ui.patron.edit.au.day_phone.require
 #: 950.data.seed-values.sql:2265
-msgid "The day_phone field will be required on the patron registration screen."
+msgid ""
+"The day_phone field will be required on the patron registration screen."
 msgstr ""
 "Pole day_phone bude na obrazovce s registrací čtenáře označeno jako povinné."
 
-# id::ccvm.value__276
 #: 950.data.seed-values.sql:3776
 msgid "Malay"
 msgstr "Malajština"
 
-# id::ccvm.value__211
 #: 950.data.seed-values.sql:3711
 msgid "Kalâtdlisut"
 msgstr "Kalmyčtina"
 
-# id::ccvm.value__486
 #: 950.data.seed-values.sql:3986
 msgid "Zuni"
 msgstr "Zunijština"
 
-# id::coust.description__circ.selfcheck.auto_override_checkout_events
 #: 950.data.seed-values.sql:1907
-msgid "List of checkout/renewal events that the selfcheck interface should automatically override instead instead of alerting and stopping the transaction"
+msgid ""
+"List of checkout/renewal events that the selfcheck interface should "
+"automatically override instead instead of alerting and stopping the "
+"transaction"
 msgstr ""
-"Seznam událostí týkajících se výpůjček a jejich prodloužení, které by měly "
-"být v rozhraní samoobslužné výpůjční stanice automaticky překonány (místo "
-"varování a zastavení transakce)"
+"Seznam událostí týkajících se výpůjček a jejich prodloužení, které by mělo "
+"rozhraní samoobslužné výpůjční stanice automaticky obejít (místo varování a "
+"zastavení transakce)"
 
-# id::coust.description__ui.patron.edit.au.claims_returned_count.show
 #: 950.data.seed-values.sql:2249
-msgid "The claims_returned_count field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored."
+msgid ""
+"The claims_returned_count field will be shown on the patron registration "
+"screen. Showing a field makes it appear with required fields even when not "
+"required. If the field is required this setting is ignored."
 msgstr ""
-"Pole claims_returned_count bude zobrazeno na obrazovce s registrací čtenáře. "
-"Pole je zobrazeno, pokud jsou zobrazena povinná pole, a to i v případě, že "
-"samo není povinné. Pokud je pole povinné, toto nastavení není uplatněno."
+"Pole claims_returned_count (počet údajně vrácených) bude zobrazeno na "
+"obrazovce s registrací čtenáře. Pole je zobrazeno, pokud jsou zobrazena "
+"povinná pole, a to i v případě, že samo není povinné. Pokud je pole povinné, "
+"toto nastavení není uplatněno."
 
-# id::cmf.label__11
 #: 950.data.seed-values.sql:62
 msgid "Geographic Subject"
 msgstr "Geografické téma"
 
-# id::ccvm.value__184
 # id::clm.value__iba
 #: 950.data.seed-values.sql:3684
 msgid "Iban"
@@ -3545,96 +3105,79 @@ msgstr "Iban"
 msgid "This Branch"
 msgstr "Tato pobočka"
 
-# id::cbt.name__9
 #: 950.data.seed-values.sql:406
 msgid "Notification Fee"
 msgstr "Poplatek za upozornění"
 
-# id::coust.description__circ.lost_immediately_available
 #: 950.data.seed-values.sql:1827
 msgid "Lost items are usable on checkin instead of going 'home' first"
 msgstr ""
-"Ztracené exempláře jsou použitelné při vrácení (nemusejí jít nejprve \"domů\")"
+"Exempláře označené jako ztracené je možné využít ihned po vrácení (nemusejí "
+"jít nejprve \"domů\")"
 
-# id::ccvm.value__449
 #: 950.data.seed-values.sql:3949
 msgid "Altaic (Other)"
 msgstr "Altajské jazyky (ostatní)"
 
-# id::ccvm.value__182
 # id::clm.value__hun
 #: 950.data.seed-values.sql:3682
 msgid "Hungarian"
 msgstr "Maďarština"
 
-# id::pgt.name__5
 #: 950.data.seed-values.sql:1394
 msgid "Circulators"
 msgstr "Díla určená k půjčování"
 
-# id::ccvm.value__71
 #: 950.data.seed-values.sql:3571
 msgid "Cebuano"
 msgstr "Cebuánština"
 
-# id::coust.description__credit.processor.authorizenet.server
 #: 950.data.seed-values.sql:1957
 msgid "Required if using a developer/test account with AuthorizeNet"
 msgstr ""
 "Povinné, pokud je používán vývojářský/testovací účet u služby AuthorizeNet"
 
-# id::ccvm.value__290
 # id::clm.value__moh
 #: 950.data.seed-values.sql:3790
 msgid "Mohawk"
 msgstr "Mohawk"
 
-# id::ccvm.value__105
 # id::clm.value__dgr
 #: 950.data.seed-values.sql:3605
 msgid "Dogrib"
 msgstr "Dogrib"
 
-# id::ccvm.value__464
 #: 950.data.seed-values.sql:3964
 msgid "Volapük"
 msgstr "Volapük"
 
-# id::coust.description__auth.persistent_login_interval
 #: 950.data.seed-values.sql:7251
 msgid "How long a persistent login lasts.  E.g. '2 weeks'"
 msgstr "Délka trvání trvalého přihlášení. Např. \"2 týdny\""
 
-# id::ccvm.value__279
 #: 950.data.seed-values.sql:3779
 msgid "Irish, Middle (ca. 1100-1550)"
 msgstr "Irština, střední doba (cca 1100-1550)"
 
-# id::ccvm.value__495
-# id::cam.value__j
 #: 950.data.seed-values.sql:3997
 msgid "Juvenile"
-msgstr "Pro mládež"
+msgstr "Nezletilí"
 
-# id::coust.description__ui.patron.edit.au.dob.require
 #: 950.data.seed-values.sql:2281
 msgid "The dob field will be required on the patron registration screen."
 msgstr ""
-"Pole dob bude na obrazovce s registrací uživatele označeno jako povinné."
+"Pole \"dob\" bude na obrazovce s registrací uživatele označeno jako povinné."
 
-# id::ccvm.value__456
 # id::clm.value__ukr
 #: 950.data.seed-values.sql:3956
 msgid "Ukrainian"
 msgstr "Ukrajinština"
 
-# id::ccvm.value__361
 # id::clm.value__sad
 #: 950.data.seed-values.sql:3861
 msgid "Sandawe"
 msgstr "Sandawština"
 
-# id::ccvm.value__321
 #: 950.data.seed-values.sql:3821
 msgid "Nyamwezi"
 msgstr "Ňamwežština"
@@ -3644,31 +3187,30 @@ msgstr "Ňamwežština"
 msgid "OCLC"
 msgstr "OCLC"
 
-# id::coust.label__circ.item_checkout_history.max
 #: 950.data.seed-values.sql:1736
 msgid "Maximum previous checkouts displayed"
 msgstr "Zobrazení maximálního počtu předchozích výpůjček"
 
-# id::cbrebt.label__reading_list
 #: 950.data.seed-values.sql:2555
 msgid "Reading List"
 msgstr "Seznam literatury"
 
-# id::coust.label__ui.patron.edit.au.email.regex
 #: 950.data.seed-values.sql:2296
 msgid "GUI: Regex for email field on patron registration"
 msgstr "GUI: Regex pro pole email při registraci čtenáře"
 
-# id::coust.description__circ.holds.clear_shelf.copy_status
 #: 950.data.seed-values.sql:5342
-msgid "Any copies that have not been put into reshelving, in-transit, or on-holds-shelf (for a new hold) during the clear shelf process will be put into this status.  This is basically a purgatory status for copies waiting to be pulled from the shelf and processed by hand"
+msgid ""
+"Any copies that have not been put into reshelving, in-transit, or on-holds-"
+"shelf (for a new hold) during the clear shelf process will be put into this "
+"status.  This is basically a purgatory status for copies waiting to be "
+"pulled from the shelf and processed by hand"
 msgstr ""
 "Všem exemplářům, které nejsou zařazovány zpět za regál, v přepravě nebo na "
 "regále s rezervacemi (pro novou rezervaci) bude během procesu čištění regálů "
 "přidělen tento status. Jedná se vlastně o očistný status pro exempláře, "
 "které čekají na vytažení z regálu a ruční zpracování"
 
-# id::ccvm.value__bad
 # id::clm.value__bad
 #: 950.data.seed-values.sql:3536
 msgid "Banda"
@@ -3679,161 +3221,136 @@ msgstr "Banda"
 msgid "Author of work"
 msgstr "Autor díla"
 
-# id::cbt.name__101
 #: 950.data.seed-values.sql:408
 msgid "Misc"
 msgstr "Různé"
 
-# id::ccvm.value__213
 # id::clm.value__kan
 #: 950.data.seed-values.sql:3713
 msgid "Kannada"
 msgstr "Kannadština"
 
-# id::coust.label__ui.patron.edit.au.barred.show
 #: 950.data.seed-values.sql:2232
 msgid "GUI: Show barred field on patron registration"
-msgstr "GUI: Zobrazit zakázané pole při registraci čtenáře"
+msgstr "GUI: Zobrazit blokované pole při registraci čtenáře"
 
-# id::coust.description__circ.hold_expire_alert_interval
 #: 950.data.seed-values.sql:1682
-msgid "Amount of time before a hold expires at which point the patron should be alerted. Examples: \"5 days\", \"1 hour\""
+msgid ""
+"Amount of time before a hold expires at which point the patron should be "
+"alerted. Examples: \"5 days\", \"1 hour\""
 msgstr ""
-"Doba před expirací rezervace, kdy by měl být čtenář varován. Příklady: \"5 "
+"Doba před expirací rezervace, kdy by měl být čtenář upozorněn. Příklady: \"5 "
 "dní\", \"1 hodina\""
 
-# id::ccvm.value__292
 # id::clm.value__mon
 #: 950.data.seed-values.sql:3792
 msgid "Mongolian"
 msgstr "Mongolština"
 
-# id::ccvm.value__81
 #: 950.data.seed-values.sql:3581
 msgid "Choctaw"
 msgstr "Choctawština"
 
-# id::ccvm.value__293
 #: 950.data.seed-values.sql:3793
 msgid "Mooré"
 msgstr "Mosi (more)"
 
-# id::ccvm.value__aym
 # id::clm.value__aym
 #: 950.data.seed-values.sql:3534
 msgid "Aymara"
 msgstr "Ajmarština"
 
-# id::ccvm.value__364
 #: 950.data.seed-values.sql:3864
 msgid "South American Indian (Other)"
 msgstr "Jihoamerické indiánské jazyky (ostatní)"
 
-# id::ccvm.value__434
 #: 950.data.seed-values.sql:3934
 msgid "Tokelauan"
 msgstr "Tokelauština"
 
-# id::coust.label__credit.processor.paypal.testmode
 #: 950.data.seed-values.sql:1982
 msgid "Credit card processing: PayPal test mode"
 msgstr "Zpracování kreditní karty: Testovací režim služby PayPal"
 
-# id::cmf.label__26 id::cza.label__1 id::cza.label__10 id::cza.label__19
 #: 950.data.seed-values.sql:95 950.data.seed-values.sql:281
 #: 950.data.seed-values.sql:302 950.data.seed-values.sql:321
 msgid "Title Control Number"
 msgstr "Kontrolní číslo záznamu (TCN)"
 
-# id::coust.description__credit.processor.paypal.enabled
 #: 950.data.seed-values.sql:1967
 msgid "Enable PayPal payments"
 msgstr "Povolit platby prostřednictvím služby PayPal"
 
-# id::ccvm.value__379 id::ccvm.value__394
 # id::clm.value__-sho id::clm.value__sna
 #: 950.data.seed-values.sql:3879 950.data.seed-values.sql:3894
 msgid "Shona"
 msgstr "Šonština"
 
-# id::ccvm.value__82
 # id::clm.value__chp
 #: 950.data.seed-values.sql:3582
 msgid "Chipewyan"
 msgstr "Chipewyan"
 
-# id::coust.description__circ.auto_hide_patron_summary
 #: 950.data.seed-values.sql:1932
-msgid "When true, the patron summary sidebar will collapse after a new patron sub-interface is selected."
+msgid ""
+"When true, the patron summary sidebar will collapse after a new patron sub-"
+"interface is selected."
 msgstr ""
-"Je-li označeno jako pravdivé, postranní lišta s přehledem o čtenáři se "
-"zmenší po výběru dílčího rozhraní nového čtenáře."
+"Je-li tato hodnota nastavena jako pravdivá, postranní lišta s přehledem o "
+"čtenáři se zmenší po výběru dílčího rozhraní nového čtenáře."
 
-# id::ccvm.value__90
 # id::clm.value__cos
 #: 950.data.seed-values.sql:3590
 msgid "Corsican"
 msgstr "Korsičtina"
 
-# id::ccvm.value__489
 # id::cam.value__b
 #: 950.data.seed-values.sql:3991
 msgid "Primary"
 msgstr "Primární"
 
-# id::ccvm.value__233
 # id::clm.value__kpe
 #: 950.data.seed-values.sql:3733
 msgid "Kpelle"
 msgstr "Kpelle"
 
-# id::ccvm.value__525
 #: 950.data.seed-values.sql:4034
 msgid "Microopaque"
 msgstr "Mikrokarta"
 
-# id::ccvm.value__399
 # id::clm.value__som
 #: 950.data.seed-values.sql:3899
 msgid "Somali"
 msgstr "Somálština"
 
-# id::ccvm.value__arp
 #: 950.data.seed-values.sql:3524
 msgid "Arapaho"
 msgstr "Arapaho"
 
-# id::coust.label__circ.checkout_fills_related_hold
 #: 950.data.seed-values.sql:1901
 msgid "Checkout Fills Related Hold"
 msgstr "Výpůjčka splňuje související rezervaci"
 
-# id::pgt.description__10
 #: 950.data.seed-values.sql:1401
 msgid "System maintenance, configuration, etc."
 msgstr "Údržba systému, konfigurace apod."
 
-# id::ccvm.value__80
 #: 950.data.seed-values.sql:3580
 msgid "Chinook jargon"
 msgstr "Chinook (činuk) pidžin"
 
-# id::ccvm.value__aka
 #: 950.data.seed-values.sql:3511
 msgid "Akan"
 msgstr "Akan"
 
-# id::coust.label__circ.selfcheck.require_patron_password
 #: 950.data.seed-values.sql:1766
 msgid "Selfcheck: Require patron password"
-msgstr "Samoobslužná výpůjční stanice: Vyžadovat po čtenáři heslo"
+msgstr "Samoobslužný výpůjční protokol: Požadovatpo čtenáři heslo"
 
-# id::ccvm.value__415
 #: 950.data.seed-values.sql:3915
 msgid "Syriac"
 msgstr "Syrština"
 
-# id::coust.label__circ.void_lost_on_checkin
 #: 950.data.seed-values.sql:1806
 msgid "Circ: Void lost item billing when returned"
 msgstr "Výpůjčky: Zrušit poplatek za ztracený exemplář po jeho vrácení"
@@ -3843,266 +3360,236 @@ msgstr "Výpůjčky: Zrušit poplatek za ztracený exemplář po jeho vrácení"
 msgid "English (US)"
 msgstr "Angličtina (US)"
 
-# id::coust.description__ui.patron.edit.au.active.suggest
 #: 950.data.seed-values.sql:2213
-msgid "The active field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored."
+msgid ""
+"The active field will be suggested on the patron registration screen. "
+"Suggesting a field makes it appear when suggested fields are shown. If the "
+"field is shown or required this setting is ignored."
 msgstr ""
 "Aktivní pole bude navrženo na obrazovce s registrací čtenáře. Návrh pole je "
 "zobrazen, pokud jsou zobrazena navrhovaná pole. Pokud je pole zobrazeno nebo "
 "je povinné, toto nastavení není uplatněno."
 
-# id::ccvm.value__346
 #: 950.data.seed-values.sql:3846
 msgid "Ponape"
 msgstr "Pohnpeiština (ponape)"
 
-# id::ccvm.value__417
 # id::clm.value__tah
 #: 950.data.seed-values.sql:3917
 msgid "Tahitian"
 msgstr "Tahitština"
 
-# id::ccvm.value__55
 # id::clm.value__bla
 #: 950.data.seed-values.sql:3555
 msgid "Siksika"
 msgstr "Siksika"
 
-# id::coust.description__ui.circ.show_billing_tab_on_bills
 #: 950.data.seed-values.sql:1842
-msgid "If enabled and a patron has outstanding bills and the alert page is not required, show the billing tab by default, instead of the checkout tab, when a patron is loaded"
+msgid ""
+"If enabled and a patron has outstanding bills and the alert page is not "
+"required, show the billing tab by default, instead of the checkout tab, when "
+"a patron is loaded"
 msgstr ""
-"Pokud je to povoleno, zároveň čtenář má nezaplacené poplatky a není "
-"vyžadováno zobrazení varovné stránky, standardně při načítání čtenáře "
-"zobrazit panel s poplatky (místo výpůjčního panelu)"
+"Pokud je tato volba aktivována, má-li čtenář má nezaplacené poplatky a "
+"zároveň není vyžadováno zobrazení varovné stránky, standardně při načítání "
+"čtenáře zobrazit kartu Účty  (místo karty Půjčit)"
 
-# id::ccvm.value__307
 #: 950.data.seed-values.sql:3807
 msgid "Low German"
 msgstr "Němčina, dolní (plattdeutsch)"
 
-# id::ccvm.value__350
 #: 950.data.seed-values.sql:3850
 msgid "Pushto"
 msgstr "Pašto (pachto, paštština)"
 
-# id::ccvm.value__101
 # id::clm.value__dar
 #: 950.data.seed-values.sql:3601
 msgid "Dargwa"
 msgstr "Dargwa"
 
-# id::ccvm.value__519
 # id::clfm.value__m
 #: 950.data.seed-values.sql:4025
 msgid "Mixed forms"
 msgstr "Smíšené formy"
 
-# id::coust.description__ui.patron.edit.au.second_given_name.suggest
 #: 950.data.seed-values.sql:2389
-msgid "The second_given_name field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored."
+msgid ""
+"The second_given_name field will be suggested on the patron registration "
+"screen. Suggesting a field makes it appear when suggested fields are shown. "
+"If the field is shown or required this setting is ignored."
 msgstr ""
 "Pole second_given_name bude navrženo na stránce s registrací čtenáře. Návrh "
 "pole je zobrazen, pokud jsou zobrazena navrhovaná pole. Pokud je pole "
 "zobrazeno nebo je povinné, toto nastavení není uplatněno."
 
-# id::ccvm.value__398
 #: 950.data.seed-values.sql:3898
 msgid "Sogdian"
 msgstr "Soghdština"
 
-# id::ccvm.value__348
 #: 950.data.seed-values.sql:3848
 msgid "Prakrit languages"
 msgstr "Prákrty"
 
-# id::ccvm.value__95
 # id::clm.value__crh
 #: 950.data.seed-values.sql:3595
 msgid "Crimean Tatar"
 msgstr "Krymská tatarština"
 
-# id::coust.label__credit.processor.paypal.enabled
 #: 950.data.seed-values.sql:1966
 msgid "Credit card processing: Enable PayPal payments"
 msgstr "Zpracování kreditní karty: Povolit platby pomocí služby PayPal"
 
-# id::cust.label__history.circ.retention_start
-# id::cust.description__history.circ.retention_start
 #: 950.data.seed-values.sql:7220 950.data.seed-values.sql:7221
 msgid "Historical Circulation Retention Start Date"
 msgstr "Počáteční datum uchovávání historických výpůjček"
 
-# id::coust.description__credit.processor.payflowpro.enabled
 #: 950.data.seed-values.sql:1987
-msgid "This is NOT the same thing as the settings labeled with just \"PayPal.\""
+msgid ""
+"This is NOT the same thing as the settings labeled with just \"PayPal.\""
 msgstr "Toto NENÍ totéž jako nastavení označená pouze jako \"PayPal\"."
 
-# id::ccvm.value__510
 # id::clfm.value__0
 #: 950.data.seed-values.sql:4016
 msgid "Not fiction (not further specified)"
 msgstr "Literatura faktu (blíže nespecifikovaná)"
 
-# id::coust.label__ui.patron.edit.au.evening_phone.regex
 #: 950.data.seed-values.sql:2316
 msgid "GUI: Regex for evening_phone field on patron registration"
 msgstr "GUI: Regex pro pole evening_phone při registraci čtenáře"
 
-# id::ccvm.value__421 id::ccvm.value__422
 # id::clm.value__-tar id::clm.value__tat
 #: 950.data.seed-values.sql:3921 950.data.seed-values.sql:3922
 msgid "Tatar"
 msgstr "Tatarština"
 
-# id::ccvm.value__245
 # id::clm.value__lao
 #: 950.data.seed-values.sql:3745
 msgid "Lao"
 msgstr "Laoština"
 
-# id::coust.label__credit.processor.payflowpro.testmode
 #: 950.data.seed-values.sql:1998
 msgid "Credit card processing: PayflowPro test mode"
 msgstr "Zpracování kredigní karty: Testovací režim služby PayflowPro"
 
-# id::crmf.name__7
 #: 950.data.seed-values.sql:201
 msgid "overdue_equip_max"
 msgstr "zpoždění_vybavení_maximální"
 
-# id::ccvm.value__207
 #: 950.data.seed-values.sql:3707
 msgid "Judeo-Arabic"
 msgstr "Judeo-arabština"
 
-# id::ccvm.value__146 id::ccvm.value__328
 # id::clm.value__-gal id::clm.value__orm
 #: 950.data.seed-values.sql:3646 950.data.seed-values.sql:3828
 msgid "Oromo"
 msgstr "Oromština"
 
-# id::ccvm.value__536
 #: 950.data.seed-values.sql:4047
 msgid "Serial"
 msgstr "Seriál"
 
-# id::ccvm.value__368 id::ccvm.value__392
 # id::clm.value__-sao id::clm.value__smo
 #: 950.data.seed-values.sql:3868 950.data.seed-values.sql:3892
 msgid "Samoan"
 msgstr "Samojština"
 
-# id::coust.description__ui.patron.edit.au.dob.calendar
 #: 950.data.seed-values.sql:2277
-msgid "If set the calendar widget will appear when editing the dob field on the patron registration form."
+msgid ""
+"If set the calendar widget will appear when editing the dob field on the "
+"patron registration form."
 msgstr ""
 "Pokud je to nastaveno, kalendářový nástroj se objeví při editaci pole dob ve "
 "formuláři registrace čtenáře."
 
-# id::ccvm.value__503
 #: 950.data.seed-values.sql:4007
 msgid "Cartographic material"
 msgstr "Kartografický dokument"
 
-# id::ccvm.value__375
 #: 950.data.seed-values.sql:3875
 msgid "Semitic (Other)"
 msgstr "Semitské jazyky (ostatní)"
 
-# id::coust.label__ui.patron.edit.au.day_phone.suggest
 #: 950.data.seed-values.sql:2272
 msgid "GUI: Suggest day_phone field on patron registration"
 msgstr "GUI: Navrhnout pole day_phone při registraci čtenáře"
 
-# id::cmf.label__15
 #: 950.data.seed-values.sql:72
 msgid "General Keywords"
 msgstr "Obecná klíčová slova"
 
-# id::ccvm.value__116
 #: 950.data.seed-values.sql:3616
 msgid "Egyptian"
 msgstr "Egyptština"
 
-# id::ccvm.value__47
 #: 950.data.seed-values.sql:3547
 msgid "Bemba"
 msgstr "Bembština"
 
-# id::coust.label__credit.processor.paypal.password
 #: 950.data.seed-values.sql:1974
 msgid "Credit card processing: PayPal password"
 msgstr "Zpracování kreditní karty: Heslo do služby PayPal"
 
-# id::pgt.name__10
 #: 950.data.seed-values.sql:1400
 msgid "Local System Administrator"
 msgstr "Správce lokálního systému"
 
-# id::coust.description__ui.patron.edit.au.ident_value.show
 #: 950.data.seed-values.sql:2333
-msgid "The ident_value field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored."
+msgid ""
+"The ident_value field will be shown on the patron registration screen. "
+"Showing a field makes it appear with required fields even when not required. "
+"If the field is required this setting is ignored."
 msgstr ""
 "Pole ident_value bude zobrazeno na obrazovce s registrací čtenáře. Návrh "
 "pole je zobrazen, pokud jsou zobrazena navrhovaná pole. Pokud je pole "
 "zobrazeno nebo je povinné, toto nastavení není uplatněno."
 
-# id::coust.label__ui.patron.edit.au.email.suggest
 #: 950.data.seed-values.sql:2308
 msgid "GUI: Suggest email field on patron registration"
 msgstr "GUI: Navrhnout pole email při registraci čtenáře"
 
-# id::coust.description__circ.hold_stalling.soft
 #: 950.data.seed-values.sql:1707
-msgid "How long to wait before allowing remote items to be opportunistically captured for a hold.  Example \"5 days\""
+msgid ""
+"How long to wait before allowing remote items to be opportunistically "
+"captured for a hold.  Example \"5 days\""
 msgstr ""
 "Doba čekání před povolením uložení záznamu rezervace vzdáleného exempláře. "
 "Příklad \"5 dní\""
 
-# id::ccvm.value__96
 #: 950.data.seed-values.sql:3596
 msgid "Creoles and Pidgins (Other)"
 msgstr "Kreolština a jiné pidginy (ostatní)"
 
-# id::coust.label__credit.processor.default
 #: 950.data.seed-values.sql:1936
 msgid "Credit card processing: Name default credit processor"
-msgstr "Zpracování kreditní karty: Standardní jméno zpracovatele kreditní karty"
+msgstr ""
+"Zpracování kreditní karty: Standardní jméno zpracovatele kreditní karty"
 
-# id::ccvm.value__311
 #: 950.data.seed-values.sql:3811
 msgid "Niger-Kordofanian (Other)"
 msgstr "Nigersko-konžské jazyky (ostatní)"
 
-# id::ccvm.value__124
 # id::clm.value__est
 #: 950.data.seed-values.sql:3624
 msgid "Estonian"
 msgstr "Estonština"
 
-# id::ccvm.value__128
 # id::clm.value__fan
 #: 950.data.seed-values.sql:3628
 msgid "Fang"
 msgstr "Fang"
 
-# id::ccvm.value__253
 #: 950.data.seed-values.sql:3753
 msgid "Mongo-Nkundu"
 msgstr "Mongština"
 
-# id::ccvm.value__165
 #: 950.data.seed-values.sql:3665
 msgid "Greek, Modern (1453- )"
 msgstr "Řečtina, moderní (po 1453)"
 
-# id::coust.label__circ.hold_expire_alert_interval
 #: 950.data.seed-values.sql:1681
 msgid "Holds: Expire Alert Interval"
-msgstr "Rezervace: Interval varování o expiraci"
+msgstr "Rezervace: Interval pro upozornění o vypršení"
 
-# id::ccvm.value__391
 #: 950.data.seed-values.sql:3891
 msgid "Inari Sami"
 msgstr "Inari sami"
@@ -4112,12 +3599,10 @@ msgstr "Inari sami"
 msgid "French (Canada)"
 msgstr "Francouzština (Kanada)"
 
-# id::aout.name__3
 #: 950.data.seed-values.sql:353
 msgid "Branch"
 msgstr "Pobočka"
 
-# id::coust.label__ui.patron.edit.au.day_phone.regex
 #: 950.data.seed-values.sql:2260
 msgid "GUI: Regex for day_phone field on patron registration"
 msgstr "GUI: Regex pro pole day_phone při registraci čtenáře"
@@ -4127,15 +3612,16 @@ msgstr "GUI: Regex pro pole day_phone při registraci čtenáře"
 msgid "Item Barcode"
 msgstr "Čárový kód exempláře"
 
-# id::coust.description__ui.patron.edit.au.dob.show
 #: 950.data.seed-values.sql:2285
-msgid "The dob field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored."
+msgid ""
+"The dob field will be shown on the patron registration screen. Showing a "
+"field makes it appear with required fields even when not required. If the "
+"field is required this setting is ignored."
 msgstr ""
 "Pole dob bude zobrazeno na obrazovce s registrací čtenáře. Pole je "
 "zobrazeno, pokud jsou zobrazena povinná pole, a to i v případě, že samo není "
 "povinné. Pokud je pole povinné, toto nastavení není uplatněno."
 
-# id::coust.label__circ.selfcheck.patron_password_required
 #: 950.data.seed-values.sql:5355
 msgid "Selfcheck: Require Patron Password"
 msgstr "Samoobslužná výpůjční stanice: Vyžadovat po čtenáři heslo"
@@ -4145,133 +3631,119 @@ msgstr "Samoobslužná výpůjční stanice: Vyžadovat po čtenáři heslo"
 msgid "Project Gutenberg"
 msgstr "Projekt Gutenberg"
 
-# id::aou.name__9
 #: 950.data.seed-values.sql:380
 msgid "Example Bookmobile 1"
 msgstr "Vzorová pojízdná knihovna 1"
 
-# id::coust.label__ui.patron.edit.au.day_phone.show
 #: 950.data.seed-values.sql:2268
 msgid "GUI: Show day_phone field on patron registration"
 msgstr "GUI: Zobrazit pole day_phone při registraci čtenáře"
 
-# id::coust.description__ui.patron.edit.au.other_phone.show
 #: 950.data.seed-values.sql:2377
-msgid "The other_phone field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored."
+msgid ""
+"The other_phone field will be shown on the patron registration screen. "
+"Showing a field makes it appear with required fields even when not required. "
+"If the field is required this setting is ignored."
 msgstr ""
 "Pole other_phone se zobrazí na obrazovce s registrací čtenáře. Pole je "
 "zobrazeno, pokud jsou zobrazena povinná pole, a to i v případě, že samo není "
 "povinné. Pokud je pole povinné, toto nastavení není uplatněno."
 
-# id::ccvm.value__493
 # id::cam.value__f
 #: 950.data.seed-values.sql:3995
 msgid "Specialized"
 msgstr "Specializovaný"
 
-# id::coust.label__ui.patron.edit.au.alert_message.suggest
 #: 950.data.seed-values.sql:2220
 msgid "GUI: Suggest alert_message field on patron registration"
-msgstr "GUI: Navrhnout pole alert_message při registraci čtenáře"
+msgstr ""
+"GUI: Navrhnout pole alert_message (upozornění) při registraci čtenáře"
 
-# id::coust.description__ui.patron.edit.au.day_phone.example
 #: 950.data.seed-values.sql:2257
-msgid "The Example for validation on the day_phone field in patron registration."
+msgid ""
+"The Example for validation on the day_phone field in patron registration."
 msgstr "Příklad pro validaci pole day_phone při registraci čtenáře."
 
-# id::coust.description__ui.patron.edit.au.alert_message.suggest
 #: 950.data.seed-values.sql:2221
-msgid "The alert_message field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored."
+msgid ""
+"The alert_message field will be suggested on the patron registration screen. "
+"Suggesting a field makes it appear when suggested fields are shown. If the "
+"field is shown or required this setting is ignored."
 msgstr ""
-"Pole alert_message bude navrženo na obrazovce s registrací čtenáře. Návrh "
-"pole je zobrazen, pokud jsou zobrazena navrhovaná pole. Pokud je pole "
-"zobrazeno nebo je povinné, toto nastavení není uplatněno."
+"Pole alert_message (upozornění)bude navrženo na obrazovce s registrací "
+"čtenáře. Návrh pole je zobrazen, pokud jsou zobrazena navrhovaná pole. Pokud "
+"je pole zobrazeno nebo je povinné, toto nastavení není uplatněno."
 
-# id::coust.label__ui.patron.edit.au.email.example
 #: 950.data.seed-values.sql:2292
 msgid "GUI: Example for email field on patron registration"
 msgstr "GUI: Příklad pro pole email při registraci čtenáře"
 
-# id::coust.label__global.password_regex
 #: 950.data.seed-values.sql:1731
 msgid "Password format"
 msgstr "Formát hesla"
 
-# id::ccvm.value__84
 # id::clm.value__chu
 #: 950.data.seed-values.sql:3584
 msgid "Church Slavic"
 msgstr "Církevní slověnština"
 
-# id::ccvm.value__202
 # id::clm.value__iro
 #: 950.data.seed-values.sql:3702
 msgid "Iroquoian (Other)"
 msgstr "Irokézské jazyky (ostatní)"
 
-# id::ccs.name__3
 #: 950.data.seed-values.sql:221
 msgid "Lost"
 msgstr "Ztraceno"
 
-# id::ccvm.value__278
 # id::clm.value__men
 #: 950.data.seed-values.sql:3778
 msgid "Mende"
 msgstr "Mende"
 
-# id::coust.label__acq.tmp_callnumber_prefix
-# id::coust.description__acq.tmp_callnumber_prefix
 #: 950.data.seed-values.sql:1871 950.data.seed-values.sql:1872
 msgid "Temporary call number prefix"
-msgstr "Dočasné předčíslí telefonního čísla"
+msgstr "Dočasný prefix signatury"
 
-# id::cust.label__history.hold.retention_age
-# id::cust.description__history.hold.retention_age
 #: 950.data.seed-values.sql:7229 950.data.seed-values.sql:7230
 msgid "Historical Hold Retention Age"
 msgstr "Doba uchovávání historických rezervací"
 
-# id::ccvm.value__363
 #: 950.data.seed-values.sql:3863
 msgid "Yakut"
 msgstr "Jakutština"
 
-# id::ccvm.value__313
 #: 950.data.seed-values.sql:3813
 msgid "Norwegian (Nynorsk)"
 msgstr "Norština (nynorsk)"
 
-# id::ccvm.value__431
 # id::clm.value__tig
 #: 950.data.seed-values.sql:3931
 msgid "Tigré"
 msgstr "Tigrejština"
 
-# id::ccvm.value__327
 # id::clm.value__ori
 #: 950.data.seed-values.sql:3827
 msgid "Oriya"
 msgstr "Urijština"
 
-# id::ccpbt.label__staff_client id::cbrebt.label__staff_client
 #: 950.data.seed-values.sql:2549 950.data.seed-values.sql:2553
 msgid "General Staff Client container"
 msgstr "Obecný kontejner ve služebním klientovi"
 
-# id::ccvm.value__157 id::ccvm.value__275
 #: 950.data.seed-values.sql:3657 950.data.seed-values.sql:3775
 msgid "Manx"
 msgstr "Manština (manx)"
 
-# id::ccvm.value__354
 #: 950.data.seed-values.sql:3854
 msgid "Rarotongan"
 msgstr "Rarotongština"
 
-# id::coust.description__ui.patron.edit.au.email.suggest
 #: 950.data.seed-values.sql:2309
-msgid "The email field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored."
+msgid ""
+"The email field will be suggested on the patron registration screen. "
+"Suggesting a field makes it appear when suggested fields are shown. If the "
+"field is shown or required this setting is ignored."
 msgstr ""
 "Pole email bude navrženo na obrazovce s registrací čtenáře. Návrh pole je "
 "zobrazen, pokud jsou zobrazena navrhovaná pole. Pokud je pole zobrazeno nebo "
@@ -4282,141 +3754,117 @@ msgstr ""
 msgid "50_cent_per_day"
 msgstr "50_centů_za_den"
 
-# id::coust.description__credit.processor.authorizenet.testmode
 #: 950.data.seed-values.sql:1962
 msgid "AuthorizeNet test mode"
 msgstr "Testovací režim služby AuthorizeNet"
 
-# id::ccvm.value__113
 #: 950.data.seed-values.sql:3613
 msgid "Dyula"
 msgstr "Djula"
 
-# id::ccvm.value__199
 #: 950.data.seed-values.sql:3699
 msgid "Inupiaq"
 msgstr "Inupiak"
 
-# id::coust.description__circ.block_renews_for_holds
 #: 950.data.seed-values.sql:2027
-msgid "When an item could fulfill a hold, do not allow the current patron to renew"
+msgid ""
+"When an item could fulfill a hold, do not allow the current patron to renew"
 msgstr ""
-"Pokud může exemplář splnit rezervaci, nepovolit stávajícímu čtenáři "
-"prodloužit výpůjčku"
+"Pokud může být exemplář využit pro splnění rezervace, nepovolit prodloužení "
+"výpůjčky"
 
-# id::coust.description__opac.allow_pending_address
 #: 950.data.seed-values.sql:1837
-msgid "If enabled, patrons can create and edit existing addresses.  Addresses are kept in a pending state until staff approves the changes"
+msgid ""
+"If enabled, patrons can create and edit existing addresses.  Addresses are "
+"kept in a pending state until staff approves the changes"
 msgstr ""
 "Je-li tato volba aktivována, čtenáři mohou vytvářet a editovat své adresy. "
-"Adresy jsou ponechány v nevyřízeném stavu, dokud zaměstnanec nepotvrdí změny"
+"Adresy jsou ponechány v nevyřízeném stavu, dokud personál nepotvrdí změny"
 
-# id::ccvm.value__115
 #: 950.data.seed-values.sql:3615
 msgid "Efik"
 msgstr "Efik"
 
-# id::cmf.label__7
 #: 950.data.seed-values.sql:53
 msgid "Corporate Author"
 msgstr "Korporace"
 
-# id::coust.label__ui.patron.edit.au.other_phone.regex
 #: 950.data.seed-values.sql:2368
 msgid "GUI: Regex for other_phone field on patron registration"
 msgstr "GUI: Regex pro pole other_phone při registraci čtenáře"
 
-# id::ccvm.value__252
 # id::clm.value__lit
 #: 950.data.seed-values.sql:3752
 msgid "Lithuanian"
 msgstr "Litevština"
 
-# id::ccvm.value__296
 #: 950.data.seed-values.sql:3796
 msgid "Creek"
 msgstr "Muskogee"
 
-# id::ccvm.value__490
-# id::cam.value__c
 #: 950.data.seed-values.sql:3992
 msgid "Pre-adolescent"
-msgstr "Předpubertální"
+msgstr "Preadolescenti"
 
-# id::ccvm.value__390
 #: 950.data.seed-values.sql:3890
 msgid "Lule Sami"
 msgstr "Lule sami"
 
-# id::ccvm.value__afh
 #: 950.data.seed-values.sql:3508
 msgid "Afrihili (Artificial language)"
 msgstr "Afrihili (umělý jazyk)"
 
-# id::coust.label__ui.patron.edit.au.juvenile.show
 #: 950.data.seed-values.sql:2348
 msgid "GUI: Show juvenile field on patron registration"
-msgstr "GUI: Zobrazit pole juvenile při registraci čtenáře"
+msgstr "GUI: Zobrazit pole Nezletilý při registraci čtenáře"
 
-# id::ccvm.value__54
 #: 950.data.seed-values.sql:3554
 msgid "Bislama"
 msgstr "Bislama"
 
-# id::ccvm.value__230
 #: 950.data.seed-values.sql:3730
 msgid "Kongo"
 msgstr "Konžština"
 
-# id::ccvm.value__397
 #: 950.data.seed-values.sql:3897
 msgid "Soninke"
 msgstr "Sonikština"
 
-# id::ccvm.value__ach
 #: 950.data.seed-values.sql:3504
 msgid "Acoli"
 msgstr "Ačoli"
 
-# id::ccvm.value__283
 #: 950.data.seed-values.sql:3783
 msgid "Mon-Khmer (Other)"
 msgstr "Mon-khmerské jazyky (ostatní)"
 
-# id::ccvm.value__243
 # id::clm.value__lam
 #: 950.data.seed-values.sql:3743
 msgid "Lamba"
 msgstr "Lambština"
 
-# id::ccvm.value__338
 # id::clm.value__pap
 #: 950.data.seed-values.sql:3838
 msgid "Papiamento"
 msgstr "Papiamento"
 
-# id::coust.label__ui.patron.edit.au.juvenile.suggest
 #: 950.data.seed-values.sql:2352
 msgid "GUI: Suggest juvenile field on patron registration"
-msgstr "GUI: Navrhnout pole juvenile při registraci čtenáře"
+msgstr "GUI: Navrhnout pole Nezletilý při registraci čtenáře"
 
-# id::ccvm.value__297
 #: 950.data.seed-values.sql:3797
 msgid "Marwari"
 msgstr "Márvárština"
 
-# id::crmf.name__2
 #: 950.data.seed-values.sql:191
 msgid "overdue_min"
 msgstr "zpoždění_minimální"
 
-# id::ccvm.value__99
 # id::clm.value__dak
 #: 950.data.seed-values.sql:3599
 msgid "Dakota"
 msgstr "Dakota"
 
-# id::ccvm.value__345
 # id::clm.value__pol
 #: 950.data.seed-values.sql:3845
 msgid "Polish"
@@ -4427,35 +3875,29 @@ msgstr "Polština"
 msgid "overdue_mid"
 msgstr "zpoždění_střední"
 
-# id::coust.label__ui.patron.edit.au.evening_phone.suggest
 #: 950.data.seed-values.sql:2328
 msgid "GUI: Suggest evening_phone field on patron registration"
 msgstr "GUI: Navrhnout pole evening_phone při registraci čtenáře"
 
-# id::ccvm.value__52
 #: 950.data.seed-values.sql:3552
 msgid "Bikol"
 msgstr "Bikolština"
 
-# id::ccvm.value__178
 # id::clm.value__hin
 #: 950.data.seed-values.sql:3678
 msgid "Hindi"
 msgstr "Hindština"
 
-# id::ccvm.value__413
 # id::clm.value__swe
 #: 950.data.seed-values.sql:3913
 msgid "Swedish"
 msgstr "Švédština"
 
-# id::ccvm.value__238
 # id::clm.value__kur
 #: 950.data.seed-values.sql:3738
 msgid "Kurdish"
 msgstr "Kurdština"
 
-# id::ccvm.value__377
 # id::clm.value__sgn
 #: 950.data.seed-values.sql:3877
 msgid "Sign languages"
@@ -4466,131 +3908,117 @@ msgstr "Znakové jazyky"
 msgid "System"
 msgstr "Systém"
 
-# id::ccvm.value__126
 # id::clm.value__ewe
 #: 950.data.seed-values.sql:3626
 msgid "Ewe"
 msgstr "Eweština"
 
-# id::ccvm.value__447
 #: 950.data.seed-values.sql:3947
 msgid "Tupi languages"
 msgstr "Tupi jazyky"
 
-# id::ccvm.value__alg
 #: 950.data.seed-values.sql:3515
 msgid "Algonquian (Other)"
 msgstr "Algonkinské jazyky (ostatní)"
 
-# id::coust.label__acq.default_copy_location
-# id::coust.description__acq.default_copy_location
 #: 950.data.seed-values.sql:2440 950.data.seed-values.sql:2441
 msgid "Default copy location"
 msgstr "Standardní umístění exempláře"
 
-# id::ccvm.value__129 id::ccvm.value__130
 # id::clm.value__fao id::clm.value__-far
 #: 950.data.seed-values.sql:3629 950.data.seed-values.sql:3630
 msgid "Faroese"
 msgstr "Faerština"
 
-# id::coust.description__ui.patron.edit.au.other_phone.example
 #: 950.data.seed-values.sql:2365
-msgid "The Example for validation on the other_phone field in patron registration."
+msgid ""
+"The Example for validation on the other_phone field in patron registration."
 msgstr "Příklad pro validaci pole other_phone při registraci čtenáře."
 
-# id::ccvm.value__100
 # id::clm.value__dan
 #: 950.data.seed-values.sql:3600
 msgid "Danish"
 msgstr "Dánština"
 
-# id::ccvm.value__109
 #: 950.data.seed-values.sql:3609
 msgid "Dravidian (Other)"
 msgstr "Drávidské jazyky (ostatní)"
 
-# id::coust.description__ui.patron.edit.phone.example
 #: 950.data.seed-values.sql:2417
-msgid "The Example for validation on phone fields in patron registration. Applies to all phone fields without their own setting."
+msgid ""
+"The Example for validation on phone fields in patron registration. Applies "
+"to all phone fields without their own setting."
 msgstr ""
 "Příklad pro validaci polí s telefonními čísli při registraci čtenáře. "
 "Vztahuje se na všechna telefonní čísla bez vlastního nastavení."
 
-# id::coust.description__ui.patron.edit.au.day_phone.show
 #: 950.data.seed-values.sql:2269
-msgid "The day_phone field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored."
+msgid ""
+"The day_phone field will be shown on the patron registration screen. Showing "
+"a field makes it appear with required fields even when not required. If the "
+"field is required this setting is ignored."
 msgstr ""
 "Pole day_phone bude zobrazeno na obrazovce s registrací čtenáře. Pole je "
 "zobrazeno, pokud jsou zobrazena povinná pole, a to i v případě, že samo není "
 "povinné. Pokud je pole povinné, toto nastavení není uplatněno."
 
-# id::ccvm.value__91
 #: 950.data.seed-values.sql:3591
 msgid "Creoles and Pidgins, English-based (Other)"
 msgstr "Kreolština a jiné pidginy na základě angličtiny"
 
-# id::ccvm.value__249
 #: 950.data.seed-values.sql:3749
 msgid "Lezgian"
 msgstr "Lezgiština"
 
-# id::ccvm.value__97
 #: 950.data.seed-values.sql:3597
 msgid "Cushitic (Other)"
 msgstr "Kušitské jazyky (ostatní)"
 
-# id::ccvm.value__258
 # id::clm.value__lug
 #: 950.data.seed-values.sql:3758
 msgid "Ganda"
 msgstr "Ganda"
 
-# id::ccvm.value__426
 #: 950.data.seed-values.sql:3926
 msgid "Tetum"
 msgstr "Tetumština"
 
-# id::ccvm.value__335
 #: 950.data.seed-values.sql:3835
 msgid "Pahlavi"
 msgstr "Pahlaví (střední perština)"
 
-# id::cubt.label__folks%3Apub_book_bags.add
 #: 950.data.seed-values.sql:2561
 msgid "Add to Published Book Bags"
 msgstr "Přidat do zveřejněných seznamů knih"
 
-# id::ccvm.value__484
 #: 950.data.seed-values.sql:3984
 msgid "Zande"
 msgstr "Zandština"
 
-# id::ccvm.value__145 id::ccvm.value__156
 # id::clm.value__-gag id::clm.value__glg
 #: 950.data.seed-values.sql:3645 950.data.seed-values.sql:3656
 msgid "Galician"
 msgstr "Galicijština"
 
-# id::ccvm.value__66
 #: 950.data.seed-values.sql:3566
 msgid "Central American Indian (Other)"
 msgstr "Indiánské jazyky střední Ameriky (ostatní)"
 
-# id::coust.label__ui.patron.edit.au.dob.suggest
 #: 950.data.seed-values.sql:2288
 msgid "GUI: Suggest dob field on patron registration"
 msgstr "GUI: Navrhnout pole dob při registraci čtenáře"
 
-# id::coust.description__ui.patron.edit.au.alert_message.show
 #: 950.data.seed-values.sql:2217
-msgid "The alert_message field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored."
+msgid ""
+"The alert_message field will be shown on the patron registration screen. "
+"Showing a field makes it appear with required fields even when not required. "
+"If the field is required this setting is ignored."
 msgstr ""
-"Pole alert_message bude zobrazeno na obrazovce s registrací čtenáře. Pole je "
-"zobrazeno, pokud jsou zobrazena povinná pole, a to i v případě, že samo "
-"není povinné. Pokud je pole povinné, toto nastavení není uplatněno."
+"Pole alert_message (upozornění) bude zobrazeno na obrazovce s registrací "
+"čtenáře. Pole je zobrazeno, pokud jsou zobrazena povinná pole, a to i v "
+"případě, že samo není povinné. Pokud je pole povinné, toto nastavení není "
+"uplatněno."
 
-# id::ccvm.value__224
 #: 950.data.seed-values.sql:3724
 msgid "Kikuyu"
 msgstr "Kukujština"
@@ -4600,200 +4028,179 @@ msgstr "Kukujština"
 msgid "6month"
 msgstr "6měsíční"
 
-# id::cgf.label__history.circ.retention_count
 #: 950.data.seed-values.sql:7194
 msgid "Historical Circulations per Copy"
 msgstr "Historické výpůjčky podle exempláře"
 
-# id::cmf.label__20
 #: 950.data.seed-values.sql:83
 msgid "UPC"
 msgstr "Univerzální kód výrobků (UPC)"
 
-# id::coust.label__org.bounced_emails
-# id::coust.description__org.bounced_emails
 #: 950.data.seed-values.sql:1676 950.data.seed-values.sql:1677
 msgid "Sending email address for patron notices"
 msgstr "E-mailová adresa pro zasílání upozornění čtenáři"
 
-# id::ccvm.value__ang
 #: 950.data.seed-values.sql:3517
 msgid "English, Old (ca. 450-1100)"
 msgstr "Anglosaština, stará (cca 450-1100)"
 
-# id::ccvm.value__300
 #: 950.data.seed-values.sql:3800
 msgid "North American Indian (Other)"
 msgstr "Severoamerické indiánské jazyky (ostatní)"
 
-# id::coust.label__ui.admin.patron_log.max_entries
 #: 950.data.seed-values.sql:2016
 msgid "GUI: Work Log: Maximum Patrons Logged"
 msgstr "GUI: Pracovní deník: maximum přihlášených čtenářů"
 
-# id::coust.description__ui.patron.edit.au.suffix.suggest
 #: 950.data.seed-values.sql:2397
-msgid "The suffix field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored."
+msgid ""
+"The suffix field will be suggested on the patron registration screen. "
+"Suggesting a field makes it appear when suggested fields are shown. If the "
+"field is shown or required this setting is ignored."
 msgstr ""
 "Pole suffix bude navrženo na obrazovce s registrací čtenáře. Návrh pole je "
 "zobrazen, pokud jsou zobrazena navrhovaná pole. Pokud je pole zobrazeno nebo "
 "je povinné, toto nastavení není uplatněno."
 
-# id::coust.description__ui.patron.edit.au.other_phone.suggest
 #: 950.data.seed-values.sql:2381
-msgid "The other_phone field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored."
+msgid ""
+"The other_phone field will be suggested on the patron registration screen. "
+"Suggesting a field makes it appear when suggested fields are shown. If the "
+"field is shown or required this setting is ignored."
 msgstr ""
 "Pole other_phone bude navrženo na obrazovce s registrací čtenáře. Návrh pole "
 "je zobrazen, pokud jsou zobrazena navrhovaná pole. Pokud je pole zobrazeno "
 "nebo je povinné, toto nastavení není uplatněno."
 
-# id::cbrebt.label__bookbag
 #: 950.data.seed-values.sql:2554
 msgid "Book Bag"
 msgstr "Seznam knih"
 
-# id::coust.label__credit.processor.authorizenet.password
 #: 950.data.seed-values.sql:1951
 msgid "Credit card processing: AuthorizeNet password"
 msgstr "Zpracování kreditní karty: Heslo do služby AuthorizeNet"
 
-# id::ccvm.value__50
 #: 950.data.seed-values.sql:3550
 msgid "Bhojpuri"
 msgstr "Bhódžpurí (bhódžpurština)"
 
-# id::ccvm.value__441
 #: 950.data.seed-values.sql:3941
 msgid "Tsimshian"
 msgstr "Tsimshijské jazyky"
 
-# id::aout.opac_label__5
 #: 950.data.seed-values.sql:360
 msgid "Your Bookmobile"
 msgstr "Vaše pojízdná knihovna"
 
-# id::ccvm.value__315
 # id::clm.value__nog
 #: 950.data.seed-values.sql:3815
 msgid "Nogai"
 msgstr "Nogai"
 
-# id::coust.description__ui.patron.edit.au.juvenile.show
 #: 950.data.seed-values.sql:2349
-msgid "The juvenile field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored."
+msgid ""
+"The juvenile field will be shown on the patron registration screen. Showing "
+"a field makes it appear with required fields even when not required. If the "
+"field is required this setting is ignored."
 msgstr ""
-"Pole juvenile bude zobrazeno na obrazovce s registrací čtenáře. Pole je "
+"Pole Nezletilý bude zobrazeno na obrazovce s registrací čtenáře. Pole je "
 "zobrazeno, pokud jsou zobrazena povinná pole, a to i v případě, že samo není "
 "povinné. Pokud je pole povinné, toto nastavení není uplatněno."
 
-# id::ccvm.value__120
 #: 950.data.seed-values.sql:3620
 msgid "English, Middle (1100-1500)"
 msgstr "Angličtina, střední doba (1100-1500)"
 
-# id::ccvm.value__171
 #: 950.data.seed-values.sql:3671
 msgid "Haitian French Creole"
 msgstr "Haitsko-francouzská kreolština"
 
-# id::ccvm.value__411
 # id::clm.value__sux
 #: 950.data.seed-values.sql:3911
 msgid "Sumerian"
 msgstr "Sumerština"
 
-# id::coust.label__circ.selfcheck.patron_login_timeout
 #: 950.data.seed-values.sql:1756
 msgid "Selfcheck: Patron Login Timeout (in seconds)"
 msgstr ""
 "Samoobslužná výpůjční stanice: Vypršení přihlášení čtenáře (v sekundách)"
 
-# id::acqit.name__PPR
 #: 950.data.seed-values.sql:6491
 msgid "Paper"
 msgstr "Dokument"
 
-# id::coust.label__circ.holds.min_estimated_wait_interval
 #: 950.data.seed-values.sql:1751
 msgid "Holds: Minimum Estimated Wait"
 msgstr "Rezervace: Minimální odhadovaná doba čekání"
 
-# id::ccvm.value__475
 #: 950.data.seed-values.sql:3975
 msgid "Xhosa"
 msgstr "Xhosština"
 
-# id::coust.label__ui.patron.edit.au.email.require
 #: 950.data.seed-values.sql:2300
 msgid "GUI: Require email field on patron registration"
 msgstr "GUI: Vyžadovat pole email při registraci čtenáře"
 
-# id::ccvm.value__61
 #: 950.data.seed-values.sql:3561
 msgid "Buriat"
 msgstr "Burjatština"
 
-# id::ccvm.value__270
 # id::clm.value__man
 #: 950.data.seed-values.sql:3770
 msgid "Mandingo"
 msgstr "Mandingština"
 
-# id::coust.label__auth.opac_timeout id::coust.description__auth.opac_timeout
 #: 950.data.seed-values.sql:1656 950.data.seed-values.sql:1657
 msgid "OPAC Inactivity Timeout (in seconds)"
-msgstr "Doba vypršení OPACu při nečinnosti (v sekundách)"
+msgstr "Doba vypršení relace OPACu při nečinnosti (v sekundách)"
 
-# id::coust.description__ui.patron.edit.au.other_phone.regex
 #: 950.data.seed-values.sql:2369
-msgid "The Regular Expression for validation on the other_phone field in patron registration."
-msgstr "Regulární výraz pro validaci pole other_phone při registraci čtenáře."
+msgid ""
+"The Regular Expression for validation on the other_phone field in patron "
+"registration."
+msgstr ""
+"Regulární výraz pro validaci pole other_phone při registraci čtenáře."
 
-# id::ccvm.value__193 id::ccvm.value__198
 #: 950.data.seed-values.sql:3693 950.data.seed-values.sql:3698
 msgid "Interlingua (International Auxiliary Language Association)"
 msgstr "Interlingua (Mezinárodní pomocná jazyková asociace)"
 
-# id::ccvm.value__186
 # id::clm.value__ice
 #: 950.data.seed-values.sql:3686
 msgid "Icelandic"
 msgstr "Islandština"
 
-# id::ccvm.value__451
 #: 950.data.seed-values.sql:3951
 msgid "Twi"
 msgstr "Twi"
 
-# id::coust.description__ui.patron.edit.au.email.regex
 #: 950.data.seed-values.sql:2297
-msgid "The Regular Expression for validation on the email field in patron registration."
+msgid ""
+"The Regular Expression for validation on the email field in patron "
+"registration."
 msgstr "Regulární výraz pro validaci pole email při registraci čtenáře"
 
-# id::ccvm.value__168
 #: 950.data.seed-values.sql:3668
 msgid "Gujarati"
 msgstr "Gudžarátština"
 
-# id::ccvm.value__511
 #: 950.data.seed-values.sql:4017
 msgid "Fiction (not further specified)"
 msgstr "Beletrie (bez bližší specifikace)"
 
-# id::ccvm.value__272
 #: 950.data.seed-values.sql:3772
 msgid "Austronesian (Other)"
 msgstr "Malajsko-polynéské jazyky (ostatní)"
 
-# id::ccvm.value__akk
 # id::clm.value__akk
 #: 950.data.seed-values.sql:3512
 msgid "Akkadian"
 msgstr "Akkadština"
 
-# id::coust.description__circ.selfcheck.alert.popup
 #: 950.data.seed-values.sql:1762
-msgid "If true, checkout/renewal errors will cause a pop-up window in addition to the on-screen message"
+msgid ""
+"If true, checkout/renewal errors will cause a pop-up window in addition to "
+"the on-screen message"
 msgstr ""
 "Je-li tato hodnota nastavena jako pravdivá, pokud dojde k chybě při při "
 "výpůjčce/prodloužení výpůjčky, objeví se kromě zprávy na obrazovce také  "
@@ -4804,118 +4211,97 @@ msgstr ""
 msgid "Filtered"
 msgstr "Filtrováno"
 
-# id::ccvm.value__231
 # id::clm.value__kor
 #: 950.data.seed-values.sql:3731
 msgid "Korean"
 msgstr "Korejština"
 
-# id::coust.label__ui.patron.edit.au.other_phone.show
 #: 950.data.seed-values.sql:2376
 msgid "GUI: Show other_phone field on patron registration"
 msgstr "GUI: Zobrazit pole other_phone při registraci čtenáře"
 
-# id::ccvm.value__378
 #: 950.data.seed-values.sql:3878
 msgid "Shan"
 msgstr "Šanština"
 
-# id::coust.description__ui.staff.require_initials
 #: 950.data.seed-values.sql:1882
 msgid "Appends staff initials and edit date into note content."
 msgstr "Přidává do obsahu poznámky iniciály zaměstnance a datum editace."
 
-# id::coust.label__ui.patron.edit.au.other_phone.suggest
 #: 950.data.seed-values.sql:2380
 msgid "GUI: Suggest other_phone field on patron registration"
 msgstr "GUI: Navrhnout pole other_phone field při registraci čtenáře"
 
-# id::ccvm.value__506
 #: 950.data.seed-values.sql:4010
 msgid "Manuscript notated music"
 msgstr "Rukopisná hudebnina"
 
-# id::coust.description__circ.item_checkout_history.max
 #: 950.data.seed-values.sql:1737
-msgid "This is the maximum number of previous circulations the staff client will display when investigating item details"
+msgid ""
+"This is the maximum number of previous circulations the staff client will "
+"display when investigating item details"
 msgstr ""
 "Maximální počet předchozích výpůjček ve služebním klientovi se zobrazí při "
 "zkoumání detailů exempláře"
 
-# id::coust.label__circ.holds.default_estimated_wait_interval
 #: 950.data.seed-values.sql:1746
 msgid "Holds: Default Estimated Wait"
 msgstr "Rezervace: Standardní odhadovaná čekací doba"
 
-# id::coust.label__circ.max_patron_claim_return_count
 #: 950.data.seed-values.sql:1921
 msgid "Max Patron Claims Returned Count"
-msgstr "Maximální počet exemplářů se statusem podle čtenáře vráceno"
+msgstr "Maximální počet exemplářů se statusem \"údajně vráceno\""
 
-# id::coust.label__cat.default_item_price
-# id::coust.description__cat.default_item_price
 #: 950.data.seed-values.sql:1671 950.data.seed-values.sql:1672
 msgid "Default Item Price"
-msgstr "Standardní cena exempláře"
+msgstr "Přednastavená cena exemplářů"
 
-# id::ccvm.value__532
 #: 950.data.seed-values.sql:4043
 msgid "Collection"
 msgstr "Fond"
 
-# id::ccvm.value__320
 #: 950.data.seed-values.sql:3820
 msgid "Nyanja"
 msgstr "Ňandžština"
 
-# id::ccvm.value__221
 #: 950.data.seed-values.sql:3721
 msgid "Khoisan (Other)"
 msgstr "Khoisanské jazyky (ostatní)"
 
-# id::ccvm.value__65
 # id::clm.value__cad
 #: 950.data.seed-values.sql:3565
 msgid "Caddo"
 msgstr "Caddo"
 
-# id::ccvm.value__137 id::ccvm.value__140
 #: 950.data.seed-values.sql:3637 950.data.seed-values.sql:3640
 msgid "Frisian"
 msgstr "Fríština"
 
-# id::coust.label__circ.offline.username_allowed
 #: 950.data.seed-values.sql:5917
 msgid "Offline: Patron Usernames Allowed"
 msgstr "Offline: Povolení uživatelských jmen čtenářů"
 
-# id::ccvm.value__215
 #: 950.data.seed-values.sql:3715
 msgid "Kashmiri"
 msgstr "Kašmírí"
 
-# id::ccvm.value__170
 #: 950.data.seed-values.sql:3670
 msgid "Haida"
 msgstr "Haida"
 
-# id::cmf.label__25
 #: 950.data.seed-values.sql:93
 msgid "Local Free-Text Call Number"
 msgstr "Lokální signatura (zapsaná volným textem)"
 
-# id::ccvm.value__244 id::ccvm.value__325
 #: 950.data.seed-values.sql:3744 950.data.seed-values.sql:3825
 msgid "Occitan (post-1500)"
 msgstr "Okcitánština (po 1500)"
 
-# id::ccvm.value__347
 # id::clm.value__por
 #: 950.data.seed-values.sql:3847
 msgid "Portuguese"
 msgstr "Portugalština"
 
-# id::ccvm.value__316
 #: 950.data.seed-values.sql:3816
 msgid "Old Norse"
 msgstr "Norština, stará"
@@ -4925,48 +4311,40 @@ msgstr "Norština, stará"
 msgid "Spanish (US)"
 msgstr "Španělština (US)"
 
-# id::coust.label__ui.patron.edit.au.active.show
 #: 950.data.seed-values.sql:2208
 msgid "GUI: Show active field on patron registration"
-msgstr "GUI: Zobrazit pole active při registraci čtenáře"
+msgstr "GUI: Zobrazit pole aktivní při registraci čtenáře"
 
-# id::coust.label__ui.patron.edit.au.master_account.suggest
 #: 950.data.seed-values.sql:2360
 msgid "GUI: Suggest master_account field on patron registration"
 msgstr "GUI: Navrhnout pole master_account při registraci čtenáře"
 
-# id::ccvm.value__79
 # id::clm.value__chm
 #: 950.data.seed-values.sql:3579
 msgid "Mari"
 msgstr "Marijština"
 
-# id::pgt.name__7
 #: 950.data.seed-values.sql:1398
 msgid "Acquisitions Administrator"
 msgstr "Administrátor akvizic"
 
-# id::coust.label__ui.patron.edit.au.dob.calendar
 #: 950.data.seed-values.sql:2276
 msgid "GUI: Show calendar widget for dob field on patron registration"
-msgstr "GUI: Zobrazit kalendářový nástroj pro pole dob při registraci čtenáře"
+msgstr "GUI: Zobrazit kalendářové okno  pro pole dob při registraci čtenáře"
 
 # id::vqbrad.description__3
 #: 950.data.seed-values.sql:2482
 msgid "Language of work"
 msgstr "Jazyk díla"
 
-# id::coust.label__credit.processor.payflowpro.partner
 #: 950.data.seed-values.sql:2006
 msgid "Credit card processing: PayflowPro partner"
 msgstr "Zpracování kreditní karty: Partner služby PayflowPro"
 
-# id::coust.label__ui.patron.edit.au.day_phone.require
 #: 950.data.seed-values.sql:2264
 msgid "GUI: Require day_phone field on patron registration"
 msgstr "GUI: Vyžadovat pole day_phone při registraci čtenáře"
 
-# id::ccvm.value__aar
 #: 950.data.seed-values.sql:3501
 msgid "Afar"
 msgstr "Afar"
@@ -4976,37 +4354,30 @@ msgstr "Afar"
 msgid "3month"
 msgstr "3měsíční"
 
-# id::cza.label__8 id::cza.label__17 id::cza.label__26
-# id::vqbrad.description__13
 #: 950.data.seed-values.sql:295 950.data.seed-values.sql:316
 #: 950.data.seed-values.sql:335 950.data.seed-values.sql:2492
 msgid "Publication Date"
 msgstr "Datum vydání"
 
-# id::ccvm.value__453
 # id::clm.value__udm
 #: 950.data.seed-values.sql:3953
 msgid "Udmurt"
 msgstr "Udmurtština"
 
-# id::ccvm.value__155 id::ccvm.value__201
 # id::clm.value__gle id::clm.value__-iri
 #: 950.data.seed-values.sql:3655 950.data.seed-values.sql:3701
 msgid "Irish"
 msgstr "Irština"
 
-# id::ccvm.value__148
 # id::clm.value__gba
 #: 950.data.seed-values.sql:3648
 msgid "Gbaya"
 msgstr "Gbaja"
 
-# id::coust.label__circ.max_fine.cap_at_price
 #: 950.data.seed-values.sql:5333
 msgid "Circ: Cap Max Fine at Item Price"
 msgstr "Výpůjčky: Maximální pokuta je cena exempláře"
 
-# id::i18n_l.name__cs-CZ id::i18n_l.description__cs-CZ id::ccvm.value__98
 # id::clm.value__cze id::i18n_l.name__cs-CZ id::i18n_l.description__cs-CZ
 # id::clm.value__cze
 #: 950.data.seed-values.sql:250 950.data.seed-values.sql:251
@@ -5014,30 +4385,25 @@ msgstr "Výpůjčky: Maximální pokuta je cena exempláře"
 msgid "Czech"
 msgstr "Čeština"
 
-# id::ccvm.value__261
 #: 950.data.seed-values.sql:3761
 msgid "Luo (Kenya and Tanzania)"
 msgstr "Luoština (Keňa a Tanzanie)"
 
-# id::ccvm.value__219
 # id::clm.value__kbd
 #: 950.data.seed-values.sql:3719
 msgid "Kabardian"
 msgstr "Kabardština"
 
-# id::ccvm.value__242
 # id::clm.value__lah
 #: 950.data.seed-values.sql:3742
 msgid "Lahnda"
 msgstr "Lahndština"
 
-# id::ccvm.value__46
 # id::clm.value__bel
 #: 950.data.seed-values.sql:3546
 msgid "Belarusian"
 msgstr "Běloruština"
 
-# id::ccvm.value__288
 # id::clm.value__mni
 #: 950.data.seed-values.sql:3788
 msgid "Manipuri"
@@ -5048,167 +4414,144 @@ msgstr "Manipurština"
 msgid "Library of Congress"
 msgstr "Kongresová knihovna"
 
-# id::coust.label__ui.patron.edit.au.ident_value.suggest
 #: 950.data.seed-values.sql:2336
 msgid "GUI: Suggest ident_value field on patron registration"
 msgstr "GUI: Navrhnout pole ident_value při registraci čtenáře"
 
-# id::ccvm.value__526
 #: 950.data.seed-values.sql:4035
 msgid "Large print"
 msgstr "Velká písmena"
 
-# id::ccvm.value__-ajm
 #: 950.data.seed-values.sql:3510
 msgid "Aljamía"
 msgstr "Aljamia"
 
-# id::cmf.label__12
 #: 950.data.seed-values.sql:64
 msgid "Name Subject"
 msgstr "Jmenné téma"
 
-# id::ccvm.value__388
 #: 950.data.seed-values.sql:3888
 msgid "Northern Sami"
 msgstr "Sami jazyky, severní"
 
-# id::ccvm.value__458
 #: 950.data.seed-values.sql:3958
 msgid "Undetermined"
 msgstr "Nezjištěno"
 
-# id::ccvm.value__474
 #: 950.data.seed-values.sql:3974
 msgid "Kalmyk"
 msgstr "Kalmyčtina"
 
-# id::cmf.label__6
 #: 950.data.seed-values.sql:50
 msgid "Title Proper"
 msgstr "Název"
 
-# id::ccvm.value__491
 #: 950.data.seed-values.sql:3993
 msgid "Adolescent"
 msgstr "Dospívající"
 
-# id::coust.description__ui.patron.edit.au.barred.suggest
 #: 950.data.seed-values.sql:2237
-msgid "The barred field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored."
+msgid ""
+"The barred field will be suggested on the patron registration screen. "
+"Suggesting a field makes it appear when suggested fields are shown. If the "
+"field is shown or required this setting is ignored."
 msgstr ""
 "Blokované pole bude navrženo na obrazovce s registrací čtenáře. Návrh pole "
 "je zobrazen, pokud jsou zobrazena navrhovaná pole. Pokud je pole zobrazeno "
 "nebo je povinné, toto nastavení není uplatněno."
 
-# id::ccvm.value__358
 # id::clm.value__rum
 #: 950.data.seed-values.sql:3858
 msgid "Romanian"
 msgstr "Rumunština"
 
-# id::ccvm.value__aze
 # id::clm.value__aze
 #: 950.data.seed-values.sql:3535
 msgid "Azerbaijani"
 msgstr "Ázerbájdžánština"
 
-# id::ccvm.value__403
 # id::clm.value__srd
 #: 950.data.seed-values.sql:3903
 msgid "Sardinian"
 msgstr "Sardština"
 
-# id::cbt.name__5
 #: 950.data.seed-values.sql:398
 msgid "System: Deposit"
 msgstr "Systém: Vklad"
 
-# id::coust.label__circ.max_accept_return_of_lost
 #: 950.data.seed-values.sql:1811
 msgid "Circ: Void lost max interval"
 msgstr "Výpůjčky: Zrušit maximální interval ztráty"
 
-# id::ccvm.value__498
 #: 950.data.seed-values.sql:4002
 msgid "Projected medium"
 msgstr "Projekční médium"
 
-# id::coust.description__ui.patron.edit.au.email.require
 #: 950.data.seed-values.sql:2301
 msgid "The email field will be required on the patron registration screen."
 msgstr ""
 "Pole email bude na obrazovce s registrací čtenáře označeno jako povinné."
 
-# id::coust.description__circ.selfcheck.patron_login_timeout
 #: 950.data.seed-values.sql:1757
-msgid "Number of seconds of inactivity before the patron is logged out of the selfcheck interface"
+msgid ""
+"Number of seconds of inactivity before the patron is logged out of the "
+"selfcheck interface"
 msgstr ""
-"Počet sekund neaktivity před odhlášením čtenáře z rozhraní samoobslužné "
+"Počet sekund bez aktivity před odhlášením čtenáře z rozhraní samoobslužné "
 "výpůjční stanice."
 
-# id::cmf.label__22
 #: 950.data.seed-values.sql:87
 msgid "EAN"
 msgstr "EAN"
 
-# id::coust.label__ui.circ.patron_summary.horizontal
-# id::coust.description__ui.circ.patron_summary.horizontal
 #: 950.data.seed-values.sql:1876 950.data.seed-values.sql:1877
 msgid "Patron circulation summary is horizontal"
-msgstr "Přehled o výpůjčkách čtenáře je horizontální"
+msgstr "Přehled úadjů o čtenáři je zobrazen horizontálně"
 
-# id::coust.description__lib.courier_code
 #: 950.data.seed-values.sql:2022
-msgid "Courier Code for the library.  Available in transit slip templates as the %courier_code% macro."
+msgid ""
+"Courier Code for the library.  Available in transit slip templates as the "
+"%courier_code% macro."
 msgstr ""
 "Kód kurýra pro knihovnu. Dostupný v šablonách stvrzenek pro přepravu jako "
 "makro %courier_code%."
 
-# id::ccvm.value__382
 #: 950.data.seed-values.sql:3882
 msgid "Siouan (Other)"
 msgstr "Siouxské jazyky (ostatní)"
 
-# id::coust.label__circ.hold_stalling.soft
 #: 950.data.seed-values.sql:1706
 msgid "Holds: Soft stalling interval"
 msgstr "Rezervace: Tolerantní interval pozdržení"
 
-# id::coust.label__ui.patron.edit.au.claims_never_checked_out_count.show
 #: 950.data.seed-values.sql:2240
 msgid "GUI: Show claims_never_checked_out_count field on patron registration"
 msgstr ""
-"GUI: Zobrazit pole claims_never_checked_out_count při registraci čtenáře"
+"GUI: Zobrazit pole claims_never_checked_out_count (počet údajně "
+"nevypůjčených) při registraci čtenáře"
 
-# id::coust.label__acq.fnd.balance_limit.block
 #: 950.data.seed-values.sql:6478
 msgid "Fund Spending Limit for Block"
-msgstr "Limit pro utrácení peněz z fondu pro blokované"
+msgstr "Limit pro blokaci při čerpání z fondu"
 
-# id::ccvm.value__326
 #: 950.data.seed-values.sql:3826
 msgid "Ojibwa"
 msgstr "Odžibwejština"
 
-# id::ccvm.value__410
 # id::clm.value__sus
 #: 950.data.seed-values.sql:3910
 msgid "Susu"
 msgstr "Susu"
 
-# id::ccvm.value__70
 #: 950.data.seed-values.sql:3570
 msgid "Caucasian (Other)"
 msgstr "Kavkazské jazyky (ostatní)"
 
-# id::ccvm.value__118
 # id::clm.value__elx
 #: 950.data.seed-values.sql:3618
 msgid "Elamite"
 msgstr "Elamština"
 
-# id::ccvm.value__467
 #: 950.data.seed-values.sql:3967
 msgid "Walamo"
 msgstr "Walamština"
@@ -5218,59 +4561,49 @@ msgstr "Walamština"
 msgid "American Spanish"
 msgstr "Americká španělština"
 
-# id::ccvm.value__305
 #: 950.data.seed-values.sql:3805
 msgid "Ndebele (Zimbabwe)  "
 msgstr "Ndebelština (Zimbabwe)  "
 
-# id::ccvm.value__257
 #: 950.data.seed-values.sql:3757
 msgid "Luba-Katanga"
 msgstr "Lubu-katanžština"
 
-# id::coust.label__circ.lost_immediately_available
 #: 950.data.seed-values.sql:1826
 msgid "Circ: Lost items usable on checkin"
-msgstr "Výpůjčky: Ztracené exempláře využitelné při vracení"
+msgstr ""
+"Výpůjčky: Exempláře označené jako ztracené  je možné po vrácení ihned využít."
 
-# id::ccvm.value__513
 #: 950.data.seed-values.sql:4019
 msgid "Dramas"
 msgstr "Divadelní hry"
 
-# id::ccvm.value__483
 #: 950.data.seed-values.sql:3983
 msgid "Zhuang"
 msgstr "Čuangština"
 
-# id::ccvm.value__527
 # id::cifm.value__f
 #: 950.data.seed-values.sql:4036
 msgid "Braille"
 msgstr "Braillovo písmo"
 
-# id::coust.label__circ.hold_shelf_status_delay
 #: 950.data.seed-values.sql:1891
 msgid "Hold Shelf Status Delay"
 msgstr "Zpoždění statusu na regále s rezervacemi"
 
-# id::coust.label__ui.patron.edit.phone.regex
 #: 950.data.seed-values.sql:2420
 msgid "GUI: Regex for phone fields on patron registration"
 msgstr "GUI: Regex pro telefonní čísla při registraci čtenáře"
 
-# id::ccvm.value__508
 # id::citm.value__j
 #: 950.data.seed-values.sql:4012
 msgid "Musical sound recording"
 msgstr "Hudební zvukový záznam"
 
-# id::coust.label__credit.processor.payflowpro.login
 #: 950.data.seed-values.sql:1990
 msgid "Credit card processing: PayflowPro login/merchant ID"
 msgstr "Zpracování kreditní karty: Login do služby PayflowPro/ID obchodníka"
 
-# id::ccvm.value__187
 # id::clm.value__ido
 #: 950.data.seed-values.sql:3687
 msgid "Ido"
@@ -5281,101 +4614,91 @@ msgstr "Ido"
 msgid "Canadian French"
 msgstr "Kanadská francouzština"
 
-# id::coust.description__ui.patron.edit.au.ident_value2.show
 #: 950.data.seed-values.sql:2341
-msgid "The ident_value2 field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored."
+msgid ""
+"The ident_value2 field will be shown on the patron registration screen. "
+"Showing a field makes it appear with required fields even when not required. "
+"If the field is required this setting is ignored."
 msgstr ""
-"Pole ident_value2 bude zobrazeno na obrazovce s registrací uživatele. Pole "
-"je zobrazeno, pokud jsou zobrazena povinná pole, a to i v případě, že samo "
-"není povinné. Pokud je pole povinné, toto nastavení není uplatněno."
+"Pole ident_value2 bude zobrazeno na obrazovce s registrací čtenáře. Pole je "
+"zobrazeno, pokud jsou zobrazena povinná pole, a to i v případě, že samo není "
+"povinné. Pokud je pole povinné, toto nastavení není uplatněno."
 
-# id::cmf.label__23
 #: 950.data.seed-values.sql:89
 msgid "ISRC"
 msgstr "ISRC"
 
-# id::ccvm.value__134
 #: 950.data.seed-values.sql:3634
 msgid "Finno-Ugrian (Other)"
 msgstr "Ugrofinské jazyky (ostatní)"
 
-# id::ccvm.value__apa
 #: 950.data.seed-values.sql:3518
 msgid "Apache languages"
 msgstr "Apačské jazyky"
 
-# id::coust.description__circ.holds.hold_has_copy_at.block
 #: 950.data.seed-values.sql:7125
-msgid "If there is an available copy at the requesting library that could fulfill a hold during hold placement time, do not allow the hold to be placed"
+msgid ""
+"If there is an available copy at the requesting library that could fulfill a "
+"hold during hold placement time, do not allow the hold to be placed"
 msgstr ""
 "Je-li během doby zadání rezervace v žádající knihovně dostupný exemplář, "
 "který by mohl splnit rezervaci, nepovolit zadání rezervace"
 
-# id::ccvm.value__359
 #: 950.data.seed-values.sql:3859
 msgid "Rundi"
 msgstr "Rundština"
 
-# id::crcd.name__7
 #: 950.data.seed-values.sql:177
 msgid "7_days_2_renew"
 msgstr "7_dní_2_prodloužení"
 
-# id::ccvm.value__122
 #: 950.data.seed-values.sql:3622
 msgid "Eskimo languages"
 msgstr "Eskymáčtina"
 
-# id::cubt.label__folks%3Acirc.checkout
 #: 950.data.seed-values.sql:2564
 msgid "Checkout Items"
 msgstr "Vypůjčené exempláře"
 
-# id::cmf.label__10
 #: 950.data.seed-values.sql:59
 msgid "Other Author"
 msgstr "Další autor"
 
-# id::ccvm.value__ath
 #: 950.data.seed-values.sql:3529
 msgid "Athapascan (Other)"
 msgstr "Athapaskánské jazyky (ostatní)"
 
-# id::ccvm.value__306
 #: 950.data.seed-values.sql:3806
 msgid "Ndonga"
 msgstr "Ndondština"
 
-# id::coust.label__circ.holds.hold_has_copy_at.alert
 #: 950.data.seed-values.sql:7119
 msgid "Holds: Has Local Copy Alert"
-msgstr "Rezervace: Varování, je-li exemplář k dispozici lokálně"
+msgstr "Rezervace: Upozornit, je-li exemplář k dispozici lokálně"
 
-# id::ccvm.value__372
 # id::clm.value__sco
 #: 950.data.seed-values.sql:3872
 msgid "Scots"
 msgstr "Skotština"
 
-# id::ccvm.value__401 id::ccvm.value__406
 #: 950.data.seed-values.sql:3901 950.data.seed-values.sql:3906
 msgid "Sotho"
 msgstr "Sothoština, jižní"
 
-# id::ccvm.value__469
 # id::clm.value__was
 #: 950.data.seed-values.sql:3969
 msgid "Washo"
 msgstr "Washo"
 
-# id::ccvm.value__402
 #: 950.data.seed-values.sql:3902
 msgid "Spanish"
 msgstr "Španělština"
 
-# id::coust.description__ui.general.idle_timeout
 #: 950.data.seed-values.sql:1847
-msgid "If you want staff client windows to be minimized after a certain amount of system idle time, set this to the number of seconds of idle time that you want to allow before minimizing (requires staff client restart)."
+msgid ""
+"If you want staff client windows to be minimized after a certain amount of "
+"system idle time, set this to the number of seconds of idle time that you "
+"want to allow before minimizing (requires staff client restart)."
 msgstr ""
 "Chcete-li minimalizovat okna služebního klienta po určité době nečinnosti "
 "systému, proveďte nastavení na počet sekund nečinnosti, které chcete před "

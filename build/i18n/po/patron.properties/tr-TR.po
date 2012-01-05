@@ -2,21 +2,20 @@
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/patron.properties
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-07 02:03-0400\n"
-"PO-Revision-Date: 2010-03-23 18:16+0000\n"
-"Last-Translator: Can Bülbül <a_bulbul@ug.bilkent.edu.tr>\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2011-09-06 10:45+0000\n"
+"Last-Translator: Hamit Selahattin Naiboğlu <Unknown>\n"
 "Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
-"X-Launchpad-Export-Date: 2010-03-24 04:55+0000\n"
-"X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-09-07 04:37+0000\n"
+"X-Generator: Launchpad (build 13861)\n"
 
 #: staff.patron.barcode_entry.user_permission_editor
 msgid "User Permission Editor"
@@ -75,11 +74,11 @@ msgstr ""
 
 #: staff.patron.bill_interface.payment_pending.column_header
 msgid "Payment Pending"
-msgstr ""
+msgstr "Ödeme Beklemede"
 
 #: staff.patron.bill_cc_info.need_cc_number
 msgid "You must provide a credit card number"
-msgstr ""
+msgstr "Kredi kartı numarası tanımlamalısınız"
 
 #: staff.patron.bill_cc_info.need_approval_code
 msgid "You must provide an approval code or an imprint slip number"
@@ -97,21 +96,23 @@ msgstr ""
 #: staff.patron.bill_details.handle_edit_bill_note.note_dialog.prompt
 msgctxt "staff.patron.bill_details.handle_edit_bill_note.note_dialog.prompt"
 msgid "Enter new note:"
-msgstr ""
+msgstr "Yeni bir not girin:"
 
 #: staff.patron.bill_details.handle_edit_bill_note.failure
 msgid "Note for selected bills not likely updated."
 msgstr ""
 
 #: staff.patron.bill_details.handle_edit_payment_note.note_dialog.title
-msgctxt "staff.patron.bill_details.handle_edit_payment_note.note_dialog.title"
+msgctxt ""
+"staff.patron.bill_details.handle_edit_payment_note.note_dialog.title"
 msgid "Replacement Note"
 msgstr ""
 
 #: staff.patron.bill_details.handle_edit_payment_note.note_dialog.prompt
-msgctxt "staff.patron.bill_details.handle_edit_payment_note.note_dialog.prompt"
+msgctxt ""
+"staff.patron.bill_details.handle_edit_payment_note.note_dialog.prompt"
 msgid "Enter new note:"
-msgstr ""
+msgstr "Yeni bir not girin:"
 
 #: staff.patron.bill_details.handle_edit_payment_note.failure
 msgid "Note for selected payments not likely updated."
@@ -123,7 +124,8 @@ msgstr ""
 
 #: staff.patron.bill_details.handle_void.confirm_void_billing
 msgctxt "staff.patron.bill_details.handle_void.confirm_void_billing"
-msgid "Are you sure you would like to void $%1$s worth of line-item billings?"
+msgid ""
+"Are you sure you would like to void $%1$s worth of line-item billings?"
 msgstr ""
 
 #: staff.patron.bill_details.handle_void.confirm_void_billing_title
@@ -142,10 +144,10 @@ msgid "No"
 msgstr ""
 
 #: staff.patron.bill_details.handle_void.confirm_void_billing_confirm_message
-#, fuzzy
-msgctxt "staff.patron.bill_details.handle_void.confirm_void_billing_confirm_message"
+msgctxt ""
+"staff.patron.bill_details.handle_void.confirm_void_billing_confirm_message"
 msgid "Check here to confirm this message"
-msgstr "Bu mesajı onaymalak için tıklayın"
+msgstr ""
 
 #: staff.patron.bill_details.handle_void.voiding_error
 msgctxt "staff.patron.bill_details.handle_void.voiding_error"
@@ -154,15 +156,15 @@ msgstr ""
 
 #: staff.patron.bill_history.retrieve_mbts_for_list.close_win_try_again
 msgid "Please close this window and try again."
-msgstr ""
+msgstr "Lütfen bu pencereyi kapatın ve yeniden deneyin."
 
 #: staff.patron.bill_history.my_init.current_bills
 msgid "Current Bills"
-msgstr ""
+msgstr "Son Ödemeler"
 
 #: staff.patron.bill_history.my_init.bill_history
 msgid "Bill History"
-msgstr ""
+msgstr "Ödeme Tarihi"
 
 #: staff.patron.bill_history.handle_add.message_plural
 msgid "Are you sure you would like to add a billing to bills %1$s?"
@@ -187,10 +189,9 @@ msgid "No"
 msgstr ""
 
 #: staff.patron.bill_history.handle_add.confirm_message
-#, fuzzy
 msgctxt "staff.patron.bill_history.handle_add.confirm_message"
 msgid "Check here to confirm this message"
-msgstr "Bu mesajı onaymalak için tıklayın"
+msgstr ""
 
 #: staff.patron.bill_history.handle_void.message_plural
 msgid "Are you sure you would like to void all billings on bills %1$s?"
@@ -216,10 +217,46 @@ msgid "No"
 msgstr ""
 
 #: staff.patron.bill_history.handle_void.confirm_message
-#, fuzzy
 msgctxt "staff.patron.bill_history.handle_void.confirm_message"
 msgid "Check here to confirm this message"
-msgstr "Bu mesajı onaymalak için tıklayın"
+msgstr ""
+
+#: staff.patron.bills.handle_refund.message_plural
+msgid ""
+"Are you sure you would like to refund excess payment on bills %1$s?  This "
+"action will simply put the amount in the Payment Pending column as a "
+"negative value.  You must still select Apply Payment!  Certain types of "
+"payments may not be refunded.  The refund may be applied to checked "
+"transactions that follow the refunded transaction."
+msgstr ""
+
+#: staff.patron.bills.handle_refund.message_singular
+msgid ""
+"Are you sure you would like to refund excess payment on bill %1$s?  This "
+"action will simply put the amount in the Payment Pending column as a "
+"negative value.  You must still select Apply Payment!  Certain types of "
+"payments may not be refunded.  The refund may be applied to checked "
+"transactions that follow the refunded transaction."
+msgstr ""
+
+#: staff.patron.bills.handle_refund.title
+msgid "Refund Excess Payment"
+msgstr ""
+
+#: staff.patron.bills.handle_refund.btn_yes
+msgctxt "staff.patron.bills.handle_refund.btn_yes"
+msgid "Yes"
+msgstr ""
+
+#: staff.patron.bills.handle_refund.btn_no
+msgctxt "staff.patron.bills.handle_refund.btn_no"
+msgid "No"
+msgstr ""
+
+#: staff.patron.bills.handle_refund.confirm_message
+msgctxt "staff.patron.bills.handle_refund.confirm_message"
+msgid "Check here to confirm this message"
+msgstr ""
 
 #: staff.patron.bill_history.print_bills.print_error
 msgid "printing bills"
@@ -227,11 +264,11 @@ msgstr ""
 
 #: staff.patron.bill_history.column.xact_type.label
 msgid "Transaction Type"
-msgstr ""
+msgstr "Muamele Türü"
 
 #: staff.patron.bill_history.column.last_billing_type.label
 msgid "Last Billing Type"
-msgstr ""
+msgstr "Son Ödeme Türü"
 
 #: staff.patron.bill_history.column.title.label
 msgctxt "staff.patron.bill_history.column.title.label"
@@ -240,7 +277,7 @@ msgstr ""
 
 #: staff.patron.bills.init_controller.money_summary_label
 msgid "Money Summary"
-msgstr ""
+msgstr "Para Geçmişi"
 
 #: staff.patron.bills.bill_payment_amount.credit_amount
 msgid "Patron only has %1$s in credit."
@@ -248,7 +285,7 @@ msgstr ""
 
 #: staff.patron.bills.bill_change_amount.greedy
 msgid "Someone wanted more money than they deserved"
-msgstr ""
+msgstr "Birileri hak ettiklerinden daha fazla para istedi"
 
 #: staff.patron.bills.apply_payment.nothing_applied
 msgid "No payments or patron credit applied."
@@ -268,6 +305,14 @@ msgid ""
 "\n"
 "Another way to \"zero\" this transaction is to use Add Billing and add a "
 "miscellaneous bill to counter the negative balance."
+msgstr ""
+
+#: staff.patron.bills.pay.invalid_user_xact_id
+msgid ""
+"%1$s\n"
+"\n"
+"This patron data is stale.  Refreshing patron data.  You should re-attempt "
+"the payment."
 msgstr ""
 
 #: staff.patron.bills.pay.payment_failed
@@ -294,11 +339,11 @@ msgstr ""
 
 #: staff.patron.bills.info_box.label_value.last_billing
 msgid "Last Billing:"
-msgstr ""
+msgstr "Son Ödeme:"
 
 #: staff.patron.bills.info_box.label_value.add_billing
 msgid "Add Billing"
-msgstr ""
+msgstr "Ödeme Ekle"
 
 #: staff.patron.bills.info_box.label_value.refund
 msgid "Refund"
@@ -311,7 +356,7 @@ msgstr ""
 
 #: staff.patron.bills.info_box.label_value.full_details
 msgid "Full Details"
-msgstr ""
+msgstr "Tüm Ayrıntılar"
 
 #: staff.patron.bills.void_all_billings.all_voided
 msgid "All billings already voided on this bill."
@@ -319,7 +364,8 @@ msgstr ""
 
 #: staff.patron.bills.void_all_billings.void.message
 msgctxt "staff.patron.bills.void_all_billings.void.message"
-msgid "Are you sure you would like to void $%1$s worth of line-item billings?"
+msgid ""
+"Are you sure you would like to void $%1$s worth of line-item billings?"
 msgstr ""
 
 #: staff.patron.bills.void_all_billings.void.title
@@ -338,10 +384,9 @@ msgid "No"
 msgstr ""
 
 #: staff.patron.bills.void_all_billings.void.confirm_message
-#, fuzzy
 msgctxt "staff.patron.bills.void_all_billings.void.confirm_message"
 msgid "Check here to confirm this message"
-msgstr "Bu mesajı onaymalak için tıklayın"
+msgstr ""
 
 #: staff.patron.bills.void_all_billings.error_voiding_bills
 msgctxt "staff.patron.bills.void_all_billings.error_voiding_bills"
@@ -360,10 +405,6 @@ msgstr ""
 msgid "No Patron Selected"
 msgstr ""
 
-#: staff.patron.display.cmd_patron_edit.edit_search
-msgid "Editor would like to search for: %1$s"
-msgstr ""
-
 #: staff.patron.display.cmd_patron_delete.dialog.title
 msgid "Delete Patron Account"
 msgstr ""
@@ -375,9 +416,8 @@ msgid ""
 msgstr ""
 
 #: staff.patron.display.cmd_patron_delete.dialog.confirmation
-#, fuzzy
 msgid "Check here to confirm this action."
-msgstr "Bu mesajı onaymalak için tıklayın"
+msgstr ""
 
 #: staff.patron.display.cmd_patron_delete.dialog.cancel
 msgid "Cancel Deletion"
@@ -400,11 +440,6 @@ msgid ""
 "The user you're attempting to delete has STAFF_LOGIN priviledges.  Please "
 "enter the barcode for a destination user to receive the deleted user's "
 "miscellaneous staff artifacts (reports, etc.):"
-msgstr ""
-
-#: staff.patron.display.cmd_patron_delete.dest_user.default_value
-msgctxt "staff.patron.display.cmd_patron_delete.dest_user.default_value"
-msgid ""
 msgstr ""
 
 #: staff.patron.display.cmd_patron_delete.dest_user.title
@@ -444,7 +479,7 @@ msgstr ""
 
 #: staff.patron.display.init.network_request.account_barred
 msgid "Patron account is BARRED.<br/><br/>"
-msgstr ""
+msgstr "Hesabınız zaman aşımına uğradı."
 
 #: staff.patron.display.init.network_request.account_inactive
 msgid "Patron account is INACTIVE.<br/><br/>"
@@ -464,8 +499,7 @@ msgstr ""
 
 #: staff.patron.display.init.network_request.window_message
 msgid ""
-"Press a navigation button above (for example, Check Out) to clear this "
-"alert."
+"Press a navigation button above (for example, Check Out) to clear this alert."
 msgstr ""
 
 #: staff.patron.display.init.network_request.dump_error_message
@@ -486,6 +520,11 @@ msgstr ""
 
 #: staff.patron.display.no_alerts_or_messages
 msgid "No Alerts, Blocks, or Messages"
+msgstr "Alarm, Engel, yada Mesaj yok"
+
+#. # Field 1 = actor.usr.id, Field 2 = actor.usr.create_date
+#: staff.patron.display.db_data
+msgid "Record ID: %1$s Create Date: %2$s "
 msgstr ""
 
 #: staff.patron.hold_notices.tooltiptext
@@ -517,7 +556,7 @@ msgstr ""
 
 #: staff.patron.hold_notices.add_notif_record
 msgid "Add Notification Record"
-msgstr ""
+msgstr "Bildiri Kaydı Ekle"
 
 #: staff.patron.hold_notices.add_notif_record_accesskey
 msgctxt "staff.patron.hold_notices.add_notif_record_accesskey"
@@ -647,14 +686,14 @@ msgstr ""
 
 #: staff.patron.holds.holds_edit_selection_depth.modify_holds_message.singular
 msgid ""
-"Are you sure you would like to change the Hold Range for hold %1$s to \"%"
-"2$s\"?;"
+"Are you sure you would like to change the Hold Range for hold %1$s to "
+"\"%2$s\"?;"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_selection_depth.modify_holds_message.plural
 msgid ""
-"Are you sure you would like to change the Hold Range for holds %1$s to \"%"
-"2$s\"?;"
+"Are you sure you would like to change the Hold Range for holds %1$s to "
+"\"%2$s\"?;"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_selection_depth.modify_holds_title
@@ -697,8 +736,8 @@ msgstr ""
 
 #: staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_message.singular
 msgid ""
-"Are you sure you would like to change the Pick Up Library for hold %1$s to %"
-"2$s?"
+"Are you sure you would like to change the Pick Up Library for hold %1$s to "
+"%2$s?"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_message.plural
@@ -797,7 +836,8 @@ msgid "Set Email Notification for Holds"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_email_notify.enable_email.singular
-msgid "Are you sure you would like to enable email notification for hold %1$s?"
+msgid ""
+"Are you sure you would like to enable email notification for hold %1$s?"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_email_notify.enable_email.plural
@@ -895,7 +935,8 @@ msgid "Any Condition"
 msgstr ""
 
 #: staff.patron.holds.holds_desire_mint_condition.btn_mediocre.accesskey
-msgctxt "staff.patron.holds.holds_desire_mint_condition.btn_mediocre.accesskey"
+msgctxt ""
+"staff.patron.holds.holds_desire_mint_condition.btn_mediocre.accesskey"
 msgid "A"
 msgstr ""
 
@@ -915,14 +956,14 @@ msgstr ""
 
 #: staff.patron.holds.holds_desire_mint_condition.enable_good.singular
 msgid ""
-"Are you sure you would like to restrict to Good Condition copies for hold %"
-"1$s?"
+"Are you sure you would like to restrict to Good Condition copies for hold "
+"%1$s?"
 msgstr ""
 
 #: staff.patron.holds.holds_desire_mint_condition.enable_good.plural
 msgid ""
-"Are you sure you would like to restrict to Good Condition copies for holds %"
-"1$s?"
+"Are you sure you would like to restrict to Good Condition copies for holds "
+"%1$s?"
 msgstr ""
 
 #: staff.patron.holds.holds_desire_mint_condition.disable_good.singular
@@ -1344,23 +1385,17 @@ msgid "Renew probably did not happen."
 msgstr ""
 
 #: staff.patron.items.items_edit.renew_with_date.title
+msgctxt "staff.patron.items.items_edit.renew_with_date.title"
+msgid "Renew with Due Date"
+msgstr ""
+
+#: staff.patron.items.items_edit.renew_with_date.description
+msgctxt "staff.patron.items.items_edit.renew_with_date.description"
 msgid "Renew with Due Date"
 msgstr ""
 
 #: staff.patron.items.items_edit.renew_with_date.prompt
 msgid "Enter a new due date for these items to be renewed: %1$s"
-msgstr ""
-
-#: staff.patron.items.items_edit.cancel_renew_with_date
-msgid "Missing Due Date. Renewal canceled."
-msgstr ""
-
-#: staff.patron.items.items_edit.invalid_date
-msgid "Invalid Date"
-msgstr ""
-
-#: staff.patron.items.items_edit.need_later_date
-msgid "Due date needs to be after today."
 msgstr ""
 
 #: staff.patron.items.items_edit.edit_due_date.singular
@@ -1369,6 +1404,10 @@ msgstr ""
 
 #: staff.patron.items.items_edit.edit_due_date.plural
 msgid "Edit Due Dates"
+msgstr ""
+
+#: staff.patron.items.items_edit.edit_due_date.description
+msgid "Due Date"
 msgstr ""
 
 #: staff.patron.items.items_edit.new_due_date
@@ -1393,12 +1432,12 @@ msgstr ""
 msgid "The items were not likely marked lost."
 msgstr ""
 
-#: staff.patron.items.items_claimed_returned.date_cannot_be_in_future
-msgid "Claims Returned Date cannot be in the future."
-msgstr ""
-
 #: staff.patron.items.items_claimed_returned.claimed_returned
 msgid "Claimed Returned"
+msgstr ""
+
+#: staff.patron.items.items_claimed_returned.claimed_returned.description
+msgid "Date Claimed"
 msgstr ""
 
 #: staff.patron.items.items_claimed_returned.enter_returned_date
@@ -1435,7 +1474,8 @@ msgid "Retrieving title..."
 msgstr ""
 
 #: staff.patron.items.retrieve_row.callback_error
-msgid "Error in callback for FM_CIRC_DETAILS.authoritative in patron/items.js"
+msgid ""
+"Error in callback for FM_CIRC_DETAILS.authoritative in patron/items.js"
 msgstr ""
 
 #: staff.patron.items.retrieve_row.error_in_retrieve_row
@@ -1490,6 +1530,14 @@ msgstr ""
 
 #: staff.patron.search_result.init.search_saving_columns
 msgid "patron search saving columns"
+msgstr ""
+
+#: staff.patron.search_result.mailing_address_column_label_prefix
+msgid "Mailing Addr: "
+msgstr ""
+
+#: staff.patron.search_result.billing_address_column_label_prefix
+msgid "Billing Addr: "
 msgstr ""
 
 #: staff.patron.summary.patron_bill.money

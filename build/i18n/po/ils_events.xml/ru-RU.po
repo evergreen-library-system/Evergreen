@@ -1,26 +1,20 @@
-# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 21:45:27-0400\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
 "PO-Revision-Date: 2010-05-11 08:59+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Launchpad (build 12959)\n"
 "X-Launchpad-Export-Date: 2011-05-18 04:43+0000\n"
+"X-Generator: Launchpad (build 12959)\n"
 
 #: 1208.TITLE_LAST_COPY:66
 msgid "The last copy attached to a title is being removed or deleted"
 msgstr "Последняя копия прикрепленная к заглавию удаляется или перемещается"
-
-#: 1232.ITEM_DEPOSIT_REQUIRED:157 1233.ITEM_RENTAL_FEE_REQUIRED:160
-#: 1234.ITEM_DEPOSIT_PAID:163
-msgid ""
-msgstr ""
 
 #: 1598.MONEY_USER_CIRCULATION_SUMMARY_NOT_FOUND:435
 msgid "The requested money_user_circulation_summary was not found"
@@ -35,10 +29,11 @@ msgid "This item is too new to have a hold placed on it"
 msgstr "диница очень свежа чтобы поставить на нем хранение"
 
 #: 1214.PATRON_DUP_IDENT1:87
-msgid "The selected primary identification type and value are in use by another patron"
+msgid ""
+"The selected primary identification type and value are in use by another "
+"patron"
 msgstr ""
-"Выбранные тип исходной идентификации и значение в пользовании другим "
-"патроном"
+"Выбранные тип исходной идентификации и значение в пользовании другим патроном"
 
 #: 1561.PERMISSION_PERM_LIST_NOT_FOUND:327
 msgid "The requested permission_perm_list was not found"
@@ -53,9 +48,8 @@ msgid "The requested config_circ_matrix_test was not found"
 msgstr "Запрашиваемый config_circ_matrix_test не найден"
 
 #: 7004.COPY_NOT_AVAILABLE:826
-#, fuzzy
 msgid "Copy is not available"
-msgstr " Копия недоступна "
+msgstr ""
 
 #: 1591.METABIB_SERIES_FIELD_ENTRY_NOT_FOUND:414
 msgid "The requested metabib_series_field_entry was not found"
@@ -70,7 +64,9 @@ msgid "No default credit processor is selected"
 msgstr "Не выбран способ оплаты по умолчанию"
 
 #: 1862.ACQ_FUND_EXCEEDS_STOP_PERCENT:658
-msgid "The requested acq.purchase_order cannot be activated because it would over-encumber a fund."
+msgid ""
+"The requested acq.purchase_order cannot be activated because it would over-"
+"encumber a fund."
 msgstr ""
 
 #: 1649.VANDELAY_IMPORT_ITEM_NOT_FOUND:587
@@ -106,17 +102,15 @@ msgid "The requested acq_lineitem_attr was not found"
 msgstr "Запрашиваемый acq_lineitem_attr не  был найден"
 
 #: 1207.REFUND_EXCEEDS_BALANCE:63
-msgid "A refund greater than the negative balance on a transaction was provided"
+msgid ""
+"A refund greater than the negative balance on a transaction was provided"
 msgstr "Возмещение больше чем отрицательный баланс на данную транзакцию"
 
 #: 1504.ACTION_TRANSIT_COPY_NOT_FOUND:191
-#, fuzzy
-msgid "Someone attempted to retrieve a transit object from the system and the object was not found."
+msgid ""
+"Someone attempted to retrieve a transit object from the system and the "
+"object was not found."
 msgstr ""
-"\n"
-"\t\t\tКто то попытался извлечь транзитный объект из \n"
-"\t\t\tсистемы и объект не найден.\n"
-"\t\t"
 
 #: 1538.ACTION_SURVEY_RESPONSE_NOT_FOUND:262
 msgid "The requested action_survey_response was not found"
@@ -127,14 +121,10 @@ msgid "The requested money_open_billable_transaction_summary was not found"
 msgstr "Запрашиваемый money_open_billable_transaction_summary не найден"
 
 #: 7000.ROUTE_ITEM:809
-#, fuzzy
-msgid "A copy needs to be routed to a different location The destination location will be specified by an 'org' key within the event object"
+msgid ""
+"A copy needs to be routed to a different location The destination location "
+"will be specified by an 'org' key within the event object"
 msgstr ""
-" \n"
-"\t\t\tнеобходимо перенаправлять копию в другое местоположение\t\n"
-"\t\t\tМестоположение пункта доставки будет определено с помощью ключа 'org' \n"
-"\t\t\tвнутри объекта события\n"
-"\t\t"
 
 #: 1554.CONFIG_RULES_CIRC_DURATION_NOT_FOUND:307
 msgid "The requested config_rules_circ_duration was not found"
@@ -170,9 +160,8 @@ msgstr "Запрашиваемый config_audience_map не найден"
 
 #: 8004.OFFLINE_CONFIG_ERROR:910 8005.OFFLINE_CHECKSUM_FAILED:913
 #: 8006.OFFLINE_SESSION_NOT_FOUND:916
-#, fuzzy
 msgid "Offline server is not configured properly"
-msgstr " Офлайн сервер конфигурирован неправильно "
+msgstr ""
 
 #: 1001.NO_SESSION:26
 msgid "User login session has either timed out or does not exist"
@@ -199,13 +188,10 @@ msgid "The copy in question is not in an ideal status for deleting"
 msgstr "Копия в вопросе это не идеальный статус для удаления"
 
 #: 1204.CIRC_BAD_STATUS:54
-#, fuzzy
-msgid "The given circulation is not in a standard status or the circulation was never fully closed properly"
+msgid ""
+"The given circulation is not in a standard status or the circulation was "
+"never fully closed properly"
 msgstr ""
-"\n"
-"\t\t\tДанная циркуляция не в стандартном состоянии или\n"
-"\t\t\tциркуляция никогда не была правильно закрыта\n"
-"\t\t"
 
 #: 1855.ACQ_FUNDING_SOURCE_CREDIT_TOTAL_NOT_FOUND:637
 msgid "The requested acq.funding_source_credit_total was not found"
@@ -220,14 +206,15 @@ msgid "The user does not have a valid phone number assigned"
 msgstr "У пользователя нету назначенного действительного телефонного номера"
 
 #: 1002.ACTOR_USER_NOT_FOUND:29
-msgid "Someone attempted to retrieve a user from the system and the user was not found"
+msgid ""
+"Someone attempted to retrieve a user from the system and the user was not "
+"found"
 msgstr ""
 "Кто то попытался извлечь пользователя из системы и пользователь не найдена"
 
 #: 7010.COPY_ALERT_MESSAGE:844
-#, fuzzy
 msgid "The requested copy has an alert message attached"
-msgstr " Запрошенная копия имеет прикрепленным сообщение тревоги "
+msgstr ""
 
 #: 1643.VANDELAY_BIB_QUEUE_NOT_FOUND:569
 msgid "The requested vandelay_bib_queue was not found"
@@ -242,18 +229,16 @@ msgid "The requested reporter_output_folder was not found"
 msgstr "Запрашиваемый reporter_output_folder не найден"
 
 #: 7008.MAX_RENEWALS_REACHED:838
-#, fuzzy
 msgid "Circulation has no more renewals remaining"
-msgstr " Циркуляция не имеет больше ожидающих обновлений "
+msgstr ""
 
 #: 1217.PATRON_INACTIVE:101
 msgid "This account is marked as inactive"
 msgstr "Этот абонентский счет отмечен как неактивный"
 
 #: 8003.OFFLINE_PARAM_ERROR:907
-#, fuzzy
 msgid "Missing params in offline upload"
-msgstr " Отсутствующие параметры в офлайн выгрузке "
+msgstr ""
 
 #: 1637.REPORTER_REPORT_FOLDER_NOT_FOUND:551
 msgid "The requested reporter_report_folder was not found"
@@ -322,9 +307,8 @@ msgid "The requested actor_user_standing_penalty was not found"
 msgstr "Запрашиваемый actor_user_standing_penalty не найден"
 
 #: 8000.OFFLINE_SESSION_ACTIVE:898
-#, fuzzy
 msgid "An offline session for this location is currently processing"
-msgstr " Офлайн сессия для этого местоположения на данный момент в процессе "
+msgstr ""
 
 #: 1200.USERNAME_EXISTS:39
 msgid "The given username already exists in the database"
@@ -339,21 +323,19 @@ msgid "User has already created a bucket with the requested name"
 msgstr "Пользователь уже создал букет с запрашиваемым именем"
 
 #: 7001.PATRON_BAD_STANDING:816
-#, fuzzy
-msgid "The patron in question is not able to check out materials because their account is in bad standing"
+msgid ""
+"The patron in question is not able to check out materials because their "
+"account is in bad standing"
 msgstr ""
-"\n"
-"\t\t\tПатрон в вопросе не может взять материалы, так как\n"
-"\t\t\tего клиентский счет в плохом состоянии\n"
-"\t\t"
 
 #: 1525.BILLING_NOT_FOUND:224
-#, fuzzy
 msgid "Requested billing note does not exist"
-msgstr " Запрашиваемая заметка на счет оплаты не существует "
+msgstr ""
 
 #: 11102.SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER:980
-msgid "Units cannot be created for the given item because its associated distribution does not have a call number."
+msgid ""
+"Units cannot be created for the given item because its associated "
+"distribution does not have a call number."
 msgstr ""
 
 #: 1575.CONTAINER_BIBLIO_RECORD_ENTRY_BUCKET_NOT_FOUND:367
@@ -365,12 +347,13 @@ msgid "Booking reservation not found"
 msgstr ""
 
 #: 1700.NON_CAT_TYPE_EXISTS:699
-#, fuzzy
 msgid "The non-cataloged type object already exists"
-msgstr " Объект некаталогизированного типа уже есть "
+msgstr ""
 
 #: 1860.ACQ_PURCHASE_ORDER_TOO_SHORT:652
-msgid "The requested acq.purchase_order cannot be split because it does not have more than one lineitem"
+msgid ""
+"The requested acq.purchase_order cannot be split because it does not have "
+"more than one lineitem"
 msgstr ""
 
 #: 10004.ACQ_LINEITEM_NO_PRICE:952
@@ -378,13 +361,10 @@ msgid "The lineitem has no price"
 msgstr "Строка не имеет цены"
 
 #: 1226.REFUND_EXCEEDS_DESK_PAYMENTS:135
-#, fuzzy
-msgid "This refund amount is not allowed because it exceeds the total amount of desk payments for this transaction."
+msgid ""
+"This refund amount is not allowed because it exceeds the total amount of "
+"desk payments for this transaction."
 msgstr ""
-"\n"
-"\t\t\tЭтот размер компенсации не разрешен, так как превышает \n"
-"\t\t\tсуммарный размер кассовых оплат для данной транзакций.\n"
-"\t\t"
 
 #: 1619.ACTOR_STAT_CAT_ENTRY_USER_MAP_NOT_FOUND:497
 msgid "The requested actor_stat_cat_entry_user_map was not found"
@@ -463,9 +443,8 @@ msgid "The requested acq.lineitem_provider_attr_definition was not found"
 msgstr "Запрашиваемый acq.lineitem_provider_attr_definition не был найден"
 
 #: 7007.COPY_NEEDED_FOR_HOLD:835
-#, fuzzy
 msgid "Copy is needed to fulfill a hold"
-msgstr " Для осуществения хранения требуется копия "
+msgstr ""
 
 #: 1562.METABIB_METARECORD_SOURCE_MAP_NOT_FOUND:330
 msgid "The requested metabib_metarecord_source_map was not found"
@@ -488,18 +467,14 @@ msgid "The requested permission_usr_grp_map was not found"
 msgstr "Запрашиваемый permission_usr_grp_map не найден"
 
 #: 1215.CIRC_EXCEEDS_COPY_RANGE:94
-#, fuzzy
-msgid "The selected copy may not circulate because the recipient's home location is not within the copy's circulation range"
+msgid ""
+"The selected copy may not circulate because the recipient's home location is "
+"not within the copy's circulation range"
 msgstr ""
-"\n"
-"\t\t\tВыбранная копия не может быть циркулирована так как местонахождение \n"
-"\t\t\tполучателя не в интервале циркуляции копии\n"
-"\t\t"
 
 #: 10005.ACQ_LINEITEM_NO_PROVIDER:955
-#, fuzzy
 msgid "The lineitem has no provider"
-msgstr "Строка не имеет цены"
+msgstr ""
 
 #: 1606.MONEY_WORK_PAYMENT_NOT_FOUND:459
 msgid "The requested money_work_payment was not found"
@@ -538,7 +513,9 @@ msgid "The selecte bill has already been voided"
 msgstr "Выбор счета для оплаты опустошен"
 
 #: 7026.PATRON_NOT_AN_ACTIVE_PASSWORD_RESET_REQUEST:795
-msgid "The user attempted to update their password using a stale or inactive password reset request session."
+msgid ""
+"The user attempted to update their password using a stale or inactive "
+"password reset request session."
 msgstr ""
 
 #: 1222.PATRON_NO_EMAIL_ADDRESS:119
@@ -554,9 +531,8 @@ msgid "The subscription still has dependent objects"
 msgstr ""
 
 #: 1523.TITLE_NOTE_NOT_FOUND:221
-#, fuzzy
 msgid "Requested title note does not exist"
-msgstr " Запрошенное примечание заглавия не существует "
+msgstr ""
 
 #: 1605.CONFIG_LIT_FORM_MAP_NOT_FOUND:456
 msgid "The requested config_lit_form_map was not found"
@@ -571,18 +547,14 @@ msgid "The object is not in a cancelable state."
 msgstr ""
 
 #: 9000.REPORT_TEMPLATE_EXISTS:932
-#, fuzzy
 msgid "A report template with the given name and folder already exists"
-msgstr " Шаблон отчета с заданным именем и папкой уже существует"
+msgstr ""
 
 #: 1500.ACTION_CIRCULATION_NOT_FOUND:173
-#, fuzzy
-msgid "Someone attempted to retrieve a circulation object from the system and the object was not found."
+msgid ""
+"Someone attempted to retrieve a circulation object from the system and the "
+"object was not found."
 msgstr ""
-"\n"
-"\t\t\tКто то попытался извлечь объект циркуляции из системы и \n"
-"\t\t\tобъект не найден.\n"
-"\t\t"
 
 #: 4001.CREDIT_PROCESSOR_NOT_ENABLED:760
 msgid "Credit card processor not enabled"
@@ -593,9 +565,8 @@ msgid "The requested actor_user_note was not found"
 msgstr "Запршенный actor_user_note не найден"
 
 #: 7005.LOCATION_CIRC_NOT_ALLOWED:829
-#, fuzzy
 msgid "Location does not allow materials to circulate"
-msgstr " Местоположение не разрешает циркулировать материалы "
+msgstr ""
 
 #: 1508.ASSET_CALL_NUMBER_NOT_FOUND:208
 msgid "Requested asset_call_number was not found"
@@ -623,7 +594,9 @@ msgstr ""
 "Содержимое строки не может быть изменено, так как оно уже было утвержденно"
 
 #: 1714.HIGH_LEVEL_HOLD_HAS_NO_COPIES:741
-msgid "A hold request at a higher level than copy has been attempted, but there are no copies that belonging to the higher-level unit."
+msgid ""
+"A hold request at a higher level than copy has been attempted, but there are "
+"no copies that belonging to the higher-level unit."
 msgstr ""
 
 #: 1614.ACTION_SURVEY_ANSWER_NOT_FOUND:482
@@ -643,7 +616,8 @@ msgid "The requested config_non_cataloged_type was not found"
 msgstr "Запрашиваемый config_non_cataloged_type не найден"
 
 #: 1225.TRANSIT_ABORT_NOT_ALLOWED:128
-msgid "The transit on this item may not be aborted due to the state the item is in"
+msgid ""
+"The transit on this item may not be aborted due to the state the item is in"
 msgstr ""
 "Транзит на данную единицу невозможно прекратить в связи с состоянием единицы"
 
@@ -696,13 +670,10 @@ msgid "The requested money_credit_payment was not found"
 msgstr "Запрашиваемый money_credit_payment не найден"
 
 #: 7017.ROUTE_TO_COPY_LOCATION:868
-#, fuzzy
-msgid "A copy needs to be routed to a copy location.  The location should be specified within the event with a 'location' key"
+msgid ""
+"A copy needs to be routed to a copy location.  The location should be "
+"specified within the event with a 'location' key"
 msgstr ""
-" \n"
-"\t\tКопия должна быть перенаправлена в местоположение копии. Местоположение\n"
-"\t\tдолжно быть указано внутри события с ключом 'местоположение'\n"
-"\t\t"
 
 #: 1618.METABIB_TITLE_FIELD_ENTRY_NOT_FOUND:494
 msgid "The requested metabib_title_field_entry was not found"
@@ -717,22 +688,18 @@ msgid "The requested item is not cataloged in the database"
 msgstr "Запрошенная единица не каталогизирована в базе"
 
 #: 1520.WORKSTATION_NOT_FOUND:218
-#, fuzzy
 msgid "Requested workstation object does not exist"
-msgstr " Запрашиваемый объект для рабочей станции не существует "
+msgstr ""
 
 #: 1628.MONEY_BILLING_NOT_FOUND:523
 msgid "The requested money_billing was not found"
 msgstr "Запрашиваемый money_billing не найден"
 
 #: 1507.CONTAINER_ITEM_NOT_FOUND:205
-#, fuzzy
-msgid "Someone attempted to retrieve a container item object from the system and the object was not found."
+msgid ""
+"Someone attempted to retrieve a container item object from the system and "
+"the object was not found."
 msgstr ""
-"\n"
-"\t\t\tКто то попытался извлечь единица объект контейтера из \n"
-"\t\t\tсистемы и объект не айден.\n"
-"\t\t"
 
 #: 2002.DATABASE_QUERY_FAILED:752
 msgid "The attempt to query to the DB failed"
@@ -743,7 +710,9 @@ msgid "The requested config_standing was not found"
 msgstr "Запрашиваемый config_standing не найден"
 
 #: 1861.ACQ_PURCHASE_ORDER_TOO_LATE:655
-msgid "The requested acq.purchase_order cannot be split because it has gone beyond the \"pending\" state"
+msgid ""
+"The requested acq.purchase_order cannot be split because it has gone beyond "
+"the \"pending\" state"
 msgstr ""
 
 #: 1210.INCORRECT_PASSWORD:73
@@ -755,9 +724,8 @@ msgid "The requested config_item_type_map was not found"
 msgstr "Запрашиваемый config_item_type_map не найден"
 
 #: 8007.OFFLINE_SESSION_EXISTS:919
-#, fuzzy
 msgid "A session with the given name already exists"
-msgstr " Сессия с таким именем уже есть "
+msgstr ""
 
 #: 1650.CONFIG_CIRC_MATRIX_RULESET_NOT_FOUND:590
 msgid "The requested config_circ_matrix_ruleset_not_found was not found"
@@ -768,9 +736,8 @@ msgid "The lineitem detail has no associated fund"
 msgstr "Детали строки(lineitem) не имеют ассоциированного фонда"
 
 #: 7003.COPY_CIRC_NOT_ALLOWED:823
-#, fuzzy
 msgid "Target copy is not allowed to circulate"
-msgstr " Копия мишень нельзя циркулировать "
+msgstr ""
 
 #: 1530.CONFIG_IDENTIFICATION_TYPE_NOT_FOUND:239
 msgid "The requested config_identification_type was not found"
@@ -781,20 +748,19 @@ msgid "The requested asset_copy_location was not found"
 msgstr "Запрашиваемый asset_copy_location не найден"
 
 #: 1506.CONTAINER_NOT_FOUND:199
-#, fuzzy
-msgid "Someone attempted to retrieve a container object from the system and the object was not found."
+msgid ""
+"Someone attempted to retrieve a container object from the system and the "
+"object was not found."
 msgstr ""
-"\n"
-"\t\t\tКто то попытался извлечь объект контейнера из \n"
-"\t\t\tсистемы и объект не найден.\n"
-"\t\t"
 
 #: 1571.ASSET_CALL_NUMBER_NOTE_NOT_FOUND:356
 msgid "The requested asset_call_number_note was not found"
 msgstr "Запрашиваемый asset_call_number_note не найдвен"
 
 #: 4004.CREDIT_PROCESSOR_NOT_SPECIFIED:769
-msgid "No credit card processor specified either in org unit settings or in call to credit service API method."
+msgid ""
+"No credit card processor specified either in org unit settings or in call to "
+"credit service API method."
 msgstr ""
 "Нет процессора кредитной карты определенного индивидуальными признаками  в "
 "настройках организационной единицы  и в вызове метода кредитных услуг API."
@@ -804,7 +770,8 @@ msgid "Requested address was not found"
 msgstr "Затребованный адрес не найден"
 
 #: 7002.PATRON_EXCEEDS_CHECKOUT_COUNT:820
-msgid "The patron in question has the maximum number of items already checked out"
+msgid ""
+"The patron in question has the maximum number of items already checked out"
 msgstr "Патрон в запросе имет максимальное число выданных материалов"
 
 #: 1003.Z3950_SEARCH_FAILED:32
@@ -820,7 +787,8 @@ msgid "The requested permission_grp_perm_map was not found"
 msgstr "Запрашиваемый permission_grp_perm_map не найден"
 
 #: 7025.PATRON_TOO_MANY_ACTIVE_PASSWORD_RESET_REQUESTS:792
-msgid "There are too many active password reset request sessions for this patron."
+msgid ""
+"There are too many active password reset request sessions for this patron."
 msgstr ""
 
 #: 1709.MAX_HOLDS:726
@@ -840,9 +808,8 @@ msgid "A copy with a remote circulating library (circ_lib) was encountered"
 msgstr "Копия удаленной циркулирующей библиотеки (circ_lib) обнаружена"
 
 #: 1702.OPEN_CIRCULATION_EXISTS:705
-#, fuzzy
 msgid "There is an open circulation on the requested item"
-msgstr " На запрокенную единицу есть открытая циркуляция "
+msgstr ""
 
 #: 0.SUCCESS:14
 msgid "Success"
@@ -861,7 +828,9 @@ msgid "The patron has too many overdue items"
 msgstr "Патрон имеет слишком много просроченных единиц"
 
 #: 1863.ACQ_FUND_EXCEEDS_WARN_PERCENT:661
-msgid "Activating the requested acq.purchase_order would encumber it beyond its warning level."
+msgid ""
+"Activating the requested acq.purchase_order would encumber it beyond its "
+"warning level."
 msgstr ""
 
 #: 1578.ACTION_HOLD_NOTIFICATION_NOT_FOUND:376
@@ -905,18 +874,14 @@ msgid "Hold capture was delayed for this item"
 msgstr "Захват хранения для этой единицы отложен"
 
 #: 1502.ASSET_COPY_NOT_FOUND:182
-#, fuzzy
-msgid "Someone attempted to retrieve a copy object from the system and the object was not found."
+msgid ""
+"Someone attempted to retrieve a copy object from the system and the object "
+"was not found."
 msgstr ""
-"\n"
-"\t\t\tКто то попытался извлечь копия объект из \n"
-"\t\t\tсистемы и объект не найден.\n"
-"\t\t"
 
 #: 1703.WORKSTATION_NAME_EXISTS:708
-#, fuzzy
 msgid "A workstation with that name already exists"
-msgstr " Рабочяя станция с таким именем уже есть "
+msgstr ""
 
 #: 1568.CONFIG_COPY_STATUS_NOT_FOUND:348
 msgid "The requested config_copy_status was not found"
@@ -935,23 +900,20 @@ msgid "The user attempted to set their password to a weak value."
 msgstr ""
 
 #: 9001.REPORT_REPORT_EXISTS:936
-#, fuzzy
 msgid "A report with the given name and folder already exists"
-msgstr " Отчет с заданным именем и папкой уже существует"
+msgstr ""
 
 #: 1705.VOLUME_LABEL_EXISTS:714
 msgid "A volume with the same label, title and owning library exists"
 msgstr "Том с тем же ярлыком, заглавием и библиотекой собственником уже есть"
 
 #: 8008.OFFLINE_INVALID_SESSION:922
-#, fuzzy
 msgid "The session name is invalid"
-msgstr " Неправильная имя сессии "
+msgstr ""
 
 #: 7009.CIRC_CLAIMS_RETURNED:841
-#, fuzzy
 msgid "Requested circulation is marked claims returned"
-msgstr " Запрошенная циркуляция отмечена возврат рекламаций "
+msgstr ""
 
 #: 1577.ACTION_HOLD_COPY_MAP_NOT_FOUND:373
 msgid "The requested action_hold_copy_map was not found"
@@ -967,10 +929,13 @@ msgstr "Запрашиваемый reporter_template_folder не найден"
 
 #: 4002.CREDIT_PROCESSOR_BAD_PARAMS:763
 msgid "Not enough parameters to use credit card processor"
-msgstr "Не достаточно аргументов, чтобы использовать процессор кредитных карт"
+msgstr ""
+"Не достаточно аргументов, чтобы использовать процессор кредитных карт"
 
 #: 7024.HOLD_RESERVATION_CONFLICT:889
-msgid "Both a hold and a reservation exist for this item; staff intervention is required to resolve the conflict."
+msgid ""
+"Both a hold and a reservation exist for this item; staff intervention is "
+"required to resolve the conflict."
 msgstr ""
 
 #: 1644.VANDELAY_AUTHORITY_QUEUE_NOT_FOUND:572
@@ -978,9 +943,8 @@ msgid "The requested vandelay_authority_queue was not found"
 msgstr "Запрашиваемый vandelay_authority_queue не найден"
 
 #: 7006.COPY_IS_REFERENCE:832
-#, fuzzy
 msgid "Copy is reference material"
-msgstr " Копия является справочным материалом "
+msgstr ""
 
 #: 1634.REPORTER_TEMPLATE_NOT_FOUND:542
 msgid "The requested reporter_template was not found"
@@ -1011,9 +975,8 @@ msgid "The requested money_grocery was not found"
 msgstr "Запрашиваемый money_grocery не найден"
 
 #: 8009.OFFLINE_NO_ORG:925 8010.OFFLINE_SESSION_COMPLETE:928
-#, fuzzy
 msgid "No org id was provided"
-msgstr " Не проведен орг id "
+msgstr ""
 
 #: 7012.COPY_STATUS_MISSING:850
 msgid "Copy has is marked as missing"
@@ -1024,10 +987,8 @@ msgid "The requested money_billable_transaction_summary was not found"
 msgstr "Запрашиваемый money_billable_transaction_summary не найден"
 
 #: 8001.OFFLINE_SESSION_FILE_EXISTS:901
-#, fuzzy
 msgid "An offline file for this workstation exists within this session"
 msgstr ""
-" Офлайновый файл для этой рабочей станции существует внутри данной сесси "
 
 #: 2003.INTERNAL_SERVER_ERROR:755
 msgid "There was an internal server error"
@@ -1042,9 +1003,8 @@ msgid "The requested vandelay_queued_authority_record was not found"
 msgstr "Запрашиваемый vandelay_queued_authority_record не найден"
 
 #: 8002.OFFLINE_FILE_ERROR:904
-#, fuzzy
 msgid "An offline file or directory could not be created or accessed"
-msgstr " Офлайн файл или папка не возможно создавать или сделать доступным "
+msgstr ""
 
 #: 1597.BIBLIO_RECORD_NOTE_NOT_FOUND:432
 msgid "The requested biblio_record_note was not found"
@@ -1087,17 +1047,16 @@ msgid "The requested acq.lineitem_attr was not found"
 msgstr "Запрашиваемый  acq.lineitem_attr не был найден"
 
 #: 1708.MONEY_COLLECTIONS_TRACKER_EXISTS:723
-msgid "A duplicate money.collections_tracker object already exists in the database"
+msgid ""
+"A duplicate money.collections_tracker object already exists in the database"
 msgstr "Дублетный money.collections_tracker объект уже есть в базе"
 
 #: 4040.CREDIT_PROCESSOR_SUCCESS_WO_RECORD:784
-#, fuzzy
-msgid "A *TERRIBLE* problem has occurred: a credit card transaction was processed successfuly, but the patron's payment could not be recorded within Evergreen.  Please seek assistance."
+msgid ""
+"A *TERRIBLE* problem has occurred: a credit card transaction was processed "
+"successfuly, but the patron's payment could not be recorded within "
+"Evergreen.  Please seek assistance."
 msgstr ""
-"Была обнаружена *серьёзная* проблема:\n"
-"            операция по кредитной карте была успешно выполнена,\n"
-"            но платёж не был зарегистрирован в Evergreen.\n"
-"            Обратитесь в службу поддержки."
 
 #: 1845.ACQ_PROVIDER_NOT_FOUND:607
 msgid "The requested acq.provider was not found"
@@ -1128,9 +1087,8 @@ msgid "The requested config_circ_modifier was not found"
 msgstr "Запрашиваемый config_circ_modifier не найден"
 
 #: 1701.COPY_LOCATION_EXISTS:702
-#, fuzzy
 msgid "The copy location object already exists"
-msgstr " Объект копии местоположения уже существует "
+msgstr ""
 
 #: 1589.ACTOR_CARD_NOT_FOUND:408
 msgid "The requested actor_card was not found"
@@ -1165,7 +1123,9 @@ msgid "The lineitem detail has no owning_lib"
 msgstr "Детали строки(lineitem) не имеют owning_lib"
 
 #: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:976
-msgid "Units cannot be created for the given item because its associated distribution does not have a copy template."
+msgid ""
+"Units cannot be created for the given item because its associated "
+"distribution does not have a copy template."
 msgstr ""
 
 #: 1518.ACTION_HOLD_TRANSIT_COPY_NOT_FOUND:213
@@ -1207,6 +1167,218 @@ msgstr "Запрашиваемый action_non_cataloged_circulation не най�
 #: 1604.MONEY_USER_SUMMARY_NOT_FOUND:453
 msgid "The requested money_user_summary was not found"
 msgstr "Запрашиваемый money_user_summary не найден"
+
+#~ msgid " An offline file or directory could not be created or accessed "
+#~ msgstr " Офлайн файл или папка не возможно создавать или сделать доступным "
+
+#~ msgid ""
+#~ "\n"
+#~ "\t\t\tSomeone attempted to retrieve a copy object from the \n"
+#~ "\t\t\tsystem and the object was not found.\n"
+#~ "\t\t"
+#~ msgstr ""
+#~ "\n"
+#~ "\t\t\tКто то попытался извлечь копия объект из \n"
+#~ "\t\t\tсистемы и объект не найден.\n"
+#~ "\t\t"
+
+#~ msgid " Copy is reference material "
+#~ msgstr " Копия является справочным материалом "
+
+#~ msgid ""
+#~ "\n"
+#~ "\t\t\tSomeone attempted to retrieve a container item object from the \n"
+#~ "\t\t\tsystem and the object was not found.\n"
+#~ "\t\t"
+#~ msgstr ""
+#~ "\n"
+#~ "\t\t\tКто то попытался извлечь единица объект контейтера из \n"
+#~ "\t\t\tсистемы и объект не айден.\n"
+#~ "\t\t"
+
+#~ msgid " An offline session for this location is currently processing "
+#~ msgstr " Офлайн сессия для этого местоположения на данный момент в процессе "
+
+#~ msgid " Requested billing note does not exist "
+#~ msgstr " Запрашиваемая заметка на счет оплаты не существует "
+
+#~ msgid " An offline file for this workstation exists within this session "
+#~ msgstr ""
+#~ " Офлайновый файл для этой рабочей станции существует внутри данной сесси "
+
+#~ msgid " A session with the given name already exists "
+#~ msgstr " Сессия с таким именем уже есть "
+
+#~ msgid " A report template with the given name and folder already exists"
+#~ msgstr " Шаблон отчета с заданным именем и папкой уже существует"
+
+#~ msgid " The copy location object already exists "
+#~ msgstr " Объект копии местоположения уже существует "
+
+#~ msgid " A workstation with that name already exists "
+#~ msgstr " Рабочяя станция с таким именем уже есть "
+
+#~ msgid ""
+#~ " \n"
+#~ "\t\tA copy needs to be routed to a copy location.  The location\n"
+#~ "\t\tshould be specified within the event with a 'location' key\n"
+#~ "\t\t"
+#~ msgstr ""
+#~ " \n"
+#~ "\t\tКопия должна быть перенаправлена в местоположение копии. Местоположение\n"
+#~ "\t\tдолжно быть указано внутри события с ключом 'местоположение'\n"
+#~ "\t\t"
+
+#~ msgid ""
+#~ "\n"
+#~ "\t\t\tSomeone attempted to retrieve a transit object from the \n"
+#~ "\t\t\tsystem and the object was not found.\n"
+#~ "\t\t"
+#~ msgstr ""
+#~ "\n"
+#~ "\t\t\tКто то попытался извлечь транзитный объект из \n"
+#~ "\t\t\tсистемы и объект не найден.\n"
+#~ "\t\t"
+
+#~ msgid " Requested title note does not exist "
+#~ msgstr " Запрошенное примечание заглавия не существует "
+
+#~ msgid " A report with the given name and folder already exists"
+#~ msgstr " Отчет с заданным именем и папкой уже существует"
+
+#~ msgid " Location does not allow materials to circulate "
+#~ msgstr " Местоположение не разрешает циркулировать материалы "
+
+#~ msgid " Requested circulation is marked claims returned "
+#~ msgstr " Запрошенная циркуляция отмечена возврат рекламаций "
+
+#~ msgid " Missing params in offline upload "
+#~ msgstr " Отсутствующие параметры в офлайн выгрузке "
+
+#~ msgid ""
+#~ "\n"
+#~ "\t\t\tThe selected copy may not circulate because the recipient's home \n"
+#~ "\t\t\tlocation is not within the copy's circulation range\n"
+#~ "\t\t"
+#~ msgstr ""
+#~ "\n"
+#~ "\t\t\tВыбранная копия не может быть циркулирована так как местонахождение \n"
+#~ "\t\t\tполучателя не в интервале циркуляции копии\n"
+#~ "\t\t"
+
+#~ msgid " There is an open circulation on the requested item "
+#~ msgstr " На запрокенную единицу есть открытая циркуляция "
+
+#~ msgid " Copy is not available "
+#~ msgstr " Копия недоступна "
+
+#~ msgid ""
+#~ "\n"
+#~ "\t\t\tThe patron in question is not able to check out materials because\n"
+#~ "\t\t\ttheir account is in bad standing\n"
+#~ "\t\t"
+#~ msgstr ""
+#~ "\n"
+#~ "\t\t\tПатрон в вопросе не может взять материалы, так как\n"
+#~ "\t\t\tего клиентский счет в плохом состоянии\n"
+#~ "\t\t"
+
+#~ msgid ""
+#~ "\n"
+#~ "\t\t\tThe given circulation is not in a standard status or\n"
+#~ "\t\t\tthe circulation was never fully closed properly\n"
+#~ "\t\t"
+#~ msgstr ""
+#~ "\n"
+#~ "\t\t\tДанная циркуляция не в стандартном состоянии или\n"
+#~ "\t\t\tциркуляция никогда не была правильно закрыта\n"
+#~ "\t\t"
+
+#~ msgid ""
+#~ " \n"
+#~ "\t\t\tA copy needs to be routed to a different location\t\n"
+#~ "\t\t\tThe destination location will be specified by an 'org' key\n"
+#~ "\t\t\twithin the event object\n"
+#~ "\t\t"
+#~ msgstr ""
+#~ " \n"
+#~ "\t\t\tнеобходимо перенаправлять копию в другое местоположение\t\n"
+#~ "\t\t\tМестоположение пункта доставки будет определено с помощью ключа 'org' "
+#~ "\n"
+#~ "\t\t\tвнутри объекта события\n"
+#~ "\t\t"
+
+#~ msgid " Copy is needed to fulfil a hold "
+#~ msgstr " Для осуществения хранения требуется копия "
+
+#~ msgid " The requested copy has an alert message attached "
+#~ msgstr " Запрошенная копия имеет прикрепленным сообщение тревоги "
+
+#~ msgid " Offline server is not configured properly "
+#~ msgstr " Офлайн сервер конфигурирован неправильно "
+
+#~ msgid " Target copy is not allowed to circulate "
+#~ msgstr " Копия мишень нельзя циркулировать "
+
+#~ msgid " Circulation has no more renewals remaining "
+#~ msgstr " Циркуляция не имеет больше ожидающих обновлений "
+
+#~ msgid " No org id was provided "
+#~ msgstr " Не проведен орг id "
+
+#~ msgid ""
+#~ "\n"
+#~ "\t\t\tSomeone attempted to retrieve a circulation object from the system and "
+#~ "\n"
+#~ "\t\t\tthe object was not found.\n"
+#~ "\t\t"
+#~ msgstr ""
+#~ "\n"
+#~ "\t\t\tКто то попытался извлечь объект циркуляции из системы и \n"
+#~ "\t\t\tобъект не найден.\n"
+#~ "\t\t"
+
+#~ msgid " The session name is invalid "
+#~ msgstr " Неправильная имя сессии "
+
+#~ msgid ""
+#~ "\n"
+#~ "\t\t\tSomeone attempted to retrieve a container object from the \n"
+#~ "\t\t\tsystem and the object was not found.\n"
+#~ "\t\t"
+#~ msgstr ""
+#~ "\n"
+#~ "\t\t\tКто то попытался извлечь объект контейнера из \n"
+#~ "\t\t\tсистемы и объект не найден.\n"
+#~ "\t\t"
+
+#~ msgid " The non-cataloged type object already exists "
+#~ msgstr " Объект некаталогизированного типа уже есть "
+
+#~ msgid ""
+#~ "\n"
+#~ "\t\t\tThis refund amount is not allowed because it exceeds \n"
+#~ "\t\t\tthe total amount of desk payments for this transaction.\n"
+#~ "\t\t"
+#~ msgstr ""
+#~ "\n"
+#~ "\t\t\tЭтот размер компенсации не разрешен, так как превышает \n"
+#~ "\t\t\tсуммарный размер кассовых оплат для данной транзакций.\n"
+#~ "\t\t"
+
+#~ msgid " Requested workstation object does not exist "
+#~ msgstr " Запрашиваемый объект для рабочей станции не существует "
+
+#~ msgid ""
+#~ "A *TERRIBLE* problem has occurred: a credit\n"
+#~ "            card transaction was processed successfuly, but the patron's\n"
+#~ "            payment could not be recorded within Evergreen.  Please seek\n"
+#~ "            assistance."
+#~ msgstr ""
+#~ "Была обнаружена *серьёзная* проблема:\n"
+#~ "            операция по кредитной карте была успешно выполнена,\n"
+#~ "            но платёж не был зарегистрирован в Evergreen.\n"
+#~ "            Обратитесь в службу поддержки."
 
 #~ msgid " "
 #~ msgstr " "

@@ -2,19 +2,20 @@
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the evergreen package.
 # Job Diógenes Ribeiro Borges <EMAIL@ADDRESS>, 2010.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 21:45:31-0400\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
 "PO-Revision-Date: 2010-02-05 19:54+0000\n"
 "Last-Translator: jobdrb <jobdrb@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Launchpad (build 12959)\n"
 "X-Launchpad-Export-Date: 2011-05-18 04:40+0000\n"
+"X-Generator: Launchpad (build 12959)\n"
 
 #: conify.js:SURVEY_ID
 msgid "Survey ID # ${0}"
@@ -123,7 +124,9 @@ msgid "Problem fetching Mailing Address for ${0}"
 msgstr "Problema ao obter Endereços de Correspondência para $(0)"
 
 #: conify.js:CONFIRM_EXIT_AOU
-msgid "There are unsaved changes to one or more organizational units. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved changes to one or more organizational units. Click OK to "
+"save these changes, or Cancel to abandon them."
 msgstr ""
 "Existem alterações não salvas para um ou mais unidades organizacionais. "
 "Clique OK para salva-las, ou Cancelar para abandona-las."
@@ -171,10 +174,12 @@ msgid "New Group"
 msgstr "Novo Grupo"
 
 #: conify.js:CONFIRM_EXIT_PGT
-msgid "There are unsaved modified permission maps. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved modified permission maps. Click OK to save these changes, "
+"or Cancel to abandon them."
 msgstr ""
-"Existem alterações não salvas para mapas de permissões. Clique OK para "
-"salva-las, ou Cancelar para abandona-las."
+"Existem alterações não salvas para mapas de permissões. Clique OK para salva-"
+"las, ou Cancelar para abandona-las."
 
 #: conify.js:SUCCESS_SAVING_MAILING
 msgid "Saved changes to the Mailing Address of ${0}"
@@ -197,13 +202,17 @@ msgid "Are you sure you want to delete ${0}?"
 msgstr "Você tem certeza que quer excluir ${0}?"
 
 #: conify.js:CONFIRM_EXIT_PPL
-msgid "There are unsaved modified permissions. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved modified permissions. Click OK to save these changes, or "
+"Cancel to abandon them."
 msgstr ""
 "Existem alterações não salvas para permissões. Clique OK para salva-las, ou "
 "Cancelar para abandona-las."
 
 #: conify.js:CONFIRM_UNSAVED_CHANGES
-msgid "There are unsaved changes to one or more organization types. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved changes to one or more organization types. Click OK to "
+"save these changes, or Cancel to abandon them."
 msgstr ""
 "Existem alterações não salvas para um ou mais tipos de organizações. Clique "
 "OK para salva-las, ou Cancelar para abandona-las."
@@ -309,7 +318,9 @@ msgid "Problem fetching organizational unit data"
 msgstr "Problema ao obter dados de unidade organizacional"
 
 #: conify.js:CONFIRM_EXIT_CCS
-msgid "There are unsaved changes to one or more copy statuses. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved changes to one or more copy statuses. Click OK to save "
+"these changes, or Cancel to abandon them."
 msgstr ""
 "Existem alterações não salvas para um ou mais situações. Clique OK para "
 "salva-las, ou Cancelar para abandona-las."
@@ -363,7 +374,9 @@ msgid "${0}: ${1}"
 msgstr "${0}: ${1}"
 
 #: conify.js:CONFIRM_EXIT_CAM
-msgid "There are unsaved changes to one or more ${0} codes. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved changes to one or more ${0} codes. Click OK to save these "
+"changes, or Cancel to abandon them."
 msgstr ""
 "Existem alterações não salvas para um ou mais $(0) códigos. Clique OK para "
 "salvar essas alterações, ou Cancelar para abandonalas."

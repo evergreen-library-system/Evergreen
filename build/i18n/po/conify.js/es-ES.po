@@ -2,19 +2,20 @@
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 21:45:31-0400\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
 "PO-Revision-Date: 2010-06-22 21:27+0000\n"
 "Last-Translator: Juan Pablo <Unknown>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Launchpad (build 12959)\n"
 "X-Launchpad-Export-Date: 2011-05-18 04:40+0000\n"
+"X-Generator: Launchpad (build 12959)\n"
 
 #: conify.js:SURVEY_ID
 msgid "Survey ID # ${0}"
@@ -122,7 +123,9 @@ msgid "Problem fetching Mailing Address for ${0}"
 msgstr "Problema al extraer la Dirección de Correo para ${0}"
 
 #: conify.js:CONFIRM_EXIT_AOU
-msgid "There are unsaved changes to one or more organizational units. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved changes to one or more organizational units. Click OK to "
+"save these changes, or Cancel to abandon them."
 msgstr ""
 "Hay cambios sin grabar a una o mas unidades de organización. Haga click en "
 "Aceptar para grabar estos cambios, o Cancelar para abandonarlos."
@@ -149,7 +152,8 @@ msgstr "Ingrese el nombre de la nueva formula"
 
 #: conify.js:ERROR_DELETING_LAST_AOUT
 msgid "Cannot delete ${0}. You need at least one organization type."
-msgstr "No se pudo borrar ${0}. Necesita un minimo de un tipo de organización."
+msgstr ""
+"No se pudo borrar ${0}. Necesita un minimo de un tipo de organización."
 
 #: conify.js:SURVEY_ANSWER
 msgid "Answer:"
@@ -168,7 +172,9 @@ msgid "New Group"
 msgstr "Nuevo Grupo"
 
 #: conify.js:CONFIRM_EXIT_PGT
-msgid "There are unsaved modified permission maps. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved modified permission maps. Click OK to save these changes, "
+"or Cancel to abandon them."
 msgstr ""
 "Hay cambios a los mapas de permiso sin graber. Haca clic en Aceptar para "
 "grabar estos cambios, o Cancelar para abandonarlos."
@@ -194,13 +200,17 @@ msgid "Are you sure you want to delete ${0}?"
 msgstr "Estas seguro que quieres eliminar ${0}?"
 
 #: conify.js:CONFIRM_EXIT_PPL
-msgid "There are unsaved modified permissions. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved modified permissions. Click OK to save these changes, or "
+"Cancel to abandon them."
 msgstr ""
 "Hay cambios a los permisos sin grabar. Haga clic en Aceptar para guardar "
 "estos cambios, o Cancelar para abandonarlos."
 
 #: conify.js:CONFIRM_UNSAVED_CHANGES
-msgid "There are unsaved changes to one or more organization types. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved changes to one or more organization types. Click OK to "
+"save these changes, or Cancel to abandon them."
 msgstr ""
 "Existen cambios sin guardar en uno o mas tipos de organización. Click OK "
 "para guardar estos cambios, o Cancelar para abandonarlos."
@@ -306,7 +316,9 @@ msgid "Problem fetching organizational unit data"
 msgstr "Problema al obtener información de unidad organizacional"
 
 #: conify.js:CONFIRM_EXIT_CCS
-msgid "There are unsaved changes to one or more copy statuses. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved changes to one or more copy statuses. Click OK to save "
+"these changes, or Cancel to abandon them."
 msgstr ""
 "Hay cambios a los estados de una copia o más no grabados. Haca clic en "
 "Aceptar para grabar los cambios, o Cancelar para abandonarlos."
@@ -360,7 +372,9 @@ msgid "${0}: ${1}"
 msgstr "Copy text \t ${0}: ${1}"
 
 #: conify.js:CONFIRM_EXIT_CAM
-msgid "There are unsaved changes to one or more ${0} codes. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved changes to one or more ${0} codes. Click OK to save these "
+"changes, or Cancel to abandon them."
 msgstr ""
 "Hay cambios no grabados a uno o más ${0} códigos. Haga clic en Aceptar para "
 "guardar los cambios, o Cancelar para abandonarlos."

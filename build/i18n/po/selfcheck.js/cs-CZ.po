@@ -2,19 +2,20 @@
 # Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 21:45:31-0400\n"
-"PO-Revision-Date: 2011-08-13 19:21+0000\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2011-12-10 16:53+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Launchpad (build 13674)\n"
-"X-Launchpad-Export-Date: 2011-08-14 04:47+0000\n"
+"X-Launchpad-Export-Date: 2011-12-11 05:37+0000\n"
+"X-Generator: Launchpad (build 14450)\n"
 
 #: selfcheck.js:FAIL_PART_config_hold_matrix_test_max_holds
 msgid "The patron has reached the maximum number of holds"
@@ -26,7 +27,8 @@ msgstr "Výpůjčka exempláře ${0} proběhla úspěšně"
 
 #: selfcheck.js:FAIL_PART_no_ultimate_items
 msgid "The system could not find any items to match this hold request"
-msgstr "Systém nenalezl exempláře, které by odpovídaly pořadavku na rezervaci."
+msgstr ""
+"Systém nenalezl exempláře, které by odpovídaly pořadavku na rezervaci."
 
 #: selfcheck.js:TOTAL_ITEMS_ACCOUNT
 msgid "Total items on account:  <b>${0}</b>."
@@ -46,7 +48,7 @@ msgstr "Pokuta na tomto účtu celkem: <b>$${0}</b>."
 
 #: selfcheck.js:FAIL_PART_asset_copy_status
 msgid "The item cannot circulate at this time"
-msgstr "Exemplář nemůže být v tento okamžik vypůjčen"
+msgstr "Exemplář nyní nemůže být vypůjčen"
 
 #: selfcheck.js:FAIL_PART_no_user
 msgid "The system could not find this patron"
@@ -58,12 +60,13 @@ msgstr "Exemplář není možné přesunout tak daleko"
 
 #: selfcheck.js:WORKSTATION_REQUIRED
 msgid ""
-"A workstation is required to log in to selfcheck.  You can set the  workstation name with URL param 'ws'.  \n"
+"A workstation is required to log in to selfcheck.  You can set the  "
+"workstation name with URL param 'ws'.  \n"
 "\n"
 "Would you like to register a new workstation for this self-check interface?"
 msgstr ""
 "Pro samoobslužné vypůjčky je nutné pracovní stanici  přihlásit. Jméno "
-"pracovní stanice můžete nastavit URL parametrem 'ws'.  \n"
+"pracovní stanice můžete nastavit pomocí URL parametru 'ws'.  \n"
 "\n"
 "Chcete zaregistrovat novu pracovní stanici jako rozhraní pro samoobslužné "
 "výpůjčky?"
@@ -110,10 +113,13 @@ msgstr "Položka ${0} nebyla v systému nalezena. Zkuste ji znovu načíst."
 
 #: selfcheck.js:FAIL_PART_actor_usr_barred
 msgid "The patron is barred"
-msgstr "Čtenářské konto je blokováno"
+msgstr "Čtenářské transakce jsou omezeny"
 
 #: selfcheck.js:PAYMENT_INVALID_USER_XACT_ID
-msgid "We cannot proceed with the payment, because your account was updated from another location.  Please refresh the interface or log out and back in to retrieve the latest account information"
+msgid ""
+"We cannot proceed with the payment, because your account was updated from "
+"another location.  Please refresh the interface or log out and back in to "
+"retrieve the latest account information"
 msgstr ""
 "Nelze pokračovat v platbě, protože Váš účet byl aktualizován z jiného místa. "
 "Pro nahrání aktuálních informací načtěte prosím znovu stránku nebo se "
@@ -121,7 +127,7 @@ msgstr ""
 
 #: selfcheck.js:CC_PAYABLE_BALANCE
 msgid "Total amount to pay: $${0}"
-msgstr "Zbývá zaplati celkem:  $${0}"
+msgstr "Zbývá zaplatit celkem:  $${0}"
 
 #: selfcheck.js:FAIL_PART_no_item
 msgid "The system could not find this item"
@@ -133,7 +139,7 @@ msgstr "Nejsou nastavena pravidla pro manipulaci s tímto exemplářem"
 
 #: selfcheck.js:FAIL_PART_asset_copy_circulate
 msgid "The item does not circulate"
-msgstr "Exemplář není vypůjčen"
+msgstr "Tento exemplář nelze půjčovat"
 
 #: selfcheck.js:LOGIN_FAILED
 msgid "Login for ${0} failed"
@@ -150,7 +156,7 @@ msgstr ""
 
 #: selfcheck.js:HOLDS_READY_FOR_PICKUP
 msgid "You have <b>${0}</b> item(s) ready for pickup."
-msgstr "Máte <b>${0}</b> položek připraveno k vyzvednutí"
+msgstr "Máte <b>${0}</b> položek připravených k vyzvednutí"
 
 #: selfcheck.js:FAIL_PART_config_circ_matrix_test_circulate
 msgid "Circulation rules reject this item as non-circulatable"
@@ -161,7 +167,9 @@ msgid "Item ${0} is already checked out to another user"
 msgstr "Exemplář ${0} je již vypůjčen jiným uživatelem"
 
 #: selfcheck.js:WORKSTATION_EXISTS
-msgid "This workstation has already been registered.  Would you like to use it for this self-check station?"
+msgid ""
+"This workstation has already been registered.  Would you like to use it for "
+"this self-check station?"
 msgstr ""
 "Tato pracovní stanice již byla zaregistrována. Chcet ji použít jako stanici "
 "pro samoobslužné půjčování?"
@@ -172,7 +180,7 @@ msgstr "Došlo k nepřekonatelné výjimce. Kód chyby ${0}"
 
 #: selfcheck.js:FAIL_PART_asset_copy_location_circulate
 msgid "Items from this shelving location do not circulate"
-msgstr "Exempláře z tohoto regálu nejsou určeny k absenční výpůjčce."
+msgstr "Exempláře z tohoto umístění  nejsou určeny k absenční výpůjčce."
 
 #: selfcheck.js:TOTAL_ITEMS_SESSION
 msgid "Total items this session: <b>${0}</b>."

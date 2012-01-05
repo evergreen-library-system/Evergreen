@@ -2,11 +2,11 @@
 # Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR: Job Diógenes Ribeiro Borges, 2009.
-#. extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:45-0400\n"
 "PO-Revision-Date: 2010-02-12 19:45+0000\n"
 "Last-Translator: jobdrb <jobdrb@gmail.com>\n"
@@ -14,9 +14,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.8.1\n"
-"X-Accelerator-Marker: &\n"
 "X-Launchpad-Export-Date: 2011-05-18 04:46+0000\n"
+"X-Generator: Launchpad (build 12959)\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -38,26 +37,23 @@ msgid "The JSAN library object is missing."
 msgstr "Esta faltando o JSAN library object."
 
 #: common.ok
-#, fuzzy
 msgctxt "common.ok"
 msgid "Ok"
-msgstr "Ok"
+msgstr ""
 
 #: common.ok.label
-#, fuzzy
 msgctxt "common.ok.label"
 msgid "Ok"
-msgstr "Ok"
+msgstr ""
 
 #: common.ok.accesskey
 msgid "O"
 msgstr ""
 
 #: common.cancel.label
-#, fuzzy
 msgctxt "common.cancel.label"
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr ""
 
 #: common.cancel.accesskey
 msgctxt "common.cancel.accesskey"
@@ -81,9 +77,8 @@ msgid "Copy Message"
 msgstr "Copiar Mensagem"
 
 #: common.barcode.status.warning
-#, fuzzy
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3$s."
-msgstr "Aviso:  O código-de-barras (%2$s) foi marcado %3$s, como %1$s."
+msgstr ""
 
 #: common.barcode.status.warning.lost
 msgid "Lost"
@@ -147,7 +142,8 @@ msgid "Delete"
 msgstr "Excluir"
 
 #: cat.opac.undelete_record.confirm
-msgid "Are you sure you want to undelete title record #%1$s from the catalog?"
+msgid ""
+"Are you sure you want to undelete title record #%1$s from the catalog?"
 msgstr ""
 "Tem certeza de que deseja anular a exclusão do título de registro #%1$s do "
 "catálogo?"
@@ -161,10 +157,9 @@ msgid "Undelete"
 msgstr "Anular exclusão"
 
 #: cat.opac.cancel
-#, fuzzy
 msgctxt "cat.opac.cancel"
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr ""
 
 #: cat.opac.record_deleted
 msgid "Record deleted."
@@ -195,16 +190,14 @@ msgid "Error undeleting record #%1$s : %2$s : %3$s"
 msgstr "Erro ao des-excluir registro #%1$s : %2$s : %3$s"
 
 #: cat.opac.record_marked_for_overlay.record_id.alert
-#, fuzzy
 msgctxt "cat.opac.record_marked_for_overlay.record_id.alert"
 msgid "Record with ID %1$s marked for overlay."
-msgstr "Registro com ID %1$s marcado para sobreposição"
+msgstr ""
 
 #: cat.opac.record_marked_for_overlay.tcn.alert
-#, fuzzy
 msgctxt "cat.opac.record_marked_for_overlay.tcn.alert"
 msgid "Record with TCN %1$s marked for overlay."
-msgstr "Registro com TCN %1$s marcado para sobreposição"
+msgstr ""
 
 #: cat.opac.record_marked_for_multi_home.record_id.alert
 msgctxt "cat.opac.record_marked_for_multi_home.record_id.alert"
@@ -295,7 +288,8 @@ msgstr ""
 
 #: circ.offline_checkout.barcode.flagged.barred
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Barred."
-msgstr "Atenção: Desde %1$s, o código-de-barras (%2$s) foi marcado como Barrado"
+msgstr ""
+"Atenção: Desde %1$s, o código-de-barras (%2$s) foi marcado como Barrado"
 
 #: circ.offline_checkout.barcode.flagged.blocked
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Blocked."
@@ -304,8 +298,8 @@ msgstr ""
 
 #: circ.offline_checkout.barcode.flagged.unknown
 msgid ""
-"Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: %"
-"3$s."
+"Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: "
+"%3$s."
 msgstr ""
 "Atenção: Desde %1$s, o código-de-barras (%2$s) foi marcado com um código "
 "desconhecido: %3$s"
@@ -475,7 +469,8 @@ msgstr "Renomear interrompido. Não é permitido código de barras em Branco."
 
 #: menu.cmd_replace_barcode.duplicate.error
 msgid "Rename aborted.  Another copy has barcode \"%1$s\"."
-msgstr "Renomear interrompido. Outro exemplar possui o código-de-barras \"%1$s\"."
+msgstr ""
+"Renomear interrompido. Outro exemplar possui o código-de-barras \"%1$s\"."
 
 #: menu.cmd_replace_barcode.testing.error
 msgid "Error testing replacement barcode \"%1$s\"."
@@ -823,9 +818,8 @@ msgid "Exceptions"
 msgstr "Excessões"
 
 #: network.override.override
-#, fuzzy
 msgid "Override "
-msgstr "Substituir"
+msgstr ""
 
 #: network.override.force.prompt
 msgid "Force this action?"
@@ -885,8 +879,8 @@ msgstr ""
 "esta ação específica. Por favor notifique o administrador da biblioteca caso "
 "você precise desta permissão. Se você achar que recebeu esta exceção "
 "erroneamente, por favor informe o pessoal de desenvolvimento do Evergreen ou "
-"o pessoal do setor de suporte sobre a permissão acima e esta é informação "
-"de depuração: %1$s"
+"o pessoal do setor de suporte sobre a permissão acima e esta é informação de "
+"depuração: %1$s"
 
 #: network.server_or_method.error
 msgid "Server or method error"
@@ -903,8 +897,8 @@ msgstr ""
 "Falha de rede ou servidor. Por favor verifique sua conexão de Internet para "
 "%1$s  e escolha Re-Tentar Rede. Se você precisar entrar em Modo OffLine, "
 "escolha Ignorar Erros neste e nos diálogos subseqüentes. Se você acreditar "
-"que este erro é devido a um bug no Evergreen e não um problema de rede, por "
-" favor entre em contato com o seu pessoal de suporte ou vossos amáveis "
+"que este erro é devido a um bug no Evergreen e não um problema de rede, por  "
+"favor entre em contato com o seu pessoal de suporte ou vossos amáveis "
 "administradores do Evergreen. e passe esta informação a eles:"
 
 #: network.server.method
@@ -1055,7 +1049,8 @@ msgid "=-=-="
 msgstr "=-=-="
 
 #: menu.cmd_survey_wizard.inadequate_perm
-msgid "You are lacking the CREATE_SURVEY permission and/or working locations."
+msgid ""
+"You are lacking the CREATE_SURVEY permission and/or working locations."
 msgstr ""
 "Você está necessitando da permissão CREATE_SURVEY e/ou localizações de "
 "trabalho."
@@ -1234,21 +1229,20 @@ msgid "Record with TCN %1$s targeted for Multi-Bib items."
 msgstr ""
 
 #: staff.cat.copy_browser.marked_record_for_multi_home_indicator.record_id.label
-msgctxt "staff.cat.copy_browser.marked_record_for_multi_home_indicator.record_id.label"
+msgctxt ""
+"staff.cat.copy_browser.marked_record_for_multi_home_indicator.record_id.label"
 msgid "Record with ID %1$s targeted for Multi-Bib items."
 msgstr ""
 
 #: staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label
-#, fuzzy
 msgctxt "staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label"
 msgid "Record with TCN %1$s marked for overlay."
-msgstr "Registro com TCN %1$s marcado para sobreposição"
+msgstr ""
 
 #: staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label
-#, fuzzy
 msgctxt "staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label"
 msgid "Record with ID %1$s marked for overlay."
-msgstr "Registro com ID %1$s marcado para sobreposição"
+msgstr ""
 
 #: staff.cat.opac.marked_record_for_hold_transfer_indicator.tcn.label
 msgid "Record with TCN %1$s marked for title hold transfer."
@@ -1288,8 +1282,8 @@ msgstr "Nada para imprimir novamente"
 
 #: printing.prompt_for_external_print_cmd
 msgid ""
-"Enter external print command and parameters (use %receipt.txt% or %"
-"receipt.html% as the file containing the print data. Those values will be "
+"Enter external print command and parameters (use %receipt.txt% or "
+"%receipt.html% as the file containing the print data. Those values will be "
 "substituted with the proper path.):"
 msgstr ""
 
@@ -1371,6 +1365,9 @@ msgstr ""
 #~ msgid "Ok"
 #~ msgstr "Ok"
 
+#~ msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3."
+#~ msgstr "Aviso:  O código-de-barras (%2$s) foi marcado %3$s, como %1$s."
+
 #~ msgid "Cancel"
 #~ msgstr "Cancelar"
 
@@ -1382,6 +1379,9 @@ msgstr ""
 
 #~ msgid "Record successfully saved."
 #~ msgstr "Registro salvo com sucesso."
+
+#~ msgid "Override"
+#~ msgstr "Substituir"
 
 #~ msgid "C"
 #~ msgstr "C"

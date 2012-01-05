@@ -2,19 +2,20 @@
 # Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 21:45:31-0400\n"
-"PO-Revision-Date: 2011-04-19 04:00+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2011-12-08 01:25+0000\n"
+"Last-Translator: Tomas Abril <Unknown>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Launchpad (build 12959)\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:48+0000\n"
+"X-Launchpad-Export-Date: 2011-12-09 04:48+0000\n"
+"X-Generator: Launchpad (build 14450)\n"
 
 #: capture.js:AUTO_ATTR_VALUE_capture
 msgid "Capture"
@@ -26,7 +27,7 @@ msgstr ""
 
 #: capture.js:CAPTURED_NOTHING
 msgid "Didn't capture anything."
-msgstr ""
+msgstr "Não capturou nada."
 
 #: capture.js:AUTHOR
 msgid "Author"
@@ -38,11 +39,11 @@ msgstr "Tempo de reserva"
 
 #: capture.js:CAPTURE_INFO
 msgid "Capture Information"
-msgstr ""
+msgstr "Capturar Informação"
 
 #: capture.js:HERES_WHAT_WE_KNOW
 msgid "The following information is available about the failed capture:"
-msgstr ""
+msgstr "A informação a seguir esta disponível sobre a falha de captura:"
 
 #: capture.js:AT
 msgid "at"
@@ -50,7 +51,7 @@ msgstr "em"
 
 #: capture.js:RESERVED
 msgid "Reserved for patron"
-msgstr ""
+msgstr "Reservado para patrono"
 
 #: capture.js:CAPTURE_CAUSES_TRANSIT
 msgid "This item is now in transit!"
@@ -69,8 +70,12 @@ msgid "Printed by"
 msgstr "Impresso por"
 
 #: capture.js:NO_PAYLOAD
-msgid "We did not receive further information from the server about this attempt to capture."
+msgid ""
+"We did not receive further information from the server about this attempt to "
+"capture."
 msgstr ""
+"Nós não recebemos mais informações do servidor sobre essa tentativa de "
+"captura."
 
 #: capture.js:CAPTURE_TRANSIT_SOURCE
 msgid "From:"
@@ -82,23 +87,23 @@ msgstr "Para:"
 
 #: capture.js:FAILURE
 msgid "Capture failed"
-msgstr ""
+msgstr "Captura falhou"
 
 #: capture.js:RESERVATION_SHELF
 msgid "RESERVATION SHELF"
-msgstr ""
+msgstr "PRATELEIRA DE RESERVA"
 
 #: capture.js:SUCCESS
 msgid "Capture succeeded"
-msgstr ""
+msgstr "Captura sucedida"
 
 #: capture.js:PRINT_ACCESSKEY
 msgid "P"
-msgstr ""
+msgstr "P"
 
 #: capture.js:CAPTURE_BRESV_BRSRC
 msgid "Resource barcode:"
-msgstr ""
+msgstr "Código de barras de recursos:"
 
 #: capture.js:DURATION
 msgid "Reserved from"
@@ -122,11 +127,11 @@ msgstr "Código de Barras"
 
 #: capture.js:REQUEST
 msgid "Request time"
-msgstr ""
+msgstr "Hora da solicitação"
 
 #: capture.js:TRANSIT
 msgid "*** TRANSIT ***"
-msgstr ""
+msgstr "*** TRANSITO ***"
 
 #: capture.js:AUTO_resource_barcode
 msgid "Enter barcode:"

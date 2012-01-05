@@ -2,21 +2,20 @@
 # Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR: Job Diogenes Ribeiro Borges, 2009.
-#. extracted from ../../Open-ILS/web/opac/locale/en-US/opac.dtd
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:44-0400\n"
-"PO-Revision-Date: 2010-02-05 17:27+0000\n"
-"Last-Translator: jobdrb <jobdrb@gmail.com>\n"
+"PO-Revision-Date: 2011-11-30 13:36+0000\n"
+"Last-Translator: Tomas Abril <Unknown>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.8.1\n"
-"X-Accelerator-Marker: &\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:47+0000\n"
+"X-Launchpad-Export-Date: 2011-12-01 05:26+0000\n"
+"X-Generator: Launchpad (build 14414)\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -217,7 +216,8 @@ msgid "Tips:"
 msgstr "Dicas:"
 
 #: common.tips.tip1
-msgid "Click on a folder icon in the sidebar to access related quick searches"
+msgid ""
+"Click on a folder icon in the sidebar to access related quick searches"
 msgstr ""
 "Clique no ícone de pasta na barra-lateral para acessar pesquisas rápidas "
 "relacionadas"
@@ -276,8 +276,8 @@ msgid ""
 "contain at least one letter (a-z/A-Z), \n"
 "and contain at least one number."
 msgstr ""
-"A senha deve conter ao menos 7 caracteres, \tconter ao menos uma letra "
-"(a-z/A-Z), \te conter ao menos um número."
+"A senha deve conter ao menos 7 caracteres, \tconter ao menos uma letra (a-"
+"z/A-Z), \te conter ao menos um número."
 
 #: common.a2z.title
 msgid "Title: A to Z"
@@ -420,14 +420,16 @@ msgid ""
 "Installing the Google Chrome Frame plugin for Internet Explorer will improve "
 "your Evergreen experience with more speed and advanced features!"
 msgstr ""
+"Instalar o plugin \"Google Chrome Frame\" para Internet Explorer vai "
+"melhorar sua experiencia Evergreen com mais velocidade e recursos avançados!"
 
 #: common.googlechromeframe.install
 msgid "Install Now!"
-msgstr ""
+msgstr "Instalar Agora!"
 
 #: common.googlechromeframe.dontask
 msgid "Don't ask me again"
-msgstr ""
+msgstr "Não perguntar novamente"
 
 #: home.js.disabled
 msgid ""
@@ -437,7 +439,8 @@ msgid ""
 "browser. \n"
 "To use the regular Evergreen Catalog, enable JavaScript by changing your "
 "browser options, then \n"
-"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. \n"
+"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
+"\n"
 "<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
 "<a style='color: blue; text-decoration: underline;' "
 "href='/opac/extras/slimpac/start.html'>here</a>."
@@ -460,8 +463,8 @@ msgid ""
 "bookbag. \n"
 "Are you sure you wish to continue?"
 msgstr ""
-"Isto irá remover a sacola selecionada e todos os itens nela contidos. \\ nTem "
-"certeza de que deseja continuar?"
+"Isto irá remover a sacola selecionada e todos os itens nela contidos. \\ "
+"nTem certeza de que deseja continuar?"
 
 #: myopac.no.bookbags
 msgid "You have not created any bookbags"
@@ -585,9 +588,9 @@ msgid ""
 msgstr ""
 "Aviso: Adicionando itens a uma sacola cria um elo entre você \n"
 "e os itens na base de dados. O conteúdo desta não são publicamente visíveis, "
-"a menos que você a compartilhe. No entanto, se você preferir não ter "
-"nenhuma ligação entre o seu registro de leitor e um determinado item ou "
-"itens, sugerimos \n"
+"a menos que você a compartilhe. No entanto, se você preferir não ter nenhuma "
+"ligação entre o seu registro de leitor e um determinado item ou itens, "
+"sugerimos \n"
 "que você não coloque os itens supracitados na sacola ou que você evite \n"
 "usar em conjunto todas as sacolas. Obrigado."
 
@@ -669,7 +672,6 @@ msgstr ""
 #. MyOPAC Fines Page
 #. =================================================================
 #: myopac.fines.title
-#, fuzzy
 msgctxt "myopac.fines.title"
 msgid "Summary"
 msgstr "Sumário"
@@ -1071,8 +1073,7 @@ msgstr "Por favor entre com um nome de usuário"
 
 #: myopac.summary.username.dup
 msgid ""
-"The requested username is not available.  Please choose a different "
-"username."
+"The requested username is not available.  Please choose a different username."
 msgstr ""
 "O nome de usuário solicitado não está disponível. Por favor escolha um nome "
 "de usuário diferente."
@@ -1358,7 +1359,7 @@ msgstr "Meus Títulos Encontrados"
 
 #: navigate.facetRefine
 msgid "Refine your search"
-msgstr ""
+msgstr "Refine sua pesquisa"
 
 #: navigate.title.details
 msgid "My Title Details"
@@ -1409,9 +1410,8 @@ msgid "GALILEO"
 msgstr "GALILEO"
 
 #: footer.copyright
-#, fuzzy
 msgid "Copyright &#xA9; 2006-2010 Georgia Public Library Service, and others"
-msgstr "Copyright &#xA9; 2006 Georgia Public Library Service"
+msgstr ""
 
 #. Introduces the logo for the project
 #: footer.logo
@@ -1492,7 +1492,7 @@ msgstr "Livros Impressos Grandes"
 
 #: opac.search.ebook
 msgid "E-Books"
-msgstr ""
+msgstr "Livros Digitais"
 
 #: opac.search.audioBooks
 msgid "Audiobooks"
@@ -1727,7 +1727,7 @@ msgstr "imprima esses detalhes"
 
 #: rdetail.cn.part
 msgid "Part"
-msgstr ""
+msgstr "Parte"
 
 #: rdetail.cn.barcode
 msgctxt "rdetail.cn.barcode"
@@ -1769,11 +1769,11 @@ msgstr "reservar"
 
 #: rdetail.cn.reserve
 msgid "book now"
-msgstr ""
+msgstr "Reserve já"
 
 #: rdetail.cn.multi_home
 msgid "linked titles"
-msgstr ""
+msgstr "títulos vinculados"
 
 #: rdetail.cn.disabled
 msgid "- Disabled -"
@@ -1810,7 +1810,7 @@ msgstr "Página Anterior"
 
 #: rdetail.page.previous.short
 msgid "&#171;"
-msgstr ""
+msgstr "&#171;"
 
 #: rdetail.page.next
 msgid "Next page"
@@ -1818,7 +1818,7 @@ msgstr "Próxima página"
 
 #: rdetail.page.next.short
 msgid "&#187;"
-msgstr ""
+msgstr "&#187;"
 
 #: rdetail.page.last
 msgid "Last results page"
@@ -1947,7 +1947,6 @@ msgid "Shelf Browser"
 msgstr "Navegador de Prateleira"
 
 #: rdetail.extras.bib_summary
-#, fuzzy
 msgctxt "rdetail.extras.bib_summary"
 msgid "Summary"
 msgstr "Sumário"
@@ -1983,17 +1982,16 @@ msgstr "Registro MARC"
 
 #: rdetail.extras.foreign_items
 msgid "Linked Titles"
-msgstr ""
+msgstr "Títulos Vinculados"
 
 #: rdetail.extras.call.null
 msgid "There are no call numbers for this item at this location."
 msgstr "Não existem nº de chamadas para este item nesta localização"
 
 #: rdetail.extras.call.local
-#, fuzzy
 msgctxt "rdetail.extras.call.local"
 msgid "Local Call Numbers:"
-msgstr "Nº de Chamada Local:"
+msgstr "Numeros de Chamada Local:"
 
 #: rdetail.extras.preview.fulltext
 msgid "Full text"
@@ -2009,12 +2007,11 @@ msgstr "Mostra um preview deste livro do Google Book Search"
 
 #: rdetail.extras.novelist
 msgid "Suggestions by NoveList"
-msgstr ""
+msgstr "Sugestões pelo Escritor"
 
 #: rdetail.loading
-#, fuzzy
 msgid "Loading copy information..."
-msgstr "Carregando informações do exemplar..."
+msgstr "Carregando informações de cópia ..."
 
 #: rdetail.noneAvailable
 msgid " * There are no copies in this location"
@@ -2059,7 +2056,8 @@ msgstr "Exemplares disponíveis / Total de Exemplares"
 
 #: result.info.no.items
 msgid "No items with the selected format were found in this location."
-msgstr "Nenhum item com o formato selecionado foi encontrado nesta localização"
+msgstr ""
+"Nenhum item com o formato selecionado foi encontrado nesta localização"
 
 #: result.info.format.items
 msgid "Listed below are all items in the catalog with the chosen format."
@@ -2136,10 +2134,9 @@ msgid "Browse in Google Books Search"
 msgstr "Consultar no Google Books Search"
 
 #: result.localCallNumbers
-#, fuzzy
 msgctxt "result.localCallNumbers"
 msgid "Local Call Numbers:"
-msgstr "Nº de Chamada Local:"
+msgstr "Numeros de Chamada Local:"
 
 #: common.call.number.label
 msgid "Call Number:"
@@ -2155,7 +2152,7 @@ msgstr "ISSN:"
 
 #: common.mono_parts.label
 msgid "Monograph Parts:"
-msgstr ""
+msgstr "Partes de Monografia:"
 
 #: common.copy.barcode.label
 msgid "Copy Barcode:"
@@ -2163,7 +2160,7 @@ msgstr "Código-de-barras do Exemplar:"
 
 #: common.issuance_label.label
 msgid "Issuance Label:"
-msgstr ""
+msgstr "Etiqueta de Emissão:"
 
 #: common.hold.place
 msgid "Place hold for my account"
@@ -2208,25 +2205,22 @@ msgstr ""
 
 #: common.hold.checked_out
 msgid "This item is already checked out."
-msgstr ""
+msgstr "Este item já foi retirado."
 
 #: common.hold.checked_out.override
 msgid ""
 "This item is already checked out.  Would you like to place the hold anyway?"
-msgstr ""
+msgstr "Este item já foi retirado. Gostaria de realizar mesmo assim?"
 
 #: common.hold.exists
 msgid "A hold already exists on the requested item."
 msgstr "Já existe uma reserva para o item solicitado."
 
 #: common.hold.exists.override
-#, fuzzy
 msgid ""
 "A hold already exists on the requested item. Would you like to create the "
 "hold anyway?"
 msgstr ""
-"Uma reserva já existe para o item solicitado. \n"
-"Você gostaria de criar a reserva mesmo assim?"
 
 #: common.hold.barred
 msgid ""
@@ -2276,8 +2270,8 @@ msgid ""
 msgstr ""
 "Nenhum item foi encontrado que possa atender a reserva solicitada. \\ nÉ "
 "possível que escolhendo um formato diferente resultará em um reserva com. \\ "
-"nTambém é possível que você excedeu o número máximo permitido de reservas. \\ "
-"nPara mais informações, queira consultar o seu  bibliotecário local."
+"nTambém é possível que você excedeu o número máximo permitido de reservas. \\"
+" nPara mais informações, queira consultar o seu  bibliotecário local."
 
 #: common.control.click
 msgid "(control-click to select multiple formats)"
@@ -2406,7 +2400,8 @@ msgstr ""
 "favor contate sua biblioteca local."
 
 #: login.account.inactive
-msgid "This account has been deactivated.  Please contact your local library."
+msgid ""
+"This account has been deactivated.  Please contact your local library."
 msgstr "Esta conta foi desativada. Por favor contate sua biblioteca local."
 
 #: login.failed
@@ -2415,8 +2410,8 @@ msgid ""
 "Ensure Caps-Lock is off and try again or contact your local library."
 msgstr ""
 "Falha na autentificação. O nome de usuário ou senha fornecida não eram "
-"válidos. Certifique-se que o \"Caps Lock\" está desligado e tente novamente ou "
-"contate a sua biblioteca local."
+"válidos. Certifique-se que o \"Caps Lock\" está desligado e tente novamente "
+"ou contate a sua biblioteca local."
 
 #: button.go
 msgid "Go!"
@@ -2621,7 +2616,7 @@ msgstr "Domingo"
 
 #: circ.fail_part.actor.usr.barred
 msgid "The patron is barred"
-msgstr ""
+msgstr "O Leitor esta barrado"
 
 #: circ.fail_part.asset.copy.circulate
 msgid "The item does not circulate"
@@ -2633,7 +2628,7 @@ msgstr ""
 
 #: circ.fail_part.asset.copy.status
 msgid "The item cannot circulate at this time"
-msgstr ""
+msgstr "O item não pode circular neste momento"
 
 #: circ.fail_part.circ.holds.target_skip_me
 msgid "The item's circulation library does not fulfill holds"
@@ -2686,19 +2681,3 @@ msgstr ""
 #: circ.fail_part.transit_range
 msgid "The item cannot transit this far"
 msgstr ""
-
-#~ msgid "Summary"
-#~ msgstr "Sumário"
-
-#~ msgid "Local Call Numbers:"
-#~ msgstr "Nº de Chamada Local:"
-
-#~ msgid "details"
-#~ msgstr "detalhes"
-
-#~ msgid "browse"
-#~ msgstr "navegar"
-
-#~ msgctxt "rdetail.copyInfo.hold"
-#~ msgid "place hold"
-#~ msgstr "Reservar"

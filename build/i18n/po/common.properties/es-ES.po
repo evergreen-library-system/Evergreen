@@ -2,11 +2,11 @@
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/common.properties
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:45-0400\n"
 "PO-Revision-Date: 2011-09-13 16:46+0000\n"
 "Last-Translator: Emerson Posadas <toxickore@gmail.com>\n"
@@ -14,9 +14,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.8.1\n"
-"X-Accelerator-Marker: &\n"
 "X-Launchpad-Export-Date: 2011-09-14 04:42+0000\n"
+"X-Generator: Launchpad (build 13921)\n"
 
 #: common.exception
 msgid ""
@@ -62,8 +61,7 @@ msgstr "Por favor informe que esto ha ocurrido."
 #: common.barcode.status.warning
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3$s."
 msgstr ""
-"Advertencia: A partir de %1$s, este código de barras (%2$s) fue marcado %"
-"3$s."
+"Advertencia: A partir de %1$s, este código de barras (%2$s) fue marcado %3$s."
 
 #: common.barcode.status.warning.lost
 msgid "Lost"
@@ -366,31 +364,15 @@ msgctxt "staff.csp_block_circ_yes"
 msgid "Yes"
 msgstr "Si"
 
-#: staff.csp_block_circ_no
-msgctxt "staff.csp_block_circ_no"
-"staff.csp_block_circ_no"
-msgid ""
-msgstr ""
-
 #: staff.csp_block_renew_yes
 msgctxt "staff.csp_block_renew_yes"
 msgid "Yes"
 msgstr "Si"
 
-#: staff.csp_block_renew_no
-msgctxt "staff.csp_block_renew_no"
-msgid ""
-msgstr ""
-
 #: staff.csp_block_hold_yes
 msgctxt "staff.csp_block_hold_yes"
 msgid "Yes"
 msgstr "Si"
-
-#: staff.csp_block_hold_no
-msgctxt "staff.csp_block_hold_no"
-msgid ""
-msgstr ""
 
 #: staff.ausp_id_label
 msgid "Penalty ID "
@@ -405,9 +387,8 @@ msgid "Applied On "
 msgstr "Aplicado sobre "
 
 #: staff.ausp_note_label
-#, fuzzy
 msgid "Note "
-msgstr "Nota"
+msgstr ""
 
 #: staff.ausp_org_unit_label
 msgid "Library "

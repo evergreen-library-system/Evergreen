@@ -1,7 +1,6 @@
 # translation of opac.dtd.po to French - Canadian
 # Dan Scott <dscott@laurentian.ca>, 2007.
 # extracted from ../../Open-ILS/web/opac/locale/en-US/opac.dtd, ../../Open-ILS/web/opac/locale/fr-CA/opac.dtd
-#. extracted from ../../Open-ILS/web/opac/locale/en-US/opac.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > opac.dtd.po\n"
@@ -13,10 +12,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.8.1\n"
-"X-Accelerator-Marker: &\n"
 "X-Launchpad-Export-Date: 2011-08-05 04:41+0000\n"
+"X-Generator: Launchpad (build 13604)\n"
 "X-Poedit-Country: CANADA\n"
+"X-Accelerator-Marker: &\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
@@ -219,7 +218,8 @@ msgid "Tips:"
 msgstr "Conseils :"
 
 #: common.tips.tip1
-msgid "Click on a folder icon in the sidebar to access related quick searches"
+msgid ""
+"Click on a folder icon in the sidebar to access related quick searches"
 msgstr ""
 "Cliquez sur une icône de dossier dans la colonne du côté pour accéder à des "
 "recherches rapides connexes"
@@ -457,7 +457,8 @@ msgid ""
 "browser. \n"
 "To use the regular Evergreen Catalog, enable JavaScript by changing your "
 "browser options, then \n"
-"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. \n"
+"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
+"\n"
 "<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
 "<a style='color: blue; text-decoration: underline;' "
 "href='/opac/extras/slimpac/start.html'>here</a>."
@@ -572,7 +573,8 @@ msgid ""
 "\"Shared\" column of the Bookbag list at the top of this page."
 msgstr ""
 "Les autres voient le contenu de tout sac de livres partagé. \n"
-"Pour voir le contenu public d'un sac de livres partagé, cliquez sur le lien \n"
+"Pour voir le contenu public d'un sac de livres partagé, cliquez sur le lien "
+"\n"
 "'Visualiser' dans la colonne 'Partagé' de la liste du sac de livres en haut "
 "de cette page."
 
@@ -700,7 +702,6 @@ msgstr ""
 #. MyOPAC Fines Page
 #. =================================================================
 #: myopac.fines.title
-#, fuzzy
 msgctxt "myopac.fines.title"
 msgid "Summary"
 msgstr "Sommaire"
@@ -832,7 +833,8 @@ msgstr "Annuler"
 
 #: myopac.holds.processing
 msgid "Processing holds... This may take a moment."
-msgstr "Traitement des articles mis en réserve...Veuillez patienter un instant."
+msgstr ""
+"Traitement des articles mis en réserve...Veuillez patienter un instant."
 
 #: myopac.holds.actions
 msgid "Actions for selected holds"
@@ -1114,8 +1116,7 @@ msgstr "Veuillez entrer un nom d'utilisateur"
 
 #: myopac.summary.username.dup
 msgid ""
-"The requested username is not available.  Please choose a different "
-"username."
+"The requested username is not available.  Please choose a different username."
 msgstr ""
 "Le nom d'utilisateur demandé n'est pas disponible. Veuillez en choisir un "
 "autre."
@@ -1170,7 +1171,8 @@ msgstr "Le champ sélectionné contient les mots suivants"
 
 #: opac.advanced.wizard.nocontains
 msgid "Selected field does <u>not</u> contain the following words"
-msgstr "Le champ sélectionné contient <u>ne contient pas</u> les mots suivants"
+msgstr ""
+"Le champ sélectionné contient <u>ne contient pas</u> les mots suivants"
 
 #: opac.advanced.wizard.exact
 msgid "Selected field contains the <u>exact</u> phrase"
@@ -1332,7 +1334,8 @@ msgstr "Conseil :"
 #. =================================================================
 #: opac.session_expiring
 msgid "Your login session will timeout in 1 minute unless there is activity."
-msgstr "S'il n'y a pas d'activité, votre session se terminera dans une minute."
+msgstr ""
+"S'il n'y a pas d'activité, votre session se terminera dans une minute."
 
 #: opac.session_expired
 msgid "Your login session has expired"
@@ -1982,7 +1985,8 @@ msgstr "Emplacement de l'exemplaire"
 
 #: rdetail.copyInfo.local
 msgid "View Copy Information for this location only"
-msgstr "Voir les renseignements sur l'exemplaire de cet emplacement seulement"
+msgstr ""
+"Voir les renseignements sur l'exemplaire de cet emplacement seulement"
 
 #: rdetail.copyInfo.all
 msgid "View copy information for all libraries"
@@ -2019,7 +2023,6 @@ msgid "Shelf Browser"
 msgstr "Auto-navigation"
 
 #: rdetail.extras.bib_summary
-#, fuzzy
 msgctxt "rdetail.extras.bib_summary"
 msgid "Summary"
 msgstr "Sommaire"
@@ -2062,7 +2065,6 @@ msgid "There are no call numbers for this item at this location."
 msgstr "Il n'y a pas de cote pour cet élément à cet emplacement."
 
 #: rdetail.extras.call.local
-#, fuzzy
 msgctxt "rdetail.extras.call.local"
 msgid "Local Call Numbers:"
 msgstr "Cote(s) locale :"
@@ -2209,7 +2211,6 @@ msgid "Browse in Google Books Search"
 msgstr "Parcourir dans Google Books Search"
 
 #: result.localCallNumbers
-#, fuzzy
 msgctxt "result.localCallNumbers"
 msgid "Local Call Numbers:"
 msgstr "Cote(s) locale :"
@@ -2373,7 +2374,8 @@ msgstr "Activer les avis téléphoniques pour cette mise en réserve?"
 
 #: common.email.enable
 msgid "Enable email notifications for this hold?"
-msgstr "Activer les avis par courrier électronique pour cette mise en réserve?"
+msgstr ""
+"Activer les avis par courrier électronique pour cette mise en réserve?"
 
 #: common.email.none
 msgid "(Patron has no configured email address)"
@@ -2482,7 +2484,8 @@ msgstr ""
 "bibliothèque locale."
 
 #: login.account.inactive
-msgid "This account has been deactivated.  Please contact your local library."
+msgid ""
+"This account has been deactivated.  Please contact your local library."
 msgstr ""
 "Ce compte a été désactivé. Veuillez communiquer avec votre bibliothèque "
 "locale."
@@ -2773,8 +2776,16 @@ msgstr "Le système n'a pas pu trouver ce patron"
 msgid "The item cannot transit this far"
 msgstr "Cet article ne peut pas être déplacé à cette distance"
 
+# =================================================================
+# MyOPAC Fines Page
+#~ msgid "Summary"
+#~ msgstr "Sommaire"
+
 #~ msgid "Copyright &#xA9; 2006-2008 Georgia Public Library Service"
 #~ msgstr "Droits d'auteur &#xA9; 2006-2008 Georgia Public Library Service"
+
+#~ msgid "Local Call Numbers:"
+#~ msgstr "Cotes locales :"
 
 #~ msgid "Loading copy infomation..."
 #~ msgstr "Chargement des renseignements sur l'exemplaire..."

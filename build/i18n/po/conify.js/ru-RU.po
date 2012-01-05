@@ -1,17 +1,16 @@
-# 
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 21:45:31-0400\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
 "PO-Revision-Date: 2011-07-31 17:04+0000\n"
 "Last-Translator: Alexander Sapronov <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Launchpad (build 13405)\n"
 "X-Launchpad-Export-Date: 2011-08-01 04:42+0000\n"
+"X-Generator: Launchpad (build 13405)\n"
 
 #: conify.js:SURVEY_ID
 msgid "Survey ID # ${0}"
@@ -120,7 +119,9 @@ msgid "Problem fetching Mailing Address for ${0}"
 msgstr "Проблема извлечения Почтового адреса для ${0}"
 
 #: conify.js:CONFIRM_EXIT_AOU
-msgid "There are unsaved changes to one or more organizational units. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved changes to one or more organizational units. Click OK to "
+"save these changes, or Cancel to abandon them."
 msgstr ""
 "Есть несохраненные изменения в одном или нескольких организационных "
 "подразделениях. Нажмите ОК, чтобы сохранить эти изменения, или Отменить, "
@@ -169,7 +170,9 @@ msgid "New Group"
 msgstr "Новая группа"
 
 #: conify.js:CONFIRM_EXIT_PGT
-msgid "There are unsaved modified permission maps. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved modified permission maps. Click OK to save these changes, "
+"or Cancel to abandon them."
 msgstr ""
 "Есть несохраненный измененый список  полномочий. Нажмите ОК, чтобы сохранить "
 "эти изменения, или Отменить, чтобы отказаться от них."
@@ -195,13 +198,17 @@ msgid "Are you sure you want to delete ${0}?"
 msgstr "Вы уверены, что хотите удалить ${0}?"
 
 #: conify.js:CONFIRM_EXIT_PPL
-msgid "There are unsaved modified permissions. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved modified permissions. Click OK to save these changes, or "
+"Cancel to abandon them."
 msgstr ""
 "Есть несохраненные изменённые полномочия.  Нажмите ОК, чтобы сохранить эти "
 "изменения, или Отменить, чтобы отказаться от них."
 
 #: conify.js:CONFIRM_UNSAVED_CHANGES
-msgid "There are unsaved changes to one or more organization types. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved changes to one or more organization types. Click OK to "
+"save these changes, or Cancel to abandon them."
 msgstr ""
 "Есть несохраненные изменения в одном или нескольких организационных типах. "
 "Нажмите ОК, чтобы сохранить эти изменения, или Отменить, чтобы отказаться от "
@@ -308,7 +315,9 @@ msgid "Problem fetching organizational unit data"
 msgstr "Проблема создания  данных  детской организационной единицы"
 
 #: conify.js:CONFIRM_EXIT_CCS
-msgid "There are unsaved changes to one or more copy statuses. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved changes to one or more copy statuses. Click OK to save "
+"these changes, or Cancel to abandon them."
 msgstr ""
 "Есть несохраненные изменения в одном или нескольких статусах экземляра. "
 "Нажмите ОК, чтобы сохранить эти изменения, или Отменить, чтобы отказаться от "
@@ -363,7 +372,9 @@ msgid "${0}: ${1}"
 msgstr "${0}: ${1}"
 
 #: conify.js:CONFIRM_EXIT_CAM
-msgid "There are unsaved changes to one or more ${0} codes. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved changes to one or more ${0} codes. Click OK to save these "
+"changes, or Cancel to abandon them."
 msgstr ""
 "Есть несохраненные изменения в одном или нескольких $ (0) кодах. Нажмите ОК, "
 "чтобы сохранить эти изменения, или Отменить, чтобы отказаться от них."

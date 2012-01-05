@@ -2,11 +2,11 @@
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
-#. extracted from ../../Open-ILS/web/opac/locale/en-US/opac.dtd
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:44-0400\n"
 "PO-Revision-Date: 2011-09-03 21:22+0000\n"
 "Last-Translator: Ben Shum <Unknown>\n"
@@ -14,9 +14,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.8.1\n"
-"X-Accelerator-Marker: &\n"
 "X-Launchpad-Export-Date: 2011-09-04 04:43+0000\n"
+"X-Generator: Launchpad (build 13830)\n"
 
 #. =================================================================
 #. Some generic stuff
@@ -216,7 +215,8 @@ msgid "Tips:"
 msgstr "Consejos:"
 
 #: common.tips.tip1
-msgid "Click on a folder icon in the sidebar to access related quick searches"
+msgid ""
+"Click on a folder icon in the sidebar to access related quick searches"
 msgstr ""
 "Haga clic en un ícono de la barra lateral para acceder a búsquedas rápidas "
 "relacionadas"
@@ -442,7 +442,8 @@ msgid ""
 "browser. \n"
 "To use the regular Evergreen Catalog, enable JavaScript by changing your "
 "browser options, then \n"
-"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. \n"
+"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
+"\n"
 "<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
 "<a style='color: blue; text-decoration: underline;' "
 "href='/opac/extras/slimpac/start.html'>here</a>."
@@ -557,8 +558,8 @@ msgstr ""
 "visible a otros. \n"
 "Para acceder a la vista pública de un guarda libros compartido, haga clic en "
 "\"Ver\" líguese con \n"
-"la columna \"Compartido\" de la lista de guarda libros en la parte superior de "
-"esta página."
+"la columna \"Compartido\" de la lista de guarda libros en la parte superior "
+"de esta página."
 
 #: myopac.item.confirm
 msgid "Are you sure you wish to remove this bookbag item?"
@@ -596,6 +597,7 @@ msgid ""
 "avoid using bookbags all together.  Thank you."
 msgstr ""
 "Precaución: Añadir elementos al porta libros crea una liga entre usted y los "
+"\n"
 "elementos en la base de datos. El contenido del porta libros NO es visible \n"
 "públicamente a menos que el porta libros sea compartido. Sin embargo, si "
 "prefiere no \n"
@@ -1087,8 +1089,7 @@ msgstr "Por favor ingrese un nombre de usuario"
 
 #: myopac.summary.username.dup
 msgid ""
-"The requested username is not available.  Please choose a different "
-"username."
+"The requested username is not available.  Please choose a different username."
 msgstr ""
 "El nombre de usuario no está disponible. por favor elija otro nombre de "
 "usuario."
@@ -2003,7 +2004,8 @@ msgstr ""
 
 #: rdetail.extras.call.null
 msgid "There are no call numbers for this item at this location."
-msgstr "No hay los números de la llamada para este artículo en esta ubicación"
+msgstr ""
+"No hay los números de la llamada para este artículo en esta ubicación"
 
 #: rdetail.extras.call.local
 msgctxt "rdetail.extras.call.local"
@@ -2249,7 +2251,8 @@ msgid ""
 "library."
 msgstr ""
 "El PATROCINADOR IMPIDIO. Vea por favor cualquier nota en la sección de \n"
-"\"Notas de Personal\" de su \"Mi Cuenta\" página o contacte su biblioteca local"
+"\"Notas de Personal\" de su \"Mi Cuenta\" página o contacte su biblioteca "
+"local"
 
 #: common.hold.item.invalid
 msgid ""
@@ -2423,7 +2426,8 @@ msgstr ""
 "por favor su biblioteca local."
 
 #: login.account.inactive
-msgid "This account has been deactivated.  Please contact your local library."
+msgid ""
+"This account has been deactivated.  Please contact your local library."
 msgstr ""
 "Esta cuenta ha sido desactivada. Contacte por favor su biblioteca local."
 
@@ -2699,9 +2703,8 @@ msgid "System rules do not define how to handle this item"
 msgstr ""
 
 #: circ.fail_part.no_user
-#, fuzzy
 msgid "The system could not find this patron"
-msgstr "El sistema no pudo encontrar este elemento."
+msgstr ""
 
 #: circ.fail_part.transit_range
 msgid "The item cannot transit this far"

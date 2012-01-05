@@ -1,0 +1,178 @@
+# Russian translation for evergreen
+# Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2011-07-31 17:24+0000\n"
+"Last-Translator: Alexander Sapronov <Unknown>\n"
+"Language-Team: Russian <ru@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2011-08-01 04:42+0000\n"
+"X-Generator: Launchpad (build 13405)\n"
+
+#: Searcher.js:before
+msgid "Published Before"
+msgstr ""
+
+#: Searcher.js:lit_form
+msgid "Literary Form"
+msgstr ""
+
+#: Searcher.js:metabib
+msgid "Metarecord Search"
+msgstr ""
+
+#: Searcher.js:contains
+msgid "Contains"
+msgstr ""
+
+#: Searcher.js:more
+msgid "More..."
+msgstr "Ещё..."
+
+#: Searcher.js:after
+msgid "Published After"
+msgstr "Опубликованные после"
+
+#: Searcher.js:basic
+msgid "Basic"
+msgstr ""
+
+#: Searcher.js:modifiers
+msgid "Modifiers"
+msgstr "Модификаторы"
+
+#: Searcher.js:item_type
+msgid "Type"
+msgstr ""
+
+#: Searcher.js:depth
+msgid "Search Depth"
+msgstr "Глубина поиска"
+
+#: Searcher.js:available
+msgid "Available"
+msgstr "Доступен"
+
+#: Searcher.js:classed_searches
+msgid "Classed Searches"
+msgstr ""
+
+#: Searcher.js:item_form
+msgid "Form"
+msgstr "Форма"
+
+#: Searcher.js:new_modifier
+msgid "New Modifier"
+msgstr "Новый модификатор"
+
+#: Searcher.js:less
+msgid "...Less"
+msgstr "... Меньше"
+
+#: Searcher.js:modifier_default
+msgid "-- Select a Modifier --"
+msgstr "-- Выбор модификатора --"
+
+#: Searcher.js:during
+msgid "In Publication"
+msgstr "Опубликовано"
+
+#: Searcher.js:exact
+msgid "Exactly Matches"
+msgstr ""
+
+#: Searcher.js:advanced
+msgid "Advanced"
+msgstr "Расширенные"
+
+#: Searcher.js:between
+msgid "Published Between"
+msgstr "Опубликованные в период с"
+
+#: Searcher.js:new_filter
+msgid "New Filter"
+msgstr "Новый Фильтр"
+
+#: Searcher.js:faceted_searches
+msgid "Facets"
+msgstr ""
+
+#: Searcher.js:perform_search
+msgid "Go!"
+msgstr "Начать!"
+
+#: Searcher.js:remove
+msgid "Remove"
+msgstr "Удалить"
+
+#: Searcher.js:audience
+msgid "Audience"
+msgstr "Аудитория"
+
+#: Searcher.js:format
+msgid "Type and Form"
+msgstr ""
+
+#: Searcher.js:descending
+msgid "Sort Descending"
+msgstr "Сортировка по убыванию"
+
+#: Searcher.js:new_facet
+msgid "New Facet"
+msgstr ""
+
+#: Searcher.js:and
+msgid "AND"
+msgstr "И"
+
+#: Searcher.js:vr_format
+msgid "Videorecording Format"
+msgstr "Формат видеозаписи"
+
+#: Searcher.js:staff
+msgid "Staff Search"
+msgstr "Поиск сотрудников"
+
+#: Searcher.js:site
+msgid "Site"
+msgstr "Сайт"
+
+#: Searcher.js:notcontains
+msgid "Does Not Contain"
+msgstr ""
+
+#: Searcher.js:sort
+msgid "Sort Axis"
+msgstr ""
+
+#: Searcher.js:filters
+msgid "Filters"
+msgstr "Фильтры"
+
+#: Searcher.js:bib_level
+msgid "Bibliographic Level"
+msgstr ""
+
+#: Searcher.js:filter_default
+msgid "-- Select a Filter --"
+msgstr "-- Выбор фильтра ---"
+
+#: Searcher.js:ascending
+msgid "Sort Ascending"
+msgstr "Сортировка по возрастанию"
+
+#: Searcher.js:or
+msgid "OR"
+msgstr "или"
+
+#: Searcher.js:statuses
+msgid "Statuses"
+msgstr "Статусы"

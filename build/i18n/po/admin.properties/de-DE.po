@@ -7,15 +7,23 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-11-23 23:36-0400\n"
-"PO-Revision-Date: 2010-02-21 14:34+0000\n"
-"Last-Translator: Provetin <hamburgskaddi@web.de>\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2011-12-11 19:50+0000\n"
+"Last-Translator: raymond <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-02-22 04:43+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2011-12-12 05:18+0000\n"
+"X-Generator: Launchpad (build 14458)\n"
+
+#: staff.admin.age_overdue_circulations_to_lost.chunks_processed
+msgid "Chunks Processed: %1$s"
+msgstr ""
+
+#: staff.admin.age_overdue_circulations_to_lost.events_created
+msgid "Events Created: %1$s"
+msgstr ""
 
 #: staff.admin.font_settings.sound
 msgid "Sound preference saved to file system."
@@ -75,55 +83,55 @@ msgstr ""
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_5PT
 msgid "Global Font set to 5pt"
-msgstr ""
+msgstr "Globale Schriftart auf 5pt eingestellt"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_6PT
 msgid "Global Font set to 6pt"
-msgstr ""
+msgstr "Globale Schriftart auf 6pt eingestellt"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_7PT
 msgid "Global Font set to 7pt"
-msgstr ""
+msgstr "Globale Schriftart auf 7pt eingestellt"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_8PT
 msgid "Global Font set to 8pt"
-msgstr ""
+msgstr "Globale Schriftart auf 8pt eingestellt"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_9PT
 msgid "Global Font set to 9pt"
-msgstr ""
+msgstr "Globale Schriftart auf 9pt eingestellt"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_10PT
 msgid "Global Font set to 10pt"
-msgstr ""
+msgstr "Globale Schriftart auf 10pt eingestellt"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_11PT
 msgid "Global Font set to 11pt"
-msgstr ""
+msgstr "Globale Schriftart auf 11pt eingestellt"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_12PT
 msgid "Global Font set to 12pt"
-msgstr ""
+msgstr "Globale Schriftart auf 12pt eingestellt"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_13PT
 msgid "Global Font set to 13pt"
-msgstr ""
+msgstr "Globale Schriftart auf 13pt eingestellt"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_14PT
 msgid "Global Font set to 14pt"
-msgstr ""
+msgstr "Globale Schriftart auf 14pt eingestellt"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_15PT
 msgid "Global Font set to 15pt"
-msgstr ""
+msgstr "Globale Schriftart auf 15pt eingestellt"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_16PT
 msgid "Global Font set to 16pt"
-msgstr ""
+msgstr "Globale Schriftart auf 16pt eingestellt"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_17PT
 msgid "Global Font set to 17pt"
-msgstr ""
+msgstr "Globale Schriftart auf 17pt eingestellt"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_18PT
 msgid "Global Font set to 18pt"
@@ -139,11 +147,11 @@ msgstr ""
 
 #: staff.admin.transit_list.invalid_date
 msgid "Invalid Date (%1$s), setting to Today"
-msgstr ""
+msgstr "Ungültiges Datum (%1$s), stelle auf heute ein"
 
 #: staff.admin.transit_list.invalid_date_format
 msgid "Invalid Date (%1$s,%2$s), setting to Today"
-msgstr ""
+msgstr "Ungültiges Datum (%1$s,%2$s), stelle auf heute ein"
 
 #: staff.admin.transit_list.date_processing.error
 msgid "error processing date"
@@ -175,7 +183,7 @@ msgstr ""
 
 #: staff.admin.offline_manage_xacts.init_list.organization
 msgid "Organization"
-msgstr ""
+msgstr "Organisation"
 
 #: staff.admin.offline_manage_xacts.init_list.description
 msgid "Description"
@@ -228,12 +236,12 @@ msgstr ""
 #: staff.admin.offline_manage_xacts.init_script_list.workstation
 msgctxt "staff.admin.offline_manage_xacts.init_script_list.workstation"
 msgid "Workstation"
-msgstr ""
+msgstr "Workstation"
 
 #: staff.admin.offline_manage_xacts.init_error_list.workstation
 msgctxt "staff.admin.offline_manage_xacts.init_error_list.workstation"
 msgid "Workstation"
-msgstr ""
+msgstr "Workstation"
 
 #: staff.admin.offline_manage_xacts.init_error_list.timestamp
 msgid "Timestamp"
@@ -241,7 +249,7 @@ msgstr ""
 
 #: staff.admin.offline_manage_xacts.init_error_list.type
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 #: staff.admin.offline_manage_xacts.init_error_list.event_code
 msgid "Event Code"
@@ -253,7 +261,7 @@ msgstr ""
 
 #: staff.admin.offline_manage_xacts.init_error_list.event_description
 msgid "Event Description"
-msgstr ""
+msgstr "Ereignisbeschreibung"
 
 #: staff.admin.offline_manage_xacts.init_error_list.item_barcode
 msgid "Item Barcode"
@@ -265,7 +273,7 @@ msgstr ""
 
 #: staff.admin.offline_manage_xacts.init_error_list.due_date
 msgid "Due Date"
-msgstr ""
+msgstr "Fälligkeitsdatum"
 
 #: staff.admin.offline_manage_xacts.init_error_list.count
 msgid "In House Use Count"
@@ -317,7 +325,7 @@ msgstr ""
 
 #: staff.admin.offline_manage_xacts.error.unique_file
 msgid "Taking too long to find a unique filename."
-msgstr ""
+msgstr "Dauert zu lange, um einen eindeutigen Dateinamen zu finden."
 
 #: staff.admin.offline_manage_xacts.error.transaction_conflicts
 msgid ""
@@ -331,7 +339,7 @@ msgstr ""
 
 #: staff.admin.offline_manage_xacts.error.transaction_conflicts.ok
 msgid "Ok"
-msgstr ""
+msgstr "Ok"
 
 #: staff.admin.offline_manage_xacts.error.transaction_conflicts.confirm
 msgid "Check here to confirm this message"
@@ -411,7 +419,7 @@ msgstr ""
 
 #: staff.admin.offline_manage_xacts.completed
 msgid "Completed"
-msgstr ""
+msgstr "Abgeschlossen"
 
 #: staff.admin.offline_manage_xacts.no
 msgid "No"
@@ -420,3 +428,25 @@ msgstr "Nein"
 #: staff.admin.offline_manage_xacts.yes
 msgid "Yes"
 msgstr "Ja"
+
+#: staff.admin.staff.do_not_auto_attempt_print_setting.update_success
+msgid "Setting updated"
+msgstr ""
+
+#: staff.admin.staff.do_not_auto_attempt_print_setting.update_failure
+msgid "Setting not updated due to error"
+msgstr ""
+
+#. # 1 - workstation library shortname   2 - setting library shortname
+#: staff.admin.staff.do_not_auto_attempt_print_setting.current_setting_preamble
+msgid ""
+"Workstation library %1$s is currently suppressing auto-print for these "
+"receipt/slip types based on a setting inherited from %2$s:"
+msgstr ""
+
+#. # 1 - workstation library shortname
+#: staff.admin.staff.do_not_auto_attempt_print_setting.current_setting_nonexistent
+msgid ""
+"Workstation library %1$s is not currently suppressing auto-print for any "
+"receipt/slip types."
+msgstr ""
