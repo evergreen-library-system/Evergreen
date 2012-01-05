@@ -72,7 +72,6 @@
     [%- END %]
     </tbody></table>
 [%- END %]
-[%- IF openurls.size && openurls.0 != '' %]
     </div>    
 [%- END %]
 [%- merged_uris = args.uris.merge(args.online_res);
