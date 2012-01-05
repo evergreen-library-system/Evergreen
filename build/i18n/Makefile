@@ -92,7 +92,6 @@ newpo:
 	@pot2po $(PROGRESS) -i po/reservation.js/reservation.js.pot -o $(PO)/reservation.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/selfcheck.js/selfcheck.js.pot -o $(PO)/selfcheck.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/serial.properties/serial.properties.pot -o $(PO)/serial.properties/$(LOCALE).po 
-	@pot2po $(PROGRESS) -i po/vandelay.dtd/vandelay.dtd.pot -o $(PO)/vandelay.dtd/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/AutoFieldWidget.js/AutoFieldWidget.js.pot -o $(PO)/AutoFieldWidget.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/Searcher.js/Searcher.js.pot -o $(PO)/Searcher.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/TranslatorPopup.js/TranslatorPopup.js.pot -o $(PO)/TranslatorPopup.js/$(LOCALE).po 
@@ -138,7 +137,6 @@ updatepo: prep_output
 	@pot2po $(PROGRESS) -i po/reservation.js/reservation.js.pot -o $(PO)/reservation.js/$(LOCALE).po  -t $(PO)/reservation.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/selfcheck.js/selfcheck.js.pot -o $(PO)/selfcheck.js/$(LOCALE).po  -t $(PO)/selfcheck.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/serial.properties/serial.properties.pot -o $(PO)/serial.properties/$(LOCALE).po  -t $(PO)/serial.properties/$(LOCALE).po 
-	@pot2po $(PROGRESS) -i po/vandelay.dtd/vandelay.dtd.pot -o $(PO)/vandelay.dtd/$(LOCALE).po  -t $(PO)/vandelay.dtd/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/AutoFieldWidget.js/AutoFieldWidget.js.pot -o $(PO)/AutoFieldWidget.js/$(LOCALE).po  -t $(PO)/AutoFieldWidget.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/Searcher.js/Searcher.js.pot -o $(PO)/Searcher.js/$(LOCALE).po  -t $(PO)/Searcher.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/TranslatorPopup.js/TranslatorPopup.js.pot -o $(PO)/TranslatorPopup.js/$(LOCALE).po  -t $(PO)/TranslatorPopup.js/$(LOCALE).po 
@@ -151,7 +149,6 @@ dtds2pot:
 	@moz2po -P $(PROGRESS) -o $(PO)/lang.dtd/lang.dtd.pot -i $(DTDDIR)/en-US/lang.dtd 2>&1
 	@moz2po -P $(PROGRESS) -o $(PO)/opac.dtd/opac.dtd.pot -i $(DTDDIR)/en-US/opac.dtd 2>&1
 	@moz2po -P $(PROGRESS) -o $(PO)/reports.dtd/reports.dtd.pot -i $(DTDDIR)/en-US/reports.dtd 2>&1
-	@moz2po -P $(PROGRESS) -o $(PO)/vandelay.dtd/vandelay.dtd.pot -i $(DTDDIR)/en-US/vandelay.dtd 2>&1
 
 dojo2pot:
 	@scripts/dojo_resource.py --pot $(DOJO_ACQ_SRC)/acq.js --output $(PO)/acq.js/acq.js.pot
@@ -226,7 +223,6 @@ po2dtds:
 	@po2moz $(PROGRESS) -i $(PO)/lang.dtd/$(LOCALE).dtd.po -o $(PROJECT)/$(LOCALE)/lang.dtd -t $(DTDDIR)/en-US/lang.dtd 2>&1
 	@po2moz $(PROGRESS) -i $(PO)/opac.dtd/$(LOCALE).dtd.po -o $(PROJECT)/$(LOCALE)/opac.dtd -t $(DTDDIR)/en-US/opac.dtd 2>&1
 	@po2moz $(PROGRESS) -i $(PO)/reports.dtd/$(LOCALE).dtd.po -o $(PROJECT)/$(LOCALE)/reports.dtd -t $(DTDDIR)/en-US/reports.dtd 2>&1
-	@po2moz $(PROGRESS) -i $(PO)/vandelay.dtd/$(LOCALE).dtd.po -o $(PROJECT)/$(LOCALE)/vandelay.dtd -t $(DTDDIR)/en-US/vandelay.dtd 2>&1
 
 po2props:
 	@po2moz $(PROGRESS) -i $(PO)/auth.properties/$(LOCALE).properties.po -o $(PROJECT)/$(LOCALE)/auth.properties -t $(CHROME_PROPSDIR)/en-US/auth.properties 2>&1
@@ -285,7 +281,6 @@ install: updatepo project fmidl2fmidlent fmidlpo2entity-en
 	cp $(PROJECT)/$(LOCALE)/opac.dtd $(DTDDIR)/$(LOCALE)/
 	cp $(PROJECT)/$(LOCALE)/reports.dtd $(DTDDIR)/$(LOCALE)/
 	cp $(PROJECT)/$(LOCALE)/serial.properties $(SERVER_PROPSDIR)/$(LOCALE)/.
-	cp $(PROJECT)/$(LOCALE)/vandelay.dtd $(DTDDIR)/$(LOCALE)/
 	cp $(PROJECT)/$(LOCALE)/$(FMIDLENTITY) $(DTDDIR)/$(LOCALE)/
 	@scripts/merge_ils_events.py --master $(EVTSRC) --localization $(PROJECT)/$(LOCALE)/$(EVTXML) --output $(EVTSRC)
 	cp $(PROJECT)/$(LOCALE)/$(SQLOUT).sql $(SQLSRCDIR)/$(SQLOUT)-$(LOCALE).sql
