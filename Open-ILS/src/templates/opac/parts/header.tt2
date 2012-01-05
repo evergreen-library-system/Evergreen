@@ -4,6 +4,7 @@
     USE POSIX;
     USE HTML;
     SET DATE_FORMAT = l('%m/%d/%Y');
+    PROCESS "opac/parts/config.tt2";
 
     # Don't wrap in l() here; do that where this format string is actually used.
     SET HUMAN_NAME_FORMAT = '[_1] [_2] [_3] [_4] [_5]';

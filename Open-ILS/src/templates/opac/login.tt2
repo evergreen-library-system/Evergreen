@@ -1,5 +1,4 @@
 [%  PROCESS "opac/parts/header.tt2";
-    PROCESS "opac/parts/config.tt2";
     WRAPPER "opac/parts/base.tt2";
     INCLUDE "opac/parts/topnav.tt2";
     ctx.page_title = l("Account Login") %]

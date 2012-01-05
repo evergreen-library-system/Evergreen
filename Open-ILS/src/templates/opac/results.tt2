@@ -1,6 +1,4 @@
 [%  PROCESS "opac/parts/header.tt2";
-    PROCESS "opac/parts/config.tt2";
-    USE POSIX;
 
     WRAPPER "opac/parts/base.tt2";
     INCLUDE "opac/parts/topnav.tt2";

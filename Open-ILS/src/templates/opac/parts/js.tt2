@@ -1,8 +1,6 @@
 <!-- JS imports, etc.  -->
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/simple.js"></script>
 
-[%- PROCESS "opac/parts/config.tt2"; %]
-
 [%- IF ctx.is_staff %]
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/staff.js"></script>
     [% IF ctx.page == 'record' %]
