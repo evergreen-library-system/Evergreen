@@ -215,7 +215,7 @@ cd /etc/apache2/ssl
 .Fedora
 [source,bash]
 ------------------------------------------------------------------------------
-cp Open-ILS/examples/apache/eg.conf       /etc/httpd/sites-available/
+cp Open-ILS/examples/apache/eg.conf       /etc/httpd/conf.d/
 cp Open-ILS/examples/apache/eg_vhost.conf /etc/httpd/
 cp Open-ILS/examples/apache/startup.pl    /etc/httpd/
 # Now set up SSL
@@ -239,6 +239,8 @@ place.
   a. Replace `Allow from 10.0.0.0/8` with `Allow from all` (to enable
      access to the offline upload / execute interface from any workstation on
      any network - note that you must secure this for a production instance)
+  b. (Fedora): Change references from the non-existent `/etc/apache2/` directory
+     to `/etc/httpd/`.
 4. Change the user for the Apache server.
   * (Debian and Ubuntu): As the *root* Linux account, edit
     `/etc/apache2/envvars`.  Change `export APACHE_RUN_USER=www-data` to 
@@ -267,7 +269,10 @@ place.
 </IfModule>
 ------------------------------------------------------------------------------
 +
-6. (Debian and Ubuntu): As the *root* Linux account, enable the Evergreen site:
+6. (Fedora): As the *root* Linux account, edit the `/etc/httpd/eg_vhost.conf`
+   file to change references from the non-existent `/etc/apache2/` directory
+   to `/etc/httpd/`.
+7. (Debian and Ubuntu): As the *root* Linux account, enable the Evergreen site:
 +
 [source,bash]
 ------------------------------------------------------------------------------
@@ -325,6 +330,7 @@ using the following commands as the *root* Linux account:
 [source, bash]
 ------------------------------------------------------------------------------
 make -f Open-ILS/src/extras/Makefile.install install_fedora_pgsql_server
+postgresql-setup initdb
 ------------------------------------------------------------------------------
 
 For a standalone PostgreSQL server, install the following Perl modules as the
