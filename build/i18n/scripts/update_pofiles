@@ -1,0 +1,213 @@
+#!/usr/bin/perl
+# Copyright (C) 2011 Laurentian University
+# Author: Dan Scott <dscott@laurentian.ca>
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# ---------------------------------------------------------------
+
+use strict;
+use warnings;
+use File::Spec;
+use Getopt::Long;
+use Pod::Usage qw/ pod2usage /;
+
+my $lp_base_dir;
+my $eg_base_dir;
+my $help = 0;
+
+GetOptions(
+    'launchpad-base-dir=s' => \$lp_base_dir,
+    'evergreen-base-dir=s' => \$eg_base_dir,
+    'help' => \$help,
+);
+
+if ($help) {
+    pod2usage(0);
+}
+
+check_options();
+
+my %locs = (
+    ar => "ar-AR",
+    cs => "cs-CZ",
+    de => "de-DE",
+    en_CA => "en-CA",
+    en_GB => "en-GB",
+    es => "es-ES",
+    fr => "fr-CA",
+    he => "he-IL",
+    hu => "hu-HU",
+    hy => "hy-AM",
+    oc => "oc-FR",
+    pt_BR => "pt-BR",
+    ru => "ru-RU",
+    sv => "sv-SE",
+    tr => "tr-TR",
+);
+
+my @pofiles = qw/
+    Acq.js
+    admin.properties
+    authority.js
+    auth.properties
+    AutoFieldWidget.js
+    capture.js
+    cat.properties
+    circ.properties
+    common.properties
+    conify.dtd
+    conify.js
+    db.seed
+    fm_IDL.dtd
+    ils_events.xml
+    lang.dtd
+    multiclass_search_help.html
+    offline.properties
+    opac.dtd
+    opac.js
+    patron.properties
+    pickup_and_return.js
+    pull_list.js
+    register.js
+    reports.dtd
+    reports.js
+    reservation.js
+    Searcher.js
+    selfcheck.js
+    serial.properties
+    TranslatorPopup.js
+    User.js
+    vandelay.dtd
+    XULTermLoader.js
+/;
+
+foreach my $pofile (@pofiles) {
+    foreach my $lang (keys %locs) {
+        my $src_file = File::Spec->catfile(
+            ($lp_base_dir, 'build/i18n/po', $pofile), "$lang.po"
+        );
+        my $dest_file = File::Spec->catfile(
+            ($eg_base_dir, 'build/i18n/po', $pofile), "$locs{$lang}.po"
+        );
+
+        # If the source file doesn't exist, move on
+        next if ! -f $src_file;
+
+        # Check for actual changed strings
+        if (-f $dest_file) {
+            my $diff = `diff -u $dest_file $src_file`;
+
+            # Ignore changes to the PO header
+            $diff =~ s/^\+#.*?$//ms;
+            $diff =~ s/^\+"PO-Revision-Date:.*?$//ms;
+            $diff =~ s/^\+"Report-Msgid-Bugs-To:.*?$//ms;
+            $diff =~ s/^\+"X-Launchpad-Export-Date:.*?$//ms;
+            $diff =~ s/^\+"X-Generator:.*?$//ms;
+
+            if ($diff =~ /^\+/sm) {
+                `cp $src_file $dest_file`;
+            }
+        } else {
+            # Copy brand new translations into place
+            `cp $src_file $dest_file`;
+        }
+    }
+}
+
+sub check_options {
+    if (!($lp_base_dir && $eg_base_dir)) {
+        pod2usage(1);
+    }
+
+    if (!-d $lp_base_dir) {
+        print STDERR "$lp_base_dir does not exist; exiting\n";
+        pod2usage(1);
+    }
+
+    if (!-d $eg_base_dir) {
+        print STDERR "$eg_base_dir does not exist; exiting\n";
+        pod2usage(1);
+    }
+
+    if (!-d File::Spec->catdir($lp_base_dir, '.bzr')) {
+        print STDERR "$lp_base_dir is not a bzr branch; exiting\n";
+        pod2usage(1);
+    }
+
+    if (!-f File::Spec->catfile(($eg_base_dir, '.git'), 'config')) {
+        print STDERR "$eg_base_dir is not a git clone; exiting\n";
+        pod2usage(1);
+    }
+}
+
+__END__
+
+=head1 NAME
+
+update_pofiles - Updates translations from Launchpad
+
+=head1 SYNOPSIS
+
+B<update_pofile> B<--launchpad-base-dir>=I<translation-export-directory>
+                B<--evergreen-base-dir>=I<evergreen-git-clone-directory>
+
+=head1 DESCRIPTION
+
+Assuming that you have an updated bzr checkout of
+satisfy the 'launchpad-base-dir' argument, and an updated git clone
+of Evergreen master to satisfy the 'evergreen-base-dir' argument,
+this script attempts to copy only the new or changed translations
+from the Launchpad directory into the Evergreen directory. It
+converts the Launchpad I<ll> and I<ll_LL> locale names into Evergreen's
+I<ll-LL> locale names.
+
+Note that the user is still required to build, test, and check in the
+updated translations.
+
+=head1 OPTIONS
+
+=over
+
+=item * B<-l> I<translation-export-directory>, B<--launchpad-base-dir>=I<translation-export-directory>
+
+Specifies the directory holding the updated bzr checkout of
+https://code.launchpad.net/~denials/evergreen/translation-export
+
+=item * B<-e> I<evergreen-directory>, B<--evergreen-base-dir>=I<evergreen-directory>
+
+Specifies the directory holding the updated git clone of Evergreen.
+
+=back
+
+=head1 AUTHOR
+
+Dan Scott <dscott@laurentian.ca>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2011 by Dan Scott
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+=cut
+
