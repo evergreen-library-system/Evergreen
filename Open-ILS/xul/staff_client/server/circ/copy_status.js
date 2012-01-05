@@ -918,7 +918,6 @@ circ.copy_status.prototype = {
                                         }
                                         break loop;
                                     }
-                                    alert(document.getElementById('circStrings').getString('staff.circ.copy_status.delete_volumes.success'));
                                 }
                             } catch(E) {
                                 obj.error.standard_unexpected_error_alert('copy status -> delete volumes',E);
