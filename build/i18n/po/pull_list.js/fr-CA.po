@@ -2,19 +2,20 @@
 # Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 21:45:31-0400\n"
-"PO-Revision-Date: 2011-04-19 04:00+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2011-12-24 02:51+0000\n"
+"Last-Translator: SarahSlean <yoda4@hotmail.fr>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Launchpad (build 12959)\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:48+0000\n"
+"X-Launchpad-Export-Date: 2011-12-25 04:54+0000\n"
+"X-Generator: Launchpad (build 14560)\n"
 
 #: pull_list.js:PULL_LIST_NO_RESPONSE
 msgid "No response from server trying to get pull list!"
@@ -22,7 +23,7 @@ msgstr "Pas de réponse du serveur pour la liste déroulante!"
 
 #: pull_list.js:AUTO_interval_in_days
 msgid "Generate list for this many days hence: "
-msgstr ""
+msgstr "Générer la liste pour un nombre équivalent de jours "
 
 #: pull_list.js:COPY_LOOKUP_ERROR
 msgid "Error looking up copies by barcode: "
@@ -34,7 +35,7 @@ msgstr "Pas de réponse lors de la vérification d’une copie par code à barre
 
 #: pull_list.js:FOR
 msgid "for"
-msgstr ""
+msgstr "pour"
 
 #: pull_list.js:AUTO_pull_list_title
 msgid "Booking Pull List"
@@ -62,7 +63,7 @@ msgstr "Cote du document"
 
 #: pull_list.js:AUTO_owning_lib_selector
 msgid "See pull list for library:"
-msgstr ""
+msgstr "Voir la liste déroulante pour les bibliothèques"
 
 #: pull_list.js:AUTO_th_resv_details
 msgid "Reservation details"
@@ -70,7 +71,7 @@ msgstr "Détails sur la réservation"
 
 #: pull_list.js:AT
 msgid "at"
-msgstr ""
+msgstr "à"
 
 #: pull_list.js:AUTO_ATTR_VALUE_fetch
 msgid "Fetch"
@@ -86,7 +87,7 @@ msgstr "Imprimer"
 
 #: pull_list.js:AUTO_th_pickup_lib
 msgid "Pickup library"
-msgstr ""
+msgstr "bibliothèque de collecte"
 
 #: pull_list.js:AUTO_th_copy_location
 msgid "Copy location"

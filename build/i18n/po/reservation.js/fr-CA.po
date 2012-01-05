@@ -2,19 +2,20 @@
 # Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 21:45:31-0400\n"
-"PO-Revision-Date: 2011-04-19 04:00+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2011-11-09 18:48+0000\n"
+"Last-Translator: George Duimovich <George.Duimovich@nrcan-rncan.gc.ca>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Launchpad (build 12959)\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:48+0000\n"
+"X-Launchpad-Export-Date: 2011-11-10 04:59+0000\n"
+"X-Generator: Launchpad (build 14263)\n"
 
 #: reservation.js:AUTO_ending_at
 msgid "and"
@@ -86,7 +87,8 @@ msgstr "Exception lors de la création d’une réservation "
 
 #: reservation.js:CREATE_BRESV_OK_MISSING_TARGET
 msgid ""
-"Created ${0} reservation(s), but ${1} of these could not target any resources.\n"
+"Created ${0} reservation(s), but ${1} of these could not target any "
+"resources.\n"
 "\n"
 "This means that it won't be possible to fulfill some of these\n"
 "reservations until a suitable resource becomes available."
@@ -120,8 +122,7 @@ msgstr "${0} réservation(s) annulée(s)"
 #: reservation.js:GET_PATRON_NO_RESULT
 msgid "No server response after attempting to look up patron by barcode."
 msgstr ""
-"Aucune réponse du serveur lors de la vérification du client par code à "
-"barres"
+"Aucune réponse du serveur lors de la vérification du client par code à barres"
 
 #: reservation.js:AUTO_or
 msgid "- Or -"
@@ -210,7 +211,10 @@ msgid "This user has no existing reservations at this time."
 msgstr "Cet utilisateur n’a aucune réservation pour le moment."
 
 #: reservation.js:AUTO_explain_bookable
-msgid "To reserve an item that is not yet registered as a bookable resource, find it in the catalog or under <em>Display Item</em>, and select <em>Make Item Bookable</em> or <em>Book Item Now</em> there."
+msgid ""
+"To reserve an item that is not yet registered as a bookable resource, find "
+"it in the catalog or under <em>Display Item</em>, and select <em>Make Item "
+"Bookable</em> or <em>Book Item Now</em> there."
 msgstr ""
 "Pour réserver un document qui n’est pas enregistré comme une ressource "
 "réservable, veuillez consulter le dans le catalogue ou aller sous "
@@ -223,7 +227,8 @@ msgstr "Erreur lors de l’annulation des réservations:\n"
 
 #: reservation.js:NO_BRA_RESULTS
 msgid "Couldn't retrieve booking resource attributes."
-msgstr "Impossible de trouver les caractéristiques de la ressource réservable."
+msgstr ""
+"Impossible de trouver les caractéristiques de la ressource réservable."
 
 #: reservation.js:CREATE_BRESV_SERVER_NO_RESPONSE
 msgid "No response from server after trying to create reservation."
@@ -266,11 +271,12 @@ msgstr ""
 
 #: reservation.js:AUTO_ATTR_VALUE_button_edit_existing
 msgid "Edit selected"
-msgstr ""
+msgstr "Modifier l’élément sélectionné"
 
 #: reservation.js:CREATE_BRESV_OK_MISSING_TARGET_BLOCKED_BY_CIRC
 msgid ""
-"The desired reservation(s) are blocked by circulation(s) with the following due date(s):\n"
+"The desired reservation(s) are blocked by circulation(s) with the following "
+"due date(s):\n"
 "${0}"
 msgstr ""
 
@@ -280,4 +286,5 @@ msgstr ""
 
 #: reservation.js:CXL_BRESV_FAILURE
 msgid "Error canceling reservations; server silent."
-msgstr "Erreur lors de l’annulation des réservations; pas de réponse du serveur"
+msgstr ""
+"Erreur lors de l’annulation des réservations; pas de réponse du serveur"

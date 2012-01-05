@@ -1,23 +1,25 @@
+# German translation for evergreen
+# Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2010-06-07 02:03:44-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2011-12-24 08:38+0000\n"
+"Last-Translator: Daniel Winzen <d@winzen4.de>\n"
+"Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
+"X-Launchpad-Export-Date: 2011-12-25 04:54+0000\n"
+"X-Generator: Launchpad (build 14560)\n"
 
 #: reservation.js:AUTO_ending_at
 msgid "and"
-msgstr ""
-
-#: reservation.js:CREATE_BRESV_OK
-msgid "Created ${0} reservation."
-msgstr ""
+msgstr "und"
 
 #: reservation.js:BRSRC_NOT_FOUND
 msgid "Could not locate that resource."
@@ -27,9 +29,13 @@ msgstr ""
 msgid "Choose a Bookable Resource Type"
 msgstr ""
 
+#: reservation.js:CREATE_BRESV_OK
+msgid "Created ${0} reservation(s)"
+msgstr "${0} Vormerkungen erstellt"
+
 #: reservation.js:AUTO_ATTR_VALUE_reserve_brsrc
 msgid "Reserve Selected"
-msgstr ""
+msgstr "Ausgewählte vormerken"
 
 #: reservation.js:NO_BRT_RESULTS
 msgid "There are no bookable resource types registered."
@@ -37,7 +43,7 @@ msgstr ""
 
 #: reservation.js:AUTO_ATTR_VALUE_next
 msgid "Next"
-msgstr ""
+msgstr "Weiter"
 
 #: reservation.js:BRSRC_RETRIVE_ERROR
 msgid "Error retrieving resource: "
@@ -45,11 +51,11 @@ msgstr ""
 
 #: reservation.js:AUTO_starting_at
 msgid "Between"
-msgstr ""
+msgstr "Zwischen"
 
 #: reservation.js:AUTO_bresv_grid_resource
 msgid "Resource"
-msgstr ""
+msgstr "Quelle"
 
 #: reservation.js:AUTO_brt_noncat_only
 msgid "Show only non-cataloged bookable resource types"
@@ -61,54 +67,74 @@ msgstr ""
 
 #: reservation.js:AUTO_bresv_grid_type
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 #: reservation.js:AUTO_with_these_attr
 msgid "With these attributes:"
-msgstr ""
+msgstr "Mit diesen Attributen:"
 
 #: reservation.js:WHERES_THE_BARCODE
 msgid "Enter a patron's barcode to make a reservation."
-msgstr ""
+msgstr "Barcode des Kunden eingeben, um eine Vormerkung vorzunehmen"
 
 #: reservation.js:CREATE_BRESV_SERVER_ERROR
 msgid "Server error trying to create reservation: "
+msgstr "Server-Fehler beim Anlegen der Vormerkung: "
+
+#: reservation.js:CREATE_BRESV_LOCAL_ERROR
+msgid "Exception trying to create reservation: "
+msgstr "Fehler beim Anlegen der Vormerkung: "
+
+#: reservation.js:CREATE_BRESV_OK_MISSING_TARGET
+msgid ""
+"Created ${0} reservation(s), but ${1} of these could not target any "
+"resources.\n"
+"\n"
+"This means that it won't be possible to fulfill some of these\n"
+"reservations until a suitable resource becomes available."
 msgstr ""
 
-#: reservation.js:CXL_BRESV_SUCCESS
-msgid "Canceled ${0} reservation."
+#: reservation.js:CREATE_BRESV_OK_MISSING_TARGET_WILL_CANCEL
+msgid ""
+"Since the requested resource could not be targeted, this\n"
+"reservation will now be canceled."
 msgstr ""
 
 #: reservation.js:OUTSTANDING_BRESV
 msgid "Outstanding reservations for patron"
-msgstr ""
+msgstr "Ausstehende Vormerkungen für Kunde"
 
 #: reservation.js:HERE_ARE_EXISTING_BRESV
 msgid "Existing reservations for"
-msgstr ""
+msgstr "Vorhandene Vormerkungen für"
 
-#: reservation.js:CREATE_BRESV_LOCAL_ERROR
-msgid "Exception trying to create reservation: "
-msgstr ""
+#: reservation.js:CXL_BRESV_SUCCESS
+msgid "Canceled ${0} reservation(s)"
+msgstr "${0} Vormerkung(en) gelöscht"
 
-#: reservation.js:AUTO_ATTR_VALUE_button_cancel_existing
-msgid "Cancel selcted"
+#: reservation.js:GET_PATRON_NO_RESULT
+msgid "No server response after attempting to look up patron by barcode."
 msgstr ""
+"Server antwortet nicht auf den Versuch, den Kunden mit seinem Barcode zu "
+"finden."
 
 #: reservation.js:AUTO_or
 msgid "- Or -"
-msgstr ""
+msgstr "- Oder -"
 
-#: reservation.js:CXL_BRESV_SUCCESS_PLURAL
-msgid "Canceled ${0} reservations"
+#: reservation.js:SELECT_A_BRSRC_THEN
+msgid ""
+"You have clicked 'Reserve Selected', but nothing is selected!\n"
+"\n"
+"You must select a resource from the large box above.\n"
+"\n"
+"***  If resources that you would select are highlighted in RED, ***\n"
+"these items are not available during the requested time; if\n"
+"possible, choose another resource or change the reservation time."
 msgstr ""
 
 #: reservation.js:AUTO_ATTR_VALUE_reserve_brt
 msgid "Reserve Any"
-msgstr ""
-
-#: reservation.js:GET_PATRON_NO_RESULT
-msgid "No server response after attempting to look up patron by barcode."
 msgstr ""
 
 #: reservation.js:AUTO_patron_barcode
@@ -121,11 +147,11 @@ msgstr ""
 
 #: reservation.js:ACTOR_CARD_NOT_FOUND
 msgid "Patron barcode not found. Please try again."
-msgstr ""
+msgstr "Barcode des Kunden wurde nicht gefunden. Bitte nochmal probieren."
 
 #: reservation.js:CXL_BRESV_SELECT_SOMETHING
 msgid "You have not selected any reservations to cancel."
-msgstr ""
+msgstr "Sie haben keine Vormerkungen zum Löschen ausgewählt."
 
 #: reservation.js:AUTO_i_need_this_resource
 msgid "I need this resource..."
@@ -139,12 +165,15 @@ msgstr ""
 msgid "Start time"
 msgstr ""
 
-#: reservation.js:SELECT_A_BRSRC_THEN
-msgid "Select a resource from the big list above."
+#: reservation.js:ERROR_FETCHING_AOUS
+msgid ""
+"Could not retrieve organizational unit settings.\n"
+"This is a non-fatal error, but you may wish to\n"
+"contact your system administrator."
 msgstr ""
 
-#: reservation.js:AUTO_bresv_grid_end_time
-msgid "End time"
+#: reservation.js:AUTO_ATTR_VALUE_button_cancel_existing
+msgid "Cancel selected"
 msgstr ""
 
 #: reservation.js:GET_BRESV_LIST_NO_RESULT
@@ -153,35 +182,26 @@ msgstr ""
 
 #: reservation.js:GET_BRESV_LIST_ERR
 msgid "Error while retrieving reservation list: "
-msgstr ""
+msgstr "Fehler beim Empfangen der Vormerkungs-Liste: "
 
 #: reservation.js:AUTO_arbitrary_resource
 msgid "Enter the barcode of a cataloged, bookable resource:"
 msgstr ""
 
-#: reservation.js:CREATE_BRESV_OK_MISSING_TARGET
-msgid ""
-"Created ${0} reservation(s), but ${1} of these couldn't target any resources.\n"
-"\n"
-"This means that it won't be possible to fulfill some of these\n"
-"reservations until a suitable resource becomes available."
-msgstr ""
-
 #: reservation.js:NO_EXISTING_BRESV
 msgid "This user has no existing reservations at this time."
-msgstr ""
-
-#: reservation.js:CREATE_BRESV_OK_PLURAL
-msgid "Created ${0} reservations"
-msgstr ""
+msgstr "Dieser Benutzer hat zur Zeit keine ausstehenden Vormerkungen."
 
 #: reservation.js:AUTO_explain_bookable
-msgid "To reserve an item that is not yet registered as a bookable resource, find it in the catalog or under <em>Display Item</em>, and select <em>Make Item Bookable</em> or <em>Book Item Now</em> there."
+msgid ""
+"To reserve an item that is not yet registered as a bookable resource, find "
+"it in the catalog or under <em>Display Item</em>, and select <em>Make Item "
+"Bookable</em> or <em>Book Item Now</em> there."
 msgstr ""
 
 #: reservation.js:CXL_BRESV_FAILURE2
 msgid "Error canceling reservations:\n"
-msgstr ""
+msgstr "Fehler beim Löschen der Vormerkungen:\n"
 
 #: reservation.js:NO_BRA_RESULTS
 msgid "Couldn't retrieve booking resource attributes."
@@ -189,6 +209,11 @@ msgstr ""
 
 #: reservation.js:CREATE_BRESV_SERVER_NO_RESPONSE
 msgid "No response from server after trying to create reservation."
+msgstr ""
+"Keine Antwort des Servers auf den Versuch eine Vormerkung zu erstellen."
+
+#: reservation.js:AUTO_bresv_grid_end_time
+msgid "End time"
 msgstr ""
 
 #: reservation.js:UNTARGETED
@@ -206,6 +231,7 @@ msgstr ""
 #: reservation.js:INVALID_TS_RANGE
 msgid "You must choose a valid start and end time for the reservation."
 msgstr ""
+"Sie müssen eine gültige Start- und End-Zeit für die Vormerkung angeben."
 
 #: reservation.js:AUTO_pickup_lib_selector
 msgid "Choose the pickup library for this reservation:"
@@ -219,6 +245,13 @@ msgstr ""
 
 #: reservation.js:AUTO_ATTR_VALUE_button_edit_existing
 msgid "Edit selected"
+msgstr "Ausgewählte bearbeiten"
+
+#: reservation.js:CREATE_BRESV_OK_MISSING_TARGET_BLOCKED_BY_CIRC
+msgid ""
+"The desired reservation(s) are blocked by circulation(s) with the following "
+"due date(s):\n"
+"${0}"
 msgstr ""
 
 #: reservation.js:ANY
@@ -227,4 +260,4 @@ msgstr ""
 
 #: reservation.js:CXL_BRESV_FAILURE
 msgid "Error canceling reservations; server silent."
-msgstr ""
+msgstr "Fehler beim Löschen der Vormerkungen; Server antwortet nicht."

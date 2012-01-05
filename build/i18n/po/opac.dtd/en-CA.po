@@ -1,5 +1,4 @@
 # extracted from ../../Open-ILS/web/opac/locale/en-US/opac.dtd, ../../Open-ILS/web/opac/locale/en-CA/opac.dtd
-#. extracted from ../../Open-ILS/web/opac/locale/en-US/opac.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -11,9 +10,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.8.1\n"
-"X-Accelerator-Marker: &\n"
 "X-Launchpad-Export-Date: 2011-05-18 04:47+0000\n"
+"X-Generator: Launchpad (build 12959)\n"
+"X-Accelerator-Marker: &\n"
 
 # =================================================================
 # Some generic stuff
@@ -214,8 +213,10 @@ msgid "Tips:"
 msgstr "Tips:"
 
 #: common.tips.tip1
-msgid "Click on a folder icon in the sidebar to access related quick searches"
-msgstr "Click on a folder icon in the sidebar to access related quick searches"
+msgid ""
+"Click on a folder icon in the sidebar to access related quick searches"
+msgstr ""
+"Click on a folder icon in the sidebar to access related quick searches"
 
 #: common.tips.tip2
 msgid ""
@@ -439,7 +440,8 @@ msgid ""
 "browser. \n"
 "To use the regular Evergreen Catalog, enable JavaScript by changing your "
 "browser options, then \n"
-"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. \n"
+"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
+"\n"
 "<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
 "<a style='color: blue; text-decoration: underline;' "
 "href='/opac/extras/slimpac/start.html'>here</a>."
@@ -450,7 +452,8 @@ msgstr ""
 "browser. \n"
 "To use the regular Evergreen Catalogue, enable JavaScript by changing your "
 "browser options, then \n"
-"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. \n"
+"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
+"\n"
 "<br/><br/>Alternatively, you can use the basic HTML-only catalogue \n"
 "<a style='color: blue; text-decoration: underline;' "
 "href='/opac/extras/slimpac/start.html'>here</a>."
@@ -1080,11 +1083,9 @@ msgstr "Please enter a username"
 
 #: myopac.summary.username.dup
 msgid ""
-"The requested username is not available.  Please choose a different "
-"username."
+"The requested username is not available.  Please choose a different username."
 msgstr ""
-"The requested username is not available.  Please choose a different "
-"username."
+"The requested username is not available.  Please choose a different username."
 
 #: myopac.summary.username.success
 msgid "Username successfully updated"
@@ -1296,7 +1297,8 @@ msgstr "Tip:"
 #. =================================================================
 #: opac.session_expiring
 msgid "Your login session will timeout in 1 minute unless there is activity."
-msgstr "Your login session will timeout in 1 minute unless there is activity."
+msgstr ""
+"Your login session will timeout in 1 minute unless there is activity."
 
 #: opac.session_expired
 msgid "Your login session has expired"
@@ -1432,7 +1434,8 @@ msgstr "GALILEO"
 
 #: footer.copyright
 msgid "Copyright &#xA9; 2006-2010 Georgia Public Library Service, and others"
-msgstr "Copyright &#xA9; 2006-2011 Georgia Public Library Service, and others"
+msgstr ""
+"Copyright &#xA9; 2006-2011 Georgia Public Library Service, and others"
 
 # Introduces the logo for the project
 #. Introduces the logo for the project
@@ -2437,8 +2440,10 @@ msgstr ""
 "library."
 
 #: login.account.inactive
-msgid "This account has been deactivated.  Please contact your local library."
-msgstr "This account has been deactivated.  Please contact your local library."
+msgid ""
+"This account has been deactivated.  Please contact your local library."
+msgstr ""
+"This account has been deactivated.  Please contact your local library."
 
 #: login.failed
 msgid ""

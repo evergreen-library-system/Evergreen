@@ -1,4 +1,3 @@
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/admin.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -10,9 +9,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.8.1\n"
-"X-Accelerator-Marker: &\n"
 "X-Launchpad-Export-Date: 2011-08-01 04:42+0000\n"
+"X-Generator: Launchpad (build 13405)\n"
+"X-Accelerator-Marker: &\n"
 
 #: staff.admin.age_overdue_circulations_to_lost.chunks_processed
 msgid "Chunks Processed: %1$s"
@@ -40,7 +39,8 @@ msgstr "Звук включен"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_SMALLER
 msgid "Global Font Adjust set to Smaller than Default"
-msgstr "Регулировка Глобального Шрифта установлен к Меньшему  чем по Умолчанию"
+msgstr ""
+"Регулировка Глобального Шрифта установлен к Меньшему  чем по Умолчанию"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_DEFAULT
 msgid "Global Font Adjust set to Default"
@@ -48,7 +48,8 @@ msgstr "Регулировка Глобального Шрифта устано�
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_LARGER
 msgid "Global Font Adjust set to Larger than Default"
-msgstr "Регулировка Глобального Шрифта установлен к Большему чем по Умолчанию"
+msgstr ""
+"Регулировка Глобального Шрифта установлен к Большему чем по Умолчанию"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_XX_SMALL
 msgid "Global Font set to XX-Small"

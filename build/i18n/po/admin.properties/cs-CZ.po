@@ -1,19 +1,18 @@
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/admin.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2011-08-13 17:15+0000\n"
+"PO-Revision-Date: 2011-12-09 20:39+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.8.1\n"
-"X-Accelerator-Marker: &\n"
-"X-Launchpad-Export-Date: 2011-08-14 04:47+0000\n"
+"X-Launchpad-Export-Date: 2011-12-10 04:59+0000\n"
+"X-Generator: Launchpad (build 14450)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
+"X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
@@ -31,7 +30,7 @@ msgstr "Nastavení zvuku uloženo na lokální počítač."
 
 #: staff.admin.font_settings.save
 msgid "Global Font saved to file system."
-msgstr "Nastavení písma uloženo na lokální počítač."
+msgstr "Nastavení písma bylo uloženo na lokální počítač."
 
 #: staff.admin.font_settings.sound.disabled
 msgid "Sound is now disabled."
@@ -43,100 +42,99 @@ msgstr "Všechny zvuky jsou nyní zapnuty."
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_SMALLER
 msgid "Global Font Adjust set to Smaller than Default"
-msgstr "Písmo bylo změněno na menší než implicitní"
+msgstr "Písmo bylo nastaveno na menší než výchozí"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_DEFAULT
 msgid "Global Font Adjust set to Default"
-msgstr "Písmo bylo změněno na implicitní"
+msgstr "Písmo bylo nastaveno na výchozí hodnotu"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_LARGER
 msgid "Global Font Adjust set to Larger than Default"
-msgstr "Písmo bylo změněno na větší než implicitní"
+msgstr "Písmo bylo nastaveno na větší než výchozí"
 
-# Překlad small, x-small a a xx- small není ideální, ale nic lepšího mě nenapadá
 #: staff.admin.font_settings.status_msg.ALL_FONTS_XX_SMALL
 msgid "Global Font set to XX-Small"
-msgstr "Písmo nastaveno na extra malé"
+msgstr "Písmo bylo nastaveno na extra malé"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_X_SMALL
 msgid "Global Font set to X-Small"
-msgstr "Písmo nastaveno na velmi malé"
+msgstr "Písmo bylo nastaveno na velmi malé"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_SMALL
 msgid "Global Font set to Small"
-msgstr "Písmo nastaveno na malé"
+msgstr "Písmo bylo nastaveno na malé"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_MEDIUM
 msgid "Global Font set to Medium"
-msgstr "Písmo nastaveno na střední"
+msgstr "Písmo bylo nastaveno na střední"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_LARGE
 msgid "Global Font set to Large"
-msgstr "Písmo nastaveno na velké"
+msgstr "Písmo bylo nastaveno na velké"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_X_LARGE
 msgid "Global Font set to X-Large"
-msgstr "Písmo nastaveno na velmi velké"
+msgstr "Písmo bylo nastaveno na velmi velké"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_XX_LARGE
 msgid "Global Font set to XX-Large"
-msgstr "Písmo nastaveno na extra velké"
+msgstr "Písmo bylo nastaveno na extra velké"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_5PT
 msgid "Global Font set to 5pt"
-msgstr "Písmo nastaveno na velikost 5 bodů"
+msgstr "Písmo bylo nastaveno na velikost 5 bodů"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_6PT
 msgid "Global Font set to 6pt"
-msgstr "Písmo nastaveno na velikost 6 bodů"
+msgstr "Písmo bylo nastaveno na velikost 6 bodů"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_7PT
 msgid "Global Font set to 7pt"
-msgstr "Písmo nastaveno na velikost 7 bodů"
+msgstr "Písmo bylo nastaveno na velikost 7 bodů"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_8PT
 msgid "Global Font set to 8pt"
-msgstr "Písmo nastaveno na velikost 8 bodů"
+msgstr "Písmo bylo nastaveno na velikost 8 bodů"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_9PT
 msgid "Global Font set to 9pt"
-msgstr "Písmo nastaveno na velikost 9 bodů"
+msgstr "Písmo bylo nastaveno na velikost 9 bodů"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_10PT
 msgid "Global Font set to 10pt"
-msgstr "Písmo nastaveno na velikost 10 bodů"
+msgstr "Písmo bylo nastaveno na velikost 10 bodů"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_11PT
 msgid "Global Font set to 11pt"
-msgstr "Písmo nastaveno na velikost 11 bodů"
+msgstr "Písmo bylo nastaveno na velikost 11 bodů"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_12PT
 msgid "Global Font set to 12pt"
-msgstr "Písmo nastaveno na velikost 12 bodů"
+msgstr "Písmo bylo nastaveno na velikost 12 bodů"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_13PT
 msgid "Global Font set to 13pt"
-msgstr "Písmo nastaveno na velikost 13 bodů"
+msgstr "Písmo bylo nastaveno na velikost 13 bodů"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_14PT
 msgid "Global Font set to 14pt"
-msgstr "Písmo nastaveno na velikost 14 bodů"
+msgstr "Písmo bylo nastaveno na velikost 14 bodů"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_15PT
 msgid "Global Font set to 15pt"
-msgstr "Písmo nastaveno na velikost 15 bodů"
+msgstr "Písmo bylo nastaveno na velikost 15 bodů"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_16PT
 msgid "Global Font set to 16pt"
-msgstr "Písmo nastaveno na velikost 16 bodů"
+msgstr "Písmo bylo nastaveno na velikost 16 bodů"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_17PT
 msgid "Global Font set to 17pt"
-msgstr "Písmo nastaveno na velikost 17 bodů"
+msgstr "Písmo bylo nastaveno na velikost 17 bodů"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_18PT
 msgid "Global Font set to 18pt"
-msgstr "Písmo nastaveno na velikost 18 bodů"
+msgstr "Písmo bylo nastaveno na velikost 18 bodů"
 
 #: staff.admin.transit_list.missing_list
 msgid "Missing library list."
@@ -196,7 +194,7 @@ msgstr "Datum vytvoření"
 
 #: staff.admin.offline_manage_xacts.init_list.created_by
 msgid "Created By"
-msgstr "Vytvořeno"
+msgstr "Vytvořil(a)"
 
 #: staff.admin.offline_manage_xacts.init_list.upload_count
 msgid "Upload Count"
@@ -274,7 +272,7 @@ msgstr "Čárový kód čtenáře"
 
 #: staff.admin.offline_manage_xacts.init_error_list.due_date
 msgid "Due Date"
-msgstr "Datum vrácení"
+msgstr "K vrácení dne"
 
 #: staff.admin.offline_manage_xacts.init_error_list.count
 msgid "In House Use Count"
@@ -335,8 +333,8 @@ msgid ""
 "Something bad happened.  New offline transactions were accumulated during "
 "our attempted upload.  Tell your system admin that the file involved is %1$s"
 msgstr ""
-"Vyskytl se problém. Nové offline transakce se nahromadily po dobu pokusů o "
-"přenos (upload). Oznamte svému systémovému administrátorovi, že se jedná o "
+"Vyskytl se problém. Po dobu pokusů o přenos (upload) se nahromadily nové "
+"offline transakce. Oznamte svému systémovému administrátorovi, že se jedná o "
 "soubor %1$s"
 
 #: staff.admin.offline_manage_xacts.error.transaction_conflicts.title
@@ -349,7 +347,7 @@ msgstr "OK"
 
 #: staff.admin.offline_manage_xacts.error.transaction_conflicts.confirm
 msgid "Check here to confirm this message"
-msgstr "Zaškrtnutím potvrďte zprávu"
+msgstr "Zaškrtněte pro potvrzení zprávy"
 
 #: staff.admin.offline_manage_xacts.error.reverting_file
 msgid "Error reverting transaction file"
@@ -437,7 +435,7 @@ msgstr "Ano"
 
 #: staff.admin.staff.do_not_auto_attempt_print_setting.update_success
 msgid "Setting updated"
-msgstr "Nastavení aktualizováno"
+msgstr "Nastavení bylo aktualizováno"
 
 #: staff.admin.staff.do_not_auto_attempt_print_setting.update_failure
 msgid "Setting not updated due to error"

@@ -2,19 +2,58 @@
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 21:44:24-0400\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-04-18 21:44-0400\n"
 "PO-Revision-Date: 2011-07-16 08:58+0000\n"
 "Last-Translator: Serj Safarian <serjsafarian@gmail.com>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Launchpad (build 13405)\n"
 "X-Launchpad-Export-Date: 2011-07-17 04:33+0000\n"
+"X-Generator: Launchpad (build 13405)\n"
+
+#: field.atevdef.hook.label:860
+msgid "Hook"
+msgstr "Կեռ"
+
+#: field.amtr.success.label:108
+msgid "Success"
+msgstr "Հաջողվեց"
+
+#: field.aou.settings.label:4260
+msgid "Settings"
+msgstr "Կարգավորումներ"
+
+#: field.acqpca.contact.label:5850
+msgid "Contact"
+msgstr "Կապ"
+
+#: field.mrd.item_form.label:2640
+msgid "Form"
+msgstr "Ձեւ"
+
+#: class.clfm.label:4636 field.rccc.lit_form.label:8267
+msgid "Literary Form"
+msgstr "Գեղարվեստական ձեւը"
+
+#: field.act.location.label:4867 field.acqdfe.location.label:7165
+msgid "Location"
+msgstr "Տեղադրությունը"
+
+#: class.cvrfm.label:1125 field.chmw.marc_vr_format.label:1155
+#: field.ccmw.marc_vr_format.label:1181 field.chmm.marc_vr_format.label:1235
+#: field.ccmm.marc_vr_format.label:1282
+msgid "Videorecording Format"
+msgstr "Տեսագրման ձեւաչափը"
+
+#: field.acn.copies.label:1915 field.acpl.copies.label:3419
+msgid "Copies"
+msgstr "Պատճեններ"
 
 #: field.bre.source.label:2042
 msgid "Record Source"
@@ -182,10 +221,6 @@ msgstr "Կազմակերպչական միավորի կարգաբերումներ
 #: field.rxbt.unvoided.label:7098
 msgid "Unvoided Billing Amount"
 msgstr "Չմշակված հաշիվների մեծություններ"
-
-#: field.atevdef.hook.label:860
-msgid "Hook"
-msgstr "Կեռ"
 
 #: field.ssr.deleted.label:4101 field.rocit.deleted.label:8664
 msgid "Deleted"
@@ -809,10 +844,6 @@ msgstr "Դասիչի դաշտեր"
 msgid "Z39.50 Attribute"
 msgstr "Z39.50 բաղադրիչ"
 
-#: field.amtr.success.label:108
-msgid "Success"
-msgstr "Հաջողվեց"
-
 #: class.srlu.label:3702
 msgid "Routing List User"
 msgstr "Շրջանառու ցուցակի օգտվող"
@@ -986,10 +1017,6 @@ msgstr "Auth"
 msgid "Last Editing User"
 msgstr "Վերջին խմբագրող օգտվող"
 
-#: field.aou.settings.label:4260
-msgid "Settings"
-msgstr "Կարգավորումներ"
-
 #: field.acqafet.amount.label:6151
 msgid "Total Encumbered Amount"
 msgstr "Ընդհանուր կուտակված գումար"
@@ -1034,10 +1061,6 @@ msgstr "Սա խմբի առաջատարի հաշիվն է"
 #: field.ahr.frozen.label:4192
 msgid "Currently Frozen"
 msgstr "Արտարժույթը սառեցված է"
-
-#: field.acqpca.contact.label:5850
-msgid "Contact"
-msgstr "Կապ"
 
 #: class.puwoum.label:5111
 msgid "User Work Org Unit Map"
@@ -1788,10 +1811,6 @@ msgstr "Պիտակ"
 msgid "Normalizer"
 msgstr "նորմալացնող"
 
-#: field.mrd.item_form.label:2640
-msgid "Form"
-msgstr "Ձեւ"
-
 #: field.bre.subscriptions.label:2059
 msgid "Subscriptions"
 msgstr "Բաժանորդագրություններ"
@@ -2039,10 +2058,6 @@ msgstr "Մանրամասն բովանդակություն"
 #: field.vii.id.label:186
 msgid "Import Item ID"
 msgstr "Ներմուծված նյութի ID"
-
-#: class.clfm.label:4636 field.rccc.lit_form.label:8267
-msgid "Literary Form"
-msgstr "Գեղարվեստական ձեւը"
 
 #: field.ahr.prev_check_time.label:4178
 msgid "Last Targeting Date/Time"
@@ -2587,10 +2602,6 @@ msgstr "Վերջին ընդունման ժամ"
 #: class.erfcc.label:7127
 msgid "Total Circulation Count, Including Legacy"
 msgstr "Ընդհանուր տացքերի հաշվիչ։ Հաշվիչ ներառած ժառանգությունը"
-
-#: field.act.location.label:4867 field.acqdfe.location.label:7165
-msgid "Location"
-msgstr "Տեղադրությունը"
 
 #: class.cmpcvm.label:8130
 msgid "MARC21 Physical Characteristic Value Map"
@@ -3408,7 +3419,8 @@ msgstr "MARC ենթադաշտեր"
 
 #: class.mbtslv.label:1439
 msgid "Billable Transaction Summary with Billing Location"
-msgstr "Վճարման ենթակա տրանզակցիայի համառոտագրություն փոխանցման տեղաբաշխումով"
+msgstr ""
+"Վճարման ենթակա տրանզակցիայի համառոտագրություն փոխանցման տեղաբաշխումով"
 
 #: field.au.demographic.label:2326
 msgid "Demographic Info"
@@ -4071,12 +4083,6 @@ msgstr "Պաշարի նկարագրիչի արժեք"
 #: field.acqlisum.claim_count.label:8490
 msgid "Claim Count"
 msgstr "Պահանջագրի հաշվիչ"
-
-#: class.cvrfm.label:1125 field.chmw.marc_vr_format.label:1155
-#: field.ccmw.marc_vr_format.label:1181 field.chmm.marc_vr_format.label:1235
-#: field.ccmm.marc_vr_format.label:1282
-msgid "Videorecording Format"
-msgstr "Տեսագրման ձեւաչափը"
 
 #: class.sdistn.label:3641
 msgid "Distribution Note"
@@ -5350,7 +5356,8 @@ msgid "In House Use"
 msgstr "Ներքին օգտագործման համար"
 
 #: class.ccmcmtm.label:1348
-msgid "Circulation Matrix Circulation Modifier Subtest Circulation Modifier Set"
+msgid ""
+"Circulation Matrix Circulation Modifier Subtest Circulation Modifier Set"
 msgstr "Տացքի մատրիցա Տացքի ձևափոխիչի ենթատեստ Տացքի ձևափոխիչի բազմություն"
 
 #: field.qsq.limit_count.label:7572
@@ -5384,10 +5391,6 @@ msgstr "Պահվող"
 #: field.rodcirc.stop_fines_time.label:8604
 msgid "Fine Stop Date/Time"
 msgstr "Տուգանքի կանգնեցման ամսաթիվ/ժամ"
-
-#: field.acn.copies.label:1915 field.acpl.copies.label:3419
-msgid "Copies"
-msgstr "Պատճեններ"
 
 #: field.ssr.excluded.label:4102
 msgid "Excluded"

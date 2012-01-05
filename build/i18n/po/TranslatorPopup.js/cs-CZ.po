@@ -2,23 +2,24 @@
 # Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 21:45:32-0400\n"
-"PO-Revision-Date: 2011-04-19 04:00+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2011-10-31 20:22+0000\n"
+"Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Launchpad (build 12959)\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:49+0000\n"
+"X-Launchpad-Export-Date: 2011-11-01 04:57+0000\n"
+"X-Generator: Launchpad (build 14197)\n"
 
 #: TranslatorPopup.js:locale
 msgid "Locale"
-msgstr "Jazyk"
+msgstr "Lokalizace"
 
 #: TranslatorPopup.js:create
 msgid "Create"
@@ -30,7 +31,7 @@ msgstr "Aktualizovat"
 
 #: TranslatorPopup.js:remove
 msgid "Remove"
-msgstr "Odstranit"
+msgstr "Smazat"
 
 #: TranslatorPopup.js:translation
 msgid "Translation"

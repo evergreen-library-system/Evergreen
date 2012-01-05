@@ -2,19 +2,20 @@
 # Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 21:45:31-0400\n"
-"PO-Revision-Date: 2011-08-13 19:53+0000\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2011-12-10 16:30+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Launchpad (build 13674)\n"
-"X-Launchpad-Export-Date: 2011-08-14 04:47+0000\n"
+"X-Launchpad-Export-Date: 2011-12-11 05:37+0000\n"
+"X-Generator: Launchpad (build 14450)\n"
 
 #: reservation.js:AUTO_ending_at
 msgid "and"
@@ -22,7 +23,7 @@ msgstr "a"
 
 #: reservation.js:BRSRC_NOT_FOUND
 msgid "Could not locate that resource."
-msgstr "Není možné získat daný zdroj."
+msgstr "Nelze lokalizovat uvedený zdroj."
 
 #: reservation.js:AUTO_choose_a_brt
 msgid "Choose a Bookable Resource Type"
@@ -30,15 +31,15 @@ msgstr "Vyberte si rezervovatelný typ zdroje"
 
 #: reservation.js:CREATE_BRESV_OK
 msgid "Created ${0} reservation(s)"
-msgstr "Vytvořen(o/na) ${0} rezervac(e/í)"
+msgstr "Vytvořeno ${0} rezervací"
 
 #: reservation.js:AUTO_ATTR_VALUE_reserve_brsrc
 msgid "Reserve Selected"
-msgstr "Rezervuj vybrané"
+msgstr "Rezervuj vybraný zdroj"
 
 #: reservation.js:NO_BRT_RESULTS
 msgid "There are no bookable resource types registered."
-msgstr "Nejsou zdenastaveny  žádné rezervovatelné typy zdrojů."
+msgstr "Nejsou registrovány  žádné rezervovatelné typy zdrojů."
 
 #: reservation.js:AUTO_ATTR_VALUE_next
 msgid "Next"
@@ -74,24 +75,25 @@ msgstr "S těmito atributy:"
 
 #: reservation.js:WHERES_THE_BARCODE
 msgid "Enter a patron's barcode to make a reservation."
-msgstr "Pro vytvoření rezervace načtěte čárový kód čtenáře:"
+msgstr "Pro vytvoření rezervace zdroje načtěte čárový kód čtenáře:"
 
 #: reservation.js:CREATE_BRESV_SERVER_ERROR
 msgid "Server error trying to create reservation: "
-msgstr "Chyba serveru při pokusu o vytvoření rezervace: "
+msgstr "Při pokusu o vytvoření rezervace zdroje nastala chyba: "
 
 #: reservation.js:CREATE_BRESV_LOCAL_ERROR
 msgid "Exception trying to create reservation: "
-msgstr "Vyjímka  při pokusu o vytvoření rezervace: "
+msgstr "Při pokusu o vytvoření rezervace nastala výjimka: "
 
 #: reservation.js:CREATE_BRESV_OK_MISSING_TARGET
 msgid ""
-"Created ${0} reservation(s), but ${1} of these could not target any resources.\n"
+"Created ${0} reservation(s), but ${1} of these could not target any "
+"resources.\n"
 "\n"
 "This means that it won't be possible to fulfill some of these\n"
 "reservations until a suitable resource becomes available."
 msgstr ""
-"Vytvořeno ${0} rezervac(e/í), ale ${1} z nich se neodkazují na dostupný "
+"Vytvořeno ${0} rezervací zdrojů, ale ${1} z nich se neodkazují na dostupný "
 "zdroj.\n"
 "\n"
 "To znamená, že nebude možné vyplnit některé z těchto rezervací\n"
@@ -107,19 +109,20 @@ msgstr ""
 
 #: reservation.js:OUTSTANDING_BRESV
 msgid "Outstanding reservations for patron"
-msgstr "Čtenář má nevyřešené (nezaplacené) rezervace"
+msgstr "Čtenář má nevyřešené  rezervace zdrojů"
 
 #: reservation.js:HERE_ARE_EXISTING_BRESV
 msgid "Existing reservations for"
-msgstr "Existující rezervace pro"
+msgstr "Existující rezervace zdroje pro"
 
 #: reservation.js:CXL_BRESV_SUCCESS
 msgid "Canceled ${0} reservation(s)"
-msgstr "Zrušeno recervací: ${0}"
+msgstr "Zrušeno rezervací zdroje: ${0}"
 
 #: reservation.js:GET_PATRON_NO_RESULT
 msgid "No server response after attempting to look up patron by barcode."
-msgstr "Není odezva serveru při pokusu nalezení čtenáře pomocí čárového kódu."
+msgstr ""
+"Při pokusu o vyhledání  čtenáře pomocí čárového kódu server neodpovídá."
 
 #: reservation.js:AUTO_or
 msgid "- Or -"
@@ -135,7 +138,7 @@ msgid ""
 "these items are not available during the requested time; if\n"
 "possible, choose another resource or change the reservation time."
 msgstr ""
-"Klikl jste na  \"Rezervovat vybrané\", ale nic není vybráno!\n"
+"Klikl(a) jste na  \"Rezervovat vybrané\", ale nic není vybráno!\n"
 "\n"
 "Musíte vybrat zdroj k rezervaci z velkého boxu nahoře.\n"
 "\n"
@@ -145,23 +148,23 @@ msgstr ""
 
 #: reservation.js:AUTO_ATTR_VALUE_reserve_brt
 msgid "Reserve Any"
-msgstr "Rezervuj libovolné"
+msgstr "Rezervuj kterýkoliv"
 
 #: reservation.js:AUTO_patron_barcode
 msgid "Reserve to patron barcode:"
-msgstr "Jezervuj k čárovému kódu čtenáře:"
+msgstr "Rezervuj k čárovému kódu čtenáře:"
 
 #: reservation.js:COULD_NOT_RETRIEVE_BRT_PASSED_IN
 msgid "Error retrieving booking resource type"
-msgstr "Chyba při získávání druhu zdroje rezervace"
+msgstr "Chyba při načtení typu rezervačního zdroje"
 
 #: reservation.js:ACTOR_CARD_NOT_FOUND
 msgid "Patron barcode not found. Please try again."
-msgstr "Čtenářský čárový kód není dostupný. Prosím zkuste to znovu."
+msgstr "Čárový kód čtenáře nebyl nalezen. Zkuste toprosím  znovu."
 
 #: reservation.js:CXL_BRESV_SELECT_SOMETHING
 msgid "You have not selected any reservations to cancel."
-msgstr "Nemáte vybrané žádné rezervace ke zrušení."
+msgstr "Nevybrali jste žádné rezervace zdrojů ke zrušení."
 
 #: reservation.js:AUTO_i_need_this_resource
 msgid "I need this resource..."
@@ -173,7 +176,7 @@ msgstr "Není možné rezervovat zdroje různých typů najednou"
 
 #: reservation.js:AUTO_bresv_grid_start_time
 msgid "Start time"
-msgstr "Čas začátku rezervace"
+msgstr "Čas začátku"
 
 #: reservation.js:ERROR_FETCHING_AOUS
 msgid ""
@@ -181,40 +184,45 @@ msgid ""
 "This is a non-fatal error, but you may wish to\n"
 "contact your system administrator."
 msgstr ""
-"Není možné získat nastavení organizační složky.\n"
-"Není to závažná chyba, ale třaba budete chtít\n"
+"Nelze načíst nastavení organizační jednotky.\n"
+"Nejedná se o závažnou chybu, ale možná  budete chtít\n"
 "kontaktovat Vašeho systémového administrátora."
 
 #: reservation.js:AUTO_ATTR_VALUE_button_cancel_existing
 msgid "Cancel selected"
-msgstr "Zruš vybrané"
+msgstr "Zrušit vybrané"
 
 #: reservation.js:GET_BRESV_LIST_NO_RESULT
 msgid "No results from server retrieving reservation list."
-msgstr "Žádné výsledky ze serveru při získávání seznamu rezervací."
+msgstr ""
+"Při načítání seznamu rezervací zdrojů nevrátil server žádné výsledky."
 
 #: reservation.js:GET_BRESV_LIST_ERR
 msgid "Error while retrieving reservation list: "
-msgstr "Chyba při získávání seznamu rezervací: "
+msgstr "Chyba při načítání seznamu rezervací zdrojů: "
 
 #: reservation.js:AUTO_arbitrary_resource
 msgid "Enter the barcode of a cataloged, bookable resource:"
-msgstr "Zadejte čárový kód katalogizovaného a rezervovatelného zdroje:"
+msgstr "Zadejte čárový kód katalogizovaného, rezervovatelného zdroje:"
 
 #: reservation.js:NO_EXISTING_BRESV
 msgid "This user has no existing reservations at this time."
-msgstr "Tento uživatel nemá aktuálně žádné rezervace."
+msgstr "Tento uživatel nemá nyní žádné rezervace zdrojů."
 
 #: reservation.js:AUTO_explain_bookable
-msgid "To reserve an item that is not yet registered as a bookable resource, find it in the catalog or under <em>Display Item</em>, and select <em>Make Item Bookable</em> or <em>Book Item Now</em> there."
+msgid ""
+"To reserve an item that is not yet registered as a bookable resource, find "
+"it in the catalog or under <em>Display Item</em>, and select <em>Make Item "
+"Bookable</em> or <em>Book Item Now</em> there."
 msgstr ""
-"K rezervování položky, která není založena jako rezervovatelná, ji najděte v "
-"katalogu a nebo pod <em>Zobraz položku</em>, a vyberte tam <em>Nastav "
-"položku jako rezervovatelnou</em> nebo <em>Rezervuj položku</em>."
+"Chcete-li rezervovat položku, která není registrována jako rezervovatelný "
+"zdroj,  najděte nejdříve tuto položku v  katalogu a v <em>Zobraz "
+"položku</em> a vyberte<em>Nastav položku jako rezervovatelnou</em> nebo "
+"<em>Rezervovat zdroj</em>."
 
 #: reservation.js:CXL_BRESV_FAILURE2
 msgid "Error canceling reservations:\n"
-msgstr "Chyba při rušení rezervací:\n"
+msgstr "Chyba při rušení rezervace zdroje:\n"
 
 #: reservation.js:NO_BRA_RESULTS
 msgid "Couldn't retrieve booking resource attributes."
@@ -222,19 +230,19 @@ msgstr "Nemohu získat atributy rezervovatelného zdroje."
 
 #: reservation.js:CREATE_BRESV_SERVER_NO_RESPONSE
 msgid "No response from server after trying to create reservation."
-msgstr "Žádná odezva od serveru při pokusu o vytvoření rezervace."
+msgstr "Při pokusu o vytvoření rezervace zdroje server neodpovídá."
 
 #: reservation.js:AUTO_bresv_grid_end_time
 msgid "End time"
-msgstr "Čas konce"
+msgstr "Čas ukončení"
 
 #: reservation.js:UNTARGETED
 msgid "None targeted"
-msgstr "Není zaměřeno"
+msgstr "Není vybrán cíl"
 
 #: reservation.js:ON_FLY_NO_RESPONSE
 msgid "No response from server attempting to make item a bookable resource."
-msgstr "Žádná reakce od serveru při pokusu o vytvoření rezervovatelného zdroje."
+msgstr "Při pokusu o vytvoření rezervovatelného zdroje server neodpovídá."
 
 #: reservation.js:NO_TARG_DIV
 msgid "Could not find target div"
@@ -242,19 +250,19 @@ msgstr "Nemohu najít zástupce cíle"
 
 #: reservation.js:INVALID_TS_RANGE
 msgid "You must choose a valid start and end time for the reservation."
-msgstr "Musíte vybrat platný čas začátku a konce rezervace."
+msgstr "Musíte vybrat platný čas začátku a konce rezervace zdroje."
 
 #: reservation.js:AUTO_pickup_lib_selector
 msgid "Choose the pickup library for this reservation:"
-msgstr "Vyberte si knihovnu, kterou využijete pro vyzvednutí rezervace."
+msgstr "Vyberte knihovnu pro vyzvednutní rezervovaného zdroje."
 
 #: reservation.js:NO_USABLE_BRSRC
 msgid ""
 "No reservable resources.  Adjust start and end time\n"
 "until a resource is available for reservation."
 msgstr ""
-"Žádné rezervovatelné zdroje.  Upravujte čas začátku a konce\n"
-"rezervace dokud nebude zdroj rezervovatelný."
+"Nejsou dostupné žádné rezervovatelné zdroje.  Upravte čas \n"
+"začátku a konce rezervace, aby byl zdroj rezervovatelný."
 
 #: reservation.js:AUTO_ATTR_VALUE_button_edit_existing
 msgid "Edit selected"
@@ -262,17 +270,18 @@ msgstr "Upravit vybrané"
 
 #: reservation.js:CREATE_BRESV_OK_MISSING_TARGET_BLOCKED_BY_CIRC
 msgid ""
-"The desired reservation(s) are blocked by circulation(s) with the following due date(s):\n"
+"The desired reservation(s) are blocked by circulation(s) with the following "
+"due date(s):\n"
 "${0}"
 msgstr ""
-"Požatdovan(á/né) rezervace jsou blokovány výpůjčkou(kami) s následujícím(y) "
-"přepokládaným(i) dat(em/y) vrácení:\n"
+"Požadované zdroje k rezervaci jsou blokovány  výpůjčkami s následujícími "
+"přepokládanými daty vrácení:\n"
 "${0}"
 
 #: reservation.js:ANY
 msgid "ANY"
-msgstr "cokoliv"
+msgstr "Kterýkoliv"
 
 #: reservation.js:CXL_BRESV_FAILURE
 msgid "Error canceling reservations; server silent."
-msgstr "Chyba při rušení rezervací: server mlčí."
+msgstr "Chyba při rušení rezervací zdrojů: server neodpovídá."

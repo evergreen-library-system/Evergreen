@@ -2,19 +2,20 @@
 # Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 21:45:31-0400\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
 "PO-Revision-Date: 2011-04-19 04:00+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Launchpad (build 12959)\n"
 "X-Launchpad-Export-Date: 2011-05-18 04:49+0000\n"
+"X-Generator: Launchpad (build 12959)\n"
 
 #: selfcheck.js:FAIL_PART_config_hold_matrix_test_max_holds
 msgid "The patron has reached the maximum number of holds"
@@ -27,8 +28,7 @@ msgstr "Pago del item ${0} realizado"
 #: selfcheck.js:FAIL_PART_no_ultimate_items
 msgid "The system could not find any items to match this hold request"
 msgstr ""
-"El sistema no ha encontrado items que coincidan con esta solicitud "
-"requerida."
+"El sistema no ha encontrado items que coincidan con esta solicitud requerida."
 
 #: selfcheck.js:TOTAL_ITEMS_ACCOUNT
 msgid "Total items on account:  <b>${0}</b>."
@@ -60,7 +60,8 @@ msgstr "El item no puede transitar hasta aqui."
 
 #: selfcheck.js:WORKSTATION_REQUIRED
 msgid ""
-"A workstation is required to log in to selfcheck.  You can set the  workstation name with URL param 'ws'.  \n"
+"A workstation is required to log in to selfcheck.  You can set the  "
+"workstation name with URL param 'ws'.  \n"
 "\n"
 "Would you like to register a new workstation for this self-check interface?"
 msgstr ""
@@ -74,9 +75,8 @@ msgid "Item ${0} is already checked out"
 msgstr ""
 
 #: selfcheck.js:FAIL_PART_config_circ_matrix_test_available_copy_hold_ratio
-#, fuzzy
 msgid "The available item-to-hold ratio is too low"
-msgstr "La proporción total de la pieza a tener es demasiada baja"
+msgstr ""
 
 #: selfcheck.js:HOLD_STATUS_READY
 msgid "Ready for pickup"
@@ -91,9 +91,8 @@ msgid "#${0} in line with ${1} copies"
 msgstr ""
 
 #: selfcheck.js:RENEW_SUCCESS
-#, fuzzy
 msgid "Renewal of item ${0} succeeded"
-msgstr "Pago del item ${0} realizado"
+msgstr ""
 
 #: selfcheck.js:FAIL_PART_config_circ_matrix_circ_mod_test
 msgid "The patron has too many items of this type checked out"
@@ -114,7 +113,10 @@ msgid "The patron is barred"
 msgstr ""
 
 #: selfcheck.js:PAYMENT_INVALID_USER_XACT_ID
-msgid "We cannot proceed with the payment, because your account was updated from another location.  Please refresh the interface or log out and back in to retrieve the latest account information"
+msgid ""
+"We cannot proceed with the payment, because your account was updated from "
+"another location.  Please refresh the interface or log out and back in to "
+"retrieve the latest account information"
 msgstr ""
 
 #: selfcheck.js:CC_PAYABLE_BALANCE
@@ -158,7 +160,9 @@ msgid "Item ${0} is already checked out to another user"
 msgstr ""
 
 #: selfcheck.js:WORKSTATION_EXISTS
-msgid "This workstation has already been registered.  Would you like to use it for this self-check station?"
+msgid ""
+"This workstation has already been registered.  Would you like to use it for "
+"this self-check station?"
 msgstr ""
 
 #: selfcheck.js:UNKNOWN_ERROR

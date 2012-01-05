@@ -2,19 +2,20 @@
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 21:44:24-0400\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-04-18 21:44-0400\n"
 "PO-Revision-Date: 2011-06-25 19:25+0000\n"
 "Last-Translator: Paco Molinero <paco@byasl.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Launchpad (build 13168)\n"
 "X-Launchpad-Export-Date: 2011-06-26 04:37+0000\n"
+"X-Generator: Launchpad (build 13168)\n"
 
 #: field.bre.source.label:2042
 msgid "Record Source"
@@ -180,9 +181,8 @@ msgid "Organizational Unit Setting"
 msgstr ""
 
 #: field.rxbt.unvoided.label:7098
-#, fuzzy
 msgid "Unvoided Billing Amount"
-msgstr "Monto de Pago Anulado"
+msgstr ""
 
 #: field.atevdef.hook.label:860
 msgid "Hook"
@@ -328,9 +328,8 @@ msgid "Provider Address"
 msgstr "Dirección del proveedor"
 
 #: field.acqlia.id.label:6626
-#, fuzzy
 msgid "Attribute Value ID"
-msgstr "Valor atributos"
+msgstr ""
 
 #: class.ahcm.label:3384
 msgid "Hold Copy Map"
@@ -418,9 +417,8 @@ msgid "Scheduled Time"
 msgstr ""
 
 #: field.auri.call_number_maps.label:1962
-#, fuzzy
 msgid "Call Number Maps"
-msgstr "Números de llamada"
+msgstr ""
 
 #: class.acnn.label:2783
 msgid "Call Number Note"
@@ -474,23 +472,20 @@ msgid "SAN"
 msgstr ""
 
 #: field.accs.checkout_workstation.label:121
-#, fuzzy
 msgid "Checkout Workstation"
-msgstr "Comprobando Estación de Trabajo"
+msgstr ""
 
 #: class.asc.label:4339
-#, fuzzy
 msgid "Asset Statistical Category"
-msgstr "Categoría estadística"
+msgstr ""
 
 #: class.jub.label:6485 field.acqlin.lineitem.label:6607
 msgid "Line Item"
 msgstr ""
 
 #: field.cracct.path.label:673 field.acqedi.path.label:6806
-#, fuzzy
 msgid "Path"
-msgstr "XPath"
+msgstr ""
 
 #: field.vii.pub_note.label:205 field.viiad.pub_note.label:253
 msgid "Public Note"
@@ -550,9 +545,8 @@ msgid "Selection List ID"
 msgstr ""
 
 #: class.pupm.label:5122
-#, fuzzy
 msgid "User Permission Map"
-msgstr "Grupo de permisos de usuario"
+msgstr ""
 
 #: class.auricnm.label:1970
 msgid "Electronic Access URI to Call Number Map"
@@ -701,9 +695,8 @@ msgstr ""
 
 #: field.atcol.module.label:771 field.atval.module.label:779
 #: field.atreact.module.label:795 field.atclean.module.label:811
-#, fuzzy
 msgid "Module Name"
-msgstr "Segundo nombre"
+msgstr ""
 
 #: class.ccnbin.label:3349
 msgid "Call Number Bucket Item Note"
@@ -713,9 +706,8 @@ msgstr ""
 #: field.acqfdeb.create_time.label:6029 field.acqfa.create_time.label:6236
 #: field.acqfap.create_time.label:6270 field.acqpoh.create_time.label:6389
 #: field.acqlih.create_time.label:6552 field.acqdfa.create_time.label:7194
-#, fuzzy
 msgid "Create Time"
-msgstr "Hora de creación"
+msgstr ""
 
 #: field.combcirc.usr_birth_year.label:3017
 #: field.acirc.usr_birth_year.label:3086
@@ -1025,9 +1017,8 @@ msgid "Age Hold Protection Rule"
 msgstr ""
 
 #: field.aou.workstations.label:4263
-#, fuzzy
 msgid "Workstations"
-msgstr "Estación de trabajo"
+msgstr ""
 
 #: field.aur.article_title.label:5518
 msgid "Article Title"
@@ -1054,9 +1045,8 @@ msgid "User Work Org Unit Map"
 msgstr ""
 
 #: field.accs.last_checkin_workstation.label:126
-#, fuzzy
 msgid "Last Checkin Workstation"
-msgstr "Comprobando Estación de Trabajo"
+msgstr ""
 
 #: class.stgu.label:7391
 msgid "User Stage"
@@ -1122,9 +1112,8 @@ msgid "Edit date"
 msgstr ""
 
 #: field.acqlid.claims.label:6655
-#, fuzzy
 msgid "Claims"
-msgstr "Reclamación"
+msgstr ""
 
 #: class.ppl.label:2517
 msgid "Permission List"
@@ -1303,9 +1292,8 @@ msgid "Final Target Record"
 msgstr ""
 
 #: field.acn.uris.label:1927
-#, fuzzy
 msgid "URIs"
-msgstr "URI"
+msgstr ""
 
 #: class.acqfat.label:6088
 msgid "Fund Allocation Total"
@@ -1344,9 +1332,8 @@ msgid "Flattened MARC Fields"
 msgstr ""
 
 #: class.acpn.label:2444
-#, fuzzy
 msgid "Copy Note"
-msgstr "Copiar notas"
+msgstr ""
 
 #: field.atc.persistant_transfer.label:1547
 #: field.iatc.persistant_transfer.label:8516
@@ -1371,9 +1358,8 @@ msgid "Currency Code"
 msgstr ""
 
 #: class.coust.label:2406
-#, fuzzy
 msgid "Organizational Unit Setting Type"
-msgstr "Tipo de Unidad Organizacional"
+msgstr ""
 
 #: field.ancc.duedate.label:4995
 msgid "Virtual Due Date/Time"
@@ -1487,9 +1473,8 @@ msgstr ""
 
 #: field.bresv.xact_start.label:3263 field.mbt.xact_start.label:4567
 #: field.rccbs.xact_start.label:8340
-#, fuzzy
 msgid "Transaction Start Date/Time"
-msgstr "Inicio de la transacción"
+msgstr ""
 
 #: class.rmobbhol.label:8748
 msgid "Open Circulation Balance by User Home Library and Owning Library"
@@ -1641,9 +1626,8 @@ msgstr ""
 
 #: field.circ.checkin_time.label:2923 field.combcirc.checkin_time.label:2985
 #: field.acirc.checkin_time.label:3050 field.rodcirc.checkin_time.label:8587
-#, fuzzy
 msgid "Check In Date/Time"
-msgstr "Comprobando Fecha/Hora de Escaneo"
+msgstr ""
 
 #: field.act.owning_lib.label:4859 field.rocit.owning_lib.label:8657
 msgid "Owning Lib"
@@ -1664,9 +1648,8 @@ msgid "Datatype Name"
 msgstr ""
 
 #: field.sre.active.label:3479
-#, fuzzy
 msgid "Is Active"
-msgstr "¿está activa?"
+msgstr ""
 
 #: field.czs.attrs.label:700
 msgid "Attrs"
@@ -1848,9 +1831,8 @@ msgid "Distribution"
 msgstr ""
 
 #: field.bre.simple_record.label:2057
-#, fuzzy
 msgid "Simple Record Extracts "
-msgstr "Extractos de Grabaciones Simples"
+msgstr ""
 
 #: class.actsce.label:4588
 msgid "User Stat Cat Entry"
@@ -1882,9 +1864,8 @@ msgid "Match ID"
 msgstr ""
 
 #: field.ccmm.juvenile_flag.label:1284
-#, fuzzy
 msgid "Juvenile?"
-msgstr "Juvenil"
+msgstr ""
 
 #: field.actscecm.stat_cat.label:5056
 msgid "Statistical Category"
@@ -1903,9 +1884,8 @@ msgid "Authority-Bibliographic Record Link"
 msgstr ""
 
 #: field.aur.isxn.label:5514
-#, fuzzy
 msgid "ISxN"
-msgstr "ISSN"
+msgstr ""
 
 #: field.acn.edit_date.label:1919 field.sunit.edit_date.label:3792
 #: field.acp.edit_date.label:4796
@@ -1917,9 +1897,8 @@ msgid "Queue ID"
 msgstr ""
 
 #: field.brt.tgt_rsrc_types.label:3134
-#, fuzzy
 msgid "Target Resource Types"
-msgstr "Tipo de recurso del objetivo"
+msgstr ""
 
 #: field.actsce.stat_cat.label:4592 field.asce.stat_cat.label:5280
 msgid "Stat Cat"
@@ -1985,9 +1964,8 @@ msgstr "Rango de Transito"
 #: field.mwp.id.label:4657 field.mgp.id.label:4675 field.mckp.id.label:4763
 #: field.mp.id.label:5152 field.mbp.id.label:5180 field.mndp.id.label:5208
 #: field.mdp.id.label:5230
-#, fuzzy
 msgid "Payment ID"
-msgstr "ID de Pago"
+msgstr ""
 
 #: class.cbrebin.label:5266
 msgid "Biblio Record Entry Bucket Item Note"
@@ -2165,9 +2143,8 @@ msgstr ""
 
 #: field.aua.street1.label:2754 field.acqpca.street1.label:5848
 #: field.stgma.street1.label:7426 field.stgba.street1.label:7441
-#, fuzzy
 msgid "Street (1)"
-msgstr "Calle (2)"
+msgstr ""
 
 #: field.au.second_given_name.label:2315
 #: field.stgu.second_given_name.label:7401
@@ -2371,9 +2348,8 @@ msgid "Subfield Type"
 msgstr ""
 
 #: field.acqfsrcct.amount.label:6191
-#, fuzzy
 msgid "Total Credits to Funding Source"
-msgstr "Total de crédito a Fuente de Financiamiento"
+msgstr ""
 
 #: class.mct.label:2006
 msgid "Collections Tracker"
@@ -2434,9 +2410,8 @@ msgid "Operator Expression"
 msgstr ""
 
 #: field.rxbt.total.label:7100
-#, fuzzy
 msgid "Total Billing Amount"
-msgstr "Monto de Pago Anulado"
+msgstr ""
 
 #: field.circ.xact_finish.label:2944 field.combcirc.xact_finish.label:3006
 #: field.acirc.xact_finish.label:3071 field.bresv.xact_finish.label:3262
@@ -2509,9 +2484,8 @@ msgstr ""
 #: field.auricnm.call_number.label:1974
 #: field.combcirc.copy_call_number.label:3018
 #: field.acirc.copy_call_number.label:3087
-#, fuzzy
 msgid "Call Number"
-msgstr "Números de llamada"
+msgstr ""
 
 #: field.atev.template_output.label:910
 msgid "Template Output"
@@ -2713,9 +2687,8 @@ msgid "Normalized Value"
 msgstr ""
 
 #: field.ccmm.circulate.label:1287 field.act.circulate.label:4871
-#, fuzzy
 msgid "Circulate?"
-msgstr "Circular"
+msgstr ""
 
 #: class.cxt.label:1731
 msgid "XML/XSLT Transform Definition"
@@ -2855,9 +2828,8 @@ msgstr ""
 
 #: field.chmw.request_ou.label:1146 field.chmm.request_ou.label:1226
 #: field.bresv.request_lib.label:3284
-#, fuzzy
 msgid "Request Library"
-msgstr "Pidiendo biblioteca"
+msgstr ""
 
 #: field.asvr.usr.label:1583
 msgid "Responding User"
@@ -2904,14 +2876,12 @@ msgid "Library Initiated"
 msgstr ""
 
 #: field.bresv.attr_val_maps.label:3287
-#, fuzzy
 msgid "Attribute Value Maps"
-msgstr "Valor atributos"
+msgstr ""
 
 #: field.scap.start_date.label:3514 field.ssub.start_date.label:3553
-#, fuzzy
 msgid "Start Date"
-msgstr "Fecha inicial"
+msgstr ""
 
 #: field.acn.label_class.label:1929
 msgid "Classification Scheme"
@@ -3102,9 +3072,8 @@ msgid "Opt-in ID"
 msgstr ""
 
 #: field.asvq.answers.label:1392
-#, fuzzy
 msgid "Answers"
-msgstr "Respuesta"
+msgstr ""
 
 #: field.rocit.stat_cat_1.label:8649
 msgid "Legacy Stat Cat 1"
@@ -3184,9 +3153,8 @@ msgid "Line Item Local Attribute Definition"
 msgstr ""
 
 #: field.au.checkouts.label:2275
-#, fuzzy
 msgid "All Circulations"
-msgstr "Circulaciones totales"
+msgstr ""
 
 #: field.acqedim.jedi.label:6847
 msgid "JEDI Message Body"
@@ -3311,9 +3279,8 @@ msgid "Column Alias"
 msgstr ""
 
 #: field.aou.id.label:4246
-#, fuzzy
 msgid "Organizational Unit ID"
-msgstr "Unidad organizacional"
+msgstr ""
 
 #: field.acqinv.inv_ident.label:5667
 msgid "Vendor Invoice ID"
@@ -3336,9 +3303,8 @@ msgid "Processing Delay"
 msgstr ""
 
 #: class.acqfsrcat.label:6198
-#, fuzzy
 msgid "Total Allocation to Funding Source"
-msgstr "Total asignado por Fuente de Financiamiento"
+msgstr ""
 
 #: class.cust.label:2383
 msgid "User Setting Type"
@@ -3709,9 +3675,8 @@ msgid "Origin Amount"
 msgstr ""
 
 #: field.aur.request_type.label:5503
-#, fuzzy
 msgid "Request Type"
-msgstr "Tiempo Pedido"
+msgstr ""
 
 #: class.brn.label:52
 msgid "Record Node"
@@ -3756,9 +3721,8 @@ msgid "Checkin Workstation"
 msgstr "Comprobando Estación de Trabajo"
 
 #: field.acqfc.years.label:5901
-#, fuzzy
 msgid "Years"
-msgstr "Año"
+msgstr ""
 
 #: class.aua.label:2745
 msgid "User Address"
@@ -3815,9 +3779,8 @@ msgstr ""
 #: field.mwp.xact.label:4660 field.mgp.xact.label:4678
 #: field.rxbt.xact.label:7097 field.rxpt.xact.label:7108
 #: field.rccbs.id.label:8327
-#, fuzzy
 msgid "Transaction ID"
-msgstr "Transacción"
+msgstr ""
 
 #: field.ahn.notify_time.label:3402
 msgid "Notification Date/Time"
@@ -4006,9 +3969,8 @@ msgid "Notifications Phone Number"
 msgstr ""
 
 #: field.mg.billable_transaction.label:4531
-#, fuzzy
 msgid "Billable Transaction link"
-msgstr "Transacciones facturables"
+msgstr ""
 
 #: class.cmpctm.label:8098
 msgid "MARC21 Physical Characteristic Type Map"
@@ -4088,9 +4050,8 @@ msgid "Language"
 msgstr ""
 
 #: field.acqpa.street2.label:5785
-#, fuzzy
 msgid "Street 2"
-msgstr "Calle 1"
+msgstr ""
 
 #: field.cust.datatype.label:2388 class.qdt.label:7601
 #: field.qfpd.datatype.label:7648
@@ -4172,9 +4133,8 @@ msgid "All Permissions"
 msgstr ""
 
 #: field.cit.id.label:1376
-#, fuzzy
 msgid "Identification ID"
-msgstr "Tipo de identificación"
+msgstr ""
 
 #: field.acnc.normalizer.label:1866
 msgid "Normalizer function"
@@ -4366,9 +4326,8 @@ msgstr ""
 
 #: field.rcirct.id.label:7076 field.rmocbbol.id.label:8683
 #: field.rmocbbcol.id.label:8707 field.rmocbbhol.id.label:8735
-#, fuzzy
 msgid "Circulation ID"
-msgstr "Tipo de circulación"
+msgstr ""
 
 #: field.aou.holds_address.label:4245
 msgid "Holds Receiving Address"
@@ -4409,9 +4368,8 @@ msgstr ""
 
 #: field.mp.credit_payment.label:5160 field.mbp.credit_payment.label:5188
 #: field.mndp.credit_payment.label:5217
-#, fuzzy
 msgid "Credit Payment Detail"
-msgstr "Detalle del pago con tarjeta de crédito"
+msgstr ""
 
 #: field.sdist.unit_label_suffix.label:3610
 msgid "Unit Label Suffix"
@@ -4471,9 +4429,8 @@ msgid "User County"
 msgstr ""
 
 #: field.acqf.tags.label:6069
-#, fuzzy
 msgid "Tags"
-msgstr "Etiqueta"
+msgstr ""
 
 #: class.cracct.label:665
 msgid "Remote (3rd party) Account"
@@ -4520,9 +4477,8 @@ msgid "User Age: Upper Bound"
 msgstr ""
 
 #: class.stgsc.label:7451
-#, fuzzy
 msgid "Statistical Category Stage"
-msgstr "Entradas de categorías estadísticas"
+msgstr ""
 
 #: field.aua.post_code.label:2752 field.acqpca.post_code.label:5846
 #: field.stgma.post_code.label:7431 field.stgba.post_code.label:7446
@@ -4551,16 +4507,14 @@ msgid "Answer ID"
 msgstr ""
 
 #: class.ahrn.label:4219
-#, fuzzy
 msgid "Hold Request Note"
-msgstr "Mantener Tipo de solicitud"
+msgstr ""
 
 #: field.rmobbol.billing_types.label:8697
 #: field.rmobbcol.billing_types.label:8724
 #: field.rmobbhol.billing_types.label:8752
-#, fuzzy
 msgid "Billing Types"
-msgstr "Tipo de facturación"
+msgstr ""
 
 #: field.aua.city.label:2748 field.acqpa.city.label:5777
 #: field.acqpca.city.label:5842 field.stgma.city.label:7428
@@ -4577,9 +4531,8 @@ msgid "Serial Item"
 msgstr ""
 
 #: field.sunit.holds.label:3813 field.acp.holds.label:4815
-#, fuzzy
 msgid "Holds"
-msgstr "Retener"
+msgstr ""
 
 #: field.sunit.summary_contents.label:3807
 msgid "Summary Contents"
@@ -4590,9 +4543,8 @@ msgid "Classic Circulation View"
 msgstr ""
 
 #: field.aihu.id.label:1515 field.ancihu.id.label:1529
-#, fuzzy
 msgid "Use ID"
-msgstr "ID de usuario"
+msgstr ""
 
 #: field.atc.dest_recv_time.label:1545 field.artc.dest_recv_time.label:5310
 #: field.ahtc.dest_recv_time.label:5345 field.iatc.dest_recv_time.label:8514
@@ -4629,9 +4581,8 @@ msgstr ""
 
 #: field.aihu.item.label:1516 class.sitem.label:3842 field.sin.item.label:3889
 #: class.acp.label:4777
-#, fuzzy
 msgid "Item"
-msgstr "Elementos"
+msgstr ""
 
 #: field.aout.parent.label:4476
 msgid "Parent Type"
@@ -4642,9 +4593,8 @@ msgid "User Demographics"
 msgstr ""
 
 #: field.atev.add_time.label:903
-#, fuzzy
 msgid "Add Time"
-msgstr "Hora de finalización"
+msgstr ""
 
 #: field.sitem.date_expected.label:3853
 msgid "Date Expected"
@@ -4738,9 +4688,8 @@ msgid "Is Floating"
 msgstr ""
 
 #: field.crad.normalizers.label:591
-#, fuzzy
 msgid "Normalizers"
-msgstr "Normalizador"
+msgstr ""
 
 #: field.rocit.patron_name.label:8670
 msgid "Patron Name"
@@ -4785,9 +4734,8 @@ msgid "Line Item Attribute Definition"
 msgstr ""
 
 #: field.aws.id.label:953 field.au.wsid.label:2283
-#, fuzzy
 msgid "Workstation ID"
-msgstr "Estación de trabajo"
+msgstr ""
 
 #: field.bram.id.label:3238
 msgid "Resource Attribute Map ID"
@@ -4841,9 +4789,8 @@ msgstr ""
 
 #: field.combcirc.usr_profile.label:3016 field.acirc.usr_profile.label:3085
 #: field.rccc.profile_group.label:8271
-#, fuzzy
 msgid "Patron Profile Group"
-msgstr "Grupo de Perfil de Usuario"
+msgstr ""
 
 #: field.rccbs.usr_home_ou_shortname.label:8333
 msgid "User Home Library Short (Policy) Name"
@@ -4921,9 +4868,8 @@ msgid "Note Value"
 msgstr ""
 
 #: field.rsr.summary.label:7048
-#, fuzzy
 msgid "Summary (normalized)"
-msgstr "Autor (normalizado)"
+msgstr ""
 
 #: class.xbind.label:7811
 msgid "Bind Variable Expression"
@@ -4966,9 +4912,8 @@ msgid "Namespace URI"
 msgstr ""
 
 #: field.acqpoh.audit_time.label:6382 field.acqlih.audit_time.label:6542
-#, fuzzy
 msgid "Audit Time"
-msgstr "Editar hora"
+msgstr ""
 
 #: field.sra.field.label:4031
 msgid "Index Field"
@@ -4983,9 +4928,8 @@ msgid "Publication Date"
 msgstr ""
 
 #: field.au.mailing_address.label:2307 field.aou.mailing_address.label:4248
-#, fuzzy
 msgid "Mailing Address"
-msgstr "Dirección de facturación"
+msgstr ""
 
 #: class.acqdf.label:7136 field.acqdfa.formula.label:7195
 msgid "Distribution Formula"
@@ -5000,9 +4944,8 @@ msgid "To Currency"
 msgstr ""
 
 #: class.acqfscred.label:5974
-#, fuzzy
 msgid "Credit to Funding Source"
-msgstr "Total de crédito a Fuente de Financiamiento"
+msgstr ""
 
 #: field.vii.location.label:194 field.viiad.location.label:242
 #: field.combcirc.copy_location.label:3019
@@ -5023,9 +4966,8 @@ msgid "Indexed Keyword Field Entries"
 msgstr ""
 
 #: class.rxbt.label:7095
-#, fuzzy
 msgid "Transaction Billing Totals"
-msgstr "Total de Transacciones Pagadas"
+msgstr ""
 
 #: field.au.home_ou.label:2300 field.stgu.home_ou.label:7405
 msgid "Home Library"
@@ -5036,9 +4978,8 @@ msgid "Identification Name"
 msgstr "Nombre de identificación"
 
 #: field.sunit.cost.label:3805 field.acp.cost.label:4810
-#, fuzzy
 msgid "Cost"
-msgstr "Anfitrión"
+msgstr ""
 
 #: field.mbt.circulation.label:4570
 msgid "Circulation Billing link"
@@ -5103,9 +5044,8 @@ msgid "Item Age"
 msgstr ""
 
 #: field.au.ident_type.label:2302 field.stgu.ident_type.label:7399
-#, fuzzy
 msgid "Primary Identification Type"
-msgstr "Tipo de identificación secudaria"
+msgstr ""
 
 #: field.rccbs.total_owed.label:8345 field.rmocbbol.billed.label:8686
 #: field.rmocbbcol.billed.label:8711 field.rmocbbhol.billed.label:8739
@@ -5160,9 +5100,8 @@ msgid "Distribution Formula Application"
 msgstr ""
 
 #: field.acpn.create_date.label:2446
-#, fuzzy
 msgid "Note Creation Date/Time"
-msgstr "Fecha/Hora de Creación"
+msgstr ""
 
 #: field.atev.update_process.label:913
 msgid "Update Process"
@@ -5311,9 +5250,8 @@ msgstr "Total debido"
 
 #: field.mbts.last_payment_ts.label:1426
 #: field.mbtslv.last_payment_ts.label:1447
-#, fuzzy
 msgid "Last Payment Timestamp"
-msgstr "Estampilla de tiempo de Pago"
+msgstr ""
 
 #: class.rsr.label:7033
 msgid "Simple Record"
@@ -5410,7 +5348,8 @@ msgid "In House Use"
 msgstr ""
 
 #: class.ccmcmtm.label:1348
-msgid "Circulation Matrix Circulation Modifier Subtest Circulation Modifier Set"
+msgid ""
+"Circulation Matrix Circulation Modifier Subtest Circulation Modifier Set"
 msgstr ""
 
 #: field.qsq.limit_count.label:7572
@@ -5462,9 +5401,8 @@ msgid "Organizational Unit"
 msgstr "Unidad organizacional"
 
 #: field.ancc.circ_time.label:4990 field.rccc.xact_start.label:8261
-#, fuzzy
 msgid "Circulation Date/Time"
-msgstr "Fecha/Hora de Creación"
+msgstr ""
 
 #: class.msefe.label:4386
 msgid "Series Field Entry"
@@ -5496,9 +5434,8 @@ msgid "Unvoided Paid Amount"
 msgstr ""
 
 #: field.acqfdt.amount.label:6101
-#, fuzzy
 msgid "Total Debit Amount"
-msgstr "Monto total pagado"
+msgstr ""
 
 #: field.cam.code.label:1833
 msgid "Audience Code"
@@ -5653,9 +5590,8 @@ msgid "Function Name"
 msgstr ""
 
 #: class.actsc.label:4364
-#, fuzzy
 msgid "User Statistical Category"
-msgstr "Categoría estadística"
+msgstr ""
 
 #: class.auss.label:2768
 msgid "User Saved Search"
@@ -5762,9 +5698,8 @@ msgid "Trigger Event Parameter"
 msgstr ""
 
 #: field.bre.deleted.label:2034
-#, fuzzy
 msgid "Is Deleted?"
-msgstr "Se elimina"
+msgstr ""
 
 #: class.accs.label:116
 msgid "Circulation Chain Summary"
@@ -5779,9 +5714,8 @@ msgid "Line Item Attribute"
 msgstr ""
 
 #: field.ccmw.grp.label:1177 field.ccmm.grp.label:1278 class.pgt.label:4936
-#, fuzzy
 msgid "Permission Group"
-msgstr "Grupo de permisos de usuario"
+msgstr ""
 
 #: field.ahr.id.label:4175 field.ahrn.hold.label:4222 field.rhrr.id.label:7085
 #: field.aufhl.hold.label:7501 field.aufhml.hold.label:7513
@@ -5823,9 +5757,8 @@ msgstr ""
 #: field.chmw.ref_flag.label:1156 field.ccmw.ref_flag.label:1182
 #: field.chmm.ref_flag.label:1236 field.ccmm.ref_flag.label:1283
 #: field.act.ref.label:4873
-#, fuzzy
 msgid "Reference?"
-msgstr "Referencia"
+msgstr ""
 
 #: field.rsr.external_uri.label:7056
 msgid "External URI List (normalized)"
@@ -5845,9 +5778,8 @@ msgstr ""
 #: field.rmocbbol.owning_lib.label:8684 field.rmobbol.owning_lib.label:8696
 #: field.rmocbbcol.owning_lib.label:8709 field.rmobbcol.owning_lib.label:8723
 #: field.rmocbbhol.owning_lib.label:8737 field.rmobbhol.owning_lib.label:8751
-#, fuzzy
 msgid "Owning Library"
-msgstr "Enviando biblioteca"
+msgstr ""
 
 #: field.rocit.circ_lib_name.label:8656
 msgid "Circ Lib Name"
@@ -5889,9 +5821,8 @@ msgid "Hold Capture Requires Verification"
 msgstr ""
 
 #: field.rccbs.last_payment_ts.label:8347
-#, fuzzy
 msgid "Last Payment Date/Time"
-msgstr "Fecha/Tiempo de Pago"
+msgstr ""
 
 #: class.ccbn.label:5101
 msgid "Copy Bucket Note"
@@ -5904,9 +5835,8 @@ msgstr ""
 #: field.mbts.last_payment_type.label:1427
 #: field.mbtslv.last_payment_type.label:1448
 #: field.rccbs.last_payment_type.label:8349
-#, fuzzy
 msgid "Last Payment Type"
-msgstr "Última nota de pago"
+msgstr ""
 
 #: field.brsrc.id.label:3155
 msgid "Resource ID"
@@ -5918,9 +5848,8 @@ msgstr ""
 
 #: field.rmsr.isbn.label:7006 field.rssr.isbn.label:7025
 #: field.rsr.isbn.label:7049
-#, fuzzy
 msgid "ISBN"
-msgstr "ISSN"
+msgstr ""
 
 #: field.scap.pattern_code.label:3517
 msgid "Pattern Code"
@@ -5931,9 +5860,8 @@ msgid "First Name"
 msgstr ""
 
 #: field.acqpa.post_code.label:5782
-#, fuzzy
 msgid "Post Code"
-msgstr "Código postal"
+msgstr ""
 
 #: field.atc.source_send_time.label:1551
 #: field.artc.source_send_time.label:5316
@@ -5963,14 +5891,12 @@ msgid "Credits"
 msgstr ""
 
 #: field.au.open_billable_transactions_summary.label:2329
-#, fuzzy
 msgid "Open Billable Transactions"
-msgstr "Transacciones facturables"
+msgstr ""
 
 #: field.sunit.ref.label:3800 field.acp.ref.label:4805
-#, fuzzy
 msgid "Is Reference"
-msgstr "Referencia"
+msgstr ""
 
 #: field.bresv.target_resource_type.label:3281
 msgid "Target Resource Type"
@@ -6061,9 +5987,8 @@ msgid "Test ID"
 msgstr ""
 
 #: class.rmsr.label:6995
-#, fuzzy
 msgid "Fast Simple Record Extracts"
-msgstr "Extractos de Grabaciones Simples"
+msgstr ""
 
 #: field.ahr.cancel_cause.label:4195
 msgid "Cancelation cause"
@@ -6116,9 +6041,8 @@ msgstr ""
 
 #: field.asvq.question.label:1395 field.asvr.question.label:1580
 #: field.asva.question.label:4966
-#, fuzzy
 msgid "Question"
-msgstr "Preguntas"
+msgstr ""
 
 #: field.qxp.parenthesize.label:7677 field.xbet.parenthesize.label:7797
 #: field.xbind.parenthesize.label:7814 field.xbool.parenthesize.label:7830
@@ -6231,9 +6155,8 @@ msgid "Overdue Circulation"
 msgstr ""
 
 #: field.bre.active.label:2031
-#, fuzzy
 msgid "Is Active?"
-msgstr "¿está activa?"
+msgstr ""
 
 #: field.ausp.stop_date.label:2727
 msgid "Stop Date"
@@ -6266,14 +6189,12 @@ msgstr ""
 #: field.auri.active.label:1961 field.au.active.label:2284
 #: field.sra.active.label:4030 field.acqpro.active.label:5601
 #: field.acqf.active.label:6063
-#, fuzzy
 msgid "Active"
-msgstr "¿Activo?"
+msgstr ""
 
 #: field.bram.value.label:3241
-#, fuzzy
 msgid "Attribute Value"
-msgstr "Valor atributos"
+msgstr ""
 
 #: field.circbyyr.count.label:8569
 msgid "Count"
@@ -6363,9 +6284,8 @@ msgid "Audit ID"
 msgstr ""
 
 #: field.scap.end_date.label:3515 field.ssub.end_date.label:3554
-#, fuzzy
 msgid "End Date"
-msgstr "Fecha de finalización"
+msgstr ""
 
 #: class.brsrc.label:3153 field.bram.resource.label:3239
 msgid "Resource"
@@ -6428,9 +6348,8 @@ msgid "Item Circ Library"
 msgstr ""
 
 #: field.mckp.xact.label:4766
-#, fuzzy
 msgid "Transaction link"
-msgstr "Tipo de transacción"
+msgstr ""
 
 #: field.acqfsrcb.amount.label:6211
 msgid "Balance Remaining"
@@ -6453,9 +6372,8 @@ msgid "Keep Debits?"
 msgstr ""
 
 #: field.ateo.create_time.label:733 field.acn.create_date.label:1916
-#, fuzzy
 msgid "Create Date/Time"
-msgstr "Fecha/Hora de Creación"
+msgstr ""
 
 #: field.au.super_user.label:2318
 msgid "Is Super User"
@@ -6495,9 +6413,8 @@ msgid "Parameters"
 msgstr ""
 
 #: field.ahn.id.label:3398
-#, fuzzy
 msgid "Notification ID"
-msgstr "Notificaciones"
+msgstr ""
 
 #: field.cmf.search_field.label:1797
 msgid "Search Field"
@@ -6525,9 +6442,8 @@ msgid "Full Authority Record"
 msgstr ""
 
 #: field.ocirccount.lost.label:2869 field.ocirclist.lost.label:2911
-#, fuzzy
 msgid "Lost"
-msgstr "Anfitrión"
+msgstr ""
 
 #: field.au.dob.label:2294 field.rud.dob.label:7067 field.stgu.dob.label:7406
 msgid "Date of Birth"
@@ -6582,9 +6498,8 @@ msgstr ""
 
 #: class.mbt.label:4562 field.mp.xact.label:5156 field.mbp.xact.label:5184
 #: field.mndp.xact.label:5212 field.mdp.xact.label:5234
-#, fuzzy
 msgid "Billable Transaction"
-msgstr "Transacciones facturables"
+msgstr ""
 
 #: field.aou.parent_ou.label:4251
 msgid "Parent Organizational Unit"
@@ -6639,9 +6554,8 @@ msgid "Check Number"
 msgstr ""
 
 #: field.au.ident_value.label:2304
-#, fuzzy
 msgid "Primary Identification"
-msgstr "Identificación secundaria"
+msgstr ""
 
 #: field.aur.cancel_reason.label:5525 class.acqcr.label:6314
 #: field.acqpo.cancel_reason.label:6348 field.acqpoh.cancel_reason.label:6395
@@ -6804,9 +6718,8 @@ msgid "Items Out"
 msgstr ""
 
 #: field.siss.holding_type.label:3745
-#, fuzzy
 msgid "Holding Type"
-msgstr "Tipo de facturación"
+msgstr ""
 
 #: class.aoup.label:4081
 msgid "Org Unit Proximity"
@@ -6836,14 +6749,12 @@ msgid "Survey End Date/Time"
 msgstr ""
 
 #: field.mg.xact_start.label:4528
-#, fuzzy
 msgid "Transaction Start Timestamp"
-msgstr "Inicio de la transacción"
+msgstr ""
 
 #: field.bresv.target_resource.label:3282
-#, fuzzy
 msgid "Target Resource"
-msgstr "Recurso actual"
+msgstr ""
 
 #: field.aufhml.min.label:7514
 msgid "Min Loop"
@@ -6870,6 +6781,12 @@ msgstr "Anular Estampilla de Tiempo"
 #: field.au.billable_transactions.label:2327
 msgid "Billable Transactions"
 msgstr "Transacciones facturables"
+
+#~ msgid "End date"
+#~ msgstr "Fecha de finalización"
+
+#~ msgid "Start date"
+#~ msgstr "Fecha inicial"
 
 #~ msgid "Picklist ID"
 #~ msgstr "ID de lista de seleccion"

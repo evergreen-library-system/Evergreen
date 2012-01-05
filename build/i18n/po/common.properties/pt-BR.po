@@ -2,21 +2,20 @@
 # Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR: Job Diógenes Ribeiro Borges <>, 2009.
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/common.properties
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2010-02-10 13:10+0000\n"
-"Last-Translator: jobdrb <jobdrb@gmail.com>\n"
+"PO-Revision-Date: 2011-12-08 12:40+0000\n"
+"Last-Translator: Tomas Abril <Unknown>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.8.1\n"
-"X-Accelerator-Marker: &\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:40+0000\n"
+"X-Launchpad-Export-Date: 2011-12-09 04:48+0000\n"
+"X-Generator: Launchpad (build 14450)\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -39,7 +38,8 @@ msgstr "Esta faltando o JSAN library object."
 
 #: common.error
 msgid "Please inform your help desk or developers of this error:"
-msgstr "Favor informar seu setor de suporte ou programadores sobre este erro:"
+msgstr ""
+"Favor informar seu setor de suporte ou programadores sobre este erro:"
 
 #: common.ok
 msgid "Ok"
@@ -181,7 +181,7 @@ msgstr "Nº do Exemplar"
 
 #: staff.acp_label_parts
 msgid "Part"
-msgstr ""
+msgstr "Parte"
 
 #: staff.acp_label_deposit_amount
 msgid "Deposit Amount"
@@ -247,7 +247,7 @@ msgstr ""
 
 #: staff.ahr_issuance_label_label
 msgid "Issuance Label"
-msgstr ""
+msgstr "Etiqueta de Emissão"
 
 #: staff.ahr_id_label
 msgid "Hold ID"
@@ -366,31 +366,15 @@ msgctxt "staff.csp_block_circ_yes"
 msgid "Yes"
 msgstr "Sim"
 
-#: staff.csp_block_circ_no
-msgctxt "staff.csp_block_circ_no"
-"staff.csp_block_circ_no"
-msgid ""
-msgstr ""
-
 #: staff.csp_block_renew_yes
 msgctxt "staff.csp_block_renew_yes"
 msgid "Yes"
 msgstr "Sim"
 
-#: staff.csp_block_renew_no
-msgctxt "staff.csp_block_renew_no"
-msgid ""
-msgstr ""
-
 #: staff.csp_block_hold_yes
 msgctxt "staff.csp_block_hold_yes"
 msgid "Yes"
 msgstr "Sim"
-
-#: staff.csp_block_hold_no
-msgctxt "staff.csp_block_hold_no"
-msgid ""
-msgstr ""
 
 #: staff.ausp_id_label
 msgid "Penalty ID "
@@ -826,7 +810,7 @@ msgstr "Registrado com sucesso"
 
 #: staff.main.gen_offline_widgets.registration.empty
 msgid "Please specify a workstation name"
-msgstr ""
+msgstr "Por favor especifique o nome da estação de trabalho"
 
 #: staff.util.timestamp_dialog.future_date_disallowed
 msgid "Future dates disallowed."
@@ -843,28 +827,3 @@ msgstr "Hoje não permitido."
 #: tab.label.triggered_events_for_copy
 msgid "Triggered Events: %1$s"
 msgstr "Eventos"
-
-#~ msgid ","
-#~ msgstr ","
-
-#~ msgid "Penalty ID"
-#~ msgstr "ID da Penalidade"
-
-#~ msgid "Applied By"
-#~ msgstr "Aplicados por"
-
-#~ msgid "Applied On"
-#~ msgstr "Aplicado Em"
-
-#~ msgctxt "staff.ausp_note_label"
-#~ msgid "Note"
-#~ msgstr "Nota"
-
-#~ msgid "Library"
-#~ msgstr "Biblioteca"
-
-#~ msgid "Bill #"
-#~ msgstr "Fatura #"
-
-#~ msgid "error in noncat sorting:"
-#~ msgstr "erro em ordenação não-catalogado:"

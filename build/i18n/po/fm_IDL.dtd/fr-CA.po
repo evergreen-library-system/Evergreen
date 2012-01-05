@@ -2,19 +2,20 @@
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 21:44:24-0400\n"
-"PO-Revision-Date: 2010-03-11 22:58+0000\n"
-"Last-Translator: Provetin <hamburgskaddi@web.de>\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-04-18 21:44-0400\n"
+"PO-Revision-Date: 2011-11-08 22:04+0000\n"
+"Last-Translator: George Duimovich <George.Duimovich@nrcan-rncan.gc.ca>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Launchpad (build 12959)\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:42+0000\n"
+"X-Launchpad-Export-Date: 2011-11-09 04:51+0000\n"
+"X-Generator: Launchpad (build 14263)\n"
 
 #: field.bre.source.label:2042
 msgid "Record Source"
@@ -95,7 +96,7 @@ msgstr "Adresse de l'organisation"
 
 #: field.auri.id.label:1957
 msgid "URI ID"
-msgstr ""
+msgstr "L'id URI"
 
 #: field.mcrp.id.label:4428
 msgid "Pyament ID"
@@ -123,7 +124,7 @@ msgstr ""
 
 #: field.cmfinm.params.label:558 field.crainm.params.label:627
 msgid "Parameters (JSON Array)"
-msgstr ""
+msgstr "Paramètres (liste JSON)"
 
 #: field.vii.ref.label:198 field.viiad.ref.label:246
 #: field.rocit.ref.label:8662
@@ -528,9 +529,8 @@ msgid "Valid Value"
 msgstr ""
 
 #: field.mp.check_payment.label:5161 field.mbp.check_payment.label:5189
-#, fuzzy
 msgid "Check Payment Detail"
-msgstr "Détails de paiement par carte de crédit"
+msgstr ""
 
 #: field.asvr.effective_date.label:1578
 msgid "Effective Answer Date/Time"
@@ -669,9 +669,8 @@ msgstr ""
 
 #: field.cwa.active.label:1200 field.chmm.active.label:1223
 #: field.ccmm.active.label:1273 field.scap.active.label:3516
-#, fuzzy
 msgid "Active?"
-msgstr "Est actif"
+msgstr ""
 
 #: class.ascecm.label:3984
 msgid "Statistical Category Entry Copy Map"
@@ -1649,9 +1648,8 @@ msgid "Datatype Name"
 msgstr ""
 
 #: field.sre.active.label:3479
-#, fuzzy
 msgid "Is Active"
-msgstr "Est actif"
+msgstr ""
 
 #: field.czs.attrs.label:700
 msgid "Attrs"
@@ -1723,9 +1721,8 @@ msgstr ""
 
 #: field.aua.street2.label:2755 field.acqpca.street2.label:5849
 #: field.stgma.street2.label:7427 field.stgba.street2.label:7442
-#, fuzzy
 msgid "Street (2)"
-msgstr "Rue 2"
+msgstr ""
 
 #: field.qsq.use_distinct.label:7568
 msgid "Use DISTINCT"
@@ -2116,9 +2113,8 @@ msgid "Receiver"
 msgstr ""
 
 #: field.mp.cash_payment.label:5158 field.mbp.cash_payment.label:5186
-#, fuzzy
 msgid "Cash Payment Detail"
-msgstr "Détails de paiement par carte de crédit"
+msgstr ""
 
 #: field.vmp.id.label:144 field.vibtf.id.label:167 field.mfr.id.label:2477
 msgid "Field ID"
@@ -2147,9 +2143,8 @@ msgstr ""
 
 #: field.aua.street1.label:2754 field.acqpca.street1.label:5848
 #: field.stgma.street1.label:7426 field.stgba.street1.label:7441
-#, fuzzy
 msgid "Street (1)"
-msgstr "Rue 1"
+msgstr ""
 
 #: field.au.second_given_name.label:2315
 #: field.stgu.second_given_name.label:7401
@@ -4373,9 +4368,8 @@ msgstr ""
 
 #: field.mp.credit_payment.label:5160 field.mbp.credit_payment.label:5188
 #: field.mndp.credit_payment.label:5217
-#, fuzzy
 msgid "Credit Payment Detail"
-msgstr "Détails de paiement par carte de crédit"
+msgstr ""
 
 #: field.sdist.unit_label_suffix.label:3610
 msgid "Unit Label Suffix"
@@ -4549,9 +4543,8 @@ msgid "Classic Circulation View"
 msgstr ""
 
 #: field.aihu.id.label:1515 field.ancihu.id.label:1529
-#, fuzzy
 msgid "Use ID"
-msgstr "Code d’utilisateur"
+msgstr ""
 
 #: field.atc.dest_recv_time.label:1545 field.artc.dest_recv_time.label:5310
 #: field.ahtc.dest_recv_time.label:5345 field.iatc.dest_recv_time.label:8514
@@ -4653,9 +4646,8 @@ msgstr ""
 
 #: field.mp.goods_payment.label:5164 field.mbp.goods_payment.label:5192
 #: field.mndp.goods_payment.label:5216
-#, fuzzy
 msgid "Goods Payment Detail"
-msgstr "Détails de paiement par carte de crédit"
+msgstr ""
 
 #: class.rmobbol.label:8694
 msgid "Open Circulation Balance by Owning Library"
@@ -4986,9 +4978,8 @@ msgid "Identification Name"
 msgstr ""
 
 #: field.sunit.cost.label:3805 field.acp.cost.label:4810
-#, fuzzy
 msgid "Cost"
-msgstr "Hôte"
+msgstr ""
 
 #: field.mbt.circulation.label:4570
 msgid "Circulation Billing link"
@@ -5357,7 +5348,8 @@ msgid "In House Use"
 msgstr ""
 
 #: class.ccmcmtm.label:1348
-msgid "Circulation Matrix Circulation Modifier Subtest Circulation Modifier Set"
+msgid ""
+"Circulation Matrix Circulation Modifier Subtest Circulation Modifier Set"
 msgstr ""
 
 #: field.qsq.limit_count.label:7572
@@ -5868,9 +5860,8 @@ msgid "First Name"
 msgstr ""
 
 #: field.acqpa.post_code.label:5782
-#, fuzzy
 msgid "Post Code"
-msgstr "Code postal"
+msgstr ""
 
 #: field.atc.source_send_time.label:1551
 #: field.artc.source_send_time.label:5316
@@ -6164,9 +6155,8 @@ msgid "Overdue Circulation"
 msgstr ""
 
 #: field.bre.active.label:2031
-#, fuzzy
 msgid "Is Active?"
-msgstr "Est actif"
+msgstr ""
 
 #: field.ausp.stop_date.label:2727
 msgid "Stop Date"
@@ -6199,9 +6189,8 @@ msgstr ""
 #: field.auri.active.label:1961 field.au.active.label:2284
 #: field.sra.active.label:4030 field.acqpro.active.label:5601
 #: field.acqf.active.label:6063
-#, fuzzy
 msgid "Active"
-msgstr "Est actif"
+msgstr ""
 
 #: field.bram.value.label:3241
 msgid "Attribute Value"
@@ -6421,7 +6410,7 @@ msgstr ""
 
 #: field.atevdef.params.label:875
 msgid "Parameters"
-msgstr ""
+msgstr "Paramètres"
 
 #: field.ahn.id.label:3398
 msgid "Notification ID"
@@ -6453,9 +6442,8 @@ msgid "Full Authority Record"
 msgstr ""
 
 #: field.ocirccount.lost.label:2869 field.ocirclist.lost.label:2911
-#, fuzzy
 msgid "Lost"
-msgstr "Hôte"
+msgstr ""
 
 #: field.au.dob.label:2294 field.rud.dob.label:7067 field.stgu.dob.label:7406
 msgid "Date of Birth"

@@ -1,0 +1,178 @@
+# Armenian translation for evergreen
+# Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2011-07-13 17:13+0000\n"
+"Last-Translator: Serj Safarian <serjsafarian@gmail.com>\n"
+"Language-Team: Armenian <hy@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2011-07-14 04:33+0000\n"
+"X-Generator: Launchpad (build 13405)\n"
+
+#: Searcher.js:site
+msgid "Site"
+msgstr "Կայք"
+
+#: Searcher.js:before
+msgid "Published Before"
+msgstr "Հրատարակված մինչեւ"
+
+#: Searcher.js:lit_form
+msgid "Literary Form"
+msgstr "Գեղարվեստական ձեւը"
+
+#: Searcher.js:metabib
+msgid "Metarecord Search"
+msgstr "Մետագրառման որոնում"
+
+#: Searcher.js:contains
+msgid "Contains"
+msgstr "Պարունակում է"
+
+#: Searcher.js:more
+msgid "More..."
+msgstr "Ավելին..."
+
+#: Searcher.js:after
+msgid "Published After"
+msgstr "Հրատարակված հետո"
+
+#: Searcher.js:basic
+msgid "Basic"
+msgstr "Հիմնական"
+
+#: Searcher.js:modifiers
+msgid "Modifiers"
+msgstr "Ձեւափոխիչներ"
+
+#: Searcher.js:item_type
+msgid "Type"
+msgstr "Տեսակը"
+
+#: Searcher.js:depth
+msgid "Search Depth"
+msgstr "Որոնման խորությունը"
+
+#: Searcher.js:available
+msgid "Available"
+msgstr "Մատչելի"
+
+#: Searcher.js:classed_searches
+msgid "Classed Searches"
+msgstr "Դասային որոնումներ"
+
+#: Searcher.js:item_form
+msgid "Form"
+msgstr "Ձեւ"
+
+#: Searcher.js:new_modifier
+msgid "New Modifier"
+msgstr "Նոր ձեւափոխիչ"
+
+#: Searcher.js:less
+msgid "...Less"
+msgstr "...Պակաս"
+
+#: Searcher.js:modifier_default
+msgid "-- Select a Modifier --"
+msgstr "-- Ընտրե՛ք ձեւափոխիչը --"
+
+#: Searcher.js:during
+msgid "In Publication"
+msgstr "Հրատարակման մեջ"
+
+#: Searcher.js:exact
+msgid "Exactly Matches"
+msgstr "Ճշգրտորեն համընկնում է"
+
+#: Searcher.js:advanced
+msgid "Advanced"
+msgstr "Խորացված"
+
+#: Searcher.js:between
+msgid "Published Between"
+msgstr "Հրատարակված միջեւ"
+
+#: Searcher.js:new_filter
+msgid "New Filter"
+msgstr "Նոր զտիչ"
+
+#: Searcher.js:faceted_searches
+msgid "Facets"
+msgstr "Նիստեր"
+
+#: Searcher.js:perform_search
+msgid "Go!"
+msgstr "Առա՛ջ"
+
+#: Searcher.js:remove
+msgid "Remove"
+msgstr "Հեռացնել"
+
+#: Searcher.js:audience
+msgid "Audience"
+msgstr "Լսարան"
+
+#: Searcher.js:format
+msgid "Type and Form"
+msgstr "Ձեւի տեսակը"
+
+#: Searcher.js:descending
+msgid "Sort Descending"
+msgstr "Տեսակավորել ըստ նվազման"
+
+#: Searcher.js:new_facet
+msgid "New Facet"
+msgstr "Նոր նիստը"
+
+#: Searcher.js:and
+msgid "AND"
+msgstr "AND"
+
+#: Searcher.js:vr_format
+msgid "Videorecording Format"
+msgstr "Տեսագրման ձեւաչափը"
+
+#: Searcher.js:staff
+msgid "Staff Search"
+msgstr "Աշխատակազմի որոնում"
+
+#: Searcher.js:notcontains
+msgid "Does Not Contain"
+msgstr "Չի պարունակում"
+
+#: Searcher.js:sort
+msgid "Sort Axis"
+msgstr "Տեսակավորման առանցք"
+
+#: Searcher.js:filters
+msgid "Filters"
+msgstr "Զտիչներ"
+
+#: Searcher.js:bib_level
+msgid "Bibliographic Level"
+msgstr "Մատենագիտական մակարդակ"
+
+#: Searcher.js:filter_default
+msgid "-- Select a Filter --"
+msgstr "-- Ընտրե՛ք զտիչը --"
+
+#: Searcher.js:ascending
+msgid "Sort Ascending"
+msgstr "Տեսակավորել ըստ աճման"
+
+#: Searcher.js:or
+msgid "OR"
+msgstr "ԿԱՄ"
+
+#: Searcher.js:statuses
+msgid "Statuses"
+msgstr "Կարգավիճակները"

@@ -2,19 +2,20 @@
 # Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 21:45:32-0400\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
 "PO-Revision-Date: 2011-07-03 15:43+0000\n"
 "Last-Translator: Linda Jansova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Launchpad (build 13168)\n"
 "X-Launchpad-Export-Date: 2011-07-04 04:49+0000\n"
+"X-Generator: Launchpad (build 13168)\n"
 
 #: XULTermLoader.js:LABEL_TEXT
 msgid " term(s) loaded"
@@ -29,7 +30,9 @@ msgid "You have already loaded the maximum number of terms."
 msgstr "Již jste načetli maximální počet termínů"
 
 #: XULTermLoader.js:TERM_LIMIT_SOME
-msgid "Could not load all terms from the file without exceeding maximum number of terms. Some data not included."
+msgid ""
+"Could not load all terms from the file without exceeding maximum number of "
+"terms. Some data not included."
 msgstr ""
 "Nelze načíst všechny termíny ze souboru, aniž by byl překročen maximální "
 "počet termínů. Některá data nebudou zahrnuta."

@@ -2,11 +2,11 @@
 # Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR: Job Diógenes Ribeiro Borges, 2009.
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/patron.properties
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:45-0400\n"
 "PO-Revision-Date: 2010-02-22 21:57+0000\n"
 "Last-Translator: jobdrb <jobdrb@gmail.com>\n"
@@ -14,9 +14,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.8.1\n"
-"X-Accelerator-Marker: &\n"
 "X-Launchpad-Export-Date: 2011-05-18 04:47+0000\n"
+"X-Generator: Launchpad (build 12959)\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -111,12 +110,14 @@ msgstr ""
 "selecionadas."
 
 #: staff.patron.bill_details.handle_edit_payment_note.note_dialog.title
-msgctxt "staff.patron.bill_details.handle_edit_payment_note.note_dialog.title"
+msgctxt ""
+"staff.patron.bill_details.handle_edit_payment_note.note_dialog.title"
 msgid "Replacement Note"
 msgstr "Nota de Substituição"
 
 #: staff.patron.bill_details.handle_edit_payment_note.note_dialog.prompt
-msgctxt "staff.patron.bill_details.handle_edit_payment_note.note_dialog.prompt"
+msgctxt ""
+"staff.patron.bill_details.handle_edit_payment_note.note_dialog.prompt"
 msgid "Enter new note:"
 msgstr "Entre com uma nova observação:"
 
@@ -132,7 +133,8 @@ msgstr "Todos lançamentos ja foram anulados."
 
 #: staff.patron.bill_details.handle_void.confirm_void_billing
 msgctxt "staff.patron.bill_details.handle_void.confirm_void_billing"
-msgid "Are you sure you would like to void $%1$s worth of line-item billings?"
+msgid ""
+"Are you sure you would like to void $%1$s worth of line-item billings?"
 msgstr "Você tem certeza que deseja anular o valor $%1$s do item da fatura?"
 
 #: staff.patron.bill_details.handle_void.confirm_void_billing_title
@@ -151,7 +153,8 @@ msgid "No"
 msgstr "Não"
 
 #: staff.patron.bill_details.handle_void.confirm_void_billing_confirm_message
-msgctxt "staff.patron.bill_details.handle_void.confirm_void_billing_confirm_message"
+msgctxt ""
+"staff.patron.bill_details.handle_void.confirm_void_billing_confirm_message"
 msgid "Check here to confirm this message"
 msgstr "Marque aqui para confirmar esta mensagem"
 
@@ -200,38 +203,32 @@ msgid "Check here to confirm this message"
 msgstr "Marque aqui para confirmar esta mensagem"
 
 #: staff.patron.bill_history.handle_void.message_plural
-#, fuzzy
 msgid "Are you sure you would like to void all billings on bills %1$s?"
-msgstr "Você tem certeza que deseja incluir um lançamento nas faturas %1$s?"
+msgstr ""
 
 #: staff.patron.bill_history.handle_void.message_singular
-#, fuzzy
 msgid "Are you sure you would like to void all billings on bill %1$s?"
-msgstr "Você tem certeza que deseja incluir um lançamento na fatura %1$s?"
+msgstr ""
 
 #: staff.patron.bill_history.handle_void.title
-#, fuzzy
 msgctxt "staff.patron.bill_history.handle_void.title"
 msgid "Void All Billings"
-msgstr "Anular Todos Faturamentos"
+msgstr ""
 
 #: staff.patron.bill_history.handle_void.btn_yes
-#, fuzzy
 msgctxt "staff.patron.bill_history.handle_void.btn_yes"
 msgid "Yes"
-msgstr "Sim"
+msgstr ""
 
 #: staff.patron.bill_history.handle_void.btn_no
-#, fuzzy
 msgctxt "staff.patron.bill_history.handle_void.btn_no"
 msgid "No"
-msgstr "Não"
+msgstr ""
 
 #: staff.patron.bill_history.handle_void.confirm_message
-#, fuzzy
 msgctxt "staff.patron.bill_history.handle_void.confirm_message"
 msgid "Check here to confirm this message"
-msgstr "Marque para confirmar esta mensagem"
+msgstr ""
 
 #: staff.patron.bills.handle_refund.message_plural
 msgid ""
@@ -256,22 +253,19 @@ msgid "Refund Excess Payment"
 msgstr ""
 
 #: staff.patron.bills.handle_refund.btn_yes
-#, fuzzy
 msgctxt "staff.patron.bills.handle_refund.btn_yes"
 msgid "Yes"
-msgstr "Sim"
+msgstr ""
 
 #: staff.patron.bills.handle_refund.btn_no
-#, fuzzy
 msgctxt "staff.patron.bills.handle_refund.btn_no"
 msgid "No"
-msgstr "Não"
+msgstr ""
 
 #: staff.patron.bills.handle_refund.confirm_message
-#, fuzzy
 msgctxt "staff.patron.bills.handle_refund.confirm_message"
 msgid "Check here to confirm this message"
-msgstr "Marque para confirmar esta mensagem"
+msgstr ""
 
 #: staff.patron.bill_history.print_bills.print_error
 msgid "printing bills"
@@ -286,10 +280,9 @@ msgid "Last Billing Type"
 msgstr ""
 
 #: staff.patron.bill_history.column.title.label
-#, fuzzy
 msgctxt "staff.patron.bill_history.column.title.label"
 msgid "Title"
-msgstr "Título"
+msgstr ""
 
 #: staff.patron.bills.init_controller.money_summary_label
 msgid "Money Summary"
@@ -370,10 +363,9 @@ msgid "Refund"
 msgstr "Re-embolso"
 
 #: staff.patron.bills.info_box.label_value.void_all_billings
-#, fuzzy
 msgctxt "staff.patron.bills.info_box.label_value.void_all_billings"
 msgid "Void All Billings"
-msgstr "Anular Todos Faturamentos"
+msgstr ""
 
 #: staff.patron.bills.info_box.label_value.full_details
 msgid "Full Details"
@@ -385,7 +377,8 @@ msgstr "Todas os lançamentos já foram anulados nesta fatura."
 
 #: staff.patron.bills.void_all_billings.void.message
 msgctxt "staff.patron.bills.void_all_billings.void.message"
-msgid "Are you sure you would like to void $%1$s worth of line-item billings?"
+msgid ""
+"Are you sure you would like to void $%1$s worth of line-item billings?"
 msgstr "Você tem certeza que deseja anular o valor $%1$s do item da fatura?"
 
 #: staff.patron.bills.void_all_billings.void.title
@@ -415,7 +408,7 @@ msgstr "Erro ao anular faturas."
 
 #: staff.patron.bills.void_all_billings.billings_voided
 msgid "Billings voided."
-msgstr "Lançamentos anulados."
+msgstr ""
 
 #: staff.patron.bill_wizard.patron_bill_finish.billing_added
 msgid "Billing added."
@@ -466,11 +459,6 @@ msgstr ""
 "O usuário que você está tentando excluir tem privilégios ADMINISTRATIVOS. "
 "Por favor introduza o código de barra para o usuário de destino receber os "
 "artefatos (relatórios, etc) do usuário excluído:"
-
-#: staff.patron.display.cmd_patron_delete.dest_user.default_value
-msgctxt "staff.patron.display.cmd_patron_delete.dest_user.default_value"
-msgid ""
-msgstr ""
 
 #: staff.patron.display.cmd_patron_delete.dest_user.title
 msgid "Destination User"
@@ -531,8 +519,7 @@ msgstr "Alerta"
 
 #: staff.patron.display.init.network_request.window_message
 msgid ""
-"Press a navigation button above (for example, Check Out) to clear this "
-"alert."
+"Press a navigation button above (for example, Check Out) to clear this alert."
 msgstr ""
 "Pressione o botão de navegação acima (exemplo, Dar Saída) para limpar este "
 "alerta."
@@ -642,9 +629,8 @@ msgid "By Staff"
 msgstr "Pelo Admin."
 
 #: staff.patron.hold_notes.by_patron
-#, fuzzy
 msgid "By Patron "
-msgstr "Por Leitor"
+msgstr ""
 
 #: staff.patron.hold_notes.new_note.public
 msgid "Public?"
@@ -722,16 +708,16 @@ msgstr "Escolha a Biblioteca de Retirada"
 
 #: staff.patron.holds.holds_edit_selection_depth.modify_holds_message.singular
 msgid ""
-"Are you sure you would like to change the Hold Range for hold %1$s to \"%"
-"2$s\"?;"
+"Are you sure you would like to change the Hold Range for hold %1$s to "
+"\"%2$s\"?;"
 msgstr ""
 "Você tem certeza que deseja alterar a abrangência de reserva para a reserva "
 "%1$s para \"%2$s\"?;"
 
 #: staff.patron.holds.holds_edit_selection_depth.modify_holds_message.plural
 msgid ""
-"Are you sure you would like to change the Hold Range for holds %1$s to \"%"
-"2$s\"?;"
+"Are you sure you would like to change the Hold Range for holds %1$s to "
+"\"%2$s\"?;"
 msgstr ""
 "Você tem certeza que deseja alterar a abrangência de reserva para as "
 "reservas %1$s para \"%2$s\"?;"
@@ -776,8 +762,8 @@ msgstr "Escolha a Biblioteca de Retirada"
 
 #: staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_message.singular
 msgid ""
-"Are you sure you would like to change the Pick Up Library for hold %1$s to %"
-"2$s?"
+"Are you sure you would like to change the Pick Up Library for hold %1$s to "
+"%2$s?"
 msgstr ""
 "Você tem certeza que deseja alterar a biblioteca de retirada para a reserva "
 "%1$s para %2$s?"
@@ -888,7 +874,8 @@ msgid "Set Email Notification for Holds"
 msgstr "Define a notificação por e-mail para reservas"
 
 #: staff.patron.holds.holds_edit_email_notify.enable_email.singular
-msgid "Are you sure you would like to enable email notification for hold %1$s?"
+msgid ""
+"Are you sure you would like to enable email notification for hold %1$s?"
 msgstr ""
 "Você tem certeza que deseja habilitar a notificação por e-mail para a "
 "reserva %1$s?"
@@ -960,7 +947,8 @@ msgstr "Por no Topo da Fila (Forçar para Frente) para Reservas"
 
 #: staff.patron.holds.holds_cut_in_line.enable_cut.singular
 msgid "Are you sure you would like to enable Top of Queue for hold %1$s?"
-msgstr "Você tem certeza que deseja habilitar Topo da Fila para a reserva %1$s?"
+msgstr ""
+"Você tem certeza que deseja habilitar Topo da Fila para a reserva %1$s?"
 
 #: staff.patron.holds.holds_cut_in_line.enable_cut.plural
 msgid "Are you sure you would like to enable Top of Queue for holds %1$s?"
@@ -999,7 +987,8 @@ msgid "Any Condition"
 msgstr "Qualquer Condição"
 
 #: staff.patron.holds.holds_desire_mint_condition.btn_mediocre.accesskey
-msgctxt "staff.patron.holds.holds_desire_mint_condition.btn_mediocre.accesskey"
+msgctxt ""
+"staff.patron.holds.holds_desire_mint_condition.btn_mediocre.accesskey"
 msgid "A"
 msgstr "I"
 
@@ -1019,16 +1008,16 @@ msgstr "Definir Qualidade Desejada do Exemplar para Reservas"
 
 #: staff.patron.holds.holds_desire_mint_condition.enable_good.singular
 msgid ""
-"Are you sure you would like to restrict to Good Condition copies for hold %"
-"1$s?"
+"Are you sure you would like to restrict to Good Condition copies for hold "
+"%1$s?"
 msgstr ""
 "Você tem certeza que deseja restringir para exemplares em Boa Condição para "
 "a reserva %1$s?"
 
 #: staff.patron.holds.holds_desire_mint_condition.enable_good.plural
 msgid ""
-"Are you sure you would like to restrict to Good Condition copies for holds %"
-"1$s?"
+"Are you sure you would like to restrict to Good Condition copies for holds "
+"%1$s?"
 msgstr ""
 "Você tem certeza que deseja restringir para exemplares em Boa Condição para "
 "as reservas %1$s?"
@@ -1149,10 +1138,9 @@ msgid "error spawning user editors"
 msgstr "erro ao chamar editores de usuário"
 
 #: staff.patron.info_group.spawn_editor.editing_patron
-#, fuzzy
 msgctxt "staff.patron.info_group.spawn_editor.editing_patron"
 msgid "Editing Related Patron"
-msgstr "Editando Leitor Relacionado"
+msgstr ""
 
 #: staff.patron.info_group.spawn_search
 msgid "spawn search"
@@ -1468,16 +1456,14 @@ msgid "Renew probably did not happen."
 msgstr "A renovação provavelmente não foi realizada."
 
 #: staff.patron.items.items_edit.renew_with_date.title
-#, fuzzy
 msgctxt "staff.patron.items.items_edit.renew_with_date.title"
 msgid "Renew with Due Date"
-msgstr "Renovar com Data de Vencimento"
+msgstr ""
 
 #: staff.patron.items.items_edit.renew_with_date.description
-#, fuzzy
 msgctxt "staff.patron.items.items_edit.renew_with_date.description"
 msgid "Renew with Due Date"
-msgstr "Renovar com Data de Vencimento"
+msgstr ""
 
 #: staff.patron.items.items_edit.renew_with_date.prompt
 msgid "Enter a new due date for these items to be renewed: %1$s"
@@ -1562,8 +1548,10 @@ msgid "Retrieving title..."
 msgstr "Obtendo título..."
 
 #: staff.patron.items.retrieve_row.callback_error
-msgid "Error in callback for FM_CIRC_DETAILS.authoritative in patron/items.js"
-msgstr "Erro no callback para FM_CIRC_DETAILS.authoritative em patron/items.js"
+msgid ""
+"Error in callback for FM_CIRC_DETAILS.authoritative in patron/items.js"
+msgstr ""
+"Erro no callback para FM_CIRC_DETAILS.authoritative em patron/items.js"
 
 #: staff.patron.items.retrieve_row.error_in_retrieve_row
 msgid "error in patron/items.js retrieve_row():"
@@ -1851,8 +1839,7 @@ msgstr ""
 msgid ""
 "<div>Replaces address <b>%1$s</b><br/> %2$s %3$s<br/> %4$s, %5$s %6$s</div>"
 msgstr ""
-"<div>Substitui endereço <b>%1$s</b><br/> %2$s %3$s<br/> %4$s, %5$s %"
-"6$s</div>"
+"<div>Substitui endereço <b>%1$s</b><br/> %2$s %3$s<br/> %4$s, %5$s %6$s</div>"
 
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode
 #: staff.circ.work_log_patron_edit.message
@@ -1872,6 +1859,9 @@ msgstr ""
 
 #~ msgid "Editor would like to search for: %1$s"
 #~ msgstr "Editor deseja procurar por: %1$s"
+
+#~ msgid "By Patron"
+#~ msgstr "Por Leitor"
 
 #~ msgctxt "staff.patron.info_group.spwan_editor.editing_patron"
 #~ msgid "Editing Related Patron"

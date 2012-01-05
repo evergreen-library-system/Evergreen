@@ -1,5 +1,4 @@
 # extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
-#. extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -11,9 +10,19 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.8.1\n"
-"X-Accelerator-Marker: &\n"
 "X-Launchpad-Export-Date: 2011-05-25 04:40+0000\n"
+"X-Generator: Launchpad (build 12959)\n"
+"X-Accelerator-Marker: &\n"
+
+#: common.cancel.label
+msgctxt "common.cancel.label"
+msgid "Cancel"
+msgstr "Չեղարկել"
+
+#: cat.opac.cancel
+msgctxt "cat.opac.cancel"
+msgid "Cancel"
+msgstr "Չեղարկել"
 
 #: common.exception
 msgid ""
@@ -43,11 +52,6 @@ msgstr "Լավ"
 #: common.ok.accesskey
 msgid "O"
 msgstr "O"
-
-#: common.cancel.label
-msgctxt "common.cancel.label"
-msgid "Cancel"
-msgstr "Չեղարկել"
 
 #: common.cancel.accesskey
 msgctxt "common.cancel.accesskey"
@@ -135,8 +139,10 @@ msgid "Delete"
 msgstr "Ջնջել"
 
 #: cat.opac.undelete_record.confirm
-msgid "Are you sure you want to undelete title record #%1$s from the catalog?"
-msgstr "Վստա՞հ ես որ ցանկանում ես հետ ջնջել վերնագրի գրառումը #%1$s քարտարանից:"
+msgid ""
+"Are you sure you want to undelete title record #%1$s from the catalog?"
+msgstr ""
+"Վստա՞հ ես որ ցանկանում ես հետ ջնջել վերնագրի գրառումը #%1$s քարտարանից:"
 
 #: cat.opac.undelete_record
 msgid "Undelete Record"
@@ -145,11 +151,6 @@ msgstr "Հետ ջնջել գրառումը"
 #: cat.opac.undelete
 msgid "Undelete"
 msgstr "Հետ ջնջել"
-
-#: cat.opac.cancel
-msgctxt "cat.opac.cancel"
-msgid "Cancel"
-msgstr "Չեղարկել"
 
 #: cat.opac.record_deleted
 msgid "Record deleted."
@@ -280,15 +281,16 @@ msgstr "Զգուշացում: Սրա համար %1$s, այս շտրիխ կոդը
 
 #: circ.offline_checkout.barcode.flagged.blocked
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Blocked."
-msgstr "Զգուշացում: Սրա համար %1$s, այս շտրիխ կոդը (%2$s) նշված է արգելափակված:"
+msgstr ""
+"Զգուշացում: Սրա համար %1$s, այս շտրիխ կոդը (%2$s) նշված է արգելափակված:"
 
 #: circ.offline_checkout.barcode.flagged.unknown
 msgid ""
-"Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: %"
-"3$s."
+"Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: "
+"%3$s."
 msgstr ""
-"Զգուշացում: Սրա համար %1$s, այս շտրիխ կոդը (%2$s) նշված է չճանաչված կոդով: %"
-"3$s."
+"Զգուշացում: Սրա համար %1$s, այս շտրիխ կոդը (%2$s) նշված է չճանաչված կոդով: "
+"%3$s."
 
 #: circ.offline_checkout.date.early
 msgid "Due date needs to be after today."
@@ -454,7 +456,8 @@ msgstr "Անվանափոխումը չկայացավ: Շտրիխ կոդը չի կ
 
 #: menu.cmd_replace_barcode.duplicate.error
 msgid "Rename aborted.  Another copy has barcode \"%1$s\"."
-msgstr "Անվանափոխումը չկայացավ: Նույն շտրիխ կոդը մեկ այլ օրինակ ունի \"%1$s\":"
+msgstr ""
+"Անվանափոխումը չկայացավ: Նույն շտրիխ կոդը մեկ այլ օրինակ ունի \"%1$s\":"
 
 #: menu.cmd_replace_barcode.testing.error
 msgid "Error testing replacement barcode \"%1$s\"."
@@ -882,8 +885,7 @@ msgstr ""
 "Կրկնել Ցանցը։ Եթե ցանկանում ես մուտք գործել ավտոնոմ ռեժիմ, ընտրիր Անտեսիր "
 "Սխալները և համապատասխան երկխոսությունները։ Եթե վստահ ես որ այս սխալը "
 "Էվերգրինի թերություններից է և ոչ թե ցանցային պրոբլեմ է, կապվիր օգնւթյան "
-"սեղանի կամ Էվերգրինի աշխատակազմի հետ, և նրանց տրամադրիր այս "
-"տեղեկատվությունը։"
+"սեղանի կամ Էվերգրինի աշխատակազմի հետ, և նրանց տրամադրիր այս տեղեկատվությունը։"
 
 #: network.server.method
 msgid "method=%1$s"
@@ -1035,7 +1037,8 @@ msgid "=-=-="
 msgstr "=-=-="
 
 #: menu.cmd_survey_wizard.inadequate_perm
-msgid "You are lacking the CREATE_SURVEY permission and/or working locations."
+msgid ""
+"You are lacking the CREATE_SURVEY permission and/or working locations."
 msgstr ""
 "Դու ցանկանում ես ձեռք բերել CREATE_SURVEY արտոնություն և/կամ աշխատանքային "
 "տեղաբաշխումներ։"
@@ -1215,7 +1218,8 @@ msgid "Record with TCN %1$s targeted for Multi-Bib items."
 msgstr "Այս TCN-ով գրառումը %1$s թիրախավորված է բազմա-մատեն նյութերի համար։"
 
 #: staff.cat.copy_browser.marked_record_for_multi_home_indicator.record_id.label
-msgctxt "staff.cat.copy_browser.marked_record_for_multi_home_indicator.record_id.label"
+msgctxt ""
+"staff.cat.copy_browser.marked_record_for_multi_home_indicator.record_id.label"
 msgid "Record with ID %1$s targeted for Multi-Bib items."
 msgstr "Այս ID-ով գրառումը %1$s թիրախավորված է բազմա-մատեն նյութերի համար։"
 
@@ -1268,8 +1272,8 @@ msgstr "Վերատպելու համար ոչինչ չկա"
 
 #: printing.prompt_for_external_print_cmd
 msgid ""
-"Enter external print command and parameters (use %receipt.txt% or %"
-"receipt.html% as the file containing the print data. Those values will be "
+"Enter external print command and parameters (use %receipt.txt% or "
+"%receipt.html% as the file containing the print data. Those values will be "
 "substituted with the proper path.):"
 msgstr ""
 "Մուտք արա արտաքին տպելու հրամանները և պարամետրերը (օգտագործիր %receipt.txt% "
@@ -1286,8 +1290,8 @@ msgid ""
 "file containing the text. This value will be substituted with the proper "
 "path.):"
 msgstr ""
-"Մուտք արա արտաքին տեքստային խմբագրիչի հրամանը և պարամետրերը։ (օգտագործիր %"
-"letter.txt% որպես ֆայլ որը պարունակում է տեքստը։ Այս արժեքը կփոխարինվի ճիշտ "
+"Մուտք արա արտաքին տեքստային խմբագրիչի հրամանը և պարամետրերը։ (օգտագործիր "
+"%letter.txt% որպես ֆայլ որը պարունակում է տեքստը։ Այս արժեքը կփոխարինվի ճիշտ "
 "ուղիով):"
 
 #: menu.tab1.accesskey
@@ -1332,7 +1336,8 @@ msgstr "0"
 
 #: browser.reload.unsaved_data_warning
 msgid "This page may have unsaved data. Reload it anyway?"
-msgstr "Այս էջը կարող է ունենալ չհիշված տվյալ։ Վերաբեռնավորե՞լ այնուամենայնիվ։"
+msgstr ""
+"Այս էջը կարող է ունենալ չհիշված տվյալ։ Վերաբեռնավորե՞լ այնուամենայնիվ։"
 
 #: menu.close_tab.unsaved_data_warning
 msgid "This tab may have unsaved data. Close it anyway?"

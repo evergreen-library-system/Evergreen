@@ -1,5 +1,4 @@
 # extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/cat.properties
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/cat.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -11,9 +10,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.8.1\n"
-"X-Accelerator-Marker: &\n"
 "X-Launchpad-Export-Date: 2011-05-18 04:39+0000\n"
+"X-Generator: Launchpad (build 12959)\n"
+"X-Accelerator-Marker: &\n"
 
 #: bib.no_marc
 msgid "No MARC Record"
@@ -352,7 +351,8 @@ msgstr "Ցանկալի չէ բոլոր օրինակների տեղափոխում
 #: staff.cat.copy_browser.link_as_multi_bib.missing_bib
 msgid ""
 "Please Mark a bib record as a Target for Foreign Items and try this again."
-msgstr "Նշիր մատեն գրառումը որպես Թիրախ օտարրկրյա նյութերի համար և փորձիր նորից"
+msgstr ""
+"Նշիր մատեն գրառումը որպես Թիրախ օտարրկրյա նյութերի համար և փորձիր նորից"
 
 #: staff.cat.copy_browser.missing_library
 msgid "Missing library list."
@@ -488,8 +488,8 @@ msgid ""
 "Transfer the items in bucket \"%1$s\" from their original volumes to the "
 "volume labelled \"%2$s\" for the library \"%3$s\" on the following record?"
 msgstr ""
-"Տեղափոխե՞լ փնջի նյութերը \"%1$s\" իրենց իրական հատորներից դեպի հատորներ նշված "
-"\"%2$s\" այս գրադարանի համար \"%3$s\" հետևյալ գրառումների համար:"
+"Տեղափոխե՞լ փնջի նյութերը \"%1$s\" իրենց իրական հատորներից դեպի հատորներ "
+"նշված \"%2$s\" այս գրադարանի համար \"%3$s\" հետևյալ գրառումների համար:"
 
 #: staff.cat.copy_buckets.copy_buckets_transfer_to_volume.error
 msgid "Items not likely transferred."
@@ -1403,7 +1403,8 @@ msgstr "Փնջի ստեղծումը ձախողվեց:"
 
 #: staff.cat.record_buckets_quick.add_to_bucket.addition_failed
 msgid "Addition likely failed for bucket = %1$s and record ID = %2$s"
-msgstr "Հավանաբար փունջը = %1$s և գրառում  ID = %2$s համար հավելումը ձախողվեց:"
+msgstr ""
+"Հավանաբար փունջը = %1$s և գրառում  ID = %2$s համար հավելումը ձախողվեց:"
 
 #: staff.cat.record_buckets.menulist.change_bucket.undefined
 msgctxt "staff.cat.record_buckets.menulist.change_bucket.undefined"
@@ -1581,7 +1582,8 @@ msgstr "Դիտել"
 #: staff.cat.util.mark_item_damaged.af_message
 msgid ""
 "Action failed.  One or more of these items is in a special status such as "
-"\"Checked Out\" or \"In Transit\" and cannot be changed to the Damaged status."
+"\"Checked Out\" or \"In Transit\" and cannot be changed to the Damaged "
+"status."
 msgstr ""
 "Գործողությունը տապալվեց: Այս նյութերից մեկը կամ մի քանիսը գտնվում են հատուկ "
 "կարգավիճակում, ասենք \"Սպասարկված\" կամ \"Տեղափոխման մեջ\" և հնարավոր չէ "
@@ -1695,7 +1697,8 @@ msgstr "%1$s նյութեր նշված են վնասված:"
 #: staff.cat.util.mark_item_missing.af_message
 msgid ""
 "Action failed.  One or more of these items is in a special status such as "
-"\"Checked Out\" or \"In Transit\" and cannot be changed to the Missing status."
+"\"Checked Out\" or \"In Transit\" and cannot be changed to the Missing "
+"status."
 msgstr ""
 "Գործողությունը տապալվեց: Այս նյութերից մեկը կամ մի քանիսը գտնվում են հատուկ "
 "կարգավիճակում, ասենք \"Սպասարկված\" կամ \"Տեղափոխման մեջ\" և հնարավոր չէ "
@@ -1787,7 +1790,8 @@ msgid "%1$s items marked as missing pieces."
 msgstr "%1$s նյութերը նշված են որպես կորած կտորներ"
 
 #: staff.cat.util.mark_item_missing_pieces.circ_not_found
-msgid "No circulation found for item with barcode %1$s.  Item left unmodified."
+msgid ""
+"No circulation found for item with barcode %1$s.  Item left unmodified."
 msgstr ""
 "Չի գտնվել սպասարկում նյութի համար հետևյալ շտրիխ կոդով %1$s: Նյութը թողնված է "
 "չփոփոխված:"
@@ -2051,14 +2055,10 @@ msgstr ""
 "ԶԳՈՒՇԱՑՈՒՄ: Սա պարզ որոնում չէ ըստ վճռորոշ բառի։  Մուտք արա z39.50 PQN "
 "փնտրման տողը: "
 
-#: staff.cat.z3950.initial_search.raw_prompt.default_value
-msgctxt "staff.cat.z3950.initial_search.raw_prompt.default_value"
-msgid ""
-msgstr ""
-
 #: staff.cat.z3950.initial_search.raw_search_unsupported_for_native_catalog
 msgid "Raw z39.50 PQN search not yet implemented for native catalog."
-msgstr "Մոտավոր z39.50 PQN փնտրումը դեռ ներդրված չէ հիմնական քարտարանի համար։"
+msgstr ""
+"Մոտավոր z39.50 PQN փնտրումը դեռ ներդրված չէ հիմնական քարտարանի համար։"
 
 #: staff.cat.z3950.page_next.more_results
 msgid "Retrieving more results..."

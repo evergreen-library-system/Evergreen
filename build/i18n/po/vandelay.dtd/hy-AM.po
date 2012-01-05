@@ -1,5 +1,4 @@
 # extracted from ../../Open-ILS/web/opac/locale/en-US/vandelay.dtd
-#. extracted from ../../Open-ILS/web/opac/locale/en-US/vandelay.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -11,9 +10,37 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.8.1\n"
-"X-Accelerator-Marker: &\n"
 "X-Launchpad-Export-Date: 2011-08-05 04:41+0000\n"
+"X-Generator: Launchpad (build 13604)\n"
+"X-Accelerator-Marker: &\n"
+
+#: vandelay.done
+msgid "Done"
+msgstr "Ավարտված է"
+
+#: vandelay.refresh
+msgid "Refresh"
+msgstr "Թարմացնել"
+
+#: vandelay.remove.advanced
+msgid "Remove (advanced)"
+msgstr "Ջնջել (ընդլայնված)"
+
+#: vandelay.update
+msgid "Update"
+msgstr "Թարմացնել"
+
+#: vandelay.uploading
+msgid "Uploading..."
+msgstr "Վերբեռնում..."
+
+#: vandelay.upload.status
+msgid "Upload Status"
+msgstr "Վերբեռնման կարգավիճակը"
+
+#: vandelay.upload
+msgid "Upload"
+msgstr "Վերբեռնում"
 
 #: vandelay.add.existing.queue
 msgid "or Add to an Existing Queue"
@@ -115,10 +142,6 @@ msgstr "Նպատակակետի վճռորոշ միավոր"
 #: vandelay.display
 msgid "Display"
 msgstr "Արտածում"
-
-#: vandelay.done
-msgid "Done"
-msgstr "Ավարտված է"
 
 #: vandelay.edit.attributes
 msgctxt "vandelay.edit.attributes"
@@ -254,14 +277,6 @@ msgstr "Գրառման հերթ"
 msgid "Record Type"
 msgstr "Գրառման տեսակ"
 
-#: vandelay.refresh
-msgid "Refresh"
-msgstr "Թարմացնել"
-
-#: vandelay.remove.advanced
-msgid "Remove (advanced)"
-msgstr "Ջնջել (ընդլայնված)"
-
 #: vandelay.remove
 msgid "Remove"
 msgstr "Հեռացնել"
@@ -340,22 +355,6 @@ msgstr ""
 #: vandelay.true
 msgid "True"
 msgstr "Ճիշտ"
-
-#: vandelay.update
-msgid "Update"
-msgstr "Թարմացնել"
-
-#: vandelay.uploading
-msgid "Uploading..."
-msgstr "Վերբեռնում..."
-
-#: vandelay.upload.status
-msgid "Upload Status"
-msgstr "Վերբեռնման կարգավիճակը"
-
-#: vandelay.upload
-msgid "Upload"
-msgstr "Վերբեռնում"
 
 #: vandelay.vandelay
 msgid "Vandelay"

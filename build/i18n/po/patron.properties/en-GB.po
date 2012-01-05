@@ -2,11 +2,11 @@
 # Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/patron.properties
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:45-0400\n"
 "PO-Revision-Date: 2009-12-31 11:39+0000\n"
 "Last-Translator: Jonathan Field <Unknown>\n"
@@ -14,9 +14,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.8.1\n"
-"X-Accelerator-Marker: &\n"
 "X-Launchpad-Export-Date: 2011-05-18 04:47+0000\n"
+"X-Generator: Launchpad (build 12959)\n"
 
 #: staff.patron.barcode_entry.user_permission_editor
 msgid "User Permission Editor"
@@ -106,12 +105,14 @@ msgid "Note for selected bills not likely updated."
 msgstr "Note for selected bills not likely updated."
 
 #: staff.patron.bill_details.handle_edit_payment_note.note_dialog.title
-msgctxt "staff.patron.bill_details.handle_edit_payment_note.note_dialog.title"
+msgctxt ""
+"staff.patron.bill_details.handle_edit_payment_note.note_dialog.title"
 msgid "Replacement Note"
 msgstr "Replacement Note"
 
 #: staff.patron.bill_details.handle_edit_payment_note.note_dialog.prompt
-msgctxt "staff.patron.bill_details.handle_edit_payment_note.note_dialog.prompt"
+msgctxt ""
+"staff.patron.bill_details.handle_edit_payment_note.note_dialog.prompt"
 msgid "Enter new note:"
 msgstr "Enter new note:"
 
@@ -125,8 +126,10 @@ msgstr "All selected billings have already voided."
 
 #: staff.patron.bill_details.handle_void.confirm_void_billing
 msgctxt "staff.patron.bill_details.handle_void.confirm_void_billing"
-msgid "Are you sure you would like to void $%1$s worth of line-item billings?"
-msgstr "Are you sure you would like to void $%1$s worth of line-item billings?"
+msgid ""
+"Are you sure you would like to void $%1$s worth of line-item billings?"
+msgstr ""
+"Are you sure you would like to void $%1$s worth of line-item billings?"
 
 #: staff.patron.bill_details.handle_void.confirm_void_billing_title
 msgctxt "staff.patron.bill_details.handle_void.confirm_void_billing_title"
@@ -144,7 +147,8 @@ msgid "No"
 msgstr "No"
 
 #: staff.patron.bill_details.handle_void.confirm_void_billing_confirm_message
-msgctxt "staff.patron.bill_details.handle_void.confirm_void_billing_confirm_message"
+msgctxt ""
+"staff.patron.bill_details.handle_void.confirm_void_billing_confirm_message"
 msgid "Check here to confirm this message"
 msgstr "Check here to confirm this message"
 
@@ -381,8 +385,10 @@ msgstr "All billings already voided on this bill."
 
 #: staff.patron.bills.void_all_billings.void.message
 msgctxt "staff.patron.bills.void_all_billings.void.message"
-msgid "Are you sure you would like to void $%1$s worth of line-item billings?"
-msgstr "Are you sure you would like to void $%1$s worth of line-item billings?"
+msgid ""
+"Are you sure you would like to void $%1$s worth of line-item billings?"
+msgstr ""
+"Are you sure you would like to void $%1$s worth of line-item billings?"
 
 #: staff.patron.bills.void_all_billings.void.title
 msgctxt "staff.patron.bills.void_all_billings.void.title"
@@ -463,11 +469,6 @@ msgstr ""
 "enter the barcode for a destination user to receive the deleted user's "
 "miscellaneous staff artifacts (reports, etc.):"
 
-#: staff.patron.display.cmd_patron_delete.dest_user.default_value
-msgctxt "staff.patron.display.cmd_patron_delete.dest_user.default_value"
-msgid ""
-msgstr ""
-
 #: staff.patron.display.cmd_patron_delete.dest_user.title
 msgid "Destination User"
 msgstr "Destination User"
@@ -527,8 +528,7 @@ msgstr "Alert"
 
 #: staff.patron.display.init.network_request.window_message
 msgid ""
-"Press a navigation button above (for example, Check Out) to clear this "
-"alert."
+"Press a navigation button above (for example, Check Out) to clear this alert."
 msgstr ""
 "Press a navigation button above (for example, Issue) to clear this alert."
 
@@ -716,19 +716,19 @@ msgstr "Choose a Pick Up Library"
 
 #: staff.patron.holds.holds_edit_selection_depth.modify_holds_message.singular
 msgid ""
-"Are you sure you would like to change the Hold Range for hold %1$s to \"%"
-"2$s\"?;"
+"Are you sure you would like to change the Hold Range for hold %1$s to "
+"\"%2$s\"?;"
 msgstr ""
-"Are you sure you would like to change the Hold Range for hold %1$s to \"%"
-"2$s\"?;"
+"Are you sure you would like to change the Hold Range for hold %1$s to "
+"\"%2$s\"?;"
 
 #: staff.patron.holds.holds_edit_selection_depth.modify_holds_message.plural
 msgid ""
-"Are you sure you would like to change the Hold Range for holds %1$s to \"%"
-"2$s\"?;"
+"Are you sure you would like to change the Hold Range for holds %1$s to "
+"\"%2$s\"?;"
 msgstr ""
-"Are you sure you would like to change the Hold Range for holds %1$s to \"%"
-"2$s\"?;"
+"Are you sure you would like to change the Hold Range for holds %1$s to "
+"\"%2$s\"?;"
 
 #: staff.patron.holds.holds_edit_selection_depth.modify_holds_title
 msgctxt "staff.patron.holds.holds_edit_selection_depth.modify_holds_title"
@@ -770,11 +770,11 @@ msgstr "Choose a Pick Up Library"
 
 #: staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_message.singular
 msgid ""
-"Are you sure you would like to change the Pick Up Library for hold %1$s to %"
-"2$s?"
+"Are you sure you would like to change the Pick Up Library for hold %1$s to "
+"%2$s?"
 msgstr ""
-"Are you sure you would like to change the Pick Up Library for hold %1$s to %"
-"2$s?"
+"Are you sure you would like to change the Pick Up Library for hold %1$s to "
+"%2$s?"
 
 #: staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_message.plural
 msgid ""
@@ -882,8 +882,10 @@ msgid "Set Email Notification for Holds"
 msgstr "Set Email Notification for Holds"
 
 #: staff.patron.holds.holds_edit_email_notify.enable_email.singular
-msgid "Are you sure you would like to enable email notification for hold %1$s?"
-msgstr "Are you sure you would like to enable email notification for hold %1$s?"
+msgid ""
+"Are you sure you would like to enable email notification for hold %1$s?"
+msgstr ""
+"Are you sure you would like to enable email notification for hold %1$s?"
 
 #: staff.patron.holds.holds_edit_email_notify.enable_email.plural
 msgid ""
@@ -985,7 +987,8 @@ msgid "Any Condition"
 msgstr "Any Condition"
 
 #: staff.patron.holds.holds_desire_mint_condition.btn_mediocre.accesskey
-msgctxt "staff.patron.holds.holds_desire_mint_condition.btn_mediocre.accesskey"
+msgctxt ""
+"staff.patron.holds.holds_desire_mint_condition.btn_mediocre.accesskey"
 msgid "A"
 msgstr "A"
 
@@ -1005,19 +1008,19 @@ msgstr "Set Desired Copy Quality for Holds"
 
 #: staff.patron.holds.holds_desire_mint_condition.enable_good.singular
 msgid ""
-"Are you sure you would like to restrict to Good Condition copies for hold %"
-"1$s?"
+"Are you sure you would like to restrict to Good Condition copies for hold "
+"%1$s?"
 msgstr ""
-"Are you sure you would like to restrict to Good Condition copies for hold %"
-"1$s?"
+"Are you sure you would like to restrict to Good Condition copies for hold "
+"%1$s?"
 
 #: staff.patron.holds.holds_desire_mint_condition.enable_good.plural
 msgid ""
-"Are you sure you would like to restrict to Good Condition copies for holds %"
-"1$s?"
+"Are you sure you would like to restrict to Good Condition copies for holds "
+"%1$s?"
 msgstr ""
-"Are you sure you would like to restrict to Good Condition copies for holds %"
-"1$s?"
+"Are you sure you would like to restrict to Good Condition copies for holds "
+"%1$s?"
 
 #: staff.patron.holds.holds_desire_mint_condition.disable_good.singular
 msgid ""
@@ -1543,8 +1546,10 @@ msgid "Retrieving title..."
 msgstr "Retrieving title..."
 
 #: staff.patron.items.retrieve_row.callback_error
-msgid "Error in callback for FM_CIRC_DETAILS.authoritative in patron/items.js"
-msgstr "Error in callback for FM_CIRC_DETAILS.authoritative in patron/items.js"
+msgid ""
+"Error in callback for FM_CIRC_DETAILS.authoritative in patron/items.js"
+msgstr ""
+"Error in callback for FM_CIRC_DETAILS.authoritative in patron/items.js"
 
 #: staff.patron.items.retrieve_row.error_in_retrieve_row
 msgid "error in patron/items.js retrieve_row():"

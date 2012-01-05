@@ -1,5 +1,4 @@
 # extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/common.properties
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/common.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > common.properties.po\n"
@@ -11,10 +10,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.8.1\n"
-"X-Accelerator-Marker: &\n"
 "X-Launchpad-Export-Date: 2011-07-19 04:39+0000\n"
+"X-Generator: Launchpad (build 13405)\n"
 "X-Poedit-Country: CANADA\n"
+"X-Accelerator-Marker: &\n"
 "X-Poedit-Language: English\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
@@ -363,31 +362,15 @@ msgctxt "staff.csp_block_circ_yes"
 msgid "Yes"
 msgstr "Yes"
 
-#: staff.csp_block_circ_no
-msgctxt "staff.csp_block_circ_no"
-"staff.csp_block_circ_no"
-msgid ""
-msgstr ""
-
 #: staff.csp_block_renew_yes
 msgctxt "staff.csp_block_renew_yes"
 msgid "Yes"
 msgstr "Yes"
 
-#: staff.csp_block_renew_no
-msgctxt "staff.csp_block_renew_no"
-msgid ""
-msgstr ""
-
 #: staff.csp_block_hold_yes
 msgctxt "staff.csp_block_hold_yes"
 msgid "Yes"
 msgstr "Yes"
-
-#: staff.csp_block_hold_no
-msgctxt "staff.csp_block_hold_no"
-msgid ""
-msgstr ""
 
 #: staff.ausp_id_label
 msgid "Penalty ID "

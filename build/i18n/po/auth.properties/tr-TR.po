@@ -2,21 +2,20 @@
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
-#. extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/auth.properties
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-07 02:03-0400\n"
-"PO-Revision-Date: 2010-05-08 14:24+0000\n"
-"Last-Translator: Ugurcan377 <Unknown>\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2010-09-15 10:50+0000\n"
+"Last-Translator: cornetto <Unknown>\n"
 "Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
-"X-Launchpad-Export-Date: 2010-05-20 05:28+0000\n"
-"X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-05-18 04:39+0000\n"
+"X-Generator: Launchpad (build 12959)\n"
 
 #: staff.auth.controller.not_configured
 msgid "Not yet configured for the specified server."
@@ -24,15 +23,15 @@ msgstr "Belirtilen sunucu henüz yapılandırılmadı."
 
 #: staff.auth.controller.testing_hostname
 msgid "Testing hostname..."
-msgstr ""
+msgstr "Sunucu adı test ediliyor..."
 
 #: staff.auth.controller.prompt_hostname
 msgid "Please enter a server hostname."
-msgstr ""
+msgstr "Lütfen sunucu adı giriniz."
 
 #: staff.auth.controller.error_hostname
 msgid "There was an error testing this hostname."
-msgstr ""
+msgstr "Girilen sunucu adı test edilirken bir sorun oluştu."
 
 #: staff.auth.controller.status
 msgid "%1$s : %2$s"
@@ -51,11 +50,15 @@ msgid ""
 "This server does not support your version of the staff client.  Please check "
 "with your system administrator."
 msgstr ""
+"Bu sunucu sizin kadro istemci sürümünüzü desteklememektedir. Lütfen sistem "
+"yöneticinize başvurun."
 
 #. # login with <username> and <password> at <server>
 #: staff.auth.controller.error_login
 msgid "login with %1$s and %2$s at %3$s"
 msgstr ""
+"%1$s kullanıcı adı ve şifre olarak %2$s ile belirtilen sunucuya giriş yapın: "
+"%3$s"
 
 #: staff.auth.controller.confirm_close
 msgid "Are you sure you would like to exit the program completely?"
@@ -75,8 +78,8 @@ msgstr ""
 
 #: staff.auth.session.init_false
 msgid "open-ils.auth.authenticate.init returned false"
-msgstr ""
+msgstr "open-ils.auth.authenticate.init hata döndürdü"
 
 #: staff.auth.titlebar.label
 msgid "Evergreen Staff Client - %1$s"
-msgstr ""
+msgstr "Evergreen Çalışan İstemcisi - %1$s"

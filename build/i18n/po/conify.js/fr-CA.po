@@ -1,17 +1,16 @@
-# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > conify.js.po\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 21:45:31-0400\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
 "PO-Revision-Date: 2010-02-02 16:31+0000\n"
 "Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: NRCan Library <Warren.Layton@nrcan.gc.ca>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Launchpad (build 12959)\n"
 "X-Launchpad-Export-Date: 2011-05-18 04:40+0000\n"
+"X-Generator: Launchpad (build 12959)\n"
 "X-Poedit-Country: CANADA\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -35,8 +34,7 @@ msgstr "Les changements apportés à ${0} ont été enregistrés."
 #: conify.js:ERROR_FETCHING_PHYSICAL
 msgid "Problem fetching Physical Address for ${0}"
 msgstr ""
-"Un problème se produit en cherchant le contenu de l’adresse physique de "
-"${0}."
+"Un problème se produit en cherchant le contenu de l’adresse physique de ${0}."
 
 #: conify.js:SURVEY_ADD_ANSWER
 msgid "Add Answer"
@@ -82,7 +80,8 @@ msgstr "Un problème se produit en créant un groupe enfant."
 
 #: conify.js:SUCCESS_SAVE_PERM
 msgid "Saved permission changes to ${0}"
-msgstr "Les changements apportés aux permissions de ${0} ont été enregistrés."
+msgstr ""
+"Les changements apportés aux permissions de ${0} ont été enregistrés."
 
 #: conify.js:SURVEY_DELETE_ANSWER
 msgid "Delete Answer"
@@ -130,7 +129,9 @@ msgstr ""
 "${0}."
 
 #: conify.js:CONFIRM_EXIT_AOU
-msgid "There are unsaved changes to one or more organizational units. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved changes to one or more organizational units. Click OK to "
+"save these changes, or Cancel to abandon them."
 msgstr ""
 "Il y a des changements non enregistrés apportés à une ou plusieurs unités "
 "organisationnelles. Cliquez sur OK pour enregistrer ces changements ou sur "
@@ -180,7 +181,9 @@ msgid "New Group"
 msgstr "Nouveau groupe"
 
 #: conify.js:CONFIRM_EXIT_PGT
-msgid "There are unsaved modified permission maps. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved modified permission maps. Click OK to save these changes, "
+"or Cancel to abandon them."
 msgstr ""
 "Il y a des cartes de permission  modifiées non enregistrées. Cliquez sur OK "
 "pour enregistrer ces changements ou Annuler pour les abandonner."
@@ -210,13 +213,17 @@ msgid "Are you sure you want to delete ${0}?"
 msgstr "Désirez-vous vraiment supprimer ${0}?"
 
 #: conify.js:CONFIRM_EXIT_PPL
-msgid "There are unsaved modified permissions. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved modified permissions. Click OK to save these changes, or "
+"Cancel to abandon them."
 msgstr ""
 "Il y a des permissions modifiées non enregistrées. Cliquez sur OK pour "
 "enregistrer ces changements ou Annuler pour les abandonner."
 
 #: conify.js:CONFIRM_UNSAVED_CHANGES
-msgid "There are unsaved changes to one or more organization types. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved changes to one or more organization types. Click OK to "
+"save these changes, or Cancel to abandon them."
 msgstr ""
 "Il y a des changements non enregistrés apportés à une ou plusieurs types "
 "organisationnelles. Cliquez sur OK pour enregistrer ces changements ou sur "
@@ -336,7 +343,9 @@ msgstr ""
 "organisationnelle."
 
 #: conify.js:CONFIRM_EXIT_CCS
-msgid "There are unsaved changes to one or more copy statuses. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved changes to one or more copy statuses. Click OK to save "
+"these changes, or Cancel to abandon them."
 msgstr ""
 "Des changements apportés à l’état d’un ou de plusieurs exemplaires ne sont "
 "pas enregistrés. Cliquez sur OK pour enregistrer ces changements ou sur "
@@ -396,7 +405,9 @@ msgid "${0}: ${1}"
 msgstr "${0}: ${1}"
 
 #: conify.js:CONFIRM_EXIT_CAM
-msgid "There are unsaved changes to one or more ${0} codes. Click OK to save these changes, or Cancel to abandon them."
+msgid ""
+"There are unsaved changes to one or more ${0} codes. Click OK to save these "
+"changes, or Cancel to abandon them."
 msgstr ""
 "Il y a des changements non enregistrés apportés à un ou plusieurs codes de "
 "${0}. Cliquez sur OK pour enregistrer ces changements ou Annuler pour les "
@@ -405,8 +416,7 @@ msgstr ""
 #: conify.js:ERROR_CALLING_METHOD_PGT
 msgid "Problem calling method to create child Group"
 msgstr ""
-"Un problème se produit en appelant la méthode de création d’un groupe "
-"enfant."
+"Un problème se produit en appelant la méthode de création d’un groupe enfant."
 
 #: conify.js:ERROR_CALLING_METHOD_AOUT
 msgid "Problem calling method to create child organization type"

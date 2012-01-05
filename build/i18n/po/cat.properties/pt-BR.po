@@ -2,21 +2,20 @@
 # Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR: Job Diógenes Ribeiro Borges <jobdrb@gmail.com>, 2009.
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/cat.properties
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2010-02-01 12:27+0000\n"
-"Last-Translator: jobdrb <jobdrb@gmail.com>\n"
+"PO-Revision-Date: 2011-12-08 01:43+0000\n"
+"Last-Translator: Tomas Abril <Unknown>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.8.1\n"
-"X-Accelerator-Marker: &\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:39+0000\n"
+"X-Launchpad-Export-Date: 2011-12-09 04:48+0000\n"
+"X-Generator: Launchpad (build 14450)\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -72,15 +71,15 @@ msgstr ""
 
 #: staff.cat.manage_multi_bib_items.result.column.value.error
 msgid "Error"
-msgstr ""
+msgstr "Erro"
 
 #: staff.cat.manage_multi_bib_items.result.column.value.success
 msgid "Success"
-msgstr ""
+msgstr "Sucesso"
 
 #: staff.cat.manage_multi_bib_items.result.column.value.failed
 msgid "Failed"
-msgstr ""
+msgstr "Falhou"
 
 #: staff.cat.manage_multi_bib_items.result.column.value.item_linked_to_bib
 msgid "Item linked to bib"
@@ -209,7 +208,7 @@ msgstr "navegação de exemplares -> incluir volumes"
 
 #: staff.cat.edit_volume.permission_error
 msgid "You do not have permission to edit the volume or volumes selected."
-msgstr ""
+msgstr "Você não tem permissão para editar o volume ou volumes selecionados."
 
 #: staff.cat.edit_volume.title
 msgid "Volume"
@@ -222,7 +221,7 @@ msgstr "Volumes"
 
 #: staff.cat.edit_volumes.override.confirm
 msgid "Override volume re-labeling collision and merge the volumes?"
-msgstr ""
+msgstr "Substituir colisão de re-rotulagem do volume e mesclar os volumes?"
 
 #: staff.cat.edit_volumes.label_exists.details
 msgid "%1$s"
@@ -307,7 +306,8 @@ msgstr ""
 
 #: staff.cat.copy_browser.transfer.prompt
 msgid "Transfer volumes %1$s to library %2$s on the following record?"
-msgstr "Transferir os volumes %1$s para a biblioteca %2$s para este registro?"
+msgstr ""
+"Transferir os volumes %1$s para a biblioteca %2$s para este registro?"
 
 #: staff.cat.copy_browser.transfer.submit.label
 msgctxt "staff.cat.copy_browser.transfer.submit.label"
@@ -544,7 +544,8 @@ msgstr "A criação da cesta falhou."
 
 #: staff.cat.copy_buckets_quick.addition.error
 msgid "Addition likely failed for bucket = %1$s and copy ID = %2$s."
-msgstr "A Inclusão provavelmente falhou para cesta = %1$s e Exemplar ID = %2$s."
+msgstr ""
+"A Inclusão provavelmente falhou para cesta = %1$s e Exemplar ID = %2$s."
 
 #: staff.cat.copy_editor.caption
 msgid "Copy Editor"
@@ -727,7 +728,8 @@ msgstr "erro de atualização de exemplar:"
 
 #: staff.cat.copy_editor.add_stat_cat.error
 msgid "Error adding statistical category to display definition"
-msgstr "Erro ao incluir a categoria estatí­stica para as definições de exibição"
+msgstr ""
+"Erro ao incluir a categoria estatí­stica para as definições de exibição"
 
 #: staff.cat.copy_editor.populate_stat_cat.error
 msgid "Error populating statistical categories for display"
@@ -816,7 +818,7 @@ msgstr "Não"
 
 #: staff.cat.copy_editor.field.floating.label
 msgid "Floating?"
-msgstr ""
+msgstr "Flutuante?"
 
 #: staff.cat.copy_editor.field.floating.yes_or_true
 msgctxt "staff.cat.copy_editor.field.floating.yes_or_true"
@@ -1071,11 +1073,11 @@ msgstr "Não Catalogado"
 
 #: staff.cat.marcedit.authority_see_also
 msgid "See also: %1$s"
-msgstr ""
+msgstr "Ver também: %1$s"
 
 #: staff.cat.marcedit.authority_see_from
 msgid "See from: %1$s"
-msgstr ""
+msgstr "Ver de: %1$s"
 
 #: staff.cat.marcedit.help.add_row
 msgid "Add Row: CTRL+Enter"
@@ -1175,7 +1177,7 @@ msgstr "Página anterior"
 
 #: staff.cat.marcedit.create_authority.label
 msgid "Create New Authority from this Field"
-msgstr ""
+msgstr "Criar nova autorização a partir deste campo"
 
 #: staff.cat.marcedit.create_authority_now.label
 msgid "Create Immediately"
@@ -1183,7 +1185,7 @@ msgstr "Criar Imediatamente"
 
 #: staff.cat.marcedit.create_authority_success.label
 msgid "Created new authority record"
-msgstr ""
+msgstr "Criar novo registro de autoridade"
 
 #: staff.cat.marcedit.create_authority_edit.label
 msgid "Create and Edit..."
@@ -1237,9 +1239,8 @@ msgid "Need to mark a record as a Title Hold Transfer Destination first."
 msgstr ""
 
 #: staff.cat.opac.title_for_hold_transfer.success.label
-#, fuzzy
 msgid "Holds transferred."
-msgstr "Volumes transferidos."
+msgstr ""
 
 #: staff.cat.opac.title_for_hold_transfer.failure.label
 msgid "Holds not transferred."
@@ -1420,7 +1421,8 @@ msgstr "A criação da cesta falhou."
 
 #: staff.cat.record_buckets_quick.add_to_bucket.addition_failed
 msgid "Addition likely failed for bucket = %1$s and record ID = %2$s"
-msgstr "A Inclusão provavelmente falhou para cesta = %1$s e registro ID = %2$s"
+msgstr ""
+"A Inclusão provavelmente falhou para cesta = %1$s e registro ID = %2$s"
 
 #: staff.cat.record_buckets.menulist.change_bucket.undefined
 msgctxt "staff.cat.record_buckets.menulist.change_bucket.undefined"
@@ -1505,8 +1507,7 @@ msgid ""
 "the following record (and change their circulation libs to match)?"
 msgstr ""
 "Transferir itens dos volumes originais %1$s para o volume rotulado como %2$s "
-"no seguinte registro (e alterar suas bibis de circulação para "
-"corresponder)?"
+"no seguinte registro (e alterar suas bibis de circulação para corresponder)?"
 
 #: staff.cat.util.transfer_copies.transfer.label
 msgctxt "staff.cat.util.transfer_copies.transfer.label"
@@ -1563,9 +1564,8 @@ msgid "Error opening catalog for document ID = %1$s"
 msgstr "Erro ao abrir catalogo para o ID de documento = %1$s"
 
 #: staff.cat.util.copy_editor.batch_in_title
-#, fuzzy
 msgid "Batch "
-msgstr "Lotes"
+msgstr ""
 
 #: staff.cat.util.copy_editor.edit_in_title
 msgctxt "staff.cat.util.copy_editor.edit_in_title"
@@ -1602,10 +1602,12 @@ msgstr "Visualizar"
 #: staff.cat.util.mark_item_damaged.af_message
 msgid ""
 "Action failed.  One or more of these items is in a special status such as "
-"\"Checked Out\" or \"In Transit\" and cannot be changed to the Damaged status."
+"\"Checked Out\" or \"In Transit\" and cannot be changed to the Damaged "
+"status."
 msgstr ""
 "Ação falhou. Um ou mais desses itens estão com uma situação especial tal "
-"como \"Saído\" ou \"Em transito\" e não podem receber o estado de \"Danificado\"."
+"como \"Saído\" ou \"Em transito\" e não podem receber o estado de "
+"\"Danificado\"."
 
 #: staff.cat.util.mark_item_damaged.af_title
 msgctxt "staff.cat.util.mark_item_damaged.af_title"
@@ -1624,7 +1626,8 @@ msgstr "Marque aqui para confirmar esta ação"
 
 #: staff.cat.util.mark_item_damaged.md_message
 msgid "Change the status for these items to Damaged?  Barcodes: %1$s"
-msgstr "Mudar o estado desses itens para Danificados? Códigos-de-barras : %1$s"
+msgstr ""
+"Mudar o estado desses itens para Danificados? Códigos-de-barras : %1$s"
 
 #: staff.cat.util.mark_item_damaged.md_title
 msgid "Mark Damaged"
@@ -1668,42 +1671,34 @@ msgid "Check here to confirm this action"
 msgstr "Marque aqui para confirmar esta ação"
 
 #: staff.cat.util.mark_item_damaged.item_circulating_to_patron
-#, fuzzy
 msgid "Item %1$s is checked out to patron, %2$s, and is due on %3$s. "
-msgstr "Item %1$s emprestado para o leitor, %2$s, com devolução para %3$s."
+msgstr ""
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.message
-#, fuzzy
 msgid ""
 "Item %1$s will be marked damaged.  Was returned on %3$s for %2$s.  Charge "
 "this patron $%4$s for the damage? "
 msgstr ""
-"O Item %1$s será marcado como Danificado.  Retornou em %3$s para %2$s.  "
-"Cobrar o leitor $%4$s pelo dano?"
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.title
-#, fuzzy
 msgid "Charge Patron For Damaged Item? "
-msgstr "Cobrar Leitor por Item danificado?"
+msgstr ""
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.ok_label
 msgid "OK "
-msgstr ""
+msgstr "OK "
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.change_amount_label
-#, fuzzy
 msgid "Change Amount "
-msgstr "Mudar Valor"
+msgstr "Alterar Quantidade "
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.cancel_label
-#, fuzzy
 msgid "Cancel "
-msgstr "Cancelar"
+msgstr "Cancelar "
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.confirm_action
-#, fuzzy
 msgid "Check here to confirm this action "
-msgstr "Marque aqui para confirmar esta ação"
+msgstr "Marque aqui para confirmar esta ação "
 
 #: staff.cat.util.mark_item_damaged.marking_error
 msgid "Error marking item %1$s damaged."
@@ -1720,10 +1715,12 @@ msgstr "Os exemplares %1$s foram marcados como Danificados."
 #: staff.cat.util.mark_item_missing.af_message
 msgid ""
 "Action failed.  One or more of these items is in a special status such as "
-"\"Checked Out\" or \"In Transit\" and cannot be changed to the Missing status."
+"\"Checked Out\" or \"In Transit\" and cannot be changed to the Missing "
+"status."
 msgstr ""
 "Ação falhou. Um ou mais desses itens estão com uma situação especial tal "
-"como \"Saíu\" ou \"Em transito\" e não podem receber o estado de \"Danificado\"."
+"como \"Saíu\" ou \"Em transito\" e não podem receber o estado de "
+"\"Danificado\"."
 
 #: staff.cat.util.mark_item_missing.af_title
 msgctxt "staff.cat.util.mark_item_missing.af_title"
@@ -1794,15 +1791,13 @@ msgid "Cancel"
 msgstr "Cancelar"
 
 #: staff.cat.util.mark_item_missing_pieces.ms_confirm_action
-#, fuzzy
 msgctxt "staff.cat.util.mark_item_missing_pieces.ms_confirm_action"
 msgid "Check here to confirm this action"
 msgstr "Marque aqui para confirmar esta ação"
 
 #: staff.cat.util.mark_item_missing_pieces.marking_error
-#, fuzzy
 msgid "Error marking item %1$s as missing pieces."
-msgstr "Erro ao marcar como em falta o item %1$s"
+msgstr ""
 
 #: staff.cat.util.mark_item_missing_pieces.one_item_missing_pieces
 msgid "Item marked as missing pieces."
@@ -1813,7 +1808,8 @@ msgid "%1$s items marked as missing pieces."
 msgstr ""
 
 #: staff.cat.util.mark_item_missing_pieces.circ_not_found
-msgid "No circulation found for item with barcode %1$s.  Item left unmodified."
+msgid ""
+"No circulation found for item with barcode %1$s.  Item left unmodified."
 msgstr ""
 
 #: staff.cat.volume_buckets.window_tab_name
@@ -1828,7 +1824,7 @@ msgstr "Aplicar"
 #: staff.cat.volume_copy_creator.my_init.btn.accesskey
 msgctxt "staff.cat.volume_copy_creator.my_init.btn.accesskey"
 msgid "A"
-msgstr ""
+msgstr "A"
 
 #: staff.cat.volume_copy_creator.create_part.btn.label
 msgid "Create Part Designator"
@@ -1836,7 +1832,7 @@ msgstr ""
 
 #: staff.cat.volume_copy_creator.edit_then_create.btn.label
 msgid "Edit then Create"
-msgstr ""
+msgstr "Editar e Criar"
 
 #: staff.cat.volume_copy_creator.edit_then_create.btn.accesskey
 msgctxt "staff.cat.volume_copy_creator.edit_then_create.btn.accesskey"
@@ -1845,7 +1841,7 @@ msgstr "C"
 
 #: staff.cat.volume_copy_creator.create_with_defaults.btn.label
 msgid "Create with Defaults"
-msgstr ""
+msgstr "Criar com Padrões"
 
 #: staff.cat.volume_copy_creator.create_with_defaults.btn.accesskey
 msgid "D"
@@ -1858,7 +1854,7 @@ msgstr ""
 #: staff.cat.volume_copy_creator.create.btn.accesskey
 msgctxt "staff.cat.volume_copy_creator.create.btn.accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: staff.cat.volume_copy_creator.edit_then_rebarcode.btn.label
 msgid "Edit then Re-barcode"
@@ -1874,7 +1870,7 @@ msgstr ""
 
 #: staff.cat.volume_copy_creator.rebarcode.btn.accesskey
 msgid "R"
-msgstr ""
+msgstr "R"
 
 #: staff.cat.volume_copy_creator.render_volume_count_entry.message
 msgid ""
@@ -1894,11 +1890,11 @@ msgstr "Ok"
 
 #: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.classification
 msgid "Classification"
-msgstr ""
+msgstr "Classificação"
 
 #: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.prefix
 msgid "Prefix"
-msgstr ""
+msgstr "Prefixo"
 
 #: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.call_nums
 msgid "Call Numbers"
@@ -1906,7 +1902,7 @@ msgstr "Números de Chamada"
 
 #: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.suffix
 msgid "Suffix"
-msgstr ""
+msgstr "Sufixo"
 
 #: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.num_of_copies
 msgid "# of Copies"
@@ -2067,17 +2063,9 @@ msgid "Raw Z39.50 PQN Search"
 msgstr "Pesquisa Z39.50 PQN Direta"
 
 #: staff.cat.z3950.initial_search.raw_prompt.msg
-#, fuzzy
 msgid ""
 "WARNING: This is not a simple keyword search.  Enter raw z39.50 PQN search "
 "string: "
-msgstr ""
-"AVISO: Isto não é uma simples busca de palavra chave. Entre com uma consulta "
-"no formato z39.50 PQN:"
-
-#: staff.cat.z3950.initial_search.raw_prompt.default_value
-msgctxt "staff.cat.z3950.initial_search.raw_prompt.default_value"
-msgid ""
 msgstr ""
 
 #: staff.cat.z3950.initial_search.raw_search_unsupported_for_native_catalog
@@ -2115,9 +2103,8 @@ msgid "Showing %1$s of %2$s for %3$s"
 msgstr "Exibindo %1$s de %2$s para %3$s"
 
 #: staff.cat.z3950.handle_results.showing_total_results
-#, fuzzy
 msgid "Showing %1$s of %2$s "
-msgstr "Mostrando %1$s de %2$s"
+msgstr ""
 
 #: staff.cat.z3950.handle_results.num_of_results
 msgid "%1$s records found"
@@ -2303,45 +2290,8 @@ msgstr "Erro ao obter as credenciais z39.50 armazenadas"
 msgid "Problem storing z39.50 credentials."
 msgstr "Problema ao armazenar credenciais z39.50."
 
-#~ msgid "You do not have permission to edit this volume."
-#~ msgstr "Você não tem permissão para editar este volume."
-
-#~ msgctxt "staff.cat.copy_browser.edit_volume.title.plural"
-#~ msgid "Volumes"
-#~ msgstr "Volumes"
-
-#~ msgid ""
-#~ "Edit failed:  You tried to change a volume's callnumber to one that is "
-#~ "already in use for the given library.  You should transfer the items to the "
-#~ "desired callnumber instead."
-#~ msgstr ""
-#~ "Falha ao Editar. Você tentou alterar o número de chamada para um já "
-#~ "existente nesta biblioteca. No entanto, você pode ao invéz, transferir os "
-#~ "itens para o número de chamada desejado."
-
-#~ msgid "Volumes modified."
-#~ msgstr "Volume alterado."
-
-#~ msgid "volume update error:"
-#~ msgstr "erro ao atualizar volume:"
-
-#~ msgid "Copy Browser -> Volume Edit"
-#~ msgstr "Navegação de Exemplares -> Edição de Volume"
-
 #~ msgid "Volumes deleted."
 #~ msgstr "Volumes excluídos."
-
-#~ msgid "Create Copies"
-#~ msgstr "Criar Exemplares"
-
-#~ msgid "Items were added or modified."
-#~ msgstr "Itens foram incluídos ou modificados."
-
-#~ msgid "Note added."
-#~ msgstr "Observação incluída."
-
-#~ msgid "Record created."
-#~ msgstr "Registro Criado."
 
 #~ msgid "Merge these records? (Select the \"lead\" record first)"
 #~ msgstr ""
@@ -2372,27 +2322,3 @@ msgstr "Problema ao armazenar credenciais z39.50."
 
 #~ msgid "Records were not likely merged."
 #~ msgstr "Os registros provavelmente não foram mesclados."
-
-#~ msgid "Copies not modified."
-#~ msgstr "Exemplares não modificados."
-
-#~ msgctxt "staff.cat.util.mark_item_damaged.charge_patron_prompt.ok_label"
-#~ msgid "OK"
-#~ msgstr "OK"
-
-#~ msgctxt "staff.cat.util.mark_item_damaged.charge_patron_prompt.cancel_label"
-#~ msgid "Cancel"
-#~ msgstr "Cancelar"
-
-#~ msgctxt ""
-#~ "staff.cat.util.mark_item_damaged.charge_patron_prompt.confirm_action"
-#~ msgid "Check here to confirm this action"
-#~ msgstr "Marque aqui para confirmar esta ação"
-
-#~ msgid ""
-#~ "Change the status for these items to Damaged?  You will have to manually "
-#~ "retrieve the last circulation if you need to bill a patron.  Barcodes: %1$s"
-#~ msgstr ""
-#~ "Mudar o estado desses itens para \"Danificado\"? Você terá que manualmente "
-#~ "obter a última circulação se precisar emitir recibo de cliente. Códigos-de-"
-#~ "barras : %1$s"

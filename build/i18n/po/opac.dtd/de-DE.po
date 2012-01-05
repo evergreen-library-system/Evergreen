@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-11-23 23:35-0400\n"
-"PO-Revision-Date: 2010-07-30 02:30+0000\n"
-"Last-Translator: spaceflower <Unknown>\n"
+"POT-Creation-Date: 2011-04-18 21:44-0400\n"
+"PO-Revision-Date: 2011-12-24 10:36+0000\n"
+"Last-Translator: Daniel Winzen <d@winzen4.de>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-07-31 03:41+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2011-12-25 04:54+0000\n"
+"X-Generator: Launchpad (build 14560)\n"
 
 #. =================================================================
 #. Some generic stuff
@@ -418,6 +418,22 @@ msgstr "/"
 msgid "Large"
 msgstr "Groß"
 
+#: common.googlechromeframe.why
+msgid ""
+"Installing the Google Chrome Frame plugin for Internet Explorer will improve "
+"your Evergreen experience with more speed and advanced features!"
+msgstr ""
+"Mit dem Google Chrome Frame plugin für den Internet Explorer können Sie "
+"Evergreen schneller und mit erweiterten Funktionen nutzen!"
+
+#: common.googlechromeframe.install
+msgid "Install Now!"
+msgstr "Jetzt installieren!"
+
+#: common.googlechromeframe.dontask
+msgid "Don't ask me again"
+msgstr "Nicht erneut fragen"
+
 #: home.js.disabled
 msgid ""
 "JavaScript must be enabled in order for you to use the regular Evergreen "
@@ -602,15 +618,15 @@ msgstr "Büchermappen sind..."
 #. =================================================================
 #: myopac.checked.out
 msgid "Total items out:"
-msgstr ""
+msgstr "Ausgeliehene Medien:"
 
 #: myopac.checked.overdue
 msgid "Total items overdue:"
-msgstr ""
+msgstr "Überfällige Posten:"
 
 #: myopac.checked.renew
 msgid "Renew Selected Items"
-msgstr ""
+msgstr "Erneuere ausgewählte Elemente"
 
 #: myopac.checked.renewing
 msgid "Renewing..."
@@ -623,7 +639,7 @@ msgstr "Verbleibende Verlängerungen"
 
 #: myopac.checked.noitems
 msgid "You have no items checked out at this time"
-msgstr ""
+msgstr "Sie haben zur Zeit keine Medien ausgeliehen"
 
 #: myopac.checked.other.circ
 msgid "Other Circulations"
@@ -643,11 +659,11 @@ msgstr "Bitte zurückgeben am ..."
 
 #: myopac.checked.renew.success
 msgid "item(s) successfully renewed"
-msgstr ""
+msgstr "Element(e) erfolgreich erneuert"
 
 #: myopac.checked.renew.confirm
 msgid "Are you sure you wish to renew the selected item(s)?"
-msgstr ""
+msgstr "Sind Sie sicher, dass Sie die ausgewählten Elemente erneuern wollen?"
 
 #: myopac.checked.renew.fail
 msgid ""
@@ -666,12 +682,13 @@ msgstr ""
 #. MyOPAC Fines Page
 #. =================================================================
 #: myopac.fines.title
+msgctxt "myopac.fines.title"
 msgid "Summary"
-msgstr "Zusammenfassung"
+msgstr ""
 
 #: myopac.fines.owed
 msgid "Total Owed"
-msgstr ""
+msgstr "Gesamter offener Betrag"
 
 #: myopac.fines.paid
 msgid "Total Paid"
@@ -679,7 +696,7 @@ msgstr ""
 
 #: myopac.fines.balance
 msgid "Balance Owed"
-msgstr ""
+msgstr "Schulden insgesamt"
 
 #: myopac.fines.status
 msgctxt "myopac.fines.status"
@@ -688,7 +705,7 @@ msgstr "Wird geladen..."
 
 #: myopac.fines.overdue
 msgid "Overdue Materials"
-msgstr ""
+msgstr "Überfällige Materialien"
 
 #: myopac.fines.checkout
 msgid "Checkout Date"
@@ -697,7 +714,7 @@ msgstr "Ausleihdatum"
 #: myopac.fines.due
 msgctxt "myopac.fines.due"
 msgid "Due Date"
-msgstr ""
+msgstr "Fälligkeitsdatum"
 
 #: myopac.fines.returned
 msgid "Date Returned"
@@ -709,7 +726,7 @@ msgstr ""
 
 #: myopac.fines.other
 msgid "Other Fees"
-msgstr ""
+msgstr "Sonstige Gebühren"
 
 #: myopac.fines.time.start
 msgid "Transaction Start Time"
@@ -717,7 +734,7 @@ msgstr ""
 
 #: myopac.fines.time.paid
 msgid "Last Payment Time"
-msgstr ""
+msgstr "Datum der letzten Bezahlung"
 
 #: myopac.fines.owed.initial
 msgid "Initial Amount Owed"
@@ -725,11 +742,11 @@ msgstr ""
 
 #: myopac.fines.paid.amount
 msgid "Total Amount Paid"
-msgstr ""
+msgstr "Gesamter gezahlter Betrag"
 
 #: myopac.fines.type
 msgid "Billing Type"
-msgstr ""
+msgstr "Rechnungsart"
 
 #. =================================================================
 #. MyOPAC Holds Page
@@ -740,7 +757,7 @@ msgstr "Formate"
 
 #: myopac.holds.location
 msgid "Pickup Location"
-msgstr ""
+msgstr "Abholungsort"
 
 #: myopac.holds.edit
 msgid "Edit"
@@ -748,19 +765,19 @@ msgstr "Bearbeiten"
 
 #: myopac.holds.status.none
 msgid "You have no items on hold at this time"
-msgstr ""
+msgstr "Sie haben derzeit keine Artikel in der Warteliste"
 
 #: myopac.holds.status.waiting
 msgid "Waiting for copy"
-msgstr ""
+msgstr "Warten auf Kopie"
 
 #: myopac.holds.status.intransit
 msgid "In Transit"
-msgstr ""
+msgstr "In Bearbeitung"
 
 #: myopac.holds.status.available
 msgid "Ready for Pickup"
-msgstr ""
+msgstr "Bereit zur Abholung"
 
 #: myopac.holds.cancel
 msgctxt "myopac.holds.cancel"
@@ -774,7 +791,7 @@ msgstr ""
 
 #: myopac.holds.freeze_selected
 msgid "Suspend"
-msgstr ""
+msgstr "Aufschieben"
 
 #: myopac.holds.thaw_selected
 msgid "Activate"
@@ -839,7 +856,7 @@ msgstr ""
 
 #: opac.holds.expire_time
 msgid "Expiration date"
-msgstr ""
+msgstr "Ablaufdatum"
 
 #: myopac.holds.estimated_wait
 msgid "Estimated Wait (days)"
@@ -862,7 +879,7 @@ msgstr "Vorgabeschriftgröße"
 
 #: myopac.prefs.font.regular
 msgid "Regular Font"
-msgstr ""
+msgstr "Standard-Font"
 
 #: myopac.prefs.font.large
 msgid "Large Font"
@@ -874,7 +891,7 @@ msgstr ""
 
 #: myopac.prefs.holds.both
 msgid "Use Phone and Email"
-msgstr ""
+msgstr "Über Telefon und E-Mail"
 
 #: myopac.prefs.holds.phone
 msgid "Use Phone Only"
@@ -886,7 +903,7 @@ msgstr "Nur Email benutzen"
 
 #: myopac.prefs.search.location
 msgid "Default Search Location"
-msgstr ""
+msgstr "Standard Such-Ort"
 
 #: myopac.prefs.search.home
 msgid "Always search my home library by default."
@@ -954,7 +971,7 @@ msgstr "Andere Telefonnummer"
 
 #: myopac.summary.change
 msgid "Change"
-msgstr ""
+msgstr "Ändern"
 
 #: myopac.summary.username.enter
 msgid "Enter new username:"
@@ -1010,7 +1027,7 @@ msgstr ""
 
 #: myopac.summary.address.type
 msgid "Address Type"
-msgstr ""
+msgstr "Adresstyp"
 
 #: myopac.summary.address.street
 msgid "Street"
@@ -1022,7 +1039,7 @@ msgstr "Ort"
 
 #: myopac.summary.address.county
 msgid "County"
-msgstr ""
+msgstr "Land"
 
 #: myopac.summary.address.state
 msgid "State"
@@ -1143,12 +1160,12 @@ msgstr "Stimmt genau überein mit"
 
 #: opac.advanced.marc.warning
 msgid "For Librarians"
-msgstr ""
+msgstr "Für Bibliothekare"
 
 #: opac.advanced.marc.title
 msgctxt "opac.advanced.marc.title"
 msgid "MARC Expert Search"
-msgstr ""
+msgstr "MARC Suche für Experten"
 
 #: opac.advanced.marc.tag
 msgid "MARC Tag"
@@ -1168,7 +1185,7 @@ msgstr ""
 
 #: opac.advanced.marc.value
 msgid "Value"
-msgstr ""
+msgstr "Wert"
 
 #: opac.advanced.marc.addrow
 msgid "Add a new row"
@@ -1228,7 +1245,7 @@ msgstr ""
 
 #: search.marc.value
 msgid "Value:"
-msgstr ""
+msgstr "Wert:"
 
 #: search.marc.add.row
 msgid "Add Row"
@@ -1247,18 +1264,18 @@ msgstr ""
 #: tips.label
 msgctxt "tips.label"
 msgid "Tip:"
-msgstr ""
+msgstr "Tipp:"
 
 #. =================================================================
 #. More generic stuff
 #. =================================================================
 #: opac.session_expiring
 msgid "Your login session will timeout in 1 minute unless there is activity."
-msgstr ""
+msgstr "Ihre Session wird in einer Minute wegen Inaktivität ablaufen."
 
 #: opac.session_expired
 msgid "Your login session has expired"
-msgstr ""
+msgstr "Ihre Sitzung ist abgelaufen"
 
 #: navigate.home
 msgid "Home"
@@ -1289,7 +1306,7 @@ msgstr "Mein Konto"
 
 #: navigate.myopac.title
 msgid "Go to My OPAC"
-msgstr ""
+msgstr "Gehe zu Mein OPAC"
 
 #: navigate.login
 msgid "Log in"
@@ -1332,6 +1349,10 @@ msgstr "Meine Suchergebnisse"
 
 #: navigate.titleResults
 msgid "My Title Results"
+msgstr ""
+
+#: navigate.facetRefine
+msgid "Refine your search"
 msgstr ""
 
 #: navigate.title.details
@@ -1383,13 +1404,14 @@ msgid "GALILEO"
 msgstr "GALILEO"
 
 #: footer.copyright
-msgid "Copyright &#xA9; 2006-2008 Georgia Public Library Service"
+msgid "Copyright &#xA9; 2006-2010 Georgia Public Library Service, and others"
 msgstr ""
+"Copyright &#xA9; 2006-2010 Georgia Public Library Service, und andere"
 
 #. Introduces the logo for the project
 #: footer.logo
 msgid "Powered by"
-msgstr ""
+msgstr "Powered by"
 
 #. =================================================================
 #. My OPAC
@@ -1463,6 +1485,10 @@ msgstr "Alle Formate"
 msgid "Large Print Books"
 msgstr ""
 
+#: opac.search.ebook
+msgid "E-Books"
+msgstr "E-Books"
+
 #: opac.search.audioBooks
 msgid "Audiobooks"
 msgstr "Hörbücher"
@@ -1508,7 +1534,7 @@ msgstr ""
 
 #: opac.title.advanced
 msgid "Evergreen Advanced Search"
-msgstr ""
+msgstr "Evergreen erweiterte Suche"
 
 #: opac.title.reqitems
 msgid "Evergreen Request Items"
@@ -1528,7 +1554,7 @@ msgstr ""
 
 #: opac.holds.recipient
 msgid "Recipient"
-msgstr ""
+msgstr "Empfänger"
 
 #: opac.holds.placeHold
 msgctxt "opac.holds.placeHold"
@@ -1542,11 +1568,11 @@ msgstr ""
 
 #: opac.holds.contactPhone
 msgid "Contact telephone number"
-msgstr ""
+msgstr "Telefonnummer"
 
 #: opac.holds.contactEmail
 msgid "Contact email address"
-msgstr ""
+msgstr "E-Mail-Adresse"
 
 #: opac.holds.pickupLocation
 msgid "Pickup location"
@@ -1577,7 +1603,7 @@ msgstr ""
 
 #: advanced.search.reset
 msgid "Reset Form"
-msgstr ""
+msgstr "Formular zurücksetzen"
 
 #: advanced.search.filters
 msgid "Search Filters"
@@ -1589,7 +1615,7 @@ msgstr ""
 
 #: advanced.item.type
 msgid "Item Type"
-msgstr ""
+msgstr "Medien-Typ"
 
 #: advanced.link
 msgid "Advanced"
@@ -1597,7 +1623,7 @@ msgstr "Fortgeschritten"
 
 #: advanced.basic.link
 msgid "Basic"
-msgstr ""
+msgstr "Einfach"
 
 #: advanced.literary.form
 msgid "Literary Form"
@@ -1633,7 +1659,7 @@ msgstr "Allgemein"
 
 #: advanced.sort.criteria
 msgid "Sort Criteria"
-msgstr ""
+msgstr "Sortierkriterium"
 
 #: advanced.search.library
 msgid "Search Library"
@@ -1661,7 +1687,7 @@ msgstr ""
 
 #: advanced.go
 msgid "Go"
-msgstr ""
+msgstr "Los"
 
 #: advanced.biblevel
 msgid "Bib Level"
@@ -1677,22 +1703,26 @@ msgstr ""
 
 #: advanced.filter.pubyear.before
 msgid "Before"
-msgstr ""
+msgstr "Älter"
 
 #: advanced.filter.pubyear.after
 msgid "After"
-msgstr ""
+msgstr "Neuer"
 
 #: advanced.filter.pubyear.between
 msgid "Between"
-msgstr ""
+msgstr "Dazwischen"
 
 #. =================================================================
 #. Rdetail
 #. =================================================================
 #: rdetail.print
 msgid "print these details"
-msgstr ""
+msgstr "Beschreibung ausdrucken"
+
+#: rdetail.cn.part
+msgid "Part"
+msgstr "Teil"
 
 #: rdetail.cn.barcode
 msgctxt "rdetail.cn.barcode"
@@ -1701,7 +1731,7 @@ msgstr "Barcode"
 
 #: rdetail.cn.location
 msgid "Location"
-msgstr ""
+msgstr "Standort"
 
 #: rdetail.cn.hold.age
 msgid "Age Hold Protection"
@@ -1718,7 +1748,7 @@ msgstr ""
 #: rdetail.cn.due
 msgctxt "rdetail.cn.due"
 msgid "Due Date"
-msgstr ""
+msgstr "Fälligkeitsdatum"
 
 #: rdetail.cn.more
 msgid "more info..."
@@ -1730,6 +1760,14 @@ msgstr "weniger Informationen"
 
 #: rdetail.cn.hold
 msgid "place hold"
+msgstr ""
+
+#: rdetail.cn.reserve
+msgid "book now"
+msgstr ""
+
+#: rdetail.cn.multi_home
+msgid "linked titles"
 msgstr ""
 
 #: rdetail.cn.disabled
@@ -1765,9 +1803,17 @@ msgstr ""
 msgid "Previous page"
 msgstr "Vorherige Seite"
 
+#: rdetail.page.previous.short
+msgid "&#171;"
+msgstr ""
+
 #: rdetail.page.next
 msgid "Next page"
 msgstr "Nächste Seite"
+
+#: rdetail.page.next.short
+msgid "&#187;"
+msgstr ""
 
 #: rdetail.page.last
 msgid "Last results page"
@@ -1798,7 +1844,7 @@ msgstr ""
 
 #: rdetail.none
 msgid "(none)"
-msgstr ""
+msgstr "(ohne)"
 
 #: rdetail.bookbag.add.success
 msgid "Item successfully added to bookbag"
@@ -1823,19 +1869,19 @@ msgstr "Themen"
 
 #: rdetail.detailMain.abstract
 msgid "Abstract"
-msgstr ""
+msgstr "Abstrakt"
 
 #: rdetail.detailMain.viewMarc
 msgid "View MARC"
-msgstr ""
+msgstr "MARC anzeigen"
 
 #: rdetail.detailMain.hideMarc
 msgid "Return to title details"
-msgstr ""
+msgstr "Zurück zu den Titel-Details"
 
 #: rdetail.author.search
 msgid "Perform an author search"
-msgstr ""
+msgstr "Suche nach Autor"
 
 #: rdetail.copyInfo.headerLabel
 msgid "Copy Information"
@@ -1885,12 +1931,17 @@ msgstr ""
 
 #: rdetail.extras.summary
 msgid "Copy Summary"
-msgstr ""
+msgstr "Zusammenfassung kopieren"
 
 #: rdetail.extras.browser
 msgctxt "rdetail.extras.browser"
 msgid "Shelf Browser"
 msgstr ""
+
+#: rdetail.extras.bib_summary
+msgctxt "rdetail.extras.bib_summary"
+msgid "Summary"
+msgstr "Zusammenfassung"
 
 #: rdetail.extras.reviews
 msgctxt "rdetail.extras.reviews"
@@ -1915,39 +1966,48 @@ msgstr ""
 
 #: rdetail.extras.annotation
 msgid "Annotation"
-msgstr ""
+msgstr "Anmerkung"
 
 #: rdetail.extras.marc
 msgid "MARC Record"
 msgstr "MARC Eintrag"
+
+#: rdetail.extras.foreign_items
+msgid "Linked Titles"
+msgstr ""
 
 #: rdetail.extras.call.null
 msgid "There are no call numbers for this item at this location."
 msgstr ""
 
 #: rdetail.extras.call.local
+msgctxt "rdetail.extras.call.local"
 msgid "Local Call Numbers:"
 msgstr ""
 
 #: rdetail.extras.preview.fulltext
 msgid "Full text"
-msgstr ""
+msgstr "Volltext"
 
 #: rdetail.extras.preview.title
 msgid "See the full text of this book."
-msgstr ""
+msgstr "Den ganzen Text dieses Buches lesen."
 
 #: rdetail.extras.preview.badge
 msgid "Show a preview of this book from Google Book Search"
 msgstr "Eine Vorschau für dieses Buch von Google Book Search anzeigen"
 
+#: rdetail.extras.novelist
+msgid "Suggestions by NoveList"
+msgstr "Vorschläge von NoveList"
+
 #: rdetail.loading
-msgid "Loading copy infomation..."
+msgid "Loading copy information..."
 msgstr ""
 
 #: rdetail.noneAvailable
 msgid " * There are no copies in this location"
-msgstr ""
+msgstr " Kein Exemplar an diesem Standort"
 
 #: rdetail.summary.online
 msgid "Online Resources"
@@ -1957,6 +2017,10 @@ msgstr ""
 msgctxt "rdetail.summary.subjects"
 msgid "Subjects"
 msgstr "Themen"
+
+#: rdetail.summary.issues_held
+msgid "Issues Held"
+msgstr ""
 
 #: result.sort_by
 msgid "Sort Results by Relevance"
@@ -2052,11 +2116,16 @@ msgstr "Titel für diesen Eintrag ansehen"
 
 #: result.table.author
 msgid "Perform an Author Search"
-msgstr ""
+msgstr "Suche nach Autor"
 
 #: result.googleBooks.browse
 msgid "Browse in Google Books Search"
 msgstr "Googe Books Search durchsuchen"
+
+#: result.localCallNumbers
+msgctxt "result.localCallNumbers"
+msgid "Local Call Numbers:"
+msgstr ""
 
 #: common.call.number.label
 msgid "Call Number:"
@@ -2070,9 +2139,17 @@ msgstr "ISBN"
 msgid "ISSN:"
 msgstr "ISSN"
 
+#: common.mono_parts.label
+msgid "Monograph Parts:"
+msgstr ""
+
 #: common.copy.barcode.label
 msgid "Copy Barcode:"
 msgstr "Barcode kopieren:"
+
+#: common.issuance_label.label
+msgid "Issuance Label:"
+msgstr ""
 
 #: common.hold.place
 msgid "Place hold for my account"
@@ -2102,6 +2179,10 @@ msgstr ""
 msgid "Copy Hold"
 msgstr ""
 
+#: common.hold.issuance
+msgid "Issuance Hold"
+msgstr ""
+
 #: common.hold.advanced
 msgid "Advanced Hold Options"
 msgstr ""
@@ -2110,14 +2191,23 @@ msgstr ""
 msgid "Please select a physical location where your hold can be delivered."
 msgstr ""
 
+#: common.hold.checked_out
+msgid "This item is already checked out."
+msgstr ""
+
+#: common.hold.checked_out.override
+msgid ""
+"This item is already checked out.  Would you like to place the hold anyway?"
+msgstr ""
+
 #: common.hold.exists
 msgid "A hold already exists on the requested item."
 msgstr ""
 
 #: common.hold.exists.override
 msgid ""
-"A hold already exists on the requested \n"
-"item. Would you like to create the hold anyway?"
+"A hold already exists on the requested item. Would you like to create the "
+"hold anyway?"
 msgstr ""
 
 #: common.hold.barred
@@ -2163,7 +2253,7 @@ msgstr ""
 
 #: common.control.click
 msgid "(control-click to select multiple formats)"
-msgstr ""
+msgstr "(Strg+Klick um mehrere Medienarten auszuwählen)"
 
 #: common.format.alternatives
 msgid "Acceptable Alternative Formats:"
@@ -2405,7 +2495,7 @@ msgstr "Autor"
 #: selfck.due_date
 msgctxt "selfck.due_date"
 msgid "Due Date"
-msgstr ""
+msgstr "Fälligkeitsdatum"
 
 #: selfck.remaining
 msgctxt "selfck.remaining"
@@ -2455,7 +2545,7 @@ msgstr ""
 
 #: selfck.event.item_noncat
 msgid "The requested item is not in the catalog"
-msgstr ""
+msgstr "Das angeforderte Medium ist nicht im Katalog"
 
 #: selfck.event.item_nocirc
 msgid "The requested item is not allowed to circulate"
@@ -2504,3 +2594,71 @@ msgstr "Samstag"
 #: selfck.day6
 msgid "Sunday"
 msgstr "Sonntag"
+
+#: circ.fail_part.actor.usr.barred
+msgid "The patron is barred"
+msgstr "Das Kundenkonto ist gesperrt"
+
+#: circ.fail_part.asset.copy.circulate
+msgid "The item does not circulate"
+msgstr ""
+
+#: circ.fail_part.asset.copy_location.circulate
+msgid "Items from this shelving location do not circulate"
+msgstr ""
+
+#: circ.fail_part.asset.copy.status
+msgid "The item cannot circulate at this time"
+msgstr ""
+
+#: circ.fail_part.circ.holds.target_skip_me
+msgid "The item's circulation library does not fulfill holds"
+msgstr ""
+
+#: circ.fail_part.config.circ_matrix_circ_mod_test
+msgid "The patron has too many items of this type checked out"
+msgstr "Der Kunde hat zu viele Medien dieses Typs ausgeliehen"
+
+#: circ.fail_part.config.circ_matrix_test.available_copy_hold_ratio
+msgid "The available item-to-hold ratio is too low"
+msgstr ""
+
+#: circ.fail_part.config.circ_matrix_test.circulate
+msgid "Circulation rules reject this item as non-circulatable"
+msgstr ""
+
+#: circ.fail_part.config.circ_matrix_test.total_copy_hold_ratio
+msgid "The total item-to-hold ratio is too low"
+msgstr ""
+
+#: circ.fail_part.config.hold_matrix_test.holdable
+msgid "Hold rules reject this item as unholdable"
+msgstr ""
+
+#: circ.fail_part.config.hold_matrix_test.max_holds
+msgid "The patron has reached the maximum number of holds"
+msgstr ""
+
+#: circ.fail_part.config.rule_age_hold_protect.prox
+msgid "The item is too new to transit this far"
+msgstr ""
+
+#: circ.fail_part.no_item
+msgid "The system could not find this item"
+msgstr "Das Medium konnte nicht gefunden werden"
+
+#: circ.fail_part.no_ultimate_items
+msgid "The system could not find any items to match this hold request"
+msgstr ""
+
+#: circ.fail_part.no_matchpoint
+msgid "System rules do not define how to handle this item"
+msgstr ""
+
+#: circ.fail_part.no_user
+msgid "The system could not find this patron"
+msgstr "Das Kundenkonto konnte nicht gefunden werden"
+
+#: circ.fail_part.transit_range
+msgid "The item cannot transit this far"
+msgstr ""

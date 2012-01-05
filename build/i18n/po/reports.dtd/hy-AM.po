@@ -1,5 +1,4 @@
 # extracted from ../../Open-ILS/web/opac/locale/en-US/reports.dtd
-#. extracted from ../../Open-ILS/web/opac/locale/en-US/reports.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -11,9 +10,21 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.8.1\n"
-"X-Accelerator-Marker: &\n"
 "X-Launchpad-Export-Date: 2011-07-15 04:53+0000\n"
+"X-Generator: Launchpad (build 13405)\n"
+"X-Accelerator-Marker: &\n"
+
+#: reports.oils_rpt_builder.close_window
+msgid "Close Window"
+msgstr "Փակել պատուհանը"
+
+#: reports.oils_rpt_folder_window.select_folder
+msgid "Select Folder"
+msgstr "Ընտրել պանակ"
+
+#: reports.oils_rpt_folder_window.cancel
+msgid "Cancel"
+msgstr "Չեղարկել"
 
 #. Common Entities
 #: reports.common.logged_in_as
@@ -236,10 +247,6 @@ msgstr "Նվազող"
 #: reports.oils_rpt_builder.add_sort
 msgid "Add Sort"
 msgstr "Ավելացրու տեսակավորումը"
-
-#: reports.oils_rpt_builder.close_window
-msgid "Close Window"
-msgstr "Փակել պատուհանը"
 
 #: reports.oils_rpt_builder.confirm_new_report
 msgid ""
@@ -551,14 +558,6 @@ msgstr "Ամբողջական նյութեր"
 msgctxt "reports.oils_rpt_folder_window.selected_folder"
 msgid "Selected Folder: "
 msgstr "Ընտրված թղթապանակ։ "
-
-#: reports.oils_rpt_folder_window.select_folder
-msgid "Select Folder"
-msgstr "Ընտրել պանակ"
-
-#: reports.oils_rpt_folder_window.cancel
-msgid "Cancel"
-msgstr "Չեղարկել"
 
 #: reports.oils_rpt_folder_window.confirm_delete
 msgid "Are you sure you wish to delete the selected item(s)?"

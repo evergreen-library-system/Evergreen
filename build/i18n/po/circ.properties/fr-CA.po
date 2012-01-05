@@ -1,5 +1,4 @@
 # extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/circ.properties
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/circ.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > circ.properties.po\n"
@@ -11,10 +10,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.8.1\n"
-"X-Accelerator-Marker: &\n"
 "X-Launchpad-Export-Date: 2011-05-18 04:39+0000\n"
+"X-Generator: Launchpad (build 12959)\n"
 "X-Poedit-Country: Canada\n"
+"X-Accelerator-Marker: &\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
@@ -27,7 +26,6 @@ msgid "Item %1$s has never circulated."
 msgstr "L’article %1$s n’a jamais été prêté."
 
 #: staff.circ.invalid_date
-#, fuzzy
 msgid "Invalid Date"
 msgstr "Format de date non valide"
 
@@ -58,8 +56,8 @@ msgid ""
 "Bad check digit, possibly due to a bad scan.  Use this barcode (\"%1$s\") "
 "anyway?"
 msgstr ""
-"Numéro de chèque erroné, possiblement en raison d’un problème de balayage. D"
-"ésirez-vous utiliser quand même ce code à barres (\"%1$s\")?"
+"Numéro de chèque erroné, possiblement en raison d’un problème de balayage. "
+"Désirez-vous utiliser quand même ce code à barres (\"%1$s\")?"
 
 #: staff.circ.barcode.bad
 msgid "Bad Barcode"
@@ -130,14 +128,12 @@ msgstr ""
 "de %2$s."
 
 #: staff.circ.backdate.circ_ids.prompt
-#, fuzzy
 msgid "Number of circulations selected: %1$s "
-msgstr "Nombre d’exemplaires sélectionnés : %1$s"
+msgstr ""
 
 #: staff.circ.backdate.circ_ids.failed
-#, fuzzy
 msgid "Number of circulations not backdated: %1$s "
-msgstr "Nombre d’exemplaires qui ne sont pas antidatés : %1$s"
+msgstr ""
 
 #: staff.circ.checkout.sorting.exception
 msgid "error in sorting non-cataloged items: %1$s"
@@ -162,7 +158,8 @@ msgstr "Articles non catalogués"
 
 #: staff.circ.checkout.cmd_checkout_submit.too_many.msg
 msgid "You tried to circulate %1$d %2$s.  The maximum is 99 per action."
-msgstr "Vous avez tenté de prêter %1$d %2$s. Le maximum est de 99 par action."
+msgstr ""
+"Vous avez tenté de prêter %1$d %2$s. Le maximum est de 99 par action."
 
 #: staff.circ.checkout.cmd_checkout_submit.too_many.title
 msgctxt "staff.circ.checkout.cmd_checkout_submit.too_many.title"
@@ -400,8 +397,8 @@ msgid ""
 "to \"On Holds Shelf\".  Please check this item in to correct the status."
 msgstr ""
 "Cet article n’est pas saisi pour un article mis en réserve, toutefois, cet "
-"état est réglé incorrectement à \"Sur l’étagère des articles mis en réserve\". "
-"Veuillez entrer cet article pour en corriger l’état."
+"état est réglé incorrectement à \"Sur l’étagère des articles mis en "
+"réserve\". Veuillez entrer cet article pour en corriger l’état."
 
 #: staff.circ.copy_details.no_hold
 msgid "This item is not captured for a hold."
@@ -428,7 +425,6 @@ msgstr "%3$s/%4$s/%5$s - %6$s renouvellements"
 
 #. # From Config::rules::recurring_fine, 1 - Name, 2 - ID, 3 - Low, 4 - Normal, 5 - High, 6 - Recurrence Interval
 #: staff.circ.copy_details.recurring_fine_rule_format
-#, fuzzy
 msgctxt "staff.circ.copy_details.recurring_fine_rule_format"
 msgid "%1$s"
 msgstr "%1$s"
@@ -440,7 +436,6 @@ msgstr "%3$s/%4$s/%5$s - %6$s"
 
 #. # From Config::rules::max_fine, 1 - Name, 2 - ID, 3 - Amount, 4 - Is Percent
 #: staff.circ.copy_details.max_fine_rule_format
-#, fuzzy
 msgctxt "staff.circ.copy_details.max_fine_rule_format"
 msgid "%1$s"
 msgstr "%1$s"
@@ -452,7 +447,8 @@ msgstr "%3$s Les données sont-elles exprimées en pourcentage? %4$s"
 
 #. # From asset::copy_location: 1 - Can Circulate?  2 - Is Holdable?  3 - Hold Capture Requires Verification?  4 - Is OPAC Visible?
 #: staff.circ.copy_details.location_tooltip
-msgid "Circulate? %1$s  Holdable? %2$s  Hold Verify? %3$s  OPAC Visible? %4$s"
+msgid ""
+"Circulate? %1$s  Holdable? %2$s  Hold Verify? %3$s  OPAC Visible? %4$s"
 msgstr ""
 "Est-il distribué? %1$s peut-il être mis en réserve? %2$s L’article mis en "
 "réserve a-t-il été vérifié? %3$s Le catalogue public en ligne est-il "
@@ -537,7 +533,8 @@ msgstr "Il semble que tous les exemplaires n’ont pas été transférés."
 
 #: staff.circ.copy_status.add_volumes.perm_failure
 msgid "You do not have permission to add volumes to that library."
-msgstr "Vous n’êtes pas autorisé à ajouter des volumes dans cette bibliothèque."
+msgstr ""
+"Vous n’êtes pas autorisé à ajouter des volumes dans cette bibliothèque."
 
 #: staff.circ.copy_status.add_volumes.title
 msgid "Add Volume/Item for Record # %1$s"
@@ -653,8 +650,7 @@ msgstr ""
 #: staff.circ.copy_status.transfer_volume.confirm
 msgid "Transfer volumes %1$s to library %2$s on the following record?"
 msgstr ""
-"Transférer les volumes %1$s vers la bibliothèque %2$s dans le compte "
-"suivant?"
+"Transférer les volumes %1$s vers la bibliothèque %2$s dans le compte suivant?"
 
 #: staff.circ.copy_status.transfer_volume.transfer.label
 msgid "Transfer"
@@ -699,8 +695,8 @@ msgid ""
 "Bad check digit, possibly due to a bad scan.  Use this barcode (\"%1$s\") "
 "anyway?"
 msgstr ""
-"Numéro de chèque erroné, possiblement en raison d’un problème de balayage. D"
-"ésirez-vous utiliser quand même ce code à barres (\"%1$s\")?"
+"Numéro de chèque erroné, possiblement en raison d’un problème de balayage. "
+"Désirez-vous utiliser quand même ce code à barres (\"%1$s\")?"
 
 #: staff.circ.copy_status.status.null_result
 msgid "Something weird happened.  Result was null."
@@ -826,13 +822,13 @@ msgid "Non-Cataloged"
 msgstr "Non catalogué"
 
 #: staff.circ.in_house_use.items_dump
-#, fuzzy
 msgid "items = "
-msgstr "Articles ="
+msgstr ""
 
 #: staff.circ.in_house_use.confirm_multiple
 msgid "Are you sure you want to mark %1$s as having been used %2$s times?"
-msgstr "Désirez-vous vraiment désigner %1$s comme ayant été utilisé %2$s fois?"
+msgstr ""
+"Désirez-vous vraiment désigner %1$s comme ayant été utilisé %2$s fois?"
 
 #: staff.circ.in_house_use.confirm_multiple.title
 msgid "In-House Use Verification"
@@ -899,9 +895,8 @@ msgid "Close Window"
 msgstr "Fermer la fenêtre"
 
 #: staff.circ.print_list_template.preview
-#, fuzzy
 msgid "preview: "
-msgstr "aperçu :"
+msgstr ""
 
 #: staff.circ.print_list_template.save
 msgid "Template Saved"
@@ -1176,18 +1171,16 @@ msgid "Date Created"
 msgstr "Date de création"
 
 #: staff.circ.utils.edit_date
-#, fuzzy
 msgid "Date Last Edited "
-msgstr "Date de la dernière modification"
+msgstr ""
 
 #: staff.circ.utils.bre.create_date
 msgid "Date Record Created"
 msgstr "Date de création du dossier"
 
 #: staff.circ.utils.bre.edit_date
-#, fuzzy
 msgid "Date Record Last Edited "
-msgstr "Date de la dernière modification du dossier"
+msgstr ""
 
 #: staff.circ.utils.edition
 msgid "Edition"
@@ -1300,7 +1293,6 @@ msgid "Request Library"
 msgstr "Bibliothèque qui a effectué la demande"
 
 #: staff.circ.utils.request_time
-#, fuzzy
 msgctxt "staff.circ.utils.request_time"
 msgid "Request Date"
 msgstr "Date de la demande"
@@ -1379,7 +1371,6 @@ msgid "Active?"
 msgstr "Actif?"
 
 #: staff.circ.utils.thaw_date
-#, fuzzy
 msgctxt "staff.circ.utils.thaw_date"
 msgid "Activation Date"
 msgstr "Date d’activation"
@@ -1429,7 +1420,8 @@ msgid "Override Checkin Failure?"
 msgstr "Ne pas tenir compte de l’échec d’entrée?"
 
 #: staff.circ.utils.checkin.override.item_deposit_paid.warning
-msgid "A paid deposit will be owed to this patron if this action is overrided."
+msgid ""
+"A paid deposit will be owed to this patron if this action is overrided."
 msgstr "Un dépôt sera dû à ce client si cette action est contournée."
 
 #: staff.circ.utils.billable.amount
@@ -1460,7 +1452,8 @@ msgstr "Cet article doit être acheminé vers %1$s."
 
 #: staff.circ.utils.route_item_error
 msgid "We should have received a ROUTE_ITEM"
-msgstr "Nous devrions avoir reçu une indication ROUTE_ITEM (article acheminé)."
+msgstr ""
+"Nous devrions avoir reçu une indication ROUTE_ITEM (article acheminé)."
 
 #: staff.circ.utils.route_item_status_error
 msgid "status of Holds Shelf, but no actual hold found."
@@ -1480,7 +1473,6 @@ msgid "Barcode: %1$s"
 msgstr "Code à barres : %1$s"
 
 #: staff.circ.utils.payload.hold.title
-#, fuzzy
 msgctxt "staff.circ.utils.payload.hold.title"
 msgid "Title: %1$s"
 msgstr "Titre : %1$s"
@@ -1525,13 +1517,11 @@ msgid "Notify by email: %1$s"
 msgstr "Aviser par courriel : %1$s"
 
 #: staff.circ.utils.payload.hold.request_date
-#, fuzzy
 msgctxt "staff.circ.utils.payload.hold.request_date"
 msgid "Request Date: %1$s"
 msgstr "Date de la demande : %1$s"
 
 #: staff.circ.utils.payload.hold.slip_date
-#, fuzzy
 msgctxt "staff.circ.utils.payload.hold.slip_date"
 msgid "Slip Date: %1$s"
 msgstr "Date du bordereau : %1$s"
@@ -1559,13 +1549,11 @@ msgid "Do Not Print"
 msgstr "Ne pas imprimer"
 
 #: staff.circ.utils.payload.reservation.barcode
-#, fuzzy
 msgctxt "staff.circ.utils.payload.reservation.barcode"
 msgid "Barcode: %1$s"
 msgstr "Code à barres : %1$s"
 
 #: staff.circ.utils.payload.reservation.title
-#, fuzzy
 msgctxt "staff.circ.utils.payload.reservation.title"
 msgid "Title: %1$s"
 msgstr "Titre : %1$s"
@@ -1580,7 +1568,6 @@ msgid "Reservation for patron %1$s"
 msgstr "Réservation à l’intention de l’usager %1$s"
 
 #: staff.circ.utils.payload.reservation.request_date
-#, fuzzy
 msgctxt "staff.circ.utils.payload.reservation.request_date"
 msgid "Request Date: %1$s"
 msgstr "Date de la demande : %1$s"
@@ -1590,7 +1577,6 @@ msgid "Start Date: %1$s"
 msgstr "Date de début : %1$s"
 
 #: staff.circ.utils.payload.reservation.slip_date
-#, fuzzy
 msgctxt "staff.circ.utils.payload.reservation.slip_date"
 msgid "Slip Date: %1$s"
 msgstr "Date du bordereau : %1$s"
@@ -1600,13 +1586,11 @@ msgid "Reservation Slip"
 msgstr "Bordereau de réservation"
 
 #: staff.circ.utils.reservation_slip.print.yes
-#, fuzzy
 msgctxt "staff.circ.utils.reservation_slip.print.yes"
 msgid "Print"
 msgstr "Imprimer"
 
 #: staff.circ.utils.reservation_slip.print.no
-#, fuzzy
 msgctxt "staff.circ.utils.reservation_slip.print.no"
 msgid "Do Not Print"
 msgstr "Ne pas imprimer"
@@ -1638,9 +1622,8 @@ msgid "Hold Capture Delayed"
 msgstr "Délai de la saisie des articles en réserve"
 
 #: staff.circ.utils.hold_capture_delayed.prompt_for_nocapture
-#, fuzzy
 msgid "Do Not Capture "
-msgstr "Ne pas saisir"
+msgstr ""
 
 #: staff.circ.utils.hold_capture_delayed.prompt_for_capture
 msgid "Capture"
@@ -1693,9 +1676,8 @@ msgid "Estimated Wait Time"
 msgstr "Estimation du temps d’attente"
 
 #: staff.circ.utils.potential_copies
-#, fuzzy
 msgid "Potential Copies "
-msgstr "Exemplaires possibles"
+msgstr ""
 
 #: staff.circ.utils.queue_position
 msgid "Queue Position"
@@ -1730,7 +1712,8 @@ msgstr "%1$s renouvelé(e) %4$s pour %3$s (%2$s)"
 
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
 #: staff.circ.work_log_checkin_attempt.transit.message
-msgid "%1$s attempted checkin of %4$s, resulting in transit.  Route To = %5$s"
+msgid ""
+"%1$s attempted checkin of %4$s, resulting in transit.  Route To = %5$s"
 msgstr ""
 "%1$s tentative de vérification %4$s qui a entraîné une mise en transit. "
 "Acheminer à = %5$s"
@@ -1738,22 +1721,23 @@ msgstr ""
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
 #: staff.circ.work_log_checkin_attempt.transit_for_hold.message
 msgid ""
-"%1$s attempted checkin of %4$s, resulting in a hold-transit.  Route To = %"
-"5$s"
+"%1$s attempted checkin of %4$s, resulting in a hold-transit.  Route To = %5$s"
 msgstr ""
 "%1$s tentative de vérification %4$s qui a entraîné une mise en réserve-en "
 "transit. Route To = %5$s"
 
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
 #: staff.circ.work_log_checkin_attempt.no_change.message
-msgid "%1$s attempted checkin of %4$s, but nothing happened.  Route To = %5$s"
+msgid ""
+"%1$s attempted checkin of %4$s, but nothing happened.  Route To = %5$s"
 msgstr ""
 "%1$s tentative de vérification de %4$s, mais rien ne s’est produit. "
 "Acheminer à = %5$s"
 
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
 #: staff.circ.work_log_checkin_attempt.error.message
-msgid "%1$s attempted checkin of %4$s, and an error occurred.  Route To = %5$s"
+msgid ""
+"%1$s attempted checkin of %4$s, and an error occurred.  Route To = %5$s"
 msgstr ""
 "%1$s tentative de vérification de %4$s, et une erreur s’est produite. "
 "Acheminer à = %5$s"
@@ -1813,9 +1797,8 @@ msgid "Renew Items"
 msgstr "Renouveler les articles"
 
 #: staff.circ.checkin.error
-#, fuzzy
 msgid "Check In Failed (in circ.util.checkin) (%1$s): "
-msgstr "Échec de l’entrée (dans circ.util.checkin) (%1$s) :"
+msgstr ""
 
 #. # "Circulation" - check &staff.main.menu.circ.label; in lang.dtd
 #. # "Offline Interface" - check &staff.main.menu.circ.offline.label; in lang.dtd
@@ -1892,15 +1875,14 @@ msgstr ""
 
 #: staff.circ.holds.activation_date.prompt.plural
 msgid ""
-"Please enter an Activation Date (or choose Remove to unset) for holds %1$s. "
-" This will also Suspend the holds."
+"Please enter an Activation Date (or choose Remove to unset) for holds %1$s.  "
+"This will also Suspend the holds."
 msgstr ""
 "Veuillez indiquer une date d’activation (ou sélectionner Supprimer pour "
 "désactiver) pour les articles mis en réserve %1$s. Cela aura également pour "
 "effet de suspendre les articles mis en réserve."
 
 #: staff.circ.holds.activation_date.dialog.description
-#, fuzzy
 msgctxt "staff.circ.holds.activation_date.dialog.description"
 msgid "Activation Date"
 msgstr "Date d’activation"
@@ -1924,7 +1906,6 @@ msgstr ""
 "la liste d’attente des articles mis en réserve."
 
 #: staff.circ.holds.request_date.dialog.description
-#, fuzzy
 msgctxt "staff.circ.holds.request_date.dialog.description"
 msgid "Request Date"
 msgstr "Date de la demande"
@@ -1979,9 +1960,8 @@ msgid "No"
 msgstr "Non"
 
 #: staff.circ.hold_update.hold_ids.failed
-#, fuzzy
 msgid "Number of holds not updated: %1$s "
-msgstr "Nombre d’articles mis en réserve non mis à jour : %1$s"
+msgstr ""
 
 #: staff.circ.holds.already_activated
 msgid "Hold %1$s was already activated."
@@ -2042,6 +2022,40 @@ msgstr "Pièces manquantes"
 msgid "No item with barcode \"%1$s\""
 msgstr "Aucun article dont le code à barres est \\\"%1$s\\\""
 
+#~ msgctxt "staff.circ.invalid_date"
+#~ msgid "Invalid Date"
+#~ msgstr "Date invalide"
+
+#~ msgid "items ="
+#~ msgstr "Articles ="
+
+#~ msgid "preview:"
+#~ msgstr "aperçu :"
+
+#~ msgid "Date Last Edited"
+#~ msgstr "Date de la dernière modification"
+
+#~ msgid "Request Date"
+#~ msgstr "Date de la demande"
+
+#~ msgid "Activation Date"
+#~ msgstr "Date d’activation"
+
+#~ msgid "Title: %1$s"
+#~ msgstr "Titre : %1$s"
+
+#~ msgid "Request Date: %1$s"
+#~ msgstr "Date de demande : %1$s"
+
+#~ msgid "Slip Date: %1$s"
+#~ msgstr "Date de bordereau : %1$s"
+
+#~ msgid "Do Not Capture"
+#~ msgstr "Ne pas saisir"
+
+#~ msgid "Check In Failed (in circ.util.checkin) (%1$s):"
+#~ msgstr "Échec de l’entrée (dans circ.util.checkin) (%1$s) :"
+
 #~ msgid ""
 #~ "Please enter an Activation Date (or leave blank to unset) for hold %1$s.  "
 #~ "This will also Suspend the hold."
@@ -2063,10 +2077,9 @@ msgstr "Aucun article dont le code à barres est \\\"%1$s\\\""
 #~ msgstr ""
 #~ "La date d’activation doit être rétablie ou réglée à une date ultérieure."
 
-#, fuzzy
 #~ msgctxt "staff.circ.holds.activation_date.invalid_date"
 #~ msgid "Invalid Date"
-#~ msgstr "Format de date non valide"
+#~ msgstr "Date invalide"
 
 #~ msgid ""
 #~ "Please enter an Expiration Date (or leave blank to unset) for hold %1$s."
@@ -2085,15 +2098,13 @@ msgstr "Aucun article dont le code à barres est \\\"%1$s\\\""
 #~ msgstr ""
 #~ "La date d’activation doit être rétablie ou réglée à une date ultérieure."
 
-#, fuzzy
 #~ msgctxt "staff.circ.holds.expire_time.invalid_date"
 #~ msgid "Invalid Date"
-#~ msgstr "Format de date non valide"
+#~ msgstr "Date invalide"
 
-#, fuzzy
 #~ msgctxt "staff.circ.holds.shelf_expire_time.invalid_date"
 #~ msgid "Invalid Date"
-#~ msgstr "Format de date non valide"
+#~ msgstr "Date invalide"
 
 #~ msgid "Checkout Timestamp"
 #~ msgstr "Horodateur -  Sortie"
@@ -2119,3 +2130,18 @@ msgstr "Aucun article dont le code à barres est \\\"%1$s\\\""
 #~ msgstr ""
 #~ "Vous ne pouvez pas modifier la bibliothèque d’emprunt lorsque les articles "
 #~ "mis en réserve sont en transit ou prêts à être empruntés."
+
+#~ msgid "Number of circulations not backdated: %1$s"
+#~ msgstr "Nombre d’exemplaires qui ne sont pas antidatés : %1$s"
+
+#~ msgid "Number of circulations selected: %1$s"
+#~ msgstr "Nombre d’exemplaires sélectionnés : %1$s"
+
+#~ msgid "Date Record Last Edited"
+#~ msgstr "Date de la dernière modification du dossier"
+
+#~ msgid "Potential Copies"
+#~ msgstr "Exemplaires possibles"
+
+#~ msgid "Number of holds not updated: %1$s"
+#~ msgstr "Nombre d’articles mis en réserve non mis à jour : %1$s"

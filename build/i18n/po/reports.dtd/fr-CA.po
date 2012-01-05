@@ -1,5 +1,4 @@
 # extracted from ../../Open-ILS/web/opac/locale/en-US/reports.dtd
-#. extracted from ../../Open-ILS/web/opac/locale/en-US/reports.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > reports.dtd.po\n"
@@ -11,10 +10,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.8.1\n"
-"X-Accelerator-Marker: &\n"
 "X-Launchpad-Export-Date: 2011-05-18 04:47+0000\n"
+"X-Generator: Launchpad (build 12959)\n"
 "X-Poedit-Country: CANADA\n"
+"X-Accelerator-Marker: &\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
@@ -248,8 +247,8 @@ msgid ""
 "This will destroy the report you are currently constructing.  Are you sure "
 "you wish to do this?"
 msgstr ""
-"Cette action détruira le rapport sur lequel vous travaillez en ce moment. D"
-"ésirez-vous vraiment le détruire?"
+"Cette action détruira le rapport sur lequel vous travaillez en ce moment. "
+"Désirez-vous vraiment le détruire?"
 
 #: reports.oils_rpt_common.action_succeeded
 msgid "Action Succeeded"

@@ -2,11 +2,11 @@
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/cat.properties
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-04-18 21:45-0400\n"
 "PO-Revision-Date: 2010-10-30 19:49+0000\n"
 "Last-Translator: Gabriel Perez Pepe <Unknown>\n"
@@ -14,9 +14,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.8.1\n"
-"X-Accelerator-Marker: &\n"
 "X-Launchpad-Export-Date: 2011-05-18 04:39+0000\n"
+"X-Generator: Launchpad (build 12959)\n"
 
 #: bib.no_marc
 msgid "No MARC Record"
@@ -252,10 +251,9 @@ msgid "Cancel"
 msgstr "Cancelar"
 
 #: staff.cat.copy_browser.delete_volume.override
-#, fuzzy
 msgctxt "staff.cat.copy_browser.delete_volume.override"
 msgid "Override Delete Failure?"
-msgstr "Omitir Falla de Borrado?"
+msgstr ""
 
 #: staff.cat.copy_browser.delete_volume.copies_remain
 msgid ""
@@ -271,7 +269,8 @@ msgstr "Copiar navegador -> borrar volúmenes"
 
 #: staff.cat.copy_browser.mark_library.alert
 msgid "Library + Record marked as Volume Transfer Destination"
-msgstr "Librería + Registro marcado como Destino de transferencia del volúmen"
+msgstr ""
+"Librería + Registro marcado como Destino de transferencia del volúmen"
 
 #: staff.cat.copy_browser.mark_library.prompt
 msgid "Choose just one Library to mark as Volume Transfer Destination"
@@ -309,8 +308,7 @@ msgstr ""
 #: staff.cat.copy_browser.transfer.prompt
 msgid "Transfer volumes %1$s to library %2$s on the following record?"
 msgstr ""
-"¿Transferir los volúmenes %1$s a la biblioteca %2$s en el siguiente "
-"registro?"
+"¿Transferir los volúmenes %1$s a la biblioteca %2$s en el siguiente registro?"
 
 #: staff.cat.copy_browser.transfer.submit.label
 msgctxt "staff.cat.copy_browser.transfer.submit.label"
@@ -453,10 +451,9 @@ msgid "Action completed."
 msgstr "Acción completa."
 
 #: staff.cat.copy_buckets.copy_buckets_delete_bucket.confirm
-#, fuzzy
 msgctxt "staff.cat.copy_buckets.copy_buckets_delete_bucket.confirm"
 msgid "Delete the bucket named %1$s?"
-msgstr "¿Borrar el tarro llamado %1$s?"
+msgstr ""
 
 #: staff.cat.copy_buckets.copy_buckets_delete_bucket.complete
 msgctxt "staff.cat.copy_buckets.copy_buckets_delete_bucket.complete"
@@ -747,10 +744,9 @@ msgid "<Remove Circulate as Type>"
 msgstr "<Remover Circular como Tipo>"
 
 #: staff.cat.copy_editor.field.unset_or_null
-#, fuzzy
 msgctxt "staff.cat.copy_editor.field.unset_or_null"
 msgid "<Unset>"
-msgstr "<Desmontar>"
+msgstr ""
 
 #: staff.cat.copy_editor.field.owning_library.label
 msgid "Owning Lib : Call Number"
@@ -1300,10 +1296,9 @@ msgid "Delete the bucket named %1$s?"
 msgstr "¿Borrar el tarro llamado %1$s?"
 
 #: staff.cat.record_buckets.new_bucket.bucket_prompt
-#, fuzzy
 msgctxt "staff.cat.record_buckets.new_bucket.bucket_prompt"
 msgid "What would you like to name the bucket?"
-msgstr "¿Que nombre desea para el tarro?"
+msgstr ""
 
 #: staff.cat.record_buckets.new_bucket.bucket_prompt_title
 msgctxt "staff.cat.record_buckets.new_bucket.bucket_prompt_title"
@@ -1406,10 +1401,9 @@ msgid "Trying to init record_buckets_quick.xul"
 msgstr ""
 
 #: staff.cat.record_buckets_quick.name_of_bucket
-#, fuzzy
 msgctxt "staff.cat.record_buckets_quick.name_of_bucket"
 msgid "What would you like to name the bucket?"
-msgstr "¿Que nombre desea para el tarro?"
+msgstr ""
 
 #: staff.cat.record_buckets_quick.name_of_bucket.title
 msgctxt "staff.cat.record_buckets_quick.name_of_bucket.title"
@@ -1495,14 +1489,11 @@ msgid "Rename did not likely occur."
 msgstr "Cambio de nombre probablemente no ocurrio."
 
 #: staff.cat.util.transfer_copies.unmarked_volume_alert
-#, fuzzy
 msgctxt "staff.cat.util.transfer_copies.unmarked_volume_alert"
 msgid ""
 "Please mark a volume as the destination from within holdings maintenance and "
 "then try this again."
 msgstr ""
-"Marce un volumen como el destino de el mantenimiento de apartados y intente "
-"denuevo."
 
 #: staff.cat.util.transfer_copies.params_message
 msgid ""
@@ -1566,9 +1557,8 @@ msgstr ""
 "Error abriendo el catalogo para el documento con la identificación = %1$s"
 
 #: staff.cat.util.copy_editor.batch_in_title
-#, fuzzy
 msgid "Batch "
-msgstr "Lote"
+msgstr ""
 
 #: staff.cat.util.copy_editor.edit_in_title
 msgctxt "staff.cat.util.copy_editor.edit_in_title"
@@ -1605,7 +1595,8 @@ msgstr "Vista"
 #: staff.cat.util.mark_item_damaged.af_message
 msgid ""
 "Action failed.  One or more of these items is in a special status such as "
-"\"Checked Out\" or \"In Transit\" and cannot be changed to the Damaged status."
+"\"Checked Out\" or \"In Transit\" and cannot be changed to the Damaged "
+"status."
 msgstr ""
 "Acción fracasada. Uno o más de estos artículos estan en un estado especial "
 "como \"Prestado\" o \"En Transito\" y no puede ser cambiado a Dañado."
@@ -1672,42 +1663,34 @@ msgid "Check here to confirm this action"
 msgstr "Marce aquí para confirmar esta acción"
 
 #: staff.cat.util.mark_item_damaged.item_circulating_to_patron
-#, fuzzy
 msgid "Item %1$s is checked out to patron, %2$s, and is due on %3$s. "
-msgstr "Artículo %1$s fue prestrado a un cliente, %2$s, y esta tarde el %3$s."
+msgstr ""
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.message
-#, fuzzy
 msgid ""
 "Item %1$s will be marked damaged.  Was returned on %3$s for %2$s.  Charge "
 "this patron $%4$s for the damage? "
 msgstr ""
-"Artículo %1$s serán marcados dañados. Fue retornado el %3$s por %2$s. "
-"¿Cobrarle a este cliente $%4$s por los daños?"
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.title
-#, fuzzy
 msgid "Charge Patron For Damaged Item? "
-msgstr "¿Cobrarle Al Cliente Por El Artículo Dañado?"
+msgstr ""
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.ok_label
 msgid "OK "
 msgstr ""
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.change_amount_label
-#, fuzzy
 msgid "Change Amount "
-msgstr "Cambiar La Cantidad"
+msgstr ""
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.cancel_label
-#, fuzzy
 msgid "Cancel "
-msgstr "Cancelar"
+msgstr ""
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.confirm_action
-#, fuzzy
 msgid "Check here to confirm this action "
-msgstr "Marce aquí para confirmar esta acción"
+msgstr ""
 
 #: staff.cat.util.mark_item_damaged.marking_error
 msgid "Error marking item %1$s damaged."
@@ -1724,10 +1707,12 @@ msgstr "%1$s artículos marcados Dañados."
 #: staff.cat.util.mark_item_missing.af_message
 msgid ""
 "Action failed.  One or more of these items is in a special status such as "
-"\"Checked Out\" or \"In Transit\" and cannot be changed to the Missing status."
+"\"Checked Out\" or \"In Transit\" and cannot be changed to the Missing "
+"status."
 msgstr ""
 "Acción fracasda. Uno o más de estos artículos esta en un estado especial "
-"como \"Prestado\" o \"En Transito\" y no puede ser cambiado a el estado Perdido."
+"como \"Prestado\" o \"En Transito\" y no puede ser cambiado a el estado "
+"Perdido."
 
 #: staff.cat.util.mark_item_missing.af_title
 msgctxt "staff.cat.util.mark_item_missing.af_title"
@@ -1782,7 +1767,8 @@ msgstr "%1$s artículos marcados Perdidos."
 
 #: staff.cat.util.mark_item_missing_pieces.ms_message
 msgid "Mark these items as missing pieces?  Barcodes: %1$s"
-msgstr "¿Marcar estos artículos como piezas perdidas? Códigos de barras: %1$s"
+msgstr ""
+"¿Marcar estos artículos como piezas perdidas? Códigos de barras: %1$s"
 
 #: staff.cat.util.mark_item_missing_pieces.ms_title
 msgid "Mark Missing Pieces"
@@ -1816,10 +1802,11 @@ msgid "%1$s items marked as missing pieces."
 msgstr "%1$s artículos marcados como piezas perdidas."
 
 #: staff.cat.util.mark_item_missing_pieces.circ_not_found
-msgid "No circulation found for item with barcode %1$s.  Item left unmodified."
+msgid ""
+"No circulation found for item with barcode %1$s.  Item left unmodified."
 msgstr ""
-"Ninguna circulación encontrada para el artículo con el código de barras %"
-"1$s. El artículo no fue modificado."
+"Ninguna circulación encontrada para el artículo con el código de barras "
+"%1$s. El artículo no fue modificado."
 
 #: staff.cat.volume_buckets.window_tab_name
 msgid "Volume Buckets"
@@ -2077,11 +2064,6 @@ msgid ""
 "string: "
 msgstr ""
 
-#: staff.cat.z3950.initial_search.raw_prompt.default_value
-msgctxt "staff.cat.z3950.initial_search.raw_prompt.default_value"
-msgid ""
-msgstr ""
-
 #: staff.cat.z3950.initial_search.raw_search_unsupported_for_native_catalog
 msgid "Raw z39.50 PQN search not yet implemented for native catalog."
 msgstr ""
@@ -2115,9 +2097,8 @@ msgid "Showing %1$s of %2$s for %3$s"
 msgstr "Mostrando %1$s of %2$s for %3$s"
 
 #: staff.cat.z3950.handle_results.showing_total_results
-#, fuzzy
 msgid "Showing %1$s of %2$s "
-msgstr "Mostrando %1$s of %2$s"
+msgstr ""
 
 #: staff.cat.z3950.handle_results.num_of_results
 msgid "%1$s records found"
@@ -2155,20 +2136,18 @@ msgid "Import Collision"
 msgstr "Importar Colisión"
 
 #: staff.cat.z3950.spawn_marc_editor.btn1_overlay
-#, fuzzy
 msgctxt "staff.cat.z3950.spawn_marc_editor.btn1_overlay"
 msgid "Overlay"
-msgstr "Sobreponer"
+msgstr ""
 
 #: staff.cat.z3950.spawn_marc_editor.btn2_import
 msgid "Import with alternate TCN %1$s"
 msgstr "Importan con un TCN %1$s sustituto"
 
 #: staff.cat.z3950.spawn_marc_editor.permission_error
-#, fuzzy
 msgctxt "staff.cat.z3950.spawn_marc_editor.permission_error"
 msgid "check permission"
-msgstr "comprobación de permisos"
+msgstr ""
 
 #: staff.cat.z3950.spawn_marc_editor.btn3_cancel_import
 msgctxt "staff.cat.z3950.spawn_marc_editor.btn3_cancel_import"
@@ -2260,9 +2239,8 @@ msgid "Import Collision"
 msgstr "Importar Colisión"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.btn1_overlay
-#, fuzzy
 msgid "Overlay with alternate TCN %1$s"
-msgstr "Importan con un TCN %1$s sustituto"
+msgstr ""
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.permission_error
 msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.permission_error"
@@ -2280,19 +2258,17 @@ msgid "Check here to confirm this action"
 msgstr "Marque aquí para confirmar esta acción"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.successful_overlay_with_new_TCN
-#, fuzzy
 msgid "Record successfully overlaid with alternate TCN."
-msgstr "Registro exitosamente importado con el sustituto TCN."
+msgstr ""
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.cancelled_overlay
 msgid "Record overlay cancelled"
 msgstr ""
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.success_overlay
-#, fuzzy
 msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.success_overlay"
 msgid "Record successfully overlaid."
-msgstr "Registro exitosamente sobrepuesto."
+msgstr ""
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.overlay_error
 msgid "Record not likely overlaid."
@@ -2352,15 +2328,38 @@ msgstr ""
 #~ msgid "Merge Aborted"
 #~ msgstr "Combinación Abortada"
 
+#~ msgid "Batch"
+#~ msgstr "Lote"
+
+#~ msgid "Item %1$s is checked out to patron, %2$s, and is due on %3$s."
+#~ msgstr ""
+#~ "Artículo %1$s fue prestrado a un cliente, %2$s, y esta tarde el %3$s."
+
 #~ msgctxt "staff.cat.util.mark_item_damaged.charge_patron_prompt.ok_label"
 #~ msgid "OK"
 #~ msgstr "Aceptar"
+
+#~ msgid "Charge Patron For Damaged Item?"
+#~ msgstr "¿Cobrarle Al Cliente Por El Artículo Dañado?"
+
+#~ msgid ""
+#~ "Item %1$s will be marked damaged.  Was returned on %3$s for %2$s.  Charge "
+#~ "this patron $%4$s for the damage?"
+#~ msgstr ""
+#~ "Artículo %1$s serán marcados dañados. Fue retornado el %3$s por %2$s. "
+#~ "¿Cobrarle a este cliente $%4$s por los daños?"
 
 #~ msgctxt "staff.cat.util.mark_item_damaged.charge_patron_prompt.cancel_label"
 #~ msgid "Cancel"
 #~ msgstr "Cancelar"
 
+#~ msgid "Change Amount"
+#~ msgstr "Cambiar La Cantidad"
+
 #~ msgctxt ""
 #~ "staff.cat.util.mark_item_damaged.charge_patron_prompt.confirm_action"
 #~ msgid "Check here to confirm this action"
 #~ msgstr "Marce aquí para confirmar esta acción"
+
+#~ msgid "Showing %1$s of %2$s"
+#~ msgstr "Mostrando %1$s of %2$s"

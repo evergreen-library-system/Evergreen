@@ -1,5 +1,4 @@
 # extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/common.properties
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/common.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > common.properties.po\n"
@@ -11,10 +10,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.8.1\n"
-"X-Accelerator-Marker: &\n"
 "X-Launchpad-Export-Date: 2011-05-18 04:40+0000\n"
+"X-Generator: Launchpad (build 12959)\n"
 "X-Poedit-Country: Canada\n"
+"X-Accelerator-Marker: &\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
@@ -368,61 +367,39 @@ msgctxt "staff.csp_block_circ_yes"
 msgid "Yes"
 msgstr "Oui"
 
-#: staff.csp_block_circ_no
-msgctxt "staff.csp_block_circ_no"
-"staff.csp_block_circ_no"
-msgid ""
-msgstr ""
-
 #: staff.csp_block_renew_yes
 msgctxt "staff.csp_block_renew_yes"
 msgid "Yes"
 msgstr "Oui"
-
-#: staff.csp_block_renew_no
-msgctxt "staff.csp_block_renew_no"
-msgid ""
-msgstr ""
 
 #: staff.csp_block_hold_yes
 msgctxt "staff.csp_block_hold_yes"
 msgid "Yes"
 msgstr "Oui"
 
-#: staff.csp_block_hold_no
-msgctxt "staff.csp_block_hold_no"
-msgid ""
+#: staff.ausp_id_label
+msgid "Penalty ID "
 msgstr ""
 
-#: staff.ausp_id_label
-#, fuzzy
-msgid "Penalty ID "
-msgstr "ID de pénalité"
-
 #: staff.ausp_staff_label
-#, fuzzy
 msgid "Applied By "
-msgstr "Appliqué par"
+msgstr ""
 
 #: staff.ausp_set_date_label
-#, fuzzy
 msgid "Applied On "
-msgstr "Appliqué le"
+msgstr ""
 
 #: staff.ausp_note_label
-#, fuzzy
 msgid "Note "
-msgstr "Note"
+msgstr ""
 
 #: staff.ausp_org_unit_label
-#, fuzzy
 msgid "Library "
-msgstr "Bibliothèque"
+msgstr ""
 
 #: staff.mbts_id_label
-#, fuzzy
 msgid "Bill # "
-msgstr "No de facture"
+msgstr ""
 
 #: staff.mbts_xact_start_label
 msgid "Start"
@@ -809,9 +786,8 @@ msgid "Offline interface synchronized with server."
 msgstr "Interface hors ligne synchronisée avec le serveur."
 
 #: staff.main.gen_offline_widgets.noncat_sort.error
-#, fuzzy
 msgid "error in noncat sorting: "
-msgstr "erreur de triage des articles non catalogués :"
+msgstr ""
 
 #: staff.main.gen_offline_widgets.please_wait
 msgid "Please wait"
@@ -853,5 +829,30 @@ msgstr "Aujourd'hui refusé."
 msgid "Triggered Events: %1$s"
 msgstr "Évènements déclenchés : %1 $s"
 
+#~ msgid ","
+#~ msgstr ","
+
+#~ msgctxt "staff.ausp_note_label"
+#~ msgid "Note"
+#~ msgstr "Note"
+
+#~ msgid "Bill #"
+#~ msgstr "No de facture"
+
+#~ msgid "error in noncat sorting:"
+#~ msgstr "erreur de triage des articles non catalogués :"
+
 #~ msgid "Expire Time"
 #~ msgstr "Heure d’expiration"
+
+#~ msgid "Penalty ID"
+#~ msgstr "ID de pénalité"
+
+#~ msgid "Applied By"
+#~ msgstr "Appliqué par"
+
+#~ msgid "Applied On"
+#~ msgstr "Appliqué le"
+
+#~ msgid "Library"
+#~ msgstr "Bibliothèque"

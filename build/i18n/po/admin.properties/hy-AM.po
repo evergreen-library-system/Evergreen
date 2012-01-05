@@ -1,5 +1,4 @@
 # extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/admin.properties
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/admin.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -11,9 +10,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.8.1\n"
-"X-Accelerator-Marker: &\n"
 "X-Launchpad-Export-Date: 2011-05-18 04:38+0000\n"
+"X-Generator: Launchpad (build 12959)\n"
+"X-Accelerator-Marker: &\n"
 
 #: staff.admin.age_overdue_circulations_to_lost.chunks_processed
 msgid "Chunks Processed: %1$s"

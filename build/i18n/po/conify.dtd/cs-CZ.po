@@ -1,19 +1,18 @@
-#. extracted from ../../Open-ILS/web/opac/locale/en-US/conify.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-04-18 21:44-0400\n"
-"PO-Revision-Date: 2011-08-27 18:07+0000\n"
+"PO-Revision-Date: 2011-12-10 07:31+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.8.1\n"
-"X-Accelerator-Marker: &\n"
-"X-Launchpad-Export-Date: 2011-08-28 05:19+0000\n"
+"X-Launchpad-Export-Date: 2011-12-11 05:37+0000\n"
+"X-Generator: Launchpad (build 14450)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
+"X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
@@ -85,9 +84,8 @@ msgstr "Ovládací prvky"
 
 #. Organization unit type configuration interface
 #: conify.org_unit_type.title
-#, fuzzy
 msgid "Global :: Actor :: Organization Unit Types"
-msgstr "Globální :: Činitel :: Organizační Jednotky"
+msgstr "Globální :: Faktor :: Typy organizačních jednotek"
 
 #: conify.org_unit_type.type_tree.label
 msgid "Organization Unit Types"
@@ -158,7 +156,7 @@ msgstr "Viditelné v OPACu"
 #. Hours of operation
 #: conify.org_unit.hoo_pane.title
 msgid "Hours of Operation"
-msgstr "Provozní doba"
+msgstr "Otevírací doba"
 
 #: conify.org_unit.hoo_pane.open_time
 msgid "Open time"
@@ -166,7 +164,7 @@ msgstr "Čas otevření"
 
 #: conify.org_unit.hoo_pane.close_time
 msgid "Close time"
-msgstr "Zavírací hodina"
+msgstr "Čas uzavření"
 
 #: conify.org_unit.hoo_pane.closed
 msgid "Closed"
@@ -207,7 +205,7 @@ msgstr "Adresy"
 
 #: conify.org_unit.addresses_pane.physical.title
 msgid "Physical Address"
-msgstr ""
+msgstr "Fyzická adresa"
 
 #: conify.org_unit.addresses_pane.holds.title
 msgid "Holds Address"
@@ -239,7 +237,7 @@ msgstr "Ulice 2"
 
 #: conify.org_unit.addresses_pane.city
 msgid "City"
-msgstr "Obec"
+msgstr "Město / obec"
 
 #: conify.org_unit.addresses_pane.state
 msgid "State"
@@ -272,7 +270,7 @@ msgstr "Nový status"
 
 #: conify.copy_status.new_status.name
 msgid "New Status Name"
-msgstr "Jméno nového statutu"
+msgstr "Název nového statutu"
 
 #: conify.copy_status.new_status.save
 msgctxt "conify.copy_status.new_status.save"
@@ -336,7 +334,7 @@ msgstr "Nová bibliografická úroveň"
 #: conify.marc_code_maps.add
 msgctxt "conify.marc_code_maps.add"
 msgid "Add"
-msgstr "Pridano"
+msgstr "Přidat"
 
 #: conify.marc_code_maps.item_form.title
 msgid "Item Form Map"
@@ -348,11 +346,11 @@ msgstr "Nová forma popisné jednotky"
 
 #: conify.marc_code_maps.item_type.title
 msgid "Item Type Map"
-msgstr "Typ záznamu"
+msgstr "Typy exemplářů"
 
 #: conify.marc_code_maps.item_type.new.label
 msgid "New Item Type:"
-msgstr "Nový typ záznamu"
+msgstr "Nový typ exempláře"
 
 #: conify.marc_code_maps.language.title
 msgid "Language Map"
@@ -432,7 +430,7 @@ msgstr "Popis"
 
 #: conify.grp_tree.permission_interval.label
 msgid "Permission Interval"
-msgstr "Doba trvání oprávnění"
+msgstr "Interval trvání oprávnění"
 
 #: conify.grp_tree.hold_priority.label
 msgid "Hold Priority"
@@ -463,7 +461,7 @@ msgstr "Smazat"
 #: conify.grp_tree.new_child_button.label
 msgctxt "conify.grp_tree.new_child_button.label"
 msgid "New Child"
-msgstr "Přidat novu podřízenou skupinu"
+msgstr "Přidat nový podřízený typ"
 
 #: conify.grp_tree.group_permissions.title
 msgid "Group Permissions"

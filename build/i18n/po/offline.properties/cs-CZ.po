@@ -1,19 +1,18 @@
-#. extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergeen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-04-18 21:45-0400\n"
-"PO-Revision-Date: 2011-08-25 20:53+0000\n"
+"PO-Revision-Date: 2011-12-10 10:30+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <petrkubiska@seznam.cz>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.8.1\n"
-"X-Accelerator-Marker: &\n"
-"X-Launchpad-Export-Date: 2011-08-26 04:37+0000\n"
+"X-Launchpad-Export-Date: 2011-12-11 05:37+0000\n"
+"X-Generator: Launchpad (build 14450)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
+"X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
@@ -31,7 +30,7 @@ msgstr ""
 
 #: common.jsan.missing
 msgid "The JSAN library object is missing."
-msgstr "JSAN knihovna chybí."
+msgstr "Chybí objekt knihovny JSAN"
 
 #: common.ok
 msgctxt "common.ok"
@@ -63,11 +62,11 @@ msgstr "Vyčistit"
 
 #: common.confirm
 msgid "Check here to confirm this message."
-msgstr "Zkontrolujte zde potvrzení této zprávy."
+msgstr "Zaškrtnutím potvrďte tuto zprávu"
 
 #: common.error.default
 msgid "Please report that this happened."
-msgstr "Prosím hlaste, že se to stalo."
+msgstr "Nahlašte prosím tuto událost"
 
 #: common.error.copy_msg
 msgid "Copy Message"
@@ -87,7 +86,7 @@ msgstr "Vypršel"
 
 #: common.barcode.status.warning.barred
 msgid "Barred"
-msgstr "Zamezený"
+msgstr "Omezení transakcí"
 
 #: common.barcode.status.warning.blocked
 msgid "Blocked"
@@ -119,7 +118,7 @@ msgstr "A"
 
 #: common.unimplemented
 msgid "Not Yet Implemented"
-msgstr "Dosud nebyla provedena"
+msgstr "Zatím neimplementováno"
 
 #: cat.bib_record
 msgid "Bib Record: %1$s"
@@ -127,7 +126,7 @@ msgstr "Bibliografický záznam: %1$s"
 
 #: cat.opac.delete_record.confirm
 msgid "Are you sure you want to delete title record #%1$s from the catalog?"
-msgstr "Jste si jisti, že chcete odstranit titul záznamu #%1 $s z katalogu?"
+msgstr "Jste si jisti, že chcete odstranit záznam titulu #%1 $s z katalogu?"
 
 #: cat.opac.delete_record
 msgid "Delete Record"
@@ -138,8 +137,9 @@ msgid "Delete"
 msgstr "Smazat"
 
 #: cat.opac.undelete_record.confirm
-msgid "Are you sure you want to undelete title record #%1$s from the catalog?"
-msgstr "Jste si jisti, že chcete obnovirt titul záznamu #%1$s z katalogu?"
+msgid ""
+"Are you sure you want to undelete title record #%1$s from the catalog?"
+msgstr "Jste si jisti, že chcete obnovirt záznam titulu #%1$s z katalogu?"
 
 #: cat.opac.undelete_record
 msgid "Undelete Record"
@@ -152,7 +152,7 @@ msgstr "Obnovit"
 #: cat.opac.cancel
 msgctxt "cat.opac.cancel"
 msgid "Cancel"
-msgstr "Zrušit"
+msgstr "Storno"
 
 #: cat.opac.record_deleted
 msgid "Record deleted."
@@ -161,7 +161,7 @@ msgstr "Záznam smazán."
 #: cat.opac.record_deleted.confirm
 msgctxt "cat.opac.record_deleted.confirm"
 msgid "Check here to confirm this action."
-msgstr "Zkontrolujte zde potvrzení této akce."
+msgstr "Zaškrtnutím potvrďte tuto akci"
 
 #: cat.opac.record_undeleted
 msgid "Record undeleted."
@@ -170,7 +170,7 @@ msgstr "Záznam obnoven."
 #: cat.opac.record_undeleted.confirm
 msgctxt "cat.opac.record_undeleted.confirm"
 msgid "Check here to confirm this action."
-msgstr "Zkontrolujte zde potvrzení této akce."
+msgstr "Zaškrtnutím potvrďte tuto akci"
 
 #. # variables: document ID, error code, error description
 #: cat.opac.record_deleted.error
@@ -185,12 +185,12 @@ msgstr "Chyba při obnově záznamu #%1$s : %2$s : %3$s"
 #: cat.opac.record_marked_for_overlay.record_id.alert
 msgctxt "cat.opac.record_marked_for_overlay.record_id.alert"
 msgid "Record with ID %1$s marked for overlay."
-msgstr "Záznam s ID %1$s označen k překrytí."
+msgstr "Záznam s ID %1$s označen k přepsání."
 
 #: cat.opac.record_marked_for_overlay.tcn.alert
 msgctxt "cat.opac.record_marked_for_overlay.tcn.alert"
 msgid "Record with TCN %1$s marked for overlay."
-msgstr "Záznam s TCN %1$s označen k překrytí."
+msgstr "Záznam s TCN %1$s označen k přepsání."
 
 #: cat.opac.record_marked_for_multi_home.record_id.alert
 msgctxt "cat.opac.record_marked_for_multi_home.record_id.alert"
@@ -199,11 +199,11 @@ msgstr "Záznam s ID %1$s je cílen pro Multi-Bib položky."
 
 #: cat.opac.record_marked_for_multi_home.tcn.alert
 msgid "Record with TCN %1$s targeted for Mutli-Bib items."
-msgstr "Záznam s TCN %1$s je cílen pro Multi-Bib položky."
+msgstr "Záznam s TCN %1$s je cílen pro Multi-Bib exempláře"
 
 #: cat.opac.clear_statusbar
 msgid "Un-target/un-mark this record?"
-msgstr "Necílit/odznačit tento záznam?"
+msgstr "Odznačit / zrušit tento záznam jako cíl"
 
 #: cat.save_record
 msgid "Save Record"
@@ -211,7 +211,7 @@ msgstr "Uložit záznam"
 
 #: cat.save.failure
 msgid "Record not likely updated."
-msgstr "Záznam není pravděpodobně aktualizován."
+msgstr "Záznam nebyl pravděpodobně aktualizován."
 
 #: cat.record.counter
 msgid "Record %1$s of %2$s"
@@ -219,11 +219,11 @@ msgstr "Záznam %1$s z %2$s"
 
 #: cat.preference.error
 msgid "Preference not likely updated."
-msgstr "Volby pravděpodobně neaktualizovány."
+msgstr "Předvolby pravděpodobně nebyly neaktualizovány."
 
 #: staff.admin.survey.save_response.label
 msgid "Save this response"
-msgstr "Ulož tuto odpověď"
+msgstr "Uložte tuto odpověď"
 
 #: staff.admin.survey.save_response.accesskey
 msgid "R"
@@ -231,11 +231,11 @@ msgstr "R"
 
 #: circ.bad_checkdigit
 msgid "This barcode has a bad check digit."
-msgstr "Tento čárový kód má špatnou kontrolu cifer."
+msgstr "Tento čárový kód má špatnou kontrolní číslici"
 
 #: circ.barcode.enter
 msgid "Please enter a patron barcode first."
-msgstr "Prosím, nejdříve zadejte čárový kód návštěvníka."
+msgstr "Prosím, nejdříve zadejte čárový kód čtenáře."
 
 #: circ.barcode.warning
 msgid "Barcode Warning"
@@ -247,11 +247,11 @@ msgstr "Samostatný"
 
 #: circ.duplicate_scan.msg
 msgid "This barcode has already been scanned."
-msgstr "Tento čárový kód je již nasnímaný."
+msgstr "Tento čárový kód již byl načten"
 
 #: circ.duplicate_scan.field
 msgid "Duplicate Scan"
-msgstr "Duplikátní snímání"
+msgstr "Opakované načtení"
 
 #: circ.offline_checkout.nonbarcoded
 msgid "or choose a non-barcoded option..."
@@ -259,7 +259,7 @@ msgstr "nebo zvolte možnost bez čárového kódu..."
 
 #: circ.offline_checkout.items
 msgid "Enter the number of items:"
-msgstr "Vložit počet exempláře:"
+msgstr "Zadejte počet exemplářů:"
 
 #: circ.offline_checkout.download.warning
 msgid ""
@@ -275,27 +275,29 @@ msgstr "Upozornění: od %1$s tento čárový kód (%2$s) byl označen za ztrace
 
 #: circ.offline_checkout.barcode.flagged.expired
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Expired."
-msgstr "Upozornění: od %1$s tento čárový kód (%2$s) byl označen za vypršený."
+msgstr "Upozornění: od %1$s tento čárový kód (%2$s) byl označen jako prošlý."
 
 #: circ.offline_checkout.barcode.flagged.barred
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Barred."
-msgstr "Upozornění: od %1$s tento čárový kód (%2$s) byl označen za zamezený."
+msgstr ""
+"Upozornění: od %1$s tento čárový kód (%2$s) byl označen jako blokovaný."
 
 #: circ.offline_checkout.barcode.flagged.blocked
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Blocked."
-msgstr "Upozornění: od %1$s tento čárový kód (%2$s) byl označen za zablokovaný."
+msgstr ""
+"Upozornění: od %1$s tento čárový kód (%2$s) byl označen jako zablokovaný."
 
 #: circ.offline_checkout.barcode.flagged.unknown
 msgid ""
-"Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: %"
-"3$s."
+"Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: "
+"%3$s."
 msgstr ""
-"Upozornění: od %1$s tento čárový kód (%2$s) byl označen s neznámým kódem: %"
-"3$s."
+"Upozornění: od %1$s tento čárový kód (%2$s) byl označen s neznámým kódem: "
+"%3$s."
 
 #: circ.offline_checkout.date.early
 msgid "Due date needs to be after today."
-msgstr "Datum splatnosti musí být po dnešku."
+msgstr "Datum, do kdy má být exemplář vrácen, musí být po dnešním datu."
 
 #: circ.offline_checkout.required_field
 msgid "Required Field"
@@ -311,11 +313,11 @@ msgstr "Požadovaná hodnota"
 
 #: circ.offline_register.future.birth.date
 msgid "Patron needs to be born yesterday."
-msgstr "Je nutné, aby byl návštěvník narozen včera."
+msgstr "Čtenář musí být narozen včera."
 
 #: circ.offline_register.invalid.birth.date
 msgid "Happy birthday!  You need to be more than 0 days old."
-msgstr "Všechno nejlepší k narozeninám! Musíte být starší více než 0 den."
+msgstr "Všechno nejlepší k narozeninám! Musíte být starší více než 0 dnů."
 
 #: circ.offline_register.survey.prompt
 msgid "Choose a response..."
@@ -323,55 +325,55 @@ msgstr "Vyberte odpověď..."
 
 #: circ.offline_register.missing.post_code
 msgid "Missing Address : Postal Code"
-msgstr "Chybějící adresa: PSČ"
+msgstr "Chybí adresa: PSČ"
 
 #: circ.offline_register.missing.state
 msgid "Missing Address : State"
-msgstr "Chybějící adresa : stát"
+msgstr "Chybí adresa : stát"
 
 #: circ.offline_register.missing.city
 msgid "Missing Address : City"
-msgstr "Chybějící adresa : město"
+msgstr "Chybí adresa : město / obec"
 
 #: circ.offline_register.missing.street1
 msgid "Missing Address : Line 1"
-msgstr "Chybějící adresa : linka 1"
+msgstr "Chybí adresa : Ulice, řádek  1"
 
 #: circ.offline_register.missing.ident_value
 msgid "Missing Identification Value"
-msgstr "Chybějící identifikační hodnota"
+msgstr "Chybí číslo  identifikačního dokladu"
 
 #: circ.offline_register.missing.ident_type
 msgid "Missing Identification Type"
-msgstr "Chybějící identifikační typ"
+msgstr "Chybí typ identifikačního dokladu"
 
 #: circ.offline_register.missing.dob
 msgid "Missing Date of Birth"
-msgstr "Chybějící datum narození"
+msgstr "Chybí datum narození"
 
 #: circ.offline_register.missing.first_given_name
 msgid "Missing First Name"
-msgstr "Chybějící křestní jméno"
+msgstr "Chybí křestní jméno"
 
 #: circ.offline_register.missing.family_name
 msgid "Missing Last Name"
-msgstr "Chybějící přijmení"
+msgstr "Chybí přijmení"
 
 #: circ.offline_register.missing.passwd
 msgid "Missing Password"
-msgstr "Chybějící heslo"
+msgstr "Chybí heslo"
 
 #: circ.offline_register.missing.barcode
 msgid "Missing Barcode"
-msgstr "Chybějící čárový kód"
+msgstr "Chybí čárový kód"
 
 #: circ.offline_register.missing.profile
 msgid "Missing Profile"
-msgstr "Chybějící profil"
+msgstr "Chybí profil oprávnění"
 
 #: circ.offline_register.missing.home_ou
 msgid "Missing Home Library"
-msgstr "Chybá domácí knihovna"
+msgstr "Chybí domovská knihovna"
 
 #: circ.offline_register.missing.alert
 msgid "Please fix the following:"
@@ -379,7 +381,7 @@ msgstr "Opravte prosím následující:"
 
 #: circ.offline_register.patron.saved
 msgid "Patron Registration Saved"
-msgstr "Návštěvníkova registrace uložena"
+msgstr "Registrace čtenáře uložena"
 
 #: circ.offline_register.missing.library.list
 msgid "Missing library list."
@@ -387,23 +389,23 @@ msgstr "Chybí seznam knihoven."
 
 #: circ.offline_register.missing.profile.list
 msgid "Missing profile list."
-msgstr "Chybí seznam profilů."
+msgstr "Chybí seznam profilů oprávnění"
 
 #: circ.offline_register.missing.id.type.list
 msgid "Missing identification type list."
-msgstr "Chybí seznam identifikačních typů."
+msgstr "Chybí seznam typů identifikačních dokladů"
 
 #: circ.offline_register.missing.required.surveys
 msgid "Missing required surveys."
-msgstr "Chybějící povinné prohlídky."
+msgstr "Chybí povinný průzkum"
 
 #: circ.offline_register.missing.files.error
 msgid ""
 "ERROR: Offline patron registration requires some server-generated files.  "
 "Please login periodically to retrieve these files."
 msgstr ""
-"ERROR: Offline registrace návštěvníka vyžaduje určitý server-generované "
-"soubory. Prosím, přihlaste se pravidelně k získáníí těchto souborů."
+"CHYBA: Offline registrace čtenáře vyžaduje určité serverem-generované "
+"soubory. Prosím, přihlašujte se pravidelně k získáníí těchto souborů."
 
 #: jsan.file_not_found.error
 msgid "File not found: %1$s"
@@ -436,7 +438,7 @@ msgstr "Zadejte původní čárový kód pro tento exemplář:"
 #: menu.cmd_replace_barcode.label
 msgctxt "menu.cmd_replace_barcode.label"
 msgid "Replace Barcode"
-msgstr "Nahradit čárový kód"
+msgstr "Změnit čárový kód"
 
 #: menu.cmd_replace_barcode.retrieval.error
 msgid "We were unable to retrieve an item with barcode \"%1$s\"."
@@ -449,7 +451,7 @@ msgstr "Zadejte nový čárový kód pro tento exemplář:"
 #: menu.cmd_replace_barcode.replacement.label
 msgctxt "menu.cmd_replace_barcode.replacement.label"
 msgid "Replace Barcode"
-msgstr "Nahradit čárový kód"
+msgstr "Změnit čárový kód"
 
 #: menu.cmd_replace_barcode.blank.error
 msgid "Rename aborted.  Blank for barcode not allowed."
@@ -461,7 +463,7 @@ msgstr "Přejmenování přerušeno. Čárový kód \"%1$s\" již existuje."
 
 #: menu.cmd_replace_barcode.testing.error
 msgid "Error testing replacement barcode \"%1$s\"."
-msgstr "Chyba př zkoušení nahrazení čárového kódu \"%1$s\"."
+msgstr "Chyba při  testu změny čárového kódu \"%1$s\"."
 
 #: menu.cmd_replace_barcode.permission.error
 msgid "Rename aborted.  Insufficient permission."
@@ -469,7 +471,7 @@ msgstr "Přejmenování přerušeno. Nedostatečné oprávnění."
 
 #: menu.cmd_replace_barcode.renaming.error
 msgid "Error renaming item."
-msgstr "Chyba při přejmenování položky."
+msgstr "Chyba při změně položky."
 
 #: menu.cmd_replace_barcode.renaming.failure
 msgid "The rename operation probably failed."
@@ -481,19 +483,19 @@ msgstr "Katalog"
 
 #: menu.cmd_search_bib_id.tab
 msgid "What is the internal ID for the bibliographic record?"
-msgstr "Co je interní ID pro bibliografický záznam?"
+msgstr "Jaké je interní ID pro bibliografický záznam?"
 
 #: menu.cmd_search_bib_id.prompt
 msgid "Bib ID Lookup"
-msgstr "Bib ID vyhledávání"
+msgstr "Vyhledávání podle bib ID"
 
 #: menu.cmd_search_tcn.tab
 msgid "What is the TCN or accession ID for the record?"
-msgstr "Jaké je TCN nebo přístupové ID pro záznam?"
+msgstr "Jaké je TCN nebo přístupové ID záznamu?"
 
 #: menu.cmd_search_tcn.prompt
 msgid "TCN Lookup"
-msgstr "TCN vyhledávání"
+msgstr "Vyhledávání podle TCN"
 
 #: menu.cmd_search_tcn.not_found.error
 msgid "\"%1$s\" not found"
@@ -501,15 +503,15 @@ msgstr "\"%1$s\"  nenalezen"
 
 #: menu.cmd_search_tcn.deleted.error
 msgid "\"%1$s\" is deleted.  Show the deleted record anyway?"
-msgstr "\"%1$s\" je smazán. Přesto smazané záznamy ukázat?"
+msgstr "\"%1$s\" je smazán. Přesto zobrazit smazané záznamy?"
 
 #: menu.cmd_patron_register.related.tab
 msgid "Editing Related Patron"
-msgstr "Úpravy týkající se návštěvníka"
+msgstr "Edituji dotyčného čtenáře"
 
 #: menu.cmd_patron_register.tab
 msgid "Register Patron"
-msgstr "Registrace návštěvníka"
+msgstr "Registrace čtenáře"
 
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode
 #: staff.circ.work_log_patron_registration.message
@@ -522,15 +524,15 @@ msgstr "Vyhledávání rezervace"
 
 #: menu.cmd_browse_holds_shelf.tab
 msgid "Holds Shelf"
-msgstr "Regál Držení"
+msgstr "Regál s rezervacemi"
 
 #: menu.cmd_browse_hold_pull_list.tab
 msgid "On Shelf Pull List"
-msgstr "Na Seznamu Získání Regálu"
+msgstr "Seznam rezervací na regále"
 
 #: menu.cmd_local_admin.tab
 msgid "Local Administration"
-msgstr "Místní administrace"
+msgstr "Lokální  administrace"
 
 #: menu.cmd_open_vandelay.tab
 msgid "MARC Import/Export"
@@ -538,7 +540,7 @@ msgstr "Import/Export MARC"
 
 #: menu.cmd_marc_batch_edit.tab
 msgid "MARC Batch Edit"
-msgstr "Hromadná Úprava MARC"
+msgstr "Hromadná editace MARCu"
 
 #: menu.cmd_open_conify.tab
 msgid "Server Settings"
@@ -546,7 +548,7 @@ msgstr "Nastavení serveru"
 
 #: menu.cmd_retrieve_last_patron.session.error
 msgid "No patron visited yet this session."
-msgstr "Žádný návštěvník dosud nenavštívil tuto sekci."
+msgstr "Žádný čtenář dosud tuto relaci nenavštívil"
 
 #: menu.cmd_retrieve_last_record.session.error
 msgid "No record visited yet this session."
@@ -554,7 +556,7 @@ msgstr "V této relaci nebyl ještě navštíven žádný záznam."
 
 #: menu.cmd_retrieve_last_record.status
 msgid "Retrieving title..."
-msgstr "Získávám název..."
+msgstr "Načítání záznamu..."
 
 #: menu.cmd_chg_session.label
 msgid "Change Login"
@@ -566,7 +568,7 @@ msgstr "Změna operátora: %1$s"
 
 #: menu.cmd_manage_offline_xacts.tab
 msgid "Offline Transactions"
-msgstr "Offline protokol"
+msgstr "Offline transakce"
 
 #: menu.cmd_download_patrons.complete.status
 msgid "Download completed"
@@ -576,23 +578,23 @@ msgstr "Stahování dokončeno"
 msgid ""
 "There was a problem with the download.  The server returned a status %1$s : "
 "%2$s"
-msgstr "Byly zde problémy se stažením. Server vrátil status %1$s : %2$s"
+msgstr "Vznikl problém se stažením. Server vrátil status %1$s : %2$s"
 
 #: menu.cmd_stat_cat_edit.tab
 msgid "Statistical Category Editor"
-msgstr "Editor Statistické Kategorie"
+msgstr "Editor statistických kategorií"
 
 #: menu.cmd_non_cat_type_edit.tab
 msgid "Non-Cataloged Type Editor"
-msgstr "Editor Nezkatalogizovaných Typů"
+msgstr "Editor nezkatalogizovaných typů"
 
 #: menu.cmd_copy_location_edit.tab
 msgid "Copy Location Editor"
-msgstr "Editor Kopírování Umístění"
+msgstr "Umístění exemplářů"
 
 #: menu.cmd_console.tab
 msgid "JavaScript Console"
-msgstr "JavaScript Console"
+msgstr "Konzole JavaScriptu"
 
 #: menu.cmd_shell.tab
 msgid "JavaScript Shell"
@@ -604,7 +606,7 @@ msgstr "XUL editor"
 
 #: menu.cmd_fieldmapper.tab
 msgid "Fieldmapper"
-msgstr "Mapovač polí"
+msgstr "Mapování polí"
 
 #: menu.cmd_public_opac.tab
 msgid "OPAC"
@@ -612,15 +614,15 @@ msgstr "OPAC"
 
 #: menu.cmd_extension_manager.tab
 msgid "Extension Manager"
-msgstr "Rozšiřující správce"
+msgstr "Správa rozšíření"
 
 #: menu.cmd_theme_manager.tab
 msgid "Theme Manager"
-msgstr "Předmět správce"
+msgstr "Správa motivů"
 
 #: menu.cmd_shutdown.prompt
 msgid "Exit Evergreen completely?"
-msgstr "Ukončit Evergreen uplně?"
+msgstr "úplně ukončit Evergreen?"
 
 #: menu.spawn_search.msg
 msgid "Editor would like to search for: %1$s"
@@ -628,23 +630,23 @@ msgstr "Editor by rád hledal: %1$s"
 
 #: menu.cmd_verify_credentials.tabname
 msgid "Verify Credentials"
-msgstr "Ověřit Pověření"
+msgstr "Ověřit oprávnění"
 
 #: menu.close_all_tabs.error
 msgid "Error closing all tabs"
-msgstr "Chyba při uzavření všech záložek"
+msgstr "Při uzavírání všech panelů došlo k chybě"
 
 #: menu.new_tab.tab
 msgid "Tab"
-msgstr "Tab"
+msgstr "Panel"
 
 #: menu.new_tab.max_tab_dialog
 msgid ""
 "Sorry, we can't create any more tabs in this window.\n"
 "Would you like to create a new tab in another window?"
 msgstr ""
-"Je nám líto, ale nemůžeme v tomto okně vytvořit více karet.\n"
-"Chtelí byste novou kartu vytvořit v jiném okně?"
+"Bohužel, v tomto okně nelze vytvořit více panelů.\n"
+"Chtěli byste nový panel vytvořit v jiném okně?"
 
 #: main.session_cookie.error
 msgid "Error setting session cookie: %1$s"
@@ -664,15 +666,15 @@ msgstr "Testování"
 
 #: main.transaction_export.title
 msgid "Save Transaction File As"
-msgstr "Uložit soubor jako transakce"
+msgstr "Uložit transakční soubor jako"
 
 #: main.transaction_export.prompt
 msgid "Would you like to overwrite the existing file %1$s?"
-msgstr "Chtěli byste přepsat existující soubor %1$s?"
+msgstr "Chcete přepsat existující soubor %1$s?"
 
 #: main.transaction_export.prompt.title
 msgid "Transaction Export Warning"
-msgstr "Upozornění na export transakce"
+msgstr "Warování exportu transakcí"
 
 #: main.transaction_export.success.prompt
 msgid ""
@@ -681,28 +683,30 @@ msgid ""
 "you like for us to do this?"
 msgstr ""
 "Vaše transakce byla úspěšně exportována do souboru %1$s. Důrazně "
-"doporučujeme, abyste si nyní očistili transakce z tohoto zaměstnaneckého "
-"klienta. Chtěli byste to pro nás udělat?"
+"doporučujeme, abyste  nyní vyčistili transakce z tohoto služebního klienta. "
+"Chtěli byste to pro nás udělat?"
 
 #: main.transaction_export.success.title
 msgid "Transaction Export Successful"
-msgstr "Export Převodu Byl Úspěšný"
+msgstr "Export transakcí úspěšně problěhl"
 
 #: main.transaction_export.filename.error
 msgid ""
 "Error purging transactions:  Taking too long to find a unique filename for "
 "archival."
 msgstr ""
-"Chyba při čištění transakce: Příliš dlouho trvalo najít jedinečné jméno "
+"Chyba při čištění transakcí: Příliš dlouho trvalo najít jedinečné jméno "
 "souboru pro archivaci."
 
-# zde uplně nechápu význam věty
 #: main.transaction_export.duplicate.warning
 msgid ""
 "Please note that you now have two sets of identical transactions.  Unless "
 "the set you just exported is solely for archival purposes, we run the risk "
 "of duplicate transactions being processed on the server."
-msgstr "Mějte na paměti, že nyní máte dvě sady totožných operací."
+msgstr ""
+"Mějte na paměti, že nyní máte dvě sady totožných transakcí. Pokud sada, "
+"kterou jste právě exportovali, učena výhradně pro archivační účely,  jsme "
+"vystaveni riziku, že budou  serverem zpracovány duplikované transakce."
 
 #: main.transaction_export.no_filename.error
 msgid ""
@@ -714,19 +718,19 @@ msgstr ""
 
 #: main.transaction_export.no_transactions.error
 msgid "There are no outstanding transactions to export."
-msgstr "Zde nejsou žádné nesplněné transakce k exportu."
+msgstr "Neexistují  žádné nevyřízené trasakce pro export."
 
 #: main.transaction_import.outstanding.error
 msgid ""
 "There are already outstanding transactions on this staff client.  Upload "
 "these first."
 msgstr ""
-"Na tomto zaměstnaneckém klientovi již existují splněné transakce. Nejdříve "
-"je nahrajte."
+"Tento služební klient již obsahuje nevyřízené transakce.  Nejdříve nahrajte "
+"tyto transakce."
 
 #: main.transaction_import.title
 msgid "Import Transaction File"
-msgstr "Import transakčních souborů"
+msgstr "Import transakčního souboru"
 
 #: main.transaction_import.delete.prompt
 msgid ""
@@ -735,14 +739,13 @@ msgid ""
 "We recommend that you delete the external copy.  Would you like for us to "
 "delete %1$s?"
 msgstr ""
-"Vaše převody byly úspěšně převedeny do tohoto klienta obsluhy.\n"
+"Vaše transakce byly úspěšně převedeny do tohoto služebního klienta.\n"
 "\n"
-"Doporučujeme Vám, abyste externí kopii smazali . Chtěli byste, abychom pro "
-"Vás smazali %1$s?"
+"Doporučujeme Vám, abyste externí kopii smazali . Chtěli byste smazat %1$s?"
 
 #: main.transaction_import.success
 msgid "Transaction Import Successful"
-msgstr "Úspěšný import transakcí"
+msgstr "Import transakcí úspěšně proběhl"
 
 #: main.on_debug.clear_cache
 msgid "cache cleared"
@@ -762,9 +765,8 @@ msgid ""
 "location than your previous installation.  Should we attempt to migrate "
 "these settings?"
 msgstr ""
-"Tato verze zaměstnaneckého klienta ukládá místní nastavění v různých "
-"lokacích, jinak než vaše předchozí instalace. Máme se pokusit migrovat tyto "
-"nastevení?"
+"Tato verze služebního klienta ukládá místní nastavění v různých lokacích "
+"jinak, než vaše předchozí instalace. Máme se pokusit převést  tato nastevení?"
 
 #: main.settings.migrate.failed
 msgid ""
@@ -777,8 +779,8 @@ msgid ""
 "\t%2$s\n"
 "which is where we used to store such information.\n"
 msgstr ""
-"UPOZORNĚNÍ: Nelze migrovat odkaz nastavení. Zdá se, že nastavení a "
-"konfigurační soubory existují v několika lokalitách. \n"
+"UPOZORNĚNÍ: Nelze migrovat zděděná nastavení. Zdá se, že nastavení a "
+"konfigurační soubory existují v několika umístěních. \n"
 "Chcete-li tento problém vyřešit ručně, prosím uvažte:\n"
 "\t%1$s\n"
 "který je v adresáři, kde chceme ukládat nastavení pro aktuální účet "
@@ -793,7 +795,7 @@ msgid ""
 "to\n"
 "%2$s?"
 msgstr ""
-"Přesun nastavení a konfiguračních souborů z\n"
+"Přenést nastavení a konfigurační soubory z\n"
 "%1$s\n"
 "do\n"
 "%2$s?"
@@ -808,15 +810,15 @@ msgstr "Výjimky"
 
 #: network.override.override
 msgid "Override "
-msgstr "Potlačit "
+msgstr "Obejít "
 
 #: network.override.force.prompt
 msgid "Force this action?"
-msgstr "Donutit k této činnosti?"
+msgstr "Chcete v této akci přesto pokračovat?"
 
 #: network.ignore_errors
 msgid "Ignore Errors"
-msgstr "Nevšímat si Chyb"
+msgstr "Ignorovat chyby"
 
 #: network.method_not_found.error
 msgid "Method not found for %1$s"
@@ -825,36 +827,36 @@ msgstr "Metoda pro %1$s nenalezena"
 #: network.new_session.authorize
 msgctxt "network.new_session.authorize"
 msgid "Authorize"
-msgstr "Schválit"
+msgstr "Autorizovat"
 
 #: network.new_session.expired
 msgid "Session Expired"
-msgstr "Relace Vypřšela"
+msgstr "Relace vypřšela"
 
 #: network.new_session.expired.prompt
 msgid "Please enter the credentials for a new login session."
-msgstr "Prosím zadejte pověření k nové relaci přihlášení."
+msgstr "Prosím zadejte ověření k nové k přihlášení nové relace."
 
 #: network.new_session.operator_change
 msgid "Operator Change"
-msgstr "Změna Operátora"
+msgstr "Změna operátora"
 
 #: network.new_session.operator_change.prompt
 msgid ""
 "Please enter the credentials for the new login session.  Note that the "
 "previous session is still active."
 msgstr ""
-"Prosím zadejte pověření pro novou relaci přihlášení. Nezapomeňte, že "
-"předchozí relace je stále aktivní."
+"Prosím zadejte ověření pro přihlášení nové relace. Nezapomeňte, že předchozí "
+"relace je stále aktivní."
 
 #: network.permission.authorize
 msgctxt "network.permission.authorize"
 msgid "Authorize"
-msgstr "Schválit"
+msgstr "Autorizovat"
 
 #: network.permission.description.brief
 msgid "Permission Denied: %1$s"
-msgstr "Oprávnění Zamítnuto: %1$s"
+msgstr "Oprávnění zamítnuto: %1$s"
 
 #: network.permission.description.full
 msgid ""
@@ -864,11 +866,11 @@ msgid ""
 "inform your friendly Evergreen developers or helpdesk staff of the above "
 "permission and this debug information: %1$s"
 msgstr ""
-"Jiný člen obsluhy s výše uvedeným oprávněním může určenou činnost schválit. "
-"Pokud potřebujete toto povolení, oznamte to Vašemu správci knihovny. Pokud "
-"si myslíte, že jste tuto výhradu obdrželi neprávem, informujte Vaše "
-"přátelské vývojáře Evergreenu nebo pracoviště obsluhy oprávnění výše a také "
-"předejte tuto informaci ladění: %1$s"
+"Tuto akci může autorizovat jiný člen personálu s výše uvedeným oprávněním. "
+"Pokud potřebujete toto oprávnění, oznamte to systémovému správci Vaší "
+"knihovny. Pokud si myslíte, že po Vás oprávnění bylo požadováno neprávem, "
+"informujte helpdesk nebo spřáteleného vývojáře Evergreenu a předejte mu tuto "
+"informaci: %1$s"
 
 #: network.server_or_method.error
 msgid "Server or method error"
@@ -882,12 +884,12 @@ msgid ""
 "a bug in Evergreen and not network problems, please contact your help desk "
 "or friendly Evergreen administrators, and give them this information:"
 msgstr ""
-"Selhání sítě nebo serveru. Zkontrolujte prosím Vaše internetové připojení k "
-"%1$s a zvolte Znovu Zkusit Síť. Pokud potřebujete vstoupit do režimu "
-"Offline, zvolte Nevšímat si Chyb v tomto a dalších dialogových oknech. Pokud "
-"věříte, že je toto vada kvůli chybě v Evergreen a ne problémy se sítí, "
-"prosím kontaktujte pracoviště obsluhy nebo přátelské správce Evergreenu a "
-"přdejte jim tuto informaci:"
+"Došlo  k selhání sítě nebo serveru. Zkontrolujte prosím Vaše internetové "
+"připojení k %1$s a zvolte Zkontrolovat síť. Pokud potřebujete vstoupit do "
+"režimu offline, v tomto a následujících dialogových oknech zvolte Ignorovat "
+"chyby. Pokud myslíte, že k problému došlo kvůli chybě v Evergreenu a nikoli "
+"kvůli problémům se sítí, prosím, kontaktujte helpdesk nebo spřáteleného "
+"administrátora a předejte mu tuto informaci:"
 
 #: network.server.method
 msgid "method=%1$s"
@@ -907,11 +909,11 @@ msgstr "STAV:"
 
 #: network.network_failure
 msgid "Network Failure"
-msgstr "Selhání Sítě"
+msgstr "Selhání sítě"
 
 #: network.retry_network
 msgid "Retry Network"
-msgstr "Znovu Zkusit Síť"
+msgstr "Zkontrolovat síť"
 
 #: network.unknown_status
 msgid "Unknown status"
@@ -919,7 +921,7 @@ msgstr "Neznámý stav"
 
 #: network.window_title.error
 msgid "Error setting window titles to match new login"
-msgstr "Chyba při nastavení názvů oken ke shodě s novým přihlášením"
+msgstr "Chyba při nastavení názvů oken aby odpovídaly novému přihlášení"
 
 #: openils.global_util.clear_cache.error
 msgid "Problem clearing the cache: %1$s"
@@ -927,7 +929,7 @@ msgstr "Problém mazání cache: %1$s"
 
 #: openils.global_util.clipboard.error
 msgid "Clipboard action failed: %1$s"
-msgstr "Činnost schránky se nezdařila: %1$s"
+msgstr "Proces kopírování do schránky selhal: %1$s"
 
 #: openils.global_util.clipboard
 msgid "Copied \"%1$s\" to clipboard."
@@ -952,30 +954,30 @@ msgid ""
 "retrieved, and this may take some time and lag the staff client.  Would you "
 "like to proceed?"
 msgstr ""
-"VAROVÁNÍ: Pouze %1$s z %2$s řádků byly v tomto seznamu získány pro okamžité "
-"prohlížení. Třídění tohoto seznamu vyžaduje, aby byly získány všechny řádky "
-"a to může chvíli trvat a způsobit zasekávání klienta obsluhy. Chtěli byste "
-"pokračovat?"
+"VAROVÁNÍ: Pro okamžité zobrazení bylo načteno pouze %1$s z %2$s řádků.  "
+"Třídění tohoto seznamu vyžaduje, aby byly načteny všechny řádky. To může "
+"chvíli trvat a způsobit zpomalení  služebního klienta. Chcete  pokračovat?"
 
 #: list.columns_saved
 msgid "Column configuration saved."
-msgstr "Nastavení slopuců uloženo."
+msgstr "Nastavení slopuců bylo uloženo."
 
 #: list.column_save_disabled
 msgid "Column configuration save disabled by server policy."
-msgstr "Uložení nastavení sloupců bylo zakázáno zásadami serveru."
+msgstr ""
+"Uložení nastavení sloupců bylo zakázáno bezpečenostními opatřeními serveru."
 
 #: list.row_retrieving
 msgid "Retrieving..."
-msgstr "Získávání..."
+msgstr "Načítání..."
 
 #: list.save_csv_as
 msgid "Save List CSV As..."
-msgstr "Uložit CSV Seznam Jako..."
+msgstr "Uložit CSV seznam jako..."
 
 #: list.actions.menu.label
 msgid "List Actions"
-msgstr "Zobrazit Činnosti"
+msgstr "Práce se seznamem"
 
 #: list.actions.menu.accesskey
 msgctxt "list.actions.menu.accesskey"
@@ -984,7 +986,7 @@ msgstr "O"
 
 #: list.actions.field_to_clipboard.label
 msgid "Copy Field from Selected Row to Clipboard"
-msgstr "Kopírovat Pole z Vybrané Řádky do Schránky"
+msgstr "Kopírovat do schránky pole z vybraného řádku"
 
 #: list.actions.field_to_clipboard.accesskey
 msgctxt "list.actions.field_to_clipboard.accesskey"
@@ -993,16 +995,16 @@ msgstr "C"
 
 #: list.actions.csv_to_clipboard.label
 msgid "Copy List CSV to Clipboard"
-msgstr "Kopírovat Seznam CSV do Schránky"
+msgstr "Kopírovat seznam CSV do schránky"
 
 #: list.actions.csv_to_clipboard.accesskey
 msgctxt "list.actions.csv_to_clipboard.accesskey"
 msgid "L"
-msgstr "O"
+msgstr "L"
 
 #: list.actions.csv_to_printer.label
 msgid "Print List CSV"
-msgstr "Tisk Seznamu CSV"
+msgstr "Tisk seznamu CSV"
 
 #: list.actions.csv_to_printer.accesskey
 msgid "P"
@@ -1010,7 +1012,7 @@ msgstr "T"
 
 #: list.actions.extended_to_printer.label
 msgid "Print List Expanded Format"
-msgstr "Vytisknout Seznam v Rozšířeném Formátu"
+msgstr "Vytisknout seznam v rozšířeném formátu"
 
 #: list.actions.extended_to_printer.accesskey
 msgid "x"
@@ -1018,7 +1020,7 @@ msgstr "r"
 
 #: list.actions.csv_to_file.label
 msgid "Save List CSV to File"
-msgstr "Uložit Seznam CSV do Souboru"
+msgstr "Uložit seznam CSV do souboru"
 
 #: list.actions.csv_to_file.accesskey
 msgid "F"
@@ -1026,7 +1028,7 @@ msgstr "B"
 
 #: list.actions.save_column_configuration.label
 msgid "Save Column Configuration"
-msgstr "Uložit Nastavení Sloupců"
+msgstr "Uložit nastavení sloupců"
 
 #: list.actions.save_column_configuration.accesskey
 msgid "S"
@@ -1037,80 +1039,81 @@ msgid "=-=-="
 msgstr "=-=-="
 
 #: menu.cmd_survey_wizard.inadequate_perm
-msgid "You are lacking the CREATE_SURVEY permission and/or working locations."
-msgstr "Chybí Vám povolení CREATE_SURVEY a/nebo pracovní umístění."
+msgid ""
+"You are lacking the CREATE_SURVEY permission and/or working locations."
+msgstr "Chybí Vám oprávnění  CREATE_SURVEY a/nebo umístění pracovní stanice."
 
 #: menu.cmd_local_admin_fonts_and_sounds.tab
 msgid "Global Font and Sound Settings"
-msgstr "Globalní Nastavení Písma a Zvuků"
+msgstr "Celkové nastavení fontů a zvuků"
 
 #: menu.cmd_local_admin_printer.tab
 msgid "Printer Settings Editor"
-msgstr "Editor Nastavení Tiskárny"
+msgstr "Nastavení tiskárny"
 
 #: menu.cmd_local_admin_do_not_auto_attempt_print_setting.tab
 msgid "'Do Not Attempt Auto-Print' Setting"
-msgstr "Nastavení 'Nepokoušet se o Automatický Tisk'"
+msgstr "Nastavení 'Netisknout automaticky'"
 
 #: menu.cmd_local_admin_closed_dates.tab
 msgid "Closed Dates Editor"
-msgstr "Editor Nepracovních Dnů"
+msgstr "Nastavení zavíracích dnů knihovny"
 
 #: menu.cmd_local_admin_copy_locations.tab
 msgid "Copy Locations Editor"
-msgstr "Editor Umístění Kopírování"
+msgstr "Umístění exemplářů"
 
 #: menu.cmd_local_admin_lib_settings.tab
 msgid "Library Settings Editor"
-msgstr "Editor Nastavení Knihovny"
+msgstr "Nastavení knihovny"
 
 #: menu.cmd_local_admin_non_cat_types.tab
 msgid "Non-cataloged Types Editor"
-msgstr "Editor Nekatalogizovaných Typů"
+msgstr "Nastavení  nekatalogizovaných typů"
 
 #: menu.cmd_local_admin_stat_cats.tab
 msgid "Statistical Categories Editor"
-msgstr "Editor Statistických Kategorií"
+msgstr "Nastavení statistických kategorií"
 
 #: menu.cmd_local_admin_reports.tab
 msgid "Reports"
-msgstr "Hlášení"
+msgstr "Zprávy"
 
 #: menu.cmd_local_admin_age_overdue_circulations_to_lost.tab
 msgid "Age to Lost"
-msgstr "Věk do Ztracení"
+msgstr "Doba pro označení exempláře za ztracený"
 
 #: menu.cmd_local_admin_cash_reports.tab
 msgid "Cash Reports"
-msgstr "Hlášení o hotovostních operacích"
+msgstr "Přehledy hotovostních operací"
 
 #: menu.cmd_local_admin_transit_list.tab
 msgid "Transits"
-msgstr "Přenosy"
+msgstr "Přeprava"
 
 #: menu.cmd_acq_create_invoice.tab
 msgid "New Invoice"
-msgstr "Nová Faktura"
+msgstr "Nová faktura"
 
 #: menu.cmd_acq_bib_search.tab
 msgid "MARC Federated Search"
-msgstr "Pararelní Vyhledávání MARC"
+msgstr "Federativní vyhledávání MARCu"
 
 #: menu.cmd_acq_from_bib.tab
 msgid "Load Catalog Record IDs"
-msgstr "Načíst Katalog ID Záznamů"
+msgstr "Načíst ID katalogizačních záznamů"
 
 #: menu.cmd_acq_unified_search.tab
 msgid "Acquisitions Search"
-msgstr "Vyhledávání Přírůstků"
+msgstr "Vyhledávání v akvizici"
 
 #: menu.cmd_acq_upload.tab
 msgid "Load MARC Order Records"
-msgstr "Načíst MARC Záznamy Objednávek"
+msgstr "Nahrát MARC záznamy pro objednávky"
 
 #: menu.cmd_acq_new_brief_record.tab
 msgid "New Brief Record"
-msgstr "Nový Stručný Záznam"
+msgstr "Vytvořit zkrácený záznam"
 
 #: menu.cmd_acq_po.tab
 msgid "Purchase Orders"
@@ -1118,15 +1121,15 @@ msgstr "Objednávky"
 
 #: menu.cmd_acq_user_requests.tab
 msgid "Patron Requests"
-msgstr "Žádosti Patrona"
+msgstr "Požadavky čtenářů"
 
 #: menu.cmd_acq_claim_eligible.tab
 msgid "Claim-Ready Items"
-msgstr "Položky Připravené k Vyzvednutí"
+msgstr "Položky k reklamaci"
 
 #: menu.cmd_serial_batch_receive.tab
 msgid "Batch Receive"
-msgstr "Hromadné Přijetí"
+msgstr "Příjem exemplářů"
 
 #: menu.cmd_booking_resource.tab
 msgid "Resources"
@@ -1134,11 +1137,11 @@ msgstr "Zdroje"
 
 #: menu.cmd_booking_reservation.tab
 msgid "Reservations"
-msgstr "Rezervace"
+msgstr "Rezervace zdrojů"
 
 #: menu.cmd_booking_reservation_pickup.tab
 msgid "Reservation Pickup"
-msgstr "Vyzvednutí Rezervace"
+msgstr "Vyzvednutí rezervace"
 
 #: menu.cmd_booking_reservation_return.tab
 msgid "Reservation Return"
@@ -1146,55 +1149,55 @@ msgstr "Vrácení rezervace"
 
 #: menu.cmd_booking_pull_list.tab
 msgid "Booking Pull List"
-msgstr "Seznam Vytažení pro Rezervace"
+msgstr "Seznam rezervovaných zdrojů"
 
 #: menu.cmd_booking_capture.tab
 msgid "Booking Capture"
-msgstr "Zachycení Rezervace"
+msgstr "Zachycení rezervovaného zdroje"
 
 #: menu.local_admin.circ_matrix_matchpoint.tab
 msgid "Circulation Policies"
-msgstr "Zásady Oběhu"
+msgstr "Nastavení pravidel pro půjčování"
 
 #: menu.local_admin.hold_matrix_matchpoint.tab
 msgid "Hold Policies"
-msgstr "Zásady Držení"
+msgstr "Pravidla vyřizování rezervací"
 
 #: menu.local_admin.work_log.tab
 msgid "Work Log"
-msgstr "Záznam Práce"
+msgstr "Pracovní log"
 
 #: menu.local_admin.patrons_due_refunds.tab
 msgid "Patrons With Negative Balances"
-msgstr "Patroni Se Záporným Zůstatkem"
+msgstr "Čtenáři s negativní bilancí"
 
 #: menu.circulation.staged_patrons.tab
 msgid "Pending Patrons"
-msgstr "Nevyřízení Patroni"
+msgstr "Nevyřízení čtenáři"
 
 #: load_printer_settings_error_description
 msgid ""
 "Printer settings did not load cleanly with this version of Evergreen.  You "
 "should reconfigure your printer under Printer Settings Editor."
 msgstr ""
-"Nastavení tiskárny nebylo správně načteno v této verzi Evergreen. Měli byste "
-"Vaši tiskárnu nastavit v Editoru Nastavení Tiskárny."
+"Nastavení tiskárny nebylo v této verzi Evergreenu správně načteno. Měli "
+"byste Vaši tiskárnu nastavit v  Nastavení tiskárny."
 
 #: load_printer_settings_error_title
 msgid "Printer Settings"
-msgstr "Nastavení Tiskárny"
+msgstr "Nastavení tiskárny"
 
 #: staff.cat.util.copy_editor.batch_edit
 msgid "Batch Edit"
-msgstr "Hromadná Úprava"
+msgstr "Dávková editace"
 
 #: staff.cat.util.copy_editor.batch_view
 msgid "Batch View"
-msgstr "Hromadné Zobrazení"
+msgstr "Zobrazení dávky"
 
 #: staff.cat.util.copy_editor.edit
 msgid "Edit"
-msgstr "Upravit"
+msgstr "Editovat"
 
 #: staff.cat.util.copy_editor.view
 msgid "View"
@@ -1202,54 +1205,57 @@ msgstr "Zobrazit"
 
 #: staff.circ.copy_status.add_volumes.perm_failure
 msgid "You do not have permission to add volumes to the workstation library."
-msgstr "Nemáte oprávnění pro přidání svazků do knihovny pracovní stanice."
+msgstr ""
+"Nemáte oprávnění přidávat  svazků do knihovny, v níž je registrována "
+"pracovní stanice."
 
 #: staff.circ.copy_status.add_volumes.title
 msgid "Add Volume/Item for Record # %1$s"
-msgstr "Přidat svazek/položku pro Záznam # %1$s"
+msgstr "Přidat svazek/exemplář k záznamu číslo %1$s"
 
 #: staff.cat.copy_browser.marked_record_for_multi_home_indicator.tcn.label
 msgid "Record with TCN %1$s targeted for Multi-Bib items."
-msgstr "Záznam s TCN %1$s cílen pro Multi-Bib položky"
+msgstr "Záznam s TCN %1$s je cílen pro multi-bib položky"
 
 #: staff.cat.copy_browser.marked_record_for_multi_home_indicator.record_id.label
-msgctxt "staff.cat.copy_browser.marked_record_for_multi_home_indicator.record_id.label"
+msgctxt ""
+"staff.cat.copy_browser.marked_record_for_multi_home_indicator.record_id.label"
 msgid "Record with ID %1$s targeted for Multi-Bib items."
 msgstr "Záznam s ID %1$s je cílen pro Multi-Bib položky."
 
 #: staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label
 msgctxt "staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label"
 msgid "Record with TCN %1$s marked for overlay."
-msgstr "Záznam s TCN %1$s označen k překrytí."
+msgstr "Záznam s TCN %1$s označen k přepsání."
 
 #: staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label
 msgctxt "staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label"
 msgid "Record with ID %1$s marked for overlay."
-msgstr "Záznam s ID %1$s označen k překrytí."
+msgstr "Záznam s ID %1$s označen k přepsání."
 
 #: staff.cat.opac.marked_record_for_hold_transfer_indicator.tcn.label
 msgid "Record with TCN %1$s marked for title hold transfer."
-msgstr "Záznam s TCN %1$s byl označen pro převod držení názvu."
+msgstr "Záznam s TCN %1$s byl označen pro přesun kvůli rezervaci titulu"
 
 #: staff.cat.opac.marked_record_for_hold_transfer_indicator.record_id.label
 msgid "Record with ID %1$s marked for title hold transfer."
-msgstr "Záznam s ID %1$s byl označen pro převod držení názvu."
+msgstr "Záznam s ID %1$s byl označen pro přesun kvůli rezervaci titulu."
 
 #: staff.cat.opac.title_for_hold_transfer.destination_needed.label
 msgid "Need to mark a record as a Title Hold Transfer Destination first."
-msgstr "Je třeba nejdříve označit záznam jako Cíl Přesunu Držení Názvu."
+msgstr "Nejprve je potřeba označit záznam jako cíl přesunu rezervace"
 
 #: staff.cat.opac.title_for_hold_transfer.success.label
 msgid "Holds transferred."
-msgstr "Držení přesunuta."
+msgstr "Rezervace přesunuty."
 
 #: staff.cat.opac.title_for_hold_transfer.failure.label
 msgid "Holds not transferred."
-msgstr "Držení nepřesunuta."
+msgstr "Rezervace nebyly přesunuty."
 
 #: staff.cat.opac.related_items
 msgid "Related Lineitems"
-msgstr "Související Řádkové Položky"
+msgstr "Související položky"
 
 #: staff.cat.opac.serial_alt_mgmt
 msgid "Subscriptions"
@@ -1257,7 +1263,7 @@ msgstr "Předplatné"
 
 #: staff.cat.create_or_rebarcode_items
 msgid "Create or Re-barcode Items"
-msgstr "Vytvořit nebo Znovu Označit Položky Čárovým Kódem"
+msgstr "Vytvořit exempláře nebo změnit čárový kód"
 
 #: printing.nothing_to_reprint
 msgid "Nothing to re-print"
@@ -1265,17 +1271,18 @@ msgstr "Není co znovu vytisknout"
 
 #: printing.prompt_for_external_print_cmd
 msgid ""
-"Enter external print command and parameters (use %receipt.txt% or %"
-"receipt.html% as the file containing the print data. Those values will be "
+"Enter external print command and parameters (use %receipt.txt% or "
+"%receipt.html% as the file containing the print data. Those values will be "
 "substituted with the proper path.):"
 msgstr ""
-"Zadejte externí příkaz tiskárny a parametry (použijte %receipt.txt% nebo %"
-"receipt.html% pro soubor obsahující data k tisknutí. Tyto hodnoty budou "
-"nahrazeny opravdovou cestou.)"
+"Zadejte externí příkaz tiskárny a parametry (použijte %receipt.txt% nebo "
+"%receipt.html% pro soubor obsahující data k tisku. Za tyto  hodnoty bude "
+"dosazena správná cesta.)"
 
 #: printing.print_strategy_saved
 msgid "Print strategy (%1$s) for %2$s context saved to file system."
-msgstr "Strategie tisknutí (%1$s) pro obsah %2$s uložena na souborový systém."
+msgstr ""
+"Strategie tisku (%1$s) pro obsah %2$s byla uložena v souborovém systému."
 
 #: text_editor.prompt_for_external_cmd
 msgid ""
@@ -1284,7 +1291,7 @@ msgid ""
 "path.):"
 msgstr ""
 "Zadejte externí příkaz textového editoru a parametry (použijte %letter.txt% "
-"pro soubor obsahující text. Tyto hodnoty budou nahrazeny opravdovou cestou.)"
+"pro soubor obsahující text. Za tyto  hodnoty bude dosazena správná cesta)."
 
 #: menu.tab1.accesskey
 msgid "1"
@@ -1328,27 +1335,31 @@ msgstr "0"
 
 #: browser.reload.unsaved_data_warning
 msgid "This page may have unsaved data. Reload it anyway?"
-msgstr "Tato stránka může obsahovat neuložená data. Přesto ji znovu načíst?"
+msgstr ""
+"Tato stránka může obsahovat neuložená data. Chcete ji přesto znovu načíst?"
 
 #: menu.close_tab.unsaved_data_warning
 msgid "This tab may have unsaved data. Close it anyway?"
-msgstr "Tato karta může obsahovat neuložená data. Přesto ji zavřít?"
+msgstr "Tento panel může obsahovat neuložená data. Chcete ho přesto zavřít?"
 
 #: menu.replace_tab.unsaved_data_warning
 msgid "This tab may have unsaved data. Replace it anyway?"
-msgstr "Tato karta může obsahovat neuložená data. Přesto ji nahradit?"
+msgstr ""
+"Tento panel  může obsahovat neuložená data. Chcete ho přesto nahradit?"
 
 #: menu.close_window.unsaved_data_warning
 msgid "This window may have unsaved data. Close it anyway?"
-msgstr "Toto okno může obsahovat neuložená data. Přesto ho zavřít?"
+msgstr "Toto okno může obsahovat neuložená data. Chcete ho přesto  zavřít?"
 
 #: menu.logoff.unsaved_data_warning
 msgid "This session may have unsaved data. Logoff anyway?"
-msgstr "Tato relace může obsahovat neuložená data. Přesto se odhlásit?"
+msgstr ""
+"Tato relace může obsahovat neuložená data. Chcete se přesto odhlásit?"
 
 #: menu.shutdown.unsaved_data_warning
 msgid "This application may have unsaved data. Exit it anyway?"
-msgstr "Tato aplikace může obsahovat neuložená data. Přesto ji ukončit?"
+msgstr ""
+"Tato aplikace může obsahovat neuložená data. Chcete ji přesto ukončit?"
 
 #~ msgid "Ok"
 #~ msgstr "Ok"

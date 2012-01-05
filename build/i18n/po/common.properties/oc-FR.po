@@ -1,17 +1,21 @@
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/common.properties
+# Occitan (post 1500) translation for evergreen
+# Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-07 02:03-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2011-11-25 16:16+0000\n"
+"Last-Translator: Cédric VALMARY (Tot en òc) <cvalmary@yahoo.fr>\n"
+"Language-Team: Occitan (post 1500) <oc@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
-"X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2011-11-26 05:51+0000\n"
+"X-Generator: Launchpad (build 14381)\n"
 
 #: common.exception
 msgid ""
@@ -31,11 +35,11 @@ msgstr ""
 
 #: common.ok
 msgid "Ok"
-msgstr ""
+msgstr "D'acòrdi"
 
 #: common.clear
 msgid "Clear"
-msgstr ""
+msgstr "Escafar"
 
 #: common.confirm
 msgid "Check here to confirm this message."
@@ -55,20 +59,20 @@ msgstr ""
 
 #: common.barcode.status.warning.lost
 msgid "Lost"
-msgstr ""
+msgstr "Perdut"
 
 #: common.barcode.status.warning.expired
 msgid "Expired"
-msgstr ""
+msgstr "Expirats"
 
 #: common.barcode.status.warning.barred
 msgctxt "common.barcode.status.warning.barred"
 msgid "Barred"
-msgstr ""
+msgstr "Raiat"
 
 #: common.barcode.status.warning.blocked
 msgid "Blocked"
-msgstr ""
+msgstr "Blocat"
 
 #: common.barcode.status.warning.unknown
 msgid "with an unknown code: %1$s"
@@ -85,20 +89,20 @@ msgstr ""
 #. # common.grouping_string = the string that should be inserted between elements of a grouped list
 #: common.grouping_string
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: common.unimplemented
 msgid "Not yet implemented"
-msgstr ""
+msgstr "Pas encara implementat"
 
 #: common.yes
 msgctxt "common.yes"
 msgid "Yes"
-msgstr ""
+msgstr "Òc"
 
 #: common.no
 msgid "No"
-msgstr ""
+msgstr "Non"
 
 #: common.check_to_confirm
 msgid "Check here to confirm this message"
@@ -158,8 +162,17 @@ msgstr ""
 msgid "Circulation Modifier"
 msgstr ""
 
+#. # %1$s = circ modifier code, %2$s = circ modifier name, %3$s = circ modifier description
+#: staff.circ_modifier.display
+msgid "%1$s : %2$s : %3$s"
+msgstr ""
+
 #: staff.acp_label_copy_number
 msgid "Copy Number"
+msgstr ""
+
+#: staff.acp_label_parts
+msgid "Part"
 msgstr ""
 
 #: staff.acp_label_deposit_amount
@@ -218,6 +231,14 @@ msgstr ""
 
 #: staff.ahr_holdable_formats_label
 msgid "Holdable Formats"
+msgstr ""
+
+#: staff.ahr_holdable_part_label
+msgid "Holdable Part"
+msgstr ""
+
+#: staff.ahr_issuance_label_label
+msgid "Issuance Label"
 msgstr ""
 
 #: staff.ahr_id_label
@@ -337,30 +358,14 @@ msgctxt "staff.csp_block_circ_yes"
 msgid "Yes"
 msgstr ""
 
-#: staff.csp_block_circ_no
-msgctxt "staff.csp_block_circ_no"
-"staff.csp_block_circ_no"
-msgid ""
-msgstr ""
-
 #: staff.csp_block_renew_yes
 msgctxt "staff.csp_block_renew_yes"
 msgid "Yes"
 msgstr ""
 
-#: staff.csp_block_renew_no
-msgctxt "staff.csp_block_renew_no"
-msgid ""
-msgstr ""
-
 #: staff.csp_block_hold_yes
 msgctxt "staff.csp_block_hold_yes"
 msgid "Yes"
-msgstr ""
-
-#: staff.csp_block_hold_no
-msgctxt "staff.csp_block_hold_no"
-msgid ""
 msgstr ""
 
 #: staff.ausp_id_label
@@ -793,6 +798,10 @@ msgstr ""
 
 #: staff.main.gen_offline_widgets.registration.success
 msgid "Registration successful"
+msgstr ""
+
+#: staff.main.gen_offline_widgets.registration.empty
+msgid "Please specify a workstation name"
 msgstr ""
 
 #: staff.util.timestamp_dialog.future_date_disallowed

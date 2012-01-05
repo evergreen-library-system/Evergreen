@@ -1,0 +1,646 @@
+# Czech translation for evergreen
+# Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2011-11-01 13:56+0000\n"
+"Last-Translator: Eva Cerninakova <Unknown>\n"
+"Language-Team: Czech <cs@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2011-11-02 04:57+0000\n"
+"X-Generator: Launchpad (build 14214)\n"
+
+#: staff.serial.editor_base.handle_update.error
+msgid "serial update error:"
+msgstr "Chyba při aktualizaci seriálu"
+
+#: staff.serial.editor_base.handle_update.success
+msgid "Save Successful"
+msgstr "Úspěšně uloženo"
+
+#: staff.serial.sbsum_editor.count
+msgctxt "staff.serial.sbsum_editor.count"
+msgid "1 summary"
+msgstr "1 přehled"
+
+#: staff.serial.sbsum_editor.count.plural
+msgctxt "staff.serial.sbsum_editor.count.plural"
+msgid "%1$s summaries"
+msgstr "%1$s přehledy"
+
+#: staff.serial.sbsum_editor.modify.label
+msgid "Modify Basic Summary"
+msgstr "Upravit základní jednotky"
+
+#: staff.serial.sbsum_editor.modify.accesskey
+msgctxt "staff.serial.sbsum_editor.modify.accesskey"
+msgid "M"
+msgstr "M"
+
+#: staff.serial.sisum_editor.count
+msgctxt "staff.serial.sisum_editor.count"
+msgid "1 summary"
+msgstr "1 přehled"
+
+#: staff.serial.sisum_editor.count.plural
+msgctxt "staff.serial.sisum_editor.count.plural"
+msgid "%1$s summaries"
+msgstr "%1$s přehledy"
+
+#: staff.serial.sisum_editor.modify.label
+msgid "Modify Index Summary"
+msgstr "Upravit rejstříky"
+
+#: staff.serial.sisum_editor.modify.accesskey
+msgctxt "staff.serial.sisum_editor.modify.accesskey"
+msgid "M"
+msgstr "M"
+
+#: staff.serial.sssum_editor.count
+msgctxt "staff.serial.sssum_editor.count"
+msgid "1 summary"
+msgstr "1 přehled"
+
+#: staff.serial.sssum_editor.count.plural
+msgctxt "staff.serial.sssum_editor.count.plural"
+msgid "%1$s summaries"
+msgstr "%1$s přehledy"
+
+#: staff.serial.sssum_editor.modify.label
+msgid "Modify Supplement Summary"
+msgstr "Upravit dodatky"
+
+#: staff.serial.sssum_editor.modify.accesskey
+msgctxt "staff.serial.sssum_editor.modify.accesskey"
+msgid "M"
+msgstr "M"
+
+#: staff.serial.scap_editor.count
+msgid "1 caption and pattern"
+msgstr "1 označení a schéma"
+
+#: staff.serial.scap_editor.count.plural
+msgid "%1$s caption and patterns"
+msgstr "%1$s označení a schémata"
+
+#: staff.serial.scap_editor.create.label
+msgid "Create Caption and Pattern(s)"
+msgstr "Vytvořit označení a schéma(ta)"
+
+#: staff.serial.scap_editor.create.accesskey
+msgctxt "staff.serial.scap_editor.create.accesskey"
+msgid "C"
+msgstr "C"
+
+#: staff.serial.scap_editor.modify.label
+msgid "Modify Caption and Pattern(s)"
+msgstr "Upravit označení a schéma(ta)"
+
+#: staff.serial.scap_editor.modify.accesskey
+msgctxt "staff.serial.scap_editor.modify.accesskey"
+msgid "M"
+msgstr "M"
+
+#: staff.serial.scap_editor.notes
+msgid "Caption and Pattern Notes"
+msgstr "Poznámky k označení a schématu"
+
+#: staff.serial.sdist_editor.count
+msgid "1 distribution"
+msgstr "1 distribuce"
+
+#: staff.serial.sdist_editor.count.plural
+msgid "%1$s distributions"
+msgstr "%1$s distribuce"
+
+#: staff.serial.sdist_editor.create.label
+msgid "Create Distribution(s)"
+msgstr "Vytvořit distribuci"
+
+#: staff.serial.sdist_editor.create.accesskey
+msgctxt "staff.serial.sdist_editor.create.accesskey"
+msgid "C"
+msgstr "C"
+
+#: staff.serial.sdist_editor.modify.label
+msgid "Modify Distribution(s)"
+msgstr "Upravit distribuci(e)"
+
+#: staff.serial.sdist_editor.modify.accesskey
+msgctxt "staff.serial.sdist_editor.modify.accesskey"
+msgid "M"
+msgstr "M"
+
+#: staff.serial.sdist_editor.notes
+msgid "Distribution Notes"
+msgstr "Poznámky k distribuci"
+
+#: staff.serial.siss_editor.count
+msgid "1 issuance"
+msgstr "1 číslování / chronologie"
+
+#: staff.serial.siss_editor.count.plural
+msgid "%1$s issuances"
+msgstr "%1$s číslování / chronologie"
+
+#: staff.serial.siss_editor.create.label
+msgid "Create Issuance(s)"
+msgstr "Vytvořit číslování /  chronologii"
+
+#: staff.serial.siss_editor.create.accesskey
+msgctxt "staff.serial.siss_editor.create.accesskey"
+msgid "C"
+msgstr "C"
+
+#: staff.serial.siss_editor.modify.label
+msgid "Modify Issuance(s)"
+msgstr "Upravit číslování / chronologii"
+
+#: staff.serial.siss_editor.modify.accesskey
+msgctxt "staff.serial.siss_editor.modify.accesskey"
+msgid "M"
+msgstr "M"
+
+#: staff.serial.siss_editor.notes
+msgid "Issuance Notes"
+msgstr "Poznámky k číslování /chronologii"
+
+#: staff.serial.sitem_editor.count
+msgid "1 item"
+msgstr "1 exemplář"
+
+#: staff.serial.sitem_editor.count.plural
+msgid "%1$s items"
+msgstr "%1$s exemplář(e/ů)"
+
+#: staff.serial.sitem_editor.create.label
+msgid "Create Item(s)"
+msgstr "Vytvořit exemplář(e)"
+
+#: staff.serial.sitem_editor.create.accesskey
+msgctxt "staff.serial.sitem_editor.create.accesskey"
+msgid "C"
+msgstr "C"
+
+#: staff.serial.sitem_editor.modify.label
+msgid "Modify Item(s)"
+msgstr "Upravit exemplář(e)"
+
+#: staff.serial.sitem_editor.modify.accesskey
+msgctxt "staff.serial.sitem_editor.modify.accesskey"
+msgid "M"
+msgstr "M"
+
+#: staff.serial.sitem_editor.notes
+msgid "Item Notes"
+msgstr "Poznámky k exempláři"
+
+#: staff.serial.sstr_editor.count
+msgid "1 stream"
+msgstr "1 soubor exemplářů"
+
+#: staff.serial.sstr_editor.count.plural
+msgid "%1$s streams"
+msgstr "%1$s soubor exemplářů"
+
+#: staff.serial.sstr_editor.create.label
+msgid "Create Stream(s)"
+msgstr "Vytvořit soubor(y) exemplářů"
+
+#: staff.serial.sstr_editor.create.accesskey
+msgctxt "staff.serial.sstr_editor.create.accesskey"
+msgid "C"
+msgstr "C"
+
+#: staff.serial.sstr_editor.modify.label
+msgid "Modify Stream(s)"
+msgstr "Upravit soubor(y) exemplářů"
+
+#: staff.serial.sstr_editor.modify.accesskey
+msgctxt "staff.serial.sstr_editor.modify.accesskey"
+msgid "M"
+msgstr "M"
+
+#: staff.serial.ssub_editor.count
+msgid "1 subscription"
+msgstr "1 předplatné"
+
+#: staff.serial.ssub_editor.count.plural
+msgid "%1$s subscriptions"
+msgstr "%1$s předplatné"
+
+#: staff.serial.ssub_editor.create.label
+msgid "Create Subscription(s)"
+msgstr "Vytvořit předplatné"
+
+#: staff.serial.ssub_editor.create.accesskey
+msgctxt "staff.serial.ssub_editor.create.accesskey"
+msgid "C"
+msgstr "C"
+
+#: staff.serial.ssub_editor.modify.label
+msgid "Modify Subscription(s)"
+msgstr "Upravit předplatné"
+
+#: staff.serial.ssub_editor.modify.accesskey
+msgctxt "staff.serial.ssub_editor.modify.accesskey"
+msgid "M"
+msgstr "M"
+
+#: staff.serial.ssub_editor.notes
+msgid "Subscription Notes"
+msgstr "Poznámky k předplatnému"
+
+#: staff.serial.manage_dists.add.error
+msgid "error adding object in manage_dists.js:"
+msgstr "chyba při přidávání objektu v  manage_dists.js:"
+
+#: staff.serial.manage_dists.delete.error
+msgid "error deleting object in manage_dists.js:"
+msgstr "chyba při mazání  objektu v  manage_dists.js:"
+
+#: staff.serial.manage_dists.delete_sstr.confirm
+msgid "Are you sure you would like to delete this stream?"
+msgstr "Opravdu chcete smazat tento soubor exemplářů?"
+
+#: staff.serial.manage_dists.delete_sstr.confirm.plural
+msgid "Are you sure you would like to delete these %1$s streams?"
+msgstr "Opravdu chcete smazat tyto %1$s soubory exemplářů?"
+
+#: staff.serial.manage_dists.delete_sstr.title
+msgid "Delete Streams?"
+msgstr "Smazat soubory exemplářů?"
+
+#: staff.serial.manage_dists.delete_sstr.override
+msgctxt "staff.serial.manage_dists.delete_sstr.override"
+msgid ""
+"Override Delete Failure? Doing so will delete all attached items as well!"
+msgstr ""
+"Obejít chybu při mazání? Tím budou vymazány také všechny připojené exempláře!"
+
+#: staff.serial.manage_subs.add.error
+msgid "error adding object in manage_subs.js:"
+msgstr "chyba při přidání objektu v manage_subs.js:"
+
+#: staff.serial.manage_subs.delete.error
+msgid "error deleting object in manage_subs.js:"
+msgstr "chyba při mazání objektu v manage_subs.js:"
+
+#: staff.serial.manage_subs.delete_scap.confirm
+msgid "Are you sure you would like to delete this caption and pattern?"
+msgstr "Opravdu chcete smazat toto označení a vzor?"
+
+#: staff.serial.manage_subs.delete_scap.confirm.plural
+msgid ""
+"Are you sure you would like to delete these %1$s caption and patterns?"
+msgstr "Opravdu chcete smazat tato %1$s označení a vzory?"
+
+#: staff.serial.manage_subs.delete_scap.title
+msgid "Delete Caption and Patterns?"
+msgstr "Smazat označení a vzory?"
+
+#: staff.serial.manage_subs.delete_scap.override
+msgid ""
+"Override Delete Failure? Doing so will delete all attached issuances and "
+"items as well!"
+msgstr ""
+"Obejít chybu při mazání? Tím budou vymazána také všechna připojená číslování "
+"/ chronologie a exempláře."
+
+#: staff.serial.manage_subs.delete_sdist.confirm
+msgid "Are you sure you would like to delete this distribution?"
+msgstr "Opravdu chcete smazat tuto distribuci?"
+
+#: staff.serial.manage_subs.delete_sdist.confirm.plural
+msgid "Are you sure you would like to delete these %1$s distributions?"
+msgstr "Opravdu chcete smazat tyto  %1$s distribuce?"
+
+#: staff.serial.manage_subs.delete_sdist.title
+msgid "Delete Distributions?"
+msgstr "Smazat distribuce?"
+
+#: staff.serial.manage_subs.delete_sdist.override
+msgid "Override Delete Failure?"
+msgstr "Obejít chybu při mazání?"
+
+#: staff.serial.manage_subs.delete_siss.confirm
+msgid "Are you sure you would like to delete this issuance?"
+msgstr "Opravdu chcete vymazat toto číslování / chronologii?"
+
+#: staff.serial.manage_subs.delete_siss.confirm.plural
+msgid "Are you sure you would like to delete these %1$s issuances?"
+msgstr "Opravdu chcete vymazat tato %1$s číslování / chronologie?"
+
+#: staff.serial.manage_subs.delete_siss.title
+msgid "Delete Issuances?"
+msgstr "Vymazat číslování / chronologie?"
+
+#: staff.serial.manage_subs.delete_siss.override
+msgctxt "staff.serial.manage_subs.delete_siss.override"
+msgid ""
+"Override Delete Failure? Doing so will delete all attached items as well!"
+msgstr ""
+"Obejít chybu při mazání? Tím budou vymazány také všechny připojené exempláře!"
+
+#: staff.serial.manage_subs.delete_ssub.confirm
+msgid "Are you sure you would like to delete this subscription?"
+msgstr "Chcete opravdu smazat toto předplatné?"
+
+#: staff.serial.manage_subs.delete_ssub.confirm.plural
+msgid "Are you sure you would like to delete these %1$s subscriptions?"
+msgstr "Opravdu chcete smazat tato %1$s předplatné?"
+
+#: staff.serial.manage_subs.delete_ssub.title
+msgid "Delete Subscriptions?"
+msgstr "Smazat předplatné?"
+
+#: staff.serial.manage_subs.delete_ssub.override
+msgid ""
+"Override Delete Failure? Doing so will delete all related data as well!"
+msgstr ""
+"Obejít chybu při mazání? Tím budou vymazána také všechna související data!"
+
+#: batch_receive.bib_lookup.empty
+msgid "Enter a search term."
+msgstr "Zadejte termín pro vyhledávání"
+
+#: batch_receive.bib_lookup.multiple
+msgid ""
+"Multiple matching records found. Please use a more specific identifier, or "
+"use the catalog to find the exact record you want."
+msgstr ""
+"Bylo nalezeno více záznamů odpovídajícíh zadání. Prosím použijte přesnější "
+"identifikátor nebo k vyhledání požadovaného záznamu použijte katalog."
+
+#: batch_receive.bib_lookup.not_found
+msgid "No matching records found with any subscriptions attached."
+msgstr "Nebyl nalezen odpovádající záznam s připojeným předplatným."
+
+#: batch_receive.issuance_lookup.error
+msgid "Problem retrieving issuances related to subscription."
+msgstr ""
+"Nastal problém při zobrazení číslování /chronologií připojených k "
+"předplatnému"
+
+#: batch_receive.issuance_lookup.none
+msgid "There are no receivable issuances."
+msgstr "Neexistují číslování / chronologie, které by bylo možné přijmout"
+
+#: batch_receive.item_lookup.none
+msgid "Could not retrieve receivable items for this issuance."
+msgstr ""
+"Nebylo možné načíst exempláře pro toto číslování  /chronologii, které by "
+"bylo možné přijmout"
+
+#: batch_receive.autogen_barcodes.questionable
+msgid ""
+"There are already barcodes entered further down the list than the one you "
+"just entered.\n"
+"Fill the intervening fields with auto-generated barcodes?"
+msgstr ""
+"Existují čárové kódy, které již byly vloženy do seznamu níže dříve, než ten, "
+"který jste právě vložili.\n"
+"Vyplnit dotyčná pole automaticky generovanými čárovými kódky?"
+
+#: batch_receive.autogen_barcodes.remove
+msgid "Clear the barcodes that have already been auto-generated?"
+msgstr "Smazat čárové kódy, které již byly automaticky vygenerovány?"
+
+#: batch_receive.none
+msgid "[None]"
+msgstr "[Žádný]"
+
+#: batch_receive.apply
+msgid "Apply"
+msgstr "Použít"
+
+#: batch_receive.receive_time_note
+msgid "Receive-time Note"
+msgstr "Poznámka k přijetí exempláře"
+
+#: batch_receive.cn_for_lib
+msgid ""
+"Do you want to use this call number at %1$s?\n"
+"It doesn't exist there, and it will have to be created."
+msgstr ""
+"Chcete použít tuto signaturu pro  %1$s?\n"
+"Signatura zde zatím neexistuje a bude muset být vytvořena"
+
+#: batch_receive.missing_units
+msgid ""
+"You have not provided barcodes and call numbers for all of the selected "
+"items.  Choose OK to receive those items anyway, or choose Cancel to supply "
+"the missing information."
+msgstr ""
+"Neuvedli jste čárové kódy a signatury pro všechny vybrané exempláře. Zvolte "
+"OK pokud chcete exempláře přijmout bez nich nebo zvolte Storno, pokud chcete "
+"doplnit chybějící údaje."
+
+#: batch_receive.missing_cn
+msgid ""
+"You cannot assign a barcode without selecting a call number. Please correct "
+"the non-conforming units."
+msgstr ""
+"Nemůžete přiřadit čárový kód aniž byste zvolili signaturu. Prosím opravte "
+"nevyhovující jednotky."
+
+#: batch_receive.print_routing_list_users
+msgid "Print Routing List"
+msgstr "Vytisknout seznam předběžných příjemců"
+
+#: pattern_wizard.enumeration.a
+msgctxt "pattern_wizard.enumeration.a"
+msgid "First level"
+msgstr "První úroveň"
+
+#: pattern_wizard.enumeration.b
+msgctxt "pattern_wizard.enumeration.b"
+msgid "Second level"
+msgstr "Druhá úroveň"
+
+#: pattern_wizard.enumeration.c
+msgctxt "pattern_wizard.enumeration.c"
+msgid "Third level"
+msgstr "Třetí úroveň"
+
+#: pattern_wizard.enumeration.d
+msgctxt "pattern_wizard.enumeration.d"
+msgid "Fourth level"
+msgstr "Čtvrtá úroveň"
+
+#: pattern_wizard.enumeration.e
+msgid "Fifth level"
+msgstr "Pátá úroveň"
+
+#: pattern_wizard.enumeration.f
+msgid "Sixth level"
+msgstr "Šestá úroveň"
+
+#: pattern_wizard.enumeration.g
+msgid "First alternate"
+msgstr "První alternativní"
+
+#: pattern_wizard.enumeration.h
+msgid "Second alternate"
+msgstr "Druhá alternativní"
+
+#: pattern_wizard.chronology.i
+msgctxt "pattern_wizard.chronology.i"
+msgid "First level"
+msgstr "První úroveň"
+
+#: pattern_wizard.chronology.j
+msgctxt "pattern_wizard.chronology.j"
+msgid "Second level"
+msgstr "Druhá úroveň"
+
+#: pattern_wizard.chronology.k
+msgctxt "pattern_wizard.chronology.k"
+msgid "Third level"
+msgstr "Třetí úroveň"
+
+#: pattern_wizard.chronology.l
+msgctxt "pattern_wizard.chronology.l"
+msgid "Fourth level"
+msgstr "Čtvrtá úroveň"
+
+#: pattern_wizard.chronology.m
+msgid "Alternative numbering scheme"
+msgstr "Alternativní schéma číslování"
+
+#: pattern_wizard.not_removable_row
+msgid ""
+"You cannot remove this row because it's not at the end of the sequence.  "
+"Remove later rows first."
+msgstr ""
+"Nemůžete odstranit tento řádek,  protože se nenachází na konci sekvence. "
+"Odstraňte nejprve dřívější řádek."
+
+#: pattern_wizard.bad_date_value
+msgid "That is not a valid day for that month."
+msgstr "Toto není platný den uvedeného měsíce"
+
+#: pattern_wizard.weekdays
+msgid "Monday Tuesday Wednesday Thursday Friday Saturday Sunday"
+msgstr "Pondělí Úterý Středa Čtvrtek Pátek Sobota Neděle"
+
+#: pattern_wizard.months
+msgid ""
+"January February March April May June July August September October November "
+"December"
+msgstr ""
+"Leden Únor Březen Duben Květen Červen Červenec Srpen Září Říjen Listopad "
+"Prosinec"
+
+#: pattern_wizard.weeks
+msgid ""
+"Every.First.Second.Third.Fourth.Fifth.Third from last.Second from last.Last"
+msgstr ""
+"Každý.První.Druhý.Třetí.Čtvrtý.Pátý.Třetí od konce.Druhý od konce.Poslední"
+
+#: pattern_wizard.seasons
+msgid "Spring Summer Autumn Winter"
+msgstr "Jaro Léto Podzim Zima"
+
+#: pattern_wizard.week
+msgid "week"
+msgstr "týden"
+
+#: pattern_wizard.remove_sub_row
+msgid "Remove sub-row"
+msgstr "Odstranit řádek pod"
+
+#: serial.editor_base.unset
+msgid "<Unset>"
+msgstr "<Nenastaveno>"
+
+#: serial.manage_dists.streams
+msgid "Streams"
+msgstr "Soubory exemplářů"
+
+#: serial.manage_dists.stream_num
+msgid "Stream : # %1$s"
+msgstr "Soubor exemplářů : # %1$s"
+
+#: serial.manage_dists.sbsum
+msgid "Basic Summary"
+msgstr "Základní jednotky"
+
+#: serial.manage_dists.sssum
+msgid "Supplement Summary"
+msgstr "Dodatky"
+
+#: serial.manage_dists.sisum
+msgid "Index Summary"
+msgstr "Rejstříky"
+
+#: serial.manage_dists.library_label
+msgid "%1$s : %2$s"
+msgstr "%1$s : %2$s"
+
+#: serial.manage_dists.distributions
+msgctxt "serial.manage_dists.distributions"
+msgid "Distributions"
+msgstr "Distribuce"
+
+#: serial.common.default
+msgid "Default"
+msgstr "Výchozí nastavení"
+
+#: serial.manage_subs.predict.alert
+msgid "You must select a subscription before predicting issuances."
+msgstr "Před vytvořením seznamu očekávaných čísel musíte vybrat předplatné."
+
+#: serial.manage_subs.predict.prompt
+msgid "How many items (per active pattern) would you like to predict?"
+msgstr ""
+"Kolik exemplářů (pro aktivní schéma) chcete zahrnout do seznamu očekávaných "
+"čísel?"
+
+#: serial.manage_subs.predict.prompt.text
+msgid "Number of Predicted Issuances"
+msgstr "Počet jednotek zahrnutých do seznamu očekávaných čísel"
+
+#: serial.manage_subs.invalid_number
+msgid "Invalid number entered!"
+msgstr "Bylo zadáno neplatné číslo"
+
+#: serial.manage_subs.predict_success
+msgid "Successfully predicted %1$s item(s) for subscription # %2$s."
+msgstr "Úspěšně vytvořeno %1$s očekávaných jednotek pro předplatné # %2$s."
+
+#: serial.manage_subs.distributions
+msgctxt "serial.manage_subs.distributions"
+msgid "Distributions"
+msgstr "Distribuce"
+
+#: serial.manage_subs.issuances
+msgid "Issuances"
+msgstr "Číslování / chronologie"
+
+#: serial.manage_subs.captions_patterns
+msgid "Captions/Patterns"
+msgstr "Označení / schémata"
+
+#: serial.manage_subs.tree_location
+msgid "Location"
+msgstr "Umístění"
+
+#: serial.manage_subs.scap_id
+msgid "Caption / Pattern : # %1$s"
+msgstr "Označení / schéma : # %1$s"
+
+#: serial.manage_subs.ssub_id
+msgid "Subscription : # %1$s"
+msgstr "Předplatné : # %1$s"
+
+#: serial.manage_subs.subscriptions
+msgid "Subscriptions"
+msgstr "Předplatné"

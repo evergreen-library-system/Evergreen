@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-11-23 23:35-0400\n"
-"PO-Revision-Date: 2010-03-30 15:15+0000\n"
-"Last-Translator: Jens Böning <jensboening@gmx.de>\n"
+"POT-Creation-Date: 2011-04-18 21:44-0400\n"
+"PO-Revision-Date: 2011-12-24 08:40+0000\n"
+"Last-Translator: Thomas Schwiertz <thomas.schwiertz@googlemail.com>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-03-31 03:55+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2011-12-25 04:54+0000\n"
+"X-Generator: Launchpad (build 14560)\n"
 
 #. Common Entities
 #: reports.common.logged_in_as
@@ -33,6 +33,7 @@ msgstr "Evergreen: Berichte"
 #: reports.oils_rpt.insufficient_permissions
 msgid "You do not have sufficient permissions to run reports"
 msgstr ""
+"Sie haben keine ausreichenden Berechtigungen, um Berichte anzufertigen"
 
 #: reports.oils_rpt.my_folders
 msgid "My Folders"
@@ -61,7 +62,7 @@ msgstr "Einen neuen Unterordner erstellen"
 
 #: reports.oils_rpt.folder_type
 msgid "Folder type: "
-msgstr ""
+msgstr "Ordnertyp: "
 
 #: reports.oils_rpt.folder_name
 msgctxt "reports.oils_rpt.folder_name"
@@ -132,7 +133,7 @@ msgstr ""
 
 #: reports.oils_rpt_builder.remove_selected
 msgid "Remove Selected"
-msgstr ""
+msgstr "Ausgewähltes entfernen"
 
 #: reports.oils_rpt_builder.move_up
 msgctxt "reports.oils_rpt_builder.move_up"
@@ -165,7 +166,7 @@ msgstr ""
 
 #: reports.oils_rpt_builder.template_types
 msgid "Template Types"
-msgstr ""
+msgstr "Vorlagentypen"
 
 #: reports.oils_rpt_builder.display_items
 msgid "Display Items"
@@ -173,7 +174,7 @@ msgstr ""
 
 #: reports.oils_rpt_builder.filters
 msgid "Filters"
-msgstr ""
+msgstr "Filter"
 
 #: reports.oils_rpt_builder.aggregate_filters
 msgctxt "reports.oils_rpt_builder.aggregate_filters"
@@ -202,11 +203,11 @@ msgstr ""
 
 #: reports.oils_rpt_builder.choose_a_filter
 msgid "Choose a Filter: "
-msgstr ""
+msgstr "Wählen Sie einen Filter: "
 
 #: reports.oils_rpt_builder.create_filter
 msgid "Create Filter"
-msgstr ""
+msgstr "Filter erstellen"
 
 #: reports.oils_rpt_builder.aggregate_filter_to_apply
 msgid "Select what aggregate filter should be applied to this field:"
@@ -218,7 +219,7 @@ msgstr ""
 
 #: reports.oils_rpt_builder.choose_column
 msgid "Choose a column: "
-msgstr ""
+msgstr "Wählen Sie eine Spalte: "
 
 #: reports.oils_rpt_builder.choose_sorting_direction
 msgid "Choose the direction the sorting should occur: "

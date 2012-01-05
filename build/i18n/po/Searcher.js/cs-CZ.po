@@ -1,0 +1,178 @@
+# Czech translation for evergreen
+# Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"PO-Revision-Date: 2011-12-10 16:43+0000\n"
+"Last-Translator: Eva Cerninakova <Unknown>\n"
+"Language-Team: Czech <cs@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2011-12-11 05:37+0000\n"
+"X-Generator: Launchpad (build 14450)\n"
+
+#: Searcher.js:before
+msgid "Published Before"
+msgstr "Vydáno před"
+
+#: Searcher.js:lit_form
+msgid "Literary Form"
+msgstr "Literární žánr"
+
+#: Searcher.js:metabib
+msgid "Metarecord Search"
+msgstr "Vyhledávání metazáznamu"
+
+#: Searcher.js:contains
+msgid "Contains"
+msgstr "Obsahuje"
+
+#: Searcher.js:more
+msgid "More..."
+msgstr "Více..."
+
+#: Searcher.js:after
+msgid "Published After"
+msgstr "Vydáno po"
+
+#: Searcher.js:basic
+msgid "Basic"
+msgstr "Zakladní"
+
+#: Searcher.js:modifiers
+msgid "Modifiers"
+msgstr "Modifikátory"
+
+#: Searcher.js:item_type
+msgid "Type"
+msgstr "Typ"
+
+#: Searcher.js:depth
+msgid "Search Depth"
+msgstr "Hloubka vyhledávání"
+
+#: Searcher.js:available
+msgid "Available"
+msgstr "Volné"
+
+#: Searcher.js:classed_searches
+msgid "Classed Searches"
+msgstr "Podrobné vyhledávání"
+
+#: Searcher.js:item_form
+msgid "Form"
+msgstr "Formát"
+
+#: Searcher.js:new_modifier
+msgid "New Modifier"
+msgstr "Nový Modifikátor"
+
+#: Searcher.js:less
+msgid "...Less"
+msgstr "...Méně"
+
+#: Searcher.js:modifier_default
+msgid "-- Select a Modifier --"
+msgstr "-- Vyberte Modifikátor --"
+
+#: Searcher.js:during
+msgid "In Publication"
+msgstr "V publikaci"
+
+#: Searcher.js:exact
+msgid "Exactly Matches"
+msgstr "Odpovídá přesně"
+
+#: Searcher.js:advanced
+msgid "Advanced"
+msgstr "Podrobné vyhledávání"
+
+#: Searcher.js:between
+msgid "Published Between"
+msgstr "Vydáno mezi"
+
+#: Searcher.js:new_filter
+msgid "New Filter"
+msgstr "Nový filtr"
+
+#: Searcher.js:faceted_searches
+msgid "Facets"
+msgstr "Fasety"
+
+#: Searcher.js:perform_search
+msgid "Go!"
+msgstr "Hledat!"
+
+#: Searcher.js:remove
+msgid "Remove"
+msgstr "Smazat"
+
+#: Searcher.js:audience
+msgid "Audience"
+msgstr "Čtenářské určení"
+
+#: Searcher.js:format
+msgid "Type and Form"
+msgstr "Typ a formát"
+
+#: Searcher.js:descending
+msgid "Sort Descending"
+msgstr "Řadit sestupně"
+
+#: Searcher.js:new_facet
+msgid "New Facet"
+msgstr "Nová faseta"
+
+#: Searcher.js:and
+msgid "AND"
+msgstr "AND"
+
+#: Searcher.js:vr_format
+msgid "Videorecording Format"
+msgstr "Formát videozáznamu"
+
+#: Searcher.js:staff
+msgid "Staff Search"
+msgstr "Hledání - personál"
+
+#: Searcher.js:site
+msgid "Site"
+msgstr "Stránka"
+
+#: Searcher.js:notcontains
+msgid "Does Not Contain"
+msgstr "Neobsahuje"
+
+#: Searcher.js:sort
+msgid "Sort Axis"
+msgstr "Osa třídění"
+
+#: Searcher.js:filters
+msgid "Filters"
+msgstr "Filtry"
+
+#: Searcher.js:bib_level
+msgid "Bibliographic Level"
+msgstr "Bibliografická úroveň"
+
+#: Searcher.js:filter_default
+msgid "-- Select a Filter --"
+msgstr "-- Vyberte filtr --"
+
+#: Searcher.js:ascending
+msgid "Sort Ascending"
+msgstr "Řadit vzestupně"
+
+#: Searcher.js:or
+msgid "OR"
+msgstr "OR"
+
+#: Searcher.js:statuses
+msgid "Statuses"
+msgstr "Statuty"

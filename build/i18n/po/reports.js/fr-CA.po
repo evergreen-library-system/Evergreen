@@ -1,17 +1,16 @@
-# 
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 21:45:31-0400\n"
+"POT-Creation-Date: 2011-04-18 21:45-0400\n"
 "PO-Revision-Date: 2010-11-05 15:54+0000\n"
 "Last-Translator: Jean-François Huck <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Launchpad (build 12959)\n"
 "X-Launchpad-Export-Date: 2011-05-18 04:48+0000\n"
+"X-Generator: Launchpad (build 12959)\n"
 
 #: reports.js:OPERATORS_IN_LIST reports.js:FILTERS_LABEL_IN
 msgid "In list"
@@ -74,7 +73,8 @@ msgstr "Nom du jour"
 #: reports.js:SOURCE_SETUP_CONFIRM_EXIT
 msgid ""
 "You have started building a template!\n"
-" Selecting a new starting source will destroy the current template and start over.  Is this OK?"
+" Selecting a new starting source will destroy the current template and start "
+"over.  Is this OK?"
 msgstr ""
 "Vous avez commencé à construire un modèle !\n"
 " Choisir une nouvelle source de démarrage détruira le modèle en cours et "
@@ -226,7 +226,8 @@ msgstr "Vide"
 
 #: reports.js:TEMPLATE_CONF_IN
 msgid "Field matches one of list (comma separated):"
-msgstr "Champ correspond à une entrée de la liste (séparé par des virgules) :"
+msgstr ""
+"Champ correspond à une entrée de la liste (séparé par des virgules) :"
 
 #: reports.js:TRANSFORMS_MONTH_TRUNC reports.js:TFORMS_LABEL_MONTH_TRUNC
 msgid "Year + Month"
