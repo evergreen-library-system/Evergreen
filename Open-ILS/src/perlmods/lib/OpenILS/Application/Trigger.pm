@@ -605,7 +605,7 @@ sub revalidate_event_group_test {
     my $client = shift;
     my $events = shift;
 
-    my $e = OpenILS::Application::Trigger::EventGroup->new(@$events);
+    my $e = OpenILS::Application::Trigger::EventGroup->new_nochanges(@$events);
 
     my $result = $e->revalidate_test;
 

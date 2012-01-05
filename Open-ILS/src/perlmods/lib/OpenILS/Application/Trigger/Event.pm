@@ -14,6 +14,7 @@ sub new {
     my $class = shift;
     my $id = shift;
     my $editor = shift;
+    my $nochanges = shift; # no guarantees, yet...
     $class = ref($class) || $class;
 
     my $standalone = $editor ? 0 : 1;
@@ -27,7 +28,7 @@ sub new {
         return $id;
     }
 
-    my $self = bless { id => $id, editor => $editor, standalone => $standalone } => $class;
+    my $self = bless { id => $id, editor => $editor, standalone => $standalone, nochanges => $nochanges } => $class;
 
     return $self->init()
 }
@@ -93,8 +94,9 @@ sub init {
         $self->cleanedup(0);
     }
 
-
-    $self->update_state('found') || die 'Unable to update event state';
+    unless ($self->nochanges) {
+        $self->update_state('found') || die 'Unable to update event state';
+    }
 
     my $class = $self->_fm_class_by_hint( $self->event->event_def->hook->core_type );
     
@@ -112,8 +114,8 @@ sub init {
         $self->editor->xact_rollback || return undef;
     }
 
-    unless($self->target) {
-        $self->update_state('invalid');
+    unless ($self->target) {
+        $self->update_state('invalid') unless $self->nochanges;
         $self->valid(0);
     }
 
@@ -323,6 +325,16 @@ sub editor {
     my $e = shift;
     $self->{editor} = $e if (defined $e);
     return $self->{editor};
+}
+
+sub nochanges {
+    # no guarantees, yet.
+    my $self = shift;
+    return undef unless (ref $self);
+
+    my $e = shift;
+    $self->{nochanges} = $e if (defined $e);
+    return $self->{nochanges};
 }
 
 sub unfind {

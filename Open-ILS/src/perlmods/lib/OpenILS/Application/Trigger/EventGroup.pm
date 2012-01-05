@@ -12,9 +12,11 @@ use OpenILS::Application::Trigger::ModRunner;
 
 my $log = 'OpenSRF::Utils::Logger';
 
-sub new {
+sub new_impl {
     my $class = shift;
-    my @ids = @_;
+    my @ids = @{shift()};
+    my $nochanges = shift;
+
     $class = ref($class) || $class;
 
     my $editor = new_editor(xact=>1);
@@ -25,7 +27,7 @@ sub new {
             map {
                 ref($_) ?
                     do { $_->standalone(0); $_->editor($editor); $_ } :
-                    OpenILS::Application::Trigger::Event->new($_, $editor)
+                    OpenILS::Application::Trigger::Event->new($_, $editor, $nochanges)
             } @ids
         ],
         ids         => [ map { ref($_) ? $_->id : $_ } @ids ],
@@ -37,6 +39,20 @@ sub new {
     $self->editor->xact_begin;
 
     return $self;
+}
+
+sub new_nochanges {
+    my $class = shift;
+    my @ids = @_;
+
+    return new_impl($class, \@ids, 1);
+}
+
+sub new {
+    my $class = shift;
+    my @ids = @_;
+
+    return new_impl($class, \@ids);
 }
 
 sub react {
