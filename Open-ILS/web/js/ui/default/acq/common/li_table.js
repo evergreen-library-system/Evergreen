@@ -366,6 +366,24 @@ function AcqLiTable() {
             nodeByName("link_to_catalog_link", row).onclick = function() { self.drawBibFinder(li) };
         }
 
+        if (li.queued_record()) {
+            this.pcrud.retrieve('vqbr', li.queued_record(),
+                {   async : true, 
+                    oncomplete : function(r) {
+                        var qrec = openils.Util.readResponse(r);
+                        openils.Util.show(nodeByName('queue', row), 'inline');
+                        var link = nodeByName("queue_link", row);
+                        link.onclick = function() { 
+                            // open a new tab to the vandelay queue for this record
+                            openils.XUL.newTabEasy(
+                                oilsBasePath + '/vandelay/vandelay?qtype=bib&qid=' + qrec.queue()
+                            );
+                        }
+                    }
+                }
+            );
+        }
+
         nodeByName("worksheet_link", row).href =
             oilsBasePath + "/acq/lineitem/worksheet/" + li.id();
 
