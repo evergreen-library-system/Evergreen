@@ -10,27 +10,27 @@
                 <a href='#'>[% l("Personal Information") %]</a>
             </div>
             <div class="align">
-                <a href='prefs_notify'>[% l("Notification Preferences") %]</a>
+                <a href='[% mkurl('prefs_notify') %]'>[% l("Notification Preferences") %]</a>
             </div>
             <div class="align">
-                <a href='prefs_settings'>[% l("Search Preferences") %]</a>
+                <a href='[% mkurl('prefs_settings') %]'>[% l("Search Preferences") %]</a>
             </div>
         [% ELSIF prefs_page == 'notify' %]
             <div class="align">
-                <a href='prefs'>[% l("Personal Information") %]</a>
+                <a href='[% mkurl('prefs') %]'>[% l("Personal Information") %]</a>
             </div>
             <div class="align selected">
                 <a href='#'>[% l("Notification Preferences") %]</a>
             </div>
             <div class="align" >
-                <a href='prefs_settings'>[% l("Search Preferences") %]</a>
+                <a href='[% mkurl('prefs_settings') %]'>[% l("Search Preferences") %]</a>
             </div>
         [% ELSE %]
             <div class="align">
-                <a href='prefs'>[% l("Personal Information") %]</a>
+                <a href='[% mkurl('prefs') %]'>[% l("Personal Information") %]</a>
             </div>
             <div class="align">
-                <a href='prefs_notify'>[% l("Notification Preferences") %]</a>
+                <a href='[% mkurl('prefs_notify') %]'>[% l("Notification Preferences") %]</a>
             </div>
             <div class="align selected" >
                 <a href='#'>[% l("Search Preferences") %]</a>

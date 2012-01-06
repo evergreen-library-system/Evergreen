@@ -34,7 +34,7 @@
             operation = ctx.mylist.grep(ctx.bre_id).size ? "delete" : "add";
             label = (operation == "add") ? l("Add to my list") : l("Remove from my list"); 
         %]
-            <a href="[% ctx.opac_root %]/mylist/[% operation %]?record=[% ctx.bre_id %]" class="no-dec">
+            <a href="[% mkurl(ctx.opac_root _ '/mylist/' _ operation, {record => ctx.bre_id}) %]" class="no-dec">
                 <img src="[% ctx.media_prefix %]/images/clipboard.png" alt="" />
                 [% label %]
             </a>

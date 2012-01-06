@@ -536,6 +536,11 @@ sub handle_hold_update {
             $e->authtoken, undef, \@vals
         )->gather(1);   # LFW XXX test for failure
         $url = 'https://' . $self->apache->hostname . $self->ctx->{opac_root} . '/myopac/holds';
+        foreach my $param (('loc', 'qtype', 'query')) {
+            if ($self->cgi->param($param)) {
+                $url .= ";$param=" . uri_escape($self->cgi->param($param));
+            }
+        }
     }
 
     $circ->kill_me;
@@ -1574,9 +1579,10 @@ sub load_myopac_bookbags {
                 my $url = $self->ctx->{opac_root} . '/myopac/lists?id=' .
                     $bookbag->id;
 
-                # Keep it if we've got it
-                if ($self->cgi->param("sort")) {
-                    $url .= ";sort=" . $self->cgi->param("sort");
+                foreach my $param (('loc', 'qtype', 'query', 'sort')) {
+                    if ($self->cgi->param($param)) {
+                        $url .= ";$param=" . uri_escape($self->cgi->param($param));
+                    }
                 }
 
                 return $self->generic_redirect($url);
@@ -1636,7 +1642,11 @@ sub load_myopac_bookbag_update {
     my $url = "https://" . $self->apache->hostname .
         $self->ctx->{opac_root} . "/myopac/lists?";
 
-    $url .= 'sort=' . uri_escape($cgi->param("sort")) if $cgi->param("sort");
+    foreach my $param (('loc', 'qtype', 'query', 'sort')) {
+        if ($cgi->param($param)) {
+            $url .= "$param=" . uri_escape($cgi->param($param)) . ";";
+        }
+    }
 
     if ($action eq 'create') {
         $list = Fieldmapper::container::biblio_record_entry_bucket->new;
@@ -1663,6 +1673,11 @@ sub load_myopac_bookbag_update {
 
         my $url = $self->ctx->{opac_root} . '/place_hold?hold_type=T';
         $url .= ';hold_target=' . $_ for @hold_recs;
+        foreach my $param (('loc', 'qtype', 'query')) {
+            if ($cgi->param($param)) {
+                $url .= ";$param=" . uri_escape($cgi->param($param));
+            }
+        }
         return $self->generic_redirect($url);
 
     } else {

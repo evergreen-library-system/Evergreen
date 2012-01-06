@@ -31,7 +31,11 @@
                 </div>
                 [% IF ctx.mylist.size %]
                 <div class="results_header_btns cached_list_div">
-                    <a href="[% ctx.opac_root; ctx.user ? '/myopac/lists' : '/mylist' %]">[% l('View My List') %]</a>
+                    [%- IF ctx.user; %]
+                    <a href="[% mkurl(ctx.opac_root _ '/myopac/lists') %]">[% l('View My List') %]</a>
+                    [%- ELSE %]
+                    <a href="[% mkurl(ctx.opac_root _ '/mylist') %]">[% l('View My List') %]</a>
+                    [%- END %]
                 </div>
                 [% END %]
                 <div class="results_header_div"></div>

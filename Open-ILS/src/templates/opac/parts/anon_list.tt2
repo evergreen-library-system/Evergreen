@@ -6,13 +6,12 @@
                     id="anonsort" name="anonsort" value=CGI.param("anonsort") %]
                 <input type="hidden" name="id"
                     value="[% CGI.param('id') | html %]" />
-                <!-- just preserve this --><input type="hidden" name="sort"
-                    value="[% CGI.param('sort') | html %]" />
+                [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
                 <input type="submit" value="[% l('Sort') %]" />
             </form>
         </div>
 
-        <form action="[% ctx.opac_root %]/mylist/move" method="POST">
+        <form action="[% mkurl(ctx.opac_root _ '/mylist/move') %]" method="GET">
         <div>
             <p class="big-strong">[% l('Temporary List') %]</p>
             <table cellpadding='0' cellspacing='0' border='0'>
@@ -39,6 +38,7 @@
                                 </optgroup>
                                 [% END %]
                             </select>
+                            [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
                             <input type="submit" value="[% l('Go') %]" />
                         </td>
                     </tr>
