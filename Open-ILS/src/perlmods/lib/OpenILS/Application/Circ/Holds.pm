@@ -1019,7 +1019,7 @@ sub set_hold_shelf_expire_time {
     # closed date, push it out to the first open date
     my $dateinfo = $U->storagereq(
         'open-ils.storage.actor.org_unit.closed_date.overlap', 
-        $hold->pickup_lib, $expire_time);
+        $hold->pickup_lib, $expire_time->strftime('%FT%T%z'));
 
     if($dateinfo) {
         my $dt_parser = DateTime::Format::ISO8601->new;
