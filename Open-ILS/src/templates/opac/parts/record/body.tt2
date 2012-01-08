@@ -7,12 +7,12 @@
 
     [% IF ctx.search_result_index >= 0 %]
     <div id="rdetail_header">
-        <div style="float:left;">
+        <span id="rdetail_results">
             <a href='[% mkurl(ctx.opac_root _ '/results', {}, stop_parms); %]'>[% l('&#9668; Search Results') %]</a>
             <span id="rdetail_result_count">
                 [% l('Showing Item [_1] of [_2]', ctx.search_result_index + 1, ctx.hit_count) %]
             </span>
-        </div>
+        </span>
         <div id="rdetail_result_nav">
             [%
                 IF ctx.prev_search_record;
@@ -23,10 +23,8 @@
                     ctx.prev_rec_url = mkurl(ctx.prev_search_record, prev_args, stop_parms);
             %]
             <a class='np_nav_link classic_link' title='[% l("Previous Record") %]'
-                href='[% ctx.prev_rec_url %]'><span class="nav_arrow_fix">&#9668; </span>[% l('Previous') %]</a>
+                href='[% ctx.prev_rec_url %]'>&#9668; [% l('Previous') %]</a>
             [% END %]
-
-            <span style="padding:0px 10px;"> </span>
 
             [% 
                 IF ctx.next_search_record;
@@ -37,7 +35,7 @@
                     ctx.next_rec_url = mkurl(ctx.next_search_record, next_args, stop_parms);
             %]
             <a class='np_nav_link classic_link' title='[% l("Next Record") %]'
-                href='[% ctx.next_rec_url %]'>[% l('Next') %]<span class="nav_arrow_fix"> &#9658;</span></a>
+                href='[% ctx.next_rec_url %]'>[% l('Next') %] &#9658;</a>
             [% END %]
 
         </div>
