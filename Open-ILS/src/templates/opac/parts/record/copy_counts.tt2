@@ -4,12 +4,17 @@
     [%- depths = ctx.copy_summary.size;
         depth = 0;
         WHILE depth < depths;
+            ou_avail = ctx.copy_summary.$depth.available;
+            ou_id = ctx.copy_summary.$depth.org_unit;
     %]
     <li>
-    [% l('[quant,_1,copy,copies] at [_2].', 
-        ctx.copy_summary.$depth.available,
-        ctx.get_aou(ctx.copy_summary.$depth.org_unit).name)
+    [% l('[quant,_1,copy,copies] at [_2].', ou_avail, ctx.get_aou(ou_id).name)
         | html %]
+    [%- IF ou_avail > 0 && ou_id != CGI.param('loc'); %]
+    <a href="[% mkurl('', {loc => ou_id}); %]"
+       title="[% l('Show copies at [_1]', ctx.get_aou(ou_id).name); %]">
+       [%- l('(Show)'); %]</a>
+    [%- END; %]
     </li>
     [%- depth = depth + 1; END %]
     </ul>

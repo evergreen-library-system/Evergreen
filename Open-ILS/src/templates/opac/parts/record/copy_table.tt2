@@ -1,11 +1,17 @@
 [%-
 FOREACH copy_info IN ctx.copies;
+    IF copy_info.call_number_label != '##URI##';
+        has_copies = 'true';
+    END;
     IF copy_info.part_label != '';
         has_parts = 'true';
+    END;
+    IF has_parts && has_copies;
         LAST;
     END;
 END;
 %]
+[%- IF has_copies; %]
 <table cellpadding="0" cellspacing="0" border="0" width="100%" id="rdetails_status">
     <thead>
         <tr>
@@ -132,4 +138,4 @@ END;
         </tr>
     </tbody>
 </table>
-
+[% END; %]
