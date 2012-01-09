@@ -719,8 +719,20 @@ div.format_icon {
 	margin-top: 1em;
 }
 
-tr.result_table_row td.result_table_row {
-    border-bottom:1px solid #d4d4d4;
+tr.result_table_row > td.results_row_count,
+tr.result_table_row > td.result_table_pic_header,
+tr.result_table_row > td.result_table_title_cell {
+    vertical-align: top;
+}
+
+tr.result_table_row:nth-child(n+2) > td {
+    border-top: 1px solid #d4d4d4;
+}
+
+tr.result_table_row > td.result_table_pic_header {
+    white-space: nowrap;
+    width: 78px;
+    padding-left: 1em;
 }
 
 .result_numbers {
@@ -749,10 +761,6 @@ div.result_place_hold {
 
 .icon_text {
 	text-transform:capitalize;
-}
-
-.result_table_title_cell {
-	padding-left: 7px;
 }
 
 #myopac_summary_div p {
