@@ -1,0 +1,19 @@
+{
+    "OPERATOR_EQ": "is",
+    "OPERATOR_NE": "is not",
+    "OPERATOR_IS_NULL": "is null",
+    "OPERATOR_IS_NOT_NULL": "is not null",
+    "OPERATOR_LT": "is less than",
+    "OPERATOR_GT": "is greater than",
+    "OPERATOR_LTE": "is less than or equal to",
+    "OPERATOR_GTE": "is greater than or equal to",
+    "OPERATOR_BETWEEN": "is between",
+    "OPERATOR_NOT_BETWEEN": "is not between",
+    "OPERATOR_LIKE": "is like",
+    "OPERATOR_NOT_LIKE": "is not like",
+    "EMPTY_CASE": "Add rows to filter results, or just click Apply to see unfiltered results.",
+    "DEFAULT_DIALOG_TITLE": "Filter Results",
+    "ADD_ROW": "Add Row",
+    "APPLY": "Apply",
+    "CANCEL": "Cancel"
+}

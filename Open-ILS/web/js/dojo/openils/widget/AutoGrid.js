@@ -23,6 +23,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             editReadOnly : false,
             suppressFields : null,
             suppressEditFields : null,
+            suppressFilterFields : null,
             hideSelector : false,
             selectorWidth : '1.5',
             showColumnPicker : false,
@@ -119,13 +120,15 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                                 style : 'padding-right:6px;',
                                 href : 'javascript:void(0);', 
                                 onclick : function() { 
-                                    var dialog = new openils.widget.PCrudFilterDialog({fmClass:self.fmClass})
-                                    dialog.onApply = function(filter) {
-                                        self.resetStore();
-                                        self.loadAll(self.cachedQueryOpts, filter);
-                                    };
-                                    dialog.startup();
-                                    dialog.show();
+                                    if (!self.filterDialog) {
+                                        self.filterDialog = new openils.widget.PCrudFilterDialog({fmClass:self.fmClass, suppressFilterFields:self.suppressFilterFields})
+                                        self.filterDialog.onApply = function(filter) {
+                                            self.resetStore();
+                                            self.loadAll(self.cachedQueryOpts, filter);
+                                        };
+                                        self.filterDialog.startup();
+                                    }
+                                    self.filterDialog.show();
                                 }
                             }),
                             this.paginator.domNode
