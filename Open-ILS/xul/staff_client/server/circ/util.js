@@ -1884,11 +1884,8 @@ circ.util.hold_columns = function(modify,params) {
             'primary' : false,
             'hidden' : false,
             'editable' : false, 'render' : function(my) {
-                if (my.ahr.transit() && my.ahr.transit().dest_recv_time()) {
-                    return util.date.formatted_date( my.ahr.transit().dest_recv_time(), '%{localized}' );
-                }
-                if (!my.ahr.transit() && my.ahr.capture_time()) {
-                    return util.date.formatted_date( my.ahr.capture_time(), '%{localized}' );
+                if (my.ahr.current_shelf_lib() == my.ahr.pickup_lib()) {
+                    return util.date.formatted_date( my.ahr.shelf_time(), '%{localized}' );
                 }
                 return "";
             }
@@ -1943,6 +1940,9 @@ circ.util.hold_columns = function(modify,params) {
                         break;
                     case 7:
                         return document.getElementById('circStrings').getString('staff.circ.utils.hold_status.7');
+                        break;
+                    case 8:
+                        return document.getElementById('circStrings').getString('staff.circ.utils.hold_status.8');
                         break;
                     default:
                         return my.status;

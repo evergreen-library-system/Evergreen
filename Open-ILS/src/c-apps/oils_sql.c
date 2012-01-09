@@ -4950,6 +4950,8 @@ static char* buildOrderByFromArray( osrfMethodContext* ctx, const jsonObject* or
 		const char* field =
 			jsonObjectGetString( jsonObjectGetKeyConst( order_spec, "field" ));
 
+		jsonObject* compare_to = jsonObjectGetKeyConst( order_spec, "compare" );
+
 		if( !field || !class_alias ) {
 			osrfLogError( OSRF_LOG_MARK,
 				"%s: Missing class or field name in field specification of ORDER BY clause",
@@ -5028,6 +5030,24 @@ static char* buildOrderByFromArray( osrfMethodContext* ctx, const jsonObject* or
 
 			OSRF_BUFFER_ADD( order_buf, transform_str );
 			free( transform_str );
+		} else if( compare_to ) {
+			char* compare_str = searchPredicate( order_class_info, field_def, compare_to, ctx );
+			if( ! compare_str ) {
+				if( ctx )
+					osrfAppSessionStatus(
+						ctx->session,
+						OSRF_STATUS_INTERNALSERVERERROR,
+						"osrfMethodException",
+						ctx->request,
+						"Severe query error in ORDER BY clause -- "
+						"see error log for more details"
+					);
+				buffer_free( order_buf );
+				return NULL;
+			}
+
+			buffer_fadd( order_buf, "(%s)", compare_str );
+			free( compare_str );
 		}
 		else
 			buffer_fadd( order_buf, "\"%s\".%s", class_alias, field );

@@ -1655,6 +1655,7 @@ sub handle_checkout_holds {
         $hold->clear_capture_time;
         $hold->clear_shelf_time;
         $hold->clear_shelf_expire_time;
+	    $hold->clear_current_shelf_lib;
 
         return $self->bail_on_event($e->event)
             unless $e->update_action_hold_request($hold);
@@ -2798,23 +2799,42 @@ sub checkin_build_copy_transit {
     my $self            = shift;
     my $dest            = shift;
     my $copy       = $self->copy;
-   my $transit    = Fieldmapper::action::transit_copy->new;
+    my $transit    = Fieldmapper::action::transit_copy->new;
+
+    # if we are transiting an item to the shelf shelf, it's a hold transit
+    if (my $hold = $self->remote_hold) {
+        $transit = Fieldmapper::action::hold_transit_copy->new;
+        $transit->hold($hold->id);
+
+        # the item is going into transit, remove any shelf-iness
+        if ($hold->current_shelf_lib or $hold->shelf_time) {
+            $hold->clear_current_shelf_lib;
+            $hold->clear_shelf_time;
+            return $self->bail_on_events($self->editor->event)
+                unless $self->editor->update_action_hold_request($hold);
+        }
+    }
 
     #$dest  ||= (ref($copy->circ_lib)) ? $copy->circ_lib->id : $copy->circ_lib;
     $logger->info("circulator: transiting copy to $dest");
 
-   $transit->source($self->circ_lib);
-   $transit->dest($dest);
-   $transit->target_copy($copy->id);
-   $transit->source_send_time('now');
-   $transit->copy_status( $U->copy_status($copy->status)->id );
+    $transit->source($self->circ_lib);
+    $transit->dest($dest);
+    $transit->target_copy($copy->id);
+    $transit->source_send_time('now');
+    $transit->copy_status( $U->copy_status($copy->status)->id );
 
     $logger->debug("circulator: setting copy status on transit: ".$transit->copy_status);
 
-    return $self->bail_on_events($self->editor->event)
-        unless $self->editor->create_action_transit_copy($transit);
+    if ($self->remote_hold) {
+        return $self->bail_on_events($self->editor->event)
+            unless $self->editor->create_action_hold_transit_copy($transit);
+    } else {
+        return $self->bail_on_events($self->editor->event)
+            unless $self->editor->create_action_transit_copy($transit);
+    }
 
-   $copy->status(OILS_COPY_STATUS_IN_TRANSIT);
+    $copy->status(OILS_COPY_STATUS_IN_TRANSIT);
     $self->update_copy;
     $self->checkin_changed(1);
 }
@@ -3169,35 +3189,9 @@ sub process_received_transit {
 # ------------------------------------------------------------------
 sub put_hold_on_shelf {
     my($self, $hold) = @_;
-
     $hold->shelf_time('now');
-
-    my $shelf_expire = $U->ou_ancestor_setting_value(
-        $self->circ_lib, 'circ.holds.default_shelf_expire_interval', $self->editor);
-
-    return undef unless $shelf_expire;
-
-    my $seconds = OpenSRF::Utils->interval_to_seconds($shelf_expire);
-    my $expire_time = DateTime->now->add(seconds => $seconds);
-
-    # if the shelf expire time overlaps with a pickup lib's 
-    # closed date, push it out to the first open date
-    my $dateinfo = $U->storagereq(
-        'open-ils.storage.actor.org_unit.closed_date.overlap', 
-        $hold->pickup_lib, $expire_time);
-
-    if($dateinfo) {
-        my $dt_parser = DateTime::Format::ISO8601->new;
-        $expire_time = $dt_parser->parse_datetime(cleanse_ISO8601($dateinfo->{end}));
-
-        # TODO: enable/disable time bump via setting?
-        $expire_time->set(hour => '23', minute => '59', second => '59');
-
-        $logger->info("circulator: shelf_expire_time overlaps".
-            " with closed date, pushing expire time to $expire_time");
-    }
-
-    $hold->shelf_expire_time($expire_time->strftime('%FT%T%z'));
+    $hold->current_shelf_lib($self->circ_lib);
+    $holdcode->set_hold_shelf_expire_time($hold, $self->editor);
     return undef;
 }
 

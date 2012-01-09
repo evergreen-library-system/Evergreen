@@ -75,11 +75,13 @@ sub HoldIsAvailable {
 
     return 1 if 
         !$hold->cancel_time and
-        $hold->capture_time and 
-        $hold->current_copy and
-        $hold->shelf_time and
         !$hold->fulfillment_time and
-        $hold->current_copy->status == OILS_COPY_STATUS_ON_HOLDS_SHELF;
+        $hold->current_shelf_lib and
+        $hold->current_shelf_lib eq $hold->pickup_lib and
+        $hold->capture_time and # redundant
+        $hold->current_copy and # redundant
+        $hold->shelf_time and   # redundant
+        $hold->current_copy->status == OILS_COPY_STATUS_ON_HOLDS_SHELF; # redundant
 
     return 0;
 }

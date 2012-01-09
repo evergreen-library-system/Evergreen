@@ -624,16 +624,27 @@ sub recall_items {
 sub unavail_holds {
      my ($self, $start, $end) = @_;
      syslog('LOG_DEBUG', 'OILS: Patron->unavail_holds()');
+
+     my $ids = $self->{editor}->json_query({
+        select => {ahr => ['id']},
+        from => 'ahr',
+        where => {
+            usr => $self->{user}->id,
+            fulfillment_time => undef,
+            cancel_time => undef,
+            '-or' => [
+                {current_shelf_lib => undef},
+                {current_shelf_lib => {'!=' => {'+ahr' => 'pickup_lib'}}}
+            ]
+        }
+    });
  
      my @holds_sip_output = map {
         OpenILS::SIP::clean_text($self->__hold_to_title($_))
      } @{
-        $self->{editor}->search_action_hold_request({
-            usr              => $self->{user}->id,
-            fulfillment_time => undef,
-            cancel_time      => undef,
-            shelf_time       => undef
-        })
+        $self->{editor}->search_action_hold_request(
+            {id => [map {$_->{id}} @$ids]}
+        )
      };
  
      return (defined $start and defined $end) ?
