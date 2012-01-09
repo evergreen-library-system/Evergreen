@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('XXXX');
+INSERT INTO config.upgrade_log (version) VALUES ('0665');
 
 CREATE OR REPLACE FUNCTION action.item_user_circ_test( circ_ou INT, match_item BIGINT, match_user INT, renewal BOOL ) RETURNS SETOF action.matrix_test_result AS $func$ DECLARE
     user_object        actor.usr%ROWTYPE;
