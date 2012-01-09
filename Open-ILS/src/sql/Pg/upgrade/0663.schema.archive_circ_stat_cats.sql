@@ -34,10 +34,7 @@ ALTER TABLE asset.stat_cat
 
 -- Circulation copy column
 ALTER TABLE action.circulation
-    ADD COLUMN copy_location INT NOT NULL DEFAULT 1 REFERENCES asset.copy_location(id) DEFERRABLE INITIALLY DEFERRED;
-
--- Update action.circulation with real copy_location numbers instead of all "Stacks"
-UPDATE action.circulation circ SET copy_location = ac.location FROM asset.copy ac WHERE ac.id = circ.target_copy;
+    ADD COLUMN copy_location INT NULL REFERENCES asset.copy_location(id) DEFERRABLE INITIALLY DEFERRED;
 
 -- Create trigger function to auto-fill the copy_location field
 CREATE OR REPLACE FUNCTION action.fill_circ_copy_location () RETURNS TRIGGER AS $$
@@ -69,6 +66,9 @@ $$ LANGUAGE PLPGSQL;
 CREATE TRIGGER fill_circ_copy_location_tgr BEFORE INSERT ON action.circulation FOR EACH ROW EXECUTE PROCEDURE action.fill_circ_copy_location();
 CREATE TRIGGER archive_stat_cats_tgr AFTER INSERT ON action.circulation FOR EACH ROW EXECUTE PROCEDURE action.archive_stat_cats();
 
+-- Ensure all triggers are disabled for speedy updates!
+ALTER TABLE action.circulation DISABLE TRIGGER ALL;
+
 -- Update view to use circ's copy_location field instead of the copy's current copy_location field
 CREATE OR REPLACE VIEW action.all_circulation AS
     SELECT  id,usr_post_code, usr_home_ou, usr_profile, usr_birth_year, copy_call_number, copy_location,
@@ -92,5 +92,15 @@ CREATE OR REPLACE VIEW action.all_circulation AS
         JOIN actor.usr p ON (circ.usr = p.id)
         LEFT JOIN actor.usr_address a ON (p.mailing_address = a.id)
         LEFT JOIN actor.usr_address b ON (p.billing_address = b.id);
+
+-- Update action.circulation with real copy_location numbers instead of all NULL
+DO $$BEGIN RAISE WARNING 'We are about to do an update on every row in action.circulation. This may take a while. %', timeofday(); END;$$;
+UPDATE action.circulation circ SET copy_location = ac.location FROM asset.copy ac WHERE ac.id = circ.target_copy;
+
+-- Set not null/default on new column, re-enable triggers
+ALTER TABLE action.circulation
+    ALTER COLUMN copy_location SET NOT NULL,
+    ALTER COLUMN copy_location SET DEFAULT 1,
+    ENABLE TRIGGER ALL;
 
 COMMIT;
