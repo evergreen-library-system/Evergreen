@@ -580,7 +580,7 @@ circ.util.columns = function(modify,params) {
                         acn_id = my.acn;
                     }
                 } else if (my.acp) {
-                    if (typeof my.acp.call_number() == 'object') {
+                    if (typeof my.acp.call_number() == 'object' && my.acp.call_number() != null) {
                         acn_id = my.acp.call_number().id();
                     } else {
                         acn_id = my.acp.call_number();
@@ -594,6 +594,9 @@ circ.util.columns = function(modify,params) {
                     return document.getElementById('circStrings').getString('staff.circ.utils.retrieving');
                 } else {
                     if (!my.acn) {
+                        if (typeof scratch_data == 'undefined' || scratch_data == null) {
+                            scratch_data = {};
+                        }
                         if (typeof scratch_data['acn_map'] == 'undefined') {
                             scratch_data['acn_map'] = {};
                         }
@@ -646,7 +649,7 @@ circ.util.columns = function(modify,params) {
                         acn_id = my.acn;
                     }
                 } else if (my.acp) {
-                    if (typeof my.acp.call_number() == 'object') {
+                    if (typeof my.acp.call_number() == 'object' && my.acp.call_number() != null) {
                         acn_id = my.acp.call_number().id();
                     } else {
                         acn_id = my.acp.call_number();
@@ -660,6 +663,9 @@ circ.util.columns = function(modify,params) {
                     return document.getElementById('circStrings').getString('staff.circ.utils.retrieving');
                 } else {
                     if (!my.acn) {
+                        if (typeof scratch_data == 'undefined' || scratch_data == null) {
+                            scratch_data = {};
+                        }
                         if (typeof scratch_data['acn_map'] == 'undefined') {
                             scratch_data['acn_map'] = {};
                         }
@@ -700,7 +706,7 @@ circ.util.columns = function(modify,params) {
                         acn_id = my.acn;
                     }
                 } else if (my.acp) {
-                    if (typeof my.acp.call_number() == 'object') {
+                    if (typeof my.acp.call_number() == 'object' && my.acp.call_number() != null) {
                         acn_id = my.acp.call_number().id();
                     } else {
                         acn_id = my.acp.call_number();
@@ -714,6 +720,9 @@ circ.util.columns = function(modify,params) {
                     return document.getElementById('circStrings').getString('staff.circ.utils.retrieving');
                 } else {
                     if (!my.acn) {
+                        if (typeof scratch_data == 'undefined' || scratch_data == null) {
+                            scratch_data = {};
+                        }
                         if (typeof scratch_data['acn_map'] == 'undefined') {
                             scratch_data['acn_map'] = {};
                         }
@@ -754,7 +763,7 @@ circ.util.columns = function(modify,params) {
                         acn_id = my.acn;
                     }
                 } else if (my.acp) {
-                    if (typeof my.acp.call_number() == 'object') {
+                    if (typeof my.acp.call_number() == 'object' && my.acp.call_number() != null) {
                         acn_id = my.acp.call_number().id();
                     } else {
                         acn_id = my.acp.call_number();
@@ -768,6 +777,9 @@ circ.util.columns = function(modify,params) {
                     return document.getElementById('circStrings').getString('staff.circ.utils.retrieving');
                 } else {
                     if (!my.acn) {
+                        if (typeof scratch_data == 'undefined' || scratch_data == null) {
+                            scratch_data = {};
+                        }
                         if (typeof scratch_data['acn_map'] == 'undefined') {
                             scratch_data['acn_map'] = {};
                         }
@@ -2412,7 +2424,7 @@ circ.util.hold_columns = function(modify,params) {
                         acn_id = my.acn;
                     }
                 } else if (my.acp) {
-                    if (typeof my.acp.call_number() == 'object') {
+                    if (typeof my.acp.call_number() == 'object' && my.acp.call_number() != null) {
                         acn_id = my.acp.call_number().id();
                     } else {
                         acn_id = my.acp.call_number();
@@ -2426,6 +2438,9 @@ circ.util.hold_columns = function(modify,params) {
                     return document.getElementById('circStrings').getString('staff.circ.utils.retrieving');
                 } else {
                     if (!my.acn) {
+                        if (typeof scratch_data == 'undefined' || scratch_data == null) {
+                            scratch_data = {};
+                        }
                         if (typeof scratch_data['acn_map'] == 'undefined') {
                             scratch_data['acn_map'] = {};
                         }
