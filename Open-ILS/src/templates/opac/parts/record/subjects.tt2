@@ -40,9 +40,10 @@
                 # at this point, we actually have a partial term to use.
                 single_term = subfield.textContent | html;
                 all_terms.push(subfield.textContent);
-                total_term = all_terms.join(" ").replace('\s+$', '') | uri;
-                '<a href="' _ ctx.opac_root _ '/results?qtype=subject&amp;query=' _ total_term _ '&amp;loc=' _ loc _ '">' _ single_term _ '</a>';
-            END;
+                total_term = all_terms.join(" ").replace('\s+$', '');
+            %]
+<a href="[% mkurl(ctx.opac_root _ '/results', {qtype=>'subject', query=>total_term}, stop_parms); %]">[% single_term %]</a>
+            [%- END;
             IF all_terms.size; "<br/>"; END;
         END;
     END 

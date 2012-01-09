@@ -1,14 +1,14 @@
-<!-- ****************** page_rdetail.xml ***************************** -->
-[%  attrs = {marc_xml => ctx.marc_xml};
+[%-  attrs = {marc_xml => ctx.marc_xml};
     PROCESS "opac/parts/misc_util.tt2";
-    PROCESS get_marc_attrs args=attrs %]
-
+    PROCESS get_marc_attrs args=attrs;
+    stop_parms = ['expand','cnoffset'];
+%]
 <div id='canvas_main' class='canvas'>
 
     [% IF ctx.search_result_index >= 0 %]
     <div id="rdetail_header">
         <div style="float:left;">
-            <a href='[% mkurl(ctx.opac_root _ '/results') %]'>[% l('&#9668; Search Results') %]</a>
+            <a href='[% mkurl(ctx.opac_root _ '/results', {}, stop_parms); %]'>[% l('&#9668; Search Results') %]</a>
             <span id="rdetail_result_count">
                 [% l('Showing Item [_1] of [_2]', ctx.search_result_index + 1, ctx.hit_count) %]
             </span>
@@ -20,7 +20,7 @@
                     IF ctx.search_result_index % (ctx.page_size + 1) == 0; # first record in the page
                         prev_args.page = ctx.search_page - 1;
                     END;
-                    ctx.prev_rec_url = mkurl(ctx.prev_search_record, prev_args);
+                    ctx.prev_rec_url = mkurl(ctx.prev_search_record, prev_args, stop_parms);
             %]
             <a class='np_nav_link classic_link' title='[% l("Previous Record") %]'
                 href='[% ctx.prev_rec_url %]'><span class="nav_arrow_fix">&#9668; </span>[% l('Previous') %]</a>
@@ -34,7 +34,7 @@
                     IF ctx.page_size == ctx.search_result_index + 1;
                         next_args.page = ctx.search_page + 1;
                     END;
-                    ctx.next_rec_url = mkurl(ctx.next_search_record, next_args);
+                    ctx.next_rec_url = mkurl(ctx.next_search_record, next_args, stop_parms);
             %]
             <a class='np_nav_link classic_link' title='[% l("Next Record") %]'
                 href='[% ctx.next_rec_url %]'>[% l('Next') %]<span class="nav_arrow_fix"> &#9658;</span></a>
@@ -51,4 +51,3 @@
     </div>
     [% INCLUDE "opac/parts/record/summary.tt2" %]
 </div>
-<!-- ****************** end; page_rdetail.xml ***************************** -->

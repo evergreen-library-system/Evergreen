@@ -25,7 +25,7 @@
     <div id="rdetail_actions_div">
         <div class="rdetail_aux_utils place_hold">
             <a href="[% mkurl(ctx.opac_root _ '/place_hold', 
-                {hold_target => ctx.bre_id, hold_type => 'T', hold_source_page => mkurl()}) %]" 
+                {hold_target => ctx.bre_id, hold_type => 'T', hold_source_page => mkurl()}, stop_parms) %]" 
             class="no-dec"><img src="[% ctx.media_prefix %]/images/green_check.png" alt="[% l('place hold') %]" /><span 
             class="place_hold">[% l('Place Hold') %]</span></a>
         </div>
@@ -34,7 +34,7 @@
             operation = ctx.mylist.grep(ctx.bre_id).size ? "delete" : "add";
             label = (operation == "add") ? l("Add to my list") : l("Remove from my list"); 
         %]
-            <a href="[% mkurl(ctx.opac_root _ '/mylist/' _ operation, {record => ctx.bre_id}) %]" class="no-dec">
+            <a href="[% mkurl(ctx.opac_root _ '/mylist/' _ operation, {record => ctx.bre_id}, stop_parms) %]" class="no-dec">
                 <img src="[% ctx.media_prefix %]/images/clipboard.png" alt="" />
                 [% label %]
             </a>
