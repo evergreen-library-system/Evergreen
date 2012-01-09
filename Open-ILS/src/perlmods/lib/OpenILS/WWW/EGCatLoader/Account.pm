@@ -561,6 +561,8 @@ sub load_myopac_holds {
     return defined($hold_handle_result) ? $hold_handle_result : Apache2::Const::OK;
 }
 
+my $data_filler;
+
 sub load_place_hold {
     my $self = shift;
     my $ctx = $self->ctx;
@@ -637,14 +639,14 @@ sub load_place_hold {
     my @hold_data;
     $ctx->{hold_data} = \@hold_data;
 
-    sub data_filler {
+    $data_filler = sub {
         my $hdata = shift;
         if ($ctx->{email_notify}) { $hdata->{email_notify} = $ctx->{email_notify}; }
         if ($ctx->{phone_notify}) { $hdata->{phone_notify} = $ctx->{phone_notify}; }
         if ($ctx->{sms_notify}) { $hdata->{sms_notify} = $ctx->{sms_notify}; }
         if ($ctx->{sms_carrier}) { $hdata->{sms_carrier} = $ctx->{sms_carrier}; }
         return $hdata;
-    }
+    };
 
     my $type_dispatch = {
         T => sub {
@@ -679,7 +681,7 @@ sub load_place_hold {
                     $part_required = 1 if $np_copies->[0]->{count} == 0;
                 }
 
-                push(@hold_data, data_filler({
+                push(@hold_data, $data_filler->({
                     target => $rec,
                     record => $rec,
                     parts => $parts,
@@ -697,7 +699,7 @@ sub load_place_hold {
 
             for my $id (@targets) { 
                 my ($vol) = grep {$_->id eq $id} @$vols;
-                push(@hold_data, data_filler({target => $vol, record => $vol->record}));
+                push(@hold_data, $data_filler->({target => $vol, record => $vol->record}));
             }
         },
         C => sub {
@@ -713,7 +715,7 @@ sub load_place_hold {
 
             for my $id (@targets) { 
                 my ($copy) = grep {$_->id eq $id} @$copies;
-                push(@hold_data, data_filler({target => $copy, record => $copy->call_number->record}));
+                push(@hold_data, $data_filler->({target => $copy, record => $copy->call_number->record}));
             }
         },
         I => sub {
@@ -728,7 +730,7 @@ sub load_place_hold {
 
             for my $id (@targets) { 
                 my ($iss) = grep {$_->id eq $id} @$isses;
-                push(@hold_data, data_filler({target => $iss, record => $iss->subscription->record_entry}));
+                push(@hold_data, $data_filler->({target => $iss, record => $iss->subscription->record_entry}));
             }
         }
         # ...
@@ -848,7 +850,7 @@ sub attempt_hold_placement {
         my $breq = $bses->request( 
             $method, 
             $e->authtoken, 
-            data_filler({   patronid => $usr,
+            $data_filler->({   patronid => $usr,
                 pickup_lib => $pickup_lib, 
                 hold_type => $hold_type
             }),
