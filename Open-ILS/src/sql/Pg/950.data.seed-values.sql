@@ -1452,7 +1452,10 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 517, 'COPY_HOLDS_FORCE', oils_i18n_gettext( 517, 
     'Allow a user to place a force hold on a specific copy', 'ppl', 'description' )),
  ( 518, 'COPY_HOLDS_RECALL', oils_i18n_gettext( 518, 
-    'Allow a user to place a cataloging recall on a specific copy', 'ppl', 'description' ));
+    'Allow a user to place a cataloging recall on a specific copy', 'ppl', 'description' )),
+ ( 519, 'ADMIN_SMS_CARRIER', oils_i18n_gettext( 519,
+    'Allows a user to add/create/delete SMS Carrier entries.', 'ppl', 'description' ));
+
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
 
@@ -11643,19 +11646,6 @@ INSERT INTO config.sms_carrier VALUES
         ),
         '$number@myhelio.com',
         TRUE
-    )
-;
-
-INSERT INTO permission.perm_list ( id, code, description ) VALUES
-    (
-        517,
-        'ADMIN_SMS_CARRIER',
-        oils_i18n_gettext(
-            517,
-            'Allows a user to add/create/delete SMS Carrier entries.',
-            'ppl',
-            'description'
-        )
     )
 ;
 

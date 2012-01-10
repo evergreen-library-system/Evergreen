@@ -136,7 +136,7 @@ INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert)
 
 INSERT INTO config.standing_penalty (id,name,label,staff_alert) VALUES (20,'ALERT_NOTE','Alerting Note, no blocks',TRUE);
 INSERT INTO config.standing_penalty (id,name,label) VALUES (21,'SILENT_NOTE','Note, no blocks');
-INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert) VALUES (22,'STAFF_C','Alerting block on Circ','CIRC');
+INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert) VALUES (22,'STAFF_C','Alerting block on Circ','CIRC', TRUE);
 INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert) VALUES (23,'STAFF_CH','Alerting block on Circ and Hold','CIRC|HOLD', TRUE);
 INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert) VALUES (24,'STAFF_CR','Alerting block on Circ and Renew','CIRC|RENEW', TRUE);
 INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert) VALUES (25,'STAFF_CHR','Alerting block on Circ, Hold and Renew','CIRC|HOLD|RENEW', TRUE);

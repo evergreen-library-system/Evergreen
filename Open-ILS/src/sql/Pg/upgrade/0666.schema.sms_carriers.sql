@@ -1251,10 +1251,10 @@ INSERT INTO config.sms_carrier VALUES
 
 INSERT INTO permission.perm_list ( id, code, description ) VALUES
     (
-        517,
+        519,
         'ADMIN_SMS_CARRIER',
         oils_i18n_gettext(
-            517,
+            519,
             'Allows a user to add/create/delete SMS Carrier entries.',
             'ppl',
             'description'
@@ -1406,6 +1406,6 @@ INSERT INTO action_trigger.environment (
 );
 
 
--- DELETE FROM actor.usr_setting WHERE name = 'opac.default_phone' OR name in ( SELECT name FROM config.usr_setting_type WHERE grp = 'sms' ); DELETE FROM config.usr_setting_type WHERE name = 'opac.default_phone' OR grp = 'sms'; DELETE FROM actor.org_unit_setting WHERE name in ( SELECT name FROM config.org_unit_setting_type WHERE grp = 'sms' ); DELETE FROM config.org_unit_setting_type_log WHERE field_name in ( SELECT name FROM config.org_unit_setting_type WHERE grp = 'sms' ); DELETE FROM config.org_unit_setting_type WHERE grp = 'sms'; DELETE FROM config.settings_group WHERE name = 'sms'; DELETE FROM permission.grp_perm_map WHERE perm = 517; DELETE FROM permission.perm_list WHERE id = 517; ALTER TABLE action.hold_request DROP CONSTRAINT sms_check; ALTER TABLE action.hold_request DROP COLUMN sms_notify; ALTER TABLE action.hold_request DROP COLUMN sms_carrier; DROP TABLE config.sms_carrier; DELETE FROM action_trigger.event WHERE event_def = ( SELECT id FROM action_trigger.event_definition WHERE name = 'Hold Ready for Pickup SMS Notification' ); DELETE FROM action_trigger.environment WHERE event_def = ( SELECT id FROM action_trigger.event_definition WHERE name = 'Hold Ready for Pickup SMS Notification' ); DELETE FROM action_trigger.event_definition WHERE name = 'Hold Ready for Pickup SMS Notification'; DELETE FROM action_trigger.event WHERE event_def IN ( SELECT id FROM action_trigger.event_definition WHERE hook = 'acn.format.sms_text' ); DELETE FROM action_trigger.environment WHERE event_def IN ( SELECT id FROM action_trigger.event_definition WHERE hook = 'acn.format.sms_text' ); DELETE FROM action_trigger.event_definition WHERE hook = 'acn.format.sms_text'; DELETE FROM action_trigger.hook WHERE key = 'acn.format.sms_text'; DELETE FROM action_trigger.reactor WHERE module = 'SendSMS'; DELETE FROM config.upgrade_log WHERE version = 'XXXX';
+-- DELETE FROM actor.usr_setting WHERE name = 'opac.default_phone' OR name in ( SELECT name FROM config.usr_setting_type WHERE grp = 'sms' ); DELETE FROM config.usr_setting_type WHERE name = 'opac.default_phone' OR grp = 'sms'; DELETE FROM actor.org_unit_setting WHERE name in ( SELECT name FROM config.org_unit_setting_type WHERE grp = 'sms' ); DELETE FROM config.org_unit_setting_type_log WHERE field_name in ( SELECT name FROM config.org_unit_setting_type WHERE grp = 'sms' ); DELETE FROM config.org_unit_setting_type WHERE grp = 'sms'; DELETE FROM config.settings_group WHERE name = 'sms'; DELETE FROM permission.grp_perm_map WHERE perm = 519; DELETE FROM permission.perm_list WHERE id = 519; ALTER TABLE action.hold_request DROP CONSTRAINT sms_check; ALTER TABLE action.hold_request DROP COLUMN sms_notify; ALTER TABLE action.hold_request DROP COLUMN sms_carrier; DROP TABLE config.sms_carrier; DELETE FROM action_trigger.event WHERE event_def = ( SELECT id FROM action_trigger.event_definition WHERE name = 'Hold Ready for Pickup SMS Notification' ); DELETE FROM action_trigger.environment WHERE event_def = ( SELECT id FROM action_trigger.event_definition WHERE name = 'Hold Ready for Pickup SMS Notification' ); DELETE FROM action_trigger.event_definition WHERE name = 'Hold Ready for Pickup SMS Notification'; DELETE FROM action_trigger.event WHERE event_def IN ( SELECT id FROM action_trigger.event_definition WHERE hook = 'acn.format.sms_text' ); DELETE FROM action_trigger.environment WHERE event_def IN ( SELECT id FROM action_trigger.event_definition WHERE hook = 'acn.format.sms_text' ); DELETE FROM action_trigger.event_definition WHERE hook = 'acn.format.sms_text'; DELETE FROM action_trigger.hook WHERE key = 'acn.format.sms_text'; DELETE FROM action_trigger.reactor WHERE module = 'SendSMS'; DELETE FROM config.upgrade_log WHERE version = 'XXXX';
 
 COMMIT;
