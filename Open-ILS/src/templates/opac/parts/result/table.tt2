@@ -13,6 +13,12 @@
 [% ctx.results_count_header = PROCESS results_count_header;
     ctx.results_count_header %]
 
+[% IF ctx.bookbag %]
+<div id="result-bookbag-heading">
+    <div class="result-bookbag-name">[% ctx.bookbag.name | html %]</div>
+    <div class="result-bookbag-description">[% ctx.bookbag.description | html %]</div>
+</div>
+[% END %]
 <div id="result_table_div">
             <div class="facet_sidebar">
                 [% INCLUDE "opac/parts/staff_saved_searches.tt2" %]
@@ -180,6 +186,14 @@
                                                         <img src="[% ctx.media_prefix %]/images/green_check.png" alt="[% l('Checked Out Before') %]"/>
                                                         <span>[% l('I have checked this item out before') %]</span>
                                                     </div>
+                                                    [% END %]
+                                                    [% IF ctx.bookbag;
+                                                        rec_id = rec.id;
+                                                        FOR note IN ctx.bookbag_items_by_bre_id.$rec_id.notes %]
+                                                    <div class="result-bookbag-item-note">
+                                                        [% note.note | html %]
+                                                    </div>
+                                                        [% END %]
                                                     [% END %]
                                                 </div>
                                             </td>

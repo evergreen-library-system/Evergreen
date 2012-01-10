@@ -1335,3 +1335,11 @@ table.bookbag-specific {
     top:-3px;
     left:3px;
 }
+
+#search-only-bookbag-container { margin: 2ex 0; font-weight: bold; }
+#result-bookbag-heading { text-align: center; margin: 2ex; }
+
+.result-bookbag-name { font-size: 140%; font-weight: bold; }
+.result-bookbag-description { font-size: 120%; font-style: italic; }
+.result-bookbag-item-note { font-style: italic; }
+.lowhits-bookbag-name { font-weight: bold; }

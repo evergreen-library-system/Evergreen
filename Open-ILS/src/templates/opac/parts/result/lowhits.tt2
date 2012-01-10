@@ -8,6 +8,11 @@
                 [% IF is_advanced OR is_special; l('your search'); ELSE %]
                 <q>[% CGI.param('query') | html %]</q>
                 [% END %]
+                [% IF ctx.bookbag;
+                    l('within') %]
+                    <span class="lowhits-bookbag-name">[% ctx.bookbag.name | html %]</span>.
+                [% END %]
+
             </p>
         </div>
         <div style="float:right;width:353px;background:#ccc;padding:10px;margin-top:7px;">
