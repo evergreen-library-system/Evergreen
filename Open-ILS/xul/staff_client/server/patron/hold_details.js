@@ -32,7 +32,7 @@ function my_init() {
 
 function fetch_and_render_all(do_not_refresh_parent_interface) {
     try {
-        if (!xulG.ahr_id) { alert('boo'); return; }
+        if (!xulG.ahr_id) { return; }
 
         fetch_hold();
 
