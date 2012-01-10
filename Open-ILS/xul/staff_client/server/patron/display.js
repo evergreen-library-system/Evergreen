@@ -963,7 +963,7 @@ patron.display.prototype = {
                 if (!penalties) { penalties = []; }
                 var dl_flag_opened = false;
                 for (var i = 0; i < penalties.length; i++) {
-                    if (penalties[i].standing_penalty().block_list() || penalties[i].standing_penalty().id() == 20 /* ALERT_NOTE */) {
+                    if (get_bool(penalties[i].standing_penalty().staff_alert())) {
                         if (!dl_flag_opened) {
                             msg += '<dl>';
                             dl_flag_opened = true;

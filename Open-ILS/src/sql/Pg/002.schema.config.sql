@@ -86,7 +86,7 @@ CREATE TRIGGER no_overlapping_deps
     BEFORE INSERT OR UPDATE ON config.db_patch_dependencies
     FOR EACH ROW EXECUTE PROCEDURE evergreen.array_overlap_check ('deprecates');
 
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0666', :eg_version); -- phasefx/miker
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0667', :eg_version); -- senator/berick
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -122,26 +122,27 @@ CREATE TABLE config.standing_penalty (
 	name		TEXT	NOT NULL UNIQUE,
 	label		TEXT	NOT NULL,
 	block_list	TEXT,
+	staff_alert	BOOL	NOT NULL DEFAULT FALSE,
 	org_depth	INTEGER
 );
-INSERT INTO config.standing_penalty (id,name,label,block_list)
-	VALUES (1,'PATRON_EXCEEDS_FINES','Patron exceeds fine threshold','CIRC|HOLD|RENEW');
-INSERT INTO config.standing_penalty (id,name,label,block_list)
-	VALUES (2,'PATRON_EXCEEDS_OVERDUE_COUNT','Patron exceeds max overdue item threshold','CIRC|HOLD|RENEW');
-INSERT INTO config.standing_penalty (id,name,label,block_list)
-	VALUES (3,'PATRON_EXCEEDS_CHECKOUT_COUNT','Patron exceeds max checked out item threshold','CIRC');
-INSERT INTO config.standing_penalty (id,name,label,block_list)
-	VALUES (4,'PATRON_EXCEEDS_COLLECTIONS_WARNING','Patron exceeds pre-collections warning fine threshold','CIRC|HOLD|RENEW');
+INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert)
+	VALUES (1,'PATRON_EXCEEDS_FINES','Patron exceeds fine threshold','CIRC|HOLD|RENEW', TRUE);
+INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert)
+	VALUES (2,'PATRON_EXCEEDS_OVERDUE_COUNT','Patron exceeds max overdue item threshold','CIRC|HOLD|RENEW', TRUE);
+INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert)
+	VALUES (3,'PATRON_EXCEEDS_CHECKOUT_COUNT','Patron exceeds max checked out item threshold','CIRC', TRUE);
+INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert)
+	VALUES (4,'PATRON_EXCEEDS_COLLECTIONS_WARNING','Patron exceeds pre-collections warning fine threshold','CIRC|HOLD|RENEW', TRUE);
 
-INSERT INTO config.standing_penalty (id,name,label) VALUES (20,'ALERT_NOTE','Alerting Note, no blocks');
+INSERT INTO config.standing_penalty (id,name,label,staff_alert) VALUES (20,'ALERT_NOTE','Alerting Note, no blocks',TRUE);
 INSERT INTO config.standing_penalty (id,name,label) VALUES (21,'SILENT_NOTE','Note, no blocks');
-INSERT INTO config.standing_penalty (id,name,label,block_list) VALUES (22,'STAFF_C','Alerting block on Circ','CIRC');
-INSERT INTO config.standing_penalty (id,name,label,block_list) VALUES (23,'STAFF_CH','Alerting block on Circ and Hold','CIRC|HOLD');
-INSERT INTO config.standing_penalty (id,name,label,block_list) VALUES (24,'STAFF_CR','Alerting block on Circ and Renew','CIRC|RENEW');
-INSERT INTO config.standing_penalty (id,name,label,block_list) VALUES (25,'STAFF_CHR','Alerting block on Circ, Hold and Renew','CIRC|HOLD|RENEW');
-INSERT INTO config.standing_penalty (id,name,label,block_list) VALUES (26,'STAFF_HR','Alerting block on Hold and Renew','HOLD|RENEW');
-INSERT INTO config.standing_penalty (id,name,label,block_list) VALUES (27,'STAFF_H','Alerting block on Hold','HOLD');
-INSERT INTO config.standing_penalty (id,name,label,block_list) VALUES (28,'STAFF_R','Alerting block on Renew','RENEW');
+INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert) VALUES (22,'STAFF_C','Alerting block on Circ','CIRC');
+INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert) VALUES (23,'STAFF_CH','Alerting block on Circ and Hold','CIRC|HOLD', TRUE);
+INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert) VALUES (24,'STAFF_CR','Alerting block on Circ and Renew','CIRC|RENEW', TRUE);
+INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert) VALUES (25,'STAFF_CHR','Alerting block on Circ, Hold and Renew','CIRC|HOLD|RENEW', TRUE);
+INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert) VALUES (26,'STAFF_HR','Alerting block on Hold and Renew','HOLD|RENEW', TRUE);
+INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert) VALUES (27,'STAFF_H','Alerting block on Hold','HOLD', TRUE);
+INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert) VALUES (28,'STAFF_R','Alerting block on Renew','RENEW', TRUE);
 INSERT INTO config.standing_penalty (id,name,label) VALUES (29,'INVALID_PATRON_ADDRESS','Patron has an invalid address');
 INSERT INTO config.standing_penalty (id,name,label) VALUES (30,'PATRON_IN_COLLECTIONS','Patron has been referred to a collections agency');
 
