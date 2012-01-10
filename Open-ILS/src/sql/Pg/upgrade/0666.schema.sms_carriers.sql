@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0666', :eg_version);
 
 -- 950.data.seed-values.sql
 INSERT INTO config.settings_group (name, label) VALUES
