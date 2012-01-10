@@ -319,7 +319,7 @@ centos_like: install_centos_rpms install_yaz install_cpan_marc install install_c
 fedora16: install_fedora_rpms install_cpan_fedora install_cpan_marc install
 
 debian-squeeze: squeeze generic_debian
-squeeze: install_pgsql_client_debs_90  install_extra_debs_squeeze
+squeeze: install_pgsql_client_debs_91  install_extra_debs_squeeze
 generic_debian: install_debs install_yaz test_for_libdbi_pkg install debian_sys_config install_libdbi
 
 # Needs for Ubuntu Lucid Lynx (10.04 LTS):
