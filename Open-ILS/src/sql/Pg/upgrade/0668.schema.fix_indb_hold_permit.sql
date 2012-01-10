@@ -1,3 +1,14 @@
+-- Evergreen DB patch 0668.schema.fix_indb_hold_permit.sql
+--
+-- FIXME: insert description of change, if needed
+--
+BEGIN;
+
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0668', :eg_version);
+
+-- FIXME: add/check SQL statements to perform the upgrade
 CREATE OR REPLACE FUNCTION action.hold_request_permit_test( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT, retargetting BOOL ) RETURNS SETOF action.matrix_test_result AS $func$
 DECLARE
     matchpoint_id        INT;
@@ -214,3 +225,6 @@ BEGIN
     RETURN;
 END;
 $func$ LANGUAGE plpgsql;
+
+
+COMMIT;
