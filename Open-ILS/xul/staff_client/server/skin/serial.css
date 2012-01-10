@@ -1,3 +1,5 @@
+@import url("serial_custom.css");
+
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 caption.top {
     background-color: #00246b;
