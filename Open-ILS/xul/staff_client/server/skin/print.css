@@ -1,3 +1,5 @@
+@import url("print_custom.css");
+
 .first_pre {
     page-break-after: always;
     margin-top: -0.20cm;
