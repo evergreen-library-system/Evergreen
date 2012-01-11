@@ -28,25 +28,30 @@ const clh_category = "m-egcli";
  * @param aChromeURISpec a string specifying the URI of the window to open.
  * @param aArgument an argument to pass to the window (may be null)
  */
-function findOrOpenWindow(aWindowType, aChromeURISpec, aName, aArgument)
+function findOrOpenWindow(aWindowType, aChromeURISpec, aName, aArgument, aLoginInfo)
 {
   var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].
     getService(Components.interfaces.nsIWindowMediator);
   var targetWindow = wm.getMostRecentWindow(aWindowType);
   if (targetWindow != null) {
-      if(typeof targetWindow.new_tabs == 'function' && aArgument != null)
-      {
+      var noFocus = false;
+      if(typeof targetWindow.new_tabs == 'function' && aArgument != null) {
           targetWindow.new_tabs(aArgument);
+          noFocus = true;
       }
-      else {
+      if(typeof targetWindow.auto_login == 'function' && aLoginInfo != null) {
+          targetWindow.auto_login(aLoginInfo);
+          noFocus = true;
+      }
+      if(!noFocus) {
           targetwindow.focus;
       }
   }
   else {
     var params = null;
-    if (aArgument != null && aArgument.length != 0)
+    if (aArgument != null && aArgument.length != 0 || aLoginInfo != null)
     {
-        params = { "openTabs" : aArgument };
+        params = { "openTabs" : aArgument, "loginInfo" : aLoginInfo };
         params.wrappedJSObject = params;
     }
     var ww = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].
@@ -93,6 +98,8 @@ const myAppHandler = {
     };
 
     var inParams = new Array();
+    var loginInfo = {};
+    var loginInfoProvided = false;
 	var position = 0;
 	while (position < cmdLine.length) {
 		var arg = cmdLine.getArgument(position).toLowerCase();
@@ -106,16 +113,34 @@ const myAppHandler = {
 		  cmdLine.removeArguments(position, position + 1);
 		  continue;
 		}
+        if (arg == '-ilshost' && cmdLine.length > position) {
+          loginInfo.host = cmdLine.getArgument(position + 1);
+          cmdLine.removeArguments(position, position + 1);
+          loginInfoProvided = true;
+          continue;
+        }
+        if (arg == '-ilsuser' && cmdLine.length > position) {
+          loginInfo.user = cmdLine.getArgument(position + 1);
+          cmdLine.removeArguments(position, position + 1);
+          loginInfoProvided = true;
+          continue;
+        }
+        if (arg == '-ilspassword' && cmdLine.length > position) {
+          loginInfo.passwd = cmdLine.getArgument(position + 1);
+          cmdLine.removeArguments(position, position + 1);
+          loginInfoProvided = true;
+          continue;
+        }
 		position=position + 1;
 	}
 
-	if (cmdLine.handleFlag("ILSlogin", false) || inParams.length > 0) {
-	  findOrOpenWindow(WINDOW_MAIN, XUL_MAIN, '_blank', inParams);
+	if (cmdLine.handleFlag("ILSlogin", false) || inParams.length > 0 || loginInfoProvided) {
+	  findOrOpenWindow(WINDOW_MAIN, XUL_MAIN, '_blank', inParams, loginInfoProvided ? loginInfo : null);
 	  cmdLine.preventDefault = true;
 	}
 
     if (cmdLine.handleFlag("ILSoffline", false) || cmdLine.handleFlag("ILSstandalone", false)) {
-   	  findOrOpenWindow(WINDOW_STANDALONE, XUL_STANDALONE, 'Offline', null);
+   	  findOrOpenWindow(WINDOW_STANDALONE, XUL_STANDALONE, 'Offline', null, null);
       cmdLine.preventDefault = true;
    	}
   },
@@ -133,7 +158,11 @@ const myAppHandler = {
              "                       with a 'default' tab\n" +
              "  -ILStab              Open a 'default' tab alone\n" +
              "  -ILSurl <url>        Open the specified url in an Evergreen tab\n" +
-             "  The above six imply -ILSlogin\n" +
+             "  -ILShost             Default hostname for login\n" +
+             "  -ILSuser             Default username for login\n" +
+             "  -ILSpassword         Default password for login\n" +
+             "  The above three, if all specified, trigger an automatic login attempt\n" +
+             "  The above nine imply -ILSlogin\n" +
              "  -ILSlogin            Open the Evergreen Login window\n" +
              "  -ILSstandalone       Open the Evergreen Standalone interface\n" +
              "  -ILSoffline          Alias for -ILSstandalone\n",
