@@ -3580,6 +3580,12 @@ sub update_events {
 
 __PACKAGE__->register_method (
 	method		=> 'really_delete_user',
+	api_name    => 'open-ils.actor.user.delete.override',
+    signature   => q/@see open-ils.actor.user.delete/
+);
+
+__PACKAGE__->register_method (
+	method		=> 'really_delete_user',
 	api_name    => 'open-ils.actor.user.delete',
     signature   => q/
         It anonymizes all personally identifiable information in actor.usr. By calling actor.usr_purge_data() 
@@ -3606,8 +3612,12 @@ sub really_delete_user {
 
     my $user = $e->retrieve_actor_user($user_id) or return $e->die_event;
 
-    # No deleting patrons with open billings or checked out copies
-    return $e->die_event(OpenILS::Event->new('ACTOR_USER_DELETE_OPEN_XACTS')) if @$open_bills;
+    # No deleting patrons with open billings or checked out copies, unless perm-enabled override
+    if (@$open_bills) {
+        return $e->die_event(OpenILS::Event->new('ACTOR_USER_DELETE_OPEN_XACTS'))
+        unless $self->api_name =~ /override/o
+        && $e->allowed('ACTOR_USER_DELETE_OPEN_XACTS.override', $user->home_ou);
+    }
     # No deleting yourself - UI is supposed to stop you first, though.
     return $e->die_event unless $e->requestor->id != $user->id;
     return $e->die_event unless $e->allowed('DELETE_USER', $user->home_ou);
