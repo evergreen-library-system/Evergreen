@@ -504,6 +504,9 @@ install_pgsql_client_debs_91:
 	$(APT_TOOL) install $(PGSQL_CLIENT_DEBS_91)
 
 install_pgsql_server_debs_91:
+	$(APT_TOOL) install $(PGSQL_SERVER_DEBS_91)
+
+install_pgsql_server_backport_debs_91:
 	$(APT_BACKPORT_TOOL) install $(PGSQL_SERVER_DEBS_91)
 
 # Install the debian-specific dependencies for more modern distros

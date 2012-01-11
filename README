@@ -317,7 +317,13 @@ dedicated machine. You can install the packages required by Debian or Ubuntu
 on the machine of your choice using the following commands as the *root*
 Linux account:
 
-.(Debian / Ubuntu) Installing PostgreSQL 9.1 server packages
+.(Debian) Installing PostgreSQL 9.1 server packages
+[source, bash]
+------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install install_pgsql_server_backport_debs_91
+------------------------------------------------------------------------------
+
+.(Ubuntu) Installing PostgreSQL 9.1 server packages
 [source, bash]
 ------------------------------------------------------------------------------
 make -f Open-ILS/src/extras/Makefile.install install_pgsql_server_debs_91
