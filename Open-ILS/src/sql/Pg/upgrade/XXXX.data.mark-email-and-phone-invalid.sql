@@ -9,7 +9,7 @@ BEGIN;
 SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
 
 
-INSERT INTO config.standing_penalty (id, name, label, staff_alert) VALUES
+INSERT INTO config.standing_penalty (id, name, label, staff_alert, org_depth) VALUES
     (
         31,
         'INVALID_PATRON_EMAIL_ADDRESS',
@@ -19,7 +19,8 @@ INSERT INTO config.standing_penalty (id, name, label, staff_alert) VALUES
             'csp',
             'label'
         ),
-        TRUE
+        TRUE,
+        0
     ),
     (
         32,
@@ -30,7 +31,8 @@ INSERT INTO config.standing_penalty (id, name, label, staff_alert) VALUES
             'csp',
             'label'
         ),
-        TRUE
+        TRUE,
+        0
     ),
     (
         33,
@@ -41,7 +43,8 @@ INSERT INTO config.standing_penalty (id, name, label, staff_alert) VALUES
             'csp',
             'label'
         ),
-        TRUE
+        TRUE,
+        0
     ),
     (
         34,
@@ -52,7 +55,8 @@ INSERT INTO config.standing_penalty (id, name, label, staff_alert) VALUES
             'csp',
             'label'
         ),
-        TRUE
+        TRUE,
+        0
     );
 
 

@@ -1700,7 +1700,7 @@ function uGenerateInvalidatorWidget(container_node, field) {
                 fieldmapper.standardRequest(
                     ["open-ils.actor", "open-ils.actor.invalidate." + field], {
                         "async": true,
-                        "params": [openils.User.authtoken, patron.id()],
+                        "params": [openils.User.authtoken, patron.id(), null, patron.home_ou()],
                         "oncomplete": function(r) {
                             progressDialog.hide();
                             // alerts on non-success event

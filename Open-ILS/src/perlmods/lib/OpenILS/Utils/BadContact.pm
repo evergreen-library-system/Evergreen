@@ -64,7 +64,15 @@ sub mark_users_contact_invalid {
         name => $penalty_name
     });
 
-    if (not $penalty_ou) {
+    return $editor->die_event unless $penalty and @$penalty;
+    $penalty = $penalty->[0];
+
+    if ($penalty_ou) {
+        $penalty_ou = $U->org_unit_ancestor_at_depth(
+            $penalty_ou, $penalty->org_depth) 
+            if defined $penalty->org_depth;
+
+    } else {
         # Fallback to using top of org tree if no penalty_ou provided. This
         # possibly makes sense in most cases anyway.
 
@@ -76,9 +84,6 @@ sub mark_users_contact_invalid {
 
         $penalty_ou = $results->[0]->{"id"};
     }
-
-    return $editor->die_event unless $penalty and @$penalty;
-    $penalty = $penalty->[0];
 
     my $last_xact_id_map = {};
     my $clear_meth = "clear_$contact_type";
