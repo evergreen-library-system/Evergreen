@@ -19,6 +19,79 @@ INSERT INTO config.standing (id, value) VALUES (1, oils_i18n_gettext(1, 'Good', 
 INSERT INTO config.standing (id, value) VALUES (2, oils_i18n_gettext(2, 'Barred', 'cst', 'value'));
 SELECT SETVAL('config.standing_id_seq'::TEXT, 100);
 
+INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert)
+	VALUES (1,'PATRON_EXCEEDS_FINES',oils_i18n_gettext(1, 'Patron exceeds fine threshold', 'csp', 'label'),'CIRC|HOLD|RENEW', TRUE);
+INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert)
+	VALUES (2,'PATRON_EXCEEDS_OVERDUE_COUNT',oils_i18n_gettext(2, 'Patron exceeds max overdue item threshold', 'csp', 'label'),'CIRC|HOLD|RENEW', TRUE);
+INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert)
+	VALUES (3,'PATRON_EXCEEDS_CHECKOUT_COUNT',oils_i18n_gettext(3, 'Patron exceeds max checked out item threshold', 'csp', 'label'),'CIRC', TRUE);
+INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert)
+	VALUES (4,'PATRON_EXCEEDS_COLLECTIONS_WARNING',oils_i18n_gettext(4, 'Patron exceeds pre-collections warning fine threshold', 'csp', 'label'),'CIRC|HOLD|RENEW', TRUE);
+
+INSERT INTO config.standing_penalty (id,name,label,staff_alert) VALUES (20,'ALERT_NOTE',oils_i18n_gettext(20, 'Alerting Note, no blocks', 'csp', 'label'),TRUE);
+INSERT INTO config.standing_penalty (id,name,label) VALUES (21,'SILENT_NOTE',oils_i18n_gettext(21, 'Note, no blocks', 'csp', 'label'));
+INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert) VALUES (22,'STAFF_C',oils_i18n_gettext(22, 'Alerting block on Circ', 'csp', 'label'),'CIRC', TRUE);
+INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert) VALUES (23,'STAFF_CH',oils_i18n_gettext(23, 'Alerting block on Circ and Hold', 'csp', 'label'),'CIRC|HOLD', TRUE);
+INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert) VALUES (24,'STAFF_CR',oils_i18n_gettext(24, 'Alerting block on Circ and Renew', 'csp', 'label'),'CIRC|RENEW', TRUE);
+INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert) VALUES (25,'STAFF_CHR',oils_i18n_gettext(25, 'Alerting block on Circ, Hold and Renew', 'csp', 'label'),'CIRC|HOLD|RENEW', TRUE);
+INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert) VALUES (26,'STAFF_HR',oils_i18n_gettext(26, 'Alerting block on Hold and Renew', 'csp', 'label'),'HOLD|RENEW', TRUE);
+INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert) VALUES (27,'STAFF_H',oils_i18n_gettext(27, 'Alerting block on Hold', 'csp', 'label'),'HOLD', TRUE);
+INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert) VALUES (28,'STAFF_R',oils_i18n_gettext(28, 'Alerting block on Renew', 'csp', 'label'),'RENEW', TRUE);
+INSERT INTO config.standing_penalty (id,name,label) VALUES (29,'INVALID_PATRON_ADDRESS',oils_i18n_gettext(29, 'Patron has an invalid address', 'csp', 'label'));
+INSERT INTO config.standing_penalty (id,name,label) VALUES (30,'PATRON_IN_COLLECTIONS',oils_i18n_gettext(30, 'Patron has been referred to a collections agency', 'csp', 'label'));
+INSERT INTO config.standing_penalty (id, name, label, staff_alert, org_depth) VALUES
+    (
+        31,
+        'INVALID_PATRON_EMAIL_ADDRESS',
+        oils_i18n_gettext(
+            31,
+            'Patron had an invalid email address',
+            'csp',
+            'label'
+        ),
+        TRUE,
+        0
+    ),
+    (
+        32,
+        'INVALID_PATRON_DAY_PHONE',
+        oils_i18n_gettext(
+            32,
+            'Patron had an invalid daytime phone number',
+            'csp',
+            'label'
+        ),
+        TRUE,
+        0
+    ),
+    (
+        33,
+        'INVALID_PATRON_EVENING_PHONE',
+        oils_i18n_gettext(
+            33,
+            'Patron had an invalid evening phone number',
+            'csp',
+            'label'
+        ),
+        TRUE,
+        0
+    ),
+    (
+        34,
+        'INVALID_PATRON_OTHER_PHONE',
+        oils_i18n_gettext(
+            34,
+            'Patron had an invalid other phone number',
+            'csp',
+            'label'
+        ),
+        TRUE,
+        0
+    );
+
+
+SELECT SETVAL('config.standing_penalty_id_seq', 100);
+
 INSERT INTO config.metabib_class ( name, label ) VALUES ( 'identifier', oils_i18n_gettext('identifier', 'Identifier', 'cmc', 'label') );
 INSERT INTO config.metabib_class ( name, label ) VALUES ( 'keyword', oils_i18n_gettext('keyword', 'Keyword', 'cmc', 'label') );
 INSERT INTO config.metabib_class ( name, label ) VALUES ( 'title', oils_i18n_gettext('title', 'Title', 'cmc', 'label') );
