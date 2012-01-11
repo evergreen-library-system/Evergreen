@@ -263,6 +263,7 @@ g.retrieve_templates = function() {
                 xulG.update_unified_template_list(list);
                 // functions the unified wrapper should use to let the item attribute editor do the heavy lifting for templates
                 xulG.update_item_editor_template_selection = function(new_value) {
+                    g.template_menu.setAttribute('value', new_value);
                     g.template_menu.value = new_value;
                     g.copy_editor_prefs[ 'template_menu' ] = { 'value' : g.template_menu.value };
                     g.save_attributes();
@@ -1263,7 +1264,14 @@ g.render = function() {
             } catch(E) { alert(E); }
         }
     }
-    if (g.template_menu) g.template_menu.value = g.template_menu.getAttribute('value');
+    if (g.template_menu) {
+        g.template_menu.value = g.template_menu.getAttribute('value');
+        if (xulG.unified_interface) {
+            if (typeof xulG.update_unified_template_selection == 'function') {
+                xulG.update_unified_template_selection(g.template_menu.value);
+            }
+        }
+    }
 
 }
 

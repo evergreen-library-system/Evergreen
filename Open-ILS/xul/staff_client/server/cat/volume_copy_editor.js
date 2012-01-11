@@ -110,6 +110,12 @@ function setup_templates() {
             }
         };
 
+        // used for loading default template selection
+        xulG.update_unified_template_selection = function(value) {
+            g.template_menu.setAttribute('value', value);
+            g.template_menu.value = value;
+        };
+
     } catch(E) {
         alert('Error in volume_copy_editor.js, setup_templates(): ' + E);
     }
