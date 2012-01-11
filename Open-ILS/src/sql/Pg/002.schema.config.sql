@@ -86,7 +86,7 @@ CREATE TRIGGER no_overlapping_deps
     BEFORE INSERT OR UPDATE ON config.db_patch_dependencies
     FOR EACH ROW EXECUTE PROCEDURE evergreen.array_overlap_check ('deprecates');
 
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0669', :eg_version); -- tsbere/miker
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0670', :eg_version); -- berick/senator
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -145,6 +145,56 @@ INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert) VALUE
 INSERT INTO config.standing_penalty (id,name,label,block_list,staff_alert) VALUES (28,'STAFF_R','Alerting block on Renew','RENEW', TRUE);
 INSERT INTO config.standing_penalty (id,name,label) VALUES (29,'INVALID_PATRON_ADDRESS','Patron has an invalid address');
 INSERT INTO config.standing_penalty (id,name,label) VALUES (30,'PATRON_IN_COLLECTIONS','Patron has been referred to a collections agency');
+INSERT INTO config.standing_penalty (id, name, label, staff_alert, org_depth) VALUES
+    (
+        31,
+        'INVALID_PATRON_EMAIL_ADDRESS',
+        oils_i18n_gettext(
+            31,
+            'Patron had an invalid email address',
+            'csp',
+            'label'
+        ),
+        TRUE,
+        0
+    ),
+    (
+        32,
+        'INVALID_PATRON_DAY_PHONE',
+        oils_i18n_gettext(
+            32,
+            'Patron had an invalid daytime phone number',
+            'csp',
+            'label'
+        ),
+        TRUE,
+        0
+    ),
+    (
+        33,
+        'INVALID_PATRON_EVENING_PHONE',
+        oils_i18n_gettext(
+            33,
+            'Patron had an invalid evening phone number',
+            'csp',
+            'label'
+        ),
+        TRUE,
+        0
+    ),
+    (
+        34,
+        'INVALID_PATRON_OTHER_PHONE',
+        oils_i18n_gettext(
+            34,
+            'Patron had an invalid other phone number',
+            'csp',
+            'label'
+        ),
+        TRUE,
+        0
+    );
+
 
 SELECT SETVAL('config.standing_penalty_id_seq', 100);
 

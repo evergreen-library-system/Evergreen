@@ -30,6 +30,8 @@
         <label class="hideme overdues_indicator" value="&staff.patron.display_overlay.has_overdues.value;"/>
         <label class="hideme invalid_dob_indicator" value="&staff.patron.display_overlay.invalid_dob.value;"/>
         <label class="hideme invalid_address_indicator" value="&staff.patron.display_overlay.invalid_address.value;"/>
+        <label class="hideme invalid_email_indicator" value="&staff.patron.display_overlay.invalid_email.value;"/>
+        <label class="hideme invalid_phone_indicator" value="&staff.patron.display_overlay.invalid_phone.value;"/>
     </hbox>
     <vbox id="PatronNotNavBar" flex="1" class="my_bg">
         <hbox id="left_deck_vbox" flex="1" oils_persist="height"> 

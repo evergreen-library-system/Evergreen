@@ -173,7 +173,7 @@ if(!dojo._hasResource["openils.Util"]) {
         if(isList && dojo.isArray(val))
             testval = val[0];
         if(e = openils.Event.parse(testval)) {
-            if(eventOk) return e;
+            if(eventOk || e.textcode == 'SUCCESS') return e;
             console.log(e.toString());
 
             // session timed out.  Stop propagation of requests queued by Util.onload 

@@ -35,5 +35,6 @@
     "ALL_CARDS_ACTIVE" : "Active",
     "ALL_CARDS_PRIMARY" : "Primary",
     "ALL_CARDS_CLOSE" : "Close",
-    "ALL_CARDS_APPLY" : "Apply Changes"
+    "ALL_CARDS_APPLY" : "Apply Changes",
+    "INVALIDATE": "Invalidate"
 }

@@ -34,6 +34,7 @@ use OpenILS::Application::Actor::Stage;
 
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Penalty;
+use OpenILS::Utils::BadContact;
 use List::Util qw/max reduce/;
 
 use UUID::Tiny qw/:std/;
@@ -365,10 +366,25 @@ sub update_patron {
 		if(ref($patron->mailing_address));
 
 	# create/update the patron first so we can use his id
+
+    # $patron is the obj from the client (new data) and $new_patron is the
+    # patron object properly built for db insertion, so we need a third variable
+    # if we want to represent the old patron.
+
+    my $old_patron;
+
 	if($patron->isnew()) {
 		( $new_patron, $evt ) = _add_patron($session, _clone_patron($patron), $user_obj);
 		return $evt if $evt;
-	} else { $new_patron = $patron; }
+	} else {
+        $new_patron = $patron;
+
+        # Did auth checking above already.
+        my $e = new_editor;
+        $old_patron = $e->retrieve_actor_user($patron->id) or
+            return $e->die_event;
+        $e->disconnect;
+    }
 
 	( $new_patron, $evt ) = _add_update_addresses($session, $patron, $new_patron, $user_obj);
 	return $evt if $evt;
@@ -384,6 +400,9 @@ sub update_patron {
 		( $new_patron, $evt ) = _update_patron($session, $new_patron, $user_obj);
 		return $evt if $evt;
 	}
+
+	( $new_patron, $evt ) = _clear_badcontact_penalties($session, $old_patron, $new_patron, $user_obj);
+	return $evt if $evt;
 
 	($new_patron, $evt) = _create_stat_maps($session, $user_session, $patron, $new_patron, $user_obj);
 	return $evt if $evt;
@@ -875,6 +894,60 @@ sub _add_survey_responses {
 	}
 
 	return ( $new_patron, undef );
+}
+
+sub _clear_badcontact_penalties {
+    my ($session, $old_patron, $new_patron, $user_obj) = @_;
+
+    return ($new_patron, undef) unless $old_patron;
+
+    my $PNM = $OpenILS::Utils::BadContact::PENALTY_NAME_MAP;
+    my $e = new_editor(xact => 1);
+
+    # This ignores whether the caller of update_patron has any permission
+    # to remove penalties, but these penalties no longer make sense
+    # if an email address field (for example) is changed (and the caller must
+    # have perms to do *that*) so there's no reason not to clear the penalties.
+
+    my $bad_contact_penalties = $e->search_actor_user_standing_penalty([
+        {
+            "+csp" => {"name" => [values(%$PNM)]},
+            "+ausp" => {"stop_date" => undef, "usr" => $new_patron->id}
+        }, {
+            "join" => {"csp" => {}},
+            "flesh" => 1,
+            "flesh_fields" => {"ausp" => ["standing_penalty"]}
+        }
+    ]) or return (undef, $e->die_event);
+
+    return ($new_patron, undef) unless @$bad_contact_penalties;
+
+    my @penalties_to_clear;
+    my ($field, $penalty_name);
+
+    # For each field that might have an associated bad contact penalty, 
+    # check for such penalties and add them to the to-clear list if that
+    # field has changed.
+    while (($field, $penalty_name) = each(%$PNM)) {
+        if ($old_patron->$field ne $new_patron->$field) {
+            push @penalties_to_clear, grep {
+                $_->standing_penalty->name eq $penalty_name
+            } @$bad_contact_penalties;
+        }
+    }
+
+    foreach (@penalties_to_clear) {
+        # Note that this "archives" penalties, in the terminology of the staff
+        # client, instead of just deleting them.  This may assist reporting,
+        # or preserving old contact information when it is still potentially
+        # of interest.
+        $_->standing_penalty($_->standing_penalty->id); # deflesh
+        $_->stop_date('now');
+        $e->update_actor_user_standing_penalty($_) or return (undef, $e->die_event);
+    }
+
+    $e->commit;
+    return ($new_patron, undef);
 }
 
 
@@ -4413,6 +4486,88 @@ sub address_alert_test {
         map {$e->retrieve_actor_address_alert($_)} 
             (map {$_->{id}} @$alerts)
     ];
+}
+
+__PACKAGE__->register_method(
+    method   => "mark_users_contact_invalid",
+    api_name => "open-ils.actor.invalidate.email",
+    signature => {
+        desc => "Given a patron, clear the email field and put the old email address into a note and/or create a standing penalty, depending on OU settings",
+        params => [
+            {desc => "Authentication token", type => "string"},
+            {desc => "Patron ID", type => "number"},
+            {desc => "Additional note text (optional)", type => "string"},
+            {desc => "penalty org unit ID (optional)", type => "number"}
+        ],
+        return => {desc => "Event describing success or failure", type => "object"}
+    }
+);
+
+__PACKAGE__->register_method(
+    method   => "mark_users_contact_invalid",
+    api_name => "open-ils.actor.invalidate.day_phone",
+    signature => {
+        desc => "Given a patron, clear the day_phone field and put the old day_phone into a note and/or create a standing penalty, depending on OU settings",
+        params => [
+            {desc => "Authentication token", type => "string"},
+            {desc => "Patron ID", type => "number"},
+            {desc => "Additional note text (optional)", type => "string"},
+            {desc => "penalty org unit ID (optional)", type => "number"}
+        ],
+        return => {desc => "Event describing success or failure", type => "object"}
+    }
+);
+
+__PACKAGE__->register_method(
+    method   => "mark_users_contact_invalid",
+    api_name => "open-ils.actor.invalidate.evening_phone",
+    signature => {
+        desc => "Given a patron, clear the evening_phone field and put the old evening_phone into a note and/or create a standing penalty, depending on OU settings",
+        params => [
+            {desc => "Authentication token", type => "string"},
+            {desc => "Patron ID", type => "number"},
+            {desc => "Additional note text (optional)", type => "string"},
+            {desc => "penalty org unit ID (optional)", type => "number"}
+        ],
+        return => {desc => "Event describing success or failure", type => "object"}
+    }
+);
+
+__PACKAGE__->register_method(
+    method   => "mark_users_contact_invalid",
+    api_name => "open-ils.actor.invalidate.other_phone",
+    signature => {
+        desc => "Given a patron, clear the other_phone field and put the old other_phone into a note and/or create a standing penalty, depending on OU settings",
+        params => [
+            {desc => "Authentication token", type => "string"},
+            {desc => "Patron ID", type => "number"},
+            {desc => "Additional note text (optional)", type => "string"},
+            {desc => "penalty org unit ID (optional, default to top of org tree)",
+                type => "number"}
+        ],
+        return => {desc => "Event describing success or failure", type => "object"}
+    }
+);
+
+sub mark_users_contact_invalid {
+    my ($self, $conn, $auth, $patron_id, $addl_note, $penalty_ou) = @_;
+
+    # This method invalidates an email address or a phone_number which
+    # removes the bad email address or phone number, copying its contents
+    # to a patron note, and institutes a standing penalty for "bad email"
+    # or "bad phone number" which is cleared when the user is saved or
+    # optionally only when the user is saved with an email address or
+    # phone number (or staff manually delete the penalty).
+
+    my $contact_type = ($self->api_name =~ /invalidate.(\w+)(\.|$)/)[0];
+
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->die_event unless $e->checkauth;
+
+    return OpenILS::Utils::BadContact->mark_users_contact_invalid(
+        $e, $contact_type, {usr => $patron_id},
+        $addl_note, $penalty_ou, $e->requestor->id
+    );
 }
 
 1;
