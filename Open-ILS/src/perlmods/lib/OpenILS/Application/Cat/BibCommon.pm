@@ -210,6 +210,7 @@ sub _find_tcn_info {
 
     my $xpath = '//marc:controlfield[@tag="001"]';
     my $tcn = $marcxml->documentElement->findvalue($xpath);
+    $tcn =~ s/^\s+|\s+$//og;
     $logger->info("biblio import located 001 (tcn) value of $tcn");
 
     $xpath = '//marc:controlfield[@tag="003"]';
