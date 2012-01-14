@@ -52,7 +52,11 @@ END;
             [%- IF has_parts == 'true' %]
             <td header='copy_header_part'>[% copy_info.part_label | html %]</td>
             [%- END %]
-            <td header='copy_header_barcode'>[% copy_info.barcode | html %]</td>
+            <td header='copy_header_barcode'>
+                [%- IF ctx.is_staff -%]
+                    <a href="javascript:void(0)" onclick="xulG.new_tab(xulG.urls.XUL_COPY_STATUS, {}, {'from_item_details_new': true, 'barcodes': ['[%- copy_info.barcode | html | replace('\'', '\\\'') -%]']})">[% copy_info.barcode | html %]</a>
+                [%- ELSE -%][% copy_info.barcode | html %]
+                [%- END -%]</td>
             <td header='copy_header_shelfloc'>[% copy_info.copy_location | html %]</td>
             [%- IF ctx.is_staff %]
             <td header='copy_header_age_hold'>
