@@ -620,6 +620,7 @@ We recommend that you remove this title from any bookbags it may have been added
 <!ENTITY common.hold.exists "A hold already exists on the requested item.">
 <!ENTITY common.hold.exists.override "A hold already exists on the requested item. Would you like to create the hold anyway?">
 <!ENTITY common.hold.age_protect.override "This hold may take extra time to fill due to library policies. Would you like to create the hold anyway?">
+<!ENTITY common.hold.place_unfillable.override "The requested hold cannot currently be filled. You have permission to place the hold regardless, but should only do so if you know the hold will eventually be fillable. Would you like to create the hold anyway?">
 <!ENTITY common.hold.barred 'PATRON BARRED. Please see any notes in the
 "Staff Notes" section of your "My Account" page or contact your local library.'>
 <!ENTITY common.hold.item.invalid "This hold is no longer valid. It's likely that the

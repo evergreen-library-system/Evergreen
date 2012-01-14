@@ -242,6 +242,7 @@
 	<span class='hide_me' id='hold_dup_exists_override'>&common.hold.exists.override;</span>
 	<span class='hide_me' id='hold_checked_out_override'>&common.hold.checked_out.override;</span>
 	<span class='hide_me' id='hold_age_protected_override'>&common.hold.age_protect.override;</span>
+	<span class='hide_me' id='hold_place_unfillable_override'>&common.hold.place_unfillable.override;</span>
 
 	<span id='hold_failed_patron_barred' class='hide_me'>&common.hold.barred;</span>
 

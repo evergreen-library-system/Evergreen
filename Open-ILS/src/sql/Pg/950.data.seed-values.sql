@@ -1535,7 +1535,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 522, 'IMPORT_AUTHORITY_MARC', oils_i18n_gettext( 522,
     'Allows a user to create new authority records', 'ppl', 'description' )),
  ( 523, 'ADMIN_TOOLBAR', oils_i18n_gettext( 523,
-    'Allows a user to create, edit, and delete custom toolbars', 'ppl', 'description' ));
+    'Allows a user to create, edit, and delete custom toolbars', 'ppl', 'description' )),
+ ( 524, 'PLACE_UNFILLABLE_HOLD', oils_i18n_gettext( 524,
+    'Allows a user to place a hold that cannot currently be filled.', 'ppl', 'description' ));
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
 

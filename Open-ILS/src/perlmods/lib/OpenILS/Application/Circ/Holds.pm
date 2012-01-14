@@ -2254,6 +2254,9 @@ sub check_title_hold {
         @status = do_possibility_checks($e, $patron, $request_lib, $params{depth}, %params);
     }
 
+    my $place_unfillable = 0;
+    $place_unfillable = 1 if $e->allowed('PLACE_UNFILLABLE_HOLD', $e->requestor->ws_ou);
+
     if ($status[0]) {
         return {
             "success" => 1,
@@ -2262,9 +2265,9 @@ sub check_title_hold {
         };
     } elsif ($status[2]) {
         my $n = scalar @{$status[2]};
-        return {"success" => 0, "last_event" => $status[2]->[$n - 1], "age_protected_copy" => $status[3]};
+        return {"success" => 0, "last_event" => $status[2]->[$n - 1], "age_protected_copy" => $status[3], "place_unfillable" => $place_unfillable};
     } else {
-        return {"success" => 0, "age_protected_copy" => $status[3]};
+        return {"success" => 0, "age_protected_copy" => $status[3], "place_unfillable" => $place_unfillable};
     }
 }
 
