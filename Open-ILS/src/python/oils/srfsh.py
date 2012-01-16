@@ -44,6 +44,34 @@ def handle_login(srfsh, args):
         )
     ])
 
+def handle_auth_verify(srfsh, args):
+    ''' Verify auth w/ args '''
+
+    username = args[0]
+    password = args[1]
+
+    seed = srfsh.handle_request([
+        'open-ils.auth', 
+        'open-ils.auth.authenticate.init', 
+        '"%s"' % username
+    ])
+
+    password = md5sum(seed + md5sum(password))
+
+    response = srfsh.handle_request([
+        'open-ils.auth', 
+        'open-ils.auth.authenticate.verify', 
+
+        osrf.json.to_json( 
+            {   # handle_request accepts json-encoded params
+                'username'    : username,
+                'password'    : password,
+                'type'        : args[2] if len(args) > 2 else None,
+            }
+        )
+    ])
+
+
 def handle_org_setting(srfsh, args):
     ''' Retrieves the requested org setting.
 
@@ -91,6 +119,7 @@ def load(srfsh, config):
 
     # register custom commands
     srfsh.add_command(command = 'login', handler = handle_login)
+    srfsh.add_command(command = 'auth_verify', handler = handle_auth_verify)
     srfsh.add_command(command = 'idl', handler = handle_idl)
     srfsh.add_command(command = 'org_setting', handler = handle_org_setting)
 
