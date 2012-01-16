@@ -104,6 +104,12 @@ int oilsUtilsIsDBTrue( const char* val );
 
 long oilsUtilsIntervalToSeconds( const char* interval );
 
+/**
+ * Creates actor.usr_activity entries
+ * @return The number of rows created.  0 or 1.
+ */
+int oilsUtilsTrackUserActivity( long usr, const char* ewho, const char* ewhat, const char* ehow );
+
 #ifdef __cplusplus
 }
 #endif

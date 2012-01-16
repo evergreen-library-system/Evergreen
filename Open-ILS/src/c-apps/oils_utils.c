@@ -120,6 +120,50 @@ long oilsFMGetObjectId( const jsonObject* obj ) {
 	return id;
 }
 
+int oilsUtilsTrackUserActivity(long usr, const char* ewho, const char* ewhat, const char* ehow) {
+    if (!usr && !(ewho || ewhat || ehow)) return 0;
+    int rowcount = 0;
+
+    jsonObject* params = jsonParseFmt(
+        "{\"from\":[\"actor.insert_usr_activity\", %ld, \"%s\", \"%s\", \"%s\"]}",
+        usr, 
+        (NULL == ewho)  ? "" : ewho, 
+        (NULL == ewhat) ? "" : ewhat, 
+        (NULL == ehow)  ? "" : ehow
+    );
+
+	osrfAppSession* session = osrfAppSessionClientInit("open-ils.cstore");
+    osrfAppSessionConnect(session);
+    int reqid = osrfAppSessionSendRequest(session, NULL, "open-ils.cstore.transaction.begin", 1);
+	osrfMessage* omsg = osrfAppSessionRequestRecv(session, reqid, 60);
+
+    if(omsg) {
+        osrfMessageFree(omsg);
+        reqid = osrfAppSessionSendRequest(session, params, "open-ils.cstore.json_query", 1);
+	    omsg = osrfAppSessionRequestRecv(session, reqid, 60);
+
+        if(omsg) {
+            const jsonObject* rows = osrfMessageGetResult(omsg);
+            if (rows) rowcount = rows->size;
+            osrfMessageFree(omsg); // frees rows
+            if (rowcount) {
+                reqid = osrfAppSessionSendRequest(session, NULL, "open-ils.cstore.transaction.commit", 1);
+	            omsg = osrfAppSessionRequestRecv(session, reqid, 60);
+                osrfMessageFree(omsg);
+            } else {
+                reqid = osrfAppSessionSendRequest(session, NULL, "open-ils.cstore.transaction.rollback", 1);
+	            omsg = osrfAppSessionRequestRecv(session, reqid, 60);
+                osrfMessageFree(omsg);
+            }
+        }
+    }
+
+    osrfAppSessionFree(session); // calls disconnect internally
+    jsonObjectFree(params);
+    return rowcount;
+}
+
+
 
 oilsEvent* oilsUtilsCheckPerms( int userid, int orgid, char* permissions[], int size ) {
 	if (!permissions) return NULL;

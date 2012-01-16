@@ -64,6 +64,15 @@ int osrfAppInitialize() {
 
 	osrfAppRegisterMethod(
 		MODULENAME,
+		"open-ils.auth.authenticate.verify",
+		"oilsAuthComplete",
+		"Verifies the user provided a valid username and password."
+		"Params and are the same as open-ils.auth.authenticate.complete."
+		"Returns SUCCESS event on success, failure event on failure", 1, 0);
+
+
+	osrfAppRegisterMethod(
+		MODULENAME,
 		"open-ils.auth.session.retrieve",
 		"oilsAuthSessionRetrieve",
 		"Pass in the auth token and this retrieves the user object.  The auth "
@@ -553,6 +562,7 @@ static oilsEvent* oilsAuthVerifyWorkstation(
 		- "type"
 		- "org"
 		- "workstation"
+		- "agent" (what software/interface/3rd-party is making the request)
 
 	The password is required.  Either a username or a barcode must also be present.
 
@@ -575,6 +585,7 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 	int orgloc        = (int) jsonObjectGetNumber(jsonObjectGetKeyConst(args, "org"));
 	const char* workstation = jsonObjectGetString(jsonObjectGetKeyConst(args, "workstation"));
 	const char* barcode     = jsonObjectGetString(jsonObjectGetKeyConst(args, "barcode"));
+	const char* ewho        = jsonObjectGetString(jsonObjectGetKeyConst(args, "agent"));
 
 	const char* ws = (workstation) ? workstation : "";
 
@@ -709,8 +720,23 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 		uname = freeable_uname = oilsFMGetString( userObj, "usrname" );
 	}
 
-	if( passOK ) {
-		response = oilsAuthHandleLoginOK( userObj, uname, type, orgloc, workstation );
+	if( passOK ) { // login successful  
+        
+		char* ewhat = "login";
+
+		if (0 == strcmp(ctx->method->name, "open-ils.auth.authenticate.verify")) {
+			response = oilsNewEvent( OSRF_LOG_MARK, OILS_EVENT_SUCCESS );
+			ewhat = "verify";
+
+		} else {
+			response = oilsAuthHandleLoginOK( userObj, uname, type, orgloc, workstation );
+		}
+
+		oilsUtilsTrackUserActivity(
+			oilsFMGetObjectId(userObj), 
+			ewho, ewhat, 
+			osrfAppSessionGetIngress()
+		);
 
 	} else {
 		response = oilsNewEvent( OSRF_LOG_MARK, OILS_EVENT_AUTH_FAILED );
