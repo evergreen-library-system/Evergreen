@@ -623,4 +623,11 @@ CREATE TABLE actor.address_alert (
     billing_address BOOL    NOT NULL DEFAULT FALSE
 );
 
+CREATE TABLE actor.usr_activity (
+    id          BIGSERIAL   PRIMARY KEY,
+    usr         INT         REFERENCES actor.usr (id) ON DELETE SET NULL,
+    etype       INT         NOT NULL REFERENCES config.usr_activity_type (id),
+    event_time  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 COMMIT;

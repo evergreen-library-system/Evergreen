@@ -2092,4 +2092,61 @@ CREATE OR REPLACE FUNCTION evergreen.coded_value_map_normalizer( input TEXT, cty
             WHERE ctype = $2 AND code = $1;
 $F$ LANGUAGE SQL;
 
+-- user activity functions --
 
+-- remove transient activity entries on insert of new entries
+CREATE OR REPLACE FUNCTION actor.usr_activity_transient_trg () RETURNS TRIGGER AS $$
+BEGIN
+    DELETE FROM actor.usr_activity USING config.usr_activity_type atype
+        WHERE atype.transient AND NEW.etype = atype.id;
+    RETURN NEW;
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER remove_transient_usr_activity
+    BEFORE INSERT ON actor.usr_activity
+    FOR EACH ROW EXECUTE PROCEDURE actor.usr_activity_transient_trg();
+
+-- given a set of activity criteria, find the most approprate activity type
+CREATE OR REPLACE FUNCTION actor.usr_activity_get_type (
+        ewho TEXT, 
+        ewhat TEXT, 
+        ehow TEXT
+    ) RETURNS SETOF config.usr_activity_type AS $$
+SELECT * FROM config.usr_activity_type 
+    WHERE 
+        enabled AND 
+        (ewho  IS NULL OR ewho  = $1) AND
+        (ewhat IS NULL OR ewhat = $2) AND
+        (ehow  IS NULL OR ehow  = $3) 
+    ORDER BY 
+        -- BOOL comparisons sort false to true
+        COALESCE(ewho, '')  != COALESCE($1, ''),
+        COALESCE(ewhat,'')  != COALESCE($2, ''),
+        COALESCE(ehow, '')  != COALESCE($3, '') 
+    LIMIT 1;
+$$ LANGUAGE SQL;
+
+-- given a set of activity criteria, finds the best
+-- activity type and inserts the activity entry
+CREATE OR REPLACE FUNCTION actor.insert_usr_activity (
+        usr INT,
+        ewho TEXT, 
+        ewhat TEXT, 
+        ehow TEXT
+    ) RETURNS SETOF actor.usr_activity AS $$
+DECLARE
+    new_row actor.usr_activity%ROWTYPE;
+BEGIN
+    SELECT id INTO new_row.etype FROM actor.usr_activity_get_type(ewho, ewhat, ehow);
+    IF FOUND THEN
+        new_row.usr := usr;
+        INSERT INTO actor.usr_activity (usr, etype) 
+            VALUES (usr, new_row.etype)
+            RETURNING * INTO new_row;
+        RETURN NEXT new_row;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+-- user activity functions --

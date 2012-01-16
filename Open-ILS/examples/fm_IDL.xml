@@ -2736,7 +2736,45 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="reservations" reltype="has_many" key="usr" map="" class="bresv"/>
 		</links>
 	</class>
-
+	<class id="cuat" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::usr_activity_type" oils_persist:tablename="config.usr_activity_type" reporter:label="User Activity Type">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.usr_activity_type_id_seq">
+			<field name="id" reporter:label="ID" reporter:datatype="id" />
+			<field name="ewho" reporter:label="Event Caller" reporter:datatype="text"/>
+			<field name="ewhat" reporter:label="Event Type" reporter:datatype="text"/>
+			<field name="ehow" reporter:label="Event Mechanism" reporter:datatype="text"/>
+			<field name="label" reporter:label="Label" reporter:datatype="text"/>
+			<field name="egroup" reporter:label="Activity Group" reporter:datatype="text"/>
+			<field name="enabled" reporter:label="Enabled" reporter:datatype="bool"/>
+			<field name="transient" reporter:label="Transient" reporter:datatype="bool"/>
+        </fields>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_USER_ACTIVITY_TYPE" global_required="true"/>
+				<retrieve/>
+				<update permission="ADMIN_USER_ACTIVITY_TYPE" global_required="true"/>
+				<delete permission="ADMIN_USER_ACTIVITY_TYPE" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+	<class id="auact" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::usr_activity" oils_persist:tablename="actor.usr_activity" reporter:label="User Activity">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_activity_id_seq">
+			<field name="id" reporter:label="ID" reporter:datatype="id" />
+			<field name="usr" reporter:label="User" reporter:datatype="link" />
+			<field name="etype" reporter:label="Activity Type" reporter:datatype="link" />
+			<field name="event_time" reporter:label="Event Time" reporter:datatype="timestamp" />
+        </fields>
+        <links>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="etype" reltype="has_a" key="id" map="" class="cuat"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve permission="VIEW_USER">
+					<context link="usr" field="home_ou" />
+				</retrieve>
+			</actions>
+		</permacrud>
+	</class>
 	<class id="csg" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::settings_group" oils_persist:tablename="config.settings_group" reporter:label="Settings Group">
 		<fields oils_persist:primary="name">
 			<field name="name" reporter:datatype="text"/>

@@ -951,4 +951,22 @@ CREATE TABLE config.sms_carrier (
     active          BOOLEAN DEFAULT TRUE
 );
 
+CREATE TYPE config.usr_activity_group AS ENUM ('authen','authz','circ','hold','search');
+
+CREATE TABLE config.usr_activity_type (
+    id          SERIAL                      PRIMARY KEY, 
+    ewho        TEXT,
+    ewhat       TEXT,
+    ehow        TEXT,
+    label       TEXT                        NOT NULL, -- i18n
+    egroup      config.usr_activity_group   NOT NULL,
+    enabled     BOOL                        NOT NULL DEFAULT TRUE,
+    transient   BOOL                        NOT NULL DEFAULT FALSE,
+    CONSTRAINT  one_of_wwh CHECK (COALESCE(ewho,ewhat,ehow) IS NOT NULL)
+);
+
+CREATE UNIQUE INDEX unique_wwh ON config.usr_activity_type 
+    (COALESCE(ewho,''), COALESCE (ewhat,''), COALESCE(ehow,''));
+
+
 COMMIT;
