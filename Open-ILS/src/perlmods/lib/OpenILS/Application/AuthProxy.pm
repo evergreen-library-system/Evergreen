@@ -30,6 +30,7 @@ use strict;
 use warnings;
 use OpenILS::Application;
 use base qw/OpenILS::Application/;
+use OpenSRF::Utils::Cache;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Application::AppUtils;
@@ -45,10 +46,25 @@ my $U = 'OpenILS::Application::AppUtils';
 my @authenticators;
 my %authenticators_by_name;
 my $enabled = 'false';
+my $cache = OpenSRF::Utils::Cache->new();
+my $seed_timeout;
+my $block_timeout;
+my $block_count;
 
 sub initialize {
     my $conf = OpenSRF::Utils::SettingsClient->new;
-    my @pfx = ( "apps", "open-ils.auth_proxy", "app_settings" );
+
+    my @pfx = ( "apps", "open-ils.auth", "app_settings", "auth_limits" );
+
+    # read in (or set defaults) for brute force blocking settings
+    $seed_timeout = $conf->config_value( @pfx, "seed_timeout" );
+    $seed_timeout = 30 if (!$seed_timeout or $seed_timeout < 0);
+    $block_timeout = $conf->config_value( @pfx, "seed_timeout" );
+    $block_timeout = $seed_timeout * 3 if (!$block_timeout or $block_timeout < 0);
+    $block_count = $conf->config_value( @pfx, "block_count" );
+    $block_count = 10 if (!$block_count or $block_count < 0);
+
+    @pfx = ( "apps", "open-ils.auth_proxy", "app_settings" );
 
     $enabled = $conf->config_value( @pfx, 'enabled' );
 
@@ -157,6 +173,19 @@ sub login {
     return OpenILS::Event->new( 'LOGIN_FAILED' )
       unless (&enabled() and ($args->{'username'} or $args->{'barcode'}));
 
+    # check for possibility of brute-force attack
+    my $fail_count;
+    # since barcode logins are for 'native' only, we will rely on the blocking
+    # code built-in to 'native' for those logins
+    if ($args->{'username'}) {
+        $fail_count = $cache->get_cache('oils_auth_' . $args->{'username'} . '_count') || 0;
+        if ($fail_count >= $block_count) {
+            $logger->debug("AuthProxy found too many recent failures for '" . $args->{'username'} . "' : $fail_count, forcing failure state.");
+            $cache->put_cache('oils_auth_' . $args->{'username'} . '_count', ++$fail_count, $block_timeout);
+            return OpenILS::Event->new( 'LOGIN_FAILED' );
+        }
+    }
+
     my @error_events;
     my $authenticated = 0;
     my $auths;
@@ -198,6 +227,10 @@ sub login {
     }
 
     # if we got this far, we failed
+    # increment the brute force counter if 'native' didn't already
+    if ($args->{'username'} and !exists $authenticators_by_name{'native'}) {
+        $cache->put_cache('oils_auth_' . $args->{'username'} . '_count', ++$fail_count, $block_timeout);
+    }
     # TODO: send back some form of collected error events
     return OpenILS::Event->new( 'LOGIN_FAILED' );
 }
