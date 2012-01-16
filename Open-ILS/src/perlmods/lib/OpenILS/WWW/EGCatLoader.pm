@@ -330,7 +330,8 @@ sub load_login {
     my $args = {	
         username => $username, 
         password => md5_hex($seed . md5_hex($password)), 
-        type => ($persist) ? 'persist' : 'opac' 
+        type => ($persist) ? 'persist' : 'opac',
+        agent => 'opac'
     };
 
     my $bc_regex = $ctx->{get_org_setting}->($org_unit, 'opac.barcode_regex');

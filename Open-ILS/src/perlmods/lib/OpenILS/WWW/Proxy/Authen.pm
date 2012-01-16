@@ -163,7 +163,7 @@ sub oils_login {
         my $response = OpenSRF::AppSession
 		->create("open-ils.auth")
 		->request( 'open-ils.auth.authenticate.complete',
-			{ $nametype => $username,
+			{ $nametype => $username, agent => 'authproxy',
 			  password => md5_hex($seed . md5_hex($password)),
 			  type => $type })
 		->gather(1);

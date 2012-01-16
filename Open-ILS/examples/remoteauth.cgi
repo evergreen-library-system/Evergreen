@@ -29,16 +29,19 @@ use Digest::MD5 qw(md5_hex);
 
 use OpenSRF::EX qw(:try);
 use OpenSRF::System;
+use OpenSRF::AppSession;
 
 my $bootstrap = '/openils/conf/opensrf_core.xml';
 my $cgi = new CGI;
 my $u = $cgi->param('user');
 my $usrname = $cgi->param('usrname');
 my $barcode = $cgi->param('barcode');
+my $agent = $cgi->param('agent'); # optional, but preferred
 my $p = $cgi->param('passwd');
 
 print $cgi->header(-type=>'text/html', -expires=>'-1d');
 
+OpenSRF::AppSession->ingress('remoteauth');
 OpenSRF::System->bootstrap_client( config_file => $bootstrap );
 
 if (!($u || $usrname || $barcode) || !$p) {
@@ -69,20 +72,17 @@ if (!($u || $usrname || $barcode) || !$p) {
 	if ($seed) {
 		my $response = OpenSRF::AppSession
 			->create('open-ils.auth')
-			->request( 'open-ils.auth.authenticate.complete', { $nametype => $u, password => md5_hex($seed . md5_hex($p)), type => 'opac' })
+			->request( 'open-ils.auth.authenticate.verify', 
+				{ $nametype => $u, password => md5_hex($seed . md5_hex($p)), type => 'opac', agent => $agent })
 			->gather(1);
-		if ($response->{payload}->{authtoken}) {
-			my $user = OpenSRF::AppSession
-				->create('open-ils.auth')
-				->request( 'open-ils.auth.session.retrieve', $response->{payload}->{authtoken} )
-				->gather(1);
-			if (ref($user) eq 'HASH' && $user->{ilsevent} == 1001) {
-				print '+NO';
-			} else {
+		if ($response) {
+			if ($response->{ilsevent} == 0) {
 				print '+VALID';
+			} else {
+				print '+NO';
 			}
 		} else {
-			print '+NO';
+			print '+BACKEND_ERROR';
 		}
 	} else {
 		print '+BACKEND_ERROR';

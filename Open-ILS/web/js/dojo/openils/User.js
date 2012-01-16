@@ -33,6 +33,7 @@ if(!dojo._hasResource["openils.User"]) {
         username : null,
         passwd : null,
         login_type : 'opac',
+        login_agent : null,
         location : null,
         authtoken : null,
         authtime : null,
@@ -48,6 +49,7 @@ if(!dojo._hasResource["openils.User"]) {
             this.authtoken = kwargs.authtoken || openils.User.authtoken;
             this.authtime = kwargs.authtime || openils.User.authtime;
             this.login_type = kwargs.login_type;
+            this.login_agent = kwargs.login_agent || openils.User.default_login_agent || 'staffclient';
             this.location = kwargs.location;
             this.authcookie = kwargs.authcookie || openils.User.authcookie;
             this.permOrgStoreCache = {}; /* permName => permOrgUnitStore map */
@@ -111,6 +113,42 @@ if(!dojo._hasResource["openils.User"]) {
                 return req.recv().content();
             }
         },
+
+        /**
+         * Tests the given username and password.  This version is async only.
+         */
+        auth_verify : function(args, onComplete) {
+            var _u = this;
+            if (!args) args = {};
+            if (!args.username) args.username = _u.username;
+            if (!args.passwd) args.passwd = _u.passwd;
+            if (!args.agent) args.agent = _u.login_agent;
+            if (!args.type) args.type = _u.type;
+
+            var initReq = OpenSRF.CachedClientSession('open-ils.auth').request('open-ils.auth.authenticate.init', args.username);
+    
+            initReq.oncomplete = function(r) {
+                var seed = r.recv().content(); 
+                var loginInfo = {
+                    type : args.type,
+                    username : args.username,
+                    barcode : args.barcode,
+                    password : hex_md5(seed + hex_md5(args.passwd)), 
+                    agent : args.agent,
+                };
+    
+                var authReq = OpenSRF.CachedClientSession('open-ils.auth').request('open-ils.auth.authenticate.verify', loginInfo);
+                authReq.oncomplete = function(rr) {
+                    var data = rr.recv().content();
+                    var evt = openils.Event.parse(data);
+                    if (evt && evt.code == 0) onComplete(true);
+                    else onComplete(false);
+                }
+                authReq.send();
+            }
+    
+            initReq.send();
+        },
     
     
         /**
@@ -123,6 +161,7 @@ if(!dojo._hasResource["openils.User"]) {
             if (!args.username) args.username = _u.username;
             if (!args.passwd) args.passwd = _u.passwd;
             if (!args.type) args.type = _u.login_type;
+            if (!args.agent) args.agent = _u.login_agent;
             if (!args.location) args.location = _u.location;
 
             var initReq = OpenSRF.CachedClientSession('open-ils.auth').request('open-ils.auth.authenticate.init', args.username);
@@ -133,6 +172,7 @@ if(!dojo._hasResource["openils.User"]) {
                     username : args.username,
                     password : hex_md5(seed + hex_md5(args.passwd)), 
                     type : args.type,
+                    agent : args.agent,
                     org : args.location,
                     workstation : args.workstation
                 };
@@ -165,6 +205,7 @@ if(!dojo._hasResource["openils.User"]) {
             if (!args.username) args.username = _u.username;
             if (!args.passwd) args.passwd = _u.passwd;
             if (!args.type) args.type = _u.login_type;
+            if (!args.agent) args.agent = _u.login_agent;
             if (!args.location) args.location = _u.location;
 
             var seed = fieldmapper.standardRequest(
@@ -176,6 +217,7 @@ if(!dojo._hasResource["openils.User"]) {
                 username : args.username,
                 password : hex_md5(seed + hex_md5(args.passwd)), 
                 type : args.type,
+                agent : args.agent,
                 org : args.location,
                 workstation : args.workstation,
             };
@@ -298,6 +340,7 @@ if(!dojo._hasResource["openils.User"]) {
 	openils.User.authtoken = null;
 	openils.User.authtime = null;
     openils.User.authcookie = null;
+    openils.User.default_login_agent = null; // global agent override
     openils.User.localeStrings =
         dojo.i18n.getLocalization("openils.User", "User");
 

@@ -40,6 +40,7 @@ sub import { $bs_config = $_[1]; }
 # Bootstrap and load config settings
 sub child_init {
 	$__inited = 1;
+	OpenSRF::AppSession->ingress('xmlrpc');
 	OpenSRF::System->bootstrap_client( config_file => $bs_config );
 	my $sclient	= OpenSRF::Utils::SettingsClient->new();
 	my $idl = $sclient->config_value("IDL");
@@ -48,6 +49,7 @@ sub child_init {
 	$logger->debug("XML-RPC: allowed services @$services");
 	OpenILS::Utils::Fieldmapper->require;
 	Fieldmapper->import(IDL => $idl);
+	OpenSRF::AppSession->ingress('apache');
 }
 
 
@@ -82,8 +84,12 @@ sub handler {
 
 sub run_request {
     my( $service, $method, @args ) = @_;
+
+    # since multiple Perl clients run within mod_perl, 
+    # we must set our ingress before each request.
+    OpenSRF::AppSession->ingress('xmlrpc');
+
     my $ses = OpenSRF::AppSession->create( $service );
-    #my $data = $ses->request($method, @args)->gather(1);
 
     my $data = [];
     my $req = $ses->request($method, @args);
@@ -94,6 +100,10 @@ sub run_request {
         }
         push( @$data, $resp->content );
     }
+
+    # recover the default Apache/http ingress to avoid 
+    # polluting other mod_perl clients w/ our ingress value.
+    OpenSRF::AppSession->ingress('apache');
 
     return [] if scalar(@$data) == 0;
     return wrap_perl($$data[0]) 

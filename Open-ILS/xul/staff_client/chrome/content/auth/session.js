@@ -38,6 +38,7 @@ auth.session.prototype = {
                         )
                     ),
                     'type' : 'temp',
+                    'agent' : 'staffclient'
                 };
 
                 if (data.ws_info[ this.view.server_prompt.value ]) {

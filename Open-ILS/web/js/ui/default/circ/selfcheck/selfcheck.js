@@ -27,6 +27,9 @@ const SET_CC_PAYMENT_ALLOWED = 'credit.payments.allow';
 // This setting only comes into play if COPY_NOT_AVAILABLE is in the SET_AUTO_OVERRIDE_EVENTS list
 const SET_BLOCK_CHECKOUT_ON_COPY_STATUS = 'circ.selfcheck.block_checkout_on_copy_status';
 
+// set before the login dialog is rendered
+openils.User.default_login_agent = 'selfcheck';
+
 function SelfCheckManager() {
 
     this.cgi = new openils.CGI();
@@ -329,21 +332,31 @@ SelfCheckManager.prototype.loginPatron = function(barcode_or_usrname, passwd) {
 
         // patron password is required.  Verify it.
 
-        var res = fieldmapper.standardRequest(
-            ['open-ils.actor', 'open-ils.actor.verify_user_password'],
-            {params : [this.authtoken, barcode, usrname, hex_md5(passwd)]}
+        var self = this;
+        new openils.User().auth_verify(
+            {   username : usrname, barcode : barcode, 
+                type : 'opac', passwd : passwd, agent : 'selfcheck' },
+            function(OK) {
+                if (OK) {
+                    self.fetchPatron(barcode, usrname);
+
+                } else {
+                    // auth verify failed
+                    self.handleAlert(
+                        dojo.string.substitute(localeStrings.LOGIN_FAILED, [barcode_or_usrname]),
+                        false, 'login-failure'
+                    );
+                    self.drawLoginPage();
+                }
+            }
         );
 
-        if(res == 0) {
-            // user-not-found results in login failure
-            this.handleAlert(
-                dojo.string.substitute(localeStrings.LOGIN_FAILED, [barcode_or_usrname]),
-                false, 'login-failure'
-            );
-            this.drawLoginPage();
-            return;
-        }
-    } 
+    } else {
+        this.fetchPatron(barcode, usrname);
+    }
+};
+
+SelfCheckManager.prototype.fetchPatron = function(barcode, usrname) {
 
     var patron_id = fieldmapper.standardRequest(
         ['open-ils.actor', 'open-ils.actor.user.retrieve_id_by_barcode_or_username'],
@@ -373,7 +386,7 @@ SelfCheckManager.prototype.loginPatron = function(barcode_or_usrname, passwd) {
 
     if(evt || inactiveCard) {
         this.handleAlert(
-            dojo.string.substitute(localeStrings.LOGIN_FAILED, [barcode_or_usrname]),
+            dojo.string.substitute(localeStrings.LOGIN_FAILED, [barcode || usrname]),
             false, 'login-failure'
         );
         this.drawLoginPage();

@@ -17,6 +17,7 @@ use OpenILS::SIP::Transaction::Renew;
 use OpenILS::SIP::Transaction::FeePayment;
 
 use OpenSRF::System;
+use OpenSRF::AppSession;
 use OpenILS::Utils::Fieldmapper;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Application::AppUtils;
@@ -47,6 +48,9 @@ sub new {
 	$target_encoding = $institution->{implementation_config}->{encoding} || 'ascii';
 
 	syslog('LOG_DEBUG', "OILS: loading bootstrap config: $bsconfig");
+
+	# ingress will persist throughout
+	OpenSRF::AppSession->ingress('sip2');
 	
 	local $/ = "\n";    # why?
 	OpenSRF::System->bootstrap_client(config_file => $bsconfig);

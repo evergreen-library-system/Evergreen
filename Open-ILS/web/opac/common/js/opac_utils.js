@@ -727,7 +727,8 @@ function doLogin(suppressEvents) {
 	var args = {
 		password : hex_md5(seed + hex_md5(passwd)), 
 		type		: "opac", 
-		org		: getOrigLocation()
+		org		: getOrigLocation(),
+		agent : 'opac'
 	};
 
     r = fetchOrgSettingDefault(globalOrgTree.id(), 'opac.barcode_regex');
