@@ -461,7 +461,8 @@ function myOShowHoldStatus(r) {
 
 	var row = $("myopac_holds_row_" + r.hold.id());
 
-    if(qstats.estimated_wait || myopacShowHoldEstimate) {
+    // A note: estimated_wait may be -1 under some circumstances where it shouldn't be shown.
+    if((qstats.estimated_wait && qstats.estimated_wait > 0) || myopacShowHoldEstimate) {
         myopacShowHoldEstimate = true;
         if(qstats.estimated_wait) {
             // wait is currently returned in seconds, but displayed in days
