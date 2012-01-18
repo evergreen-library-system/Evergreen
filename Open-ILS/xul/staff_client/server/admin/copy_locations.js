@@ -114,6 +114,9 @@ function clCreateNew() {
     cl.hold_verify( ($('cl_new_hold_verify_yes').checked) ? 1 : 0 );
     cl.opac_visible( ($('cl_new_vis_yes').checked) ? 1 : 0 );
     cl.circulate( ($('cl_new_circulate_yes').checked) ? 1 : 0 );
+    cl.checkin_alert( $('cl_new_checkin_alert_yes').checked ? 1 : 0 );
+    cl.label_prefix( $('cl_new_label_prefix').value );
+    cl.label_suffix( $('cl_new_label_suffix').value );
 
     var req = new Request(CREATE_CL, SESSION, cl);
     req.send(true);
@@ -160,6 +163,7 @@ function clBuildRow( tbody, row, cl ) {
     appendClear($n( row, 'cl_hold_verify'), (isTrue(cl.hold_verify())) ? _TRUE.cloneNode(true) : _FALSE.cloneNode(true) );
     appendClear($n( row, 'cl_visible'), (isTrue(cl.opac_visible())) ? _TRUE.cloneNode(true) : _FALSE.cloneNode(true) );
     appendClear($n( row, 'cl_circulate'), (isTrue(cl.circulate())) ? _TRUE.cloneNode(true) : _FALSE.cloneNode(true) );
+    appendClear($n( row, 'cl_checkin_alert'), (isTrue(cl.checkin_alert())) ? _TRUE.cloneNode(true) : _FALSE.cloneNode(true) );
     $n( row, 'cl_label_prefix').appendChild(text(cl.label_prefix() || ''));
     $n( row, 'cl_label_suffix').appendChild(text(cl.label_suffix() || ''));
 
@@ -202,6 +206,8 @@ function clEdit( cl, tbody, row ) {
     else arr[5].checked = true;
     if(isTrue(cl.hold_verify())) arr[6].checked = true;
     else arr[7].checked = true;
+    if(isTrue(cl.checkin_alert())) arr[8].checked = true;
+    else arr[9].checked = true;
 
     var label_prefix = $n(r, 'cl_edit_label_prefix');
     if (cl.label_prefix()) {
@@ -237,6 +243,8 @@ function _clOptions(r) {
     arr[5] = $n( $n(r,'cl_edit_circulate_no'), 'cl_edit_circulate');
     arr[6] = $n( $n(r,'cl_edit_hold_verify_yes'), 'cl_edit_hold_verify');
     arr[7] = $n( $n(r,'cl_edit_hold_verify_no'), 'cl_edit_hold_verify');
+    arr[8] = $n( $n(r,'cl_edit_checkin_alert_yes'), 'cl_edit_checkin_alert');
+    arr[9] = $n( $n(r,'cl_edit_checkin_alert_no'), 'cl_edit_checkin_alert');
     return arr;
 }
 
@@ -251,6 +259,8 @@ function clEditCommit( tbody, r, cl ) {
     else cl.circulate(0);
     if(arr[6].checked) cl.hold_verify(1);
     else cl.hold_verify(0);
+    if(arr[8].checked) cl.checkin_alert(1);
+    else cl.checkin_alert(0);
     cl.name($n(r, 'cl_edit_name').value);
     cl.label_prefix($n(r, 'cl_edit_label_prefix').value);
     cl.label_suffix($n(r, 'cl_edit_label_suffix').value);

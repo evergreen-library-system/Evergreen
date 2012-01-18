@@ -3772,6 +3772,7 @@ SELECT  usr,
 			<field reporter:label="Copies" name="copies" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Label Prefix" name="label_prefix"  reporter:datatype="text" oils_persist:i18n="true"/>
 			<field reporter:label="Label Suffix" name="label_suffix"  reporter:datatype="text" oils_persist:i18n="true"/>
+			<field reporter:label="Checkin Alert" name="checkin_alert" reporter:datatype="bool" />
 		</fields>
 		<links>
 			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
