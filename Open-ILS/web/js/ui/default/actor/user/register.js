@@ -804,6 +804,7 @@ function loadAllAddrs() {
 }
 
 function loadStatCats() {
+    var sc_widget;
 
     statCats = fieldmapper.standardRequest(
         ['open-ils.circ', 'open-ils.circ.stat_cat.actor.retrieve.all'],
@@ -814,6 +815,7 @@ function loadStatCats() {
     for(var idx in statCats) {
         var stat = statCats[idx];
         var required = openils.Util.isTrue(stat.required());
+        var allow_freetext = openils.Util.isTrue(stat.allow_freetext());
         var row = statCatTemplate.cloneNode(true);
         row.id = 'stat-cat-row-' + idx;
         row.setAttribute('stat_cat_owner',stat.owner());
@@ -830,32 +832,39 @@ function loadStatCats() {
         var span = valtd.appendChild(document.createElement('span'));
         var store = new dojo.data.ItemFileReadStore(
                 {data:fieldmapper.actsc.toStoreData(stat.entries())});
-        var comboBox = new dijit.form.ComboBox({store:store,scrollOnFocus:false,fetchProperties:{sort:[{attribute: 'value'}]}}, span);
+
+        if(allow_freetext) {
+            sc_widget = new dijit.form.ComboBox({store:store,scrollOnFocus:false,fetchProperties:{sort:[{attribute: 'value'}]}}, span);
+        } else {
+            sc_widget = new dijit.form.FilteringSelect({store:store,scrollOnFocus:false,fetchProperties:{sort:[{attribute: 'value'}]}}, span);
+        }
+
         if(required) {
-            comboBox.isValid = function() {
+            sc_widget.isValid = function() {
                 // Must contain a word character
                 if(this.attr("value").match(/\w/)) {
                     return true;
                 } else return false;
             };
-            comboBox.attr('required', true);
+            sc_widget.attr('required', true);
         }
-        comboBox.labelAttr = 'value';
-        comboBox.searchAttr = 'value';
 
-        comboBox._wtype = 'statcat';
-        comboBox._statcat = stat.id();
+        sc_widget.labelAttr = 'value';
+        sc_widget.searchAttr = 'value';
+
+        sc_widget._wtype = 'statcat';
+        sc_widget._statcat = stat.id();
 
         // populate existing cats
         var map = patron.stat_cat_entries().filter(
             function(mp) { return (mp.stat_cat() == stat.id()) })[0];
-        if(map) comboBox.attr('value', map.stat_cat_entry()); 
+        if(map) sc_widget.attr('value', map.stat_cat_entry()); 
         
-        comboBox._hasBeenBlurred = true;
-                if(comboBox.validate)
-                    comboBox.validate();
+        sc_widget._hasBeenBlurred = true;
+                if(sc_widget.validate)
+                    sc_widget.validate();
 
-        widgetPile.push(comboBox); 
+        widgetPile.push(sc_widget); 
     }
 }
 
