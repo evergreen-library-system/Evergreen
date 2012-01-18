@@ -813,11 +813,17 @@ function loadStatCats() {
     // draw stat cats
     for(var idx in statCats) {
         var stat = statCats[idx];
+        var required = openils.Util.isTrue(stat.required());
         var row = statCatTemplate.cloneNode(true);
         row.id = 'stat-cat-row-' + idx;
         row.setAttribute('stat_cat_owner',stat.owner());
         row.setAttribute('stat_cat_name',stat.name());
         row.setAttribute('stat_cat_id',stat.id());
+        if(required) {
+            row.setAttribute('required','required');
+            dividerRow = dojo.byId('stat-cat-divider');
+            dividerRow.setAttribute('required','required');
+        }
         tbody.appendChild(row);
         getByName(row, 'name').innerHTML = stat.name();
         var valtd = getByName(row, 'widget');
@@ -825,18 +831,31 @@ function loadStatCats() {
         var store = new dojo.data.ItemFileReadStore(
                 {data:fieldmapper.actsc.toStoreData(stat.entries())});
         var comboBox = new dijit.form.ComboBox({store:store,scrollOnFocus:false,fetchProperties:{sort:[{attribute: 'value'}]}}, span);
+        if(required) {
+            comboBox.isValid = function() {
+                // Must contain a word character
+                if(this.attr("value").match(/\w/)) {
+                    return true;
+                } else return false;
+            };
+            comboBox.attr('required', true);
+        }
         comboBox.labelAttr = 'value';
         comboBox.searchAttr = 'value';
 
         comboBox._wtype = 'statcat';
         comboBox._statcat = stat.id();
-        widgetPile.push(comboBox); 
 
         // populate existing cats
         var map = patron.stat_cat_entries().filter(
             function(mp) { return (mp.stat_cat() == stat.id()) })[0];
         if(map) comboBox.attr('value', map.stat_cat_entry()); 
+        
+        comboBox._hasBeenBlurred = true;
+                if(comboBox.validate)
+                    comboBox.validate();
 
+        widgetPile.push(comboBox); 
     }
 }
 
