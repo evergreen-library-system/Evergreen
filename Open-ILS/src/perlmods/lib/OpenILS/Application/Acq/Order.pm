@@ -1316,8 +1316,8 @@ sub upload_records {
     my $picklist        = $args->{picklist};
     my $create_po       = $args->{create_po};
     my $activate_po     = $args->{activate_po};
-    my $ordering_agency = $args->{ordering_agency};
     my $vandelay        = $args->{vandelay};
+    my $ordering_agency = $args->{ordering_agency} || $e->requestor->ws_ou;
     my $po;
     my $evt;
 
@@ -1339,6 +1339,8 @@ sub upload_records {
     }
 
     if($create_po) {
+        return $e->die_event unless 
+            $e->allowed('CREATE_PURCHASE_ORDER', $ordering_agency);
 
         $po = create_purchase_order($mgr, 
             ordering_agency => $ordering_agency,
@@ -1411,6 +1413,7 @@ sub upload_records {
         return $die_event if $die_event;
 
     } elsif ($vandelay) {
+        $vandelay->{new_rec_perm} = 'IMPORT_ACQ_LINEITEM_BIB_RECORD_UPLOAD';
         create_lineitem_list_assets($mgr, \@li_list, $vandelay) or return $e->die_event;
     }
 

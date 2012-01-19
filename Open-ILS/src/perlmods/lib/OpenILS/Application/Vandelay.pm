@@ -915,6 +915,7 @@ sub import_record_list_impl {
         $rec_class = 'vqar';
     }
 
+    my $new_rec_perm_cache;
     my @success_rec_ids;
     for my $rec_id (@$rec_ids) {
 
@@ -1059,26 +1060,54 @@ sub import_record_list_impl {
             if(!$imported and !$error and $import_no_match and scalar(@{$rec->matches}) == 0) {
             
                 # No overlay / merge occurred.  Do a traditional record import by creating a new record
-            
-                $logger->info("vl: creating new $type record for queued record $rec_id");
-                if($type eq 'bib') {
-                    $record = OpenILS::Application::Cat::BibCommon->biblio_record_xml_import(
-                        $e, $rec->marc, $bib_sources{$rec->bib_source}, undef, 1);
-                } else {
 
-                    $record = OpenILS::Application::Cat::AuthCommon->import_authority_record($e, $rec->marc); #$source);
+                if (!$new_rec_perm_cache) {
+                    $new_rec_perm_cache = {};
+
+                    # all users creating new records are required to have the basic permission.
+                    # if the client requests, we can enforce extra permissions for creating new records.
+                    # for speed, check the permissions the first time then cache the result.
+
+                    my $perm = ($type eq 'bib') ? 'IMPORT_MARC' : 'IMPORT_AUTHORITY_MARC';
+                    my $xperm = $$args{new_rec_perm};
+                    my $rec_ou = $e->requestor->ws_ou;
+
+                    $new_rec_perm_cache->{evt} = $e->die_event
+                        if !$e->allowed($perm, $rec_ou) || ($xperm and !$e->allowed($xperm, $rec_ou));
                 }
 
-                if($U->event_code($record)) {
-                    $$report_args{import_error} = 'import.duplicate.tcn' 
-                        if $record->{textcode} eq 'OPEN_TCN_NOT_FOUND';
-                    $$report_args{evt} = $record;
+                if ($new_rec_perm_cache->{evt}) {
 
-                } else {
+                    # a cached event won't roll back the transaction (a la die_event), but
+                    # the transaction will get rolled back in finish_rec_import_attempt() below
+                    $$report_args{evt} = $new_rec_perm_cache->{evt};
+                    $$report_args{import_error} = 'import.record.perm_failure';
 
-                    $logger->info("vl: successfully imported new $type record");
-                    $rec->imported_as($record->id);
-                    $imported = 1;
+                } else { # perm checks succeeded
+
+                    $logger->info("vl: creating new $type record for queued record $rec_id");
+
+                    if ($type eq 'bib') {
+
+                        $record = OpenILS::Application::Cat::BibCommon->biblio_record_xml_import(
+                            $e, $rec->marc, $bib_sources{$rec->bib_source}, undef, 1);
+
+                    } else { # authority record
+
+                        $record = OpenILS::Application::Cat::AuthCommon->import_authority_record($e, $rec->marc); #$source);
+                    }
+
+                    if($U->event_code($record)) {
+                        $$report_args{import_error} = 'import.duplicate.tcn' 
+                            if $record->{textcode} eq 'OPEN_TCN_NOT_FOUND';
+                        $$report_args{evt} = $record;
+
+                    } else {
+
+                        $logger->info("vl: successfully imported new $type record");
+                        $rec->imported_as($record->id);
+                        $imported = 1;
+                    }
                 }
             }
         }

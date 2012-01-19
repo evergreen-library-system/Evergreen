@@ -44,6 +44,30 @@ ALTER TABLE acq.acq_lineitem_history ADD COLUMN queued_record BIGINT
     REFERENCES vandelay.queued_bib_record (id) 
     ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 
+-- seed data --
+
+INSERT INTO permission.perm_list ( id, code, description ) 
+    VALUES ( 
+        521, 
+        'IMPORT_ACQ_LINEITEM_BIB_RECORD_UPLOAD', 
+        oils_i18n_gettext( 
+            521,
+            'Allows a user to create new bibs directly from an ACQ MARC file upload', 
+            'ppl', 
+            'description' 
+        )
+    );
+
+
+INSERT INTO vandelay.import_error ( code, description ) 
+    VALUES ( 
+        'import.record.perm_failure', 
+        oils_i18n_gettext(
+            'import.record.perm_failure', 
+            'Perm failure creating a record', 'vie', 'description') 
+    );
+
+
 COMMIT;
 
 /* UNDO SQL
