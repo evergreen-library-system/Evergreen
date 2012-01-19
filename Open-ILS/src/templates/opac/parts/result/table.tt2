@@ -244,8 +244,8 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                        [%- IF ENV.OILS_CHILIFRESH_ACCOUNT %]
                                         </tr>
+                                        [%- IF ENV.OILS_CHILIFRESH_ACCOUNT %]
                                         <tr>
                                             <td/>
                                             <td align='center'> <!-- Chilifresh reviews link --> 
@@ -259,7 +259,6 @@
                                             </td>
                                         </tr>
                                         [%- END %]
-                        </tr>
                     [% END %]
                     </tbody>
                 </table>
