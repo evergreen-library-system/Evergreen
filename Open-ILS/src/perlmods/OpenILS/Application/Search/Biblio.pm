@@ -1166,7 +1166,6 @@ sub staged_search {
             my $start = time;
             $results = $U->storagereq($method, %$search_hash);
             $search_duration = time - $start;
-            $logger->info("staged search: DB call took $search_duration seconds and returned ".scalar(@$results)." rows, including summary");
             $summary = shift(@$results) if $results;
 
             unless($summary) {
@@ -1174,6 +1173,8 @@ sub staged_search {
                     OpenSRF::Utils::JSON->perl2JSON($search_hash));
                 return {count => 0};
             }
+
+            $logger->info("staged search: DB call took $search_duration seconds and returned ".scalar(@$results)." rows, including summary");
 
             my $hc = $summary->{estimated_hit_count} || $summary->{visible};
             if($hc == 0) {
