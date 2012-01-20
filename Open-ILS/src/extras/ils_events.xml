@@ -760,6 +760,9 @@
 	<event code='2003' textcode='INTERNAL_SERVER_ERROR'>
 		<desc xml:lang="en-US">There was an internal server error</desc>
 	</event>
+        <event code='2004' textcode='ACTOR_USER_DELETE_OPEN_XACTS'>
+                <desc xml:lang="en-US">The user you have attempted to delete cannot be deleted because it has open circulations and/or unpaid bills.</desc>
+        </event>
 
     <!-- CREDIT EVENTS -->
 	<event code='4001' textcode='CREDIT_PROCESSOR_NOT_ENABLED'>

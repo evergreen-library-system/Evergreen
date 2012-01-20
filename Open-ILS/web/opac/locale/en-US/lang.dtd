@@ -1976,7 +1976,11 @@
 <!ENTITY staff.server.admin.copy_locations.editor.delete.confirm "Are you sure you wish to delete the selected copy location?  Note: If copies are currently attached to this location, the delete operation will fail.">
 <!ENTITY staff.server.admin.copy_locations.editor.prefix "Label prefix">
 <!ENTITY staff.server.admin.copy_locations.editor.suffix "Label suffix">
+<!ENTITY staff.server.admin.copy_locations.editor.prefix.label "Label prefix: ">
+<!ENTITY staff.server.admin.copy_locations.editor.suffix.label "Label suffix: ">
 <!ENTITY staff.server.admin.copy_locations.editor.welcome "Welcome">
+<!ENTITY staff.server.admin.copy_locations.editor.checkin_alert.label "Checkin Alert: ">
+<!ENTITY staff.server.admin.copy_locations.editor.checkin_alert "Checkin Alert">
 <!ENTITY staff.server.admin.copy_locations.submit "Submit">
 <!ENTITY staff.server.admin.copy_locations.cancel "Cancel">
 <!ENTITY staff.server.admin.copy_locations.update_success "Update Succeeded">

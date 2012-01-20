@@ -1,0 +1,85 @@
+Release notes
+=============
+
+Upgrade notes
+-------------
+
+Located URI search scope
+~~~~~~~~~~~~~~~~~~~~~~~~
+Recognizing that electronic resources are often licensed for an entire library
+system rather than just a single library, the search scope for located URIs has
+changed to match from the highest point in the hierarchy down, rather than from
+the bottom up. In previous releases of Evergreen, if you had a MARC record with
+a URI located at 'BR1', a search for that record at the 'SYS1' scope would
+include the record in its results. The current release of Evergreen would not
+include the record in its results; the scope needs to be set at the level of
+'BR1' in the hierarchy or below.
+
+Therefore, you may want to run a SQL statement like the following, edited to
+match the short names of your branches and systems, to change the located
+URIs so that searches at the system level continue to return results for
+located URIs:
+
+------------------------------------------------------------------------------
+UPDATE biblio.record_entry
+    SET marc = replace(
+        replace(
+            marc, 
+            '<subfield code="9">BR1</subfield>',
+            '<subfield code="9">SYS1</subfield>'
+        ),
+        '<subfield code="9">BR3</subfield>',
+        '<subfield code="9">SYS2</subfield>'
+    ) WHERE marc LIKE '<subfield code="9">BR1</subfield>'
+        OR marc LIKE '<subfield code="9">BR3</subfield>'
+;
+------------------------------------------------------------------------------
+
+New features
+------------
+
+Cataloging
+~~~~~~~~~~
+
+Prevent bibliographic records from having attached copies
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+To enable libraries to designate specific sets of records as only for use
+as electronic resources, it is possible to configure a bibliographic source
+such that physical copies or MFHD records may not be attached to records
+from that source. The `config.bib_source` table now includes a new Boolean
+column, `can_have_copies`, that controls this behavior. If `can_have_copies`
+for a given bibliographic source is `TRUE`, then the staff client will prevent
+a cataloger from adding volumes or MFHD records to records belonging to that
+source.
+
+Switch copy location name and library short name in copy editor
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+By default, the copy editor shows the library shortname ('BR1' or 'CONS')
+followed by the copy location name ('Stacks', 'Reference').  A new workstation
+setting, under *Admin -> Workstation Administration -> Copy Editor: Copy
+Location Name First*, enables staff to change the display so that the copy
+location name is displayed first, followed by the library shortname. This
+may be particularly useful for libraries that have defined one set of copy
+locations at the consortial level and want to enable quick keyboard navigation
+to copy locations by typing just the first letters of the copy location.
+
+Reports
+~~~~~~~
+
+New views for reporting sources
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+To support the creation of collection development reports, the following
+reporting sources have been added:
+
+  * 'Last Circulation or Creation Date' is a source that offers the copy ID,
+    the last circulation date or creation date, and the last circulation date
+  * 'Hold/Copy Ratio per Bib and Pickup Library' is a source that calculates
+    the number of holds per copy per bibliographic record, with granularity
+    by pickup library.
+
+License
+-------
+This work is licensed under the Creative Commons Attribution-ShareAlike 3.0
+Unported License. To view a copy of this license, visit
+http://creativecommons.org/licenses/by-sa/3.0/ or send a letter to Creative
+Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, USA.

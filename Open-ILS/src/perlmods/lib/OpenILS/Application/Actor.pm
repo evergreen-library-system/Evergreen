@@ -3580,6 +3580,12 @@ sub update_events {
 
 __PACKAGE__->register_method (
 	method		=> 'really_delete_user',
+	api_name    => 'open-ils.actor.user.delete.override',
+    signature   => q/@see open-ils.actor.user.delete/
+);
+
+__PACKAGE__->register_method (
+	method		=> 'really_delete_user',
 	api_name    => 'open-ils.actor.user.delete',
     signature   => q/
         It anonymizes all personally identifiable information in actor.usr. By calling actor.usr_purge_data() 
@@ -3593,7 +3599,25 @@ sub really_delete_user {
     my($self, $conn, $auth, $user_id, $dest_user_id) = @_;
     my $e = new_editor(authtoken => $auth, xact => 1);
     return $e->die_event unless $e->checkauth;
+
+    # Find all unclosed billings for for user $user_id, thereby, also checking for open circs
+    my $open_bills = $e->json_query({
+        select => { mbts => ['id'] },
+        from => 'mbts',
+        where => {
+            xact_finish => { '=' => undef },
+            usr => { '=' => $user_id },
+        }
+    }) or return $e->die_event;
+
     my $user = $e->retrieve_actor_user($user_id) or return $e->die_event;
+
+    # No deleting patrons with open billings or checked out copies, unless perm-enabled override
+    if (@$open_bills) {
+        return $e->die_event(OpenILS::Event->new('ACTOR_USER_DELETE_OPEN_XACTS'))
+        unless $self->api_name =~ /override/o
+        && $e->allowed('ACTOR_USER_DELETE_OPEN_XACTS.override', $user->home_ou);
+    }
     # No deleting yourself - UI is supposed to stop you first, though.
     return $e->die_event unless $e->requestor->id != $user->id;
     return $e->die_event unless $e->allowed('DELETE_USER', $user->home_ou);
@@ -3602,12 +3626,11 @@ sub really_delete_user {
     my $evt = group_perm_failed($session, $e->requestor, $user);
     return $e->die_event($evt) if $evt;
     my $stat = $e->json_query(
-        {from => ['actor.usr_delete', $user_id, $dest_user_id]})->[0] 
+        {from => ['actor.usr_delete', $user_id, $dest_user_id]})->[0]
         or return $e->die_event;
     $e->commit;
     return 1;
 }
-
 
 
 __PACKAGE__->register_method (

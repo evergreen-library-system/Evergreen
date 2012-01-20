@@ -31,6 +31,7 @@ CREATE TABLE asset.copy_location (
 	circulate	BOOL	NOT NULL DEFAULT TRUE,
 	label_prefix	TEXT,
 	label_suffix	TEXT,
+	checkin_alert	BOOL	NOT NULL DEFAULT FALSE,
 	CONSTRAINT acl_name_once_per_lib UNIQUE (name, owning_lib)
 );
 

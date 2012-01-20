@@ -580,7 +580,7 @@ circ.util.columns = function(modify,params) {
                         acn_id = my.acn;
                     }
                 } else if (my.acp) {
-                    if (typeof my.acp.call_number() == 'object') {
+                    if (typeof my.acp.call_number() == 'object' && my.acp.call_number() != null) {
                         acn_id = my.acp.call_number().id();
                     } else {
                         acn_id = my.acp.call_number();
@@ -594,6 +594,9 @@ circ.util.columns = function(modify,params) {
                     return document.getElementById('circStrings').getString('staff.circ.utils.retrieving');
                 } else {
                     if (!my.acn) {
+                        if (typeof scratch_data == 'undefined' || scratch_data == null) {
+                            scratch_data = {};
+                        }
                         if (typeof scratch_data['acn_map'] == 'undefined') {
                             scratch_data['acn_map'] = {};
                         }
@@ -646,7 +649,7 @@ circ.util.columns = function(modify,params) {
                         acn_id = my.acn;
                     }
                 } else if (my.acp) {
-                    if (typeof my.acp.call_number() == 'object') {
+                    if (typeof my.acp.call_number() == 'object' && my.acp.call_number() != null) {
                         acn_id = my.acp.call_number().id();
                     } else {
                         acn_id = my.acp.call_number();
@@ -660,6 +663,9 @@ circ.util.columns = function(modify,params) {
                     return document.getElementById('circStrings').getString('staff.circ.utils.retrieving');
                 } else {
                     if (!my.acn) {
+                        if (typeof scratch_data == 'undefined' || scratch_data == null) {
+                            scratch_data = {};
+                        }
                         if (typeof scratch_data['acn_map'] == 'undefined') {
                             scratch_data['acn_map'] = {};
                         }
@@ -700,7 +706,7 @@ circ.util.columns = function(modify,params) {
                         acn_id = my.acn;
                     }
                 } else if (my.acp) {
-                    if (typeof my.acp.call_number() == 'object') {
+                    if (typeof my.acp.call_number() == 'object' && my.acp.call_number() != null) {
                         acn_id = my.acp.call_number().id();
                     } else {
                         acn_id = my.acp.call_number();
@@ -714,6 +720,9 @@ circ.util.columns = function(modify,params) {
                     return document.getElementById('circStrings').getString('staff.circ.utils.retrieving');
                 } else {
                     if (!my.acn) {
+                        if (typeof scratch_data == 'undefined' || scratch_data == null) {
+                            scratch_data = {};
+                        }
                         if (typeof scratch_data['acn_map'] == 'undefined') {
                             scratch_data['acn_map'] = {};
                         }
@@ -754,7 +763,7 @@ circ.util.columns = function(modify,params) {
                         acn_id = my.acn;
                     }
                 } else if (my.acp) {
-                    if (typeof my.acp.call_number() == 'object') {
+                    if (typeof my.acp.call_number() == 'object' && my.acp.call_number() != null) {
                         acn_id = my.acp.call_number().id();
                     } else {
                         acn_id = my.acp.call_number();
@@ -768,6 +777,9 @@ circ.util.columns = function(modify,params) {
                     return document.getElementById('circStrings').getString('staff.circ.utils.retrieving');
                 } else {
                     if (!my.acn) {
+                        if (typeof scratch_data == 'undefined' || scratch_data == null) {
+                            scratch_data = {};
+                        }
                         if (typeof scratch_data['acn_map'] == 'undefined') {
                             scratch_data['acn_map'] = {};
                         }
@@ -2412,7 +2424,7 @@ circ.util.hold_columns = function(modify,params) {
                         acn_id = my.acn;
                     }
                 } else if (my.acp) {
-                    if (typeof my.acp.call_number() == 'object') {
+                    if (typeof my.acp.call_number() == 'object' && my.acp.call_number() != null) {
                         acn_id = my.acp.call_number().id();
                     } else {
                         acn_id = my.acp.call_number();
@@ -2426,6 +2438,9 @@ circ.util.hold_columns = function(modify,params) {
                     return document.getElementById('circStrings').getString('staff.circ.utils.retrieving');
                 } else {
                     if (!my.acn) {
+                        if (typeof scratch_data == 'undefined' || scratch_data == null) {
+                            scratch_data = {};
+                        }
                         if (typeof scratch_data['acn_map'] == 'undefined') {
                             scratch_data['acn_map'] = {};
                         }
@@ -2791,10 +2806,15 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
             msg += '\n\n';
         }
 
+        var suppress_popups = data.hash.aous['ui.circ.suppress_checkin_popups'];
+
         /* SUCCESS  /  NO_CHANGE  /  ITEM_NOT_CATALOGED */
         if (check.ilsevent == 0 || check.ilsevent == 3 || check.ilsevent == 1202) {
-            try { check.route_to = data.lookup('acpl', check.copy.location() ).name(); }
-            catch(E) {
+            try {
+                var acpl = data.lookup('acpl', check.copy.location()); 
+                check.route_to = acpl.name();
+                check.checkin_alert = isTrue(acpl.checkin_alert()) && !suppress_popups;
+            } catch(E) {
                 print_data.error_msg = document.getElementById('commonStrings').getString('common.error');
                 print_data.error_msg += '\nFIXME: ' + E + '\n';
                 msg += print_data.error_msg;
@@ -2832,7 +2852,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                 case 7: /* RESHELVING */
                     check.what_happened = 'success';
                     sound.special('checkin.success');
-                    if (msg) {
+                    if (msg || check.checkin_alert) {
                         print_data.route_to_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
                         print_data.route_to = check.route_to;
                         msg += print_data.route_to_msg;
@@ -2994,7 +3014,6 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                         msg += '\n';
                     }
                     var rv = 0;
-                    var suppress_popups = data.hash.aous['ui.circ.suppress_checkin_popups'];
                     if (suppress_popups) {
                         rv = auto_print ? 0 : -1; auto_print = true; // skip dialog and PRINT or DO NOT PRINT based on Auto-Print checkbox
                     }
@@ -3088,7 +3107,6 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                     sound.special('checkin.cataloging');
                     check.route_to = 'CATALOGING';
                     print_data.route_to;
-                    var suppress_popups = data.hash.aous['ui.circ.suppress_checkin_popups'];
                     var x = document.getElementById('do_not_alert_on_precat');
                     var do_not_alert_on_precats = x ? ( x.getAttribute('checked') == 'true' ) : false;
                     if ( !suppress_popups && !do_not_alert_on_precats ) {
@@ -3401,7 +3419,6 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                 }
             }
             var rv = 0;
-            var suppress_popups = data.hash.aous['ui.circ.suppress_checkin_popups'];
             if (suppress_popups) {
                 rv = auto_print ? 0 : -1; auto_print = true; // skip dialog and PRINT or DO NOT PRINT based on Auto-Print checkbox
             }
@@ -3483,7 +3500,6 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
             sound.special('checkin.not_found');
             check.route_to = 'CATALOGING';
             var mis_scan_msg = document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.status.copy_not_found', [params.barcode]);
-            var suppress_popups = data.hash.aous['ui.circ.suppress_checkin_popups'];
             if (!suppress_popups) {
                 error.yns_alert(
                     mis_scan_msg,
@@ -3515,7 +3531,6 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
             sound.special('checkin.hold_capture_delayed');
             var rv = 0;
             msg += document.getElementById('circStrings').getString('staff.circ.utils.hold_capture_delayed.description');
-            var suppress_popups = data.hash.aous['ui.circ.suppress_checkin_popupst'];
             if (!suppress_popups) {
                 rv = error.yns_alert_formatted(
                     msg,

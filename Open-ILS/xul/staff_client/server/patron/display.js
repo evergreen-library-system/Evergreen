@@ -123,7 +123,25 @@ patron.display.prototype = {
                                         }
                                         params.push( dest_usr.id() );
                                     }
-                                    obj.network.simple_request( 'FM_AU_DELETE', params );
+                                    var robj = obj.network.simple_request(
+                                        'FM_AU_DELETE',
+                                        params,
+                                        null,
+                                        {
+                                            'title' : document.getElementById('patronStrings').getString('staff.patron.display.cmd_patron_delete.override_prompt'),
+                                            'overridable_events' : [
+                                                2004 /* ACTOR_USER_DELETE_OPEN_XACTS */
+                                            ]
+                                        }
+                                    );
+                                    if (typeof robj.ilsevent != 'undefined') {
+                                        switch(Number(robj.ilsevent)) {
+                                            /* already informed via override prompt */
+                                            case 2004 /* ACTOR_USER_DELETE_OPEN_XACTS */ :
+                                                return;
+                                            break;
+                                        }
+                                    }
                                     obj.refresh_all();
                                 }
                             } catch(E) {
