@@ -2,15 +2,23 @@ body {
 	margin:0;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
-	background: #252525;
+	background: #00593d;
 }
 
 img {
 	border: none;
 }
 
+#topnav_logo {
+	padding-bottom: 25px;
+}
+
+#homesearch_main_logo {
+        padding-top: 60px;
+}
+
 a {
-	color: #003399;
+	color: #00593d;
 }
 
 #search-wrapper input[type=text] {
@@ -83,7 +91,7 @@ div.select-wrapper:hover {
 #dash_wrapper div {
 	position: relative;
     vertical-align: middle;
-    background: #252525;
+    background: #00593d;
     border-radius: 5px;
     height: 3em;
     padding: 0em 1em 0em 1em;
@@ -93,20 +101,21 @@ span.dash_divider {
     margin: 0em 1em 0em 1em;
 	position: relative;
     top: 10px;
-    color: black;
+    color: #007a54;
 }
 
 #dashboard {
 	clear:both;
 	float:right;
     margin-top: 1em;
-    background: #252525;
+    background: #00593d;
     border-radius: 5px;
     height: 3em;
 }
 
 #dashboard span.dash-align a {
 	font-weight: bold;
+	text-decoration: none;
 	position: relative;
     top: 10px;
 }
@@ -125,11 +134,11 @@ span.dash_divider {
 #dash_pickup { color: #1dd93c; }
 #dash_fines { color: #f41d36; }
 #header-wrap {
-    background: linear-gradient(lightGreen, #252525);
-    background: -moz-linear-gradient(lightGreen, #252525);
-    background: -o-linear-gradient(lightGreen, #252525);
-    background: -webkit-linear-gradient(lightGreen, #252525);
-    background-color: lightGreen;
+    background: linear-gradient(#00593d, #007a54);
+    background: -moz-linear-gradient(#00593d, #007a54);
+    background: -o-linear-gradient(#00593d, #007a54);
+    background: -webkit-linear-gradient(#00593d, #007a54);
+    background-color: #007a54;
 }
 #header {
 	color: #fff;
@@ -148,7 +157,7 @@ span.dash_divider {
 }
 
 #header-links {
-	color: #afafaf;
+	color: white;
 	font-size: 11px;
 	font-weight: bold;
 	position: relative;
@@ -157,14 +166,16 @@ span.dash_divider {
 }
 
 #header-links a {
-	color: #afafaf;
+	color: white;
 	display: block;
 	float:left;
 	margin-right:22px;
+	text-decoration: none;
 }
 
 #header-links a:hover {
 	color: white;
+	text-shadow: 0 0 0.2em #00593d, 0 0 0.2em #00593d;
 	text-decoration: none;
 }
 
@@ -272,30 +283,39 @@ span.dash_divider {
     display: block;
     margin: 10px 7px 10px 0px;
     padding: 10px 0px 10px 0px;
-    -moz-border-radius: 7px 7px 0px 0px; 
-    border-radius: 7px 7px 0px 0px;
+    -moz-border-radius: 10px 10px 0px 0px; 
+    border-radius: 10px 10px 0px 0px;
     font-weight: bold;
-    color: #45709b;
-    background: #9ad0f1;
+    color: white;
+    background: #69A088;
     font-weight: bold;
+    text-decoration: none;
 }
 
 #adv_search_tabs a, #acct_tabs a, #acct_fines_tabs a {
     padding: 1em 1em 0.5em;
 }
 
+#adv_search_tabs a:hover, #acct_tabs a:hover, #acct_fines_tabs a:hover, #acct_checked_tabs a:hover, #acct_holds_tabs a:hover, #acct_prefs_tabs a:hover {
+    background: #00593d; 
+    color: white;
+    text-decoration: none;
+}
+
 #adv_search.on, #num_search.on, #expert_search.on {
     color: #333333;
     background: white;
+    text-decoration: none;
 }
 
 #adv_search_tabs a.acct-tab-on, #acct_tabs a.acct-tab-on, #acct_fines_tabs a.acct-tab-on {
     color: #333333;
     background: white;
+    text-decoration: none;
 }
 
 .acct-tab-off {
-    background: #9ad0f1;
+    background: #69A088;
 }
 
 #acct_checked_tabs a, #acct_holds_tabs a, #acct_prefs_tabs a {
@@ -322,7 +342,7 @@ span.dash_divider {
 }
 
 #rdetail_results a {
-    color:#074079;
+    color:#007a54;
     font-weight:bold;
     font-size: 1.2em;
 }
@@ -455,7 +475,7 @@ div.format_icon {
 
 .rdetail_extras {
 	height: 29px;
-	background: #9ad0f1;
+	background: #69A088;
 	padding-top:1px;
 	margin-bottom: 10px;
 	margin-top: 10px;
@@ -708,7 +728,7 @@ div.format_icon {
 .results_header_nav1 .h1 {
 	font-size:14px;
 	font-weight:bold;
-	color:#074079;
+	color:#007a54;
 }
 
 .start_end_links_span {
@@ -819,7 +839,7 @@ div.result_place_hold {
 	height:22px;
 	font-size:14px;
 	font-weight:bold;
-	color:#074079;
+	color:#007a54;
 	padding: 0px 7px 0px 0px;
 	border-bottom: 1px dotted #ccc;
 }
@@ -917,8 +937,7 @@ div.result_place_hold {
 }
 
 #myopac_tabs, #adv_search_parent, #fines_payments_wrapper {
-	background: #929292;
-	border-top:1px solid #8b8b8b;
+	background: #007a54;
 	padding-top:5px;
 	margin-bottom:20px;
 }
@@ -993,7 +1012,7 @@ div.facet_sidebar {
 	overflow:hidden;
 	background:url('/images/facet_box_bg.png') no-repeat;
 	font-weight:bold;
-	color:#074079;
+	color:#007a54;
 	padding-top:4px;
 }
 
@@ -1055,11 +1074,11 @@ div.facet_sidebar {
 }
 
 #footer-wrap {
-    background: linear-gradient(lightGreen, #252525);
-    background: -moz-linear-gradient(lightGreen, #252525);
-    background: -o-linear-gradient(lightGreen, #252525);
-    background: -webkit-linear-gradient(lightGreen, #252525);
-    background-color: lightGreen;
+    background: linear-gradient(#007a54, #00593d);
+    background: -moz-linear-gradient(#007a54, #00593d);
+    background: -o-linear-gradient(#007a54, #00593d);
+    background: -webkit-linear-gradient(#007a54, #00593d);
+    background-color: #00593d;
 }
 
 #footer {
@@ -1070,7 +1089,13 @@ div.facet_sidebar {
 }
 
 #footer a {
-	color: black;
+	color: white;
+	text-decoration: none;
+	text-shadow: 0 0 0.2em #00593d, 0 0 0.2em #00593d;
+}
+
+#copyright_text, #footer_logo {
+    color: white;
 }
 
 .color_4 {
@@ -1097,7 +1122,7 @@ div.facet_sidebar {
 .row-remover { position: relative; top: 1px; vertical-align: middle; }
 .subtle-button {
     background-color: #ffffff;
-    color: #003399; text-decoration: none;
+    color: #00593d; text-decoration: none;
     font-size: 12px;
     padding: 0; border: 0; margin: 0;
     vertical-align: middle;
@@ -1163,9 +1188,10 @@ a.dash-link:hover { text-decoration: underline !important; }
 .opac-button, .results_header_btns, #simple-detail-view-links { 
     color: white; 
     font-weight: bold; 
-    -moz-border-radius: 5%;
-    border-radius: 5%;
-    background: #1784c7; 
+    text-decoration: none;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background: #69A088; 
 }
 
 .results_header_btns a, #simple-detail-view-links a {
@@ -1177,7 +1203,7 @@ a.dash-link:hover { text-decoration: underline !important; }
 }
 
 a.opac-button:hover, .results_header_btns a:hover, #simple-detail-view-links a:hover {
-    background: #359ee0;
+    background: #00593d;
     text-decoration: none;
 }
 
