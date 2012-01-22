@@ -1,7 +1,5 @@
 Evergreen Documentation
 =======================
-Robert Soulliere <robert.soulliere@mohawkcollege.ca>
-v2.2, January 2011
 
 Introduction
 ------------ 
