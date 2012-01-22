@@ -8927,5 +8927,7 @@ UPDATE  metabib.record_attr
         GROUP BY 1) x
   WHERE x.record = metabib.record_attr.id;
 
-
-
+UPDATE metabib.record_attr
+   SET attrs = attrs || ('pubdate' => (attrs->'date1'))
+   WHERE defined(attrs, 'pubdate') IS FALSE
+   AND defined(attrs, 'date1') IS TRUE;
