@@ -13,9 +13,18 @@
         END;
         args.upc = args.upcs.0; # use first UPC as the default
         args.issn = xml.findnodes('//*[@tag="022"]/*[@code="a"]').textContent;
-        args.title = xml.findnodes('//*[@tag="245"]/*[@code="a"]').textContent;
-        args.title_extended = xml.findnodes('//*[@tag="245"]').textContent;
         args.author = xml.findnodes('//*[@tag="100"]/*[@code="a"]').textContent;
+
+        # Avoid ugly trailing syntax on brief titles
+        args.title = xml.findnodes('//*[@tag="245"]/*[@code="a"]').textContent;
+        args.title = args.title | replace('[:;/]$', '');
+
+        # Provide correct spacing between the subfields
+        titsubs = xml.findnodes('//*[@tag="245"]/*[@code]');
+        titsubs_content = [];
+            FOR sub IN titsubs; titsubs_content.push(sub.textContent); END;
+        args.title_extended = titsubs_content.join(" ");
+
         args.publisher = xml.findnodes('//*[@tag="260"]/*[@code="b"]').textContent;
         args.pubdate = xml.findnodes('//*[@tag="260"]/*[@code="c"]').textContent;
         args.summary = xml.findnodes('//*[@tag="520"]/*[@code="a"]').textContent;

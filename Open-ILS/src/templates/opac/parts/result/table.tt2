@@ -7,6 +7,7 @@
     IF ctx.result_stop > ctx.hit_count; ctx.result_stop = ctx.hit_count; END;
 
     result_count = ctx.result_start;
+
 %]
 
 [% PROCESS "opac/parts/result/paginate.tt2" %] 
@@ -30,7 +31,11 @@
                     <tbody id="result_table">
                     [%  FOR rec IN ctx.records;
                             attrs = {marc_xml => rec.marc_xml};
-                            PROCESS get_marc_attrs args=attrs %]
+                            PROCESS get_marc_attrs args=attrs;
+                            IF CGI.param('detail_record_view');
+                                attrs.title = attrs.title_extended;
+                            END;
+                    -%]
                         <tr class="result_table_row">
                                             <td class="results_row_count" name="results_row_count">[%
                                                     result_count; result_count = result_count + 1
