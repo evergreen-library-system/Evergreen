@@ -1,0 +1,114 @@
+Evergreen Documentation
+=======================
+Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+v2.2, January 2011
+
+Introduction
+------------ 
+
+This guide was produced by the Evergreen Documentation Interest Group (DIG), consisting of numerous volunteers from many different organizations. The DIG has drawn together, edited, and supplemented pre-existing documentation contributed by libraries and consortia running Evergreen that were kind enough to release their documentation into the creative commons. For a full list of authors and contributing organizations, see Appendix B, About this Documentation. Just like the software it describes, this guide is a work in progress, continually revised to meet the needs of its users, so if you find errors or omissions, please let us know, by contacting the DIG facilitators at docs@evergreen-ils.org.
+
+This guide to Evergreen is intended to meet the needs of front-line library staff, catalogers, library administrators, system administrators, and software developers. It is organized into Parts, Chapters, and Sections addressing key aspects of the software, beginning with the topics of broadest interest to the largest groups of users and progressing to some of the more specialized and technical topics of interest to smaller numbers of users.
+
+Copies of this guide can be accessed in PDF and HTML formats from http://docs.evergreen-ils.org/.
+
+About Evergreen
+~~~~~~~~~~~~~~~
+Evergreen is an open source library automation software designed to meet the needs of the very smallest to the very largest libraries and consortia. Through its staff interface, it facilitates the management, cataloging, and circulation of library materials, and through its online public access interface it helps patrons find those materials.
+
+The Evergreen software is freely licensed under the GNU General Public License, meaning that it is free to download, use, view, modify, and share. It has an active development and user community, as well as several companies offering migration, support, hosting, and development services.
+
+The community’s development requirements state that Evergreen must be:
+
+* Stable, even under extreme load.
+* Robust, and capable of handling a high volume of transactions and simultaneous users.
+* Flexible, to accommodate the varied needs of libraries.
+* Secure, to protect our patrons’ privacy and data.
+* User-friendly, to facilitate patron and staff use of the system.
+
+Evergreen, which first launched in 2006 now powers over 544 libraries of every type – public, academic, special, school, and even tribal and home libraries – in over a dozen countries worldwide.
+
+include::release_notes.txt[]
+
+
+
+Software Installation
+---------------------
+
+Introduction
+~~~~~~~~~~~~
+
+
+System Configuration and Customization
+--------------------------------------
+
+Introduction
+~~~~~~~~~~~~
+
+
+System Administration From the Staff Client
+-------------------------------------------
+
+Introduction
+~~~~~~~~~~~~
+
+
+
+Local Administration
+--------------------
+
+Introduction
+~~~~~~~~~~~~
+
+
+Acqiostions
+-----------
+
+Introduction
+~~~~~~~~~~~~
+
+
+Cataloging
+----------
+
+Intrododuction
+~~~~~~~~~~~~~~
+
+\Serials
+-------
+
+Introduction
+~~~~~~~~~~~~
+
+
+Circulation
+-----------
+
+Introduction
+~~~~~~~~~~~~
+
+
+Reports
+-------
+
+Introduction
+~~~~~~~~~~~~
+
+
+Using the Public Access Catalog
+-------------------------------
+
+Introduction
+~~~~~~~~~~~~
+
+
+Developer Resources
+-------------------
+
+Introduction
+~~~~~~~~~~~~
+
+
+Appendices
+----------
+
