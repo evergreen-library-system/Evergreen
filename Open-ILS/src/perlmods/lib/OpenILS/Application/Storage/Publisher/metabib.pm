@@ -1953,7 +1953,7 @@ sub biblio_search_multi_class_fts {
     my $ou_type          = $args{depth};
     my $limit            = $args{limit}  || 10;
     my $offset           = $args{offset} ||  0;
-    my $pref_lang        = $args{prefered_language} || 'eng';
+    my $pref_lang        = $args{preferred_language} || 'eng';
     my $visibility_limit = $args{visibility_limit}  || 5000;
 
 	if (!$ou) {
@@ -2862,7 +2862,7 @@ sub query_parser_fts {
 
     my $config = OpenSRF::Utils::SettingsClient->new();
 
-    # set the locale-based default prefered location
+    # set the locale-based default preferred location
     if (!$query->parse_tree->find_filter('preferred_language')) {
         $parser->default_preferred_language( $args{preferred_language} );
 
