@@ -119,7 +119,7 @@ if (!dojo._hasResource["openils.widget.HoldingCode"]) {
 
         new dijit.form.Button(
             {
-                "label": "Compile",
+                "label": "Create Holding Code",
                 "onClick": function() {
                     inputs.forEach(
                         function(input) {
@@ -200,9 +200,21 @@ if (!dojo._hasResource["openils.widget.HoldingCode"]) {
                     dojo.create("span", null, dialog_div)
                 );
 
-                this.code_text_box = new dijit.form.TextBox(
+                this.code_text_box = new dijit.form.ValidationTextBox(
                     {}, dojo.create("div", null, this.domNode)
                 );
+
+                /* This by no means will fully validate plausible holding codes,
+                 * but it will perhaps help users who experiment with typing
+                 * the holding code in here freehand (a little). */
+                this.code_text_box.validator = function(value) {
+                    try {
+                        return dojo.isArray(dojo.fromJson(value));
+                    } catch(E) {
+                        return false;
+                    }
+                };
+
                 this.code_text_box.startup();
             },
 
