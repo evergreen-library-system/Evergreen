@@ -70,18 +70,6 @@ sub _prepare_biblio_search {
         $query .= " $1($term)" if length $term;
     }
 
-    # sort is treated specially, even though it's actually a filter
-    if ($cgi->param('sort')) {
-        $query =~ s/sort\([^\)]*\)//g;  # override existing sort(). no stacking.
-        my ($axis, $desc) = split /\./, $cgi->param('sort');
-        $query .= " sort($axis)";
-        if ($desc and not $query =~ /\#descending/) {
-            $query .= '#descending';
-        } elsif (not $desc) {
-            $query =~ s/\#descending//;
-        }
-    }
-
     if ($cgi->param("bookbag")) {
         $query .= " container(bre,bookbag," . int($cgi->param("bookbag")) . ")";
     }
@@ -97,6 +85,23 @@ sub _prepare_biblio_search {
         } else {
             $query .= ' ' . $cgi->param('pubdate') .
                 '(' . $cgi->param('date1') . ')';
+        }
+    }
+
+    # ---------------------------------------------------------------------
+    # Nothing below here constitutes a query by itself.  If the query value 
+    # is still empty up to this point, there is no query.  abandon ship.
+    return () unless $query;
+
+    # sort is treated specially, even though it's actually a filter
+    if ($cgi->param('sort')) {
+        $query =~ s/sort\([^\)]*\)//g;  # override existing sort(). no stacking.
+        my ($axis, $desc) = split /\./, $cgi->param('sort');
+        $query .= " sort($axis)";
+        if ($desc and not $query =~ /\#descending/) {
+            $query .= '#descending';
+        } elsif (not $desc) {
+            $query =~ s/\#descending//;
         }
     }
 
@@ -184,7 +189,7 @@ sub tag_circed_items {
 sub load_rresults_bookbag {
     my ($self) = @_;
 
-    my $bookbag_id = int($self->cgi->param("bookbag"));
+    my $bookbag_id = int($self->cgi->param("bookbag") || 0);
     return if $bookbag_id < 1;
 
     my %authz = $self->ctx->{"user"} ?
