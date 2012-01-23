@@ -236,11 +236,15 @@ patron.search_result.prototype = {
         try {
             var results = [];
 
+            var sort_params = obj.search_sort;
+            if (!sort_params) {
+                sort_params = [ 'family_name ASC', 'first_given_name ASC', 'second_given_name ASC', 'dob DESC' ];
+            }
             var params = [ 
                 ses(), 
                 search_hash, 
                 typeof obj.search_limit != 'undefined' && typeof obj.search_limit != 'null' ? obj.search_limit : obj.result_cap + 1, 
-                typeof obj.search_sort != 'undefined' ? obj.search_sort : [ 'family_name ASC', 'first_given_name ASC', 'second_given_name ASC', 'dob DESC' ] 
+                sort_params
             ];
             if (inactive) {
                 params.push(1);
