@@ -259,7 +259,7 @@ CPAN_MODULES_FORCE = \
 
 # Lucid needs this because the XML::RPC that comes by default is broken with Evergreen
 LUCID_CPAN = \
-	XML::RPC
+	RPC::XML::Function
 
 # ----------------------------------------------------------------------------
 
