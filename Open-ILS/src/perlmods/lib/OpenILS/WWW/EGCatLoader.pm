@@ -128,10 +128,10 @@ sub load {
         );
     }
 
-    my $org_unit = $self->cgi->param('loc') || $self->ctx->{aou_tree}->()->id;
-    my $skip_sms_auth = $self->ctx->{get_org_setting}->($org_unit, 'sms.disable_authentication_requirement.callnumbers');
-    if ($skip_sms_auth) {
-        return $self->load_sms_cn if $path =~ m|opac/sms_cn|;
+    if ($path =~ m|opac/sms_cn| and !$self->editor->requestor) {
+        my $org_unit = $self->ctx->{physical_loc} || $self->cgi->param('loc') || $self->ctx->{aou_tree}->()->id;
+        my $skip_sms_auth = $self->ctx->{get_org_setting}->($org_unit, 'sms.disable_authentication_requirement.callnumbers');
+        return $self->load_sms_cn if $skip_sms_auth;
     }
 
     # ----------------------------------------------------------------
