@@ -1,0 +1,53 @@
+[%  
+    PROCESS "opac/parts/header.tt2";
+    PROCESS "kpac/parts/grid.tt2";
+    WRAPPER "kpac/parts/base.tt2";
+    ctx.page_title = l("Home") 
+%]
+
+<div class="main_top_shadow">
+    <div class="main_tl_corner">&nbsp;</div>
+    <div class="main_mid_top">&nbsp;</div>
+    <div class="main_tr_corner">&nbsp;</div>
+    <div class="clear">&nbsp;</div>
+</div>
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
+    <tr>
+        <td width="3" class="main_left_shadow"><div class="clear">&nbsp;</div></td>
+        <td valign="top" class="main_inside_cell" valign="top">
+            <div class="search_wrapper">
+                <h1>Search your Library</h1>
+                <h3>for books, movies, music, magazines, and more!</h3>
+                <table cellpadding="0" cellspacing="0" border="0" align="center" class="search_box_wrapper">
+                    <tr>
+                        <td class="st_radio_btn"><input type="radio" name="search_type" checked="checked" id="st_word" class="st_word" /></td>
+                        <td class="st_label"><label for="st_word">Word</label></td>
+                        <td class="st_radio_btn"><input type="radio" name="search_type" id="st_title" class="st_title" /></td>
+                        <td class="st_label"><label for="st_title">Title</label></td>
+                        <td class="st_radio_btn"><input type="radio" name="search_type" id="st_author" class="st_author" /></td>
+                        <td class="st_label st_author_box"><label for="st_author">Author</label></td>
+                        <td><input type="text" class="search_box" /></td>
+                        <td><a href="javascript:;"><img src="[% ctx.media_prefix %]/images/kpac/search_btn.png" alt="search" /></a></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="category_wrapper">
+                <h3 class="c_header_image">Or click on an image to get started:</h3>
+                [% render_kpac_grid(ctx.kpac_layout); %]
+            </div>
+
+        </td>
+        <td width="3" class="main_right_shadow"><div class="clear">&nbsp;</div></td>
+    </tr>
+</table>
+
+<div class="main_bottom_shadow">
+    <div class="main_bl_corner">&nbsp;</div>
+    <div class="main_mid_bottom">&nbsp;</div>
+    <div class="main_br_corner">&nbsp;</div>
+    <div class="clear">&nbsp;</div>
+</div>
+
+[% END %]
+

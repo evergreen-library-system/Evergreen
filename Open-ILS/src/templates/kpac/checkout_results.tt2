@@ -1,0 +1,22 @@
+[%  PROCESS "opac/parts/header.tt2";
+    PROCESS "kpac/parts/grid.tt2";
+    WRAPPER "kpac/parts/subpage.tt2";
+    ctx.page_title = l('Get it') %]
+          
+          <h2 class="sub_header2">You Got It!</h2>
+          
+          <div class="checkout_res_body">
+            <p>Your Request for <a href="javascript:;">Book Name</a> was successful.<br />You will be able to pick up this material at <a href="javascript:;">Fairwood</a>.</p>
+          </div>
+          
+          <div class="sub_navigation2 checkout">
+            <table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+              <td><a href="javascript:;"><img src="[% ctx.media_prefix %]/images/kpac/back_to_results_btn.png" /></a></td>
+              <td width="100%" class="nav_mid_bg">&nbsp;</td>
+              <td><img src="[% ctx.media_prefix %]/images/kpac/back_to_book.png" /></td>
+              <td nowrap="nowrap"><a class="checkout_res_back" href="javascript:;">Back to <span>Book Name</span></a></td>
+            </tr></table>
+          </div>
+          
+[% END %]          
+

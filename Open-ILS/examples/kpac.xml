@@ -1,0 +1,55 @@
+<kpac version="1.0" xmlns="http://evergreen-ils.org/spec/OPAC/kpac/v1">
+    <pages>
+        <!-- top-level layout pages -->
+        <page id="1" columns="5" name="Home" img="/images/home.jpg">
+            <cell type="topic">10</cell>
+            <cell type="topic">11</cell>
+            <cell type="topic">12</cell>
+            <cell type="topic">13</cell>
+            <cell type="topic">14</cell>
+            <cell type="topic">15</cell>
+            <cell type="topic">16</cell>
+            <cell type="topic">17</cell>
+            <cell type="topic">18</cell>
+            <cell type="topic">19</cell>
+        </page>
+
+        <!-- sample alternate layout -->
+        <page id="23" columns="3" name="ABC Home" img="/images/abc-logo.jpg">
+            <cell type="topic">11</cell>
+            <cell type="topic">10</cell>
+            <cell type="topic">12</cell>
+        </page>
+
+        <!-- topic pages -->
+        <page id="10" columns="3" name="Book Series" img="category.png">
+            <cell name="Mammals" img="category.png" type="search">su:mammal audience(j)</cell>
+            <cell name="Molluscs" img="category.png" type="search">su:mammal audience(j)</cell>
+            <cell name="Squids" img="category.png" type="search">su:mammal audience(j)</cell>
+            <cell name="Snails" img="category.png" type="search">su:mammal audience(j)</cell>
+            <cell name="Jellyfish" img="category.png" type="search">su:mammal audience(j)</cell>
+            <cell name="Old Yeller" img="category.png" type="search">su:mammal audience(j)</cell>
+        </page>
+        <page id="11" columns="1" name="Current Events" img="category.png">
+        </page>
+        <page id="12" columns="3" name="Programming" img="category.png">
+        </page>
+        <page id="13" columns="3" name="It's Alive!" img="category.png">
+        </page>
+        <page id="14" columns="3" name="Book Series" img="category.png">
+        </page>
+        <page id="15" columns="3" name="Book Series" img="category.png">
+        </page>
+        <page id="16" columns="3" name="Book Series" img="category.png">
+        </page>
+        <page id="17" columns="3" name="Book Series" img="category.png">
+        </page>
+        <page id="18" columns="3" name="Book Series" img="category.png">
+        </page>
+        <page id="19" columns="3" name="Book Series" img="category.png">
+        </page>
+    </pages>
+
+    <layout owner="1" page="1"/>
+    <layout owner="213" page="23"/>
+</kpac>

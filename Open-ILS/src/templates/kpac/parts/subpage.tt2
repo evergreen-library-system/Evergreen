@@ -1,0 +1,75 @@
+[% WRAPPER "kpac/parts/base.tt2" %]
+
+<div class="main_top_shadow_sub">
+    <div class="main_mid_top_sub">
+        [%# TODO BREADCRUMBS %]
+        <div class="breadcrumb">
+            <a class="bread_home"><img alt="home" src="[% ctx.media_prefix %]/images/kpac/home_icon.png" /></a>
+            <div class="bread_green_mid">&nbsp;</div>
+            <a href="javascript:;">Animals, insects, &amp; birds</a>
+            <div class="bread_green_mid">&nbsp;</div>
+            <a href="javascript:;">search results</a>
+            <div class="bread_green_mid">&nbsp;</div>
+            <a href="javascript:;">book name</a>
+            <div class="bread_green_last">&nbsp;</div>
+            <span class="bread_last">got it</span>
+            <div class="clear">&nbsp;</div>
+        </div>
+    </div>
+</div>
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
+    <tr>
+        <td width="3" class="main_left_shadow"><div class="clear">&nbsp;</div></td>
+        <td valign="top" class="main_inside_cell" valign="top" height="300">
+            <div class="main_content_wrapper">
+                [% content %] 
+                <div class="clear">&nbsp;</div>
+            </div>
+        </td>
+        <td width="266" valign="top" class="sub_sidebar">
+            <div class="sub_sidebar_inner">
+                <div class="sub_sidebar_header">New Search</div>
+                <div class="sub_sidebar_search_wrapper">
+                    <input type="text" 
+                        class="sub_sidebar_search_box" style="color:#aaa;" value=" Enter Text... " 
+                        onfocus="if(this.value==' Enter Text... '){this.value='';this.style.color='#424242';}" 
+                        onblur="if(this.value==''){this.value=' Enter Text... '; this.style.color='#aaa';}" />
+                </div>
+                <table cellpadding="0" cellspacing="0" border="0" class="sub_sidebar_search_st">
+                    <tr>
+                        <td class="st_radio_btn">
+                            <input type="radio" name="search_type" checked="checked" id="st_word" class="st_word" />
+                        </td>
+                        <td class="st_label"><label for="st_word">Word</label></td>
+                        <td class="st_radio_spacer"><div>&nbsp;</div></td>
+                        <td class="st_radio_btn">
+                            <input type="radio" name="search_type" id="st_title" class="st_title" />
+                        </td>
+                        <td class="st_label"><label for="st_title">Title</label></td>
+                        <td class="st_radio_spacer"><div>&nbsp;</div></td>
+                        <td class="st_radio_btn">
+                            <input type="radio" name="search_type" id="st_author" class="st_author" />
+                        </td>
+                        <td class="st_label"><label for="st_author">Author</label></td>
+                    </tr>
+                </table>
+                <div class="hr">&nbsp;</div>
+                <div class="sub_search_category">
+                    <select class="search_category" name="search_category">
+                        <option>Children's Material</option>
+                    </select>
+                </div>
+                <div class="hr">&nbsp;</div>
+                <div>
+                    <a href="javascript:;"><img alt="search" src="[% ctx.media_prefix %]/images/kpac/search_btn_sub.png" /></a>
+                </div>
+            </div>
+        </td>
+        <td width="3" class="main_right_shadow"><div class="clear">&nbsp;</div></td>
+    </tr>
+</table>
+<div class="main_bottom_shadow"><div class="main_mid_bottom_sub">&nbsp;</div></div>
+
+[% END %]  
+  
+

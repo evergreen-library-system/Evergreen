@@ -1,0 +1,124 @@
+[%  PROCESS "opac/parts/header.tt2";
+    PROCESS "kpac/parts/grid.tt2";
+    WRAPPER "kpac/parts/subpage.tt2";
+    ctx.page_title = l('Item Details') %]
+
+          <!-- did somebody order the div salad? -->
+          <div class="item_detail_header">
+            <div class="item_detail_image"><a href="javascript:;"><img alt="item image" src="[% ctx.media_prefix %]/images/kpac/item_image.jpg" /></a></div>
+            
+            <div class="item_detail_info">
+              <div class="item_detail_name">Book Name</div>
+              <div class="item_detail_author">by Author Name</div>
+              <div class="item_detail_icon_rate">
+                <div class="item_icon_wrapper">
+                  <div class="item_icon">&nbsp;<img alt="book" src="[% ctx.media_prefix %]/images/kpac/icon_book.png" />&nbsp; <!-- put a single &nbsp; around each side of the image - for vertical centering --></div>
+                  <div class="item_icon_type_text">Book</div>
+                </div>
+                
+                <div class="item_detail_rate_wrapper">
+                  <div class="item_detail_rate_starts"><img alt="rating" src="[% ctx.media_prefix %]/images/kpac/stars!.png" /></div>
+                  <div class="item_detail_rate_link"><a href="javascript:;">Rate this</a></div>
+                  <div class="clear">&nbsp;</div>
+                  <div class="item_detail_cn_wrapper">
+                    <div class="item_detail_callnumber">Call Number</div>
+                    <div class="item_detail_extra_info">Publisher, Year, Size</div>
+                  </div>
+                </div>
+                <div class="clear">&nbsp;</div>
+              </div>
+            </div>
+            <div class="item_detail_header_buttons">
+              <div class="item_detail_getit_btn"><a href=""><img alt="get it" src="[% ctx.media_prefix %]/images/kpac/get_it_btn.png" /></a></div>
+              <div class="item_detail_goback_btn"><a href=""><img alt="go back" src="[% ctx.media_prefix %]/images/kpac/go_back_btn.png" /></a></div>
+            </div>
+            <div class="clear">&nbsp;</div>
+          </div>
+          <div class="sub_header">You can find this item at these locations:</div>
+          <div class="item_detail_location_wrapper">
+            <table cellpadding="0" cellspacing="0" border="0" class="item_location_table">
+              <tbody>
+                <tr class="header">
+                  <td class="location">Location</td>
+                  <td class="loc_info">&nbsp;</td>
+                  <td class="status">Status</td>
+                  <td class="callnumber">Call Number</td>
+                </tr>
+                <tr>
+                  <td class="location">Bellevue Library</td>
+                  <td class="loc_info"><a href="javascript:;">View Library Info</a></td>
+                  <td class="status">Check Shelf</td>
+                  <td class="callnumber">J613.71 CRE</td>
+                </tr>
+                <tr class="gray">
+                  <td class="location">Burien Library</td>
+                  <td class="loc_info"><a href="javascript:;">View Library Info</a></td>
+                  <td class="status">Check Shelf</td>
+                  <td class="callnumber">J613.71 CRE</td>
+                </tr>
+                <tr>
+                  <td class="location">Newport Library</td>
+                  <td class="loc_info"><a href="javascript:;">View Library Info</a></td>
+                  <td class="status">Due: 03-13-10</td>
+                  <td class="callnumber">J613.71 CRE</td>
+                </tr>
+                <tr class="gray">
+                  <td class="location">Redmond Library</td>
+                  <td class="loc_info"><a href="javascript:;">View Library Info</a></td>
+                  <td class="status">Check Shelf</td>
+                  <td class="callnumber">J613.71 CRE</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="sub_header">About this item:</div>
+          <div class="item_detail_desc">
+            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam <a href="javascript:;">nonummy</a> nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit</p>
+          </div>
+          <div class="item_detail_extras_tabs">
+            <a href="javascript:;">Reviews</a>
+            <div class="selected">Rate this Item</div>
+            <a href="javascript:;">About the Author</a>
+            <div class="clear">&nbsp;</div>
+          </div>
+          <div class="item_detail_rating_top">
+            <table cellpadding="0" cellspacing="0" border="0" class="item_avg_rate_table"><tr>
+              <td class="avg_rate">Average Rating</td>
+              <td class="stars"><img alt="rating" src="[% ctx.media_prefix %]/images/kpac/stars!.png" /></td>
+              <td class="total_rates">out of 132 reviews</td>
+            </tr></table>
+            <div class="clear">&nbsp;</div>
+          </div>
+          <div class="item_detail_rating">
+            <div class="review_box_top">&nbsp;</div>
+            <div class="review_box_body">
+              <div class="input_boxes">
+                <table cellpadding="0" cellspacing="0" border="0"><tr>
+                  <td class="review_name_cell"><input type="text" class="review_name" style="color:#aaa;" value=" Name " onfocus="if(this.value==' Name '){this.value='';this.style.color='#424242';}" onblur="if(this.value==''){this.value=' Name '; this.style.color='#aaa';}" /></td>
+                  <td class="review_email_cell"><input type="text" class="review_email" style="color:#aaa;" value=" Email Address " onfocus="if(this.value==' Email Address '){this.value='';this.style.color='#424242';}" onblur="if(this.value==''){this.value=' Email Address '; this.style.color='#aaa';}" /></td>
+                  <td class="rating_msg_box">Your email address will not<br />be displayed to other users.</td>
+                </tr></table>
+              </div>
+              <div class="item_detail_rating2">
+                <table cellpadding="0" cellspacing="0" border="0" class="item_avg_rate_table2"><tr>
+                  <td class="rate">Rating</td>
+                  <td class="stars"><img alt="rating" src="[% ctx.media_prefix %]/images/kpac/stars!_gray.png" /></td>
+                  <td class="scale">1 = Poor, 5 = Awesome</td>
+                </tr></table>
+                
+              </div>
+              <div class="review_comment_box"><textarea class="review_comment" style="color:#aaa;" onfocus="if(this.value==' Write the reasons for your rating here. '){this.value='';this.style.color='#424242';}" onblur="if(this.value==''){this.value=' Write the reasons for your rating here. '; this.style.color='#aaa';}"> Write the reasons for your rating here. </textarea></div>
+              <div class="clear">&nbsp;</div>
+            </div>
+            <div class="review_submit_box"><a href="javascript:;"><img alt="submit review" src="[% ctx.media_prefix %]/images/kpac/review_submit_btn.png" /></a></div>
+          </div>
+          
+          <div class="sub_navigation1">
+            <table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+              <td><a href="javascript:;"><img src="[% ctx.media_prefix %]/images/kpac/go_back_btn.png" /></a></td>
+              <td width="100%" class="nav_mid_bg"></td>
+              <td class="to_top_btn"><a href="javascript:;"><img src="[% ctx.media_prefix %]/images/kpac/to_top_btn.png" /></a></td>
+            </tr></table>
+          </div>
+          
+[% END %]

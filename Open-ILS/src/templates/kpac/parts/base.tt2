@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns='http://www.w3.org/1999/xhtml' lang='[% ctx.locale %]' xml:lang='[% ctx.locale %]'>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="[% ctx.media_prefix %]/css/skin/default/kpac/style.css" />
+        [% IF ctx.authtime %]
+        <meta http-equiv="refresh" content="[% ctx.authtime %];[% ctx.logout_page %]">
+        [% END %]
+        <title>[% l("Kid's Catalog - [_1]", ctx.page_title) %]</title>
+    </head>
+    <body>
+        <div class="main_center">
+
+          <!-- TODO -->
+            <div class="main_header_wrapper">
+                <div class="logo_wrapper">
+                    <a href="javascript:;">
+                        <span class="logo_left">&nbsp;</span>
+                        <span class="logo_middle"><img src="[% ctx.media_prefix %]/images/kpac/kcls_logo.jpg" alt="kcls" /></span>
+                        <span class="logo_right">&nbsp;</span>
+                    </a>
+                </div>
+                <div class="header_utils">
+                    <a href="javascript:;" class="text_size_btn"><span>Text size</span> &nbsp; <img 
+                        alt="text size" src="[% ctx.media_prefix %]/images/kpac/text_size_btn.png" /></a>
+                    <a href="javascript:;" class="print_btn"><span>Print</span> &nbsp; <img 
+                        alt="print" src="[% ctx.media_prefix %]/images/kpac/print_btn.png" /></a>
+                </div>
+                <div class="header_menu">
+                    <!-- menu rendered in reverse order -->
+                    <a href="javascript:;">Login</a>
+                    <a href="javascript:;">Get a Library Card</a>
+                    <a href="javascript:;">Help</a>
+                </div>
+                <div class="clear">&nbsp;</div>
+            </div>
+
+            <div class="main_wrapper"> [% content %] </div>
+
+            <!-- TODO -->
+            <div class="footer_wrapper">
+                <a href="javascript:;">Contact Us</a>
+                <a href="javascript:;">Site Help</a>
+                <a href="javascript:;">Site Map</a>
+                <a href="javascript:;">Back to Main KCLS Catalog</a>
+                <div class="clear">&nbsp;</div>
+            </div>
+
+        </div>
+        <script type="text/javascript" src="js/functions.js"></script>
+    </body>
+</html>
