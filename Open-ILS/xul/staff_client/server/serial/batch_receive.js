@@ -7,7 +7,17 @@ dojo.require("openils.CGI");
 dojo.require("openils.XUL");
 dojo.require("openils.PermaCrud");
 
+JSAN.use("util.error");
+var _error = new util.error();
 var batch_receiver;
+
+function _generic_onmethoderror(r, stat, stat_text) {
+    _error.standard_unexpected_error_alert(
+        dojo.byId("commonStrings").getString("common.error"),
+        stat + ":" + stat_text
+    );
+    busy(false);
+}
 
 function S(k) {
     return dojo.byId("serialStrings").getString("batch_receive." + k).
@@ -147,7 +157,8 @@ function BatchReceiver() {
                     "onresponse": function(r) {
                         if (r = openils.Util.readResponse(r))
                             issuances.push(r);
-                    }
+                    },
+                    "onmethoderror": _generic_onmethoderror
                 }
             );
         } catch (E) {
@@ -191,7 +202,8 @@ function BatchReceiver() {
                                 }
                             );
                         }
-                    }
+                    },
+                    "onmethoderror": _generic_onmethoderror
                 }
             );
             if (!mods.length) {
@@ -248,7 +260,8 @@ function BatchReceiver() {
                     "onresponse": function(r) {
                         if (locs = openils.Util.readResponse(r))
                             self._location_by_lib[lib] = locs;
-                    }
+                    },
+                    "onmethoderror": _generic_onmethoderror
                 }
             );
         }
@@ -341,7 +354,8 @@ function BatchReceiver() {
                             }
                         );
                     }
-                }
+                },
+                "onmethoderror": _generic_onmethoderror
             }
         );
 
@@ -568,7 +582,8 @@ function BatchReceiver() {
                             }, true /* wrap_in_browser */
                         );
                     }
-                }
+                },
+                "onmethoderror": _generic_onmethoderror
             }
         );
     };
@@ -628,7 +643,8 @@ function BatchReceiver() {
                             dojo.byId("bib_search_term").focus();
                         }
                     }
-                }
+                },
+                "onmethoderror": _generic_onmethoderror
             }
         );
     };
@@ -814,7 +830,8 @@ function BatchReceiver() {
                             else self.init();
                         }
                     }
-                }
+                },
+                "onmethoderror": _generic_onmethoderror
             }
         );
     };
@@ -1068,7 +1085,8 @@ function BatchReceiver() {
                     } catch(E) {
                         (dump ? dump : console.log)(E);
                     }
-                }
+                },
+                "onmethoderror": _generic_onmethoderror
             }
         );
     };
@@ -1108,7 +1126,8 @@ function BatchReceiver() {
                                         row._has_autogen_barcode = true;
                                     }
                                 }
-                            }
+                            },
+                            "onmethoderror": _generic_onmethoderror
                         }
                     );
                 } catch (E) {
