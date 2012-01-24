@@ -52,6 +52,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
   </xs:sequence>
   <xs:attribute name="name"/>
   <xs:attribute ref="oils_obj:array_position"/>
+  <xs:attribute ref="oils_obj:required"/>
+  <xs:attribute ref="oils_obj:validate"/>
   <xs:attribute ref="oils_persist:i18n"/>
   <xs:attribute ref="oils_persist:primitive"/>
   <xs:attribute ref="oils_persist:virtual"/>

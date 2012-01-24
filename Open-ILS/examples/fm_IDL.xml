@@ -116,16 +116,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<class id="accs" controller="open-ils.cstore" oils_obj:fieldmapper="action::circ_chain_summary" oils_persist:virtual="true" reporter:label="Circulation Chain Summary">
         <!-- when the time is right, turn me into a view.  -->
 		<fields>
-            <field reporter:label="Total Circs" name="num_circs" datatype="int"/>
-            <field reporter:label="Start Time" name="start_time" datatype="timestamp"/>
-            <field reporter:label="Checkout Workstation" name="checkout_workstation" datatype="text"/>
-            <field reporter:label="Last Renewal Time" name="last_renewal_time" datatype="timestamp"/>
-            <field reporter:label="Last Stop Fines" name="last_stop_fines" datatype="text"/>
-            <field reporter:label="Last Stop Fines Time" name="last_stop_fines_time" datatype="timestamp"/>
-            <field reporter:label="Last Renewal Workstation" name="last_renewal_workstation" datatype="text"/>
-            <field reporter:label="Last Checkin Workstation" name="last_checkin_workstation" datatype="text"/>
-            <field reporter:label="Last Checkin Time" name="last_checkin_time" datatype="timestamp"/>
-            <field reporter:label="Last Checkin Scan Time" name="last_checkin_scan_time" datatype="timestamp"/>
+            <field reporter:label="Total Circs" name="num_circs" reporter:datatype="int"/>
+            <field reporter:label="Start Time" name="start_time" reporter:datatype="timestamp"/>
+            <field reporter:label="Checkout Workstation" name="checkout_workstation" reporter:datatype="text"/>
+            <field reporter:label="Last Renewal Time" name="last_renewal_time" reporter:datatype="timestamp"/>
+            <field reporter:label="Last Stop Fines" name="last_stop_fines" reporter:datatype="text"/>
+            <field reporter:label="Last Stop Fines Time" name="last_stop_fines_time" reporter:datatype="timestamp"/>
+            <field reporter:label="Last Renewal Workstation" name="last_renewal_workstation" reporter:datatype="text"/>
+            <field reporter:label="Last Checkin Workstation" name="last_checkin_workstation" reporter:datatype="text"/>
+            <field reporter:label="Last Checkin Time" name="last_checkin_time" reporter:datatype="timestamp"/>
+            <field reporter:label="Last Checkin Scan Time" name="last_checkin_scan_time" reporter:datatype="timestamp"/>
 		</fields>
 	</class>
 
@@ -1633,7 +1633,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Was Reset?" name="has_been_reset" reporter:datatype="bool"/>
 		</fields>
 		<links>
-			<link field="usr" reltype="has_a" key="id" class="au"/>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 	</class>
 	<class id="aus" controller="open-ils.cstore" oils_obj:fieldmapper="actor::user_setting" oils_persist:tablename="actor.usr_setting" reporter:label="User Setting">
@@ -2154,7 +2154,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
     <class id="acnc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::call_number_class" oils_persist:tablename="asset.call_number_class" reporter:label="Call number classification scheme">
         <fields oils_persist:primary="id" oils_persist:sequence="asset.call_number_class_id_seq">
-            <field reporter:label="Call number class ID" name="id" reporter_datatype="id"/>
+            <field reporter:label="Call number class ID" name="id" reporter:datatype="id"/>
             <field reporter:label="Name" name="name" reporter:datatype="text"/>
             <field reporter:label="Normalizer function" name="normalizer" reporter:datatype="text"/>
             <field reporter:label="Call number fields" name="field" reporter:datatype="text"/>
@@ -3931,7 +3931,7 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="ssubn" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="serial::subscription_note" oils_persist:tablename="serial.subscription_note" reporter:label="Subscription Note">
+	<class id="ssubn" controller="open-ils.cstore" oils_obj:fieldmapper="serial::subscription_note" oils_persist:tablename="serial.subscription_note" reporter:label="Subscription Note">
 		<fields oils_persist:primary="id" oils_persist:sequence="serial.subscription_note_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Subscription" name="subscription" reporter:datatype="link"/>
@@ -3945,8 +3945,6 @@ SELECT  usr,
 			<link field="subscription" reltype="has_a" key="id" map="" class="ssub"/>
 			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
 	<class id="sdist" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="serial::distribution" oils_persist:tablename="serial.distribution" reporter:label="Distribution">
@@ -4276,9 +4274,9 @@ SELECT  usr,
 				<update permission="ADMIN_SERIAL_DISTRIBUTION">
 					<context link="distribution" field="holding_lib" />
 				</update>
-				<create permission="ADMIN_SERIAL_DISTRIBUTION">
+				<delete permission="ADMIN_SERIAL_DISTRIBUTION">
 					<context link="distribution" field="holding_lib" />
-				</create>
+				</delete>
 			</actions>
 		</permacrud>
 	</class>
@@ -4303,9 +4301,9 @@ SELECT  usr,
 				<update permission="ADMIN_SERIAL_DISTRIBUTION">
 					<context link="distribution" field="holding_lib" />
 				</update>
-				<create permission="ADMIN_SERIAL_DISTRIBUTION">
+				<delete permission="ADMIN_SERIAL_DISTRIBUTION">
 					<context link="distribution" field="holding_lib" />
-				</create>
+				</delete>
 			</actions>
 		</permacrud>
 	</class>
@@ -4330,9 +4328,9 @@ SELECT  usr,
 				<update permission="ADMIN_SERIAL_DISTRIBUTION">
 					<context link="distribution" field="holding_lib" />
 				</update>
-				<create permission="ADMIN_SERIAL_DISTRIBUTION">
+				<delete permission="ADMIN_SERIAL_DISTRIBUTION">
 					<context link="distribution" field="holding_lib" />
-				</create>
+				</delete>
 			</actions>
 		</permacrud>
 	</class>
@@ -6346,7 +6344,7 @@ SELECT  usr,
         </permacrud>
 	</class>
 
-	<class id="acqftr" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::fund_transfer" oils_persist:tablename="acq.fund_transfer" reporter:label="Fund Transfer">
+	<class id="acqftr" controller="open-ils.cstore" oils_obj:fieldmapper="acq::fund_transfer" oils_persist:tablename="acq.fund_transfer" reporter:label="Fund Transfer">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.fund_transfer_id_seq">
 			<field reporter:label="Fund Transfer ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Source Fund" name="src_fund" reporter:datatype="link"/>
@@ -6364,8 +6362,6 @@ SELECT  usr,
 			<link field="transfer_user" reltype="has_a" key="id" map="" class="au"/>
 			<link field="funding_source_credit" reltype="has_a" key="id" map="" class="acqfscred"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
 	<class id="acqfc" controller="open-ils.cstore" oils_obj:fieldmapper="acq::fiscal_calendar" oils_persist:tablename="acq.fiscal_calendar" reporter:label="Fiscal Calendar">
@@ -6475,7 +6471,7 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="acqofscred" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::ordered_funding_source_credit" oils_persist:tablename="acq.ordered_funding_source_credit" reporter:label="Ordered Funding Source Credit">
+	<class id="acqofscred" controller="open-ils.cstore" oils_obj:fieldmapper="acq::ordered_funding_source_credit" oils_persist:tablename="acq.ordered_funding_source_credit" reporter:label="Ordered Funding Source Credit">
 		<fields oils_persist:primary="id">
 			<field reporter:label="Ordered Fund Src ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Sort Priority" name="sort_priority" reporter:datatype="int"/>
@@ -6487,8 +6483,6 @@ SELECT  usr,
 		<links>
 			<link field="funding_source" reltype="has_a" key="id" map="" class="acqfs"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
 	<class id="acqfdeb" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::fund_debit" oils_persist:tablename="acq.fund_debit" reporter:label="Debit From Fund">
@@ -6903,12 +6897,12 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
-                <retrieve permission="CREATE_PURCHASE_ORDER VIEW_PURCHASE_ORDER">
-                    <context link="purchase_order" field="ordering_agency"/>
-                </retrieve>
                 <create permission="CREATE_PURCHASE_ORDER">
                     <context link="purchase_order" field="ordering_agency"/>
                 </create>
+                <retrieve permission="CREATE_PURCHASE_ORDER VIEW_PURCHASE_ORDER">
+                    <context link="purchase_order" field="ordering_agency"/>
+                </retrieve>
                 <update permission="CREATE_PURCHASE_ORDER">
                     <context link="purchase_order" field="ordering_agency"/>
                 </update>
@@ -6940,12 +6934,12 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
-                <retrieve permission="CREATE_PURCHASE_ORDER VIEW_PURCHASE_ORDER">
-                    <context link="purchase_order" field="ordering_agency"/>
-                </retrieve>
                 <create permission="CREATE_PURCHASE_ORDER">
                     <context link="purchase_order" field="ordering_agency"/>
                 </create>
+                <retrieve permission="CREATE_PURCHASE_ORDER VIEW_PURCHASE_ORDER">
+                    <context link="purchase_order" field="ordering_agency"/>
+                </retrieve>
                 <update permission="CREATE_PURCHASE_ORDER">
                     <context link="purchase_order" field="ordering_agency"/>
                 </update>
@@ -7168,7 +7162,7 @@ SELECT  usr,
             <field reporter:label="Remove" name="remove" reporter:datatype="text" />
 		</fields>
 		<links/>
-        <permacrud>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="ADMIN_LINEITEM_MARC_ATTR_DEF" global_required="true"/>
                 <retrieve />
@@ -7694,7 +7688,7 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="acqda" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::debit_attribution" oils_persist:tablename="acq.debit_attribution" reporter:label="Debit Attribution">
+	<class id="acqda" controller="open-ils.cstore" oils_obj:fieldmapper="acq::debit_attribution" oils_persist:tablename="acq.debit_attribution" reporter:label="Debit Attribution">
 		<fields oils_persist:primary="id">
 			<field reporter:label="Debit Attribution ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Fund Debit" name="fund_debit" reporter:datatype="link"/>
@@ -7706,8 +7700,6 @@ SELECT  usr,
 			<link field="fund_debit" reltype="has_a" key="id" map="" class="acqfdeb"/>
 			<link field="funding_source_credit" reltype="has_a" key="id" map="" class="acqfscred"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
 	<class id="acqclt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::claim_type" oils_persist:tablename="acq.claim_type" reporter:label="Claim Type">
@@ -7751,7 +7743,7 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="acqcl" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::claim" oils_persist:tablename="acq.claim" reporter:label="Claim">
+	<class id="acqcl" controller="open-ils.cstore" oils_obj:fieldmapper="acq::claim" oils_persist:tablename="acq.claim" reporter:label="Claim">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.claim_id_seq">
 			<field reporter:label="Claim ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Claim Type" name="type" reporter:datatype="link"/>
@@ -7761,11 +7753,9 @@ SELECT  usr,
 			<link field="type" reltype="has_a" key="id" map="" class="acqclt"/>
 			<link field="lineitem_detail" reltype="has_a" key="id" map="" class="acqlid"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
-	<class id="acqcle" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::claim_event" oils_persist:tablename="acq.claim_event" reporter:label="Claim Event">
+	<class id="acqcle" controller="open-ils.cstore" oils_obj:fieldmapper="acq::claim_event" oils_persist:tablename="acq.claim_event" reporter:label="Claim Event">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.claim_event_id_seq">
 			<field reporter:label="Claim Event ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Claim Event Type" name="type" reporter:datatype="link"/>
@@ -7779,11 +7769,9 @@ SELECT  usr,
 			<link field="claim" reltype="has_a" key="id" map="" class="acqcl"/>
 			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
-	<class id="acqscl" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::serial_claim" oils_persist:tablename="acq.serial_claim" reporter:label="Serial Claim">
+	<class id="acqscl" controller="open-ils.cstore" oils_obj:fieldmapper="acq::serial_claim" oils_persist:tablename="acq.serial_claim" reporter:label="Serial Claim">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.serial_claim_id_seq">
 			<field reporter:label="Claim ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Claim Type" name="type" reporter:datatype="link"/>
@@ -7793,11 +7781,9 @@ SELECT  usr,
 			<link field="type" reltype="has_a" key="id" map="" class="acqclt"/>
 			<link field="item" reltype="has_a" key="id" map="" class="sitem"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
-	<class id="acqscle" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::serial_claim_event" oils_persist:tablename="acq.serial_claim_event" reporter:label="Serial Claim Event">
+	<class id="acqscle" controller="open-ils.cstore" oils_obj:fieldmapper="acq::serial_claim_event" oils_persist:tablename="acq.serial_claim_event" reporter:label="Serial Claim Event">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.serial_claim_event_id_seq">
 			<field reporter:label="Claim Event ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Claim Event Type" name="type" reporter:datatype="link"/>
@@ -7811,8 +7797,6 @@ SELECT  usr,
 			<link field="claim" reltype="has_a" key="id" map="" class="acqscl"/>
 			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
 	<class id="acqclp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::claim_policy" oils_persist:tablename="acq.claim_policy" reporter:label="Claim Policy">
@@ -7935,7 +7919,7 @@ SELECT  usr,
         </fields>
     </class>
 
-	<class id="afs" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::fieldset" oils_persist:tablename="action.fieldset" reporter:label="Fieldset">
+	<class id="afs" controller="open-ils.cstore" oils_obj:fieldmapper="action::fieldset" oils_persist:tablename="action.fieldset" reporter:label="Fieldset">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.fieldset_id_seq">
 			<field reporter:label="Fieldset ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Owner" name="owner" reporter:datatype="link"/>
@@ -7954,11 +7938,9 @@ SELECT  usr,
 			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="stored_query" reltype="has_a" key="id" map="" class="qsq"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
-	<class id="afscv" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::fieldset_col_val" oils_persist:tablename="action.fieldset_col_val" reporter:label="Fieldset Column Value">
+	<class id="afscv" controller="open-ils.cstore" oils_obj:fieldmapper="action::fieldset_col_val" oils_persist:tablename="action.fieldset_col_val" reporter:label="Fieldset Column Value">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.fieldset_col_val_id_seq">
 			<field reporter:label="Column Value ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Fieldset ID" name="fieldset" reporter:datatype="link"/>
@@ -7968,8 +7950,6 @@ SELECT  usr,
 		<links>
 			<link field="fieldset" reltype="has_a" key="id" map="" class="afs"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
     <class id="aufhl" controller="open-ils.cstore" oils_obj:fieldmapper="action::unfulfilled_hold_loops" oils_persist:tablename="action.unfulfilled_hold_loops" oils_persist:readonly="true">
@@ -8036,7 +8016,7 @@ SELECT  usr,
 		</links>
     </class>
 
-	<class id="qsq" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::stored_query" oils_persist:tablename="query.stored_query" reporter:label="Stored Query">
+	<class id="qsq" controller="open-ils.cstore" oils_obj:fieldmapper="query::stored_query" oils_persist:tablename="query.stored_query" reporter:label="Stored Query">
 		<fields oils_persist:primary="id" oils_persist:sequence="query.stored_query_id_seq">
 			<field reporter:label="Query ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Query type" name="type" reporter:datatype="text"/>
@@ -8055,11 +8035,9 @@ SELECT  usr,
 			<link field="limit_count" reltype="has_a" key="id" map="" class="qxp"/>
 			<link field="offset_count" reltype="has_a" key="id" map="" class="qxp"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
-	<class id="qseq" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::query_sequence" oils_persist:tablename="query.query_sequence" reporter:label="Query Sequence">
+	<class id="qseq" controller="open-ils.cstore" oils_obj:fieldmapper="query::query_sequence" oils_persist:tablename="query.query_sequence" reporter:label="Query Sequence">
 		<fields oils_persist:primary="id" oils_persist:sequence="query.query_sequence_id_seq">
 			<field reporter:label="Query Seq ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Parent Query" name="parent_query" reporter:datatype="link"/>
@@ -8070,11 +8048,9 @@ SELECT  usr,
 			<link field="parent_query" reltype="has_a" key="id" map="" class="qsq"/>
 			<link field="child_query" reltype="has_a" key="id" map="" class="qsq"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
-	<class id="qdt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::datatype" oils_persist:tablename="query.datatype" reporter:label="Datatype">
+	<class id="qdt" controller="open-ils.cstore" oils_obj:fieldmapper="query::datatype" oils_persist:tablename="query.datatype" reporter:label="Datatype">
 		<fields oils_persist:primary="id" oils_persist:sequence="query.datatype_id_seq">
 			<field reporter:label="Datatype ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Datatype Name" name="datatype_name" reporter:datatype="text"/>
@@ -8083,11 +8059,9 @@ SELECT  usr,
 		</fields>
 		<links>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
-	<class id="qsf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::subfield" oils_persist:tablename="query.subfield" reporter:label="Subfield">
+	<class id="qsf" controller="open-ils.cstore" oils_obj:fieldmapper="query::subfield" oils_persist:tablename="query.subfield" reporter:label="Subfield">
 		<fields oils_persist:primary="id" oils_persist:sequence="query.subfield_id_seq">
 			<field reporter:label="Subfield ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Composite Type" name="composite_type" reporter:datatype="link"/>
@@ -8098,11 +8072,9 @@ SELECT  usr,
 			<link field="composite_type" reltype="has_a" key="id" map="" class="qdt"/>
 			<link field="subfield_type" reltype="has_a" key="id" map="" class="qdt"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 	
-	<class id="qfs" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::function_sig" oils_persist:tablename="query.function_sig" reporter:label="Function Signature">
+	<class id="qfs" controller="open-ils.cstore" oils_obj:fieldmapper="query::function_sig" oils_persist:tablename="query.function_sig" reporter:label="Function Signature">
 		<fields oils_persist:primary="id" oils_persist:sequence="query.function_sig_id_seq">
 			<field reporter:label="Function Signature ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Function Name" name="function_name" reporter:datatype="text"/>
@@ -8112,11 +8084,9 @@ SELECT  usr,
 		<links>
 			<link field="return_type" reltype="has_a" key="id" map="" class="qdt"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 	
-	<class id="qfpd" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::function_param_def" oils_persist:tablename="query.function_param_def" reporter:label="Function Parameter Definition">
+	<class id="qfpd" controller="open-ils.cstore" oils_obj:fieldmapper="query::function_param_def" oils_persist:tablename="query.function_param_def" reporter:label="Function Parameter Definition">
 		<fields oils_persist:primary="id" oils_persist:sequence="query.function_param_def_id_seq">
 			<field reporter:label="Function Param Def ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Function ID" name="function_id" reporter:datatype="link"/>
@@ -8127,11 +8097,9 @@ SELECT  usr,
 			<link field="function_id" reltype="has_a" key="id" map="" class="qfs"/>
 			<link field="datatype" reltype="has_a" key="id" map="" class="qdt"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
-	<class id="qbv" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::bind_variable" oils_persist:tablename="query.bind_variable" reporter:label="Bind Variable">
+	<class id="qbv" controller="open-ils.cstore" oils_obj:fieldmapper="query::bind_variable" oils_persist:tablename="query.bind_variable" reporter:label="Bind Variable">
 		<fields oils_persist:primary="name">
 			<field reporter:label="Name" name="name" reporter:datatype="id"/>
 			<field reporter:label="Label" name="label" reporter:datatype="text" oils_persist:i18n="true"/>
@@ -8142,11 +8110,9 @@ SELECT  usr,
 		</fields>
 		<links>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
-	<class id="qxp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expression" oils_persist:tablename="query.expression" reporter:label="Expression">
+	<class id="qxp" controller="open-ils.cstore" oils_obj:fieldmapper="query::expression" oils_persist:tablename="query.expression" reporter:label="Expression">
 		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Expression Type" name="type" reporter:datatype="text"/>
@@ -8174,11 +8140,9 @@ SELECT  usr,
 			<link field="cast_type" reltype="has_a" key="id" map="" class="qdt"/>
 			<link field="bind_variable" reltype="has_a" key="name" map="" class="qbv"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
-	<class id="qcb" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::case_branch" oils_persist:tablename="query.case_branch" reporter:label="Case Branch">
+	<class id="qcb" controller="open-ils.cstore" oils_obj:fieldmapper="query::case_branch" oils_persist:tablename="query.case_branch" reporter:label="Case Branch">
 		<fields oils_persist:primary="id" oils_persist:sequence="query.case_branch_id_seq">
 			<field reporter:label="Case Branch ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Parent Expression" name="parent_expr" reporter:datatype="link"/>
@@ -8191,11 +8155,9 @@ SELECT  usr,
 			<link field="condition" reltype="has_a" key="id" map="" class="qxp"/>
 			<link field="result" reltype="has_a" key="id" map="" class="qxp"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
-	<class id="qfr" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::from_relation" oils_persist:tablename="query.from_relation" reporter:label="From Relation">
+	<class id="qfr" controller="open-ils.cstore" oils_obj:fieldmapper="query::from_relation" oils_persist:tablename="query.from_relation" reporter:label="From Relation">
 		<fields oils_persist:primary="id" oils_persist:sequence="query.from_relation_id_seq">
 			<field reporter:label="From Relation ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="From Relation Type" name="type" reporter:datatype="text"/>
@@ -8215,11 +8177,9 @@ SELECT  usr,
 			<link field="parent_relation" reltype="has_a" key="id" map="" class="qfr"/>
 			<link field="on_clause" reltype="has_a" key="id" map="" class="qxp"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
-	<class id="qrc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::record_column" oils_persist:tablename="query.record_column" reporter:label="Record Column">
+	<class id="qrc" controller="open-ils.cstore" oils_obj:fieldmapper="query::record_column" oils_persist:tablename="query.record_column" reporter:label="Record Column">
 		<fields oils_persist:primary="id" oils_persist:sequence="query.record_column_id_seq">
 			<field reporter:label="Record Column ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="From Relation ID" name="from_relation" reporter:datatype="link"/>
@@ -8231,11 +8191,9 @@ SELECT  usr,
 			<link field="from_relation" reltype="has_a" key="id" map="" class="qfr"/>
 			<link field="column_type" reltype="has_a" key="id" map="" class="qdt"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
-	<class id="qsi" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::select_item" oils_persist:tablename="query.select_item" reporter:label="Select Item">
+	<class id="qsi" controller="open-ils.cstore" oils_obj:fieldmapper="query::select_item" oils_persist:tablename="query.select_item" reporter:label="Select Item">
 		<fields oils_persist:primary="id" oils_persist:sequence="query.select_item_id_seq">
 			<field reporter:label="Select Item ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Stored Query ID" name="stored_query" reporter:datatype="link"/>
@@ -8248,11 +8206,9 @@ SELECT  usr,
 			<link field="stored_query" reltype="has_a" key="id" map="" class="qsq"/>
 			<link field="expression" reltype="has_a" key="id" map="" class="qxp"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
-	<class id="qobi" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::order_by_item" oils_persist:tablename="query.order_by_item" reporter:label="Order By Item">
+	<class id="qobi" controller="open-ils.cstore" oils_obj:fieldmapper="query::order_by_item" oils_persist:tablename="query.order_by_item" reporter:label="Order By Item">
 		<fields oils_persist:primary="id" oils_persist:sequence="query.order_by_item_id_seq">
 			<field reporter:label="Order By Item ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Stored Query ID" name="stored_query" reporter:datatype="link"/>
@@ -8263,11 +8219,9 @@ SELECT  usr,
 			<link field="stored_query" reltype="has_a" key="id" map="" class="qsq"/>
 			<link field="expression" reltype="has_a" key="id" map="" class="qxp"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
-	<class id="xbet" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xbet" oils_persist:tablename="query.expr_xbet" reporter:label="Between Expression">
+	<class id="xbet" controller="open-ils.cstore" oils_obj:fieldmapper="query::expr_xbet" oils_persist:tablename="query.expr_xbet" reporter:label="Between Expression">
 		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
@@ -8280,11 +8234,9 @@ SELECT  usr,
 			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
 			<link field="left_operand" reltype="has_a" key="id" map="" class="qxp"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
-	<class id="xbind" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xbind" oils_persist:tablename="query.expr_xbind" reporter:label="Bind Variable Expression">
+	<class id="xbind" controller="open-ils.cstore" oils_obj:fieldmapper="query::expr_xbind" oils_persist:tablename="query.expr_xbind" reporter:label="Bind Variable Expression">
 		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
@@ -8296,11 +8248,9 @@ SELECT  usr,
 			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
 			<link field="bind_variable" reltype="has_a" key="name" map="" class="qbv"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
-	<class id="xbool" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xbool" oils_persist:tablename="query.expr_xbool" reporter:label="Boolean Expression">
+	<class id="xbool" controller="open-ils.cstore" oils_obj:fieldmapper="query::expr_xbool" oils_persist:tablename="query.expr_xbool" reporter:label="Boolean Expression">
 		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
@@ -8312,11 +8262,9 @@ SELECT  usr,
 		<links>
 			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
-	<class id="xcase" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xcase" oils_persist:tablename="query.expr_xcase" reporter:label="Case Expression">
+	<class id="xcase" controller="open-ils.cstore" oils_obj:fieldmapper="query::expr_xcase" oils_persist:tablename="query.expr_xcase" reporter:label="Case Expression">
 		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
@@ -8329,11 +8277,9 @@ SELECT  usr,
 			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
 			<link field="left_operand" reltype="has_a" key="id" map="" class="qxp"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
-	<class id="xcast" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xcast" oils_persist:tablename="query.expr_xcast" reporter:label="Cast Expression">
+	<class id="xcast" controller="open-ils.cstore" oils_obj:fieldmapper="query::expr_xcast" oils_persist:tablename="query.expr_xcast" reporter:label="Cast Expression">
 		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
@@ -8348,11 +8294,9 @@ SELECT  usr,
 			<link field="left_operand" reltype="has_a" key="id" map="" class="qxp"/>
 			<link field="cast_type" reltype="has_a" key="id" map="" class="qdt"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
-	<class id="xcol" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xcol" oils_persist:tablename="query.expr_xcol" reporter:label="Column Expression">
+	<class id="xcol" controller="open-ils.cstore" oils_obj:fieldmapper="query::expr_xcol" oils_persist:tablename="query.expr_xcol" reporter:label="Column Expression">
 		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
@@ -8365,11 +8309,9 @@ SELECT  usr,
 		<links>
 			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
-	<class id="xex" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xex" oils_persist:tablename="query.expr_xex" reporter:label="Exists Expression">
+	<class id="xex" controller="open-ils.cstore" oils_obj:fieldmapper="query::expr_xex" oils_persist:tablename="query.expr_xex" reporter:label="Exists Expression">
 		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
@@ -8382,11 +8324,9 @@ SELECT  usr,
 			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
 			<link field="subquery" reltype="has_a" key="id" map="" class="qsq"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
-	<class id="xfunc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xfunc" oils_persist:tablename="query.expr_xfunc" reporter:label="Function Expression">
+	<class id="xfunc" controller="open-ils.cstore" oils_obj:fieldmapper="query::expr_xfunc" oils_persist:tablename="query.expr_xfunc" reporter:label="Function Expression">
 		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
@@ -8400,11 +8340,9 @@ SELECT  usr,
 			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
 			<link field="function_id" reltype="has_a" key="id" map="" class="qfs"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
-	<class id="xin" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xin" oils_persist:tablename="query.expr_xin" reporter:label="In Expression">
+	<class id="xin" controller="open-ils.cstore" oils_obj:fieldmapper="query::expr_xin" oils_persist:tablename="query.expr_xin" reporter:label="In Expression">
 		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
@@ -8419,11 +8357,9 @@ SELECT  usr,
 			<link field="left_operand" reltype="has_a" key="id" map="" class="qxp"/>
 			<link field="subquery" reltype="has_a" key="id" map="" class="qsq"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
-	<class id="xisnull" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xisnull" oils_persist:tablename="query.expr_xisnull" reporter:label="IS NULL Expression">
+	<class id="xisnull" controller="open-ils.cstore" oils_obj:fieldmapper="query::expr_xisnull" oils_persist:tablename="query.expr_xisnull" reporter:label="IS NULL Expression">
 		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
@@ -8436,11 +8372,9 @@ SELECT  usr,
 			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
 			<link field="left_operand" reltype="has_a" key="id" map="" class="qxp"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
-	<class id="xnull" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xnull" oils_persist:tablename="query.expr_xnull" reporter:label="Null Expression">
+	<class id="xnull" controller="open-ils.cstore" oils_obj:fieldmapper="query::expr_xnull" oils_persist:tablename="query.expr_xnull" reporter:label="Null Expression">
 		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
@@ -8451,11 +8385,9 @@ SELECT  usr,
 		<links>
 			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
-	<class id="xnum" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xnum" oils_persist:tablename="query.expr_xnum" reporter:label="Number Expression">
+	<class id="xnum" controller="open-ils.cstore" oils_obj:fieldmapper="query::expr_xnum" oils_persist:tablename="query.expr_xnum" reporter:label="Number Expression">
 		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
@@ -8466,11 +8398,9 @@ SELECT  usr,
 		<links>
 			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
-	<class id="xop" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xop" oils_persist:tablename="query.expr_xop" reporter:label="Operator Expression">
+	<class id="xop" controller="open-ils.cstore" oils_obj:fieldmapper="query::expr_xop" oils_persist:tablename="query.expr_xop" reporter:label="Operator Expression">
 		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
@@ -8486,11 +8416,9 @@ SELECT  usr,
 			<link field="left_operand" reltype="has_a" key="id" map="" class="qxp"/>
 			<link field="right_operand" reltype="has_a" key="id" map="" class="qxp"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
-	<class id="xser" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xser" oils_persist:tablename="query.expr_xser" reporter:label="Operator Expression">
+	<class id="xser" controller="open-ils.cstore" oils_obj:fieldmapper="query::expr_xser" oils_persist:tablename="query.expr_xser" reporter:label="Operator Expression">
 		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
@@ -8502,11 +8430,9 @@ SELECT  usr,
 		<links>
 			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
-	<class id="xstr" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xstr" oils_persist:tablename="query.expr_xstr" reporter:label="String Expression">
+	<class id="xstr" controller="open-ils.cstore" oils_obj:fieldmapper="query::expr_xstr" oils_persist:tablename="query.expr_xstr" reporter:label="String Expression">
 		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
@@ -8517,11 +8443,9 @@ SELECT  usr,
 		<links>
 			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
-	<class id="xsubq" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xsubq" oils_persist:tablename="query.expr_xsubq" reporter:label="Subquery Expression">
+	<class id="xsubq" controller="open-ils.cstore" oils_obj:fieldmapper="query::expr_xsubq" oils_persist:tablename="query.expr_xsubq" reporter:label="Subquery Expression">
 		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
@@ -8533,8 +8457,6 @@ SELECT  usr,
 			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
 			<link field="subquery" reltype="has_a" key="id" map="" class="qsq"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
 	</class>
 
 	<class id="bmpc" controller="open-ils.cstore" oils_obj:fieldmapper="biblio::marc21_physical_characteristics" oils_persist:tablename="biblio.marc21_physical_characteristics" reporter:label="MARC21 Physical Characteristics" oils_persist:field_safe="true" oils_persist:readonly="true">
