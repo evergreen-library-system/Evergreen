@@ -1,0 +1,310 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude"
+   xml:lang="EN" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" xml:id="admin-booking">
+   <info>
+      <title>Booking Module Administration</title>
+      <legalnotice>
+         <para><emphasis role="bold">Adapted with permission from original material by the <link
+                  xlink:title="http://docs.evergreen-ils.org/1.6/draft/html/"
+                  xlink:href="http://docs.evergreen-ils.org/1.6/draft/html/">Evergreen
+                  Community</link></emphasis></para>
+      </legalnotice>
+
+      <abstract>
+         <para>The Evergreen booking module is included in Evergreen 1.6.1.x and above.The following
+            documentation will include information about making cataloged items bookable; making
+            non-bibliographic items bookable; and setting permissions in the booking module for
+            staff.</para>
+      </abstract>
+   </info>
+   <section xml:id="MakeCataloguedItemBookable">
+      <title>Make a Cataloged Item Bookable in Advance</title>
+	<indexterm><primary>booking reservation</primary><secondary>making a cataloged item bookable</secondary></indexterm>
+      <para>If their permission settings allow, staff members can make items bookable. Staff members
+         can do this in advance of a booking request, or they can do it on the fly.</para>
+      <para>If you know in advance of the request that an item will need to be booked, you can make
+         the item bookable.</para>
+
+
+      <procedure>
+         <step>
+            <para>In the staff client, select <menuchoice>
+                  <guimenu>Search</guimenu>
+                  <guimenuitem>Search the Catalog</guimenuitem>
+               </menuchoice></para>
+         </step>
+         <step>
+            <para>Begin a title search to find an item.</para>
+         </step>
+         <step>
+            <para>Click the title of the item that you want to book.</para>
+         </step>
+
+         <step>
+            <para>The <guilabel>Record Summary</guilabel> will appear. In this view you can see
+               information about the item and its locations. Click <menuchoice>
+                  <guimenu>Actions for this Record</guimenu>
+                  <guimenuitem>Holdings Maintenance</guimenuitem>
+               </menuchoice> in the top right corner of the screen.</para>
+         </step>
+
+         <step>
+            <para>The <guilabel>Holdings Maintenance</guilabel> screen will appear. In this screen,
+               you can view the volumes and copies of an item avaialable at each branch. To view the
+               barcodes and other information for each copy, click the arrow adjacent to the branch
+               with the copy that you need to view. Click on successive arrows until you find the
+               copy that you need to view.</para>
+         </step>
+         <step>
+            <para>Select the item that you want to make bookable. Right click to open the menu, and
+               click <guimenuitem>Make Item Bookable</guimenuitem>.</para>
+         </step>
+         <step>
+            <para>The item has now been added to the list of resources that are bookable. To book
+               the item, return to the <guilabel>Record Summary</guilabel>, and proceed with
+               booking..</para>
+         </step>
+
+      </procedure>
+      <note>
+         <para>In Evergreen 1.6.1, there is no way to make an item “unbookable” after it has been
+            made bookable and has been reserved. The <guibutton>Delete Selected</guibutton> button
+            on this screen deletes the resource from the screen, but the item will be able to be
+            booked after it has been returned.</para>
+      </note>
+
+   </section>
+   <section xml:id="MakeItemBookableOnTheFly">
+      <title>Make a Cataloged Item Bookable On the Fly</title>
+      <para>If a patron wants to book an item immediately that does not have bookable status, you
+         can book the item on the fly if you have the appropriate permissions.</para>
+
+      <procedure>
+         <step>
+            <para>Follow steps one through five in <xref linkend="MakeCataloguedItemBookable"
+               />.</para>
+         </step>
+         <step>
+            <para>Select the item that you want to make bookable. Right click to open the menu, and
+               click <guimenuitem>Book Item Now</guimenuitem>.</para>
+         </step>
+         <step>
+            <para>A <guilabel>Reservations</guilabel> screen will appear in a new tab, and you can
+               make the reservation.</para>
+         </step>
+
+      </procedure>
+
+   </section>
+   <section xml:id="MakeNon-CataloguedItemBookable">
+      <title>Create a Bookable Status for Non-Bibliographic Items</title>
+	<indexterm><primary>booking reservation</primary><secondary>non-bibliographic items</secondary></indexterm>
+      <para>Staff with the required permissions can create a bookable status for non-bibliographic
+         items. For example, staff can book conference rooms or laptops. You will be able to create
+         types of resources, specify the names of individual resources within each type, and set
+         attributes to describe those resources. You can then bring the values together through the
+            <guilabel>Resource Attribute Map</guilabel>.</para>
+      <procedure>
+         <step>
+            <para>First, create the type of resource that you want to make bookable. Select <menuchoice>
+                  <guimenu>Admin</guimenu>
+                  <guisubmenu>Server Administration</guisubmenu>
+                  <guisubmenu>Booking</guisubmenu>
+                  <guimenuitem>Resource Types</guimenuitem>
+               </menuchoice>.</para>
+         </step>
+         <step>
+            <para>A list of resource types will appear. You may also see titles of cataloged items
+               on this screen if they were added using the <guilabel>Make Item Bookable</guilabel>
+               or <guilabel>Book Now</guilabel> links. You should not attempt to add cataloged items
+               on this screen; it is best to use the aforementioned links to make those items
+               bookable. In this screen, you will create a type of resource.</para>
+         </step>
+         <step>
+            <para>In the right corner, click <guibutton>New Resource Type</guibutton>.</para>
+         </step>
+         <step>
+            <para>A box will appear in which you will create a type of resource. In this box, you
+               can set fines, determine “elbow room” periods between reservations on this type of
+               resource, and indicate if this type of resource can be transferred to another
+               library. Click <guibutton>Save</guibutton> when you have entered the needed
+               information.</para>
+         </step>
+         <step>
+            <para>After you click <guibutton>Save</guibutton>, the box will disappear. Refresh the
+               screen to see the item that you have added.</para>
+         </step>
+         <step>
+            <para>Next, set the attributes for the type of resource that you have created. Select <menuchoice>
+                  <guimenu>Server Administration</guimenu>
+                  <guisubmenu>Booking</guisubmenu>
+                  <guimenuitem>Resource Attributes</guimenuitem>
+               </menuchoice>.</para>
+         </step>
+
+         <step>
+            <para>Click <guibutton>New Resource Attribute</guibutton>.</para>
+         </step>
+
+         <step>
+            <para>A box will appear in which you can add the attributes of the resource. Attributes
+               are descriptive information that is provided to the staff member when the booking
+               request is made. For example, an attribute of the projector may be a cart that allows
+               for its transportation. Other attributes might be number of seats available in a
+               room, or MAC or PC attributes for a laptop. Click <guibutton>Save</guibutton> when
+               the necessary information has been entered.</para>
+         </step>
+
+         <step>
+            <para>The box will disappear. Refresh the screen to see the added attribute.</para>
+         </step>
+
+         <step>
+            <para>Next, add the values for the resource attributes. A value can be a number, yes/no,
+               or any other meaningful information. Select <menuchoice>
+                  <guimenu>Server Administration</guimenu>
+                  <guisubmenu>Booking</guisubmenu>
+                  <guimenuitem>Resource Attribute Values</guimenuitem>
+               </menuchoice>.</para>
+         </step>
+
+         <step>
+            <para>Select <guibutton>New Resource Attribute Value</guibutton>.</para>
+         </step>
+
+         <step>
+            <para>A pop up box will appear. Select the <guilabel>Resource Attribute</guilabel> from
+               the drop down box. Add the value. You can add multiple values for this field. Click
+                  <guibutton>Save</guibutton> when the required information has been added.</para>
+         </step>
+
+         <step>
+            <para>If you refresh the screen, the attribute value may not appear, but it has been
+               saved.</para>
+         </step>
+
+         <step>
+            <para>Next, identify the specific objects that are associated with this resource type.
+               Click <menuchoice>
+                  <guimenu>Admin</guimenu>
+                  <guisubmenu>Server Administration</guisubmenu>
+                  <guisubmenu>Booking</guisubmenu>
+                  <guimenuitem>Resources</guimenuitem>
+               </menuchoice>.</para>
+         </step>
+
+         <step>
+            <para>Click <guibutton>New Resource</guibutton>.</para>
+         </step>
+
+         <step>
+            <para>A pop-up box will appear. Add information for the resource and click
+                  <guibutton>Save</guibutton>. Repeat this process for each resource.</para>
+         </step>
+
+         <step>
+            <para>Refresh the screen, and the resource(s) that you added will appear.</para>
+         </step>
+
+         <step>
+            <para>Finally, use <guilabel>Resource Attribute Maps</guilabel> to bring together the
+               resource and its attributes. Select <menuchoice>
+                  <guimenu>Admin</guimenu>
+                  <guisubmenu>Server Administration</guisubmenu>
+                  <guisubmenu>Booking</guisubmenu>
+                  <guimenuitem>Resource Attribute Maps</guimenuitem>
+               </menuchoice>.</para>
+         </step>
+
+         <step>
+            <para>Select <guibutton>New Resource Attribute Map</guibutton></para>
+         </step>
+
+         <step>
+            <para>Select the resource that you want to match with its attributes, then click
+                  <guibutton>Save</guibutton>. Repeat for all applicable resources.</para>
+         </step>
+
+         <step>
+            <para>You have now created bookable, non-bibliographic resource(s) with
+               attributes.</para>
+         </step>
+
+      </procedure>
+   </section>
+   <section xml:id="SettingBookingPermissions">
+      <title>Setting Booking Permissions</title>
+	<indexterm><primary>booking reservation</primary><secondary>setting booking permissions</secondary></indexterm>
+      <para>Administrators can set permissions so that staff members can view reservations, make
+         reservations, and make bibliographic or non-bibliographic items bookable.</para>
+
+      <para>If a staff member attempts to book an item for which they do not have the appropriate
+         permissions, they will receive an error message.</para>
+
+      <para>To set permissions, select <menuchoice>
+            <guimenu>Admin</guimenu>
+            <guisubmenu>Server Administration</guisubmenu>
+            <guimenuitem>Permissions</guimenuitem>
+         </menuchoice>.</para>
+
+      <para>Staff members should be assigned the following permissions to do common tasks in the
+         booking module. These permissions could be assigned to front line staff members, such as
+         circulation staff. Permissions with an asterisk (<emphasis role="bold">*</emphasis>) are
+         already included in the <emphasis role="bold">Staff</emphasis> permission group. All other
+         booking permissions must be applied individually.</para>
+
+      <itemizedlist>
+         <listitem>
+            <para><emphasis role="bold">View Reservations:</emphasis> VIEW_TRANSACTION*</para>
+         </listitem>
+         <listitem>
+            <para><emphasis role="bold">Use the pull list:</emphasis>
+               RETRIEVE_RESERVATION_PULL_LIST</para>
+         </listitem>
+         <listitem>
+            <para><emphasis role="bold">Capture reservations:</emphasis> CAPTURE_RESERVATION</para>
+         </listitem>
+         <listitem>
+            <para><emphasis role="bold">Assist patrons with pickup and return:</emphasis>
+               VIEW_USER*</para>
+         </listitem>
+         <listitem>
+            <para><emphasis role="bold">Create/update/delete reservations:</emphasis>
+               ADMIN_BOOKING_RESERVATION</para>
+         </listitem>
+      </itemizedlist>
+
+      <para>The following permissions allow users to do more advanced tasks, such as making items
+         bookable, booking items on the fly, and creating non-bibliographic resources for
+         booking.</para>
+
+      <itemizedlist>
+         <listitem>
+            <para><emphasis role="bold">Create/update/delete booking resource type:</emphasis>
+               ADMIN_BOOKING_RESOURCE_TYPE</para>
+         </listitem>
+         <listitem>
+            <para><emphasis role="bold">Create/update/delete booking resource attributes:</emphasis>
+               ADMIN_BOOKING_RESOURCE_ATTR</para>
+         </listitem>
+         <listitem>
+            <para><emphasis role="bold">Create/update/delete booking resource attribute
+                  values:</emphasis> ADMIN_BOOKING_RESOURCE_ATTR_VALUE</para>
+         </listitem>
+         <listitem>
+            <para><emphasis role="bold">Create/update/delete booking resource:</emphasis>
+               ADMIN_BOOKING_RESOURCE</para>
+         </listitem>
+         <listitem>
+            <para><emphasis role="bold">Create/update/delete booking resource attribute
+                  maps:</emphasis> ADMIN_BOOKING_RESOURCE_ATTR_MAP</para>
+         </listitem>
+      </itemizedlist>
+
+      <para>In addition to having the permissions listed above, staff members will need a valid
+         working location in their profiles. This should be done when registering new staff members.</para>
+
+      <!-- Pages 14-16 of source document from http://evergreen-ils.org/dokuwiki/doku.php?id=booking ommitted at conversion (Jeremy Buhler, Oct 6 2010).  Rationale: subject is covered elsewhere in the Book of Evergreen and it confuses 'working location' with 'home library', both of which should already be set for all staff accounts. -->
+
+   </section>
+</chapter>

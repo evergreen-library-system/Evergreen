@@ -5,6 +5,9 @@ Evergreen Documentation
 Introduction
 ============ 
 
+About This Documentation
+------------------------
+
 This guide was produced by the Evergreen Documentation Interest Group (DIG), consisting of numerous volunteers from many different organizations. The DIG has drawn together, edited, and supplemented pre-existing documentation contributed by libraries and consortia running Evergreen that were kind enough to release their documentation into the creative commons. For a full list of authors and contributing organizations, see Appendix B, About this Documentation. Just like the software it describes, this guide is a work in progress, continually revised to meet the needs of its users, so if you find errors or omissions, please let us know, by contacting the DIG facilitators at docs@evergreen-ils.org.
 
 This guide to Evergreen is intended to meet the needs of front-line library staff, catalogers, library administrators, system administrators, and software developers. It is organized into Parts, Chapters, and Sections addressing key aspects of the software, beginning with the topics of broadest interest to the largest groups of users and progressing to some of the more specialized and technical topics of interest to smaller numbers of users.
@@ -33,15 +36,21 @@ include::release_notes.txt[]
 Software Installation
 =====================
 
-[partintro]
---
-This part will guide you through the installation steps installation or upgrading your Evergreen system. It is intended for system administrators. 
---
 
-// include::system_requirements.txt[]
-// include::server_installation.txt[]
-// include::server_upgrade.txt[]
+Introduction
+------------
+
+This part will guide you through the installation steps installation or upgrading your Evergreen system. It is intended for system administrators. 
+
+
+include::system_requirements.txt[]
+
+include::server_installation.txt[]
+
+include::server_upgrade.txt[]
+
 // include::system_troubleshooting.txt[]
+
 // include::staff_client_installation.txt[] 
 // include::org_unit_structure_initialization.txt[]
 // include::loading_data.txt[]
@@ -50,10 +59,11 @@ This part will guide you through the installation steps installation or upgradin
 System Configuration and Customization
 ======================================
 
-[partintro]
---
+Introduction
+------------
+
 The Evergreen system allows a free range of customizations to every aspect of the system. Use this part of the documentation to become familiar with the tools for  configuring the system as well as  customizing  the OPAC and staff client.  
---
+
 
 // include::global_system_configuration.txt[]
 // include::opac_customization.txt[]
@@ -65,10 +75,10 @@ The Evergreen system allows a free range of customizations to every aspect of th
 System Administration From the Staff Client
 ===========================================
 
-[partintro]
---
+Introduction
+------------
+
 This part deals with the options in the Server Administration menu found in the staff client. 
---
 
 // Follow structure from staff client system admin menu.
 
@@ -76,10 +86,10 @@ This part deals with the options in the Server Administration menu found in the 
 Local Administration
 ====================
 
-[partintro]
---
+Introduction
+------------
+
 This part covers the options in the Local Administration menu found in the staff client. 
---
 
 // Follow structure from staff client local admin menu.
 
@@ -87,58 +97,58 @@ This part covers the options in the Local Administration menu found in the staff
 Acuisitions
 ===========
 
-[partintro]
---
+Introduction
+------------
+
 This part is intended for staff who are involved in managing and processing acquisitions. 
---
 
 Cataloging
 ==========
 
-[partintro]
---
+Introduction
+------------
+
 Cataloguers should use this part for understanding the cataloguing procedures used in Evergreen.
---
 
 Serials
 =======
 
-[partintro]
---
+Introduction
+------------
+
 This part is intended for staff involved in Serials management and processing.
---
 
 Circulation
 ===========
 
-[partintro]
---
+Introduction
+------------
+
 Use this section for understanding the circulation procedures in the Evergreen system.  
---
 
 Reports
 =======
 
-[partintro]
---
+Introduction
+------------
+
 Learn how to create and use reports in Evergreen. 
---
 
 Using the Public Access Catalog
 ===============================
 
-[partintro]
---
+Introduction
+------------
+
 Use this part for information about searching the Evergreen public access catalog.
---
 
 Developer Resources
 ===================
 
-[partintro]
---
+Introduction
+------------
+
 Developers can use this part to learn more about the programming languages, communication protocols and standards used in Evergreen.  
---
 
 [appendix]
 
