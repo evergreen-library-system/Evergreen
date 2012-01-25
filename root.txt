@@ -43,11 +43,11 @@ Introduction
 This part will guide you through the installation steps installation or upgrading your Evergreen system. It is intended for system administrators. 
 
 
-include::system_requirements.txt[]
+include::installation/system_requirements.txt[]
 
-include::server_installation.txt[]
+include::installation/server_installation.txt[]
 
-include::server_upgrade.txt[]
+include::installation/server_upgrade.txt[]
 
 // include::system_troubleshooting.txt[]
 

@@ -117,7 +117,7 @@ cd /home/opensrf/Evergreen-ILS-2.2.alpha1
 +   
 It is recommended that you back up your Evergreen database in order to restore your data if anything goes wrong.
 +
-[WARNING]
+[CAUTION]
 Pay attention to error output as you run these scripts. You should do additional troubleshooting and error reporting to the Evergreen Developer List if you encounter errors.
 +
 [source, bash]
@@ -141,12 +141,12 @@ cp /openils/conf/opensrf_core.xml.example /openils/conf/opensrf_core.xml
 cp /openils/conf/opensrf.xml.example /openils/conf/opensrf.xml
 ----------------------------------------------------------
 +    
-[WARNING]
+[CAUTION]
 Copying these configuration files will remove any customizations you have made to them. Remember to redo your customizations after copying them.
 +
 14. Update Apache files:
 +
-[WARNING]
+[CAUTION]
 Copying these Apache configuration files will remove any customizations you have made to them. Remember to redo your customizations after copying them. For example, 
 if you purchased an SSL certificate, you will need to edit eg.conf to point to the appropriate SSL certificate files.
 +
