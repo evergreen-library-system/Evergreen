@@ -94,7 +94,7 @@ This part covers the options in the Local Administration menu found in the staff
 // Follow structure from staff client local admin menu.
 
 
-Acuisitions
+Acquisitions
 ===========
 
 Introduction
