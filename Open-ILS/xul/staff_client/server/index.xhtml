@@ -110,13 +110,7 @@
                 
                 //Place your helpdesk link here
                 function helpdesk(newtab) {
-                        loc = "http://evergreen-ils.org/communicate.php";
-                        var params = {'tab_name':'Evergreen Project Website'};
-                        
-                        if(newtab)
-                                xulG.new_tab(loc, params, {}); 
-                        else
-                                xulG.set_tab(loc, params, {}); 
+                        xulG.open_external("http://evergreen-ils.org/communicate.php");
                 }
                 
                 //A good place for a Google map.  Evergreen Indiana uses GIS data to create a Google map to verify if a library is within district boundaries
@@ -532,8 +526,7 @@
               onclick="try { helpdesk(false); } catch(E) { alert(E); }" alt=
               "Submit A Helpdesk Ticket" /></td>
 
-              <td><img class="newtabimg" src="skin/media/images/portal/newtab2.PNG" alt="Open in a new tab"
-              onclick="try { helpdesk(true); } catch(E) { alert(E); }" /> <a href="#"
+              <td><a href="#"
               onclick="try { helpdesk(false); } catch(E) { alert(E); }">&staff.client.portal.helpdesk;</a></td>
             </tr>
 
