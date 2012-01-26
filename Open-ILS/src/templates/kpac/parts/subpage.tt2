@@ -1,8 +1,6 @@
 [% PROCESS 'kpac/parts/util.tt2'; WRAPPER "kpac/parts/base.tt2" %]
 
-<!--
-subpage is the main wrapper page for everything except 'index'
--->
+<!-- subpage is the main wrapper page for everything except 'index' -->
 
 <div class="main_top_shadow_sub">
     <div class="main_mid_top_sub">
@@ -20,41 +18,7 @@ subpage is the main wrapper page for everything except 'index'
         </td>
         <td width="266" valign="top" class="sub_sidebar">
             <div class="sub_sidebar_inner">
-                <div class="sub_sidebar_header">New Search</div>
-                <div class="sub_sidebar_search_wrapper">
-                    <input type="text" 
-                        class="sub_sidebar_search_box" style="color:#aaa;" value=" Enter Text... " 
-                        onfocus="if(this.value==' Enter Text... '){this.value='';this.style.color='#424242';}" 
-                        onblur="if(this.value==''){this.value=' Enter Text... '; this.style.color='#aaa';}" />
-                </div>
-                <table cellpadding="0" cellspacing="0" border="0" class="sub_sidebar_search_st">
-                    <tr>
-                        <td class="st_radio_btn">
-                            <input type="radio" name="search_type" checked="checked" id="st_word" class="st_word" />
-                        </td>
-                        <td class="st_label"><label for="st_word">Word</label></td>
-                        <td class="st_radio_spacer"><div>&nbsp;</div></td>
-                        <td class="st_radio_btn">
-                            <input type="radio" name="search_type" id="st_title" class="st_title" />
-                        </td>
-                        <td class="st_label"><label for="st_title">Title</label></td>
-                        <td class="st_radio_spacer"><div>&nbsp;</div></td>
-                        <td class="st_radio_btn">
-                            <input type="radio" name="search_type" id="st_author" class="st_author" />
-                        </td>
-                        <td class="st_label"><label for="st_author">Author</label></td>
-                    </tr>
-                </table>
-                <div class="hr">&nbsp;</div>
-                <div class="sub_search_category">
-                    <select class="search_category" name="search_category">
-                        <option>Children's Material</option>
-                    </select>
-                </div>
-                <div class="hr">&nbsp;</div>
-                <div>
-                    <a href="javascript:;"><img alt="search" src="[% ctx.media_prefix %]/images/kpac/search_btn_sub.png" /></a>
-                </div>
+                [% INCLUDE 'kpac/parts/searchbox.tt2' %]
             </div>
         </td>
         <td width="3" class="main_right_shadow"><div class="clear">&nbsp;</div></td>

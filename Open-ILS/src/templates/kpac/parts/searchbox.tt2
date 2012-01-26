@@ -1,0 +1,43 @@
+<div class="sub_sidebar_header">[% l('New Search') %]</div>
+<form action="[% ctx.kpac_root _ '/search_results' %]">
+    <div class="sub_sidebar_search_wrapper">
+        <input type="text" name='query' value="[% CGI.param('query') | html %]"
+            [% seed = l(' Enter Text... ') | html %]
+            class="sub_sidebar_search_box" style="color:#aaa;" value="[% seed %]"
+            onfocus="if(this.value=='[% seed %]'){this.value='';this.style.color='#424242';}" 
+            onblur="if(this.value==''){this.value='[% seed %]'; this.style.color='#aaa';}" />
+    </div>
+    <table cellpadding="0" cellspacing="0" border="0" class="sub_sidebar_search_st">
+        <tr>
+            [%  
+            types = [
+                {keyword => l('Word')}, 
+                {title => l('Title')}, 
+                {author => l('Author')}
+            ];
+            FOR qtype_blob IN types;
+                qtype = qtype_blob.keys.0 %]
+                <td class="st_radio_btn">
+                    <input type="radio" name="qtype" value="[% qtype %]" id="st_[% qtype %]"
+                        [% IF CGI.param('qtype') == qtype %]checked="checked"[% END %]/>
+                </td>
+                <td class="st_label"><label for="st_[% qtype %]">[% qtype_blob.$qtype | html %]</label></td>
+                [% IF !loop.last %]
+                <td class="st_radio_spacer"><div>&nbsp;</div></td>
+                [% END %]
+            [% END %]
+        </tr>
+    </table>
+    <div class="hr">&nbsp;</div>
+    <div class="sub_search_category">
+        <!-- XXX TODO: QP Groups / saved searches -->
+        <select class="search_category" name="search_category">
+            <option>Children's Material</option>
+        </select>
+    </div>
+    <div class="hr">&nbsp;</div>
+    <div>
+        <input type="image" alt="search" src="[% ctx.media_prefix %]/images/kpac/search_btn_sub.png" />
+    </div>
+</form>
+
