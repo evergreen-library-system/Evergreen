@@ -123,6 +123,12 @@ Introduction
 
 Cataloguers should use this part for understanding the cataloguing procedures used in Evergreen.
 
+include::cataloging/batch_importing_MARC.txt[]
+include::cataloging/overlay_record_3950_import.txt[]
+include::cataloging/monograph_parts.txt[]
+include::cataloging/conjoined_items.txt[]
+
+
 Serials
 =======
 

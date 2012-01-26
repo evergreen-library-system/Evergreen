@@ -1,29 +1,23 @@
-Batch Importing MARC Records 2.2
---------------------------------
-
-This feature will be available in Evergreen version 2.2.
-
-*Abstract*
-~~~~~~~~~~
+Batch Importing MARC Records
+----------------------------
 
 The cataloging module in version 2.2 includes an enhanced MARC Batch Import interface.  This interface features improved matching of records and managing of your import queue.  In 2.2, you will be able to specify match points between incoming and existing records.  You will also be able to apply filters to your queue that enable you to generate any errors that may have occurred during import.  You will also be able to print your queue, email your queue, or export your queue as a CSV file. 
 
-*Permissions*
-~~~~~~~~~~~~~
+Permissions
+~~~~~~~~~~~
 
 To use match sets to import records, you will need the following permission:
 
 ADMIN_IMPORT_MATCH_SET
 
 
-*Record Display Attributes*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Record Display Attributes
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This feature enables you to specify the tags and subfields that will display in records that appear in the import queue. 
 
 
 *Record Match Sets*
-^^^^^^^^^^^^^^^^^^^
 
 This feature enables you to create custom match points that you can use to accurately match incoming records with existing catalog records.  
   
@@ -44,7 +38,7 @@ In this example, to demonstrate matching on record attributes and MARC tags and 
 6) Click *Save*.
 
 
-image::/esi/docs/wp-content/uploads/2011/11/Batch_Importing_MARC_Records1.jpg[Batch_Importing_MARC_Records1]
+image::media/Batch_Importing_MARC_Records1.jpg[Batch_Importing_MARC_Records1]
 
 
 7) The screen will refresh to list the record match set that you created.  Click the link to the record match set.
@@ -59,7 +53,7 @@ image::/esi/docs/wp-content/uploads/2011/11/Batch_Importing_MARC_Records1.jpg[Ba
 
 
 
-image::/esi/docs/wp-content/uploads/2011/11/Batch_Importing_MARC_Records2.jpg[Batch_Importing_MARC_Records2]
+image::media/Batch_Importing_MARC_Records2.jpg[Batch_Importing_MARC_Records2]
 
 
 
@@ -69,13 +63,13 @@ image::/esi/docs/wp-content/uploads/2011/11/Batch_Importing_MARC_Records2.jpg[Ba
 
 
 
-image::/esi/docs/wp-content/uploads/2011/11/Batch_Importing_MARC_Records3.jpg[Batch_Importing_MARC_Records3]
+image::media/Batch_Importing_MARC_Records3.jpg[Batch_Importing_MARC_Records3]
 
 
 The match point will nest underneath the folder in the Expression tree.
 
 
-image::/esi/docs/wp-content/uploads/2011/11/Batch_Importing_MARC_Records4.jpg[Batch_Importing_MARC_Records4]
+image::media/Batch_Importing_MARC_Records4.jpg[Batch_Importing_MARC_Records4]
 
 
 14) Enter another *Boolean Operator* to further refine your match set.
@@ -89,7 +83,7 @@ image::/esi/docs/wp-content/uploads/2011/11/Batch_Importing_MARC_Records4.jpg[Ba
 18) Drag the operator to the expression tree.
 
 
-image::/esi/docs/wp-content/uploads/2011/11/Batch_Importing_MARC_Records5.jpg[Batch_Importing_MARC_Records5]
+image::media/Batch_Importing_MARC_Records5.jpg[Batch_Importing_MARC_Records5]
 
 
 19) Click *MARC Tag and Subfield*.
@@ -106,7 +100,7 @@ image::/esi/docs/wp-content/uploads/2011/11/Batch_Importing_MARC_Records5.jpg[Ba
 24) Click *Ok.*
 
 
-image::/esi/docs/wp-content/uploads/2011/11/Batch_Importing_MARC_Records6.jpg[Batch_Importing_MARC_Records6]
+image::media/Batch_Importing_MARC_Records6.jpg[Batch_Importing_MARC_Records6]
 
 
 25) Drag the completed match point under the folder with the appropriately-named Boolean folder under the Expression tree. The Expression will build across the top of the screen.
@@ -116,7 +110,7 @@ image::/esi/docs/wp-content/uploads/2011/11/Batch_Importing_MARC_Records6.jpg[Ba
 27) Click *Save Changes to Expression*.
 
 
-image::/esi/docs/wp-content/uploads/2011/11/Batch_Importing_MARC_Records7.jpg[Batch_Importing_MARC_Records7]
+image::media/Batch_Importing_MARC_Records7.jpg[Batch_Importing_MARC_Records7]
 
 
 *Replace Mode*
@@ -153,7 +147,7 @@ Replace Mode enables you to replace an existing part of the expression tree with
 7) Click *Ok*.  
  
 
-image::/esi/docs/wp-content/uploads/2011/11/Batch_Importing_MARC_Records8.jpg[Batch_Importing_MARC_Records8]
+image::media/Batch_Importing_MARC_Records8.jpg[Batch_Importing_MARC_Records8]
 
 
 
@@ -191,16 +185,16 @@ the user to import holdings attached to a lower quality record without replacing
 10) *Browse* to find the appropriate file, and click *Upload*.  The files will be uploaded to a queue.
 
 
-image::/esi/docs/wp-content/uploads/2011/11/Batch_Importing_MARC_Records9.jpg[Batch_Importing_MARC_Records9]
+image::media/Batch_Importing_MARC_Records9.jpg[Batch_Importing_MARC_Records9]
 
 11) The screen will display records that have been uploaded to your queue.
   
-image::/esi/docs/wp-content/uploads/2011/11/Batch_Importing_MARC_Records15.jpg[Batch_Importing_MARC_Records15]
+image::media/Batch_Importing_MARC_Records15.jpg[Batch_Importing_MARC_Records15]
 
 
 12) If Evergreen indicates that matching records exist, then click the *Matches* link to view the matching records.  Check the box adjacent to the existing record that you want to merge with the incoming record. 
 
-image::/esi/docs/wp-content/uploads/2011/11/Batch_Importing_MARC_Records10.jpg[Batch_Importing_MARC_Records10]
+image::media/Batch_Importing_MARC_Records10.jpg[Batch_Importing_MARC_Records10]
 
 13) Click *Back to Import Queue*.
 
@@ -208,13 +202,13 @@ image::/esi/docs/wp-content/uploads/2011/11/Batch_Importing_MARC_Records10.jpg[B
 
 15) A pop up window will offer you the same import choices that were present on the *Import Records* screen.  You can choose one of the import options, or click *Import*.
 
-image::/esi/docs/wp-content/uploads/2011/11/Batch_Importing_MARC_Records9a.jpg[Batch_Importing_MARC_Records9a]
+image::media/Batch_Importing_MARC_Records9a.jpg[Batch_Importing_MARC_Records9a]
 
 16) The screen will refresh.  The *Queue Summary* indicates that the record was imported.  The *Import Time* column records the date that the record was imported.
 
-image::/esi/docs/wp-content/uploads/2011/11/Batch_Importing_MARC_Records12.jpg[Batch_Importing_MARC_Records12] 
+image::media/Batch_Importing_MARC_Records12.jpg[Batch_Importing_MARC_Records12] 
 
 17) Search the catalog to confirm that the record was imported.
 
-image::/esi/docs/wp-content/uploads/2011/11/Batch_Importing_MARC_Records14.jpg[Batch_Importing_MARC_Records14] 
+image::media/Batch_Importing_MARC_Records14.jpg[Batch_Importing_MARC_Records14] 
 

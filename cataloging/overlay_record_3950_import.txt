@@ -1,13 +1,9 @@
 Overlay Existing Catalog Record via Z39.50 Import
 -------------------------------------------------
 
-*Abstract*
-~~~~~~~~~~
-
 This feature enables you to replace a catalog record with a record obtained through a Z39.50 search.  No new permissions or administrative settings are needed to use this feature.
 
 *To Overlay an Existing Record via Z39.50 Import:*
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 1) Click *Cataloging -> Import Record from Z39.50*
 
@@ -17,7 +13,7 @@ This feature enables you to replace a catalog record with a record obtained thro
 
 4) Click *Search*.
 
-image::/esi/docs/wp-content/uploads/2011/11/Overlay_Existing_Record_via_Z39.50_Import1.jpg[Overlay_Existing_Record_via_Z39.50_Import1]
+image::media/Overlay_Existing_Record_via_Z39.50_Import1.jpg[Overlay_Existing_Record_via_Z39.50_Import1]
 
 5) The results will appear in the lower window.
 
@@ -26,7 +22,7 @@ image::/esi/docs/wp-content/uploads/2011/11/Overlay_Existing_Record_via_Z39.50_I
 7) Click *Mark Local Result as Overlay Target*
 
 
-image::/esi/docs/wp-content/uploads/2011/11/Overlay_Existing_Record_via_Z39.50_Import2.jpg[Overlay_Existing_Record_via_Z39.50_Import2]
+image::media/Overlay_Existing_Record_via_Z39.50_Import2.jpg[Overlay_Existing_Record_via_Z39.50_Import2]
 
 
 8) A confirmation message appears.  Click *OK*.
@@ -36,12 +32,12 @@ image::/esi/docs/wp-content/uploads/2011/11/Overlay_Existing_Record_via_Z39.50_I
 10) Click *Overlay.*
 
 
-image::/esi/docs/wp-content/uploads/2011/11/Overlay_Existing_Record_via_Z39.50_Import3.jpg[Overlay_Existing_Record_via_Z39.50_Import3]
+image::media/Overlay_Existing_Record_via_Z39.50_Import3.jpg[Overlay_Existing_Record_via_Z39.50_Import3]
 
 
 11) The record that you selected will open in the MARC Editor.  Make any desired changes to the record, and click *Overlay Record*.
 
-image::/esi/docs/wp-content/uploads/2011/11/Overlay_Existing_Record_via_Z39.50_Import4.jpg[Overlay_Existing_Record_via_Z39.50_Import4]
+image::media/Overlay_Existing_Record_via_Z39.50_Import4.jpg[Overlay_Existing_Record_via_Z39.50_Import4]
 
 
 12) The catalog record that you want to overlay will appear in a new window.  Review the MARC record to verify that you are overlaying the correct catalog record.
@@ -49,11 +45,11 @@ image::/esi/docs/wp-content/uploads/2011/11/Overlay_Existing_Record_via_Z39.50_I
 13) If the correct record appears, click *Overlay*.
 
 
-image::/esi/docs/wp-content/uploads/2011/11/Overlay_Existing_Record_via_Z39.50_Import5.jpg[Overlay_Existing_Record_via_Z39.50_Import5]
+image::media/Overlay_Existing_Record_via_Z39.50_Import5.jpg[Overlay_Existing_Record_via_Z39.50_Import5]
 
 14) A confirmation message will appear to confirm that you have overlaid the record.  Click *Ok*.
 
 15) The screen will refresh in the OPAC View to show that the record has been overlaid.
 
 
-image::/esi/docs/wp-content/uploads/2011/11/Overlay_Existing_Record_via_Z39.50_Import6.jpg[Overlay_Existing_Record_via_Z39.50_Import6]
+image::media/Overlay_Existing_Record_via_Z39.50_Import6.jpg[Overlay_Existing_Record_via_Z39.50_Import6]
