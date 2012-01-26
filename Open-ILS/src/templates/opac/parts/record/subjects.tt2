@@ -36,7 +36,7 @@
                 NEXT UNLESS subfield.nodeName == "subfield";
                 code = subfield.getAttribute('code');
                 NEXT UNLESS code.match('[a-z]');
-                IF code.match('[vxyz]'); " &mdash; "; END;
+                IF code.match('[vxyz]'); " &gt; "; END;
                 # at this point, we actually have a partial term to use.
                 single_term = subfield.textContent | html;
                 all_terms.push(subfield.textContent);
