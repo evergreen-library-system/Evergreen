@@ -46,9 +46,9 @@
 
                     <div class='results_header_sel' id='simple-detail-view-links'>
                         [% IF CGI.param('detail_record_view') %]
-                        <a href="[% mkurl('', {detail_record_view => ''}) %]">[% l('Simple View') %]</a>
+                        <a href="[% mkurl('', {detail_record_view => ''}) %]">[% l('Show Fewer Details') %]</a>
                         [% ELSE %]
-                        <a href="[% mkurl('', {detail_record_view => 1}) %]">[% l('Detailed View') %]</a>
+                        <a href="[% mkurl('', {detail_record_view => 1}) %]">[% l('Show More Details') %]</a>
                         [% END %]
                     </div>
                     <div class="results_header_div"></div>
