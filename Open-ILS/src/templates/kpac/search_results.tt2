@@ -2,33 +2,12 @@
     PROCESS "opac/parts/misc_util.tt2"; # MARC 
     PROCESS "kpac/parts/grid.tt2";
     WRAPPER "kpac/parts/subpage.tt2";
-
-    ctx.page_title = l('Search Results') 
-    ctx.result_start = 1 + ctx.page_size * page;
-    ctx.result_stop = ctx.page_size * (page + 1);
-    IF ctx.result_stop > ctx.hit_count; ctx.result_stop = ctx.hit_count; END;
-    result_count = ctx.result_start;
-%]
+    ctx.page_title = l('Search Results') %]
         
 <h2 class="sub_header2">Search Results</h2>
 
 <div class="sub_navigation2">
-    <table cellpadding="0" cellspacing="0" border="0" width="100%">
-        <tr>
-            <td><a href="javascript:;"><img src="[% ctx.media_prefix %]/images/kpac/arrow_last.png" /></a></td>
-            <td width="100%" class="nav_mid_bg">
-                <table cellpadding="0" cellspacing="0" border="0" align="center">
-                    <tr>
-                        <td>Page </td>
-                        <td class="current_page">3</td>
-                        <td> of </td>
-                        <td class="total_pages">12</td>
-                    </tr>
-                </table>
-            </td>
-            <td class="to_top_btn"><a href="javascript:;"><img src="[% ctx.media_prefix %]/images/kpac/arrow_next.png" /></a></td>
-        </tr>
-    </table>
+    [% INCLUDE 'kpac/parts/paginate.tt2' %]
 </div>
 
 <div id="search_results_parent">
@@ -52,10 +31,15 @@
             <div class="item_detail_name"><a href="[% mkurl('detailed/' _ rec.id) %]">[% attrs.title %]</a></div>
             <div class="item_detail_author">[% l('by [_1]', attrs.author) %]</div>
             <div class="item_detail_callnumber">[% attrs.holdings.0.label | html %]</div>
-            <div class="item_detail_extra_info">[% l('[_1], [_2]', attrs.publisher, attrs.pubdate) | html %] <!-- TODO fix and add Size --></div>
+            <div class="item_detail_extra_info">
+                [% l('[_1], [_2]', attrs.publisher, attrs.pubdate) | html %] <!-- TODO fix commas, etc. -->
+                [% IF attrs.phys_desc %]<br/>[% attrs.phys_desc | html; END %]
+            </div>
             <div class="item_detail_actions">
-                <div class="button"><a href="javascript:;"><img src="[% ctx.media_prefix %]/images/kpac/more_info_btn.png" alt="more info" /></a></div>
-                <div class="button"><a href="javascript:;"><img src="[% ctx.media_prefix %]/images/kpac/get_it_btn_sm.png" alt="get it" /></a></div>
+                <div class="button"><a href="[% mkurl(ctx.kpac_root _ '/detailed/' _ rec.id) %]"><img 
+                    src="[% ctx.media_prefix %]/images/kpac/more_info_btn.png" alt="more info" /></a></div>
+                <div class="button"><a href="javascript:;"><img 
+                    src="[% ctx.media_prefix %]/images/kpac/get_it_btn_sm.png" alt="get it" /></a></div>
                 <div class="clear">&nbsp;</div>
             </div>
         </div>
@@ -73,22 +57,7 @@
 </div>
 
 <div class="sub_navigation3">
-    <table cellpadding="0" cellspacing="0" border="0" width="100%">
-        <tr>
-            <td><a href="javascript:;"><img src="[% ctx.media_prefix %]/images/kpac/arrow_last.png" /></a></td>
-            <td width="100%" class="nav_mid_bg">
-                <table cellpadding="0" cellspacing="0" border="0" align="center">
-                    <tr>
-                        <td>Page </td>
-                        <td class="current_page">3</td>
-                        <td> of </td><td class="total_pages">12</td>
-                    </tr>
-                </table>
-            </td>
-            <td><a href="javascript:;"><img src="[% ctx.media_prefix %]/images/kpac/arrow_next.png" /></a></td>
-            <td class="to_top_btn"><a href="javascript:;"><img src="[% ctx.media_prefix %]/images/kpac/to_top_btn.png" /></a></td>
-        </tr>
-    </table>
+    [% INCLUDE 'kpac/parts/paginate.tt2' showtop=1 %]
 </div>
 
 [% END %]

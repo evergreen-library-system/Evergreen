@@ -23,13 +23,18 @@ sub load {
     $self->load_kpac_config;
 
     my $path = $self->apache->path_info;
+    ($self->ctx->{page} = $path) =~ s#.*/(.*)#$1#g;
 
     return $self->load_simple("index") if $path =~ m|kpac/index|;
     return $self->load_simple("category") if $path =~ m|kpac/category|;
     return $self->load_simple("checkout") if $path =~ m|kpac/checkout|;
     return $self->load_simple("checkout_results") if $path =~ m|kpac/checkout_results|;
-    return $self->load_simple("detailed") if $path =~ m|kpac/detailed|;
+
+    # note: sets page=rresult
     return $self->load_rresults if $path =~ m|kpac/search_results|; # inherited from tpac
+
+    # note: sets page=record
+    return $self->load_simple("detailed") if $path =~ m|kpac/detailed|;
 
     # ----------------------------------------------------------------
     #  Everything below here requires SSL
@@ -86,8 +91,9 @@ sub load_kpac_config {
         $ou = $org->parent_ou;
     }
 
-    $self->ctx->{kpac_layout} = $kpac_config->{pages}->{page}->{$layout->{page}};
+    $self->ctx->{kpac_layout} = $layout;
     $self->ctx->{kpac_config} = $kpac_config;
+    $self->ctx->{kpac_root} = $self->ctx->{base_path} . "/kpac"; 
 }
 
 

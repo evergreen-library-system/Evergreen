@@ -1,0 +1,38 @@
+<div class="breadcrumb">
+
+    <!-- home page -->
+    <a href="[% mkurl(ctx.kpac_root _ '/index', {}, ['trail']) %]" 
+        class="bread_home"><img alt="[% l('Home') %]" 
+        src="[% ctx.media_prefix %]/images/kpac/home_icon.png" /></a>
+
+    <!-- category trail -->
+    [%  trail = CGI.param('trail'); 
+        trail = trail ? trail.split('/') : [];
+        FOR page_id IN trail;
+            page = ctx.kpac_config.pages.page.$page_id %]
+            <div class="bread_green_mid">&nbsp;</div>
+            <a href="[% mkurl(ctx.kpac_root _ '/category', 
+                {trail = trail_splice(page_id)}) %]">[% page.name | html %]</a>
+    [%  END %]
+
+    [% IF ctx.page != 'index' AND ctx.page != 'category' %]
+
+        <!-- search results -->
+        <div class="bread_green_mid">&nbsp;</div>
+        <a href="[% mkurl(ctx.kpac_root _ '/search_results') %]">[% l('search results') | html %]</a>
+
+        [% IF ctx.page != 'rresult' %]
+
+            <!-- record title -->
+            <div class="bread_green_mid">&nbsp;</div>
+            <a href="javascript:;">book name</a>
+
+            <!-- Get it -->
+            <div class="bread_green_last">&nbsp;</div>
+            <span class="bread_last">[% l('Get it') %]</span>
+            <div class="clear">&nbsp;</div>
+
+        [% END %]
+    [% END %]
+</div>
+

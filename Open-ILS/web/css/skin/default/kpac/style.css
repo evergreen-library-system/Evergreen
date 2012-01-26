@@ -1015,7 +1015,9 @@ div.hr {
 	background:url('/images/kpac/popup_br.png') no-repeat;
 }
 
-
+.invisible {
+    visibility : hidden;
+}
 
 
 

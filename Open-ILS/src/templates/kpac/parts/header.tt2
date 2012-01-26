@@ -1,0 +1,23 @@
+<div class="main_header_wrapper">
+    <div class="logo_wrapper">
+        <a href="javascript:;">
+            <span class="logo_left">&nbsp;</span>
+            <span class="logo_middle"><img src="[% ctx.media_prefix %]/images/kpac/kcls_logo.jpg" alt="kcls" /></span>
+            <span class="logo_right">&nbsp;</span>
+        </a>
+    </div>
+    <div class="header_utils">
+        <a href="javascript:;" class="text_size_btn"><span>Text size</span> &nbsp; <img 
+            alt="text size" src="[% ctx.media_prefix %]/images/kpac/text_size_btn.png" /></a>
+        <a href="javascript:;" class="print_btn"><span>Print</span> &nbsp; <img 
+            alt="print" src="[% ctx.media_prefix %]/images/kpac/print_btn.png" /></a>
+    </div>
+    <div class="header_menu">
+        <!-- menu rendered in reverse order -->
+        <a href="javascript:;">Login</a>
+        <a href="javascript:;">Get a Library Card</a>
+        <a href="javascript:;">Help</a>
+    </div>
+    <div class="clear">&nbsp;</div>
+</div>
+

@@ -1,0 +1,44 @@
+[% 
+
+    # -----------------------------------------------------------------
+    # Category trail/path utilities
+    # page trail looks like trail=id/id/id
+
+    # adds an ID, esults in the full trail as a string
+    MACRO trail_append(node_id) BLOCK;
+        trail = CGI.param('trail');
+        trail ? trail _ '/' _ node_id : node_id;
+    END;
+
+    # last trail component/id as a string
+    MACRO trail_endpoint BLOCK;
+        trail = CGI.param('trail');
+        list = trail ? trail.split('/') : [];
+        list().last;
+    END;
+
+    MACRO trail_splice(page_id) BLOCK;
+        trail = CGI.param('trail');
+        list = trail ? trail.split('/') : [];
+        path = '';
+        FOR id IN list;
+            path = path ? path _ '/' _ id : id;
+            IF id == page_id; LAST; END;
+        END;
+        path;
+    END;
+
+    # -----------------------------------------------------------------
+    # Determines the full path to image URLs
+    # Use absolute and fully-qualified image URLs as-is.
+    # For all others, use the kpac base path.
+    MACRO kpac_img_path(img) BLOCK;
+        IF img.match('^/') OR img.match('^https?://');
+            img;
+        ELSE;
+            ctx.media_prefix _ '/images/kpac/' _ img;
+        END;
+    END;
+%]
+
+

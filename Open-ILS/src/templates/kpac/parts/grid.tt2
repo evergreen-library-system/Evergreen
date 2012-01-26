@@ -1,24 +1,15 @@
-
 [% 
-    # Use absolute and fully-qualified image URLs as-is.
-    # Otherwise, use the kpac base path.
-    MACRO kpac_img_path(img) BLOCK;
-        IF img.match('^/') OR img.match('^https?://');
-            img;
-        ELSE;
-            ctx.media_prefix _ '/images/kpac/' _ img;
-        END;
-    END;
-%]
+PROCESS 'kpac/parts/util.tt2';
 
-[%
-    MACRO render_kpac_grid(page) BLOCK;
-        ncols = page.columns;
-        name = page.name;
-        idx = 0 %]
+# Renders a single 'page' grid
+
+MACRO render_kpac_grid(page_id) BLOCK;
+    page = ctx.kpac_config.pages.page.$page_id;
+    ncols = page.columns || 3; # avoid divide-by-zero
+    name = page.name;
+    idx = 0 %]
 <table cellpadding="0" cellspacing="0" border="0" class="main_category_table">
-    <tr>
-    [% 
+    <tr> [% 
     width = 100 / ncols;
     FOR cell IN page.cell;
         IF idx == ncols; 
@@ -28,20 +19,20 @@
         idx = idx + 1;
 
         IF cell.type == 'topic';
-            page_id = cell.content;
-            topic_page = ctx.kpac_config.pages.page.$page_id %]
+            tpage_id = cell.content;
+            topic_page = ctx.kpac_config.pages.page.$tpage_id %]
 
-        <td width="[% width %]%"><a href="javascript:;"><img 
+        <td width="[% width %]%"><a href="[% mkurl(ctx.kpac_root _ '/category', {trail => trail_append(tpage_id)}) %]"><img 
             src="[% kpac_img_path(topic_page.img) %]" alt="" /><span>[% topic_page.name %]</span></a></td>
 
         [% ELSIF cell.type == 'search'; %]
 
-        <td width="[% width %]%"><a href="[% mkurl('search_results') %]"><img 
+        <td width="[% width %]%"><a href="[% mkurl(ctx.kpac_root _ '/search_results', {query => cell.content}) %]"><img 
             src="[% kpac_img_path(cell.img) %]" alt="" /><span>[% cell.name %]</span></a></td>
 
         [% ELSIF cell.type == 'link'; %]
 
-        <td width="[% width %]%"><a href="[% mkurl(cell.content) %]"><img 
+        <td width="[% width %]%"><a href="[% cell.content | html %]"><img 
             src="[% kpac_img_path(cell.img) %]" alt="" /><span>[% cell.name %]</span></a></td>
 
         [% END %]

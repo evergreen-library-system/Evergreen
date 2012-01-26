@@ -34,7 +34,7 @@
             </div>
             <div class="category_wrapper">
                 <h3 class="c_header_image">Or click on an image to get started:</h3>
-                [% render_kpac_grid(ctx.kpac_layout); %]
+                [% render_kpac_grid(ctx.kpac_layout.page) %]
             </div>
 
         </td>

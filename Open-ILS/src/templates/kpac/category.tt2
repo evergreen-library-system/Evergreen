@@ -1,12 +1,14 @@
 [%  PROCESS "opac/parts/header.tt2";
     PROCESS "kpac/parts/grid.tt2";
     WRAPPER "kpac/parts/subpage.tt2";
-    ctx.page_title = ctx.kpac_layout.name %]
+    page_id = trail_endpoint();
+    page = ctx.kpac_config.pages.page.$page_id;
+    ctx.page_title = page.name %]
           
-<h2 class="sub_header2">Living Creatures</h2>
+<h2 class="sub_header2">[% page.name | html %]</h2>
 <div class="hr">&nbsp;</div>
 <div class="sub_cat_wrapper">
-    [% render_kpac_grid(ctx.kpac_config.pages.page.10); # TODO %]
+    [% render_kpac_grid(page_id) %]
 </div>
 
 <div class="sub_navigation1">

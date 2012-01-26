@@ -22,15 +22,18 @@
         </page>
 
         <!-- topic pages -->
-        <page id="10" columns="3" name="Book Series" img="category.png">
-            <cell name="Mammals" img="category.png" type="search">su:mammal audience(j)</cell>
-            <cell name="Molluscs" img="category.png" type="search">su:mammal audience(j)</cell>
-            <cell name="Squids" img="category.png" type="search">su:mammal audience(j)</cell>
-            <cell name="Snails" img="category.png" type="search">su:mammal audience(j)</cell>
-            <cell name="Jellyfish" img="category.png" type="search">su:mammal audience(j)</cell>
-            <cell name="Old Yeller" img="category.png" type="search">su:mammal audience(j)</cell>
+        <page id="10" columns="3" name="Musical Instruments" img="category.png">
+            <cell name="Piano"    img="category.png" type="search">su:piano</cell>
+            <cell name="Guitar"   img="category.png" type="search">su:guitar</cell>
+            <cell name="Trumpet"  img="category.png" type="search">su:trumpet</cell>
+            <cell name="Drums"    img="category.png" type="search">su:drums</cell>
+            <cell name="Bass"     img="category.png" type="search">su:bass</cell>
+            <cell name="Clarinet" img="category.png" type="search">su:clarinet</cell>
         </page>
-        <page id="11" columns="1" name="Current Events" img="category.png">
+        <page id="11" columns="3" name="Current Events" img="category.png">
+            <cell name="Entertainment"  img="category.png" type="search">su:entertainment sort('pubdate')#descending</cell>
+            <cell name="Politics"       img="category.png" type="search">su:politics sort('pubdate')#descending</cell>
+            <cell name="Economy"        img="category.png" type="search">su:economy sort('pubdate')#descending</cell>
         </page>
         <page id="12" columns="3" name="Programming" img="category.png">
         </page>

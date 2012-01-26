@@ -1,20 +1,12 @@
-[% WRAPPER "kpac/parts/base.tt2" %]
+[% PROCESS 'kpac/parts/util.tt2'; WRAPPER "kpac/parts/base.tt2" %]
+
+<!--
+subpage is the main wrapper page for everything except 'index'
+-->
 
 <div class="main_top_shadow_sub">
     <div class="main_mid_top_sub">
-        [%# TODO BREADCRUMBS %]
-        <div class="breadcrumb">
-            <a class="bread_home"><img alt="home" src="[% ctx.media_prefix %]/images/kpac/home_icon.png" /></a>
-            <div class="bread_green_mid">&nbsp;</div>
-            <a href="javascript:;">Animals, insects, &amp; birds</a>
-            <div class="bread_green_mid">&nbsp;</div>
-            <a href="javascript:;">search results</a>
-            <div class="bread_green_mid">&nbsp;</div>
-            <a href="javascript:;">book name</a>
-            <div class="bread_green_last">&nbsp;</div>
-            <span class="bread_last">got it</span>
-            <div class="clear">&nbsp;</div>
-        </div>
+        [% INCLUDE 'kpac/parts/breadcrumb.tt2' %]
     </div>
 </div>
 <table cellpadding="0" cellspacing="0" border="0" width="100%">
