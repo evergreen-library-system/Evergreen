@@ -2437,6 +2437,9 @@ INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatyp
 INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
     VALUES ('circ.holds_behind_desk', FALSE, 'Hold is behind Circ Desk', 'Hold is behind Circ Desk', 'bool');
 
+INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
+    VALUES ('opac.default_pickup_location', TRUE, 'Default Hold Pickup Location', 'Default location for holds pickup', 'integer');
+
 -- Add groups for org_unitu settings
 INSERT INTO config.settings_group (name, label) VALUES
 ('sys', oils_i18n_gettext('config.settings_group.system', 'System', 'coust', 'label')),

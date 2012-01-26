@@ -50,6 +50,18 @@
                     </td>
                 </tr>
                 <tr>
+                    <td width='20%'>[% l("Preferred pickup location") %]</td>
+                    <td>
+                        [%- setting = 'opac.default_pickup_location';
+                            thang = ctx.user.home_ou.id;
+                            IF ctx.user_setting_map.$setting;
+                                thang = ctx.user_setting_map.$setting;
+                            END;
+                            INCLUDE build_org_selector name=setting value=thang can_have_vols_only=1;
+                        %]
+                    </td>
+                </tr>
+                <tr>
                     <td>[% l('Keep history of checked out items?') %]</td>
                     <td>
                         [% setting = 'history.circ.retention_start' %]

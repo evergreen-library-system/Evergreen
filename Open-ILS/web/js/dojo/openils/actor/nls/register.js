@@ -36,5 +36,8 @@
     "ALL_CARDS_PRIMARY" : "Primary",
     "ALL_CARDS_CLOSE" : "Close",
     "ALL_CARDS_APPLY" : "Apply Changes",
-    "INVALIDATE": "Invalidate"
+    "INVALIDATE": "Invalidate",
+    "HOLD_NOTIFY_PHONE": "Phone: ",
+    "HOLD_NOTIFY_EMAIL": "Email: ",
+    "HOLD_NOTIFY_SMS": "SMS: "
 }

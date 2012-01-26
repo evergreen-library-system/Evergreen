@@ -176,11 +176,18 @@ sub load_myopac_prefs_notify {
     my $self = shift;
     my $e = $self->editor;
 
+
+    my $stat = $self->_load_user_with_prefs;
+    return $stat if $stat;
+
     my $user_prefs = $self->fetch_optin_prefs;
     $user_prefs = $self->update_optin_prefs($user_prefs)
         if $self->cgi->request_method eq 'POST';
 
     $self->ctx->{opt_in_settings} = $user_prefs;
+
+    return Apache2::Const::OK
+        unless $self->cgi->request_method eq 'POST';
 
     my %settings;
     my $set_map = $self->ctx->{user_setting_map};
@@ -343,6 +350,7 @@ sub load_myopac_prefs_settings {
     my @user_prefs = qw/
         opac.hits_per_page
         opac.default_search_location
+        opac.default_pickup_location
     /;
 
     my $stat = $self->_load_user_with_prefs;
@@ -644,6 +652,11 @@ sub load_place_hold {
         $ctx->{default_sms_notify} = 'checked';
     } else {
         $ctx->{default_sms_notify} = '';
+    }
+
+    # If we have a default pickup location, grab it
+    if ($$user_setting_map{'opac.default_pickup_location'}) {
+        $ctx->{default_pickup_lib} = $$user_setting_map{'opac.default_pickup_location'};
     }
 
     my $request_lib = $e->requestor->ws_ou;

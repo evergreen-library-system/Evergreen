@@ -5,6 +5,7 @@ dojo.require('dijit.form.FilteringSelect');
 dojo.require('dijit.form.ComboBox');
 dojo.require('dijit.form.NumberSpinner');
 dojo.require('fieldmapper.IDL');
+dojo.require('fieldmapper.OrgUtils');
 dojo.require('openils.PermaCrud');
 dojo.require('openils.widget.AutoGrid');
 dojo.require('openils.widget.AutoFieldWidget');
@@ -47,6 +48,7 @@ var optInSettings;
 var allCardsTemplate;
 var uEditCloneCopyAddr; // if true, copy addrs on clone instead of link
 var homeOuTypes = {};
+var holdPickupTypes = {};
 var cardPerms = {};
 var editCard;
 var prevBillingAddress;
@@ -186,7 +188,8 @@ function load() {
         'format.date',
         'ui.patron.edit.default_suggested',
         'opac.barcode_regex',
-        'opac.username_regex'
+        'opac.username_regex',
+        'sms.enable'
     ]);
 
     for(k in orgSettings)
@@ -222,6 +225,11 @@ function load() {
     for(var i in list) {
         var type = list[i];
         homeOuTypes[type.id()] = true;
+    }
+    list = pcrud.search('aout', {can_have_vols: 'true'});
+    for(var i in list) {
+        var type = list[i];
+        holdPickupTypes[type.id()] = true;
     }
 
     tbody = dojo.byId('uedit-tbody');
@@ -630,7 +638,7 @@ function uEditFetchUserSettings(userId) {
     /* fetch any user setting types we need + any that offer opt-in */
     userSettingTypes = pcrud.search('cust', {
         '-or' : [
-            {name:['circ.holds_behind_desk', 'circ.collections.exempt']}, 
+            {name:['circ.holds_behind_desk', 'circ.collections.exempt', 'opac.hold_notify', 'opac.default_phone', 'opac.default_pickup_location', 'opac.default_sms_carrier', 'opac.default_sms_notify']}, 
             {name : {
                 'in': {
                     select : {atevdef : ['opt_in_setting']}, 
@@ -688,15 +696,97 @@ function uEditDrawSettingRow(tbody, dividerRow, template, stype) {
     var row = template.cloneNode(true);
     row.setAttribute('user_setting', stype.name());
     getByName(row, 'label').innerHTML = stype.label();
-    var cb = new dijit.form.CheckBox({scrollOnFocus:false}, getByName(row, 'widget'));
-    cb.attr('value', userSettings[stype.name()]);
-    dojo.connect(cb, 'onChange', function(newVal) { userSettingsToUpdate[stype.name()] = newVal; });
+    switch(stype.name()) {
+        case 'opac.hold_notify':
+            var template = localeStrings.HOLD_NOTIFY_PHONE + '<span name="hold_phone"></span>&nbsp;'
+                + localeStrings.HOLD_NOTIFY_EMAIL + '<span name="hold_email"></span>';
+            if(orgSettings['sms.enable']) {
+                template += '&nbsp;' + localeStrings.HOLD_NOTIFY_SMS + '<span name="hold_sms"></span>';
+            }
+            getByName(row, 'widget').innerHTML = template;
+            var setting = userSettings['opac.hold_notify'];
+            if(setting == null) setting = 'phone:email';
+            var cb_phone = new dijit.form.CheckBox({scrollOnFocus:false}, getByName(row, 'hold_phone'));
+            cb_phone.attr('value', setting.indexOf('phone') != -1);
+            var cb_email = new dijit.form.CheckBox({scrollOnFocus:false}, getByName(row, 'hold_email'));
+            cb_email.attr('value', setting.indexOf('email') != -1);
+            var cb_sms = null;
+            if(orgSettings['sms.enable']) {
+                cb_sms = new dijit.form.CheckBox({scrollOnFocus:false}, getByName(row, 'hold_sms'));
+                cb_sms.attr('value', setting.indexOf('sms') != -1);
+            }
+            var func = function() {
+                var newVal = '';
+                var splitter = '';
+                if(cb_phone.checked) {
+                    newVal+= splitter + 'phone';
+                    splitter = ':';
+                }
+                if(cb_email.checked) {
+                    newVal+= splitter + 'email';
+                    splitter = ':';
+                }
+                if(orgSettings['sms.enable'] && cb_sms.checked) {
+                    newVal+= splitter + 'sms';
+                    splitter = ':';
+                }
+                userSettingsToUpdate['opac.hold_notify'] = newVal;
+            };
+            dojo.connect(cb_phone, 'onChange', func);
+            dojo.connect(cb_email, 'onChange', func);
+            if(cb_sms) dojo.connect(cb_sms, 'onChange', func);
+            break;
+        case 'opac.default_pickup_location':
+            var sb = new openils.widget.FilteringTreeSelect({
+                scrollOnFocus: false,
+                labelAttr: 'name',
+                searchAttr: 'name',
+                parentField: 'parent_ou',
+                }, getByName(row, 'widget'));
+            sb.tree = fieldmapper.aou.globalOrgTree;
+            sb.startup();
+            sb.attr('value', userSettings[stype.name()]);
+
+            sb.isValid = function() {
+                if(this.item) {
+                    if(holdPickupTypes[this.store.getValue(this.item, 'ou_type')]) {
+                        return true;
+                    }
+                    return false;
+                }
+                return true;
+            };
+
+            dojo.connect(sb, 'onChange', function(newVal) { userSettingsToUpdate[stype.name()] = newVal; });
+            break;
+        case 'opac.default_sms_carrier':
+            if(!orgSettings['sms.enable']) return; // Skip when SMS is disabled
+            var carriers = pcrud.search('csc', {active: 'true'}, {'order_by':[{'class':'csc', 'field':'name'},{'class':'csc', 'field':'region'}]});
+            var storedata = fieldmapper.csc.toStoreData(carriers);
+            for(var i in storedata.items) storedata.items[i].label = storedata.items[i].name + ' (' + storedata.items[i].region + ')';
+            var store = new dojo.data.ItemFileReadStore({data:storedata});
+            var select = new dijit.form.FilteringSelect({store:store,scrollOnFocus:false,labelAttr:'label',searchAttr:'label'}, getByName(row, 'widget'));
+            select.attr('value', userSettings[stype.name()]);
+            select.isValid = function() { return true; };
+            dojo.connect(select, 'onChange', function(newVal) { userSettingsToUpdate[stype.name()] = newVal; });
+            break;
+        case 'opac.default_sms_notify':
+            if(!orgSettings['sms.enable']) return; // Skip when SMS is disabled
+        case 'opac.default_phone':
+            var tb = new dijit.form.TextBox({scrollOnFocus:false}, getByName(row, 'widget'));
+            tb.attr('value', userSettings[stype.name()]);
+            dojo.connect(tb, 'onChange', function(newVal) { userSettingsToUpdate[stype.name()] = newVal; });
+            break;
+        default:
+            var cb = new dijit.form.CheckBox({scrollOnFocus:false}, getByName(row, 'widget'));
+            cb.attr('value', userSettings[stype.name()]);
+            dojo.connect(cb, 'onChange', function(newVal) { userSettingsToUpdate[stype.name()] = newVal; });
+            if(stype.name() == 'circ.collections.exempt') {
+                checkCollectionsExemptPerm(cb);
+            }
+    }
     tbody.insertBefore(row, dividerRow.nextSibling);
     openils.Util.show(row, 'table-row');
-
-    if(stype.name() == 'circ.collections.exempt') {
-        checkCollectionsExemptPerm(cb);
-    }
 }
 
 function uEditUpdateUserSettings(userId) {
