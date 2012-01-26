@@ -25,7 +25,7 @@ To add a *control set*:
 5) Click *Save*.
 
 
-image::/esi/docs/wp-content/uploads/2011/11/Authority_Control_Sets1.jpg[Authority_Control_Sets1]
+image::media/Authority_Control_Sets1.jpg[Authority_Control_Sets1]
 
 
 Thesauri
@@ -49,7 +49,7 @@ To add a *Thesaurus*:
 5) Add a *Description* of the thesaurus.  Enter any number of characters. 
 
 
-image::/esi/docs/wp-content/uploads/2011/11/Authority_Control_Sets2.jpg[Authority_Control_Sets2]
+image::media/Authority_Control_Sets2.jpg[Authority_Control_Sets2]
 
 
 
@@ -80,7 +80,7 @@ To create an *Authority Field*:
 9) Click *Save*.
 
 
-image::/esi/docs/wp-content/uploads/2011/11/Authority_Control_Sets3.jpg[Authority_Control_Sets3]
+image::media/Authority_Control_Sets3.jpg[Authority_Control_Sets3]
 
 
 
@@ -94,7 +94,7 @@ image::/esi/docs/wp-content/uploads/2011/11/Authority_Control_Sets3.jpg[Authorit
 
 
 
-image::/esi/docs/wp-content/uploads/2011/11/Authority_Control_Sets4.jpg[Authority_Control_Sets4]
+image::media/Authority_Control_Sets4.jpg[Authority_Control_Sets4]
 
 
 *Browse Axes*
@@ -117,7 +117,7 @@ Create a new *Browse Axis*:
 6) Add a *sorter attribute*. The sorter attribute indicates the order in which the results will be displayed.
 
 
-image::/esi/docs/wp-content/uploads/2011/11/Authority_Control_Sets5.jpg[Authority_Control_Sets5]
+image::media/Authority_Control_Sets5.jpg[Authority_Control_Sets5]
 
 
 7) Assign the axis to an authority so that users can find the authority record when browsing authorities. Click *Admin* -> *Server Administration* -> *Authorities* -> *Control Sets*. 
@@ -133,7 +133,7 @@ image::/esi/docs/wp-content/uploads/2011/11/Authority_Control_Sets5.jpg[Authorit
 12) Click *Save*.
 
 
-image::/esi/docs/wp-content/uploads/2011/11/Authority_Control_Sets6.jpg[Authority_Control_Sets6]
+image::media/Authority_Control_Sets6.jpg[Authority_Control_Sets6]
 
 
 *OPAC Searching of Authorities*
@@ -150,20 +150,20 @@ To search for *Authorities*:
 3) Select a browse axis, and enter a keyword. The terms in the middle of the results list should yield the best match.
 
 
-image::/esi/docs/wp-content/uploads/2011/11/Authority_Control_Sets7.jpg[Authority_Control_Sets7]
+image::media/Authority_Control_Sets7.jpg[Authority_Control_Sets7]
 
 
 4) Click *Submit*.
 
 5) A list of results will appear.  The authorities with bibliographic records attached will be listed in bold with the number of attached bibliographic records in parentheses.
 
-image::/esi/docs/wp-content/uploads/2011/11/Authority_Control_Sets8.jpg[Authority_Control_Sets8]
+image::media/Authority_Control_Sets8.jpg[Authority_Control_Sets8]
 
 
 6) Click on the bolded text to view bibliographic records.
 
 
-image::/esi/docs/wp-content/uploads/2011/11/Authority_Control_Sets9.jpg[Authority_Control_Sets9]
+image::media/Authority_Control_Sets9.jpg[Authority_Control_Sets9]
 
 
 *Permissions to use this Feature*

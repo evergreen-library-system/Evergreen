@@ -1,6 +1,8 @@
 Evergreen Documentation
 =======================
-
+Documentation Interest Group
+2008-2012
+:doctype: book
 
 Introduction
 ============ 
@@ -153,6 +155,8 @@ Introduction
 
 Use this part for information about searching the Evergreen public access catalog.
 
+include::opac/my_lists.txt[]
+
 Developer Resources
 ===================
 
@@ -163,4 +167,4 @@ Developers can use this part to learn more about the programming languages, comm
 
 [appendix]
 
-
+include::attributions.txt[]

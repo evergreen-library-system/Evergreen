@@ -12,12 +12,12 @@ In this example, we have created a purchase order, added line items and copies, 
 
 2) Click *Create Invoice*.
 
-image::/esi/docs/wp-content/uploads/2011/11/Receive_Items_From_an_Invoice1.jpg[Receive_Items_From_an_Invoice1]
+image::media/Receive_Items_From_an_Invoice1.jpg[Receive_Items_From_an_Invoice1]
 
 3) The blank invoice appears.  In the top half of the invoice, enter descriptive information about the invoice.  In the bottom half of the invoice, enter the number of items for which you were invoiced, the amount that you were billed, and the amount that you paid.
 
 
-image::/esi/docs/wp-content/uploads/2011/11/Receive_Items_From_an_Invoice2.jpg[Receive_Items_From_an_Invoice2]
+image::media/Receive_Items_From_an_Invoice2.jpg[Receive_Items_From_an_Invoice2]
 
 
 4) Click *Save*.  You must choose a save option before you can receive items.
@@ -38,7 +38,7 @@ NOTE: You cannot receive fewer items than 0 (zero) or more items than the number
 8) Click *Receive Selected Copies*.
 
 
-image::/esi/docs/wp-content/uploads/2011/11/Receive_Items_From_an_Invoice4.jpg[Receive_Items_From_an_Invoice4]
+image::media/Receive_Items_From_an_Invoice4.jpg[Receive_Items_From_an_Invoice4]
 
 
 9) When you are finished receiving items, close the screen.  You can repeat this process as you receive more copies.
@@ -59,7 +59,7 @@ In this example, we have created a purchase order, added line items and copies, 
 
 4) Click *Receive Selected Copies*.  
 
-image::/esi/docs/wp-content/uploads/2011/11/Receive_Items_From_an_Invoice5.jpg[Receive_Items_From_an_Invoice5]
+image::media/Receive_Items_From_an_Invoice5.jpg[Receive_Items_From_an_Invoice5]
 
 
 The screen will refresh.  Copies that have not yet been received remain on the screen so that you can receive them when they arrive.
@@ -69,5 +69,5 @@ The screen will refresh.  Copies that have not yet been received remain on the s
 
 6) The purchase order records that all items have been received.
 
-image::/esi/docs/wp-content/uploads/2011/11/Receive_Items_From_an_Invoice7.jpg[Receive_Items_From_an_Invoice7]
+image::media/Receive_Items_From_an_Invoice7.jpg[Receive_Items_From_an_Invoice7]
 
