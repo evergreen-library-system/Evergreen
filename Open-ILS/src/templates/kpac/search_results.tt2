@@ -48,7 +48,7 @@
                 &nbsp;<img width="35" alt="[% attrs.format_label %]" src="[% attrs.format_icon %]" />&nbsp; 
                 <!-- put a single &nbsp; around each side of the image - for vertical centering -->
             </div>
-        <div class="item_icon_type_text">[% attrs.format_label %]</div>
+            <div class="item_icon_type_text">[% attrs.format_label %]</div>
         </div>
         <div class="clear">&nbsp;</div>
     </div>

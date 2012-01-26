@@ -25,7 +25,12 @@
 
             <!-- record title -->
             <div class="bread_green_mid">&nbsp;</div>
-            <a href="javascript:;">book name</a>
+            [%  title = '';
+                IF attrs AND attrs.title;
+                    title = attrs.title.substr(15, -1, '...');
+                END
+            %]
+            <a href="javascript:;">[% title | html %]</a>
 
             <!-- Get it -->
             <div class="bread_green_last">&nbsp;</div>

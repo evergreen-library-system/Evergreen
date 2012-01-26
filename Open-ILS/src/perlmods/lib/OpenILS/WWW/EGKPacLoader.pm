@@ -34,7 +34,7 @@ sub load {
     return $self->load_rresults if $path =~ m|kpac/search_results|; # inherited from tpac
 
     # note: sets page=record
-    return $self->load_simple("detailed") if $path =~ m|kpac/detailed|;
+    return $self->load_record(no_search => 1) if $path =~ m|kpac/detailed|;
 
     # ----------------------------------------------------------------
     #  Everything below here requires SSL
