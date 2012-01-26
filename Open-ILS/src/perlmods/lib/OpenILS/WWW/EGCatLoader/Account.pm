@@ -622,7 +622,7 @@ sub load_place_hold {
             {
                 flesh => 1,
                 flesh_fields => {
-                    au => ['settings']
+                    au => ['settings', 'card']
                 }
             }
         ]) or return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;

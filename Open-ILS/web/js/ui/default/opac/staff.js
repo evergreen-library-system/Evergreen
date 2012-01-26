@@ -17,6 +17,46 @@ function runEvt(scope, name) {
 function staff_hold_usr_input_disabler(input) {
     document.getElementById("hold_usr_input").disabled =
         Boolean(Number(input.value));
+    staff_hold_usr_barcode_changed();
+}
+var cur_hold_barcode = undefined;
+function staff_hold_usr_barcode_changed() {
+    if(typeof xulG != 'undefined' && xulG.get_barcode_and_settings) {
+        var barcode = document.getElementById('staff_barcode').value;
+        var only_settings = true;
+        if(!document.getElementById('hold_usr_is_requestor').checked) {
+            barcode = document.getElementById('hold_usr_input').value;
+            only_settings = false;
+            if(barcode && barcode != '' && !document.getElementById('hold_usr_is_requestor_not').checked)
+                document.getElementById('hold_usr_is_requestor_not').checked = 'checked';
+        }
+        if(barcode == undefined || barcode == '' || barcode == cur_hold_barcode)
+            return;
+        var load_info = xulG.get_barcode_and_settings(window, barcode, ['opac.hold_notify','opac.default_pickup_location','opac.default_sms_carrier','opac.default_sms_notify','opac.default_phone'], only_settings);
+        if(load_info == false || load_info == undefined)
+            return;
+        cur_hold_barcode = load_info.barcode;
+        if(!only_settings) document.getElementById('hold_usr_input').value = load_info.barcode; // Safe at this point as we already set cur_hold_barcode
+        if(load_info.settings['opac.default_pickup_location'])
+            document.getElementById('pickup_lib').value = load_info.settings['opac.default_pickup_location'];
+        if(load_info.settings['opac.hold_notify']) {
+            var email = load_info.settings['opac.hold_notify'].indexOf('email') > -1;
+            var phone = load_info.settings['opac.hold_notify'].indexOf('phone') > -1;
+            var sms = load_info.settings['opac.hold_notify'].indexOf('sms') > -1;
+            var update_elements = document.getElementsByName('email_notify');
+            for(var i in update_elements) update_elements[i].checked = (email ? 'checked' : '');
+            update_elements = document.getElementsByName('phone_notify_checkbox');
+            for(var i in update_elements) update_elements[i].checked = (phone ? 'checked' : '');
+            update_elements = document.getElementsByName('sms_notify_checkbox');
+            for(var i in update_elements) update_elements[i].checked = (sms ? 'checked' : '');
+        }
+        update_elements = document.getElementsByName('phone_notify');
+        for(var i in update_elements) update_elements[i].value = load_info.settings['opac.default_phone'];
+        update_elements = document.getElementsByName('sms_notify');
+        for(var i in update_elements) update_elements[i].value = load_info.settings['opac.default_sms_notify'];
+        update_elements = document.getElementsByName('sms_carrier');
+        for(var i in update_elements) update_elements[i].value = load_info.settings['opac.default_sms_carrier'];
+    }
 }
 window.onload = function() {
     // record details page events

@@ -62,6 +62,7 @@ main.menu.prototype = {
         urls.remote = params['server'];
 
         xulG.get_barcode = this.get_barcode;
+        xulG.get_barcode_and_settings = this.get_barcode_and_settings;
 
         // Pull in local customizations
         var r = new XMLHttpRequest();
@@ -2275,6 +2276,7 @@ commands:
         content_params.network_meter = obj.network_meter;
         content_params.page_meter = obj.page_meter;
         content_params.get_barcode = obj.get_barcode;
+        content_params.get_barcode_and_settings = obj.get_barcode_and_settings;
         content_params.render_toolbar_layout = function(layout) { return obj.render_toolbar_layout(layout); };
         content_params.set_statusbar = function(slot,text,tooltiptext,click_handler) {
             var e = document.getElementById('statusbarpanel'+slot);
@@ -2526,6 +2528,29 @@ commands:
         else
             // user_false is used to indicate the user said "None of the above" to avoid fall-through erroring later.
             return "user_false";
+    },
+
+    'get_barcode_and_settings' : function(window, barcode, settings, settings_only) {
+        JSAN.use('util.network');
+        if(!settings_only) {
+            // We need to double-check the barcode for completion and such.
+            var new_barcode = xulG.get_barcode(window, 'actor', barcode);
+            if(new_barcode == "user_false") return;
+            // No error means we have a (hopefully valid) completed barcode to use.
+            // Otherwise, fall through to other methods of checking
+            if(typeof new_barcode.ilsevent == 'undefined')
+                barcode = new_barcode.barcode;
+            else
+                return false;
+        }
+        var network = new util.network();
+        // We have a barcode! Time to load settings.
+        // First, we need the user ID
+        var user_id = network.simple_request('FM_AU_ID_RETRIEVE_VIA_BARCODE_OR_USERNAME', [ ses(), barcode ]);
+        if(user_id.ilsevent != undefined || user_id.textcode != undefined)
+            return false;
+        var settings = network.simple_request('FM_AUS_RETRIEVE', [ ses(), user_id, settings ]);
+        return {"barcode": barcode, "settings" : settings};
     },
 
     'sort_menu' : function(menu, recurse) {
