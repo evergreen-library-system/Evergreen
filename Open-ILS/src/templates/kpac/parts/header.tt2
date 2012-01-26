@@ -1,8 +1,8 @@
 <div class="main_header_wrapper">
     <div class="logo_wrapper">
-        <a href="javascript:;">
+        <a href="http://evergreen-ils.org">
             <span class="logo_left">&nbsp;</span>
-            <span class="logo_middle"><img src="[% ctx.media_prefix %]/images/kpac/kcls_logo.jpg" alt="kcls" /></span>
+            <span class="logo_middle"><img src="[% ctx.media_prefix %]/images/eg_logo.jpg" width="170" lt="[% l('Logo') %]" /></span>
             <span class="logo_right">&nbsp;</span>
         </a>
     </div>
