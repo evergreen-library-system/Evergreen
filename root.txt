@@ -82,6 +82,13 @@ This part deals with the options in the Server Administration menu found in the 
 
 // Follow structure from staff client system admin menu.
 
+include::admin/authority_control_sets.txt[]
+
+include::admin/cn_prefixes_and_suffixes.txt[]
+
+include::admin/restrict_Z39.50_sources_by_perm_group.txt[]
+
+
 
 Local Administration
 ====================
@@ -94,6 +101,8 @@ This part covers the options in the Local Administration menu found in the staff
 // Follow structure from staff client local admin menu.
 
 
+include::admin/recent_staff_searches.txt[]
+
 Acquisitions
 ===========
 
@@ -101,6 +110,8 @@ Introduction
 ------------
 
 This part is intended for staff who are involved in managing and processing acquisitions. 
+
+include::acquisitions/receive_items_from_invoice.txt[]
 
 Cataloging
 ==========

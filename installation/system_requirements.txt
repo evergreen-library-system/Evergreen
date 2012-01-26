@@ -22,13 +22,11 @@ The staff client must be installed on each staff workstation and requires at min
  * 512Mb of RAM
  * The staff client uses the TCP protocal on ports 80 and 443 to communicate with the Evergreen server.
 
-Barcode Scanners
-^^^^^^^^^^^^^^^^
+*Barcode Scanners*
 
 Evergreen will work with virtually any barcode scanner – if it worked with your legacy system it should work on Evergreen.
 
-Printers
-^^^^^^^^
+*Printers*
 
 Evergreen can use any printer configured for your terminal to print receipts, check-out slips, holds lists, etc. The single exception is spine label printing, 
 which is still under development. Evergreen currently formats spine labels for output to a label roll printer. If you do not have a roll printer manual formatting may be required. 

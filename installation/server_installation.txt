@@ -393,6 +393,7 @@ Evergreen administrator account to your requested values.
 
 Creating the database on a remote server
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 In a production instance of Evergreen, your PostgreSQL server should be
 installed on a dedicated server. For PostgreSQL 9.1 and later you should be
 able to continue to use the --create-database flag on eg_db_config.pl, without

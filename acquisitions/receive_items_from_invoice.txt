@@ -1,19 +1,10 @@
-= Receive Items From an Invoice 2.2
-
-This feature will be available in Evergreen version 2.2.
-
-*Abstract*
+Receive Items From an Invoice
+-----------------------------
 
 This feature enables users to receive items from an invoice.  Staff can receive individual copies, or they can receive items in batch.
 
-
-*Table of Contents*
-
-* Receive Items in Batch
-* Receive Specific Copies
-
-
-*Recieve Items in Batch (List Mode)*
+Recieve Items in Batch (List Mode)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In this example, we have created a purchase order, added line items and copies, and activated the purchase order.  We will create an invoice from the purchase order, receive items, and invoice them.  We will receive the items in batch from the invoice.
 
@@ -54,7 +45,8 @@ image::/esi/docs/wp-content/uploads/2011/11/Receive_Items_From_an_Invoice4.jpg[R
 
 
 
-*Recieve Specific Copies (Numeric Mode)*
+Recieve Specific Copies (Numeric Mode)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In this example, we have created a purchase order, added line items and copies, and activated the purchase order.  We will create an invoice from the purchase order, receive items, and invoice them. We will receive specific copies from the invoice.  This function may be useful to libraries who purchase items that have been barcoded by their vendor. 
 
@@ -79,7 +71,3 @@ The screen will refresh.  Copies that have not yet been received remain on the s
 
 image::/esi/docs/wp-content/uploads/2011/11/Receive_Items_From_an_Invoice7.jpg[Receive_Items_From_an_Invoice7]
 
-
-Copyright: 2011 Equinox Software. This work by Equinox Software, Inc. is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License.
-
-Author: Sally Fortin, Equinox Software

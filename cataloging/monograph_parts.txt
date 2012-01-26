@@ -1,8 +1,10 @@
-= *Monograph Parts 2.1*
+*Monograph Parts*
+-----------------
 
 This feature will be available in Evergreen version 2.1.
 
 *Abstract*
+----------
 
 *Monograph Parts* enables you to differentiate between parts of monographs or other multi-part items.  This feature enables catalogers to describe items more precisely by labeling the parts of an item.  For example, catalogers might identify the parts of a monograph or the discs of a DVD set.  This feature also allows patrons more flexibility when placing holds on multi-part items.  A patron could place a hold on a specific disc of a DVD set if they want to access a specific season or episode rather than an entire series.
 
@@ -10,11 +12,8 @@ Four new permissions are used by this functionality: CREATE_MONOGRAPH_PART, UPDA
 e permissions should be assigned at the consorial level to those groups or users that will make use of the features described below.
 
 
-
-*Table of Contents*
-
-* Add a monograph part to an existing record
-
+Add a monograph part to an existing record
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To add a monograph part to an existing record in the catalog:  
 
@@ -61,7 +60,3 @@ image::/esi/docs/wp-content/uploads/2011/11/monograph_parts4.jpg[monograph_parts
 
 image::/esi/docs/wp-content/uploads/2011/11/monograph_parts5.jpg[monograph_parts5]
 
-
-Copyright: 2011 Equinox Software. This work by Equinox Software, Inc. is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License.
-
-Author: Sally Fortin, Equinox Software

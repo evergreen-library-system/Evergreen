@@ -1,29 +1,16 @@
-= Authority Control Sets 2.2
-
-This feature will be available in Evergreen version 2.2.
-
-*Abstract*
+Authority Control Sets
+----------------------
 
 The tags and subfields that display in authority records in Evergreen are proscribed by control sets.  The Library of Congress control set is the default control set in Evergreen.  In Evergreen release 2.2, you can create customized control sets for authority records.  Also, you can define thesauri and authority fields for these control sets.
 
 Patrons and staff will be able to browse authorities in the OPAC.  The following fields are browsable by default: author, series, subject, title, and topic.  You will be able to add custom browse axes in addition to these default fields.
 
-*Table of Contents*
-
-
-* Control Sets
-* Thesauri
-* Authority Fields
-* Browse Axes
-* OPAC Searching of Authorities
-* Permissions to use this Feature
-
-*Control Sets*
+Control Sets
+~~~~~~~~~~~~
 
 You can specify the MARC tags and subfields that an authority record should contain.  The Library of Congress control set exists in the staff client by default.  The control sets feature enables librarians to add or customize new control sets.
 
 To access existing control sets, click *Admin* -> *Server Administration* -> *Authorities* -> *Control Sets*.
-
 
 To add a *control set*:
 
@@ -41,7 +28,8 @@ To add a *control set*:
 image::/esi/docs/wp-content/uploads/2011/11/Authority_Control_Sets1.jpg[Authority_Control_Sets1]
 
 
-*Thesauri*
+Thesauri
+~~~~~~~~
 
 A thesaurus describes the semantic rules that govern the meaning of words in a MARC record. The thesaurus code, which indicates the specific thesarus that should control a MARC record, is encoded in a fixed field using the mnemonic Subj in the authority record.  Eleven thesauri associated with the Library of Congress control set exist by default in the staff client.  
 
@@ -65,12 +53,13 @@ image::/esi/docs/wp-content/uploads/2011/11/Authority_Control_Sets2.jpg[Authorit
 
 
 
-*Authority Fields*
-
+Authority Fields
+~~~~~~~~~~~~~~~~
 
 Authority fields indicate the tags and subfields that should be entered in the authority record.  Authority fields also enable you to specify the type of data that should be entered in a tag.  For example, in an authority record governed by a Library of Congress control set, the 100 tag would contain a "Heading - Personal Name."  Authority fields also enable you to create the corresponding tag in the bibliographic record that would contain the same data. 
 
-==== To create an *Authority Field*:
+To create an *Authority Field*:
+
 
 1) Click *Admin* -> *Server Administration* -> *Authorities* -> *Control Sets*.
 
@@ -108,11 +97,9 @@ image::/esi/docs/wp-content/uploads/2011/11/Authority_Control_Sets3.jpg[Authorit
 image::/esi/docs/wp-content/uploads/2011/11/Authority_Control_Sets4.jpg[Authority_Control_Sets4]
 
 
-
 *Browse Axes*
 
 Authority records can be browsed, by default, along five axes: author, series, subject, title, and topic. Use the *Browse Axes* feature to create additional axes.
-
 
 
 Create a new *Browse Axis*:
@@ -187,15 +174,4 @@ To use authority control sets, you will need the following permissions:
 * CREATE_AUTHORITY_CONTROL_SET
 * UPDATE_AUTHORITY_CONTROL_SET
 * DELETE_AUTHORITY_CONTROL_SET
-
-
-
-Copyright: 2011 Equinox Software. This work by Equinox Software, Inc. is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License.
-
-Author: Sally Fortin, Equinox Software
-
-
-
-
-
 

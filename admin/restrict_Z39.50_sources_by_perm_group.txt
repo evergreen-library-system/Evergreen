@@ -1,20 +1,10 @@
-= Restrict Z39.50 Sources by Permission Group 2.2
-
-
-This functionality will be available in Evergreen version 2.2.
-
-*Abstract*
+Restrict Z39.50 Sources by Permission Group
+-------------------------------------------
 
 In Evergreen versions preceeding 2.2, all users with cataloging privileges could view all of the Z39.50 servers that were available for use in the staff client.  In Evergreen version 2.2, you can use a permission to restrict users' access to Z39.50 servers.  You can apply a permission to the Z39.50 servers to restrict access to that server, and then assign that permission to users or groups so that they can access the restricted servers.
 
-
-*Table of Contents*
-
-* Administrative Settings
-* Restrict Z39.50 Sources by Permission Group
-
-
-*Administrative Settings*
+Administrative Settings
+~~~~~~~~~~~~~~~~~~~~~~~
 
 You can add a permission to limit use of Z39.50 servers, or you can use an existing permission.
 
@@ -36,8 +26,8 @@ image::/esi/docs/wp-content/uploads/2011/11/Restrict_Z39.50_Sources_by_Permissio
 
 
 
-*Restrict Z39.50 Sources by Permission Group*
-
+Restrict Z39.50 Sources by Permission Group
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 1) Click *Admin -> Server Administration -> Z39.50 Servers*
 
@@ -56,10 +46,4 @@ image::/esi/docs/wp-content/uploads/2011/11/Restrict_Z39.50_Sources_by_Permissio
 
 6) Users that log in to the staff client and have that permission will be able to see the restricted Z39.50 server.  
 
-
 NOTE: As an alternative to creating a new permission to restrict use, you can use a preexisting permission.  For example, your library uses a permission group called SuperCat, and only members in this group should have access to a restricted Z39.50 source.  Identify a permission that is unique to the SuperCat group (e.g. CREATE_MARC) and apply that permission to the restricted Z39.50 server.  Because these users are in the only group with the permission, they will be the only group w/ access to the restricted server.
-
-
-Copyright: 2011 Equinox Software. This work by Equinox Software, Inc. is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License.
-
-Author: Sally Fortin, Equinox Software

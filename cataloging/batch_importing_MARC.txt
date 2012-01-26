@@ -1,34 +1,29 @@
-= Batch Importing MARC Records 2.2
+Batch Importing MARC Records 2.2
+--------------------------------
 
 This feature will be available in Evergreen version 2.2.
 
-=== *Abstract*
+*Abstract*
+~~~~~~~~~~
 
 The cataloging module in version 2.2 includes an enhanced MARC Batch Import interface.  This interface features improved matching of records and managing of your import queue.  In 2.2, you will be able to specify match points between incoming and existing records.  You will also be able to apply filters to your queue that enable you to generate any errors that may have occurred during import.  You will also be able to print your queue, email your queue, or export your queue as a CSV file. 
 
-
-=== *Table of Contents*
-
-* Permissions
-* Record Display Attributes
-* Record Match Sets
-* Replace Mode
-* Quality Metrics
-* Import Records
-
-=== *Permissions*
+*Permissions*
+~~~~~~~~~~~~~
 
 To use match sets to import records, you will need the following permission:
 
 ADMIN_IMPORT_MATCH_SET
 
 
-=== *Record Display Attributes*
+*Record Display Attributes*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This feature enables you to specify the tags and subfields that will display in records that appear in the import queue. 
 
 
-=== *Record Match Sets*
+*Record Match Sets*
+^^^^^^^^^^^^^^^^^^^
 
 This feature enables you to create custom match points that you can use to accurately match incoming records with existing catalog records.  
   
@@ -223,9 +218,3 @@ image::/esi/docs/wp-content/uploads/2011/11/Batch_Importing_MARC_Records12.jpg[B
 
 image::/esi/docs/wp-content/uploads/2011/11/Batch_Importing_MARC_Records14.jpg[Batch_Importing_MARC_Records14] 
 
-
-
-
-Copyright: 2011 Equinox Software. This work by Equinox Software, Inc. is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License.
-
-Author: Sally Fortin, Equinox Software

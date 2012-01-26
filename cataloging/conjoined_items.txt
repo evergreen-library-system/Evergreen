@@ -1,14 +1,16 @@
-= Conjoined Items
-===============
+Conjoined Items
+---------------
 
 
-== Abstract
+Abstract
+~~~~~~~~
 
 Prior to Evergreen version 2.1, items could be attached to only one bibliographic record.  The Conjoined Items feature in Evergreen 2.1 enables catalogers to link items to multiple bibliographic records.  This feature will enable more precise cataloging.  For example, catalogers will be able to indicate items that are printed back to back, are bilingual, are part of a bound volume, are part of a set, or are available as an e-reader pre-load.  This feature will also help the user retrieve more relevant search results.  For example, a librarian catalogs a multi-volume festschrift.  She can create a bibliographic record for the festschrift and a record for each volume.  She can link the items on each volume to the festschrift record so that a patron could search for a volume or the festschrift and retrieve information about both works.
 
 In the example below, a librarian has created a bibliographic record for two bestselling items.  These books are available as physical copies in the library, and they are available as e-reader downloads.  The librarian will link the copy of the Kindle to the bibliographic records that are available on the e-reader.
 
-=== Using the Conjoined Items Feature
+Using the Conjoined Items Feature
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Conjoined Items feature was designed so that you can link items between bibliographic records when you have the item in hand, or when the item is not physically present.  Both processes are described here.  The steps are fewer if you have the item in hand, but both processes accomplish the same task.  This documentalso demonstrates the process to edit or delete links between items and bibliographic records. Finally, the permission a cataloger needs to use this feature is listed.
 
@@ -110,7 +112,3 @@ image::/esi/docs/wp-content/uploads/2011/10/conj10.jpg[conj10]
  
  
 UPDATE_COPY  -  Link items to bibliographic records
-
-Copyright: 2011 Equinox Software. This work by Equinox Software, Inc. is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License.
-
-Author: Sally Fortin, Equinox Software
