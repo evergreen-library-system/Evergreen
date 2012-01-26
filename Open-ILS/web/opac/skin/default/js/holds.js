@@ -469,6 +469,11 @@ function __holdsDrawWindow() {
 	
 	}
 
+	var pref = holdArgs.recipient.prefs[PREF_DEF_PICKUP];
+	if(pref) {
+		setSelector(selector, pref);
+	}
+
 	/*
 	if(isXUL()) {
 		var dsel = $('holds_depth_selector');
@@ -609,9 +614,11 @@ function __holdsDrawWindow() {
 
 
 	$('holds_phone').value = holdArgs.recipient.day_phone();
+	var pref = holdArgs.recipient.prefs[PREF_DEF_PHONE];
+	if(pref) $('holds_phone').value = pref;
 	appendClear( $('holds_email'), text(holdArgs.recipient.email()));
 
-	var pref = holdArgs.recipient.prefs[PREF_HOLD_NOTIFY];
+	pref = holdArgs.recipient.prefs[PREF_HOLD_NOTIFY];
 
 	if(pref) {
 		if( ! pref.match(/email/i) ) {

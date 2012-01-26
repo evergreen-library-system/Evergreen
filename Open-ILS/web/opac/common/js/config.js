@@ -165,6 +165,8 @@ var PREF_DEF_FONT		= 'opac.default_font';
 var PREF_HOLD_NOTIFY = 'opac.hold_notify';
 var PREF_DEF_LOCATION = 'opac.default_search_location';
 var PREF_DEF_DEPTH	= 'opac.default_search_depth';
+var PREF_DEF_PICKUP = 'opac.default_pickup_location';
+var PREF_DEF_PHONE = 'opac.default_phone'; 
 
 
 /** If enabled, added content attribution links will be 
