@@ -1,0 +1,82 @@
+[%-
+FOREACH copy_info IN ctx.copies;
+    IF copy_info.call_number_label != '##URI##';
+        has_copies = 'true';
+    END;
+    IF copy_info.part_label != '';
+        has_parts = 'true';
+    END;
+    IF has_parts && has_copies;
+        LAST;
+    END;
+END;
+%]
+[%- IF has_copies; %]
+<table cellpadding="0" cellspacing="0" border="0" width="100%" class="item_location_table">
+    <tbody>
+        <tr class="header">
+            <td class="location">[% l('Location') %]</td>
+            <td class="loc_info">&nbsp;</td>
+            <td class="status">[% l('Status') %]</td>
+            <td class="callnumber">[% l('Call Number') %]</td>
+        </tr>
+        [%- 
+        FOR copy_info IN ctx.copies;
+            callnum = copy_info.call_number_label;
+            NEXT IF callnum == '##URI##';
+
+            callnum_prefix = copy_info.call_number_prefix_label;
+            IF callnum_prefix != "";
+                callnum = callnum_prefix _ " " _ callnum;
+            END;
+
+            callnum_suffix = copy_info.call_number_suffix_label;
+            IF callnum_suffix != "";
+                callnum = callnum  _ " " _ callnum_suffix;
+            END;
+        -%]
+        <tr>
+            <td class="location">[% ctx.get_aou(copy_info.circ_lib).name | html %]</td>
+            <td class="loc_info"><a href="javascript:;">View Library Info</a></td><!-- TODO -->
+            <td class="status">[% copy_info.copy_status | html %]</td>
+            [%- IF has_parts == 'true' %]
+            <td class="callnumber">[% l('[_1] ([_2])', callnum, copy_info.part_label) | html %]</td>
+            [% ELSE %]
+            <td class="callnumber">[% callnum | html %]</td>
+            [%- END %]
+        </tr>
+        [%- END %]
+
+        <!-- PAGING -->
+
+        <tr>
+
+            <td>
+            [%- IF ctx.copy_offset > 0;
+                new_offset = ctx.copy_offset - ctx.copy_limit;
+                IF new_offset < 0; new_offset = 0; END %]
+                    <a href="[% mkurl('', {copy_offset => new_offset, copy_limit => ctx.copy_limit}) %]">&laquo; [%
+                        l('Previous [_1]', ctx.copy_offset - new_offset) %]</a>
+            [%- END %]
+            </td>
+
+            <td>
+            [%- IF ctx.copies.size >= ctx.copy_limit %]
+                    <a href="[% mkurl('', {copy_offset => ctx.copy_offset + ctx.copy_limit, copy_limit => ctx.copy_limit}) %]">[%
+                        l('Next [_1]', ctx.copy_limit) %] &raquo;</a>
+            [%- END %]
+            </td>
+
+            [%- more_copies_limit = 50 %] [%# TODO: config %]
+            <td>
+            [%- IF  ctx.copy_limit != more_copies_limit AND ctx.copies.size >= ctx.copy_limit %]
+                <a href="[% mkurl('', {copy_limit => more_copies_limit, copy_offset => 0}) %]">[% l('Show more copies') %]</a>
+            [%- ELSIF ctx.copy_limit == more_copies_limit %]
+                <a href="[% mkurl('', {copy_limit => 0, copy_offset => 0}) %]">[% l('Show fewer copies') %]</a>
+            [%- END %]
+            </td>
+        </tr>
+    </tbody>
+</table>
+[% END %]
+

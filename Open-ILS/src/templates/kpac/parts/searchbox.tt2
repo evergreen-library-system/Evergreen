@@ -1,6 +1,5 @@
 <div class="sub_sidebar_header">[% l('New Search') %]</div>
 <form action="[% ctx.kpac_root _ '/search_results' %]">
-    <input type='hidden' name='trail' value="[% CGI.param('trail') | html %]"/>
     <div class="sub_sidebar_search_wrapper">
         <input type="text" name='query' value="[% CGI.param('query') | html %]"
             [% seed = l(' Enter Text... ') | html %]

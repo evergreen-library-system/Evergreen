@@ -80,7 +80,7 @@ sub load_kpac_config {
         );
     }
 
-    # TODO: make generic "whoami" sub for EGCatLoader.
+    # TODO: make generic "whereami" sub for EGCatLoader.
     my $ou = $self->ctx->{physical_loc} || $self->cgi->param('loc') || $self->ctx->{aou_tree}->()->id;
     my $layout;
 

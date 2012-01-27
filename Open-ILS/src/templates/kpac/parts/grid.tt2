@@ -27,7 +27,7 @@ MACRO render_kpac_grid(page_id) BLOCK;
 
         [% ELSIF cell.type == 'search'; %]
 
-        <td width="[% width %]%"><a href="[% mkurl(ctx.kpac_root _ '/search_results', {query => cell.content}) %]"><img 
+        <td width="[% width %]%"><a href="[% mkurl(ctx.kpac_root _ '/search_results', {query => cell.content}, ['page']) %]"><img 
             src="[% kpac_img_path(cell.img) %]" alt="" /><span>[% cell.name %]</span></a></td>
 
         [% ELSIF cell.type == 'link'; %]

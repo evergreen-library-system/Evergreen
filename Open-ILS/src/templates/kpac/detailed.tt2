@@ -60,29 +60,22 @@
     <div class="clear">&nbsp;</div>
 </div>
 
-<div class="sub_header">You can find this item at these locations:</div>
+<div class="sub_header">[% l('You can find this item at these locations:') %]</div>
     <div class="item_detail_location_wrapper">
-        <table cellpadding="0" cellspacing="0" border="0" class="item_location_table">
-            <tbody>
-                <tr class="header">
-                    <td class="location">Location</td>
-                    <td class="loc_info">&nbsp;</td>
-                    <td class="status">Status</td>
-                    <td class="callnumber">Call Number</td>
-                </tr>
-                <tr>
-                    <td class="location">Bellevue Library</td>
-                    <td class="loc_info"><a href="javascript:;">View Library Info</a></td>
-                    <td class="status">Check Shelf</td>
-                    <td class="callnumber">J613.71 CRE</td>
-                </tr>
-            </tbody>
-        </table>
+        [% INCLUDE 'kpac/parts/copy_table.tt2' %]
     </div>
-    <div class="sub_header">About this item:</div>
-    <div class="item_detail_desc">
-        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam <a href="javascript:;">nonummy</a> nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit</p>
-    </div>
+
+    [% IF attrs.summary %]
+        <div class="sub_header">[% l('About this item:') %]</div>
+        <div class="item_detail_desc">
+            [% FOR sum IN attrs.summary %]
+                [% IF !loop.first; '<br/>'; END %]
+                <p>[% sum | html %] </p>
+            [% END %]
+        </div>
+    [% END %]
+
+    <!-- TODO -->
 
     <div class="item_detail_extras_tabs">
         <a href="javascript:;">Reviews</a>

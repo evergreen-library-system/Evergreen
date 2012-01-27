@@ -1,7 +1,7 @@
 <div class="breadcrumb">
 
     <!-- home page -->
-    <a href="[% mkurl(ctx.kpac_root _ '/index', {}, ['trail']) %]" 
+    <a href="[% mkurl(ctx.kpac_root _ '/index', {}, ['trail', 'page']) %]" 
         class="bread_home"><img alt="[% l('Home') %]" 
         src="[% ctx.media_prefix %]/images/kpac/home_icon.png" /></a>
 
@@ -25,10 +25,13 @@
 
             <!-- record title -->
             <div class="bread_green_mid">&nbsp;</div>
-            [%  title = '';
-                IF attrs AND attrs.title;
-                    title = attrs.title.substr(15, -1, '...');
-                END
+            [%  tlen = 18; # TODO config?
+                title = attrs.title || '';
+                IF title.length > tlen;
+                    title = l('[_1]...', title.substr(0, tlen - 3));
+                END;
+                # I know there's a way to do this all w/ substr, 
+                # but it's trying my patience.  this works.
             %]
             <a href="javascript:;">[% title | html %]</a>
 
