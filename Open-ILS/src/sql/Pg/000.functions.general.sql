@@ -28,6 +28,11 @@ CREATE OR REPLACE FUNCTION evergreen.xml_escape(str TEXT) RETURNS text AS $$
        '>', '&gt;');
 $$ LANGUAGE SQL IMMUTABLE;
 
+CREATE OR REPLACE FUNCTION evergreen.regexp_split_to_array(TEXT, TEXT)
+RETURNS TEXT[] AS $$
+    return encode_array_literal([split $_[1], $_[0]]);
+$$ LANGUAGE PLPERLU STRICT IMMUTABLE;
+
 -- Provide a named type for patching functions
 CREATE TYPE evergreen.patch AS (patch TEXT);
 

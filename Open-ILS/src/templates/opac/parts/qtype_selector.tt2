@@ -6,7 +6,7 @@
     {value => "series", label => l("Series")},
     {value => "id|bibcn", label => l("Bib Call Number")}
 ] %]
-<select name="qtype">
+<select name="qtype"[% IF id; ' id="'; id ; '"' ; END %]>
     [%  query_type = query_type || CGI.param('qtype');
         FOR qt IN query_types -%]
     <option value='[% qt.value | html %]'[%

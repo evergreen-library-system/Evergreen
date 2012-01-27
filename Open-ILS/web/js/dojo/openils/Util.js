@@ -372,6 +372,16 @@ if(!dojo._hasResource["openils.Util"]) {
         return K;
     }
 
+    /**
+     * Return the values of an object as a list. There may be a Dojo
+     * idiom or something that makes this redundant. Check into that.
+     */
+    openils.Util.objectValues = function(obj) {
+        var V = [];
+        for (var k in obj) V.push(obj[k]);
+        return V;
+    }
+
     openils.Util.uniqueElements = function(L) {
         var o = {};
         for (var k in L) o[L[k]] = true;

@@ -69,4 +69,15 @@
             cgi.url("-path" => 1, "-query" => 1);
         END;
     END;
+
+    # Whether we want Dojo or not may one day be a wholly distinct
+    # concern from whether we want autosuggest, so let's get used to
+    # defining that separately.
+    want_dojo = 0;
+
+    use_autosuggest = ctx.get_cgf("opac.use_autosuggest");
+
+    IF use_autosuggest.enabled == "t";
+        want_dojo = 1;
+    END;
 %]

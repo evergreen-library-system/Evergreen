@@ -2063,6 +2063,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<fields oils_persist:primary="name">
 			<field reporter:label="Name" name="name" reporter:datatype="text"/>
 			<field reporter:label="Label" name="label" reporter:datatype="text" oils_persist:i18n="true"/>
+			<field reporter:label="Bouyant?" name="bouyant" reporter:datatype="bool" />
+			<field reporter:label="Restrict?" name="restrict" reporter:datatype="bool" />
 			<field reporter:label="Fields" name="fields" reporter:datatype="link" oils_persist:virtual="true"/>
 		</fields>
 		<links>
@@ -2090,6 +2092,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Search Field" name="search_field" reporter:datatype="bool" />
 			<field reporter:label="Facet Field" name="facet_field" reporter:datatype="bool" />
 			<field reporter:label="Facet XPath" name="facet_xpath" reporter:datatype="text" />
+			<field reporter:label="Browse Field" name="browse_field" reporter:datatype="bool" />
+			<field reporter:label="Browse XPath" name="browse_xpath" reporter:datatype="text" />
+			<field reporter:label="Restrict?" name="restrict" reporter:datatype="bool" />
 		</fields>
 		<links>
 			<link field="field_class" reltype="has_a" key="name" map="" class="cmc"/>
@@ -2848,6 +2853,29 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links>
 			<link field="source" reltype="has_a" key="id" map="" class="bre"/>
 			<link field="field" reltype="has_a" key="id" map="" class="cmf"/>
+		</links>
+	</class>
+	<class id="mbe" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="metabib::browse_entry" oils_persist:tablename="metabib.browse_entry" reporter:label="Combined Browse Entry" oils_persist:readonly="true">
+		<fields oils_persist:primary="id" oils_persist:sequence="metabib.browse_entry_id_seq">
+			<field name="id" reporter:datatype="id" />
+			<field name="value" reporter:datatype="text"/>
+			<field name="def_maps" oils_persist:virtual="true" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="def_maps" reltype="has_many" key="entry" map="" class="mbedm"/>
+		</links>
+	</class>
+	<class id="mbedm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="metabib::browse_entry_def_map" oils_persist:tablename="metabib.browse_entry_def_map" reporter:label="Combined Browse Entry Definition Map" oils_persist:readonly="true">
+		<fields oils_persist:primary="id" oils_persist:sequence="metabib.browse_entry_def_map_id_seq">
+			<field name="id" reporter:datatype="id" />
+			<field name="entry" reporter:datatype="link"/>
+			<field name="def" reporter:datatype="link"/>
+			<field name="source" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="entry" reltype="has_a" key="id" map="" class="mbe"/>
+			<link field="def" reltype="has_a" key="id" map="" class="cmf"/>
+			<link field="source" reltype="has_a" key="id" map="" class="bre"/>
 		</links>
 	</class>
 	<class id="mfe" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="metabib::field_entry" reporter:label="Combined Field Entry View" oils_persist:readonly="true">

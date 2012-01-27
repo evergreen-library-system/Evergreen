@@ -165,8 +165,10 @@ INSERT INTO config.biblio_fingerprint (name, xpath, format, first_word)
     );
 
 CREATE TABLE config.metabib_class (
-    name    TEXT    PRIMARY KEY,
-    label   TEXT    NOT NULL UNIQUE
+    name     TEXT    PRIMARY KEY,
+    label    TEXT    NOT NULL UNIQUE,
+    bouyant  BOOL    DEFAULT FALSE NOT NULL,
+    restrict BOOL    DEFAULT FALSE NOT NULL
 );
 
 CREATE TABLE config.metabib_field (
@@ -179,7 +181,10 @@ CREATE TABLE config.metabib_field (
 	format		TEXT	NOT NULL REFERENCES config.xml_transform (name) DEFAULT 'mods33',
 	search_field	BOOL	NOT NULL DEFAULT TRUE,
 	facet_field	BOOL	NOT NULL DEFAULT FALSE,
-    facet_xpath TEXT
+	browse_field	BOOL	NOT NULL DEFAULT TRUE,
+	browse_xpath   TEXT,
+	facet_xpath	TEXT,
+	restrict	BOOL    DEFAULT FALSE NOT NULL
 );
 COMMENT ON TABLE config.metabib_field IS $$
 XPath used for record indexing ingest
@@ -802,11 +807,13 @@ BEGIN
         END LOOP;
     END IF;
 
-    IF REGEXP_REPLACE(VERSION(),E'^.+?(\\d+\\.\\d+).*?$',E'\\1')::FLOAT > 8.2 THEN
-        NEW.index_vector = to_tsvector((TG_ARGV[0])::regconfig, value);
-    ELSE
-        NEW.index_vector = to_tsvector(TG_ARGV[0], value);
+    IF TG_TABLE_NAME::TEXT ~ 'browse_entry$' THEN
+        value :=  ARRAY_TO_STRING(
+            evergreen.regexp_split_to_array(value, E'\\W+'), ' '
+        );
     END IF;
+
+    NEW.index_vector = to_tsvector((TG_ARGV[0])::regconfig, value);
 
     RETURN NEW;
 END;

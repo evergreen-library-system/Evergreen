@@ -1,6 +1,7 @@
 package OpenILS::WWW::EGCatLoader;
 use strict; use warnings;
 use Apache2::Const -compile => qw(OK DECLINED FORBIDDEN HTTP_INTERNAL_SERVER_ERROR REDIRECT HTTP_BAD_REQUEST);
+use File::Spec;
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Fieldmapper;
@@ -13,7 +14,8 @@ our %cache = ( # cached data
     map => {aou => {}}, # others added dynamically as needed
     list => {},
     search => {},
-    org_settings => {}
+    org_settings => {},
+    eg_cache_hash => undef
 );
 
 sub init_ro_object_cache {
@@ -300,6 +302,42 @@ sub _get_search_lib {
     }
 
     return $self->ctx->{aou_tree}->()->id;
+}
+
+# This is defensively coded since we don't do much manual reading from the
+# file system in this module.
+sub load_eg_cache_hash {
+    my ($self) = @_;
+
+    # just a context helper
+    $self->ctx->{eg_cache_hash} = sub { return $cache{eg_cache_hash}; };
+
+    # Need to actually load the value? If already done, move on.
+    return if defined $cache{eg_cache_hash};
+
+    # In this way even if we fail, we won't slow things down by ever trying
+    # again within this Apache process' lifetime.
+    $cache{eg_cache_hash} = 0;
+
+    my $path = File::Spec->catfile(
+        $self->apache->document_root, "eg_cache_hash"
+    );
+
+    if (not open FH, "<$path") {
+        $self->apache->log->warn("error opening $path : $!");
+        return;
+    } else {
+        my $buf;
+        my $rv = read FH, $buf, 64;  # defensive
+        close FH;
+
+        if (not defined $rv) {  # error
+            $self->apache->log->warn("error reading $path : $!");
+        } elsif ($rv > 0) {     # no error, something read
+            chomp $buf;
+            $cache{eg_cache_hash} = $buf;
+        }
+    }
 }
 
 1;

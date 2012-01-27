@@ -1,0 +1,89 @@
+AutoSuggest
+
+Get an autocompleting dialog underneath basic search boxes.
+
+If activated, the dialog appears in both the JavaScript OPAC and the Template
+Toolkit OPAC.
+
+Mike Rylander and Bill Erickson largely designed and spec'ed out this
+feature, especially at the database level.  Lebbeous Fogle-Weekley and
+Mike Rylander did the programming.
+
+How it works, for site administrators
+-------------------------------------
+
+Once the code is installed, including database stored procedures,
+(re)ingesting your bibliographic records will populate two new tables
+needed by AutoSuggest: metabib.browse_entry and metabib.browse_entry_def_map.
+
+Yes, for now this means that the size of your database in per-record terms
+will be greater.  The browse_entry data we generate is extremely similar to
+facet data, so it's possible that in the future we can blend them into the
+same thing at the database level, and save some space.
+
+To control what gets indexed in the metabib.browse_* tables, set the
+boolean 'browse_field' column for each row in config.metabib_field as desired
+Numbers 15 (keyword|keyword) and 16 (subject|complete) should generally be set
+to false.
+
+The config.metabib_class  table has a new 'bouyant'
+column.  Setting this to true means that when a user is typing in the OPAC
+search box with a search class selector set to, say, 'Subject', and the cmc row
+for 'Subject' has 'bouyant' set to true, the top suggestions will definitely
+come from the Subject fields of MARC records (if any).  'restrict' is like
+'bouyant', only stronger.  In that case suggestions /only/ come from the
+selected class.
+
+This is the idea behind the 'restrict' column (in both the
+config.metabib_class table and the config.metabib_field table):
+For any given class or field, if restrict is true AND the user at the OPAC
+has selected that same class or field from the search class dropdown, then
+autosuggestions will only come from that class or field in the record.
+ 
+You never want this column to be true for keyword, because we don't index
+keywords for browse/autosuggest purposes (we would get giant blobs of
+information as autosuggestions, and you don't want that (really)).
+ 
+You don't really want it to be true for most classes and fields.
+If the user sets the dropdown to "subject" and start typing "harry potter",
+the user really wants matches from the "title" class too (although other
+things being equal, matches from the "subject" class will rise to the top).
+ 
+If you have a speciality index, you *may* want to set restrict to true
+for that particular field.  For a song title index, for example.  To take
+advantage of this, you would also have to customize your OPAC to have an
+entry in the search class dropdown for 'title|songtitle' (or whatever's
+appropriate for your specialty index).  This is easy to do and should be
+covered somewhere in documentation for both the JSPAC and the TPAC.
+
+The order of suggestions otherwise has mostly to do with how well what users
+have typed matches what's in your bib records, and the value of the weight
+column of the relevant config.metabib_field row.  Examine the code if you're
+curious to know more or want to make adjustments.
+
+The master on/off switch for AutoSuggest is a new row in in config.global_flag
+named 'opac.use_autosuggest'.  Set its 'enabled' column to false to turn
+off AutoSuggest.  If you don't want your suggestions to be limited to whatever's
+OPAC visible at the search org, set the 'value' column to anything that
+does not contain the string 'opac_visible'.  This could be a good idea
+if AutoSuggest seems slow on a large site.
+
+Turning this on means introducing Dojo in your TPAC.  I tried to
+keep it minimal, for load time's sake.  There's no fieldmapper or IDL stuff 
+play.  For now, turning this feature off will avoid loading Dojo in your
+TPAC.
+
+Managing the little stuff
+-------------------------
+CSS classes that affect the look of suggestions are in this file for the TPAC:
+    Open-ILS/web/css/skin/default/opac/style.css
+
+and in this file for the JSPAC:
+    Open-ILS/web/opac/skin/default/css/layout.css
+
+At bottom, autosuggest is shaped by PostgreSQL's Full Text Search features.
+Some of the arguments that are passed to TS_RANK_CD() and TS_HEADLINE() are
+expoposed via options to the openils.widget.AutoSuggest and
+openils.AutoSuggestStore modules, which have comments.  You can customize your
+OPAC files to invoke these with your desired options without touching much
+actual code.

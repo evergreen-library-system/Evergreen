@@ -135,6 +135,25 @@ CREATE INDEX metabib_facet_entry_field_idx ON metabib.facet_entry (field);
 CREATE INDEX metabib_facet_entry_value_idx ON metabib.facet_entry (SUBSTRING(value,1,1024));
 CREATE INDEX metabib_facet_entry_source_idx ON metabib.facet_entry (source);
 
+CREATE TABLE metabib.browse_entry (
+    id BIGSERIAL PRIMARY KEY,
+    value TEXT unique,
+    index_vector tsvector
+);
+CREATE INDEX metabib_browse_entry_index_vector_idx ON metabib.browse_entry USING GIST (index_vector);
+CREATE TRIGGER metabib_browse_entry_fti_trigger
+    BEFORE INSERT OR UPDATE ON metabib.browse_entry
+    FOR EACH ROW EXECUTE PROCEDURE oils_tsearch2('keyword');
+
+
+CREATE TABLE metabib.browse_entry_def_map (
+    id BIGSERIAL PRIMARY KEY,
+    entry BIGINT REFERENCES metabib.browse_entry (id),
+    def INT REFERENCES config.metabib_field (id),
+    source BIGINT REFERENCES biblio.record_entry (id)
+);
+
+
 CREATE OR REPLACE FUNCTION metabib.facet_normalize_trigger () RETURNS TRIGGER AS $$
 DECLARE
     normalizer  RECORD;
@@ -301,9 +320,13 @@ CREATE INDEX metabib_metarecord_source_map_source_record_idx ON metabib.metareco
 CREATE TYPE metabib.field_entry_template AS (
         field_class     TEXT,
         field           INT,
+        facet_field     BOOL,
+        search_field    BOOL,
+        browse_field   BOOL,
         source          BIGINT,
         value           TEXT
 );
+
 
 CREATE OR REPLACE FUNCTION biblio.extract_metabib_field_entry ( rid BIGINT, default_joiner TEXT ) RETURNS SETOF metabib.field_entry_template AS $func$
 DECLARE
@@ -315,6 +338,7 @@ DECLARE
     xml_node    TEXT;
     xml_node_list   TEXT[];
     facet_text  TEXT;
+    browse_text TEXT;
     raw_text    TEXT;
     curr_text   TEXT;
     joiner      TEXT := default_joiner; -- XXX will index defs supply a joiner?
@@ -372,6 +396,25 @@ BEGIN
 
             raw_text := COALESCE(raw_text,'') || curr_text;
 
+            -- autosuggest/metabib.browse_entry
+            IF idx.browse_field THEN
+
+                IF idx.browse_xpath IS NOT NULL AND idx.browse_xpath <> '' THEN
+                    browse_text := oils_xpath_string( idx.browse_xpath, xml_node, joiner, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]] );
+                ELSE
+                    browse_text := curr_text;
+                END IF;
+
+                output_row.field_class = idx.field_class;
+                output_row.field = idx.id;
+                output_row.source = rid;
+                output_row.value = BTRIM(REGEXP_REPLACE(browse_text, E'\\s+', ' ', 'g'));
+
+                output_row.browse_field = TRUE;
+                RETURN NEXT output_row;
+                output_row.browse_field = FALSE;
+            END IF;
+
             -- insert raw node text for faceting
             IF idx.facet_field THEN
 
@@ -386,7 +429,9 @@ BEGIN
                 output_row.source = rid;
                 output_row.value = BTRIM(REGEXP_REPLACE(facet_text, E'\\s+', ' ', 'g'));
 
+                output_row.facet_field = TRUE;
                 RETURN NEXT output_row;
+                output_row.facet_field = FALSE;
             END IF;
 
         END LOOP;
@@ -400,11 +445,76 @@ BEGIN
             output_row.source = rid;
             output_row.value = BTRIM(REGEXP_REPLACE(raw_text, E'\\s+', ' ', 'g'));
 
+            output_row.search_field = TRUE;
             RETURN NEXT output_row;
         END IF;
 
     END LOOP;
 
+END;
+
+$func$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION metabib.reingest_metabib_field_entries( bib_id BIGINT ) RETURNS VOID AS $func$
+DECLARE
+    fclass          RECORD;
+    ind_data        metabib.field_entry_template%ROWTYPE;
+    mbe_row         metabib.browse_entry%ROWTYPE;
+    mbe_id          BIGINT;
+BEGIN
+    PERFORM * FROM config.internal_flag WHERE name = 'ingest.assume_inserts_only' AND enabled;
+    IF NOT FOUND THEN
+        FOR fclass IN SELECT * FROM config.metabib_class LOOP
+            -- RAISE NOTICE 'Emptying out %', fclass.name;
+            EXECUTE $$DELETE FROM metabib.$$ || fclass.name || $$_field_entry WHERE source = $$ || bib_id;
+        END LOOP;
+        DELETE FROM metabib.facet_entry WHERE source = bib_id;
+        DELETE FROM metabib.browse_entry_def_map WHERE source = bib_id;
+    END IF;
+
+    FOR ind_data IN SELECT * FROM biblio.extract_metabib_field_entry( bib_id ) LOOP
+        IF ind_data.field < 0 THEN
+            ind_data.field = -1 * ind_data.field;
+        END IF;
+
+        IF ind_data.facet_field THEN
+            INSERT INTO metabib.facet_entry (field, source, value)
+                VALUES (ind_data.field, ind_data.source, ind_data.value);
+        END IF;
+
+        IF ind_data.browse_field THEN
+            -- A caveat about this SELECT: this should take care of replacing
+            -- old mbe rows when data changes, but not if normalization (by
+            -- which I mean specifically the output of
+            -- evergreen.oils_tsearch2()) changes.  It may or may not be
+            -- expensive to add a comparison of index_vector to index_vector
+            -- to the WHERE clause below.
+            SELECT INTO mbe_row * FROM metabib.browse_entry WHERE value = ind_data.value;
+            IF FOUND THEN
+                mbe_id := mbe_row.id;
+            ELSE
+                INSERT INTO metabib.browse_entry (value) VALUES
+                    (metabib.browse_normalize(ind_data.value, ind_data.field));
+                mbe_id := CURRVAL('metabib.browse_entry_id_seq'::REGCLASS);
+            END IF;
+
+            INSERT INTO metabib.browse_entry_def_map (entry, def, source)
+                VALUES (mbe_id, ind_data.field, ind_data.source);
+        END IF;
+
+        IF ind_data.search_field THEN
+            EXECUTE $$
+                INSERT INTO metabib.$$ || ind_data.field_class || $$_field_entry (field, source, value)
+                    VALUES ($$ ||
+                        quote_literal(ind_data.field) || $$, $$ ||
+                        quote_literal(ind_data.source) || $$, $$ ||
+                        quote_literal(ind_data.value) ||
+                    $$);$$;
+        END IF;
+
+    END LOOP;
+
+    RETURN;
 END;
 $func$ LANGUAGE PLPGSQL;
 
@@ -736,41 +846,6 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION metabib.reingest_metabib_field_entries( bib_id BIGINT ) RETURNS VOID AS $func$
-DECLARE
-    fclass          RECORD;
-    ind_data        metabib.field_entry_template%ROWTYPE;
-BEGIN
-    PERFORM * FROM config.internal_flag WHERE name = 'ingest.assume_inserts_only' AND enabled;
-    IF NOT FOUND THEN
-        FOR fclass IN SELECT * FROM config.metabib_class LOOP
-            -- RAISE NOTICE 'Emptying out %', fclass.name;
-            EXECUTE $$DELETE FROM metabib.$$ || fclass.name || $$_field_entry WHERE source = $$ || bib_id;
-        END LOOP;
-        DELETE FROM metabib.facet_entry WHERE source = bib_id;
-    END IF;
-
-    FOR ind_data IN SELECT * FROM biblio.extract_metabib_field_entry( bib_id ) LOOP
-        IF ind_data.field < 0 THEN
-            ind_data.field = -1 * ind_data.field;
-            INSERT INTO metabib.facet_entry (field, source, value)
-                VALUES (ind_data.field, ind_data.source, ind_data.value);
-        ELSE
-            EXECUTE $$
-                INSERT INTO metabib.$$ || ind_data.field_class || $$_field_entry (field, source, value)
-                    VALUES ($$ ||
-                        quote_literal(ind_data.field) || $$, $$ ||
-                        quote_literal(ind_data.source) || $$, $$ ||
-                        quote_literal(ind_data.value) ||
-                    $$);$$;
-        END IF;
-
-    END LOOP;
-
-    RETURN;
-END;
-$func$ LANGUAGE PLPGSQL;
-
 CREATE OR REPLACE FUNCTION biblio.extract_located_uris( bib_id BIGINT, marcxml TEXT, editor_id INT ) RETURNS VOID AS $func$
 DECLARE
     uris            TEXT[];
@@ -965,6 +1040,7 @@ BEGIN
         DELETE FROM metabib.record_attr WHERE id = NEW.id; -- Kill the attrs hash, useless on deleted records
         DELETE FROM authority.bib_linking WHERE bib = NEW.id; -- Avoid updating fields in bibs that are no longer visible
         DELETE FROM biblio.peer_bib_copy_map WHERE peer_record = NEW.id; -- Separate any multi-homed items
+        DELETE FROM metabib.browse_entry_def_map WHERE source = NEW.id; -- Don't auto-suggest deleted bibs
         RETURN NEW; -- and we're done
     END IF;
 
@@ -1106,6 +1182,229 @@ BEGIN
     END IF;
 
     RETURN NEW;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION metabib.browse_normalize(facet_text TEXT, mapped_field INT) RETURNS TEXT AS $$
+DECLARE
+    normalizer  RECORD;
+BEGIN
+
+    FOR normalizer IN
+        SELECT  n.func AS func,
+                n.param_count AS param_count,
+                m.params AS params
+          FROM  config.index_normalizer n
+                JOIN config.metabib_field_index_norm_map m ON (m.norm = n.id)
+          WHERE m.field = mapped_field AND m.pos < 0
+          ORDER BY m.pos LOOP
+
+            EXECUTE 'SELECT ' || normalizer.func || '(' ||
+                quote_literal( facet_text ) ||
+                CASE
+                    WHEN normalizer.param_count > 0
+                        THEN ',' || REPLACE(REPLACE(BTRIM(normalizer.params,'[]'),E'\'',E'\\\''),E'"',E'\'')
+                        ELSE ''
+                    END ||
+                ')' INTO facet_text;
+
+    END LOOP;
+
+    RETURN facet_text;
+END;
+
+$$ LANGUAGE PLPGSQL;
+
+
+-- This mimics a specific part of QueryParser, turning the first part of a
+-- classed search (search_class) into a set of classes and possibly fields.
+-- search_class might look like "author" or "title|proper" or "ti|uniform"
+-- or "au" or "au|corporate|personal" or anything like that, where the first
+-- element of the list you get by separating on the "|" character is either
+-- a registered class (config.metabib_class) or an alias
+-- (config.metabib_search_alias), and the rest of any such elements are
+-- fields (config.metabib_field).
+CREATE OR REPLACE
+    FUNCTION metabib.search_class_to_registered_components(search_class TEXT)
+    RETURNS SETOF RECORD AS $func$
+DECLARE
+    search_parts        TEXT[];
+    field_name          TEXT;
+    search_part_count   INTEGER;
+    rec                 RECORD;
+    registered_class    config.metabib_class%ROWTYPE;
+    registered_alias    config.metabib_search_alias%ROWTYPE;
+    registered_field    config.metabib_field%ROWTYPE;
+BEGIN
+    search_parts := REGEXP_SPLIT_TO_ARRAY(search_class, E'\\|');
+
+    search_part_count := ARRAY_LENGTH(search_parts, 1);
+    IF search_part_count = 0 THEN
+        RETURN;
+    ELSE
+        SELECT INTO registered_class
+            * FROM config.metabib_class WHERE name = search_parts[1];
+        IF FOUND THEN
+            IF search_part_count < 2 THEN   -- all fields
+                rec := (registered_class.name, NULL::INTEGER);
+                RETURN NEXT rec;
+                RETURN; -- done
+            END IF;
+            FOR field_name IN SELECT *
+                FROM UNNEST(search_parts[2:search_part_count]) LOOP
+                SELECT INTO registered_field
+                    * FROM config.metabib_field
+                    WHERE name = field_name AND
+                        field_class = registered_class.name;
+                IF FOUND THEN
+                    rec := (registered_class.name, registered_field.id);
+                    RETURN NEXT rec;
+                END IF;
+            END LOOP;
+        ELSE
+            -- maybe we have an alias?
+            SELECT INTO registered_alias
+                * FROM config.metabib_search_alias WHERE alias=search_parts[1];
+            IF NOT FOUND THEN
+                RETURN;
+            ELSE
+                IF search_part_count < 2 THEN   -- return w/e the alias says
+                    rec := (
+                        registered_alias.field_class, registered_alias.field
+                    );
+                    RETURN NEXT rec;
+                    RETURN; -- done
+                ELSE
+                    FOR field_name IN SELECT *
+                        FROM UNNEST(search_parts[2:search_part_count]) LOOP
+                        SELECT INTO registered_field
+                            * FROM config.metabib_field
+                            WHERE name = field_name AND
+                                field_class = registered_alias.field_class;
+                        IF FOUND THEN
+                            rec := (
+                                registered_alias.field_class,
+                                registered_field.id
+                            );
+                            RETURN NEXT rec;
+                        END IF;
+                    END LOOP;
+                END IF;
+            END IF;
+        END IF;
+    END IF;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+
+CREATE OR REPLACE
+    FUNCTION metabib.suggest_browse_entries(
+        query_text      TEXT,   -- 'foo' or 'foo & ba:*',ready for to_tsquery()
+        search_class    TEXT,   -- 'alias' or 'class' or 'class|field..', etc
+        headline_opts   TEXT,   -- markup options for ts_headline()
+        visibility_org  INTEGER,-- null if you don't want opac visibility test
+        query_limit     INTEGER,-- use in LIMIT clause of interal query
+        normalization   INTEGER -- argument to TS_RANK_CD()
+    ) RETURNS TABLE (
+        value                   TEXT,   -- plain
+        field                   INTEGER,
+        bouyant_and_class_match BOOL,
+        field_match             BOOL,
+        field_weight            INTEGER,
+        rank                    REAL,
+        bouyant                 BOOL,
+        match                   TEXT    -- marked up
+    ) AS $func$
+DECLARE
+    query                   TSQUERY;
+    opac_visibility_join    TEXT;
+    search_class_join       TEXT;
+    r_fields                RECORD;
+BEGIN
+    query := TO_TSQUERY('keyword', query_text);
+
+    IF visibility_org IS NOT NULL THEN
+        opac_visibility_join := '
+    JOIN asset.opac_visible_copies aovc ON (
+        aovc.record = mbedm.source AND
+        aovc.circ_lib IN (SELECT id FROM actor.org_unit_descendants($4))
+    )';
+    ELSE
+        opac_visibility_join := '';
+    END IF;
+
+    -- The following determines whether we only provide suggestsons matching
+    -- the user's selected search_class, or whether we show other suggestions
+    -- too. The reason for MIN() is that for search_classes like
+    -- 'title|proper|uniform' you would otherwise get multiple rows.  The
+    -- implication is that if title as a class doesn't have restrict,
+    -- nor does the proper field, but the uniform field does, you're going
+    -- to get 'false' for your overall evaluation of 'should we restrict?'
+    -- To invert that, change from MIN() to MAX().
+
+    SELECT
+        INTO r_fields
+            MIN(cmc.restrict::INT) AS restrict_class,
+            MIN(cmf.restrict::INT) AS restrict_field
+        FROM metabib.search_class_to_registered_components(search_class)
+            AS _registered (field_class TEXT, field INT)
+        JOIN
+            config.metabib_class cmc ON (cmc.name = _registered.field_class)
+        LEFT JOIN
+            config.metabib_field cmf ON (cmf.id = _registered.field);
+
+    -- evaluate 'should we restrict?'
+    IF r_fields.restrict_field::BOOL OR r_fields.restrict_class::BOOL THEN
+        search_class_join := '
+    JOIN
+        metabib.search_class_to_registered_components($2)
+        AS _registered (field_class TEXT, field INT) ON (
+            (_registered.field IS NULL AND
+                _registered.field_class = cmf.field_class) OR
+            (_registered.field = cmf.id)
+        )
+    ';
+    ELSE
+        search_class_join := '
+    LEFT JOIN
+        metabib.search_class_to_registered_components($2)
+        AS _registered (field_class TEXT, field INT) ON (
+            _registered.field_class = cmc.name
+        )
+    ';
+    END IF;
+
+    RETURN QUERY EXECUTE 'SELECT *, TS_HEADLINE(value, $1, $3) FROM (SELECT DISTINCT
+        mbe.value,
+        cmf.id,
+        cmc.bouyant AND _registered.field_class IS NOT NULL,
+        _registered.field = cmf.id,
+        cmf.weight,
+        TS_RANK_CD(mbe.index_vector, $1, $6),
+        cmc.bouyant
+    FROM metabib.browse_entry_def_map mbedm
+    JOIN metabib.browse_entry mbe ON (mbe.id = mbedm.entry)
+    JOIN config.metabib_field cmf ON (cmf.id = mbedm.def)
+    JOIN config.metabib_class cmc ON (cmf.field_class = cmc.name)
+    '  || search_class_join || opac_visibility_join ||
+    ' WHERE $1 @@ mbe.index_vector
+    ORDER BY 3 DESC, 4 DESC NULLS LAST, 5 DESC, 6 DESC, 7 DESC, 1 ASC
+    LIMIT $5) x
+    ORDER BY 3 DESC, 4 DESC NULLS LAST, 5 DESC, 6 DESC, 7 DESC, 1 ASC
+    '   -- sic, repeat the order by clause in the outer select too
+    USING
+        query, search_class, headline_opts,
+        visibility_org, query_limit, normalization
+        ;
+
+    -- sort order:
+    --  bouyant AND chosen class = match class
+    --  chosen field = match field
+    --  field weight
+    --  rank
+    --  bouyancy
+    --  value itself
+
 END;
 $func$ LANGUAGE PLPGSQL;
 

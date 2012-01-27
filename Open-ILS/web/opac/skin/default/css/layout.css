@@ -263,3 +263,10 @@ tr[name="myopac_invalid_addr_row"] td {
 td.toc_label { text-align: right; }
 td.toc_title { text-align: left; padding-left: 1em; padding-right: 2em; }
 td.toc_page { text-align: right; }
+
+.oils_AS { font-weight: bold; color: #c00; }
+.oils_AS_match_term { text-align: left; color: #000; }
+.oils_AS_match_field {
+    font-size: 75%; padding: 0.65em 0;
+    text-align: right; color: #666;
+}

@@ -15,12 +15,19 @@
             l(' for ');
         %]
         <span class='search_box_wrapper'>
-            <input type="text" id="search_box" name="query" value="[% is_advanced ? ctx.processed_search_query : CGI.param('query') || l("Search Keyword") | html %]"
-                onfocus="if (this.value=='[% l("Search Keyword") %]'){this.value='';this.style.color='#000';}"
-                onblur="if (this.value==''){this.value='[% l("Search Keyword") %]';this.style.color='#999';}"
-                x-webkit-speech />
+            <input type="text" id="search_box" name="query"
+                value="[% is_advanced ? ctx.processed_search_query : CGI.param('query') | html %]"
+                [%- IF use_autosuggest.enabled == "t" %]
+                dojoType="openils.widget.AutoSuggest" type_selector="'qtype'"
+                submitter="this.textbox.form.submit();"
+                [%-     IF use_autosuggest.value.search('opac_visible') %]
+                store_args='{"org_unit_getter": function() { return [% ctx.search_ou %]; }}'
+                [%-     END # opac_visible -%]
+                [%- ELSE -%]
+                x-webkit-speech
+                [%- END # autosuggest enabled %] />
         </span>
-        [%- INCLUDE "opac/parts/qtype_selector.tt2";
+        [%- INCLUDE "opac/parts/qtype_selector.tt2" id="qtype";
             l(' in '); PROCESS build_org_selector name='loc' value=ctx.search_ou;
     %]
     <span>

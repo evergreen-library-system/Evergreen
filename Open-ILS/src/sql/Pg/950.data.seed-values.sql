@@ -141,10 +141,10 @@ INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, 
     (14, 'subject', 'topic', oils_i18n_gettext(14, 'Topic Subject', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject/mods32:topic$$, TRUE );
 --INSERT INTO config.metabib_field ( id, field_class, name, format, xpath ) VALUES 
 --  ( id, field_class, name, xpath ) VALUES ( 'subject', 'genre', 'mods32', $$//mods32:mods/mods32:genre$$ );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES 
-    (15, 'keyword', 'keyword', oils_i18n_gettext(15, 'General Keywords', 'cmf', 'label'), 'mods32', $$//mods32:mods/*[not(local-name()='originInfo')]$$ ); -- /* to fool vim */;
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
-    (16, 'subject', 'complete', oils_i18n_gettext(16, 'All Subjects', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject$$ );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, browse_field ) VALUES 
+    (15, 'keyword', 'keyword', oils_i18n_gettext(15, 'General Keywords', 'cmf', 'label'), 'mods32', $$//mods32:mods/*[not(local-name()='originInfo')]$$, FALSE ); -- /* to fool vim */;
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, browse_field ) VALUES
+    (16, 'subject', 'complete', oils_i18n_gettext(16, 'All Subjects', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject$$, FALSE );
 
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
     (17, 'identifier', 'accession', oils_i18n_gettext(17, 'Accession Number', 'cmf', 'label'), 'marcxml', $$//marc:controlfield[@tag='001']$$ );
@@ -8673,6 +8673,20 @@ INSERT INTO config.global_flag (name, label, enabled)
         ),
         FALSE
     );
+
+INSERT INTO config.global_flag (name, label, value, enabled)
+    VALUES (
+        'opac.use_autosuggest',
+        oils_i18n_gettext(
+            'opac.use_autosuggest',
+            'OPAC: Show auto-completing suggestions dialog under basic search box (put ''opac_visible'' into the value field to limit suggestions to OPAC-visible items, or blank the field for a possible performance improvement)',
+            'cgf',
+            'label'
+        ),
+        'opac_visible',
+        TRUE
+    );
+
 
 INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
     VALUES (

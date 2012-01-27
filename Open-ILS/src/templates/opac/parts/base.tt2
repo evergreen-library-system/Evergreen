@@ -9,9 +9,15 @@
         <link rel="stylesheet" type="text/css" href="[% ctx.media_prefix %]/css/skin/default/opac/style.css" />
         <title>[% l('Catalog - [_1]', ctx.page_title) %]</title>
         <link rel="unapi-server" type="application/xml" title="unAPI" href="/opac/extras/unapi" />
+        [% IF want_dojo %]
+        <style type="text/css">
+            @import "[% ctx.media_prefix %]/js/dojo/dojo/resources/dojo.css";
+            @import "[% ctx.media_prefix %]/js/dojo/dijit/themes/tundra/tundra.css";
+        </style>
+        [% END %]
         [% INCLUDE 'opac/parts/goog_analytics.tt2' %]
     </head>
-    <body>
+    <body[% IF want_dojo; ' class="tundra"'; END %]>
         [% content %] 
         [% INCLUDE 'opac/parts/footer.tt2' %]
         [% INCLUDE 'opac/parts/js.tt2' %]

@@ -254,6 +254,7 @@ sub load_common {
     $ctx->{search_ou} = $self->_get_search_lib();
 
     $self->staff_saved_searches_set_expansion_state if $ctx->{is_staff};
+    $self->load_eg_cache_hash;
 
     return Apache2::Const::OK;
 }

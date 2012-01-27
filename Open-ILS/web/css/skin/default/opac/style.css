@@ -1389,3 +1389,9 @@ table.bookbag-specific {
 .result-bookbag-description { font-size: 120%; font-style: italic; }
 .result-bookbag-item-note { font-style: italic; }
 .lowhits-bookbag-name { font-weight: bold; }
+.oils_AS { font-weight: bold; color: #c00; }
+.oils_AS_match_term { text-align: left; color: #000; }
+.oils_AS_match_field {
+    font-size: 75%; padding: 0.65em 0;
+    text-align: right; color: #666;
+}
