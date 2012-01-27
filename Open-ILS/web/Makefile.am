@@ -17,7 +17,6 @@ OILSWEB_INST = webcore-install offline-install
 
 reports_SCRIPTS = @top_srcdir@/Open-ILS/xul/staff_client/server/admin/adminlib.js
 OPACJS = $(OPENSRF_LIBS)/javascript/DojoSRF.js \
-	 $(OPENSRF_LIBS)/javascript/JSON_v0.js \
 	 $(OPENSRF_LIBS)/javascript/JSON_v1.js \
 	 $(OPENSRF_LIBS)/javascript/md5.js \
 	 $(OPENSRF_LIBS)/javascript/opensrf.js \
