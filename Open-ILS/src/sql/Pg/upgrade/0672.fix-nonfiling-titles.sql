@@ -1,5 +1,31 @@
+-- Evergreen DB patch 0672.fix-nonfiling-titles.sql
+--
+-- Titles that begin with non-filing articles using apostrophes
+-- (for example, "L'armée") get spaces injected between the article
+-- and the subsequent text, which then breaks searching for titles
+-- beginning with those articles.
+--
+-- This patch adds a nonfiling title element to MODS32 that can then
+-- be used to retrieve the title proper without affecting the spaces
+-- in the title. It's what we want, what we really really want, for
+-- title searches.
+--
+BEGIN;
+
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0672', :eg_version);
+
+-- Update the XPath definition before the titleNonfiling element exists;
+-- but are you really going to read through the whole XSL below before
+-- seeing this important bit?
+UPDATE config.metabib_field
+    SET xpath = $$//mods32:mods/mods32:titleNonfiling[mods32:title and not (@type)]$$,
+        format = 'mods32'
+    WHERE field_class = 'title' AND name = 'proper';
+
+UPDATE config.xml_transform SET xslt=$$<?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns="http://www.loc.gov/mods/v3" xmlns:marc="http://www.loc.gov/MARC21/slim" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="xlink marc" version="1.0">
-	<xsl:include href="MARC21slimUtils.xsl"/>
 	<xsl:output encoding="UTF-8" indent="yes" method="xml"/>
 <!--
 Revision 1.14 - Fixed template isValid and fields 010, 020, 022, 024, 028, and 037 to output additional identifier elements 
@@ -3040,4 +3066,180 @@ Added Log Comment
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-</xsl:stylesheet>
+	<xsl:template name="datafield">
+		<xsl:param name="tag"/>
+		<xsl:param name="ind1"><xsl:text> </xsl:text></xsl:param>
+		<xsl:param name="ind2"><xsl:text> </xsl:text></xsl:param>
+		<xsl:param name="subfields"/>
+		<xsl:element name="marc:datafield">
+			<xsl:attribute name="tag">
+				<xsl:value-of select="$tag"/>
+			</xsl:attribute>
+			<xsl:attribute name="ind1">
+				<xsl:value-of select="$ind1"/>
+			</xsl:attribute>
+			<xsl:attribute name="ind2">
+				<xsl:value-of select="$ind2"/>
+			</xsl:attribute>
+			<xsl:copy-of select="$subfields"/>
+		</xsl:element>
+	</xsl:template>
+
+	<xsl:template name="subfieldSelect">
+		<xsl:param name="codes"/>
+		<xsl:param name="delimeter"><xsl:text> </xsl:text></xsl:param>
+		<xsl:variable name="str">
+			<xsl:for-each select="marc:subfield">
+				<xsl:if test="contains($codes, @code)">
+					<xsl:value-of select="text()"/><xsl:value-of select="$delimeter"/>
+				</xsl:if>
+			</xsl:for-each>
+		</xsl:variable>
+		<xsl:value-of select="substring($str,1,string-length($str)-string-length($delimeter))"/>
+	</xsl:template>
+
+	<xsl:template name="buildSpaces">
+		<xsl:param name="spaces"/>
+		<xsl:param name="char"><xsl:text> </xsl:text></xsl:param>
+		<xsl:if test="$spaces>0">
+			<xsl:value-of select="$char"/>
+			<xsl:call-template name="buildSpaces">
+				<xsl:with-param name="spaces" select="$spaces - 1"/>
+				<xsl:with-param name="char" select="$char"/>
+			</xsl:call-template>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="chopPunctuation">
+		<xsl:param name="chopString"/>
+		<xsl:param name="punctuation"><xsl:text>.:,;/ </xsl:text></xsl:param>
+		<xsl:variable name="length" select="string-length($chopString)"/>
+		<xsl:choose>
+			<xsl:when test="$length=0"/>
+			<xsl:when test="contains($punctuation, substring($chopString,$length,1))">
+				<xsl:call-template name="chopPunctuation">
+					<xsl:with-param name="chopString" select="substring($chopString,1,$length - 1)"/>
+					<xsl:with-param name="punctuation" select="$punctuation"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:when test="not($chopString)"/>
+			<xsl:otherwise><xsl:value-of select="$chopString"/></xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<xsl:template name="chopPunctuationFront">
+		<xsl:param name="chopString"/>
+		<xsl:variable name="length" select="string-length($chopString)"/>
+		<xsl:choose>
+			<xsl:when test="$length=0"/>
+			<xsl:when test="contains('.:,;/[ ', substring($chopString,1,1))">
+				<xsl:call-template name="chopPunctuationFront">
+					<xsl:with-param name="chopString" select="substring($chopString,2,$length - 1)"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:when test="not($chopString)"/>
+			<xsl:otherwise><xsl:value-of select="$chopString"/></xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+</xsl:stylesheet>$$ WHERE name = 'mods32';
+
+-- Currently, the only difference from naco_normalize is that search_normalize
+-- turns apostrophes into spaces, while naco_normalize collapses them.
+CREATE OR REPLACE FUNCTION public.search_normalize( TEXT, TEXT ) RETURNS TEXT AS $func$
+
+    use strict;
+    use Unicode::Normalize;
+    use Encode;
+
+    my $str = decode_utf8(shift);
+    my $sf = shift;
+
+    # Apply NACO normalization to input string; based on
+    # http://www.loc.gov/catdir/pcc/naco/SCA_PccNormalization_Final_revised.pdf
+    #
+    # Note that unlike a strict reading of the NACO normalization rules,
+    # output is returned as lowercase instead of uppercase for compatibility
+    # with previous versions of the Evergreen naco_normalize routine.
+
+    # Convert to upper-case first; even though final output will be lowercase, doing this will
+    # ensure that the German eszett (ß) and certain ligatures (ﬀ, ﬁ, ﬄ, etc.) will be handled correctly.
+    # If there are any bugs in Perl's implementation of upcasing, they will be passed through here.
+    $str = uc $str;
+
+    # remove non-filing strings
+    $str =~ s/\x{0098}.*?\x{009C}//g;
+
+    $str = NFKD($str);
+
+    # additional substitutions - 3.6.
+    $str =~ s/\x{00C6}/AE/g;
+    $str =~ s/\x{00DE}/TH/g;
+    $str =~ s/\x{0152}/OE/g;
+    $str =~ tr/\x{0110}\x{00D0}\x{00D8}\x{0141}\x{2113}\x{02BB}\x{02BC}][/DDOLl/d;
+
+    # transformations based on Unicode category codes
+    $str =~ s/[\p{Cc}\p{Cf}\p{Co}\p{Cs}\p{Lm}\p{Mc}\p{Me}\p{Mn}]//g;
+
+	if ($sf && $sf =~ /^a/o) {
+		my $commapos = index($str, ',');
+		if ($commapos > -1) {
+			if ($commapos != length($str) - 1) {
+                $str =~ s/,/\x07/; # preserve first comma
+			}
+		}
+	}
+
+    # since we've stripped out the control characters, we can now
+    # use a few as placeholders temporarily
+    $str =~ tr/+&@\x{266D}\x{266F}#/\x01\x02\x03\x04\x05\x06/;
+    $str =~ s/[\p{Pc}\p{Pd}\p{Pe}\p{Pf}\p{Pi}\p{Po}\p{Ps}\p{Sk}\p{Sm}\p{So}\p{Zl}\p{Zp}\p{Zs}]/ /g;
+    $str =~ tr/\x01\x02\x03\x04\x05\x06\x07/+&@\x{266D}\x{266F}#,/;
+
+    # decimal digits
+    $str =~ tr/\x{0660}-\x{0669}\x{06F0}-\x{06F9}\x{07C0}-\x{07C9}\x{0966}-\x{096F}\x{09E6}-\x{09EF}\x{0A66}-\x{0A6F}\x{0AE6}-\x{0AEF}\x{0B66}-\x{0B6F}\x{0BE6}-\x{0BEF}\x{0C66}-\x{0C6F}\x{0CE6}-\x{0CEF}\x{0D66}-\x{0D6F}\x{0E50}-\x{0E59}\x{0ED0}-\x{0ED9}\x{0F20}-\x{0F29}\x{1040}-\x{1049}\x{1090}-\x{1099}\x{17E0}-\x{17E9}\x{1810}-\x{1819}\x{1946}-\x{194F}\x{19D0}-\x{19D9}\x{1A80}-\x{1A89}\x{1A90}-\x{1A99}\x{1B50}-\x{1B59}\x{1BB0}-\x{1BB9}\x{1C40}-\x{1C49}\x{1C50}-\x{1C59}\x{A620}-\x{A629}\x{A8D0}-\x{A8D9}\x{A900}-\x{A909}\x{A9D0}-\x{A9D9}\x{AA50}-\x{AA59}\x{ABF0}-\x{ABF9}\x{FF10}-\x{FF19}/0-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-9/;
+
+    # intentionally skipping step 8 of the NACO algorithm; if the string
+    # gets normalized away, that's fine.
+
+    # leading and trailing spaces
+    $str =~ s/\s+/ /g;
+    $str =~ s/^\s+//;
+    $str =~ s/\s+$//g;
+
+    return lc $str;
+$func$ LANGUAGE 'plperlu' STRICT IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION public.search_normalize_keep_comma( TEXT ) RETURNS TEXT AS $func$
+        SELECT public.search_normalize($1,'a');
+$func$ LANGUAGE SQL STRICT IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION public.search_normalize( TEXT ) RETURNS TEXT AS $func$
+	SELECT public.search_normalize($1,'');
+$func$ LANGUAGE 'sql' STRICT IMMUTABLE;
+
+INSERT INTO config.index_normalizer (name, description, func, param_count) VALUES (
+	'Search Normalize',
+	'Apply search normalization rules to the extracted text. A less extreme version of NACO normalization.',
+	'search_normalize',
+	0
+);
+
+UPDATE config.metabib_field_index_norm_map
+    SET norm = (
+        SELECT id FROM config.index_normalizer WHERE func = 'search_normalize'
+    )
+    WHERE norm = (
+        SELECT id FROM config.index_normalizer WHERE func = 'naco_normalize'
+    )
+;
+
+COMMIT;
+
+-- This could take a long time if you have a very non-English bib database
+-- Run it outside of a transaction to avoid lock escalation
+SELECT metabib.reingest_metabib_field_entries(record)
+    FROM metabib.full_rec
+    WHERE tag = '245'
+    AND subfield = 'a'
+    AND value LIKE '%''%'
+;

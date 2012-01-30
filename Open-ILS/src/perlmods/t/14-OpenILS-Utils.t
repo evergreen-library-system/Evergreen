@@ -1,6 +1,6 @@
 #!perl -T
 
-use Test::More tests => 20;
+use Test::More tests => 22;
 
 use_ok( 'OpenILS::Utils::Configure' );
 use_ok( 'OpenILS::Utils::Cronscript' );
@@ -37,3 +37,9 @@ is(@comp_holdings, 0, "Compressed holdings for an MFHD record that only has a ca
 
 my @decomp_holdings = $co_mfhd->get_decompressed_holdings($co_mfhd->field('853'));
 is(@decomp_holdings, 0, "Decompressed holdings for an MFHD record that only has a caption");
+
+my $apostring = OpenILS::Utils::Normalize::naco_normalize("it's time");
+is($apostring, "its time", "naco_normalize: strip apostrophes");
+
+my $apos = OpenILS::Utils::Normalize::search_normalize("it's time");
+is($apos, "it s time", "search_normalize: replace apostrophes with space");

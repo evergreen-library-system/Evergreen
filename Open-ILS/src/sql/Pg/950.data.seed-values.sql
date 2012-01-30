@@ -120,7 +120,7 @@ INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath )
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES 
     (5, 'title', 'uniform', oils_i18n_gettext(5, 'Uniform Title', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:titleInfo[mods32:title and (@type='uniform')]$$ );
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES 
-    (6, 'title', 'proper', oils_i18n_gettext(6, 'Title Proper', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:titleInfo[mods32:title and not (@type)]$$ );
+    (6, 'title', 'proper', oils_i18n_gettext(6, 'Title Proper', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:titleNonfiling[mods32:title and not (@type)]$$ );
 
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_xpath, facet_field ) VALUES 
     (7, 'author', 'corporate', oils_i18n_gettext(7, 'Corporate Author', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:name[@type='corporate' and mods32:role/mods32:roleTerm[text()='creator']]$$, $$//*[local-name()='namePart']$$, TRUE ); -- /* to fool vim */;
@@ -7318,6 +7318,12 @@ INSERT INTO config.index_normalizer (name, description, func, param_count) VALUE
     1
 );
 
+INSERT INTO config.index_normalizer (name, description, func, param_count) VALUES (
+	'Search Normalize',
+	'Apply search normalization rules to the extracted text. A less extreme version of NACO normalization.',
+	'search_normalize',
+	0
+);
 
 -- make use of the index normalizers
 
@@ -7326,7 +7332,7 @@ INSERT INTO config.metabib_field_index_norm_map (field,norm)
             i.id
       FROM  config.metabib_field m,
         config.index_normalizer i
-      WHERE i.func IN ('naco_normalize','split_date_range')
+      WHERE i.func IN ('search_normalize','split_date_range')
             AND m.id NOT IN (18, 19);
 
 INSERT INTO config.metabib_field_index_norm_map (field,norm,pos)
