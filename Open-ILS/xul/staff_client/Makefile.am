@@ -290,7 +290,7 @@ linux-xulrunner: client_app
 # Build a windows installer.
 
 win-client: nsis_check win-xulrunner
-	@if [ "${NSIS_AUTOUPDATE}${NSIS_PERMACHINE}" -a ! -d AccessControl ]; then echo 'Fetching AccessControl Plugin'; wget ${NSIS_ACCESSCONTROL} -O AccessControl.zip; unzip AccessControl.zip; fi
+	@if [ "${NSIS_AUTOUPDATE}${NSIS_PERMACHINE}" -a ! -d AccessControl ]; then echo 'Fetching AccessControl Plugin'; wget ${NSIS_ACCESSCONTROL} -O AccessControl.zip; unzip AccessControl.zip $$(unzip -t AccessControl.zip | grep 'AccessControl/Contrib/' > /dev/null || echo "-dAccessControl"); fi
 	@echo 'Building installer'
 	@makensis -V2 -DPRODUCT_VERSION="${STAFF_CLIENT_VERSION}" ${NSIS_WICON} ${NSIS_AUTOUPDATE} ${NSIS_DEV} ${NSIS_PERMACHINE} ${NSIS_EXTRAS} ${NSIS_EXTRAOPTS} windowssetup.nsi
 	@echo 'Done'
