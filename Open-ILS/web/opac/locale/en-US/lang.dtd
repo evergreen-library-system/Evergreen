@@ -3658,7 +3658,7 @@
 <!ENTITY staff.client.portal.helpdesk "Get Help with Evergreen">
 <!ENTITY staff.client.portal.reports "Reports">
 <!ENTITY staff.client.portal.receipts "Edit Receipt Templates">
-<!ENTITY staff.client.portal.copyright "Copyright &copy; 2006-2011 Georgia Public Library Service, and others">
+<!ENTITY staff.client.portal.copyright "Copyright &copy; 2006-2012 Georgia Public Library Service, and others">
 <!ENTITY staff.client.portal.poweredby "Powered by">
 <!ENTITY staff.client.portal.toggle_tpac "Toggle Template Toolkit OPAC Use">
 <!ENTITY staff.client.portal.toggle_tpac.message_on "The use of the Template Toolkit OPAC has been enabled. You may need to restart the staff client for this to take effect.">
