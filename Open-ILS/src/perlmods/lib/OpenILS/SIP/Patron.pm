@@ -639,13 +639,14 @@ sub unavail_holds {
         }
     });
  
-     my @holds_sip_output = map {
+     my @holds_sip_output;
+     @holds_sip_output = map {
         OpenILS::SIP::clean_text($self->__hold_to_title($_))
      } @{
         $self->{editor}->search_action_hold_request(
             {id => [map {$_->{id}} @$ids]}
         )
-     };
+     } if (@$ids > 0);
  
      return (defined $start and defined $end) ?
          [ @holds_sip_output[($start-1)..($end-1)] ] :
