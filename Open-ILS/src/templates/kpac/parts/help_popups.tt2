@@ -1,0 +1,26 @@
+<div class="popup_wrapper">
+    <div class="popup_wrapper_inner" id="[% popup_id %]">
+        <table cellpadding="0" cellspacing="0" border="0">
+            <tr>
+                <td class="popup_tl"><div class="clear">&nbsp;</div></td>
+                <td class="popup_tm"><div class="clear">&nbsp;</div></td>
+                <td class="popup_tr"><div class="clear">&nbsp;</div></td>
+            </tr>
+            <tr>
+                <td class="popup_lm"><div class="clear">&nbsp;</div></td>
+                <td class="popup_mid"><div class="popup_content">[% content %]</td>
+                <td class="popup_rm"><div class="clear">&nbsp;</div></td>
+            </tr>
+            <tr>
+                <td class="popup_bl"><div class="clear">&nbsp;</div></td>
+                <td class="popup_bm"><div class="clear">&nbsp;</div></td>
+                <td class="popup_br"><div class="clear">&nbsp;</div></td>
+            </tr>
+            <tr>
+                <td colspan="3" align="center" valign="top">
+                    <img class="popup_arrow_bm" src="[% ctx.media_prefix %]/images/kpac/popup_arrow_bm.png" />
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

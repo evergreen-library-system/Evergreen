@@ -31,9 +31,9 @@
             <cell name="Clarinet" img="category.png" type="link">http://en.wikipedia.org/wiki/Clarinet</cell>
         </page>
         <page id="11" columns="3" name="Current Events" img="category.png">
-            <cell name="Entertainment"  img="category.png" type="search">su:entertainment sort('pubdate')#descending</cell>
-            <cell name="Politics"       img="category.png" type="search">su:politics sort('pubdate')#descending</cell>
-            <cell name="Economy"        img="category.png" type="search">su:economy sort('pubdate')#descending</cell>
+            <cell name="Entertainment"  img="category.png" type="search">su:entertainment sort(pubdate)#descending</cell>
+            <cell name="Politics"       img="category.png" type="search">su:politics sort(pubdate)#descending</cell>
+            <cell name="Economy"        img="category.png" type="search">su:economy sort(pubdate)#descending</cell>
         </page>
         <page id="12" columns="3" name="Programming" img="category.png">
         </page>

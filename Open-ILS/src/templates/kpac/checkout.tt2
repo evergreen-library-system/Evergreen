@@ -11,113 +11,104 @@
     [% INCLUDE 'kpac/parts/record_row.tt2' rec_id=ctx.bre_id%]
 </div>
           
-          <div class="checkout_options">
-            <table cellpadding="0" cellspacing="0" border="0"><tr><td valign="top" class="left_brain_cell">
-              <div class="left_brain">
+<div class="checkout_options">
+    <table cellpadding="0" cellspacing="0" border="0">
+        <tr>
+            <td valign="top" class="left_brain_cell">
+                <div class="left_brain">
 
- <!-- ************************************* all help popups should go here **************************************** -->
-       <div class="popup_wrapper">
-         <div class="popup_wrapper_inner" id="card_help">
-           <table cellpadding="0" cellspacing="0" border="0">
-             <tr>
-               <td class="popup_tl"><div class="clear">&nbsp;</div></td>
-               <td class="popup_tm"><div class="clear">&nbsp;</div></td>
-               <td class="popup_tr"><div class="clear">&nbsp;</div></td>
-             </tr>
-             <tr>
-               <td class="popup_lm"><div class="clear">&nbsp;</div></td>
-               <td class="popup_mid"><div class="popup_content"><img src="[% ctx.media_prefix %]/images/kpac/library_card.png" alt="library card" /></div></td>
-               <td class="popup_rm"><div class="clear">&nbsp;</div></td>
-             </tr>
-             <tr>
-               <td class="popup_bl"><div class="clear">&nbsp;</div></td>
-               <td class="popup_bm"><div class="clear">&nbsp;</div></td>
-               <td class="popup_br"><div class="clear">&nbsp;</div></td>
-             </tr>
-             <tr><td colspan="3" align="center" valign="top"><img class="popup_arrow_bm" src="[% ctx.media_prefix %]/images/kpac/popup_arrow_bm.png" /></td></tr>
-           </table>
-         </div>
-       </div>
-       
-       <div class="popup_wrapper">
-         <div class="popup_wrapper_inner" id="test_popup">
-           <table cellpadding="0" cellspacing="0" border="0">
-             <tr>
-               <td class="popup_tl"><div class="clear">&nbsp;</div></td>
-               <td class="popup_tm"><div class="clear">&nbsp;</div></td>
-               <td class="popup_tr"><div class="clear">&nbsp;</div></td>
-             </tr>
-             <tr>
-               <td class="popup_lm"><div class="clear">&nbsp;</div></td>
-               <td class="popup_mid"><div class="popup_content"><p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam <a href="javascript:alert('hi');">nonummy</a> nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit</p></div></td>
-               <td class="popup_rm"><div class="clear">&nbsp;</div></td>
-             </tr>
-             <tr>
-               <td class="popup_bl"><div class="clear">&nbsp;</div></td>
-               <td class="popup_bm"><div class="clear">&nbsp;</div></td>
-               <td class="popup_br"><div class="clear">&nbsp;</div></td>
-             </tr>
-             <tr><td colspan="3" align="center" valign="top"><img class="popup_arrow_bm" src="[% ctx.media_prefix %]/images/kpac/popup_arrow_bm.png" /></td></tr>
-           </table>
-         </div>
-       </div>
-<!-- ********************************************** end popups *************************************************** -->
-  
-              
-              
-              
-                <div class="top_side">
-                  <h2>get it!</h2>
-                  <p>If you would like to request this item, please enter the following information and click<br />Submit below:</p>
+                    [% WRAPPER 'kpac/parts/help_popups.tt2' popup_id='card_help' %]
+                        <img src="[% ctx.media_prefix %]/images/kpac/library_card.png" alt="[% l('library card') %]" /></div></td>
+                    [% END %]
+                    [% WRAPPER 'kpac/parts/help_popups.tt2' popup_id='password_help' %]
+                        <p>[% l('Enter your password') %]</p>
+                    [% END %]
+
+                    <div class="top_side">
+                        <h2>get it!</h2>
+                        <p>[% |l %]If you would like to request this item, please enter the following information and click<br />Submit below:[% END %]</p>
+                    </div>
+                    <div class="checkout_box">
+                        <div class="box1_top">&nbsp;</div>
+                        <div class="box_inside">
+
+                            [% IF !ctx.user %]
+                                [% seed = l(' Enter Numbers... ') %]
+                                <p>[% l('Library Card Number without spaces:') %]</p>
+                                <div class="input_box">
+                                    <input type="text" class="text_box" style="color:#aaa;" value="[% seed %]" 
+                                        onfocus="if(this.value=='[% seed %]'){this.value='';this.style.color='#424242';}" 
+                                        onblur="if(this.value==''){this.value='[% seed %]'; this.style.color='#aaa';}" />
+                                </div>
+                                <a class="help_btn" href="javascript:;" 
+                                    onclick="helpPopup('card_help', this, event);"><img 
+                                    src="[% ctx.media_prefix %]/images/kpac/question_mark.png" alt="pin number help" /></a>
+                                <div class="clear">&nbsp;</div>
+                                <div class="hr">&nbsp;</div>
+
+                                <p>[% l('Password') %]</p>
+                                <div class="input_box">
+                                    <input type="password" class="text_box" style="color:#aaa;" value="[% seed %]" 
+                                        onfocus="if(this.value=='[% seed %]'){this.value='';this.style.color='#424242';}" 
+                                        onblur="if(this.value==''){this.value='[% seed %]'; this.style.color='#aaa';}" />
+
+                                <a class="help_btn" href="javascript:;" 
+                                    onclick="helpPopup('password_help', this, event);"><img 
+                                    src="[% ctx.media_prefix %]/images/kpac/question_mark.png" alt="[% l('password help') %]" /></a>
+
+                                <div class="clear">&nbsp;</div>
+                                <div class="hr">&nbsp;</div>
+                            [% END %]
+
+                            <p>[% l('Choose a Pickup Library:') %]</p>
+                            <div class="pickup_lib">
+                                [%  def_lib = ctx.default_pickup_lib || ctx.physical_loc;
+                                    PROCESS "opac/parts/org_selector.tt2";
+                                    PROCESS build_org_selector name='pickup_lib' 
+                                    value=def_lib id='pickup_lib' can_have_vols_only=1 %]
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit_btn">
+                        <a href="javascript:;"><img src="[% ctx.media_prefix %]/images/kpac/review_submit_btn.png" alt="submit" /></a>
+                    </div>
                 </div>
-                <div class="checkout_box">
-                  <div class="box1_top">&nbsp;</div>
-                  <div class="box_inside">
-                    <p>Library Card Number without spaces:</p>
-                    <div class="input_box"><input type="text" class="text_box" style="color:#aaa;" value=" Enter Numbers... " onfocus="if(this.value==' Enter Numbers... '){this.value='';this.style.color='#424242';}" onblur="if(this.value==''){this.value=' Enter Numbers... '; this.style.color='#aaa';}" /></div>
-                    <a class="help_btn" href="javascript:;" onclick="helpPopup('card_help', this, event);"><img src="[% ctx.media_prefix %]/images/kpac/question_mark.png" alt="pin number help" /></a>
-                    <div class="clear">&nbsp;</div>
-                    <div class="hr">&nbsp;</div>
-                    <p>Pin Number:</p>
-                    <div class="input_box"><input type="password" class="text_box" style="color:#aaa;" value=" Enter Numbers... " onfocus="if(this.value==' Enter Numbers... '){this.value='';this.style.color='#424242';}" onblur="if(this.value==''){this.value=' Enter Numbers... '; this.style.color='#aaa';}" /></div>
-                    <a class="help_btn" href="javascript:;" onclick="helpPopup('test_popup', this, event);"><img src="[% ctx.media_prefix %]/images/kpac/question_mark.png" alt="pin number help" /></a>
-                    <div class="clear">&nbsp;</div>
-                    <div class="hr">&nbsp;</div>
-                    <p>Choose a Pickup Library:</p>
-                    <div class="pickup_lib"><select name="library"><option>Fairwood</option></select></div>
-                  </div>
+            </td>
+
+            <!-- TODO -->
+            <td valign="top">
+                <div class="right_brain">
+                    <div class="top_side">
+                        <h2>save it!</h2>
+                        <p>If you would like to save this item to a list to be requested later, please choose a location and click<br />Submit below.</p>
+                    </div>
+                    <div class="checkout_box">
+                        <div class="box1_top">&nbsp;</div>
+                        <div class="box_inside">
+                            <p>Choose a Pickup Library:</p>
+                            <div class="pickup_lib"><select name="library"><option>Fairwood</option></select></div>
+                            <div class="hr">&nbsp;</div>
+                            <div><a href="javascript:;">View all KCLS libraries</a></div>
+                        </div>
+                    </div>
+                    <div class="submit_btn">
+                        <a href="javascript:;"><img src="[% ctx.media_prefix %]/images/kpac/review_submit_btn.png" alt="submit" /></a>
+                    </div>
                 </div>
-                <div class="submit_btn">
-                  <a href="javascript:;"><img src="[% ctx.media_prefix %]/images/kpac/review_submit_btn.png" alt="submit" /></a>
-                </div>
-              </div>
-            </td><td valign="top">
-              <div class="right_brain">
-                <div class="top_side">
-                  <h2>save it!</h2>
-                  <p>If you would like to save this item to a list to be requested later, please choose a location and click<br />Submit below.</p>
-                </div>
-                <div class="checkout_box">
-                  <div class="box1_top">&nbsp;</div>
-                  <div class="box_inside">
-                    <p>Choose a Pickup Library:</p>
-                    <div class="pickup_lib"><select name="library"><option>Fairwood</option></select></div>
-                    <div class="hr">&nbsp;</div>
-                    <div><a href="javascript:;">View all KCLS libraries</a></div>
-                  </div>
-                </div>
-                <div class="submit_btn">
-                  <a href="javascript:;"><img src="[% ctx.media_prefix %]/images/kpac/review_submit_btn.png" alt="submit" /></a>
-                </div>
-              </div>
-            </td></tr></table>
-          </div>
-          
-          <div class="sub_navigation2 checkout">
-            <table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
-              <td><a href="javascript:;"><img src="[% ctx.media_prefix %]/images/kpac/cancel_back_btn.png" /></a></td>
-              <td width="100%" class="nav_mid_bg">&nbsp;</td>
-            </tr></table>
-          </div>
-             
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="sub_navigation2 checkout">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tr>
+            [%  # in the absence of a sane referer, return to the detail page
+                url = ctx.kpac_root _ (ctx.referer.match('search_results') ? '/search_results' : '/detailed/' _ ctx.bre_id) %]
+            <td><a href="[% mkurl(url) %]"><img src="[% ctx.media_prefix %]/images/kpac/cancel_back_btn.png" /></a></td>
+            <td width="100%" class="nav_mid_bg">&nbsp;</td>
+        </tr>
+    </table>
+</div>
+         
 [% END %]

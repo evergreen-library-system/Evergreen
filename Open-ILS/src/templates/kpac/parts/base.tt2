@@ -14,6 +14,6 @@
             <div class="main_wrapper"> [% content %] </div>
             [% INCLUDE 'kpac/parts/footer.tt2' %]
         </div>
-        <script type="text/javascript" src="js/functions.js"></script>
+        <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/kpac/functions.js"></script>
     </body>
 </html>
