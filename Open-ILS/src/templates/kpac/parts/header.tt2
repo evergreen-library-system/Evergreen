@@ -14,9 +14,15 @@
     </div>
     <div class="header_menu">
         <!-- menu rendered in reverse order -->
-        <a href="javascript:;">Login</a>
-        <a href="javascript:;">Get a Library Card</a>
-        <a href="javascript:;">Help</a>
+        [% IF ctx.user %]
+            [% redir = CGI.url('-base' => 1) _ ctx.kpac_root _ '/index' %]
+            <a href="[% mkurl(ctx.logout_page, 
+                {redirect_to => redir.replace('^https:', 'http:')}, 1) %]">[% l('Logout') %]</a>
+        [% ELSE %]
+            <a href="[% mkurl(ctx.opac_root _ '/login').replace('^http:', 'https:') %]">[% l('Login') %]</a>
+        [% END %]
+        <a href="javascript:;">[% l('Get a Library Card') %]</a>
+        <a href="javascript:;">[% l('Help') %]</a>
     </div>
     <div class="clear">&nbsp;</div>
 </div>

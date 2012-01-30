@@ -436,7 +436,7 @@ sub load_login {
 # -----------------------------------------------------------------------------
 sub load_logout {
     my $self = shift;
-    my $redirect_to = shift;
+    my $redirect_to = shift || $self->cgi->param('redirect_to');
 
     # If the user was adding anyting to an anonymous cache 
     # while logged in, go ahead and clear it out.

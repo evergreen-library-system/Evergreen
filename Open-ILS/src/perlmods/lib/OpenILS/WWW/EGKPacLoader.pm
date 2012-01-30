@@ -27,8 +27,6 @@ sub load {
 
     return $self->load_simple("index") if $path =~ m|kpac/index|;
     return $self->load_simple("category") if $path =~ m|kpac/category|;
-    return $self->load_simple("checkout") if $path =~ m|kpac/checkout|;
-    return $self->load_simple("checkout_results") if $path =~ m|kpac/checkout_results|;
 
     # note: sets page=rresult
     return $self->load_rresults if $path =~ m|kpac/search_results|; # inherited from tpac
@@ -40,21 +38,15 @@ sub load {
     #  Everything below here requires SSL
     # ----------------------------------------------------------------
     return $self->redirect_ssl unless $self->cgi->https;
-    return $self->load_logout if $path =~ m|kpac/logout|;
 
-    if($path =~ m|kpac/login|) {
-        return $self->load_login unless $self->editor->requestor; # already logged in?
-
-        # This will be less confusing to users than to be shown a login form
-        # when they're already logged in.
-        return $self->generic_redirect(
-            sprintf(
-                "https://%s%s/kpac/index",
-                $self->apache->hostname, $self->ctx->{base_path}
-            )
-        );
+    if ($path =~ m|kpac/checkout|) {
+        my $stat = $self->load_record(no_search => 1);
+        $self->ctx->{page} = 'checkout'; # repair the page
+        return $stat;
     }
 
+    # XXX auth vs. no-auth, pending list answers
+    return $self->load_simple("checkout_results") if $path =~ m|kpac/checkout_results|;
 
     # ----------------------------------------------------------------
     #  Everything below here requires authentication

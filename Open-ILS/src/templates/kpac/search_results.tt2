@@ -16,42 +16,7 @@
         attrs = {marc_xml => rec.marc_xml};
         PROCESS get_marc_attrs args=attrs %]
 
-    <div class="search_results" id="search_results_template">
-        <div class="item_detail_image">
-            [% ident = attrs.isbn_clean || attrs.upc; IF ident; %]
-                <a href="[% mkurl('detailed/' _ rec.id) %]"><img alt="[% l('Image of item') %]"
-                    width="167"
-                    src='[% ctx.media_prefix %]/opac/extras/ac/jacket/medium/[% ident | uri %]' /></a><br />
-            [% ELSE %]
-                <a href="[% mkurl('detailed/' _ rec.id) %]"><img alt="[% l('Image of item') %]"
-                    src="[% ctx.media_prefix %]/images/kpac/item_image.jpg" /></a>
-            [% END %]
-        </div>
-        <div class="item_detail_info">
-            <div class="item_detail_name"><a href="[% mkurl('detailed/' _ rec.id) %]">[% attrs.title %]</a></div>
-            <div class="item_detail_author">[% l('by [_1]', attrs.author) %]</div>
-            <div class="item_detail_callnumber">[% attrs.holdings.0.label | html %]</div>
-            <div class="item_detail_extra_info">
-                [% l('[_1], [_2]', attrs.publisher, attrs.pubdate) | html %] <!-- TODO fix commas, etc. -->
-                [% IF attrs.phys_desc %]<br/>[% attrs.phys_desc | html; END %]
-            </div>
-            <div class="item_detail_actions">
-                <div class="button"><a href="[% mkurl(ctx.kpac_root _ '/detailed/' _ rec.id) %]"><img 
-                    src="[% ctx.media_prefix %]/images/kpac/more_info_btn.png" alt="more info" /></a></div>
-                <div class="button"><a href="javascript:;"><img 
-                    src="[% ctx.media_prefix %]/images/kpac/get_it_btn_sm.png" alt="get it" /></a></div>
-                <div class="clear">&nbsp;</div>
-            </div>
-        </div>
-        <div class="item_icon_wrapper">
-            <div class="item_icon">
-                &nbsp;<img width="35" alt="[% attrs.format_label %]" src="[% attrs.format_icon %]" />&nbsp; 
-                <!-- put a single &nbsp; around each side of the image - for vertical centering -->
-            </div>
-            <div class="item_icon_type_text">[% attrs.format_label %]</div>
-        </div>
-        <div class="clear">&nbsp;</div>
-    </div>
+    [% INCLUDE 'kpac/parts/record_row.tt2' show_actions=1 rec_id=rec.id%]
 
 [% END %]
 </div>

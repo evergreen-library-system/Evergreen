@@ -19,7 +19,8 @@
                 qtype = qtype_blob.keys.0 %]
                 <td class="st_radio_btn">
                     <input type="radio" name="qtype" value="[% qtype %]" id="st_[% qtype %]"
-                        [% IF CGI.param('qtype') == qtype %]checked="checked"[% END %]/>
+                        [% IF (CGI.param('qtype') == qtype) OR 
+                            (!CGI.param('qtype') AND qtype == 'keyword') %]checked="checked"[% END %]/>
                 </td>
                 <td class="st_label"><label for="st_[% qtype %]">[% qtype_blob.$qtype | html %]</label></td>
                 [% IF !loop.last %]

@@ -7,7 +7,6 @@
     ctx.page_title = attrs.title | html 
 %]
 
-  <!-- did somebody order the div salad? -->
 <div class="item_detail_header">
 
     <div class="item_detail_image">
@@ -49,7 +48,7 @@
     </div>
 
     <div class="item_detail_header_buttons">
-        <div class="item_detail_getit_btn"><a href="[% mkurl(ctx.kpac_root _ '/checkout') %]"><img 
+        <div class="item_detail_getit_btn"><a href="[% mkurl(ctx.kpac_root _ '/checkout/' _ ctx.bre_id) %]"><img 
             alt="[% l('Get it') | html %]" src="[% ctx.media_prefix %]/images/kpac/get_it_btn.png" /></a>
         </div>
         <div class="item_detail_goback_btn">

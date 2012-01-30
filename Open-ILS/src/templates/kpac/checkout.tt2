@@ -1,24 +1,15 @@
-[%  PROCESS "opac/parts/header.tt2";
-    PROCESS "kpac/parts/grid.tt2";
+[%  
+    PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2"; # MARC 
     WRAPPER "kpac/parts/subpage.tt2";
-    ctx.page_title = l('Get it') %]
+    attrs = {marc_xml => ctx.marc_xml};
+    PROCESS get_marc_attrs args=attrs;
+    ctx.page_title = attrs.title | html 
+%]
 
-          <div id="search_results_parent">
-            <div class="search_results checkout_item_pad">
-              <div class="item_detail_image"><a href="javascript:;"><img alt="item image" src="[% ctx.media_prefix %]/images/kpac/item_image.jpg" /></a></div>
-              <div class="item_detail_info">
-                <div class="item_detail_name">Book Name</div>
-                <div class="item_detail_author">by Author Name</div>
-                <div class="item_detail_callnumber">Call Number</div>
-                <div class="item_detail_extra_info">Publisher, Year, Size</div>
-              </div>
-              <div class="item_icon_wrapper">
-                <div class="item_icon">&nbsp;<img alt="book" src="[% ctx.media_prefix %]/images/kpac/icon_book.png" />&nbsp; <!-- put a single &nbsp; around each side of the image - for vertical centering --></div>
-                <div class="item_icon_type_text">Book</div>
-              </div>
-              <div class="clear">&nbsp;</div>
-            </div>
-          </div>
+<div id="search_results_parent">
+    [% INCLUDE 'kpac/parts/record_row.tt2' rec_id=ctx.bre_id%]
+</div>
           
           <div class="checkout_options">
             <table cellpadding="0" cellspacing="0" border="0"><tr><td valign="top" class="left_brain_cell">
