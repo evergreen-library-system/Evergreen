@@ -3445,7 +3445,8 @@ sub clear_shelf_process {
         # refetch the holds to pick up the caclulated cancel_time, 
         # which may be needed by Action/Trigger
         $e->xact_begin;
-        my $updated_holds = $e->search_action_hold_request({id => \@canceled_holds}, {substream => 1});
+        my $updated_holds = [];
+        $updated_holds = $e->search_action_hold_request({id => \@canceled_holds}, {substream => 1}) if (@canceled_holds > 0);
         $e->rollback;
 
         $U->create_events_for_hook(
