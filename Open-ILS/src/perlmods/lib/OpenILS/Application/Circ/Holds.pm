@@ -1956,6 +1956,7 @@ __PACKAGE__->register_method(
 		Returns a list of un-fulfilled holds (on the Holds Shelf) for a given title id
 		@param authtoken The login session key
 		@param org The org id of the location in question
+		@param match_copy A specific copy to limit to
 	/
 );
 
@@ -1968,6 +1969,7 @@ __PACKAGE__->register_method(
 		Returns list ids of un-fulfilled holds (on the Holds Shelf) for a given title id
 		@param authtoken The login session key
 		@param org The org id of the location in question
+		@param match_copy A specific copy to limit to
 	/
 );
 
@@ -1980,18 +1982,22 @@ __PACKAGE__->register_method(
 		Returns list ids of shelf-expired un-fulfilled holds for a given title id
 		@param authtoken The login session key
 		@param org The org id of the location in question
+		@param match_copy A specific copy to limit to
 	/
 );
 
 
 sub fetch_captured_holds {
-	my( $self, $conn, $auth, $org ) = @_;
+	my( $self, $conn, $auth, $org, $match_copy ) = @_;
 
 	my $e = new_editor(authtoken => $auth);
 	return $e->die_event unless $e->checkauth;
 	return $e->die_event unless $e->allowed('VIEW_HOLD'); # XXX rely on editor perm
 
 	$org ||= $e->requestor->ws_ou;
+
+	my $current_copy = { '!=' => undef };
+	$current_copy = { '=' => $match_copy } if $match_copy;
 
     my $query = { 
         select => { alhr => ['id'] },
@@ -2007,7 +2013,7 @@ sub fetch_captured_holds {
             '+acp' => { status => OILS_COPY_STATUS_ON_HOLDS_SHELF },
             '+alhr' => {
                 capture_time     => { "!=" => undef },
-                current_copy     => { "!=" => undef },
+                current_copy     => $current_copy,
                 fulfillment_time => undef,
                 current_shelf_lib => $org
             }
@@ -3352,9 +3358,6 @@ __PACKAGE__->register_method(
 sub clear_shelf_process {
 	my($self, $client, $auth, $org_id, $match_copy) = @_;
 
-    my $current_copy = { '!=' => undef };
-    $current_copy = { '=' => $match_copy } if $match_copy;
-
 	my $e = new_editor(authtoken=>$auth, xact => 1);
 	$e->checkauth or return $e->die_event;
 	my $cache = OpenSRF::Utils::Cache->new('global');
@@ -3366,7 +3369,7 @@ sub clear_shelf_process {
 
     my @hold_ids = $self->method_lookup(
         "open-ils.circ.captured_holds.id_list.expired_on_shelf.retrieve"
-    )->run($auth, $org_id);
+    )->run($auth, $org_id, $match_copy);
 
     my @holds;
     my @canceled_holds; # newly canceled holds
