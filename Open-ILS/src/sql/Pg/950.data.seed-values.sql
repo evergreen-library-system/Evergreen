@@ -4412,6 +4412,33 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'bool', null)
 
+,( 'ui.patron.edit.au.prefix.require', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.prefix.require',
+        'Require prefix field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.prefix.require',
+        'The prefix field will be required on the patron registration screen.'
+        'coust', 'description'),
+    'bool', null)
+	
+,( 'ui.patron.edit.au.prefix.show', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.prefix.show',
+        'Show prefix field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.prefix.show',
+        'The prefix field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.'
+        'coust', 'description'),
+    'bool', null)
+
+,( 'ui.patron.edit.au.prefix.suggest', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.prefix.suggest',
+        'Suggest prefix field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.prefix.suggest',
+        'The prefix field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.'
+        'coust', 'description'),
+    'bool', null)
+
 ,( 'ui.patron.edit.au.second_given_name.show', 'gui',
     oils_i18n_gettext('ui.patron.edit.au.second_given_name.show',
         'Show second_given_name field on patron registration',
