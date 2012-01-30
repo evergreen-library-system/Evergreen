@@ -1155,30 +1155,33 @@ sub new_hold_copy_targeter {
 
 			# find all the potential copies
 			if ($hold->hold_type eq 'M') {
-				for my $r ( map
-						{$_->record}
-						metabib::record_descriptor
-							->search(
-								record => [
-									map {
-										isTrue($_->deleted) ?  () : ($_->id)
-									} metabib::metarecord->retrieve($hold->target)->source_records
-								],
-								( $types   ? (item_type => [split '', $types])   : () ),
-								( $formats ? (item_form => [split '', $formats]) : () ),
-								( $lang	   ? (item_lang => $lang)				 : () ),
-							)
-				) {
-					my ($rtree) = $self
-						->method_lookup( 'open-ils.storage.biblio.record_entry.ranged_tree')
-						->run( $r->id, $hold->selection_ou, $hold->selection_depth );
+				my $records = [
+					map {
+						isTrue($_->deleted) ?  () : ($_->id)
+					} metabib::metarecord->retrieve($hold->target)->source_records
+				];
+                if(@$records > 0) {
+					for my $r ( map
+							{$_->record}
+							metabib::record_descriptor
+								->search(
+									record => $records,
+									( $types   ? (item_type => [split '', $types])   : () ),
+									( $formats ? (item_form => [split '', $formats]) : () ),
+									( $lang	   ? (item_lang => $lang)				 : () ),
+								)
+					) {
+						my ($rtree) = $self
+							->method_lookup( 'open-ils.storage.biblio.record_entry.ranged_tree')
+							->run( $r->id, $hold->selection_ou, $hold->selection_depth );
 
-					for my $cn ( @{ $rtree->call_numbers } ) {
-						push @$all_copies,
-							asset::copy->search_where(
-								{ id => [map {$_->id} @{ $cn->copies }],
-								  deleted => 'f' }
-							) if ($cn && @{ $cn->copies });
+						for my $cn ( @{ $rtree->call_numbers } ) {
+							push @$all_copies,
+								asset::copy->search_where(
+									{ id => [map {$_->id} @{ $cn->copies }],
+									  deleted => 'f' }
+								) if ($cn && @{ $cn->copies });
+						}
 					}
 				}
 			} elsif ($hold->hold_type eq 'T') {
