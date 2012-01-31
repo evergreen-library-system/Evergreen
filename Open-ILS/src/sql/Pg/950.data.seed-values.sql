@@ -4196,6 +4196,15 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'bool', null)
 
+,( 'ui.patron.edit.ac.barcode.regex', 'gui',
+    oils_i18n_gettext('ui.patron.edit.ac.barcode.regex',
+        'Regex for barcodes on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.ac.barcode.regex',
+        'The Regular Expression for validation on barcodes in patron registration.',
+        'coust', 'description'),
+    'string', null)
+
 ,( 'ui.patron.edit.au.day_phone.example', 'gui',
     oils_i18n_gettext('ui.patron.edit.au.day_phone.example',
         'Example for day_phone field on patron registration',

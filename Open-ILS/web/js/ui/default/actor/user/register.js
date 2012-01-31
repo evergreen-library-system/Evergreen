@@ -132,6 +132,7 @@ function load() {
         'ui.patron.edit.au.prefix.require',
         'ui.patron.edit.au.prefix.show',
         'ui.patron.edit.au.prefix.suggest',
+        'ui.patron.edit.ac.barcode.regex',
         'ui.patron.edit.au.second_given_name.show',
         'ui.patron.edit.au.second_given_name.suggest',
         'ui.patron.edit.au.suffix.show',
@@ -1239,6 +1240,24 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
 
     if(fmcls == 'ac') {
         if(fmfield == 'barcode') {
+            widget.widget.isValid = function() {
+                if(this.attr('disabled') || this.attr('readOnly')) {
+                    return true;
+                }
+                if(orgSettings['ui.patron.edit.ac.barcode.regex']) { // This serves as a master "on" for these checks
+                    // No spaces
+                    if(this.attr("value").match(/\s/)) {
+                        return false;
+                    }
+                    var test_regexp = new RegExp(orgSettings['ui.patron.edit.ac.barcode.regex']);
+                    if(test_regexp.test(this.attr("value"))) {
+                        return true;
+                    }
+                    return false;
+                }
+
+                return true;
+            }
             dojo.connect(widget.widget, 'onChange',
                 function() {
                     var barcode = this.attr('value');
