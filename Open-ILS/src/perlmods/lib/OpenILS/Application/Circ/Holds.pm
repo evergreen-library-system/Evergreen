@@ -935,7 +935,7 @@ sub update_hold_impl {
     # --------------------------------------------------------------
     if ($U->is_true($hold->frozen) and not $U->is_true($orig_hold->frozen)) {
         $hold_status = _hold_status($e, $hold);
-        if ($hold_status > 2) { # hold is captured
+        if ($hold_status > 2 && $hold_status != 7) { # hold is captured
             $logger->info("bypassing hold freeze on captured hold");
             return OpenILS::Event->new('HOLD_SUSPEND_AFTER_CAPTURE');
         }
@@ -1177,7 +1177,7 @@ sub _hold_status {
     if ($hold->cancel_time) {
         return 6;
     }
-    if ($U->is_true($hold->frozen)) {
+    if ($U->is_true($hold->frozen) && !$hold->capture_time) {
         return 7;
     }
     if ($hold->current_shelf_lib and $hold->current_shelf_lib ne $hold->pickup_lib) {
