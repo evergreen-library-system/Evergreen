@@ -1354,7 +1354,26 @@ function batchUpload() {
 
 
 function vlFleshQueueSelect(selector, type) {
-    var data = (type == 'bib') ? vbq.toStoreData(allUserBibQueues) : vaq.toStoreData(allUserAuthQueues);
+    var data;
+    if (type == 'bib') {
+        var bibList = allUserBibQueues.filter(
+            function(q) {
+                return (q.queue_type() == 'bib');
+            }
+        );
+        data = vbq.toStoreData(bibList);
+    } else if (type == 'bib-acq') {
+        // ACQ queues are a special type of bib queue
+        var acqList = allUserBibQueues.filter(
+            function(q) {
+                return (q.queue_type() == 'acq');
+            }
+        );
+        data = vbq.toStoreData(acqList);
+    } else {
+        data = vaq.toStoreData(allUserAuthQueues);
+    }
+
     selector.store = new dojo.data.ItemFileReadStore({data:data});
     selector.setValue(null);
     selector.setDisplayedValue('');
@@ -1455,7 +1474,7 @@ function vlShowMatchSetEditor() {
 }
 
 function vlFetchQueueFromForm() {
-    currentType = vlQueueSelectType.getValue();
+    currentType = vlQueueSelectType.attr('value').replace(/-.*/, ''); // trim bib-acq
     currentQueueId = vlQueueSelectQueueList.getValue();
     retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
 }
