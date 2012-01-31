@@ -316,7 +316,7 @@ sub create_lineitem_list_assets {
     return $res;
 }
 
-sub verify_vandelay_import_args {
+sub test_vandelay_import_args {
     my $vandelay = shift;
 
     # we need a queue
@@ -324,16 +324,16 @@ sub verify_vandelay_import_args {
         ($vandelay->{queue_name} or $vandelay->{existing_queue});
 
     # match-based merge/overlay import
-    return 1 if $vandelay->{merge_profile} and (
+    return 2 if $vandelay->{merge_profile} and (
         $vandelay->{auto_overlay_exact} or
         $vandelay->{auto_overlay_1match} or
         $vandelay->{auto_overlay_best_match}
     );
 
     # no-match import
-    return 1 if $vandelay->{import_no_match};
+    return 2 if $vandelay->{import_no_match};
 
-    return 0;
+    return 1; # queue only
 }
 
 sub find_or_create_vandelay_queue {
@@ -394,8 +394,9 @@ sub import_li_bibs_via_vandelay {
 
     $logger->info("acq-vl: processing recs via Vandelay with args: ".Dumper($vandelay));
 
-    if (!verify_vandelay_import_args($vandelay)) {
-        $logger->error("acq-vl: invalid vandelay arguments for acq import");
+    my $vl_stat = test_vandelay_import_args($vandelay);
+    if ($vl_stat == 0) {
+        $logger->error("acq-vl: invalid vandelay arguments for acq import (queue needed)");
         return $res;
     }
 
@@ -429,6 +430,8 @@ sub import_li_bibs_via_vandelay {
     # we have to commit the transaction now since 
     # vandelay uses its own transactions.
     $e->commit;
+
+    return $res if $vl_stat == 1; # queue only
 
     # Import the bibs via vandelay.  Note: Vandely will 
     # update acq.lineitem.eg_bib_id on successful import.
