@@ -33,7 +33,8 @@ function VLAgent(args) {
                         fmClass : widg.cls,
                         selfReference : true,
                         orgLimitPerms : [self.limitPerm || 'CREATE_PURCHASE_ORDER'],
-                        parentNode : dojo.byId('acq_vl:' + widg.key)
+                        parentNode : dojo.byId('acq_vl:' + widg.key),
+                        searchFilter : (widg.cls == 'vbq') ? {queue_type : 'acq'} : null
                     }).build(function(dijit) { 
                         widg.dijit = dijit; 
                         self.attachOnChange(widg);
