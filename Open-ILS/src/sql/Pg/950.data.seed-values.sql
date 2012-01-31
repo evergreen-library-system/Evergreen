@@ -1527,7 +1527,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 518, 'COPY_HOLDS_RECALL', oils_i18n_gettext( 518, 
     'Allow a user to place a cataloging recall on a specific copy', 'ppl', 'description' )),
  ( 519, 'ADMIN_SMS_CARRIER', oils_i18n_gettext( 519,
-    'Allows a user to add/create/delete SMS Carrier entries.', 'ppl', 'description' ));
+    'Allows a user to add/create/delete SMS Carrier entries.', 'ppl', 'description' )),
+ ( 520, 'COPY_DELETE_WARNING.override', oils_i18n_gettext( 520,
+    'Allow a user to override warnings about deleting copies in problematic situations.', 'ppl', 'description' ));
 
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
