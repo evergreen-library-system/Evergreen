@@ -893,15 +893,22 @@ sub attempt_hold_placement {
 
                     if (ref $result eq 'HASH') {
                         $hdata->{hold_failed_event} = $result->{last_event};
-                    } elsif (ref $result eq 'ARRAY') {
-                        $hdata->{hold_failed_event} = pop @$result;
-                    }
 
-                    if($result->{age_protected_copy}) {
-                        $hdata->{could_override} = 1;
-                        $hdata->{age_protect} = 1;
-                    } else {
-                        $hdata->{could_override} = $self->test_could_override($hdata->{hold_failed_event});
+                        if ($result->{age_protected_copy}) {
+                            $hdata->{could_override} = 1;
+                            $hdata->{age_protect} = 1;
+                        } else {
+                            $hdata->{could_override} = $self->test_could_override($hdata->{hold_failed_event});
+                        }
+                    } elsif (ref $result eq 'ARRAY') {
+                        $hdata->{hold_failed_event} = $result->[0];
+
+                        if ($result->[3]) { # age_protect_only
+                            $hdata->{could_override} = 1;
+                            $hdata->{age_protect} = 1;
+                        } else {
+                            $hdata->{could_override} = $self->test_could_override($hdata->{hold_failed_event});
+                        }
                     }
                 }
             }
