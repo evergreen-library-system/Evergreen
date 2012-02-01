@@ -17,7 +17,7 @@ function loadEventDef() {
     eventDefGranularity.attr('value', null);
     edGrid.overrideEditWidgets.granularity = eventDefGranularity;
     edGrid.overrideEditWidgets.granularity.shove = {"create": ""};
-    edGrid.loadAll({order_by:{atevdef : 'name'}}); 
+    edGrid.loadAll({order_by:{atevdef : 'name, owner, hook, reactor, delay'}});
     openils.widget.Textarea.width = '600px';
     openils.widget.Textarea.height = '600px';
     edGrid.overrideEditWidgetClass.template = 'openils.widget.Textarea';
