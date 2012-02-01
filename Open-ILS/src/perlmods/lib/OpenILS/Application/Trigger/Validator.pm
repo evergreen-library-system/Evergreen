@@ -77,7 +77,8 @@ sub HoldIsAvailable {
         !$hold->cancel_time and
         !$hold->fulfillment_time and
         $hold->current_shelf_lib and
-        $hold->current_shelf_lib eq $hold->pickup_lib and
+        (ref $hold->current_shelf_lib ? $hold->current_shelf_lib->id : $hold->current_shelf_lib)
+            eq (ref $hold->pickup_lib ? $hold->pickup_lib->id : $hold->pickup_lib) and
         $hold->capture_time and # redundant
         $hold->current_copy and # redundant
         $hold->shelf_time and   # redundant
