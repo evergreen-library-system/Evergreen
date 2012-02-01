@@ -84,13 +84,33 @@ function VLAgent(args) {
         }
 
         qInputChange = function(val) {
-            // TODO: user may enter the name of an existing queue.  
-            // Detect this and disable/update match_set accordingly
-            self.getDijit('match_set').attr('disabled', false);
+
             var qSelector = self.getDijit('existing_queue');
-            dojo.disconnect(qSelector._onchange);
-            qSelector.attr('value', '');
-            qSelector._onchange = dojo.connect(qSelector, 'onChange', qSelChange);
+            var matchSetSelector = self.getDijit('match_set');
+            var foundMatch = false;
+
+            if (val) {
+
+                // if the user entered the name of an existing queue, update the 
+                // queue selector to match the value (and clear the text input 
+                // via qselector onchange)
+                qSelector.store.fetch({
+                    query:{name:val},
+                    onComplete:function(items) {
+                        if(items.length == 0) return;
+                        var item = items[0];
+                        qSelector.attr('value', item.id);
+                        foundMatch = true;
+                    }
+                });
+            }
+
+            if (!foundMatch) {
+                self.getDijit('match_set').attr('disabled', false);
+                dojo.disconnect(qSelector._onchange);
+                qSelector.attr('value', '');
+                qSelector._onchange = dojo.connect(qSelector, 'onChange', qSelChange);
+            }
         }
 
         if (widg.key == 'existing_queue') {
@@ -103,9 +123,7 @@ function VLAgent(args) {
     }
 
     this.getDijit = function(key) {
-        return this.widgets.filter( 
-            function(w) {return (w.key == key)}
-        )[0].dijit;
+        return this.widgets.filter(function(w) {return (w.key == key)})[0].dijit;
     }
 
     this.values = function() {
