@@ -627,7 +627,6 @@ NOTES
 
 
 sub naive_ts_string {strftime("%F %T", localtime($_[0] || time));}
-sub naive_start_of_day {strftime("%F", localtime($_[0] || time))." 00:00:00";}
 
 # Return a map of bresv or an ilsevent on failure.
 sub get_uncaptured_bresv_for_brsrc {
@@ -1217,7 +1216,7 @@ sub get_captured_reservations {
                     "usr" => $patron->id,
                     "capture_time" => {"!=" => undef},
                     "pickup_time" => undef,
-                    "start_time" => {">=" => naive_start_of_day()},
+                    "start_time" => {"!=" => undef},
                     "cancel_time" => undef
                 },
                 $bresv_flesh
@@ -1238,7 +1237,7 @@ sub get_captured_reservations {
             return $e->search_booking_reservation([
                 {
                     "usr" => $patron->id,
-                    "return_time" => {">=" => naive_start_of_day()},
+                    "return_time" => {">=" => "today"},
                     "cancel_time" => undef
                 },
                 $bresv_flesh
