@@ -9,7 +9,7 @@ Regular Items
 
 1) To check out an item press *F1*, click *Check Out* on the Circulation toolbar, or select *Circulation* -> *Check Out Items*.
 
-2) Scan or enter patron’s barcode and click *Submit* if entering barcode manually. If scanning, number is submitted automatically.
+2) Scan or enter patron's barcode and click *Submit* if entering barcode manually. If scanning, number is submitted automatically.
  
 
 3) Scan or enter item barcode manually, clicking *Submit* if manual. 
@@ -51,7 +51,7 @@ Regular check in
 
 2) Scan item barcode or enter manually and click *Submit*.
  
-3) If there is an overdue fine associated with the checkin, an alert will appear at the top of the screen with a fine tally for the current checkin session. To immediately handle fine payment, click the alert to jump to the patron’s bill record.
+3) If there is an overdue fine associated with the checkin, an alert will appear at the top of the screen with a fine tally for the current checkin session. To immediately handle fine payment, click the alert to jump to the patron's bill record.
 
 Backdated check in
 ^^^^^^^^^^^^^^^^^^
@@ -91,7 +91,7 @@ Renewal and Editing the Item's Due Date
 
 Checked-out items can be renewed if your library's policy allows it. The new due date is calculated from the renewal date. Existing loans can also be extended to a specific date by editing the due date or renewing with a specific due date.
 
-Renewing via a Patron’s Account
+Renewing via a Patron's Account
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 1) Retrieve the patron record and go to the *Items Out* screen.
@@ -150,7 +150,7 @@ Lost Item Billing
 Refunds for Lost Items
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-If an item is returned after a lost bill has been paid and the library’s policy is to void the replacement fee for lost-then-returned items, there will be a negative balance in the bill. A refund needs to be made to close the bill and the circulation record. Once the outstanding amount has been refunded, the bill and circulation record will be closed and the item will disappear from the Items Out screen.
+If an item is returned after a lost bill has been paid and the library's policy is to void the replacement fee for lost-then-returned items, there will be a negative balance in the bill. A refund needs to be made to close the bill and the circulation record. Once the outstanding amount has been refunded, the bill and circulation record will be closed and the item will disappear from the Items Out screen.
 
 If you need to balance a bill with a negative amount and close the linked lost circulation record without making a refund (removing the item from the *Lost, Claimed Returned, Long Overdue, Has Unpaid Bills* panel on the *Items Out* screen), you need to add two dummy bills to the existing bills. The first one can be of any amount (e.g. $0.01), while the second should be of the absolute value of the negative amount. Then you need to void the first dummy bill. The reason for using a dummy bill is that Evergreen will check and close the circulation record only when payment is applied or bills are voided.
 
@@ -165,7 +165,7 @@ Claimed Returned Items
 
 4) The Claimed Returned item now displays in the *Lost/Claimed Returned/Long Overdue, Has Unpaid Billings* section of the patron record.
 
-5) The Claimed Returned item  adds to the count of Check Outs that are Claimed Returned in the patron summary on the left (or top) of the screen. It also adds to the total *Claims-returned Count* (including those that are current Check Outs and those that have since been returned) that is displayed by editing the patron’s record. 
+5) The Claimed Returned item  adds to the count of Check Outs that are Claimed Returned in the patron summary on the left (or top) of the screen. It also adds to the total *Claims-returned Count* (including those that are current Check Outs and those that have since been returned) that is displayed by editing the patron's record. 
 
 [NOTE]
 More on Claimed Returned Items
@@ -173,6 +173,7 @@ More on Claimed Returned Items
 - The date entered for a Claimed Returned item establishes the fine. If the date given has passed, bills will be adjusted accordingly.
 - When a Claimed Returned item is returned, if there is an outstanding bill associated with it, the item will not disappear from the *Items Out* screen. It will disappear when the outstanding bills are resolved.
 - When an item is marked Claimed Returned, the value in *Claims-returned Count* field in the patron record is automatically increased. Staff can manually adjust this count by editing the patron record.
+====================================
 
 In-house Use (F6)
 ~~~~~~~~~~~~~~~~~
@@ -212,7 +213,7 @@ Viewing past circulations
 
 2) Select *Actions for Selected Items* -> *Show Last Few Circulations*.
 
-3) The item’s recent circulation history is displayed.
+3) The item's recent circulation history is displayed.
 
 4) To retrieve the patron(s) of the last circulations, click the *Retrieve Last Patron* or the *Retrieve All These Patrons* button at the bottom of the above screen. Patron record(s) will be displayed in new tab(s).
 
