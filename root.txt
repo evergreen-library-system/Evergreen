@@ -1,7 +1,6 @@
 Evergreen Documentation
 =======================
 Documentation Interest Group
-2008-2012
 :doctype: book
 
 Introduction
@@ -144,6 +143,8 @@ Introduction
 ------------
 
 Use this section for understanding the circulation procedures in the Evergreen system.  
+
+include::circulation/circulating_items.txt[]
 
 Reports
 =======
