@@ -1010,9 +1010,13 @@ div.facet_sidebar {
 .facet_box_temp .header {
 	height:31px;
 	overflow:hidden;
-	background:url('/images/facet_box_bg.png') no-repeat;
+	background:#00593d;
+        -moz-border-top-left-radius: 5px;
+        border-top-left-radius: 5px;
+        -moz-border-top-right-radius: 5px;
+        border-top-right-radius: 5px;
 	font-weight:bold;
-	color:#007a54;
+	color:white;
 	padding-top:4px;
 }
 
