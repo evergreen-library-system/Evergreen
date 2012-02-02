@@ -8,7 +8,7 @@
         [% IF !ctx.user %]
         <div id="your-acct-login">
             <a href="[% mkurl(ctx.opac_root _ '/myopac/main') %]" 
-                class="opac-button" id="home_myopac_link">
+                class="opac-button opac-button-header" id="home_myopac_link">
                 [% l('Your Account Log in') %]
             </a>
         </div>

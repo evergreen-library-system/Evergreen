@@ -1188,14 +1188,25 @@ a.dash-link:hover { text-decoration: underline !important; }
     height: 26px;
 }
 
-/* TODO: gradients */
 .opac-button, .results_header_btns, #simple-detail-view-links { 
-    color: white; 
+    color: #FBF9F9;
     font-weight: bold; 
     text-decoration: none;
+    text-shadow: 1px 1px 1px #555555;
+    cursor: pointer !important;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    background: #69A088; 
+    border: 1px solid #007a54;
+    background: linear-gradient(#007a54, #00593d);
+    background: -moz-linear-gradient(#007a54, #00593d);
+    background: -o-linear-gradient(#007a54, #00593d);
+    background: -webkit-linear-gradient(#007a54, #00593d);
+    background-color: #00593d;
+}
+
+.opac-button-header {
+    background: #69A088;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
 .results_header_btns a, #simple-detail-view-links a {
