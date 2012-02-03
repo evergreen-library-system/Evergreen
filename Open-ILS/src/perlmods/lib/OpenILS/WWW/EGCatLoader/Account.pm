@@ -1177,6 +1177,19 @@ sub load_myopac_pay_init {
 
     my @payment_xacts = ($self->cgi->param('xact'), $self->cgi->param('xact_misc'));
 
+    if (!@payment_xacts) {
+        # for consistency with load_myopac_payment_form() and
+        # to preserve backwards compatibility, if no xacts are
+        # selected, assume all (applicable) transactions are wanted.
+        my $stat = $self->prepare_fines(undef, undef, [$self->cgi->param('xact'), $self->cgi->param('xact_misc')]);
+        return $stat if $stat;
+        @payment_xacts =
+            map { $_->{xact}->id } (
+                @{$self->ctx->{fines}->{circulation}}, 
+                @{$self->ctx->{fines}->{grocery}}
+        );
+    }
+
     return $self->generic_redirect unless @payment_xacts;
 
     my $cc_args = {"where_process" => 1};
