@@ -811,6 +811,10 @@ main.menu.prototype = {
                 ['oncommand'],
                 function(event) { open_eg_web_page('conify/global/config/circ_limit_group', null, event); }
             ],
+            'cmd_server_admin_config_usr_activity_type' : [
+                ['oncommand'],
+                function(event) { open_eg_web_page('conify/global/config/usr_activity_type', null, event); }
+            ],
             'cmd_local_admin_external_text_editor' : [
                 ['oncommand'],
                 function() {

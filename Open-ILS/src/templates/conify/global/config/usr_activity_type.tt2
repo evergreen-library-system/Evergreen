@@ -1,0 +1,34 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = l('User Activity Type') %]
+<!--
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/config/sms_carrier.js'> </script>
+-->
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+        <div>[% ctx.page_title %]</div>
+        <div>
+            <button dojoType='dijit.form.Button' onClick='thingGrid.showCreateDialog()'>[% l('New Activity Type') %]</button>
+            <button dojoType='dijit.form.Button' onClick='thingGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
+        </div>
+    </div>
+    <table  jsId="thingGrid"
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['id', 'label', 'ewho', 'ewhat', 'ehow', 'egroup', 'enabled', 'transient']"
+            query="{id: '*'}"
+            defaultCellWidth='"15%"'
+            fmClass='cuat'
+            editOnEnter='true'>
+    </table>
+</div>
+<script>
+    dojo.require('openils.widget.AutoGrid');
+    dojo.addOnLoad(
+        function() {
+            thingGrid.loadAll({order_by : {cuat : 'label, ewho'}});
+        }
+    );
+</script>
+[% END %]
+
+

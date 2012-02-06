@@ -744,6 +744,7 @@
 <!ENTITY staff.main.menu.admin.server_admin.conify.config_weight_assoc "Weights Association">
 <!ENTITY staff.main.menu.admin.server_admin.conify.config_actor_sip_fields "Actor Stat Cat Sip Fields">
 <!ENTITY staff.main.menu.admin.server_admin.conify.config_asset_sip_fields "Asset Stat Cat Sip Fields">
+<!ENTITY staff.main.menu.admin.server_admin.conify.config_usr_activity_type "User Activity Types">
 <!ENTITY staff.main.menu.admin.server_admin.conify.global_flag.label "Global Flags">
 <!ENTITY staff.main.menu.admin.server_admin.conify.circulation_limit_group.label "Circulation Limit Groups">
 
