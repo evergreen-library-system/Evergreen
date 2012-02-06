@@ -2955,7 +2955,8 @@ sub user_retrieve_fleshed_by_id {
 		"addresses",
 		"billing_address",
 		"mailing_address",
-		"stat_cat_entries" ];
+		"stat_cat_entries",
+		"usr_activity" ];
 	return new_flesh_user($user_id, $fields, $e);
 }
 
@@ -2970,6 +2971,12 @@ sub new_flesh_user {
     if(grep {$_ eq 'standing_penalties'} @$fields) {
         $fields = [grep {$_ ne 'standing_penalties'} @$fields];
         $fetch_penalties = 1;
+    }
+
+    my $fetch_usr_act = 0;
+    if(grep {$_ eq 'usr_activity'} @$fields) {
+        $fields = [grep {$_ ne 'usr_activity'} @$fields];
+        $fetch_usr_act = 1;
     }
 
 	my $user = $e->retrieve_actor_user(
@@ -3017,6 +3024,31 @@ sub new_flesh_user {
                     flesh_fields => {ausp => ['standing_penalty']}
                 }
             ])
+        );
+    }
+
+    # retrieve the most recent usr_activity entry
+    if ($fetch_usr_act) {
+
+        # max number to return for simple patron fleshing
+        my $limit = $U->ou_ancestor_setting_value(
+            $e->requestor->ws_ou, 
+            'circ.patron.usr_activity_retrieve.max');
+
+        my $opts = {
+            flesh => 1,
+            flesh_fields => {auact => ['etype']},
+            order_by => {auact => 'event_time DESC'}, 
+        };
+
+        # 0 == none, <0 == return all
+        $limit = 1 unless defined $limit;
+        $opts->{limit} = $limit if $limit > 0;
+
+        $user->usr_activity( 
+            ($limit == 0) ? 
+                [] : # skip the DB call
+                $e->search_actor_usr_activity([{usr => $user->id}, $opts])
         );
     }
 

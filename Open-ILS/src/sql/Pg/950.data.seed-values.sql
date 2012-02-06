@@ -11352,3 +11352,23 @@ INSERT INTO config.usr_activity_type (id, ewho, ewhat, ehow, egroup, label) VALU
 -- reserve the first 1000 slots
 SELECT SETVAL('config.usr_activity_type_id_seq'::TEXT, 1000);
 
+INSERT INTO config.org_unit_setting_type 
+    (name, label, description, grp, datatype) 
+    VALUES (
+        'circ.patron.usr_activity_retrieve.max',
+         oils_i18n_gettext(
+            'circ.patron.usr_activity_retrieve.max',
+            'Max user activity entries to retrieve (staff client)',
+            'coust', 
+            'label'
+        ),
+        oils_i18n_gettext(
+            'circ.patron.usr_activity_retrieve.max',
+            'Sets the maxinum number of recent user activity entries to retrieve for display in the staff client.  0 means show none, -1 means show all.  Default is 1.',
+            'coust', 
+            'description'
+        ),
+        'gui',
+        'integer'
+    );
+

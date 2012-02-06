@@ -2703,6 +2703,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Circulations Performed as Staff" name="performed_circulations" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Fund Allocation Percentages" name="fund_alloc_pcts" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Reservations" name="reservations" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="User Activity Entries" name="usr_activity" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="demographic" reltype="might_have" key="id" map="" class="rud"/>
@@ -2734,6 +2735,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="performed_circulations" reltype="has_many" key="circ_staff" map="" class="circ"/>
 			<link field="fund_alloc_pcts" reltype="has_many" key="allocator" map="" class="acqfap"/>
 			<link field="reservations" reltype="has_many" key="usr" map="" class="bresv"/>
+			<link field="usr_activity" reltype="has_many" key="usr" map="" class="auact"/>
 		</links>
 	</class>
 	<class id="cuat" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::usr_activity_type" oils_persist:tablename="config.usr_activity_type" reporter:label="User Activity Type">
@@ -2769,7 +2771,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<retrieve permission="VIEW_USER">
+				<retrieve permission="RUN_REPORTS">
 					<context link="usr" field="home_ou" />
 				</retrieve>
 			</actions>
