@@ -5,9 +5,12 @@ use DateTime::Format::ISO8601;
 use OpenSRF::Utils qw/:datetime/;
 use OpenSRF::Utils::Logger qw/:logger/;
 use OpenILS::Const qw/:const/;
+use OpenILS::Application::AppUtils;
 sub fourty_two { return 42 }
 sub NOOP_True { return 1 }
 sub NOOP_False { return 0 }
+
+my $U = 'OpenILS::Application::AppUtils';
 
 sub CircIsOpen {
     my $self = shift;
@@ -73,6 +76,16 @@ sub HoldIsAvailable {
 
     my $hold = $env->{target};
 
+    if ($env->{params}->{check_email_notify}) {
+        return 0 unless $U->is_true($hold->email_notify);
+    }
+    if ($env->{params}->{check_sms_notify}) {
+        return 0 unless $hold->sms_notify;
+    }
+    if ($env->{params}->{check_phone_notify}) {
+        return 0 unless $hold->phone_notify;
+    }
+
     return 1 if 
         !$hold->cancel_time and
         !$hold->fulfillment_time and
@@ -106,7 +119,36 @@ sub HoldIsCancelled {
 
     my $hold = $env->{target};
 
+    if ($env->{params}->{check_email_notify}) {
+        return 0 unless $U->is_true($hold->email_notify);
+    }
+    if ($env->{params}->{check_sms_notify}) {
+        return 0 unless $hold->sms_notify;
+    }
+    if ($env->{params}->{check_phone_notify}) {
+        return 0 unless $hold->phone_notify;
+    }
+
     return ($hold->cancel_time) ? 1 : 0;
+}
+
+sub HoldNotifyCheck {
+    my $self = shift;
+    my $env = shift;
+
+    my $hold = $env->{target};
+
+    if ($env->{params}->{check_email_notify}) {
+        return 0 unless $U->is_true($hold->email_notify);
+    }
+    if ($env->{params}->{check_sms_notify}) {
+        return 0 unless $hold->sms_notify;
+    }
+    if ($env->{params}->{check_phone_notify}) {
+        return 0 unless $hold->phone_notify;
+    }
+
+    return 1;
 }
 
 1;

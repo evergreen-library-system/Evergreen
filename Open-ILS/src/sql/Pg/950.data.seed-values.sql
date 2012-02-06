@@ -6522,6 +6522,8 @@ The item(s) you requested are available for pickup from the Library.
 
 $$);
 
+INSERT INTO action_trigger.event_params (event_def, param, value)
+    VALUES (5, 'check_email_notify', 1);
 
 INSERT INTO action_trigger.hook (
         key,
@@ -6584,6 +6586,8 @@ pickup, but these holds will soon expire.
 $$
 );
 
+INSERT INTO action_trigger.event_params (event_def, param, value)
+    VALUES (7, 'check_email_notify', 1);
 
 INSERT INTO action_trigger.environment (
         event_def,
@@ -6607,6 +6611,15 @@ INSERT INTO action_trigger.hook (
         TRUE
     );
 
+INSERT INTO action_trigger.validator (module,description) VALUES
+    ('HoldNotifyCheck',
+    oils_i18n_gettext(
+        'HoldNotifyCheck',
+        'Check Hold notification flag(s)',
+        'atval',
+        'description'
+    ));
+
 INSERT INTO action_trigger.event_definition (
         id,
         active,
@@ -6625,7 +6638,7 @@ INSERT INTO action_trigger.event_definition (
         1,
         'Hold waiting for pickup for long time',
         'hold_request.long_wait',
-        'NOOP_True',
+        'HoldNotifyCheck',
         'SendEmail',
         '6 MONTHS',
         'request_time',
@@ -6657,6 +6670,9 @@ INSERT INTO action_trigger.environment (event_def, path)
     (9, 'pickup_lib'),
     (9, 'usr'),
     (9, 'current_copy.call_number');
+
+INSERT INTO action_trigger.event_params (event_def, param, value)
+    VALUES (9, 'check_email_notify', 1);
 
 -- trigger data related to acq user requests
 
@@ -9192,6 +9208,9 @@ INSERT INTO action_trigger.environment (event_def, path) VALUES
     (38, 'pickup_lib'),
     (38, 'bib_rec.bib_record.simple_record');
 
+INSERT INTO action_trigger.event_params (event_def, param, value)
+    VALUES (currval('action_trigger.event_definition_id_seq'), 'check_email_notify', 1);
+
 ----------------------------------------------------------------
 -- Seed data for queued record/item exports
 ----------------------------------------------------------------
@@ -11237,6 +11256,9 @@ INSERT INTO action_trigger.environment (
     currval('action_trigger.event_definition_id_seq'),
     'pickup_lib.billing_address'
 );
+
+INSERT INTO action_trigger.event_params (event_def, param, value)
+    VALUES (currval('action_trigger.event_definition_id_seq'), 'check_sms_notify', 1);
 
 INSERT INTO action_trigger.hook(
     key,
