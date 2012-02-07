@@ -3710,11 +3710,18 @@ sub user_payments {
                 }   
             }
         },
-        order_by => [{ # by default, order newest payments first
-            class => 'mp', 
-            field => 'payment_ts',
-            direction => 'desc'
-        }]
+        order_by => [
+            { # by default, order newest payments first
+                class => 'mp', 
+                field => 'payment_ts',
+                direction => 'desc'
+            }, {
+                # secondary sort in ID as a tie-breaker, since payments created
+                # within the same transaction will have identical payment_ts's
+                class => 'mp',
+                field => 'id'
+            }
+        ]
     };
 
     for (qw/order_by limit offset/) {
