@@ -1,0 +1,138 @@
+Circulation Limits
+==================
+Thomas Berezansky <tsbere@mvlc.org>
+:Date: 2011-10-14
+
+== Limit Groups
+
+Limit Groups can be thought of as "Tags" the system places on circulations so
+that it can find them later. They are placed on circulations based on
+association with Limit Sets.
+
+Limit Groups are global, like Circulation Modifiers, and are edited via the
+Admin->Server Administration->Circulation Limit Groups menu.
+
+Limit Groups are selected by their Name, but support an optional description.
+This description may be useful for storing why a given group was created, or
+what it is intended for.
+
+== Limit Sets
+
+Limit Sets define rules for limiting the number of active circulations a patron
+may have based on Circulation Modifiers and Limit Groups. They support a number
+of options:
+
+Owning Library:: The library that that "owns" the limit set and can edit the
+parameters it contains.
+Name:: The name used to select the limit set when attaching it to Circulation
+Matchpoints.
+Items Out:: The maximum number of items from the associated Circulation
+Modifiers and Limit Groups allowed to be checked out. If set to zero (0) then no
+limiting will be done, but Limit Groups may still be tagged.
+Min Depth:: The minimum depth in the org tree to consider as valid circulation
+libraries for counting, based on Org Unit Type depths.
+Global:: If enabled then treat the Min Depth setting as defining the "Root" of
+the tree, and then include the entire tree below the "Root". Otherwise only
+direct ancestors and descendants of the circulation library will be checked.
+Description:: A description that may be used to describe what purpose the limit
+set is supposed to be serving.
+
+Limit Sets support linking Circulation Modifiers and Limit Groups, and count
+circulations that match any of them. Care has been taken to ensure that even if
+a circulation matches multiple criteria it will only be counted once per Limit
+Set, however.
+
+Limit Sets are configured via the Admin->Local Administration->Circulation Limit
+Sets menu.
+
+=== A Min Depth/Global Example
+
+The Min Depth and Global options are fairly hard to just describe, so lets look
+at a quick example using the default org tree:
+
+* CONS
+** SYS1
+*** BR1
+**** SL1
+*** BR2
+** SYS2
+*** BR3
+**** BM1
+*** BR4
+
+The tree has depths of 0 (CONS) through 3 (SL1/BM1). Using BR1 as a consistent
+circulation library we can build a table of Depth/Global combinations and
+expected included libraries:
+
+.BR1 Depth/Global comparisons
+[options="header"]
+|===============================
+|Depth|Global|Included Libraries
+|0    |False |CONS,SYS1,BR1,SL1
+|0    |True  |ALL
+|1    |False |SYS1,BR1,SL1
+|1    |True  |SYS1,BR1,BR2,SL1
+|2    |False |BR1,SL1
+|2    |True  |BR1,SL1
+|3    |False |SL1
+|3    |True  |SL1
+|===============================
+
+== "Tagging" Circulations
+
+In order to count circulations that have no circulation modifier the system has
+to know how to find them. When using circulation modifiers this is easy, just
+look for circulations with items assigned the modifier. But say you want to be
+able to count every video, regardless of circulation modifiers? That is where
+Limit Groups come in.
+
+Limit Groups are automatically recorded from the circulation policies as the
+Limit Sets are looked over. Those Limit Groups assigned to the Limit Sets that
+are not flagged as "Check Only" will be attached to the circulation so that
+later circulations can find them.
+
+It is possible to make Limit Sets that do not check, but only tag. This is
+accomplished by setting "Items Out" to zero (0).
+
+== Associating Limit Sets with Matchpoints
+
+Limit Sets alone are useless if they are not associated with circulation
+matchpoints. When creating or editing matchpoints you can add, remove, or adjust
+settings on linked Limit Sets.
+
+The options available for an attached limit set are:
+
+Fallthrough:: If enabled the Limit Set will be applied whenever the matchpoint
+matches a potential circulation. If not enabled the limit set will only be
+applied when the matchpoint is the first match for a potential circulation.
+Active:: An inactive Limit Set link will never be checked, for tagging or
+counting.
+
+== Limit Sets on Empty Rules
+
+For limiting without otherwise changing circulation rules you can create an
+"empty" rule and attach one or more Limit Sets to it. In this case an empty rule
+is one that does not set any of the "result" fields, but instead lets everything
+fall through to less specific rules. Top level rules based on Marc Type could be
+created for the sole purpose of attaching Limit Sets that allow 0 "Items Out".
+This would allow for a quick top-level tagging of all circulations by Marc Type,
+without otherwise introducing limits, in the event you have reason to limit
+based on that information later.
+
+== Limit a single library's items, regardless of checkout library
+
+For example, videos from BR2 limited to 5 anywhere:
+
+. Create a Limit Group, say "BR2 Videos"
+. Create a Limit Set:
+* Items Out: 5
+* Min Depth: 0
+* Global: True
+* Limit Groups: "BR2 Videos"
+. Create an "empty" matchpoint that is at the top of the org/permission trees
+with Marc Type g and circ library BR2.
+. Attach your limit set to the matchpoint with Fallthrough enabled.
+
+This should limit BR2's videos to 5 out, no matter where they are being checked
+out. Videos owned by others should be unaffected, even if circulating out of
+BR2.
