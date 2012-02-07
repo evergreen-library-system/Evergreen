@@ -1470,56 +1470,126 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </permacrud>
 	</class>
 
-	<class id="ccmcmt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::circ_matrix_circ_mod_test" oils_persist:tablename="config.circ_matrix_circ_mod_test" reporter:label="Circulation Matrix Circulation Modifier Subtest">
-		<fields oils_persist:primary="id" oils_persist:sequence="config.circ_matrix_circ_mod_test_id_seq">
-			<field reporter:label="Test ID" name="id" reporter:datatype="id"/>
-			<field reporter:label="Matchpoint ID" name="matchpoint" reporter:datatype="link"/>
-			<field reporter:label="Items Out" name="items_out" reporter:datatype="int"/>
-		</fields>
-		<links>
-			<link field="matchpoint" reltype="has_a" key="id" map="" class="ccmm"/>
-		</links>
+    <class id="cclg" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::circ_limit_group" oils_persist:tablename="config.circ_limit_group" reporter:label="Circulation Limit Group">
+        <fields oils_persist:primary="id" oils_persist:sequence="config.circ_limit_group_id_seq">
+            <field reporter:label="ID" name="id" reporter:datatype="id" reporter:selector="name"/>
+            <field reporter:label="Name" name="name" reporter:datatype="text"/>
+            <field reporter:label="Description" name="description" reporter:datatype="text"/>
+        </fields>
+        <links/>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
-                <create permission="ADMIN_CIRC_MATRIX_MATCHPOINT">
-                    <context link="matchpoint" field="org_unit"/>
-                </create>
+                <create permission="ADMIN_CIRC_MATRIX_MATCHPOINT" global_required="true"/>
                 <retrieve/>
-                <update permission="ADMIN_CIRC_MATRIX_MATCHPOINT">
-                    <context link="matchpoint" field="org_unit"/>
-                </update>
-                <delete permission="ADMIN_CIRC_MATRIX_MATCHPOINT">
-                    <context link="matchpoint" field="org_unit"/>
-                </delete>
+                <update permission="ADMIN_CIRC_MATRIX_MATCHPOINT" global_required="true"/>
+                <delete permission="ADMIN_CIRC_MATRIX_MATCHPOINT" global_required="true"/>
             </actions>
         </permacrud>
-	</class>
+    </class>
 
-	<class id="ccmcmtm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::circ_matrix_circ_mod_test_map" oils_persist:tablename="config.circ_matrix_circ_mod_test_map" reporter:label="Circulation Matrix Circulation Modifier Subtest Circulation Modifier Set">
-		<fields oils_persist:primary="id" oils_persist:sequence="config.circ_matrix_circ_mod_test_map_id_seq">
-			<field reporter:label="Entry ID" name="id" reporter:datatype="id"/>
-			<field reporter:label="Circulation Modifier Subtest ID" name="circ_mod_test" reporter:datatype="link"/>
-			<field reporter:label="Circulation Modifier" name="circ_mod" reporter:datatype="link"/>
-		</fields>
-		<links>
-			<link field="circ_mod_test" reltype="has_a" key="id" map="" class="ccmcmt"/>
-			<link field="circ_mod" reltype="has_a" key="code" map="" class="ccm"/>
-		</links>
+    <class id="ccls" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::circ_limit_set" oils_persist:tablename="config.circ_limit_set" reporter:label="Circulation Limit Set">
+        <fields oils_persist:primary="id" oils_persist:sequence="config.circ_limit_set_id_seq">
+            <field reporter:label="ID" name="id" reporter:datatype="id" reporter:selector="name"/>
+            <field reporter:label="Name" name="name" reporter:datatype="text"/>
+            <field reporter:label="Owning Library" name="owning_lib"  reporter:datatype="org_unit"/>
+            <field reporter:label="Items Out" name="items_out" reporter:datatype="int"/>
+            <field reporter:label="Min Depth" name="depth" reporter:datatype="int"/>
+            <field reporter:label="Global" name="global" reporter:datatype="bool"/>
+            <field reporter:label="Description" name="description" reporter:datatype="text"/>
+        </fields>
+        <links>
+            <link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
+        </links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_CIRC_MATRIX_MATCHPOINT" context_field="owning_lib"/>
+                <retrieve/>
+                <update permission="ADMIN_CIRC_MATRIX_MATCHPOINT" context_field="owning_lib"/>
+                <delete permission="ADMIN_CIRC_MATRIX_MATCHPOINT" context_field="owning_lib"/>
+            </actions>
+        </permacrud>
+    </class>
+
+    <class id="ccmlsm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::circ_matrix_limit_set_map" oils_persist:tablename="config.circ_matrix_limit_set_map" reporter:label="Circulation Matrix Limit Set Map">
+        <fields oils_persist:primary="id" oils_persist:sequence="config.circ_matrix_limit_set_map_id_seq">
+            <field reporter:label="ID" name="id" reporter:datatype="id"/>
+            <field reporter:label="Matchpoint" name="matchpoint" reporter:datatype="link"/>
+            <field reporter:label="Limit Set" name="limit_set" reporter:datatype="link"/>
+            <field reporter:label="Fallthrough" name="fallthrough" reporter:datatype="bool"/>
+            <field reporter:label="Active" name="active" reporter:datatype="bool"/>
+        </fields>
+        <links>
+            <link field="matchpoint" reltype="has_a" key="id" map="" class="ccmm"/>
+            <link field="limit_set" reltype="has_a" key="id" map="" class="ccls"/>
+        </links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="ADMIN_CIRC_MATRIX_MATCHPOINT">
-                    <context link="circ_mod_test" jump="matchpoint" field="org_unit"/>
+                    <context link="matchpoint" field="org_unit"/>
                 </create>
                 <retrieve/>
                 <update permission="ADMIN_CIRC_MATRIX_MATCHPOINT">
-                    <context link="circ_mod_test" jump="matchpoint" field="org_unit"/>
+                    <context link="matchpoint" field="org_unit"/>
                 </update>
                 <delete permission="ADMIN_CIRC_MATRIX_MATCHPOINT">
-                    <context link="circ_mod_test" jump="matchpoint" field="org_unit"/>
+                    <context link="matchpoint" field="org_unit"/>
                 </delete>
             </actions>
         </permacrud>
-	</class>
+    </class>
+
+    <class id="cclscmm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::circ_limit_set_circ_mod_map" oils_persist:tablename="config.circ_limit_set_circ_mod_map" reporter:label="Circulation Limit Set Circ Mod Map">
+        <fields oils_persist:primary="id" oils_persist:sequence="config.circ_limit_set_circ_mod_map_id_seq">
+            <field reporter:label="ID" name="id" reporter:datatype="id"/>
+            <field reporter:label="Limit Set" name="limit_set" reporter:datatype="link"/>
+            <field reporter:label="Circulation Modifier" name="circ_mod" reporter:datatype="link"/>
+        </fields>
+        <links>
+            <link field="limit_set" reltype="has_a" key="id" map="" class="ccls"/>
+            <link field="circ_mod" reltype="has_a" key="code" map="" class="ccm"/>
+        </links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_CIRC_MATRIX_MATCHPOINT">
+                    <context link="limit_set" field="owning_lib"/>
+                </create>
+                <retrieve/>
+                <update permission="ADMIN_CIRC_MATRIX_MATCHPOINT">
+                    <context link="limit_set" field="owning_lib"/>
+                </update>
+                <delete permission="ADMIN_CIRC_MATRIX_MATCHPOINT">
+                    <context link="limit_set" field="owning_lib"/>
+                </delete>
+            </actions>
+        </permacrud>
+    </class>
+
+    <class id="cclsgm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::circ_limit_set_group_map" oils_persist:tablename="config.circ_limit_set_group_map" reporter:label="Circulation Limit Set Group Map">
+        <fields oils_persist:primary="id" oils_persist:sequence="config.circ_limit_set_group_map_id_seq">
+            <field reporter:label="ID" name="id" reporter:datatype="id"/>
+            <field reporter:label="Limit Set" name="limit_set" reporter:datatype="link"/>
+            <field reporter:label="Limit Group" name="limit_group" reporter:datatype="link"/>
+            <field reporter:label="Check Only" name="check_only" reporter:datatype="bool"/>
+        </fields>
+        <links>
+            <link field="limit_set" reltype="has_a" key="id" map="" class="ccls"/>
+            <link field="limit_group" reltype="has_a" key="id" map="" class="cclg"/>
+        </links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_CIRC_MATRIX_MATCHPOINT">
+                    <context link="limit_set" field="owning_lib"/>
+                </create>
+                <retrieve/>
+                <update permission="ADMIN_CIRC_MATRIX_MATCHPOINT">
+                    <context link="limit_set" field="owning_lib"/>
+                </update>
+                <delete permission="ADMIN_CIRC_MATRIX_MATCHPOINT">
+                    <context link="limit_set" field="owning_lib"/>
+                </delete>
+            </actions>
+        </permacrud>
+    </class>
 
 	<class id="cit" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::identification_type" oils_persist:tablename="config.identification_type" reporter:label="Identification Type">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.identification_type_id_seq">

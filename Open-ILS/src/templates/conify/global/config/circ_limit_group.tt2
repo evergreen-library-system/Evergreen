@@ -1,0 +1,36 @@
+[% WRAPPER base.tt2 %]
+<h1>Circulation Limit Group</h1> <br/>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
+    <div>Circulation Limit Group</div>
+    <div>
+        <button dojoType='dijit.form.Button' onClick='clgGrid.showCreateDialog()'>New Limit Group</button>
+        <button dojoType='dijit.form.Button' onClick='clgGrid.deleteSelected()'>Delete Selected</button>
+    </div>
+</div>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <table  jsId="clgGrid"
+            autoHeight='true'
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['id','name','description']"
+            query="{id: '*'}"
+            defaultCellWidth='"auto"'
+            fmClass='cclg'
+            showPaginator='true'
+            editOnEnter='true'>
+    </table>
+ </div>
+
+<script type ="text/javascript">
+
+    dojo.require('openils.widget.AutoGrid');
+
+    openils.Util.addOnLoad(
+        function() {
+            clgGrid.loadAll({order_by:{cclg : 'name'}});
+        }
+    );
+
+</script>
+
+[% END %]

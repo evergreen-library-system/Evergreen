@@ -770,6 +770,10 @@ main.menu.prototype = {
                 ['oncommand'],
                 function(event) { open_eg_web_page('conify/global/permission/grp_penalty_threshold', null, event); }
             ],
+            'cmd_local_admin_circ_limit_set' : [
+                ['oncommand'],
+                function(event) { open_eg_web_page('conify/global/config/circ_limit_set', null, event); }
+            ],
             'cmd_server_admin_config_rule_circ_duration' : [
                 ['oncommand'],
                 function(event) { open_eg_web_page('conify/global/config/rule_circ_duration', null, event); }
@@ -809,6 +813,10 @@ main.menu.prototype = {
             'cmd_server_admin_config_asset_sip_fields' : [
                 ['oncommand'],
                 function(event) { open_eg_web_page('conify/global/config/asset_sip_fields', null, event); }
+            ],
+            'cmd_server_admin_circ_limit_group' : [
+                ['oncommand'],
+                function(event) { open_eg_web_page('conify/global/config/circ_limit_group', null, event); }
             ],
             'cmd_local_admin_external_text_editor' : [
                 ['oncommand'],

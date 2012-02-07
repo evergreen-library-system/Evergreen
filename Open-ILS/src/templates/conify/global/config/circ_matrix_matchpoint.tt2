@@ -27,51 +27,37 @@
 </div>
 
 <div class='hidden'>
-    <div id='circ-mod-editor' style='border:1px solid #aaa'>
-        <h3>Circ Modifier Count Groups</h3>
-        <table class='oils-generic-table' name='circ-mod-group-table'>
-            <tbody><tr>
-                <td>Total items out</td>
-                <td><input type='text' size='3' name='circ-mod-count'></div></td>
-            </tr><tbody>
-            <tbody name='circ-mod-entry-tbody'>
-                <tr name='circ-mod-entry-row'>
-                    <td name='circ-mod'/>
-                    <td><a name='remove-circ-mod' href='javascript:void(0);'>Remove</a></td>
-                </tr>
-            </tbody>
+    <div id='limit-set-editor' style='border:1px solid #aaa'>
+        <h3>Linked Limit Sets</h3>
+        <table class='oils-generic-table'>
             <tbody>
                 <tr>
-                    <td><div name='circ-mod-selector'></div></td>
-                    <td><a href='javascript:void(0);' name='add-circ-mod'>Add</a></td>
+                    <th>Name</th>
+                    <th>Fallthrough</th>
+                    <th>Active</th>
+                    <th>Remove</th>
+                </tr>
+            </tbody>
+            <tbody name='limit-set-entry-tbody'>
+                <tr name='limit-set-entry-row'>
+                    <td name='limit-set'></td>
+                    <td><input type="checkbox" name="limit-set-fallthrough"/></td>
+                    <td><input type="checkbox" name="limit-set-active"/></td>
+                    <td><a name='remove-limit-set' href='javascript:void(0);'>Remove</a></td>
+                </tr>
+            </tbody>
+            <tbody name='limit-set-entry-new'>
+                <tr>
+                    <td><div name='limit-set-selector'></div></td>
+                    <td colspan="3"><a href='javascript:void(0);' name='add-limit-set'>Add</a></td>
                 </tr>
             </tbody>
         </table>
-        <span name='add-circ-mod-group-span'>
-        <a href='javascript:void(0);' name='add-circ-mod-group'>Create New Group</a>
-        </span>&nbsp;&nbsp;<span>
-        <a href='javascript:void(0);' onclick='applyCircModChanges()'>Apply Circ Modifier Changes</a>
-        </span>
     </div>
 </div>
 
+
 <div class='hidden'><div dojoType='openils.widget.ProgressDialog' jsId='progressDialog'></div></div>
 
-<script type="text/javascript">
-    function format_hard_due_date(name, id) {
-        var item=this.grid.getItem(id);
-        if(!item) return name;
-        switch (this.grid.store.getValue(this.grid.getItem(id), 'hard_due_date')) {
-            case null :
-            case undefined :
-            case 'unset' :
-                return name;
-            default:
-                return "<a href='" + oilsBasePath +
-                    "/conify/global/config/hard_due_date?name=" +
-                    encodeURIComponent(name) + "'>" + name + "</a>";
-        }
-    }
-</script>
 [% END %]
 

@@ -5,11 +5,9 @@ dojo.require('openils.widget.AutoFieldWidget');
 dojo.require('openils.PermaCrud');
 dojo.require('openils.widget.ProgressDialog');
 
-var circModEditor = null;
-var circModGroupTables = [];
-var circModGroupCache = {};
-var circModEntryCache = {};
-var matchPoint;
+var limitSetEditor = null;
+var limitSetEntryCache = [];
+var limitSetCache = {};
 
 function load(){
     cmGrid.overrideWidgetArgs.grp = {hrbefore : true};
@@ -27,7 +25,14 @@ function load(){
     cmGrid.overrideWidgetArgs.hard_due_date = {inherits : true};
     cmGrid.loadAll({order_by:{ccmm:'circ_modifier'}});
     cmGrid.onEditPane = buildEditPaneAdditions;
-    circModEditor = dojo.byId('circ-mod-editor').parentNode.removeChild(dojo.byId('circ-mod-editor'));
+    cmGrid.onPostUpdate = updateLinked;
+    cmGrid.onPostCreate = updateLinked;
+    limitSetEditor = dojo.byId('limit-set-editor').parentNode.removeChild(dojo.byId('limit-set-editor'));
+
+    // Cache limit set info for later display
+    var pcrud = new openils.PermaCrud();
+    var temp = pcrud.retrieveAll('ccls');
+    dojo.forEach(temp, function(g) { limitSetCache[g.id()] = g; } );
 }
 
 function byName(name, ctxt) {
@@ -35,174 +40,180 @@ function byName(name, ctxt) {
 }
 
 function buildEditPaneAdditions(editPane) {
-    if(!editPane.fmObject) return; 
-    var node = circModEditor.cloneNode(true);
-    var tableTmpl = node.removeChild(byName('circ-mod-group-table', node));
-    circModGroupTables = [];
-    matchPoint = editPane.fmObject.id();
-
-    byName('add-circ-mod-group', node).onclick = function() {
-        addCircModGroup(node, tableTmpl)
-    }
-
-    if(editPane.mode == 'update') {
-        var groups = new openils.PermaCrud().search('ccmcmt', {matchpoint: editPane.fmObject.id()});
-        dojo.forEach(groups, function(g) { addCircModGroup(node, tableTmpl, g); } );
-    } 
-
-    editPane.domNode.appendChild(node);
-}
-
-
-function addCircModGroup(node, tableTmpl, group) {
-
-    var table = tableTmpl.cloneNode(true);
-    var circModRowTmpl = byName('circ-mod-entry-tbody', table).removeChild(byName('circ-mod-entry-row', table));
-    circModGroupTables.push(table);
-
-    var entries = [];
-    if(group) {
-        entries = new openils.PermaCrud().search('ccmcmtm', {circ_mod_test : group.id()});
-        table.setAttribute('group', group.id());
-        circModGroupCache[group.id()] = group;
-        circModEntryCache[group.id()] = entries;
-    }
-
-    function addMod(code, name) {
-        name = name || code; // XXX
-        var row = circModRowTmpl.cloneNode(true);
-        byName('circ-mod', row).innerHTML = name;
-        byName('circ-mod', row).setAttribute('code', code);
-        byName('circ-mod-entry-tbody', table).appendChild(row);
-        byName('remove-circ-mod', row).onclick = function() {
-            byName('circ-mod-entry-tbody', table).removeChild(row);
-        }
-    }
-
-    dojo.forEach(entries, function(e) { addMod(e.circ_mod()); });
-
-    byName('circ-mod-count', table).value = (group) ? group.items_out() : 0;
+    limitSetEntryCache = [];
+    var tr = document.createElement('tr');
+    var td = document.createElement('td');
+    td.setAttribute('colspan','2');
+    // Explanation....
+    // editPane.domNode.lastChild = Table
+    // .lastChild = Table Body
+    // .lastChild = Table Row containing Action Buttons
+    editPane.domNode.lastChild.lastChild.insertBefore(tr, editPane.domNode.lastChild.lastChild.lastChild);
+    tr.appendChild(td);
+    curLimitSetEditor = limitSetEditor.cloneNode(true);
+    td.appendChild(curLimitSetEditor);
+    var limitSetTmpl = byName('limit-set-entry-tbody', curLimitSetEditor).removeChild(byName('limit-set-entry-row', curLimitSetEditor));
 
     var selector = new openils.widget.AutoFieldWidget({
-        fmClass : 'ccmcmtm',
-        fmField : 'circ_mod',
-        parentNode : byName('circ-mod-selector', table)
+        fmClass : 'ccmlsm',
+        fmField : 'limit_set',
+        parentNode : byName('limit-set-selector', curLimitSetEditor)
     });
     selector.build();
 
-    byName('add-circ-mod', table).onclick = function() {
-        addMod(selector.widget.attr('value'), selector.widget.attr('displayedValue'));
+    function addSet(lset) {
+        var row = limitSetTmpl.cloneNode(true);
+        row.setAttribute('limit_set', lset);
+        byName('limit-set', row).innerHTML = limitSetCache[lset].name();
+        byName('remove-limit-set', row).onclick = function() {
+            byName('limit-set-entry-tbody', cmGrid.editPane.domNode).removeChild(row);
+        }
+        byName('limit-set-active', row).setAttribute('checked', 'true');
+        byName('limit-set-entry-tbody', editPane.domNode).appendChild(row);
     }
 
-    node.insertBefore(table, byName('add-circ-mod-group-span', node));
-    node.insertBefore(dojo.create('hr'), byName('add-circ-mod-group-span', node));
+    byName('add-limit-set', editPane.domNode).onclick = function() {
+        addSet(selector.widget.attr('value'));
+    }
+
+    // On edit we need to load existing entries.
+    // On create, not so much.
+    if(!editPane.fmObject) return; 
+    var matchpoint = editPane.fmObject.id();
+
+    if(editPane.mode == 'update') {
+        var pcrud = new openils.PermaCrud();
+        limitSetEntryCache = pcrud.search('ccmlsm', {matchpoint: editPane.fmObject.id()});
+        dojo.forEach(limitSetEntryCache, function(g) { addLimitSet(limitSetTmpl, g); } );
+    } 
 }
 
-function applyCircModChanges() {
+function addLimitSet(tmpl, limit_set_entry) {
+    var row = tmpl.cloneNode(true);
+    var lset = limit_set_entry.limit_set();
+    row.setAttribute('limit_set', lset);
+    byName('limit-set', row).innerHTML = limitSetCache[lset].name();
+    if(limit_set_entry.active() == 't') {
+        byName('limit-set-active', row).setAttribute('checked', 'true');
+    }
+    if(limit_set_entry.fallthrough() == 't') {
+        byName('limit-set-fallthrough', row).setAttribute('checked', 'true');
+    }
+    byName('remove-limit-set', row).onclick = function() {
+        byName('limit-set-entry-tbody', cmGrid.editPane.domNode).removeChild(row);
+    }
+    byName('limit-set-entry-tbody', cmGrid.editPane.domNode).appendChild(row);
+}
+
+function format_hard_due_date(name, id) {
+    var item=this.grid.getItem(id);
+    if(!item) return name;
+    switch (this.grid.store.getValue(this.grid.getItem(id), 'hard_due_date')) {
+        case null :
+        case undefined :
+        case 'unset' :
+            return name;
+        default:
+            return "<a href='" + oilsBasePath +
+                "/conify/global/config/hard_due_date?name=" +
+                encodeURIComponent(name) + "'>" + name + "</a>";
+    }
+}
+
+function updateLinked(fmObject, rowindex) {
+    var id = null;
+    if(rowindex != undefined && this.editPane && this.editPane.fmObject) {
+        // Edit, grab existing ID
+        id = this.editPane.fmObject.id();
+    } else if(fmObject.id) {
+        // Create, grab new ID
+        id = fmObject.id();
+    }
+    // If we don't have an ID, drop out.
+    if(id == null) return;
     var pcrud = new openils.PermaCrud();
     progressDialog.show(true);
 
-    for(var idx in circModGroupTables) {
-        var table = circModGroupTables[idx];
-        var gp = table.getAttribute('group');
+    var add = [];
+    var remove = [];
+    var update = [];
 
-        var count = byName('circ-mod-count', table).value;
-        var mods = [];
-        var entries = [];
-
-        dojo.forEach(dojo.query('[name=circ-mod]', table), function(td) { 
-            mods.push(td.getAttribute('code'));
-        });
-
-        var group = circModGroupCache[gp];
-
-        if(!group) {
-
-            group = new fieldmapper.ccmcmt();
-            group.isnew(true);
-            dojo.forEach(mods, function(mod) {
-                var entry = new fieldmapper.ccmcmtm();
+    var limit_sets = [];
+    dojo.query('[name=limit-set-entry-row]', this.editPane.domNode).forEach(
+        function(row) {
+            var lset = row.getAttribute('limit_set');
+            limit_sets.push(lset);
+            var cached = limitSetEntryCache.filter(function(i) { return (i.limit_set() == lset); })[0];
+            if(!cached) {
+                var entry = new fieldmapper.ccmlsm();
                 entry.isnew(true);
-                entry.circ_mod(mod);
-                entries.push(entry);
-            });
-
-
-        } else {
-
-            var existing = circModEntryCache[group.id()];
-            dojo.forEach(mods, function(mod) {
-                
-                // new circ mod for this group
-                if(!existing.filter(function(i){ return (i.circ_mod() == mod)})[0]) {
-                    var entry = new fieldmapper.ccmcmtm();
-                    entry.isnew(true);
-                    entry.circ_mod(mod);
-                    entries.push(entry);
-                    entry.circ_mod_test(group.id());
+                entry.matchpoint(id);
+                entry.limit_set(lset);
+                entry.active(byName('limit-set-active', row).checked ? 't' : 'f');
+                entry.fallthrough(byName('limit-set-fallthrough', row).checked ? 't' : 'f');
+                add.push(entry);
+            } else {
+                var active = byName('limit-set-active', row).checked;
+                var fallthrough = byName('limit-set-fallthrough', row).checked;
+                if((active != (cached.active() == 't')) || (fallthrough != (cached.fallthrough() == 't'))) {
+                    cached.active(active ? 't' : 'f');
+                    cached.fallthrough(fallthrough ? 't' : 'f');
+                    cached.ischanged(true);
+                    update.push(cached);
                 }
-            });
-
-            dojo.forEach(existing, function(eMod) {
-                if(!mods.filter(function(i){ return (i == eMod.circ_mod()) })[0]) {
-                    eMod.isdeleted(true);
-                    entries.push(eMod);
-                }
-            });
+            }
         }
-
-        group.items_out(count);
-        group.matchpoint(matchPoint);
-
-        if(group.isnew()) {
-
-            pcrud.create(group, {
-                oncomplete : function(r, cudResults) {
-                    var group = cudResults[0];
-                    dojo.forEach(entries, function(e) { e.circ_mod_test(group.id()) } );
-                    pcrud.create(entries, {
-                        oncomplete : function() {
-                            progressDialog.hide();
-                        }
-                    });
-                }
-            });
-
-        } else {
-
-            pcrud.update(group, {
-                oncomplete : function(r, cudResults) {
-                    var newOnes = entries.filter(function(e) { return e.isnew() });
-                    var delOnes = entries.filter(function(e) { return e.isdeleted() });
-                    if(!delOnes.length && !newOnes.length) {
-                        progressDialog.hide();
-                        return;
-                    }
-                    if(newOnes.length) {
-                        pcrud.create(newOnes, {
-                            oncomplete : function() {
-                                if(delOnes.length) {
-                                    pcrud.eliminate(delOnes, {
-                                        oncomplete : function() {
-                                            progressDialog.hide();
-                                        }
-                                    });
-                                } else {
-                                    progressDialog.hide();
-                                }
-                            }
-                        });
-                    } else {
-                        pcrud.eliminate(delOnes, {
-                            oncomplete : function() {
-                                progressDialog.hide();
-                            }
-                        });
-                    }
-                }
-            });
+    );
+    dojo.forEach(limitSetEntryCache, function(eSet) {
+            if(!limit_sets.filter(function(i) { return (i == eSet.limit_set()); })[0]) {
+                eSet.isdeleted(true);
+                remove.push(eSet);
+            }
         }
+    );
+
+    function updateEntries() {
+        pcrud.update(update, {
+            oncomplete : function () {
+                progressDialog.hide();
+            }
+        });
     }
+
+    function removeEntries() {
+        pcrud.eliminate(remove, {
+            oncomplete : function () {
+                if(update.length) {
+                    updateEntries();
+                } else {
+                    progressDialog.hide();
+                }
+            }
+        });
+    }
+
+    function addEntries() {
+        pcrud.create(add, {
+            oncomplete : function () {
+                if(remove.length) {
+                    removeEntries();
+                } else if (update.length) {
+                    updateEntries();
+                } else {
+                    progressDialog.hide();
+                }
+            }
+        });
+    }
+
+    if(add.length)
+        addEntries();
+    else if (remove.length)
+        removeEntries();
+    else if (update.length)
+        updateEntries();
+    else
+        progressDialog.hide();
 }
 
 openils.Util.addOnLoad(load);

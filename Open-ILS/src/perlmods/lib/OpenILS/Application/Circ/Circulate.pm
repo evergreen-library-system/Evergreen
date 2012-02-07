@@ -539,6 +539,7 @@ my @AUTOLOAD_FIELDS = qw/
     retarget_mode
     hold_as_transit
     fake_hold_dest
+    limit_groups
 /;
 
 
@@ -1188,6 +1189,8 @@ sub run_indb_circ_test {
         }
         $self->circ_matrix_matchpoint->max_fine_rule($self->editor->retrieve_config_rules_max_fine($results->[0]->{max_fine_rule}));
         $self->circ_matrix_matchpoint->hard_due_date($self->editor->retrieve_config_hard_due_date($results->[0]->{hard_due_date}));
+        # Grab the *last* response for limit_groups, where it is more likely to be filled
+        $self->limit_groups($results->[-1]->{limit_groups});
     }
 
     return $self->matrix_test_result($results);
@@ -1486,6 +1489,10 @@ sub do_checkout {
 
     # refresh the circ to force local time zone for now
     $self->circ($self->editor->retrieve_action_circulation($self->circ->id));
+
+    if($self->limit_groups) {
+        $self->editor->json_query({ from => ['action.link_circ_limit_groups', $self->circ->id, $self->limit_groups] });
+    }
 
     $self->copy->status(OILS_COPY_STATUS_CHECKED_OUT);
     $self->update_copy;

@@ -86,19 +86,62 @@ CREATE TABLE config.circ_matrix_matchpoint (
 -- Nulls don't count for a constraint match, so we have to coalesce them into something that does.
 CREATE UNIQUE INDEX ccmm_once_per_paramset ON config.circ_matrix_matchpoint (org_unit, grp, COALESCE(circ_modifier, ''), COALESCE(marc_type, ''), COALESCE(marc_form, ''), COALESCE(marc_bib_level,''), COALESCE(marc_vr_format, ''), COALESCE(copy_circ_lib::TEXT, ''), COALESCE(copy_owning_lib::TEXT, ''), COALESCE(user_home_ou::TEXT, ''), COALESCE(ref_flag::TEXT, ''), COALESCE(juvenile_flag::TEXT, ''), COALESCE(is_renewal::TEXT, ''), COALESCE(usr_age_lower_bound::TEXT, ''), COALESCE(usr_age_upper_bound::TEXT, ''), COALESCE(item_age::TEXT, '')) WHERE active;
 
--- Tests for max items out by circ_modifier
-CREATE TABLE config.circ_matrix_circ_mod_test (
-    id          SERIAL     PRIMARY KEY,
-    matchpoint  INT     NOT NULL REFERENCES config.circ_matrix_matchpoint (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-    items_out   INT     NOT NULL -- Total current active circulations must be less than this, NULL means skip (always pass)
+-- Limit groups for circ counting
+CREATE TABLE config.circ_limit_group (
+    id          SERIAL  PRIMARY KEY,
+    name        TEXT    UNIQUE NOT NULL,
+    description TEXT
 );
 
-CREATE TABLE config.circ_matrix_circ_mod_test_map (
-    id      SERIAL  PRIMARY KEY,
-    circ_mod_test   INT NOT NULL REFERENCES config.circ_matrix_circ_mod_test (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-    circ_mod        TEXT    NOT NULL REFERENCES config.circ_modifier (code) ON DELETE CASCADE ON UPDATE CASCADE  DEFERRABLE INITIALLY DEFERRED,
-    CONSTRAINT cm_once_per_test UNIQUE (circ_mod_test, circ_mod)
+-- Limit sets
+CREATE TABLE config.circ_limit_set (
+    id          SERIAL  PRIMARY KEY,
+    name        TEXT    UNIQUE NOT NULL,
+    owning_lib  INT     NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+    items_out   INT     NOT NULL, -- Total current active circulations must be less than this. 0 means skip counting (always pass)
+    depth       INT     NOT NULL DEFAULT 0, -- Depth count starts at
+    global      BOOL    NOT NULL DEFAULT FALSE, -- If enabled, include everything below depth, otherwise ancestors/descendants only
+    description TEXT
 );
+
+-- Linkage between matchpoints and limit sets
+CREATE TABLE config.circ_matrix_limit_set_map (
+    id          SERIAL  PRIMARY KEY,
+    matchpoint  INT     NOT NULL REFERENCES config.circ_matrix_matchpoint (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    limit_set   INT     NOT NULL REFERENCES config.circ_limit_set (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    fallthrough BOOL    NOT NULL DEFAULT FALSE, -- If true fallthrough will grab this rule as it goes along
+    active      BOOL    NOT NULL DEFAULT TRUE,
+    CONSTRAINT circ_limit_set_once_per_matchpoint UNIQUE (matchpoint, limit_set)
+);
+
+-- Linkage between limit sets and circ mods
+CREATE TABLE config.circ_limit_set_circ_mod_map (
+    id          SERIAL  PRIMARY KEY,
+    limit_set   INT     NOT NULL REFERENCES config.circ_limit_set (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    circ_mod    TEXT    NOT NULL REFERENCES config.circ_modifier (code) ON DELETE CASCADE ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    CONSTRAINT cm_once_per_set UNIQUE (limit_set, circ_mod)
+);
+
+-- Linkage between limit sets and limit groups
+CREATE TABLE config.circ_limit_set_group_map (
+    id          SERIAL  PRIMARY KEY,
+    limit_set    INT     NOT NULL REFERENCES config.circ_limit_set (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    limit_group INT     NOT NULL REFERENCES config.circ_limit_group (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    check_only  BOOL    NOT NULL DEFAULT FALSE, -- If true, don't accumulate this limit_group for storing with the circulation
+    CONSTRAINT clg_once_per_set UNIQUE (limit_set, limit_group)
+);
+
+-- Linkage between limit groups and circulations
+CREATE TABLE action.circulation_limit_group_map (
+    circ        BIGINT      NOT NULL REFERENCES action.circulation (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    limit_group INT         NOT NULL REFERENCES config.circ_limit_group (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    PRIMARY KEY (circ, limit_group)
+);
+
+-- Function for populating the circ/limit group mappings
+CREATE OR REPLACE FUNCTION action.link_circ_limit_groups ( BIGINT, INT[] ) RETURNS VOID AS $func$
+    INSERT INTO action.circulation_limit_group_map(circ, limit_group) SELECT $1, id FROM config.circ_limit_group WHERE id IN (SELECT * FROM UNNEST($2));
+$func$ LANGUAGE SQL;
 
 CREATE TYPE action.found_circ_matrix_matchpoint AS ( success BOOL, matchpoint config.circ_matrix_matchpoint, buildrows INT[] );
 
@@ -355,7 +398,7 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
-CREATE TYPE action.circ_matrix_test_result AS ( success BOOL, fail_part TEXT, buildrows INT[], matchpoint INT, circulate BOOL, duration_rule INT, recurring_fine_rule INT, max_fine_rule INT, hard_due_date INT, renewals INT, grace_period INTERVAL );
+CREATE TYPE action.circ_matrix_test_result AS ( success BOOL, fail_part TEXT, buildrows INT[], matchpoint INT, circulate BOOL, duration_rule INT, recurring_fine_rule INT, max_fine_rule INT, hard_due_date INT, renewals INT, grace_period INTERVAL, limit_groups INT[] );
 CREATE OR REPLACE FUNCTION action.item_user_circ_test( circ_ou INT, match_item BIGINT, match_user INT, renewal BOOL ) RETURNS SETOF action.circ_matrix_test_result AS $func$
 DECLARE
     user_object             actor.usr%ROWTYPE;
@@ -366,8 +409,7 @@ DECLARE
     result                  action.circ_matrix_test_result;
     circ_test               action.found_circ_matrix_matchpoint;
     circ_matchpoint         config.circ_matrix_matchpoint%ROWTYPE;
-    out_by_circ_mod         config.circ_matrix_circ_mod_test%ROWTYPE;
-    circ_mod_map            config.circ_matrix_circ_mod_test_map%ROWTYPE;
+    circ_limit_set          config.circ_limit_set%ROWTYPE;
     hold_ratio              action.hold_stats%ROWTYPE;
     penalty_type            TEXT;
     items_out               INT;
@@ -466,7 +508,7 @@ BEGIN
     END IF;
 
     -- Use Circ OU for penalties and such
-    SELECT INTO context_org_list ARRAY_ACCUM(id) FROM actor.org_unit_full_path( circ_ou );
+    SELECT INTO context_org_list ARRAY_AGG(id) FROM actor.org_unit_full_path( circ_ou );
 
     IF renewal THEN
         penalty_type = '%RENEW%';
@@ -521,25 +563,50 @@ BEGIN
         END IF;
     END IF;
 
-    -- Fail if the user has too many items with specific circ_modifiers checked out
-    IF NOT renewal THEN
-        FOR out_by_circ_mod IN SELECT * FROM config.circ_matrix_circ_mod_test WHERE matchpoint = circ_matchpoint.id LOOP
-            SELECT  INTO items_out COUNT(*)
-              FROM  action.circulation circ
-                JOIN asset.copy cp ON (cp.id = circ.target_copy)
-              WHERE circ.usr = match_user
-                   AND circ.circ_lib IN ( SELECT * FROM unnest(context_org_list) )
-                AND circ.checkin_time IS NULL
-                AND (circ.stop_fines IN ('MAXFINES','LONGOVERDUE') OR circ.stop_fines IS NULL)
-                AND cp.circ_modifier IN (SELECT circ_mod FROM config.circ_matrix_circ_mod_test_map WHERE circ_mod_test = out_by_circ_mod.id);
-            IF items_out >= out_by_circ_mod.items_out THEN
-                result.fail_part := 'config.circ_matrix_circ_mod_test';
-                result.success := FALSE;
-                done := TRUE;
-                RETURN NEXT result;
+    -- Fail if the user has too many items out by defined limit sets
+    FOR circ_limit_set IN SELECT ccls.* FROM config.circ_limit_set ccls
+      JOIN config.circ_matrix_limit_set_map ccmlsm ON ccmlsm.limit_set = ccls.id
+      WHERE ccmlsm.active AND ( ccmlsm.matchpoint = circ_matchpoint.id OR
+        ( ccmlsm.matchpoint IN (SELECT * FROM unnest(result.buildrows)) AND ccmlsm.fallthrough )
+        ) LOOP
+            IF circ_limit_set.items_out > 0 AND NOT renewal THEN
+                SELECT INTO context_org_list ARRAY_AGG(aou.id)
+                  FROM actor.org_unit_full_path( circ_ou ) aou
+                    JOIN actor.org_unit_type aout ON aou.ou_type = aout.id
+                  WHERE aout.depth >= circ_limit_set.depth;
+                IF circ_limit_set.global THEN
+                    WITH RECURSIVE descendant_depth AS (
+                        SELECT  ou.id,
+                            ou.parent_ou
+                        FROM  actor.org_unit ou
+                        WHERE ou.id IN (SELECT * FROM unnest(context_org_list))
+                            UNION
+                        SELECT  ou.id,
+                            ou.parent_ou
+                        FROM  actor.org_unit ou
+                            JOIN descendant_depth ot ON (ot.id = ou.parent_ou)
+                    ) SELECT INTO context_org_list ARRAY_AGG(ou.id) FROM actor.org_unit ou JOIN descendant_depth USING (id);
+                END IF;
+                SELECT INTO items_out COUNT(DISTINCT circ.id)
+                  FROM action.circulation circ
+                    JOIN asset.copy copy ON (copy.id = circ.target_copy)
+                    LEFT JOIN action.circulation_limit_group_map aclgm ON (circ.id = aclgm.circ)
+                  WHERE circ.usr = match_user
+                    AND circ.circ_lib IN (SELECT * FROM unnest(context_org_list))
+                    AND circ.checkin_time IS NULL
+                    AND (circ.stop_fines IN ('MAXFINES','LONGOVERDUE') OR circ.stop_fines IS NULL)
+                    AND (copy.circ_modifier IN (SELECT circ_mod FROM config.circ_limit_set_circ_mod_map WHERE limit_set = circ_limit_set.id)
+                        OR aclgm.limit_group IN (SELECT limit_group FROM config.circ_limit_set_group_map WHERE limit_set = circ_limit_set.id)
+                    );
+                IF items_out >= circ_limit_set.items_out THEN
+                    result.fail_part := 'config.circ_matrix_circ_mod_test';
+                    result.success := FALSE;
+                    done := TRUE;
+                    RETURN NEXT result;
+                END IF;
             END IF;
-        END LOOP;
-    END IF;
+            SELECT INTO result.limit_groups result.limit_groups || ARRAY_AGG(limit_group) FROM config.circ_limit_set_group_map WHERE limit_set = circ_limit_set.id AND NOT check_only;
+    END LOOP;
 
     -- If we passed everything, return the successful matchpoint
     IF NOT done THEN

@@ -149,7 +149,9 @@
     <command id="cmd_local_admin_patrons_due_refunds" />
     <command id="cmd_local_admin_copy_template" />
     <command id="cmd_local_admin_address_alert"
-             perm="ADMIN_ADDRESS_ALERT VIEW_ADDRESS_ALERT"
+             perm="ADMIN_ADDRESS_ALERT VIEW_ADDRESS_ALERT" />
+    <command id="cmd_local_admin_circ_limit_set"
+             perm="ADMIN_CIRC_MATRIX_MATCHPOINT VIEW_CIRC_MATRIX_MATCHPOINT"
              />
 
     <!-- server admin menu commands -->
@@ -194,6 +196,9 @@
     <command id="cmd_server_admin_z39_source" />
     <command id="cmd_server_admin_circ_mod" 
              perm="CREATE_CIRC_MOD DELETE_CIRC_MOD UPDATE_CIRC_MOD ADMIN_CIRC_MOD"
+             />
+    <command id="cmd_server_admin_circ_limit_group"
+             perm="ADMIN_CIRC_MATRIX_MATCHPOINT VIEW_CIRC_MATRIX_MATCHPOINT"
              />
     <command id="cmd_server_admin_global_flag"
              perm="ADMIN_GLOBAL_FLAG"
@@ -485,6 +490,7 @@
                 <menuitem label="&staff.server.admin.index.cash_reports;" command="cmd_local_admin_cash_reports"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.barcode_completion.label;" command="cmd_local_admin_barcode_completion"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.circ_matrix_matchpoint.label;" command="cmd_local_admin_circ_matrix_matchpoint"/>
+                <menuitem label="&staff.main.menu.admin.local_admin.circ_limit_set.label;" command="cmd_local_admin_circ_limit_set"/>
                 <menuitem label="&staff.server.admin.index.closed_dates;" command="cmd_local_admin_closed_dates"/>
                 <menuitem label="&staff.server.admin.index.copy_locations;" command="cmd_local_admin_copy_locations"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.copy_location_order.label;" command="cmd_local_admin_copy_location_order"/>
@@ -522,6 +528,7 @@
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.sms_carrier.label;" command="cmd_server_admin_sms_carrier"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.z3950_source.label;" command="cmd_server_admin_z39_source"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.circulation_modifier.label;" command="cmd_server_admin_circ_mod"/>
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.circulation_limit_group.label;" command="cmd_server_admin_circ_limit_group"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.global_flag.label;" command="cmd_server_admin_global_flag"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.import_match_set;" command="cmd_server_admin_import_match_set"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.org_unit_setting_type;" command="cmd_server_admin_org_unit_setting_type"/>
