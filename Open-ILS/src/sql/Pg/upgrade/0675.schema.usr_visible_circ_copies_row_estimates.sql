@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0675', :eg_version);
+
 -- set expected row count to low value to avoid problem
 -- where use of this function by the circ tagging feature
 -- results in full scans of asset.call_number
