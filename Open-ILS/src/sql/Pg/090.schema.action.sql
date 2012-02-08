@@ -699,7 +699,7 @@ $func$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION action.usr_visible_circ_copies( INTEGER ) RETURNS SETOF BIGINT AS $$
     SELECT DISTINCT(target_copy) FROM action.usr_visible_circs($1)
-$$ LANGUAGE SQL;
+$$ LANGUAGE SQL ROWS 10;
 
 CREATE OR REPLACE FUNCTION action.usr_visible_holds (usr_id INT) RETURNS SETOF action.hold_request AS $func$
 DECLARE
