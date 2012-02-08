@@ -9,6 +9,7 @@ dojo.require("dojo.io.iframe");
 dojo.require('openils.User');
 dojo.require('openils.widget.AutoFieldWidget');
 dojo.require('openils.acq.Picklist');
+dojo.require('openils.XUL');
 
 var VANDELAY_URL = '/vandelay-upload';
 var providerWidget;
@@ -117,21 +118,28 @@ function acqHandlePostUpload(key, plId) {
                         openils.Util.hide('acq-pl-upload-progress-bar');
                         openils.Util.show('acq-pl-upload-complete');
 
+                        function activateLink(link, url, name) {
+                            link = dojo.byId(link);
+                            openils.Util.show(link);
+                            if (name) link.innerHTML = name;
+                            if (typeof xulG == 'undefined') { // browser
+                                link.setAttribute('href', url); 
+                            } else {
+                                link.setAttribute('href', 'javascript:;'); // for linky-ness
+                                link.onclick = function() { openils.XUL.newTabEasy(url) };
+                            }
+                        }
+                            
                         if(res.picklist_url) {
-                            openils.Util.show('acq-pl-upload-complete-pl');
-                            dojo.byId('acq-pl-upload-complete-pl').setAttribute('href', res.picklist_url);
+                            activateLink('acq-pl-upload-complete-pl', res.picklist_url);
                         } 
 
                         if(res.po_url) {
-                            openils.Util.show('acq-pl-upload-complete-po');
-                            dojo.byId('acq-pl-upload-complete-po').setAttribute('href', res.po_url);
+                            activateLink('acq-pl-upload-complete-po', res.po_url);
                         }
 
                         if (res.queue_url) {
-                            link = dojo.byId('acq-pl-upload-complete-q');
-                            openils.Util.show(link);
-                            link.setAttribute('href', res.queue_url);
-                            link.innerHTML = resp.queue.name();
+                            activateLink('acq-pl-upload-complete-q', res.queue_url, resp.queue.name());
                         }
                     }
                 );
