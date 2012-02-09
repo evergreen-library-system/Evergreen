@@ -704,6 +704,13 @@ cat.copy_buckets.prototype = {
         var obj = this;
         try {
             var barcode = obj.controller.view.copy_bucket_barcode_entry_textbox.value;
+            var barcode_object = xulG.get_barcode(window, 'asset', barcode);
+            // user_false means the user said "None of the above", so abort without further prompts/actions
+            if(barcode_object == "user_false") return;
+            if(barcode_object && barcode_object.barcode) {
+                barcode = barcode_object.barcode;
+            }
+
             var copy_obj = obj.network.simple_request('FM_ACP_DETAILS_VIA_BARCODE',[ses(),barcode]);
             if (copy_obj == null) {
                 throw(document.getElementById('circStrings').getString('staff.circ.copy_status.status.null_result'));
