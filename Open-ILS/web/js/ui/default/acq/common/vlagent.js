@@ -1,4 +1,5 @@
 dojo.require('openils.widget.AutoFieldWidget');
+dojo.require('openils.PermaCrud');
 
 function VLAgent(args) {
     args = args || {};
@@ -34,7 +35,8 @@ function VLAgent(args) {
                         selfReference : true,
                         orgLimitPerms : [self.limitPerm || 'CREATE_PURCHASE_ORDER'],
                         parentNode : dojo.byId('acq_vl:' + widg.key),
-                        searchFilter : (widg.cls == 'vbq') ? {queue_type : 'acq'} : null
+                        searchFilter : (widg.cls == 'vbq') ? {queue_type : 'acq'} : null,
+                        useWriteStore :  (widg.cls == 'vbq')
                     }).build(function(dijit) { 
                         widg.dijit = dijit; 
                         self.attachOnChange(widg);
@@ -161,7 +163,20 @@ function VLAgent(args) {
             }
 
             if (resp.queue) {
-                res.queue_url = oilsBasePath + '/vandelay/vandelay?qtype=bib&qid=' + resp.queue.id();
+                var newQid = resp.queue.id();
+                res.queue_url = oilsBasePath + '/vandelay/vandelay?qtype=bib&qid=' + newQid;
+
+                var qInput = this.getDijit('queue_name');
+
+                if (newQName = qInput.attr('value')) {
+                    // user created a new queue.  Fetch the new queue object,
+                    // replace the ReadStore with a WriteStore and insert.
+                    qInput.attr('value', '');
+                    var qSelector = this.getDijit('existing_queue');
+                    var newQ = new openils.PermaCrud().retrieve('vbq', newQid);
+                    qSelector.store.newItem(newQ.toStoreItem());
+                    qSelector.attr('value', newQid);
+                }
             }
 
             if (oncomplete) 
