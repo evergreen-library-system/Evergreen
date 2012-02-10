@@ -1,5 +1,5 @@
 dump('entering auth/session.js\n');
-// vim:sw=4:ts=4:noet:
+// vim:sw=4:ts=4:et:
 
 if (typeof auth == 'undefined') auth = {};
 auth.session = function (view,login_type) {
@@ -43,8 +43,17 @@ auth.session.prototype = {
             }
 
             if (init || auth_proxy_enabled) {
-                if (xulG._data) { delete xulG._data; } // quick kludge; we were re-using a poisoned OpenILS.data (from ws_info.xul?) where js2JSON (and maybe other stuff) does not exist
-                JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
+                if (xulG._data) {
+                    /* quick kludge; we were re-using a poisoned OpenILS.data
+                     * (from ws_info.xul?) where js2JSON (and maybe other
+                     * stuff) does not exist
+                     */
+                    delete xulG._data;
+                }
+
+                JSAN.use('OpenILS.data');
+                var data = new OpenILS.data();
+                data.stash_retrieve();
 
                 var params = { 
                     'username' : this.view.name_prompt.value,
