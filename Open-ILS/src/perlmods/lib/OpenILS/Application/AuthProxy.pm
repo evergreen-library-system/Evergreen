@@ -57,9 +57,9 @@ sub initialize {
     my @pfx = ( "apps", "open-ils.auth", "app_settings", "auth_limits" );
 
     # read in (or set defaults) for brute force blocking settings
-    $seed_timeout = $conf->config_value( @pfx, "seed_timeout" );
+    $seed_timeout = $conf->config_value( @pfx, "seed" );
     $seed_timeout = 30 if (!$seed_timeout or $seed_timeout < 0);
-    $block_timeout = $conf->config_value( @pfx, "seed_timeout" );
+    $block_timeout = $conf->config_value( @pfx, "block_time" );
     $block_timeout = $seed_timeout * 3 if (!$block_timeout or $block_timeout < 0);
     $block_count = $conf->config_value( @pfx, "block_count" );
     $block_count = 10 if (!$block_count or $block_count < 0);
