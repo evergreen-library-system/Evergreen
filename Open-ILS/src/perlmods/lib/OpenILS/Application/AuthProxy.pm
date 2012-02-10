@@ -46,13 +46,14 @@ my $U = 'OpenILS::Application::AppUtils';
 my @authenticators;
 my %authenticators_by_name;
 my $enabled = 'false';
-my $cache = OpenSRF::Utils::Cache->new();
+my $cache;
 my $seed_timeout;
 my $block_timeout;
 my $block_count;
 
 sub initialize {
     my $conf = OpenSRF::Utils::SettingsClient->new;
+    $cache = OpenSRF::Utils::Cache->new();
 
     my @pfx = ( "apps", "open-ils.auth", "app_settings", "auth_limits" );
 

@@ -93,6 +93,7 @@ DEBS =  \
 	liblog-log4perl-perl\
 	libmarc-record-perl\
 	libncurses5-dev\
+	libnet-ldap-perl \
 	libnet-server-perl\
 	libnet-ssh2-perl\
 	libnspr4-dev\
@@ -188,6 +189,7 @@ FEDORA_RPMS = \
 	perl-Email-Simple \
 	perl-GDGraph3d \
 	perl-JSON-XS \
+	perl-LDAP \
 	perl-Locale-Codes \
 	perl-Net-IP \
 	perl-Net-SSH2 \
