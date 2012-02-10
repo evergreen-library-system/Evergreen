@@ -46,6 +46,9 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
          *      The fetched objects should be passed to the callback as an array
          *  disableQuery : dojo.data query passed to FilteringTreeSelect-based widgets to disable
          *      (but leave visible) certain options.  
+         *  useWriteStore : tells AFW to use a dojo.data.ItemFileWriteStore instead of a ReadStore for
+         *      data stores created with dynamic data.  This allows the caller to add/remove items from 
+         *      the store.
          */
         constructor : function(args) {
             for(var k in args)
@@ -102,6 +105,13 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             this.cache[this.auth] = this.cache[this.auth] || {};
             this.cache[this.auth].single = this.cache[this.auth].single || {};
             this.cache[this.auth].list = this.cache[this.auth].list || {};
+
+            if (this.useWriteStore) {
+                dojo.require('dojo.data.ItemFileWriteStore');
+                this.storeConstructor = dojo.data.ItemFileWriteStore;
+            } else {
+                this.storeConstructor = dojo.data.ItemFileReadStore;
+            }
         },
 
         /**
@@ -521,7 +531,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                         );
                     }
 
-                    self.widget.store = new dojo.data.ItemFileReadStore(storeData);
+                    self.widget.store = new self.storeConstructor(storeData);
                     self.cache[self.auth].list[linkClass] = self.widget.store;
 
                 } else {
@@ -703,7 +713,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                     var list = openils.Util.readResponse(r, false, true);
                     if(!list) return;
                     self.widget.store = 
-                        new dojo.data.ItemFileReadStore({data:fieldmapper.acpl.toStoreData(list)});
+                        new self.storeConstructor({data:fieldmapper.acpl.toStoreData(list)});
                     self.cache.copyLocStore = self.widget.store;
                     self.widget.startup();
                     self._widgetLoaded();
