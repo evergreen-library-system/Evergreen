@@ -1,4 +1,5 @@
 dojo.require('dojo.data.ItemFileReadStore');
+dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('dijit.ProgressBar');
 dojo.require('dijit.form.CheckBox');
 dojo.require('dijit.form.TextBox');
@@ -10,11 +11,13 @@ dojo.require('openils.User');
 dojo.require('openils.widget.AutoFieldWidget');
 dojo.require('openils.acq.Picklist');
 dojo.require('openils.XUL');
+dojo.require('openils.PermaCrud');
 
 var VANDELAY_URL = '/vandelay-upload';
 var providerWidget;
 var orderAgencyWidget;
 var vlAgent;
+var usingNewPl = false;
 
 function init() {
     dojo.byId('acq-pl-upload-ses').value = openils.User.authtoken;
@@ -47,7 +50,7 @@ function init() {
             oncomplete : function(r) {
                 var list = openils.Util.readResponse(r);
                 acqPlUploadPlSelector.store = 
-                    new dojo.data.ItemFileReadStore({data:acqpl.toStoreData(list)});
+                    new dojo.data.ItemFileWriteStore({data:acqpl.toStoreData(list)});
             }
         }
     );
@@ -64,11 +67,13 @@ function acqUploadRecords() {
             onComplete : function(items) {
                 if(items.length == 0) {
                     // create a new picklist for these items
+                    usingNewPl = true;
                     openils.acq.Picklist.create(
                         {name:picklist, org_unit: orderAgencyWidget.attr('value')},
                         function(plId) { acqSendUploadForm({picklist:plId}) }
                     );
                 } else {
+                    usingNewPl = false;
                     acqSendUploadForm({picklist:items[0].id[0]});
                 }
             }
@@ -132,6 +137,14 @@ function acqHandlePostUpload(key, plId) {
                             
                         if(res.picklist_url) {
                             activateLink('acq-pl-upload-complete-pl', res.picklist_url);
+
+                            // if the user entered a new picklist, refetch the set to pick
+                            // up the ID and redraw the list with the new one selected
+                            if (usingNewPl) {
+                                var newPl = new openils.PermaCrud().retrieve('acqpl', resp.picklist.id());
+                                acqPlUploadPlSelector.store.newItem(newPl.toStoreItem());
+                                acqPlUploadPlSelector.attr('value', newPl.name());
+                            }
                         } 
 
                         if(res.po_url) {
