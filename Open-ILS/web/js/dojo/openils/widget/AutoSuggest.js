@@ -5,6 +5,16 @@ if (!dojo._hasResource["openils.widget.AutoSuggest"]) {
     dojo.require("dijit.form.ComboBox");
     dojo.require("openils.AutoSuggestStore");
 
+    /* Here's a monkey patch to assist in making clicking on a suggestion lead
+     * directly to search. Relies on overridden _startSearch() in the widget
+     * below. */
+    var _orig_onMouseUp = dijit.form._ComboBoxMenu.prototype._onMouseUp;
+    dijit.form._ComboBoxMenu.prototype._onMouseUp = function(evt) {
+        if (this.parent_widget)
+            this.parent_widget.mouse_used_most_recently = true;
+        dojo.hitch(this, _orig_onMouseUp)(evt);
+    };
+
     dojo.declare(
         "openils.widget.AutoSuggest", [dijit.form.ComboBox], {
 
@@ -20,6 +30,8 @@ if (!dojo._hasResource["openils.widget.AutoSuggest"]) {
             "type_selector": null,  /* see openils.AutoSuggestStore for docs */
 
             "store_args": {},
+
+            "mouse_used_most_recently": false,
 
             "_update_search_type_selector": function(id) {  /* cmf id */
                 if (!this.store.cm_cache.is_done) {
@@ -51,17 +63,26 @@ if (!dojo._hasResource["openils.widget.AutoSuggest"]) {
                 }
             },
 
-            /* Something subtle is going on such that it's ungood to just
-             * declare the onKeyPress directly here, so we connect() it later.
-             */
-            "_local_onKeyPress": function(ev) {
-                if (ev.keyCode == dojo.keys.ENTER)
-                    this.submitter();
+            "_startSearch": function() {
+                this.inherited(arguments);
+                this._popupWidget.parent_widget = this;
             },
 
             "onChange": function(value) {
-                if (typeof value.field == "number")
+                if (typeof value.field == "number") {
                     this._update_search_type_selector(value.field);
+
+                    /* If onChange fires and the following condition is true,
+                     * it must mean that the user clicked on an actual
+                     * suggestion with the mouse.  To match the behavior
+                     * of well known autosuggesting things out there (like
+                     * with Google search), we should actually perform our
+                     * search now.  We also perform our search when the user
+                     * presses enter (handled elsewhere), but not when the user
+                     * selects something and tabs out.  */
+                    if (this.mouse_used_most_recently)
+                        this.submitter();
+                }
             },
 
             "postMixInProperties": function() {
@@ -85,7 +106,13 @@ if (!dojo._hasResource["openils.widget.AutoSuggest"]) {
             "postCreate": function() {
                 this.inherited(arguments);
 
-                dojo.connect(this, "onKeyPress", this, this._local_onKeyPress);
+                dojo.connect(
+                    this, "onKeyPress", this, function(evt) {
+                        this.mouse_used_most_recently = false;
+                        if (evt.keyCode == dojo.keys.ENTER)
+                            this.submitter();
+                    }
+                );
             }
         }
     );
