@@ -58,7 +58,7 @@ sub prepare_for_tsquery {
     $str =~ s/[^\w\s]/ /ig;
     $str .= ":*" unless $str =~ /\s$/;
 
-    return join(" & ", split(/\s+/, $str));
+    return join(" & ", grep(length, split(/\s+/, $str)));
 }
 
 # The third argument to our stored procedure, metabib.suggest_browse_entries(),
