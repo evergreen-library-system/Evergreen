@@ -831,7 +831,7 @@ function AcqLiTable() {
     }
 
     this.updateLiPrice = function(input, li) {
-
+        var self = this;
         var price = input.value;
         if(Number(price) == Number(li.estimated_unit_price())) return;
 
@@ -843,6 +843,20 @@ function AcqLiTable() {
                 oncomplete : function(r) {
                     openils.Util.readResponse(r);
                     li.estimated_unit_price(price); // update local copy
+
+                    /*
+                     * If this is a PO and every visible lineitem has a price,
+                     * check again to see if this PO can be activated.  Note that 
+                     * every visible lineitem having a price does not guarantee it can
+                     * be activated, which is why we still make the call.  Having a price
+                     * set for every visiable lineitem is just the lowest barrier to entry.
+                     */
+                    if (self.isPO) {
+                        var priceNodes = dojo.query('[name=price]', dojo.byId('acq-lit-tbody'));
+                        var allSet = true;
+                        dojo.forEach(priceNodes, function(node) { if (node.value == '') allSet = false});
+                        if (allSet) checkCouldActivatePo();
+                    }
                 }
             }
         );
