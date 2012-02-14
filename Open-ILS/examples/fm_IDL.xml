@@ -9479,6 +9479,37 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
+	<class id="acqus" controller="open-ils.cstore" oils_obj:fieldmapper="acq::unified_search" reporter:label="Acq Unified Search View" oils_persist:readonly="true">
+		<oils_persist:source_definition><![CDATA[
+		SELECT
+			jub.id AS lineitem,
+			po.id AS purchase_order,
+			pl.id AS picklist,
+			inv.id AS invoice
+		FROM acq.purchase_order po
+		FULL JOIN acq.lineitem jub ON (jub.purchase_order = po.id)
+		FULL JOIN acq.picklist pl ON (pl.id = jub.picklist)
+		LEFT JOIN acq.po_item poi ON (poi.purchase_order = po.id)
+		LEFT JOIN acq.invoice_item ii
+			ON (ii.po_item = poi.id OR ii.purchase_order = po.id)
+		LEFT JOIN acq.invoice_entry ie
+			ON (ie.lineitem = jub.id OR ie.purchase_order = po.id)
+		LEFT JOIN acq.invoice inv
+			ON (ie.invoice = inv.id OR ii.invoice = inv.id)
+		]]></oils_persist:source_definition>
+		<fields>
+			<field reporter:label="Lineitem ID" name="lineitem" reporter:datatype="link"/>
+			<field reporter:label="Purchase Order ID" name="purchase_order" reporter:datatype="link"/>
+			<field reporter:label="Picklist ID" name="picklist" reporter:datatype="link"/>
+			<field reporter:label="Invoice" name="invoice" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="lineitem" reltype="has_a" key="id" map="" class="jub" />
+			<link field="purchase_order" reltype="has_a" key="id" map="" class="acqpo" />
+			<link field="picklist" reltype="has_a" key="id" map="" class="acqpl" />
+			<link field="invoice" reltype="has_a" key="id" map="" class="acqinv" />
+		</links>
+	</class>
 	<class id="cbc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::barcode_completion" oils_persist:tablename="config.barcode_completion" reporter:label="Barcode Completions">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.barcode_completion_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id"/>

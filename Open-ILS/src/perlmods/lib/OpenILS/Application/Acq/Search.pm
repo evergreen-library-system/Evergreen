@@ -395,30 +395,12 @@ q/order_by clause must be of the long form, like:
 
     my $query = {
         "select" => $select_clause,
-        "from" => {
-            "jub" => {
-                "acqpo" => {
-                    "type" => "full",
-                    "field" => "id",
-                    "fkey" => "purchase_order"
-                },
-                "acqpl" => {
-                    "type" => "full",
-                    "field" => "id",
-                    "fkey" => "picklist"
-                },
-                "acqie" => {
-                    "type" => "full",
-                    "field" => "lineitem",
-                    "fkey" => "id",
-                    "join" => {
-                        "acqinv" => {
-                            "type" => "full",
-                            "fkey" => "invoice",
-                            "field" => "id"
-                        }
-                    }
-                }
+        from => {
+            acqus => {
+                jub => {type => "full"},
+                acqpo => {type => "full"},
+                acqpl => {type => "full"},
+                acqinv => {type => "full"}
             }
         },
         "order_by" => ($options->{"order_by"} || {$hint => {"id" => {}}}),
