@@ -294,8 +294,9 @@ sub delete_lineitem {
 }
 
 # begins and commit transactions as it goes
+# bib_only exits before creation of copies and callnumbers
 sub create_lineitem_list_assets {
-    my($mgr, $li_ids, $vandelay) = @_;
+    my($mgr, $li_ids, $vandelay, $bib_only) = @_;
 
     if (check_import_li_marc_perms($mgr, $li_ids)) { # event on error
         $logger->error("acq-vl: user does not have permission to import acq records");
@@ -304,6 +305,7 @@ sub create_lineitem_list_assets {
 
     my $res = import_li_bibs_via_vandelay($mgr, $li_ids, $vandelay);
     return undef unless $res;
+    return $res if $bib_only;
 
     # create the bibs/volumes/copies for the successfully imported records
     for my $li_id (@{$res->{li_ids}}) {
@@ -1417,7 +1419,7 @@ sub upload_records {
 
     } elsif ($vandelay) {
         $vandelay->{new_rec_perm} = 'IMPORT_ACQ_LINEITEM_BIB_RECORD_UPLOAD';
-        create_lineitem_list_assets($mgr, \@li_list, $vandelay) or return $e->die_event;
+        create_lineitem_list_assets($mgr, \@li_list, $vandelay, 1) or return $e->die_event;
     }
 
     return $mgr->respond_complete;
@@ -1675,7 +1677,7 @@ sub create_purchase_order_api {
     $e->xact_commit;
 
     if($li_ids and $vandelay) {
-        create_lineitem_list_assets($mgr, $li_ids, $vandelay) or return $e->die_event;
+        create_lineitem_list_assets($mgr, $li_ids, $vandelay, !$$args{create_assets}) or return $e->die_event;
     }
 
     return $mgr->respond_complete;
