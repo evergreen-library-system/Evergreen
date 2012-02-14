@@ -418,20 +418,20 @@ function new_match_set_tree() {
  * ],
  *
  */
-function dojoize_match_set_tree(point, refgen) {
+function dojoize_match_set_tree(point, depth) {
     var root = false;
-    if (!refgen) {
+    if (!depth) {
         if (!point) {
             return new_match_set_tree();
         }
-        refgen = 0;
+        depth = 0;
         root = true;
     }
 
     var bathwater = point.children();
     point.children([]);
     var item = {
-        "id": (root ? "root" : refgen),
+        "id": (root ? "root" : point.id()),
         "name": render_vmsp_label(point),
         "match_point": point.clone(),
         "children": []
@@ -443,9 +443,9 @@ function dojoize_match_set_tree(point, refgen) {
     if (point.children()) {
         for (var i = 0; i < point.children().length; i++) {
             var child = point.children()[i];
-            item.children.push({"_reference": ++refgen});
+            item.children.push({"_reference": child.id()});
             results = results.concat(
-                dojoize_match_set_tree(child, refgen)
+                dojoize_match_set_tree(child, ++depth)
             );
         }
     }
