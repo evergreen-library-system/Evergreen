@@ -32,3 +32,7 @@ pref("oils.use_tpac", false);
 
 // Copy location name first in copy editor
 pref("oils.copy_editor.copy_location_name_first", false);
+
+// Number of tabs that can be opened in Staff Client
+// NOTE: If the value is set to 0 or less, there is no limit to number of tabs.
+pref("open-ils.window_max_tabs", 0);
