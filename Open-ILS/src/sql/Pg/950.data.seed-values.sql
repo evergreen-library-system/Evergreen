@@ -6341,6 +6341,7 @@ The following items are 90 days overdue and have been marked LOST.
     Item Cost: [% helpers.get_copy_price(circ.target_copy) %]
     Total Owed For Transaction: [% circ.billable_transaction.summary.balance_owed %]
     Library: [% circ.circ_lib.name %]
+
 [% END %]
 
 $$);
@@ -7431,18 +7432,21 @@ Dear [% user.family_name %], [% user.first_given_name %]
 As a reminder, the following items are due in 3 days.
 
 [% FOR circ IN target %]
-    Title: [% circ.target_copy.call_number.record.simple_record.title %] 
+    [%- copy_details = helpers.get_copy_bib_basics(circ.target_copy.id) -%]
+    Title: [% copy_details.title %]
+    Author: [% copy_details.author %]
     Barcode: [% circ.target_copy.barcode %] 
     Due: [% date.format(helpers.format_date(circ.due_date), '%Y-%m-%d') %]
     Item Cost: [% helpers.get_copy_price(circ.target_copy) %]
     Library: [% circ.circ_lib.name %]
     Library Phone: [% circ.circ_lib.phone %]
+
 [% END %]
 
 $$);
 
 INSERT INTO action_trigger.environment (event_def, path) VALUES 
-    (6, 'target_copy.call_number.record.simple_record'),
+    (6, 'target_copy.call_number'),
     (6, 'usr'),
     (6, 'circ_lib.billing_address');
 
