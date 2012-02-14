@@ -1,8 +1,8 @@
 <div class="footer_wrapper">
-    <a href="javascript:;">Contact Us</a>
-    <a href="javascript:;">Site Help</a>
-    <a href="javascript:;">Site Map</a>
-    <a href="javascript:;">Back to Main KCLS Catalog</a>
+    <a href="javascript:;">[% l('Contact Us') %]</a>
+    <a href="javascript:;">[% l('Site Help') %]</a>
+    <a href="javascript:;">[% l('Site Map') %]</a>
+    <a href="[% mkurl(ctx.opac_root _ '/home') %]">[% l('Back to Main Catalog') %]</a>
     <div class="clear">&nbsp;</div>
 </div>
 
