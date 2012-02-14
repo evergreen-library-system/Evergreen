@@ -540,8 +540,13 @@ sub winter_starts_year {
     if ($freq =~ /^\d$/) {
         foreach my $pubpat (@$pubpats) {
             my $chroncode = substr($pubpat, 0, 1);
-            if ($chroncode eq 's' and substr($pubpat, 1, 2) == 24) {
-                return 1;        
+            if ($chroncode eq 's') {
+                # check first instance only
+                if (substr($pubpat, 1, 2) == 24) {
+                    return 1;
+                } else {
+                    return 0;
+                }
             }
         }
     }
