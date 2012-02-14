@@ -8454,6 +8454,142 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
+	<class id="acqmapinv" controller="open-ils.cstore" oils_obj:fieldmapper="acq::map_to_invoice" reporter:label="Acq Map to Invoice View" oils_persist:readonly="true">
+		<oils_persist:source_definition><![CDATA[
+		SELECT
+			poi.purchase_order AS purchase_order,
+			ii.invoice AS invoice,
+			NULL AS lineitem,
+			poi.id AS po_item,
+			NULL AS picklist
+		FROM
+			acq.po_item poi
+			JOIN acq.invoice_item ii ON (ii.po_item = poi.id)
+		UNION SELECT
+			jub.purchase_order AS purchase_order,
+			ie.invoice AS invoice,
+			jub.id AS lineitem,
+			NULL AS po_item,
+			jub.picklist AS picklist
+		FROM
+			acq.lineitem jub
+			JOIN acq.invoice_entry ie ON (ie.lineitem = jub.id)
+		UNION SELECT
+			ii.purchase_order AS purchase_order,
+			ii.invoice AS invoice,
+			NULL AS lineitem,
+			NULL AS po_item,
+			NULL AS picklist
+		FROM
+			acq.invoice_item ii
+		WHERE ii.po_item IS NULL
+		UNION SELECT
+			ie.purchase_order AS purchase_order,
+			ie.invoice AS invoice,
+			NULL AS lineitem,
+			NULL AS po_item,
+			NULL AS picklist
+		FROM
+			acq.invoice_entry ie
+		WHERE ie.lineitem IS NULL
+		UNION SELECT
+			NULL AS purchase_order,
+			NULL AS invoice,
+			jub.id AS lineitem,
+			NULL AS po_item,
+			jub.picklist AS picklist
+		FROM
+			acq.lineitem jub
+		WHERE jub.purchase_order IS NULL
+		]]></oils_persist:source_definition>
+		<fields>
+			<field reporter:label="Purchase Order ID" name="purchase_order" reporter:datatype="link"/>
+			<field reporter:label="Lineitem ID" name="lineitem" reporter:datatype="link"/>
+			<field reporter:label="Invoice ID" name="invoice" reporter:datatype="link"/>
+			<field reporter:label="Purchase Order Item ID" name="po_item" reporter:datatype="link"/>
+			<field reporter:label="Picklist ID" name="picklist" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="purchase_order" reltype="has_a" key="id" map="" class="acqpo" />
+			<link field="lineitem" reltype="has_a" key="id" map="" class="jub" />
+			<link field="invoice" reltype="has_a" key="id" map="" class="acqinv" />
+			<link field="po_item" reltype="has_a" key="id" map="" class="acqpoi" />
+			<link field="picklist" reltype="has_a" key="id" map="" class="acqpl" />
+		</links>
+	</class>
+	<class id="cbc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::barcode_completion" oils_persist:tablename="config.barcode_completion" reporter:label="Barcode Completions">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.barcode_completion_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Active" name="active" reporter:datatype="bool"/>
+			<field reporter:label="Owner" name="org_unit" reporter:datatype="org_unit"/>
+			<field reporter:label="Prefix" name="prefix" reporter:datatype="text"/>
+			<field reporter:label="Suffix" name="suffix" reporter:datatype="text"/>
+			<field reporter:label="Length" name="length" reporter:datatype="int"/>
+			<field reporter:label="Padding" name="padding" reporter:datatype="text"/>
+			<field reporter:label="Padding At End" name="padding_end" reporter:datatype="bool"/>
+			<field reporter:label="Applies to Items" name="asset" reporter:datatype="bool"/>
+			<field reporter:label="Applies to Users" name="actor" reporter:datatype="bool"/>
+		</fields>
+		<links>
+			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="UPDATE_ORG_UNIT_SETTING_ALL" context_field="org_unit"/>
+				<retrieve/>
+				<update permission="UPDATE_ORG_UNIT_SETTING_ALL" context_field="org_unit"/>
+				<delete permission="UPDATE_ORG_UNIT_SETTING_ALL" context_field="org_unit"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="coustl" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::org_unit_setting_type_log" oils_persist:tablename="config.org_unit_setting_type_log" reporter:label="Organizational Unit Setting Type Log">
+		<fields oils_persist:primary="date_applied" oils_persist:sequence="config.org_unit_setting_type_log_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field name="date_applied" reporter:datatype="timestamp"/>
+			<field name="org" reporter:datatype="org_unit"/>
+			<field name="original_value" reporter:datatype="text"/>
+			<field name="new_value" reporter:datatype="text"/>
+			<field name="field_name" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="field_name" reltype="has_a" key="name" map="" class="coust"/>
+			<link field="org" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_ORG_UNIT_SETTING_TYPE" context_field="org"/>
+				<retrieve/>
+				<update permission="ADMIN_ORG_UNIT_SETTING_TYPE_LOG" context_field="org"/>
+				<delete permission="ADMIN_ORG_UNIT_SETTING_TYPE_LOG" context_field="org"/>
+			</actions>
+		</permacrud>
+	</class>
+	<class id="aaactsc" controller="open-ils.reporter-store" oils_obj:fieldmapper="action::archive_actor_stat_cat" oils_persist:tablename="action.archive_actor_stat_cat" reporter:label="Circ-Archived Patron Statistical Category Entries">
+		<fields oils_persist:primary="id" oils_persist:sequence="action.archive_actor_stat_cat_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Circ" name="xact" reporter:datatype="link"/>
+			<field reporter:label="Statistical Category" name="stat_cat" reporter:datatype="link"/>
+			<field reporter:label="Entry Value" name="value" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="xact" reltype="has_a" key="id" map="" class="combcirc"/>
+			<link field="stat_cat" reltype="has_a" key="id" map="" class="actsc"/>
+		</links>
+	</class>
+	<class id="aaasc" controller="open-ils.reporter-store" oils_obj:fieldmapper="action::archive_asset_stat_cat" oils_persist:tablename="action.archive_asset_stat_cat" reporter:label="Circ-Archived Copy Statistical Category Entries">
+		<fields oils_persist:primary="id" oils_persist:sequence="action.archive_actor_stat_cat_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Circ" name="xact" reporter:datatype="link"/>
+			<field reporter:label="Statistical Category" name="stat_cat" reporter:datatype="link"/>
+			<field reporter:label="Entry Value" name="value" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="xact" reltype="has_a" key="id" map="" class="combcirc"/>
+			<link field="stat_cat" reltype="has_a" key="id" map="" class="asc"/>
+		</links>
+	</class>
+
 
 	<!-- ********************************************************************************************************************* -->
 
