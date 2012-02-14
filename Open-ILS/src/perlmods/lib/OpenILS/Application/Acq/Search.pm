@@ -156,12 +156,16 @@ sub get_fm_links_by_hint {
 
 sub gen_au_term {
     my ($value, $n) = @_;
+    my $lc_value = {
+        "=" => { transform => "lowercase", value => lc($value) }
+    };
+
     +{
         "-or" => [
             {"+au$n" => {"usrname" => $value}},
-            {"+au$n" => {"first_given_name" => $value}},
-            {"+au$n" => {"second_given_name" => $value}},
-            {"+au$n" => {"family_name" => $value}},
+            {"+au$n" => {"first_given_name" => $lc_value}},
+            {"+au$n" => {"second_given_name" => $lc_value}},
+            {"+au$n" => {"family_name" => $lc_value}},
             {"+ac$n" => {"barcode" => $value}}
         ]
     };
@@ -262,19 +266,13 @@ sub prepare_terms {
 }
 
 sub add_au_joins {
-    my ($from) = shift;
+    my $graft_map = shift;
+    my $core_hint = shift;
 
     my $n = 0;
     foreach my $join (@_) {
         my ($hint, $attr, $num) = @$join;
-        my $start;
-        if ($hint eq "jub") {
-            $start = $from->{$hint};
-        } elsif ($hint eq "acqinv") {
-            $start = $from->{"jub"}->{"acqie"}->{"join"}->{$hint};
-        } else {
-            $start = $from->{"jub"}->{$hint};
-        }
+        my $start = $graft_map->{$hint};
         my $clause = {
             "class" => "au",
             "type" => "left",
@@ -289,15 +287,62 @@ sub add_au_joins {
                 }
             }
         };
-        if ($hint eq "jub") {
+
+        if ($hint eq $core_hint) {
             $start->{"au$num"} = $clause;
         } else {
             $start->{"join"} ||= {};
             $start->{"join"}->{"au$num"} = $clause;
         }
+
         $n++;
     }
     $n;
+}
+
+sub build_from_clause_and_joins {
+    my ($query, $core, $and_terms, $or_terms) = @_;
+
+    my %graft_map = ();
+
+    $graft_map{$core} = $query->{from}{$core} = {};
+
+    my $join_type = keys(%$or_terms) ? "left" : "inner";
+
+    my @classes = grep { $core ne $_ } (keys(%$and_terms), keys(%$or_terms));
+    my %classes_uniq = map { $_ => 1 } @classes;
+    @classes = keys(%classes_uniq);
+
+    my $acqlia_join = sub {
+        return {"type" => "left", "field" => "lineitem", "fkey" => "id"};
+    };
+
+    foreach my $class (@classes) {
+        if ($class eq 'acqlia') {
+            if ($core eq 'acqinv') {
+                $graft_map{acqlia} =
+                    $query->{from}{$core}{acqmapinv}{join}{jub}{join}{acqlia} =
+                    $acqlia_join->();
+            } elsif ($core eq 'jub') {
+                $graft_map{acqlia} = 
+                    $query->{from}{$core}{acqlia} =
+                    $acqlia_join->();
+            } else {
+                $graft_map{acqlia} = 
+                    $query->{from}{$core}{jub}{join}{acqlia} =
+                    $acqlia_join->();
+            }
+        } elsif ($class eq 'acqinv' or $core eq 'acqinv') {
+            $graft_map{$class} =
+                $query->{from}{$core}{acqmapinv}{join}{$class} ||= {};
+            $graft_map{$class}{type} = $join_type;
+        } else {
+            $graft_map{$class} = $query->{from}{$core}{$class} ||= {};
+            $graft_map{$class}{type} = $join_type;
+        }
+    }
+
+    return \%graft_map;
 }
 
 __PACKAGE__->register_method(
@@ -394,54 +439,22 @@ q/order_by clause must be of the long form, like:
     }
 
     my $query = {
-        "select" => $select_clause,
-        "from" => {
-            "jub" => {
-                "acqpo" => {
-                    "type" => "full",
-                    "field" => "id",
-                    "fkey" => "purchase_order"
-                },
-                "acqpl" => {
-                    "type" => "full",
-                    "field" => "id",
-                    "fkey" => "picklist"
-                },
-                "acqie" => {
-                    "type" => "full",
-                    "field" => "lineitem",
-                    "fkey" => "id",
-                    "join" => {
-                        "acqinv" => {
-                            "type" => "full",
-                            "fkey" => "invoice",
-                            "field" => "id"
-                        }
-                    }
-                }
-            }
-        },
-        "order_by" => ($options->{"order_by"} || {$hint => {"id" => {}}}),
-        "offset" => ($options->{"offset"} || 0)
+        select => $select_clause,
+        order_by => ($options->{order_by} || {$hint => {id => {}}}),
+        offset => ($options->{offset} || 0)
     };
 
     $query->{"limit"} = $options->{"limit"} if $options->{"limit"};
 
-    # XXX for the future? but it doesn't quite work as is.
-#    # Remove anything in temporary picklists from search results.
-#    $and_terms ||= {};
-#    $and_terms->{"acqpl"} ||= [];
-#    push @{$and_terms->{"acqpl"}}, {"name" => "", "__not" => 1};
+    my $graft_map = build_from_clause_and_joins(
+        $query, $hint, $and_terms, $or_terms
+    );
 
     $and_terms = prepare_terms($and_terms, 1);
-    $or_terms = prepare_terms($or_terms, 0) and do {
-        $query->{"from"}->{"jub"}->{"acqlia"} = {
-            "type" => "left", "field" => "lineitem", "fkey" => "id",
-        };
-    };
+    $or_terms = prepare_terms($or_terms, 0);
 
-    my $offset = add_au_joins($query->{"from"}, prepare_au_terms($and_terms));
-    add_au_joins($query->{"from"}, prepare_au_terms($or_terms, $offset));
+    my $offset = add_au_joins($graft_map, $hint, prepare_au_terms($and_terms));
+    add_au_joins($graft_map, $hint, prepare_au_terms($or_terms, $offset));
 
     if ($and_terms and $or_terms) {
         $query->{"where"} = {
