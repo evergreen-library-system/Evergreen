@@ -199,3 +199,9 @@
 853 20 $834$av.$bno.$u12$vr$i(year)$j(month)$wm$ycm12/01$yce22/3
 863 41 $834.1$a24$b1$i2011$j11$x|a24|b2/3|i2011/2012|j12/01$zNov. to Combined Dec./Jan.
 863 41 $834.2$a24$b2/3$i2011/2012$j12/1$x|a24|b4|i2012|j02$zCombined Dec./Jan. to Feb.
+
+# Winter does NOT start the calendar year, separate subfield 'y'
+245 00 $aWinter does NOT start the calendar year, separate subfield 'y'
+853 20 $835$av.$bno.$u4$vr$i(year)$j(season)$w4$yps21$yps22$yps23$yps24
+863 41 $835.1$a1$b4$i2010$j23$x|a2|b1|i2010|j24$zAutumn 2010 to Winter 2010 (separate 'y')
+863 41 $835.2$a2$b1$i2010$j24$x|a2|b2|i2011|j21$zWinter 2010 to Spring 2011 (separate 'y')
