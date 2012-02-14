@@ -6315,7 +6315,7 @@ INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, vali
     VALUES (2, 'f', 1, '90 Day Overdue Mark Lost', 'checkout.due', 'CircIsOverdue', 'MarkItemLost', '90 days', 'due_date');
 
 INSERT INTO action_trigger.event_params (event_def, param, value) VALUES
-    (2, 'editor', '\'1\'');
+    (2, 'editor', '''1''');
 
 -- Sample Auto Mark Lost Notice --
 
@@ -6335,7 +6335,7 @@ The following items are 90 days overdue and have been marked LOST.
     [%- copy_details = helpers.get_copy_bib_basics(circ.target_copy.id) -%]
     Title: [% copy_details.title %], by [% copy_details.author %]
     Call Number: [% circ.target_copy.call_number.label %]
-    Shelving Location: [% circ.target_copy.location.name %
+    Shelving Location: [% circ.target_copy.location.name %]
     Barcode: [% circ.target_copy.barcode %]
     Due: [% date.format(helpers.format_date(circ.due_date), '%Y-%m-%d') %]
     Item Cost: [% helpers.get_copy_price(circ.target_copy) %]
@@ -6351,7 +6351,7 @@ INSERT INTO action_trigger.environment (event_def, path) VALUES
     (3, 'target_copy.call_number'),
     (3, 'usr'),
     (3, 'billable_transaction.summary'),
-    (3, 'circ_lib.billing_address')
+    (3, 'circ_lib.billing_address'),
     (3, 'target_copy.location');
 
 
