@@ -25,28 +25,24 @@ sub load {
     my $path = $self->apache->path_info;
     ($self->ctx->{page} = $path) =~ s#.*/(.*)#$1#g;
 
-    return $self->load_simple("index") if $path =~ m|kpac/index|;
+    return $self->load_simple("home") if $path =~ m|kpac/home|;
     return $self->load_simple("category") if $path =~ m|kpac/category|;
-
-    # note: sets page=rresult
-    return $self->load_rresults if $path =~ m|kpac/search_results|; # inherited from tpac
-
-    # note: sets page=record
-    return $self->load_record(no_search => 1) if $path =~ m|kpac/detailed|;
+    return $self->load_rresults if $path =~ m|kpac/results|; # inherited 
+    return $self->load_record(no_search => 1) if $path =~ m|kpac/record|; # inherited
 
     # ----------------------------------------------------------------
     #  Everything below here requires SSL
     # ----------------------------------------------------------------
     return $self->redirect_ssl unless $self->cgi->https;
 
-    if ($path =~ m|kpac/checkout|) {
+    # XXX auth vs. no-auth, pending list answers
+    return $self->load_simple("getit_results") if $path =~ m|kpac/getit_results|;
+
+    if ($path =~ m|kpac/getit|) { # after getit_results
         my $stat = $self->load_record(no_search => 1);
-        $self->ctx->{page} = 'checkout'; # repair the page
+        $self->ctx->{page} = 'getit'; # repair the page
         return $stat;
     }
-
-    # XXX auth vs. no-auth, pending list answers
-    return $self->load_simple("checkout_results") if $path =~ m|kpac/checkout_results|;
 
     # ----------------------------------------------------------------
     #  Everything below here requires authentication
@@ -89,6 +85,4 @@ sub load_kpac_config {
 }
 
 
-
 1;
-

@@ -104,7 +104,7 @@
     <table cellpadding="0" cellspacing="0" border="0" width="100%">
         <tr>
             [%  # in the absence of a sane referer, return to the detail page
-                url = ctx.kpac_root _ (ctx.referer.match('search_results') ? '/search_results' : '/detailed/' _ ctx.bre_id) %]
+                url = ctx.kpac_root _ (ctx.referer.match('results') ? '/results' : '/record/' _ ctx.bre_id) %]
             <td><a href="[% mkurl(url) %]"><img src="[% ctx.media_prefix %]/images/kpac/cancel_back_btn.png" /></a></td>
             <td width="100%" class="nav_mid_bg">&nbsp;</td>
         </tr>

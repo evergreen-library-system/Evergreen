@@ -6,12 +6,12 @@
                 img_src = ctx.media_prefix _ '/opac/extras/ac/jacket/medium/' _ ident;
             END;
         %]
-        <a href="[% mkurl(ctx.kpac_root _ '/detailed/' _ rec_id) %]"><img 
+        <a href="[% mkurl(ctx.kpac_root _ '/record/' _ rec_id) %]"><img 
             alt="[% l('Image of item') %]" width="167"
             src='[% mkurl(img_src, {}, 1) %]' /></a><br />
     </div>
     <div class="item_detail_info">
-        <div class="item_detail_name"><a href="[% mkurl(ctx.kpac_root _ '/detailed/' _ rec_id) %]">[% attrs.title %]</a></div>
+        <div class="item_detail_name"><a href="[% mkurl(ctx.kpac_root _ '/record/' _ rec_id) %]">[% attrs.title %]</a></div>
         <div class="item_detail_author">[% l('by [_1]', attrs.author) %]</div>
         <div class="item_detail_callnumber">[% attrs.holdings.0.label | html %]</div>
         <div class="item_detail_extra_info">
@@ -20,9 +20,9 @@
         </div>
         [% IF show_actions %]
         <div class="item_detail_actions">
-            <div class="button"><a href="[% mkurl(ctx.kpac_root _ '/detailed/' _ rec_id) %]"><img 
+            <div class="button"><a href="[% mkurl(ctx.kpac_root _ '/record/' _ rec_id) %]"><img 
                 src="[% ctx.media_prefix %]/images/kpac/more_info_btn.png" alt="more info" /></a></div>
-            <div class="button"><a href="[% mkurl(ctx.kpac_root _ '/checkout/' _ rec_id) %]"><img 
+            <div class="button"><a href="[% mkurl(ctx.kpac_root _ '/getit/' _ rec_id) %]"><img 
                 src="[% ctx.media_prefix %]/images/kpac/get_it_btn_sm.png" alt="get it" /></a></div>
             <div class="clear">&nbsp;</div>
         </div>

@@ -1,7 +1,7 @@
 <div class="breadcrumb">
 
     <!-- home page -->
-    <a href="[% mkurl(ctx.kpac_root _ '/index', {}, ['trail', 'page']) %]" 
+    <a href="[% mkurl(ctx.kpac_root _ '/home', {}, ['trail', 'page']) %]" 
         class="bread_home"><img alt="[% l('Home') %]" 
         src="[% ctx.media_prefix %]/images/kpac/home_icon.png" /></a>
 
@@ -19,7 +19,7 @@
 
         <!-- search results -->
         <div class="bread_green_mid">&nbsp;</div>
-        <a href="[% mkurl(ctx.kpac_root _ '/search_results') %]">[% l('search results') | html %]</a>
+        <a href="[% mkurl(ctx.kpac_root _ '/results') %]">[% l('search results') | html %]</a>
 
         [% IF ctx.page != 'rresult' %]
 

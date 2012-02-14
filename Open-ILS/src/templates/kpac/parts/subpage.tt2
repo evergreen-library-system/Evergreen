@@ -1,6 +1,6 @@
 [% PROCESS 'kpac/parts/util.tt2'; WRAPPER "kpac/parts/base.tt2" %]
 
-<!-- subpage is the main wrapper page for everything except 'index' -->
+<!-- subpage is the main wrapper page for everything except 'home' -->
 
 <div class="main_top_shadow_sub">
     <div class="main_mid_top_sub">

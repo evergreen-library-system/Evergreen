@@ -31,7 +31,7 @@
 
             <div class="item_detail_rate_wrapper">
                 <!-- TODO chilifresh, etc. -->
-                <div class="item_detail_rate_starts"><img alt="rating" src="[% ctx.media_prefix %]/images/kpac/stars!.png" /></div>
+                <div class="item_detail_rate_starts"><img alt="rating" src="[% ctx.media_prefix %]/images/kpac/stars.png" /></div>
                 <div class="item_detail_rate_link"><a href="javascript:;">Rate this</a></div>
                 <div class="clear">&nbsp;</div>
 
@@ -48,11 +48,11 @@
     </div>
 
     <div class="item_detail_header_buttons">
-        <div class="item_detail_getit_btn"><a href="[% mkurl(ctx.kpac_root _ '/checkout/' _ ctx.bre_id) %]"><img 
+        <div class="item_detail_getit_btn"><a href="[% mkurl(ctx.kpac_root _ '/getit/' _ ctx.bre_id) %]"><img 
             alt="[% l('Get it') | html %]" src="[% ctx.media_prefix %]/images/kpac/get_it_btn.png" /></a>
         </div>
         <div class="item_detail_goback_btn">
-            <a href="[% mkurl(ctx.kpac_root _ '/search_results') %]"><img 
+            <a href="[% mkurl(ctx.kpac_root _ '/results') %]"><img 
                 alt="[% l('Go Back') | html %]" src="[% ctx.media_prefix %]/images/kpac/go_back_btn.png" /></a>
         </div>
     </div>
@@ -87,7 +87,7 @@
         <table cellpadding="0" cellspacing="0" border="0" class="item_avg_rate_table">
             <tr>
                 <td class="avg_rate">Average Rating</td>
-                <td class="stars"><img alt="rating" src="[% ctx.media_prefix %]/images/kpac/stars!.png" /></td>
+                <td class="stars"><img alt="rating" src="[% ctx.media_prefix %]/images/kpac/stars.png" /></td>
                 <td class="total_rates">out of 132 reviews</td>
             </tr>
         </table>
@@ -109,7 +109,7 @@
         <div class="item_detail_rating2">
             <table cellpadding="0" cellspacing="0" border="0" class="item_avg_rate_table2"><tr>
                     <td class="rate">Rating</td>
-                    <td class="stars"><img alt="rating" src="[% ctx.media_prefix %]/images/kpac/stars!_gray.png" /></td>
+                    <td class="stars"><img alt="rating" src="[% ctx.media_prefix %]/images/kpac/stars_gray.png" /></td>
                     <td class="scale">1 = Poor, 5 = Awesome</td>
                 </tr>
             </table>

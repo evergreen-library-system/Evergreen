@@ -15,7 +15,7 @@
     <div class="header_menu">
         <!-- menu rendered in reverse order -->
         [% IF ctx.user %]
-            [% redir = CGI.url('-base' => 1) _ ctx.kpac_root _ '/index' %]
+            [% redir = CGI.url('-base' => 1) _ ctx.kpac_root _ '/home' %]
             <a href="[% mkurl(ctx.logout_page, 
                 {redirect_to => redir.replace('^https:', 'http:')}, 1) %]">[% l('Logout') %]</a>
         [% ELSE %]
