@@ -376,6 +376,10 @@ sub update_patron {
 	if($patron->isnew()) {
 		( $new_patron, $evt ) = _add_patron($session, _clone_patron($patron), $user_obj);
 		return $evt if $evt;
+		if($U->is_true($patron->barred)) {
+			$evt = $U->check_perms($user_obj->id, $patron->home_ou, 'BAR_PATRON');
+			return $evt if $evt;
+		}
 	} else {
         $new_patron = $patron;
 
@@ -384,6 +388,10 @@ sub update_patron {
         $old_patron = $e->retrieve_actor_user($patron->id) or
             return $e->die_event;
         $e->disconnect;
+        if($U->is_true($old_patron->barred) != $U->is_true($new_patron->barred)) {
+            $evt = $U->check_perms($user_obj->id, $patron->home_ou, $U->is_true($old_patron->barred) ? 'UNBAR_PATRON' : 'BAR_PATRON');
+            return $evt if $evt;
+        }
     }
 
 	( $new_patron, $evt ) = _add_update_addresses($session, $patron, $new_patron, $user_obj);

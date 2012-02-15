@@ -850,7 +850,27 @@ function fleshFMRow(row, fmcls, args) {
 
     var fmObject = null;
     switch(fmcls) {
-        case 'au' : fmObject = patron; break;
+        case 'au' :
+            fmObject = patron;
+            if(fmfield == 'barred') {
+                // Are we allowed to touch the barred state?
+                var permission = 'BAR_PATRON';
+                if(fmObject.barred() == 't') {
+                    permission = 'UNBAR_PATRON';
+                }
+                var ou = staff.ws_ou();
+                if(fmObject.home_ou() != null) {
+                    ou = fmObject.home_ou();
+                }
+                var resp = fieldmapper.standardRequest(
+                    ['open-ils.actor', 'open-ils.actor.user.perm.check'],
+                    { params : [openils.User.authtoken, staff.id(), ou, [permission] ] }
+                );
+                if(resp[0]) { // No permission to adjust barred state from current
+                    disabled = true;
+                }
+            }
+            break;
         case 'ac' : if(!editCard) editCard = patron.card(); fmObject = editCard; break;
         case 'aua' : 
             fmObject = patron.addresses().filter(
