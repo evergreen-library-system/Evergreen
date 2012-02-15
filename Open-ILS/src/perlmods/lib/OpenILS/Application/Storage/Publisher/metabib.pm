@@ -2992,6 +2992,22 @@ sub query_parser_fts {
         @location = @{$filter->args} if (@{$filter->args});
     }
 
+    # gather location_groups
+    if (my ($filter) = $query->parse_tree->find_filter('location_groups')) {
+        my @loc_groups = @{$filter->args} if (@{$filter->args});
+        
+        # collect the mapped locations and add them to the locations() filter
+        if (@loc_groups) {
+
+            my $cstore = OpenSRF::AppSession->create( 'open-ils.cstore' );
+            my $maps = $cstore->request(
+                'open-ils.cstore.direct.asset.copy_location_group_map.search.atomic',
+                {lgroup => \@loc_groups})->gather(1);
+
+            push(@location, $_->location) for @$maps;
+        }
+    }
+
 
     my $param_check = $limit || $query->superpage_size || 'NULL';
     my $param_offset = $offset || 'NULL';
@@ -3183,7 +3199,7 @@ sub query_parser_fts_wrapper {
         if ( ref($args{between}) and @{$args{between}} == 2 and $args{between}[0] =~ /^\d+$/ and $args{between}[1] =~ /^\d+$/ );
 
 
-	my (@between,@statuses,@locations,@types,@forms,@lang,@aud,@lit_form,@vformats,@bib_level);
+	my (@between,@statuses,@locations,@location_groups,@types,@forms,@lang,@aud,@lit_form,@vformats,@bib_level);
 
 	# XXX legacy format and item type support
 	if ($args{format}) {
@@ -3192,7 +3208,7 @@ sub query_parser_fts_wrapper {
 		$args{item_form} = [ split '', $f ];
 	}
 
-    for my $filter ( qw/locations statuses between audience language lit_form item_form item_type bib_level vr_format/ ) {
+    for my $filter ( qw/locations location_groups statuses between audience language lit_form item_form item_type bib_level vr_format/ ) {
     	if (my $s = $args{$filter}) {
     		$s = [$s] if (!ref($s));
 

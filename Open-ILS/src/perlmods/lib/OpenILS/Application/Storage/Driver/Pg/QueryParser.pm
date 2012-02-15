@@ -422,6 +422,7 @@ __PACKAGE__->add_search_filter( 'during' );
 # used by layers above this
 __PACKAGE__->add_search_filter( 'statuses' );
 __PACKAGE__->add_search_filter( 'locations' );
+__PACKAGE__->add_search_filter( 'location_groups' );
 __PACKAGE__->add_search_filter( 'site' );
 __PACKAGE__->add_search_filter( 'lasso' );
 __PACKAGE__->add_search_filter( 'my_lasso' );
