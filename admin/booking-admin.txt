@@ -21,7 +21,11 @@ Create New Resource Type
 
 1) Select Admin --> Server Administration --> Booking --> Resource Types.
 
+image::media/booking-create-resourcetype-1.png[]
+
 2) A list of current resource types will appear. Use Back and Next buttons to browse the whole list.
+
+image::media/booking-create-resourcetype-2.png[]
 
 [NOTE]
 You may also see cataloged items in the list. Those items have been marked bookable or booked before.
@@ -29,7 +33,11 @@ You may also see cataloged items in the list. Those items have been marked booka
 
 3) To create a new resource type, click New Resource Type in the top right corner, .
 
+image::media/booking-create-resourcetype-3.png[]
+
 4) A box will appear in which you create your new type of resource.
+
+image::media/booking-create-bookable-1.png[]
 
 * Resource Type Name - Give your resource a name.
 * Fine Interval - How often will fines be charged? This period can be input in several ways:
@@ -51,7 +59,11 @@ You may also see cataloged items in the list. Those items have been marked booka
 
 5) Click Save when you have entered the needed information.
 
+image::media/booking-create-resourcetype-4.png[]
+
 6) The new resource type will appear in the list.
+
+image::media/booking-create-resourcetype-5.png[]
 
 Create New Resource Attribute
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -61,6 +73,8 @@ Create New Resource Attribute
 2) Click New Resource Attribute in the top right corner.
 
 3) A box will appear in which you can add the attributes of the resource. Attributes are categories of descriptive information that are provided to the staff member when the booking request is made. For example, an attribute of a projector may be the type of projector. Other attributes might be the number of seats available in a room, or the computing platform of a laptop.
+
+image::media/booking-create-bookable-2.png[]
 
 * Resource Attribute Name - Give your attribute a name.
 * Owning Library - The home library of the resource.
@@ -83,6 +97,8 @@ Create New Resource Attribute Value
 
 3) A box will appear in which you assign a value to a particular attribute. Values can be numbers, words, or a combination of them, that describe the particular aspects of the resource that have been defined as Attributes. As all values appear on the same list for selection, values should be as unique as possible. For example, a laptop may have a computing platform that is either PC or Mac.
 
+image::media/booking-create-bookable-3.png[]
+
 * Owning Library - The home library of the resource.
 * Resource Attribute - The attribute you wish to assign the value to.
 * Valid Value - Enter the value for your attribute.
@@ -99,6 +115,8 @@ Create New Resource
 2) Click New Resource in the top right corner.
 
 3) A box will appear. Add information for the resource.
+
+image::media/booking-create-bookable-4.png[]
 
 * Owning Library - The home library of the resource.
 * Resource Type - Type in the first letter of the resource type's name to list then select the resource type for your item.
@@ -124,6 +142,8 @@ Map Resource Attributes and Values to Resources
 
 3) A box will appear in which you will map your attributes and values to your resources.
 
+image::media/booking-create-bookable-5.png[]
+
 * Resource - Enter the barcode of your resource.
 * Resource Attribute - Select an attribute that belongs to the Resource Type.
 * Attribute Value - Select a value that belongs to your chosen attribute and describes your resource. If your attribute and value do not belong together you will be unable to save.
@@ -134,6 +154,10 @@ Map Resource Attributes and Values to Resources
 A resource may have multiple attributes and values. Repeat the above steps to map all.
 
 5) The resource attribute map will appear in the list.
+
+Once all attributes have been mapped your resource will be part of a hierarchy similar to the example below.
+
+image::media/booking-create-bookable-6.png[]
 
 
 Editing Non-Bibliographic Resources
