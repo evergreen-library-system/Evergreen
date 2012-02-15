@@ -838,7 +838,7 @@ sub update_hold_impl {
             $transit->dest($hold->pickup_lib);
             $e->update_action_hold_transit_copy($transit) or return $e->die_event;
 
-        } elsif($status == 4) { # on holds shelf
+        } elsif($status == 4 or $status == 5) { # on holds shelf
 
             return $e->die_event unless $e->allowed('UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF', $orig_hold->pickup_lib);
             return $e->die_event unless $e->allowed('UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF', $hold->pickup_lib);
