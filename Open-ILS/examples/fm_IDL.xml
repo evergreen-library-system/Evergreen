@@ -3928,6 +3928,53 @@ SELECT  usr,
             </actions>
         </permacrud>
 	</class>
+	<class id="acplg" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_location_group" oils_persist:tablename="asset.copy_location_group" reporter:label="Copy/Shelving Location Group">
+		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_location_group_id_seq">
+			<field reporter:label="ID" name="id" reporter:selector="name" reporter:datatype="id"/>
+			<field reporter:label="Name" name="name"  reporter:datatype="text" oils_persist:i18n="true"/>
+			<field reporter:label="Is OPAC Visible?" name="opac_visible" reporter:datatype="bool"/>
+			<field reporter:label="Owning Org Unit" name="owner"  reporter:datatype="org_unit"/>
+            <field reporter:label="Position" name="pos" reporter:datatype="int"/>
+            <field reporter:label="Copy Location Mappings" name="location_maps" oils_persist:virtual="true" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="location_maps" reltype="has_many" key="lgroup" map="" class="acplgm"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_COPY_LOCATION_GROUP" context_field="owner"/>
+                <retrieve/>
+                <update permission="ADMIN_COPY_LOCATION_GROUP" context_field="owner"/>
+                <delete permission="ADMIN_COPY_LOCATION_GROUP" context_field="owner"/>
+            </actions>
+        </permacrud>
+	</class>
+	<class id="acplgm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_location_group_map" oils_persist:tablename="asset.copy_location_group_map" reporter:label="Copy/Shelving Location Group Map">
+		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_location_group_map_id_seq">
+			<field reporter:label="ID" name="id" reporter:selector="name" reporter:datatype="id"/>
+            <field reporter:label="Group" name="lgroup" reporter:datatype="link"/>
+            <field reporter:label="Copy Location" name="location" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="lgroup" reltype="has_a" key="id" map="" class="acplg"/>
+			<link field="location" reltype="has_a" key="id" map="" class="acpl"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_COPY_LOCATION_GROUP">
+					<context link="lgroup" field="owner" />
+                </create>
+                <retrieve/>
+                <update permission="ADMIN_COPY_LOCATION_GROUP">
+					<context link="lgroup" field="owner" />
+                </update>
+                <delete permission="ADMIN_COPY_LOCATION_GROUP">
+					<context link="lgroup" field="owner" />
+                </delete>
+            </actions>
+        </permacrud>
+	</class>
 
     <class id="acplo" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_location_order" oils_persist:tablename="asset.copy_location_order" reporter:label="Copy/Shelving Location Order">
         <fields oils_persist:primary="id" oils_persist:sequence="asset.copy_location_order_id_seq">
