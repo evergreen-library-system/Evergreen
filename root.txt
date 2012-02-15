@@ -89,6 +89,7 @@ include::admin/cn_prefixes_and_suffixes.txt[]
 
 include::admin/restrict_Z39.50_sources_by_perm_group.txt[]
 
+include::admin/booking-admin.txt[]
 
 
 Local Administration
@@ -145,6 +146,8 @@ Introduction
 Use this section for understanding the circulation procedures in the Evergreen system.  
 
 include::circulation/circulating_items.txt[]
+
+include::circulation/booking.txt[]
 
 Reports
 =======
