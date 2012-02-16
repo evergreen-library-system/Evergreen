@@ -65,7 +65,7 @@ msgstr "neque dolor a nulla"
 
 #: field.auoi.id.label:25
 msgid "Opt-in ID"
-msgstr "Phasellus aliquam vulputate justo"
+msgstr "Phasellus \" aliquam vulputate justo"
 
 #: field.rodcirc.payment_total.label:86
 msgid "Payment Totals"
@@ -165,7 +165,7 @@ msgstr "ut ullamcorper faucibus"
 
 #: field.rodcirc.renewal_remaining.label:74
 msgid "Remaining Renewals"
-msgstr "diam felis"
+msgstr "diam felis<"
 
 #: field.aws.owning_lib.label:46
 msgid "Owning Library"

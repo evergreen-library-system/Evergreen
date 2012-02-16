@@ -24,6 +24,7 @@ import polib
 import sys
 import xml.sax
 import xml.sax.handler
+import xml.sax.saxutils
 
 class IDL(basel10n.BaseL10N):
     """
@@ -64,14 +65,14 @@ class IDL(basel10n.BaseL10N):
         """
         Creates an entity definition file based on a translated PO file.
         """
-        entity = '<!ENTITY %s "%s">'
+        entity = '<!ENTITY %s %s>'
         for entry in self.pot:
             for name in entry.occurrences:
+                entdef = xml.sax.saxutils.quoteattr(entry.msgstr)
                 if entry.msgstr == '':
                     # No translation available; use the en-US definition
-                    self.definitions.append(entity % (name[0], entry.msgid))
-                else:
-                    self.definitions.append(entity % (name[0], entry.msgstr))
+                    entdef = xml.sax.saxutils.quoteattr(entry.msgid)
+                self.definitions.append(entity % (name[0], entdef))
 
 class IDLHandler(xml.sax.handler.ContentHandler):
     """

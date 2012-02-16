@@ -11,7 +11,7 @@
 <!ENTITY class.auoi.label "venenatis, mi nisl">
 <!ENTITY field.rodcirc.recurring_fine_rule.label "suscipit sapien, eu sollicitudin">
 <!ENTITY field.rodcirc.duration_rule.label "neque dolor a nulla">
-<!ENTITY field.auoi.id.label "Phasellus aliquam vulputate justo">
+<!ENTITY field.auoi.id.label 'Phasellus " aliquam vulputate justo'>
 <!ENTITY field.rodcirc.payment_total.label "Proin augue libero">
 <!ENTITY field.rodcirc.phone_renewal.label "hendrerit pretium">
 <!ENTITY field.rodcirc.circ_lib.label "rutrum pretium">
@@ -37,6 +37,6 @@
 <!ENTITY field.auoi.opt_in_ts.label "sapien id velit nonummy">
 <!ENTITY field.rodcirc.desk_renewal.label "congue, neque">
 <!ENTITY field.rodcirc.target_copy.label "ut ullamcorper faucibus">
-<!ENTITY field.rodcirc.renewal_remaining.label "diam felis">
+<!ENTITY field.rodcirc.renewal_remaining.label "diam felis&lt;">
 <!ENTITY field.aws.owning_lib.label "Owning Library">
 <!ENTITY field.rodcirc.id.label "pulvinar augue">
