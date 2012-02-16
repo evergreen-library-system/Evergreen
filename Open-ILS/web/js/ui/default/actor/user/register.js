@@ -816,6 +816,10 @@ function loadStatCats() {
         var stat = statCats[idx];
         var required = openils.Util.isTrue(stat.required());
         var allow_freetext = openils.Util.isTrue(stat.allow_freetext());
+        var default_entry = null;
+        if(stat.default_entries()[0])
+            default_entry = stat.default_entries()[0].stat_cat_entry();
+        
         var row = statCatTemplate.cloneNode(true);
         row.id = 'stat-cat-row-' + idx;
         row.setAttribute('stat_cat_owner',stat.owner());
@@ -832,21 +836,22 @@ function loadStatCats() {
         var span = valtd.appendChild(document.createElement('span'));
         var store = new dojo.data.ItemFileReadStore(
                 {data:fieldmapper.actsc.toStoreData(stat.entries())});
+        var p_opt, e_field;
 
+        var patmap = patron.stat_cat_entries().filter(
+            function(mp) { return (mp.stat_cat() == stat.id()) })[0];
+        var entrymap = stat.entries().filter(
+                function(mp) { return (mp.id() == default_entry) })[0];
+        
         if(allow_freetext) {
             sc_widget = new dijit.form.ComboBox({store:store,scrollOnFocus:false,fetchProperties:{sort:[{attribute: 'value'}]}}, span);
+	    e_field = entrymap ? entrymap.value() : null;
+	    p_opt = 'value';
         } else {
             sc_widget = new dijit.form.FilteringSelect({store:store,scrollOnFocus:false,fetchProperties:{sort:[{attribute: 'value'}]}}, span);
-        }
-
-        if(required) {
-            sc_widget.isValid = function() {
-                // Must contain a word character
-                if(this.attr("value").match(/\w/)) {
-                    return true;
-                } else return false;
-            };
-            sc_widget.attr('required', true);
+            sc_widget.attr('required', false);
+	    e_field = entrymap ? entrymap.id() : null;
+	    p_opt = 'displayedValue';
         }
 
         sc_widget.labelAttr = 'value';
@@ -855,14 +860,20 @@ function loadStatCats() {
         sc_widget._wtype = 'statcat';
         sc_widget._statcat = stat.id();
 
-        // populate existing cats
-        var map = patron.stat_cat_entries().filter(
-            function(mp) { return (mp.stat_cat() == stat.id()) })[0];
-        if(map) sc_widget.attr('value', map.stat_cat_entry()); 
-        
-        sc_widget._hasBeenBlurred = true;
-                if(sc_widget.validate)
-                    sc_widget.validate();
+        // set default value:  first choice is patron table entry,
+        // then the default entry for the stat_cat
+        if(patmap) {
+            sc_widget.attr(p_opt, patmap.stat_cat_entry()); 
+        } else if(entrymap) {
+            sc_widget.attr('value', e_field); 
+        }
+
+        if(required) {
+            sc_widget.attr('required', true);
+            sc_widget._hasBeenBlurred = true;
+            if(sc_widget.validate)
+                sc_widget.validate();
+        }
 
         widgetPile.push(sc_widget); 
     }
@@ -1767,6 +1778,10 @@ function _uEditSave(doClone) {
                 var map = patron.stat_cat_entries().filter(
                     function(m){
                         return (m.stat_cat() == w._statcat) })[0];
+
+                if(w.declaredClass == 'dijit.form.FilteringSelect') {
+                    val = w.attr('displayedValue');
+                }
 
                 if(map) {
                     if(map.stat_cat_entry() == val) 
