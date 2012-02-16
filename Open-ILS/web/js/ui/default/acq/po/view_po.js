@@ -285,7 +285,7 @@ function prepareInvoiceFeatures() {
     /* view invoices button */
     dijit.byId("acq-po-view-invoice-link").onClick = function() {
         location.href = oilsBasePath + "/acq/search/unified?so=" +
-            base64Encode({"jub":[{"purchase_order": PO.id()}]}) +
+            base64Encode({"acqpo":[{"id": PO.id()}]}) +
             "&rt=invoice";
     };
 
