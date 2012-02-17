@@ -153,6 +153,8 @@
     <command id="cmd_local_admin_circ_limit_set"
              perm="ADMIN_CIRC_MATRIX_MATCHPOINT VIEW_CIRC_MATRIX_MATCHPOINT"
              />
+    <command id="cmd_local_admin_copy_location_group"
+             perm="ADMIN_COPY_LOCATION_GROUP VIEW_COPY_LOCATION_GROUP" />
 
     <!-- server admin menu commands -->
     <command id="cmd_server_admin_org_type"
@@ -497,6 +499,7 @@
                 <menuitem label="&staff.server.admin.index.closed_dates;" command="cmd_local_admin_closed_dates"/>
                 <menuitem label="&staff.server.admin.index.copy_locations;" command="cmd_local_admin_copy_locations"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.copy_location_order.label;" command="cmd_local_admin_copy_location_order"/>
+                <menuitem label="&staff.main.menu.admin.local_admin.copy_location_group.label;" command="cmd_local_admin_copy_location_group"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.copy_template.label;" accesskey="&staff.main.menu.admin.local_admin.copy_template.accesskey;" command="cmd_local_admin_copy_template"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.idl_field_doc.label;" command="cmd_local_admin_idl_field_doc"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.grp_penalty_threshold.label;" command="cmd_local_admin_grp_penalty_threshold"/>

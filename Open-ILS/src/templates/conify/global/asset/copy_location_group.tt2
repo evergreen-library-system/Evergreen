@@ -1,0 +1,137 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = l('Copy Location Group') %]
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/asset/copy_location_group.js'> </script>
+<link rel='stylesheet' type='text/css' href='[% ctx.media_prefix %]/js/dojo/dojo/resources/dnd.css'/>
+<style>
+    .acpl-content {
+        padding: 10px; 
+        padding-top: 20px;
+        min-width: 20%;
+        height: 100%;
+    }
+    .acpl-content div:first-child {
+        font-weight: bold;
+        font-size: 110%;
+        border-bottom: 1px solid #888;
+        background-color:#E7A555;
+    }
+    .acpl-content-2 {
+        border-left: 2px solid #888;
+        float:left;
+    }
+    .acplg-drag-handle { 
+        background-image: url([% ctx.media_prefix %]/images/dimple.png);
+        background-repeat: no-repeat;
+        background-position: center;
+        padding: 5px;
+        margin-left:5px;
+    }
+    .acplg-list-tbody td {
+        padding: 2px;
+    }
+    .acplg-list-tbody tr:nth-child(even) {
+        background: #EEE
+    }
+    #acplg-list li {
+        padding: 5px;
+    }
+    #acplg-header {
+        margin-top: 20px;
+        border-bottom: 2px solid #888;
+        padding-bottom: 10px;
+    }
+    #acplg-header span:first-child {
+        font-weight: bold;
+        font-size: 130%;
+    }
+    .acplg-group-selected {
+        background-color:#E7A555;
+        border: 1px solid #4A4747;
+    }
+</style>
+
+<div id='acplg-header'>
+    <span>[% l('Copy Location Groups') %]</span>
+    <select dojoType="openils.widget.OrgUnitFilteringSelect"
+            jsId='contextOrgSelector'
+            searchAttr='shortname'
+            labelAttr='shortname'>
+    </select>
+</div>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client" style="width:100%">
+    <div class='acpl-content' style="float: left">
+        <div>
+            <table width='100%'><tr>
+                <td align='left' style='padding-left:5px;'>[% l('Location Groups') %]</td>
+                <td align='right'><button onclick='newGroup()'>[% l('New') %]</button></td>
+            </tr></table>
+        </div>
+        <ol id='acplg-list'></ol>
+    </div>
+    <div class='acpl-content acpl-content-2'>
+        <div>
+            <table width='100%'><tr>
+                <td align='left' style='padding-left:5px;'>[% l('Group Entries') %]</td>
+                <td align='right'><button onclick='editLocations("eliminate")'>[% l('Remove &rarr;') %]</button></td>
+            </tr></table>
+        </div>
+        <div style='height:400px; overflow-y:scroll'>
+            <table>
+                <tbody id='acplg-loc-map-tbody' class='acplg-list-tbody'>
+                    <tr id='acplg-loc-map-row'>
+                        <td><input type='checkbox' name='selector'/></td>
+                        <td><span name='owning_lib'></span></td>
+                        <td><span name='name'></span></td>
+                    </td>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class='acpl-content acpl-content-2'>
+        <div>
+            <table width='100%'><tr>
+                <td align='left'><button onclick='editLocations("create")'>[% l('&larr; Add') %]</button></td>
+                <td align='right' style='padding-right:5px;'>[% l('Copy Locations') %]</td>
+            </tr></table>
+        </div>
+        <div style='height:400px; overflow-y:scroll'>
+            <table>
+                <tbody id='acplg-loc-tbody' class='acplg-list-tbody'>
+                    <tr id='acplg-loc-row'>
+                        <td><input type='checkbox' name='selector'/></td>
+                        <td><span name='owning_lib'></span></td>
+                        <td><span name='name'></span></td>
+                    </td>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class='hidden'>
+    <div dojoType='openils.widget.ProgressDialog' jsId='progressDialog'></div>
+    <div id='dnd-drag-actions'>
+        <span>
+            <span style='padding:5px;' group="GRPID">
+                <span><a href="javascript:;" onclick="drawGroupEntries(GRPID)">GRPNAME</a></span>
+                [
+                <span>[% l('Visible') %]
+                    <span style='color:green' name='visible'>&#x2713;</span>
+                    <span style='color:red' name='invisible'>&#x2717;</span>
+                </span>
+                <span><a href="javascript:;" onclick="editGroup(GRPID)">[% l('Edit') %]</a></span>
+                <span><a href="javascript:;" onclick="deleteGroup(GRPID)">[% l('Delete') %]</a></span>
+                ]
+            </span>
+            <span></span>
+            <span class='acplg-drag-handle'></span>
+            <span class='acplg-drag-handle'></span>
+            <span class='acplg-drag-handle'></span>
+        </span>
+    </div>
+    <div id='acplg-edit-dialog'></div>
+</div>
+
+
+[% END %]
