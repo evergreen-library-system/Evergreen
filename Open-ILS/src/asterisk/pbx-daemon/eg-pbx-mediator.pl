@@ -74,7 +74,7 @@ sub load_config {
     %config = ParseConfig($opts{c});
 
     # validate
-    foreach my $opt (qw/staging_path spool_path done_path/) {
+    foreach my $opt (qw/staging_path spool_path done_path ack_path/) {
         if (not -d $config{$opt}) {
             die $config{$opt} . " ($opt): no such directory";
         }
@@ -138,6 +138,133 @@ sub prefixer {
     my $string = @_ ? shift : '';
     $string =~ /^$universal_prefix\_/ and return $string;
     return $universal_prefix . '_' . $string;
+}
+
+sub get_status_from_callfile {
+    my ($filename) = @_;
+
+    if (not open FH, "<$filename") {
+        syslog(LOG_ERR, "error opening $filename: $!");
+        return;
+    }
+
+    my @event_ids;
+
+    while(<FH>) {
+        # The AstCall A/T reactor puts this line into all call files.
+        next unless /^; event_ids = ([\d\,]+)$/;
+        push @event_ids, map(int, split(/,/, $1));
+        last;
+    }
+
+    seek(FH, -64, 2);   # go to end of file. back up enough to read short line.
+    my @lines = <FH>;
+    close FH;
+
+    my $status;
+    if (my $lastline = pop @lines) {    # sic, assignment
+        $status = $1 if $lastline =~ /^Status: (\w+)$/;
+    }
+
+    return ($status, @event_ids);
+}
+
+sub ack_callfile {
+    my ($basename) = @_;
+    my $from = $config{done_path} . '/' . $basename;
+    my $to = $config{ack_path} . '/' . $basename;
+
+    if (not rename($from, $to)) {
+        syslog LOG_ERR, "ack_callfile() could not move '$from' to '$to'";
+        return 0;
+    } else {
+        return 1;
+    }
+}
+
+# Returns a list of event ids from files in the done_path that don't end in
+# Status: Completed (which is what Asterisk will put there if it thinks somebody
+# answered the call).
+#
+# The optional argument $with_filenames is for internal use by ack_failures().
+#
+sub get_failures {
+    my ($with_filenames) = @_;
+
+    if (not opendir DIR, $config{done_path}) {
+        syslog LOG_ERR, "could not opendir $config{done_path}: $!";
+        return [];
+    }
+
+    my @files = grep { /^${universal_prefix}.+\.call$/ } readdir DIR;
+    closedir DIR;
+
+    my %result_tree;
+    my @result_set;
+    no warnings 'uninitialized';
+
+    foreach my $filename (@files) {
+        my ($status, @event_ids) =
+            get_status_from_callfile($config{done_path} . '/' . $filename);
+
+        if ($status ne 'Completed') {
+            if ($with_filenames) {
+                $result_tree{$filename} = [@event_ids];
+            } else {
+                push @result_set, @event_ids;
+            }
+        }
+    }
+
+    return ($with_filenames ? \%result_tree : \@result_set);
+}
+
+# Given a list of event ids, finds calls files in the done_path that refer to
+# them, and moves any such files to the ack_path directory.
+#
+# Returns the number of files archived for informational purposes only.
+#
+sub ack_failures {
+    my @event_ids = map(int, (grep defined, @{shift()}));
+
+    my %lookup = map { $_ => 1 } @event_ids;
+
+    my $known_failures = get_failures(1);  # 1 means "with filenames"
+    my $archived = 0;
+
+    OUTER: foreach my $filename (keys(%$known_failures)) {
+        my @ids_known_failed = @{ $known_failures->{$filename} };
+        foreach (@ids_known_failed) {
+            next OUTER unless exists $lookup{$_};
+        }
+        $archived += ack_callfile($filename);
+    }
+
+    return $archived;
+}
+
+sub set_holidays {
+    my ($holidays) = @_;
+
+    return -1 unless exists $config{holidays};
+    return -2 unless @$holidays <= $config{holiday_limit};
+
+    if (-e $config{holidays}) {
+        rename($config{holidays}, $config{holidays} . ".bak") or return -3;
+    }
+
+    my $count = 0;
+    open HOLIDAYS, ">$config{holidays}" or return -4;
+
+    foreach (@$holidays) {
+        next unless @$_ == 2;
+
+        print HOLIDAYS sprintf("%d,%d\n", @$_);
+        $count++;
+    }
+    close HOLIDAYS;
+
+    return $count;
 }
 
 sub inject {
@@ -224,111 +351,6 @@ sub inject {
 }
 
 
-sub retrieve {
-    my $globstring = prefixer(@_ ? shift : '*');
-    # We depend on being in the correct (done) directory already, thanks to the config step
-    # This prevents us from having to chdir for each request..
-
-    my @matches = grep {-f $_ } <'./' . ${globstring}>;    # don't use <$pathglob>, that looks like ref to HANDLE
-
-    my $ret = {
-        code => 200,
-        glob_used   => $globstring,
-        match_count => scalar(@matches),
-    };
-    my $i = 0;
-    foreach my $match (@matches) {
-        $i++;
-        # warn "file $i '$match'";
-        unless (open (FILE, "<$match")) {
-            syslog LOG_ERR, "Cannot read done file $i of " . scalar(@matches) . ": '$match'";
-            $ret->{error_count}++;
-            next;
-        }
-        my @content = <FILE>;   #slurpy
-        close FILE;
-
-        $ret->{'file_' . sprintf("%06d",$i++)} = {
-            filename => fileparse($match),
-            content  => join('', @content),
-        };
-    }
-    return $ret;
-}
-
-
-# cleanup: deletes files
-# arguments: string (comma separated filenames), optional int flag
-# returns: struct reporting success/failure
-#
-# The list of files to delete must be explicit, in a comma-separated string.
-# We cannot use globs or any other
-# pattern matching because there might be additional files that match.  Asterisk
-# might be making calls for other people and prodcesses (i.e., non-EG calls) or
-# might have made more calls for us since the last time we checked matches.
-
-sub cleanup {
-    my $targetstring = shift or return &$bad_request(
-        "Must supply at least one filename to cleanup()"     # not empty string!
-    );
-    my $dequeue = @_ ? shift : 0;  # default is to target done files.
-    my @targets = split ',', $targetstring;
-    my $path = $dequeue ? $config{spool_path} : $config{done_path};
-    (-r $path and -d $path) or return &$failure("Cannot open dir '$path': $!");
-
-    my $ret = {
-        code => 200,    # optimism
-        request_count => scalar(@targets),
-        from_queue    => $dequeue,
-        match_count   => 0,
-        delete_count  => 0,
-    };
-
-    my %problems;
-    my $i = 0;
-    foreach my $target (@targets) {
-        $i++;
-        $target = fileparse($target);    # no fair trying to get us to delete in other directories!
-        my $file = $path . '/' . prefixer($target);
-        unless (-f $file) {
-            $problems{$target} = {
-                code => 404,        # NOT FOUND: may or may not be a true error, since our purpose was to delete it anyway.
-                target => $target,
-            };
-            syslog LOG_NOTICE, "Delete request $i of " . $ret->{request_count} . " for file '$file': File not found";
-            next;
-        }
-
-        $ret->{match_count}++;
-        if (unlink $file) {
-            $ret->{delete_count}++;
-            syslog LOG_NOTICE, "Delete request $i of " . $ret->{request_count} . " for file '$file' successful";
-        } else {
-            syslog LOG_ERR,    "Delete request $i of " . $ret->{request_count} . " for file '$file' FAILED: $!";
-            $problems{$target} = {
-                code => 403,        # FORBIDDEN: permissions problem
-                target => $target,
-            };
-            next;
-        }
-    }
-
-    my $prob_count = scalar keys %problems;
-    if ($prob_count) {
-        $ret->{error_count} = $prob_count;
-        if ($prob_count == 1 and $ret->{request_count} == 1) {
-             # We had exactly 1 error and no successes
-            my $one = (values %problems)[0];
-            $ret->{code} = $one->{code};     # So our code is the error's code
-        } else {
-            $ret->{code} = 207;              # otherwise, MULTI-STATUS
-            $ret->{multistatus} = \%problems;
-        }
-    }
-    return $ret;
-}
-
-
 sub main {
     getopt('c:', \%opts);
     load_config;    # dies on invalid/incomplete config
@@ -339,16 +361,27 @@ sub main {
     #  ~ the first datatype  is  for RETURN value,
     #  ~ any other datatypes are for INCOMING args
     #
-    # Everything here returns a struct.
 
     $server->add_proc({
         name => 'inject',   code => \&inject,   signature => ['struct string', 'struct string string', 'struct string string int']
     });
+
     $server->add_proc({
-        name => 'retrieve', code => \&retrieve, signature => ['struct string', 'struct']
+        name => 'get_failures',
+        code => \&get_failures,
+        signature => ['array']
     });
+
     $server->add_proc({
-        name => 'cleanup',  code => \&cleanup,  signature => ['struct string', 'struct string int']
+        name => 'ack_failures',
+        code => \&ack_failures,
+        signature => ['int array']
+    });
+
+    $server->add_proc({
+        name => 'set_holidays',
+        code => \&set_holidays,
+        signature => ['int array']
     });
 
     $server->add_default_methods;

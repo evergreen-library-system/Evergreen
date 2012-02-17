@@ -1,0 +1,11 @@
+--- include/asterisk/cdr.h.orig        2012-01-03 11:38:13.523342497 -0500
++++ include/asterisk/cdr.h     2012-01-03 11:38:22.955055996 -0500
+@@ -59,7 +59,7 @@
+ /*@} */
+ 
+ #define AST_MAX_USER_FIELD                    256
+-#define AST_MAX_ACCOUNT_CODE          20
++#define AST_MAX_ACCOUNT_CODE          4096
+ 
+ /* Include channel.h after relevant declarations it will need */
+ #include "asterisk/channel.h"

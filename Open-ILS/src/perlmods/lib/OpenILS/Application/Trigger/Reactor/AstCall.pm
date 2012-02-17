@@ -143,8 +143,13 @@ sub handler {
         $tmpl_output .= $env->{"extra_lines"};
     }
 
-    # or would we prefer distinct lines instead of comma-separated?
-    $tmpl_output .= "; event_ids = " . join(",",@eventids) . "\n";
+    my $eventids_str = join(",", @eventids);
+
+    # Stuff the call file with data about A/T event IDs and related things,
+    # for other processes to pick up on later.
+
+    $tmpl_output =~ s/^(Account:.+)$/$1 . "," . $eventids_str/gem;
+    $tmpl_output .= "; event_ids = " . $eventids_str . "\n";
     $tmpl_output .= "; event_output = " . $eo->id . "\n";
 
     #my $filename_fragment = $userid . '_' . $eventids[0] . 'uniq' . time;

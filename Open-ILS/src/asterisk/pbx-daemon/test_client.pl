@@ -1,5 +1,10 @@
 #!/usr/bin/perl
-#
+
+
+# 17 Feb 2012:
+# A lot has changed with the other files in this directory, and regrettably
+# I don't know to what extent this script works anymore.
+#   - senator
 
 use warnings;
 use strict;

@@ -1,0 +1,657 @@
+Setting up Telephone Notices with Evergreen
+===========================================
+
+[abstract]
+What is this document good for?
+-------------------------------
+This is telephony based on Asterisk and Action/Trigger for Evergreen 2.2 and up.
+
+If you've never done this before, you should *really* read this document all the way through before you begin, so that you have some idea of what to expect and how much time to schedule for it.
+
+This document should lead you through getting overdue telephone notices set up for Evergreen.  This document is long, but it's not comprehensive.  It does not cover everything you need to know about Asterisk, for example, or Action/Trigger or Cron or several other things.  It assumes you're bringing some knowledge to the table and that you're willing and able to search for information you don't have at hand. You must be prepared to solve small problems along the way.
+
+Once you've set up overdue notices, you should get the general idea of how to set up additional notices, like notices for holds available. The last section of this document contains some parting information on what you can expect to differ between those notices and overdue notices.
+
+Hardware
+--------
+Get a dedicated computer running Linux and make sure it meets any system requirements for Asterisk. 1 modernish CPU, 1 GB memory is plenty for most
+applications.  More is always better.
+
+Make sure that the system running Evergreen (specifically, the utility box if you're dealing with a multi-server environment that has a utility box specifically for Action/Trigger stuff) has network connectivity to the box running Asterisk.  At minimum it needs to be able to reach that Asterisk machine via TCP port 10080.  Do not let the whole Internet talk to your Asterisk box via TCP port 10080.  iptables is your friend.
+
+If you're using analog telephony (you're connecting to the Public Switched Telephone Network), you'll need an actual physical computer.
+
+For digital telephony, a virtual machine may suffice.
+
+NOTE: Ask the Asterisk community whether they generally recommend using virtual machines to host Asterisk.
+
+There are three main ways you can make phone calls with Asterisk.
+
+. *plain old phone lines* - If you have to connect to plain old analog single-channel phone lines, you can use a card from Digium like the
+AEX400 series to connect to up to four of those lines at once.  You need an FXO
+module for each line you want to connect to the system (so the card itself is not enough).  Plain old phone lines are the worst choice on this list.  Usually with these, Asterisk thinks the conversation in outgoing calls has begun as soon as the other end starts *ringing.*  This is really suboptimal.
+. *PRI interface or similar* - If your institution has this kind of service from a telephone company, or if they already have a PBX or some other such device that can offer channels for outbound dialing over a T1 interface, look into a card like the Digium TE121.  Make very sure you understand what kind of phone network you're going to connect it to, and that your selected card can talk to it.  This will often require coordination with a telephone company or PBX vendor to get working, but it provides a better platform that plain old phone lines.
+. *VoIP service with SIP or IAX protocols* - Digital telephony.  Easiest to
+deal with by far, and also provides the richest set of information to Asterisk about whether calls complete properly, whether busy signals occur, etc.  Requires no special hardware, just an internet connection.  Your institution will purchase this service from some other company.  Specifically, the institution should look for VoIP SIP providers (not library SIP, telephony SIP).  SIP is pretty easy to deal with.
+
+If your project is at the stage where you can still recommend how your institution will achieve telephony connectivity , go with option 3 (voip service). You'll be glad you did.
+
+Install Asterisk, Perform Test Calls
+------------------------------------
+
+First things first
+~~~~~~~~~~~~~~~~~~
+The first thing you need is a server dedicated to running Asterisk and
+Festival.  Asterisk is an open source PBX.  Festival is for speech synthesis.
+
+We'll talk about setting up Festival in a later step.  Strictly speaking, you might not need Festival if your institution doesn't
+need its notice message to contain truly dynamic parts (such as reading a
+list of overdue titles).  Asterisk can read numbers aloud by itself, and if
+you need notices to choose between a finite set of possiblities of things to
+say, you can just make or acquire recordings of each of those things and
+choose between them with logic either in the Action/Trigger template or in
+the Asterisk dialplan (for example, reading the name of a library branch
+where a circulation is overdue).  More on this later.
+
+As of this writing, you want any version of Asterisk within the 1.4, 1.6 or 1.8 series.
+
+Basic outbound call testing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Install asterisk.  If you're using a Debian-based distro, try installing
+Asterisk with apt.  If not, you may wind up installing it from source.  That's
+ok. Installing Asterisk from source is easy;  it follows the typical +./configure && make && make install+ pattern, and that's about it.  For more information on installing Asterisk, just google it.
+
+NOTE: If asterisk-1.6.2.18-accountcode.patch from the Evergreen source applies cleanly to whatever version of Asterisk you wind up installing, you may want to use it.  For reporting/auditing purposes, the Account field is a good place to shove data when using Asterisk call files and Call Detail Records, and that patch makes it possible to store more than a few bytes there.  Other fields (like userdata) don't necessary make it to the Call Detail Record in the event of outbound calls not reaching their destination (like when they result in busy signals).
+
+Configure asterisk for full logging.  When running asterisk, you should get matter in +/var/log/asterisk/full+ on a typically configured system.
+
+Be sure you also installed DAHDI if you're using analog hardware to place phone calls (there are even cases when you want to install it for digital calling; grep Asterisk documentation for "timing source").
+When in doubt, just install it.  Maybe your package manager already did for you.
+
+If using analog telephony, get your hardware configured and make sure you can see the things that you're supposed to see with +/usr/sbin/dahdi_tool+ (typical install location, but look around if needed) and the command "dahdi show channels" in the Asterisk interactive console.  I'm handwaving over the specifics here.  There's a wealth of information avaiable online about how to do this.
+
+If using digital telephony, preferably with the SIP protocol, get that configured in asterisk and make sure your SIP channel(s) is/are up.  Again, more specifics on this are available online.
+
+By the way, if you're not comfortable already, now is the time to get comfortable with Asterisk and making changes to its configuration.  I have not successfully used FreePBX or AsteriskHome or any of the friendly metapackages.  In my experience, these just get in your way and make Asterisk behave differently than otherwise documented.
+
+Make sure asterisk is running.
+
+In your dialplan (+/etc/asterisk/extensions.conf+), add a context that looks like the following.  If you're not comfortable yet with the meanings of "context," "extension," "module," and "dialplan" in Asterisk, go back and learn more about Asterisk before proceeding.
+
+-------------------------------------------------------
+[just-a-test]
+exten => 10,1,Verbose(entering the just-a-test context)
+exten => 10,n,Answer
+exten => 10,n,SayNumber(10)
+exten => 10,n,SayDigits(987654321)
+exten => 10,n,Playback(vm-goodbye)
+exten => 10,n,Hangup
+-------------------------------------------------------
+
+Reload your dialplan. You should be able to do this with the "dialplan reload"
+command in the asterisk interactive console.
+
+Make sure the pbx_spool asterisk module is running.
+
+Edit a file in your home directory on the Asterisk machine.  Give it any name you like. Make its contents match the following.
+
+-------------------------------------------------------
+Channel: X
+Context: just-a-test
+Extension: 10
+Callerid: 7701234567
+MaxRetries: 1
+RetryTime: 60
+WaitTime: 30
+Archive: 1
+-------------------------------------------------------
+
+Choose a phone number where you can be reached for this test call, such as your desk phone number.  Let's pretend that's 770-555-1212. Now replace the "X" in the first line with something like "SIP/mytrunk/7705551212" if you've configured SIP and named your trunk "mytrunk," or with something like "DAHDI/1/17705551212" if using analog hardware (the 1 between the slashes here means channel 1.)
+
+Exactly what to replace that X with will vary a lot depending on circumstances.  If you're in a situation where you're not directly connected to the outside telephone network, but are rather behind some other PBX equipment or something, you may have to prepend a 9 to the number you wish to dial, or something like that. Whether or not to add a 1 before dialing the main phone number is also a matter of circumstance.  Sometimes you'll even be able to dial 7 digit phone numbers by themselves!
+
+NOTE: I'm sorry I've obviously written the above from a North America-centric perspective; somebody else feel free to correct this.
+
+When you think you've got something subsituted for X that might work, do the following as root:
+
+-------------------------------------------------------
+cp yourfile /tmp
+chown asterisk /tmp/yourfile
+mv /tmp/yourfile /var/spool/asterisk/outgoing
+-------------------------------------------------------
+
+You might think that three step operation looks silly, but it's important that you not copy your "call file" (that's what we're calling the file you just composed) directly into +/var/spool/asterisk/outgoing+.  The copy operation may not be finished when Asterisk reads in the file to make a call.  By using a move operation instead (atomic) you make sure Asterisk doesn't see the file until it's completely there.
+
+If you've got the right stuff, and I've glossed over a lot of detail above, so you may very well not get it on the first try, you should get a phone call at your desk, and you should hear a woman's voice count down from ten to one and say goodbye.
+
+When you get the call, check whether your caller ID actually shows "7701234567" or whatever you entered for that line in your call file.  Not all phone service providers actually let you set the caller ID here!  Your institution probably wants the outgoing caller ID on these notices to be set to some phone number where patrons should call in. Don't promise your institution that you can actually make that happen until you test it!
+
+Testing a Call with Festival
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you don't need Festival (because perhaps you don't need to for the outbound notices to contain arbitrary strings like lists of item titles), move on to the next section in this document. But it's not that hard, and it does come in handy, so I recommend you keep going here.
+
+Install festival.  Packages exist for any reasonable distro.
+
+Follow the instructions at http://www.voip-info.org/wiki/view/Asterisk+festival+installation .  Within that document, just follow method 1 ("the easiest way") for installing Festival for Asterisk usage.
+
+Edit the "just-a-test" context in your dialplan so that it now reads like this:
+
+-------------------------------------------------------
+[just-a-test]
+exten => 10,1,Verbose(entering the just-a-test context)
+exten => 10,n,Answer
+exten => 10,n,SayDigits(123)
+exten => 10,n,Festival(Testing testing one two three)
+exten => 10,n,Playback(vm-goodbye)
+exten => 10,n,Festival(Goodbye)
+exten => 10,n,Hangup
+-------------------------------------------------------
+
+Reload your dialplan, and follow the steps as in the previous test to respool your call file for another outbound call.
+
+When you answer this call, you should hear a nice lady's voice say "one two three," a less nice male-ish voice say "testing testing one two three," the nice lady say "goodbye", and the less nice male say "goodbye."
+
+When you hear this test, you have festival configured correctly.
+
+Deploy Perl scripts connecting Evergreen to Asterisk
+----------------------------------------------------
+You've got to set up two Perl scripts now.  These two scripts are involved in getting call files from Evergreen to Asterisk.  Evergreen basically generates a
+call file via an Action/Trigger template and then ships it off to the Asterisk machine.  More on that later.
+
+For now, the important thing is that Evergreen will send call files to your Asterisk machine on TCP port 10080 via XML-RPC.  One of these two Perl scripts I'm talking about has the job of listening for those deliveries.
+
+Find the +Open-ILS/src/asterisk/pbx-daemon+ directory in the tarball for whatever version of Evergreen you installed, or from a checkout of the master branch.  From there, copy the two .pl files to +/usr/local/bin+ and the one .conf file to +/usr/local/etc+.
+
+Try to run the command +eg-pbx-mediator.pl -c /usr/local/etc/eg-pbx-daemon.conf+.  It probably won't work the first time.  Read whatever error messages you get, and use your distribution's package manager or CPAN to install any missing perl dependencies (like Config::General and RPC::XML).  Rinse and repeat until the script runs without errors.  Use sudo or su to run it as the user "nobody." Once eg-pbx-mediator.pl is running, background it and get it out of your sight.
+
+From the utility box, make sure you can telnet to your Asterisk box on port 10080.  If you can't get a connection, there's a either a firewall in your way or some other network layer problem.  Resolve that before continuing.
+
+Now try to run +eg-pbx-allocator.pl -c /usr/local/etc/eg-pbx-daemon.conf+.  Follow the same process as above to install any missing dependencies or fix any errors.  This script is not a daemon, so it should exit immediately (and silently) when it's configured correctly.  We're going to want to run it via cronjob eventually, but we'll set that up in a later step.
+
+What does each script do, you ask?  Basically eg-pbx-mediator.pl listens for call files from Evergreen and drops them off in +/var/tmp+.  eg-pbx-allocator.pl will move a given number of call files from +/var/tmp+ into +/var/spool/asterisk/outgoing+.  The reason there are two separate scripts doing this is so that you can schedule eg-pbx-allocator.pl to run (via cron) only during times when you want to be calling patrons (like during the day, and not on Sundays).
+
+Getting your call script together
+---------------------------------
+Now you need to determine what your notifications should say.  There are not useful defaults for this in Evergreen yet.
+
+We know we can do overdue notices and hold available notices.  There are other "hooks" (see your Action/Trigger vocabulary) off which we could build other event definitions.  Chart your own course here and please share your results with the community!
+
+For an overdue notice, for example, you need to decide (or get the
+institution to decide) literally word for word what you want the message to
+say.
+
+Generic example:
+
+-------------------------------------------------------
+This is the Example Consortium calling on behalf of Example Branch 1 to inform
+you that you have <number> overdue item(s).  The following titles are overdue:
+<titles of overdue items>.  For more information, please call Example Branch 1
+at <branch's phone number>.  Thank you.
+-------------------------------------------------------
+
+And then you need to create or obtain a similar script for hold available notices.
+
+The following two subsections cover how to write a very basic dialplan and how to record sound files for a custom script.
+
+Expanding your dialplan
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Now it's time to create more complete dialplans that reflect your call scripts.
+
+In +/etc/asterisk/extensions.conf+, add a new context like the following.  This follows our example call script above, and assumes you installed and set up Festival.
+
+-------------------------------------------------------
+[overdue-notice]
+exten => 11,1,Verbose(started in eg-overdue-notice)
+exten => 11,n,Answer
+exten => 11,n,Festival(This is the)
+exten => 11,n,Festival(${root_ou_name})
+exten => 11,n,Festival(calling on behalf of the)
+exten => 11,n,Festival(${ou_name})
+exten => 11,n,Festival(to inform you that you have)
+exten => 11,n,SayNumber(${items})
+exten => 11,n,GotoIf($[0${items} > 1]?20:25)     ; spaces important
+exten => 11,20,Festival(overdue items.)          ; this is plural
+exten => 11,n,Goto(30)
+exten => 11,25,Festival(overdue item.)           ; this is singular
+exten => 11,n,Goto(30)
+exten => 11,30,Festival(The following titles are overdue)
+exten => 11,n,Festival(${titles})
+exten => 11,n,Festival(For more information please call)
+exten => 11,n,Festival(${ou_name})
+exten => 11,n,Festival(at)
+exten => 11,n,SayDigits(${ou_phone})
+exten => 11,n,Festival(Thank you.)
+exten => 11,n,Hangup
+-------------------------------------------------------
+
+There are several things to bear in mind about the above dialplan.  It's extremely simple in that it doesn't attempt answering machine detection and it doesn't offer the called party any way to repeat part of the message.  If you're using plain-old-phone-lines (as opposed to a PRI card or digital telephony) this message will actually play to the ringback tone instead of waiting for a human to answer!  Furthermore, it's going to read everything in a hard-to-understand robot voice.
+
+It will, however, serve its purpose in testing whether our call script will work.
+
+Compose a new call file like this:
+
+-------------------------------------------------------
+Channel: X
+Context: overdue-notice
+Extension: 11
+Callerid: 7701234567
+MaxRetries: 1
+RetryTime: 60
+WaitTime: 30
+Archive: 1
+Set: rout_ou_name=Example Consortium
+Set: ou_name=Example Branch 1
+Set: ou_phone=4045551212
+Set: items=2
+Set: titles=Harry Potter. The Da Vinci Code.
+-------------------------------------------------------
+
+where you substitute "SIP/blah/somenumber" or "DAHDI/N/somenumber" for X as in the earlier example in this document.
+
+Spool the file as per previous instructions. Does the message being read to you over the phone match the script you have?  If so, great.  Otherwise, do not continute until you get it right.
+
+Repeat this process to create a hold-available notice, assuming your institution wants one.  You'll create a similar chunk of dialplan, but you'll just change the messages and logic to reflect your script for hold-available notices rather than your script for overdue notices.
+
+Recording Sounds
+~~~~~~~~~~~~~~~~
+Now to get rid of the robot voice.  For all the static parts of your call script (represented in the dialplan by lines that call Festival() without using any variables for arguments such as +${items}+), you can ask your institution to have somebody record wave files saying these phrases.  Or maybe by the time you read this document Evergreen will have some standard dialplans and matching sound files.  Or you may have to do the voice work yourself.
+
+'Audacity' is a great open source application for recording and editing sound files.  Avoid clipping and introducing noisy artifacts.  How to record good audio is obviously outside the scope of this document, but anybody can do it.  Export Microsoft-style wav files, at 44100hz/16-bit.
+
+Once you have your wave files of all the parts of the dialplan recorded, you'll need to turn them into GSM files for Asterisk.
+
+Use sox to convert your WAV files to GSM.  sox is available on every serious Linux distro. For a single file, do this:
+
+-------------------------------------------------------
+sox infile.wav -r 8000 -c 1 outfile.gsm  resample -ql
+-------------------------------------------------------
+
+Put the above command inside a for loop to handle all your WAVs at once.  I leave that as an exercise for the reader.
+
+Make sure your can play the product by running:
+-------------------------------------------------------
+play outfile.gsm
+-------------------------------------------------------
+
+It'll sound relatively lo-fi, but as long as you can hear yourself, that'll do.  It'll probably sound more natural through a phone handset than it does through your workstation's speakers.
+
+Ideally you will have given your GSM files names that easily map to the strings of text that you have spoken in each file.  Place these files in +/var/lib/asterisk/sounds+ on the Asterisk server.  Then replace all of the static Festival calls in your dialplans with lines that look like this:
+
+-------------------------------------------------------
+exten => 11,n,Playback(For-more-information-please-call)
+-------------------------------------------------------
+
+The above assumes that there is a file at +/var/lib/asterisk/sounds/For-more-information-please-call.gsm+.
+
+Reload your dialplan. Re-run the test from end of the section "expanding your dialplan."  You should hear your own voice replacing the hard-to-understand robot voice for all but the dynamic parts of the message.
+
+Action/Trigger Event Definitions
+--------------------------------
+
+It's time to create Action/Trigger Event Definitions (rows in the action_trigger.event_defintion table) for the notifications you want.
+
+Setting up the event definition itself
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+There should be a stock example event definition linked to the the "checkout.due" hook.  For your overdue notices, you can just adjust this *if* you're going to be setting up overdue notices for the entire system or consortia using the Evergreen instance.
+
+If, on the other hand, you're setting up telephone notifications just for a certain branch or system, go ahead and create a new event definition, and make extra sure that its owner field contains the ID of the highest org unit that you want to be involved in your notifications, and no higher.
+
+Make your event definition look like the following. Columns I haven't mentioned can be left on their default values.
+
+-------------------------------------------------------
+active          | t
+owner           | N     -- where N is the top org unit where you want notices
+name            | Overdue Telephone Notification For Blah Library System
+hook            | checkout.due
+validator       | CircIsOverdue
+reactor         | ProcessTemplate       -- sic! just while we're testing
+delay           | 5 seconds
+delay_field     | due_date
+group_field     | usr
+template        | test                  -- sic! just while we're testing
+granularity     | Telephony
+-------------------------------------------------------
+
+The above isn't really enough to get the job done, but we're going to do this in baby steps.
+
+Now make sure you have rows in action_trigger.environment that point to your event_definition (i.e., they have the correct event_definition ID in the "event_def" column) with the following three values for "path".
+
+-------------------------------------------------------
+target_copy.call_number.record.simple_record
+usr.settings
+circ_lib
+-------------------------------------------------------
+
+Once that's done, here's a simple template.  The more you want to change it, the more comfortable you'll need to be with Template Toolkit Syntax. Try setting the "template" column of your action_trigger.event_definition row to this:
+
+-------------------------------------------------------
+[%-
+
+# Get a usable phone number.
+phone = target.0.usr.day_phone | replace('[^0-9]', '');
+
+IF phone.length == 7;
+  chan = 'DAHDI/r1/' _ phone;
+ELSIF phone.length == 10;
+  chan = 'DAHDI/r1/1' _ phone;
+ELSE;
+  ";noop bad phone number: '" _ phone _ "'"; STOP;
+END;
+
+branchname = target.0.circ_lib.shortname | lower;
+branchphone = target.0.circ_lib.phone | replace('[^0-9]','');
+-%]
+Channel: [% chan %]
+Context: overdue-notice
+Extension: 11
+MaxRetries: 2
+RetryTime: 300
+WaitTime: 30
+Archive: 1
+Set: eg_user_id=[% target.0.usr.id %]
+Set: items=[% target.size %]
+Set: branchname=[% branchname %]
+Set: branchphone=[% branchphone %]
+Set: titlestring=[%
+  titles = [];
+  FOR circ IN target;
+    t = circ.target_copy.call_number.record.simple_record.title;
+    t = t | replace('[^a-zA-Z0-9]',' '); # commas and things break Festival
+    titles.push(t);
+  END;
+  titles.join(". ");
+%]
+
+[%#
+  # Make sure this template ends with some line feeds! You don't want the
+  # "Set: titlestring=blah" line to be the last thing in the output without
+  # a linefeed (this, combined with things that happen later, will lead to
+  # callfiles that Asterisk cannot parse).
+%]
+
+-------------------------------------------------------
+
+Around the middle, notice the lines where the template defines a variable "chan".  Make sure that "chan" is getting set to something that will actually work for placing a call with your system.  It may start with DAHDI or it may start with SIP, and the middle part will vary as well.  It all depends on what you had to put in your test call files earlier in order to be able to place test calls.
+
+Enough about the template for now. Let's run some test events and see if we can generate a correct callfile from this template.
+
+Testing some events for call file generation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+On your institution's utility server, change to the opensrf user and issue the following command.
+
+NOTE: For a busy institution that might have lots of overdue circulations (> 1000) you should take care to do this at some point in the day that won't disrupt other important processes on the utility box.  This could take a while (hours, potentially).
+
+-------------------------------------------------------
+/openils/bin/action_trigger_runner.pl --run-pending --process-hooks --granularity Telephony --granularity-only
+-------------------------------------------------------
+
+When that command finishes, you should have some rows in your *action_trigger.event* table where the "event_def" column matches the ID of the telephony event definition you just set up and the "state" column is "complete".
+
+If you have rows where "event_def" is right but the state is not "complete," investigate that as you would any action trigger problem.  Otherwise your event rows will have numbers in the "template_output" column.  Pick some of those values from the "template_output" column, and for each of those values select the row from the *action_trigger.event_output* table with the matching ID.
+
+The value of the "data" column of your event output rows should look like a callfile that matches the format of the callfiles you successfully tested in earlier sections of this document.  If you're not getting something that looks like a callfile that should work, make adjustments until you do.  Once you think you have something that might work, try pasting it into a text editor, substituting your own phone number for the one generated from the patron record, and spooling that as a callfile on the Asterisk system.  In theory you should hear a complete overdue notice.
+
+Finishing touches
+-----------------
+
+Revalidation
+~~~~~~~~~~~~
+
+TODO: Explain how to use revalidator_uri in +eg-pbx-daemon.conf+ to revalidate events that have been waiting for the allocator for a while right before we actually attempt to spool their callfiles with Asterisk, so patrons don't get stale overdue notices and such.
+
+Patch AstCall.pm
+~~~~~~~~~~~~~~~~
+
+If you're using a version of Evergreen earlier than 2.1.0, take the following commit from the Evergreen git repository and apply it on your utility server: e2d50e9f062c.
+
+/openils/conf/opensrf.xml
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+On the utility server edit +/openils/conf/opensrf.xml+ so that the <telephony> section looks like this:
+
+-------------------------------------------------------
+<telephony>
+    <enabled>1</enabled>    <!-- I think this setting isn't actually used -->
+    <driver>SIP</driver>    <!-- Always make this SIP, no matter what. -->
+        <channels>          <!-- This isn't used but must be here anyway. -->
+                <channel>1</channel>
+                <channel>2</channel>
+        </channels>
+    <host>A.B.C.D</host>    <!-- for A.B.C.D, enter the IP of Asterisk box -->
+    <port>10080</port>      <!-- default, little reason to change this -->
+    <user>evergreen</user>  <!-- not actually used -->
+    <pw>evergreen</pw>      <!-- not actually used -->
+</telephony>
+-------------------------------------------------------
+
+Yes, I realize most of that config is ridiculous, especially how it expects you to have "SIP" as the driver even when you're using analog hardware. The config was shaped by earlier designs for A/T-based telephony that have been superseded. We should fix this, but don't worry: it's your event definition template that really spells out DAHDI or SIP, anyway.
+
+Of course, somebody should clean up the config and the code that uses it to reflect what we really need, and then ideally update this document.  Thanks in advance.
+
+Services to restart
+~~~~~~~~~~~~~~~~~~~
+Restart the open-ils.trigger and the opensrf.settings services on the utility box.  If you don't usually restart specific services like that, restarting all the services on the utility box is fine.
+
+Make your event definition use the AstCall reactor
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Remember the event definition you made for telephone notices a few steps ago?  Change the value of its "reactor" column from 'ProcessTemplate' to 'AstCall'.
+
+Init scripts for the Asterisk box
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you installed Asterisk from source instead of from a distro package, look in the source tarball for sample init scripts.  Choose the one appropriate for your distro, put it in place, run 'chkconfig' or 'update-rc.d' or whatever's appropritate for your distro, and make sure you can start and stop Asterisk with that init script now.
+
+For festival, I think on Debianesque distros you will have installed this from a package, but if you're on something Redhat-ish and you need an init script, the following will probably work.
+
+Festival:
+-------------------------------------------------------
+#!/bin/sh
+#
+# festival:     Festival Text-to-Speech server
+#
+# chkconfig:    - 26 89
+# description:  Festival Text-to-Speech server
+#
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+start()
+{
+        mkdir -p /var/log/festival
+        mkdir -p /var/run/festival
+        cd /var/run/festival
+        echo -n $"Starting festival: "
+        nohup festival_server -l /var/log/festival &
+        echo
+}
+
+stop()
+{
+        echo -n $"Shutting down festival: "
+        festival_server_control -l /var/log/festival exit
+        echo
+}
+
+# See how we were called.
+case "$1" in
+  start)
+        start
+        ;;
+  stop)
+        stop
+        ;;
+  restart|reload)
+        stop
+        start
+        ;;
+  status)
+        status festival_server
+        ;;
+  *)
+        echo $"Usage: $0 {start|stop|restart|reload}"
+        exit 1
+esac
+
+exit 0
+-------------------------------------------------------
+
+For eg-pbx-mediator.pl, use this init script.  Actually you should change it to run the mediator as the 'nobody' user instead of as the 'root' user, but I haven't got around to that yet.
+
+-------------------------------------------------------
+#!/bin/sh
+#
+# eg-pbx-mediator:      Daemon to listen for call files from Evergreen
+#
+# chkconfig:    - 62 38
+# description:  Daemon to listen for call files from Evergreen
+#
+
+PIDFILE=/var/run/eg-pbx-mediator.pid
+
+start()
+{
+        echo -n "Starting eg-pbx-daemon: "
+        /usr/local/bin/eg-pbx-mediator.pl -c /usr/local/etc/eg-pbx-daemon.conf &
+        echo
+        echo $! > $PIDFILE
+}
+
+stop()
+{
+        echo -n "Shutting down eg-pbx-daemon: "
+        [ -r $PIDFILE ] && kill `cat $PIDFILE `
+        echo
+}
+
+# See how we were called.
+case "$1" in
+  start)
+        start
+        ;;
+  stop)
+        stop
+        ;;
+  restart|reload)
+        stop
+        start
+        ;;
+  *)
+        echo $"Usage: $0 {start|stop|restart|reload}"
+        exit 1
+esac
+
+exit 0
+
+-------------------------------------------------------
+
+Cron job for eg-pbx-allocator.pl
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+On the asterisk machine, create a cron job (or more than one) for root to run the eg-pbx-allocator.pl script.  The idea is to run this script every minute during the "call window", or the period of time during which your institution is okay with calls going out.  Make sure you communicate with your institution and find out when this window is!
+
+Here's an example from root's crontab on Anytown Public Library's Asterisk box:
+
+-------------------------------------------------------
+# Call window for Anytown Public Lib: 930am - 630pm Mon-Sat
+# The three lines below here do this.
+* 10-17 * * 1-6 /usr/local/bin/eg-pbx-allocator.pl -c /usr/local/etc/eg-pbx-daemon.conf
+0-29 18 * * 1-6 /usr/local/bin/eg-pbx-allocator.pl -c /usr/local/etc/eg-pbx-daemon.conf
+30-59 9 * * 1-6 /usr/local/bin/eg-pbx-allocator.pl -c /usr/local/etc/eg-pbx-daemon.conf
+-------------------------------------------------------
+
+So you see how those three cron lines togeter run the allocator every minute within Anytown's 930am - 630pm Mon-Sat call window.
+
+Cron job for action_trigger_runner.pl
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+On the utility server, create a cronjob as opensrf to run action_trigger_runner.pl with the particular arguments we need for telephony notices.  If you're just doing overdue notices, most (but not all) Evergreen systems calculate overdues at midnight, so you 'could' have this cronjob run just once per day, some time in the wee hours.
+
+On the other hand, if you're eventually going to run telephony notices for holds available, too, then you want to run action_trigger_runner.pl with our arguments more often.  Run it at the same frequency as you run the general --run-pending call, but slightly offset.  For example, if you have a general "Run all pending A/T events every half hour" cronjob that does things every hour at :00 and :30, then perhaps use this for your telephony --run-pending job:
+
+-------------------------------------------------------
+# Runs all pending telephony A/T events every half hour (offset by 10 min)
+10,40 * * * * . ~/.bashrc && /openils/bin/action_trigger_runner.pl --osrf-config /openils/conf/opensrf_core.xml --run-pending --process-hooks --granularity Telephony --granularity-only
+-------------------------------------------------------
+
+Holidays
+~~~~~~~~
+TODO: Write this section
+
+Rollover failed notices
+~~~~~~~~~~~~~~~~~~~~~~~
+TODO: Write this section
+
+Congratulations!
+~~~~~~~~~~~~~~~~
+
+Congratulations!  In a perfect world, telephone overdue notices for your institution are now live.  If you're not quite there, but you followed this document carefully, you should at least be close, and maybe with some clever troubleshooting you'll get there soon.
+
+What to do differently for hooks like hold.available
+----------------------------------------------------
+
+For your event definition where the hook is "hold.available", be sure you make the "validator" column "HoldIsAvailable".
+
+Also, hold.available is an "active hook" as opposed to a passive one (like checkout.due) in Action/Trigger parlance.  I suppose the only thing that you really need to know about it is that events for hold.available, once you set up an event definition, will appear all throughout the day, unlike the events for checkout.due, which will typically appear all at once sometime shortly after midnight.
+
+This may have implications for load scheduling.  That might mean changes to the cron job on the Asterisk machine that runs eg-pbx-allocator.pl, or changes to the queue_limit value in +/usr/local/etc/eg-pbx-daemon.conf+, or other things.  Telephony is an adventure.
+
+The target for a hold.available hook is a hold, unlike a checkout.due hook for which the target is a circ, so for your event_definition's environment, notice change 'circ_lib' to 'pickup_lib'.  Then within your event_defintion's template, make the same substitution and any other reasonable changes in light of the fact that now target is an array of holds, whereas before it was an array of circs.
+
+Troubleshooting and support
+---------------------------
+
+Troubleshooting post-go-live
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Want to see what's your telephony system is doing?  The best things you can do are these.
+
+TODO: Explain how info from Account in a callfile winds up in CSV, and why it's good and helpful.
+
+- Activate one of the cdr modules that come with Asterisk.  Call Detail Records wind up in either a CSV file or a database table depending on which module you activate.  You can even have the cdr_pgsql.so module put that database table in the same postgres database as Evergreen itself uses.  A cdr databse table will have one row per call made, with lots of information about what the phone number was and what happened with the call.  This information will be less reliable if you're using analog hardware, but is better if you're using digital telephony (VoIP).
+- Check +/var/log/asterisk/full+.  grep around in this file to learn how to find all kinds of good information.
+- Run the interactive Asterisk console.  On the asterisk server, as root, run */usr/sbin/asterisk -rvvvvvvvvvv* .  Watch things happen in real time.
+- Consult the Evergreen database to see what kinds of notices have been generated.  The following is an example query to see if any telephone notices went out regarding Harry Potter (assuming you kept the titlestring part in your event definition template):
+-------------------------------------------------------
+SELECT atev.id
+FROM action_trigger.event_definition atevdef
+JOIN action_trigger.event atev ON (atev.event_def = atevdef.id)
+JOIN action_trigger.event_output ateo ON (ateo.id = atev.template_output)
+WHERE ateo.data ILIKE '%harry potter%';
+-------------------------------------------------------
+- Want to know what hold available events have been generated for a given user? Try a query like this:
+-------------------------------------------------------
+SELECT atev.id,atev.state,ateo.data
+FROM action_trigger.event atev
+JOIN action_trigger.event_definition atevdev ON (atevdef.id = atev.event_def)
+LEFT JOIN action_trigger.event_output ateo ON (ateo.id = atev.template_output)
+JOIN action.hold_request ahr ON (ahr.id = atev.target)
+WHERE atevdef.hook = 'hold.available' and ahr.usr = <yourusridhere>;
+-------------------------------------------------------
+
+Stopping and restarting notices
+-------------------------------
+
+Is the system going haywire, and you need to stop outbound notices until you can figure out what's going on?  The following two steps are enough to stop notices in their tracks:
+
+. Comment out the cron jobs for *eg-pbx-allocator.pl* in root's crontab on the Asterisk machine.
+. +/etc/init.d/asterisk+ stop
+
+Restarting notices is basically the obvious opposite of the above two steps, BUT you may wish to clear out previously queued notices first (or you may not, this just depends on what you're trying to accomplish and why you stopped notices in the first place).  For Evergreen telephony, there's a two-stage queuing system in play.  Files first go to +/var/tmp+ and then to +/var/spool/asterisk/outgoing+ so look for call files there and delete some if appropriate.
+
+Clearing out queued notices
+---------------------------
+
+Sometimes something will have happened (perhaps Evergreen has been used in offline mode for a while) and the system will have generated a lot of pending notices for overdues and holds that aren't actually correct.  Remember that overdue notices are produced typically just after midnight, and hold available notices are produced all the time.  Fixing wrong overdues or wrong hold shelving does NOT automatically recall any generated notices, so if there's some big disruptive event that's happened, it may be wise to clear out pending notices.  It's even better if you can do this before the call window opens for the day.
+
+To remove queued notices (this is irrevocable!), just do
+
++rm /var/tmp/EG*.call+
+
++rm /var/spool/asterisk/outgoing/*+
+
+You could move these files somewhere instead of deleting them if you think there's some chance you might not actually want to delete them all.

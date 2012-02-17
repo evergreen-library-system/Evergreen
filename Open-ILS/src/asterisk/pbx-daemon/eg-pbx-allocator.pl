@@ -81,6 +81,9 @@ Equinox Software, Inc.
 
 package RevalidatorClient;
 
+use strict;
+use warnings;
+
 use Sys::Syslog qw/:standard :macros/;
 use RPC::XML;
 use RPC::XML::Client;
@@ -230,6 +233,68 @@ sub queue {
     $opts{v} and print $msg . "\n";
 }
 
+sub lock_file_create {
+    if (not open FH, ">$config{lock_file}") {
+        syslog LOG_ERR, "could not create lock file $config{lock_file}: $!";
+        die "could not create lock file!";
+    }
+    print FH $$, "\n";
+    close FH;
+}
+
+sub lock_file_release {
+    if (not unlink $config{lock_file}) {
+        syslog LOG_ERR, "could not remove lock file $config{lock_file}: $!";
+        die "could not remove lock file";
+    }
+}
+
+sub lock_file_test {
+    if (open FH, $config{lock_file}) {
+        my $pid = <>;
+        chomp $pid;
+        close FH;
+
+        # process still running?
+        if (-d "/proc/$pid") {
+            syslog(
+                LOG_ERR,
+                "lock file present ($config{lock_file}), $pid still running"
+            );
+            die "lock file present!";
+        } else {
+            syslog(
+                LOG_INFO,
+                "lock file present ($config{lock_file}), but $pid no longer running"
+            );
+            lock_file_release;
+        }
+    } 
+}
+
+sub holiday_test {
+    if (exists $config{holidays}) {
+        my $now = time;
+
+        if (not open FH, "<" . $config{holidays}) {
+            syslog LOG_ERR, "could not open holidays file $config{holidays}: $!";
+            die "could not open holidays file $config{holidays}: $!";
+        }
+
+        while (<FH>) {
+            chomp;
+            my ($from, $to) = map(int, split(/,/));
+
+            if ($now >= $from && $now <= $to) {
+                close FH;
+                syslog LOG_NOTICE, "$config{holidays} says it's a holiday, so i'm quitting";
+                exit 0;
+            }
+        }
+        close FH;
+    }
+}
+
 ###  MAIN  ###
 
 getopts('htvc:', \%opts) or pod2usage(2);
@@ -240,6 +305,12 @@ $opts{t} and print "TEST MODE\n";
 $opts{v} and print "verbose output ON\n";
 load_config;    # dies on invalid/incomplete config
 openlog basename($0), 'ndelay', LOG_USER;
+lock_file_test;
+holiday_test;
+
+# there seems to be no potential die()ing or exit()ing after this, failures with the revalidator
+# excepting failures with the revalidator
+lock_file_create;
 
 my $now = time;
 # incoming files sorted by mtime (stat element 9): OLDEST first
@@ -317,8 +388,9 @@ if ($opts{v}) {
 }
 
 foreach (@actually) {
-    # $opts{v} and print `ls -l $_`;  # '  ', (stat($_))[9], " - $now = ", (stat($_))[9] - $now, "\n";
     queue($_);
 }
 
-1;
+lock_file_release;
+
+0;
