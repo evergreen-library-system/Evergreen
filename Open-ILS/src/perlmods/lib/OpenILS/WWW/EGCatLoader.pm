@@ -251,10 +251,13 @@ sub load_common {
             return $self->load_logout($self->apache->unparsed_uri);
         }
     }
-    $ctx->{search_ou} = $self->_get_search_lib();
 
+    $self->extract_copy_location_group_info;
+    $ctx->{search_ou} = $self->_get_search_lib();
     $self->staff_saved_searches_set_expansion_state if $ctx->{is_staff};
     $self->load_eg_cache_hash;
+    $self->load_copy_location_groups;
+    $self->staff_saved_searches_set_expansion_state if $ctx->{is_staff};
 
     return Apache2::Const::OK;
 }
@@ -302,8 +305,6 @@ sub get_physical_loc {
 
     return $self->cgi->cookie(COOKIE_PHYSICAL_LOC);
 }
-
-
 
 # -----------------------------------------------------------------------------
 # Log in and redirect to the redirect_to URL (or home)

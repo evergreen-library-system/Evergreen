@@ -28,7 +28,6 @@
     ];
 
     BLOCK render_subject;
-        loc = CGI.param('loc') | uri;
         xpath = xpath || '//*[starts-with(@tag,"6")]';
         FOR node IN ctx.marc_xml.findnodes(xpath);
             all_terms = [];

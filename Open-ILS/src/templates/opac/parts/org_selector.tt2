@@ -1,33 +1,66 @@
 [%
-    BLOCK build_org_selector_options;
-        disabled = '';
-        selected = '';
-        IF can_have_vols_only AND walker.ou_type.can_have_vols != 't';
-            disabled = 'disabled="disabled"';
-        ELSIF walker.id == value;
-            selected = 'selected="selected"';
-        END;
-        IF ctx.is_staff || walker.opac_visible == 't';
-%]
-            <option value='[% walker.id | uri %]' [% selected %] [% disabled %]>
-                [%
-                    pad = walker.ou_type.depth * 2;
-                    FOR idx IN [0..pad]; '&nbsp;'; END;
-                    walker.name | html;
-                %]
-            </option>
-            [% FOR child IN walker.children;
-                PROCESS build_org_selector_options walker=child value=value;
-            END;
+# Org Unit Selector Widget :
+#   PROCESS build_org_selector id='selector-id' name='selector-name' 
+#       value=org_id show_loc_groups=1/0 can_have_vols_only=1/0
+
+BLOCK build_org_selector;
+    node_stack = [{org => org_unit || ctx.aou_tree}];
+    IF !name; 
+        name = 'loc';
+        IF show_loc_groups; name = 'locg'; END;
+    END;
+    IF !value;
+        value = ctx.search_ou;
+        IF show_loc_groups; 
+            value = CGI.param('locg') || ctx.search_ou;
         END;
     END;
+    %]
 
-    # XXX TODO probably put this BLOCK somewhere else so it can be used widely.
-    # Org Unit Selector Widget :
-    #   PROCESS build_org_selector id='selector-id' name='selector-name'
-    BLOCK build_org_selector;
-%]
     <select [% IF id %] id='[% id %]' [% END %] name='[% name %]'>
-    [% PROCESS build_org_selector_options walker=(org_unit || ctx.aou_tree) value=value %]
+    [% 
+        WHILE node_stack.size > 0; 
+            node = node_stack.pop();
+            org_unit = node.org;
+            loc_grp = node.loc_grp;
+            ou_id = org_unit.id;
+            disabled = '';
+            selected = '';
+
+            NEXT UNLESS ctx.is_staff || org_unit.opac_visible == 't';
+
+            IF !loc_grp;
+                IF show_loc_groups;
+                    FOR grp IN ctx.copy_location_groups.$ou_id.reverse;
+                        node_stack.push({org => org_unit, loc_grp => grp});
+                    END;
+                END;
+                FOR child IN org_unit.children.reverse;
+                    node_stack.push({org => child});
+                END;
+            END;
+
+            node_value = ou_id;
+            IF loc_grp; node_value = node_value _ ':' _ loc_grp.id; END;
+
+            IF can_have_vols_only AND org_unit.ou_type.can_have_vols != 't';
+                disabled = 'disabled="disabled"';
+            ELSIF node_value == value;
+                selected = 'selected="selected"';
+            END %] 
+
+            <option value='[% node_value %]' [% selected %] [% disabled %]> 
+            [%
+                # loc_grp's are displayed as children of the current org
+                depth = org_unit.ou_type.depth;
+                IF loc_grp; depth = depth + 1; END;
+                pad = depth * 2;
+                FOR idx IN [0..pad]; '&nbsp;'; END;
+                loc_grp ? loc_grp.name : org_unit.name | html ;
+            %]
+            </option> 
+            [%
+        END;
+    %]
     </select>
-[%  END %]
+[% END %]

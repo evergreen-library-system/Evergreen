@@ -112,6 +112,10 @@ sub _prepare_biblio_search {
         $query .= " site($site)";
     }
 
+    if (my $grp = $ctx->{copy_location_group}) {
+        $query .= " location_groups($grp)";
+    }
+
     if(!$site) {
         ($site) = ($query =~ /site\(([^\)]+)\)/);
         $site ||= $ctx->{aou_tree}->()->shortname;

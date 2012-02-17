@@ -280,28 +280,35 @@ sub fetch_marc_xml_by_id {
 
 sub _get_search_lib {
     my $self = shift;
+    my $ctx = $self->ctx;
 
-    # loc param takes precedence
-    my $loc = $self->cgi->param('loc');
+    # avoid duplicate lookups
+    return $ctx->{search_ou} if $ctx->{search_ou};
+
+    my $loc = $ctx->{copy_location_group_org};
     return $loc if $loc;
 
-    if ($self->ctx->{user}) {
+    # loc param takes precedence
+    $loc = $self->cgi->param('loc');
+    return $loc if $loc;
+
+    if ($ctx->{user}) {
         # See if the user has a search library preference
         my $lset = $self->editor->search_actor_user_setting({
-            usr => $self->ctx->{user}->id, 
+            usr => $ctx->{user}->id, 
             name => 'opac.default_search_location'
         })->[0];
         return OpenSRF::Utils::JSON->JSON2perl($lset->value) if $lset;
 
         # Otherwise return the user's home library
-        return $self->ctx->{user}->home_ou;
+        return $ctx->{user}->home_ou;
     }
 
     if ($self->cgi->param('physical_loc')) {
         return $self->cgi->param('physical_loc');
     }
 
-    return $self->ctx->{aou_tree}->()->id;
+    return $ctx->{aou_tree}->()->id;
 }
 
 # This is defensively coded since we don't do much manual reading from the
@@ -339,5 +346,52 @@ sub load_eg_cache_hash {
         }
     }
 }
+
+# Extracts the copy location org unit and group from the 
+# "logc" param, which takes the form org_id:grp_id.
+sub extract_copy_location_group_info {
+    my $self = shift;
+    my $ctx = $self->ctx;
+    if (my $clump = $self->cgi->param('locg')) {
+        my ($org, $grp) = split(/:/, $clump);
+        $ctx->{copy_location_group_org} = $org;
+        $ctx->{copy_location_group} = $grp if $grp;
+    }
+}
+
+sub load_copy_location_groups {
+    my $self = shift;
+    my $ctx = $self->ctx;
+
+    # User can access to the search location groups at the current 
+    # search lib, the physical location lib, and the patron's home ou.
+    my @ctx_orgs = $ctx->{search_ou};
+    push(@ctx_orgs, $ctx->{physical_loc}) if $ctx->{physical_loc};
+    push(@ctx_orgs, $ctx->{user}->home_ou) if $ctx->{user};
+
+    my $grps = $self->editor->search_asset_copy_location_group([
+        {
+            opac_visible => 't',
+            owner => {
+                in => {
+                    select => {aou => [{
+                        column => 'id', 
+                        transform => 'actor.org_unit_full_path',
+                        result_field => 'id',
+                    }]},
+                    from => 'aou',
+                    where => {id => \@ctx_orgs}
+                }
+            }
+        },
+        {order_by => {acplg => 'pos'}}
+    ]);
+
+    my %buckets;
+    push(@{$buckets{$_->owner}}, $_) for @$grps;
+    $ctx->{copy_location_groups} = \%buckets;
+}
+
+
 
 1;

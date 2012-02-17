@@ -10,7 +10,7 @@
     <li>
     [% l('[quant,_1,copy,copies] at [_2].', ou_avail, ctx.get_aou(ou_id).name)
         | html %]
-    [%- IF ou_avail > 0 && ou_id != CGI.param('loc'); %]
+    [%- IF ou_avail > 0 && ou_id != ctx.search_ou; %]
     <a href="[% mkurl('', {loc => ou_id}); %]"
        title="[% l('Show copies at [_1]', ctx.get_aou(ou_id).name); %]">
        [%- l('(Show)'); %]</a>

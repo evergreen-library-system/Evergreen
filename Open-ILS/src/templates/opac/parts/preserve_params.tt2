@@ -1,6 +1,6 @@
 [%- 
 UNLESS params;
-    params = ['loc', 'query', 'qtype', 'sort'];
+    params = ['locg', 'loc', 'query', 'qtype', 'sort'];
 END;
 FOR param IN params;
     IF CGI.param(param); %]

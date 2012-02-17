@@ -1,6 +1,6 @@
 [% 
     series_tags = ['440', '490', '800', '810', '811', '830', '694']; 
-    loc = CGI.param('loc');
+    loc = ctx.search_ou;
 %]
 
 [% BLOCK render_series;

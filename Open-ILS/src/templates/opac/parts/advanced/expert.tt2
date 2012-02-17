@@ -1,4 +1,3 @@
-[% loc = CGI.param("loc") %]
 <form action="[% ctx.opac_root %]/results" method="GET">
     <div class="header_middle">[% l("Expert Search") %]</div>
     <input type="hidden" name="_special" value="1" />

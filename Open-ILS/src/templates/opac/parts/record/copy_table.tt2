@@ -54,7 +54,7 @@ END;
                 org_name | html
             -%]
             </td>
-            <td header='copy_header_callnumber'>[% callnum | html %] [% IF ctx.get_org_setting(CGI.param('loc') OR ctx.aou_tree.id, 'sms.enable') == 1 %](<a href="[% mkurl(ctx.opac_root _ '/sms_cn', {copy_id => copy_info.id}) %]">Text</a>)[% END %]</td>
+            <td header='copy_header_callnumber'>[% callnum | html %] [% IF ctx.get_org_setting(ctx.search_ou, 'sms.enable') == 1 %](<a href="[% mkurl(ctx.opac_root _ '/sms_cn', {copy_id => copy_info.id}) %]">Text</a>)[% END %]</td>
             [%- IF has_parts == 'true' %]
             <td header='copy_header_part'>[% copy_info.part_label | html %]</td>
             [%- END %]

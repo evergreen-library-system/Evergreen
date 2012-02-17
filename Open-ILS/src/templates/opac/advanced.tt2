@@ -1,9 +1,9 @@
-[%-  PROCESS "opac/parts/header.tt2";
+[%- PROCESS "opac/parts/header.tt2";
     WRAPPER "opac/parts/base.tt2";
     INCLUDE "opac/parts/topnav.tt2";
     ctx.page_title = l("Advanced Search");
     pane = CGI.param("pane") || "advanced";
-    loc = CGI.param("loc");
+    loc = ctx.search_ou;
 -%]
     <div id="search-wrapper">
         <div id="search-box">

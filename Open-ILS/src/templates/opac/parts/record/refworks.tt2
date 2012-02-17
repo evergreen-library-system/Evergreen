@@ -1,9 +1,6 @@
 [%
     # Default to the root of the org unit tree in the absence of a specific library
-    loc = ctx.aou_tree.id;
-    IF CGI.param('loc');
-        loc = CGI.param('loc');
-    END;
+    loc = ctx.search_ou;
 
     # Get the full name of the library
     ou_name = ctx.get_aou(loc).name | uri;
