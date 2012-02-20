@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('YYYY', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0676', :eg_version);
 
 INSERT INTO config.global_flag (name, label, enabled, value) VALUES (
     'opac.use_autosuggest',
