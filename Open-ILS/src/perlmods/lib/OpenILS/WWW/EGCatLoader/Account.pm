@@ -34,6 +34,10 @@ sub prepare_extended_user_info {
 
     $e->rollback if $local_xact;
 
+    # discard replaced (negative-id) addresses.
+    $self->ctx->{user}->addresses([
+        grep {$_->id > 0} @{$self->ctx->{user}->addresses} ]);
+
     return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR 
         unless $self->ctx->{user};
 
