@@ -23,7 +23,7 @@ sub new {
         total => 0
     };
     $self->{cache} = {};
-    $self->throttle(5) unless $self->throttle;
+    $self->throttle(4) unless $self->throttle;
     $self->{post_proc_queue} = [];
     $self->{last_respond_progress} = 0;
     return $self;
@@ -48,6 +48,7 @@ sub respond {
     }
     $self->conn->respond({ %{$self->{args}}, %other_args });
     $self->{last_respond_progress} = $self->{args}->{progress};
+    $self->throttle($self->throttle * 2) unless $self->throttle >= 256;
 }
 sub respond_complete {
     my($self, %other_args) = @_;
