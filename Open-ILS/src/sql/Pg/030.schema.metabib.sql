@@ -459,7 +459,7 @@ END;
 
 $func$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION metabib.reingest_metabib_field_entries( bib_id BIGINT ) RETURNS VOID AS $func$
+CREATE OR REPLACE FUNCTION metabib.reingest_metabib_field_entries( bib_id BIGINT, skip_facet BOOL DEFAULT FALSE, skip_browse BOOL DEFAULT FALSE, skip_search BOOL DEFAULT FALSE ) RETURNS VOID AS $func$
 DECLARE
     fclass          RECORD;
     ind_data        metabib.field_entry_template%ROWTYPE;
@@ -468,12 +468,18 @@ DECLARE
 BEGIN
     PERFORM * FROM config.internal_flag WHERE name = 'ingest.assume_inserts_only' AND enabled;
     IF NOT FOUND THEN
-        FOR fclass IN SELECT * FROM config.metabib_class LOOP
-            -- RAISE NOTICE 'Emptying out %', fclass.name;
-            EXECUTE $$DELETE FROM metabib.$$ || fclass.name || $$_field_entry WHERE source = $$ || bib_id;
-        END LOOP;
-        DELETE FROM metabib.facet_entry WHERE source = bib_id;
-        DELETE FROM metabib.browse_entry_def_map WHERE source = bib_id;
+        IF NOT skip_search THEN
+            FOR fclass IN SELECT * FROM config.metabib_class LOOP
+                -- RAISE NOTICE 'Emptying out %', fclass.name;
+                EXECUTE $$DELETE FROM metabib.$$ || fclass.name || $$_field_entry WHERE source = $$ || bib_id;
+            END LOOP;
+        END IF;
+        IF NOT skip_facet THEN
+            DELETE FROM metabib.facet_entry WHERE source = bib_id;
+        END IF;
+        IF NOT skip_browse THEN
+            DELETE FROM metabib.browse_entry_def_map WHERE source = bib_id;
+        END IF;
     END IF;
 
     FOR ind_data IN SELECT * FROM biblio.extract_metabib_field_entry( bib_id ) LOOP
@@ -481,12 +487,12 @@ BEGIN
             ind_data.field = -1 * ind_data.field;
         END IF;
 
-        IF ind_data.facet_field THEN
+        IF ind_data.facet_field AND NOT skip_facet THEN
             INSERT INTO metabib.facet_entry (field, source, value)
                 VALUES (ind_data.field, ind_data.source, ind_data.value);
         END IF;
 
-        IF ind_data.browse_field THEN
+        IF ind_data.browse_field AND NOT skip_browse THEN
             -- A caveat about this SELECT: this should take care of replacing
             -- old mbe rows when data changes, but not if normalization (by
             -- which I mean specifically the output of
@@ -506,7 +512,7 @@ BEGIN
                 VALUES (mbe_id, ind_data.field, ind_data.source);
         END IF;
 
-        IF ind_data.search_field THEN
+        IF ind_data.search_field AND NOT skip_search THEN
             EXECUTE $$
                 INSERT INTO metabib.$$ || ind_data.field_class || $$_field_entry (field, source, value)
                     VALUES ($$ ||
