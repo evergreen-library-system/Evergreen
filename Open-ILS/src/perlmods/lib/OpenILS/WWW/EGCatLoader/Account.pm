@@ -1907,8 +1907,6 @@ sub update_bookbag_item_notes {
 sub load_myopac_bookbag_print {
     my ($self) = @_;
 
-    $self->apache->content_type("text/plain; encoding=utf8");
-
     my $id = int($self->cgi->param("list"));
 
     my ($sorter, $modifier) = $self->_get_bookbag_sort_params("sort");
@@ -1950,12 +1948,34 @@ sub load_myopac_bookbag_print {
     # provoke browser download dialogs.
     (my $filename = $bbag->id . $bbag->name) =~ s/[^a-z0-9_ -]//gi;
 
-    $self->apache->headers_out->add(
-        "Content-Disposition",
-        "attachment;filename=$filename.csv"
+    return $self->set_file_download_headers("$filename.csv");
+}
+
+sub load_myopac_circ_history_export {
+    my $self = shift;
+    my $e = $self->editor;
+    my $filename = $self->cgi->param('filename') || 'circ_history.csv';
+
+    my $ids = $e->json_query({
+        select => {
+            au => [{
+                column => 'id', 
+                transform => 'action.usr_visible_circs', 
+                result_field => 'id'
+            }]
+        },
+        from => 'au',
+        where => {id => $e->requestor->id} 
+    });
+
+    $self->ctx->{csv} = $U->fire_object_event(
+        undef, 
+        'circ.format.history.csv',
+        $e->search_action_circulation({id => [map {$_->{id}} @$ids]}, {substream =>1}),
+        $self->editor->requestor->home_ou
     );
 
-    return Apache2::Const::OK;
+    return $self->set_file_download_headers($filename);
 }
 
 sub load_password_reset {

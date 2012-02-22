@@ -392,6 +392,19 @@ sub load_copy_location_groups {
     $ctx->{copy_location_groups} = \%buckets;
 }
 
+sub set_file_download_headers {
+    my $self = shift;
+    my $filename = shift;
+    my $ctype = shift || "text/plain; encoding=utf8";
 
+    $self->apache->content_type($ctype);
+
+    $self->apache->headers_out->add(
+        "Content-Disposition",
+        "attachment;filename=$filename"
+    );
+
+    return Apache2::Const::OK;
+}
 
 1;

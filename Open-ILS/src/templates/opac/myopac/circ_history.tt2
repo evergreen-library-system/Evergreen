@@ -26,8 +26,14 @@
             <a href='[% mkurl('circ_history', {limit => limit, offset => (offset + limit)}) %]'
                [% IF ctx.circs.size < limit %] class='invisible' [% END %] >[% l('Next') %]<span class="nav_arrow_fix">&#9658;</span></a>
         </span>
-        <span class="float-right">
-            <a class="hide_me" href="#">[% l('Export List') %]</a>
+        <span class="float-left">
+            <form action="[% mkurl(ctx.opac_root _ '/myopac/circ_history/export') %]" method="POST">
+                <div>
+                    [%- INCLUDE "opac/parts/preserve_params.tt2" %]
+                    <input type="hidden" name="filename" value="[% l('circ_history.csv') %]"/> 
+                    <button type="submit">[% l('Download CSV') %]</button>
+                </div>
+            </form>
         </span>
     </div>
     <div class="clear-both"></div>

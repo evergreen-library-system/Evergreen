@@ -155,6 +155,7 @@ sub load {
     return $self->load_myopac_bookbags if $path =~ m|opac/myopac/lists|;
     return $self->load_myopac_bookbag_print if $path =~ m|opac/myopac/list/print|;
     return $self->load_myopac_bookbag_update if $path =~ m|opac/myopac/list/update|;
+    return $self->load_myopac_circ_history_export if $path =~ m|opac/myopac/circ_history/export|;
     return $self->load_myopac_circ_history if $path =~ m|opac/myopac/circ_history|;
     return $self->load_myopac_hold_history if $path =~ m|opac/myopac/hold_history|;
     return $self->load_myopac_prefs_notify if $path =~ m|opac/myopac/prefs_notify|;
