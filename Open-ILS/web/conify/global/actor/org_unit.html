@@ -353,29 +353,34 @@
 										var modified_ou = new aou().fromStoreItem( current_ou );
 										modified_ou.isdeleted( 1 );
 
-                                        var objs = [];
-                                        objs.push(modified_ou);
+										var objs = [];
+										objs.push(modified_ou);
 										if (!current_billing_address.isnew()) {
-                                            current_billing_address.isdeleted( 1 );
-                                            objs.push(current_billing_address);
-                                        }
+											current_billing_address.isdeleted( 1 );
+											objs.push(current_billing_address);
+										}
+
 										if (!current_mailing_address.isnew()) {
-                                            current_mailing_address.isdeleted( 1 );
-                                            objs.push(current_mailing_address);
-                                        }
+											current_mailing_address.isdeleted( 1 );
+											objs.push(current_mailing_address);
+										}
+
 										if (!current_holds_address.isnew()) {
-                                            current_holds_address.isdeleted( 1 );
-                                            objs.push(current_holds_address);
-                                        }
+											current_holds_address.isdeleted( 1 );
+											objs.push(current_holds_address);
+										}
+
 										if (!current_ill_address.isnew()) {
-                                            current_ill_address.isdeleted( 1 );
-                                            objs.push(current_ill_address);
-                                        }
-                                        if (!current_ou_hoo.isnew()) {
-                                            current_ou_hoo.isdeleted( 1 );
-                                            objs.push(current_ou_hoo);
-                                        }
-                                        pcrud.apply(objs, {
+											current_ill_address.isdeleted( 1 );
+											objs.push(current_ill_address);
+										}
+
+										if (!current_ou_hoo.isnew()) {
+											current_ou_hoo.isdeleted( 1 );
+											objs.push(current_ou_hoo);
+										}
+
+										pcrud.apply(objs, {
 											timeout : 10,
 											onerror : function (r) {
 												highlighter.editor_pane.red.play();
@@ -400,11 +405,11 @@
 													scope : ou_list_store
 												});
 
-                                                current_billing_address = null;
-                                                current_mailing_address = null;
-                                                current_holds_address = null;
-                                                current_ill_address = null;
-                                                current_ou_hoo = null;
+												current_billing_address = null;
+												current_mailing_address = null;
+												current_holds_address = null;
+												current_ill_address = null;
+												current_ou_hoo = null;
 												current_ou = null;
 
 												highlighter.editor_pane.green.play();
@@ -439,11 +444,11 @@
 										highlighter.editor_pane.red.play();
 										status_update( aou_strings.ERROR_CREATING_CHILD_AOU );
 									},
-									oncomplete : function (r) {
-										var res = r.recv();
-										if ( res && res.content() ) {
+									oncomplete : function (r, list) {
+										
+										if ( list.length ) {
 											ou_list_store.newItem(
-												res.content().toHash(),
+												list[0].toHash(),
 												{ parent : current_ou, attribute : 'children' }
 											);
 										} else {
@@ -595,11 +600,9 @@
                                                 highlighter.addresses_pane.red.play();
                                                 status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_PHYSICAL, [ou_list_store.getValue( current_ou, 'name' )] ) );
                                             },
-                                            oncomplete : function (r) {
-                                                var res = r.recv();
-                                                if (res && res.content()
-                                                    && (current_billing_address.isnew() == 1)) {
-                                                    current_billing_address = res.content();
+                                            oncomplete : function (r, list) {
+                                                if (list[0] && (current_billing_address.isnew() == 1)) {
+                                                    current_billing_address = list[0];
 
                                                     ou_list_store.setValue( current_ou, "billing_address", current_billing_address.id());
                                                     save_org();
@@ -665,11 +668,9 @@
                                                 highlighter.addresses_pane.red.play();
                                                 status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_HOLDS, [ou_list_store.getValue( current_ou, 'name' )] ) );
                                             },
-                                            oncomplete : function (r) {
-                                                var res = r.recv();
-                                                if (res && res.content()
-                                                    && (current_holds_address.isnew() == 1)) {
-                                                    current_holds_address = res.content();
+                                            oncomplete : function (r, list) {
+                                                if (list[0] && (current_holds_address.isnew() == 1)) {
+                                                    current_holds_address = list[0];
 
                                                     ou_list_store.setValue( current_ou, "holds_address", current_holds_address.id());
                                                     save_org();
@@ -734,11 +735,9 @@
                                                 highlighter.addresses_pane.red.play();
                                                 status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_MAILING, [ou_list_store.getValue( current_ou, 'name' )] ) );
                                             },
-                                            oncomplete : function (r) {
-                                                var res = r.recv();
-                                                if (res && res.content()
-                                                    && (current_mailing_address.isnew() == 1)) {
-                                                    current_mailing_address = res.content();
+                                            oncomplete : function (r, list) {
+                                                if (list[0] && (current_mailing_address.isnew() == 1)) {
+                                                    current_mailing_address = list[0];
 
                                                     ou_list_store.setValue( current_ou, "mailing_address", current_mailing_address.id());
                                                     save_org();
@@ -803,11 +802,9 @@
                                                 highlighter.addresses_pane.red.play();
                                                 status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_ILL, [ou_list_store.getValue( current_ou, 'name' )] ) );
                                             },
-                                            oncomplete : function (r) {
-                                                var res = r.recv();
-                                                if (res && res.content()
-                                                    && (current_ill_address.isnew() == 1)) {
-                                                    current_ill_address = res.content();
+                                            oncomplete : function (r, list) {
+                                                if (list[0] && (current_ill_address.isnew() == 1)) {
+                                                    current_ill_address = list[0];
 
                                                     ou_list_store.setValue( current_ou, "ill_address", current_ill_address.id());
                                                     save_org();

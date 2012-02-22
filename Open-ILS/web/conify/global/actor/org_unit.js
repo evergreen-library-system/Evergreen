@@ -71,9 +71,8 @@ function save_org () {
             highlighter.editor_pane.red.play();
             status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_DATA, [ou_list_store.getValue( current_ou, 'name' )] ) );
         },
-        oncomplete : function (r) {
-            var res = r.recv();
-            if ( res && res.content() ) {
+        oncomplete : function (r, list) {
+            if ( list[0] ) {
                 ou_list_store.setValue( current_ou, 'ischanged', 0 );
                 highlighter.editor_pane.green.play();
                 status_update( dojo.string.substitute( aou_strings.SUCCESS_SAVE, [ou_list_store.getValue( current_ou, 'name' )] ) );
