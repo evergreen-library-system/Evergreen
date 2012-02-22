@@ -73,6 +73,22 @@ following steps:
 New features
 ------------
 
+OPAC
+~~~~
+
+Copy Location Groups
+^^^^^^^^^^^^^^^^^^^^
+This feature allows staff to create and name sets of copy locations to use as
+a search filter in the catalog.  OPAC-visible groups will display within the
+library selector in the template toolkit OPAC.  When a user selects a group
+and performs a search, the set of results will be limited to records that have
+copies in one of the copy locations within the group.  Groups can live at any
+level of the library hierarchy and may include copy locations from any parent 
+org unit or child org unit.
+
+For advanced users, this change includes a new Query Parser filter called
+location_groups().
+
 Cataloging
 ~~~~~~~~~~
 
