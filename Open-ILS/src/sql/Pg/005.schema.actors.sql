@@ -681,4 +681,31 @@ CREATE TABLE actor.org_unit_custom_tree_node (
     CONSTRAINT aouctn_once_per_org UNIQUE (tree, org_unit)
 );
 
+CREATE TABLE actor.search_query (
+    id          SERIAL PRIMARY KEY, 
+    label       TEXT NOT NULL, -- i18n
+    query_text  TEXT NOT NULL -- QP text
+);
+
+CREATE TABLE actor.search_filter_group (
+    id          SERIAL      PRIMARY KEY,
+    owner       INT         NOT NULL REFERENCES actor.org_unit (id) 
+                            ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    code        TEXT        NOT NULL, -- for CGI, etc.
+    label       TEXT        NOT NULL, -- i18n
+    create_date TIMESTAMPTZ NOT NULL DEFAULT now(),
+    CONSTRAINT  asfg_label_once_per_org UNIQUE (owner, label),
+    CONSTRAINT  asfg_code_once_per_org UNIQUE (owner, code)
+);
+
+CREATE TABLE actor.search_filter_group_entry (
+    id          SERIAL  PRIMARY KEY,
+    grp         INT     NOT NULL REFERENCES actor.search_filter_group(id) 
+                        ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    pos         INT     NOT NULL DEFAULT 0,
+    query       INT     NOT NULL REFERENCES actor.search_query(id) 
+                        ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    CONSTRAINT asfge_query_once_per_group UNIQUE (grp, query)
+);
+
 COMMIT;
