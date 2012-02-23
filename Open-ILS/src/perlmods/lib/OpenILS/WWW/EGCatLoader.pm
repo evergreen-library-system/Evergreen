@@ -270,6 +270,7 @@ sub load_common {
     $self->load_eg_cache_hash;
     $self->load_copy_location_groups;
     $self->staff_saved_searches_set_expansion_state if $ctx->{is_staff};
+    $self->load_search_filter_groups($ctx->{search_ou});
 
     return Apache2::Const::OK;
 }

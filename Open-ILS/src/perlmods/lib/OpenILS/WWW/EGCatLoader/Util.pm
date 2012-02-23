@@ -15,7 +15,8 @@ our %cache = ( # cached data
     list => {},
     search => {},
     org_settings => {},
-    eg_cache_hash => undef
+    eg_cache_hash => undef,
+    search_filter_groups => {}
 );
 
 sub init_ro_object_cache {
@@ -512,5 +513,36 @@ sub apache_log_if_event {
 
     return;
 }
+
+sub load_search_filter_groups {
+    my $self = shift;
+    my $ctx_org = shift;
+    my $org_list = $U->get_org_ancestors($ctx_org, 1);
+
+    my %seen;
+    for my $org_id (@$org_list) {
+
+        my $grps;
+        if (!$cache{search_filter_groups}{$org_id}) {
+            $grps = $self->editor->search_actor_search_filter_group([
+                {owner => $org_id},
+                {   flesh => 2, 
+                    flesh_fields => {
+                        asfg => ['entries'],
+                        asfge => ['query']
+                    }
+                }
+            ]);
+            $cache{search_filter_groups}{$org_id} = $grps;
+        }
+            
+        # for the current context, if a descendant org has a group 
+        # with a matching code replace the group from the parent.
+        $seen{$_->code} = $_ for @$grps;
+    }
+
+    return $self->ctx->{search_filter_groups} = \%seen;
+}
+
 
 1;
