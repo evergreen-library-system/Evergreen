@@ -4,6 +4,7 @@
 *.lo
 *.pyc
 *.slo
+*.class
 
 aclocal.m4
 autom4te.cache/
