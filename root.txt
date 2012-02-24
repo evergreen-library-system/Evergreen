@@ -68,6 +68,11 @@ The Evergreen system allows a free range of customizations to every aspect of th
 
 // include::global_system_configuration.txt[]
 // include::opac_customization.txt[]
+
+
+include::admin/template_toolkit.txt[]
+
+
 //include::staff_client_customization.txt[]
 // include::backing_up.txt[]
  
