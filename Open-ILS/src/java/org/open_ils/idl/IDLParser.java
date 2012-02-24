@@ -29,6 +29,7 @@ public class IDLParser {
     InputStream inStream;
     HashMap<String, IDLObject> IDLObjects;
     IDLObject current;
+    private int fieldIndex;
 
     /** If true, we retain the full set of IDL objects in memory.  This is true by default. */
     private boolean keepIDLObjects;
@@ -39,6 +40,7 @@ public class IDLParser {
         IDLObjects = new HashMap<String, IDLObject>();
         keepIDLObjects = true;
         parsedObjectCount = 0;
+        fieldIndex = 0;
     }
 
     public IDLParser(String fileName) throws IOException {
@@ -122,6 +124,7 @@ public class IDLParser {
         String localpart = reader.getLocalName();
     
         if( "class".equals(localpart) ) {
+            fieldIndex = 0;
             current = new IDLObject();
             current.setIDLClass(reader.getAttributeValue(null, "id"));
             current.setController(reader.getAttributeValue(null, "controller"));
@@ -133,7 +136,7 @@ public class IDLParser {
         if( "field".equals(localpart) ) {
             IDLField field = new IDLField();
             field.setName(reader.getAttributeValue(null, "name"));
-            field.setArrayPos(new Integer(reader.getAttributeValue(OILS_NS_OBJ, "array_position")));
+            field.setArrayPos(fieldIndex++);
             field.setIsVirtual("true".equals(reader.getAttributeValue(OILS_NS_PERSIST, "virtual")));
             current.addField(field);
         }
