@@ -551,7 +551,7 @@ function __holdsDrawWindow() {
 	var mods_formats = rec.types_of_resource();
 	var formats;
 
-	if(holdArgs.recordDescriptors)
+	if (holdArgs.recordDescriptors && holdArgs.recordDescriptors.length)
 		formats = holdArgs.recordDescriptors[0].item_type();
 
 	if( holdArgs.type == 'T' ) {
