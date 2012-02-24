@@ -112,22 +112,26 @@
 <div class='hidden'>
     <div dojoType='openils.widget.ProgressDialog' jsId='progressDialog'></div>
     <div id='dnd-drag-actions'>
-        <span>
-            <span style='padding:5px;' group="GRPID">
-                <span><a href="javascript:;" onclick="drawGroupEntries(GRPID)">GRPNAME</a></span>
-                [
-                <span>[% l('Visible') %]
-                    <span style='color:green' name='visible'>&#x2713;</span>
-                    <span style='color:red' name='invisible'>&#x2717;</span>
+        <table width='100%'><tr>
+            <td nowrap='nowrap' align='left'>
+                <span style='padding:5px;' group="GRPID">
+                    <span><a href="javascript:;" onclick="drawGroupEntries(GRPID)">GRPNAME</a></span>
                 </span>
+            </td>
+            <td align='right'>
+                [
+                <span style='color:green' name='visible'>[% l('Visible') %]</span>
+                <span style='color:red' name='invisible'>[% l('Not Visible') %]</span>
                 <span><a href="javascript:;" onclick="editGroup(GRPID)">[% l('Edit') %]</a></span>
                 <span><a href="javascript:;" onclick="deleteGroup(GRPID)">[% l('Delete') %]</a></span>
                 ]
-            </span>
-            <span></span>
-            <span class='acplg-drag-handle'></span>
-            <span class='acplg-drag-handle'></span>
-            <span class='acplg-drag-handle'></span>
+            </td>
+            <td align='right' width='32px'>
+                <span class='acplg-drag-handle'></span>
+                <span class='acplg-drag-handle'></span>
+                <span class='acplg-drag-handle'></span>
+            </td>
+        </tr></table>
         </span>
     </div>
     <div id='acplg-edit-dialog'></div>
