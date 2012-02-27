@@ -90,6 +90,9 @@
             <row id="pdsgr5aa">
                 <description id="patron_date_of_exp" class="copyable expire_date value"/>
             </row>
+            <row id="pdsgr5aac">
+                <description id="patron_last_activity_date" class="copyable last_activity_date value"/>
+            </row>
         </rows>
     </grid>
 </vbox>

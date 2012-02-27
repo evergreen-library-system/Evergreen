@@ -556,6 +556,28 @@ patron.summary.prototype = {
                             };
                         }
                     ],
+                    'patron_last_activity_date' : [
+                        ['render'],
+                        function(e) {
+                            return function() { 
+                                var act = obj.patron.usr_activity();
+                                if (act && act.length) {
+                                    act = act[0];
+                                    util.widgets.set_text(e,
+                                        patronStrings.getString('staff.patron.summary.last_activity') + ' ' + 
+                                            util.date.formatted_date( act.event_time(), '%{localized_date}' ) 
+                                    );
+                                    e.setAttribute('tooltiptext', act.etype().label());
+                                } else {
+
+                                    util.widgets.set_text(e,
+                                        patronStrings.getString('staff.patron.summary.last_activity') + ' ' + 
+                                            patronStrings.getString('staff.patron.field.unset') 
+                                    );
+                                }
+                            };
+                        }
+                    ],
                     'patron_date_of_last_update' : [
                         ['render'],
                         function(e) {
