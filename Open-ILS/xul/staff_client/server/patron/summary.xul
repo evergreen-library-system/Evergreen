@@ -37,12 +37,10 @@
         function myObserver() { this.register(); }
         myObserver.prototype = {
             register: function() {
-                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                 var observerService = Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
                 observerService.addObserver(this, "xul-overlay-merged", false);
             },
             unregister: function() {
-                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                 var observerService = Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
                 observerService.removeObserver(this, "xul-overlay-merged");
             },
@@ -55,7 +53,6 @@
                 
         function my_init() {
             try {
-                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                 if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
                 JSAN.errorLevel = "die"; // none, warn, or die
                 JSAN.addRepository('/xul/server/');
@@ -117,8 +114,6 @@
     
         function post_overlay() {
             try {
-                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-
                 var patron_id = xul_param('id'); 
                 var patron_bc = xul_param('barcode'); 
 

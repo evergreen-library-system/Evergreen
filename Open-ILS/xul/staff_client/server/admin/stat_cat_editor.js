@@ -89,6 +89,14 @@ function scSetPerms() {
 function scEditorInit() {
     cgi = new CGI();
     session = cgi.param('ses');
+    if(!session && (location.protocol == 'chrome:' || location.protocol == 'oils:')) {
+        try {
+            var CacheClass = Components.classes["@open-ils.org/openils_data_cache;1"].getService();
+            session = CacheClass.wrappedJSObject.data.session.key;
+        } catch(e) {
+            console.log("Error loading XUL stash: " + e);
+        }
+    }
     if(!session) throw "User session is not defined";
     user = fetchUser(session);
     $('sc_type_selector').onchange = scBuildNew;

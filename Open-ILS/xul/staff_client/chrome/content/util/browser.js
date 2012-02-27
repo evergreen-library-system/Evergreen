@@ -3,7 +3,6 @@ dump('entering util.browser.js\n');
 if (typeof util == 'undefined') util = {};
 util.browser = function (params) {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         JSAN.use('util.error'); this.error = new util.error();
     } catch(E) {
         dump('util.browser: ' + E + '\n');
@@ -20,8 +19,6 @@ util.browser.prototype = {
     'init' : function( params ) {
 
         try {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-
             var obj = this;
 
             obj.url = params['url'];
@@ -61,7 +58,6 @@ util.browser.prototype = {
                             ['command'],
                             function() {
                                 try {
-                                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                                     var content = obj.get_content();
                                     JSAN.use('util.print'); var p = new util.print(obj.printer_context);
                                     var print_params = {};
@@ -103,7 +99,6 @@ util.browser.prototype = {
                             ['command'],
                             function() {
                                 try {
-                                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                                     var n = obj.getWebNavigation();
                                     if (n.canGoForward) n.goForward();
                                 } catch(E) {
@@ -116,7 +111,6 @@ util.browser.prototype = {
                             ['command'],
                             function() {
                                 try {
-                                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                                     var n = obj.getWebNavigation();
                                     if (n.canGoBack) {
                                         obj.back_button_clicked = true;
@@ -182,7 +176,6 @@ util.browser.prototype = {
                 return;
             }
         }
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         var n = obj.getWebNavigation();
         n.reload( Components.interfaces.nsIWebNavigation.LOAD_FLAGS_NONE );
     },
@@ -190,8 +183,6 @@ util.browser.prototype = {
     'find' : function(text) {
         var obj = this;
         try {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-
             function getBrowser() {
                 return obj.controller.view.browser_browser;
             }
@@ -254,7 +245,6 @@ util.browser.prototype = {
 
     'get_content' : function() {
         try {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             if (this.controller.view.browser_browser.contentWindow.wrappedJSObject) {
                 return this.controller.view.browser_browser.contentWindow.wrappedJSObject;
             } else {
@@ -271,7 +261,6 @@ util.browser.prototype = {
             var s = '';
             try { s += obj.url + '\n' + obj.get_content().location.href + '\n'; } catch(E) { s+=E + '\n'; }
             if (!obj.push_xulG) return;
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             var cw = this.get_content();
             cw.IAMXUL = true;
             cw.XUL_BUILD_ID = '/xul/server/'.split(/\//)[2];
@@ -310,7 +299,6 @@ util.browser.prototype = {
 
     'getWebNavigation' : function() {
         try {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             var wn = this.controller.view.browser_browser.webNavigation;
             var s = this.url + '\n' + this.get_content().location.href + '\n';
             s += ('getWebNavigation() = ' + wn + '\n');
@@ -322,7 +310,6 @@ util.browser.prototype = {
     },
 
     'updateNavButtons' : function() {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         var obj = this; 
         var s = obj.url + '\n' + obj.get_content().location.href + '\n';
         try {
@@ -385,8 +372,6 @@ util.browser.prototype = {
     'buildProgressListener' : function() {
 
         try {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-
             var obj = this;
             obj.progressListener = {
                 onProgressChange    : function(webProgress,request,curSelfProgress,maxSelfProgress,curTotalProgress,maxTotalProgress){
@@ -435,7 +420,6 @@ util.browser.prototype = {
                 },
                 onStateChange         : function ( webProgress, request, stateFlags, status) {
                     try {
-                        netscape.security.PrivilegeManager.enablePrivilege( "UniversalXPConnect" );
                         /*dump('browser.js onStateChange('
                             +webProgress
                             +','+request
@@ -491,11 +475,9 @@ util.browser.prototype = {
                                         obj.error.sdump('D_TRACE','calling on_url_load');
                                         var helpers = {
                                             'doc_write' : function(html) {
-                                                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                                                 obj.get_content().document.write(html);
                                             },
                                             'doc_close' : function() {
-                                                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                                                 obj.get_content().document.close();
                                             }
                                         }

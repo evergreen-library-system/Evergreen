@@ -9,8 +9,6 @@ function refresh() { populate_list(); }
 
 function staged_init() {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect"); 
-
         commonStrings = $('commonStrings');
         patronStrings = $('patronStrings');
 
@@ -145,7 +143,7 @@ function spawn_search(s) {
 
 function spawn_editor(p,func) {
     var url = urls.XUL_PATRON_EDIT;
-    var loc = xulG.url_prefix( urls.XUL_REMOTE_BROWSER );
+    var loc = xulG.url_prefix('XUL_REMOTE_BROWSER');
     xulG.new_tab(
         loc, 
         {}, 

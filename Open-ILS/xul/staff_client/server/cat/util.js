@@ -159,7 +159,6 @@ cat.util.transfer_copies = function(params) {
             alert($("catStrings").getString('staff.cat.util.transfer_copies.unmarked_volume_alert'));
             return;
         }
-        netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
         var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: auto">';
         if (!params.message) {
             params.message = $("catStrings").getFormattedString('staff.cat.util.transfer_copies.params_message', [data.hash.aou[ params.owning_lib ].shortname(), params.volume_label]);
@@ -172,7 +171,7 @@ cat.util.transfer_copies = function(params) {
         xml += '<hbox><button label="' + $("catStrings").getString('staff.cat.util.transfer_copies.transfer.label')+ '" name="fancy_submit"/>';
         xml += '<button label="' + $("catStrings").getString('staff.cat.util.transfer_copies.cancel.label');
         xml += '" accesskey="'+ $("catStrings").getString('staff.cat.util.transfer_copies.cancel.accesskey') +'" name="fancy_cancel"/></hbox>';
-        xml += '<iframe style="overflow: scroll" flex="1" src="' + urls.XUL_BIB_BRIEF + '?docid=' + params.docid + '"/>';
+        xml += '<iframe style="overflow: scroll" flex="1" src="' + urls.XUL_BIB_BRIEF + '?docid=' + params.docid + '" oils_force_external="true"/>';
         xml += '</vbox>';
         //data.temp_transfer = xml; data.stash('temp_transfer');
         JSAN.use('util.window'); var win = new util.window();
@@ -231,7 +230,7 @@ cat.util.spawn_spine_editor = function(selection_list) {
     try {
         JSAN.use('util.functional');
         xulG.new_tab(
-            xulG.url_prefix( urls.XUL_SPINE_LABEL ),
+            xulG.url_prefix('XUL_SPINE_LABEL'),
             { 'tab_name' : $("catStrings").getString('staff.cat.util.spine_editor.tab_name') },
             {
                 'barcodes' : util.functional.map_list( selection_list, function(o){return o.barcode;}) 
@@ -264,14 +263,14 @@ cat.util.show_in_opac = function(selection_list) {
                 continue;
             }
             seen[doc_id] = true;
-            var opac_url = xulG.url_prefix( urls.opac_rdetail ) + doc_id;
+            var opac_url = xulG.url_prefix('opac_rdetail') + doc_id;
             var content_params = { 
                 'session' : ses(),
                 'authtime' : ses('authtime'),
                 'opac_url' : opac_url,
             };
             xulG.new_tab(
-                xulG.url_prefix(urls.XUL_OPAC_WRAPPER), 
+                xulG.url_prefix('XUL_OPAC_WRAPPER'), 
                 {'tab_name':$('catStrings').getString('staff.cat.util.show_in_opac.retrieving_title')}, 
                 content_params
             );
@@ -299,7 +298,7 @@ cat.util.add_copies_to_bucket = function(selection_list) {
     );
     data.stash('cb_temp_copy_ids');
     win.open( 
-        xulG.url_prefix(urls.XUL_COPY_BUCKETS_QUICK),
+        xulG.url_prefix('XUL_COPY_BUCKETS_QUICK'),
         '_blank',
         'chrome,resizable,center'
     );
@@ -322,7 +321,7 @@ cat.util.add_titles_to_bucket = function(record_ids) {
     }
     if (filtered_record_ids.length > 0) {
         win.open(
-            xulG.url_prefix(urls.XUL_RECORD_BUCKETS_QUICK),
+            xulG.url_prefix('XUL_RECORD_BUCKETS_QUICK'),
             '_blank',
             'chrome,resizable,modal,center',
             {
@@ -618,7 +617,7 @@ cat.util.fast_item_add = function(doc_id,cn_label,cp_barcode) {
         var unified_interface = String( data.hash.aous['ui.unified_volume_copy_editor'] ) == 'true';
         if (unified_interface) {
             var horizontal_interface = String( data.hash.aous['ui.cat.volume_copy_editor.horizontal'] ) == 'true';
-            var url = window.xulG.url_prefix( horizontal_interface ? urls.XUL_VOLUME_COPY_CREATOR_HORIZONTAL : urls.XUL_VOLUME_COPY_CREATOR );
+            var url = window.xulG.url_prefix( horizontal_interface ? 'XUL_VOLUME_COPY_CREATOR_HORIZONTAL' : 'XUL_VOLUME_COPY_CREATOR' );
             var w = xulG.set_tab(
                 url,
                 {
@@ -672,7 +671,7 @@ cat.util.edit_new_brsrc = function(brsrc_list) {
         xulG.resultant_brsrc = brsrc_list.map(function(o) { return o[0]; });
         xulG.new_tab(
             urls.XUL_BROWSER + "?url=" + window.escape(
-                xulG.url_prefix("/eg/conify/global/booking/resource")
+                xulG.url_prefix("BOOKING_RESOURCE")
             ), {
                 "tab_name": offlineStrings.getString(
                     "menu.cmd_booking_resource.tab"
@@ -760,7 +759,7 @@ cat.util.batch_edit_volumes = function(fleshed_volumes) {
         }
 
         var my_xulG = win.open(
-            xulG.url_prefix(urls.XUL_VOLUME_EDITOR),
+            xulG.url_prefix('XUL_VOLUME_EDITOR'),
             title,
             'chrome,modal,resizable',
             { 'volumes' : clone_list( fleshed_volumes ) }
@@ -1185,7 +1184,7 @@ cat.util.mark_for_overlay = function(doc_id,doc_mvr) {
                 }
 
                 if (ev.button == 0 /* left click, spawn opac */) {
-                    var opac_url = xulG.url_prefix( urls.opac_rdetail )
+                    var opac_url = xulG.url_prefix('opac_rdetail')
                         + data[data_key];
                     var content_params = {
                         'session' : ses(),
@@ -1193,7 +1192,7 @@ cat.util.mark_for_overlay = function(doc_id,doc_mvr) {
                         'opac_url' : opac_url,
                     };
                     xulG.new_tab(
-                        xulG.url_prefix(urls.XUL_OPAC_WRAPPER),
+                        xulG.url_prefix('XUL_OPAC_WRAPPER'),
                         {'tab_name':'Retrieving title...'},
                         content_params
                     );

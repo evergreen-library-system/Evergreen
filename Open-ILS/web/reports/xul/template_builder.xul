@@ -336,7 +336,7 @@
 </commandset>
 
 <popupset>
-	<popup id="source-menu" position="after_start"/>
+	<menupopup id="source-menu" position="after_start"/>
 	<popup
 		id="calendar-widget"
 		position="before_start"

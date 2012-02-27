@@ -157,7 +157,7 @@ function open_batch_receive() {
         return;
     }
 
-    var url = "/xul/server/serial/batch_receive.xul?docid=" +
+    var url = "XUL_SERIAL_BATCH_RECEIVE?docid=" +
         sub.record_entry() + "&subid=" + sub.id();
 
     try {

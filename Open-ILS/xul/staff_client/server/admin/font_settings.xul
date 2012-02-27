@@ -33,7 +33,6 @@
     <![CDATA[
         function my_init() {
             try {
-                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                 if (typeof JSAN == 'undefined') { throw( document.getElementById("commonStrings").getString('common.jsan.missing') ); }
 
                 JSAN.errorLevel = "die"; // none, warn, or die
@@ -51,7 +50,6 @@
 
         function save() {
             try {
-                netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
                 JSAN.use('util.file'); var file = new util.file('global_font_adjust');
                 file.set_object(g.data.global_font_adjust);
                 file.close();
@@ -113,7 +111,6 @@
 
         function save_sound() {
             try {
-                netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
                 JSAN.use('util.file'); var file = new util.file('no_sound');
                 file.write_content( 'truncate', String( document.getElementById('sound').checked ) );
                 file.close();

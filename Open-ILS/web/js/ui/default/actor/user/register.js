@@ -1210,7 +1210,6 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
         widget.widget,
         'onKeyPress',
         function(ev){
-            netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
             if (!(ev.altKey || ev.ctrlKey || ev.metaKey)) {
                 if (lock_ready && xulG && typeof xulG.lock_tab == 'function') {
                     if (! already_locked) {

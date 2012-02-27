@@ -11,7 +11,6 @@ serial.editor_base = {
             /******************************************************************************************************/
             /* setup JSAN and some initial libraries */
 
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             if (typeof JSAN == 'undefined') {
                 throw( $('commonStrings').getString('common.jsan.missing') );
             }

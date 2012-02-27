@@ -4,7 +4,6 @@ dump('entering serial/manage_dists.js\n');
 if (typeof serial == 'undefined') serial = {};
 serial.manage_dists = function (params) {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         JSAN.use('util.error'); this.error = new util.error();
     } catch(E) {
         dump('serial/manage_dists: ' + E + '\n');
@@ -134,7 +133,6 @@ serial.manage_dists.prototype = {
     'init' : function( params ) {
 
         try {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             var obj = this;
 
             obj.docid = params.docid;
@@ -276,8 +274,6 @@ serial.manage_dists.prototype = {
                                     
                                     var list = obj.ids_from_sel_list('sdist');
 
-                                    netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
-
                                     JSAN.use('util.functional');
 
                                     var sdist_list = util.functional.map_list(
@@ -297,7 +293,7 @@ serial.manage_dists.prototype = {
                                         + '" accesskey="' 
                                         + document.getElementById('catStrings').getString('staff.cat.copy_browser.transfer.cancel.accesskey') 
                                         + '" name="fancy_cancel"/></hbox>';
-                                    xml += '<iframe style="overflow: scroll" flex="1" src="' + urls.XUL_BIB_BRIEF + '?docid=' + obj.data.marked_library.docid + '"/>';
+                                    xml += '<iframe style="overflow: scroll" flex="1" src="' + urls.XUL_BIB_BRIEF + '?docid=' + obj.data.marked_library.docid + '" oils_force_external="true"/>';
                                     xml += '</vbox>';
                                     JSAN.use('OpenILS.data');
                                     var data = new OpenILS.data(); data.init({'via':'stash'});
@@ -460,7 +456,7 @@ serial.manage_dists.prototype = {
                                     obj.data.temp_barcodes_for_labels = util.functional.map_list( list, function(o){return o.barcode();}) ; 
                                     obj.data.stash('temp_barcodes_for_labels');
                                     xulG.new_tab(
-                                        xulG.url_prefix( urls.XUL_SPINE_LABEL ),
+                                        xulG.url_prefix('XUL_SPINE_LABEL'),
                                         { 'tab_name' : document.getElementById('catStrings').getString('staff.cat.copy_browser.print_spine.tab') },
                                         {}
                                     );
@@ -1080,7 +1076,6 @@ serial.manage_dists.prototype = {
     'list_init' : function( params ) {
 
         try {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             var obj = this;
             
             JSAN.use('circ.util');
@@ -1128,7 +1123,6 @@ serial.manage_dists.prototype = {
                         return row;
                     },
                     'on_click' : function(ev) {
-                        netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserRead');
                         var row = {}; var col = {}; var nobj = {};
                         obj.list.node.treeBoxObject.getCellAt(ev.clientX,ev.clientY,row,col,nobj); 
                         if ((row.value == -1)||(nobj.value != 'twisty')) { return; } // on_click runs for twistys only

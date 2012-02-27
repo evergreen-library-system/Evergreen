@@ -40,11 +40,8 @@ function SCAPRow() {
                 return;
             }
             try {
-                netscape.security.PrivilegeManager.enablePrivilege(
-                    "UniversalXPConnect"
-                );
                 window.openDialog(
-                    xulG.url_prefix("/xul/server/serial/pattern_wizard.xul"),
+                    xulG.url_prefix("XUL_SERIAL_PATTERN_WIZARD"),
                     "pattern_wizard",
                     "width=800",
                     function(value) {

@@ -6,7 +6,6 @@ util.error = function () {
     try {
 
         try {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             this.consoleService = Components.classes['@mozilla.org/consoleservice;1']
                 .getService(Components.interfaces.nsIConsoleService);
         } catch(E) {
@@ -174,7 +173,6 @@ util.error.prototype = {
                 if (this.forceDebugDump || ( this.allowDebugDump && this.sdump_levels[level] && this.sdump_levels[level].debug ) ) this.debug(message);
                 if (this.forceAlertDump || ( this.allowAlertDump && this.sdump_levels[level] && this.sdump_levels[level].alert ) ) alert(message);
                 if (this.forceConsoleDump || ( this.allowConsoleDump && this.sdump_levels[level] && this.sdump_levels[level].console ) ) {
-                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                     if (level=='D_ERROR') {
                         Components.utils.reportError(message);
                     } else {
@@ -183,7 +181,6 @@ util.error.prototype = {
                 }
                 if (this.forceFileDump || ( this.allowFileDump && this.sdump_levels[level] && this.sdump_levels[level].file ) ) {
                     if (level!='D_FILE') {
-                        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                         JSAN.use('util.file'); var master_log = new util.file('log');
                         master_log.write_content('append',message); master_log.close();
                         var specific_log = new util.file('log_'+level);
@@ -349,7 +346,6 @@ util.error.prototype = {
         */
 
         dump('yns_alert:\n\ts = ' + s + '\n\ttitle = ' + title + '\n\tb1 = ' + b1 + '\n\tb2 = ' + b2 + '\n\tb3 = ' + b3 + '\n\tc = ' + c + '\n');
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalBrowserWrite");
 
         //FIXME - is that good enough of an escape job?
         s = s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -423,7 +419,6 @@ util.error.prototype = {
         */
 
         dump('yns_alert_formatted:\n\ts = ' + s + '\n\ttitle = ' + title + '\n\tb1 = ' + b1 + '\n\tb2 = ' + b2 + '\n\tb3 = ' + b3 + '\n\tc = ' + c + '\n');
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalBrowserWrite");
 
         //FIXME - is that good enough of an escape job?
         s = s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -489,7 +484,6 @@ util.error.prototype = {
         */
 
         dump('yns_alert_original:\n\ts = ' + s + '\n\ttitle = ' + title + '\n\tb1 = ' + b1 + '\n\tb2 = ' + b2 + '\n\tb3 = ' + b3 + '\n\tc = ' + c + '\n');
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 
         if (this.sound) { this.sound.bad(); }
 

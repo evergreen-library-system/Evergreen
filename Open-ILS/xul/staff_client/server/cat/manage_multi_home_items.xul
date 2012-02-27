@@ -48,11 +48,11 @@
     </commandset>
 
     <popupset>
-        <popup id="actions">
+        <menupopup id="actions">
             <menuitem command="opac" />
             <menuitem command="change" />
             <menuitem command="remove" />
-        </popup>
+        </menupopup>
     </popupset>
 
     <groupbox id="bib_brief_groupbox" hidden="true">

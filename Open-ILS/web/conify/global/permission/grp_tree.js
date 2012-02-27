@@ -40,11 +40,16 @@ dojo.require('dijit.layout.SplitContainer');
 dojo.require('dojox.widget.Toaster');
 dojo.require('dojox.fx');
 dojo.require('dojox.grid.Grid');
+dojo.require('openils.XUL');
 dojo.requireLocalization("openils.conify", "conify");
 
 // some handy globals
 var cgi = new CGI();
 var ses = dojo.cookie('ses') || cgi.param('ses');
+if(!ses && openils.XUL.isXUL()) {
+    var stash = openils.XUL.getStash();
+    ses = stash.session.key;
+}
 var server = {};
 server.pcrud = new openils.PermaCrud({ authtoken : ses });
 server.actor = new OpenSRF.ClientSession('open-ils.actor');

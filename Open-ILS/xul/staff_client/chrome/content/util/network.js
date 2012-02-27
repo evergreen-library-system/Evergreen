@@ -327,7 +327,7 @@ util.network.prototype = {
             while ( w = enumerator.getNext() ) {
                 x = w.document.getElementById('oc_menuitem');
 
-                if(!offlinestrings) w.document.getElementById('offlineStrings');
+                if(!offlinestrings) offlinestrings = w.document.getElementById('offlineStrings');
                 if(permlist) w.g.menu.set_menu_access(permlist);
                 if(data.list.au.length > 1) {
                     addCSSClass(w.document.getElementById('main_tabbox'),'operator_change');
@@ -347,7 +347,6 @@ util.network.prototype = {
         var obj = this;
         try {
 
-        netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
         var url = urls.XUL_AUTH_SIMPLE;
         if (typeof xulG != 'undefined' && typeof xulG.url_prefix == 'function') url = xulG.url_prefix( url );
         JSAN.use('util.window'); var win = new util.window();
@@ -374,12 +373,10 @@ util.network.prototype = {
             data.stash('session');
             try {
                 var ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
-                var cookieUri = ios.newURI("http://" + data.server_unadorned, null, null);
                 var cookieUriSSL = ios.newURI("https://" + data.server_unadorned, null, null);
                 var cookieSvc = Components.classes["@mozilla.org/cookieService;1"].getService(Components.interfaces.nsICookieService);
 
-                cookieSvc.setCookieString(cookieUri, null, "ses="+data.session.key, null);
-                cookieSvc.setCookieString(cookieUriSSL, null, "ses="+data.session.key, null);
+                cookieSvc.setCookieString(cookieUriSSL, null, "ses="+data.session.key + "; secure;", null);
 
             } catch(E) {
                 alert(offineStrings.getFormattedString('main.session_cookie.error', [E]));
@@ -422,7 +419,6 @@ util.network.prototype = {
             var obj = this;
             var robj = obj.get_result(req);
             if (robj != null && robj.ilsevent && robj.ilsevent == 5000) {
-                netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
                 if (location.href.match(/^chrome/)) {
                     //alert('Permission denied.');
                 } else {
@@ -489,7 +485,6 @@ util.network.prototype = {
                         return req;
                     }
 
-                    netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
                     var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">' + 
                         '<groupbox><caption label="' + offlineStrings.getString('network.override.exceptions') + '"/>' + 
                         '<grid><columns><column/><column flex="1"/></columns><rows>';

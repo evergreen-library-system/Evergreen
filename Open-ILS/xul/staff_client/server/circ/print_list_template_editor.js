@@ -4,7 +4,6 @@ dump('entering print_list_template_editor.js\n');
 if (typeof circ == 'undefined') circ = {};
 circ.print_list_template_editor = function (params) {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         JSAN.use('util.error'); this.error = new util.error();
     } catch(E) {
         dump('print_list: ' + E + '\n');
@@ -16,8 +15,6 @@ circ.print_list_template_editor.prototype = {
     'init' : function( params ) {
 
         try {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-
             var obj = this;
 
             JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
@@ -412,7 +409,6 @@ circ.print_list_template_editor.prototype = {
         obj.data.print_list_templates[name].type = obj.controller.view.template_type_menu.value;
         obj.data.print_list_templates[name].context = obj.controller.view.template_context_menu.value;
         obj.data.stash( 'print_list_templates' );
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         JSAN.use('util.file'); var file = new util.file('print_list_templates');
         file.set_object(obj.data.print_list_templates); file.close();
         alert(document.getElementById('circStrings').getString('staff.circ.print_list_template.save') + '\n' + js2JSON(obj.data.print_list_templates[name]));
@@ -421,7 +417,6 @@ circ.print_list_template_editor.prototype = {
     'export_templates' : function() {
         try {
             var obj = this;
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             JSAN.use('util.file'); var f = new util.file('');
             f.export_file( { 'title' : document.getElementById('circStrings').getString('staff.circ.print_list_template.save_as'), 'data' : obj.data.print_list_templates } );
 
@@ -433,7 +428,6 @@ circ.print_list_template_editor.prototype = {
     'import_templates' : function() {
         try {
             var obj = this;
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             JSAN.use('util.file'); var f = new util.file('');
             var temp = f.import_file( { 'title' : document.getElementById('circStrings').getString('staff.circ.print_list_template.import') } );
             if (!temp) { return; }
@@ -446,7 +440,7 @@ circ.print_list_template_editor.prototype = {
             obj.data.stash('print_list_templates');
             alert(document.getElementById('circStrings').getFormattedString('staff.circ.print_list_template.import_results', [s]));
             if (xulG) { 
-                xulG.set_tab(xulG.url_prefix(urls.XUL_PRINT_LIST_TEMPLATE_EDITOR), {}, {});
+                xulG.set_tab(xulG.url_prefix('XUL_PRINT_LIST_TEMPLATE_EDITOR'), {}, {});
             } else {
                 alert(document.getElementById('circStrings').getString('staff.circ.print_list_template.reload'));
             }

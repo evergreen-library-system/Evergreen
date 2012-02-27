@@ -6,7 +6,6 @@ JSAN.use('serial.editor_base');
 if (typeof serial == 'undefined') serial = {};
 serial.scap_editor = function (params) {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         JSAN.use('util.error'); this.error = new util.error();
         JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init({'via':'stash'});
         JSAN.use('util.network'); this.network = new util.network();
@@ -140,9 +139,8 @@ serial.scap_editor.prototype = {
             obj.summarize(obj.scaps);
             obj.render();
         };
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         window.openDialog(
-            xulG.url_prefix("/xul/server/serial/pattern_wizard.xul"),
+            xulG.url_prefix("XUL_SERIAL_PATTERN_WIZARD"),
             "pattern_wizard",
             "width=800",
             onsubmit

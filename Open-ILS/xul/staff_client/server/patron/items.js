@@ -650,14 +650,14 @@ patron.items.prototype = {
                     alert($("patronStrings").getFormattedString('staff.patron.items.show_catalog.barcode_not_cataloged', [retrieve_ids[i].barcode]));
                     continue;
                 }
-                var opac_url = xulG.url_prefix( urls.opac_rdetail ) + doc_id;
+                var opac_url = xulG.url_prefix('opac_rdetail') + doc_id;
                 var content_params = { 
                     'session' : ses(),
                     'authtime' : ses('authtime'),
                     'opac_url' : opac_url
                 };
                 xulG.new_tab(
-                    xulG.url_prefix(urls.XUL_OPAC_WRAPPER), 
+                    xulG.url_prefix('XUL_OPAC_WRAPPER'), 
                     {'tab_name': $("patronStrings").getString('staff.patron.items.show_catalog.retrieving_title')}, 
                     content_params
                 );

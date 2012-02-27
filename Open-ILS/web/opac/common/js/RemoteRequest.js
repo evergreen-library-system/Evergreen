@@ -213,8 +213,7 @@ RemoteRequest.prototype.send = function(blocking) {
 			url = 'http://'+XML_HTTP_SERVER+'/'+XML_HTTP_GATEWAY;
 
 		if( url.match(/^http:/) && 
-				(this.secure || location.href.match(/^https:/) || location.href.match(/^chrome:/) ) ) {
-			netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
+				(this.secure || location.href.match(/^https:/) || location.href.match(/^chrome:/) || location.href.match(/^oils:/) ) ) {
 			url = url.replace(/^http:/, 'https:');
 		}
 	}
@@ -362,10 +361,8 @@ RemoteRequest.prototype.addParam = function(param) {
 function fetchXULStash() {
 	if( isXUL() ) {
 		try {
-			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-			var __OILS = new Components.Constructor("@mozilla.org/openils_data_cache;1", "nsIOpenILS");
-			var data_cache = new __OILS( );
-			return data_cache.wrappedJSObject.OpenILS.prototype.data;
+			var __OILS = Components.classes["@open-ils.org/openils_data_cache;1"].getService();
+			return __OILS.wrappedJSObject.data;
 	
 		} catch(E) {
 			_debug('Error in OpenILS.data._debug_stash(): ' + js2JSON(E) );

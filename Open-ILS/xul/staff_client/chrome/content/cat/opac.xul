@@ -23,7 +23,6 @@
     <!-- BEHAVIOR -->
         <script type="text/javascript">
         var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
     </script>
         <scripts id="openils_util_scripts"/>
 <script type="text/javascript" src="chrome://openils_staff_client/content/OpenILS/util/fmall.js"/>

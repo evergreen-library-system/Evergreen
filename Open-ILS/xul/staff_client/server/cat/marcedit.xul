@@ -46,9 +46,9 @@
     </hbox>
     <hbox id="fastItemAdd_textboxes">
         <label control="fastItemAdd_callnumber" accesskey="&staff.cat.marcedit.fastItemAdd_callnumber.accesskey;" value="&staff.cat.marcedit.fastItemAdd_callnumber.label;" />
-        <textbox onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" context="clipboard" id="fastItemAdd_callnumber" />
+        <textbox onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" context="clipboard" id="fastItemAdd_callnumber" />
         <label control="fastItemAdd_barcode" accesskey="&staff.cat.marcedit.fastItemAdd_barcode.accesskey;" value="&staff.cat.marcedit.fastItemAdd_barcode.label;" />
-        <textbox onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" context="clipboard" id="fastItemAdd_barcode"/>
+        <textbox onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" context="clipboard" id="fastItemAdd_barcode"/>
     </hbox>
 </groupbox>
 
@@ -80,157 +80,157 @@
                     <rows>
                         <row>
                             <label name="Type" control="Type_tb" set="BKS SER VIS MIX MAP SCO REC COM" value="Type" />
-                            <textbox id="Type_tb" context="clipboard" class="plain" name="Type" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Type_tb" context="clipboard" class="plain" name="Type" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="ELvl" control="ELvl_tb" set="BKS SER VIS MIX MAP SCO REC COM" value="ELvl" />
-                            <textbox id="Elvl_tb" context="clipboard" class="plain" name="ELvl" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Elvl_tb" context="clipboard" class="plain" name="ELvl" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="Srce" control="Srce_tb" set="BKS SER VIS MIX MAP SCO REC COM" value="Srce" />
-                            <textbox id="Srce_tb" context="clipboard" class="plain" name="Srce" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Srce_tb" context="clipboard" class="plain" name="Srce" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="Audn" control="Audn_tb" set="BKS VIS SCO REC COM" value="Audn" />
-                            <textbox id="Audn_tb" context="clipboard" class="plain" name="Audn" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Audn_tb" context="clipboard" class="plain" name="Audn" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="Ctrl" control="Ctrl_tb" set="BKS SER VIS MIX MAP SCO REC COM" value="Ctrl" />
-                            <textbox id="Ctrl_tb" context="clipboard" class="plain" name="Ctrl" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Ctrl_tb" context="clipboard" class="plain" name="Ctrl" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="Lang" control="Lang_tb" set="BKS SER VIS MIX MAP SCO REC COM" value="Lang" />
-                            <textbox id="Lang_tb" context="clipboard" class="plain" name="Lang" maxlength="3" size="3" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Lang_tb" context="clipboard" class="plain" name="Lang" maxlength="3" size="3" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                         </row>
                         <row>
                             <label name="BLvl" control="BLvl_tb" set="BKS SER VIS MIX MAP SCO REC COM" value="BLvl" />
-                            <textbox id="BLvl_tb" context="clipboard" class="plain" name="BLvl" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="BLvl_tb" context="clipboard" class="plain" name="BLvl" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="Form" control="Form_tb" set="BKS SER VIS MIX MAP SCO REC" value="Form" />
-                            <textbox id="Form_tb" context="clipboard" class="plain" name="Form" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Form_tb" context="clipboard" class="plain" name="Form" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="Conf" control="Conf_tb" set="BKS SER" value="Conf" />
-                            <textbox id="Conf_tb" context="clipboard" class="plain" name="Conf" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Conf_tb" context="clipboard" class="plain" name="Conf" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="Biog" control="Biog_tb" set="BKS" value="Biog" />
-                            <textbox id="Biog_tb" context="clipboard" class="plain" name="Biog" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Biog_tb" context="clipboard" class="plain" name="Biog" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="MRec" control="MRec_tb" set="BKS SER VIS MIX MAP SCO REC COM" value="MRec" />
-                            <textbox id="MRec_tb" context="clipboard" class="plain" name="MRec" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="MRec_tb" context="clipboard" class="plain" name="MRec" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="Ctry" control="Ctry_tb" set="BKS SER VIS MIX MAP SCO REC COM" value="Ctry" />
-                            <textbox id="Ctry_tb" context="clipboard" class="plain" name="Ctry" maxlength="3" size="3" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Ctry_tb" context="clipboard" class="plain" name="Ctry" maxlength="3" size="3" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                         </row>
                         <row>
                             <label name="S/L" control="s_l_tb" set="SER" value="S/L" />
-                            <textbox id="s_l_tb" context="clipboard" class="plain" name="S/L" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="s_l_tb" context="clipboard" class="plain" name="S/L" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="Cont" control="Cont_tb" set="BKS SER" value="Cont" />
-                            <textbox id="Cont_tb" context="clipboard" class="plain" name="Cont" maxlength="4" size="4" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Cont_tb" context="clipboard" class="plain" name="Cont" maxlength="4" size="4" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="GPub" control="GPub_tb" set="BKS SER VIS MAP COM" value="GPub" />
-                            <textbox id="GPub_tb" context="clipboard" class="plain" name="GPub" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="GPub_tb" context="clipboard" class="plain" name="GPub" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="LitF" control="LitF_tb" set="BKS" value="LitF" />
-                            <textbox id="LitF_tb" context="clipboard" class="plain" name="LitF" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="LitF_tb" context="clipboard" class="plain" name="LitF" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="Indx" control="Indx_tb" set="BKS MAP" value="Indx" />
-                            <textbox id="Indx_tb" context="clipboard" class="plain" name="Indx" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Indx_tb" context="clipboard" class="plain" name="Indx" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="Alph" control="Alph_tb" set="SER" value="Alph" />
-                            <textbox id="Alph_tb" context="clipboard" class="plain" name="Alph" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Alph_tb" context="clipboard" class="plain" name="Alph" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                         </row>
                         <row>
                             <label name="Desc" control="Desc_tb" set="BKS SER VIS MIX MAP SCO REC COM" value="Desc" />
-                            <textbox id="Desc_tb" context="clipboard" class="plain" name="Desc" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Desc_tb" context="clipboard" class="plain" name="Desc" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="Ills" control="Ills_tb" set="BKS" value="Ills" />
-                            <textbox id="Ills_tb" context="clipboard" class="plain" name="Ills" maxlength="4" size="4" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Ills_tb" context="clipboard" class="plain" name="Ills" maxlength="4" size="4" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="Fest" control="Fest_tb" set="BKS" value="Fest" />
-                            <textbox id="Fest_tb" context="clipboard" class="plain" name="Fest" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Fest_tb" context="clipboard" class="plain" name="Fest" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="DtSt" control="DtSt_tb" set="BKS SER VIS MIX MAP SCO REC COM" value="DtSt" />
-                            <textbox id="DtSt_tb" context="clipboard" class="plain" name="DtSt" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="DtSt_tb" context="clipboard" class="plain" name="DtSt" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="Date1" control="Date1_tb" set="BKS SER VIS MIX MAP SCO REC COM" value="Date1" />
-                            <textbox id="Date1_tb" context="clipboard" class="plain" name="Date1" maxlength="4" size="4" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Date1_tb" context="clipboard" class="plain" name="Date1" maxlength="4" size="4" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="Date2" control="Date2_tb" set="BKS SER VIS MIX MAP SCO REC COM" value="Date2" />
-                            <textbox id="Date2_tb" context="clipboard" class="plain" name="Date2" maxlength="4" size="4" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Date2_tb" context="clipboard" class="plain" name="Date2" maxlength="4" size="4" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                         </row>
                         <row>
                             <label name="SrTp" control="SrTp_tb" set="SER" value="SrTp" />
-                            <textbox id="SrTp_tb" context="clipboard" class="plain" name="SrTp" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="SrTp_tb" context="clipboard" class="plain" name="SrTp" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="Regl" control="Regl_tb" set="SER" value="Regl" />
-                            <textbox id="Regl_tb" context="clipboard" class="plain" name="Regl" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Regl_tb" context="clipboard" class="plain" name="Regl" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="Orig" control="Orig_tb" set="SER" value="Orig" />
-                            <textbox id="Orig_tb" context="clipboard" class="plain" name="Orig" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Orig_tb" context="clipboard" class="plain" name="Orig" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="Freq" control="Freq_tb" set="SER" value="Freq" />
-                            <textbox id="Freq_tb" context="clipboard" class="plain" name="Freq" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Freq_tb" context="clipboard" class="plain" name="Freq" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="EntW" control="EntW_tb" set="SER" value="EntW" />
-                            <textbox id="EntW_tb" context="clipboard" class="plain" name="EntW" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="EntW_tb" context="clipboard" class="plain" name="EntW" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                         </row>
                         <row>
                             <label name="TrAr" control="TrAr_tb" set="SCO REC" value="TrAr" />
-                            <textbox id="TrAr_tb" context="clipboard" class="plain" name="TrAr" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="TrAr_tb" context="clipboard" class="plain" name="TrAr" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="Part" control="Part_tb" set="SCO REC" value="Part" />
-                            <textbox id="Part_tb" context="clipboard" class="plain" name="Part" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Part_tb" context="clipboard" class="plain" name="Part" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="LTxt" control="LTxt_tb" set="SCO REC" value="LTxt" />
-                            <textbox id="LTxt_tb" context="clipboard" class="plain" name="LTxt" maxlength="2" size="2" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="LTxt_tb" context="clipboard" class="plain" name="LTxt" maxlength="2" size="2" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="FMus" control="FMus_tb" set="SCO REC" value="FMus" />
-                            <textbox id="FMus_tb" context="clipboard" class="plain" name="FMus" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="FMus_tb" context="clipboard" class="plain" name="FMus" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="AccM" control="AccM_tb" set="SCO REC" value="AccM" />
-                            <textbox id="AccM_tb" context="clipboard" class="plain" name="AccM" maxlength="6" size="6" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="AccM_tb" context="clipboard" class="plain" name="AccM" maxlength="6" size="6" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="Comp" control="Comp_tb" set="SCO REC" value="Comp" />
-                            <textbox id="Comp_tb" context="clipboard" class="plain" name="Comp" maxlength="2" size="2" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Comp_tb" context="clipboard" class="plain" name="Comp" maxlength="2" size="2" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                         </row>
                         <row>
                             <label name="SpFm" control="SpFm_tb" set="MAP" value="SpFm" />
-                            <textbox id="SpFm_tb" context="clipboard" class="plain" name="SpFm" maxlength="2" size="2" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="SpFm_tb" context="clipboard" class="plain" name="SpFm" maxlength="2" size="2" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="Relf" control="Relf_tb" set="MAP" value="Relf" />
-                            <textbox id="Relf_tb" context="clipboard" class="plain" name="Relf" maxlength="4" size="4" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Relf_tb" context="clipboard" class="plain" name="Relf" maxlength="4" size="4" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="Proj" control="Proj_tb" set="MAP" value="Proj" />
-                            <textbox id="Proj_tb" context="clipboard" class="plain" name="Proj" maxlength="2" size="2" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Proj_tb" context="clipboard" class="plain" name="Proj" maxlength="2" size="2" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="CrTp" control="CrTp_tb" set="MAP" value="CrTp" />
-                            <textbox id="CrTp_tb" context="clipboard" class="plain" name="CrTp" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="CrTp_tb" context="clipboard" class="plain" name="CrTp" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                         </row>
                         <row>
                             <label name="TMat" control="TMat_tb" set="VIS" value="TMat" />
-                            <textbox id="TMat_tb" context="clipboard" class="plain" name="TMat" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="TMat_tb" context="clipboard" class="plain" name="TMat" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="Time" control="Time_tb" set="VIS" value="Time" />
-                            <textbox id="Time_tb" context="clipboard" class="plain" name="Time" maxlength="3" size="3" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Time_tb" context="clipboard" class="plain" name="Time" maxlength="3" size="3" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="Tech" control="Tech_tb" set="VIS" value="Tech" />
-                            <textbox id="Tech_tb" context="clipboard" class="plain" name="Tech" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Tech_tb" context="clipboard" class="plain" name="Tech" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="File" control="File_tb" set="COM" value="File" />
-                            <textbox id="File_tb" context="clipboard" class="plain" name="File" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="File_tb" context="clipboard" class="plain" name="File" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                         </row>
                         <row>
                             <label name="Type" control="Type_tbmfhd" set="AUT MFHD" value="Type" />
-                            <textbox id="Type_tbmfhd" context="clipboard" class="plain" name="Type" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Type_tbmfhd" context="clipboard" class="plain" name="Type" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="ELvl" control="ELvl_tbmfhd" set="AUT MFHD" value="ELvl" />
-                            <textbox id="ELvl_tbmfhd" context="clipboard" class="plain" name="ELvl" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="ELvl_tbmfhd" context="clipboard" class="plain" name="ELvl" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="Item" control="Item_tbmfhd" set="AUT MFHD" value="Item" />
-                            <textbox id="Item_tbmfhd" context="clipboard" class="plain" name="Item" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Item_tbmfhd" context="clipboard" class="plain" name="Item" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="GeoDiv" control="GeoDiv_tb" set="AUT" value="GeoDiv" />
-                            <textbox id="GeoDiv_tb" context="clipboard" class="plain" name="GeoDiv" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="GeoDiv_tb" context="clipboard" class="plain" name="GeoDiv" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="Roman" control="Roman_tb" set="AUT" value="Roman" />
-                            <textbox id="Roman_tb" context="clipboard" class="plain" name="Roman" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Roman_tb" context="clipboard" class="plain" name="Roman" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="CatLang" control="CatLang_tb" set="AUT" value="CatLang" />
-                            <textbox id="CatLang_tb" context="clipboard" class="plain" name="CatLang" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="CatLang_tb" context="clipboard" class="plain" name="CatLang" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                         </row>
                         <row>
                             <label name="Kind" control="Kind_tb" set="AUT" value="Kind" />
-                            <textbox id="Kind_tb" context="clipboard" class="plain" name="Kind" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Kind_tb" context="clipboard" class="plain" name="Kind" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="Rules" control="Rules_tb" set="AUT" value="Rules" />
-                            <textbox id="Rules_tb" context="clipboard" class="plain" name="Rules" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Rules_tb" context="clipboard" class="plain" name="Rules" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="SHSys" control="SHSys_tb" set="AUT" value="SHSys" />
-                            <textbox id="SHSys_tb" context="clipboard" class="plain" name="SHSys" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="SHSys_tb" context="clipboard" class="plain" name="SHSys" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="SerType" control="SerType_tb" set="AUT" value="SerType" />
-                            <textbox id="SerType_tb" context="clipboard" class="plain" name="SerType" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="SerType_tb" context="clipboard" class="plain" name="SerType" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="SerNum" control="SerNum_tb" set="AUT" value="SerNum" />
-                            <textbox id="SerNum_tb" context="clipboard" class="plain" name="SerNum" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="SerNum_tb" context="clipboard" class="plain" name="SerNum" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="HeadMain" control="HeadMain_tb" set="AUT" value="HeadMain" />
-                            <textbox id="HeadMain_tb" context="clipboard" class="plain" name="HeadMain" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="HeadMain_tb" context="clipboard" class="plain" name="HeadMain" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                         </row>
                         <row>
                             <label name="Subj" control="Subj_tb" set="AUT" value="Subj" />
-                            <textbox id="Subj_tb" context="clipboard" class="plain" name="Subj" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Subj_tb" context="clipboard" class="plain" name="Subj" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="HeadSer" control="HeadSer_tb" set="AUT" value="HeadSer" />
-                            <textbox id="HeadSer_tb" context="clipboard" class="plain" name="HeadSer" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="HeadSer_tb" context="clipboard" class="plain" name="HeadSer" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="TypeSubd" control="TypeSubd_tb" set="AUT" value="TypeSubd" />
-                            <textbox id="TypeSubd_tb" context="clipboard" class="plain" name="TypeSubd" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="TypeSubd_tb" context="clipboard" class="plain" name="TypeSubd" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="TypeGov" control="TypeGov_tb" set="AUT" value="TypeGov" />
-                            <textbox id="TypeGov_tb" context="clipboard" class="plain" name="TypeGov" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="TypeGov_tb" context="clipboard" class="plain" name="TypeGov" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="RefEval" control="RefEval_tb" set="AUT" value="RefEval" />
-                            <textbox id="RefEval_tb" context="clipboard" class="plain" name="RefEval" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="RefEval_tb" context="clipboard" class="plain" name="RefEval" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="RecUpd" control="RecUpd_tb" set="AUT" value="RecUpd" />
-                            <textbox id="RecUpd_tb" context="clipboard" class="plain" name="RecUpd" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="RecUpd_tb" context="clipboard" class="plain" name="RecUpd" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                         </row>
                         <row>
                             <label name="NameDiff" control="NameDiff_tb" set="AUT" value="NameDiff" />
-                            <textbox id="NameDiff_tb" context="clipboard" class="plain" name="NameDiff" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="NameDiff_tb" context="clipboard" class="plain" name="NameDiff" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="Level" control="Level_tb" set="AUT" value="Level" />
-                            <textbox id="Level_tb" context="clipboard" class="plain" name="Level" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="Level_tb" context="clipboard" class="plain" name="Level" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="ModRec" control="ModRec_tb" set="AUT" value="ModRec" />
-                            <textbox id="ModRec_tb" context="clipboard" class="plain" name="ModRec" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="ModRec_tb" context="clipboard" class="plain" name="ModRec" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="CatSrc" control="CatSrc_tb" set="AUT" value="CatSrc" />
-                            <textbox id="CatSrc_tb" context="clipboard" class="plain" name="CatSrc" maxlength="1" size="1" onkeypress="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <textbox id="CatSrc_tb" context="clipboard" class="plain" name="CatSrc" maxlength="1" size="1" onkeypress="if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); }" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                         </row>
 
                     </rows>
@@ -258,7 +258,7 @@
 </groupbox>
 
 <hbox hidden="true" id="text-editor" flex="1">
-    <xhtml:textarea rows="50" cols='100' onkeypress="if (event.charCode == 115 &amp;&amp; event.ctrlKey &amp;&amp; $('symbol-panel')) { setNod(tab); $('symbol-panel').openPopup(tab, 'after_pointer'); } else { netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); } }" context="clipboard" id="text-editor-box"></xhtml:textarea>
+    <xhtml:textarea rows="50" cols='100' onkeypress="if (event.charCode == 115 &amp;&amp; event.ctrlKey &amp;&amp; $('symbol-panel')) { setNod(tab); $('symbol-panel').openPopup(tab, 'after_pointer'); } else {if (!(event.altKey || event.ctrlKey || event.metaKey)) { oils_lock_page(); } }" context="clipboard" id="text-editor-box"></xhtml:textarea>
 </hbox>
 
 <grid name="authority-marc-template" hidden="true">
@@ -272,7 +272,7 @@
 </grid>
 
 <popupset>
-    <popup id="recordTypeMenu" position="after_start">
+    <menupopup id="recordTypeMenu" position="after_start">
         <menuitem label="BKS" oncommand="changeFFEditor('BKS');"/>
         <menuitem label="SER" oncommand="changeFFEditor('SER');"/>
         <menuitem label="VIS" oncommand="changeFFEditor('VIS');"/>
@@ -282,7 +282,7 @@
         <menuitem label="REC" oncommand="changeFFEditor('REC');"/>
         <menuitem label="COM" oncommand="changeFFEditor('COM');"/>
         <menuitem label="MFHD" oncommand="changeFFEditor('MFHD');"/>
-    </popup>
+    </menupopup>
 </popupset>
 
 </window>

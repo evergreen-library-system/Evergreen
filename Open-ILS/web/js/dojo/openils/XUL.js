@@ -5,7 +5,8 @@ if(!dojo._hasResource["openils.XUL"]) {
     dojo.declare('openils.XUL', null, {});
 
     openils.XUL.isXUL = function() {
-        return Boolean(dojo.cookie('xul')) || Boolean(window.IAMXUL);
+        if(location.protocol == 'chrome:' || location.protocol == 'oils:') return true;
+        return Boolean(window.IAMXUL);
     }
 
  try {
@@ -16,11 +17,8 @@ if(!dojo._hasResource["openils.XUL"]) {
     openils.XUL.getStash = function() {
         if(openils.XUL.isXUL()) {
             try {
-                if(openils.XUL.enableXPConnect()) {
-                    netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-                    var CacheClass = new Components.Constructor("@mozilla.org/openils_data_cache;1", "nsIOpenILS");
-                    return new CacheClass().wrappedJSObject.OpenILS.prototype.data;
-                }
+                var CacheClass = Components.classes["@open-ils.org/openils_data_cache;1"].getService();
+                return CacheClass.wrappedJSObject.data;
             } catch(e) {
                 console.log("Error loading XUL stash: " + e);
                 return { 'error' : e };
@@ -78,23 +76,6 @@ if(!dojo._hasResource["openils.XUL"]) {
         return xulG.get_new_session({callback : callback});
     }
 
-    /** 
-     * This can be used by privileged Firefox in addition to XUL.
-     * To use use in Firefox directly, set signed.applets.codebase_principal_support to true in about:config
-     */ 
-    openils.XUL.enableXPConnect = function() {
-        try {
-            netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-        } catch (E) {
-            if(dojo.isFF) {
-                console.error("Unable to enable UniversalXPConnect privileges.  " +
-                    "Try setting 'signed.applets.codebase_principal_support' to true in about:config");
-            }
-            return false;
-        }
-        return true;
-    }
-
     /* This class cuts down on the obscenely long incantations needed to
      * use XPCOM components. */
     openils.XUL.SimpleXPCOM = function() {};
@@ -118,19 +99,11 @@ if(!dojo._hasResource["openils.XUL"]) {
         "create": function(key) {
             return Components.classes[this[key].cls].
                 createInstance(this[key].iface);
-        },
-        "getPrivilegeManager": function() {
-            return netscape.security.PrivilegeManager;
         }
     };
 
     openils.XUL.contentFromFileOpenDialog = function(windowTitle, sizeLimit) {
         var api = new openils.XUL.SimpleXPCOM();
-
-        /* The following enablePrivilege() call must happen at this exact
-         * level of scope -- not wrapped in another function -- otherwise
-         * it doesn't work. */
-        api.getPrivilegeManager().enablePrivilege("UniversalXPConnect");
 
         var picker = api.create("FP");
         picker.init(
@@ -151,7 +124,6 @@ if(!dojo._hasResource["openils.XUL"]) {
 
     openils.XUL.contentToFileSaveDialog = function(content, windowTitle, dispositionArgs) {
         var api = new openils.XUL.SimpleXPCOM();
-        api.getPrivilegeManager().enablePrivilege("UniversalXPConnect");
 
         var picker = api.create("FP");
         picker.init(

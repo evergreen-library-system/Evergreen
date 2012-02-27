@@ -23,6 +23,9 @@
 !define MUI_WELCOMEFINISHPAGE_BITMAP "custom_images\${UI_IMAGESET}\install.bmp"
 !define MUI_UNWELCOMEFINISHPAGE_BITMAP "custom_images\${UI_IMAGESET}\uninstall.bmp"
 
+; This should improve compression, and solves some zlib related issues with extensions
+SetCompressor /SOLID lzma
+
 ; MUI 1.67 compatible ------
 !include "MUI.nsh"
 

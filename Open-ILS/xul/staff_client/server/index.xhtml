@@ -41,9 +41,9 @@
         var search_depth = 0; // 0 = consortium, 1 = system, 2 = library, 3 = sub-library, etc.
         
         if(textbox && textbox.value != "") {
-                var opac_url =  xulG.url_prefix(urls.opac_rresult) + "?rt=keyword&tp=keyword&l=" + home_ou_id + "&d=" + search_depth +"&f=&t=" + escape(textbox.value);
+                var opac_url =  xulG.url_prefix('opac_rresult') + "?rt=keyword&tp=keyword&l=" + home_ou_id + "&d=" + search_depth +"&f=&t=" + escape(textbox.value);
                 if (urls.opac_rresult.match(/\/eg\/opac\/results/)) {
-                    opac_url =  xulG.url_prefix(urls.opac_rresult) + "?query=" + escape(textbox.value);
+                    opac_url =  xulG.url_prefix('opac_rresult') + "?query=" + escape(textbox.value);
                 }
                 var params = {'tab_name':'Catalog'};
                 var content_params = { 'session' : ses(), 'authtime' : ses('authtime'), 'opac_url' : opac_url };
@@ -90,7 +90,7 @@
                         xulG.set_tab_name('Portal');
                 }
                 function jb_open_eg_web_page(path, label) {
-                        var loc = urls.XUL_BROWSER + '?url=' + window.escape(xulG.url_prefix(urls.EG_WEB_BASE) + '/' + path);
+                        var loc = urls.XUL_BROWSER + '?url=' + window.escape(xulG.url_prefix('EG_WEB_BASE') + '/' + path);
 
                         xulG.set_tab( 
                                 loc, 
@@ -99,7 +99,7 @@
                         );
                 }
                 function jb_open_eg_web_page_newtab(path, label) {
-                        var loc = urls.XUL_BROWSER + '?url=' + window.escape(xulG.url_prefix(urls.EG_WEB_BASE) + '/' + path);
+                        var loc = urls.XUL_BROWSER + '?url=' + window.escape(xulG.url_prefix('EG_WEB_BASE') + '/' + path);
 
                         xulG.new_tab( 
                                 loc, 
@@ -203,7 +203,7 @@
                                 jb_open_eg_web_page('vandelay/vandelay', 'Server Settings');
                 }
                 function local_admin_reports(newtab) {
-                        var loc = urls.XUL_BROWSER + '?url=' + window.escape( xulG.url_prefix(urls.XUL_REPORTS) + '?ses=' + ses());
+                        var loc = urls.XUL_BROWSER + '?url=' + window.escape( xulG.url_prefix('XUL_REPORTS') + '?ses=' + ses());
                         params = {'tab_name' : 'Reports', 'browser' : false }
                         content_params = {'no_xulG' : false, 'show_print_button' : false, show_nav_buttons : true }
                         if(newtab)
@@ -247,7 +247,6 @@
                 }
                 function toggle_tpac(mode) {
                     var use_tpac = false;
-                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                     var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces['nsIPrefBranch']);
                     try {
                         use_tpac = prefs.getBoolPref('oils.use_tpac');

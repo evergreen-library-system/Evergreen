@@ -4,8 +4,6 @@ function default_focus() { document.getElementById('apply_btn').focus(); } // pa
 
 function penalty_init() {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect"); 
-
         commonStrings = document.getElementById('commonStrings');
         patronStrings = document.getElementById('patronStrings');
 
@@ -132,7 +130,6 @@ function populate_list() {
 
 function handle_apply_penalty(ev) {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect"); 
         JSAN.use('util.window');
         var win = new util.window();
         var my_xulG = win.open(
@@ -269,7 +266,6 @@ function generate_penalty_remove_function(id) {
 function handle_edit_penalty(ev) {
     try {
 
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect"); 
         JSAN.use('util.window');
         var win = new util.window();
 

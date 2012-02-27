@@ -1,69 +1,49 @@
-function OpenILS(){}
+Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
 
-OpenILS.prototype = {
+// This entire component is a singleton that exists solely to store data.
 
-    help: function () { 
-        dump("Ah ha!  This xpcom isn't really 'xp'.  We make use of the .wrappedJSObject method to get a truly global place to stick data.\n"); 
-    },
-
-    data: {},
-
-    wrappedJSObject: this,
-
-    QueryInterface: function (iid) {
-        if (!iid.equals(Components.interfaces.nsIOpenILS)
-            && !iid.equals(Components.interfaces.nsISupports))
-        {
-            throw Components.results.NS_ERROR_NO_INTERFACE;
-        }
-        return this;
-    }
+function nsOpenILS() {
+    this.wrappedJSObject = this;
 }
 
-var Module = {
-    firstTime: true,
-
-    registerSelf: function (compMgr, fileSpec, location, type) {
-        if (this.firstTime) {
-            dump("*** Deferring registration of OpenILS data cache\n");
-            this.firstTime = false;
-            throw Components.results.NS_ERROR_FACTORY_REGISTER_AGAIN;
-        }
-        debug("*** Registering OpenILS data cache\n");
-        compMgr = compMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
-        compMgr.registerFactoryLocation(this.myCID,
-                                        "OpenILS data cache",
-                                        this.myProgID,
-                                        fileSpec,
-                                        location,
-                                        type);
-    },
-
-    getClassObject : function (compMgr, cid, iid) {
-        if (!cid.equals(this.myCID))
-        throw Components.results.NS_ERROR_NO_INTERFACE
-        if (!iid.equals(Components.interfaces.nsIFactory))
-        throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
-        return this.myFactory;
-    },
-
-    myCID: Components.ID("{dc3e4b5f-c0f4-4b34-bc57-7b4099c3a5d6}"),
-    myProgID: "@mozilla.org/openils_data_cache;1",
-
-    myFactory: {
-        createInstance: function (outer, iid) {
-            //dump("CI: " + iid + "\n");
-            if (outer != null)
-            throw Components.results.NS_ERROR_NO_AGGREGATION;
-            return (new OpenILS()).QueryInterface(iid);
+nsOpenILS.prototype = {
+    classDescription: "OpenILS Data Cache",
+    classID:          Components.ID("{dc3e4b5f-c0f4-4b34-bc57-7b4099c3a5d6}"),
+    contractID:       "@open-ils.org/openils_data_cache;1",
+    QueryInterface:   XPCOMUtils.generateQI(),
+    _xpcom_factory:   {
+        singleton: null,
+        createInstance: function (aOuter, aIID) {
+            if (aOuter != null)
+                throw Components.results.NS_ERROR_NO_AGGREGATION;
+            if (this.singleton == null)
+                this.singleton = new nsOpenILS();
+            return this.singleton.QueryInterface(aIID);
+        },
+        getService: function (aIID) {
+            if (aOuter != null)
+                throw Components.results.NS_ERROR_NO_AGGREGATION;
+            if (this.singleton == null)
+                this.singleton = new nsOpenILS();
+            return this.singleton.QueryInterface(aIID);
         }
     },
+    data: {},
+    openMainEGWindow: function() {
+        var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"]
+                 .getService(Components.interfaces.nsIWindowMediator);
+        var targetWindow = wm.getMostRecentWindow("eg_main");
+        if (targetWindow != null) {
+            targetWindow.focus();
+        } else {
+            var ww = Components.classes["@mozilla.org/embedcomp/window-watcher;1"]
+                     .getService(Components.interfaces.nsIWindowWatcher);
+            ww.openWindow(null, "chrome://open_ils_staff_client/content/main/main.xul", "_blank", "chrome,resizable,dialog=no", null);
+        }
+    },
+};
 
-    canUnload: function(compMgr) {
-        dump("****** Unloading: OpenILS data cache! ****** \n");
-        return true;
-    }
-}; // END Module
-
-function NSGetModule(compMgr, fileSpec) { return Module; }
-
+if (XPCOMUtils.generateNSGetFactory)
+    var NSGetFactory = XPCOMUtils.generateNSGetFactory([nsOpenILS]);
+else
+    var NSGetModule = XPCOMUtils.generateNSGetModule([nsOpenILS]);

@@ -300,8 +300,6 @@ function populate_pickup_lib_menu() {
 }
 
 function ui_setup() {
-    netscape.security.PrivilegeManager.enablePrivilege(
-        "UniversalXPConnect");
     if (typeof JSAN == 'undefined') {
         throw( "The JSAN library object is missing.");
     }

@@ -45,14 +45,14 @@
     </commandset>
 
     <popupset>
-        <popup id="actions_popup">
+        <menupopup id="actions_popup">
             <menuitem command="opac" />
             <menuitem command="copy_details" />
             <menuitem command="voidall" />
             <menuitem command="refund" />
             <menuitem command="add" />
             <menuitem command="details" />
-        </popup>
+        </menupopup>
     </popupset>
 
     <vbox flex="1" class="my_overflow">

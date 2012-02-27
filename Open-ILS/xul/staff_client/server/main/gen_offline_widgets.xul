@@ -35,8 +35,6 @@
     <![CDATA[
 
         function my_init() {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-
             if (typeof JSAN == 'undefined') {
                 throw(document.getElementById('commonStrings').getString('common.jsan.missing'));
             }
@@ -57,8 +55,6 @@
         }
 
         function gen_offline_menus_init() {
-
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 
             JSAN.use('util.functional');
 
@@ -96,7 +92,6 @@
         }
 
         function save_object(filename,obj) {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             JSAN.use('util.file'); var file = new util.file(filename);
             file.set_object(obj); file.close();
         }

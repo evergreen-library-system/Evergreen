@@ -1090,7 +1090,7 @@ function AcqLiTable() {
                     no_xulG : false, 
                     show_nav_buttons : true, 
                     show_print_button : true, 
-                    opac_url : xulG.url_prefix(xulG.urls.opac_rdetail + bib_id),
+                    opac_url : xulG.url_prefix('opac_rdetail|' + bib_id),
                     default_view : default_view
                 }
             );
@@ -2660,8 +2660,6 @@ function AcqLiTable() {
 
         /*  To run in Firefox directly, must set signed.applets.codebase_principal_support
             to true in about:config */
-
-        if(!openils.XUL.enableXPConnect()) return;
 
         if(openils.XUL.isXUL()) {
             win = window.open('/xul/' + openils.XUL.buildId() + '/server/cat/marcedit.xul');

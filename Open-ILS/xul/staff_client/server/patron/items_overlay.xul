@@ -57,7 +57,7 @@
 
 
 <popupset id="items_popupset">
-    <popup id="items_actions" position="at_pointer"> 
+    <menupopup id="items_actions" position="at_pointer"> 
         <menuitem command="sel_clip" label="&staff.patron.items_overlay.sel_clip.label;" accesskey="&staff.patron.items_overlay.sel_clip.accesskey;"/>
         <menuitem command="sel_bucket" label="&staff.patron.items_overlay.sel_bucket.label;" accesskey="&staff.patron.items_overlay.sel_bucket.accesskey;"/>
         <menuitem label="&staff.patron.items_overlay.show_catalog.label;" command="cmd_show_catalog" />
@@ -78,8 +78,8 @@
         <menuitem label="&staff.patron.items_overlay.add_billing.label;" command="cmd_add_billing" />
         <menuseparator />
         <menuitem command="save_columns" label="&staff.patron.items_overlay.save_columns.label;"/>
-    </popup>
-    <popup id="items_actions2" position="at_pointer"> 
+    </menupopup>
+    <menupopup id="items_actions2" position="at_pointer"> 
         <menuitem command="sel_clip2" label="&staff.patron.items_overlay.sel_clip.label;" accesskey="&staff.patron.items_overlay.sel_clip.accesskey;" />
         <menuitem command="sel_bucket2" label="&staff.patron.items_overlay.sel_bucket.label;" accesskey="&staff.patron.items_overlay.sel_bucket.accesskey;"/>
         <menuitem label="&staff.patron.items_overlay.show_catalog.label;" command="cmd_show_catalog2" />
@@ -99,7 +99,7 @@
         <menuitem label="&staff.patron.items_overlay.add_billing.label;" command="cmd_add_billing2" />
         <menuseparator />
         <menuitem command="save_columns2" label="&staff.patron.items_overlay.save_columns.label;"/>
-    </popup>
+    </menupopup>
 
 </popupset>
 

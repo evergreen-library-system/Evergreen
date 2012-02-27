@@ -48,7 +48,7 @@
                 <input name="lead_button" type="radio" xmlns="http://www.w3.org/1999/xhtml"></input>
                 &staff.cat.record_buckets.merge_records.lead;
             </hbox>
-            <iframe name="bib_brief" flex="1" />
+            <iframe name="bib_brief" flex="1" oils_force_external="true" />
             <hbox>
                 <radiogroup flex="0" orient="horizontal">
                     <radio name="view_bib" label="View Bib" />

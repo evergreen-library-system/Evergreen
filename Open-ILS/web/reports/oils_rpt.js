@@ -25,8 +25,8 @@ function oilsInitReports() {
 
     dojo.require('dojo.cookie');
 	oilsRptCurrentOrg = USER.ws_ou();
-	dojo.cookie(COOKIE_SES, SESSION, { 'path' : '/'});
-	dojo.cookie('ws_ou', USER.ws_ou(), { 'path' : '/'});
+	dojo.cookie(COOKIE_SES, SESSION, { 'path' : '/', 'secure' : true});
+	dojo.cookie('ws_ou', USER.ws_ou(), { 'path' : '/', 'secure' : true});
 
 	oilsRptFetchOrgTree(
 		function() {

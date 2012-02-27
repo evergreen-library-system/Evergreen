@@ -6,7 +6,6 @@ JSAN.use('serial.editor_base');
 if (typeof serial == 'undefined') serial = {};
 serial.siss_editor = function (params) {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         JSAN.use('util.error'); this.error = new util.error();
         JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init({'via':'stash'});
         JSAN.use('util.network'); this.network = new util.network();

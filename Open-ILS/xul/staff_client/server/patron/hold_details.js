@@ -2,7 +2,6 @@ function $(id) { return document.getElementById(id); }
 
 function my_init() {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
         JSAN.errorLevel = "die"; // none, warn, or die
         JSAN.addRepository('/xul/server/');
@@ -233,7 +232,6 @@ function render_notes() {
 
 function new_notification() {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalBrowserWrite");
         var xml = '<groupbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1">';
         xml += '<caption label="' + $("patronStrings").getString('staff.patron.hold_notices.new_notification_record') + '"/><grid flex="1"><columns><column/><column flex="1"/></columns><rows>';
         xml += '<row><label value="' + $("patronStrings").getString('staff.patron.hold_notices.method') + '"/><textbox id="method" name="fancy_data" context="clipboard"/></row>';
@@ -265,7 +263,6 @@ function new_notification() {
 
 function new_note() {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalBrowserWrite");
         var xml = '<groupbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1">';
         xml += '<caption label="' + $("patronStrings").getString('staff.patron.hold_notes.new_note') + '"/><grid flex="1"><columns><column/><column flex="1"/></columns><rows>';
         xml += '<row><label value="' + $('patronStrings').getString('staff.patron.hold_notes.new_note.public') + '"/><checkbox id="pub" name="fancy_data" checked="false"/></row>';

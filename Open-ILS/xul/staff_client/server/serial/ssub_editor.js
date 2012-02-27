@@ -6,7 +6,6 @@ JSAN.use('serial.editor_base');
 if (typeof serial == 'undefined') serial = {};
 serial.ssub_editor = function (params) {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         JSAN.use('util.error'); this.error = new util.error();
     } catch(E) {
         dump('serial/ssub_editor: ' + E + '\n');

@@ -86,10 +86,8 @@ OpenILS.data.prototype = {
             obj.observers.add = function(full_path, func) {
                 try {
                     obj.error.sdump('D_OBSERVERS', 'entering observers.add\nfull_path = ' + full_path + '\nfunc = ' + func + '\n');
-                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-                    const OpenILS=new Components.Constructor("@mozilla.org/openils_data_cache;1", "nsIOpenILS");
-                    var data_cache=new OpenILS( );
-                    var stash = data_cache.wrappedJSObject.OpenILS.prototype.data;
+                    var data_cache = Components.classes["@open-ils.org/openils_data_cache;1"].getService();
+                    var stash = data_cache.wrappedJSObject.data;
 
                     var id = obj.observers.id++;
                     if (typeof obj.observers.cache[ full_path ] == 'undefined') obj.observers.cache[ full_path ] = {};
@@ -162,14 +160,12 @@ OpenILS.data.prototype = {
 
     'stash' : function () {
         try {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-            const OpenILS=new Components.Constructor("@mozilla.org/openils_data_cache;1", "nsIOpenILS");
-            var data_cache=new OpenILS( );
+            var data_cache = Components.classes["@open-ils.org/openils_data_cache;1"].getService();
             for (var i = 0; i < arguments.length; i++) {
                 try {
                     if (arguments[i] != 'hash' && arguments[i] != 'list') this.error.sdump('D_DATA_STASH','stashing ' + arguments[i] + ' : ' + this[arguments[i]] + (typeof this[arguments[i]] == 'object' ? ' = ' + (this[arguments[i]]) : '') + '\n');
                 } catch(F) { alert(F); }
-                data_cache.wrappedJSObject.OpenILS.prototype.data[arguments[i]] = this[arguments[i]];
+                data_cache.wrappedJSObject.data[arguments[i]] = this[arguments[i]];
             }
         } catch(E) {
             this.error.sdump('D_ERROR','Error in OpenILS.data.stash(): ' + js2JSON(E) );
@@ -216,10 +212,8 @@ OpenILS.data.prototype = {
 
     '_debug_stash' : function() {
         try {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-            const OpenILS=new Components.Constructor("@mozilla.org/openils_data_cache;1", "nsIOpenILS");
-            var data_cache=new OpenILS( );
-            for (var i in data_cache.wrappedJSObject.OpenILS.prototype.data) {
+            var data_cache = Components.classes["@open-ils.org/openils_data_cache;1"].getService();
+            for (var i in data_cache.wrappedJSObject.data) {
                 dump('_debug_stash ' + i + '\n');
             }
         } catch(E) {
@@ -246,10 +240,8 @@ OpenILS.data.prototype = {
 
     'stash_retrieve' : function() {
         try {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-            const OpenILS=new Components.Constructor("@mozilla.org/openils_data_cache;1", "nsIOpenILS");
-            var data_cache=new OpenILS( );
-            var dc = data_cache.wrappedJSObject.OpenILS.prototype.data;
+            var data_cache = Components.classes["@open-ils.org/openils_data_cache;1"].getService();
+            var dc = data_cache.wrappedJSObject.data;
             for (var i in dc) {
                 this.error.sdump('D_DATA_RETRIEVE','Retrieving ' + i + ' : ' + dc[i] + '\n');
                 this[i] = dc[i];
@@ -491,7 +483,6 @@ OpenILS.data.prototype = {
     },
 
     'network_retrieve' : function() {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         var obj = this;
 
         JSAN.use('util.file'); var file = new util.file('global_font_adjust');
@@ -537,10 +528,8 @@ OpenILS.data.prototype = {
         function gen_fm_retrieval_func(classname,data) {
             var app = data[0]; var method = data[1]; var params = data[2]; var cacheable = data[3];
             return function () {
-                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 
                 function convert() {
-                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                     try {
                         if (obj.list[classname].constructor.name == 'Array') {
                             obj.hash[classname] = 
@@ -742,7 +731,6 @@ OpenILS.data.prototype = {
 
         this.chain.push(
             function() {
-                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                 var f = gen_fm_retrieval_func(
                     'my_asv',
                     [
@@ -753,7 +741,6 @@ OpenILS.data.prototype = {
                     ]
                 );
                 try {
-                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                     f();
                 } catch(E) {
                     var error = 'Error: ' + js2JSON(E);
@@ -765,7 +752,6 @@ OpenILS.data.prototype = {
 
         this.chain.push(
             function() {
-                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                 var f = gen_fm_retrieval_func(
                     'asv',
                     [
@@ -776,7 +762,6 @@ OpenILS.data.prototype = {
                     ]
                 );
                 try {
-                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                     f();
                 } catch(E) {
                     var error = 'Error: ' + js2JSON(E);

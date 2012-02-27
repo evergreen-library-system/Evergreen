@@ -1,0 +1,60 @@
+XULRunner / Firefox
+-------------------
+Support for later versions of XULRunner is included, which means that later
+improvements to XULRunner can be taken advantage of. This also means that the
+Firefox extension mode works in Firefox 3.6+, though some frequent tweaking
+will be needed due to the rapid Firefox major release schedule.
+
+The majority of the actual changes are backend changes, but there are some
+significant things to note for local customizations.
+
+Remote XUL
+~~~~~~~~~~
+Remote XUL no longer works in XULRunner/Firefox 4+, but to work around it a
+custom extension now creates an oils:// wrapper. Within the staff client that
+wrapper contains a "remote" host, from which server-side XUL can be loaded.
+
+Custom XUL pages stored on the server will need to reference the new wrapper
+to function.
+
+As a note: The new wrapper is used for all OPAC access and only talks SSL.
+
+enablePrivilege
+~~~~~~~~~~~~~~~
+The enablePrivilege command that would allow code to access various protected
+functionality is no longer available. Any code that depended upon it will need
+to be adjusted to use the oils:// wrapper created for Remote XUL.
+
+Cookies
+~~~~~~~
+Unfortunately, the oils:// wrapper has one less than useful effect. Any
+JavaScript loaded via it loses access to cookies. This is most notable when you
+are dealing with authtoken cookies. This only applies to JavaScript, however,
+and the server can still see the cookies when it gets requests.
+
+As a workaround you can load the data stash and fetch authtokens via it instead.
+This should always work when using the oils:// wrapper due to the elevated
+permission set it gets (nearly, if not equal to, local XUL).
+
+url_prefix
+~~~~~~~~~~
+Finally, as a useful feature, the url_prefix function is now slightly easier to
+use. Instead of needing to reference urls.SOMETHING you can instead just put the
+SOMETHING at the start of the url to prefix:
+
+url_prefix('SOMETHING/stuff.html')
+
+In this case SOMETHING can be terminated by the end of the string or up to the
+first instance of a slash (/), question mark (?), or pipe (|). The pipe is a
+special case and is removed during the replacement.
+
+For example, if urls.REPLACE were set to 'oils://remote/replace':
+
+url_prefix('REPLACE/stuff') becomes 'oils://remote/replace/stuff'
+url_prefix('REPLACE?query') becomes 'oils://remote/replace?query'
+url_prefix('RPLACE|ment') becomes 'oils://remote/replacement'
+
+The pipe is intended for cases where the urls entry may or may not already
+contain a query string, say for differences between OPACs where one requires
+that something be passed into the query string, but the other uses a path
+component instead.

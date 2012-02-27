@@ -38,7 +38,6 @@
     
         function my_init() {
             try {
-                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                 if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
                 JSAN.errorLevel = "die"; // none, warn, or die
                 JSAN.addRepository('/xul/server/');
@@ -67,7 +66,6 @@
             setTimeout(
                 function() {
                     try {
-                        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                         var node = g.patron.right_deck.node.selectedPanel;
                         if (node && get_contentWindow(node) && typeof get_contentWindow(node).default_focus == 'function') {
                             get_contentWindow(node).default_focus();

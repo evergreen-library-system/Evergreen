@@ -59,9 +59,9 @@
     </groupbox>
 
     <popupset id="au_popupset">
-        <popup id="au_actions" position="at_pointer">
+        <menupopup id="au_actions" position="at_pointer">
             <menuitem command="retrieve_patron" />
-        </popup>
+        </menupopup>
     </popupset>
 
 </window>

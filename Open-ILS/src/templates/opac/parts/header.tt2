@@ -82,7 +82,7 @@
             END;
         ELSE;
             # staying on the current page
-            cgi.url("-path" => 1, "-query" => 1) _ final;
+            cgi.url("-absolute" => 1, "-path" => 1, "-query" => 1) _ final;
         END;
     END;
 

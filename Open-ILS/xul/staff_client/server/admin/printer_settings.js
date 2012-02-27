@@ -2,7 +2,6 @@ var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
 
 function my_init() {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                 if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
         JSAN.errorLevel = "die"; // none, warn, or die
         JSAN.addRepository('/xul/server/');
@@ -21,7 +20,6 @@ function my_init() {
         x.checked = print_silent_pref;
 
         /*
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         g.PSSVC = Components.classes["@mozilla.org/gfx/printsettings-service;1"].getService(Components.interfaces.nsIPrintSettingsService);
         g.PO = Components.classes["@mozilla.org/gfx/printsettings-service;1"].getService(Components.interfaces.nsIPrintOptions);
         g.PPSVC = Components.classes["@mozilla.org/embedcomp/printingprompt-service;1"].getService(Components.interfaces.nsIPrintingPromptService);
@@ -35,7 +33,6 @@ function my_init() {
 
 g.toggle_silent_print = function() {
     var x = document.getElementById('print_silent');
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
     if (x.checked) {
         g.prefs.setBoolPref('print.always_print_silent', true);
         dump('Setting print.always_print_silent to true\n');
@@ -55,13 +52,11 @@ g.set_printer_context = function(context) {
 }
 
 g.page_settings = function() {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
     g.print.page_settings();
     g.print.save_settings();
 }
 
 g.printer_settings = function() {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
     var print_silent_pref = false;
     if (g.prefs.prefHasUserValue('print.always_print_silent')) {
         print_silent_pref = g.prefs.getBoolPref('print.always_print_silent');
@@ -77,7 +72,6 @@ g.printer_settings = function() {
 }
 
 g.set_print_strategy = function(which) {
-    netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
     if (which == 'custom.print') {
         var key = 'oils.printer.external.cmd.' + g.context;
         var has_key = g.prefs.prefHasUserValue(key);

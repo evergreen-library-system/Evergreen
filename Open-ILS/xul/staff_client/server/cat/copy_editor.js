@@ -9,7 +9,6 @@ function my_init() {
         /******************************************************************************************************/
         /* setup JSAN and some initial libraries */
 
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         if (typeof JSAN == 'undefined') {
             throw( $('commonStrings').getString('common.jsan.missing') );
         }
@@ -431,7 +430,6 @@ g.delete_template = function() {
 
 g.export_templates = function() {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         JSAN.use('util.file'); var f = new util.file('');
         f.export_file( { 'title' : $('catStrings').getString('staff.cat.copy_editor.export_templates.title'), 'data' : g.templates } );
     } catch(E) {
@@ -444,7 +442,6 @@ g.export_templates = function() {
 
 g.import_templates = function() {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         JSAN.use('util.file'); var f = new util.file('');
         var temp = f.import_file( { 'title' : $('catStrings').getString('staff.cat.copy_editor.import_templates.title') } );
         if (temp) {

@@ -57,13 +57,13 @@
     </vbox>
 
     <popupset>
-        <popup id="work_log_actions">
+        <menupopup id="work_log_actions">
             <menuitem label="&staff.admin.work_log.list1.retrieve_item_btn.label;" accesskey="&staff.admin.work_log.list1.retrieve_item_btn.accesskey;" command="cmd_retrieve_item" />
             <menuitem label="&staff.admin.work_log.list1.retrieve_patron_btn.label;" accesskey="&staff.admin.work_log.list1.retrieve_patron_btn.accesskey;" command="cmd_retrieve_patron1" />
-        </popup>
-        <popup id="patron_actions">
+        </menupopup>
+        <menupopup id="patron_actions">
             <menuitem label="&staff.admin.work_log.list2.retrieve_patron_btn.label;" accesskey="&staff.admin.work_log.list2.retrieve_patron_btn.accesskey;" command="cmd_retrieve_patron2" />
-        </popup>
+        </menupopup>
     </popupset>
 
     <commandset>

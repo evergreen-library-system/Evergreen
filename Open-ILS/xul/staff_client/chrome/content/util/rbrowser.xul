@@ -26,7 +26,6 @@
     <!-- BEHAVIOR -->
         <script type="text/javascript">
         var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
     </script>
         <scripts id="openils_util_scripts"/>
 
@@ -36,7 +35,6 @@
 
         function my_init() {
             try {
-                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                         if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
                 JSAN.errorLevel = "die"; // none, warn, or die
                 JSAN.addRepository('/xul/server/');
@@ -122,11 +120,11 @@
     </commandset>
 
     <popupset>
-        <popup id="debug_popup">
+        <menupopup id="debug_popup">
             <menuitem label="&common.browser.view_source.label;" accesskey="&common.browser.view_source.accesskey;" command="cmd_view_source" />
             <menuitem label="&common.browser.set_url.label;" accesskey="&common.browser.set_url.accesskey;" command="cmd_debug" />
             <menuitem label="&common.browser.find.label;" accesskey="&common.browser.find.accesskey;" command="cmd_find" />
-        </popup>
+        </menupopup>
     </popupset>
 
     <vbox flex="1">
@@ -138,7 +136,7 @@
             <label id="debug" value="Debug" disabled="true" popup="debug_popup" />
             <button id="browser_print" command="cmd_print" hidden="true"/>
         </hbox>
-        <browser id="browser_browser" flex="1" autoscroll="false" type="content"/>
+        <browser id="browser_browser" flex="1" autoscroll="false" type="content" oils_force_external="true" />
     </vbox>
 
 </window>

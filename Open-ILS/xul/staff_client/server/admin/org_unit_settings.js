@@ -18,6 +18,7 @@ dojo.require('openils.PermaCrud');
 dojo.require('openils.widget.AutoFieldWidget');
 dojo.require('openils.widget.ProgressDialog');
 dojo.require('dijit.Toolbar');
+dojo.require('openils.XUL');
 
 var authtoken;
 var query;
@@ -37,6 +38,10 @@ function osInit(data) {
     showProcessingDialog(true);
     
     authtoken = new openils.CGI().param('ses') || dojo.cookie('ses');
+    if(!authtoken && openils.XUL.isXUL()) {
+        var stash = openils.XUL.getStash();
+        authtoken = stash.session.key;
+    }   
     query = new openils.CGI().param('filter');
     user = new openils.User({authtoken:authtoken});
     contextOrg = user.user.ws_ou();

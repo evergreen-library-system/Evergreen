@@ -40,7 +40,6 @@
 
         function my_init() {
             try {
-                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                 if (typeof JSAN == 'undefined') { 
                     throw( $("commonStrings").getString('common.jsan.missing') );
                 }
@@ -155,7 +154,6 @@
         
         function new_note() {
             try {
-                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalBrowserWrite");
                 var xml = '<groupbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1"> \
                     <caption label="' + $('catStrings').getString('staff.cat.copy_notes.new_note.label') + '"/> \
                     <grid flex="1"><columns><column/><column flex="1"/></columns> \

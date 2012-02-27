@@ -146,7 +146,6 @@ circ.checkout.prototype = {
                             } else {
                                 params.noncat = 1;
                                 params.noncat_type = obj.controller.view.checkout_menu.value;
-                                netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
                                 var r = window.prompt(
                                     document.getElementById('circStrings').getFormattedString('staff.circ.checkout.cmd_checkout_submit.msg', [obj.data.hash.cnct[params.noncat_type].name()]),
                                     '1',
@@ -611,7 +610,7 @@ circ.checkout.prototype = {
                 if(in_barcode.type == 'actor') {
                     // Go to new patron (do not pass go, do not collect $200, do not prompt user)
                     var horizontal_interface = String( obj.data.hash.aous['ui.circ.patron_summary.horizontal'] ) == 'true';
-                    var loc = xulG.url_prefix( horizontal_interface ? urls.XUL_PATRON_HORIZ_DISPLAY : urls.XUL_PATRON_DISPLAY );
+                    var loc = xulG.url_prefix( horizontal_interface ? 'XUL_PATRON_HORIZ_DISPLAY' : 'XUL_PATRON_DISPLAY' );
                     xulG.set_tab( loc, {}, { 'barcode' : in_barcode.barcode } );
                     return;
                 }

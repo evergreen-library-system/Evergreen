@@ -11,7 +11,6 @@
 
     function xsl_marc2html_init() {
         try {
-            netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
             xsltProcessor = new XSLTProcessor();
             var req = new XMLHttpRequest();
             req.open("GET", urls.xsl_marc2html, false);
@@ -31,7 +30,6 @@
 
     function apply_xsl_marc2html(marc) {
         try {
-            netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
             var obj = this;
             var parser = new DOMParser();
             var doc = parser.parseFromString( marc, 'text/xml' );

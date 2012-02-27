@@ -32,8 +32,6 @@ cat.record_buckets = function (params) {
 };
 
 cat.record_buckets.pick_file = function (defaultFileName) {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-
     var nsIFilePicker = Components.interfaces.nsIFilePicker;
     var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance( nsIFilePicker );
 
@@ -53,7 +51,6 @@ cat.record_buckets.pick_file = function (defaultFileName) {
 
 cat.record_buckets.export_records = function(obj, output_type) {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         obj.list2.select_all();
         obj.data.stash_retrieve();
         JSAN.use('util.functional');
@@ -693,7 +690,6 @@ cat.record_buckets.prototype = {
                                     }
                                 );
 
-                                netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
                                 var top_xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" >';
                                 top_xml += '<description>' + $("catStrings").getString('staff.cat.record_buckets.delete_records.xml1') + '</description>';
                                 top_xml += '<hbox>';
@@ -712,11 +708,11 @@ cat.record_buckets.prototype = {
                                 xml += '</tr><tr valign="top">';
                                 for (var i = 0; i < record_ids.length; i++) {
                                     xml += '<td nowrap="nowrap"><iframe src="' + urls.XUL_BIB_BRIEF; 
-                                    xml += '?docid=' + record_ids[i] + '"/></td>';
+                                    xml += '?docid=' + record_ids[i] + '" oils_force_external="true"/></td>';
                                 }
                                 xml += '</tr><tr valign="top">';
                                 for (var i = 0; i < record_ids.length; i++) {
-                                    xml += '<td nowrap="nowrap"><iframe style="min-height: 1000px; min-width: 300px;" flex="1" src="' + urls.XUL_MARC_VIEW + '?docid=' + record_ids[i] + ' "/></td>';
+                                    xml += '<td nowrap="nowrap"><iframe style="min-height: 1000px; min-width: 300px;" flex="1" src="' + urls.XUL_MARC_VIEW + '?docid=' + record_ids[i] + ' " oils_force_external="true"/></td>';
                                 }
                                 xml += '</tr></table></form>';
                                 //obj.data.temp_merge_top = top_xml; obj.data.stash('temp_merge_top');
@@ -781,14 +777,14 @@ cat.record_buckets.prototype = {
                                 for (var i = 0; i < docids.length; i++) {
                                     var doc_id = docids[i];
                                     if (seen[doc_id]) continue; seen[doc_id] = true;
-                                    var opac_url = xulG.url_prefix( urls.opac_rdetail ) + doc_id;
+                                    var opac_url = xulG.url_prefix('opac_rdetail') + doc_id;
                                     var content_params = { 
                                         'session' : ses(),
                                         'authtime' : ses('authtime'),
                                         'opac_url' : opac_url
                                     };
                                     xulG.new_tab(
-                                        xulG.url_prefix(urls.XUL_OPAC_WRAPPER), 
+                                        xulG.url_prefix('XUL_OPAC_WRAPPER'), 
                                         {'tab_name':$("catStrings").getString('staff.cat.record_buckets.cmd_sel_opac.tab_name')}, 
                                         content_params
                                     );

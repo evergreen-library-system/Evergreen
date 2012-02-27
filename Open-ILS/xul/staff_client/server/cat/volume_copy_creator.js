@@ -18,7 +18,6 @@ function my_init() {
         /***********************************************************************************************************/
         /* Initial setup */
 
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
         JSAN.errorLevel = "die"; // none, warn, or die
         JSAN.addRepository('/xul/server/');
@@ -1212,14 +1211,14 @@ g.stash_and_close = function(param) {
             xulG.reload_opac();
         }
         if (xul_param('load_opac_when_done')) {
-            var opac_url = xulG.url_prefix( urls.opac_rdetail ) + g.doc_id;
+            var opac_url = xulG.url_prefix('opac_rdetail') + g.doc_id;
             var content_params = {
                 'session' : ses(),
                 'authtime' : ses('authtime'),
                 'opac_url' : opac_url
             };
             xulG.set_tab(
-                xulG.url_prefix(urls.XUL_OPAC_WRAPPER),
+                xulG.url_prefix('XUL_OPAC_WRAPPER'),
                 {
                     'tab_name':'Retrieving title...',
                     'on_tab_load' : function(cw) {
@@ -1244,7 +1243,6 @@ g.stash_and_close = function(param) {
 
 g.load_prefs = function() {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
         JSAN.use('util.file'); var file = new util.file('volume_copy_creator.prefs');
         if (file._file.exists()) {
             var prefs = file.get_object(); file.close();
@@ -1275,7 +1273,6 @@ g.load_prefs = function() {
 
 g.save_prefs = function () {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
         JSAN.use('util.file'); var file = new util.file('volume_copy_creator.prefs');
         file.set_object(
             {

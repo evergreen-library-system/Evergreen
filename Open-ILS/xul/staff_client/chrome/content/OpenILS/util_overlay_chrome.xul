@@ -38,10 +38,11 @@
                     dump('pulling in custom.js in util_overlay_chrome.xul\n');
                     // Pull in local customizations
                     var r = new XMLHttpRequest();
-                    r.open("GET", xulG.url_prefix('/xul/server/skin/custom.js'), false);
+                    var custom_js = xulG.url_prefix('CUSTOM_JS');
+                    r.open("GET", custom_js, false);
                     r.send(null);
                     if (r.status == 200) {
-                        dump('Evaluating /xul/server/skin/custom.js\n');
+                        dump('Evaluating ' + custom_js + '\n');
                         eval( r.responseText );
                     }
                 } else {

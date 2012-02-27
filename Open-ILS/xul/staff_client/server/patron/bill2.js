@@ -1,6 +1,5 @@
 function my_init() {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
         JSAN.errorLevel = "die"; // none, warn, or die
         JSAN.addRepository('/xul/server/');
@@ -508,7 +507,6 @@ function init_lists() {
             $('copy_details').setAttribute('disabled', g.bill_list_selection.length == 0);
         },
         'on_click' : function(ev) {
-            netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserRead');
             var row = {}; var col = {}; var nobj = {};
             g.bill_list.node.treeBoxObject.getCellAt(ev.clientX,ev.clientY,row,col,nobj);
             if (row.value == -1) return;
@@ -840,7 +838,6 @@ function apply_payment() {
                 if (no_print_prompting) {
                     if (no_print_prompting.indexOf( "Bill Pay" ) > -1) { return; } // Skip print attempt
                 }
-                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                 g.data.stash_retrieve();
                 var template = 'bill_payment';
                 JSAN.use('patron.util'); JSAN.use('util.functional');

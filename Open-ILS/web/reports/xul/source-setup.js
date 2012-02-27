@@ -1,4 +1,5 @@
 dojo.requireLocalization("openils.reports", "reports");
+dojo.require('openils.XUL');
 
 var rpt_strings = dojo.i18n.getLocalization("openils.reports", "reports");
 var idlNS	= "http://opensrf.org/spec/IDL/base/v1";
@@ -39,7 +40,10 @@ function sortLabels (a,b) {
 function loadTemplate(id) {
 	var cgi = new CGI();
 	var session = cgi.param('ses');
-
+    if(!session && openils.XUL.isXUL()) {
+        var stash = openils.XUL.getStash();
+        session = stash.session.key;
+    }
 	var r = new Request('open-ils.reporter:open-ils.reporter.template.retrieve', session, id);
 
 	r.callback(

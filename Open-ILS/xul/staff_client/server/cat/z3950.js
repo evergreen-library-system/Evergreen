@@ -5,7 +5,6 @@ function $(id) { return document.getElementById(id); }
 if (typeof cat == 'undefined') cat = {};
 cat.z3950 = function (params) {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         JSAN.use('util.error'); this.error = new util.error();
         JSAN.use('util.network'); this.network = new util.network();
     } catch(E) {
@@ -26,7 +25,6 @@ cat.z3950.prototype = {
     'init' : function( params ) {
 
         try {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             JSAN.use('util.widgets');
 
             var obj = this;
@@ -151,7 +149,6 @@ cat.z3950.prototype = {
                                         n.setAttribute('toggle','1');
                                         n.setAttribute('label', $("catStrings").getString('staff.cat.z3950.results_view.label'));
                                         n.setAttribute('accesskey', $("catStrings").getString('staff.cat.z3950.results_view.accesskey'));
-                                        netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
                                         var f = get_contentWindow(document.getElementById('marc_frame'));
                                         var retrieve_id = n.getAttribute('retrieve_id');
                                         var result_idx = retrieve_id.split('-')[0];
@@ -184,14 +181,14 @@ cat.z3950.prototype = {
                                 try {
                                     var doc_id = obj.controller.view.mark_overlay.getAttribute('doc_id');
                                     if (doc_id) {
-                                        var opac_url = xulG.url_prefix( urls.opac_rdetail ) + doc_id;
+                                        var opac_url = xulG.url_prefix('opac_rdetail') + doc_id;
                                         var content_params = { 
                                             'session' : ses(),
                                             'authtime' : ses('authtime'),
                                             'opac_url' : opac_url,
                                         };
                                         xulG.new_tab(
-                                                     xulG.url_prefix(urls.XUL_OPAC_WRAPPER), 
+                                                     xulG.url_prefix('XUL_OPAC_WRAPPER'), 
                                                      {'tab_name': $("catStrings").getString('staff.cat.z3950.replace_tab_with_opac.tab_name')}, 
                                                      content_params
                                                      );
@@ -766,14 +763,14 @@ cat.z3950.prototype = {
     },
 
     'replace_tab_with_opac' : function(doc_id) {
-        var opac_url = xulG.url_prefix( urls.opac_rdetail ) + doc_id;
+        var opac_url = xulG.url_prefix('opac_rdetail') + doc_id;
         var content_params = { 
             'session' : ses(),
             'authtime' : ses('authtime'),
             'opac_url' : opac_url,
         };
         xulG.set_tab(
-            xulG.url_prefix(urls.XUL_OPAC_WRAPPER), 
+            xulG.url_prefix('XUL_OPAC_WRAPPER'), 
             {'tab_name': $("catStrings").getString('staff.cat.z3950.replace_tab_with_opac.tab_name')}, 
             content_params
         );
@@ -881,7 +878,7 @@ cat.z3950.prototype = {
 
         if ( $('marc_editor').checked ) {
             xulG.new_tab(
-                xulG.url_prefix(urls.XUL_MARC_EDIT), 
+                xulG.url_prefix('XUL_MARC_EDIT'), 
                 { 'tab_name' : 'MARC Editor' }, 
                 { 
                     'marc_control_number_identifier': obj.data.hash.aous['cat.marc_control_number_identifier'] || 'Set cat.marc_control_number_identifier in Library Settings',
@@ -908,7 +905,6 @@ cat.z3950.prototype = {
 
     'confirm_overlay' : function(record_ids) {
         var obj = this; // JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-        netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
         var top_xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" >';
         top_xml += '<description>'+$("catStrings").getString('staff.cat.z3950.confirm_overlay.description')+'</description>';
         top_xml += '<hbox><button id="lead" disabled="false" label="'+$("catStrings").getString('staff.cat.z3950.confirm_overlay.lead.label')+'" name="fancy_submit"';
@@ -920,11 +916,11 @@ cat.z3950.prototype = {
         xml += '<table width="100%"><tr valign="top">';
         for (var i = 0; i < record_ids.length; i++) {
             xml += '<td nowrap="nowrap"><iframe src="' + urls.XUL_BIB_BRIEF; 
-            xml += '?docid=' + record_ids[i] + '"/></td>';
+            xml += '?docid=' + record_ids[i] + '" oils_force_external="true"/></td>';
         }
         xml += '</tr><tr valign="top">';
         for (var i = 0; i < record_ids.length; i++) {
-            xml += '<td nowrap="nowrap"><iframe style="min-height: 1000px; min-width: 300px;" flex="1" src="' + urls.XUL_MARC_VIEW + '?docid=' + record_ids[i] + ' "/></td>';
+            xml += '<td nowrap="nowrap"><iframe style="min-height: 1000px; min-width: 300px;" flex="1" src="' + urls.XUL_MARC_VIEW + '?docid=' + record_ids[i] + ' " oils_force_external="true"/></td>';
         }
         xml += '</tr></table></form>';
         // data.temp_merge_top = top_xml; data.stash('temp_merge_top');
@@ -1044,7 +1040,7 @@ cat.z3950.prototype = {
 
         if ( $('marc_editor').checked ) {
             xulG.new_tab(
-                xulG.url_prefix(urls.XUL_MARC_EDIT), 
+                xulG.url_prefix('XUL_MARC_EDIT'), 
                 { 'tab_name' : $("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.tab_name') },
                 { 
                     'record' : { 'marc' : my_marcxml },
@@ -1111,7 +1107,6 @@ cat.z3950.prototype = {
                     }
                 }
             */
-            netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
             JSAN.use('util.file'); var file = new util.file('z3950_store');
             if (file._file.exists()) {
                 var creds = file.get_object(); file.close();
@@ -1145,7 +1140,6 @@ cat.z3950.prototype = {
                 }
             }
             obj.creds.version = obj.creds_version;
-            netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
             JSAN.use('util.file'); var file = new util.file('z3950_store');
             file.set_object(obj.creds);
             file.close();

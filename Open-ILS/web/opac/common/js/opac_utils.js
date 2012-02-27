@@ -2,7 +2,10 @@
 
 
 /* define it again here for pages that don't load RemoteRequest */
-function isXUL() { try { if(IAMXUL) return true;}catch(e){return false;}; }
+function isXUL() {
+    if(location.protocol == 'chrome:' || location.protocol == 'oils:') return true;
+    try { if(IAMXUL) return true;}catch(e){return false;};
+}
 
 
 var __ilsEvent; /* the last event the occurred */
@@ -16,7 +19,7 @@ function Request(type) {
 	var p = [];
 
 	if(isXUL()) {
-		if(!location.href.match(/^https:/))
+		if(!location.href.match(/^https:/) && !location.href.match(/^oils:/))
 			this.request.setSecure(false);
 
 	} else {
@@ -282,6 +285,7 @@ function findBasePath() {
 function findBaseURL(ssl) {
 	var path = findBasePath();
 	var proto = (ssl) ? "https:" : "http:";
+	if(ssl && location.protocol == 'oils:') proto = 'oils:';
 
 	/* strip port numbers.  This is necessary for browsers that
 	send an explicit  <host>:80, 443 - explicit ports
@@ -314,7 +318,6 @@ function _debug(str) {
 	if(!IE) {
 		if(!consoleService) {
 			try {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 				this.consoleService = Components.classes['@mozilla.org/consoleservice;1']
 					.getService(Components.interfaces.nsIConsoleService);
 			} catch(e) {}
@@ -322,7 +325,6 @@ function _debug(str) {
 	
 		try {
 			if(consoleService) {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 				consoleService.logStringMessage(str + '\n');
 			}
 		} catch(e){}
@@ -337,7 +339,7 @@ function  buildOPACLink(args, slim, ssl) {
 	var string = "";
 
     if( ssl == undefined && (
-            location.protocol == 'https:' ||
+            location.protocol == 'https:' || location.protocol == 'oils:' ||
             (forceLoginSSL && G.user && G.user.session))) {
         ssl = true;
     }
@@ -521,7 +523,7 @@ function buildSearchLink(type, string, linknode, trunc) {
 }
 
 function setSessionCookie(ses) {
-	dojo.cookie(COOKIE_SES, ses);
+	dojo.cookie(COOKIE_SES, ses, {'secure':'true'});
 }
 
 

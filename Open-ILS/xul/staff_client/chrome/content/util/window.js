@@ -35,12 +35,6 @@ util.window.prototype = {
     'SafeWindowOpen' : function (url,title,features) {
         var w;
 
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalPreferencesRead");
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalPreferencesWrite");
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserWrite");
-
         const CI = Components.interfaces;
         const PB = Components.classes["@mozilla.org/preferences-service;1"].getService(CI.nsIPrefBranch);
 
@@ -62,12 +56,6 @@ util.window.prototype = {
     'SafeWindowOpenDialog' : function (url,title,features) {
         var w;
 
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalPreferencesRead");
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalPreferencesWrite");
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserWrite");
-
         const CI = Components.interfaces;
         const PB = Components.classes["@mozilla.org/preferences-service;1"].getService(CI.nsIPrefBranch);
 
@@ -87,7 +75,6 @@ util.window.prototype = {
     },
 
     'open' : function(url,title,features,my_xulG) {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         var key;
         if (!title) title = '_blank';
         if (!features) features = 'chrome';
@@ -105,6 +92,9 @@ util.window.prototype = {
             } else if (typeof url_prefix == 'function') {
                     key = key.replace( url_prefix('/'), '/' );    
             }
+            // oils://remote/ looks like http://server/ to files loaded off of it. That is, location.pathname ignores it.
+            // So remove it here, like we remove url_prefix.
+            key = key.replace('oils://remote/', '/');
             if (typeof data.modal_xulG_stack[key] == 'undefined') data.modal_xulG_stack[key] = [];
             data.modal_xulG_stack[key].push( my_xulG );
             data.stash('modal_xulG_stack');
@@ -138,7 +128,6 @@ util.window.prototype = {
     },
 
     'openDialog' : function(url,title,features,my_xulG) {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         var key;
         if (!title) title = '_blank';
         if (!features) features = 'chrome'; // Note that this is a default for openDialog anyway
@@ -158,6 +147,9 @@ util.window.prototype = {
             } else if (typeof url_prefix == 'function') {
                     key = key.replace( url_prefix('/'), '/' );    
             }
+            // oils://remote/ looks like http://server/ to files loaded off of it. That is, location.pathname ignores it.
+            // So remove it here, like we remove url_prefix.
+            key = key.replace('oils://remote/', '/');
             if (typeof data.modal_xulG_stack[key] == 'undefined') data.modal_xulG_stack[key] = [];
             data.modal_xulG_stack[key].push( my_xulG );
             data.stash('modal_xulG_stack');

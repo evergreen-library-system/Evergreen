@@ -38,12 +38,17 @@
         <script type="text/javascript" src="/js/dojo/dijit/dijit.js"></script>
         <script type="text/javascript" src="/js/dojo/openils/User.js"></script>
         <script type="text/javascript" src="/js/dojo/openils/Util.js"></script>
+        <script type="text/javascript" src="/js/dojo/openils/XUL.js"></script>
         <script type="text/javascript" src="/opac/extras/circ/alt_holds_print.js"></script>
         <script type="text/javascript">
             function my_init() {
                 cgi = new CGI();
                 authtoken = (typeof ses == "function" ? ses() : 0) ||
                     cgi.param("ses") || dojo.cookie("ses");
+                if(!authtoken && openils.XUL.isXUL()) {
+                    var stash = openils.XUL.getStash();
+                    authtoken = stash.session.key;
+                }
 
                 if (cgi.param("do") == "shelf_expired_holds") {
                     dojo.query("th[name=barcode_part]")[0].innerHTML = "Barcode";  /* XXX i18n. also, no support for part labels in this interface, at least for now */

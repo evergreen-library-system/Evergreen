@@ -2,7 +2,6 @@ function $(id) { return document.getElementById(id); }
 
 function my_init() {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
         JSAN.errorLevel = "die"; // none, warn, or die
         JSAN.addRepository('/xul/server/');
@@ -312,7 +311,7 @@ function clone_patron() {
     if (! g.sel_list ) return;
     try {
         for (var i = 0; i < g.sel_list.length; i++) {    
-            var loc = xulG.url_prefix( urls.XUL_REMOTE_BROWSER ); 
+            var loc = xulG.url_prefix('XUL_REMOTE_BROWSER'); 
                 //+ '?url=' + window.escape( urls.XUL_PATRON_EDIT + '?ses=' 
                 //+ window.escape( ses() ) + '&clone=' + g.sel_list[i] );
             if (typeof window.xulG == 'object' && typeof window.xulG.new_tab == 'function') xulG.new_tab(
@@ -355,7 +354,7 @@ function spawn_editor(p) {
     for (var i in p) {
         passthru[i] = p[i];
     }
-    var loc = xulG.url_prefix( urls.XUL_REMOTE_BROWSER ); // + '?url=' + window.escape( url );
+    var loc = xulG.url_prefix('XUL_REMOTE_BROWSER'); // + '?url=' + window.escape( url );
     if (typeof window.xulG == 'object' && typeof window.xulG.new_tab == 'function') xulG.new_tab(
         loc, 
         {}, 
@@ -444,7 +443,6 @@ function link_patron(direction) {
             }
 
             var horizontal_interface = String( g.data.hash.aous['ui.circ.patron_summary.horizontal'] ) == 'true';
-            netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
             var top_xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: auto"><description>' + second_msg + '</description>';
             top_xml += '<hbox><spacer flex="1"/><button label="'+$("patronStrings").getString('staff.patron.info_group.link_patron.move.label')+'"';
             top_xml += ' accesskey="'+$("patronStrings").getString('staff.patron.info_group.link_patron.move.accesskey')+'" name="fancy_submit"/>';
@@ -465,8 +463,8 @@ function link_patron(direction) {
                 xml += '<image src="/xul/server/skin/media/images/patron_left_arrow.png"/>';
             }
             xml += '</hbox>';
-            xml += '<iframe style="min-height: 100px" flex="1" src="' + xulG.url_prefix( urls.XUL_PATRON_SUMMARY );
-            xml += '?show_name=1&amp;id=' + g.sel_list[i] + '"/>';
+            xml += '<iframe style="min-height: 100px" flex="1" src="' + xulG.url_prefix('XUL_PATRON_SUMMARY');
+            xml += '?show_name=1&amp;id=' + g.sel_list[i] + '" oils_force_external="true"/>';
             xml += '</vbox>';
             xml += '<vbox flex="1">';
             xml += '<hbox>';
@@ -476,8 +474,8 @@ function link_patron(direction) {
                 xml += '<image src="/xul/server/skin/media/images/patron_left_arrow.png"/>';
             }
             xml += '<spacer flex="1"/></hbox>';
-            xml += '<iframe style="min-height: 100px" flex="1" src="' + xulG.url_prefix( urls.XUL_PATRON_SUMMARY );
-            xml += '?show_name=1&amp;id=' + patron_b.id() + '"/>';
+            xml += '<iframe style="min-height: 100px" flex="1" src="' + xulG.url_prefix('XUL_PATRON_SUMMARY');
+            xml += '?show_name=1&amp;id=' + patron_b.id() + '" oils_force_external="true"/>';
             xml += '</vbox>';
             /************/
             if (horizontal_interface) {

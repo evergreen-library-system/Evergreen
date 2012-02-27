@@ -54,7 +54,6 @@ util.deck.prototype = {
 
             if (content_params) {
                 try {
-                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                     this.error.sdump('D_DECK', 'set_iframe\nurl = ' + url + '\nframe.contentWindow = ' + iframe.contentWindow + '\n' + 'content_params = ' + (content_params) );
                     var cw = iframe.contentWindow; 
                     if (typeof iframe.contentWindow.wrappedJSObject != 'undefined') cw = iframe.contentWindow.wrappedJSObject;
@@ -90,7 +89,6 @@ util.deck.prototype = {
         this.node.selectedIndex = this.node.childNodes.length - 1;
         if (content_params) {
             try {
-                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                 this.error.sdump('D_DECK', 'new_iframe\nurl = ' + url + '\nframe.contentWindow = ' + iframe.contentWindow + '\n' + 'content_params = ' + (content_params) );
                 var cw = iframe.contentWindow; 
                 if (typeof iframe.contentWindow.wrappedJSObject != 'undefined') cw = iframe.contentWindow.wrappedJSObject;

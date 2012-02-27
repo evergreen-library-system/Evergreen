@@ -43,7 +43,7 @@
     <vbox flex="1">
         <vbox id="top_pane" flex="1" oils_persist="height">
             <hbox id="template_bar_holder"/>
-            <browser id="volume_pane" flex="1" />
+            <browser id="volume_pane" flex="1" oils_force_external="true" />
         </vbox>
         <splitter
             collapse="after"
@@ -54,7 +54,7 @@
             <grippy/>
         </splitter>
         <vbox id="bottom_pane" flex="1" oils_persist="height">
-            <browser id="item_pane" flex="1" />
+            <browser id="item_pane" flex="1" oils_force_external="true" />
             <hbox id="bottom_bar"/>
         </vbox>
     </vbox>

@@ -3,8 +3,6 @@ dump('entering util/file.js\n');
 if (typeof util == 'undefined') util = {};
 util.file = function (fname) {
 
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead UniversalFileRead");
-
     JSAN.use('util.error'); this.error = new util.error();
 
     this.dirService = Components.classes["@mozilla.org/file/directory_service;1"].
@@ -30,7 +28,6 @@ util.file.prototype = {
             if (!fname) throw('Must specify a filename.');
 
             try {
-                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead UniversalFileRead");
                 var pref = Components.classes["@mozilla.org/preferences-service;1"]
                     .getService(Components.interfaces.nsIPrefBranch);
                 if (!path && pref.getBoolPref("open-ils.write_in_user_chrome_directory")) path = 'uchrome';
@@ -43,10 +40,6 @@ util.file.prototype = {
                 case 'uchrome' :
                     this._file = this.dirService.get( "UChrm",  Components.interfaces.nsIFile );
                     //this._file = this.dirService.get( "ProfD",  Components.interfaces.nsIFile );
-                break;
-                case 'skin' :
-                    this._file = this.dirService.get( "AChrom",  Components.interfaces.nsIFile );
-                    this._file.append("skin");
                 break;
                 default:
                 case 'chrome' : 
@@ -120,7 +113,6 @@ util.file.prototype = {
 
     'write_content' : function(write_type,content) {
         try {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead UniversalFileRead");
             if (!this._output_stream) this._create_output_stream(write_type);
             this._output_stream.write( content, String( content ).length );
         } catch(E) {
@@ -144,8 +136,6 @@ util.file.prototype = {
 
     'get_content' : function() {
         try {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead UniversalFileRead");
-
             if (!this._file) throw('Must .get() a file first.');
             if (!this._file.exists()) throw('File does not exist.');
             
@@ -163,8 +153,6 @@ util.file.prototype = {
         try {
             //dump('_create_input_stream()\n');
             
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead UniversalFileRead");
-
             if (!this._file) throw('Must .get() a file first.');
             if (!this._file.exists()) throw('File does not exist.');
 
@@ -194,8 +182,6 @@ util.file.prototype = {
         try {
             //dump('_create_output_stream('+param+') for '+this._file.path+'\n');
             
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead UniversalFileRead");
-
             if (!this._file) throw('Must .get() a file first.');
 
             if (! this._file.exists()) {
@@ -230,7 +216,6 @@ util.file.prototype = {
 
     'pick_file' : function(params) {
         try {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             if (typeof params == 'undefined') params = {};
             if (typeof params.mode == 'undefined') params.mode = 'open';
             var nsIFilePicker = Components.interfaces.nsIFilePicker;
@@ -261,7 +246,6 @@ util.file.prototype = {
             if (typeof params == 'undefined') params = {};
             params.mode = 'save';
             if (typeof params.data == 'undefined') throw('Need a .data field to export');
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             var f = obj.pick_file( params );
             if (f) {
                 obj._file = f;
@@ -289,7 +273,6 @@ util.file.prototype = {
             var obj = this;
             if (typeof params == 'undefined') params = {};
             params.mode = 'open';
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             var f = obj.pick_file(params);
             if (f && f.exists()) {
                 obj._file = f;

@@ -337,7 +337,6 @@ function OpenMarcEditWindow(pcrud, rec) {
 	   To run in Firefox directly, must set signed.applets.codebase_principal_support
 	   to true in about:config
 	 */
-	netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
 	win = window.open('/xul/server/cat/marcedit.xul'); // XXX version?
 	dojo.require('openils.PermaCrud');
 

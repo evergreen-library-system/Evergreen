@@ -3,7 +3,6 @@ dump('entering example.template.js\n');
 if (typeof example == 'undefined') example = {};
 example.template = function (params) {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         JSAN.use('util.error'); this.error = new util.error();
     } catch(E) {
         dump('example.template: ' + E + '\n');
@@ -15,8 +14,6 @@ example.template.prototype = {
     'init' : function( params ) {
 
         try {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-
             var obj = this;
 
             JSAN.use('util.controller'); obj.controller = new util.controller();

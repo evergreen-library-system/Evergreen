@@ -1,6 +1,0 @@
-#include "nsISupports.idl"
-[scriptable, uuid(dc3e4b5f-c0f4-4b34-bc57-7b4099c3a5d6)]
-interface nsIOpenILS : nsISupports
-{
-	void help( );
-};

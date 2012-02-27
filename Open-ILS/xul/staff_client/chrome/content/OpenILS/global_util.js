@@ -199,6 +199,15 @@
         }
     }
 
+    function oils_persist_hostname() {
+        if(location.protocol == 'oils:') {
+            JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+            return data.server_unadorned;
+        } else {
+            return location.hostname;
+        }
+    }
+
     function persist_helper(base_key_suffix) {
         try {
             if (base_key_suffix) {
@@ -220,7 +229,6 @@
             function gen_oils_persist_handler(bk,node) {
                 return function(ev) {
                     try {
-                        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                         var target;
                         if (ev.target.nodeName == 'command') {
                             target = node;
@@ -232,7 +240,7 @@
                             }
                         }
                         var filename = location.pathname.split('/')[ location.pathname.split('/').length - 1 ];
-                        var base_key = 'oils_persist_' + String(location.hostname + '_' + filename + '_' + target.getAttribute('id')).replace('/','_','g') + '_' + base_key_suffix;
+                        var base_key = 'oils_persist_' + String(oils_persist_hostname() + '_' + filename + '_' + target.getAttribute('id')).replace('/','_','g') + '_' + base_key_suffix;
                         var attribute_list = target.getAttribute('oils_persist').split(' ');
                         dump('on_oils_persist: <<< ' + target.nodeName + '.id = ' + target.id + '\t' + bk + '\n');
                         for (var j = 0; j < attribute_list.length; j++) {
@@ -282,12 +290,11 @@
                 };
             }
 
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces['nsIPrefBranch']);
             var nodes = document.getElementsByAttribute('oils_persist','*');
             for (var i = 0; i < nodes.length; i++) {
                 var filename = location.pathname.split('/')[ location.pathname.split('/').length - 1 ];
-                var base_key = 'oils_persist_' + String(location.hostname + '_' + filename + '_' + nodes[i].getAttribute('id')).replace('/','_','g') + '_' + base_key_suffix;
+                var base_key = 'oils_persist_' + String(oils_persist_hostname() + '_' + filename + '_' + nodes[i].getAttribute('id')).replace('/','_','g') + '_' + base_key_suffix;
                 var attribute_list = nodes[i].getAttribute('oils_persist').split(' ');
                 dump('persist_helper: >>> ' + nodes[i].nodeName + '.id = ' + nodes[i].id + '\t' + base_key + '\n');
                 for (var j = 0; j < attribute_list.length; j++) {
@@ -417,7 +424,6 @@
 
     function get_contentWindow(frame) {
         try {
-            netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
             if (frame && frame.contentWindow) {
                 try {
                     if (typeof frame.contentWindow.wrappedJSObject != 'undefined') {
@@ -575,7 +581,6 @@
 
     function copy_to_clipboard(ev) {
         try {
-            netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
             var text;
             if (typeof ev == 'object') {
                 if (typeof ev.target != 'undefined') {
@@ -598,7 +603,6 @@
 
     function clear_the_cache() {
         try {
-            netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
             var cacheClass         = Components.classes["@mozilla.org/network/cache-service;1"];
             var cacheService    = cacheClass.getService(Components.interfaces.nsICacheService);
             cacheService.evictEntries(Components.interfaces.nsICache.STORE_ON_DISK);
@@ -615,8 +619,14 @@
     }
 
     function url_prefix(url) {
+        var base_url = url.match(/^[^?/|]+/);
+        if(base_url) {
+            base_url = base_url[0];
+            if(urls[base_url])
+                url = url.replace(/^[^?/|]+\|/, urls[base_url]);
+        }
         if (url.match(/^\//)) url = urls.remote + url;
-        if (! url.match(/^(http|chrome):\/\//) && ! url.match(/^data:/) ) url = 'http://' + url;
+        if (! url.match(/^(http|https|chrome|oils):\/\//) && ! url.match(/^data:/) ) url = 'http://' + url;
         dump('url_prefix = ' + url + '\n');
         return url;
     }

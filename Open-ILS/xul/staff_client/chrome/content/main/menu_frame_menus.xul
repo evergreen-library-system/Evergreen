@@ -631,7 +631,7 @@
                 <menuitem label="&staff.main.menu.admin.venkman.label;" command="cmd_debug_venkman"/>
                 <menuitem label="&staff.main.auth.debug.inspector;" command="cmd_debug_inspector"/>
                 <menuitem label="&staff.main.auth.debug.chrome_list;" command="cmd_debug_chrome_list"/>
-                <menuitem label="&staff.main.menu.admin.ping;" oncommand="try{netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');JSAN.use('util.network'); var n = new util.network(); alert(n.ping());}catch(E){alert(E);}"/>
+                <menuitem label="&staff.main.menu.admin.ping;" oncommand="try{JSAN.use('util.network'); var n = new util.network(); alert(n.ping());}catch(E){alert(E);}"/>
             </menupopup>
         </menu>
     </menupopup>

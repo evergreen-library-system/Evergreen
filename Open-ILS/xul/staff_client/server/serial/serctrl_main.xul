@@ -93,7 +93,7 @@ vim:noet:sw=4:ts=4:
 	</commandset>
 
 	<!--<popupset>
-		<popup id="serctrl_main_actions">
+		<menupopup id="serctrl_main_actions">
 			<menuitem command="cmd_add_items" label="&staff.cat.copy_browser.actions.cmd_add_items.label;" accesskey="&staff.cat.copy_browser.actions.cmd_add_items.accesskey;"/>
 			<menuitem command="cmd_edit_items" label="Edit Item Attributes" accesskey="&staff.cat.copy_browser.actions.cmd_edit_items.accesskey;"/>
 			<menuitem command="cmd_delete_items" label="Delete Item" accesskey="&staff.cat.copy_browser.actions.cmd_delete_items.accesskey;"/>
@@ -106,7 +106,7 @@ vim:noet:sw=4:ts=4:
 			<menuseparator/>
 			<menuitem command="save_columns" label="&staff.cat.copy_browser.actions.save_columns.label;"/>
 			<menuitem command="cmd_refresh_list" label="&staff.cat.copy_browser.actions.cmd_refresh_list.label;" accesskey="&staff.cat.copy_browser.actions.cmd_refresh_list.accesskey;"/>
-		</popup>
+		</menupopup>
 	</popupset> -->
 
 <!--	<groupbox flex="1" class="my_overflow"> -->

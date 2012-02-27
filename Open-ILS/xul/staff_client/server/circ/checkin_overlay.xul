@@ -42,7 +42,7 @@
 
 
 <popupset id="copy_status_popupset">
-    <popup id="copy_status_actions" position="at_pointer"> 
+    <menupopup id="copy_status_actions" position="at_pointer"> 
         <menuitem command="sel_clip" label="&staff.circ.checkin_overlay.sel_clip.label;" accesskey="&staff.circ.checkin_overlay.sel_clip.accesskey;" />
         <menuitem command="sel_bucket" label="&staff.circ.checkin_overlay.sel_bucket.label;" accesskey="&staff.circ.checkin_overlay.sel_bucket.accesskey;"/>
         <menuitem command="sel_opac" label="&staff.circ.checkin_overlay.sel_opac.label;" accesskey="&staff.circ.checkin_overlay.sel_opac.accesskey;" />
@@ -60,7 +60,7 @@
         <menuseparator />
         <menuitem command="sel_spine" label="&staff.circ.checkin_overlay.sel_spine.label;" accesskey="&staff.circ.checkin_overlay.sel_spine.accesskey;"/>
         <menuitem command="save_columns" label="&staff.circ.checkin_overlay.save_columns.label;"/>
-    </popup>
+    </menupopup>
 </popupset>
 
 <box id="checkin_main" flex="1" orient="vertical" class="my_overflow">

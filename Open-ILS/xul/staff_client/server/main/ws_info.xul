@@ -40,8 +40,6 @@
             document.getElementById('wsname').disabled = true;
             document.getElementById('wsname').value = document.getElementById('commonStrings').getString('staff.main.gen_offline_widgets.please_wait');
 
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-
             if (typeof JSAN == 'undefined') {
                 throw(document.getElementById("commonStrings").getString('common.jsan.missing'));
             }
@@ -186,7 +184,6 @@
                         default: g.error.standard_unexpected_error_alert(document.getElementById('commonStrings').getFormattedString('staff.main.gen_offline_widgets.registration.error', ['1']), robj); break;
                     }
                 } else {
-                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead");
                     g.data.ws_info[ xulG.auth.controller.view.server_prompt.value ] = { 
                         'name' : g.my_libs_shortname_hash[ g.ml.value ] + '-' + g.tb.value, 
                         'owning_lib' : g.ml.value,

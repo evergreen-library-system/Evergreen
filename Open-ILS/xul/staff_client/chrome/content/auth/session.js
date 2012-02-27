@@ -158,9 +158,22 @@ auth.session.prototype = {
         var obj = this;
         obj.error.sdump('D_AUTH','auth.session.close()\n'); 
         try {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-            Components.classes["@mozilla.org/cookiemanager;1"]
-                .getService(Components.interfaces.nsICookieManager).removeAll();
+            // Remove *our* cookie(s), but leave any from elsewhere alone.
+            JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
+            var host = data.server_unadorned;
+            host = host.toLowerCase();
+            var cookieManager = Components.classes["@mozilla.org/cookiemanager;1"]
+                .getService(Components.interfaces.nsICookieManager);
+            var iter = cookieManager.enumerator;
+            while (iter.hasMoreElements()) {
+                var cookie = iter.getNext();
+                if (cookie instanceof Components.interfaces.nsICookie) {
+                    var temphost = cookie.host.toLowerCase();
+                    if(temphost == host || temphost == '.' + host) {
+                        cookieManager.remove(cookie.host, cookie.name, cookie.path, cookie.blocked);
+                    }
+                }
+            }
         } catch(E) {
             dump('Error in auth/session.js, close(): ' + E + '\n');
         }

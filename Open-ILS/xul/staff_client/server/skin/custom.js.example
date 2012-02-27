@@ -22,7 +22,6 @@
 
 // Debugging aids.  _dump_level = 4 enables all dump statements
 try {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
     var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces['nsIPrefBranch']);
     if (prefs.prefHasUserValue('oils.dump_level')) {
         _dump_level = prefs.getIntPref('oils.dump_level');
@@ -33,7 +32,6 @@ try {
 
 var _dump_prefix = '0';
 try {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
     var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces['nsIPrefBranch']);
     if (!prefs.prefHasUserValue('oils.unique_id')) {
         prefs.setIntPref('oils.unique_id',Number(_dump_prefix));

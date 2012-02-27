@@ -4,7 +4,6 @@ var local_lock = false;
 function my_init() {
     try {
         offlineStrings = $('offlineStrings');
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
         JSAN.errorLevel = "die"; // none, warn, or die
         JSAN.addRepository('..');
@@ -30,7 +29,6 @@ function my_init() {
         todayPlus = util.date.formatted_date(todayPlus,"%F");
 
         function handle_lock(ev) {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             if (!(ev.altKey || ev.ctrlKey || ev.metakey)) {
                 if (!local_lock) {
                     local_lock = true;

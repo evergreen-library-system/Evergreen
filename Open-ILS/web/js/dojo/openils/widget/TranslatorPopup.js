@@ -31,6 +31,7 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
 	dojo.require("dijit.form.TextBox");
 	dojo.require("dijit.form.FilteringSelect");
 	dojo.require("dojox.jsonPath");
+    dojo.require('openils.XUL');
 	dojo.requireLocalization("openils.widget", "TranslatorPopup");
 
 
@@ -211,8 +212,13 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
 			
 				var _trans_dijit = this;
 
-                if (typeof(ses) == "undefined")
+                if (typeof(ses) == "undefined") {
                     var ses = cgi.param("ses") || dojo.cookie("ses");
+                    if(!ses && openils.XUL.isXUL()) {
+                        var stash = openils.XUL.getStash();
+                        ses = stash.session.key;
+                    }
+                }
 
 				OpenSRF.CachedClientSession('open-ils.permacrud').request({
 					method : 'open-ils.permacrud.' + method + '.i18n',

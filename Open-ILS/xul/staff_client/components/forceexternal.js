@@ -1,30 +1,26 @@
-const nsISupports           = Components.interfaces.nsISupports;
-const nsICategoryManager    = Components.interfaces.nsICategoryManager;
-const nsIComponentRegistrar = Components.interfaces.nsIComponentRegistrar;
-const nsIContentPolicy      = Components.interfaces.nsIContentPolicy;
-const nsIFactory            = Components.interfaces.nsIFactory;
-const nsIModule             = Components.interfaces.nsIModule;
-const nsIWindowWatcher      = Components.interfaces.nsIWindowWatcher;
+Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
 
-const WINDOW_MAIN = "eg_main"
+// This content policy component tries to prevent outside sites from getting xulG hooks
+// It does so by forcing them to open outside of Evergreen
 
-const fe_contractID = "@mozilla.org/content-policy;1?type=egfe";
-const fe_CID = Components.ID("{D969ED61-DF4C-FA12-A2A6-70AA94C222FB}");
-// category names are sorted alphabetically. Typical command-line handlers use a
-// category that begins with the letter "m".
-const fe_category = "m-egfe";
-
-const myAppHandler = {
-
-   shouldLoad: function(contentType, contentLocation, requestOrigin, node, mimeTypeGuess, extra)
-   {
-      if (contentType == nsIContentPolicy.TYPE_DOCUMENT) {
-          var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].
-            getService(Components.interfaces.nsIWindowMediator);
-          var targetWindow = wm.getMostRecentWindow("eg_main");
-          if (targetWindow != null) {
-            var host = targetWindow.G.data.server_unadorned;
-            if(host && (contentLocation.scheme == 'http' || contentLocation.scheme == 'https') && contentLocation.host != host) {
+function oilsForceExternal() {}
+oilsForceExternal.prototype = {
+    classDescription: "OpenILS Force External",
+    classID:          Components.ID("{D969ED61-DF4C-FA12-A2A6-70AA94C222FB}"),
+    contractID:       "@mozilla.org/content-policy;1?type=egfe",
+    _xpcom_categories: [{
+        category: "content-policy",
+        entry: "m-egfe"
+    }],
+    QueryInterface:   XPCOMUtils.generateQI([Components.interfaces.nsIContentPolicy]),
+    shouldLoad: function(contentType, contentLocation, requestOrigin, node, mimeTypeGuess, extra)
+    {
+        if ((contentType == Components.interfaces.nsIContentPolicy.TYPE_DOCUMENT || contentType == Components.interfaces.nsIContentPolicy.TYPE_SUBDOCUMENT)
+          && (contentLocation.scheme == 'http' || contentLocation.scheme == 'https')
+          && node && node.getAttribute('oils_force_external') == 'true') {
+            var data_cache = Components.classes["@open-ils.org/openils_data_cache;1"].getService().wrappedJSObject.data;
+            var host = data_cache.server_unadorned;
+            if(host && contentLocation.host != host) {
                 // first construct an nsIURI object using the ioservice
                 var ioservice = Components.classes["@mozilla.org/network/io-service;1"]
                                 .getService(Components.interfaces.nsIIOService);
@@ -32,112 +28,25 @@ const myAppHandler = {
                 var uriToOpen = ioservice.newURI(contentLocation.spec, null, null);
 
                 var extps = Components.classes["@mozilla.org/uriloader/external-protocol-service;1"]
-                                .getService(Components.interfaces.nsIExternalProtocolService);
+                            .getService(Components.interfaces.nsIExternalProtocolService);
 
                 // now, open it!
                 extps.loadURI(uriToOpen, null);
 
-                return nsIContentPolicy.REJECT_REQUEST;
+                return Components.interfaces.nsIContentPolicy.REJECT_REQUEST;
             }
-          }
-      }
-      return nsIContentPolicy.ACCEPT;
-   },
+        }
+        return Components.interfaces.nsIContentPolicy.ACCEPT;
+    },
 
-   shouldProcess: function(contentType, contentLocation, requestOrigin, insecNode, mimeType, extra)
-   {
-      return nsIContentPolicy.ACCEPT;
-   },
-
-  /* nsISupports */
-  QueryInterface : function fe_QI(iid)
-  {
-    if (iid.equals(nsIContentPolicy) ||
-        iid.equals(nsIFactory) ||
-        iid.equals(nsISupports))
-      return this;
-
-    throw Components.results.NS_ERROR_NO_INTERFACE;
-  },
-
-  /* nsIFactory */
-
-  createInstance : function fe_CI(outer, iid)
-  {
-    if (outer != null)
-      throw Components.results.NS_ERROR_NO_AGGREGATION;
-
-    return this.QueryInterface(iid);
-  },
-
-  lockFactory : function fe_lock(lock)
-  {
-    /* no-op */
-  }
+    shouldProcess: function(contentType, contentLocation, requestOrigin, insecNode, mimeType, extra)
+    {
+        return Components.interfaces.nsIContentPolicy.ACCEPT;
+    },
 };
 
-/**
- * The XPCOM glue that implements nsIModule
- */
-const myAppHandlerModule = {
-  /* nsISupports */
-  QueryInterface : function mod_QI(iid)
-  {
-    if (iid.equals(nsIModule) ||
-        iid.equals(nsISupports))
-      return this;
-
-    throw Components.results.NS_ERROR_NO_INTERFACE;
-  },
-
-  /* nsIModule */
-  getClassObject : function mod_gch(compMgr, cid, iid)
-  {
-    if (cid.equals(fe_CID))
-      return myAppHandler.QueryInterface(iid);
-
-    throw Components.results.NS_ERROR_NOT_REGISTERED;
-  },
-
-  registerSelf : function mod_regself(compMgr, fileSpec, location, type)
-  {
-    compMgr.QueryInterface(nsIComponentRegistrar);
-
-    compMgr.registerFactoryLocation(fe_CID,
-                                    "myAppHandler",
-                                    fe_contractID,
-                                    fileSpec,
-                                    location,
-                                    type);
-
-    var catMan = Components.classes["@mozilla.org/categorymanager;1"].
-      getService(nsICategoryManager);
-    catMan.addCategoryEntry("content-policy",
-                            fe_category,
-                            fe_contractID, true, true);
-  },
-
-  unregisterSelf : function mod_unreg(compMgr, location, type)
-  {
-    compMgr.QueryInterface(nsIComponentRegistrar);
-    compMgr.unregisterFactoryLocation(fe_CID, location);
-
-    var catMan = Components.classes["@mozilla.org/categorymanager;1"].
-      getService(nsICategoryManager);
-    catMan.deleteCategoryEntry("content-policy", fe_category);
-  },
-
-  canUnload : function (compMgr)
-  {
-    return true;
-  }
-};
-
-/* The NSGetModule function is the magic entry point that XPCOM uses to find what XPCOM objects
- * this component provides
- */
-function NSGetModule(comMgr, fileSpec)
-{
-  return myAppHandlerModule;
-}
+if (XPCOMUtils.generateNSGetFactory)
+    var NSGetFactory = XPCOMUtils.generateNSGetFactory([oilsForceExternal]);
+else
+    var NSGetModule = XPCOMUtils.generateNSGetModule([oilsForceExternal]);
 

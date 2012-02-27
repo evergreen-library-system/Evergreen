@@ -4,7 +4,6 @@ dump('entering cat.copy_browser.js\n');
 if (typeof cat == 'undefined') cat = {};
 cat.copy_browser = function (params) {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         JSAN.use('util.error'); this.error = new util.error();
     } catch(E) {
         dump('cat.copy_browser: ' + E + '\n');
@@ -22,7 +21,6 @@ cat.copy_browser.prototype = {
     'init' : function( params ) {
 
         try {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             var obj = this;
 
             obj.docid = params.docid;
@@ -352,9 +350,9 @@ cat.copy_browser.prototype = {
                                     var unified_interface = String( obj.data.hash.aous['ui.unified_volume_copy_editor'] ) == 'true';
                                     if (unified_interface) {
                                         var horizontal_interface = String( obj.data.hash.aous['ui.cat.volume_copy_editor.horizontal'] ) == 'true';
-                                        url = xulG.url_prefix( horizontal_interface ? urls.XUL_VOLUME_COPY_CREATOR_HORIZONTAL : urls.XUL_VOLUME_COPY_CREATOR );
+                                        url = xulG.url_prefix( horizontal_interface ? 'XUL_VOLUME_COPY_CREATOR_HORIZONTAL' : 'XUL_VOLUME_COPY_CREATOR' );
                                     } else {
-                                        url = xulG.url_prefix( urls.XUL_VOLUME_COPY_CREATOR_ORIGINAL );
+                                        url = xulG.url_prefix('XUL_VOLUME_COPY_CREATOR_ORIGINAL');
                                     }
 
                                     var w = xulG.new_tab(
@@ -600,7 +598,7 @@ cat.copy_browser.prototype = {
                                     );
 
                                     xulG.new_tab(
-                                        xulG.url_prefix( urls.XUL_SPINE_LABEL ),
+                                        xulG.url_prefix('XUL_SPINE_LABEL'),
                                         { 'tab_name' : document.getElementById('catStrings').getString('staff.cat.copy_browser.print_spine.tab') },
                                         {
                                             'barcodes' : util.functional.map_list( list, function(o){return o.barcode();})
@@ -660,9 +658,9 @@ cat.copy_browser.prototype = {
                                     var unified_interface = String( obj.data.hash.aous['ui.unified_volume_copy_editor'] ) == 'true';
                                     if (unified_interface) {
                                         var horizontal_interface = String( obj.data.hash.aous['ui.cat.volume_copy_editor.horizontal'] ) == 'true';
-                                        url = xulG.url_prefix( horizontal_interface ? urls.XUL_VOLUME_COPY_CREATOR_HORIZONTAL : urls.XUL_VOLUME_COPY_CREATOR );
+                                        url = xulG.url_prefix( horizontal_interface ? 'XUL_VOLUME_COPY_CREATOR_HORIZONTAL' : 'XUL_VOLUME_COPY_CREATOR' );
                                     } else {
-                                        url = xulG.url_prefix( urls.XUL_VOLUME_COPY_CREATOR_ORIGINAL );
+                                        url = xulG.url_prefix('XUL_VOLUME_COPY_CREATOR_ORIGINAL');
                                     }
 
                                     var w = xulG.new_tab(
@@ -910,8 +908,6 @@ cat.copy_browser.prototype = {
                                         }
                                     );
 
-                                    netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
-
                                     var acn_list = util.functional.map_list(
                                         list,
                                         function (o) {
@@ -929,7 +925,7 @@ cat.copy_browser.prototype = {
                                         + '" accesskey="' 
                                         + document.getElementById('catStrings').getString('staff.cat.copy_browser.transfer.cancel.accesskey') 
                                         + '" name="fancy_cancel"/></hbox>';
-                                    xml += '<iframe style="overflow: scroll" flex="1" src="' + urls.XUL_BIB_BRIEF + '?docid=' + obj.data.marked_library.docid + '"/>';
+                                    xml += '<iframe style="overflow: scroll" flex="1" src="' + urls.XUL_BIB_BRIEF + '?docid=' + obj.data.marked_library.docid + '" oils_force_external="true"/>';
                                     xml += '</vbox>';
                                     JSAN.use('OpenILS.data');
                                     var data = new OpenILS.data(); data.init({'via':'stash'});
@@ -1050,7 +1046,7 @@ cat.copy_browser.prototype = {
                                     );
 
                                     xulG.new_tab(
-                                        window.xulG.url_prefix(urls.MANAGE_MULTI_HOME_ITEMS),
+                                        window.xulG.url_prefix('MANAGE_MULTI_HOME_ITEMS'),
                                         {},
                                         { 'docid' : obj.data.marked_multi_home_record, 'barcodes' : list }
                                     );
@@ -1501,7 +1497,6 @@ cat.copy_browser.prototype = {
 
     'append_org' : function (org,parent_org,params) {
         var obj = this;
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         obj.error.consoleService.logStringMessage('append_org: org = ' + org.shortname() + ' parent_org = ' + (parent_org ? parent_org.shortname() : '') + ' params = ' + js2JSON(params) + '\n');
         try {
             if (obj.map_tree[ 'aou_' + org.id() ]) {
@@ -1714,7 +1709,6 @@ cat.copy_browser.prototype = {
     'list_init' : function( params ) {
 
         try {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             var obj = this;
             
             JSAN.use('circ.util');
@@ -1834,7 +1828,6 @@ cat.copy_browser.prototype = {
                         return row;
                     },
                     'on_click' : function(ev) {
-                        netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserRead');
                         var row = {}; var col = {}; var nobj = {};
                         obj.list.node.treeBoxObject.getCellAt(ev.clientX,ev.clientY,row,col,nobj); 
                         if ((row.value == -1)||(nobj.value != 'twisty')) { return; }

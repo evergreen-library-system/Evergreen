@@ -847,7 +847,6 @@ patron.util.set_penalty_css = function(patron) {
 patron.util.merge = function(record_ids) {
     var error;
     try {
-        netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
         JSAN.use('util.error'); error = new util.error();
         JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
         var horizontal_interface = String( data.hash.aous['ui.circ.patron_summary.horizontal'] ) == 'true';
@@ -888,7 +887,7 @@ patron.util.merge = function(record_ids) {
                 xml += '<tr valign="top">' + table_cell_with_lead_button( record_ids[i] );
             }
             xml += '<td nowrap="nowrap"><iframe style="' + iframe_css + '" flex="1" src="' + urls.XUL_PATRON_SUMMARY; 
-            xml += '?id=' + record_ids[i] + '&amp;show_name=1"/></td>';
+            xml += '?id=' + record_ids[i] + '&amp;show_name=1" oils_force_external="true"/></td>';
             if (horizontal_interface) {
                 xml += '</tr>';
             }
@@ -944,7 +943,6 @@ patron.util.format_name = function(patron_obj) {
 patron.util.work_log_patron_edit = function(p) {
     var error;
     try {
-        netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
         JSAN.use('util.error'); error = new util.error();
         error.work_log(
             document.getElementById('patronStrings').getFormattedString(

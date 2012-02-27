@@ -40,7 +40,6 @@
 
         function my_init() {
             try {
-                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                 if (typeof JSAN == 'undefined') { 
                     throw( document.getElementById("commonStrings").getString('common.jsan.missing') );
                 }

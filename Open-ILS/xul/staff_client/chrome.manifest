@@ -1,0 +1,27 @@
+# Grab manifest from chrome directory
+manifest chrome/chrome.manifest
+# Grab xulrunner binary manifest
+manifest components/binary.manifest
+
+# Register our components
+#component {classID} components/file.js
+#contract @foobar/mycomponent;1 {classID}
+#category category-name MyComponent @foobar/mycomponent;1
+
+# Data Store Component
+component {dc3e4b5f-c0f4-4b34-bc57-7b4099c3a5d6} components/nsOpenILS.js
+contract @open-ils.org/openils_data_cache;1 {dc3e4b5f-c0f4-4b34-bc57-7b4099c3a5d6}
+
+# Command Line Handler
+component {7e608198-7355-483a-a85a-20322e4ef91a} components/clh.js
+contract @mozilla.org/commandlinehandler/general-startup;1?type=egcli {7e608198-7355-483a-a85a-20322e4ef91a}
+category command-line-handler m-egcli @mozilla.org/commandlinehandler/general-startup;1?type=egcli
+
+# Remote XUL Protocol (oils://)
+component {51d35450-5e59-11e1-b86c-0800200c9a66} components/oils_protocol.js
+contract @mozilla.org/network/protocol;1?name=oils {51d35450-5e59-11e1-b86c-0800200c9a66}
+
+# Force External
+component {D969ED61-DF4C-FA12-A2A6-70AA94C222FB} components/forceexternal.js
+contract @mozilla.org/content-policy;1?type=egfe {D969ED61-DF4C-FA12-A2A6-70AA94C222FB}
+category content-policy m-egfe @mozilla.org/content-policy;1?type=egfe

@@ -1,19 +1,18 @@
 <?xml version="1.0"?>
-<overlay id="sample" 
+<overlay id="eg_firefox_browser" 
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-<!--
- <statusbar id="status-bar">
-  <statusbarpanel id="my-panel" label="Hello, World"  />
- </statusbar>
--->
   <menupopup id="menu_ToolsPopup">
-    <menuitem id="evergreen_entry" insertbefore="devToolsSeparator" label="Evergreen Client"
-        oncommand="try {
-          Components.classes['@mozilla.org/embedcomp/window-watcher;1']
-                    .getService(Components.interfaces.nsIWindowWatcher)
-                    .openWindow(null, 'chrome://open_ils_staff_client/content/main/main.xul', '_blank',
-                                'chrome,dialog=no,all', null);
-            } catch(E) { alert(E); }
-        "/>
+    <menuitem id="evergreen_entry_tools" insertbefore="devToolsSeparator" label="Evergreen Client"
+      oncommand="try {
+          Components.classes['@open-ils.org/openils_data_cache;1'].getService().wrappedJSObject.openMainEGWindow();
+        } catch(E) { alert(E); }
+      "/>
   </menupopup>
+  <vbox id="appmenuPrimaryPane">
+    <menuitem id="evergreen_entry_primary" insertafter="appmenu_webDeveloper" label="Evergreen Client"
+      oncommand="try {
+          Components.classes['@open-ils.org/openils_data_cache;1'].getService().wrappedJSObject.openMainEGWindow();
+        } catch(E) { alert(E); }
+      "/>
+  </vbox>
 </overlay>

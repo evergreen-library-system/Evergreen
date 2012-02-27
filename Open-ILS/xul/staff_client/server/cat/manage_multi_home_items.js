@@ -11,8 +11,6 @@ function default_focus() { document.getElementById('scanbox').focus(); }
 
 function my_init() {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect"); 
-
         commonStrings = $('commonStrings');
         catStrings = $('catStrings');
 

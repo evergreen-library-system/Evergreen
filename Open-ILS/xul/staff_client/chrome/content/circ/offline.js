@@ -3,7 +3,6 @@ dump('entering circ.offline.js\n');
 if (typeof circ == 'undefined') circ = {};
 circ.offline = function (params) {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         JSAN.use('util.error'); this.error = new util.error();
     } catch(E) {
         dump('circ.offline: ' + E + '\n');
@@ -15,8 +14,6 @@ circ.offline.prototype = {
     'init' : function( params ) {
 
         try {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-
             var obj = this;
 
             JSAN.use('util.deck'); obj.deck = new util.deck('main');

@@ -35,8 +35,6 @@
 
         function my_init() {
             try {
-                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-
                 /* ugly hack so we don't have to upgrade the chrome for quick buckets */
                 if (typeof xulG == 'undefined') location.href = String(location.href).replace(/record_buckets.xul/,'record_buckets_quick.xul');
 

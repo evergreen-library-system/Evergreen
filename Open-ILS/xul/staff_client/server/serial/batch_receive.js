@@ -558,7 +558,7 @@ function BatchReceiver() {
                 "oncomplete": function(r) {
                     if ((r = openils.Util.readResponse(r)) && r.length) {
                         openils.XUL.newTabEasy(
-                            "/eg/serial/print_routing_list_users",
+                            "SERIAL_PRINT_ROUTING_LIST_USERS",
                             S("print_routing_list_users"), {
                                 "show_print_button": false, /* we supply one */
                                 "routing_list_data": {
@@ -1124,10 +1124,14 @@ function BatchReceiver() {
 
 function my_init() {
     var cgi = new openils.CGI();
-
+    var authtoken = (typeof ses == "function" ? ses() : 0) ||
+            cgi.param("ses") || dojo.cookie("ses");
+    if(!authtoken && openils.XUL.isXUL()) {
+        var stash = openils.XUL.getStash();
+        authtoken = stash.session.key;
+    }
     batch_receiver = new BatchReceiver(
-        (typeof ses == "function" ? ses() : 0) ||
-            cgi.param("ses") || dojo.cookie("ses"),
+        authtoken,
         cgi.param("docid") || null, cgi.param("subid") || null
     );
 }

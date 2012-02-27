@@ -208,10 +208,10 @@
 </grid>
 
 <popupset id="patron_summary_popups">
-    <popup id="addr_export_popup" oncommand="export_address(event);">
+    <menupopup id="addr_export_popup" oncommand="export_address(event);">
         <menuitem id="addr_export_copy" label="&staff.patron_display.address_export_popup.copy;"/>
         <menuitem id="addr_export_print" label="&staff.patron_display.address_export_popup.print;"/>
-    </popup>
+    </menupopup>
 </popupset>
 
 <groupbox id="PatronSummaryContact_mailing_address" orient="vertical">

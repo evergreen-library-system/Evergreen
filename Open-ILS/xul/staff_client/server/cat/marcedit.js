@@ -152,7 +152,6 @@ function set_flat_editor (useFlatText) {
 function my_init() {
     try {
 
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
         JSAN.errorLevel = "die"; // none, warn, or die
         JSAN.addRepository('/xul/server/');
@@ -225,7 +224,6 @@ function my_init() {
         var locale = "en-US";
 
         // Try to get the locale from our preferences
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         try {
             const Cc = Components.classes;
             const Ci = Components.interfaces;
@@ -495,7 +493,7 @@ function setFocusToNextTag (row, direction) {
 function createMARCTextbox (element,attrs) {
 
     var box = createComplexXULElement('textbox', attrs, Array.prototype.slice.apply(arguments, [2]) );
-    box.addEventListener('keypress',function(ev) { netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect"); if (!(ev.altKey || ev.ctrlKey || ev.metaKey)) { oils_lock_page(); } },false);
+    box.addEventListener('keypress',function(ev) { if (!(ev.altKey || ev.ctrlKey || ev.metaKey)) { oils_lock_page(); } },false);
     box.onkeypress = function (event) {
         var root_node;
         var node = element;
@@ -2050,7 +2048,6 @@ function loadMarcEditor(pcrud, marcxml, target, sf) {
        To run in Firefox directly, must set signed.applets.codebase_principal_support
        to true in about:config
      */
-    netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
     win = window.open('/xul/server/cat/marcedit.xul'); // XXX version?
 
     // Match marc2are.pl last_xact_id format, roughly

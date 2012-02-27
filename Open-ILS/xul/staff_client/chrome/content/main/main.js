@@ -8,20 +8,6 @@ var openTabs = new Array();
 var tempWindow = null;
 var tempFocusWindow = null;
 
-function grant_perms(url) {
-    var perms = "UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead UniversalFileRead";
-    dump('Granting ' + perms + ' to ' + url + '\n');
-    if (G.pref) {
-        G.pref.setCharPref("capability.principal.codebase.p0.granted", perms);
-        G.pref.setCharPref("capability.principal.codebase.p0.id", url);
-        G.pref.setCharPref("capability.principal.codebase.p1.granted", perms);
-        G.pref.setCharPref("capability.principal.codebase.p1.id", url.replace('http:','https:'));
-        G.pref.setBoolPref("dom.disable_open_during_load",false);
-        G.pref.setBoolPref("browser.popups.showPopupBlocker",false);
-    }
-
-}
-
 function clear_the_cache() {
     try {
         var cacheClass         = Components.classes["@mozilla.org/network/cache-service;1"];
@@ -79,7 +65,6 @@ function new_tabs(aTabList, aContinue) {
         openTabs = openTabs.concat(aTabList);
     }
     if(G.data.session) { // Just add to the list of stuff to open unless we are logged in
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         var targetwindow = null;
         var focuswindow = null;
         var focustab = {'focus' : true};
@@ -233,18 +218,36 @@ function get_menu_perms(indocument) {
 function load_hotkey_sets() {
     if(typeof(load_hotkey_sets.set_list) == 'undefined') {
         load_hotkey_sets.set_list = [];
-        JSAN.use('util.file');
-        var file = new util.file();
-        var dirEntries = file.get('hotkeys','skin').directoryEntries;
-        while(dirEntries.hasMoreElements()) {
-            var entry = dirEntries.getNext();
-            entry.QueryInterface(Components.interfaces.nsIFile);
-            if(!entry.isFile()) continue;
-            if(!entry.leafName.match(/.+\.keyset$/)) continue;
-            var keysetname = entry.leafName.replace(/\.keyset$/,'');
-            load_hotkey_sets.set_list.push(keysetname);
+        // We can't safely use util.file here because extensions aren't unpacked in Firefox 4+
+        // So instead we will use and parse information from a chrome:// URL
+        var hotkeysBase = 'chrome://open_ils_staff_client/skin/hotkeys/';
+        var ioService=Components.classes["@mozilla.org/network/io-service;1"]
+            .getService(Components.interfaces.nsIIOService);
+        var scriptableStream=Components
+            .classes["@mozilla.org/scriptableinputstream;1"]
+            .getService(Components.interfaces.nsIScriptableInputStream);
+
+        var channel=ioService.newChannel(hotkeysBase,null,null);
+        var input=channel.open();
+        var str = '';
+        scriptableStream.init(input);
+        try {
+            while(input.available()) {
+                str+=scriptableStream.read(input.available());
+            }
+        } catch (E) {}
+        scriptableStream.close();
+        input.close();
+        // str now, in theory, has a list of files (and metadata) for our base chrome URL.
+        str = str.replace(/^(?!201: ).*$/gm,''); // Remove non-filename result lines
+        str = str.replace(/^(?!.*\.keyset).*$/gm,''); // Remove non-keyset file result lines
+        str = str.replace(/^201: (.*)\.keyset.*$/gm, "$1"); // Reduce keyset matches to just base names
+        // Split into an array
+        var files = str.trim().split(/[\r\n]+/g);
+        for (var i = 0; i < files.length; i++) {
+            if(files[i].length = 0) continue;
+            load_hotkey_sets.set_list.push(files[i]);
         }
-        file.close();
     }
     return load_hotkey_sets.set_list;
 }
@@ -256,41 +259,51 @@ function get_hotkey_array(keyset_name) {
     }
     if(get_hotkey_array.keyset_cache[keyset_name])
         return get_hotkey_array.keyset_cache[keyset_name];
-    JSAN.use('util.file');
-    var file = new util.file();
-    var keyset_raw;
-    try {
-        var keyset_file = file.get('hotkeys','skin');
-        keyset_file.append(keyset_name + ".keyset");
-        keyset_raw = file.get_content();
-        file.close();
-        var tempArray = [];
+    // We can't safely use util.file here because extensions aren't unpacked in Firefox 4+
+    // So instead we will use and parse information from a chrome:// URL
+    var hotkeysBase = 'chrome://open_ils_staff_client/skin/hotkeys/' + keyset_name + '.keyset';
+    var ioService=Components.classes["@mozilla.org/network/io-service;1"]
+        .getService(Components.interfaces.nsIIOService);
+    var scriptableStream=Components
+        .classes["@mozilla.org/scriptableinputstream;1"]
+        .getService(Components.interfaces.nsIScriptableInputStream);
 
-        var keyset_lines = keyset_raw.trim().split("\n");
-        for(var line = 0; line < keyset_lines.length; line++) {
-            // Grab line, strip comments, strip leading/trailing whitespace
-            var curline = keyset_lines[line].replace(/\s*#.*$/,'').trim();
-            if(curline == "") continue; // Skip empty lines
-            // Split into pieces
-            var split_line = curline.split(',');
-            // We need at least 3 elements. Command, modifiers, keycode.
-            if(split_line.length < 3) continue;
-            // Trim each segment
-            split_line[0] = split_line[0].trim();
-            split_line[1] = split_line[1].trim();
-            split_line[2] = split_line[2].trim();
-            if(split_line.length > 3)
-                split_line[3] = split_line[3].trim();
-            // Skip empty commands
-            if(split_line[0] == "") continue;
-            // Push to array
-            tempArray.push(split_line);
+    var channel=ioService.newChannel(hotkeysBase,null,null);
+    var input=channel.open();
+    var keyset_raw = '';
+    scriptableStream.init(input);
+    try {
+        while(input.available()) {
+            keyset_raw+=scriptableStream.read(input.available());
         }
-        get_hotkey_array.keyset_cache[keyset_name] = tempArray;
-        return tempArray;
-    } catch(E) { // Something went wrong.
-        return false;
+    } catch (E) {}
+    scriptableStream.close();
+    input.close();
+
+    var tempArray = [];
+
+    var keyset_lines = keyset_raw.trim().split("\n");
+    for(var line = 0; line < keyset_lines.length; line++) {
+        // Grab line, strip comments, strip leading/trailing whitespace
+        var curline = keyset_lines[line].replace(/\s*#.*$/,'').trim();
+        if(curline == "") continue; // Skip empty lines
+        // Split into pieces
+        var split_line = curline.split(',');
+        // We need at least 3 elements. Command, modifiers, keycode.
+        if(split_line.length < 3) continue;
+        // Trim each segment
+        split_line[0] = split_line[0].trim();
+        split_line[1] = split_line[1].trim();
+        split_line[2] = split_line[2].trim();
+        if(split_line.length > 3)
+            split_line[3] = split_line[3].trim();
+        // Skip empty commands
+        if(split_line[0] == "") continue;
+        // Push to array
+        tempArray.push(split_line);
     }
+    get_hotkey_array.keyset_cache[keyset_name] = tempArray;
+    return tempArray;
 }
 
 function main_init() {
@@ -299,6 +312,17 @@ function main_init() {
         clear_the_cache();
         if("arguments" in window && window.arguments.length > 0 && window.arguments[0].wrappedJSObject != undefined && window.arguments[0].wrappedJSObject.openTabs != undefined) {
             openTabs = openTabs.concat(window.arguments[0].wrappedJSObject.openTabs);
+        }
+
+        // Disable commands that we can't do anything with right now
+        if(typeof start_venkman != 'function') {
+            document.getElementById('cmd_debugger').setAttribute('disabled','true');
+        }
+        if(typeof inspectDOMDocument != 'function') {
+            document.getElementById('cmd_inspector').setAttribute('disabled','true');
+        }
+        if(typeof startChromeList != 'function') {
+            document.getElementById('cmd_chrome_list').setAttribute('disabled','true');
         }
 
         // Now we can safely load the strings without the cache getting wiped
@@ -322,9 +346,6 @@ function main_init() {
         
         G.pref = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
         G.pref.QueryInterface(Components.interfaces.nsIPrefBranch2);
-        if (! G.pref.prefHasUserValue('general.useragent.override')) {
-            G.pref.setCharPref('general.useragent.override',navigator.userAgent + ' oils_xulrunner /xul/server/');
-        }
 
         JSAN.use('util.error');
         G.error = new util.error();
@@ -356,27 +377,21 @@ function main_init() {
 
             G.data.server_unadorned = url; G.data.stash('server_unadorned'); G.data.stash_retrieve();
 
-            if (! url.match( '^http://' ) ) { url = 'http://' + url; }
+            if (! url.match( '^(http|https)://' ) ) { url = 'http://' + url; }
 
             G.data.server = url; G.data.stash('server'); 
             G.data.session = { 'key' : G.auth.session.key, 'auth' : G.auth.session.authtime }; G.data.stash('session');
             G.data.stash_retrieve();
             try {
                 var ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
-                var cookieUri = ios.newURI("http://" + G.data.server_unadorned, null, null);
                 var cookieUriSSL = ios.newURI("https://" + G.data.server_unadorned, null, null);
                 var cookieSvc = Components.classes["@mozilla.org/cookieService;1"].getService(Components.interfaces.nsICookieService);
 
-                cookieSvc.setCookieString(cookieUri, null, "ses="+G.data.session.key, null);
-                cookieSvc.setCookieString(cookieUriSSL, null, "ses="+G.data.session.key, null);
-                cookieSvc.setCookieString(cookieUri, null, "xul=1", null);
-                cookieSvc.setCookieString(cookieUriSSL, null, "xul=1", null);
+                cookieSvc.setCookieString(cookieUriSSL, null, "ses="+G.data.session.key + "; secure;", null);
 
             } catch(E) {
                 alert(offlineStrings.getFormattedString(main.session_cookie.error, [E]));
             }
-
-            grant_perms(url);
 
             xulG = {
                 'auth' : G.auth,
@@ -391,7 +406,7 @@ function main_init() {
                 var deck = document.getElementById('progress_space');
                 util.widgets.remove_children( deck );
                 var iframe = document.createElement('iframe'); deck.appendChild(iframe);
-                iframe.setAttribute( 'src', url + urls.XUL_LOGIN_DATA );
+                iframe.setAttribute( 'src', urls.XUL_LOGIN_DATA );
                 iframe.contentWindow.xulG = xulG;
                 G.data_xul = iframe.contentWindow;
             } else {
@@ -399,7 +414,7 @@ function main_init() {
                 var deck = G.auth.controller.view.ws_deck;
                 JSAN.use('util.widgets'); util.widgets.remove_children('ws_deck');
                 var iframe = document.createElement('iframe'); deck.appendChild(iframe);
-                iframe.setAttribute( 'src', url + urls.XUL_WORKSTATION_INFO );
+                iframe.setAttribute( 'src', urls.XUL_WORKSTATION_INFO );
                 iframe.contentWindow.xulG = xulG;
                 deck.selectedIndex = deck.childNodes.length - 1;
             }
@@ -750,6 +765,7 @@ function handle_migration() {
 }
 
 function auto_login(loginInfo) {
+    G.data.stash_retrieve();
     if(G.data.session) return; // We are logged in. No auto-logoff supported.
     if(loginInfo.host) G.auth.controller.view.server_prompt.value = loginInfo.host;
     if(loginInfo.user) G.auth.controller.view.name_prompt.value = loginInfo.user;

@@ -13,11 +13,11 @@
 </commandset>
 
 <popupset id="patron_summary_popups">
-    <popup id="group_actions" position="at_pointer">
+    <menupopup id="group_actions" position="at_pointer">
         <menuitem command="group_tab_retrieve_patron"
             label="&staff.patron.summary_overlay.group_tab.retrieve_patron.label;"
             accesskey="&staff.patron.summary_overlay.group_tab.retrieve_patron.accesskey;" />
-    </popup>
+    </menupopup>
 </popupset>
 
 <box id="patron_summary_main" flex="1" orient="vertical" class="my_overflow">
@@ -254,10 +254,10 @@
 </vbox>
 
 <popupset id="patron_summary_popups">
-    <popup id="addr_export_popup" oncommand="export_address(event);">
+    <menupopup id="addr_export_popup" oncommand="export_address(event);">
         <menuitem id="addr_export_copy" label="&staff.patron_display.address_export_popup.copy;"/>
         <menuitem id="addr_export_print" label="&staff.patron_display.address_export_popup.print;"/>
-    </popup>
+    </menupopup>
 </popupset>
 
 <vbox id="PatronSummaryContact_address">

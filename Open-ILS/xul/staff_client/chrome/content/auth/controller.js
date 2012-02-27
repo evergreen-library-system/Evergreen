@@ -196,7 +196,6 @@ auth.controller.prototype = {
                                             ws.name /*+ ' @  ' + ws.lib_shortname*/
                                         )
                                     );
-                                    netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
                                     JSAN.use('util.file'); var file = new util.file('last_ws_server');
                                     file.set_object(obj.controller.view.server_prompt.value);
                                     file.close();
@@ -284,7 +283,6 @@ auth.controller.prototype = {
     'test_server' : function(url) {
         var obj = this;
         if (!url) {
-            netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
             JSAN.use('util.file'); var file = new util.file('last_ws_server');
             if (file._file.exists()) {
                 url = file.get_object(); file.close();
@@ -554,9 +552,11 @@ auth.controller.prototype = {
         this.data.menu_perms = false;
         this.data.current_hotkeyset = undefined;
         this.data.enable_debug = this.data.debug_client;
+        this.data.session = undefined;
         this.data.stash('menu_perms');
         this.data.stash('current_hotkeyset');
         this.data.stash('enable_debug');
+        this.data.stash('session');
 
         /* FIXME - need some locking or object destruction for the async tests */
         /* this.test_server( this.controller.view.server_prompt.value ); */

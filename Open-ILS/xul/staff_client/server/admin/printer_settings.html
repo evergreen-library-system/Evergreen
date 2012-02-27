@@ -37,7 +37,7 @@
         <input type="radio" name="context" value="offline" onclick="g.set_printer_context('offline');">&staff.printing.context.radio.offline.label;</input>
     </form> 
     <h1>&staff.printing.normal_settings.header;</h1>
-    <iframe id="sample" src="printer_settings.txt"></iframe><br />
+    <iframe id="sample" src="printer_settings.txt" oils_force_external="true"></iframe><br />
     <button onclick="try { g.printer_settings(); } catch(E) { alert(E); }">&staff.printing.set_default;</button>
     <button onclick="try { g.page_settings(); } catch(E) { alert(E); }">&staff.printing.page_settings;</button><br />
     <h1>&staff.printing.advanced_settings.header;</h1>

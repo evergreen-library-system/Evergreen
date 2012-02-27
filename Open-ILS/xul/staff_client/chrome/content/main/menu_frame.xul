@@ -72,7 +72,6 @@
         function my_init() {
             try {
 
-                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                 if (typeof JSAN == 'undefined') { throw(document.getElementById('offlineStrings').getString('common.jsan.missing')); }
                 JSAN.errorLevel = "die"; // none, warn, or die
                 /*

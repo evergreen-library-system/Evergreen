@@ -33,7 +33,6 @@
     <![CDATA[
         function my_init() {
             try {
-                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                 if (typeof JSAN == 'undefined') {
                     throw( document.getElementById("commonStrings").getString('common.jsan.missing') );
                 }
@@ -106,7 +105,7 @@
         <hbox flex="1">
             <groupbox flex="1">
                 <caption label="&staff.circ.print_list.top_ui.preview.label;" />
-                <iframe id="sample" flex="1"/>
+                <iframe id="sample" flex="1" oils_force_external="true"/>
             </groupbox>
             <vbox flex="1">
                 <groupbox flex="1">

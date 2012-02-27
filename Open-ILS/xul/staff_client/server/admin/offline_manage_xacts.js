@@ -385,8 +385,8 @@ admin.offline_manage_xacts.prototype = {
 
         for (var i = 0; i < obj.sel_list.length; i++) {
 
-            var url  = xulG.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS_CGI)
-                + "?ses=" + window.escape(ses())
+            var url  = xulG.url_prefix('XUL_OFFLINE_MANAGE_XACTS_CGI?ses=')
+                + window.escape(ses())
                 + "&action=execute" 
                 + "&seskey=" + window.escape(obj.seslist[obj.sel_list[i]].key)
                 + "&ws=" + window.escape(obj.data.ws_name);
@@ -418,8 +418,8 @@ admin.offline_manage_xacts.prototype = {
         clear_the_cache();
         obj.data.stash_retrieve();
 
-        var url  = xulG.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS_CGI)
-            + "?ses=" + window.escape(ses())
+        var url  = xulG.url_prefix('XUL_OFFLINE_MANAGE_XACTS_CGI?ses=')
+            + window.escape(ses())
             + "&action=status" 
             + "&seskey=" + window.escape(obj.seslist[ obj.sel_list[0] ].key)
             + "&ws=" + window.escape(obj.data.ws_name)
@@ -443,7 +443,6 @@ admin.offline_manage_xacts.prototype = {
     },
 
     'rename_file' : function() {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         var obj = this;
 
         try {
@@ -471,7 +470,6 @@ admin.offline_manage_xacts.prototype = {
     },
 
     'revert_file' : function() {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         var obj = this;
 
         try {
@@ -498,7 +496,6 @@ admin.offline_manage_xacts.prototype = {
     },
 
     'archive_file' : function() {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         var obj = this;
 
         try {
@@ -513,7 +510,6 @@ admin.offline_manage_xacts.prototype = {
     },
 
     'upload' : function() {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         var obj = this;
 
         try {
@@ -544,7 +540,7 @@ admin.offline_manage_xacts.prototype = {
         var x = document.createElement('iframe'); xx.appendChild(x); x.flex = 1;
         x.setAttribute(
             'src',
-            window.xulG.url_prefix( urls.XUL_REMOTE_BROWSER )
+            window.xulG.url_prefix('XUL_REMOTE_BROWSER')
             /*
             + '?url=' + window.escape(
                 urls.XUL_OFFLINE_UPLOAD_XACTS
@@ -567,7 +563,6 @@ admin.offline_manage_xacts.prototype = {
                 'filename' : obj.transition_filename,
                 'url_prefix' : window.xulG.url_prefix,
                 'handle_event' : function(robj){
-                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                     try {
                         dump('robj = ' + js2JSON(robj) + '\n');
                         if ( robj.ilsevent != 0 ) {
@@ -604,8 +599,8 @@ admin.offline_manage_xacts.prototype = {
         clear_the_cache();
         obj.data.stash_retrieve();
 
-        var url  = xulG.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS_CGI)
-            + "?ses=" + window.escape(ses())
+        var url  = xulG.url_prefix('XUL_OFFLINE_MANAGE_XACTS_CGI?ses=')
+            + window.escape(ses())
             + "&action=status" 
             + "&seskey=" + window.escape(obj.seslist[obj.sel_list[0]].key)
             + "&ws=" + window.escape(obj.data.ws_name)
@@ -646,8 +641,8 @@ admin.offline_manage_xacts.prototype = {
         clear_the_cache();
         obj.data.stash_retrieve();
 
-        var url  = xulG.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS_CGI)
-            + "?ses=" + window.escape(ses())
+        var url  = xulG.url_prefix('XUL_OFFLINE_MANAGE_XACTS_CGI?ses=')
+            + window.escape(ses())
             + "&action=create" 
             + "&desc=" + window.escape(desc)
             + "&ws=" + window.escape(obj.data.ws_name);
@@ -681,8 +676,8 @@ admin.offline_manage_xacts.prototype = {
             clear_the_cache();
             obj.data.stash_retrieve();
 
-            var url = xulG.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS_CGI) 
-                + "?ses=" + window.escape(ses())
+            var url = xulG.url_prefix('XUL_OFFLINE_MANAGE_XACTS_CGI?ses=') 
+                + window.escape(ses())
                 + "&action=status"
                 + "&org=" + window.escape(obj.data.list.au[0].ws_ou())
                 + "&status_type=sessions";

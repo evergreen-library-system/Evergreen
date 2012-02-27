@@ -5,7 +5,6 @@ var lead_record;
 
 function my_init() {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
         JSAN.errorLevel = "die"; // none, warn, or die
         JSAN.addRepository('/xul/server/');
@@ -192,14 +191,14 @@ function merge_records() {
         if (typeof xulG.on_merge == 'function') {
             xulG.on_merge(robj);
         }
-        var opac_url = xulG.url_prefix( urls.opac_rdetail ) + lead_record;
+        var opac_url = xulG.url_prefix('opac_rdetail') + lead_record;
         var content_params = {
             'session' : ses(),
             'authtime' : ses('authtime'),
             'opac_url' : opac_url,
         };
         xulG.set_tab(
-            xulG.url_prefix(urls.XUL_OPAC_WRAPPER),
+            xulG.url_prefix('XUL_OPAC_WRAPPER'),
             {'tab_name':'Retrieving title...'},
             content_params
         );

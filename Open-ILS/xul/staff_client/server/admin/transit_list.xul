@@ -34,7 +34,6 @@
     <![CDATA[
         function my_init() {
             try {
-                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                 if (typeof JSAN == 'undefined') { throw( document.getElementById("commonStrings").getString('common.jsan.missing') ); }
                 JSAN.errorLevel = "die"; // none, warn, or die
                 JSAN.addRepository('/xul/server/');
@@ -126,7 +125,7 @@
     </vbox>
 
     <popupset id="transit_list_popupset">
-        <popup id="transit_list_actions" position="at_pointer"> 
+        <menupopup id="transit_list_actions" position="at_pointer"> 
             <menuitem command="sel_clip" label="&staff.server.admin.transit.list.copy.label;" accesskey="&staff.server.admin.transit.list.copy.accesskey;" />
             <menuitem command="sel_bucket" label="&staff.server.admin.transit.list.add.label;" accesskey="&staff.server.admin.transit.list.add.accesskey;"/>
             <menuitem command="sel_opac" label="&staff.server.admin.transit.list.show.label;" accesskey="&staff.server.admin.transit.list.show.accesskey;" />
@@ -137,7 +136,7 @@
             <menuitem command="sel_transit_abort" label="&staff.server.admin.transit.list.abort.label;" />
             <menuseparator />
             <menuitem command="save_columns" label="&staff.server.admin.transit.list.save.label;"/>
-        </popup>
+        </menupopup>
     </popupset>
 
     <commandset id="transit_list_cmds">

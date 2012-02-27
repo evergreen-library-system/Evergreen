@@ -1,10 +1,6 @@
-[%- 
-    USE CGI = CGI_utf8;
-    hostname = CGI.url({'-base' => 1});
--%]
 <div id="footer-wrap">
 <div id="footer">
-    <a href="[% hostname %]">[% l('Dynamic catalog') %]</a> &nbsp;|&nbsp;
+    <a href="/">[% l('Dynamic catalog') %]</a> &nbsp;|&nbsp;
     <a href="http://example.com">[% l('Bottom Link 2') %]</a> &nbsp;|&nbsp;
     <a href="http://example.com">[% l('Bottom Link 3') %]</a> &nbsp;|&nbsp;
     <a href="http://example.com">[% l('Bottom Link 4') %]</a> &nbsp;|&nbsp;

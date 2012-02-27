@@ -168,7 +168,6 @@ circ.copy_status.prototype = {
                                     n.setAttribute('toggle','1');
                                     n.setAttribute('label', document.getElementById("circStrings").getString('staff.circ.copy_status.list_view.label'));
                                     n.setAttribute('accesskey', document.getElementById("circStrings").getString('staff.circ.copy_status.list_view.accesskey'));
-                                    netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
                                     obj.controller.view.copy_status_barcode_entry_textbox.focus();
                                     if (obj.selection_list.length == 0) return;
                                     var f = obj.browser.get_content();
@@ -455,7 +454,6 @@ circ.copy_status.prototype = {
                     'cmd_copy_status_upload_file' : [
                         ['command'],
                         function() {
-                            netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
                             JSAN.use('util.file');
                             var f = new util.file('');
                             var content = f.import_file( { 'title' : document.getElementById('circStrings').getString('staff.circ.copy_status.upload_file.title'), 'not_json' : true } );
@@ -568,9 +566,9 @@ circ.copy_status.prototype = {
                                     var unified_interface = String( obj.data.hash.aous['ui.unified_volume_copy_editor'] ) == 'true';
                                     if (unified_interface) {
                                         var horizontal_interface = String( obj.data.hash.aous['ui.cat.volume_copy_editor.horizontal'] ) == 'true';
-                                        url = window.xulG.url_prefix( horizontal_interface ? urls.XUL_VOLUME_COPY_CREATOR_HORIZONTAL : urls.XUL_VOLUME_COPY_CREATOR );
+                                        url = window.xulG.url_prefix( horizontal_interface ? 'XUL_VOLUME_COPY_CREATOR_HORIZONTAL' : 'XUL_VOLUME_COPY_CREATOR' );
                                     } else {
-                                        url = window.xulG.url_prefix( urls.XUL_VOLUME_COPY_CREATOR_ORIGINAL );
+                                        url = window.xulG.url_prefix('XUL_VOLUME_COPY_CREATOR_ORIGINAL');
                                     }
 
                                     var w = xulG.new_tab(
@@ -728,9 +726,9 @@ circ.copy_status.prototype = {
                                     var unified_interface = String( obj.data.hash.aous['ui.unified_volume_copy_editor'] ) == 'true';
                                     if (unified_interface) {
                                         var horizontal_interface = String( obj.data.hash.aous['ui.cat.volume_copy_editor.horizontal'] ) == 'true';
-                                        url = window.xulG.url_prefix( horizontal_interface ? urls.XUL_VOLUME_COPY_CREATOR_HORIZONTAL : urls.XUL_VOLUME_COPY_CREATOR );
+                                        url = window.xulG.url_prefix( horizontal_interface ? 'XUL_VOLUME_COPY_CREATOR_HORIZONTAL' : 'XUL_VOLUME_COPY_CREATOR' );
                                     } else {
-                                        url = window.xulG.url_prefix( urls.XUL_VOLUME_COPY_CREATOR_ORIGINAL );
+                                        url = window.xulG.url_prefix('XUL_VOLUME_COPY_CREATOR_ORIGINAL');
                                     }
 
                                     var w = xulG.new_tab(
@@ -1018,7 +1016,6 @@ circ.copy_status.prototype = {
                                         list.push(map_acn[v]);
                                     }
 
-                                    netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
                                     var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: auto">';
                                     xml += '<description>';
 
@@ -1041,7 +1038,7 @@ circ.copy_status.prototype = {
                                     xml += '" accesskey="';
                                     xml += document.getElementById('circStrings').getString('staff.circ.copy_status.transfer_volume.cancel.accesskey');
                                     xml += '" name="fancy_cancel"/></hbox>';
-                                    xml += '<iframe style="overflow: scroll" flex="1" src="' + urls.XUL_BIB_BRIEF + '?docid=' + obj.data.marked_library.docid + '"/>';
+                                    xml += '<iframe style="overflow: scroll" flex="1" src="' + urls.XUL_BIB_BRIEF + '?docid=' + obj.data.marked_library.docid + '" oils_force_external="true"/>';
                                     xml += '</vbox>';
                                     JSAN.use('OpenILS.data');
                                     //var data = new OpenILS.data(); data.init({'via':'stash'});
@@ -1266,7 +1263,6 @@ circ.copy_status.prototype = {
             var result = obj.network.simple_request('FM_ACP_DETAILS_VIA_BARCODE.authoritative', [ ses(), barcode ]);
             handle_req({'getResultObject':function(){return result;}}); // used to be async
             if (result.copy && document.getElementById('deck').selectedIndex == 1) {
-                netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
                 var f = obj.browser.get_content();
                 xulG.barcode = result.copy.barcode(); // FIXME: We could pass the already-fetched data, but need to figure out how to manage that and honor Trim List, the whole point of which is to limit memory consumption
                 if (f) {

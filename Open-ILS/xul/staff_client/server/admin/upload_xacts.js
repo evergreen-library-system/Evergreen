@@ -6,7 +6,6 @@ function $(id) {
 
 function my_init() {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalFileRead");
         if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
         JSAN.errorLevel = "die"; // none, warn, or die
         JSAN.addRepository('..');
@@ -32,7 +31,7 @@ function my_init() {
         $( 'seskey' ).setAttribute('value', xul_param('seskey'));
         $( 'delta' ).setAttribute('value', xul_param('delta'));
 
-        $( 'form' ).setAttribute('action', xulG.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS_CGI));
+        $( 'form' ).setAttribute('action', xulG.url_prefix('XUL_OFFLINE_MANAGE_XACTS_CGI'));
 
         setTimeout(
             function() {

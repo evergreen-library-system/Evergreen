@@ -112,11 +112,11 @@
     </groupbox>
 
     <popupset id="csp_popupset">
-        <popup id="ausp_actions" position="at_pointer">
+        <menupopup id="ausp_actions" position="at_pointer">
             <menuitem command="cmd_remove_penalty" label="&staff.patron_display.penalty.menu.actions.remove.label;" accesskey="&staff.patron_display.menu.actions.remove.accesskey;"/>
             <menuitem command="cmd_edit_penalty" label="&staff.patron_display.penalty.menu.actions.edit.label;" accesskey="&staff.patron_display.menu.actions.edit.accesskey;"/>
             <menuitem command="cmd_archive_penalty" label="&staff.patron_display.penalty.menu.actions.archive.label;" accesskey="&staff.patron_display.menu.actions.archive.accesskey;"/>
-        </popup>
+        </menupopup>
     </popupset>
 
 </window>

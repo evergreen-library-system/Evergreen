@@ -39,7 +39,6 @@ vim:noet:sw=4:ts=4:
     <![CDATA[
         function my_init() {
             try {
-                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                 if (typeof JSAN == 'undefined') { 
                     throw( document.getElementById("commonStrings").getString('common.jsan.missing') );
                 }
@@ -104,7 +103,7 @@ vim:noet:sw=4:ts=4:
     </commandset>
 
     <popupset>
-        <popup id="copy_browser_actions">
+        <menupopup id="copy_browser_actions">
             <menuitem command="sel_clip" label="&staff.cat.copy_browser.actions.sel_clip.label;" accesskey="&staff.cat.copy_browser.actions.sel_clip.accesskey;"/>
             <menuitem command="cmd_add_items_to_buckets" label="&staff.cat.copy_browser.actions.cmd_add_items_to_buckets.label;" accesskey="&staff.cat.copy_browser.actions.cmd_add_items_to_buckets.accesskey;"/>
             <menuitem command="sel_copy_details" label="&staff.cat.copy_browser.actions.sel_copy_details.label;" accesskey="&staff.cat.copy_browser.actions.sel_copy_details.label;" />
@@ -137,7 +136,7 @@ vim:noet:sw=4:ts=4:
             <menuitem command="cmd_replace_barcode" label="&staff.cat.copy_browser.holdings_maintenance.cmd_replace_barcode.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_replace_barcode.accesskey;"/>
             <menuitem command="save_columns" label="&staff.cat.copy_browser.actions.save_columns.label;"/>
             <menuitem command="cmd_refresh_list" label="&staff.cat.copy_browser.actions.cmd_refresh_list.label;" accesskey="&staff.cat.copy_browser.actions.cmd_refresh_list.accesskey;"/>
-        </popup>
+        </menupopup>
     </popupset>
 
     <groupbox flex="1" class="my_overflow">

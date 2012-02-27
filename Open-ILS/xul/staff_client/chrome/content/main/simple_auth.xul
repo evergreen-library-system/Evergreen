@@ -34,7 +34,6 @@
     <![CDATA[
         function my_init() {
             try {
-                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                 if (typeof JSAN == 'undefined') { 
                     throw( offlineStrings.getString('common.jsan.missing'));
                 }

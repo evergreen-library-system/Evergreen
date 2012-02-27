@@ -254,7 +254,6 @@ patron.holds.prototype = {
                                     n.setAttribute('toggle','1');
                                     n.setAttribute('label', document.getElementById("circStrings").getString('staff.circ.holds.list_view.label'));
                                     n.setAttribute('accesskey', document.getElementById("circStrings").getString('staff.circ.holds.list_view.accesskey'));
-                                    netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
                                     if (obj.retrieve_ids.length == 0) return;
                                     var f = obj.browser.get_content();
                                     xulG.ahr_id = obj.retrieve_ids[0].id;
@@ -378,7 +377,7 @@ patron.holds.prototype = {
                                 });
 
                                 var loc = urls.XUL_BROWSER + "?url=" + window.escape(
-                                    xulG.url_prefix("/opac/extras/circ/alt_holds_print.html").replace("http:","https:")
+                                    xulG.url_prefix("ALT_HOLDS_PRINT")
                                 );
                                 xulG.new_tab(
                                     loc, {
@@ -498,7 +497,6 @@ patron.holds.prototype = {
                                 bot_xml += 'accesskey="'+ $("patronStrings").getString('staff.patron.holds.holds_edit_selection_depth.done.accesskey') +'" name="fancy_submit"/>';
                                 bot_xml += '<button label="'+ $("patronStrings").getString('staff.patron.holds.holds_edit_selection_depth.cancel.label') +'"';
                                 bot_xml += 'accesskey="'+ $("patronStrings").getString('staff.patron.holds.holds_edit_selection_depth.cancel.accesskey') +'" name="fancy_cancel"/></hbox>';
-                                netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
                                 //obj.data.temp_mid = xml; obj.data.stash('temp_mid');
                                 //obj.data.temp_bot = bot_xml; obj.data.stash('temp_bot');
                                 JSAN.use('util.window'); var win = new util.window();
@@ -567,7 +565,6 @@ patron.holds.prototype = {
                                 bot_xml += ' accesskey="'+$("patronStrings").getString('staff.patron.holds.holds_edit_pickup_lib.done.accesskey')+'" name="fancy_submit"/>';
                                 bot_xml += '<button label="'+$("patronStrings").getString('staff.patron.holds.holds_edit_pickup_lib.cancel.label')+'"';
                                 bot_xml += ' accesskey="'+$("patronStrings").getString('staff.patron.holds.holds_edit_pickup_lib.cancel.accesskey')+'" name="fancy_cancel"/></hbox>';
-                                netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
                                 //obj.data.temp_mid = xml; obj.data.stash('temp_mid');
                                 //obj.data.temp_bot = bot_xml; obj.data.stash('temp_bot');
                                 JSAN.use('util.window'); var win = new util.window();
@@ -617,7 +614,6 @@ patron.holds.prototype = {
                                 bot_xml += ' accesskey="'+$("patronStrings").getString('staff.patron.holds.holds_edit_phone_notify.btn_done.accesskey')+'" name="fancy_submit"/>';
                                 bot_xml += '<button label="'+$("patronStrings").getString('staff.patron.holds.holds_edit_phone_notify.btn_cancel.label')+'"';
                                 bot_xml += ' accesskey="'+$("patronStrings").getString('staff.patron.holds.holds_edit_phone_notify.btn_cancel.accesskey')+'" name="fancy_cancel"/></hbox>';
-                                netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
                                 //obj.data.temp_mid = xml; obj.data.stash('temp_mid');
                                 //obj.data.temp_bot = bot_xml; obj.data.stash('temp_bot');
                                 JSAN.use('util.window'); var win = new util.window();
@@ -669,7 +665,6 @@ patron.holds.prototype = {
                                 bot_xml += ' accesskey="'+$("patronStrings").getString('staff.patron.holds.holds_edit_sms_notify.btn_done.accesskey')+'" name="fancy_submit"/>';
                                 bot_xml += '<button label="'+$("patronStrings").getString('staff.patron.holds.holds_edit_sms_notify.btn_cancel.label')+'"';
                                 bot_xml += ' accesskey="'+$("patronStrings").getString('staff.patron.holds.holds_edit_sms_notify.btn_cancel.accesskey')+'" name="fancy_cancel"/></hbox>';
-                                netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
                                 //obj.data.temp_mid = xml; obj.data.stash('temp_mid');
                                 //obj.data.temp_bot = bot_xml; obj.data.stash('temp_bot');
                                 JSAN.use('util.window'); var win = new util.window();
@@ -743,7 +738,6 @@ patron.holds.prototype = {
                                 bot_xml += ' accesskey="'+$("patronStrings").getString('staff.patron.holds.holds_edit_sms_carrier.btn_done.accesskey')+'" name="fancy_submit"/>';
                                 bot_xml += '<button label="'+$("patronStrings").getString('staff.patron.holds.holds_edit_sms_carrier.btn_cancel.label')+'"';
                                 bot_xml += ' accesskey="'+$("patronStrings").getString('staff.patron.holds.holds_edit_sms_carrier.btn_cancel.accesskey')+'" name="fancy_cancel"/></hbox>';
-                                netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
                                 //obj.data.temp_mid = xml; obj.data.stash('temp_mid');
                                 //obj.data.temp_bot = bot_xml; obj.data.stash('temp_bot');
                                 JSAN.use('util.window'); var win = new util.window();
@@ -796,7 +790,6 @@ patron.holds.prototype = {
                                 var bot_xml = '<hbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
                                 bot_xml += '<spacer flex="1"/><button label="'+$("patronStrings").getString('staff.patron.holds.holds_edit_email_notify.btn_cancel.label')+'"';
                                 bot_xml += ' accesskey="'+$("patronStrings").getString('staff.patron.holds.holds_edit_email_notify.btn_cancel.accesskey')+'" name="fancy_cancel"/></hbox>';
-                                netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
                                 //obj.data.temp_mid = xml; obj.data.stash('temp_mid');
                                 //obj.data.temp_bot = bot_xml; obj.data.stash('temp_bot');
                                 JSAN.use('util.window'); var win = new util.window();
@@ -856,7 +849,6 @@ patron.holds.prototype = {
                                 var bot_xml = '<hbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
                                 bot_xml += '<spacer flex="1"/><button label="'+$("patronStrings").getString('staff.patron.holds.holds_cut_in_line.btn_cancel.label')+'"';
                                 bot_xml += ' accesskey="'+$("patronStrings").getString('staff.patron.holds.holds_cut_in_line.btn_cancel.accesskey')+'" name="fancy_cancel"/></hbox>';
-                                netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
                                 JSAN.use('util.window'); var win = new util.window();
                                 var fancy_prompt_data = win.open(
                                     urls.XUL_FANCY_PROMPT,
@@ -911,7 +903,6 @@ patron.holds.prototype = {
                                 var bot_xml = '<hbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
                                 bot_xml += '<spacer flex="1"/><button label="'+$("patronStrings").getString('staff.patron.holds.holds_desire_mint_condition.btn_cancel.label')+'"';
                                 bot_xml += ' accesskey="'+$("patronStrings").getString('staff.patron.holds.holds_desire_mint_condition.btn_cancel.accesskey')+'" name="fancy_cancel"/></hbox>';
-                                netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
                                 JSAN.use('util.window'); var win = new util.window();
                                 var fancy_prompt_data = win.open(
                                     urls.XUL_FANCY_PROMPT,
@@ -1229,7 +1220,6 @@ patron.holds.prototype = {
                                     msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_cancel.cancel_hold_message.singular', [hold_list.join(', ')]);
                                 }
 
-                                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                                 JSAN.use('util.window');
                                 var win = new util.window();
                                 var my_xulG = win.open(
@@ -1337,22 +1327,22 @@ patron.holds.prototype = {
                                     var opac_url;
                                     switch(htype) {
                                         case 'M' :
-                                            opac_url = xulG.url_prefix( urls.opac_rresult_metarecord ) + htarget;
+                                            opac_url = xulG.url_prefix('opac_rresult_metarecord') + htarget;
                                         break;
                                         case 'T' :
-                                            opac_url = xulG.url_prefix( urls.opac_rdetail ) + htarget;
+                                            opac_url = xulG.url_prefix('opac_rdetail') + htarget;
                                         break;
                                         case 'P' :
-                                            opac_url = xulG.url_prefix( urls.opac_rdetail )
+                                            opac_url = xulG.url_prefix('opac_rdetail')
                                             + obj.hold_part_map[ obj.retrieve_ids[i].id ].record();
                                         break;
                                         case 'I' :
-                                            opac_url = xulG.url_prefix( urls.opac_rdetail )
+                                            opac_url = xulG.url_prefix('opac_rdetail')
                                             + obj.hold_subscription_map[ obj.retrieve_ids[i].id ].record_entry();
                                         break;
                                         case 'V' :
                                             var my_acn = obj.network.simple_request( 'FM_ACN_RETRIEVE.authoritative', [ htarget ]);
-                                            opac_url = xulG.url_prefix( urls.opac_rdetail) + my_acn.record();
+                                            opac_url = xulG.url_prefix('opac_rdetail') + my_acn.record();
                                         break;
                                         case 'C' :
                                         case 'R' :
@@ -1365,7 +1355,7 @@ patron.holds.prototype = {
                                                 my_acn = obj.network.simple_request( 'FM_ACN_RETRIEVE.authoritative',
                                                     [ my_acp.call_number() ]);
                                             }
-                                            opac_url = xulG.url_prefix( urls.opac_rdetail) + my_acn.record();
+                                            opac_url = xulG.url_prefix('opac_rdetail') + my_acn.record();
                                         break;
                                         default:
                                             obj.error.standard_unexpected_error_alert($("patronStrings").getFormattedString('staff.patron.holds.show_catalog.unknown_htype', [htype]), obj.retrieve_ids[i]);
@@ -1378,7 +1368,7 @@ patron.holds.prototype = {
                                         'opac_url' : opac_url
                                     };
                                     xulG.new_tab(
-                                        xulG.url_prefix(urls.XUL_OPAC_WRAPPER),
+                                        xulG.url_prefix('XUL_OPAC_WRAPPER'),
                                         {'tab_name': htype == 'M' ? 'Catalog' : $("patronStrings").getString('staff.patron.holds.show_catalog.retrieving_title') },
                                         content_params
                                     );
@@ -1467,14 +1457,13 @@ patron.holds.prototype = {
                         function(ev) {
                             try {
                                 var content_params = {
-                                    'show_nav_buttons' : false,
+                                    'show_nav_buttons' : true,
                                     'show_print_button' : true,
                                     'passthru_content_params' : {
                                         'authtoken' : ses(),
                                         'authtime' : ses('authtime'),
                                         'window_open' : function(a,b,c) {
                                             try {
-                                                netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
                                                 return window.open(a,b,c);
                                             } catch(E) {
                                                 obj.error.standard_unexpected_error_alert('window_open',E);
@@ -1528,7 +1517,7 @@ patron.holds.prototype = {
                                         'patron_barcode' : obj.patron_barcode
                                     },
                                     'url_prefix' : xulG.url_prefix,
-                                    'url' : xulG.url_prefix(urls.browser)
+                                    'url' : xulG.url_prefix('browser')
                                 };
                                 xulG.display_window.g.patron.right_deck.set_iframe( urls.XUL_REMOTE_BROWSER + '?patron_hold=1', {}, content_params);
                             } catch(E) {
@@ -1629,7 +1618,6 @@ patron.holds.prototype = {
             }
             dump('hold details UI ready\n');
         }
-        netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
         JSAN.use('util.browser');
         obj.browser = new util.browser();
         obj.browser.init(

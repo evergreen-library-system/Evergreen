@@ -37,8 +37,6 @@
         
         function my_init() {
             try {
-                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-
                 /* load translatable strings for patron interfaces */
                 patronStrings = document.getElementById('patronStrings');
 

@@ -86,7 +86,6 @@ function retrieve_circ() {
                 if (get_bool(r_circ.phone_renewal() ) ) r += 'PHONE ';
                 $('renewal').value = r || 'No';
 
-                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                 var csb = $('copy_summary_vbox'); while (csb.firstChild) csb.removeChild(csb.lastChild);
                 var copy_summary = document.createElement('iframe'); csb.appendChild(copy_summary);
                 copy_summary.setAttribute('src',urls.XUL_COPY_SUMMARY); // + '?copy_id=' + r_circ.target_copy());
@@ -201,7 +200,6 @@ function retrieve_mp() {
 
 function my_init() {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
         JSAN.errorLevel = "die"; // none, warn, or die
         JSAN.addRepository('/xul/server/');

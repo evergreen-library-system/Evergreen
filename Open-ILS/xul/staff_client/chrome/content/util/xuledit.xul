@@ -9,7 +9,7 @@ onload="try { init(); } catch(E) { dump(E+'\n'); alert(E); }">
 <textbox id="ta" multiline="true" wrap="true" flex="1" onkeydown="resetTimeout()"
 value='&lt;?xml version="1.0"?&gt;&#x0A;&lt;?xml-stylesheet href="chrome://global/skin/" type="text/css"?&gt;&#x0A;&lt;window id="yourwindow" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"&gt;&#x0A;&lt;label value="Put your XUL here!"/&gt;&#x0A;&lt;/window&gt;'/>
 <splitter id="split"/>
-<iframe id="content" src="about:blank" flex="1"/>
+<iframe id="content" src="about:blank" flex="1" oils_force_external="true"/>
 <hbox><button id="open" label="Open preview in new window" onclick="openwin()"/><spacer flex="1"/></hbox>
 </vbox>
 </window>

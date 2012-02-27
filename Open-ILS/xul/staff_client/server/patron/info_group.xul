@@ -60,14 +60,14 @@
     </commandset>
 
     <popupset id="info_group_popupset">
-        <popup id="info_group_actions" position="at_pointer"> 
+        <menupopup id="info_group_actions" position="at_pointer"> 
             <menuitem command="clone" />
             <menuitem command="remove" />
             <menuitem command="move" />
             <menuitem command="add" />
             <menuitem command="retrieve_p" />
             <menuitem command="merge_p" />
-        </popup>
+        </menupopup>
     </popupset>
 
     <vbox flex="1" class="my_overflow" id="group_panel">

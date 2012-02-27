@@ -36,7 +36,6 @@ vim:noet:sw=4:ts=4:
     <![CDATA[
         function my_init() {
             try {
-                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                 if (typeof JSAN == 'undefined') { 
                     throw( document.getElementById('commonStrings').getString('common.jsan.missing') );
                 }
@@ -68,7 +67,7 @@ vim:noet:sw=4:ts=4:
                         function(req) {
                             var marc_html = req.getResultObject();
                             if (noprint||typeof xulG == 'undefined') marc_html = marc_html.replace(/<button.+?button>/, '');
-                            document.getElementById('marc_frame').setAttribute('src', 'data:text/html,' + marc_html);
+                            document.getElementById('marc_frame').setAttribute('src', 'data:text/html,' + encodeURIComponent(marc_html));
                         }
                     );
                 } else {
@@ -90,7 +89,7 @@ vim:noet:sw=4:ts=4:
 
     <groupbox flex="1">
         <caption label="&staff.cat.marc_view.title;"/>
-        <iframe id="marc_frame" flex="1"/>
+        <iframe id="marc_frame" flex="1" oils_force_external="true"/>
     </groupbox>
 
 </window>

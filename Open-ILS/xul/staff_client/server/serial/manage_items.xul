@@ -15,7 +15,6 @@ vim:noet:sw=4:ts=4:
     <![CDATA[
         function my_init() {
             try {
-                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                 if (typeof JSAN == 'undefined') { 
                     throw( document.getElementById("commonStrings").getString('common.jsan.missing') );
                 }
@@ -39,14 +38,14 @@ vim:noet:sw=4:ts=4:
     ]]>
     </script>
     <popupset>
-        <popup id="serial_manage_items_popup">
+        <menupopup id="serial_manage_items_popup">
             <menuitem command="cmd_edit_items" label="&staff.serial.manage_items.actions.cmd_edit_items.label;" accesskey="&staff.serial.manage_items.actions.cmd_edit_items.accesskey;"/>
             <menuitem command="cmd_reset_items" label="&staff.serial.manage_items.actions.cmd_reset_items.label;" />
             <menuitem command="cmd_delete_items" label="&staff.serial.manage_items.actions.cmd_delete_items.label;" accesskey="&staff.serial.manage_items.actions.cmd_delete_items.accesskey;"/>
             <menuitem command="cmd_view_sitem_notes" label="&staff.serial.manage_items.actions.cmd_view_sitem_notes.label;" accesskey="&staff.serial.manage_items.actions.cmd_view_sitem_notes.accesskey;"/>
             <menuitem command="cmd_view_sdist_notes" label="&staff.serial.manage_items.actions.cmd_view_sdist_notes.label;" accesskey="&staff.serial.manage_items.actions.cmd_view_sdist_notes.accesskey;"/>
             <menuitem command="cmd_view_ssub_notes" label="&staff.serial.manage_items.actions.cmd_view_ssub_notes.label;" accesskey="&staff.serial.manage_items.actions.cmd_view_ssub_notes.accesskey;"/>
-        </popup>
+        </menupopup>
     </popupset>
     <tabpanel id="serial_manage_items" orient="vertical" flex="1">
         <hbox align="center">

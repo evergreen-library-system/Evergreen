@@ -1,6 +1,5 @@
         function my_init() {
             try {
-                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                 if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
                 JSAN.errorLevel = "die"; // none, warn, or die
                 JSAN.addRepository('/xul/server/');
@@ -504,7 +503,6 @@
 
         function preview(idx) {
             try {
-                    netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
                     var pt = Number( $('pt').value );  /* font size */
                     if (!pt) {
                         pt = g.data.hash.aous['cat.label.font.size'] || 10;
@@ -604,7 +602,6 @@
                 'title' : $("catStrings").getString('staff.cat.spine_labels.preview.title'),
                 'on_url_load' : function(b) { 
                     try { 
-                        netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
                         if (typeof w.xulG.written == 'undefined') {
                             w.xulG.written = true;
                             w.g.browser.get_content().document.write(html);

@@ -653,7 +653,7 @@ serial.manage_items.prototype = {
 		try {
             JSAN.use('util.window'); var win = new util.window();
             var select_unit_window = win.open(
-                xulG.url_prefix(urls.XUL_SERIAL_SELECT_UNIT),
+                xulG.url_prefix('XUL_SERIAL_SELECT_UNIT'),
                 '_blank',
                 'chrome,resizable,modal,centerscreen',
                 {'sdist_ids' : obj.sdist_ids}

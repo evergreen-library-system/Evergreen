@@ -1,6 +1,5 @@
 dump('entering util/mozilla.js\n');
 
-netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 const Cc = Components.classes;
 const Ci = Components.interfaces;
 
@@ -15,7 +14,6 @@ util.mozilla.EXPORT_TAGS    = { ':all' : util.mozilla.EXPORT_OK };
 util.mozilla.chromeRegistry = function() {
     try {
 
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         return Cc['@mozilla.org/chrome/chrome-registry;1'].getService(Ci['nsIToolkitChromeRegistry']);
 
     } catch(E) {
@@ -26,7 +24,6 @@ util.mozilla.chromeRegistry = function() {
 util.mozilla.languages = function() {
     try {
 
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         var stringBundles = Cc['@mozilla.org/intl/stringbundle;1'].getService(Ci['nsIStringBundleService']);
         return stringBundles.createBundle('chrome://global/locale/languageNames.properties');
 
@@ -38,7 +35,6 @@ util.mozilla.languages = function() {
 util.mozilla.regions = function() {
     try {
 
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         var stringBundles = Cc['@mozilla.org/intl/stringbundle;1'].getService(Ci['nsIStringBundleService']);
         return stringBundles.createBundle('chrome://global/locale/regionNames.properties');
 
@@ -50,7 +46,6 @@ util.mozilla.regions = function() {
 util.mozilla.prefs = function() {
     try {
 
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         return Cc['@mozilla.org/preferences-service;1'].getService(Ci['nsIPrefBranch']);
 
     } catch(E) {

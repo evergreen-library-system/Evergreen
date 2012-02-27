@@ -4,7 +4,6 @@ dump('entering serial/manage_subs.js\n');
 if (typeof serial == 'undefined') serial = {};
 serial.manage_subs = function (params) {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         JSAN.use('util.error'); this.error = new util.error();
     } catch(E) {
         dump('serial/manage_subs: ' + E + '\n');
@@ -174,7 +173,6 @@ serial.manage_subs.prototype = {
     'init' : function( params ) {
 
         try {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             var obj = this;
 
             obj.docid = params.docid;
@@ -534,8 +532,6 @@ serial.manage_subs.prototype = {
                                     
                                     var list = obj.ids_from_sel_list('ssub');
 
-                                    netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
-
                                     JSAN.use('util.functional');
 
                                     var ssub_list = util.functional.map_list(
@@ -555,7 +551,7 @@ serial.manage_subs.prototype = {
                                         + '" accesskey="' 
                                         + document.getElementById('catStrings').getString('staff.cat.copy_browser.transfer.cancel.accesskey') 
                                         + '" name="fancy_cancel"/></hbox>';
-                                    xml += '<iframe style="overflow: scroll" flex="1" src="' + urls.XUL_BIB_BRIEF + '?docid=' + obj.data.marked_library.docid + '"/>';
+                                    xml += '<iframe style="overflow: scroll" flex="1" src="' + urls.XUL_BIB_BRIEF + '?docid=' + obj.data.marked_library.docid + '" oils_force_external="true"/>';
                                     xml += '</vbox>';
                                     JSAN.use('OpenILS.data');
                                     var data = new OpenILS.data(); data.init({'via':'stash'});
@@ -1258,7 +1254,6 @@ serial.manage_subs.prototype = {
     'list_init' : function( params ) {
 
         try {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             var obj = this;
             
             JSAN.use('circ.util');
@@ -1313,7 +1308,6 @@ serial.manage_subs.prototype = {
                         return row;
                     },
                     'on_click' : function(ev) {
-                        netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserRead');
                         var row = {}; var col = {}; var nobj = {};
                         obj.list.node.treeBoxObject.getCellAt(ev.clientX,ev.clientY,row,col,nobj); 
                         if ((row.value == -1)||(nobj.value != 'twisty')) { return; } // on_click runs for twistys only

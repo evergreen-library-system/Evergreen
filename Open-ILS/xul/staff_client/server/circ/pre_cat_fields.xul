@@ -36,7 +36,6 @@
     <![CDATA[
 
         function my_init() {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             if (typeof JSAN == 'undefined') {
                 throw( document.getElementById("commonStrings").getString('common.jsan.missing') );
             }

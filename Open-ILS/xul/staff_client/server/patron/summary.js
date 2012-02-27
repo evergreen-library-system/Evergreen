@@ -908,7 +908,6 @@ patron.summary.prototype = {
                         function() {
                             //alert('setting shrink_state to ' + gb_content.hidden);
                             //caption.setAttribute('shrink_state',gb_content.hidden);
-                            netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
                             JSAN.use('util.file'); var file = new util.file('patron_id_shrink');
                             file.set_object(String(gb_content.hidden)); file.close();
                         }, 0
@@ -917,7 +916,6 @@ patron.summary.prototype = {
             );
             //var shrink_state = caption.getAttribute('shrink_state');
             var shrink_state = false;
-            netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
             JSAN.use('util.file'); var file = new util.file('patron_id_shrink');
             if (file._file.exists()) {
                 shrink_state = file.get_object(); file.close();

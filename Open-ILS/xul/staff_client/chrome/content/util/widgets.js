@@ -50,8 +50,6 @@ util.widgets.apply = function(e,attr,attr_value,f) {
 
 util.widgets.save_xml = function (filename,node) {
     try { 
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-
         JSAN.use('util.file'); var file = new util.file(filename);
 
         node = util.widgets.get(node);
@@ -380,7 +378,6 @@ util.widgets.save_attributes = function (file,ids_attrs) {
                 dump('\telement_id = ' + element_id + '\n');
             }
         }
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         //FIXME - WHY DOES THIS NOT WORK?// JSAN.use('util.file'); var file = new util.file(filename);
         file.set_object(blob); file.close();
     } catch(E) {
@@ -390,7 +387,6 @@ util.widgets.save_attributes = function (file,ids_attrs) {
 
 util.widgets.load_attributes = function (file) {        
     try {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         //FIXME - WHY DOES THIS NOT WORK?// JSAN.use('util.file'); var file = new util.file(filename);
         if (file._file.exists()) {
             var blob = file.get_object(); file.close();

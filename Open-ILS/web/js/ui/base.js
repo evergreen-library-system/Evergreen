@@ -62,7 +62,7 @@ function oilsSetupUser() {
         }
     }
 
-    dojo.cookie('ses', authtoken, {path:'/'});
+    dojo.cookie('ses', authtoken, {path:'/', 'secure' : true});
     openils.User.authtoken = authtoken;
     openils.User.workstation = workstation;
     return authtoken;

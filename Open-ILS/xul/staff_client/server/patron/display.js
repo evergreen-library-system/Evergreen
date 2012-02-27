@@ -214,7 +214,6 @@ patron.display.prototype = {
                                 {
                                     'patron_id' : obj.patron.id(),
                                     'on_list_change' : function(b) {
-                                        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                                         obj.summary_window.g.summary.controller.render('patron_checkouts');
                                         obj.summary_window.g.summary.controller.render('patron_standing_penalties');
                                         obj.summary_window.g.summary.controller.render('patron_bill');
@@ -226,7 +225,6 @@ patron.display.prototype = {
                                     'new_patron_tab' : function(a,b) { return xulG.new_patron_tab(a,b); }
                                 }
                             );
-                            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                             obj.items_window = get_contentWindow(frame);
                         }
                     ],
@@ -249,7 +247,7 @@ patron.display.prototype = {
                                     //    if (param_count++ == 0) url += '?'; else url += '&';
                                     //    url += i + '=' + window.escape(p[i]);
                                     //}
-                                    var loc = xulG.url_prefix( urls.XUL_REMOTE_BROWSER ); // + '?url=' + window.escape( url );
+                                    var loc = xulG.url_prefix('XUL_REMOTE_BROWSER'); // + '?url=' + window.escape( url );
                                     xulG.new_tab(
                                         loc, 
                                         {}, 
@@ -296,7 +294,6 @@ patron.display.prototype = {
                                                 JSAN.use('patron.util'); 
                                                 patron.util.work_log_patron_edit(p);
                                                 if (obj.barcode) obj.barcode = p.card().barcode();
-                                                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                                                 //obj.summary_window.g.summary.retrieve();
                                                 obj.refresh_all();
                                             } catch(E) {
@@ -420,7 +417,7 @@ patron.display.prototype = {
                         ['command'],
                         function(ev) {
                             openils.XUL.newTabEasy(
-                                "/eg/booking/reservation",
+                                "BOOKING_RESERVATION",
                                 $("offlineStrings").getString(
                                     "menu.cmd_booking_reservation.tab"
                                 ), {
@@ -437,7 +434,7 @@ patron.display.prototype = {
                         ['command'],
                         function(ev) {
                             openils.XUL.newTabEasy(
-                                "/eg/booking/pickup",
+                                "BOOKING_PICKUP",
                                 $("offlineStrings").getString(
                                     "menu.cmd_booking_reservation_pickup.tab"
                                 ), {
@@ -454,7 +451,7 @@ patron.display.prototype = {
                         ['command'],
                         function(ev) {
                             openils.XUL.newTabEasy(
-                                "/eg/booking/return",
+                                "BOOKING_RETURN",
                                 $("offlineStrings").getString(
                                     "menu.cmd_booking_reservation_return.tab"
                                 ), {
@@ -489,7 +486,6 @@ patron.display.prototype = {
                                         'patron_barcode' : obj.patron.card().barcode(),
                                         'on_list_change' : function(h) {
                                             try {
-                                                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                                                 obj.summary_window.g.summary.controller.render('patron_holds');
                                             } catch(E) {
                                                 alert(E);
@@ -524,12 +520,10 @@ patron.display.prototype = {
                                     'get_new_session' : function(a) { return xulG.get_new_session(a); },
                                     'new_tab' : function(a,b,c) { return xulG.new_tab(a,b,c); },
                                     'on_money_change' : function(b) {
-                                        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                                         obj.summary_window.refresh();
                                     }
                                 }
                             );
-                            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                             obj.bill_window = get_contentWindow(f);
                         }
                     ],
@@ -673,7 +667,6 @@ patron.display.prototype = {
                     }
                 }
             );
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             obj.summary_window = get_contentWindow(frame);
 
         } else {
@@ -770,9 +763,6 @@ patron.display.prototype = {
                                                 }
                                             }
                                         );
-                                        netscape.security.PrivilegeManager.enablePrivilege(
-                                            "UniversalXPConnect"
-                                        );
                                         obj.summary_window = get_contentWindow(frame);
                                         obj.patron = obj.summary_window.g.summary.patron;
                                         obj.controller.render('patron_name');
@@ -781,7 +771,6 @@ patron.display.prototype = {
                             }
                         }
                     );
-                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                     obj.search_result = get_contentWindow(list_frame);
                 }
             };
@@ -796,7 +785,6 @@ patron.display.prototype = {
                 {},
                 my_xulG
             );
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             obj.search_window = get_contentWindow(form_frame);
             obj._already_defaulted_once = true;
     },
@@ -805,7 +793,6 @@ patron.display.prototype = {
 
     'refresh_deck' : function(url) {
         var obj = this;
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         for (var i = 0; i < obj.right_deck.node.childNodes.length; i++) {
             try {
                 var f = obj.right_deck.node.childNodes[i];
@@ -850,14 +837,11 @@ patron.display.prototype = {
                     'patron' : obj.patron,
                     'check_stop_checkouts' : function() { return obj.check_stop_checkouts(); },
                     'on_list_change_old' : function(checkout) {
-                        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                         var x = obj.summary_window.g.summary.controller.view.patron_checkouts;
                         var n = Number(x.getAttribute('value'));
                         x.setAttribute('value',n+1);
                     },
                     'on_list_change' : function(checkout,is_renewal) {
-                    
-                        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                         // Downside here: an extra network call, open-ils.actor.user.checked_out.count.authoritative
                         obj.summary_window.g.summary.controller.render('patron_checkouts');
                         obj.summary_window.g.summary.controller.render('patron_standing_penalties');
@@ -893,7 +877,6 @@ patron.display.prototype = {
                     'url_prefix' : xulG.url_prefix
                 }
             );
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             obj.checkout_window = get_contentWindow(frame);
         } catch(E) {
             alert('Error in spawn_checkout_interface(): ' + E);
@@ -945,7 +928,6 @@ patron.display.prototype = {
                 if (obj.stop_checkouts && obj.checkout_window) {
                     setTimeout( function() {
                         try {
-                            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                             obj.checkout_window.g.checkout.check_disable();
                         } catch(E) { }
                     }, 1000);

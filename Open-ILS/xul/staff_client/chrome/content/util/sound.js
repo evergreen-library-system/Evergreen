@@ -37,7 +37,6 @@ util.sound = function (params) {
             dump('SOUND('+this.sig+'): starting timer with intervalId = ' + intervalId + '\n');
         }
 
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         var SOUNDContractID = "@mozilla.org/sound;1";
         var SOUNDIID        = Components.interfaces.nsISound;
         this.SOUND          = Components.classes[SOUNDContractID].createInstance(SOUNDIID);
@@ -58,7 +57,6 @@ util.sound.prototype = {
 
     'xp_url_init' : function (aURL) {
         try {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             var URLContractID   = "@mozilla.org/network/standard-url;1";
             var URLIID          = Components.classes[URLContractID].createInstance( );
             var URL             = URLIID.QueryInterface(Components.interfaces.nsIURL);
@@ -77,7 +75,6 @@ util.sound.prototype = {
 
         var obj = this;
         try {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
             var url2 = obj.xp_url_init( data.server + url );
             if (typeof data.no_sound == 'undefined' || data.no_sound == false || data.no_sound == 'false') {

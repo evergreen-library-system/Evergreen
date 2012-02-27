@@ -39,7 +39,6 @@
 
 		function my_init() {
 			try {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 				if (typeof JSAN == 'undefined') { 
 					throw( $("commonStrings").getString('common.jsan.missing') );
 				}
@@ -205,7 +204,6 @@
 			}
 
 			try {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalBrowserWrite");
 				value = value.replace(/\n/g, "&#10;"); // preserve newlines
 				var xml = '<groupbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1"> \
 					<caption label="' + label_text + '"/> \

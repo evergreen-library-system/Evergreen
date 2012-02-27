@@ -9,8 +9,6 @@ function refresh() { populate_list(); }
 
 function patrons_due_refunds_init() {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect"); 
-
         if (typeof JSAN == 'undefined') {
             throw(
                 $('commonStrings').getString('common.jsan.missing')

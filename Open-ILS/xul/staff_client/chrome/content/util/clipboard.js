@@ -10,7 +10,6 @@ util.clipboard.EXPORT_TAGS    = { ':all' : util.clipboard.EXPORT_OK };
 
 util.clipboard.cut = function() {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
         var n = document.popupNode;
         if (n.getAttribute('readonly')=='true') return;
         var v = n.value;
@@ -30,7 +29,6 @@ util.clipboard.cut = function() {
 
 util.clipboard.copy = function() {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
         var n = document.popupNode;
         var v = n.value;
         var start = n.selectionStart;
@@ -47,7 +45,6 @@ util.clipboard.copy = function() {
 
 util.clipboard.paste = function() {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
         var n = document.popupNode;
         if (n.getAttribute('readonly')=='true') return;
         var v = n.value;

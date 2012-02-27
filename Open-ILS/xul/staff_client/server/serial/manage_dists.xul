@@ -26,7 +26,6 @@ vim:noet:sw=4:ts=4:
                                 return;
                             }
                             try {
-                                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                                 if (typeof JSAN == 'undefined') { 
                                     throw( document.getElementById("commonStrings").getString('common.jsan.missing') );
                                 }
@@ -50,7 +49,7 @@ vim:noet:sw=4:ts=4:
                 </script>
 
                 <popupset>
-                    <popup id="serial_manage_dists_popup">
+                    <menupopup id="serial_manage_dists_popup">
                         <menuitem command="cmd_add_sstr" label="&staff.serial.manage_dists.actions.cmd_add_sstr.label;"/>
                         <menuseparator/>
                         <menuitem command="cmd_delete_sstr" label="&staff.serial.manage_dists.actions.cmd_delete_sstr.label;"/>
@@ -65,7 +64,7 @@ vim:noet:sw=4:ts=4:
                         <menuitem command="cmd_delete_siss" label="Delete Issuance"/>
                         <menuitem command="cmd_delete_scap" label="Delete Caption/Pattern"/>
                         -->
-                    </popup>
+                    </menupopup>
                 </popupset>
 
                 <hbox flex="1">
