@@ -1,3 +1,14 @@
+-- Evergreen DB patch 0677.schema.circ_limits.sql
+--
+-- FIXME: insert description of change, if needed
+--
+BEGIN;
+
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0677', :eg_version);
+
+-- FIXME: add/check SQL statements to perform the upgrade
 -- Limit groups for circ counting
 CREATE TABLE config.circ_limit_group (
     id          SERIAL  PRIMARY KEY,
@@ -315,3 +326,6 @@ DROP FUNCTION evergreen.temp_migrate_circ_mod_limits();
 --Drop the old tables
 --Not sure we want to do this. Keeping them may help "something went wrong" correction.
 --DROP TABLE IF EXISTS config.circ_matrix_circ_mod_test_map, config.circ_matrix_circ_mod_test;
+
+
+COMMIT;
