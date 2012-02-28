@@ -29,6 +29,7 @@ my $U = 'OpenILS::Application::AppUtils';
 
 my $editor;
 my $config;
+my $login_account;
 my $target_encoding;    # FIXME: this is configured at the institution level. 
 
 use Digest::MD5 qw(md5_hex);
@@ -38,7 +39,7 @@ sub new {
 	my $type = ref($class) || $class;
 	my $self = {};
 
-	$self->{login} = $login;
+	$self->{login} = $login_account = $login;
 
 	$config = $institution;
 	syslog("LOG_DEBUG", "OILS: new ILS '%s'", $institution->{id});
@@ -94,6 +95,9 @@ sub editor {
 
 sub config {
 	return $config;
+}
+sub login_account {
+	return $login_account;
 }
 
 sub get_option_value {

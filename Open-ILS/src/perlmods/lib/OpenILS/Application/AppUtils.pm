@@ -1934,5 +1934,34 @@ sub bib_container_items_via_search {
     return [map { $ordering_hash{$_} } @$id_list];
 }
 
+# returns undef on success, Event on error
+sub log_user_activity {
+    my ($class, $user_id, $who, $what, $e, $async) = @_;
+
+    my $commit = 0;
+    if (!$e) {
+        $e = OpenILS::Utils::CStoreEditor->new(xact => 1);
+        $commit = 1;
+    }
+
+    my $res = $e->json_query({
+        from => [
+            'actor.insert_usr_activity', 
+            $user_id, $who, $what, OpenSRF::AppSession->ingress
+        ]
+    });
+
+    if ($res) { # call returned OK
+
+        $e->commit   if $commit and @$res;
+        $e->rollback if $commit and !@$res;
+
+    } else {
+        return $e->die_event;
+    }
+
+    return undef;
+}
+
 1;
 
