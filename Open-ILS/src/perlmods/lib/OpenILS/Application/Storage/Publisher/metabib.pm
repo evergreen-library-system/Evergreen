@@ -2846,8 +2846,11 @@ sub query_parser_fts {
     my $default_CD_modifiers = OpenSRF::Utils::SettingsClient->new->config_value(
         apps => 'open-ils.search' => app_settings => 'default_CD_modifiers'
     );
-    $args{query} = "$default_CD_modifiers $args{query}" if ($default_CD_modifiers);
 
+    # Protect against empty / missing default_CD_modifiers setting
+    if ($default_CD_modifiers and !ref($default_CD_modifiers)) {
+        $args{query} = "$default_CD_modifiers $args{query}";
+    }
 
     my $simple_plan = $args{_simple_plan};
     # remove bad chunks of the %args hash
