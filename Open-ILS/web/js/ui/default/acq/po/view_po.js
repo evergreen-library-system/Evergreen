@@ -513,19 +513,7 @@ function activatePo() {
             return false;
     }
 
-    // first, let's see if this PO has any LI's that need to be merged/imported
-    pcrud.search('jub', {purchase_order : poId, eg_bib_id : null}, {
-        id_list : true,
-        oncomplete : function(r) {
-            var resp = openils.Util.readResponse(r);
-            if (resp && resp.length) {
-                // kick off the merge/import process
-                liTable.showAssetCreator(activatePoStage2);
-            } else {
-                activatePoStage2();
-            }
-        }
-    });
+    liTable.showAssetCreator(activatePoStage2);
 }
 
 function activatePoStage2() {

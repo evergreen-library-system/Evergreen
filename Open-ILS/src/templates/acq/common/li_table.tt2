@@ -108,7 +108,7 @@
                                         <span name='po' class='hidden'> | <a title='Purchase Order' name='po_link' href='javascript:void(0);'>&#x2318; </a></span>
                                         <span name="show_requests"> | <a title='Patron Requests' name="show_requests_link" href="javascript:void(0);">requests</a></span> 
                                         <span name='pro' class='hidden'> | <a title='[% l('Provider') %]' name='pro_link' href='javascript:void(0);'>&#x235F; </a></span>
-                                        <span name='queue' class='hidden'> | <a title='[% l('Import Queue') %]' name='queue_link' href='javascript:void(0);'>&#x27AC; Queue</a></span>
+                                        <span name='queue' class='hidden'> | <a title='[% l('Import Queue') %]' name='queue_link' href='javascript:void(0);'>[% l('&#x27AC; queue') %]</a></span>
                                     </td>
                                 </tr>
                             </tbody>

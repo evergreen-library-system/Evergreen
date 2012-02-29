@@ -2124,21 +2124,40 @@ function AcqLiTable() {
 
     this.showAssetCreator = function(onAssetsCreated) {
         if(!this.isPO) return;
-        this.show('asset-creator');
-        if(!this.vlAgent.loaded)
-            this.vlAgent.init();
         var self = this;
-        dojo.connect(assetCreatorButton, 'onClick', 
-            function() { self.createAssets(onAssetsCreated) });
+    
+        // first, let's see if this PO has any LI's that need to be merged/imported
+        self.pcrud.search('jub', {purchase_order : this.isPO, eg_bib_id : null}, {
+            id_list : true,
+            oncomplete : function(r) {
+                var resp = openils.Util.readResponse(r);
+                if (resp && resp.length) {
+                    // PO has some non-linked jubs.  
+                    
+                    self.show('asset-creator');
+                    if(!self.vlAgent.loaded)
+                        self.vlAgent.init();
+
+                    dojo.connect(assetCreatorButton, 'onClick', 
+                        function() { self.createAssets(onAssetsCreated) });
+
+                } else {
+
+                    // all jubs linked, move on to asset creation
+                    self.createAssets(onAssetsCreated, true); 
+                }
+            }
+        });
     }
 
-    this.createAssets = function(onAssetsCreated) {
+    this.createAssets = function(onAssetsCreated, noVl) {
         this.show('acq-lit-progress-numbers');
         var self = this;
+        var vlArgs = (noVl) ? {} : {vandelay : this.vlAgent.values()};
         fieldmapper.standardRequest(
             ['open-ils.acq', 'open-ils.acq.purchase_order.assets.create'],
             {   async: true,
-                params: [this.authtoken, this.isPO, {vandelay : this.vlAgent.values()}],
+                params: [this.authtoken, this.isPO, vlArgs],
                 onresponse: function(r) {
                     var resp = openils.Util.readResponse(r);
                     self._updateProgressNumbers(resp, !Boolean(onAssetsCreated), onAssetsCreated);
