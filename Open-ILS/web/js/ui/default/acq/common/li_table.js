@@ -2123,6 +2123,7 @@ function AcqLiTable() {
     };
 
     this.showAssetCreator = function(onAssetsCreated) {
+        if(!this.isPO) return;
         this.show('asset-creator');
         if(!this.vlAgent.loaded)
             this.vlAgent.init();
@@ -2132,7 +2133,6 @@ function AcqLiTable() {
     }
 
     this.createAssets = function(onAssetsCreated) {
-        if(!this.isPO) return;
         this.show('acq-lit-progress-numbers');
         var self = this;
         fieldmapper.standardRequest(
