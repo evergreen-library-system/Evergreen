@@ -811,6 +811,7 @@ BEGIN
         value :=  ARRAY_TO_STRING(
             evergreen.regexp_split_to_array(value, E'\\W+'), ' '
         );
+        value := public.search_normalize(value);
     END IF;
 
     NEW.index_vector = to_tsvector((TG_ARGV[0])::regconfig, value);

@@ -1297,9 +1297,50 @@ END;
 $func$ LANGUAGE PLPGSQL;
 
 
+-- Given a string such as a user might type into a search box, prepare
+-- two changed variants for TO_TSQUERY(). See
+-- http://www.postgresql.org/docs/9.0/static/textsearch-controls.html
+-- The first variant is normalized to match indexed documents regardless
+-- of diacritics.  The second variant keeps its diacritics for proper
+-- highlighting via TS_HEADLINE().
+CREATE OR REPLACE
+    FUNCTION metabib.autosuggest_prepare_tsquery(orig TEXT) RETURNS TEXT[] AS
+$$
+DECLARE
+    orig_ended_in_space     BOOLEAN;
+    result                  RECORD;
+    plain                   TEXT;
+    normalized              TEXT;
+BEGIN
+    orig_ended_in_space := orig ~ E'\\s$';
+
+    orig := ARRAY_TO_STRING(
+        evergreen.regexp_split_to_array(orig, E'\\W+'), ' '
+    );
+
+    normalized := public.search_normalize(orig); -- also trim()s
+    plain := trim(orig);
+
+    IF NOT orig_ended_in_space THEN
+        plain := plain || ':*';
+        normalized := normalized || ':*';
+    END IF;
+
+    plain := ARRAY_TO_STRING(
+        evergreen.regexp_split_to_array(plain, E'\\s+'), ' & '
+    );
+    normalized := ARRAY_TO_STRING(
+        evergreen.regexp_split_to_array(normalized, E'\\s+'), ' & '
+    );
+
+    RETURN ARRAY[normalized, plain];
+END;
+$$ LANGUAGE PLPGSQL;
+
+
 CREATE OR REPLACE
     FUNCTION metabib.suggest_browse_entries(
-        query_text      TEXT,   -- 'foo' or 'foo & ba:*',ready for to_tsquery()
+        raw_query_text  TEXT,   -- actually typed by humans at the UI level
         search_class    TEXT,   -- 'alias' or 'class' or 'class|field..', etc
         headline_opts   TEXT,   -- markup options for ts_headline()
         visibility_org  INTEGER,-- null if you don't want opac visibility test
@@ -1316,12 +1357,17 @@ CREATE OR REPLACE
         match                   TEXT    -- marked up
     ) AS $func$
 DECLARE
+    prepared_query_texts    TEXT[];
     query                   TSQUERY;
+    plain_query             TSQUERY;
     opac_visibility_join    TEXT;
     search_class_join       TEXT;
     r_fields                RECORD;
 BEGIN
-    query := TO_TSQUERY('keyword', query_text);
+    prepared_query_texts := metabib.autosuggest_prepare_tsquery(raw_query_text);
+
+    query := TO_TSQUERY('keyword', prepared_query_texts[1]);
+    plain_query := TO_TSQUERY('keyword', prepared_query_texts[2]);
 
     IF visibility_org IS NOT NULL THEN
         opac_visibility_join := '
@@ -1374,7 +1420,7 @@ BEGIN
     ';
     END IF;
 
-    RETURN QUERY EXECUTE 'SELECT *, TS_HEADLINE(value, $1, $3) FROM (SELECT DISTINCT
+    RETURN QUERY EXECUTE 'SELECT *, TS_HEADLINE(value, $7, $3) FROM (SELECT DISTINCT
         mbe.value,
         cmf.id,
         cmc.bouyant AND _registered.field_class IS NOT NULL,
@@ -1394,7 +1440,7 @@ BEGIN
     '   -- sic, repeat the order by clause in the outer select too
     USING
         query, search_class, headline_opts,
-        visibility_org, query_limit, normalization
+        visibility_org, query_limit, normalization, plain_query
         ;
 
     -- sort order:

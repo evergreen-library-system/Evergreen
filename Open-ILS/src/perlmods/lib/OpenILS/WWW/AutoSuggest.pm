@@ -49,18 +49,6 @@ my @_output_handler_types = sort {
 
 # END package globals
 
-# Given a string such as a user might type into a search box, prepare
-# it for to_tsquery(). See
-# http://www.postgresql.org/docs/9.0/static/textsearch-controls.html
-sub prepare_for_tsquery {
-    my ($str) = shift;
-
-    $str =~ s/[^\w\s]/ /ig;
-    $str .= ":*" unless $str =~ /\s$/;
-
-    return join(" & ", grep(length, split(/\s+/, $str)));
-}
-
 # The third argument to our stored procedure, metabib.suggest_browse_entries(),
 # is passed through directly to ts_headline() as the 'options' arugment.
 sub prepare_headline_opts {
@@ -106,7 +94,7 @@ sub get_suggestions {
     return $editor->json_query({
         "from" => [
             "metabib.suggest_browse_entries",
-            prepare_for_tsquery($query),
+            $query,
             $search_class,
             $headline_opts,
             $org_unit,
