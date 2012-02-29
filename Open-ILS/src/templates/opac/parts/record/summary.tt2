@@ -11,7 +11,7 @@
 
 <hr />
 
-[%- # This holds the record summary information %]
+[%-# This holds the record summary information %]
 <div id="rdetail_summary_header">
     <div id="rdetail_image_div">
         [% ident = attrs.isbn_clean || attrs.upc; IF ident; %]
@@ -38,6 +38,11 @@
                 <img src="[% ctx.media_prefix %]/images/clipboard.png" alt="" />
                 [% label %]
             </a>
+        </div>
+        <div class="rdetail_aux_utils">
+            <img src="[% ctx.media_prefix %]/images/clipboard.png" alt="" />
+            <a href="[% mkurl(ctx.opac_root _ '/record/print/' _ ctx.bre_id) %]" class="no-dec">[% l('Print') %]</a> /
+            <a href="[% mkurl(ctx.opac_root _ '/record/email/' _ ctx.bre_id) %]" class="no-dec">[% l('Email') %]</a>
         </div>
     </div>
     <div id='rdetail_title_div'>

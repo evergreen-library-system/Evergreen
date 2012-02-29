@@ -1,0 +1,21 @@
+[%  PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/config.tt2";
+    WRAPPER "opac/parts/base.tt2";
+    INCLUDE "opac/parts/topnav.tt2";
+    ctx.page_title = l("Record Detail") %]
+    <div id="search-wrapper">
+        [% INCLUDE "opac/parts/searchbar.tt2" %]
+    </div>
+    <br class="clear-both" />
+    <div id="content-wrapper" class="content-wrapper-record-page">
+        <div id='main-content'>
+            <br/>
+            <h2 class='success'>[% l('Your email has been queued for Delivery.') %]</h2>
+            <br/>
+            <p>[ <a href="[% mkurl(ctx.opac_root  _ '/record/' _ ctx.bre_id) %]">[% l("Back to Record") %]</a> ]</p>
+            <div class="common-full-pad"></div>
+        </div>
+        <br class="clear-both" />
+    </div>
+[% END %]
+

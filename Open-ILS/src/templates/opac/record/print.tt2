@@ -1,0 +1,27 @@
+[% PROCESS 'opac/parts/header.tt2' %]
+<html>
+    <head>
+        <title>[% l('Print Record') %]</title>
+        <style type="text/css" media="print">.noprint {display: none}</style>
+    </head>
+    <body onload="if (document.getElementById('printable-record')) window.print();">
+        [% IF ctx.printable_record.template_output %]
+        <tt id="printable-record">
+            [% ctx.printable_record.template_output.data %]
+        </tt>
+        [% ELSE %]
+        <div class="noprint print-error">
+            [% l(
+                'Error printing record: [_1]',
+                    (ctx.printable_record.textcode ? ctx.printable_record.textcode _ ' / ' _ ctx.printable_record.desc : 0) ||
+                    ctx.printable_record.error_output.data ||
+                    l('No record data returned from server')
+                ) | html %]
+        </div>
+        [% END %]
+        <div class='noprint'>
+            <hr />
+            <p>[ <a href="[% mkurl(ctx.opac_root  _ '/record/' _ ctx.bre_id) %]">[% l("Back to Record") %]</a> ]</p>
+        </div>
+    </body>
+</html>

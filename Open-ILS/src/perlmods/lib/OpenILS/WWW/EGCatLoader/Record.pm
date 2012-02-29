@@ -363,4 +363,33 @@ sub get_hold_copy_summary {
     $search->kill_me;
 }
 
+sub load_print_record {
+    my $self = shift;
+
+    my $rec_id = $self->ctx->{page_args}->[0] 
+        or return Apache2::Const::HTTP_BAD_REQUEST;
+
+    $self->{ctx}->{bre_id} = $rec_id;
+    $self->{ctx}->{printable_record} = $U->simplereq(
+        'open-ils.search',
+        'open-ils.search.biblio.record.print', $rec_id);
+
+    return Apache2::Const::OK;
+}
+
+sub load_email_record {
+    my $self = shift;
+
+    my $rec_id = $self->ctx->{page_args}->[0] 
+        or return Apache2::Const::HTTP_BAD_REQUEST;
+
+    $self->{ctx}->{bre_id} = $rec_id;
+    $U->simplereq(
+        'open-ils.search',
+        'open-ils.search.biblio.record.email', 
+        $self->ctx->{authtoken}, $rec_id);
+
+    return Apache2::Const::OK;
+}
+
 1;

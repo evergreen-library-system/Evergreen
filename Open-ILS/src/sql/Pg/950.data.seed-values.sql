@@ -8486,6 +8486,7 @@ INSERT INTO action_trigger.event_definition (
         cleanup_failure,
         group_field,
         granularity,
+        delay,
         template
     ) VALUES (
         31,
@@ -8499,22 +8500,42 @@ INSERT INTO action_trigger.event_definition (
         'DeleteTempBiblioBucket',
         'owner',
         NULL,
+        '00:00:00'
 $$
-[%- USE date -%]
 [%- SET user = target.0.owner -%]
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
 Subject: Bibliographic Records
 
-    [% FOR cbreb IN target %]
-    [% FOR cbrebi IN cbreb.items %]
-        Bib ID# [% cbrebi.target_biblio_record_entry.id %] ISBN: [% crebi.target_biblio_record_entry.simple_record.isbn %]
-        Title: [% cbrebi.target_biblio_record_entry.simple_record.title %]
-        Author: [% cbrebi.target_biblio_record_entry.simple_record.author %]
-        Publication Year: [% cbrebi.target_biblio_record_entry.simple_record.pubdate %]
+[% FOR cbreb IN target %]
+[% FOR item IN cbreb.items;
+    bre_id = item.target_biblio_record_entry;
 
-    [% END %]
-    [% END %]
+    bibxml = helpers.unapi_bre(bre_id, {flesh => '{mra}'});
+    FOR part IN bibxml.findnodes('//*[@tag="245"]/*[@code="a" or @code="b"]');
+        title = title _ part.textContent;
+    END;
+
+    author = bibxml.findnodes('//*[@tag="100"]/*[@code="a"]').textContent;
+    item_type = bibxml.findnodes('//*[local-name()="attributes"]/*[local-name()="field"][@name="item_type"]').getAttribute('coded-value');
+    publisher = bibxml.findnodes('//*[@tag="260"]/*[@code="b"]').textContent;
+    pubdate = bibxml.findnodes('//*[@tag="260"]/*[@code="c"]').textContent;
+    isbn = bibxml.findnodes('//*[@tag="020"]/*[@code="a"]').textContent;
+    issn = bibxml.findnodes('//*[@tag="022"]/*[@code="a"]').textContent;
+    upc = bibxml.findnodes('//*[@tag="024"]/*[@code="a"]').textContent;
+%]
+
+[% loop.count %]/[% loop.size %].  Bib ID# [% bre_id %] 
+[% IF isbn %]ISBN: [% isbn _ "\n" %][% END -%]
+[% IF issn %]ISSN: [% issn _ "\n" %][% END -%]
+[% IF upc  %]UPC:  [% upc _ "\n" %] [% END -%]
+Title: [% title %]
+Author: [% author %]
+Publication Info: [% publisher %] [% pubdate %]
+Item Type: [% item_type %]
+
+[% END %]
+[% END %]
 $$
     )
     ,(
@@ -8529,17 +8550,33 @@ $$
         'DeleteTempBiblioBucket',
         'owner',
         'print-on-demand',
+        NULL,
 $$
-[%- USE date -%]
 <div>
     <style> li { padding: 8px; margin 5px; }</style>
     <ol>
     [% FOR cbreb IN target %]
-    [% FOR cbrebi IN cbreb.items %]
-        <li>Bib ID# [% cbrebi.target_biblio_record_entry.id %] ISBN: [% crebi.target_biblio_record_entry.simple_record.isbn %]<br />
-            Title: [% cbrebi.target_biblio_record_entry.simple_record.title %]<br />
-            Author: [% cbrebi.target_biblio_record_entry.simple_record.author %]<br />
-            Publication Year: [% cbrebi.target_biblio_record_entry.simple_record.pubdate %]
+    [% FOR item IN cbreb.items;
+        bre_id = item.target_biblio_record_entry;
+
+        bibxml = helpers.unapi_bre(bre_id, {flesh => '{mra}'});
+        FOR part IN bibxml.findnodes('//*[@tag="245"]/*[@code="a" or @code="b"]');
+            title = title _ part.textContent;
+        END;
+
+        author = bibxml.findnodes('//*[@tag="100"]/*[@code="a"]').textContent;
+        item_type = bibxml.findnodes('//*[local-name()="attributes"]/*[local-name()="field"][@name="item_type"]').getAttribute('coded-value');
+        publisher = bibxml.findnodes('//*[@tag="260"]/*[@code="b"]').textContent;
+        pubdate = bibxml.findnodes('//*[@tag="260"]/*[@code="c"]').textContent;
+        isbn = bibxml.findnodes('//*[@tag="020"]/*[@code="a"]').textContent;
+        %]
+
+        <li>
+            Bib ID# [% bre_id %] ISBN: [% isbn %]<br />
+            Title: [% title %]<br />
+            Author: [% author %]<br />
+            Publication Info: [% publisher %] [% pubdate %]<br/>
+            Item Type: [% item_type %]
         </li>
     [% END %]
     [% END %]
@@ -8555,20 +8592,7 @@ INSERT INTO action_trigger.environment (
     ) VALUES -- for fleshing cbreb objects
          ( 31, 'owner' )
         ,( 31, 'items' )
-        ,( 31, 'items.target_biblio_record_entry' )
-        ,( 31, 'items.target_biblio_record_entry.simple_record' )
-        ,( 31, 'items.target_biblio_record_entry.call_numbers' )
-        ,( 31, 'items.target_biblio_record_entry.fixed_fields' )
-        ,( 31, 'items.target_biblio_record_entry.notes' )
-        ,( 31, 'items.target_biblio_record_entry.full_record_entries' )
-        ,( 32, 'owner' )
         ,( 32, 'items' )
-        ,( 32, 'items.target_biblio_record_entry' )
-        ,( 32, 'items.target_biblio_record_entry.simple_record' )
-        ,( 32, 'items.target_biblio_record_entry.call_numbers' )
-        ,( 32, 'items.target_biblio_record_entry.fixed_fields' )
-        ,( 32, 'items.target_biblio_record_entry.notes' )
-        ,( 32, 'items.target_biblio_record_entry.full_record_entries' )
 ;
 
 INSERT INTO acq.invoice_item_type (code,name) VALUES ('TAX',oils_i18n_gettext('TAX', 'Tax', 'aiit', 'name'));

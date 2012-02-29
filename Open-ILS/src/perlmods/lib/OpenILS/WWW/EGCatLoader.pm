@@ -99,7 +99,8 @@ sub load {
         $path =~ m:opac/(advanced|numeric|expert):;
 
     return $self->load_rresults if $path =~ m|opac/results|;
-    return $self->load_record if $path =~ m|opac/record|;
+    return $self->load_print_record if $path =~ m|opac/record/print|;
+    return $self->load_record if $path =~ m|opac/record/\d|;
     return $self->load_cnbrowse if $path =~ m|opac/cnbrowse|;
 
     return $self->load_mylist_add if $path =~ m|opac/mylist/add|;
@@ -138,6 +139,8 @@ sub load {
     #  Everything below here requires authentication
     # ----------------------------------------------------------------
     return $self->redirect_auth unless $self->editor->requestor;
+
+    return $self->load_email_record if $path =~ m|opac/record/email|;
 
     return $self->load_place_hold if $path =~ m|opac/place_hold|;
     return $self->load_myopac_holds if $path =~ m|opac/myopac/holds|;
