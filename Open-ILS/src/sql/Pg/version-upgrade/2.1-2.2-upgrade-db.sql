@@ -12721,5 +12721,4 @@ INSERT INTO vandelay.merge_profile (owner, name, replace_spec)
 INSERT INTO vandelay.merge_profile (owner, name, preserve_spec) 
     VALUES (1, 'Full Overlay', '901c');
 
--- COMMIT; TESTING, NO SAVING FOR YOU!
-ROLLBACK;
+COMMIT;
