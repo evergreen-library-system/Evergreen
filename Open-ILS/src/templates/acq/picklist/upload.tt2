@@ -57,9 +57,9 @@
         [% PROCESS vlagent_results %]
         <div id='acq-pl-upload-complete' class='hidden'>
             <div>Upload Complete!</div><br/>
-            <div><a id='acq-pl-upload-complete-po'>View Purchase Order</a></div><br/>
-            <div><a id='acq-pl-upload-complete-pl'>View Selection List</a></div><br/>
-            <div><a id='acq-pl-upload-complete-q'></a></div><br/>
+            <div><a id='acq-pl-upload-complete-po'>[% l('View Purchase Order') %]</a></div><br/>
+            <div><a id='acq-pl-upload-complete-pl'>[% l('View Selection List') %]</a></div><br/>
+            <div><a id='acq-pl-upload-complete-q'>[% l('View Upload Queue') %]</a></div><br/>
         </div>
     </div>
 </form>

@@ -152,7 +152,7 @@ function acqHandlePostUpload(key, plId) {
                         }
 
                         if (res.queue_url) {
-                            activateLink('acq-pl-upload-complete-q', res.queue_url, resp.queue.name());
+                            activateLink('acq-pl-upload-complete-q', res.queue_url);
                         }
                     }
                 );
