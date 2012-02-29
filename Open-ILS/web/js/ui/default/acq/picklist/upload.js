@@ -131,7 +131,7 @@ function acqHandlePostUpload(key, plId) {
                                 link.setAttribute('href', url); 
                             } else {
                                 link.setAttribute('href', 'javascript:;'); // for linky-ness
-                                link.onclick = function() { openils.XUL.newTabEasy(url) };
+                                link.onclick = function() { openils.XUL.newTabEasy(url, null, null, true) };
                             }
                         }
                             
