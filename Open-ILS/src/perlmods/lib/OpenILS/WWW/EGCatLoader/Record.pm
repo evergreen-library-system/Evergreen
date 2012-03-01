@@ -15,7 +15,14 @@ sub load_record {
     $ctx->{page} = 'record';  
 
     my $org = $self->_get_search_lib();
-    my $depth = $self->cgi->param('depth') || $ctx->{get_aou}->($org)->ou_type->depth;
+    my $depth = $self->cgi->param('depth');
+    $depth = $ctx->{get_aou}->($org)->ou_type->depth 
+        unless defined $depth; # can be 0
+
+    my $copy_depth = $self->cgi->param('copy_depth');
+    $copy_depth = $depth unless defined $copy_depth; # can be 0
+    $self->ctx->{copy_depth} = $copy_depth;
+
     my $copy_limit = int($self->cgi->param('copy_limit') || 10);
     my $copy_offset = int($self->cgi->param('copy_offset') || 0);
 
@@ -34,7 +41,7 @@ sub load_record {
     my $cstore = OpenSRF::AppSession->create('open-ils.cstore');
     my $copy_rec = $cstore->request(
         'open-ils.cstore.json_query.atomic', 
-        $self->mk_copy_query($rec_id, $org, $depth, $copy_limit, $copy_offset)
+        $self->mk_copy_query($rec_id, $org, $copy_depth, $copy_limit, $copy_offset)
     );
 
     my (undef, @rec_data) = $self->get_records_and_facets([$rec_id], undef, {flesh => '{holdings_xml,bmp,mra,acp,acnp,acns}'});
@@ -47,6 +54,7 @@ sub load_record {
 
     $ctx->{have_holdings_to_show} = 0;
     $ctx->{have_mfhd_to_show} = 0;
+
     $self->get_hold_copy_summary($rec_id, $org);
 
     $cstore->kill_me;
@@ -56,7 +64,7 @@ sub load_record {
             ($org, "opac.fully_compressed_serial_holdings")
     ) {
         $ctx->{holding_summaries} =
-            $self->get_holding_summaries($rec_id, $org, $depth);
+            $self->get_holding_summaries($rec_id, $org, $copy_depth);
 
         $ctx->{have_holdings_to_show} =
             scalar(@{$ctx->{holding_summaries}->{basic}}) ||
@@ -64,7 +72,7 @@ sub load_record {
             scalar(@{$ctx->{holding_summaries}->{supplement}});
     } else {
         $ctx->{mfhd_summaries} =
-            $self->get_mfhd_summaries($rec_id, $org, $depth);
+            $self->get_mfhd_summaries($rec_id, $org, $copy_depth);
 
         if ($ctx->{mfhd_summaries} && scalar(@{$ctx->{mfhd_summaries}})
         ) {
@@ -78,7 +86,7 @@ sub load_record {
         },
         issues => sub {
             $ctx->{expanded_holdings} =
-                $self->get_expanded_holdings($rec_id, $org, $depth)
+                $self->get_expanded_holdings($rec_id, $org, $copy_depth)
                 if $ctx->{have_holdings_to_show};
         },
         cnbrowse => sub {

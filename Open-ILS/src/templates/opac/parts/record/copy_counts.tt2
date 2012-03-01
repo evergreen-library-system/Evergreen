@@ -8,10 +8,10 @@
             ou_id = ctx.copy_summary.$depth.org_unit;
     %]
     <li>
-    [% l('[quant,_1,copy,copies] at [_2].', ou_avail, ctx.get_aou(ou_id).name)
-        | html %]
-    [%- IF ou_avail > 0 && ou_id != ctx.search_ou; %]
-    <a href="[% mkurl('', {loc => ou_id}); %]"
+    [% l('[quant,_1,copy,copies] at [_2].', ou_avail, ctx.get_aou(ou_id).name) | html %]
+    [%- this_depth = ctx.get_aou(ou_id).ou_type.depth;
+        IF ou_avail > 0 && this_depth != ctx.copy_depth %]
+    <a href="[% mkurl('', {copy_depth => this_depth}, ['copy_offset']); %]"
        title="[% l('Show copies at [_1]', ctx.get_aou(ou_id).name); %]">
        [%- l('(Show)'); %]</a>
     [%- END; %]
