@@ -55,6 +55,7 @@ CREATE TABLE asset.copy_location_group (
     name            TEXT    NOT NULL, -- i18n
     owner           INT     NOT NULL REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     pos             INT     NOT NULL DEFAULT 0,
+    top             BOOL    NOT NULL DEFAULT FALSE,
     opac_visible    BOOL    NOT NULL DEFAULT TRUE,
     CONSTRAINT lgroup_once_per_owner UNIQUE (owner,name)
 );

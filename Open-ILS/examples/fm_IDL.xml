@@ -3935,6 +3935,7 @@ SELECT  usr,
 			<field reporter:label="Is OPAC Visible?" name="opac_visible" reporter:datatype="bool"/>
 			<field reporter:label="Owning Org Unit" name="owner"  reporter:datatype="org_unit"/>
             <field reporter:label="Position" name="pos" reporter:datatype="int"/>
+            <field reporter:label="Display Above Orgs" name="top" reporter:datatype="bool"/>
             <field reporter:label="Copy Location Mappings" name="location_maps" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>

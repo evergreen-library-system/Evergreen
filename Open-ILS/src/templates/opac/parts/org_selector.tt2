@@ -29,14 +29,29 @@ BLOCK build_org_selector;
 
             NEXT UNLESS ctx.is_staff || org_unit.opac_visible == 't';
 
-            IF !loc_grp;
+            IF !loc_grp; # processing an org unit
+
+                top_loc_groups = [];
                 IF show_loc_groups;
+                    # add the location groups that sort below the child org units
                     FOR grp IN ctx.copy_location_groups.$ou_id.reverse;
-                        node_stack.push({org => org_unit, loc_grp => grp});
+                        IF grp.top == 't';
+                            top_loc_groups.push(grp);
+                        ELSE;
+                            node_stack.push({org => org_unit, loc_grp => grp});
+                        END;
                     END;
                 END;
+
+                # add the child org units
                 FOR child IN org_unit.children.reverse;
                     node_stack.push({org => child});
+                END;
+
+                # add the location groups that sort to the top
+                # above the child org units
+                FOR grp IN top_loc_groups;
+                    node_stack.push({org => org_unit, loc_grp => grp});
                 END;
             END;
 
