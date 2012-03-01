@@ -2186,19 +2186,22 @@ sub clone_picklist_api {
 
     my $li_ids = $e->search_acq_lineitem({picklist => $pl_id}, {idlist => 1});
 
+    # get the current user
+    my $cloner = $mgr->editor->requestor->id;
+
     for my $li_id (@$li_ids) {
 
-        # copy the lineitems
-        my $li = $e->retrieve_acq_lineitem($li_id);
+        # copy the lineitems' MARC
+        my $marc = ($e->retrieve_acq_lineitem($li_id))->marc;
+
+        # create a skeletal clone of the item
+        my $li = Fieldmapper::acq::lineitem->new;
+        $li->creator($cloner);
+        $li->selector($cloner);
+        $li->editor($cloner);
+        $li->marc($marc);
+
         my $new_li = create_lineitem($mgr, %{$li->to_bare_hash}, picklist => $new_pl->id) or return $e->die_event;
-
-        my $lid_ids = $e->search_acq_lineitem_detail({lineitem => $li_id}, {idlist => 1});
-        for my $lid_id (@$lid_ids) {
-
-            # copy the lineitem details
-            my $lid = $e->retrieve_acq_lineitem_detail($lid_id);
-            create_lineitem_detail($mgr, %{$lid->to_bare_hash}, lineitem => $new_li->id) or return $e->die_event;
-        }
 
         $mgr->respond;
     }
