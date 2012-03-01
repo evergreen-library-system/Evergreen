@@ -5888,6 +5888,14 @@ $$ LANGUAGE SQL ROWS 10;
 -- check whether patch can be applied
 SELECT evergreen.upgrade_deps_block_check('0641', :eg_version);
 
+-- This may not be in the evergreen schema on upgrades. So put it there.
+CREATE OR REPLACE FUNCTION evergreen.is_json( TEXT ) RETURNS BOOL AS $f$
+    use JSON::XS;
+    my $json = shift();
+    eval { JSON::XS->new->allow_nonref->decode( $json ) };
+    return $@ ? 0 : 1;
+$f$ LANGUAGE PLPERLU;
+
 ALTER TABLE actor.org_unit_setting ADD CONSTRAINT aous_must_be_json CHECK ( evergreen.is_json(value) );
 
 -- Evergreen DB patch 0642.data.acq-worksheet-hold-count.sql
