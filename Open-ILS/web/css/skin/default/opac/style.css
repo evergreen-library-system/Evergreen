@@ -475,7 +475,7 @@ div.format_icon {
 
 .rdetail_extras {
 	height: 29px;
-	background: #69A088;
+	background: #417860;
 	padding-top:1px;
 	margin-bottom: 10px;
 	margin-top: 10px;
@@ -501,6 +501,7 @@ div.format_icon {
 	position: relative;
 	top: -4px;
 	left: 7px;
+	color: white;
 }
 
 #paginate-homebanner a.toc {
