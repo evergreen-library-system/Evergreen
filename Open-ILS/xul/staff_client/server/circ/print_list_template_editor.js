@@ -105,6 +105,10 @@ circ.print_list_template_editor.prototype = {
         setTimeout(
             function() {
                 var tmp = obj.data.print_list_templates[ obj.controller.view.template_name_menu.value ];
+                if (tmp.inherit) {
+                    tmp = obj.data.print_list_templates[ tmp.inherit ];
+                    // if someone wants to implement recursion later, feel free
+                }
                 obj.controller.view.template_type_menu.value = tmp.type;
                 obj.controller.view.header.value = tmp.header;
                 obj.controller.view.line_item.value = tmp.line_item;
@@ -307,6 +311,10 @@ circ.print_list_template_editor.prototype = {
                                         'command',
                                         function(ev) {
                                             var tmp = obj.data.print_list_templates[ ev.target.value ];
+                                            if (tmp.inherit) {
+                                                tmp = obj.data.print_list_templates[ tmp.inherit ];
+                                                // if someone wants to implement recursion later, feel free
+                                            }
                                             obj.controller.view.template_type_menu.value = tmp.type;
                                             obj.controller.view.header.value = tmp.header;
                                             obj.controller.view.line_item.value = tmp.line_item;
@@ -397,6 +405,7 @@ circ.print_list_template_editor.prototype = {
 
     'save_template' : function(name) {
         var obj = this;
+        obj.data.print_list_templates[name].inherit = null;
         obj.data.print_list_templates[name].header = obj.controller.view.header.value;
         obj.data.print_list_templates[name].line_item = obj.controller.view.line_item.value;
         obj.data.print_list_templates[name].footer = obj.controller.view.footer.value;

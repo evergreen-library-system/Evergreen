@@ -1408,6 +1408,10 @@ util.list.prototype = {
             }
             if (params.template && data.print_list_templates[ params.template ]) {
                 var template = data.print_list_templates[ params.template ];
+                if (template.inherit) {
+                    template = data.print_list_templates[ template.inherit ];
+                    // if someone wants to implement recursion later, feel free
+                }
                 for (var i in template) params[i] = template[i];
             }
             obj.wrap_in_full_retrieve(

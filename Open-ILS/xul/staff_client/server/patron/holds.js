@@ -395,9 +395,23 @@ patron.holds.prototype = {
                             try {
                                 JSAN.use('patron.util');
                                 var params = {
-                                    'patron' : patron.util.retrieve_au_via_id(ses(),obj.patron_id),
-                                    'template' : 'holds'
+                                    'patron' : patron.util.retrieve_au_via_id(ses(),obj.patron_id)
                                 };
+                                switch(obj.hold_interface_type) {
+                                    case 'patron':
+                                        params.template = 'holds_for_patron';
+                                    break;
+                                    case 'record':
+                                        params.template = 'holds_on_bib';
+                                    break;
+                                    case 'shelf':
+                                        params.template = 'holds_shelf';
+                                    break;
+                                    case 'pull':
+                                    default:
+                                        params.template = 'holds_pull_list';
+                                    break;
+                                }
                                 obj.list.print(params);
                             } catch(E) {
                                 obj.error.standard_unexpected_error_alert('print 1',E);

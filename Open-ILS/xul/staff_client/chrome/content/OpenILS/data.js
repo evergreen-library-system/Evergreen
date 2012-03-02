@@ -444,6 +444,22 @@ OpenILS.data.prototype = {
                     'line_item' : '<li>%title%\r\n',
                     'footer' : '</ol><hr />%SHORTNAME% %TODAY_TRIM%<br/>\r\nYou were helped by %STAFF_FIRSTNAME%<br/>\r\n<br/>\r\n'
                 },
+                'holds_on_bib' : {
+                    'type' : 'holds',
+                    'inherit' : 'holds'
+                },
+                'holds_for_patron' : {
+                    'type' : 'holds',
+                    'inherit' : 'holds'
+                },
+                'holds_shelf' : {
+                    'type' : 'holds',
+                    'inherit' : 'holds'
+                },
+                'holds_pull_list' : {
+                    'type' : 'holds',
+                    'inherit' : 'holds'
+                },
                 'hold_slip' : {
                     'type' : 'holds',
                     'header' : 'This item needs to be routed to <b>%route_to%</b>:<br/>\r\nBarcode: %item_barcode%<br/>\r\nTitle: %item_title%<br/>\r\n<br/>\r\n%hold_for_msg%<br/>\r\nBarcode: %PATRON_BARCODE%<br/>\r\nNotify by phone: %notify_by_phone%<br/>\r\nNotified by text: %notify_by_text%<br/>\r\nNotified by email: %notify_by_email%<br/>\r\n',
