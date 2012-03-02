@@ -598,7 +598,6 @@
                 <menuitem label="&staff.main.menu.admin.stat_cat_edit.label;" accesskey="&staff.main.menu.admin.stat_cat_edit.accesskey;" command="cmd_stat_cat_edit"/>
                 <menuitem label="&staff.main.menu.admin.non_cat_type_edit.label;" accesskey="&staff.main.menu.admin.non_cat_type_edit.accesskey;" command="cmd_non_cat_type_edit"/>
                 <menuitem label="&staff.main.menu.admin.copy_location_edit.label;" accesskey="&staff.main.menu.admin.copy_location_edit.accesskey;" command="cmd_copy_location_edit"/>
-                <menuitem label="&staff.main.menu.admin.browse_holds.label;" command="cmd_browse_holds" accesskey="&staff.main.menu.admin.browse_holds.accesskey;"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.label;" accesskey="&staff.main.menu.admin.local_admin.accesskey;" command="cmd_local_admin"/>
                 <menuitem label="&staff.main.menu.admin.survey_wizard.label;" accesskey="&staff.main.menu.admin.survey_wizard.accesskey;" command="cmd_survey_wizard"/>
                 <menuseparator />

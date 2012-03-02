@@ -684,8 +684,6 @@
 <!ENTITY staff.main.menu.acquisitions.accesskey "q">
 <!ENTITY staff.main.menu.acquisitions.label "Acquisitions">
 <!ENTITY staff.main.menu.admin.accesskey "-">
-<!ENTITY staff.main.menu.admin.browse_holds.accesskey "B">
-<!ENTITY staff.main.menu.admin.browse_holds.label "Browse Unfulfilled Holds for this Pickup Lib">
 <!ENTITY staff.main.menu.admin.change_session.label "Operator Change: New">
 <!ENTITY staff.main.menu.admin.clear_cache.accesskey "3">
 <!ENTITY staff.main.menu.admin.clear_cache.label "Clear Cache">

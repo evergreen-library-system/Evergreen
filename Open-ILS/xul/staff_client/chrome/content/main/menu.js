@@ -625,13 +625,6 @@ main.menu.prototype = {
                     obj.command_tab(event,obj.url_prefix(urls.XUL_CHECKIN)+'?hold_capture=1',{},{});
                 }
             ],
-            'cmd_browse_holds' : [
-                ['oncommand'],
-                function(event) { 
-                    obj.data.stash_retrieve();
-                    obj.command_tab(event,obj.url_prefix(urls.XUL_HOLDS_BROWSER),{ 'tab_name' : offlineStrings.getString('menu.cmd_browse_holds.tab') },{});
-                }
-            ],
             'cmd_browse_holds_shelf' : [
                 ['oncommand'],
                 function(event) { 
