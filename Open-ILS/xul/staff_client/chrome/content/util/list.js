@@ -32,6 +32,9 @@ util.list.prototype = {
         var obj = this;
         obj.scratch_data = {};
 
+        // If set, save and restore columns as if the tree/list id was the value of columns_saved_under
+        obj.columns_saved_under = params.columns_saved_under;
+
         JSAN.use('util.widgets');
 
         obj.printer_context = params.printer_context;
@@ -259,7 +262,9 @@ util.list.prototype = {
     '_save_columns_tree' : function (params) {
         var obj = this;
         try {
-            var id = obj.node.getAttribute('id'); if (!id) {
+            var id = obj.node.getAttribute('id');
+            if (obj.columns_saved_under) { id = obj.columns_saved_under; }
+            if (!id) {
                 alert("FIXME: The columns for this list cannot be saved because the list has no id.");
                 return;
             }
@@ -298,7 +303,9 @@ util.list.prototype = {
     '_restores_columns_tree' : function (params) {
         var obj = this;
         try {
-            var id = obj.node.getAttribute('id'); if (!id) {
+            var id = obj.node.getAttribute('id');
+            if (obj.columns_saved_under) { id = obj.columns_saved_under; }
+            if (!id) {
                 alert("FIXME: The columns for this list cannot be restored because the list has no id.");
                 return;
             }

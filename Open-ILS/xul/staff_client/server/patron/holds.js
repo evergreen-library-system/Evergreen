@@ -48,6 +48,8 @@ patron.holds.prototype = {
         obj.shelf = params['shelf'];
         obj.tree_id = params['tree_id'];
 
+        obj.determine_hold_interface_type();
+
         var progressmeter = document.getElementById('progress');
 
         JSAN.use('circ.util');
@@ -71,6 +73,7 @@ patron.holds.prototype = {
         JSAN.use('util.list'); obj.list = new util.list( obj.tree_id || 'holds_list');
         obj.list.init(
             {
+                'columns_saved_under' : 'holds_' + obj.hold_interface_type,
                 'columns' : columns.concat(
                     obj.list.fm_columns('acp', {
                         '*' : { 'expanded_label' : true, 'hidden' : true },
