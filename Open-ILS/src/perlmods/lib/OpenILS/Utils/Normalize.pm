@@ -111,12 +111,12 @@ sub _normalize_codes {
 # Assumes input is already in UTF-8.
 sub clean_marc {
     my $input = shift;
-    my $xml = (isa $input, 'MARC::Record') ? $input->as_xml_record() : $input;
+    my $xml = decode_utf8((isa $input, 'MARC::Record') ? $input->as_xml_record() : $input);
     $xml =~ s/\n//sog;
     $xml =~ s/^<\?xml.+\?\s*>//go;
     $xml =~ s/>\s+</></go;
-    $xml = OpenILS::Application::AppUtils->entityize($xml);
     $xml =~ s/\p{Cc}//go;
+    $xml = OpenILS::Application::AppUtils->entityize($xml);
     $xml =~ s/[\x00-\x1f]//go;
     return $xml;
 }
