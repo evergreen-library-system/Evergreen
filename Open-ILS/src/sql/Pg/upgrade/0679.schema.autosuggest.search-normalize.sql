@@ -1,6 +1,11 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0679', :eg_version);
+
+-- Address typo in column name
+ALTER TABLE config.metabib_class ADD COLUMN buoyant BOOL DEFAULT FALSE NOT NULL;
+UPDATE config.metabib_class SET buoyant = bouyant;
+ALTER TABLE config.metabib_class DROP COLUMN bouyant;
 
 CREATE OR REPLACE FUNCTION oils_tsearch2 () RETURNS TRIGGER AS $$
 DECLARE
