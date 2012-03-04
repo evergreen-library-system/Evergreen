@@ -116,16 +116,16 @@ make -f Open-ILS/src/extras/Makefile.install <osname>
 ------------------------------------------------------------------------------
 +
 [NOTE]
-`centos` and `rhel` are less tested than the `debian`, `fedora`,
-and `ubuntu` options.  Your patches and suggestions for improvement are
+`centos` and `rhel` are less tested than the `debian`, `fedora`, `ubuntu-lucid`,
+and `ubuntu-precise` options.  Your patches and suggestions for improvement are
 welcome!
 +
 5. Add the libdbi-libdbd libraries to the system dynamic library path by
    issuing the following commands as the *root* Linux account:
 +
 [NOTE]
-You should skip this step if installing on Ubuntu 12.04 LTS (Precise
-Pangolin).  The ubuntu-precise target uses libdbd-pgsql from packages.
+You should skip this step if installing on Ubuntu Precise. The ubuntu-precise
+target uses libdbd-pgsql from packages.
 +
 .Debian / Ubuntu Lucid
 [source, bash]
@@ -313,17 +313,17 @@ Creating the Evergreen database
 By default, the `Makefile.install` prerequisite installer does not install
 the PostgreSQL 9 database server required by every Evergreen system;
 for production use, most libraries install the PostgreSQL database server on a
-dedicated machine. You can install the packages required by Debian or Ubuntu
+dedicated machine. You can install the packages required by Debian or Ubuntu Lucid
 on the machine of your choice using the following commands as the *root*
 Linux account:
 
-.(Debian) Installing PostgreSQL 9.1 server packages
+.(Debian and Ubuntu Lucid) Installing PostgreSQL 9.1 server packages
 [source, bash]
 ------------------------------------------------------------------------------
 make -f Open-ILS/src/extras/Makefile.install install_pgsql_server_backport_debs_91
 ------------------------------------------------------------------------------
 
-.(Ubuntu) Installing PostgreSQL 9.1 server packages
+.(Ubuntu Precise) Installing PostgreSQL 9.1 server packages
 [source, bash]
 ------------------------------------------------------------------------------
 make -f Open-ILS/src/extras/Makefile.install install_pgsql_server_debs_91
