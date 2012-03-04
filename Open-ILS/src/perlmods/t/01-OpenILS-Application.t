@@ -1,6 +1,6 @@
 #!perl -T
 
-use Test::More tests => 13;
+use Test::More tests => 14;
 
 BEGIN {
 	use_ok( 'OpenILS::Application' );
@@ -18,3 +18,9 @@ use_ok( 'OpenILS::Application::ResolverResolver' );
 use_ok( 'OpenILS::Application::Serial' );
 use_ok( 'OpenILS::Application::SuperCat' );
 use_ok( 'OpenILS::Application::Vandelay' );
+
+is(
+    OpenILS::Application::AppUtils::entityize(0, 'èöçÇÈÀ'),
+    '&#xE8;&#xF6;&#xE7;&#xC7;&#xC8;&#xC0;',
+    'entityize: diacritics'
+);

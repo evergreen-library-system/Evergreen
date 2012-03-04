@@ -115,8 +115,8 @@ sub clean_marc {
     $xml =~ s/\n//sog;
     $xml =~ s/^<\?xml.+\?\s*>//go;
     $xml =~ s/>\s+</></go;
-    $xml =~ s/\p{Cc}//go;
     $xml = OpenILS::Application::AppUtils->entityize($xml);
+    $xml =~ s/\p{Cc}//go;
     $xml =~ s/[\x00-\x1f]//go;
     return $xml;
 }
