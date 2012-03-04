@@ -1349,11 +1349,11 @@ CREATE OR REPLACE
     ) RETURNS TABLE (
         value                   TEXT,   -- plain
         field                   INTEGER,
-        bouyant_and_class_match BOOL,
+        buoyant_and_class_match BOOL,
         field_match             BOOL,
         field_weight            INTEGER,
         rank                    REAL,
-        bouyant                 BOOL,
+        buoyant                 BOOL,
         match                   TEXT    -- marked up
     ) AS $func$
 DECLARE
@@ -1423,11 +1423,11 @@ BEGIN
     RETURN QUERY EXECUTE 'SELECT *, TS_HEADLINE(value, $7, $3) FROM (SELECT DISTINCT
         mbe.value,
         cmf.id,
-        cmc.bouyant AND _registered.field_class IS NOT NULL,
+        cmc.buoyant AND _registered.field_class IS NOT NULL,
         _registered.field = cmf.id,
         cmf.weight,
         TS_RANK_CD(mbe.index_vector, $1, $6),
-        cmc.bouyant
+        cmc.buoyant
     FROM metabib.browse_entry_def_map mbedm
     JOIN metabib.browse_entry mbe ON (mbe.id = mbedm.entry)
     JOIN config.metabib_field cmf ON (cmf.id = mbedm.def)
@@ -1444,11 +1444,11 @@ BEGIN
         ;
 
     -- sort order:
-    --  bouyant AND chosen class = match class
+    --  buoyant AND chosen class = match class
     --  chosen field = match field
     --  field weight
     --  rank
-    --  bouyancy
+    --  buoyancy
     --  value itself
 
 END;

@@ -167,7 +167,7 @@ INSERT INTO config.biblio_fingerprint (name, xpath, format, first_word)
 CREATE TABLE config.metabib_class (
     name     TEXT    PRIMARY KEY,
     label    TEXT    NOT NULL UNIQUE,
-    bouyant  BOOL    DEFAULT FALSE NOT NULL,
+    buoyant  BOOL    DEFAULT FALSE NOT NULL,
     restrict BOOL    DEFAULT FALSE NOT NULL
 );
 
