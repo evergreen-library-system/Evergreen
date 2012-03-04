@@ -109,18 +109,13 @@ add-apt-repository ppa:pitti/postgresql
    retrieve the new packages from the backports repository.
 4. Issue the following commands as the *root* Linux account to install
    prerequisites using the `Makefile.install` prerequisite installer,
-   substituting `debian-squeeze`, `fedora16`, `ubuntu-lucid`, `ubuntu-precise`,
-   `centos`, or `rhel` for <osname> below:
+   substituting `debian-squeeze`, `fedora16`, `ubuntu-lucid`, or
+   `ubuntu-precise` for <osname> below:
 +
 [source, bash]
 ------------------------------------------------------------------------------
 make -f Open-ILS/src/extras/Makefile.install <osname>
 ------------------------------------------------------------------------------
-+
-[NOTE]
-`centos` and `rhel` are less tested than the `debian`, `fedora`, `ubuntu-lucid`,
-and `ubuntu-precise` options.  Your patches and suggestions for improvement are
-welcome!
 +
 5. Add the libdbi-libdbd libraries to the system dynamic library path by
    issuing the following commands as the *root* Linux account:
