@@ -424,7 +424,7 @@
 <menu id="main.menu.admin" label="&staff.main.menu.admin.label;" accesskey="&staff.main.menu.admin.accesskey;">
     <menupopup id="main.menu.admin.popup">
         <menuitem id="oc_menuitem" label="&staff.main.menu.admin.change_session.label;" label_orig="&staff.main.menu.admin.change_session.label;" 
-            accesskey="O" command="cmd_change_session"/>
+            accesskey="O" command="cmd_change_session" forceFirst="true"/>
         <menuitem label="&staff.main.menu.admin.offline_xacts.label;" accesskey="&staff.main.menu.admin.offline_xacts.accesskey;" command="cmd_manage_offline_xacts"/>
         <menuitem label="&staff.main.menu.admin.download_patrons.label;" accesskey="&staff.main.menu.admin.download_patrons.accesskey;" command="cmd_download_patrons"/>
         <menuseparator />

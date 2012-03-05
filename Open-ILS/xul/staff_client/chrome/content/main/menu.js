@@ -1696,6 +1696,9 @@ main.menu.prototype = {
         obj.controller.view.tabs = window.document.getElementById('main_tabs');
         obj.controller.view.panels = window.document.getElementById('main_panels');
         obj.controller.view.tabscroller = window.document.getElementById('main_tabs_scrollbox');
+
+        obj.sort_menu(document.getElementById('main.menu.admin'), true);
+
         if(params['firstURL']) {
             obj.new_tab(params['firstURL'],{'focus':true},null);
         }
@@ -2463,6 +2466,45 @@ commands:
         else
             // user_false is used to indicate the user said "None of the above" to avoid fall-through erroring later.
             return "user_false";
+    },
+
+    'sort_menu' : function(menu, recurse) {
+        var curgroup = new Array();
+        var curstart = 1;
+        var curordinal = 0;
+        for (var itemid = 0; itemid < menu.firstChild.children.length; itemid++) {
+            var item = menu.firstChild.children[itemid];
+            curordinal++;
+            if (item.getAttribute('forceFirst')) {
+                item.setAttribute('ordinal', curstart);
+                curstart++;
+                continue;
+            }
+            if (item.nodeName == 'menuseparator') {
+                this.sort_menu_items(curgroup, curstart);
+                item.setAttribute('ordinal', curordinal);
+                curstart = curordinal + 1;
+                curgroup = new Array();
+                continue;
+            }
+            if (item.nodeName == 'menu' && recurse) {
+                this.sort_menu(item, recurse);
+            }
+            curgroup.push(item);
+        }
+        this.sort_menu_items(curgroup, curstart);
+    },
+
+    'sort_menu_items' : function(itemgroup, start) {
+        var curpos = start;
+        var sorted = itemgroup.sort(function(a,b) {
+            var labelA = a.getAttribute('label').toUpperCase();
+            var labelB = b.getAttribute('label').toUpperCase();
+            return labelA.localeCompare(labelB);
+        });
+        for(var item = 0; item < sorted.length; item++) {
+            sorted[item].setAttribute('ordinal', curpos++);
+        }
     },
 
     'observe' : function(subject, topic, data) {
