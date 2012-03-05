@@ -24,7 +24,7 @@
                 store_args='{"org_unit_getter": function() { return [% ctx.search_ou %]; }}'
                 [%-     END # opac_visible -%]
                 [%- ELSE -%]
-                x-webkit-speech
+                autofocus x-webkit-speech
                 [%- END # autosuggest enabled %] />
         </span>
         [%- INCLUDE "opac/parts/qtype_selector.tt2" id="qtype";
