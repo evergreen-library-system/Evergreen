@@ -174,6 +174,14 @@ util.list.prototype = {
                 false
             );
         }
+        if (typeof params.on_dblclick == 'function') {
+            this.node.addEventListener(
+                'dblclick',
+                params.on_dblclick,
+                false
+            );
+        }
+
         /*
         this.node.addEventListener(
             'mousemove',

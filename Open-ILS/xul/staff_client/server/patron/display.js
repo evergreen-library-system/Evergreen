@@ -735,6 +735,10 @@ patron.display.prototype = {
                             'query' : query,
                             'search_limit' : search_limit,
                             'search_sort' : search_sort,
+                            'on_dblclick' : function(list) {
+                                JSAN.use('util.widgets');
+                                util.widgets.dispatch('command','cmd_patron_retrieve')
+                            },
                             'on_select' : function(list) {
                                 if (!list) return;
                                 if (list.length < 1) return;

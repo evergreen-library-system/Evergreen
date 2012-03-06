@@ -1841,6 +1841,18 @@ cat.copy_browser.prototype = {
                             window.xulG.on_select(list);
                         }
                     },
+                    'on_dblclick' : function(ev) {
+                        JSAN.use('util.functional');
+                        JSAN.use('util.widgets');
+                        var sel = obj.list.retrieve_selection();
+                        obj.controller.view.sel_clip.disabled = sel.length < 1;
+                        obj.sel_list = util.functional.map_list(
+                            sel,
+                            function(o) { return o.getAttribute('retrieve_id'); }
+                        );
+                        obj.toggle_actions();
+                        util.widgets.dispatch('command','cmd_edit_items');
+                    },
                     'on_select' : function(ev) {
                         JSAN.use('util.functional');
                         var sel = obj.list.retrieve_selection();
