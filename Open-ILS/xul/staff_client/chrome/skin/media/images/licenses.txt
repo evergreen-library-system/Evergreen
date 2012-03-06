@@ -1,3 +1,8 @@
+newtab.png comes from the Mozilla source tree:
+http://mxr.mozilla.org/mozilla-central/source/browser/themes/winstripe/tabbrowser/newtab.png
+http://mxr.mozilla.org/mozilla-central/source/browser/themes/LICENSE
+"All files in this directory are assumed to be licensed under the tri-license (MPL/GPL/LGPL) used throughout this codebase."
+
 HILLBLU_lente_32x32 and HILLBLU_lente_toolbar derived from:
 http://commons.wikimedia.org/wiki/File:HILLBLU_lente.png
 Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.2 or any later version published by the Free Software Foundation; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license is included in the section entitled "GNU Free Documentation License".

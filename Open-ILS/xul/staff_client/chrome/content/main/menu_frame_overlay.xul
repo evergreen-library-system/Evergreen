@@ -17,11 +17,13 @@
     <toolbox id="main_toolbox"/>
     <tabbox id="main_tabbox" flex="1" eventnode="window" handleCtrlTab="true">
         <hbox>
-            <arrowscrollbox orient="horizontal" id="main_tabs_scrollbox" flex="2">
+            <arrowscrollbox orient="horizontal" id="main_tabs_scrollbox" flex="1">
                 <tabs id="main_tabs">
                     <tab hidden="true" />
                 </tabs>
             </arrowscrollbox>
+            <toolbarbutton id="main_tabs_newbutton" class="tabs-button" style="list-style-image: url('chrome://open_ils_staff_client/skin/media/images/newtab.png');" command="cmd_new_tab" />
+            <spacer flex="10000"/>
             <toolbarbutton id="main_tabs_closebutton" class="tabs-closebutton close-button" command="cmd_close_tab" />
         </hbox>
         <tabpanels id="main_panels" flex="1">
