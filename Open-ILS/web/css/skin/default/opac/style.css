@@ -1396,3 +1396,13 @@ table.bookbag-specific {
     font-size: 75%; padding: 0.65em 0;
     text-align: right; color: #666;
 }
+table.result_holdings_table {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+table.result_holdings_table thead tr {
+    background: #D8D8D8;
+}
+table.result_holdings_table thead tr th {
+    font-weight: bold;
+}
