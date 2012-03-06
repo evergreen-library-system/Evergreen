@@ -97,7 +97,7 @@ sub query {
             if ($i->{barcode} ne $bc || $i->{phone_notify} ne $pn) {
                 if ($count > 0 && $skipme == 0) {
                     my $phone = $pn;
-                    $phone =~ s/-//g;
+                    $phone =~ s/[- ]//g;
                     my $out = [$name, $phone, $bc];
                     push(@$out, $count) if ($self->addcount);
                     push(@{$self->{results}}, $out);
