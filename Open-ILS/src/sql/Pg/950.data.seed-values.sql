@@ -146,34 +146,34 @@ INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, 
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, browse_field ) VALUES
     (16, 'subject', 'complete', oils_i18n_gettext(16, 'All Subjects', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject$$, FALSE );
 
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
-    (17, 'identifier', 'accession', oils_i18n_gettext(17, 'Accession Number', 'cmf', 'label'), 'marcxml', $$//marc:controlfield[@tag='001']$$ );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
-    (18, 'identifier', 'isbn', oils_i18n_gettext(18, 'ISBN', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='020']/marc:subfield[@code='a' or @code='z']$$ );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
-    (19, 'identifier', 'issn', oils_i18n_gettext(19, 'ISSN', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='022']/marc:subfield[@code='a' or @code='z']$$ );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
-    (20, 'identifier', 'upc', oils_i18n_gettext(20, 'UPC', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='024' and @ind1='1']/marc:subfield[@code='a' or @code='z']$$ );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
-    (21, 'identifier', 'ismn', oils_i18n_gettext(21, 'ISMN', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='024' and @ind1='2']/marc:subfield[@code='a' or @code='z']$$ );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
-    (22, 'identifier', 'ean', oils_i18n_gettext(22, 'EAN', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='024' and @ind1='3']/marc:subfield[@code='a' or @code='z']$$ );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
-    (23, 'identifier', 'isrc', oils_i18n_gettext(23, 'ISRC', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='024' and @ind1='0']/marc:subfield[@code='a' or @code='z']$$ );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
-    (24, 'identifier', 'sici', oils_i18n_gettext(24, 'SICI', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='024' and @ind1='4']/marc:subfield[@code='a' or @code='z']$$ );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
-    (25, 'identifier', 'bibcn', oils_i18n_gettext(25, 'Local Free-Text Call Number', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='099']$$ );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
-    (26, 'identifier', 'tcn', oils_i18n_gettext(26, 'Title Control Number', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='901']/marc:subfield[@code='a']$$ );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
-    (27, 'identifier', 'bibid', oils_i18n_gettext(27, 'Internal ID', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='901']/marc:subfield[@code='c']$$ );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, search_field, facet_field) VALUES
-    (28, 'identifier', 'authority_id', oils_i18n_gettext(28, 'Authority Record ID', 'cmf', 'label'), 'marcxml', '//marc:datafield/marc:subfield[@code="0"]', FALSE, TRUE);
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath) VALUES
-    (29, 'identifier', 'scn', oils_i18n_gettext(29, 'System Control Number', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='035']/marc:subfield[@code="a"]$$);
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath) VALUES
-    (30, 'identifier', 'lccn', oils_i18n_gettext(30, 'LC Control Number', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='010']/marc:subfield[@code="a" or @code='z']$$);
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, browse_field ) VALUES
+    (17, 'identifier', 'accession', oils_i18n_gettext(17, 'Accession Number', 'cmf', 'label'), 'marcxml', $$//marc:controlfield[@tag='001']$$, FALSE );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, browse_field ) VALUES
+    (18, 'identifier', 'isbn', oils_i18n_gettext(18, 'ISBN', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='020']/marc:subfield[@code='a' or @code='z']$$, FALSE );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, browse_field ) VALUES
+    (19, 'identifier', 'issn', oils_i18n_gettext(19, 'ISSN', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='022']/marc:subfield[@code='a' or @code='z']$$, FALSE );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, browse_field ) VALUES
+    (20, 'identifier', 'upc', oils_i18n_gettext(20, 'UPC', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='024' and @ind1='1']/marc:subfield[@code='a' or @code='z']$$, FALSE );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, browse_field ) VALUES
+    (21, 'identifier', 'ismn', oils_i18n_gettext(21, 'ISMN', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='024' and @ind1='2']/marc:subfield[@code='a' or @code='z']$$, FALSE );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, browse_field ) VALUES
+    (22, 'identifier', 'ean', oils_i18n_gettext(22, 'EAN', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='024' and @ind1='3']/marc:subfield[@code='a' or @code='z']$$, FALSE );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, browse_field ) VALUES
+    (23, 'identifier', 'isrc', oils_i18n_gettext(23, 'ISRC', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='024' and @ind1='0']/marc:subfield[@code='a' or @code='z']$$, FALSE );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, browse_field ) VALUES
+    (24, 'identifier', 'sici', oils_i18n_gettext(24, 'SICI', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='024' and @ind1='4']/marc:subfield[@code='a' or @code='z']$$, FALSE );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, browse_field ) VALUES
+    (25, 'identifier', 'bibcn', oils_i18n_gettext(25, 'Local Free-Text Call Number', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='099']$$, FALSE );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, browse_field ) VALUES
+    (26, 'identifier', 'tcn', oils_i18n_gettext(26, 'Title Control Number', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='901']/marc:subfield[@code='a']$$, FALSE );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, browse_field ) VALUES
+    (27, 'identifier', 'bibid', oils_i18n_gettext(27, 'Internal ID', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='901']/marc:subfield[@code='c']$$, FALSE );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, search_field, facet_field, browse_field) VALUES
+    (28, 'identifier', 'authority_id', oils_i18n_gettext(28, 'Authority Record ID', 'cmf', 'label'), 'marcxml', '//marc:datafield/marc:subfield[@code="0"]', FALSE, TRUE, FALSE);
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, browse_field) VALUES
+    (29, 'identifier', 'scn', oils_i18n_gettext(29, 'System Control Number', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='035']/marc:subfield[@code="a"]$$, FALSE);
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, browse_field) VALUES
+    (30, 'identifier', 'lccn', oils_i18n_gettext(30, 'LC Control Number', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='010']/marc:subfield[@code="a" or @code='z']$$, FALSE);
 
 SELECT SETVAL('config.metabib_field_id_seq'::TEXT, (SELECT MAX(id) FROM config.metabib_field), TRUE);
 

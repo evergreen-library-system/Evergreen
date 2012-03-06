@@ -140,7 +140,7 @@ CREATE TABLE metabib.browse_entry (
     value TEXT unique,
     index_vector tsvector
 );
-CREATE INDEX metabib_browse_entry_index_vector_idx ON metabib.browse_entry USING GIST (index_vector);
+CREATE INDEX metabib_browse_entry_index_vector_idx ON metabib.browse_entry USING GIN (index_vector);
 CREATE TRIGGER metabib_browse_entry_fti_trigger
     BEFORE INSERT OR UPDATE ON metabib.browse_entry
     FOR EACH ROW EXECUTE PROCEDURE oils_tsearch2('keyword');
@@ -152,6 +152,10 @@ CREATE TABLE metabib.browse_entry_def_map (
     def INT REFERENCES config.metabib_field (id),
     source BIGINT REFERENCES biblio.record_entry (id)
 );
+CREATE INDEX browse_entry_def_map_def_idx ON metabib.browse_entry_def_map (def);
+CREATE INDEX browse_entry_def_map_entry_idx ON metabib.browse_entry_def_map (entry);
+CREATE INDEX browse_entry_def_map_source_idx ON metabib.browse_entry_def_map (source);
+
 
 
 CREATE OR REPLACE FUNCTION metabib.facet_normalize_trigger () RETURNS TRIGGER AS $$
@@ -1294,7 +1298,7 @@ BEGIN
         END IF;
     END IF;
 END;
-$func$ LANGUAGE PLPGSQL;
+$func$ LANGUAGE PLPGSQL ROWS 1;
 
 
 -- Given a string such as a user might type into a search box, prepare
@@ -1372,7 +1376,7 @@ BEGIN
     IF visibility_org IS NOT NULL THEN
         opac_visibility_join := '
     JOIN asset.opac_visible_copies aovc ON (
-        aovc.record = mbedm.source AND
+        aovc.record = x.source AND
         aovc.circ_lib IN (SELECT id FROM actor.org_unit_descendants($4))
     )';
     ELSE
@@ -1420,24 +1424,36 @@ BEGIN
     ';
     END IF;
 
-    RETURN QUERY EXECUTE 'SELECT *, TS_HEADLINE(value, $7, $3) FROM (SELECT DISTINCT
-        mbe.value,
-        cmf.id,
-        cmc.buoyant AND _registered.field_class IS NOT NULL,
-        _registered.field = cmf.id,
-        cmf.weight,
-        TS_RANK_CD(mbe.index_vector, $1, $6),
-        cmc.buoyant
-    FROM metabib.browse_entry_def_map mbedm
-    JOIN metabib.browse_entry mbe ON (mbe.id = mbedm.entry)
-    JOIN config.metabib_field cmf ON (cmf.id = mbedm.def)
-    JOIN config.metabib_class cmc ON (cmf.field_class = cmc.name)
-    '  || search_class_join || opac_visibility_join ||
-    ' WHERE $1 @@ mbe.index_vector
-    ORDER BY 3 DESC, 4 DESC NULLS LAST, 5 DESC, 6 DESC, 7 DESC, 1 ASC
-    LIMIT $5) x
-    ORDER BY 3 DESC, 4 DESC NULLS LAST, 5 DESC, 6 DESC, 7 DESC, 1 ASC
-    '   -- sic, repeat the order by clause in the outer select too
+    RETURN QUERY EXECUTE '
+SELECT  DISTINCT
+        x.value,
+        x.id,
+        x.push,
+        x.restrict,
+        x.weight,
+        x.ts_rank_cd,
+        x.buoyant,
+        TS_HEADLINE(value, $7, $3)
+  FROM  (SELECT DISTINCT
+                mbe.value,
+                cmf.id,
+                cmc.buoyant AND _registered.field_class IS NOT NULL AS push,
+                _registered.field = cmf.id AS restrict,
+                cmf.weight,
+                TS_RANK_CD(mbe.index_vector, $1, $6),
+                cmc.buoyant,
+                mbedm.source
+          FROM  metabib.browse_entry_def_map mbedm
+                JOIN (SELECT * FROM metabib.browse_entry WHERE index_vector @@ $1 LIMIT 10000) mbe ON (mbe.id = mbedm.entry)
+                JOIN config.metabib_field cmf ON (cmf.id = mbedm.def)
+                JOIN config.metabib_class cmc ON (cmf.field_class = cmc.name)
+                '  || search_class_join || '
+          ORDER BY 3 DESC, 4 DESC NULLS LAST, 5 DESC, 6 DESC, 7 DESC, 1 ASC
+          LIMIT 1000) AS x
+        ' || opac_visibility_join || '
+  ORDER BY 3 DESC, 4 DESC NULLS LAST, 5 DESC, 6 DESC, 7 DESC, 1 ASC
+  LIMIT $5
+'   -- sic, repeat the order by clause in the outer select too
     USING
         query, search_class, headline_opts,
         visibility_org, query_limit, normalization, plain_query
