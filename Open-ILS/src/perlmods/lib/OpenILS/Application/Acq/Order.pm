@@ -1338,7 +1338,8 @@ sub import_lineitem_details {
                 circ_modifier   => $$compiled{circ_modifier},
                 note            => $$compiled{note},
                 location        => $$compiled{copy_location},
-                collection_code => $$compiled{collection_code}
+                collection_code => $$compiled{collection_code},
+                barcode         => $$compiled{barcode}
             ) or return 0;
         }
 
