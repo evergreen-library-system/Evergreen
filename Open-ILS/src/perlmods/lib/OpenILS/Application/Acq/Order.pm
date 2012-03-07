@@ -1231,7 +1231,7 @@ sub upload_records {
         $po = create_purchase_order($mgr, 
             ordering_agency => $ordering_agency,
             provider => $provider->id,
-            state => 'on-order'
+            state => 'pending' # will be updated later if activated
         ) or return $mgr->editor->die_event;
     }
 
