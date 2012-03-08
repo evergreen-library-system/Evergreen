@@ -15,6 +15,10 @@ ght_depth = 0;
 
 VIEW grouped_holding_tree;
     BLOCK list;
+        level_description = item.shift;
+        level_description.caption =
+            level_description.caption.replace('[\(\)]', '');
+
         '<div class="rdetail-holding-group">';
         prev_seoffset_list = seoffset_list.slice(0, ght_depth);
         next_seoffset_list = seoffset_list.slice(0, ght_depth);
@@ -24,11 +28,18 @@ VIEW grouped_holding_tree;
             prev_seoffset_list.$ght_depth = 0;
         END;
 
+        has_more = 0;
+        at_deepest_level = 0;
+
         next_seoffset_list.$ght_depth = next_seoffset_list.$ght_depth + selimit;
-        IF item.0.units.size;
+        IF item.0.units;
             INCLUDE "opac/parts/record/copy_table.tt2" serial_holdings=item;
             "<hr />";
-            "</div>";
+
+            at_deepest_level = 1;
+            IF NOT item.last.label;
+                has_more = 1;
+            END;
         ELSE;
             FOREACH node IN item;
                 IF NOT node.label;
@@ -80,31 +91,58 @@ VIEW grouped_holding_tree;
                     waste = ght_sepath.pop;
                 ELSE;
                     "<div class='rdetail-holding-group'>"; node.label; "</div>";
-                    # XXX Hold placement link here? Maybe not if no units.
+                    at_deepest_level = 1;
                 END;
             END;
-
-            to_clear = 0;
-            new_sepath_end = ght_depth - 1;
-            IF new_sepath_end < 0;
-                to_clear = ['sepath'];
-                new_sepath = [];
-            ELSE;
-                new_sepath = expand_path.slice(0, ght_depth - 1);
-            END;
-
-            IF has_more;
-                '<a class="paging" href="';
-                    mkurl('',{seoffset => next_seoffset_list, sepath => new_sepath},to_clear,'issues');
-                '">&laquo; '; l('Earlier holdings'); '</a>';
-            END;
-            IF seoffset_list.$ght_depth > 0;
-                '<a class="paging" href="';
-                    mkurl('',{seoffset => prev_seoffset_list, sepath => new_sepath},to_clear,'issues');
-                '">'; l('Later holdings'); ' &raquo;</a>&nbsp; ';
-            END;
-            '</div>';
         END;
+
+        to_clear = 0;
+        new_sepath_end = ght_depth - 1;
+        IF new_sepath_end < 0;
+            to_clear = ['sepath'];
+            new_sepath = [];
+        ELSE;
+            new_sepath = expand_path.slice(0, ght_depth - 1);
+        END;
+
+        # So the "holdings" level of the tree is sorted ascending, while all
+        # the higher levels are sorted descending.  This seems weird until you
+        # look at it.  I dunno. I think it feels right.  It could be changed I
+        # guess.  Anyway, this means we have to be careful about which
+        # paging link we label "earlier" and which one we label "later."
+
+        next_link = ''; prev_link = '';
+        IF has_more;
+            next_link = '<a class="paging" href="' _
+                mkurl('',{seoffset => next_seoffset_list, sepath => new_sepath},to_clear,'issues') _ '">LABEL_HERE</a>&nbsp; ';
+        END;
+        IF seoffset_list.$ght_depth > 0;
+            prev_link = '<a class="paging" href="' _
+                mkurl('',{seoffset => prev_seoffset_list, sepath => new_sepath},to_clear,'issues') _ '">LABEL_HERE</a>&nbsp; ';
+        END;
+
+        IF at_deepest_level;
+            prev_link.replace('LABEL_HERE', '&laquo; ' _ l('Earlier issues'));
+            next_link.replace('LABEL_HERE', l('Later issues') _ ' &raquo;');
+        ELSE;
+            # XXX this is really bad for i18n (notice the sloppy pluralization),
+            # but then the middle layer for serials only knows English names
+            # for things like "month". There's a bigger problem to solve
+            # here...
+            caption = level_description.caption;
+            IF level_description.display_grouping == 'chron';
+                caption = caption _ 's';
+            END;
+            next_link.replace(
+                'LABEL_HERE',
+                '&laquo; ' _ l('Earlier') _ ' ' _ caption
+            );
+            prev_link.replace(
+                'LABEL_HERE',
+                l('Later') _ ' ' _ caption _ ' &raquo;'
+            );
+        END;
+        '</div>';
     END;
 END;
 

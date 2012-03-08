@@ -375,8 +375,8 @@ sub grouped_holdings_for_summary {
     ($summary_type .= "") =~ s/[^\w]//g;
     $summary_id = int($summary_id);
     $expand_path ||= [];
-    $limit ||= 10;
-    $limit = 10 if $limit < 1;
+    $limit ||= 12;
+    $limit = 12 if $limit < 1;
     $offsets ||= [0];
 
     foreach ($expand_path, $offsets) {
@@ -519,13 +519,16 @@ sub grouped_holdings_for_summary {
 
     # Make the tree we have so far.
     my $tree = [
+        { display_grouping => $display_grouping,
+            caption => $pattern_field->subfield($subfield) },
         map(
             _make_grouped_holding_node(
                 $_, $subfield, $deepest_level, $pattern_field,
                 $unit_data, $mfhd_cache
             ),
             @$top
-        ), ($top_more ? undef : ())
+        ),
+        ($top_more ? undef : ())
     ];
 
     # We'll need a parent reference at each level as we descend.
@@ -582,13 +585,16 @@ sub grouped_holdings_for_summary {
 
         # Set parent for the next iteration.
         $parent = $point->{children} = [
+            { display_grouping => $display_grouping,
+                caption => $pattern_field->subfield($subfield) },
             map(
                 _make_grouped_holding_node(
                     $_, $subfield, $deepest_level, $pattern_field,
                     $unit_data, $mfhd_cache
                 ),
                 @$level
-            ), ($level_more ? undef : ())
+            ),
+            ($level_more ? undef : ())
         ];
 
         last if $subfield eq $deepest_level;
@@ -610,7 +616,7 @@ __PACKAGE__->register_method(
             { name => "summary_id", type => "number" },
             { name => "expand_path", type => "array",
                 desc => "In root-to-leaf order, the values of the nodes along the axis you want to expand" },
-            { name => "limit (default 10)", type => "number" },
+            { name => "limit (default 12)", type => "number" },
             { name => "offsets", type => "array", desc =>
                 "This must be exactly one element longer than expand_path" },
             { name => "auto_expand_first", type => "boolean", desc =>
