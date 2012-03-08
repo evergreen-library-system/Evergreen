@@ -2097,8 +2097,11 @@ $F$ LANGUAGE SQL;
 -- remove transient activity entries on insert of new entries
 CREATE OR REPLACE FUNCTION actor.usr_activity_transient_trg () RETURNS TRIGGER AS $$
 BEGIN
-    DELETE FROM actor.usr_activity USING config.usr_activity_type atype
-        WHERE atype.transient AND NEW.etype = atype.id;
+    DELETE FROM actor.usr_activity act USING config.usr_activity_type atype
+        WHERE atype.transient AND 
+            NEW.etype = atype.id AND
+            act.etype = atype.id AND
+            act.usr = NEW.usr;
     RETURN NEW;
 END;
 $$ LANGUAGE PLPGSQL;
