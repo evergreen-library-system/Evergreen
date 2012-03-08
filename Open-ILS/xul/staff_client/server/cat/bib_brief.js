@@ -196,7 +196,7 @@ function add_volumes() {
         var w = xulG.new_tab(
             url,
             { 'tab_name' : title },
-            { 'doc_id' : docid, 'ou_ids' : [ ses('ws_ou') ] }
+            { 'doc_id' : docid, 'ou_ids' : [ ses('ws_ou') ], 'reload_opac' : xulG.reload_opac }
         );
     } catch(E) {
         alert('Error in server/cat/bib_brief.js, add_volumes(): ' + E);

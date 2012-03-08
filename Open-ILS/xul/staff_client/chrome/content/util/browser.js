@@ -132,17 +132,7 @@ util.browser.prototype = {
                             ['command'],
                             function() {
                                 try {
-                                    if (obj.lock_reload) {
-                                        if (window.confirm( $('offlineStrings').getString('browser.reload.unsaved_data_warning') )) {
-                                            obj.lock_reload = false;
-                                            window.xulG.unlock_tab();
-                                        } else {
-                                            return;
-                                        }
-                                    }
-                                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-                                    var n = obj.getWebNavigation();
-                                    n.reload( Components.interfaces.nsIWebNavigation.LOAD_FLAGS_NONE );
+                                    obj.reload();
                                 } catch(E) {
                                     var err = 'cmd_reload: ' + E;
                                     obj.error.sdump('D_ERROR',err);
@@ -180,6 +170,21 @@ util.browser.prototype = {
         } catch(E) {
             this.error.sdump('D_ERROR','util.browser.init: ' + E + '\n');
         }
+    },
+
+    'reload' : function() {
+        var obj = this;
+        if (obj.lock_reload) {
+            if (window.confirm( $('offlineStrings').getString('browser.reload.unsaved_data_warning') )) {
+                obj.lock_reload = false;
+                window.xulG.unlock_tab();
+            } else {
+                return;
+            }
+        }
+        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+        var n = obj.getWebNavigation();
+        n.reload( Components.interfaces.nsIWebNavigation.LOAD_FLAGS_NONE );
     },
 
     'find' : function(text) {

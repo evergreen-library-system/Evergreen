@@ -1208,6 +1208,9 @@ g.stash_and_close = function(param) {
             xulG.unlock_copy_editor();
         }
 
+        if (typeof xulG.reload_opac == 'function') {
+            xulG.reload_opac();
+        }
         if (xul_param('load_opac_when_done')) {
             var opac_url = xulG.url_prefix( urls.opac_rdetail ) + g.doc_id;
             var content_params = {

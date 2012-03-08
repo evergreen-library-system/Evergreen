@@ -1998,7 +1998,14 @@ cat.copy_browser.prototype = {
             obj.org_ids = util.functional.map_list( obj.org_ids, function (o) { return Number(o); });
             obj.show_my_libs( obj.default_lib.id() );
             // FIXME - we get a null from the copy_count call if we call it too quickly here
-            setTimeout( function() { obj.show_consortial_count(); }, 2000 );
+            setTimeout(
+                function() {
+                    obj.show_consortial_count();
+                    if (typeof xulG.reload_opac == 'function') {
+                        xulG.reload_opac();
+                    }
+                }, 2000
+            );
         } catch(E) {
             this.error.standard_unexpected_error_alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.refresh_list.error'),E);
         }
