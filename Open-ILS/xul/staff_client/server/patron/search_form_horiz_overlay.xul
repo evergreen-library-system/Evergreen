@@ -27,6 +27,10 @@
                 <label control="search_range_menu" value="&staff.patron.search_form_overlay.search_range_menu.value;"/>
                 <hbox id="search_depth" />
             </hbox>
+            <hbox>
+                <label control="search_profile_menu" value="&staff.patron_search_form.profile.label;"/>
+                <hbox id="profile" />
+            </hbox>
         </hbox>
         <hbox>
             <grid id="psg" />
