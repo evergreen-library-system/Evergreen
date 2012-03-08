@@ -98,6 +98,27 @@ may be particularly useful for libraries that have defined one set of copy
 locations at the consortial level and want to enable quick keyboard navigation
 to copy locations by typing just the first letters of the copy location.
 
+Authentication proxy
+~~~~~~~~~~~~~~~~~~~~
+To support integration of Evergreen with organizational authentication systems,
+and to reduce the proliferation of user names and passwords, Evergreen offers 
+a new service called `open-ils.auth_proxy`. If you enable the service,
+`open-ils.auth_proxy` supports different authentication mechanisms
+that implement the `authenticate` method. You can define a chain of these
+authentication mechanisms to be tried in order within the `<authenticators>`
+element of the `opensrf.xml` configuration file, with the option of falling
+back to the `native` mode that uses Evergreen's internal method of password
+authentication.
+
+This service only provides authentication; there is no support for automatic
+provisioning of accounts. To authenticate against any authentication system,
+the user account must first be defined within the Evergreen system, and
+authentication will be based on the user name as it exists in Evergreen.
+
+A sample authentication mechanism for LDAP is provided in
+`Open-ILS::Application::AuthProxy::LDAP_AUTH`, and corresponding sample
+attributes can be found in `opensrf.xml.example`.
+
 Reports
 ~~~~~~~
 
