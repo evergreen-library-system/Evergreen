@@ -1,9 +1,9 @@
--- Evergreen DB patch XXXX.schema.user-activity.sql
+-- Evergreen DB patch 0681.schema.user-activity.sql
 --
 BEGIN;
 
 -- check whether patch can be applied
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0681', :eg_version);
 
 -- SCHEMA --
 
