@@ -35,6 +35,41 @@ UPDATE biblio.record_entry
 ;
 ------------------------------------------------------------------------------
 
+Z39.50 server definitions
+~~~~~~~~~~~~~~~~~~~~~~~~~
+Z39.50 server target definitions have been removed from the sample
+`opensrf.xml.example` file. To migrate existing settings from your
+`opensrf.xml` configuration file to the database, peform the
+following steps:
+
+    1. First, set up your custom Z39.50 sources in the database. For
+      each entry in `z3950/services`, map the following XML paths to the
+      corresponding `config.z3950_source` table column as follows:
++
+      ** `z3950/services/<entry>` = name
+      ** `//<entry>/name` = label
+      ** `//<entry>/host` = host
+      ** `//<entry>/port` = port
+      ** `//<entry>/db` = db
+      ** `//<entry>/record_format` = record_format
+      ** `//<entry>/transmission_format` = transmission_format
++
+    2. Then, for each attribute defined in the `<attrs>` element for
+       a given service, map the following XML paths to the corresponding
+       `config.z3950_attr` table column as follows:
++
+      ** `z3950/services/<entry>` = source
+      ** `//<entry>/attrs/<attr>` = name
+      ** `//<entry>/attrs/<attr>/code` = code
+      ** `//<entry>/attrs/<attr>/format` = format
++
+    3. After adding the new Z39.50 sources and corresponding attributes,
+       you will need to log out of the staff client and log back into the
+       staff client to retrieve the new entry values. If a given Z39.50
+       server does not work for a given attribute, pay attention to the
+       `truncation` column for the attribute.
+
+
 New features
 ------------
 
