@@ -343,15 +343,23 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 dojo.forEach(items,
                     function(item) {
                         var fmObject = new fieldmapper[self.fmClass]().fromStoreItem(item);
-                        new openils.PermaCrud()['eliminate'](fmObject, {oncomplete : function(r) { self.store.deleteItem(item) }});
+                        new openils.PermaCrud()['eliminate'](
+                            fmObject, {
+                                oncomplete : function(r) {
+                                    self.store.deleteItem(item);
+                                    if (--total < 1) {
+                                        try {
+                                            xulG.reload_opac();
+                                        } catch (E) {
+                                            (dump ? dump : console.log)(E);
+                                        }
+                                    }
+                                }
+                            }
+                        );
                     }
                 );
 
-                try {
-                    xulG.reload_opac();
-                } catch (E) {
-                    (dump ? dump : console.log)(E);
-                }
             },
 
             _formatRowSelectInput : function(rowIdx) {
