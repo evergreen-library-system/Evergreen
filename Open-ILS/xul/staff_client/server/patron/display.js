@@ -844,30 +844,43 @@ patron.display.prototype = {
                     'patron_id' : obj.patron.id(),
                     'patron' : obj.patron,
                     'check_stop_checkouts' : function() { return obj.check_stop_checkouts(); },
-                    'on_list_change' : function(checkout) {
+                    'on_list_change_old' : function(checkout) {
                         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                         var x = obj.summary_window.g.summary.controller.view.patron_checkouts;
                         var n = Number(x.getAttribute('value'));
                         x.setAttribute('value',n+1);
                     },
-                    'on_list_change_old' : function(checkout) {
+                    'on_list_change' : function(checkout,is_renewal) {
                     
-                        /* this stops noncats from getting pushed into Items Out */
-                        if (!checkout.circ.id()) return; 
-
                         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                        // Downside here: an extra network call, open-ils.actor.user.checked_out.count.authoritative
                         obj.summary_window.g.summary.controller.render('patron_checkouts');
                         obj.summary_window.g.summary.controller.render('patron_standing_penalties');
+
+                        /* this stops noncats from getting pushed into Items Out */
+                        if (!checkout.circ.id()) return;
+
                         if (obj.items_window) {
-                            obj.items_window.g.items.list.append(
-                                {
-                                    'row' : {
-                                        'my' : {
-                                            'circ_id' : checkout.circ.id()
-                                        }
+                            if (is_renewal) {
+                                var original_circ_id = obj.items_window.g.items.list_circ_map_by_copy[ checkout.circ.target_copy() ];
+                                obj.items_window.g.items.list_circ_map[ original_circ_id ].row.my.circ = checkout.circ;
+                                obj.items_window.g.items.list_circ_map[ checkout.circ.id() ] =
+                                    obj.items_window.g.items.list_circ_map[ original_circ_id ];
+                                obj.items_window.g.items.refresh( checkout.circ.id() );
+                            } else {
+                                var nparams = obj.items_window.g.items.list.append(
+                                    {
+                                        'row' : {
+                                            'my' : {
+                                                'circ_id' : checkout.circ.id()
+                                            }
+                                        },
+                                        'to_bottom' : true
                                     }
-                                }
-                            )
+                                )
+                                obj.items_window.g.items.list_circ_map[ checkout.circ.id() ] = nparams;
+                                obj.items_window.g.items.list_circ_map_by_copy[ checkout.circ.target_copy() ] = checkout.circ.id();
+                            }
                         }
                     },
                     'get_barcode' : xulG.get_barcode,

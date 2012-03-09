@@ -436,11 +436,17 @@ circ.checkout.prototype = {
                             //I could override map_row_to_column here
                             }
                         );
+                        var is_renewal = (
+                            get_bool(checkout.payload.circ.opac_renewal())
+                            ||get_bool(checkout.payload.circ.phone_renewal())
+                            ||get_bool(checkout.payload.circ.desk_renewal())
+                        );
                         try {
                             obj.error.work_log(
                                 document.getElementById('circStrings').getFormattedString(
-                                    (get_bool(checkout.payload.circ.opac_renewal())||get_bool(checkout.payload.circ.phone_renewal())||get_bool(checkout.payload.circ.desk_renewal())) ?
-                                        'staff.circ.work_log_renew.message' : 'staff.circ.work_log_checkout.message',
+                                        is_renewal
+                                        ? 'staff.circ.work_log_renew.message'
+                                        : 'staff.circ.work_log_checkout.message',
                                     [
                                         ses('staff_usrname'),
                                         xulG.patron.family_name(),
@@ -464,7 +470,7 @@ circ.checkout.prototype = {
                         }
                         */
                         if (typeof window.xulG == 'object' && typeof window.xulG.on_list_change == 'function') {
-                            window.xulG.on_list_change(checkout.payload);
+                            window.xulG.on_list_change(checkout.payload,is_renewal);
                         } else {
                             obj.error.sdump('D_CIRC','circ.checkout: No external .on_checkout()\n');
                         }

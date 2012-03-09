@@ -14,6 +14,7 @@ patron.items = function (params) {
 patron.items.prototype = {
 
     'list_circ_map' : {},
+    'list_circ_map_by_copy' : {},
 
     'init' : function( params ) {
 
@@ -392,6 +393,7 @@ patron.items.prototype = {
                         obj.list_circ_map[ circ_id ].row.my.mvr = r[0].payload.record;
                         // A renewed circ is a new circ, and has a new circ_id.
                         obj.list_circ_map[ r[0].payload.circ.id() ] = obj.list_circ_map[ circ_id ];
+                        obj.list_circ_map_by_copy[ r[0].payload.copy.id() ] = r[0].payload.circ.id();
                     } else {
                         var msg = $("patronStrings").getFormattedString('staff.patron.items.items_renew.not_renewed',[bc, r[0].textcode + r[0].desc]);
                         l.setAttribute('value', msg);
@@ -464,6 +466,7 @@ patron.items.prototype = {
                         var robj = obj.network.simple_request('FM_CIRC_EDIT_DUE_DATE',[ses(),circs[i],my_xulG.timestamp]);
                         if (typeof robj.ilsevent != 'undefined') { if (robj.ilsevent != 0) throw(robj); }
                         obj.list_circ_map[ circs[i] ].row.my.circ = robj;
+                        obj.list_circ_map_by_copy[ robj.target_copy() ] = circs[i];
                         obj.refresh(circs[i]);
                     }
                 }
@@ -746,6 +749,8 @@ patron.items.prototype = {
                                 }
                                 
                                 params.treeitem_node.setAttribute( 'retrieve_id', js2JSON({'copy_id':copy_id,'circ_id':row.my.circ.id(),'barcode':row.my.acp.barcode(),'doc_id': ( row.my.record ? row.my.record.id() : null ) }) );
+
+                                obj.list_circ_map_by_copy[ copy_id ] = row.my.circ.id();
             
                                 if (typeof params.on_retrieve == 'function') {
                                     params.on_retrieve(row);
