@@ -1063,6 +1063,11 @@ function BatchReceiver() {
                         alert(E);
                     }
                     busy(false);
+                    try {
+                        xulG.reload_opac();
+                    } catch(E) {
+                        (dump ? dump : console.log)(E);
+                    }
                 }
             }
         );

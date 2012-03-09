@@ -355,7 +355,10 @@ function open_alt_serial_mgmt() {
             "authtime": ses("authtime"),
             "show_nav_buttons": true,
             "no_xulG": false,
-            "show_print_button": false
+            "show_print_button": false,
+            "passthru_content_params": {
+                "reload_opac": xulG.reload_opac
+            }
         };
 
         ["url_prefix", "new_tab", "set_tab", "close_tab", "new_patron_tab",

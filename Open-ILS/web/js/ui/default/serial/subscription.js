@@ -217,6 +217,10 @@ function _clone_subscription(bre_id) {
                     location.href =
                         oilsBasePath + "/serial/subscription?id=" + r;
                 }
+
+                /* cloning doesn't clone holdings, so nothing changes at
+                 * OPAC view just because of this, so no need to try
+                 * reload_opac().  */
             }
         }
     );
