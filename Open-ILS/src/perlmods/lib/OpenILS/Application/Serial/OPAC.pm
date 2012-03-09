@@ -536,7 +536,7 @@ sub grouped_holdings_for_summary {
 
     # Will we be trying magic auto-expansion of the first top-level grouping?
     if ($auto_expand_first and @$tree and not @$expand_path) {
-        $expand_path = [$tree->[0]->{value}];
+        $expand_path = [$tree->[1]->{value}];
         $offsets = [0];
     }
 
