@@ -110,41 +110,76 @@ INSERT INTO marcxml_import (marc) VALUES
 
 INSERT INTO biblio.record_entry (marc, last_xact_id) SELECT marc, 'IMPORT' FROM marcxml_import;
 
--- Create call numbers for BR1
-INSERT INTO asset.call_number (record, creator, editor, owning_lib, label, label_class)
- SELECT id, 1, 1, 4, 'CONCERTO ' || id::text, 1
- FROM biblio.record_entry
- WHERE id > 0;
+CREATE FUNCTION evergreen.populate_call_number (ownlib INTEGER, label TEXT)
+RETURNS void AS $$
+    INSERT INTO asset.call_number (record, creator, editor, owning_lib, label, label_class)
+        SELECT id, 1, 1, $1, $2 || id::text, 1
+        FROM biblio.record_entry
+        WHERE id > 0;
+$$ LANGUAGE SQL;
 
--- Create call numbers for BR2
-INSERT INTO asset.call_number (record, creator, editor, owning_lib, label, label_class)
- SELECT id, 1, 1, 5, 'CONCERTO ' || id::text, 1
- FROM biblio.record_entry
- WHERE id > 0;
+CREATE FUNCTION evergreen.populate_copy (circlib INTEGER, ownlib INTEGER, barcode TEXT, label TEXT)
+RETURNS void AS $$
+    INSERT INTO asset.copy (call_number, circ_lib, creator, editor, loan_duration, fine_level, barcode)
+        SELECT id, $1, 1, 1, 1, 1, $3 || id::text
+        FROM asset.call_number
+        WHERE record > 0 AND label LIKE $4 || '%' AND owning_lib = $2;
+$$ LANGUAGE SQL;
 
--- Create call numbers for BR4
-INSERT INTO asset.call_number (record, creator, editor, owning_lib, label, label_class)
- SELECT id, 1, 1, 7, 'CONCERTO ' || id::text, 1
- FROM biblio.record_entry
- WHERE id > 0;
+-- Create call numbers
+SELECT evergreen.populate_call_number(4, 'CONCERTO '); -- BR1
+SELECT evergreen.populate_call_number(5, 'CONCERTO '); -- BR2
+SELECT evergreen.populate_call_number(6, 'CONCERTO '); -- BR3
+SELECT evergreen.populate_call_number(7, 'CONCERTO '); -- BR4
+SELECT evergreen.populate_call_number(9, 'CONCERTO '); -- BM1
+SELECT evergreen.populate_call_number(4, 'PERFORM '); -- BR1
+SELECT evergreen.populate_call_number(5, 'PERFORM '); -- BR2
+SELECT evergreen.populate_call_number(6, 'PERFORM '); -- BR3
+SELECT evergreen.populate_call_number(7, 'PERFORM '); -- BR4
+SELECT evergreen.populate_call_number(9, 'PERFORM '); -- BM1
 
--- CREATE copies for BR1
-INSERT INTO asset.copy (call_number, circ_lib, creator, editor, loan_duration, fine_level, barcode)
- SELECT id, owning_lib, 1, 1, 1, 1, 'CONC40000' || id::text
- FROM asset.call_number
- WHERE record > 0 AND label LIKE 'CONCERTO %' AND owning_lib = 4;
+-- Create copies
+SELECT evergreen.populate_copy(4, 4, 'CONC40000', 'CONCERTO'); -- BR1
+SELECT evergreen.populate_copy(5, 5, 'CONC50000', 'CONCERTO'); -- BR2
+SELECT evergreen.populate_copy(6, 6, 'CONC60000', 'CONCERTO'); -- BR3
+SELECT evergreen.populate_copy(7, 7, 'CONC70000', 'CONCERTO'); -- BR4
+SELECT evergreen.populate_copy(9, 9, 'CONC90000', 'CONCERTO'); -- BM1
 
--- CREATE copies for BR2
-INSERT INTO asset.copy (call_number, circ_lib, creator, editor, loan_duration, fine_level, barcode)
- SELECT id, owning_lib, 1, 1, 1, 1, 'CONC50000' || id::text
- FROM asset.call_number
- WHERE record > 0 AND label LIKE 'CONCERTO %'  AND owning_lib = 5;
+SELECT evergreen.populate_copy(4, 4, 'CONC41000', 'CONCERTO'); -- BR1
+SELECT evergreen.populate_copy(5, 5, 'CONC51000', 'CONCERTO'); -- BR2
+SELECT evergreen.populate_copy(6, 6, 'CONC61000', 'CONCERTO'); -- BR3
+SELECT evergreen.populate_copy(7, 7, 'CONC71000', 'CONCERTO'); -- BR4
+SELECT evergreen.populate_copy(9, 9, 'CONC91000', 'CONCERTO'); -- BM1
 
--- CREATE copies for BR4
-INSERT INTO asset.copy (call_number, circ_lib, creator, editor, loan_duration, fine_level, barcode)
- SELECT id, owning_lib, 1, 1, 1, 1, 'CONC70000' || id::text
- FROM asset.call_number
- WHERE record > 0 AND label LIKE 'CONCERTO %' AND owning_lib = 7;
+SELECT evergreen.populate_copy(4, 4, 'CONC42000', 'CONCERTO'); -- BR1
+SELECT evergreen.populate_copy(5, 5, 'CONC52000', 'CONCERTO'); -- BR2
+SELECT evergreen.populate_copy(6, 6, 'CONC62000', 'CONCERTO'); -- BR3
+SELECT evergreen.populate_copy(7, 7, 'CONC72000', 'CONCERTO'); -- BR4
+SELECT evergreen.populate_copy(9, 9, 'CONC92000', 'CONCERTO'); -- BM1
+
+SELECT evergreen.populate_copy(4, 4, 'CONC43000', 'CONCERTO'); -- BR1
+SELECT evergreen.populate_copy(5, 5, 'CONC53000', 'CONCERTO'); -- BR2
+SELECT evergreen.populate_copy(6, 6, 'CONC63000', 'CONCERTO'); -- BR3
+SELECT evergreen.populate_copy(7, 7, 'CONC73000', 'CONCERTO'); -- BR4
+SELECT evergreen.populate_copy(9, 9, 'CONC93000', 'CONCERTO'); -- BM1
+
+SELECT evergreen.populate_copy(4, 4, 'CONC44000', 'CONCERTO'); -- BR1
+SELECT evergreen.populate_copy(5, 5, 'CONC54000', 'CONCERTO'); -- BR2
+SELECT evergreen.populate_copy(6, 6, 'CONC64000', 'CONCERTO'); -- BR3
+SELECT evergreen.populate_copy(7, 7, 'CONC74000', 'CONCERTO'); -- BR4
+SELECT evergreen.populate_copy(9, 9, 'CONC94000', 'CONCERTO'); -- BM1
+
+SELECT evergreen.populate_copy(4, 4, 'CONC40000', 'PERFORM'); -- BR1
+SELECT evergreen.populate_copy(5, 5, 'CONC50000', 'PERFORM'); -- BR2
+SELECT evergreen.populate_copy(6, 6, 'CONC60000', 'PERFORM'); -- BR3
+SELECT evergreen.populate_copy(7, 7, 'CONC70000', 'PERFORM'); -- BR4
+SELECT evergreen.populate_copy(9, 9, 'CONC90000', 'PERFORM'); -- BM1
+
+SELECT evergreen.populate_copy(4, 4, 'CONC41000', 'PERFORM'); -- BR1
+SELECT evergreen.populate_copy(5, 5, 'CONC51000', 'PERFORM'); -- BR2
+SELECT evergreen.populate_copy(6, 6, 'CONC61000', 'PERFORM'); -- BR3
+SELECT evergreen.populate_copy(7, 7, 'CONC71000', 'PERFORM'); -- BR4
+SELECT evergreen.populate_copy(9, 9, 'CONC91000', 'PERFORM'); -- BM1
 
 -- Delete some copies, call numbers, and bib records
 DELETE FROM biblio.record_entry
@@ -234,5 +269,7 @@ INSERT INTO biblio.peer_bib_copy_map (peer_type, peer_record, target_copy)
     GROUP BY bpt.id, acn.record, ac.id;
 
 DROP TABLE marcxml_import;
+DROP FUNCTION evergreen.populate_call_number(INTEGER, TEXT);
+DROP FUNCTION evergreen.populate_copy(INTEGER, INTEGER, TEXT, TEXT);
 
 COMMIT;
