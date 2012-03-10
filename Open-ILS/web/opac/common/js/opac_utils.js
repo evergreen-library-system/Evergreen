@@ -724,7 +724,6 @@ function doLogin(suppressEvents) {
 	var passwd = G.ui.login.password.value;
 
 	var args = {
-		password : hex_md5(seed + hex_md5(passwd)), 
 		type		: "opac", 
 		org		: getOrigLocation(),
 		agent : 'opac'
