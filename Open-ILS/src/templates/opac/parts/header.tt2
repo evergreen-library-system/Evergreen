@@ -57,6 +57,11 @@
         FOR p IN cgi.param;
             val = cgi.param(p);
             IF val == ''; cgi.delete(p); END;
+
+            # Delete POST vars unless we asked for them
+            UNLESS CGI.url_param(p) OR params.defined(p);
+                cgi.delete(p);
+            END;
         END;
 
         IF page;
