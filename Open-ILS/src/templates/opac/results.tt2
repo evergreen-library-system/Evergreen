@@ -22,7 +22,7 @@
         <div id="results_header_bar">
             <div id="results_header_inner">
                 <div class="results_header_btns">
-                    <a href="[% ctx.opac_root %]/home">[% l('Another Search') %]</a>
+                    <a href="[% mkurl(ctx.opac_root _ '/home') %]">[% l('Another Search') %]</a>
                 </div>
                 <div class="results_header_btns">
                     <a href="[% mkurl(ctx.opac_root _ '/advanced') %]">[% l('Advanced Search') %]</a>
