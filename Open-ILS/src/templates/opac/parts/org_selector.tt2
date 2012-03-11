@@ -24,6 +24,7 @@ BLOCK build_org_selector;
             org_unit = node.org;
             loc_grp = node.loc_grp;
             ou_id = org_unit.id;
+            css_class = '';
             disabled = '';
             selected = '';
 
@@ -57,6 +58,11 @@ BLOCK build_org_selector;
 
             node_value = ou_id;
             IF loc_grp; node_value = node_value _ ':' _ loc_grp.id; END;
+            IF loc_grp;
+                css_class = 'class="loc_grp"';
+            ELSE;
+                css_class = 'class="org_unit"';
+            END;
 
             IF can_have_vols_only AND org_unit.ou_type.can_have_vols != 't';
                 disabled = 'disabled="disabled"';
@@ -64,7 +70,7 @@ BLOCK build_org_selector;
                 selected = 'selected="selected"';
             END %] 
 
-            <option value='[% node_value %]' [% selected %] [% disabled %]> 
+            <option value='[% node_value %]' [% selected %] [% disabled %] [% css_class %]> 
             [%
                 # loc_grp's are displayed as children of the current org
                 depth = org_unit.ou_type.depth;
