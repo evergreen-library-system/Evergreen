@@ -727,7 +727,7 @@ sub transaction_details {
 		or return $e->event; $org = $org->[0];
 
 	# get a reference to the org inside of the tree
-	$org = $U->find_org($U->fetch_org_tree(), $org->id);
+	$org = $U->find_org($U->get_org_tree(), $org->id);
 
 	my @data;
 	for my $uid (@$user_list) {

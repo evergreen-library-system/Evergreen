@@ -80,7 +80,7 @@ sub cn_browse {
 	my( $self, $conn, $cn, $orgid, $size, $offset, $copy_statuses, $copy_locations ) = @_;
 	my $ses = OpenSRF::AppSession->create('open-ils.supercat');
 
-	my $tree = $U->get_slim_org_tree;
+	my $tree = $U->get_org_tree;
 	my $name = _find_shortname($orgid, $tree);
 
 	$logger->debug("cn browse found or name $name");

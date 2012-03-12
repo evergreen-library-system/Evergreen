@@ -275,16 +275,7 @@ sub insert_org_methods {
 	my ( $editor, $runner ) = @_;
 
 	if(!$ORG_TREE) {
-		$ORG_TREE = $editor->search_actor_org_unit(
-			[
-				{"parent_ou" => undef },
-				{
-					flesh				=> -1,
-					flesh_fields	=> { aou =>  ['children'] },
-					order_by			=> { aou => 'name'}
-				}
-			]
-		)->[0];
+		$ORG_TREE = $U->get_org_tree;
 		flatten_org_tree($ORG_TREE);
 	}
 

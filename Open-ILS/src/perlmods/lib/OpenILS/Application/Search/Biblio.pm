@@ -1928,7 +1928,7 @@ sub format_biblio_record_entry {
 
     if ($for_print) {
         $bib_id = $arg1;
-        $context_org = $arg2 || $U->fetch_org_tree->id;
+        $context_org = $arg2 || $U->get_org_tree->id;
         $e = new_editor(xact => 1);
     } elsif ($for_email) {
         $auth = $arg1;

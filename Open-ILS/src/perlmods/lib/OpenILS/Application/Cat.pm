@@ -1286,7 +1286,7 @@ sub acn_sms_msg {
     my($self, $conn, $auth, $org_id, $carrier, $number, $target_ids) = @_;
 
     my $sms_enable = $U->ou_ancestor_setting_value(
-        $org_id || $U->fetch_org_tree->id,
+        $org_id || $U->get_org_tree->id,
         'sms.enable'
     );
     # We could maybe make a Validator for this on the templates
@@ -1295,7 +1295,7 @@ sub acn_sms_msg {
     }
 
     my $disable_auth = $U->ou_ancestor_setting_value(
-        $org_id || $U->fetch_org_tree->id,
+        $org_id || $U->get_org_tree->id,
         'sms.disable_authentication_requirement.callnumbers'
     );
 

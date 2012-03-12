@@ -2789,46 +2789,6 @@ sub safe_token_home_lib {
 }
 
 
-
-__PACKAGE__->register_method(
-    method   => 'slim_tree',
-    api_name => "open-ils.actor.org_tree.slim_hash.retrieve",
-);
-sub slim_tree {
-	my $tree = new_editor()->search_actor_org_unit( 
-		[
-			{"parent_ou" => undef },
-			{
-				flesh				=> -1,
-				flesh_fields	=> { aou =>  ['children'] },
-				order_by			=> { aou => 'name'},
-				select			=> { aou => ["id","shortname", "name"]},
-			}
-		]
-	)->[0];
-
-	return trim_tree($tree);
-}
-
-
-sub trim_tree {
-	my $tree = shift;
-	return undef unless $tree;
-	my $htree = {
-		code => $tree->shortname,
-		name => $tree->name,
-	};
-	if( $tree->children and @{$tree->children} ) {
-		$htree->{children} = [];
-		for my $c (@{$tree->children}) {
-			push( @{$htree->{children}}, trim_tree($c) );
-		}
-	}
-
-	return $htree;
-}
-
-
 __PACKAGE__->register_method(
     method   => "update_penalties",
     api_name => "open-ils.actor.user.penalties.update"
