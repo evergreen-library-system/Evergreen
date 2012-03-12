@@ -1,4 +1,4 @@
-README for Evergreen master
+README for Evergreen 2.2-alpha3
 ===========================
 :toc:
 :numbered:
@@ -31,6 +31,18 @@ follows:
     ** The *egadmin* Evergreen account is an administrator account for
        Evergreen that you will use to test connectivity and configure your
        Evergreen instance.
+
+Preamble: Getting an Evergreen official release tarball
+-------------------------------------------------------
+
+To download and extract the source for the current release of Evergreen, issue
+the following commands as the *user* Linux account:
+
+[source, bash]
+------------------------------------------------------------------------------
+wget -c http://evergreen-ils.org/downloads/previews/Evergreen-ILS-2.2-alpha3.tar.gz
+tar xzf Evergreen-ILS-2.2-alpha3.tar.gz
+------------------------------------------------------------------------------
 
 Preamble: Developer instructions
 --------------------------------
@@ -76,7 +88,7 @@ Installing prerequisites
 Evergreen has a number of prerequisite packages that must be installed
 before you can successfully configure, compile, and install Evergreen.
 
-1. Begin by installing the most recent version of OpenSRF (2.0 or later).
+1. Begin by installing the most recent version of OpenSRF (2.1 or later).
    You can download OpenSRF releases from http://evergreen-ils.org/opensrf.php
 2. On many distributions, it is necessary to install PostgreSQL 9 from external
    repositories.
@@ -163,7 +175,7 @@ Installation instructions
 +
 [source, bash]
 ------------------------------------------------------------------------------
-make STAFF_CLIENT_STAMP_ID=rel_name install
+make STAFF_CLIENT_STAMP_ID=rel_2_2_alpha3 install
 ------------------------------------------------------------------------------
 +
 2. The server portion of the staff client expects `http://hostname/xul/server`

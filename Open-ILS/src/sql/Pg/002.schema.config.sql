@@ -87,6 +87,7 @@ CREATE TRIGGER no_overlapping_deps
     FOR EACH ROW EXECUTE PROCEDURE evergreen.array_overlap_check ('deprecates');
 
 INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0682', :eg_version); -- berick/dbs/tsbere
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('2.2-alpha3', :eg_version);
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
