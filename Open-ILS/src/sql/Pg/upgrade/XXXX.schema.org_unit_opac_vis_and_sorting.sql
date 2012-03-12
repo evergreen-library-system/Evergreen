@@ -14,11 +14,19 @@ INSERT INTO config.global_flag (name, enabled, label)
         )
     );
 
+ALTER TABLE actor.org_unit ADD COLUMN 
+    sibling_order INTEGER NOT NULL DEFAULT 0; 
+
+ALTER TABLE auditor.actor_org_unit_history ADD COLUMN 
+    sibling_order INTEGER NOT NULL DEFAULT 0;
+
 COMMIT;
 
 /* UNDO
 BEGIN;
 DELETE FROM config.global_flag WHERE name = 'opac.org_unit.non_inheritied_visibility';
+ALTER TABLE actor.org_unit DROP COLUMN sibling_order;
+ALTER TABLE auditor.actor_org_unit_history DROP COLUMN sibling_order;
 COMMIT;
 */
 
