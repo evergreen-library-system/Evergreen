@@ -547,13 +547,13 @@ function init_lists() {
                 function handle_props(row) {
                     try {
                         if ( row && row.my && row.my.mbts && Number( row.my.mbts.balance_owed() ) < 0 ) {
-                            util.widgets.addProperty(params.row_node.firstChild,'refundable');
-                            util.widgets.addProperty(params.row_node.firstChild.childNodes[ g.payment_pending_column_idx ],'refundable');
+                            util.widgets.addProperty(params.treeitem_node.firstChild,'refundable');
+                            util.widgets.addProperty(params.treeitem_node.firstChild.childNodes[ g.payment_pending_column_idx ],'refundable');
                         }
                         if ( row && row.my && row.my.circ && ! row.my.circ.checkin_time() ) {
                             $('circulating_hint').hidden = false;
-                            util.widgets.addProperty(params.row_node.firstChild,'circulating');
-                            util.widgets.addProperty(params.row_node.firstChild.childNodes[ g.title_column_idx ],'circulating');
+                            util.widgets.addProperty(params.treeitem_node.firstChild,'circulating');
+                            util.widgets.addProperty(params.treeitem_node.firstChild.childNodes[ g.title_column_idx ],'circulating');
                         }
                     } catch(E) {
                         g.error.sdump('D_WARN','Error setting list properties in bill2.js: ' + E);

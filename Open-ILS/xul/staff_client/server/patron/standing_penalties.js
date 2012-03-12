@@ -85,7 +85,7 @@ function init_archived_list() {
 
 
 function retrieve_row (params) { // callback function for fleshing rows in a list
-    params.row_node.setAttribute('retrieve_id',params.row.my.ausp.id()); 
+    params.treeitem_node.setAttribute('retrieve_id',params.row.my.ausp.id()); 
     params.on_retrieve(params.row); 
     return params.row; 
 }
@@ -255,7 +255,7 @@ function generate_penalty_remove_function(id) {
             if (typeof req.ilsevent != 'undefined' || String(req) != '1') {
                 error.standard_unexpected_error_alert(patronStrings.getFormattedString('staff.patron.standing_penalty.remove_error',[id]),req);
             } else {
-                var node = rows[ id ].my_node;
+                var node = rows[ id ].treeitem_node;
                 var parentNode = node.parentNode;
                 parentNode.removeChild( node );
                 delete(rows[ id ]);
@@ -371,7 +371,7 @@ function handle_archive_penalty(ev) {
                             try {
                                 var res = openils.Util.readResponse(r,true);
                                 /* FIXME - test for success */
-                                var node = rows[row_id].my_node;
+                                var node = rows[row_id].treeitem_node;
                                 var parentNode = node.parentNode;
                                 parentNode.removeChild( node );
                                 delete(rows[row_id]);

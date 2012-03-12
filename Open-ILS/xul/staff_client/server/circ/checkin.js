@@ -508,7 +508,7 @@ circ.checkin.prototype = {
             try {
                 var row = params.row;
                 if (typeof params.on_retrieve == 'function') params.on_retrieve(row);
-                obj.update_no_change_label(params.my_node,row);
+                obj.update_no_change_label(params.treeitem_node,row);
                 var bill = row.my.mbts;
                 if (bill && document.getElementById('fine_tally') && ! row.already_tallied) {
                     params.row.already_tallied = true;

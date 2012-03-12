@@ -116,7 +116,7 @@ function cancel(ids) {
                     if (idx == ids.length) { pm.value = 0; pm.hidden = true; }
                     var robj = req.getResultObject();
                     if (robj == '1') {
-                        var node = rows[ row_id_usrname_map[ id ] ].my_node;
+                        var node = rows[ row_id_usrname_map[ id ] ].treeitem_node;
                         var parentNode = node.parentNode;
                         parentNode.removeChild( node );
                         delete(rows[ row_id_usrname_map[ id ] ]);
@@ -174,7 +174,7 @@ function load( usrnames ) {
         function gen_on_save_handler(usrname) {
             return function() {
                 try {
-                    var node = rows[ usrname ].my_node;
+                    var node = rows[ usrname ].treeitem_node;
                     var parentNode = node.parentNode;
                     parentNode.removeChild( node );
                     delete(row_id_usrname_map[ rows[ usrname ].row.my.stgu.row_id() ]);
@@ -224,7 +224,7 @@ function init_list() {
 
 function retrieve_row(params) { // callback function for fleshing rows in a list
     try {
-        params.row_node.setAttribute('retrieve_id',js2JSON( { 'row_id' : params.row.my.stgu.row_id(), 'usrname' : params.row.my.stgu.usrname() } )); 
+        params.treeitem_node.setAttribute('retrieve_id',js2JSON( { 'row_id' : params.row.my.stgu.row_id(), 'usrname' : params.row.my.stgu.usrname() } )); 
         params.on_retrieve(params.row); 
     } catch(E) {
         alert('Error in staged.js, retrieve_row(): ' + E);

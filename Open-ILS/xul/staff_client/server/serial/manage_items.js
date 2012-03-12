@@ -736,8 +736,8 @@ serial.manage_items.prototype = {
                             var sitem = robj[0];
                             obj.list_sitem_map[sitem.id()] = sitem;
                             row.my.sitem = sitem;
-                            //params.row_node.setAttribute( 'retrieve_id', js2JSON({'copy_id':copy_id,'circ_id':row.my.circ.id(),'barcode':row.my.acp.barcode(),'doc_id': ( row.my.record ? row.my.record.id() : null ) }) );
-                            params.row_node.setAttribute( 'retrieve_id', js2JSON({'sitem_id':sitem.id()}) );
+                            //params.treeitem_node.setAttribute( 'retrieve_id', js2JSON({'copy_id':copy_id,'circ_id':row.my.circ.id(),'barcode':row.my.acp.barcode(),'doc_id': ( row.my.record ? row.my.record.id() : null ) }) );
+                            params.treeitem_node.setAttribute( 'retrieve_id', js2JSON({'sitem_id':sitem.id()}) );
                             dump('dumping... ' + js2JSON(obj.list_sitem_map[sitem.id()]));
                             if (typeof params.on_retrieve == 'function') {
                                 params.on_retrieve(row);

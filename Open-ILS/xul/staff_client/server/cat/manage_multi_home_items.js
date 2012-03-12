@@ -97,7 +97,7 @@ function init_list() {
             {
                 'retrieve_row' : function(params) {
                     if (params.row.my.bpbcm) {
-                        params.row_node.setAttribute('retrieve_id',params.row.my.bpbcm.id());
+                        params.treeitem_node.setAttribute('retrieve_id',params.row.my.bpbcm.id());
                     }
                     params.on_retrieve(params.row);
                     return params.row;
@@ -178,7 +178,7 @@ function handle_submit(create,my_bpbcm,my_barcode) {
         };
 
         if (barcode && rows[barcode]) {
-                var node = rows[barcode].my_node;
+                var node = rows[barcode].treeitem_node;
                 var parentNode = node.parentNode;
                 parentNode.removeChild( node );
                 delete(rows[barcode]);
@@ -400,7 +400,7 @@ function handle_remove() {
                             for (var i = 0; i < ids.length; i++) {
                                 var bpbcm_id = ids[i];
                                 try {
-                                    var node = rows[ bpbcm_barcode_map[ bpbcm_id ] ].my_node;
+                                    var node = rows[ bpbcm_barcode_map[ bpbcm_id ] ].treeitem_node;
                                     var parentNode = node.parentNode;
                                     parentNode.removeChild( node );
                                     delete(rows[ bpbcm_barcode_map[ bpbcm_id ] ]);

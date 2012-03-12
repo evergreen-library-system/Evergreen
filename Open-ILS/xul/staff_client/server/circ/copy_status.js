@@ -1246,7 +1246,7 @@ circ.copy_status.prototype = {
                                     if (typeof obj.list_copyid_map[details.copy.id()][i] == 'undefined') {
                                         obj.list.append(params);
                                     } else {
-                                        params.my_node = obj.list_copyid_map[details.copy.id()][i].my_node;
+                                        params.treeitem_node = obj.list_copyid_map[details.copy.id()][i].treeitem_node;
                                         obj.list.refresh_row(params);
                                     }
                                 }

@@ -1352,7 +1352,7 @@ serial.manage_subs.prototype = {
                 data.node = obj.map_tree[ 'aou_' + parent_org.id() ];
             }
             var nparams = obj.list.append(data);
-            var node = nparams.my_node;
+            var node = nparams.treeitem_node;
             if (params) {
                 for (var i in params) {
                     node.setAttribute(i,params[i]);
@@ -1418,7 +1418,7 @@ serial.manage_subs.prototype = {
                 'no_auto_select' : true,
             };
             var nparams = obj.list.append(data);
-            var node = nparams.my_node;
+            var node = nparams.treeitem_node;
             obj.map_tree[ 'ssub_' + ssub_tree.id() ] =  node;
             if (params) {
                 for (var i in params) {
@@ -1445,7 +1445,7 @@ serial.manage_subs.prototype = {
                 'no_auto_select' : true,
             };
             nparams = obj.list.append(sdist_group_node_data);
-            obj.map_tree[ 'ssub_sdist_group_' + ssub_tree.id() ] =  nparams.my_node;
+            obj.map_tree[ 'ssub_sdist_group_' + ssub_tree.id() ] =  nparams.treeitem_node;
 
             var siss_group_node_data = {
                 'row' : {
@@ -1459,7 +1459,7 @@ serial.manage_subs.prototype = {
                 'no_auto_select' : true,
             };
             nparams = obj.list.append(siss_group_node_data);
-            obj.map_tree[ 'ssub_siss_group_' + ssub_tree.id() ] =  nparams.my_node;
+            obj.map_tree[ 'ssub_siss_group_' + ssub_tree.id() ] =  nparams.treeitem_node;
 
             var scap_group_node_data = {
                 'row' : {
@@ -1473,7 +1473,7 @@ serial.manage_subs.prototype = {
                 'no_auto_select' : true,
             };
             nparams = obj.list.append(scap_group_node_data);
-            obj.map_tree[ 'ssub_scap_group_' + ssub_tree.id() ] =  nparams.my_node;
+            obj.map_tree[ 'ssub_scap_group_' + ssub_tree.id() ] =  nparams.treeitem_node;
         } catch(E) {
             dump(E+'\n');
             alert(E);
@@ -1510,7 +1510,7 @@ serial.manage_subs.prototype = {
             };
             data['row']['my'][type] = item; // TODO: future optimization: get only the IDs of these leaves, then fetch the full row in 'retrieve_row'
             var nparams = obj.list.append(data);
-            var node = nparams.my_node;
+            var node = nparams.treeitem_node;
             obj.map_tree[ type + '_' + item.id() ] =  node;
             if (attributes) {
                 for (var i in attributes) {

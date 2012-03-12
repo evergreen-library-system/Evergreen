@@ -718,21 +718,21 @@ cat.z3950.prototype = {
                                 }
                             }
                         );
-                        n.my_node.setAttribute('isbn', function(a){return a;}(obj.result_set[ obj.number_of_result_sets ].records[j].mvr).isbn());
-                        n.my_node.setAttribute(
+                        n.treeitem_node.setAttribute('isbn', function(a){return a;}(obj.result_set[ obj.number_of_result_sets ].records[j].mvr).isbn());
+                        n.treeitem_node.setAttribute(
                             'service',
                             function(a){return a;}(
                                 results[i].service
                             )
                         );
-                        n.my_node.setAttribute(
+                        n.treeitem_node.setAttribute(
                             'doc_id',
                             function(a){return a;}(
                                 (obj.result_set[ obj.number_of_result_sets ].records[j].mvr)
                             ).doc_id()
                         );
 
-                        if (!f) { n.my_node.parentNode.focus(); f = n; } 
+                        if (!f) { n.treeitem_node.parentNode.focus(); f = n; } 
                     }
                 } else {
                     x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);

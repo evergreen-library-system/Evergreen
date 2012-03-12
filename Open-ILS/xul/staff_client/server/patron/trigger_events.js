@@ -158,7 +158,7 @@ function init_list() {
 }
 
 function retrieve_row(params) { // callback function for fleshing rows in a list
-    params.row_node.setAttribute('retrieve_id',params.row.my.atev.id()); 
+    params.treeitem_node.setAttribute('retrieve_id',params.row.my.atev.id()); 
     params.on_retrieve(params.row); 
     return params.row; 
 }

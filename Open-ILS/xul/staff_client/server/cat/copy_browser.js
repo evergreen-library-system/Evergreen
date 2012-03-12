@@ -1565,7 +1565,7 @@ cat.copy_browser.prototype = {
                 data.node = obj.map_tree[ 'aou_' + parent_org.id() ];
             }
             var nparams = obj.list.append(data);
-            var node = nparams.my_node;
+            var node = nparams.treeitem_node;
             if (params) {
                 for (var i in params) {
                     node.setAttribute(i,params[i]);
@@ -1631,7 +1631,7 @@ cat.copy_browser.prototype = {
                 'no_auto_select' : true,
             };
             var nparams = obj.list.append(data);
-            var node = nparams.my_node;
+            var node = nparams.treeitem_node;
             obj.map_tree[ 'acn_' + acn_tree.id() ] =  node;
             if (params) {
                 for (var i in params) {
@@ -1692,7 +1692,7 @@ cat.copy_browser.prototype = {
                 'no_auto_select' : true,
             };
             var nparams = obj.list.append(data);
-            var node = nparams.my_node;
+            var node = nparams.treeitem_node;
             obj.map_tree[ 'acp_' + acp_item.id() ] =  node;
             if (params) {
                 for (var i in params) {
@@ -1807,12 +1807,12 @@ cat.copy_browser.prototype = {
                                         [ row.my.circ.target_copy() ]
                                     );
 
-                                    params.row_node.setAttribute( 'retrieve_id',row.my.acp.barcode() );
+                                    params.treeitem_node.setAttribute( 'retrieve_id',row.my.acp.barcode() );
 
                                 }
                             );
                         } else {
-                            params.row_node.setAttribute( 'retrieve_id',row.my.acp.barcode() );
+                            params.treeitem_node.setAttribute( 'retrieve_id',row.my.acp.barcode() );
                         }
                     */
                         obj.funcs.push(

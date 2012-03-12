@@ -57,7 +57,7 @@ cat.copy_buckets.prototype = {
                         row.my.acn = blob.volume;
                         row.my.ahr = blob.hold;
                         row.my.circ = blob.circ;
-                        params.row_node.setAttribute('retrieve_id', js2JSON( [ blob.copy.id(), blob.copy.barcode(), row.my.bucket_item_id ] ));
+                        params.treeitem_node.setAttribute('retrieve_id', js2JSON( [ blob.copy.id(), blob.copy.barcode(), row.my.bucket_item_id ] ));
                         if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
 
                     } catch(E) {

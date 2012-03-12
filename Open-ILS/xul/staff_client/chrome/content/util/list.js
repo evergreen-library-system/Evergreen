@@ -407,14 +407,14 @@ util.list.prototype = {
         }
         if (rparams && params.attributes) {
             for (var i in params.attributes) {
-                rparams.my_node.setAttribute(i,params.attributes[i]);
+                rparams.treeitem_node.setAttribute(i,params.attributes[i]);
             }
         }
         this.row_count.total++;
         if (this.row_count.fleshed == this.row_count.total) {
             setTimeout( function() { obj.exec_on_all_fleshed(); }, 0 );
         }
-        rparams.my_node.setAttribute('unique_row_counter',obj.unique_row_counter);
+        rparams.treeitem_node.setAttribute('unique_row_counter',obj.unique_row_counter);
         rparams.unique_row_counter = obj.unique_row_counter++;
         if (typeof params.on_append == 'function') {
             params.on_append(rparams);
@@ -431,7 +431,7 @@ util.list.prototype = {
         }
         if (rparams && params.attributes) {
             for (var i in params.attributes) {
-                rparams.my_node.setAttribute(i,params.attributes[i]);
+                rparams.treeitem_node.setAttribute(i,params.attributes[i]);
             }
         }
         this.row_count.fleshed--;
@@ -524,13 +524,13 @@ util.list.prototype = {
                         }
                     }
 
-                    params.row_node = treeitem;
+                    params.treeitem_node = treeitem;
                     params.on_retrieve = function(p) {
                         try {
                             p.row = params.row;
                             obj._map_row_to_treecell(p,treerow);
                             inc_fleshed();
-                            var idx = obj.node.contentView.getIndexOfItem( params.row_node );
+                            var idx = obj.node.contentView.getIndexOfItem( params.treeitem_node );
                             dump('idx = ' + idx + '\n');
                             // if current row is selected, send another select event to re-sync data that the client code fetches on selects
                             if ( obj.node.view.selection.isSelected( idx ) ) {
@@ -613,7 +613,7 @@ util.list.prototype = {
 
         setTimeout( function() { obj.auto_retrieve(); }, 0 );
 
-        params.my_node = treeitem;
+        params.treeitem_node = treeitem;
         return params;
     },
 
@@ -622,12 +622,12 @@ util.list.prototype = {
         var obj = this;
 
         if (typeof params.row == 'undefined') throw('util.list.refresh_row: Object must contain a row');
-        if (typeof params.my_node == 'undefined') throw('util.list.refresh_row: Object must contain a my_node');
-        if (params.my_node.nodeName != 'treeitem') throw('util.list.refresh_rwo: my_node must be a treeitem');
+        if (typeof params.treeitem_node == 'undefined') throw('util.list.refresh_row: Object must contain a treeitem_node');
+        if (params.treeitem_node.nodeName != 'treeitem') throw('util.list.refresh_rwo: treeitem_node must be a treeitem');
 
         var s = ('util.list.refresh_row: params = ' + (params) + '\n');
 
-        var treeitem = params.my_node;
+        var treeitem = params.treeitem_node;
         treeitem.setAttribute('retrieve_id',params.retrieve_id);
         if (typeof params.to_bottom != 'undefined') {
             if (typeof params.no_auto_select == 'undefined') {
@@ -684,13 +684,13 @@ util.list.prototype = {
                         }
                     }
 
-                    params.row_node = treeitem;
+                    params.treeitem_node = treeitem;
                     params.on_retrieve = function(p) {
                         try {
                             p.row = params.row;
                             obj._map_row_to_treecell(p,treerow);
                             inc_fleshed();
-                            var idx = obj.node.contentView.getIndexOfItem( params.row_node );
+                            var idx = obj.node.contentView.getIndexOfItem( params.treeitem_node );
                             dump('idx = ' + idx + '\n');
                             // if current row is selected, send another select event to re-sync data that the client code fetches on selects
                             if ( obj.node.view.selection.isSelected( idx ) ) {
@@ -967,7 +967,7 @@ util.list.prototype = {
                     //FIXME//Make async and fire when row is visible in list
                     var row;
 
-                    params.row_node = listitem;
+                    params.treeitem_node = listitem;
                     params.on_retrieve = function(row) {
                         params.row = row;
                         obj._map_row_to_listcell(params,listitem);
@@ -995,7 +995,7 @@ util.list.prototype = {
         }
 
         this.error.sdump('D_LIST',s);
-        params.my_node = listitem;
+        params.treeitem_node = listitem;
         return params;
 
     },

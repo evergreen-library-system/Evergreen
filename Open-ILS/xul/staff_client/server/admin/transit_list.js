@@ -339,7 +339,7 @@ admin.transit_list.prototype = {
                                                 if (typeof r_mvr.ilsevent != 'undefined') throw(r_mvr);
                                                 row.my.mvr = r_mvr;
 
-                                                params.row_node.setAttribute(
+                                                params.treeitem_node.setAttribute(
                                                     'retrieve_id', js2JSON( { 
                                                         'copy_id' : row.my.acp ? row.my.acp.id() : null, 
                                                         'doc_id' : row.my.mvr ? row.my.mvr.doc_id() : null,  
@@ -359,7 +359,7 @@ admin.transit_list.prototype = {
                                         }
                                     );
                                 } else {
-                                    params.row_node.setAttribute(
+                                    params.treeitem_node.setAttribute(
                                         'retrieve_id', js2JSON( { 
                                             'copy_id' : row.my.acp ? row.my.acp.id() : null, 
                                             'doc_id' : row.my.mvr ? row.my.mvr.doc_id() : null,  

@@ -126,7 +126,7 @@ patron.holds.prototype = {
                                     }
 
                                     obj.holds_map[ row.my.ahr.id() ] = blob;
-                                    params.row_node.setAttribute('retrieve_id',
+                                    params.treeitem_node.setAttribute('retrieve_id',
                                         js2JSON({
                                             'copy_id':copy_id,
                                             'barcode':row.my.acp ? row.my.acp.barcode() : null,
