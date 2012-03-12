@@ -51,7 +51,23 @@ util.list.prototype = {
         if (typeof params.prebuilt != 'undefined') obj.prebuilt = params.prebuilt;
 
         if (typeof params.columns == 'undefined') throw('util.list.init: No columns');
-        obj.columns = [];
+        obj.columns = [
+            {
+                'id' : 'lineno',
+                'label' : document.getElementById('offlineStrings').getString('list.line_number'),
+                'flex' : '0',
+                'no_sort' : 'true',
+                'properties' : 'ordinal', // column properties for css styling
+                'hidden' : 'false',
+                'editable' : false,
+                'render' : function(my,scratch) {
+                    // special code will handle this based on the attribute we set
+                    // here.  All cells for this column need to be updated whenever
+                    // a list adds, removes, or sorts rows
+                    return '_';
+                }
+            }
+        ];
         for (var i = 0; i < params.columns.length; i++) {
             if (typeof params.columns[i] == 'object') {
                 obj.columns.push( params.columns[i] );
@@ -611,7 +627,7 @@ util.list.prototype = {
             } catch(E) {
             }
 
-        setTimeout( function() { obj.auto_retrieve(); }, 0 );
+        setTimeout( function() { obj.auto_retrieve(); obj.refresh_ordinals(); }, 0 );
 
         params.treeitem_node = treeitem;
         return params;
@@ -773,13 +789,44 @@ util.list.prototype = {
             } catch(E) {
             }
 
-        setTimeout( function() { obj.auto_retrieve(); }, 0 );
+        setTimeout( function() { obj.auto_retrieve(); obj.refresh_ordinals(); }, 0 );
 
         JSAN.use('util.widgets'); util.widgets.dispatch('select',obj.node);
 
         this.error.sdump('D_LIST',s);
 
         return params;
+    },
+
+    'refresh_ordinals' : function() {
+        var obj = this;
+        try {
+            setTimeout( // Otherwise we can miss a row just added
+                function() {
+                    var nl = document.getElementsByAttribute('label','_');
+                    for (var i = 0; i < nl.length; i++) {
+                        nl[i].setAttribute(
+                            'ord_col',
+                            'true'
+                        );
+                        nl[i].setAttribute( // treecell properties for css styling
+                            'properties',
+                            'ordinal'
+                        );
+                    }
+                    nl = document.getElementsByAttribute('ord_col','true');
+                    for (var i = 0; i < nl.length; i++) {
+                        nl[i].setAttribute(
+                            'label',
+                            // we could just use 'i' here if we trust the order of elements
+                            1 + obj.node.contentView.getIndexOfItem(nl[i].parentNode.parentNode) // treeitem
+                        );
+                    }
+                }, 1000
+            );
+        } catch(E) {
+            alert('Error in list.js, refresh_ordinals(): ' + E);
+        }
     },
 
     'put_retrieving_label' : function(treerow) {
@@ -1512,7 +1559,7 @@ util.list.prototype = {
     '_sort_tree' : function(col,sortDir) {
         var obj = this;
         try {
-            if (obj.node.getAttribute('no_sort')) {
+            if (obj.node.getAttribute('no_sort') || col.getAttribute('no_sort')) {
                 return;
             }
             var col_pos;
@@ -1592,6 +1639,7 @@ util.list.prototype = {
                     } catch(E) {
                         obj.error.standard_unexpected_error_alert('sorting',E); 
                     }
+                    obj.refresh_ordinals();
                 }
             );
         } catch(E) {

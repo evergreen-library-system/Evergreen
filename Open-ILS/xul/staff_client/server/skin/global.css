@@ -19,6 +19,13 @@ treechildren::-moz-tree-row(selected) {
     border: thin dashed lightblue ! important;
 }
 
+treechildren::-moz-tree-column(ordinal) {
+    background: -moz-dialog ! important;
+}
+
+treechildren::-moz-tree-cell-text(ordinal) {
+    font-weight: bold ! important;
+}
 /*
 treechildren::-moz-tree-cell-text(selected,focus) {
     color: black;
