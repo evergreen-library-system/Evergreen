@@ -11541,3 +11541,15 @@ INSERT INTO action_trigger.environment (event_def, path)
 INSERT INTO actor.toolbar(org,label,layout) VALUES
     ( 1, 'circ', '["circ_checkout","circ_checkin","toolbarseparator.1","search_opac","copy_status","toolbarseparator.2","patron_search","patron_register","toolbarspacer.3","hotkeys_toggle"]' ),
     ( 1, 'cat', '["circ_checkin","toolbarseparator.1","search_opac","copy_status","toolbarseparator.2","create_marc","authority_manage","retrieve_last_record","toolbarspacer.3","hotkeys_toggle"]' );
+
+INSERT INTO config.global_flag (name, enabled, label) 
+    VALUES (
+        'opac.org_unit.non_inheritied_visibility',
+        FALSE,
+        oils_i18n_gettext(
+            'opac.org_unit.non_inheritied_visibility',
+            'Org Units Do Not Inherit Visibility',
+            'cgf',
+            'label'
+        )
+    );
