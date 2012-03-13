@@ -529,10 +529,11 @@ static void pcacheFree( char* key, void* item ) {
 	Create a cache for the session by making the session's userData member point
 	to an osrfHash instance.
 */
-static void initSessionCache( osrfMethodContext* ctx ) {
+static osrfHash* initSessionCache( osrfMethodContext* ctx ) {
 	ctx->session->userData = osrfNewHash();
 	osrfHashSetCallback( (osrfHash*) ctx->session->userData, &sessionDataFree );
 	ctx->session->userDataFree = &userDataFree;
+	return ctx->session->userData;
 }
 
 /**
@@ -550,7 +551,7 @@ static void setXactId( osrfMethodContext* ctx ) {
 		// If the session doesn't already have a hash, create one.  Make sure
 		// that the application session frees the hash when it terminates.
 		if( NULL == cache )
-			initSessionCache( ctx );
+			cache = initSessionCache( ctx );
 
 		// Save the transaction id in the hash, with the key "xact_id"
 		osrfHashSet( cache, strdup( session->session_id ), "xact_id" );
@@ -597,7 +598,7 @@ static void setPermLocationCache( osrfMethodContext* ctx, const char* perm, osrf
 		// If the session doesn't already have a hash, create one.  Make sure
 		// that the application session frees the hash when it terminates.
 		if( NULL == cache )
-			initSessionCache( ctx );
+			cache = initSessionCache( ctx );
 
 		osrfHash* pcache = osrfHashGet(cache, "pcache");
 
@@ -649,7 +650,7 @@ static void setUserLogin( osrfMethodContext* ctx, jsonObject* user_login ) {
 		// If the session doesn't already have a hash, create one.  Make sure
 		// that the application session frees the hash when it terminates.
 		if( NULL == cache )
-			initSessionCache( ctx );
+			cache = initSessionCache( ctx );
 
 		if( user_login )
 			osrfHashSet( cache, user_login, "user_login" );
@@ -688,7 +689,7 @@ static void setAuthkey( osrfMethodContext* ctx, const char* authkey ) {
 		// If the session doesn't already have a hash, create one.  Make sure
 		// that the application session frees the hash when it terminates.
 		if( NULL == cache )
-			initSessionCache( ctx );
+			cache = initSessionCache( ctx );
 
 		// Save the transaction id in the hash, with the key "xact_id"
 		if( authkey && *authkey )
@@ -5561,7 +5562,7 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 	char* pkey = osrfHashGet( class_meta, "primarykey" );
 
 	if (!ctx->session->userData)
-		initSessionCache( ctx );
+		(void) initSessionCache( ctx );
 
 	char *methodtype = osrfHashGet( (osrfHash *) ctx->method->userData, "methodtype" );
 	char *inside_verify = osrfHashGet( (osrfHash*) ctx->session->userData, "inside_verify" );
