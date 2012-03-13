@@ -2068,6 +2068,7 @@
 <!ENTITY staff.server.admin.index.closed_dates "Closed Dates Editor">
 <!ENTITY staff.server.admin.index.copy_locations "Copy Locations Editor">
 <!ENTITY staff.server.admin.index.library_settings "Library Settings Editor">
+<!ENTITY staff.server.admin.index.library_sort_order "Library Sort Order">
 <!ENTITY staff.server.admin.index.non_cataloged_types "Non-cataloged Types Editor">
 <!ENTITY staff.server.admin.index.statistical_categories "Statistical Categories Editor">
 <!ENTITY staff.server.admin.index.expired_holds_shelf "Expired Holds Shelf Printable Listing">
