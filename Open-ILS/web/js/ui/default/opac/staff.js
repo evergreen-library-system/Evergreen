@@ -27,10 +27,16 @@ window.onload = function() {
     }
 }
 
-function rdetail_next_prev_actions(index, count, prev, next, start, end) {
-    /*  we get the relative URL from the template:  recid?query_args...
+function rdetail_next_prev_actions(index, count, prev, next, start, end, results) {
+    /*  we mostly get the relative URL from the template:  recid?query_args...
         replace the recid and args on location.href to get the new URL  */
-    function fullurl(url) { return location.href.replace(/\/\d+\??.*/, '/' + url); }
+    function fullurl(url) {
+        if (url.match(/eg\/opac\/results/)) {
+            return location.href.replace(/eg\/opac\/.+$/, url);
+        } else {
+            return location.href.replace(/\/\d+\??.*/, '/' + url);
+        }
+    }
 
     if (index > 0) {
         if(prev) 
@@ -45,6 +51,8 @@ function rdetail_next_prev_actions(index, count, prev, next, start, end) {
         if(end) 
             window.rdetailEnd = function() { location.href = fullurl(end); }
     }
+
+    window.rdetailBackToResults = function() { location.href = fullurl(results); };
 
     ol = window.onload;
     window.onload = function() {

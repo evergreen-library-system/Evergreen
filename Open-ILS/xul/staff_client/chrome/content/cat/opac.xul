@@ -41,6 +41,8 @@
             <button id="record_next" accesskey="&staff.cat.opac.record_next.accesskey;" label="&staff.cat.opac.record_next.label;" oncommand="if (g.f_record_next) g.f_record_next();"/>
             <button id="record_end" accesskey="&staff.cat.opac.record_end.accesskey;" label="&staff.cat.opac.record_end.label;" oncommand="if (g.f_record_end) g.f_record_end();"/>
             <spacer flex="1"/>
+            <button id="record_back_to_results" accesskey="&staff.cat.opac.record_back_to_results.accesskey;" label="&staff.cat.opac.record_back_to_results.label;" oncommand="if (g.f_record_back_to_results) g.f_record_back_to_results();"/>
+            <spacer flex="3"/>
             <menubar>
                 <menu label="&staff.cat.opac.menu.label;" accesskey="&staff.cat.opac.menu.accesskey;">
                 <menupopup>

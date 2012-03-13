@@ -42,6 +42,7 @@ var rdetailPrev = null;
 var rdetailNext = null;
 var rdetailStart = null;
 var rdetailEnd = null;
+var rdetailBackToResults = null;
 
 var mfhdDetails = [];
 var orgHiding = false;
@@ -108,6 +109,7 @@ function rdetailSetPaging(ids) {
 		rdetailNext = function() { _rdetailNav(nextRecord); };
 		rdetailEnd = function() { _rdetailNav(cachedRecords.ids[cachedRecords.ids.length-1]); };
 	}
+    rdetailBackToResults = function() { location.href = prevRResults(); };
 
 	runEvt('rdetail', 'nextPrevDrawn', i, cachedRecords.ids.length);
 }

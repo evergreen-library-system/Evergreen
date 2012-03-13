@@ -12,7 +12,8 @@
                 "[% ctx.prev_rec_url || '' %]",
                 "[% ctx.next_rec_url || '' %]",
                 "[% mkurl(ctx.first_search_record, {page => 0}) %]",
-                "[% mkurl(ctx.last_search_record, {page => POSIX.floor(ctx.hit_count / ctx.page_size)}) %]"
+                "[% mkurl(ctx.last_search_record, {page => POSIX.floor(ctx.hit_count / ctx.page_size)}) %]",
+                "[% mkurl(ctx.opac_root _ '/results', {}, ['expand','cnoffset']) %]"
             );
         </script>
         [% END %]

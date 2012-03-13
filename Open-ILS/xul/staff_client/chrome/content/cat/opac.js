@@ -422,9 +422,12 @@ function set_opac() {
                     }
                 );
                 
-                g.f_record_start = null; g.f_record_prev = null; g.f_record_next = null; g.f_record_end = null;
+                g.f_record_start = null; g.f_record_prev = null;
+                g.f_record_next = null; g.f_record_end = null;
+                g.f_record_back_to_results = null;
                 $('record_start').disabled = true; $('record_next').disabled = true;
                 $('record_prev').disabled = true; $('record_end').disabled = true;
+                $('record_back_to_results').disabled = true;
                 $('record_pos').setAttribute('value','');
 
                 win.attachEvt("rdetail", "nextPrevDrawn",
@@ -457,6 +460,17 @@ function set_opac() {
                                 win.rdetailEnd(); 
                             }
                             $('record_end').disabled = false;
+                        }
+                        if (win.rdetailBackToResults) {
+                            g.f_record_back_to_results = function() {
+                                g.view_override = g.view;
+                                win.rdetailBackToResults();
+                                if (g.view != "opac") {
+                                    set_opac();
+                                    opac_wrapper_set_help_context();
+                                }
+                            }
+                            $('record_back_to_results').disabled = false;
                         }
                     }
                 );

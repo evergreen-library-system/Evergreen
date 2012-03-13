@@ -311,6 +311,8 @@
 <!ENTITY staff.cat.opac.menu.label "Actions for this Record">
 <!ENTITY staff.cat.opac.opac_view.accesskey "O">
 <!ENTITY staff.cat.opac.opac_view.label "OPAC View">
+<!ENTITY staff.cat.opac.record_back_to_results.accesskey "H">
+<!ENTITY staff.cat.opac.record_back_to_results.label "Search Results">
 <!ENTITY staff.cat.opac.record_end.accesskey "E">
 <!ENTITY staff.cat.opac.record_end.label "End">
 <!ENTITY staff.cat.opac.record_next.accesskey "N">
