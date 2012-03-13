@@ -52,6 +52,7 @@ if (!dojo._hasResource["openils.widget.AutoSuggest"]) {
     dojo.declare(
         "openils.widget.AutoSuggest", [dijit.form.ComboBox], {
 
+            "scrollOnFocus": false,
             "labelAttr": "match",
             "labelType": "html",
             "searchAttr": "term",
