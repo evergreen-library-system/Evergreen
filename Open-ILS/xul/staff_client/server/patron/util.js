@@ -388,7 +388,14 @@ patron.util.ausp_columns = function(modify,params) {
             'primary' : false, 'hidden' : false, 'editable' : false, 'render' : function(my) { 
                 return my.ausp ? data.hash.aou[ my.ausp.org_unit() ].shortname() : '';
             }
+        },
+        {
+            'persist' : 'hidden width ordinal', 'id' : 'ausp_org_unit_full', 'label' : commonStrings.getString('staff.ausp_org_unit_full_label'), 'flex' : 1,
+            'primary' : false, 'hidden' : true, 'editable' : false, 'render' : function(my) { 
+                return my.ausp ? data.hash.aou[ my.ausp.org_unit() ].name() : '';
+            }
         }
+
     ];
     for (var i = 0; i < c.length; i++) {
         if (modify[ c[i].id ]) {
