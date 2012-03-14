@@ -75,6 +75,10 @@ table { border-collapse: collapse; }
 .dijitTooltipTable td {padding: 3px;} /* custom class for handling dialog tables */
 /* ----------------------------------------------------------------- */
 
+.autoGridLineNumber {
+    background-color: -moz-dialog;
+    font-weight: bold;
+}
 
 .oils-fm-edit-pane { margin: 5px; }
 .oils-fm-edit-pane td { padding: 5px; }

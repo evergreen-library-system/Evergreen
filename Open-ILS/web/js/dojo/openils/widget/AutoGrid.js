@@ -25,9 +25,22 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             suppressEditFields : null,
             suppressFilterFields : null,
             hideSelector : false,
+            hideLineNumber : false,
             selectorWidth : '1.5',
+            lineNumberWidth : '1.5',
             showColumnPicker : false,
             columnPickerPrefix : null,
+            onStyleRow : function(row) {
+                // FIXME: this really feels kludgy (sensitive to how dojo constructs the HTML), and is
+                // probably not idiomatic dojo
+                if (!this.hideLineNumber) {
+                    if (this.hideSelector) {
+                        dojo.addClass(row.node.firstChild.firstChild.firstChild.childNodes[0],'autoGridLineNumber');
+                    } else {
+                        dojo.addClass(row.node.firstChild.firstChild.firstChild.childNodes[1],'autoGridLineNumber');
+                    }
+                }
+            },
             displayLimit : 15,
             displayOffset : 0,
             requiredFields : null,
@@ -156,6 +169,10 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             canSort : function(rowIdx) {
                 if(rowIdx == 1 && !this.hideSelector)
                     return false;
+                if(this.hideSelector && rowIdx == 1 && !this.hideLineNumber)
+                    return false;
+                if(!this.hideSelector && rowIdx == 2 && !this.hideLineNumber)
+                    return false;
                 return true;
             },
 
@@ -189,6 +206,16 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     });
                 }
 
+                if(!this.hideLineNumber) {
+                    // insert the line number column
+                    pushEntry({
+                        field : '+lineno',
+                        get : function(rowIdx, item) { if(item) return 1 + rowIdx; },
+                        width : this.lineNumberWidth,
+                        name : '#',
+                        nonSelectable : false
+                    });
+                }
 
                 if(!this.fieldOrder) {
                     /* no order defined, start with any explicit grid fields */
