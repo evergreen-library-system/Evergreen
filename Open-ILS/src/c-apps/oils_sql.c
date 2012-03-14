@@ -5566,6 +5566,7 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 	char *methodtype = osrfHashGet( (osrfHash *) ctx->method->userData, "methodtype" );
 	char *inside_verify = osrfHashGet( (osrfHash*) ctx->session->userData, "inside_verify" );
 	int need_to_verify = (inside_verify ? !atoi(inside_verify) : 1);
+	int has_controller = osrfStringArrayContains(osrfHashGet(class_meta, "controller"), modulename);
 
 	int i_respond_directly = 0;
 	int flesh_depth = 0;
@@ -5577,7 +5578,10 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 	// TODO To avoid redundancy, move this block to right before we recurse,
 	// and change the class we're checking to the one we're /about/ to search for,
 	// not the one we're currently searching for.
-	if (!osrfStringArrayContains(osrfHashGet(class_meta, "controller"), modulename)) {
+	if (
+		(!has_controller && !enforce_pcrud) // cstore client-level case: we require the controller, period
+		|| (!has_controller && enforce_pcrud && need_to_verify) // pcrud case: we require the controller in need_to_verify mode
+	) {
 		osrfLogInfo(OSRF_LOG_MARK, "%s is not listed as a controller for %s, moving on",
 			modulename, core_class);
 		return jsonNewObjectType( JSON_ARRAY );	/* empty */
@@ -5880,8 +5884,10 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 						} // end while loop traversing X
 					}
 
-					if(    !strcmp( osrfHashGet( kid_link, "reltype" ), "has_a" )
-						|| !strcmp( osrfHashGet( kid_link, "reltype" ), "might_have" )) {
+					if((   !strcmp( osrfHashGet( kid_link, "reltype" ), "has_a" )
+						|| !strcmp( osrfHashGet( kid_link, "reltype" ), "might_have" ))
+						&& (!enforce_pcrud || JSON_NULL != jsonObjectGetIndex( kids, 0 )->type)
+					) {
 						osrfLogDebug(OSRF_LOG_MARK, "Storing fleshed objects in %s",
 							osrfHashGet( kid_link, "field" ));
 						jsonObjectSetIndex(
