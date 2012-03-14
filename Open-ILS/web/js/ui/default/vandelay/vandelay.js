@@ -344,10 +344,8 @@ function runStartupCommands() {
     dojo.style('vl-nav-bar', 'visibility', 'visible');
     if(currentQueueId)
         return retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
-    if (cgi.param('page', 'inspectq')) {
-        vlShowQueueSelect();
-        return displayGlobalDiv('vl-queue-select-div');
-    }
+    if (cgi.param('page', 'inspectq'))
+        return vlShowQueueSelect();
         
     vlShowUploadForm();
 }
@@ -1354,28 +1352,29 @@ function batchUpload() {
     }
 }
 
+// Inspect Queue no longer uses stores, so put type matching here instead
+function vlGetQueueData(type, asStore) {
+    var filter;
+    switch(type) {
+        case 'bib-acq':
+            filter = 'acq';
+        case 'bib':
+            if(!filter) filter = 'bib';
+            var bibList = allUserBibQueues.filter(
+                function(q) {
+                    return (q.queue_type() == filter);
+                }
+            );
+            if (!asStore) return bibList;
+            return vbq.toStoreData(bibList);
+        case 'auth':
+            if (!asStore) return allUserAuthQueues;
+            return vaq.toStoreData(allUserAuthQueues);
+    }
+}
 
 function vlFleshQueueSelect(selector, type) {
-    var data;
-    if (type == 'bib') {
-        var bibList = allUserBibQueues.filter(
-            function(q) {
-                return (q.queue_type() == 'bib');
-            }
-        );
-        data = vbq.toStoreData(bibList);
-    } else if (type == 'bib-acq') {
-        // ACQ queues are a special type of bib queue
-        var acqList = allUserBibQueues.filter(
-            function(q) {
-                return (q.queue_type() == 'acq');
-            }
-        );
-        data = vbq.toStoreData(acqList);
-    } else {
-        data = vaq.toStoreData(allUserAuthQueues);
-    }
-
+    var data = vlGetQueueData(type, true);
     selector.store = new dojo.data.ItemFileReadStore({data:data});
     selector.setValue(null);
     selector.setDisplayedValue('');
@@ -1459,9 +1458,48 @@ function vlShowUploadForm() {
 
 }
 
+function vlDeleteSelectedQueues() {
+    var checkboxes = document.getElementById('vlQueueSelectList').getElementsByTagName('input');
+    var type = vlQueueSelectType.attr('value').replace(/-.*/, '');
+    for(var i = 0; i < checkboxes.length; i++) {
+        if(checkboxes[i].getAttribute('name') == 'delete' && checkboxes[i].checked) {
+            vlDeleteQueue(type, checkboxes[i].getAttribute('value'), function () {});
+        }
+    }
+    window.location.reload();
+}
+
 function vlShowQueueSelect() {
     displayGlobalDiv('vl-queue-select-div');
-    vlFleshQueueSelect(vlQueueSelectQueueList, vlQueueSelectType.getValue());
+    var type = vlQueueSelectType.attr('value');
+    var data = vlGetQueueData(type, false);
+    type = type.replace(/-.*/, ''); // To remove any sub-typeish info.
+    var tbody = document.getElementById('vlQueueSelectList');
+    // Clear it out
+    while(tbody.firstChild) {
+        tbody.removeChild(tbody.firstChild);
+    }
+    // Add entries
+    for(var entry in data) {
+        var name = data[entry].name();
+        if(!name.match(/\S/))
+            name = '-';
+        var tr = document.createElement('tr');
+        var td = document.createElement('td');
+        var checkbox = document.createElement('input');
+        checkbox.setAttribute('type', 'checkbox');
+        checkbox.setAttribute('name', 'delete');
+        checkbox.setAttribute('value', data[entry].id());
+        td.appendChild(checkbox);
+        tr.appendChild(td);
+        td = document.createElement('td');
+        var a = document.createElement('a');
+        a.textContent = name;
+        a.setAttribute('href', "javascript:retrieveQueuedRecords('" + type + "', " + data[entry].id() + ");");
+        td.appendChild(a);
+        tr.appendChild(td);
+        tbody.appendChild(tr);
+    }
 }
 
 function vlShowMatchSetEditor() {
@@ -1473,12 +1511,6 @@ function vlShowMatchSetEditor() {
             style : 'width:100%; height:500px; border:none; margin:0px;'
         })
     );
-}
-
-function vlFetchQueueFromForm() {
-    currentType = vlQueueSelectType.attr('value').replace(/-.*/, ''); // trim bib-acq
-    currentQueueId = vlQueueSelectQueueList.getValue();
-    retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
 }
 
 function vlOpenMarcEditWindow(rec, postReloadHTMLHandler) {

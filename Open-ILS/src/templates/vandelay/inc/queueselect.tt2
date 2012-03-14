@@ -1,26 +1,27 @@
 <!-- Form for choosing which queue to view -->
 <h1>[% l('Select a Queue to Inspect') %]</h1><br/>
-<table class='form_table'>
-    <tr>
-        <td>[% l('Queue Type') %]</td>
-        <td>
-            <select jsId='vlQueueSelectType' dojoType='dijit.form.FilteringSelect' onchange='vlShowQueueSelect();'>
-                <option value='bib' selected='selected'>[% l('Bibliographic Records') %]</option>
-                <option value='bib-acq'>[% l('Acquisitions Records') %]</option>
-                <option value='auth'>[% l('Authority Records') %]</option>
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <td>[% l('Queue') %]</td>
-        <td>
-            <select jsId='vlQueueSelectQueueList' dojoType='dijit.form.FilteringSelect'>
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <td colspan='2'>
-            <button dojoType='dijit.form.Button' onclick='vlFetchQueueFromForm();'>[% l('Retrieve Queue') %]</button>
-        </td>
-    </tr>
+[% l('Queue Type') %]
+<select jsId='vlQueueSelectType' dojoType='dijit.form.FilteringSelect' onchange='vlShowQueueSelect();'>
+    <option value='bib' selected='selected'>[% l('Bibliographic Records') %]</option>
+    <option value='bib-acq'>[% l('Acquisitions Records') %]</option>
+    <option value='auth'>[% l('Authority Records') %]</option>
+</select>
+<table>
+    <thead>
+        <tr>
+            <td><input type="checkbox" disabled="true" /> &nbsp;</td>
+            <td>[% l('Queue') %]</td>
+        </tr>
+    </thead>
+    <tbody id="vlQueueSelectList">
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>&nbsp;</td>
+            <td><input type="button" value="[% l('Delete Selected') %]" onclick='
+                if(confirm("[% l('Are you sure you want to delete the selected queues?') %]")) {
+                    vlDeleteSelectedQueues();
+                }' /></td>
+        </tr>
+    </tfoot>
 </table>
