@@ -67,7 +67,7 @@
                         <td valign='top'>
                             <strong>[% l("Search Library") %]</strong><br />
                             [% PROCESS "opac/parts/org_selector.tt2";
-                                PROCESS build_org_selector show_loc_groups=1 %]
+                                INCLUDE build_org_selector show_loc_groups=1 %]
                             <div style="position:relative;top:7px;">
                                 <input type='checkbox' name="modifier"
                                     value="available"[% CGI.param('modifier').grep('available').size ? ' checked="checked"' : '' %]

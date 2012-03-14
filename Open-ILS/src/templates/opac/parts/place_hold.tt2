@@ -68,7 +68,7 @@
         <p>
             [% l('Pickup location:') %]
             [% PROCESS "opac/parts/org_selector.tt2";
-                PROCESS build_org_selector name='pickup_lib' value=ctx.default_pickup_lib id='pickup_lib' can_have_vols_only=1 %]
+                INCLUDE build_org_selector name='pickup_lib' value=ctx.default_pickup_lib id='pickup_lib' can_have_vols_only=1 %]
         </p>
         <p>
             [% l('Notify when hold is ready for pickup?') %]

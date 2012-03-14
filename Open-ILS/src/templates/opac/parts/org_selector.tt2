@@ -1,7 +1,10 @@
 [%
 # Org Unit Selector Widget :
-#   PROCESS build_org_selector id='selector-id' name='selector-name' 
+#   INCLUDE build_org_selector id='selector-id' name='selector-name' 
 #       value=org_id show_loc_groups=1/0 can_have_vols_only=1/0
+#
+# NOTE: DO NOT USE PROCESS
+# Use of PROCESS results in internal variables, such as value or org_unit, to "leak" out
 
 BLOCK build_org_selector;
     node_stack = [{org => org_unit || ctx.aou_tree}];

@@ -45,7 +45,7 @@
                             IF ctx.user_setting_map.$setting;
                                 thang = ctx.user_setting_map.$setting;
                             END;
-                            PROCESS build_org_selector name=setting value=thang;
+                            INCLUDE build_org_selector name=setting value=thang;
                         %]
                     </td>
                 </tr>

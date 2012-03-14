@@ -28,7 +28,7 @@
                 [%- END # autosuggest enabled %] />
         </span>
         [%- INCLUDE "opac/parts/qtype_selector.tt2" id="qtype";
-            l(' in '); PROCESS build_org_selector show_loc_groups=1
+            l(' in '); INCLUDE build_org_selector show_loc_groups=1
     %]
     <span>
         <input id='search-submit-go' type="submit" value="[% l('Search') %]" alt="[% l('Search') %]" class="opac-button"

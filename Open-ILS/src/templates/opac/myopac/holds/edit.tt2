@@ -47,7 +47,7 @@
                             [% l('Pickup library') %]
                         </th>
                         <td>
-                            [% PROCESS build_org_selector
+                            [% INCLUDE build_org_selector
                                 name='pickup_lib' value=ahr.pickup_lib %]
                         </td>
                     </tr>
