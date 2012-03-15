@@ -30,17 +30,6 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             lineNumberWidth : '1.5',
             showColumnPicker : false,
             columnPickerPrefix : null,
-            onStyleRow : function(row) {
-                // FIXME: this really feels kludgy (sensitive to how dojo constructs the HTML), and is
-                // probably not idiomatic dojo
-                if (!this.hideLineNumber) {
-                    if (this.hideSelector) {
-                        dojo.addClass(row.node.firstChild.firstChild.firstChild.childNodes[0],'autoGridLineNumber');
-                    } else {
-                        dojo.addClass(row.node.firstChild.firstChild.firstChild.childNodes[1],'autoGridLineNumber');
-                    }
-                }
-            },
             displayLimit : 15,
             displayOffset : 0,
             requiredFields : null,
@@ -50,6 +39,14 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
 
             /* by default, don't show auto-generated (sequence) fields */
             showSequenceFields : false, 
+
+            // style the cells in the line number column
+            onStyleRow : function(row) {
+                if (!this.hideLineNumber) {
+                    var cellIdx = this.hideSelector ? 0 : 1;
+                    dojo.addClass(this.views.views[0].getCellNode(row.index, cellIdx), 'autoGridLineNumber');
+                }
+            },
 
             startup : function() {
                 this.selectionMode = 'single';
