@@ -27,7 +27,8 @@ util.widgets.EXPORT_OK    = [
     'set_text',
     'save_attributes',
     'load_attributes',
-    'find_descendants_by_name'
+    'find_descendants_by_name',
+    'render_perm_org_menu'
 ];
 util.widgets.EXPORT_TAGS    = { ':all' : util.widgets.EXPORT_OK };
 
@@ -475,4 +476,56 @@ util.widgets.find_descendants_by_name = function(top_node,name) {
     return top_node.getElementsByAttribute('name',name);
 }
 
+util.widgets.render_perm_org_menu = function (perm,org) {
+    try {
+        JSAN.use('util.functional'); JSAN.use('util.fm_utils');
+        JSAN.use('OpenILS.data'); JSAN.use('util.network');
+        var data = new OpenILS.data(); data.stash_retrieve();
+        var network = new util.network();
+
+        var work_ous = network.simple_request(
+            'PERM_RETRIEVE_WORK_OU',
+            [ ses(), perm]
+        );
+        if (work_ous.length == 0) {
+            return false;
+        }
+
+        var my_libs = [];
+        for (var i = 0; i < work_ous.length; i++ ) {
+            var perm_depth = data.hash.aout[ data.hash.aou[ work_ous[i] ].ou_type() ].depth();
+
+            var my_libs_tree = network.simple_request(
+                'FM_AOU_DESCENDANTS_RETRIEVE',
+                [ work_ous[i], perm_depth ]
+            );
+            if (!instanceOf(my_libs_tree,aou)) { /* FIXME - workaround for weird descendants call result */
+                my_libs_tree = my_libs_tree[0];
+            }
+            my_libs = my_libs.concat( util.fm_utils.flatten_ou_branch( my_libs_tree ) );
+        }
+
+        var default_lib = org || my_libs[0].id();
+
+        var ml = util.widgets.make_menulist(
+            util.functional.map_list(
+                my_libs,
+                function(obj) {
+                    return [
+                        obj.shortname() + ' : ' + obj.name(),
+                        obj.id(),
+                        false,
+                        ( data.hash.aout[ obj.ou_type() ].depth() )
+                    ];
+                }
+            ),
+            default_lib
+        );
+
+        return ml;
+
+    } catch(E) {
+        alert('Error in util.widgets.render_perm_org_menu(): ' + E);
+    }
+}
 dump('exiting util/widgets.js\n');

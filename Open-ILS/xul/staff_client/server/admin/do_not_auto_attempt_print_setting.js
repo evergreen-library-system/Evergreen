@@ -28,7 +28,14 @@ function my_init() {
             false
         );
 
-        render_lib_menu();
+        var ml = util.widgets.render_perm_org_menu('ADMIN_ORG_UNIT_SETTING_TYPE');
+        if (ml) {
+            document.getElementById('apply').disabled = false;
+            ml.setAttribute('id','lib_menulist');
+            var x = document.getElementById('menu');
+            util.widgets.remove_children(x);
+            x.appendChild(ml);
+        }
 
     } catch(E) {
         try { error.standard_unexpected_error_alert('main/test.xul',E); } catch(F) { alert(E); }
@@ -105,57 +112,4 @@ function render_current_setting() {
 }
 
 
-function render_lib_menu() {
-    try {
-        JSAN.use('util.functional'); JSAN.use('util.fm_utils'); JSAN.use('util.widgets');
 
-        var work_ous = network.simple_request(
-            'PERM_RETRIEVE_WORK_OU',
-            [ ses(), 'ADMIN_ORG_UNIT_SETTING_TYPE']
-        );
-        if (work_ous.length == 0) {
-            return;
-        } else {
-            document.getElementById('apply').disabled = false;
-        }
-
-        var my_libs = [];
-        for (var i = 0; i < work_ous.length; i++ ) {
-            var perm_depth = data.hash.aout[ data.hash.aou[ work_ous[i] ].ou_type() ].depth();
-
-            var my_libs_tree = network.simple_request(
-                'FM_AOU_DESCENDANTS_RETRIEVE',
-                [ work_ous[i], perm_depth ]
-            );
-            if (!instanceOf(my_libs_tree,aou)) { /* FIXME - workaround for weird descendants call result */
-                my_libs_tree = my_libs_tree[0];
-            }
-            my_libs = my_libs.concat( util.fm_utils.flatten_ou_branch( my_libs_tree ) );
-        }
-
-        var x = document.getElementById('menu');
-        util.widgets.remove_children( x );
-
-        var default_lib = my_libs[0].id();
-
-        var ml = util.widgets.make_menulist(
-            util.functional.map_list(
-                my_libs,
-                function(obj) {
-                    return [
-                        obj.shortname(),
-                        obj.id(),
-                        false,
-                        ( data.hash.aout[ obj.ou_type() ].depth() )
-                    ];
-                }
-            ),
-            default_lib
-        );
-        ml.setAttribute('id','lib_menulist');
-
-        x.appendChild( ml );
-    } catch(E) {
-        alert('Error in do_not_auto_attempt_print_setting.js, render_lib_menu(): ' + E);
-    }
-}
