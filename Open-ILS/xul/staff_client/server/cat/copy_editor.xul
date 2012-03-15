@@ -85,6 +85,11 @@
         </hbox>
 
         <hbox id="nav">
+            <button
+                label="&staff.cat.copy_editor.hide_fields.label;"
+                accesskey="&staff.cat.copy_editor.hide_fields.accesskey;"
+                oncommand="util.hide.generate_dialog('ui.hide_copy_editor_fields')"
+            />
             <spacer flex="1"/>
             <button id="copy_notes" label="&staff.cat.copy_editor.copy_notes.label;" accesskey="&staff.cat.copy_editor.copy_notes.accesskey;" oncommand="g.copy_notes();"/>
             <hbox id="non_unified_buttons">

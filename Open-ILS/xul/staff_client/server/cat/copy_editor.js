@@ -224,6 +224,9 @@ function my_init() {
             g.hide_copy_notes_button();
         }
 
+        JSAN.use('util.hide');
+        util.hide.generate_css('ui.hide_copy_editor_fields');
+
     } catch(E) {
         var err_msg = $("commonStrings").getFormattedString('common.exception', ['cat/copy_editor.js', E]);
         try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); dump(js2JSON(E)); }
@@ -1209,6 +1212,7 @@ g.render = function() {
             try {
                 var f = g.panes_and_field_names[h][i]; var fn = f[0]; var attr = f[1].attr;
                 groupbox = document.createElement('groupbox'); document.getElementById(h).appendChild(groupbox);
+                groupbox.setAttribute('hideable',fn);
                 if (attr) {
                     for (var a in attr) {
                         groupbox.setAttribute(a,attr[a]);
@@ -1217,6 +1221,7 @@ g.render = function() {
                 caption = document.createElement('caption'); groupbox.appendChild(caption);
                 caption.setAttribute('label',fn);
                 caption.setAttribute('id','caption_'+fn); // used for focus/keyboard navigation
+                caption.setAttribute('hideable',fn);
                 vbox = document.createElement('vbox'); groupbox.appendChild(vbox); // main display widget goes here
                 if (typeof g.changed[fn] != 'undefined') { addCSSClass(vbox,'copy_editor_field_changed'); }
                 if (typeof g.required[fn] != 'undefined') { addCSSClass(vbox,'copy_editor_field_required'); }

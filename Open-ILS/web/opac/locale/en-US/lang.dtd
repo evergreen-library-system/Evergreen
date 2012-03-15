@@ -2768,6 +2768,8 @@
 <!ENTITY staff.cat.copy_editor.save.accesskey "M">
 <!ENTITY staff.cat.copy_editor.cancel.label "Close">
 <!ENTITY staff.cat.copy_editor.cancel.accesskey "C">
+<!ENTITY staff.cat.copy_editor.hide_fields.label "Hide Fields">
+<!ENTITY staff.cat.copy_editor.hide_fields.accesskey "">
 <!ENTITY staff.cat.copy_summary.label "Item Summary">
 <!ENTITY staff.cat.copy_summary.barcode.label "Barcode:">
 <!ENTITY staff.cat.copy_summary.location.label "Location:">
