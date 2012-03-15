@@ -47,7 +47,7 @@ sub void_overdues {
         my $date = DateTime::Format::ISO8601->parse_datetime($backdate);
         my $due_date = DateTime::Format::ISO8601->parse_datetime(cleanse_ISO8601($circ->due_date))->epoch;
         my $grace_period = extend_grace_period( $class, $circ->circ_lib, $circ->due_date, OpenSRF::Utils->interval_to_seconds($circ->grace_period), $e);
-        if($date->epoch < $due_date + $grace_period) {
+        if($date->epoch <= $due_date + $grace_period) {
             $logger->info("backdate $backdate is within grace period, voiding all");
         } else {
             $backdate = $U->epoch2ISO8601($date->epoch + $interval);
