@@ -8,7 +8,6 @@ caption.top {
     text-align: center;
 }
 label.receiving { width: 20em; text-align: right; }
-.hideme { display: none; }
 #batch_receive_entry { padding-top: 10px; }
 #entry_submitter { padding: 20px 0; }
 menulist.cn { width: 12em; }

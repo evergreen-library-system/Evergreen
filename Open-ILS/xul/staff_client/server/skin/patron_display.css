@@ -3,8 +3,6 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); 
 @namespace html url("http://www.w3.org/TR/REC-html40"); 
 
-.hideme { display: none; }
-
 .change_to_credit { text-decoration: line-through; }
 
 hbox#PatronNotNavBar { border-top: solid thin black; }
