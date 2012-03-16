@@ -4,14 +4,6 @@
     prefs_page = 'notify' %]
 
 <form method='POST'>
-
-    <div style="float:right;width:65px;">
-        <input type='submit' 
-            value="[% l('Save') %]"
-            alt="[% l('Save') %]"
-            class="opac-button" />
-    </div>
-
     [% setting = 'opac.hold_notify' %]
     <input name='[% setting %]' type="hidden"
         [% IF ctx.user_setting_map.$setting; %] value='[% ctx.user_setting_map.$setting | html %]' [% END %]/>
@@ -98,6 +90,7 @@
             [% END %]
         </tbody>
     </table>
+    <input type='submit' value="[% l('Save') %]" alt="[% l('Save') %]" class="opac-button" />
 </form>
 [% END %]
 
