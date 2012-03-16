@@ -1529,8 +1529,12 @@ static int verifyObjectPCRUD ( osrfMethodContext* ctx, osrfHash *class, const js
 		osrfLogDebug( OSRF_LOG_MARK,
 				"global-level permissions required, fetching top of the org tree" );
 
+		// no need to check perms for org tree root retrieval
+		osrfHashSet((osrfHash*) ctx->session->userData, "1", "inside_verify");
 		// check for perm at top of org tree
 		const char* org_tree_root_id = org_tree_root( ctx );
+		osrfHashSet((osrfHash*) ctx->session->userData, "0", "inside_verify");
+
 		if( org_tree_root_id ) {
 			osrfStringArrayAdd( context_org_array, org_tree_root_id );
 			osrfLogDebug( OSRF_LOG_MARK, "top of the org tree is %s", org_tree_root_id );
@@ -5885,17 +5889,19 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 						} // end while loop traversing X
 					}
 
-					if((   !strcmp( osrfHashGet( kid_link, "reltype" ), "has_a" )
-						|| !strcmp( osrfHashGet( kid_link, "reltype" ), "might_have" ))
-						&& (!enforce_pcrud || JSON_NULL != jsonObjectGetIndex( kids, 0 )->type)
-					) {
-						osrfLogDebug(OSRF_LOG_MARK, "Storing fleshed objects in %s",
-							osrfHashGet( kid_link, "field" ));
-						jsonObjectSetIndex(
-							cur,
-							(unsigned long) atoi( osrfHashGet( field, "array_position" ) ),
-							jsonObjectClone( jsonObjectGetIndex( kids, 0 ))
-						);
+					if (kids->size > 0) {
+
+						if((   !strcmp( osrfHashGet( kid_link, "reltype" ), "has_a" )
+							|| !strcmp( osrfHashGet( kid_link, "reltype" ), "might_have" ))
+						) {
+							osrfLogDebug(OSRF_LOG_MARK, "Storing fleshed objects in %s",
+								osrfHashGet( kid_link, "field" ));
+							jsonObjectSetIndex(
+								cur,
+								(unsigned long) atoi( osrfHashGet( field, "array_position" ) ),
+								jsonObjectClone( jsonObjectGetIndex( kids, 0 ))
+							);
+						}
 					}
 
 					if( !strcmp( osrfHashGet( kid_link, "reltype" ), "has_many" )) {
