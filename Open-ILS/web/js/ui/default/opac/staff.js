@@ -32,13 +32,16 @@ function staff_hold_usr_barcode_changed() {
         }
         if(barcode == undefined || barcode == '' || barcode == cur_hold_barcode)
             return;
-        var load_info = xulG.get_barcode_and_settings(window, barcode, ['opac.hold_notify','opac.default_pickup_location','opac.default_sms_carrier','opac.default_sms_notify','opac.default_phone'], only_settings);
+        var load_info = xulG.get_barcode_and_settings(window, barcode, only_settings);
         if(load_info == false || load_info == undefined)
             return;
         cur_hold_barcode = load_info.barcode;
         if(!only_settings) document.getElementById('hold_usr_input').value = load_info.barcode; // Safe at this point as we already set cur_hold_barcode
         if(load_info.settings['opac.default_pickup_location'])
             document.getElementById('pickup_lib').value = load_info.settings['opac.default_pickup_location'];
+        if(!load_info.settings['opac.default_phone']) load_info.settings['opac.default_phone'] = '';
+        if(!load_info.settings['opac.default_sms_notify']) load_info.settings['opac.default_sms_notify'] = '';
+        if(!load_info.settings['opac.default_sms_carrier']) load_info.settings['opac.default_sms_carrier'] = '';
         if(load_info.settings['opac.hold_notify']) {
             var email = load_info.settings['opac.hold_notify'].indexOf('email') > -1;
             var phone = load_info.settings['opac.hold_notify'].indexOf('phone') > -1;

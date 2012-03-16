@@ -2530,7 +2530,7 @@ commands:
             return "user_false";
     },
 
-    'get_barcode_and_settings' : function(window, barcode, settings, settings_only) {
+    'get_barcode_and_settings' : function(window, barcode, settings_only) {
         JSAN.use('util.network');
         if(!settings_only) {
             // We need to double-check the barcode for completion and such.
@@ -2546,10 +2546,14 @@ commands:
         var network = new util.network();
         // We have a barcode! Time to load settings.
         // First, we need the user ID
-        var user_id = network.simple_request('FM_AU_ID_RETRIEVE_VIA_BARCODE_OR_USERNAME', [ ses(), barcode ]);
-        if(user_id.ilsevent != undefined || user_id.textcode != undefined)
+        var user = network.simple_request('FM_AU_RETRIEVE_VIA_BARCODE', [ ses(), barcode ]);
+        if(user.ilsevent != undefined || user.textcode != undefined)
             return false;
-        var settings = network.simple_request('FM_AUS_RETRIEVE', [ ses(), user_id, settings ]);
+        var settings = {};
+        for(var i = 0; i < user.settings().length; i++) {
+            settings[user.settings()[i].name()] = JSON2js(user.settings()[i].value());
+        }
+        if(!settings['opac.default_phone'] && user.day_phone()) settings['opac.default_phone'] = user.day_phone();
         return {"barcode": barcode, "settings" : settings};
     },
 

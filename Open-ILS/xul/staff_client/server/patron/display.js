@@ -392,7 +392,7 @@ patron.display.prototype = {
                                 {},
                                 {
                                     'get_barcode' : function(a,b,c) { return xulG.get_barcode(a,b,c); },
-                                    'get_barcode_and_settings' : function(a,b,c,d) { return xulG.get_barcode_and_settings(a,b,c,d); }
+                                    'get_barcode_and_settings' : function(a,b,c) { return xulG.get_barcode_and_settings(a,b,c); }
                                 }
                             );
                         }

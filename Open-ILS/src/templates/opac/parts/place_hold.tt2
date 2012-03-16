@@ -82,7 +82,8 @@
                     [% l('Yes, by Phone') %]<br/>
                 <blockquote>
                     [% l('Phone Number:') %]<input type="text" name="phone_notify" [% setting = 'opac.default_phone';
-                    IF ctx.user_setting_map.$setting; %] value='[% ctx.user_setting_map.$setting | html %]' [% END %]/>
+                    IF ctx.user_setting_map.$setting; %] value='[% ctx.user_setting_map.$setting | html %]'
+                    [%- ELSIF ctx.user.day_phone; %] value='[% ctx.user.day_phone | html %]' [% END %]/>
                 </blockquote>
                 [% IF ctx.get_org_setting(ctx.search_ou, 'sms.enable') == 1 %]
                 <input type="checkbox" name="sms_notify_checkbox"
