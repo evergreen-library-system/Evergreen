@@ -2576,7 +2576,7 @@ sub usrname_exists {
 	my( $self, $conn, $auth, $usrname ) = @_;
 	my $e = new_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
-	my $a = $e->search_actor_user({usrname => $usrname, deleted=>'f'}, {idlist=>1});
+	my $a = $e->search_actor_user({usrname => $usrname}, {idlist=>1});
 	return $$a[0] if $a and @$a;
 	return undef;
 }
