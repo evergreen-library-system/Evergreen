@@ -46,6 +46,7 @@ sysconf_DATA = $(examples)/action_trigger_filters.json.example \
 	       $(examples)/oils_sip.xml.example \
 	       $(examples)/lib_ips.txt.example \
 	       $(examples)/oils_yaz.xml.example \
+	       $(examples)/kpac.xml.example \
 	       $(examples)/oils_z3950.xml.example 
 
 #----------------------------

@@ -75,22 +75,26 @@
                 </div>
             </td>
 
-            <!-- TODO -->
             <td valign="top">
                 <div class="right_brain">
                     <div class="top_side">
-                        <h2>save it!</h2>
-                        <p>If you would like to save this item to a list to be requested later, please choose a location and click<br />Submit below.</p>
+                        <h2>[% l('save it!') %]</h2>
+                        <p>[% l('If you would like to save this item to a list to be requested later, please choose a location and click <br/>Submit below.') %]</p>
                     </div>
-                    <div class="checkout_box">
-                        <div class="box1_top">&nbsp;</div>
-                        <div class="box_inside">
-                            <p>Choose a Pickup Library:</p>
-                            <div class="pickup_lib"><select name="library"><option>Fairwood</option></select></div>
-                            <div class="hr">&nbsp;</div>
-                            <div><a href="javascript:;">View all KCLS libraries</a></div>
+                    [% IF ctx.user AND ctx.bookbags.size > 0 %]
+                        <div class="checkout_box">
+                            <div class="box1_top">&nbsp;</div>
+                            <div class="box_inside">
+                                <p>[% l('Add to one of your lists?') %]</p>
+                                <select name='bookbag'>
+                                    <option selected='selected'>[% l('-- Select a List --') %]</option>
+                                    [% FOR bbag IN ctx.bookbags %]
+                                        <option value="[% bbag.id %]">[% bbag.name | html %]</option>
+                                    [% END %]
+                                </select>
+                            </div>
                         </div>
-                    </div>
+                    [% END %]
                     <div class="submit_btn">
                         <a href="javascript:;"><img src="[% ctx.media_prefix %]/images/kpac/review_submit_btn.png" alt="submit" /></a>
                     </div>

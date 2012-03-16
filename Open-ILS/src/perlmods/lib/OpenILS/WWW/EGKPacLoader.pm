@@ -15,9 +15,9 @@ my $kpac_config;
 sub load {
     my $self = shift;
 
-    $self->init_ro_object_cache;
+    $self->init_ro_object_cache; 
 
-    my $stat = $self->load_common;
+    my $stat = $self->load_common; 
     return $stat unless $stat == Apache2::Const::OK;
 
     $self->load_kpac_config;
@@ -27,22 +27,16 @@ sub load {
 
     return $self->load_simple("home") if $path =~ m|kpac/home|;
     return $self->load_simple("category") if $path =~ m|kpac/category|;
-    return $self->load_rresults if $path =~ m|kpac/results|; # inherited 
-    return $self->load_record(no_search => 1) if $path =~ m|kpac/record|; # inherited
+    return $self->load_rresults if $path =~ m|kpac/results|;
+    return $self->load_record(no_search => 1) if $path =~ m|kpac/record|; 
 
     # ----------------------------------------------------------------
     #  Everything below here requires SSL
     # ----------------------------------------------------------------
     return $self->redirect_ssl unless $self->cgi->https;
 
-    # XXX auth vs. no-auth, pending list answers
     return $self->load_simple("getit_results") if $path =~ m|kpac/getit_results|;
-
-    if ($path =~ m|kpac/getit|) { # after getit_results
-        my $stat = $self->load_record(no_search => 1);
-        $self->ctx->{page} = 'getit'; # repair the page
-        return $stat;
-    }
+    return $self->load_getit if $path =~ m|kpac/getit|;
 
     # ----------------------------------------------------------------
     #  Everything below here requires authentication
@@ -54,12 +48,46 @@ sub load {
     return Apache2::Const::OK;
 }
 
+sub load_getit {
+    my $self = shift;
+    my $ctx = $self->ctx;
+
+    # first load the record
+    my $stat = $self->load_record(no_search => 1);
+    return $stat unless $stat == Apache2::Const::OK;
+
+    $self->ctx->{page} = 'getit'; # repair the page
+
+    # if the user is logged in, fetch his bookbags
+    if ($ctx->{user}) {
+        $ctx->{bookbags} = $self->editor->search_container_biblio_record_entry_bucket(
+            [{
+                    owner => $ctx->{user}->id, 
+                    btype => 'bookbag'
+                }, {
+                    order_by => {cbreb => 'name'},
+                    limit => $self->cgi->param('bbag_limit') || 100,
+            }],
+            {substream => 1}
+        );
+    }
+
+    $self->ctx->{page} = 'getit'; # repair the page
+    return Apache2::Const::OK;
+}
+
 
 sub load_kpac_config {
     my $self = shift;
-    my $path = '/home/berick/code/Evergreen/Open-ILS/examples/kpac.xml'; # TODO: apache config
 
-    unless ($kpac_config) {
+    if (!$kpac_config) {
+        my $path = $self->apache->dir_config('KPacConfigFile');
+
+        if (!$path) {
+            $self->apache->log->error("KPacConfigFile required!");
+            return;
+        }
+        
         $kpac_config = XMLin(
             $path,
             KeyAttr => ['id'],
@@ -68,8 +96,7 @@ sub load_kpac_config {
         );
     }
 
-    # TODO: make generic "whereami" sub for EGCatLoader.
-    my $ou = $self->ctx->{physical_loc} || $self->cgi->param('loc') || $self->ctx->{aou_tree}->()->id;
+    my $ou = $self->ctx->{physical_loc} || $self->_get_search_lib;
     my $layout;
 
     # Search up the org tree to find the nearest config for the context org unit
