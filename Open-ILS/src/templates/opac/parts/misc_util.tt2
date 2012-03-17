@@ -15,8 +15,12 @@
         args.issn = xml.findnodes('//*[@tag="022"]/*[@code="a"]').textContent;
         args.author = xml.findnodes('//*[@tag="100"]/*[@code="a"]').textContent;
 
+        # Include subfields 'abnp' to generate a more comprehensive title display in search results
+        titresults = xml.findnodes('//*[@tag="245"]/*[@code="a" or @code="b" or @code="n" or @code="p"]');
+        titresults_content = [];
+            FOR sub IN titresults; titresults_content.push(sub.textContent); END;
+        args.title = titresults_content.join(" ");
         # Avoid ugly trailing syntax on brief titles
-        args.title = xml.findnodes('//*[@tag="245"]/*[@code="a"]').textContent;
         args.title = args.title | replace('[:;/]$', '');
 
         # Provide correct spacing between the subfields
