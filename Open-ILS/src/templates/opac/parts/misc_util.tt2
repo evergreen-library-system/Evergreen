@@ -3,6 +3,13 @@
     #   get_marc_attrs( { marc_xml => doc } )
     BLOCK get_marc_attrs;
         xml = args.marc_xml;
+
+        # Map item types to schema.org types; impedance mismatch :(
+        args.schema.itemtype = {};
+        schema_typemap = {};
+        schema_typemap.a = 'http://schema.org/Book';
+        schema_typemap.j = 'http://schema.org/MusicRecording';
+
         args.isbns = [];
         FOR isbn IN xml.findnodes('//*[@tag="020"]/*[@code="a"]');
             args.isbns.push(isbn.textContent);
@@ -208,10 +215,13 @@
             node = xml.findnodes(
                 '//*[local-name()="attributes"]/*[local-name()="field"][@name="' _ icon_style _ '"]');
             IF node AND node.textContent;
+                type = node.textContent;
                 args.format_label = node.getAttribute('coded-value')
-                args.format_icon = ctx.media_prefix _ '/images/format_icons/' _ icon_style _ '/' _ node.textContent _ '.png';
+                args.schema.itemtype = schema_typemap.$type;
+                args.format_icon = ctx.media_prefix _ '/images/format_icons/' _ icon_style _ '/' _ type _ '.png';
                 LAST;
             END;
         END;
+
     END;
 %]

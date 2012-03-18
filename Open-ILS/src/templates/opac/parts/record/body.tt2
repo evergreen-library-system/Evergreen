@@ -3,7 +3,7 @@
     PROCESS get_marc_attrs args=attrs;
     stop_parms = ['expand','cnoffset'];
 %]
-<div id='canvas_main' class='canvas'>
+<div id='canvas_main' class='canvas' itemscope itemtype='[% args.schema.itemtype %]'>
 
     [% IF ctx.search_result_index >= 0 %]
     <div id="rdetail_header">
