@@ -665,4 +665,20 @@ CREATE UNIQUE INDEX label_once_per_ws ON actor.toolbar (ws, label) WHERE ws IS N
 CREATE UNIQUE INDEX label_once_per_org ON actor.toolbar (org, label) WHERE org IS NOT NULL;
 CREATE UNIQUE INDEX label_once_per_usr ON actor.toolbar (usr, label) WHERE usr IS NOT NULL;
 
+CREATE TYPE actor.org_unit_custom_tree_purpose AS ENUM ('opac');
+CREATE TABLE actor.org_unit_custom_tree (
+    id              SERIAL  PRIMARY KEY,
+    active          BOOLEAN DEFAULT FALSE,
+    purpose         actor.org_unit_custom_tree_purpose NOT NULL DEFAULT 'opac' UNIQUE
+);
+
+CREATE TABLE actor.org_unit_custom_tree_node (
+    id              SERIAL  PRIMARY KEY,
+    tree            INTEGER REFERENCES actor.org_unit_custom_tree (id) DEFERRABLE INITIALLY DEFERRED,
+	org_unit        INTEGER NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+	parent_node     INTEGER REFERENCES actor.org_unit_custom_tree_node (id) DEFERRABLE INITIALLY DEFERRED,
+    sibling_order   INTEGER NOT NULL DEFAULT 0,
+    CONSTRAINT aouctn_once_per_org UNIQUE (tree, org_unit)
+);
+
 COMMIT;
