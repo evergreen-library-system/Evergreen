@@ -37,7 +37,7 @@
         fieldOrder="['id','distribution','routing_label']"
         suppressFields="['distribution']"
         showSequenceFields="true"
-        onPostSubmit="function(){window.xulG && xulG.reload_opac()}"
+        onPostSubmit="attempt_reload_opac"
         fmClass="sstr"
         showPaginator="true"
         editOnEnter="true">
@@ -146,5 +146,6 @@
     </div>
     <div dojoType="openils.widget.ProgressDialog" jsId="progress_dialog"></div>
 </div>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/serial/common.js"> </script>
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/serial/list_stream.js"> </script>
 [% END %]

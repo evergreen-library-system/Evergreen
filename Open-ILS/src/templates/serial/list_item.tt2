@@ -47,7 +47,7 @@
         showSequenceFields="true"
         fmClass="sitem"
         editPaneOnSubmit="update_sitem_safely"
-        onPostSubmit="function(){window.xulG && xulG.reload_opac()}"
+        onPostSubmit="attempt_reload_opac"
         showPaginator="true"
         editOnEnter="true">
         <thead>
@@ -120,5 +120,6 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/serial/common.js"></script>
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/serial/list_item.js"></script>
 [% END %]

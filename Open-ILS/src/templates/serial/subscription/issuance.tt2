@@ -22,7 +22,7 @@
         suppressFields="['subscription','holding_link_id','create_date','edit_date','creator','editor']"
         suppressEditFields="['id','holding_link_id','create_date','edit_date']"
         defaultCellWidth="'auto'"
-        onPostSubmit="function(){window.xulG && xulG.reload_opac()}"
+        onPostSubmit="attempt_reload_opac"
         fmClass="siss"
         query="{id: '*'}"
         editOnEnter="true"

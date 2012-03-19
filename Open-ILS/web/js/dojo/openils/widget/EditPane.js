@@ -253,14 +253,6 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                 } else {
                     (new openils.PermaCrud())[this.mode](this.fmObject, opts);
                 }
-
-                /* If we happen to have been spawned by something that
-                 * puts an reload_opac() function into our context, call it. */
-                try {
-                    xulG.reload_opac();
-                } catch(E) {
-                    (dump ? dump : console.log)(E);
-                }
             }
         }
     );
