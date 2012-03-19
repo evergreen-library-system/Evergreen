@@ -1,3 +1,14 @@
+-- Evergreen DB patch 0685.data.bluray_vr_format.sql
+--
+-- FIXME: insert description of change, if needed
+--
+BEGIN;
+
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0685', :eg_version);
+
+-- FIXME: add/check SQL statements to perform the upgrade
 DO $FUNC$
 DECLARE
     same_marc BOOL;
@@ -31,3 +42,6 @@ BEGIN
     UPDATE config.internal_flag SET enabled = same_marc WHERE name = 'ingest.reingest.force_on_same_marc';
 END;
 $FUNC$;
+
+
+COMMIT;
