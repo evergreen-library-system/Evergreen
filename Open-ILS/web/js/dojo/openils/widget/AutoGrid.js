@@ -16,6 +16,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
 
             /* if true, pop up an edit dialog when user hits Enter on a give row */
             editPaneOnSubmit : null,
+            onPostSubmit : null, // called after any CRUD actions are complete
             createPaneOnSubmit : null,
             editOnEnter : false, 
             defaultCellWidth : null,
@@ -347,19 +348,14 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                             fmObject, {
                                 oncomplete : function(r) {
                                     self.store.deleteItem(item);
-                                    if (--total < 1) {
-                                        try {
-                                            xulG.reload_opac();
-                                        } catch (E) {
-                                            (dump ? dump : console.log)(E);
-                                        }
+                                    if (--total < 1 && self.onPostSubmit) {
+                                        self.onPostSubmit();
                                     }
                                 }
                             }
                         );
                     }
                 );
-
             },
 
             _formatRowSelectInput : function(rowIdx) {
@@ -410,7 +406,6 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 var grid = this;
                 var fmObject = new fieldmapper[this.fmClass]().fromStoreItem(storeItem);
                 var idents = grid.store.getIdentityAttributes();
-                var self = this;
 
                 var pane = new openils.widget.EditPane({
                     fmObject:fmObject,
@@ -429,8 +424,8 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                                 continue; // don't try to edit an identifier field
                             grid.store.setValue(storeItem, field, fmObject[field]());
                         }
-                        if(self.onPostUpdate)
-                            self.onPostUpdate(storeItem, rowIndex);
+                        if(grid.onPostUpdate)
+                            grid.onPostUpdate(storeItem, rowIndex);
                         setTimeout(
                             function(){
                                 try { 
@@ -440,6 +435,9 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                         );
                         if(onPostSubmit) 
                             onPostSubmit();
+                        if (grid.onPostSubmit)
+                            grid.onPostSubmit();
+
                     },
                     onCancel : function() {
                         setTimeout(function(){
@@ -479,6 +477,8 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                         },200);
                         if(onPostSubmit)
                             onPostSubmit(fmObject);
+                        if (grid.onPostSubmit)
+                            grid.onPostSubmit();
                     },
                     onCancel : function() {
                         if(onCancel) onCancel();
