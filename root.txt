@@ -50,7 +50,7 @@ include::installation/server_installation.txt[]
 
 include::installation/server_upgrade.txt[]
 
-include::edi_setup.txt[]
+include::installation/edi_setup.txt[]
 
 // include::staff_client_installation.txt[] 
 // include::org_unit_structure_initialization.txt[]
