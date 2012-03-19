@@ -1,8 +1,8 @@
--- Evergreen DB patch XXXX.schema.acq-vandelay-integration.sql
+-- Evergreen DB patch 0684.schema.acq-vandelay-integration.sql
 BEGIN;
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0684', :eg_version);
 
 -- schema --
 
