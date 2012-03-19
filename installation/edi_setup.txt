@@ -1,0 +1,212 @@
+Setting Up EDI Acquisitions
+---------------------------
+
+Introduction
+~~~~~~~~~~~~
+
+Electronic Data Interchange (EDI) is used to exchange information between 
+participating vendors and Evergreen. This chapter contains technical 
+information for installation and configuration of the components necessary 
+to run EDI Acquisitions for Evergreen.
+
+Installation
+~~~~~~~~~~~~
+
+Install EDI Translator
+^^^^^^^^^^^^^^^^^^^^^^
+
+The EDI Translator is used to convert data into EDI format. It runs
+on localhost and listens on port 9191 by default. This is controlled via 
+the edi_webrick.cnf file located in the edi_translator directory. It should
+not be necessary to edit this configuration if you install EDI Translator 
+on the same server used for running Action/Triggers events.
+
+[NOTE]
+If you are running Evergreen with a multi-server configuration, make sure
+to install EDI Translator on the same server used for Action/Trigger event
+generation.
+
+.Steps for Installing
+
+1. As the *opensrf* user, copy the EDI Translator code found in 
+   Open-ILS/src/edi_translator to somewhere accessible 
+   (for example, /openils/var/edi):
++
+[source, bash]
+--------------------------------------------------
+cp -r Open-ILS/src/edi_translator /openils/var/edi
+--------------------------------------------------
+2. Navigate to where you have saved the code to begin next step:
++
+[source, bash]
+-------------------
+cd /openils/var/edi
+-------------------
+3. Next, as the *root* user (or a user with sudo rights), install the 
+   dependencies, via "install.sh". This will perform some apt-get routines 
+   to install the code needed for the EDI translator to function. 
+   (Note: subversion must be installed first)
++
+[source, bash]
+-----------
+./install.sh
+-----------
+4. Now, we're ready to start "edi_webrick.bash" which is the script that calls 
+   the "Ruby" code to translate EDI. This script needs to be started in 
+   order for EDI to function so please take appropriate measures to ensure this 
+   starts following reboots/upgrades/etc. As the *opensrf* user:
++
+[source, bash]
+-----------------
+./edi_webrick.bash
+-----------------
+5. You can check to see if EDI translator is running.
+   * Using the command "ps aux | grep edi" should show you something similar 
+     if the script is running properly:
++
+[source, bash]
+------------------------------------------------------------------------------------------
+root 	30349  0.8  0.1  52620 10824 pts/0	S	13:04   0:00 ruby ./edi_webrick.rb
+------------------------------------------------------------------------------------------
+   * To shutdown EDI Translator you can use something like pkill (assuming 
+     no other ruby processes are running on that server):
++
+[source, bash]
+-----------------------
+kill -INT $(pgrep ruby)
+-----------------------
+
+Install EDI Scripts
+^^^^^^^^^^^^^^^^^^^
+
+The EDI scripts are "edi_pusher.pl" and "edi_fetcher.pl" and are used to
+"push" and "fetch" EDI messages for configured EDI accounts.
+
+1. As the *opensrf* user, copy edi_pusher.pl and edi_fetcher.pl from
+   Open-ILS/src/support-scripts into /openils/bin:
++
+[source, bash]
+--------------------------------------------------
+cp Open-ILS/src/support-scripts/edi_pusher.pl /openils/bin
+cp Open-ILS/src/support-scripts/edi_fetcher.pl /openils/bin
+--------------------------------------------------
+2. Setup the edi_pusher.pl and edi_fetcher.pl scripts to run as cron jobs
+   in order to regularly push and receive EDI messages.
+   * Add to the opensrf user's crontab the following entries:
++
+[source, bash]
+-----------------------------------------------------------------------
+10 * * * * cd /openils/bin && /usr/bin/perl ./edi_pusher.pl > /dev/null
+0 1 * * * cd /openils/bin && /usr/bin/perl ./edi_fetcher.pl > /dev/null
+-----------------------------------------------------------------------
+   * The example for edi_pusher.pl sets the script to run at 
+     10 minutes past the hour, every hour.
+   * The example for edi_fetcher.pl sets the script to run at
+     1 AM every night.
+
+[NOTE]
+You may choose to run the EDI scripts more or less frequently based on the 
+necessary response times from your vendors.
+
+Configuration
+~~~~~~~~~~~~~
+
+Configuring Providers
+^^^^^^^^^^^^^^^^^^^^^
+
+Look in Admin > Server Administration > Acquisitions > Providers
+
+[options="header"]
+|======================================================================================
+|Column              |Description/Notes
+|Provider Name       |A unique name to identify the provider
+|Code	             |A unique code to identify the provider
+|Owner	             |The org unit who will "own" the provider.
+|Currency	     |The currency format the provider accepts
+|Active	             |Whether or not the Provider is "active" for use
+|Default Claim Policy|??
+|EDI Default	     |The default "EDI Account" to use (see EDI Accounts Configuration)
+|Email	             |The email address for the provider
+|Fax Phone	     |A fax number for the provider
+|Holdings Tag	     |The holdings tag to be utilized (usually 852, for Evergreen)
+|Phone	             |A phone number for the provider
+|Prepayment Required |Whether or not prepayment is required
+|SAN	             |The vendor provided, org unit specific SAN code
+|URL	             |The vendor website
+|======================================================================================
+
+Configuring EDI Accounts
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Look in Admin > Server Administration > Acquisitions > EDI Accounts
+
+[options="header"]
+|===============================================================================================================
+|Column	              |Description/Notes
+|Label	              |A unique name to identify the provider
+|Host	              |FTP/SFTP/SSH hostname - vendor assigned
+|Username	      |FTP/SFTP/SSH username - vendor assigned
+|Password	      |FTP/SFTP/SSH password - vendor assigned
+|Account	      |Vendor assigned account number associated with your organization
+|Owner	              |The organizational unit who owns the EDI account
+|Last Activity	      |The date of last activity for the account
+|Provider	      |This is a link to one of the "codes" in the "Providers" interface
+|Path                 |The path on the vendor's server where Evergreen will send it's outgoing .epo files
+|Incoming Directory   |The path on the vendor's server where "incoming" .epo files are stored
+|Vendor Account Number|Vendor assigned account number.
+|Vendor Assigned Code |Usually a sub-account designation. Can be used with or without the Vendor Account Number.
+|===============================================================================================================
+
+Configuring Organizational Unit SAN code
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Look in Admin > Server Settings > Organizational Units
+
+This interface allows a library to configure their SAN, alongside 
+their address, phone, etc.
+
+Troubleshooting
+~~~~~~~~~~~~~~~
+
+PO JEDI Template Issues
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Some libraries may run into issues with the action/trigger (PO JEDI). 
+The template has to be modified to handle different vendor codes that 
+may be used. For instance, if you use "ingra" instead of INGRAM this 
+may cause a problem because they are hardcoded in the template. The 
+following is an example of one modification that seems to work.
+
+.Original template has:
+
+[source, bash]
+----------------------------------------------------------------------------------------------------------------------------------------------
+"buyer":[
+    [%   IF   target.provider.edi_default.vendcode && (target.provider.code == 'BT' || target.provider.name.match('(?i)^BAKER & TAYLOR'))  -%]
+        {"id-qualifier": 91, "id":"[% target.ordering_agency.mailing_address.san _ ' ' _ target.provider.edi_default.vendcode %]"}
+    [%- ELSIF target.provider.edi_default.vendcode && target.provider.code == 'INGRAM' -%]
+        {"id":"[% target.ordering_agency.mailing_address.san %]"},
+        {"id-qualifier": 91, "id":"[% target.provider.edi_default.vendcode %]"}
+    [%- ELSE -%]
+        {"id":"[% target.ordering_agency.mailing_address.san %]"}
+    [%- END -%]
+],
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+.Modified template has the following where it matches on provider SAN instead of code:
+
+[source, bash]
+------------------------------------------------------------------------------------------------------------------------------------------
+"buyer":[
+    [%   IF   target.provider.edi_default.vendcode && (target.provider.san == '1556150')  -%]
+        {"id-qualifier": 91, "id":"[% target.ordering_agency.mailing_address.san _ ' ' _ target.provider.edi_default.vendcode %]"}
+        {"id-qualifier": 91, "id":"[% target.ordering_agency.mailing_address.san _ ' ' _ target.provider.edi_default.vendcode %]"}
+    [%- ELSIF target.provider.edi_default.vendcode && (target.provider.san == '1697978')  -%]
+        {"id":"[% target.ordering_agency.mailing_address.san %]"},
+        {"id-qualifier": 91, "id":"[% target.provider.edi_default.vendcode %]"}
+    [%- ELSE -%]
+        {"id":"[% target.ordering_agency.mailing_address.san %]"}
+    [%- END -%]
+],
+------------------------------------------------------------------------------------------------------------------------------------------
+
