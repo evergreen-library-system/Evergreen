@@ -87,9 +87,9 @@ The Pattern Code Wizard enables you to create the caption of the item and add it
 image::images/cap-wiz-num.jpg[Enuperation]
 ----
 	. To add an enumeration, check the box adjacent to Use enumerations.. The enumerations conform to $a-$h of the 853,854, and 855 MARC tags.
-	. A field for the First level will appear. Enter the enumeration for the first level. A common first level enumeration is volume, or “v.”
+	. A field for the First level will appear. Enter the enumeration for the first level. A common first level enumeration is volume, or "v."
 	. Click Add Enumeration.
-	. A field for the Second level will appear. Enter the enumeration for the second level. A common first level enumeration is number, or “no.”
+	. A field for the Second level will appear. Enter the enumeration for the second level. A common first level enumeration is number, or "no."
 	. Enter the number of bibliographic units per next higher level. This conforms to $u in the 853, 854, and 855 MARC tags.
 	. Choose the enumeration scheme from the drop down menu. This conforms to $v in the 853, 854, and 855 MARC tags.
 	+
@@ -115,7 +115,7 @@ image::images/cap-wiz-cal.jpg[Enumeration]
 image::images/cap-wiz-chron.jpg[Chronology]
 ----
 	. To add chronological units to the captions, check the box adjacent to Use chronology captions.
-	. Choose a chronology for the first level. If you want to display the terms, “year” and “month” next to the chronology caption in the catlaog, then check the box beneath Display in holding field.
+	. Choose a chronology for the first level. If you want to display the terms, "year" and "month" next to the chronology caption in the catlaog, then check the box beneath Display in holding field.
 	. To include additional levels of chronology, click Add Chronology Caption. Each level that you add must be smaller than the previous level.
 	. After you have completed the chronology caption, click Next.
 . Page 4: Compress and Expand Captions
