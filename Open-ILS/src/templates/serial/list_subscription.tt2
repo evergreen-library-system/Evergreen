@@ -39,6 +39,7 @@
         suppressFields="['record_entry']"
         fmClass="ssub"
         showPaginator="true"
+        onPostSubmit="function(){window.xulG && xulG.reload_opac()}"
         showSequenceFields="true"
         editOnEnter="true">
         <thead>

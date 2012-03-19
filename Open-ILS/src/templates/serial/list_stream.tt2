@@ -37,6 +37,7 @@
         fieldOrder="['id','distribution','routing_label']"
         suppressFields="['distribution']"
         showSequenceFields="true"
+        onPostSubmit="function(){window.xulG && xulG.reload_opac()}"
         fmClass="sstr"
         showPaginator="true"
         editOnEnter="true">

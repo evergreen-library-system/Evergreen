@@ -47,6 +47,7 @@
         showSequenceFields="true"
         fmClass="sitem"
         editPaneOnSubmit="update_sitem_safely"
+        onPostSubmit="function(){window.xulG && xulG.reload_opac()}"
         showPaginator="true"
         editOnEnter="true">
         <thead>
