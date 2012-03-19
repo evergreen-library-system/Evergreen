@@ -7,7 +7,7 @@
 # Use of PROCESS results in internal variables, such as value or org_unit, to "leak" out
 
 BLOCK build_org_selector;
-    node_stack = [{org => org_unit || ctx.aou_tree}];
+    node_stack = [{org => org_unit || ctx.aouct_tree || ctx.aou_tree}];
     inherited_vis = ctx.get_cgf('opac.org_unit.non_inheritied_visibility').enabled == 'f';
 
     IF !name; 
@@ -79,26 +79,22 @@ BLOCK build_org_selector;
                 disabled = 'disabled="disabled"';
             ELSIF node_value == value;
                 selected = 'selected="selected"';
-            END;
+            END; 
 
-            pad_depth = org_unit.ou_type.depth;
+            pad_depth = 0;
 
-            # copy loc groups appear as children of the owner (current) org
+            # copy loc groups appear as children of the owning org unit
             SET pad_depth = pad_depth + 1 IF loc_grp;
 
-            # for each parent org unit that is hidden, decrease the pad depth by one.  
-            IF !ctx.is_staff; 
-                porg = ctx.get_aou(org_unit.parent_ou);
-                WHILE porg;
-                    SET pad_depth = pad_depth - 1 IF porg.opac_visible == 'f';
-                    porg = ctx.get_aou(porg.parent_ou);
-                END;
+            # determine the depth by calculating the distance from the root
+            porg = ctx.get_aou(org_unit.parent_ou);
+            WHILE porg;
+                SET pad_depth = pad_depth + 1 IF porg.opac_visible == 't' OR ctx.is_staff;
+                porg = ctx.get_aou(porg.parent_ou);
             END;
 
             pad_depth = pad_depth * 2;
-            display_name = loc_grp ? loc_grp.name : org_unit.name;
-            
-            %] 
+            display_name = loc_grp ? loc_grp.name : org_unit.name %]
 
             <option value='[% node_value %]' [% selected %] [% disabled %] [% css_class %]> 
                 [% '&nbsp;' FOR [0..pad_depth]; display_name | html %]

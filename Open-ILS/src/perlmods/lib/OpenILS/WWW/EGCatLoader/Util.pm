@@ -122,6 +122,47 @@ sub init_ro_object_cache {
         return [ values %{$cache{map}{aou}} ];
     };
 
+    $ro_object_subs->{aouct_tree} = sub {
+
+        # fetch the org unit tree
+        unless(exists $cache{aouct_tree}) {
+            $cache{aouct_tree} = undef;
+
+            my $tree_id = $e->search_actor_org_unit_custom_tree(
+                {purpose => 'opac', active => 't'},
+                {idlist => 1}
+            )->[0];
+
+            if ($tree_id) {
+                my $node_tree = $e->search_actor_org_unit_custom_tree_node([
+                {parent_node => undef, tree => $tree_id},
+                {   flesh        => -1,
+                    flesh_fields => {aouctn => ['children', 'org_unit']},
+                    order_by     => {aouctn => 'sibling_order'}
+                }
+                ])->[0];
+
+                # tree-ify the org units.  note that since the orgs are fleshed
+                # upon retrieval, this org tree will not clobber ctx->{aou_tree}.
+                my @nodes = ($node_tree);
+                while (my $node = shift(@nodes)) {
+                    my $aou = $node->org_unit;
+                    $aou->children([]);
+                    for my $cnode (@{$node->children}) {
+                        my $child_org = $cnode->org_unit;
+                        $child_org->parent_ou($aou->id);
+                        $child_org->ou_type( $ro_object_subs->{get_aout}->($child_org->ou_type) );
+                        push(@{$aou->children}, $child_org);
+                        push(@nodes, $cnode);
+                    }
+                }
+
+                $cache{aouct_tree} = $node_tree->org_unit;
+            }
+        }
+
+        return $cache{aouct_tree};
+    };
 
     # turns an ISO date into something TT can understand
     $ro_object_subs->{parse_datetime} = sub {
