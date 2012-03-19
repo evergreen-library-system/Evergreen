@@ -248,6 +248,7 @@ sub mk_copy_query {
         $query->{where}->{'+acp'}->{opac_visible} = 't';
         $query->{from}->{'acp'}->{'acpl'}->{filter} = {opac_visible => 't'};
         $query->{from}->{'acp'}->{'ccs'}->{filter} = {opac_visible => 't'};
+        $query->{from}->{'acp'}->{'aou'}->{filter} = {opac_visible => 't'};
     }
 
     return $query;
