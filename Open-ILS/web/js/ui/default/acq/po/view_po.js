@@ -513,6 +513,11 @@ function activatePo() {
             return false;
     }
 
+    liTable.showAssetCreator(activatePoStage2);
+}
+
+function activatePoStage2() {
+
     var want_refresh = false;
     progressDialog.show(true);
     fieldmapper.standardRequest(

@@ -6,6 +6,7 @@
         <td>
             <select jsId='vlQueueSelectType' dojoType='dijit.form.FilteringSelect' onchange='vlShowQueueSelect();'>
                 <option value='bib' selected='selected'>[% l('Bibliographic Records') %]</option>
+                <option value='bib-acq'>[% l('Acquisitions Records') %]</option>
                 <option value='auth'>[% l('Authority Records') %]</option>
             </select>
         </td>

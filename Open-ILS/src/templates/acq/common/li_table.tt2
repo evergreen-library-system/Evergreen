@@ -1,4 +1,5 @@
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/common/base64.js"> </script>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/common/vlagent.js'> </script>
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/common/li_table.js'> </script>
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/financial/claim_voucher.js'> </script>
 <div id='acq-lit-table-container'>
@@ -107,6 +108,7 @@
                                         <span name='po' class='hidden'> | <a title='Purchase Order' name='po_link' href='javascript:void(0);'>&#x2318; </a></span>
                                         <span name="show_requests"> | <a title='Patron Requests' name="show_requests_link" href="javascript:void(0);">requests</a></span> 
                                         <span name='pro' class='hidden'> | <a title='[% l('Provider') %]' name='pro_link' href='javascript:void(0);'>&#x235F; </a></span>
+                                        <span name='queue' class='hidden'> | <a title='[% l('Import Queue') %]' name='queue_link' href='javascript:void(0);'>[% l('&#x27AC; queue') %]</a></span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -309,35 +311,25 @@
         </div>
     </div>
 
-    <div class='hidden' id='acq-lit-progress-numbers'>
+
+    [% PROCESS 'acq/common/vlagent.tt2' %]
+    <div class='hidden' id='acq-lit-asset-creator'>
         <table class='oils-generic-table'>
             <tbody>
+                [% PROCESS vlagent_form %]
                 <tr>
-                    <td>Lineitems Processed</td>
-                    <td><span id='acq-pl-lit-li-processed'>0</span></td>
-                </tr>
-                <tr>
-                    <td>Items Processed</td>
-                    <td><span id='acq-pl-lit-lid-processed'>0</span></td>
-                </tr>
-                <tr>
-                    <td>Debits Encumbered</td>
-                    <td><span id='acq-pl-lit-debits-processed'>0</span></td>
-                </tr>
-                <tr>
-                    <td>Bib Records Imported</td>
-                    <td><span id='acq-pl-lit-bibs-processed'>0</span></td>
-                </tr>
-                <tr>
-                    <td>Bib Records Indexed</td>
-                    <td><span id='acq-pl-lit-indexed-processed'>0</span></td>
-                </tr>
-                <tr>
-                    <td>Copies Processed</td>
-                    <td><span id='acq-pl-lit-copies-processed'>0</span></td>
+                    <td>
+                        <span style='margin-left:10px;'>
+                            <button dojoType="dijit.form.Button" jsId='assetCreatorButton'>[% l('Submit') %]</button>
+                        </span>
+                    </td>
                 </tr>
             </tbody>
         </table>
+    </div>
+
+    <div class='hidden' id='acq-lit-progress-numbers'>
+        [% PROCESS vlagent_results %]
     </div>
 
     <div class='hidden'>

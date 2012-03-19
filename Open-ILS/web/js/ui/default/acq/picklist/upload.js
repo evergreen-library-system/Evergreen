@@ -1,4 +1,5 @@
 dojo.require('dojo.data.ItemFileReadStore');
+dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('dijit.ProgressBar');
 dojo.require('dijit.form.CheckBox');
 dojo.require('dijit.form.TextBox');
@@ -9,10 +10,14 @@ dojo.require("dojo.io.iframe");
 dojo.require('openils.User');
 dojo.require('openils.widget.AutoFieldWidget');
 dojo.require('openils.acq.Picklist');
+dojo.require('openils.XUL');
+dojo.require('openils.PermaCrud');
 
 var VANDELAY_URL = '/vandelay-upload';
 var providerWidget;
 var orderAgencyWidget;
+var vlAgent;
+var usingNewPl = false;
 
 function init() {
     dojo.byId('acq-pl-upload-ses').value = openils.User.authtoken;
@@ -35,6 +40,9 @@ function init() {
         function(w) { orderAgencyWidget = w }
     );
 
+    vlAgent = new VLAgent();
+    vlAgent.init();
+
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.picklist.user.retrieve.atomic'],
         {   async: true,
@@ -42,7 +50,7 @@ function init() {
             oncomplete : function(r) {
                 var list = openils.Util.readResponse(r);
                 acqPlUploadPlSelector.store = 
-                    new dojo.data.ItemFileReadStore({data:acqpl.toStoreData(list)});
+                    new dojo.data.ItemFileWriteStore({data:acqpl.toStoreData(list)});
             }
         }
     );
@@ -59,12 +67,14 @@ function acqUploadRecords() {
             onComplete : function(items) {
                 if(items.length == 0) {
                     // create a new picklist for these items
+                    usingNewPl = true;
                     openils.acq.Picklist.create(
                         {name:picklist, org_unit: orderAgencyWidget.attr('value')},
                         function(plId) { acqSendUploadForm({picklist:plId}) }
                     );
                 } else {
-                    acqSendUploadForm({picklist:items[0].id});
+                    usingNewPl = false;
+                    acqSendUploadForm({picklist:items[0].id[0]});
                 }
             }
         });
@@ -79,53 +89,73 @@ function acqSendUploadForm(args) {
         method: "post",
         handleAs: "html",
         form: dojo.byId('acq-pl-upload-form'),
-        content : {
-            picklist : args.picklist,
-            provider : providerWidget.attr('value'),
-            ordering_agency : orderAgencyWidget.attr('value')
-        },
         handle: function(data, ioArgs){
-            acqHandlePostUpload(data.documentElement.textContent);
+            acqHandlePostUpload(data.documentElement.textContent, args.picklist);
         }
     });
 }
 
 
-function acqHandlePostUpload(key) {
+function acqHandlePostUpload(key, plId) {
+
+    var args = {
+        picklist : plId,
+        provider : providerWidget.attr('value'),
+        ordering_agency : orderAgencyWidget.attr('value'),
+        create_po : acqPlUploadCreatePo.attr('value'),
+        activate_po : acqPlUploadActivatePo.attr('value'),
+        vandelay : vlAgent.values()
+    };
+
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.process_upload_records'],
         {   async: true,
-            params: [openils.User.authtoken, key],
+            params: [openils.User.authtoken, key, args],
             onresponse : function(r) {
-                var resp = openils.Util.readResponse(r);
-                console.log(js2JSON(resp));
-                if(!resp) return;
-                if(resp.complete) {
-                    openils.Util.hide('acq-pl-upload-complete-pl');
-                    openils.Util.hide('acq-pl-upload-complete-po');
-                    openils.Util.hide('acq-pl-upload-progress-bar');
-                    openils.Util.show('acq-pl-upload-complete');
 
-                    if(resp.picklist) {
-                        openils.Util.show('acq-pl-upload-complete-pl');
-                        dojo.byId('acq-pl-upload-complete-pl').setAttribute(
-                            'href', oilsBasePath + '/acq/picklist/view/' + resp.picklist.id());
-                    } 
+                vlAgent.handleResponse(
+                    openils.Util.readResponse(r),
+                    function(resp, res) {
 
-                    if(resp.purchase_order) {
-                        openils.Util.show('acq-pl-upload-complete-po');
-                        dojo.byId('acq-pl-upload-complete-po').setAttribute(
-                            'href', oilsBasePath + '/acq/po/view/' + resp.purchase_order.id());
+                        openils.Util.hide('acq-pl-upload-complete-pl');
+                        openils.Util.hide('acq-pl-upload-complete-po');
+                        openils.Util.hide('acq-pl-upload-complete-q');
+                        openils.Util.hide('acq-pl-upload-progress-bar');
+                        openils.Util.show('acq-pl-upload-complete');
+
+                        function activateLink(link, url, name) {
+                            link = dojo.byId(link);
+                            openils.Util.show(link);
+                            if (name) link.innerHTML = name;
+                            if (typeof xulG == 'undefined') { // browser
+                                link.setAttribute('href', url); 
+                            } else {
+                                link.setAttribute('href', 'javascript:;'); // for linky-ness
+                                link.onclick = function() { openils.XUL.newTabEasy(url, null, null, true) };
+                            }
+                        }
+                            
+                        if(res.picklist_url) {
+                            activateLink('acq-pl-upload-complete-pl', res.picklist_url);
+
+                            // if the user entered a new picklist, refetch the set to pick
+                            // up the ID and redraw the list with the new one selected
+                            if (usingNewPl) {
+                                var newPl = new openils.PermaCrud().retrieve('acqpl', resp.picklist.id());
+                                acqPlUploadPlSelector.store.newItem(newPl.toStoreItem());
+                                acqPlUploadPlSelector.attr('value', newPl.name());
+                            }
+                        } 
+
+                        if(res.po_url) {
+                            activateLink('acq-pl-upload-complete-po', res.po_url);
+                        }
+
+                        if (res.queue_url) {
+                            activateLink('acq-pl-upload-complete-q', res.queue_url);
+                        }
                     }
-
-                } else {
-                    dojo.byId('acq-pl-upload-li-processed').innerHTML = resp.li;
-                    dojo.byId('acq-pl-upload-lid-processed').innerHTML = resp.lid;
-                    dojo.byId('acq-pl-upload-debits-processed').innerHTML = resp.debits_accrued;
-                    dojo.byId('acq-pl-upload-bibs-processed').innerHTML = resp.bibs;
-                    dojo.byId('acq-pl-upload-indexed-processed').innerHTML = resp.indexed;
-                    dojo.byId('acq-pl-upload-copies-processed').innerHTML = resp.copies;
-                }
+                );
             },
         }
     );

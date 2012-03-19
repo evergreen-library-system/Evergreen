@@ -1529,7 +1529,11 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 519, 'ADMIN_SMS_CARRIER', oils_i18n_gettext( 519,
     'Allows a user to add/create/delete SMS Carrier entries.', 'ppl', 'description' )),
  ( 520, 'COPY_DELETE_WARNING.override', oils_i18n_gettext( 520,
-    'Allow a user to override warnings about deleting copies in problematic situations.', 'ppl', 'description' ));
+    'Allow a user to override warnings about deleting copies in problematic situations.', 'ppl', 'description' )),
+ ( 521, 'IMPORT_ACQ_LINEITEM_BIB_RECORD_UPLOAD', oils_i18n_gettext( 521,
+    'Allows a user to create new bibs directly from an ACQ MARC file upload', 'ppl', 'description' )),
+ ( 522, 'IMPORT_AUTHORITY_MARC', oils_i18n_gettext( 522,
+    'Allows a user to create new authority records', 'ppl', 'description' ));
 
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
@@ -1766,6 +1770,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'DELETE_TITLE_NOTE',
 			'IMPORT_ACQ_LINEITEM_BIB_RECORD',
 			'IMPORT_MARC',
+            'IMPORT_AUTHORITY_MARC',
 			'MERGE_AUTH_RECORDS',
 			'MERGE_BIB_RECORDS',
 			'UPDATE_AUTHORITY_IMPORT_QUEUE',
@@ -9176,6 +9181,8 @@ INSERT INTO vandelay.import_error ( code, description ) VALUES (
     'import.item.invalid.copy_number', oils_i18n_gettext('import.item.invalid.copy_number', 'Invalid value for "copy_number"', 'vie', 'description') );
 INSERT INTO vandelay.import_error ( code, description ) VALUES ( 
     'import.item.invalid.circ_as_type', oils_i18n_gettext('import.item.invalid.circ_as_type', 'Invalid value for "circ_as_type"', 'vie', 'description') );
+INSERT INTO vandelay.import_error ( code, description ) VALUES ( 
+    'import.record.perm_failure', oils_i18n_gettext('import.record.perm_failure', 'Perm failure creating a record', 'vie', 'description') );
 
 -- Event def for email notice for hold cancelled due to lack of target -----
 

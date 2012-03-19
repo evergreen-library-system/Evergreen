@@ -486,6 +486,8 @@ CREATE TABLE acq.lineitem (
 	estimated_unit_price NUMERIC,
 	claim_policy        INT                         REFERENCES acq.claim_policy
 			                                        DEFERRABLE INITIALLY DEFERRED,
+    queued_record       BIGINT                      REFERENCES vandelay.queued_bib_record (id)
+                                                        ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
     CONSTRAINT picklist_or_po CHECK (picklist IS NOT NULL OR purchase_order IS NOT NULL)
 );
 CREATE INDEX li_po_idx ON acq.lineitem (purchase_order);

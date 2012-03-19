@@ -1,0 +1,78 @@
+[% BLOCK vlagent_form %]
+    <tr>
+        <td>[% l('Upload to Queue') %]</td>
+        <td><div id='acq_vl:existing_queue'></div></td>
+        <td>
+            <span>[% l('Or create a new queue') %]</span>
+            <input dojoType='dijit.form.TextBox' id='acq_vl:queue_name' size='32'></input>
+        </td>
+    </tr>
+    <tr>
+        <td>[% l('Record Match Set') %]</td>
+        <td><div id='acq_vl:match_set'></div></td>
+    </tr>
+    <tr>
+        <td>[% l('Merge Profile') %]</td>
+        <td><div id='acq_vl:merge_profile'></div></td>
+    </tr>
+    <tr>
+        <td>[% l('Import Non-Matching Records') %]</td>
+        <td><input dojoType='dijit.form.CheckBox' id='acq_vl:import_no_match'></input></td>
+        <td><span style='padding-right:10px;'>[% l('Record Source') %]</span> <div id='acq_vl:bib_source'></div></td>
+    </tr>
+    <tr>
+        <td>[% l('Merge On Exact Match (901c)') %]</td>
+        <td><input dojoType='dijit.form.CheckBox' id='acq_vl:auto_overlay_exact'></input></td>
+    </tr>
+    <tr>
+        <td>[% l('Merge On Single Match') %]</td>
+        <td><input dojoType='dijit.form.CheckBox' id='acq_vl:auto_overlay_1match'></input></td>
+    </tr>
+    <tr>
+        <td>[% l('Merge On Best Match') %]</td>
+        <td><input dojoType='dijit.form.CheckBox' id='acq_vl:auto_overlay_best_match'></input></td>
+    </tr>
+    <tr>
+        <td>[% l('Best/Single Match Minimum Quality Ratio') %]</td>
+        <td colspan='4'>
+            <input style='width:3em' value='0.0' id='acq_vl:match_quality_ratio' dojoType='dijit.form.TextBox'/>
+            <span style='padding-left: 10px; font-size:90%'>[% l('New Record Quality / Quality of Best Match') %]</span>
+        </td>
+    </tr>
+    <tr>
+        <td>[% l('Insufficient Quality Fall-Through Profile') %]</td>
+        <td><div id='acq_vl:fall_through_merge_profile'></div></td>
+    </tr>
+[% END %]
+
+[% BLOCK vlagent_results %]
+    <table class='oils-generic-table'>
+        <tbody>
+            <tr>
+                <td>[% l('Lineitems Processed') %]</td>
+                <td><span id='acq_vl:li-processed'>0</span></td>
+            </tr>
+            <tr>
+                <td>[% l('Vandelay Records Processed') %]</td>
+                <td><span id='acq_vl:vqbr-processed'>0</span></td>
+            </tr>
+            <tr>
+                <td>[% l('Bib Records Merged/Imported') %]</td>
+                <td><span id='acq_vl:bibs-processed'>0</span></td>
+            </tr>
+            <tr>
+                <td>[% l('ACQ Copies Processed') %]</td>
+                <td><span id='acq_vl:lid-processed'>0</span></td>
+            </tr>
+            <tr>
+                <td>[% l('Debits Encumbered') %]</td>
+                <td><span id='acq_vl:debits-processed'>0</span></td>
+            </tr>
+            <tr>
+                <td>[% l('Real Copies Processed') %]</td>
+                <td><span id='acq_vl:copies-processed'>0</span></td>
+            </tr>
+        </tbody>
+    </table>
+[% END %]
+
