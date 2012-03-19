@@ -248,7 +248,7 @@ RETURNS INT[] AS $$
         FROM actor.org_unit aou
         JOIN descendant_depth dd USING (id)
         WHERE aou.id = $1 ORDER BY dd.path;
-$$ LANGUAGE SQL STABLE ROWS 1;
+$$ LANGUAGE SQL STABLE;
 
 CREATE OR REPLACE FUNCTION actor.org_unit_proximity ( INT, INT ) RETURNS INT AS $$
 	SELECT COUNT(id)::INT FROM (

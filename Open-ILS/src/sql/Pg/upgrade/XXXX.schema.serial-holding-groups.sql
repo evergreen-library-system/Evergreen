@@ -65,7 +65,7 @@ RETURNS INT[] AS $$
         FROM actor.org_unit aou
         JOIN descendant_depth dd USING (id)
         WHERE aou.id = $1 ORDER BY dd.path;
-$$ LANGUAGE SQL STABLE ROWS 1;
+$$ LANGUAGE SQL STABLE;
 
 CREATE TABLE serial.materialized_holding_code (
     id BIGSERIAL PRIMARY KEY,
