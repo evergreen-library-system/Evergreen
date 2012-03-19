@@ -1,5 +1,5 @@
 Serials
-------------
+-------
 
 This documentation is intended for users who will be ordering subscriptions, distributing issues, and receiving issues in Evergreen.
 
@@ -23,7 +23,6 @@ The views are interoperable, but because the views were designed for different p
 |Generate Predictions          |Make predictions          |Generate predictions
 |Add items for special issue   |No functionality          |New items on issuances tab
 ====================================================================================================
-
 
 MFHD Records
 ~~~~~~~~~~~~
