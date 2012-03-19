@@ -51,13 +51,8 @@ if (!dojo._hasResource["openils.AutoSuggestStore"]) {
 
             if (this.cm_cache[key]) return;
 
-            var cookie = dojo.cookie("OILS_AS" + key);
-            if (cookie) {
-                this.cm_cache[key] = dojo.fromJson(cookie);
-                return oncomplete();
-            }
-
-            /* now try to get it from open-ils.searcher */
+            /* Try to get cache of cmc's or cmf's from
+             * openils.widget.Searcher */
             try {
                 /* openils.widget.Searcher may not even be loaded;
                  * that's ok; just try. */
@@ -81,16 +76,12 @@ if (!dojo._hasResource["openils.AutoSuggestStore"]) {
                 "params": [{"query": query, "fields": field_list}],
                 "async": true,
                 "oncomplete": function(r) {
-                    /* XXX check for failure? */
-                    var result_arr = r.recv().content();
+                    var result_arr = openils.Util.readResponse(r);
 
                     self.cm_cache[key] = {};
                     dojo.forEach(
                         result_arr,
                         function(o) { self.cm_cache[key][o[pkey]] = o; }
-                    );
-                    dojo.cookie(
-                        "OILS_AS" + key, dojo.toJson(self.cm_cache[key])
                     );
                     oncomplete();
                 }
