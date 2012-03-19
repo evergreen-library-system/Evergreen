@@ -1095,10 +1095,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Workstation ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Workstation Name" name="name" reporter:datatype="text"/>
 			<field reporter:label="Owning Library" name="owning_lib"  reporter:datatype="org_unit"/>
+			<field reporter:label="Toolbars" name="toolbars" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Circulations" name="circulations" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="toolbars" reltype="has_many" key="ws" map="" class="atb"/>
 			<link field="circulations" reltype="has_many" key="workstation" map="" class="circ"/>
 		</links>
 	</class>
@@ -2774,6 +2776,41 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 				<retrieve permission="RUN_REPORTS">
 					<context link="usr" field="home_ou" />
 				</retrieve>
+			</actions>
+		</permacrud>
+	</class>
+	<class id="atb" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::toolbar" oils_persist:tablename="actor.toolbar" reporter:label="Custom Toolbar">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.toolbar_id_seq">
+			<field name="id" reporter:label="ID" reporter:datatype="id" />
+			<field name="usr" reporter:label="Owning User" reporter:datatype="link" />
+			<field name="org" reporter:label="Owning Org Unit" reporter:datatype="link" />
+			<field name="ws" reporter:label="Owning Workstation" reporter:datatype="link" />
+			<field name="label" reporter:label="Label" reporter:datatype="text" oils_persist:i18n="true" />
+			<field name="layout" reporter:label="Layout" reporter:datatype="text" />
+        </fields>
+        <links>
+			<link field="usr" reltype="might_have" key="id" map="" class="au"/>
+			<link field="org" reltype="might_have" key="id" map="" class="aou"/>
+			<link field="ws" reltype="might_have" key="id" map="" class="aws"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve permission="ADMIN_TOOLBAR VIEW_TOOLBAR" context_field="org">
+					<context link="usr" field="home_ou" />
+					<context link="ws" field="owning_lib" />
+				</retrieve>
+				<create permission="ADMIN_TOOLBAR" context_field="org">
+					<context link="usr" field="home_ou" />
+					<context link="ws" field="owning_lib" />
+				</create>
+				<update permission="ADMIN_TOOLBAR" context_field="org">
+					<context link="usr" field="home_ou" />
+					<context link="ws" field="owning_lib" />
+				</update>
+				<delete permission="ADMIN_TOOLBAR" context_field="org">
+					<context link="usr" field="home_ou" />
+					<context link="ws" field="owning_lib" />
+				</delete>
 			</actions>
 		</permacrud>
 	</class>
