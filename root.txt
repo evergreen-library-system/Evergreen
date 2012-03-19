@@ -129,18 +129,33 @@ Introduction
 Cataloguers should use this part for understanding the cataloguing procedures used in Evergreen.
 
 include::cataloging/batch_importing_MARC.txt[]
+
 include::cataloging/overlay_record_3950_import.txt[]
+
 include::cataloging/monograph_parts.txt[]
+
 include::cataloging/conjoined_items.txt[]
 
 
 Serials
 =======
 
-Introduction
-------------
+include::serials/A-intro.txt[]
 
-This part is intended for staff involved in Serials management and processing.
+include::serials/B-copy_template.txt[]
+
+include::serials/C-subscription-SCV.txt[]
+
+include::serials/D-subscription-ASCV.txt[]
+
+include::serials/E-edit_subscription.txt[]
+
+include::serials/F-Receiving.txt[]
+
+include::serials/G-Special_issue.txt[]
+
+include::serials/H-holdings_statements.txt[]
+
 
 Circulation
 ===========

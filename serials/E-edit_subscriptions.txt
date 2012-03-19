@@ -1,0 +1,19 @@
+Edit Subscriptions
+------------------
+Subscriptions can be edite to change the caption and pattern and other information.
+
+Serials Control View
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+. To access Serial Control View, open a serials record, and click Actions for this Record >> Serial Control. This opens the Subscriptions interface
+. Click the subscriptions tab
+. Click on the appropriate link to edit
+
+
+Alternate Serials Control View
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+. To access Alternate Serial Control View, open a serials record, and click Actions for this Record >> Alternate Serial Control. This opens the Subscriptions interface
+. Click the hyperlinked ID number to edit the subscription. 
+. Click on the appropriate tab to edit the information
+
