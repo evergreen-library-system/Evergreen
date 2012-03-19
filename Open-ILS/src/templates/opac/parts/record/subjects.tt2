@@ -57,7 +57,7 @@
             <tbody>
                 <tr>
                     <td class='rdetail_subject_type'>[% subj.label %]</td>
-                    <td class='rdetail_subject_value'>[% content %]</td>
+                    <td class='rdetail_subject_value' itemprop='keywords'>[% content %]</td>
                 </tr>
             </tbody>
         </table>

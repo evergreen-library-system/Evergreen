@@ -28,6 +28,7 @@ BLOCK build_author_links;
     FOR node IN ctx.marc_xml.findnodes(xpath);
         term = '';
         qterm = '';
+        iprop = '';
         FOR subfield IN node.childNodes;
             NEXT UNLESS subfield.nodeName == "subfield";
             code = subfield.getAttribute('code');
@@ -39,7 +40,14 @@ BLOCK build_author_links;
         END;
         url = mkurl(ctx.opac_root _ '/results', {query => qterm, qtype => 'author'}, ['page', 'expand']);
         author_type = label | html;
-        '<a href="' _ url _ '">' _ term _ '</a> (' _ author_type _ '). ';
+        
+        # schema.org changes
+        IF type == 'author';
+            iprop = ' itemprop="accountablePerson"';
+        ELSIF type == 'added';
+            iprop = ' itemprop="contributor"';
+        END;
+        '<a href="' _ url _ '"' _ iprop _ '>' _ term.replace('^\s+', '') _ '</a> (' _ author_type _ '). ';
     END;
 END;
 %]
@@ -47,7 +55,9 @@ END;
 <div class='rdetail_authors_div'>
 [%- FOREACH author IN authors;
     NEXT UNLESS author.xpath; 
-    links = PROCESS build_author_links(xpath=author.xpath, label=author.label);
+    links = PROCESS build_author_links(
+        xpath=author.xpath, label=author.label, type=author.type
+    );
     IF links.match('\S') %]
     <span class='rdetail-author-div'>[% links %]</span>
     [%- END %]

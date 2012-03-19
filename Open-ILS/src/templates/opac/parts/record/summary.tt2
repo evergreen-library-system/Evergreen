@@ -51,7 +51,7 @@
             <img alt="[% attrs.format_label %]" title="[% attrs.format_label | html %]" src="[% attrs.format_icon %]" />
         </div>
         [%- END %]
-        <h1 id='rdetail_title'>[% attrs.title_extended | html %]</h1>
+        <h1 id='rdetail_title' itemprop="name">[% attrs.title_extended | html %]</h1>
         [%- INCLUDE "opac/parts/record/authors.tt2" %]
     </div>
 </div>
@@ -115,7 +115,7 @@ IF num_uris > 0;
     [%- IF attrs.isbns.0; FOR isbn IN attrs.isbns %]
     <li class='rdetail_isbns'>
         <strong class='rdetail_label'>[% l('ISBN:'); %]</strong>
-        <span class='rdetail_value'>[% isbn | html  %]</span>
+        <span class='rdetail_value' itemprop='isbn'>[% isbn | html  %]</span>
     </li>
         [%- END %]
     [%- END %]
@@ -141,7 +141,12 @@ IF num_uris > 0;
     [%- IF attrs.publisher %]
     <li id='rdetail_publisher'>
         <strong class='rdetail_label'>[% l("Publisher:") %]</strong>
-        <span class='rdetail_value'>[% attrs.publisher | html %] [% IF attrs.pubdate; attrs.pubdate | html; END %]</span>
+        <span class='rdetail_value' itemprop="publisher">[%
+            attrs.publisher | html;
+        %]</span>[% IF attrs.pubdate; %] <span itemprop="datePublished">[%
+            attrs.pubdate | html;
+            END;
+        %]</span>
     </li>
     [%- END %]
 </ul>
