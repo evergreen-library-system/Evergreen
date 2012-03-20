@@ -38,7 +38,7 @@ sub add_survey {
     return $evt if $evt;
 
 	my $session = $apputils->start_db_session();
-	$apputils->set_audit_info($user_session, $user_obj->id, $user_obj->wsid);
+	$apputils->set_audit_info($session, $user_session, $user_obj->id, $user_obj->wsid);
 	my $err = undef; my $id;
 
 

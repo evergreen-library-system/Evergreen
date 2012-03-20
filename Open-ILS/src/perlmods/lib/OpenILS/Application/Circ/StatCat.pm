@@ -177,7 +177,7 @@ sub stat_cat_create {
 
 
 	my $session = $apputils->start_db_session();
-	$apputils->set_audit_info($user_session, $user_obj->id, $user_obj->wsid);
+	$apputils->set_audit_info($session, $user_session, $user_obj->id, $user_obj->wsid);
 	my $newid = _create_stat_cat($session, $stat_cat, $method);
 
 	if( ref($stat_cat->entries) ) {
@@ -297,7 +297,7 @@ sub update_stat_entry {
 	return $evt if $evt;
 
 	my $session = $apputils->start_db_session();
-	$apputils->set_audit_info($user_session, $user_obj->id, $user_obj->wsid);
+	$apputils->set_audit_info($session, $user_session, $user_obj->id, $user_obj->wsid);
 	my $req = $session->request($method, $entry); 
 	my $status = $req->gather(1);
 	$apputils->commit_db_session($session);
@@ -330,7 +330,7 @@ sub update_stat {
 	return $evt if $evt;
 
 	my $session = $apputils->start_db_session();
-	$apputils->set_audit_info($user_session, $user_obj->id, $user_obj->wsid);
+	$apputils->set_audit_info($session, $user_session, $user_obj->id, $user_obj->wsid);
 	my $req = $session->request($method, $cat); 
 	my $status = $req->gather(1);
 	$apputils->commit_db_session($session);
@@ -364,7 +364,7 @@ sub create_stat_entry {
 
 	$entry->clear_id();
 	my $session = $apputils->start_db_session();
-	$apputils->set_audit_info($user_session, $user_obj->id, $user_obj->wsid);
+	$apputils->set_audit_info($session, $user_session, $user_obj->id, $user_obj->wsid);
 	my $req = $session->request($method, $entry); 
 	my $status = $req->gather(1);
 	$apputils->commit_db_session($session);
@@ -420,7 +420,7 @@ sub create_stat_map {
 	$map->clear_id();
 
 	my $session = $apputils->start_db_session();
-	$apputils->set_audit_info($user_session, $user_obj->id, $user_obj->wsid);
+	$apputils->set_audit_info($session, $user_session, $user_obj->id, $user_obj->wsid);
 	my $req = $session->request($method, $map); 
 	my $newid = $req->gather(1);
 	warn "Created new stat cat map with id $newid\n";
@@ -471,7 +471,7 @@ sub update_stat_map {
 
 
 	my $session = $apputils->start_db_session();
-	$apputils->set_audit_info($user_session, $user_obj->id, $user_obj->wsid);
+	$apputils->set_audit_info($session, $user_session, $user_obj->id, $user_obj->wsid);
 	my $req = $session->request($method, $map); 
 	my $newid = $req->gather(1);
 	warn "Updated new stat cat map with id $newid\n";
