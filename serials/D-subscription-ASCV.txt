@@ -140,7 +140,7 @@ image::media/cap-wiz-freq.jpg[Compress or Expand]
 Page 5: Regularity Information 
 ++++++++++++++++++++++++++++++
 
-image::images/cap-wiz-chan.jpg[Changes]
+image::media/cap-wiz-chan.jpg[Changes]
 
 . If needed, check box for Use specific regularity information
 . Choose the appropriate information for combined, omitted or published issues
