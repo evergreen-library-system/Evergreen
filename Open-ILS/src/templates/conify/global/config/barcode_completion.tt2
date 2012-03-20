@@ -16,7 +16,7 @@
             editStyle='pane'
             editOnEnter='true'
             showColumnPicker='true'
-            columnPickerPrefix='"conify.config.barcode_completion"'>
+            columnPersistKey='"conify.config.barcode_completion"'>
     </table>
 </div>
 

@@ -15,7 +15,7 @@
             editStyle='pane'
             editOnEnter='true'
             showColumnPicker='true'
-            columnPickerPrefix='"conify.config.hold_matrix_matchpoint"'>
+            columnPersistKey='"conify.config.hold_matrix_matchpoint"'>
     </table>
     <div></div>
 </div>

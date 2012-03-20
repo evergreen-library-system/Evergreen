@@ -51,7 +51,7 @@
                     defaultCellWidth='"auto"'
                     showPaginator='true'
                     showColumnPicker='true'
-                    columnPickerPrefix='"acq.picklist.user_request"'>
+                    columnPersistKey='"acq.picklist.user_request"'>
                     <thead>
                         <tr>
                             <th field='title' get='getTitle' formatter='formatTitle'/>

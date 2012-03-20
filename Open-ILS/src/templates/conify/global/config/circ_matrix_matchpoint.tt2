@@ -16,7 +16,7 @@
             editStyle='pane'
             editOnEnter='true'
             showColumnPicker='true'
-            columnPickerPrefix='"conify.config.circ_matrix_matchpoint"'>
+            columnPersistKey='"conify.config.circ_matrix_matchpoint"'>
             <thead>
                 <tr>
                     <th field="hard_due_date" formatter="format_hard_due_date">

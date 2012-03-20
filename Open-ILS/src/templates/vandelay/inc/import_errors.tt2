@@ -31,7 +31,7 @@
                 query="{id: '*'}"
                 hidePaginator='true'
                 showColumnPicker='true'
-                columnPickerPrefix='"vandelay.item.import_error"'
+                columnPersistKey='"vandelay.item.import_error"'
                 fmClass='vii'>
                 <thead>
                     <tr>
@@ -65,7 +65,7 @@
                 query="{id: '*'}"
                 showPaginator='true'
                 showColumnPicker='true'
-                columnPickerPrefix='"vandelay.item.import_error"'
+                columnPersistKey='"vandelay.item.import_error"'
                 fmClass='vii'>
                 <thead>
                     <tr>

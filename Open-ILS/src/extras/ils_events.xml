@@ -19,6 +19,11 @@
 	<event code='3' textcode='NO_CHANGE'>
 		<desc xml:lang="en-US">No change occurred</desc>
 	</event>
+
+    <event code='4' textcode='CACHE_MISS'>
+        <desc xml:lang="en-US">A cached object could not be retrieved by the given reference.</desc>
+    </event>
+
 	<event code='1000' textcode='LOGIN_FAILED'>
 		<desc xml:lang="en-US">User login failed</desc>
 	</event>

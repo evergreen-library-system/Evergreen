@@ -31,6 +31,7 @@ if (!dojo._hasResource['openils.widget.PCrudFilterDialog']) {
      * org unit selector will not respect selected filters in this dijit, and
      * vice-versa.
      */
+
     dojo.provide('openils.widget.PCrudFilterDialog');
     dojo.require('openils.widget.AutoFieldWidget');
     dojo.require('dijit.form.FilteringSelect');
@@ -40,6 +41,8 @@ if (!dojo._hasResource['openils.widget.PCrudFilterDialog']) {
     dojo.require('openils.Util');
 
     dojo.requireLocalization("openils.widget", "PCrudFilterDialog");
+
+    /* XXX namespace pollution! arg! Fix this whole module sometime. */
     var localeStrings = dojo.i18n.getLocalization(
         "openils.widget", "PCrudFilterDialog"
     );
@@ -410,8 +413,8 @@ if (!dojo._hasResource['openils.widget.PCrudFilterDialog']) {
 
             for (var i = 0; i < param_count; i++) {
                 var widg = new openils.widget.AutoFieldWidget({
-                    "fmClass": this.filter_row_manager.fm_class,
-                    "fmField": this.selected_field,
+                    "fmClass": this.selected_field_fm_class,
+                    "fmField": this.selected_field_fm_field,
                     "parentNode": dojo.create("span", {}, this.value_slot),
                     "dijitArgs": {"scrollOnFocus": false}
                 });
@@ -450,6 +453,18 @@ if (!dojo._hasResource['openils.widget.PCrudFilterDialog']) {
             if (this.field_selector.item) {
                 this.selected_field = value;
                 this.selected_field_type = this.field_selector.item.type;
+
+                /* This is really about supporting flattenergrid, of which
+                 * we're in the superclass (in a sloppy sad way). From now
+                 * on I won't mix this kind of lazy object with Dojo modules. */
+                //console.log(dojo.toJson(this.field_selector.item));
+                this.selected_field_fm_field = this.field_selector.item.name;
+                this.selected_field_is_indirect =
+                    this.field_selector.item.indirect || false;
+                this.selected_field_fm_class =
+                    this.field_selector.item.fmClass ||
+                    this.filter_row_manager.fm_class;
+
                 this._adjust_operator_selector();
                 this._rebuild_value_widgets();
             }
@@ -458,7 +473,11 @@ if (!dojo._hasResource['openils.widget.PCrudFilterDialog']) {
         this.compile = function() {
             if (this.value_widgets) {
                 var values = this.value_widgets.map(
-                    function(widg) { return widg.getFormattedValue(); }
+                    function(widg) {
+                        return self.selected_field_is_indirect ?
+                            widg.widget.attr('displayedValue') :
+                            widg.getFormattedValue();
+                    }
                 );
 
                 if (!values.length) {
@@ -502,58 +521,8 @@ if (!dojo._hasResource['openils.widget.PCrudFilterDialog']) {
                 this.widgetCache = {};
             },
 
-            /* All we really do here is create a data store out of the fields
-             * from the IDL for our given class, place a few buttons at the
-             * bottom of the dialog, and hand off to PCrudFilterRowManager to
-             * do the actual work.
-             */
-
-            startup : function() {
+            _buildButtons : function() {
                 var self = this;
-                this.inherited(arguments);
-                this.initAutoEnv();
-                var realFieldList = this.sortedFieldList.filter(
-                    function(item) { return !(item.virtual || item.nonIdl); }
-                );
-
-                /* Prevent any explicitly unwanted fields from being available
-                 * in our field dropdowns. */
-                if (dojo.isArray(this.suppressFilterFields)) {
-                    realFieldList = realFieldList.filter(
-                        function(item) {
-                            for (
-                                var i = 0;
-                                i < self.suppressFilterFields.length;
-                                i++
-                            ) {
-                                if (item.name == self.suppressFilterFields[i])
-                                    return false;
-                            }
-                            return true;
-                        }
-                    );
-                }
-
-                this.fieldStore = new dojo.data.ItemFileReadStore({
-                    "data": {
-                        "identifier": "name",
-                        "name": "label",
-                        "items": realFieldList.map(
-                            function(item) {
-                                return {
-                                    "label": item.label,
-                                    "name": item.name,
-                                    "type": item.datatype
-                                };
-                            }
-                        )
-                    }
-                });
-
-                this.filter_row_manager = new PCrudFilterRowManager(
-                    dojo.create("div", {}, this.domNode),
-                    this.fieldStore, this.fmClass
-                );
 
                 var button_holder = dojo.create(
                     "div", {
@@ -594,6 +563,68 @@ if (!dojo._hasResource['openils.widget.PCrudFilterDialog']) {
                         }
                     }, dojo.create("span", {}, button_holder)
                 );
+            },
+
+            _buildFieldStore : function() {
+                var self = this;
+                var realFieldList = this.sortedFieldList.filter(
+                    function(item) { return !(item.virtual || item.nonIdl); }
+                );
+
+                /* Prevent any explicitly unwanted fields from being available
+                 * in our field dropdowns. */
+                if (dojo.isArray(this.suppressFilterFields)) {
+                    realFieldList = realFieldList.filter(
+                        function(item) {
+                            for (
+                                var i = 0;
+                                i < self.suppressFilterFields.length;
+                                i++
+                            ) {
+                                if (item.name == self.suppressFilterFields[i])
+                                    return false;
+                            }
+                            return true;
+                        }
+                    );
+                }
+
+                this.fieldStore = new dojo.data.ItemFileReadStore({
+                    "data": {
+                        "identifier": "name",
+                        "name": "label",
+                        "items": realFieldList.map(
+                            function(item) {
+                                return {
+                                    "label": item.label,
+                                    "name": item.name,
+                                    "type": item.datatype
+                                };
+                            }
+                        )
+                    }
+                });
+            },
+
+            /* All we really do here is create a data store out of the fields
+             * from the IDL for our given class, place a few buttons at the
+             * bottom of the dialog, and hand off to PCrudFilterRowManager to
+             * do the actual work.
+             */
+
+            startup : function() {
+                var self = this;
+                this.inherited(arguments);
+                this.initAutoEnv();
+
+                this._buildFieldStore();
+
+                this.filter_row_manager = new PCrudFilterRowManager(
+                    dojo.create("div", {}, this.domNode),
+                    this.fieldStore, this.fmClass
+                );
+
+                this._buildButtons();
             }
         }
     );

@@ -19,7 +19,7 @@
             editStyle='pane'
             editOnEnter='true'
             showColumnPicker='true'
-            columnPickerPrefix='"conify.config.circ_limit_set"'>
+            columnPersistKey='"conify.config.circ_limit_set"'>
     </table>
 </div>
 

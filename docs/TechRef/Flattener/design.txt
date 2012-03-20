@@ -1,0 +1,124 @@
+Deep-data Flattening Service
+============================
+Mike Rylander
+with Lebbeous Fogle-Weekley
+
+[abstract]
+Purpose
+-------
+Evergreen supplies a broad API for accessing, processing and interacting with library data.  Because of the relatively complex nature of the underlying database schema, and the flexibility required by clients when, in the simplest case, performing CRUD operations, focus has been given to providing a nearly direct view of various data source.  When, however, the verbosity or complexity of full object access gets in the way of performant or straight-forward UIs, there has been a tendency to create one-off data simplification calls targetting specific use cases.
+
+A generalized API which accepts a simplified query structure and field mapping, calculates the required backend query, and flattens the hierarchical data returned for each top level row into a would facilitate the simplification of existing UIs and provide for new UIs based on simple, reusable components.
+
+Overview
+--------
+The existing, public open-ils.fielder server will be extended with two new OpenSRF methods, contained in a separate package so that they will be reusable in a private service which does not require authentication.
+
+These methods will be supported by code which takes simplifed cstore/pcrud search and order-by hashes and computes the full data structure required for the query.  The simplification will leverage the IDL to discover links between classes.
+
+Underlying the simplified search grammar will be a path-field mapping structure.  This will describe the layout of fields, how they are to collapse from fleshed objects, and how the shape of both the query and result data structures should be interpreted by and presented to the caller.
+
+Mapping Structure
+-----------------
+Implemented as a JSON object, each property name will represent a data element that can be displayed, filtered or sorted, and each property value will represent either a simple path (in which case it is usable for display, filtering or sorting), or an object providing the path and available uses.
+
+Example Map
+~~~~~~~~~~~
+Assuming a core class of acp:
+
+--------------------------------------------------------------------------------
+{
+    "barcode":          "barcode",
+    "circ_lib_name":    "circ_lib.name",
+    "circ_lib":         "circ_lib.shortname",
+    "call_number":      { "path": "call_number.label", "sort": true, "display": true },
+    "tcn":              { "path": "call_number.record.tcn_value", "filter": true, "sort": true }
+}
+--------------------------------------------------------------------------------
+
+'Yes I realize that this example ignores call number prefixes and suffixes, but it's just an example.'
+
+Based on this mapping structure simplified queries can be constructed by the caller, which will then be expanded in the flattening service to produce join and where clauses that can be used by open-ils.pcrud.
+
+Example Query
+~~~~~~~~~~~~~
+Assuming the above example map:
+
+-------------------------------------
+{   "tcn":   { ">": "100" },
+    "circ_lib": "BR1"
+}
+-------------------------------------
+
+This example would expand to a PCrud query based on the map provided above, containing not only the complex where clause, but a join tree and the necessary fleshing structure.
+
+
+Expanded PCrud Query
+~~~~~~~~~~~~~~~~~~~~
+
+---------------------------------------
+{
+    "+__circ_lib_aou": {"shortname":"BR1"},
+    "+__tcn_bre":{"tcn_value":{">":"100"}}
+}, {
+    "flesh_fields": {
+        "acp":["call_number", "circ_lib"]
+    },"flesh":1,
+    "join": {
+        "__circ_lib_name_aou": {
+            "fkey":"circ_lib",
+            "class":"aou",
+            "field":"id"
+        },
+        "__call_number_acn":{
+            "fkey":"call_number",
+            "class":"acn",
+            "field":"id"
+        },
+        "__tcn_acn":{
+            "fkey":"call_number",
+            "class":"acn",
+            "field":"id",
+            "join":{
+                "__tcn_bre":{
+                    "fkey":"record",
+                    "class":"bre",
+                    "field":"id"
+                }
+            }
+        },
+        "__circ_lib_aou":{
+            "fkey":"circ_lib",
+            "class":"aou",
+            "field":"id"
+        }
+    }
+}
+---------------------------------------
+
+
+API
+---
+
+OpenSRF Method name: open-ils.fielder.flattened_search
+
+Parameters:
+
+- Authentication token (as for pcrud)
+- IDL class
+ * e.g. "acp"
+- Path map hash
+ * e.g. { "barcode": "barcode", "circ_lib_name": "circ_lib.name", "circ_lib": "circ_lib.shortname", "call_number": { "path": "call_number.label", "sort": true, "display": true }, "id": "id", "tcn": { "path": "call_number.record.tcn_value", "filter": true, "sort": true } }
+- Simplified query hash
+ * e.g. {"tcn": {">": "100" }, "circ_lib": "BR1"}
+- Simplified sort/limit/offset hash
+ * e.g. { "sort":[{"circ_lib":"desc"},{"call_number":"asc"}],"limit":10 }
+ * or {"sort":{"call_number":"desc"}}
+ * or {"sort": "circ_lib"}
+ * or {"sort": ["circ_lib", {"checkin_time": "desc"}]}
+
+Returns:
+
+- stream (or array, for .atomic) of hashes having the shape described in the path map
+ * e.g.  { "call_number":"PR3533.B61994", "circ_lib_name":"Example Branch 1", "barcode":"23624564258", "id":7, "circ_lib":"BR1" }
+

@@ -13,6 +13,7 @@ use OpenILS::WWW::TemplateBatchBibUpdate qw( /openils/conf/opensrf_core.xml );
 use OpenILS::WWW::EGWeb;
 use OpenILS::WWW::PasswordReset ('/openils/conf/opensrf_core.xml');
 use OpenILS::WWW::IDL2js ('/openils/conf/opensrf_core.xml');
+use OpenILS::WWW::FlatFielder;
 
 # - Uncoment the following 2 lines to make use of the IP redirection code
 # - The IP file should to contain a map with the following format:
