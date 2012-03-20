@@ -973,6 +973,40 @@ OpenILS.data.prototype = {
         this.chain.push(
             function() {
                 var f = gen_fm_retrieval_func(
+                    'atb',
+                    [
+                        api.FM_ATB_RETRIEVE_VIA_PCRUD.app,
+                        api.FM_ATB_RETRIEVE_VIA_PCRUD.method,
+                        [
+                            obj.session.key,
+                            {
+                                "-or": [
+                                    { "ws" : obj.list.au[0].wsid() },
+                                    { "usr" : obj.list.au[0].id() },
+                                    { "org" : util.functional.map_list( obj.list.my_aou, function(o) { return o.id(); } ) }
+                                ]
+                            },
+                            {
+                                "order_by":{"atb":"label"}
+                            }
+                        ],
+                        false
+                    ]
+                );
+                try {
+                    f();
+                } catch(E) {
+                    var error = 'Error: ' + js2JSON(E);
+                    obj.error.sdump('D_ERROR',error);
+                    throw(E);
+                }
+            }
+        );
+
+
+        this.chain.push(
+            function() {
+                var f = gen_fm_retrieval_func(
                     'acnp',
                     [
                         api.FM_ACNP_RETRIEVE_VIA_PCRUD.app,

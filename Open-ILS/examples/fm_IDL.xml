@@ -2795,7 +2795,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<retrieve permission="ADMIN_TOOLBAR VIEW_TOOLBAR" context_field="org">
+				<retrieve permission="ADMIN_TOOLBAR STAFF_LOGIN" context_field="org">
 					<context link="usr" field="home_ou" />
 					<context link="ws" field="owning_lib" />
 				</retrieve>

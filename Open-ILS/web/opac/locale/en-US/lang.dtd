@@ -190,6 +190,26 @@
 <!ENTITY staff.admin.survey.save_question.label "Save this Question">
 <!ENTITY staff.admin.survey.staff_client.label "Staff Client:">
 <!ENTITY staff.admin.survey.start.label "Start:">
+<!ENTITY staff.admin.toolbar.new_toolbar.label "New Toolbar">
+<!ENTITY staff.admin.toolbar.new_toolbar.accesskey "N">
+<!ENTITY staff.admin.toolbar.delete_toolbar.label "Delete Toolbar">
+<!ENTITY staff.admin.toolbar.delete_toolbar.accesskey "">
+<!ENTITY staff.admin.toolbar.add_toolbar_button.label "--&gt;">
+<!ENTITY staff.admin.toolbar.add_toolbar_button.accesskey "a">
+<!ENTITY staff.admin.toolbar.remove_toolbar_button.label "&lt;--">
+<!ENTITY staff.admin.toolbar.remove_toolbar_button.accesskey "r">
+<!ENTITY staff.admin.toolbar.move_toolbar_button_up.label "Up">
+<!ENTITY staff.admin.toolbar.move_toolbar_button_up.accesskey "U">
+<!ENTITY staff.admin.toolbar.move_toolbar_button_down.label "Down">
+<!ENTITY staff.admin.toolbar.move_toolbar_button_down.accesskey "D">
+<!ENTITY staff.admin.toolbar.permission_context.label "Permission Context">
+<!ENTITY staff.admin.toolbar.permission_context.accesskey "P">
+<!ENTITY staff.admin.toolbar.cancel_changes.label "Cancel Changes">
+<!ENTITY staff.admin.toolbar.cancel_changes.accesskey "C">
+<!ENTITY staff.admin.toolbar.save_toolbar.label "Save Toolbar">
+<!ENTITY staff.admin.toolbar.save_toolbar.accesskey "S">
+<!ENTITY staff.admin.toolbar.header.available "Available">
+<!ENTITY staff.admin.toolbar.header.selected "Selected">
 <!ENTITY staff.admin.work_log.list1.header "Most Recently Logged Staff Actions">
 <!ENTITY staff.admin.work_log.list2.header "Most Recently Affected Patrons for Logged Staff Actions and Last Action for each">
 <!ENTITY staff.admin.work_log.refresh_btn.label "Refresh">
@@ -664,9 +684,6 @@
 <!ENTITY staff.main.auth.status "Status">
 <!ENTITY staff.main.auth.version "Version">
 <!ENTITY staff.main.auth.workstation "Workstation">
-<!ENTITY staff.main.button_bar.none "None">
-<!ENTITY staff.main.button_bar.circ "Circulation">
-<!ENTITY staff.main.button_bar.cat "Cataloging">
 <!ENTITY staff.main.button_bar.check_out.label "Check Out">
 <!ENTITY staff.main.button_bar.check_out.accesskey "">
 <!ENTITY staff.main.button_bar.check_in.label "Check In">
@@ -846,6 +863,8 @@
 <!ENTITY staff.main.menu.admin.client.hotkeys.clearworkstation.accesskey "">
 <!ENTITY staff.main.menu.admin.client.toolbars "Toolbars">
 <!ENTITY staff.main.menu.admin.client.toolbars.current "Current">
+<!ENTITY staff.main.menu.admin.client.toolbars.config.label "Configure Toolbars">
+<!ENTITY staff.main.menu.admin.client.toolbars.config.accesskey "">
 <!ENTITY staff.main.menu.admin.client.toolbars.setworkstation.label "Set Workstation Default to Current">
 <!ENTITY staff.main.menu.admin.client.toolbars.setworkstation.accesskey "">
 <!ENTITY staff.main.menu.admin.client.toolbars.clearworkstation.label "Clear Workstation Default">

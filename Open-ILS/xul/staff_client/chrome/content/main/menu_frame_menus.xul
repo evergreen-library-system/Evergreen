@@ -256,6 +256,7 @@
     <command id="cmd_hotkeys_set" />
     <command id="cmd_hotkeys_setworkstation" />
     <command id="cmd_hotkeys_clearworkstation" />
+    <command id="cmd_toolbar_configure" />
     <command id="cmd_toolbar_set" />
     <command id="cmd_toolbar_setworkstation" />
     <command id="cmd_toolbar_clearworkstation" />
@@ -457,9 +458,6 @@
                     <menupopup id="main.menu.admin.client.toolbars.popup">
                         <menu id="main.menu.admin.client.toolbars.current" label="&staff.main.menu.admin.client.toolbars.current;">
                             <menupopup id="main.menu.admin.client.toolbars.current.popup">
-                                <menuitem name="current_toolbar" type="radio" label="&staff.main.button_bar.none;" value="none" command="cmd_toolbar_set" checked="true"/>
-                                <menuitem name="current_toolbar" type="radio" label="&staff.main.button_bar.circ;" value="circ" command="cmd_toolbar_set"/>
-                                <menuitem name="current_toolbar" type="radio" label="&staff.main.button_bar.cat;" value="cat" command="cmd_toolbar_set"/>
                             </menupopup>
                         </menu>
                         <menu id="main.menu.admin.client.toolbars.mode" label="&staff.main.menu.admin.client.toolbars.mode;">
@@ -481,6 +479,8 @@
                                 <menuitem name="toolbar_size" type="radio" label="&staff.main.menu.admin.client.toolbars.size.small;" value="small" command="cmd_toolbar_size_set"/>
                             </menupopup>
                         </menu>
+                        <menuseparator />
+                        <menuitem label="&staff.main.menu.admin.client.toolbars.config.label;" accesskey="&staff.main.menu.admin.client.toolbars.config.accesskey;" command="cmd_toolbar_configure"/>
                         <menuseparator />
                         <menuitem label="&staff.main.menu.admin.client.toolbars.setworkstation.label;" accesskey="&staff.main.menu.admin.client.toolbars.setworkstation.accesskey;" command="cmd_toolbar_setworkstation"/>
                         <menuitem label="&staff.main.menu.admin.client.toolbars.clearworkstation.label;" accesskey="&staff.main.menu.admin.client.toolbars.clearworkstation.accesskey;" command="cmd_toolbar_clearworkstation"/>
