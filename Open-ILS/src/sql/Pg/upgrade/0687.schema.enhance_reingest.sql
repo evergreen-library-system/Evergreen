@@ -1,3 +1,14 @@
+-- Evergreen DB patch 0687.schema.enhance_reingest.sql
+--
+-- FIXME: insert description of change, if needed
+--
+BEGIN;
+
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0687', :eg_version);
+
+-- FIXME: add/check SQL statements to perform the upgrade
 -- New function def
 CREATE OR REPLACE FUNCTION metabib.reingest_metabib_field_entries( bib_id BIGINT, skip_facet BOOL DEFAULT FALSE, skip_browse BOOL DEFAULT FALSE, skip_search BOOL DEFAULT FALSE ) RETURNS VOID AS $func$
 DECLARE
@@ -70,3 +81,6 @@ $func$ LANGUAGE PLPGSQL;
 
 -- Delete old one
 DROP FUNCTION IF EXISTS metabib.reingest_metabib_field_entries(BIGINT);
+
+
+COMMIT;
