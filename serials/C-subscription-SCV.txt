@@ -146,7 +146,7 @@ Generate Prediction
 ~~~~~~~~~~~~~~~~~~~
 
 . Open the Subscriptions tab.
-. Right-click or click Actions for Selected Row >> Make predictions.
+. Right-click or click Actions for Selected Row -> Make predictions.
 . A pop up box will aks you how many items you want to predict. Enter the number, and click OK.
 . A confirmation message will appear. Click OK.
 . Click the Issuances link to view the predicted issues.

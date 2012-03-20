@@ -6,7 +6,7 @@ A copy template enables you to specify item attributes that should be applied by
 Create a copy template
 ~~~~~~~~~~~~~~~~~~~~~~
 
-To create a copy template, click Admin . Local Administration . Copy Template Editor.
+To create a copy template, click Admin -> Local Administration -> Copy Template Editor.
 
 . Enter a Name for the template.
 . Select an owning library from the Owning lib drop down menu. This organization owns the copy template. A staff member with permissions at that organization can modify the copy template. The menu is populated from the organizations that you created in Admin . Server Administration . Organizational Units.
