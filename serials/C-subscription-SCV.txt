@@ -19,6 +19,7 @@ image::media/scv-sub.jpg[Subscription]
 . When finished, click Create Subscription(s) in the bottom right corner of the screen.
 . A confirmation message appears. Click OK.
 
+[NOTE]
 You can add notes to the subscription by clicking Subscription Notes. These notes are currently viewable only in the staff client by clicking on the Subscription Notes button.
 
 Create a distribution
@@ -41,9 +42,8 @@ image::media/scv-distr.jpg[Distribution]
 . When finished, click Create Distribution(s) in the bottom right corner of the screen.
 . A confirmation message appears. Click OK.
 
-----
+[NOTE]
 You can add notes to the distribution by clicking Distribution Notes. These notes are currently viewable only in the staff client by clicking on the Distribution Notes button.
-----
 
 Create Captions and Patterns
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~

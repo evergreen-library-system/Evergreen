@@ -39,4 +39,5 @@ You can make changes to an existing copy template. Changes that you make to a co
 . Double-click. The copy template will appear, and you can edit the fields.
 . After making changes, click Save.
 
+[NOTE]
 From the copy template interface, you can delete copy templates that have never been used.
