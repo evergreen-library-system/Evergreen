@@ -85,7 +85,7 @@ Use the Pattern Code Wizard
 
 The Pattern Code Wizard enables you to create the caption of the item and add its publication information. The Wizard is composed of five pages of questions. You can use the Next and Previous navigation buttons in the top corners to flip between pages.
 
-. To add a pattern code, click Wizard.
+To add a pattern code, click Wizard.
 
 Page 1: Enumerations
 ++++++++++++++++++++
@@ -136,6 +136,7 @@ image::media/cap-wiz-freq.jpg[Compress or Expand]
 . Choose the appropriate caption evaluation from the drop down menu.
 . Choose the frequency of your publication from the drop down menu. For irregular frequencies, you may wish to select use number of issues per year, and enter the total number of issues that you receive each year. However, in the . 0 release, recommended practice is that you use only regular frequencies. Planned development will create an additional step to aid in the creation of irregular frequencies.
 . Click Next.
+
 Page 5: Regularity Information 
 ++++++++++++++++++++++++++++++
 
@@ -180,7 +181,7 @@ Generate Item Predictions
 
 After you manually create the first issue, Evergreen will predict future issuances. Use the Generate Predictions functionality to predict future issues.
 
-. Click Subscription Details >> Issuances >> Generate Predictions.
+. Click Subscription Details -> Issuances -> Generate Predictions.
 . Choose the length of time for which you want to predict issues. If you select the radio button to predict until end of subscription, then Evergreen will predict issues until the end date that you created when you created the subscription. See simplesect . 1 for more information. If you do not have an end date, select the radio button to predict a certain number of issuances, and enter a number in the field.
 . Click Generate.
 . Evergreen will predict a run of issuances and copies. The prediction will appear in a list.
