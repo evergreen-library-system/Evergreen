@@ -1,5 +1,3 @@
-Test
-====
 
 Serials Control View
 --------------------
@@ -10,7 +8,7 @@ Create a subscription
 ~~~~~~~~~~~~~~~~~~~~~
 A subscription is designed to hold all information related to a single serial title.  Therefore, each library is likely to have only one subscription per serial title.
 
-image::images/scv-sub.jpg[Subscription]
+image::media/scv-sub.jpg[Subscription]
 
 . Click the Subscriptions link.
 . Select the branch that will own the subscription.
@@ -28,7 +26,7 @@ Create a distribution
 
 Distributions indicate the branches that should receive copies of a serial. Distributions work together with streams to indicate the number of copies that should be sent to each branch.
 
-image::images/scv-distr.jpg[Distribution]
+image::media/scv-distr.jpg[Distribution]
 
 . Click the distributions link beneath the subscription. Right click or click Actions for Selected Rows, and click Add distribution.
 . Apply a new label to the distribution. It may be useful to identify the branch to which you are distributing these issues in this field. This field is not publicly visible and only appears when an item is received. There are no limits on the number of characters that can be entered in this field.
