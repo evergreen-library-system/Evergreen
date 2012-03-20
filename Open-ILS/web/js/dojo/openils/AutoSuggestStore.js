@@ -75,6 +75,7 @@ if (!dojo._hasResource["openils.AutoSuggestStore"]) {
                 "method": "open-ils.fielder." + key + ".atomic",
                 "params": [{"query": query, "fields": field_list}],
                 "async": true,
+                "cache": true,
                 "oncomplete": function(r) {
                     var result_arr = openils.Util.readResponse(r);
 
