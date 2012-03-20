@@ -1,0 +1,73 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = l('Org Unit Custom Tree') %]
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/actor/org_unit_custom_tree.js'> </script>
+<link rel='stylesheet' type='text/css' href='[% ctx.media_prefix %]/js/dojo/dojo/resources/dnd.css'/>
+<link rel='stylesheet' type='text/css' href='[% ctx.media_prefix %]/js/dojo/dojo/resources/dndDefault.css'/>
+
+<style>
+    #wrapper     {width : 100%; height: 100%}
+    .block       {height: 100%; float : left; vertical-align : top; text-align: left; overflow: auto;}
+    #left-block  {border-right: 2px solid #333; margin-right: 20px; padding-right: 40px; max-width 40%}
+    #right-block  {max-width: 58%}
+    .action-wrapper { padding-right: 5px; margin-right: 5px; border-right: 2px dotted #333; }
+    .tree-actions {
+        width : 98%; 
+        padding: 5px; 
+        margin: 5px; 
+        background-color:#E7A555;
+        border-bottom: 2px solid #4A4747;
+    }
+</style>
+
+<h2>[% l('Org Unit Custom Tree') %]</h2>
+<ul>
+    <li>[% l('To add new nodes to the custom tree, drag them from the full tree on the left') %]</li>
+    <li>[% l('Changes to custom org trees may require web server (apache) reload before taking effect') %]</li>
+</ul>
+<hr/>
+
+<div id='wrapper'>
+    <div id='left-block' class='block'>
+        <h3>[% l('Full Org Unit Tree') %]</h3>
+        <div class='tree-actions'>
+            <a href='javascript:;' onClick='realTree.expandAll()'>[% l('Expand') %]</a>&nbsp;/&nbsp;<a 
+                href='javascript:;' onClick='realTree.collapseAll()'>[% l('Collapse') %]</a>
+        </div>
+        <div id='real-tree'></div>
+    </div>
+    <div id='right-block' class='block'>
+        <table>
+            <td style='padding-right: 10px;'>
+                <h3>[% l('Custom Unit Tree: ') %]</h3>
+            </td>
+            <td style='vertical-align: bottom'>
+                <!-- 'opac' is currently the only purpose -->
+                <select jsId='treePurposeSelector' dojoType='dijit.form.FilteringSelect' disabled='disabled' onChange='drawMagicTree()'>
+                    <option value='opac'>[% l('OPAC') %]</option>
+                </select>
+            </td>
+        </tr></table>
+        <div class='tree-actions'>
+            <span class='action-wrapper'>
+                <a href='javascript:;' onClick='magicTree.expandAll()'>[% l('Expand') %]</a>&nbsp;/&nbsp;<a 
+                    href='javascript:;' onClick='magicTree.collapseAll()'>[% l('Collapse') %]</a>
+            </span>
+            <span class='action-wrapper'>
+                <a href='javascript:;' onClick='deleteSelected()'>[% l('Delete Selected') %]</a>
+            </span>
+            <span class='action-wrapper'>
+                <a id='activate-tree'   href='javascript:;' onClick='activateTree()'>[% l('Activate Tree') %]</a>
+                <a id='deactivate-tree' href='javascript:;' onClick='deactivateTree()' class='hidden'>[% l('Deactivate Tree') %]</a>
+            </span>
+            <span>
+                <a href='javascript:;' onClick='applyChanges()'>[% l('Apply Changes') %]</a>
+            </span>
+        </div>
+        <div id='magic-tree'></div>
+    </div>
+</div>
+
+<div jsId="progressDialog" dojoType="openils.widget.ProgressDialog"></div>
+[% END %]
+
+

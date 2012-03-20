@@ -750,6 +750,10 @@ main.menu.prototype = {
                 ['oncommand'],
                 function(event) { open_eg_web_page('conify/global/config/usr_activity_type', null, event); }
             ],
+            'cmd_server_admin_actor_org_unit_custom_tree' : [
+                ['oncommand'],
+                function(event) { open_eg_web_page('conify/global/actor/org_unit_custom_tree', null, event); }
+            ],
             'cmd_local_admin_external_text_editor' : [
                 ['oncommand'],
                 function() {
