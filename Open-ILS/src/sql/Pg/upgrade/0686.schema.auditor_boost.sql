@@ -1,3 +1,14 @@
+-- Evergreen DB patch 0686.schema.auditor_boost.sql
+--
+-- FIXME: insert description of change, if needed
+--
+BEGIN;
+
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0686', :eg_version);
+
+-- FIXME: add/check SQL statements to perform the upgrade
 -- These three functions are for capturing, getting, and clearing user and workstation information
 
 -- Set the User AND workstation in one call. Tis faster. And less calls.
@@ -274,3 +285,6 @@ $BODY$ LANGUAGE plpgsql;
 
 -- Go ahead and update them all now
 SELECT auditor.update_auditors();
+
+
+COMMIT;
