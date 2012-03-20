@@ -1533,8 +1533,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 521, 'IMPORT_ACQ_LINEITEM_BIB_RECORD_UPLOAD', oils_i18n_gettext( 521,
     'Allows a user to create new bibs directly from an ACQ MARC file upload', 'ppl', 'description' )),
  ( 522, 'IMPORT_AUTHORITY_MARC', oils_i18n_gettext( 522,
-    'Allows a user to create new authority records', 'ppl', 'description' ));
-
+    'Allows a user to create new authority records', 'ppl', 'description' )),
+ ( 523, 'ADMIN_TOOLBAR', oils_i18n_gettext( 523,
+    'Allows a user to create, edit, and delete custom toolbars', 'ppl', 'description' ));
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
 
@@ -1743,6 +1744,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'RENEW_HOLD_OVERRIDE',
 			'UPDATE_COPY',
 			'UPDATE_VOLUME',
+			'ADMIN_TOOLBAR',
 			'VOLUME_HOLDS');
 
 
@@ -11509,3 +11511,6 @@ INSERT INTO action_trigger.environment (event_def, path)
         'target_copy.call_number'
     );
 
+INSERT INTO actor.toolbar(org,label,layout) VALUES
+    ( 1, 'circ', '["circ_checkout","circ_checkin","toolbarseparator","search_opac","copy_status","toolbarseparator","patron_search","patron_register","toolbarspacer","hotkeys_toggle"]' ),
+    ( 1, 'cat', '["circ_checkin","toolbarseparator","search_opac","copy_status","toolbarseparator","create_marc","authority_manage","retrieve_last_record","toolbarspacer","hotkeys_toggle"]' );
