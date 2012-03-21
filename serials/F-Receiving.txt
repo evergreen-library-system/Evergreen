@@ -5,7 +5,7 @@ You can receive either through the Serials Control View or in Batch Receive with
 Serials Control View Receiving
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-image::images/scv-rec.jpg[Receiving]
+image::media/scv-rec.jpg[Receiving]
 
 . To receive items, click the Receive radio button. In the top half of the screen, the items that have yet to be received are displayed. In the bottom half of the screen, recently received items are displayed.
 . Select the branch that will receive the items from the drop down box.
@@ -32,7 +32,7 @@ Simple Batch Receiving
 ^^^^^^^^^^^^^^^^^^^^^^
 Follow these steps to receive items in batch in a simple interface.
 
-image::images/scv-srec.jpg[Receiving]
+image::media/scv-srec.jpg[Receiving]
 
 . The Batch Receive interface displays issues that have not yet been received. The earliest expected issue appears at the top of the list.
 . In the right lower corner, you see a check box to Create Units for Received Items. If you do not check this box, then you will receive items in simple mode.
@@ -46,7 +46,7 @@ image::images/scv-srec.jpg[Receiving]
 Advanced Batch Receiving
 ^^^^^^^^^^^^^^^^^^^^^^^^
 Follow these steps to receive items in batch in a simple interface.
-image::images/scv-srec.jpg[Receiving]
+image::media/scv-srec.jpg[Receiving]
 
 . The Batch Receive interface displays issues that have not yet been received. The earliest expected issue appears at the top of the list.
 . If you want to barcode each copy, display it in the catalog, and make it holdable, then check the box adjacent to Create Units for Received Items in the lower right side of the screen.
