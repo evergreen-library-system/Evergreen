@@ -2981,7 +2981,7 @@ static char* searchPredicate( const ClassInfo* class_info, osrfHash* field,
 		buffer_fadd(
 			_p,
 			"\"%s\".%s IS NULL",
-			class_info->class_name,
+			class_info->alias,
 			osrfHashGet( field, "name" )
 		);
 		pred = buffer_release( _p );
@@ -5101,7 +5101,7 @@ static char* buildOrderByFromArray( osrfMethodContext* ctx, const jsonObject* or
 		const char* direction =
 			jsonObjectGetString( jsonObjectGetKeyConst( order_spec, "direction" ) );
 		if( direction ) {
-			if( direction[ 0 ] || 'D' == direction[ 0 ] )
+			if( direction[ 0 ] && ( 'd' == direction[ 0 ] || 'D' == direction[ 0 ] ) )
 				OSRF_BUFFER_ADD( order_buf, " DESC" );
 			else
 				OSRF_BUFFER_ADD( order_buf, " ASC" );
