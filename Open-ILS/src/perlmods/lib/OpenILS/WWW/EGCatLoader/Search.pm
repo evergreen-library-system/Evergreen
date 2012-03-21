@@ -279,6 +279,7 @@ sub load_rresults {
     my @facets = $cgi->param('facet');
     my $limit = $self->_get_search_limit;
     $ctx->{search_ou} = $self->_get_search_lib();
+    $ctx->{pref_ou} = $self->_get_pref_lib() || $ctx->{search_ou};
     my $offset = $page * $limit;
     my $metarecord = $cgi->param('metarecord');
     my $results; 
@@ -375,7 +376,8 @@ sub load_rresults {
         {
             flesh => '{holdings_xml,mra,acp,acnp,acns,bmp}',
             site => $site,
-            depth => $depth
+            depth => $depth,
+            pref_lib => $ctx->{pref_ou},
         }
     );
 
@@ -525,6 +527,7 @@ sub marc_expert_search {
     my $page = $self->cgi->param("page") || 0;
     my $limit = $self->_get_search_limit;
     $self->ctx->{search_ou} = $self->_get_search_lib();
+    $self->ctx->{pref_ou} = $self->_get_pref_lib();
     my $offset = $page * $limit;
 
     $self->ctx->{records} = [];
@@ -572,7 +575,10 @@ sub marc_expert_search {
     }
 
     my ($facets, @data) = $self->get_records_and_facets(
-        $self->ctx->{ids}, undef, {flesh => "{holdings_xml,mra,acnp,acns}"}
+        $self->ctx->{ids}, undef, {
+            flesh => "{holdings_xml,mra,acnp,acns}",
+            pref_lib => $self->ctx->{pref_ou},
+        }
     );
 
     $self->ctx->{records} = [@data];

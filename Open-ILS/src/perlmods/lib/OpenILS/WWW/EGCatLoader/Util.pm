@@ -209,7 +209,8 @@ sub get_records_and_facets {
             $unapi_args->{flesh}, 
             $unapi_args->{site}, 
             $unapi_args->{depth}, 
-            $unapi_args->{flesh_depth}, 
+            'acn=>' . $unapi_args->{flesh_depth} . ',acp=>' . $unapi_args->{flesh_depth}, 
+            undef, undef, $unapi_args->{pref_lib}
         ]}
     ) for @$rec_ids;
 
@@ -292,6 +293,20 @@ sub _get_search_lib {
     $loc = $self->cgi->param('loc');
     return $loc if $loc;
 
+    my $pref_lib = $self->_get_pref_lib();
+    return $pref_lib if $pref_lib;
+
+    return $ctx->{aou_tree}->()->id;
+}
+
+sub _get_pref_lib {
+    my $self = shift;
+    my $ctx = $self->ctx;
+
+    # plib param takes precedence
+    my $plib = $self->cgi->param('plib');
+    return $plib if $plib;
+
     if ($ctx->{user}) {
         # See if the user has a search library preference
         my $lset = $self->editor->search_actor_user_setting({
@@ -308,7 +323,6 @@ sub _get_search_lib {
         return $self->cgi->param('physical_loc');
     }
 
-    return $ctx->{aou_tree}->()->id;
 }
 
 # This is defensively coded since we don't do much manual reading from the

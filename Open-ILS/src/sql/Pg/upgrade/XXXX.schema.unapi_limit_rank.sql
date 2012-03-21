@@ -1,6 +1,31 @@
+-- Evergreen DB patch XXXX.schema.unapi_limit_rank.sql
+--
+-- Rewrite the in-database unapi functions to include per-object limits and
+-- offsets, such as a maximum number of copies and call numbers for given
+-- bib record via the HSTORE syntax (for example, 'acn => 5, acp => 10' would
+-- limit to a maximum of 5 call numbers for the bib, with up to 10 copies per
+-- call number).
+--
+-- Add some notion of "preferred library" that will provide copy counts
+-- and optionally affect the sorting of returned copies.
+--
+-- Sort copies by availability, preferring the most available copies.
+--
+-- Return located URIs.
+--
+--
+BEGIN;
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+
+-- The simplest way to apply all of these changes is just to replace the unapi
+-- schema entirely -- the following is a copy of 990.schema.unapi.sql with
+-- the initial COMMIT in place in case the upgrade_deps_block_check fails;
+-- if it does, then the attempt to create the unapi schema in the following
+-- transaction will also fail. Not graceful, but safe!
 DROP SCHEMA IF EXISTS unapi CASCADE;
 
-BEGIN;
 CREATE SCHEMA unapi;
 
 CREATE OR REPLACE FUNCTION evergreen.org_top()

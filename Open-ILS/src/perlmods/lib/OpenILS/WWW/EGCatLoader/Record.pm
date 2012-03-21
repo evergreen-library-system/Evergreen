@@ -15,6 +15,8 @@ sub load_record {
     $ctx->{page} = 'record';  
 
     my $org = $self->_get_search_lib();
+    my $org_name = $ctx->{get_aou}->($org)->shortname;
+    my $pref_ou = $self->_get_pref_lib();
     my $depth = $self->cgi->param('depth');
     $depth = $ctx->{get_aou}->($org)->ou_type->depth 
         unless defined $depth; # can be 0
@@ -41,10 +43,15 @@ sub load_record {
     my $cstore = OpenSRF::AppSession->create('open-ils.cstore');
     my $copy_rec = $cstore->request(
         'open-ils.cstore.json_query.atomic', 
-        $self->mk_copy_query($rec_id, $org, $copy_depth, $copy_limit, $copy_offset)
+        $self->mk_copy_query($rec_id, $org, $copy_depth, $copy_limit, $copy_offset, $pref_ou)
     );
 
-    my (undef, @rec_data) = $self->get_records_and_facets([$rec_id], undef, {flesh => '{holdings_xml,bmp,mra,acp,acnp,acns}'});
+    my (undef, @rec_data) = $self->get_records_and_facets([$rec_id], undef, {
+        flesh => '{holdings_xml,bmp,mra,acp,acnp,acns}',
+        site => $org_name,
+        depth => $depth,
+        pref_lib => $pref_ou
+    });
     $ctx->{bre_id} = $rec_data[0]->{id};
     $ctx->{marc_xml} = $rec_data[0]->{marc_xml};
 
@@ -143,6 +150,7 @@ sub mk_copy_query {
     my $depth = shift;
     my $copy_limit = shift;
     my $copy_offset = shift;
+    my $pref_ou = shift;
 
     my $query = {
         select => {
@@ -203,23 +211,19 @@ sub mk_copy_query {
         },
 
         order_by => [
+            { class => "aou", field => 'id', 
+              transform => 'evergreen.rank_ou', params => [$org]
+            },
             {class => 'aou', field => 'name'}, 
-            {class => 'acn', field => 'label'}
+            {class => 'acn', field => 'label'},
+            { class => "acp", field => 'status',
+              transform => 'evergreen.rank_cp_status'
+            }
         ],
 
         limit => $copy_limit,
         offset => $copy_offset
     };
-
-    # XXX In the future, $sort_org should be understood to be an abstration
-    # that refers to something configurable, not necessariyl physical_loc.
-
-    if (my $sort_org = $self->ctx->{physical_loc}) {
-        unshift @{$query->{order_by}}, {
-            class => 'acp', field => 'circ_lib', transform => 'numeric_eq',
-            params => [$sort_org], direction => 'desc'
-        };
-    }
 
     if($org != $self->ctx->{aou_tree}->()->id) { 
         # no need to add the org join filter if we're not actually filtering
@@ -248,7 +252,7 @@ sub mk_copy_query {
         $query->{where}->{'+acp'}->{opac_visible} = 't';
         $query->{from}->{'acp'}->{'acpl'}->{filter} = {opac_visible => 't'};
         $query->{from}->{'acp'}->{'ccs'}->{filter} = {opac_visible => 't'};
-        $query->{from}->{'acp'}->{'aou'}->{filter} = {opac_visible => 't'};
+        $query->{where}->{'+aou'}->{opac_visible} = {'t'};
     }
 
     return $query;

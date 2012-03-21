@@ -129,6 +129,7 @@
 
             IF vol.label == '##URI##';
                 FOR uri IN volume.findnodes('./*[local-name()="uris"]/*[local-name()="uri"]');
+                    res = {};
                     res.href = uri.getAttribute('href');
                     res.link = uri.getAttribute('label');
                     res.note = uri.getAttribute('use_restriction');
@@ -188,6 +189,17 @@
             FOR attr IN ['count', 'available', 'unshadow', 'transcendant', 'org_unit']; 
                 depth = node.getAttribute('depth');
                 args.copy_counts.$depth.$attr = node.getAttribute(attr);
+            END;
+        END;
+        
+        # Get preferred library copy count
+        args.plib_copy_counts = {};
+        count_type = 'pref_lib';
+        xpath = '//*[local-name()="counts"]/*[local-name()="count"][@type="' _ count_type _ '"]';
+        FOR node IN xml.findnodes(xpath);
+            FOR attr IN ['count', 'available', 'unshadow', 'transcendant', 'org_unit']; 
+                depth = node.getAttribute('depth');
+                args.plib_copy_counts.$depth.$attr = node.getAttribute(attr);
             END;
         END;
 

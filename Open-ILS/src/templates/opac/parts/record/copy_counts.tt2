@@ -3,19 +3,39 @@
     <ul>
     [%- depths = ctx.copy_summary.size;
         depth = 0;
+        displayed_ous = {};
         WHILE depth < depths;
             ou_avail = ctx.copy_summary.$depth.available;
             ou_id = ctx.copy_summary.$depth.org_unit;
+            ou_name = ctx.get_aou(ou_id).name;
+            displayed_ous.$ou_name = 1;
     %]
     <li>
-    [% l('[quant,_1,copy,copies] at [_2].', ou_avail, ctx.get_aou(ou_id).name) | html %]
+    [% l('[quant,_1,copy,copies] at [_2].', ou_avail, ou_name) | html %]
     [%- this_depth = ctx.get_aou(ou_id).ou_type.depth;
         IF ou_avail > 0 && this_depth != ctx.copy_depth %]
     <a href="[% mkurl('', {copy_depth => this_depth}, ['copy_offset']); %]"
-       title="[% l('Show copies at [_1]', ctx.get_aou(ou_id).name); %]">
+       title="[% l('Show copies at [_1]', ou_name); %]">
        [%- l('(Show)'); %]</a>
     [%- END; %]
     </li>
-    [%- depth = depth + 1; END %]
+    [%- depth = depth + 1;
+        END;
+
+        depth = attrs.plib_copy_counts.size - 1;
+        ou_name = ctx.get_aou(attrs.plib_copy_counts.$depth.org_unit).name;
+        ou_id = attrs.plib_copy_counts.$depth.org_unit;
+        UNLESS depth < 0 || displayed_ous.exists(ou_name);
+    %]
+    <li class="preferred">[%
+        l('[_1] of [quant,_2,copy,copies] available at [_3].',
+            attrs.plib_copy_counts.$depth.available,
+            attrs.plib_copy_counts.$depth.count,
+            ou_name) | html
+    %] <a href="[% mkurl('', {locg => ou_id}, ['copy_offset']); %]"
+       title="[% l('Show copies at [_1]', ou_name); %]">[%
+       l('(Show preferred library)');
+    %]</a></li>
+    [%- END %]
     </ul>
 </span>

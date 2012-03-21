@@ -1,12 +1,30 @@
 [%- depths = attrs.copy_counts.size;
     depth = 0;
+    displayed_ous = {};
     WHILE depth < depths;
+        ou_name = ctx.get_aou(attrs.copy_counts.$depth.org_unit).name;
+        displayed_ous.$ou_name = 1;
 %]
 <div class="result_count">
     [% l('[_1] of [quant,_2,copy,copies] available at [_3].',
         attrs.copy_counts.$depth.available,
         attrs.copy_counts.$depth.count,
-        ctx.get_aou(attrs.copy_counts.$depth.org_unit).name) | html
+        ou_name) | html
     %]
 </div>
-[%- depth = depth + 1; END %]
+[%- depth = depth + 1;
+    END;
+
+    depth = attrs.plib_copy_counts.size - 1;
+    ou_name = ctx.get_aou(attrs.plib_copy_counts.$depth.org_unit).name;
+    UNLESS displayed_ous.exists(ou_name);
+    
+%]
+<div class="result_count preferred">[%
+     l('[_1] of [quant,_2,copy,copies] available at [_3].',
+        attrs.plib_copy_counts.$depth.available,
+        attrs.plib_copy_counts.$depth.count,
+        ou_name) | html
+    %]<span> [% l('(Preferred)') %]</span>
+</div>
+[%- END %]
