@@ -12,17 +12,17 @@ The views are interoperable, but because the views were designed for different p
 
 .Serials Control View and Alternate Serials Control View Comparison
 [options="header"]
-====================================================================================================
-|Function                      |Serials Control View      |Alternate Serials Control View
-|Menu Style		               |Menu driven               |Wizard oriented
-|Setting Up subscription       |No calendar drop downs    |Includes calendar drop down
-|Setting up distributions      |No copy template selection|Requires the selection of a copy template
-|Creating streams              |No setup required         |Requires streams
-|Creating captions and patterns|Wizard available          |Wizard available
-|Adding Starting Issue         |No holdings code wizard   |Includes holdings code wizard
-|Generate Predictions          |Make predictions          |Generate predictions
-|Add items for special issue   |No functionality          |New items on issuances tab
-====================================================================================================
+|====================================================================================================
+|Function	|Serials Control View	|Alternate Serials Control View
+|Menu Style	|Menu driven	|Wizard oriented
+|Setting Up subscription	|No calendar drop downs	|Includes calendar drop down
+|Setting up distributions	|No copy template selection	|Requires the selection of a copy template
+|Creating streams	|No setup required	|Requires streams
+|Creating captions and patterns	|Wizard available	|Wizard available
+|Adding Starting Issue	|No holdings code wizard	|Includes holdings code wizard
+|Generate Predictions	|Make predictions	|Generate predictions
+|Add items for special issue	|No functionality	|New items on issuances tab
+|====================================================================================================
 
 MFHD Records
 ~~~~~~~~~~~~
