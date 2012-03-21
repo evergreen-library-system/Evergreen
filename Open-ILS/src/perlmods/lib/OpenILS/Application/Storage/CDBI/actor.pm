@@ -118,7 +118,7 @@ use base qw/actor/;
 
 __PACKAGE__->table( 'actor_stat_cat' );
 __PACKAGE__->columns( Primary => qw/id/ );
-__PACKAGE__->columns( Essential => qw/owner name opac_visible usr_summary sip_field sip_format checkout_archive/ );
+__PACKAGE__->columns( Essential => qw/owner name opac_visible usr_summary sip_field sip_format checkout_archive required allow_freetext/ );
 
 #-------------------------------------------------------------------------------
 package actor::stat_cat_entry;

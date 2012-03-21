@@ -104,6 +104,15 @@
                         </td>
                     </tr>
                     <tr>
+                        <td id='usr_freetext_td1'>&staff.server.admin.stat_cat.allow_freetext;</td>
+                        <td id='usr_freetext_td2'>    
+                            <span>&staff.server.admin.stat_cat.on;</span>
+                            <input type='radio' name='usr_freetext' id='sc_make_usr_freetext' checked='checked'> </input>
+                            <span>&staff.server.admin.stat_cat.off;</span>
+                            <input type='radio' name='usr_freetext'> </input>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>&staff.server.admin.stat_cat.sip_field;</td>
                         <td>
                             <select name='sip_field' id='sc_sip_field'>
@@ -163,6 +172,7 @@
                             <td>&staff.server.admin.stat_cat.opac_visibility.label;</td>
                             <td id='sc_required_label'>&staff.server.admin.stat_cat.required.label;</td>
                             <td id='sc_usr_summary_label'>&staff.server.admin.stat_cat.usr_summary.label;</td>
+                            <td id='sc_usr_freetext_label'>&staff.server.admin.stat_cat.allow_freetext.label;</td>
                             <td>&staff.server.admin.stat_cat.sip_field.label;</td>
                             <td>&staff.server.admin.stat_cat.sip_format.label;</td>
                             <td>&staff.server.admin.stat_cat.checkout_archive.label;</td>
@@ -176,7 +186,6 @@
                         <tr id='sc_tr'>
                             <td><b name='sc_name'> </b></td>
                             <td name='sc_owning_lib'> </td>
-    
                             <td>
                                 <span class='hide_me' name='sc_opac_visible'>&staff.server.admin.stat_cat.on;</span> 
                                 <span class='hide_me' name='sc_opac_invisible'>&staff.server.admin.stat_cat.off;</span> 
@@ -188,6 +197,10 @@
                             <td name='sc_usr_summary_td'>
                                 <span class='hide_me' name='sc_usr_summary_on'>&staff.server.admin.stat_cat.on;</span> 
                                 <span class='hide_me' name='sc_usr_summary'>&staff.server.admin.stat_cat.off;</span> 
+                            </td>
+                            <td name='sc_usr_freetext_td'>
+                                <span class='hide_me' name='sc_usr_freetext_on'>&staff.server.admin.stat_cat.on;</span> 
+                                <span class='hide_me' name='sc_usr_freetext'>&staff.server.admin.stat_cat.off;</span> 
                             </td>
                             <td>
                                 <span class='hide_me' name='sc_sip_field_none'>&staff.server.admin.stat_cat.sip_field.none.label;</span>
@@ -236,22 +249,17 @@
                     <span class='hide_me' name='sc_edit_show_owning_lib'> </span>
                     <select class='hide_me' name='sc_edit_owning_lib'> </select>
                 </td>
-
-                <td>
-                    <span>&staff.server.admin.stat_cat.on;</span>
-                    <span name='sc_edit_opac_vis'>
-                        <input type='radio' name='sc_edit_opac_visibility'> </input>
-                    </span>
-                    <span>&staff.server.admin.stat_cat.off;</span>
-                    <span name='sc_edit_opac_invis'>
-                        <input type='radio' name='sc_edit_opac_visibility'> </input>
-                    </span>
+                <td name='sc_edit_opac_visibility_td'>
+                    <input type='checkbox' name='sc_edit_opac_visibility'/>
                 </td>
                 <td name='sc_edit_required_td'>
                     <input type='checkbox' name='sc_edit_required'/>
                 </td>
                 <td name='sc_edit_usr_summary_td'>
                     <input type='checkbox' name='sc_edit_usr_summary'/>
+                </td>
+                <td name='sc_edit_usr_freetext_td'>
+                    <input type='checkbox' name='sc_edit_usr_freetext'/>
                 </td>
                 <td>
                     <select name='sc_edit_sip_field'>

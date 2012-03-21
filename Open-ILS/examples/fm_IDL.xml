@@ -5066,6 +5066,8 @@ SELECT  usr,
 			<field reporter:label="SIP Field" name="sip_field" reporter:datatype="link"/>
 			<field reporter:label="SIP Format" name="sip_format" reporter:datatype="text"/>
 			<field reporter:label="Checkout Archive" name="checkout_archive" reporter:datatype="bool"/>
+			<field reporter:label="Required" name="required" reporter:datatype="bool"/>
+			<field reporter:label="Free Text" name="allow_freetext" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>

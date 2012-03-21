@@ -164,10 +164,10 @@ function scDraw( type, cats ) {
 
     if(type == ACTOR) {
         unHideMe($('sc_usr_summary_label'));
-        hideMe($('sc_required_label'));
+        unHideMe($('sc_usr_freetext_label'));
     } else {
-        unHideMe($('sc_required_label'));
         hideMe($('sc_usr_summary_label'));
+        hideMe($('sc_usr_freetext_label'));
     }
 
     scCounter = 0;
@@ -180,6 +180,7 @@ function scInsertCat( tbody, cat, type ) {
 
     var row = scRow.cloneNode(true);
     row.id = 'sc_tr_' + cat.id();
+    var required = cat.required();
     var name_td = $n(row, 'sc_name');
     name_td.appendChild( text(cat.name()) );
     if(scCounter++ % 2) addCSSClass(row, 'has_color');
@@ -207,20 +208,24 @@ function scInsertCat( tbody, cat, type ) {
     else
         unHideMe($n(row, 'sc_checkout_archive'));
 
+    if(isTrue(required))
+        unHideMe($n(row, 'sc_required_on'));
+    else 
+        unHideMe($n(row, 'sc_required'));
+
     if(type == ACTOR) {
         if(isTrue(cat.usr_summary()))
             unHideMe($n(row, 'sc_usr_summary_on'));
         else 
             unHideMe($n(row, 'sc_usr_summary'));
 
-        hideMe($n(row, 'sc_required_td'));
-    } else {
-        if(isTrue(cat.required()))
-            unHideMe($n(row, 'sc_required_on'));
+        if(isTrue(cat.allow_freetext()))
+            unHideMe($n(row, 'sc_usr_freetext_on'));
         else 
-            unHideMe($n(row, 'sc_required'));
-
+            unHideMe($n(row, 'sc_usr_freetext'));
+    } else {
         hideMe($n(row, 'sc_usr_summary_td'));
+        hideMe($n(row, 'sc_usr_freetext_td'));
     }
 
     tbody.appendChild(row);
@@ -317,18 +322,18 @@ function scBuildNew() {
     var type = getSelectorVal(typeSel);
     switch(type) {
         case ACTOR:
-            hideMe($('required_td1'));
-            hideMe($('required_td2'));
             unHideMe($('usr_summary_td1'));
             unHideMe($('usr_summary_td2'));
             unHideMe($('sip_tr'));
+            unHideMe($('usr_freetext_td1'));
+            unHideMe($('usr_freetext_td2'));
         break;
         case ASSET:
             hideMe($('usr_summary_td1'));
             hideMe($('usr_summary_td2'));
             hideMe($('sip_tr'));
-            unHideMe($('required_td1'));
-            unHideMe($('required_td2'));
+            hideMe($('usr_freetext_td1'));
+            hideMe($('usr_freetext_td2'));
         break;
     }
     var org_list = PERMS[type].create_stat_cat;
@@ -355,19 +360,21 @@ function scNew() {
     var required = 0;
     var usr_summary = 0;
     var checkout_archive = 0;
+    var usr_freetext = 0;
     if( $('sc_make_opac_visible').checked) visible = 1;
     if( $('sc_make_required').checked) required = 1;
     if( $('sc_make_usr_summary').checked) usr_summary = 1;
     if( $('sc_make_checkout_archive').checked) checkout_archive = 1;
+    if( $('sc_make_usr_freetext').checked) usr_freetext = 1;
 
     var cat;
     if( type == ACTOR ) {
         cat = new actsc();
         cat.usr_summary( usr_summary );
+        cat.allow_freetext( usr_freetext );
     }
     if( type == ASSET ) {
         cat = new asc();
-        cat.required( required );
     }
     var field = getSelectorVal($('sc_sip_field'));
     if(field.length == 2) cat.sip_field(field);
@@ -375,6 +382,7 @@ function scNew() {
     cat.sip_format($('sc_sip_format').value);
 
     cat.opac_visible(visible);
+    cat.required( required );
     cat.name(name);
     cat.checkout_archive(checkout_archive);
     cat.owner(getSelectorVal($('sc_owning_lib_selector')));
@@ -400,21 +408,25 @@ function scEdit( tbody, type, cat ) {
     if(r.nextSibling) { tbody.insertBefore( row, r.nextSibling ); }
     else{ tbody.appendChild(row); }
 
+    var required = cat.required();
+    var reqcb = $n(row, 'sc_edit_required');
+    reqcb.checked = isTrue(required); 
+
     scPopSipFields($n(row, 'sc_edit_sip_field'), type);
     $n(row, 'sc_edit_name').value = cat.name();
     setSelector($n(row, 'sc_edit_sip_field'), cat.sip_field());
     $n(row, 'sc_edit_sip_format').value = cat.sip_format();
 
     if(type == ACTOR) {
-        var cb = $n(row, 'sc_edit_usr_summary');
-        cb.checked = isTrue(cat.usr_summary()); 
-        hideMe($n(row, 'sc_edit_required_td'));
+        var cb1 = $n(row, 'sc_edit_usr_summary');
+        var cb2 = $n(row, 'sc_edit_usr_freetext');
+        cb1.checked = isTrue(cat.usr_summary()); 
+        cb2.checked = isTrue(cat.allow_freetext()); 
         unHideMe($n(row, 'sc_edit_usr_summary_td'));
+        unHideMe($n(row, 'sc_edit_usr_freetext_td'));
     } else {
-        var cb = $n(row, 'sc_edit_required');
-        cb.checked = isTrue(cat.required()); 
         hideMe($n(row, 'sc_edit_usr_summary_td'));
-        unHideMe($n(row, 'sc_edit_required_td'));
+        hideMe($n(row, 'sc_edit_usr_freetext_td'));
     }
 
     var name = $n(row, 'sc_edit_cancel');
@@ -439,12 +451,9 @@ function scEdit( tbody, type, cat ) {
     name.select();
 
     if( cat.opac_visible() != 0 && cat.opac_visible() != '0' ) {
-        $n( $n(row, 'sc_edit_opac_vis'), 
+        $n( $n(row, 'sc_edit_opac_visibility'), 
             'sc_edit_opac_visibility').checked = true;
-    } else {
-        $n( $n(row, 'sc_edit_opac_invis'), 
-            'sc_edit_opac_visibility').checked = true;
-    }
+    } 
 
     $n( row, 'sc_edit_checkout_archive' ).checked = isTrue(cat.checkout_archive());
 
@@ -467,33 +476,31 @@ function scEdit( tbody, type, cat ) {
 function scEditGo( type, cat, row, selector ) {
     var name = $n(row, 'sc_edit_name').value;
     var visible = 
-        $n( $n(row, 'sc_edit_opac_vis'), 'sc_edit_opac_visibility').checked;
+        $n( $n(row, 'sc_edit_opac_visibility'), 'sc_edit_opac_visibility').checked;
 
     var newlib = cat.owner();
     if(selector) newlib = getSelectorVal( selector );
 
     if(!name) return false;
 
-    var usr_summary = $n(row, 'sc_edit_usr_summary').checked;
     var required = $n(row, 'sc_edit_required').checked;
+    var usr_summary = $n(row, 'sc_edit_usr_summary').checked;
     var sip_field = getSelectorVal( $n(row, 'sc_edit_sip_field') );
+    var usr_freetext = $n(row, 'sc_edit_usr_freetext').checked;
 
     cat.name( name );
     cat.owner( newlib );
     cat.entries(null);
     cat.opac_visible(0);
     cat.checkout_archive($n(row, 'sc_edit_checkout_archive').checked ? 1 : 0);
+    cat.required( (required) ? 1 : 0 );
     if(sip_field.length == 2) cat.sip_field( sip_field );
     else cat.sip_field(null);
     cat.sip_format($n(row, 'sc_edit_sip_format').value);
     if( visible ) cat.opac_visible(1);
-    switch(type) {
-        case ACTOR:
-            cat.usr_summary( (usr_summary) ? 1 : 0 );
-        break;
-        case ASSET:
-            cat.required( (required) ? 1 : 0 );
-        break;
+    if(type == ACTOR) {
+        cat.usr_summary( (usr_summary) ? 1 : 0 );
+        cat.allow_freetext( (usr_freetext) ? 1 : 0 );
     }
 
     var req = new Request( SC_UPDATE.replace(/TYPE/,type), session, cat );

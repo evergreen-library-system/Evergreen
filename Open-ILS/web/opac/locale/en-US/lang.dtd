@@ -2183,6 +2183,7 @@
 <!ENTITY staff.server.admin.stat_cat.owning_library "Owning Library: ">
 <!ENTITY staff.server.admin.stat_cat.opac_visibility "OPAC Visibility: ">
 <!ENTITY staff.server.admin.stat_cat.required "Required: ">
+<!ENTITY staff.server.admin.stat_cat.allow_freetext "Allow Free Text: ">
 <!ENTITY staff.server.admin.stat_cat.usr_summary "Show in Summary: ">
 <!ENTITY staff.server.admin.stat_cat.on "On">
 <!ENTITY staff.server.admin.stat_cat.off "Off">
@@ -2200,6 +2201,7 @@
 <!ENTITY staff.server.admin.stat_cat.owning_library.label "Owning Library">
 <!ENTITY staff.server.admin.stat_cat.opac_visibility.label "OPAC Visibility">
 <!ENTITY staff.server.admin.stat_cat.required.label "Required">
+<!ENTITY staff.server.admin.stat_cat.allow_freetext.label "Allow Free Text">
 <!ENTITY staff.server.admin.stat_cat.usr_summary.label "Show in Summary">
 <!ENTITY staff.server.admin.stat_cat.entries.label "Entries">
 <!ENTITY staff.server.admin.stat_cat.add_entry "Add Entry">
