@@ -7,7 +7,12 @@
         WHILE depth < depths;
             ou_avail = ctx.copy_summary.$depth.available;
             ou_id = ctx.copy_summary.$depth.org_unit;
-            ou_name = ctx.get_aou(ou_id).name;
+            cp_org_unit = ctx.get_aou(ou_id);
+            IF cp_org_unit.opac_visible == 'f' AND !ctx.is_staff;
+                depth = depth + 1;
+                NEXT;
+            END;
+            ou_name = cp_org_unit.name;
             displayed_ous.$ou_name = 1;
     %]
     <li>
