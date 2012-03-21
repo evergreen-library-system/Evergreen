@@ -13475,7 +13475,7 @@ CREATE OR REPLACE FUNCTION auditor.clear_audit_info() RETURNS VOID AS $$
     delete($_SHARED{"eg_audit_ws"});
 $$ LANGUAGE plperl;
 
-CREATE FUNCTION auditor.create_auditor_history ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
+CREATE OR REPLACE FUNCTION auditor.create_auditor_history ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
 BEGIN
     EXECUTE $$
         CREATE TABLE auditor.$$ || sch || $$_$$ || tbl || $$_history (
