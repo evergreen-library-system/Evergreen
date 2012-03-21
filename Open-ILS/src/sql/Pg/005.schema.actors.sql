@@ -188,6 +188,8 @@ CREATE TABLE actor.stat_cat (
     sip_field   CHAR(2) REFERENCES actor.stat_cat_sip_fields(field) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
     sip_format  TEXT,
     checkout_archive    BOOL NOT NULL DEFAULT FALSE,
+	required	BOOL NOT NULL DEFAULT FALSE,
+	allow_freetext	BOOL NOT NULL DEFAULT TRUE,
 	CONSTRAINT sc_once_per_owner UNIQUE (owner,name)
 );
 COMMENT ON TABLE actor.stat_cat IS $$
@@ -362,6 +364,21 @@ CREATE TABLE actor.org_unit_proximity (
 	prox		INT
 );
 CREATE INDEX from_prox_idx ON actor.org_unit_proximity (from_org);
+
+CREATE TABLE actor.stat_cat_entry_default (
+	id		SERIAL	PRIMARY KEY,
+        stat_cat_entry	INT	NOT NULL REFERENCES actor.stat_cat_entry(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	stat_cat	INT	NOT NULL REFERENCES actor.stat_cat(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	owner		INT	NOT NULL REFERENCES actor.org_unit(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	CONSTRAINT sced_once_per_owner UNIQUE (stat_cat,owner)
+);
+COMMENT ON TABLE actor.stat_cat_entry_default IS $$
+User Statistical Category Default Entry
+
+A library may choose one of the stat_cat entries to be the
+default entry.
+$$;
+
 
 CREATE TABLE actor.hours_of_operation (
 	id		INT	PRIMARY KEY REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
