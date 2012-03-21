@@ -1545,7 +1545,11 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 527, 'DELETE_PATRON_STAT_CAT_ENTRY_DEFAULT', oils_i18n_gettext( 527, 
     'User may unset a default entry in a patron statistical category', 'ppl', 'description' )),
  ( 528, 'ADMIN_ORG_UNIT_CUSTOM_TREE', oils_i18n_gettext( 528, 
-    'User may update custom org unit trees', 'ppl', 'description' ));
+    'User may update custom org unit trees', 'ppl', 'description' )),
+ ( 529, 'ADMIN_IMPORT_MATCH_SET', oils_i18n_gettext( 529,
+    'Allows a user to create/retrieve/update/delete vandelay match sets', 'ppl', 'description' )),
+ ( 530, 'VIEW_IMPORT_MATCH_SET', oils_i18n_gettext( 530,
+    'Allows a user to view vandelay match sets', 'ppl', 'description' ));
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
 
