@@ -657,7 +657,7 @@ sub staff_save_search {
 
     unshift @$list, $query unless $already{$query};
 
-    splice @$list, $sss_size;
+    splice @$list, $sss_size if scalar @$list > $sss_size;
 
     $cache_key = $U->simplereq(
         "open-ils.actor",
