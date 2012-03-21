@@ -14,22 +14,18 @@ RETURNS anyarray AS $$
     SELECT ARRAY_ACCUM(x.e) FROM UNNEST( $1 ) x(e) WHERE x.e <> $2;
 $$ LANGUAGE SQL STABLE;
 
-DROP FUNCTION IF EXISTS evergreen.rank_ou(INT, INT, INT);
 CREATE OR REPLACE FUNCTION evergreen.rank_ou(lib INT, search_lib INT, pref_lib INT DEFAULT NULL)
 RETURNS INTEGER AS $$
-    WITH pref_libs AS (
-        SELECT id, distance FROM actor.org_unit_descendants_distance(COALESCE($3, $2))
-    ), search_libs AS (
+    WITH search_libs AS (
         SELECT id, distance FROM actor.org_unit_descendants_distance($2)
     )
     SELECT COALESCE(
-        (SELECT distance - 10000 FROM pref_libs WHERE id = $1),
+        (SELECT -10000 FROM actor.org_unit WHERE $1 = $3 AND id = $3),
         (SELECT distance FROM search_libs WHERE id = $1),
         10000
     );
 $$ LANGUAGE SQL STABLE;
 
-DROP FUNCTION IF EXISTS evergreen.rank_cp_status(INT);
 CREATE OR REPLACE FUNCTION evergreen.rank_cp_status(status INT)
 RETURNS INTEGER AS $$
     WITH totally_available AS (
@@ -58,11 +54,12 @@ CREATE OR REPLACE FUNCTION evergreen.ranked_volumes(
     ouid INT,
     depth INT DEFAULT NULL,
     slimit HSTORE DEFAULT NULL,
-    soffset HSTORE DEFAULT NULL
+    soffset HSTORE DEFAULT NULL,
+    pref_lib INT DEFAULT NULL
 ) RETURNS TABLE (id BIGINT, name TEXT, label_sortkey TEXT, rank BIGINT) AS $$
     SELECT ua.id, ua.name, ua.label_sortkey, MIN(ua.rank) AS rank FROM (
         SELECT acn.id, aou.name, acn.label_sortkey,
-            evergreen.rank_ou(aou.id, $2), evergreen.rank_cp_status(acp.status),
+            evergreen.rank_ou(aou.id, $2, $6), evergreen.rank_cp_status(acp.status),
             RANK() OVER w
         FROM asset.call_number acn
             JOIN asset.copy acp ON (acn.id = acp.call_number)
@@ -72,14 +69,14 @@ CREATE OR REPLACE FUNCTION evergreen.ranked_volumes(
                     FROM actor.org_unit_type aout
                         INNER JOIN actor.org_unit ou ON ou_type = aout.id
                     WHERE ou.id = $2
-                ))
+                ), $6)
             ) AS aou ON (acp.circ_lib = aou.id)
         WHERE acn.record = $1
             AND acn.deleted IS FALSE
             AND acp.deleted IS FALSE
         GROUP BY acn.id, acp.status, aou.name, acn.label_sortkey, aou.id
         WINDOW w AS (
-            ORDER BY evergreen.rank_ou(aou.id, $2), evergreen.rank_cp_status(acp.status)
+            ORDER BY evergreen.rank_ou(aou.id, $2, $6), evergreen.rank_cp_status(acp.status)
         )
     ) AS ua
     GROUP BY ua.id, ua.name, ua.label_sortkey
@@ -94,7 +91,7 @@ CREATE OR REPLACE FUNCTION evergreen.located_uris (
     ouid INT,
     pref_lib INT DEFAULT NULL
 ) RETURNS TABLE (id BIGINT, name TEXT, label_sortkey TEXT, rank INT) AS $$
-    SELECT acn.id, aou.name, acn.label_sortkey, evergreen.rank_ou(aou.id, $2) AS pref_ou
+    SELECT acn.id, aou.name, acn.label_sortkey, evergreen.rank_ou(aou.id, $2, $3) AS pref_ou
       FROM asset.call_number acn
            INNER JOIN asset.uri_call_number_map auricnm ON acn.id = auricnm.call_number 
            INNER JOIN asset.uri auri ON auri.id = auricnm.uri
@@ -103,7 +100,7 @@ CREATE OR REPLACE FUNCTION evergreen.located_uris (
           AND acn.deleted IS FALSE
           AND auri.active IS TRUE
     UNION
-    SELECT acn.id, aou.name, acn.label_sortkey, evergreen.rank_ou(aou.id, $2) AS pref_ou
+    SELECT acn.id, aou.name, acn.label_sortkey, evergreen.rank_ou(aou.id, $2, $3) AS pref_ou
       FROM asset.call_number acn
            INNER JOIN asset.uri_call_number_map auricnm ON acn.id = auricnm.call_number 
            INNER JOIN asset.uri auri ON auri.id = auricnm.uri
@@ -439,7 +436,7 @@ RETURNS XML AS $F$
                      (SELECT XMLAGG(acn ORDER BY rank, name, label_sortkey) FROM (
                         -- Physical copies
                         SELECT  unapi.acn(y.id,'xml','volume',evergreen.array_remove_item_by_value( evergreen.array_remove_item_by_value($5,'holdings_xml'),'bre'), $3, $4, $6, $7, FALSE), y.rank, name, label_sortkey
-                        FROM evergreen.ranked_volumes($1, $2, $4, $6, $7) AS y
+                        FROM evergreen.ranked_volumes($1, $2, $4, $6, $7, $9) AS y
                         UNION ALL
                         -- Located URIs
                         SELECT unapi.acn(uris.id,'xml','volume',evergreen.array_remove_item_by_value( evergreen.array_remove_item_by_value($5,'holdings_xml'),'bre'), $3, $4, $6, $7, FALSE), 0, name, label_sortkey
@@ -1165,4 +1162,3 @@ EXPLAIN ANALYZE SELECT unapi.bre(36,'marcxml','record','{holdings_xml,mra,acp,ac
 */
 
 COMMIT;
-

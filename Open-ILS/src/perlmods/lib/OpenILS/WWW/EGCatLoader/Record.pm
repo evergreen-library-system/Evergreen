@@ -212,7 +212,7 @@ sub mk_copy_query {
 
         order_by => [
             { class => "aou", field => 'id', 
-              transform => 'evergreen.rank_ou', params => [$org]
+              transform => 'evergreen.rank_ou', params => [$org, $pref_ou]
             },
             {class => 'aou', field => 'name'}, 
             {class => 'acn', field => 'label'},
@@ -235,7 +235,7 @@ sub mk_copy_query {
                     in => {
                         select => {aou => [{
                             column => 'id', 
-                            transform => 'actor.org_unit_descendants', 
+                            transform => 'actor.org_unit_descendants',
                             result_field => 'id', 
                             params => [$depth]
                         }]},
@@ -244,6 +244,14 @@ sub mk_copy_query {
                     }
                 }
             }
+        };
+        if ($org != $pref_ou) {
+            $query->{from}->{acp}->{aou}->{filter}->{id}->{in}->{select}->{aou} = [{
+                column => 'id',
+                transform => 'actor.org_unit_descendants_pref_lib',
+                result_field => 'id',
+                params => [$depth, $pref_ou]
+            }];
         }
     };
 
