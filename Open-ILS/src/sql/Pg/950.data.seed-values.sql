@@ -5881,15 +5881,6 @@ INSERT INTO config.metabib_field_index_norm_map (field,norm,params)
       WHERE i.func IN ('replace')
             AND m.id IN (19);
 
-INSERT INTO config.metabib_field_index_norm_map (field,norm,params)
-    SELECT  m.id,
-            i.id,
-            $$[" ",""]$$
-      FROM  config.metabib_field m,
-            config.index_normalizer i
-      WHERE i.func IN ('replace')
-            AND m.id IN (19);
-
 INSERT INTO config.record_attr_index_norm_map (attr,norm,pos)
     SELECT  m.name, i.id, 0
       FROM  config.record_attr_definition m,
