@@ -132,14 +132,41 @@ if BUILDEGJAVA
 OILSJAVA_DIR = java
 endif
 
-bin_SCRIPTS = $(core_scripts) $(reporter_scripts) $(installautojs) @srcdir@/extras/eg_config @srcdir@/extras/fast-extract @srcdir@/extras/import/marc2are.pl @srcdir@/extras/import/marc2bre.pl @srcdir@/extras/import/marc2sre.pl @srcdir@/extras/import/parallel_pg_loader.pl $(supportscr)/marc_export
+gen_scripts = \
+	@srcdir@/extras/fast-extract \
+	@srcdir@/extras/import/marc2are.pl \
+	@srcdir@/extras/import/marc2bre.pl \
+	@srcdir@/extras/import/marc2sre.pl \
+	@srcdir@/extras/import/parallel_pg_loader.pl \
+	$(supportscr)/authority_control_fields.pl \
+	$(supportscr)/marc_export
+
+bin_SCRIPTS = $(core_scripts) $(gen_scripts) $(reporter_scripts) $(installautojs)
+
+CLEANFILES = $(gen_scripts)
+
 data_DATA = $(core_data) $(reporter_data)
 
 # Take care of which subdirectories to build, and which extra files to include in a distribution.
 
 SUBDIRS = $(OILSCORE_DIRS) $(OILSWEB_DIR) $(OILSPYTHON_DIR) $(OILSJAVA_DIR)
 
-EXTRA_DIST = @srcdir@/perlmods @srcdir@/templates @top_srcdir@/Open-ILS/xsl @srcdir@/cgi-bin
+EXTRA_DIST = @srcdir@/perlmods \
+	@srcdir@/templates \
+	@top_srcdir@/Open-ILS/xsl \
+	@srcdir@/cgi-bin \
+	$(gen_scripts) \
+	@srcdir@/extras/eg_config
+
+do_subst = $(SED) \
+	-e 's,[@]bindir[@],$(bindir),g' \
+	-e 's,[@]datarootdir[@],$(datarootdir),g' \
+	-e 's,[@]docdir[@],$(docdir),g' \
+	-e 's,[@]exec_prefix[@],$(exec_prefix),g' \
+	-e 's,[@]includedir[@],$(includedir),g' \
+	-e 's,[@]libdir[@],$(libdir),g' \
+	-e 's,[@]prefix[@],$(prefix),g' \
+	-e 's,[@]sysconfdir[@],$(sysconfdir),g'
 
 # Install header files
 
@@ -156,6 +183,33 @@ uninstall-hook:
 	rm -R $(XSLDIR)
 	rm -R $(CGIDIR)
 
+@srcdir@/extras/fast-extract: @srcdir@/extras/fast-extract.in
+	$(do_subst) "$<" > "$@"
+	chmod 755 "$@"
+
+@srcdir@/extras/import/marc2are.pl: @srcdir@/extras/import/marc2are.pl.in
+	$(do_subst) "$<" > "$@"
+	chmod 755 "$@"
+
+@srcdir@/extras/import/marc2bre.pl: @srcdir@/extras/import/marc2bre.pl.in
+	$(do_subst) "$<" > "$@"
+	chmod 755 "$@"
+
+@srcdir@/extras/import/marc2sre.pl: @srcdir@/extras/import/marc2sre.pl.in
+	$(do_subst) "$<" > "$@"
+	chmod 755 "$@"
+
+@srcdir@/extras/import/parallel_pg_loader.pl: @srcdir@/extras/import/parallel_pg_loader.pl.in
+	$(do_subst) "$<" > "$@"
+	chmod 755 "$@"
+
+$(supportscr)/authority_control_fields.pl: $(supportscr)/authority_control_fields.pl.in
+	$(do_subst) "$<" > "$@"
+	chmod 755 "$@"
+
+$(supportscr)/marc_export: $(supportscr)/marc_export.in
+	$(do_subst) "$<" > "$@"
+	chmod 755 "$@"
 
 #perl-install and string-templates-install	
 ilscore-install:

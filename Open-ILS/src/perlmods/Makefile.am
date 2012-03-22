@@ -11,8 +11,13 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
-CLEANFILES = Build
+bin_SCRIPTS = Build lib/OpenILS/Utils/Cronscript.pm
+
+CLEANFILES = $(bin_SCRIPTS)
+
 DISTCLEANFILES = Makefile.in Makefile
+
+do_subst = $(SED) -e 's,[@]sysconfdir@,$(sysconfdir),g'
 
 all: build-perl
 	./Build || make -s build-perl-fail
@@ -23,8 +28,11 @@ check: build-perl
 install: build-perl
 	./Build install
 
-build-perl:
+build-perl: lib/OpenILS/Utils/Cronscript.pm
 	perl Build.PL --destdir $(DESTDIR) || make -s build-perl-fail
+
+lib/OpenILS/Utils/Cronscript.pm: lib/OpenILS/Utils/Cronscript.pm.in
+	$(do_subst) "$<" > "$@"
 
 build-perl-fail:
 	echo
