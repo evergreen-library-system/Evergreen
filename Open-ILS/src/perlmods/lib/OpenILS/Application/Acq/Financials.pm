@@ -305,7 +305,7 @@ sub retrieve_org_funds {
 
     my $limit_perm = ($$options{limit_perm}) ? $$options{limit_perm} : 'ADMIN_FUND';
     return OpenILS::Event->new('BAD_PARAMS') 
-        unless $limit_perm =~ /(ADMIN|MANAGE|VIEW)_FUND/;
+        unless $limit_perm =~ /(ADMIN|MANAGE|VIEW)_(ACQ_)?FUND/;
 
     $filter->{org}  = $filter->{org} || 
         $U->user_has_work_perm_at($e, $limit_perm, {descendants =>1});
