@@ -9,6 +9,38 @@ _out,
 tooManyMatches = null,
 lastError = null;
 
+function win_list() {
+    var list = [];
+    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].
+        getService(Components.interfaces.nsIWindowMediator);
+    var enumerator = wm.getEnumerator('eg_menu');
+    while(enumerator.hasMoreElements()) {
+        targetwindow = enumerator.getNext();
+        list.push(targetwindow);
+    }
+    return list;
+}
+
+function get_tab(a,b) {
+
+    var win;
+    var idx;
+
+    if (typeof b == 'undefined') {
+        idx = a;
+        win = win_list()[0];
+    } else {
+        win = a;
+        idx = b;
+    }
+
+    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    var tabs = win.document.getElementById('main_tabs');
+    var panels = win.document.getElementById('main_panels');
+    return { 'name' : tabs.childNodes[idx].getAttribute('label'), 'content' : panels.childNodes[idx].firstChild.contentWindow };
+}
+
 function refocus()
 {
   _in.blur(); // Needed for Mozilla to scroll correctly.
