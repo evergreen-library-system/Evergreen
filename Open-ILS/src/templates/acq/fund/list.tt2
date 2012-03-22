@@ -139,14 +139,14 @@
     </div>
 </div>
 
-<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:80%'>
     <table  jsId="lfGrid"
             dojoType="openils.widget.AutoGrid"
             fieldOrder="['id', 'name', 'code', 'year', 'org', 'currency_type', 'combined_balance']"
             requiredFields="['name', 'code', 'year', 'org', 'currency_type']"
             query="{id: '*'}"
-            defaultCellWidth='"auto"'
             fmClass='acqf'
+            showLoadFilter='true'
             showPaginator='true'
             editOnEnter='true'>
         <thead>

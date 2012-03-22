@@ -12,7 +12,7 @@ dojo.require('openils.Event');
 dojo.require('openils.Util');
 dojo.require('openils.User');
 dojo.require('openils.CGI');
-dojo.require('openils.acq.Fund');
+dojo.require('openils.PermaCrud');
 dojo.require('openils.widget.AutoGrid');
 dojo.require('openils.widget.ProgressDialog');
 dojo.require('fieldmapper.OrgUtils');
@@ -22,18 +22,19 @@ var localeStrings = dojo.i18n.getLocalization('openils.acq', 'acq');
 var contextOrg;
 var rolloverResponses;
 var rolloverMode = false;
+var fundFleshFields = [
+    'spent_balance', 
+    'combined_balance', 
+    'spent_total', 
+    'encumbrance_total', 
+    'debit_total', 
+    'allocation_total'
+];
 
-function getBalanceInfo(rowIndex, item) {
-    if(!item) return '';
-    var id = this.grid.store.getValue( item, 'id');   
-    var fund = openils.acq.Fund.cache[id];
-    if(fund && fund.summary()) 
-        return fund.summary().combined_balance;
-    return 0;
-}
+var adminPermOrgs = [];
+var cachedFunds = [];
 
 function initPage() {
-
     contextOrg = openils.User.user.ws_ou();
 
     var connect = function() {
@@ -48,17 +49,29 @@ function initPage() {
         );
     };
 
-    dojo.connect(refreshButton, 'onClick', function() { rolloverMode = false; gridDataLoader(); });
+    dojo.connect(refreshButton, 'onClick', 
+        function() { rolloverMode = false; gridDataLoader(); });
 
     new openils.User().buildPermOrgSelector(
-        'ADMIN_ACQ_FUND', contextOrgSelector, contextOrg, connect);
+        ['ADMIN_ACQ_FUND', 'VIEW_FUND'], 
+        contextOrgSelector, contextOrg, connect);
 
     dojo.byId('oils-acq-rollover-ctxt-org').innerHTML = 
         fieldmapper.aou.findOrgUnit(contextOrg).shortname();
 
     loadYearSelector();
-    lfGrid.dataLoader = gridDataLoader;
-    loadFundGrid(new openils.CGI().param('year') || new Date().getFullYear().toString());
+    lfGrid.onItemReceived = function(item) {cachedFunds.push(item)};
+
+    new openils.User().getPermOrgList(
+        'ADMIN_ACQ_FUND',
+        function(list) {
+            adminPermOrgs = list;
+            loadFundGrid(
+                new openils.CGI().param('year') 
+                    || new Date().getFullYear().toString());
+        },
+        true, true
+    );
 }
 
 function gridDataLoader() {
@@ -75,36 +88,39 @@ function gridDataLoader() {
     }
 }
 
-function loadFundGrid(year) {
+function getBalanceInfo(rowIdx, item) {
+    if (!item) return '';
+    var fundId = this.grid.store.getValue(item, 'id');
+    var fund = cachedFunds.filter(function(f) { return f.id() == fundId })[0];
+    var cb = fund.combined_balance();
+    return cb ? cb.amount() : '0';
+}
 
+function loadFundGrid(year) {
     openils.Util.hide('acq-fund-list-rollover-summary');
     year = year || fundFilterYearSelect.attr('value');
+    cachedFunds = [];
 
-    fieldmapper.standardRequest(
-       [ 'open-ils.acq', 'open-ils.acq.fund.org.retrieve'],
-       {    async: true,
-
-            params: [
-                openils.User.authtoken, 
-                {year : year, org : fieldmapper.aou.descendantNodeList(contextOrg, true)}, 
-                {
-                    flesh_summary:1, 
-                    limit: lfGrid.displayLimit,
-                    offset: lfGrid.displayOffset
+    lfGrid.loadAll(
+        {
+            flesh : 1,  
+            flesh_fields : {acqf : fundFleshFields},
+            
+            // by default, sort funds I can edit to the front
+            order_by : [
+                {   'class' : 'acqf',
+                    field : 'org',
+                    compare : {'in' : adminPermOrgs},
+                    direction : 'desc'
+                },
+                {   'class' : 'acqf',
+                    field : 'name'
                 }
-            ],
-
-            onresponse : function(r) {
-                if(lf = openils.Util.readResponse(r)) {
-                   openils.acq.Fund.cache[lf.id()] = lf;
-                   lfGrid.store.newItem(acqf.toStoreItem(lf));
-                }
-            },
-
-            oncomplete : function(r) {
-                lfGrid.hideLoadProgressIndicator();
-            }
-        }
+            ]
+        }, {   
+            year : year, 
+            org : fieldmapper.aou.descendantNodeList(contextOrg, true) 
+        } 
     );
 }
 
@@ -113,7 +129,7 @@ function loadYearSelector() {
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.fund.org.years.retrieve'],
         {   async : true,
-            params : [openils.User.authtoken],
+            params : [openils.User.authtoken, {}, {limit_perm : 'VIEW_FUND'}],
             oncomplete : function(r) {
 
                 var yearList = openils.Util.readResponse(r);
