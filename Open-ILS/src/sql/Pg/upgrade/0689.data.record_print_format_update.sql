@@ -1,4 +1,12 @@
+-- Evergreen DB patch 0689.data.record_print_format_update.sql
+--
+-- Updates print and email templates for bib record actions
+--
+BEGIN;
 
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0689', :eg_version);
 
 UPDATE action_trigger.event_definition SET template = $$
 <div>
@@ -95,4 +103,4 @@ DELETE FROM action_trigger.environment env
         def.hook = 'biblio.format.record_entry.email' AND 
         def.id < 100; -- sample data
 
-
+COMMIT;
