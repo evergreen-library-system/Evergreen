@@ -20,13 +20,14 @@ function staff_hold_usr_input_disabler(input) {
     staff_hold_usr_barcode_changed();
 }
 var cur_hold_barcode = undefined;
-function staff_hold_usr_barcode_changed() {
+function staff_hold_usr_barcode_changed(isload) {
     if(typeof xulG != 'undefined' && xulG.get_barcode_and_settings) {
         var barcode = document.getElementById('staff_barcode').value;
         var only_settings = true;
         if(!document.getElementById('hold_usr_is_requestor').checked) {
             barcode = document.getElementById('hold_usr_input').value;
-            only_settings = false;
+            if(!isload)
+                only_settings = false;
             if(barcode && barcode != '' && !document.getElementById('hold_usr_is_requestor_not').checked)
                 document.getElementById('hold_usr_is_requestor_not').checked = 'checked';
         }
@@ -67,6 +68,9 @@ window.onload = function() {
     if(rec && rec[1]) { 
         runEvt('rdetail', 'recordRetrieved', rec[1]); 
         runEvt('rdetail', 'MFHDDrawn');
+    }
+    if(location.href.match(/place_hold/)) {
+        staff_hold_usr_barcode_changed(true);
     }
 }
 

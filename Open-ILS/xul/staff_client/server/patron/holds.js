@@ -1461,6 +1461,8 @@ patron.holds.prototype = {
                                                 obj.error.standard_unexpected_error_alert('holds.js, opac_hold_placed(): ',E);
                                             }
                                         },
+                                        'get_barcode' : xulG.get_barcode,
+                                        'get_barcode_and_settings' : xulG.get_barcode_and_settings,
                                         'patron_barcode' : obj.patron_barcode
                                     },
                                     'url_prefix' : xulG.url_prefix,
