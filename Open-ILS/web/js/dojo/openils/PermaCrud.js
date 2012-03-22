@@ -148,6 +148,8 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
             if (opts.limit) order_by.limit = opts.limit;
             if (opts.offset) order_by.offset = opts.offset;
             if (opts.join) order_by.join = opts.join;
+            if (opts.flesh) order_by.flesh = opts.flesh;
+            if (opts.flesh_fields) order_by.flesh_fields = opts.flesh_fields;
             
             var method = 'open-ils.pcrud.search.' + fm_class;
             if(!opts.streaming) method += '.atomic';
@@ -196,6 +198,8 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
             if (opts.limit) order_by.limit = opts.limit;
             if (opts.offset) order_by.offset = opts.offset;
             if (opts.join) order_by.join = opts.join;
+            if (opts.flesh) order_by.flesh = opts.flesh;
+            if (opts.flesh_fields) order_by.flesh_fields = opts.flesh_fields;
             if (opts.id_list) return_type = 'id_list';
 
             var method = 'open-ils.pcrud.' + return_type + '.' + fm_class;
