@@ -803,7 +803,7 @@ util.list.prototype = {
         try {
             setTimeout( // Otherwise we can miss a row just added
                 function() {
-                    var nl = document.getElementsByAttribute('label','_');
+                    var nl = obj.node.getElementsByAttribute('label','_');
                     for (var i = 0; i < nl.length; i++) {
                         nl[i].setAttribute(
                             'ord_col',
@@ -814,7 +814,7 @@ util.list.prototype = {
                             'ordinal'
                         );
                     }
-                    nl = document.getElementsByAttribute('ord_col','true');
+                    nl = obj.node.getElementsByAttribute('ord_col','true');
                     for (var i = 0; i < nl.length; i++) {
                         nl[i].setAttribute(
                             'label',
