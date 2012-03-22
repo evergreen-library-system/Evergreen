@@ -142,6 +142,12 @@
                 case 'staff' : return data.list.au[0]; break;
                 case 'staff_id' : return data.list.au[0].id(); break;
                 case 'staff_usrname' : return data.list.au[0].usrname(); break;
+                case 'ws_name':
+                    return data.ws_name;
+                break;
+                case 'ws_id' :
+                    return data.list.au[0].wsid();
+                break;
                 case 'ws_ou' :
                     return data.list.au[0].ws_ou();
                 break;
