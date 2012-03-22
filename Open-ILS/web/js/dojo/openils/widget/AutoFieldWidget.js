@@ -389,14 +389,18 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             }
 
             // then try the single object cache
-            if(this.cache[this.auth].single[lclass] && 
-                    this.cache[this.auth].single[lclass][this.widgetValue] &&
-                    this.cache[this.auth].single[lclass][this.widgetValue][self.labelFormat || '']) {
-                this.widgetValue = this.cache[this.auth].single[lclass][this.widgetValue][self.labelFormat || ''];
+            var item;
+            if(this.cache[this.auth].single[lclass] && (
+                item = this.cache[this.auth].single[lclass][this.widgetValue]) ) {
+
+                this.widgetValue = (this.labelFormat) ? 
+                    this._applyLabelFormat(item.toStoreItem(), this.labelFormat) :
+                    item[linkInfo.vfield.selector]();
+
                 return;
             }
 
-            console.log("Fetching sync object " + lclass + " : " + this.widgetValue);
+            console.log("Fetching linked object " + lclass + " : " + this.widgetValue);
 
             // if those fail, fetch the linked object
             this.async = true;
@@ -406,22 +410,14 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 oncomplete : function(r) {
                     var item = openils.Util.readResponse(r);
 
-                    var newvalue = item[linkInfo.vfield.selector]();
-
-                    var labelCacheKey = ''; 
-
-                    if(self.labelFormat) {
-                        labelCacheKey = self.labelFormat;
-                        self.widgetValue = self._applyLabelFormat(item.toStoreItem(), self.labelFormat);
-                    } else {
-                        self.widgetValue = newvalue;
-                    }
-
+                    // cache the true object under its real value
                     if(!self.cache[self.auth].single[lclass])
                         self.cache[self.auth].single[lclass] = {};
-                    if(!self.cache[self.auth].single[lclass][self.widgetValue])
-                        self.cache[self.auth].single[lclass][self.widgetValue] = {};
-                    self.cache[self.auth].single[lclass][self.widgetValue][labelCacheKey] = newvalue;
+                    self.cache[self.auth].single[lclass][self.widgetValue] = item;
+
+                    self.widgetValue = (self.labelFormat) ? 
+                        self._applyLabelFormat(item.toStoreItem(), self.labelFormat) :
+                        item[linkInfo.vfield.selector]();
 
                     self.widget.startup();
                     self._widgetLoaded();
