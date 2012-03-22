@@ -860,11 +860,11 @@ function loadStatCats() {
         sc_widget._wtype = 'statcat';
         sc_widget._statcat = stat.id();
 
-        // set default value:  first choice is patron table entry,
-        // then the default entry for the stat_cat
+        // set value:  first choice is patron table entry,
+        // then the default entry for the stat_cat if new patron
         if(patmap) {
             sc_widget.attr(p_opt, patmap.stat_cat_entry()); 
-        } else if(entrymap) {
+        } else if(entrymap && patron.isnew()) {
             sc_widget.attr('value', e_field); 
         }
 
