@@ -6759,6 +6759,12 @@ SELECT  usr,
 			<field reporter:label="Allocations" name="allocations" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Debits" name="debits" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Tags" name="tags" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Allocation Total" name="allocation_total" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Debit Total" name="debit_total" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Encumbrance Total" name="encumbrance_total" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Spent Total" name="spent_total" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Combined Balance" name="combined_balance" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Spent Balance" name="spent_balance" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="org" reltype="has_a" key="id" map="" class="aou"/>
@@ -6766,6 +6772,12 @@ SELECT  usr,
             <link field="allocations" reltype="has_many" key="fund" map="" class="acqfa"/>
             <link field="debits" reltype="has_many" key="fund" map="" class="acqfdeb"/>
             <link field="tags" reltype="has_many" key="fund" map="" class="acqftm"/>
+            <link field="allocation_total" reltype="might_have" key="fund" map="" class="acqfat"/>
+            <link field="debit_total" reltype="might_have" key="fund" map="" class="acqfdt"/>
+            <link field="encumbrance_total" reltype="might_have" key="fund" map="" class="acqfet"/>
+            <link field="spent_total" reltype="might_have" key="fund" map="" class="acqfst"/>
+            <link field="combined_balance" reltype="might_have" key="fund" map="" class="acqfcb"/>
+            <link field="spent_balance" reltype="might_have" key="fund" map="" class="acqfsb"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -6777,7 +6789,7 @@ SELECT  usr,
         </permacrud>
 	</class>
 
-	<class id="acqfat" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::fund_allocation_total" oils_persist:readonly="true" oils_persist:tablename="acq.fund_allocation_total" reporter:label="Fund Allocation Total">
+	<class id="acqfat" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="acq::fund_allocation_total" oils_persist:readonly="true" oils_persist:tablename="acq.fund_allocation_total" reporter:label="Fund Allocation Total">
 		<fields oils_persist:primary="fund">
 			<field reporter:label="Fund ID" name="fund" reporter:datatype="link" />
 			<field reporter:label="Total Allocation Amount" name="amount" reporter:datatype="money" />
@@ -6785,9 +6797,16 @@ SELECT  usr,
 		<links>
 			<link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve permission="ADMIN_ACQ_FUND VIEW_FUND MANAGE_FUND">
+					<context link="fund" field="org" />
+                </retrieve>
+            </actions>
+        </permacrud>
 	</class>
 
-	<class id="acqfdt" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::fund_debit_total" oils_persist:readonly="true" oils_persist:tablename="acq.fund_debit_total" reporter:label="Total Debit from Fund">
+	<class id="acqfdt" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="acq::fund_debit_total" oils_persist:readonly="true" oils_persist:tablename="acq.fund_debit_total" reporter:label="Total Debit from Fund">
 		<fields oils_persist:primary="fund">
 			<field reporter:label="Fund ID" name="fund" reporter:datatype="link" />
 			<field reporter:label="Total Debit Amount" name="amount" reporter:datatype="money" />
@@ -6795,9 +6814,16 @@ SELECT  usr,
 		<links>
 			<link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve permission="ADMIN_ACQ_FUND VIEW_FUND MANAGE_FUND">
+					<context link="fund" field="org" />
+                </retrieve>
+            </actions>
+        </permacrud>
 	</class>
 
-	<class id="acqfet" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::fund_encumbrance_total" oils_persist:readonly="true" oils_persist:tablename="acq.fund_encumbrance_total" reporter:label="Total Fund Encumbrance">
+	<class id="acqfet" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="acq::fund_encumbrance_total" oils_persist:readonly="true" oils_persist:tablename="acq.fund_encumbrance_total" reporter:label="Total Fund Encumbrance">
 		<fields oils_persist:primary="fund">
 			<field reporter:label="Fund ID" name="fund" reporter:datatype="link" />
 			<field reporter:label="Total Encumbrance Amount" name="amount" reporter:datatype="money" />
@@ -6805,9 +6831,16 @@ SELECT  usr,
 		<links>
 			<link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve permission="ADMIN_ACQ_FUND VIEW_FUND MANAGE_FUND">
+					<context link="fund" field="org" />
+                </retrieve>
+            </actions>
+        </permacrud>
 	</class>
 
-	<class id="acqfst" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::fund_spent_total" oils_persist:readonly="true" oils_persist:tablename="acq.fund_spent_total" reporter:label="Total Spent from Fund">
+	<class id="acqfst" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="acq::fund_spent_total" oils_persist:readonly="true" oils_persist:tablename="acq.fund_spent_total" reporter:label="Total Spent from Fund">
 		<fields oils_persist:primary="fund">
 			<field reporter:label="Fund ID" name="fund" reporter:datatype="link" />
 			<field reporter:label="Total Spent Amount" name="amount" reporter:datatype="money" />
@@ -6815,9 +6848,16 @@ SELECT  usr,
 		<links>
 			<link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve permission="ADMIN_ACQ_FUND VIEW_FUND MANAGE_FUND">
+					<context link="fund" field="org" />
+                </retrieve>
+            </actions>
+        </permacrud>
 	</class>
 
-	<class id="acqfcb" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::fund_combined_balance" oils_persist:readonly="true" oils_persist:tablename="acq.fund_combined_balance" reporter:label="Fund Combined Balance">
+	<class id="acqfcb" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="acq::fund_combined_balance" oils_persist:readonly="true" oils_persist:tablename="acq.fund_combined_balance" reporter:label="Fund Combined Balance">
 		<fields oils_persist:primary="fund">
 			<field reporter:label="Fund ID" name="fund" reporter:datatype="link" />
 			<field reporter:label="Balance after Spent and Encumbered" name="amount" reporter:datatype="money" />
@@ -6825,6 +6865,13 @@ SELECT  usr,
 		<links>
 			<link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve permission="ADMIN_ACQ_FUND VIEW_FUND MANAGE_FUND">
+					<context link="fund" field="org" />
+                </retrieve>
+            </actions>
+        </permacrud>
 	</class>
 
    <class id="acqafat" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::all_fund_allocation_total" oils_persist:readonly="true" oils_persist:tablename="acq.all_fund_allocation_total" reporter:label="All Fund Allocation Total">
@@ -6907,7 +6954,7 @@ SELECT  usr,
 		</links>
 	</class>
 
-	<class id="acqfsb" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::fund_spent_balance" oils_persist:readonly="true" oils_persist:tablename="acq.fund_spent_balance" reporter:label="Fund Spent Balance">
+	<class id="acqfsb" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="acq::fund_spent_balance" oils_persist:readonly="true" oils_persist:tablename="acq.fund_spent_balance" reporter:label="Fund Spent Balance">
 		<fields oils_persist:primary="fund">
 			<field reporter:label="Fund ID" name="fund" reporter:datatype="link" />
 			<field reporter:label="Balance after Spent" name="amount" reporter:datatype="money" />
@@ -6915,7 +6962,14 @@ SELECT  usr,
 		<links>
 			<link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
 		</links>
-	</class>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve permission="ADMIN_ACQ_FUND VIEW_FUND MANAGE_FUND">
+					<context link="fund" field="org" />
+                </retrieve>
+            </actions>
+        </permacrud>
+    </class>
 
 	<class id="acqfa" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::fund_allocation" oils_persist:tablename="acq.fund_allocation" reporter:label="Fund Allocation">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.fund_allocation_id_seq">
