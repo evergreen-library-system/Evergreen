@@ -56,7 +56,7 @@
                     <tr>
                         <td>[% l("Items Currently Checked out ([_1])", ctx.user_stats.checkouts.total_out) %]</td>
                         <td align="right">
-                            <a href="[% mkurl(ctx.opac_root + '/myopac/circs') %]">[% l("View All") %]</a>
+                            <a href="[% mkurl(ctx.opac_root _ '/myopac/circs') %]">[% l("View All") %]</a>
                         </td>
                     </tr>
                 </table>
