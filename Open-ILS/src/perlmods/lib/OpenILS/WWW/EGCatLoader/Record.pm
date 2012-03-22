@@ -245,14 +245,6 @@ sub mk_copy_query {
                 }
             }
         };
-        if ($org != $pref_ou) {
-            $query->{from}->{acp}->{aou}->{filter}->{id}->{in}->{select}->{aou} = [{
-                column => 'id',
-                transform => 'actor.org_unit_descendants_pref_lib',
-                result_field => 'id',
-                params => [$depth, $pref_ou]
-            }];
-        }
     };
 
     # Filter hidden items if this is the public catalog

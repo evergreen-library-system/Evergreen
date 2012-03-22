@@ -20,7 +20,11 @@ RETURNS INTEGER AS $$
         SELECT id, distance FROM actor.org_unit_descendants_distance($2)
     )
     SELECT COALESCE(
-        (SELECT -10000 FROM actor.org_unit WHERE $1 = $3 AND id = $3),
+        (SELECT -10000 FROM actor.org_unit
+         WHERE $1 = $3 AND id = $3 AND $2 IN (
+                SELECT id FROM actor.org_unit WHERE parent_ou IS NULL
+             )
+        ),
         (SELECT distance FROM search_libs WHERE id = $1),
         10000
     );

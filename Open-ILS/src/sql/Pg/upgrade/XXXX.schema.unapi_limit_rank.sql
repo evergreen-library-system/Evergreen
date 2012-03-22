@@ -19,21 +19,6 @@ BEGIN;
 -- check whether patch can be applied
 SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
 
-CREATE OR REPLACE FUNCTION actor.org_unit_descendants_pref_lib (
-    ou INT,
-    depth INT,
-    pref_ou INT
-) RETURNS SETOF actor.org_unit AS $$
-    SELECT ou.* FROM actor.org_unit_descendants($1, $2) AS ou
-    UNION
-    SELECT ou.* FROM actor.org_unit ou WHERE id = $3;
-$$ LANGUAGE SQL STABLE ROWS 1;
-
-COMMENT ON FUNCTION actor.org_unit_descendants_pref_lib( INT, INT, INT) IS $$
-Returns the descendants by depth of the specified library, but adds the
-preferred library if it is not contained in the set of descendants.
-$$;
-
 -- The simplest way to apply all of these changes is just to replace the unapi
 -- schema entirely -- the following is a copy of 990.schema.unapi.sql with
 -- the initial COMMIT in place in case the upgrade_deps_block_check fails;
@@ -61,7 +46,11 @@ RETURNS INTEGER AS $$
         SELECT id, distance FROM actor.org_unit_descendants_distance($2)
     )
     SELECT COALESCE(
-        (SELECT -10000 FROM actor.org_unit WHERE $1 = $3 AND id = $3),
+        (SELECT -10000 FROM actor.org_unit
+         WHERE $1 = $3 AND id = $3 AND $2 IN (
+                SELECT id FROM actor.org_unit WHERE parent_ou IS NULL
+             )
+        ),
         (SELECT distance FROM search_libs WHERE id = $1),
         10000
     );

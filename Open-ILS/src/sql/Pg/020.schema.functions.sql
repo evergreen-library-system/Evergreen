@@ -152,21 +152,6 @@ CREATE OR REPLACE FUNCTION actor.org_unit_descendants( INT ) RETURNS SETOF actor
     ) SELECT ou.* FROM actor.org_unit ou JOIN descendant_depth USING (id);
 $$ LANGUAGE SQL ROWS 1;
 
-CREATE OR REPLACE FUNCTION actor.org_unit_descendants_pref_lib (
-    ou INT,
-    depth INT,
-    pref_ou INT
-) RETURNS SETOF actor.org_unit AS $$
-    SELECT ou.* FROM actor.org_unit_descendants($1, $2) AS ou
-    UNION
-    SELECT ou.* FROM actor.org_unit ou WHERE id = $3;
-$$ LANGUAGE SQL STABLE ROWS 1;
-
-COMMENT ON FUNCTION actor.org_unit_descendants_pref_lib( INT, INT, INT) IS $$
-Returns the descendants by depth of the specified library, but adds the
-preferred library if it is not contained in the set of descendants.
-$$;
-
 CREATE OR REPLACE FUNCTION actor.org_unit_descendants_distance( INT ) RETURNS TABLE (id INT, distance INT) AS $$
     WITH RECURSIVE org_unit_descendants_distance(id, distance) AS (
             SELECT $1, 0
