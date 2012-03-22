@@ -31,8 +31,8 @@ install: build-perl
 build-perl: lib/OpenILS/Utils/Cronscript.pm
 	perl Build.PL --destdir $(DESTDIR) || make -s build-perl-fail
 
-lib/OpenILS/Utils/Cronscript.pm: lib/OpenILS/Utils/Cronscript.pm.in
-	$(do_subst) "$<" > "$@"
+lib/OpenILS/Utils/Cronscript.pm: Makefile lib/OpenILS/Utils/Cronscript.pm.in
+	$(do_subst) lib/OpenILS/Utils/Cronscript.pm.in > "$@"
 
 build-perl-fail:
 	echo

@@ -183,32 +183,32 @@ uninstall-hook:
 	rm -R $(XSLDIR)
 	rm -R $(CGIDIR)
 
-@srcdir@/extras/fast-extract: @srcdir@/extras/fast-extract.in
-	$(do_subst) "$<" > "$@"
+@srcdir@/extras/fast-extract: Makefile @srcdir@/extras/fast-extract.in
+	$(do_subst) @srcdir@/extras/fast-extract.in > "$@"
 	chmod 755 "$@"
 
-@srcdir@/extras/import/marc2are.pl: @srcdir@/extras/import/marc2are.pl.in
-	$(do_subst) "$<" > "$@"
+@srcdir@/extras/import/marc2are.pl: Makefile @srcdir@/extras/import/marc2are.pl.in
+	$(do_subst) @srcdir@/extras/import/marc2are.pl.in > "$@"
 	chmod 755 "$@"
 
-@srcdir@/extras/import/marc2bre.pl: @srcdir@/extras/import/marc2bre.pl.in
-	$(do_subst) "$<" > "$@"
+@srcdir@/extras/import/marc2bre.pl: Makefile @srcdir@/extras/import/marc2bre.pl.in
+	$(do_subst) @srcdir@/extras/import/marc2bre.pl.in > "$@"
 	chmod 755 "$@"
 
-@srcdir@/extras/import/marc2sre.pl: @srcdir@/extras/import/marc2sre.pl.in
-	$(do_subst) "$<" > "$@"
+@srcdir@/extras/import/marc2sre.pl: Makefile @srcdir@/extras/import/marc2sre.pl.in
+	$(do_subst) @srcdir@/extras/import/marc2sre.pl.in > "$@"
 	chmod 755 "$@"
 
-@srcdir@/extras/import/parallel_pg_loader.pl: @srcdir@/extras/import/parallel_pg_loader.pl.in
-	$(do_subst) "$<" > "$@"
+@srcdir@/extras/import/parallel_pg_loader.pl: Makefile @srcdir@/extras/import/parallel_pg_loader.pl.in
+	$(do_subst) @srcdir@/extras/import/parallel_pg_loader.pl.in > "$@"
 	chmod 755 "$@"
 
-$(supportscr)/authority_control_fields.pl: $(supportscr)/authority_control_fields.pl.in
-	$(do_subst) "$<" > "$@"
+$(supportscr)/authority_control_fields.pl: Makefile $(supportscr)/authority_control_fields.pl.in
+	$(do_subst) $(supportscr)/authority_control_fields.pl.in > "$@"
 	chmod 755 "$@"
 
-$(supportscr)/marc_export: $(supportscr)/marc_export.in
-	$(do_subst) "$<" > "$@"
+$(supportscr)/marc_export: Makefile $(supportscr)/marc_export.in
+	$(do_subst) $(supportscr)/marc_export.in > "$@"
 	chmod 755 "$@"
 
 #perl-install and string-templates-install	
