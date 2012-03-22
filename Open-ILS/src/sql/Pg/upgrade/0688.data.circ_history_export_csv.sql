@@ -1,5 +1,11 @@
-
+-- Evergreen DB patch 0688.data.circ_history_export_csv.sql
+--
+-- FIXME: insert description of change, if needed
+--
 BEGIN;
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0688', :eg_version);
 
 INSERT INTO action_trigger.hook (key, core_type, description, passive)
 VALUES (
@@ -46,10 +52,3 @@ INSERT INTO action_trigger.environment (event_def, path)
     );
 
 COMMIT;
-
-/* UNDO
-DELETE FROM action_trigger.event WHERE event_def = (
-    SELECT id FROM action_trigger.event_definition WHERE hook = 'circ.format.history.csv');
-DELETE FROM action_trigger.event_definition WHERE hook = 'circ.format.history.csv');
-DELETE FROM action_trigger.hook WHERE key = 'circ.format.history.csv';
-*/
