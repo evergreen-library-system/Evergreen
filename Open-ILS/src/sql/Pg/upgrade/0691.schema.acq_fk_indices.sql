@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0691', :eg_version);
 
 CREATE INDEX poi_po_idx ON acq.po_item (purchase_order);
 
