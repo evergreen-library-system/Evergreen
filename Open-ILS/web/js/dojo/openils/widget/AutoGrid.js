@@ -36,6 +36,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             requiredFields : null,
             hidePaginator : false,
             showLoadFilter : false,
+            onItemReceived : null,
             suppressLinkedFields : null, // list of fields whose linked display data should not be fetched from the server
 
             /* by default, don't show auto-generated (sequence) fields */
@@ -626,6 +627,8 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     streaming : true,
                     onresponse : function(r) {
                         var item = openils.Util.readResponse(r);
+                        if (self.onItemReceived) 
+                            self.onItemReceived(item);
                         self.store.newItem(item.toStoreItem());
                     },
                     oncomplete : function() {
