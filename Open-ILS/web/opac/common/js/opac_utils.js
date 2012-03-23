@@ -881,8 +881,8 @@ function buildOrgSelector(node) {
 	var tree = new SlimTree(node,'orgTreeSelector');
 	orgTreeSelector = tree;
 	var orgHiding = checkOrgHiding();
-	for( var i in orgArraySearcher ) { 
-		var node = orgArraySearcher[i];
+	for (var i = 0; i < orgArraySearcherOrder.length; i++) {
+		var node = orgArraySearcher[orgArraySearcherOrder[i]];
 		if( node == null ) continue;
 		if(!isXUL() && !isTrue(node.opac_visible())) continue; 
 		if (orgHiding) {
