@@ -189,6 +189,12 @@ $_TT_helpers = {
     # returns matching line item attribute, or undef
     get_li_attr => \&get_li_attr,
 
+    # get_li_attr_jedi() returns a JSON-encoded string without the enclosing
+    # quotes.  The function also removes other characters from the string
+    # that the EDI translator doesn't like.
+    #
+    # This *always* return a string, so don't use this in conditional
+    # expressions in your templates unless you really mean to.
     get_li_attr_jedi => sub {
         # This helper has to mangle data in at least three interesting ways.
         #
@@ -201,33 +207,42 @@ $_TT_helpers = {
         # passed through edi4r by the edi_pusher.pl script.
 
         my $value = get_li_attr(@_);
-        if ($value) {
-            # Here we can add any number of special case transformations to
-            # avoid problems with the EDI translator (or bad JSON).
 
-            # The ? character, if in the final position of a string, breaks
-            # the translator. + or ' or : could be problematic, too.
-            if ($value =~ /[\?\+':]$/) {
-                chop $value;
-            }
+        {
+            no warnings 'uninitialized';
+            $value .= "";   # force to string
+        };
 
-            # Typical vendors dealing with EDIFACT would seem not to want
-            # any unicode characters, so trash them. Yes, they're already
-            # in the data escaped like this at this point even though we
-            # haven't JSON-escaped things yet.
-            $value =~ s/\\u[0-9a-f]{4}//g;
+        # Here we can add any number of special case transformations to
+        # avoid problems with the EDI translator (or bad JSON).
 
-            # What the heck, get rid of [ ] too (although I couldn't get them
-            # to cause any problems for me, problems have been reported. See
-            # LP #812593).
-            $value =~ s/[\[\]]//g;
-        }
+        # Typical vendors dealing with EDIFACT (or is the problem with
+        # our EDI translator itself?) would seem not to want
+        # any characters outside the ASCII range, so trash them.
+        $value =~ s/[^[:ascii:]]//g;
+
+        # Remove anything somehow already JSON-escaped as a Unicode
+        # character. (even though for our part, we haven't JSON-escaped
+        # anything yet).
+        $value =~ s/\\u[0-9a-f]{4}//g;
+
+        # What the heck, get rid of [ ] too (although I couldn't get them
+        # to cause any problems for me, problems have been reported. See
+        # LP #812593).
+        $value =~ s/[\[\]]//g;
 
         $value = OpenSRF::Utils::JSON->perl2JSON($value);
 
         # Existing action/trigger templates expect an unquoted string.
         $value =~ s/^"//g;
-        chop $value;
+        $value =~ s/"$//g;
+
+        # The ? character, if in the final position of a string, breaks
+        # the translator. + or ' or : could be problematic, too. And we must
+        # avoid leaving a hanging \.
+        while ($value =~ /[\\\?\+':]$/) {
+            chop $value;
+        }
 
         return $value;
     },
