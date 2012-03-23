@@ -1,3 +1,6 @@
+BEGIN;
+
+SELECT evergreen.upgrade_deps_block_check('0693', :eg_version);
 
 INSERT INTO config.org_unit_setting_type
     (name, label, description, grp, datatype)
@@ -19,3 +22,4 @@ INSERT INTO config.org_unit_setting_type
         'bool'
     );
 
+COMMIT;
