@@ -1,22 +1,8 @@
 [% WRAPPER base.tt2 %]
 [% ctx.page_title = 'Providers' %]
 
-<div class="hidden">
-    <select dojoType="dijit.form.FilteringSelect" jsId="nameSelect">
-        <option value='owning_lib'>Owning Library</option>
-        <option value='quantity'>Quantity</option>
-        <option value='call_number'>Call Number</option>
-        <option value='fund_code'>Fund Code</option>
-        <option value='local_note'>Local Note</option>
-        <option value='price'>Price</option>
-        <option value='circ_modifier'>Circulation Modifier</option>
-        <option value='copy_location'>Copy Location</option>
-        <option value='collection_code'>Collection Code</option>
-    </select>
-</div> 
-
-<div id='provider-list-div'>
-    <div dojoType="dijit.layout.ContentPane" layoutAlign='top'>
+<div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
+    <div id='provider-list-div'>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
             <div>Provider</div>
             <div>
@@ -24,163 +10,178 @@
                 <button dojoType='dijit.form.Button' onClick='pListGrid.deleteSelected()'>Delete Selected</button> 
             </div>
         </div>
-    </div>
-    <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
-        <span>Context Org Unit</span>
-        <select dojoType="openils.widget.OrgUnitFilteringSelect"
-            jsId='contextOrgSelector'
-            searchAttr='shortname'
-            labelAttr='shortname'>
-        </select>
-    </div>
-    <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
-        <table  jsId="pListGrid"
-                dojoType="openils.widget.AutoGrid"
-                fieldOrder="['id', 'name', 'code', 'owner', 'currency_type']"
-                query="{id: '*'}"
-                defaultCellWidth='"auto"'
-                fmClass='acqpro'
-                showPaginator='true'
-                editOnEnter='true'>
-            <thead>
-                <tr><th field='name' get='getProviderName' formatter='formatName'/></tr>
-            </thead>
-        </table>
-    </div>
-</div>
-
-<div id='provider-summary-pane'></div>     
-<div id='provider-details-div' style='height:600px'>
-<div dojoType="dijit.layout.TabContainer" style='height:100%' jsId='providerTabs'>
-
-    <div dojoType="dijit.layout.ContentPane" title='Provider Address' select='true' id='provider-address'>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-            <div>Provider Address</div>
-            <div>
-            <button dojoType='dijit.form.Button' onClick='paListGrid.showCreateDialog()'>New Provider Address</button>
-            <button dojoType='dijit.form.Button' onClick='paListGrid.deleteSelected()'>Delete Selected</button>
-            </div>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+            <span>Context Org Unit</span>
+            <select dojoType="openils.widget.OrgUnitFilteringSelect"
+                jsId='contextOrgSelector'
+                searchAttr='shortname'
+                labelAttr='shortname'>
+            </select>
         </div>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:100px'>
-            <table  jsId="paListGrid"
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+            <table  jsId="pListGrid"
                     dojoType="openils.widget.AutoGrid"
-                    fieldOrder="['id', 'address_type', 'provider', 'street1', 'street2', 'city', 'county', 'state', 'country', 'post_code']"
-                    requiredFields="['street1', 'city', 'state', 'country', 'post_code']"
+                    fieldOrder="['id', 'name', 'code', 'owner', 'currency_type']"
                     query="{id: '*'}"
-                    fmClass='acqpa'
-                    defaultCellWidth='"auto"' 
-                    editOnEnter='true'>
-            </table>
-        </div>
-    </div>
-
-    <div dojoType="dijit.layout.ContentPane" title='Provider Contact' id='tab-pro-contact'>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-            <div>Provider Contact</div>
-            <div>
-            <button dojoType='dijit.form.Button' onClick='pcListGrid.showCreateDialog()'>New Contact</button>
-            <button dojoType='dijit.form.Button' onClick='pcListGrid.deleteSelected()'>Delete Selected</button>
-            </div>
-        </div>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:200px'>
-            <table  jsId="pcListGrid"
-                    dojoType="openils.widget.AutoGrid"
-                    fieldOrder="['id', 'name', 'provider', 'role', 'email']"
-                    requiredFields="['name']"
                     defaultCellWidth='"auto"'
-                    query="{id: '*'}"
-                    fmClass='acqpc'
-                    editOnEnter='true'>
-            </table>
-        </div>
-      
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-            <div>Contact Address</div>
-            <div>
-                <button dojoType='dijit.form.Button' onClick='pcaListGrid.showCreateDialog()'>New Contact Address</button>
-                <button dojoType='dijit.form.Button' onClick='pcaListGrid.deleteSelected()'>Delete Selected</button>
-            </div>
-        </div>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:200px'>
-            <table  jsId="pcaListGrid"
-                    dojoType="openils.widget.AutoGrid"
-                    fieldOrder="['id', 'address_type', 'contact', 'street1', 'street2', 'city', 'county', 'state', 'country', 'post_code']"
-                    requiredFields="['street1', 'city', 'state', 'country', 'post_code']"
-                    query="{id: '*'}"
-                    fmClass='acqpca'
-                    defaultCellWidth='"auto"' 
-                    editOnEnter='true'>
-            </table>
-        </div>
-       
-    </div>
-    <div dojoType="dijit.layout.ContentPane" title='Attribute Definitions' id='tab-attr'>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-            <div> Attribute Definitions</div>
-            <div>
-                <button dojoType='dijit.form.Button' onClick='padListGrid.showCreateDialog()'>New Attribute Definition</button>
-                <button dojoType='dijit.form.Button' onClick='padListGrid.deleteSelected()'>Delete Selected</button>
-            </div>
-        </div>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:200px'>
-            <table  jsId="padListGrid"
-                    dojoType="openils.widget.AutoGrid"
-                    fieldOrder="['id', 'provider', 'code', 'description',  'provider', 'ident', 'remove',  'tag', 'subfield', 'xpath']"
-                    requiredFields="['code', 'description', 'xpath']"
-                    query="{id: '*'}"
-                    fmClass='acqlipad'
+                    fmClass='acqpro'
+                    showLoadFilter='true'
                     editOnEnter='true'>
                 <thead>
-                    <tr>
-                        <th field="xpath" width='auto'/>
-                        <th field="tag" name="Tag" get='getParsedTag'/>
-                        <th field="subfield" name="Subfield" get='getParsedSubf'/>
-                    </tr>
+                    <tr><th field='name' get='getProviderName' formatter='formatName'/></tr>
                 </thead>
             </table>
         </div>
     </div>
 
-    <div dojoType="dijit.layout.ContentPane" title='Holding Subfield' id='tab-hold'>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-            <div>Holding Subfield</div>
-            <div>
-            <button dojoType='dijit.form.Button' onClick='phsListGrid.showCreateDialog()'>New Holding Subfield</button>
-            <button dojoType='dijit.form.Button' onClick='phsListGrid.deleteSelected()'>Delete Selected</button>
+    <div id='provider-summary-pane'></div>     
+    <div id='provider-details-div' style='height:600px'>
+    <div dojoType="dijit.layout.TabContainer" style='height:100%' jsId='providerTabs'>
+
+        <div dojoType="dijit.layout.ContentPane" title='Provider Address' select='true' id='provider-address'>
+            <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+                <div>Provider Address</div>
+                <div>
+                <button dojoType='dijit.form.Button' onClick='paListGrid.showCreateDialog()'>New Provider Address</button>
+                <button dojoType='dijit.form.Button' onClick='paListGrid.deleteSelected()'>Delete Selected</button>
+                </div>
+            </div>
+            <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:100px'>
+                <table  jsId="paListGrid"
+                        dojoType="openils.widget.AutoGrid"
+                        fieldOrder="['id', 'address_type', 'provider', 'street1', 'street2', 'city', 'county', 'state', 'country', 'post_code']"
+                        requiredFields="['street1', 'city', 'state', 'country', 'post_code']"
+                        query="{id: '*'}"
+                        fmClass='acqpa'
+                        defaultCellWidth='"auto"' 
+                        editOnEnter='true'>
+                </table>
             </div>
         </div>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:400px'>
-            <table  jsId="phsListGrid"
-                    dojoType="openils.widget.AutoGrid"
-                    fieldOrder="['id', 'provider', 'name', 'subfield']"
-                    requiredFields="['name', 'subfield']"
-                    query="{id: '*'}"
-                    fmClass='acqphsm'
-                    editOnEnter='true'>
-            </table>
+
+        <div dojoType="dijit.layout.ContentPane" title='Provider Contact' id='tab-pro-contact'>
+            <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+                <div>Provider Contact</div>
+                <div>
+                <button dojoType='dijit.form.Button' onClick='pcListGrid.showCreateDialog()'>New Contact</button>
+                <button dojoType='dijit.form.Button' onClick='pcListGrid.deleteSelected()'>Delete Selected</button>
+                </div>
+            </div>
+            <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:200px'>
+                <table  jsId="pcListGrid"
+                        dojoType="openils.widget.AutoGrid"
+                        fieldOrder="['id', 'name', 'provider', 'role', 'email']"
+                        requiredFields="['name']"
+                        defaultCellWidth='"auto"'
+                        query="{id: '*'}"
+                        fmClass='acqpc'
+                        editOnEnter='true'>
+                </table>
+            </div>
+          
+            <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+                <div>Contact Address</div>
+                <div>
+                    <button dojoType='dijit.form.Button' onClick='pcaListGrid.showCreateDialog()'>New Contact Address</button>
+                    <button dojoType='dijit.form.Button' onClick='pcaListGrid.deleteSelected()'>Delete Selected</button>
+                </div>
+            </div>
+            <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:200px'>
+                <table  jsId="pcaListGrid"
+                        dojoType="openils.widget.AutoGrid"
+                        fieldOrder="['id', 'address_type', 'contact', 'street1', 'street2', 'city', 'county', 'state', 'country', 'post_code']"
+                        requiredFields="['street1', 'city', 'state', 'country', 'post_code']"
+                        query="{id: '*'}"
+                        fmClass='acqpca'
+                        defaultCellWidth='"auto"' 
+                        editOnEnter='true'>
+                </table>
+            </div>
+           
         </div>
+        <div dojoType="dijit.layout.ContentPane" title='Attribute Definitions' id='tab-attr'>
+            <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+                <div> Attribute Definitions</div>
+                <div>
+                    <button dojoType='dijit.form.Button' onClick='padListGrid.showCreateDialog()'>New Attribute Definition</button>
+                    <button dojoType='dijit.form.Button' onClick='padListGrid.deleteSelected()'>Delete Selected</button>
+                </div>
+            </div>
+            <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:200px'>
+                <table  jsId="padListGrid"
+                        dojoType="openils.widget.AutoGrid"
+                        fieldOrder="['id', 'provider', 'code', 'description',  'provider', 'ident', 'remove',  'tag', 'subfield', 'xpath']"
+                        requiredFields="['code', 'description', 'xpath']"
+                        query="{id: '*'}"
+                        fmClass='acqlipad'
+                        editOnEnter='true'>
+                    <thead>
+                        <tr>
+                            <th field="xpath" width='auto'/>
+                            <th field="tag" name="Tag" get='getParsedTag'/>
+                            <th field="subfield" name="Subfield" get='getParsedSubf'/>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+        <div dojoType="dijit.layout.ContentPane" title='Holding Subfield' id='tab-hold'>
+            <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+                <div>Holding Subfield</div>
+                <div>
+                <button dojoType='dijit.form.Button' onClick='phsListGrid.showCreateDialog()'>New Holding Subfield</button>
+                <button dojoType='dijit.form.Button' onClick='phsListGrid.deleteSelected()'>Delete Selected</button>
+                </div>
+            </div>
+            <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:400px'>
+                <table  jsId="phsListGrid"
+                        dojoType="openils.widget.AutoGrid"
+                        fieldOrder="['id', 'provider', 'name', 'subfield']"
+                        requiredFields="['name', 'subfield']"
+                        query="{id: '*'}"
+                        fmClass='acqphsm'
+                        editOnEnter='true'>
+                </table>
+            </div>
+        </div>
+
+        <div dojoType="dijit.layout.ContentPane" title="Invoices" id="tab-invoice">
+            <big class="oils-acq-basic-roomy"><strong>Invoices</strong></big>
+            <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style="height:400px">
+                <table jsId="invListGrid"
+                    dojoType="openils.widget.AutoGrid"
+                    fieldOrder="['inv_ident', 'receiver', 'shipper']"
+                    suppressFields="['id', 'provider']"
+                    query="{id: '*'}"
+                    showPaginator='true'
+                    fmClass="acqinv">
+                    <thead>
+                        <tr>
+                            <th field="inv_ident" get="getInvIdent" formatter="formatInvIdent" />
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
     </div>
 
-    <div dojoType="dijit.layout.ContentPane" title="Invoices" id="tab-invoice">
-        <big class="oils-acq-basic-roomy"><strong>Invoices</strong></big>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style="height:400px">
-            <table jsId="invListGrid"
-                dojoType="openils.widget.AutoGrid"
-                fieldOrder="['inv_ident', 'receiver', 'shipper']"
-                suppressFields="['id', 'provider']"
-                query="{id: '*'}"
-                showPaginator='true'
-                fmClass="acqinv">
-                <thead>
-                    <tr>
-                        <th field="inv_ident" get="getInvIdent" formatter="formatInvIdent" />
-                    </tr>
-                </thead>
-            </table>
-        </div>
-    </div>
+    <div class="hidden">
+        <select dojoType="dijit.form.FilteringSelect" jsId="nameSelect">
+            <option value='owning_lib'>Owning Library</option>
+            <option value='quantity'>Quantity</option>
+            <option value='call_number'>Call Number</option>
+            <option value='fund_code'>Fund Code</option>
+            <option value='local_note'>Local Note</option>
+            <option value='price'>Price</option>
+            <option value='circ_modifier'>Circulation Modifier</option>
+            <option value='copy_location'>Copy Location</option>
+            <option value='collection_code'>Collection Code</option>
+        </select>
+    </div> 
 </div>
-</div>
+
 
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/acq/provider.js'> </script>
 
