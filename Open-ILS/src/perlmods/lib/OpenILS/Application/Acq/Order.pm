@@ -2195,6 +2195,9 @@ sub activate_purchase_order_impl {
     my $po = $e->retrieve_acq_purchase_order($po_id) or return $e->die_event;
     return $e->die_event unless $e->allowed('CREATE_PURCHASE_ORDER', $po->ordering_agency);
 
+    return $e->die_event(OpenILS::Event->new('PO_ALREADY_ACTIVATED'))
+        if $po->order_date; # PO cannot be re-activated
+
     my $provider = $e->retrieve_acq_provider($po->provider);
 
     $po->state('on-order');
