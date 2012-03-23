@@ -1,4 +1,4 @@
--- Evergreen DB patch XXXX.schema.unapi_limit_rank.sql
+-- Evergreen DB patch 0690.schema.unapi_limit_rank.sql
 --
 -- Rewrite the in-database unapi functions to include per-object limits and
 -- offsets, such as a maximum number of copies and call numbers for given
@@ -17,7 +17,7 @@
 BEGIN;
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0690', :eg_version);
 
 -- The simplest way to apply all of these changes is just to replace the unapi
 -- schema entirely -- the following is a copy of 990.schema.unapi.sql with
