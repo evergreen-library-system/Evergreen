@@ -14,6 +14,9 @@ use DateTime::Format::ISO8601;
 use OpenILS::Utils::Penalty;
 use POSIX qw(ceil);
 use OpenILS::Application::Circ::CircCommon;
+use OpenILS::Application::AppUtils;
+my $U = "OpenILS::Application::AppUtils";
+
 
 sub isTrue {
 	my $v = shift;
@@ -901,6 +904,10 @@ sub generate_fines {
 			my $recurring_fine = int($c->$recurring_fine_method * 100);
 			my $max_fine = int($c->max_fine * 100);
 
+			my $skip_closed_check = $U->ou_ancestor_setting_value(
+				$c->$circ_lib_method->to_fieldmapper->id, 'circ.fines.charge_when_closed');
+			$skip_closed_check = $U->is_true($skip_closed_check);
+
 			my ($latest_billing_ts, $latest_amount) = ('',0);
 			for (my $bill = 1; $bill <= $pending_fine_count; $bill++) {
 	
@@ -921,22 +928,24 @@ sub generate_fines {
 					$current_bill_count--;
 				}
 
-				my $dow = $billing_ts->day_of_week_0();
-				my $dow_open = "dow_${dow}_open";
-				my $dow_close = "dow_${dow}_close";
+				my $timestamptz = $billing_ts->strftime('%FT%T%z');
+				if (!$skip_closed_check) {
+					my $dow = $billing_ts->day_of_week_0();
+					my $dow_open = "dow_${dow}_open";
+					my $dow_close = "dow_${dow}_close";
 
-				if (my $h = $hoo{$c->$circ_lib_method}) {
-					next if ( $h->$dow_open eq '00:00:00' and $h->$dow_close eq '00:00:00');
+					if (my $h = $hoo{$c->$circ_lib_method}) {
+						next if ( $h->$dow_open eq '00:00:00' and $h->$dow_close eq '00:00:00');
+					}
+	
+					my @cl = actor::org_unit::closed_date->search_where(
+							{ close_start	=> { '<=' => $timestamptz },
+							  close_end	=> { '>=' => $timestamptz },
+							  org_unit	=> $c->$circ_lib_method }
+					);
+					next if (@cl);
 				}
 
-				my $timestamptz = $billing_ts->strftime('%FT%T%z');
-				my @cl = actor::org_unit::closed_date->search_where(
-						{ close_start	=> { '<=' => $timestamptz },
-						  close_end	=> { '>=' => $timestamptz },
-						  org_unit	=> $c->$circ_lib_method }
-				);
-				next if (@cl);
-	
 				$current_fine_total += $recurring_fine;
 				$latest_amount += $recurring_fine;
 				$latest_billing_ts = $timestamptz;
