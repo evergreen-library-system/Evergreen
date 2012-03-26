@@ -65,15 +65,14 @@ sub load_getit {
 
     # if the user is logged in, fetch his bookbags
     if ($ctx->{user}) {
-        $ctx->{bookbags} = $self->editor->search_container_biblio_record_entry_bucket(
-            [{
-                    owner => $ctx->{user}->id, 
-                    btype => 'bookbag'
-                }, {
-                    order_by => {cbreb => 'name'},
-                    limit => $self->cgi->param('bbag_limit') || 100,
-            }],
-        );
+        $ctx->{bookbags} = $self->editor->search_container_biblio_record_entry_bucket([
+            {   owner => $ctx->{user}->id, 
+                btype => 'bookbag' 
+            }, 
+            {   order_by => {cbreb => 'name'},
+                limit => $self->cgi->param('bbag_limit') || 100 
+            }
+        ]);
     }
 
     $self->ctx->{page} = 'getit'; # repair the page
