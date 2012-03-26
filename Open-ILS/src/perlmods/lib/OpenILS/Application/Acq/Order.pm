@@ -1420,7 +1420,8 @@ sub upload_records {
 
     } elsif ($vandelay) {
         $vandelay->{new_rec_perm} = 'IMPORT_ACQ_LINEITEM_BIB_RECORD_UPLOAD';
-        create_lineitem_list_assets($mgr, \@li_list, $vandelay, 1) or return $e->die_event;
+        create_lineitem_list_assets($mgr, \@li_list, $vandelay, 
+            !$vandelay->{create_assets}) or return $e->die_event;
     }
 
     return $mgr->respond_complete;

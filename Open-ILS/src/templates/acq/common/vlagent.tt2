@@ -43,6 +43,12 @@
         <td>[% l('Insufficient Quality Fall-Through Profile') %]</td>
         <td><div id='acq_vl:fall_through_merge_profile'></div></td>
     </tr>
+    [% IF vl_show_copy_option %]
+    <tr>
+        <td>[% l('Load Items for Imported Records') %]</td>
+        <td><input dojoType='dijit.form.CheckBox' id='acq_vl:create_assets'></input></td>
+    </tr>
+    [% END %]
 [% END %]
 
 [% BLOCK vlagent_results %]

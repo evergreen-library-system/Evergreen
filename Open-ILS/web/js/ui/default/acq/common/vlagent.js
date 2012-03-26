@@ -14,6 +14,7 @@ function VLAgent(args) {
         {key : 'auto_overlay_best_match'},
         {key : 'match_quality_ratio'},
         {key : 'queue_name'},
+        {key : 'create_assets'},
         {key : 'match_set', cls : 'vms'},
         {key : 'bib_source', cls : 'cbs'},
         {key : 'merge_profile', cls : 'vmp'},
@@ -44,6 +45,7 @@ function VLAgent(args) {
 
                 } else { // bools
                     widg.dijit = dijit.byId('acq_vl:' + widg.key);
+                    if (!widg.dijit) return; // some fields optional
                     self.attachOnChange(widg);
                 }
             }
@@ -132,7 +134,8 @@ function VLAgent(args) {
         var values = {};
         dojo.forEach(this.widgets,
             function(widg) {
-                values[widg.key] = widg.dijit.attr('value');
+                if (widg.dijit)
+                    values[widg.key] = widg.dijit.attr('value');
             }
         );
         return values;
