@@ -21,7 +21,7 @@ function fresh_scap_selector(grid) {
                     selector, "onChange", null, function() {
                         if (this.item) {
                             var widget =
-                                iss_grid.overrideEditWidgets.holding_type;
+                                grid.overrideEditWidgets.holding_type;
                             widget.attr("value", this.item.type);
                             widget.attr("disabled", true);
                         }
