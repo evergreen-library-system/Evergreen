@@ -8518,7 +8518,7 @@ INSERT INTO action_trigger.event_definition (
         'DeleteTempBiblioBucket',
         'owner',
         NULL,
-        '00:00:00'
+        '00:00:00',
 $$
 [%- SET user = target.0.owner -%]
 To: [%- params.recipient_email || user.email %]
