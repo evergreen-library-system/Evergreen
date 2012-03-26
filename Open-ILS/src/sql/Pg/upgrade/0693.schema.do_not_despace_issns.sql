@@ -1,3 +1,14 @@
+-- Evergreen DB patch 0693.schema.do_not_despace_issns.sql
+--
+-- FIXME: insert description of change, if needed
+--
+BEGIN;
+
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0693', :eg_version);
+
+-- FIXME: add/check SQL statements to perform the upgrade
 -- Delete the index normalizer that was meant to remove spaces from ISSNs
 -- but ended up breaking records with multiple ISSNs
 DELETE FROM config.metabib_field_index_norm_map WHERE id IN (
@@ -19,3 +30,6 @@ SELECT metabib.reingest_metabib_field_entries(source)
     AND cmf.name = 'issn'
     AND char_length(value) > 9
 ;
+
+
+COMMIT;
