@@ -1,3 +1,7 @@
+BEGIN;
+
+INSERT INTO config.upgrade_log (version) VALUES ('0693');
+
 -- Delete the index normalizer that was meant to remove spaces from ISSNs
 -- but ended up breaking records with multiple ISSNs
 DELETE FROM config.metabib_field_index_norm_map WHERE id IN (
@@ -19,3 +23,6 @@ SELECT metabib.reingest_metabib_field_entries(source)
     AND cmf.name = 'issn'
     AND char_length(value) > 9
 ;
+
+COMMIT;
+
