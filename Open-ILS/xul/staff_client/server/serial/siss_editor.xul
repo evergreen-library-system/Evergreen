@@ -11,30 +11,7 @@
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<vbox flex="1" id="serial_siss_editor_panel" class="my_overflow">
-        <vbox id="brief_display_box"/>
-
-		<hbox flex="1" style="overflow: auto">
-			<vbox flex="1" id="before_splitter1" oils_persist="width">
-				<label value="Issuance" style="font-weight: bold; font-size: large"/>
-				<vbox id="siss_editor_left_pane" flex="1"/>
-			</vbox>
-			<splitter id="splitter1" oils_persist="state hidden" oils_persist_peers="before_splitter1 after_splitter1"><grippy /></splitter>
-			<vbox flex="1" id="after_splitter1" oils_persist="width">
-				<vbox id="siss_editor_middle_pane"/>
-			</vbox>
-			<splitter id="splitter2" oils_persist="state hidden" oils_persist_peers="after_splitter1 after_splitter2"><grippy /></splitter>
-			<vbox flex="1" id="after_splitter2" oils_persist="width">
-				<vbox id="siss_editor_right_pane"/>
-			</vbox>
-		</hbox>
-
-		<hbox id="siss_editor_nav">
-			<spacer flex="1"/>
-			<button id="siss_save" label="&staff.serial.siss_editor.modify.label;" hidden="true" accesskey="&staff.cat.copy_editor.save.accesskey;" oncommand="g.manage_subs.siss_editor.save()" />
-			<!--<button id="cancel" label="&staff.cat.copy_editor.cancel.label;" accesskey="&staff.cat.copy_editor.cancel.accesskey;" oncommand="window.close();"/>-->
-		</hbox>
-
-		<spacer/>
+		<iframe flex="1" id="alt_siss_editor" name="alt_siss_editor"/>
 	</vbox>
 
 </overlay>

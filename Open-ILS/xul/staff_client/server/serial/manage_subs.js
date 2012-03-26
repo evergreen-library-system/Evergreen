@@ -45,19 +45,36 @@ serial.manage_subs.prototype = {
         var obj = this;
         try {
             $('serial_manage_subs_editor_deck').selectedIndex = obj.editor_indexes[type];
-            var editor_type = type + '_editor';
-            if (typeof obj[editor_type] == 'undefined') {
-                JSAN.use('serial.' + editor_type);
-                obj[editor_type] = new serial[editor_type](); 
-            }
 
-            params.do_edit = true;
-            params.handle_update = true;
-            if (mode == 'add') {
+            if (type == "siss") { // begin transition from xul to dojo editors
+                var iframe = dojo.byId('alt_siss_editor');
+                var src;
+                if (mode == "add") {
+                    src = '/eg/serial/edit_siss/new/' + params.sisses[0].subscription();
+                    iframe.refresh_command = function () {obj.refresh_list();};
+                } else {
+                    src = '/eg/serial/edit_siss/' + params.siss_ids[0];
+                    iframe.refresh_command = function () { /* TODO: redraw tree node */ };
+                }
+                iframe.setAttribute("src", src);
+            } else {
+                var editor_type = type + '_editor';
+                if (typeof obj[editor_type] == 'undefined') {
+                    JSAN.use('serial.' + editor_type);
+                    obj[editor_type] = new serial[editor_type]();
+                }
+
+                params.do_edit = true;
+                params.handle_update = true;
                 params.trigger_refresh = true;
-                params.refresh_command = function () {obj.refresh_list();};
+                if (mode == 'add') {
+                    params.refresh_command = function () {obj.refresh_list();};
+                } else {
+                    params.refresh_command = function () {obj.remap_node(type, this);};
+                }
+
+                obj[editor_type].init(params);
             }
-            obj[editor_type].init(params);
         } catch(E) {
             obj.error.standard_unexpected_error_alert('editor_init() error',E);
         }
