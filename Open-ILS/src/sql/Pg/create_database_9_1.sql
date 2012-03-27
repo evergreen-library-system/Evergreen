@@ -14,7 +14,7 @@ CREATE DATABASE :db_name TEMPLATE template0 ENCODING 'UNICODE' LC_COLLATE 'C' LC
 
 \connect :db_name
 
-CREATE LANGUAGE plperl;
+--CREATE LANGUAGE plperl;
 CREATE LANGUAGE plperlu;
 
 CREATE EXTENSION tablefunc;
