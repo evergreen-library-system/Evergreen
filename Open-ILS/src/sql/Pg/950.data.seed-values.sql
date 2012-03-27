@@ -4417,7 +4417,7 @@ INSERT into config.org_unit_setting_type
         'Require prefix field on patron registration',
         'coust', 'label'),
     oils_i18n_gettext('ui.patron.edit.au.prefix.require',
-        'The prefix field will be required on the patron registration screen.'
+        'The prefix field will be required on the patron registration screen.',
         'coust', 'description'),
     'bool', null)
 	
@@ -4426,7 +4426,7 @@ INSERT into config.org_unit_setting_type
         'Show prefix field on patron registration',
         'coust', 'label'),
     oils_i18n_gettext('ui.patron.edit.au.prefix.show',
-        'The prefix field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.'
+        'The prefix field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.',
         'coust', 'description'),
     'bool', null)
 
@@ -4435,7 +4435,7 @@ INSERT into config.org_unit_setting_type
         'Suggest prefix field on patron registration',
         'coust', 'label'),
     oils_i18n_gettext('ui.patron.edit.au.prefix.suggest',
-        'The prefix field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.'
+        'The prefix field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.',
         'coust', 'description'),
     'bool', null)
 
