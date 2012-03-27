@@ -230,8 +230,8 @@ sub load_locale_handlers {
 
     my @locale_tags = sort { length($a) <=> length($b) } keys %locales;
 
-    # If no locales are defined, fall back to en_us so that at least 1 handler exists
-    push(@locale_tags, 'en_us') unless @registered_locales or @locale_tags;
+    # always fall back to en_us, the assumed template language
+    push(@locale_tags, 'en_us');
 
     for my $idx (0..$#locale_tags) {
 
