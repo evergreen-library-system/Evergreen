@@ -38,8 +38,8 @@ the following commands as the *user* Linux account:
 
 [source, bash]
 ------------------------------------------------------------------------------
-wget -c http://evergreen-ils.org/downloads/Evergreen-ILS-2.2-alpha1.tar.gz
-tar xzf Evergreen-ILS-2.2-alpha1.tar.gz
+wget -c http://evergreen-ils.org/downloads/Evergreen-ILS-2.2-alpha3.tar.gz
+tar xzf Evergreen-ILS-2.2-alpha3.tar.gz
 ------------------------------------------------------------------------------
 
 Preamble: Developer instructions
@@ -86,7 +86,7 @@ Installing prerequisites
 Evergreen has a number of prerequisite packages that must be installed
 before you can successfully configure, compile, and install Evergreen.
 
-1. Begin by installing the most recent version of OpenSRF (2.0 or later).
+1. Begin by installing the most recent version of OpenSRF (2.1 or later).
    You can download OpenSRF releases from http://evergreen-ils.org/opensrf.php
 2. On many distributions, it is necessary to install PostgreSQL 9 from external
    repositories.
@@ -111,29 +111,27 @@ apt-get install python-software-properties
 add-apt-repository ppa:pitti/postgresql
 ------------------------------------------------------------------------------
 +
+  * Ubuntu Precise comes with PostgreSQL 9, so no additional steps are required.
   * Fedora 16 comes with PostgreSQL 9, so no additional steps are required.
 +
 3. On Debian and Ubuntu, run `aptitude update` as the *root* Linux account to
    retrieve the new packages from the backports repository.
 4. Issue the following commands as the *root* Linux account to install
    prerequisites using the `Makefile.install` prerequisite installer,
-   substituting `debian-squeeze`, `fedora16`, `ubuntu-lucid`, `centos`, or
-   `rhel` for <osname> below:
+   substituting `debian-squeeze`, `fedora16`, `ubuntu-lucid` or `ubuntu-precise` for <osname> below:
 +
 [source, bash]
 ------------------------------------------------------------------------------
 make -f Open-ILS/src/extras/Makefile.install <osname>
 ------------------------------------------------------------------------------
 +
-[NOTE]
-`centos` and `rhel` are less tested than the `debian`, `fedora`,
-and `ubuntu` options.  Your patches and suggestions for improvement are
-welcome!
-+
 5. Add the libdbi-libdbd libraries to the system dynamic library path by
    issuing the following commands as the *root* Linux account:
 +
-.Debian / Ubuntu
+[NOTE]
+You should skip this step if installing on Ubuntu Precise. The `ubuntu-precise` target uses libdbd-pgsql from packages.
+
+.Debian / Ubuntu Lucid
 [source, bash]
 ------------------------------------------------------------------------------
 echo "/usr/local/lib/dbd" > /etc/ld.so.conf.d/eg.conf
@@ -172,7 +170,7 @@ Installation instructions
 +
 [source, bash]
 ------------------------------------------------------------------------------
-make STAFF_CLIENT_STAMP_ID=rel_2_2_alpha1 install
+make STAFF_CLIENT_STAMP_ID=rel_2_2_alpha13 install
 ------------------------------------------------------------------------------
 +
 2. The server portion of the staff client expects `http://hostname/xul/server`
@@ -221,7 +219,7 @@ cd /etc/apache2/ssl
 .Fedora
 [source,bash]
 ------------------------------------------------------------------------------
-cp Open-ILS/examples/apache/eg.conf       /etc/httpd/sites-available/
+cp Open-ILS/examples/apache/eg.conf       /etc/httpd/conf.d/
 cp Open-ILS/examples/apache/eg_vhost.conf /etc/httpd/
 cp Open-ILS/examples/apache/startup.pl    /etc/httpd/
 # Now set up SSL
@@ -245,6 +243,7 @@ place.
   a. Replace `Allow from 10.0.0.0/8` with `Allow from all` (to enable
      access to the offline upload / execute interface from any workstation on
      any network - note that you must secure this for a production instance)
+  b.(Ferdora): Change references from the non-existent /etc/apache2/ directory to /etc/httpd/.
 4. Change the user for the Apache server.
   * (Debian and Ubuntu): As the *root* Linux account, edit
     `/etc/apache2/envvars`.  Change `export APACHE_RUN_USER=www-data` to 
@@ -273,7 +272,8 @@ place.
 </IfModule>
 ------------------------------------------------------------------------------
 +
-6. (Debian and Ubuntu): As the *root* Linux account, enable the Evergreen site:
+6.(Fedora): As the root Linux account, edit the /etc/httpd/eg_vhost.conf file to change references from the non-existent /etc/apache2/ directory to /etc/httpd/.  
+7. (Debian and Ubuntu): As the *root* Linux account, enable the Evergreen site:
 +
 [source,bash]
 ------------------------------------------------------------------------------
@@ -318,7 +318,13 @@ dedicated machine. You can install the packages required by Debian or Ubuntu
 on the machine of your choice using the following commands as the *root*
 Linux account:
 
-.(Debian / Ubuntu) Installing PostgreSQL 9.1 server packages
+.(Debian / Ubuntu Lucid) Installing PostgreSQL 9.1 server packages
+[source, bash]
+------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install install_pgsql_server_debs_91
+------------------------------------------------------------------------------
+
+.(Ubuntu Precise) Installing PostgreSQL 9.1 server packages
 [source, bash]
 ------------------------------------------------------------------------------
 make -f Open-ILS/src/extras/Makefile.install install_pgsql_server_debs_91
@@ -331,6 +337,7 @@ using the following commands as the *root* Linux account:
 [source, bash]
 ------------------------------------------------------------------------------
 make -f Open-ILS/src/extras/Makefile.install install_fedora_pgsql_server
+postgresql-setup initdb
 ------------------------------------------------------------------------------
 
 For a standalone PostgreSQL server, install the following Perl modules as the
