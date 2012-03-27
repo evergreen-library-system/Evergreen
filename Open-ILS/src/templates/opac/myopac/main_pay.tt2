@@ -24,8 +24,9 @@
                 retry_url =  mkurl(ctx.opac_root _ '/myopac/main_payment_form', url_args, 1);
             %]
             <br/>
-            <a href="[% retry_url %]">[% l('Go back') %]</a>
-            [% l('to try again or to cancel this payment attempt.') %]
+            <a href="[% retry_url %]">[%
+                l('Go back to try again or to cancel this payment attempt.')
+            %]</a>
         </p>
     [% ELSE %]
         <p><big>[% l('Your payment has been approved.') %]</big></p>

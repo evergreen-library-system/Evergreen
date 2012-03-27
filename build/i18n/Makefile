@@ -31,6 +31,8 @@ SQLSRCFILE=950.data.seed-values.sql
 SQLPOT=db.seed.pot
 SQLPO=db.seed.po
 SQLOUT=950.data.seed-values
+TPAC_SRC=../../Open-ILS/src/templates/opac/
+TT_LOCALE=../../Open-ILS/src/templates/locale/
 PROGRESS=--progress none
 
 # This Makefile can be used to generate and update PO files for Evergreen,
@@ -92,6 +94,7 @@ newpo:
 	@pot2po $(PROGRESS) -i po/reservation.js/reservation.js.pot -o $(PO)/reservation.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/selfcheck.js/selfcheck.js.pot -o $(PO)/selfcheck.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/serial.properties/serial.properties.pot -o $(PO)/serial.properties/$(LOCALE).po 
+	@pot2po $(PROGRESS) -i po/tpac/tpac.pot -o $(PO)/tpac/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/AutoFieldWidget.js/AutoFieldWidget.js.pot -o $(PO)/AutoFieldWidget.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/Searcher.js/Searcher.js.pot -o $(PO)/Searcher.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/TranslatorPopup.js/TranslatorPopup.js.pot -o $(PO)/TranslatorPopup.js/$(LOCALE).po 
@@ -100,7 +103,7 @@ newpo:
 	@echo "Generated new PO files for locale $(LOCALE)"
 
 # Generate a new set of POT files and entityized fieldmapper IDL
-newpot: dtds2pot fmidl2pot fmidl2fmidlent ils2pot props2pot sql2pot dojo2pot
+newpot: dtds2pot fmidl2pot fmidl2fmidlent ils2pot props2pot sql2pot dojo2pot tpac2pot
 	@echo "Generated new POT files"
 
 # Generate DTD, JavaScript message catalogs, fieldmapper IDL,
@@ -137,6 +140,7 @@ updatepo: prep_output
 	@pot2po $(PROGRESS) -i po/reservation.js/reservation.js.pot -o $(PO)/reservation.js/$(LOCALE).po  -t $(PO)/reservation.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/selfcheck.js/selfcheck.js.pot -o $(PO)/selfcheck.js/$(LOCALE).po  -t $(PO)/selfcheck.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/serial.properties/serial.properties.pot -o $(PO)/serial.properties/$(LOCALE).po  -t $(PO)/serial.properties/$(LOCALE).po 
+	@pot2po $(PROGRESS) -i po/tpac/tpac.pot -o $(PO)/tpac/$(LOCALE).po -t $(PO)/tpac/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/AutoFieldWidget.js/AutoFieldWidget.js.pot -o $(PO)/AutoFieldWidget.js/$(LOCALE).po  -t $(PO)/AutoFieldWidget.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/Searcher.js/Searcher.js.pot -o $(PO)/Searcher.js/$(LOCALE).po  -t $(PO)/Searcher.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/TranslatorPopup.js/TranslatorPopup.js.pot -o $(PO)/TranslatorPopup.js/$(LOCALE).po  -t $(PO)/TranslatorPopup.js/$(LOCALE).po 
@@ -168,8 +172,7 @@ dojo2pot:
 	@scripts/dojo_resource.py --pot $(DOJO_WIDGET_SRC)/TranslatorPopup.js --output $(PO)/TranslatorPopup.js/TranslatorPopup.js.pot
 	@scripts/dojo_resource.py --pot $(DOJO_WIDGET_SRC)/XULTermLoader.js --output $(PO)/XULTermLoader.js/XULTermLoader.js.pot
 
-po2dojo:
-	@mkdir -p locale/$(LOCALE)
+po2dojo: mklocale
 	@scripts/dojo_resource.py --create $(PO)/acq.js/$(LOCALE).po --output $(PROJECT)/$(LOCALE)/acq.js
 	@scripts/dojo_resource.py --create $(PO)/authority.js/$(LOCALE).po --output $(PROJECT)/$(LOCALE)/authority.js
 	@scripts/dojo_resource.py --create $(PO)/capture.js/$(LOCALE).po --output $(PROJECT)/$(LOCALE)/capture.js
@@ -190,12 +193,10 @@ po2dojo:
 ils2pot:
 	@scripts/ils_events.py --pot $(EVTSRC) --output $(PO)/ils_events.xml/$(EVTOUT)
 
-po2ils:
-	@mkdir -p locale/$(LOCALE)
+po2ils: mklocale
 	@scripts/ils_events.py --create $(PO)/ils_events.xml/$(LOCALE).po --locale $(LOCALE) --output $(PROJECT)/$(LOCALE)/$(EVTXML) 
 
-props2pot:
-	@mkdir -p locale/$(LOCALE)
+props2pot: mklocale
 	@moz2po -P $(PROGRESS) -o $(PO)/auth.properties/auth.properties.pot -i $(CHROME_PROPSDIR)/en-US/auth.properties 2>&1
 	@moz2po -P $(PROGRESS) -o $(PO)/offline.properties/offline.properties.pot -i $(CHROME_PROPSDIR)/en-US/offline.properties 2>&1
 	@moz2po -P $(PROGRESS) -o $(PO)/admin.properties/admin.properties.pot -i $(SERVER_PROPSDIR)/en-US/admin.properties 2>&1
@@ -206,19 +207,24 @@ props2pot:
 	@moz2po -P $(PROGRESS) -o $(PO)/patron.properties/patron.properties.pot -i $(SERVER_PROPSDIR)/en-US/patron.properties 2>&1
 	@moz2po -P $(PROGRESS) -o $(PO)/serial.properties/serial.properties.pot -i $(SERVER_PROPSDIR)/en-US/serial.properties 2>&1
 
+tpac2pot: mklocale
+	@mkdir -p po/tpac
+	@xgettext.pl --plugin=tt2 --directory=$(TPAC_SRC) --output-dir=po/tpac/ --output=tpac.pot
+
+mklocale:
+	@mkdir -p locale/$(LOCALE)
+
 # There are some hacky things we need to do to make po2moz happy,
 # like ensure that the .po file has either ".dtd" or ".properties" in
 # the name to generate the appropriate output, even though that breaks
 # GNU gettext recommended layout of foo.dtd/ll-LL.po
-prep_output:
-	@mkdir -p locale/$(LOCALE)
+prep_output: mklocale
 	@for i in `ls -d $(PO)/*.dtd`; do cd $(STARTDIR)/$$i && ln -sf $(LOCALE).po $(LOCALE).dtd.po; done
 	@for i in `ls -d $(PO)/*.properties`; do cd $(STARTDIR)/$$i && ln -sf $(LOCALE).po $(LOCALE).properties.po; done
 	@for i in `ls -d $(PO)/*.html`; do cd $(STARTDIR)/$$i && ln -sf $(LOCALE).po $(LOCALE).html.po; done
 	@cd $(STARTDIR)
 
-po2dtds:
-	@mkdir -p locale/$(LOCALE)
+po2dtds: mklocale
 	@po2moz $(PROGRESS) -i $(PO)/conify.dtd/$(LOCALE).dtd.po -o $(PROJECT)/$(LOCALE)/conify.dtd -t $(DTDDIR)/en-US/conify.dtd 2>&1
 	@po2moz $(PROGRESS) -i $(PO)/lang.dtd/$(LOCALE).dtd.po -o $(PROJECT)/$(LOCALE)/lang.dtd -t $(DTDDIR)/en-US/lang.dtd 2>&1
 	@po2moz $(PROGRESS) -i $(PO)/opac.dtd/$(LOCALE).dtd.po -o $(PROJECT)/$(LOCALE)/opac.dtd -t $(DTDDIR)/en-US/opac.dtd 2>&1
@@ -239,8 +245,7 @@ sql2pot:
 	@scripts/db-seed-i18n.py --pot $(SQLSRCDIR)/$(SQLSRCFILE) --output $(PO)/db.seed/$(SQLPOT)
 #	@msghack --empty -o $(PO)/$(SQLPOT) $(PO)/$(SQLPOT)
 
-po2sql:
-	@mkdir -p locale/$(LOCALE)
+po2sql: mklocale
 	@scripts/db-seed-i18n.py --sql $(PO)/db.seed/$(LOCALE).po --locale $(LOCALE) --output $(PROJECT)/$(LOCALE)/$(SQLOUT).sql
 
 # Generate a fieldmapper IDL file that uses entities instead of hard-coded strings
@@ -252,8 +257,7 @@ fmidl2pot:
 	@scripts/fieldmapper.py --pot $(FMIDLSRC) --output $(PO)/fm_IDL.dtd/$(FMIDLOUT)
 
 # Generate a set of entity declarations from a PO file
-fmidlpo2entity:
-	@mkdir -p locale/$(LOCALE)
+fmidlpo2entity: mklocale
 	@scripts/fieldmapper.py --entity $(PO)/fm_IDL.dtd/$(LOCALE).po --output $(PROJECT)/$(LOCALE)/$(FMIDLENTITY)
 
 # Generate en-US DTD from a POT file; required if any other locale is installed
@@ -281,6 +285,8 @@ install: updatepo project fmidl2fmidlent fmidlpo2entity-en
 	cp $(PROJECT)/$(LOCALE)/opac.dtd $(DTDDIR)/$(LOCALE)/
 	cp $(PROJECT)/$(LOCALE)/reports.dtd $(DTDDIR)/$(LOCALE)/
 	cp $(PROJECT)/$(LOCALE)/serial.properties $(SERVER_PROPSDIR)/$(LOCALE)/.
+	mkdir -p $(TT_LOCALE)
+	cp po/tpac/$(LOCALE).po $(TT_LOCALE)/tpac.$(LOCALE).po
 	cp $(PROJECT)/$(LOCALE)/$(FMIDLENTITY) $(DTDDIR)/$(LOCALE)/
 	@scripts/merge_ils_events.py --master $(EVTSRC) --localization $(PROJECT)/$(LOCALE)/$(EVTXML) --output $(EVTSRC)
 	cp $(PROJECT)/$(LOCALE)/$(SQLOUT).sql $(SQLSRCDIR)/$(SQLOUT)-$(LOCALE).sql
