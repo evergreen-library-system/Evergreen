@@ -27,6 +27,7 @@
         ou_id = attrs.plib_copy_counts.$depth.org_unit;
         UNLESS depth < 0 || displayed_ous.exists(ou_name);
     %]
+    [%- IF attrs.plib_copy_counts.$depth.count > 0; %]
     <li class="preferred">[%
         l('[_1] of [quant,_2,copy,copies] available at [_3].',
             attrs.plib_copy_counts.$depth.available,
@@ -36,6 +37,7 @@
        title="[% l('Show copies at [_1]', ou_name); %]">[%
        l('(Show preferred library)');
     %]</a></li>
+    [%- END %]
     [%- END %]
     </ul>
 </span>
