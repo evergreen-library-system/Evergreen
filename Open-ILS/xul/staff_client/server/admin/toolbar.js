@@ -303,6 +303,7 @@ function populate_list2_list3(list3_idx) {
 
         if (list3_idx) {
             if (list3_idx < 0) { list3_idx = 0; }
+            if (list3_idx >= g.list3.node.view.rowCount) { list3_idx = g.list3.node.view.rowCount - 1; }
             g.list3.node.view.selection.select(list3_idx);
         }
 
