@@ -128,6 +128,7 @@ function orgIsMineFromSet(meList, org) {
 }
 
 var orgArraySearcher = {};
+var orgArraySearcherOrder = [];
 var globalOrgTree;
 for (var i = 0; i < _l.length; i++) {
 	var x = new aou();
@@ -135,12 +136,13 @@ for (var i = 0; i < _l.length; i++) {
 	x.ou_type(_l[i][1]);
 	x.parent_ou(_l[i][2]);
 	x.name(_l[i][3]);
-    x.opac_visible(_l[i][4]);
-    x.shortname(_l[i][5]);
+	x.opac_visible(_l[i][4]);
+	x.shortname(_l[i][5]);
 	orgArraySearcher[x.id()] = x;
+	orgArraySearcherOrder.push(x.id());
 }
-for (var i in orgArraySearcher) {
-	var x = orgArraySearcher[i];
+for (var i = 0; i < orgArraySearcherOrder.length; i++) {
+	var x = orgArraySearcher[orgArraySearcherOrder[i]];
 	if (x.parent_ou() == null || x.parent_ou() == '') {
 		globalOrgTree = x;
 		continue;
