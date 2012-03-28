@@ -50,7 +50,7 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES (
 -- INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) SELECT pgt.id, perm.id, aout.depth, FALSE FROM permission.grp_tree pgt, permission.perm_list perm, actor.org_unit_type aout WHERE pgt.name = 'Staff' AND aout.name = 'Branch' AND perm.code = 'ADMIN_TOOLBAR';
 
 INSERT INTO actor.toolbar(org,label,layout) VALUES
-    ( 1, 'circ', '["circ_checkout","circ_checkin","toolbarseparator","search_opac","copy_status","toolbarseparator","patron_search","patron_register","toolbarspacer","hotkeys_toggle"]' ),
-    ( 1, 'cat', '["circ_checkin","toolbarseparator","search_opac","copy_status","toolbarseparator","create_marc","authority_manage","retrieve_last_record","toolbarspacer","hotkeys_toggle"]' );
+    ( 1, 'circ', '["circ_checkout","circ_checkin","toolbarseparator.1","search_opac","copy_status","toolbarseparator.2","patron_search","patron_register","toolbarspacer.3","hotkeys_toggle"]' ),
+    ( 1, 'cat', '["circ_checkin","toolbarseparator.1","search_opac","copy_status","toolbarseparator.2","create_marc","authority_manage","retrieve_last_record","toolbarspacer.3","hotkeys_toggle"]' );
 
 -- delete from permission.grp_perm_map where perm in (select id from permission.perm_list where code ~ 'TOOLBAR'); delete from permission.perm_list where code ~ 'TOOLBAR'; drop table actor.toolbar ;

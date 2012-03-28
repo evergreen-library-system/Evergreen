@@ -2605,7 +2605,7 @@ commands:
             if (!def) def = util.functional.find_list( this.data.list.atb, function(e) { return e.label == button_bar; } );
             if (!def) {
                 dump('Could not find layout for specified toolbar. Defaulting to a stock toolbar.\n');
-                layout = [ 'circ_checkin', 'toolbarseparator', 'toolbarspacer', 'hotkeys_toggle' ];
+                layout = ["circ_checkout","circ_checkin","toolbarseparator","search_opac","copy_status","toolbarseparator","patron_search","patron_register","toolbarspacer","hotkeys_toggle"];
             } else {
                 layout = JSON2js(def.layout());
             }
@@ -2634,26 +2634,23 @@ commands:
             // create new one
             for (var i = 0; i < layout.length; i++) {
                 var e = layout[i];
-                switch(e) {
-                    case 'toolbarseparator':
+                if (e.match('toolbarseparator')) {
                         toolbar.appendChild( document.createElement('toolbarseparator') );
-                    break;
-                    case 'toolbarspacer':
-                        var spacer = document.createElement('toolbarspacer');
-                        spacer.setAttribute('flex','1');
-                        toolbar.appendChild( spacer );
-                    break;
-                    default:
-                        var templates = $('palette').getElementsByAttribute('templateid',e);
-                        var template = templates.length > 0 ? templates[0] : null;
-                        if (template) {
-                            var clone = template.cloneNode(true);
-                            toolbar.appendChild( clone );
-                        } else {
-                            var label = document.createElement('label');
-                            label.setAttribute('value',e);
-                            toolbar.appendChild( label );
-                        }
+                } else if (e.match('toolbarspacer')) {
+                    var spacer = document.createElement('toolbarspacer');
+                    spacer.setAttribute('flex','1');
+                    toolbar.appendChild( spacer );
+                } else {
+                    var templates = $('palette').getElementsByAttribute('templateid',e);
+                    var template = templates.length > 0 ? templates[0] : null;
+                    if (template) {
+                        var clone = template.cloneNode(true);
+                        toolbar.appendChild( clone );
+                    } else {
+                        var label = document.createElement('label');
+                        label.setAttribute('value',e);
+                        toolbar.appendChild( label );
+                    }
                 }
             }
             toolbar.setAttribute('hidden','false');

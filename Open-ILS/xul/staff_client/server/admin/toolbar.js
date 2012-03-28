@@ -279,17 +279,13 @@ function populate_list2_list3(list3_idx) {
             var value = g.layout[i];
             var label;
 
-            switch(value) {
-                case 'toolbarseparator':
-                    label = $('adminStrings').getString('staff.admin.toolbar.toolbar_separator.list_entry');
-                break;
-                case 'toolbarspacer':
-                    label = $('adminStrings').getString('staff.admin.toolbar.toolbar_spacer.list_entry');
-                break;
-                default:
-                    label = g.data.toolbar_buttons[value];
-                    seen[value] = true;
-                break;
+            if (value.match('toolbarseparator')) {
+                label = $('adminStrings').getString('staff.admin.toolbar.toolbar_separator.list_entry');
+            } else if (value.match('toolbarspacer')) {
+                label = $('adminStrings').getString('staff.admin.toolbar.toolbar_spacer.list_entry');
+            } else {
+                label = g.data.toolbar_buttons[value];
+                seen[value] = true;
             }
 
             var rdata3 = g.list3.append({
@@ -406,6 +402,9 @@ function Add(ev) {
 
         for (var i = values_to_add.length - 1; i >= 0; i--) { // iterate backwards so that we add them forwards
             if (!values_to_add[i]) { continue; }
+            if (values_to_add[i].match('toolbarseparator') || values_to_add[i].match('toolbarspacer')) {
+                values_to_add[i] = values_to_add[i] + '.' + (new Date()).getTime();
+            }
             g.layout.splice(add_after_this_position,0,values_to_add[i]);
         }
 
