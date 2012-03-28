@@ -1138,10 +1138,13 @@ sub new_hold_copy_targeter {
 
 					# cancel cause = un-targeted expiration
 					$hold->update( { cancel_time => 'now', cancel_cause => 1 } ); 
+
+					# refresh fields from the DB while still in the xact
+					my $fm_hold = $hold->to_fieldmapper; 
+
 					$self->method_lookup('open-ils.storage.transaction.commit')->run;
 
 					# tell A/T the hold was cancelled
-					my $fm_hold = $hold->to_fieldmapper;
 					my $ses = OpenSRF::AppSession->create('open-ils.trigger');
 					$ses->request('open-ils.trigger.event.autocreate', 
 						'hold_request.cancel.expire_no_target', $fm_hold, $fm_hold->pickup_lib);
@@ -1447,10 +1450,13 @@ sub new_hold_copy_targeter {
 
 						# cancel cause = un-targeted expiration
 						$hold->update( { cancel_time => 'now', cancel_cause => 1 } ); 
+
+						# refresh fields from the DB while still in the xact
+						my $fm_hold = $hold->to_fieldmapper; 
+
 						$self->method_lookup('open-ils.storage.transaction.commit')->run;
 
 						# tell A/T the hold was cancelled
-						my $fm_hold = $hold->to_fieldmapper;
 						my $ses = OpenSRF::AppSession->create('open-ils.trigger');
 						$ses->request('open-ils.trigger.event.autocreate', 
 							'hold_request.cancel.expire_no_target', $fm_hold, $fm_hold->pickup_lib);
@@ -1670,10 +1676,13 @@ sub reservation_targeter {
 
 				# cancel cause = un-targeted expiration
 				$bresv->update( { cancel_time => 'now' } ); 
+
+				# refresh fields from the DB while still in the xact
+				my $fm_bresv = $bresv->to_fieldmapper;
+
 				$self->method_lookup('open-ils.storage.transaction.commit')->run;
 
 				# tell A/T the reservation was cancelled
-				my $fm_bresv = $bresv->to_fieldmapper;
 				my $ses = OpenSRF::AppSession->create('open-ils.trigger');
 				$ses->request('open-ils.trigger.event.autocreate', 
 					'booking.reservation.cancel.expire_no_target', $fm_bresv, $fm_bresv->pickup_lib);
