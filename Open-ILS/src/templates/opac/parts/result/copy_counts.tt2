@@ -28,7 +28,7 @@
         attrs.plib_copy_counts.$depth.available,
         attrs.plib_copy_counts.$depth.count,
         ou_name) | html
-    %]<span> [% l('(Preferred)') %]</span>
+    %]
 </div>
 [%- END %]
 [%- END %]

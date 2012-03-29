@@ -1,17 +1,16 @@
 [% BLOCK results_count_header %]
 <div class="results_header_nav1">
-    <table cellpadding="0" cellspacing="0" border="0" width="100%">
-        <tr>
-            <td class="h1" width="116">[% ctx.bookbag ? l('List Contents') : l('Search Results') %]</td>
-            <td valign="bottom" nowrap="nowrap" class="result_number">
+    <span class="h1">[% ctx.bookbag ? l('List Contents') : l('Search Results') %]</span>
+    <span nowrap="nowrap" class="result_number">
                 [% |l(ctx.result_start, ctx.result_stop, ctx.hit_count) %]
                 Results <strong>[_1]</strong> - <strong>[_2]</strong> of <strong>[_3]</strong>
                 [% END %]
                 <span style='padding-left: 6px;'>
                     [% |l(page + 1, page_count) %](page <strong>[_1]</strong> of <strong>[_2]</strong>)[% END %]
                 </span>
-            </td>
-            <td align="right" valign="bottom">
+    </span>
+    [%- INCLUDE "opac/parts/pref_lib_display.tt2" %]
+    <span>
                 <span class='start_end_links_span'>
 
                     [%  class = 'search_page_nav_link';
@@ -51,9 +50,7 @@
                     <a class='[% class %]' href='[% href %]' 
                         title='[% l("Next page") %]'> [% l('Next') %] <span class="nav_arrow_fix">&#9658;</span></a>
                 </span>
-            </td>
-        </tr>
-    </table>
+    </span>
 </div>
 [% END %]
 

@@ -1413,3 +1413,12 @@ table.result_holdings_table thead tr {
 table.result_holdings_table thead tr th {
     font-weight: bold;
 }
+span.preflib {
+    margin: 0 2em 0 2em;
+}
+a.preflib_change {
+  vertical-align: super;
+  font-size: smaller;
+  line-height: normal;
+  text-decoration: none;
+}

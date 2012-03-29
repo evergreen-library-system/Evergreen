@@ -1,0 +1,7 @@
+[%- IF ctx.pref_ou && ctx.pref_ou != ctx.search_ou; %]
+<span class="preflib">[%
+    l('Preferred library: [_1][_2][_3]', '<b>', ctx.get_aou(ctx.pref_ou).name, '</b>');
+    %]<a href="[% mkurl(ctx.opac_root _ '/myopac/prefs_settings')
+    %]" class="preflib_change" title="[% l("Change preferred library"); %]">[% l('?') %]</a>
+</span>
+[%- END; %]

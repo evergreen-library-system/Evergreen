@@ -13,6 +13,7 @@
                 [% l('Showing Item [_1] of [_2]', ctx.search_result_index + 1, ctx.hit_count) %]
             </span>
         </span>
+        [%- INCLUDE "opac/parts/pref_lib_display.tt2" %]
         <div id="rdetail_result_nav">
             [%
                 IF ctx.prev_search_record;
