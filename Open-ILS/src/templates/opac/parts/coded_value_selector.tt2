@@ -7,7 +7,7 @@
     all_values = [];
     attr_class = '';
     FOR attr_class IN attr;
-        all_values = ctx.search_ccvm('ctype', attr_class);
+        all_values = ctx.search_ccvm('ctype', attr_class, 'opac_visible', 't');
         IF all_values.size > 0; LAST; END;
     END;
     name = name || "fi:" _ attr_class;
@@ -25,7 +25,7 @@
 # leverage TT's array.sort('<hashkey>') behavior
 sorter = [];
 FOR o IN all_values; 
-    sorter.push({code => o.code, value  => o.value}); 
+    sorter.push({code => o.code, value  => (o.search_label ? o.search_label : o.value)}); 
 END;
 FOR o IN sorter.sort('value') %]
     <option value='[% o.code | uri %]'[% values.grep('^' _ o.code _ '$').size ? ' selected="selected"' : '' %]>[% o.value | html %]</option>

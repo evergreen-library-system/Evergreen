@@ -70,12 +70,18 @@ sub init_ro_object_cache {
         # search for objects of class $hint where field=value
         $cache{search}{$hint} = {};
         $ro_object_subs->{$search_key} = sub {
-            my ($field, $val) = @_;
+            my ($field, $val, $filterfield, $filterval) = @_;
             my $method = "search_$eclass";
+            my $cacheval = $val;
+            my $search_obj = {$field => $val};
+            if($filterfield) {
+                $search_obj->{$filterfield} = $filterval;
+                $cacheval .= ':' . $filterfield . ':' . $filterval;
+            }
             $cache{search}{$hint}{$field} = {} unless $cache{search}{$hint}{$field};
-            $cache{search}{$hint}{$field}{$val} = $e->$method({$field => $val}) 
-                unless $cache{search}{$hint}{$field}{$val};
-            return $cache{search}{$hint}{$field}{$val};
+            $cache{search}{$hint}{$field}{$cacheval} = $e->$method($search_obj) 
+                unless $cache{search}{$hint}{$field}{$cacheval};
+            return $cache{search}{$hint}{$field}{$cacheval};
         };
     }
 

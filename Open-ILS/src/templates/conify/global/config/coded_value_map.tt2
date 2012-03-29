@@ -17,7 +17,7 @@
     <table  jsId="ccvmGrid"
             autoHeight='true'
             dojoType="openils.widget.AutoGrid"
-            fieldOrder="['ctype', 'code', 'value', 'description']"
+            fieldOrder="['ctype', 'code', 'value', 'description', 'opac_visible', 'search_label']"
             query="{code: '*'}"
             defaultCellWidth='"25%"'
             fmClass='ccvm'

@@ -737,11 +737,13 @@ CREATE TABLE config.record_attr_index_norm_map (
 );
 
 CREATE TABLE config.coded_value_map (
-    id          SERIAL  PRIMARY KEY,
-    ctype       TEXT    NOT NULL REFERENCES config.record_attr_definition (name) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-    code        TEXT    NOT NULL,
-    value       TEXT    NOT NULL,
-    description TEXT
+    id              SERIAL  PRIMARY KEY,
+    ctype           TEXT    NOT NULL REFERENCES config.record_attr_definition (name) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    code            TEXT    NOT NULL,
+    value           TEXT    NOT NULL,
+    description     TEXT,
+    opac_visible    BOOL    NOT NULL DEFAULT TRUE, -- For TPac selectors
+    search_label    TEXT
 );
 
 CREATE VIEW config.language_map AS SELECT code, value FROM config.coded_value_map WHERE ctype = 'item_lang';

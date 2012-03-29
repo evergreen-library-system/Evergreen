@@ -16,7 +16,7 @@ function advgInit() {
 
     var ctypes = ["bib_level", "item_form", "item_type", "audience", "lit_form"];
 
-    var req = new Request('open-ils.fielder:open-ils.fielder.ccvm.atomic', {"cache":1,"query":{"ctype":ctypes}});
+    var req = new Request('open-ils.fielder:open-ils.fielder.ccvm.atomic', {"cache":1,"query":{"ctype":ctypes, "opac_visible":"t"}});
     req.callback(advDrawBibExtras);
     req.request.ctypes = ctypes;
     req.send();
@@ -156,13 +156,13 @@ function advDrawBibExtras(r) {
             var ctypeData = dojo.filter(data, function(item) { return item.ctype == ctype } );
             ctypeData = ctypeData.sort(
                 function(a,b) { /* sort alphabetically */
-                    return (a.value < b.value) ? -1 : 1;
+                    return ((a.search_label ? a.search_label : a.value) < (b.search_label ? b.search_label : b.value)) ? -1 : 1;
                 }
             );
             dojo.forEach(ctypeData,
                 function(thing) {
-                    var opt = insertSelectorVal(sel, -1, thing.value, thing.code);
-                    opt.setAttribute('title', thing.value);
+                    var opt = insertSelectorVal(sel, -1, (thing.search_label ? thing.search_label : thing.value), thing.code);
+                    opt.setAttribute('title', (thing.search_label ? thing.search_label : thing.value));
                 }
             );
         }
