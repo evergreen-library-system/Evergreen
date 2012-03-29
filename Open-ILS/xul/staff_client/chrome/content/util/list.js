@@ -571,6 +571,7 @@ util.list.prototype = {
                     
                             inc_fleshed();
                     }
+                    obj.refresh_ordinals();
                 },
                 false
             );
@@ -596,6 +597,7 @@ util.list.prototype = {
                     if (obj.row_count.fleshed >= obj.row_count.total) {
                         setTimeout( function() { obj.exec_on_all_fleshed(); }, 0 );
                     }
+                    obj.refresh_ordinals();
                 },
                 false
             );
@@ -731,6 +733,7 @@ util.list.prototype = {
                     
                             inc_fleshed();
                     }
+                    obj.refresh_ordinals();
                 },
                 false
             );
@@ -760,6 +763,7 @@ util.list.prototype = {
                     if (obj.row_count.fleshed >= obj.row_count.total) {
                         setTimeout( function() { obj.exec_on_all_fleshed(); }, 0 );
                     }
+                    obj.refresh_ordinals();
                 },
                 false
             );
@@ -801,29 +805,41 @@ util.list.prototype = {
     'refresh_ordinals' : function() {
         var obj = this;
         try {
-            setTimeout( // Otherwise we can miss a row just added
+            if (obj.refresh_ordinals_timeout_id) { return; }
+
+            function _refresh_ordinals(clear) {
+                var nl = obj.node.getElementsByAttribute('label','_');
+                for (var i = 0; i < nl.length; i++) {
+                    nl[i].setAttribute(
+                        'ord_col',
+                        'true'
+                    );
+                    nl[i].setAttribute( // treecell properties for css styling
+                        'properties',
+                        'ordinal'
+                    );
+                }
+                nl = obj.node.getElementsByAttribute('ord_col','true');
+                for (var i = 0; i < nl.length; i++) {
+                    nl[i].setAttribute(
+                        'label',
+                        // we could just use 'i' here if we trust the order of elements
+                        1 + obj.node.contentView.getIndexOfItem(nl[i].parentNode.parentNode) // treeitem
+                    );
+                }
+                if (clear) { obj.refresh_ordinals_timeout_id = null; }
+            }
+
+            // spamming this to cover race conditions
+            setTimeout(_refresh_ordinals, 500); // for speedy looking UI updates
+            setTimeout(_refresh_ordinals, 2000); // for most uses
+            obj.refresh_ordinals_timeout_id = setTimeout(
                 function() {
-                    var nl = obj.node.getElementsByAttribute('label','_');
-                    for (var i = 0; i < nl.length; i++) {
-                        nl[i].setAttribute(
-                            'ord_col',
-                            'true'
-                        );
-                        nl[i].setAttribute( // treecell properties for css styling
-                            'properties',
-                            'ordinal'
-                        );
-                    }
-                    nl = obj.node.getElementsByAttribute('ord_col','true');
-                    for (var i = 0; i < nl.length; i++) {
-                        nl[i].setAttribute(
-                            'label',
-                            // we could just use 'i' here if we trust the order of elements
-                            1 + obj.node.contentView.getIndexOfItem(nl[i].parentNode.parentNode) // treeitem
-                        );
-                    }
-                }, 1000
+                    _refresh_ordinals(true);
+                },
+                4000 // just in case, say with a slow rendering list
             );
+
         } catch(E) {
             alert('Error in list.js, refresh_ordinals(): ' + E);
         }
@@ -973,6 +989,7 @@ util.list.prototype = {
             case 'tree' : obj._full_retrieve_tree(params); break;
             default: throw('NYI: Need .full_retrieve() for ' + obj.node.nodeName); break;
         }
+        obj.refresh_ordinals();
     },
 
     '_full_retrieve_tree' : function(params) {
