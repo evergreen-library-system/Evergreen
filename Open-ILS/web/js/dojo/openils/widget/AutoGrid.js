@@ -103,11 +103,20 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                                 href : 'javascript:void(0);', 
                                 onclick : function() { 
                                     if (!self.filterDialog) {
+
                                         self.filterDialog = new openils.widget.PCrudFilterDialog(
                                             {fmClass:self.fmClass, suppressFilterFields:self.suppressFilterFields})
+
                                         self.filterDialog.onApply = function(filter) {
-                                            self.refresh(self.cachedQueryOpts, filter);
+                                            self.cachedQuerySearch = dojo.mixin( filter, self.preFilterSearch );
+                                            self.resetStore();
+                                            self.loadAll(
+                                                dojo.mixin( { offset : 0 }, self.cachedQueryOpts ),
+                                                self.cachedQuerySearch,
+                                                true
+                                            );
                                         };
+
                                         self.filterDialog.startup();
                                     }
                                     self.filterDialog.show();
@@ -511,7 +520,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 }
             },
 
-            loadAll : function(opts, search) {
+            loadAll : function(opts, search, filter_triggered) {
                 var _this = this;
 
                 // first we have to load the column picker to determine the sort fields.
@@ -535,10 +544,10 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 }
 
                 // column picker not wanted or already loaded
-                this._loadAll(opts, search);
+                this._loadAll(opts, search, filter_triggered);
             },
 
-            _loadAll : function(opts, search) {
+            _loadAll : function(opts, search, filter_triggered) {
                 var self = this;
 
                 dojo.require('openils.PermaCrud');
@@ -565,6 +574,11 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
 
                 this.cachedQuerySearch = search;
                 this.cachedQueryOpts = opts;
+
+                // retain the most recent external loadAll 
+                if (!filter_triggered || !this.preFilterSearch)
+                    this.preFilterSearch = dojo.clone( this.cachedQuerySearch );
+
                 if(search)
                     new openils.PermaCrud().search(this.fmClass, search, opts);
                 else
