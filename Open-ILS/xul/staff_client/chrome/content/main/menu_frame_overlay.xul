@@ -157,7 +157,7 @@
         label="&staff.main.menu.file.portal.label;"
         tooltiptext="&staff.main.menu.file.portal.label;" />
     <toolbarbutton
-        id="cmd_edit_copy_buckets"
+        templateid="edit_copy_buckets"
         command="cmd_edit_copy_buckets"
         label="&staff.main.menu.edit.buckets.copies;"
         tooltiptext="&staff.main.menu.edit.buckets.copies;" />
