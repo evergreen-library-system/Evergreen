@@ -9,6 +9,8 @@ util.list = function (id) {
 
     this.unique_row_counter = 0;
 
+    this.sub_sorts = [];
+
     if (!this.node) throw('Could not find element ' + id);
     switch(this.node.nodeName) {
         case 'listbox' : 
@@ -21,6 +23,8 @@ util.list = function (id) {
     JSAN.use('util.error'); this.error = new util.error();
 
     JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.stash_retrieve();
+
+    JSAN.use('util.functional');
 
     return this;
 };
@@ -137,11 +141,36 @@ util.list.prototype = {
                     treecol.addEventListener(
                         'click', 
                         function(ev) {
+                            if (ev.target.getAttribute('no_sort')) {
+                                return;
+                            }
+
                             function do_it() {
-                                var sortDir = ev.target.getAttribute('sortDir') || 'desc';
-                                if (sortDir == 'desc') sortDir = 'asc'; else sortDir = 'desc';
-                                ev.target.setAttribute('sortDir',sortDir);
-                                obj._sort_tree(ev.target,sortDir);
+                                if (ev.ctrlKey) { // sub sort
+                                    var sortDir = 'asc';
+                                    if (ev.shiftKey) {
+                                        sortDir = 'desc';
+                                    }
+                                    obj.sub_sorts.push({
+                                        'target' : ev.target,
+                                        'sortDir' : sortDir
+                                    });
+                                } else { // first sort
+                                    var sortDir = ev.target.getAttribute('sortDir') || 'desc';
+                                    if (sortDir == 'desc') sortDir = 'asc'; else sortDir = 'desc';
+                                    if (ev.shiftKey) {
+                                        sortDir = 'desc';
+                                    }
+                                    ev.target.setAttribute('sortDir',sortDir);
+                                    obj.first_sort = {
+                                        'target' : ev.target,
+                                        'sortDir' : sortDir
+                                    };
+                                    obj.sub_sorts = [];
+                                }
+                                if (obj.first_sort) {
+                                    obj._sort_tree();
+                                }
                             }
 
                             if (obj.row_count.total != obj.row_count.fleshed && (obj.row_count.total - obj.row_count.fleshed) > 50) {
@@ -1573,15 +1602,27 @@ util.list.prototype = {
         obj.full_retrieve();
     },
 
-    '_sort_tree' : function(col,sortDir) {
+    '_sort_tree' : function() {
         var obj = this;
         try {
-            if (obj.node.getAttribute('no_sort') || col.getAttribute('no_sort')) {
+            if (obj.node.getAttribute('no_sort')) {
                 return;
             }
-            var col_pos;
-            for (var i = 0; i < obj.columns.length; i++) { 
-                if (obj.columns[i].id == col.id) col_pos = function(a){return a;}(i); 
+
+            var sorts = [ obj.first_sort ].concat( obj.sub_sorts );
+            var columns = util.functional.map_list(
+                sorts,
+                function(e,idx) {
+                    return e.target;
+                }
+            );
+            var column_positions = [];
+            for (var i = 0; i < columns.length; i++) {
+                for (var j = 0; j < obj.columns.length; j++) {
+                    if (obj.columns[j].id == columns[i].id) {
+                        column_positions.push( function(a){return a;}(j) );
+                    }
+                }
             }
             obj.wrap_in_full_retrieve(
                 function() {
@@ -1592,62 +1633,99 @@ util.list.prototype = {
                         for (var i = 0; i < treeitems.length; i++) {
                             var treeitem = treeitems[i];
                             var treerow = treeitem.firstChild;
-                            var treecell = treerow.childNodes[ col_pos ];
-                            value = ( {
-                                'value' : treecell
-                                    ? treecell.getAttribute('label')
-                                    : '',
-                                'sort_value' : treecell ? treecell.hasAttribute('sort_value')
-                                    ? JSON2js(
-                                        treecell.getAttribute('sort_value'))
-                                    : '' : '',
+
+                            function get_value(treecell) {
+                                value = ( {
+                                    'value' : treecell
+                                        ? treecell.getAttribute('label')
+                                        : '',
+                                    'sort_value' : treecell ? treecell.hasAttribute('sort_value')
+                                        ? JSON2js(
+                                            treecell.getAttribute('sort_value'))
+                                        : '' : ''
+                                } );
+                                return value;
+                            }
+
+                            var values = [];
+                            for (var j = 0; j < column_positions.length; j++) {
+                                var treecell = treerow.childNodes[ column_positions[j] ];
+                                values.push({
+                                    'position' : column_positions[j],
+                                    'value' : get_value(treecell)
+                                });
+                            }
+
+                            rows.push({
+                                'values' : values,
                                 'node' : treeitem
-                            } );
-                            rows.push( value );
+                            });
                         }
-                        rows = rows.sort( function(a,b) { 
-                            if (a.sort_value) {
-                                a = a.sort_value;
-                                b = b.sort_value;
-                            } else {
-                                a = a.value;
-                                b = b.value;
-                                if (col.getAttribute('sort_type')) {
-                                    switch(col.getAttribute('sort_type')) {
-                                        case 'date' :
-                                            JSAN.use('util.date'); // to pull in dojo.date.locale
-                                            a = dojo.date.locale.parse(a,{});
-                                            b = dojo.date.locale.parse(b,{});
-                                        break;
-                                        case 'number' :
-                                            a = Number(a); b = Number(b);
-                                        break;
-                                        case 'money' :
-                                            a = util.money.dollars_float_to_cents_integer(a);
-                                            b = util.money.dollars_float_to_cents_integer(b);
-                                        break;
-                                        case 'title' : /* special case for "a" and "the".  doesn't use marc 245 indicator */
-                                            a = String( a ).toUpperCase().replace( /^\s*(THE|A|AN)\s+/, '' );
-                                            b = String( b ).toUpperCase().replace( /^\s*(THE|A|AN)\s+/, '' );
-                                        break;
-                                        default:
+                        rows = rows.sort( function(A,B) {
+                            function normalize(a,b,p) {
+                                if (a.sort_value) {
+                                    a = a.sort_value;
+                                    b = b.sort_value;
+                                } else {
+                                    a = a.value;
+                                    b = b.value;
+                                    if (obj.columns[p].getAttribute('sort_type')) {
+                                        switch(obj.columns[p].getAttribute('sort_type')) {
+                                            case 'date' :
+                                                JSAN.use('util.date'); // to pull in dojo.date.locale
+                                                a = dojo.date.locale.parse(a,{});
+                                                b = dojo.date.locale.parse(b,{});
+                                            break;
+                                            case 'number' :
+                                                a = Number(a); b = Number(b);
+                                            break;
+                                            case 'money' :
+                                                a = util.money.dollars_float_to_cents_integer(a);
+                                                b = util.money.dollars_float_to_cents_integer(b);
+                                            break;
+                                            case 'title' : /* special case for "a" and "the".  doesn't use marc 245 indicator */
+                                                a = String( a ).toUpperCase().replace( /^\s*(THE|A|AN)\s+/, '' );
+                                                b = String( b ).toUpperCase().replace( /^\s*(THE|A|AN)\s+/, '' );
+                                            break;
+                                            default:
+                                                a = String( a ).toUpperCase();
+                                                b = String( b ).toUpperCase();
+                                            break;
+                                        }
+                                    } else {
+                                        if (typeof a == 'string' || typeof b == 'string') {
                                             a = String( a ).toUpperCase();
                                             b = String( b ).toUpperCase();
-                                        break;
-                                    }
-                                } else {
-                                    if (typeof a == 'string' || typeof b == 'string') {
-                                        a = String( a ).toUpperCase();
-                                        b = String( b ).toUpperCase();
+                                        }
                                     }
                                 }
+                                return [ a, b ];
                             }
-                            //dump('sorting: type = ' + col.getAttribute('sort_type') + ' a = ' + a + ' b = ' + b + ' a<b= ' + (a<b) + ' a>b= ' + (a>b) + '\n');
-                            if (a < b) return -1; 
-                            if (a > b) return 1; 
+
+                            for (var i = 0; i < sorts.length; i++) {
+                                var values;
+                                if (sorts[i].sortDir == 'asc') {
+                                    values = normalize(
+                                        B['values'][i]['value'],
+                                        A['values'][i]['value'],
+                                        A['values'][i]['position']
+                                    );
+                                } else {
+                                    values = normalize(
+                                        A['values'][i]['value'],
+                                        B['values'][i]['value'],
+                                        A['values'][i]['position']
+                                    );
+                                }
+                                if (values[0] < values[1] ) {
+                                    return -1;
+                                }
+                                if (values[0] > values[1] ) {
+                                    return 1;
+                                }
+                            }
                             return 0; 
                         } );
-                        if (sortDir == 'asc') rows = rows.reverse();
                         while(obj.treechildren.lastChild) obj.treechildren.removeChild( obj.treechildren.lastChild );
                         for (var i = 0; i < rows.length; i++) {
                             obj.treechildren.appendChild( rows[i].node );
