@@ -22,12 +22,14 @@ function staff_hold_usr_input_disabler(input) {
 var cur_hold_barcode = undefined;
 function staff_hold_usr_barcode_changed(isload) {
     if(typeof xulG != 'undefined' && xulG.get_barcode_and_settings) {
-        var barcode = document.getElementById('staff_barcode').value;
+        var barcode = isload;
+        if(!barcode || barcode === true) barcode = document.getElementById('staff_barcode').value;
         var only_settings = true;
         if(!document.getElementById('hold_usr_is_requestor').checked) {
-            barcode = document.getElementById('hold_usr_input').value;
-            if(!isload)
+            if(!isload) {
+                barcode = document.getElementById('hold_usr_input').value;
                 only_settings = false;
+            }
             if(barcode && barcode != '' && !document.getElementById('hold_usr_is_requestor_not').checked)
                 document.getElementById('hold_usr_is_requestor_not').checked = 'checked';
         }
@@ -37,7 +39,7 @@ function staff_hold_usr_barcode_changed(isload) {
         if(load_info == false || load_info == undefined)
             return;
         cur_hold_barcode = load_info.barcode;
-        if(!only_settings) document.getElementById('hold_usr_input').value = load_info.barcode; // Safe at this point as we already set cur_hold_barcode
+        if(!only_settings || (isload && isload !== true)) document.getElementById('hold_usr_input').value = load_info.barcode; // Safe at this point as we already set cur_hold_barcode
         if(load_info.settings['opac.default_pickup_location'])
             document.getElementById('pickup_lib').value = load_info.settings['opac.default_pickup_location'];
         if(!load_info.settings['opac.default_phone']) load_info.settings['opac.default_phone'] = '';
@@ -70,7 +72,11 @@ window.onload = function() {
         runEvt('rdetail', 'MFHDDrawn');
     }
     if(location.href.match(/place_hold/)) {
-        staff_hold_usr_barcode_changed(true);
+        if(xulG.patron_barcode) {
+            staff_hold_usr_barcode_changed(xulG.patron_barcode);
+        } else {
+            staff_hold_usr_barcode_changed(true);
+        }
     }
 }
 

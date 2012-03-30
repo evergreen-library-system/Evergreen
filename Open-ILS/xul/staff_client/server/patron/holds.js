@@ -1426,9 +1426,6 @@ patron.holds.prototype = {
                         ['command'],
                         function(ev) {
                             try {
-                                var use_url = urls.browser;
-                                use_url += use_url.match(/\?/) ? "&" : "?";
-                                use_url += "patron_barcode=" + obj.patron_barcode;
                                 var content_params = {
                                     'show_nav_buttons' : false,
                                     'show_print_button' : true,
@@ -1466,7 +1463,7 @@ patron.holds.prototype = {
                                         'patron_barcode' : obj.patron_barcode
                                     },
                                     'url_prefix' : xulG.url_prefix,
-                                    'url' : xulG.url_prefix(use_url)
+                                    'url' : xulG.url_prefix(urls.browser)
                                 };
                                 xulG.display_window.g.patron.right_deck.set_iframe( urls.XUL_REMOTE_BROWSER + '?patron_hold=1', {}, content_params);
                             } catch(E) {
