@@ -119,14 +119,15 @@ serial.siss_editor.prototype = {
 
         'siss_editor_middle_pane' :
         [
-/*rjs7 don't think we need these anymore            [
-                'Holding Type',
+            [
+                'holding_type',
                 {
-                    render: 'fm.holding_type();',
-                    input: 'c = function(v){ obj.apply("holding_type",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ ["basic", "basic"], ["index", "index"], ["supplement", "supplement"] ] ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+                    input: 'c = function(v){ obj.apply("holding_type",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ ["basic", "basic"], ["index", "index"], ["supplement", "supplement"] ] ); x.setAttribute("value",obj.editor_values.holding_type); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+                    value_key: 'holding_type',
+                    required: true
                 }
             ],
-            [
+/* deprecated            [
                 'Holding Link ID',
                 {
                     render: 'fm.holding_link_id();',

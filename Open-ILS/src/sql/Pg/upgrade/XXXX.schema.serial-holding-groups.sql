@@ -146,4 +146,10 @@ UPDATE config.internal_flag
 
 -- finish holding code materialization process
 
+-- fix up missing holding_code fields from serial.issuance
+UPDATE serial.issuance siss
+    SET holding_type = scap.type
+    FROM serial.caption_and_pattern scap
+    WHERE scap.id = siss.caption_and_pattern AND siss.holding_type IS NULL;
+
 COMMIT;
