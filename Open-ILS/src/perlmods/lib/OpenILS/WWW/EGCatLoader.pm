@@ -217,18 +217,6 @@ sub load_simple {
     $self->ctx->{page} = $page;
     $self->ctx->{search_ou} = $self->_get_search_lib();
 
-    if (my $patron_barcode = $self->cgi->param("patron_barcode")) {
-        # Special CGI variable from staff client; propagate henceforth as cookie
-        $self->apache->headers_out->add(
-            "Set-Cookie" => $self->cgi->cookie(
-                -name => "patron_barcode",
-                -path => "/",
-                -secure => 1,
-                -value => $patron_barcode,
-                -expires => undef
-            )
-        );
-    }
     return Apache2::Const::OK;
 }
 

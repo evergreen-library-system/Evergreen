@@ -608,31 +608,19 @@ sub load_place_hold {
 
     $logger->info("Looking at hold_type: " . $ctx->{hold_type} . " and targets: @targets");
 
-    # if the staff client provides a patron barcode, fetch the patron
-    if (my $bc = $self->cgi->cookie("patron_barcode")) {
-        $ctx->{patron_recipient} = $U->simplereq(
-            "open-ils.actor", "open-ils.actor.user.fleshed.retrieve_by_barcode",
-            $self->editor->authtoken, $bc
-        ) or return Apache2::Const::HTTP_BAD_REQUEST;
-
-        $ctx->{default_pickup_lib} = $ctx->{patron_recipient}->home_ou;
-    } else {
-        $ctx->{staff_recipient} = $self->editor->retrieve_actor_user([
-            $e->requestor->id,
-            {
-                flesh => 1,
-                flesh_fields => {
-                    au => ['settings', 'card']
-                }
+    $ctx->{staff_recipient} = $self->editor->retrieve_actor_user([
+        $e->requestor->id,
+        {
+            flesh => 1,
+            flesh_fields => {
+                au => ['settings', 'card']
             }
-        ]) or return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
-    }
+        }
+    ]) or return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
     my $user_setting_map = {
         map { $_->name => OpenSRF::Utils::JSON->JSON2perl($_->value) }
             @{
-                $ctx->{patron_recipient}
-                ? $ctx->{patron_recipient}->settings
-                : $ctx->{staff_recipient}->settings
+                $ctx->{staff_recipient}->settings
             }
     };
     $ctx->{user_setting_map} = $user_setting_map;
