@@ -25,6 +25,7 @@ util.list = function (id) {
     JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.stash_retrieve();
 
     JSAN.use('util.functional');
+    JSAN.use('util.widgets');
 
     return this;
 };
@@ -100,6 +101,9 @@ util.list.prototype = {
             var treecols = document.createElement('treecols');
             this.node.appendChild(treecols);
             this.treecols = treecols;
+            if (document.getElementById('column_sort_menu')) {
+                treecols.setAttribute('context','column_sort_menu');
+            }
 
             var check_for_id_collisions = {};
             for (var i = 0; i < this.columns.length; i++) {
@@ -122,6 +126,7 @@ util.list.prototype = {
                     treecol.setAttribute(j,value);
                 }
                 treecols.appendChild(treecol);
+
                 if (this.columns[i].type == 'checkbox') {
                     treecol.addEventListener(
                         'click',
@@ -139,49 +144,137 @@ util.list.prototype = {
                     );
                 } else {
                     treecol.addEventListener(
+                        'sort_first_asc',
+                        function(ev) {
+                            dump('sort_first_asc\n');
+                            ev.target.setAttribute('sortDir','asc');
+                            obj.first_sort = {
+                                'target' : ev.target,
+                                'sortDir' : 'asc'
+                            };
+                            obj.sub_sorts = [];
+                            util.widgets.dispatch('sort',ev.target);
+                        },
+                        false
+                    );
+                    treecol.addEventListener(
+                        'sort_first_desc',
+                        function(ev) {
+                            dump('sort_first_desc\n');
+                            ev.target.setAttribute('sortDir','desc');
+                            obj.first_sort = {
+                                'target' : ev.target,
+                                'sortDir' : 'desc'
+                            };
+                            obj.sub_sorts = [];
+                            util.widgets.dispatch('sort',ev.target);
+                        },
+                        false
+                    );
+                    treecol.addEventListener(
+                        'sort_next_asc',
+                        function(ev) {
+                            dump('sort_next_asc\n');
+                            ev.target.setAttribute('sortDir','asc');
+                            obj.sub_sorts.push({
+                                'target' : ev.target,
+                                'sortDir' : 'asc'
+                            });
+                            util.widgets.dispatch('sort',ev.target);
+                        },
+                        false
+                    );
+                    treecol.addEventListener(
+                        'sort_next_desc',
+                        function(ev) {
+                            dump('sort_next_desc\n');
+                            ev.target.setAttribute('sortDir','desc');
+                            obj.sub_sorts.push({
+                                'target' : ev.target,
+                                'sortDir' : 'desc'
+                            });
+                            util.widgets.dispatch('sort',ev.target);
+                        },
+                        false
+                    );
+
+                    treecol.addEventListener(
                         'click', 
                         function(ev) {
-                            if (ev.target.getAttribute('no_sort')) {
+                            dump('click\n');
+                            if (ev.button == 2 /* context menu click */ || ev.target.getAttribute('no_sort')) {
                                 return;
                             }
+                            if (document.popupNode
+                                && document.popupNode.nodeName == 'treecol'
+                                && document.popupNode.hasAttribute('locked')
+                            ) {
+                                return;
+                            }
+                            dump('click2\n');
+
+                            if (ev.ctrlKey) { // sub sort
+                                dump('click3\n');
+                                var sortDir = 'asc';
+                                if (ev.shiftKey) {
+                                    sortDir = 'desc';
+                                }
+                                ev.target.setAttribute('sortDir',sortDir);
+                                obj.sub_sorts.push({
+                                    'target' : ev.target,
+                                    'sortDir' : sortDir
+                                });
+                            } else { // first sort
+                                dump('click4\n');
+                                var sortDir = ev.target.getAttribute('sortDir') || 'desc';
+                                if (sortDir == 'desc') sortDir = 'asc'; else sortDir = 'desc';
+                                if (ev.shiftKey) {
+                                    sortDir = 'desc';
+                                }
+                                ev.target.setAttribute('sortDir',sortDir);
+                                obj.first_sort = {
+                                    'target' : ev.target,
+                                    'sortDir' : sortDir
+                                };
+                                obj.sub_sorts = [];
+                            }
+                            util.widgets.dispatch('sort',ev.target);
+                        },
+                        false
+                    );
+
+                    treecol.addEventListener(
+                        'sort',
+                        function(ev) {
+                            dump('sort\n');
+                            if (!obj.first_sort) {
+                                return;
+                            }
+                            dump('sort2\n');
 
                             function do_it() {
-                                if (ev.ctrlKey) { // sub sort
-                                    var sortDir = 'asc';
-                                    if (ev.shiftKey) {
-                                        sortDir = 'desc';
-                                    }
-                                    obj.sub_sorts.push({
-                                        'target' : ev.target,
-                                        'sortDir' : sortDir
-                                    });
-                                } else { // first sort
-                                    var sortDir = ev.target.getAttribute('sortDir') || 'desc';
-                                    if (sortDir == 'desc') sortDir = 'asc'; else sortDir = 'desc';
-                                    if (ev.shiftKey) {
-                                        sortDir = 'desc';
-                                    }
-                                    ev.target.setAttribute('sortDir',sortDir);
-                                    obj.first_sort = {
-                                        'target' : ev.target,
-                                        'sortDir' : sortDir
-                                    };
-                                    obj.sub_sorts = [];
-                                }
-                                if (obj.first_sort) {
-                                    obj._sort_tree();
-                                }
+                                dump('sort3\n');
+                                obj._sort_tree();
                             }
 
-                            if (obj.row_count.total != obj.row_count.fleshed && (obj.row_count.total - obj.row_count.fleshed) > 50) {
-                                var r = window.confirm(document.getElementById('offlineStrings').getFormattedString('list.row_fetch_warning',[obj.row_count.fleshed,obj.row_count.total]));
+                            if (obj.row_count.total != obj.row_count.fleshed
+                                && (obj.row_count.total - obj.row_count.fleshed) > 50
+                            ) {
+                                var r = window.confirm(
+                                    document.getElementById('offlineStrings').getFormattedString(
+                                        'list.row_fetch_warning',
+                                        [obj.row_count.fleshed,obj.row_count.total]
+                                    )
+                                );
 
                                 if (r) {
                                     setTimeout( do_it, 0 );
                                 }
+
                             } else {
                                     setTimeout( do_it, 0 );
                             }
+
                         },
                         false
                     );
@@ -1706,14 +1799,14 @@ util.list.prototype = {
                                 var values;
                                 if (sorts[i].sortDir == 'asc') {
                                     values = normalize(
-                                        B['values'][i]['value'],
                                         A['values'][i]['value'],
+                                        B['values'][i]['value'],
                                         A['values'][i]['position']
                                     );
                                 } else {
                                     values = normalize(
-                                        A['values'][i]['value'],
                                         B['values'][i]['value'],
+                                        A['values'][i]['value'],
                                         A['values'][i]['position']
                                     );
                                 }
