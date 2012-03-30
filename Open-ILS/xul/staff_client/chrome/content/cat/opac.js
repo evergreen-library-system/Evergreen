@@ -439,44 +439,70 @@ function set_opac() {
                 $('record_back_to_results').disabled = true;
                 $('record_pos').setAttribute('value','');
 
+                function safe_to_proceed() {
+                    if (typeof xulG.is_tab_locked == 'undefined') { return true; }
+                    if (! xulG.is_tab_locked()) { return true; }
+                    var r = window.confirm(
+                        document.getElementById('offlineStrings').getString(
+                           'generic.unsaved_data_warning'
+                        )
+                    );
+                    if (r) {
+                        while ( xulG.unlock_tab() > 0 ) {};
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+
                 win.attachEvt("rdetail", "nextPrevDrawn",
                     function(rIndex,rCount){
                         $('record_pos').setAttribute('value', document.getElementById('offlineStrings').getFormattedString('cat.record.counter', [(1+rIndex), rCount ? rCount : 1]));
                         if (win.rdetailNext) {
-                            g.f_record_next = function() { 
-                                g.view_override = g.view; 
-                                win.rdetailNext(); 
+                            g.f_record_next = function() {
+                                if (safe_to_proceed()) {
+                                    g.view_override = g.view;
+                                    win.rdetailNext();
+                                }
                             }
                             $('record_next').disabled = false;
                         }
                         if (win.rdetailPrev) {
-                            g.f_record_prev = function() { 
-                                g.view_override = g.view; 
-                                win.rdetailPrev(); 
+                            g.f_record_prev = function() {
+                                if (safe_to_proceed()) {
+                                    g.view_override = g.view;
+                                    win.rdetailPrev();
+                                }
                             }
                             $('record_prev').disabled = false;
                         }
                         if (win.rdetailStart) {
                             g.f_record_start = function() { 
-                                g.view_override = g.view; 
-                                win.rdetailStart(); 
+                                if (safe_to_proceed()) {
+                                    g.view_override = g.view;
+                                    win.rdetailStart();
+                                }
                             }
                             $('record_start').disabled = false;
                         }
                         if (win.rdetailEnd) {
                             g.f_record_end = function() { 
-                                g.view_override = g.view; 
-                                win.rdetailEnd(); 
+                                if (safe_to_proceed()) {
+                                    g.view_override = g.view;
+                                    win.rdetailEnd();
+                                }
                             }
                             $('record_end').disabled = false;
                         }
                         if (win.rdetailBackToResults) {
                             g.f_record_back_to_results = function() {
-                                g.view_override = g.view;
-                                win.rdetailBackToResults();
-                                if (g.view != "opac") {
-                                    set_opac();
-                                    opac_wrapper_set_help_context();
+                                if (safe_to_proceed()) {
+                                    g.view_override = g.view;
+                                    win.rdetailBackToResults();
+                                    if (g.view != "opac") {
+                                        set_opac();
+                                        opac_wrapper_set_help_context();
+                                    }
                                 }
                             }
                             $('record_back_to_results').disabled = false;
@@ -531,6 +557,7 @@ function set_opac() {
         content_params.lock_tab = xulG.lock_tab;
         content_params.unlock_tab = xulG.unlock_tab;
         content_params.inspect_tab = xulG.inspect_tab;
+        content_params.is_tab_locked = xulG.is_tab_locked;
         content_params.new_patron_tab = xulG.new_patron_tab;
         content_params.set_patron_tab = xulG.set_patron_tab;
         content_params.volume_item_creator = xulG.volume_item_creator;
@@ -709,6 +736,7 @@ function bib_in_new_tab() {
         content_params.lock_tab = xulG.lock_tab;
         content_params.unlock_tab = xulG.unlock_tab;
         content_params.inspect_tab = xulG.inspect_tab;
+        content_params.is_tab_locked = xulG.is_tab_locked;
         content_params.new_patron_tab = xulG.new_patron_tab;
         content_params.set_patron_tab = xulG.set_patron_tab;
         content_params.volume_item_creator = xulG.volume_item_creator;

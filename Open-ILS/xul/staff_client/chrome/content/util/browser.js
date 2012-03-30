@@ -293,6 +293,7 @@ util.browser.prototype = {
                 };
             }
             if (!cw.xulG.inspect_tab) { cw.xulG.inspect_tab = function() { return window.xulG.inspect_tab(); }; }
+            if (!cw.xulG.is_tab_locked) { cw.xulG.is_tab_locked = function() { return window.xulG.is_tab_locked(); }; }
             if (!cw.xulG.new_patron_tab) { cw.xulG.new_patron_tab = function(a,b) { return window.xulG.new_patron_tab(a,b); }; }
             if (!cw.xulG.set_patron_tab) { cw.xulG.set_patron_tab = function(a,b) { return window.xulG.set_patron_tab(a,b); }; }
             if (!cw.xulG.volume_item_creator) { cw.xulG.volume_item_creator = function(a) { return window.xulG.volume_item_creator(a); }; }

@@ -2240,6 +2240,14 @@ commands:
         var panel = this.controller.view.panels.childNodes[ idx ];
         while ( panel.lastChild ) panel.removeChild( panel.lastChild );
 
+        content_params.is_tab_locked = function() {
+            dump('is_tab_locked\n');
+            var id = tab.getAttribute('id');
+            if (typeof obj.tab_semaphores[id] == 'undefined') {
+                return false;
+            }
+            return obj.tab_semaphores[id] > 0;
+        }
         content_params.lock_tab = function() { 
             dump('lock_tab\n');
             var id = tab.getAttribute('id');
