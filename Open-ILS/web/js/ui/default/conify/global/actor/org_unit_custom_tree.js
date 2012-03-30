@@ -247,7 +247,15 @@ function deleteSelected() {
 
 function activateTree() {
     mTree.active('t');
-    if (mTree.isnew()) return;
+
+    if (mTree.isnew()) {
+        // before the tree exists, we can only activate the local copy
+        // the next save event will activate it
+        openils.Util.hide(dojo.byId('activate-tree'));
+        openils.Util.show(dojo.byId('deactivate-tree'), 'inline');
+        return;
+    }
+
     pcrud.update(mTree, {
         oncomplete : function() {
             openils.Util.hide(dojo.byId('activate-tree'));
@@ -258,7 +266,13 @@ function activateTree() {
 
 function deactivateTree() {
     mTree.active('f');
-    if (mTree.isnew()) return;
+
+    if (mTree.isnew()) {
+        openils.Util.hide(dojo.byId('deactivate-tree'));
+        openils.Util.show(dojo.byId('activate-tree'), 'inline');
+        return;
+    }
+
     pcrud.update(mTree, {
         oncomplete : function() {
             openils.Util.hide(dojo.byId('deactivate-tree'));
