@@ -44,3 +44,5 @@ Nuvola 1.0 (KDE 3.x icon set) (nuvola)
     subdirectory: open_icon_library-devel/icons/nuvola
 
 preferences-desktop-keyboard-3.png
+
+Files in toolbar_<color> folders are currently derived from SVG files found in Open-ILS/src/xul/staff_client/imagesources, the licenses they fall under is provided there.
