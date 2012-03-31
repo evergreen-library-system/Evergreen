@@ -9,6 +9,13 @@
     <html>
         <head>
             <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
+            <style type="text/css">
+                /* This CSS controls whether data printed from an interface
+                based on FlattenerGrid has visible table cell borders. */
+
+                table { border-collapse: collapse; }
+                td, th { border: 1px solid black; }
+            </style>
         </head>
         <body>
             <table>

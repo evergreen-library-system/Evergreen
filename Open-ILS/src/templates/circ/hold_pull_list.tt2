@@ -1,0 +1,99 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = 'Hold Pull List' %]
+<script type="text/javascript">
+    dojo.require("dijit.form.Button");
+    dojo.require("openils.widget.OrgUnitFilteringSelect");
+    dojo.require("openils.widget.FlattenerGrid");
+
+    var map_extras = {
+        "copy_circ_lib": {
+            "path": "current_copy.circ_lib",
+            "filter": true
+        },
+        "call_number_sort_key": {
+            "path": "current_copy.call_number.label_sortkey",
+            "sort" :true
+        }
+    };
+
+    function set_grid_query_from_org_selector() {
+        grid.query = {
+            "copy_circ_lib": org_selector.attr("value")
+        };
+        grid.refresh();
+    }
+
+    function prepare_org_selector(perm) {
+        new openils.User().buildPermOrgSelector(
+            perm, org_selector, null,
+            function() {
+                dojo.connect(
+                    org_selector, "onChange", set_grid_query_from_org_selector
+                );
+                set_grid_query_from_org_selector();
+            }
+        );
+    }
+
+    openils.Util.addOnLoad(
+        function() {
+            prepare_org_selector("VIEW_HOLD");
+        }
+    );
+
+</script>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane"
+         layoutAlign="top" class="oils-header-panel">
+        <div>Hold Pull List</div>
+        <div>
+            <button dojoType="dijit.form.Button"
+                onClick="grid.print();">Print Pull List</button>
+        </div>
+    </div>
+    <div class="oils-acq-basic-roomy">
+        <label for="org_selector">Show the pull list for:</label>
+        <select
+            id="org_selector" jsId="org_selector"
+            dojoType="openils.widget.OrgUnitFilteringSelect"
+            searchAttr="name" labelAttr="name">
+        </select>
+    </div>
+    <table
+        jsid="grid"
+        dojoType="openils.widget.FlattenerGrid"
+        columnPersistKey='"circ.hold_pull_list"'
+        autoHeight="10"
+        editOnEnter="false"
+        hideSelector="true"
+        autoCoreFields="true"
+        autoFieldFields="['current_copy','current_copy.call_number.record.simple_record']"
+        editStyle="pane"
+        showLoadFilter="true"
+        fmClass="'ahopl'"
+        defaultSort="['copy_location_sort_order','call_number_sort_key']"
+        mapExtras="map_extras"
+        sortFieldReMap="{call_number_label: 'call_number_sort_key'}"
+        fetchLock="true"
+        query="{}">
+        <thead>
+            <tr>
+                <th field="shelving_loc" fpath="current_copy.location.name" ffilter="true">Shelving Location</th>
+                <th field="call_number_label" fpath="call_number_label"></th>
+                <th field="author" fpath="current_copy.call_number.record.simple_record.author">Author</th>
+                <th field="title" fpath="current_copy.call_number.record.simple_record.title">Title</th>
+                <th field="barcode" fpath="current_copy.barcode"></th>
+                <th field="parts" fpath="current_copy.parts.label" fsort="false">Parts</th>
+                <th field="notes" fpath="notes.body" fsort="false" _visible="false">Hold Notes</th>
+                <th field="patron_barcode" fpath="usr.card.barcode" _visible="false">Patron Barcode</th>
+                <th field="pickup_lib_name" fpath="pickup_lib.name" _visible="false">Pickup Library</th>
+                <th field="pickup_lib_shortname" fpath="pickup_lib.shortname" _visible="false">Pickup Library (Shortname)</th>
+                <th field="request_lib_name" fpath="request_lib.name" _visible="false">Request Library</th>
+                <th field="request_lib_shortname" fpath="request_lib.shortname" _visible="false">Request Library (Shortname)</th>
+                <th field="selection_ou" fpath="selection_ou.shortname" _visible="false">Selection Locus</th>
+                <th field="sms_carrier_name" fpath="sms_carrier.name" _visible="false">SMS Carrier</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+[% END %]

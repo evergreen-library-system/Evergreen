@@ -58,15 +58,28 @@ if(!dojo._hasResource["openils.widget.GridColumnPicker"]) {
             };
         },
 
-        /** Loads the current grid structure and passes the 
-         *  structure back to the grid to force a UI refresh.
-         *  This is necessary if external forces alter the structure. 
+        /** Loads any grid column label changes, clears any 
+         * non-visible fields from the structure, and passes 
+         * the structure back to the grid to force a UI refresh.
          */
         reloadStructure : function() {
-            this.structure = this.grid.structure;
-            this.cells = this.structure[0].cells[0].slice();
+
+            // update our copy of the column labels
+            var _this = this;
+            dojo.forEach(
+                this.grid.structure[0].cells[0],
+                function(gcell) {
+                    var cell = _this.cells.filter(
+                        function(c) { return c.field == gcell.field }
+                    )[0];
+                    cell.name = gcell.name;
+                }
+            );
+
+            this.pruneInvisibleFields();
             this.grid.setStructure(this.structure);
         },
+
 
         // determine the visible sorting from the 
         // view and update our list of cells to match
@@ -114,7 +127,7 @@ if(!dojo._hasResource["openils.widget.GridColumnPicker"]) {
                 "<th width='23%'>Auto Width</th><th width='23%'>Sort Priority</th></tr></thead>" +
                 "<tbody />"});
 
-            var tDiv = dojo.create('div', {style : 'height:400px; overflow-y:auto;'});
+            var tDiv = dojo.create('div');
             tDiv.appendChild(table);
 
             var bDiv = dojo.create('div', {style : 'text-align:right; width:100%;',
@@ -211,16 +224,24 @@ if(!dojo._hasResource["openils.widget.GridColumnPicker"]) {
                 else
                     this.dialogTable.appendChild(tr);
 
-                if ( this.grid.canSort(i+1) ) { // column index is 1-based
+                if (this.grid.canSort(
+                    i + 1,  /* column index is 1-based */
+                    true    /* skip structure test (API abuse) */
+                )) { 
 
-                    // must be added after its parent node is inserted into the DOM.
-                    var ns = new dijit.form.NumberSpinner(
-                        {   constraints : {places : 0}, 
-                            value : cell._sort || 0,
-                            style : 'width:4em',
-                            name : 'sort',
-                        }, ipt3
-                    );
+                    /* Ugly kludge. When using with FlattenerGrid the
+                     * conditional is needed. Shouldn't hurt usage with
+                     * AutoGrid. */
+                    if (typeof cell.fsort == "undefined" || cell.fsort) {
+                        // must be added after its parent node is inserted into the DOM.
+                        var ns = new dijit.form.NumberSpinner(
+                            {   constraints : {places : 0}, 
+                                value : cell._sort || 0,
+                                style : 'width:4em',
+                                name : 'sort',
+                            }, ipt3
+                        );
+                    }
                 }
             }
         },
@@ -364,6 +385,18 @@ if(!dojo._hasResource["openils.widget.GridColumnPicker"]) {
             this.structure[0].cells[0] = displayCells;
             this.grid.setStructure(this.structure);
             this.grid.update();
+        },
+
+        // *only* call this when no usr setting tells us what columns
+        // are visible or not.
+        pruneInvisibleFields : function() {
+            this.structure[0].cells[0] = dojo.filter(
+                this.structure[0].cells[0],
+                dojo.hitch(this, function(c) {
+                    // keep true or undef, lose false
+                    return typeof c._visible == "undefined" || c._visible;
+                })
+            );
         },
 
         load : function() {

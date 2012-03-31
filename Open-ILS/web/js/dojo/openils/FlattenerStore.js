@@ -29,6 +29,7 @@ if (!dojo._hasResource["openils.FlattenerStore"]) {
         "offset": 0,
         "baseSort": null,
         "defaultSort": null,
+        "sortFieldReMap": null,
 
         "constructor": function(/* object */ args) {
             dojo.mixin(this, args);
@@ -51,7 +52,33 @@ if (!dojo._hasResource["openils.FlattenerStore"]) {
             );
         },
 
-        "_prepare_flattener_params": function(req) {
+        "_remap_sort": function(prepared_sort) {
+            if (this.sortFieldReMap) {
+                return prepared_sort.map(
+                    dojo.hitch(
+                        this, function(exp) {
+                            if (typeof exp == "object") {
+                                var key;
+                                for (key in exp)
+                                    break;
+                                var newkey = (key in this.sortFieldReMap) ?
+                                    this.sortFieldReMap[key] : key;
+                                var o = {};
+                                o[newkey] = exp[key];
+                                return o;
+                            } else {
+                                return (exp in this.sortFieldReMap) ?
+                                    this.sortFieldReMap[exp] : exp;
+                            }
+                        }
+                    )
+                );
+            } else {
+                return prepared_sort;
+            }
+        },
+
+        "_build_flattener_params": function(req) {
             var params = {
                 "hint": this.fmClass,
                 "ses": openils.User.authtoken
@@ -65,31 +92,38 @@ if (!dojo._hasResource["openils.FlattenerStore"]) {
 
                 params.where = dojo.toJson(where);
             } else {
-                var limit = (!isNaN(req.count) && req.count != Infinity) ?
-                    req.count : this.limit;
-                var offset = (!isNaN(req.start) && req.start != Infinity) ?
-                    req.start : this.offset;
+                params.where =  dojo.toJson(req.query);
 
-                dojo.mixin(
-                    params, {
-                        "where": dojo.toJson(req.query),
-                        "slo": dojo.toJson({
-                            "sort": this._prepare_sort(req.sort),
-                            "limit": limit,
-                            "offset": offset
-                        })
-                    }
-                );
+                var slo = {
+                    "sort": this._remap_sort(this._prepare_sort(req.sort))
+                };
+
+                if (!req.queryOptions.all) {
+                    slo.limit =
+                        (!isNaN(req.count) && req.count != Infinity) ?
+                            req.count : this.limit;
+
+                    slo.offset =
+                        (!isNaN(req.start) && req.start != Infinity) ?
+                            req.start : this.offset;
+                }
+
+                if (req.queryOptions.columns)
+                    params.columns = req.queryOptions.columns;
+                if (req.queryOptions.labels)
+                    params.labels = req.queryOptions.labels;
+
+                params.slo = dojo.toJson(slo);
             }
 
-            if (this.mapKey) { /* XXX TODO, get a map key */
+            if (this.mapKey) {
                 params.key = this.mapKey;
             } else {
                 params.map = dojo.toJson(this.mapClause);
             }
 
-            for (var key in params)
-                console.debug("flattener param " + key + " -> " + params[key]);
+//            for (var key in params)
+//                console.debug("flattener param " + key + " -> " + params[key]);
 
             return params;
         },
@@ -112,6 +146,94 @@ if (!dojo._hasResource["openils.FlattenerStore"]) {
                     "async": false
                 }
             );
+        },
+
+        "_on_http_error": function(response, ioArgs, req, retry_method) {
+            if (response.status == 402) {   /* 'Payment Required' stands
+                                               in for cache miss */
+                if (this._retried_map_key_already) {
+                    var e = new FlattenerStoreError(
+                        "Server won't cache flattener map?"
+                    );
+                    if (typeof req.onError == "function")
+                        req.onError.call(callback_scope, e);
+                    else
+                        throw e;
+                } else {
+                    this._retried_map_key_already = true;
+                    delete this.mapKey;
+                    if (retry_method)
+                        return this[retry_method](req);
+                }
+            }
+        },
+
+        "_fetch_prepare": function(req) {
+            req.queryOptions = req.queryOptions || {};
+            req.abort = function() { console.warn("[unimplemented] abort()"); };
+
+            if (!this.mapKey)
+                this._get_map_key();
+
+            return this._build_flattener_params(req);
+        },
+
+        "_fetch_execute": function(params,handle_as,mime_type,onload,onerror) {
+            dojo.xhrPost({
+                "url": this._flattener_url,
+                "content": params,
+                "handleAs": handle_as,
+                "sync": false,
+                "preventCache": true,
+                "headers": {"Accept": mime_type},
+                "load": onload,
+                "error": onerror
+            });
+        },
+
+        /* *** Nonstandard but public API - Please think hard about doing
+         * things the Dojo Way whenever possible before extending the API
+         * here. *** */
+
+        /* fetchToPrint() acts like a lot like fetch(), but doesn't call
+         * onBegin or onComplete.  */
+        "fetchToPrint": function(req) {
+            var callback_scope = req.scope || dojo.global;
+            var post_params;
+
+            try {
+                post_params = this._fetch_prepare(req);
+            } catch (E) {
+                if (typeof req.onError == "function")
+                    req.onError.call(callback_scope, E);
+                else
+                    throw E;
+            }
+
+            var process_fetch_all = dojo.hitch(
+                this, function(text) {
+                    this._retried_map_key_already = false;
+
+                    if (typeof req.onComplete == "function")
+                        req.onComplete.call(callback_scope, text, req);
+                }
+            );
+
+            var process_error = dojo.hitch(
+                this, function(response, ioArgs) {
+                    this._on_http_error(response, ioArgs, req, "fetchToPrint");
+                }
+            );
+
+            this._fetch_execute(
+                post_params,
+                "text",
+                "text/html",
+                process_fetch_all,
+                process_error
+            );
+
+            return req;
         },
 
         /* *** Begin dojo.data.api.Read methods *** */
@@ -223,35 +345,18 @@ if (!dojo._hasResource["openils.FlattenerStore"]) {
             //      onItem   a callback that takes each item as we get it
             //      onComplete  a callback that takes the list of items
             //                      after they're all fetched
-            //
-            //  The onError callback is ignored for now (haven't thought
-            //  of anything useful to do with it yet).
-            //
-            //  The Read API also charges this method with adding an abort
-            //  callback to the *req* object for the caller's use, but
-            //  the one we provide does nothing but issue an alert().
 
-            //console.log("fetch(" + dojo.toJson(req) + ")");
             var self = this;
             var callback_scope = req.scope || dojo.global;
+            var post_params;
 
-            if (!this.mapKey) {
-                try {
-                    this._get_map_key();
-                } catch (E) {
-                    if (req.onError)
-                        req.onError.call(callback_scope, E);
-                    else
-                        throw E;
-                }
-            }
-
-            var post_params = this._prepare_flattener_params(req);
-
-            if (!post_params) {
-                if (typeof req.onComplete == "function")
-                    req.onComplete.call(callback_scope, [], req);
-                return;
+            try {
+                post_params = this._fetch_prepare(req);
+            } catch (E) {
+                if (typeof req.onError == "function")
+                    req.onError.call(callback_scope, E);
+                else
+                    throw E;
             }
 
             var process_fetch = function(obj, when) {
@@ -296,41 +401,21 @@ if (!dojo._hasResource["openils.FlattenerStore"]) {
                     req.onComplete.call(callback_scope, obj, req);
             };
 
-            req.abort = function() {
-                throw new FlattenerStoreError(
-                    "The 'abort' operation is not supported"
-                );
-            };
+            var process_error = dojo.hitch(
+                this, function(response, ioArgs) {
+                    this._on_http_error(response, ioArgs, req, "fetch");
+                }
+            );
 
             var fetch_time = this._last_fetch = (new Date().getTime());
 
-            dojo.xhrPost({
-                "url": this._flattener_url,
-                "content": post_params,
-                "handleAs": "json",
-                "sync": false,
-                "preventCache": true,
-                "headers": {"Accept": "application/json"},
-                "load": function(obj) { process_fetch(obj, fetch_time); },
-                "error": function(response, ioArgs) {
-                    if (response.status == 402) {   /* 'Payment Required' stands
-                                                       in for cache miss */
-                        if (self._retried_map_key_already) {
-                            var e = new FlattenerStoreError(
-                                "Server won't cache flattener map?"
-                            );
-                            if (typeof req.onError == "function")
-                                req.onError.call(callback_scope, e);
-                            else
-                                throw e;
-                        } else {
-                            self._retried_map_key_already = true;
-                            delete self.mapKey;
-                            return self.fetch(req);
-                        }
-                    }
-                }
-            });
+            this._fetch_execute(
+                post_params,
+                "json",
+                "application/json",
+                function(obj) { process_fetch(obj, fetch_time); },
+                process_error
+            );
 
             return req;
         },
@@ -368,7 +453,15 @@ if (!dojo._hasResource["openils.FlattenerStore"]) {
                 return;
             }
 
-            var post_params = this._prepare_flattener_params(keywordArgs);
+            var post_params;
+            try {
+                post_params = this._fetch_prepare(keywordArgs);
+            } catch (E) {
+                if (typeof keywordArgs.onError == "function")
+                    keywordArgs.onError.call(callback_scope, E);
+                else
+                    throw E;
+            }
 
             var process_fetch_one = dojo.hitch(
                 this, function(obj, when) {
@@ -404,17 +497,23 @@ if (!dojo._hasResource["openils.FlattenerStore"]) {
                 }
             );
 
+            var process_error = dojo.hitch(
+                this, function(response, ioArgs) {
+                    this._on_http_error(
+                        response, ioArgs, keywordArgs, "fetchItemByIdentity"
+                    );
+                }
+            );
+
             var fetch_time = this._last_fetch = (new Date().getTime());
 
-            dojo.xhrPost({
-                "url": this._flattener_url,
-                "content": post_params,
-                "handleAs": "json",
-                "sync": false,
-                "preventCache": true,
-                "headers": {"Accept": "application/json"},
-                "load": function(obj){ process_fetch_one(obj, fetch_time); }
-            });
+            this._fetch_execute(
+                post_params,
+                "json",
+                "application/json",
+                function(obj) { process_fetch_one(obj, fetch_time); },
+                process_error
+            );
         },
 
         /* dojo.data.api.Write - only very partially implemented, because

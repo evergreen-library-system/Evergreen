@@ -58,8 +58,7 @@ my $_output_handler_dispatch = {
         "prio" => 0,
         "code" => sub {
             $_[0]->content_type("text/html; charset=utf-8");
-            print html_ish_output( @_, 'FlatFielder2HTML.xsl' );
-            return Apache2::Const::OK;
+            return html_ish_output( @_, 'FlatFielder2HTML.xsl' );
         }
     },
     "application/xml" => {
@@ -115,15 +114,29 @@ sub data_to_xml {
     $fs->setAttribute("FS_key", $args->{key}) if $args->{key};
     $dom->setDocumentElement($fs);
 
+    my @columns;
+    my %column_labels;
+    if (@{$args->{columns}}) {
+        @columns = @{$args->{columns}};
+        if (@{$args->{labels}}) {
+            my @labels = @{$args->{labels}};
+            $column_labels{$columns[$_]} = $labels[$_] for (0..$#labels);
+        }
+    }
+
     my $rownum = 1;
     for my $i (@{$$args{data}}) {
         my $item = $dom->createElement("row");
         $item->setAttribute('ordinal', $rownum);
         $rownum++;
-        for my $k (keys %$i) {
+        @columns = keys %$i unless @columns;
+        for my $k (@columns) {
             my $val = $dom->createElement('column');
-            $val->setAttribute('name', $k);
-            $val->appendText($i->{$k});
+            my $datum = $i->{$k};
+            $datum = join(" ", @$datum) if ref $datum eq 'ARRAY';
+
+            $val->setAttribute('name', $column_labels{$k} || $k);
+            $val->appendText($datum);
             $item->addChild($val);
         }
         $fs->addChild($item);
@@ -214,6 +227,8 @@ sub handler {
     $args{key} = $cgi->param('key');
     $args{id_field} = $cgi->param('identifier');
     $args{label_field} = $cgi->param('label');
+    $args{columns} = [ $cgi->param('columns') ];
+    $args{labels} = [ $cgi->param('labels') ];
 
     my $fielder = OpenSRF::AppSession->create('open-ils.fielder');
     if ($args{map}) {

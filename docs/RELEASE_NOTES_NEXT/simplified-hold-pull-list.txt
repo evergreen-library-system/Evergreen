@@ -1,0 +1,30 @@
+Simplified Hold Pull List
+-------------------------
+
+There is a new hold pull list interface based on the Flattener service that's
+designed to perform faster than existing pull list interfaces, both in staff
+client display and printing.
+
+Sorting
+~~~~~~~
+
+You can sort on any one column by clicking on it.  Click again to reverse
+direction.  This is typical of similar interfaces.
+
+Now you can also sort by multiple columns.  Right click the column headers of
+the grid in the pull list interface to get a dialog that allows you to sort
+by multiple columns, in any order.
+
+Column Picking
+~~~~~~~~~~~~~~
+
+The same dialog that allows you to choose multiple sort columns (accessed by
+right clicking any column header) also allows you to toggle the display of any
+column available to the pull list on or off.
+
+Persistence
+~~~~~~~~~~~
+
+Once saved, your changes in this dialog persist for your user account.  Column
+display, display order, and `sorting choices affect printing as well as
+displayed output.

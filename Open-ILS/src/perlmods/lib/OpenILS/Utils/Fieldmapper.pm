@@ -139,11 +139,13 @@ sub load_links {
 			my $reltype = get_attribute( $attribute_list, 'reltype' );
 			my $key     = get_attribute( $attribute_list, 'key' );
 			my $class   = get_attribute( $attribute_list, 'class' );
+			my $map	    = get_attribute( $attribute_list, 'map' );
 
 			$$fieldmap{$fm}{links}{ $field } =
 				{ class   => $class,
 				  reltype => $reltype,
 				  key     => $key,
+				  map     => $map
 				};
 		}
 	}

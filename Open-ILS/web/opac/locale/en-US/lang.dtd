@@ -3253,6 +3253,8 @@
 <!ENTITY staff.patron.holds_overlay.print_full_pull_list.accesskey "u">
 <!ENTITY staff.patron.holds_overlay.print_alt_pull_list.label "Print Full Pull List (Alternate strategy)">
 <!ENTITY staff.patron.holds_overlay.print_alt_pull_list.accesskey "y">
+<!ENTITY staff.patron.holds_overlay.simplified_pull_list.label "Simplified Pull List Interface">
+<!ENTITY staff.patron.holds_overlay.simplified_pull_list.accesskey "i">
 <!ENTITY staff.patron.holds_overlay.place_hold.label "Place Hold">
 <!ENTITY staff.patron.holds_overlay.place_hold.accesskey "H">
 <!ENTITY staff.patron.holds_overlay.show_cancelled_holds.label "Show Cancelled Holds">

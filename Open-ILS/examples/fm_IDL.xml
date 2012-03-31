@@ -2303,7 +2303,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Notes" name="notes" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="URI Maps" name="uri_maps" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="URIs" name="uris" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Sort Key" name="label_sortkey" reporter:datatype="text"/>
+			<field reporter:label="Call Number Sort Key" name="label_sortkey" reporter:datatype="text"/>
 			<field reporter:label="Classification Scheme" name="label_class" reporter:datatype="link"/>
 			<field reporter:label="Prefix" name="prefix" reporter:datatype="link"/>
 			<field reporter:label="Suffix" name="suffix" reporter:datatype="link"/>
@@ -2649,7 +2649,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="billing_location" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
-	<class id="au" controller="open-ils.cstore" oils_obj:fieldmapper="actor::user" oils_persist:tablename="actor.usr" reporter:core="true" reporter:label="ILS User">
+	<class id="au" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::user" oils_persist:tablename="actor.usr" reporter:core="true" reporter:label="ILS User">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_id_seq">
 			<field reporter:label="All Addresses" name="addresses" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="All Library Cards" name="cards" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -2747,6 +2747,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="reservations" reltype="has_many" key="usr" map="" class="bresv"/>
 			<link field="usr_activity" reltype="has_many" key="usr" map="" class="auact"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve permission="VIEW_USER" context_field="home_ou" />
+			</actions>
+		</permacrud>
 	</class>
 	<class id="cuat" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::usr_activity_type" oils_persist:tablename="config.usr_activity_type" reporter:label="User Activity Type">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.usr_activity_type_id_seq">
@@ -4833,7 +4838,7 @@ SELECT  usr,
         </permacrud>
 	</class>
 
-	<!-- A note: Please update alhr when updating ahr -->
+	<!-- A note: Please update alhr and ahopl when updating ahr -->
 	<class id="ahr" controller="open-ils.cstore" oils_obj:fieldmapper="action::hold_request" oils_persist:tablename="action.hold_request" reporter:core="true" reporter:label="Hold Request">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.hold_request_id_seq">
 			<field reporter:label="Status" name="status" oils_persist:virtual="true" />
@@ -4850,7 +4855,7 @@ SELECT  usr,
 			<field reporter:label="Hold ID" name="id" reporter:datatype="id" />
 			<field reporter:label="Notifications Phone Number" name="phone_notify" reporter:datatype="text"/>
 			<field reporter:label="Notifications SMS Number" name="sms_notify" reporter:datatype="text"/>
-			<field reporter:label="Notifications SMS Carrier" name="sms_carrier" reporter:datatype="text"/>
+			<field reporter:label="Notifications SMS Carrier" name="sms_carrier" reporter:datatype="link"/>
 			<field reporter:label="Pickup Library" name="pickup_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Last Targeting Date/Time" name="prev_check_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Requesting Library" name="request_lib" reporter:datatype="org_unit"/>
@@ -4893,8 +4898,117 @@ SELECT  usr,
 			<link field="cancel_cause" reltype="might_have" key="id" map="" class="ahrcc"/>
 			<link field="notes" reltype="has_many" key="hold" map="" class="ahrn"/>
 			<link field="current_shelf_lib" reltype="has_a" key="id" map="" class="aou"/>
-			<link field="sms_carrier" reltype="might_have" key="code" map="" class="csc"/>
+			<link field="sms_carrier" reltype="has_a" key="id" map="" class="csc"/>
 		</links>
+	</class>
+	<class id="ahopl" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::hold_on_pull_list" reporter:label="Hold On Pull List" oils_persist:readonly="true">
+		<oils_persist:source_definition><![CDATA[
+		SELECT
+			ahr.*,
+			COALESCE(acplo.position, 999) AS
+				copy_location_order_position,
+			CASE WHEN au.alias IS NOT NULL THEN
+				au.alias
+			ELSE
+				REGEXP_REPLACE(ARRAY_TO_STRING(ARRAY[
+					COALESCE(au.family_name, ''),
+					COALESCE(au.suffix, ''),
+					', ',
+					COALESCE(au.prefix, ''),
+					COALESCE(au.first_given_name, ''),
+					COALESCE(au.second_given_name, '')
+				], ' '), E'\\s+,', ',')
+			END AS usr_display_name,
+			TRIM(acnp.label || ' ' || acn.label || ' ' || acns.label)
+				AS call_number_label,
+			siss.label AS issuance_label,
+			(ahr.usr <> ahr.requestor) AS is_staff_hold
+		FROM action.hold_request ahr
+		JOIN asset.copy acp ON (acp.id = ahr.current_copy)
+		JOIN asset.call_number acn ON (acp.call_number = acn.id)
+		JOIN asset.call_number_prefix acnp ON (acn.prefix = acnp.id)
+		JOIN asset.call_number_suffix acns ON (acn.suffix = acns.id)
+		JOIN actor.usr au ON (au.id = ahr.usr)
+		LEFT JOIN serial.issuance siss
+			ON (ahr.hold_type = 'I' AND siss.id = ahr.target)
+		LEFT JOIN asset.copy_location_order acplo
+			ON (acp.location = acplo.location AND
+				acp.circ_lib = acplo.org)
+		WHERE
+			ahr.capture_time IS NULL AND
+			ahr.cancel_time IS NULL AND
+			(ahr.expire_time is NULL OR ahr.expire_time > NOW())
+		]]></oils_persist:source_definition>
+		<fields oils_persist:primary="id">
+			<field reporter:label="Status" name="status" oils_persist:virtual="true" />
+			<field reporter:label="Transit" name="transit" oils_persist:virtual="true" />
+			<field reporter:label="Capture Date/Time" name="capture_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Currently Targeted Copy" name="current_copy" />
+			<field reporter:label="Notify by Email?" name="email_notify" reporter:datatype="bool"/>
+			<field reporter:label="Hold Expire Date/Time" name="expire_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Fulfilling Library" name="fulfillment_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Fulfilling Staff" name="fulfillment_staff" />
+			<field reporter:label="Fulfillment Date/Time" name="fulfillment_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Hold Type" name="hold_type" reporter:datatype="text"/>
+			<field reporter:label="Holdable Formats (for M-type hold)" name="holdable_formats" reporter:datatype="text"/>
+			<field reporter:label="Hold ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Notifications Phone Number" name="phone_notify" reporter:datatype="text"/>
+			<field reporter:label="Notifications SMS Number" name="sms_notify" reporter:datatype="text"/>
+			<field reporter:label="Notifications SMS Carrier" name="sms_carrier" reporter:datatype="link"/>
+			<field reporter:label="Pickup Library" name="pickup_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Last Targeting Date/Time" name="prev_check_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Requesting Library" name="request_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Request Date/Time" name="request_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Requesting User" name="requestor" reporter:datatype="link"/>
+			<field reporter:label="Item Selection Depth" name="selection_depth" />
+			<field reporter:label="Selection Locus" name="selection_ou" reporter:datatype="org_unit"/>
+			<field reporter:label="Target Object ID" name="target" reporter:datatype="link"/>
+			<field reporter:label="Hold User" name="usr" reporter:datatype="link"/>
+			<field reporter:label="Hold Cancel Date/Time" name="cancel_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Notify Time" name="notify_time" oils_persist:virtual="true" reporter:datatype="timestamp"/>
+			<field reporter:label="Notify Count" name="notify_count" oils_persist:virtual="true" reporter:datatype="int" />
+			<field reporter:label="Notifications" name="notifications" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Bib Record link" name="bib_rec" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Eligible Copies" name="eligible_copies" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Currently Frozen" name="frozen" reporter:datatype="bool"/>
+			<field reporter:label="Thaw Date (if frozen)" name="thaw_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Shelf Time" name="shelf_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Cancelation cause" name="cancel_cause" reporter:datatype="link" />
+			<field reporter:label="Cancelation note" name="cancel_note" reporter:datatype="text" />
+			<field reporter:label="Top of Queue" name="cut_in_line" reporter:datatype="bool" />
+			<field reporter:label="Is Mint Condition" name="mint_condition" reporter:datatype="bool" />
+			<field reporter:label="Shelf Expire Time" name="shelf_expire_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Notes" name="notes" reporter:datatype="link" oils_persist:virtual="true"/>
+			<field reporter:label="Current Shelf Lib" name="current_shelf_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Copy Location Sort Order" name="copy_location_order_position" reporter:datatype="int" />
+			<field reporter:label="User Display Name" name="usr_display_name" reporter:datatype="text" />
+			<field reporter:label="Call Number Label" name="call_number_label" reporter:datatype="text" />
+			<field reporter:label="Issuance Label" name="issuance_label" reporter:datatype="text" />
+			<field reporter:label="Is Staff Hold?" name="is_staff_hold" reporter:datatype="bool" />
+		</fields>
+		<links>
+			<link field="fulfillment_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="fulfillment_staff" reltype="has_a" key="id" map="" class="au"/>
+			<link field="pickup_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="selection_ou" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="requestor" reltype="has_a" key="id" map="" class="au"/>
+			<link field="current_copy" reltype="has_a" key="id" map="" class="acp"/>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="request_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="transit" reltype="might_have" key="hold" map="" class="ahtc"/>
+			<link field="notifications" reltype="has_many" key="hold" map="" class="ahn"/>
+			<link field="eligible_copies" reltype="has_many" key="hold" map="target_copy" class="ahcm"/>
+			<link field="bib_rec" reltype="might_have" key="id" map="" class="rhrr"/>
+			<link field="cancel_cause" reltype="might_have" key="id" map="" class="ahrcc"/>
+			<link field="notes" reltype="has_many" key="hold" map="" class="ahrn"/>
+			<link field="current_shelf_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="sms_carrier" reltype="has_a" key="id" map="" class="csc"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve permission="VIEW_HOLD" context_field="pickup_lib" />
+			</actions>
+		</permacrud>
 	</class>
 	<class id="alhr" controller="open-ils.cstore" oils_obj:fieldmapper="action::last_hold_request" reporter:label="Last Captured Hold Request" oils_persist:readonly="true">
 		<oils_persist:source_definition>
@@ -5137,7 +5251,7 @@ SELECT  usr,
 			<link field="entries" reltype="has_many" key="stat_cat" map="" class="asce"/>
 		</links>
 	</class>
-	<class id="ac" controller="open-ils.cstore" oils_obj:fieldmapper="actor::card" oils_persist:tablename="actor.card" reporter:label="Library Card">
+	<class id="ac" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::card" oils_persist:tablename="actor.card" reporter:label="Library Card">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.card_id_seq">
 			<field reporter:label="IsActive?" name="active" reporter:datatype="bool"/>
 			<field reporter:label="Barcode" name="barcode" reporter:datatype="text"/>
@@ -5147,6 +5261,13 @@ SELECT  usr,
 		<links>
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve permission="VIEW_USER">
+					<context link="usr" field="home_ou" />
+				</retrieve>
+			</actions>
+		</permacrud>
 	</class>
     <class id="actscsf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::stat_cat_sip_fields" oils_persist:tablename="actor.stat_cat_sip_fields" reporter:label="SIP Statistical Category Field Identifier">
         <fields oils_persist:primary="field">
@@ -7898,7 +8019,7 @@ SELECT  usr,
 			<link field="folder" reltype="has_a" key="id" map="" class="rof"/>
 		</links>
 	</class>
-	<class id="rmsr" controller="open-ils.reporter-store open-ils.cstore" oils_obj:fieldmapper="reporter::materialized_simple_record" oils_persist:tablename="reporter.materialized_simple_record" reporter:label="Fast Simple Record Extracts">
+	<class id="rmsr" controller="open-ils.reporter-store open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="reporter::materialized_simple_record" oils_persist:tablename="reporter.materialized_simple_record" reporter:label="Fast Simple Record Extracts">
 		<fields oils_persist:primary="id">
 			<field reporter:label="Record ID" name="id" reporter:datatype="id" />
 			<field reporter:label="Fingerprint" name="fingerprint" reporter:datatype="text"/>
@@ -7916,6 +8037,11 @@ SELECT  usr,
 		<links>
 			<link field="biblio_record" reltype="might_have" key="id" map="" class="bre"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve />
+			</actions>
+		</permacrud>
 	</class>
 	<class id="rssr" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::super_simple_record" oils_persist:tablename="reporter.super_simple_record" reporter:label="Simple Record Extracts">
 		<fields oils_persist:primary="id">

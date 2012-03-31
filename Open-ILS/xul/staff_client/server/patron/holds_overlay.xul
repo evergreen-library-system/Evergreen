@@ -20,6 +20,7 @@
         <command id="cmd_holds_print" />
         <command id="cmd_holds_print_full" />
         <command id="cmd_holds_print_alt" />
+        <command id="cmd_simplified_pull_list" />
         <command id="cmd_show_catalog" />
         <command id="cmd_retrieve_patron" />
         <command id="cmd_holds_edit_desire_mint_condition" />
@@ -200,6 +201,7 @@
         <button id="holds_print" label="&staff.patron.holds_overlay.print.label;" command="cmd_holds_print" accesskey="&staff.patron.holds_overlay.print.accesskey;" />
         <button id="print_full_btn" hidden="true" label="&staff.patron.holds_overlay.print_full_pull_list.label;" command="cmd_holds_print_full" accesskey="&staff.patron.holds_overlay.print_full_pull_list.accesskey;" />
         <button id="print_alt_btn" hidden="true" label="&staff.patron.holds_overlay.print_alt_pull_list.label;" command="cmd_holds_print_alt" accesskey="&staff.patron.holds_overlay.print_alt_pull_list.accesskey;" />
+        <button id="simplified_pull_list_btn" hidden="true" label="&staff.patron.holds_overlay.simplified_pull_list.label;" command="cmd_simplified_pull_list" accesskey="&staff.patron.holds_overlay.simplified_pull_list.accesskey;" />
         <spacer flex="1"/>
     </hbox>
 

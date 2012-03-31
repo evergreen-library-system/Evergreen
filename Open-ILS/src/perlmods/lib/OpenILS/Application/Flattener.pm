@@ -89,12 +89,14 @@ sub _flattened_search_single_join_clause {
             my $new_join;
             if ($reltype eq "has_a") {
                 $new_join = {
+                    type => "left",
                     class => $hint,
                     fkey => $piece,
                     field => $field
                 };
             } elsif ($reltype eq "has_many" or $reltype eq "might_have") {
                 $new_join = {
+                    type => "left",
                     class => $hint,
                     fkey => $last_ident,
                     field => $field
