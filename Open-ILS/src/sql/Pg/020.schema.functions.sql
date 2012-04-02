@@ -221,6 +221,35 @@ CREATE OR REPLACE FUNCTION actor.org_unit_common_ancestors ( INT, INT ) RETURNS 
 	  FROM	actor.org_unit_ancestors($2);
 $$ LANGUAGE SQL STABLE ROWS 1;
 
+-- Given the IDs of two rows in actor.org_unit, *the second being an ancestor
+-- of the first*, return in array form the path from the ancestor to the
+-- descendant, with each point in the path being an org_unit ID.  This is
+-- useful for sorting org_units by their position in a depth-first (display
+-- order) representation of the tree.
+--
+-- This breaks with the precedent set by actor.org_unit_full_path() and others,
+-- and gets the parameters "backwards," but otherwise this function would
+-- not be very usable within json_query.
+CREATE OR REPLACE FUNCTION actor.org_unit_simple_path(INT, INT)
+RETURNS INT[] AS $$
+    WITH RECURSIVE descendant_depth(id, path) AS (
+        SELECT  aou.id,
+                ARRAY[aou.id]
+          FROM  actor.org_unit aou
+                JOIN actor.org_unit_type aout ON (aout.id = aou.ou_type)
+          WHERE aou.id = $2
+            UNION ALL
+        SELECT  aou.id,
+                dd.path || ARRAY[aou.id]
+          FROM  actor.org_unit aou
+                JOIN actor.org_unit_type aout ON (aout.id = aou.ou_type)
+                JOIN descendant_depth dd ON (dd.id = aou.parent_ou)
+    ) SELECT dd.path
+        FROM actor.org_unit aou
+        JOIN descendant_depth dd USING (id)
+        WHERE aou.id = $1 ORDER BY dd.path;
+$$ LANGUAGE SQL STABLE ROWS 1;
+
 CREATE OR REPLACE FUNCTION actor.org_unit_proximity ( INT, INT ) RETURNS INT AS $$
 	SELECT COUNT(id)::INT FROM (
 		SELECT id FROM actor.org_unit_combined_ancestors($1, $2)

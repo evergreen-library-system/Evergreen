@@ -1001,6 +1001,11 @@
         <desc xml:lang="en-US">Checkin attempted on item during minimum transit checkin interval.</desc>
     </event>
 
+    <event code='11104' textcode='SERIAL_CORRUPT_PATTERN_CODE'>
+        <desc xml:lang="en-US">A serial pattern code has been configured
+        that fails to conform to MFHD standards for fields 853-855.</desc>
+    </event>
+
 	<!-- ================================================================ -->
 
 </ils_events>

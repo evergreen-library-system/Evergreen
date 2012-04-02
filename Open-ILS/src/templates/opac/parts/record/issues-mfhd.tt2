@@ -1,0 +1,40 @@
+[% IF ctx.mfhd_summaries.size; %]
+    <div class="rdetail-mfhd-holdings">
+        <table><tbody>
+[%
+        mfhd = {
+            basic_holdings = l('Volumes'),
+            basic_holdings_add = l('Additional Volume Information'),
+            supplement_holdings = l('Supplements'),
+            supplement_holdings_add = l('Additional Supplement Information'),
+            index_holdings = l('Indexes'),
+            index_holdings_add = l('Additional Index Information'),
+            online = l('Online'),
+            missing = l('Missing'),
+            incomplete = l('Incomplete'),
+        };
+
+        FOREACH serial IN ctx.mfhd_summaries;
+%]
+            <tr>
+                <td class="rdetail-mfhd-head" colspan="2">[% l('Holdings summary ([_1])', serial.location) %]</td>
+            </tr>
+[%
+            FOREACH type IN mfhd.keys;
+                NEXT UNLESS serial.$type.size;
+%]
+            <tr>
+                <td class="rdetail-mfhd-type">[% mfhd.$type %]</td>
+                <td class="rdetail-mfhd-contents">[%
+                    FOR thing IN serial.$type;
+                        thing.join(", ");
+                    END %]</td>
+            </tr>
+        [% END %]
+            <tr>
+                <td class="rdetail-mfhd-foot" colspan="2"> </td>
+            </tr>
+    [% END %]
+        </tbody></table>
+    </div>
+[% END %]

@@ -233,6 +233,72 @@ sub subfields_list {
     }
     return @subfields;
 }
+my %__mfhd_month_labels = (
+    '01' => ['Jan.', 'January'],
+    '02' => ['Feb.', 'February'],
+    '03' => ['Mar.', 'March'],
+    '04' => ['Apr.', 'April'],
+    '05' => ['May ', 'May'],
+    '06' => ['Jun.', 'June'],
+    '07' => ['Jul.', 'July'],
+    '08' => ['Aug.', 'August'],
+    '09' => ['Sep.', 'September'],
+    '10' => ['Oct.', 'October'],
+    '11' => ['Nov.', 'November'],
+    '12' => ['Dec.', 'December'],
+    '21' => 'Spring',
+    '22' => 'Summer',
+    '23' => 'Autumn',
+    '24' => 'Winter'
+);
+
+sub _get_mfhd_month_label {
+    my ($month, $long) = @_;
+    $long ||= 0;
+
+    my $o = $__mfhd_month_labels{$month};
+    return (ref $o) ? $o->[$long] : $o;
+}
+
+# Called by method 'format_chron'
+#
+sub format_single_chron {
+    my $self = shift;
+    my $holdings = shift;
+    my $key = shift;
+    my $skip_sep = shift;
+    my $long = shift;
+    my $capstr;
+    my $chron;
+    my $sep = ':';
+
+    return if !defined $self->caption->capstr($key);
+
+    $capstr = $self->caption->capstr($key);
+    if (substr($capstr, 0, 1) eq '(') {
+        # a caption enclosed in parentheses is not displayed
+        $capstr = '';
+    }
+
+    # If this is the second level of chronology, then it's
+    # likely to be a month or season, so we should use the
+    # string name rather than the number given.
+    if ($key eq 'b' or $key eq 'j') {
+        # account for possible combined issue chronology
+        my @chron_parts = split('/', $holdings->{$key});
+        for (my $i = 0; $i < @chron_parts; $i++) {
+            my $month_label =  _get_mfhd_month_label($chron_parts[$i], $long);
+            $chron_parts[$i] = $month_label if defined $month_label;
+        }
+        $chron = join('/', @chron_parts);
+    } else {
+        $chron = $holdings->{$key};
+    }
+
+    $skip_sep ||= ($key eq 'a' || $key eq 'i');
+
+    return ($skip_sep ? '' : $sep) . $capstr . $chron;
+}
 
 #
 # Called by method 'format_part' for formatting the chronology portion of
@@ -241,60 +307,46 @@ sub subfields_list {
 sub format_chron {
     my $self     = shift;
     my $holdings = shift;
-    my $caption  = $self->caption;
     my @keys     = @_;
     my $str      = '';
-    my %month    = (
-        '01' => 'Jan.',
-        '02' => 'Feb.',
-        '03' => 'Mar.',
-        '04' => 'Apr.',
-        '05' => 'May ',
-        '06' => 'Jun.',
-        '07' => 'Jul.',
-        '08' => 'Aug.',
-        '09' => 'Sep.',
-        '10' => 'Oct.',
-        '11' => 'Nov.',
-        '12' => 'Dec.',
-        '21' => 'Spring',
-        '22' => 'Summer',
-        '23' => 'Autumn',
-        '24' => 'Winter'
-    );
 
-    foreach my $i (0..@keys) {
-        my $key = $keys[$i];
-        my $capstr;
-        my $chron;
-        my $sep;
-
-        last if !defined $caption->capstr($key);
-
-        $capstr = $caption->capstr($key);
-        if (substr($capstr, 0, 1) eq '(') {
-            # a caption enclosed in parentheses is not displayed
-            $capstr = '';
-        }
-
-        # If this is the second level of chronology, then it's
-        # likely to be a month or season, so we should use the
-        # string name rather than the number given.
-        if (($i == 1)) {
-            # account for possible combined issue chronology
-            my @chron_parts = split('/', $holdings->{$key});
-            for (my $i = 0; $i < @chron_parts; $i++) {
-                $chron_parts[$i] = $month{$chron_parts[$i]} if exists $month{$chron_parts[$i]};
-            }
-            $chron = join('/', @chron_parts);
-        } else {
-            $chron = $holdings->{$key};
-        }
-
-        $str .= (($i == 0 || $str =~ /[. ]$/) ? '' : ':') . $capstr . $chron;
+    foreach my $key (@keys) {
+        my $skip_sep = ($str =~ /[. ]$/);
+        my $new_part = $self->format_single_chron($holdings, $key, $skip_sep);
+        last unless defined $new_part;
+        $str .= $new_part;
     }
 
     return $str;
+}
+
+#
+# Called by method 'format_part' for each enum subfield
+#
+sub format_single_enum {
+    my $self = shift;
+    my $holding_values = shift;
+    my $key = shift;
+    my $skip_sep = shift;
+    my $capstr;
+    my $chron;
+    my $sep = ':';
+
+    return if !defined $self->caption->capstr($key);
+
+    $capstr = $self->caption->capstr($key);
+    if (substr($capstr, 0, 1) eq '(') {
+        # a caption enclosed in parentheses is not displayed
+        $capstr = '';
+    } elsif ($skip_sep) {
+        # We'll let a $skip_sep parameter of true mean what it means down by
+        # the return statement AND to pad the caption itself here.
+        $capstr .= ' ';
+    }
+
+
+    $skip_sep ||= ($key eq 'a');
+    return ($skip_sep ? '' : $sep) . $capstr . $holding_values->{$key};
 }
 
 #
@@ -321,19 +373,9 @@ sub format_part {
 
         # Enumerations
         foreach my $key ('a'..'f') {
-            my $capstr;
-            my $chron;
-            my $sep;
-
-            last if !defined $caption->capstr($key);
-
-            $capstr = $caption->capstr($key);
-            if (substr($capstr, 0, 1) eq '(') {
-                # a caption enclosed in parentheses is not displayed
-                $capstr = '';
-            }
-            $str .=
-              ($key eq 'a' ? '' : ':') . $capstr . $holding_values->{$key};
+            my $new_part = $self->format_single_enum($holding_values, $key);
+            last unless defined $new_part;
+            $str .= $new_part;
         }
 
         # Chronology

@@ -4185,6 +4185,7 @@ SELECT  usr,
 			<field reporter:label="Bind Unit Template" name="bind_unit_template" reporter:datatype="link"/>
 			<field reporter:label="Unit Label Prefix" name="unit_label_prefix" reporter:datatype="text"/>
 			<field reporter:label="Unit Label Suffix" name="unit_label_suffix" reporter:datatype="text"/>
+			<field reporter:label="Display Grouping" name="display_grouping" reporter:datatype="text"/>
 			<field reporter:label="Streams" name="streams" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Notes" name="notes" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Basic Issue Summary" name="basic_summary" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -4477,7 +4478,32 @@ SELECT  usr,
 		</links>
 		<!-- Not available via PCRUD at this time -->
 	</class>
-
+	<class id="sasum" controller="open-ils.cstore" oils_obj:fieldmapper="serial::any_summary" oils_persist:tablename="serial.any_summary" reporter:label="All Issues' Summaries" oils_persist:readonly="true">
+		<fields>
+			<field name="summary_type" reporter:label="Summary Type" reporter:datatype="text" />
+			<field name="id" reporter:label="Native ID" reporter:datatype="int" /><!-- not datatype="id", because id is not unique in this view -->
+			<field name="distribution" reporter:label="Distribution" reporter:datatype="link" />
+			<field name="generated_coverage" reporter:label="Generated Coverage" reporter:datatype="text" />
+			<field name="show_generated" reporter:label="Show Generated?" reporter:datatype="bool" />
+		</fields>
+		<links>
+			<link field="distribution" reltype="has_a" key="id" map="" class="sdist"/>
+		</links>
+	</class>
+	<class id="smhc" controller="open-ils.cstore" oils_obj:fieldmapper="serial::materialized_holding_code" oils_persist:tablename="serial.materialized_holding_code" reporter:label="Materialized Holding Code" oils_persist:readonly="true">
+		<fields oils_persist:primary="id" oils_persist:sequence="serial.materialized_holding_code_id_seq">
+			<field name="id" reporter:label="ID" reporter:datatype="id" />
+			<field name="issuance" reporter:label="Issuance" reporter:datatype="link" />
+			<field name="holding_type" reporter:label="Holding Type" reporter:datatype="text" />
+			<field name="ind1" reporter:label="First Indicator" reporter:datatype="text" />
+			<field name="ind2" reporter:label="Second Indicator" reporter:datatype="text" />
+			<field name="subfield" reporter:label="Subfield" reporter:datatype="text" />
+			<field name="value" reporter:label="Value" reporter:datatype="text" oils_obj:validate="^\w$" />
+		</fields>
+		<links>
+			<link field="issuance" reltype="has_a" key="id" map="" class="siss"/>
+		</links>
+	</class>
 	<class id="sbsum" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="serial::basic_summary" oils_persist:tablename="serial.basic_summary" reporter:label="Basic Issue Summary">
 		<fields oils_persist:primary="id" oils_persist:sequence="serial.basic_summary_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id" />

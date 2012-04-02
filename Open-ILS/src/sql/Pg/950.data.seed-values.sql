@@ -4664,6 +4664,21 @@ INSERT into config.org_unit_setting_type
         'description'
     ),
     'bool', null)
+,( 'serial.default_display_grouping', 'serial'
+    oils_i18n_gettext(
+        'serial.default_display_grouping',
+        'Default display grouping for serials distributions presented in the OPAC.',
+        'coust',
+        'label'
+    ),
+    oils_i18n_gettext(
+        'serial.default_display_grouping',
+        'Default display grouping for serials distributions presented in the OPAC. This can be "enum" or "chron".',
+        'coust',
+        'description'
+    ),
+    'string', null)
+
 ;
 
 UPDATE config.org_unit_setting_type
@@ -10117,7 +10132,6 @@ INSERT INTO config.usr_setting_type (name,grp,opac_visible,label,description,dat
     ),
     'string'
 );
-
 SELECT setval( 'config.sms_carrier_id_seq', 1000 );
 INSERT INTO config.sms_carrier VALUES
 

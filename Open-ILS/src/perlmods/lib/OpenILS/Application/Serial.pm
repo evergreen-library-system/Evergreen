@@ -50,6 +50,9 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::MFHD;
 use DateTime::Format::ISO8601;
 use MARC::File::XML (BinaryEncoding => 'utf8');
+
+use OpenILS::Application::Serial::OPAC;
+
 my $U = 'OpenILS::Application::AppUtils';
 my @MFHD_NAMES = ('basic','supplement','index');
 my %MFHD_NAMES_BY_TAG = (  '853' => $MFHD_NAMES[0],
@@ -503,6 +506,8 @@ sub pub_fleshed_serial_issuance_retrieve_batch {
 }
 
 sub received_siss_by_bib {
+    # XXX this is somewhat wrong in implementation and should not be used in
+    # new places - senator
     my $self = shift;
     my $client = shift;
     my $bib = shift;
@@ -614,6 +619,8 @@ q/A hash of optional arguments.  Valid keys and their meanings:
 
 
 sub scoped_bib_holdings_summary {
+    # XXX this is somewhat wrong in implementation and should not be used in
+    # new places - senator
     my $self = shift;
     my $client = shift;
     my $bibid = shift;
@@ -643,7 +650,7 @@ __PACKAGE__->register_method(
     api_level => 1,
     argc      => 1,
     signature => {
-        desc   => 'Receives a Bib ID and other optional params and returns set of holdings statements',
+        desc   => '** DEPRECATED and only used by JSPAC. Somewhat wrong in implementation. *** Receives a Bib ID and other optional params and returns set of holdings statements',
         params => [
             {   name => 'bibid',
                 desc => 'id of the bre to which the issuances belong',

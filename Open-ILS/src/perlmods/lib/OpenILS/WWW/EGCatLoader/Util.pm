@@ -421,4 +421,27 @@ sub set_file_download_headers {
     return Apache2::Const::OK;
 }
 
+sub apache_log_if_event {
+    my ($self, $event, $prefix_text, $success_ok, $level) = @_;
+
+    $prefix_text ||= "Evergreen returned event";
+    $success_ok ||= 0;
+    $level ||= "warn";
+
+    chomp $prefix_text;
+    $prefix_text .= ": ";
+
+    my $code = $U->event_code($event);
+    if (defined $code and ($code or not $success_ok)) {
+        $self->apache->log->$level(
+            $prefix_text .
+            ($event->{textcode} || "") . " ($code)" .
+            ($event->{note} ? (": " . $event->{note}) : "")
+        );
+        return 1;
+    }
+
+    return;
+}
+
 1;

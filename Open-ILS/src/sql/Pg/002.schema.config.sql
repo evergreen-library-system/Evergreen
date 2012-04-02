@@ -46,6 +46,7 @@ INSERT INTO config.internal_flag (name) VALUES ('ingest.disable_metabib_full_rec
 INSERT INTO config.internal_flag (name) VALUES ('ingest.disable_metabib_rec_descriptor');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.disable_metabib_field_entry');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.assume_inserts_only');
+INSERT INTO config.internal_flag (name) VALUES ('serial.rematerialize_on_same_holding_code');
 
 CREATE TABLE config.global_flag (
     label   TEXT    NOT NULL

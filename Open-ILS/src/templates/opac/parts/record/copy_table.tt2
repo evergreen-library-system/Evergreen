@@ -1,5 +1,19 @@
 [%-
-FOREACH copy_info IN ctx.copies;
+
+# If being used in serial mode, flatten list of units so that they can be
+# used like one long list of copies without changing so much code below.
+IF serial_holdings;
+    copies = [];
+    FOREACH h IN serial_holdings;
+        units = h.units.slice(0); # copy
+        FOREACH unit IN units;
+            unit.holding_label = h.label;
+        END;
+        copies = copies.merge(units);
+    END;
+END;
+
+FOREACH copy_info IN copies;
     IF copy_info.call_number_label != '##URI##';
         has_copies = 'true';
     END;
@@ -10,12 +24,16 @@ FOREACH copy_info IN ctx.copies;
         LAST;
     END;
 END;
-%]
+-%]
 [%- IF has_copies; %]
 <table cellpadding="0" cellspacing="0" border="0" width="100%" id="rdetails_status">
     <thead>
         <tr>
+            [% IF serial_holdings -%]
+            <th id='copy_header_holding_label'>[% l("Issue Label") %]</th>
+            [%- ELSE -%]
             <th id='copy_header_library'>[% l("Location") %]</th>
+            [%- END %]
             <th id='copy_header_callnmber'>[% l("Call Number") %]</th>
             [%- IF has_parts == 'true' %]
             <th id='copy_header_part'>[% l("Part") %]</th>
@@ -25,6 +43,8 @@ END;
             [%- IF ctx.is_staff %]
             <th id='copy_header_age_hold'>[% l("Age Hold Protection") %]</th>
             <th id='copy_header_create_date'>[% l("Create Date") %]</th>
+            [%- END %]
+            [%- IF ctx.is_staff OR serial_holdings %]
             <th id='copy_header_holdable'>[% l("Holdable?") %]</th>
             [%- END %]
             <th id='copy_header_status'>[% l("Status") %]</th>
@@ -33,7 +53,7 @@ END;
     </thead>
     <tbody class="copy_details_table">
         [%- last_cn = 0;
-        FOR copy_info IN ctx.copies;
+        FOR copy_info IN copies;
             callnum = copy_info.call_number_label;
             NEXT IF callnum == '##URI##';
 
@@ -48,13 +68,16 @@ END;
             END;
         -%]
         <tr>
-            <td header='copy_header_library'>
+            [%- IF serial_holdings %]<td header='copy_header_holding_label' class='rdetail-issue-issue'>
+                [%- copy_info.holding_label | html; -%]
+            </td>
+            [%- ELSE %]<td header='copy_header_library'>
             [%-
                 org_name = ctx.get_aou(copy_info.circ_lib).name;
                 org_name | html
             -%]
-            </td>
-            <td header='copy_header_callnumber'>[% callnum | html %] [% IF ctx.get_org_setting(ctx.search_ou, 'sms.enable') == 1 %](<a href="[% mkurl(ctx.opac_root _ '/sms_cn', {copy_id => copy_info.id}) %]">Text</a>)[% END %]</td>
+            </td>[% END %]
+            <td header='copy_header_callnumber'>[% callnum | html %] [% IF ctx.get_org_setting(CGI.param('loc') OR ctx.aou_tree.id, 'sms.enable') == 1 %](<a href="[% mkurl(ctx.opac_root _ '/sms_cn', {copy_id => copy_info.id}) %]">Text</a>)[% END %]</td>
             [%- IF has_parts == 'true' %]
             <td header='copy_header_part'>[% copy_info.part_label | html %]</td>
             [%- END %]
@@ -73,13 +96,18 @@ END;
                 ctx.parse_datetime(copy_info.create_date),
                 DATE_FORMAT
             ) %]</td>
+            [% END # is_staff %]
+            [% IF ctx.is_staff OR serial_holdings %]
             <td header='copy_header_holdable'>[%  # Show copy/volume hold links to staff (without
                     # checking whether they have permissions to do those).
-                    overall_holdable = (copy_info.holdable == 't' AND
+                    overall_holdable = (
+                        copy_info.holdable == 't' AND
                         copy_info.location_holdable == 't' AND
                         copy_info.status_holdable == 't');
                     IF overall_holdable;
-                        l("Place on"); %]
+                        l("Place on");
+                        IF ctx.is_staff;
+                    %]
                 <a href="[% mkurl(ctx.opac_root _ '/place_hold', 
                     {hold_target => copy_info.id, hold_type => 'C', hold_source_page => mkurl()}) %]">[% l("copy") %]</a>
                 [%-      IF copy_info.call_number != last_cn;
@@ -88,6 +116,18 @@ END;
                 <a href="[% mkurl(ctx.opac_root _ '/place_hold', 
                     {hold_target => copy_info.call_number, hold_type => 'V', hold_source_page => mkurl()}) %]">[% l("volume") %]</a>
                 [%-      END;
+                         IF serial_holdings;
+                            l(" / ");
+                         END;
+                        END;
+                        IF serial_holdings;
+                %]
+                <a class="rdetail-issue-place-hold"
+                    href="[% mkurl(ctx.opac_root _ '/place_hold', {
+                    hold_target => copy_info.issuance, hold_type => 'I',
+                    hold_source_page => mkurl()
+                }) %]">[% l("issue") %]</a>[%-
+                        END;
                     ELSE;
                         l("No");
                     END %]</td>
@@ -105,7 +145,7 @@ END;
         </tr>
         [%- END %]
         <tr>
-        [%- IF ctx.copy_offset > 0;
+        [%- IF ctx.copy_offset > 0 AND NOT serial_holdings;
             new_offset = ctx.copy_offset - ctx.copy_limit;
             IF new_offset < 0; new_offset = 0; END %]
             <td>
@@ -113,17 +153,18 @@ END;
                     l('Previous [_1]', ctx.copy_offset - new_offset) %]</a>
             </td>
         [%- END %]
-        [%- IF ctx.copies.size >= ctx.copy_limit %]
+        [%- IF copies.size >= ctx.copy_limit AND NOT serial_holdings %]
             <td>
                 <a href="[% mkurl('', {copy_offset => ctx.copy_offset + ctx.copy_limit, copy_limit => ctx.copy_limit}) %]">[%
                     l('Next [_1]', ctx.copy_limit) %] &raquo;</a>
             </td>
         [%- END %]
         </tr>
+        [% IF NOT serial_holdings -%]
         <tr>
             <td>
                 [%- more_copies_limit = 50 %] [%# TODO: config %]
-                [%- IF  ctx.copy_limit != more_copies_limit AND ctx.copies.size >= ctx.copy_limit %]
+                [%- IF  ctx.copy_limit != more_copies_limit AND copies.size >= ctx.copy_limit %]
                     <div class="rdetail_show_copies">
                         <img src="[% ctx.media_prefix %]/images/plus_sign.png" />
                         <a href="[% mkurl('', {copy_limit => more_copies_limit, copy_offset => 0}) %]">[% l('Show more copies') %]</a>
@@ -136,6 +177,7 @@ END;
                 [%- END %]
             </td>
         </tr>
+        [%- END %]
     </tbody>
 </table>
 [% END; %]

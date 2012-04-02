@@ -75,6 +75,40 @@
                     new dijit.form.TextBox({
                         "disabled": true, "value": sub_id
                     });
+
+                var _display_grouping_store = new dojo.data.ItemFileReadStore({
+                    "data": {
+                        "identifier": "display_grouping",
+                        "label": "label",
+                        "items": [
+                            {"display_grouping": "chron",
+                                "label": "Chronology"},
+                            {"display_grouping": "enum",
+                                "label": "Enumeration"}
+                        ]
+                    }
+                });
+
+                var settings = fieldmapper.aou.fetchOrgSettingBatch(
+                    openils.User.user.ws_ou(),
+                    ["serial.default_display_grouping"]
+                );
+                var default_display_grouping = "chron";
+
+                if (settings && settings["serial.default_display_grouping"]) {
+                    default_display_grouping =
+                        settings["serial.default_display_grouping"].value;
+                }
+
+                dist_grid.overrideEditWidgets.display_grouping =
+                    new dijit.form.FilteringSelect({
+                        "store": _display_grouping_store,
+                        "searchAttr": "label",
+                        "name": "display_grouping"
+                    });
+                    dist_grid.overrideEditWidgets.display_grouping.shove = {
+                        "create": default_display_grouping
+                    };
             }
         </script>
         [% INCLUDE "serial/subscription/distribution.tt2" %]
