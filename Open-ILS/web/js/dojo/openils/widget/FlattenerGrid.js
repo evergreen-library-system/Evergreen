@@ -298,6 +298,9 @@ if (!dojo._hasResource["openils.widget.FlattenerGrid"]) {
                     }), this.query
                 );
 
+                // pick up any column label changes
+                this.columnPicker.reloadStructure();
+
                 this._showing_create_pane = false;
 
                 this.overrideEditWidgets = {};
