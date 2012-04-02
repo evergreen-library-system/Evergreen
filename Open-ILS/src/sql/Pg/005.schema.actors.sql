@@ -295,8 +295,7 @@ CREATE TABLE actor.org_unit (
 	email		TEXT,
 	phone		TEXT,
 	opac_visible	BOOL	NOT NULL DEFAULT TRUE,
-	fiscal_calendar INT     NOT NULL DEFAULT 1,   -- foreign key constraint to be added later
-	sibling_order   INT     NOT NULL DEFAULT 0 
+	fiscal_calendar INT     NOT NULL DEFAULT 1   -- foreign key constraint to be added later
 );
 CREATE INDEX actor_org_unit_parent_ou_idx ON actor.org_unit (parent_ou);
 CREATE INDEX actor_org_unit_ou_type_idx ON actor.org_unit (ou_type);

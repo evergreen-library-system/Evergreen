@@ -87,7 +87,7 @@ sub init_ro_object_cache {
 			    {   parent_ou => undef},
 			    {   flesh            => -1,
 				    flesh_fields    => {aou =>  ['children']},
-				    order_by        => {aou => 'sibling_order, name'}
+				    order_by        => {aou => 'name'}
 			    }
 		    ])->[0];
 
