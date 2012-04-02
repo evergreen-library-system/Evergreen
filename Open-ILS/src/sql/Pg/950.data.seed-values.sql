@@ -4664,7 +4664,7 @@ INSERT into config.org_unit_setting_type
         'description'
     ),
     'bool', null)
-,( 'serial.default_display_grouping', 'serial'
+,( 'serial.default_display_grouping', 'serial',
     oils_i18n_gettext(
         'serial.default_display_grouping',
         'Default display grouping for serials distributions presented in the OPAC.',
