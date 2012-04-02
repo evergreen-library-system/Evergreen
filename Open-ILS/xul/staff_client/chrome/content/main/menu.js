@@ -1106,17 +1106,6 @@ main.menu.prototype = {
                     );
                 }
             ],
-            'cmd_local_admin_lib_sort_order' : [
-                ['oncommand'],
-                function(event) {
-                    open_eg_web_page(
-                        "/eg/actor/org_unit/sibling_order",
-                        "menu.cmd_local_admin_lib_sort_order.tab",
-                        event
-                    );
-                }
-            ],
-
             'cmd_reprint' : [
                 ['oncommand'],
                 function() {
