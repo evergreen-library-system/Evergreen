@@ -1,4 +1,4 @@
--- Evergreen DB patch XXXX.schema.patron_stat_category_enhancements.sql
+-- Evergreen DB patch 0701.schema.patron_stat_category_enhancements.sql
 --
 -- Enables users to set patron statistical categories as required,
 -- whether or not users can input free text for the category value.
@@ -8,7 +8,7 @@
 BEGIN;
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0701', :eg_version);
 
 -- New table
 
