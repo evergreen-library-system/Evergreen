@@ -489,11 +489,53 @@ function setFocusToNextTag (row, direction) {
     return true;
 }
 
+function set_lock_on_keypress(ev) {
+    try {
+        //dump('keypress: isChar = ' + ev.isChar + ' char = ' + ev.char + ' charCode = ' + ev.charCode + ' key = ' + ev.key + ' keyCode = ' + ev.keyCode + '\n');
+        if (! /* NOT */(
+                ev.altKey
+                || ev.ctrlKey
+                || ev.metaKey
+                || ev.keyCode == ev.DOM_VK_F1
+                || ev.keyCode == ev.DOM_VK_F2
+                || ev.keyCode == ev.DOM_VK_F3
+                || ev.keyCode == ev.DOM_VK_F4
+                || ev.keyCode == ev.DOM_VK_F5
+                || ev.keyCode == ev.DOM_VK_F6
+                || ev.keyCode == ev.DOM_VK_F7
+                || ev.keyCode == ev.DOM_VK_F8
+                || ev.keyCode == ev.DOM_VK_F9
+                || ev.keyCode == ev.DOM_VK_F10
+                || ev.keyCode == ev.DOM_VK_F11
+                || ev.keyCode == ev.DOM_VK_F12
+                || ev.keyCode == ev.DOM_VK_F13
+                || ev.keyCode == ev.DOM_VK_F14
+                || ev.keyCode == ev.DOM_VK_F15
+                || ev.keyCode == ev.DOM_VK_F16
+                || ev.keyCode == ev.DOM_VK_F17
+                || ev.keyCode == ev.DOM_VK_F18
+                || ev.keyCode == ev.DOM_VK_F19
+                || ev.keyCode == ev.DOM_VK_F20
+                || ev.keyCode == ev.DOM_VK_F21
+                || ev.keyCode == ev.DOM_VK_F22
+                || ev.keyCode == ev.DOM_VK_F23
+                || ev.keyCode == ev.DOM_VK_F24
+        )) {
+            oils_lock_page();
+        }
+    } catch(E) {
+        alert(E);
+    }
+}
 
 function createMARCTextbox (element,attrs) {
 
     var box = createComplexXULElement('textbox', attrs, Array.prototype.slice.apply(arguments, [2]) );
-    box.addEventListener('keypress',function(ev) { if (!(ev.altKey || ev.ctrlKey || ev.metaKey)) { oils_lock_page(); } },false);
+    box.addEventListener(
+        'keypress',
+        set_lock_on_keypress,
+        false
+    );
     box.onkeypress = function (event) {
         var root_node;
         var node = element;
