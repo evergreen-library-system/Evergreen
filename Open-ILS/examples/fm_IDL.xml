@@ -4944,7 +4944,6 @@ SELECT  usr,
 			<field reporter:label="Resource Attributes" name="rsrc_attrs" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Attribute Values" name="attr_vals" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Hours of Operation" name="hours_of_operation" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Sibling Sort Order" name="sibling_order" reporter:datatype="int"/>
 		</fields>
 		<links>
 			<link field="billing_address" reltype="has_a" key="id" map="" class="aoa"/>
