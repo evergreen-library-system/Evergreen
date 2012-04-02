@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('0702', :eg_version);
+--SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
 
 INSERT INTO config.global_flag (name, enabled, label) 
     VALUES (
