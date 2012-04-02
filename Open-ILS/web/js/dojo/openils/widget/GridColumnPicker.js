@@ -58,6 +58,16 @@ if(!dojo._hasResource["openils.widget.GridColumnPicker"]) {
             };
         },
 
+        /** Loads the current grid structure and passes the 
+         *  structure back to the grid to force a UI refresh.
+         *  This is necessary if external forces alter the structure. 
+         */
+        reloadStructure : function() {
+            this.structure = this.grid.structure;
+            this.cells = this.structure[0].cells[0].slice();
+            this.grid.setStructure(this.structure);
+        },
+
         // determine the visible sorting from the 
         // view and update our list of cells to match
         refreshCells : function() {
