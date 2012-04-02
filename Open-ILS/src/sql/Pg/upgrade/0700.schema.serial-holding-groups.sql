@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0700', :eg_version);
 
 INSERT INTO config.internal_flag (name, value, enabled) VALUES (
     'serial.rematerialize_on_same_holding_code', NULL, FALSE
