@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0699', :eg_version);
 
 INSERT INTO config.org_unit_setting_type ( name, label, description, datatype, grp )
     VALUES (
@@ -23,6 +23,5 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype, g
         'gui'
     );
 
--- DELETE FROM actor.org_unit_setting WHERE name = 'ui.hide_copy_editor_fields'; DELETE FROM config.org_unit_setting_type_log WHERE field_name = 'ui.hide_copy_editor_fields'; DELETE FROM config.org_unit_setting_type WHERE name = 'ui.hide_copy_editor_fields'; DELETE FROM config.upgrade_log WHERE version = 'XXXX';
 
 COMMIT;
