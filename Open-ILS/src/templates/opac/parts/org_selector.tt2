@@ -8,8 +8,6 @@
 
 BLOCK build_org_selector;
     node_stack = [{org => org_unit || ctx.aou_tree}];
-    inherited_vis = ctx.get_cgf('opac.org_unit.non_inheritied_visibility').enabled == 'f';
-
     IF !name; 
         name = 'loc';
         IF show_loc_groups; name = 'locg'; END;
@@ -32,10 +30,8 @@ BLOCK build_org_selector;
             css_class = '';
             disabled = '';
             selected = '';
-            visible = org_unit.opac_visible == 't';
 
-            # org and all children are invisible.
-            NEXT IF !visible AND inherited_vis AND !ctx.is_staff;
+            NEXT UNLESS ctx.is_staff || org_unit.opac_visible == 't';
 
             IF !loc_grp; # processing an org unit
 
@@ -61,15 +57,11 @@ BLOCK build_org_selector;
                 FOR grp IN top_loc_groups;
                     node_stack.push({org => org_unit, loc_grp => grp});
                 END;
-
             END;
 
-            # This org unit is not publicly visible (though its children may be).
-            NEXT UNLESS ctx.is_staff OR visible;
-
             node_value = ou_id;
+            IF loc_grp; node_value = node_value _ ':' _ loc_grp.id; END;
             IF loc_grp;
-                node_value = node_value _ ':' _ loc_grp.id; 
                 css_class = 'class="loc_grp"';
             ELSE;
                 css_class = 'class="org_unit"';
@@ -79,31 +71,20 @@ BLOCK build_org_selector;
                 disabled = 'disabled="disabled"';
             ELSIF node_value == value;
                 selected = 'selected="selected"';
-            END;
-
-            pad_depth = org_unit.ou_type.depth;
-
-            # copy loc groups appear as children of the owner (current) org
-            SET pad_depth = pad_depth + 1 IF loc_grp;
-
-            # for each parent org unit that is hidden, decrease the pad depth by one.  
-            IF !ctx.is_staff; 
-                porg = ctx.get_aou(org_unit.parent_ou);
-                WHILE porg;
-                    SET pad_depth = pad_depth - 1 IF porg.opac_visible == 'f';
-                    porg = ctx.get_aou(porg.parent_ou);
-                END;
-            END;
-
-            pad_depth = pad_depth * 2;
-            display_name = loc_grp ? loc_grp.name : org_unit.name;
-            
-            %] 
+            END %] 
 
             <option value='[% node_value %]' [% selected %] [% disabled %] [% css_class %]> 
-                [% '&nbsp;' FOR [0..pad_depth]; display_name | html %]
+            [%
+                # loc_grp's are displayed as children of the current org
+                depth = org_unit.ou_type.depth;
+                IF loc_grp; depth = depth + 1; END;
+                pad = depth * 2;
+                FOR idx IN [0..pad]; '&nbsp;'; END;
+                loc_grp ? loc_grp.name : org_unit.name | html ;
+            %]
             </option> 
-
-        [% END %]
+            [%
+        END;
+    %]
     </select>
 [% END %]
