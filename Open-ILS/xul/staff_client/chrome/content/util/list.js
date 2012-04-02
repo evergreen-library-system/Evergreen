@@ -201,20 +201,11 @@ util.list.prototype = {
                     treecol.addEventListener(
                         'click', 
                         function(ev) {
-                            dump('click\n');
                             if (ev.button == 2 /* context menu click */ || ev.target.getAttribute('no_sort')) {
                                 return;
                             }
-                            if (document.popupNode
-                                && document.popupNode.nodeName == 'treecol'
-                                && document.popupNode.hasAttribute('locked')
-                            ) {
-                                return;
-                            }
-                            dump('click2\n');
 
                             if (ev.ctrlKey) { // sub sort
-                                dump('click3\n');
                                 var sortDir = 'asc';
                                 if (ev.shiftKey) {
                                     sortDir = 'desc';
@@ -225,7 +216,6 @@ util.list.prototype = {
                                     'sortDir' : sortDir
                                 });
                             } else { // first sort
-                                dump('click4\n');
                                 var sortDir = ev.target.getAttribute('sortDir') || 'desc';
                                 if (sortDir == 'desc') sortDir = 'asc'; else sortDir = 'desc';
                                 if (ev.shiftKey) {
@@ -246,14 +236,11 @@ util.list.prototype = {
                     treecol.addEventListener(
                         'sort',
                         function(ev) {
-                            dump('sort\n');
                             if (!obj.first_sort) {
                                 return;
                             }
-                            dump('sort2\n');
 
                             function do_it() {
-                                dump('sort3\n');
                                 obj._sort_tree();
                             }
 
