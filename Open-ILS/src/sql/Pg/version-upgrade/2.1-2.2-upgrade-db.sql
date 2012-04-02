@@ -1,4 +1,8 @@
 --Upgrade Script for 2.1 to 2.2-alpha2
+
+-- Don't require use of -vegversion=something
+\set eg_version '''2.2'''
+
 -- DROP objects that might have existed from a prior run of 0526
 -- Yes this is ironic.
 DROP TABLE IF EXISTS config.db_patch_dependencies;
@@ -7,7 +11,7 @@ DROP FUNCTION evergreen.upgrade_list_applied_deprecates(TEXT);
 DROP FUNCTION evergreen.upgrade_list_applied_supersedes(TEXT);
 
 BEGIN;
-INSERT INTO config.upgrade_log (version) VALUES ('2.2-alpha3');
+INSERT INTO config.upgrade_log (version) VALUES ('2.2-beta1');
 
 INSERT INTO config.upgrade_log (version) VALUES ('0526'); --miker
 
@@ -13816,6 +13820,161 @@ $func$ LANGUAGE PLPGSQL;
 -- Delete old one
 DROP FUNCTION IF EXISTS metabib.reingest_metabib_field_entries(BIGINT);
 
+-- Evergreen DB patch 0688.data.circ_history_export_csv.sql
+--
+-- FIXME: insert description of change, if needed
+--
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0688', :eg_version);
+
+INSERT INTO action_trigger.hook (key, core_type, description, passive)
+VALUES (
+    'circ.format.history.csv',
+    'circ',
+    oils_i18n_gettext(
+        'circ.format.history.csv',
+        'Produce CSV of circulation history',
+        'ath',
+        'description'
+    ),
+    FALSE
+);
+
+INSERT INTO action_trigger.event_definition (
+    active, owner, name, hook, reactor, validator, group_field, template) 
+VALUES (
+    TRUE, 1, 'Circ History CSV', 'circ.format.history.csv', 'ProcessTemplate', 'NOOP_True', 'usr',
+$$
+Title,Author,Call Number,Barcode,Format
+[%-
+FOR circ IN target;
+    bibxml = helpers.unapi_bre(circ.target_copy.call_number.record, {flesh => '{mra}'});
+    title = "";
+    FOR part IN bibxml.findnodes('//*[@tag="245"]/*[@code="a" or @code="b"]');
+        title = title _ part.textContent;
+    END;
+    author = bibxml.findnodes('//*[@tag="100"]/*[@code="a"]').textContent;
+    item_type = bibxml.findnodes('//*[local-name()="attributes"]/*[local-name()="field"][@name="item_type"]').getAttribute('coded-value') %]
+
+    [%- helpers.csv_datum(title) -%],
+    [%- helpers.csv_datum(author) -%],
+    [%- helpers.csv_datum(circ.target_copy.call_number.label) -%],
+    [%- helpers.csv_datum(circ.target_copy.barcode) -%],
+    [%- helpers.csv_datum(item_type) %]
+[%- END -%]
+$$
+);
+
+INSERT INTO action_trigger.environment (event_def, path)
+    VALUES (
+        currval('action_trigger.event_definition_id_seq'),
+        'target_copy.call_number'
+    );
+
+
+-- Evergreen DB patch 0689.data.record_print_format_update.sql
+--
+-- Updates print and email templates for bib record actions
+--
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0689', :eg_version);
+
+UPDATE action_trigger.event_definition SET template = $$
+<div>
+    <style> li { padding: 8px; margin 5px; }</style>
+    <ol>
+    [% FOR cbreb IN target %]
+    [% FOR item IN cbreb.items;
+        bre_id = item.target_biblio_record_entry;
+
+        bibxml = helpers.unapi_bre(bre_id, {flesh => '{mra}'});
+        FOR part IN bibxml.findnodes('//*[@tag="245"]/*[@code="a" or @code="b"]');
+            title = title _ part.textContent;
+        END;
+
+        author = bibxml.findnodes('//*[@tag="100"]/*[@code="a"]').textContent;
+        item_type = bibxml.findnodes('//*[local-name()="attributes"]/*[local-name()="field"][@name="item_type"]').getAttribute('coded-value');
+        publisher = bibxml.findnodes('//*[@tag="260"]/*[@code="b"]').textContent;
+        pubdate = bibxml.findnodes('//*[@tag="260"]/*[@code="c"]').textContent;
+        isbn = bibxml.findnodes('//*[@tag="020"]/*[@code="a"]').textContent;
+        issn = bibxml.findnodes('//*[@tag="022"]/*[@code="a"]').textContent;
+        upc = bibxml.findnodes('//*[@tag="024"]/*[@code="a"]').textContent;
+        %]
+
+        <li>
+            Bib ID# [% bre_id %]<br/>
+            [% IF isbn %]ISBN: [% isbn %]<br/>[% END %]
+            [% IF issn %]ISSN: [% issn %]<br/>[% END %]
+            [% IF upc  %]UPC:  [% upc %]<br/>[% END %]
+            Title: [% title %]<br />
+            Author: [% author %]<br />
+            Publication Info: [% publisher %] [% pubdate %]<br/>
+            Item Type: [% item_type %]
+        </li>
+    [% END %]
+    [% END %]
+    </ol>
+</div>
+$$ 
+WHERE hook = 'biblio.format.record_entry.print' AND id < 100; -- sample data
+
+
+UPDATE action_trigger.event_definition SET delay = '00:00:00', template = $$
+[%- SET user = target.0.owner -%]
+To: [%- params.recipient_email || user.email %]
+From: [%- params.sender_email || default_sender %]
+Subject: Bibliographic Records
+
+[% FOR cbreb IN target %]
+[% FOR item IN cbreb.items;
+    bre_id = item.target_biblio_record_entry;
+
+    bibxml = helpers.unapi_bre(bre_id, {flesh => '{mra}'});
+    FOR part IN bibxml.findnodes('//*[@tag="245"]/*[@code="a" or @code="b"]');
+        title = title _ part.textContent;
+    END;
+
+    author = bibxml.findnodes('//*[@tag="100"]/*[@code="a"]').textContent;
+    item_type = bibxml.findnodes('//*[local-name()="attributes"]/*[local-name()="field"][@name="item_type"]').getAttribute('coded-value');
+    publisher = bibxml.findnodes('//*[@tag="260"]/*[@code="b"]').textContent;
+    pubdate = bibxml.findnodes('//*[@tag="260"]/*[@code="c"]').textContent;
+    isbn = bibxml.findnodes('//*[@tag="020"]/*[@code="a"]').textContent;
+    issn = bibxml.findnodes('//*[@tag="022"]/*[@code="a"]').textContent;
+    upc = bibxml.findnodes('//*[@tag="024"]/*[@code="a"]').textContent;
+%]
+
+[% loop.count %]/[% loop.size %].  Bib ID# [% bre_id %] 
+[% IF isbn %]ISBN: [% isbn _ "\n" %][% END -%]
+[% IF issn %]ISSN: [% issn _ "\n" %][% END -%]
+[% IF upc  %]UPC:  [% upc _ "\n" %] [% END -%]
+Title: [% title %]
+Author: [% author %]
+Publication Info: [% publisher %] [% pubdate %]
+Item Type: [% item_type %]
+
+[% END %]
+[% END %]
+$$ 
+WHERE hook = 'biblio.format.record_entry.email' AND id < 100; -- sample data
+
+-- remove a swath of unused environment entries
+
+DELETE FROM action_trigger.environment env 
+    USING action_trigger.event_definition def 
+    WHERE env.event_def = def.id AND 
+        env.path != 'items' AND 
+        def.hook = 'biblio.format.record_entry.print' AND 
+        def.id < 100; -- sample data
+
+DELETE FROM action_trigger.environment env 
+    USING action_trigger.event_definition def 
+    WHERE env.event_def = def.id AND 
+        env.path != 'items' AND 
+        env.path != 'owner' AND 
+        def.hook = 'biblio.format.record_entry.email' AND 
+        def.id < 100; -- sample data
 
 -- Evergreen DB patch 0690.schema.unapi_limit_rank.sql
 --
@@ -15008,38 +15167,41 @@ EXPLAIN ANALYZE SELECT unapi.bre(36,'marcxml','record','{holdings_xml,mra,acp,ac
 
 */
 
--- Evergreen DB patch 0693.schema.do_not_despace_issns.sql
---
--- FIXME: insert description of change, if needed
---
+
+SELECT evergreen.upgrade_deps_block_check('0691', :eg_version);
+
+CREATE INDEX poi_po_idx ON acq.po_item (purchase_order);
+
+CREATE INDEX ie_inv_idx on acq.invoice_entry (invoice);
+CREATE INDEX ie_po_idx on acq.invoice_entry (purchase_order);
+CREATE INDEX ie_li_idx on acq.invoice_entry (lineitem);
+
+CREATE INDEX ii_inv_idx on acq.invoice_item (invoice);
+CREATE INDEX ii_po_idx on acq.invoice_item (purchase_order);
+CREATE INDEX ii_poi_idx on acq.invoice_item (po_item);
 
 
--- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('0693', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0692', :eg_version);
 
--- FIXME: add/check SQL statements to perform the upgrade
--- Delete the index normalizer that was meant to remove spaces from ISSNs
--- but ended up breaking records with multiple ISSNs
-DELETE FROM config.metabib_field_index_norm_map WHERE id IN (
-    SELECT map.id FROM config.metabib_field_index_norm_map map
-        INNER JOIN config.metabib_field cmf ON cmf.id = map.field
-        INNER JOIN config.index_normalizer cin ON cin.id = map.norm
-    WHERE cin.func = 'replace'
-        AND cmf.field_class = 'identifier'
-        AND cmf.name = 'issn'
-        AND map.params = $$[" ",""]$$
-);
-
--- Reindex records that have more than just a single ISSN
--- to ensure that spaces are maintained
-SELECT metabib.reingest_metabib_field_entries(source)
-  FROM metabib.identifier_field_entry mife
-    INNER JOIN config.metabib_field cmf ON cmf.id = mife.field
-  WHERE cmf.field_class = 'identifier'
-    AND cmf.name = 'issn'
-    AND char_length(value) > 9
-;
-
+INSERT INTO config.org_unit_setting_type
+    (name, label, description, grp, datatype)
+    VALUES (
+        'circ.fines.charge_when_closed',
+         oils_i18n_gettext(
+            'circ.fines.charge_when_closed',
+            'Charge fines on overdue circulations when closed',
+            'coust',
+            'label'
+        ),
+        oils_i18n_gettext(
+            'circ.fines.charge_when_closed',
+            'Normally, fines are not charged when a library is closed.  When set to True, fines will be charged during scheduled closings and normal weekly closed days.',
+            'coust',
+            'description'
+        ),
+        'circ',
+        'bool'
+    );
 
 SELECT evergreen.upgrade_deps_block_check('0694', :eg_version);
 
@@ -15051,7 +15213,7 @@ INSERT into config.org_unit_setting_type
         'Require prefix field on patron registration',
         'coust', 'label'),
     oils_i18n_gettext('ui.patron.edit.au.prefix.require',
-        'The prefix field will be required on the patron registration screen.'
+        'The prefix field will be required on the patron registration screen.',
         'coust', 'description'),
     'bool', null)
 	
@@ -15060,7 +15222,7 @@ INSERT into config.org_unit_setting_type
         'Show prefix field on patron registration',
         'coust', 'label'),
     oils_i18n_gettext('ui.patron.edit.au.prefix.show',
-        'The prefix field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.'
+        'The prefix field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.',
         'coust', 'description'),
     'bool', null)
 
@@ -15069,11 +15231,125 @@ INSERT into config.org_unit_setting_type
         'Suggest prefix field on patron registration',
         'coust', 'label'),
     oils_i18n_gettext('ui.patron.edit.au.prefix.suggest',
-        'The prefix field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.'
+        'The prefix field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.',
         'coust', 'description'),
     'bool', null)
 ;		
 
+
+-- Evergreen DB patch 0695.schema.custom_toolbars.sql
+--
+-- FIXME: insert description of change, if needed
+--
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0695', :eg_version);
+
+CREATE TABLE actor.toolbar (
+    id          BIGSERIAL   PRIMARY KEY,
+    ws          INT         REFERENCES actor.workstation (id) ON DELETE CASCADE,
+    org         INT         REFERENCES actor.org_unit (id) ON DELETE CASCADE,
+    usr         INT         REFERENCES actor.usr (id) ON DELETE CASCADE,
+    label       TEXT        NOT NULL,
+    layout      TEXT        NOT NULL,
+    CONSTRAINT only_one_type CHECK (
+        (ws IS NOT NULL AND COALESCE(org,usr) IS NULL) OR
+        (org IS NOT NULL AND COALESCE(ws,usr) IS NULL) OR
+        (usr IS NOT NULL AND COALESCE(org,ws) IS NULL)
+    ),
+    CONSTRAINT layout_must_be_json CHECK ( is_json(layout) )
+);
+CREATE UNIQUE INDEX label_once_per_ws ON actor.toolbar (ws, label) WHERE ws IS NOT NULL;
+CREATE UNIQUE INDEX label_once_per_org ON actor.toolbar (org, label) WHERE org IS NOT NULL;
+CREATE UNIQUE INDEX label_once_per_usr ON actor.toolbar (usr, label) WHERE usr IS NOT NULL;
+
+-- this one unrelated to toolbars but is a gap in the upgrade scripts
+INSERT INTO permission.perm_list ( id, code, description )
+    SELECT
+        522,
+        'IMPORT_AUTHORITY_MARC',
+        oils_i18n_gettext(
+            522,
+            'Allows a user to create new authority records',
+            'ppl',
+            'description'
+        )
+    WHERE NOT EXISTS (
+        SELECT 1
+        FROM permission.perm_list
+        WHERE
+            id = 522
+    );
+
+INSERT INTO permission.perm_list ( id, code, description ) VALUES (
+    523,
+    'ADMIN_TOOLBAR',
+    oils_i18n_gettext(
+        523,
+        'Allows a user to create, edit, and delete custom toolbars',
+        'ppl',
+        'description'
+    )
+);
+
+-- Don't want to assume stock perm groups in an upgrade script, but here for ease of testing
+-- INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) SELECT pgt.id, perm.id, aout.depth, FALSE FROM permission.grp_tree pgt, permission.perm_list perm, actor.org_unit_type aout WHERE pgt.name = 'Staff' AND aout.name = 'Branch' AND perm.code = 'ADMIN_TOOLBAR';
+
+INSERT INTO actor.toolbar(org,label,layout) VALUES
+    ( 1, 'circ', '["circ_checkout","circ_checkin","toolbarseparator.1","search_opac","copy_status","toolbarseparator.2","patron_search","patron_register","toolbarspacer.3","hotkeys_toggle"]' ),
+    ( 1, 'cat', '["circ_checkin","toolbarseparator.1","search_opac","copy_status","toolbarseparator.2","create_marc","authority_manage","retrieve_last_record","toolbarspacer.3","hotkeys_toggle"]' );
+
+-- delete from permission.grp_perm_map where perm in (select id from permission.perm_list where code ~ 'TOOLBAR'); delete from permission.perm_list where code ~ 'TOOLBAR'; drop table actor.toolbar ;
+
+-- Evergreen DB patch 0696.no_plperl.sql
+--
+-- FIXME: insert description of change, if needed
+--
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0696', :eg_version);
+
+-- Re-create these as plperlu instead of plperl
+CREATE OR REPLACE FUNCTION auditor.set_audit_info(INT, INT) RETURNS VOID AS $$
+    $_SHARED{"eg_audit_user"} = $_[0];
+    $_SHARED{"eg_audit_ws"} = $_[1];
+$$ LANGUAGE plperlu;
+
+CREATE OR REPLACE FUNCTION auditor.get_audit_info() RETURNS TABLE (eg_user INT, eg_ws INT) AS $$
+    return [{eg_user => $_SHARED{"eg_audit_user"}, eg_ws => $_SHARED{"eg_audit_ws"}}];
+$$ LANGUAGE plperlu;
+
+CREATE OR REPLACE FUNCTION auditor.clear_audit_info() RETURNS VOID AS $$
+    delete($_SHARED{"eg_audit_user"});
+    delete($_SHARED{"eg_audit_ws"});
+$$ LANGUAGE plperlu;
+
+-- And remove the language so that we don't use it later.
+DROP LANGUAGE plperl;
+
+-- Evergreen DB patch 0697.data.place_currently_unfillable_hold.sql
+--
+-- FIXME: insert description of change, if needed
+--
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0697', :eg_version);
+
+-- FIXME: add/check SQL statements to perform the upgrade
+INSERT INTO permission.perm_list ( id, code, description ) VALUES
+ ( 524, 'PLACE_UNFILLABLE_HOLD', oils_i18n_gettext( 524,
+    'Allows a user to place a hold that cannot currently be filled.', 'ppl', 'description' ));
+
+-- Evergreen DB patch 0698.hold_default_pickup.sql
+--
+-- FIXME: insert description of change, if needed
+--
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0698', :eg_version);
+
+INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
+    VALUES ('opac.default_pickup_location', TRUE, 'Default Hold Pickup Location', 'Default location for holds pickup', 'integer');
 
 SELECT evergreen.upgrade_deps_block_check('0699', :eg_version);
 
@@ -15250,5 +15526,155 @@ UPDATE serial.issuance siss
     SET holding_type = scap.type
     FROM serial.caption_and_pattern scap
     WHERE scap.id = siss.caption_and_pattern AND siss.holding_type IS NULL;
+
+
+-- Evergreen DB patch 0701.schema.patron_stat_category_enhancements.sql
+--
+-- Enables users to set patron statistical categories as required,
+-- whether or not users can input free text for the category value.
+-- Enables administrators to set an entry as the default for any
+-- given patron statistical category and org unit.
+--
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0701', :eg_version);
+
+-- New table
+
+CREATE TABLE actor.stat_cat_entry_default (
+    id              SERIAL  PRIMARY KEY,
+    stat_cat_entry  INT     NOT NULL REFERENCES actor.stat_cat_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    stat_cat        INT     NOT NULL REFERENCES actor.stat_cat (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    owner           INT     NOT NULL REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    CONSTRAINT sced_once_per_owner UNIQUE (stat_cat,owner)
+);
+
+COMMENT ON TABLE actor.stat_cat_entry_default IS $$
+User Statistical Category Default Entry
+
+A library may choose one of the stat_cat entries to be the
+default entry.
+$$;
+
+-- Add columns to existing tables
+
+-- Patron stat cat required column
+ALTER TABLE actor.stat_cat
+    ADD COLUMN required BOOL NOT NULL DEFAULT FALSE;
+
+-- Patron stat cat allow_freetext column
+ALTER TABLE actor.stat_cat
+    ADD COLUMN allow_freetext BOOL NOT NULL DEFAULT TRUE;
+
+-- Add permissions
+
+INSERT INTO permission.perm_list ( id, code, description ) VALUES
+    ( 525, 'CREATE_PATRON_STAT_CAT_ENTRY_DEFAULT', oils_i18n_gettext( 525, 
+        'User may set a default entry in a patron statistical category', 'ppl', 'description' )),
+    ( 526, 'UPDATE_PATRON_STAT_CAT_ENTRY_DEFAULT', oils_i18n_gettext( 526, 
+        'User may reset a default entry in a patron statistical category', 'ppl', 'description' )),
+    ( 527, 'DELETE_PATRON_STAT_CAT_ENTRY_DEFAULT', oils_i18n_gettext( 527, 
+        'User may unset a default entry in a patron statistical category', 'ppl', 'description' ));
+
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
+    SELECT
+        pgt.id, perm.id, aout.depth, TRUE
+    FROM
+        permission.grp_tree pgt,
+        permission.perm_list perm,
+        actor.org_unit_type aout
+    WHERE
+        pgt.name = 'Circulation Administrator' AND
+        aout.name = 'System' AND
+        perm.code IN ('CREATE_PATRON_STAT_CAT_ENTRY_DEFAULT', 'DELETE_PATRON_STAT_CAT_ENTRY_DEFAULT');
+
+
+SELECT evergreen.upgrade_deps_block_check('0702', :eg_version);
+
+INSERT INTO config.global_flag (name, enabled, label) 
+    VALUES (
+        'opac.org_unit.non_inheritied_visibility',
+        FALSE,
+        oils_i18n_gettext(
+            'opac.org_unit.non_inheritied_visibility',
+            'Org Units Do Not Inherit Visibility',
+            'cgf',
+            'label'
+        )
+    );
+
+CREATE TYPE actor.org_unit_custom_tree_purpose AS ENUM ('opac');
+
+CREATE TABLE actor.org_unit_custom_tree (
+    id              SERIAL  PRIMARY KEY,
+    active          BOOLEAN DEFAULT FALSE,
+    purpose         actor.org_unit_custom_tree_purpose NOT NULL DEFAULT 'opac' UNIQUE
+);
+
+CREATE TABLE actor.org_unit_custom_tree_node (
+    id              SERIAL  PRIMARY KEY,
+    tree            INTEGER REFERENCES actor.org_unit_custom_tree (id) DEFERRABLE INITIALLY DEFERRED,
+	org_unit        INTEGER NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+	parent_node     INTEGER REFERENCES actor.org_unit_custom_tree_node (id) DEFERRABLE INITIALLY DEFERRED,
+    sibling_order   INTEGER NOT NULL DEFAULT 0,
+    CONSTRAINT aouctn_once_per_org UNIQUE (tree, org_unit)
+);
+    
+
+/* UNDO
+BEGIN;
+DELETE FROM config.global_flag WHERE name = 'opac.org_unit.non_inheritied_visibility';
+DROP TABLE actor.org_unit_custom_tree_node;
+DROP TABLE actor.org_unit_custom_tree;
+DROP TYPE actor.org_unit_custom_tree_purpose;
+COMMIT;
+*/
+
+COMMIT;
+
+-- This is split out because it was backported to 2.1, but may not exist before upgrades
+-- It can safely fail
+-- Also, lets say that. <_<
+\qecho
+\qecho *************************************************************************
+\qecho !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\qecho We are about to apply a patch that may not be needed. It can fail safely.
+\qecho !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\qecho *************************************************************************
+\qecho
+
+-- Evergreen DB patch 0693.schema.do_not_despace_issns.sql
+--
+-- FIXME: insert description of change, if needed
+--
+BEGIN;
+
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0693', :eg_version);
+
+-- FIXME: add/check SQL statements to perform the upgrade
+-- Delete the index normalizer that was meant to remove spaces from ISSNs
+-- but ended up breaking records with multiple ISSNs
+DELETE FROM config.metabib_field_index_norm_map WHERE id IN (
+    SELECT map.id FROM config.metabib_field_index_norm_map map
+        INNER JOIN config.metabib_field cmf ON cmf.id = map.field
+        INNER JOIN config.index_normalizer cin ON cin.id = map.norm
+    WHERE cin.func = 'replace'
+        AND cmf.field_class = 'identifier'
+        AND cmf.name = 'issn'
+        AND map.params = $$[" ",""]$$
+);
+
+-- Reindex records that have more than just a single ISSN
+-- to ensure that spaces are maintained
+SELECT metabib.reingest_metabib_field_entries(source)
+  FROM metabib.identifier_field_entry mife
+    INNER JOIN config.metabib_field cmf ON cmf.id = mife.field
+  WHERE cmf.field_class = 'identifier'
+    AND cmf.name = 'issn'
+    AND char_length(value) > 9
+;
+
 
 COMMIT;
