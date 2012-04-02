@@ -135,6 +135,29 @@ help { -moz-binding: url('chrome://open_ils_staff_client/content/main/bindings.x
 #main_toolbox toolbarbutton[command="cmd_patron_register"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/HILLBLU_famiglia_toolbar.png"); }
 #main_toolbox toolbarbutton[command="cmd_hotkeys_toggle"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/hotkeys_disable_toolbar.png"); }
 
+/* More icons, courtesy of Christine Morgan of NOBLE - They are in a subfolder for later development reasons. */
+#main_toolbox toolbarbutton[command="cmd_portal"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/portal_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_edit_copy_buckets"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/edit_copy_buckets_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_edit_record_buckets"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/edit_record_buckets_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_circ_renew"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/circ_renew_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_circ_hold_pull_list"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/circ_hold_pull_list_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_browse_holds_shelf"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/browse_holds_shelf_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_retrieve_last_patron"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/retrieve_last_patron_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_acq_unified_search"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/acq_unified_search_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_acq_view_my_pl"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/acq_view_my_pl_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_acq_new_brief_record"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/acq_new_brief_record_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_acq_user_requests"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/acq_user_requests_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_acq_bib_search"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/acq_bib_search_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_acq_upload"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/acq_upload_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_acq_create_po"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/acq_create_po_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_acq_claim_eligible"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/acq_claim_eligible_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_acq_create_invoice"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/acq_create_invoice_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_booking_reservation"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/booking_reservation_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_booking_pull_list"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/booking_pull_list_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_booking_capture"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/booking_capture_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_booking_reservation_pickup"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/booking_reservation_pickup_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_booking_reservation_return"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/booking_reservation_return_toolbar.png"); }
+
 /* Temp icons because tsbere is lazy - Someone please find/make new ones ;) */
 #main_toolbox toolbarbutton[command="cmd_create_marc"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/HILLBLU_indici_toolbar.png"); }
 #main_toolbox toolbarbutton[command="cmd_authority_manage"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/HILLBLU_indici_toolbar.png"); }

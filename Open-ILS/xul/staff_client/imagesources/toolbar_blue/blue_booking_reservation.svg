@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg id="svg6289" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="32" width="32" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/">
+ <defs id="defs6291">
+  <linearGradient id="linearGradient6307">
+   <stop id="stop6309" stop-color="#d5f6ff" offset="0"/>
+   <stop id="stop6315" stop-color="#7ac1d2" offset=".51193"/>
+   <stop id="stop6311" stop-color="#08a" offset="1"/>
+  </linearGradient>
+  <filter id="filter6551" color-interpolation-filters="sRGB">
+   <feGaussianBlur id="feGaussianBlur6553" stdDeviation="0.90177518"/>
+  </filter>
+  <radialGradient id="radialGradient7159" xlink:href="#linearGradient6307" gradientUnits="userSpaceOnUse" cy="14.52" cx="7.0513" gradientTransform="matrix(1.1891 1.8655 -1.2258 .78135 -14.393 -48.541)" r="16.454"/>
+  <radialGradient id="radialGradient7165" xlink:href="#linearGradient6307" gradientUnits="userSpaceOnUse" cy="14.52" cx="7.0513" gradientTransform="matrix(1.1477 1.7791 -1.1832 .74518 -14.245 -46.039)" r="16.454"/>
+ </defs>
+ <metadata id="metadata6294">
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title/>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <g id="layer1">
+  <g id="g7300">
+   <g id="g13006" stroke-opacity="0" transform="translate(-.23247 -.39478)">
+    <rect id="rect6297" transform="rotate(179.93)" rx="3.8862" ry="3.8862" height="31.09" width="31.09" y="-32.025" x="-31.875" fill="url(#radialGradient7159)"/>
+    <rect id="rect6317" transform="rotate(179.93)" rx="3.8862" ry="3.8862" height="31.09" width="31.09" y="-32.025" x="-31.875" fill="url(#radialGradient7159)"/>
+    <rect id="rect6325" transform="rotate(179.93)" rx="3.8862" ry="3.8862" height="31.09" width="31.09" y="-32.025" x="-31.875" fill="url(#radialGradient7159)"/>
+    <rect id="rect5843" transform="matrix(.90415 .0083759 -.0082899 .91353 30.793 30.721)" rx="3.751" ry="3.7063" height="29.65" filter="url(#filter6551)" width="30.008" y="-30.287" x="-31.12" fill="url(#radialGradient7165)"/>
+   </g>
+   <g id="g7140" transform="translate(2.6794 1.4287)">
+    <g id="g15443" stroke="#1d859f" stroke-width=".25" transform="translate(-2.5864 .052996)">
+     <rect id="rect9804" height="18.754" width="14.646" y="5.3343" x="8.7484" fill="#fff"/>
+     <path id="path12774" fill="#1d859f" d="m10.984 8.7812c3.0813 1.452 6.8342 0.48384 10.091 0.71443"/>
+     <path id="path12776" fill="#1d859f" d="m11.877 12.085c2.4458-0.84555 5.6475-0.24554 8.2159-0.35721"/>
+     <path id="path12784" fill="#1d859f" d="m11.52 21.016c2.5068 0.92837 5.7617 0.18586 8.3052 0.26791"/>
+     <path id="path12786" fill="#1d859f" d="m11.609 18.783c2.8598 0.67097 6.0155-0.19198 8.3945-0.26791"/>
+     <path id="path12792" fill="#1d859f" d="m12.235 14.229c2.4119 0.43637 4.5399-0.05675 7.1443-0.0893"/>
+     <path id="path12806" fill="#1d859f" d="m11.967 16.729c2.4694-0.63969 5.11-0.17826 7.6801-0.26791"/>
+    </g>
+    <g id="g15491" transform="matrix(.73561 .62275 -.65525 .69913 23.7 -5.1387)">
+     <g id="g14758">
+      <rect id="rect10326" height="9.2875" width="2.4112" y="9.9421" x="7.3675" fill="#1d859f"/>
+      <rect id="rect10328" height=".53934" width="2.4145" y="19.942" x="7.3658" fill="#1d859f"/>
+      <path id="path10332" transform="matrix(.72461 .40226 -.39302 .74165 11.46 3.1937)" fill="#1d859f" d="m8.3052 22.712-2.5204-1.581 2.6296-1.392z"/>
+      <path id="rect10337" d="m7.3654 7.442h2.4153v1.7854h-2.4153z" fill="#1d859f"/>
+      <rect id="rect14134" height=".53582" width="2.4112" stroke="#1d859f" y="9.317" x="7.3675" stroke-width=".25" fill="#fff"/>
+      <rect id="rect14134-5" height=".53582" width="2.4112" stroke="#1d859f" y="20.569" x="7.3675" stroke-width=".25" fill="#fff"/>
+      <rect id="rect14134-5-7" height=".53582" width="2.4112" stroke="#1d859f" y="19.319" x="7.3675" stroke-width=".25" fill="#fff"/>
+     </g>
+    </g>
+   </g>
+  </g>
+ </g>
+</svg>
