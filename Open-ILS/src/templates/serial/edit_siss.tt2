@@ -1,0 +1,17 @@
+[% WRAPPER 'base.tt2' %]
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/serial/edit_siss.js'></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/serial/subscription/caption_and_pattern.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/serial/subscription/issuance.js"></script>
+<script type="text/javascript">
+    dojo.require('openils.Util');
+    [% ctx.page_args = ctx.page_args.reverse %]
+    var siss_id = '[% ctx.page_args.0 %]';
+    var ssub_id = '[% ctx.page_args.1 %]';
+    openils.Util.addOnLoad(function() { drawSiss(siss_id, ssub_id) });
+</script>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div id='edit-pane'> </div>
+</div>
+
+[% END %]
