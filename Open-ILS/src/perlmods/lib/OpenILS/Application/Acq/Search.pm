@@ -267,14 +267,7 @@ sub add_au_joins {
     my $n = 0;
     foreach my $join (@_) {
         my ($hint, $attr, $num) = @$join;
-        my $start;
-        if ($hint eq "jub") {
-            $start = $from->{$hint};
-        } elsif ($hint eq "acqinv") {
-            $start = $from->{"jub"}->{"acqie"}->{"join"}->{$hint};
-        } else {
-            $start = $from->{"jub"}->{$hint};
-        }
+        my $start = $from->{"acqus"}{$hint};
         my $clause = {
             "class" => "au",
             "type" => "left",
@@ -289,12 +282,8 @@ sub add_au_joins {
                 }
             }
         };
-        if ($hint eq "jub") {
-            $start->{"au$num"} = $clause;
-        } else {
-            $start->{"join"} ||= {};
-            $start->{"join"}->{"au$num"} = $clause;
-        }
+        $start->{"join"} ||= {};
+        $start->{"join"}->{"au$num"} = $clause;
         $n++;
     }
     $n;
@@ -417,7 +406,7 @@ q/order_by clause must be of the long form, like:
 
     $and_terms = prepare_terms($and_terms, 1);
     $or_terms = prepare_terms($or_terms, 0) and do {
-        $query->{"from"}->{"jub"}->{"acqlia"} = {
+        $query->{"from"}{"acqus"}{"jub"}{"join"}{"acqlia"} = {
             "type" => "left", "field" => "lineitem", "fkey" => "id",
         };
     };
