@@ -246,6 +246,9 @@ function deleteSelected() {
             );
         }
     );
+
+    // otherwise, delete is only superficial
+    magicTree.model.store.save();
 }
 
 function activateTree() {
