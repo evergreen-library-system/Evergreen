@@ -869,9 +869,11 @@ function _myOPACSummaryShowUer(r) {
         unHideMe($('myopac.expired.alert'));
     }
 
-	var iv1 = user.ident_value()+'';
-    if (iv1.length > 4 && iv1.match(/\d{4}/)) iv1 = iv1.substring(0,4) + '***********';
-
+	var iv1 = '';
+    if (user.ident_value()) {
+        iv1 = user.ident_value()+'';
+        if (iv1.length > 4 && iv1.match(/\d{4}/)) iv1 = iv1.substring(0,4) + '***********';
+    }
 
 	appendClear($('myopac_summary_prefix'),text(user.prefix()));
 	appendClear($('myopac_summary_first'),text(user.first_given_name()));

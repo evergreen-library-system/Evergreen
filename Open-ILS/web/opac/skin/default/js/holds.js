@@ -613,7 +613,7 @@ function __holdsDrawWindow() {
 	}
 
 
-	$('holds_phone').value = holdArgs.recipient.day_phone();
+	$('holds_phone').value = (holdArgs.recipient.day_phone() ? holdArgs.recipient.day_phone() : '');
 	var pref = holdArgs.recipient.prefs[PREF_DEF_PHONE];
 	if(pref) $('holds_phone').value = pref;
 	appendClear( $('holds_email'), text(holdArgs.recipient.email()));
