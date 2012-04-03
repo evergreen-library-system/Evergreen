@@ -169,9 +169,12 @@ function applyChanges2() {
     var prevTn;
     var progress = 0;
 
+    // flatten child nodes into a level-order (by parent) list
+    var nodeList = [magicTree.rootNode];
     function flatten(node) {
-        nodeList.push(node);
-        dojo.forEach(node.getChildren(), flatten);
+        var kids = node.getChildren();
+        nodeList = nodeList.concat(kids);
+        dojo.forEach(kids, flatten);
     }
     flatten(magicTree.rootNode);
 
