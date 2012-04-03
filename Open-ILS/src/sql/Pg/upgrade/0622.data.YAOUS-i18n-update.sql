@@ -17,7 +17,7 @@ INSERT INTO config.settings_group (name, label) VALUES
 ('opac', oils_i18n_gettext('config.settings_group.opac', 'OPAC', 'coust', 'label')),
 ('prog', oils_i18n_gettext('config.settings_group.program', 'Program', 'coust', 'label')),
 ('glob', oils_i18n_gettext('config.settings_group.global', 'Global', 'coust', 'label')),
-('finance', oils_i18n_gettext('config.settings_group.finances', 'Finanaces', 'coust', 'label')),
+('finance', oils_i18n_gettext('config.settings_group.finances', 'Finances', 'coust', 'label')),
 ('credit', oils_i18n_gettext('config.settings_group.ccp', 'Credit Card Processing', 'coust', 'label')),
 ('serial', oils_i18n_gettext('config.settings_group.serial', 'Serials', 'coust', 'label')),
 ('recall', oils_i18n_gettext('config.settings_group.recall', 'Recalls', 'coust', 'label')),
