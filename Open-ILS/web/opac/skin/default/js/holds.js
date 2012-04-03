@@ -508,7 +508,7 @@ function __holdsDrawWindow() {
 	}
 
 
-	$('holds_phone').value = holdArgs.recipient.day_phone();
+	$('holds_phone').value = (holdArgs.recipient.day_phone() ? holdArgs.recipient.day_phone() : '');
 	appendClear( $('holds_email'), text(holdArgs.recipient.email()));
 
 	var pref = holdArgs.recipient.prefs[PREF_HOLD_NOTIFY];
