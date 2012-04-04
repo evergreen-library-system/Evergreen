@@ -2,7 +2,7 @@ package OpenILS::WWW::EGKPacLoader;
 use base 'OpenILS::WWW::EGCatLoader';
 use strict; use warnings;
 use XML::Simple;
-use Apache2::Const -compile => qw(OK DECLINED FORBIDDEN HTTP_INTERNAL_SERVER_ERROR REDIRECT HTTP_BAD_REQUEST);
+use Apache2::Const -compile => qw(OK HTTP_BAD_REQUEST);
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
@@ -35,7 +35,7 @@ sub load {
     # ----------------------------------------------------------------
     return $self->redirect_ssl unless $self->cgi->https;
 
-    return $self->load_simple("getit_results") if $path =~ m|kpac/getit_results|;
+    return $self->load_getit_results if $path =~ m|kpac/getit_results|;
     return $self->load_getit if $path =~ m|kpac/getit|;
 
     # ----------------------------------------------------------------
@@ -86,6 +86,12 @@ sub save_item_to_bookbag {
 
     if ($bookbag_id) { 
         # save to existing bookbag
+        $self->cgi->param('record', $rec_id);
+        my $stat = $self->load_myopac_bookbag_update('add_rec', $bookbag_id);
+        # TODO: check for failure
+        (my $new_uri = $self->apache->unparsed_uri) =~ s/getit/getit_results/g;
+        $new_uri .= ($new_uri =~ /\?/) ? "&list=$bookbag_id" : "?list=$bookbag_id";
+        return $self->generic_redirect($new_uri);
 
     } else { 
         # save to anonymous list
@@ -93,9 +99,41 @@ sub save_item_to_bookbag {
         # set some params assumed to exist for load_mylist_add
         $self->cgi->param('record', $rec_id);
         (my $new_uri = $self->apache->unparsed_uri) =~ s/getit/getit_results/g;
+        $new_uri .= ($new_uri =~ /\?/) ? '&list=anon' : '?list=anon';
         $self->cgi->param('redirect_to', $new_uri);
 
-        $self->load_mylist_add;
+        return $self->load_mylist_add;
+    }
+
+    return Apache2::Const::HTTP_BAD_REQUEST;
+}
+
+
+sub load_getit_results {
+    my $self = shift;
+    my $ctx = $self->ctx;
+    my $e = $self->editor;
+    my $list = $self->cgi->param('list');
+    my $hold_id = $self->cgi->param('hold');
+    my $rec_id = $ctx->{page_args}->[0];
+
+    my (undef, @rec_data) = $self->get_records_and_facets([$rec_id]);
+    $ctx->{bre_id} = $rec_data[0]->{id};
+    $ctx->{marc_xml} = $rec_data[0]->{marc_xml};
+
+    if ($list) {
+        if ($list eq 'anon') {
+            $ctx->{anon_list} = 1;
+        } else {
+            $ctx->{list} = $e->retrieve_container_biblio_record_entry_bucket($list);
+        }
+
+    } elsif ($hold_id) {
+
+        # new hold means potential for replication lag
+        $e->xact_start; 
+        # fetch the hold...
+        $e->xact_rollback;
     }
 
     return Apache2::Const::OK;
