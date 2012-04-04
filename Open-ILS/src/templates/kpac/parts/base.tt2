@@ -15,5 +15,6 @@
             [% INCLUDE 'kpac/parts/footer.tt2' %]
         </div>
         <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/kpac/functions.js"></script>
+        [%- INCLUDE 'kpac/parts/chilifresh.tt2' %]
     </body>
 </html>
