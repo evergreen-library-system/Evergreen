@@ -1,0 +1,32 @@
+Brief Records
+-------------
+
+Brief records are short bibliographic records with minimal information that are often used as placeholder records until items are received. Brief records can be added to selection lists or purchase orders and can be imported into the catalog. You can add brief records to new or existing selection lists. You can add brief records to new, pending or on-order purchase orders.
+
+Add brief records to a selection list
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+. Click _Acquisitions -> New Brief Record_. You can also add brief records to an existing selection list by clicking the Actions menu on the selection list and choosing _Add Brief Record_.
+
+. Choose a selection list from the drop down menu, or enter the name of a new selection list.
+
+. Enter bibliographic information in the desired fields.
+
+. Click Save Record.
+
+image::media/acq_brief_record.png[]
+
+Add brief records to purchase orders
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can add brief records to new or existing purchase orders.
+
+. Open or create a purchase order. See the section on link:03-PO.txt[purchase orders] for more information.
+
+. Click _Add Brief Record_.
+
+. Enter bibliographic information in the desired fields. Notice that the record is added to the purchase order that you just created.
+
+. Click _Save Record_.
+
+image::media/acq_brief_record-2.png[]
