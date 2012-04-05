@@ -115,11 +115,7 @@ Acquisitions
 
 include::acquisitions/introduction.txt[]
 
-include::acquisitions/selection_lists.txt[]
-
-include::acquisitions/brief_records.txt[]
-
-include::acquisitions/federated.txt[]
+include::acquisitions/selection_lists_po.txt[]
 
 include::acquisitions/receive_items_from_invoice.txt[]
 
