@@ -88,25 +88,52 @@ sub login_and_place_hold {
     my $password = $self->cgi->param('password');
     my $pickup_lib = $self->cgi->param('pickup_lib');
 
+    return Apache2::Const::HTTP_BAD_REQUEST 
+        unless $pickup_lib =~ /^\d+$/;
+
+    my $new_uri = $self->apache->unparsed_uri;
+    my $sep = ($new_uri =~ /\?/) ? '&' : '?';
+
     if (!$ctx->{user}) {
         # First, log the user in and return to 
+        $self->apache->log->info("kpac: logging in $username");
+
         # TODO: let user know username/password is required..
         return Apache2::Const::OK unless $username and $password;
-        my $new_uri = $self->apache->unparsed_uri;
-        my $sep = ($new_uri =~ /\?/) ? '&' : '?';
+
         $new_uri .= "${sep}pickup_lib=$pickup_lib&action=hold";
         $self->cgi->param('redirect_to', $new_uri);
         return $self->load_login;
+
+    } else {
+
+        $self->apache->log->info("kpac: placing hold for $bre_id");
+
+        $new_uri =~ s/getit/getit_results/g;
+        $self->cgi->param('hold_target', $bre_id);
+        $self->cgi->param('hold_type', 'T');
+        $self->cgi->param('part', ''); # needed even if unused
+
+        my $stat = $self->load_place_hold;
+
+        $self->apache->log->info("kpac: place hold returned $stat");
+
+        return $stat unless $stat == Apache2::Const::OK;
+
+        my $hdata = $ctx->{hold_data}->[0]; # only 1 hold placed
+        if (my $hold_id = $hdata ? $hdata->{hold_success} : undef) {
+
+            $self->apache->log->info("kpac: place hold succeeded");
+            $new_uri .= "${sep}hold=$hold_id";
+
+        } else {
+            $self->apache->log->info("kpac: place hold failed : " . $ctx->{hold_failed_event});
+            $new_uri .= "${sep}hold_failed=1";
+        }
     }
 
-    # TODO: place hold
-
-    my $hold_id = '';
-#    (my $new_uri = $self->apache->unparsed_uri) =~ s/getit/getit_results/g;
-#    $new_uri .= ($new_uri =~ /\?/) ? "&hold=$hold_id" : "?hold=$hold_id";
-#    return $self->generic_redirect($new_uri);
-
-    return Apache2::Const::OK;
+    $self->apache->log->info("kpac: place hold redirecting to: $new_uri");
+    return $self->generic_redirect($new_uri);
 }
 
 sub save_item_to_bookbag {
@@ -153,16 +180,13 @@ sub load_getit_results {
 
     if ($list) {
         if ($list eq 'anon') {
-            $ctx->{anon_list} = 1;
+            $ctx->{added_to_anon} = 1;
         } else {
-            $ctx->{list} = $e->retrieve_container_biblio_record_entry_bucket($list);
+            $ctx->{added_to_list} = $e->retrieve_container_biblio_record_entry_bucket($list);
         }
-
-    } elsif ($hold_id) {
-
-        # new hold means potential for replication lag
-        $e->xact_start; 
-        # fetch the hold...
+    } else { 
+        $e->xact_begin;
+        $ctx->{hold} = $e->retrieve_action_hold_request(8);
         $e->xact_rollback;
     }
 

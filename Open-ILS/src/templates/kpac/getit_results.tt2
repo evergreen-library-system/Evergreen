@@ -5,36 +5,44 @@
     attrs = {marc_xml => ctx.marc_xml};
     PROCESS get_marc_attrs args=attrs;
     ctx.page_title = l('Get it');
-    kill_params = ['list', 'hold'];
+    kill_params = ['list', 'hold', 'hold_failed', 'pickup_lib'];
     title_html = attrs.title | html;
 %]
           
-<h2 class="sub_header2">You Got It!</h2>
 
 <div class="checkout_res_body">
-    [% IF ctx.anon_list %]
+    [% IF ctx.added_to_anon %]
+        <h2 class="sub_header2">[% l('You Saved It!') %]</h2>
         <p>
         [% |l(title_html) %]
         You successfully saved [_1].  <br/>
         To manage your lists, go to <a href="[% mkurl(ctx.opac_root _ '/myopac/lists', {}, 1) %]">My Lists</a>
         [% END %]
         <p>
-    [% ELSIF ctx.list %]
+    [% ELSIF ctx.added_to_list %]
         [% list_html = ctx.list.name | html %]
+        <h2 class="sub_header2">[% l('You Saved It!') %]</h2>
         <p>
         [% |l(title_html, list_html) %]
         You successfully saved [_1] to [_2]. <br/>  
         To manage your lists, go to <a href="[% mkurl(ctx.opac_root _ '/myopac/lists', {}, 1) %]">My Lists</a>
         [% END %]
         <p>
-    [% ELSE %]
+    [% ELSIF CGI.param('hold') %]
         [% lib_html = ctx.get_aou(ctx.hold.pickup_lib).name | html %]
+        <h2 class="sub_header2">[% l('You Got It!') %]</h2>
         <p>
         [% |l(title_html, lib_html) %]
         Your request for <a href="[% mkurl(ctx.kpac_root _ '/record/' _ ctx.bre_id, {}, kill_params) %]">[_1]</a> was successful.<br/>
         You will be able to pick up this material at [_2].
         [% END %]
         <p>
+    [% ELSE %]
+        <p>
+        [% |l(title_html) %]
+        Unable to request <a href="[% mkurl(ctx.kpac_root _ '/record/' _ ctx.bre_id, {}, kill_params) %]">[_1]</a>.<br/>
+        Please see a librarian.
+        [% END %]
     [% END %]
 </div>
 

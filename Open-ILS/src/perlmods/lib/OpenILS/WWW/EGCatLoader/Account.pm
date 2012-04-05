@@ -853,6 +853,8 @@ sub load_place_hold {
             }
         }
 
+        $self->apache->log->warn("$#parts : @t_holds");
+
         $self->attempt_hold_placement($usr, $pickup_lib, 'P', @p_holds) if @p_holds;
         $self->attempt_hold_placement($usr, $pickup_lib, 'T', @t_holds) if @t_holds;
 
