@@ -23,12 +23,23 @@
 [% END;
 # turn the list of objects into a list of hashes to 
 # leverage TT's array.sort('<hashkey>') behavior
+simple_sorter = [];
 sorter = [];
-FOR o IN all_values; 
-    sorter.push({code => o.code, value  => (o.search_label ? o.search_label : o.value)}); 
+FOR o IN all_values;
+    IF o.is_simple == 't';
+        simple_sorter.push({code => o.code, value => (o.search_label ? o.search_label : o.value)});
+    ELSE;
+        sorter.push({code => o.code, value  => (o.search_label ? o.search_label : o.value)}); 
+    END;
 END;
+FOR o IN simple_sorter.sort('value') %]
+    <option value='[% o.code | html | replace("'","&#39;") %]'[% values.grep('^' _ o.code _ '$').size ? ' selected="selected"' : '' %]>[% o.value | html %]</option>
+[%  END;
+IF simple_sorter.size && sorter.size %]
+    <option disabled='true'>-----</option>
+[%  END;
 FOR o IN sorter.sort('value') %]
-    <option value='[% o.code | uri %]'[% values.grep('^' _ o.code _ '$').size ? ' selected="selected"' : '' %]>[% o.value | html %]</option>
+    <option value='[% o.code | html | replace("'","&#39;") %]'[% values.grep('^' _ o.code _ '$').size ? ' selected="selected"' : '' %]>[% o.value | html %]</option>
 [%  END -%]
 </select>
 

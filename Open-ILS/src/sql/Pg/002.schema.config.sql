@@ -743,7 +743,8 @@ CREATE TABLE config.coded_value_map (
     value           TEXT    NOT NULL,
     description     TEXT,
     opac_visible    BOOL    NOT NULL DEFAULT TRUE, -- For TPac selectors
-    search_label    TEXT
+    search_label    TEXT,
+    is_simple       BOOL    NOT NULL DEFAULT FALSE
 );
 
 CREATE VIEW config.language_map AS SELECT code, value FROM config.coded_value_map WHERE ctype = 'item_lang';

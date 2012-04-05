@@ -16,7 +16,7 @@ function advgInit() {
 
     var ctypes = ["bib_level", "item_form", "item_type", "audience", "lit_form"];
 
-    var req = new Request('open-ils.fielder:open-ils.fielder.ccvm.atomic', {"cache":1,"query":{"ctype":ctypes, "opac_visible":"t"}});
+    var req = new Request('open-ils.fielder:open-ils.fielder.ccvm.atomic', {"cache":1,"query":{"ctype":ctypes, "opac_visible":"t", "is_simple":"f"}});
     req.callback(advDrawBibExtras);
     req.request.ctypes = ctypes;
     req.send();
