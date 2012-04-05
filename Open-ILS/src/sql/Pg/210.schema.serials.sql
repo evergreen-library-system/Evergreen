@@ -202,6 +202,7 @@ CREATE TABLE serial.issuance (
 	holding_link_id INT -- probably defunct
 	-- TODO: add columns for separate enumeration/chronology values
 );
+ALTER TABLE serial.issuance ADD CHECK (holding_code IS NULL OR evergreen.is_json(holding_code));
 CREATE INDEX serial_issuance_sub_idx ON serial.issuance (subscription);
 CREATE INDEX serial_issuance_caption_and_pattern_idx ON serial.issuance (caption_and_pattern);
 CREATE INDEX serial_issuance_date_published_idx ON serial.issuance (date_published);
@@ -348,9 +349,6 @@ CREATE VIEW serial.any_summary AS
 CREATE TABLE serial.materialized_holding_code (
     id BIGSERIAL PRIMARY KEY,
     issuance INTEGER NOT NULL REFERENCES serial.issuance (id) ON DELETE CASCADE,
-    holding_type TEXT NOT NULL,
-    ind1 TEXT,
-    ind2 TEXT,
     subfield CHAR,
     value TEXT
 );
@@ -361,6 +359,11 @@ use strict;
 
 use MARC::Field;
 use JSON::XS;
+
+if (not defined $_TD->{new}{holding_code}) {
+    elog(WARNING, 'NULL in "holding_code" column of serial.issuance allowed for now, but may not be useful');
+    return;
+}
 
 # Do nothing if holding_code has not changed...
 
@@ -388,18 +391,15 @@ spi_exec_prepared($dstmt, $_TD->{new}{id});
 my $istmt = spi_prepare(
     q{
         INSERT INTO serial.materialized_holding_code (
-            issuance, holding_type, ind1, ind2, subfield, value
-        ) VALUES ($1, $2, $3, $4, $5, $6)
-    }, qw{INT TEXT TEXT TEXT CHAR TEXT}
+            issuance, subfield, value
+        ) VALUES ($1, $2, $3)
+    }, qw{INT CHAR TEXT}
 );
 
 foreach ($field->subfields) {
     spi_exec_prepared(
         $istmt,
         $_TD->{new}{id},
-        $_TD->{new}{holding_type},
-        $field->indicator(1),
-        $field->indicator(2),
         $_->[0],
         $_->[1]
     );

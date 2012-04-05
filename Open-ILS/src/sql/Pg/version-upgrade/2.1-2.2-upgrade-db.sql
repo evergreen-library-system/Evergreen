@@ -15376,6 +15376,15 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype, g
 
 
 SELECT evergreen.upgrade_deps_block_check('0700', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0706', :eg_version);
+
+-- This throws away data, but only data that causes breakage anyway.
+UPDATE serial.issuance SET holding_code = NULL WHERE NOT is_json(holding_code);
+
+-- If we don't do this, we have unprocessed triggers and we can't alter the table
+SET CONSTRAINTS serial.issuance_caption_and_pattern_fkey IMMEDIATE;
+
+ALTER TABLE serial.issuance ADD CHECK (holding_code IS NULL OR is_json(holding_code));
 
 INSERT INTO config.internal_flag (name, value, enabled) VALUES (
     'serial.rematerialize_on_same_holding_code', NULL, FALSE
@@ -15455,6 +15464,11 @@ use strict;
 
 use MARC::Field;
 use JSON::XS;
+
+if (not defined $_TD->{new}{holding_code}) {
+    elog(WARNING, 'NULL in "holding_code" column of serial.issuance allowed for now, but may not be useful');
+    return;
+}
 
 # Do nothing if holding_code has not changed...
 
