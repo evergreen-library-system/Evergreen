@@ -26,52 +26,60 @@
 
                     <div class="top_side">
                         <h2>get it!</h2>
-                        <p>[% |l %]If you would like to request this item, please enter the following information and click<br />Submit below:[% END %]</p>
+                        <p>[% |l %]If you would like to request this item, please enter the 
+                            following information and click<br />Submit below:[% END %]</p>
                     </div>
-                    <div class="checkout_box">
-                        <div class="box1_top">&nbsp;</div>
-                        <div class="box_inside">
 
-                            [% IF !ctx.user %]
-                                [% seed = l(' Enter Numbers... ') %]
-                                <p>[% l('Library Card Number without spaces:') %]</p>
-                                <div class="input_box">
-                                    <input type="text" class="text_box" style="color:#aaa;" value="[% seed %]" 
-                                        onfocus="if(this.value=='[% seed %]'){this.value='';this.style.color='#424242';}" 
-                                        onblur="if(this.value==''){this.value='[% seed %]'; this.style.color='#aaa';}" />
+                    <form method='POST'><!-- login + place hold form -->
+
+                        <div class="checkout_box">
+                            <div class="box1_top">&nbsp;</div>
+                            <div class="box_inside">
+
+                                [% IF !ctx.user %]
+                                    [% seed = l(' Enter Numbers... ') %]
+                                    <p>[% l('Library Card Number without spaces:') %]</p>
+                                    <div class="input_box">
+                                        <input name="username" type="text" class="text_box" style="color:#aaa;" value="[% seed %]" 
+                                            onfocus="if(this.value=='[% seed %]'){this.value='';this.style.color='#424242';}" 
+                                            onblur="if(this.value==''){this.value='[% seed %]'; this.style.color='#aaa';}" />
+                                    </div>
+                                    <a class="help_btn" href="javascript:;" 
+                                        onclick="helpPopup('card_help', this, event);"><img 
+                                        src="[% ctx.media_prefix %]/images/kpac/question_mark.png" alt="pin number help" /></a>
+
+                                    <div class="clear">&nbsp;</div>
+                                    <div class="hr">&nbsp;</div>
+
+                                    <p>[% l('Password') %]</p>
+                                    <div class="input_box">
+                                        <input name="password" type="password" class="text_box" style="color:#aaa;" value="[% seed %]" 
+                                            onfocus="if(this.value=='[% seed %]'){this.value='';this.style.color='#424242';}" 
+                                            onblur="if(this.value==''){this.value='[% seed %]'; this.style.color='#aaa';}" />
+                                    </div>
+
+                                    <a class="help_btn" href="javascript:;" 
+                                        onclick="helpPopup('password_help', this, event);"><img 
+                                        src="[% ctx.media_prefix %]/images/kpac/question_mark.png" alt="[% l('password help') %]" /></a>
+
+                                    <div class="clear">&nbsp;</div>
+                                    <div class="hr">&nbsp;</div>
+                                [% END %]
+
+                                <p>[% l('Choose a Pickup Library:') %]</p>
+                                <div class="pickup_lib">
+                                    [%  def_lib = ctx.default_pickup_lib || ctx.physical_loc;
+                                        PROCESS "opac/parts/org_selector.tt2";
+                                        PROCESS build_org_selector name='pickup_lib' 
+                                        value=def_lib id='pickup_lib' can_have_vols_only=1 %]
                                 </div>
-                                <a class="help_btn" href="javascript:;" 
-                                    onclick="helpPopup('card_help', this, event);"><img 
-                                    src="[% ctx.media_prefix %]/images/kpac/question_mark.png" alt="pin number help" /></a>
-                                <div class="clear">&nbsp;</div>
-                                <div class="hr">&nbsp;</div>
-
-                                <p>[% l('Password') %]</p>
-                                <div class="input_box">
-                                    <input type="password" class="text_box" style="color:#aaa;" value="[% seed %]" 
-                                        onfocus="if(this.value=='[% seed %]'){this.value='';this.style.color='#424242';}" 
-                                        onblur="if(this.value==''){this.value='[% seed %]'; this.style.color='#aaa';}" />
-
-                                <a class="help_btn" href="javascript:;" 
-                                    onclick="helpPopup('password_help', this, event);"><img 
-                                    src="[% ctx.media_prefix %]/images/kpac/question_mark.png" alt="[% l('password help') %]" /></a>
-
-                                <div class="clear">&nbsp;</div>
-                                <div class="hr">&nbsp;</div>
-                            [% END %]
-
-                            <p>[% l('Choose a Pickup Library:') %]</p>
-                            <div class="pickup_lib">
-                                [%  def_lib = ctx.default_pickup_lib || ctx.physical_loc;
-                                    PROCESS "opac/parts/org_selector.tt2";
-                                    PROCESS build_org_selector name='pickup_lib' 
-                                    value=def_lib id='pickup_lib' can_have_vols_only=1 %]
                             </div>
                         </div>
-                    </div>
-                    <div class="submit_btn">
-                        <a href="javascript:;"><img src="[% ctx.media_prefix %]/images/kpac/review_submit_btn.png" alt="submit" /></a>
-                    </div>
+                        <div class="submit_btn">
+                            <input type='hidden' name='action' value='hold'/>
+                            <input type='image' src="[% ctx.media_prefix %]/images/kpac/review_submit_btn.png" alt="[% l('Submit') %]"/>
+                        </div>
+                    </form>
                 </div>
             </td>
 
@@ -83,7 +91,7 @@
                     </div>
                     <form method='POST'>
                         <input type='hidden' name='action' value='save'/>
-                        [% IF ctx.user AND ctx.bookbags.size > 0 %]
+                        [% IF ctx.user AND ctx.bookbags AND ctx.bookbags.size > 0 %]
                             <div class="checkout_box">
                                 <div class="box1_top">&nbsp;</div>
                                 <div class="box_inside">

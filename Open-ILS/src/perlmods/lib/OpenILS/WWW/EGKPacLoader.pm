@@ -62,6 +62,7 @@ sub load_getit {
     $self->ctx->{page} = 'getit'; # repair the page
 
     return $self->save_item_to_bookbag($rec_id, $bbag_id) if $action eq 'save';
+    return $self->login_and_place_hold($rec_id) if $action eq 'hold';
 
     # if the user is logged in, fetch his bookbags
     if ($ctx->{user}) {
@@ -76,6 +77,35 @@ sub load_getit {
     }
 
     $self->ctx->{page} = 'getit'; # repair the page
+    return Apache2::Const::OK;
+}
+    
+sub login_and_place_hold {
+    my $self = shift;
+    my $bre_id = shift;
+    my $ctx = $self->ctx;
+    my $username = $self->cgi->param('username');
+    my $password = $self->cgi->param('password');
+    my $pickup_lib = $self->cgi->param('pickup_lib');
+
+    if (!$ctx->{user}) {
+        # First, log the user in and return to 
+        # TODO: let user know username/password is required..
+        return Apache2::Const::OK unless $username and $password;
+        my $new_uri = $self->apache->unparsed_uri;
+        my $sep = ($new_uri =~ /\?/) ? '&' : '?';
+        $new_uri .= "${sep}pickup_lib=$pickup_lib&action=hold";
+        $self->cgi->param('redirect_to', $new_uri);
+        return $self->load_login;
+    }
+
+    # TODO: place hold
+
+    my $hold_id = '';
+#    (my $new_uri = $self->apache->unparsed_uri) =~ s/getit/getit_results/g;
+#    $new_uri .= ($new_uri =~ /\?/) ? "&hold=$hold_id" : "?hold=$hold_id";
+#    return $self->generic_redirect($new_uri);
+
     return Apache2::Const::OK;
 }
 
