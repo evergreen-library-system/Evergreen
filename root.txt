@@ -113,10 +113,7 @@ include::admin/recent_staff_searches.txt[]
 Acquisitions
 ===========
 
-Introduction
-------------
-
-This part is intended for staff who are involved in managing and processing acquisitions. 
+include::acquisitions/introduction.txt[]
 
 include::acquisitions/selection_lists.txt[]
 
@@ -125,6 +122,7 @@ include::acquisitions/brief_records.txt[]
 include::acquisitions/federated.txt[]
 
 include::acquisitions/receive_items_from_invoice.txt[]
+
 
 Cataloging
 ==========
