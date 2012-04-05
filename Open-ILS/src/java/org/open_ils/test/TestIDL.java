@@ -10,10 +10,11 @@ public class TestIDL {
         parser.parse();
         //System.out.print(parser.toXML());
 
-        /*
         OSRFObject bre = new OSRFObject("bre");
         bre.put("id", new Integer(1));
+        bre.put("isnew", new Boolean(false));
+        bre.put("isdeleted", new Boolean(true));
         System.out.println(bre);
-        */
+        System.out.println(new JSONWriter(bre).write());
     }
 }

@@ -159,6 +159,15 @@ public class IDLParser {
 
         if("class".equals(localpart)) {
 
+            String[] vfields = {"isnew", "ischanged", "isdeleted"};
+            for (String fieldName : vfields) {
+                IDLField field = new IDLField();
+                field.setName(fieldName);
+                field.setArrayPos(fieldIndex++);
+                field.setIsVirtual(true);
+                current.addField(field);
+            }
+
             if(keepIDLObjects)
                 IDLObjects.put(current.getIDLClass(), current);
 
