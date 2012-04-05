@@ -298,7 +298,7 @@ image::media/acq_marc_search.png[search form]
 
 . You can save the line item(s) to a selection list by checking the box on the line item and clicking _Actions ~> Save Items to Selection List_. You can also create a purchase order from the line item(s) by checking the box on the line item and clicking _Actions ~> Create Purchase Order_.
 
-image::media/acq_marc_search~2.png[line item]
+image::media/acq_marc_search-2.png[line item]
 
 Fund Tags
 ~~~~~~~~~
