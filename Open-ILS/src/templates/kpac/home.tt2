@@ -19,18 +19,27 @@
             <div class="search_wrapper">
                 <h1>Search your Library</h1>
                 <h3>for books, movies, music, magazines, and more!</h3>
-                <table cellpadding="0" cellspacing="0" border="0" align="center" class="search_box_wrapper">
-                    <tr>
-                        <td class="st_radio_btn"><input type="radio" name="search_type" checked="checked" id="st_word" class="st_word" /></td>
-                        <td class="st_label"><label for="st_word">[% l('Word') %]</label></td>
-                        <td class="st_radio_btn"><input type="radio" name="search_type" id="st_title" class="st_title" /></td>
-                        <td class="st_label"><label for="st_title">[% l('Title') %]</label></td>
-                        <td class="st_radio_btn"><input type="radio" name="search_type" id="st_author" class="st_author" /></td>
-                        <td class="st_label st_author_box"><label for="st_author">[% l('Author') %]</label></td>
-                        <td><input type="text" class="search_box" /></td>
-                        <td><a href="javascript:;"><img src="[% ctx.media_prefix %]/images/kpac/search_btn.png" alt="search" /></a></td>
-                    </tr>
-                </table>
+                <form action="[% ctx.kpac_root _ '/results' %]">
+                    [% qtype = CGI.param('qtype') %]
+                    <table cellpadding="0" cellspacing="0" border="0" align="center" class="search_box_wrapper">
+                        <tr>
+                            <td class="st_radio_btn"><input type="radio" name="qtype" value="keyword" id="st_word" class="st_word" 
+                                [% IF !qtype OR qtype == 'keyword' %]checked="checked"[% END %]/></td>
+                            <td class="st_label"><label for="st_word">[% l('Word') %]</label></td>
+
+                            <td class="st_radio_btn"><input type="radio" name="qtype" value="title" id="st_title" class="st_title" 
+                                [% IF qtype == 'title' %]checked="checked"[% END %]/></td>
+                            <td class="st_label"><label for="st_title">[% l('Title') %]</label></td>
+
+                            <td class="st_radio_btn"><input type="radio" name="qtype" value="author" id="st_author" class="st_author"
+                                [% IF qtype == 'author' %]checked="checked"[% END %]/></td>
+                            <td class="st_label st_author_box"><label for="st_author">[% l('Author') %]</label></td>
+
+                            <td><input type="text" class="search_box" name="query" value="[% CGI.param('query') | html %]"/></td>
+                            <td><input type="image" src="[% ctx.media_prefix %]/images/kpac/search_btn.png" alt="search" /></td>
+                        </tr>
+                    </table>
+                </form>
             </div>
             <div class="category_wrapper">
                 <h3 class="c_header_image">Or click on an image to get started:</h3>

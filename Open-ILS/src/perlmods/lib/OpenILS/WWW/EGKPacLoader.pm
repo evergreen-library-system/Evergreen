@@ -171,6 +171,7 @@ sub load_getit_results {
 
 sub load_kpac_config {
     my $self = shift;
+    my $ctx = $self->ctx;
 
     if (!$kpac_config) {
         my $path = $self->apache->dir_config('KPacConfigFile');
@@ -188,19 +189,20 @@ sub load_kpac_config {
         );
     }
 
-    my $ou = $self->ctx->{physical_loc} || $self->_get_search_lib;
+    my $ou = $ctx->{physical_loc} || $self->_get_search_lib;
     my $layout;
 
     # Search up the org tree to find the nearest config for the context org unit
-    while (my $org = $self->ctx->{get_aou}->($ou)) {
+    while (my $org = $ctx->{get_aou}->($ou)) {
         ($layout) = grep {$_->{owner} eq $org->id} @{$kpac_config->{layout}};
         last if $layout;
         $ou = $org->parent_ou;
     }
 
-    $self->ctx->{kpac_layout} = $layout;
-    $self->ctx->{kpac_config} = $kpac_config;
-    $self->ctx->{kpac_root} = $self->ctx->{base_path} . "/kpac"; 
+    $ctx->{kpac_layout} = $layout;
+    $ctx->{kpac_config} = $kpac_config;
+    $ctx->{kpac_root} = $ctx->{base_path} . "/kpac"; 
+    $ctx->{home_page} = 'http://' . $self->apache->hostname . $ctx->{kpac_root} . "/home";
 }
 
 
