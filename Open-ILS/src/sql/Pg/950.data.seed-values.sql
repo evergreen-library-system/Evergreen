@@ -6570,7 +6570,7 @@ $$
     END
 -%]
 
-<h2>Purchase Order [% target.id %]</h2>
+<h2>Purchase Order: [% target.name %] ([% target.id %])</h2>
 <br/>
 date <b>[% date.format(date.now, '%Y%m%d') %]</b>
 <br/>
