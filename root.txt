@@ -88,7 +88,7 @@ This part deals with the options in the Server Administration menu found in the 
 
 // Follow structure from staff client system admin menu.
 
-include::admin/aquisitions_admin.txt[]
+include::admin/acquisitions_admin.txt[]
 
 include::admin/authority_control_sets.txt[]
 
@@ -150,7 +150,7 @@ include::serials/C-subscription-SCV.txt[]
 
 include::serials/D-subscription-ASCV.txt[]
 
-include::serials/E-edit_subscription.txt[]
+include::serials/E-edit_subscriptions.txt[]
 
 include::serials/F-Receiving.txt[]
 

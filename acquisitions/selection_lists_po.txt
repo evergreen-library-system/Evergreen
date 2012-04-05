@@ -4,7 +4,7 @@ Selection Lists and Purchase Orders
 Selection Lists
 ~~~~~~~~~~~~~~~
 
-Selection lists allow you to create, manage, and save lists of items that you may want to purchase. To view your selection list, click Acquisitions ~> My Selection Lists. Use the general search to view selection lists created by other users.
+Selection lists allow you to create, manage, and save lists of items that you may want to purchase. To view your selection list, click Acquisitions -> My Selection Lists. Use the general search to view selection lists created by other users.
 
 Create a selection list
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -122,7 +122,7 @@ Brief records are short bibliographic records with minimal information that are 
 Add brief records to a selection list
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-. Click _Acquisitions -> New Brief Record_. You can also add brief records to an existing selection list by clicking the Actions menu on the selection list and choosing _Add Brief Record_.
+. Click Acquisitions -> New Brief Record. You can also add brief records to an existing selection list by clicking the Actions menu on the selection list and choosing Add Brief Record.
 
 . Choose a selection list from the drop down menu, or enter the name of a new selection list.
 
@@ -139,11 +139,11 @@ You can add brief records to new or existing purchase orders.
 
 . Open or create a purchase order. See the section on link:03~PO.txt[purchase orders] for more information.
 
-. Click _Add Brief Record_.
+. Click Add Brief Record.
 
 . Enter bibliographic information in the desired fields. Notice that the record is added to the purchase order that you just created.
 
-. Click _Save Record_.
+. Click Save Record.
 
 image::media/acq_brief_record~2.png[]
 
@@ -152,7 +152,7 @@ MARC Federated Search
 
 The MARC Federated Search enables you to import bibliographic records into a selection list or purchase order from a Z39.50 source.
 
-. Click _Acquisitions -> MARC Federated Search_.
+. Click Acquisitions -> MARC Federated Search.
 
 . Check the boxes of Z39.50 services that you want to search. Your local Evergreen Catalog is checked by default. Click Submit.
 
@@ -162,12 +162,12 @@ image::media/acq_marc_search.png[search form]
 ~~~~
 +
 
-. A list of results will appear. Click the _Copies_ link to add copy information to the line item. See the link:line_items.txt[section on Line Items] for more information.
+. A list of results will appear. Click the "Copies" link to add copy information to the line item. See the link:line_items.txt[section on Line Items] for more information.
 
 . Click the Notes link to add notes or line item alerts to the line item. See the link:line_items.txt[section on Line Items] for more information.
 
-. Enter a price in the _Estimated Price_ field.
+. Enter a price in the "Estimated Price" field.
 
-. You can save the line item(s) to a selection list by checking the box on the line item and clicking _Actions ~> Save Items to Selection List_. You can also create a purchase order from the line item(s) by checking the box on the line item and clicking _Actions ~> Create Purchase Order_.
+. You can save the line item(s) to a selection list by checking the box on the line item and clicking Actions -> Save Items to Selection List. You can also create a purchase order from the line item(s) by checking the box on the line item and clicking Actions ~> Create Purchase Order.
 
 image::media/acq_marc_search~2.png[line item]
