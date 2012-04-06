@@ -2911,7 +2911,6 @@ sub query_parser_fts {
     }
     $ou = actor::org_unit->search( { shortname => $ou } )->next->id if ($ou and $ou !~ /^(-)?\d+$/);
 
-
     # gather lasso, as with $ou
 	my $lasso = $args{lasso};
 	if (my ($filter) = $query->parse_tree->find_filter('lasso')) {
@@ -2933,6 +2932,13 @@ sub query_parser_fts {
     # if we have a lasso, go with that, otherwise ... ou
     $ou = $lasso if ($lasso);
 
+    # gather the preferred OU, if one is specified, as with $ou
+    my $pref_ou = $args{pref_ou};
+	$log->info("pref_ou = $pref_ou");
+	if (my ($filter) = $query->parse_tree->find_filter('pref_ou')) {
+            $pref_ou = $filter->args->[0] if (@{$filter->args});
+    }
+    $pref_ou = actor::org_unit->search( { shortname => $pref_ou } )->next->id if ($pref_ou and $pref_ou !~ /^(-)?\d+$/);
 
     # get the default $ou if we have nothing
 	$ou = actor::org_unit->search( { parent_ou => undef } )->next->id if (!$ou and !$lasso and !$mylasso);
@@ -3028,6 +3034,7 @@ sub query_parser_fts {
 	my $param_locations = '$${' . join(',', map { s/\$//go; "\"$_\""} @location) . '}$$';
 	my $staff = ($self->api_name =~ /staff/ or $query->parse_tree->find_modifier('staff')) ? "'t'" : "'f'";
 	my $metarecord = ($self->api_name =~ /metabib/ or $query->parse_tree->find_modifier('metabib') or $query->parse_tree->find_modifier('metarecord')) ? "'t'" : "'f'";
+	my $param_pref_ou = $pref_ou || 'NULL';
 
 	my $sth = metabib::metarecord_source_map->db_Main->prepare(<<"    SQL");
         SELECT  * -- bib search: $args{query}
@@ -3041,7 +3048,8 @@ sub query_parser_fts {
                     $param_check\:\:INT,
                     $param_limit\:\:INT,
                     $metarecord\:\:BOOL,
-                    $staff\:\:BOOL
+                    $staff\:\:BOOL,
+                    $param_pref_ou\:\:INT
                 );
     SQL
 
@@ -3184,6 +3192,7 @@ sub query_parser_fts_wrapper {
 
     $query = "estimation_strategy($args{estimation_strategy}) $query" if ($args{estimation_strategy});
     $query = "site($args{org_unit}) $query" if ($args{org_unit});
+    $query = "pref_ou($args{pref_ou}) $query" if ($args{pref_ou});
     $query = "depth($args{depth}) $query" if (defined($args{depth}));
     $query = "sort($args{sort}) $query" if ($args{sort});
     $query = "limit($args{limit}) $query" if ($args{limit});
