@@ -748,6 +748,7 @@ Recognized search keys include:
  series  (se) - search series     *
  lang - limit by language (specifiy multiple langs with lang:l1 lang:l2 ...)
  site - search at specified org unit, corresponds to actor.org_unit.shortname
+ pref_ou - extend search to specified org unit, corresponds to actor.org_unit.shortname
  sort - sort type (title, author, pubdate)
  dir  - sort direction (asc, desc)
  available - if set to anything other than "false" or "0", limits to available items
@@ -805,7 +806,7 @@ sub multiclass_query {
 
     my $simple_class_re  = qr/((?:\w+(?:\|\w+)?):[^:]+?)$/;
     my $class_list_re    = qr/(?:keyword|title|author|subject|series)/;
-    my $modifier_list_re = qr/(?:site|dir|sort|lang|available)/;
+    my $modifier_list_re = qr/(?:site|dir|sort|lang|available|preflib)/;
 
     my $tmp_value = '';
     while ($query =~ s/$simple_class_re//so) {
@@ -840,6 +841,14 @@ sub multiclass_query {
                 $arghash->{depth} = $e->retrieve_actor_org_unit_type($org->ou_type)->depth;
             } else {
                 $logger->warn("'site:' query used on invalid org shortname: $value ... ignoring");
+            }
+        } elsif($type eq 'pref_ou') {
+            # 'pref_ou' is the preferred org shortname.
+            my $e = new_editor();
+            if(my $org = $e->search_actor_org_unit({shortname => $value})->[0]) {
+                $arghash->{pref_ou} = $org->id if $org;
+            } else {
+                $logger->warn("'pref_ou:' query used on invalid org shortname: $value ... ignoring");
             }
 
         } elsif($type eq 'available') {

@@ -112,6 +112,12 @@ sub _prepare_biblio_search {
         $query .= " site($site)";
     }
 
+    my $pref_ou = $ctx->{pref_ou};
+    if (defined($pref_ou) and $pref_ou ne '' and $pref_ou != $org and ($pref_ou ne $ctx->{aou_tree}->()->id)) {
+        my $plib = $ctx->{get_aou}->($pref_ou)->shortname;
+        $query .= " pref_ou($plib)";
+    }
+
     if (my $grp = $ctx->{copy_location_group}) {
         $query .= " location_groups($grp)";
     }
