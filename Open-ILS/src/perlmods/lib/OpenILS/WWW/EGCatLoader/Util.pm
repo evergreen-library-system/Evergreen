@@ -235,6 +235,10 @@ sub get_records_and_facets {
         success_handler => sub {
             my($self, $req) = @_;
             my $data = $req->{response}->[0]->content;
+
+            # Protect against requests for non-existent records
+            return unless $data->{'unapi.bre'};
+
             my $xml = XML::LibXML->new->parse_string($data->{'unapi.bre'})->documentElement;
 
             # Protect against legacy invalid MARCXML that might not have a 901c
