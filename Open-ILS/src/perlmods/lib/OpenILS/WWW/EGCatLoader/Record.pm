@@ -64,6 +64,14 @@ sub load_record {
 
     $self->get_hold_copy_summary($rec_id, $org);
 
+    $self->ctx->{bib_is_dead} = OpenILS::Application::AppUtils->is_true(
+        OpenILS::Utils::CStoreEditor->new->json_query({
+            select => { bre => [ 'deleted' ] },
+            from => 'bre',
+            where => { 'id' => $rec_id }
+        })->[0]->{deleted}
+    );
+
     $cstore->kill_me;
 
     if (
