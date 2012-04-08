@@ -1425,3 +1425,9 @@ a.preflib_change {
 .rdetail-holding-group { margin-left: 1.5em; }
 .rdetail-holding-group span { margin-left: 1.5em; }
 .rdetail-holding-group .paging { margin-left: 1.5em; }
+#rdetail_deleted_exp {
+    font-weight: bold;
+    padding: 1em;
+    margin: 1em;
+    border: thick solid red;
+}
