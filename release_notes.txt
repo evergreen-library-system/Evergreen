@@ -4,43 +4,61 @@ Release notes
 Upgrade notes
 ~~~~~~~~~~~~~
 
-Located URI search scope
-^^^^^^^^^^^^^^^^^^^^^^^^
-Recognizing that electronic resources are often licensed for an entire library
-system rather than just a single library, the search scope for located URIs has
-changed to match from the highest point in the hierarchy down, rather than from
-the bottom up. In previous releases of Evergreen, if you had a MARC record with
-a URI located at 'BR1', a search for that record at the 'SYS1' scope would
-include the record in its results. The current release of Evergreen would not
-include the record in its results; the scope needs to be set at the level of
-'BR1' in the hierarchy or below.
+Z39.50 server definitions
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Therefore, you may want to run a SQL statement like the following, edited to
-match the short names of your branches and systems, to change the located
-URIs so that searches at the system level continue to return results for
-located URIs:
+Z39.50 server target definitions have been removed from the sample
+`opensrf.xml.example` file. To migrate existing settings from your
+`opensrf.xml` configuration file to the database, peform the
+following steps:
 
-------------------------------------------------------------------------------
-UPDATE biblio.record_entry
-    SET marc = replace(
-        replace(
-            marc, 
-            '<subfield code="9">BR1</subfield>',
-            '<subfield code="9">SYS1</subfield>'
-        ),
-        '<subfield code="9">BR3</subfield>',
-        '<subfield code="9">SYS2</subfield>'
-    ) WHERE marc LIKE '<subfield code="9">BR1</subfield>'
-        OR marc LIKE '<subfield code="9">BR3</subfield>'
-;
-------------------------------------------------------------------------------
+. First, set up your custom Z39.50 sources in the database. For
+      each entry in `z3950/services`, map the following XML paths to the
+      corresponding `config.z3950_source` table column as follows:
++
+      ** `z3950/services/<entry>` = name
+      ** `//<entry>/name` = label
+      ** `//<entry>/host` = host
+      ** `//<entry>/port` = port
+      ** `//<entry>/db` = db
+      ** `//<entry>/record_format` = record_format
+      ** `//<entry>/transmission_format` = transmission_format
++
+. Then, for each attribute defined in the `<attrs>` element for
+       a given service, map the following XML paths to the corresponding
+       `config.z3950_attr` table column as follows:
++
+      ** `z3950/services/<entry>` = source
+      ** `//<entry>/attrs/<attr>` = name
+      ** `//<entry>/attrs/<attr>/code` = code
+      ** `//<entry>/attrs/<attr>/format` = format
++
+. After adding the new Z39.50 sources and corresponding attributes, you will need to log out of the staff client and log back into the
+staff client to retrieve the new entry values. If a given Z39.50 server does not work for a given attribute, pay attention to the
+`truncation` column for the attribute.
 
 New features
 ~~~~~~~~~~~~
 
+*OPAC*
+
+Copy Location Groups
+^^^^^^^^^^^^^^^^^^^^
+This feature allows staff to create and name sets of copy locations to use as
+a search filter in the catalog.  OPAC-visible groups will display within the
+library selector in the template toolkit OPAC.  When a user selects a group
+and performs a search, the set of results will be limited to records that have
+copies in one of the copy locations within the group.  Groups can live at any
+level of the library hierarchy and may include copy locations from any parent 
+org unit or child org unit.
+
+For advanced users, this change includes a new Query Parser filter called
+location_groups().
+
 *Cataloging*
 
-*Prevent bibliographic records from having attached copies*
+Prevent bibliographic records from having attached copies
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To enable libraries to designate specific sets of records as only for use
 as electronic resources, it is possible to configure a bibliographic source
@@ -51,7 +69,8 @@ for a given bibliographic source is `TRUE`, then the staff client will prevent
 a cataloger from adding volumes or MFHD records to records belonging to that
 source.
 
-*Switch copy location name and library short name in copy editor*
+Switch copy location name and library short name in copy editor
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 By default, the copy editor shows the library shortname ('BR1' or 'CONS')
 followed by the copy location name ('Stacks', 'Reference').  A new workstation
@@ -62,10 +81,33 @@ may be particularly useful for libraries that have defined one set of copy
 locations at the consortial level and want to enable quick keyboard navigation
 to copy locations by typing just the first letters of the copy location.
 
+Authentication proxy
+~~~~~~~~~~~~~~~~~~~
+To support integration of Evergreen with organizational authentication systems,
+and to reduce the proliferation of user names and passwords, Evergreen offers 
+a new service called `open-ils.auth_proxy`. If you enable the service,
+`open-ils.auth_proxy` supports different authentication mechanisms
+that implement the `authenticate` method. You can define a chain of these
+authentication mechanisms to be tried in order within the `<authenticators>`
+element of the `opensrf.xml` configuration file, with the option of falling
+back to the `native` mode that uses Evergreen's internal method of password
+authentication.
+
+This service only provides authentication; there is no support for automatic
+provisioning of accounts. To authenticate against any authentication system,
+the user account must first be defined within the Evergreen system, and
+authentication will be based on the user name as it exists in Evergreen.
+
+A sample authentication mechanism for LDAP is provided in
+`Open-ILS::Application::AuthProxy::LDAP_AUTH`, and corresponding sample
+attributes can be found in `opensrf.xml.example`.
+
+
 *Reports*
 
 
-*New views for reporting sources*
+New views for reporting sources
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To support the creation of collection development reports, the following
 reporting sources have been added:
