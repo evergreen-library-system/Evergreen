@@ -27,7 +27,7 @@ sub load {
 
     return $self->load_simple("home") if $path =~ m|kpac/home|;
     return $self->load_simple("category") if $path =~ m|kpac/category|;
-    return $self->load_rresults if $path =~ m|kpac/results|;
+    return $self->load_kpac_rresults if $path =~ m|kpac/results|;
     return $self->load_record(no_search => 1) if $path =~ m|kpac/record|; 
 
     # ----------------------------------------------------------------
@@ -46,6 +46,21 @@ sub load {
     # AUTH pages
 
     return Apache2::Const::OK;
+}
+
+sub load_kpac_rresults {
+    my $self = shift;
+
+    # The redirect-to-record-details-on-single-hit logic
+    # leverages the opac_root to determine the record detail
+    # page.  Replace it temporarily for our purposes.
+    my $tpac_root = $self->ctx->{opac_root};
+    $self->ctx->{opac_root} = $self->ctx->{kpac_root};
+
+    my $stat = $self->load_rresults;
+    $self->ctx->{opac_root} = $tpac_root;
+
+    return $stat;
 }
 
 sub load_getit {
