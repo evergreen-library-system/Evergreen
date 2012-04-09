@@ -9289,7 +9289,7 @@ INSERT INTO action_trigger.environment (event_def, path) VALUES
     (38, 'bib_rec.bib_record.simple_record');
 
 INSERT INTO action_trigger.event_params (event_def, param, value)
-    VALUES (currval('action_trigger.event_definition_id_seq'), 'check_email_notify', 1);
+    VALUES (38, 'check_email_notify', 1);
 
 ----------------------------------------------------------------
 -- Seed data for queued record/item exports
