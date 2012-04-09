@@ -21,8 +21,8 @@
 # Make any assumptions about the shell being used explicit
 SHELL=/bin/bash 
 
-LIBJS=js-1.7.0
-LIBJS_PERL=JavaScript-SpiderMonkey-0.20
+LIBJS=js185-1.0.0
+LIBJS_PERL=JavaScript-SpiderMonkey-0.21
 LIBJS_URL=http://ftp.mozilla.org/pub/mozilla.org/js/$(LIBJS).tar.gz
 LIBJS_PERL_URL=http://mirror.datapipe.net/pub/CPAN/authors/id/T/TB/TBUSCH/$(LIBJS_PERL).tar.gz
 # used for installing libjs lib and header files
@@ -39,7 +39,7 @@ LIBDBI_HOST=http://open-ils.org/~denials/evergreen
 
 # We need a recent version of Yaz
 # Debian Lenny and Ubuntu 8.10 come with 3.0.34
-YAZ=yaz-4.2.17
+YAZ=yaz-4.2.32
 YAZ_HOST=http://ftp.indexdata.dk/pub/yaz
 
 APT_TOOL=aptitude -yq
