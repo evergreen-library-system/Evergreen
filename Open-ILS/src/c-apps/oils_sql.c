@@ -5585,26 +5585,9 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 	char *methodtype = osrfHashGet( (osrfHash *) ctx->method->userData, "methodtype" );
 	char *inside_verify = osrfHashGet( (osrfHash*) ctx->session->userData, "inside_verify" );
 	int need_to_verify = (inside_verify ? !atoi(inside_verify) : 1);
-	int has_controller = osrfStringArrayContains(osrfHashGet(class_meta, "controller"), modulename);
 
 	int i_respond_directly = 0;
 	int flesh_depth = 0;
-
-	// XXX This can be redundant with another instance of the same test that happens
-	// within the functions that call doFieldmapperSearch(), but we have it here to
-	// prevent any non-pcrud-controlled classes from being fleshed on.
-	//
-	// TODO To avoid redundancy, move this block to right before we recurse,
-	// and change the class we're checking to the one we're /about/ to search for,
-	// not the one we're currently searching for.
-	if (
-		(!has_controller && !enforce_pcrud) // cstore client-level case: we require the controller, period
-		|| (!has_controller && enforce_pcrud && need_to_verify) // pcrud case: we require the controller in need_to_verify mode
-	) {
-		osrfLogInfo(OSRF_LOG_MARK, "%s is not listed as a controller for %s, moving on",
-			modulename, core_class);
-		return jsonNewObjectType( JSON_ARRAY );	/* empty */
-	}
 
 	char* sql = buildSELECT( where_hash, query_hash, class_meta, ctx );
 	if( !sql ) {
@@ -5780,6 +5763,21 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 						|| !strcmp( reltype, "might_have" ) ) { // has_many or might_have
 						value_field = osrfHashGet(
 							fields, osrfHashGet( class_meta, "primarykey" ) );
+					}
+
+					int kid_has_controller = osrfStringArrayContains( osrfHashGet(kid_idl, "controller"), modulename );
+					// fleshing pcrud case: we require the controller in need_to_verify mode
+					if ( !kid_has_controller && enforce_pcrud && need_to_verify ) {
+						osrfLogInfo( OSRF_LOG_MARK, "%s is not listed as a controller for %s; moving on", modulename, core_class );
+
+						jsonObjectSetIndex(
+							cur,
+							(unsigned long) atoi( osrfHashGet(field, "array_position") ),
+							jsonNewObjectType(
+								!strcmp( reltype, "has_many" ) ? JSON_ARRAY : JSON_NULL
+							)
+						);
+						continue;
 					}
 
 					osrfStringArray* link_map = osrfHashGet( kid_link, "map" );
