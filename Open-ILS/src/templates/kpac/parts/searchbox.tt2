@@ -1,7 +1,8 @@
 <div class="sub_sidebar_header">[% l('New Search') %]</div>
 <form action="[% ctx.kpac_root _ '/results' %]">
     <div class="sub_sidebar_search_wrapper">
-        <input type="text" name='query' value="[% CGI.param('query') | html %]"
+        <input type="text" name='query' 
+            value="[% CGI.param('nosprop') ? '' : CGI.param('query') | html %]"
             [% seed = l(' Enter Text... ') | html %]
             class="sub_sidebar_search_box" style="color:#aaa;" value="[% seed %]"
             onfocus="if(this.value=='[% seed %]'){this.value='';this.style.color='#424242';}" 
