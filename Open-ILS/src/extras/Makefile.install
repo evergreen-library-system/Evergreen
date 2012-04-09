@@ -4,8 +4,7 @@
 #
 # Makefile to install prerequisites for OpenSRF and Evergreen
 #
-# Currently supports Debian (squeeze), Ubuntu (lucid), and Fedora (16).
-# Working towards support of CentOS 5 / RHEL 5.
+# Currently supports Debian (squeeze), Ubuntu (10.04), Ubuntu (12.04) and Fedora (16).
 # Installs Perl prereqs, libjs with Perl wrapper, libdbi, libdbi-drivers, and libyaz
 #
 # usage:
@@ -13,16 +12,9 @@
 # 	- or -
 # 	make -f Makefile.install ubuntu-lucid
 # 	- or -
+# 	make -f Makefile.install ubuntu-precise
+# 	- or -
 # 	make -f Makefile.install fedora16
-# 	- or -
-# 	make -f Makefile.install centos
-# 	- or -
-# 	make -f Makefile.install rhel
-#
-# Notes:
-#
-# 	This makefile has been tested much more with Debian, Ubuntu, and
-# 	Fedora than CentOS, or RHEL.
 #
 # ---------------------------------------------------------------------
  
@@ -50,27 +42,15 @@ LIBDBI_HOST=http://open-ils.org/~denials/evergreen
 YAZ=yaz-4.2.17
 YAZ_HOST=http://ftp.indexdata.dk/pub/yaz
 
-# Business::OnlinePayment is not packaged on CentOS/RHEL
-PAY_ONLINE=Business-OnlinePayment-3.00_08.tar.gz
-PAY_ONLINE_HOST=http://ftp.perl.org/pub/CPAN/authors/id/I/IV/IVAN/
-
 APT_TOOL=aptitude -yq
 APT_SAFE_TOOL=aptitude -P
 APT_BACKPORT_TOOL=aptitude -t squeeze-backports -yq
-
-# 64 or 32 bit os?
-LBITS=$(shell getconf LONG_BIT)
 
 # Fedora?
 FEDORA=$(shell uname -r | grep "\.fc[0-9][0-9]\.")
 
 # Fedora 64-bit?
 FEDORA_64=$(shell uname -r | grep "\.fc[0-9][0-9]\.x86_64")
-
-#RHEL/Centos PGSQL 
-PGSQL_HOST=http://yum.pgsqlrpms.org/reporpms/9.0
-PGSQL_CENTOS=pgdg-centos-9.0-2.noarch.rpm
-PGSQL_REDHAT=pgdg-redhat-9.0-2.noarch.rpm	
 
 # Debian dependencies
 DEBS =  \
@@ -136,37 +116,6 @@ EXTRA_DEBS_PRECISE = \
 # > 2.12 - see bug 525069.
 EXTRA_ENCODE = \
 	libencode-perl
-
-CENTOS = \
-	aspell \
-	aspell-devel \
-	aspell-en \
-	gd-devel \
-	libssh2-devel \
-	openssl-devel \
-	perl-parent \
-	perl-Business-CreditCard \
-	perl-Business-ISBN \
-	perl-Business-ISBN-Data \
-	perl-Business-OnlinePayment \
-	perl-Class-Data-Inheritable \
-	perl-DateTime-Format-Builder \
-	perl-DateTime-Format-Strptime \
-	perl-Ima-DBI \
-	perl-DBD-Pg \
-	perl-GD-Graph3d \
-	perl-IO-stringy \
-	perl-Spreadsheet-WriteExcel \
-	perl-Text-Aspell \
-	perl-Text-CSV
-
-CENTOS_PERL = \
-	Encode \
-	DBIx::ContextualFetch \
-	Getopt::Long \
-	Net::SSH2 \
-	Net::XMPP \
-	Net::Z3950::ZOOM
 
 FEDORA_RPMS = \
 	aspell \
@@ -315,10 +264,6 @@ all:
 
 # these should be the same for any distro
 install: install_cpan install_js_sm install_cpan_force
-
-centos: install_centos_pgsql centos_like
-rhel: install_redhat_pgsql centos_like
-centos_like: install_centos_rpms install_yaz install_cpan_marc install install_centos_perl create_ld_local install_cpan_safe install_libdbi
 
 fedora16: install_fedora_rpms install_cpan_fedora install_cpan_marc install
 
@@ -535,39 +480,6 @@ install_fedora_rpms:
 
 install_fedora_pgsql_server:
 	yum -y install $(PGSQL_FEDORA_RPMS)
-
-# CENTOS
-install_centos_rpms:
-	yum -y install $(CENTOS)
-	yum -y update
-	if [ $(LBITS) -eq 64 ]; then \
-		ln -sf /usr/lib64/libpq.* /usr/lib/ && \
-		ln -sf /usr/lib64/perl5/5.8.8/x86_64-linux-thread-multi/CORE/libperl.so /usr/lib/ && \
-		ldconfig ; \
-	fi;
-	if [ $(LBITS) -eq 32 ]; then \
-		ln -sf /usr/lib/perl5/5.8.8/i386-linux-thread-multi/CORE/libperl.so /usr/lib && \
-		ldconfig ; \
-	fi;
-
-install_centos_pgsql:
-	if [ $(LBITS) -eq 64 ]; then yum remove -y postgresql-libs-8.1*i386 apr-util-devel-*i386 ; fi;
-	wget $(PGSQL_HOST)/$(PGSQL_CENTOS)
-	rpm -Uvh --force ./$(PGSQL_CENTOS)
-	yum update -y
-	yum -y install $(PGSQL_90_RPMS)
-
-install_redhat_pgsql:
-	if [ $(LBITS) -eq 64 ]; then yum remove -y postgresql-libs-8.1*i386 apr-util-devel-*i386 ; fi;
-	wget $(PGSQL_HOST)/$(PGSQL_REDHAT)
-	rpm -Uvh --force ./$(PGSQL_REDHAT)
-	yum update -y
-	yum -y install $(PGSQL_90_RPMS)
-
-install_centos_perl:
-	for m in $(CENTOS_PERL); do perl -MCPAN -e "install \"$$m\";"; done
-	echo "force install Business::OnlinePayment::AuthorizeNet" | perl -MCPAN -e shell
-	echo "force install Scalar::Util" | perl -MCPAN -e shell	
 
 # We need to add /usr/local/lib to the ldconfig list of directories on CentOS,
 # if it is not already there
