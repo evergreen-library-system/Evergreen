@@ -55,8 +55,8 @@ class SQL(basel10n.BaseL10N):
 
         num = 0
         findi18n = re.compile(r'.*?oils_i18n_gettext\((.*?)\'\)')
-        intkey = re.compile(r'\s*(?P<id>\d+),\s*\'(?P<string>.+?)\',\s*\'(?P<class>.+?)\',\s*\'(?P<property>.+?)$')
-        textkey = re.compile(r'\s*\'(?P<id>.*?)\',\s*\'(?P<string>.+?)\',\s*\'(?P<class>.+?)\',\s*\'(?P<property>.+?)$')
+        intkey = re.compile(r'\s*(?P<id>\d+)\s*,\s*\'(?P<string>.+?)\',\s*\'(?P<class>.+?)\',\s*\'(?P<property>.+?)$')
+        textkey = re.compile(r'\s*\'(?P<id>.*?)\'\s*,\s*\'(?P<string>.+?)\',\s*\'(?P<class>.+?)\',\s*\'(?P<property>.+?)$')
         serts = dict()
 
         # Iterate through the source SQL grabbing table names and l10n strings
