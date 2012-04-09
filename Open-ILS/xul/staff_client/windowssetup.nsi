@@ -107,11 +107,13 @@ Section "Staff Client" SECMAIN
   CreateDirectory "$SMPROGRAMS\$ICONS_GROUP"
   !ifdef WICON
   CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\Evergreen Staff Client.lnk" "$INSTDIR\evergreen.exe" "" "$INSTDIR\evergreen.ico"
+  CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\Evergreen Staff Client (Standalone).lnk" "$INSTDIR\evergreen.exe" "-ILSoffline" "$INSTDIR\evergreen.ico"
   !ifdef PROFILES
   CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\Evergreen Staff Client Profile Manager.lnk" "$INSTDIR\evergreen.exe" "-profilemanager" "$INSTDIR\evergreen.ico"
   !endif
   !else
   CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\Evergreen Staff Client.lnk" "$INSTDIR\evergreen.exe"
+  CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\Evergreen Staff Client (Standalone).lnk" "$INSTDIR\evergreen.exe" "-ILSoffline"
   !ifdef PROFILES
   CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\Evergreen Staff Client Profile Manager.lnk" "$INSTDIR\evergreen.exe" "-profilemanager"
   !endif
@@ -271,6 +273,7 @@ Section Uninstall
   Delete "$SMPROGRAMS\$ICONS_GROUP\Website.lnk"
   Delete "$DESKTOP\Evergreen Staff Client ${PRODUCT_TAG}.lnk"
   Delete "$SMPROGRAMS\$ICONS_GROUP\Evergreen Staff Client.lnk"
+  Delete "$SMPROGRAMS\$ICONS_GROUP\Evergreen Staff Client (Standalone).lnk"
 
   ; External script for removing extra files before we wipe out the install directory
   !ifdef EXTRAS
