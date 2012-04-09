@@ -11,7 +11,7 @@ DROP FUNCTION evergreen.upgrade_list_applied_deprecates(TEXT);
 DROP FUNCTION evergreen.upgrade_list_applied_supersedes(TEXT);
 
 BEGIN;
-INSERT INTO config.upgrade_log (version) VALUES ('2.2-beta1');
+INSERT INTO config.upgrade_log (version) VALUES ('2.2-beta2');
 
 INSERT INTO config.upgrade_log (version) VALUES ('0526'); --miker
 
