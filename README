@@ -397,13 +397,20 @@ Evergreen administrator account to your requested values.
 Creating the database on a remote server
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 In a production instance of Evergreen, your PostgreSQL server should be
-installed on a dedicated server. For PostgreSQL 9.1 and later you should be
-able to continue to use the --create-database flag on eg_db_config.pl, without
-needing to install any server modules on your application machine. For
-PostgreSQL 9.0 you can either:
+installed on a dedicated server.
+
+PostgreSQL 9.1 and later
+^^^^^^^^^^^^^^^^^^^^^^^^
+To create the database instance on a remote database server running PostgreSQL
+9.1 or later, simply use the `--create-database` flag on `eg_db_config.pl`.
+
+For PostgreSQL 9.0
+^^^^^^^^^^^^^^^^^^
+To create the database instance on a remote database server running PostgreSQL
+9.0, you can either:
 
   *  Install the PostgreSQL contrib modules on the machine on which you
-     are installing the Evergreen code, and use the --create-database
+     are installing the Evergreen code, and use the `--create-database`
      option from that machine, or
   *  Copy the `Open-ILS/src/sql/Pg/create_database.sql` script to your
      PostgreSQL server and invoke it as the *postgres* Linux account:
