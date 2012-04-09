@@ -112,11 +112,6 @@ EXTRA_DEBS_PRECISE = \
     libnet-z3950-simple2zoom-perl \
     libuuid-tiny-perl
 
-# Ubuntu Hardy requires libencode-perl # to get a version of Encode
-# > 2.12 - see bug 525069.
-EXTRA_ENCODE = \
-	libencode-perl
-
 FEDORA_RPMS = \
 	aspell \
 	aspell-en \
@@ -466,10 +461,6 @@ install_extra_debs_precise: install_extra_debs
 
 install_extra_debs:
 	$(APT_TOOL) install $(EXTRA_DEBS)
-
-# Install specific modules required by Ubuntu Hardy - see bug 525069
-install_extra_encode:
-	$(APT_TOOL) install $(EXTRA_ENCODE)
 
 # ------------------------------------------------------------------
 
