@@ -115,7 +115,7 @@ make
 [source, bash]
 ------------------------------------------------------------
 cd /home/opensrf/Evergreen-ILS-2.2-beta1
-make STAFF_CLIENT_BUILD_ID=rel_2_2_beta1 install
+make STAFF_CLIENT_STAMP_ID=rel_2_2_beta1 install
 ------------------------------------------------------------
 +
 . As the root user, change all files to be owned by the opensrf user and group:
