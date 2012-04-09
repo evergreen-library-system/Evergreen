@@ -6,23 +6,31 @@
         
 <h2 class="sub_header2">Search Results</h2>
 
-<div class="sub_navigation2">
-    [% INCLUDE 'kpac/parts/paginate.tt2' %]
-</div>
+[% IF ctx.records.size == 0 %]
 
-<div id="search_results_parent">
+    <br/>
+    <div style='width:100%; text-align:center'>
+        <h3>[% l('No records were found that matched your search.') %]</h3>
+    </div>
 
-[%  FOR rec IN ctx.records;
-        attrs = {marc_xml => rec.marc_xml};
-        PROCESS get_marc_attrs args=attrs %]
+[% ELSE %]
 
-    [% INCLUDE 'kpac/parts/record_row.tt2' show_actions=1 rec_id=rec.id%]
+    <div class="sub_navigation2">
+        [% INCLUDE 'kpac/parts/paginate.tt2' %]
+    </div>
+
+    <div id="search_results_parent"> [%
+        FOR rec IN ctx.records;
+            attrs = {marc_xml => rec.marc_xml};
+            PROCESS get_marc_attrs args=attrs;
+            INCLUDE 'kpac/parts/record_row.tt2' show_actions=1 rec_id=rec.id;
+        END;
+    %] </div>
+
+    <div class="sub_navigation3">
+        [% INCLUDE 'kpac/parts/paginate.tt2' showtop=1 %]
+    </div>
 
 [% END %]
-</div>
-
-<div class="sub_navigation3">
-    [% INCLUDE 'kpac/parts/paginate.tt2' showtop=1 %]
-</div>
 
 [% END %]
