@@ -542,6 +542,7 @@ my @AUTOLOAD_FIELDS = qw/
     fake_hold_dest
     limit_groups
     override_args
+    checkout_is_for_hold
 /;
 
 
@@ -978,9 +979,9 @@ sub is_group_descendant {
 }
 
 sub check_captured_holds {
-   my $self    = shift;
-   my $copy    = $self->copy;
-   my $patron  = $self->patron;
+    my $self    = shift;
+    my $copy    = $self->copy;
+    my $patron  = $self->patron;
 
     return undef unless $copy;
 
@@ -989,7 +990,7 @@ sub check_captured_holds {
     $logger->info("circulator: copy is on holds shelf, searching for the correct hold");
 
     # Item is on the holds shelf, make sure it's going to the right person
-    my $holds   = $self->editor->search_action_hold_request(
+    my $hold = $self->editor->search_action_hold_request(
         [
             { 
                 current_copy        => $copy->id , 
@@ -999,10 +1000,11 @@ sub check_captured_holds {
             },
             { limit => 1 }
         ]
-    );
+    )->[0];
 
-    if( $holds and $$holds[0] ) {
-        return undef if $$holds[0]->usr == $patron->id;
+    if ($hold and $hold->usr == $patron->id) {
+        $self->checkout_is_for_hold(1);
+        return undef;
     }
 
     $logger->info("circulator: this copy is needed by a different patron to fulfill a hold");
@@ -1097,10 +1099,33 @@ sub run_patron_permit_scripts {
 
         my $results = $self->run_indb_circ_test;
         unless($self->circ_test_success) {
-            # no_item result is OK during noncat checkout
-            unless(@$results == 1 && $results->[0]->{fail_part} eq 'no_item' and $self->is_noncat) {
-                push @allevents, $self->matrix_test_result_events;
+            my @trimmed_results;
+
+            if ($self->is_noncat) {
+                # no_item result is OK during noncat checkout
+                @trimmed_results = grep { ($_->{fail_part} || '') ne 'no_item' } @$results;
             }
+
+            if ($self->checkout_is_for_hold) {
+                # if this checkout will fulfill a hold, ignore CIRC blocks
+                # and rely instead on the (later-checked) FULFILL block
+
+                my @pen_names = grep {$_} map {$_->{fail_part}} @$results;
+                my $fblock_pens = $self->editor->search_config_standing_penalty(
+                    {name => [@pen_names], block_list => {like => '%CIRC%'}});
+
+                for my $res (@$results) {
+                    my $name = $res->{fail_part} || '';
+                    next if grep {$_->name eq $name} @$fblock_pens or 
+                        ($self->is_noncat and $name eq 'no_item');
+                    push(@trimmed_results, $res);
+                }
+            }
+
+            # update the final set of test results
+            $self->matrix_test_result(\@trimmed_results); 
+
+            push @allevents, $self->matrix_test_result_events;
         }
 
     } else {
@@ -1120,6 +1145,8 @@ sub run_patron_permit_scripts {
         $penalties = $penalties->{fatal_penalties};
 
         for my $pen (@$penalties) {
+            # CIRC blocks are ignored if this is a FULFILL scenario
+            next if $mask eq 'CIRC' and $self->checkout_is_for_hold;
             my $event = OpenILS::Event->new($pen->name);
             $event->{desc} = $pen->label;
             push(@allevents, $event);
@@ -1633,6 +1660,44 @@ sub bail_on_events {
     $self->bail_out(1);
 }
 
+# ------------------------------------------------------------------------------
+# A hold FULFILL block is just like a CIRC block, except that FULFILL only
+# affects copies that will fulfill holds and CIRC affects all other copies.
+# If blocks exists, bail, push Events onto the event pile, and return true.
+# ------------------------------------------------------------------------------
+sub check_hold_fulfill_blocks {
+    my $self = shift;
+
+    # See if the user has any penalties applied that prevent hold fulfillment
+    my $pens = $self->editor->json_query({
+        select => {csp => ['name', 'label']},
+        from => {ausp => {csp => {}}},
+        where => {
+            '+ausp' => {
+                usr => $self->patron->id,
+                org_unit => $U->get_org_full_path($self->circ_lib),
+                '-or' => [
+                    {stop_date => undef},
+                    {stop_date => {'>' => 'now'}}
+                ]
+            },
+            '+csp' => {block_list => {'like' => '%FULFILL%'}}
+        }
+    });
+
+    return 0 unless @$pens;
+
+    for my $pen (@$pens) {
+        $logger->info("circulator: patron has hold FULFILL block " . $pen->{name});
+        my $event = OpenILS::Event->new($pen->{name});
+        $event->{desc} = $pen->{label};
+        $self->push_events($event);
+    }
+
+    $self->override_events;
+    return $self->bail_out;
+}
+
 
 # ------------------------------------------------------------------------------
 # When an item is checked out, see if we can fulfill a hold for this patron
@@ -1681,6 +1746,8 @@ sub handle_checkout_holds {
         $hold = $self->find_related_user_hold($copy, $patron) or return;
         $logger->info("circulator: found related hold to fulfill in checkout");
     }
+
+    return if $self->check_hold_fulfill_blocks;
 
     $logger->debug("circulator: checkout fulfilling hold " . $hold->id);
 
