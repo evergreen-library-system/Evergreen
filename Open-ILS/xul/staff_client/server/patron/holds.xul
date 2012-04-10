@@ -52,6 +52,7 @@
                         'docid' : xul_param('docid'),
                         'shelf' : xul_param('shelf'),
                         'pull' : xul_param('pull'),
+                        'clear' : xul_param('clear')
                     } 
                 );
                 window.refresh = function(p) { g.holds.list.clear(); g.holds.retrieve(p); }

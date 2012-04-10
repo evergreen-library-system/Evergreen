@@ -1570,7 +1570,15 @@ patron.holds.prototype = {
                     if (obj.controller.view.lib_menu) obj.controller.view.lib_menu.disabled = true;
                 }
                 obj.controller.render();
-                obj.retrieve(true);
+                if (params['clear']) {
+                    JSAN.use('util.widgets');
+                    var x = document.getElementById('expired_checkbox');
+                    x.checked = true;
+                    obj.expired = true;
+                    util.widgets.dispatch('command','cmd_clear_expired_onshelf_holds');
+                } else {
+                    obj.retrieve(true);
+                }
 
                 obj.controller.view.cmd_retrieve_patron.setAttribute('disabled','true');
                 obj.controller.view.cmd_holds_edit_pickup_lib.setAttribute('disabled','true');

@@ -567,6 +567,23 @@ main.menu.prototype = {
                     obj.command_tab(event,obj.url_prefix(urls.XUL_HOLDS_BROWSER)+'?shelf=1',{ 'tab_name' : offlineStrings.getString('menu.cmd_browse_holds_shelf.tab') },{});
                 }
             ],
+            'cmd_clear_holds_shelf' : [
+                ['oncommand'],
+                function(event) {
+                    obj.data.stash_retrieve();
+                    obj.command_tab(
+                        event,
+                        obj.url_prefix(urls.XUL_HOLDS_BROWSER),
+                        {
+                            'tab_name' : offlineStrings.getString('menu.cmd_browse_holds_shelf.tab')
+                        },
+                        {
+                            'shelf':1,
+                            'clear':true
+                        }
+                    );
+                }
+            ],
             'cmd_circ_hold_pull_list' : [
                 ['oncommand'],
                 function(event) { 

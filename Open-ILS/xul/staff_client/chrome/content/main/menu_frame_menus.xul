@@ -32,6 +32,7 @@
     <command id="cmd_circ_hold_pull_list" />
     <command id="cmd_browse_holds" />
     <command id="cmd_browse_holds_shelf" />
+    <command id="cmd_clear_holds_shelf" />
     <command id="cmd_in_house_use" />
     <command id="cmd_scan_item_as_missing_pieces" />
     <command id="cmd_copy_status" />
@@ -325,6 +326,7 @@
         <menuitem label="&staff.main.menu.circ.hold_capture.label;" accesskey="&staff.main.menu.circ.hold_capture.accesskey;" command="cmd_circ_hold_capture"/>
         <menuitem label="&staff.main.menu.circ.hold_pull.label;" accesskey="&staff.main.menu.circ.hold_pull.accesskey;" command="cmd_circ_hold_pull_list"/>
         <menuitem label="&staff.main.menu.circ.hold_browse.label;" command="cmd_browse_holds_shelf" accesskey="&staff.main.menu.circ.hold_browse.accesskey;"/>
+        <menuitem label="&staff.main.menu.circ.hold_clear.label;" command="cmd_clear_holds_shelf" accesskey="&staff.main.menu.circ.hold_clear.accesskey;"/>
         <menuitem label="&staff.main.menu.circ.place_hold.label;" accesskey="&staff.main.menu.circ.place_hold.accesskey;" command="cmd_search_opac"/>
         <menuseparator />
         <menuitem label="&staff.main.menu.circ.barcode.show_item;" accesskey="&staff.main.menu.circ.barcode.show_item.accesskey;" command="cmd_copy_status"/>

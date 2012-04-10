@@ -1017,6 +1017,8 @@
 <!ENTITY staff.main.menu.circ.found.label "Mark Found">
 <!ENTITY staff.main.menu.circ.hold_browse.accesskey "B">
 <!ENTITY staff.main.menu.circ.hold_browse.label "Browse Holds Shelf">
+<!ENTITY staff.main.menu.circ.hold_clear.accesskey "">
+<!ENTITY staff.main.menu.circ.hold_clear.label "Clear Shelf-Expired Holds">
 <!ENTITY staff.main.menu.circ.hold_capture.accesskey "H">
 <!ENTITY staff.main.menu.circ.hold_capture.label "Capture Holds">
 <!ENTITY staff.main.menu.circ.hold_pull.accesskey "S">

@@ -182,6 +182,11 @@
         command="cmd_browse_holds_shelf"
         templateid="browse_holds_shelf" />
     <toolbarbutton
+        label="&staff.main.menu.circ.hold_clear.label;"
+        tooltiptext="&staff.main.menu.circ.hold_clear.label;"
+        command="cmd_clear_holds_shelf"
+        templateid="clear_holds_shelf" />
+    <toolbarbutton
         label="&staff.main.menu.circ.patron_retrieve.label;"
         tooltiptext="&staff.main.menu.circ.patron_retrieve.label;"
         command="cmd_retrieve_last_patron"
