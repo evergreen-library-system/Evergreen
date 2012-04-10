@@ -6349,6 +6349,7 @@ INSERT INTO config.coded_value_map (id, ctype, code, value) VALUES
     (535, 'bib_level', 'm', oils_i18n_gettext('535', 'Monograph/Item', 'ccvm', 'value')),
     (536, 'bib_level', 's', oils_i18n_gettext('536', 'Serial', 'ccvm', 'value'));
 
+SELECT SETVAL('config.coded_value_map_id_seq'::TEXT, (SELECT max(id) FROM config.coded_value_map));
 
 -- Trigger Event Definitions -------------------------------------------------
 

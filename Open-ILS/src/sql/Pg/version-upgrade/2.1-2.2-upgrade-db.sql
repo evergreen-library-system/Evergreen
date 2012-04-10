@@ -12417,6 +12417,13 @@ INSERT INTO permission.perm_list ( id, code, description )
         )
     );
 
+
+-- Evergreen DB patch 0716.coded_value_map_id_seq_fix.sql
+
+SELECT evergreen.upgrade_deps_block_check('0716', :eg_version);
+
+SELECT SETVAL('config.coded_value_map_id_seq'::TEXT, (SELECT max(id) FROM config.coded_value_map));
+
 COMMIT;
 
 \qecho ************************************************************************
