@@ -1749,8 +1749,8 @@ util.list.prototype = {
                                 } else {
                                     a = a.value;
                                     b = b.value;
-                                    if (obj.columns[p].getAttribute('sort_type')) {
-                                        switch(obj.columns[p].getAttribute('sort_type')) {
+                                    if (obj.columns[p].sort_type) {
+                                        switch(obj.columns[p].sort_type) {
                                             case 'date' :
                                                 JSAN.use('util.date'); // to pull in dojo.date.locale
                                                 a = dojo.date.locale.parse(a,{});
