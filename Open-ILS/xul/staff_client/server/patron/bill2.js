@@ -516,7 +516,7 @@ function init_lists() {
             var treeItem = g.bill_list.node.contentView.getItemAtIndex(row.value);
             if (treeItem.nodeName != 'treeitem') return;
             var treeRow = treeItem.firstChild;
-            var treeCell = treeRow.firstChild;
+            var treeCell = treeRow.firstChild.nextSibling;
             if (g.check_map[ treeItem.getAttribute('retrieve_id') ] != (treeCell.getAttribute('value') == 'true')) {
                 g.check_map[ treeItem.getAttribute('retrieve_id') ] = treeCell.getAttribute('value') == 'true';
                 g.row_map[ treeItem.getAttribute('retrieve_id') ].row.my.checked = treeCell.getAttribute('value') == 'true';
