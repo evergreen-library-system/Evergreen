@@ -6,6 +6,7 @@ use OpenSRF::Utils::Logger;
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::System;
 use XML::LibXML;
+use Scalar::Util 'blessed';
 
 my $log = 'OpenSRF::Utils::Logger';
 
@@ -330,6 +331,46 @@ sub RequiredField {
 	my $f = shift;
     return undef unless ($f);
 	return $$fieldmap{$self->class_name}{fields}{$f}{required};
+}
+
+sub toXML {
+    my $self = shift;
+    return undef unless (ref $self);
+
+    my $dom = XML::LibXML::Document->new;
+    my $root = $dom->createElement( $self->class_name );
+    $dom->setDocumentElement( $root );
+
+    for my $f ($self->properties) {
+        next if ($f eq 'isnew');
+        next if ($f eq 'ischanged');
+        next if ($f eq 'isdeleted');
+
+        my $value = $self->$f();
+        my $element = $dom->createElement( $f );
+
+        $value = [$value] if (blessed($value)); # fm object
+
+        if (ref($value)) { # array
+            for my $k (@$value) {
+                if (blessed($k)) {
+                    my $subdoc = $k->toXML;
+                    next unless $subdoc;
+                    my $subnode = $subdoc->documentElement;
+                    $dom->adoptNode($subnode);
+                    $element->appendChild($subnode);
+                } elsif (ref $k) { # not sure what to do here
+                    $element->appendText($k);
+                } else { # meh .. just append, I guess
+                    $element->appendText($k);
+                }
+            }
+        } else {
+            $element->appendText($value);
+        }
+    }
+
+    return $dom;
 }
 
 sub ValidateField {
