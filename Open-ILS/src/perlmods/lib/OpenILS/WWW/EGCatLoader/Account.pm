@@ -108,12 +108,12 @@ sub load_myopac_prefs {
     my $user = $self->ctx->{user};
 
     my $lock_usernames = $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'opac.lock_usernames');
-    if($lock_usernames == 1) {
+    if(defined($lock_usernames) and $lock_usernames == 1) {
         # Policy says no username changes
         $self->ctx->{username_change_disallowed} = 1;
     } else {
         my $username_unlimit = $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'opac.unlimit_usernames');
-        if($username_unlimit != 1) {
+        if(defined($username_unlimit) and $username_unlimit != 1) {
             my $regex_check = $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'opac.barcode_regex');
             if(!$regex_check) {
                 # Default is "starts with a number"
@@ -1482,14 +1482,14 @@ sub load_myopac_update_username {
     my $allow_change = 1;
     my $regex_check;
     my $lock_usernames = $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'opac.lock_usernames');
-    if($lock_usernames == 1) {
+    if(defined($lock_usernames) and $lock_usernames == 1) {
         # Policy says no username changes
         $allow_change = 0;
     } else {
         # We want this further down.
         $regex_check = $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'opac.barcode_regex');
         my $username_unlimit = $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'opac.unlimit_usernames');
-        if($username_unlimit != 1) {
+        if(defined($username_unlimit) and $username_unlimit != 1) {
             if(!$regex_check) {
                 # Default is "starts with a number"
                 $regex_check = '^\d+';
