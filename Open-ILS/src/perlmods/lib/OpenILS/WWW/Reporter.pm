@@ -49,7 +49,7 @@ sub child_init {
 	#$parser->expand_xinclude(1);
 
 	#$base_xml_doc = $parser->parse_file($base_xml);
-
+	return Apache2::Const::OK;
 }
 
 sub handler {

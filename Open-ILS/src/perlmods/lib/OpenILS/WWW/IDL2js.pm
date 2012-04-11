@@ -49,6 +49,7 @@ sub child_init {
     };
 
     $idl_doc = XML::LibXML->load_xml(location => $idl_file);
+    return Apache2::Const::OK;
 }
 
 

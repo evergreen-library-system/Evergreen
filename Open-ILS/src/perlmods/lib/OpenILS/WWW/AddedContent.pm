@@ -50,9 +50,9 @@ sub child_init {
     my $sclient = OpenSRF::Utils::SettingsClient->new();
     my $ac_data = $sclient->config_value("added_content");
 
-    return unless $ac_data;
+    return Apache2::Const::OK unless $ac_data;
     my $ac_handler = $ac_data->{module};
-    return unless $ac_handler;
+    return Apache2::Const::OK unless $ac_handler;
 
     $net_timeout = $ac_data->{timeout} || 1;
     $error_countdown = $max_errors = $ac_data->{max_errors} || 10;
@@ -64,11 +64,12 @@ sub child_init {
 
     if($@) {    
         $logger->error("Unable to load Added Content handler [$ac_handler]: $@"); 
-        return; 
+        return Apache2::Const::OK; 
     }
 
     $handler = $ac_handler->new($ac_data);
     $logger->debug("added content loaded handler: $handler");
+    return Apache2::Const::OK;
 }
 
 
