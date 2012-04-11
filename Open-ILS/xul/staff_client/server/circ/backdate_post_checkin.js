@@ -34,7 +34,7 @@ function backdate_post_checkin_init() {
         $('checkin_effective_datepicker').value = util.date.formatted_date(new Date(),'%F');
 
         var x = $('circ_brief_area');
-        var circ_ids = xul_param('circ_ids',{'modal_xulG':true});
+        var circ_ids = xul_param('circ_ids');
         if (x) {
             var d = document.createElement('description');
             var t = document.createTextNode( $('circStrings').getFormattedString('staff.circ.backdate.circ_ids.prompt',[circ_ids.length,circ_ids.join(',')]) ); 
@@ -111,13 +111,9 @@ function gen_handle_apply(circ_ids) {
                             sound.circ_good();
                         }
 
-                        update_modal_xulG(
-                            {
-                                'backdate' : backdate,
-                                'bad_circs' : bad_circs,
-                                'complete' : 1
-                            }
-                        )
+                        xulG['backdate'] = backdate;
+                        xulG['bad_circs'] = bad_circs;
+                        xulG['complete'] = 1;
                         window.close();
                     }
                 }

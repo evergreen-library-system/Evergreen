@@ -52,10 +52,10 @@
 
 				g.error.sdump('D_TRACE','my_init() for notes.xul');
 
-				g.object_type = xul_param('object_type',{'modal_xulG':true});
-				g.object_id = xul_param('object_id',{'modal_xulG':true});
-				g.function_type = xul_param('function_type',{'modal_xulG':true});
-				g.constructor = xul_param('constructor',{'modal_xulG':true});
+				g.object_type = xul_param('object_type');
+				g.object_id = xul_param('object_id');
+				g.function_type = xul_param('function_type');
+				g.constructor = xul_param('constructor');
 
 				var window_title = xul_param('title',{'modal_xulG':true});
 				if (window_title) {

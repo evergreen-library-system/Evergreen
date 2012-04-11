@@ -79,13 +79,9 @@ function new_penalty_init() {
                         note = note + commonStrings.getFormattedString('staff.initials.format',[initials_tb.value,util.date.formatted_date(new Date(),'%F'), ses('ws_ou_shortname')]);
                     }
                 }
-                update_modal_xulG(
-                    {
-                        'id' : document.getElementById('csp_menupopup').getAttribute('value'),
-                        'note' : note,
-                        'modify' : 1
-                    }
-                )
+                xulG.id = document.getElementById('csp_menupopup').getAttribute('value');
+                xulG.note = note;
+                xulG.modify = 1;
                 window.close();
             }, 
             false

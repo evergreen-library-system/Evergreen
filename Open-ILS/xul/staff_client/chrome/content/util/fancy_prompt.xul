@@ -19,7 +19,7 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="fancy_prompt_win" 
-    onload="try { my_init(); font_helper(); persist_helper( xul_param('title',{'modal_xulG':true}) ); } catch(E) { alert(E); }"
+    onload="try { my_init(); font_helper(); persist_helper( xul_param('title') ); } catch(E) { alert(E); }"
     oils_persist="width height"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
@@ -34,8 +34,6 @@
     <script>
     <![CDATA[
 
-        var xulG = {};
-
         function my_init() {
             try {
                 if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
@@ -44,16 +42,7 @@
                 JSAN.use('util.error'); g.error = new util.error();
                 g.error.sdump('D_TRACE','my_init() for fancy_prompt.xul');
 
-                //JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
-                //g.data.fancy_prompt_data = ''; g.data.stash('fancy_prompt_data');
-                //g.data.fancy_prompt_data = {};
-
-                //var key = location.pathname + location.search + location.hash;
-                //if (typeof g.data.modal_xulG_stack != 'undefined' && typeof g.data.modal_xulG_stack[key] != 'undefined') {
-                //    xulG = g.data.modal_xulG_stack[key][ g.data.modal_xulG_stack[key].length - 1 ];
-                //}
-
-                var top_xml = xul_param('top_xml',{'stash_name':xul_param('top_xml_in_stash',{'modal_xulG':true}),'modal_xulG':true});
+                var top_xml = xul_param('top_xml',{'stash_name':xul_param('top_xml_in_stash')});
                 if (top_xml) {
                     var parser = new DOMParser();
                     var doc = parser.parseFromString( top_xml, 'text/xml' );
@@ -61,7 +50,7 @@
                     if (node) document.getElementById('fancy_prompt_topbar').appendChild(node);
                 }
 
-                var my_xml = xul_param('xml',{'stash_name':xul_param('xml_in_stash',{'modal_xulG':true}),'modal_xulG':true});
+                var my_xml = xul_param('xml',{'stash_name':xul_param('xml_in_stash')});
                 if (my_xml) {
                     var parser = new DOMParser();
                     var doc = parser.parseFromString( my_xml, 'text/xml' );
@@ -69,7 +58,7 @@
                     if (node) document.getElementById('fancy_prompt_main').appendChild(node);
                 }
 
-                var bot_xml = xul_param('bottom_xml',{'stash_name':xul_param('bottom_xml_in_stash',{'modal_xulG':true}),'modal_xulG':true});;
+                var bot_xml = xul_param('bottom_xml',{'stash_name':xul_param('bottom_xml_in_stash')});;
                 if (bot_xml) {
                     var parser = new DOMParser();
                     var doc = parser.parseFromString( bot_xml, 'text/xml' );
@@ -87,18 +76,18 @@
                     nl[i].addEventListener('command',function(ev) { window.close(); },false);
                 }
 
-                if (xul_param('title',{'modal_xulG':true})) {
-                    try { window.title = xul_param('title',{'modal_xulG':true}); } catch(E) {}
-                    try { document.title = xul_param('title',{'modal_xulG':true}); } catch(E) {}
+                if (xul_param('title')) {
+                    try { window.title = xul_param('title'); } catch(E) {}
+                    try { document.title = xul_param('title'); } catch(E) {}
                 }
 
-                if (xul_param('focus',{'modal_xulG':true})) {
-                    var focus_element = document.getElementById(xul_param('focus',{'modal_xulG':true}));
+                if (xul_param('focus')) {
+                    var focus_element = document.getElementById(xul_param('focus'));
                     if (focus_element) focus_element.focus();
                 }
 
-                var snd = xul_param('sound',{'modal_xulG':true});
-                var snd_obj = xul_param('sound_object',{'modal_xulG':true});
+                var snd = xul_param('sound');
+                var snd_obj = xul_param('sound_object');
                 if (snd) {
                     try {
                         var params = { 'sig' : 'fancy_prompt_my_init' };
@@ -110,11 +99,7 @@
                     }
                 }
 
-                JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
                 xulG.fancy_status = 'incomplete';
-                var key = location.pathname + location.search + location.hash;
-                data.modal_xulG_stack[key][ data.modal_xulG_stack[key].length - 1 ] = xulG;
-                data.stash('modal_xulG_stack');
 
             } catch(E) {
                 var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
@@ -149,9 +134,6 @@
                     xulG[ nl[i].id ] = nl[i].nodeName == 'checkbox' ? nl[i].checked : nl[i].value;
                 }
                 xulG.fancy_status = 'complete';
-                var key = location.pathname + location.search + location.hash;
-                data.modal_xulG_stack[key][ data.modal_xulG_stack[key].length - 1 ] = xulG;
-                data.stash('modal_xulG_stack');
     
                 window.close();
             } catch(E) {

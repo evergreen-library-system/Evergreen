@@ -47,15 +47,15 @@
 
                 $('server').value = g.data.server_unadorned;
 
-                addCSSClass(document.documentElement,xul_param('login_type',{'modal_xulG':true}))
+                addCSSClass(document.documentElement,xul_param('login_type'))
 
-                if (xul_param('desc_brief',{'modal_xulG':true})) {
+                if (xul_param('desc_brief')) {
                     $('desc').hidden = false;
-                    $('desc_brief').appendChild( document.createTextNode( xul_param('desc_brief',{'modal_xulG':true}) ) );
+                    $('desc_brief').appendChild( document.createTextNode( xul_param('desc_brief') ) );
                 }
-                if (xul_param('desc_full',{'modal_xulG':true})) {
+                if (xul_param('desc_full')) {
                     $('desc').hidden = false;
-                    $('desc_full').appendChild( document.createTextNode( xul_param('desc_full',{'modal_xulG':true}) ) );
+                    $('desc_full').appendChild( document.createTextNode( xul_param('desc_full') ) );
                 }
 
                 $('username').focus();
@@ -90,7 +90,7 @@
                         'password_prompt' : $('password'),
                         'server_prompt' : $('server'),
                     },
-                    xul_param('login_type',{'modal_xulG':true}) || 'temp'
+                    xul_param('login_type') || 'temp'
                 );
                 g.session.on_init = function() { 
                     try {
@@ -102,10 +102,7 @@
                             'usr' : js2JSON(staff)
                         }
                         g.data.stash('temporary_session');
-                        var my_xulG = { // new way, to minimize the use of global spaces
-                            'temporary_session' : g.data.temporary_session
-                        };
-                        update_modal_xulG(my_xulG);
+                        xulG.temporary_session = g.data.temporary_session;
                         window.close();
                     } catch(E) {
                         g.error.standard_unexpected_error_alert('simple_auth.session.on_init',E);

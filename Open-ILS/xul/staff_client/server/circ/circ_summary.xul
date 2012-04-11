@@ -48,7 +48,7 @@
                 JSAN.use('util.error'); g.error = new util.error();
                 g.error.sdump('D_TRACE','my_init() for circ_circ_brief.xul');
 
-                g.copy_id = xul_param('copy_id',{'modal_xulG':true});
+                g.copy_id = xul_param('copy_id');
 
                 JSAN.use('util.network'); g.network = new util.network();
                 JSAN.use('util.date');
@@ -106,7 +106,6 @@
                 //g.data.fancy_prompt_data = js2JSON( [ g.circs[0].usr() ] );
                 //g.data.stash('fancy_prompt_data');
                 xulG.retrieve_these_patrons = [ g.circs[0].usr() ];
-                update_modal_xulG(xulG);
                 window.close();
             } catch(E) {
                 g.error.standard_unexpected_error_alert('retrieve_last',E);
@@ -125,7 +124,6 @@
                 //g.data.fancy_prompt_data = js2JSON(patrons);
                 //g.data.stash('fancy_prompt_data');
                 xulG.retrieve_these_patrons = patrons;
-                update_modal_xulG(xulG);
                 window.close();
             } catch(E) {
                 g.error.standard_unexpected_error_alert('retrieve_all',E);

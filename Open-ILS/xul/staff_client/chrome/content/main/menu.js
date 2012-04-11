@@ -1278,11 +1278,9 @@ main.menu.prototype = {
                                 var cookieSvc = Components.classes["@mozilla.org/cookieService;1"].getService(Components.interfaces.nsICookieService);
 
                                 cookieSvc.setCookieString(cookieUriSSL, null, "ses="+obj.data.session.key + "; secure;", null);
-
-                        } catch(E) {
-                            alert(offlineStrings.getFormattedString(main.session_cookie.error, [E]));
-                        }
-
+                            } catch(E) {
+                                alert(offlineStrings.getFormattedString(main.session_cookie.error, [E]));
+                            }
                         } else {
                             if (network.get_new_session(offlineStrings.getString('menu.cmd_chg_session.label'),{'url_prefix':obj.url_prefix})) {
                                 obj.data.stash_retrieve();

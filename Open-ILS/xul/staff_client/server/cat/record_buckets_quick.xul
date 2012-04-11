@@ -46,7 +46,6 @@
                 g.record_ids = xul_param(
                     'record_ids',{
                         'concat' : true,
-                        'modal_xulG' : true,
                         'JSON2js_if_cgi' : true,
                         'JSON2js_if_xpcom' : true,
                         'stash_name':'rb_temp_record_ids',

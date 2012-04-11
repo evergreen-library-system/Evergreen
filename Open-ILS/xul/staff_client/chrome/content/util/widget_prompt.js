@@ -9,24 +9,24 @@ function my_init() {
         JSAN.use('util.error'); g.error = new util.error();
         g.error.sdump('D_TRACE','my_init() for widget_prompt.xul');
 
-        widget = xul_param('widget',{'modal_xulG':true});
+        widget = xul_param('widget');
         if (widget) {
             $('widget_prompt_main').appendChild(widget);
         }
 
-        var ok_label = xul_param('ok_label',{'modal_xulG':true}) || offlineStrings.getString('common.ok.label');
+        var ok_label = xul_param('ok_label') || offlineStrings.getString('common.ok.label');
         $('ok_btn').setAttribute('label',ok_label);
 
-        var ok_accesskey = xul_param('ok_accesskey',{'modal_xulG':true}) || offlineStrings.getString('common.ok.accesskey');
+        var ok_accesskey = xul_param('ok_accesskey') || offlineStrings.getString('common.ok.accesskey');
         $('ok_btn').setAttribute('accesskey',ok_accesskey);
 
-        var cancel_label = xul_param('cancel_label',{'modal_xulG':true}) || offlineStrings.getString('common.cancel.label');
+        var cancel_label = xul_param('cancel_label') || offlineStrings.getString('common.cancel.label');
         $('cancel_btn').setAttribute('label',cancel_label);
 
-        var cancel_accesskey = xul_param('cancel_accesskey',{'modal_xulG':true}) || offlineStrings.getString('common.cancel.accesskey');
+        var cancel_accesskey = xul_param('cancel_accesskey') || offlineStrings.getString('common.cancel.accesskey');
         $('cancel_btn').setAttribute('accesskey',cancel_accesskey);
 
-        var desc = xul_param('desc',{'modal_xulG':true});
+        var desc = xul_param('desc');
         if (desc) {
             $('desc').appendChild( document.createTextNode( desc ) );
         }
@@ -34,13 +34,12 @@ function my_init() {
         $('ok_btn').addEventListener('command',widget_save,false);
         $('cancel_btn').addEventListener('command',function(ev) { window.close(); },false);
 
-        if (xul_param('title',{'modal_xulG':true})) {
-            try { window.title = xul_param('title',{'modal_xulG':true}); } catch(E) {}
-            try { document.title = xul_param('title',{'modal_xulG':true}); } catch(E) {}
+        if (xul_param('title')) {
+            try { window.title = xul_param('title'); } catch(E) {}
+            try { document.title = xul_param('title'); } catch(E) {}
         }
 
         xulG[ 'status' ] = 'incomplete';
-        update_modal_xulG(xulG);
 
         try { widget.focus(); } catch(E) {}
 
@@ -52,7 +51,7 @@ function my_init() {
 function widget_save(ev) {
     try {
         if (widget) {
-            switch( xul_param('access',{'modal_xulG':true}) ) {
+            switch( xul_param('access') ) {
                 case 'method' :
                     xulG[ 'value' ] = xulG[ 'method' ]();
                 break;
@@ -66,8 +65,6 @@ function widget_save(ev) {
             }
         }
         xulG[ 'status' ] = 'complete';
-
-        update_modal_xulG(xulG);
 
         window.close();
     } catch(E) {

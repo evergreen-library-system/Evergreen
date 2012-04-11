@@ -20,7 +20,7 @@ function my_init() {
 
         JSAN.use('cat.util');
 
-        g.volumes = xul_param('volumes',{'stash_name':'volumes_temp','clear_xpcom':true,'modal_xulG':true}); //JSON2js( g.data.volumes_temp );
+        g.volumes = xul_param('volumes',{'stash_name':'volumes_temp','clear_xpcom':true}); //JSON2js( g.data.volumes_temp );
         //g.data.volumes_temp = ''; g.data.stash('volumes_temp');
 
         var rows = document.getElementById('rows');
@@ -123,7 +123,6 @@ g.stash_and_close = function() {
         xulG.volumes = g.volumes;
         xulG.update_these_volumes = 1;
         xulG.auto_merge = document.getElementById('auto_merge').checked;
-        update_modal_xulG(xulG);
         window.close();
     } catch(E) {
         alert('FIXME: volume editor -> ' + E);

@@ -30,16 +30,16 @@ function edit_penalty_init() {
         }
 
         /* set widget values */
-        document.getElementById('note_tb').value = xul_param('note',{'modal_xulG':true});
-        document.getElementById('csp_menupopup').setAttribute('value',xul_param('id',{'modal_xulG':true}));
-        if (xul_param('id',{'modal_xulG':true})==21) { // SILENT_NOTE
+        document.getElementById('note_tb').value = xul_param('note');
+        document.getElementById('csp_menupopup').setAttribute('value',xul_param('id'));
+        if (xul_param('id')==21) { // SILENT_NOTE
             document.getElementById('note_btn').checked = true;
-        } else if (xul_param('id',{'modal_xulG':true})==20) { // ALERT_NOTE
+        } else if (xul_param('id')==20) { // ALERT_NOTE
             document.getElementById('alert_btn').checked = true;
-        } else if (xul_param('id',{'modal_xulG':true})==25) { // STAFF_CHR
+        } else if (xul_param('id')==25) { // STAFF_CHR
             document.getElementById('block_btn').checked = true;
         } else {
-            var nl = document.getElementById('csp_menupopup').getElementsByAttribute('value',xul_param('id',{'modal_xulG':true}));
+            var nl = document.getElementById('csp_menupopup').getElementsByAttribute('value',xul_param('id'));
             if (nl.length > 0) {
                 document.getElementById('csp_menulist').setAttribute('label', nl[0].getAttribute('label'));
             } else {
@@ -97,13 +97,9 @@ function edit_penalty_init() {
                         note = note + commonStrings.getFormattedString('staff.initials.format',[initials_tb.value,util.date.formatted_date(new Date(),'%F'), ses('ws_ou_shortname')]);
                     }
                 }
-                update_modal_xulG(
-                    {
-                        'id' : document.getElementById('csp_menupopup').getAttribute('value'),
-                        'note' : note,
-                        'modify' : 1
-                    }
-                )
+                xulG.id = document.getElementById('csp_menupopup').getAttribute('value');
+                xulG.note = note;
+                xulG.modify = 1;
                 window.close();
             }, 
             false

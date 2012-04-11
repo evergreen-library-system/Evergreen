@@ -1,3 +1,7 @@
+    if(window.arguments && typeof window.arguments[0] == 'object' && typeof xulG == 'undefined') {
+        xulG = window.arguments[0];
+    }
+
     function $(id) { return document.getElementById(id); }
 
     function oils_unsaved_data_V() {
@@ -443,25 +447,6 @@
         }
     }
 
-    function update_modal_xulG(v) {
-        try {
-            if (typeof xulG != "undefined" && xulG.not_modal) {
-                xulG = v;
-                xulG.not_modal = true;
-                return;
-            }
-
-            JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-            var key = location.pathname + location.search + location.hash;
-            if (typeof data.modal_xulG_stack != 'undefined' && typeof data.modal_xulG_stack[key] != 'undefined') {
-                data.modal_xulG_stack[key][ data.modal_xulG_stack[key].length - 1 ] = v;
-                data.stash('modal_xulG_stack');
-            }
-        } catch(E) {
-            alert('FIXME: update_modal_xulG => ' + E);
-        }
-    }
-
     function xul_param(param_name,_params) {
         /* By default, this function looks for a CGI-style query param identified by param_name.  If one isn't found, it then looks in xulG.  If one still isn't found, and _params.stash_name is true, it looks in the global xpcom stash for the field identified by stash_name.  If _params.concat is true, then it looks in all these places and concatenates the results.  There are also options for converting JSON to javascript objects, and clearing the xpcom stash_name field after retrieval.  Also added, ability to search a specific spot in the xpcom stash that implements a stack to hold xulG's for modal windows */
         try {
@@ -490,18 +475,6 @@
                 }
             }
             if (typeof _params.no_xulG == 'undefined') {
-                if (typeof _params.modal_xulG != 'undefined') {
-                    if (typeof xulG != 'undefined' && xulG.not_modal) {
-                        // for interfaces that used to be modal but aren't now, do nothing
-                    } else {
-                        JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-                        var key = location.pathname + location.search + location.hash;
-                        //dump('xul_param, considering modal key = ' + key + '\n');
-                        if (typeof data.modal_xulG_stack != 'undefined' && typeof data.modal_xulG_stack[key] != 'undefined') {
-                            xulG = data.modal_xulG_stack[key][ data.modal_xulG_stack[key].length - 1 ];
-                        }
-                    }
-                }
                 if (typeof xulG == 'object' && typeof xulG[ param_name ] != 'undefined') {
                     var x = xulG[ param_name ];
                     //dump('\tfound via xulG = ' + x + '\n');

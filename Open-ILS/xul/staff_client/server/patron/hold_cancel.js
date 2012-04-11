@@ -32,13 +32,9 @@ function hold_cancel_init() {
             'command', 
             function() {
                 var note = document.getElementById('note_tb').value;
-                update_modal_xulG(
-                    {
-                        'cancel_reason' : document.getElementById('ahrcc_menupopup').getAttribute('value'),
-                        'note' : note,
-                        'proceed' : 1
-                    }
-                )
+                xulG.cancel_reason = document.getElementById('ahrcc_menupopup').getAttribute('value');
+                xulG.note = note;
+                xulG.proceed = 1;
                 window.close();
             }, 
             false

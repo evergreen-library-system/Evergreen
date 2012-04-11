@@ -47,16 +47,6 @@ vim:noet:sw=4:ts=4:
                 var docid = xul_param('docid');
                 var noprint = xul_param('noprint');
 
-                JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-                var key = location.pathname + location.search + location.hash;
-                if (!docid && typeof data.modal_xulG_stack != 'undefined' && typeof data.modal_xulG_stack[key] != 'undefined') {
-                    var modal_xulG = data.modal_xulG_stack[key][ data.modal_xulG_stack[key].length - 1 ];
-                    if (typeof modal_xulG == 'object') {
-                        docid = modal_xulG.docid;
-                        if (modal_xulG.noprint) noprint = modal_xulG.noprint;
-                    }
-                }
-
                 JSAN.use('util.network'); g.network = new util.network();
 
                 if (docid > -1) {

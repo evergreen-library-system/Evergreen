@@ -22,31 +22,31 @@ function timestamp_init() {
         JSAN.use('util.sound'); sound = new util.sound();
         JSAN.use('util.date'); 
 
-        $('datepicker').value = xul_param('default_date',{'modal_xulG':true}) || util.date.formatted_date(new Date(),'%F');
-        if (xul_param('default_time',{'modal_xulG':true})) {
-            $('timepicker').value = xul_param('default_time',{'modal_xulG':true});
+        $('datepicker').value = xul_param('default_date') || util.date.formatted_date(new Date(),'%F');
+        if (xul_param('default_time')) {
+            $('timepicker').value = xul_param('default_time');
         }
-        if (xul_param('time_readonly',{'modal_xulG':true})) {
+        if (xul_param('time_readonly')) {
             $('timepicker').readonly = true; // This isn't working correctly with xulrunner 1.9.2
             $('timepicker').disabled = true; // So, poor man's kludge
         }
-        if (xul_param('date_readonly',{'modal_xulG':true})) {
+        if (xul_param('date_readonly')) {
             $('datepicker').readonly = true; // This isn't working correctly with xulrunner 1.9.2
             $('datepicker').disabled = true; // So, poor man's kludge
         }
 
-        if (xul_param('title',{'modal_xulG':true})) { $('dialogheader').setAttribute('title',xul_param('title',{'modal_xulG':true})); }
-        if (xul_param('description',{'modal_xulG':true})) { $('dialogheader').setAttribute('description',xul_param('description',{'modal_xulG':true})); }
+        if (xul_param('title')) { $('dialogheader').setAttribute('title',xul_param('title')); }
+        if (xul_param('description')) { $('dialogheader').setAttribute('description',xul_param('description')); }
 
         var x = $('msg_area');
-        if (x && xul_param('msg',{'modal_xulG':true})) {
+        if (x && xul_param('msg')) {
             var d = document.createElement('description');
-            var t = document.createTextNode( xul_param('msg',{'modal_xulG':true}) );
+            var t = document.createTextNode( xul_param('msg') );
             x.appendChild( d );
             d.appendChild( t );
         }
 
-        if (xul_param('allow_unset',{'modal_xulG':true})) { $('remove_btn').hidden = false; }
+        if (xul_param('allow_unset')) { $('remove_btn').hidden = false; }
 
         /* set widget behavior */
         $('cancel_btn').addEventListener(
@@ -92,13 +92,13 @@ function timestamp_init() {
 }
 
 function check_date(value) {
-    if (xul_param('disallow_future_dates',{'modal_xulG':true})) {
+    if (xul_param('disallow_future_dates')) {
         if ( value > new Date() ) { return { 'allowed' : false, 'reason' : $('commonStrings').getString('staff.util.timestamp_dialog.future_date_disallowed') }; }
     }
-    if (xul_param('disallow_past_dates',{'modal_xulG':true})) {
+    if (xul_param('disallow_past_dates')) {
         if ( util.date.check_past('YYYY-MM-DD', value) ) { return { 'allowed' : false, 'reason' : $('commonStrings').getString('staff.util.timestamp_dialog.past_date_disallowed') }; }
     }
-    if (xul_param('disallow_today',{'modal_xulG':true})) {
+    if (xul_param('disallow_today')) {
         if ( util.date.formatted_date(new Date(),'%F') == value) { return { 'allowed' : false, 'reason' : $('commonStrings').getString('staff.util.timestamp_dialog.today_disallowed') }; }
     }
     return { 'allowed' : true };
@@ -110,12 +110,8 @@ function gen_handle_apply(params) {
 
             if (!params) { params = {}; }
             if (params.remove) {
-                update_modal_xulG(
-                    {
-                        'timestamp' : null,
-                        'complete' : 1
-                    }
-                )
+                xulG.timestamp = null;
+                xulG.complete = 1;
                 window.close();
             } else {
 
@@ -130,12 +126,8 @@ function gen_handle_apply(params) {
                 dp_date.setHours( tp_date.getHours() );
                 dp_date.setMinutes( tp_date.getMinutes() );
 
-                update_modal_xulG(
-                    {
-                        'timestamp' : util.date.formatted_date(dp_date,'%{iso8601}'),
-                        'complete' : 1
-                    }
-                )
+                xulG.timestampe = util.date.formatted_date(dp_date,'%{iso8601}');
+                xulG.complete = 1;
                 window.close();
             }
 

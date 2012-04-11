@@ -182,7 +182,7 @@ util.print.prototype = {
                         print_url += '<script src="' + this.data.hash.aous['print.custom_js_file'] + '"></script>';
                     }
                     print_url += '</head><body onload="try{print_init(\'' + params.type + '\');}catch(E){alert(E);}">' + window.escape(msg.replace(/<script[^>]*>.*?<\/script>/gi,'')) + '</body></html>';
-                    obj.win.openDialog(print_url,'receipt_temp','chrome,resizable,modal', null, { "data" : params.data, "list" : params.list}, function(w) { 
+                    obj.win.openDialog(print_url,'receipt_temp','chrome,resizable,modal', { "data" : params.data, "list" : params.list}, function(w) { 
                         try {
                             obj.NSPrint(w, silent, params);
                         } catch(E) {

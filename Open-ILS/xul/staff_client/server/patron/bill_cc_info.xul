@@ -108,7 +108,7 @@
             try {
                 patron = g.network.simple_request(
                     'FM_AU_FLESHED_RETRIEVE_VIA_ID',
-                    [ses(), xul_param('patron_id', {'modal_xulG': true})]
+                    [ses(), xul_param('patron_id')]
                 );
             } catch (e) {
                 alert ("Patron retrieval failed");

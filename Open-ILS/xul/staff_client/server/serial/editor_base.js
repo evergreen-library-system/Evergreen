@@ -27,10 +27,10 @@ serial.editor_base = {
             /******************************************************************************************************/
             /* base vars */
 
-            obj.docid = xul_param('docid',{'modal_xulG':true});
+            obj.docid = xul_param('docid');
             
             if (typeof params.handle_update == 'undefined') {
-                obj.handle_update = xul_param('handle_update',{'modal_xulG':true});
+                obj.handle_update = xul_param('handle_update');
             } else {
                 obj.handle_update = params.handle_update;
             }
@@ -54,7 +54,7 @@ serial.editor_base = {
             /* Get the fm_type ids from various sources and flesh them */
 
             var fm_type_ids = params[fm_type + '_ids'];
-            if (!fm_type_ids) fm_type_ids = xul_param(fm_type + '_ids',{'concat':true,'JSON2js_if_cgi':true,'JSON2js_if_xulG':true,'JSON2js_if_xpcom':true,'stash_name':'temp_' + fm_type + '_ids','clear_xpcom':true,'modal_xulG':true});
+            if (!fm_type_ids) fm_type_ids = xul_param(fm_type + '_ids',{'concat':true,'JSON2js_if_cgi':true,'JSON2js_if_xulG':true,'JSON2js_if_xpcom':true,'stash_name':'temp_' + fm_type + '_ids','clear_xpcom':true});
             if (!fm_type_ids) fm_type_ids = [];
 
             obj[fm_type_plural] = [];
@@ -70,7 +70,7 @@ serial.editor_base = {
 
             if (!obj[fm_type_plural]) obj[fm_type_plural] = [];
             var fms = params[fm_type_plural];
-            if (!fms) fms = xul_param(fm_type_plural,{'concat':true,'JSON2js_if_cgi':true,'JSON2js_if_xpcom':true,'stash_name':'temp_' + fm_type_plural,'clear_xpcom':true,'modal_xulG':true})
+            if (!fms) fms = xul_param(fm_type_plural,{'concat':true,'JSON2js_if_cgi':true,'JSON2js_if_xpcom':true,'stash_name':'temp_' + fm_type_plural,'clear_xpcom':true})
             if (fms) obj[fm_type_plural] = obj[fm_type_plural].concat(fms);
 
 
@@ -90,7 +90,7 @@ serial.editor_base = {
 
             var do_edit;
             if (typeof params.do_edit == 'undefined') {
-                do_edit = xul_param('do_edit',{'modal_xulG':true});
+                do_edit = xul_param('do_edit');
             } else {
                 do_edit = params.do_edit;
             }
@@ -185,7 +185,7 @@ serial.editor_base = {
             /* Show the Record Details? (only for 'in_modal' mode)*/
 
             var bdb;
-            if (xul_param('in_modal',{'modal_xulG':true}) && obj.docid) {
+            if (xul_param('in_modal') && obj.docid) {
                 bdb = document.getElementById('brief_display_box'); while(bdb.firstChild) bdb.removeChild(bdb.lastChild);
                 var brief_display = document.createElement('iframe'); bdb.appendChild(brief_display); 
                 brief_display.setAttribute( 'src', urls.XUL_BIB_BRIEF + '?docid=' + obj.docid); // this is a modal window, so can't push in xulG
@@ -580,18 +580,17 @@ serial.editor_base = {
                 } catch(E) {
                     alert($('serialStrings').getString('staff.serial.editor_base.handle_update.error') + ' ' + js2JSON(E));
                 }
-            } else if (xul_param('in_modal',{'modal_xulG':true})) {
+            } else if (xul_param('in_modal')) {
                 // TODO: this is to perhaps allow this editor to be called
                 // in a modal window, but is unfinished functionality
                 var xulG = {};
                 xulG[fm_type_plural] = obj[fm_type_plural];
-                update_modal_xulG(xulG);
             } else {
                 obj.data['temp_' + fm_type_plural] = js2JSON( obj[fm_type_plural] );
                 obj.data.stash('temp_' + fm_type_plural);
             }
 
-            if (xul_param('in_modal',{'modal_xulG':true})) {
+            if (xul_param('in_modal')) {
                 window.close();
             }
         } catch(E) {

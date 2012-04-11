@@ -19,7 +19,7 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="widget_prompt_win" 
-    onload="try { my_init(); font_helper(); persist_helper( xul_param('title',{'modal_xulG':true}) ); } catch(E) { alert(E); }"
+    onload="try { my_init(); font_helper(); persist_helper( xul_param('title') ); } catch(E) { alert(E); }"
     oils_persist="width height"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 

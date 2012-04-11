@@ -47,7 +47,7 @@
                 var file; var list_data; var ml;
 
                 file = new util.file('offline_ou_list');
-                var server_unadorned = xul_param('server_unadorned',{'modal_xulG':true});
+                var server_unadorned = xul_param('server_unadorned');
                 if (file._file.exists()) {
                     list_data = file.get_object(); file.close();
                     ml = util.widgets.make_menulist( list_data[0], list_data[1] );
@@ -76,7 +76,7 @@
         }
 
         g.select_aou = function() {
-            update_modal_xulG({'create_mfhd_aou' : $('lib_menu').value});
+            xulG.create_mfhd_aou = $('lib_menu').value;
             window.close();
         }
 

@@ -53,7 +53,7 @@
 
                 g.error.sdump('D_TRACE','my_init() for copy_notes.xul');
 
-                g.copy_id = xul_param('copy_id',{'modal_xulG':true});
+                g.copy_id = xul_param('copy_id');
 
                 refresh();
 

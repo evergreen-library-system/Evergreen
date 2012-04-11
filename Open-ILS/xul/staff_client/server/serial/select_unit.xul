@@ -45,7 +45,7 @@
 
                 var ml;
 				JSAN.use('util.network'); g.network = new util.network();
-                var sdist_ids = xul_param('sdist_ids',{'modal_xulG':true});
+                var sdist_ids = xul_param('sdist_ids');
                 //TODO: unit_list.retrieve option for binding units only (that is, units containing bound items only)
                 var robj = g.network.request(
                     'open-ils.serial',
@@ -65,7 +65,7 @@
         g.select_unit = function() {
             var selection = JSON2js($('unit_menu').value);
             selection.label = $('unit_menu').selectedItem.label;
-            update_modal_xulG({'sunit_selection' : selection});
+            xulG.sunit_selection = selection;
             window.close();
         }
 
