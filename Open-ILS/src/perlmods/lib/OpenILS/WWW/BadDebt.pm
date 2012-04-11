@@ -37,6 +37,7 @@ sub import {
 
 sub child_init {
         OpenSRF::System->bootstrap_client( config_file => $bootstrap );
+        return Apache2::Const::OK;
 }
 
 sub handler {

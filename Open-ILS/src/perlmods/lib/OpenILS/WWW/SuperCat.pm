@@ -271,6 +271,7 @@ sub child_init {
             }
         }
     }
+    return Apache2::Const::OK;
 }
 
 sub check_child_init() {

@@ -61,6 +61,7 @@ sub child_init {
     $actor = OpenSRF::AppSession->create('open-ils.actor');
     load_i18n();
     $init_done = 1;
+    return Apache2::Const::OK;
 }
 
 sub password_reset {
