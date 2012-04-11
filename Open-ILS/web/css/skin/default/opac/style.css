@@ -388,6 +388,7 @@ div.rdetail_show_copies {
 
 div#rdetail_actions_div {
     float: right;
+    background: white;
 }
 
 span#rdetail_copy_counts {
@@ -630,12 +631,11 @@ div.format_icon {
 }
 
 #main-content-after-bar {
-	float: left;
 	margin-left: 1em;
 	padding-left: 4px;
 }
 
-#results-side-bar { float: left; width: 174px;  height: 500px; /* XXX to height of container*/  }
+#results-side-bar { float: left; width: 174px; margin-right: 5px; background: white; }
 
 #main-content .login_boxes {
 	border: 1px solid #dedede;
@@ -1376,7 +1376,7 @@ table.bookbag-specific {
 .saved-searches-header .button { float: right; width: 28px; }
 .saved-searches-header .text { float: left; padding-right: 1em; margin: 0.5ex 0;}
 .saved-searches-header {font-weight: bold; font-size: 120%; }
-.saved-searches { border-bottom: 1px solid #666; }
+.saved-searches { border-bottom: 1px solid #666; padding-right: 1em; }
 #staff-saved-search { /* wraps .saved-searches-header and .saved-searches on the record page */
     border-right: 1px solid #333;
 }
