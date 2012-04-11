@@ -25,8 +25,9 @@
                 <button dojoType='dijit.form.Button' onClick='edGrid.deleteSelected()'>Delete Selected</button>
             </div>
         </div>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:460px'>
             <table  jsId="edGrid" 
+                    autoHeight='true'
                     dojoType="openils.widget.AutoGrid" 
                     fieldOrder="['owner', 'name', 'hook', 'active', 'delay', 'delay_field', 'group_field', 'reactor', 'validator']"
                     suppressFields="['usr_field', 'opt_in_setting', 'max_delay', 'template', 'cleanup_failure', 'cleanup_success']"
