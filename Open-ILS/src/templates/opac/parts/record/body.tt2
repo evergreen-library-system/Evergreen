@@ -40,7 +40,6 @@
             [% END %]
 
         </div>
-        <div class="clear-both"></div>
     </div>
     [% END %]
     [%- IF ctx.bib_is_dead %]
