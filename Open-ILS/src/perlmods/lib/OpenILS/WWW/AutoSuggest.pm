@@ -35,6 +35,7 @@ sub initialize {
 sub child_init {
     $cache = OpenSRF::Utils::Cache->new('global');
     $init_done = 1;
+    return Apache2::Const::OK;
 }
 
 # BEGIN package globals

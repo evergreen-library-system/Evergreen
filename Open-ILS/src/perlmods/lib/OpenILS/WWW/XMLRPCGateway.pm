@@ -50,6 +50,7 @@ sub child_init {
 	OpenILS::Utils::Fieldmapper->require;
 	Fieldmapper->import(IDL => $idl);
 	OpenSRF::AppSession->ingress('apache');
+	return Apache2::Const::OK;
 }
 
 
