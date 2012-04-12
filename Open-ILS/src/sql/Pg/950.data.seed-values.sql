@@ -2463,8 +2463,9 @@ INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatyp
 INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
     VALUES ('opac.default_pickup_location', TRUE, 'Default Hold Pickup Location', 'Default location for holds pickup', 'integer');
 
--- Add groups for org_unitu settings
+-- Add groups for org_unit settings
 INSERT INTO config.settings_group (name, label) VALUES
+('acq', oils_i18n_gettext('config.settings_group.system', 'Acquisitions', 'coust', 'label')),
 ('sys', oils_i18n_gettext('config.settings_group.system', 'System', 'coust', 'label')),
 ('gui', oils_i18n_gettext('config.settings_group.gui', 'GUI', 'coust', 'label')),
 ('lib', oils_i18n_gettext('config.settings_group.lib', 'Library', 'coust', 'label')),
@@ -2492,7 +2493,7 @@ INSERT INTO config.settings_group (name, label) VALUES
 INSERT into config.org_unit_setting_type
 ( name, grp, label, description, datatype, fm_class ) VALUES
 
-( 'acq.copy_creator_uses_receiver', 'lib',
+( 'acq.copy_creator_uses_receiver', 'acq',
     oils_i18n_gettext('acq.copy_creator_uses_receiver',
         'Set copy creator as receiver',
         'coust', 'label'),
@@ -2501,7 +2502,7 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'bool', null)
 
-,( 'acq.default_circ_modifier', 'lib',
+,( 'acq.default_circ_modifier', 'acq',
     oils_i18n_gettext('acq.default_circ_modifier',
         'Default circulation modifier',
         'coust', 'label'),
@@ -2510,7 +2511,7 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'string', null)
 
-,( 'acq.default_copy_location', 'lib',
+,( 'acq.default_copy_location', 'acq',
     oils_i18n_gettext('acq.default_copy_location',
         'Default copy location',
         'coust', 'label'),
@@ -2519,7 +2520,7 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'link', 'acpl')
 
-,( 'acq.fund.balance_limit.block', 'finance',
+,( 'acq.fund.balance_limit.block', 'acq',
     oils_i18n_gettext('acq.fund.balance_limit.block',
         'Fund Spending Limit for Block',
         'coust', 'label'),
@@ -2528,7 +2529,7 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'integer', null)
 
-,( 'acq.fund.balance_limit.warn', 'finance',
+,( 'acq.fund.balance_limit.warn', 'acq',
     oils_i18n_gettext('acq.fund.balance_limit.warn',
         'Fund Spending Limit for Warning',
         'coust', 'label'),
@@ -2537,7 +2538,7 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'integer', null)
 
-,( 'acq.holds.allow_holds_from_purchase_request', 'lib',
+,( 'acq.holds.allow_holds_from_purchase_request', 'acq',
     oils_i18n_gettext('acq.holds.allow_holds_from_purchase_request',
         'Allows patrons to create automatic holds from purchase requests.',
         'coust', 'label'),
@@ -2546,7 +2547,7 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'bool', null)
 
-,( 'acq.tmp_barcode_prefix', 'lib',
+,( 'acq.tmp_barcode_prefix', 'acq',
     oils_i18n_gettext('acq.tmp_barcode_prefix',
         'Temporary barcode prefix',
         'coust', 'label'),
@@ -2555,7 +2556,7 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'string', null)
 
-,( 'acq.tmp_callnumber_prefix', 'lib',
+,( 'acq.tmp_callnumber_prefix', 'acq',
     oils_i18n_gettext('acq.tmp_callnumber_prefix',
         'Temporary call number prefix',
         'coust', 'label'),
