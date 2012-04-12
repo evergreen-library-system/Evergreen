@@ -2999,15 +2999,6 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'link', 'ccs')
 
-,( 'circ.holds.clear_shelf.no_capture_holds', 'holds',
-    oils_i18n_gettext('circ.holds.clear_shelf.no_capture_holds',
-        'Bypass hold capture during clear shelf process',
-        'coust', 'label'),
-    oils_i18n_gettext('circ.holds.clear_shelf.no_capture_holds',
-        'During the clear shelf process, avoid capturing new holds on cleared items.',
-        'coust', 'description'),
-    'bool', null)
-
 ,( 'circ.holds.default_estimated_wait_interval', 'holds',
     oils_i18n_gettext('circ.holds.default_estimated_wait_interval',
         'Default Estimated Wait',
