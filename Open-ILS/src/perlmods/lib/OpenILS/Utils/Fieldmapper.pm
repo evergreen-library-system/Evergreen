@@ -337,14 +337,23 @@ sub toXML {
     my $self = shift;
     return undef unless (ref $self);
 
+    my $opts = shift || {};
+    my $no_virt = $$opts{no_virt}; # skip virtual fields
+    my $skip_fields = $$opts{skip_fields} || {}; # eg. {au => ['passwd']}
+    my @to_skip = @{$$skip_fields{$self->json_hint}} 
+        if $$skip_fields{$self->json_hint};
+
     my $dom = XML::LibXML::Document->new;
-    my $root = $dom->createElement( $self->class_name );
+    my $root = $dom->createElement( $self->json_hint );
     $dom->setDocumentElement( $root );
 
-    for my $f ($self->properties) {
+    my @field_names = $no_virt ? $self->real_fields : $self->properties;
+
+    for my $f (@field_names) {
         next if ($f eq 'isnew');
         next if ($f eq 'ischanged');
         next if ($f eq 'isdeleted');
+        next if (grep {$_ eq $f} @to_skip);
 
         my $value = $self->$f();
         my $element = $dom->createElement( $f );
@@ -354,7 +363,7 @@ sub toXML {
         if (ref($value)) { # array
             for my $k (@$value) {
                 if (blessed($k)) {
-                    my $subdoc = $k->toXML;
+                    my $subdoc = $k->toXML($opts);
                     next unless $subdoc;
                     my $subnode = $subdoc->documentElement;
                     $dom->adoptNode($subnode);
@@ -368,6 +377,8 @@ sub toXML {
         } else {
             $element->appendText($value);
         }
+
+        $root->appendChild($element);
     }
 
     return $dom;
