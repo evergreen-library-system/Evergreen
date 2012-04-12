@@ -255,6 +255,12 @@
 <!ENTITY staff.auth.verify.submit.accesskey "V">
 <!ENTITY staff.auth.verify.retrieve.label "Retrieve">
 <!ENTITY staff.auth.verify.retrieve.accesskey "R">
+<!ENTITY staff.auth.change_type.label "New Login Type:">
+<!ENTITY staff.auth.change_type.accesskey "N">
+<!ENTITY staff.auth.change_type_description "Temporary logins expire with a few minutes of inactivity. Staff logins are the same as the initial login into the staff client. Permanent will discard the existing login session and replace it with the new one.">
+<!ENTITY staff.auth.change_type_staff "Staff">
+<!ENTITY staff.auth.change_type_temporary "Temporary">
+<!ENTITY staff.auth.change_type_permanent "Permanent">
 
 <!ENTITY staff.bills_current_payment_label "Current Payment">
 <!ENTITY staff.bills_information "Information">

@@ -586,7 +586,7 @@ function main_init() {
             }
         }
 
-        window.title = authStrings.getFormattedString('staff.auth.titlebar.label', version);
+        window.document.title = authStrings.getFormattedString('staff.auth.titlebar.label', CLIENT_VERSION);
         var x = document.getElementById('about_btn');
         x.addEventListener(
             'command',

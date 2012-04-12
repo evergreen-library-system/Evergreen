@@ -1284,13 +1284,18 @@ main.menu.prototype = {
                         } else {
                             if (network.get_new_session(offlineStrings.getString('menu.cmd_chg_session.label'),{'url_prefix':obj.url_prefix})) {
                                 obj.data.stash_retrieve();
-                                obj.data.list.au[1] = JSON2js( temp_au );
-                                obj.data.stash('list');
-                                obj.data.previous_session = JSON2js( temp_ses );
-                                obj.data.previous_menu_perms = obj.data.menu_perms;
+                                if (obj.data.session.is_perm === false) {
+                                    obj.data.list.au[1] = JSON2js( temp_au );
+                                    obj.data.stash('list');
+                                    obj.data.previous_session = JSON2js( temp_ses );
+                                    obj.data.previous_menu_perms = obj.data.menu_perms;
+                                    obj.data.stash('previous_session');
+                                    obj.data.stash('previous_menu_perms');
+                                } else {
+                                    var temp_session_object = JSON2js( temp_ses );
+                                    network.simple_request('AUTH_DELETE', [ temp_session_object.key ] );
+                                }
                                 obj.data.menu_perms = false;
-                                obj.data.stash('previous_session');
-                                obj.data.stash('previous_menu_perms');
                                 obj.data.stash('menu_perms');
                             }
                         }

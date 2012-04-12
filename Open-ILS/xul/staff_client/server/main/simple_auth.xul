@@ -37,6 +37,7 @@
     <![CDATA[
 
         var offlineStrings = document.getElementById('offlineStrings');
+        var login_type = 'temp';
 
         function my_init() {
             try {
@@ -53,7 +54,10 @@
 
                 $('server').value = g.data.server_unadorned;
 
-                addCSSClass(document.documentElement,xul_param('login_type'))
+                login_type = xul_param('login_type') || 'temp';
+                addCSSClass(document.documentElement,login_type)
+                if(login_type == 'ochange')
+                    $('change_type_row').hidden = false;
 
                 if (xul_param('desc_brief')) {
                     $('desc').hidden = false;
@@ -89,6 +93,15 @@
 
         function authorize() {
             try {
+                var my_login_type = login_type;
+                var is_perm = false;
+                if(login_type == 'ochange') {
+                    my_login_type = $('change_type').value;
+                    if(my_login_type == 'perm') {
+                        my_login_type = 'staff';
+                        is_perm = true;
+                    }
+                }
                 JSAN.use('auth.session');
                 g.session = new auth.session(
                     {
@@ -96,7 +109,7 @@
                         'password_prompt' : $('password'),
                         'server_prompt' : $('server'),
                     },
-                    xul_param('login_type') || 'temp'
+                    my_login_type
                 );
                 g.session.on_init = function() { 
                     try {
@@ -105,7 +118,9 @@
                         g.data.temporary_session = {  // old way because of local chrome still out there
                             'key' : g.session.key, 
                             'authtime' : g.session.authtime, 
-                            'usr' : js2JSON(staff)
+                            'usr' : js2JSON(staff),
+                            'is_perm' : is_perm,
+                            'login_type' : my_login_type
                         }
                         g.data.stash('temporary_session');
                         xulG.temporary_session = g.data.temporary_session;
@@ -141,7 +156,7 @@
     <groupbox>
         <caption label="&staff.main.simple_auth.authorization.label;"/>
         <grid>
-            <columns><column /><column /></columns>
+            <columns><column /><column /><column flex="1" /></columns>
             <rows>
                 <row>
                     <label value="&common.username.label;" control="username" accesskey="&common.username.accesskey;"/>
@@ -150,6 +165,17 @@
                 <row>
                     <label value="&staff.auth.password_prompt;" control="password" accesskey="&staff.auth.password_prompt.accesskey;"/>
                     <textbox id="password" type="password"/>
+                </row>
+                <row id="change_type_row" hidden="true">
+                    <label value="&staff.auth.change_type.label;" control="change_type" accesskey="&staff.auth.change_type.accesskey;"/>
+                    <menulist id="change_type">
+                        <menupopup>
+                                <menuitem label="&staff.auth.change_type_temporary;" value="temp" selected="true"/>
+                                <menuitem label="&staff.auth.change_type_staff;" value="staff"/>
+                                <menuitem label="&staff.auth.change_type_permanent;" value="perm"/>
+                        </menupopup>
+                    </menulist>
+                    <description>&staff.auth.change_type_description;</description>
                 </row>
                 <row>
                     <button label="&common.cancel;" accesskey="&common.cancel.accesskey;" oncommand="window.close()"/>

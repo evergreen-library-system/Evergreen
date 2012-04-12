@@ -94,7 +94,8 @@
                 JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
                 XML_HTTP_SERVER = g.data.server_unadorned;
 
-                document.title = g.window.appshell_name_increment() + ': ' + g.data.list.au[0].usrname() + '@' + g.data.ws_name + '.' + g.data.server_unadorned;
+                window.egwinid = g.window.appshell_name_increment();
+                document.title = window.egwinid + ': ' + g.data.list.au[0].usrname() + '@' + g.data.ws_name + '.' + g.data.server_unadorned;
 
                 var delay = g.data.hash.aous["ui.general.idle_timeout"];
                 if (delay) setup_idle_observer(delay);
