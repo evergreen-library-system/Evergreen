@@ -1543,7 +1543,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 526, 'UPDATE_PATRON_STAT_CAT_ENTRY_DEFAULT', oils_i18n_gettext( 526, 
     'User may reset a default entry in a patron statistical category', 'ppl', 'description' )),
  ( 527, 'DELETE_PATRON_STAT_CAT_ENTRY_DEFAULT', oils_i18n_gettext( 527, 
-    'User may unset a default entry in a patron statistical category', 'ppl', 'description' ));
+    'User may unset a default entry in a patron statistical category', 'ppl', 'description' )),
+ ( 528, 'ADMIN_ORG_UNIT_CUSTOM_TREE', oils_i18n_gettext( 528, 
+    'User may update custom org unit trees', 'ppl', 'description' ));
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
 
