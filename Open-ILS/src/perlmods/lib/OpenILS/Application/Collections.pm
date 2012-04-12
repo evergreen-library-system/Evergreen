@@ -11,6 +11,11 @@ use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Event;
 use OpenILS::Const qw/:const/;
 my $U = "OpenILS::Application::AppUtils";
+use XML::LibXML;
+use Scalar::Util 'blessed';
+use File::Spec;
+use File::Copy;
+use File::Path;
 
 
 # --------------------------------------------------------------
@@ -786,6 +791,230 @@ sub transaction_details {
 	}
 
 	return \@data;
+}
+
+__PACKAGE__->register_method(
+    method    => 'user_balance_summary',
+    api_name  => 'open-ils.collections.user_balance_summary.generate',
+    api_level => 1,
+    stream    => 1,
+    argc      => 2,
+    signature => { 
+        desc     => q/Collect balance information for users in collections.  By default, 
+                        only the total balance owed is calculated.  Use the "include_xacts"
+                        param to include per-transaction summaries as well./,
+        params   => [
+            {   name => 'auth',
+                desc => 'The authentication token',
+                type => 'string' },
+            {   name => 'args',
+                desc => q/
+                    Hash of API arguments.  Options include:
+                    location   -- org unit shortname
+                    start_date -- ISO 8601 date. limit to patrons added to collections on or after this date (optional).
+                    end_date   -- ISO 8601 date. limit to patrons added to collections on or before this date (optional).
+                    user_id    -- retrieve information only for this user (takes preference over 
+                        start and end_date).  May be a single ID or list of IDs. (optional).
+                    include_xacts -- If true, include a summary object per transaction in addition to the full balance owed
+                /,
+                type => q/hash/
+            },
+        ],
+        'return' => { 
+            desc => q/
+                The file name prefix of the file to be created.  
+                The file name format will be:
+                user_balance_YYYY-MM-DD_${location}_${start_date}_${end_date}_${user_id}.[tmp|xml]
+                Optional params not provided by the caller will not be part of the file name.
+                Examples:
+                    user_balance_BR1_2012-05-25_2012-01-01_2012-12-31 # start and end dates
+                    user_balance_BR2_2012-05-25_153244 # user id only.
+                In-process files will have a .tmp suffix
+                Completed files will have a .xml suffix
+            /,
+            type => 'string'
+        }
+    }
+);
+
+sub user_balance_summary {
+    my ($self, $client, $auth, $args) = @_;
+
+    my $location = $$args{location};
+    my $start_date = $$args{start_date};
+    my $end_date = $$args{end_date};
+    my $user_id = $$args{user_id};
+
+    return OpenILS::Event->new('BAD_PARAMS') 
+        unless $auth and $location and 
+        ($start_date or $end_date or $user_id);
+
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+
+    my $org = $e->search_actor_org_unit({shortname => $location})->[0]
+        or return $e->event;
+
+    # they need global perms to view users so no org is provided
+    return $e->event unless $e->allowed('VIEW_USER', $org->id); 
+
+    my $org_list = $U->get_org_descendants($org->id);
+
+    my ($evt, $file_prefix, $file_name, $FILE) = setup_batch_file('user_balance', $args);
+
+    $client->respond_complete($evt || $file_prefix);
+
+    my @user_list;
+
+    if ($user_id) {
+        @user_list = (ref $user_id eq 'ARRAY') ? @$user_id : ($user_id);
+
+    } else {
+        # collect the users from the tracker table based on the provided filters
+
+        my $query = {
+            select => {mct => ['usr']},
+            from => 'mct',
+            where => {location => $org_list}
+        };
+
+        $query->{where}->{enter_time} = {'>=' => $start_date};
+        $query->{where}->{enter_time} = {'<=' => $end_date};
+        my $users = $e->json_query($query);
+        @user_list = map {$_->{usr}} @$users;
+    }
+
+    print $FILE "<Collections>\n"; # append to the document as we have data
+            
+    for my $user_id (@user_list) {
+        my $user_doc = XML::LibXML::Document->new;
+        my $root = $user_doc->createElement('User');
+        $user_doc->setDocumentElement($root);
+
+        my $user = $e->retrieve_actor_user([
+            $user_id, {   
+            flesh        => 1,
+            flesh_fields => {
+                au => [
+                    'card',
+                  	'cards',
+                  	'standing_penalties',
+                  	'addresses',
+                  	'billing_address',
+                  	'mailing_address',
+                  	'stat_cat_entries'
+                ]
+            }}
+        ]);
+
+        my $au_doc = $user->toXML({no_virt => 1, skip_fields => {au => ['passwd']}});
+        my $au_node = $au_doc->documentElement;
+        $user_doc->adoptNode($au_node);
+        $root->appendChild($au_node);
+
+        my $circ_ids = $e->search_action_circulation(
+            {usr => $user_id, circ_lib => $org_list, xact_finish => undef},
+            {idlist => 1}
+        );
+
+        my $groc_ids = $e->search_money_grocery(
+            {usr => $user_id, billing_location => $org_list, xact_finish => undef},
+            {idlist => 1}
+        );
+
+        my $res_ids = $e->search_booking_reservation(
+            {usr => $user_id, pickup_lib => $org_list, xact_finish => undef},
+            {idlist => 1}
+        );
+
+        # get the sum owed an all transactions
+        my $balance = $e->json_query({
+            select => {mbts => [
+                {   column => 'balance_owed', 
+                    transform => 'sum', 
+                    aggregate => 1
+                }
+            ]}, 
+            from => 'mbts',
+            where => {id => [@$circ_ids, @$groc_ids, @$res_ids]}
+        })->[0];
+
+        $balance = $balance ? $balance->{balance_owed} : '0';
+
+        my $xacts_node = $user_doc->createElement('Transactions');
+        my $balance_node = $user_doc->createElement('BalanceOwed'); 
+        $balance_node->appendChild($user_doc->createTextNode($balance));
+        $xacts_node->appendChild($balance_node);
+        $root->appendChild($xacts_node);
+
+        if ($$args{include_xacts}) {
+            my $xacts = $e->search_money_billable_transaction_summary(
+                {id => [@$circ_ids, @$groc_ids, @$res_ids]},
+                {substream => 1}
+            );
+
+            for my $xact (@$xacts) {
+                my $xact_node = $xact->toXML({no_virt => 1})->documentElement;
+                $user_doc->adoptNode($xact_node);
+                $xacts_node->appendChild($xact_node);
+            }
+        }
+
+        print $FILE $user_doc->documentElement->toString(1) . "\n";
+    }
+
+    print $FILE "\n</Collections>";
+    close($FILE);
+
+    (my $complete_file = $file_name) =~ s|.tmp$|.xml|og;
+
+    unless (move($file_name, $complete_file)) {
+        $logger->error("collections: unable to move ".
+            "user_balance file $file_name => $complete_file : $@");
+    }
+
+    return undef;
+}
+
+sub setup_batch_file {
+    my $prefix = shift;
+    my $args = shift;
+    my $location = $$args{location};
+    my $start_date = $$args{start_date};
+    my $end_date = $$args{end_date};
+    my $user_id = $$args{user_id};
+
+    my $conf = OpenSRF::Utils::SettingsClient->new;
+    my $dir_name = $conf->config_value(apps => 
+        'open-ils.collections' => app_settings => 'batch_file_dir');
+
+    if (!$dir_name) {
+        $logger->error("collections: no batch_file_dir directory configured");
+        return OpenILS::Event->new('COLLECTIONS_FILE_ERROR');
+    }
+
+    unless (-e $dir_name) {
+        eval { mkpath($dir_name); };
+        if ($@) {
+            $logger->error("collections: unable to create batch_file_dir directory $dir_name : $@");
+            return OpenILS::Event->new('COLLECTIONS_FILE_ERROR');
+        }
+    }
+
+    my $file_prefix = "${prefix}_" . DateTime->now->strftime('%F') . "_$location";
+    $file_prefix .= "_$start_date" if $start_date;
+    $file_prefix .= "_$end_date" if $end_date;
+    $file_prefix .= "_$user_id" if $user_id;
+
+    my $FILE;
+    my $file_name = File::Spec->catfile($dir_name, "$file_prefix.tmp");
+
+    unless (open($FILE, '>', $file_name)) {
+        $logger->error("collections: unable to open user_balance_summary file $file_name : $@");
+        return OpenILS::Event->new('COLLECTIONS_FILE_ERROR');
+    }
+
+    return (undef, $file_prefix, $file_name, $FILE);
 }
 
 sub flesh_payment {

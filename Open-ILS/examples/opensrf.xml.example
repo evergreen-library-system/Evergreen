@@ -1062,6 +1062,10 @@ vim:et:ts=4:sw=4:
                     <min_spare_children>1</min_spare_children>
                     <max_spare_children>5</max_spare_children>
                 </unix_config>
+                <app_settings>
+                    <!-- batch_file_dir must be a protected, web-accessible, shared directory -->
+                    <batch_file_dir>/openils/var/web/collections</batch_file_dir>
+                </app_settings>
             </open-ils.collections>
 
             <open-ils.reporter>
