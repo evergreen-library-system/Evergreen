@@ -273,7 +273,6 @@ sub check_db_langs {
 
     # Ensure the following PostgreSQL languages have been enabled
     my %languages = (
-        'plperl' => 0,
         'plperlu' => 0,
         'plpgsql' => 0,
     );
