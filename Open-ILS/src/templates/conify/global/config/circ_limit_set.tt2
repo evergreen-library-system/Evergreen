@@ -46,6 +46,27 @@
                 </tr>
             </tbody>
         </table>
+        <h3>[% l('Linked Copy Locations') %]</h3>
+        <table class='oils-generic-table'>
+            <tbody>
+                <tr>
+                    <th>[% l('Name') %]</th>
+                    <th>[% l('Remove') %]</th>
+                </tr>
+            </tbody>
+            <tbody name='copy-loc-entry-tbody'>
+                <tr name='copy-loc-entry-row'>
+                    <td name='copy-loc'></td>
+                    <td><a name='remove-copy-loc' href='javascript:void(0);'>[% l('Remove') %]</a></td>
+                </tr>
+            </tbody>
+            <tbody name='copy-loc-entry-new'>
+                <tr>
+                    <td><div name='copy-loc-selector'></div></td>
+                    <td><a href='javascript:void(0);' name='add-copy-loc'>[% l('Add') %]</a></td>
+                </tr>
+            </tbody>
+        </table>
         <h3>Linked Limit Groups</h3>
         <table class='oils-generic-table'>
             <tbody>

@@ -4,11 +4,14 @@ dojo.require('openils.widget.AutoGrid');
 dojo.require('openils.widget.AutoFieldWidget');
 dojo.require('openils.PermaCrud');
 dojo.require('openils.widget.ProgressDialog');
+dojo.require('openils.User');
 
 var linkedEditor = null;
 var circModEntryCache = [];
+var copyLocEntryCache = [];
 var limitGroupEntryCache = [];
 var circModCache = {};
+var copyLocCache = {};
 var limitGroupCache = {};
 var curLinkedEditor;
 
@@ -25,6 +28,17 @@ function load(){
     dojo.forEach(temp, function(g) { circModCache[g.code()] = g; } );
     temp = pcrud.retrieveAll('cclg');
     dojo.forEach(temp, function(g) { limitGroupCache[g.id()] = g; } );
+
+    // Avoid fetching all copy locations because there can be many 
+    // thousands.  Limit to those within permission range of the user.
+    new openils.User().getPermOrgList(
+        'ADMIN_CIRC_MATRIX_MATCHPOINT',
+        function (orgList) {
+            temp = pcrud.search('acpl', {owning_lib : orgList});
+            dojo.forEach(temp, function(g) { copyLocCache[g.id()] = g; } );
+        }, 
+        true, true 
+    );
 }
 
 function byName(name, ctxt) {
@@ -34,6 +48,7 @@ function byName(name, ctxt) {
 function buildEditPaneAdditions(editPane) {
     circModEntryCache = [];
     limitGroupEntryCache = [];
+    copyLocEntryCache = [];
     var tr = document.createElement('tr');
     var td = document.createElement('td');
     td.setAttribute('colspan','2');
@@ -46,6 +61,7 @@ function buildEditPaneAdditions(editPane) {
     curLinkedEditor = linkedEditor.cloneNode(true);
     td.appendChild(curLinkedEditor);
     var circModTmpl = byName('circ-mod-entry-tbody', curLinkedEditor).removeChild(byName('circ-mod-entry-row', curLinkedEditor));
+    var copyLocTmpl = byName('copy-loc-entry-tbody', curLinkedEditor).removeChild(byName('copy-loc-entry-row', curLinkedEditor));
     var limitGroupTmpl = byName('limit-group-entry-tbody', curLinkedEditor).removeChild(byName('limit-group-entry-row', curLinkedEditor));
 
     var cm_selector = new openils.widget.AutoFieldWidget({
@@ -54,6 +70,13 @@ function buildEditPaneAdditions(editPane) {
         parentNode : byName('circ-mod-selector', curLinkedEditor)
     });
     cm_selector.build();
+
+    var cl_selector = new openils.widget.AutoFieldWidget({
+        fmClass : 'cclsacpl',
+        fmField : 'copy_loc',
+        parentNode : byName('copy-loc-selector', curLinkedEditor)
+    });
+    cl_selector.build();
 
     var lg_selector = new openils.widget.AutoFieldWidget({
         fmClass : 'cclsgm',
@@ -72,6 +95,19 @@ function buildEditPaneAdditions(editPane) {
         byName('circ-mod-entry-tbody', editPane.domNode).appendChild(row);
     }
 
+    function addLoc(id) {
+        var row = copyLocTmpl.cloneNode(true);
+        row.setAttribute('loc_id', id);
+        var copyloc = copyLocCache[id];
+        byName('copy-loc', row).innerHTML = 
+            fieldmapper.aou.findOrgUnit(copyloc.owning_lib()).shortname() +
+            ' : ' + copyloc.name();
+        byName('remove-copy-loc', row).onclick = function() {
+            byName('copy-loc-entry-tbody', clsGrid.editPane.domNode).removeChild(row);
+        }
+        byName('copy-loc-entry-tbody', editPane.domNode).appendChild(row);
+    }
+
     function addGroup(group) {
         var row = limitGroupTmpl.cloneNode(true);
         row.setAttribute('limit_group', group);
@@ -86,6 +122,10 @@ function buildEditPaneAdditions(editPane) {
         addMod(cm_selector.widget.attr('value'));
     }
 
+    byName('add-copy-loc', editPane.domNode).onclick = function() {
+        addLoc(cl_selector.widget.attr('value'));
+    }
+
     byName('add-limit-group', editPane.domNode).onclick = function() {
         addGroup(lg_selector.widget.attr('value'));
     }
@@ -98,8 +138,10 @@ function buildEditPaneAdditions(editPane) {
     if(editPane.mode == 'update') {
         var pcrud = new openils.PermaCrud();
         circModEntryCache = pcrud.search('cclscmm', {limit_set: limitSet});
+        copyLocEntryCache = pcrud.search('cclsacpl', {limit_set: limitSet});
         limitGroupEntryCache = pcrud.search('cclsgm', {limit_set: limitSet});
         dojo.forEach(circModEntryCache, function(g) { addCircMod(circModTmpl, g); } );
+        dojo.forEach(copyLocEntryCache, function(g) { addCopyLoc(copyLocTmpl, g); } );
         dojo.forEach(limitGroupEntryCache, function(g) { addLimitGroup(limitGroupTmpl, g); } );
     } 
 }
@@ -113,6 +155,20 @@ function addCircMod(tmpl, circ_mod_entry) {
         byName('circ-mod-entry-tbody', clsGrid.editPane.domNode).removeChild(row);
     }
     byName('circ-mod-entry-tbody', clsGrid.editPane.domNode).appendChild(row);
+}
+
+function addCopyLoc(tmpl, copy_loc_entry) {
+    var row = tmpl.cloneNode(true);
+    var id = copy_loc_entry.copy_loc();
+    var copyloc = copyLocCache[id];
+    row.setAttribute('loc_id', id);
+    byName('copy-loc', row).innerHTML = 
+        fieldmapper.aou.findOrgUnit(copyloc.owning_lib()).shortname() +
+        ' : ' + copyloc.name();
+    byName('remove-copy-loc', row).onclick = function() {
+        byName('copy-loc-entry-tbody', clsGrid.editPane.domNode).removeChild(row);
+    }
+    byName('copy-loc-entry-tbody', clsGrid.editPane.domNode).appendChild(row);
 }
 
 function addLimitGroup(tmpl, limit_group_entry) {
@@ -169,6 +225,30 @@ function updateLinked(fmObject, rowindex) {
             }
         }
     );
+
+    // Next, copy locations
+    var copy_locs = [];
+    dojo.query('[name=copy-loc-entry-row]', this.editPane.domNode).forEach(
+        function(row) {
+            var loc_id = row.getAttribute('loc_id');
+            copy_locs.push(loc_id);
+            if(!copyLocEntryCache.filter(function(i) { return (i.copy_loc() == loc_id); })[0]) {
+                var entry = new fieldmapper.cclsacpl();
+                entry.isnew(true);
+                entry.limit_set(id);
+                entry.copy_loc(loc_id);
+                add.push(entry);
+            }
+        }
+    );
+    dojo.forEach(copyLocEntryCache, function(eLoc) {
+            if(!copy_locs.filter(function(i) { return (i == eLoc.copy_loc()); })[0]) {
+                eLoc.isdeleted(true);
+                remove.push(eLoc);
+            }
+        }
+    );
+
 
     // Next, limit groups
     var limit_groups = [];
