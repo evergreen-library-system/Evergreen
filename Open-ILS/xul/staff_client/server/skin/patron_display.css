@@ -17,6 +17,8 @@ row#row_billing_zip { padding-bottom: 10px; }
 .MULTIPLE_PENALTIES .patronNameLarge { background-color: #CC3300; }
 */
 
+.PATRON_HAS_STAFF_ALERT .patronNameLarge { border: solid thick blue; padding: 10px; }
+
 .PATRON_HAS_BILLS .patronNameLarge { border: solid thick #FFC266; padding: 10px; }
 .PATRON_HAS_BILLS label.bill { color: #AA4400; }
 /* .PATRON_HAS_BILLS label.bill.label { text-decoration: underline; } */

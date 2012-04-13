@@ -703,6 +703,32 @@ patron.util.set_penalty_css = function(patron) {
         for (var i = 0; i < penalties.length; i++) {
             /* this comes from /opac/common/js/utils.js */
             addCSSClass(document.documentElement,penalties[i].standing_penalty().name());
+            if (penalties[i].standing_penalty().id() >= 100) {
+                addCSSClass(document.documentElement,'PATRON_HAS_CUSTOM_PENALTY');
+            }
+            if (get_bool( penalties[i].standing_penalty().staff_alert() )) {
+                addCSSClass(document.documentElement,'PATRON_HAS_STAFF_ALERT');
+            }
+            var block_list = penalties[i].standing_penalty().block_list();
+            if (block_list) {
+                addCSSClass(document.documentElement,'PATRON_HAS_BLOCK');
+                // TODO: futureproofing, split and loop on block_list to produce these classnames
+                if (block_list.match('CIRC')) {
+                    addCSSClass(document.documentElement,'PATRON_HAS_CIRC_BLOCK');
+                }
+                if (block_list.match('RENEW')) {
+                    addCSSClass(document.documentElement,'PATRON_HAS_RENEW_BLOCK');
+                }
+                if (block_list.match('HOLD')) {
+                    addCSSClass(document.documentElement,'PATRON_HAS_HOLD_BLOCK');
+                }
+                if (block_list.match('CAPTURE')) {
+                    addCSSClass(document.documentElement,'PATRON_HAS_CAPTURE_BLOCK');
+                }
+                if (block_list.match('FULFILL')) {
+                    addCSSClass(document.documentElement,'PATRON_HAS_FULFILL_BLOCK');
+                }
+            }
         }
 
         switch(penalties.length) {
