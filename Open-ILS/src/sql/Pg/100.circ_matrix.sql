@@ -122,6 +122,14 @@ CREATE TABLE config.circ_limit_set_circ_mod_map (
     CONSTRAINT cm_once_per_set UNIQUE (limit_set, circ_mod)
 );
 
+-- Linkage between limit sets and copy locations
+CREATE TABLE config.circ_limit_set_copy_loc_map (
+    id          SERIAL  PRIMARY KEY,
+    limit_set   INT     NOT NULL REFERENCES config.circ_limit_set (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    copy_loc    INT     NOT NULL REFERENCES asset.copy_location (id) ON DELETE CASCADE ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    CONSTRAINT cl_once_per_set UNIQUE (limit_set, copy_loc)
+);
+
 -- Linkage between limit sets and limit groups
 CREATE TABLE config.circ_limit_set_group_map (
     id          SERIAL  PRIMARY KEY,
@@ -596,6 +604,7 @@ BEGIN
                     AND circ.checkin_time IS NULL
                     AND (circ.stop_fines IN ('MAXFINES','LONGOVERDUE') OR circ.stop_fines IS NULL)
                     AND (copy.circ_modifier IN (SELECT circ_mod FROM config.circ_limit_set_circ_mod_map WHERE limit_set = circ_limit_set.id)
+                        OR copy.location IN (SELECT copy_loc FROM config.circ_limit_set_copy_loc_map WHERE limit_set = circ_limit_set.id)
                         OR aclgm.limit_group IN (SELECT limit_group FROM config.circ_limit_set_group_map WHERE limit_set = circ_limit_set.id)
                     );
                 IF items_out >= circ_limit_set.items_out THEN
