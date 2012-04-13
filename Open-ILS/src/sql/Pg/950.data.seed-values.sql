@@ -6352,6 +6352,28 @@ INSERT INTO config.coded_value_map (id, ctype, code, value) VALUES
     (535, 'bib_level', 'm', oils_i18n_gettext('535', 'Monograph/Item', 'ccvm', 'value')),
     (536, 'bib_level', 's', oils_i18n_gettext('536', 'Serial', 'ccvm', 'value'));
 
+INSERT INTO config.coded_value_map(id, ctype, code, value) VALUES
+    (537, 'vr_format', 'a', oils_i18n_gettext('537', 'Beta', 'ccvm', 'value')),
+    (538, 'vr_format', 'b', oils_i18n_gettext('538', 'VHS', 'ccvm', 'value')),
+    (539, 'vr_format', 'c', oils_i18n_gettext('539', 'U-matic', 'ccvm', 'value')),
+    (540, 'vr_format', 'd', oils_i18n_gettext('540', 'EIAJ', 'ccvm', 'value')),
+    (541, 'vr_format', 'e', oils_i18n_gettext('541', 'Type C', 'ccvm', 'value')),
+    (542, 'vr_format', 'f', oils_i18n_gettext('542', 'Quadruplex', 'ccvm', 'value')),
+    (543, 'vr_format', 'g', oils_i18n_gettext('543', 'Laserdisc', 'ccvm', 'value')),
+    (544, 'vr_format', 'h', oils_i18n_gettext('544', 'CED videodisc', 'ccvm', 'value')),
+    (545, 'vr_format', 'i', oils_i18n_gettext('545', 'Betacam', 'ccvm', 'value')),
+    (546, 'vr_format', 'j', oils_i18n_gettext('546', 'Betacam SP', 'ccvm', 'value')),
+    (547, 'vr_format', 'k', oils_i18n_gettext('547', 'Super-VHS', 'ccvm', 'value')),
+    (548, 'vr_format', 'm', oils_i18n_gettext('548', 'M-II', 'ccvm', 'value')),
+    (549, 'vr_format', 'o', oils_i18n_gettext('549', 'D-2', 'ccvm', 'value')),
+    (550, 'vr_format', 'p', oils_i18n_gettext('550', '8 mm.', 'ccvm', 'value')),
+    (551, 'vr_format', 'q', oils_i18n_gettext('551', 'Hi-8 mm.', 'ccvm', 'value')),
+    (552, 'vr_format', 's', oils_i18n_gettext('552', 'Blu-ray disc', 'ccvm', 'value')),
+    (553, 'vr_format', 'u', oils_i18n_gettext('553', 'Unknown', 'ccvm', 'value')),
+    (554, 'vr_format', 'v', oils_i18n_gettext('554', 'DVD', 'ccvm', 'value')),
+    (555, 'vr_format', 'z', oils_i18n_gettext('555', 'Other', 'ccvm', 'value')),
+    (556, 'vr_format', ' ', oils_i18n_gettext('556', 'Unspecified', 'ccvm', 'value'));
+
 SELECT SETVAL('config.coded_value_map_id_seq'::TEXT, (SELECT max(id) FROM config.coded_value_map));
 
 -- Trigger Event Definitions -------------------------------------------------

@@ -14,7 +14,7 @@
     # scalar.merge treats the scalar as a 1-item array
     WHILE queries.size < rowcount; queries = queries.merge(['']); END;
     WHILE bools.size < rowcount; bools = bools.merge(['and']); END;
-    WHILE qtypes.size < rowcount; qtypes = qtypes.merge(['keyword']); END;
+    WHILE qtypes.size < rowcount; qtypes = qtypes.merge(search.default_qtypes.${qtypes.size} ? [search.default_qtypes.${qtypes.size}] : ['keyword']); END;
 
     FOR qtype IN qtypes;
         c = contains.shift;

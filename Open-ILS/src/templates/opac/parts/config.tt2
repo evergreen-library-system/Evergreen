@@ -69,4 +69,37 @@ facet.display = [
     {facet_class => 'subject', facet_order => ['name', 'geographic']}
 ];
 
+##############################################################################
+# Define the advanced search limiters and labels.
+# adv_label is the (translated) label for the limiter
+# adv_attr is an array of possible limiters, the first one that has any
+#   values will be used
+# adv_break will end the current row. If specified with a label/attr it
+#   will do so *after* that limiter.
+# adv_special will drop in a special entry:
+#   lib_selector will put the search library box (with limit to available)
+#   pub_year will put the publication year box
+#   sort_selector will put the sort results selector
+
+search.adv_config = [
+    {adv_label => l("Item Type"), adv_attr => ["mattype", "item_type"]},
+    {adv_label => l("Item Form"), adv_attr => "item_form"},
+    {adv_label => l("Language"),  adv_attr => "item_lang"},
+    {adv_label => l("Audience"),  adv_attr => ["audience_group", "audience"], adv_break => 1},
+    {adv_label => l("Video Format"), adv_attr => "vr_format"},
+    {adv_label => l("Bib Level"), adv_attr => "bib_level"},
+    {adv_label => l("Literary Form"), adv_attr => "lit_form", adv_break => 1},
+    {adv_label => l("Search Library"), adv_special => "lib_selector"},
+    {adv_label => l("Publication Year"), adv_special => "pub_year"},
+    {adv_label => l("Sort Results"), adv_special => "sort_selector"},
+];
+
+##############################################################################
+# For each search box the default "query type" value can be specified here
+# This is the actual backend value, not the label
+# Also note that including more than the row count entries won't add rows
+# The first entry should be used as a default for "basic" search as well
+
+search.default_qtypes = ['keyword','title','author'];
+
 %]

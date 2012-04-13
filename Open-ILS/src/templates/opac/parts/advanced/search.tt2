@@ -28,46 +28,24 @@
     <tr>
         <td align='top'>
           <div style="width:100%;" class="header_middle">[% l('Search Filters') %]</div>
-          <table cellpadding='10' cellspacing='0' border='0'><tr>
+          <table cellpadding='10' cellspacing='0' border='0'>
+[%
+    in_row = 0;
+    FOR adv_chunk IN search.adv_config;
+        NEXT IF adv_chunk.adv_hide;
+        IF in_row == 0;
+            in_row = 1; %]
+            <tr>
+[%
+        END; %]
             <td valign='top'>
-                <strong>[% l("Item Type") %]</strong><br />
-                [%  INCLUDE "opac/parts/coded_value_selector.tt2"
-                        attr=["mattype", "item_type"] multiple="multiple" size="4" %]
-            </td>
-            <td valign='top'>
-                <strong>[% l("Language") %]</strong><br />
-                [%  INCLUDE "opac/parts/coded_value_selector.tt2"
-                        attr="item_lang" multiple="multiple" size="4" %]
-            </td>
-            <td valign='top'>
-                <strong>[% l("Audience") %]</strong><br />
-                    [% INCLUDE "opac/parts/coded_value_selector.tt2"
-                        attr=["audience_group", "audience"] multiple="multiple" size="4" %]
-                </select>
-            </td>
-            <td valign='top'>
-            <strong>[% l("Sort Results") %]</strong>
-              <table class='adv_global_filter_sort'>
-                <tr>
-                    <td align='center' width='100%'>
-                        [% INCLUDE "opac/parts/filtersort.tt2"
-                            value=CGI.param('sort') class='results_header_sel' %]
-                    </td>
-                </tr>
-              </table>
-            </td>
-          </tr></table>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="2">
-            <table cellpadding='10' cellspacing='0' border='0'>
-                <tbody>
-                    <tr>
-                        <td valign='top'>
-                            <strong>[% l("Search Library") %]</strong><br />
-                            [% PROCESS "opac/parts/org_selector.tt2";
-                                INCLUDE build_org_selector show_loc_groups=1 %]
+                <strong>[% adv_chunk.adv_label %]</strong><br />
+[%
+        IF adv_chunk.adv_special;
+            SWITCH adv_chunk.adv_special;
+                CASE "lib_selector";
+                    PROCESS "opac/parts/org_selector.tt2";
+                        INCLUDE build_org_selector show_loc_groups=1; %]
                             <div style="position:relative;top:7px;">
                                 <input type='checkbox' name="modifier"
                                     value="available"[% CGI.param('modifier').grep('available').size ? ' checked="checked"' : '' %]
@@ -76,9 +54,8 @@
                                     for='opac.result.limit2avail'>
                                     [% l("Limit to Available") %]</label>
                             </div>
-                        </td>
-                        <td valign='top'>
-                            <strong>[% l("Publication Year") %]</strong><br />
+[%
+                CASE "pub_year"; %]
                             <select name='pubdate' onchange='
                                 if(this.selectedIndex == 3)
                                     unHideMe($("adv_global_pub_date_2_span"));
@@ -98,18 +75,23 @@
                                    [% l("and") %] <input name='date2' type='text' size='4' maxlength='4' value="[% CGI.param('date2') | html %]" />
                                 </span>
                             </div>
-                        </td>
-                    </tr>
-                    <!-- TODO: Copy Location Filter -->
-                    <tr class='hide_me'>
-                        <td align='right'>[% l("Shelving Location") %]</td>
-                        <td align='left'>
-                            <select size='3' multiple='multiple'>
-                                [%# TODO: add filter options... %]
-                            </select>
-                        </td>
-                    </tr>
-                </tbody>
+[%
+                CASE "sort_selector";
+                    INCLUDE "opac/parts/filtersort.tt2"
+                        value=CGI.param('sort') class='results_header_sel';
+            END;
+        ELSIF adv_chunk.adv_attr;
+            INCLUDE "opac/parts/coded_value_selector.tt2"
+                attr=adv_chunk.adv_attr multiple="multiple" size="4";
+        END; %]
+            </td>
+[%
+        IF adv_chunk.adv_break;
+            in_row = 0; %]
+            </tr>
+[%
+        END;
+    END; %]
             </table>
         </td>
     </tr>
