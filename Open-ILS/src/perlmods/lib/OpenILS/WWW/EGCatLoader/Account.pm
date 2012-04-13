@@ -625,7 +625,7 @@ sub load_place_hold {
     };
     $ctx->{user_setting_map} = $user_setting_map;
 
-    my $default_notify = $$user_setting_map{'opac.hold_notify'} || '';
+    my $default_notify = (defined $$user_setting_map{'opac.hold_notify'} ? $$user_setting_map{'opac.hold_notify'} : 'email:phone');
     if ($default_notify =~ /email/) {
         $ctx->{default_email_notify} = 'checked';
     } else {

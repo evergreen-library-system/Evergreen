@@ -2566,6 +2566,7 @@ commands:
             settings[user.settings()[i].name()] = JSON2js(user.settings()[i].value());
         }
         if(!settings['opac.default_phone'] && user.day_phone()) settings['opac.default_phone'] = user.day_phone();
+        if(!settings['opac.hold_notify'] && settings['opac.hold_notify'] !== '') settings['opac.hold_notify'] = 'email:phone';
         return {"barcode": barcode, "settings" : settings};
     },
 

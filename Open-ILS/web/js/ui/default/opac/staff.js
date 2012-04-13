@@ -45,7 +45,7 @@ function staff_hold_usr_barcode_changed(isload) {
         if(!load_info.settings['opac.default_phone']) load_info.settings['opac.default_phone'] = '';
         if(!load_info.settings['opac.default_sms_notify']) load_info.settings['opac.default_sms_notify'] = '';
         if(!load_info.settings['opac.default_sms_carrier']) load_info.settings['opac.default_sms_carrier'] = '';
-        if(load_info.settings['opac.hold_notify']) {
+        if(load_info.settings['opac.hold_notify'] || load_info.settings['opac.hold_notify'] === '') {
             var email = load_info.settings['opac.hold_notify'].indexOf('email') > -1;
             var phone = load_info.settings['opac.hold_notify'].indexOf('phone') > -1;
             var sms = load_info.settings['opac.hold_notify'].indexOf('sms') > -1;
