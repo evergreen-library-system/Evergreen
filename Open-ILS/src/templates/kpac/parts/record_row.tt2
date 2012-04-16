@@ -11,8 +11,8 @@
             src='[% mkurl(img_src, {}, 1) %]' /></a><br />
     </div>
     <div class="item_detail_info">
-        <div class="item_detail_name"><a href="[% mkurl(ctx.kpac_root _ '/record/' _ rec_id) %]">[% attrs.title %]</a></div>
-        <div class="item_detail_author">[% l('by [_1]', attrs.author) %]</div>
+        <div class="item_detail_name"><a href="[% mkurl(ctx.kpac_root _ '/record/' _ rec_id) %]">[% attrs.title | html %]</a></div>
+        <div class="item_detail_author">[% l('by [_1]', attrs.author) | html %]</div>
         <div class="item_detail_callnumber">[% attrs.holdings.0.label | html %]</div>
         <div class="item_detail_extra_info">
             [% l('[_1], [_2]', attrs.publisher, attrs.pubdate) | html %] <!-- TODO fix commas, etc. -->
