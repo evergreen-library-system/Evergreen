@@ -10,13 +10,14 @@
         <title>[% l("Kid's Catalog - [_1]", ctx.page_title) %]</title>
     </head>
     <body>
-        <div class="center_me">[% INCLUDE 'kpac/parts/header.tt2' %]</div>
-        <!-- home_search sits outside the normal content div -->
-        [% INCLUDE 'kpac/parts/home_search.tt2' IF ctx.page == 'home' %]
-        <div class="center_me hp_reposition">
+        <!-- home has a different layout.  it loads its own header/footer blocks -->
+        [% IF ctx.page == 'home'; content; ELSE %]
+        <div class="main_center">
+            [% INCLUDE 'kpac/parts/header.tt2' %]
             <div class="main_wrapper">[% content %]</div>
+            [% INCLUDE 'kpac/parts/footer.tt2' %]
         </div>
-        [% INCLUDE 'kpac/parts/footer.tt2' %]
+        [% END %]
         <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/kpac/functions.js"></script>
         [%- INCLUDE 'kpac/parts/acimport.tt2' %]
     </body>

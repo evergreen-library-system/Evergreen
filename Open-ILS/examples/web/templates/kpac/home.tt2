@@ -5,59 +5,62 @@
     ctx.page_title = l("Home") 
 %]
 
-<div class="main_top_shadow">
-    <div class="main_tl_corner">&nbsp;</div>
-    <div class="main_mid_top">&nbsp;</div>
-    <div class="main_tr_corner">&nbsp;</div>
-    <div class="clear">&nbsp;</div>
-</div>
+<div class="center_me">[% INCLUDE 'kpac/parts/header.tt2' %]</div>
 
-<table cellpadding="0" cellspacing="0" border="0" width="100%">
-    <tr>
-        <td width="3" class="main_left_shadow"><div class="clear">&nbsp;</div></td>
-        <td valign="top" class="main_inside_cell" valign="top">
-            <!--
-            <div class="search_wrapper">
-                <h1>Search your Library</h1>
-                <h3>for books, movies, music, magazines, and more!</h3>
+<div class="banner_wrapper">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" height="100%"><tr>
+        <td class="hp_banner_bgl">&nbsp;</td>
+        <td class="hp_banner_content" valign="top">
+            <div class="hp_search_main">
                 <form action="[% ctx.kpac_root _ '/results' %]">
-                    [% qtype = CGI.param('qtype') %]
-                    <table cellpadding="0" cellspacing="0" border="0" align="center" class="search_box_wrapper">
-                        <tr>
-                            <td class="st_radio_btn"><input type="radio" name="qtype" value="keyword" id="st_word" class="st_word" 
-                                [% IF !qtype OR qtype == 'keyword' %]checked="checked"[% END %]/></td>
-                            <td class="st_label"><label for="st_word">[% l('Word') %]</label></td>
+                    <table cellpadding="0" cellspacing="0" border="0"><tr>
+                        <td valign="top">
+                            <div class="hp_search_box_wrapper"><input type="text" name="query" class="hp_search_box" value="[% CGI.param('query') | html %]"/></div>
+                            <table cellpadding="0" cellspacing="0" border="0" class="hp_search_st"><tr>
+                                <td class="st_radio_btn"><input type="radio" name="qtype" value="keyword" id="st_word" class="st_word" 
+                                    [% IF !qtype OR qtype == 'keyword' %]checked="checked"[% END %]/></td>
+                                <td class="st_label"><label for="st_word">[% l('Word') %]</label></td>
 
-                            <td class="st_radio_btn"><input type="radio" name="qtype" value="title" id="st_title" class="st_title" 
-                                [% IF qtype == 'title' %]checked="checked"[% END %]/></td>
-                            <td class="st_label"><label for="st_title">[% l('Title') %]</label></td>
+                                <td class="st_radio_spacer"><div>&nbsp;</div></td>
+                                <td class="st_radio_btn"><input type="radio" name="qtype" value="title" id="st_title" class="st_title" 
+                                    [% IF qtype == 'title' %]checked="checked"[% END %]/></td>
+                                <td class="st_label"><label for="st_title">[% l('Title') %]</label></td>
 
-                            <td class="st_radio_btn"><input type="radio" name="qtype" value="author" id="st_author" class="st_author"
-                                [% IF qtype == 'author' %]checked="checked"[% END %]/></td>
-                            <td class="st_label st_author_box"><label for="st_author">[% l('Author') %]</label></td>
-
-                            <td><input type="text" class="search_box" name="query" value="[% CGI.param('query') | html %]"/></td>
-                            <td><input type="image" src="[% ctx.media_prefix %]/images/kpac/search_btn.png" alt="search" /></td>
-                        </tr>
-                    </table>
+                                <td class="st_radio_spacer"><div>&nbsp;</div></td>
+                                <td class="st_radio_btn"><input type="radio" name="qtype" value="author" id="st_author" class="st_author"
+                                    [% IF qtype == 'author' %]checked="checked"[% END %]/></td>
+                                <td class="st_label st_author_box"><label for="st_author">[% l('Author') %]</label></td>
+                            </tr></table>
+                        </td>
+                        <td valign="top">
+                            <input type="image" src="[% ctx.media_prefix %]/images/kpac/hp_search_btn.png" alt="[% l('Search') %]" /></td>
+                        </td>
+                    </tr></table>
                 </form>
             </div>
-            -->
-            <div class="category_wrapper">
-                <h3 class="c_header_image">Or click on an image to get started:</h3>
-                [% render_kpac_grid(ctx.kpac_layout.page) %]
-            </div>
-
         </td>
-        <td width="3" class="main_right_shadow"><div class="clear">&nbsp;</div></td>
-    </tr>
-</table>
+        <td class="hp_banner_bgr">&nbsp;</td>
+    </tr></table>
+</div>
 
-<div class="main_bottom_shadow">
-    <div class="main_bl_corner">&nbsp;</div>
-    <div class="main_mid_bottom">&nbsp;</div>
-    <div class="main_br_corner">&nbsp;</div>
-    <div class="clear">&nbsp;</div>
+<div class="center_me hp_reposition">
+    <div class="main_wrapper">
+        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+            <tr>
+                <td width="3"><div class="clear">&nbsp;</div></td>
+                <td valign="top" class="main_inside_cell" valign="top">
+                    <div class="category_wrapper">
+                        <h3 class="c_header_image2"><span class="c_header_hp_or">or</span> click on an image to get started:</h3>
+                        [% render_kpac_grid(ctx.kpac_layout.page) %]
+                    </div>
+                </td>
+                <td width="3"><div class="clear">&nbsp;</div></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="center_me hp_reposition">
+    [% INCLUDE 'kpac/parts/footer.tt2' %]
 </div>
 
 [% END %]
