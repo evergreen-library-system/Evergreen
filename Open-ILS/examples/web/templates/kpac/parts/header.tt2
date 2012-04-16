@@ -1,0 +1,24 @@
+<div class="main_header_wrapper">
+    <div class="logo_wrapper">
+        <a href="http://evergreen-ils.org"><span class="logo_middle"><img 
+            src="[% ctx.media_prefix %]/images/eg_logo.jpg"  width="170" alt="[% l('Logo') %]" /></span></a>
+    </div>
+    <div class="header_menu">
+        <!-- menu rendered in reverse order -->
+
+        [% IF ctx.user %]
+            [% redir = CGI.url('-base' => 1) _ ctx.kpac_root _ '/home' %]
+            <a href="[% mkurl(ctx.logout_page, 
+                {redirect_to => redir.replace('^https:', 'http:')}, 1) %]"><img src="[% ctx.media_prefix %]/images/kpac/logout_btn.png"/></a>
+        [% ELSE %]
+            <a href="[% mkurl(ctx.opac_root _ '/login').replace('^http:', 'https:') %]"><img src="[% ctx.media_prefix %]/images/kpac/login_btn.png"/></a>
+        [% END %]
+
+        <a href="javascript:;"><img src="[% ctx.media_prefix %]/images/kpac/get_a_card_btn.png" alt="get a library card" /></a>
+        <a href="javascript:;"><img src="[% ctx.media_prefix %]/images/kpac/help_btn.png" alt="help" /></a>
+        <a href="javascript:window.print()"><img src="[% ctx.media_prefix %]/images/kpac/print_btn.png" alt="print" /></a>
+        <a href="javascript:;"><img src="[% ctx.media_prefix %]/images/kpac/text_size_btn.png" alt="text size" /></a>
+    </div>
+    <div class="clear">&nbsp;</div>
+</div>
+

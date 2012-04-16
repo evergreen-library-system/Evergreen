@@ -10,11 +10,13 @@
         <title>[% l("Kid's Catalog - [_1]", ctx.page_title) %]</title>
     </head>
     <body>
-        <div class="main_center">
-            [% INCLUDE 'kpac/parts/header.tt2' %]
-            <div class="main_wrapper"> [% content %] </div>
-            [% INCLUDE 'kpac/parts/footer.tt2' %]
+        <div class="center_me">[% INCLUDE 'kpac/parts/header.tt2' %]</div>
+        <!-- home_search sits outside the normal content div -->
+        [% INCLUDE 'kpac/parts/home_search.tt2' IF ctx.page == 'home' %]
+        <div class="center_me hp_reposition">
+            <div class="main_wrapper">[% content %]</div>
         </div>
+        [% INCLUDE 'kpac/parts/footer.tt2' %]
         <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/kpac/functions.js"></script>
         [%- INCLUDE 'kpac/parts/acimport.tt2' %]
     </body>
