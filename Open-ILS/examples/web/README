@@ -1,0 +1,27 @@
+README for Evergreen example web
+================================
+
+What's Here
+-----------
+
+Here lie example templates for testing and examples of template 
+overrides and their associated resources (js, css, images).
+
+Installation
+------------
+
+    * To install all example files.
+    * Templates assume a local override directory of "templates_local"
+
+[source, bash]
+------------------------------------------------------------------------------
+cp -r js/* /openils/var/web/js/
+cp -r css/* /openils/var/web/css/
+cp -r images/* /openils/var/web/images/
+cp -r templates/* /openils/var/templates_local
+------------------------------------------------------------------------------
+
+////////////////////////
+vim:set syntax=asciidoc:
+////////////////////////
+
