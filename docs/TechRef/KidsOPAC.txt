@@ -1,0 +1,97 @@
+Kid's OPAC
+==========
+
+Configuration
+-------------
+
+Apache
+~~~~~~
+
+[source, bash]
+------------------------------------------------------------------------------
+<Location /eg/kpac>
+    PerlSetVar OILSWebContextLoader "OpenILS::WWW::EGKPacLoader"
+    PerlSetVar KPacConfigFile "/openils/conf/kpac.xml.example"
+</Location>
+------------------------------------------------------------------------------
+
+XML Configuration File
+~~~~~~~~~~~~~~~~~~~~~~
+
+    * The XML configuration file defines the layout of the kid's OPAC.
+    * It is read with each restart/reload of the Apache web server.
+    * The file lives by default at /openils/conf/kpac.xml.example
+    * There are two top-level elements: <pages> and <layout>.
+    * The layout defines the owning org unit and the start page, both by ID.
+    * At runtime, the layout is determined by the context org unit.  If no 
+      configuration is defined for the context org unit, the layout for the 
+      closest ancestor is used.
+
+[source, xml]
+------------------------------------------------------------------------------
+<layout owner="1" page="1"/>
+------------------------------------------------------------------------------
+
+    * The pages section is a container for <page> elements.
+    * Each page defines an ID, the number of columns to display for the page, 
+      the page name, and an icon.
+
+[source, xml]
+------------------------------------------------------------------------------
+<page id="1" columns="5" name="Home" img="/images/home.jpg">
+------------------------------------------------------------------------------
+
+    * Each page is a container of cells
+    * Each cell defines
+        ** type (topic, search, link)
+        ** name
+        ** icon
+        ** content
+    * The content for type="topic" cells is the ID of the page this topic
+      jumps to.  The name and img for the referenced page is used as the 
+      display content.
+
+[source, xml]
+------------------------------------------------------------------------------
+<cell type="topic">12</cell>
+------------------------------------------------------------------------------
+
+    * The content for type="search" cells is the search query.  The name and 
+      img are used for the display content.
+
+[source, xml]
+------------------------------------------------------------------------------
+<cell name="Piano" img="category.png" type="search">su:piano</cell>
+------------------------------------------------------------------------------
+
+    * The content for type="link" cells is the URL.  The name and img are used 
+    for the display content.
+
+[source, xml]
+------------------------------------------------------------------------------
+<cell name="Clarinet" img="category.png" 
+    type="link">http://en.wikipedia.org/wiki/Clarinet</cell>
+------------------------------------------------------------------------------
+
+
+Considerations for Community Adoption
+-------------------------------------
+
+The templates for the Kid's OPAC were developed long before the TPAC was 
+integrated into Evergreen and it has many of the same limitations that 
+were part of the TPAC.  
+
+    * Fixed width elements (divs, images, etc.), which complicates the 
+      addition of new features and local customizations.  
+    * Images with text, which prevents l10n/i18n.
+    * While the KPAC does not attempt to match the color scheme of any one
+      institution, it's inconsistent with the standard Evergreen color 
+      palette.  Creating an additional skin to act as the Evergreen default
+      my be necessary.
+
+Outstanding Development (Unsponsored)
+-------------------------------------
+
+    ** Port the XML configuration file to a DB structure, complete with UI for
+       managing the various components and upgrade path.
+
