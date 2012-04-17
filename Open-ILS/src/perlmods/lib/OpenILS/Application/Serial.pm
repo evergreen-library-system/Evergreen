@@ -65,6 +65,11 @@ my %MFHD_TAGS_BY_NAME = (  $MFHD_NAMES[0] => '853',
                         $MFHD_NAMES[1] => '854',
                         $MFHD_NAMES[2] => '855');
 my $_strp_date = new DateTime::Format::Strptime(pattern => '%F');
+my %FM_NAME_TO_ID = (
+    'subscription' => 'ssub',
+    'distribution' => 'sdist',
+    'item' => 'sitem'
+    );
 
 # helper method for conforming dates to ISO8601
 sub _cleanse_dates {
@@ -1947,18 +1952,19 @@ sub fetch_notes {
 
     my $id = $$args{object_id};
     my $authtoken = $$args{authtoken};
+    my $order_by = $$args{order_by} || 'create_date';
     my( $r, $evt);
 
     if( $$args{pub} ) {
         return $U->cstorereq(
             'open-ils.cstore.direct.serial.'.$type.'_note.search.atomic',
-            { $type => $id, pub => 't' } );
+            { $type => $id, pub => 't' }, {'order_by' => {$FM_NAME_TO_ID{$type}.'n' => $order_by}} );
     } else {
         # FIXME: restore perm check
         # ( $r, $evt ) = $U->checksesperm($authtoken, 'VIEW_COPY_NOTES');
         # return $evt if $evt;
         return $U->cstorereq(
-            'open-ils.cstore.direct.serial.'.$type.'_note.search.atomic', {$type => $id} );
+            'open-ils.cstore.direct.serial.'.$type.'_note.search.atomic', {$type => $id}, {'order_by' => {$FM_NAME_TO_ID{$type}.'n' => $order_by}} );
     }
 
     return undef;
