@@ -171,6 +171,10 @@
 
 		}
 		
+		function xml_encode(str) {
+			return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+		}
+
 		function new_note(index) {
 			var public = false;
 			var title = '';
@@ -182,8 +186,8 @@
 			if (typeof index != 'undefined') {
 				edit_mode = true;
 				public = get_bool(g.notes[index].pub());
-				title = g.notes[index].title();
-				value = g.notes[index].value();
+				title = xml_encode(g.notes[index].title());
+				value = xml_encode(g.notes[index].value());
 				label_text = $('serialStrings').getString('staff.serial.notes.edit_note.label');
 				button_accesskey = $('serialStrings').getString('staff.serial.notes.edit_note.accesskey');
 			} else {
@@ -193,6 +197,7 @@
 
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalBrowserWrite");
+				value = value.replace(/\n/g, "&#10;"); // preserve newlines
 				var xml = '<groupbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1"> \
 					<caption label="' + label_text + '"/> \
 					<grid flex="1"><columns><column/><column flex="1"/></columns> \
