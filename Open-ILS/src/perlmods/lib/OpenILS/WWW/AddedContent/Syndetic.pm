@@ -121,7 +121,7 @@ sub reviews_html {
     $reviews{chreview} = $self->fetch_content('chreview.html', $key);
     $reviews{blreview} = $self->fetch_content('blreview.html', $key);
     $reviews{hbreview} = $self->fetch_content('hbreview.html', $key);
-    $reviews{kirkreview} = $self->fetch_content('kirkreview.html', $key);
+    $reviews{kireview} = $self->fetch_content('kireview.html', $key);
 
     for(keys %reviews) {
         if( ! $self->data_exists($reviews{$_}) ) {
@@ -152,7 +152,7 @@ sub reviews_xml {
     $reviews{chreview} = $self->fetch_content('chreview.xml', $key);
     $reviews{blreview} = $self->fetch_content('blreview.xml', $key);
     $reviews{hbreview} = $self->fetch_content('hbreview.xml', $key);
-    $reviews{kirkreview} = $self->fetch_content('kirkreview.xml', $key);
+    $reviews{kireview} = $self->fetch_content('kireview.xml', $key);
 
     for(keys %reviews) {
         if( ! $self->data_exists($reviews{$_}) ) {
