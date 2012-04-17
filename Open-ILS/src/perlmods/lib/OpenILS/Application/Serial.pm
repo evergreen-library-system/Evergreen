@@ -344,7 +344,7 @@ sub fleshed_serial_item_retrieve_batch {
         "open-ils.cstore.direct.serial.item.search.atomic",
         { id => $ids },
         { flesh => 2,
-          flesh_fields => {sitem => [ qw/issuance creator editor stream unit notes/ ], sstr => ["distribution"], sunit => ["call_number"], siss => [qw/creator editor subscription/]}
+          flesh_fields => {sitem => [ qw/issuance creator editor stream unit notes/ ], sunit => ["call_number"], siss => [qw/creator editor subscription/]}
         });
 }
 
@@ -2476,7 +2476,7 @@ sub fleshed_serial_distribution_retrieve_batch {
         "open-ils.cstore.direct.serial.distribution.search.atomic",
         { id => $ids },
         { flesh => 1,
-          flesh_fields => {sdist => [ qw/ holding_lib receive_call_number receive_unit_template bind_call_number bind_unit_template streams / ]}
+          flesh_fields => {sdist => [ qw/ holding_lib receive_call_number receive_unit_template bind_call_number bind_unit_template streams notes / ]}
         });
 }
 
