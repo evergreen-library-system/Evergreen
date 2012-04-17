@@ -1730,10 +1730,16 @@
 <!ENTITY staff.serial.manage_dists.actions.cmd_add_sstr.label "Add Stream">
 <!ENTITY staff.serial.manage_dists.actions.cmd_delete_sstr.label "Delete Stream">
 <!ENTITY staff.serial.manage_items.actions.cmd_edit_items.label "Edit Item Attributes">
-<!ENTITY staff.serial.manage_items.actions.cmd_edit_items.access_key "E">
+<!ENTITY staff.serial.manage_items.actions.cmd_edit_items.accesskey "E">
 <!ENTITY staff.serial.manage_items.actions.cmd_delete_items.label "Delete Items">
-<!ENTITY staff.serial.manage_items.actions.cmd_delete_items.access_key "D">
+<!ENTITY staff.serial.manage_items.actions.cmd_delete_items.accesskey "D">
 <!ENTITY staff.serial.manage_items.actions.cmd_reset_items.label "Reset Items to Expected">
+<!ENTITY staff.serial.manage_items.actions.cmd_view_sdist_notes.label "View Dist. Notes">
+<!ENTITY staff.serial.manage_items.actions.cmd_view_sdist_notes.accesskey "T">
+<!ENTITY staff.serial.manage_items.actions.cmd_view_sitem_notes.label "View Item Notes">
+<!ENTITY staff.serial.manage_items.actions.cmd_view_sitem_notes.accesskey "I">
+<!ENTITY staff.serial.manage_items.actions.cmd_view_ssub_notes.label "View Sub. Notes">
+<!ENTITY staff.serial.manage_items.actions.cmd_view_ssub_notes.accesskey "S">
 <!ENTITY staff.serial.manage_items.workarea_showing "Showing: ">
 <!ENTITY staff.serial.manage_items.workarea_current_unit "Current Working Unit: ">
 <!ENTITY staff.serial.manage_items.workarea_recently_received "Recently Received">
