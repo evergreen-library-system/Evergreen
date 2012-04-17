@@ -9,6 +9,7 @@ use Apache2::Const -compile => qw(OK DECLINED HTTP_INTERNAL_SERVER_ERROR);
 use Apache2::Log;
 use OpenSRF::EX qw(:try);
 use OpenILS::Utils::CStoreEditor q/:funcs/;
+use List::MoreUtils qw/uniq/;
 
 use constant OILS_HTTP_COOKIE_SKIN => 'eg_skin';
 use constant OILS_HTTP_COOKIE_THEME => 'eg_theme';
@@ -146,7 +147,7 @@ sub load_context {
     $ctx->{theme} = $cgi->cookie(OILS_HTTP_COOKIE_THEME) || 'default';
     $ctx->{proto} = $cgi->https ? 'https' : 'http';
 
-    my @template_paths = $r->dir_config->get('OILSWebTemplatePath');
+    my @template_paths = uniq $r->dir_config->get('OILSWebTemplatePath');
     $ctx->{template_paths} = [ reverse @template_paths ];
 
     my %locales = $r->dir_config->get('OILSWebLocale');
