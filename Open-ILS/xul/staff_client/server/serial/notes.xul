@@ -58,6 +58,11 @@
 				g.function_type = xul_param('function_type',{'modal_xulG':true});
 				g.constructor = xul_param('constructor',{'modal_xulG':true});
 
+				var window_title = xul_param('title',{'modal_xulG':true});
+				if (window_title) {
+					try { document.title = window_title; } catch(E) {}
+				}
+
 				refresh();
 
 			} catch(E) {

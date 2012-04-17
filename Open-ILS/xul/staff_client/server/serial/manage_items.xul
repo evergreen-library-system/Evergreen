@@ -43,6 +43,9 @@ vim:noet:sw=4:ts=4:
             <menuitem command="cmd_edit_items" label="&staff.serial.manage_items.actions.cmd_edit_items.label;" accesskey="&staff.serial.manage_items.actions.cmd_edit_items.accesskey;"/>
             <menuitem command="cmd_reset_items" label="&staff.serial.manage_items.actions.cmd_reset_items.label;" />
             <menuitem command="cmd_delete_items" label="&staff.serial.manage_items.actions.cmd_delete_items.label;" accesskey="&staff.serial.manage_items.actions.cmd_delete_items.accesskey;"/>
+            <menuitem command="cmd_view_sitem_notes" label="&staff.serial.manage_items.actions.cmd_view_sitem_notes.label;" accesskey="&staff.serial.manage_items.actions.cmd_view_sitem_notes.accesskey;"/>
+            <menuitem command="cmd_view_sdist_notes" label="&staff.serial.manage_items.actions.cmd_view_sdist_notes.label;" accesskey="&staff.serial.manage_items.actions.cmd_view_sdist_notes.accesskey;"/>
+            <menuitem command="cmd_view_ssub_notes" label="&staff.serial.manage_items.actions.cmd_view_ssub_notes.label;" accesskey="&staff.serial.manage_items.actions.cmd_view_ssub_notes.accesskey;"/>
         </popup>
     </popupset>
     <tabpanel id="serial_manage_items" orient="vertical" flex="1">
@@ -67,6 +70,9 @@ vim:noet:sw=4:ts=4:
                         <menuitem command="cmd_edit_items" label="&staff.serial.manage_items.actions.cmd_edit_items.label;" accesskey="&staff.serial.manage_items.actions.cmd_edit_items.accesskey;"/>
                         <menuitem command="cmd_reset_items" label="&staff.serial.manage_items.actions.cmd_reset_items.label;" />
                         <menuitem command="cmd_delete_items" label="&staff.serial.manage_items.actions.cmd_delete_items.label;" accesskey="&staff.serial.manage_items.actions.cmd_delete_items.accesskey;"/>
+                        <menuitem command="cmd_view_sitem_notes" label="&staff.serial.manage_items.actions.cmd_view_sitem_notes.label;" accesskey="&staff.serial.manage_items.actions.cmd_view_sitem_notes.accesskey;"/>
+                        <menuitem command="cmd_view_sdist_notes" label="&staff.serial.manage_items.actions.cmd_view_sdist_notes.label;" accesskey="&staff.serial.manage_items.actions.cmd_view_sdist_notes.accesskey;"/>
+                        <menuitem command="cmd_view_ssub_notes" label="&staff.serial.manage_items.actions.cmd_view_ssub_notes.label;" accesskey="&staff.serial.manage_items.actions.cmd_view_ssub_notes.accesskey;"/>
                         <menuseparator/>
                         <menuitem command="cmd_refresh_list" label="&staff.cat.copy_browser.holdings_maintenance.cmd_refresh_list.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_refresh_list.accesskey;"/>
                         <menuitem command="save_columns" label="&staff.cat.copy_browser.holdings_maintenance.save_columns.label;"/>

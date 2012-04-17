@@ -524,7 +524,36 @@ serial.manage_items.prototype = {
                             }
                         }
                     ],
-
+                    'cmd_view_sitem_notes' : [
+                        ['command'],
+                        function() {
+                            try {
+                                obj.view_notes('sitem');
+                            } catch(E) {
+                                obj.error.standard_unexpected_error_alert('cmd_view_sitem_notes failed!',E);
+                            }
+                        }
+                    ],
+                    'cmd_view_sdist_notes' : [
+                        ['command'],
+                        function() {
+                            try {
+                                obj.view_notes('sdist');
+                            } catch(E) {
+                                obj.error.standard_unexpected_error_alert('cmd_view_sdist_notes failed!',E);
+                            }
+                        }
+                    ],
+                    'cmd_view_ssub_notes' : [
+                        ['command'],
+                        function() {
+                            try {
+                                obj.view_notes('ssub');
+                            } catch(E) {
+                                obj.error.standard_unexpected_error_alert('cmd_view_ssub_notes failed!',E);
+                            }
+                        }
+                    ],
                     'cmd_items_print' : [ ['command'], function() { obj.items_print(obj.selected_list); } ],
 					'cmd_items_export' : [ ['command'], function() { obj.items_export(obj.selected_list); } ],
 					'cmd_refresh_list' : [ ['command'], function() { obj.retrieve_ssubs_and_sdists(); obj.refresh_list('main'); obj.refresh_list('workarea'); } ]
@@ -935,6 +964,66 @@ serial.manage_items.prototype = {
             obj.refresh_list('main');
             obj.refresh_list('workarea');
         }
+    },
+
+    'view_notes' : function(type) {
+        var obj = this;
+
+        if (!obj.retrieve_ids || obj.retrieve_ids.length == 0) return;
+
+        var object_id_fn;
+        var function_type;
+        var object_type;
+        var constructor;
+
+        switch(type) {
+            case 'sitem':
+                object_id_fn = function(item) { return item.id() };
+                title_fn = function(item) { return fieldmapper.IDL.fmclasses.sitem.field_map.id.label + ' ' + item.id() };
+                function_type = 'SIN';
+                object_type = 'item';
+                constructor = sin;
+                break;
+            case 'sdist':
+                object_id_fn = function(item) { return item.stream().distribution() };
+                title_fn = function(item) {
+                    var sdist_id = object_id_fn(item);
+                    return obj.sdist_map[sdist_id].label()
+                        + ' -- ' + obj.sdist_map[sdist_id].holding_lib().shortname()
+                        + ' (' + fieldmapper.IDL.fmclasses.sdist.field_map.id.label + ' ' + sdist_id + ')'
+                };
+                function_type = 'SDISTN';
+                object_type = 'distribution';
+                constructor = sdistn;
+                break;
+            case 'ssub':
+                object_id_fn = function(item) { return item.issuance().subscription().id() };
+                title_fn = function(item) {
+                    var ssub_id = object_id_fn(item);
+                    return obj.ssub_map[ssub_id].owning_lib().shortname()
+                        + ' (' + fieldmapper.IDL.fmclasses.ssub.field_map.id.label + ' ' + ssub_id + ')'
+                };
+                function_type = 'SSUBN';
+                object_type = 'subscription';
+                constructor = ssubn;
+                break;
+            default:
+                return;
+        }
+
+        var seen_ids = {};
+        for (var i = 0; i < obj.retrieve_ids.length; i++) {
+            var item = obj.list_sitem_map[obj.retrieve_ids[i].sitem_id];
+            var obj_id = object_id_fn(item);
+            if (seen_ids[obj_id]) continue;
+            JSAN.use('util.window'); var win = new util.window();
+            win.open(
+                urls.XUL_SERIAL_NOTES,
+                '','chrome,resizable,modal',
+                { 'object_id' : obj_id, 'function_type' : function_type, 'object_type' : object_type, 'constructor' : constructor, 'title' : $('serialStrings').getString('staff.serial.'+type+'_editor.notes') + ' -- ' + title_fn(item) }
+            );
+            seen_ids[obj_id] = 1;
+        }
     }
 }
 
@@ -1018,11 +1107,11 @@ function item_columns(modify,params) {
         },
         {
             'id' : 'notes',
-            'label' : 'Notes',
+            'label' : $('serialStrings').getString('staff.serial.manage_items.notes_column.label'),
             'flex' : 1,
             'primary' : false,
             'hidden' : false,
-            'render' : function(my) { return my.sitem.notes().length; },
+            'render' : function(my) { return my.sitem.notes().length + ' / ' + my.parent_obj.sdist_map[my.sitem.stream().distribution()].notes().length + ' / ' + my.parent_obj.ssub_map[my.sitem.issuance().subscription().id()].notes().length; },
             'persist' : 'hidden width ordinal'
         },
         {
