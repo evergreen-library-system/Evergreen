@@ -73,6 +73,11 @@ sub init_ro_object_cache {
             my ($field, $val, $filterfield, $filterval) = @_;
             my $method = "search_$eclass";
             my $cacheval = $val;
+            if (ref $val) {
+                $val = [sort(@$val)] if ref $val eq 'ARRAY';
+                $cacheval = OpenSRF::Utils::JSON->perl2JSON($val); 
+                #$self->apache->log->info("cacheval : $cacheval");
+            }
             my $search_obj = {$field => $val};
             if($filterfield) {
                 $search_obj->{$filterfield} = $filterval;
