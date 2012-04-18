@@ -63,6 +63,14 @@ sub filters {
     return $parser_config{$class}{filters};
 }
 
+sub filter_callbacks {
+    my $class = shift;
+    $class = ref($class) || $class;
+
+    $parser_config{$class}{filter_callbacks} ||= {};
+    return $parser_config{$class}{filter_callbacks};
+}
+
 sub modifiers {
     my $class = shift;
     $class = ref($class) || $class;
@@ -100,9 +108,11 @@ sub add_search_filter {
     my $pkg = shift;
     $pkg = ref($pkg) || $pkg;
     my $filter = shift;
+    my $callback = shift;
 
     return $filter if (grep { $_ eq $filter } @{$pkg->filters});
     push @{$pkg->filters}, $filter;
+    $pkg->filter_callbacks->{$filter} = $callback if ($callback);
     return $filter;
 }
 
@@ -568,7 +578,17 @@ sub decompose {
 
             my $negate = ($1 eq $pkg->operator('disallowed')) ? 1 : 0;
             $_ = $';
-            $struct->new_filter( $2 => [ split '[,]+', $3 ], $negate );
+
+            my $filter = $2;
+            my $params = [ split '[,]+', $3 ];
+
+            if ($pkg->filter_callbacks->{$filter}) {
+                my $replacement = $pkg->filter_callbacks->{$filter}->($self, $struct, $filter, $params, $negate);
+                $_ = "$replacement $_" if ($replacement);
+            } else {
+                $struct->new_filter( $filter => $params, $negate );
+            }
+
 
             $last_type = '';
         } elsif ($self->filter_count && /$filter_as_class_re/) { # found a filter
@@ -576,7 +596,16 @@ sub decompose {
 
             my $negate = ($1 eq $pkg->operator('disallowed')) ? 1 : 0;
             $_ = $';
-            $struct->new_filter( $2 => [ split '[,]+', $3 ], $negate );
+
+            my $filter = $2;
+            my $params = [ split '[,]+', $3 ];
+
+            if ($pkg->filter_callbacks->{$filter}) {
+                my $replacement = $pkg->filter_callbacks->{$filter}->($self, $struct, $filter, $params, $negate);
+                $_ = "$replacement $_" if ($replacement);
+            } else {
+                $struct->new_filter( $filter => $params, $negate );
+            }
 
             $last_type = '';
         } elsif ($self->modifier_count && /$modifier_re/) { # found a modifier
