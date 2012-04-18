@@ -6,9 +6,24 @@ use OpenILS::Application::Storage::QueryParser;
 use base 'QueryParser';
 use OpenSRF::Utils::JSON;
 use OpenILS::Application::AppUtils;
+use OpenILS::Utils::CStoreEditor;
 my $U = 'OpenILS::Application::AppUtils';
 
 my ${spc} = ' ' x 2;
+sub subquery_callback {
+    my ($invocant, $self, $struct, $filter, $params, $negate) = @_;
+
+    return join(
+        ' ',
+        map {
+            $_->query_text
+        } @{
+            OpenILS::Utils::CStoreEditor
+                ->new
+                ->search_actor_search_query({ id => $params })
+        }
+    );
+}
 
 sub quote_value {
     my $self = shift;
@@ -411,6 +426,9 @@ sub TEST_SETUP {
 }
 
 __PACKAGE__->default_search_class( 'keyword' );
+
+# implements EG-specific stored subqueries
+__PACKAGE__->add_search_filter( 'saved_query', sub { return __PACKAGE__->subquery_callback(@_) } );
 
 # will be retained simply for back-compat
 __PACKAGE__->add_search_filter( 'format' );
