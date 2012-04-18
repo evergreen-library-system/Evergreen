@@ -23,12 +23,14 @@
     </div>
 
     <div id="rdetail_actions_div">
+[% IF ctx.place_unfillable || attrs.marc_xml.findnodes('//*[local-name()="holdings" and @has_holdable="true"]').size > 0 %]
         <div class="rdetail_aux_utils place_hold">
             <a href="[% mkurl(ctx.opac_root _ '/place_hold', 
                 {hold_target => ctx.bre_id, hold_type => 'T', hold_source_page => mkurl()}, stop_parms) %]" 
             class="no-dec"><img src="[% ctx.media_prefix %]/images/green_check.png" alt="[% l('place hold') %]" /><span 
             class="place_hold">[% l('Place Hold') %]</span></a>
         </div>
+[%  END %]
         <div class="rdetail_aux_utils toggle_list">
         [%  IF ctx.user;
             INCLUDE "opac/parts/bookbag_actions.tt2";

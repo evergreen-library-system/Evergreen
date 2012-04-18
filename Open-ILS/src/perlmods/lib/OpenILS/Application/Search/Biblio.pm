@@ -276,6 +276,51 @@ sub record_id_to_copy_count {
     return [ sort { $a->{depth} <=> $b->{depth} } @count ];
 }
 
+__PACKAGE__->register_method(
+    method   => "record_has_holdable_copy",
+    api_name => "open-ils.search.biblio.record.has_holdable_copy",
+    signature => {
+        desc => q/Returns a boolean indicating if a record has any holdable copies./,
+        params => [
+            {desc => 'Record ID', type => 'number'}
+        ],
+        return => {
+            desc => q/bool indicating if the record has any holdable copies/,
+            type => 'bool'
+        }
+    }
+);
+
+__PACKAGE__->register_method(
+    method   => "record_has_holdable_copy",
+    api_name => "open-ils.search.biblio.metarecord.has_holdable_copy",
+    signature => {
+        desc => q/Returns a boolean indicating if a record has any holdable copies./,
+        params => [
+            {desc => 'Record ID', type => 'number'}
+        ],
+        return => {
+            desc => q/bool indicating if the record has any holdable copies/,
+            type => 'bool'
+        }
+    }
+);
+
+sub record_has_holdable_copy {
+    my($self, $client, $record_id ) = @_;
+
+    return 0 unless $record_id;
+
+    my $key = $self->api_name =~ /metarecord/ ? 'metarecord' : 'record';
+
+    my $data = $U->cstorereq(
+        "open-ils.cstore.json_query.atomic",
+        { from => ['asset.' . $key . '_has_holdable_copy' => $record_id ] }
+    );
+
+    return ${@$data[0]}{'asset.' . $key . '_has_holdable_copy'} eq 't';
+
+}
 
 __PACKAGE__->register_method(
     method   => "biblio_search_tcn",

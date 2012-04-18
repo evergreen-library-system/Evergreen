@@ -216,6 +216,7 @@
                                             <td nowrap='nowrap' width="1" align="right">
                                                 <div class="result_table_utils_cont">
                                                     <div class="result_table_utils">
+[% IF ctx.place_unfillable || attrs.marc_xml.findnodes('//*[local-name()="holdings" and @has_holdable="true"]').size > 0 %]
                                                         <div class="results_aux_utils place_hold"><a
                                                                 href="[% mkurl(ctx.opac_root _ '/place_hold', 
                                                                     {hold_target => rec.id, hold_type => 'T', hold_source_page => mkurl()}) %]" 
@@ -223,6 +224,7 @@
                                                                 src="[% ctx.media_prefix %]/images/green_check.png"
                                                                 alt=""/><span class="result_place_hold">[% l('Place Hold') %]</span></a>
                                                         </div>
+[% END %]
                                                         <div class="results_aux_utils result_util">
                                                             [%  IF ctx.user;
                                                                 INCLUDE "opac/parts/bookbag_actions.tt2";

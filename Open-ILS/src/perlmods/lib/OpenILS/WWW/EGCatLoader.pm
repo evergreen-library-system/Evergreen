@@ -262,6 +262,7 @@ sub load_common {
             $ctx->{authtoken} = $e->authtoken;
             $ctx->{authtime} = $e->authtime;
             $ctx->{user} = $e->requestor;
+            $ctx->{place_unfillable} = 1 if $e->requestor->wsid && $e->allowed('PLACE_UNFILLABLE_HOLD', $e->requestor->ws_ou);
 
             $ctx->{user_stats} = $U->simplereq(
                 'open-ils.actor', 
