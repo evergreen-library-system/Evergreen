@@ -132,7 +132,7 @@ if (!dojo._hasResource["openils.AutoSuggestStore"]) {
             term = term.replace(/\*$/, "");
 
             var params = [
-                "query=" + encodeURI(term),
+                "query=" + encodeURIComponent(term),
                 "search_class=" + this.type_selector.value,
                 "limit=" + limit
             ];
