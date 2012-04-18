@@ -1152,7 +1152,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             <field reporter:label="Circulation Modifier" name="circ_modifier" oils_persist:primitive="string" reporter:datatype="float"/>
             <field reporter:label="MARC Type" name="marc_type" oils_persist:primitive="string" reporter:datatype="float"/>
             <field reporter:label="MARC Form" name="marc_form" oils_persist:primitive="string" reporter:datatype="float"/>
+            <field reporter:label="MARC Bib Level" name="marc_bib_level" oils_persist:primitive="string" reporter:datatype="float"/>
             <field reporter:label="Videorecording Format" name="marc_vr_format" oils_persist:primitive="string" reporter:datatype="float"/>
+            <field reporter:label="Juvenile?" name="juvenile_flag" oils_persist:primitive="string" reporter:datatype="float"/>
             <field reporter:label="Reference?" name="ref_flag" reporter:datatype="float"/>
         </fields>
         <links/>
@@ -1170,6 +1172,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <fields oils_persist:primary="id" oils_persist:sequence="config.circ_matrix_weights_id_seq">
             <field reporter:label="Circ Weights ID" name="id" reporter:datatype="id" reporter:selector="name"/>
             <field reporter:label="Name" name="name" reporter:datatype="text"/>
+            <field reporter:label="Renewal?" name="is_renewal" reporter:datatype="float"/>
             <field reporter:label="Org Unit" name="org_unit" reporter:datatype="float"/>
             <field reporter:label="Copy Circ Lib" name="copy_circ_lib" reporter:datatype="float"/>
             <field reporter:label="Copy Owning Lib" name="copy_owning_lib" reporter:datatype="float"/>
@@ -1178,8 +1181,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             <field reporter:label="Circulation Modifier" name="circ_modifier" reporter:datatype="float"/>
             <field reporter:label="MARC Type" name="marc_type" reporter:datatype="float"/>
             <field reporter:label="MARC Form" name="marc_form" reporter:datatype="float"/>
+            <field reporter:label="MARC Bib Level" name="marc_bib_level" reporter:datatype="float"/>
             <field reporter:label="Videorecording Format" name="marc_vr_format" reporter:datatype="float"/>
             <field reporter:label="Reference?" name="ref_flag" reporter:datatype="float"/>
+            <field reporter:label="Juvenile?" name="juvenile_flag" reporter:datatype="float"/>
             <field reporter:label="User Age: Lower Bound" name="usr_age_lower_bound" reporter:datatype="float"/>
             <field reporter:label="User Age: Upper Bound" name="usr_age_upper_bound" reporter:datatype="float"/>
         </fields>
