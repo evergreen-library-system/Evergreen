@@ -25,6 +25,23 @@ sub subquery_callback {
     );
 }
 
+sub filter_group_entry_callback {
+    my ($invocant, $self, $struct, $filter, $params, $negate) = @_;
+
+    return sprintf(' saved_query(%s)', 
+        join(
+            ',', 
+            map {
+                $_->query
+            } @{
+                OpenILS::Utils::CStoreEditor
+                    ->new
+                    ->search_actor_search_filter_group_entry({ id => $params })
+            }
+        )
+    );
+}
+
 sub quote_value {
     my $self = shift;
     my $value = shift;
@@ -429,6 +446,7 @@ __PACKAGE__->default_search_class( 'keyword' );
 
 # implements EG-specific stored subqueries
 __PACKAGE__->add_search_filter( 'saved_query', sub { return __PACKAGE__->subquery_callback(@_) } );
+__PACKAGE__->add_search_filter( 'filter_group_entry', sub { return __PACKAGE__->filter_group_entry_callback(@_) } );
 
 # will be retained simply for back-compat
 __PACKAGE__->add_search_filter( 'format' );
