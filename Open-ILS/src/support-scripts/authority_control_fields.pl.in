@@ -33,6 +33,7 @@ use Pod::Usage qw/ pod2usage /;
 MARC::Charset->assume_unicode(1);
 
 my ($start_id, $end_id);
+my ($days_back);
 my $bootstrap = '@sysconfdir@/opensrf_core.xml';
 my @records;
 
@@ -44,10 +45,16 @@ my $result = GetOptions(
     'all', 'help',
     'start_id=i' => \$start_id,
     'end_id=i' => \$end_id,
+    'days_back=i' => \$days_back,
 );
 
 if (!$result or $options{help}) {
     pod2usage(0);
+}
+
+if ($start_id && $days_back) {
+    print "Can't use both start ID and days back!\n";
+    exit;
 }
 
 OpenSRF::System->bootstrap_client(config_file => $bootstrap);
@@ -72,6 +79,39 @@ if ($options{all}) {
 if ($start_id and $end_id) {
     @records = ($start_id .. $end_id);
 }
+
+if (defined $days_back) { 
+@records=();
+
+# Grab DB information from local settings
+my $sc = OpenSRF::Utils::SettingsClient->new;
+my $db_driver = $sc->config_value( reporter => setup => database => 'driver' );
+my $db_host = $sc->config_value( reporter => setup => database => 'host' );
+my $db_port = $sc->config_value( reporter => setup => database => 'port' );
+my $db_name = $sc->config_value( reporter => setup => database => 'db' );
+if (!$db_name) {
+    $db_name = $sc->config_value( reporter => setup => database => 'name' );
+    print STDERR "WARN: <database><name> is a deprecated setting for database name. For future compatibility, you should use <database><db> instead." if $db_name;
+}
+my $db_user = $sc->config_value( reporter => setup => database => 'user' );
+my $db_pw = $sc->config_value( reporter => setup => database => 'pw' );
+
+die "Unable to retrieve database connection information from the settings server" unless ($db_driver && $db_host && $db_port && $db_name && $db_user);
+
+my $dsn = "dbi:" . $db_driver . ":dbname=" . $db_name .';host=' . $db_host . ';port=' . $db_port;
+my $dbh = DBI->connect($dsn,$db_user,$db_pw, {AutoCommit => 1, pg_enable_utf8 => 1, RaiseError => 1}) or die "database connection error";
+
+# SQL Used to gather a list of ID's
+my $idstatement = $dbh->prepare("SELECT DISTINCT(id) AS id FROM biblio.record_entry where (date(create_date) = date(now()) or date(edit_date) = date((NOW() - '$days_back day'::interval)))");
+
+# Load the list of ID's into the records array
+$idstatement->execute();
+    while (my $ref = $idstatement->fetchrow_hashref()) {
+        my $id_ref = $ref->{"id"};   # the column name in our sql query is "id"
+        push(@records, $id_ref);
+    }
+}
+
 # print Dumper($undeleted, \@records);
 
 # Hash of controlled fields & subfields in bibliographic records, and their
