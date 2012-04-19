@@ -4664,7 +4664,7 @@ SELECT  usr,
 			<field reporter:label="Copy Status" name="status" reporter:datatype="link"/>
 			<field reporter:label="Copy Status Changed Time" name="status_changed_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Is Mint Condition" name="mint_condition" reporter:datatype="bool"/>
-			<field reporter:label="Is Floating" name="floating" reporter:datatype="bool"/>
+			<field reporter:label="Floating Group" name="floating" reporter:datatype="link"/>
 			<field reporter:label="Cost" name="cost" reporter:datatype="money"/>
 			<field reporter:label="Sort Key" name="sort_key" reporter:datatype="text"/>
 			<field reporter:label="Summary Contents" name="summary_contents" reporter:datatype="text"/>
@@ -4691,6 +4691,7 @@ SELECT  usr,
 			<link field="circulations" reltype="has_many" key="target_copy" map="" class="circ"/>
 			<link field="total_circ_count" reltype="might_have" key="id" map="" class="erfcc"/>
 			<link field="circ_modifier" reltype="has_a" key="code" map="" class="ccm"/>
+			<link field="floating" reltype="has_a" key="id" map="" class="cfg"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
@@ -6244,7 +6245,7 @@ SELECT  usr,
 			<field reporter:label="Copy Status" name="status" reporter:datatype="link"/>
 			<field reporter:label="Copy Status Changed Time" name="status_changed_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Is Mint Condition" name="mint_condition" reporter:datatype="bool"/>
-			<field reporter:label="Is Floating" name="floating" reporter:datatype="bool"/>
+			<field reporter:label="Floating Group" name="floating" reporter:datatype="link"/>
 			<field reporter:label="Cost" name="cost" reporter:datatype="money"/>
 			<field reporter:label="Copy Notes" name="notes" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Stat-Cat entry maps" name="stat_cat_entry_copy_maps" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -6278,6 +6279,7 @@ SELECT  usr,
 			<link field="peer_record_maps" reltype="has_many" key="target_copy" map="" class="bpbcm"/>
 			<link field="peer_records" reltype="has_many" key="target_copy" map="peer_record" class="bpbcm"/>
 			<link field="last_captured_hold" reltype="has_a" key="current_copy" map="" class="alhr"/>
+			<link field="floating" reltype="has_a" key="id" map="" class="cfg"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -6320,7 +6322,7 @@ SELECT  usr,
 			<field reporter:label="Circ As Type" name="circ_as_type" reporter:datatype="text"/>
 			<field reporter:label="Alert Message" name="alert_message" reporter:datatype="text"/>
 			<field reporter:label="OPAC Visible?" name="opac_visible" reporter:datatype="bool"/>
-			<field reporter:label="Floating?" name="floating" reporter:datatype="bool"/>
+			<field reporter:label="Floating Group" name="floating" reporter:datatype="link"/>
 			<field reporter:label="Mint Condition?" name="mint_condition" reporter:datatype="bool"/>
 		</fields>
 		<links>
@@ -6331,6 +6333,7 @@ SELECT  usr,
 			<link field="status" reltype="has_a" key="id" map="" class="ccs"/>
 			<link field="circ_modifier" reltype="has_a" key="code" map="" class="ccm"/>
 			<link field="location" reltype="has_a" key="id" map="" class="acpl"/>
+			<link field="floating" reltype="has_a" key="id" map="" class="cfg"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
@@ -10844,7 +10847,47 @@ SELECT  usr,
 			<link field="stat_cat" reltype="has_a" key="id" map="" class="asc"/>
 		</links>
 	</class>
-
+	<class id="cfg" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::floating_group" oils_persist:tablename="config.floating_group" reporter:label="Floating Group">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.floating_group_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Name" name="name" reporter:datatype="text"/>
+			<field reporter:label="Manual" name="manual" reporter:datatype="bool"/>
+			<field reporter:label="Group Members" name="members" oils_persist:virtual="true" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="members" reltype="has_many" key="floating_group" class="cfgm"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_FLOAT_GROUPS" global_required="true"/>
+				<retrieve/>
+				<update permission="ADMIN_FLOAT_GROUPS" global_required="true"/>
+				<delete permission="ADMIN_FLOAT_GROUPS" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+	<class id="cfgm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::floating_group_member" oils_persist:tablename="config.floating_group_member" reporter:label="Floating Group Members">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.floating_group_member_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Floating Group" name="floating_group" reporter:datatype="link"/>
+			<field reporter:label="Org Unit" name="org_unit" reporter:datatype="link"/>
+			<field reporter:label="Stop Depth" name="stop_depth" reporter:datatype="int"/>
+			<field reporter:label="Max Depth" name="max_depth" reporter:datatype="int"/>
+			<field reporter:label="Exclude" name="exclude" reporter:datatype="bool"/>
+		</fields>
+		<links>
+			<link field="floating_group" reltype="has_a" key="id" class="cfg"/>
+			<link field="org_unit" reltype="has_a" key="id" class="aou"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_FLOAT_GROUPS" global_required="true"/>
+				<retrieve/>
+				<update permission="ADMIN_FLOAT_GROUPS" global_required="true"/>
+				<delete permission="ADMIN_FLOAT_GROUPS" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
 
 	<!-- ********************************************************************************************************************* -->
 

@@ -817,6 +817,7 @@
 <!ENTITY staff.main.menu.admin.server_admin.conify.config.remote_account "Remote Accounts">
 <!ENTITY staff.main.menu.admin.server_admin.conify.global_flag.label "Global Flags">
 <!ENTITY staff.main.menu.admin.server_admin.conify.circulation_limit_group.label "Circulation Limit Groups">
+<!ENTITY staff.main.menu.admin.server_admin.conify.floating_groups.label "Floating Groups">
 
 <!ENTITY staff.main.menu.admin.server_admin.acq.label "Acquisitions">
 <!ENTITY staff.main.menu.admin.server_admin.acq.accesskey "A">
@@ -2489,6 +2490,8 @@
 <!ENTITY staff.circ.checkin_overlay.checkin_auto_retarget_all_ind.label "Always Retarget Local Holds">
 <!ENTITY staff.circ.checkin_overlay.checkin_local_hold_as_transit.label "Capture Local Holds as Transits">
 <!ENTITY staff.circ.checkin_overlay.checkin_local_hold_as_transit.accesskey "L">
+<!ENTITY staff.circ.checkin_overlay.checkin_manual_float.label "Manual Floating Active">
+<!ENTITY staff.circ.checkin_overlay.checkin_manual_float.accesskey "F">
 <!ENTITY staff.circ.renew_overlay.background_text "Renew Item">
 <!ENTITY staff.circ.renew_overlay.sel_clip.label "Copy to Clipboard">
 <!ENTITY staff.circ.renew_overlay.sel_clip.accesskey "C">

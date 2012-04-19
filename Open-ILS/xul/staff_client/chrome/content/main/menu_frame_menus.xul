@@ -334,6 +334,9 @@
     <command id="cmd_server_admin_vandelay_import_bib_trash_group"
              perm="CREATE_IMPORT_TRASH_FIELD UPDATE_IMPORT_TRASH_FIELD DELETE_IMPORT_TRASH_FIELD"
              />
+    <command id="cmd_server_admin_floating_groups"
+             perm="ADMIN_FLOAT_GROUPS"
+             />
 
     <command id="cmd_hotkeys_toggle" />
     <command id="cmd_hotkeys_set" />
@@ -634,6 +637,7 @@
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.z3950_index_field_map.label;" command="cmd_server_admin_z39_index_field_map"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.circulation_modifier.label;" command="cmd_server_admin_circ_mod"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.circulation_limit_group.label;" command="cmd_server_admin_circ_limit_group"/>
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.floating_groups.label;" command="cmd_server_admin_floating_groups"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.global_flag.label;" command="cmd_server_admin_global_flag"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.import_match_set;" command="cmd_server_admin_import_match_set"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.org_unit_setting_type;" command="cmd_server_admin_org_unit_setting_type"/>

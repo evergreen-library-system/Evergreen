@@ -202,7 +202,7 @@ function load_item() {
                 set("circ_modifier","");
             }
             set("circulate", get_localized_bool( details.copy.circulate() )); 
-            set("floating", get_localized_bool( details.copy.floating() )); 
+            set("floating", (details.copy.floating() && typeof details.copy.floating() == 'object' ? details.copy.floating().name() : get_localized_bool( details.copy.floating() ))); 
             set("copy_number", details.copy.copy_number()); 
             set("copy_create_date", util.date.formatted_date( details.copy.create_date(), '%{localized}' )); 
             set("copy_active_date", util.date.formatted_date( details.copy.active_date(), '%{localized}' ));

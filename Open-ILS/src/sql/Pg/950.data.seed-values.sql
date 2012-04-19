@@ -1609,9 +1609,10 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 550, 'SET_CIRC_LONG_OVERDUE', oils_i18n_gettext(550,
         'Allows the user to mark a circulation as long-overdue', 'ppl', 'code')),
  ( 551, 'ADMIN_SERVER_ADDON_FOR_WORKSTATION', oils_i18n_gettext( 551,
-        'Allows a user to specify which Server Add-ons get invoked at the current workstation', 'ppl', 'description'))
+        'Allows a user to specify which Server Add-ons get invoked at the current workstation', 'ppl', 'description')),
+ ( 552, 'ADMIN_FLOAT_GROUPS', oils_i18n_gettext( 552,
+    'Allows administration of floating groups', 'ppl', 'description' ))
 ;
-
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
 
@@ -13513,3 +13514,5 @@ VALUES (
     )
 );
 
+INSERT INTO config.floating_group(name) VALUES ('Everywhere');
+INSERT INTO config.floating_group_member(floating_group, org_unit) VALUES (1, 1);

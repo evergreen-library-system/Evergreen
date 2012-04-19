@@ -970,10 +970,14 @@ circ.util.columns = function(modify,params) {
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) {
-                if (get_bool( my.acp.floating() )) {
-                    return document.getElementById('circStrings').getString('staff.circ.utils.yes');
+                if (my.acp.floating() && typeof my.acp.floating() == 'object') {
+                    return my.acp.floating().name();
                 } else {
-                    return document.getElementById('circStrings').getString('staff.circ.utils.no');
+                    if (get_bool( my.acp.floating() )) {
+                        return document.getElementById('circStrings').getString('staff.circ.utils.yes');
+                    } else {
+                        return document.getElementById('circStrings').getString('staff.circ.utils.no');
+                    }
                 }
             },
             'persist' : 'hidden width ordinal'

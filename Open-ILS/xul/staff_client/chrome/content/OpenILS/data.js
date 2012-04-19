@@ -667,6 +667,27 @@ OpenILS.data.prototype = {
         this.chain.push(
             function() {
                 var f = gen_fm_retrieval_func(
+                    'cfg',
+                    [
+                        api.FM_CFG_RETRIEVE_VIA_PCRUD.app,
+                        api.FM_CFG_RETRIEVE_VIA_PCRUD.method,
+                        [ obj.session.key, {"id":{"!=":null}}, {"order_by":{"cfg":"id"}} ],
+                        false
+                    ]
+                );
+                try {
+                    f();
+                } catch(E) {
+                    var error = 'Error: ' + js2JSON(E);
+                    obj.error.sdump('D_ERROR',error);
+                    throw(E);
+                }
+            }
+        );
+
+        this.chain.push(
+            function() {
+                var f = gen_fm_retrieval_func(
                     'csp',
                     [
                         api.FM_CSP_PCRUD_SEARCH.app,

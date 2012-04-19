@@ -808,6 +808,10 @@ main.menu.prototype = {
                 ['oncommand'],
                 function(event) { open_eg_web_page('conify/global/actor/org_unit_custom_tree', null, event); }
             ],
+            'cmd_server_admin_floating_groups' : [
+                ['oncommand'],
+                function(event) { open_eg_web_page('conify/global/config/floating_groups', 'menu.cmd_server_admin_floating_groups.tab', event); }
+            ],
             'cmd_local_admin_external_text_editor' : [
                 ['oncommand'],
                 function() {

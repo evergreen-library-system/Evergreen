@@ -1070,8 +1070,8 @@ g.panes_and_field_names = {
     [
         $('catStrings').getString('staff.cat.copy_editor.field.floating.label'),
         { 
-            render: 'fm.floating() == null ? $("catStrings").getString("staff.cat.copy_editor.field.unset_or_null") : ( get_bool( fm.floating() ) ? $("catStrings").getString("staff.cat.copy_editor.field.floating.yes_or_true") : $("catStrings").getString("staff.cat.copy_editor.field.floating.no_or_false") )',
-            input: 'c = function(v){ g.apply("floating",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ $("catStrings").getString("staff.cat.copy_editor.field.floating.yes_or_true"), get_db_true() ], [ $("catStrings").getString("staff.cat.copy_editor.field.floating.no_or_false"), get_db_false() ] ] ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+            render: 'fm.floating() == null ? $("catStrings").getString("staff.cat.copy_editor.field.unset_or_null") : ( typeof fm.floating() == "object" ? fm.floating().name() : g.data.hash.cfg[ fm.floating() ].name() )',
+            input: 'c = function(v){ g.apply("floating",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ $("catStrings").getString("staff.cat.copy_editor.remove_floating"), "<HACK:KLUDGE:NULL>" ] ].concat( util.functional.map_list( g.data.list.cfg, function(obj) { return [ obj.name(), obj.id() ]; }).sort() ) ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
         }
     ],
     [

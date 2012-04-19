@@ -1,0 +1,59 @@
+[% ctx.page_title = 'Floating Groups Configuration' %]
+[% WRAPPER base.tt2 %]
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/config/floating_groups.js'> </script>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+    <div>Floating Groups Configuration</div>
+    <div><button dojoType='dijit.form.Button' onClick='cfgGrid.showCreatePane()'>New</button></div>
+</div>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <table  jsId="cfgGrid"
+            style="height: 600px;"
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['id', 'name', 'manual']"
+            defaultCellWidth='"auto"'
+            query="{id: '*'}"
+            fmClass='cfg'
+            editStyle='pane'
+            editOnEnter='true'
+            showColumnPicker='false'
+            columnPersistKey='"conify.config.floating_groups"'>
+    </table>
+</div>
+
+<div class='hidden'>
+    <div id='group-member-editor' style='border:1px solid #aaa'>
+        <h3>Linked Group Members</h3>
+        <table class='oils-generic-table'>
+            <thead>
+                <tr>
+                    <th>Org Unit</th>
+                    <th>Stop Depth</th>
+                    <th>Max Depth</th>
+                    <th>Exclude</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody name='group-member-entry-tbody'>
+                <tr name='group-member-entry-row'>
+                    <td name='org-unit'></td>
+                    <td><input type="text" name="group-member-stop-depth" value="0" /></td>
+                    <td><input type="text" name="group-member-max-depth" /></td>
+                    <td><input type="checkbox" name="group-member-exclude"/></td>
+                    <td><a name='remove-group-member' href='javascript:void(0);'>Remove</a></td>
+                </tr>
+            </tbody>
+            <tfoot name='group-member-entry-new'>
+                <tr>
+                    <td><div name='org-unit-selector'></div></td>
+                    <td colspan="4"><a href='javascript:void(0);' name='add-group-member'>Add</a></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+
+<div class='hidden'><div dojoType='openils.widget.ProgressDialog' jsId='progressDialog'></div></div>
+
+[% END %]
+

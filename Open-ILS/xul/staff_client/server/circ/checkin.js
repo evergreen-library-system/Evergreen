@@ -469,6 +469,18 @@ circ.checkin.prototype = {
                         document.getElementById('checkin_barcode_entry_textbox').focus();
                         return true;
 
+                    } ],
+                    'cmd_checkin_manual_float' : [ ['command'], function(ev) {
+                        dump('in cmd_checkin_manual_float\n');
+                        var bg = document.getElementById('background');
+                        var cb = document.getElementById('checkin_manual_float');
+                        var ind = document.getElementById('checkin_manual_float_indicator');
+                        var cn = 'checkin_screen_checkin_manual_float';
+                        if (cb.getAttribute('checked') == 'true') { addCSSClass(bg,cn); } else { removeCSSClass(bg,cn); }
+                        ind.hidden = cb.getAttribute('checked') != 'true'; 
+                        document.getElementById('checkin_barcode_entry_textbox').focus();
+                        return true;
+
                     } ]
                 }
             }
@@ -646,6 +658,9 @@ circ.checkin.prototype = {
             var hold_as_transit = document.getElementById('checkin_local_hold_as_transit');
             if (hold_as_transit) hold_as_transit = hold_as_transit.getAttribute('checked') == 'true';
             if (hold_as_transit) params.hold_as_transit = 1;
+            var manual_float = document.getElementById('checkin_manual_float');
+            if (manual_float) manual_float = manual_float.getAttribute('checked') == 'true';
+            if (manual_float) params.manual_float = 1;
             circ.util.checkin_via_barcode(
                 ses(), 
                 params,

@@ -150,4 +150,8 @@ ALTER TABLE config.filter_dialog_filter_set
 ALTER TABLE config.filter_dialog_filter_set
     ADD CONSTRAINT config_filter_dialog_filter_set_filters_check
     CHECK (evergreen.is_json(filters));
+
+ALTER TABLE asset.copy ADD CONSTRAINT asset_copy_floating_fkey FOREIGN KEY (floating) REFERENCES config.floating_group (id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE asset.copy_template ADD CONSTRAINT asset_copy_template_floating_fkey FOREIGN KEY (floating) REFERENCES config.floating_group (id) DEFERRABLE INITIALLY DEFERRED;
+
 COMMIT;

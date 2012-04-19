@@ -965,7 +965,7 @@ sub copy_details {
             {
                 flesh => 2,
                 flesh_fields => {
-                    acp => ['call_number','parts','peer_record_maps'],
+                    acp => ['call_number','parts','peer_record_maps','floating'],
                     acn => ['record','prefix','suffix','label_class']
                 }
             }

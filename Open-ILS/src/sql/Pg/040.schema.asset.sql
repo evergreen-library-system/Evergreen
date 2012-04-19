@@ -96,7 +96,7 @@ CREATE TABLE asset.copy (
 	alert_message	TEXT,
 	opac_visible	BOOL				NOT NULL DEFAULT TRUE,
 	deleted		BOOL				NOT NULL DEFAULT FALSE,
-	floating		BOOL				NOT NULL DEFAULT FALSE,
+	floating        INT,
 	dummy_isbn      TEXT,
 	status_changed_time TIMESTAMP WITH TIME ZONE,
 	active_date TIMESTAMP WITH TIME ZONE,
@@ -506,7 +506,7 @@ CREATE TABLE asset.copy_template (
 	circ_as_type   TEXT,
 	alert_message  TEXT,
 	opac_visible   BOOL,
-	floating       BOOL,
+	floating       INT,
 	mint_condition BOOL
 );
 

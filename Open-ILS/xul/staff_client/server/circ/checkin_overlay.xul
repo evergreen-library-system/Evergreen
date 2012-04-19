@@ -39,6 +39,7 @@
     <command id="cmd_checkin_clear_shelf_expired" />
     <command id="cmd_checkin_auto_retarget" />
     <command id="cmd_checkin_local_hold_as_transit" />
+    <command id="cmd_checkin_manual_float" />
 </commandset>
 
 
@@ -83,6 +84,7 @@
                 <description id="checkin_auto_retarget_indicator" hidden="true">&staff.circ.checkin_overlay.checkin_auto_retarget.label;</description>
                 <description id="checkin_auto_retarget_all_indicator" hidden="true">&staff.circ.checkin_overlay.checkin_auto_retarget_all_ind.label;</description>
                 <description id="checkin_local_hold_as_transit_indicator" hidden="true">&staff.circ.checkin_overlay.checkin_local_hold_as_transit.label;</description>
+                <description id="checkin_manual_float_indicator" hidden="true">&staff.circ.checkin_overlay.checkin_manual_float.label;</description>
             </vbox>
         </vbox>
         <spacer flex="1"/>
@@ -191,6 +193,8 @@
                 label="&staff.circ.checkin_overlay.checkin_auto_retarget_all.label;" accesskey="&staff.circ.checkin_overlay.checkin_auto_retarget_all.accesskey;"/>
             <menuitem type="checkbox" id="checkin_local_hold_as_transit" oils_persist="checked" command="cmd_checkin_local_hold_as_transit"
                 label="&staff.circ.checkin_overlay.checkin_local_hold_as_transit.label;" accesskey="&staff.circ.checkin_overlay.checkin_local_hold_as_transit;"/>
+            <menuitem type="checkbox" id="checkin_manual_float" oils_persist="checked" command="cmd_checkin_manual_float"
+                label="&staff.circ.checkin_overlay.checkin_manual_float.label;" accesskey="&staff.circ.checkin_overlay.checkin_manual_float.accesskey;"/>
         </menupopup>
     </button>
 </hbox>

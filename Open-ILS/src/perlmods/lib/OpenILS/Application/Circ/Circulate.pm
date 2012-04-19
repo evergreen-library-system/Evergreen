@@ -33,7 +33,7 @@ sub determine_booking_status {
 
 my $MK_ENV_FLESH = { 
     flesh => 2, 
-    flesh_fields => {acp => ['call_number','parts'], acn => ['record']}
+    flesh_fields => {acp => ['call_number','parts','floating'], acn => ['record']}
 };
 
 sub initialize {
@@ -544,6 +544,7 @@ my @AUTOLOAD_FIELDS = qw/
     limit_groups
     override_args
     checkout_is_for_hold
+    manual_float
 /;
 
 
@@ -2703,8 +2704,20 @@ sub do_checkin {
     
             } else {
                 # copy needs to transit "home", or stick here if it's a floating copy
-    
-                if ($U->is_true( $self->copy->floating ) && !$self->remote_hold) { # copy is floating, stick here
+                my $can_float = 0;
+                if ($self->copy->floating && ($self->manual_float || !$U->is_true($self->copy->floating->manual)) && !$self->remote_hold) { # copy is potentially floating?
+                    my $res = $self->editor->json_query(
+                        {   from => [
+                                'evergreen.can_float',
+                                $self->copy->floating->id,
+                                $self->copy->circ_lib,
+                                $self->circ_lib
+                            ]
+                        }
+                    );
+                    $can_float = $U->is_true($res->[0]->{'evergreen.can_float'}) if $res; 
+                }
+                if ($can_float) { # Yep, floating, stick here
                     $self->checkin_changed(1);
                     $self->copy->circ_lib( $self->circ_lib );
                     $self->update_copy;
