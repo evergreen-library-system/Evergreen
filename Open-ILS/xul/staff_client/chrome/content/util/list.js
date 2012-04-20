@@ -1075,7 +1075,7 @@ util.list.prototype = {
                                 dump('exec_on_all_fleshed, processing on_all_fleshed array, length = ' + obj.on_all_fleshed.length + '\n');
                                 var f = obj.on_all_fleshed.pop();
                                 if (typeof f == 'function') { 
-                                    try { f(); } catch(E) { obj.error.standard_unexpected_error_alert('_full_retrieve_tree callback',f); } 
+                                    try { f(); } catch(E) { obj.error.standard_unexpected_error_alert('_full_retrieve_tree callback',E); }
                                 }
                                 if (obj.on_all_fleshed.length > 0) arguments.callee(); 
                             } catch(E) {
