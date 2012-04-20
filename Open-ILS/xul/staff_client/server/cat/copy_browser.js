@@ -428,7 +428,9 @@ cat.copy_browser.prototype = {
                                         }
                                     );
 
-                                    xulG.volume_item_creator( {'existing_copies':list, 'onrefresh' : function() { obj.refresh_list(); } } );
+                                    if (list.length > 0) {
+                                        xulG.volume_item_creator( {'existing_copies':list, 'onrefresh' : function() { obj.refresh_list(); } } );
+                                    }
 
                                 } catch(E) {
                                     obj.error.standard_unexpected_error_alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.edit_items.error'),E);
