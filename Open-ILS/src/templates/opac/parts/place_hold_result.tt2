@@ -54,6 +54,24 @@
 
                         <div class='success'>[% l("Hold was successfully placed"); %]</div>
 
+                        [% IF ctx.is_staff %]
+                            <script>
+                                window.addEventListener(
+                                    'load',
+                                    function() {
+                                        try {
+                                            if (typeof xulG != 'undefined' && xulG.opac_hold_placed) {
+                                                xulG.opac_hold_placed([% hdata.hold_success %]);
+                                            }
+                                        } catch(E) {
+                                            alert('Error updating Work Log with hold placement: ' + E);
+                                        }
+                                    },
+                                    false
+                                );
+                            </script>
+                        [% END %]
+
                         [% ELSIF hdata.hold_failed; any_failures = 1 %]
 
                             <div><big><strong>[% l("Hold was not successfully placed"); %]</strong></big></div>

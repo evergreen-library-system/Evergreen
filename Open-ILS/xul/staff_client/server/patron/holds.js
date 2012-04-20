@@ -1482,11 +1482,12 @@ patron.holds.prototype = {
                                         },
                                         'opac_hold_placed' : function(hold) {
                                             try {
+                                                var hold_id = typeof hold == 'object' ? hold.id() : hold;
                                                 obj.list.append(
                                                     {
                                                         'row' : {
                                                             'my' : {
-                                                                'hold_id' : typeof hold == 'object' ? hold.id() : hold
+                                                                'hold_id' : hold_id
                                                             }
                                                         }
                                                     }
@@ -1494,6 +1495,30 @@ patron.holds.prototype = {
                                                 if (window.xulG && typeof window.xulG.on_list_change == 'function') {
                                                     window.xulG.on_list_change(); 
                                                 }
+                                                obj.list.wrap_in_full_retrieve(
+                                                    function() {
+                                                        try {
+                                                            obj.error.work_log(
+                                                                $('offlineStrings').getFormattedString(
+                                                                    'staff.circ.work_log_hold_placed.message',
+                                                                    [
+                                                                        ses('staff_usrname'),
+                                                                        obj.holds_map[ hold_id ].patron_last,
+                                                                        obj.holds_map[ hold_id ].patron_barcode,
+                                                                        hold_id,
+                                                                        obj.holds_map[ hold_id ].hold.hold_type()
+                                                                    ]
+                                                                ), {
+                                                                    'au_id' : obj.holds_map[ hold_id ].hold.usr(),
+                                                                    'au_family_name' : obj.holds_map[ hold_id ].patron_family_name,
+                                                                    'au_barcode' : obj.holds_map[ hold_id ].patron_barcode
+                                                                }
+                                                            );
+                                                        } catch(F) {
+                                                            obj.error.standard_unexpected_error_alert('holds.js, opac_hold_placed(), work_log: ',F);
+                                                        }
+                                                    }
+                                                );
                                             } catch(E) {
                                                 obj.error.standard_unexpected_error_alert('holds.js, opac_hold_placed(): ',E);
                                             }
