@@ -405,7 +405,40 @@ function set_opac() {
                     }
                 },
                 'get_barcode' : xulG.get_barcode,
-                'get_barcode_and_settings' : xulG.get_barcode_and_settings
+                'get_barcode_and_settings' : xulG.get_barcode_and_settings,
+                'opac_hold_placed' : function(hold) {
+                    try {
+                        var hold_id = typeof hold == 'object' ? hold.id() : hold;
+                        g.network.simple_request('FM_AHR_BLOB_RETRIEVE.authoritative', [ ses(), hold_id ],
+                            function(blob_req) {
+                                try {
+                                    var blob = blob_req.getResultObject();
+                                    if (typeof blob.ilsevent != 'undefined') throw(blob);
+                                    g.error.work_log(
+                                        $('offlineStrings').getFormattedString(
+                                            'staff.circ.work_log_hold_placed.message',
+                                            [
+                                                ses('staff_usrname'),
+                                                blob.patron_last,
+                                                blob.patron_barcode,
+                                                hold_id,
+                                                blob.hold.hold_type()
+                                            ]
+                                        ), {
+                                            'au_id' : blob.hold.usr(),
+                                            'au_family_name' : blob.patron_family_name,
+                                            'au_barcode' : blob.patron_barcode
+                                        }
+                                    );
+                                } catch(E) {
+                                    g.error.standard_unexpected_error_alert('opac.js, opac_hold_placed(), work_log #2: ',E);
+                                }
+                            }
+                        );
+                    } catch(F) {
+                        g.error.standard_unexpected_error_alert('opac.js, opac_hold_placed(), work_log #1: ',F);
+                    }
+                }
             },
             'on_url_load' : function(f) {
                 netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
