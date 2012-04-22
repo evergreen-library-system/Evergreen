@@ -54,7 +54,7 @@ source directory to generate the configure script and Makefiles:
 
 [source, bash]
 ------------------------------------------------------------------------------
-./autogen.sh
+autoreconf -f -i
 ------------------------------------------------------------------------------
 
 After running `make install`, developers also need to install the Dojo Toolkit
