@@ -201,7 +201,7 @@ sub load_getit_results {
         }
     } else { 
         $e->xact_begin;
-        $ctx->{hold} = $e->retrieve_action_hold_request(8);
+        $ctx->{hold} = $e->retrieve_action_hold_request($hold_id);
         $e->xact_rollback;
     }
 
