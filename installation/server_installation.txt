@@ -38,8 +38,8 @@ the following commands as the *user* Linux account:
 
 [source, bash]
 ------------------------------------------------------------------------------
-wget -c http://evergreen-ils.org/downloads/Evergreen-ILS-2.2-alpha3.tar.gz
-tar xzf Evergreen-ILS-2.2-alpha3.tar.gz
+wget -c http://evergreen-ils.org/downloads/Evergreen-ILS-2.2-beta2.tar.gz
+tar xzf Evergreen-ILS-2.2-beta2.tar.gz
 ------------------------------------------------------------------------------
 
 Preamble: Developer instructions
@@ -170,7 +170,7 @@ Installation instructions
 +
 [source, bash]
 ------------------------------------------------------------------------------
-make STAFF_CLIENT_STAMP_ID=rel_2_2_alpha3 install
+make STAFF_CLIENT_STAMP_ID=rel_2_2_beta2 install
 ------------------------------------------------------------------------------
 +
 2. The server portion of the staff client expects `http://hostname/xul/server`
@@ -401,26 +401,27 @@ Evergreen administrator account to your requested values.
 Creating the database on a remote server
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In a production instance of Evergreen, your PostgreSQL server should be
-installed on a dedicated server. For PostgreSQL 9.1 and later you should be
-able to continue to use the --create-database flag on eg_db_config.pl, without
-needing to install any server modules on your application machine. For
-PostgreSQL 9.0 you can either:
+In a production instance of Evergreen, your PostgreSQL server should be installed on a dedicated server.
 
-  *  Install the PostgreSQL contrib modules on the machine on which you
-     are installing the Evergreen code, and use the --create-database
-     option from that machine, or
-  *  Copy the `Open-ILS/src/sql/Pg/create_database.sql` script to your
-     PostgreSQL server and invoke it as the *postgres* Linux account:
+PostgreSQL 9.1 and later
+++++++++++++++++++++++++
+
+To create the database instance on a remote database server running PostgreSQL 9.1 or later, simply use the --create-database flag on eg_db_config.pl.
+
+For PostgreSQL 9.0
+++++++++++++++++++
+
+To create the database instance on a remote database server running PostgreSQL 9.0, you can either:
+
+* Install the PostgreSQL contrib modules on the machine on which you are installing the Evergreen code, and use the --create-database option from that machine, or
+* Copy the Open-ILS/src/sql/Pg/create_database.sql script to your PostgreSQL server and invoke it as the postgres Linux account:
 +
 [source, bash]
 ------------------------------------------------------------------------------
 psql -vdb_name=<dbname> -vcontrib_dir=`pg_config --sharedir`/contrib -f create_database.sql
 ------------------------------------------------------------------------------
 
-Then you can issue the `eg_db_config.pl` command as above _without_ the
-`--create-database` argument to create your schema and configure your
-configuration files.
+Then you can issue the eg_db_config.pl command as above without the --create-database argument to create your schema and configure your configuration files.
 
 Starting Evergreen
 ~~~~~~~~~~~~~~~~~~
