@@ -5,7 +5,7 @@
     attrs = {marc_xml => ctx.marc_xml};
     PROCESS get_marc_attrs args=attrs;
     ctx.page_title = l('Get it');
-    kill_params = ['list', 'hold', 'hold_failed', 'pickup_lib'];
+    kill_params = ['list', 'hold', 'hold_failed', 'pickup_lib', 'action'];
     title_html = attrs.title | html;
 %]
           
