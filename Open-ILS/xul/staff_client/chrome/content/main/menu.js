@@ -860,6 +860,17 @@ main.menu.prototype = {
                     open_eg_web_page("conify/global/asset/copy_template");
                 }
             ],
+            "cmd_local_admin_item_attribute_editor": [
+                ["oncommand"],
+                function(event) {
+                    obj.command_tab(
+                        event,
+                        urls.XUL_COPY_EDITOR,
+                        { 'tab_name' : offlineStrings.getString('menu.local_admin.item_attribute_editor.tab') },
+                        { 'admin' : true, 'not_modal' : true }
+                    );
+                }
+            ],
             'cmd_local_admin_patrons_due_refunds' : [
                 ['oncommand'],
                 function(event) {

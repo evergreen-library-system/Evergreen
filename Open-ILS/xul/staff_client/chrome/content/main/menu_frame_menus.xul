@@ -149,6 +149,7 @@
     <command id="cmd_local_admin_work_log" />
     <command id="cmd_local_admin_patrons_due_refunds" />
     <command id="cmd_local_admin_copy_template" />
+    <command id="cmd_local_admin_item_attribute_editor" />
     <command id="cmd_local_admin_address_alert"
              perm="ADMIN_ADDRESS_ALERT VIEW_ADDRESS_ALERT" />
     <command id="cmd_local_admin_circ_limit_set"
@@ -510,6 +511,7 @@
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.copy_location_order.label;" command="cmd_local_admin_copy_location_order"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.copy_location_group.label;" command="cmd_local_admin_copy_location_group"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.copy_template.label;" accesskey="&staff.main.menu.admin.local_admin.copy_template.accesskey;" command="cmd_local_admin_copy_template"/>
+                <menuitem label="&staff.main.menu.admin.local_admin.item_attribute_editor.label;" accesskey="&staff.main.menu.admin.local_admin.item_attribute_editor.accesskey;" command="cmd_local_admin_item_attribute_editor"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.idl_field_doc.label;" command="cmd_local_admin_idl_field_doc"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.grp_penalty_threshold.label;" command="cmd_local_admin_grp_penalty_threshold"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.hold_matrix_matchpoint.label;" command="cmd_local_admin_hold_matrix_matchpoint"/>

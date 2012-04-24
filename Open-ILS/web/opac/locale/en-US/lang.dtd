@@ -741,6 +741,8 @@
 <!ENTITY staff.main.menu.admin.local_admin.work_log.accesskey "W">
 <!ENTITY staff.main.menu.admin.local_admin.copy_template.label "Copy Template Editor">
 <!ENTITY staff.main.menu.admin.local_admin.copy_template.accesskey "T">
+<!ENTITY staff.main.menu.admin.local_admin.item_attribute_editor.label "Item Attribute Editor">
+<!ENTITY staff.main.menu.admin.local_admin.item_attribute_editor.accesskey "E">
 <!ENTITY staff.main.menu.admin.local_admin.patrons_due_refunds.label "Patrons with Negative Balances">
 <!ENTITY staff.main.menu.admin.local_admin.patrons_due_refunds.accesskey "N">
 <!ENTITY staff.main.menu.admin.local_admin.address_alert.label "Address Alerts">
